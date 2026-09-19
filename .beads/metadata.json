@@ -1,0 +1,7 @@
+{
+  "database": "dolt",
+  "backend": "dolt",
+  "dolt_mode": "embedded",
+  "dolt_database": "skein",
+  "project_id": "2a99a8cb-c664-4c7d-8528-772408045418"
+}

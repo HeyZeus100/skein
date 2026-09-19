@@ -1,0 +1,76 @@
+# Android / Gradle
+*.iml
+.gradle/
+local.properties
+.idea/
+.DS_Store
+build/
+captures/
+.externalNativeBuild/
+.cxx/
+*.apk
+*.aab
+*.dex
+release/
+
+# Native
+*.so
+*.a
+*.o
+llama.cpp/build/
+tools/**/build/
+
+# Kotlin / JVM
+*.class
+*.jar
+!gradle/wrapper/gradle-wrapper.jar
+hs_err_pid*
+replay_pid*
+
+# Model files (never checked in — always downloaded via SAF, hash-verified)
+*.gguf
+*.task
+*.litertlm
+*.onnx
+*.safetensors
+*.bin
+models/
+
+# Vault / test data
+vault.db*
+*.sqlite*
+attachments/
+.superpowers/
+
+# Benchmark output
+tools/m0-benchmark/output/
+MEASUREMENTS.md.bak
+
+# Secrets — never checked in
+*.jks
+*.keystore
+signing.properties
+*.pem
+*.key
+!**/public.pem
+
+# Editor / OS
+.vscode/
+.env
+.env.local
+*.swp
+*~
+Thumbs.db
+
+# bd (local db committed; caches ignored)
+.beads/cache/
+.beads/*.wal
+.beads/*.shm
+
+# Node (if any tooling ends up needing it)
+node_modules/
+
+# Beads / Dolt files (added by bd init)
+.dolt/
+*.db
+.beads-credential-key
