@@ -1,0 +1,11 @@
+## Long-context test prompt (~8k tokens)
+## Purpose: measure prefill throughput and effective context degradation at scale
+##
+## The real 8k prompt should be generated fresh from the actual vault at run time
+## (mix of retrieved chunks from realistic 100-note vault) to avoid overfitting to
+## a fixed test artifact. Use scripts/generate-long-prompt.py to synthesize.
+##
+## Placeholder for M0 measurement: run `scripts/generate-long-prompt.py --tokens 8000`
+## before benchmarking to fill this file with realistic RAG-shaped content.
+
+PLACEHOLDER — populate before use.

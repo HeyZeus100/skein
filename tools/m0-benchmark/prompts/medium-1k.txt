@@ -1,0 +1,17 @@
+Below is a personal knowledge note about a trip to Kyoto, followed by several retrieved excerpts from related notes in the same vault. Answer the user's question using the note and excerpts as your context. Cite sources by their [N] markers. If the information is not in the sources, say so plainly.
+
+Note: "Kyoto trip planning"
+I'm traveling to Kyoto for eight days in early April to see the cherry blossoms. Budget is moderate but I want at least two nights in a traditional ryokan. I prefer walking-friendly neighborhoods over central hotel districts. Interested in temples, tea culture, kaiseki dinners, and used-book shops. Avoiding: crowds where possible, chain hotels, anything requiring a car.
+
+Retrieved sources:
+
+[1] Japan notes.md · "Ryokan shortlist"
+Higashiyama has several traditional options. Seikoro, near Sanjusangendo, is often recommended by [[Yuki]] and costs around ¥40k/night for two people including kaiseki dinner and breakfast. Tawaraya in Kamigyo is historic — nine generations of the same family — but almost impossible to book without an introduction. Hiiragiya is the same lineage as Tawaraya and slightly more accessible; expect ¥60k+ per night. All three are in walking distance of major sights.
+
+[2] Kyoto guide.pdf · page 12
+The Higashiyama district encompasses the eastern hills of Kyoto, including Kiyomizu-dera, Sanjusangendo, and the philosopher's path. Cherry blossom viewing peaks in the first week of April in average years but has arrived up to 10 days earlier in the last decade. The area is best walked; taxis struggle with the narrow streets during blossom season.
+
+[3] Travel wishlist
+Want to try an authentic kaiseki dinner. Recommended by [[Marcus]]: Hiiragiya, Kikunoi, and Nakamura for the multi-course experience. Nakamura has a lunch option that's about a third of the dinner price.
+
+User's question: Which of these ryokan should I book, and how should I structure the eight days to see cherry blossoms without fighting crowds?

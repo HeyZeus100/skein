@@ -1,0 +1,3 @@
+Summarize the following note in three sentences, preserving the key decision and its rationale:
+
+Today I decided to switch the vault storage from shared filesystem access to an app-private DocumentsProvider. The reason is that shared storage cannot enforce app-level encryption, and enumerating thousands of files via DocumentsFile is slow. The tradeoff is that Obsidian users will need to open the vault through the system file picker rather than treating it as a plain folder.

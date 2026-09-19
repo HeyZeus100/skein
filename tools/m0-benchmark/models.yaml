@@ -1,0 +1,86 @@
+# M0 benchmark model manifest.
+# Hashes must be verified before load; refuse to run against any file whose
+# SHA-256 differs from the value below.
+#
+# Fill in `sha256` and `size_bytes` after first download; leave `TBD` for now.
+
+models:
+  - id: qwen-2.5-3b-instruct-abliterated-q4km
+    display_name: "Qwen 2.5 3B Instruct Abliterated (Q4_K_M)"
+    role: primary                        # 'primary' | 'safety' | 'embedder' | 'reranker'
+    format: gguf
+    hf_repo: "huihui-ai/Qwen2.5-3B-Instruct-abliterated-GGUF"
+    file: "Qwen2.5-3B-Instruct-abliterated-Q4_K_M.gguf"
+    expected_size_bytes: TBD
+    sha256: TBD
+    license: apache-2.0
+    capabilities: [text]
+
+  - id: gemma-4-e4b-q4km
+    display_name: "Gemma 4 E4B (Q4_K_M)"
+    role: safety
+    format: gguf
+    hf_repo: "unsloth/gemma-4-E4B-it-GGUF"
+    file: "gemma-4-E4B-it-Q4_K_M.gguf"
+    expected_size_bytes: TBD
+    sha256: TBD
+    license: apache-2.0
+    capabilities: [text, vision]
+
+  - id: gemma-4-e2b-q4km
+    display_name: "Gemma 4 E2B (Q4_K_M)"
+    role: background
+    format: gguf
+    hf_repo: "unsloth/gemma-4-E2B-it-GGUF"
+    file: "gemma-4-E2B-it-Q4_K_M.gguf"
+    expected_size_bytes: TBD
+    sha256: TBD
+    license: apache-2.0
+    capabilities: [text]
+
+  - id: nomic-embed-text-v1.5-gguf
+    display_name: "Nomic Embed Text v1.5 (GGUF)"
+    role: embedder
+    format: gguf
+    hf_repo: "nomic-ai/nomic-embed-text-v1.5-GGUF"
+    file: "nomic-embed-text-v1.5.Q4_K_M.gguf"
+    expected_size_bytes: TBD
+    sha256: TBD
+    license: apache-2.0
+    capabilities: [embedding]
+    embedding_dim: 768
+    matryoshka_dims: [768, 512, 256, 128, 64]
+
+  - id: qwen3-embedding-0.6b-onnx
+    display_name: "Qwen3 Embedding 0.6B (ONNX, optional comparison)"
+    role: embedder
+    format: onnx
+    hf_repo: "onnx-community/Qwen3-Embedding-0.6B-ONNX"
+    file: "model.onnx"
+    expected_size_bytes: TBD
+    sha256: TBD
+    license: apache-2.0
+    capabilities: [embedding]
+    embedding_dim: 1024
+
+  - id: gliner-small-v2.5-onnx-int8
+    display_name: "GLiNER small v2.5 (ONNX int8)"
+    role: entity_extractor
+    format: onnx
+    hf_repo: "GG-QandV/gliner_small-v2.5-onnx"
+    file: "model_int8.onnx"
+    expected_size_bytes: TBD
+    sha256: TBD
+    license: apache-2.0
+    capabilities: [ner, relations]
+
+  - id: ms-marco-minilm-l6-v2-onnx
+    display_name: "ms-marco MiniLM L-6-v2 (ONNX, optional reranker)"
+    role: reranker
+    format: onnx
+    hf_repo: "cross-encoder/ms-marco-MiniLM-L-6-v2"
+    file: "model.onnx"
+    expected_size_bytes: TBD
+    sha256: TBD
+    license: apache-2.0
+    capabilities: [rerank]
