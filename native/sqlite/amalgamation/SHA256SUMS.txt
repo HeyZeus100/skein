@@ -1,0 +1,20 @@
+# SHA-256 of the checked-in SQLCipher 4.17.0 (SQLite 3.53.3) amalgamation.
+#
+# This file exists so tampering or drift in the checked-in amalgamation is
+# loud: native/sqlite/CMakeLists.txt hashes the three files below at every
+# CMake configure and fails the build on mismatch. It is also the input to
+# native/sqlite/verify_amalgamation.sh, which the release-tag CI job
+# (.github/workflows/reproducible-build.yml, job "amalgamation-integrity")
+# uses to confirm these files are byte-identical to what the pinned
+# SQLCipher v4.17.0 source (commit f9788efa8ac4dfed75c03e4756b1666a1d0845da)
+# produces when regenerated fresh.
+#
+# Regenerate with: native/sqlite/verify_amalgamation.sh --regenerate
+# (writes fresh hashes here after confirming the diff is clean), or
+# manually: `shasum -a 256 sqlite3.c sqlite3.h sqlite3ext.h` from this
+# directory. See docs/design/AMALGAMATION_POLICY.md and README.md §3.
+#
+# Verify with (from this directory): shasum -a 256 -c SHA256SUMS.txt
+8adaff6b464052a74e7adaa3cfa2725400f48eca68f47856fa806eaf30bdf2c9  sqlite3.c
+e564d0492e7556a8ad2f30c8ec645b5a6abb89f32f7b40465a3032d937596401  sqlite3.h
+ac9645e5c9ff0cf176efdd6e75cb5e98f46295d38e02db5c4d208826a39ab4be  sqlite3ext.h
