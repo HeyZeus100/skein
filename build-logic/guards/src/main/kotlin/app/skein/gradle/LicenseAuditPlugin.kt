@@ -1,19 +1,23 @@
 package app.skein.gradle
 
+import com.android.build.api.variant.AndroidComponentsExtension
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 
 /**
- * Registers a `licenseAudit<Variant>` task for each foss variant, walking the
- * runtime classpath to check licenses against the allowlist (spec §10, E1.I7).
+ * Registers a `licenseAudit<Variant>RuntimeClasspath` task for each foss
+ * variant, walking the runtime classpath to check licenses against the
+ * allowlist (spec §10, E1.I7).
  *
  * The task:
- * - Resolves the foss runtime classpath
+ * - Resolves the foss variant's runtime classpath (`variant.runtimeConfiguration`)
  * - Checks each artifact's license from metadata or overrides
  * - Maps to SPDX with overrides for ambiguous/missing licenses
  * - Fails for `foss` variants if any license is outside the allowlist
- * - Emits a report at build/reports/licenses/foss.md
- * - Generates app/src/main/assets/licenses.json for the in-app licenses screen
+ * - Emits a report at build/reports/licenses/<variant>.md
+ * - Generates build/generated/licenses/<variant>/assets/licenses.json for
+ *   the in-app licenses screen, registered as a generated asset source via
+ *   the Variant API (see below) rather than written into `src/main/assets`
  *
  * Wire into check task to enforce on all builds.
  */
@@ -27,27 +31,33 @@ class LicenseAuditPlugin : Plugin<Project> {
         }
         project.tasks.matching { it.name == "check" }.configureEach { dependsOn(aggregate) }
 
-        project.configurations.configureEach {
-            val configurationName = name
-            // Only process runtime classpath configurations for foss variants
-            if (!configurationName.endsWith("RuntimeClasspath")) return@configureEach
-            if (!configurationName.contains("foss", ignoreCase = true)) return@configureEach
-            if (!isCanBeResolved) return@configureEach
+        val androidComponents = project.extensions.findByType(AndroidComponentsExtension::class.java)
+            ?: error(
+                "app.skein.guard.license requires the Android application (or library) plugin to be " +
+                    "applied first in ${project.path}.",
+            )
 
+        androidComponents.onVariants { variant ->
+            // Only the foss distribution flavor is subject to the allowlist
+            // (spec §10, E1.I7); the dev flavor may pull in non-allowlisted
+            // licenses (e.g. proprietary GMS-adjacent deps) intentionally.
+            if (!variant.name.contains("foss", ignoreCase = true)) return@onVariants
+
+            val runtimeConfiguration = variant.runtimeConfiguration
+            val configurationName = runtimeConfiguration.name
             val taskName = "licenseAudit${configurationName.replaceFirstChar(Char::uppercaseChar)}"
-            if (project.tasks.findByName(taskName) != null) return@configureEach
 
-            // Extract artifact license info from the configuration
-            val artifactLicensesProvider = incoming.resolutionResult.rootComponent.map { root ->
-                val licenses = mutableMapOf<String, String>()
-                collectArtifactLicenses(root, licenses)
-                licenses
-            }
+            // Extract artifact license info from the resolved runtime classpath
+            val artifactLicensesProvider =
+                runtimeConfiguration.incoming.resolutionResult.rootComponent.map { root ->
+                    val licenses = mutableMapOf<String, String>()
+                    collectArtifactLicenses(root, licenses)
+                    licenses
+                }
 
             val overridesFile = project.file("tools/licenses/overrides.json")
             val reportFile =
                 project.file("build/reports/licenses/${configurationName.replace("RuntimeClasspath", "")}.md")
-            val licensesJsonFile = project.layout.projectDirectory.file("src/main/assets/licenses.json")
 
             val task = project.tasks.register(taskName, LicenseAuditTask::class.java) {
                 group = "verification"
@@ -58,26 +68,22 @@ class LicenseAuditPlugin : Plugin<Project> {
                     this.overridesFile.set(overridesFile)
                 }
                 this.reportFile.set(reportFile)
-                this.licensesJsonFile.set(licensesJsonFile)
+                // Build-generated output — deliberately NOT src/main/assets.
+                // Each variant gets its own subdirectory: the directory is
+                // declared as this task's @OutputDirectory and, below, is
+                // registered as a *generated* asset source for exactly this
+                // variant via the Variant API, so Gradle's task graph knows
+                // this task is the producer that mergeAssets/lint model
+                // tasks depend on. Writing straight into `src/main/assets`
+                // (the previous approach) made that relationship invisible
+                // to Gradle and tripped the "implicit dependency" task-graph
+                // validation introduced in Gradle 9.7.1 (skein-iau5).
+                outputDir.set(project.layout.buildDirectory.dir("generated/licenses/${variant.name}/assets"))
             }
 
             aggregate.configure { dependsOn(task) }
 
-            // The task writes app/src/main/assets/licenses.json, which is
-            // part of the module's main source set. AGP-generated tasks in
-            // this module (lint analysis, merge-assets, ...) read that
-            // merged source set without Gradle knowing there is a
-            // relationship to this task's output, which Gradle's task
-            // validation flags as an "implicit dependency" and fails the
-            // build on. Order every other task in the project after the
-            // license audit so that ambiguity is resolved without turning
-            // it into a hard `dependsOn` (see
-            // https://docs.gradle.org/current/userguide/validation_problems.html#implicit_dependency).
-            project.tasks.configureEach {
-                if (name != "clean" && name != "licenseAudit" && !name.startsWith("licenseAudit")) {
-                    mustRunAfter(task)
-                }
-            }
+            variant.sources.assets?.addGeneratedSourceDirectory(task, LicenseAuditTask::outputDir)
         }
     }
 

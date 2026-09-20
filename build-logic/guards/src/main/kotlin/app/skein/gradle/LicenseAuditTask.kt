@@ -3,6 +3,7 @@ package app.skein.gradle
 import com.fasterxml.jackson.databind.ObjectMapper
 import org.gradle.api.DefaultTask
 import org.gradle.api.GradleException
+import org.gradle.api.file.DirectoryProperty
 import org.gradle.api.file.RegularFileProperty
 import org.gradle.api.provider.ListProperty
 import org.gradle.api.provider.MapProperty
@@ -10,6 +11,7 @@ import org.gradle.api.provider.Property
 import org.gradle.api.tasks.Input
 import org.gradle.api.tasks.InputFile
 import org.gradle.api.tasks.Optional
+import org.gradle.api.tasks.OutputDirectory
 import org.gradle.api.tasks.OutputFile
 import org.gradle.api.tasks.TaskAction
 import java.io.File
@@ -39,15 +41,24 @@ abstract class LicenseAuditTask : DefaultTask() {
     @get:OutputFile
     abstract val reportFile: RegularFileProperty
 
-    @get:OutputFile
-    abstract val licensesJsonFile: RegularFileProperty
+    /**
+     * A build-generated directory (NOT `src/main/assets`) that this task
+     * populates with `licenses.json`. Registered with AGP as a generated
+     * asset source directory via
+     * `variant.sources.assets.addGeneratedSourceDirectory(taskProvider, LicenseAuditTask::outputDir)`
+     * (see [LicenseAuditPlugin]), so Gradle knows this task is the producer
+     * and schedules it before `mergeAssets` / lint model tasks consume it —
+     * no manual `dependsOn`/`mustRunAfter` wiring required.
+     */
+    @get:OutputDirectory
+    abstract val outputDir: DirectoryProperty
 
     @TaskAction
     fun auditLicenses() {
         val variant = variant.get()
         val artifacts = artifactLicenses.get()
         val reportFile = reportFile.get().asFile
-        val licensesJsonFile = licensesJsonFile.get().asFile
+        val licensesJsonFile = File(outputDir.get().asFile, "licenses.json")
 
         // Load overrides if provided
         val overrides = mutableMapOf<String, LicenseOverride>()
