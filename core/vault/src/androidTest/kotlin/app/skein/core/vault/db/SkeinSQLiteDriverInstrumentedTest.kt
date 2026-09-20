@@ -99,4 +99,102 @@ class SkeinSQLiteDriverInstrumentedTest {
             }
         }
     }
+
+    // --- E2.I1 remaining scope: primary SkeinSQLiteDriver(key: ByteArray) constructor,
+    // §4.9 PRAGMA sequence, and additional bind/get round trips (real SQLCipher engine). ---
+
+    private fun randomKey(seed: Byte): ByteArray = ByteArray(32) { (seed + it).toByte() }
+
+    @Test
+    fun keyedOpenRunsSection4_9PragmaSequence() {
+        val dbFile = tempDbFile()
+        val key = randomKey(1)
+
+        SkeinSQLiteDriver(key).open(dbFile.absolutePath).use { conn ->
+            conn.prepare("PRAGMA journal_mode").use { stmt ->
+                assertThat(stmt.step()).isTrue()
+                assertThat(stmt.getText(0)).isEqualTo("wal")
+            }
+            conn.prepare("PRAGMA foreign_keys").use { stmt ->
+                assertThat(stmt.step()).isTrue()
+                assertThat(stmt.getLong(0)).isEqualTo(1L)
+            }
+        }
+
+        // The constructor's key array was zeroed by open().
+        assertThat(key.all { it == 0.toByte() }).isTrue()
+    }
+
+    @Test
+    fun openingWithWrongKeyThrowsNotADatabase() {
+        val dbFile = tempDbFile()
+        val correctKey = randomKey(2)
+
+        SkeinSQLiteDriver(correctKey).open(dbFile.absolutePath).use { conn ->
+            (conn as SkeinSQLiteConnection).exec("CREATE TABLE t(x TEXT)")
+        }
+
+        val wrongKey = randomKey(9)
+        try {
+            SkeinSQLiteDriver(wrongKey).open(dbFile.absolutePath).close()
+            error("expected an exception from the wrong key")
+        } catch (ex: RuntimeException) {
+            // A key WAS supplied (just the wrong one), so the raw
+            // SkeinSQLiteException (not EncryptedDatabaseWithoutKeyException)
+            // should propagate, carrying SQLite's own diagnosis.
+            assertThat(ex).isInstanceOf(SkeinSQLiteException::class.java)
+            assertThat(ex.message).contains("not a database")
+        }
+    }
+
+    @Test
+    fun bindAndGetRoundTripsForAllSupportedTypes() {
+        val dbFile = tempDbFile()
+        val key = randomKey(3)
+
+        SkeinSQLiteDriver(key).open(dbFile.absolutePath).use { conn ->
+            val connection = conn as SkeinSQLiteConnection
+            connection.exec(
+                "CREATE TABLE round_trip(i INTEGER, d REAL, t TEXT, b BLOB, n TEXT)",
+            )
+            connection.prepare("INSERT INTO round_trip VALUES(?, ?, ?, ?, ?)").use { insert ->
+                insert.bindLong(1, 123456789L)
+                insert.bindDouble(2, 2.71828)
+                insert.bindText(3, "skein vault")
+                insert.bindBlob(4, byteArrayOf(9, 8, 7, 6, 5))
+                insert.bindNull(5)
+                assertThat(insert.step()).isFalse() // DONE, no row
+            }
+            connection.prepare("SELECT i, d, t, b, n FROM round_trip").use { select ->
+                assertThat(select.step()).isTrue()
+                assertThat(select.getLong(0)).isEqualTo(123456789L)
+                assertThat(select.getDouble(1)).isEqualTo(2.71828)
+                assertThat(select.getText(2)).isEqualTo("skein vault")
+                assertThat(select.getBlob(3)).isEqualTo(byteArrayOf(9, 8, 7, 6, 5))
+                assertThat(select.isNull(4)).isTrue()
+            }
+        }
+    }
+
+    @Test
+    fun getBlobRoundTrips256ByteInt8Vector() {
+        val dbFile = tempDbFile()
+        val key = randomKey(4)
+        val vector = ByteArray(256) { (it - 128).toByte() }
+
+        SkeinSQLiteDriver(key).open(dbFile.absolutePath).use { conn ->
+            val connection = conn as SkeinSQLiteConnection
+            connection.exec("CREATE VIRTUAL TABLE vec_round_trip USING vec0(embedding int8[256])")
+            connection.prepare("INSERT INTO vec_round_trip(rowid, embedding) VALUES(1, ?)").use { insert ->
+                insert.bindBlob(1, vector)
+                assertThat(insert.step()).isFalse() // DONE, no row
+            }
+            connection.prepare("SELECT embedding FROM vec_round_trip WHERE rowid = 1").use { select ->
+                assertThat(select.step()).isTrue()
+                val roundTripped = select.getBlob(0)
+                assertThat(roundTripped.size).isEqualTo(256)
+                assertThat(roundTripped).isEqualTo(vector)
+            }
+        }
+    }
 }

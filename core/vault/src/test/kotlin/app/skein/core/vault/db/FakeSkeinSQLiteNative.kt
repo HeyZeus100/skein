@@ -23,6 +23,21 @@ internal class FakeSkeinSQLiteNative : SkeinSQLiteNative {
     /** When false, the vec_version prepare returns a stmt that reports no rows. */
     var vecProbeReturnsRow: Boolean = true
 
+    /**
+     * Simulated PRAGMA state, mutated by [nativeExec] when it sees the
+     * corresponding `PRAGMA ... = ...;` set statement, and read back by
+     * [nativeColumnText] / [nativeColumnLong] for a subsequent read-only
+     * `PRAGMA journal_mode` / `PRAGMA foreign_keys` prepare+step.
+     */
+    var journalMode: String = "delete"
+    var foreignKeysEnabled: Long = 0L
+
+    /** Hex payload of the last `PRAGMA key = "x'...'"` exec, if any. */
+    var lastKeyPragmaHex: String? = null
+
+    /** Bound parameter values, keyed by (stmtHandle, 1-based index). */
+    private val boundValues = mutableMapOf<Pair<Long, Int>, Any>()
+
     private var nextStmtHandle = 100L
 
     override fun nativeOpen(fileName: String): Long = DB_HANDLE
@@ -47,6 +62,12 @@ internal class FakeSkeinSQLiteNative : SkeinSQLiteNative {
         sql: String,
     ) {
         execCalls += sql
+        when {
+            sql.startsWith("PRAGMA journal_mode = WAL", ignoreCase = true) -> journalMode = "wal"
+            sql.startsWith("PRAGMA foreign_keys = ON", ignoreCase = true) -> foreignKeysEnabled = 1L
+            sql.startsWith("PRAGMA key", ignoreCase = true) ->
+                lastKeyPragmaHex = Regex("x'([0-9a-fA-F]+)'").find(sql)?.groupValues?.get(1)
+        }
     }
 
     override fun nativeChanges(dbHandle: Long): Long = 0
@@ -89,16 +110,25 @@ internal class FakeSkeinSQLiteNative : SkeinSQLiteNative {
     override fun nativeColumnType(
         stmtHandle: Long,
         index: Int,
-    ): Int = 3 // SQLITE_TEXT
+    ): Int =
+        when (boundValues[stmtHandle to (index + 1)]) {
+            NullValue -> SQLITE_TYPE_NULL
+            is Long -> SQLITE_TYPE_INTEGER
+            is Double -> SQLITE_TYPE_FLOAT
+            is ByteArray -> SQLITE_TYPE_BLOB
+            else -> SQLITE_TYPE_TEXT
+        }
 
     override fun nativeColumnText(
         stmtHandle: Long,
         index: Int,
     ): String? {
+        (boundValues[stmtHandle to (index + 1)] as? String)?.let { return it }
         val sql = prepareCalls.getOrNull((stmtHandle - 100L).toInt()) ?: return null
         return when {
             "cipher_version" in sql -> fakeCipherVersion
             "vec_version" in sql -> fakeVecVersion
+            "journal_mode" in sql -> journalMode
             else -> ""
         }
     }
@@ -106,48 +136,75 @@ internal class FakeSkeinSQLiteNative : SkeinSQLiteNative {
     override fun nativeColumnLong(
         stmtHandle: Long,
         index: Int,
-    ): Long = 0
+    ): Long {
+        (boundValues[stmtHandle to (index + 1)] as? Long)?.let { return it }
+        val sql = prepareCalls.getOrNull((stmtHandle - 100L).toInt()) ?: return 0
+        return when {
+            "foreign_keys" in sql -> foreignKeysEnabled
+            else -> 0
+        }
+    }
 
     override fun nativeColumnDouble(
         stmtHandle: Long,
         index: Int,
-    ): Double = 0.0
+    ): Double = (boundValues[stmtHandle to (index + 1)] as? Double) ?: 0.0
 
     override fun nativeColumnBlob(
         stmtHandle: Long,
         index: Int,
-    ): ByteArray = ByteArray(0)
+    ): ByteArray = (boundValues[stmtHandle to (index + 1)] as? ByteArray) ?: ByteArray(0)
 
     override fun nativeBindNull(
         stmtHandle: Long,
         index: Int,
-    ) = Unit
+    ) {
+        boundValues[stmtHandle to index] = NullValue
+    }
 
     override fun nativeBindLong(
         stmtHandle: Long,
         index: Int,
         value: Long,
-    ) = Unit
+    ) {
+        boundValues[stmtHandle to index] = value
+    }
 
     override fun nativeBindDouble(
         stmtHandle: Long,
         index: Int,
         value: Double,
-    ) = Unit
+    ) {
+        boundValues[stmtHandle to index] = value
+    }
 
     override fun nativeBindText(
         stmtHandle: Long,
         index: Int,
         value: String,
-    ) = Unit
+    ) {
+        boundValues[stmtHandle to index] = value
+    }
 
     override fun nativeBindBlob(
         stmtHandle: Long,
         index: Int,
         value: ByteArray,
-    ) = Unit
+    ) {
+        boundValues[stmtHandle to index] = value
+    }
+
+    /** Sentinel stored in [boundValues] to distinguish "bound NULL" from "not bound". */
+    private object NullValue
 
     companion object {
         const val DB_HANDLE: Long = 42L
+
+        // From sqlite3.h: SQLITE_INTEGER=1, FLOAT=2, TEXT=3, BLOB=4, NULL=5.
+        private const val SQLITE_TYPE_INTEGER = 1
+        private const val SQLITE_TYPE_FLOAT = 2
+        private const val SQLITE_TYPE_TEXT = 3
+        private const val SQLITE_TYPE_BLOB = 4
+        private const val SQLITE_TYPE_NULL = 5
     }
 }
