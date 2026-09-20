@@ -74,7 +74,7 @@ class LicenseAuditPlugin : Plugin<Project> {
             // it into a hard `dependsOn` (see
             // https://docs.gradle.org/current/userguide/validation_problems.html#implicit_dependency).
             project.tasks.configureEach {
-                if (name != taskName && name != "clean") {
+                if (name != "clean" && name != "licenseAudit" && !name.startsWith("licenseAudit")) {
                     mustRunAfter(task)
                 }
             }
