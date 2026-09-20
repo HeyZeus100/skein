@@ -29,7 +29,9 @@ An offline-first personal knowledge system with an on-device LLM as its interfac
 - **Security policy:** [`SECURITY.md`](SECURITY.md)
 - **Governance:** [`GOVERNANCE.md`](GOVERNANCE.md)
 - **Contributing:** [`CONTRIBUTING.md`](CONTRIBUTING.md)
-- **M0 benchmark harness:** `tools/m0-benchmark/`
+- **M0 benchmark harness:** `tools/m0-benchmark/` *(refactor in progress under `skein-79od` per the hardware handoff below)*
+- **Fold hardware lab handoff:** [`docs/Handoffs/skein-fold-m0-hardware-handoff.md`](docs/Handoffs/skein-fold-m0-hardware-handoff.md) — authoritative record of the proven Mac + ADB + SSH-to-Termux topology
+- **Design docs:** [`docs/design/`](docs/design/) — Artifact Engine sketch, post-review resolutions, vault tool primitives, amalgamation policy, skill guardrails
 - **Task tracking:** `bd` (beads) — see `bd ready` for available work
 
 ## License

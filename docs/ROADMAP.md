@@ -187,4 +187,5 @@ Every roadmap decision is checked against these:
 - v1 milestones tracked in `docs/superpowers/plans/2026-09-19-skein-v1-plan.md`
 - v2 issues filed in `bd`; search: `bd list --labels docs | grep v2` after milestone tags land
 - Architectural specs for major v2 additions (Artifact Engine, Intelligence modes, Agents, Security UX) live under `docs/design/`
+- Hardware lab state (Pixel 9 Pro Fold on GrapheneOS, ADB-forwarded-SSH topology, pinned llama.cpp binaries, Q3_K_M smoke evidence) captured in `docs/Handoffs/skein-fold-m0-hardware-handoff.md`
 - This file is the entry point; sub-docs are the substance
