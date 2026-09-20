@@ -19,12 +19,17 @@ android {
 
     defaultConfig {
         minSdk = 30
+        // skein-e2ki: SkeinSQLiteDriverInstrumentedTest exercises the real
+        // libskein_sqlite_jni.so + libskein_sqlite.so on-device.
+        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         externalNativeBuild {
             cmake {
                 // -DANDROID_STL is a no-op for our C-only build but AGP wires
                 // it anyway; explicit `none` keeps the .so free of libc++_shared.
                 arguments += listOf("-DANDROID_STL=none")
                 cFlags += "-fPIC"
+                // skein-e2ki: build both the payload .so and the JNI shim.
+                targets += listOf("skein_sqlite", "skein_sqlite_jni")
             }
         }
     }
@@ -79,7 +84,21 @@ android {
 
 dependencies {
     implementation(libs.androidx.core.ktx)
+    // skein-e2ki: SkeinSQLiteDriver implements androidx.sqlite.SQLiteDriver
+    // and returns androidx.sqlite.SQLiteConnection / SQLiteStatement, so
+    // downstream modules (Room / Skein's own vault repositories) can consume
+    // them without seeing any Skein-specific interface. `sqlite-framework`
+    // and `sqlite-bundled` are NOT wanted — we bring our own JNI shim
+    // (libskein_sqlite_jni.so) that binds through libskein_sqlite.so.
+    api(libs.androidx.sqlite)
+
     testImplementation(libs.junit)
+    testImplementation(libs.truth)
+
+    androidTestImplementation(libs.androidx.test.ext.junit)
+    androidTestImplementation(libs.androidx.test.runner)
+    androidTestImplementation(libs.androidx.test.rules)
+    androidTestImplementation(libs.truth)
 }
 
 // E0.I7 followup (skein-2lq9): fast, standalone entry point for the same

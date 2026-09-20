@@ -459,3 +459,50 @@ target_link_libraries(skein_sqlite PRIVATE crypto_static log android)
 set_target_properties(skein_sqlite PROPERTIES
   LIBRARY_OUTPUT_DIRECTORY "${CMAKE_LIBRARY_OUTPUT_DIRECTORY}"
 )
+
+# -----------------------------------------------------------------------------
+# 6. libskein_sqlite_jni.so — androidx.sqlite-shaped JNI shim (skein-e2ki)
+#
+# Small (~350 LoC) translation unit at `androidx-jni/skein_jni.c` that maps the
+# native methods on `app.skein.core.vault.db.SkeinSQLiteNative` onto the
+# corresponding sqlite3_* calls exported by libskein_sqlite.so (skein-6rwv).
+# Emitted as a *separate* .so so we don't perturb the reproducibility hash of
+# skein_sqlite itself; the .apk carries both.
+#
+# Reproducibility contract mirrors skein_sqlite: -fno-ident,
+# -ffile-prefix-map, -Wl,--build-id=none. No __DATE__/__TIME__ (guarded by
+# -Werror=date-time via the amalgamation's rule set; the shim doesn't
+# reference either).
+# -----------------------------------------------------------------------------
+add_library(skein_sqlite_jni SHARED
+  "${SKEIN_SQLITE_ROOT}/androidx-jni/skein_jni.c"
+)
+
+target_include_directories(skein_sqlite_jni PRIVATE
+  "${SKEIN_SQLITE_ROOT}/amalgamation"
+)
+
+# Link against the shared skein_sqlite target so the JNI shim resolves
+# sqlite3_open / sqlite3_key_v2 / sqlite3_prepare_v2 / etc. dynamically.
+# CMake handles both the -lskein_sqlite link line and the DT_NEEDED entry.
+target_link_libraries(skein_sqlite_jni PRIVATE skein_sqlite log)
+
+target_compile_options(skein_sqlite_jni PRIVATE
+  -O2
+  -fvisibility=hidden
+  -fno-ident
+  "-ffile-prefix-map=${SKEIN_SQLITE_ROOT}=/skein/native/sqlite"
+  "-ffile-prefix-map=${CMAKE_CURRENT_BINARY_DIR}=/skein/build"
+  -Wdate-time
+  -Werror=date-time
+)
+
+target_link_options(skein_sqlite_jni PRIVATE
+  "-Wl,--build-id=none"
+  "-Wl,--no-rosegment"
+)
+
+set_target_properties(skein_sqlite_jni PROPERTIES
+  C_VISIBILITY_PRESET default
+  LIBRARY_OUTPUT_DIRECTORY "${CMAKE_LIBRARY_OUTPUT_DIRECTORY}"
+)

@@ -66,14 +66,18 @@ directories that own each component (`native/sqlite/README.md`,
   see `native/sqlite/third_party/openssl-3.5.4/LICENSE.txt` (present after
   the CMake build extracts the tarball).
 
-### androidx.sqlite JNI (vendored, follow-up)
+### androidx.sqlite JNI (vendored, skein-e2ki)
 
+- **SPDX:** `Apache-2.0`
 - **Repository:** https://android.googlesource.com/platform/frameworks/support
-- **License:** Apache-2.0
-- **Where it will ship:** a small vendored copy of androidx.sqlite's JNI
-  layer that surfaces `libskein_sqlite.so` to Kotlin as
-  `SkeinSQLiteDriver`. Not yet in-tree — filed as `skein-e2ki`. This entry
-  is included here so the license baseline is stable for `E2.I1`.
+  (reference at `sqlite/sqlite-bundled/src/androidMain/jni/`)
+- **Where it ships:** a small hand-written JNI shim
+  (`native/sqlite/androidx-jni/skein_jni.c`, ~350 LoC) whose function
+  layout follows AOSP's androidx.sqlite bundled driver. Built as
+  `libskein_sqlite_jni.so` and linked against the exported SQLCipher/vec
+  API surface of `libskein_sqlite.so` (skein-6rwv). Surfaced to Kotlin
+  as `app.skein.core.vault.db.SkeinSQLiteDriver` implementing
+  `androidx.sqlite.SQLiteDriver`.
 - **Attribution:** Copyright (c) The Android Open Source Project.
 
 ### llama.cpp
