@@ -1,0 +1,7 @@
+# sqlite-vec release tarball provenance. The source (sqlite-vec.c) and the
+# generated sqlite-vec.h are vendored in-tree under third_party/sqlite-vec-0.1.9/
+# so no network fetch is required at build time. This file records the upstream
+# release we vendored, for auditability and to enable future refreshes.
+#
+# Format: <sha256>  <filename>  <url>
+9823e737d9934dcbe85dff75d3fca81018a9beee803d70fa77b16faab5d61dc9  sqlite-vec-0.1.9.tar.gz  https://github.com/asg017/sqlite-vec/archive/refs/tags/v0.1.9.tar.gz

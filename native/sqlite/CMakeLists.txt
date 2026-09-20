@@ -3,87 +3,286 @@ project(skein_sqlite C)
 
 # -----------------------------------------------------------------------------
 # Skein native SQLite: SQLCipher (OpenSSL-backed) + sqlite-vec + FTS5, statically
-# linked into a single shared object. Consumed by the vendored androidx.sqlite
-# JNI driver (see native/sqlite/androidx-jni/, filed as follow-up).
+# linked into a single Android shared object `libskein_sqlite.so`.
 #
-# Spike E0.I7 (skein-1ld) proved the recipe. Full production integration is
-# E1.I5.
+# The vendored androidx.sqlite JNI driver (skein-e2ki) will link this .so and
+# expose it to Kotlin as `SkeinSQLiteDriver` (E2.I1).
+#
+# Recipe reference: `native/sqlite/README.md` and `docs/SPIKE_E0_I7_RESULTS.md`.
+# Reproducibility flags mirror `E1.I4`:
+#   * `-ffile-prefix-map` strips absolute build paths from __FILE__
+#   * `-Wl,--build-id=none` drops the ELF build-id note
+#   * `-fno-ident` removes `.comment` toolchain strings
+#   * `-Wdate-time -Werror=date-time` fails the build on any __DATE__/__TIME__
+#   * `SOURCE_DATE_EPOCH` honoured by every subordinate build (OpenSSL, ar, ld)
 # -----------------------------------------------------------------------------
 
 set(CMAKE_C_STANDARD 11)
 set(CMAKE_POSITION_INDEPENDENT_CODE ON)
 
-if(NOT DEFINED SKEIN_ROOT)
-  set(SKEIN_ROOT "${CMAKE_CURRENT_SOURCE_DIR}")
+if(NOT DEFINED SKEIN_SQLITE_ROOT)
+  set(SKEIN_SQLITE_ROOT "${CMAKE_CURRENT_SOURCE_DIR}")
 endif()
 
-# Where prebuilt OpenSSL static libs live, per ABI.
-# Point OPENSSL_ROOT at .../openssl-android-<abi>/ containing include/ and lib/.
-if(NOT DEFINED OPENSSL_ROOT)
-  if(ANDROID_ABI STREQUAL "arm64-v8a")
-    set(OPENSSL_ROOT "${SKEIN_ROOT}/build/openssl-android-arm64")
-  elseif(ANDROID_ABI STREQUAL "x86_64")
-    set(OPENSSL_ROOT "${SKEIN_ROOT}/build/openssl-android-x86_64")
-  else()
-    message(FATAL_ERROR "Unsupported ANDROID_ABI=${ANDROID_ABI}. Add an OpenSSL build for it.")
+# -----------------------------------------------------------------------------
+# 1. Toolchain sanity
+# -----------------------------------------------------------------------------
+if(NOT ANDROID)
+  message(FATAL_ERROR
+    "native/sqlite/CMakeLists.txt is built only inside AGP's externalNativeBuild "
+    "(ANDROID must be defined). Host builds happen in build-host/ via a "
+    "separate driver script (see host_harness.c).")
+endif()
+
+if(NOT DEFINED ANDROID_NDK)
+  message(FATAL_ERROR "ANDROID_NDK is required (AGP normally sets it).")
+endif()
+
+set(_ANDROID_MIN_API 26)
+if(DEFINED ANDROID_PLATFORM)
+  string(REGEX REPLACE "^android-" "" _ANDROID_API_LEVEL "${ANDROID_PLATFORM}")
+else()
+  set(_ANDROID_API_LEVEL "${_ANDROID_MIN_API}")
+endif()
+
+# -----------------------------------------------------------------------------
+# 2. Map ABI → OpenSSL Configure target
+# -----------------------------------------------------------------------------
+if(ANDROID_ABI STREQUAL "arm64-v8a")
+  set(OPENSSL_TARGET "android-arm64")
+elseif(ANDROID_ABI STREQUAL "x86_64")
+  set(OPENSSL_TARGET "android-x86_64")
+else()
+  message(FATAL_ERROR
+    "Unsupported ANDROID_ABI=${ANDROID_ABI}. Only arm64-v8a (production) and "
+    "x86_64 (dev/emulator) are wired.")
+endif()
+
+# -----------------------------------------------------------------------------
+# 3. Fetch pinned OpenSSL tarball (verified sha256)
+# -----------------------------------------------------------------------------
+set(OPENSSL_VERSION "3.5.4")
+set(OPENSSL_SHA256  "967311f84955316969bdb1d8d4b983718ef42338639c621ec4c34fddef355e99")
+set(OPENSSL_URL     "https://github.com/openssl/openssl/releases/download/openssl-${OPENSSL_VERSION}/openssl-${OPENSSL_VERSION}.tar.gz")
+
+set(OPENSSL_SRC_DIR      "${SKEIN_SQLITE_ROOT}/third_party/openssl-${OPENSSL_VERSION}")
+set(OPENSSL_TARBALL      "${SKEIN_SQLITE_ROOT}/third_party/openssl-${OPENSSL_VERSION}.tar.gz")
+
+# Per-ABI build tree, kept under the CMake build dir so `./gradlew clean` wipes it.
+set(OPENSSL_BUILD_DIR    "${CMAKE_CURRENT_BINARY_DIR}/openssl-${OPENSSL_VERSION}-${ANDROID_ABI}")
+set(OPENSSL_PREFIX       "${CMAKE_CURRENT_BINARY_DIR}/openssl-${OPENSSL_VERSION}-${ANDROID_ABI}-install")
+set(OPENSSL_LIBCRYPTO    "${OPENSSL_PREFIX}/lib/libcrypto.a")
+set(OPENSSL_INCLUDE_DIR  "${OPENSSL_PREFIX}/include")
+
+# Fetch once (per repo). If the tarball is missing or its sha256 doesn't match,
+# re-download. This runs at CMake configure time so subsequent builds are fast.
+if(NOT EXISTS "${OPENSSL_TARBALL}")
+  message(STATUS "Fetching OpenSSL ${OPENSSL_VERSION} tarball (${OPENSSL_URL})…")
+  file(DOWNLOAD "${OPENSSL_URL}" "${OPENSSL_TARBALL}"
+       EXPECTED_HASH SHA256=${OPENSSL_SHA256}
+       SHOW_PROGRESS
+       TLS_VERIFY ON
+       STATUS _dl_status)
+  list(GET _dl_status 0 _dl_code)
+  if(NOT _dl_code EQUAL 0)
+    file(REMOVE "${OPENSSL_TARBALL}")
+    message(FATAL_ERROR "Failed to download OpenSSL: ${_dl_status}")
+  endif()
+else()
+  file(SHA256 "${OPENSSL_TARBALL}" _existing_sha)
+  if(NOT _existing_sha STREQUAL "${OPENSSL_SHA256}")
+    message(STATUS "OpenSSL tarball sha mismatch — refetching")
+    file(DOWNLOAD "${OPENSSL_URL}" "${OPENSSL_TARBALL}"
+         EXPECTED_HASH SHA256=${OPENSSL_SHA256}
+         SHOW_PROGRESS
+         TLS_VERIFY ON)
   endif()
 endif()
 
+if(NOT EXISTS "${OPENSSL_SRC_DIR}/Configure")
+  message(STATUS "Extracting OpenSSL ${OPENSSL_VERSION}…")
+  file(ARCHIVE_EXTRACT INPUT "${OPENSSL_TARBALL}"
+       DESTINATION "${SKEIN_SQLITE_ROOT}/third_party")
+endif()
+
+# -----------------------------------------------------------------------------
+# 4. Build OpenSSL libcrypto.a for the current ABI (ExternalProject_Add)
+# -----------------------------------------------------------------------------
+include(ExternalProject)
+
+# Find the NDK's host prebuilt bin dir so OpenSSL's Configure can locate
+# clang/ar/ranlib. r27+ ships only darwin-x86_64/linux-x86_64/windows-x86_64.
+# NB: `APPLE`/`WIN32` refer to the *target* platform when cross-compiling;
+# `CMAKE_HOST_*` is what we need for host-side toolchain path selection.
+if(CMAKE_HOST_APPLE)
+  set(_NDK_HOST_TAG "darwin-x86_64")
+elseif(CMAKE_HOST_WIN32)
+  set(_NDK_HOST_TAG "windows-x86_64")
+else()
+  set(_NDK_HOST_TAG "linux-x86_64")
+endif()
+set(_NDK_TOOLCHAIN_BIN "${ANDROID_NDK}/toolchains/llvm/prebuilt/${_NDK_HOST_TAG}/bin")
+if(NOT EXISTS "${_NDK_TOOLCHAIN_BIN}")
+  message(FATAL_ERROR "NDK toolchain bin dir not found: ${_NDK_TOOLCHAIN_BIN}")
+endif()
+
+# SOURCE_DATE_EPOCH: honour an ambient value from the Gradle build (E1.I8), and
+# otherwise fall back to a deterministic constant so two clean builds on the
+# same machine still produce identical bytes.
+if(DEFINED ENV{SOURCE_DATE_EPOCH})
+  set(_SOURCE_DATE_EPOCH "$ENV{SOURCE_DATE_EPOCH}")
+else()
+  # 2026-01-01T00:00:00Z — arbitrary, but stable.
+  set(_SOURCE_DATE_EPOCH "1767225600")
+endif()
+
+# OpenSSL Configure disables shared, DSO, engine and tests: shaves ~1 MB from
+# libcrypto.a and removes the runtime dynamic-provider loader (spec §5 hardening).
+set(_OPENSSL_CONFIGURE_ARGS
+  "${OPENSSL_TARGET}"
+  "-D__ANDROID_API__=${_ANDROID_API_LEVEL}"
+  no-shared
+  no-tests
+  no-dso
+  no-engine
+  no-legacy
+  "--prefix=${OPENSSL_PREFIX}"
+  "--libdir=lib"
+)
+
+# OpenSSL only supports in-tree builds, so we copy the source into a per-ABI
+# BINARY_DIR (via the CONFIGURE_COMMAND) and run ./Configure + make there.
+# `cmake -E chdir` handles the WORKING_DIRECTORY hop for each command, because
+# ExternalProject_Add's COMMAND blocks don't take a WORKING_DIRECTORY keyword.
+set(_OPENSSL_ENV
+  ${CMAKE_COMMAND} -E env
+    "ANDROID_NDK_ROOT=${ANDROID_NDK}"
+    "PATH=${_NDK_TOOLCHAIN_BIN}:$ENV{PATH}"
+    "SOURCE_DATE_EPOCH=${_SOURCE_DATE_EPOCH}"
+)
+
+ExternalProject_Add(openssl_ep
+  SOURCE_DIR        "${OPENSSL_SRC_DIR}"
+  BINARY_DIR        "${OPENSSL_BUILD_DIR}"
+  INSTALL_DIR       "${OPENSSL_PREFIX}"
+  DOWNLOAD_COMMAND  ""
+  UPDATE_COMMAND    ""
+  # Copy the upstream source into BINARY_DIR then run Configure in place. Both
+  # the copy and the Configure invocation are one CMake `COMMAND` block each
+  # so ExternalProject can log/rerun them independently.
+  CONFIGURE_COMMAND
+    ${CMAKE_COMMAND} -E copy_directory "${OPENSSL_SRC_DIR}" "${OPENSSL_BUILD_DIR}"
+  COMMAND
+    ${CMAKE_COMMAND} -E chdir "${OPENSSL_BUILD_DIR}"
+      ${_OPENSSL_ENV} perl ./Configure ${_OPENSSL_CONFIGURE_ARGS}
+  BUILD_COMMAND
+    ${CMAKE_COMMAND} -E chdir "${OPENSSL_BUILD_DIR}"
+      ${_OPENSSL_ENV} make -j build_libs
+  INSTALL_COMMAND
+    ${CMAKE_COMMAND} -E chdir "${OPENSSL_BUILD_DIR}"
+      ${_OPENSSL_ENV} make install_dev
+  BUILD_BYPRODUCTS "${OPENSSL_LIBCRYPTO}"
+  USES_TERMINAL_BUILD TRUE
+  LOG_CONFIGURE ON
+  LOG_BUILD ON
+  LOG_INSTALL ON
+)
+
+# Present libcrypto.a to skein_sqlite as an IMPORTED static library.
 add_library(crypto_static STATIC IMPORTED GLOBAL)
 set_target_properties(crypto_static PROPERTIES
-  IMPORTED_LOCATION "${OPENSSL_ROOT}/lib/libcrypto.a"
-  INTERFACE_INCLUDE_DIRECTORIES "${OPENSSL_ROOT}/include"
+  IMPORTED_LOCATION "${OPENSSL_LIBCRYPTO}"
 )
+# The include dir doesn't exist until openssl_ep installs; sidestep the
+# non-existent-dir check.
+file(MAKE_DIRECTORY "${OPENSSL_INCLUDE_DIR}")
+set_property(TARGET crypto_static APPEND PROPERTY
+  INTERFACE_INCLUDE_DIRECTORIES "${OPENSSL_INCLUDE_DIR}")
+add_dependencies(crypto_static openssl_ep)
+
+# -----------------------------------------------------------------------------
+# 5. SQLCipher amalgamation + sqlite-vec + skein_extra_init → libskein_sqlite.so
+# -----------------------------------------------------------------------------
+set(SQLITE_VEC_DIR "${SKEIN_SQLITE_ROOT}/third_party/sqlite-vec-0.1.9")
+if(NOT EXISTS "${SQLITE_VEC_DIR}/sqlite-vec.c")
+  message(FATAL_ERROR
+    "sqlite-vec.c missing at ${SQLITE_VEC_DIR}. Vendored copy expected — see "
+    "native/sqlite/README.md §2.")
+endif()
 
 add_library(skein_sqlite SHARED
-  "${SKEIN_ROOT}/amalgamation/sqlite3.c"
-  "${SKEIN_ROOT}/third_party/sqlite-vec-0.1.9/sqlite-vec.c"
-  "${SKEIN_ROOT}/skein_extra_init.c"
+  "${SKEIN_SQLITE_ROOT}/amalgamation/sqlite3.c"
+  "${SQLITE_VEC_DIR}/sqlite-vec.c"
+  "${SKEIN_SQLITE_ROOT}/skein_extra_init.c"
 )
+add_dependencies(skein_sqlite openssl_ep)
 
 target_compile_definitions(skein_sqlite PRIVATE
+  # SQLCipher codec
   SQLITE_HAS_CODEC
-  SQLITE_TEMP_STORE=2
-  SQLITE_ENABLE_FTS5
-  SQLITE_OMIT_LOAD_EXTENSION
-  SQLITE_THREADSAFE=1
   SQLCIPHER_CRYPTO_OPENSSL
+  # Feature set (see plan §5, spec §5)
+  SQLITE_ENABLE_FTS5
+  SQLITE_ENABLE_JSON1
+  SQLITE_SECURE_DELETE
+  SQLITE_DQS=0
+  # Attack surface: no runtime extension loading. sqlite-vec is registered at
+  # startup via SQLITE_EXTRA_INIT.
+  SQLITE_OMIT_LOAD_EXTENSION
+  # Concurrency: threadsafe (default), single-connection is the common case
+  # but multi-connection is required by the vault write coalescer (E2.I2).
+  SQLITE_THREADSAFE=1
+  SQLITE_TEMP_STORE=2
+  # SQLite core with sqlite-vec statically linked in the same TU set.
+  SQLITE_CORE
+  # Init chain: skein_extra_init → sqlcipher_extra_init → sqlite3_auto_extension(vec).
   SQLITE_EXTRA_INIT=skein_extra_init
   SQLITE_EXTRA_SHUTDOWN=skein_extra_shutdown
-  SQLITE_CORE
   HAVE_STDINT_H=1
   HAVE_INTTYPES_H=1
 )
 
 target_include_directories(skein_sqlite PRIVATE
-  "${SKEIN_ROOT}/amalgamation"
-  "${SKEIN_ROOT}/third_party/sqlite-vec-0.1.9"
+  "${SKEIN_SQLITE_ROOT}/amalgamation"
+  "${SQLITE_VEC_DIR}"
 )
 
 target_compile_options(skein_sqlite PRIVATE
-  -O2 -fvisibility=hidden -fno-strict-aliasing
+  -O2
+  -fvisibility=hidden
+  -fno-strict-aliasing
+  -fno-ident
+  # Reproducibility: strip absolute build paths from __FILE__/__BASE_FILE__
+  # for anything the amalgamation embeds via macros; second entry is for the
+  # OpenSSL install prefix that shows up in headers.
+  "-ffile-prefix-map=${SKEIN_SQLITE_ROOT}=/skein/native/sqlite"
+  "-ffile-prefix-map=${CMAKE_CURRENT_BINARY_DIR}=/skein/build"
+  # Fail the build if any TU compiles __DATE__ or __TIME__ into a string
+  # (the SQLCipher amalgamation is scrubbed; this guards against future
+  # regressions from vendored code).
+  -Wdate-time
+  # Silence the amalgamation's stylistic warnings (not code changes we own).
   -Wno-pointer-bool-conversion
   -Wno-unused-function
   -Wno-unused-variable
   -Wno-unused-but-set-variable
-  # Reproducibility: strip absolute build paths from __FILE__
-  "-ffile-prefix-map=${SKEIN_ROOT}=/src"
 )
 
-# Strip everything not explicitly exported. sqlite3_* is exported via the
-# amalgamation's SQLITE_API macro; we add JNI symbol scope in the vendored
-# androidx JNI layer (E1.I5).
+target_link_options(skein_sqlite PRIVATE
+  # Determinism: no build-id note in the .so, no path leakage in DT_RUNPATH.
+  "-Wl,--build-id=none"
+  "-Wl,--no-rosegment"
+)
+
 set_target_properties(skein_sqlite PROPERTIES
   C_VISIBILITY_PRESET hidden
 )
 
-target_link_libraries(skein_sqlite PRIVATE crypto_static)
+target_link_libraries(skein_sqlite PRIVATE crypto_static log android)
 
-if(ANDROID)
-  target_link_libraries(skein_sqlite PRIVATE log android)
-endif()
-
-# Emit .so and manifest of build inputs for auditing.
+# AGP looks for `.so` files under `<cxxBuildDir>/<abi>/`. That's the default;
+# emit `libskein_sqlite.so` there so `packageFossDebug` picks it up
+# automatically for the flavor's abiFilters.
 set_target_properties(skein_sqlite PROPERTIES
-  LIBRARY_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/out"
+  LIBRARY_OUTPUT_DIRECTORY "${CMAKE_LIBRARY_OUTPUT_DIRECTORY}"
 )

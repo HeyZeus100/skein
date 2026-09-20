@@ -1,50 +1,89 @@
 # native/sqlite — SQLCipher + sqlite-vec + FTS5 in one library
 
-This directory holds the E0.I7 spike (`skein-1ld`) that proved a **single**
-Android shared object can bundle:
+This directory produces **`libskein_sqlite.so`**, a single Android shared
+object that bundles:
 
-- SQLCipher 4.17.0 (SQLite core + encryption codec)
-- OpenSSL 3.5.4 libcrypto (Apache-2.0), statically linked
-- sqlite-vec v0.1.9 (`vec0` vtable + KNN), statically linked and registered via
-  `sqlite3_auto_extension` (no runtime `.load` — `SQLITE_OMIT_LOAD_EXTENSION`
-  is on)
-- FTS5 (via `-DSQLITE_ENABLE_FTS5`)
+- SQLCipher 4.17.0 (SQLite 3.53.3 core + page-level encryption codec)
+- OpenSSL 3.5.4 libcrypto (Apache-2.0) — built from a pinned source
+  tarball (sha256 in `openssl.sha256`) as `no-shared no-dso no-engine
+  no-legacy no-tests` and statically linked
+- sqlite-vec v0.1.9 (`vec0` vtable + KNN) — sources vendored in-tree at
+  `third_party/sqlite-vec-0.1.9/`, provenance recorded in
+  `sqlite-vec.sha256`, statically linked and auto-registered via
+  `sqlite3_auto_extension` at `sqlite3_initialize` time
+- FTS5 (`-DSQLITE_ENABLE_FTS5`) and JSON1 (default in modern SQLite)
 
-Production integration (JNI, Kotlin wrapper, Gradle wiring) is scheduled as
-`E1.I5` / `skein-qz5`. This spike keeps the sources here so the recipe is
-self-contained and reproducible.
+No runtime extension loading (`SQLITE_OMIT_LOAD_EXTENSION` on), secure
+delete on, and `SQLITE_DQS=0` (no double-quoted string literals).
+
+Owned Gradle module: **`:core:vault`**. Its
+`android { externalNativeBuild { cmake { path = "…/native/sqlite/CMakeLists.txt" } } }`
+consumes this build; the resulting `.so` is packaged into `:app`'s APK
+under `lib/<abi>/libskein_sqlite.so`. The Kotlin JNI driver that surfaces
+it as `SkeinSQLiteDriver` is tracked separately as `skein-e2ki`.
+
+The spike that proved the recipe was `E0.I7 / skein-1ld` — see
+`docs/SPIKE_E0_I7_RESULTS.md`.
 
 ## Layout
 
 ```
 native/sqlite/
-├── CMakeLists.txt            # Android + host build
-├── skein_extra_init.c        # chains sqlcipher_extra_init + sqlite-vec auto-ext
-├── host_harness.c            # native macOS test that asserts all 3 features
-├── amalgamation/             # generated SQLCipher 4.17.0 amalgamation
-│   ├── sqlite3.c             # 9.3 MB, has SQLCipher + FTS5 + JSON
+├── CMakeLists.txt            # Consumed by AGP externalNativeBuild for
+│                             # `:core:vault`. Fetches OpenSSL at configure
+│                             # time (sha256-pinned), builds libcrypto.a per
+│                             # ABI, then links libskein_sqlite.so.
+├── skein_extra_init.c        # Chains sqlcipher_extra_init + sqlite-vec auto-ext
+├── host_harness.c            # macOS host smoke test (kept for local dev)
+├── openssl.sha256            # Pinned OpenSSL tarball hash
+├── sqlite-vec.sha256         # Vendored sqlite-vec release provenance
+├── sqlcipher.sha256          # Vendored SQLCipher amalgamation provenance
+├── amalgamation/             # SQLCipher 4.17.0 amalgamation (checked in)
+│   ├── sqlite3.c             # 9.3 MB, has SQLCipher + FTS5 + JSON1
 │   ├── sqlite3.h
 │   └── sqlite3ext.h
 ├── third_party/
-│   ├── sqlcipher-4.17.0.tar.gz            (79c0e164…)
-│   ├── sqlite-vec-0.1.9.tar.gz            (9823e737…)
-│   ├── openssl-3.5.4.tar.gz               (967311f8…)
-│   ├── sqlcipher-4.17.0/                  extracted
-│   ├── sqlite-vec-0.1.9/                  extracted (+ generated sqlite-vec.h)
-│   └── openssl-3.5.4/                     extracted
-├── build/
-│   ├── openssl-android-arm64/lib/libcrypto.a   11 MB
-│   ├── openssl-android-x86_64/lib/libcrypto.a  11 MB
-│   ├── arm64-v8a/out/libskein_sqlite.so         (unstripped 14 MB)
-│   └── x86_64/out/libskein_sqlite.so
-├── prebuilt/                 # stripped, ready-to-ship copies
-│   ├── arm64-v8a/libskein_sqlite.so    6.6 MB   sha256 582d290b…
-│   ├── x86_64/libskein_sqlite.so       7.0 MB   sha256 c69c7f97…
-│   └── darwin-arm64/host_harness       (host smoke-test binary)
-└── host-build/               # intermediate host artifacts
+│   ├── sqlite-vec-0.1.9/     # Vendored: sqlite-vec.c + generated .h + licenses
+│   ├── openssl-3.5.4.tar.gz  # Fetched by CMake, git-ignored
+│   └── openssl-3.5.4/        # Extracted by CMake, git-ignored
 ```
 
-## Build recipe (reproducible)
+Everything under `build/`, `host-build/`, `prebuilt/`, and the OpenSSL
+extraction is regenerated on demand — not checked in.
+
+## Production build (Gradle)
+
+Building the app also builds `libskein_sqlite.so`:
+
+```
+./gradlew :app:assembleFossDebug     # arm64-v8a only
+./gradlew :app:assembleDevDebug      # + x86_64 for the emulator
+./gradlew :core:vault:assembleFossRelease  # module-only stripped .so
+```
+
+The pipeline is:
+
+1. AGP invokes `native/sqlite/CMakeLists.txt` per ABI selected by
+   `:core:vault`'s `flavorDimensions("distribution")` × `productFlavors {
+   foss, dev }`.
+2. CMake fetches `openssl-3.5.4.tar.gz` (sha256 verified against
+   `openssl.sha256`), extracts it, and — via `ExternalProject_Add` — runs
+   `./Configure android-<abi> -D__ANDROID_API__=26 no-shared no-tests
+   no-dso no-engine no-legacy` followed by `make build_libs install_dev`.
+3. `libcrypto.a` is statically linked into `libskein_sqlite.so` together
+   with the SQLCipher amalgamation, `sqlite-vec.c`, and `skein_extra_init.c`.
+4. AGP strips the release `.so`, packages it under `lib/<abi>/`, and hands
+   it to `:app` via the standard AAR jniLibs mechanism.
+
+Expected artifact sizes (measured on the spike, arm64-v8a):
+
+| Stage | Size |
+|-------|------|
+| Unstripped `libskein_sqlite.so` | ~14 MB |
+| Stripped `libskein_sqlite.so`   | ~6.6 MB |
+| Contribution to APK             | ~4–5 MB (post `zip` compression) |
+
+## Manual / spike build recipe (reproducible)
 
 Prerequisites (installed during this spike):
 
