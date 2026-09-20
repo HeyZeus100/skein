@@ -19,10 +19,10 @@ directories that own each component (`native/sqlite/README.md`,
 
 ### SQLCipher
 
+- **SPDX:** `BSD-3-Clause`
 - **Repository:** https://github.com/sqlcipher/sqlcipher
 - **Version:** 4.17.0 (tarball sha256 pinned in
   `native/sqlite/sqlcipher.sha256`)
-- **License:** BSD-3-Clause (Zetetic LLC)
 - **Where it ships:** statically compiled from the amalgamation into
   `libskein_sqlite.so`; provides the SQLite core plus the page-level
   encryption codec.
@@ -41,11 +41,10 @@ directories that own each component (`native/sqlite/README.md`,
 
 ### sqlite-vec
 
+- **SPDX:** `Apache-2.0 OR MIT`
 - **Repository:** https://github.com/asg017/sqlite-vec
 - **Version:** v0.1.9 (tarball sha256 pinned in
   `native/sqlite/sqlite-vec.sha256`)
-- **License:** Apache-2.0 OR MIT (dual-licensed; Skein consumes it under
-  Apache-2.0)
 - **Where it ships:** `sqlite-vec.c` compiled with `-DSQLITE_CORE` into
   `libskein_sqlite.so`; registered at startup via `sqlite3_auto_extension`.
 - **Attribution:** Copyright (c) 2024 Alex Garcia — see
@@ -54,10 +53,10 @@ directories that own each component (`native/sqlite/README.md`,
 
 ### OpenSSL (libcrypto)
 
-- **Repository:** https://github.com/openssl/openssl
+- **SPDX:** `Apache-2.0`
+- **Repository:** https://www.openssl.org
 - **Version:** 3.5.4 (tarball sha256 pinned in
   `native/sqlite/openssl.sha256`)
-- **License:** Apache-2.0
 - **Where it ships:** built from source at Android build time as
   `libcrypto.a` (`no-shared no-dso no-engine no-legacy no-tests`), then
   statically linked into `libskein_sqlite.so` as the SQLCipher crypto
@@ -79,9 +78,10 @@ directories that own each component (`native/sqlite/README.md`,
 
 ### llama.cpp
 
+- **SPDX:** `MIT`
 - **Repository:** https://github.com/ggerganov/llama.cpp
-- **License:** MIT
-- **Where it ships:** compiled into `libskein_llama.so` (`E1.I4`).
+- **Status:** Deferred — queued for `E1.I4` (to be compiled into
+  `libskein_llama.so`). Not yet in production build.
 - **Attribution:** Copyright (c) 2023 Georgi Gerganov and contributors.
 
 ---
@@ -90,10 +90,73 @@ directories that own each component (`native/sqlite/README.md`,
 
 ### GLiNER
 
+- **SPDX:** `Apache-2.0`
 - **Repository:** https://github.com/urchade/gliner
-- **License:** Apache-2.0
 - **Status:** ONNX model files, loaded at runtime by
   `:embedder-service` via ONNX Runtime Mobile.
+
+---
+
+## ONNX Runtime and Related Infrastructure
+
+### ONNX Runtime Android
+
+- **SPDX:** `MIT`
+- **Repository:** https://github.com/microsoft/onnxruntime
+- **Version:** 1.27.0 (Maven Central:
+  `com.microsoft.onnxruntime:onnxruntime-android`)
+- **Where it ships:** runtime dependency for `:embedder-service`; its
+  native libraries (libonnxruntime.so, etc.) are packaged into the APK
+  under `lib/<abi>/`.
+- **Attribution:** Copyright (c) Microsoft Corporation. Licensed under the
+  MIT License.
+
+---
+
+## Additional AndroidX & Material Design Libraries
+
+### androidx.window
+
+- **SPDX:** `Apache-2.0`
+- **Repository:** https://android.googlesource.com/platform/frameworks/support
+- **Version:** 1.5.1 (Maven Central:
+  `androidx.window:window`)
+- **Where it ships:** Maven dependency; Jetpack Compose support for
+  multi-window and foldable device layout adaptation.
+- **Attribution:** Copyright (c) The Android Open Source Project.
+
+### Compose Material Design 3
+
+- **SPDX:** `Apache-2.0`
+- **Repository:** https://android.googlesource.com/platform/frameworks/support
+- **Version:** 1.4.0 (Maven Central:
+  `androidx.compose.material3:material3`)
+- **Where it ships:** Maven dependency; primary UI component library.
+- **Attribution:** Copyright (c) Google LLC.
+
+### Compose Material Design 3 Adaptive
+
+- **SPDX:** `Apache-2.0`
+- **Repository:** https://android.googlesource.com/platform/frameworks/support
+- **Version:** 1.3.0 (Maven Central:
+  `androidx.compose.material3.adaptive:adaptive`)
+- **Where it ships:** Maven dependency; responsive layout support for
+  tablets and foldables.
+- **Attribution:** Copyright (c) Google LLC.
+
+---
+
+## Bundled Fonts
+
+### IBM Plex Mono
+
+- **SPDX:** `OFL-1.1`
+- **Source:** https://github.com/IBM/plex
+- **Version:** Latest release (4 variants: Regular, Italic, Bold, Bold Italic)
+- **Where it ships:** vendored TTF files under
+  `feature/shell/src/main/res/font/ibm_plex_mono_*.ttf`.
+- **Attribution:** Copyright (c) IBM Corp. Licensed under the SIL Open Font
+  License v1.1.
 
 ---
 
