@@ -1,4 +1,8 @@
 pluginManagement {
+    // E1.I2: build-logic hosts the manifest/dependency/isolation Gradle guards
+    // that enforce the no-INTERNET / no-GMS / isolated-process non-negotiables.
+    includeBuild("build-logic")
+
     repositories {
         google()
         mavenCentral()

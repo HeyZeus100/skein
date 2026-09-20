@@ -18,6 +18,17 @@ subprojects {
     apply(plugin = "org.jlleitschuh.gradle.ktlint")
 }
 
-tasks.register("clean", Delete::class) {
+// The root project has no source of its own; `lifecycle-base` gives it a
+// `check` task so `./gradlew check` also runs build-logic's own guard unit
+// tests, in addition to every module's checkManifestGuards /
+// checkDependencyGuards / checkIsolationGuards tasks (wired into their own
+// `check` individually).
+apply(plugin = "lifecycle-base")
+
+tasks.named("check") {
+    dependsOn(gradle.includedBuild("build-logic").task(":guards:test"))
+}
+
+tasks.named("clean", Delete::class) {
     delete(rootProject.layout.buildDirectory)
 }

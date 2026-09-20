@@ -1,6 +1,10 @@
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.compose)
+    // E1.I2: manifest and dependency guards (spec §2.1/§2.2/§2.6). Applied
+    // after the Android plugin so the Variant API extension is available.
+    id("app.skein.guard.manifest")
+    id("app.skein.guard.dependency")
 }
 
 android {
