@@ -93,6 +93,13 @@ dependencies {
     testImplementation(libs.junit)
     testImplementation(libs.robolectric)
     testImplementation(libs.androidx.test.ext.junit)
+    // E10.I1: Robolectric-backed Compose UI test sample (MainActivityComposeTest).
+    // Launches `MainActivity` directly (already declared+exported in the
+    // manifest) rather than depending on `ui-test-manifest`'s generic
+    // `ComponentActivity` registration, which manifest-merges into an
+    // *application* module's own manifest but not into a *library*
+    // module's (verified: `:feature:shell` does not get it).
+    testImplementation(libs.compose.ui.test.junit4)
     androidTestImplementation(libs.androidx.test.ext.junit)
     androidTestImplementation(libs.androidx.test.espresso.core)
     debugImplementation(libs.compose.ui.tooling)
