@@ -1,6 +1,7 @@
 package app.skein
 
 import android.app.ActivityManager
+import android.os.Build
 import android.os.Bundle
 import android.view.WindowManager
 import androidx.activity.ComponentActivity
@@ -49,12 +50,16 @@ class MainActivity : ComponentActivity() {
         // the OS from capturing a snapshot at all, but the task description
         // is stubbed too, so the recents card can only ever show the app
         // name/icon, never a label derived from on-screen content.
-        setTaskDescription(
-            ActivityManager.TaskDescription
-                .Builder()
-                .setLabel(getString(R.string.app_name))
-                .build(),
-        )
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            setTaskDescription(
+                ActivityManager.TaskDescription
+                    .Builder()
+                    .setLabel(getString(R.string.app_name))
+                    .build(),
+            )
+        } else {
+            setTaskDescription(ActivityManager.TaskDescription(getString(R.string.app_name)))
+        }
 
         // Apply synchronously on the very first frame so there is never a
         // window where FLAG_SECURE is briefly unset while the DataStore read
