@@ -575,6 +575,11 @@ interface IInferenceService {
     float[] embed(in String[] texts);
     int tokenCount(String text);
     EngineStatus status();
+    // LOCK_POLICY_INDEXING.md §7.6/§5.2 (2026-09-20), additive to the v2 AIDL contract:
+    /** oneway. Pushed the instant SessionState enters LOCKING; see LOCK_POLICY_INDEXING.md §5.2. */
+    oneway void onSessionLocking(long epoch, long budgetMillis);
+    /** oneway. Pushed once LOCKING's budget has elapsed or all in-flight work acknowledged. Idempotent. */
+    oneway void onSessionLocked(long epoch);
 }
 ```
 
@@ -604,6 +609,13 @@ interface IEmbedderService {
     float[] rerank(String query, in String[] candidates);
     int tokenCount(String text);
     void unload();
+    // LOCK_POLICY_INDEXING.md §7.6/§5.2 (2026-09-20), additive to the v2 AIDL contract:
+    /** oneway. Previously absent (POST_REVIEW_RESOLUTIONS.md §3.3 defined embed as synchronous with no cancel path). Interrupts an in-flight embed/extractEntities batch between chunks (§4.2). */
+    oneway void cancel(int requestId);
+    /** oneway. Pushed the instant SessionState enters LOCKING; see LOCK_POLICY_INDEXING.md §5.2. */
+    oneway void onSessionLocking(long epoch, long budgetMillis);
+    /** oneway. Pushed once LOCKING's budget has elapsed or all in-flight work acknowledged. Idempotent. */
+    oneway void onSessionLocked(long epoch);
 }
 ```
 
@@ -618,6 +630,7 @@ import kotlinx.parcelize.Parcelize
 object ErrorCode {
     const val OK = 0; const val HASH_MISMATCH = 1; const val INVALID_MODEL = 2; const val OOM = 3
     const val NOT_LOADED = 4; const val BUSY = 5; const val CANCELLED = 6; const val INTERNAL = 99
+    const val SESSION_LOCKED = 11   // LOCK_POLICY_INDEXING.md §7.6/§5.2 (2026-09-20): IsolatedSessionGate.guard() refusal
 }
 
 @Parcelize data class LoadRequest(
@@ -629,6 +642,7 @@ object ErrorCode {
     val threads: Int,
     val gpuLayers: Int,                         // 0 = CPU only; from MEASUREMENTS.md
     val embeddingMode: Boolean,                 // true when loading nomic GGUF in :embedder (GGUF path)
+    val sessionEpoch: Long,                     // LOCK_POLICY_INDEXING.md §7.6/§5.2 (2026-09-20): IsolatedSessionGate.guard() input
 ) : Parcelable
 
 @Parcelize data class ChatMessageParcel(val role: String, val content: String) : Parcelable
@@ -643,6 +657,7 @@ object ErrorCode {
     val messages: List<ChatMessageParcel>,
     val images: List<ByteArray>,                // PNG/JPEG bytes, ≤ 4 MiB each, only with mmproj loaded
     val sampling: SamplingParcel,
+    val sessionEpoch: Long,                     // LOCK_POLICY_INDEXING.md §7.6/§5.2 (2026-09-20): IsolatedSessionGate.guard() input
 ) : Parcelable
 
 @Parcelize data class GenStats(
@@ -657,10 +672,13 @@ object ErrorCode {
     val nerModelFd: ParcelFileDescriptor?, val nerModelSha256: String?, val nerTokenizerFd: ParcelFileDescriptor?,
     val rerankModelFd: ParcelFileDescriptor?, val rerankModelSha256: String?, val rerankTokenizerFd: ParcelFileDescriptor?,
     val threads: Int,
+    val sessionEpoch: Long,                     // LOCK_POLICY_INDEXING.md §7.6/§5.2 (2026-09-20): IsolatedSessionGate.guard() input
 ) : Parcelable
 
 @Parcelize data class EntitySpanParcel(val start: Int, val end: Int, val text: String, val label: String, val score: Float) : Parcelable
 ```
+
+> COORDINATOR TODO: LOCK_POLICY_INDEXING.md §7.6/§5.2 says "every existing request-carrying method (`load`, `generate`, `embed`, `extractEntities`, `rerank`) gains a `sessionEpoch: Long` field on its request Parcelable (`LoadRequest`, `GenerateRequest`, `EmbedRequest`, ...)." `LoadRequest` and `GenerateRequest` above have been amended accordingly, and `EmbedderLoadRequest` (this contract's closest analog to a "load" request) likewise gains `sessionEpoch`. But `IEmbedderService.embed(in String[] texts, boolean isQuery)`, `extractEntities(String text, in String[] labels)`, and `IInferenceService.embed(in String[] texts)`/`rerank(String query, in String[] candidates)` take raw scalar/array parameters today, not a wrapped Parcelable — there is no `EmbedRequest` class in this contract to add a field to. Whether to (a) introduce new wrapper Parcelables for these calls solely to carry `sessionEpoch`, or (b) add `sessionEpoch: Long` as a plain trailing parameter to each of these AIDL methods, is an API-shape decision this docs-only pass should not make unilaterally. `IsolatedSessionGate.guard()` (§5.3) can be checked against the service's own `authorizedEpoch` regardless of which shape is chosen, so this does not block `E4.I3`/`E5.I1`'s gate implementation — it only affects the exact per-call signatures.
 
 Binder transaction limit is 1 MiB; clients batch ≤ 32 texts per `embed` and the inference client never sends more than one image per message.
 
@@ -1362,13 +1380,14 @@ priority: 0
 labels: blocks-others
 deps: E0.I10, E0.I15, E1.I1
 ```
-**Description:** Land §4.7: the three `.aidl` interfaces, the `parcelable` declarations, and `Parcels.kt`. Add a Robolectric round-trip test for every Parcelable and a `Binder` size guard test (a `GenerateRequest` with one 4 MiB image plus 16K tokens of text must be under 1 MiB after excluding the image, i.e. images travel as shared-memory `ParcelFileDescriptor` if the guard fails — decide here and document).
+**Description:** Land §4.7: the three `.aidl` interfaces, the `parcelable` declarations, and `Parcels.kt`. Add a Robolectric round-trip test for every Parcelable and a `Binder` size guard test (a `GenerateRequest` with one 4 MiB image plus 16K tokens of text must be under 1 MiB after excluding the image, i.e. images travel as shared-memory `ParcelFileDescriptor` if the guard fails — decide here and document). **Amended by `docs/design/LOCK_POLICY_INDEXING.md` §7.6 (2026-09-20):** §4.7's AIDL now additionally includes `onSessionLocking(long epoch, long budgetMillis)` and `onSessionLocked(long epoch)` (oneway) on both `IInferenceService` and `IEmbedderService`, and `cancel(int requestId)` (oneway) on `IEmbedderService` (previously absent — `POST_REVIEW_RESOLUTIONS.md` §3.3 defined `embed` as synchronous with no cancellation path). `LoadRequest`, `GenerateRequest`, and `EmbedderLoadRequest` each gain a `sessionEpoch: Long` field; `ErrorCode.SESSION_LOCKED = 11` is added. See the plan doc's §4.7 code blocks (updated in this pass) for exact signatures, and the COORDINATOR TODO there about `embed`/`extractEntities`/`rerank`'s lack of a wrapping request Parcelable.
 
 **Acceptance criteria:**
 - [ ] `./gradlew :core:ipc:assembleDebug` generates Java stubs for `IInferenceService`, `IInferenceCallback`, `IEmbedderService`
 - [ ] Parcel round-trip tests pass for `LoadRequest` (with a real `ParcelFileDescriptor` from a temp file), `GenerateRequest`, `GenStats`, `EngineStatus`, `EmbedderLoadRequest`, `EntitySpanParcel`
-- [ ] `ErrorCode` constants documented in KDoc with the `InferenceException` they map to
+- [ ] `ErrorCode` constants documented in KDoc with the `InferenceException` they map to, including the new `SESSION_LOCKED = 11`
 - [ ] Decision on image transport recorded in the file header (inline `ByteArray` ≤ 512 KiB, else `MemoryFile`-backed fd)
+- [ ] `onSessionLocking`/`onSessionLocked` present on both `IInferenceService` and `IEmbedderService`; `IEmbedderService.cancel(requestId)` present; round-trip/AIDL-generation tests cover the new methods compiling and being invokable on a fake `Binder`
 
 **Files:**
 - Create: `core/ipc/build.gradle.kts` (`buildFeatures { aidl = true }`, `kotlin-parcelize`), `core/ipc/src/main/aidl/us/aherrera/skein/ipc/*.aidl`, `core/ipc/src/main/kotlin/us/aherrera/skein/ipc/Parcels.kt`, `core/ipc/src/test/kotlin/us/aherrera/skein/ipc/ParcelRoundTripTest.kt`
@@ -2096,7 +2115,7 @@ priority: 1
 labels:
 deps: E3.I2, E2.I4
 ```
-**Description:** Spec §2.9 requires all data encrypted at rest with StrongBox-backed keys; the DB is covered by SQLCipher, attachments are not. `FileAttachmentStore` writes `attachments/<uuidv7>` as a streaming AES-256-GCM container: 16-byte header (`SKAT` magic, version, chunk size), then 1 MiB chunks each encrypted with a per-file key derived via HKDF-SHA256 (`javax.crypto.Mac`) from the vault master key and the attachment id, with a 12-byte nonce = chunk index. Reads verify each chunk's tag before returning bytes; truncation is detected by a final `EOF` chunk flag in the AAD.
+**Description:** Spec §2.9 requires all data encrypted at rest with StrongBox-backed keys; the DB is covered by SQLCipher, attachments are not. `FileAttachmentStore` writes `attachments/<uuidv7>` as a streaming AES-256-GCM container: 16-byte header (`SKAT` magic, version, chunk size), then 1 MiB chunks each encrypted with a per-file key derived via HKDF-SHA256 (`javax.crypto.Mac`) from the vault master key and the attachment id, with a 12-byte nonce = chunk index. Reads verify each chunk's tag before returning bytes; truncation is detected by a final `EOF` chunk flag in the AAD. See `docs/design/ATTACHMENT_ENCRYPTION.md` §2/§3/§5 for the full 3-layer key hierarchy, initial-wrap flow, and recovery flow this per-file HKDF derivation sits within.
 
 **Acceptance criteria:**
 - [ ] Round-trips 0 bytes, 1 byte, 1 MiB − 1, 1 MiB, 5 MiB + 3 random bytes exactly
@@ -2446,7 +2465,7 @@ priority: 0
 labels: blocks-others
 deps: E1.I1, E0.I11
 ```
-**Description:** Spec §5 key wrapping. On first run: generate a random 32-byte vault master key (`SecureRandom`), and an AES-256-GCM `AndroidKeyStore` key with `setIsStrongBoxBacked(true)`, `setUserAuthenticationRequired(true)`, `setUserAuthenticationParameters(0, AUTH_BIOMETRIC_STRONG)` (per-use auth), `setUnlockedDeviceRequired(true)`, `setInvalidatedByBiometricEnrollment(true)`; catch `StrongBoxUnavailableException` and retry without StrongBox, recording `strongbox=false` in a settings flag shown in Settings › Security. Wrap the master key with the keystore key (12-byte random IV) and store `wrapped.bin` (IV ∥ ciphertext ∥ tag) in `filesDir/keys/`. Unwrap: caller supplies a `Cipher` that was authenticated through `BiometricPrompt.CryptoObject` (`E3.I4`); `unwrap(cipher)` returns the master key bytes to `UnlockManager` (`E3.I3`) only. A `KeyStoreFacade` interface abstracts `AndroidKeyStore` so the logic is JVM-testable with a fake.
+**Description:** Spec §5 key wrapping. On first run: generate a random 32-byte vault master key (`SecureRandom`), and an AES-256-GCM `AndroidKeyStore` key with `setIsStrongBoxBacked(true)`, `setUserAuthenticationRequired(true)`, `setUserAuthenticationParameters(0, AUTH_BIOMETRIC_STRONG)` (per-use auth), `setUnlockedDeviceRequired(true)`, `setInvalidatedByBiometricEnrollment(true)`; catch `StrongBoxUnavailableException` and retry without StrongBox, recording `strongbox=false` in a settings flag shown in Settings › Security. Wrap the master key with the keystore key (12-byte random IV) and store `wrapped.bin` (IV ∥ ciphertext ∥ tag) in `filesDir/keys/`. Unwrap: caller supplies a `Cipher` that was authenticated through `BiometricPrompt.CryptoObject` (`E3.I4`); `unwrap(cipher)` returns the master key bytes to `UnlockManager` (`E3.I3`) only. A `KeyStoreFacade` interface abstracts `AndroidKeyStore` so the logic is JVM-testable with a fake. See `docs/design/ATTACHMENT_ENCRYPTION.md` §2/§3/§5 for how this StrongBox-wrapped master key roots the attachment store's 3-layer key hierarchy, its initial-wrap flow, and its biometric-invalidation recovery flow.
 
 **Acceptance criteria:**
 - [ ] JVM tests with `FakeKeyStore`: `initialize()` writes `wrapped.bin` of exactly 12+32+16 bytes; `unwrap` returns the original 32 bytes; `unwrap` with a tampered file throws `KeyUnwrapException`; `isInitialized()` reflects file presence
@@ -2477,7 +2496,9 @@ priority: 0
 labels: blocks-others
 deps: E3.I2
 ```
-**Description:** Holds the unwrapped master key in memory only while unlocked. States: `Locked` → (biometric success) `Unlocking` → `Unlocked(since)` → (idle timeout | screen off with policy | `lock()`) `Locked`. On lock: `VaultManager.close()`, `InferenceEngine.unload()` (models stay mmapped in the isolated process is acceptable per spec only while unlocked; spec §9 "idle-unload after N minutes"), zero the key array, clear any cached decrypted attachments. Idle is measured from the last UI interaction (`touch()` called by the Activity) and from the last inference token. Timeout default 5 minutes, configurable (`E3.I14`). `ProcessLifecycleOwner` background → start the idle timer regardless of interaction.
+**Description:** Holds the unwrapped master key in memory only while unlocked. **Amended by `docs/design/LOCK_POLICY_INDEXING.md` §7.4 (2026-09-20):** the state machine gains an explicit intermediate `LOCKING` phase (`SessionPhase.LOCKING`, §5.1 of that document) — states are now `Locked` → (biometric success) `Unlocking` → `Unlocked(since)` → (idle timeout | screen off with policy | `lock()`) `Locking` → `Locked`; the previous `Locked → Unlocking → Unlocked(since) → Locked` cycle was missing the bounded flush-and-notify window this design requires. On lock, the full ordered sequence (LOCK_POLICY_INDEXING.md §4) replaces the old flat description: (1) push `onSessionLocking`/`onSessionLocked` to both isolated services, `:inference` and `:embedder` (§4.1, §4.2); (2) flush-or-recovery-draft the editor's pending body (§4.3) — this happens *before* closing the vault, since it is the last operation permitted to use the live key; (3) `VaultManager.close()`, having first set `cipher_memory_security = ON` on the SQLCipher connection for its lifetime (§4.4); (4) `InferenceEngine.unload()` is **not** called on every lock (models stay mmapped in the isolated process is acceptable per spec only while unlocked; spec §9 "idle-unload after N minutes" is a separate, independent policy — see §4.5's mmap clarification); (5) only then zero the key array (`java.util.Arrays.fill(key, 0)`) and clear any cached decrypted attachments. Idle is measured from the last UI interaction (`touch()` called by the Activity) and from the last inference token. Timeout default 5 minutes, configurable (`E3.I14`). `ProcessLifecycleOwner` background → start the idle timer regardless of interaction. See `docs/design/ATTACHMENT_ENCRYPTION.md` §2/§3/§5 for the 3-layer key hierarchy, initial-wrap flow, and recovery flow this issue's `VaultKeyProvider`/`UnlockManager` collaboration sits alongside.
+
+> COORDINATOR TODO: LOCK_POLICY_INDEXING.md §7.9 proposes a new plan item (`E3.I3b` or similar) for a `SessionState`/`LockObserver` registry (§5.1 of that doc) as either a distinct, testable unit separate from `UnlockManager`, or an expansion of `UnlockManager` itself — and explicitly says "the coordinator should decide based on how much of `E3.I3`'s existing test suite would need rewriting either way." That is an implementation-scope judgment call this docs-only pass should not make unilaterally (it affects whether a new bd issue is filed and how `E3.I3`'s test suite is restructured). Left undecided here; whoever picks up `E3.I3` should resolve it before implementation.
 
 **Acceptance criteria:**
 - [ ] JVM tests with a `TestScope` clock: unlock → after `timeout` without `touch()` → `Locked`; `touch()` at `timeout-1` extends; background+`lockOnScreenOff=true` → immediate lock
@@ -2487,6 +2508,9 @@ deps: E3.I2
 
 **Files:**
 - Create: `core/security/src/main/kotlin/us/aherrera/skein/security/unlock/{UnlockManager,UnlockState,IdleTimer,VaultLockedException}.kt`, `core/security/src/test/kotlin/us/aherrera/skein/security/unlock/UnlockManagerTest.kt`
+- Create (LOCK_POLICY_INDEXING.md §7.8): a new migration adding `recovery_drafts(document_id TEXT, captured_at INTEGER, body_md TEXT, PRIMARY KEY (document_id, captured_at))`, referenced by §4.3's flush-timeout fallback.
+
+> COORDINATOR TODO: LOCK_POLICY_INDEXING.md §7.8 names this migration `006_recovery_drafts.sql`, "assuming migrations 003–005 from `POST_REVIEW_RESOLUTIONS.md` §1/§2/§4 land first." As of this pass, those three migrations have **not** been applied to this plan doc yet (the plan doc's only migrations so far are `001_initial.sql`, `002_attestation_status.sql`, and `003_ingest_attempts.sql` from this same doc's `E5.I10`) — so `003_ingest_attempts.sql` already occupies the number `POST_REVIEW_RESOLUTIONS.md` §5 also wants for `document_revisions`. The exact filename for the `recovery_drafts` migration is therefore ambiguous until the coordinator reconciles the two independent numbering schemes; do not assume `006` is free. The migration's *content* above is not in question, only its number.
 
 **Interfaces:**
 - Consumes: `VaultKeyProvider`, `VaultManager` (`E2.I13`) via a `LockHooks` interface (`onUnlocked(key)`, `onLocked()`), engine via the same hooks
@@ -2507,7 +2531,7 @@ priority: 1
 labels:
 deps: E3.I2, E6.I1
 ```
-**Description:** `UnlockScreen` composable + `BiometricUnlocker` using `androidx.biometric:biometric:1.1.0` (stable; 1.4.0 is alpha-only as of 2026-04 and is not used): `BiometricPrompt.PromptInfo` with `BIOMETRIC_STRONG` only (no device-credential fallback — spec says biometric-gated), `CryptoObject(keyProvider.cipherForUnwrap())`, then `unlockManager.unlock(result.cryptoObject.cipher)`. Handles `BIOMETRIC_ERROR_NONE_ENROLLED` (explain + deep link to enrollment settings), `BIOMETRIC_ERROR_HW_UNAVAILABLE`, `KeyPermanentlyInvalidatedException` (offer `rotate` flow with passphrase import `E3.I11` if available, otherwise explain data is unrecoverable — this is by design).
+**Description:** `UnlockScreen` composable + `BiometricUnlocker` using `androidx.biometric:biometric:1.1.0` (stable; 1.4.0 is alpha-only as of 2026-04 and is not used): `BiometricPrompt.PromptInfo` with `BIOMETRIC_STRONG` only (no device-credential fallback — spec says biometric-gated), `CryptoObject(keyProvider.cipherForUnwrap())`, then `unlockManager.unlock(result.cryptoObject.cipher)`. Handles `BIOMETRIC_ERROR_NONE_ENROLLED` (explain + deep link to enrollment settings), `BIOMETRIC_ERROR_HW_UNAVAILABLE`, `KeyPermanentlyInvalidatedException` (offer `rotate` flow with passphrase import `E3.I11` if available, otherwise explain data is unrecoverable — this is by design). See `docs/design/ATTACHMENT_ENCRYPTION.md` §3 for the biometric-invalidation recovery flow the `KeyPermanentlyInvalidatedException` path here must stay consistent with, and §4 for its test cases.
 
 **Acceptance criteria:**
 - [ ] Compose UI test: locked state shows the unlock button; tapping calls `BiometricUnlocker.prompt`
@@ -2694,7 +2718,7 @@ priority: 2
 labels: needs-human-review
 deps: E3.I2
 ```
-**Description:** Spec §9/§17: passphrase export is the user's escape hatch from a lost biometric/StrongBox key. Settings › Security › "Export recovery key": user types a passphrase (≥ 12 chars, zxcvbn-free strength meter using length + class count), the app derives a KEK with PBKDF2-HMAC-SHA256, 600 000 iterations, 16-byte random salt (`javax.crypto`; Argon2 is not in the JDK and no dependency is added), wraps the master key with AES-256-GCM, and writes `skein-recovery-<date>.json` (`{version, salt, iterations, iv, ciphertext}`) via SAF `CreateDocument`. Import path (onboarding / invalidated-key recovery): pick the file, enter the passphrase, unwrap, then `VaultKeyProvider.rotate()` re-wraps under a fresh keystore key. The passphrase is never stored; the UI uses `SecureTextField` with password transformation.
+**Description:** Spec §9/§17: passphrase export is the user's escape hatch from a lost biometric/StrongBox key. Settings › Security › "Export recovery key": user types a passphrase (≥ 12 chars, zxcvbn-free strength meter using length + class count), the app derives a KEK with PBKDF2-HMAC-SHA256, 600 000 iterations, 16-byte random salt (`javax.crypto`; Argon2 is not in the JDK and no dependency is added), wraps the master key with AES-256-GCM, and writes `skein-recovery-<date>.json` (`{version, salt, iterations, iv, ciphertext}`) via SAF `CreateDocument`. Import path (onboarding / invalidated-key recovery): pick the file, enter the passphrase, unwrap, then `VaultKeyProvider.rotate()` re-wraps under a fresh keystore key. The passphrase is never stored; the UI uses `SecureTextField` with password transformation. See `docs/design/ATTACHMENT_ENCRYPTION.md` §3 for how this vault-key recovery path relates to attachment key recovery, and note its §3.8 flags the v2 recovery-code/escrow mechanism as an explicitly out-of-scope follow-up candidate, not built here.
 
 **Acceptance criteria:**
 - [ ] Round-trip JVM test: export → import with the same passphrase recovers the key; wrong passphrase → `RecoveryFailedException` (bad GCM tag), never a different key
@@ -2764,7 +2788,7 @@ priority: 2
 labels:
 deps: E3.I3, E6.I14
 ```
-**Description:** Settings › Security: idle timeout (1, 5, 15, 30, 60 min), "lock when screen turns off" (default on), "lock when app leaves foreground" (default off), "show StrongBox status" (read-only), "allow screenshots" (`E3.I8`). Stored in `ui_prefs.xml` (the one backed-up preference file — none of these are secrets), applied via `UnlockManager.configure(LockPolicy)`.
+**Description:** Settings › Security: idle timeout (1, 5, 15, 30, 60 min), "lock when screen turns off" (default on), "lock when app leaves foreground" (default off), "show StrongBox status" (read-only), "allow screenshots" (`E3.I8`). Stored in `ui_prefs.xml` (the one backed-up preference file — none of these are secrets), applied via `UnlockManager.configure(LockPolicy)`. **Amended by `docs/design/LOCK_POLICY_INDEXING.md` §7.5 (2026-09-20):** add a line to the Settings › Indexing copy (already referenced by this item's deps on `E6.I14`) explaining that indexing runs during unlocked sessions, not in the background while locked — the direct user-facing consequence of §2.1's accepted con in that document.
 
 **Acceptance criteria:**
 - [ ] Changing the timeout in the UI updates `UnlockManager`'s policy immediately (Compose test with a fake manager capturing `configure`)
@@ -2877,7 +2901,7 @@ priority: 0
 labels: blocks-others
 deps: E0.I16, E4.I1, E3.I5
 ```
-**Description:** `InferenceService : Service` in `:inference` (`isolatedProcess=true`, `exported=false`) implementing `IInferenceService.Stub`. `load`: verify the fd (`ModelVerifier`), `dup` it, load via `/proc/self/fd/<dup>`, create the context with `contextLength`/`threads`/`gpuLayers`, keep the fd open until `unload`; second `load` while loaded performs unload first (warm swap). `generate`: single worker thread (`HandlerThread`), applies the chat template, tokenizes, decodes the prompt in batches of 512, then samples token by token; pieces are UTF-8-buffered and batched to the callback every 20 ms or 16 tokens; stop strings checked on the accumulated tail; `Done` with stats. `cancel(requestId)`: sets the abort flag; the worker emits `onDone(CANCELLED)`. Only one active request; a second `generate` gets `onError(BUSY)`. `IInferenceCallback` death (`linkToDeath`) cancels the request. Memory: if `llama_decode` returns an allocation failure, respond `OOM` and unload. The service holds nothing from `:app` except the fds and the request payloads.
+**Description:** `InferenceService : Service` in `:inference` (`isolatedProcess=true`, `exported=false`) implementing `IInferenceService.Stub`. `load`: verify the fd (`ModelVerifier`), `dup` it, load via `/proc/self/fd/<dup>`, create the context with `contextLength`/`threads`/`gpuLayers`, keep the fd open until `unload`; second `load` while loaded performs unload first (warm swap). `generate`: single worker thread (`HandlerThread`), applies the chat template, tokenizes, decodes the prompt in batches of 512, then samples token by token; pieces are UTF-8-buffered and batched to the callback every 20 ms or 16 tokens; stop strings checked on the accumulated tail; `Done` with stats. `cancel(requestId)`: sets the abort flag; the worker emits `onDone(CANCELLED)`. Only one active request; a second `generate` gets `onError(BUSY)`. `IInferenceCallback` death (`linkToDeath`) cancels the request. Memory: if `llama_decode` returns an allocation failure, respond `OOM` and unload. The service holds nothing from `:app` except the fds and the request payloads. **Amended by `docs/design/LOCK_POLICY_INDEXING.md` §7.7 (2026-09-20):** implement `IsolatedSessionGate` (§5.3) and call `guard(requestEpoch)` as the first statement of every AIDL entry point that touches plaintext (`load`, `generate`, `embed`, `tokenCount`); wire `onSessionLocking`/`onSessionLocked` (added to `IInferenceService` by `E0.I16`'s amendment) to the gate's `onLocking`/`onLocked`. On `onLocked`, before freeing the `LlamaContext`, call the new native `skein_ctx_free_secure` wrapper (§4.5) — a small addition alongside the existing `llama_free` call site that `memset`s the KV cache buffer to zero **before** freeing it, since `llama_free` alone does not guarantee zeroing.
 
 **Acceptance criteria:**
 - [ ] Instrumented test binds the service (dev emulator, tiny GGUF), loads, streams a 32-token generation, receives ≥ 1 `onTokens` and exactly one `onDone`, `cancel` mid-generation yields `onDone(stopReason=CANCELLED)` within 200 ms
@@ -2886,9 +2910,12 @@ deps: E0.I16, E4.I1, E3.I5
 - [ ] Killing the service process (`Process.killProcess` from a debug method or `am kill`) → the client's `DeathRecipient` fires (covered by `E4.I4`) and the process restarts cleanly on next bind
 - [ ] `adb shell ps -A | grep :inference` shows uid in the isolated range (99000–99999) — recorded by the runner on the Fold
 - [ ] No logging of prompt/token text at any level (grep of the service sources for `SkeinLog` calls with content variables in CI)
+- [ ] `IsolatedSessionGate.guard()` refuses every AIDL entry point with `ErrorCode.SESSION_LOCKED` when `requestEpoch != authorizedEpoch`, including immediately after a simulated process restart before any `onUnlocked` (`IsolatedProcessColdStartUnauthorizedTest`-equivalent, LOCK_POLICY_INDEXING.md §6.1 invariants I1/I6)
+- [ ] `LockDuringGenerateTest`-equivalent: start `generate()`, lock mid-stream, assert `onDone(stopReason = CANCELLED)` is delivered and `skein_ctx_free_secure`'s zero-then-free path ran (dev-only counter/hook)
 
 **Files:**
-- Create: `inference-service/src/main/kotlin/us/aherrera/skein/inference/service/{InferenceService,InferenceWorker,TokenBatcher,Utf8Buffer,StopStringMatcher,ChatTemplating}.kt`, `inference-service/src/test/kotlin/.../{TokenBatcherTest,Utf8BufferTest,StopStringMatcherTest}.kt`, `inference-service/src/androidTest/kotlin/.../InferenceServiceTest.kt`
+- Create: `inference-service/src/main/kotlin/us/aherrera/skein/inference/service/{InferenceService,InferenceWorker,TokenBatcher,Utf8Buffer,StopStringMatcher,ChatTemplating,IsolatedSessionGate}.kt`, `inference-service/src/test/kotlin/.../{TokenBatcherTest,Utf8BufferTest,StopStringMatcherTest}.kt`, `inference-service/src/androidTest/kotlin/.../InferenceServiceTest.kt`
+- Create (LOCK_POLICY_INDEXING.md §7.7): `native/llama/skein_ctx_free_secure.cpp`-equivalent small native addition alongside the existing `llama_free` call site (exact path per `E4.I1`'s native module layout).
 
 **Interfaces:**
 - Consumes: `LlamaNative` (`E4.I1`), `ModelVerifier` (`E3.I5`), AIDL from `E0.I16`
@@ -2910,13 +2937,14 @@ priority: 0
 labels: blocks-others
 deps: E4.I3
 ```
-**Description:** Implements §4.1 in `core/inference`. Binds with `BIND_AUTO_CREATE | BIND_IMPORTANT`, opens the model file read-only (`ParcelFileDescriptor.open(file, MODE_READ_ONLY)`), builds `LoadRequest` from `Model` + `MEASUREMENTS.md` defaults (`threads`, `gpuLayers` via `InferenceConfig`), maps `ErrorCode` → `InferenceException`. `stream` is `callbackFlow` with a `requestId` counter; `onTokens` → `Token.Text` per piece; `onDone` → `Token.Done` + close; `onError` → `close(exception)`; `awaitClose { cancel(requestId) }`. `DeathRecipient` fails any in-flight flow with `ServiceDied`, sets state `UNLOADED`, and the next `load` rebinds. `embed` requires `EMBEDDING` capability. Exposes `status: StateFlow<ModelStatus>`.
+**Description:** Implements §4.1 in `core/inference`. Binds with `BIND_AUTO_CREATE | BIND_IMPORTANT`, opens the model file read-only (`ParcelFileDescriptor.open(file, MODE_READ_ONLY)`), builds `LoadRequest` from `Model` + `MEASUREMENTS.md` defaults (`threads`, `gpuLayers` via `InferenceConfig`), maps `ErrorCode` → `InferenceException`. `stream` is `callbackFlow` with a `requestId` counter; `onTokens` → `Token.Text` per piece; `onDone` → `Token.Done` + close; `onError` → `close(exception)`; `awaitClose { cancel(requestId) }`. `DeathRecipient` fails any in-flight flow with `ServiceDied`, sets state `UNLOADED`, and the next `load` rebinds. `embed` requires `EMBEDDING` capability. Exposes `status: StateFlow<ModelStatus>`. **Amended by `docs/design/LOCK_POLICY_INDEXING.md` §7.7 (2026-09-20):** every `LoadRequest`/`GenerateRequest` this engine builds carries the current `SessionEpoch` (from `SessionState`, `E3.I3`'s amendment); `ErrorCode.SESSION_LOCKED` maps to a new `InferenceException.SessionLocked` subtype in `ErrorMapping`, distinct from `ServiceDied` (the service is alive and refusing, not dead). The `:inference`-side gate itself (`IsolatedSessionGate`) is implemented by `E4.I3`, not here; this issue only needs to thread the epoch through and handle the refusal.
 
 **Acceptance criteria:**
 - [ ] `LlamaCppEngineTest : InferenceEngineContractTest()` (instrumented, dev emulator, tiny model) passes all contract tests
 - [ ] Service death test: after `load`, kill `:inference` (dev-only debug binder or `am kill`); an active `stream` fails with `ServiceDied`; `load` again succeeds
 - [ ] `status` transitions UNLOADED → LOADING → READY → GENERATING → READY observed in order
-- [ ] Unit test (JVM, fake `IInferenceService` stub) covers error mapping for every `ErrorCode`
+- [ ] Unit test (JVM, fake `IInferenceService` stub) covers error mapping for every `ErrorCode`, including `SESSION_LOCKED` → `InferenceException.SessionLocked`
+- [ ] `LoadRequest`/`GenerateRequest` are built with the caller's current `sessionEpoch` (unit test with a fake `SessionState`)
 
 **Files:**
 - Create: `core/inference/src/main/kotlin/us/aherrera/skein/inference/{LlamaCppEngine,InferenceConfig,ServiceBinder,ErrorMapping}.kt`, `core/inference/src/test/kotlin/us/aherrera/skein/inference/{ErrorMappingTest,LlamaCppEngineUnitTest}.kt`, `core/inference/src/androidTest/kotlin/us/aherrera/skein/inference/LlamaCppEngineTest.kt`
@@ -3147,7 +3175,7 @@ priority: 0
 labels: blocks-others
 deps: E0.I16, E1.I6, E3.I5
 ```
-**Description:** `EmbedderService : Service` in `:embedder` implementing `IEmbedderService.Stub`. `load`: verify each fd with `ModelVerifier`, create `OrtSession`s from the fd bytes (`OrtEnvironment.createSession(byteArray)` — ORT Android has no fd API, so the verified bytes are read into a direct `ByteBuffer`; GLiNER small int8 is tens of MB, nomic int8 ~140 MB; acceptable in the isolated process), read `tokenizer.json` files, build the tokenizers (`E5.I2`). `embed`/`extractEntities`/`rerank` are synchronous Binder calls executed on a single worker (`Executors.newSingleThreadExecutor`) with a 30 s per-call timeout; batches ≤ 32. If `embedFormat == "gguf"` (M0 decision), the embed session is a llama.cpp context via `LlamaNative` with `embeddings=true` — this module then also links `libskein_llama.so`, and `E1.I2`'s isolation rule allows it.
+**Description:** `EmbedderService : Service` in `:embedder` implementing `IEmbedderService.Stub`. `load`: verify each fd with `ModelVerifier`, create `OrtSession`s from the fd bytes (`OrtEnvironment.createSession(byteArray)` — ORT Android has no fd API, so the verified bytes are read into a direct `ByteBuffer`; GLiNER small int8 is tens of MB, nomic int8 ~140 MB; acceptable in the isolated process), read `tokenizer.json` files, build the tokenizers (`E5.I2`). `embed`/`extractEntities`/`rerank` are synchronous Binder calls executed on a single worker (`Executors.newSingleThreadExecutor`) with a 30 s per-call timeout; batches ≤ 32. If `embedFormat == "gguf"` (M0 decision), the embed session is a llama.cpp context via `LlamaNative` with `embeddings=true` — this module then also links `libskein_llama.so`, and `E1.I2`'s isolation rule allows it. **Amended by `docs/design/LOCK_POLICY_INDEXING.md` §7.7 (2026-09-20):** implement `IsolatedSessionGate` (§5.3) and call `guard(requestEpoch)` as the first statement of every AIDL entry point (`load`, `embed`, `extractEntities`, `rerank`, `tokenCount`); wire the new `onSessionLocking`/`onSessionLocked`/`cancel` methods (added to `IEmbedderService` by `E0.I16`'s amendment) to the gate. Per §4.2, the batch executor calls the underlying ONNX Runtime/native inference in a per-chunk loop (not one opaque call for the whole batch) and checks a per-request `volatile aborted` flag **between chunks within a batch**, so a lock-triggered or client-initiated `cancel(requestId)` has per-chunk (not per-batch) cancellation latency (~100–150 ms per spec §7.1). Any `SharedMemRef`-backed `MemoryFile`/ashmem region still open for an in-flight request is `close()`d immediately on `onSessionLocked` (the existing `POST_REVIEW_RESOLUTIONS.md` §3.2 fd-ownership rule's error path, now also exercised by lock).
 
 **Acceptance criteria:**
 - [ ] Instrumented test on the emulator with the nomic int8 ONNX + tokenizer: `embed(["hello"], false)` returns 256 bytes; two calls with the same text are byte-identical; `"search_query: "` vs `"search_document: "` prefixes give different vectors
@@ -3155,9 +3183,11 @@ deps: E0.I16, E1.I6, E3.I5
 - [ ] Hash mismatch on any fd → `load` returns `HASH_MISMATCH` and no session is created
 - [ ] `rerank` without a rerank model → `UnsupportedOperationException` propagated as a Binder `RemoteException` with a recognizable message; the app-side wrapper maps it
 - [ ] Peak PSS of `:embedder` after load recorded (runner, on the Fold; emulator value noted separately)
+- [ ] `IsolatedSessionGate.guard()` refuses every AIDL entry point with `ErrorCode.SESSION_LOCKED` when `requestEpoch != authorizedEpoch`, and defaults to unauthorized on cold start (`IsolatedProcessColdStartUnauthorizedTest`, LOCK_POLICY_INDEXING.md §6.1 I1/I6)
+- [ ] `LockDuringIngestBatchTest`-equivalent: a real batch cancelled mid-run via lock either completes within its ≤30s budget or is cancelled between chunks with its shared-memory fds closed (`/proc/<pid>/fd` leak-check)
 
 **Files:**
-- Create: `embedder-service/src/main/kotlin/us/aherrera/skein/embedder/{EmbedderService,OrtSessions,EmbedPipeline,NerPipeline,RerankPipeline,Pooling}.kt`, `embedder-service/src/androidTest/kotlin/us/aherrera/skein/embedder/EmbedderServiceTest.kt`, `embedder-service/src/test/kotlin/.../PoolingTest.kt`
+- Create: `embedder-service/src/main/kotlin/us/aherrera/skein/embedder/{EmbedderService,OrtSessions,EmbedPipeline,NerPipeline,RerankPipeline,Pooling,IsolatedSessionGate}.kt`, `embedder-service/src/androidTest/kotlin/us/aherrera/skein/embedder/EmbedderServiceTest.kt`, `embedder-service/src/test/kotlin/.../PoolingTest.kt`
 
 **Interfaces:**
 - Consumes: tokenizers from `E5.I2`, AIDL from `E0.I16`
@@ -3388,14 +3418,15 @@ priority: 0
 labels: blocks-others
 deps: E5.I3, E5.I5, E5.I6, E5.I7, E5.I8, E5.I9, E4.I9, E2.I4, E3.I3
 ```
-**Description:** Spec §7.1. `IngestWorker : CoroutineWorker` (androidx.work 2.11.2 — `work-runtime`, not the deprecated `-ktx`) scheduled as a unique periodic work (15 min) with `Constraints(requiresCharging=true, requiresDeviceIdle=true, requiredNetworkType=NOT_REQUIRED)` (`NetworkType.NONE` is not a WorkManager value; `NOT_REQUIRED` is the correct constant — noted for the spec) plus an expedited one-time "index now" variant without constraints (user-triggered, `E6.I14`). Runs only while the vault is unlocked (otherwise returns `retry()`); the `UnlockManager` idle timer is not touched by background ingest (so indexing does not keep the vault open past the timeout — the worker checks the lock state before each document and exits). Pipeline per queued document: chunk → embed (vectors) → FTS (triggers) → entities (GLiNER) → links; each step's failure is logged and the doc is re-queued with `reason=updated` at most 3 times (a `ingest_attempts` column via migration 003). Thermal: consult `ThermalGovernor`; `Reduced` halves the batch, `Paused` returns `retry()`. Progress notification via `SecureNotification` (`E3.I8`) with counts only.
+**Description:** Spec §7.1. `IngestWorker : CoroutineWorker` (androidx.work 2.11.2 — `work-runtime`, not the deprecated `-ktx`). **Amended by `docs/design/LOCK_POLICY_INDEXING.md` §7.1 (2026-09-20):** periodic scheduling with `requiresDeviceIdle` is dropped entirely — no `Constraints` gate is used. Instead, `IngestScheduler` enqueues one-time, expedited `IngestWorker` requests via `ExistingWorkPolicy.APPEND_OR_REPLACE` (replacing the old unique-periodic-work `skein-ingest`/`ExistingPeriodicWorkPolicy.UPDATE` framing) triggered by (a) `SessionState` transitioning to `UNLOCKED`, and (b) `documents.updated_at` firing while already unlocked (LOCK_POLICY_INDEXING.md §3.2). `requiresCharging` is no longer a `Constraints` gate; it becomes a batch-size input read at run time via `BatteryManager` (unplugged → smaller batch, not "don't run"). An expedited one-time "index now" variant remains available without constraints (user-triggered, `E6.I14`) and now shares the same `APPEND_OR_REPLACE` enqueue path. Runs only while the vault is unlocked (otherwise `IngestScheduler` does not enqueue any `WorkRequest` at all — see acceptance criteria); the `UnlockManager` idle timer is not touched by background ingest (so indexing does not keep the vault open past the timeout — the worker checks the lock state before each document and exits). Pipeline per queued document: chunk → embed (vectors) → FTS (triggers) → entities (GLiNER) → links; each step's failure is logged and the doc is re-queued with `reason=updated` at most 3 times (a `ingest_attempts` column via migration 003). Per LOCK_POLICY_INDEXING.md §4.2, `IngestWorker` checks `isStopped` (or relies on structured-concurrency cancellation propagating through suspend calls) between pipeline steps and must not let its existing "each step's failure is logged and re-queued" `try/catch` swallow `CancellationException` — a lock-triggered `WorkManager.cancelUniqueWork`/job cancellation must propagate promptly. Thermal: consult `ThermalGovernor`; `Reduced` halves the batch, `Paused` returns `retry()`. Progress notification via `SecureNotification` (`E3.I8`) with counts only.
 
 **Acceptance criteria:**
 - [ ] `WorkManagerTestInitHelper` test: enqueuing three documents and running the worker leaves `ingest_queue` empty, chunks/vectors/edges present, and `completeIngest` semantics respected when a document changes mid-run
-- [ ] Locked vault → `Result.retry()` without touching the queue
+- [ ] Locked vault → `IngestScheduler` does not enqueue any `WorkRequest` at all (per `E5.I10`'s design, LOCK_POLICY_INDEXING.md §6.1 invariant I2); `ingest_queue` rows accumulate but no worker runs until `onUnlocked`
 - [ ] `Paused` thermal state → `retry()`; `Reduced` → batch size 16
 - [ ] A document whose GLiNER step throws is still chunked/embedded/linked, `ingest_attempts` incremented, and requeued; after 3 failures it is dropped with a `SkeinLog.w` (no content)
-- [ ] Unique work name `skein-ingest`; `ExistingPeriodicWorkPolicy.UPDATE`
+- [ ] One-time expedited enqueue via `ExistingWorkPolicy.APPEND_OR_REPLACE`, triggered on `SessionState` → `UNLOCKED` and on `documents.updated_at` while unlocked; no unique periodic work is registered
+- [ ] New invariant/regression tests from `LOCK_POLICY_INDEXING.md` §6.1/§6.3 pass: `WorkManagerNeverEnqueuesWhileLockedTest` (no `skein-ingest` work is ever `ENQUEUED`/`RUNNING` while `phase == LOCKED`, including a `documents.updated_at` trigger firing while locked) and `LockDuringIngestBatchTest` (a real ingest batch against `:embedder`, `lock(USER_REQUESTED)` mid-batch, `onSessionLocking` observed within ~50 ms, batch completes within budget or is cancelled with fds closed)
 
 **Files:**
 - Create: `core/rag/src/main/kotlin/us/aherrera/skein/rag/ingest/{IngestWorker,IngestPipeline,IngestScheduler}.kt`, `core/vault/src/main/resources/migrations/003_ingest_attempts.sql`, `core/rag/src/test/kotlin/.../IngestPipelineTest.kt` (fakes), `core/rag/src/androidTest/.../IngestWorkerTest.kt`
@@ -3618,6 +3649,7 @@ deps: E5.I10, E10.I4, E4.I9
 - [ ] Results table in the issue; total time for 1k notes recorded and compared to `E0.I3` per-chunk numbers (within 2×)
 - [ ] Constrained worker verified not to run unplugged (`adb shell dumpsys jobscheduler` shows constraints unsatisfied)
 - [ ] Any thermal `Paused` events logged with timestamps
+- [ ] **(LOCK_POLICY_INDEXING.md §7.3, 2026-09-20)** Lock/unlock cycling exercised during the 1k-note fixture run: lock mid-batch, unlock again, and confirm indexing resumes from the `ingest_queue`, not a restart, after each unlock — matching the bead's decision note point (4): "on next unlock, indexing resumes from queue, not restart"
 
 **Files:**
 - Create: `tools/device/ingest-validate.sh`
@@ -4300,15 +4332,18 @@ priority: 1
 labels:
 deps: E7.I1, E2.I4
 ```
-**Description:** `Autosaver(state, repo, docId)`: debounce 500 ms after the last edit, plus save on tab switch, app background, and lock; `updateBody(id, title, body)` where title = frontmatter `title` or first heading or existing title; skips if `contentHash` unchanged; single in-flight save with the latest text winning; surfaces `Saved · 12:03` / `Saving…` in the note header.
+**Description:** `Autosaver(state, repo, docId)`: debounce 500 ms after the last edit, plus save on tab switch, app background, and lock; `updateBody(id, title, body)` where title = frontmatter `title` or first heading or existing title; skips if `contentHash` unchanged; single in-flight save with the latest text winning; surfaces `Saved · 12:03` / `Saving…` in the note header. **Amended by `docs/design/LOCK_POLICY_INDEXING.md` §7.10/§4.3 (2026-09-20):** the "save on lock" path is now a force-flush-on-lock hook registered as a `LockObserver` (priority LOW, flush-needing) implementing `onLocking(epoch, budgetMillis)`: it force-flushes the same write path autosave already uses (no new write path, just an immediate flush of whatever the debounce hasn't committed yet — a no-op if autosave already ran within the last debounce interval), bounded by `withTimeoutOrNull(budgetMillis)` (default 2000 ms). On success, the vault reflects the edit. On timeout, the still-valid (not yet zeroed) master key is used for one smaller, append-only write into the new `recovery_drafts` table (`E3.I3`'s amendment) keyed by `(document_id, captured_at)`; if that also fails, the buffer is discarded and the failure is logged (data loss only in this doubly-degraded case). This `EditorViewModel` (or whichever view model owns unsaved editor state) also owns the recovery-draft prompt UI: on next unlock, if a `recovery_drafts` row exists for the currently (or most recently) open document, show a "recovered unsaved draft — keep or discard" prompt before showing the persisted version, then delete the row either way.
 
 **Acceptance criteria:**
 - [ ] `runTest`: three edits within 400 ms → one save; edit then background → immediate save
 - [ ] Unchanged text → no `updateBody` call
 - [ ] Concurrent edit during save → a second save with the newest text follows
+- [ ] `EditorFlushOnLockTest`-equivalent: type into the editor, trigger idle-timeout lock, assert the vault (re-opened on next simulated unlock) contains the typed content without any user-initiated save
+- [ ] `EditorFlushTimeoutTest`-equivalent: inject a test-only I/O stall so the primary flush exceeds `budgetMillis`; assert a `recovery_drafts` row exists and is surfaced as the "keep or discard" prompt on next unlock (LOCK_POLICY_INDEXING.md §6.1 invariant I5: durable-or-recovered, never silently lost)
 
 **Files:**
 - Create: `feature/editor/src/main/kotlin/us/aherrera/skein/editor/Autosaver.kt`, test
+- Create (LOCK_POLICY_INDEXING.md §7.10): `feature/editor/src/main/kotlin/us/aherrera/skein/editor/RecoveryDraftPrompt.kt`-equivalent UI, test
 
 **Steps:**
 - [ ] Step 1: Tests → FAIL → implement → PASS; commit with `-s`.
@@ -5362,6 +5397,33 @@ deps: E2.I1, E3.I3, E2.I5, E2.I13
 **Steps:**
 - [ ] Step 1: Test → run → PASS; commit with `-s`.
 
+#### E10.I18 — Lock-invalidation invariant fuzz harness and instrumented regression suite
+```bd
+key: E10.I18
+milestone: M2
+type: task
+tier: sonnet
+hours: 8
+priority: 1
+labels: needs-hardware
+deps: E3.I3, E5.I10, E4.I3, E5.I1, E0.I16
+```
+**Description:** New item per `docs/design/LOCK_POLICY_INDEXING.md` §7.11 (2026-09-20), following the numbering convention of `POST_REVIEW_RESOLUTIONS.md`'s own new-item slot (`E10.I18`; see the COORDINATOR TODO below on the numbering clash). Two parts: (1) the model-based fuzz harness (§6.2) — random interleavings of `{Unlock, LockUserRequested, LockIdleTimeout, EditType, StartIngestBatch, StartGenerate, StartEmbed, KillInferenceProcess, KillEmbedderProcess, DocumentsProviderRead}` against a simulated clock (`TestScope`/`advanceTimeBy`, matching `E3.I3`'s `UnlockManagerTest` pattern), driving `:app`-side logic directly and `:inference`/`:embedder`-side logic via an in-process fake Binder/AIDL stub pair; after each sequence, all six invariants from §6.1 are checked and failures are shrunk to a minimal regression fixture. (2) the instrumented tests from §6.3, run on real IPC/WorkManager/device: `LockDuringIngestBatchTest`, `LockDuringGenerateTest`, `EditorFlushOnLockTest`, `EditorFlushTimeoutTest`, `WorkManagerNeverEnqueuesWhileLockedTest`, `IsolatedProcessColdStartUnauthorizedTest`.
+
+> COORDINATOR TODO: `docs/design/LOCK_POLICY_INDEXING.md` §7.11 says to add this "e.g. `E10.I19`, following the numbering convention of `POST_REVIEW_RESOLUTIONS.md`'s `E10.I18`" — implying `POST_REVIEW_RESOLUTIONS.md` already claims `E10.I18` for its own (not-yet-landed) plan-doc amendment. As of this pass, `POST_REVIEW_RESOLUTIONS.md` §5's plan-doc amendments (including whatever it wants at `E10.I18`) have **not** been applied to this plan doc — the plan doc's `E10` epic currently ends at `E10.I17`, so `E10.I18` is the actual next free slot here, which is why this item uses `E10.I18` rather than `E10.I19`. If `POST_REVIEW_RESOLUTIONS.md`'s own amendments land first and also claim `E10.I18`, one of the two items will need renumbering to `E10.I19` — do not assume which one wins without checking `POST_REVIEW_RESOLUTIONS.md` §5 at that time.
+
+**Acceptance criteria:**
+- [ ] Fuzz harness runs thousands of interleavings per CI run within a fixed time budget; a regression fixture is emitted and committed for any invariant violation found during this pass
+- [ ] All six invariants (I1–I6, LOCK_POLICY_INDEXING.md §6.1) checked mechanically against recorded event traces
+- [ ] `LockDuringIngestBatchTest`, `LockDuringGenerateTest`, `EditorFlushOnLockTest`, `EditorFlushTimeoutTest`, `WorkManagerNeverEnqueuesWhileLockedTest`, `IsolatedProcessColdStartUnauthorizedTest` all pass on emulator; the runner repeats the instrumented subset on the Fold once per milestone
+
+**Files:**
+- Create: `core/security/src/test/kotlin/us/aherrera/skein/security/session/LockInvariantFuzzTest.kt`, `app/src/androidTest/kotlin/us/aherrera/skein/security/{LockDuringIngestBatchTest,LockDuringGenerateTest,EditorFlushOnLockTest,EditorFlushTimeoutTest,WorkManagerNeverEnqueuesWhileLockedTest,IsolatedProcessColdStartUnauthorizedTest}.kt`
+
+**Steps:**
+- [ ] Step 1: Build the fuzz harness and the six invariant checks; run against the current implementation → fix any violations found → PASS.
+- [ ] Step 2: Write and run the six instrumented tests on emulator, then the Fold subset via the runner; commit with `-s`.
+
 ---
 ## 6. Milestone view and execution waves
 
@@ -5999,3 +6061,28 @@ External review on 2026-09-19 flagged a circular dependency between the pre-spli
 **Known gap — bootstrap script (§11) not re-run or edited.** Per the task guardrails, `tools/bd_bootstrap.py --apply` was **not** re-run (the tracker is already seeded from the earlier bootstrap) and the script body in §11 was **not** modified. However, note for whoever next imports this plan into a fresh `bd` database: `HEADING_RE = re.compile(r"^#{3,5}\s+(E\d+(?:\.I\d+)?)\s+[—-]+\s+(.+?)\s*$")` only matches issue keys of the form `E<digits>` or `E<digits>.I<digits>` — it does **not** match the alphanumeric suffix on `E0.I23a` / `E0.I23b`. A fresh `--apply` run against this doc as currently written will silently fail to parse the `#### E0.I23a — …` and `#### E0.I23b — …` headings (and their `bd` fences), dropping both issues from the imported graph. Before the next fresh bootstrap, `HEADING_RE` needs a suffix-letter group added, e.g. `(E\d+(?:\.I\d+[a-z]?)?)`, and the downstream key handling verified end to end — this is a code change, out of scope for this plan-doc-only fix, and is **not** applied here. A `bd note` recording this has been added to `skein-4pqj`.
 
 - Plan-doc amendment commit: see `skein-4pqj` bd notes for the commit SHA.
+
+### 14.2 2026-09-20 — Lock-invalidation-during-indexing design + attachment-encryption cross-references (`skein-vlrt`)
+
+Two design docs landed on 2026-09-20 with `§7` sections listing amendments for the coordinator to apply against this plan doc: `docs/design/LOCK_POLICY_INDEXING.md` (11-item amendment list, resolving the `requiresDeviceIdle`-vs-lock deadlock class of defect) and `docs/design/ATTACHMENT_ENCRYPTION.md` (cross-reference list for the 3-layer attachment key hierarchy). This entry summarizes what this pass changed; see the two design docs' own §7 sections for the full rationale.
+
+**From `LOCK_POLICY_INDEXING.md` §7 (applied to this doc):**
+
+- **`E5.I10`** — `requiresDeviceIdle`/`requiresCharging` `Constraints` gate removed entirely; replaced with one-time expedited `IngestScheduler` enqueues (`ExistingWorkPolicy.APPEND_OR_REPLACE`) triggered by `SessionState → UNLOCKED` and by `documents.updated_at` while unlocked. Acceptance criteria updated to assert no `WorkRequest` is ever enqueued while locked, plus the new `WorkManagerNeverEnqueuesWhileLockedTest`/`LockDuringIngestBatchTest` invariants.
+- **`E5.I19`** — added a lock/unlock-cycling acceptance criterion during the 1k-note fixture run.
+- **`E3.I3`** — description expanded to the full ordered lock sequence (push `onSessionLocking`/`onSessionLocked` → flush-or-recovery-draft the editor → close vault with `cipher_memory_security=ON` → zero the key), with a new `SessionPhase.LOCKING` intermediate state. A `recovery_drafts` migration reference added (numbering left open — see the `> COORDINATOR TODO` in place). A second `> COORDINATOR TODO` flags the open question of whether a `SessionState`/`LockObserver` registry becomes a new sub-issue (`E3.I3b`) or an `E3.I3` expansion — the design doc itself defers this to the coordinator, so it was not guessed.
+- **`E3.I14`** — added a Settings › Indexing copy line explaining indexing runs only during unlocked sessions.
+- **AIDL / `E0.I16`** (and §4.7's illustrative AIDL/Parcelable blocks) — added `onSessionLocking`/`onSessionLocked` to both `IInferenceService` and `IEmbedderService`, `cancel(requestId)` to `IEmbedderService`, `sessionEpoch: Long` to `LoadRequest`/`GenerateRequest`/`EmbedderLoadRequest`, and `ErrorCode.SESSION_LOCKED = 11`. A `> COORDINATOR TODO` flags that `embed`/`extractEntities`/`rerank` have no wrapping request Parcelable to add `sessionEpoch` to, unlike the design doc's illustrative `EmbedRequest`.
+- **`E4.I3`/`E4.I4`/`E5.I1`** — `E4.I3` and `E5.I1` gain `IsolatedSessionGate` as the first check on every AIDL entry point, plus the native `skein_ctx_free_secure` zero-then-free wrapper (`E4.I3`) and per-chunk cancellation checkpoints (`E5.I1`); `E4.I4` gains sessionEpoch threading and a new `InferenceException.SessionLocked` mapping.
+- **New migration, `recovery_drafts`** — schema added to `E3.I3`'s Files list; exact filename/number left as a `> COORDINATOR TODO` pending reconciliation with `POST_REVIEW_RESOLUTIONS.md`'s own unlanded 003–005 numbering.
+- **`E7.I4` (Autosave)** — gained the force-flush-on-lock `LockObserver` hook with a bounded deadline and the recovery-draft "keep or discard" prompt UI.
+- **`E10`** — new `E10.I18` added for the invariant fuzz harness (§6.2) and the six instrumented regression tests (§6.3); a `> COORDINATOR TODO` flags a possible numbering clash with `POST_REVIEW_RESOLUTIONS.md`'s own (unlanded) `E10.I18`.
+
+**From `ATTACHMENT_ENCRYPTION.md` §7 (cross-references applied):**
+
+- `docs/design/POST_REVIEW_RESOLUTIONS.md`'s `skein-wa1l` bullet now points at `docs/design/ATTACHMENT_ENCRYPTION.md` for the full initial-wrap auth flow, biometric-invalidation recovery, and test coverage.
+- The plan doc's attachment-store issue set (`E2.I5`, `E3.I2`, `E3.I3`, `E3.I4`, `E3.I11`) each gained an explicit `docs/design/ATTACHMENT_ENCRYPTION.md` §2/§3/§5 reference.
+- `docs/Handoffs/skein-v1-autonomous-completion.md` §5.4's schema list now also lists `attachment_master_key` and `attachment_keys` alongside the existing `document_revisions`/`export_stages` post-review schema additions, with a note on the still-unreconciled migration numbering.
+- The v2 recovery-code/escrow mechanism (`ATTACHMENT_ENCRYPTION.md` §3.8) was **not** filed as a new bead, per that document's own scope guardrails; it is referenced from `E3.I11` as a known out-of-scope follow-up candidate only.
+
+**Four `> COORDINATOR TODO` blockquotes were left in place** (`E3.I3` ×2 — the `LockObserver` registry/`E3.I3b` decision and the `recovery_drafts` migration numbering; §4.7's `Parcels.kt` block — the `EmbedRequest` wrapping ambiguity; the new `E10.I18` — the numbering clash with `POST_REVIEW_RESOLUTIONS.md`) rather than guessed — see each for the specific open question. No code was touched; no unrelated issue's metadata (`plan_key`, `milestone`, `tier`, `hours`) was changed.

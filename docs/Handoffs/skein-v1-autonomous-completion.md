@@ -420,8 +420,9 @@ The schema is fully specified in `docs/superpowers/specs/2026-09-19-skein-design
 - `documents`, `chunks` (+ `chunks_fts`, `chunks_vec`), `edges`, `entities`, `messages`, `personas`, `models`, `ingest_queue` — from spec
 - `document_revisions` (BLAKE3 content-addressed) — from POST_REVIEW_RESOLUTIONS §1
 - `export_stages` — from POST_REVIEW_RESOLUTIONS §4
+- `attachment_master_key`, `attachment_keys` — from `docs/design/ATTACHMENT_ENCRYPTION.md` §3.4 (the 3-layer attachment key hierarchy; see also `docs/design/LOCK_POLICY_INDEXING.md` for the lock-triggered cancellation semantics that apply to in-flight attachment work)
 
-Migrations 001–005 pre-numbered in POST_REVIEW_RESOLUTIONS. First migration to run against SQLCipher will be 001 (base schema) once `:core:vault` implementation lands.
+Migrations 001–005 pre-numbered in POST_REVIEW_RESOLUTIONS. First migration to run against SQLCipher will be 001 (base schema) once `:core:vault` implementation lands. Note: `docs/superpowers/plans/2026-09-19-skein-v1-plan.md` currently has an independent migration 003 (`ingest_attempts`, from its own `E5.I10`) that has not yet been reconciled with POST_REVIEW_RESOLUTIONS' 003–005 numbering, nor with `LOCK_POLICY_INDEXING.md`'s proposed `006_recovery_drafts.sql` — see the `> COORDINATOR TODO` on `E3.I3` in the plan doc.
 
 ---
 
