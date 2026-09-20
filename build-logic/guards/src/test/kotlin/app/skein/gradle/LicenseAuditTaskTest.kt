@@ -3,6 +3,7 @@ package app.skein.gradle
 import org.gradle.testfixtures.ProjectBuilder
 import org.junit.Assert.assertTrue
 import org.junit.Test
+import java.io.File
 
 class LicenseAuditTaskTest {
 
@@ -16,7 +17,7 @@ class LicenseAuditTaskTest {
             "org.jetbrains.kotlin:kotlin-stdlib:1.9.0" to "Apache-2.0"
         ))
         task.reportFile.set(project.layout.buildDirectory.file("reports/test.md"))
-        task.licensesJsonFile.set(project.layout.buildDirectory.file("test-licenses.json"))
+        task.outputDir.set(project.layout.buildDirectory.dir("test-licenses"))
 
         // Should not throw
         task.auditLicenses()
@@ -32,7 +33,7 @@ class LicenseAuditTaskTest {
             "org.hibernate:hibernate-core:5.4.0" to "LGPL-2.1"
         ))
         task.reportFile.set(project.layout.buildDirectory.file("reports/test.md"))
-        task.licensesJsonFile.set(project.layout.buildDirectory.file("test-licenses.json"))
+        task.outputDir.set(project.layout.buildDirectory.dir("test-licenses"))
 
         val error = runCatching { task.auditLicenses() }.exceptionOrNull()
             ?: throw AssertionError("expected a GradleException for LGPL-2.1 license")
@@ -47,7 +48,7 @@ class LicenseAuditTaskTest {
         // Create a temporary override file
         val overridesFile = project.layout.buildDirectory.dir("temp").get().asFile
         overridesFile.mkdirs()
-        val overridesJson = java.io.File(overridesFile, "overrides.json")
+        val overridesJson = File(overridesFile, "overrides.json")
         overridesJson.writeText(
             """{
   "com.example:lib": {
@@ -65,7 +66,7 @@ class LicenseAuditTaskTest {
         ))
         task.overridesFile.set(overridesJson)
         task.reportFile.set(project.layout.buildDirectory.file("reports/test.md"))
-        task.licensesJsonFile.set(project.layout.buildDirectory.file("test-licenses.json"))
+        task.outputDir.set(project.layout.buildDirectory.dir("test-licenses"))
 
         // Should not throw because override provides MIT license
         task.auditLicenses()
@@ -81,19 +82,20 @@ class LicenseAuditTaskTest {
             "org.jetbrains.kotlin:kotlin-stdlib:1.9.0" to "Apache-2.0"
         ))
         task.reportFile.set(project.layout.buildDirectory.file("reports/test.md"))
-        task.licensesJsonFile.set(project.layout.buildDirectory.file("test-licenses.json"))
+        task.outputDir.set(project.layout.buildDirectory.dir("test-licenses"))
 
         task.auditLicenses()
-        val firstRunText = task.licensesJsonFile.get().asFile.readText()
+        val licensesJsonFile = File(task.outputDir.get().asFile, "licenses.json")
+        val firstRunText = licensesJsonFile.readText()
 
         task.auditLicenses()
-        val secondRunText = task.licensesJsonFile.get().asFile.readText()
+        val secondRunText = licensesJsonFile.readText()
 
         assertTrue("licenses.json should be deterministic", firstRunText == secondRunText)
     }
 
     @Test
-    fun `resolves licenses json to applied project directory`() {
+    fun `resolves licenses json to a build-generated assets directory, not src main assets`() {
         val project = ProjectBuilder.builder().build()
         val task = project.tasks.register("licenseAuditTest", LicenseAuditTask::class.java).get()
         task.variant.set("fossRelease")
@@ -102,16 +104,27 @@ class LicenseAuditTaskTest {
         ))
         task.reportFile.set(project.layout.buildDirectory.file("reports/test.md"))
 
-        // Set the output path to the correct location (src/main/assets/licenses.json relative to project)
-        val licensesPath = project.layout.projectDirectory.file("src/main/assets/licenses.json")
-        task.licensesJsonFile.set(licensesPath)
+        // skein-iau5: the output must live under build/generated/licenses/,
+        // registered as a generated asset source via AGP's Variant API
+        // (LicenseAuditPlugin), and must never be written into
+        // src/main/assets — writing directly into that source-tree
+        // directory hid the producer relationship from Gradle and tripped
+        // the "implicit dependency" task-graph validation added in Gradle
+        // 9.7.1, failing `./gradlew check`.
+        val outputDir = project.layout.buildDirectory.dir("generated/licenses/main/assets")
+        task.outputDir.set(outputDir)
 
         task.auditLicenses()
-        val outputFile = task.licensesJsonFile.get().asFile
+        val outputFile = File(task.outputDir.get().asFile, "licenses.json")
 
-        // Verify the file was written to the correct location (no double app/ prefix)
-        assertTrue("licenses.json should be at src/main/assets/licenses.json relative to project dir",
-            outputFile.path.contains("src/main/assets/licenses.json"))
+        assertTrue(
+            "licenses.json should be under build/generated/licenses/",
+            outputFile.path.contains("build/generated/licenses")
+        )
+        assertTrue(
+            "licenses.json must not be written into src/main/assets",
+            !outputFile.path.contains("src/main/assets")
+        )
         assertTrue("Output file should exist", outputFile.exists())
     }
 }
