@@ -5,5 +5,10 @@
     "license": "MIT",
     "reason": "Verified from GitHub repository license file",
     "source_url": "https://github.com/example/example-lib/blob/main/LICENSE"
+  },
+  "com.google.guava:listenablefuture:1.0": {
+    "license": "Apache-2.0",
+    "reason": "listenablefuture:1.0 is Guava's empty placeholder artifact (published to avoid guava/guava-android classpath conflicts); its POM declares no <licenses> block. It ships no code of its own and is covered by Guava's own Apache-2.0 license.",
+    "source_url": "https://github.com/google/guava/blob/master/COPYING"
   }
 }

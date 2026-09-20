@@ -34,6 +34,16 @@ abstract class LicenseAuditTask : DefaultTask() {
     @get:Input
     abstract val artifactLicenses: MapProperty<String, String>
 
+    /**
+     * Best-known license URL per artifact key (`group:name:version`), sourced
+     * from the artifact's POM `<licenses><license><url>` when one was
+     * resolved. Optional — a set of tests that predate POM extraction (and
+     * any artifact without a resolvable URL) simply leave this empty.
+     */
+    @get:Input
+    @get:Optional
+    abstract val artifactUrls: MapProperty<String, String>
+
     @get:Optional
     @get:InputFile
     abstract val overridesFile: RegularFileProperty
@@ -52,6 +62,10 @@ abstract class LicenseAuditTask : DefaultTask() {
      */
     @get:OutputDirectory
     abstract val outputDir: DirectoryProperty
+
+    init {
+        artifactUrls.convention(emptyMap())
+    }
 
     @TaskAction
     fun auditLicenses() {
@@ -79,14 +93,20 @@ abstract class LicenseAuditTask : DefaultTask() {
             }
         }
 
+        val urls = artifactUrls.getOrElse(emptyMap())
         val violations = mutableListOf<String>()
         val entries = mutableListOf<LicenseEntry>()
 
         for ((key, detectedLicense) in artifacts) {
             val (group, name, version) = parseArtifactKey(key)
 
-            // Use override if available, otherwise use detected license
+            // Use override if available, otherwise use the POM-detected license
+            // (LicenseAuditPlugin resolves this via PomLicenseExtractor).
             val license = overrides[key]?.license ?: detectedLicense
+
+            // A manually-verified override's source_url wins; otherwise fall
+            // back to the URL extracted from the artifact's own POM.
+            val url = overrides[key]?.sourceUrl ?: urls[key] ?: ""
 
             // Check against allowlist
             if (!SPDX_ALLOWLIST.contains(license) && license != "UNKNOWN") {
@@ -98,7 +118,7 @@ abstract class LicenseAuditTask : DefaultTask() {
                     name = "$group:$name",
                     version = version,
                     license = license,
-                    url = "" // URL would be added if we have access to artifact files
+                    url = url
                 )
             )
         }
