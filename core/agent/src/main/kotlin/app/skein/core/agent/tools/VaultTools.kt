@@ -27,15 +27,22 @@ package app.skein.core.agent.tools
  *
  * This file is interface-only. Implementations land in `:core:vault` and
  * `:core:rag` in later issues (E2/E5). Nothing here should have behavior.
+ *
+ * ## Sections in this file
+ *
+ * 1. Identifiers and value types
+ * 2. Data-carrying types (Note, NoteDraft, PatchOp, Hit, ...)
+ * 3. Filter and query types
+ * 4. Authorization
+ * 5. Errors and results
+ * 6. Interfaces (VaultReader/Writer/Patcher/Search/Links/Tags/Personas + VaultTools)
  */
-
-// ---------------------------------------------------------------------------
-// Identifiers and value types
-// ---------------------------------------------------------------------------
 
 /** UUIDv7 string identifier for a vault document. */
 @JvmInline
-value class DocId(val value: String)
+value class DocId(
+    val value: String,
+)
 
 /**
  * Content-addressed revision identifier: BLAKE3-256(canonicalized body_md +
@@ -43,15 +50,21 @@ value class DocId(val value: String)
  * POST_REVIEW_RESOLUTIONS §1.3.
  */
 @JvmInline
-value class RevisionHash(val value: String)
+value class RevisionHash(
+    val value: String,
+)
 
 /** Vault-normalized tag string (no leading `#`, lowercased, no whitespace). */
 @JvmInline
-value class Tag(val value: String)
+value class Tag(
+    val value: String,
+)
 
 /** A vault persona id (row PK in `personas`). */
 @JvmInline
-value class PersonaId(val value: String)
+value class PersonaId(
+    val value: String,
+)
 
 /** Vault document kind. Mirrors `documents.kind`. */
 enum class DocKind { NOTE, CHAT, ATTACHMENT, AIOUT }
@@ -214,7 +227,10 @@ sealed interface VaultToolError {
     val message: String
 
     /** The referenced [DocId] does not exist (or was hard-deleted). */
-    data class NotFound(val id: DocId, override val message: String) : VaultToolError
+    data class NotFound(
+        val id: DocId,
+        override val message: String,
+    ) : VaultToolError
 
     /** [PatchOp.baseRevision] no longer matches the document's head revision. */
     data class RevisionConflict(
@@ -229,22 +245,37 @@ sealed interface VaultToolError {
      * for the requested op. v1 implementations return this only for
      * absent/expired tokens.
      */
-    data class Unauthorized(override val message: String) : VaultToolError
+    data class Unauthorized(
+        override val message: String,
+    ) : VaultToolError
 
     /** A wikilink text failed to resolve to any doc, and [VaultLinks.resolveWikilink] was called strict. */
-    data class UnresolvedLink(val text: String, override val message: String) : VaultToolError
+    data class UnresolvedLink(
+        val text: String,
+        override val message: String,
+    ) : VaultToolError
 
     /** Draft failed schema/canonicalization checks (empty title, oversized body, etc.). */
-    data class InvalidInput(val field: String, override val message: String) : VaultToolError
+    data class InvalidInput(
+        val field: String,
+        override val message: String,
+    ) : VaultToolError
 
     /** SQLCipher or index is currently locked (biometric session ended). */
-    data class VaultLocked(override val message: String) : VaultToolError
+    data class VaultLocked(
+        override val message: String,
+    ) : VaultToolError
 
     /** Underlying storage or index reported a fault. Non-modeled; retry may work. */
-    data class StorageFailure(override val message: String, val cause: Throwable? = null) : VaultToolError
+    data class StorageFailure(
+        override val message: String,
+        val cause: Throwable? = null,
+    ) : VaultToolError
 
     /** Retrieval budget (time/candidates) exceeded before k results were assembled. */
-    data class RetrievalBudgetExceeded(override val message: String) : VaultToolError
+    data class RetrievalBudgetExceeded(
+        override val message: String,
+    ) : VaultToolError
 }
 
 /**
@@ -252,8 +283,13 @@ sealed interface VaultToolError {
  * sealed hierarchy the caller can exhaust, not a `Throwable`.
  */
 sealed interface ToolResult<out T> {
-    data class Ok<T>(val value: T) : ToolResult<T>
-    data class Err(val error: VaultToolError) : ToolResult<Nothing>
+    data class Ok<T>(
+        val value: T,
+    ) : ToolResult<T>
+
+    data class Err(
+        val error: VaultToolError,
+    ) : ToolResult<Nothing>
 }
 
 // ---------------------------------------------------------------------------
