@@ -229,17 +229,31 @@ class ManifestPolicyTest {
         val ALLOWED_EXPORTED_ACTIVITIES = EXPECTED_EXPORTED_COMPONENTS + DEBUG_ONLY_EXPORTED_COMPONENTS
 
         /**
-         * Self-defined, signature-protected permission androidx.core (1.9+)
-         * auto-declares and self-requests whenever a transitive dependency
-         * uses `ContextCompat.registerReceiver(..., RECEIVER_NOT_EXPORTED)`
-         * internally, to keep dynamically-registered receivers unexported on
-         * pre-API-33 devices. It is not requestable by any other app and
-         * strengthens rather than weakens the exported-component posture, so
-         * it is an accepted addition to the permission baseline.
+         * Permissions merged in by androidx transitives, accepted as
+         * safe-by-construction additions to the baseline:
+         *
+         *  - `app.skein.DYNAMIC_RECEIVER_NOT_EXPORTED_PERMISSION` —
+         *    self-defined, signature-protected permission androidx.core
+         *    (1.9+) auto-declares and self-requests whenever a transitive
+         *    dependency uses `ContextCompat.registerReceiver(...,
+         *    RECEIVER_NOT_EXPORTED)` internally, to keep dynamically-
+         *    registered receivers unexported on pre-API-33 devices. Not
+         *    requestable by any other app and strengthens rather than
+         *    weakens the exported-component posture.
+         *
+         *  - `android.permission.USE_FINGERPRINT` — merged in by
+         *    `androidx.biometric:1.1.0` (`skein-3el`, VaultKeyProvider) as
+         *    `<uses-permission android:maxSdkVersion="28" .../>`. Skein's
+         *    `minSdk = 30`, so this permission is a no-op at runtime — the
+         *    OS never grants it on any device we ship to. Kept on the
+         *    allowlist because merged-manifest parsers surface it anyway
+         *    and stripping it out via `tools:node="remove"` would break
+         *    older devices if the minSdk were ever lowered.
          */
         val ANDROIDX_INJECTED_PERMISSIONS =
             setOf(
                 "app.skein.DYNAMIC_RECEIVER_NOT_EXPORTED_PERMISSION",
+                "android.permission.USE_FINGERPRINT",
             )
 
         val ALLOWED_PERMISSIONS =

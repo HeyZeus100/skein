@@ -67,6 +67,18 @@ android {
         }
     }
 
+    // skein-3el: JVM unit tests instantiate `KeyPermanentlyInvalidatedException`
+    // and `StrongBoxUnavailableException` from `android.security.keystore.*` to
+    // drive the fake Keystore's invalidation path. `returnDefaultValues = true`
+    // makes AGP's mockable android.jar stubs return sensible defaults instead
+    // of throwing `RuntimeException("Stub!")` from super-constructor chains, so
+    // those exception subclasses can be constructed and caught in tests
+    // (`VaultKeyProviderImplTest`). The setting is scoped to unit tests only —
+    // it has no effect on instrumented tests or on production `.aar` builds.
+    testOptions {
+        unitTests.isReturnDefaultValues = true
+    }
+
     // AGP already strips .so symbols in release. Debug builds keep them for
     // easier crash triage; the OpenSSL static archive is stripped separately
     // by the CMake build's -fno-ident + --build-id=none flags.
@@ -92,8 +104,22 @@ dependencies {
     // (libskein_sqlite_jni.so) that binds through libskein_sqlite.so.
     api(libs.androidx.sqlite)
 
+    // skein-3el: VaultKeyProvider surfaces AuthorizationToken from :core:model
+    // and consumes androidx.biometric for the FragmentActivity + BiometricPrompt
+    // authentication flow (`AndroidBiometricAuthenticator`). BiometricPrompt
+    // uses only `androidx.core`/`androidx.fragment` transitives that are already
+    // depended on across the project — no Play Services / ML Kit is pulled in
+    // (verified against `DependencyGuardTask.BANNED_GROUPS`). The `USE_BIOMETRIC`
+    // uses-permission that androidx.biometric merges in is NOT on
+    // `ManifestGuardTask.BANNED_PERMISSIONS` (only INTERNET / ACCESS_NETWORK_STATE
+    // are).
+    api(project(":core:model"))
+    implementation(libs.androidx.biometric)
+    implementation(libs.kotlinx.coroutines.android)
+
     testImplementation(libs.junit)
     testImplementation(libs.truth)
+    testImplementation(libs.kotlinx.coroutines.test)
 
     androidTestImplementation(libs.androidx.test.ext.junit)
     androidTestImplementation(libs.androidx.test.runner)

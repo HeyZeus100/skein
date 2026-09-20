@@ -452,3 +452,32 @@ public interface IndexStore {
 
     public suspend fun findEntitiesByName(names: Collection<String>): List<Entity>
 }
+
+// -----------------------------------------------------------------------------
+// AuthorizationToken (skein-3el)
+// -----------------------------------------------------------------------------
+
+/**
+ * Opaque handle proving that the caller passed through a successful
+ * `VaultKeyProvider.unlock()` at a given generation of the unlocked session.
+ *
+ * The [epoch] is a monotonically non-decreasing counter bumped on every
+ * `unlock()` (and again on every `rewrapAfterInvalidation()` — see
+ * `docs/design/ATTACHMENT_ENCRYPTION.md` §3.5). Write-path callers
+ * (`VaultRepositoryImpl`, `WriteOnceAttachmentStore`) capture the epoch at
+ * the start of an operation and re-check it before committing; a mismatch
+ * (from a lock, a rewrap, or a subsequent unlock) MUST cause the write to
+ * abort rather than proceed with what is now stale authorization state.
+ *
+ * The token itself carries no key material and is safe to log its type
+ * name but not its epoch value in security-relevant traces.
+ */
+public class AuthorizationToken(
+    public val epoch: Long,
+) {
+    override fun equals(other: Any?): Boolean = other is AuthorizationToken && other.epoch == epoch
+
+    override fun hashCode(): Int = epoch.hashCode()
+
+    override fun toString(): String = "AuthorizationToken(epoch=…)"
+}
