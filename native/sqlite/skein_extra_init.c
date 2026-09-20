@@ -16,6 +16,16 @@ extern int sqlite3_vec_init(sqlite3 *db, char **pzErrMsg,
 extern int sqlcipher_extra_init(const char *arg);
 extern void sqlcipher_extra_shutdown(void);
 
+/*
+ * `skein_extra_init` is named in libskein_sqlite.so's linker version script
+ * (see native/sqlite/CMakeLists.txt §5a, skein-6rwv), so a JNI shim can
+ * dlsym it. The version script's `local: *;` clause hides everything not
+ * whitelisted, but a symbol emitted with STV_HIDDEN under -fvisibility=hidden
+ * cannot be un-hidden by the version script — so tag the definition with
+ * explicit default visibility. `skein_extra_shutdown` is not on the JNI shim's
+ * critical path and stays hidden.
+ */
+__attribute__((visibility("default")))
 int skein_extra_init(const char *arg) {
     int rc = sqlcipher_extra_init(arg);
     if (rc != SQLITE_OK) return rc;
