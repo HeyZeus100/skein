@@ -18,6 +18,18 @@
         <activity
             android:name="androidx.activity.ComponentActivity"
             android:exported="false" />
+        <!--
+            skein-ugo (E3.I4): host Activity for
+            `BiometricUnlockScreenTest` (androidTest). `BiometricUnlockScreen`
+            resolves a `FragmentActivity` from `LocalContext` (the type
+            `UnlockManager.unlock`/`VaultKeyProvider.unlock` require) — a
+            plain `ComponentActivity` host (above) does not satisfy that
+            lookup, so the test needs its own declared `FragmentActivity`
+            entry, same rationale as the `ComponentActivity` one above.
+        -->
+        <activity
+            android:name="androidx.fragment.app.FragmentActivity"
+            android:exported="false" />
     </application>
 
 </manifest>
