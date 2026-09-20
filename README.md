@@ -27,6 +27,7 @@ An offline-first personal knowledge system with an on-device LLM as its interfac
 - **Implementation plan:** `docs/superpowers/plans/` *(generation in progress)*
 - **Threat model:** `docs/THREAT_MODEL.md` *(pending, delivered by M3)*
 - **Privacy notes:** `docs/PRIVACY.md` *(pending)*
+- **Dependency notes:** [`docs/DEPENDENCY_NOTES.md`](docs/DEPENDENCY_NOTES.md) — pins, re-evaluation procedures, and fallback options for key dependencies (e.g., ONNX Runtime)
 - **Security policy:** [`SECURITY.md`](SECURITY.md)
 - **Governance:** [`GOVERNANCE.md`](GOVERNANCE.md)
 - **Contributing:** [`CONTRIBUTING.md`](CONTRIBUTING.md)
