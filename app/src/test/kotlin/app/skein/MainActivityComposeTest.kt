@@ -29,7 +29,9 @@ class MainActivityComposeTest {
     fun `MainActivity renders the Skein shell and CommandBar`() {
         // Verify the shell root has been rendered (stable test tag, not brittle text)
         composeRule.onNodeWithTag(ShellTestTags.SKEIN_SHELL_ROOT).assertExists()
-        // Verify the CommandBar is visible with model status ("qwen")
-        composeRule.onNodeWithText("qwen").assertExists()
+        // Verify the CommandBar renders the model status. CommandBar composes
+        // this as "<name> · ●", so substring-match rather than exact so a
+        // future icon or separator change doesn't break the test.
+        composeRule.onNodeWithText("qwen", substring = true).assertExists()
     }
 }
