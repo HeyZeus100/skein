@@ -12,7 +12,14 @@
 - **OQ-2 SQLCipher crypto:** OpenSSL (auditability > ~1–2 MB APK cost)
 - **OQ-3 First-run model default:** three-way picker at first run — Gemma 4 E4B (Apache 2.0), Qwen 2.5 3B abliterated (Qwen Research License, no-refusal), or bring-your-own-GGUF. Licenses and behavior tradeoffs shown in the picker.
 - Corrections rolling in: MTP does not apply to our default models; `NetworkType.NOT_REQUIRED` (not `NONE`); no `.reproducible-builds.yml` standard exists — use F-Droid metadata + documented build recipe.
-- Remaining open OQs (non-gating; tracked in `bd`): attachment encryption default (OQ-5), sigstore offline trust root rotation (OQ-6), Accrescent allowlist status, funding path reframing.
+
+## Post-review resolutions (2026-09-19 orchestrator review)
+
+- **Attachment encryption (`skein-wa1l`):** enforced immutable-write per attachment UUID. One plaintext per UUID, ever. Retries create a new UUID. Deterministic IV = `attachment_uuid[:12]` is safe under this discipline; fresh per-attachment key. Eliminates GCM IV reuse by construction.
+- **Lock policy vs indexing (`skein-3xyu`):** ingest workers only enqueue while unlocked; small idle-batches during authorized unlock windows; lock triggers immediate cancellation across `:app` / `:inference` / `:embedder` (KV cache clear, mmap handles closed, sensitive buffers zeroed, WorkManager work cancelled); on next unlock, indexing resumes from queue.
+- **RC scheduling (`skein-4pqj`):** E0.I23 splits into 23a (produce RC artifact) + 23b (validate RC — smoke, hash, size). E10.I15 becomes "device smoke of the 23b-validated RC." Removes the circular dependency.
+- **Canonical storage (`skein-vhtu`):** principle 10 amended above.
+- Remaining open review items (tracked in `bd`): `skein-uo5n` citation stability, `skein-st1r` model verification/companion hashes, `skein-pn1l` Binder byte limits + real IPC test, `skein-7ki2` export flow reconciliation.
 
 ---
 
@@ -33,7 +40,7 @@ Positioning: closer to an AI-native Obsidian than a chat app. The LLM is the int
 7. **`foss` build flavor** uses only Apache-2.0 / MIT / permissive dependencies. No LGPL, no GPL runtime deps, no proprietary blobs.
 8. **Every document has a stable UUIDv7** in its frontmatter (locks in v2 sync compatibility).
 9. **All data is app-private**, encrypted at rest with StrongBox-backed keys, exposed to other apps only via a `DocumentsProvider`.
-10. **User owns the vault format.** Markdown on disk, Obsidian-compatible, plain text under the encryption layer.
+10. **User owns the vault format.** Content is Markdown; storage is SQLCipher; Obsidian-compatibility is at the **content layer** — Markdown syntax + `[[wikilinks]]` + frontmatter UUIDv7. Skein's DocumentsProvider exposes vault content **as Markdown files** to other apps (Obsidian, external editors, backup tools) via the system file picker. There is no plaintext-Markdown-on-disk representation; the on-disk representation is always SQLCipher-encrypted.
 
 ## 3. Scope
 
