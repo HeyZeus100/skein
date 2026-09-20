@@ -409,7 +409,13 @@ touches exactly one table (`attachment_master_key`), and `attachment_keys` is un
         (a Keystore WRAP_MODE op against the brand-new entry — itself requires
         one more fresh auth challenge against the JUST-created key, which is
         expected: it has never been authorized before.)
-7.  Zero master_key_material immediately after step 6.
+7.  master_key_material remains in memory as VaultKeyProvider.currentKey() after
+    step 6 — it is NOT zeroed here. Ownership transfers to the same in-memory
+    slot `unlock()` populates; the caller (UnlockManager) is responsible for
+    zeroing it on the next `lock()`. (Updated by skein-22su: an earlier revision
+    of this flow zeroed the material immediately after step 6, which left
+    VaultState.Unlocked reachable with `currentKey() == null` — see the rewrap
+    contract clarification below.)
 8.  INSERT a new attachment_master_key row (key_version = N+1) carrying:
       - the surviving factor's EXISTING wrapped_bytes (copied forward unchanged —
         it was never invalidated, no need to rewrap it against itself)
@@ -421,6 +427,20 @@ touches exactly one table (`attachment_master_key`), and `attachment_keys` is un
     OLD dead alias (it was already unusable, this just frees the slot).
 10. Transition back to VaultState.Unlocked.
 ```
+
+**Rewrap contract (post-success key lifetime):** After a successful rewrap, the
+master key material remains accessible via `currentKey()` until the next
+`lock()`. This preserves the just-authed session and avoids a spurious
+re-prompt — the user already authenticated with the surviving factor in step 4,
+so `UnlockManager` transitions RECOVERY_REQUIRED → UNLOCKING → UNLOCKED without
+requesting a second `BiometricPrompt`. `UnlockManager` asserts
+`keyProvider.currentKey() != null` immediately before that transition and
+treats a `null` value as an internal contract violation (never a user-facing
+error) — see `VaultKeyProvider.rewrapAfterInvalidation` in
+`core/vault/.../key/VaultKeyProvider.kt`. The master-zeroed-on-`lock()`
+invariant (§3.6, §6) is unchanged: only the *timing* of zeroization after a
+successful rewrap moved from "immediately after re-wrap" to "on the next
+`lock()` call," matching how a normal `unlock()` already behaves.
 
 Note what does **not** happen anywhere in this flow: nothing touches
 `attachment_keys`, nothing touches `attachments/<uuid>` files, and

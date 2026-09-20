@@ -228,6 +228,12 @@ public class VaultKeyProviderImpl internal constructor(
             } catch (t: Throwable) {
                 return RewrapResult.Failed("unwrap failed: ${t.javaClass.simpleName}")
             }
+        // Ownership of `recoveredMaster` transfers to the `master` field on
+        // success (skein-22su) — the same in-memory slot `unlock()`
+        // populates. Only zero it here on a path that does NOT reach
+        // `RewrapResult.Success`; the caller (UnlockManager) zeroes it via
+        // `lock()` once ownership has transferred.
+        var ownershipTransferred = false
         try {
             val deadFactor = otherFactor(survivingFactor)
             keystore.deleteEntry(aliasFor(deadFactor))
@@ -247,9 +253,14 @@ public class VaultKeyProviderImpl internal constructor(
                     now = clock(),
                 )
             epoch.incrementAndGet()
+            zero(master)
+            master = recoveredMaster
+            ownershipTransferred = true
             return RewrapResult.Success(newVersion)
         } finally {
-            zero(recoveredMaster)
+            if (!ownershipTransferred) {
+                zero(recoveredMaster)
+            }
         }
     }
 

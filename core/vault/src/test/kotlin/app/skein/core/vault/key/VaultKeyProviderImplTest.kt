@@ -168,6 +168,32 @@ class VaultKeyProviderImplTest {
         }
 
     @Test
+    fun rewrapAfterInvalidation_leaves_masterKey_accessible() =
+        runTest {
+            // Arrange — setup, unlock, capture the master bytes, then lock
+            // (so `master` is null going into the rewrap, matching the real
+            // RECOVERY_REQUIRED entry path).
+            val keystore = FakeKeystoreFacade(strongBoxAvailable = true)
+            val provider = newProvider(keystore = keystore)
+            provider.setupNoUi()
+            provider.unlockNoUi(VaultKeyProvider.Factor.BIOMETRIC)
+            val originalMaster = provider.currentKey()!!.copyOf()
+            provider.lock()
+            keystore.invalidatedAliases += VaultKeyProviderImpl.ALIAS_BIOMETRIC
+
+            // Act
+            val result = provider.rewrapNoUi(VaultKeyProvider.Factor.DEVICE_CREDENTIAL)
+
+            // Assert — skein-22su: currentKey() is populated immediately
+            // after a successful rewrap, with no intervening unlock() call.
+            assertThat(result).isInstanceOf(RewrapResult.Success::class.java)
+            val current = provider.currentKey()
+            assertThat(current).isNotNull()
+            assertThat(current).hasLength(32)
+            assertThat(current).isEqualTo(originalMaster)
+        }
+
+    @Test
     fun `rewrap when surviving factor is also invalidated returns BothFactorsInvalidated`() =
         runTest {
             // Arrange

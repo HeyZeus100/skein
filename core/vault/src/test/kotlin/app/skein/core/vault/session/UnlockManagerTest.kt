@@ -385,15 +385,48 @@ class UnlockManagerTest {
             h.manager.unlockWith(UNLOCK_BIOMETRIC) {
                 UnlockResult.KeyPermanentlyInvalidated(UNLOCK_BIOMETRIC)
             }
-            // Act
+            // Act — simulate the skein-22su contract: a successful rewrap
+            // leaves the master key accessible via currentKey() (the real
+            // `VaultKeyProviderImpl.rewrapAfterInvalidation` does this by
+            // transferring ownership into its `master` field).
             val outcome =
                 h.manager.recoverAndRewrapWith {
+                    h.provider.master = ByteArray(32) { 9 }
                     RewrapResult.Success(newKeyVersion = 7)
                 }
             // Assert
             assertThat(outcome).isInstanceOf(RecoveryOutcome.Success::class.java)
             assertThat(h.manager.state.value).isInstanceOf(UnlockState.Unlocked::class.java)
             assertThat(h.manager.authorizationToken.value).isNotNull()
+            // skein-22su: state == Unlocked must never be reachable with a
+            // null in-memory key.
+            assertThat(h.provider.currentKey()).isNotNull()
+        }
+
+    @Test
+    fun `recoverAndRewrap success throws IllegalStateException when contract violated`() =
+        runTest {
+            // Arrange: land in RecoveryRequired via unlock. The rewrap lambda
+            // reports Success WITHOUT populating currentKey() — simulating a
+            // VaultKeyProvider that violates the skein-22su contract.
+            val h = Harness()
+            h.manager.unlockWith(UNLOCK_BIOMETRIC) {
+                UnlockResult.KeyPermanentlyInvalidated(UNLOCK_BIOMETRIC)
+            }
+            // Act / Assert
+            val thrown =
+                try {
+                    h.manager.recoverAndRewrapWith {
+                        RewrapResult.Success(newKeyVersion = 7)
+                    }
+                    null
+                } catch (e: IllegalStateException) {
+                    e
+                }
+            assertThat(thrown).isNotNull()
+            assertThat(thrown!!.message).isEqualTo(
+                "rewrapAfterInvalidation succeeded but currentKey is null; VaultKeyProvider contract violated",
+            )
         }
 
     @Test

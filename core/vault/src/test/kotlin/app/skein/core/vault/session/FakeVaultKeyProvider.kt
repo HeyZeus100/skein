@@ -20,7 +20,13 @@ internal class FakeVaultKeyProvider(
     private val stateAtLockSink: () -> UnlockState? = { null },
 ) : VaultKeyProvider {
     private val epochSource = AtomicLong(0)
-    private var master: ByteArray? = null
+
+    // Internal (not private) so JVM tests that drive the state machine via
+    // `recoverAndRewrapWith { RewrapResult.Success(...) }` — bypassing this
+    // fake's own `rewrapAfterInvalidation` — can simulate the skein-22su
+    // contract (master key remains in memory on a successful rewrap) without
+    // routing through the Android-shaped `rewrapAfterInvalidation` overload.
+    internal var master: ByteArray? = null
 
     val authCallCount = AtomicInteger(0)
     val lockCallCount = AtomicInteger(0)
