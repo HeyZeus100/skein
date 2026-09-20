@@ -133,6 +133,11 @@ dependencies {
     testImplementation(libs.junit)
     testImplementation(libs.truth)
     testImplementation(libs.kotlinx.coroutines.test)
+    // skein-yrp (E2.I13): VaultLifecycleTest uses `TempDirRule` for a real,
+    // per-test filesystem directory (the file-exists checks in `create` /
+    // `open` are real `java.io.File` checks, not simulated by the fake
+    // native bridge).
+    testImplementation(project(":testing"))
 
     androidTestImplementation(libs.androidx.test.ext.junit)
     androidTestImplementation(libs.androidx.test.runner)
