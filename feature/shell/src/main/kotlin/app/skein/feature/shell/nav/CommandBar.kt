@@ -8,7 +8,6 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -18,6 +17,7 @@ import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
+import app.skein.feature.shell.input.SecureTextField
 import app.skein.feature.shell.theme.LocalSkeinTokens
 
 /**
@@ -65,7 +65,7 @@ fun CommandBar(
                 Text(text = tokens.glyphs.hamburger, style = MaterialTheme.typography.titleMedium)
             }
 
-            TextField(
+            SecureTextField(
                 value = query,
                 onValueChange = onQueryChange,
                 modifier = Modifier.weight(1f),
