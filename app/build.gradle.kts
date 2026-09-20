@@ -61,6 +61,7 @@ dependencies {
     implementation(project(":core:model"))
     implementation(project(":inference-service"))
     implementation(project(":embedder-service"))
+    implementation(project(":feature:shell"))
 
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.activity.compose)
