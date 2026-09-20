@@ -16,5 +16,10 @@ dependencies {
     // so we pull in the core coroutines library (no Android or Java-8 shim).
     api(libs.kotlinx.coroutines.core)
 
+    // The `VaultRepository`/`IndexStore` contracts (§4.2, `E0.I11`) speak in
+    // `JsonObject` for the free-form frontmatter payload on `Document`. Pure
+    // Kotlin/JVM library — no Android transitives are added.
+    api(libs.kotlinx.serialization.json)
+
     testImplementation(libs.junit)
 }
