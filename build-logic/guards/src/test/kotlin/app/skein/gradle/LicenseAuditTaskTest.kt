@@ -91,4 +91,27 @@ class LicenseAuditTaskTest {
 
         assertTrue("licenses.json should be deterministic", firstRunText == secondRunText)
     }
+
+    @Test
+    fun `resolves licenses json to applied project directory`() {
+        val project = ProjectBuilder.builder().build()
+        val task = project.tasks.register("licenseAuditTest", LicenseAuditTask::class.java).get()
+        task.variant.set("fossRelease")
+        task.artifactLicenses.set(mapOf(
+            "androidx.core:core:1.10.0" to "Apache-2.0"
+        ))
+        task.reportFile.set(project.layout.buildDirectory.file("reports/test.md"))
+
+        // Set the output path to the correct location (src/main/assets/licenses.json relative to project)
+        val licensesPath = project.layout.projectDirectory.file("src/main/assets/licenses.json")
+        task.licensesJsonFile.set(licensesPath)
+
+        task.auditLicenses()
+        val outputFile = task.licensesJsonFile.get().asFile
+
+        // Verify the file was written to the correct location (no double app/ prefix)
+        assertTrue("licenses.json should be at src/main/assets/licenses.json relative to project dir",
+            outputFile.path.contains("src/main/assets/licenses.json"))
+        assertTrue("Output file should exist", outputFile.exists())
+    }
 }

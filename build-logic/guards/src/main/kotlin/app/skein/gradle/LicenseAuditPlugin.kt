@@ -47,7 +47,7 @@ class LicenseAuditPlugin : Plugin<Project> {
             val overridesFile = project.file("tools/licenses/overrides.json")
             val reportFile =
                 project.file("build/reports/licenses/${configurationName.replace("RuntimeClasspath", "")}.md")
-            val licensesJsonFile = project.file("app/src/main/assets/licenses.json")
+            val licensesJsonFile = project.layout.projectDirectory.file("src/main/assets/licenses.json")
 
             val task = project.tasks.register(taskName, LicenseAuditTask::class.java) {
                 group = "verification"
