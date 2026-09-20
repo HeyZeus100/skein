@@ -7,7 +7,8 @@ import org.gradle.api.artifacts.ProjectDependency
 /**
  * Registers `checkIsolationGuards`, enforcing the module boundaries from the
  * plan's §2.4 process assignment:
- *  - `:core:model` stays pure Kotlin/JVM (no Android Gradle plugin).
+ *  - `:core:model` and `:core:markdown` stay pure Kotlin/JVM (no Android
+ *    Gradle plugin), per E1.I2 and E7.I2 respectively.
  *  - `:inference-service` / `:embedder-service` may depend only on
  *    `:core:ipc`, `:core:model`, the Kotlin stdlib/coroutines, and (embedder
  *    only) `onnxruntime-android` — never `:core:vault`, `:core:security`, or
@@ -79,7 +80,7 @@ class IsolationGuardPlugin : Plugin<Project> {
     companion object {
         private val MAIN_DEPENDENCY_CONFIGURATIONS = listOf("implementation", "api", "compileOnly", "runtimeOnly")
 
-        private val PURE_JVM_MODULES = setOf(":core:model")
+        private val PURE_JVM_MODULES = setOf(":core:model", ":core:markdown")
 
         private val COMMON_SERVICE_PROJECT_ALLOWLIST = setOf(":core:ipc", ":core:model")
         private val COMMON_SERVICE_EXTERNAL_ALLOWLIST = setOf("org.jetbrains.kotlin", "org.jetbrains.kotlinx")

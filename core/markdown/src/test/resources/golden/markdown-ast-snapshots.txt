@@ -1,0 +1,1480 @@
+// heading-h1
+{
+    "blocks": [
+        {
+            "type": "app.skein.core.markdown.ast.Heading",
+            "level": 1,
+            "inlines": [
+                {
+                    "type": "app.skein.core.markdown.ast.Text",
+                    "value": "Heading one"
+                }
+            ]
+        }
+    ]
+}
+
+// heading-all-levels
+{
+    "blocks": [
+        {
+            "type": "app.skein.core.markdown.ast.Heading",
+            "level": 1,
+            "inlines": [
+                {
+                    "type": "app.skein.core.markdown.ast.Text",
+                    "value": "H1"
+                }
+            ]
+        },
+        {
+            "type": "app.skein.core.markdown.ast.Heading",
+            "level": 2,
+            "inlines": [
+                {
+                    "type": "app.skein.core.markdown.ast.Text",
+                    "value": "H2"
+                }
+            ]
+        },
+        {
+            "type": "app.skein.core.markdown.ast.Heading",
+            "level": 3,
+            "inlines": [
+                {
+                    "type": "app.skein.core.markdown.ast.Text",
+                    "value": "H3"
+                }
+            ]
+        },
+        {
+            "type": "app.skein.core.markdown.ast.Heading",
+            "level": 4,
+            "inlines": [
+                {
+                    "type": "app.skein.core.markdown.ast.Text",
+                    "value": "H4"
+                }
+            ]
+        },
+        {
+            "type": "app.skein.core.markdown.ast.Heading",
+            "level": 5,
+            "inlines": [
+                {
+                    "type": "app.skein.core.markdown.ast.Text",
+                    "value": "H5"
+                }
+            ]
+        },
+        {
+            "type": "app.skein.core.markdown.ast.Heading",
+            "level": 6,
+            "inlines": [
+                {
+                    "type": "app.skein.core.markdown.ast.Text",
+                    "value": "H6"
+                }
+            ]
+        }
+    ]
+}
+
+// setext-headings
+{
+    "blocks": [
+        {
+            "type": "app.skein.core.markdown.ast.Heading",
+            "level": 1,
+            "inlines": [
+                {
+                    "type": "app.skein.core.markdown.ast.Text",
+                    "value": "Title One"
+                }
+            ]
+        },
+        {
+            "type": "app.skein.core.markdown.ast.Heading",
+            "level": 2,
+            "inlines": [
+                {
+                    "type": "app.skein.core.markdown.ast.Text",
+                    "value": "Title Two"
+                }
+            ]
+        }
+    ]
+}
+
+// paragraph-plain
+{
+    "blocks": [
+        {
+            "type": "app.skein.core.markdown.ast.Paragraph",
+            "inlines": [
+                {
+                    "type": "app.skein.core.markdown.ast.Text",
+                    "value": "Just a plain paragraph of text."
+                }
+            ]
+        }
+    ]
+}
+
+// paragraph-emphasis
+{
+    "blocks": [
+        {
+            "type": "app.skein.core.markdown.ast.Paragraph",
+            "inlines": [
+                {
+                    "type": "app.skein.core.markdown.ast.Text",
+                    "value": "Some"
+                },
+                {
+                    "type": "app.skein.core.markdown.ast.Text",
+                    "value": " "
+                },
+                {
+                    "type": "app.skein.core.markdown.ast.Emph",
+                    "inlines": [
+                        {
+                            "type": "app.skein.core.markdown.ast.Text",
+                            "value": "italic"
+                        }
+                    ]
+                },
+                {
+                    "type": "app.skein.core.markdown.ast.Text",
+                    "value": " "
+                },
+                {
+                    "type": "app.skein.core.markdown.ast.Text",
+                    "value": "and"
+                },
+                {
+                    "type": "app.skein.core.markdown.ast.Text",
+                    "value": " "
+                },
+                {
+                    "type": "app.skein.core.markdown.ast.Strong",
+                    "inlines": [
+                        {
+                            "type": "app.skein.core.markdown.ast.Text",
+                            "value": "bold"
+                        }
+                    ]
+                },
+                {
+                    "type": "app.skein.core.markdown.ast.Text",
+                    "value": " "
+                },
+                {
+                    "type": "app.skein.core.markdown.ast.Text",
+                    "value": "and"
+                },
+                {
+                    "type": "app.skein.core.markdown.ast.Text",
+                    "value": " "
+                },
+                {
+                    "type": "app.skein.core.markdown.ast.Emph",
+                    "inlines": [
+                        {
+                            "type": "app.skein.core.markdown.ast.Strong",
+                            "inlines": [
+                                {
+                                    "type": "app.skein.core.markdown.ast.Text",
+                                    "value": "bold italic"
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "type": "app.skein.core.markdown.ast.Text",
+                    "value": " "
+                },
+                {
+                    "type": "app.skein.core.markdown.ast.Text",
+                    "value": "text."
+                }
+            ]
+        }
+    ]
+}
+
+// paragraph-code-span
+{
+    "blocks": [
+        {
+            "type": "app.skein.core.markdown.ast.Paragraph",
+            "inlines": [
+                {
+                    "type": "app.skein.core.markdown.ast.Text",
+                    "value": "Inline"
+                },
+                {
+                    "type": "app.skein.core.markdown.ast.Text",
+                    "value": " "
+                },
+                {
+                    "type": "app.skein.core.markdown.ast.Code",
+                    "value": "code"
+                },
+                {
+                    "type": "app.skein.core.markdown.ast.Text",
+                    "value": " "
+                },
+                {
+                    "type": "app.skein.core.markdown.ast.Text",
+                    "value": "and"
+                },
+                {
+                    "type": "app.skein.core.markdown.ast.Text",
+                    "value": " "
+                },
+                {
+                    "type": "app.skein.core.markdown.ast.Code",
+                    "value": "`nested backtick`"
+                },
+                {
+                    "type": "app.skein.core.markdown.ast.Text",
+                    "value": " "
+                },
+                {
+                    "type": "app.skein.core.markdown.ast.Text",
+                    "value": "spans."
+                }
+            ]
+        }
+    ]
+}
+
+// paragraph-strikethrough
+{
+    "blocks": [
+        {
+            "type": "app.skein.core.markdown.ast.Paragraph",
+            "inlines": [
+                {
+                    "type": "app.skein.core.markdown.ast.Text",
+                    "value": "This is"
+                },
+                {
+                    "type": "app.skein.core.markdown.ast.Text",
+                    "value": " "
+                },
+                {
+                    "type": "app.skein.core.markdown.ast.Strikethrough",
+                    "inlines": [
+                        {
+                            "type": "app.skein.core.markdown.ast.Text",
+                            "value": "struck through"
+                        }
+                    ]
+                },
+                {
+                    "type": "app.skein.core.markdown.ast.Text",
+                    "value": " "
+                },
+                {
+                    "type": "app.skein.core.markdown.ast.Text",
+                    "value": "text."
+                }
+            ]
+        }
+    ]
+}
+
+// paragraph-soft-break
+{
+    "blocks": [
+        {
+            "type": "app.skein.core.markdown.ast.Paragraph",
+            "inlines": [
+                {
+                    "type": "app.skein.core.markdown.ast.Text",
+                    "value": "Line one"
+                },
+                {
+                    "type": "app.skein.core.markdown.ast.SoftBreak"
+                },
+                {
+                    "type": "app.skein.core.markdown.ast.Text",
+                    "value": "Line two"
+                },
+                {
+                    "type": "app.skein.core.markdown.ast.SoftBreak"
+                },
+                {
+                    "type": "app.skein.core.markdown.ast.Text",
+                    "value": "Line three"
+                }
+            ]
+        }
+    ]
+}
+
+// paragraph-hard-break
+{
+    "blocks": [
+        {
+            "type": "app.skein.core.markdown.ast.Paragraph",
+            "inlines": [
+                {
+                    "type": "app.skein.core.markdown.ast.Text",
+                    "value": "Line one"
+                },
+                {
+                    "type": "app.skein.core.markdown.ast.HardBreak"
+                },
+                {
+                    "type": "app.skein.core.markdown.ast.SoftBreak"
+                },
+                {
+                    "type": "app.skein.core.markdown.ast.Text",
+                    "value": "Line two"
+                }
+            ]
+        }
+    ]
+}
+
+// paragraph-multi
+{
+    "blocks": [
+        {
+            "type": "app.skein.core.markdown.ast.Paragraph",
+            "inlines": [
+                {
+                    "type": "app.skein.core.markdown.ast.Text",
+                    "value": "First paragraph."
+                }
+            ]
+        },
+        {
+            "type": "app.skein.core.markdown.ast.Paragraph",
+            "inlines": [
+                {
+                    "type": "app.skein.core.markdown.ast.Text",
+                    "value": "Second paragraph."
+                }
+            ]
+        }
+    ]
+}
+
+// bullet-list-flat
+{
+    "blocks": [
+        {
+            "type": "app.skein.core.markdown.ast.BulletList",
+            "items": [
+                {
+                    "blocks": [
+                        {
+                            "type": "app.skein.core.markdown.ast.Paragraph",
+                            "inlines": [
+                                {
+                                    "type": "app.skein.core.markdown.ast.Text",
+                                    "value": "one"
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "blocks": [
+                        {
+                            "type": "app.skein.core.markdown.ast.Paragraph",
+                            "inlines": [
+                                {
+                                    "type": "app.skein.core.markdown.ast.Text",
+                                    "value": "two"
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "blocks": [
+                        {
+                            "type": "app.skein.core.markdown.ast.Paragraph",
+                            "inlines": [
+                                {
+                                    "type": "app.skein.core.markdown.ast.Text",
+                                    "value": "three"
+                                }
+                            ]
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+}
+
+// bullet-list-nested
+{
+    "blocks": [
+        {
+            "type": "app.skein.core.markdown.ast.BulletList",
+            "items": [
+                {
+                    "blocks": [
+                        {
+                            "type": "app.skein.core.markdown.ast.Paragraph",
+                            "inlines": [
+                                {
+                                    "type": "app.skein.core.markdown.ast.Text",
+                                    "value": "item one"
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "blocks": [
+                        {
+                            "type": "app.skein.core.markdown.ast.Paragraph",
+                            "inlines": [
+                                {
+                                    "type": "app.skein.core.markdown.ast.Text",
+                                    "value": "item two"
+                                }
+                            ]
+                        },
+                        {
+                            "type": "app.skein.core.markdown.ast.BulletList",
+                            "items": [
+                                {
+                                    "blocks": [
+                                        {
+                                            "type": "app.skein.core.markdown.ast.Paragraph",
+                                            "inlines": [
+                                                {
+                                                    "type": "app.skein.core.markdown.ast.Text",
+                                                    "value": "nested a"
+                                                }
+                                            ]
+                                        }
+                                    ]
+                                },
+                                {
+                                    "blocks": [
+                                        {
+                                            "type": "app.skein.core.markdown.ast.Paragraph",
+                                            "inlines": [
+                                                {
+                                                    "type": "app.skein.core.markdown.ast.Text",
+                                                    "value": "nested b"
+                                                }
+                                            ]
+                                        }
+                                    ]
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "blocks": [
+                        {
+                            "type": "app.skein.core.markdown.ast.Paragraph",
+                            "inlines": [
+                                {
+                                    "type": "app.skein.core.markdown.ast.Text",
+                                    "value": "item three"
+                                }
+                            ]
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+}
+
+// ordered-list-flat
+{
+    "blocks": [
+        {
+            "type": "app.skein.core.markdown.ast.OrderedList",
+            "items": [
+                {
+                    "blocks": [
+                        {
+                            "type": "app.skein.core.markdown.ast.Paragraph",
+                            "inlines": [
+                                {
+                                    "type": "app.skein.core.markdown.ast.Text",
+                                    "value": "first"
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "blocks": [
+                        {
+                            "type": "app.skein.core.markdown.ast.Paragraph",
+                            "inlines": [
+                                {
+                                    "type": "app.skein.core.markdown.ast.Text",
+                                    "value": "second"
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "blocks": [
+                        {
+                            "type": "app.skein.core.markdown.ast.Paragraph",
+                            "inlines": [
+                                {
+                                    "type": "app.skein.core.markdown.ast.Text",
+                                    "value": "third"
+                                }
+                            ]
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+}
+
+// ordered-list-custom-start
+{
+    "blocks": [
+        {
+            "type": "app.skein.core.markdown.ast.OrderedList",
+            "items": [
+                {
+                    "blocks": [
+                        {
+                            "type": "app.skein.core.markdown.ast.Paragraph",
+                            "inlines": [
+                                {
+                                    "type": "app.skein.core.markdown.ast.Text",
+                                    "value": "five"
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "blocks": [
+                        {
+                            "type": "app.skein.core.markdown.ast.Paragraph",
+                            "inlines": [
+                                {
+                                    "type": "app.skein.core.markdown.ast.Text",
+                                    "value": "six"
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "blocks": [
+                        {
+                            "type": "app.skein.core.markdown.ast.Paragraph",
+                            "inlines": [
+                                {
+                                    "type": "app.skein.core.markdown.ast.Text",
+                                    "value": "seven"
+                                }
+                            ]
+                        }
+                    ]
+                }
+            ],
+            "startNumber": 5
+        }
+    ]
+}
+
+// task-list
+{
+    "blocks": [
+        {
+            "type": "app.skein.core.markdown.ast.BulletList",
+            "items": [
+                {
+                    "blocks": [
+                        {
+                            "type": "app.skein.core.markdown.ast.Paragraph",
+                            "inlines": [
+                                {
+                                    "type": "app.skein.core.markdown.ast.Text",
+                                    "value": "todo item"
+                                }
+                            ]
+                        }
+                    ],
+                    "checked": false
+                },
+                {
+                    "blocks": [
+                        {
+                            "type": "app.skein.core.markdown.ast.Paragraph",
+                            "inlines": [
+                                {
+                                    "type": "app.skein.core.markdown.ast.Text",
+                                    "value": "done item"
+                                }
+                            ]
+                        }
+                    ],
+                    "checked": true
+                },
+                {
+                    "blocks": [
+                        {
+                            "type": "app.skein.core.markdown.ast.Paragraph",
+                            "inlines": [
+                                {
+                                    "type": "app.skein.core.markdown.ast.Text",
+                                    "value": "another todo"
+                                }
+                            ]
+                        }
+                    ],
+                    "checked": false
+                }
+            ]
+        }
+    ]
+}
+
+// task-list-nested
+{
+    "blocks": [
+        {
+            "type": "app.skein.core.markdown.ast.BulletList",
+            "items": [
+                {
+                    "blocks": [
+                        {
+                            "type": "app.skein.core.markdown.ast.Paragraph",
+                            "inlines": [
+                                {
+                                    "type": "app.skein.core.markdown.ast.Text",
+                                    "value": "parent"
+                                }
+                            ]
+                        },
+                        {
+                            "type": "app.skein.core.markdown.ast.BulletList",
+                            "items": [
+                                {
+                                    "blocks": [
+                                        {
+                                            "type": "app.skein.core.markdown.ast.Paragraph",
+                                            "inlines": [
+                                                {
+                                                    "type": "app.skein.core.markdown.ast.Text",
+                                                    "value": "child done"
+                                                }
+                                            ]
+                                        }
+                                    ],
+                                    "checked": true
+                                },
+                                {
+                                    "blocks": [
+                                        {
+                                            "type": "app.skein.core.markdown.ast.Paragraph",
+                                            "inlines": [
+                                                {
+                                                    "type": "app.skein.core.markdown.ast.Text",
+                                                    "value": "child todo"
+                                                }
+                                            ]
+                                        }
+                                    ],
+                                    "checked": false
+                                }
+                            ]
+                        }
+                    ],
+                    "checked": false
+                }
+            ]
+        }
+    ]
+}
+
+// blockquote-single-line
+{
+    "blocks": [
+        {
+            "type": "app.skein.core.markdown.ast.Quote",
+            "blocks": [
+                {
+                    "type": "app.skein.core.markdown.ast.Paragraph",
+                    "inlines": [
+                        {
+                            "type": "app.skein.core.markdown.ast.Text",
+                            "value": "A single-line quote."
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+}
+
+// blockquote-multi-line
+{
+    "blocks": [
+        {
+            "type": "app.skein.core.markdown.ast.Quote",
+            "blocks": [
+                {
+                    "type": "app.skein.core.markdown.ast.Paragraph",
+                    "inlines": [
+                        {
+                            "type": "app.skein.core.markdown.ast.Text",
+                            "value": "First line"
+                        },
+                        {
+                            "type": "app.skein.core.markdown.ast.SoftBreak"
+                        },
+                        {
+                            "type": "app.skein.core.markdown.ast.Text",
+                            "value": "second line"
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+}
+
+// blockquote-with-blank-line
+{
+    "blocks": [
+        {
+            "type": "app.skein.core.markdown.ast.Quote",
+            "blocks": [
+                {
+                    "type": "app.skein.core.markdown.ast.Paragraph",
+                    "inlines": [
+                        {
+                            "type": "app.skein.core.markdown.ast.Text",
+                            "value": "paragraph one"
+                        }
+                    ]
+                },
+                {
+                    "type": "app.skein.core.markdown.ast.Paragraph",
+                    "inlines": [
+                        {
+                            "type": "app.skein.core.markdown.ast.Text",
+                            "value": "paragraph two"
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+}
+
+// blockquote-nested
+{
+    "blocks": [
+        {
+            "type": "app.skein.core.markdown.ast.Quote",
+            "blocks": [
+                {
+                    "type": "app.skein.core.markdown.ast.Paragraph",
+                    "inlines": [
+                        {
+                            "type": "app.skein.core.markdown.ast.Text",
+                            "value": "outer"
+                        }
+                    ]
+                },
+                {
+                    "type": "app.skein.core.markdown.ast.Quote",
+                    "blocks": [
+                        {
+                            "type": "app.skein.core.markdown.ast.Paragraph",
+                            "inlines": [
+                                {
+                                    "type": "app.skein.core.markdown.ast.Text",
+                                    "value": "inner"
+                                }
+                            ]
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+}
+
+// link-inline
+{
+    "blocks": [
+        {
+            "type": "app.skein.core.markdown.ast.Paragraph",
+            "inlines": [
+                {
+                    "type": "app.skein.core.markdown.ast.Link",
+                    "inlines": [
+                        {
+                            "type": "app.skein.core.markdown.ast.Text",
+                            "value": "Skein"
+                        }
+                    ],
+                    "destination": "https://example.com/skein"
+                },
+                {
+                    "type": "app.skein.core.markdown.ast.Text",
+                    "value": " "
+                },
+                {
+                    "type": "app.skein.core.markdown.ast.Text",
+                    "value": "is a note app."
+                }
+            ]
+        }
+    ]
+}
+
+// link-with-title
+{
+    "blocks": [
+        {
+            "type": "app.skein.core.markdown.ast.Paragraph",
+            "inlines": [
+                {
+                    "type": "app.skein.core.markdown.ast.Link",
+                    "inlines": [
+                        {
+                            "type": "app.skein.core.markdown.ast.Text",
+                            "value": "Docs"
+                        }
+                    ],
+                    "destination": "https://example.com/docs",
+                    "title": "Skein Docs"
+                }
+            ]
+        }
+    ]
+}
+
+// autolink-bracketed
+{
+    "blocks": [
+        {
+            "type": "app.skein.core.markdown.ast.Paragraph",
+            "inlines": [
+                {
+                    "type": "app.skein.core.markdown.ast.Text",
+                    "value": "See"
+                },
+                {
+                    "type": "app.skein.core.markdown.ast.Text",
+                    "value": " "
+                },
+                {
+                    "type": "app.skein.core.markdown.ast.Link",
+                    "inlines": [
+                        {
+                            "type": "app.skein.core.markdown.ast.Text",
+                            "value": "https://example.com"
+                        }
+                    ],
+                    "destination": "https://example.com"
+                },
+                {
+                    "type": "app.skein.core.markdown.ast.Text",
+                    "value": " "
+                },
+                {
+                    "type": "app.skein.core.markdown.ast.Text",
+                    "value": "for details."
+                }
+            ]
+        }
+    ]
+}
+
+// autolink-bare
+{
+    "blocks": [
+        {
+            "type": "app.skein.core.markdown.ast.Paragraph",
+            "inlines": [
+                {
+                    "type": "app.skein.core.markdown.ast.Text",
+                    "value": "Visit"
+                },
+                {
+                    "type": "app.skein.core.markdown.ast.Text",
+                    "value": " "
+                },
+                {
+                    "type": "app.skein.core.markdown.ast.Link",
+                    "inlines": [
+                        {
+                            "type": "app.skein.core.markdown.ast.Text",
+                            "value": "https://example.com"
+                        }
+                    ],
+                    "destination": "https://example.com"
+                },
+                {
+                    "type": "app.skein.core.markdown.ast.Text",
+                    "value": " "
+                },
+                {
+                    "type": "app.skein.core.markdown.ast.Text",
+                    "value": "today."
+                }
+            ]
+        }
+    ]
+}
+
+// wikilink-simple
+{
+    "blocks": [
+        {
+            "type": "app.skein.core.markdown.ast.Paragraph",
+            "inlines": [
+                {
+                    "type": "app.skein.core.markdown.ast.Text",
+                    "value": "See"
+                },
+                {
+                    "type": "app.skein.core.markdown.ast.Text",
+                    "value": " "
+                },
+                {
+                    "type": "app.skein.core.markdown.ast.WikiLink",
+                    "target": "Project Overview"
+                },
+                {
+                    "type": "app.skein.core.markdown.ast.Text",
+                    "value": " "
+                },
+                {
+                    "type": "app.skein.core.markdown.ast.Text",
+                    "value": "for context."
+                }
+            ]
+        }
+    ]
+}
+
+// wikilink-alias
+{
+    "blocks": [
+        {
+            "type": "app.skein.core.markdown.ast.Paragraph",
+            "inlines": [
+                {
+                    "type": "app.skein.core.markdown.ast.Text",
+                    "value": "See"
+                },
+                {
+                    "type": "app.skein.core.markdown.ast.Text",
+                    "value": " "
+                },
+                {
+                    "type": "app.skein.core.markdown.ast.WikiLink",
+                    "target": "Project Overview",
+                    "alias": "the overview"
+                },
+                {
+                    "type": "app.skein.core.markdown.ast.Text",
+                    "value": " "
+                },
+                {
+                    "type": "app.skein.core.markdown.ast.Text",
+                    "value": "for context."
+                }
+            ]
+        }
+    ]
+}
+
+// wikilink-heading
+{
+    "blocks": [
+        {
+            "type": "app.skein.core.markdown.ast.Paragraph",
+            "inlines": [
+                {
+                    "type": "app.skein.core.markdown.ast.Text",
+                    "value": "See"
+                },
+                {
+                    "type": "app.skein.core.markdown.ast.Text",
+                    "value": " "
+                },
+                {
+                    "type": "app.skein.core.markdown.ast.WikiLink",
+                    "target": "Project Overview",
+                    "heading": "Goals"
+                },
+                {
+                    "type": "app.skein.core.markdown.ast.Text",
+                    "value": " "
+                },
+                {
+                    "type": "app.skein.core.markdown.ast.Text",
+                    "value": "for context."
+                }
+            ]
+        }
+    ]
+}
+
+// wikilink-heading-alias
+{
+    "blocks": [
+        {
+            "type": "app.skein.core.markdown.ast.Paragraph",
+            "inlines": [
+                {
+                    "type": "app.skein.core.markdown.ast.Text",
+                    "value": "See"
+                },
+                {
+                    "type": "app.skein.core.markdown.ast.Text",
+                    "value": " "
+                },
+                {
+                    "type": "app.skein.core.markdown.ast.WikiLink",
+                    "target": "Project Overview",
+                    "alias": "our goals",
+                    "heading": "Goals"
+                },
+                {
+                    "type": "app.skein.core.markdown.ast.Text",
+                    "value": " "
+                },
+                {
+                    "type": "app.skein.core.markdown.ast.Text",
+                    "value": "for context."
+                }
+            ]
+        }
+    ]
+}
+
+// wikilink-multiple
+{
+    "blocks": [
+        {
+            "type": "app.skein.core.markdown.ast.Paragraph",
+            "inlines": [
+                {
+                    "type": "app.skein.core.markdown.ast.Text",
+                    "value": "Related"
+                },
+                {
+                    "type": "app.skein.core.markdown.ast.Text",
+                    "value": ":"
+                },
+                {
+                    "type": "app.skein.core.markdown.ast.Text",
+                    "value": " "
+                },
+                {
+                    "type": "app.skein.core.markdown.ast.WikiLink",
+                    "target": "Alpha"
+                },
+                {
+                    "type": "app.skein.core.markdown.ast.Text",
+                    "value": ","
+                },
+                {
+                    "type": "app.skein.core.markdown.ast.Text",
+                    "value": " "
+                },
+                {
+                    "type": "app.skein.core.markdown.ast.WikiLink",
+                    "target": "Beta",
+                    "alias": "the beta doc"
+                },
+                {
+                    "type": "app.skein.core.markdown.ast.Text",
+                    "value": ","
+                },
+                {
+                    "type": "app.skein.core.markdown.ast.Text",
+                    "value": " "
+                },
+                {
+                    "type": "app.skein.core.markdown.ast.Text",
+                    "value": "and"
+                },
+                {
+                    "type": "app.skein.core.markdown.ast.Text",
+                    "value": " "
+                },
+                {
+                    "type": "app.skein.core.markdown.ast.WikiLink",
+                    "target": "Gamma",
+                    "heading": "Section"
+                },
+                {
+                    "type": "app.skein.core.markdown.ast.Text",
+                    "value": "."
+                }
+            ]
+        }
+    ]
+}
+
+// wikilink-not-in-code
+{
+    "blocks": [
+        {
+            "type": "app.skein.core.markdown.ast.Paragraph",
+            "inlines": [
+                {
+                    "type": "app.skein.core.markdown.ast.Text",
+                    "value": "Use"
+                },
+                {
+                    "type": "app.skein.core.markdown.ast.Text",
+                    "value": " "
+                },
+                {
+                    "type": "app.skein.core.markdown.ast.Code",
+                    "value": "[[literal]]"
+                },
+                {
+                    "type": "app.skein.core.markdown.ast.Text",
+                    "value": " "
+                },
+                {
+                    "type": "app.skein.core.markdown.ast.Text",
+                    "value": "syntax,"
+                },
+                {
+                    "type": "app.skein.core.markdown.ast.Text",
+                    "value": " "
+                },
+                {
+                    "type": "app.skein.core.markdown.ast.Text",
+                    "value": "not"
+                },
+                {
+                    "type": "app.skein.core.markdown.ast.Text",
+                    "value": " "
+                },
+                {
+                    "type": "app.skein.core.markdown.ast.WikiLink",
+                    "target": "Real Link"
+                },
+                {
+                    "type": "app.skein.core.markdown.ast.Text",
+                    "value": "."
+                }
+            ]
+        }
+    ]
+}
+
+// image-attachment
+{
+    "blocks": [
+        {
+            "type": "app.skein.core.markdown.ast.Paragraph",
+            "inlines": [
+                {
+                    "type": "app.skein.core.markdown.ast.Image",
+                    "alt": "diagram",
+                    "target": {
+                        "type": "app.skein.core.markdown.ast.ImageTarget.AttachmentRef",
+                        "uuid": "8b3f1c2a-0000-4000-8000-000000000000"
+                    }
+                }
+            ]
+        }
+    ]
+}
+
+// image-external
+{
+    "blocks": [
+        {
+            "type": "app.skein.core.markdown.ast.Paragraph",
+            "inlines": [
+                {
+                    "type": "app.skein.core.markdown.ast.Image",
+                    "alt": "logo",
+                    "target": {
+                        "type": "app.skein.core.markdown.ast.ImageTarget.ExternalUrl",
+                        "url": "https://example.com/logo.png"
+                    },
+                    "title": "Skein logo"
+                }
+            ]
+        }
+    ]
+}
+
+// code-fence-language
+{
+    "blocks": [
+        {
+            "type": "app.skein.core.markdown.ast.CodeBlock",
+            "language": "kotlin",
+            "text": "val x = 1\nfun f() = x"
+        }
+    ]
+}
+
+// code-fence-no-language
+{
+    "blocks": [
+        {
+            "type": "app.skein.core.markdown.ast.CodeBlock",
+            "language": null,
+            "text": "plain fenced text"
+        }
+    ]
+}
+
+// code-indented
+{
+    "blocks": [
+        {
+            "type": "app.skein.core.markdown.ast.CodeBlock",
+            "language": null,
+            "text": "val x = 1\nval y = 2"
+        }
+    ]
+}
+
+// thematic-break
+{
+    "blocks": [
+        {
+            "type": "app.skein.core.markdown.ast.Paragraph",
+            "inlines": [
+                {
+                    "type": "app.skein.core.markdown.ast.Text",
+                    "value": "Above"
+                }
+            ]
+        },
+        {
+            "type": "app.skein.core.markdown.ast.ThematicBreak"
+        },
+        {
+            "type": "app.skein.core.markdown.ast.Paragraph",
+            "inlines": [
+                {
+                    "type": "app.skein.core.markdown.ast.Text",
+                    "value": "Below"
+                }
+            ]
+        }
+    ]
+}
+
+// table-unsupported
+{
+    "blocks": [
+        {
+            "type": "app.skein.core.markdown.ast.UnsupportedBlock",
+            "raw": "| a | b |\n|---|---|\n| 1 | 2 |"
+        }
+    ]
+}
+
+// html-block-unsupported
+{
+    "blocks": [
+        {
+            "type": "app.skein.core.markdown.ast.UnsupportedBlock",
+            "raw": "<div>raw html block</div>"
+        }
+    ]
+}
+
+// kitchen-sink
+{
+    "blocks": [
+        {
+            "type": "app.skein.core.markdown.ast.Heading",
+            "level": 1,
+            "inlines": [
+                {
+                    "type": "app.skein.core.markdown.ast.Text",
+                    "value": "Notes on"
+                },
+                {
+                    "type": "app.skein.core.markdown.ast.Text",
+                    "value": " "
+                },
+                {
+                    "type": "app.skein.core.markdown.ast.WikiLink",
+                    "target": "Project Overview",
+                    "alias": "the project"
+                }
+            ]
+        },
+        {
+            "type": "app.skein.core.markdown.ast.Paragraph",
+            "inlines": [
+                {
+                    "type": "app.skein.core.markdown.ast.Text",
+                    "value": "Some"
+                },
+                {
+                    "type": "app.skein.core.markdown.ast.Text",
+                    "value": " "
+                },
+                {
+                    "type": "app.skein.core.markdown.ast.Strong",
+                    "inlines": [
+                        {
+                            "type": "app.skein.core.markdown.ast.Text",
+                            "value": "bold"
+                        }
+                    ]
+                },
+                {
+                    "type": "app.skein.core.markdown.ast.Text",
+                    "value": ","
+                },
+                {
+                    "type": "app.skein.core.markdown.ast.Text",
+                    "value": " "
+                },
+                {
+                    "type": "app.skein.core.markdown.ast.Emph",
+                    "inlines": [
+                        {
+                            "type": "app.skein.core.markdown.ast.Text",
+                            "value": "italic"
+                        }
+                    ]
+                },
+                {
+                    "type": "app.skein.core.markdown.ast.Text",
+                    "value": ","
+                },
+                {
+                    "type": "app.skein.core.markdown.ast.Text",
+                    "value": " "
+                },
+                {
+                    "type": "app.skein.core.markdown.ast.Text",
+                    "value": "and"
+                },
+                {
+                    "type": "app.skein.core.markdown.ast.Text",
+                    "value": " "
+                },
+                {
+                    "type": "app.skein.core.markdown.ast.Code",
+                    "value": "code"
+                },
+                {
+                    "type": "app.skein.core.markdown.ast.Text",
+                    "value": "."
+                },
+                {
+                    "type": "app.skein.core.markdown.ast.Text",
+                    "value": " "
+                },
+                {
+                    "type": "app.skein.core.markdown.ast.Text",
+                    "value": "See"
+                },
+                {
+                    "type": "app.skein.core.markdown.ast.Text",
+                    "value": " "
+                },
+                {
+                    "type": "app.skein.core.markdown.ast.WikiLink",
+                    "target": "Project Overview",
+                    "heading": "Goals"
+                },
+                {
+                    "type": "app.skein.core.markdown.ast.Text",
+                    "value": "."
+                }
+            ]
+        },
+        {
+            "type": "app.skein.core.markdown.ast.BulletList",
+            "items": [
+                {
+                    "blocks": [
+                        {
+                            "type": "app.skein.core.markdown.ast.Paragraph",
+                            "inlines": [
+                                {
+                                    "type": "app.skein.core.markdown.ast.Text",
+                                    "value": "draft the plan"
+                                }
+                            ]
+                        }
+                    ],
+                    "checked": false
+                },
+                {
+                    "blocks": [
+                        {
+                            "type": "app.skein.core.markdown.ast.Paragraph",
+                            "inlines": [
+                                {
+                                    "type": "app.skein.core.markdown.ast.Text",
+                                    "value": "review with team"
+                                }
+                            ]
+                        }
+                    ],
+                    "checked": true
+                }
+            ]
+        },
+        {
+            "type": "app.skein.core.markdown.ast.Quote",
+            "blocks": [
+                {
+                    "type": "app.skein.core.markdown.ast.Paragraph",
+                    "inlines": [
+                        {
+                            "type": "app.skein.core.markdown.ast.Text",
+                            "value": "Remember"
+                        },
+                        {
+                            "type": "app.skein.core.markdown.ast.Text",
+                            "value": ":"
+                        },
+                        {
+                            "type": "app.skein.core.markdown.ast.Text",
+                            "value": " "
+                        },
+                        {
+                            "type": "app.skein.core.markdown.ast.Text",
+                            "value": "ship small."
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "type": "app.skein.core.markdown.ast.CodeBlock",
+            "language": "kotlin",
+            "text": "fun main() {}"
+        }
+    ]
+}
