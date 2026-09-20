@@ -11,5 +11,10 @@ kotlin {
 }
 
 dependencies {
+    // `Flow<Token>` in the `InferenceEngine` contract (§4.1, `E0.I10`) is
+    // `kotlinx.coroutines.flow.Flow`; the module must stay Kotlin/JVM-only,
+    // so we pull in the core coroutines library (no Android or Java-8 shim).
+    api(libs.kotlinx.coroutines.core)
+
     testImplementation(libs.junit)
 }
