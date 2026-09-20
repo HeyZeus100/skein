@@ -86,11 +86,13 @@ class RawTextFieldTest {
      * add new exceptions for new code — only [allowlistedFile] (the
      * reference implementation) is allowed to call the raw primitives
      * going forward.
+     *
+     * Empty: `CommandBar.kt`'s entry was removed once `skein-yb3m` migrated
+     * it to `SecureTextField`. Keep this map (rather than deleting it and
+     * the filter below) so future pre-existing violations have a place to
+     * land without re-deriving this pattern.
      */
-    private val pendingMigrations =
-        mapOf(
-            "feature/shell/src/main/kotlin/app/skein/feature/shell/nav/CommandBar.kt" to "skein-yb3m",
-        )
+    private val pendingMigrations = emptyMap<String, String>()
 
     private val forbidden =
         listOf(
