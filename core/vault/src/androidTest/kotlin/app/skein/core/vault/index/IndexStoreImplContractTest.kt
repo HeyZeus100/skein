@@ -1,0 +1,83 @@
+// Instrumented contract test for `IndexStoreImpl` (E2.I15). Runs the
+// shared `IndexStoreContractTest` suite from `:testing` against the real
+// SQL-backed impl over a `:memory:` SQLCipher connection with `sqlite-vec`
+// and FTS5 live — the same libskein_sqlite.so that ships with the app.
+//
+// Follow-up (skein-k3b2): the API 35 emulator is not yet provisioned in
+// CI, so this class is compiled-but-not-executed on the Gradle `check`
+// path. Once skein-k3b2 lands, `connectedFossDebugAndroidTest` will run
+// this suite headless on every PR.
+
+package app.skein.core.vault.index
+
+import androidx.test.ext.junit.runners.AndroidJUnit4
+import app.skein.core.vault.db.SkeinSQLiteConnection
+import app.skein.core.vault.db.SkeinSQLiteDriver
+import org.junit.After
+import org.junit.runner.RunWith
+import us.aherrera.skein.core.model.IndexStore
+import us.aherrera.skein.testing.IndexStoreContractTest
+
+@RunWith(AndroidJUnit4::class)
+public class IndexStoreImplContractTest : IndexStoreContractTest() {
+    private val openImpls: MutableList<IndexStoreImpl> = mutableListOf()
+
+    @After
+    public fun tearDown() {
+        // Close every impl handed out during the test. `close()` shuts
+        // the SQLiteConnection, which in turn drops the SQLCipher-keyed
+        // in-memory DB.
+        for (impl in openImpls) {
+            try {
+                impl.close()
+            } catch (_: Throwable) {
+                // Best effort — the assertion has already run or thrown.
+            }
+        }
+        openImpls.clear()
+    }
+
+    override fun index(): IndexStore {
+        // Fresh unencrypted in-memory DB per test (no key argument to
+        // SkeinSQLiteDriver; verifyExtensions still asserts vec/FTS5
+        // linkage). Then run migration 001 statement-by-statement, using
+        // the same trigger-aware splitter as `SchemaLoadInstrumentedTest`.
+        val driver = SkeinSQLiteDriver()
+        val conn = driver.openWithKey(":memory:", passphrase = null) as SkeinSQLiteConnection
+        val sql =
+            requireNotNull(
+                javaClass.classLoader?.getResourceAsStream("migrations/001_initial.sql"),
+            ) { "migrations/001_initial.sql not on the classpath" }
+                .use { it.readBytes().toString(Charsets.UTF_8) }
+        for (statement in splitOnSentinel(sql)) {
+            conn.prepare(statement).use { it.step() }
+        }
+        val impl = IndexStoreImpl(conn)
+        openImpls += impl
+        return impl
+    }
+
+    private companion object {
+        /**
+         * Split the migration SQL on the `--;` sentinel used by
+         * `001_initial.sql` (see file header) — mirrors what the
+         * production `MigrationStatementSplitter` does. Trailing
+         * whitespace and empty statements are dropped.
+         */
+        fun splitOnSentinel(sql: String): List<String> {
+            val raw = sql.split("--;")
+            val cleaned =
+                raw.map { chunk ->
+                    chunk
+                        .lineSequence()
+                        .map { it.trimEnd() }
+                        .filter { line -> line.isNotBlank() && !line.trimStart().startsWith("--") }
+                        .joinToString(separator = "\n")
+                        .trim()
+                        .removeSuffix(";")
+                        .trim()
+                }
+            return cleaned.filter { it.isNotEmpty() }
+        }
+    }
+}

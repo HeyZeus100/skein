@@ -138,6 +138,11 @@ dependencies {
     androidTestImplementation(libs.androidx.test.runner)
     androidTestImplementation(libs.androidx.test.rules)
     androidTestImplementation(libs.truth)
+    // skein-qi6 / E2.I15: the `IndexStoreContractTest` shared suite lives in
+    // `:testing` (`us.aherrera.skein.testing.IndexStoreContractTest`) so both
+    // `InMemoryIndexStore` (JVM) and `IndexStoreImpl` (this module,
+    // instrumented) prove they satisfy the same semantic contract.
+    androidTestImplementation(project(":testing"))
 }
 
 // E0.I7 followup (skein-2lq9): fast, standalone entry point for the same
