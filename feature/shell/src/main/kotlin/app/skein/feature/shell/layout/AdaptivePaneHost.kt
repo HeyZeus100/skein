@@ -28,6 +28,15 @@ import app.skein.feature.shell.theme.LocalSkeinTokens
  * @param secondary content for the second split pane; only composed when
  *   [PaneLayoutState.SPLIT_DUAL] is active. Defaults to [primary] so a
  *   caller that doesn't yet have two tabs still gets something to look at.
+ *   Always invoked with `splitAvailable = false` (see [RightZone]) — v1
+ *   never offers splitting *within* the secondary pane (plan `E6.I6`).
+ *
+ * [primary] and [secondary] each receive `splitAvailable: Boolean` — true
+ * only at [LayoutWidthClass.EXPANDED] width (spec `E6.I6`: "Split view only
+ * appears at unfolded widths"), i.e. whenever [PaneLayoutState.SINGLE_PANE]
+ * isn't what was computed — so a `TabHost` filling either slot knows
+ * whether to offer its own `⧉` button / "Open in split" menu item without
+ * recomputing width/posture itself.
  */
 @Composable
 fun AdaptivePaneHost(
@@ -36,12 +45,13 @@ fun AdaptivePaneHost(
     windowSizeClass: WindowSizeClass = currentWindowAdaptiveInfoV2().windowSizeClass,
     posture: FoldPosture = rememberFoldPosture().value,
     timeline: @Composable () -> Unit,
-    primary: @Composable () -> Unit,
-    secondary: @Composable () -> Unit = primary,
+    primary: @Composable (splitAvailable: Boolean) -> Unit,
+    secondary: @Composable (splitAvailable: Boolean) -> Unit = primary,
 ) {
     val tokens = LocalSkeinTokens.current
     val widthClass = classifyWidth(windowSizeClass)
     val result = computeAdaptiveLayout(widthClass, posture, layoutState)
+    val splitAvailable = result.paneLayoutState != PaneLayoutState.SINGLE_PANE
 
     Row(modifier = modifier.fillMaxSize()) {
         when (result.timelineMode) {
@@ -52,6 +62,7 @@ fun AdaptivePaneHost(
                 RightZone(
                     modifier = Modifier.weight(1f - tokens.timelineShare).fillMaxHeight(),
                     result = result,
+                    splitAvailable = splitAvailable,
                     primary = primary,
                     secondary = secondary,
                 )
@@ -64,6 +75,7 @@ fun AdaptivePaneHost(
                 RightZone(
                     modifier = Modifier.weight(1f).fillMaxHeight(),
                     result = result,
+                    splitAvailable = splitAvailable,
                     primary = primary,
                     secondary = secondary,
                 )
@@ -75,6 +87,7 @@ fun AdaptivePaneHost(
                 RightZone(
                     modifier = Modifier.weight(1f).fillMaxHeight(),
                     result = result,
+                    splitAvailable = splitAvailable,
                     primary = primary,
                     secondary = secondary,
                 )
@@ -87,8 +100,9 @@ fun AdaptivePaneHost(
 private fun RightZone(
     modifier: Modifier,
     result: AdaptiveLayoutResult,
-    primary: @Composable () -> Unit,
-    secondary: @Composable () -> Unit,
+    splitAvailable: Boolean,
+    primary: @Composable (Boolean) -> Unit,
+    secondary: @Composable (Boolean) -> Unit,
 ) {
     // `E6.I5`: the tab chrome (wide strip vs. folded-phone "Recent ▾"
     // dropdown) is `TabHost`'s own concern now, driven by its own
@@ -100,11 +114,13 @@ private fun RightZone(
             PaneLayoutState.SPLIT_DUAL ->
                 SplitHost(
                     modifier = Modifier.fillMaxSize(),
-                    leftContent = primary,
-                    rightContent = secondary,
+                    leftContent = { primary(splitAvailable) },
+                    // No splitting *within* the right pane in v1 (plan `E6.I6`
+                    // guardrail): the secondary pane never offers its own ⧉.
+                    rightContent = { secondary(false) },
                 )
             PaneLayoutState.SINGLE_PANE, PaneLayoutState.DUAL_PANE ->
-                Column(modifier = Modifier.fillMaxSize()) { primary() }
+                Column(modifier = Modifier.fillMaxSize()) { primary(splitAvailable) }
         }
     }
 }

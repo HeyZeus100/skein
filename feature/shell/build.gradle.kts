@@ -46,6 +46,12 @@ dependencies {
     implementation(libs.kotlinx.coroutines.core)
 
     debugImplementation(libs.compose.ui.tooling)
+    // `lintDebug` resolves `src/debug/AndroidManifest.xml`'s
+    // `androidx.activity.ComponentActivity` reference against the *debug
+    // variant's* own compile classpath, not the test classpath — a
+    // `testImplementation`-only dependency (below) isn't visible to it and
+    // trips lint's `MissingClass` check. Same artifact, both scopes.
+    debugImplementation(libs.androidx.activity.compose)
 
     testImplementation(libs.junit)
     // E3.I9: SecureTextFieldTest asserts the EditorInfo flags a Robolectric
