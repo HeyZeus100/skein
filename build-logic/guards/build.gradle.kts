@@ -17,7 +17,7 @@ dependencies {
     compileOnly("com.android.tools.build:gradle:9.4.0")
 
     // Used by LicenseAuditTask for JSON parsing of overrides
-    implementation("com.fasterxml.jackson.core:jackson-databind:2.16.1")
+    implementation("com.fasterxml.jackson.core:jackson-databind:2.22.2")
 
     testImplementation("com.android.tools.build:gradle:9.4.0")
     testImplementation(gradleTestKit())
