@@ -347,6 +347,18 @@ public class UnlockManager
                     }
                 when (result) {
                     is RewrapResult.Success -> {
+                        // Invariant (skein-22su): `rewrapAfterInvalidation`
+                        // succeeding MUST leave the master key accessible via
+                        // `currentKey()` — see `VaultKeyProvider.rewrapAfterInvalidation`'s
+                        // contract. Verify before advancing to `Unlocked` so a
+                        // contract violation surfaces immediately instead of as
+                        // a downstream null-key failure on the next vault op.
+                        // The exception message deliberately carries no key
+                        // material.
+                        check(keyProvider.currentKey() != null) {
+                            "rewrapAfterInvalidation succeeded but currentKey is null; " +
+                                "VaultKeyProvider contract violated"
+                        }
                         val now = clock.millis()
                         lastActivityMillis = now
                         val minted = AuthorizationToken(recoveryEpoch.incrementAndGet())

@@ -108,6 +108,10 @@ public interface VaultKeyProvider {
      * `attachment_master_key.key_version`, and only then deletes the
      * dead alias. See `ATTACHMENT_ENCRYPTION.md` §3.5 for the failure-mode
      * enumeration.
+     *
+     * On success, the master key material remains in memory as
+     * `currentKey`. Caller is responsible for `lock()`-triggered
+     * zeroization.
      */
     public suspend fun rewrapAfterInvalidation(
         activity: FragmentActivity,
