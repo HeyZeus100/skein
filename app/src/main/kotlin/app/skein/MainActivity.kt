@@ -6,7 +6,11 @@ import android.view.WindowManager
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.lifecycle.lifecycleScope
+import app.skein.feature.settings.SettingsScreen
+import app.skein.feature.settings.rememberSettingsViewModel
+import app.skein.feature.shell.DestinationPlaceholder
 import app.skein.feature.shell.SkeinApp
+import app.skein.feature.shell.nav.Destination
 import app.skein.system.SecurityPrefs
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
@@ -14,8 +18,12 @@ import kotlinx.coroutines.runBlocking
 
 /**
  * Single Activity for the `:app` process (spec §4.1). Hosts [SkeinApp], the
- * Compose shell (theme, typography, tokens) landed in `E6.I1`. Navigation,
- * adaptive panes, and real screens land in `E6.I2`+.
+ * Compose shell (theme, typography, tokens) landed in `E6.I1`. Wires the
+ * Settings destination (`E6.I14`) to the real
+ * [app.skein.feature.settings.SettingsScreen] via `destinationContent`; the
+ * remaining four drawer destinations still fall back to
+ * [DestinationPlaceholder] until their own issues land (`E6.I8`+ /
+ * `E7.I3`+).
  *
  * The whole activity is a vault surface (spec §9), so `FLAG_SECURE` is
  * applied here based on [SecurityPrefs.flagSecureEnabled] (E3.I8). Future
@@ -25,6 +33,13 @@ import kotlinx.coroutines.runBlocking
  */
 class MainActivity : ComponentActivity() {
     private lateinit var securityPrefs: SecurityPrefs
+
+    // A stable field reference (unlike `securityPrefs::setFlagSecureEnabled`
+    // evaluated inline, which allocates a new bound-reference instance on
+    // every call) so `rememberSettingsViewModel`'s `remember(...)` keys
+    // don't change every recomposition and needlessly rebuild
+    // `SettingsViewModel` (and re-launch its collector) each time.
+    private val setFlagSecureEnabled: suspend (Boolean) -> Unit = { securityPrefs.setFlagSecureEnabled(it) }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -48,15 +63,31 @@ class MainActivity : ComponentActivity() {
         // after the first access.
         applyFlagSecure(runBlocking { securityPrefs.flagSecureEnabled.first() })
 
-        // Live updates: flipping the setting (once a real settings screen
-        // lands, `E3.I14`) takes effect immediately without recreating the
-        // activity.
+        // Live updates: flipping the toggle in Settings takes effect
+        // immediately without recreating the activity.
         lifecycleScope.launch {
             securityPrefs.flagSecureEnabled.collect { enabled -> applyFlagSecure(enabled) }
         }
 
         setContent {
-            SkeinApp()
+            SkeinApp(
+                destinationContent = { destination ->
+                    when (destination) {
+                        Destination.SETTINGS -> {
+                            val settingsViewModel =
+                                rememberSettingsViewModel(
+                                    flagSecureEnabledFlow = securityPrefs.flagSecureEnabled,
+                                    onSetFlagSecureEnabled = setFlagSecureEnabled,
+                                )
+                            SettingsScreen(
+                                viewModel = settingsViewModel,
+                                appVersion = "${BuildConfig.VERSION_NAME} (${BuildConfig.VERSION_CODE})",
+                            )
+                        }
+                        else -> DestinationPlaceholder(label = destination.name)
+                    }
+                },
+            )
         }
     }
 

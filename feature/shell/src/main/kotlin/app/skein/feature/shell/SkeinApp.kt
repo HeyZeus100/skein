@@ -10,6 +10,7 @@ import androidx.compose.ui.Modifier
 import app.skein.feature.shell.layout.AdaptivePaneHost
 import app.skein.feature.shell.layout.rememberAdaptiveLayoutState
 import app.skein.feature.shell.nav.CommandBar
+import app.skein.feature.shell.nav.Destination
 import app.skein.feature.shell.nav.NavDrawer
 import app.skein.feature.shell.nav.rememberNavState
 import app.skein.feature.shell.tabs.TabHost
@@ -21,12 +22,28 @@ import app.skein.feature.shell.theme.SkeinThemeMode
  * The app shell (plan `E6.I3`): [SkeinTheme] wrapping the persistent nav
  * layer — [NavDrawer] around the [CommandBar] + [AdaptivePaneHost] stack.
  * [NavState] owns drawer open/closed, the active destination, and the
- * command bar query; none of the five drawer destinations are wired to real
- * screens yet (`E6.I8`+ / `E7.I3`+ own that) — the pane content below the
- * command bar is a placeholder naming the active destination.
+ * command bar query.
+ *
+ * [destinationContent] renders the primary pane for the active
+ * [Destination]; it defaults to [DestinationPlaceholder], which is still
+ * correct for every destination [SkeinApp] doesn't yet have a real screen
+ * for (`E6.I8`+ / `E7.I3`+ own most of those). `:feature:shell` cannot
+ * depend on feature modules that host real screens (e.g. `:feature:settings`
+ * depends on `:feature:shell` for [app.skein.feature.shell.theme.SkeinTheme]
+ * / `SecureTextField`, so the reverse dependency would cycle) — this slot is
+ * how a leaf module like `:app`, which can depend on everything, wires a
+ * real screen (e.g. `Destination.SETTINGS ->
+ * app.skein.feature.settings.SettingsScreen(...)`) in without `:feature:shell`
+ * ever knowing that screen's module exists. A real nav-graph replacing this
+ * switch is out of scope for `E6.I3`/`E6.I14`.
  */
 @Composable
-fun SkeinApp(themeMode: SkeinThemeMode = SkeinThemeMode.SYSTEM) {
+fun SkeinApp(
+    themeMode: SkeinThemeMode = SkeinThemeMode.SYSTEM,
+    destinationContent: @Composable (Destination) -> Unit = { destination ->
+        DestinationPlaceholder(label = destination.name)
+    },
+) {
     SkeinTheme(mode = themeMode) {
         val navState = rememberNavState()
         val layoutState = rememberAdaptiveLayoutState()
@@ -53,7 +70,7 @@ fun SkeinApp(themeMode: SkeinThemeMode = SkeinThemeMode.SYSTEM) {
                     primary = {
                         TabHost(
                             tabsState = tabsState,
-                            content = { DestinationPlaceholder(label = navState.destination.name) },
+                            content = { destinationContent(navState.destination) },
                         )
                     },
                 )
@@ -63,11 +80,13 @@ fun SkeinApp(themeMode: SkeinThemeMode = SkeinThemeMode.SYSTEM) {
 }
 
 /**
- * Stand-in for the real destination screens (out of scope for `E6.I3`).
- * Only names the active destination so the nav wiring is visibly correct.
+ * Stand-in for a destination with no real screen yet. Only names the active
+ * destination so the nav wiring is visibly correct. Public so hosts
+ * customizing [destinationContent] can reuse it for the destinations they
+ * still don't have a screen for (see [SkeinApp]'s doc).
  */
 @Composable
-private fun DestinationPlaceholder(label: String) {
+fun DestinationPlaceholder(label: String) {
     Surface(
         modifier = Modifier.fillMaxSize(),
         color = MaterialTheme.colorScheme.background,
