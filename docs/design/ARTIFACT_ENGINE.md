@@ -317,7 +317,7 @@ When v2 work starts, build in this order to minimize dead code:
 4. Basic constraint DSL + enforcement
 5. LLM prompt template + JSON schema validator for PatchBundle
 6. Diff review UI (Compose) — works on MD-only initially
-7. Vault integration (artifact = new document with `derived_from` link)
+7. Vault integration (artifact = new document with `derived_from` link). Vault access goes through the primitives defined in [`VAULT_TOOL_PRIMITIVES.md`](VAULT_TOOL_PRIMITIVES.md) — specifically `write_note` for the derived artifact, `patch_note` for constraint-preserving edits (with `PatchOp.baseRevision` gating drift), and `search_vault` for retrieval into constraint checks. E5/E7 impls of those primitives are prerequisites for step 7.
 8. DOCX ↔ IR (minimal package)
 9. PDF → IR (import only)
 10. Extended constraints, patch operations, review UX polish

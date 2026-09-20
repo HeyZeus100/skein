@@ -9,6 +9,10 @@ import org.gradle.api.artifacts.ProjectDependency
  * plan's §2.4 process assignment:
  *  - `:core:model` and `:core:markdown` stay pure Kotlin/JVM (no Android
  *    Gradle plugin), per E1.I2 and E7.I2 respectively.
+ *  - `:core:agent` also stays pure Kotlin/JVM (no Android Gradle plugin), per
+ *    skein-fvne and `docs/design/VAULT_TOOL_PRIMITIVES.md`. Vault tool
+ *    primitives must be consumable from every surface (editor, chat, future
+ *    skill dispatcher) and unit-tested on the JVM.
  *  - `:testing` also stays pure Kotlin/JVM (no Android Gradle plugin), per
  *    E10.I1, so `:core:*` and other pure-JVM modules can depend on it
  *    (`testImplementation`) without pulling the Android SDK onto their
@@ -18,8 +22,8 @@ import org.gradle.api.artifacts.ProjectDependency
  *    only) `onnxruntime-android` — never `:core:vault`, `:core:security`, or
  *    `:app`.
  *
- * Apply to `:core:model`, `:testing`, `:inference-service`, and
- * `:embedder-service`. The
+ * Apply to `:core:model`, `:core:agent`, `:testing`, `:inference-service`,
+ * and `:embedder-service`. The
  * allowlist is keyed by [Project.getPath] rather than exposed as a DSL
  * extension because the isolated module set is a fixed, non-negotiable part
  * of the architecture (spec §2.6, plan §2.4), not something a module author
@@ -85,7 +89,7 @@ class IsolationGuardPlugin : Plugin<Project> {
     companion object {
         private val MAIN_DEPENDENCY_CONFIGURATIONS = listOf("implementation", "api", "compileOnly", "runtimeOnly")
 
-        private val PURE_JVM_MODULES = setOf(":core:model", ":core:markdown", ":testing")
+        private val PURE_JVM_MODULES = setOf(":core:model", ":core:markdown", ":core:agent", ":testing")
 
         private val COMMON_SERVICE_PROJECT_ALLOWLIST = setOf(":core:ipc", ":core:model")
         private val COMMON_SERVICE_EXTERNAL_ALLOWLIST = setOf("org.jetbrains.kotlin", "org.jetbrains.kotlinx")

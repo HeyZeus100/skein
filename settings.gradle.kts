@@ -22,6 +22,7 @@ rootProject.name = "skein"
 
 include(
     ":app",
+    ":core:agent",
     ":core:model",
     ":core:ipc",
     ":core:vault",
