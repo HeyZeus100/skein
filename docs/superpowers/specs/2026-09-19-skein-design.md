@@ -117,7 +117,7 @@ Startup: `:app` → biometric unlock → StrongBox key unwrap → SQLCipher open
 
 ## 5. Data model
 
-SQLite (via SQLCipher), one file `vault.db` in app-private storage. Bundled SQLite via `androidx.sqlite` BundledSQLiteDriver with `addExtension` for `sqlite-vec`.
+SQLite (via SQLCipher), one file `vault.db` in app-private storage. Bundled SQLite is a custom NDK build — SQLCipher 4.17.0 amalgamation + sqlite-vec v0.1.9 + FTS5 statically linked into `libskein_sqlite.so`, with OpenSSL 3.5.4 `libcrypto.a` statically linked in — surfaced to Kotlin via a vendored `androidx.sqlite` `BundledSQLiteDriver`-derivative JNI (see `native/sqlite/README.md`). The E0.I7 spike verified all three features (encryption, `vec0` KNN, FTS5 `MATCH`) work on a single connection on the API 35 arm64-v8a emulator; see `docs/SPIKE_E0_I7_RESULTS.md`.
 
 ```sql
 CREATE TABLE documents (
