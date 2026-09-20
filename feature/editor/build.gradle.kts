@@ -1,5 +1,6 @@
 plugins {
     alias(libs.plugins.android.library)
+    alias(libs.plugins.kotlin.compose)
 }
 
 android {
@@ -8,6 +9,11 @@ android {
 
     defaultConfig {
         minSdk = 30
+        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+    }
+
+    buildFeatures {
+        compose = true
     }
 
     compileOptions {
@@ -18,5 +24,45 @@ android {
 
 dependencies {
     implementation(libs.androidx.core.ktx)
+    implementation(platform(libs.compose.bom))
+    implementation(libs.compose.ui)
+    implementation(libs.compose.ui.graphics)
+    implementation(libs.compose.ui.tooling.preview)
+    implementation(libs.compose.foundation)
+    implementation(libs.material3)
+
+    // E7.I2 owns the Skein Markdown AST + the AnnotatedString renderer
+    // this module reuses (`MarkdownStyle`). The parser stays inside
+    // :core:markdown — no third-party markdown lib type crosses the
+    // boundary of this module.
+    implementation(project(":core:markdown"))
+    implementation(project(":core:model"))
+    // §9 IME hardening: SecureImeInterceptor + SecureBasicTextField.
+    // RawTextFieldTest requires every text-input Composable to go
+    // through one of :feature:shell's two allowlisted wrappers.
+    implementation(project(":feature:shell"))
+
+    debugImplementation(libs.compose.ui.tooling)
+    // `lintDebug` resolves `src/debug/AndroidManifest.xml`'s
+    // `androidx.activity.ComponentActivity` reference against the debug
+    // variant's compile classpath, not the test classpath — same note as
+    // :feature:shell's build script. Without this a `MissingClass` lint
+    // error fires even though only the androidTest classpath needs the
+    // class at runtime.
+    debugImplementation(libs.androidx.activity.compose)
+
     testImplementation(libs.junit)
+
+    // On-device Compose UI test (skein-03f acceptance: compile the UI
+    // test even where the local worktree cannot run it; bd `skein-k3b2`
+    // tracks the CI emulator gate). Placed under `androidTest` so the
+    // JVM `test` classpath does not pull in the Compose UI test deps —
+    // those pull kotlinx-coroutines-test / androidx.collection variants
+    // that are not yet pinned in `gradle/verification-metadata.xml`.
+    androidTestImplementation(platform(libs.compose.bom))
+    androidTestImplementation(libs.compose.ui.test.junit4)
+    androidTestImplementation(libs.androidx.test.ext.junit)
+    androidTestImplementation(libs.androidx.test.runner)
+    androidTestImplementation(libs.androidx.test.rules)
+    androidTestImplementation(libs.androidx.activity.compose)
 }

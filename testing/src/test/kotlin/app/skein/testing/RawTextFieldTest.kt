@@ -70,13 +70,21 @@ class RawTextFieldTest {
         )
 
     /**
-     * The one file allowed to call the raw Compose primitives directly —
-     * it WRAPS `TextField` (which itself wraps `BasicTextField`) to apply
-     * the IME hardening every other call site must get by going through
-     * it instead. Path is relative to the repo root.
+     * The files allowed to call the raw Compose primitives directly —
+     * both WRAP a Compose text-input primitive (`TextField` for
+     * `SecureTextField.kt`, `BasicTextField` for `SecureBasicTextField.kt`)
+     * to apply the IME hardening every other call site must get by going
+     * through one of them. `SecureBasicTextField` exists specifically for
+     * `TextFieldValue`-based callers (the live-preview editor in
+     * `:feature:editor`, `E7.I1`), which need the cursor/selection carried
+     * by that state — [SecureTextField]'s String-only Material 3 overload
+     * doesn't expose that. Paths are relative to the repo root.
      */
-    private val allowlistedFile =
-        "feature/shell/src/main/kotlin/app/skein/feature/shell/input/SecureTextField.kt"
+    private val allowlistedFiles =
+        setOf(
+            "feature/shell/src/main/kotlin/app/skein/feature/shell/input/SecureTextField.kt",
+            "feature/shell/src/main/kotlin/app/skein/feature/shell/input/SecureBasicTextField.kt",
+        )
 
     /**
      * Known, already-shipped violations not fixed by this test-adding
@@ -115,7 +123,7 @@ class RawTextFieldTest {
                         .walkTopDown()
                         .filter { it.isFile && it.extension == "kt" }
                         .filter { !it.path.contains("${File.separator}build${File.separator}") }
-                        .filter { it.relativeToRepoRoot(repoRoot) != allowlistedFile }
+                        .filter { it.relativeToRepoRoot(repoRoot) !in allowlistedFiles }
                         .filter { it.relativeToRepoRoot(repoRoot) !in pendingMigrations }
                         .flatMap { file ->
                             val text = file.readText()
