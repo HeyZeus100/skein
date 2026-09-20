@@ -1,0 +1,42 @@
+name: Security Vulnerability
+description: Report a security vulnerability
+labels: ["security"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        **IMPORTANT: Do not use this form for sensitive security reports.**
+
+        Please see [SECURITY.md](../../../SECURITY.md) for instructions on privately reporting vulnerabilities.
+
+        Email: `andrew@aherrera.us`
+
+  - type: textarea
+    id: description
+    attributes:
+      label: Vulnerability Description
+      description: Briefly describe the security issue (only if not sensitive)
+      placeholder: "This describes a potential vulnerability..."
+    validations:
+      required: false
+
+  - type: textarea
+    id: impact
+    attributes:
+      label: Potential Impact
+      description: How could this affect users?
+      placeholder: "This could lead to..."
+
+  - type: textarea
+    id: contact
+    attributes:
+      label: Contact Information (for private follow-up)
+      description: Email or PGP key if you prefer secure communication
+      placeholder: "your.email@example.com"
+    validations:
+      required: false
+
+  - type: markdown
+    attributes:
+      value: |
+        Thank you for helping keep Skein secure. We will respond within 48 hours.

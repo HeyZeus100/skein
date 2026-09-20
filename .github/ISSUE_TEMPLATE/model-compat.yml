@@ -1,0 +1,74 @@
+name: Model Compatibility Report
+description: Report compatibility issues with a model
+labels: ["model-compat"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Use this template to report issues with a specific model's performance, compatibility, or behavior in Skein.
+
+  - type: input
+    id: model_name
+    attributes:
+      label: Model Name
+      description: "Name and size (e.g., Gemma 4 E4B, Qwen 2.5 3B Q4_K_M)"
+      placeholder: "Gemma 4 E4B"
+    validations:
+      required: true
+
+  - type: input
+    id: model_source
+    attributes:
+      label: Model Source
+      description: "Where you obtained the model (HF link, local import, etc.)"
+      placeholder: "https://huggingface.co/..."
+    validations:
+      required: false
+
+  - type: textarea
+    id: issue
+    attributes:
+      label: Issue Description
+      description: What is not working as expected?
+      placeholder: |
+        The model fails to load with error:
+        or
+        Output quality is poor:
+        or
+        Performance is slow:
+    validations:
+      required: true
+
+  - type: textarea
+    id: reproduce
+    attributes:
+      label: Steps to Reproduce
+      description: How to trigger the issue
+      placeholder: |
+        1. Import model via [import dialog]
+        2. Create new chat
+        3. Send prompt...
+
+  - type: textarea
+    id: environment
+    attributes:
+      label: Environment
+      description: System context
+      value: |
+        - App Version:
+        - Android Version:
+        - Device Model:
+        - Available RAM:
+        - Storage Space:
+
+  - type: textarea
+    id: logs
+    attributes:
+      label: Logs or Error Output
+      render: plain
+
+  - type: textarea
+    id: bd_issue
+    attributes:
+      label: Related bd Issue (if applicable)
+      placeholder: "skein-XXXX"

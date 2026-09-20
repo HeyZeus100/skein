@@ -1,0 +1,60 @@
+# NOTICE
+
+Skein includes software from the following third-party projects. Licenses and attributions are listed below.
+
+## Third-Party Software
+
+### llama.cpp
+- **Repository:** https://github.com/ggerganov/llama.cpp
+- **License:** MIT
+- **Status:** Included as a prebuilt binary or source
+- **Attribution:** <TODO: Add specific version and link to license file>
+
+### sqlite-vec
+- **Repository:** https://github.com/asg017/sqlite-vec
+- **License:** Apache License 2.0
+- **Status:** Included as a source extension
+- **Attribution:** <TODO: Add specific version and link to license file>
+
+### GLiNER
+- **Repository:** https://github.com/urchade/gliner
+- **License:** Apache License 2.0
+- **Status:** Model files included; inference via ONNX Runtime Mobile or llama.cpp
+- **Attribution:** <TODO: Add specific version and link to license file>
+
+### SQLCipher
+- **Repository:** https://github.com/sqlcipher/sqlcipher
+- **License:** Proprietary (open-source binding available)
+- **Status:** Used via Android sqlite integration
+- **Attribution:** <TODO: Verify license and add attribution>
+
+### Jetpack Compose
+- **Repository:** https://developer.android.com/jetpack/compose
+- **License:** Apache License 2.0
+- **Status:** Dependency
+- **Attribution:** © Google LLC
+
+### Kotlin Standard Library
+- **Repository:** https://kotlinlang.org
+- **License:** Apache License 2.0
+- **Status:** Dependency
+- **Attribution:** © JetBrains s.r.o.
+
+### Android Framework
+- **License:** Apache License 2.0
+- **Status:** Target platform
+- **Attribution:** © Google LLC
+
+## License Compliance
+
+This product is distributed under the Apache License 2.0. See the LICENSE file for details.
+
+All dependencies are licensed under permissive licenses (Apache 2.0, MIT, or compatible). No GPL or LGPL runtime dependencies are included in the `foss` build variant.
+
+## Modification Notice
+
+Some third-party projects may have been modified. See the source repository for the original software and changes.
+
+## Attribution
+
+As required by the licenses above, we acknowledge all original authors and contributors. Detailed license texts are available in the source repository under `LICENSES/` or in individual files.

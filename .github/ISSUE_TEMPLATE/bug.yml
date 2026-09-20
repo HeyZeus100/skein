@@ -1,0 +1,82 @@
+name: Bug Report
+description: Report a problem with Skein
+labels: ["bug"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thank you for reporting a bug. Please provide as much detail as possible to help us investigate.
+
+  - type: textarea
+    id: description
+    attributes:
+      label: Description
+      description: Briefly describe the issue
+      placeholder: "What went wrong?"
+    validations:
+      required: true
+
+  - type: textarea
+    id: reproduce
+    attributes:
+      label: Steps to Reproduce
+      description: Exact steps to reproduce the bug
+      placeholder: |
+        1. Open vault
+        2. Create a new note
+        3. Try to...
+    validations:
+      required: true
+
+  - type: textarea
+    id: expected
+    attributes:
+      label: Expected Behavior
+      description: What should happen
+      placeholder: "The note should..."
+    validations:
+      required: true
+
+  - type: textarea
+    id: actual
+    attributes:
+      label: Actual Behavior
+      description: What actually happened
+      placeholder: "Instead, the app..."
+    validations:
+      required: true
+
+  - type: textarea
+    id: logs
+    attributes:
+      label: Logs or Error Messages
+      description: Include logcat output, stack traces, or error messages
+      render: plain
+
+  - type: textarea
+    id: environment
+    attributes:
+      label: Environment
+      description: Provide context
+      value: |
+        - App Version:
+        - Android Version:
+        - Device Model:
+        - ROM (if custom): GrapheneOS / AOSP / other
+
+  - type: textarea
+    id: bd_issue
+    attributes:
+      label: Related bd Issue (if applicable)
+      description: "Reference a bd issue if this is a known tracking item (e.g., skein-1jm)"
+      placeholder: "skein-XXXX"
+
+  - type: checkboxes
+    id: confirmation
+    attributes:
+      label: Confirmation
+      options:
+        - label: I have checked for existing issues
+          required: true
+        - label: I can reproduce this consistently
+          required: true
