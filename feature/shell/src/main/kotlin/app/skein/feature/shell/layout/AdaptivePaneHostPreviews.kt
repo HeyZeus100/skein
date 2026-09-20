@@ -73,7 +73,7 @@ private fun PreviewScaffold(
                 windowSizeClass = windowSizeClass,
                 posture = FoldPosture.Unknown,
                 timeline = { MockTimeline() },
-                primary = {
+                primary = { splitAvailable ->
                     TabHost(
                         tabsState =
                             remember {
@@ -83,10 +83,10 @@ private fun PreviewScaffold(
                                 )
                             },
                         windowSizeClass = windowSizeClass,
-                        splitAvailable = layoutState.splitEnabled,
+                        splitAvailable = splitAvailable,
                     )
                 },
-                secondary = {
+                secondary = { splitAvailable ->
                     TabHost(
                         tabsState =
                             remember {
@@ -96,7 +96,7 @@ private fun PreviewScaffold(
                                 )
                             },
                         windowSizeClass = windowSizeClass,
-                        splitAvailable = layoutState.splitEnabled,
+                        splitAvailable = splitAvailable,
                     )
                 },
             )

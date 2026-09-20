@@ -12,6 +12,7 @@ import app.skein.feature.shell.layout.rememberAdaptiveLayoutState
 import app.skein.feature.shell.nav.CommandBar
 import app.skein.feature.shell.nav.NavDrawer
 import app.skein.feature.shell.nav.rememberNavState
+import app.skein.feature.shell.split.rememberSplitCoordinator
 import app.skein.feature.shell.tabs.TabHost
 import app.skein.feature.shell.tabs.rememberTabsState
 import app.skein.feature.shell.theme.SkeinTheme
@@ -30,7 +31,9 @@ fun SkeinApp(themeMode: SkeinThemeMode = SkeinThemeMode.SYSTEM) {
     SkeinTheme(mode = themeMode) {
         val navState = rememberNavState()
         val layoutState = rememberAdaptiveLayoutState()
-        val tabsState = rememberTabsState()
+        val primaryTabsState = rememberTabsState()
+        val secondaryTabsState = rememberTabsState()
+        val splitCoordinator = rememberSplitCoordinator(primaryTabsState, secondaryTabsState, layoutState)
 
         NavDrawer(
             open = navState.drawerOpen,
@@ -50,9 +53,19 @@ fun SkeinApp(themeMode: SkeinThemeMode = SkeinThemeMode.SYSTEM) {
                     layoutState = layoutState,
                     modifier = Modifier.weight(1f),
                     timeline = { DestinationPlaceholder(label = "Timeline") },
-                    primary = {
+                    primary = { splitAvailable ->
                         TabHost(
-                            tabsState = tabsState,
+                            tabsState = primaryTabsState,
+                            splitAvailable = splitAvailable,
+                            onOpenInSplit = splitCoordinator::openInSplit,
+                            content = { DestinationPlaceholder(label = navState.destination.name) },
+                        )
+                    },
+                    secondary = { splitAvailable ->
+                        TabHost(
+                            tabsState = secondaryTabsState,
+                            splitAvailable = splitAvailable,
+                            onEmpty = splitCoordinator::exitSplitIfSecondaryEmpty,
                             content = { DestinationPlaceholder(label = navState.destination.name) },
                         )
                     },
