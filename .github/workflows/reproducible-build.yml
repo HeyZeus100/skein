@@ -34,8 +34,11 @@ jobs:
           distribution: temurin
           java-version: "17"
 
-      - name: Set up Android SDK
-        uses: android-actions/setup-android@9fc6c4e9069bf8d3d10b2204b1fb8f6ef7065407 # v3.2.2
+      # ubuntu-latest runners ship a pre-licensed Android SDK; see ci.yml for
+      # why android-actions/setup-android is not used here.
+      - name: Install required Android SDK platform
+        run: |
+          sdkmanager "platforms;android-37" "build-tools;36.0.0" || true
 
       - name: Set up Gradle
         uses: gradle/actions/setup-gradle@da187c8e6ffbd3802e00f2477aa5a822b25f2dda # v4.4.4

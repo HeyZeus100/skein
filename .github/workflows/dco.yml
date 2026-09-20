@@ -4,16 +4,21 @@ on:
   pull_request:
     types: [opened, synchronize, reopened]
 
+permissions:
+  contents: read
+  pull-requests: read
+
 jobs:
   dco:
     runs-on: ubuntu-latest
     name: Check Developer Certificate of Origin
     steps:
-      - uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
-
+      # E1.I3 fix: the previously pinned christophebedard/dco-check-action
+      # SHA 404s — that repository does not exist (likely meant
+      # christophebedard/dco-check, the underlying CLI, or was renamed).
+      # cpanato/dco-check-action is a maintained composite action wrapping
+      # the same `gh pr diff` + Signed-off-by check.
       - name: Run DCO check
-        uses: christophebedard/dco-check-action@fe9cd3d4d59b1d52fe46b0184d0d4a71f69d5ae2
+        uses: cpanato/dco-check-action@5a8e740b20f923cfc576219c32a2112f2cf74220 # v0.1.0
         with:
-          token: ${{ secrets.GITHUB_TOKEN }}
+          github_token: ${{ secrets.GITHUB_TOKEN }}

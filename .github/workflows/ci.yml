@@ -31,8 +31,14 @@ jobs:
           distribution: temurin
           java-version: "17"
 
-      - name: Set up Android SDK
-        uses: android-actions/setup-android@9fc6c4e9069bf8d3d10b2204b1fb8f6ef7065407 # v3.2.2
+      # ubuntu-latest GitHub-hosted runners ship a pre-licensed Android SDK
+      # (ANDROID_HOME) that AGP can extend on demand; android-actions/setup-android
+      # was tried here but fails trying to install the retired "tools" package
+      # (https://github.com/android-actions/setup-android/issues — sdkmanager
+      # no longer serves it), so we rely on the preinstalled SDK instead.
+      - name: Install required Android SDK platform
+        run: |
+          sdkmanager "platforms;android-37" "build-tools;36.0.0" || true
 
       # Handles Gradle dependency + build-cache caching automatically; no
       # separate actions/cache step needed.
