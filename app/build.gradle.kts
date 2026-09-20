@@ -65,6 +65,10 @@ android {
 
 dependencies {
     implementation(project(":core:model"))
+    // E1.I5: pulls libskein_sqlite.so (SQLCipher + sqlite-vec + FTS5) into the
+    // APK's `lib/<abi>/`. The vault module's flavors mirror :app's foss/dev
+    // dimension so the .so's ABIs line up with the app's abiFilters.
+    implementation(project(":core:vault"))
     implementation(project(":inference-service"))
     implementation(project(":embedder-service"))
     implementation(project(":feature:shell"))

@@ -1,60 +1,125 @@
 # NOTICE
 
-Skein includes software from the following third-party projects. Licenses and attributions are listed below.
+Skein incorporates the following third-party software. All components are
+distributed under permissive open-source licenses (Apache-2.0, MIT, BSD-*,
+or public domain). No GPL/LGPL runtime dependency ships in the `foss`
+build variant.
 
-## Third-Party Software
+Detailed license texts live under `LICENSES/` or inside each vendored source
+tree; SPDX identifiers are used below.
 
-### llama.cpp
-- **Repository:** https://github.com/ggerganov/llama.cpp
-- **License:** MIT
-- **Status:** Included as a prebuilt binary or source
-- **Attribution:** <TODO: Add specific version and link to license file>
+---
 
-### sqlite-vec
-- **Repository:** https://github.com/asg017/sqlite-vec
-- **License:** Apache License 2.0
-- **Status:** Included as a source extension
-- **Attribution:** <TODO: Add specific version and link to license file>
+## Native components
 
-### GLiNER
-- **Repository:** https://github.com/urchade/gliner
-- **License:** Apache License 2.0
-- **Status:** Model files included; inference via ONNX Runtime Mobile or llama.cpp
-- **Attribution:** <TODO: Add specific version and link to license file>
+These are statically linked into single per-role Android shared objects that
+ship inside the APK's `lib/<abi>/` directory. Rebuild instructions live in the
+directories that own each component (`native/sqlite/README.md`,
+`native/llama/README.md`).
 
 ### SQLCipher
+
 - **Repository:** https://github.com/sqlcipher/sqlcipher
-- **License:** Proprietary (open-source binding available)
-- **Status:** Used via Android sqlite integration
-- **Attribution:** <TODO: Verify license and add attribution>
+- **Version:** 4.17.0 (tarball sha256 pinned in
+  `native/sqlite/sqlcipher.sha256`)
+- **License:** BSD-3-Clause (Zetetic LLC)
+- **Where it ships:** statically compiled from the amalgamation into
+  `libskein_sqlite.so`; provides the SQLite core plus the page-level
+  encryption codec.
+- **Attribution:** Copyright (c) 2008-2024 Zetetic LLC — see
+  `native/sqlite/third_party/sqlcipher-4.17.0/LICENSE.md` (regenerated from
+  the tarball on demand; the amalgamation output `native/sqlite/amalgamation/`
+  is a byte-for-byte derivative).
 
-### Jetpack Compose
-- **Repository:** https://developer.android.com/jetpack/compose
-- **License:** Apache License 2.0
-- **Status:** Dependency
-- **Attribution:** © Google LLC
+### SQLite core (amalgamated inside SQLCipher)
 
-### Kotlin Standard Library
-- **Repository:** https://kotlinlang.org
-- **License:** Apache License 2.0
-- **Status:** Dependency
-- **Attribution:** © JetBrains s.r.o.
+- **Repository:** https://sqlite.org
+- **Version:** 3.53.3 (bundled inside SQLCipher 4.17.0)
+- **License:** Public domain
+- **Where it ships:** statically compiled inside `libskein_sqlite.so` via the
+  SQLCipher amalgamation.
 
-### Android Framework
-- **License:** Apache License 2.0
-- **Status:** Target platform
-- **Attribution:** © Google LLC
+### sqlite-vec
 
-## License Compliance
+- **Repository:** https://github.com/asg017/sqlite-vec
+- **Version:** v0.1.9 (tarball sha256 pinned in
+  `native/sqlite/sqlite-vec.sha256`)
+- **License:** Apache-2.0 OR MIT (dual-licensed; Skein consumes it under
+  Apache-2.0)
+- **Where it ships:** `sqlite-vec.c` compiled with `-DSQLITE_CORE` into
+  `libskein_sqlite.so`; registered at startup via `sqlite3_auto_extension`.
+- **Attribution:** Copyright (c) 2024 Alex Garcia — see
+  `native/sqlite/third_party/sqlite-vec-0.1.9/LICENSE-APACHE` and
+  `LICENSE-MIT`.
 
-This product is distributed under the Apache License 2.0. See the LICENSE file for details.
+### OpenSSL (libcrypto)
 
-All dependencies are licensed under permissive licenses (Apache 2.0, MIT, or compatible). No GPL or LGPL runtime dependencies are included in the `foss` build variant.
+- **Repository:** https://github.com/openssl/openssl
+- **Version:** 3.5.4 (tarball sha256 pinned in
+  `native/sqlite/openssl.sha256`)
+- **License:** Apache-2.0
+- **Where it ships:** built from source at Android build time as
+  `libcrypto.a` (`no-shared no-dso no-engine no-legacy no-tests`), then
+  statically linked into `libskein_sqlite.so` as the SQLCipher crypto
+  backend. The dynamic loader path is compiled out, so there is no runtime
+  OpenSSL surface for callers.
+- **Attribution:** Copyright (c) 1998-2024 The OpenSSL Project Authors —
+  see `native/sqlite/third_party/openssl-3.5.4/LICENSE.txt` (present after
+  the CMake build extracts the tarball).
 
-## Modification Notice
+### androidx.sqlite JNI (vendored, follow-up)
 
-Some third-party projects may have been modified. See the source repository for the original software and changes.
+- **Repository:** https://android.googlesource.com/platform/frameworks/support
+- **License:** Apache-2.0
+- **Where it will ship:** a small vendored copy of androidx.sqlite's JNI
+  layer that surfaces `libskein_sqlite.so` to Kotlin as
+  `SkeinSQLiteDriver`. Not yet in-tree — filed as `skein-e2ki`. This entry
+  is included here so the license baseline is stable for `E2.I1`.
+- **Attribution:** Copyright (c) The Android Open Source Project.
 
-## Attribution
+### llama.cpp
 
-As required by the licenses above, we acknowledge all original authors and contributors. Detailed license texts are available in the source repository under `LICENSES/` or in individual files.
+- **Repository:** https://github.com/ggerganov/llama.cpp
+- **License:** MIT
+- **Where it ships:** compiled into `libskein_llama.so` (`E1.I4`).
+- **Attribution:** Copyright (c) 2023 Georgi Gerganov and contributors.
+
+---
+
+## Bundled models
+
+### GLiNER
+
+- **Repository:** https://github.com/urchade/gliner
+- **License:** Apache-2.0
+- **Status:** ONNX model files, loaded at runtime by
+  `:embedder-service` via ONNX Runtime Mobile.
+
+---
+
+## AndroidX / Compose / Kotlin
+
+All Jetpack, Compose, and Kotlin standard-library dependencies are pulled
+from Maven Central under Apache-2.0. Individual attributions are listed in
+`app/src/main/assets/licenses.json` (generated by the `licenseAudit` guard,
+`E1.I7`).
+
+- Jetpack Compose — Apache-2.0 — © Google LLC
+- Kotlin standard library and coroutines — Apache-2.0 — © JetBrains s.r.o.
+- Android Framework — Apache-2.0 — © Google LLC
+
+---
+
+## License compliance summary
+
+- FOSS-clean: every runtime and native component ships under a permissive
+  license (Apache-2.0, MIT, BSD-3-Clause, or public domain).
+- No GPL/LGPL in the `foss` variant, enforced by the `licenseAudit`
+  Gradle task (`E1.I7`, `build-logic/guards/`).
+- Modifications: no upstream source is patched. The SQLCipher amalgamation
+  is a byte-for-byte output of `./configure && make sqlite3.c` from the
+  pinned tarball. sqlite-vec is vendored verbatim from its release tarball;
+  its generated `sqlite-vec.h` is produced from the shipped `.tmpl` by the
+  documented sed substitution (`native/sqlite/README.md` §2).
+- OpenSSL is rebuilt from source per Android ABI; the resulting
+  `libcrypto.a` is a static input, never redistributed as a shared object.
