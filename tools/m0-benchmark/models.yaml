@@ -1,16 +1,47 @@
-# M0 benchmark model manifest.
-# Hashes must be verified before load; refuse to run against any file whose
-# SHA-256 differs from the value below.
+# M0 benchmark model + binary manifest.
 #
-# Fill in `sha256` and `size_bytes` after first download; leave `TBD` for now.
+# Parsed by tools/m0-benchmark/lib/models.py, which supports ONLY this
+# restricted YAML subset: a mapping of top-level keys to lists of flat
+# mappings (scalar / quoted-scalar / `[a, b, c]` bracketed-list values). No
+# nested mappings, multi-line scalars, or anchors — see lib/models.py's
+# module docstring before editing this file.
+#
+# Hashes must be verified before load; run.sh refuses to run against any
+# file or binary whose SHA-256 differs from the value recorded here.
+# `formal_m0_candidate: false` artifacts (the Q3_K_M smoke model) can only
+# be used with `--smoke`; `--formal` refuses to run against them
+# (docs/Handoffs/skein-fold-m0-hardware-handoff.md Section 8, Section 14).
+#
+# Leave `sha256: TBD` for an artifact that has not yet been acquired/pinned
+# — run.sh refuses to run a formal cell against a TBD hash.
 
 models:
+  # --- Smoke artifact (proven on-device, handoff Section 8/9) --------------
+  - id: qwen-2.5-3b-instruct-abliterated-q3km-smoke
+    display_name: "Qwen 2.5 3B Instruct Abliterated (Q3_K_M) — SMOKE ONLY"
+    role: primary
+    format: gguf
+    quantization: Q3_K_M
+    formal_m0_candidate: false
+    purpose: smoke-test
+    lineage: "Huihui abliterated Qwen2.5-3B-Instruct derivative, GGUF distribution by TensorBlock"
+    device_path: "/sdcard/skein-bench/models/Qwen2.5-3B-Instruct-abliterated-Q3_K_M.gguf"
+    expected_size_bytes: 1590475744
+    sha256: "2c5f9a121ae6695208e300c16acca303669afa4e18812061164dca9c97071b12"
+    license: "verify upstream before formal citation"
+    capabilities: [text]
+
+  # --- Formal M0 candidate (placeholder — acquire + pin per skein-bxk) -----
   - id: qwen-2.5-3b-instruct-abliterated-q4km
     display_name: "Qwen 2.5 3B Instruct Abliterated (Q4_K_M)"
-    role: primary                        # 'primary' | 'safety' | 'embedder' | 'reranker'
+    role: primary
     format: gguf
+    quantization: Q4_K_M
+    formal_m0_candidate: true
+    purpose: formal-m0-candidate
     hf_repo: "huihui-ai/Qwen2.5-3B-Instruct-abliterated-GGUF"
     file: "Qwen2.5-3B-Instruct-abliterated-Q4_K_M.gguf"
+    device_path: "/sdcard/skein-bench/models/Qwen2.5-3B-Instruct-abliterated-Q4_K_M.gguf"
     expected_size_bytes: TBD
     sha256: TBD
     license: apache-2.0
@@ -20,6 +51,8 @@ models:
     display_name: "Gemma 4 E4B (Q4_K_M)"
     role: safety
     format: gguf
+    quantization: Q4_K_M
+    formal_m0_candidate: false
     hf_repo: "unsloth/gemma-4-E4B-it-GGUF"
     file: "gemma-4-E4B-it-Q4_K_M.gguf"
     expected_size_bytes: TBD
@@ -31,6 +64,8 @@ models:
     display_name: "Gemma 4 E2B (Q4_K_M)"
     role: background
     format: gguf
+    quantization: Q4_K_M
+    formal_m0_candidate: false
     hf_repo: "unsloth/gemma-4-E2B-it-GGUF"
     file: "gemma-4-E2B-it-Q4_K_M.gguf"
     expected_size_bytes: TBD
@@ -42,6 +77,7 @@ models:
     display_name: "Nomic Embed Text v1.5 (GGUF)"
     role: embedder
     format: gguf
+    formal_m0_candidate: false
     hf_repo: "nomic-ai/nomic-embed-text-v1.5-GGUF"
     file: "nomic-embed-text-v1.5.Q4_K_M.gguf"
     expected_size_bytes: TBD
@@ -55,6 +91,7 @@ models:
     display_name: "Qwen3 Embedding 0.6B (ONNX, optional comparison)"
     role: embedder
     format: onnx
+    formal_m0_candidate: false
     hf_repo: "onnx-community/Qwen3-Embedding-0.6B-ONNX"
     file: "model.onnx"
     expected_size_bytes: TBD
@@ -67,6 +104,7 @@ models:
     display_name: "GLiNER small v2.5 (ONNX int8)"
     role: entity_extractor
     format: onnx
+    formal_m0_candidate: false
     hf_repo: "GG-QandV/gliner_small-v2.5-onnx"
     file: "model_int8.onnx"
     expected_size_bytes: TBD
@@ -78,9 +116,40 @@ models:
     display_name: "ms-marco MiniLM L-6-v2 (ONNX, optional reranker)"
     role: reranker
     format: onnx
+    formal_m0_candidate: false
     hf_repo: "cross-encoder/ms-marco-MiniLM-L-6-v2"
     file: "model.onnx"
     expected_size_bytes: TBD
     sha256: TBD
     license: apache-2.0
     capabilities: [rerank]
+
+# --- Pinned llama.cpp binaries (handoff Section 7 / Section 11) ------------
+# Hashes copied from tools/m0-benchmark/output/baseline/llama-binaries-2026-09-20.sha256
+# (the frozen baseline — never edit that file; these entries are copies, not
+# the source of truth, so a mismatch here is a manifest bug, not grounds to
+# "fix" the baseline).
+binaries:
+  - backend: cpu
+    kind: bench
+    path: "/data/data/com.termux/files/home/skein-device/bin/llama-bench-cpu"
+    sha256: "de85775ae5ace0e70ffedef19582bf6572dac493565a69bc607c45326b6adcc8"
+    llama_cpp_commit: "b29c606e28a01b1bc8c1351026a0fa6e616bf6c4"
+
+  - backend: cpu
+    kind: cli
+    path: "/data/data/com.termux/files/home/skein-device/bin/llama-cli-cpu"
+    sha256: "1300e71b85f56ea369aeb506abff69654fbe1acd70dfe16f32b898aee3dfcf2b"
+    llama_cpp_commit: "b29c606e28a01b1bc8c1351026a0fa6e616bf6c4"
+
+  - backend: vulkan
+    kind: bench
+    path: "/data/data/com.termux/files/home/skein-device/bin/llama-bench-vulkan"
+    sha256: "cd5b6b4d4803b6281a66802f6aab82460b8a1421066ed54f505087c5cd7a929f"
+    llama_cpp_commit: "b29c606e28a01b1bc8c1351026a0fa6e616bf6c4"
+
+  - backend: vulkan
+    kind: cli
+    path: "/data/data/com.termux/files/home/skein-device/bin/llama-cli-vulkan"
+    sha256: "57ed1cd274c3e08d26d9da210cc1d1cc2f8b96c2cfc9782a1188db7987009f0b"
+    llama_cpp_commit: "b29c606e28a01b1bc8c1351026a0fa6e616bf6c4"
