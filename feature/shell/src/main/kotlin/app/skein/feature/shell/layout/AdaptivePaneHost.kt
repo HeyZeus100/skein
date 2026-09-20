@@ -4,14 +4,9 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Text
 import androidx.compose.material3.adaptive.currentWindowAdaptiveInfoV2
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.unit.dp
 import androidx.window.core.layout.WindowSizeClass
 import app.skein.feature.shell.theme.LocalSkeinTokens
 
@@ -95,10 +90,12 @@ private fun RightZone(
     primary: @Composable () -> Unit,
     secondary: @Composable () -> Unit,
 ) {
+    // `E6.I5`: the tab chrome (wide strip vs. folded-phone "Recent ▾"
+    // dropdown) is `TabHost`'s own concern now, driven by its own
+    // `windowSizeClass`. `primary`/`secondary` are expected to each be a
+    // `TabHost` (one per split side) — this zone only arranges panes, same
+    // as before tabs existed.
     Column(modifier = modifier) {
-        if (result.useTabDropdown) {
-            RecentTabsDropdownPlaceholder()
-        }
         when (result.paneLayoutState) {
             PaneLayoutState.SPLIT_DUAL ->
                 SplitHost(
@@ -110,19 +107,4 @@ private fun RightZone(
                 Column(modifier = Modifier.fillMaxSize()) { primary() }
         }
     }
-}
-
-/**
- * Placeholder for spec §8.3's "Folded phone: tabs → 'Recent ▾' dropdown".
- * The real tab list/menu is `E6.I5`; this only marks where it slots in so
- * the 600–840dp breakpoint is visibly distinct in previews.
- */
-@Composable
-private fun RecentTabsDropdownPlaceholder(modifier: Modifier = Modifier) {
-    Text(
-        text = "Recent ▾",
-        style = MaterialTheme.typography.labelLarge,
-        color = MaterialTheme.colorScheme.onSurfaceVariant,
-        modifier = modifier.fillMaxWidth().padding(8.dp),
-    )
 }

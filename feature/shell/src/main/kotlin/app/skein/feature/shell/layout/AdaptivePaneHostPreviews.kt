@@ -9,10 +9,17 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.window.core.layout.WindowSizeClass
+import app.skein.feature.shell.tabs.Tab
+import app.skein.feature.shell.tabs.TabHost
+import app.skein.feature.shell.tabs.TabId
+import app.skein.feature.shell.tabs.TabKind
+import app.skein.feature.shell.tabs.TabState
+import app.skein.feature.shell.tabs.TabsState
 import app.skein.feature.shell.theme.SkeinTheme
 import app.skein.feature.shell.theme.SkeinThemeMode
 
@@ -33,25 +40,29 @@ private fun MockTimeline() {
     }
 }
 
-/** Mock tab content for previews only — real tab system is `E6.I5`. */
-@Composable
-private fun MockTab(label: String) {
-    Surface(color = MaterialTheme.colorScheme.background) {
-        Column(modifier = Modifier.fillMaxSize().padding(16.dp)) {
-            Text(label, style = MaterialTheme.typography.titleMedium)
-            Text(
-                "placeholder mock content",
-                style = MaterialTheme.typography.bodyMedium,
-                color = MaterialTheme.colorScheme.onSurfaceVariant,
-            )
-        }
-    }
-}
+/** Three demo tabs (one of each kind) for the previews below — real tab system is `E6.I5`. */
+private fun demoTabs(
+    idPrefix: String,
+    activeState: TabState,
+): List<Tab> =
+    listOf(
+        Tab(TabId("$idPrefix-1"), docId = "doc-1", title = "Welcome", kind = TabKind.NOTE, state = TabState.PINNED),
+        Tab(
+            TabId("$idPrefix-2"),
+            docId = "doc-2",
+            title = "Research thread",
+            kind = TabKind.CHAT,
+            state = TabState.PINNED,
+        ),
+        Tab(TabId("$idPrefix-3"), docId = "doc-3", title = "spec.pdf", kind = TabKind.ATTACHMENT, state = activeState),
+    )
 
 @Composable
 private fun PreviewScaffold(
     windowSizeClass: WindowSizeClass,
     layoutState: AdaptiveLayoutState = AdaptiveLayoutState(),
+    primaryTabs: List<Tab> = demoTabs("p", TabState.PREVIEW),
+    secondaryTabs: List<Tab> = demoTabs("s", TabState.PINNED),
 ) {
     SkeinTheme(mode = SkeinThemeMode.DARK) {
         Surface(
@@ -62,41 +73,89 @@ private fun PreviewScaffold(
                 windowSizeClass = windowSizeClass,
                 posture = FoldPosture.Unknown,
                 timeline = { MockTimeline() },
-                primary = { MockTab("💬 chat") },
-                secondary = { MockTab("📄 note") },
+                primary = {
+                    TabHost(
+                        tabsState =
+                            remember {
+                                TabsState(
+                                    initialTabs = primaryTabs,
+                                    initialActiveId = primaryTabs.lastOrNull()?.id,
+                                )
+                            },
+                        windowSizeClass = windowSizeClass,
+                        splitAvailable = layoutState.splitEnabled,
+                    )
+                },
+                secondary = {
+                    TabHost(
+                        tabsState =
+                            remember {
+                                TabsState(
+                                    initialTabs = secondaryTabs,
+                                    initialActiveId = secondaryTabs.lastOrNull()?.id,
+                                )
+                            },
+                        windowSizeClass = windowSizeClass,
+                        splitAvailable = layoutState.splitEnabled,
+                    )
+                },
             )
         }
     }
 }
 
-/** < 600 dp: single pane, no timeline, no dropdown (acceptance: "width 400 dp → only the right pane"). */
-@Preview(name = "Single pane — 400dp (compact)", widthDp = 400, heightDp = 800, showBackground = true)
+/**
+ * < 600 dp: single pane, no timeline (acceptance: "width 400 dp → only the
+ * right pane"); `TabHost` itself picks the "Recent ▾" dropdown at this width
+ * (spec §8.3: "Folded phone: tabs → 'Recent ▾' dropdown"), active tab shown
+ * italic since it's still a preview.
+ */
+@Preview(name = "Single pane + Recent dropdown — 400dp (compact)", widthDp = 400, heightDp = 800, showBackground = true)
 @Composable
 private fun SinglePanePreview() {
     PreviewScaffold(windowSizeClass = WindowSizeClass(400f, 800f))
 }
 
-/** 600–840 dp: single pane, "Recent ▾" dropdown shown in place of tabs. */
-@Preview(name = "Single pane + dropdown — 700dp (medium)", widthDp = 700, heightDp = 900, showBackground = true)
+/** 600–840 dp: single pane, wide enough that `TabHost` shows the full strip instead of the dropdown. */
+@Preview(name = "Single pane + tab strip — 700dp (medium)", widthDp = 700, heightDp = 900, showBackground = true)
 @Composable
-private fun MediumWithDropdownPreview() {
+private fun MediumWithStripPreview() {
     PreviewScaffold(windowSizeClass = WindowSizeClass(700f, 900f))
 }
 
-/** >= 840 dp: dual pane, timeline at 30%, tabbed pane at 70%. */
-@Preview(name = "Dual pane — 1000dp (expanded)", widthDp = 1000, heightDp = 900, showBackground = true)
+/** Empty `TabHost`: no tabs open, content region shows the "back to timeline" placeholder, no strip drawn. */
+@Preview(name = "Empty tab strip — 1000dp (expanded)", widthDp = 1000, heightDp = 900, showBackground = true)
+@Composable
+private fun EmptyTabsPreview() {
+    PreviewScaffold(windowSizeClass = WindowSizeClass(1000f, 900f), primaryTabs = emptyList())
+}
+
+/** >= 840 dp: dual pane, timeline at 30%, tab strip with 3 tabs and an active *preview* tab (italic). */
+@Preview(name = "Dual pane — active preview — 1000dp (expanded)", widthDp = 1000, heightDp = 900, showBackground = true)
 @Composable
 private fun DualPanePreview() {
     PreviewScaffold(windowSizeClass = WindowSizeClass(1000f, 900f))
 }
 
-/** >= 840 dp with split toggled: timeline auto-collapses to rail, right zone shows two tabs. */
-@Preview(name = "Split dual — 1000dp (expanded, split)", widthDp = 1000, heightDp = 900, showBackground = true)
+/**
+ * >= 840 dp with split toggled (`E6.I2`'s `SplitHost`): timeline
+ * auto-collapses to rail, each side hosts its own `TabHost` — left shows 3
+ * tabs with an active preview (italic), right shows 3 tabs with an active
+ * pinned tab (solid) — exercising both preview and pinned rendering and the
+ * "Open in split" menu item (`splitAvailable = true`) at once.
+ */
+@Preview(
+    name = "Split dual — active pinned on right — 1000dp (expanded, split)",
+    widthDp = 1000,
+    heightDp = 900,
+    showBackground = true,
+)
 @Composable
 private fun SplitDualPreview() {
     PreviewScaffold(
         windowSizeClass = WindowSizeClass(1000f, 900f),
         layoutState = AdaptiveLayoutState(initialSplitEnabled = true),
+        secondaryTabs = demoTabs("s", TabState.PINNED),
     )
 }
 
