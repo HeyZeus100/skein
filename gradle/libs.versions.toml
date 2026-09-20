@@ -12,6 +12,9 @@ androidx-biometric = "1.1.0"
 androidx-core-ktx = "1.19.0"
 androidx-activity-compose = "1.13.0"
 androidx-lifecycle = "2.11.0"
+# E3.I8: SecurityPrefs persists the FLAG_SECURE toggle via DataStore, not
+# SharedPreferences (spec §9 vault surfaces).
+androidx-datastore = "1.2.1"
 kotlinx-coroutines = "1.11.0"
 kotlinx-serialization = "1.11.0"
 jetbrains-markdown = "0.7.14"
@@ -40,6 +43,7 @@ androidx-biometric = { group = "androidx.biometric", name = "biometric", version
 androidx-sqlite = { group = "androidx.sqlite", name = "sqlite", version.ref = "androidx-sqlite" }
 androidx-sqlite-bundled = { group = "androidx.sqlite", name = "sqlite-bundled", version.ref = "androidx-sqlite" }
 androidx-sqlite-framework = { group = "androidx.sqlite", name = "sqlite-framework", version.ref = "androidx-sqlite" }
+androidx-datastore-preferences = { group = "androidx.datastore", name = "datastore-preferences", version.ref = "androidx-datastore" }
 
 compose-bom = { group = "androidx.compose", name = "compose-bom", version.ref = "compose-bom" }
 compose-ui = { group = "androidx.compose.ui", name = "ui" }
