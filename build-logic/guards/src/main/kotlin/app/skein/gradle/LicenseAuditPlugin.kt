@@ -62,6 +62,22 @@ class LicenseAuditPlugin : Plugin<Project> {
             }
 
             aggregate.configure { dependsOn(task) }
+
+            // The task writes app/src/main/assets/licenses.json, which is
+            // part of the module's main source set. AGP-generated tasks in
+            // this module (lint analysis, merge-assets, ...) read that
+            // merged source set without Gradle knowing there is a
+            // relationship to this task's output, which Gradle's task
+            // validation flags as an "implicit dependency" and fails the
+            // build on. Order every other task in the project after the
+            // license audit so that ambiguity is resolved without turning
+            // it into a hard `dependsOn` (see
+            // https://docs.gradle.org/current/userguide/validation_problems.html#implicit_dependency).
+            project.tasks.configureEach {
+                if (name != taskName && name != "clean") {
+                    mustRunAfter(task)
+                }
+            }
         }
     }
 
