@@ -3,7 +3,16 @@
 **Status:** Approved for implementation
 **Date:** 2026-09-19
 **Author:** Andrew Herrera (@andrew-aherrera-us)
-**Reviewers:** Fable 5.1 (research pass, 2026-09-19)
+**Reviewers:** Fable 5.1 (research pass 2026-09-19; plan pass 2026-09-19)
+**Package ID:** `app.skein`
+
+## Confirmed OQ resolutions (2026-09-19)
+
+- **OQ-1 Package ID:** `app.skein` (product-first, portable if the project changes hands)
+- **OQ-2 SQLCipher crypto:** OpenSSL (auditability > ~1–2 MB APK cost)
+- **OQ-3 First-run model default:** three-way picker at first run — Gemma 4 E4B (Apache 2.0), Qwen 2.5 3B abliterated (Qwen Research License, no-refusal), or bring-your-own-GGUF. Licenses and behavior tradeoffs shown in the picker.
+- Corrections rolling in: MTP does not apply to our default models; `NetworkType.NOT_REQUIRED` (not `NONE`); no `.reproducible-builds.yml` standard exists — use F-Droid metadata + documented build recipe.
+- Remaining open OQs (non-gating; tracked in `bd`): attachment encryption default (OQ-5), sigstore offline trust root rotation (OQ-6), Accrescent allowlist status, funding path reframing.
 
 ---
 
@@ -194,7 +203,9 @@ CREATE TABLE ingest_queue (
 );
 ```
 
-Encryption key wrapping: SQLCipher passphrase derived from a StrongBox-backed hardware key, biometric-gated, kept in memory only while unlocked.
+Encryption key wrapping: SQLCipher passphrase derived from a StrongBox-backed hardware key, biometric-gated, kept in memory only while unlocked. SQLCipher is built with the OpenSSL crypto provider.
+
+**SQLite build note.** SQLCipher and androidx `BundledSQLiteDriver.addExtension` are *separate* SQLite builds — SQLCipher-android does not permit runtime extension loading. We compile a custom NDK build that statically links the SQLCipher amalgamation, sqlite-vec, and FTS5 into one library, exposed via a vendored androidx driver JNI. The week-1 spike (`E0.I7`) validates this build.
 
 ## 6. Inference stack
 
@@ -222,9 +233,11 @@ interface InferenceEngine {
 
 **Model swap:** warm-swap (unload → mmap-verify → load new); pays ~2–5 s TTFT penalty. Router deferred to v2.
 
+**Multi-token prediction (MTP):** does *not* apply to Gemma 4 or Qwen 2.5 (llama.cpp's MTP targets Qwen 3.6-class architectures). Correction from earlier draft. Revisit if v2 models support it.
+
 ## 7. RAG pipeline
 
-### 7.1 Ingest (WorkManager, `NetworkType.NONE`, charging + idle constraints)
+### 7.1 Ingest (WorkManager, `NetworkType.NOT_REQUIRED`, charging + idle constraints)
 
 1. Trigger: SQLite trigger on `documents.updated_at` writes to `ingest_queue`
 2. Chunker: paragraph-boundary semantic chunker, ~512 tokens, 64-token overlap
@@ -345,7 +358,7 @@ Full doc: `THREAT_MODEL.md` (delivered by M3). Highlights:
 - **Governance:** BDFL for year 1, documented path to broader
 - **Build:** Gradle 8+, Kotlin 2.0+, Jetpack Compose (native Android), minSdk 30, targetSdk latest, arm64-v8a only for `foss` flavor
 - **Signing:** own keys, StrongBox-attested; SHA-256 published per release
-- **Reproducible builds:** `.reproducible-builds.yml` metadata; `diffoscope` command in release notes
+- **Reproducible builds:** F-Droid `metadata/app.skein.yml` + a documented build recipe (`docs/REPRODUCIBLE_BUILDS.md`); publish `diffoscope` invocation in release notes. (Correction: there is no `.reproducible-builds.yml` standard.)
 - **Package size target:** ≤30 MB APK for `foss` flavor
 - **Distribution channels (in order):**
   1. GitHub Releases (signed APK, day one)
