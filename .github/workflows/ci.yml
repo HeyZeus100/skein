@@ -4,6 +4,14 @@ name: CI
 # assemble on every push to main and every PR. Emulator instrumented tests
 # live in emulator.yml (dispatch + nightly only — see that file for why).
 # DCO sign-off is checked separately by dco.yml (E8.I1 / skein-1jm).
+#
+# E1.I12: every ./gradlew invocation below already enforces dependency
+# checksum verification because gradle/verification-metadata.xml is present
+# in the tree with <verify-metadata>true</verify-metadata> — that is Gradle's
+# default behavior, not something this workflow opts into. We deliberately do
+# NOT pass --dependency-verification=strict: it would add no enforcement
+# beyond the file-driven default and would add friction to Dependabot
+# version-bump PRs (see docs/VERIFICATION.md, "Why CI stays at default").
 on:
   push:
     branches: [main]
