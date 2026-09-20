@@ -81,3 +81,17 @@ dependencies {
     implementation(libs.androidx.core.ktx)
     testImplementation(libs.junit)
 }
+
+// E0.I7 followup (skein-2lq9): fast, standalone entry point for the same
+// SHA256SUMS.txt check that native/sqlite/CMakeLists.txt §0 already runs on
+// every externalNativeBuild configure. Useful for CI/dev to check amalgamation
+// integrity without doing a full native configure+compile. The slow
+// regenerate-from-source check (native/sqlite/verify_amalgamation.sh
+// --regenerate) only runs in the release-tag CI job -- see
+// docs/design/AMALGAMATION_POLICY.md.
+tasks.register<Exec>("verifyAmalgamationHashes") {
+    group = "verification"
+    description = "Verify native/sqlite amalgamation files match amalgamation/SHA256SUMS.txt"
+    workingDir = rootDir
+    commandLine("native/sqlite/verify_amalgamation.sh", "--verify")
+}

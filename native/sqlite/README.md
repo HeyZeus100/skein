@@ -25,6 +25,17 @@ it as `SkeinSQLiteDriver` is tracked separately as `skein-e2ki`.
 The spike that proved the recipe was `E0.I7 / skein-1ld` — see
 `docs/SPIKE_E0_I7_RESULTS.md`.
 
+**Why the amalgamation is checked in, not regenerated per build:** see
+`docs/design/AMALGAMATION_POLICY.md` (decided in `skein-2lq9`). Short
+version — reproducibility-by-default beats a smaller repo; the amalgamation
+only changes on a deliberate SQLCipher bump. Integrity is enforced two ways:
+`CMakeLists.txt` §0 hashes the three files against
+`amalgamation/SHA256SUMS.txt` on every build, and the release-tag CI job
+(`.github/workflows/reproducible-build.yml`, job `amalgamation-integrity`)
+regenerates from the pinned SQLCipher source and diffs byte-for-byte. Both
+are backed by `verify_amalgamation.sh` (`--verify` / `--regenerate` /
+`--write-hashes`).
+
 ## Layout
 
 ```
@@ -38,10 +49,13 @@ native/sqlite/
 ├── openssl.sha256            # Pinned OpenSSL tarball hash
 ├── sqlite-vec.sha256         # Vendored sqlite-vec release provenance
 ├── sqlcipher.sha256          # Vendored SQLCipher amalgamation provenance
+├── verify_amalgamation.sh    # Fast hash check + slow regenerate-and-diff
+│                             # (see docs/design/AMALGAMATION_POLICY.md)
 ├── amalgamation/             # SQLCipher 4.17.0 amalgamation (checked in)
 │   ├── sqlite3.c             # 9.3 MB, has SQLCipher + FTS5 + JSON1
 │   ├── sqlite3.h
-│   └── sqlite3ext.h
+│   ├── sqlite3ext.h
+│   └── SHA256SUMS.txt        # Hashes of the three files above
 ├── third_party/
 │   ├── sqlite-vec-0.1.9/     # Vendored: sqlite-vec.c + generated .h + licenses
 │   ├── openssl-3.5.4.tar.gz  # Fetched by CMake, git-ignored
