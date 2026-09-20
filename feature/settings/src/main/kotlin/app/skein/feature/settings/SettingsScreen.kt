@@ -15,6 +15,10 @@ import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
@@ -27,14 +31,16 @@ import androidx.compose.ui.unit.dp
  * Vault are placeholder rows on purpose (their functionality lands in
  * `skein-bxk` + the first-run picker, and in `E2.I10`/vault-erase issues,
  * respectively); About shows the version the host passes in and a "View
- * NOTICE" row the host can wire once `E9.I8`/`skein-dun` lands the real
+ * NOTICE" row — [onViewNoticeClick] fires on tap, and [SettingsRoute] below
+ * is what actually wires it to [AboutScreen] (`E9.I8`/`skein-dun`)'s real
  * licenses screen and `assets/licenses.json`.
  *
  * Stateless: takes the current [flagSecureEnabled] value and a change
  * callback rather than a [SettingsViewModel] directly, so it can be
  * previewed and tested without standing up coroutines. The
  * [SettingsViewModel] overload below is the convenience entry point for
- * real hosts.
+ * real hosts; [SettingsRoute] additionally wires up the About/NOTICE
+ * navigation for hosts that don't need to customize it.
  *
  * @param appVersion the app's version to show in About (e.g. `"0.1.0 (1)"`
  *   from `:app`'s `BuildConfig` — `:feature:settings` has no access to it).
@@ -106,6 +112,46 @@ fun SettingsScreen(
         onEraseVaultClick = onEraseVaultClick,
         onViewNoticeClick = onViewNoticeClick,
     )
+}
+
+/**
+ * Self-contained Settings entry point (`E9.I8`): renders [SettingsScreen]
+ * and swaps to [AboutScreen] as a full-screen overlay when "View NOTICE" is
+ * tapped, swapping back on [AboutScreen]'s back action. This is the
+ * "overlay — simplest for v1" wiring called for in `skein-dun`; a real
+ * nav-graph destination for About is a followup once `:feature:shell`'s
+ * `Destination`/nav-graph work lands. [SettingsScreen] itself is untouched
+ * by this — hosts that want to own the About navigation themselves (e.g. a
+ * future real nav graph) can keep calling [SettingsScreen] directly and
+ * wire [SettingsScreen]'s `onViewNoticeClick` to their own destination
+ * instead of using this wrapper.
+ */
+@Composable
+fun SettingsRoute(
+    viewModel: SettingsViewModel,
+    appVersion: String,
+    modifier: Modifier = Modifier,
+    onExportVaultClick: () -> Unit = {},
+    onEraseVaultClick: () -> Unit = {},
+) {
+    var showAbout by remember { mutableStateOf(false) }
+
+    if (showAbout) {
+        AboutScreen(
+            appVersion = appVersion,
+            onBack = { showAbout = false },
+            modifier = modifier,
+        )
+    } else {
+        SettingsScreen(
+            viewModel = viewModel,
+            appVersion = appVersion,
+            modifier = modifier,
+            onExportVaultClick = onExportVaultClick,
+            onEraseVaultClick = onEraseVaultClick,
+            onViewNoticeClick = { showAbout = true },
+        )
+    }
 }
 
 /** One titled group of settings rows, with a trailing divider unless it's the last section on screen. */

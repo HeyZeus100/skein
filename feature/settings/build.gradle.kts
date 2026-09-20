@@ -1,6 +1,9 @@
 plugins {
     alias(libs.plugins.android.library)
     alias(libs.plugins.kotlin.compose)
+    // E9.I8: LicensesRepository deserializes assets/licenses.json via
+    // kotlinx.serialization (LicenseEntry).
+    alias(libs.plugins.kotlin.serialization)
 }
 
 android {
@@ -29,6 +32,7 @@ dependencies {
     implementation(libs.compose.foundation)
     implementation(libs.material3)
     implementation(libs.kotlinx.coroutines.core)
+    implementation(libs.kotlinx.serialization.json)
     // `SecureTextField`, `SkeinTheme`, `SkeinTokens` (E6.I1/`skein-qiu`). One-way
     // dependency only: `:feature:settings` must never be depended on by
     // `:feature:shell` (see `SettingsViewModel`'s doc on why `:app` — not
