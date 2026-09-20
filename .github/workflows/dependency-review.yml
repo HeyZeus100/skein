@@ -1,0 +1,22 @@
+name: Dependency review
+
+# Flags newly introduced dependencies with known vulnerabilities or
+# disallowed licenses on PRs, complementing the foss license allowlist
+# guard (E1.I7) which only covers the runtime classpath.
+on:
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  dependency-review:
+    name: Dependency review
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Checkout
+        uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4.3.0
+
+      - name: Dependency review
+        uses: actions/dependency-review-action@2031cfc080254a8a887f58cffee85186f0e49e48 # v4.9.0
