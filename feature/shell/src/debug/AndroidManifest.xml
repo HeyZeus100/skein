@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <!--
+        E3.I9: a debug-only host Activity for Robolectric-backed Compose UI
+        tests (`SecureTextFieldTest`) in this module. `:feature:shell` is an
+        Android *library*: `androidx.compose.ui:ui-test-manifest`'s own
+        placeholder `ComponentActivity` registration does not merge into a
+        library's manifest the way it does for `:app` (see the note on
+        `app.skein.MainActivityComposeTest`), so this module declares its
+        own, mirroring that pattern. Debug-variant only (this file lives in
+        `src/debug/`, not `src/main/`) — it never ships in a release build,
+        matching the precedent set by `androidx.compose.ui:ui-tooling`'s own
+        debug-only `PreviewActivity` merge (bd memory
+        `androidx-merged-manifest-surprises`).
+    -->
+    <application>
+        <activity
+            android:name="androidx.activity.ComponentActivity"
+            android:exported="false" />
+    </application>
+
+</manifest>
