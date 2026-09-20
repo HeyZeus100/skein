@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    E3.I7 (spec §9; docs/design/POST_REVIEW_RESOLUTIONS.md §4.3, skein-7ki2):
+    API 30 fallback for android:fullBackupContent. `android:dataExtractionRules`
+    (data_extraction_rules.xml) is API 31+ only; minSdk here is 30, so this
+    file is required to give pre-31 devices (including Seedvault D2D on API
+    30) the same exclusion posture.
+
+    Keep this file's exclude set identical to data_extraction_rules.xml's
+    named excludes (DataExtractionRulesTest asserts this). `unlock_state.xml`
+    is intentionally NOT excluded here to match the cloud-backup-only
+    treatment upstream in data_extraction_rules.xml: full-backup-content
+    has no cloud-backup/device-transfer split, so this single ruleset
+    mirrors the device-transfer set (the narrower of the two).
+-->
+<full-backup-content>
+    <exclude domain="database" />
+    <exclude domain="file" path="vault.db" />
+    <exclude domain="file" path="vault.db-wal" />
+    <exclude domain="file" path="vault.db-shm" />
+    <exclude domain="file" path="vault.db-journal" />
+    <exclude domain="file" path="keys/" />
+    <exclude domain="file" path="models/" />
+    <exclude domain="file" path="attachments/" />
+    <exclude domain="root" path="cache/staging_export/" />
+    <exclude domain="external" path="." />
+    <exclude domain="root" path="." />
+</full-backup-content>

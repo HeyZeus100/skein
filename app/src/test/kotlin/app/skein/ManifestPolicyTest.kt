@@ -140,10 +140,12 @@ class ManifestPolicyTest {
     }
 
     @Test
-    fun `dataExtractionRules is declared on the application element`() {
-        assertTrue(
-            "expected android:dataExtractionRules on <application>",
-            applicationElement().hasAttributeNS(ANDROID_NS, "dataExtractionRules"),
+    fun `dataExtractionRules points at the API 31+ rules resource`() {
+        assertEquals(
+            "expected android:dataExtractionRules to reference @xml/data_extraction_rules " +
+                "(E3.I7, docs/design/POST_REVIEW_RESOLUTIONS.md §4.3)",
+            "@xml/data_extraction_rules",
+            applicationElement().getAttributeNS(ANDROID_NS, "dataExtractionRules"),
         )
     }
 
@@ -156,11 +158,19 @@ class ManifestPolicyTest {
     }
 
     @Test
-    fun `fullBackupContent is absent`() {
-        assertFalse(
-            "android:fullBackupContent must be absent (dataExtractionRules is the only backup " +
-                "posture, per E3.I1)",
-            applicationElement().hasAttributeNS(ANDROID_NS, "fullBackupContent"),
+    fun `fullBackupContent points at the API 30 legacy rules resource`() {
+        // E3.I1 originally required fullBackupContent to be absent
+        // ("dataExtractionRules is the only backup posture"). E3.I7
+        // (docs/design/POST_REVIEW_RESOLUTIONS.md §4.3, skein-7ki2)
+        // supersedes that: dataExtractionRules is API 31+ only and minSdk
+        // here is 30, so fullBackupContent is required to give pre-31
+        // devices (including Seedvault D2D on API 30) the same exclusion
+        // posture via backup_rules_legacy.xml.
+        assertEquals(
+            "expected android:fullBackupContent to reference @xml/backup_rules_legacy " +
+                "(E3.I7, docs/design/POST_REVIEW_RESOLUTIONS.md §4.3)",
+            "@xml/backup_rules_legacy",
+            applicationElement().getAttributeNS(ANDROID_NS, "fullBackupContent"),
         )
     }
 
