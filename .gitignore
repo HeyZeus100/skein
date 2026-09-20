@@ -42,8 +42,11 @@ vault.db*
 attachments/
 .superpowers/
 
-# Benchmark output
+# Benchmark output — per-run cells are gitignored, but the baseline
+# artifact area is preserved in git (immutable per hardware-lab freeze).
 tools/m0-benchmark/output/
+!tools/m0-benchmark/output/baseline/
+!tools/m0-benchmark/output/baseline/**
 MEASUREMENTS.md.bak
 
 # Secrets — never checked in

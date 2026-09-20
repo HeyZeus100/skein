@@ -1,0 +1,21 @@
+=== DATE ===
+Sun Sep 20 01:08:27 PDT 2026
+=== ANDROID ===
+17
+2026-09-01
+google/comet/comet:17/CP2A.260805.005/2026091001:user/release-keys
+=== CPU ===
+arm64-v8a
+8
+=== TOOLCHAIN ===
+clang version 21.1.8
+cmake version 4.4.3
+2026.4
+1.4.357.0
+16.6.0
+
+=== LLAMA.CPP ===
+b29c606e28a01b1bc8c1351026a0fa6e616bf6c4
+v0.4.1
+=== MODEL ===
+2c5f9a121ae6695208e300c16acca303669afa4e18812061164dca9c97071b12  /sdcard/skein-bench/models/Qwen2.5-3B-Instruct-abliterated-Q3_K_M.gguf
