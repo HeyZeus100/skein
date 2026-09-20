@@ -67,6 +67,19 @@ android {
         }
     }
 
+    // E2.I2 (skein-5my): MigratorInstrumentedTest exercises the
+    // deliberately-broken `999_bad.sql` fixture that lives under
+    // `src/test/resources/migrations-bad/` (shared with the JVM-only
+    // MigratorStatementSplitterTest, which needs no `.so`). Android's
+    // `test` and `androidTest` source sets don't share resources by
+    // default, so the fixture directory is added to `androidTest` here
+    // rather than duplicated under `src/androidTest/resources/`.
+    sourceSets {
+        getByName("androidTest") {
+            resources.srcDirs("src/test/resources")
+        }
+    }
+
     // skein-3el: JVM unit tests instantiate `KeyPermanentlyInvalidatedException`
     // and `StrongBoxUnavailableException` from `android.security.keystore.*` to
     // drive the fake Keystore's invalidation path. `returnDefaultValues = true`

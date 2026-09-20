@@ -1,0 +1,12 @@
+# Migration manifest (E2.I2 / skein-5my).
+#
+# One `NNN_*.sql` file name per line, in the order they should be
+# discovered. `Migrator.discoverMigrations()` reads this file rather than
+# enumerating the `migrations/` resource directory directly, because
+# JAR/APK class loaders do not support directory listing
+# (`ClassLoader.getResources("migrations/")` returns the directory entry
+# itself, not its contents) — see the E2.I2 issue notes. Lines starting
+# with `#` and blank lines are ignored.
+#
+# Add new migrations by appending a line here AND adding the file below.
+001_initial.sql
