@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <!--
+        Non-negotiable (spec §2.1): no INTERNET permission, ever. Do not add one.
+        Enforced by the Gradle guard in E1.I2.
+    -->
+
+    <application
+        android:allowBackup="false"
+        android:icon="@android:drawable/sym_def_app_icon"
+        android:label="@string/app_name"
+        android:theme="@android:style/Theme.Material.NoActionBar">
+
+        <activity
+            android:name="app.skein.MainActivity"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+
+        <!--
+            Isolated inference process (spec §2.6, §4.1). No Android permissions
+            reach this process. AIDL binder + llama.cpp bridge land in E1.I4 / E4.I1+.
+        -->
+        <service
+            android:name="app.skein.inference.service.InferenceService"
+            android:process=":inference"
+            android:isolatedProcess="true"
+            android:exported="false" />
+
+        <!--
+            Isolated embedder process (spec §4.1). ONNX Runtime pipelines land in E5.I1+.
+        -->
+        <service
+            android:name="app.skein.embedder.service.EmbedderService"
+            android:process=":embedder"
+            android:isolatedProcess="true"
+            android:exported="false" />
+
+    </application>
+
+</manifest>

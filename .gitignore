@@ -34,7 +34,7 @@ replay_pid*
 *.onnx
 *.safetensors
 *.bin
-models/
+/models/
 
 # Vault / test data
 vault.db*
