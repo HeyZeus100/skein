@@ -1,0 +1,189 @@
+// Acceptance-criterion checks specific to `IndexStoreImpl` (E2.I15).
+//
+// The generic semantics (replaceChunks/knn/bm25/edgesTo/neighborhood) are
+// covered by `IndexStoreImplContractTest`. This file layers the E2.I15
+// bd acceptance bullet points that are impl-specific:
+//   • `bm25("it's a \"quoted\" (weird) query")` and 19 other adversarial
+//     strings do NOT throw against real FTS5.
+//   • `knn` returns exactly `k` rows even when the corpus is larger than
+//     `k` (timing is logged, not asserted, per the plan).
+//   • `replaceEdges(src, kinds={WIKILINK}, …)` leaves an ENTITY edge on
+//     the same source untouched.
+//
+// Follow-up (skein-k3b2): pending CI emulator; this class compiles as
+// part of `:app:check` and will run once skein-k3b2 lands.
+
+package app.skein.core.vault.index
+
+import androidx.test.ext.junit.runners.AndroidJUnit4
+import app.skein.core.vault.db.SkeinSQLiteConnection
+import app.skein.core.vault.db.SkeinSQLiteDriver
+import com.google.common.truth.Truth.assertThat
+import kotlinx.coroutines.test.runTest
+import org.junit.After
+import org.junit.Test
+import org.junit.runner.RunWith
+import us.aherrera.skein.core.model.Edge
+import us.aherrera.skein.core.model.EdgeKind
+import us.aherrera.skein.core.model.NewChunk
+import kotlin.random.Random
+
+@RunWith(AndroidJUnit4::class)
+public class IndexStoreImplAcceptanceTest {
+    private val opened: MutableList<IndexStoreImpl> = mutableListOf()
+
+    @After
+    public fun tearDown() {
+        for (impl in opened) {
+            try {
+                impl.close()
+            } catch (_: Throwable) {
+                // ignore
+            }
+        }
+        opened.clear()
+    }
+
+    @Test
+    public fun `bm25 does not throw on twenty adversarial query strings`(): Unit =
+        runTest {
+            val idx = freshIndex()
+            // Seed the corpus with something searchable so FTS5 has real
+            // work to do — an empty index would trivially pass.
+            idx.replaceChunks(
+                docId = "01924a4b-4d29-7000-8000-00000000B111",
+                chunks =
+                    listOf(
+                        NewChunk(ord = 0, text = "the quick brown fox", tokenCount = 4),
+                        NewChunk(ord = 1, text = "lorem ipsum dolor sit amet", tokenCount = 5),
+                    ),
+                embedderId = "fake",
+                embedderVersion = 1,
+            )
+            val adversarial =
+                listOf(
+                    "it's a \"quoted\" (weird) query",
+                    "",
+                    "   ",
+                    "\"",
+                    "\"\"\"",
+                    "()",
+                    "( )",
+                    "-",
+                    "--",
+                    "AND OR NOT NEAR",
+                    "^^^",
+                    "***",
+                    "\u0000",
+                    "🚀 rocket 💩",
+                    "prefix: \"unterminated",
+                    "column:body AND text:foo",
+                    "col\u0000umn:body",
+                    "\\\\\\",
+                    "a b c d e f g h i j k l m n o p q r s t",
+                    "!@#$%^&*()_+-=[]{}|;':\",./<>?`~",
+                )
+            for (query in adversarial) {
+                // Fails the test if any string throws — no assertion on
+                // the returned hits list beyond "the call returned".
+                idx.bm25(query = query, k = 5)
+            }
+        }
+
+    @Test
+    public fun `knn returns exactly k rows over a 10 000-vector corpus`(): Unit =
+        runTest {
+            val idx = freshIndex()
+            val docId = "01924a4b-4d29-7000-8000-000000010000"
+            val n = 10_000
+            val chunks = List(n) { i -> NewChunk(ord = i, text = "chunk-$i", tokenCount = 1) }
+            val ids = idx.replaceChunks(docId, chunks, "fake", 1)
+            val rng = Random(seed = 0xC0FFEEL)
+            val embeddings =
+                ids.map { id ->
+                    val vec = ByteArray(IndexSql.VEC_INT8_DIM)
+                    rng.nextBytes(vec)
+                    id to vec
+                }
+            idx.putEmbeddings(embeddings)
+
+            val queryVec = ByteArray(IndexSql.VEC_INT8_DIM).also { rng.nextBytes(it) }
+            val k = 32
+            val start = System.nanoTime()
+            val hits = idx.knn(queryInt8 = queryVec, k = k)
+            val elapsedMs = (System.nanoTime() - start) / 1_000_000.0
+            // Log-only per the acceptance criterion — do not assert the
+            // 50 ms budget in unit-tests, only on the emulator smoke.
+            android.util.Log.i(
+                "IndexStoreImpl",
+                "knn 10_000 corpus, k=$k → ${hits.size} rows in ${"%.2f".format(elapsedMs)} ms",
+            )
+            assertThat(hits.size).isEqualTo(k)
+        }
+
+    @Test
+    public fun `replaceEdges with WIKILINK does not touch ENTITY edges of the same source`(): Unit =
+        runTest {
+            val idx = freshIndex()
+            val src = "01924a4b-4d29-7000-8000-00000000E001"
+            val dstNote = "01924a4b-4d29-7000-8000-00000000E002"
+            val dstEntity = "entity:1"
+
+            // Seed one WIKILINK and one ENTITY edge from the same source.
+            idx.replaceEdges(
+                srcId = src,
+                kinds = setOf(EdgeKind.WIKILINK, EdgeKind.ENTITY),
+                edges =
+                    listOf(
+                        Edge(srcId = src, dstId = dstNote, kind = EdgeKind.WIKILINK, createdAt = 1L),
+                        Edge(srcId = src, dstId = dstEntity, kind = EdgeKind.ENTITY, createdAt = 2L),
+                    ),
+            )
+            // Now rewrite ONLY the WIKILINK edges — the ENTITY edge must
+            // survive because its kind was not in the `kinds` filter.
+            idx.replaceEdges(
+                srcId = src,
+                kinds = setOf(EdgeKind.WIKILINK),
+                edges = emptyList(),
+            )
+            val remaining = idx.edgesFrom(src)
+            assertThat(remaining.map { it.kind }).containsExactly(EdgeKind.ENTITY)
+            assertThat(remaining.single().dstId).isEqualTo(dstEntity)
+        }
+
+    // ------------------------------------------------------------------
+
+    private fun freshIndex(): IndexStoreImpl {
+        val driver = SkeinSQLiteDriver()
+        val conn = driver.openWithKey(":memory:", passphrase = null) as SkeinSQLiteConnection
+        val sql =
+            requireNotNull(
+                javaClass.classLoader?.getResourceAsStream("migrations/001_initial.sql"),
+            ) { "migrations/001_initial.sql not on the classpath" }
+                .use { it.readBytes().toString(Charsets.UTF_8) }
+        for (statement in splitOnSentinel(sql)) {
+            conn.prepare(statement).use { it.step() }
+        }
+        val impl = IndexStoreImpl(conn)
+        opened += impl
+        return impl
+    }
+
+    private companion object {
+        fun splitOnSentinel(sql: String): List<String> {
+            val raw = sql.split("--;")
+            val cleaned =
+                raw.map { chunk ->
+                    chunk
+                        .lineSequence()
+                        .map { it.trimEnd() }
+                        .filter { line -> line.isNotBlank() && !line.trimStart().startsWith("--") }
+                        .joinToString(separator = "\n")
+                        .trim()
+                        .removeSuffix(";")
+                        .trim()
+                }
+            return cleaned.filter { it.isNotEmpty() }
+        }
+    }
+}
