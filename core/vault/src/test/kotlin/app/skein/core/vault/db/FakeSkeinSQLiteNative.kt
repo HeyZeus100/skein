@@ -32,6 +32,16 @@ internal class FakeSkeinSQLiteNative : SkeinSQLiteNative {
     var journalMode: String = "delete"
     var foreignKeysEnabled: Long = 0L
 
+    /**
+     * Simulated `PRAGMA user_version`, mutated when [nativePrepare] sees a
+     * `PRAGMA user_version = N;` SET statement (skein-yrp / `E2.I13`:
+     * `Migrator.applyMigration` runs that PRAGMA as a prepared statement —
+     * via `conn.prepare(sql).use { it.step() }` — rather than through
+     * [nativeExec], unlike the key-setup pragmas above). Read back by
+     * [nativeColumnLong] for a subsequent `PRAGMA user_version;` read.
+     */
+    var userVersion: Long = 0L
+
     /** Hex payload of the last `PRAGMA key = "x'...'"` exec, if any. */
     var lastKeyPragmaHex: String? = null
 
@@ -81,6 +91,9 @@ internal class FakeSkeinSQLiteNative : SkeinSQLiteNative {
         prepareCalls += sql
         if ("cipher_version" in sql && cipherProbeError != null) {
             throw cipherProbeError!!
+        }
+        USER_VERSION_SET_REGEX.find(sql)?.let { match ->
+            userVersion = match.groupValues[1].toLong()
         }
         return nextStmtHandle++
     }
@@ -141,6 +154,7 @@ internal class FakeSkeinSQLiteNative : SkeinSQLiteNative {
         val sql = prepareCalls.getOrNull((stmtHandle - 100L).toInt()) ?: return 0
         return when {
             "foreign_keys" in sql -> foreignKeysEnabled
+            "user_version" in sql -> userVersion
             else -> 0
         }
     }
@@ -199,6 +213,7 @@ internal class FakeSkeinSQLiteNative : SkeinSQLiteNative {
 
     companion object {
         const val DB_HANDLE: Long = 42L
+        private val USER_VERSION_SET_REGEX = Regex("""PRAGMA\s+user_version\s*=\s*(\d+)""", RegexOption.IGNORE_CASE)
 
         // From sqlite3.h: SQLITE_INTEGER=1, FLOAT=2, TEXT=3, BLOB=4, NULL=5.
         private const val SQLITE_TYPE_INTEGER = 1
