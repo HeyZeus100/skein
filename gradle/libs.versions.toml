@@ -52,6 +52,11 @@ kotlinx-serialization-json = { group = "org.jetbrains.kotlinx", name = "kotlinx-
 
 jetbrains-markdown = { group = "org.jetbrains", name = "markdown", version.ref = "jetbrains-markdown" }
 onnxruntime-android = { group = "com.microsoft.onnxruntime", name = "onnxruntime-android", version.ref = "onnxruntime" }
+# Desktop/JVM artifact (bundles host-OS native libs) — testImplementation only,
+# so :embedder-service unit tests can run ONNX Runtime inference on the JVM
+# under Robolectric without an Android device/emulator. Production code uses
+# onnxruntime-android above, whose native libs are arm64-v8a-only on device.
+onnxruntime-jvm = { group = "com.microsoft.onnxruntime", name = "onnxruntime", version.ref = "onnxruntime" }
 sigstore-java = { group = "dev.sigstore", name = "sigstore-java", version.ref = "sigstore-java" }
 pdfbox-android = { group = "com.tom-roush", name = "pdfbox-android", version.ref = "pdfbox-android" }
 
