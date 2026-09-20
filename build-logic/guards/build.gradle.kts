@@ -16,6 +16,9 @@ dependencies {
     // used by ManifestGuardPlugin to locate each variant's merged manifest.
     compileOnly("com.android.tools.build:gradle:9.4.0")
 
+    // Used by LicenseAuditTask for JSON parsing of overrides
+    implementation("com.fasterxml.jackson.core:jackson-databind:2.16.1")
+
     testImplementation("com.android.tools.build:gradle:9.4.0")
     testImplementation(gradleTestKit())
     testImplementation("junit:junit:4.13.2")
@@ -34,6 +37,10 @@ gradlePlugin {
         register("isolationGuard") {
             id = "app.skein.guard.isolation"
             implementationClass = "app.skein.gradle.IsolationGuardPlugin"
+        }
+        register("licenseAudit") {
+            id = "app.skein.guard.license"
+            implementationClass = "app.skein.gradle.LicenseAuditPlugin"
         }
     }
 }

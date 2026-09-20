@@ -1,0 +1,9 @@
+{
+  "_comment": "Manual license overrides for artifacts with missing/ambiguous POM data (E1.I7)",
+  "_instructions": "Add entries for artifacts where the POM license is unclear or missing. Each entry must have: license (SPDX), reason (why this mapping), source_url (where license was verified).",
+  "org.example:example-lib": {
+    "license": "MIT",
+    "reason": "Verified from GitHub repository license file",
+    "source_url": "https://github.com/example/example-lib/blob/main/LICENSE"
+  }
+}

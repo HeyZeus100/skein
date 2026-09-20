@@ -5,6 +5,8 @@ plugins {
     // after the Android plugin so the Variant API extension is available.
     id("app.skein.guard.manifest")
     id("app.skein.guard.dependency")
+    // E1.I7: license audit for foss flavor (spec §10).
+    id("app.skein.guard.license")
 }
 
 android {
