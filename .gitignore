@@ -74,3 +74,30 @@ node_modules/
 .dolt/
 *.db
 .beads-credential-key
+
+# Local benchmark / device baseline output (agents produce these while working)
+device-baseline.txt
+
+# sqlite-vec upstream source tree — we vendor only the .c/.h/LICENSE-* files
+# (see native/sqlite/third_party/sqlite-vec-0.1.9/ tracked contents); the rest
+# of the upstream tarball leaks in during SQLCipher build regeneration.
+native/sqlite/third_party/sqlite-vec-*/.github/
+native/sqlite/third_party/sqlite-vec-*/.gitignore
+native/sqlite/third_party/sqlite-vec-*/ARCHITECTURE.md
+native/sqlite/third_party/sqlite-vec-*/Makefile
+native/sqlite/third_party/sqlite-vec-*/README.md
+native/sqlite/third_party/sqlite-vec-*/SECURITY.md
+native/sqlite/third_party/sqlite-vec-*/TODO
+native/sqlite/third_party/sqlite-vec-*/VERSION
+native/sqlite/third_party/sqlite-vec-*/benchmarks/
+native/sqlite/third_party/sqlite-vec-*/bindings/
+native/sqlite/third_party/sqlite-vec-*/examples/
+native/sqlite/third_party/sqlite-vec-*/reference.yaml
+native/sqlite/third_party/sqlite-vec-*/scripts/
+native/sqlite/third_party/sqlite-vec-*/site/
+native/sqlite/third_party/sqlite-vec-*/tests/
+native/sqlite/third_party/sqlite-vec-*/vendor/
+native/sqlite/third_party/sqlite-vec-*/sqlite-dist.toml
+native/sqlite/third_party/sqlite-vec-*/sqlite-vec.h.tmpl
+native/sqlite/third_party/sqlite-vec-*/test.sql
+native/sqlite/third_party/sqlite-vec-*/tmp-static.py
