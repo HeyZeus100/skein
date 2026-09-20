@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    E3.I1 (spec §9) baseline placeholder: exclude everything from both Cloud
+    Backup (Seedvault D2D) and Device Transfer until E3.I7 replaces this with
+    the real rule set that names the vault DB and model files specifically.
+    An empty <cloud-backup>/<device-transfer> block defaults to "back up
+    everything", so each carries an explicit blanket exclude to keep the
+    fail-safe posture in force in the meantime.
+-->
+<data-extraction-rules>
+    <cloud-backup>
+        <exclude domain="root" path="." />
+    </cloud-backup>
+    <device-transfer>
+        <exclude domain="root" path="." />
+    </device-transfer>
+</data-extraction-rules>
