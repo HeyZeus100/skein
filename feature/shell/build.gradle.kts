@@ -29,6 +29,11 @@ dependencies {
     implementation(libs.compose.ui.tooling.preview)
     implementation(libs.compose.foundation)
     implementation(libs.material3)
+    // E6.I2: fold posture (WindowInfoTracker/FoldingFeature) + WindowSizeClass
+    // breakpoints (currentWindowAdaptiveInfo) for AdaptivePaneHost.
+    implementation(libs.androidx.window)
+    implementation(libs.material3.adaptive)
+    implementation(libs.kotlinx.coroutines.core)
 
     debugImplementation(libs.compose.ui.tooling)
 
