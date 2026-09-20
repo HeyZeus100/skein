@@ -7,6 +7,7 @@ import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.testTag
 import app.skein.feature.shell.layout.AdaptivePaneHost
 import app.skein.feature.shell.layout.rememberAdaptiveLayoutState
 import app.skein.feature.shell.nav.CommandBar
@@ -16,6 +17,7 @@ import app.skein.feature.shell.nav.rememberNavState
 import app.skein.feature.shell.split.rememberSplitCoordinator
 import app.skein.feature.shell.tabs.TabHost
 import app.skein.feature.shell.tabs.rememberTabsState
+import app.skein.feature.shell.testing.ShellTestTags
 import app.skein.feature.shell.theme.SkeinTheme
 import app.skein.feature.shell.theme.SkeinThemeMode
 
@@ -58,7 +60,11 @@ fun SkeinApp(
             onNavigate = navState::navigate,
             onDismiss = navState::closeDrawer,
         ) {
-            Column(modifier = Modifier.fillMaxSize()) {
+            Column(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .testTag(ShellTestTags.SKEIN_SHELL_ROOT),
+            ) {
                 CommandBar(
                     query = navState.query,
                     onQueryChange = navState::setQuery,

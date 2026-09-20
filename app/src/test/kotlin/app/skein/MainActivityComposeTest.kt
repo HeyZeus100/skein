@@ -1,7 +1,9 @@
 package app.skein
 
 import androidx.compose.ui.test.junit4.createAndroidComposeRule
+import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.onNodeWithText
+import app.skein.feature.shell.testing.ShellTestTags
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -24,7 +26,10 @@ class MainActivityComposeTest {
     val composeRule = createAndroidComposeRule<MainActivity>()
 
     @Test
-    fun `MainActivity renders the Skein root text`() {
-        composeRule.onNodeWithText("Skein").assertExists()
+    fun `MainActivity renders the Skein shell and CommandBar`() {
+        // Verify the shell root has been rendered (stable test tag, not brittle text)
+        composeRule.onNodeWithTag(ShellTestTags.SKEIN_SHELL_ROOT).assertExists()
+        // Verify the CommandBar is visible with model status ("qwen")
+        composeRule.onNodeWithText("qwen").assertExists()
     }
 }
