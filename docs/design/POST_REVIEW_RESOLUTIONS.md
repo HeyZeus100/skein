@@ -11,7 +11,9 @@ flow, grants, backup, plaintext lifetime).
 **Locked prior decisions this design must honor** (do not contradict):
 
 - `skein-wa1l` — enforced immutable-write per attachment UUID; deterministic
-  IV = `attachment_uuid[:12]`; retries create a new UUID.
+  IV = `attachment_uuid[:12]`; retries create a new UUID — full initial-wrap
+  auth flow, biometric-invalidation recovery, and test coverage specified in
+  `docs/design/ATTACHMENT_ENCRYPTION.md`.
 - `skein-3xyu` — ingest runs only during authorized unlocked sessions; lock
   triggers immediate cancellation across `:app`/`:inference`/`:embedder`.
 - `skein-4pqj` — RC production (E0.I23a) is split from RC validation (E0.I23b);
