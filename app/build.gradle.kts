@@ -81,6 +81,11 @@ dependencies {
     implementation(project(":inference-service"))
     implementation(project(":embedder-service"))
     implementation(project(":feature:shell"))
+    // E6.I14: `:app` is the only module allowed to depend on both
+    // `:feature:shell` (for `SkeinApp`) and `:feature:settings` (for
+    // `SettingsScreen`) — see `SkeinApp.destinationContent`'s doc for why
+    // `:feature:shell` itself cannot.
+    implementation(project(":feature:settings"))
 
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.activity.compose)

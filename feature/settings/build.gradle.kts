@@ -25,10 +25,19 @@ dependencies {
     implementation(libs.androidx.core.ktx)
     implementation(platform(libs.compose.bom))
     implementation(libs.compose.ui)
+    implementation(libs.compose.ui.tooling.preview)
     implementation(libs.compose.foundation)
     implementation(libs.material3)
+    implementation(libs.kotlinx.coroutines.core)
+    // `SecureTextField`, `SkeinTheme`, `SkeinTokens` (E6.I1/`skein-qiu`). One-way
+    // dependency only: `:feature:settings` must never be depended on by
+    // `:feature:shell` (see `SettingsViewModel`'s doc on why `:app` — not
+    // `:feature:shell` — owns wiring `SecurityPrefs` into this screen).
+    implementation(project(":feature:shell"))
 
     debugImplementation(libs.compose.ui.tooling)
 
     testImplementation(libs.junit)
+    testImplementation(libs.kotlinx.coroutines.test)
+    testImplementation(libs.turbine)
 }
