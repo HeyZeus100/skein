@@ -9,6 +9,18 @@ android {
 
     defaultConfig {
         minSdk = 30
+        // skein-ugo (E3.I4): BiometricUnlockScreenTest is this module's
+        // first androidTest source set.
+        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+        // `:core:vault` (skein-e2ki) declares a "distribution" flavor
+        // dimension (foss/dev) for its native `.so` ABI filters. This
+        // module has no flavors of its own and doesn't care which native
+        // build it links against for JVM/Robolectric compilation, so
+        // resolve the ambiguity the same way `:app` effectively does by
+        // also declaring `distribution` — default to `foss` (the
+        // production/arm64-only build); `:app`'s own flavor selection is
+        // what actually decides the shipped variant.
+        missingDimensionStrategy("distribution", "foss")
     }
 
     buildFeatures {
@@ -45,6 +57,16 @@ dependencies {
     implementation(libs.material3.adaptive)
     implementation(libs.kotlinx.coroutines.core)
 
+    // skein-ugo (E3.I4): BiometricUnlockScreen drives `UnlockManager`
+    // (`skein-pya`) above `VaultKeyProvider` (`skein-3el`); both live in
+    // `:core:vault`, which `api`-exposes `:core:model`'s
+    // `AuthorizationToken`. `androidx.biometric` is needed directly here
+    // only to build `BiometricPrompt.PromptInfo` — the `CryptoObject`
+    // itself is constructed inside `:core:vault`'s
+    // `AndroidBiometricAuthenticator`, not in this module.
+    implementation(project(":core:vault"))
+    implementation(libs.androidx.biometric)
+
     debugImplementation(libs.compose.ui.tooling)
     // `lintDebug` resolves `src/debug/AndroidManifest.xml`'s
     // `androidx.activity.ComponentActivity` reference against the *debug
@@ -68,4 +90,16 @@ dependencies {
     // `ui-test-manifest`'s generic registration, which does not merge into
     // a *library* module's manifest (see that file's comment).
     testImplementation(libs.androidx.activity.compose)
+
+    // skein-ugo (E3.I4): BiometricUnlockScreenTest — on-device Compose UI
+    // test, matching `:feature:editor`'s `SkeinEditorInstrumentedTest`
+    // shape. Compiled here; the on-device run is gated on the CI emulator
+    // lane tracked by bd `skein-k3b2`.
+    androidTestImplementation(platform(libs.compose.bom))
+    androidTestImplementation(libs.compose.ui.test.junit4)
+    androidTestImplementation(libs.androidx.test.ext.junit)
+    androidTestImplementation(libs.androidx.test.runner)
+    androidTestImplementation(libs.androidx.test.rules)
+    androidTestImplementation(libs.androidx.activity.compose)
+    androidTestImplementation(libs.kotlinx.coroutines.test)
 }

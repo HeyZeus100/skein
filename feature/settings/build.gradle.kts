@@ -12,6 +12,15 @@ android {
 
     defaultConfig {
         minSdk = 30
+        // skein-ugo (E3.I4): `:feature:shell` now depends on `:core:vault`
+        // (skein-e2ki's "distribution" foss/dev flavor dimension, for its
+        // native `.so` ABI filters). This module has no flavors of its own
+        // and doesn't care which native build it transitively links
+        // against, so resolve the ambiguity the same way `:app` effectively
+        // does — default to `foss` (the production/arm64-only build);
+        // `:app`'s own flavor selection is what actually decides the
+        // shipped variant.
+        missingDimensionStrategy("distribution", "foss")
     }
 
     buildFeatures {
