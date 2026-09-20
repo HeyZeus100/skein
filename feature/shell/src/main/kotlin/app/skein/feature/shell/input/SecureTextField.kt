@@ -154,12 +154,14 @@ fun SecureTextField(
  * Intercepts the [PlatformTextInputMethodRequest] a [SecureTextField] hands
  * to the platform IME machinery and OR's the no-suggestions/no-learning
  * flags into the [EditorInfo] the real request already populated, once it
- * has built the real [InputConnection]. Internal: reached only through
- * [SecureTextField], so every vault-sensitive field goes through one
- * reviewed, tested code path — see `RawTextFieldDetector` (lint) for the
- * enforcement side.
+ * has built the real [InputConnection].
+ *
+ * Public because a second reference wrapper — [SecureBasicTextField] — also
+ * needs to apply the identical hardening. Both wrappers, and no other
+ * module code, are the only sites that speak to a raw Compose text-input
+ * primitive; see `RawTextFieldTest` for the enforcement side.
  */
-internal object SecureImeInterceptor : PlatformTextInputInterceptor {
+object SecureImeInterceptor : PlatformTextInputInterceptor {
     override suspend fun interceptStartInputMethod(
         request: PlatformTextInputMethodRequest,
         nextHandler: PlatformTextInputSession,
