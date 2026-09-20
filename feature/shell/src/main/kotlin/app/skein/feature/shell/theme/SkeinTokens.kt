@@ -16,12 +16,20 @@ data class SkeinTokens(
     val timelineShare: Float = 0.30f,
     /** Height of a preview tab (spec §8.3). */
     val tabHeight: Dp = 36.dp,
+    /**
+     * Height of the persistent top command bar (spec §8.2). Not fixed by the
+     * spec; chosen as `E6.I3`'s reference height — larger than [tabHeight]
+     * (36 dp) since it is the primary search/command entry point and hosts a
+     * tappable hamburger + model-status affordance, but still a compact
+     * single-line strip rather than a full toolbar.
+     */
+    val commandBarHeight: Dp = 44.dp,
     /** Corner radius applied via [androidx.compose.material3.Shapes] (spec `E6.I1`: 4 dp corners). */
     val cornerRadius: Dp = 4.dp,
     /** Restrained status/action glyph set used across the command bar, tabs, and context panel. */
     val glyphs: Glyphs = Glyphs(),
 ) {
-    /** Accent glyphs (spec §8.1–§8.4): `● ⏸ ◌ ! ◂ ⧉ ✦ ⚹`. */
+    /** Accent glyphs (spec §8.1–§8.4): `≡ $ ◐ ▤ ✦ ◈ ⚹ ● ⏸ ◌ ! ◂ ⧉`. */
     data class Glyphs(
         val modelActive: String = "●", // ●  model loaded / responding
         val modelPaused: String = "⏸", // ⏸  model idle / paused
@@ -30,7 +38,12 @@ data class SkeinTokens(
         val collapse: String = "◂", // ◂  collapse timeline to rail
         val split: String = "⧉", // ⧉  split view
         val graph: String = "✦", // ✦  local graph
-        val context: String = "⚹", // ⚹  context panel toggle
+        val context: String = "⚹", // ⚹  context panel toggle (also reused for the Settings nav entry)
+        val hamburger: String = "≡", // ≡  open the nav drawer (spec §8.2)
+        val searchPrompt: String = "$", // $  command bar prompt style (spec §8.4)
+        val timeline: String = "◐", // ◐  Timeline nav destination
+        val notes: String = "▤", // ▤  Notes nav destination
+        val personas: String = "◈", // ◈  Personas nav destination
     )
 }
 
