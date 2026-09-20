@@ -1,0 +1,30 @@
+name: Nightly fuzz (placeholder)
+
+# E1.I3 scaffold for the GGUF fuzz harness owned by E10.I7 (3 consecutive
+# green nights required before M2 gate per the v1 plan). That harness does
+# not exist yet — this workflow is intentionally a no-op placeholder so the
+# schedule/trigger shape is in place and E10.I7 only needs to fill in the
+# `run:` step, not author a new workflow.
+on:
+  workflow_dispatch:
+  schedule:
+    # 07:00 UTC nightly (after the emulator lane).
+    - cron: "0 7 * * *"
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  fuzz-placeholder:
+    name: GGUF fuzz harness (pending E10.I7)
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Not yet implemented
+        run: |
+          echo "GGUF fuzz harness is tracked under E10.I7 and has not landed yet."
+          echo "This workflow exists so the nightly schedule is already wired up."

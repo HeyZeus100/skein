@@ -23,9 +23,7 @@ android {
             cmake {
                 // -DANDROID_STL is a no-op for our C-only build but AGP wires
                 // it anyway; explicit `none` keeps the .so free of libc++_shared.
-                arguments += listOf(
-                    "-DANDROID_STL=none",
-                )
+                arguments += listOf("-DANDROID_STL=none")
                 cFlags += "-fPIC"
             }
         }
@@ -53,7 +51,7 @@ android {
 
     externalNativeBuild {
         cmake {
-            path = file("${rootDir}/native/sqlite/CMakeLists.txt")
+            path = file("$rootDir/native/sqlite/CMakeLists.txt")
             version = "3.22.1+"
         }
     }

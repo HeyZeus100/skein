@@ -1,0 +1,76 @@
+name: CI
+
+# E1.I3: unit tests, ktlint, Android lint, guard tasks, and a foss/debug
+# assemble on every push to main and every PR. Emulator instrumented tests
+# live in emulator.yml (dispatch + nightly only — see that file for why).
+# DCO sign-off is checked separately by dco.yml (E8.I1 / skein-1jm).
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  unit-lint-assemble:
+    name: Unit tests, lint, assemble (foss debug)
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - name: Checkout
+        uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4.3.0
+
+      - name: Set up JDK 17 (Temurin)
+        uses: actions/setup-java@cf277c60eb25467037889841efdb72551f06f6c3 # v4.8.0
+        with:
+          distribution: temurin
+          java-version: "17"
+
+      # ubuntu-latest GitHub-hosted runners ship a pre-licensed Android SDK
+      # (ANDROID_HOME) that AGP can extend on demand; android-actions/setup-android
+      # was tried here but fails trying to install the retired "tools" package
+      # (https://github.com/android-actions/setup-android/issues — sdkmanager
+      # no longer serves it), so we rely on the preinstalled SDK instead.
+      - name: Install required Android SDK platform
+        run: |
+          sdkmanager "platforms;android-37" "build-tools;36.0.0" || true
+
+      # Handles Gradle dependency + build-cache caching automatically; no
+      # separate actions/cache step needed.
+      - name: Set up Gradle
+        uses: gradle/actions/setup-gradle@da187c8e6ffbd3802e00f2477aa5a822b25f2dda # v4.4.4
+        with:
+          cache-read-only: ${{ github.ref != 'refs/heads/main' }}
+
+      # `check` fans out to every subproject's unit tests
+      # (testDevDebugUnitTest, testFossDebugUnitTest, ...) plus the guard
+      # tasks wired into `check` by build-logic/guards
+      # (checkManifestGuards, checkDependencyGuards, checkIsolationGuards,
+      # licenseAudit) — see build-logic/guards/src/main/kotlin/app/skein/gradle.
+      - name: ktlint, Android lint, unit tests, guards
+        run: ./gradlew ktlintCheck lint check --stacktrace
+
+      - name: Assemble foss debug APK
+        run: ./gradlew assembleFossDebug --stacktrace
+
+      # tools/ci/validate-manifests.py (E0.I15) validates
+      # app/src/main/assets/models/*.skein.json against the manifest schema.
+      # Skipped gracefully until that script lands so this workflow doesn't
+      # break other in-flight issues; once the file exists this step runs
+      # unconditionally.
+      - name: Validate model manifests
+        if: hashFiles('tools/ci/validate-manifests.py') != ''
+        run: python3 tools/ci/validate-manifests.py
+
+      - name: Upload foss debug APK
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        with:
+          name: skein-foss-debug-apk
+          path: app/build/outputs/apk/foss/debug/*.apk
+          if-no-files-found: warn
+          retention-days: 14
