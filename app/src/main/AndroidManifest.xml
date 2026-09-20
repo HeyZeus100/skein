@@ -1,13 +1,26 @@
 <?xml version="1.0" encoding="utf-8"?>
-<manifest xmlns:android="http://schemas.android.com/apk/res/android">
+<manifest
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <!--
         Non-negotiable (spec §2.1): no INTERNET permission, ever. Do not add one.
         Enforced by the Gradle guard in E1.I2.
+
+        E3.I1 manifest security baseline (spec §9): the permission set is
+        exactly {POST_NOTIFICATIONS, USE_BIOMETRIC} — both are normal/runtime
+        permissions for features landing later (SecureNotification, biometric
+        unlock in E3.I2/E3.I4), declared now so ManifestPolicyTest locks the
+        final posture in place. Neither is network-related and neither trips
+        the ManifestGuardTask denylist (INTERNET, ACCESS_NETWORK_STATE only).
     -->
+    <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
+    <uses-permission android:name="android.permission.USE_BIOMETRIC" />
 
     <application
-        android:allowBackup="false"
+        android:allowBackup="true"
+        android:dataExtractionRules="@xml/data_extraction_rules"
+        android:hasFragileUserData="true"
         android:icon="@android:drawable/sym_def_app_icon"
         android:label="@string/app_name"
         android:theme="@android:style/Theme.Material.NoActionBar">
@@ -39,6 +52,18 @@
             android:process=":embedder"
             android:isolatedProcess="true"
             android:exported="false" />
+
+        <!--
+            E3.I1 (spec §9): androidx.profileinstaller ships an exported
+            BroadcastReceiver so `pm compile` / Play's install-time delivery
+            can trigger baseline-profile compilation. This app is never
+            distributed through Play (spec §10) and the manifest baseline
+            requires zero exported components, so the merged component is
+            removed outright rather than merely marked exported="false".
+        -->
+        <receiver
+            android:name="androidx.profileinstaller.ProfileInstallReceiver"
+            tools:node="remove" />
 
     </application>
 

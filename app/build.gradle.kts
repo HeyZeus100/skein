@@ -51,6 +51,15 @@ android {
         buildConfig = true
     }
 
+    testOptions {
+        unitTests {
+            // E3.I1: ManifestPolicyTest reads the manifest's resource
+            // references (dataExtractionRules) via Robolectric's shadowed
+            // PackageManager, which needs merged resources on the classpath.
+            isIncludeAndroidResources = true
+        }
+    }
+
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_17
         targetCompatibility = JavaVersion.VERSION_17
@@ -82,6 +91,8 @@ dependencies {
     implementation(libs.material3)
 
     testImplementation(libs.junit)
+    testImplementation(libs.robolectric)
+    testImplementation(libs.androidx.test.ext.junit)
     androidTestImplementation(libs.androidx.test.ext.junit)
     androidTestImplementation(libs.androidx.test.espresso.core)
     debugImplementation(libs.compose.ui.tooling)
