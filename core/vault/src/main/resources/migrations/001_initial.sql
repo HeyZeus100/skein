@@ -54,11 +54,11 @@ CREATE TABLE documents (
   persona_id TEXT REFERENCES personas(id),
   frontmatter JSON,
   content_hash TEXT
-);
+);--;
 
-CREATE INDEX idx_documents_updated ON documents(updated_at DESC);
+CREATE INDEX idx_documents_updated ON documents(updated_at DESC);--;
 
-CREATE INDEX idx_documents_persona ON documents(persona_id);
+CREATE INDEX idx_documents_persona ON documents(persona_id);--;
 
 CREATE TABLE chunks (
   id INTEGER PRIMARY KEY,
@@ -68,16 +68,16 @@ CREATE TABLE chunks (
   token_count INTEGER,
   embedder_id TEXT,
   embedder_version INTEGER
-);
+);--;
 
-CREATE INDEX idx_chunks_doc ON chunks(doc_id);
+CREATE INDEX idx_chunks_doc ON chunks(doc_id);--;
 
-CREATE VIRTUAL TABLE chunks_fts USING fts5(text, content='chunks', content_rowid='id');
+CREATE VIRTUAL TABLE chunks_fts USING fts5(text, content='chunks', content_rowid='id');--;
 
 -- PLAN ADDITION (§4.9): spec DDL is `vec0(embedding int8[256])`; §7.2 requires
 -- cosine, and vec0 defaults to L2. Dimension 256 is spec default (Matryoshka
 -- slice) — see file header note.
-CREATE VIRTUAL TABLE chunks_vec USING vec0(embedding int8[256] distance_metric=cosine);
+CREATE VIRTUAL TABLE chunks_vec USING vec0(embedding int8[256] distance_metric=cosine);--;
 
 CREATE TABLE edges (
   src_id TEXT NOT NULL,
@@ -86,9 +86,9 @@ CREATE TABLE edges (
   weight REAL DEFAULT 1.0,
   created_at INTEGER,
   PRIMARY KEY (src_id, dst_id, kind)
-);
+);--;
 
-CREATE INDEX idx_edges_dst ON edges(dst_id, kind);
+CREATE INDEX idx_edges_dst ON edges(dst_id, kind);--;
 
 CREATE TABLE entities (
   id INTEGER PRIMARY KEY,
@@ -96,7 +96,7 @@ CREATE TABLE entities (
   entity_type TEXT NOT NULL,
   first_seen INTEGER,
   UNIQUE(canonical_name, entity_type)
-);
+);--;
 
 CREATE TABLE messages (
   id TEXT PRIMARY KEY,
@@ -106,9 +106,9 @@ CREATE TABLE messages (
   model_id TEXT,
   retrieved_chunks JSON,
   created_at INTEGER NOT NULL
-);
+);--;
 
-CREATE INDEX idx_messages_chat ON messages(chat_doc_id, created_at);
+CREATE INDEX idx_messages_chat ON messages(chat_doc_id, created_at);--;
 
 CREATE TABLE personas (
   id TEXT PRIMARY KEY,
@@ -116,7 +116,7 @@ CREATE TABLE personas (
   system_prompt TEXT,
   default_model TEXT,
   created_at INTEGER
-);
+);--;
 
 CREATE TABLE models (
   id TEXT PRIMARY KEY,
@@ -127,31 +127,31 @@ CREATE TABLE models (
   capabilities JSON,
   size_bytes INTEGER,
   imported_at INTEGER
-);
+);--;
 
 CREATE TABLE ingest_queue (
   doc_id TEXT PRIMARY KEY REFERENCES documents(id) ON DELETE CASCADE,
   reason TEXT,
   queued_at INTEGER
-);
+);--;
 
 -- ===== Plan §4.9 additions =====
 
 -- `models`: companions (mmproj/tokenizer) and display name — see
 -- `ModelManifest` §4.8 (E0.I15). Split into separate ALTERs because SQLite's
 -- ALTER TABLE only takes one column per statement.
-ALTER TABLE models ADD COLUMN name TEXT NOT NULL DEFAULT '';
+ALTER TABLE models ADD COLUMN name TEXT NOT NULL DEFAULT '';--;
 
-ALTER TABLE models ADD COLUMN context_length INTEGER NOT NULL DEFAULT 16384;
+ALTER TABLE models ADD COLUMN context_length INTEGER NOT NULL DEFAULT 16384;--;
 
-ALTER TABLE models ADD COLUMN companions JSON;
+ALTER TABLE models ADD COLUMN companions JSON;--;
 
-ALTER TABLE models ADD COLUMN license_spdx TEXT;
+ALTER TABLE models ADD COLUMN license_spdx TEXT;--;
 
 -- `documents`: mime type + blob size for `kind = 'attachment'` rows.
-ALTER TABLE documents ADD COLUMN mime_type TEXT;
+ALTER TABLE documents ADD COLUMN mime_type TEXT;--;
 
-ALTER TABLE documents ADD COLUMN blob_size INTEGER;
+ALTER TABLE documents ADD COLUMN blob_size INTEGER;--;
 
 -- ===== FTS5 sync triggers (plan §4.9) =====
 -- External-content FTS tables do not update themselves (SQLite docs,
@@ -159,35 +159,35 @@ ALTER TABLE documents ADD COLUMN blob_size INTEGER;
 
 CREATE TRIGGER chunks_ai AFTER INSERT ON chunks BEGIN
   INSERT INTO chunks_fts(rowid, text) VALUES (new.id, new.text);
-END;
+END;--;
 
 CREATE TRIGGER chunks_ad AFTER DELETE ON chunks BEGIN
   INSERT INTO chunks_fts(chunks_fts, rowid, text) VALUES ('delete', old.id, old.text);
   DELETE FROM chunks_vec WHERE rowid = old.id;
-END;
+END;--;
 
 CREATE TRIGGER chunks_au AFTER UPDATE OF text ON chunks BEGIN
   INSERT INTO chunks_fts(chunks_fts, rowid, text) VALUES ('delete', old.id, old.text);
   INSERT INTO chunks_fts(rowid, text) VALUES (new.id, new.text);
-END;
+END;--;
 
 -- ===== Ingest-queue triggers (spec §7.1 step 1, plan §4.9) =====
 -- Attachments are indexed via their derived NOTE/AIOUT, not directly.
 
 CREATE TRIGGER documents_ai_ingest AFTER INSERT ON documents WHEN new.kind != 'attachment' BEGIN
   INSERT OR REPLACE INTO ingest_queue(doc_id, reason, queued_at) VALUES (new.id, 'created', new.created_at);
-END;
+END;--;
 
 CREATE TRIGGER documents_au_ingest AFTER UPDATE OF body_md, title ON documents
 WHEN new.kind != 'attachment' AND (new.body_md IS NOT old.body_md OR new.title IS NOT old.title) BEGIN
   INSERT OR REPLACE INTO ingest_queue(doc_id, reason, queued_at) VALUES (new.id, 'updated', new.updated_at);
-END;
+END;--;
 
 -- Title lookups for wikilink resolution (spec §7.1 step 5) and autocomplete
 -- (`E7.I5`).
-CREATE INDEX idx_documents_title_nocase ON documents(title COLLATE NOCASE);
+CREATE INDEX idx_documents_title_nocase ON documents(title COLLATE NOCASE);--;
 
-CREATE INDEX idx_documents_kind_updated ON documents(kind, updated_at DESC);
+CREATE INDEX idx_documents_kind_updated ON documents(kind, updated_at DESC);--;
 
 -- ===== Attachment key hierarchy (ATTACHMENT_ENCRYPTION.md §3.4) =====
 -- Layer 1 master material (wrapped under the biometric / credential
@@ -205,7 +205,7 @@ CREATE TABLE attachment_master_key (
   wrap_tag_credential      BLOB,
   created_at               INTEGER NOT NULL,
   superseded_at            INTEGER
-);
+);--;
 
 CREATE TABLE attachment_keys (
   attachment_uuid    TEXT PRIMARY KEY REFERENCES documents(id),
@@ -214,6 +214,6 @@ CREATE TABLE attachment_keys (
   wrap_tag           BLOB NOT NULL,
   master_key_version INTEGER NOT NULL REFERENCES attachment_master_key(key_version),
   created_at         INTEGER NOT NULL
-);
+);--;
 
-CREATE INDEX idx_attachment_keys_version ON attachment_keys(master_key_version);
+CREATE INDEX idx_attachment_keys_version ON attachment_keys(master_key_version);--;

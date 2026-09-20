@@ -1,0 +1,4 @@
+# Manifest for the deliberately-broken migration fixture used by
+# MigratorInstrumentedTest's ROLLBACK test (E2.I2 / skein-5my). See
+# core/vault/src/main/resources/migrations/INDEX.txt for the format.
+999_bad.sql
