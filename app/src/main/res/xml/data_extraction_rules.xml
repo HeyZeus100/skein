@@ -1,17 +1,63 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
-    E3.I1 (spec §9) baseline placeholder: exclude everything from both Cloud
-    Backup (Seedvault D2D) and Device Transfer until E3.I7 replaces this with
-    the real rule set that names the vault DB and model files specifically.
-    An empty <cloud-backup>/<device-transfer> block defaults to "back up
-    everything", so each carries an explicit blanket exclude to keep the
-    fail-safe posture in force in the meantime.
+    E3.I7 (spec §9; docs/design/POST_REVIEW_RESOLUTIONS.md §4.3, skein-7ki2):
+    real Cloud Backup / Device Transfer (Seedvault D2D) exclusion rules,
+    replacing the E3.I1 blanket placeholder.
+
+    Both <cloud-backup> and <device-transfer> carry the same named excludes
+    (defense in depth, plus a blanket domain="root" exclude so nothing new
+    is silently swept in by default) so that Seedvault, which emulates
+    device-to-device transfer even though allowBackup scopes ordinary cloud
+    backup, cannot capture the vault database, key material, model
+    weights, attachments, or the export staging cache.
+
+    `cache/` is not a domain of its own: per
+    https://developer.android.com/about/versions/12/backup-restore#xml-changes
+    the only valid `domain` values are file, database, sharedpref, external,
+    and root. The app-private cache directory lives under the root data
+    directory, so the export staging cache is named as
+    domain="root" path="cache/staging_export/".
+
+    See app/src/main/res/xml/backup_rules_legacy.xml for the API 30
+    (full-backup-content) equivalent, and docs/BACKUP_EXCLUSIONS.md for the
+    Seedvault manual verification procedure.
 -->
 <data-extraction-rules>
     <cloud-backup>
+        <!-- SQLCipher vault DB (and its -wal/-shm/-journal siblings). -->
+        <exclude domain="database" />
+        <exclude domain="file" path="vault.db" />
+        <exclude domain="file" path="vault.db-wal" />
+        <exclude domain="file" path="vault.db-shm" />
+        <exclude domain="file" path="vault.db-journal" />
+        <!-- Key material. -->
+        <exclude domain="file" path="keys/" />
+        <!-- Model weights (GGUF, ONNX). -->
+        <exclude domain="file" path="models/" />
+        <!-- Attachments. -->
+        <exclude domain="file" path="attachments/" />
+        <!-- Export staging cache (docs/design/POST_REVIEW_RESOLUTIONS.md §4). -->
+        <exclude domain="root" path="cache/staging_export/" />
+        <!-- Unlock state must never leave the device via cloud backup. -->
+        <exclude domain="sharedpref" path="unlock_state.xml" />
+        <!-- External storage: this app never writes there; exclude for safety. -->
+        <exclude domain="external" path="." />
+        <!-- Blanket fail-safe: anything not explicitly named above is still
+             excluded from cloud backup by default. -->
         <exclude domain="root" path="." />
     </cloud-backup>
     <device-transfer>
+        <!-- Same named excludes as cloud-backup for Seedvault D2D coverage. -->
+        <exclude domain="database" />
+        <exclude domain="file" path="vault.db" />
+        <exclude domain="file" path="vault.db-wal" />
+        <exclude domain="file" path="vault.db-shm" />
+        <exclude domain="file" path="vault.db-journal" />
+        <exclude domain="file" path="keys/" />
+        <exclude domain="file" path="models/" />
+        <exclude domain="file" path="attachments/" />
+        <exclude domain="root" path="cache/staging_export/" />
+        <exclude domain="external" path="." />
         <exclude domain="root" path="." />
     </device-transfer>
 </data-extraction-rules>
