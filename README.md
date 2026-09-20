@@ -26,7 +26,9 @@ An offline-first personal knowledge system with an on-device LLM as its interfac
 - **Implementation plan:** `docs/superpowers/plans/` *(generation in progress)*
 - **Threat model:** `docs/THREAT_MODEL.md` *(pending, delivered by M3)*
 - **Privacy notes:** `docs/PRIVACY.md` *(pending)*
-- **Security policy:** `docs/SECURITY.md` *(pending)*
+- **Security policy:** [`SECURITY.md`](SECURITY.md)
+- **Governance:** [`GOVERNANCE.md`](GOVERNANCE.md)
+- **Contributing:** [`CONTRIBUTING.md`](CONTRIBUTING.md)
 - **M0 benchmark harness:** `tools/m0-benchmark/`
 - **Task tracking:** `bd` (beads) — see `bd ready` for available work
 
@@ -36,7 +38,7 @@ Apache 2.0. See [`LICENSE`](LICENSE).
 
 ## Contributing
 
-Contributor DCO (`Signed-off-by`) required. Contribution guidelines: pending (delivered during M3).
+Contributor DCO (`Signed-off-by`) required. See [`CONTRIBUTING.md`](CONTRIBUTING.md) for guidelines, [`GOVERNANCE.md`](GOVERNANCE.md) for decision-making, and [`CODE_OF_CONDUCT.md`](CODE_OF_CONDUCT.md) for community standards.
 
 ## Distribution (once shipping)
 
