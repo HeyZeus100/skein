@@ -73,7 +73,7 @@ Then `**Description:**`, `**Acceptance criteria:**` (imported into bd), and — 
 |---|---|---|
 | **haiku** | Mechanical with a clear oracle: CI YAML, Gradle guards, size gates, metadata files, license lists, notification plumbing, accessibility sweep | `E1.I2`, `E1.I3`, `E1.I10`, `E8.I1`, `E8.I3`, `E8.I11`, `E9.I8` |
 | **sonnet** | Mainline implementation against a locked contract with good tests: repository SQL, Compose screens, chunker, recall, exporters, tokenizer consumers, device validation runs | most of `E2`, `E5`, `E6`, `E7`, `E10` |
-| **opus** | Security-sensitive, correctness-critical, or concurrency-heavy: native builds, isolated services, JNI, key wrapping, unlock state machine, verifiers, PromptGuard, PPR, editor offset mapping, tokenizer algorithms, contract lock-in, gate integration | `E0.I7`, `E0.I10`–`E0.I16`, `E1.I4`, `E1.I5`, `E1.I8`, `E2.I1`, `E2.I5`, `E3.I2`, `E3.I3`, `E3.I5`, `E3.I6`, `E3.I10`, `E3.I11`, `E4.I1`, `E4.I3`, `E4.I4`, `E4.I11`, `E5.I1`, `E5.I2`, `E5.I4`, `E5.I12`, `E7.I1`, `E8.I6`, `E10.I6`, `E10.I7`, `E0.I21`–`E0.I23` |
+| **opus** | Security-sensitive, correctness-critical, or concurrency-heavy: native builds, isolated services, JNI, key wrapping, unlock state machine, verifiers, PromptGuard, PPR, editor offset mapping, tokenizer algorithms, contract lock-in, gate integration | `E0.I7`, `E0.I10`–`E0.I16`, `E1.I4`, `E1.I5`, `E1.I8`, `E2.I1`, `E2.I5`, `E3.I2`, `E3.I3`, `E3.I5`, `E3.I6`, `E3.I10`, `E3.I11`, `E4.I1`, `E4.I3`, `E4.I4`, `E4.I11`, `E5.I1`, `E5.I2`, `E5.I4`, `E5.I12`, `E7.I1`, `E8.I6`, `E10.I6`, `E10.I7`, `E0.I21`, `E0.I22` |
 | **fable** | Synthesis across many artifacts, adversarial review, threat modelling, evaluation design, grant/launch writing | `E0.I8`, `E0.I19`, `E3.I12`, `E3.I13`, `E5.I17`, `E8.I9`, `E8.I10`, `E0.I24` |
 
 Issues a human must execute (flash the device, generate the signing key, file submissions, send grant emails, post announcements) carry `needs-human-review` and say "the human does X; the agent prepares Y" in their description.
@@ -124,7 +124,7 @@ Day 1 = Monday 2026-09-21. M0 wk 1 (Sep 21–25) · M0.5 wk 2 (Sep 28–Oct 2) �
 ---
 ## 3. Milestone gates
 
-A milestone is a gate, not a bucket. Nothing in milestone N+1 is dispatched until the gate review issue for milestone N (`E0.I21`–`E0.I23`) is closed by the human coordinator. Inside a milestone, everything that `bd ready` surfaces runs concurrently.
+A milestone is a gate, not a bucket. Nothing in milestone N+1 is dispatched until the gate review issue for milestone N (`E0.I21`, `E0.I22`, `E0.I23a`+`E0.I23b`) is closed by the human coordinator. Inside a milestone, everything that `bd ready` surfaces runs concurrently.
 
 | Gate | Weeks | Leave when ALL of these are true |
 |---|---|---|
@@ -132,7 +132,7 @@ A milestone is a gate, not a bucket. Nothing in milestone N+1 is dispatched unti
 | **M0.5 → M1** | wk 2 | Every contract file in §4 merged under `core/model`, `core/ipc`, `core/vault/schema` (`E0.I10`–`E0.I17`); fakes + abstract contract suites compile and pass against fakes (`E10.I2`, `E10.I3`); adversarial contract review closed with no open P0/P1 findings (`E0.I19`); `docs/ARCHITECTURE.md` (`E0.I18`); CI green on unit + lint + emulator lanes (`E1.I3`); `bd dep cycles` clean and taxonomy documented (`E0.I9`). |
 | **M1 → M2** | wk 5 | On the Fold: biometric unlock → StrongBox unwrap → SQLCipher open → bind `:inference` → hash-verify → mmap → stream tokens → cancel, for both default models (`E4.I10`); `:app` survives a `:inference` crash and reports `ServiceDied` (`E4.I4`); isolation escape tests pass (`E3.I15`); `:embedder` returns int8[256] embeddings (`E5.I3`); double-build of `foss` release produces byte-identical APK (`E1.I8`); `foss` release APK ≤ 30 MB (`E1.I10`); license audit passes (`E1.I7`); at-rest test shows no plaintext in `vault.db` (`E10.I17`); Compose shell renders dual-pane on unfolded / single-pane on folded (`E6.I2`). Gate review `E0.I21`. |
 | **M2 → M3** | wk 8 | Editor live preview + wikilink autocomplete + backlinks on device (`E7.I1`, `E7.I5`, `E7.I8`); `IngestWorker` indexes the 1k-note fixture on the Fold within the budget recorded in `MEASUREMENTS.md` (`E5.I19`); retrieval eval meets thresholds in CI (`E10.I5`); chat streams with clickable `[N]` citations that open preview tabs (`E6.I8`); timeline, tabs, split, graph view, personas, settings, model management usable (`E6.I4`–`E6.I14`); prompt-injection suite passes (`E10.I6`); GGUF fuzz nightly green for 3 consecutive nights (`E10.I7`); adversarial security review closed (`E3.I13`). Gate review `E0.I22`. |
-| **M3 → M4** | wk 11 | Full E2E on device: onboarding → import model → note → ingest → ask → cite → export PDF/DOCX → share (`E10.I15`); `THREAT_MODEL.md`, `README.md`, `PRIVACY.md`, `SECURITY.md` published (`E3.I12`, `E9.I1`–`E9.I3`); release pipeline emits signed APK + `SHA256SUMS` + RB instructions from a tag (`E8.I2`); IzzyOnDroid and F-Droid submissions filed (`E8.I5`, `E8.I6`); Obtainium link installs the release (`E8.I3`); backup exfiltration test passes on device (`E10.I8`). Gate review `E0.I23`. |
+| **M3 → M4** | wk 11 | Full E2E on device: onboarding → import model → note → ingest → ask → cite → export PDF/DOCX → share (`E10.I15`); `THREAT_MODEL.md`, `README.md`, `PRIVACY.md`, `SECURITY.md` published (`E3.I12`, `E9.I1`–`E9.I3`); release pipeline emits signed APK + `SHA256SUMS` + RB instructions from a tag (`E8.I2`); IzzyOnDroid and F-Droid submissions filed (`E8.I5`, `E8.I6`); Obtainium link installs the release (`E8.I3`); backup exfiltration test passes on device (`E10.I8`); RC produced and validated (`E0.I23a`, `E0.I23b`). Gate review `E0.I23a` + `E0.I23b`. |
 | **M4 → done** | wk 12 (+2 buffer) | `v1.0.0` tag, release published, announcements posted, submission threads answered (`E8.I8`, `E0.I24`). |
 
 ---
@@ -1521,24 +1521,51 @@ deps: E7.I1, E7.I5, E7.I8, E5.I19, E10.I5, E6.I8, E6.I4, E6.I5, E6.I7, E6.I10, E
 **Steps:**
 - [ ] Step 1: As `E0.I21`.
 
-#### E0.I23 — M3 integration and gate review
+#### E0.I23a — M3 integration, gate evidence, and RC production
 ```bd
-key: E0.I23
+key: E0.I23a
 milestone: M3
 type: task
-tier: opus
-hours: 8
+tier: sonnet
+hours: 4
 priority: 1
 labels: needs-human-review
-deps: E10.I15, E3.I12, E9.I1, E9.I2, E9.I3, E8.I2, E8.I5, E8.I6, E8.I3, E10.I8, E0.I22
+deps: E3.I12, E9.I1, E9.I2, E9.I3, E8.I2, E8.I5, E8.I6, E8.I3, E10.I8, E0.I22
 ```
-**Description:** Same procedure for the M3 gate checklist in §3, plus a release-candidate build (`v1.0.0-rc1`) through the release pipeline so `E8.I8` only has to tag.
+**Description:** Same procedure as `E0.I21` for the M3 gate checklist in §3 (every line except the full-E2E line, which now closes via `E10.I15` downstream of `E0.I23b`), plus producing the release-candidate artifact itself: tag `v1.0.0-rc1`, run `./gradlew :app:assembleFossRelease`, compute `SHA256SUMS`, sign, and attach the APK to a draft GitHub release. This is one half of a 2026-09-20 plan-doc split (`skein-4pqj`, see "Amendments" at the end of this document) that broke a scheduling deadlock with `E10.I15`. This issue only *produces* the candidate; it does not validate it (that is `E0.I23b`'s job) and must not depend on `E10.I15`.
 
 **Acceptance criteria:**
-- [ ] Every M3 gate line has linked evidence; `v1.0.0-rc1` APK attached to a draft GitHub release with matching `SHA256SUMS`; independent rebuild by a second machine (or CI) reproduces it byte-for-byte; human sign-off
+- [ ] Every M3 gate line except the full-E2E line has linked evidence; CI green; human sign-off on gate evidence
+- [ ] `v1.0.0-rc1` signed APK produced via `assembleFossRelease`; SHA-256 recorded in `SHA256SUMS`; APK + `SHA256SUMS` attached to a draft (unpublished) GitHub release
 
 **Steps:**
-- [ ] Step 1: As `E0.I21`, then tag `v1.0.0-rc1` and verify reproducibility with `tools/rb/verify.sh`.
+- [ ] Step 1: As `E0.I21`, gathering M3 gate evidence (excluding the full-E2E line).
+- [ ] Step 2: Tag `v1.0.0-rc1`, run `./gradlew :app:assembleFossRelease`, compute `SHA256SUMS`, sign, attach to a draft GitHub release. Hand off to `E0.I23b`.
+
+#### E0.I23b — M3 release-candidate validation
+```bd
+key: E0.I23b
+milestone: M3
+type: task
+tier: sonnet
+hours: 5
+priority: 1
+labels: needs-human-review
+deps: E0.I23a
+```
+**Description:** Absorbs the RC-validation content formerly implied by `E10.I15`'s prerequisite on a working candidate: verify the draft release's artifact against `E0.I23a`'s output, then publish it so `E10.I15` and `E8.I8` have a validated build to run against. This is the other half of the 2026-09-20 plan-doc split (`skein-4pqj`, see "Amendments" at the end of this document).
+
+**Acceptance criteria:**
+- [ ] `SHA256SUMS` verified against `E0.I23a`'s manifest
+- [ ] Independent rebuild by a second machine (or CI) reproduces `v1.0.0-rc1` byte-for-byte via `tools/rb/verify.sh`
+- [ ] Package size within the M1 size budget threshold (`E1.I10`)
+- [ ] Smoke test: APK installs and launches (emulator or device) without crashing
+- [ ] Draft GitHub release published (undrafted) once all of the above pass
+
+**Steps:**
+- [ ] Step 1: Verify `SHA256SUMS`; run `tools/rb/verify.sh` for reproducibility.
+- [ ] Step 2: Check package size against threshold; install-and-launch smoke test.
+- [ ] Step 3: Publish the release; `bd human E0.I23b`.
 
 #### E0.I24 — v1.0 launch execution
 ```bd
@@ -4614,7 +4641,7 @@ tier: sonnet
 hours: 4
 priority: 0
 labels: needs-human-review
-deps: E8.I2, E10.I15, E0.I23, E8.I7, E9.I1
+deps: E8.I2, E10.I15, E0.I23b, E8.I7, E9.I1
 ```
 **Description:** Checklist run: `CHANGELOG.md` finalized, version bumped (`versionCode 100`, `versionName 1.0.0`), tag `v1.0.0` signed with the maintainer's git key, `release.yml` draft produced, human signs and uploads, post-publish verification green, `README` install links point at the release, IzzyOnDroid/F-Droid threads updated with the final tag, Obtainium install re-verified on the Fold.
 
@@ -5268,7 +5295,7 @@ deps: E4.I10, E5.I19, E4.I11
 **Steps:**
 - [ ] Step 1: Runner executes; attaches.
 
-#### E10.I15 — Full-flow end-to-end on device
+#### E10.I15 — Full-flow end-to-end on device (device smoke of the E0.I23b-validated RC)
 ```bd
 key: E10.I15
 milestone: M3
@@ -5277,12 +5304,12 @@ tier: sonnet
 hours: 8
 priority: 0
 labels: needs-hardware
-deps: E6.I12, E6.I15, E6.I16, E2.I11, E2.I12, E6.I8, E6.I17, E7.I7, E6.I11
+deps: E6.I12, E6.I15, E6.I16, E2.I11, E2.I12, E6.I8, E6.I17, E7.I7, E6.I11, E0.I23b
 ```
-**Description:** The M3 gate's headline test, scripted as an instrumented `@HardwareTest` where possible and a runner checklist where not: fresh install → onboarding (biometric enrol, import Gemma via SAF, first persona) → create a note with `[[links]]` → share a PDF into Skein → wait for ingest (index now) → ask a question in a new chat → citation opens the source → inline AI rewrite → export the note as PDF and DOCX → share the chat as text to another app → lock via idle → unlock → assistant long-press → uninstall keeps data prompt. Timing of each stage recorded.
+**Description:** Device smoke of the `E0.I23b`-validated release candidate — the M3 gate's headline test, scripted as an instrumented `@HardwareTest` where possible and a runner checklist where not: fresh install → onboarding (biometric enrol, import Gemma via SAF, first persona) → create a note with `[[links]]` → share a PDF into Skein → wait for ingest (index now) → ask a question in a new chat → citation opens the source → inline AI rewrite → export the note as PDF and DOCX → share the chat as text to another app → lock via idle → unlock → assistant long-press → uninstall keeps data prompt. Timing of each stage recorded. Runs only after `E0.I23b` has published a validated `v1.0.0-rc1` build (see "Amendments" at the end of this document for the 2026-09-20 dependency rescope, `skein-4pqj`).
 
 **Acceptance criteria:**
-- [ ] Every step passes on the Fold on the `v1.0.0-rc1` build; report attached with timings and screenshots
+- [ ] Every step passes on the Fold on the `E0.I23b`-validated `v1.0.0-rc1` build; report attached with timings and screenshots
 - [ ] The same flow re-run after reboot (cold start) passes
 
 **Files:**
@@ -5397,9 +5424,11 @@ The RAG spine `E5.I10/E5.I12 → E5.I13 → E5.I15 → E5.I16 → E6.I8` (37 h) 
 
 - **Wave 1 (20 issues):** `E2.I8`, `E2.I10`, `E2.I11`, `E2.I12`, `E3.I12`, `E4.I11`, `E6.I12`, `E6.I17` (device), `E6.I20`, `E6.I21`, `E7.I10`, `E8.I2`, `E8.I7`, `E9.I2`, `E9.I4`, `E9.I6`, `E9.I8`, `E9.I9`, `E9.I10`, `E10.I8` (device).
 - **Wave 2:** `E2.I9`, `E6.I15`, `E6.I16`, `E8.I3`, `E8.I4`, `E9.I1`, `E9.I3`, `E10.I11`, `E10.I12` (device), `E10.I14` (device).
-- **Wave 3:** `E8.I11`, `E9.I7`, `E10.I15` (device).
+- **Wave 3:** `E8.I11`, `E9.I7`.
 - **Wave 4:** `E8.I5`, `E8.I6`.
-- **Wave 5:** `E0.I23` → RC build → M3 gate.
+- **Wave 5:** `E0.I23a` → produce RC.
+- **Wave 6:** `E0.I23b` → validate + publish RC.
+- **Wave 7:** `E10.I15` (device) → full E2E on the validated RC → M3 gate.
 
 ### 6.6 M4 (week 12)
 
@@ -5411,11 +5440,11 @@ The RAG spine `E5.I10/E5.I12 → E5.I13 → E5.I15 → E5.I16 → E6.I8` (37 h) 
 
 Blockers are declared per issue in the `deps:` field; `tools/bd_bootstrap.py --check` verifies the graph is acyclic and that no issue depends on a later milestone. Below: the critical path, the highest-fan-out blockers, and the full adjacency list (issue ← blockers).
 
-### 7.1 Critical path (161 h, 19 issues)
+### 7.1 Critical path (162 h, 20 issues)
 
-`E0.I4` (3) → `E0.I5` (8) → `E0.I3` (12) → `E0.I8` (6) → `E1.I4` (12) → `E4.I1` (20) → `E4.I3` (16) → `E4.I4` (10) → `E4.I7` (6) → `E5.I15` (6) → `E5.I16` (5) → `E6.I8` (16) → `E6.I19` (4, device) → `E9.I1` (4) → `E8.I11` (3) → `E8.I6` (10) → `E0.I23` (8) → `E8.I8` (4) → `E0.I24` (8)
+`E0.I4` (3) → `E0.I5` (8) → `E0.I3` (12) → `E0.I8` (6) → `E1.I4` (12) → `E4.I1` (20) → `E4.I3` (16) → `E4.I4` (10) → `E4.I7` (6) → `E5.I15` (6) → `E5.I16` (5) → `E6.I8` (16) → `E6.I19` (4, device) → `E9.I1` (4) → `E8.I11` (3) → `E8.I6` (10) → `E0.I23a` (4) → `E0.I23b` (5) → `E8.I8` (4) → `E0.I24` (8)
 
-Read: acquire models → bench harness → embedder measurement → MEASUREMENTS.md → llama.cpp native build → JNI → isolated service → app-side engine → context budget → prompt assembler → citations → chat surface → fold validation (screenshots) → README → store metadata → F-Droid MR → M3 gate → release → launch. 161 serialized hours at ~25 productive hours/week for a single chain is ~6.5 weeks; the 12-week plan has ~5 weeks of gate/queue slack on this chain, which is where the "12 best case / 14 realistic" in spec §11 comes from.
+Read: acquire models → bench harness → embedder measurement → MEASUREMENTS.md → llama.cpp native build → JNI → isolated service → app-side engine → context budget → prompt assembler → citations → chat surface → fold validation (screenshots) → README → store metadata → F-Droid MR → RC produced → RC validated → release → launch. 162 serialized hours at ~25 productive hours/week for a single chain is ~6.5 weeks; the 12-week plan has ~5 weeks of gate/queue slack on this chain, which is where the "12 best case / 14 realistic" in spec §11 comes from.
 
 Second-longest chains (for the coordinator's attention): the DB spine `E0.I7 → E1.I5 → E2.I1 → E2.I2 → E2.I4 → E5.I8 → E5.I11 → E5.I12 → E5.I13` (76 h) and the editor spine `E1.I1 → E7.I2 → E7.I1 → E7.I6 → E7.I7 → E10.I15` (76 h).
 
@@ -5442,7 +5471,7 @@ E0:  I1 ← ∅ · I2 ← I1,I4 · I3 ← I1,I4,I5 · I4 ← ∅ · I5 ← I4 ·
      I17 ← I16 · I18 ← I10..I17 · I19 ← I10..I18 · I20 ← I1
      I21 ← E4.I10,E4.I4,E3.I15,E5.I3,E1.I8,E1.I10,E1.I7,E10.I17,E6.I2,E2.I4,E3.I3
      I22 ← E7.I1,E7.I5,E7.I8,E5.I19,E10.I5,E6.I8,E6.I4,E6.I5,E6.I7,E6.I10,E6.I11,E6.I13,E6.I14,E10.I6,E10.I7,E3.I13,I21
-     I23 ← E10.I15,E3.I12,E9.I1,E9.I2,E9.I3,E8.I2,E8.I5,E8.I6,E8.I3,E10.I8,I22 · I24 ← E8.I8
+     I23a ← E3.I12,E9.I1,E9.I2,E9.I3,E8.I2,E8.I5,E8.I6,E8.I3,E10.I8,I22 · I23b ← I23a · I24 ← E8.I8
 E1:  I1 ← ∅ · I2 ← I1 · I3 ← I1 · I4 ← I1,E0.I8 · I5 ← E0.I7,I1 · I6 ← I1 · I7 ← I1 · I8 ← I4,I5 · I9 ← I1
      I10 ← I3,I4,I5,I6 · I11 ← I1,I4 · I12 ← I1
 E2:  I1 ← E1.I5,E0.I11 · I2 ← I1 · I3 ← E0.I11,E0.I14,E1.I1 · I4 ← I2,I3 · I5 ← E3.I2,I4 · I6 ← I4,E3.I3 · I7 ← I4,E0.I14
@@ -5464,14 +5493,14 @@ E6:  I1 ← E1.I1 · I2 ← I1 · I3 ← I1 · I4 ← I3,E4.I12,E2.I4,I22 · I5 
 E7:  I1 ← E6.I1,I2,E3.I9,E0.I11 · I2 ← E1.I1 · I3 ← I1,E2.I3 · I4 ← I1,E2.I4 · I5 ← I1,E2.I4 · I6 ← I1,E5.I13,E4.I4,E6.I4
      I7 ← I1,E4.I4,E5.I15,E5.I4,E6.I22,I6 · I8 ← E5.I8,E2.I15 · I9 ← I1,I5 · I10 ← I7,E6.I14
 E8:  I1 ← ∅ · I2 ← E1.I8,E1.I9,E1.I10 · I3 ← I2 · I4 ← I2 · I5 ← I2,E1.I10,I11 · I6 ← E1.I8,I2,I11 · I7 ← E1.I8
-     I8 ← I2,E10.I15,E0.I23,I7,E9.I1 · I9 ← E0.I18,E1.I8 · I10 ← E0.I18,E1.I8,E2.I6 · I11 ← E9.I1,E6.I19
+     I8 ← I2,E10.I15,E0.I23b,I7,E9.I1 · I9 ← E0.I18,E1.I8 · I10 ← E0.I18,E1.I8,E2.I6 · I11 ← E9.I1,E6.I19
 E9:  I1 ← E0.I18,E8.I3,E6.I19 · I2 ← E3.I7,E3.I1 · I3 ← E3.I12,E1.I9 · I4 ← E8.I1 · I5 ← E2.I3,E2.I4,E0.I14
      I6 ← E4.I5,E0.I4,E3.I6 · I7 ← E6.I8,E7.I1,E6.I11,E6.I12,E6.I16 · I8 ← E1.I7,E6.I14 · I9 ← E8.I1 · I10 ← E0.I18,E0.I22
 E10: I1 ← E1.I1,E1.I3 · I2 ← E0.I10,E0.I11,E0.I12,E0.I13,E0.I17,I1 · I3 ← E0.I10,E0.I11,E0.I12,I1 · I4 ← E2.I3
      I5 ← E5.I17,E5.I13,I4,E5.I10 · I6 ← E3.I10,E5.I15,E5.I16,E6.I8 · I7 ← E4.I3,E4.I2,E4.I4 · I8 ← E3.I7,E2.I5,E4.I5
      I9 ← E2.I6,E3.I1 · I10 ← E6.I5,E6.I7,E6.I8,E7.I1,E7.I5,E6.I6 · I11 ← E6.I2,E6.I21,E6.I7,E6.I8,E7.I1
      I12 ← E4.I10,E5.I19,E6.I12,E4.I8 · I13 ← E0.I20,E1.I3,E0.I1 · I14 ← E4.I10,E5.I19,E4.I11
-     I15 ← E6.I12,E6.I15,E6.I16,E2.I11,E2.I12,E6.I8,E6.I17,E7.I7,E6.I11 · I16 ← E3.I5,E4.I3 · I17 ← E2.I1,E3.I3,E2.I5,E2.I13
+     I15 ← E6.I12,E6.I15,E6.I16,E2.I11,E2.I12,E6.I8,E6.I17,E7.I7,E6.I11,E0.I23b · I16 ← E3.I5,E4.I3 · I17 ← E2.I1,E3.I3,E2.I5,E2.I13
 ```
 
 Epic nodes are additionally blocked by all their children through explicit `parent-child` edges emitted by the bootstrap (bd 1.0.0's `parent` field builds hierarchy only), so `bd ready` never surfaces an epic.
@@ -5490,7 +5519,7 @@ Tests are issues. The matrix below indexes them; per-issue unit tests live insid
 | Instrumented (emulator, x86_64 `dev`) | `emulator.yml` | Native stack (SQLCipher+vec+FTS5), driver, migrations, repository, index store, JNI, isolated services, engine death handling, TOCTOU, at-rest encryption, isolation escape, provider grants, retrieval eval, GGUF fuzz (20/PR, 500 nightly) | `E0.I7`, `E1.I5`, `E2.I1`, `E2.I2`, `E2.I4`, `E2.I15`, `E4.I1`–`E4.I4`, `E5.I1`, `E5.I3`, `E10.I5`, `E10.I7`, `E10.I9`, `E10.I16`, `E10.I17`, `E3.I15` |
 | On-device (Fold, `needs-hardware`) | `tools/device/run-suite.sh` by the runner agent | Benchmarks and validations that need Tensor G4 / StrongBox / Seedvault / fold hinge: M0 measurements, engine validation, ingest validation, posture, editor perf, backup exfiltration, memory pressure, perf benchmarks, assistant, full E2E | `E0.I1`–`E0.I3`, `E0.I6`, `E4.I10`, `E4.I11`, `E5.I19`, `E6.I19`, `E7.I9`, `E3.I7`, `E10.I8`, `E10.I12`, `E10.I14`, `E10.I15`, `E6.I17` |
 | Adversarial | JVM/Robolectric (`ci.yml`) + emulator nightly + device | Prompt-injection corpus (50 payloads × 3 layers); GGUF mutation fuzzing; backup exfiltration; provider persistable-grant attempts; isolated-process escape attempts; TOCTOU swap; at-rest plaintext scan; adversarial reviews of contracts and security code | `E10.I6`, `E10.I7`, `E10.I8`, `E10.I9`, `E3.I15`, `E10.I16`, `E10.I17`, `E0.I19`, `E3.I13` |
-| Reproducibility | `rb.yml` (two runners) + second machine at rc1 | Byte-identical unsigned APK; native lib determinism; F-Droid container rebuild | `E1.I4`, `E1.I5`, `E1.I8`, `E8.I6`, `E8.I7`, `E0.I23` |
+| Reproducibility | `rb.yml` (two runners) + second machine at rc1 | Byte-identical unsigned APK; native lib determinism; F-Droid container rebuild | `E1.I4`, `E1.I5`, `E1.I8`, `E8.I6`, `E8.I7`, `E0.I23b` |
 | Policy gates (CI) | `ci.yml` | No INTERNET/GMS, module isolation, license allowlist, dependency verification, APK size, no raw logging, no content logging in services, exported-component audit, manifest validation, changelog | `E1.I2`, `E1.I7`, `E1.I10`, `E1.I11`, `E1.I12`, `E3.I1`, `E0.I15`, `E9.I9` |
 | UI flows + screenshots | Robolectric + emulator | Cross-feature flows with accessibility checks; goldens for themes × postures | `E10.I10`, `E10.I11`, `E6.I20` |
 | Retrieval quality | emulator nightly + PRs touching `core/rag` | recall@8 / nDCG@8 / MRR against the gold set on the 1k-note fixture | `E5.I17`, `E10.I5`, `E10.I4` |
@@ -5508,7 +5537,7 @@ Spec §17 risks carried forward with their concrete mitigation issues, plus risk
 | R1 | Runtime / model churn: llama.cpp CVEs, GGUF format changes (spec §17.1) | Medium / High | Pinned submodule + commit check `E1.I4`; dependency verification `E1.I12`; GGUF fuzzing `E10.I7`; isolation escape tests `E3.I15`; golden decode test `E4.I2` catches behaviour drift on bumps; physical Fold in the release loop `E10.I12` | A llama.cpp CVE affecting the pinned tag → bump, re-run `E4.I2` goldens and `E10.I7` |
 | R2 | First-run friction: getting a ~2.5 GB model into a no-INTERNET app (spec §17.2) | High / Medium | Onboarding with SAF import + bundled manifests + hash check `E6.I12`, `E4.I5`; `docs/MODELS.md` `E9.I6`; free-space check; the "fetcher companion app" from spec §17 is not planned (OQ-4) | If M3 E2E shows > 10 min or > 2 failures per import → open a companion-app epic for v1.1 |
 | R3 | Thermal + battery reality on Tensor G4 (spec §17.3) | High / Medium | Measured backoff table `E0.I6`; `ThermalGovernor` `E4.I9`; WorkManager charging+idle `E5.I10`; GLiNER instead of LLM for entities `E5.I4`; memory pressure test `E10.I14`; sustained benchmarks `E10.I12` | If sustained generation throttles < 5 min → lower default threads / context cap in `MEASUREMENTS.md` addendum |
-| R4 | Scope: solo-maintainer 2× rule (spec §17.4) | High / High | Gate reviews re-estimate with actuals `E0.I21`–`E0.I23`; M3 intentionally under-loaded (206 h) as slack; P3 issues (`E5.I14`, `E7.I10`, `E8.I4`, `E8.I9`, `E8.I10`, `E5.I18`, `E9.I9`, `E9.I10`) are the first cuts; vision `E4.I11` and DOCX templates in `E2.I12` are the next | M1 actual/estimate ratio > 1.4 at `E0.I21` → cut P3s and move `E4.I11` to v1.1 |
+| R4 | Scope: solo-maintainer 2× rule (spec §17.4) | High / High | Gate reviews re-estimate with actuals `E0.I21`, `E0.I22`, `E0.I23a`/`E0.I23b`; M3 intentionally under-loaded (206 h) as slack; P3 issues (`E5.I14`, `E7.I10`, `E8.I4`, `E8.I9`, `E8.I10`, `E5.I18`, `E9.I9`, `E9.I10`) are the first cuts; vision `E4.I11` and DOCX templates in `E2.I12` are the next | M1 actual/estimate ratio > 1.4 at `E0.I21` → cut P3s and move `E4.I11` to v1.1 |
 | R5 | Vault-location contradiction (spec §17.5): user ownership vs app-private encryption | Low / High | `DocumentsProvider` `E2.I6`; `dataExtractionRules` `E3.I7` + test `E10.I8`; passphrase export `E3.I11`; format doc `E9.I5` | A GrapheneOS/Seedvault change that backs up app-private files regardless → re-test `E10.I8` |
 | R6 | SQLCipher + sqlite-vec + FTS5 cannot be combined as the spec's DDL assumes (`BundledSQLiteDriver.addExtension` is a different SQLite build) — plan-discovered | Medium / High | Week-1 spike `E0.I7`; production build `E1.I5`; driver `E2.I1`; OQ-2 for the human | Spike fails on the emulator by day 4 → escalate OQ-2 immediately; fallback options listed there |
 | R7 | Tokenizer parity: hand-written WordPiece/Unigram diverging from the reference — plan-discovered | Medium / Medium | Golden fixtures (300 strings each) `E5.I2`; GLiNER I/O golden `E5.I4`; retrieval eval `E10.I5` catches silent degradation | Golden mismatch on CJK/emoji categories → time-box 8 h, then reduce the label set / accept approximate offsets |
@@ -5948,3 +5977,25 @@ Distribution and funding
 
 Tracker
 - beads (`bd`) 1.0.0 `bd create --graph` schema — read from `cmd/bd/graph_apply.go` in https://github.com/gastownhall/beads on 2026-09-19 and verified against a scratch database.
+
+---
+## 14. Amendments
+
+### 14.1 2026-09-20 — RC scheduling deadlock (`skein-4pqj`)
+
+External review on 2026-09-19 flagged a circular dependency between the pre-split combined M3-gate-review-and-RC-build issue (formerly a single key in E0, immediately preceding `E0.I24` — "M3 integration and gate review", which both gathered M3 gate evidence and produced the `v1.0.0-rc1` release-candidate build) and `E10.I15` ("Full-flow end-to-end on device"): the combined issue formally depended on `E10.I15` closing first, but `E10.I15`'s acceptance criteria required testing against the `v1.0.0-rc1` build — an artifact that was only produced inside the combined issue's own steps. Neither could close first.
+
+**Fix applied** (recorded as a decision on `skein-4pqj` on 2026-09-19, executed in this doc on 2026-09-20):
+
+- The pre-split combined issue is replaced by two adjacent issues, in §5 under E0:
+  - **`E0.I23a`** — gathers M3 gate-checklist evidence (all lines except the full-E2E line) and *produces* the release-candidate artifact (`assembleFossRelease`, hash, sign, attach to a draft GitHub release). Tier lowered from `opus` to `sonnet`; hours 8 → 4. Does not depend on `E10.I15`.
+  - **`E0.I23b`** — *validates* the candidate produced by `E0.I23a`: hash verification, independent-rebuild reproducibility, package-size threshold check, install/launch smoke test, then publishes the release. New issue; tier `sonnet`; hours 5. Depends only on `E0.I23a`.
+- `E10.I15` is rescoped from "requires `v1.0.0-rc1` to exist" to "device smoke of the **`E0.I23b`-validated** RC" and now depends on `E0.I23b` instead of implicitly needing the artifact the old combined issue produced. This makes the dependency chain `E0.I23a → E0.I23b → E10.I15 → E8.I8`, which is acyclic.
+- Every other `deps:`/DAG/table reference to the old combined issue was repointed to whichever half it actually needs: `E8.I8` (needs a *validated* RC) now depends on `E0.I23b`; the reproducibility-test table entry and the adjacency list's `E8.I8` line likewise point at `E0.I23b`; the M3 gate-review references (§2.2 tier table, §3 milestone-gate table, §7 risk register) now cite `E0.I21`, `E0.I22`, `E0.I23a`/`E0.I23b` jointly, since both halves must close before the M3→M4 gate.
+- §6.5 M3 waves reordered: `E10.I15` moved out of the old Wave 3 into a new Wave 7, after new Wave 5 (`E0.I23a`) and Wave 6 (`E0.I23b`), so the device smoke runs against an already-produced-and-validated build.
+- §7.1 critical path updated: the single 8-hour node is now two serial nodes, `E0.I23a` (4 h) → `E0.I23b` (5 h), for a net **+1 h** on the critical path (161 h → 162 h, 19 → 20 issues). This is well under the 4-hour delta-reporting threshold, so no further re-plan is triggered. Note this is a *local* substitution on the previously-identified critical path; a full re-derivation of whether `E10.I15` (which now sits downstream of `E0.I23b` and upstream of `E8.I8`) changes which chain is longest was not performed as part of this fix and is flagged as follow-up if the coordinator wants exact critical-path hours re-verified.
+- No acceptance criteria, tier, or priority of any other (non-split, non-`E10.I15`) issue were changed. The remaining ~165 other issues are untouched.
+
+**Known gap — bootstrap script (§11) not re-run or edited.** Per the task guardrails, `tools/bd_bootstrap.py --apply` was **not** re-run (the tracker is already seeded from the earlier bootstrap) and the script body in §11 was **not** modified. However, note for whoever next imports this plan into a fresh `bd` database: `HEADING_RE = re.compile(r"^#{3,5}\s+(E\d+(?:\.I\d+)?)\s+[—-]+\s+(.+?)\s*$")` only matches issue keys of the form `E<digits>` or `E<digits>.I<digits>` — it does **not** match the alphanumeric suffix on `E0.I23a` / `E0.I23b`. A fresh `--apply` run against this doc as currently written will silently fail to parse the `#### E0.I23a — …` and `#### E0.I23b — …` headings (and their `bd` fences), dropping both issues from the imported graph. Before the next fresh bootstrap, `HEADING_RE` needs a suffix-letter group added, e.g. `(E\d+(?:\.I\d+[a-z]?)?)`, and the downstream key handling verified end to end — this is a code change, out of scope for this plan-doc-only fix, and is **not** applied here. A `bd note` recording this has been added to `skein-4pqj`.
+
+- Plan-doc amendment commit: see `skein-4pqj` bd notes for the commit SHA.
