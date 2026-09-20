@@ -39,6 +39,10 @@ dependencies {
     implementation(libs.compose.ui.tooling.preview)
     implementation(libs.compose.foundation)
     implementation(libs.material3)
+    // E7.I4 (bd skein-twb): snapshotFlow-based autosave debouncer needs
+    // Flow/debounce/withTimeoutOrNull directly, not just what compose
+    // runtime pulls in transitively.
+    implementation(libs.kotlinx.coroutines.core)
 
     // E7.I2 owns the Skein Markdown AST + the AnnotatedString renderer
     // this module reuses (`MarkdownStyle`). The parser stays inside
@@ -61,6 +65,9 @@ dependencies {
     debugImplementation(libs.androidx.activity.compose)
 
     testImplementation(libs.junit)
+    // EditorAutosaveTest (bd skein-twb) drives EditorState directly with
+    // TestScope/runTest — pure JVM, no Robolectric/Compose UI test deps.
+    testImplementation(libs.kotlinx.coroutines.test)
 
     // On-device Compose UI test (skein-03f acceptance: compile the UI
     // test even where the local worktree cannot run it; bd `skein-k3b2`
