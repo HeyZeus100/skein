@@ -28,6 +28,11 @@
 #
 # Portability: uses `shasum -a 256` or `sha256sum`, whichever exists, and
 # avoids awk interval expressions where a plain character class will do.
+
+# SC2001: the `sed 's/^/       /'` calls below indent *every line* of a
+# captured multi-line report. `${var//search/replace}` cannot express a
+# per-line prefix, so sed is the right tool rather than a fallback.
+# shellcheck disable=SC2001
 set -uo pipefail
 
 # --- sha256 helper (macOS ships shasum, Linux ships sha256sum) -------------

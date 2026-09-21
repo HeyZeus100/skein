@@ -1,11 +1,26 @@
-# Dependency verification (E1.I12)
+# Verification
+
+Two independent guarantees, both answering "are these the bytes we think
+they are", from opposite ends of the build:
+
+1. **[Dependency verification](#dependency-verification-e1i12)** — every
+   JAR/AAR the build *consumes* is byte-for-byte the artifact we pinned.
+2. **[Build reproducibility](#build-reproducibility)** — the APK the build
+   *produces* is a deterministic function of the source, so anyone can
+   rebuild a tag and get the same bytes.
+
+Neither subsumes the other: pinned inputs can still feed a build that
+embeds a timestamp, and a perfectly reproducible build can faithfully
+reproduce a compromised dependency.
+
+## Dependency verification (E1.I12)
 
 Skein uses [Gradle's dependency verification](https://docs.gradle.org/current/userguide/dependency_verification.html)
 to make sure every JAR/AAR the build downloads is byte-for-byte the artifact
 we intended to depend on — not something a compromised repository, a
 man-in-the-middle, or a typosquatted coordinate swapped in instead.
 
-## What it does
+### What it does
 
 `gradle/verification-metadata.xml` records a SHA-256 checksum for every
 artifact (jar, aar, pom, module metadata) Gradle has ever resolved for this
@@ -26,7 +41,7 @@ of the metadata file. No CI flag or Gradle property is required to turn
 enforcement on — the file's presence *is* the enforcement. See "Why CI stays
 at default" below.
 
-### Why SHA-256 only (`<verify-signatures>false</verify-signatures>`)
+#### Why SHA-256 only (`<verify-signatures>false</verify-signatures>`)
 
 Gradle also supports PGP signature verification per artifact. We deliberately
 leave it off:
@@ -46,7 +61,7 @@ leave it off:
   incrementally as `<trusted-key>` entries scoped to those groups, without
   turning on blanket signature verification.
 
-## How to regenerate the metadata (Dependabot / manual dep bumps)
+### How to regenerate the metadata (Dependabot / manual dep bumps)
 
 **Every dependency version bump changes at least one checksum.** The
 verification file must be regenerated in the *same PR* that bumps the
@@ -106,7 +121,7 @@ to the PR branch. Treat "Dependabot PR is red" as the expected first state
 for a dependency bump, not a sign something else is wrong — check whether
 it's *this* failure mode before investigating further.
 
-## The trust story
+### The trust story
 
 What this buys us: if `mavenCentral()` or `google()` (or a CDN in front of
 them) were compromised or MITM'd after this metadata was generated, or if a
@@ -129,7 +144,7 @@ What this does **not** buy us:
   scanner — those are separate gates (`licenseAudit`,
   `.github/workflows/dependency-review.yml`).
 
-## Why CI stays at default (no `--verification-mode strict`)
+### Why CI stays at default (no `--verification-mode strict`)
 
 `--dependency-verification=strict` on the command line does not add
 anything CI doesn't already get for free: once `verify-metadata=true` is set
@@ -150,7 +165,7 @@ one step would silently under-verify rather than the visible, actionable
 verification simply by resolving dependencies at all with the metadata file
 present in the tree; no extra flag is needed or added.
 
-## Negative-case verification (done once, for this issue)
+### Negative-case verification (done once, for this issue)
 
 To confirm the mechanism actually fails closed, a single checksum byte in
 `gradle/verification-metadata.xml` was deliberately corrupted (one hex digit
@@ -162,3 +177,170 @@ showing the expected vs. actual checksum, before any compilation ran. The
 file was then reverted (`git checkout -- gradle/verification-metadata.xml`)
 and the build re-verified green. See the issue close notes on `skein-9qb`
 for the exact component used.
+
+## Build reproducibility
+
+A tagged Skein release must be a deterministic function of its source: two
+people building the same commit with the same pinned toolchain must get a
+byte-identical APK. That is what makes "the APK on the release page is
+built from the source in this repo" a checkable claim rather than a promise
+— see `docs/SIGNING.md` for how signing sits on top of it, and
+`docs/PRIVACY.md` for why it matters to a user who cannot audit the binary.
+
+> This section is the current home for the rebuild recipe. `E8.I7` plans a
+> standalone `docs/REPRODUCIBLE_BUILDS.md` plus a containerised
+> `tools/rb/rebuild-in-docker.sh` for third-party rebuilders (F-Droid,
+> IzzyOnDroid); when that lands it should *move* this content rather than
+> restate it.
+
+The unit of comparison is the **unsigned** APK,
+`app/build/outputs/apk/foss/release/app-foss-release-unsigned.apk`.
+Signatures are deliberately out of scope: signing is not reproducible by a
+third party (they do not have the key) and does not need to be — a verifier
+rebuilds the unsigned APK, compares it against the released APK's contents,
+and separately checks the signature against the published certificate.
+
+### The recipe
+
+```bash
+git clone https://github.com/<org>/skein && cd skein
+git checkout v<version>
+
+export JAVA_HOME=/path/to/jdk-17
+export ANDROID_HOME=/path/to/android-sdk
+
+./gradlew clean :app:assembleFossRelease --no-build-cache
+```
+
+`--no-build-cache` is not optional when you are checking reproducibility.
+Gradle's build cache is keyed on task inputs, so a second build in a tree
+that shares a cache with the first will *restore* `:app:minifyFossReleaseWithR8`
+and the dex tasks rather than re-run them. The APKs then match because the
+outputs were copied, not because they were recomputed — which tells you
+nothing about determinism. `.github/workflows/reproducible-build.yml` passes
+this flag for the same reason.
+
+### Comparing two APKs
+
+`sha256sum` on the whole file is the contract, but when it fails it tells
+you nothing actionable. Use the comparator instead:
+
+```bash
+tools/ci/compare-apk-entries.sh path/to/apk-a path/to/apk-b "label"
+```
+
+It checks four things, in order, and reports all of them even after one
+fails:
+
+| # | Check | Catches |
+|---|-------|---------|
+| 1 | Entry names in **stored order** | added/removed entries; central-directory reordering (which changes the bytes even when every entry matches) |
+| 2 | Per-entry zip metadata | a real wall-clock timestamp leaking in; a compression-level or method change |
+| 3 | Per-entry content sha256 | the actual payload diff, named by entry |
+| 4 | Whole-file sha256 | the contract itself |
+
+Entries are streamed with `unzip -p` rather than extracted to disk, so two
+entries whose names differ only in case are not silently merged on a
+case-insensitive filesystem (macOS).
+
+`tools/ci/compare-apk-entries.sh --self-test` exercises the comparator
+against archives that differ in content, in membership, and in mtime only,
+and asserts it reports each one. CI runs this *before* the comparison, so a
+green job cannot be a silently no-op comparison. `diffoscope`, if you have
+it, is a strictly better second step once this has named the entries to
+look at; it is not required and is not installed on the runner.
+
+### Must-match toolchain
+
+Reproducibility here is *conditional on an identical toolchain*, which is
+the normal contract for Android builds — AGP embeds its own version in the
+APK, and NDK/JDK codegen is not stable across versions. A verifier must
+match:
+
+| Input | Pinned at | Why it matters |
+|-------|-----------|----------------|
+| **JDK 17** (Temurin in CI) | `.github/workflows/*.yml`, `compileOptions` in `app/build.gradle.kts` | class-file layout, `kotlin_module` contents |
+| **Android Gradle Plugin** | `gradle/libs.versions.toml` | literally written into `META-INF/com/android/build/gradle/app-metadata.properties` as `androidGradlePluginVersion` |
+| **R8** | ships with AGP | dex layout; see the R8 note below |
+| **NDK r27c** (`27.3.13750724`) | `native/sqlite/README.md`, module `ndkVersion` | native codegen for `libskein_sqlite.so` |
+| **compileSdk / build-tools** | `app/build.gradle.kts`, CI `sdkmanager` step | `aapt2` resource-table layout in `resources.arsc` |
+| Gradle distribution | `gradle/wrapper/gradle-wrapper.properties` | task behavior, zip packaging |
+
+`app-metadata.properties` is the clearest case: it contains
+`androidGradlePluginVersion=<version>` and nothing else build-specific. It
+is deliberately **not** patched out. It is a toolchain-embedded value, not a
+nondeterminism — it is identical for everyone on the pinned AGP and
+different for anyone who is not, which is exactly the signal a verifier
+wants. Treat a diff in that entry as "you are on the wrong AGP", not as a
+reproducibility bug.
+
+### What was fixed, and why (skein-8jtj)
+
+Measured with two clean builds in one checkout plus a third from a separate
+clone of the same commit at a different path:
+
+| Result | Finding |
+|--------|---------|
+| Same path, two clean uncached builds | **716/716 entries identical** with no changes needed |
+| Different path, before fixes | exactly **one** entry differed: `META-INF/version-control-info.textproto` |
+| Different path, after fixes | **716/716 entries identical** |
+
+Two settings in `app/build.gradle.kts` carry that result:
+
+- **`vcsInfo { include = false }`** (release build type). AGP otherwise
+  packages `META-INF/version-control-info.textproto` describing the git
+  checkout the build ran in. A git *worktree* yields
+  `generate_error_reason: NO_VALID_GIT_FOUND` (42 bytes); a normal clone
+  embeds `revision: "<sha>"` (~120 bytes). That makes the APK's hash depend
+  on how the tree was obtained rather than on its contents, which defeats
+  the entire check. It also changes on every commit and leaks repo metadata
+  into a FOSS build.
+- **`dependenciesInfo { includeInApk = false; includeInBundle = false }`**.
+  AGP writes Play's dependency-metadata blob into the APK Signing Block,
+  compressed and encrypted to a Google public key, so it is nondeterministic
+  by construction. It is absent from today's APK only because the `release`
+  build type has no signing config yet (an unsigned APK has no Signing Block
+  at all) — it is disabled pre-emptively so E1.I8's signed pipeline cannot
+  silently reintroduce it, and because a FOSS/F-Droid build ships no Play
+  metadata regardless.
+
+Everything else already reproduced, including the three points this issue
+was opened to re-check:
+
+- **R8 is deterministic.** E1.I11 (skein-4je) turned on `isMinifyEnabled`
+  for the release build type, and the concern was that R8 would introduce
+  ordering or naming nondeterminism into the dex. It does not: all three
+  `classes*.dex` were byte-identical across every pair compared. The scope
+  stays stripping-only (`-dontobfuscate`, blanket `-keep`,
+  `-assumenosideeffects` on `SkeinLog.d`/`SkeinLog.i`); re-enabling
+  obfuscation and real shrinking remains E1.I8's job, together with the
+  keep-rule audit that must precede it.
+- **R8's side outputs stay out of the APK.** `-printmapping`, `-printusage`
+  and `-printconfiguration` write under `app/build/outputs/mapping/` and are
+  not packaged. Verified by entry listing, not by assumption.
+- **Native libraries are path-independent**, per skein-ej1b:
+  `lib/arm64-v8a/*.so` matched across two different absolute build paths.
+
+**DWARF caveat (skein-ej1b).** The `.so`s that ship in the APK are stripped,
+and it is the *stripped* libraries this reproducibility claim covers.
+Unstripped intermediates under `core/vault/build/intermediates/cxx/` still
+embed absolute compilation paths in their DWARF debug info and will *not*
+match across build directories. If you are diffing native artifacts by hand,
+diff the ones inside the APK (or run `llvm-strip` first); see
+`native/sqlite/README.md` § Reproducibility.
+
+### No pinned hash in this document
+
+This section deliberately records **no** expected APK sha256. Such a hash
+would be correct for exactly one commit and would rot silently into a value
+nobody can reproduce or refute — the worst possible state for a security
+document. The reproducibility claim is verified two ways instead, both of
+which travel with the code:
+
+- `.github/workflows/reproducible-build.yml` double-builds every `v*` tag
+  and fails on any entry-level diff, so the claim is re-tested per release.
+- Anyone can run the recipe above against a released tag and compare
+  against the published artifact.
+
+A release's actual hashes belong with that release (release notes /
+`SHA256SUMS`), not in a checked-in document.
