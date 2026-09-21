@@ -1,0 +1,151 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://aherrera.us/skein/schema/model-manifest-v2.json",
+  "title": "Skein model manifest v2",
+  "description": "One `<file>.skein.json` document. E0.I15 (plan §4.8) reconciled with POST_REVIEW_RESOLUTIONS §2.3 by coordinator decision skein-cqiu (2026-09-21): there is exactly one manifest shape and its version is 2. No v1 document has ever existed in this repository, so nothing accepts v1. This file is documentation plus the CI contract (tools/ci/validate-manifests.py); the runtime enforcement point is app.skein.core.inference.models.ModelManifest.parse, which re-states every constraint below in Kotlin. No runtime JSON-schema library is added.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "manifest_version",
+    "id",
+    "name",
+    "format",
+    "file",
+    "sha256",
+    "size_bytes",
+    "capabilities",
+    "license"
+  ],
+  "properties": {
+    "manifest_version": {
+      "const": 2,
+      "description": "Schema version. Const, not a range: a reader that does not know this exact shape must refuse rather than guess."
+    },
+    "id": {
+      "type": "string",
+      "pattern": "^[a-z0-9][a-z0-9.-]{2,63}$",
+      "description": "Stable model id. Doubles as the immutable-store directory name (filesDir/models/<id>/), so it is constrained to characters that are safe as a single path segment."
+    },
+    "name": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 120,
+      "description": "Human-readable name for the model-manager UI."
+    },
+    "format": {
+      "enum": ["gguf", "onnx"],
+      "description": "Container format of the main file."
+    },
+    "file": {
+      "type": "string",
+      "pattern": "^(?!\\.{1,2}$)[^/\\\\\u0000]+$",
+      "description": "Plain file name of the main (mmap'd) file, relative to the model's store directory. MODEL_STORE.md §1: never a path — a separator, a `..` or a NUL would let a manifest address bytes outside its own directory."
+    },
+    "sha256": {
+      "type": "string",
+      "pattern": "^[a-f0-9]{64}$",
+      "description": "Pre-mmap gate (MODEL_STORE.md §3, gate 1): streamed over the open channel before anything is mapped."
+    },
+    "blake3": {
+      "type": "string",
+      "pattern": "^[a-f0-9]{64}$",
+      "description": "Post-mmap gate (MODEL_STORE.md §3, gate 2), computed over the mapped bytes themselves. Optional in this schema because a user-imported model has no manifest to declare it (the store computes and records it at import instead). REQUIRED by tools/ci/validate-manifests.py for anything shipped under app/src/main/assets/models/, where the expectation must exist before any byte is mapped."
+    },
+    "size_bytes": {
+      "type": "integer",
+      "minimum": 1,
+      "description": "Length of the main file. A cheap pre-check before hashing, and input to resource planning."
+    },
+    "capabilities": {
+      "type": "array",
+      "uniqueItems": true,
+      "minItems": 1,
+      "items": { "enum": ["text", "vision", "embedding", "ner", "rerank"] },
+      "description": "What this model can be asked to do. Maps to the `models.capabilities` JSON column and to `Model.capabilities`."
+    },
+    "context_length": {
+      "type": "integer",
+      "minimum": 512,
+      "default": 16384,
+      "description": "Maximum context window. Absent means the `Model.contextLength` default (16384)."
+    },
+    "license": {
+      "type": "object",
+      "required": ["spdx"],
+      "additionalProperties": false,
+      "description": "An object, not a bare string: `spdx` is required so the license audit always has a machine-readable identifier, while `url` and `notes` carry the provenance a human reviewer needs (several model licenses are bespoke and not fully captured by their SPDX id).",
+      "properties": {
+        "spdx": { "type": "string", "minLength": 1 },
+        "url": { "type": "string", "format": "uri" },
+        "notes": { "type": "string" }
+      }
+    },
+    "source": {
+      "type": "object",
+      "additionalProperties": false,
+      "description": "Where the artifact came from. Recorded for provenance only — nothing in the app ever fetches it (no INTERNET permission).",
+      "properties": {
+        "url": { "type": "string", "format": "uri" },
+        "revision": { "type": "string" }
+      }
+    },
+    "attestation": {
+      "type": "object",
+      "required": ["bundle_file", "certificate_identity", "certificate_oidc_issuer"],
+      "additionalProperties": false,
+      "description": "Origin trust (MODEL_STORE.md §4) — the SOFT gate, kept structurally separate from the digest gate. The parser reads this and verifies nothing; E3.I6 (skein-zo8) implements offline sigstore verification against a pinned trust root. A degraded attestation can never weaken a digest check, and a good one can never excuse a digest mismatch.",
+      "properties": {
+        "bundle_file": {
+          "type": "string",
+          "pattern": "^(?!\\.{1,2}$)[^/\\\\\u0000]+$",
+          "description": "Plain file name of the sigstore bundle, same path rule as `file`."
+        },
+        "url": { "type": "string", "format": "uri" },
+        "certificate_identity": { "type": "string", "minLength": 1 },
+        "certificate_oidc_issuer": { "type": "string", "format": "uri" },
+        "covers": {
+          "type": "array",
+          "uniqueItems": true,
+          "minItems": 1,
+          "items": { "enum": ["main", "companions", "all"] },
+          "description": "Which files' digests are inside the attested manifest. Absent defaults to main only (POST_REVIEW_RESOLUTIONS §2.3)."
+        }
+      }
+    },
+    "companions": {
+      "type": "array",
+      "description": "Every non-main file the loader may open. POST_REVIEW_RESOLUTIONS §2.2 rule 3: a file that is not listed here with a sha256 is never opened — there is no 'trust the adjacent file' path. LICENSE texts are listed too, for the audit surface, even though nothing loads them. TWO RULES BELOW ARE NOT EXPRESSIBLE IN JSON SCHEMA and are enforced by ModelManifest.parse and tools/ci/validate-manifests.py instead: (a) no two companions may share a `role` — draft 2020-12's `uniqueItems` compares whole entries, so two companions differing only by file name are 'unique' as values yet name the same slot; (b) no file name may repeat across the root `file` and the companions.",
+      "items": {
+        "type": "object",
+        "required": ["role", "file", "sha256", "size_bytes"],
+        "additionalProperties": false,
+        "properties": {
+          "role": {
+            "enum": [
+              "mmproj",
+              "tokenizer",
+              "tokenizer_config",
+              "config",
+              "generation_config",
+              "license",
+              "special_tokens_map"
+            ],
+            "description": "`main` is deliberately absent: the main file is declared by the root `file`/`sha256`/`size_bytes` fields, and a second `main` here would be two sources of truth for the same bytes."
+          },
+          "file": {
+            "type": "string",
+            "pattern": "^(?!\\.{1,2}$)[^/\\\\\u0000]+$"
+          },
+          "sha256": { "type": "string", "pattern": "^[a-f0-9]{64}$" },
+          "blake3": { "type": "string", "pattern": "^[a-f0-9]{64}$" },
+          "size_bytes": { "type": "integer", "minimum": 1 },
+          "required": {
+            "type": "boolean",
+            "default": true,
+            "description": "A `false` companion may be absent from the store; when present it is still hash-verified like any other."
+          }
+        }
+      }
+    }
+  }
+}

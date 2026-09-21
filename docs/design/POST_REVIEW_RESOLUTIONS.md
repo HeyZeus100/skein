@@ -581,6 +581,13 @@ Plan:
   and required-sha256 rule; parser must accept both versions in a transitional
   window and refuse to LOAD a v1 manifest that references any companion
   outside the manifest.
+  **Applied 2026-09-21 (`skein-cqiu`), with one deviation.** The transitional
+  window was dropped: no v1 manifest ever existed in the repository
+  (`app/src/main/assets/models/` was still empty when `E0.I15` landed), so
+  "accept both versions" had nothing to accept and would have meant shipping a
+  second document shape purely to deprecate it. The parser refuses anything
+  but `manifest_version: 2`. Plan §4.8 now carries the single reconciled
+  schema; see it for the full field list.
 - `E0.I16` (AIDL contract) — `LoadRequest` and `EmbedderLoadRequest` gain a
   `ManifestBinding` field (§3 shows the exact shape after the IPC design lands).
 - `E3.I5` (`ModelVerifier`) — split into `ModelVerifier.fdSha256` (existing)
@@ -1347,10 +1354,20 @@ should apply these deltas verbatim:
    `companions.size_bytes` and `companions.required`; add
    `attestation.covers`. Note both v1 and v2 accepted by parser during
    the transitional window.
+   **Applied 2026-09-21 (`skein-cqiu`, implemented by `skein-3v9`).** §4.8 was
+   rewritten as one full v2 schema rather than a delta, because the delta form
+   had left §4.8 and this document describing two mutually unsatisfiable
+   documents for the same shipped files. The transitional window was dropped —
+   see the amended `E0.I15` bullet in §2.5 for why. Also added beyond this
+   item's list: root `file` and root `blake3`, the `license` object with a
+   required `spdx`, and the seven companion roles.
 3. **§4.9 (SQLite DDL)** — add migrations 003 (document revisions), 004
    (`models.post_mmap_blake3`), 005 (`export_stages`).
 4. **E0.I15** — parser accepts v1 and v2; refuses to LOAD a v1 manifest
    that references companions.
+   **Applied 2026-09-21 (`skein-cqiu`), amended:** v2 only. Nothing v1 ever
+   existed to be transitional about, so the parser refuses any
+   `manifest_version` but 2 and there is no v1 load path to special-case.
 5. **E0.I16** — dependency stays under it; test targets updated to v2.
 6. **E2.I2 / E2.I4** — `VaultRepository` gains `newRevision`,
    `getRevision`, and revision-aware `replaceChunks`.

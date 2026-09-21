@@ -77,13 +77,16 @@ jobs:
           export PATH="$ANDROID_HOME/build-tools/36.0.0:$PATH"
           ./tools/ci/manifest-audit.sh app/build/outputs/apk/foss/debug/app-foss-debug.apk
 
-      # tools/ci/validate-manifests.py (E0.I15) validates
-      # app/src/main/assets/models/*.skein.json against the manifest schema.
-      # Skipped gracefully until that script lands so this workflow doesn't
-      # break other in-flight issues; once the file exists this step runs
-      # unconditionally.
+      # E0.I15 / skein-3v9: validates app/src/main/assets/models/*.skein.json
+      # against core/model/.../model-manifest.schema.json (that directory is
+      # empty until skein-bxk lands; an empty glob passes), and round-trips
+      # the accept/reject fixtures in
+      # core/inference/src/test/resources/manifests/ that
+      # ModelManifestFixtureTest feeds to the Kotlin parser. Running both
+      # readers over the same fixtures is what stops the documented schema and
+      # the parser that actually enforces it from drifting apart. Stdlib only
+      # — no pip install step on the runner.
       - name: Validate model manifests
-        if: hashFiles('tools/ci/validate-manifests.py') != ''
         run: python3 tools/ci/validate-manifests.py
 
       - name: Upload foss debug APK

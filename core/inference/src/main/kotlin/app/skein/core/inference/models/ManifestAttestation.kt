@@ -57,6 +57,12 @@ enum class AttestationCoverage(
     MAIN("main"),
     COMPANIONS("companions"),
     ALL("all"),
+    ;
+
+    companion object {
+        /** skein-3v9: resolves the `attestation.covers` entries a manifest declares. */
+        fun fromWire(wire: String): AttestationCoverage? = entries.firstOrNull { it.wire == wire }
+    }
 }
 
 /** An attestation verdict plus what it claims to cover. */

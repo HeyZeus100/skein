@@ -148,3 +148,15 @@ pure-JVM types with typed results. Still open, and filed separately:
 - `E3.I6` — the sigstore `ManifestAttestation` implementation.
 - `skein-k3b2` — running `ImmutableModelStoreInstrumentedTest` on a device; it
   compiles unconditionally today.
+
+**Update 2026-09-21 (`skein-3v9` / `E0.I15`, decision `skein-cqiu`).** The
+manifest this document describes is now the *only* manifest shape: plan §4.8
+had separately described a v1 document, and the two were mutually
+unsatisfiable. `ModelManifest` keeps its place in `:core:inference` and gained
+§4.8's catalog fields (`name`, `format`, `capabilities`, `context_length`,
+`source`), a `license` **object** with a required `spdx` (it was a bare string
+here), and an `attestation` object with `covers` (it was a bare
+`attestation_url` string). The normative schema is
+`core/model/src/main/resources/schema/model-manifest.schema.json`, and
+`tools/ci/validate-manifests.py` enforces §3's rule that a *shipped* default
+manifest must declare `blake3` while an imported model need not.

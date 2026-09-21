@@ -1,0 +1,23 @@
+{
+  "manifest_version": 2,
+  "id": "fixture-reject-case",
+  "name": "Reject-case fixture",
+  "format": "gguf",
+  "file": "model.gguf",
+  "sha256": "deadbeefdeadbeefdeadbeefdeadbeefdeadbeefdeadbeefdeadbeefdeadbeef",
+  "size_bytes": 1024,
+  "capabilities": [
+    "text"
+  ],
+  "license": {
+    "url": "https://example.invalid/L"
+  },
+  "companions": [
+    {
+      "role": "tokenizer",
+      "file": "tokenizer.json",
+      "sha256": "cafebabecafebabecafebabecafebabecafebabecafebabecafebabecafebabe",
+      "size_bytes": 512
+    }
+  ]
+}

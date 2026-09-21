@@ -1,0 +1,29 @@
+{
+  "manifest_version": 2,
+  "id": "qwen-2.5-3b-abliterated-q4km",
+  "name": "Qwen2.5 3B Instruct (abliterated) Q4_K_M",
+  "format": "gguf",
+  "file": "qwen-2.5-3b-abliterated-q4km.gguf",
+  "sha256": "deadbeefdeadbeefdeadbeefdeadbeefdeadbeefdeadbeefdeadbeefdeadbeef",
+  "blake3": "beefdeadbeefdeadbeefdeadbeefdeadbeefdeadbeefdeadbeefdeadbeefdead",
+  "size_bytes": 1929000000,
+  "capabilities": ["text"],
+  "context_length": 16384,
+  "license": {
+    "spdx": "LicenseRef-Qwen-Research",
+    "url": "https://huggingface.co/Qwen/Qwen2.5-3B-Instruct/blob/main/LICENSE",
+    "notes": "Qwen Research License, not an OSI-approved SPDX id (plan E0.I4, OQ-3). The FOSS license audit treats LicenseRef-* as review-required, not auto-approved."
+  },
+  "source": {
+    "url": "https://huggingface.co/Qwen/Qwen2.5-3B-Instruct",
+    "revision": "0000000000000000000000000000000000000000"
+  },
+  "companions": [
+    {
+      "role": "license",
+      "file": "LICENSE",
+      "sha256": "cafebabecafebabecafebabecafebabecafebabecafebabecafebabecafebabe",
+      "size_bytes": 7020
+    }
+  ]
+}
