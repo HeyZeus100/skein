@@ -94,18 +94,18 @@ dependencies {
     // `:feature:settings` above — `:feature:editor` depends on
     // `:feature:shell`, so `:feature:shell` cannot depend back on it.
     implementation(project(":feature:editor"))
-    // skein-2ige: `MainActivity` feeds `TimelineScreen` the live
-    // `VaultRepositoryImpl` once the vault is open. `:feature:timeline`
-    // declares `debugImplementation(project(":testing"))` for its design-time
-    // previews; without this exclude that edge drags `:testing` and its
-    // `api` deps (JUnit 4 — EPL-1.0, off the foss allowlist — and
-    // kotlinx-coroutines-test) into the fossDebug APK and fails
-    // `licenseAuditFossDebugRuntimeClasspath`. The previews still resolve on
-    // the library's own classpath; this app's unit tests get `:testing`
+    // skein-2ige: `MainActivity` feeds `TimelineScreen`/`TimelineRail` the
+    // live `VaultRepositoryImpl` once the vault is open, both directly
+    // (`Destination.TIMELINE`) and via `SkeinApp`'s `timelinePane` slot
+    // (skein-64y9). `:feature:timeline` used to declare
+    // `debugImplementation(project(":testing"))` for its design-time
+    // previews, which dragged `:testing` and its `api` deps (JUnit 4 —
+    // EPL-1.0, off the foss allowlist — and kotlinx-coroutines-test) into
+    // the fossDebug APK and failed `licenseAuditFossDebugRuntimeClasspath`;
+    // it now declares `debugCompileOnly` instead (skein-64y9), so this
+    // exclude is no longer needed. This app's unit tests get `:testing`
     // through their own `testImplementation` edge below.
-    implementation(project(":feature:timeline")) {
-        exclude(module = "testing")
-    }
+    implementation(project(":feature:timeline"))
 
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.activity.compose)

@@ -5,18 +5,26 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
+import androidx.compose.material3.adaptive.currentWindowAdaptiveInfoV2
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.testTag
+import androidx.window.core.layout.WindowSizeClass
 import app.skein.feature.shell.layout.AdaptivePaneHost
+import app.skein.feature.shell.layout.FoldPosture
+import app.skein.feature.shell.layout.PaneLayoutState
+import app.skein.feature.shell.layout.classifyWidth
+import app.skein.feature.shell.layout.computeAdaptiveLayout
 import app.skein.feature.shell.layout.rememberAdaptiveLayoutState
+import app.skein.feature.shell.layout.rememberFoldPosture
 import app.skein.feature.shell.nav.CommandBar
 import app.skein.feature.shell.nav.Destination
 import app.skein.feature.shell.nav.NavDrawer
 import app.skein.feature.shell.nav.NavState
 import app.skein.feature.shell.nav.rememberNavState
 import app.skein.feature.shell.split.rememberSplitCoordinator
+import app.skein.feature.shell.tabs.EmptyTabHostPlaceholder
 import app.skein.feature.shell.tabs.FlushRegistry
 import app.skein.feature.shell.tabs.MockTabContent
 import app.skein.feature.shell.tabs.Tab
@@ -61,6 +69,30 @@ import java.util.UUID
  * `TabController` of its own for those two operations, only for vault
  * access ([noteTabContent]'s own closure already has that from wherever it
  * builds `NoteTab`).
+ *
+ * [timelinePane] is the seam bd `skein-64y9` adds: `:feature:shell` cannot
+ * depend on `:feature:timeline` (same dependency-direction constraint as
+ * [destinationContent]'s doc above), so `:app` supplies the real
+ * `TimelineScreen`/`TimelineRail` content here instead. It's composed in
+ * exactly one of two places, mirroring `AdaptivePaneHost`'s own posture
+ * logic (never both at once):
+ *  - the dedicated left pane, with `expanded = true`, whenever the timeline
+ *    mode is `FULL` (open Fold / wide dual-pane) — replacing the
+ *    `DestinationPlaceholder` this slot used to hard-code;
+ *  - the primary `TabHost`'s landing content, with `expanded = false`, when
+ *    the layout is single-pane (folded/phone) *and* no tab is open — this is
+ *    what stops a fresh launch from showing "No tabs open" (the bug
+ *    `skein-64y9` was filed for).
+ *
+ * `onEntryOpen`/`onEntryPin` are the same shape as [noteTabContent]'s
+ * `onOpenDocument`: `:app`'s timeline content only needs a `docId`/`title`
+ * to open a preview ([TabsState.openPreview]) or a pinned tab
+ * ([TabsState.openPinned]) on *this pane's* primary [TabsState] — the same
+ * one [tabContent] resolves `TabKind.NOTE` tabs against.
+ *
+ * `null` (the default) keeps pre-`skein-64y9` behaviour exactly: the
+ * hardcoded `DestinationPlaceholder` in the left pane, and `TabHost`'s own
+ * "No tabs open" placeholder when single-pane has no active tab.
  */
 @Composable
 fun SkeinApp(
@@ -75,6 +107,15 @@ fun SkeinApp(
         onOpenDocument: (docId: String, title: String) -> Unit,
         flushRegistry: FlushRegistry,
     ) -> Unit = { tab, _, _, _ -> MockTabContent(tab) },
+    timelinePane: (
+        @Composable (
+            expanded: Boolean,
+            onEntryOpen: (docId: String, title: String) -> Unit,
+            onEntryPin: (docId: String, title: String) -> Unit,
+        ) -> Unit
+    )? = null,
+    windowSizeClass: WindowSizeClass = currentWindowAdaptiveInfoV2().windowSizeClass,
+    posture: FoldPosture = rememberFoldPosture().value,
 ) {
     SkeinTheme(mode = themeMode) {
         val navState = rememberNavState()
@@ -82,6 +123,19 @@ fun SkeinApp(
         val primaryTabsState = rememberTabsState()
         val secondaryTabsState = rememberTabsState()
         val splitCoordinator = rememberSplitCoordinator(primaryTabsState, secondaryTabsState, layoutState)
+        // Single source of truth for "is the timeline slot the only place
+        // left to put content" — the same pure decision `AdaptivePaneHost`
+        // makes internally (and is handed the same `windowSizeClass`/
+        // `posture` here so the two never disagree).
+        val isSinglePane =
+            computeAdaptiveLayout(classifyWidth(windowSizeClass), posture, layoutState).paneLayoutState ==
+                PaneLayoutState.SINGLE_PANE
+        val onTimelineEntryOpen: (docId: String, title: String) -> Unit = { docId, title ->
+            primaryTabsState.openPreview(Tab(TabId(UUID.randomUUID().toString()), docId, title, TabKind.NOTE))
+        }
+        val onTimelineEntryPin: (docId: String, title: String) -> Unit = { docId, title ->
+            primaryTabsState.openPinned(Tab(TabId(UUID.randomUUID().toString()), docId, title, TabKind.NOTE))
+        }
 
         NavDrawer(
             open = navState.drawerOpen,
@@ -105,12 +159,24 @@ fun SkeinApp(
                 AdaptivePaneHost(
                     layoutState = layoutState,
                     modifier = Modifier.weight(1f),
-                    timeline = { DestinationPlaceholder(label = "Timeline") },
+                    windowSizeClass = windowSizeClass,
+                    posture = posture,
+                    timeline = {
+                        timelinePane?.invoke(true, onTimelineEntryOpen, onTimelineEntryPin)
+                            ?: DestinationPlaceholder(label = "Timeline")
+                    },
                     primary = { splitAvailable ->
                         TabHost(
                             tabsState = primaryTabsState,
                             splitAvailable = splitAvailable,
                             onOpenInSplit = splitCoordinator::openInSplit,
+                            emptyContent = {
+                                if (isSinglePane && timelinePane != null) {
+                                    timelinePane(false, onTimelineEntryOpen, onTimelineEntryPin)
+                                } else {
+                                    EmptyTabHostPlaceholder()
+                                }
+                            },
                             content = { tab ->
                                 tabContent(
                                     tab = tab,

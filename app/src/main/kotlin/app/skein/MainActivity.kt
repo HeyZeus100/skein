@@ -40,6 +40,7 @@ import app.skein.feature.shell.auth.BiometricUnlockScreen
 import app.skein.feature.shell.nav.Destination
 import app.skein.feature.shell.tabs.FlushRegistry
 import app.skein.feature.shell.theme.SkeinTheme
+import app.skein.feature.timeline.TimelineRail
 import app.skein.feature.timeline.TimelineScreen
 import app.skein.feature.timeline.rememberTimelineState
 import app.skein.system.SecurityPrefs
@@ -134,6 +135,12 @@ class MainActivity : FragmentActivity() {
         // lock sequence yet — `E3.I3b` owns that — this only keeps the
         // handle from being thrown away.
         val flushRegistry = remember { FlushRegistry() }
+        // skein-64y9: hoisted here (rather than inside `TimelineDestination`)
+        // so `SkeinApp`'s `timelinePane` slot — composed by `AdaptivePaneHost`
+        // itself, outside any tab — shares one `TimelineState`/subscription
+        // with the rest of this shell's timeline surface.
+        val timelinePersonaSource = remember(session) { session.personaService.observeAll() }
+        val timelinePaneState = rememberTimelineState(repo = session.repository, personaSource = timelinePersonaSource)
         SkeinApp(
             destinationContent = { destination ->
                 when (destination) {
@@ -167,6 +174,23 @@ class MainActivity : FragmentActivity() {
                     registerFlush = { flush -> registry.register(tab.id, flush) },
                     unregisterFlush = { registry.unregister(tab.id) },
                 )
+            },
+            timelinePane = { expanded, onEntryOpen, onEntryPin ->
+                if (expanded) {
+                    TimelineScreen(
+                        state = timelinePaneState,
+                        onEntryClick = { document -> onEntryOpen(document.id, document.title) },
+                        onEntryLongPress = { document -> onEntryPin(document.id, document.title) },
+                        expanded = true,
+                        modifier = Modifier.fillMaxSize(),
+                    )
+                } else {
+                    TimelineRail(
+                        state = timelinePaneState,
+                        onEntryClick = { document -> onEntryOpen(document.id, document.title) },
+                        modifier = Modifier.fillMaxSize(),
+                    )
+                }
             },
         )
     }

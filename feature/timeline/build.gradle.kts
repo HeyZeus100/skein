@@ -57,10 +57,22 @@ dependencies {
     debugImplementation(libs.androidx.activity.compose)
     // `TimelineScreenPreview` (src/debug) seeds the design-time `@Preview`s
     // with `InMemoryVaultRepository` + `SyntheticVault.Preset.MEDIUM`.
-    // Debug-variant only so the fake and the synthetic vault never ship in
-    // a release build. `:testing` is pure JVM (docs/TESTING.md), so this
-    // pulls no Android test infrastructure onto the debug classpath.
-    debugImplementation(project(":testing"))
+    // `debugCompileOnly`, not `debugImplementation` (bd `skein-64y9`):
+    // `:testing` `api`-exposes JUnit 4 (EPL-1.0, off the foss allowlist) and
+    // kotlinx-coroutines-test, and Gradle's runtime classpath is transitive
+    // regardless of the `api`/`implementation` split at the *declaring*
+    // edge — an `implementation`-scoped dependency still rides the runtime
+    // classpath of anything that needs to load the class that depends on
+    // it. `debugImplementation` therefore dragged `:testing` (+ its `api`
+    // deps) into every consumer's debug runtime classpath — e.g. `:app`'s
+    // `licenseAuditFossDebugRuntimeClasspath` — even though the only thing
+    // that ever calls into `:testing` here is a `@Preview` function Android
+    // Studio's tooling renders, never code that runs in a shipped debug
+    // build. `debugCompileOnly` keeps `:testing` resolvable to *compile*
+    // `TimelineScreenPreview.kt` in this module's own debug variant without
+    // putting it on any consumer's runtime classpath, so `:app` no longer
+    // needs `exclude(module = "testing")`.
+    debugCompileOnly(project(":testing"))
 
     // `TimelineStateTest` drives the state holder directly with
     // `runTest`/`backgroundScope` (JVM, no Robolectric/Compose UI test
