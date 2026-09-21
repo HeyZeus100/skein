@@ -107,6 +107,12 @@ private class FakeVaultKeyProvider(
         prompt: BiometricPrompt.PromptInfo,
     ): SetupResult = error("BiometricUnlockScreen does not call VaultKeyProvider.setup")
 
+    override suspend fun setup(
+        activity: FragmentActivity,
+        prompt: BiometricPrompt.PromptInfo,
+        existingMaster: ByteArray,
+    ): SetupResult = error("BiometricUnlockScreen does not call VaultKeyProvider.setup(existingMaster)")
+
     override fun isInitialised(): Boolean = error("BiometricUnlockScreen does not probe VaultKeyProvider.isInitialised")
 
     override suspend fun unlock(

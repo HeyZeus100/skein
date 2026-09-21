@@ -70,6 +70,12 @@ class IngestWorkerInstrumentedTest {
             prompt: BiometricPrompt.PromptInfo,
         ): SetupResult = SetupResult.Success(masterKeyVersion = 1, strongBoxBacked = false)
 
+        override suspend fun setup(
+            activity: FragmentActivity,
+            prompt: BiometricPrompt.PromptInfo,
+            existingMaster: ByteArray,
+        ): SetupResult = error("IngestWorkerInstrumentedTest never restores a master key")
+
         override fun isInitialised(): Boolean = true
 
         override suspend fun unlock(
