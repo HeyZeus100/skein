@@ -5,10 +5,12 @@ import androidx.compose.foundation.clickable
 import androidx.compose.material3.Text
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.test.junit4.createAndroidComposeRule
+import androidx.compose.ui.test.onNodeWithContentDescription
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
 import androidx.window.core.layout.WindowSizeClass
 import app.skein.feature.shell.layout.FoldPosture
+import app.skein.feature.shell.nav.Destination
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -178,5 +180,89 @@ class SkeinAppTest {
         }
 
         composeRule.onNodeWithText("No tabs open — back to timeline").assertExists()
+    }
+
+    // ---- skein-5cr5: emptyContent consults navState.destination ---------------
+
+    private fun navigateViaDrawer(label: String) {
+        composeRule.onNodeWithContentDescription("Open navigation drawer").performClick()
+        composeRule.onNodeWithText(label, substring = true).performClick()
+    }
+
+    @Test
+    fun `no tabs open with destination SETTINGS renders destinationContent in single-pane`() {
+        composeRule.setContent {
+            SkeinApp(
+                windowSizeClass = compactWidth,
+                posture = FoldPosture.Unknown,
+                destinationContent = { destination -> Text("DEST_${destination.name}") },
+            )
+        }
+
+        navigateViaDrawer("Settings")
+
+        composeRule.onNodeWithText("DEST_${Destination.SETTINGS.name}").assertExists()
+        composeRule.onNodeWithText("No tabs open — back to timeline").assertDoesNotExist()
+    }
+
+    @Test
+    fun `no tabs open with destination SETTINGS renders destinationContent in dual-pane`() {
+        composeRule.setContent {
+            SkeinApp(
+                windowSizeClass = expandedWidth,
+                posture = FoldPosture.Unknown,
+                destinationContent = { destination -> Text("DEST_${destination.name}") },
+            )
+        }
+
+        navigateViaDrawer("Settings")
+
+        composeRule.onNodeWithText("DEST_${Destination.SETTINGS.name}").assertExists()
+        composeRule.onNodeWithText("No tabs open — back to timeline").assertDoesNotExist()
+    }
+
+    @Test
+    fun `navigating back to destination TIMELINE keeps the landing pane, not destinationContent`() {
+        composeRule.setContent {
+            SkeinApp(
+                windowSizeClass = compactWidth,
+                posture = FoldPosture.Unknown,
+                destinationContent = { destination -> Text("DEST_${destination.name}") },
+            )
+        }
+
+        navigateViaDrawer("Settings")
+        composeRule.onNodeWithText("DEST_${Destination.SETTINGS.name}").assertExists()
+
+        navigateViaDrawer("Timeline")
+
+        composeRule.onNodeWithText("No tabs open — back to timeline").assertExists()
+        composeRule.onNodeWithText("DEST_${Destination.SETTINGS.name}").assertDoesNotExist()
+    }
+
+    @Test
+    fun `an open tab still wins over a non-TIMELINE destination`() {
+        composeRule.setContent {
+            SkeinApp(
+                windowSizeClass = compactWidth,
+                posture = FoldPosture.Unknown,
+                destinationContent = { destination -> Text("DEST_${destination.name}") },
+                timelinePane = { _, onEntryOpen, _ ->
+                    Text(
+                        text = "OPEN_ENTRY",
+                        modifier = Modifier.clickable { onEntryOpen("doc-1", "Note One") },
+                    )
+                },
+                noteTabContent = { tab, _, _, _ -> Text("NOTE_CONTENT_${tab.docId}") },
+            )
+        }
+
+        composeRule.onNodeWithText("OPEN_ENTRY").performClick()
+        composeRule.onNodeWithText("NOTE_CONTENT_doc-1").assertExists()
+
+        navigateViaDrawer("Settings")
+
+        composeRule.onNodeWithText("NOTE_CONTENT_doc-1").assertExists()
+        composeRule.onNodeWithText("DEST_${Destination.SETTINGS.name}").assertDoesNotExist()
     }
 }

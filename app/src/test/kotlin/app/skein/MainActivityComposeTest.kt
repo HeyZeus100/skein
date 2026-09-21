@@ -3,10 +3,13 @@ package app.skein
 import androidx.compose.ui.test.junit4.v2.createEmptyComposeRule
 import androidx.compose.ui.test.onAllNodesWithContentDescription
 import androidx.compose.ui.test.onAllNodesWithTag
+import androidx.compose.ui.test.onAllNodesWithText
 import androidx.compose.ui.test.onNodeWithContentDescription
 import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.onNodeWithText
+import androidx.compose.ui.test.onRoot
 import androidx.compose.ui.test.performClick
+import androidx.compose.ui.test.printToLog
 import androidx.test.core.app.ActivityScenario
 import androidx.test.core.app.ApplicationProvider
 import app.skein.core.vault.key.SetupResult
@@ -26,6 +29,7 @@ import org.robolectric.RobolectricTestRunner
 import org.robolectric.annotation.Config
 import us.aherrera.skein.core.model.DocumentKind
 import us.aherrera.skein.core.model.NewDocument
+import java.time.Duration
 
 /**
  * E10.I1's sample Compose UI test, extended by skein-2ige: a
@@ -325,6 +329,49 @@ class MainActivityComposeTest {
             }
             composeRule.onNodeWithTag(GraphTestTags.CANVAS).assertDoesNotExist()
             composeRule.onNodeWithTag(NoteTabTestTags.ROOT).assertExists()
+        }
+    }
+
+    // ---- skein-qsux (E3.I14 cont'd): lock-policy Settings wiring --------------
+
+    @Test
+    fun `changing the idle timeout in Settings persists it and updates UnlockManager's live policy`() {
+        runBlocking { SecurityPrefs(app).clearAllForTest() }
+
+        ActivityScenario.launch(MainActivity::class.java).use {
+            awaitTag(ShellTestTags.SKEIN_SHELL_ROOT)
+
+            // Open the hamburger drawer and navigate to Settings (E6.I3's
+            // CommandBar `≡` / NavDrawer "Settings" entry).
+            composeRule.onNodeWithContentDescription("Open navigation drawer").performClick()
+            composeRule.onNodeWithText("Settings", substring = true).performClick()
+            composeRule.onRoot().printToLog("SKEIN_DEBUG")
+
+            // Settings › Security's IdleTimeoutRow defaults to 5 minutes
+            // (SecurityPrefs.DEFAULT_IDLE_TIMEOUT_MINUTES) until wired
+            // through MainActivity's rememberSettingsViewModel call — this
+            // assertion is the regression guard for that wiring actually
+            // being present.
+            composeRule.waitUntil(timeoutMillis = WAIT_MILLIS) {
+                composeRule.onAllNodesWithText("5 minutes").fetchSemanticsNodes().isNotEmpty()
+            }
+            composeRule.onNodeWithText("5 minutes").performClick()
+            composeRule.onNodeWithText("1 minute").performClick()
+
+            // Persisted to the real DataStore-backed SecurityPrefs...
+            val prefs = SecurityPrefs(app)
+            composeRule.waitUntil(timeoutMillis = WAIT_MILLIS) {
+                runBlocking { prefs.idleTimeoutMinutes.first() } == 1
+            }
+            assertEquals(1, runBlocking { prefs.idleTimeoutMinutes.first() })
+
+            // ...and reflected in the real UnlockManager's live policy, via
+            // TestSkeinApplication's mirror of VaultServices.forDevice's
+            // `combine(...)` collection — the same live-collection path
+            // production wiring uses, not a write from MainActivity itself.
+            composeRule.waitUntil(timeoutMillis = WAIT_MILLIS) {
+                app.vault.unlockManager.policy.value.idleTimeout == Duration.ofMinutes(1)
+            }
         }
     }
 

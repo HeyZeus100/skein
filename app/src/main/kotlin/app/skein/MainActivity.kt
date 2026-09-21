@@ -85,12 +85,17 @@ import us.aherrera.skein.core.model.DocId
 class MainActivity : FragmentActivity() {
     private lateinit var securityPrefs: SecurityPrefs
 
-    // A stable field reference (unlike `securityPrefs::setFlagSecureEnabled`
+    // Stable field references (unlike e.g. `securityPrefs::setFlagSecureEnabled`
     // evaluated inline, which allocates a new bound-reference instance on
     // every call) so `rememberSettingsViewModel`'s `remember(...)` keys
     // don't change every recomposition and needlessly rebuild
-    // `SettingsViewModel` (and re-launch its collector) each time.
+    // `SettingsViewModel` (and re-launch its collectors) each time. E3.I14
+    // (skein-up0/skein-qsux) adds the three lock-policy setters below,
+    // following the same shape.
     private val setFlagSecureEnabled: suspend (Boolean) -> Unit = { securityPrefs.setFlagSecureEnabled(it) }
+    private val setIdleTimeoutMinutes: suspend (Int) -> Unit = { securityPrefs.setIdleTimeoutMinutes(it) }
+    private val setLockOnScreenOff: suspend (Boolean) -> Unit = { securityPrefs.setLockOnScreenOff(it) }
+    private val setLockOnBackground: suspend (Boolean) -> Unit = { securityPrefs.setLockOnBackground(it) }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -174,10 +179,25 @@ class MainActivity : FragmentActivity() {
                 when (destination) {
                     Destination.TIMELINE -> TimelineDestination(session)
                     Destination.SETTINGS -> {
+                        // E3.I14 (skein-up0/skein-qsux): the idle-timeout/
+                        // lock-on-screen-off/lock-on-background flows and
+                        // setters, plus the read-only StrongBox status flow.
+                        // `VaultServices.forDevice`'s own live `combine(...)`
+                        // collection (not this activity) remains the single
+                        // writer into `UnlockManager.configure` — these are
+                        // wired here purely so Settings › Security can display
+                        // and persist them via `SecurityPrefs`.
                         val settingsViewModel =
                             rememberSettingsViewModel(
                                 flagSecureEnabledFlow = securityPrefs.flagSecureEnabled,
                                 onSetFlagSecureEnabled = setFlagSecureEnabled,
+                                idleTimeoutMinutesFlow = securityPrefs.idleTimeoutMinutes,
+                                onSetIdleTimeoutMinutes = setIdleTimeoutMinutes,
+                                lockOnScreenOffFlow = securityPrefs.lockOnScreenOff,
+                                onSetLockOnScreenOff = setLockOnScreenOff,
+                                lockOnBackgroundFlow = securityPrefs.lockOnBackground,
+                                onSetLockOnBackground = setLockOnBackground,
+                                strongBoxUnavailableFallbackFlow = securityPrefs.strongBoxUnavailableFallback,
                             )
                         SettingsScreen(
                             viewModel = settingsViewModel,
