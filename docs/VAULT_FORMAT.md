@@ -36,13 +36,11 @@ No user-readable Markdown or configuration files live on disk inside the vault. 
 
 ## SQLCipher database
 
-**[shipped]** The vault database uses SQLCipher (AES-256-CTR page-level encryption, via `sqlcipher://` URI) at `PRAGMA user_version = 1`, currently at schema version 1 only.
+**[shipped]** The vault database uses SQLCipher (AES-256-CTR page-level encryption, via `sqlcipher://` URI). A fresh vault migrates to `PRAGMA user_version = 7` (migrations 001, 003 and 007 — see section 7).
 
-### Database schema (v1)
+### Database schema
 
-Migration file: `core/vault/src/main/resources/migrations/001_initial.sql`
-
-The schema is locked by the design spec (§5) and implements these tables:
+Migration files: `core/vault/src/main/resources/migrations/001_initial.sql` (the v1 schema, locked by the design spec §5) plus `003_document_revisions.sql` and `007_drop_attachment_master_key.sql` (see section 7). The tables below describe the schema after all of them have applied.
 
 #### `documents` (primary table)
 
@@ -56,7 +54,7 @@ The schema is locked by the design spec (§5) and implements these tables:
 | `updated_at` | INTEGER NOT NULL | Unix milliseconds since epoch |
 | `persona_id` | TEXT REFERENCES personas(id) | May be `NULL`; references the persona system prompt |
 | `frontmatter` | JSON | YAML frontmatter serialized as JSON (see section 3) |
-| `content_hash` | TEXT | Content-addressed hash (reserved for future migrations) |
+| `content_hash` | TEXT | Content address. For every non-`attachment` kind this **is** the document's current `revision_hash` — BLAKE3-256 over the canonicalized `body_md` plus normalized frontmatter (migration 003; see `document_revisions` below). For `attachment` it is SHA-256 over the blob's plaintext bytes. |
 | `mime_type` | TEXT | Present only when `kind='attachment'`; e.g. `image/png`, `application/pdf` |
 | `blob_size` | INTEGER | Present only when `kind='attachment'`; plaintext size in bytes |
 
@@ -73,8 +71,9 @@ Indexes: `documents_updated` (by `updated_at` DESC), `documents_persona` (by `pe
 | `token_count` | INTEGER | Cached token count (model-dependent) |
 | `embedder_id` | TEXT | Model ID that produced the embedding |
 | `embedder_version` | INTEGER | Embedder version (for cache invalidation) |
+| `revision_hash` | TEXT | **[v1 design, in progress]** Added by migration 003: the `document_revisions.revision_hash` this chunk was cut from, so retrieval can emit a `(revision_hash, locator)` citation tuple without re-hashing the document. Carries no foreign key — see migration 003's header for why. Populated by the retrieval/ingest pipeline (plan `E5.I13`), not yet written by shipped code. |
 
-Indexes: `chunks_doc` (by `doc_id`).
+Indexes: `chunks_doc` (by `doc_id`), `idx_chunks_revision` (by `revision_hash`).
 
 Virtual tables:
 - `chunks_fts` — FTS5 external-content table over `chunks.text` for keyword search (BM25)
@@ -89,10 +88,34 @@ Virtual tables:
 | `role` | TEXT NOT NULL | `user` or `assistant` |
 | `content_md` | TEXT NOT NULL | Message body (Markdown) |
 | `model_id` | TEXT | Model ID (for assistant messages) |
-| `retrieved_chunks` | JSON | Citation records pointing to retrieved text (see PRIVACY.md §1) |
+| `retrieved_chunks` | JSON | Citation record for the turn. Two shapes are readable: **citation-record-v1** (`record_version: 1`) — `{retrieved: [{marker, document_id, revision_hash, locator: {byte_start, byte_end, chunk_ord?}, excerpt, excerpt_hash, source_kind}], cited: [marker]}`, per `docs/design/POST_REVIEW_RESOLUTIONS.md` §1.3 — and the legacy pre-003 shape, a bare array of `chunks.id` values, treated as `record_version: 0`. SQLite enforces no JSON schema; the codec `core/model/.../CitationRecordJson.kt` is the enforcement point. See also PRIVACY.md §1. |
 | `created_at` | INTEGER NOT NULL | Unix milliseconds since epoch |
 
 Indexes: `messages_chat` (by `chat_doc_id`, `created_at`).
+
+#### `document_revisions` (citation stability, migration 003)
+
+Content-addressed snapshots of every state a document has been in that could have been cited. Added by `003_document_revisions.sql` (`skein-uo5n`, design `docs/design/POST_REVIEW_RESOLUTIONS.md` §1.3).
+
+| Column | Type | Notes |
+|--------|------|-------|
+| `document_id` | TEXT NOT NULL REFERENCES documents(id) ON DELETE CASCADE | Parent document |
+| `revision_hash` | TEXT NOT NULL | BLAKE3-256 hex over the canonicalized `body_md` + normalized frontmatter — the content address |
+| `revision_ord` | INTEGER NOT NULL | Monotonic within `document_id`; the highest ord is the most recently captured revision |
+| `body_md_snapshot` | TEXT NOT NULL | The canonical body that was hashed — the whole body, not an excerpt |
+| `frontmatter_snapshot` | TEXT NOT NULL | The canonical frontmatter JSON that was hashed |
+| `captured_at` | INTEGER NOT NULL | Unix milliseconds since epoch |
+| `reason` | TEXT NOT NULL | One of `ingest`, `reembed`, `import`, `share` |
+
+Primary key: `(document_id, revision_hash)` — the hash *is* the content address, so re-writing content a document has held before reuses its row rather than appending a duplicate. Indexes: `idx_document_revisions_doc` (by `document_id`, `revision_ord` DESC).
+
+**Revision hash (normative).** BLAKE3-256, lowercase hex, over `"skein/revision/v1\0"` ‖ `u64le(len(frontmatter))` ‖ canonical frontmatter ‖ canonical body, all UTF-8, where the canonical body folds `\r\n` and `\r` to `\n` (a null body is the empty string) and the canonical frontmatter is compact JSON with object keys sorted recursively and the `id` key removed (it always equals `documents.id`, and keeping it would make two byte-identical notes hash differently). The single implementation is `RevisionHashing` in `core/model/src/main/kotlin/us/aherrera/skein/core/model/Revisions.kt`; `Blake3` beside it is a pure-Kotlin BLAKE3-256 pinned to the published test vectors. Consequences: a CRLF↔LF-only edit, a frontmatter key reordering, a retitle, and a `persona_id` change all leave the revision — and therefore every citation into the document — untouched; a body or frontmatter-value edit re-addresses it.
+
+**Write path.** `VaultRepositoryImpl` (and its `InMemoryVaultRepository` twin) captures a revision on `createDocument`, `updateBody`, `updateFrontmatter`, and on the transcript rewrite inside `appendMessage`, inside the same transaction as the `documents` write. Capture is skipped when the content address did not move. Attachments never get rows.
+
+**Read path.** `VaultRepository.currentRevision(id)` returns the row whose hash equals the document's current `content_hash`; `getRevision(id, hash)` returns an archived one for the diff view; `revisionMatches(citation)` is the replay check — two hex strings compared, no re-hashing. A mismatch is what the chat surface renders as the "source changed" badge (plan `E5.I16b`/`E6.I8`, not yet landed).
+
+**Retention.** **[v1 design, in progress]** A revision is meant to live as long as any `messages.retrieved_chunks` entry references it (§1.2 step 4). That reference lives inside a JSON payload, which SQLite cannot express as a foreign key, so the `documentRevisions_gc` sweep that drops orphans is a follow-up; today nothing but `ON DELETE CASCADE` from `documents` removes a revision.
 
 #### `personas`
 
@@ -441,6 +464,7 @@ Fields:
 # Migration manifest (E2.I2 / skein-5my)
 # Add new migrations by appending a line here AND adding the file below.
 001_initial.sql
+003_document_revisions.sql
 007_drop_attachment_master_key.sql
 ```
 
@@ -448,15 +472,17 @@ Each migration is a file named `NNN_<description>.sql` where `NNN` is a zero-pad
 
 ### Current migrations
 
-**[shipped]** Two migrations exist:
+**[shipped]** Three migrations exist:
 
 - `001_initial.sql` — v1 schema (see section 2)
-- `007_drop_attachment_master_key.sql` — drops the vestigial `attachment_master_key` table and the never-populated `attachment_keys` table (`skein-7d0l`; see section 2's `attachment_master_key` entry above). `PRAGMA user_version` reaches 7, not 2, because migration numbers 002–006 are reserved by landed plan/design docs and an open bead (`skein-voys`) for not-yet-landed migrations (`002_attestation_status`, `003_document_revisions`, `004_post_mmap_blake3`, `005_export_stages`, `006_recovery_drafts`) and taking one of them here would collide when those land.
+- `003_document_revisions.sql` — adds `document_revisions` and `chunks.revision_hash` for citation stability across re-ingestion (`skein-uo5n`, design `docs/design/POST_REVIEW_RESOLUTIONS.md` §1.3; see section 2's `document_revisions` entry above)
+- `007_drop_attachment_master_key.sql` — drops the vestigial `attachment_master_key` table and the never-populated `attachment_keys` table (`skein-7d0l`; see section 2's `attachment_master_key` entry above). `PRAGMA user_version` reaches 7, not 2, because migration numbers 002 and 004–006 are reserved by landed plan/design docs and an open bead (`skein-voys`) for not-yet-landed migrations (`002_attestation_status`, `004_post_mmap_blake3`, `005_export_stages`, `006_recovery_drafts`) and taking one of them here would collide when those land.
 
-Future migrations are tracked in the plan and design docs; 002–006 above are reserved but not yet in-tree.
+Migrations apply in ascending numeric order, so on a fresh database 003 runs before 007; a device that installed at v1 runs 003 then 007 and reaches the same schema. Future migrations are tracked in the plan and design docs; 002 and 004–006 above are reserved but not yet in-tree.
 
 ### Migration changelog
 
+- **003** (`skein-uo5n`) — adds `document_revisions` (content-addressed body/frontmatter snapshots) and the `chunks.revision_hash` reverse pointer; changes the *meaning* of `documents.content_hash` for non-attachment documents to the BLAKE3-256 revision hash, and the *shape* of `messages.retrieved_chunks` to citation-record-v1 (the legacy bare-chunk-id array stays readable as `record_version: 0`). No column is dropped and no 001 DDL is edited.
 - **007** (`skein-7d0l`) — drops `attachment_master_key` and `attachment_keys` (superseded by the `keys/key-envelope.v1` file and `FileAttachmentStore`'s per-write HKDF derivation, respectively; neither table was ever populated by shipped code).
 
 ### Migration safety
@@ -469,7 +495,7 @@ Future migrations are tracked in the plan and design docs; 002–006 above are r
 
 The following are **not** stable or will ship as **[v1 design, in progress]**:
 
-- **Document revision history** — The `document_revisions` table (plan task `E2.I8`, design `docs/design/POST_REVIEW_RESOLUTIONS.md` §1.3) is not in Migration 001. Content addressing (BLAKE3 revision hashes) and citation stability are out of scope for v1 and will land in a later migration.
+- **Document revision history** — The `document_revisions` table, the BLAKE3-256 revision hash, and the repository write/read paths for both are **[shipped]** as of migration 003 (`skein-uo5n`; see section 2). What is still **[v1 design, in progress]**: the `documentRevisions_gc` retention sweep (§1.2 step 4), and the fact that a chat document snapshots its whole re-materialized transcript on every appended message, which is quadratic in turns until that sweep lands.
 
 - **Backup and recovery** — The `recovery_drafts` table and the background recovery indexing safety mechanism (plan task `E2.I14`, design `docs/design/LOCK_POLICY_INDEXING.md` §7) are out of scope for v1.
 
@@ -481,7 +507,7 @@ The following are **not** stable or will ship as **[v1 design, in progress]**:
 
 - **FTS5 and vec0 indexes** — The actual indexing, ingest queue processing, and retrieval pipeline are **[v1 design, in progress]** (plan tasks `E5.I1`–`E5.I5`). The schema tables exist; the code to populate and query them does not yet land in the codebase.
 
-- **Citation records** — The `messages.retrieved_chunks` JSON field design is locked (plan task `E2.I8`, design `docs/design/POST_REVIEW_RESOLUTIONS.md` §1.3), and the Kotlin type (`CitationRecord` in `core/model`) is stable, but the logic to populate and validate citations is **[v1 design, in progress]**.
+- **Citation records** — Persisting and reading back citation-record-v1 (`CitationRecord`/`CitationRecordJson` in `core/model`, via `VaultRepository.appendMessage`/`listMessages`), and the replay check `revisionMatches`, are **[shipped]** as of migration 003. What is still **[v1 design, in progress]**: the *producer* — `RetrievalServiceImpl` populating `Retrieved.revisionHash`/`locator` (plan `E5.I13`) — and the *consumer* — the chat surface's "source changed" badge and diff sheet (plan `E5.I16b`/`E6.I8`). Note the locator grammar: citation-record-v1 anchors to **UTF-8 byte offsets** into the revision's body, while `core/rag`'s `Chunk.start`/`Chunk.end` are **char offsets** into `bodyMd`; the producer bead owns that conversion.
 
 - **Persona management** — The `personas` table and system prompt selection are schema-locked and partially implemented. Full persona CRUD and the persona UI are **[v1 design, in progress]** (plan tasks `E4.I8`–`E4.I11`).
 

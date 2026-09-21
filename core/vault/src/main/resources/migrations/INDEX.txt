@@ -10,4 +10,5 @@
 #
 # Add new migrations by appending a line here AND adding the file below.
 001_initial.sql
+003_document_revisions.sql
 007_drop_attachment_master_key.sql

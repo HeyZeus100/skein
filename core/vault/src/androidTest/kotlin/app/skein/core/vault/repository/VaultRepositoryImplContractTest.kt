@@ -71,13 +71,19 @@ public class VaultRepositoryImplContractTest : VaultRepositoryContractTest() {
     override fun repo(): VaultRepository {
         val driver = SkeinSQLiteDriver()
         val conn = driver.openWithKey(":memory:", passphrase = null) as SkeinSQLiteConnection
-        val sql =
-            requireNotNull(
-                javaClass.classLoader?.getResourceAsStream("migrations/001_initial.sql"),
-            ) { "migrations/001_initial.sql not on the classpath" }
-                .use { it.readBytes().toString(Charsets.UTF_8) }
-        for (statement in splitOnSentinel(sql)) {
-            conn.prepare(statement).use { it.step() }
+        // 001 plus 003 (`document_revisions`, skein-uo5n): the inherited
+        // contract suite now covers POST_REVIEW_RESOLUTIONS.md §1's revision
+        // and citation-record semantics, which need 003's table. 007 drops
+        // only tables this class never touches, so it is still skipped.
+        for (migration in listOf("001_initial.sql", "003_document_revisions.sql")) {
+            val sql =
+                requireNotNull(
+                    javaClass.classLoader?.getResourceAsStream("migrations/$migration"),
+                ) { "migrations/$migration not on the classpath" }
+                    .use { it.readBytes().toString(Charsets.UTF_8) }
+            for (statement in splitOnSentinel(sql)) {
+                conn.prepare(statement).use { it.step() }
+            }
         }
         openConnections += conn
         val impl =

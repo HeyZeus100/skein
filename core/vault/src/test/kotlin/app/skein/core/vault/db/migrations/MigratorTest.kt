@@ -33,7 +33,7 @@ class MigratorTest {
     }
 
     @Test
-    fun `main migrations index lists exactly 001_initial_sql and 007_drop_attachment_master_key_sql`() {
+    fun `main migrations index lists exactly 001_initial, 003_document_revisions and 007_drop_attachment_master_key`() {
         // Exercises the real production manifest shipped in
         // src/main/resources/migrations/INDEX.txt against the default
         // constructor overload.
@@ -45,7 +45,11 @@ class MigratorTest {
             }.use { it.readBytes().toString(Charsets.UTF_8) }
         val listedFiles = indexText.lineSequence().map { it.trim() }.filter { it.isNotEmpty() && !it.startsWith("#") }
 
-        assertThat(listedFiles.toList()).containsExactly("001_initial.sql", "007_drop_attachment_master_key.sql")
+        assertThat(listedFiles.toList()).containsExactly(
+            "001_initial.sql",
+            "003_document_revisions.sql",
+            "007_drop_attachment_master_key.sql",
+        )
         // migrator itself isn't exercised beyond construction here — the
         // functional discover-then-apply path is covered on-device.
         assertThat(migrator).isNotNull()

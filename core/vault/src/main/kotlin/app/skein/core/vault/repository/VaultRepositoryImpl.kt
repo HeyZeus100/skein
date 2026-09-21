@@ -81,21 +81,25 @@ import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
 import kotlinx.coroutines.withContext
 import kotlinx.serialization.json.Json
-import kotlinx.serialization.json.JsonArray
 import kotlinx.serialization.json.JsonObject
 import kotlinx.serialization.json.JsonPrimitive
 import kotlinx.serialization.json.buildJsonObject
-import kotlinx.serialization.json.long
-import us.aherrera.skein.core.model.ChunkId
+import us.aherrera.skein.core.model.Citation
+import us.aherrera.skein.core.model.CitationRecordJson
 import us.aherrera.skein.core.model.DocId
 import us.aherrera.skein.core.model.Document
 import us.aherrera.skein.core.model.DocumentHit
 import us.aherrera.skein.core.model.DocumentKind
+import us.aherrera.skein.core.model.DocumentRevision
 import us.aherrera.skein.core.model.IngestItem
 import us.aherrera.skein.core.model.IngestReason
 import us.aherrera.skein.core.model.Message
 import us.aherrera.skein.core.model.NewDocument
 import us.aherrera.skein.core.model.NewMessage
+import us.aherrera.skein.core.model.RetrievedChunksPayload
+import us.aherrera.skein.core.model.RevisionHash
+import us.aherrera.skein.core.model.RevisionHashing
+import us.aherrera.skein.core.model.RevisionReason
 import us.aherrera.skein.core.model.Role
 import us.aherrera.skein.core.model.TimelineFilter
 import us.aherrera.skein.core.model.VaultRepository
@@ -130,7 +134,19 @@ public class VaultRepositoryImpl(
             val now = clock()
             val chosenId = resolveDocumentId(new)
             val frontmatterWithId = mergeFrontmatterWithId(new.frontmatter, chosenId)
-            val contentHash = new.bodyMd?.let(::sha256Hex)
+            // Migration 003 / POST_REVIEW_RESOLUTIONS.md §1.3: for every
+            // citable (non-attachment) kind, `content_hash` IS the
+            // RevisionHash. Attachments keep SHA-256-over-bytes, written by
+            // `createAttachment` instead.
+            val revisionHash =
+                if (new.kind ==
+                    DocumentKind.ATTACHMENT
+                ) {
+                    null
+                } else {
+                    RevisionHashing.compute(new.bodyMd, frontmatterWithId)
+                }
+            val contentHash = revisionHash ?: new.bodyMd?.let(::sha256Hex)
             writer.prepare(VaultSql.INSERT_DOCUMENT).use { stmt ->
                 stmt.bindText(1, chosenId)
                 stmt.bindText(2, new.kind.db)
@@ -142,6 +158,9 @@ public class VaultRepositoryImpl(
                 stmt.bindText(8, encodeFrontmatter(frontmatterWithId))
                 bindNullableText(stmt, 9, contentHash)
                 stmt.step()
+            }
+            if (revisionHash != null) {
+                captureRevision(chosenId, new.bodyMd, frontmatterWithId, revisionHash, now, RevisionReason.INGEST)
             }
             publish(TableChange.Documents(chosenId))
             Document(
@@ -173,7 +192,13 @@ public class VaultRepositoryImpl(
         writeTx {
             val existing = requireDocument(id)
             val now = clock()
-            val hash = sha256Hex(bodyMd)
+            // §1.3: the new content address of the document. Note it covers
+            // `body_md` + frontmatter only — retitling alone leaves the
+            // revision, and therefore every citation into this document,
+            // untouched. An attachment (which has no citable body) keeps the
+            // pre-003 SHA-256 shape; see `Document.contentHash`.
+            val citable = existing.kind != DocumentKind.ATTACHMENT
+            val hash = if (citable) RevisionHashing.compute(bodyMd, existing.frontmatter) else sha256Hex(bodyMd)
             writer.prepare(VaultSql.UPDATE_DOCUMENT_BODY).use { stmt ->
                 stmt.bindText(1, title)
                 stmt.bindText(2, bodyMd)
@@ -181,6 +206,11 @@ public class VaultRepositoryImpl(
                 stmt.bindText(4, hash)
                 stmt.bindText(5, id)
                 stmt.step()
+            }
+            // Nothing to capture when the content address did not move:
+            // §1.4's "newRevision is idempotent when content is unchanged".
+            if (citable && hash != existing.contentHash) {
+                captureRevision(id, bodyMd, existing.frontmatter, hash, now, RevisionReason.INGEST)
             }
             // documents_au_ingest (001_initial.sql) enqueues ingest_queue
             // automatically when body_md/title actually change — no manual
@@ -197,14 +227,25 @@ public class VaultRepositoryImpl(
             val existing = requireDocument(id)
             val now = clock()
             val withId = mergeFrontmatterWithId(frontmatter, id)
+            val citable = existing.kind != DocumentKind.ATTACHMENT
+            // §1.3's hash covers the normalized frontmatter, so a
+            // frontmatter rewrite re-addresses the document — unless the
+            // rewrite is cosmetic (key reordering, or touching only `id`),
+            // which canonicalization folds away and `captureRevision`
+            // therefore treats as a no-op.
+            val hash = if (citable) RevisionHashing.compute(existing.bodyMd, withId) else existing.contentHash
             writer.prepare(VaultSql.UPDATE_DOCUMENT_FRONTMATTER).use { stmt ->
                 stmt.bindText(1, encodeFrontmatter(withId))
                 stmt.bindLong(2, now)
-                stmt.bindText(3, id)
+                bindNullableText(stmt, 3, hash)
+                stmt.bindText(4, id)
                 stmt.step()
             }
+            if (citable && hash != null && hash != existing.contentHash) {
+                captureRevision(id, existing.bodyMd, withId, hash, now, RevisionReason.INGEST)
+            }
             publish(TableChange.Documents(id))
-            existing.copy(frontmatter = withId, updatedAt = now)
+            existing.copy(frontmatter = withId, updatedAt = now, contentHash = hash)
         }
 
     override suspend fun deleteDocument(id: DocId) {
@@ -304,7 +345,7 @@ public class VaultRepositoryImpl(
                 stmt.bindText(3, message.role.wire)
                 stmt.bindText(4, message.contentMd)
                 bindNullableText(stmt, 5, message.modelId)
-                stmt.bindText(6, encodeChunkIds(message.retrievedChunks))
+                stmt.bindText(6, encodeRetrievedChunks(message))
                 stmt.bindLong(7, now)
                 stmt.step()
             }
@@ -315,13 +356,20 @@ public class VaultRepositoryImpl(
             // resolves to the writer connection (ambient TxContext is
             // active), so it sees the row just inserted above.
             val transcript = renderTranscript(listMessages(chatDocId))
-            val hash = sha256Hex(transcript)
+            val hash = RevisionHashing.compute(transcript, chat.frontmatter)
             writer.prepare(VaultSql.UPDATE_CHAT_BODY).use { stmt ->
                 stmt.bindText(1, transcript)
                 stmt.bindLong(2, now)
                 stmt.bindText(3, hash)
                 stmt.bindText(4, chatDocId)
                 stmt.step()
+            }
+            // A chat is retrievable (it is chunked and indexed like a note),
+            // so its transcript needs a revision address too — otherwise a
+            // citation into a chat would resolve against a `content_hash`
+            // with no `document_revisions` row behind it (§1.2 step 3).
+            if (hash != chat.contentHash) {
+                captureRevision(chatDocId, transcript, chat.frontmatter, hash, now, RevisionReason.INGEST)
             }
             // documents_au_ingest fires on this body_md change, enqueuing
             // the chat for re-index automatically.
@@ -333,8 +381,9 @@ public class VaultRepositoryImpl(
                 role = message.role,
                 contentMd = message.contentMd,
                 modelId = message.modelId,
-                retrievedChunks = message.retrievedChunks,
+                retrievedChunks = if (message.citations == null) message.retrievedChunks else emptyList(),
                 createdAt = now,
+                citations = message.citations,
             )
         }
 
@@ -352,6 +401,77 @@ public class VaultRepositoryImpl(
         changeTicks { it is TableChange.Messages && it.chatDocId == chatDocId }
             .map { listMessages(chatDocId) }
             .distinctUntilChanged()
+
+    // ------------------------------------------------------------------
+    // Document revisions (migration 003, POST_REVIEW_RESOLUTIONS.md §1)
+    // ------------------------------------------------------------------
+
+    override suspend fun currentRevision(id: DocId): DocumentRevision? =
+        withReader { conn ->
+            conn.prepare(VaultSql.SELECT_CURRENT_REVISION).use { stmt ->
+                stmt.bindText(1, id)
+                if (stmt.step()) readRevision(stmt) else null
+            }
+        }
+
+    override suspend fun getRevision(
+        id: DocId,
+        revisionHash: RevisionHash,
+    ): DocumentRevision? =
+        withReader { conn ->
+            conn.prepare(VaultSql.SELECT_REVISION_BY_HASH).use { stmt ->
+                stmt.bindText(1, id)
+                stmt.bindText(2, revisionHash)
+                if (stmt.step()) readRevision(stmt) else null
+            }
+        }
+
+    override suspend fun revisionMatches(citation: Citation): Boolean =
+        withReader { conn ->
+            conn.prepare(VaultSql.SELECT_REVISION_MATCHES).use { stmt ->
+                stmt.bindText(1, citation.documentId)
+                stmt.bindText(2, citation.revisionHash)
+                stmt.step()
+            }
+        }
+
+    /**
+     * Records [revisionHash] as a `document_revisions` row for [docId], per
+     * POST_REVIEW_RESOLUTIONS.md §1.3. Idempotent by construction: the hash
+     * is the content address, so re-capturing unchanged content updates the
+     * existing row's position in history rather than appending a duplicate
+     * (see `VaultSql.UPSERT_DOCUMENT_REVISION`).
+     *
+     * Always called from inside the caller's `writeTx`, so the revision and
+     * the `documents` row it addresses commit together or not at all.
+     */
+    private fun captureRevision(
+        docId: DocId,
+        bodyMd: String?,
+        frontmatter: JsonObject,
+        revisionHash: RevisionHash,
+        capturedAt: Long,
+        reason: RevisionReason,
+    ) {
+        val nextOrd =
+            writer.prepare(VaultSql.SELECT_MAX_REVISION_ORD).use { stmt ->
+                stmt.bindText(1, docId)
+                if (stmt.step()) stmt.getLong(0) + 1 else 0L
+            }
+        writer.prepare(VaultSql.UPSERT_DOCUMENT_REVISION).use { stmt ->
+            stmt.bindText(1, docId)
+            stmt.bindText(2, revisionHash)
+            stmt.bindLong(3, nextOrd)
+            // The snapshot stores the CANONICAL bytes that were hashed, so
+            // `RevisionHashing.compute(bodyMdSnapshot, frontmatterSnapshot)`
+            // reproduces `revision_hash` from the row alone.
+            stmt.bindText(4, RevisionHashing.canonicalBody(bodyMd))
+            stmt.bindText(5, RevisionHashing.canonicalFrontmatter(frontmatter))
+            stmt.bindLong(6, capturedAt)
+            stmt.bindText(7, reason.db)
+            stmt.step()
+        }
+    }
 
     // ------------------------------------------------------------------
     // Attachments (E2.I5 / skein-1nr owns the real blob store)
@@ -588,15 +708,29 @@ public class VaultRepositoryImpl(
             contentHash = if (stmt.isNull(8)) null else stmt.getText(8),
         )
 
-    private fun readMessage(stmt: SQLiteStatement): Message =
-        Message(
+    private fun readMessage(stmt: SQLiteStatement): Message {
+        val payload = CitationRecordJson.decode(if (stmt.isNull(5)) null else stmt.getText(5))
+        return Message(
             id = stmt.getText(0),
             chatDocId = stmt.getText(1),
             role = roleFromWire(stmt.getText(2)),
             contentMd = stmt.getText(3),
             modelId = if (stmt.isNull(4)) null else stmt.getText(4),
-            retrievedChunks = decodeChunkIds(if (stmt.isNull(5)) null else stmt.getText(5)),
+            retrievedChunks = (payload as? RetrievedChunksPayload.Legacy)?.chunkIds ?: emptyList(),
             createdAt = stmt.getLong(6),
+            citations = (payload as? RetrievedChunksPayload.V1)?.record,
+        )
+    }
+
+    private fun readRevision(stmt: SQLiteStatement): DocumentRevision =
+        DocumentRevision(
+            documentId = stmt.getText(0),
+            revisionHash = stmt.getText(1),
+            revisionOrd = stmt.getLong(2).toInt(),
+            bodyMdSnapshot = stmt.getText(3),
+            frontmatterSnapshot = decodeFrontmatter(if (stmt.isNull(4)) null else stmt.getText(4)),
+            capturedAt = stmt.getLong(5),
+            reason = RevisionReason.fromDb(stmt.getText(6)),
         )
 
     private fun roleFromWire(wire: String): Role = Role.entries.first { it.wire == wire }
@@ -635,16 +769,16 @@ public class VaultRepositoryImpl(
     private fun encodeFrontmatter(frontmatter: JsonObject): String =
         json.encodeToString(JsonObject.serializer(), frontmatter)
 
-    private fun encodeChunkIds(ids: List<ChunkId>): String =
-        json.encodeToString(JsonArray.serializer(), JsonArray(ids.map { JsonPrimitive(it) }))
-
-    private fun decodeChunkIds(text: String?): List<ChunkId> {
-        if (text.isNullOrEmpty()) return emptyList()
-        val array =
-            runCatching { json.decodeFromString(JsonArray.serializer(), text) }
-                .getOrDefault(JsonArray(emptyList()))
-        return array.map { (it as JsonPrimitive).long }
-    }
+    /**
+     * The `messages.retrieved_chunks` payload for [message]: citation-record-v1
+     * when the caller supplied a `CitationRecord`, otherwise the legacy
+     * (`record_version: 0`) bare chunk-id array so callers not yet ported to
+     * POST_REVIEW_RESOLUTIONS.md §1 keep working unchanged (§1.5).
+     */
+    private fun encodeRetrievedChunks(message: NewMessage): String =
+        message.citations
+            ?.let(CitationRecordJson::encode)
+            ?: CitationRecordJson.encodeLegacyChunkIds(message.retrievedChunks)
 
     private fun padKinds(kinds: Set<DocumentKind>): List<String> {
         val dbs = kinds.map { it.db }.ifEmpty { listOf(UNMATCHABLE_KIND) }

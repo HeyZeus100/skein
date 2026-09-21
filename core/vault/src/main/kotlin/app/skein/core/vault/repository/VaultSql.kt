@@ -106,11 +106,54 @@ internal object VaultSql {
     const val UPDATE_CHAT_BODY: String =
         "UPDATE documents SET body_md = ?, updated_at = ?, content_hash = ? WHERE id = ?"
 
+    // `content_hash` is set here as well as in [UPDATE_DOCUMENT_BODY]
+    // because it now holds the document's `RevisionHash`, which covers the
+    // frontmatter too (migration 003 / POST_REVIEW_RESOLUTIONS.md §1.3). The
+    // `documents_au_ingest` trigger is `AFTER UPDATE OF body_md, title`, so
+    // this statement still does not enqueue a re-index — a frontmatter-only
+    // edit changes the revision address without re-chunking anything.
     const val UPDATE_DOCUMENT_FRONTMATTER: String =
-        "UPDATE documents SET frontmatter = ?, updated_at = ? WHERE id = ?"
+        "UPDATE documents SET frontmatter = ?, updated_at = ?, content_hash = ? WHERE id = ?"
 
     const val DELETE_DOCUMENT: String =
         "DELETE FROM documents WHERE id = ?"
+
+    // ------------------------------------------------------------------
+    // Document revisions (migration 003, POST_REVIEW_RESOLUTIONS.md §1.3)
+    // ------------------------------------------------------------------
+
+    private const val REVISION_COLUMNS: String =
+        "document_id, revision_hash, revision_ord, body_md_snapshot, frontmatter_snapshot, captured_at, reason"
+
+    const val SELECT_MAX_REVISION_ORD: String =
+        "SELECT COALESCE(MAX(revision_ord), -1) FROM document_revisions WHERE document_id = ?"
+
+    // Upsert rather than `INSERT OR IGNORE`: `revision_hash` is a content
+    // address, so re-writing content the document has held before must reuse
+    // the existing row (that is §1.4's "newRevision is idempotent when
+    // content is unchanged") — but it must also move that row back to the
+    // head of the history, or a document edited A -> B -> A would leave
+    // `MAX(revision_ord)` naming B while the document's content is A.
+    const val UPSERT_DOCUMENT_REVISION: String =
+        "INSERT INTO document_revisions($REVISION_COLUMNS) VALUES (?, ?, ?, ?, ?, ?, ?) " +
+            "ON CONFLICT(document_id, revision_hash) DO UPDATE SET " +
+            "revision_ord = excluded.revision_ord, captured_at = excluded.captured_at, reason = excluded.reason"
+
+    // The current revision is the one whose hash IS the document's current
+    // `content_hash` (§1.2 step 3) — authoritative by construction, and
+    // immune to any drift between `revision_ord` and the document row.
+    const val SELECT_CURRENT_REVISION: String =
+        "SELECT r.document_id, r.revision_hash, r.revision_ord, r.body_md_snapshot, r.frontmatter_snapshot, " +
+            "r.captured_at, r.reason FROM document_revisions r " +
+            "JOIN documents d ON d.id = r.document_id AND d.content_hash = r.revision_hash " +
+            "WHERE r.document_id = ?"
+
+    const val SELECT_REVISION_BY_HASH: String =
+        "SELECT $REVISION_COLUMNS FROM document_revisions WHERE document_id = ? AND revision_hash = ?"
+
+    /** The whole of §1's replay check: one indexed row lookup, two hex strings compared by SQLite. */
+    const val SELECT_REVISION_MATCHES: String =
+        "SELECT 1 FROM documents WHERE id = ? AND content_hash = ?"
 
     // ------------------------------------------------------------------
     // Messages
