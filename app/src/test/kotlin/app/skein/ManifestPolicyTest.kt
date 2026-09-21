@@ -26,9 +26,10 @@ import javax.xml.parsers.DocumentBuilderFactory
  * `tools/ci/manifest-audit.sh` and `ManifestGuardTask` do for defense in
  * depth against merged-manifest surprises from libraries.
  *
- * When `E2.I6` (`VaultDocumentsProvider`) or `E6.I17`
- * (`SkeinVoiceInteractionService`) land, extend [EXPECTED_EXPORTED_COMPONENTS]
- * — do not delete this test.
+ * `E2.I6` (`VaultDocumentsProvider`, permission-guarded) has landed and is
+ * asserted below as the one exported provider. When `E6.I17`
+ * (`SkeinVoiceInteractionService`) lands, extend the exported-service
+ * assertion the same way — do not delete this test.
  *
  * Pinned to SDK 34: Robolectric's SDK 35+/36+/37 (targetSdk) `android-all`
  * jars require Java 21 to load, and the toolchain here (and CI) runs on
@@ -85,15 +86,14 @@ class ManifestPolicyTest {
     }
 
     @Test
-    fun `no service, provider, or receiver is exported`() {
+    fun `no service or receiver is exported`() {
         val packageInfo =
             packageManager.getPackageInfo(
                 packageName,
-                PackageManager.GET_SERVICES or PackageManager.GET_PROVIDERS or PackageManager.GET_RECEIVERS,
+                PackageManager.GET_SERVICES or PackageManager.GET_RECEIVERS,
             )
 
         val exportedServices = packageInfo.services.orEmpty().filter { it.exported }
-        val exportedProviders = packageInfo.providers.orEmpty().filter { it.exported }
         val exportedReceivers = packageInfo.receivers.orEmpty().filter { it.exported }
 
         assertTrue(
@@ -101,13 +101,117 @@ class ManifestPolicyTest {
             exportedServices.isEmpty(),
         )
         assertTrue(
-            "expected no exported providers, found: ${exportedProviders.map { it.name }}",
-            exportedProviders.isEmpty(),
-        )
-        assertTrue(
             "expected no exported receivers, found: ${exportedReceivers.map { it.name }}",
             exportedReceivers.isEmpty(),
         )
+    }
+
+    // --- DocumentsProvider (E2.I6, POST_REVIEW_RESOLUTIONS.md §4.3) --------
+
+    @Test
+    fun `the only exported provider is the vault DocumentsProvider`() {
+        val packageInfo = packageManager.getPackageInfo(packageName, PackageManager.GET_PROVIDERS)
+        val exported =
+            packageInfo.providers
+                .orEmpty()
+                .filter { it.exported }
+                .map { it.name }
+                .toSet()
+
+        assertEquals(setOf(DOCUMENTS_PROVIDER), exported)
+    }
+
+    @Test
+    fun `no FileProvider is declared anywhere in the merged manifest`() {
+        val packageInfo = packageManager.getPackageInfo(packageName, PackageManager.GET_PROVIDERS)
+        val fileProviders =
+            packageInfo.providers
+                .orEmpty()
+                .map { it.name }
+                .filter { it.endsWith("FileProvider") }
+
+        assertTrue(
+            "POST_REVIEW_RESOLUTIONS.md §4 forbids a FileProvider in v1, found: $fileProviders",
+            fileProviders.isEmpty(),
+        )
+    }
+
+    @Test
+    fun `the DocumentsProvider is guarded by MANAGE_DOCUMENTS for both reads and writes`() {
+        val provider = documentsProviderInfo()
+
+        assertEquals(MANAGE_DOCUMENTS, provider.readPermission)
+        assertEquals(MANAGE_DOCUMENTS, provider.writePermission)
+    }
+
+    @Test
+    fun `the DocumentsProvider declares the authority the class expects`() {
+        assertEquals(DOCUMENTS_AUTHORITY, documentsProviderInfo().authority)
+    }
+
+    @Test
+    fun `the DocumentsProvider only allows grants for note and attachment document paths`() {
+        // grantUriPermissions="false" in the source manifest plus the two
+        // <grant-uri-permission> subsets resolves to an effective
+        // ProviderInfo with grantUriPermissions == true (the platform flips
+        // it whenever a subset is declared — and DocumentsProvider.attachInfo
+        // would throw otherwise) restricted to exactly these path prefixes.
+        // A tree/root/directory URI matches neither, so no client can hold
+        // a grant over the whole vault.
+        val provider = documentsProviderInfo()
+        val prefixes =
+            provider.uriPermissionPatterns
+                .orEmpty()
+                .filter { it.type == android.os.PatternMatcher.PATTERN_PREFIX }
+                .map { it.path }
+                .toSet()
+
+        assertTrue("DocumentsProvider.attachInfo requires effective grantUriPermissions", provider.grantUriPermissions)
+        assertEquals(setOf("/document/note:", "/document/att:"), prefixes)
+        assertEquals(prefixes.size, provider.uriPermissionPatterns.orEmpty().size)
+    }
+
+    @Test
+    fun `the DocumentsProvider source declaration matches POST_REVIEW_RESOLUTIONS 4_3 verbatim`() {
+        val element = documentsProviderElement()
+
+        assertEquals("true", element.getAttributeNS(ANDROID_NS, "exported"))
+        assertEquals("false", element.getAttributeNS(ANDROID_NS, "grantUriPermissions"))
+        assertEquals(MANAGE_DOCUMENTS, element.getAttributeNS(ANDROID_NS, "permission"))
+    }
+
+    @Test
+    fun `the DocumentsProvider advertises the DOCUMENTS_PROVIDER intent filter`() {
+        val actions =
+            documentsProviderElement()
+                .childElements("intent-filter")
+                .flatMap { it.childElements("action") }
+                .map { it.getAttributeNS(ANDROID_NS, "name") }
+
+        assertEquals(listOf("android.content.action.DOCUMENTS_PROVIDER"), actions)
+    }
+
+    private fun documentsProviderInfo(): android.content.pm.ProviderInfo {
+        val packageInfo =
+            packageManager.getPackageInfo(
+                packageName,
+                PackageManager.GET_PROVIDERS or PackageManager.GET_URI_PERMISSION_PATTERNS,
+            )
+        return requireNotNull(packageInfo.providers.orEmpty().firstOrNull { it.name == DOCUMENTS_PROVIDER }) {
+            "$DOCUMENTS_PROVIDER not declared in the manifest"
+        }
+    }
+
+    private fun documentsProviderElement(): Element =
+        requireNotNull(
+            applicationElement()
+                .childElements("provider")
+                .firstOrNull { it.getAttributeNS(ANDROID_NS, "name") == DOCUMENTS_PROVIDER },
+        ) { "$DOCUMENTS_PROVIDER not declared in the source manifest" }
+
+    private fun Element.childElements(tag: String): List<Element> {
+        val nodes = childNodes
+        return (0 until nodes.length).map { nodes.item(it) }.filterIsInstance<Element>().filter { it.tagName == tag }
     }
 
     @Test
@@ -206,11 +310,22 @@ class ManifestPolicyTest {
     companion object {
         const val ANDROID_NS = "http://schemas.android.com/apk/res/android"
 
-        /** Components this issue's manifest declares as exported=true. */
+        /** Activities this issue's manifest declares as exported=true. */
         val EXPECTED_EXPORTED_COMPONENTS =
             setOf(
                 "app.skein.MainActivity",
             )
+
+        /**
+         * E2.I6 (`skein-75x`): the single exported provider — the vault
+         * `DocumentsProvider` behind the system file picker, permission-
+         * guarded per POST_REVIEW_RESOLUTIONS.md §4.3. Its authority is
+         * `VaultDocumentsProvider.AUTHORITY`, duplicated here as a literal
+         * so this test does not depend on `:core:vault`.
+         */
+        const val DOCUMENTS_PROVIDER = "app.skein.core.vault.provider.VaultDocumentsProvider"
+        const val DOCUMENTS_AUTHORITY = "us.aherrera.skein.documents"
+        const val MANAGE_DOCUMENTS = "android.permission.MANAGE_DOCUMENTS"
 
         /**
          * Exported only because `androidx.compose.ui:ui-tooling` is a

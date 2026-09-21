@@ -54,6 +54,37 @@ class ManifestGuardTaskTest {
     }
 
     @Test
+    fun `passes on the exported MANAGE_DOCUMENTS-guarded vault DocumentsProvider`() {
+        // E2.I6 (skein-75x): a DocumentsProvider MUST be exported and guarded
+        // by android:permission="android.permission.MANAGE_DOCUMENTS" — the
+        // platform refuses anything else. That is a component permission,
+        // not a <uses-permission>, so the denylist (INTERNET,
+        // ACCESS_NETWORK_STATE) is untouched and no allowlist is needed;
+        // this test pins that the guard keeps accepting the declaration.
+        // Joined with the template's own inner indent so cleanManifest()'s
+        // trimIndent() still strips the common prefix (a zero-indent line
+        // here would leave the <?xml ...?> declaration indented, which the
+        // XML parser rejects).
+        val provider = listOf(
+            """<provider android:name="app.skein.core.vault.provider.VaultDocumentsProvider"""",
+            """    android:authorities="us.aherrera.skein.documents"""",
+            """    android:exported="true"""",
+            """    android:grantUriPermissions="false"""",
+            """    android:permission="android.permission.MANAGE_DOCUMENTS">""",
+            """    <intent-filter>""",
+            """        <action android:name="android.content.action.DOCUMENTS_PROVIDER" />""",
+            """    </intent-filter>""",
+            """    <grant-uri-permission android:pathPrefix="/document/note:" />""",
+            """    <grant-uri-permission android:pathPrefix="/document/att:" />""",
+            """</provider>""",
+        ).joinToString(separator = "\n" + " ".repeat(16))
+        val xml = cleanManifest(extra = provider)
+        val task = taskFor(manifestFile("documents-provider.xml", xml))
+
+        task.checkManifest()
+    }
+
+    @Test
     fun `fails when INTERNET permission is present`() {
         val xml = """
             <?xml version="1.0" encoding="utf-8"?>
