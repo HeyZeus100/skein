@@ -127,6 +127,15 @@ dependencies {
     // `ManifestGuardTask.BANNED_PERMISSIONS` (only INTERNET / ACCESS_NETWORK_STATE
     // are).
     api(project(":core:model"))
+    // E2.I12 (bd skein-jq8): DocxWriter (app.skein.core.vault.export.docx)
+    // parses a document's Markdown body (`MarkdownAst.parse`) and reuses
+    // `MarkdownFlattener`/`PrintBlock` (moved here from `:core:export` by
+    // this same bead) to map it to OOXML paragraphs/runs. `:core:markdown`
+    // is pure Kotlin/JVM (see its own build.gradle.kts) and has no
+    // dependency back on `:core:vault`, so this does not create a cycle —
+    // unlike depending on `:core:export`, which already depends on
+    // `:core:vault` for `SafeFileName`.
+    implementation(project(":core:markdown"))
     implementation(libs.androidx.biometric)
     implementation(libs.kotlinx.coroutines.android)
 

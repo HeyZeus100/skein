@@ -7,6 +7,8 @@
 
 package app.skein.core.export.pdf.layout
 
+import app.skein.core.markdown.layout.PrintBlock
+
 /**
  * The height, in device pixels, of every atomic paintable unit inside one
  * [PrintBlock] at a given content width — a wrapped visual line for

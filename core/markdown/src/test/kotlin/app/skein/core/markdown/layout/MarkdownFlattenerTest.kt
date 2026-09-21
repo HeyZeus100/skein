@@ -1,8 +1,10 @@
 // E2.I11 (bd skein-80m): `MarkdownFlattener` against hand-built
 // `:core:markdown` AST fragments (headings, paragraphs, code blocks, lists,
-// wikilinks/links) — the render tree the PDF layout is driven from.
+// wikilinks/links) — the render tree the PDF layout is driven from. Moved
+// into `:core:markdown` alongside `MarkdownFlattener`/`PrintBlock` by
+// `E2.I12` (bd skein-jq8); see `PrintBlock.kt`'s header comment.
 
-package app.skein.core.export.pdf.layout
+package app.skein.core.markdown.layout
 
 import app.skein.core.markdown.ast.BulletList
 import app.skein.core.markdown.ast.CodeBlock
@@ -91,7 +93,7 @@ class MarkdownFlattenerTest {
     }
 
     @Test
-    fun `renders wikilinks and links as plain underlined text`() {
+    fun `renders wikilinks as plain underlined text and links as underlined text carrying their destination`() {
         val doc =
             SkeinDocument(
                 listOf(
@@ -108,6 +110,7 @@ class MarkdownFlattenerTest {
         val paragraph = MarkdownFlattener.flatten(doc).single() as PrintBlock.Paragraph
 
         assertThat(paragraph.text.spans.first()).isEqualTo(TextSpan("Other Note", underline = true))
-        assertThat(paragraph.text.spans.last()).isEqualTo(TextSpan("a link", underline = true))
+        assertThat(paragraph.text.spans.last())
+            .isEqualTo(TextSpan("a link", underline = true, href = "https://example.com"))
     }
 }

@@ -5,6 +5,8 @@
 
 package app.skein.core.export.pdf.layout
 
+import app.skein.core.markdown.layout.PrintBlock
+
 /** The printable content area of one page, in device pixels (page size minus margins), as `MarkdownPrintAdapter.onLayout` computes it from `PrintAttributes`. */
 public data class PageGeometry(
     val contentWidthPx: Int,

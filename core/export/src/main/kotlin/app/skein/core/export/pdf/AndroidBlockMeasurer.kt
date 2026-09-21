@@ -7,7 +7,7 @@ package app.skein.core.export.pdf
 
 import app.skein.core.export.pdf.layout.BlockMeasurer
 import app.skein.core.export.pdf.layout.MeasuredBlock
-import app.skein.core.export.pdf.layout.PrintBlock
+import app.skein.core.markdown.layout.PrintBlock
 
 public class AndroidBlockMeasurer(
     private val typography: PdfTypography = PdfTypography.Default,

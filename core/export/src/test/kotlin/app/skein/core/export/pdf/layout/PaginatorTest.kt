@@ -4,6 +4,8 @@
 
 package app.skein.core.export.pdf.layout
 
+import app.skein.core.markdown.layout.PrintBlock
+import app.skein.core.markdown.layout.StyledText
 import com.google.common.truth.Truth.assertThat
 import org.junit.Test
 
