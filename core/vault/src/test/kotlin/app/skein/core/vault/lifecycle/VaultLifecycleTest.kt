@@ -45,6 +45,7 @@ class VaultLifecycleTest {
     private fun newLifecycle(
         dir: File,
         fake: FakeSkeinSQLiteNative,
+        readerCount: Int = 2,
     ): VaultLifecycle {
         val paths = VaultPaths(vaultDir = dir)
         val driverFactory: (ByteArray) -> SkeinSQLiteDriver = { key ->
@@ -56,6 +57,7 @@ class VaultLifecycleTest {
             driverFactory = driverFactory,
             migrator = { driver -> Migrator(driver) },
             paths = paths,
+            readerCount = readerCount,
         )
     }
 
@@ -164,5 +166,75 @@ class VaultLifecycleTest {
             lifecycle.close()
 
             assertThat(lifecycle.isOpen.value).isFalse()
+        }
+
+    @Test
+    fun `connectionPool throws while not open`() =
+        runTest {
+            val lifecycle = newLifecycle(tempDir.root, healthyFake())
+
+            try {
+                lifecycle.connectionPool()
+                error("expected IllegalStateException")
+            } catch (_: IllegalStateException) {
+                // expected
+            }
+        }
+
+    @Test
+    fun `create exposes a live connection pool with a writer and the configured reader count`() =
+        runTest {
+            val lifecycle = newLifecycle(tempDir.root, healthyFake(), readerCount = 3)
+
+            lifecycle.create(key(1))
+
+            val pool = lifecycle.connectionPool()
+            assertThat(pool.readers()).hasSize(3)
+            // The writer connection is live — a statement against it doesn't throw.
+            pool.writer().prepare("PRAGMA journal_mode;").use { it.step() }
+        }
+
+    @Test
+    fun `open exposes a live connection pool too`() =
+        runTest {
+            val fake = healthyFake()
+            val lifecycle = newLifecycle(tempDir.root, fake, readerCount = 2)
+            lifecycle.create(key(1))
+            lifecycle.close()
+
+            lifecycle.open(key(2))
+
+            val pool = lifecycle.connectionPool()
+            assertThat(pool.readers()).hasSize(2)
+        }
+
+    @Test
+    fun `close closes every pool connection and connectionPool throws afterward`() =
+        runTest {
+            val fake = healthyFake()
+            val lifecycle = newLifecycle(tempDir.root, fake, readerCount = 2)
+            lifecycle.create(key(1))
+            val pool = lifecycle.connectionPool()
+
+            lifecycle.close()
+
+            try {
+                lifecycle.connectionPool()
+                error("expected IllegalStateException")
+            } catch (_: IllegalStateException) {
+                // expected
+            }
+            try {
+                pool.writer()
+                error("expected ConnectionPoolClosedException")
+            } catch (_: ConnectionPoolClosedException) {
+                // expected
+            }
+            try {
+                pool.readers()
+                error("expected ConnectionPoolClosedException")
+            } catch (_: ConnectionPoolClosedException) {
+                // expected
+            }
         }
 }

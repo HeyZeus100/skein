@@ -42,6 +42,17 @@ internal class FakeSkeinSQLiteNative : SkeinSQLiteNative {
      */
     var userVersion: Long = 0L
 
+    /**
+     * Simulated `PRAGMA busy_timeout`, mutated when [nativePrepare] sees a
+     * `PRAGMA busy_timeout = N;` SET statement (`ConnectionPool.open`
+     * applies this via `conn.prepare(...).use { it.step() }`, the same
+     * prepare-based convention `Migrator` uses for `user_version` — see
+     * the note above). Read back by [nativeColumnLong] for a subsequent
+     * `PRAGMA busy_timeout;` read, so tests can assert the applied value
+     * round-trips rather than only asserting on the raw SQL text.
+     */
+    var busyTimeoutMs: Long = 0L
+
     /** Hex payload of the last `PRAGMA key = "x'...'"` exec, if any. */
     var lastKeyPragmaHex: String? = null
 
@@ -94,6 +105,9 @@ internal class FakeSkeinSQLiteNative : SkeinSQLiteNative {
         }
         USER_VERSION_SET_REGEX.find(sql)?.let { match ->
             userVersion = match.groupValues[1].toLong()
+        }
+        BUSY_TIMEOUT_SET_REGEX.find(sql)?.let { match ->
+            busyTimeoutMs = match.groupValues[1].toLong()
         }
         return nextStmtHandle++
     }
@@ -155,6 +169,7 @@ internal class FakeSkeinSQLiteNative : SkeinSQLiteNative {
         return when {
             "foreign_keys" in sql -> foreignKeysEnabled
             "user_version" in sql -> userVersion
+            "busy_timeout" in sql -> busyTimeoutMs
             else -> 0
         }
     }
@@ -214,6 +229,7 @@ internal class FakeSkeinSQLiteNative : SkeinSQLiteNative {
     companion object {
         const val DB_HANDLE: Long = 42L
         private val USER_VERSION_SET_REGEX = Regex("""PRAGMA\s+user_version\s*=\s*(\d+)""", RegexOption.IGNORE_CASE)
+        private val BUSY_TIMEOUT_SET_REGEX = Regex("""PRAGMA\s+busy_timeout\s*=\s*(\d+)""", RegexOption.IGNORE_CASE)
 
         // From sqlite3.h: SQLITE_INTEGER=1, FLOAT=2, TEXT=3, BLOB=4, NULL=5.
         private const val SQLITE_TYPE_INTEGER = 1

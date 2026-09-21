@@ -131,14 +131,27 @@ public sealed class IntegrityResult {
  * synchronization, but a single [VaultLifecycle] instance still represents
  * one vault connection at a time (opening while already open is a no-op,
  * not a second connection).
+ *
+ * Connections: a successful [create] / [open] builds a single
+ * [ConnectionPool] (one writer + [readerCount] readers, each carrying
+ * `PRAGMA busy_timeout = `[busyTimeoutMs]) via [ConnectionPool.open], from
+ * one key copy. [integrityCheck] and [close]'s WAL checkpoint run against
+ * the pool's writer connection. [connectionPool] exposes it to callers
+ * that need service connections (`app.skein.vault.DeviceVaultOpener`,
+ * `:app`) — this is `skein-4qol`'s fix for those callers previously having
+ * to construct their own `SkeinSQLiteDriver` per connection, each with a
+ * fresh master-key copy and no `busy_timeout`. [close] tears the pool down
+ * via [ConnectionPool.closeAll].
  */
 public class VaultLifecycle(
     private val driverFactory: (key: ByteArray) -> SkeinSQLiteDriver,
     private val migrator: (SkeinSQLiteDriver) -> Migrator,
     private val paths: VaultPaths,
+    private val readerCount: Int = ConnectionPool.DEFAULT_READER_COUNT,
+    private val busyTimeoutMs: Long = ConnectionPool.DEFAULT_BUSY_TIMEOUT_MS,
 ) {
     private val lock = Mutex()
-    private var connection: SQLiteConnection? = null
+    private var pool: ConnectionPool? = null
     private var lastOpen: OpenResult.Success? = null
 
     private val mutableIsOpen = MutableStateFlow(false)
@@ -180,9 +193,15 @@ public class VaultLifecycle(
                     return@withLock CreateResult.Failed(ex.message ?: "migration failed")
                 }
 
-            val liveConnection =
+            val livePool =
                 try {
-                    driverFactory(liveKey).open(dbFile.absolutePath)
+                    ConnectionPool.open(
+                        driverFactory = driverFactory,
+                        path = dbFile.absolutePath,
+                        key = liveKey,
+                        readerCount = readerCount,
+                        busyTimeoutMs = busyTimeoutMs,
+                    )
                 } catch (ex: SkeinSQLiteException) {
                     return@withLock CreateResult.Failed(ex.message)
                 } catch (ex: EncryptedDatabaseWithoutKeyException) {
@@ -190,15 +209,15 @@ public class VaultLifecycle(
                 }
 
             try {
-                seedDefaultPersona(liveConnection)
+                seedDefaultPersona(livePool.writer())
             } catch (ex: SkeinSQLiteException) {
-                liveConnection.close()
+                livePool.closeAll()
                 dbFile.delete()
                 return@withLock CreateResult.Failed(ex.message)
             }
 
-            val cipherVersion = readCipherVersion(liveConnection)
-            connection = liveConnection
+            val cipherVersion = readCipherVersion(livePool.writer())
+            pool = livePool
             // Also primes `lastOpen` so a subsequent `open()` call with the
             // vault already live (e.g. right after `create`) hits the
             // idempotent no-op branch below instead of opening a second,
@@ -254,23 +273,29 @@ public class VaultLifecycle(
                 )
             }
 
-            val liveConnection =
+            val livePool =
                 try {
                     // Defense-in-depth: SkeinSQLiteDriver.open() already probes
                     // cipher_version internally (and throws on a wrong key), so
                     // reaching this line means the same key just proved correct
-                    // one call ago in runMigrations(). This second open is a
-                    // fresh connection (per this file's driver single-use note),
-                    // not a re-verification of the key.
-                    driverFactory(liveKey).open(dbFile.absolutePath)
+                    // one call ago in runMigrations(). This pool's connections
+                    // are fresh (per this file's driver single-use note), not a
+                    // re-verification of the key.
+                    ConnectionPool.open(
+                        driverFactory = driverFactory,
+                        path = dbFile.absolutePath,
+                        key = liveKey,
+                        readerCount = readerCount,
+                        busyTimeoutMs = busyTimeoutMs,
+                    )
                 } catch (ex: SkeinSQLiteException) {
                     return@withLock OpenResult.WrongKey
                 } catch (ex: EncryptedDatabaseWithoutKeyException) {
                     return@withLock OpenResult.WrongKey
                 }
 
-            val cipherVersion = readCipherVersion(liveConnection)
-            connection = liveConnection
+            val cipherVersion = readCipherVersion(livePool.writer())
+            pool = livePool
             mutableIsOpen.value = true
             val result = OpenResult.Success(migrateResult, cipherVersion)
             lastOpen = result
@@ -278,25 +303,38 @@ public class VaultLifecycle(
         }
 
     /**
-     * Checkpoints the live connection's WAL with `TRUNCATE` (so `close`
-     * leaves no `-wal`/`-shm` residue larger than zero bytes), closes it,
-     * and transitions [isOpen] to `false`. A no-op when already closed.
+     * Checkpoints the writer connection's WAL with `TRUNCATE` (so `close`
+     * leaves no `-wal`/`-shm` residue larger than zero bytes), then closes
+     * every connection in the pool via [ConnectionPool.closeAll] (readers
+     * first, writer last), and transitions [isOpen] to `false`. A no-op
+     * when already closed.
      */
     public suspend fun close() {
         lock.withLock {
-            val conn = connection
-            if (conn != null) {
+            val livePool = pool
+            if (livePool != null) {
                 try {
-                    conn.prepare("PRAGMA wal_checkpoint(TRUNCATE);").use { it.step() }
+                    livePool.writer().prepare("PRAGMA wal_checkpoint(TRUNCATE);").use { it.step() }
                 } finally {
-                    conn.close()
+                    livePool.closeAll()
                 }
             }
-            connection = null
+            pool = null
             lastOpen = null
             mutableIsOpen.value = false
         }
     }
+
+    /**
+     * The live [ConnectionPool] backing this vault — one writer +
+     * [readerCount] readers, each with `busy_timeout` and the §4.9
+     * PRAGMAs applied (see [ConnectionPool.open]). Callers that need their
+     * own service connection (e.g. `app.skein.vault.DeviceVaultOpener`)
+     * draw from this instead of constructing a `SkeinSQLiteDriver`
+     * themselves. Throws [IllegalStateException] when the vault is not
+     * currently open.
+     */
+    public fun connectionPool(): ConnectionPool = pool ?: throw IllegalStateException("VaultLifecycle is not open")
 
     /**
      * Runs `PRAGMA integrity_check` on the live connection and separately
@@ -308,7 +346,7 @@ public class VaultLifecycle(
      */
     public suspend fun integrityCheck(): IntegrityResult =
         lock.withLock {
-            val conn = connection ?: return@withLock IntegrityResult.NotOpen
+            val conn = pool?.writer() ?: return@withLock IntegrityResult.NotOpen
 
             val problems = mutableListOf<String>()
             conn.prepare("PRAGMA integrity_check;").use { stmt ->
