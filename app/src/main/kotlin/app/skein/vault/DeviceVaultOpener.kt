@@ -1,28 +1,28 @@
 // skein-2ige — the on-device `openVault` for `VaultBootstrap`: `VaultLifecycle`
 // (create on first run, open otherwise; key verification + migrations) and
-// the SQL service implementations over their own keyed connections.
+// the SQL service implementations over connections drawn from it.
 //
-// Connections: `VaultLifecycle` keeps its live connection private (it
-// exposes only create/open/close/integrityCheck), so every service
-// connection is opened here through the public `SkeinSQLiteDriver(key)`
-// — exactly how the lifecycle opens its own — after `lifecycle.open`/
-// `create` has proven the key and brought the schema up to date. One
-// connection per service (writer + readers for the repository, one each
-// for the index store and the persona service): two services sharing a
+// Connections (skein-4qol): `VaultLifecycle` owns a `ConnectionPool` — one
+// writer + N readers, each keyed from a single copy and carrying
+// `busy_timeout` — built once `lifecycle.open`/`create` has proven the key
+// and brought the schema up to date. This file no longer constructs
+// `SkeinSQLiteDriver` itself; it draws every service connection from
+// `lifecycle.connectionPool()` instead. One connection per service (writer
+// + readers for the repository, one each for the index store and the
+// persona service, all distinct reader-pool slots): two services sharing a
 // connection would interleave statements and transactions across two
-// independent mutexes. The follow-up that gives `VaultLifecycle` a keyed
-// connection factory / the plan's `ConnectionPool` is filed on the bd
-// (see the skein-2ige close notes).
+// independent mutexes.
 //
 // Key discipline: `keyCopy()` is the only touch point — a fresh
-// `currentKey().copyOf()` per connection, handed to a driver/lifecycle
-// that zeroes it; nothing here retains key bytes. `FileAttachmentStore`
-// gets the same lambda (its contract: a fresh copy per call, wiped after
-// the per-file HKDF).
+// `currentKey().copyOf()` per `lifecycle.open`/`create` call, handed to a
+// lifecycle that zeroes it (the pool itself further fans that one copy out
+// per-connection and zeroes it once every connection has its own copy —
+// see `ConnectionPool.open`'s KDoc); nothing here retains key bytes.
+// `FileAttachmentStore` gets the same lambda (its contract: a fresh copy
+// per call, wiped after the per-file HKDF).
 
 package app.skein.vault
 
-import androidx.sqlite.SQLiteConnection
 import app.skein.core.vault.blob.FileAttachmentStore
 import app.skein.core.vault.db.SkeinSQLiteDriver
 import app.skein.core.vault.db.migrations.Migrator
@@ -59,24 +59,28 @@ class DeviceVaultOpener(
             driverFactory = { key -> SkeinSQLiteDriver(key) },
             migrator = { driver -> Migrator(driver) },
             paths = paths,
+            // One reader per service that isn't the repository's own writer:
+            // 2 for VaultRepositoryImpl's reader pool, 1 for IndexStoreImpl,
+            // 1 for PersonaServiceImpl.
+            readerCount = REPOSITORY_READER_CONNECTIONS + 2,
         )
 
     suspend fun open(): VaultSession =
         withContext(io) {
-            val connections = ArrayList<SQLiteConnection>()
             try {
                 createOrOpen()
-                val path = paths.databaseFile.absolutePath
-                val writer = connect(path, connections)
-                val readers = List(READER_CONNECTIONS) { connect(path, connections) }
-                val indexConnection = connect(path, connections)
-                val personaConnection = connect(path, connections)
+                val pool = lifecycle.connectionPool()
+                val writer = pool.writer()
+                val readers = pool.readers()
+                val repositoryReaders = readers.subList(0, REPOSITORY_READER_CONNECTIONS)
+                val indexConnection = readers[REPOSITORY_READER_CONNECTIONS]
+                val personaConnection = readers[REPOSITORY_READER_CONNECTIONS + 1]
 
                 val repository =
                     VaultRepositoryImpl(
                         writer = writer,
                         attachments = FileAttachmentStore(attachmentsDir, masterKey = ::keyCopy),
-                        readers = readers,
+                        readers = repositoryReaders,
                     )
                 val indexStore = IndexStoreImpl(indexConnection)
                 val personaService = PersonaServiceImpl(personaConnection)
@@ -88,7 +92,10 @@ class DeviceVaultOpener(
                     importService = ImportServiceImpl(repository),
                 ) {
                     // Closing must run to completion even when the lock
-                    // observer budget cancels the caller.
+                    // observer budget cancels the caller. `lifecycle.close()`
+                    // closes every pool connection (readers, then writer) —
+                    // including any the services above already closed
+                    // themselves, which is a harmless no-op per connection.
                     withContext(io + NonCancellable) {
                         repository.close()
                         indexStore.close()
@@ -97,7 +104,6 @@ class DeviceVaultOpener(
                     }
                 }
             } catch (t: Throwable) {
-                connections.asReversed().forEach { runCatching { it.close() } }
                 runCatching { lifecycle.close() }
                 when (t) {
                     is CancellationException, is VaultOpenException -> throw t
@@ -125,16 +131,11 @@ class DeviceVaultOpener(
         }
     }
 
-    private fun connect(
-        path: String,
-        opened: MutableList<SQLiteConnection>,
-    ): SQLiteConnection = SkeinSQLiteDriver(keyCopy()).open(path).also(opened::add)
-
     /** A fresh copy of the live master key; the callee zeroes it. Throws when locked. */
     private fun keyCopy(): ByteArray = keyProvider.currentKey()?.copyOf() ?: throw VaultOpenException("vault locked")
 
     private companion object {
         /** Reader connections for `VaultRepositoryImpl` ("typically 2-3", its header). */
-        const val READER_CONNECTIONS = 2
+        const val REPOSITORY_READER_CONNECTIONS = 2
     }
 }
