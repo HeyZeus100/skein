@@ -25,6 +25,16 @@ dependencies {
     // Dispatchers.Default, which lives in -core, not -android).
     implementation(libs.kotlinx.coroutines.core)
 
+    // skein-st1r (POST_REVIEW_RESOLUTIONS §2): `app.skein.core.inference.models`
+    // logs refusals through `SkeinLog` (:core:model), which the NoRawLogging
+    // guard requires instead of android.util.Log.
+    api(project(":core:model"))
+    // skein-st1r: `ModelManifest.parse` reads the `*.skein.json` manifest with
+    // kotlinx.serialization's tree API (`parseToJsonElement`) — no compiler
+    // plugin, no new library (`:core:model` already exposes this as `api`;
+    // naming it here keeps the direct use explicit, as :core:rag does).
+    implementation(libs.kotlinx.serialization.json)
+
     testImplementation(libs.junit)
     testImplementation(libs.truth)
 

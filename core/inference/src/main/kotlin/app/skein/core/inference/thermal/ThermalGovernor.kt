@@ -9,9 +9,9 @@
 // is compile-checked and its device-binding smoke-tested by the (compiled,
 // not-yet-run — gated on skein-k3b2) androidTest.
 //
-// `SkeinLog` (spec §9) doesn't exist in this codebase yet — see
-// `ThermalGovernorCore`'s KDoc on `onUnsupportedHeadroom`. Wire this to
-// `SkeinLog.w(TAG, ...)` once it lands.
+// `SkeinLog` (spec §9) is wired up here — see `ThermalGovernorCore`'s KDoc on
+// `onUnsupportedHeadroom`. (Resolved by skein-st1r, which gave this module its
+// `:core:model` dependency; the NoRawLogging guard forbids `android.util.Log`.)
 
 package app.skein.core.inference.thermal
 
@@ -20,7 +20,7 @@ import android.content.Intent
 import android.content.IntentFilter
 import android.os.BatteryManager
 import android.os.PowerManager
-import android.util.Log
+import app.skein.core.model.SkeinLog
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
@@ -72,8 +72,7 @@ public class ThermalGovernor
                 headroomSource = PowerManagerHeadroomSource(powerManager),
                 statusSource = PowerManagerThermalStatusSource(powerManager),
                 onUnsupportedHeadroom = {
-                    // TODO(skein: SkeinLog not implemented yet, spec §9): replace with SkeinLog.w(TAG, ...).
-                    Log.w(TAG, "getThermalHeadroom() returned NaN; defaulting to Nominal")
+                    SkeinLog.w(TAG, "getThermalHeadroom() returned NaN; defaulting to Nominal")
                 },
             )
 
