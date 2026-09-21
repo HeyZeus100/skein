@@ -19,6 +19,9 @@ android {
         targetSdk = 37
         versionCode = 1
         versionName = "0.1.0"
+        // skein-2ige: VaultBootstrapInstrumentedTest (compile-only until the
+        // emulator lane in bd skein-k3b2 runs it) needs the AndroidX runner.
+        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
 
     flavorDimensions += "distribution"
@@ -86,9 +89,27 @@ dependencies {
     // `SettingsScreen`) — see `SkeinApp.destinationContent`'s doc for why
     // `:feature:shell` itself cannot.
     implementation(project(":feature:settings"))
+    // skein-2ige: `MainActivity` feeds `TimelineScreen` the live
+    // `VaultRepositoryImpl` once the vault is open. `:feature:timeline`
+    // declares `debugImplementation(project(":testing"))` for its design-time
+    // previews; without this exclude that edge drags `:testing` and its
+    // `api` deps (JUnit 4 — EPL-1.0, off the foss allowlist — and
+    // kotlinx-coroutines-test) into the fossDebug APK and fails
+    // `licenseAuditFossDebugRuntimeClasspath`. The previews still resolve on
+    // the library's own classpath; this app's unit tests get `:testing`
+    // through their own `testImplementation` edge below.
+    implementation(project(":feature:timeline")) {
+        exclude(module = "testing")
+    }
 
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.activity.compose)
+    // skein-2ige: `MainActivity` must be a `FragmentActivity` — it hosts the
+    // `BiometricPrompt` that `BiometricUnlockScreen` / `UnlockManager.unlock`
+    // present. `androidx.biometric` exposes `androidx.fragment` as an API
+    // dependency at the version the rest of the app already resolves, so this
+    // adds no new artifact to the runtime classpath (license audit unchanged).
+    implementation(libs.androidx.biometric)
     implementation(libs.androidx.lifecycle.runtime.ktx)
     // E3.I8: SecurityPrefs (FLAG_SECURE toggle) persistence.
     implementation(libs.androidx.datastore.preferences)
@@ -109,7 +130,11 @@ dependencies {
     // *application* module's own manifest but not into a *library*
     // module's (verified: `:feature:shell` does not get it).
     testImplementation(libs.compose.ui.test.junit4)
+    // skein-2ige: VaultBootstrapTest / TestSkeinApplication run the bring-up
+    // over the JVM fakes (`InMemoryVaultRepository`, `FakeExportService`, …).
+    testImplementation(project(":testing"))
     androidTestImplementation(libs.androidx.test.ext.junit)
     androidTestImplementation(libs.androidx.test.espresso.core)
+    androidTestImplementation(libs.androidx.test.runner)
     debugImplementation(libs.compose.ui.tooling)
 }
