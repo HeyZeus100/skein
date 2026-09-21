@@ -203,9 +203,14 @@ dependencies {
     // `TestListenableWorkerBuilder` for `IngestWorkerTest` (Robolectric) and
     // the compile-only `IngestWorkerInstrumentedTest` (run gated on skein-k3b2).
     testImplementation(libs.androidx.work.testing)
+    androidTestImplementation(platform(libs.compose.bom))
     androidTestImplementation(libs.androidx.work.testing)
     androidTestImplementation(libs.androidx.test.ext.junit)
     androidTestImplementation(libs.androidx.test.espresso.core)
     androidTestImplementation(libs.androidx.test.runner)
+    // skein-rf5r: Enable Compose testing in androidTest. Allows writing
+    // real, on-device E2E tests (e.g., LockPolicySettingsRecreationInstrumentedTest
+    // evolved to drive SettingsScreen/LockPolicyControls through createAndroidComposeRule).
+    androidTestImplementation(libs.compose.ui.test.junit4)
     debugImplementation(libs.compose.ui.tooling)
 }
