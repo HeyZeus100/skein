@@ -19,6 +19,7 @@ import org.junit.Test
 import us.aherrera.skein.core.model.DocumentKind
 import us.aherrera.skein.core.model.Edge
 import us.aherrera.skein.core.model.EdgeKind
+import us.aherrera.skein.core.model.EntitySpan
 import us.aherrera.skein.core.model.NewDocument
 import us.aherrera.skein.testing.InMemoryIndexStore
 import us.aherrera.skein.testing.InMemoryVaultRepository
@@ -33,11 +34,17 @@ public class EntityIndexerTest {
         body: String,
         mention: String,
         label: String = PERSON,
-        score: Double = 0.9,
+        score: Float = 0.9f,
     ): EntitySpan {
         val start = body.indexOf(mention)
         check(start >= 0) { "'$mention' not found in body" }
-        return EntitySpan(start = start, end = start + mention.length, label = label, score = score)
+        return EntitySpan(
+            start = start,
+            end = start + mention.length,
+            text = mention,
+            label = label,
+            score = score,
+        )
     }
 
     /** Builds one [EntitySpan] per occurrence of [mention] in [body]. */
@@ -45,14 +52,21 @@ public class EntityIndexerTest {
         body: String,
         mention: String,
         label: String = PERSON,
-        score: Double = 0.9,
+        score: Float = 0.9f,
     ): List<EntitySpan> {
         val spans = mutableListOf<EntitySpan>()
         var from = 0
         while (true) {
             val start = body.indexOf(mention, from)
             if (start < 0) break
-            spans += EntitySpan(start = start, end = start + mention.length, label = label, score = score)
+            spans +=
+                EntitySpan(
+                    start = start,
+                    end = start + mention.length,
+                    text = mention,
+                    label = label,
+                    score = score,
+                )
             from = start + mention.length
         }
         return spans
@@ -135,7 +149,7 @@ public class EntityIndexerTest {
             val body = "Foo appears here."
             val doc = repo.createDocument(NewDocument(DocumentKind.NOTE, "A", body))
 
-            indexer.index(doc, listOf(spanFor(body, "Foo", score = 0.59)))
+            indexer.index(doc, listOf(spanFor(body, "Foo", score = 0.59f)))
 
             assertThat(index.edgesFrom(doc.id)).isEmpty()
             assertThat(index.findEntitiesByName(listOf("foo"))).isEmpty()
@@ -150,7 +164,7 @@ public class EntityIndexerTest {
             val body = "Bar appears here."
             val doc = repo.createDocument(NewDocument(DocumentKind.NOTE, "A", body))
 
-            indexer.index(doc, listOf(spanFor(body, "Bar", score = 0.6)))
+            indexer.index(doc, listOf(spanFor(body, "Bar", score = 0.6f)))
 
             assertThat(index.edgesFrom(doc.id).filter { it.kind == EdgeKind.ENTITY }).hasSize(1)
         }
