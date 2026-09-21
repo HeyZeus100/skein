@@ -17,7 +17,14 @@
     <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
     <uses-permission android:name="android.permission.USE_BIOMETRIC" />
 
+    <!--
+        skein-2ige: SkeinApplication is the :app process's composition root
+        for the vault stack (UnlockManager → VaultBootstrap → open-vault
+        services → VaultDocumentsProvider). The isolated processes below get
+        the same class by manifest but never touch it.
+    -->
     <application
+        android:name="app.skein.SkeinApplication"
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
         android:fullBackupContent="@xml/backup_rules_legacy"
