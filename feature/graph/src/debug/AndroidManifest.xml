@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <!--
+        bd skein-z2u (E6.I11): debug-only host Activity for the on-device
+        Compose UI test (`GraphViewInstrumentedTest`). Same rationale as
+        `:feature:timeline`/`:feature:editor`/`:feature:shell`:
+        `:feature:graph` is an Android library, so
+        `androidx.compose.ui:ui-test-manifest`'s own placeholder
+        `ComponentActivity` registration does not merge into the library
+        manifest. Debug-variant only (this file lives in `src/debug/`, not
+        `src/main/`) — it never ships in a release build.
+    -->
+    <application>
+        <activity
+            android:name="androidx.activity.ComponentActivity"
+            android:exported="false" />
+    </application>
+
+</manifest>

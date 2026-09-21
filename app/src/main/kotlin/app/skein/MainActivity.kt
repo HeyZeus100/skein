@@ -31,6 +31,7 @@ import androidx.compose.ui.unit.dp
 import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.lifecycleScope
 import app.skein.feature.editor.notetab.NoteTab
+import app.skein.feature.graph.GraphScreen
 import app.skein.feature.settings.SettingsScreen
 import app.skein.feature.settings.rememberSettingsViewModel
 import app.skein.feature.shell.DestinationPlaceholder
@@ -54,6 +55,7 @@ import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.withContext
+import us.aherrera.skein.core.model.DocId
 
 /**
  * Single Activity for the `:app` process (spec §4.1). Hosts [SkeinApp], the
@@ -144,41 +146,69 @@ class MainActivity : FragmentActivity() {
         // lock sequence yet — `E3.I3b` owns that — this only keeps the
         // handle from being thrown away.
         val flushRegistry = remember { FlushRegistry() }
-        SkeinApp(
-            destinationContent = { destination ->
-                when (destination) {
-                    Destination.TIMELINE -> TimelineDestination(session)
-                    Destination.SETTINGS -> {
-                        val settingsViewModel =
-                            rememberSettingsViewModel(
-                                flagSecureEnabledFlow = securityPrefs.flagSecureEnabled,
-                                onSetFlagSecureEnabled = setFlagSecureEnabled,
+        // skein-z2u (E6.I11): the ✦ button's real navigation target.
+        // `GraphScreen` is its own `SkeinTheme` wrapper drawn as an overlay
+        // *alongside* `SkeinApp` (see that composable's own file header) —
+        // not a `Destination`/`noteTabContent` slot — so it is local
+        // `mutableStateOf` state here in `MainActivity`, not a new
+        // `:feature:shell` API. This is not a shell-slot change (no new
+        // `SkeinApp` parameter, no change to `Destination`); it is purely
+        // this private composable's own body, same as `VaultGate` already
+        // layering screens outside `SkeinApp`.
+        var graphDocId by remember { mutableStateOf<DocId?>(null) }
+        Box(Modifier.fillMaxSize()) {
+            SkeinApp(
+                destinationContent = { destination ->
+                    when (destination) {
+                        Destination.TIMELINE -> TimelineDestination(session)
+                        Destination.SETTINGS -> {
+                            val settingsViewModel =
+                                rememberSettingsViewModel(
+                                    flagSecureEnabledFlow = securityPrefs.flagSecureEnabled,
+                                    onSetFlagSecureEnabled = setFlagSecureEnabled,
+                                )
+                            SettingsScreen(
+                                viewModel = settingsViewModel,
+                                appVersion = "${BuildConfig.VERSION_NAME} (${BuildConfig.VERSION_CODE})",
                             )
-                        SettingsScreen(
-                            viewModel = settingsViewModel,
-                            appVersion = "${BuildConfig.VERSION_NAME} (${BuildConfig.VERSION_CODE})",
-                        )
+                        }
+                        else -> DestinationPlaceholder(label = destination.name)
                     }
-                    else -> DestinationPlaceholder(label = destination.name)
-                }
-            },
-            flushRegistry = flushRegistry,
-            noteTabContent = { tab, onPin, onOpenDocument, registry ->
-                NoteTab(
-                    docId = tab.docId,
+                },
+                flushRegistry = flushRegistry,
+                noteTabContent = { tab, onPin, onOpenDocument, registry ->
+                    NoteTab(
+                        docId = tab.docId,
+                        vaultRepository = session.repository,
+                        indexStore = session.indexStore,
+                        onPin = onPin,
+                        onOpenDocument = onOpenDocument,
+                        onOpenGraph = { docId -> graphDocId = docId },
+                        registerFlush = { flush -> registry.register(tab.id, flush) },
+                        unregisterFlush = { registry.unregister(tab.id) },
+                    )
+                },
+            )
+            graphDocId?.let { docId ->
+                // `onOpenPreview`/`onOpenPinned` (tap/long-press on a node)
+                // only dismiss the overlay for now: actually opening the
+                // tapped document as a preview/pinned tab from here would
+                // need a way to reach the active `TabHost`'s `TabsState`,
+                // which `SkeinApp` does not expose outside its own
+                // `noteTabContent`/`destinationContent` slots. That is a new
+                // `:feature:shell` API (bd non-negotiable: no such change
+                // without a bead) — filed as skein follow-up rather than
+                // guessed at here (precedent: skein-64y9).
+                GraphScreen(
+                    docId = docId,
                     vaultRepository = session.repository,
                     indexStore = session.indexStore,
-                    onPin = onPin,
-                    onOpenDocument = onOpenDocument,
-                    // The local graph view is `E6.I11` — this issue only
-                    // wires the ✦ button's callback, not a real navigation
-                    // target (bd skein-u01 non-negotiables).
-                    onOpenGraph = {},
-                    registerFlush = { flush -> registry.register(tab.id, flush) },
-                    unregisterFlush = { registry.unregister(tab.id) },
+                    onOpenPreview = { graphDocId = null },
+                    onOpenPinned = { graphDocId = null },
+                    onClose = { graphDocId = null },
                 )
-            },
-        )
+            }
+        }
     }
 
     private fun applyFlagSecure(enabled: Boolean) {
