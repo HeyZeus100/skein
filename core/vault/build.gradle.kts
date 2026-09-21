@@ -90,6 +90,16 @@ android {
     // it has no effect on instrumented tests or on production `.aar` builds.
     testOptions {
         unitTests.isReturnDefaultValues = true
+        unitTests {
+            // E2.I8 (skein-qdo): `PdfImporter`'s Robolectric tests exercise
+            // real `pdfbox-android` text extraction, which loads its bundled
+            // AFM/glyph-list/CMap resources from the AAR's `assets/` folder
+            // via `PDFBoxResourceLoader` (Android `AssetManager`, not the JVM
+            // classpath — see that file's KDoc). Robolectric only sees those
+            // merged assets when `isIncludeAndroidResources` is on (same
+            // reason `:app`'s `ManifestPolicyTest` needs it).
+            isIncludeAndroidResources = true
+        }
     }
 
     // AGP already strips .so symbols in release. Debug builds keep them for
@@ -138,10 +148,21 @@ dependencies {
     implementation(project(":core:markdown"))
     implementation(libs.androidx.biometric)
     implementation(libs.kotlinx.coroutines.android)
+    // E2.I8 (skein-qdo): PDF text extraction for `ImportServiceImpl.importPdf`.
+    // Plan-pinned (`docs/superpowers/plans/2026-09-19-skein-v1-plan.md` E2.I8),
+    // Apache-2.0 (passes `licenseAuditFossDebugRuntimeClasspath`); its only
+    // transitives are `org.bouncycastle:bcprov/bcpkix/bcutil-jdk15to18`
+    // (Bouncy-Castle license, already allowlisted), and its group is not on
+    // `DependencyGuardTask.BANNED_GROUPS`.
+    implementation(libs.pdfbox.android)
 
     testImplementation(libs.junit)
     testImplementation(libs.truth)
     testImplementation(libs.kotlinx.coroutines.test)
+    // E2.I8 (skein-qdo): `PdfImporter`'s tests need a real `android.content.Context`
+    // (`AssetManager`) for `PDFBoxResourceLoader` — see the `isIncludeAndroidResources`
+    // note above.
+    testImplementation(libs.robolectric)
     // skein-yrp (E2.I13): VaultLifecycleTest uses `TempDirRule` for a real,
     // per-test filesystem directory (the file-exists checks in `create` /
     // `open` are real `java.io.File` checks, not simulated by the fake

@@ -62,6 +62,9 @@ class VaultServices(
                     keyProvider = keyProvider,
                     paths = paths,
                     attachmentsDir = File(app.filesDir, ATTACHMENTS_DIR),
+                    // E2.I8 (skein-qdo): real `AssetManager` for
+                    // `ImportServiceImpl.importPdf`'s `PDFBoxResourceLoader.init`.
+                    context = app,
                 )
             val bootstrap =
                 VaultBootstrap(

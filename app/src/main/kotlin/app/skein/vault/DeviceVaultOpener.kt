@@ -23,6 +23,7 @@
 
 package app.skein.vault
 
+import android.content.Context
 import app.skein.core.vault.blob.FileAttachmentStore
 import app.skein.core.vault.db.SkeinSQLiteDriver
 import app.skein.core.vault.db.migrations.Migrator
@@ -53,6 +54,13 @@ class DeviceVaultOpener(
     private val paths: VaultPaths,
     private val attachmentsDir: File,
     private val io: CoroutineDispatcher = Dispatchers.IO,
+    // E2.I8 (skein-qdo): threaded into `ImportServiceImpl` so `importPdf`'s
+    // `PDFBoxResourceLoader.init` can see the real app `AssetManager`.
+    // Optional/defaulted so existing call sites (and androidTest fixtures)
+    // that construct this class without a context keep compiling — without
+    // one, PDF import still works, just always falls back to the "no text
+    // layer" notice (see `PdfImporter.extract`'s KDoc).
+    private val context: Context? = null,
 ) {
     private val lifecycle =
         VaultLifecycle(
@@ -89,7 +97,7 @@ class DeviceVaultOpener(
                     indexStore = indexStore,
                     personaService = personaService,
                     exportService = ExportServiceImpl(repository),
-                    importService = ImportServiceImpl(repository),
+                    importService = ImportServiceImpl(repository, context = context),
                 ) {
                     // Closing must run to completion even when the lock
                     // observer budget cancels the caller. `lifecycle.close()`

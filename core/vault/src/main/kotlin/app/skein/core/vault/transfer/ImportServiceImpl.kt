@@ -1,9 +1,27 @@
 // `E2.I7` (bd `skein-ad5`): `ImportService` implementation backing text,
 // Markdown, and source-code import — the `importText` branch of the
 // contract locked by `E0.I14` (`core/model/.../Transfer.kt`, skein-18j).
-// `importPdf`/`importImage` are intentionally left unimplemented here:
-// `E2.I8` (bd `skein-qdo`) and `E2.I9` (bd `skein-rni`) own them, exactly
-// as `ExportServiceImpl` defers `exportDocx` to `E2.I11`/`E2.I12`.
+// `importImage` is intentionally left unimplemented here: `E2.I9` (bd
+// `skein-rni`) owns it, exactly as `ExportServiceImpl` defers `exportDocx`
+// to `E2.I11`/`E2.I12`.
+//
+// `importPdf` (`E2.I8`, bd `skein-qdo`) — see `PdfImporter.kt` for the
+// extraction mechanism itself:
+//   1. Buffer the whole stream once (`input.readBytes()` — a PDF's
+//      xref/trailer needs random access, so, like `readNormalized`, there is
+//      no true streaming parse) and store it as an `ATTACHMENT` via
+//      `VaultRepository.createAttachment` unconditionally — encrypted,
+//      scanned, and malformed PDFs all still get their bytes preserved.
+//   2. `PdfImporter.extract` tries to read the text layer + `Title` document
+//      info. A `null` text result (no layer, encrypted, or unparseable —
+//      never thrown as an exception) becomes the one-line notice body the
+//      bd description specifies; a `null` title falls back to the display
+//      name minus its extension, exactly like `importProse`'s title
+//      derivation.
+//   3. The NOTE is always freshly created (there is no PDF-side notion of a
+//      frontmatter `id` to update in place, unlike `importText`) with
+//      `source: <attachmentId>` frontmatter — the CITE edge from note to
+//      attachment is written by the ingest pipeline (`E5.I8`), not here.
 //
 // Design notes:
 //   - Like `ExportServiceImpl` (`E2.I10`), this class depends only on
@@ -60,6 +78,7 @@
 
 package app.skein.core.vault.transfer
 
+import android.content.Context
 import app.skein.core.vault.codec.Frontmatter
 import kotlinx.serialization.json.JsonObject
 import kotlinx.serialization.json.JsonPrimitive
@@ -78,15 +97,24 @@ import java.io.InputStreamReader
 import java.time.Instant
 
 /**
- * `ImportService` implementation backing text / Markdown / source-code import (`E2.I7`).
+ * `ImportService` implementation backing text / Markdown / source-code /
+ * PDF import (`E2.I7`, `E2.I8`).
  *
  * @param now source of the ISO-8601 `created` / `updated` frontmatter
  *   timestamps. The `Document.createdAt` / `updatedAt` columns come from the
  *   repository's own clock; tests inject both to make them deterministic.
+ * @param context an app `Context`, used only by `importPdf` to initialize
+ *   `PDFBoxResourceLoader` (see `PdfImporter.kt`) so pdfbox-android can load
+ *   its bundled font/glyph resources. Optional and defaulting to `null` so
+ *   call sites that predate `E2.I8` (existing tests, and any future caller
+ *   that never imports a PDF) keep compiling unchanged; without one,
+ *   `importPdf` still never throws — it degrades to the "no text layer"
+ *   notice for every PDF (see `PdfImporter.extract`'s KDoc).
  */
 public class ImportServiceImpl(
     private val repository: VaultRepository,
     private val now: () -> Instant = Instant::now,
+    private val context: Context? = null,
 ) : ImportService {
     override suspend fun importText(
         displayName: String,
@@ -107,10 +135,39 @@ public class ImportServiceImpl(
         displayName: String,
         input: InputStream,
         personaId: PersonaId?,
-    ): ImportResult =
-        throw UnsupportedOperationException(
-            "ImportServiceImpl.importPdf is not implemented yet (see plan E2.I8 / bd skein-qdo)",
-        )
+    ): ImportResult {
+        val bytes = input.readBytes()
+        val attachment =
+            repository.createAttachment(title = displayName, mimeType = PDF_MIME_TYPE) { out ->
+                out.write(bytes)
+            }
+
+        val extraction = PdfImporter.extract(bytes, context)
+        val title = extraction.title ?: titleFromDisplayName(displayName)
+        val body = extraction.text ?: "_No text layer found in $displayName._"
+
+        val sourceFrontmatter = buildJsonObject { put(FrontmatterKeys.SOURCE, JsonPrimitive(attachment.id)) }
+        val note =
+            repository.createDocument(
+                NewDocument(
+                    kind = DocumentKind.NOTE,
+                    title = title,
+                    bodyMd = body,
+                    personaId = personaId,
+                    frontmatter =
+                        reconcileFrontmatter(
+                            sourceFrontmatter,
+                            DocumentKind.NOTE,
+                            title,
+                            existing = null,
+                        ),
+                ),
+            )
+        return ImportResult(documentId = note.id, attachmentId = attachment.id, created = true)
+    }
+
+    private fun titleFromDisplayName(displayName: String): String =
+        displayName.substringBeforeLast('.').ifBlank { displayName }.ifBlank { UNTITLED }
 
     override suspend fun importImage(
         displayName: String,
@@ -255,7 +312,7 @@ public class ImportServiceImpl(
     ): String =
         frontmatter.string(FrontmatterKeys.TITLE)?.trim()?.takeIf { it.isNotEmpty() }
             ?: firstHeading(body)
-            ?: displayName.substringBeforeLast('.').ifBlank { displayName }.ifBlank { UNTITLED }
+            ?: titleFromDisplayName(displayName)
 
     /**
      * The text of the first level-one ATX heading (`# Title`, optionally
@@ -346,6 +403,7 @@ public class ImportServiceImpl(
         private const val MAX_HEADING_INDENT: Int = 3
         private const val DECODE_BUFFER_CHARS: Int = 8 * 1024
         private const val DELIMITER: String = "---"
+        private const val PDF_MIME_TYPE: String = "application/pdf"
 
         /** U+FEFF, spelled as a code point so no invisible character hides in this source file. */
         private const val BOM: Char = 0xFEFF.toChar()

@@ -3,16 +3,24 @@
 // by the JVM `InMemoryVaultRepository` fake — the same contract
 // `FakeImportService` satisfies, now exercised against production code.
 //
-// The suite's `importPdf`/`importImage` tests are assumption-skipped here
-// (reported by JUnit as *skipped*, never as passed) because those two entry
-// points are owned by `E2.I8` (bd `skein-qdo`) and `E2.I9` (bd `skein-rni`)
-// — both blocked by this issue — and `ImportServiceImpl` throws
-// `UnsupportedOperationException` for them until then, mirroring how
+// The suite's `importImage` test is assumption-skipped here (reported by
+// JUnit as *skipped*, never as passed) because that entry point is owned by
+// `E2.I9` (bd `skein-rni`) and `ImportServiceImpl` throws
+// `UnsupportedOperationException` for it until then, mirroring how
 // `ExportServiceImpl.exportDocx` defers to `E2.I11`/`E2.I12`. The suite's
 // test methods are Kotlin-final, so they cannot be overridden; a `TestRule`
 // keyed on the method name is the least invasive way to park them. When the
 // owning bead lands, delete its entry from [PENDING_ENTRY_POINTS] and the
 // real contract test runs again unchanged.
+//
+// `importPdf_creates_both_an_attachment_and_a_note` (`E2.I8`, bd
+// `skein-qdo`) is no longer parked: `ImportServiceImpl.importPdf` is
+// implemented (`PdfImporter.kt`). The suite's fixture bytes
+// (`"%PDF-1.4 fake bytes"`) are not a structurally valid PDF, so this run
+// also doubles as the "malformed PDF" case — `PdfImporter.extract` catches
+// the parse failure and falls back to the "no text layer" notice rather
+// than throwing, and an attachment is still stored either way, which is all
+// this contract test asserts (ids, not body content).
 
 package app.skein.core.vault.transfer
 
@@ -49,7 +57,6 @@ public class ImportServiceImplContractTest : ImportServiceContractTest() {
     private companion object {
         val PENDING_ENTRY_POINTS: Map<String, String> =
             mapOf(
-                "importPdf_creates_both_an_attachment_and_a_note" to "E2.I8 (bd skein-qdo)",
                 "importImage_without_a_vision_model_creates_only_the_attachment" to "E2.I9 (bd skein-rni)",
             )
     }
