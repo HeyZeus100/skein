@@ -49,7 +49,11 @@ public class LexicalRecallAcceptanceTest {
                 docId = "01924a4b-4d29-7000-8000-00000000C111",
                 chunks =
                     listOf(
-                        NewChunk(ord = 0, text = "SQLite Cipher wraps SQLite with transparent AES encryption", tokenCount = 8),
+                        NewChunk(
+                            ord = 0,
+                            text = "SQLite Cipher wraps SQLite with transparent AES encryption",
+                            tokenCount = 8,
+                        ),
                     ),
                 embedderId = "fake",
                 embedderVersion = 1,
