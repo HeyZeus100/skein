@@ -38,6 +38,7 @@ import app.skein.feature.settings.rememberSettingsViewModel
 import app.skein.feature.shell.DestinationPlaceholder
 import app.skein.feature.shell.SkeinApp
 import app.skein.feature.shell.auth.BiometricUnlockScreen
+import app.skein.feature.shell.auth.VaultResetScreen
 import app.skein.feature.shell.auth.VaultSetupScreen
 import app.skein.feature.shell.nav.Destination
 import app.skein.feature.shell.tabs.FlushRegistry
@@ -336,6 +337,10 @@ private fun VaultGate(
     val session by vault.session.collectAsState()
     var recoveryRequired by remember { mutableStateOf(false) }
     var provisioned by remember { mutableStateOf<Boolean?>(null) }
+    // skein-v3wb: local to the gate — reachable ONLY via
+    // BiometricUnlockScreen's corrupt/unreadable-envelope affordance
+    // (onResetRequested below), never a `GatePhase` of its own.
+    var resetRequested by remember { mutableStateOf(false) }
     LaunchedEffect(vault) {
         provisioned = withContext(Dispatchers.IO) { vault.keyProvider.isInitialised() }
     }
@@ -360,12 +365,28 @@ private fun VaultGate(
         GatePhase.Unlock ->
             SkeinTheme {
                 Surface(modifier = Modifier.fillMaxSize(), color = MaterialTheme.colorScheme.background) {
-                    BiometricUnlockScreen(
-                        unlockManager = vault.unlockManager,
-                        onUnlocked = { onUnlocked() },
-                        onRecoveryRequired = { recoveryRequired = true },
-                        onNotInitialised = { provisioned = false },
-                    )
+                    if (resetRequested) {
+                        VaultResetScreen(
+                            vaultReset = vault.vaultReset,
+                            onReset = {
+                                // The envelope is gone: isInitialised() would
+                                // now report false too, but setting it
+                                // directly avoids a redundant file probe —
+                                // the same pattern onNotInitialised uses.
+                                resetRequested = false
+                                provisioned = false
+                            },
+                            onDismiss = { resetRequested = false },
+                        )
+                    } else {
+                        BiometricUnlockScreen(
+                            unlockManager = vault.unlockManager,
+                            onUnlocked = { onUnlocked() },
+                            onRecoveryRequired = { recoveryRequired = true },
+                            onNotInitialised = { provisioned = false },
+                            onResetRequested = { resetRequested = true },
+                        )
+                    }
                 }
             }
     }

@@ -11,8 +11,10 @@ import app.skein.core.inference.thermal.ThermalGovernor
 import app.skein.core.vault.key.VaultKeyProvider
 import app.skein.core.vault.key.VaultKeyProviders
 import app.skein.core.vault.lifecycle.VaultPaths
+import app.skein.core.vault.lifecycle.VaultReset
 import app.skein.core.vault.session.LockPolicy
 import app.skein.core.vault.session.UnlockManager
+import app.skein.core.vault.session.UnlockState
 import app.skein.ingest.IngestPipelines
 import app.skein.ingest.IngestScheduler
 import app.skein.ingest.ThermalIngestPacer
@@ -31,6 +33,9 @@ import java.time.Duration
  * Everything the vault needs across lock/unlock cycles. [keyProvider],
  * [unlockManager] and [ingest] live as long as the process; the per-session
  * service graph is [session] (`null` while locked), managed by [bootstrap].
+ * [vaultReset] (skein-v3wb) is the one sanctioned destructive flow — the
+ * corrupt-envelope UI on `BiometricUnlockScreen` is its only production
+ * entry point today.
  */
 class VaultServices(
     val keyProvider: VaultKeyProvider,
@@ -38,6 +43,7 @@ class VaultServices(
     val bootstrap: VaultBootstrap,
     /** E5.I10 (skein-7v3): enqueues ingest on open/document change, cancels it on lock, runs `IngestWorker`'s pass. */
     val ingest: IngestScheduler,
+    val vaultReset: VaultReset,
 ) {
     /** The open vault's services, or `null` while locked / not yet brought up. */
     val session: StateFlow<VaultSession?> get() = bootstrap.session
@@ -45,6 +51,17 @@ class VaultServices(
     companion object {
         /** `attachments/<uuidv7>` beside `vault.db` under `filesDir` (spec §3). */
         const val ATTACHMENTS_DIR: String = "attachments"
+
+        /**
+         * `cache/staging_export/` — MUST match `core/export/pdf/PdfStaging.STAGING_DIR_NAME`.
+         * Duplicated as a literal (rather than a dependency on `:core:export`
+         * from `:app`) the same way `EnvelopeUnreadable`'s reason strings are
+         * kept in step with `MasterKeyStorageException.Kind` verbatim rather
+         * than shared — see `VaultReset`'s own doc on why this directory,
+         * under `cacheDir` rather than `filesDir`, is still in [VaultReset]'s
+         * deletion set.
+         */
+        private const val EXPORT_STAGING_DIR_NAME: String = "staging_export"
 
         /**
          * Production wiring: the device `VaultKeyProvider`
@@ -71,6 +88,19 @@ class VaultServices(
                     scope = scope,
                     installShutdownHook = true,
                 )
+            val vaultReset =
+                VaultReset.forDevice(
+                    context = app,
+                    paths = paths,
+                    attachmentsDir = File(app.filesDir, ATTACHMENTS_DIR),
+                    stagingDir = File(app.cacheDir, EXPORT_STAGING_DIR_NAME),
+                    isUnlocked = { unlockManager.state.value is UnlockState.Unlocked },
+                )
+            // skein-v3wb: finish a reset interrupted by a previous process
+            // death BEFORE anything below (or the gate's `isInitialised()`
+            // probe) touches the vault, so a half-done reset never looks
+            // like a usable — or ambiguously corrupt — vault.
+            vaultReset.resumeIfPending()
             val opener =
                 DeviceVaultOpener(
                     keyProvider = keyProvider,
@@ -90,7 +120,7 @@ class VaultServices(
                 )
             wireLockPolicy(app, unlockManager, scope)
             val ingest = wireIngest(app, unlockManager, bootstrap, scope)
-            return VaultServices(keyProvider, unlockManager, bootstrap, ingest)
+            return VaultServices(keyProvider, unlockManager, bootstrap, ingest, vaultReset)
         }
 
         /**

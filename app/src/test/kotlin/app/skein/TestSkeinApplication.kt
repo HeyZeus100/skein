@@ -1,9 +1,11 @@
 package app.skein
 
 import app.skein.core.rag.ingest.IngestPace
+import app.skein.core.vault.lifecycle.VaultReset
 import app.skein.core.vault.provider.VaultDocumentsProvider
 import app.skein.core.vault.session.LockPolicy
 import app.skein.core.vault.session.UnlockManager
+import app.skein.core.vault.session.UnlockState
 import app.skein.ingest.IngestPacer
 import app.skein.ingest.IngestPipelines
 import app.skein.ingest.IngestScheduler
@@ -25,6 +27,7 @@ import us.aherrera.skein.testing.FakeImportService
 import us.aherrera.skein.testing.InMemoryIndexStore
 import us.aherrera.skein.testing.InMemoryPersonaService
 import us.aherrera.skein.testing.InMemoryVaultRepository
+import java.io.File
 import java.time.Duration
 
 /**
@@ -51,9 +54,21 @@ class TestSkeinApplication : SkeinApplication() {
     @Volatile
     var failOpenWith: String? = null
 
+    /** skein-v3wb: aliases the fake keystore in [createVaultServices] recorded a delete call for. */
+    val deletedKeystoreAliases: MutableList<String> = mutableListOf()
+
     override fun createVaultServices(): VaultServices {
         val scope = CoroutineScope(SupervisorJob() + Dispatchers.Default)
         val unlockManager = UnlockManager(keyProvider = keyProvider, scope = scope)
+        val vaultReset =
+            VaultReset(
+                vaultDir = filesDir,
+                databaseFile = File(filesDir, "vault.db"),
+                attachmentsDir = File(filesDir, VaultServices.ATTACHMENTS_DIR),
+                stagingDir = File(cacheDir, "staging_export"),
+                keystore = { alias -> deletedKeystoreAliases += alias },
+                isUnlocked = { unlockManager.state.value is UnlockState.Unlocked },
+            )
         val bootstrap =
             VaultBootstrap(
                 unlockManager = unlockManager,
@@ -96,7 +111,7 @@ class TestSkeinApplication : SkeinApplication() {
                 pipelines = { session, attempts, pace -> IngestPipelines.forSession(session, pace, attempts) },
                 scope = scope,
             ).also { it.start() }
-        return VaultServices(keyProvider, unlockManager, bootstrap, ingest)
+        return VaultServices(keyProvider, unlockManager, bootstrap, ingest, vaultReset)
     }
 
     /**

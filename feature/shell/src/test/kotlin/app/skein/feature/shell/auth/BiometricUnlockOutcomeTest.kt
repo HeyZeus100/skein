@@ -20,11 +20,13 @@ class BiometricUnlockOutcomeTest {
         var recovery = false
         var notInitialised = false
         var retryMessage: String? = null
+        var envelopeUnreadableMessage: String? = null
     }
 
     private fun run(
         outcome: UnlockOutcome,
         withSetupRoute: Boolean = true,
+        withEnvelopeUnreadableRoute: Boolean = false,
     ): Effects {
         val effects = Effects()
         handleOutcome(
@@ -33,6 +35,12 @@ class BiometricUnlockOutcomeTest {
             onRecoveryRequired = { effects.recovery = true },
             onNotInitialised = if (withSetupRoute) ({ effects.notInitialised = true }) else null,
             onRetry = { effects.retryMessage = it },
+            onEnvelopeUnreadable =
+                if (withEnvelopeUnreadableRoute) {
+                    { effects.envelopeUnreadableMessage = it }
+                } else {
+                    null
+                },
         )
         return effects
     }
@@ -97,5 +105,60 @@ class BiometricUnlockOutcomeTest {
         val effects = run(UnlockOutcome.Coalesced(UnlockOutcome.NotInitialised))
 
         assertTrue(effects.notInitialised)
+    }
+
+    // ---- skein-v3wb: the reset-affordance routing ---------------------------
+
+    @Test
+    fun `a corrupt envelope routes to onEnvelopeUnreadable when the host offers it`() {
+        val effects = run(UnlockOutcome.Failed(EnvelopeUnreadable.REASON_CORRUPT), withEnvelopeUnreadableRoute = true)
+
+        assertEquals(EnvelopeUnreadable.UNLOCK_MESSAGE, effects.envelopeUnreadableMessage)
+        assertNull(effects.retryMessage)
+    }
+
+    @Test
+    fun `an unreadable envelope also routes to onEnvelopeUnreadable when offered`() {
+        val effects = run(UnlockOutcome.Failed(EnvelopeUnreadable.REASON_IO), withEnvelopeUnreadableRoute = true)
+
+        assertEquals(EnvelopeUnreadable.UNLOCK_MESSAGE, effects.envelopeUnreadableMessage)
+    }
+
+    @Test
+    fun `a corrupt envelope falls back to onRetry without an onEnvelopeUnreadable route`() {
+        val effects = run(UnlockOutcome.Failed(EnvelopeUnreadable.REASON_CORRUPT), withEnvelopeUnreadableRoute = false)
+
+        assertEquals(EnvelopeUnreadable.UNLOCK_MESSAGE, effects.retryMessage)
+        assertNull(effects.envelopeUnreadableMessage)
+    }
+
+    @Test
+    fun `a generic failure never routes to onEnvelopeUnreadable even when the host offers it`() {
+        val effects =
+            run(
+                UnlockOutcome.Failed("cipher init failed: KeyStoreException"),
+                withEnvelopeUnreadableRoute = true,
+            )
+
+        assertNull(effects.envelopeUnreadableMessage)
+        assertEquals("Authentication failed.", effects.retryMessage)
+    }
+
+    @Test
+    fun `user cancellation never routes to onEnvelopeUnreadable even when the host offers it`() {
+        val effects = run(UnlockOutcome.UserCancelled, withEnvelopeUnreadableRoute = true)
+
+        assertNull(effects.envelopeUnreadableMessage)
+    }
+
+    @Test
+    fun `a coalesced corrupt envelope is unwrapped before routing to onEnvelopeUnreadable`() {
+        val effects =
+            run(
+                UnlockOutcome.Coalesced(UnlockOutcome.Failed(EnvelopeUnreadable.REASON_CORRUPT)),
+                withEnvelopeUnreadableRoute = true,
+            )
+
+        assertEquals(EnvelopeUnreadable.UNLOCK_MESSAGE, effects.envelopeUnreadableMessage)
     }
 }
