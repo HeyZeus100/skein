@@ -26,4 +26,24 @@ object ShellTestTags {
 
     /** Re-presents the biometric prompt after a cancellation/error. */
     const val BIOMETRIC_UNLOCK_RETRY_BUTTON = "biometric_unlock_retry_button"
+
+    // skein-ank2: VaultSetupScreen tags.
+
+    /** Root container of `app.skein.feature.shell.auth.VaultSetupScreen`. */
+    const val VAULT_SETUP_ROOT = "vault_setup_root"
+
+    /** Starts `VaultKeyProvider.setup` (the explanation's call to action). */
+    const val VAULT_SETUP_BEGIN_BUTTON = "vault_setup_begin_button"
+
+    /** Shown while the setup wrap prompts are on screen. */
+    const val VAULT_SETUP_PROGRESS = "vault_setup_progress"
+
+    /** User-facing message shown when setup stopped short (cancel / failure / no biometric). */
+    const val VAULT_SETUP_MESSAGE = "vault_setup_message"
+
+    /** Re-runs setup after a cancellation, failure, or enrolment detour. */
+    const val VAULT_SETUP_RETRY_BUTTON = "vault_setup_retry_button"
+
+    /** Opens the OS biometric-enrolment settings when no strong biometric is enrolled. */
+    const val VAULT_SETUP_ENROL_BUTTON = "vault_setup_enrol_button"
 }

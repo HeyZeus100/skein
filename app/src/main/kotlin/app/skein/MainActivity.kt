@@ -30,13 +30,13 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.lifecycleScope
-import app.skein.core.vault.session.UnlockState
 import app.skein.feature.editor.notetab.NoteTab
 import app.skein.feature.settings.SettingsScreen
 import app.skein.feature.settings.rememberSettingsViewModel
 import app.skein.feature.shell.DestinationPlaceholder
 import app.skein.feature.shell.SkeinApp
 import app.skein.feature.shell.auth.BiometricUnlockScreen
+import app.skein.feature.shell.auth.VaultSetupScreen
 import app.skein.feature.shell.nav.Destination
 import app.skein.feature.shell.tabs.FlushRegistry
 import app.skein.feature.shell.theme.SkeinTheme
@@ -44,20 +44,26 @@ import app.skein.feature.timeline.TimelineScreen
 import app.skein.feature.timeline.rememberTimelineState
 import app.skein.system.SecurityPrefs
 import app.skein.vault.BringUpResult
+import app.skein.vault.GatePhase
 import app.skein.vault.VaultBootstrap
 import app.skein.vault.VaultServices
 import app.skein.vault.VaultSession
+import app.skein.vault.gatePhase
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.withContext
 
 /**
  * Single Activity for the `:app` process (spec §4.1). Hosts [SkeinApp], the
  * Compose shell (theme, typography, tokens) landed in `E6.I1`, behind the
- * vault gate ([VaultGate], skein-2ige): while `UnlockManager.state` is not
- * `Unlocked` the activity shows [BiometricUnlockScreen]; once unlocked it
- * runs `VaultBootstrap.bringUp()` and, with the vault open, renders the
- * shell with the Timeline destination fed by the live repository. Wires the
+ * vault gate ([VaultGate], skein-2ige / skein-ank2): on a device whose
+ * vault has never been set up the activity shows [VaultSetupScreen]; while
+ * `UnlockManager.state` is not `Unlocked` it shows [BiometricUnlockScreen];
+ * once unlocked it runs `VaultBootstrap.bringUp()` and, with the vault
+ * open, renders the shell with the Timeline destination fed by the live
+ * repository. Wires the
  * Settings destination (`E6.I14`) to the real
  * [app.skein.feature.settings.SettingsScreen] via `destinationContent`; the
  * remaining drawer destinations still fall back to [DestinationPlaceholder]
@@ -119,6 +125,10 @@ class MainActivity : FragmentActivity() {
             VaultGate(
                 vault = vault,
                 onUnlocked = { lifecycleScope.launch { vault.bootstrap.bringUp() } },
+                onProvisioned = { strongBoxBacked ->
+                    // skein-ank2: recorded for Settings › Security (skein-3el).
+                    lifecycleScope.launch { securityPrefs.setStrongBoxUnavailableFallback(!strongBoxBacked) }
+                },
                 unlockedContent = { session -> UnlockedShell(session) },
             )
         }
@@ -198,8 +208,9 @@ private fun TimelineDestination(session: VaultSession) {
     TimelineScreen(state = state, onEntryClick = {}, modifier = Modifier.fillMaxSize())
 }
 
-/** Test tags for the vault gate's own states (the unlock screen and the shell carry their own). */
+/** Test tags for the vault gate's own states (the unlock/setup screens and the shell carry their own). */
 object VaultGateTestTags {
+    const val PROBING = "vault_gate_probing"
     const val OPENING = "vault_gate_opening"
     const val OPEN_FAILED = "vault_gate_open_failed"
     const val RETRY = "vault_gate_retry"
@@ -207,38 +218,73 @@ object VaultGateTestTags {
 }
 
 /**
- * Routes on `UnlockManager.state` and `VaultBootstrap.session`:
+ * Renders [gatePhase] over `VaultBootstrap.session`, `UnlockManager.state`,
+ * and a one-shot, prompt-free `VaultKeyProvider.isInitialised()` probe
+ * (skein-ank2, off the main thread — it reads the key-envelope file):
  *  - session present → [unlockedContent];
  *  - `Unlocked` but no session → [OpeningVault] (runs `bringUp`; covers an
  *    Activity recreated mid-open and lets a failed open be retried);
- *  - otherwise → [BiometricUnlockScreen]. [onUnlocked] kicks off the
- *    bring-up the moment the prompt succeeds; both paths funnel into the
- *    same idempotent `bringUp`.
+ *  - recovery pending → [RecoveryRequiredNotice];
+ *  - probe outstanding → a blank surface ([ProbingVault]);
+ *  - not initialised → [VaultSetupScreen]; a provisioned or refused-as-
+ *    already-initialised setup flips the probe result to `true`;
+ *  - otherwise → [BiometricUnlockScreen], whose `NotInitialised` outcome
+ *    flips it back to `false` (the provider is the source of truth).
+ * [onUnlocked] kicks off the bring-up the moment the prompt succeeds; both
+ * paths funnel into the same idempotent `bringUp`. `setup()` is only ever
+ * called from the setup screen, i.e. never while an envelope exists.
  */
 @Composable
 private fun VaultGate(
     vault: VaultServices,
     onUnlocked: () -> Unit,
+    onProvisioned: (strongBoxBacked: Boolean) -> Unit,
     unlockedContent: @Composable (VaultSession) -> Unit,
 ) {
     val unlockState by vault.unlockManager.state.collectAsState()
     val session by vault.session.collectAsState()
     var recoveryRequired by remember { mutableStateOf(false) }
-    val current = session
-    when {
-        current != null -> unlockedContent(current)
-        unlockState is UnlockState.Unlocked -> SkeinTheme { OpeningVault(vault.bootstrap) }
-        recoveryRequired -> SkeinTheme { RecoveryRequiredNotice() }
-        else ->
+    var provisioned by remember { mutableStateOf<Boolean?>(null) }
+    LaunchedEffect(vault) {
+        provisioned = withContext(Dispatchers.IO) { vault.keyProvider.isInitialised() }
+    }
+    when (val phase = gatePhase(session, unlockState, recoveryRequired, provisioned)) {
+        is GatePhase.Open -> unlockedContent(phase.session)
+        GatePhase.Opening -> SkeinTheme { OpeningVault(vault.bootstrap) }
+        GatePhase.RecoveryRequired -> SkeinTheme { RecoveryRequiredNotice() }
+        GatePhase.Probing -> SkeinTheme { ProbingVault() }
+        GatePhase.Setup ->
+            SkeinTheme {
+                Surface(modifier = Modifier.fillMaxSize(), color = MaterialTheme.colorScheme.background) {
+                    VaultSetupScreen(
+                        keyProvider = vault.keyProvider,
+                        onProvisioned = { strongBoxBacked ->
+                            onProvisioned(strongBoxBacked)
+                            provisioned = true
+                        },
+                        onAlreadyInitialised = { provisioned = true },
+                    )
+                }
+            }
+        GatePhase.Unlock ->
             SkeinTheme {
                 Surface(modifier = Modifier.fillMaxSize(), color = MaterialTheme.colorScheme.background) {
                     BiometricUnlockScreen(
                         unlockManager = vault.unlockManager,
                         onUnlocked = { onUnlocked() },
                         onRecoveryRequired = { recoveryRequired = true },
+                        onNotInitialised = { provisioned = false },
                     )
                 }
             }
+    }
+}
+
+/** The envelope probe is a sub-millisecond file read; a bare surface avoids a spinner flash. */
+@Composable
+private fun ProbingVault() {
+    Surface(modifier = Modifier.fillMaxSize(), color = MaterialTheme.colorScheme.background) {
+        Box(modifier = Modifier.fillMaxSize().testTag(VaultGateTestTags.PROBING))
     }
 }
 

@@ -164,6 +164,8 @@ private class ScriptedVaultKeyProvider(
         prompt: BiometricPrompt.PromptInfo,
     ): SetupResult = error("BiometricUnlockScreen does not call VaultKeyProvider.setup")
 
+    override fun isInitialised(): Boolean = error("BiometricUnlockScreen does not probe VaultKeyProvider.isInitialised")
+
     override suspend fun unlock(
         activity: FragmentActivity,
         prompt: BiometricPrompt.PromptInfo,

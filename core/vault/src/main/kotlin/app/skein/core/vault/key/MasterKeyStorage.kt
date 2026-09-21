@@ -123,7 +123,14 @@ internal class MasterKeyStorageException(
     message: String,
     cause: Throwable? = null,
 ) : RuntimeException(message, cause) {
-    /** [reason] is the bounded, payload-free phrase the provider surfaces in its `Failed` results. */
+    /**
+     * [reason] is the bounded, payload-free phrase the provider surfaces in
+     * its `Failed` results. [CORRUPT] and [IO] are matched VERBATIM by the
+     * unlock UI (`:feature:shell`'s `BiometricUnlockScreen`, skein-ank2) to
+     * show a distinct, non-destructive message instead of the generic
+     * "authentication failed" — change the phrases and that screen's
+     * `EnvelopeUnreadable` constants together.
+     */
     enum class Kind(
         val reason: String,
     ) {

@@ -21,12 +21,14 @@ import us.aherrera.skein.testing.InMemoryVaultRepository
  * Robolectric stand-in for [SkeinApplication] (`@Config(application = ...)`):
  * the same [VaultServices] shape over a [ScriptedVaultKeyProvider], an
  * in-memory vault, and a no-op provider port — so `MainActivity` tests can
- * drive the real unlock → bring-up → shell path without SQLCipher or a
- * biometric prompt.
+ * drive the real setup → unlock → bring-up → shell path without SQLCipher
+ * or a biometric prompt. The bootstrap runs the production first-persona
+ * seed ([VaultServices.seedFirstPersona]) over [personaService].
  */
 class TestSkeinApplication : SkeinApplication() {
     val keyProvider = ScriptedVaultKeyProvider()
     val repository = InMemoryVaultRepository()
+    val personaService = InMemoryPersonaService()
 
     /** When non-null, every open fails with this reason (exercises the gate's failure state). */
     @Volatile
@@ -43,7 +45,7 @@ class TestSkeinApplication : SkeinApplication() {
                     VaultSession(
                         repository = repository,
                         indexStore = InMemoryIndexStore(),
-                        personaService = InMemoryPersonaService(),
+                        personaService = personaService,
                         exportService = FakeExportService(),
                         importService = FakeImportService(),
                     ) {}
@@ -55,6 +57,7 @@ class TestSkeinApplication : SkeinApplication() {
                         override fun notifyRootsChanged() = Unit
                     },
                 scope = scope,
+                seed = VaultServices::seedFirstPersona,
             )
         return VaultServices(keyProvider, unlockManager, bootstrap)
     }

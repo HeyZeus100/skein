@@ -50,6 +50,9 @@ internal class FakeVaultKeyProvider(
         prompt: BiometricPrompt.PromptInfo,
     ): SetupResult = SetupResult.Success(masterKeyVersion = 1, strongBoxBacked = true)
 
+    /** `UnlockManager` never probes this; a fake envelope is always "present". */
+    override fun isInitialised(): Boolean = true
+
     override suspend fun unlock(
         activity: FragmentActivity,
         prompt: BiometricPrompt.PromptInfo,

@@ -74,6 +74,18 @@ public class VaultKeyProviderImpl internal constructor(
 
     override fun currentKey(): ByteArray? = master
 
+    override fun isInitialised(): Boolean =
+        try {
+            storage.readActive() != null
+        } catch (_: MasterKeyStorageException) {
+            // An envelope is present but corrupt / unreadable. `setup()` is
+            // refused in that state (below) and only a user-initiated reset
+            // may discard it, so report "initialised": the gate then routes
+            // to `unlock()`, which surfaces the typed, non-destructive
+            // `Failed(kind.reason)` instead of inviting a re-setup.
+            true
+        }
+
     override fun lock() {
         zero(master)
         master = null
@@ -116,7 +128,7 @@ public class VaultKeyProviderImpl internal constructor(
             } catch (e: MasterKeyStorageException) {
                 return SetupResult.Failed(e.kind.reason)
             }
-        if (existing != null) return SetupResult.Failed(ALREADY_INITIALISED_REASON)
+        if (existing != null) return SetupResult.AlreadyInitialised
 
         // §3.2: BOTH factors must be provisioned from day one so recovery
         // never depends on lazily-created state. NoBiometricEnrolled is
@@ -409,9 +421,6 @@ public class VaultKeyProviderImpl internal constructor(
         internal const val ALIAS_BIOMETRIC: String = "skein_master_bio_v1"
         internal const val ALIAS_CREDENTIAL: String = "skein_master_cred_v1"
         internal const val MASTER_KEY_LEN: Int = 32
-
-        /** `setup()` found a wrapped master already persisted — call `unlock()` instead. */
-        internal const val ALREADY_INITIALISED_REASON: String = "already initialised"
     }
 }
 

@@ -93,12 +93,70 @@ class VaultKeyProviderImplTest {
             val rowBefore = storage.readActive()
             // Act
             val result = provider.setupNoUi()
-            // Assert — typed refusal, no alias churn, the wrapped master intact.
-            assertThat(result).isEqualTo(SetupResult.Failed(VaultKeyProviderImpl.ALREADY_INITIALISED_REASON))
+            // Assert — typed refusal (skein-ank2), no alias churn, the wrapped master intact.
+            assertThat(result).isEqualTo(SetupResult.AlreadyInitialised)
             assertThat(keystore.createCalls).hasSize(createCallsBefore)
             assertThat(storage.readActive()).isEqualTo(rowBefore)
             val unlock = provider.unlockNoUi(VaultKeyProvider.Factor.BIOMETRIC)
             assertThat(unlock).isInstanceOf(UnlockResult.Success::class.java)
+        }
+
+    // ---- isInitialised (skein-ank2) -------------------------------------
+
+    @Test
+    fun `isInitialised is false before setup`() {
+        // Arrange
+        val provider = newProvider()
+        // Act / Assert
+        assertThat(provider.isInitialised()).isFalse()
+    }
+
+    @Test
+    fun `isInitialised is true after setup`() =
+        runTest {
+            // Arrange
+            val provider = newProvider()
+            provider.setupNoUi()
+            // Act / Assert
+            assertThat(provider.isInitialised()).isTrue()
+        }
+
+    @Test
+    fun `isInitialised is true over a corrupt envelope so nothing offers a re-setup`() {
+        // Arrange — an envelope exists but cannot be decoded.
+        val storage =
+            FakeMasterKeyStorage().apply {
+                failReadsWith = MasterKeyStorageException(MasterKeyStorageException.Kind.CORRUPT, "corrupt")
+            }
+        val provider = newProvider(storage = storage)
+        // Act / Assert — the gate must route to unlock (which reports the
+        // typed reason), never to setup, which would be refused anyway.
+        assertThat(provider.isInitialised()).isTrue()
+    }
+
+    @Test
+    fun `isInitialised is true over an unreadable envelope`() {
+        // Arrange
+        val storage =
+            FakeMasterKeyStorage().apply {
+                failReadsWith = MasterKeyStorageException(MasterKeyStorageException.Kind.IO, "io")
+            }
+        val provider = newProvider(storage = storage)
+        // Act / Assert
+        assertThat(provider.isInitialised()).isTrue()
+    }
+
+    @Test
+    fun `isInitialised never touches the Keystore`() =
+        runTest {
+            // Arrange
+            val keystore = FakeKeystoreFacade(strongBoxAvailable = true)
+            val provider = newProvider(keystore = keystore)
+            // Act
+            provider.isInitialised()
+            // Assert — a pure envelope probe: no alias created, nothing unwrapped.
+            assertThat(keystore.createCalls).isEmpty()
+            assertThat(provider.currentKey()).isNull()
         }
 
     @Test

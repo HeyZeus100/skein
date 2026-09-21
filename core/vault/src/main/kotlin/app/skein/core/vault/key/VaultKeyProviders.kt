@@ -25,7 +25,8 @@ public object VaultKeyProviders {
      * beside the `vault.db` it unlocks. Construction performs no I/O and
      * does not load the Keystore; the first [VaultKeyProvider.unlock] on a
      * device with no envelope reports [UnlockResult.NotInitialised] until
-     * [VaultKeyProvider.setup] has run once.
+     * [VaultKeyProvider.setup] has run once — [VaultKeyProvider.isInitialised]
+     * reports the same fact without a prompt, for the first-run gate.
      */
     public fun forDevice(
         context: Context,
