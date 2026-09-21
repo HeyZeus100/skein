@@ -5,6 +5,8 @@ import android.os.Build
 import android.os.Bundle
 import android.view.WindowManager
 import androidx.activity.compose.setContent
+import androidx.biometric.BiometricManager
+import androidx.biometric.BiometricPrompt
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -29,8 +31,11 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.lifecycleScope
+import app.skein.core.vault.key.PassphraseKeyExport
+import app.skein.core.vault.session.UnlockState
 import app.skein.feature.editor.notetab.NoteTab
 import app.skein.feature.graph.GraphScreen
 import app.skein.feature.settings.SettingsScreen
@@ -55,10 +60,13 @@ import app.skein.vault.VaultSession
 import app.skein.vault.gatePhase
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.suspendCancellableCoroutine
 import kotlinx.coroutines.withContext
 import us.aherrera.skein.core.model.DocId
+import kotlin.coroutines.resume
 
 /**
  * Single Activity for the `:app` process (spec §4.1). Hosts [SkeinApp], the
@@ -97,6 +105,81 @@ class MainActivity : FragmentActivity() {
     private val setIdleTimeoutMinutes: suspend (Int) -> Unit = { securityPrefs.setIdleTimeoutMinutes(it) }
     private val setLockOnScreenOff: suspend (Boolean) -> Unit = { securityPrefs.setLockOnScreenOff(it) }
     private val setLockOnBackground: suspend (Boolean) -> Unit = { securityPrefs.setLockOnBackground(it) }
+
+    // E3.I11 (skein-v9g): the two seams Settings › Security's recovery export
+    // needs. Stable field references for the same `remember(...)`-keying
+    // reason as the setters above.
+    //
+    // `reauthenticateForExport` presents a FRESH `BiometricPrompt` — the
+    // export must not ride on an unlock that happened minutes ago, and a
+    // phone handed over while unlocked must not be able to walk out with the
+    // vault key. It is user-presence only (no `CryptoObject`): the master is
+    // already unwrapped in memory at this point, so binding a Keystore cipher
+    // here would prove nothing extra; what is being checked is that the
+    // person holding the phone right now is the owner.
+    //
+    // `buildRecoveryExport` is the ONLY place the in-memory master is read
+    // for export. It copies `currentKey()` (per `VaultKeyProvider`'s contract
+    // — the returned buffer is the one `lock()` zeroes, so it must not be
+    // stashed), wraps the copy, and zeroes the copy in a `finally`. `null`
+    // means the vault locked in between, which the UI reports as a refusal.
+    private val reauthenticateForExport: suspend () -> Boolean = { promptForExportReauth() }
+    private val buildRecoveryExport: suspend (CharArray) -> ByteArray? = { passphrase ->
+        withContext(Dispatchers.Default) {
+            val master =
+                (application as SkeinApplication)
+                    .vault.keyProvider
+                    .currentKey()
+                    ?.copyOf()
+            if (master == null) {
+                null
+            } else {
+                try {
+                    PassphraseKeyExport.export(master, passphrase)
+                } finally {
+                    master.fill(0)
+                }
+            }
+        }
+    }
+
+    /**
+     * Presents a fresh biometric / device-credential prompt and reports
+     * whether the user cleared it. Resumes exactly once — `BiometricPrompt`
+     * can call both `onAuthenticationFailed` (a non-terminal "try again")
+     * and then a terminal callback, so the continuation is guarded.
+     */
+    private suspend fun promptForExportReauth(): Boolean =
+        suspendCancellableCoroutine { continuation ->
+            val prompt =
+                BiometricPrompt(
+                    this,
+                    ContextCompat.getMainExecutor(this),
+                    object : BiometricPrompt.AuthenticationCallback() {
+                        override fun onAuthenticationSucceeded(result: BiometricPrompt.AuthenticationResult) {
+                            if (continuation.isActive) continuation.resume(true)
+                        }
+
+                        override fun onAuthenticationError(
+                            errorCode: Int,
+                            errString: CharSequence,
+                        ) {
+                            if (continuation.isActive) continuation.resume(false)
+                        }
+                    },
+                )
+            prompt.authenticate(
+                BiometricPrompt.PromptInfo
+                    .Builder()
+                    .setTitle("Confirm it is you")
+                    .setSubtitle("Skein is about to export your vault key")
+                    .setAllowedAuthenticators(
+                        BiometricManager.Authenticators.BIOMETRIC_STRONG or
+                            BiometricManager.Authenticators.DEVICE_CREDENTIAL,
+                    ).build(),
+            )
+            continuation.invokeOnCancellation { prompt.cancelAuthentication() }
+        }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -146,6 +229,19 @@ class MainActivity : FragmentActivity() {
 
     @Composable
     private fun UnlockedShell(session: VaultSession) {
+        // skein-v9g: Settings › Security's recovery export needs the key
+        // provider and the unlock state. Read from the Application rather
+        // than threaded through `VaultGate`'s `unlockedContent` lambda, so
+        // the gate's own wiring is untouched.
+        val vaultForSettings = remember { (application as SkeinApplication).vault }
+
+        // Derived once, outside composition (lint's
+        // `FlowOperatorInvokedInComposition`) and keyed on the services, so
+        // `rememberSettingsViewModel`'s `remember(...)` key is stable.
+        val vaultUnlockedFlow =
+            remember(vaultForSettings) {
+                vaultForSettings.unlockManager.state.map { it is UnlockState.Unlocked }
+            }
         // skein-u01 (E6.I9): held here (rather than letting `SkeinApp`
         // default one internally) so a future `E3.I3b` `SessionState`/
         // `LockObserver` registry has something to call `flushAll()` on
@@ -199,6 +295,16 @@ class MainActivity : FragmentActivity() {
                                 lockOnBackgroundFlow = securityPrefs.lockOnBackground,
                                 onSetLockOnBackground = setLockOnBackground,
                                 strongBoxUnavailableFallbackFlow = securityPrefs.strongBoxUnavailableFallback,
+                                // E3.I11 (skein-v9g): the opt-in passphrase
+                                // export of the vault key. `vaultUnlockedFlow`
+                                // is the row's hard gate; `reauthenticate`
+                                // presents a FRESH prompt at the moment of
+                                // export; `buildRecoveryExport` is the only
+                                // place the in-memory master is read, and it
+                                // wipes its own copy.
+                                vaultUnlockedFlow = vaultUnlockedFlow,
+                                reauthenticate = reauthenticateForExport,
+                                buildRecoveryExport = buildRecoveryExport,
                             )
                         SettingsScreen(
                             viewModel = settingsViewModel,

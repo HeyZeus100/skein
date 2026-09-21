@@ -64,7 +64,19 @@ public class VaultKeyProviderImpl internal constructor(
     override suspend fun setup(
         activity: FragmentActivity,
         prompt: BiometricPrompt.PromptInfo,
-    ): SetupResult = setupWith { factor, cipher -> biometric.authenticate(activity, prompt, factor, cipher) }
+    ): SetupResult =
+        setupWith(existingMaster = null) { factor, cipher ->
+            biometric.authenticate(activity, prompt, factor, cipher)
+        }
+
+    override suspend fun setup(
+        activity: FragmentActivity,
+        prompt: BiometricPrompt.PromptInfo,
+        existingMaster: ByteArray,
+    ): SetupResult =
+        setupWith(existingMaster = existingMaster) { factor, cipher ->
+            biometric.authenticate(activity, prompt, factor, cipher)
+        }
 
     override suspend fun unlock(
         activity: FragmentActivity,
@@ -106,7 +118,8 @@ public class VaultKeyProviderImpl internal constructor(
     // bypassed — the injected auth lambda returns `AuthResult.Success(cipher)`
     // unchanged. Called from `VaultKeyProviderImplTest` on the JVM.
 
-    internal suspend fun setupNoUi(): SetupResult = setupWith { _, cipher -> AuthResult.Success(cipher) }
+    internal suspend fun setupNoUi(existingMaster: ByteArray? = null): SetupResult =
+        setupWith(existingMaster) { _, cipher -> AuthResult.Success(cipher) }
 
     internal suspend fun unlockNoUi(factor: VaultKeyProvider.Factor): UnlockResult =
         unlockWith(factor) { _, cipher -> AuthResult.Success(cipher) }
@@ -116,7 +129,23 @@ public class VaultKeyProviderImpl internal constructor(
 
     // ---- shared orchestration -----------------------------------------
 
-    private suspend fun setupWith(auth: AuthenticateFn): SetupResult {
+    /**
+     * [existingMaster] non-null (skein-v9g) adopts those 32 bytes as
+     * `master_key_material` instead of generating fresh ones — the
+     * passphrase-import / device-migration path. Everything else about the
+     * flow is identical, including the refusal once an envelope exists, so
+     * an import can never overwrite a live vault's Layer-0 aliases. The
+     * array is copied, never retained: the caller keeps ownership of the
+     * buffer it passed in, and the copy this method makes is zeroed in the
+     * same `finally` that zeroes a generated master.
+     */
+    private suspend fun setupWith(
+        existingMaster: ByteArray?,
+        auth: AuthenticateFn,
+    ): SetupResult {
+        if (existingMaster != null && existingMaster.size != MASTER_KEY_LEN) {
+            return SetupResult.Failed("imported master key has the wrong length")
+        }
         // skein-txrh: setup is destructive for the Layer-0 aliases (deleted
         // and recreated below), so refuse it outright once a wrapped master
         // exists — a second setup would strand the vault.db that master
@@ -148,7 +177,9 @@ public class VaultKeyProviderImpl internal constructor(
             tryCreateBothKeys(strongBoxAvailable)
                 ?: return SetupResult.Failed("failed to create Layer-0 Keystore entries")
 
-        val newMaster = ByteArray(MASTER_KEY_LEN).also(random::nextBytes)
+        // A copy either way, so the `finally` below can zero it unconditionally
+        // without ever touching a buffer the caller still owns.
+        val newMaster = existingMaster?.copyOf() ?: ByteArray(MASTER_KEY_LEN).also(random::nextBytes)
         try {
             val bioWrap =
                 wrapUnder(VaultKeyProvider.Factor.BIOMETRIC, newMaster, auth) ?: run {

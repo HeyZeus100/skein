@@ -49,6 +49,29 @@ class VaultSetupScreenTest {
         composeRule.waitForIdle()
     }
 
+    // skein-v9g (E3.I11): the recovery / device-migration entry point.
+
+    @Test
+    fun offers_restore_from_a_passphrase_export_alongside_a_fresh_setup() {
+        val provider = ScriptedSetupProvider { SetupResult.UserCancelled }
+
+        show(provider)
+
+        composeRule.onNodeWithTag(ShellTestTags.VAULT_RESTORE_BUTTON).assertIsDisplayed()
+    }
+
+    @Test
+    fun the_restore_entry_point_does_not_mint_a_fresh_master() {
+        val provider = ScriptedSetupProvider { SetupResult.UserCancelled }
+        show(provider)
+
+        composeRule.onNodeWithTag(ShellTestTags.VAULT_RESTORE_BUTTON).performClick()
+        composeRule.waitForIdle()
+
+        // Opening the document picker must never reach `setup()`.
+        assertEquals(0, provider.setupCalls)
+    }
+
     @Test
     fun explains_and_waits_for_a_tap_before_calling_setup() {
         val provider = ScriptedSetupProvider { SetupResult.UserCancelled }
@@ -162,6 +185,22 @@ private class ScriptedSetupProvider(
         setupCalls++
         return onSetup()
     }
+
+    /** skein-v9g: the recovery / device-migration overload. Records the adopted bytes. */
+    override suspend fun setup(
+        activity: FragmentActivity,
+        prompt: BiometricPrompt.PromptInfo,
+        existingMaster: ByteArray,
+    ): SetupResult {
+        importedMaster = existingMaster.copyOf()
+        setupCalls++
+        return onSetup()
+    }
+
+    /** The master the last restore adopted, or `null` if none has run. */
+    @Volatile
+    var importedMaster: ByteArray? = null
+        private set
 
     override fun isInitialised(): Boolean = false
 

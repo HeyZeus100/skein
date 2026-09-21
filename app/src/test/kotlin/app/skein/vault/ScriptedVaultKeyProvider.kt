@@ -62,6 +62,26 @@ class ScriptedVaultKeyProvider(
         return result
     }
 
+    /**
+     * skein-v9g: the passphrase-import setup. Scripted from the same
+     * [nextSetup] as the generating overload, and records the adopted bytes
+     * in [importedMaster] so a gate test can assert the provider was handed
+     * the master the recovery file produced — never a fresh one.
+     */
+    override suspend fun setup(
+        activity: FragmentActivity,
+        prompt: BiometricPrompt.PromptInfo,
+        existingMaster: ByteArray,
+    ): SetupResult {
+        importedMaster = existingMaster.copyOf()
+        return setup(activity, prompt)
+    }
+
+    /** The bytes the last [setup] import adopted, or `null` if none has run. */
+    @Volatile
+    var importedMaster: ByteArray? = null
+        private set
+
     override fun isInitialised(): Boolean = initialised
 
     override suspend fun unlock(

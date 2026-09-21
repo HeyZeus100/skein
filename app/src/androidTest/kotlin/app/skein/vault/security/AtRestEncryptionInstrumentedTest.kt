@@ -55,6 +55,13 @@ class AtRestEncryptionInstrumentedTest {
             prompt: BiometricPrompt.PromptInfo,
         ): SetupResult = SetupResult.Success(masterKeyVersion = 1, strongBoxBacked = false)
 
+        /** skein-v9g: the passphrase-import overload; not exercised by this test. */
+        override suspend fun setup(
+            activity: FragmentActivity,
+            prompt: BiometricPrompt.PromptInfo,
+            existingMaster: ByteArray,
+        ): SetupResult = error("setup(existingMaster) is not exercised by this test")
+
         override fun isInitialised(): Boolean = true
 
         override suspend fun unlock(

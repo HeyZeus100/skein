@@ -80,6 +80,35 @@ public interface VaultKeyProvider {
     ): SetupResult
 
     /**
+     * Recovery / device-migration variant of [setup] (skein-v9g, `E3.I11`).
+     *
+     * Behaves exactly like [setup] — fresh Layer-0 aliases, fresh wraps, a
+     * new envelope — EXCEPT that it adopts [existingMaster] instead of
+     * generating a new `master_key_material`. That is the whole point: an
+     * existing `vault.db` and its attachments are keyed by those 32 bytes,
+     * so reusing them is what makes the vault readable again after both
+     * Layer-0 factors were invalidated (`ATTACHMENT_ENCRYPTION.md` §3.8) or
+     * after a move to a new device. Generating a fresh master here would
+     * strand exactly the data the user is trying to recover.
+     *
+     * [existingMaster] is normally the output of
+     * [PassphraseKeyExport.import]. It must be exactly 32 bytes. The
+     * provider copies what it needs and does NOT take ownership: the caller
+     * still owns zeroing the array it passed in.
+     *
+     * Every [SetupResult] variant means the same thing as it does for
+     * [setup] — including [SetupResult.AlreadyInitialised], which is
+     * returned whenever an envelope already exists. Importing over a live
+     * vault is therefore impossible by construction; a user-initiated reset
+     * is the only way to reach this call on a provisioned device.
+     */
+    public suspend fun setup(
+        activity: FragmentActivity,
+        prompt: BiometricPrompt.PromptInfo,
+        existingMaster: ByteArray,
+    ): SetupResult
+
+    /**
      * Whether [setup] has run on this device — i.e. whether a key envelope
      * (`keys/key-envelope.v1`) exists. Cheap and prompt-free: reads the
      * envelope, never touches the Keystore, never presents a prompt.

@@ -50,6 +50,16 @@ internal class FakeVaultKeyProvider(
         prompt: BiometricPrompt.PromptInfo,
     ): SetupResult = SetupResult.Success(masterKeyVersion = 1, strongBoxBacked = true)
 
+    /** skein-v9g: `UnlockManager` never imports; the adopted bytes are simply recorded. */
+    override suspend fun setup(
+        activity: FragmentActivity,
+        prompt: BiometricPrompt.PromptInfo,
+        existingMaster: ByteArray,
+    ): SetupResult {
+        master = existingMaster.copyOf()
+        return SetupResult.Success(masterKeyVersion = 1, strongBoxBacked = true)
+    }
+
     /** `UnlockManager` never probes this; a fake envelope is always "present". */
     override fun isInitialised(): Boolean = true
 
