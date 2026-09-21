@@ -12,10 +12,20 @@ plugins {
     alias(libs.plugins.kotlin.serialization) apply false
     alias(libs.plugins.kotlin.compose) apply false
     alias(libs.plugins.ktlint) apply false
+    // E1.I11 (skein-4je): registered here (like ktlint above) so the
+    // `apply(plugin = "app.skein.guard.logging")` call in `subprojects`
+    // below can resolve it — an included-build plugin ID is only
+    // discoverable through Gradle's plugin resolution when it appears in a
+    // declarative `plugins {}` block at least once; the imperative
+    // `apply(plugin = ...)` form alone cannot look it up in `build-logic`.
+    id("app.skein.guard.logging") apply false
 }
 
 subprojects {
     apply(plugin = "org.jlleitschuh.gradle.ktlint")
+    // E1.I11 (skein-4je): NoRawLogging — every module's `check` fails on a
+    // raw `android.util.Log`/`println` call outside `SkeinLog.kt` (spec §9).
+    apply(plugin = "app.skein.guard.logging")
 }
 
 // The root project has no source of its own; `lifecycle-base` gives it a

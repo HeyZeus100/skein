@@ -1,5 +1,6 @@
 package app.skein.testing
 
+import app.skein.core.model.SkeinLog
 import org.junit.rules.TestRule
 import org.junit.runner.Description
 import org.junit.runners.model.Statement
@@ -7,10 +8,10 @@ import java.util.concurrent.CopyOnWriteArrayList
 
 /**
  * Test-only capture point for the production `SkeinLog` facade (spec §9:
- * nothing sensitive may reach logcat). `SkeinLog` is not implemented yet
- * (it lands with a later issue); when it does, its internal `isSensitive`
- * hook must call [SkeinLogCapture.record] so tests can observe what would
- * have been logged without needing `android.util.Log`/Robolectric.
+ * nothing sensitive may reach logcat). [SkeinLogCaptureRule] installs
+ * `SkeinLog.testHook` for the duration of a test so `SkeinLog`'s calls to it
+ * land here — this file cannot depend on `SkeinLog` the other way around
+ * (`:core:model` is pure JVM and never depends on `:testing`).
  *
  * [record] is a no-op ([hook] is `null`) outside of a test using
  * [SkeinLogCaptureRule], so production code pays no cost for calling it.
@@ -59,11 +60,14 @@ class SkeinLogCaptureRule : TestRule {
         object : Statement() {
             override fun evaluate() {
                 val previousHook = SkeinLogCapture.hook
+                val previousSkeinLogHook = SkeinLog.testHook
                 SkeinLogCapture.hook = { entries.add(it) }
+                SkeinLog.testHook = { tag, message, isSensitive -> SkeinLogCapture.record(tag, message, isSensitive) }
                 try {
                     base.evaluate()
                 } finally {
                     SkeinLogCapture.hook = previousHook
+                    SkeinLog.testHook = previousSkeinLogHook
                 }
                 val sensitive = entries.filter { it.isSensitive }
                 if (sensitive.isNotEmpty()) {
