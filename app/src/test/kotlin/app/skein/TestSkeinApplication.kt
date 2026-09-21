@@ -17,6 +17,7 @@ import app.skein.vault.VaultBootstrap
 import app.skein.vault.VaultOpenException
 import app.skein.vault.VaultServices
 import app.skein.vault.VaultSession
+import kotlinx.coroutines.CompletableDeferred
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
@@ -54,6 +55,13 @@ class TestSkeinApplication : SkeinApplication() {
     @Volatile
     var failOpenWith: String? = null
 
+    /**
+     * Controls when a successful vault open completes for deterministic testing (skein-spe3).
+     * Used by the retry test to gate the open until the test explicitly allows it.
+     * Starts as a completed deferred so normal tests proceed without waiting.
+     */
+    var openReadySignal: CompletableDeferred<Unit> = CompletableDeferred<Unit>().also { it.complete(Unit) }
+
     /** skein-v3wb: aliases the fake keystore in [createVaultServices] recorded a delete call for. */
     val deletedKeystoreAliases: MutableList<String> = mutableListOf()
 
@@ -74,6 +82,9 @@ class TestSkeinApplication : SkeinApplication() {
                 unlockManager = unlockManager,
                 openVault = {
                     failOpenWith?.let { throw VaultOpenException(it) }
+                    // For deterministic testing (skein-spe3): gate successful opens behind
+                    // a signal the test controls, so the retry path is not timing-sensitive.
+                    openReadySignal.await()
                     VaultSession(
                         repository = repository,
                         indexStore = InMemoryIndexStore(),

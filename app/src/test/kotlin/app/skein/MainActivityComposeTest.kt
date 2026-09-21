@@ -19,6 +19,7 @@ import app.skein.feature.editor.notetab.NoteTabTestTags
 import app.skein.feature.graph.GraphTestTags
 import app.skein.feature.shell.testing.ShellTestTags
 import app.skein.system.SecurityPrefs
+import kotlinx.coroutines.CompletableDeferred
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.runBlocking
 import org.junit.Assert.assertEquals
@@ -453,12 +454,20 @@ class MainActivityComposeTest {
 
     @Test
     fun `retrying after a failed open brings the shell up once the vault opens`() {
+        // skein-spe3: make the retry path deterministic by gating the open behind
+        // a deferred the test controls, so the open doesn't proceed until the test
+        // explicitly allows it. This prevents timeout flakiness under CPU starvation.
+        val openSignal = CompletableDeferred<Unit>()
+        app.openReadySignal = openSignal
+
         app.failOpenWith = "wrong vault key"
 
         ActivityScenario.launch(MainActivity::class.java).use {
             awaitTag(VaultGateTestTags.RETRY)
             app.failOpenWith = null
             composeRule.onNodeWithTag(VaultGateTestTags.RETRY).performClick()
+            // Allow the retry to complete by signaling the open is ready.
+            openSignal.complete(Unit)
             awaitTag(ShellTestTags.SKEIN_SHELL_ROOT)
 
             composeRule.onNodeWithTag(ShellTestTags.SKEIN_SHELL_ROOT).assertExists()
