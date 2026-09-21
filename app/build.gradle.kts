@@ -45,7 +45,17 @@ android {
 
     buildTypes {
         release {
-            isMinifyEnabled = false
+            // E1.I11 (skein-4je): minification is turned on *only* so R8's
+            // `-assumenosideeffects` (app/proguard-rules.pro) can strip
+            // `SkeinLog.d`/`SkeinLog.i` call sites from the release dex —
+            // see that file's header comment for the narrow scope (no
+            // obfuscation, no real shrinking yet) and why full R8 mode is
+            // left to E1.I8.
+            isMinifyEnabled = true
+            proguardFiles(
+                getDefaultProguardFile("proguard-android-optimize.txt"),
+                "proguard-rules.pro",
+            )
         }
     }
 

@@ -42,6 +42,10 @@ gradlePlugin {
             id = "app.skein.guard.license"
             implementationClass = "app.skein.gradle.LicenseAuditPlugin"
         }
+        register("noRawLogging") {
+            id = "app.skein.guard.logging"
+            implementationClass = "app.skein.gradle.NoRawLoggingGuardPlugin"
+        }
     }
 }
 
