@@ -5,11 +5,18 @@
 package app.skein.vault
 
 import android.content.Context
+import android.os.PowerManager
+import androidx.work.WorkManager
+import app.skein.core.inference.thermal.ThermalGovernor
 import app.skein.core.vault.key.VaultKeyProvider
 import app.skein.core.vault.key.VaultKeyProviders
 import app.skein.core.vault.lifecycle.VaultPaths
 import app.skein.core.vault.session.LockPolicy
 import app.skein.core.vault.session.UnlockManager
+import app.skein.ingest.IngestPipelines
+import app.skein.ingest.IngestScheduler
+import app.skein.ingest.ThermalIngestPacer
+import app.skein.ingest.WorkManagerIngestWorkPort
 import app.skein.system.SecurityPrefs
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -21,14 +28,16 @@ import java.io.File
 import java.time.Duration
 
 /**
- * Everything the vault needs across lock/unlock cycles. [keyProvider] and
- * [unlockManager] live as long as the process; the per-session service
- * graph is [session] (`null` while locked), managed by [bootstrap].
+ * Everything the vault needs across lock/unlock cycles. [keyProvider],
+ * [unlockManager] and [ingest] live as long as the process; the per-session
+ * service graph is [session] (`null` while locked), managed by [bootstrap].
  */
 class VaultServices(
     val keyProvider: VaultKeyProvider,
     val unlockManager: UnlockManager,
     val bootstrap: VaultBootstrap,
+    /** E5.I10 (skein-7v3): enqueues ingest on open/document change, cancels it on lock, runs `IngestWorker`'s pass. */
+    val ingest: IngestScheduler,
 ) {
     /** The open vault's services, or `null` while locked / not yet brought up. */
     val session: StateFlow<VaultSession?> get() = bootstrap.session
@@ -80,7 +89,35 @@ class VaultServices(
                     seed = ::seedFirstPersona,
                 )
             wireLockPolicy(app, unlockManager, scope)
-            return VaultServices(keyProvider, unlockManager, bootstrap)
+            val ingest = wireIngest(app, unlockManager, bootstrap, scope)
+            return VaultServices(keyProvider, unlockManager, bootstrap, ingest)
+        }
+
+        /**
+         * E5.I10 (skein-7v3): the ingest pass over the open session —
+         * WorkManager for dispatch/retry, `ThermalGovernor` (E4.I9) plus the
+         * battery signal for batch pacing, and `IngestPipelines.forSession`
+         * for the steps. No embedder yet (skein-079): lexical (FTS) rows and
+         * wikilink/tag edges populate now, vectors stay "pending". The
+         * scheduler registers itself as a HIGH-priority lock observer so the
+         * work is cancelled before [VaultBootstrap] closes the session.
+         */
+        private fun wireIngest(
+            context: Context,
+            unlockManager: UnlockManager,
+            bootstrap: VaultBootstrap,
+            scope: CoroutineScope,
+        ): IngestScheduler {
+            val powerManager = context.getSystemService(Context.POWER_SERVICE) as PowerManager
+            val thermal = ThermalGovernor(context, powerManager)
+            return IngestScheduler(
+                unlockManager = unlockManager,
+                session = bootstrap.session,
+                port = WorkManagerIngestWorkPort(WorkManager.getInstance(context)),
+                pacer = ThermalIngestPacer.forGovernor(thermal),
+                pipelines = { session, attempts, pace -> IngestPipelines.forSession(session, pace, attempts) },
+                scope = scope,
+            ).also { it.start() }
         }
 
         /**

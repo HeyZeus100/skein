@@ -1,10 +1,11 @@
-// `IngestSteps.indexVectors` (skein-4uu, gap on plan `E5.I7`) tests, against
-// the JVM `FakeEmbedderService` / `InMemoryIndexStore` fakes from
-// `:testing`. `indexLexical` is intentionally not present — see
-// `IngestSteps.kt`'s file header (skein-01ku).
+// `IngestSteps.indexVectors` (skein-4uu, gap on plan `E5.I7`) and
+// `IngestSteps.indexLexical` (skein-7v3 / skein-01ku) tests, against the JVM
+// `FakeEmbedderService` / `InMemoryIndexStore` fakes from `:testing`.
 
 package app.skein.core.rag.ingest
 
+import app.skein.core.rag.chunk.Chunk
+import app.skein.testing.SkeinLogCaptureRule
 import com.google.common.truth.Truth.assertThat
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.Job
@@ -13,6 +14,7 @@ import kotlinx.coroutines.test.TestScope
 import kotlinx.coroutines.test.UnconfinedTestDispatcher
 import kotlinx.coroutines.test.runCurrent
 import kotlinx.coroutines.test.runTest
+import org.junit.Rule
 import org.junit.Test
 import us.aherrera.skein.core.model.Capability
 import us.aherrera.skein.core.model.ChunkId
@@ -26,6 +28,10 @@ import us.aherrera.skein.testing.FakeEmbedderService
 import us.aherrera.skein.testing.InMemoryIndexStore
 
 class IngestStepsTest {
+    /** Also fails the test if any captured `SkeinLog` entry carries content (spec §9). */
+    @get:Rule
+    val logCapture = SkeinLogCaptureRule()
+
     @Test
     fun `embedDocuments is called in batches of exactly 32 texts`() =
         runTest {
@@ -100,6 +106,156 @@ class IngestStepsTest {
             }
             assertThat(thrown).isNotNull()
         }
+
+    // ---- indexLexical (skein-7v3 / skein-01ku) --------------------------------
+
+    @Test
+    fun `indexLexical writes one row per chunk in ord order with the embedding text and returns their ids`() =
+        runTest {
+            val index = InMemoryIndexStore()
+            val chunks = listOf(chunk(0, "First paragraph here."), chunk(1, "Second paragraph here.", "# Title"))
+
+            val ids = IngestSteps(index).indexLexical("doc-a", chunks)
+
+            val rows = index.getChunks(ids)
+            assertThat(ids).hasSize(2)
+            assertThat(rows.getValue(ids[0]).ord).isEqualTo(0)
+            assertThat(rows.getValue(ids[1]).text).isEqualTo("# Title\n\nSecond paragraph here.")
+            assertThat(rows.getValue(ids[1]).tokenCount).isEqualTo(chunks[1].tokenCount)
+        }
+
+    @Test
+    fun `indexLexical without an embedder stamps the pending embedder id and version`() =
+        runTest {
+            val index = InMemoryIndexStore()
+            val steps = IngestSteps(index)
+
+            val ids = steps.indexLexical("doc-a", listOf(chunk(0, "Body text here.")))
+
+            val row = index.getChunks(ids).getValue(ids.single())
+            assertThat(row.embedderId).isEqualTo(IngestSteps.PENDING_EMBEDDER_ID)
+            assertThat(row.embedderVersion).isEqualTo(IngestSteps.PENDING_EMBEDDER_VERSION)
+            assertThat(steps.canIndexVectors).isFalse()
+        }
+
+    @Test
+    fun `indexLexical with an embedder stamps its id and version`() =
+        runTest {
+            val index = InMemoryIndexStore()
+            val embedder = loadedEmbedder()
+            val steps = IngestSteps(index, embedder)
+
+            val ids = steps.indexLexical("doc-a", listOf(chunk(0, "Body text here.")))
+
+            val row = index.getChunks(ids).getValue(ids.single())
+            assertThat(row.embedderId).isEqualTo(embedder.embedderId)
+            assertThat(row.embedderVersion).isEqualTo(embedder.embedderVersion)
+            assertThat(steps.canIndexVectors).isTrue()
+        }
+
+    @Test
+    fun `indexLexical replaces a document's earlier rows`() =
+        runTest {
+            val index = InMemoryIndexStore()
+            val steps = IngestSteps(index)
+            steps.indexLexical("doc-a", listOf(chunk(0, "Old body."), chunk(1, "Old tail.")))
+
+            val ids = steps.indexLexical("doc-a", listOf(chunk(0, "New body.")))
+
+            assertThat(
+                index.chunksForDocs(setOf("doc-a"), limitPerDoc = 10).map { it.id },
+            ).containsExactlyElementsIn(ids)
+        }
+
+    @Test
+    fun `indexLexical stays silent when the FTS probe finds the new rows`() =
+        runTest {
+            val warnings = mutableListOf<String>()
+            val steps = IngestSteps(InMemoryIndexStore(), warn = { warnings += it })
+
+            steps.indexLexical("doc-a", listOf(chunk(0, "Searchable words in this chunk.")))
+
+            assertThat(warnings).isEmpty()
+        }
+
+    @Test
+    fun `indexLexical warns without content when the FTS probe finds none of the new rows`() =
+        runTest {
+            val warnings = mutableListOf<String>()
+            val broken =
+                object : IndexStore by InMemoryIndexStore() {
+                    override suspend fun bm25(
+                        query: String,
+                        k: Int,
+                    ) = emptyList<us.aherrera.skein.core.model.ScoredChunk>()
+                }
+            val steps = IngestSteps(broken, warn = { warnings += it })
+
+            steps.indexLexical("doc-a", listOf(chunk(0, "Confidential words in this chunk.")))
+
+            assertThat(warnings).hasSize(1)
+            assertThat(warnings.single()).contains("chunks_fts")
+            assertThat(warnings.single()).doesNotContain("Confidential")
+        }
+
+    @Test
+    fun `indexLexical's default warn sink is SkeinLog under the IngestSteps tag, with no content`() =
+        runTest {
+            val broken =
+                object : IndexStore by InMemoryIndexStore() {
+                    override suspend fun bm25(
+                        query: String,
+                        k: Int,
+                    ) = emptyList<us.aherrera.skein.core.model.ScoredChunk>()
+                }
+
+            IngestSteps(broken).indexLexical("doc-a", listOf(chunk(0, "Confidential words in this chunk.")))
+
+            val entry = logCapture.captured().single { it.tag == IngestSteps.TAG }
+            assertThat(entry.message).contains("chunks_fts")
+            assertThat(entry.message).doesNotContain("Confidential")
+            assertThat(entry.isSensitive).isFalse()
+        }
+
+    @Test
+    fun `indexLexical with no chunks deletes and does not probe`() =
+        runTest {
+            val warnings = mutableListOf<String>()
+            val index = InMemoryIndexStore()
+            val steps = IngestSteps(index, warn = { warnings += it })
+            steps.indexLexical("doc-a", listOf(chunk(0, "Old body.")))
+
+            val ids = steps.indexLexical("doc-a", emptyList())
+
+            assertThat(ids).isEmpty()
+            assertThat(index.chunksForDocs(setOf("doc-a"), limitPerDoc = 10)).isEmpty()
+            assertThat(warnings).isEmpty()
+        }
+
+    @Test
+    fun `indexVectors without an embedder throws rather than silently writing nothing`() =
+        runTest {
+            val index = InMemoryIndexStore()
+            val ids = registerChunks(index, listOf("a chunk"))
+
+            val thrown = runCatching { IngestSteps(index).indexVectors(ids, listOf("a chunk")) }.exceptionOrNull()
+
+            assertThat(thrown).isInstanceOf(IllegalStateException::class.java)
+        }
+
+    private fun chunk(
+        ord: Int,
+        text: String,
+        breadcrumb: String? = null,
+    ): Chunk =
+        Chunk(
+            ord = ord,
+            headingBreadcrumb = breadcrumb,
+            text = text,
+            start = 0,
+            end = text.length,
+            tokenCount = text.split(" ").size,
+        )
 
     // ------------------------------------------------------------------
 
