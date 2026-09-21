@@ -38,12 +38,32 @@ enum class Capability(
     RERANK("rerank"),
 }
 
+/**
+ * Role of a non-main file that belongs to a model.
+ *
+ * The first three entries are the spec §4.1 originals. The last four were
+ * added additively by `skein-3v9` (E0.I15) under coordinator decision
+ * `skein-cqiu`, to match the seven roles
+ * `docs/design/POST_REVIEW_RESOLUTIONS.md` §2.3 requires a manifest to be able
+ * to cover: §2.2 rule 3 says every file the loader opens must carry its own
+ * sha256 in the manifest, and a role the enum cannot name is a file the
+ * manifest cannot cover. `license` is here for the same reason even though
+ * nothing loads it — §2.3 keeps LICENSE texts hashed for the audit surface.
+ *
+ * Additive only: no existing entry was renamed, reordered or removed, so the
+ * locked contract stays source- and behavior-compatible (same precedent as
+ * `skein-uo5n`'s additive `VaultRepository` methods).
+ */
 enum class CompanionRole(
     val db: String,
 ) {
     MMPROJ("mmproj"),
     TOKENIZER("tokenizer"),
     CONFIG("config"),
+    TOKENIZER_CONFIG("tokenizer_config"),
+    GENERATION_CONFIG("generation_config"),
+    LICENSE("license"),
+    SPECIAL_TOKENS_MAP("special_tokens_map"),
 }
 
 /** One row of the `models` table plus resolved companion files. `path` is absolute, app-private. */

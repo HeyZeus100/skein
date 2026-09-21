@@ -765,45 +765,66 @@ object ErrorCode {
 
 File: `core/model/src/main/resources/schema/model-manifest.schema.json`. A manifest travels next to a model file as `<file>.skein.json`. The two default models ship their manifests inside the APK (`app/src/main/assets/models/*.skein.json`) so a user only needs the GGUF.
 
+**Coordinator decision, 2026-09-21 (`skein-cqiu`) — this section was rewritten.** It previously described a `manifest_version: 1` document while `skein-st1r` had already landed a `manifest_version: 2` parser in `:core:inference` implementing `POST_REVIEW_RESOLUTIONS.md` §2.3. The two were *not* a superset relation — they disagreed about `license` (object vs bare string), about whether a root `file` key existed at all, and about the version constant — so no single `*.skein.json` document could satisfy both readers, even though both were meant to read the same shipped files. §5 of that document had listed the §4.8 delta as a reconciliation a later pass must apply; this is that pass. There is now **one shape and its version is 2**. No v1 document ever existed in the repository (`app/src/main/assets/models/` was still empty), so `§5` item 4's "transitional window accepting v1 and v2" is vacuous and was dropped rather than implemented: the parser refuses v1 outright.
+
+The schema below is the whole document — plan §4.8's catalog fields (`name`, `format`, `capabilities`, `context_length`, `source`, the `license` object, the `attestation` object) reconciled with POST_REVIEW §2.3's load-gate fields (root `file`, root `blake3`, the seven companion roles, `companions[].size_bytes`, `companions[].required`, `attestation.covers`).
+
 ```json
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "https://aherrera.us/skein/schema/model-manifest-v1.json",
-  "title": "Skein model manifest v1",
+  "$id": "https://aherrera.us/skein/schema/model-manifest-v2.json",
+  "title": "Skein model manifest v2",
   "type": "object",
   "additionalProperties": false,
-  "required": ["manifest_version", "id", "name", "format", "sha256", "size_bytes", "capabilities", "license"],
+  "required": ["manifest_version", "id", "name", "format", "file", "sha256", "size_bytes", "capabilities", "license"],
   "properties": {
-    "manifest_version": { "const": 1 },
+    "manifest_version": { "const": 2 },
     "id":            { "type": "string", "pattern": "^[a-z0-9][a-z0-9.-]{2,63}$" },
     "name":          { "type": "string", "minLength": 1, "maxLength": 120 },
     "format":        { "enum": ["gguf", "onnx"] },
+    "file":          { "type": "string", "pattern": "^(?!\\.{1,2}$)[^/\\\\\u0000]+$" },
     "sha256":        { "type": "string", "pattern": "^[a-f0-9]{64}$" },
+    "blake3":        { "type": "string", "pattern": "^[a-f0-9]{64}$" },
     "size_bytes":    { "type": "integer", "minimum": 1 },
     "capabilities":  { "type": "array", "uniqueItems": true, "minItems": 1,
                        "items": { "enum": ["text", "vision", "embedding", "ner", "rerank"] } },
     "context_length": { "type": "integer", "minimum": 512, "default": 16384 },
     "license":       { "type": "object", "required": ["spdx"], "additionalProperties": false,
-                       "properties": { "spdx": { "type": "string" }, "url": { "type": "string", "format": "uri" },
+                       "properties": { "spdx": { "type": "string", "minLength": 1 },
+                                       "url": { "type": "string", "format": "uri" },
                                        "notes": { "type": "string" } } },
     "source":        { "type": "object", "additionalProperties": false,
                        "properties": { "url": { "type": "string", "format": "uri" }, "revision": { "type": "string" } } },
     "attestation":   { "type": "object", "required": ["bundle_file", "certificate_identity", "certificate_oidc_issuer"],
                        "additionalProperties": false,
-                       "properties": { "bundle_file": { "type": "string" },
+                       "properties": { "bundle_file": { "type": "string", "pattern": "^(?!\\.{1,2}$)[^/\\\\\u0000]+$" },
                                        "url": { "type": "string", "format": "uri" },
-                                       "certificate_identity": { "type": "string" },
-                                       "certificate_oidc_issuer": { "type": "string", "format": "uri" } } },
+                                       "certificate_identity": { "type": "string", "minLength": 1 },
+                                       "certificate_oidc_issuer": { "type": "string", "format": "uri" },
+                                       "covers": { "type": "array", "uniqueItems": true, "minItems": 1,
+                                                   "items": { "enum": ["main", "companions", "all"] } } } },
     "companions":    { "type": "array",
-                       "items": { "type": "object", "required": ["role", "file", "sha256"], "additionalProperties": false,
-                                  "properties": { "role": { "enum": ["mmproj", "tokenizer", "config"] },
-                                                  "file": { "type": "string" },
-                                                  "sha256": { "type": "string", "pattern": "^[a-f0-9]{64}$" } } } }
+                       "items": { "type": "object", "required": ["role", "file", "sha256", "size_bytes"],
+                                  "additionalProperties": false,
+                                  "properties": { "role": { "enum": ["mmproj", "tokenizer", "tokenizer_config",
+                                                                     "config", "generation_config", "license",
+                                                                     "special_tokens_map"] },
+                                                  "file": { "type": "string", "pattern": "^(?!\\.{1,2}$)[^/\\\\\u0000]+$" },
+                                                  "sha256": { "type": "string", "pattern": "^[a-f0-9]{64}$" },
+                                                  "blake3": { "type": "string", "pattern": "^[a-f0-9]{64}$" },
+                                                  "size_bytes": { "type": "integer", "minimum": 1 },
+                                                  "required": { "type": "boolean", "default": true } } } }
   }
 }
 ```
 
-Mapping to the `models` table: `id`, `format`, `sha256`, `size_bytes`, `capabilities` (JSON array), `attestation_url` (= `attestation.url`), `path` (app-private absolute path after import), `imported_at`. Companions are stored in `frontmatter`-style JSON in a new nullable column `companions JSON` on `models` (plan addition to spec DDL, see §4.9).
+**Two rules live outside the schema** because draft 2020-12 cannot express them: no two companions may share a `role` (`uniqueItems` compares whole entries, so two companions differing only by file name are "unique" as values yet name the same slot), and no file name may repeat across the root `file` and the companions. Both are enforced by `ModelManifest.parse` and by `tools/ci/validate-manifests.py`.
+
+**`blake3` is optional in the schema, mandatory for shipped defaults.** `MODEL_STORE.md` §3 needs the post-mmap expectation to exist *before* anything is mapped. A user-imported model has no manifest declaring one, so `ImmutableModelStore` computes and records it during the same streaming pass that checks SHA-256; a default model shipped in the APK has no such import pass, so it must declare `blake3` in its manifest. `tools/ci/validate-manifests.py` enforces exactly that asymmetry: required under `app/src/main/assets/models/`, optional elsewhere.
+
+**Where the parser lives.** `E0.I15`'s parser is the already-landed `app.skein.core.inference.models.ModelManifest` in `:core:inference` (`skein-st1r`), extended by `skein-3v9` rather than duplicated — a second parser in `core/model` would reintroduce exactly the two-readers-one-document split this decision closed. `core/model` holds the `.schema.json` resource (documentation plus the CI contract; no runtime JSON-schema library is added) and the locked `Model`/`CompanionRole` contract that `ModelManifest.toModel` targets. `CompanionRole` was extended additively from three roles to the seven above.
+
+Mapping to the `models` table: `id`, `format`, `sha256`, `size_bytes`, `capabilities` (JSON array), `attestation_url` (= `attestation.url`), `path` (app-private absolute path after import), `imported_at`. Companions are stored in `frontmatter`-style JSON in a new nullable column `companions JSON` on `models` (plan addition to spec DDL, see §4.9). `ModelManifest.toModel(path, companionPaths)` performs this projection onto the `:core:model` `Model` type; it refuses a companion path for a role the manifest does not cover, since silently ignoring it would let a caller believe it had bound a file that nothing will ever verify.
 
 ### 4.9 SQLite DDL v1 (migration 1) — `E0.I11`
 
@@ -1429,24 +1450,28 @@ priority: 0
 labels: blocks-others
 deps: E0.I8, E1.I1
 ```
-**Description:** Land §4.8 as a resource plus `ModelManifest` (kotlinx.serialization data class) and `ModelManifestParser.parse(json): Result<ModelManifest>` that enforces the schema's constraints in code (no runtime JSON-schema library is added; the `.schema.json` is documentation + CI-validated against the fixtures with a Python check).
+**Description:** Land §4.8 as a resource plus the `ModelManifest` parser that enforces the schema's constraints in code (no runtime JSON-schema library is added; the `.schema.json` is documentation + CI-validated against the fixtures with a Python check).
+
+**Applied 2026-09-21 (`skein-cqiu`, implemented by `skein-3v9`).** The original criteria below described a `manifest_version: 1` document with a `core/model` parser; `skein-st1r` had already landed the v2 parser in `:core:inference`, and the two documents were mutually unsatisfiable. Reconciled per §4.8: one shape, version 2, parser stays in `:core:inference`, schema resource in `core/model`. The `kotlinx.serialization data class` / `Json { ignoreUnknownKeys = false }` phrasing was dropped in favor of the tree API, matching the landed parser and `core/model`'s `CitationRecordJson` — a generated decoder checks almost none of the constraints that are the point of this item, and the module deliberately has no serialization compiler plugin.
 
 **Acceptance criteria:**
-- [ ] `model-manifest.schema.json` in `core/model/src/main/resources/schema/`
-- [ ] `ModelManifestParser` rejects: wrong `manifest_version`, non-hex `sha256`, unknown capability, missing `license.spdx`, `additionalProperties`; accepts both default manifests from `E0.I4`
-- [ ] `tools/ci/validate-manifests.py` validates `app/src/main/assets/models/*.skein.json` against the schema (stdlib `json` + a 60-line checker, no pip deps) and runs in CI (`E1.I3`)
-- [ ] `ModelManifest.toModel(path: String, companionPaths: Map<CompanionRole,String>): Model` implemented
+- [x] `model-manifest.schema.json` in `core/model/src/main/resources/schema/` (one full v2 schema, `$id` `…/model-manifest-v2.json`)
+- [x] `ModelManifest.parse` rejects: wrong `manifest_version` (anything but 2), non-hex `sha256`, unknown capability, missing `license.spdx`, unknown properties (`additionalProperties: false`) at root / companion / license / source / attestation, unknown companion role, a `file` that is not a plain name, a companion without `sha256` or `size_bytes`, `main` inside `companions`, duplicate roles, duplicate file names, empty or duplicated `capabilities`, unknown `format`, `context_length` below 512
+- [x] Accepts both default-model manifests, as fixtures under `core/inference/src/test/resources/manifests/valid/` with clearly-marked placeholder digests of valid shape (`skein-bxk`/`E0.I4` replaces them with real digests when it writes the shipped files; nothing placeholder ships under `app/src/main/assets/models/`)
+- [x] `tools/ci/validate-manifests.py` validates `app/src/main/assets/models/*.skein.json` against the schema (stdlib `json` + a ~60-line checker, no pip deps) and runs in CI (`E1.I3`); it additionally requires `blake3` for shipped manifests (MODEL_STORE.md §3) and round-trips every accept/reject fixture so the schema and the Kotlin parser cannot drift
+- [x] `ModelManifest.toModel(path: String, companionPaths: Map<CompanionRole,String>): Model` implemented; `core/model`'s `CompanionRole` extended additively to the seven §2.3 roles
 
 **Files:**
-- Create: `core/model/src/main/resources/schema/model-manifest.schema.json`, `core/model/src/main/kotlin/us/aherrera/skein/core/model/ModelManifest.kt`, `core/model/src/test/kotlin/us/aherrera/skein/core/model/ModelManifestParserTest.kt`, `tools/ci/validate-manifests.py`
+- Create: `core/model/src/main/resources/schema/model-manifest.schema.json`, `core/inference/src/test/resources/manifests/{valid,invalid}/*.skein.json`, `core/inference/src/test/kotlin/app/skein/core/inference/models/ModelManifestFixtureTest.kt`, `tools/ci/validate-manifests.py`
+- Modify: `core/inference/src/main/kotlin/app/skein/core/inference/models/ModelManifest.kt`, `.../ManifestAttestation.kt`, `core/model/src/main/kotlin/us/aherrera/skein/core/model/Inference.kt`
 
 **Interfaces:**
-- Produces: `ModelManifest`, `ModelManifestParser`, consumed by `E4.I5`, `E3.I6`, `E6.I13`
+- Produces: `ModelManifest`, `ManifestLicense`, `ManifestSource`, `ManifestAttestationRef`, `ModelManifest.toModel`, consumed by `E4.I5`, `E3.I6`, `E6.I13`, and by `E0.I16`'s `ManifestBinding` Parcelable as a straight mapping (not a second parser)
 
 **Steps:**
-- [ ] Step 1: Write `ModelManifestParserTest` with one test per rejection and `parses_default_manifests` reading the two asset files via classpath; run → FAIL.
-- [ ] Step 2: Implement with `Json { ignoreUnknownKeys = false }` and explicit validation; run → PASS.
-- [ ] Step 3: Write `validate-manifests.py`; run it locally; commit with `-s`.
+- [x] Step 1: Write the fixtures plus `ModelManifestFixtureTest` with one test per rejection case and both defaults accepted; run → FAIL.
+- [x] Step 2: Extend the landed parser with the §4.8 catalog fields, the `license`/`attestation` objects and unknown-key rejection; run → PASS.
+- [x] Step 3: Write `validate-manifests.py`; run it locally; make the CI step unconditional; commit with `-s`.
 
 #### E0.I16 — Lock the AIDL contracts (`core/ipc`)
 ```bd

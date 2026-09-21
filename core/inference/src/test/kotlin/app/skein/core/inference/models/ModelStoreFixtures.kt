@@ -59,12 +59,21 @@ internal fun List<FixtureFile>.withRole(
     transform: (FixtureFile) -> FixtureFile,
 ): List<FixtureFile> = map { if (it.role == role) transform(it) else it }
 
-/** Renders [files] as a v2 `*.skein.json` manifest document. */
+/**
+ * Renders [files] as a v2 `*.skein.json` manifest document.
+ *
+ * skein-3v9 (coordinator decision skein-cqiu) reconciled this shape with plan
+ * §4.8: `license` is now an object with a required `spdx`, and `name`,
+ * `format` and `capabilities` are required root fields. The on-disk fixtures
+ * under `src/test/resources/manifests/` are the normative examples — this
+ * generator exists so the *store* tests can vary digests and file sets
+ * programmatically without hand-editing JSON.
+ */
 internal fun manifestJson(
     files: List<FixtureFile>,
     id: String = MODEL_ID,
     manifestVersion: Int = ModelManifest.SUPPORTED_VERSION,
-    license: String = "apache-2.0",
+    license: String = "Apache-2.0",
 ): String {
     val main = files.first { it.role == ModelFileRole.MAIN }
     val companions =
@@ -83,10 +92,13 @@ internal fun manifestJson(
         |{
         |  "manifest_version": $manifestVersion,
         |  "id": "$id",
+        |  "name": "Store fixture model",
+        |  "format": "gguf",
         |  "file": "${main.name}",
         |  "sha256": "${main.manifestSha256}",
         |  "size_bytes": ${main.content.size},
-        |  "license": "$license"${blake3Field(main)},
+        |  "capabilities": ["text"],
+        |  "license": { "spdx": "$license" }${blake3Field(main)},
         |  "companions": [
         |$companions
         |  ]

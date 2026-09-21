@@ -145,10 +145,13 @@ class ImmutableModelStoreInstrumentedTest {
             {
               "manifest_version": 2,
               "id": "$MODEL_ID",
+              "name": "Instrumented store fixture",
+              "format": "gguf",
               "file": "$MAIN_FILE",
               "sha256": "${hex(MAIN_BYTES)}",
               "size_bytes": ${MAIN_BYTES.size},
-              "license": "apache-2.0",
+              "capabilities": ["text"],
+              "license": { "spdx": "Apache-2.0" },
               "companions": [
                 {
                   "role": "tokenizer",

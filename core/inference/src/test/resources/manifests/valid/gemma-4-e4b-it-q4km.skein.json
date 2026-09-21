@@ -1,0 +1,43 @@
+{
+  "manifest_version": 2,
+  "id": "gemma-4-e4b-it-q4km",
+  "name": "Gemma 4 E4B Instruct Q4_K_M",
+  "format": "gguf",
+  "file": "gemma-4-e4b-it-q4km.gguf",
+  "sha256": "f00dfacef00dfacef00dfacef00dfacef00dfacef00dfacef00dfacef00dface",
+  "blake3": "facef00dfacef00dfacef00dfacef00dfacef00dfacef00dfacef00dfacef00d",
+  "size_bytes": 4290000000,
+  "capabilities": ["text", "vision"],
+  "context_length": 32768,
+  "license": {
+    "spdx": "Apache-2.0",
+    "url": "https://huggingface.co/google/gemma-4-e4b-it/blob/main/LICENSE"
+  },
+  "source": {
+    "url": "https://huggingface.co/google/gemma-4-e4b-it",
+    "revision": "1111111111111111111111111111111111111111"
+  },
+  "attestation": {
+    "bundle_file": "gemma-4-e4b-it-q4km.sigstore.json",
+    "url": "https://aherrera.us/skein/attest/gemma-4-e4b-it-q4km.sigstore.json",
+    "certificate_identity": "admin@aherrera.us",
+    "certificate_oidc_issuer": "https://accounts.google.com",
+    "covers": ["all"]
+  },
+  "companions": [
+    {
+      "role": "mmproj",
+      "file": "mmproj-gemma-4-e4b-it.gguf",
+      "sha256": "0ddba11f0ddba11f0ddba11f0ddba11f0ddba11f0ddba11f0ddba11f0ddba11f",
+      "blake3": "11fa0ddb11fa0ddb11fa0ddb11fa0ddb11fa0ddb11fa0ddb11fa0ddb11fa0ddb",
+      "size_bytes": 851000000
+    },
+    {
+      "role": "license",
+      "file": "LICENSE",
+      "sha256": "abadcafeabadcafeabadcafeabadcafeabadcafeabadcafeabadcafeabadcafe",
+      "size_bytes": 11358,
+      "required": false
+    }
+  ]
+}
