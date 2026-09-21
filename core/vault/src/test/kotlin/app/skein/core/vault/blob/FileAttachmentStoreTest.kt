@@ -1,12 +1,20 @@
-// JVM unit tests for `FileAttachmentStore` (`E2.I5`, skein-1nr). Everything
-// here runs on the host JVM -- `javax.crypto` needs no Android runtime -- and
-// matches the bd acceptance criteria for skein-1nr one-for-one:
+// JVM unit tests for `FileAttachmentStore` (`E2.I5`, skein-1nr; hardened by
+// skein-yn8d + skein-0nh8). Everything here runs on the host JVM --
+// `javax.crypto` needs no Android runtime.
+//
+// The original skein-1nr acceptance criteria, one-for-one:
 //   1. round-trip byte-size matrix
 //   2. bit-flip corruption -> AttachmentCorruptException(cause=AEADBadTagException)
 //   3. truncation -> AttachmentTruncatedException
 //   4. no plaintext marker survives on disk
 //   5. HKDF derives distinct per-id keys
 //   6. the master key is never written to disk
+//
+// plus the `SKAT` v2 hardening:
+//   7. (skein-yn8d) a fresh random file salt per write, mixed into HKDF and
+//      authenticated by every chunk tag
+//   8. (skein-0nh8) termination authenticated by a per-chunk final flag, so
+//      `total_plaintext_length` can be forged without truncating a read
 
 package app.skein.core.vault.blob
 
@@ -31,6 +39,11 @@ class FileAttachmentStoreTest {
 
     private fun randomBytes(size: Int): ByteArray = Random(seed = size.toLong()).nextBytes(size)
 
+    /** On-disk offset of the `finalFlag || plainLen` frame header of chunk [index], for a file whose chunks before it are full. */
+    private fun frameOffset(index: Int): Long =
+        SkatFormat.HEADER_SIZE.toLong() +
+            index.toLong() * (SkatFormat.FRAME_HEADER_SIZE + SkatFormat.CHUNK_SIZE + SkatFormat.GCM_TAG_BYTES)
+
     // ---- acceptance criterion 1: round-trip byte-size matrix ----
 
     @Test
@@ -54,8 +67,6 @@ class FileAttachmentStoreTest {
         }
 
     // ---- write-once invariant: overwrite is refused, not silently re-encrypted ----
-    // (deterministic per-id HKDF key + per-chunk nonce sequence means a silent
-    // overwrite would reuse an AES-GCM (key, nonce) pair for different plaintext)
 
     @Test
     fun `writing the same id twice throws AlreadyExists and leaves the first write untouched`() =
@@ -82,7 +93,7 @@ class FileAttachmentStoreTest {
             val id = "doc-tamper"
             store.write(id) { out -> out.write(randomBytes(4096)) }
             val file = tempDir.root.resolve("attachments/$id")
-            flipLastByte(file)
+            flipByteAt(file, file.length() - 1)
 
             val thrown =
                 assertThrows<AttachmentException.AttachmentCorruptException> {
@@ -103,7 +114,7 @@ class FileAttachmentStoreTest {
             // boundary strictly before the container's true end.
             store.write(id) { out -> out.write(randomBytes(2 * 1_048_576 + 512)) }
             val file = tempDir.root.resolve("attachments/$id")
-            truncateAfterFirstChunk(file)
+            RandomAccessFile(file, "rw").use { raf -> raf.setLength(frameOffset(1)) }
 
             assertThrows<AttachmentException.AttachmentTruncatedException> {
                 store.open(id).use { it.readBytes() }
@@ -131,43 +142,21 @@ class FileAttachmentStoreTest {
     @Test
     fun `HKDF derives different file keys for different ids under the same master`() {
         val masterKey = master()
+        val fileSalt = SkatFormat.newFileSalt()
 
-        val keyA =
-            Hkdf.deriveKey(
-                salt = masterKey,
-                ikm = "attachment-a".toByteArray(),
-                info = SkatFormat.INFO,
-                length = 32,
-            )
-        val keyB =
-            Hkdf.deriveKey(
-                salt = masterKey,
-                ikm = "attachment-b".toByteArray(),
-                info = SkatFormat.INFO,
-                length = 32,
-            )
+        val keyA = deriveFileKey(masterKey, "attachment-a", fileSalt)
+        val keyB = deriveFileKey(masterKey, "attachment-b", fileSalt)
 
         assertThat(keyA).isNotEqualTo(keyB)
     }
 
     @Test
-    fun `HKDF re-derives the same key for the same id (deterministic retry)`() {
+    fun `HKDF re-derives the same key for the same id and file salt`() {
         val masterKey = master()
+        val fileSalt = SkatFormat.newFileSalt()
 
-        val first =
-            Hkdf.deriveKey(
-                salt = masterKey,
-                ikm = "attachment-a".toByteArray(),
-                info = SkatFormat.INFO,
-                length = 32,
-            )
-        val second =
-            Hkdf.deriveKey(
-                salt = masterKey,
-                ikm = "attachment-a".toByteArray(),
-                info = SkatFormat.INFO,
-                length = 32,
-            )
+        val first = deriveFileKey(masterKey, "attachment-a", fileSalt)
+        val second = deriveFileKey(masterKey, "attachment-a", fileSalt)
 
         assertThat(first).isEqualTo(second)
     }
@@ -188,23 +177,233 @@ class FileAttachmentStoreTest {
             assertThat(containsSubsequence(rawFile, masterBytes)).isFalse()
         }
 
-    // ---- helpers ----
+    // ---- skein-yn8d: random per-write file salt ----
 
-    private fun flipLastByte(file: java.io.File) {
-        RandomAccessFile(file, "rw").use { raf ->
-            val lastIndex = raf.length() - 1
-            raf.seek(lastIndex)
-            val original = raf.read()
-            raf.seek(lastIndex)
-            raf.write(original xor 0x01)
-        }
+    @Test
+    fun `HKDF derives different file keys for the same id under different file salts`() {
+        val masterKey = master()
+
+        val keyA = deriveFileKey(masterKey, "attachment-a", SkatFormat.newFileSalt())
+        val keyB = deriveFileKey(masterKey, "attachment-a", SkatFormat.newFileSalt())
+
+        assertThat(keyA).isNotEqualTo(keyB)
     }
 
-    private fun truncateAfterFirstChunk(file: java.io.File) {
-        // Header (32B) + exactly one full encrypted chunk (chunk + 16B GCM tag);
-        // this is a genuine chunk boundary, not a mid-chunk cut.
-        val boundary = SkatFormat.HEADER_SIZE + 1_048_576 + SkatFormat.GCM_TAG_BYTES
-        RandomAccessFile(file, "rw").use { raf -> raf.setLength(boundary.toLong()) }
+    @Test
+    fun `two writes to the same id draw different file salts`() =
+        runTest {
+            val store = newStore()
+            val id = "doc-salt-rotation"
+            val content = randomBytes(4096)
+
+            store.write(id) { out -> out.write(content) }
+            val firstSalt = fileSaltOnDisk(id)
+            // Bypasses the write-once check on purpose: this is the out-of-band
+            // overwrite (backup restore, file manager) skein-yn8d defends against.
+            store.writeContainer(id, allowOverwrite = true) { out -> out.write(content) }
+
+            assertThat(fileSaltOnDisk(id)).isNotEqualTo(firstSalt)
+        }
+
+    @Test
+    fun `two writes of identical bytes to the same id produce different ciphertext`() =
+        runTest {
+            val store = newStore()
+            val id = "doc-salt-ciphertext"
+            val content = randomBytes(4096)
+
+            store.write(id) { out -> out.write(content) }
+            val firstBody = containerBody(id)
+            store.writeContainer(id, allowOverwrite = true) { out -> out.write(content) }
+
+            assertThat(containerBody(id)).isNotEqualTo(firstBody)
+        }
+
+    @Test
+    fun `the reader re-derives the file key from the header salt of the container on disk`() =
+        runTest {
+            val store = newStore()
+            val id = "doc-salt-rederive"
+            val second = randomBytes(2 * 1_048_576 + 7)
+
+            store.write(id) { out -> out.write(randomBytes(4096)) }
+            store.writeContainer(id, allowOverwrite = true) { out -> out.write(second) }
+
+            assertThat(store.open(id).use { it.readBytes() }).isEqualTo(second)
+        }
+
+    @Test
+    fun `tampering with the header file salt throws AttachmentCorruptException`() =
+        runTest {
+            val store = newStore()
+            val id = "doc-salt-tamper"
+            store.write(id) { out -> out.write(randomBytes(4096)) }
+            val file = tempDir.root.resolve("attachments/$id")
+            flipByteAt(file, SkatFormat.FILE_SALT_OFFSET.toLong())
+
+            assertThrows<AttachmentException.AttachmentCorruptException> {
+                store.open(id).use { it.readBytes() }
+            }
+        }
+
+    // ---- skein-0nh8: authenticated termination ----
+
+    @Test
+    fun `a forged total plaintext length does not truncate the bytes a read returns`() =
+        runTest {
+            val store = newStore()
+            val id = "doc-forged-length"
+            val content = randomBytes(3 * 1_048_576 + 11)
+            store.write(id) { out -> out.write(content) }
+            val file = tempDir.root.resolve("attachments/$id")
+            // Claim the attachment is 1 byte long: v1 would have handed back
+            // exactly that one byte, silently.
+            RandomAccessFile(file, "rw").use { raf ->
+                raf.seek(SkatFormat.TOTAL_LENGTH_OFFSET.toLong())
+                val forged = ByteArray(8)
+                SkatFormat.writeLongLe(1L, forged, 0)
+                raf.write(forged)
+            }
+
+            assertThat(store.open(id).use { it.readBytes() }).isEqualTo(content)
+        }
+
+    @Test
+    fun `forging an interior chunk's final flag throws AttachmentCorruptException`() =
+        runTest {
+            val store = newStore()
+            val id = "doc-forged-flag"
+            store.write(id) { out -> out.write(randomBytes(2 * 1_048_576 + 512)) }
+            val file = tempDir.root.resolve("attachments/$id")
+            // Chunk 0 was sealed as interior; claiming it is the final chunk
+            // contradicts its AAD.
+            RandomAccessFile(file, "rw").use { raf ->
+                raf.seek(frameOffset(0))
+                raf.write(SkatFormat.FLAG_FINAL.toInt())
+            }
+
+            assertThrows<AttachmentException.AttachmentCorruptException> {
+                store.open(id).use { it.readBytes() }
+            }
+        }
+
+    @Test
+    fun `dropping the final chunk throws AttachmentTruncatedException`() =
+        runTest {
+            val store = newStore()
+            val id = "doc-dropped-final"
+            store.write(id) { out -> out.write(randomBytes(2 * 1_048_576 + 512)) }
+            val file = tempDir.root.resolve("attachments/$id")
+            // Keep both interior chunks byte-for-byte; remove only the final
+            // frame. Every surviving tag still verifies -- the file is short,
+            // not corrupt.
+            RandomAccessFile(file, "rw").use { raf -> raf.setLength(frameOffset(2)) }
+
+            assertThrows<AttachmentException.AttachmentTruncatedException> {
+                store.open(id).use { it.readBytes() }
+            }
+        }
+
+    @Test
+    fun `appending data after the final chunk throws AttachmentCorruptException`() =
+        runTest {
+            val store = newStore()
+            val id = "doc-trailing-data"
+            store.write(id) { out -> out.write(randomBytes(4096)) }
+            val file = tempDir.root.resolve("attachments/$id")
+            file.appendBytes(randomBytes(64))
+
+            val thrown =
+                assertThrows<AttachmentException.AttachmentCorruptException> {
+                    store.open(id).use { it.readBytes() }
+                }
+
+            assertThat(thrown.cause).hasMessageThat().isEqualTo("data after final chunk")
+        }
+
+    // ---- compatibility: v1 containers are refused, not read ----
+
+    @Test
+    fun `a version 1 container is refused with UnsupportedVersion`() =
+        runTest {
+            val store = newStore()
+            val id = "doc-v1"
+            val v1 = ByteArray(SkatFormat.HEADER_SIZE + 64)
+            SkatFormat.MAGIC.toByteArray(Charsets.US_ASCII).copyInto(v1, 0)
+            v1[4] = 1
+            tempDir.root.resolve("attachments/$id").writeBytes(v1)
+
+            val thrown = assertThrows<AttachmentException.UnsupportedVersion> { store.open(id) }
+
+            assertThat(thrown.version).isEqualTo(1)
+        }
+
+    // ---- zeroization ----
+
+    @Test
+    fun `the writer zeroes its key, salt and plaintext buffers on close`() =
+        runTest {
+            val file = tempDir.newDir("zeroize-write").resolve("container")
+            val out =
+                RandomAccessFile(file, "rw").use { raf ->
+                    SkeinAttachmentOutputStream(raf, ByteArray(32) { 0x11 }, SkatFormat.newFileSalt()).apply {
+                        write(randomBytes(4096))
+                        close()
+                    }
+                }
+
+            assertThat(out.sensitiveBuffersAreZeroed()).isTrue()
+        }
+
+    @Test
+    fun `the reader zeroes its key and plaintext buffers on close`() =
+        runTest {
+            val store = newStore()
+            val id = "doc-zeroize-read"
+            store.write(id) { out -> out.write(randomBytes(4096)) }
+
+            val input = store.open(id) as SkeinAttachmentInputStream
+            input.readBytes()
+            input.close()
+
+            assertThat(input.sensitiveBuffersAreZeroed()).isTrue()
+        }
+
+    // ---- helpers ----
+
+    private fun deriveFileKey(
+        masterKey: ByteArray,
+        id: String,
+        fileSalt: ByteArray,
+    ): ByteArray =
+        Hkdf.deriveKey(
+            salt = masterKey,
+            ikm = id.toByteArray(),
+            info = SkatFormat.infoFor(fileSalt),
+            length = 32,
+        )
+
+    private fun fileSaltOnDisk(id: String): ByteArray {
+        val raw = tempDir.root.resolve("attachments/$id").readBytes()
+        return SkatFormat.readFileSalt(raw.copyOf(SkatFormat.HEADER_SIZE))
+    }
+
+    /** Everything after the header: the chunk frames, i.e. the part a fresh salt must re-randomize. */
+    private fun containerBody(id: String): ByteArray {
+        val raw = tempDir.root.resolve("attachments/$id").readBytes()
+        return raw.copyOfRange(SkatFormat.HEADER_SIZE, raw.size)
+    }
+
+    private fun flipByteAt(
+        file: java.io.File,
+        offset: Long,
+    ) {
+        RandomAccessFile(file, "rw").use { raf ->
+            raf.seek(offset)
+            val original = raf.read()
+            raf.seek(offset)
+            raf.write(original xor 0x01)
+        }
     }
 
     private fun containsSubsequence(

@@ -4,12 +4,15 @@
 // extract+expand directly rather than pulling in a third-party crypto lib.
 //
 // `FileAttachmentStore` uses this to turn the vault master key into a
-// distinct, deterministic per-attachment content key:
-//   fileKey = HKDF-SHA256(salt = masterKey, ikm = id.utf8Bytes, info = "skein-attachment-v1", L = 32)
+// distinct per-attachment-write content key:
+//   fileKey = HKDF-SHA256(salt = masterKey, ikm = id.utf8Bytes,
+//                         info = "skein-attachment-v2" || fileSalt, L = 32)
 // Salt/IKM are swapped relative to the "usual" HKDF phrasing (secret as IKM,
-// public value as salt) on purpose -- see `FileAttachmentStore.deriveFileKey`
-// for the rationale (deterministic per-id re-derivation without persisting
-// anything).
+// public value as salt) on purpose -- `FileAttachmentStore.deriveFileKey` has
+// the rationale. The container's own random `fileSalt` rides in `info` rather
+// than in HKDF's `salt` slot precisely because the `salt` slot is already
+// taken by the master key; mixing it into `info` gives the same per-write key
+// separation (skein-yn8d).
 
 package app.skein.core.vault.blob
 

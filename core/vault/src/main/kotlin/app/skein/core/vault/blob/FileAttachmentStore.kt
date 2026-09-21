@@ -8,8 +8,11 @@
 //
 // Each attachment is one file at `<dir>/<id>`, a streaming `SKAT` container
 // (see `SkatFormat`) encrypted chunk-by-chunk with a key unique to that
-// attachment, derived from the vault master key via HKDF-SHA256 (RFC 5869,
-// hand-rolled in `Hkdf.kt`) and never persisted anywhere.
+// *write*, derived from the vault master key and a fresh random per-file salt
+// via HKDF-SHA256 (RFC 5869, hand-rolled in `Hkdf.kt`) and never persisted.
+//
+// Hardened for skein-yn8d (random per-write file salt) and skein-0nh8
+// (authenticated final-chunk marker) -- together these are `SKAT` v2.
 
 package app.skein.core.vault.blob
 
@@ -35,10 +38,25 @@ import java.nio.file.StandardCopyOption
  * store's memory only as long as one HKDF call takes and is never written
  * to disk.
  *
- * Per-file key: `HKDF-SHA256(salt = masterKey(), ikm = id.utf8Bytes, info =
- * "skein-attachment-v1", L = 32)`. Distinct ids deterministically derive
- * distinct keys; re-deriving for the same id (e.g. on retry) reproduces the
- * same key without anything having been persisted in between.
+ * **Per-file key (`SKAT` v2, skein-yn8d):**
+ * `HKDF-SHA256(salt = masterKey(), ikm = id.utf8Bytes, info = "skein-attachment-v2" || fileSalt, L = 32)`,
+ * where `fileSalt` is 16 fresh `SecureRandom` bytes drawn for each [write] and
+ * stored in the container header. The key is therefore unique per *write*, not
+ * merely per id: even if two containers for one id reach the disk out of band
+ * (backup restore, file manager, an adversary with filesystem write), they
+ * cannot share an AES-GCM `(key, nonce)` pair. The salt is inside every
+ * chunk's AAD, so swapping it invalidates every tag in the file.
+ *
+ * v1's deterministic "same id re-derives the same key with nothing persisted"
+ * property is deliberately given up: re-deriving an attachment's key from the
+ * id alone was itself the exposure this closes, and retries already fail at
+ * the store layer with [AttachmentException.AlreadyExists].
+ *
+ * **Compatibility:** this reader refuses `SKAT` v1 containers with
+ * [AttachmentException.UnsupportedVersion]. No released Skein vault exists, so
+ * there is no v1 data in the field to migrate; carrying a reader for a format
+ * whose termination and key derivation were the things being fixed would keep
+ * both weaknesses reachable.
  */
 public class FileAttachmentStore(
     private val dir: File,
@@ -51,6 +69,18 @@ public class FileAttachmentStore(
     override suspend fun write(
         id: DocId,
         write: suspend (OutputStream) -> Unit,
+    ): Long = writeContainer(id, allowOverwrite = false, write = write)
+
+    /**
+     * Test seam (skein-yn8d): the same write path with the write-once check
+     * lifted, so tests can land two containers on one id and assert that they
+     * got distinct salts, keys and ciphertext. Production callers go through
+     * [write], which always refuses an existing id.
+     */
+    internal suspend fun writeContainer(
+        id: DocId,
+        allowOverwrite: Boolean,
+        write: suspend (OutputStream) -> Unit,
     ): Long {
         requireSafeId(id)
         dir.mkdirs()
@@ -58,15 +88,23 @@ public class FileAttachmentStore(
         val tempFile = File(dir, ".$id.${System.nanoTime()}.tmp")
         try {
             val written = writeToTempFile(id, tempFile, write)
-            // Deterministic per-id key + per-chunk nonce sequence means an
-            // overwrite would reuse (key, nonce) under AES-GCM for different
-            // plaintext -- refuse it instead of REPLACE_EXISTING. Checked
-            // right before the rename (not up front) to keep the TOCTOU
-            // window as small as possible; a concurrent writer losing this
-            // race gets ATOMIC_MOVE's own FileAlreadyExistsException instead,
-            // which still can't land a silent overwrite.
-            if (finalFile.exists()) throw AttachmentException.AlreadyExists(id)
-            Files.move(tempFile.toPath(), finalFile.toPath(), StandardCopyOption.ATOMIC_MOVE)
+            // An attachment id names exactly one plaintext for its lifetime;
+            // replacing one silently is data loss. (Before v2 this check was
+            // also what kept AES-GCM safe, since the key and nonce sequence
+            // were deterministic in the id alone -- the random per-write salt
+            // now carries that part on its own.) Checked right before the
+            // rename, not up front, to keep the TOCTOU window as small as
+            // possible; a concurrent writer losing this race gets
+            // ATOMIC_MOVE's own FileAlreadyExistsException instead, which
+            // still cannot land a silent overwrite.
+            if (!allowOverwrite && finalFile.exists()) throw AttachmentException.AlreadyExists(id)
+            val options =
+                if (allowOverwrite) {
+                    arrayOf(StandardCopyOption.REPLACE_EXISTING)
+                } else {
+                    arrayOf(StandardCopyOption.ATOMIC_MOVE)
+                }
+            Files.move(tempFile.toPath(), finalFile.toPath(), *options)
             return written
         } catch (t: Throwable) {
             tempFile.delete()
@@ -79,10 +117,11 @@ public class FileAttachmentStore(
         tempFile: File,
         write: suspend (OutputStream) -> Unit,
     ): Long {
-        val fileKey = deriveFileKey(id)
+        val fileSalt = SkatFormat.newFileSalt()
+        val fileKey = deriveFileKey(id, fileSalt)
         try {
             RandomAccessFile(tempFile, "rw").use { raf ->
-                val out = SkeinAttachmentOutputStream(raf, fileKey)
+                val out = SkeinAttachmentOutputStream(raf, fileKey, fileSalt)
                 write(out)
                 out.close()
                 return out.totalPlaintextBytes
@@ -96,11 +135,14 @@ public class FileAttachmentStore(
         requireSafeId(id)
         val file = File(dir, id)
         if (!file.isFile) throw AttachmentException.NotFound(id)
-        val fileKey = deriveFileKey(id)
+        val header = readHeader(id, file)
+        val fileSalt = SkatFormat.readFileSalt(header)
+        val fileKey = deriveFileKey(id, fileSalt)
         try {
-            return SkeinAttachmentInputStream(file, fileKey, id)
+            return SkeinAttachmentInputStream(file, fileKey, header, id)
         } finally {
             fileKey.fill(0)
+            fileSalt.fill(0)
         }
     }
 
@@ -109,10 +151,29 @@ public class FileAttachmentStore(
         File(dir, id).delete()
     }
 
+    /**
+     * The plaintext length recorded in the container header, without
+     * decrypting anything.
+     *
+     * **Caveat (skein-0nh8):** this field is not covered by any chunk tag, so
+     * a tampered file can report any length it likes here. It is kept because
+     * it makes [size] an O(1) header read, and it is safe *as a hint* --
+     * nothing in the reader uses it, so a forged value cannot truncate,
+     * extend or re-frame the plaintext that [open] returns. Callers that need
+     * a length they can rely on must count the bytes [open] actually yields.
+     */
     override suspend fun size(id: DocId): Long? {
         requireSafeId(id)
         val file = File(dir, id)
         if (!file.isFile) return null
+        return SkatFormat.readTotalPlaintextBytes(readHeader(id, file))
+    }
+
+    /** Reads and validates the fixed-size container header, or throws the matching typed failure. */
+    private fun readHeader(
+        id: DocId,
+        file: File,
+    ): ByteArray {
         RandomAccessFile(file, "r").use { raf ->
             val header = ByteArray(SkatFormat.HEADER_SIZE)
             var readSoFar = 0
@@ -122,25 +183,34 @@ public class FileAttachmentStore(
                 readSoFar += n
             }
             if (readSoFar < header.size) throw AttachmentException.AttachmentTruncatedException(id)
-            if (!SkatFormat.hasValidMagicAndVersion(header)) {
-                throw AttachmentException.AttachmentCorruptException(id, java.io.IOException("not a SKAT container"))
+            if (!SkatFormat.hasValidMagic(header)) {
+                throw AttachmentException.AttachmentCorruptException(id, IOException("not a SKAT container"))
             }
-            return SkatFormat.readTotalPlaintextBytes(header)
+            val version = SkatFormat.readVersion(header)
+            if (version != SkatFormat.VERSION) {
+                throw AttachmentException.UnsupportedVersion(id, version.toInt() and 0xFF)
+            }
+            return header
         }
     }
 
     /** HKDF-SHA256 per-file key derivation; wipes its own copy of the master key before returning. */
-    private fun deriveFileKey(id: DocId): ByteArray {
+    private fun deriveFileKey(
+        id: DocId,
+        fileSalt: ByteArray,
+    ): ByteArray {
         val master = masterKey()
+        val info = SkatFormat.infoFor(fileSalt)
         try {
             return Hkdf.deriveKey(
                 salt = master,
                 ikm = id.toByteArray(Charsets.UTF_8),
-                info = SkatFormat.INFO,
+                info = info,
                 length = 32,
             )
         } finally {
             master.fill(0)
+            info.fill(0)
         }
     }
 
