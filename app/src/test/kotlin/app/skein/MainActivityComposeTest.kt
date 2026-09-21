@@ -9,6 +9,7 @@ import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.onRoot
 import androidx.compose.ui.test.performClick
+import androidx.compose.ui.test.performTextInput
 import androidx.compose.ui.test.printToLog
 import androidx.test.core.app.ActivityScenario
 import androidx.test.core.app.ApplicationProvider
@@ -196,6 +197,55 @@ class MainActivityComposeTest {
 
             composeRule.onNodeWithText("Nothing has been changed", substring = true).assertExists()
             composeRule.onNodeWithTag(ShellTestTags.VAULT_SETUP_ROOT).assertDoesNotExist()
+        }
+    }
+
+    // ---- skein-v3wb: reset vault --------------------------------------------------
+
+    @Test
+    fun `corrupt envelope offers a reset affordance`() {
+        app.keyProvider.nextUnlock = { UnlockResult.Failed("key envelope corrupt") }
+
+        ActivityScenario.launch(MainActivity::class.java).use {
+            awaitTag(ShellTestTags.BIOMETRIC_UNLOCK_MESSAGE)
+
+            composeRule.onNodeWithTag(ShellTestTags.BIOMETRIC_UNLOCK_RESET_BUTTON).assertExists()
+        }
+    }
+
+    @Test
+    fun `corrupt envelope, reset, then setup screen shown`() {
+        app.keyProvider.nextUnlock = { UnlockResult.Failed("key envelope corrupt") }
+
+        ActivityScenario.launch(MainActivity::class.java).use {
+            awaitTag(ShellTestTags.BIOMETRIC_UNLOCK_MESSAGE)
+            composeRule.onNodeWithTag(ShellTestTags.BIOMETRIC_UNLOCK_RESET_BUTTON).performClick()
+            awaitTag(ShellTestTags.VAULT_RESET_ROOT)
+
+            composeRule.onNodeWithTag(ShellTestTags.VAULT_RESET_CONFIRM_FIELD).performTextInput("RESET")
+            composeRule.onNodeWithTag(ShellTestTags.VAULT_RESET_CONTINUE_BUTTON).performClick()
+            awaitTag(ShellTestTags.VAULT_RESET_FINAL_BUTTON)
+
+            composeRule.onNodeWithTag(ShellTestTags.VAULT_RESET_FINAL_BUTTON).performClick()
+            awaitTag(ShellTestTags.VAULT_SETUP_ROOT)
+
+            composeRule.onNodeWithTag(ShellTestTags.BIOMETRIC_UNLOCK_ROOT).assertDoesNotExist()
+        }
+    }
+
+    @Test
+    fun `cancelling out of the reset flow returns to the unlock screen`() {
+        app.keyProvider.nextUnlock = { UnlockResult.Failed("key envelope corrupt") }
+
+        ActivityScenario.launch(MainActivity::class.java).use {
+            awaitTag(ShellTestTags.BIOMETRIC_UNLOCK_MESSAGE)
+            composeRule.onNodeWithTag(ShellTestTags.BIOMETRIC_UNLOCK_RESET_BUTTON).performClick()
+            awaitTag(ShellTestTags.VAULT_RESET_ROOT)
+
+            composeRule.onNodeWithTag(ShellTestTags.VAULT_RESET_CANCEL_BUTTON).performClick()
+            awaitTag(ShellTestTags.BIOMETRIC_UNLOCK_ROOT)
+
+            composeRule.onNodeWithTag(ShellTestTags.VAULT_RESET_ROOT).assertDoesNotExist()
         }
     }
 

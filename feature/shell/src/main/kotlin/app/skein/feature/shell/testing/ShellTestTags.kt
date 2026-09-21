@@ -27,6 +27,13 @@ object ShellTestTags {
     /** Re-presents the biometric prompt after a cancellation/error. */
     const val BIOMETRIC_UNLOCK_RETRY_BUTTON = "biometric_unlock_retry_button"
 
+    /**
+     * skein-v3wb: shown ONLY alongside [BIOMETRIC_UNLOCK_MESSAGE] for a
+     * corrupt/unreadable key envelope — never for a cancellation or any
+     * other failure. Opens [VaultResetScreen].
+     */
+    const val BIOMETRIC_UNLOCK_RESET_BUTTON = "biometric_unlock_reset_button"
+
     // skein-ank2: VaultSetupScreen tags.
 
     /** Root container of `app.skein.feature.shell.auth.VaultSetupScreen`. */
@@ -46,4 +53,24 @@ object ShellTestTags {
 
     /** Opens the OS biometric-enrolment settings when no strong biometric is enrolled. */
     const val VAULT_SETUP_ENROL_BUTTON = "vault_setup_enrol_button"
+
+    // skein-v3wb: VaultResetScreen tags.
+
+    /** Root container of `app.skein.feature.shell.auth.VaultResetScreen`. */
+    const val VAULT_RESET_ROOT = "vault_reset_root"
+
+    /** The typed-confirmation text field (must read exactly "RESET"). */
+    const val VAULT_RESET_CONFIRM_FIELD = "vault_reset_confirm_field"
+
+    /** Advances from the typed confirmation to the final confirm step; disabled until the typed text matches. */
+    const val VAULT_RESET_CONTINUE_BUTTON = "vault_reset_continue_button"
+
+    /** Backs out of the reset flow at either step, leaving the vault untouched. */
+    const val VAULT_RESET_CANCEL_BUTTON = "vault_reset_cancel_button"
+
+    /** The second, explicit confirmation that actually runs `VaultReset.reset()`. Never default-focused. */
+    const val VAULT_RESET_FINAL_BUTTON = "vault_reset_final_button"
+
+    /** User-facing message shown when a reset attempt was refused or failed. */
+    const val VAULT_RESET_MESSAGE = "vault_reset_message"
 }

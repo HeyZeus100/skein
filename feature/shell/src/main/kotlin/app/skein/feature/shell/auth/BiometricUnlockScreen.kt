@@ -37,10 +37,16 @@
 // skein-ank2: two `Failed` reasons ARE inspected (never shown) — the
 // bounded phrases the provider uses for a corrupt / unreadable key envelope
 // (`EnvelopeUnreadable`) — so that state gets its own non-destructive
-// message instead of the generic "Authentication failed." No reset is
-// offered here; see that file. `NotInitialised` can now route to the
-// host's setup screen ([onNotInitialised]) instead of dead-ending in a
-// retry.
+// message instead of the generic "Authentication failed." `NotInitialised`
+// can now route to the host's setup screen ([onNotInitialised]) instead of
+// dead-ending in a retry.
+//
+// skein-v3wb: the corrupt/unreadable-envelope state is the ONLY place in the
+// app that ever offers the destructive "reset vault" flow — never for a
+// cancellation or any other failure reason. [onResetRequested], when
+// supplied, adds a "Reset vault…" affordance alongside that state's retry
+// button; omitting it (the default) renders the message with no reset
+// affordance at all, e.g. for a host that hasn't wired the flow yet.
 
 package app.skein.feature.shell.auth
 
@@ -91,10 +97,10 @@ import us.aherrera.skein.core.model.AuthorizationToken
  *  - [UnlockOutcome.NotInitialised] calls [onNotInitialised] when the host
  *    supplies one (skein-ank2: the gate then shows `VaultSetupScreen`);
  *    without it, the retry affordance with an explanatory message.
- *  - [UnlockOutcome.Failed] for a corrupt / unreadable key envelope shows a
- *    distinct message that promises nothing was changed and offers no
- *    reset ([EnvelopeUnreadable]); every other failure shows the generic
- *    retry text.
+ *  - [UnlockOutcome.Failed] for a corrupt / unreadable key envelope
+ *    ([EnvelopeUnreadable]) shows a distinct message and, when
+ *    [onResetRequested] is supplied, a "Reset vault…" affordance; every
+ *    other failure shows the generic retry text with no reset affordance.
  *
  * The prompt is presented automatically on first composition (and again on
  * every retry tap) — there is no separate "tap to unlock" gate in front of
@@ -113,6 +119,7 @@ public fun BiometricUnlockScreen(
     onRecoveryRequired: () -> Unit,
     modifier: Modifier = Modifier,
     onNotInitialised: (() -> Unit)? = null,
+    onResetRequested: (() -> Unit)? = null,
     biometricPromptTitle: String = "Unlock Skein",
     biometricPromptSubtitle: String = "Authenticate to open your vault",
     biometricPromptNegativeButton: String = "Cancel",
@@ -158,6 +165,7 @@ public fun BiometricUnlockScreen(
                 onRecoveryRequired = onRecoveryRequired,
                 onNotInitialised = onNotInitialised,
                 onRetry = { message -> uiState = BiometricUnlockUiState.Retry(message) },
+                onEnvelopeUnreadable = { message -> uiState = BiometricUnlockUiState.EnvelopeUnreadableRetry(message) },
             )
         }
     }
@@ -204,6 +212,38 @@ public fun BiometricUnlockScreen(
                         Text("Try again")
                     }
                 }
+
+            is BiometricUnlockUiState.EnvelopeUnreadableRetry ->
+                Column(
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                    verticalArrangement = Arrangement.spacedBy(SPACING),
+                    modifier = Modifier.padding(horizontal = 24.dp),
+                ) {
+                    Text(
+                        text = state.message,
+                        style = MaterialTheme.typography.bodyMedium,
+                        textAlign = TextAlign.Center,
+                        modifier = Modifier.testTag(ShellTestTags.BIOMETRIC_UNLOCK_MESSAGE),
+                    )
+                    Button(
+                        onClick = ::presentPrompt,
+                        modifier = Modifier.testTag(ShellTestTags.BIOMETRIC_UNLOCK_RETRY_BUTTON),
+                    ) {
+                        Text("Try again")
+                    }
+                    // skein-v3wb: reachable ONLY from this state — never for
+                    // a cancellation or any other failure — and only when
+                    // the host has wired a reset destination at all.
+                    val reset = onResetRequested
+                    if (reset != null) {
+                        Button(
+                            onClick = reset,
+                            modifier = Modifier.testTag(ShellTestTags.BIOMETRIC_UNLOCK_RESET_BUTTON),
+                        ) {
+                            Text("Reset vault…")
+                        }
+                    }
+                }
         }
     }
 }
@@ -215,6 +255,16 @@ private sealed class BiometricUnlockUiState {
 
     /** [message] is a user-facing string only — never a raw exception/reason. */
     data class Retry(
+        val message: String,
+    ) : BiometricUnlockUiState()
+
+    /**
+     * skein-v3wb: the corrupt/unreadable-envelope [Retry], kept as its own
+     * variant (rather than a flag on [Retry]) so the Composable's rendering
+     * of the reset affordance is driven by state, not by re-matching the
+     * message string.
+     */
+    data class EnvelopeUnreadableRetry(
         val message: String,
     ) : BiometricUnlockUiState()
 }
@@ -231,11 +281,19 @@ internal tailrec fun handleOutcome(
     onRecoveryRequired: () -> Unit,
     onNotInitialised: (() -> Unit)?,
     onRetry: (String) -> Unit,
+    onEnvelopeUnreadable: ((String) -> Unit)? = null,
 ) {
     when (outcome) {
         is UnlockOutcome.Success -> onUnlocked(outcome.token)
         is UnlockOutcome.Coalesced ->
-            handleOutcome(outcome.outcome, onUnlocked, onRecoveryRequired, onNotInitialised, onRetry)
+            handleOutcome(
+                outcome.outcome,
+                onUnlocked,
+                onRecoveryRequired,
+                onNotInitialised,
+                onRetry,
+                onEnvelopeUnreadable,
+            )
         is UnlockOutcome.KeyPermanentlyInvalidated -> onRecoveryRequired()
         UnlockOutcome.UserCancelled ->
             onRetry("Authentication was cancelled.")
@@ -244,13 +302,15 @@ internal tailrec fun handleOutcome(
         is UnlockOutcome.IllegalTransition ->
             onRetry("Unlock is not available right now.")
         is UnlockOutcome.Failed ->
-            onRetry(
-                if (EnvelopeUnreadable.matches(outcome.reason)) {
-                    EnvelopeUnreadable.UNLOCK_MESSAGE
+            if (EnvelopeUnreadable.matches(outcome.reason)) {
+                if (onEnvelopeUnreadable != null) {
+                    onEnvelopeUnreadable(EnvelopeUnreadable.UNLOCK_MESSAGE)
                 } else {
-                    GENERIC_FAILURE_MESSAGE
-                },
-            )
+                    onRetry(EnvelopeUnreadable.UNLOCK_MESSAGE)
+                }
+            } else {
+                onRetry(GENERIC_FAILURE_MESSAGE)
+            }
     }
 }
 

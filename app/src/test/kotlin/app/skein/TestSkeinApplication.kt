@@ -1,8 +1,10 @@
 package app.skein
 
+import app.skein.core.vault.lifecycle.VaultReset
 import app.skein.core.vault.provider.VaultDocumentsProvider
 import app.skein.core.vault.session.LockPolicy
 import app.skein.core.vault.session.UnlockManager
+import app.skein.core.vault.session.UnlockState
 import app.skein.system.SecurityPrefs
 import app.skein.vault.DocumentsProviderPort
 import app.skein.vault.ScriptedVaultKeyProvider
@@ -20,6 +22,7 @@ import us.aherrera.skein.testing.FakeImportService
 import us.aherrera.skein.testing.InMemoryIndexStore
 import us.aherrera.skein.testing.InMemoryPersonaService
 import us.aherrera.skein.testing.InMemoryVaultRepository
+import java.io.File
 import java.time.Duration
 
 /**
@@ -39,9 +42,21 @@ class TestSkeinApplication : SkeinApplication() {
     @Volatile
     var failOpenWith: String? = null
 
+    /** skein-v3wb: aliases the fake keystore in [createVaultServices] recorded a delete call for. */
+    val deletedKeystoreAliases: MutableList<String> = mutableListOf()
+
     override fun createVaultServices(): VaultServices {
         val scope = CoroutineScope(SupervisorJob() + Dispatchers.Default)
         val unlockManager = UnlockManager(keyProvider = keyProvider, scope = scope)
+        val vaultReset =
+            VaultReset(
+                vaultDir = filesDir,
+                databaseFile = File(filesDir, "vault.db"),
+                attachmentsDir = File(filesDir, VaultServices.ATTACHMENTS_DIR),
+                stagingDir = File(cacheDir, "staging_export"),
+                keystore = { alias -> deletedKeystoreAliases += alias },
+                isUnlocked = { unlockManager.state.value is UnlockState.Unlocked },
+            )
         val bootstrap =
             VaultBootstrap(
                 unlockManager = unlockManager,
@@ -65,7 +80,7 @@ class TestSkeinApplication : SkeinApplication() {
                 seed = VaultServices::seedFirstPersona,
             )
         wireLockPolicyForTest(unlockManager, scope)
-        return VaultServices(keyProvider, unlockManager, bootstrap)
+        return VaultServices(keyProvider, unlockManager, bootstrap, vaultReset)
     }
 
     /**

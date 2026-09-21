@@ -11,11 +11,14 @@
 // `reason` values of `MasterKeyStorageException.Kind.CORRUPT` / `.IO`; that
 // enum's doc names this file so the two stay in step.
 //
-// No reset lives here or anywhere in this flow: a user-initiated, explicitly
-// destructive "reset vault" (delete the envelope, `vault.db` and
-// `attachments/`, then `setup()`) is tracked separately in bd — see the
-// skein-ank2 close notes for the follow-up id — and is the only way past
-// this state.
+// skein-v3wb: a user-initiated, explicitly destructive "reset vault" (delete
+// the envelope, `vault.db` and `attachments/`, then `setup()` again) is now
+// wired from exactly this state — see `BiometricUnlockScreen`'s
+// `onResetRequested` param and `VaultResetScreen`. [UNLOCK_MESSAGE] below
+// drops the "not yet available in this build" clause that shipped with
+// skein-ank2 now that the reset flow exists; the rest of the promise
+// ("nothing has been changed and no data has been deleted" UNTIL the user
+// explicitly resets) still holds verbatim.
 
 package app.skein.feature.shell.auth
 
@@ -28,10 +31,10 @@ internal object EnvelopeUnreadable {
 
     val REASONS: Set<String> = setOf(REASON_CORRUPT, REASON_IO)
 
-    /** Distinct from the generic failure text; promises nothing was changed and offers no reset. */
+    /** Distinct from the generic failure text; promises nothing was changed unless the user explicitly resets. */
     const val UNLOCK_MESSAGE: String =
         "Your vault's key file could not be read. Nothing has been changed and no data has been " +
-            "deleted. Unlocking is not possible until the vault is reset, which is not yet available in this build."
+            "deleted. Unlocking is not possible until the vault is reset."
 
     fun matches(reason: String): Boolean = reason in REASONS
 }
