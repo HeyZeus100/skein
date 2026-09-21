@@ -55,6 +55,37 @@
             android:exported="false" />
 
         <!--
+            E2.I6 (spec §2.9/§9; docs/design/POST_REVIEW_RESOLUTIONS.md §4.3,
+            skein-7ki2): the ONE way vault content reaches other apps — a
+            DocumentsProvider behind the system file picker. No FileProvider
+            anywhere in the shipped app (§4 v1 acceptance criterion).
+
+            exported="true" + permission=MANAGE_DOCUMENTS is what the platform
+            requires of every DocumentsProvider (DocumentsProvider.attachInfo
+            refuses anything else; only the system DocumentsUI holds
+            MANAGE_DOCUMENTS). grantUriPermissions="false" together with the
+            two <grant-uri-permission> subsets means the effective
+            ProviderInfo allows grants ONLY for /document/note:* and
+            /document/att:* paths — never a tree/root/directory URI — so no
+            client can end up holding a grant over the whole vault. Persistable
+            grants and the exported-components audit: E10.I9. The class itself
+            refuses everything while the vault is locked.
+        -->
+        <provider
+            android:name="app.skein.core.vault.provider.VaultDocumentsProvider"
+            android:authorities="us.aherrera.skein.documents"
+            android:exported="true"
+            android:grantUriPermissions="false"
+            android:permission="android.permission.MANAGE_DOCUMENTS">
+            <intent-filter>
+                <action android:name="android.content.action.DOCUMENTS_PROVIDER" />
+            </intent-filter>
+            <!-- v1.1 ad-hoc share grants will target these same prefixes (§4.2). -->
+            <grant-uri-permission android:pathPrefix="/document/note:" />
+            <grant-uri-permission android:pathPrefix="/document/att:" />
+        </provider>
+
+        <!--
             E3.I1 (spec §9): androidx.profileinstaller ships an exported
             BroadcastReceiver so `pm compile` / Play's install-time delivery
             can trigger baseline-profile compilation. This app is never
