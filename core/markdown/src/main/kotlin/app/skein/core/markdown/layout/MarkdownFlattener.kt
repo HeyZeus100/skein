@@ -1,14 +1,17 @@
 // E2.I11 (bd skein-80m): flattens the `:core:markdown` AST (`SkeinDocument`,
-// `E7.I2`) into the linear `PrintBlock` model `Paginator` consumes. Kept
-// separate from `app.skein.core.markdown.render.MarkdownRenderer` (which
-// targets Compose `AnnotatedString` for on-screen surfaces) because the PDF
-// path needs per-block granularity (a `Paginator` decision point per
+// `E7.I2`) into the linear `PrintBlock` model `Paginator` (`:core:export`)
+// consumes. Kept separate from `app.skein.core.markdown.render.MarkdownRenderer`
+// (which targets Compose `AnnotatedString` for on-screen surfaces) because
+// the PDF/DOCX paths need per-block granularity (a decision point per
 // heading/paragraph/code block/list item) rather than one flat run of
 // styled text for a whole document.
 //
-// Deliberately Android-free — see the header comment on `PrintBlock.kt`.
+// E2.I12 (bd skein-jq8): moved into `:core:markdown` alongside `PrintBlock`
+// (see that file's header) so `DocxWriter` (`:core:vault`) can reuse this
+// same flattening step instead of re-walking the AST. Deliberately
+// Android-free — see the header comment on `PrintBlock.kt`.
 
-package app.skein.core.export.pdf.layout
+package app.skein.core.markdown.layout
 
 import app.skein.core.markdown.ast.BlockNode
 import app.skein.core.markdown.ast.BulletList
@@ -126,8 +129,8 @@ public object MarkdownFlattener {
             is Link ->
                 inline.inlines
                     .flatMap { flattenInline(it, bold, italic, strikethrough) }
-                    .map { it.copy(underline = true) }
-                    .ifEmpty { listOf(TextSpan(inline.destination, underline = true)) }
+                    .map { it.copy(underline = true, href = inline.destination) }
+                    .ifEmpty { listOf(TextSpan(inline.destination, underline = true, href = inline.destination)) }
             is WikiLink ->
                 listOf(
                     TextSpan(inline.alias ?: inline.target, bold = bold, italic = italic, underline = true),

@@ -1,7 +1,10 @@
 // `E2.I10` (bd `skein-90d`): Markdown export — single document and whole
 // vault zip — implementing the `ExportService` contract locked by `E0.I14`
-// (`core/model/.../Transfer.kt`, skein-18j). `exportDocx` is intentionally
-// left unimplemented here (`E2.I11`/`E2.I12` own it).
+// (`core/model/.../Transfer.kt`, skein-18j). `exportDocx` (bd `skein-jq8`,
+// `E2.I12`) delegates to `DocxWriter`, the hand-rolled OOXML writer in this
+// same module's `export.docx` package (see that package's `DocxWriter.kt`
+// for why it lives in `:core:vault` rather than `:core:export`, where the
+// plan's file list originally put it).
 //
 // Design notes:
 //   - This class depends only on `VaultRepository` (`core/model`), not the
@@ -43,7 +46,9 @@
 
 package app.skein.core.vault.export
 
+import app.skein.core.markdown.MarkdownAst
 import app.skein.core.vault.codec.Frontmatter
+import app.skein.core.vault.export.docx.DocxWriter
 import kotlinx.coroutines.flow.first
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.JsonObject
@@ -130,10 +135,16 @@ public class ExportServiceImpl(
         docId: DocId,
         out: OutputStream,
         template: InputStream?,
-    ): Unit =
-        throw UnsupportedOperationException(
-            "ExportServiceImpl.exportDocx is not implemented yet (see plan E2.I11/E2.I12)",
-        )
+    ) {
+        val document =
+            repository.getDocument(docId)
+                ?: throw NoSuchElementException("no document with id=$docId")
+        check(document.kind != DocumentKind.ATTACHMENT) {
+            "cannot export an ATTACHMENT document as docx: $docId"
+        }
+        val tree = MarkdownAst.parse(document.bodyMd.orEmpty())
+        DocxWriter.write(document.title, tree, out, template)
+    }
 
     // ------------------------------------------------------------------
     // Internals

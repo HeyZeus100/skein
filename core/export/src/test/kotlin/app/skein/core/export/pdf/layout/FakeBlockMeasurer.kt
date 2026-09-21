@@ -6,6 +6,7 @@
 
 package app.skein.core.export.pdf.layout
 
+import app.skein.core.markdown.layout.PrintBlock
 import kotlin.math.ceil
 
 /**

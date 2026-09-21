@@ -26,4 +26,7 @@ dependencies {
     implementation(libs.compose.ui.graphics)
 
     testImplementation(libs.junit)
+    // E2.I12 (bd skein-jq8): MarkdownFlattenerTest (moved here from
+    // :core:export, which already had this dependency) asserts with Truth.
+    testImplementation(libs.truth)
 }

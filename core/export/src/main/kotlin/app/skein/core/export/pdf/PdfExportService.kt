@@ -16,8 +16,8 @@ package app.skein.core.export.pdf
 
 import android.content.Context
 import android.print.PrintDocumentAdapter
-import app.skein.core.export.pdf.layout.MarkdownFlattener
 import app.skein.core.markdown.MarkdownAst
+import app.skein.core.markdown.layout.MarkdownFlattener
 import kotlinx.coroutines.runBlocking
 import us.aherrera.skein.core.model.DocId
 import us.aherrera.skein.core.model.DocumentKind

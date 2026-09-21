@@ -16,9 +16,9 @@ import android.text.style.StrikethroughSpan
 import android.text.style.StyleSpan
 import android.text.style.TypefaceSpan
 import android.text.style.UnderlineSpan
-import app.skein.core.export.pdf.layout.PrintBlock
-import app.skein.core.export.pdf.layout.StyledText
-import app.skein.core.export.pdf.layout.TextSpan
+import app.skein.core.markdown.layout.PrintBlock
+import app.skein.core.markdown.layout.StyledText
+import app.skein.core.markdown.layout.TextSpan
 
 /** One visual (wrapped) line: which [StaticLayout] it belongs to and which line index within it, plus its precomputed height. */
 internal data class RenderableLine(
