@@ -32,38 +32,20 @@
 // deterministic regardless of the input `spans` order or `HashMap`
 // iteration.
 //
-// `EntitySpan` (span input shape) is a minimal local placeholder for the
-// `E5.I4`/`skein-eq1` GLiNER backend's decoded-span type, per this bead's
-// coordinator note (dispatched ahead of that dependency; tests here feed
-// synthetic spans). `start`/`end` are character offsets into
-// `Document.bodyMd` — GLiNER's own word-span decoding maps back to
-// character offsets before this indexer ever sees a span (see `E5.I4`'s
-// description). If `skein-eq1` lands a canonical span type in `core/model`
-// instead, this type should be hoisted there / replaced by it rather than
-// kept as a second parallel definition.
+// `EntitySpan` (span input shape) is the canonical contract type from
+// `core/model` (skein-1su, E0.I17 / plan § 4.6). `start`/`end` are character
+// offsets into `Document.bodyMd` (end-exclusive, like `String.substring`) —
+// GLiNER's own word-span decoding maps back to character offsets before this
+// indexer ever sees a span (see `E5.I4`'s description).
 
 package app.skein.core.vault.extract
 
 import us.aherrera.skein.core.model.Document
 import us.aherrera.skein.core.model.Edge
 import us.aherrera.skein.core.model.EdgeKind
+import us.aherrera.skein.core.model.EntitySpan
 import us.aherrera.skein.core.model.IndexStore
 import java.text.Normalizer
-
-/**
- * One GLiNER-decoded entity mention. [start]/[end] are character offsets
- * into the source [Document.bodyMd] (end-exclusive, like [String.substring]);
- * [label] is the entity type GLiNER was prompted with; [score] is the
- * sigmoid confidence for this span (GLiNER's own decode threshold is 0.5 —
- * see this file's header for the stricter edge-creation threshold applied
- * on top of it).
- */
-public data class EntitySpan(
-    val start: Int,
-    val end: Int,
-    val label: String,
-    val score: Double,
-)
 
 /**
  * Computes and applies the `ENTITY` edge delta for a document from its
@@ -157,7 +139,7 @@ public class EntityIndexer(
 
     public companion object {
         /** GLiNER's own decode threshold (0.5, `E5.I4`) keeps candidates; edges require this stricter score. */
-        public const val EDGE_SCORE_THRESHOLD: Double = 0.6
+        public const val EDGE_SCORE_THRESHOLD: Float = 0.6f
 
         /** An entity mentioned this many times (at [EDGE_SCORE_THRESHOLD]+) in a document gets [FREQUENT_ENTITY_WEIGHT]. */
         public const val FREQUENT_MENTION_THRESHOLD: Int = 3
