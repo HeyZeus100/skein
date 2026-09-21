@@ -101,6 +101,51 @@ directories that own each component (`native/sqlite/README.md`,
 
 ---
 
+## Test-only tokenizer vocabularies
+
+`core/rag`'s `app.skein.core.rag.tokenizers` package implements WordPiece and
+Unigram itself (no third-party tokenizer library ships in any variant). Its JVM
+unit tests are pinned against the real `tokenizer.json` vocabularies, which are
+vendored under `core/rag/src/test/resources/tokenizers/` in gzipped form. These
+are **test resources only** — nothing below is packaged into the APK.
+
+Each file's Hugging Face repository, revision, SHA-256 and license is recorded
+in `core/rag/src/test/resources/tokenizers/MANIFEST.md`, and
+`tools/tokenizers/fetch_tokenizers.sh` re-derives every hash.
+
+### nomic-embed-text-v1.5 tokenizer
+
+- **SPDX:** `Apache-2.0`
+- **Repository:** https://huggingface.co/nomic-ai/nomic-embed-text-v1.5
+- **File:** `tokenizer.json` (BERT-uncased WordPiece vocabulary)
+- **Attribution:** Copyright (c) Nomic AI.
+
+### ms-marco-MiniLM-L6-v2 tokenizer
+
+- **SPDX:** `Apache-2.0`
+- **Repository:** https://huggingface.co/cross-encoder/ms-marco-MiniLM-L6-v2
+- **File:** `tokenizer.json` (BERT-uncased WordPiece vocabulary)
+- **Attribution:** Copyright (c) Ubiquitous Knowledge Processing Lab (UKP-TUDA)
+  / the Sentence-Transformers authors.
+
+### gliner_small-v2.5 (DeBERTa-v3) tokenizer
+
+- **SPDX:** `Apache-2.0`
+- **Repository:** https://huggingface.co/GG-QandV/gliner_small-v2.5-onnx
+  (base model https://huggingface.co/gliner-community/gliner_small-v2.5)
+- **File:** `tokenizer.json` (SentencePiece Unigram vocabulary)
+- **Attribution:** Copyright (c) the GLiNER authors.
+
+### Golden fixtures
+
+`core/rag/src/test/resources/tokenizers/golden/*.golden.json` are generated
+output produced by running Python `tokenizers` 0.22.1
+(https://github.com/huggingface/tokenizers, Apache-2.0, © Hugging Face) over the
+vocabularies above. No `tokenizers` code is vendored, linked or shipped — only
+its output is recorded, to prove the Kotlin reimplementation agrees with it.
+
+---
+
 ## ONNX Runtime and Related Infrastructure
 
 ### ONNX Runtime Android
