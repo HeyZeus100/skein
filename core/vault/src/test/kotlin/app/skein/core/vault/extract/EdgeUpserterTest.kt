@@ -192,4 +192,75 @@ public class EdgeUpserterTest {
             assertThat(index.edgesFrom(docA.id).map { it.dstId })
                 .containsExactly(docB.id, "tag:alpha", "tag:beta")
         }
+
+    @Test
+    public fun `source frontmatter produces a CITE edge to the attachment id`() =
+        runTest {
+            val repo = InMemoryVaultRepository()
+            val index = InMemoryIndexStore()
+            val upserter = EdgeUpserter(repo, index, clock = { 1_000L })
+            val attachment = repo.createAttachment("scan.pdf", "application/pdf") { it.write(ByteArray(0)) }
+            val frontmatter = JsonObject(mapOf("source" to JsonPrimitive(attachment.id)))
+            val docA = repo.createDocument(NewDocument(DocumentKind.NOTE, "A", "body", frontmatter = frontmatter))
+
+            upserter.upsert(docA)
+
+            assertThat(index.edgesFrom(docA.id)).contains(
+                Edge(srcId = docA.id, dstId = attachment.id, kind = EdgeKind.CITE, createdAt = 1_000L),
+            )
+        }
+
+    @Test
+    public fun `re-upserting an unchanged source frontmatter preserves the CITE edge's original createdAt`() =
+        runTest {
+            val repo = InMemoryVaultRepository()
+            val index = InMemoryIndexStore()
+            var now = 1_000L
+            val upserter = EdgeUpserter(repo, index, clock = { now })
+            val attachment = repo.createAttachment("scan.pdf", "application/pdf") { it.write(ByteArray(0)) }
+            val frontmatter = JsonObject(mapOf("source" to JsonPrimitive(attachment.id)))
+            val docA = repo.createDocument(NewDocument(DocumentKind.NOTE, "A", "body", frontmatter = frontmatter))
+            upserter.upsert(docA)
+
+            now = 2_000L
+            upserter.upsert(docA)
+
+            val citeEdge = index.edgesFrom(docA.id).single { it.kind == EdgeKind.CITE }
+            assertThat(citeEdge.createdAt).isEqualTo(1_000L)
+        }
+
+    @Test
+    public fun `removing source frontmatter and re-upserting removes the CITE edge`() =
+        runTest {
+            val repo = InMemoryVaultRepository()
+            val index = InMemoryIndexStore()
+            val upserter = EdgeUpserter(repo, index, clock = { 1_000L })
+            val attachment = repo.createAttachment("scan.pdf", "application/pdf") { it.write(ByteArray(0)) }
+            val withSource = JsonObject(mapOf("source" to JsonPrimitive(attachment.id)))
+            val docA = repo.createDocument(NewDocument(DocumentKind.NOTE, "A", "body", frontmatter = withSource))
+            upserter.upsert(docA)
+            check(index.edgesFrom(docA.id).any { it.kind == EdgeKind.CITE })
+
+            val withoutSource = repo.updateFrontmatter(docA.id, JsonObject(emptyMap()))
+            upserter.upsert(withoutSource)
+
+            assertThat(index.edgesFrom(docA.id).none { it.kind == EdgeKind.CITE }).isTrue()
+        }
+
+    @Test
+    public fun `upserting a CITE edge from source frontmatter leaves ENTITY edges untouched`() =
+        runTest {
+            val repo = InMemoryVaultRepository()
+            val index = InMemoryIndexStore()
+            val upserter = EdgeUpserter(repo, index, clock = { 1_000L })
+            val attachment = repo.createAttachment("scan.pdf", "application/pdf") { it.write(ByteArray(0)) }
+            val frontmatter = JsonObject(mapOf("source" to JsonPrimitive(attachment.id)))
+            val docA = repo.createDocument(NewDocument(DocumentKind.NOTE, "A", "body", frontmatter = frontmatter))
+            val entityEdge = Edge(srcId = docA.id, dstId = "entity:1", kind = EdgeKind.ENTITY, createdAt = 500L)
+            index.replaceEdges(docA.id, setOf(EdgeKind.ENTITY), listOf(entityEdge))
+
+            upserter.upsert(docA)
+
+            assertThat(index.edgesFrom(docA.id)).contains(entityEdge)
+        }
 }
