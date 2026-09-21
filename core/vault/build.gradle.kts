@@ -157,6 +157,13 @@ dependencies {
     // `InMemoryIndexStore` (JVM) and `IndexStoreImpl` (this module,
     // instrumented) prove they satisfy the same semantic contract.
     androidTestImplementation(project(":testing"))
+    // skein-3rj3: `LexicalRecallAcceptanceTest` exercises `LexicalRecall`
+    // (`:core:rag`) against the real `IndexStoreImpl` for the real-FTS5
+    // ranking assertion the JVM `InMemoryIndexStore`-backed
+    // `LexicalRecallTest` (in `:core:rag`) can only approximate. Test-only
+    // dependency — `:core:rag`'s main source set does not depend on
+    // `:core:vault`, so this does not introduce a cycle.
+    androidTestImplementation(project(":core:rag"))
 }
 
 // E0.I7 followup (skein-2lq9): fast, standalone entry point for the same
