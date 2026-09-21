@@ -1,0 +1,68 @@
+-- Skein vault DB migration 007: drop the vestigial `attachment_master_key`
+-- table (and the now-dead `attachment_keys` table with it). skein-7d0l,
+-- filed from skein-txrh.
+--
+-- Sources of truth:
+--   • skein-txrh moved the Keystore-wrapped vault master OUT of vault.db
+--     and into the app-private key-envelope file
+--     `<filesDir>/keys/key-envelope.v1`
+--     (core/vault/.../key/FileMasterKeyStorage.kt) — the same master key
+--     that unlocks vault.db can never live as a row inside vault.db
+--     itself (circular: you'd need the DB open to read the key that opens
+--     the DB). `attachment_master_key`, added by 001_initial.sql per
+--     ATTACHMENT_ENCRYPTION.md §3.4's original (pre-skein-txrh) design, is
+--     the leftover Layer-1 table from before that move.
+--   • docs/design/ATTACHMENT_ENCRYPTION.md §3.4 amendment (this migration
+--     matches its live text) and §7 item 3.
+--   • docs/VAULT_FORMAT.md §2 (schema table list) — updated alongside this
+--     file.
+--
+-- `attachment_keys` (Layer 2, per-attachment content keys) is dropped too,
+-- not just its FK to `attachment_master_key`: the shipped attachment store
+-- (`core/vault/.../blob/FileAttachmentStore.kt`, E2.I5 / skein-1nr) derives
+-- a fresh per-*write* content key via HKDF-SHA256 from the vault master key
+-- plus a random per-file salt stored in the container header itself
+-- (`FileAttachmentStore.deriveFileKey`) — see that file's class doc
+-- ("SKAT v2", skein-yn8d/skein-0nh8). No wrapped per-file key is ever
+-- persisted anywhere; `masterKey()` is called, HKDF runs in memory, and the
+-- key bytes are wiped (`fill(0)`) before the call returns. A whole-repo
+-- grep (main/test/androidTest, this migration's own bead notes) turns up
+-- no INSERT/SELECT/UPDATE against `attachment_keys` outside of
+-- `001_initial.sql`'s own DDL and this schema's test-expectation lists —
+-- the table has been dead since it was created. Keeping a table that can
+-- structurally never gain a row, just to carry a now-meaningless FK, isn't
+-- worth it; drop both.
+--
+-- FK ordering under `PRAGMA foreign_keys = ON` (§4.9; SkeinSQLiteDriver
+-- sets this on every open, and `Migrator` runs each migration inside one
+-- `BEGIN IMMEDIATE` transaction — `PRAGMA foreign_keys` is a documented
+-- no-op mid-transaction, so it cannot be toggled off here even locally;
+-- verified empirically against sqlite3 3.51.0): SQLite only checks a FK
+-- constraint against the *child* table's rows, so dropping the child
+-- (`attachment_keys`, which holds the `master_key_version` FK) before the
+-- parent (`attachment_master_key`) needs no rebuild dance and no disabled
+-- enforcement — confirmed empirically (BEGIN IMMEDIATE; DROP TABLE
+-- attachment_keys; DROP TABLE attachment_master_key; COMMIT; then
+-- PRAGMA foreign_key_check reports nothing) with rows present in both
+-- tables beforehand. Dropping a table also drops its own indexes
+-- automatically (verified: idx_attachment_keys_version disappears from
+-- sqlite_master with no explicit DROP INDEX), so none is needed here.
+--
+-- Applied by `Migrator` under `PRAGMA user_version = 7`. Numbered 007, not
+-- 002: skein-plan.json / docs/superpowers/plans/2026-09-19-skein-v1-plan.md
+-- already reserve 002 (`002_attestation_status.sql`, E1.I2), and
+-- POST_REVIEW_RESOLUTIONS.md + skein-voys reserve 003
+-- (`003_document_revisions.sql`; also the number this plan's own
+-- `003_ingest_attempts.sql` wants — an unresolved collision skein-voys
+-- exists to flag, not this migration's to resolve), 004
+-- (`004_post_mmap_blake3.sql`), and 005 (`005_export_stages.sql`);
+-- skein-voys additionally notes 006 is taken by `006_recovery_drafts.sql`
+-- per skein-ltcr / LOCK_POLICY_INDEXING.md §7.8. None of 002-006 exist as
+-- files on disk yet (only 001_initial.sql does), but they are claimed by
+-- landed plan/design docs and an open bead, so taking any of them here
+-- would guarantee a future collision. 007 is the first number nothing
+-- claims.
+
+DROP TABLE attachment_keys;--;
+
+DROP TABLE attachment_master_key;--;

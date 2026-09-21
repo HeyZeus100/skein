@@ -48,17 +48,17 @@ class MigratorInstrumentedTest {
     // --- Fresh migrate: version + full schema object set (§4.9) ---
 
     @Test
-    fun freshDatabaseMigratesToVersion1WithAllSchemaObjects() {
+    fun freshDatabaseMigratesToVersion7WithAllSchemaObjects() {
         val dbFile = tempDbFile()
 
         val result = Migrator(SkeinSQLiteDriver(randomKey(1))).migrate(dbFile.absolutePath)
 
         assertThat(result.fromVersion).isEqualTo(0)
-        assertThat(result.toVersion).isEqualTo(1)
+        assertThat(result.toVersion).isEqualTo(7)
 
         SkeinSQLiteDriver(randomKey(1)).open(dbFile.absolutePath).use { conn ->
             val inspector = SchemaInspector(conn)
-            assertThat(inspector.userVersion()).isEqualTo(1)
+            assertThat(inspector.userVersion()).isEqualTo(7)
             assertThat(inspector.tables()).containsAtLeast(
                 "documents",
                 "chunks",
@@ -70,9 +70,14 @@ class MigratorInstrumentedTest {
                 "personas",
                 "models",
                 "ingest_queue",
-                "attachment_master_key",
-                "attachment_keys",
             )
+            // 007_drop_attachment_master_key.sql (skein-7d0l): the vestigial
+            // Layer-1 wrapped-master table (superseded by the app-private
+            // key-envelope file, skein-txrh) and the never-populated Layer-2
+            // per-attachment key table (FileAttachmentStore derives per-write
+            // keys via HKDF and persists nothing) are both gone after a
+            // fresh migrate.
+            assertThat(inspector.tables()).containsNoneOf("attachment_master_key", "attachment_keys")
             assertThat(inspector.virtualTables()).containsExactly("chunks_fts", "chunks_vec")
             assertThat(inspector.triggers()).containsExactly(
                 "chunks_ai",
@@ -89,8 +94,69 @@ class MigratorInstrumentedTest {
                 "idx_messages_chat",
                 "idx_documents_title_nocase",
                 "idx_documents_kind_updated",
-                "idx_attachment_keys_version",
             )
+            // Dropping attachment_keys drops its index with it (no explicit
+            // DROP INDEX needed — verified empirically against sqlite3
+            // 3.51.0 for 007's header comment).
+            assertThat(inspector.indexes()).doesNotContain("idx_attachment_keys_version")
+        }
+    }
+
+    // --- Pre-007 rows survive the drop (seed on v1, then migrate to 007) ---
+
+    @Test
+    fun rowsSeededBeforeMigration007SurviveTheDropAndDocumentsIsUnaffected() {
+        val dbFile = tempDbFile()
+
+        // Seed at v1 only, by applying 001_initial.sql's own statements
+        // directly (same production resource the real Migrator loads) and
+        // stopping before 007 -- mirrors a real device that installed
+        // before 007 shipped. No separate "v1-only" manifest fixture is
+        // needed: this reuses the one production migration file instead of
+        // duplicating it under a test resource directory. `MigrationStatementSplitter`
+        // itself is `internal` to the main source set and not visible from
+        // `androidTest` (a separate compilation), so this splits on the
+        // same `--;` sentinel locally -- mirroring the identical workaround
+        // already used by `VaultRepositoryImplContractTest.splitOnSentinel`
+        // / `IndexStoreImplContractTest` / `PersonaServiceImplContractTest`
+        // in this module.
+        SkeinSQLiteDriver(randomKey(9)).open(dbFile.absolutePath).use { conn ->
+            val sql =
+                requireNotNull(Migrator::class.java.classLoader?.getResourceAsStream("migrations/001_initial.sql")) {
+                    "migrations/001_initial.sql not on the classpath"
+                }.use { it.readBytes().toString(Charsets.UTF_8) }
+            exec(conn, "BEGIN IMMEDIATE;")
+            for (statement in splitOnSentinel(sql)) exec(conn, statement)
+            exec(conn, "PRAGMA user_version = 1;")
+            exec(conn, "COMMIT;")
+
+            insertNote(conn, id = "doc-preserved", title = "Title", bodyMd = "body", createdAt = 100, updatedAt = 100)
+            exec(
+                conn,
+                "INSERT INTO attachment_master_key(key_version, created_at) VALUES (1, 100);",
+            )
+            exec(
+                conn,
+                "INSERT INTO attachment_keys(attachment_uuid, wrapped_content_key, wrap_iv, wrap_tag, " +
+                    "master_key_version, created_at) VALUES ('doc-preserved', x'01', x'02', x'03', 1, 100);",
+            )
+        }
+
+        // Now point a full-manifest Migrator (001 + 007) at the same file.
+        val upgraded = Migrator(SkeinSQLiteDriver(randomKey(9))).migrate(dbFile.absolutePath)
+        assertThat(upgraded.fromVersion).isEqualTo(1)
+        assertThat(upgraded.toVersion).isEqualTo(7)
+
+        SkeinSQLiteDriver(randomKey(9)).open(dbFile.absolutePath).use { conn ->
+            val inspector = SchemaInspector(conn)
+            assertThat(inspector.userVersion()).isEqualTo(7)
+            assertThat(inspector.tables()).containsNoneOf("attachment_master_key", "attachment_keys")
+
+            // The pre-existing, unrelated document row survived the
+            // migration untouched.
+            val queued = readIngestQueue(conn, docId = "doc-preserved")
+            assertThat(queued).isNotNull()
+            assertThat(queued!!.reason).isEqualTo("created")
         }
     }
 
@@ -100,12 +166,12 @@ class MigratorInstrumentedTest {
     fun runningMigrateTwiceIsANoop() {
         val dbFile = tempDbFile()
         val first = Migrator(SkeinSQLiteDriver(randomKey(2))).migrate(dbFile.absolutePath)
-        assertThat(first.toVersion).isEqualTo(1)
+        assertThat(first.toVersion).isEqualTo(7)
 
         val second = Migrator(SkeinSQLiteDriver(randomKey(2))).migrate(dbFile.absolutePath)
 
-        assertThat(second.fromVersion).isEqualTo(1)
-        assertThat(second.toVersion).isEqualTo(1)
+        assertThat(second.fromVersion).isEqualTo(7)
+        assertThat(second.toVersion).isEqualTo(7)
     }
 
     // --- Broken migration -> ROLLBACK ---
@@ -329,6 +395,30 @@ class MigratorInstrumentedTest {
         sql: String,
     ) {
         conn.prepare(sql).use { it.step() }
+    }
+
+    /**
+     * Split migration SQL on the `--;` sentinel (`001_initial.sql`'s file
+     * header) -- mirrors production `MigrationStatementSplitter`, which is
+     * `internal` and not visible from this separate `androidTest`
+     * compilation. Same helper already duplicated in
+     * `VaultRepositoryImplContractTest`, `IndexStoreImplContractTest`, and
+     * `PersonaServiceImplContractTest` in this module.
+     */
+    private fun splitOnSentinel(sql: String): List<String> {
+        val raw = sql.split("--;")
+        val cleaned =
+            raw.map { chunk ->
+                chunk
+                    .lineSequence()
+                    .map { it.trimEnd() }
+                    .filter { line -> line.isNotBlank() && !line.trimStart().startsWith("--") }
+                    .joinToString(separator = "\n")
+                    .trim()
+                    .removeSuffix(";")
+                    .trim()
+            }
+        return cleaned.filter { it.isNotEmpty() }
     }
 
     private companion object {

@@ -40,6 +40,7 @@ import app.skein.core.vault.db.EncryptedDatabaseWithoutKeyException
 import app.skein.core.vault.db.SkeinSQLiteDriver
 import app.skein.core.vault.db.SkeinSQLiteException
 import app.skein.core.vault.db.migrations.MigrateResult
+import app.skein.core.vault.db.migrations.MigrationStatementSplitter
 import app.skein.core.vault.db.migrations.Migrator
 import app.skein.core.vault.db.migrations.SchemaInspector
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -357,15 +358,31 @@ public class VaultLifecycle(
         }
 
     /**
-     * Parses `migrations/INDEX.txt` and the `NNN_*.sql` files it lists
-     * (same classpath convention [Migrator] uses for discovery) and
-     * extracts every `CREATE TABLE` / `CREATE VIRTUAL TABLE` /
-     * `CREATE INDEX` / `CREATE TRIGGER` object name. `ALTER TABLE`
-     * statements are not object-creating and are intentionally not
-     * matched. Returns an empty set (no drift is reported) if the
-     * manifest can't be found — the JVM unit test double's classpath does
-     * not always carry the production manifest, and reporting drift from
-     * an inconclusive check would be a false positive.
+     * Parses `migrations/INDEX.txt` and the `NNN_*.sql` files it lists, in
+     * version order (same classpath convention [Migrator] uses for
+     * discovery), and replays each migration's statements to compute the
+     * set of schema object names a fresh `migrate()` run should leave
+     * behind — i.e. simulates `CREATE`/`DROP` the same way SQLite would,
+     * rather than only ever accumulating `CREATE` matches.
+     *
+     * This matters once a later migration drops an object an earlier one
+     * created (skein-7d0l, `007_drop_attachment_master_key.sql`): a
+     * name-accumulating scan would keep reporting `attachment_master_key`
+     * / `attachment_keys` / `idx_attachment_keys_version` as "expected"
+     * forever, and [integrityCheck] would report permanent false-positive
+     * [IntegrityResult.SchemaDrift] on every up-to-date vault. `DROP TABLE`
+     * is also handled as SQLite itself handles it: dropping a table
+     * implicitly drops the indexes and triggers created `ON` it, even
+     * without an explicit `DROP INDEX`/`DROP TRIGGER` statement (verified
+     * empirically against sqlite3 3.51.0 — see `007_drop_attachment_master_key.sql`'s
+     * header comment) — [dependentsOf] tracks that association.
+     *
+     * `ALTER TABLE` statements are not object-creating/dropping and are
+     * intentionally not matched. Returns an empty set (no drift is
+     * reported) if the manifest can't be found — the JVM unit test
+     * double's classpath does not always carry the production manifest,
+     * and reporting drift from an inconclusive check would be a false
+     * positive.
      */
     private fun expectedMigrationObjectNames(): Set<String> {
         val classLoader = requireNotNull(javaClass.classLoader) { "no class loader available" }
@@ -379,24 +396,72 @@ public class VaultLifecycle(
                 .toList()
 
         val names = mutableSetOf<String>()
+        // Object name -> the table it was declared `ON` (indexes/triggers
+        // only), so a later `DROP TABLE` can cascade to them too.
+        val dependentsOf = mutableMapOf<String, String>()
+
         for (fileName in fileNames) {
             val sql =
                 classLoader
                     .getResourceAsStream("$MIGRATIONS_PATH/$fileName")
                     ?.use { it.readBytes().toString(Charsets.UTF_8) }
                     ?: continue
-            CREATE_OBJECT_REGEX.findAll(sql).forEach { match -> names += match.groupValues[1] }
+            for (statement in MigrationStatementSplitter.split(sql)) {
+                applyStatement(statement, names, dependentsOf)
+            }
         }
         return names
+    }
+
+    private fun applyStatement(
+        statement: String,
+        names: MutableSet<String>,
+        dependentsOf: MutableMap<String, String>,
+    ) {
+        CREATE_TABLE_REGEX.find(statement)?.let { names += it.groupValues[1] }
+        CREATE_INDEX_REGEX.find(statement)?.let { match ->
+            val (indexName, table) = match.destructured
+            names += indexName
+            dependentsOf[indexName] = table
+        }
+        CREATE_TRIGGER_REGEX.find(statement)?.let { match ->
+            val (triggerName, table) = match.destructured
+            names += triggerName
+            dependentsOf[triggerName] = table
+        }
+        DROP_TABLE_REGEX.find(statement)?.let { match ->
+            val table = match.groupValues[1]
+            names -= table
+            val cascaded = dependentsOf.filterValues { it == table }.keys
+            names -= cascaded
+            cascaded.forEach { dependentsOf.remove(it) }
+        }
+        DROP_INDEX_REGEX.find(statement)?.let { match ->
+            names -= match.groupValues[1]
+            dependentsOf.remove(match.groupValues[1])
+        }
+        DROP_TRIGGER_REGEX.find(statement)?.let { match ->
+            names -= match.groupValues[1]
+            dependentsOf.remove(match.groupValues[1])
+        }
     }
 
     private companion object {
         const val DEFAULT_PERSONA_NAME = "Default"
         const val MIGRATIONS_PATH = "migrations"
-        val CREATE_OBJECT_REGEX =
+        val CREATE_TABLE_REGEX =
+            Regex("""(?i)CREATE\s+(?:VIRTUAL\s+)?TABLE\s+(?:IF\s+NOT\s+EXISTS\s+)?["`]?(\w+)["`]?""")
+        val CREATE_INDEX_REGEX =
             Regex(
-                """(?i)CREATE\s+(?:VIRTUAL\s+TABLE|TABLE|INDEX|TRIGGER)\s+(?:IF\s+NOT\s+EXISTS\s+)?["`]?(\w+)["`]?""",
+                """(?i)CREATE\s+(?:UNIQUE\s+)?INDEX\s+(?:IF\s+NOT\s+EXISTS\s+)?["`]?(\w+)["`]?\s+ON\s+["`]?(\w+)["`]?""",
             )
+        val CREATE_TRIGGER_REGEX =
+            Regex(
+                """(?is)CREATE\s+TRIGGER\s+(?:IF\s+NOT\s+EXISTS\s+)?["`]?(\w+)["`]?.*?\bON\s+["`]?(\w+)["`]?""",
+            )
+        val DROP_TABLE_REGEX = Regex("""(?i)DROP\s+TABLE\s+(?:IF\s+EXISTS\s+)?["`]?(\w+)["`]?""")
+        val DROP_INDEX_REGEX = Regex("""(?i)DROP\s+INDEX\s+(?:IF\s+EXISTS\s+)?["`]?(\w+)["`]?""")
+        val DROP_TRIGGER_REGEX = Regex("""(?i)DROP\s+TRIGGER\s+(?:IF\s+EXISTS\s+)?["`]?(\w+)["`]?""")
     }
 }
 

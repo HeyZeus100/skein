@@ -152,11 +152,14 @@ Primary key: `(src_id, dst_id, kind)`. Indexes: `edges_dst` (by `dst_id`, `kind`
 
 Unique constraint: `(canonical_name, entity_type)`.
 
-#### `attachment_master_key` and `attachment_keys`
+#### `attachment_master_key` and `attachment_keys` — **removed** (migration 007, `skein-7d0l`)
 
-**[v1 design, in progress]** Key wrapping tables for the attachment content encryption (see section 5). Details in `docs/design/ATTACHMENT_ENCRYPTION.md` §3.4.
+**[shipped]** Both tables were dropped by `007_drop_attachment_master_key.sql` (`PRAGMA user_version = 7`) and no longer exist as of that migration. They were the key-wrapping tables originally sketched for attachment content encryption (see section 5 and `docs/design/ATTACHMENT_ENCRYPTION.md` §3.4), superseded before either was ever populated:
 
-`attachment_master_key` is **vestigial** as of `skein-txrh`: the wrapped master it was designed to hold is persisted in `keys/key-envelope.v1` (section 1), because the same master keys `vault.db` itself and a row inside the database could never be read before the database is opened. Nothing reads or writes the table; its removal in a later migration is tracked as `skein-7d0l`. `attachment_keys` is schema-locked but not yet populated.
+- `attachment_master_key` became vestigial as of `skein-txrh`: the wrapped vault master it was designed to hold is persisted in `keys/key-envelope.v1` (section 1) instead, because the same master keys `vault.db` itself and a row inside the database could never be read before the database is opened.
+- `attachment_keys` was never populated by any shipped code: the real attachment store, `FileAttachmentStore` (`core/vault/.../blob/FileAttachmentStore.kt`), derives a fresh per-write content key via HKDF-SHA256 from the vault master key and a random per-file salt stored in the container header itself (see "Attachment container (SKAT)" below), and persists no wrapped key material anywhere.
+
+`attachment_keys.master_key_version`'s foreign key to `attachment_master_key(key_version)` was resolved by dropping the child table first, then the parent, inside 007's single transaction — SQLite only checks a foreign key against the *referencing* table's rows, so no `PRAGMA foreign_keys` toggling or table-rebuild dance was needed even with `PRAGMA foreign_keys = ON` (section "Encryption and locking" / §4.9).
 
 ### Encryption and locking
 
@@ -438,17 +441,23 @@ Fields:
 # Migration manifest (E2.I2 / skein-5my)
 # Add new migrations by appending a line here AND adding the file below.
 001_initial.sql
+007_drop_attachment_master_key.sql
 ```
 
-Each migration is a file named `NNN_<description>.sql` where `NNN` is a zero-padded integer (001, 002, etc.). Migrations are applied in INDEX.txt order. Statements within a migration are separated by a bare `;` at end-of-line; comment lines (`--`) and blank lines are ignored.
+Each migration is a file named `NNN_<description>.sql` where `NNN` is a zero-padded integer (001, 002, etc.). Migrations are applied in INDEX.txt order (sorted numerically by `NNN`, not by manifest line order). Statements within a migration are separated by the `--;` sentinel at end-of-line (not a bare `;`, which also terminates inner statements inside multi-line trigger bodies); comment lines (`--`) and blank lines are ignored.
 
 ### Current migrations
 
-**[shipped]** Only one migration exists:
+**[shipped]** Two migrations exist:
 
 - `001_initial.sql` — v1 schema (see section 2)
+- `007_drop_attachment_master_key.sql` — drops the vestigial `attachment_master_key` table and the never-populated `attachment_keys` table (`skein-7d0l`; see section 2's `attachment_master_key` entry above). `PRAGMA user_version` reaches 7, not 2, because migration numbers 002–006 are reserved by landed plan/design docs and an open bead (`skein-voys`) for not-yet-landed migrations (`002_attestation_status`, `003_document_revisions`, `004_post_mmap_blake3`, `005_export_stages`, `006_recovery_drafts`) and taking one of them here would collide when those land.
 
-Future migrations are tracked in the plan and design docs; none are yet in-tree.
+Future migrations are tracked in the plan and design docs; 002–006 above are reserved but not yet in-tree.
+
+### Migration changelog
+
+- **007** (`skein-7d0l`) — drops `attachment_master_key` and `attachment_keys` (superseded by the `keys/key-envelope.v1` file and `FileAttachmentStore`'s per-write HKDF derivation, respectively; neither table was ever populated by shipped code).
 
 ### Migration safety
 
@@ -466,7 +475,7 @@ The following are **not** stable or will ship as **[v1 design, in progress]**:
 
 - **Export staging** — Migration 005 (export staging tables and the plaintext-sweep machinery) is deferred to a later release.
 
-- **Encryption keys and wrapping** — The vault master's Keystore wrapping and the `keys/key-envelope.v1` file that holds it are **[shipped]** (section 1; `skein-txrh`). The per-attachment key wrapping table (`attachment_keys`) is schema-locked but its derivation, wrapping, and unwrapping logic is **[v1 design, in progress]** (plan task `E3.I6`, design `docs/design/ATTACHMENT_ENCRYPTION.md` §3.4); `attachment_master_key` is vestigial and slated for removal (`skein-7d0l`).
+- **Encryption keys and wrapping** — The vault master's Keystore wrapping and the `keys/key-envelope.v1` file that holds it are **[shipped]** (section 1; `skein-txrh`). Per-attachment content encryption is also **[shipped]**, but not via the wrapping table `docs/design/ATTACHMENT_ENCRYPTION.md` §3.4 originally sketched: `FileAttachmentStore` derives a fresh per-write key via HKDF-SHA256 from the vault master key and a random per-file salt, persisting no wrapped key material. The now-unused `attachment_keys` and `attachment_master_key` tables were dropped in migration 007 (`skein-7d0l`; see section 2).
 
 - **Vault locking and unlock state machine** — The biometric-gated unlock flow and vault re-locking after timeout are specified but not yet implemented (plan tasks `E3.I2`, `E3.I3a`, `E3.I3b`).
 
