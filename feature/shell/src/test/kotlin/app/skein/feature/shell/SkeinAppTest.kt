@@ -110,4 +110,73 @@ class SkeinAppTest {
 
         composeRule.onNodeWithText("No tabs open — back to timeline").assertExists()
     }
+
+    // ---- skein-0td0: the `overlay` slot -----------------------------------------
+
+    @Test
+    fun `the overlay slot renders above the rest of the shell content`() {
+        composeRule.setContent {
+            SkeinApp(
+                windowSizeClass = compactWidth,
+                posture = FoldPosture.Unknown,
+                overlay = { _, _ -> Text("OVERLAY_CONTENT") },
+            )
+        }
+
+        // The shell root (nav/command bar/pane host) is still composed
+        // underneath — the overlay is additive, not a replacement.
+        composeRule.onNodeWithText("No tabs open — back to timeline").assertExists()
+        composeRule.onNodeWithText("OVERLAY_CONTENT").assertExists()
+    }
+
+    @Test
+    fun `the overlay slot's openPreview opens a real preview tab on the primary TabsState`() {
+        composeRule.setContent {
+            SkeinApp(
+                windowSizeClass = compactWidth,
+                posture = FoldPosture.Unknown,
+                overlay = { openPreview, _ ->
+                    Text(
+                        text = "OPEN_FROM_OVERLAY",
+                        modifier = Modifier.clickable { openPreview("doc-1", "Note One") },
+                    )
+                },
+                noteTabContent = { tab, _, _, _ -> Text("NOTE_CONTENT_${tab.docId}") },
+            )
+        }
+
+        composeRule.onNodeWithText("OPEN_FROM_OVERLAY").performClick()
+
+        composeRule.onNodeWithText("NOTE_CONTENT_doc-1").assertExists()
+    }
+
+    @Test
+    fun `the overlay slot's openPinned opens a real pinned tab on the primary TabsState`() {
+        composeRule.setContent {
+            SkeinApp(
+                windowSizeClass = compactWidth,
+                posture = FoldPosture.Unknown,
+                overlay = { _, openPinned ->
+                    Text(
+                        text = "PIN_FROM_OVERLAY",
+                        modifier = Modifier.clickable { openPinned("doc-2", "Note Two") },
+                    )
+                },
+                noteTabContent = { tab, _, _, _ -> Text("NOTE_CONTENT_${tab.docId}") },
+            )
+        }
+
+        composeRule.onNodeWithText("PIN_FROM_OVERLAY").performClick()
+
+        composeRule.onNodeWithText("NOTE_CONTENT_doc-2").assertExists()
+    }
+
+    @Test
+    fun `a null overlay slot renders nothing extra`() {
+        composeRule.setContent {
+            SkeinApp(windowSizeClass = compactWidth, posture = FoldPosture.Unknown)
+        }
+
+        composeRule.onNodeWithText("No tabs open — back to timeline").assertExists()
+    }
 }

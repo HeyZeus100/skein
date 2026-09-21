@@ -22,6 +22,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -149,90 +150,106 @@ class MainActivity : FragmentActivity() {
         val flushRegistry = remember { FlushRegistry() }
         // skein-z2u (E6.I11): the ✦ button's real navigation target.
         // `GraphScreen` is its own `SkeinTheme` wrapper drawn as an overlay
-        // *alongside* `SkeinApp` (see that composable's own file header) —
-        // not a `Destination`/`noteTabContent` slot — so it is local
-        // `mutableStateOf` state here in `MainActivity`, not a new
-        // `:feature:shell` API. This is not a shell-slot change (no new
-        // `SkeinApp` parameter, no change to `Destination`); it is purely
-        // this private composable's own body, same as `VaultGate` already
-        // layering screens outside `SkeinApp`.
+        // *alongside* `SkeinApp`'s panes (see that composable's own file
+        // header) — not a `Destination`/`noteTabContent` slot — so which
+        // document is open stays local `mutableStateOf` state here in
+        // `MainActivity`, not something `SkeinApp` needs to know about.
+        // skein-0td0: actually opening the tapped node as a tab needs
+        // `SkeinApp`'s `primaryTabsState`, which lives inside `SkeinApp`
+        // itself, so *rendering* the overlay (and wiring its
+        // `openPreview`/`openPinned` callbacks) now goes through `SkeinApp`'s
+        // `overlay` slot instead of a `Box` this composable used to wrap
+        // `SkeinApp` in — see `overlay`'s own kdoc on `SkeinApp` for why that
+        // slot exists rather than reusing one of the other three.
         var graphDocId by remember { mutableStateOf<DocId?>(null) }
+        val coroutineScope = rememberCoroutineScope()
         // skein-64y9: hoisted here (rather than inside `TimelineDestination`)
         // so `SkeinApp`'s `timelinePane` slot — composed by `AdaptivePaneHost`
         // itself, outside any tab — shares one `TimelineState`/subscription
         // with the rest of this shell's timeline surface.
         val timelinePersonaSource = remember(session) { session.personaService.observeAll() }
         val timelinePaneState = rememberTimelineState(repo = session.repository, personaSource = timelinePersonaSource)
-        Box(Modifier.fillMaxSize()) {
-            SkeinApp(
-                destinationContent = { destination ->
-                    when (destination) {
-                        Destination.TIMELINE -> TimelineDestination(session)
-                        Destination.SETTINGS -> {
-                            val settingsViewModel =
-                                rememberSettingsViewModel(
-                                    flagSecureEnabledFlow = securityPrefs.flagSecureEnabled,
-                                    onSetFlagSecureEnabled = setFlagSecureEnabled,
-                                )
-                            SettingsScreen(
-                                viewModel = settingsViewModel,
-                                appVersion = "${BuildConfig.VERSION_NAME} (${BuildConfig.VERSION_CODE})",
+        SkeinApp(
+            destinationContent = { destination ->
+                when (destination) {
+                    Destination.TIMELINE -> TimelineDestination(session)
+                    Destination.SETTINGS -> {
+                        val settingsViewModel =
+                            rememberSettingsViewModel(
+                                flagSecureEnabledFlow = securityPrefs.flagSecureEnabled,
+                                onSetFlagSecureEnabled = setFlagSecureEnabled,
                             )
-                        }
-                        else -> DestinationPlaceholder(label = destination.name)
-                    }
-                },
-                flushRegistry = flushRegistry,
-                noteTabContent = { tab, onPin, onOpenDocument, registry ->
-                    NoteTab(
-                        docId = tab.docId,
-                        vaultRepository = session.repository,
-                        indexStore = session.indexStore,
-                        onPin = onPin,
-                        onOpenDocument = onOpenDocument,
-                        onOpenGraph = { docId -> graphDocId = docId },
-                        registerFlush = { flush -> registry.register(tab.id, flush) },
-                        unregisterFlush = { registry.unregister(tab.id) },
-                    )
-                },
-                timelinePane = { expanded, onEntryOpen, onEntryPin ->
-                    if (expanded) {
-                        TimelineScreen(
-                            state = timelinePaneState,
-                            onEntryClick = { document -> onEntryOpen(document.id, document.title) },
-                            onEntryLongPress = { document -> onEntryPin(document.id, document.title) },
-                            expanded = true,
-                            modifier = Modifier.fillMaxSize(),
-                        )
-                    } else {
-                        TimelineRail(
-                            state = timelinePaneState,
-                            onEntryClick = { document -> onEntryOpen(document.id, document.title) },
-                            modifier = Modifier.fillMaxSize(),
+                        SettingsScreen(
+                            viewModel = settingsViewModel,
+                            appVersion = "${BuildConfig.VERSION_NAME} (${BuildConfig.VERSION_CODE})",
                         )
                     }
-                },
-            )
-            graphDocId?.let { docId ->
-                // `onOpenPreview`/`onOpenPinned` (tap/long-press on a node)
-                // only dismiss the overlay for now: actually opening the
-                // tapped document as a preview/pinned tab from here would
-                // need a way to reach the active `TabHost`'s `TabsState`,
-                // which `SkeinApp` does not expose outside its own
-                // `noteTabContent`/`destinationContent` slots. That is a new
-                // `:feature:shell` API (bd non-negotiable: no such change
-                // without a bead) — filed as skein-0td0 rather than
-                // guessed at here (precedent: skein-64y9).
-                GraphScreen(
-                    docId = docId,
+                    else -> DestinationPlaceholder(label = destination.name)
+                }
+            },
+            flushRegistry = flushRegistry,
+            noteTabContent = { tab, onPin, onOpenDocument, registry ->
+                NoteTab(
+                    docId = tab.docId,
                     vaultRepository = session.repository,
                     indexStore = session.indexStore,
-                    onOpenPreview = { graphDocId = null },
-                    onOpenPinned = { graphDocId = null },
-                    onClose = { graphDocId = null },
+                    onPin = onPin,
+                    onOpenDocument = onOpenDocument,
+                    onOpenGraph = { docId -> graphDocId = docId },
+                    registerFlush = { flush -> registry.register(tab.id, flush) },
+                    unregisterFlush = { registry.unregister(tab.id) },
                 )
-            }
-        }
+            },
+            timelinePane = { expanded, onEntryOpen, onEntryPin ->
+                if (expanded) {
+                    TimelineScreen(
+                        state = timelinePaneState,
+                        onEntryClick = { document -> onEntryOpen(document.id, document.title) },
+                        onEntryLongPress = { document -> onEntryPin(document.id, document.title) },
+                        expanded = true,
+                        modifier = Modifier.fillMaxSize(),
+                    )
+                } else {
+                    TimelineRail(
+                        state = timelinePaneState,
+                        onEntryClick = { document -> onEntryOpen(document.id, document.title) },
+                        modifier = Modifier.fillMaxSize(),
+                    )
+                }
+            },
+            overlay = { openPreview, openPinned ->
+                // skein-0td0: node tap/long-press now resolve the tapped
+                // document's title via `session.repository` (the same
+                // `getDocument` lookup `NoteTabState.resolveTitleThenOpen`
+                // uses for a backlink tap, since a graph node hands back only
+                // a `DocId` too) and hand it to `SkeinApp`'s `overlay`
+                // callbacks — real `TabsState.openPreview`/`openPinned` calls
+                // on the primary pane — then dismiss the overlay, same as
+                // `onClose` already did.
+                graphDocId?.let { docId ->
+                    GraphScreen(
+                        docId = docId,
+                        vaultRepository = session.repository,
+                        indexStore = session.indexStore,
+                        onOpenPreview = { tappedId ->
+                            coroutineScope.launch {
+                                val title = session.repository.getDocument(tappedId)?.title ?: tappedId
+                                openPreview(tappedId, title)
+                                graphDocId = null
+                            }
+                        },
+                        onOpenPinned = { tappedId ->
+                            coroutineScope.launch {
+                                val title = session.repository.getDocument(tappedId)?.title ?: tappedId
+                                openPinned(tappedId, title)
+                                graphDocId = null
+                            }
+                        },
+                        onClose = { graphDocId = null },
+                    )
+                }
+            },
+        )
     }
 
     private fun applyFlagSecure(enabled: Boolean) {
