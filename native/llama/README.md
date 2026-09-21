@@ -212,11 +212,17 @@ from a real clone.
 
 Recorded for `b29c606e` / NDK r27c / macOS arm64:
 
-| Build | sha256 |
+| Build | sha256 of `lib/arm64-v8a/libskein_llama.so` |
 |---|---|
-| A, first clean build | `af2a6ff4c30b30cb8b2ce0f5af8ba59bd6bf98bfb31d6ab7c58fe38d1a6ba6eb` |
-| A, second clean build | `af2a6ff4c30b30cb8b2ce0f5af8ba59bd6bf98bfb31d6ab7c58fe38d1a6ba6eb` |
-| B, separate clone, different path | `af2a6ff4c30b30cb8b2ce0f5af8ba59bd6bf98bfb31d6ab7c58fe38d1a6ba6eb` |
+| A, first clean build | `76fd7ce5dc9cb9774c6dcc64401d508830486e9427648286686161fdf779e2cf` |
+| A, second clean build | `76fd7ce5dc9cb9774c6dcc64401d508830486e9427648286686161fdf779e2cf` |
+| B, separate clone, different path | `76fd7ce5dc9cb9774c6dcc64401d508830486e9427648286686161fdf779e2cf` |
+
+25,270,688 bytes in all three. `strings` on the result finds no machine-specific
+path: the only absolute-looking strings are the constant, remapped
+`/skein/third_party/llama.cpp/…` that ggml's `GGML_ASSERT` bakes in from
+`__FILE__`, and those are identical on every machine by construction — which
+is the whole point of `-ffile-prefix-map`.
 
 ## 5. What is deliberately NOT here
 
