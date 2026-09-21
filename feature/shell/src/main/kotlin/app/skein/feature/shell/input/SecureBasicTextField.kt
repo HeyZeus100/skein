@@ -49,7 +49,7 @@ fun SecureBasicTextField(
     decorationBox: @Composable (innerTextField: @Composable () -> Unit) -> Unit = { it() },
 ) {
     val effectiveInteractionSource =
-        interactionSource ?: remember { androidx.compose.foundation.interaction.MutableInteractionSource() }
+        interactionSource ?: remember { MutableInteractionSource() }
     InterceptPlatformTextInput(interceptor = SecureImeInterceptor) {
         BasicTextField(
             value = value,

@@ -89,6 +89,11 @@ dependencies {
     // `SettingsScreen`) — see `SkeinApp.destinationContent`'s doc for why
     // `:feature:shell` itself cannot.
     implementation(project(":feature:settings"))
+    // skein-u01 (E6.I9): `:app` wires the real `NoteTab` into `SkeinApp`'s
+    // `noteTabContent` slot for the same dependency-direction reason as
+    // `:feature:settings` above — `:feature:editor` depends on
+    // `:feature:shell`, so `:feature:shell` cannot depend back on it.
+    implementation(project(":feature:editor"))
     // skein-2ige: `MainActivity` feeds `TimelineScreen` the live
     // `VaultRepositoryImpl` once the vault is open. `:feature:timeline`
     // declares `debugImplementation(project(":testing"))` for its design-time

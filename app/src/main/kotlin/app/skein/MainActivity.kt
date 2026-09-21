@@ -31,12 +31,14 @@ import androidx.compose.ui.unit.dp
 import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.lifecycleScope
 import app.skein.core.vault.session.UnlockState
+import app.skein.feature.editor.notetab.NoteTab
 import app.skein.feature.settings.SettingsScreen
 import app.skein.feature.settings.rememberSettingsViewModel
 import app.skein.feature.shell.DestinationPlaceholder
 import app.skein.feature.shell.SkeinApp
 import app.skein.feature.shell.auth.BiometricUnlockScreen
 import app.skein.feature.shell.nav.Destination
+import app.skein.feature.shell.tabs.FlushRegistry
 import app.skein.feature.shell.theme.SkeinTheme
 import app.skein.feature.timeline.TimelineScreen
 import app.skein.feature.timeline.rememberTimelineState
@@ -124,6 +126,14 @@ class MainActivity : FragmentActivity() {
 
     @Composable
     private fun UnlockedShell(session: VaultSession) {
+        // skein-u01 (E6.I9): held here (rather than letting `SkeinApp`
+        // default one internally) so a future `E3.I3b` `SessionState`/
+        // `LockObserver` registry has something to call `flushAll()` on
+        // before `VaultBootstrap`/`UnlockManager` close the vault
+        // (`docs/design/LOCK_POLICY_INDEXING.md` §4.3). Not wired to the
+        // lock sequence yet — `E3.I3b` owns that — this only keeps the
+        // handle from being thrown away.
+        val flushRegistry = remember { FlushRegistry() }
         SkeinApp(
             destinationContent = { destination ->
                 when (destination) {
@@ -141,6 +151,22 @@ class MainActivity : FragmentActivity() {
                     }
                     else -> DestinationPlaceholder(label = destination.name)
                 }
+            },
+            flushRegistry = flushRegistry,
+            noteTabContent = { tab, onPin, onOpenDocument, registry ->
+                NoteTab(
+                    docId = tab.docId,
+                    vaultRepository = session.repository,
+                    indexStore = session.indexStore,
+                    onPin = onPin,
+                    onOpenDocument = onOpenDocument,
+                    // The local graph view is `E6.I11` — this issue only
+                    // wires the ✦ button's callback, not a real navigation
+                    // target (bd skein-u01 non-negotiables).
+                    onOpenGraph = {},
+                    registerFlush = { flush -> registry.register(tab.id, flush) },
+                    unregisterFlush = { registry.unregister(tab.id) },
+                )
             },
         )
     }
