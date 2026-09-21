@@ -146,6 +146,25 @@ its output is recorded, to prove the Kotlin reimplementation agrees with it.
 
 ---
 
+## Test-only cryptographic vectors
+
+### BLAKE3 reference test vectors
+
+- **SPDX:** `CC0-1.0 OR Apache-2.0`
+- **Repository:** https://github.com/BLAKE3-team/BLAKE3
+- **File:** `test_vectors/test_vectors.json`, retrieved 2026-09-21; the
+  unkeyed `hash` column is transcribed into
+  `core/inference/src/test/resources/blake3/official_test_vectors.txt`.
+- **Where it ships:** nowhere. **Test resource only** — it pins
+  `app.skein.core.inference.models.Blake3` (a from-scratch BLAKE3-256
+  implementation; no BLAKE3 code is vendored, linked or shipped) to the
+  reference implementation's own 35 cases, per
+  `docs/design/POST_REVIEW_RESOLUTIONS.md` §2.4.
+- **Attribution:** Copyright (c) Jack O'Connor, Samuel Neves, Jean-Philippe
+  Aumasson and Zooko Wilcox-O'Hearn.
+
+---
+
 ## ONNX Runtime and Related Infrastructure
 
 ### ONNX Runtime Android
