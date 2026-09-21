@@ -80,13 +80,49 @@ directories that own each component (`native/sqlite/README.md`,
   `androidx.sqlite.SQLiteDriver`.
 - **Attribution:** Copyright (c) The Android Open Source Project.
 
-### llama.cpp
+### llama.cpp (including ggml)
 
 - **SPDX:** `MIT`
-- **Repository:** https://github.com/ggerganov/llama.cpp
-- **Status:** Deferred — queued for `E1.I4` (to be compiled into
-  `libskein_llama.so`). Not yet in production build.
-- **Attribution:** Copyright (c) 2023 Georgi Gerganov and contributors.
+- **Repository:** https://github.com/ggml-org/llama.cpp
+- **Version:** `v0.4.1` — commit
+  `b29c606e28a01b1bc8c1351026a0fa6e616bf6c4`, pinned as the submodule
+  `third_party/llama.cpp` and recorded in `native/llama/PINNED_COMMIT`
+  (enforced by `tools/ci/check-submodules.sh`).
+- **Where it ships:** `libllama.a` plus the `ggml`, `ggml-base`, `ggml-cpu`
+  and (arm64-v8a only) `ggml-vulkan` static archives, whole-archive linked
+  into `libskein_llama.so`. That includes the compiled SPIR-V for ggml's
+  Vulkan compute shaders, which are built from the same source tree at
+  build time.
+- **Attribution:** Copyright (c) 2023-2026 The ggml authors — see
+  `third_party/llama.cpp/LICENSE`.
+
+### Vulkan-Headers
+
+- **SPDX:** `Apache-2.0 OR MIT`
+- **Repository:** https://github.com/KhronosGroup/Vulkan-Headers
+- **Version:** `vulkan-sdk-1.4.350.0` — commit
+  `8864cdc896bbc2a9b6eb36b3218fc9ef57908d77`, pinned as the submodule
+  `third_party/Vulkan-Headers`.
+- **Where it ships:** headers only. Nothing from this repository is compiled
+  into a shipped artifact; it supplies `vulkan/vulkan.hpp` and a current
+  `vulkan_core.h` for building ggml's Vulkan backend, because NDK r27c's
+  sysroot ships neither at a usable version. The Vulkan **loader** linked at
+  runtime is Android's own `libvulkan.so`, not a vendored one.
+- **Attribution:** Copyright (c) 2015-2025 The Khronos Group Inc. — see
+  `third_party/Vulkan-Headers/LICENSE.md`.
+
+### SPIRV-Headers
+
+- **SPDX:** `MIT`
+- **Repository:** https://github.com/KhronosGroup/SPIRV-Headers
+- **Version:** `vulkan-sdk-1.4.350.0` — commit
+  `ad9184e76a66b1001c29db9b0a3e87f646c64de0`, pinned as the submodule
+  `third_party/SPIRV-Headers`.
+- **Where it ships:** headers only, consumed by `ggml-vulkan.cpp` at compile
+  time (`<spirv/unified1/spirv.hpp>`). Nothing is compiled into a shipped
+  artifact.
+- **Attribution:** Copyright (c) 2015-2025 The Khronos Group Inc. — see
+  `third_party/SPIRV-Headers/LICENSE`.
 
 ---
 

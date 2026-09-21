@@ -25,10 +25,16 @@ jobs:
   emulator:
     name: Instrumented tests (API 35, x86_64)
     runs-on: ubuntu-latest
-    timeout-minutes: 45
+    # E1.I4 (skein-ca2) raised this from 45: connectedDevDebugAndroidTest
+    # assembles the `dev` flavor, which builds libskein_llama.so for both
+    # arm64-v8a (CPU + Vulkan) and x86_64 (CPU).
+    timeout-minutes: 90
     steps:
       - name: Checkout
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v4.3.0
+        with:
+          # E1.I4: libskein_llama.so is built from third_party/ submodules.
+          submodules: true
 
       - name: Set up JDK 17 (Temurin)
         uses: actions/setup-java@de7274f081f381c8f8158605e0321c36c376e2e6 # v4.8.0
