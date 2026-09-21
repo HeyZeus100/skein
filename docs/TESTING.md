@@ -129,27 +129,47 @@ built speculatively.
 
 ### Fakes
 
-`app.skein.testing.fakes` has one scripted or in-memory fake per plan §4
-service contract:
+`us.aherrera.skein.testing` (note: **not** `app.skein.testing` — that
+package holds the pure-JVM JUnit rules above; the fakes below live under
+the plan's locked `us.aherrera.skein` contract-code prefix, alongside the
+abstract contract suites, `core/model`'s interfaces, and the concrete
+`*Impl` classes' `androidTest` contract subclasses) has one scripted or
+in-memory fake implementing each real, locked plan §4 service contract,
+plus a consistent builder DSL over them:
 
-| Fake | Stands in for | Approximation to know about |
+| Fake / builder | Stands in for | Approximation to know about |
 |---|---|---|
-| `FakeInferenceEngine` / `scriptedEngine(...)` | `InferenceEngine` (`E0.I10`) | String-keyed script, not real `Prompt`/`Token` types; no sampling. |
-| `FakeVaultRepository` / `fakeVault { ... }` | `VaultRepository` (`E0.I11`) | `searchBodies` is a substring match, not FTS5 BM25. |
-| `FakeIndexStore` | `IndexStore` (`E0.I11`) | `bm25` is naive term-overlap counting, not real BM25 or cosine-int8 `knn`. |
-| `FakeRetrievalService` | `RetrievalService` (`E0.I12`) | Pure playback of scripted results; never ranks anything. |
-| `FakePersonaService` | `PersonaService` (`E0.I13`) | Faithful to the "always a Default, can't delete the last one" guarantee; otherwise a plain map. |
-| `FakeEmbedderService` | `EmbedderService` (`E0.I17`) | Vectors are a hash-seeded PRNG stream — deterministic per input, but not semantically meaningful. |
+| `FakeInferenceEngine` / `scriptedEngine("q" to listOf("a", "b"))` | `InferenceEngine` (`E0.I10`) | Deterministic script keyed by the prompt's last user message; no sampling, no real tokenizer. |
+| `InMemoryVaultRepository` / `fakeVault { note(...); chat(...) }` | `VaultRepository` (`E0.I11`) | `searchBodies` is a substring match, not FTS5 BM25; one `Mutex` serializes writes rather than real DB transactions. |
+| `InMemoryIndexStore` / `CountingIndexStore` (call-counting decorator) | `IndexStore` (`E0.I11`) | `bm25` is term-occurrence counting, not real BM25; `knn` is real cosine-over-int8, exact (no ANN). |
+| `FakeRetrievalService` | `RetrievalService` (`E0.I12`) | Fixed fixture list, sorted once; the query text is ignored — no vector/lexical/graph recall or ranking. |
+| `FakePromptAssembler` | `PromptAssembler` (`E0.I12`) | No `PromptGuard` neutralization — never feed its output to a real model outside tests. |
+| `InMemoryPersonaService` | `PersonaService` (`E0.I13`) | Faithful to "always a Default, can't delete the last one"; otherwise a plain map, no `documents.persona_id` nulling on delete. |
+| `FakeEmbedderService` / `fakeEmbedder()` | `EmbedderService` (`E0.I17`) | Vectors are a deterministic hash-seeded stream — reproducible per input, not semantically meaningful. |
+| `FakeExportService` / `FakeImportService` | `ExportService` / `ImportService` | See each fake's own KDoc. |
 
-**These are deliberately not full implementations of the real interfaces**,
-because those interfaces (`InferenceEngine`, `VaultRepository`, `IndexStore`,
-`RetrievalService`, `PersonaService`, `EmbedderService`) have not landed yet
-— they're specified in the plan's §4 but owned by separate issues
-(`E0.I10`–`E0.I13`, `E0.I17`). `E10.I2` (bd `skein-0j1`) re-targets these
-fakes against the real interfaces once those land, and is also where the
-plan's `CountingIndexStore` decorator and `RecordingTabController` belong.
 Every fake's KDoc says exactly what it's faithful to and what it
 approximates — read it before trusting a fake's behavior in a new test.
+
+**Behavioural recorders**, also in `us.aherrera.skein.testing`:
+
+- `CountingIndexStore(delegate)` — wraps any `IndexStore` (normally
+  `InMemoryIndexStore`) and counts calls per method name (`counts`,
+  `countOf("bm25")`), for asserting *how many times* a pipeline touched the
+  index without the index itself growing recording behavior.
+- `RecordingTabController(delegate = null)` — records `TabController`
+  (`openPreview`/`openPinned`/`pin`/`close`/`closeOthers`/`activate`) calls
+  in order. Not a locked contract — `feature/shell`'s real `TabsState` is a
+  concrete Compose `@Stable` class `:testing` cannot depend on; this is a
+  plain-JVM action vocabulary a shell test can assert against instead.
+
+**History**: `E0.I10`–`E0.I13`/`E0.I17` (locking the real interfaces) landed
+after `E10.I1` first scaffolded `:testing`, so an earlier, pre-contract
+scaffold generation of these fakes briefly lived at `app.skein.testing.fakes`
+implementing nothing (self-contained placeholders). `E10.I2` (bd
+`skein-0j1`) retired that scaffold once it was confirmed unreferenced
+anywhere outside its own tests — every real fake now implements its actual
+`core/model` interface directly, and this is the only fakes package.
 
 **Fakes must never grow real behavior.** If a test needs a fake to behave
 more like production (real ranking, real tokenization, ...), that's a sign
