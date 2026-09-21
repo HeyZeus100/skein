@@ -53,7 +53,9 @@ jobs:
   reproducible-build:
     name: Double-build and diff
     runs-on: ubuntu-latest
-    timeout-minutes: 30
+    # E1.I4 (skein-ca2) raised this from 30: each of the two builds now also
+    # compiles llama.cpp + ggml and ~1100 Vulkan shader variants.
+    timeout-minutes: 90
     env:
       # Pin build timestamps to the commit so both builds see identical
       # inputs.
@@ -61,6 +63,10 @@ jobs:
     steps:
       - name: Checkout (build 1)
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v4.3.0
+        with:
+          # E1.I4: libskein_llama.so is built from third_party/ submodules; the
+          # APK this job double-builds contains it.
+          submodules: true
 
       - name: Set up JDK 17 (Temurin)
         uses: actions/setup-java@de7274f081f381c8f8158605e0321c36c376e2e6 # v4.8.0

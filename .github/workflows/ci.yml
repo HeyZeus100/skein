@@ -28,10 +28,26 @@ jobs:
   unit-lint-assemble:
     name: Unit tests, lint, assemble (foss debug)
     runs-on: ubuntu-latest
-    timeout-minutes: 20
+    # E1.I4 (skein-ca2) raised this from 20: `assembleFossDebug` now also
+    # builds libskein_llama.so, which compiles llama.cpp + ggml and ~1100
+    # Vulkan shader variants through glslc on top of the OpenSSL/SQLCipher
+    # build E1.I5 already does.
+    timeout-minutes: 45
     steps:
       - name: Checkout
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v4.3.0
+        with:
+          # E1.I4: third_party/{llama.cpp,Vulkan-Headers,SPIRV-Headers} are the
+          # sources of libskein_llama.so. Without them the native build fails
+          # at configure.
+          submodules: true
+
+      # Fails if a submodule's checked-out commit or its recorded gitlink
+      # disagrees with native/llama/PINNED_COMMIT — i.e. if somebody moved a
+      # pin without saying so, or pulled a bump without updating their tree.
+      # Runs before anything expensive.
+      - name: Verify third_party submodule pins
+        run: ./tools/ci/check-submodules.sh
 
       - name: Set up JDK 17 (Temurin)
         uses: actions/setup-java@de7274f081f381c8f8158605e0321c36c376e2e6 # v4.8.0

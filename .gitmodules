@@ -1,0 +1,38 @@
+# Skein third-party submodules (E1.I4 / bd skein-ca2).
+#
+# Policy: a dependency is a *submodule* when we build it from source and the
+# upstream publishes no stable, hash-pinnable release tarball -- a git commit
+# is itself a content hash, which is exactly the property the reproducible
+# build needs. A dependency is a *vendored tarball* (native/sqlite/*.sha256)
+# when upstream ships signed releases, and a *checked-in source copy*
+# (native/sqlite/third_party/sqlite-vec-0.1.9, the SQLCipher amalgamation)
+# when the source is small, rarely bumped, and we want it reviewable in-tree.
+# All three appear in this repo on purpose; see native/llama/README.md §2 and
+# docs/design/AMALGAMATION_POLICY.md.
+#
+# The commits these are pinned at live in `native/llama/PINNED_COMMIT`, not
+# here: a gitlink alone says nothing about *why*, and `git submodule update
+# --remote` will happily move it. `tools/ci/check-submodules.sh` fails the
+# build if the gitlink or the checked-out commit disagrees with that file.
+#
+# Nothing here is built in-tree: native/llama/CMakeLists.txt consumes all
+# three read-only via add_subdirectory / include paths, with every generated
+# byte landing under inference-service/.cxx (skein-doq0's "never build in a
+# dirty source tree").
+
+[submodule "third_party/llama.cpp"]
+	path = third_party/llama.cpp
+	url = https://github.com/ggml-org/llama.cpp
+
+# Header-only. Supplies Vulkan-Hpp (<vulkan/vulkan.hpp>) and a current
+# vulkan_core.h, neither of which the NDK r27c sysroot provides at a version
+# ggml-vulkan can compile against. The Vulkan *loader* is still the NDK's.
+[submodule "third_party/Vulkan-Headers"]
+	path = third_party/Vulkan-Headers
+	url = https://github.com/KhronosGroup/Vulkan-Headers
+
+# Header-only. Required by ggml-vulkan's `find_package(SPIRV-Headers CONFIG
+# REQUIRED)` and by its `#include <spirv/unified1/spirv.hpp>`.
+[submodule "third_party/SPIRV-Headers"]
+	path = third_party/SPIRV-Headers
+	url = https://github.com/KhronosGroup/SPIRV-Headers
