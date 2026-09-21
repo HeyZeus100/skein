@@ -68,6 +68,12 @@ dependencies {
     // EditorAutosaveTest (bd skein-twb) drives EditorState directly with
     // TestScope/runTest — pure JVM, no Robolectric/Compose UI test deps.
     testImplementation(libs.kotlinx.coroutines.test)
+    // BacklinksStateTest (bd skein-9jj, E7.I8) drives BacklinksState against
+    // the in-memory VaultRepository/IndexStore fakes + SyntheticVault —
+    // same shape as :feature:timeline's TimelineStateTest. `:testing` is
+    // pure JVM (docs/TESTING.md), so this pulls no Android test
+    // infrastructure onto the JVM `test` classpath.
+    testImplementation(project(":testing"))
 
     // On-device Compose UI test (skein-03f acceptance: compile the UI
     // test even where the local worktree cannot run it; bd `skein-k3b2`
@@ -81,4 +87,8 @@ dependencies {
     androidTestImplementation(libs.androidx.test.runner)
     androidTestImplementation(libs.androidx.test.rules)
     androidTestImplementation(libs.androidx.activity.compose)
+    // BacklinksDrawerInstrumentedTest (bd skein-9jj) seeds rows via the
+    // in-memory fakes, same as SkeinEditorInstrumentedTest's WikilinkTarget
+    // wiring test does with plain Kotlin types.
+    androidTestImplementation(project(":testing"))
 }
