@@ -29,9 +29,19 @@
 //     `SQLiteConnection` so the impl can land and downstream RAG code
 //     (`E5.I6`, `E5.I7`, `E5.I8`) can compile. Swapping to the pool is a
 //     mechanical change once `ConnectionPool` lands.
-//   • The `ChangeBus` param, likewise — reserved for the reactive
-//     invalidation stream that `SearchViewModel` will subscribe to
-//     (E7.I5).
+//   • The reader-pool split above. The `ChangeBus` slot, by contrast, is
+//     no longer reserved: bd `skein-rkxi` wired it up as
+//     [IndexStore.observeChanges]. It is deliberately NOT the
+//     `app.skein.core.vault.repository.ChangeBus` type — that bus is
+//     hard-typed to `TableChange`, which `TableChange`'s own header
+//     documents as covering only the tables `VaultRepositoryImpl` writes
+//     ("`chunks` / `edges` / `entities` are `IndexStore`'s tables — that
+//     class reserves its own `ChangeBus` slot rather than sharing this
+//     one"). The vocabulary this store publishes (`IndexChange`) also has
+//     to live in `:core:model`, because the feature modules that consume
+//     it may not depend on `:core:vault`. So the slot is filled by a
+//     dedicated `MutableSharedFlow<IndexChange>` below, with the same
+//     never-block-the-writer discipline `ChangeBus` documents.
 //
 // The instrumented tests use a fresh in-memory `:memory:` DB per test;
 // unit tests exercise only pure-Kotlin pieces (`FtsQuerySanitizer`,
@@ -41,6 +51,10 @@ package app.skein.core.vault.index
 
 import androidx.sqlite.SQLiteConnection
 import androidx.sqlite.SQLiteStatement
+import kotlinx.coroutines.channels.BufferOverflow
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.MutableSharedFlow
+import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
 import us.aherrera.skein.core.model.Chunk
@@ -49,6 +63,7 @@ import us.aherrera.skein.core.model.DocId
 import us.aherrera.skein.core.model.Edge
 import us.aherrera.skein.core.model.EdgeKind
 import us.aherrera.skein.core.model.Entity
+import us.aherrera.skein.core.model.IndexChange
 import us.aherrera.skein.core.model.IndexStore
 import us.aherrera.skein.core.model.NewChunk
 import us.aherrera.skein.core.model.ScoredChunk
@@ -58,6 +73,38 @@ public class IndexStoreImpl(
 ) : IndexStore,
     AutoCloseable {
     private val mutex: Mutex = Mutex()
+
+    /**
+     * The invalidation stream behind [observeChanges] — the once-reserved
+     * `ChangeBus` slot (see the file header for why it is not the
+     * `TableChange`-typed bus from `:core:vault`'s repository package).
+     *
+     * `replay = 0` so a late subscriber never re-runs history it already
+     * folded into its first query; `DROP_OLDEST` over a generous extra
+     * buffer so [publish] — which runs while this store holds [mutex] and
+     * an open transaction — can never suspend or fail waiting on a slow
+     * collector. Dropping the *oldest* undelivered event is the right
+     * trade for a re-query tick: the newest event always survives, and a
+     * consumer that re-queries on it observes the state every dropped
+     * event would also have pointed at.
+     */
+    private val changes: MutableSharedFlow<IndexChange> =
+        MutableSharedFlow(
+            replay = 0,
+            extraBufferCapacity = CHANGE_BUFFER_CAPACITY,
+            onBufferOverflow = BufferOverflow.DROP_OLDEST,
+        )
+
+    /**
+     * Depth of the currently open [transaction], and the changes queued by
+     * it. Both are only ever touched while [mutex] is held and only from
+     * non-suspending code inside [transaction], so plain fields are
+     * sufficient — there is no concurrent reader.
+     */
+    private var txDepth: Int = 0
+    private val pending: MutableList<IndexChange> = mutableListOf()
+
+    override fun observeChanges(): Flow<IndexChange> = changes.asSharedFlow()
 
     override suspend fun replaceChunks(
         docId: DocId,
@@ -71,24 +118,29 @@ public class IndexStoreImpl(
                     stmt.bindText(1, docId)
                     stmt.step()
                 }
-                if (chunks.isEmpty()) return@transaction emptyList()
                 val ids = ArrayList<ChunkId>(chunks.size)
-                connection.prepare(IndexSql.INSERT_CHUNK_RETURNING_ID).use { stmt ->
-                    for (c in chunks.sortedBy { it.ord }) {
-                        stmt.reset()
-                        stmt.clearBindings()
-                        stmt.bindText(1, docId)
-                        stmt.bindLong(2, c.ord.toLong())
-                        stmt.bindText(3, c.text)
-                        stmt.bindLong(4, c.tokenCount.toLong())
-                        stmt.bindText(5, embedderId)
-                        stmt.bindLong(6, embedderVersion.toLong())
-                        check(stmt.step()) {
-                            "INSERT ... RETURNING id yielded no row for doc chunk"
+                if (chunks.isNotEmpty()) {
+                    connection.prepare(IndexSql.INSERT_CHUNK_RETURNING_ID).use { stmt ->
+                        for (c in chunks.sortedBy { it.ord }) {
+                            stmt.reset()
+                            stmt.clearBindings()
+                            stmt.bindText(1, docId)
+                            stmt.bindLong(2, c.ord.toLong())
+                            stmt.bindText(3, c.text)
+                            stmt.bindLong(4, c.tokenCount.toLong())
+                            stmt.bindText(5, embedderId)
+                            stmt.bindLong(6, embedderVersion.toLong())
+                            check(stmt.step()) {
+                                "INSERT ... RETURNING id yielded no row for doc chunk"
+                            }
+                            ids += stmt.getLong(0)
                         }
-                        ids += stmt.getLong(0)
                     }
                 }
+                // Queued, not emitted: [transaction] flushes after COMMIT.
+                // An empty `chunks` still counts — the DELETE above is
+                // itself a change to what a reader sees.
+                publish(IndexChange.ChunksReplaced(docId))
                 ids
             }
         }
@@ -102,6 +154,7 @@ public class IndexStoreImpl(
                 "putEmbeddings: expected ${IndexSql.VEC_INT8_DIM} int8 values for chunk id=$id, got ${vec.size}"
             }
         }
+        if (embeddings.isEmpty()) return
         mutex.withLock {
             transaction {
                 connection.prepare(IndexSql.UPSERT_EMBEDDING).use { stmt ->
@@ -113,6 +166,7 @@ public class IndexStoreImpl(
                         stmt.step()
                     }
                 }
+                publish(IndexChange.EmbeddingsUpdated(embeddings.map { it.first }))
             }
         }
     }
@@ -239,6 +293,7 @@ public class IndexStoreImpl(
                         }
                     }
                 }
+                publish(IndexChange.EdgesReplaced(srcId, kinds))
             }
         }
     }
@@ -383,14 +438,41 @@ public class IndexStoreImpl(
      * throw). SQLite allows nested savepoints but the current callers
      * only ever call `transaction` at the top of a single method, so a
      * plain BEGIN/COMMIT is safe and cheaper than a savepoint.
+     *
+     * [txDepth] nonetheless tracks nesting, mirroring the `TxContext`
+     * discipline in `VaultRepositoryImpl.writeTx`: a nested call reuses
+     * the already-open transaction instead of issuing a second `BEGIN`,
+     * and every [IndexChange] any depth queued via [publish] is flushed
+     * **once, after the outermost COMMIT succeeds**. A throw at any depth
+     * unwinds to the outermost frame, rolls back, and discards the queue —
+     * which is the "never for rolled-back work" half of
+     * `IndexStore.observeChanges`'s guarantee.
+     *
+     * Reentrancy is safe without a coroutine-context element (which is
+     * what `VaultRepositoryImpl` needs) because [block] is a plain
+     * non-suspending lambda running under [mutex]: no other coroutine can
+     * interleave and observe a nonzero [txDepth] that is not its own.
      */
     private inline fun <T> transaction(block: () -> T): T {
+        if (txDepth > 0) {
+            txDepth++
+            try {
+                return block()
+            } finally {
+                txDepth--
+            }
+        }
         connection.prepare("BEGIN IMMEDIATE").use { it.step() }
+        txDepth = 1
         try {
             val out = block()
             connection.prepare("COMMIT").use { it.step() }
+            txDepth = 0
+            flushPending()
             return out
         } catch (t: Throwable) {
+            txDepth = 0
+            pending.clear()
             try {
                 connection.prepare("ROLLBACK").use { it.step() }
             } catch (_: Throwable) {
@@ -398,6 +480,22 @@ public class IndexStoreImpl(
             }
             throw t
         }
+    }
+
+    /**
+     * Queues [change] on the open transaction, or publishes it straight
+     * away when there is none. Callers inside [transaction] always take
+     * the first branch — nothing reaches a subscriber before COMMIT.
+     */
+    private fun publish(change: IndexChange) {
+        if (txDepth > 0) pending += change else changes.tryEmit(change)
+    }
+
+    /** Drains [pending] into [changes]. Only ever called after a successful COMMIT. */
+    private fun flushPending() {
+        if (pending.isEmpty()) return
+        for (change in pending) changes.tryEmit(change)
+        pending.clear()
     }
 
     private fun readChunk(stmt: SQLiteStatement): Chunk {
@@ -448,4 +546,15 @@ public class IndexStoreImpl(
         val dst: String,
         val kind: EdgeKind,
     )
+
+    private companion object {
+        /**
+         * Same value and rationale as `ChangeBus.EXTRA_BUFFER_CAPACITY`:
+         * deep enough that an idle-but-subscribed collector is never the
+         * reason a writer stalls, shallow enough that a collector which
+         * has genuinely stopped draining does not pin an unbounded queue.
+         * Combined with `DROP_OLDEST` this makes `tryEmit` infallible.
+         */
+        const val CHANGE_BUFFER_CAPACITY: Int = 64
+    }
 }

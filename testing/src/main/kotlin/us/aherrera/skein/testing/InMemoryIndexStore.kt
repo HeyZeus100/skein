@@ -5,6 +5,10 @@
 
 package us.aherrera.skein.testing
 
+import kotlinx.coroutines.channels.BufferOverflow
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.MutableSharedFlow
+import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
 import us.aherrera.skein.core.model.Chunk
@@ -13,6 +17,7 @@ import us.aherrera.skein.core.model.DocId
 import us.aherrera.skein.core.model.Edge
 import us.aherrera.skein.core.model.EdgeKind
 import us.aherrera.skein.core.model.Entity
+import us.aherrera.skein.core.model.IndexChange
 import us.aherrera.skein.core.model.IndexStore
 import us.aherrera.skein.core.model.NewChunk
 import us.aherrera.skein.core.model.ScoredChunk
@@ -44,6 +49,27 @@ public class InMemoryIndexStore : IndexStore {
     private val entitiesByKey: MutableMap<String, Entity> = linkedMapOf()
     private val nextEntityId: AtomicLong = AtomicLong(1L)
 
+    /**
+     * Mirror of `IndexStoreImpl`'s invalidation stream (bd `skein-rkxi`) —
+     * same `replay = 0` + `DROP_OLDEST` shape, for the same reason: a
+     * mutating call must never block on, or fail because of, a slow
+     * collector.
+     *
+     * This fake has no transactions, so "after the outermost commit" maps
+     * onto "after [lock] is released and the mutation is visible to any
+     * subsequent read" — every emission site below therefore sits outside
+     * its `withLock` block but before the function returns, which is what
+     * `IndexStore.observeChanges` promises.
+     */
+    private val changes: MutableSharedFlow<IndexChange> =
+        MutableSharedFlow(
+            replay = 0,
+            extraBufferCapacity = CHANGE_BUFFER_CAPACITY,
+            onBufferOverflow = BufferOverflow.DROP_OLDEST,
+        )
+
+    override fun observeChanges(): Flow<IndexChange> = changes.asSharedFlow()
+
     // ------------------------------------------------------------------
     // Chunks + embeddings
     // ------------------------------------------------------------------
@@ -53,47 +79,60 @@ public class InMemoryIndexStore : IndexStore {
         chunks: List<NewChunk>,
         embedderId: String,
         embedderVersion: Int,
-    ): List<ChunkId> =
-        lock.withLock {
-            // Delete old chunks for the document (real DDL's ON DELETE
-            // CASCADE + `chunks_ad` trigger analog).
-            val oldIds =
-                this.chunks.values
-                    .filter { it.docId == docId }
-                    .map { it.id }
-            for (id in oldIds) {
-                this.chunks.remove(id)
-                this.embeddings.remove(id)
+    ): List<ChunkId> {
+        val ids =
+            lock.withLock {
+                // Delete old chunks for the document (real DDL's ON DELETE
+                // CASCADE + `chunks_ad` trigger analog).
+                val oldIds =
+                    this.chunks.values
+                        .filter { it.docId == docId }
+                        .map { it.id }
+                for (id in oldIds) {
+                    this.chunks.remove(id)
+                    this.embeddings.remove(id)
+                }
+                // Insert new chunks in `ord` order.
+                val out = ArrayList<ChunkId>(chunks.size)
+                for (c in chunks.sortedBy { it.ord }) {
+                    val newId = nextChunkId.getAndIncrement()
+                    this.chunks[newId] =
+                        Chunk(
+                            id = newId,
+                            docId = docId,
+                            ord = c.ord,
+                            text = c.text,
+                            tokenCount = c.tokenCount,
+                            embedderId = embedderId,
+                            embedderVersion = embedderVersion,
+                        )
+                    out += newId
+                }
+                out
             }
-            // Insert new chunks in `ord` order.
-            val ids = ArrayList<ChunkId>(chunks.size)
-            for (c in chunks.sortedBy { it.ord }) {
-                val newId = nextChunkId.getAndIncrement()
-                this.chunks[newId] =
-                    Chunk(
-                        id = newId,
-                        docId = docId,
-                        ord = c.ord,
-                        text = c.text,
-                        tokenCount = c.tokenCount,
-                        embedderId = embedderId,
-                        embedderVersion = embedderVersion,
-                    )
-                ids += newId
-            }
-            ids
-        }
+        // Emitted even for an empty `chunks`: the delete above is itself a
+        // change to what a reader sees.
+        changes.tryEmit(IndexChange.ChunksReplaced(docId))
+        return ids
+    }
 
     override suspend fun putEmbeddings(embeddings: List<Pair<ChunkId, ByteArray>>) {
+        if (embeddings.isEmpty()) return
         lock.withLock {
+            // Validate the whole batch before writing any of it, as
+            // `IndexStoreImpl` does — so a rejected batch leaves no
+            // half-written state and, consequently, publishes nothing.
             for ((id, vec) in embeddings) {
                 require(id in chunks) { "putEmbeddings: unknown chunk id=$id" }
                 require(vec.size == INT8_DIM) {
                     "putEmbeddings: expected $INT8_DIM int8 values, got ${vec.size} for chunk id=$id"
                 }
+            }
+            for ((id, vec) in embeddings) {
                 this.embeddings[id] = vec.copyOf()
             }
         }
+        changes.tryEmit(IndexChange.EmbeddingsUpdated(embeddings.map { it.first }))
     }
 
     override suspend fun knn(
@@ -170,10 +209,14 @@ public class InMemoryIndexStore : IndexStore {
         kinds: Set<EdgeKind>,
         edges: List<Edge>,
     ) {
+        // Mirrors `IndexStoreImpl`: an empty `kinds` nominates nothing to
+        // rewrite, so it is a no-op and publishes nothing.
+        if (kinds.isEmpty()) return
         lock.withLock {
             this.edges.removeAll { it.srcId == srcId && it.kind in kinds }
             this.edges += edges
         }
+        changes.tryEmit(IndexChange.EdgesReplaced(srcId, kinds))
     }
 
     override suspend fun edgesFrom(srcId: String): List<Edge> = edges.filter { it.srcId == srcId }
@@ -255,6 +298,9 @@ public class InMemoryIndexStore : IndexStore {
     private companion object {
         /** Spec §5 vec0 dimension. Not a measurement-derived choice; see `001_initial.sql`. */
         const val INT8_DIM: Int = 256
+
+        /** Matches `IndexStoreImpl.CHANGE_BUFFER_CAPACITY` / `ChangeBus.EXTRA_BUFFER_CAPACITY`. */
+        const val CHANGE_BUFFER_CAPACITY: Int = 64
 
         val WORD_SPLIT: Regex = Regex("[^A-Za-z0-9]+")
 
