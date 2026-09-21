@@ -153,6 +153,17 @@ dependencies {
     // edge for design-time previews), so it never reaches this module's
     // runtime/debug classpath and needs no `exclude` either.
     implementation(project(":feature:graph"))
+    // E5.I10 (skein-7v3): `IngestScheduler`/`IngestWorker` compose the
+    // on-device ingest pass — `Chunker` + `IngestPipeline`/`IngestSteps`
+    // (`:core:rag`), `EdgeUpserter`/`DanglingResolver` (`:core:vault`, above)
+    // and `ThermalGovernor` (`:core:inference`) for batch pacing.
+    implementation(project(":core:rag"))
+    implementation(project(":core:inference"))
+    // E5.I10: WorkManager runs the pass as unique one-time work (no
+    // constraints gate — `docs/design/LOCK_POLICY_INDEXING.md` §3.2/§7.1).
+    // Its manifest-merged permissions are stripped in AndroidManifest.xml
+    // (see the comment there); no GMS transitive (`checkDependencyGuards`).
+    implementation(libs.androidx.work.runtime)
 
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.activity.compose)
@@ -188,6 +199,11 @@ dependencies {
     // skein-2ige: VaultBootstrapTest / TestSkeinApplication run the bring-up
     // over the JVM fakes (`InMemoryVaultRepository`, `FakeExportService`, …).
     testImplementation(project(":testing"))
+    // E5.I10 (skein-7v3): `WorkManagerTestInitHelper` /
+    // `TestListenableWorkerBuilder` for `IngestWorkerTest` (Robolectric) and
+    // the compile-only `IngestWorkerInstrumentedTest` (run gated on skein-k3b2).
+    testImplementation(libs.androidx.work.testing)
+    androidTestImplementation(libs.androidx.work.testing)
     androidTestImplementation(libs.androidx.test.ext.junit)
     androidTestImplementation(libs.androidx.test.espresso.core)
     androidTestImplementation(libs.androidx.test.runner)

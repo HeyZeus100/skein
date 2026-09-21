@@ -86,20 +86,23 @@ class ManifestPolicyTest {
     }
 
     @Test
-    fun `no service or receiver is exported`() {
-        val packageInfo =
-            packageManager.getPackageInfo(
-                packageName,
-                PackageManager.GET_SERVICES or PackageManager.GET_RECEIVERS,
-            )
+    fun `the only exported service is WorkManager's job service, guarded by BIND_JOB_SERVICE`() {
+        val packageInfo = packageManager.getPackageInfo(packageName, PackageManager.GET_SERVICES)
 
         val exportedServices = packageInfo.services.orEmpty().filter { it.exported }
+
+        assertEquals(setOf(WORKMANAGER_JOB_SERVICE), exportedServices.map { it.name }.toSet())
+        exportedServices.forEach { service ->
+            assertEquals("${service.name} must be bindable by the system only", BIND_JOB_SERVICE, service.permission)
+        }
+    }
+
+    @Test
+    fun `no receiver is exported`() {
+        val packageInfo = packageManager.getPackageInfo(packageName, PackageManager.GET_RECEIVERS)
+
         val exportedReceivers = packageInfo.receivers.orEmpty().filter { it.exported }
 
-        assertTrue(
-            "expected no exported services, found: ${exportedServices.map { it.name }}",
-            exportedServices.isEmpty(),
-        )
         assertTrue(
             "expected no exported receivers, found: ${exportedReceivers.map { it.name }}",
             exportedReceivers.isEmpty(),
@@ -326,6 +329,19 @@ class ManifestPolicyTest {
         const val DOCUMENTS_PROVIDER = "app.skein.core.vault.provider.VaultDocumentsProvider"
         const val DOCUMENTS_AUTHORITY = "us.aherrera.skein.documents"
         const val MANAGE_DOCUMENTS = "android.permission.MANAGE_DOCUMENTS"
+
+        /**
+         * E5.I10 (`skein-7v3`): the single exported service — WorkManager's
+         * JobScheduler bridge (`androidx.work:work-runtime`). JobScheduler
+         * can only bind to an exported job service, and the platform
+         * protects it with `BIND_JOB_SERVICE`, a signature-level permission
+         * only the system holds — the same "exported, but only to the OS"
+         * posture as the `MANAGE_DOCUMENTS`-guarded provider above.
+         * WorkManager's other merged components stay unexported; its
+         * DUMP-guarded `DiagnosticsReceiver` is removed in the manifest.
+         */
+        const val WORKMANAGER_JOB_SERVICE = "androidx.work.impl.background.systemjob.SystemJobService"
+        const val BIND_JOB_SERVICE = "android.permission.BIND_JOB_SERVICE"
 
         /**
          * Exported only because `androidx.compose.ui:ui-tooling` is a

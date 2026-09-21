@@ -18,6 +18,37 @@
     <uses-permission android:name="android.permission.USE_BIOMETRIC" />
 
     <!--
+        E5.I10 (skein-7v3): androidx.work:work-runtime merges four
+        uses-permissions of its own. None is needed by the ingest worker's
+        usage and one (ACCESS_NETWORK_STATE) is on the manifest guard's
+        denylist, so all four are removed from the merged manifest:
+          - ACCESS_NETWORK_STATE: only consulted by WorkManager's network
+            constraint tracker, which is never registered because
+            `IngestWorker` runs with `NetworkType.NOT_REQUIRED`
+            (LOCK_POLICY_INDEXING.md §3.2: no constraints gate at all).
+          - RECEIVE_BOOT_COMPLETED: WorkManager's boot receiver would only
+            reschedule persisted work after a reboot; the vault is locked
+            after a reboot and `IngestScheduler` re-enqueues on unlock
+            (invariant I2, §6.1), so nothing may run from boot.
+          - FOREGROUND_SERVICE: expedited/foreground work is not used
+            (on API 30 it would need a foreground service + notification).
+          - WAKE_LOCK: only acquired by the pre-API-23 alarm scheduler and
+            the foreground-service path; minSdk is 30 and neither is used.
+    -->
+    <uses-permission
+        android:name="android.permission.ACCESS_NETWORK_STATE"
+        tools:node="remove" />
+    <uses-permission
+        android:name="android.permission.RECEIVE_BOOT_COMPLETED"
+        tools:node="remove" />
+    <uses-permission
+        android:name="android.permission.FOREGROUND_SERVICE"
+        tools:node="remove" />
+    <uses-permission
+        android:name="android.permission.WAKE_LOCK"
+        tools:node="remove" />
+
+    <!--
         skein-2ige: SkeinApplication is the :app process's composition root
         for the vault stack (UnlockManager → VaultBootstrap → open-vault
         services → VaultDocumentsProvider). The isolated processes below get
@@ -104,6 +135,41 @@
             android:name="androidx.profileinstaller.ProfileInstallReceiver"
             tools:ignore="MissingClass"
             tools:node="remove" />
+
+        <!--
+            E5.I10 (skein-7v3): work-runtime merges an exported
+            DiagnosticsReceiver (DUMP-permission-guarded `adb` hook that
+            dumps WorkManager's database) — a debugging surface Skein never
+            uses, removed to keep the "no exported receiver" baseline. The
+            one WorkManager component that stays exported is
+            `androidx.work.impl.background.systemjob.SystemJobService`,
+            which JobScheduler *must* bind to and which is guarded by the
+            system-signature permission BIND_JOB_SERVICE — see
+            ManifestPolicyTest for the corresponding allowance.
+        -->
+        <receiver
+            android:name="androidx.work.impl.diagnostics.DiagnosticsReceiver"
+            tools:node="remove" />
+
+        <!--
+            E5.I10 (skein-7v3): on-demand WorkManager initialization —
+            SkeinApplication implements Configuration.Provider (custom
+            WorkerFactory for IngestWorker), so WorkManager's automatic
+            androidx.startup initializer is removed. The provider element
+            itself stays merged: lifecycle-process's ProcessLifecycleInitializer
+            (LockPolicyObserver's foreground/background trigger) still runs
+            through it.
+        -->
+        <provider
+            android:name="androidx.startup.InitializationProvider"
+            android:authorities="${applicationId}.androidx-startup"
+            android:exported="false"
+            tools:node="merge">
+            <meta-data
+                android:name="androidx.work.WorkManagerInitializer"
+                android:value="androidx.startup"
+                tools:node="remove" />
+        </provider>
 
     </application>
 

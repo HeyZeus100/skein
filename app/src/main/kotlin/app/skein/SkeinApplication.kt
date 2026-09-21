@@ -1,7 +1,9 @@
 package app.skein
 
 import android.app.Application
+import androidx.work.Configuration
 import app.skein.core.model.SkeinLog
+import app.skein.ingest.IngestWorker
 import app.skein.system.AndroidSkeinLogSink
 import app.skein.vault.VaultServices
 
@@ -18,12 +20,29 @@ import app.skein.vault.VaultServices
  * [AndroidSkeinLogSink] unconditionally, though: every process this
  * `Application` runs in should get real logcat output through [SkeinLog].
  *
+ * E5.I10 (skein-7v3): also WorkManager's [Configuration.Provider], so the
+ * `IngestWorker` is built by [IngestWorker.Factory] over the process-wide
+ * `IngestScheduler` rather than by reflection. WorkManager's automatic
+ * initializer is removed from the manifest for this (on-demand
+ * initialization); the first `WorkManager.getInstance` call — from
+ * `VaultServices.forDevice`, main process only — reads this property, so
+ * the isolated processes never initialize WorkManager at all.
+ *
  * `open` only so Robolectric tests can substitute fakes through
  * [createVaultServices] (`@Config(application = ...)`); there is no DI
  * framework in this repo and this seam is deliberately the only one.
  */
-open class SkeinApplication : Application() {
+open class SkeinApplication :
+    Application(),
+    Configuration.Provider {
     val vault: VaultServices by lazy { createVaultServices() }
+
+    override val workManagerConfiguration: Configuration
+        get() =
+            Configuration
+                .Builder()
+                .setWorkerFactory(IngestWorker.Factory { vault.ingest })
+                .build()
 
     override fun onCreate() {
         super.onCreate()

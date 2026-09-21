@@ -13,6 +13,11 @@ android {
 
     defaultConfig {
         minSdk = 30
+        // E5.I10 (skein-7v3): `IngestPipelineTest` composes the real
+        // `EdgeUpserter`/`DanglingResolver` from `:core:vault` (test-only
+        // dependency below), which carries the foss/dev `distribution`
+        // dimension this module does not — same strategy as `:feature:*`.
+        missingDimensionStrategy("distribution", "foss")
     }
 
     compileOptions {
@@ -40,4 +45,9 @@ dependencies {
     // In-memory `IndexStore`/`VaultRepository` fakes for JVM unit tests —
     // same fakes `:core:vault` uses for its own unit tests.
     testImplementation(project(":testing"))
+    // E5.I10 (skein-7v3): `IngestPipeline` keeps its link/entity steps behind
+    // small interfaces so this module's *main* classpath never sees
+    // `:core:vault`; the pipeline test still wires the real
+    // `EdgeUpserter`/`DanglingResolver` (E5.I8/E5.I8b) through them.
+    testImplementation(project(":core:vault"))
 }
