@@ -221,10 +221,14 @@ fun SkeinApp(
                                 splitAvailable = splitAvailable,
                                 onOpenInSplit = splitCoordinator::openInSplit,
                                 emptyContent = {
-                                    if (isSinglePane && timelinePane != null) {
-                                        timelinePane(false, onTimelineEntryOpen, onTimelineEntryPin)
+                                    if (navState.destination == Destination.TIMELINE) {
+                                        if (isSinglePane && timelinePane != null) {
+                                            timelinePane(false, onTimelineEntryOpen, onTimelineEntryPin)
+                                        } else {
+                                            EmptyTabHostPlaceholder()
+                                        }
                                     } else {
-                                        EmptyTabHostPlaceholder()
+                                        destinationContent(navState.destination)
                                     }
                                 },
                                 content = { tab ->
