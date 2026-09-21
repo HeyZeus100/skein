@@ -103,7 +103,8 @@ Layer 0 (Keystore, non-extractable, per-use auth, StrongBox-backed):
 Layer 1 ("attachment master key material" — the thing skein-larv is about):
     master_key_material — 256-bit AES key, software-generated via SecureRandom
     ONCE at vault setup. Persisted ONLY as two wrapped copies (one per Layer-0
-    entry) in the `attachment_master_key` table (§3.4). Never cached in process
+    entry) — in the key-envelope file `keys/key-envelope.v1`, NOT in a
+    `vault.db` table (see the 2026-09-20 amendment under §3.4). Never cached in process
     memory beyond the scope of a single wrap/unwrap operation (§1.4). Never
     regenerated for the lifetime of the vault except by an explicit, destructive,
     user-initiated "reset vault" (out of scope for this doc).
@@ -385,6 +386,76 @@ hierarchy doesn't depend on `master_key_material`). `attachment_keys` rows are
 generation, and it's a foreign key, not a copy of key material. This is what makes the
 key invariant in §3.6 mechanically true rather than merely a design intention: rewrap
 touches exactly one table (`attachment_master_key`), and `attachment_keys` is untouched.
+
+> **Amendment (2026-09-20, `skein-txrh`) — the wrapped master lives OUTSIDE `vault.db`.**
+>
+> The paragraph above rests on there being two independent key hierarchies (spec §5
+> line 213's SQLCipher passphrase vs. this document's `master_key_material`). The
+> shipped implementation has **one**: `VaultKeyProvider.currentKey()` is the 32-byte
+> master that `VaultLifecycle` / `SkeinSQLiteDriver` (E2.I13, E2.I1) key `vault.db`
+> with, and that `FileAttachmentStore` derives per-attachment keys from. With a single
+> master, an `attachment_master_key` row *inside* `vault.db` is circular — the wrapped
+> bytes needed to open the database would be stored in the database — so the row could
+> never be read on a cold start, and on-device unlock was blocked on exactly that.
+>
+> **Resolution — the key-envelope file.** The generation described by the DDL above is
+> persisted with the same fields and the same NULL-while-dead semantics, but in an
+> app-private file, `<filesDir>/keys/key-envelope.v1`
+> (`core/vault/src/main/kotlin/app/skein/core/vault/key/FileMasterKeyStorage.kt`; byte
+> layout in `docs/VAULT_FORMAT.md` §1 and in that file's header). It is read before
+> anything touches `vault.db`. `keys/` was already excluded from cloud backup and device
+> transfer (`data_extraction_rules.xml`, `backup_rules_legacy.xml`; plan E3.I2 named
+> `filesDir/keys/` for exactly this), which is why the envelope lives there rather than
+> at the top of `filesDir`. The public entry point that wires it is
+> `VaultKeyProviders.forDevice(context, paths)`; every collaborator stays `internal`.
+>
+> *Why a file, not SharedPreferences / DataStore / a second SQLite file.* The envelope is
+> under 256 bytes of ciphertext whose one hard requirement is atomic replace-in-place
+> under a mid-write kill, on the very first read of the unlock path. SharedPreferences
+> Base64-encodes byte arrays into XML, commits through its own write-then-rename with no
+> fsync under our control, and is a separate backup domain to keep excluded; DataStore
+> adds a serialisation dependency and a coroutine-only API to that first read; a second
+> SQLite file brings a journal, WAL and a connection lifecycle for one row. A
+> temp-file + fsync + rename write under `keys/` is the smallest thing that satisfies
+> the requirement and the existing backup posture.
+>
+> *Rewrap is still one transaction.* A rewrap writes the whole next generation —
+> surviving factor copied forward unchanged, dead factor rewrapped, `key_version + 1` —
+> to `key-envelope.v1.tmp`, fsyncs it and renames it over the previous envelope. That
+> rename is step 8's "SAME transaction": a kill at any point leaves either the previous
+> generation or the new one on disk, never a torn file, and §3.6/§3.7 hold as written.
+> No superseded generation is retained: `VaultKeyProviderImpl.rewrapWith` reuses the
+> dead factor's alias (delete + create), so the old wrapped bytes are unrecoverable the
+> moment a rewrap begins and keeping them would be dead weight.
+>
+> *Integrity, stated precisely.* The wrapped blobs are AES-GCM outputs, so any change
+> to wrapped bytes or IV is caught at unwrap by the Keystore cipher — that is the
+> cryptographic integrity check and it is unchanged. The header fields (`key_version`,
+> flags, aliases) are not under GCM (the wrap uses no AAD); a trailing SHA-256 over the
+> body covers them against torn writes and bit-rot. It is a checksum, not a MAC: an
+> adversary who can rewrite an app-private file already holds the app's UID or root
+> (spec §9, out of scope), and the worst a header rewrite achieves is a flipped
+> `strongBoxBacked` / `key_version`, which neither reveals nor alters the master.
+> Binding the header as GCM AAD (or an HMAC under a third alias) is filed for the crypto
+> review this document requires as `skein-oz4v`. Confidentiality needs nothing beyond
+> Keystore wrapping: the file holds only wrapped bytes, never the plaintext master (§6;
+> `FileMasterKeyStorageTest` asserts no window of the master appears in it).
+>
+> **`attachment_master_key` is now vestigial.** Nothing reads or writes it.
+> `001_initial.sql` is deliberately not edited by this amendment (migrations are
+> numbered and owned separately); its removal, together with a decision on
+> `attachment_keys.master_key_version`'s foreign key, is `skein-7d0l`. `attachment_keys`
+> itself is unaffected in shape: its `master_key_version` now names the envelope's
+> `key_version`.
+>
+> **Behaviour changes at the provider seam.** `VaultKeyProvider.setup()` is refused
+> (`SetupResult.Failed("already initialised")`) once an envelope exists, because setup
+> recreates the Layer-0 aliases and would strand the vault. A corrupt or unreadable
+> envelope surfaces as `UnlockResult.Failed("key envelope corrupt")` (or `"... io
+> failure"`), deliberately *not* as `NotInitialised`, so no UI can offer a destructive
+> re-setup for it; only a user-initiated reset (out of scope here; `skein-ank2`) may
+> discard it. A missing envelope is `NotInitialised`, as before. `UnlockResult` gains
+> no new variant — `UnlockManager`'s exhaustive `when` over it is owned elsewhere.
 
 ### 3.5 Recovery flow
 
@@ -742,10 +813,11 @@ Explicit assertions, one per requirement in the task brief:
   step 5) are created with `.setIsStrongBoxBacked(true)`, matching spec §5 line 213 and
   `docs/Handoffs/skein-v1-autonomous-completion.md` §3.15.
 - **Master key material never on disk in plaintext.** `master_key_material` exists only
-  as: (a) two independently-wrapped ciphertext blobs in `attachment_master_key`
-  (§3.4), or (b) a transient in-memory `ByteArray`, zeroed immediately after each single
-  wrap/unwrap use (§1.4). It is never serialized, logged, or written to any file or
-  database column in unwrapped form.
+  as: (a) two independently-wrapped ciphertext blobs in the key-envelope file
+  `keys/key-envelope.v1` (§3.4 amendment; `FileMasterKeyStorageTest` asserts no window
+  of the plaintext master appears in that file), or (b) a transient in-memory
+  `ByteArray`, zeroed immediately after each single wrap/unwrap use (§1.4). It is never
+  serialized, logged, or written to any file or database column in unwrapped form.
 - **Immutable-write invariant holds across every failure mode.** §4a enumerates every
   interruption point in the write path and shows the invariant survives each (retry
   mints a fresh UUID in all cases except the single case where the DB already

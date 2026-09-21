@@ -6,6 +6,7 @@ package app.skein.vault
 
 import android.content.Context
 import app.skein.core.vault.key.VaultKeyProvider
+import app.skein.core.vault.key.VaultKeyProviders
 import app.skein.core.vault.lifecycle.VaultPaths
 import app.skein.core.vault.session.UnlockManager
 import kotlinx.coroutines.CoroutineScope
@@ -32,17 +33,20 @@ class VaultServices(
         const val ATTACHMENTS_DIR: String = "attachments"
 
         /**
-         * Production wiring: the real `UnlockManager` (idle poller on a
-         * process-wide scope, shutdown-hook lock), [DeviceVaultOpener] under
-         * `filesDir`, and the real `VaultDocumentsProvider`. [keyProvider]
-         * defaults to the fail-closed [UnprovisionedVaultKeyProvider] until
-         * `:core:vault` exposes a factory for the device implementation.
+         * Production wiring: the device `VaultKeyProvider`
+         * (`VaultKeyProviders.forDevice`, skein-txrh — real Keystore +
+         * BiometricPrompt, wrapped master in `filesDir/keys/key-envelope.v1`),
+         * the real `UnlockManager` (idle poller on a process-wide scope,
+         * shutdown-hook lock), [DeviceVaultOpener] under `filesDir`, and the
+         * real `VaultDocumentsProvider`. One [VaultPaths] is shared by the key
+         * provider and the opener so the envelope sits beside the `vault.db`
+         * it unlocks. Until `setup()` has run once on the device, every unlock
+         * reports `NotInitialised` and the vault stays closed.
          */
-        fun forDevice(
-            context: Context,
-            keyProvider: VaultKeyProvider = UnprovisionedVaultKeyProvider,
-        ): VaultServices {
+        fun forDevice(context: Context): VaultServices {
             val app = context.applicationContext
+            val paths = VaultPaths(vaultDir = app.filesDir)
+            val keyProvider = VaultKeyProviders.forDevice(app, paths)
             val scope = CoroutineScope(SupervisorJob() + Dispatchers.Default)
             val unlockManager =
                 UnlockManager(
@@ -53,7 +57,7 @@ class VaultServices(
             val opener =
                 DeviceVaultOpener(
                     keyProvider = keyProvider,
-                    paths = VaultPaths(vaultDir = app.filesDir),
+                    paths = paths,
                     attachmentsDir = File(app.filesDir, ATTACHMENTS_DIR),
                 )
             val bootstrap =

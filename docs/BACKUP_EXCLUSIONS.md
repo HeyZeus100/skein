@@ -38,7 +38,7 @@ Both `data_extraction_rules.xml` and `backup_rules_legacy.xml` exclude:
 |---|---|
 | `domain="database"` (whole domain) | Room/SQLite/SQLCipher database directory |
 | `file/vault.db`, `vault.db-wal`, `vault.db-shm`, `vault.db-journal` | The SQLCipher vault and its journal/WAL/SHM siblings, in case a build path ever writes the DB file outside the `database` domain |
-| `file/keys/` | Key material |
+| `file/keys/` | Key material — `keys/key-envelope.v1`, the Keystore-wrapped vault master (`skein-txrh`; `docs/VAULT_FORMAT.md` §1). Wrapped-only, never plaintext, but it must not travel without the device's Keystore that unwraps it |
 | `file/models/` | Model weights (GGUF, ONNX) |
 | `file/attachments/` | User attachments |
 | `root/cache/staging_export/` | Export staging cache (`docs/design/POST_REVIEW_RESOLUTIONS.md` §4) — plaintext staged briefly during PDF/DOCX export |

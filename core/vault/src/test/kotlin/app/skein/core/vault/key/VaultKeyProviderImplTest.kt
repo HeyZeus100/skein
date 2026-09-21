@@ -81,7 +81,75 @@ class VaultKeyProviderImplTest {
             assertThat(row.wrapIvCredential).isNotNull()
         }
 
+    @Test
+    fun `setup when already initialised is refused and leaves the aliases untouched`() =
+        runTest {
+            // Arrange — a persisted master exists; the aliases wrap it.
+            val keystore = FakeKeystoreFacade(strongBoxAvailable = true)
+            val storage = FakeMasterKeyStorage()
+            val provider = newProvider(keystore = keystore, storage = storage)
+            provider.setupNoUi()
+            val createCallsBefore = keystore.createCalls.size
+            val rowBefore = storage.readActive()
+            // Act
+            val result = provider.setupNoUi()
+            // Assert — typed refusal, no alias churn, the wrapped master intact.
+            assertThat(result).isEqualTo(SetupResult.Failed(VaultKeyProviderImpl.ALREADY_INITIALISED_REASON))
+            assertThat(keystore.createCalls).hasSize(createCallsBefore)
+            assertThat(storage.readActive()).isEqualTo(rowBefore)
+            val unlock = provider.unlockNoUi(VaultKeyProvider.Factor.BIOMETRIC)
+            assertThat(unlock).isInstanceOf(UnlockResult.Success::class.java)
+        }
+
+    @Test
+    fun `setup over a corrupt envelope is refused without touching the Keystore`() =
+        runTest {
+            // Arrange
+            val keystore = FakeKeystoreFacade(strongBoxAvailable = true)
+            val storage =
+                FakeMasterKeyStorage().apply {
+                    failReadsWith = MasterKeyStorageException(MasterKeyStorageException.Kind.CORRUPT, "corrupt")
+                }
+            val provider = newProvider(keystore = keystore, storage = storage)
+            // Act
+            val result = provider.setupNoUi()
+            // Assert
+            assertThat(result).isEqualTo(SetupResult.Failed("key envelope corrupt"))
+            assertThat(keystore.createCalls).isEmpty()
+        }
+
     // ---- unlock / lock ------------------------------------------------
+
+    @Test
+    fun `unlock over a corrupt envelope returns Failed with the bounded reason`() =
+        runTest {
+            // Arrange
+            val storage =
+                FakeMasterKeyStorage().apply {
+                    failReadsWith = MasterKeyStorageException(MasterKeyStorageException.Kind.CORRUPT, "corrupt")
+                }
+            val provider = newProvider(storage = storage)
+            // Act
+            val result = provider.unlockNoUi(VaultKeyProvider.Factor.BIOMETRIC)
+            // Assert — not NotInitialised (that would invite a destructive re-setup).
+            assertThat(result).isEqualTo(UnlockResult.Failed("key envelope corrupt"))
+            assertThat(provider.currentKey()).isNull()
+        }
+
+    @Test
+    fun `rewrap over a corrupt envelope returns Failed`() =
+        runTest {
+            // Arrange
+            val storage =
+                FakeMasterKeyStorage().apply {
+                    failReadsWith = MasterKeyStorageException(MasterKeyStorageException.Kind.IO, "io")
+                }
+            val provider = newProvider(storage = storage)
+            // Act
+            val result = provider.rewrapNoUi(VaultKeyProvider.Factor.DEVICE_CREDENTIAL)
+            // Assert
+            assertThat(result).isEqualTo(RewrapResult.Failed("key envelope io failure"))
+        }
 
     @Test
     fun `unlock after setup makes currentKey return 32-byte master`() =

@@ -3,8 +3,15 @@
 //
 // Only the pieces documented in `ATTACHMENT_ENCRYPTION.md` §1.4 and §3.5
 // live in this file. Wire-up (real AndroidKeystoreFacade / real
-// AndroidBiometricAuthenticator / real SQLCipher-backed MasterKeyStorage)
-// belongs to callers (`E3.I3 UnlockManager`, wiring TBD by skein-pya).
+// AndroidBiometricAuthenticator / the key-envelope-file MasterKeyStorage)
+// is `VaultKeyProviders.forDevice` (skein-txrh) — the module's only public
+// factory; `:app` calls it from `VaultServices.forDevice`.
+//
+// Storage failures (skein-txrh): the backend reports a corrupt or
+// unwritable envelope as a typed `MasterKeyStorageException`; every entry
+// point maps it onto its own `Failed(reason)` variant with the bounded,
+// payload-free `Kind.reason` phrase. `UnlockResult` gains no new variant —
+// `UnlockManager`'s exhaustive `when` over it is owned elsewhere.
 //
 // Zeroing discipline: the master `ByteArray` is stored in a single
 // volatile-visible field. `lock()` zeros the array in place BEFORE
@@ -98,6 +105,19 @@ public class VaultKeyProviderImpl internal constructor(
     // ---- shared orchestration -----------------------------------------
 
     private suspend fun setupWith(auth: AuthenticateFn): SetupResult {
+        // skein-txrh: setup is destructive for the Layer-0 aliases (deleted
+        // and recreated below), so refuse it outright once a wrapped master
+        // exists — a second setup would strand the vault.db that master
+        // keys. A corrupt envelope is refused too: only a user-initiated
+        // reset may discard it.
+        val existing =
+            try {
+                storage.readActive()
+            } catch (e: MasterKeyStorageException) {
+                return SetupResult.Failed(e.kind.reason)
+            }
+        if (existing != null) return SetupResult.Failed(ALREADY_INITIALISED_REASON)
+
         // §3.2: BOTH factors must be provisioned from day one so recovery
         // never depends on lazily-created state. NoBiometricEnrolled is
         // surfaced early — DEVICE_CREDENTIAL alone is not a valid setup
@@ -130,19 +150,26 @@ public class VaultKeyProviderImpl internal constructor(
                 }
 
             val version =
-                storage.writeInitial(
-                    MasterKeyRow(
-                        keyVersion = 1,
-                        wrappedBytesBiometric = bioWrap.wrappedBytes,
-                        wrapIvBiometric = bioWrap.iv,
-                        wrapTagBiometric = null,
-                        wrappedBytesCredential = credWrap.wrappedBytes,
-                        wrapIvCredential = credWrap.iv,
-                        wrapTagCredential = null,
-                        createdAt = clock(),
-                        strongBoxBacked = strongBoxBacked,
-                    ),
-                )
+                try {
+                    storage.writeInitial(
+                        MasterKeyRow(
+                            keyVersion = 1,
+                            wrappedBytesBiometric = bioWrap.wrappedBytes,
+                            wrapIvBiometric = bioWrap.iv,
+                            wrapTagBiometric = null,
+                            wrappedBytesCredential = credWrap.wrappedBytes,
+                            wrapIvCredential = credWrap.iv,
+                            wrapTagCredential = null,
+                            createdAt = clock(),
+                            strongBoxBacked = strongBoxBacked,
+                        ),
+                    )
+                } catch (e: MasterKeyStorageException) {
+                    // Nothing persisted: the freshly created aliases wrap a
+                    // master that is about to be zeroed, so drop them too.
+                    cleanupOnSetupFail()
+                    return SetupResult.Failed(e.kind.reason)
+                }
             return if (strongBoxBacked) {
                 SetupResult.Success(version, strongBoxBacked = true)
             } else {
@@ -157,7 +184,14 @@ public class VaultKeyProviderImpl internal constructor(
         factor: VaultKeyProvider.Factor,
         auth: AuthenticateFn,
     ): UnlockResult {
-        val row = storage.readActive() ?: return UnlockResult.NotInitialised
+        val row =
+            (
+                try {
+                    storage.readActive()
+                } catch (e: MasterKeyStorageException) {
+                    return UnlockResult.Failed(e.kind.reason)
+                }
+            ) ?: return UnlockResult.NotInitialised
         val alias = aliasFor(factor)
         val iv =
             ivFor(row, factor)
@@ -197,7 +231,14 @@ public class VaultKeyProviderImpl internal constructor(
         survivingFactor: VaultKeyProvider.Factor,
         auth: AuthenticateFn,
     ): RewrapResult {
-        val row = storage.readActive() ?: return RewrapResult.Failed("no active master row")
+        val row =
+            (
+                try {
+                    storage.readActive()
+                } catch (e: MasterKeyStorageException) {
+                    return RewrapResult.Failed(e.kind.reason)
+                }
+            ) ?: return RewrapResult.Failed("no active master row")
         val survivingIv =
             ivFor(row, survivingFactor)
                 ?: return RewrapResult.Failed("no wrapped bytes for surviving factor")
@@ -244,14 +285,21 @@ public class VaultKeyProviderImpl internal constructor(
                     ?: return RewrapResult.UserCancelled
 
             val newVersion =
-                storage.rewrap(
-                    currentVersion = row.keyVersion,
-                    rewrappedFactor = deadFactor,
-                    wrappedBytes = newWrap.wrappedBytes,
-                    iv = newWrap.iv,
-                    tag = null,
-                    now = clock(),
-                )
+                try {
+                    storage.rewrap(
+                        currentVersion = row.keyVersion,
+                        rewrappedFactor = deadFactor,
+                        wrappedBytes = newWrap.wrappedBytes,
+                        iv = newWrap.iv,
+                        tag = null,
+                        now = clock(),
+                    )
+                } catch (e: MasterKeyStorageException) {
+                    // §3.7 row 2: the envelope still holds the previous
+                    // generation, whose surviving factor keeps working; the
+                    // next recovery attempt starts over from step 1.
+                    return RewrapResult.Failed(e.kind.reason)
+                }
             epoch.incrementAndGet()
             zero(master)
             master = recoveredMaster
@@ -361,6 +409,9 @@ public class VaultKeyProviderImpl internal constructor(
         internal const val ALIAS_BIOMETRIC: String = "skein_master_bio_v1"
         internal const val ALIAS_CREDENTIAL: String = "skein_master_cred_v1"
         internal const val MASTER_KEY_LEN: Int = 32
+
+        /** `setup()` found a wrapped master already persisted — call `unlock()` instead. */
+        internal const val ALREADY_INITIALISED_REASON: String = "already initialised"
     }
 }
 

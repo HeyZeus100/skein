@@ -30,7 +30,9 @@
         <exclude domain="file" path="vault.db-wal" />
         <exclude domain="file" path="vault.db-shm" />
         <exclude domain="file" path="vault.db-journal" />
-        <!-- Key material. -->
+        <!-- Key material: keys/key-envelope.v1, the Keystore-wrapped vault
+             master (skein-txrh; docs/VAULT_FORMAT.md §1). Wrapped-only, but
+             it must never leave the device with the vault it unlocks. -->
         <exclude domain="file" path="keys/" />
         <!-- Model weights (GGUF, ONNX). -->
         <exclude domain="file" path="models/" />
@@ -53,6 +55,7 @@
         <exclude domain="file" path="vault.db-wal" />
         <exclude domain="file" path="vault.db-shm" />
         <exclude domain="file" path="vault.db-journal" />
+        <!-- keys/key-envelope.v1 — the wrapped vault master (skein-txrh). -->
         <exclude domain="file" path="keys/" />
         <exclude domain="file" path="models/" />
         <exclude domain="file" path="attachments/" />
