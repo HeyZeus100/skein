@@ -1,11 +1,15 @@
 package app.skein.feature.editor.notetab
 
 import androidx.compose.ui.text.input.TextFieldValue
+import app.skein.core.vault.codec.Frontmatter
 import app.skein.feature.editor.WikilinkTarget
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.advanceTimeBy
 import kotlinx.coroutines.test.runCurrent
 import kotlinx.coroutines.test.runTest
+import kotlinx.serialization.json.JsonArray
+import kotlinx.serialization.json.JsonPrimitive
+import kotlinx.serialization.json.buildJsonObject
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertFalse
 import org.junit.Assert.assertNotNull
@@ -29,7 +33,7 @@ import java.time.Duration
 @OptIn(ExperimentalCoroutinesApi::class)
 class NoteTabStateTest {
     @Test
-    fun `loading a document seeds the title and editor body`() =
+    fun `loading a document seeds the title and editor with frontmatter plus body`() =
         runTest {
             val repo = newRepo()
             val doc = repo.note("My Note", body = "hello world")
@@ -40,8 +44,23 @@ class NoteTabStateTest {
             assertFalse(state.loading)
             assertNull(state.loadError)
             assertEquals("My Note", state.title)
-            assertEquals("hello world", state.editorState.value.text)
+            // bd skein-6rr (E7.I3): the editor buffer is frontmatter + body
+            // concatenated (`InMemoryVaultRepository.createDocument` always
+            // seeds `frontmatter = {id: <doc.id>}`) — split it back apart
+            // with the same codec `NoteTabState` saves through.
+            val (frontmatter, body) = Frontmatter.parse(state.editorState.value.text)
+            assertEquals("hello world", body)
+            assertEquals(doc.id, (frontmatter.getValue("id") as JsonPrimitive).content)
         }
+
+    @Test
+    fun `a document with no frontmatter seeds the editor with exactly its body`() {
+        // `InMemoryVaultRepository` always pins `frontmatter = {id: ...}`
+        // (mirrors the real vault's "id is always set on create" invariant),
+        // so `NoteTabState.load`'s empty-frontmatter fallback is exercised
+        // directly here against the same `Frontmatter.render` it calls.
+        assertEquals("hello world", Frontmatter.render(buildJsonObject { }, "hello world"))
+    }
 
     @Test
     fun `loading a missing document surfaces loadError instead of throwing`() =
@@ -120,6 +139,51 @@ class NoteTabStateTest {
 
             assertTrue(flushed)
             assertEquals("flushed body", repo.getDocument(doc.id)?.bodyMd)
+        }
+
+    @Test
+    fun `editing a non-id frontmatter key round-trips into the saved frontmatter JSON`() =
+        runTest {
+            val repo = newRepo()
+            val doc = repo.note("My Note", body = "hello world")
+            repo.updateFrontmatter(
+                doc.id,
+                buildJsonObject {
+                    put("id", JsonPrimitive(doc.id))
+                    put("tags", JsonArray(listOf(JsonPrimitive("a"))))
+                },
+            )
+            val state = NoteTabState(doc.id, repo, InMemoryIndexStore(), backgroundScope)
+            runCurrent()
+
+            val original = state.editorState.value.text
+            state.editorState.onValueChange(TextFieldValue(original.replace("tags: [a]", "tags: [a, b]")))
+            advanceTimeBy(600)
+            runCurrent()
+
+            val updated = repo.getDocument(doc.id)
+            val tags = (updated?.frontmatter?.get("tags") as? JsonArray)?.map { (it as JsonPrimitive).content }
+            assertEquals(listOf("a", "b"), tags)
+            assertEquals("hello world", updated?.bodyMd)
+        }
+
+    @Test
+    fun `editing the id line is rejected and the saved id never changes`() =
+        runTest {
+            val repo = newRepo()
+            val doc = repo.note("My Note", body = "hello world")
+            val state = NoteTabState(doc.id, repo, InMemoryIndexStore(), backgroundScope)
+            runCurrent()
+
+            val original = state.editorState.value.text
+            val tampered = TextFieldValue(original.replace("id: ${doc.id}", "id: HACKED"))
+            state.editorState.onValueChange(tampered)
+            advanceTimeBy(600)
+            runCurrent()
+
+            assertEquals("editor buffer should have reverted the id line", original, state.editorState.value.text)
+            assertTrue(state.editorState.idEditRejected.value)
+            assertEquals(doc.id, (repo.getDocument(doc.id)?.frontmatter?.get("id") as JsonPrimitive).content)
         }
 
     @Test

@@ -6,6 +6,7 @@ import androidx.compose.ui.text.input.OffsetMapping
 import androidx.compose.ui.text.input.TransformedText
 import androidx.compose.ui.text.input.VisualTransformation
 import app.skein.core.markdown.render.MarkdownStyle
+import app.skein.feature.editor.frontmatter.FrontmatterBlock
 
 /**
  * Obsidian-style live preview: raw Markdown is the source of truth (never
@@ -44,8 +45,10 @@ internal class LivePreviewTransformer(
     private val style: MarkdownStyle,
     private val cursor: Int,
     private val knownWikilinks: Set<String>? = null,
+    private val frontmatterExpanded: Boolean = false,
 ) : VisualTransformation {
-    override fun filter(text: AnnotatedString): TransformedText = transform(text.text, cursor, style, knownWikilinks)
+    override fun filter(text: AnnotatedString): TransformedText =
+        transform(text.text, cursor, style, knownWikilinks, frontmatterExpanded)
 }
 
 /** Marker tag on styled wikilink runs; instrumented tests use it to click. */
@@ -62,6 +65,7 @@ internal fun transform(
     cursor: Int,
     style: MarkdownStyle,
     knownWikilinks: Set<String>? = null,
+    frontmatterExpanded: Boolean = false,
 ): TransformedText {
     val lines = buildLines(source)
     val builder = AnnotatedString.Builder()
@@ -76,7 +80,21 @@ internal fun transform(
         builder.append(source[rawIndex])
     }
 
-    for (line in lines) {
+    // bd skein-6rr (E7.I3): while collapsed, the leading frontmatter block
+    // (`---\n…\n---`) contributes zero characters to the transformed
+    // text — the same "just skip appendRaw for the hidden run" technique
+    // `renderLine` already uses for an ATX heading's `# ` prefix. The
+    // one-line chip summarizing it is a separate composable
+    // (`app.skein.feature.editor.frontmatter.FrontmatterChip`) the caller
+    // places above the field, not synthesized text here, so there is one
+    // source of truth for what's "in" the transformed string. A document
+    // with no frontmatter block is completely unaffected regardless of
+    // [frontmatterExpanded] — `endLineIndex` is -1 and every line renders
+    // exactly as it did before this parameter existed.
+    val frontmatterEndLineIndex = if (frontmatterExpanded) -1 else FrontmatterBlock.endLineIndex(lines, source)
+
+    for ((index, line) in lines.withIndex()) {
+        if (frontmatterEndLineIndex >= 0 && index <= frontmatterEndLineIndex) continue
         val isActive = line.containsCursor(cursor)
         renderLine(
             builder = builder,

@@ -6,10 +6,14 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.junit4.createAndroidComposeRule
 import androidx.compose.ui.test.onNodeWithTag
+import androidx.compose.ui.test.performClick
 import androidx.compose.ui.text.TextRange
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.test.ext.junit.runners.AndroidJUnit4
+import app.skein.feature.editor.frontmatter.FRONTMATTER_CHIP_TEST_TAG
 import org.junit.Assert.assertEquals
+import org.junit.Assert.assertFalse
+import org.junit.Assert.assertTrue
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -88,5 +92,61 @@ class SkeinEditorInstrumentedTest {
         composeRule.waitForIdle()
 
         composeRule.onNodeWithTag(SKEIN_EDITOR_TEST_TAG).assertIsDisplayed()
+    }
+
+    // ------------------------------------------------------------------
+    // bd skein-6rr (E7.I3): frontmatter hide/show and protected `id`.
+    // Compile-gated on skein-k3b2's CI emulator lane — this worktree
+    // cannot run an on-device suite, only verify it builds.
+    // ------------------------------------------------------------------
+
+    @Test
+    fun frontmatter_chip_toggle_shows_and_hides_the_block() {
+        val initial = "---\nid: 0192abc\ntags: [a, b]\n---\nbody text"
+        var stateRef: EditorState? = null
+        composeRule.setContent {
+            MaterialTheme {
+                val state = remember { EditorState(initial = TextFieldValue(initial)).also { stateRef = it } }
+                SkeinEditor(state = state)
+            }
+        }
+        composeRule.waitForIdle()
+
+        assertFalse("frontmatter starts collapsed", stateRef!!.frontmatterExpanded.value)
+
+        composeRule.onNodeWithTag(FRONTMATTER_CHIP_TEST_TAG).performClick()
+        composeRule.waitForIdle()
+
+        assertTrue("tapping the chip expands the block", stateRef!!.frontmatterExpanded.value)
+
+        composeRule.onNodeWithTag(FRONTMATTER_CHIP_TEST_TAG).performClick()
+        composeRule.waitForIdle()
+
+        assertFalse("tapping again re-collapses it", stateRef!!.frontmatterExpanded.value)
+    }
+
+    @Test
+    fun id_line_is_uneditable_via_the_field() {
+        val initial = "---\nid: 0192abc\n---\nbody text"
+        var stateRef: EditorState? = null
+        composeRule.setContent {
+            MaterialTheme {
+                val state =
+                    remember {
+                        EditorState(initial = TextFieldValue(initial), initialFrontmatterExpanded = true)
+                            .also { stateRef = it }
+                    }
+                SkeinEditor(state = state)
+            }
+        }
+        composeRule.waitForIdle()
+
+        composeRule.runOnUiThread {
+            stateRef!!.onValueChange(TextFieldValue(initial.replace("id: 0192abc", "id: HACKED")))
+        }
+        composeRule.waitForIdle()
+
+        assertEquals("an id edit must be reverted", initial, stateRef!!.source)
+        assertTrue(stateRef!!.idEditRejected.value)
     }
 }

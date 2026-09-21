@@ -50,6 +50,12 @@ dependencies {
     // boundary of this module.
     implementation(project(":core:markdown"))
     implementation(project(":core:model"))
+    // E7.I3 (bd skein-6rr): the frontmatter hide/show editor round-trips
+    // through the same `Frontmatter.parse`/`render` codec `:core:vault`
+    // already ships (skein-3fn) — no reimplementation here. `:core:vault`
+    // has no dependency back on this module (see its own build.gradle.kts
+    // note on `:core:markdown`), so this does not create a cycle.
+    implementation(project(":core:vault"))
     // §9 IME hardening: SecureImeInterceptor + SecureBasicTextField.
     // RawTextFieldTest requires every text-input Composable to go
     // through one of :feature:shell's two allowlisted wrappers.
