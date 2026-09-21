@@ -82,6 +82,27 @@ public data class Document(
     val updatedAt: Long,
     val personaId: PersonaId?,
     val frontmatter: JsonObject,
+    /**
+     * Content address of this document as it stands.
+     *
+     * For every non-`ATTACHMENT` kind this **is** the document's current
+     * [RevisionHash] — `RevisionHashing.compute(bodyMd, frontmatter)`, i.e.
+     * BLAKE3-256 over the canonicalized body plus normalized frontmatter
+     * (migration 003 / `docs/design/POST_REVIEW_RESOLUTIONS.md` §1.3). §1.2
+     * step 3's replay check ("compare the cited `revision_hash` against the
+     * document's current `content_hash`") is therefore a literal comparison
+     * of this field against [Citation.revisionHash]; see
+     * [VaultRepository.revisionMatches].
+     *
+     * For `ATTACHMENT` it stays what it has always been — SHA-256 over the
+     * blob's plaintext bytes. Attachments have no `body_md`, are never
+     * chunked, and so are never the source of a citation; they get no
+     * `document_revisions` rows.
+     *
+     * Null only for rows this repository did not write (a hand-seeded row,
+     * or one written before migration 003 landed); every document created or
+     * updated through [VaultRepository] carries a hash.
+     */
     val contentHash: String?,
 )
 
@@ -122,15 +143,38 @@ public data class Message(
     val role: Role,
     val contentMd: String,
     val modelId: ModelId?,
+    /**
+     * Legacy (`record_version: 0`) contents of `messages.retrieved_chunks`:
+     * raw `chunks.id` values. Non-empty only for messages written before
+     * migration 003, because `chunks.id` is reassigned on re-ingestion and
+     * so is not a stable citation — that is the defect
+     * `docs/design/POST_REVIEW_RESOLUTIONS.md` §1.1 describes. When this is
+     * non-empty and [citations] is null the replay surface renders
+     * "source unknown" rather than resolving the ids (§1.4).
+     */
     val retrievedChunks: List<ChunkId>,
     val createdAt: Long,
+    /**
+     * citation-record-v1 payload of `messages.retrieved_chunks`
+     * (POST_REVIEW_RESOLUTIONS.md §1.3), or null when the row carries the
+     * legacy shape (see [retrievedChunks]) or nothing at all. A message
+     * never carries both.
+     */
+    val citations: CitationRecord? = null,
 )
 
 public data class NewMessage(
     val role: Role,
     val contentMd: String,
     val modelId: ModelId? = null,
+    /** Legacy chunk-id list; ignored when [citations] is set. See [Message.retrievedChunks]. */
     val retrievedChunks: List<ChunkId> = emptyList(),
+    /**
+     * The citation record to persist for this turn. When set, the repository
+     * writes citation-record-v1 JSON into `messages.retrieved_chunks` and
+     * [Message.retrievedChunks] reads back empty (§1.3).
+     */
+    val citations: CitationRecord? = null,
 )
 
 // -----------------------------------------------------------------------------
@@ -290,6 +334,46 @@ public interface VaultRepository {
     public suspend fun listMessages(chatDocId: DocId): List<Message>
 
     public fun observeMessages(chatDocId: DocId): Flow<List<Message>>
+
+    // ---- document revisions (POST_REVIEW_RESOLUTIONS.md §1, migration 003) ----
+
+    /**
+     * The `document_revisions` row addressing [id]'s content as it stands —
+     * the row whose `revision_hash` equals the document's current
+     * [Document.contentHash] (POST_REVIEW_RESOLUTIONS.md §1.2 step 3).
+     *
+     * Null for an unknown document, for an `ATTACHMENT` (no body, never
+     * cited), and for a row written before migration 003 whose content has
+     * not been rewritten since.
+     *
+     * Implementations capture a revision on [createDocument], [updateBody],
+     * [updateFrontmatter] and on the transcript rewrite inside
+     * [appendMessage]; capture is idempotent, so re-writing identical content
+     * reuses the existing row rather than growing history (§1.4
+     * `DocumentRevisionsRepositoryTest`).
+     */
+    public suspend fun currentRevision(id: DocId): DocumentRevision?
+
+    /**
+     * The archived revision a citation points at — the left-hand side of
+     * §1.2 step 3's diff view. Null once the revision has been swept by the
+     * `documentRevisions_gc` job (§1.2 step 4) or its document deleted.
+     */
+    public suspend fun getRevision(
+        id: DocId,
+        revisionHash: RevisionHash,
+    ): DocumentRevision?
+
+    /**
+     * True when [citation] still addresses its document's current content —
+     * i.e. the citation marker renders "live"; false means the replay surface
+     * shows the "source changed" badge (POST_REVIEW_RESOLUTIONS.md §1.2
+     * step 3). Two hex strings compared, no re-hashing: "no cross-turn
+     * re-verification cost" (§1.2 rationale).
+     *
+     * A citation whose document no longer exists is not a match.
+     */
+    public suspend fun revisionMatches(citation: Citation): Boolean
 
     // ---- attachments (blob store, encrypted at rest) ----
 

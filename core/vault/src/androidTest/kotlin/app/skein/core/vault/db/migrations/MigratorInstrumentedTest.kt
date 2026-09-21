@@ -70,6 +70,9 @@ class MigratorInstrumentedTest {
                 "personas",
                 "models",
                 "ingest_queue",
+                // 003_document_revisions.sql (skein-uo5n): content-addressed
+                // revision history, per POST_REVIEW_RESOLUTIONS.md §1.3.
+                "document_revisions",
             )
             // 007_drop_attachment_master_key.sql (skein-7d0l): the vestigial
             // Layer-1 wrapped-master table (superseded by the app-private
@@ -94,11 +97,43 @@ class MigratorInstrumentedTest {
                 "idx_messages_chat",
                 "idx_documents_title_nocase",
                 "idx_documents_kind_updated",
+                "idx_document_revisions_doc",
+                "idx_chunks_revision",
             )
             // Dropping attachment_keys drops its index with it (no explicit
             // DROP INDEX needed — verified empirically against sqlite3
             // 3.51.0 for 007's header comment).
             assertThat(inspector.indexes()).doesNotContain("idx_attachment_keys_version")
+
+            // 003's ALTER TABLE added `chunks.revision_hash` (the durable
+            // reverse pointer retrieval needs to emit a
+            // `(revision_hash, locator)` tuple). It carries no FK clause —
+            // see that migration's "Deviations from §1.3" header note.
+            assertThat(columnsOf(conn, "chunks")).contains("revision_hash")
+        }
+    }
+
+    // --- 003: document_revisions round-trip and cascade ---
+
+    @Test
+    fun documentRevisionsUpsertsByContentAddressAndCascadesWithItsDocument() {
+        val dbFile = tempDbFile()
+        Migrator(SkeinSQLiteDriver(randomKey(10))).migrate(dbFile.absolutePath)
+
+        SkeinSQLiteDriver(randomKey(10)).open(dbFile.absolutePath).use { conn ->
+            insertNote(conn, id = "doc-rev", title = "Title", bodyMd = "body", createdAt = 100, updatedAt = 100)
+            insertRevision(conn, docId = "doc-rev", hash = "a".repeat(64), ord = 0)
+            insertRevision(conn, docId = "doc-rev", hash = "b".repeat(64), ord = 1)
+            assertThat(revisionCount(conn, "doc-rev")).isEqualTo(2)
+
+            // The primary key is (document_id, revision_hash), so re-capturing
+            // content the document already held moves that row rather than
+            // appending a duplicate (§1.4 idempotency).
+            insertRevision(conn, docId = "doc-rev", hash = "a".repeat(64), ord = 2)
+            assertThat(revisionCount(conn, "doc-rev")).isEqualTo(2)
+
+            exec(conn, "DELETE FROM documents WHERE id = 'doc-rev';")
+            assertThat(revisionCount(conn, "doc-rev")).isEqualTo(0)
         }
     }
 
@@ -353,6 +388,47 @@ class MigratorInstrumentedTest {
             stmt.bindBlob(2, embedding)
             stmt.step()
         }
+    }
+
+    private fun insertRevision(
+        conn: SQLiteConnection,
+        docId: String,
+        hash: String,
+        ord: Long,
+    ) {
+        conn
+            .prepare(
+                "INSERT INTO document_revisions(document_id, revision_hash, revision_ord, body_md_snapshot, " +
+                    "frontmatter_snapshot, captured_at, reason) VALUES (?, ?, ?, 'body', '{}', 100, 'ingest') " +
+                    "ON CONFLICT(document_id, revision_hash) DO UPDATE SET revision_ord = excluded.revision_ord;",
+            ).use { stmt ->
+                stmt.bindText(1, docId)
+                stmt.bindText(2, hash)
+                stmt.bindLong(3, ord)
+                stmt.step()
+            }
+    }
+
+    private fun revisionCount(
+        conn: SQLiteConnection,
+        docId: String,
+    ): Long {
+        conn.prepare("SELECT COUNT(*) FROM document_revisions WHERE document_id = ?;").use { stmt ->
+            stmt.bindText(1, docId)
+            check(stmt.step()) { "COUNT(*) returned no row" }
+            return stmt.getLong(0)
+        }
+    }
+
+    private fun columnsOf(
+        conn: SQLiteConnection,
+        table: String,
+    ): List<String> {
+        val names = mutableListOf<String>()
+        conn.prepare("PRAGMA table_info($table);").use { stmt ->
+            while (stmt.step()) names += stmt.getText(1)
+        }
+        return names
     }
 
     private fun readIngestQueue(

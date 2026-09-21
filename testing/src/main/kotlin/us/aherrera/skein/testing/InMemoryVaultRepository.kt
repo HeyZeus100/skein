@@ -34,18 +34,24 @@ import kotlinx.coroutines.flow.merge
 import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
+import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.JsonObject
 import kotlinx.serialization.json.JsonPrimitive
 import kotlinx.serialization.json.buildJsonObject
+import us.aherrera.skein.core.model.Citation
 import us.aherrera.skein.core.model.DocId
 import us.aherrera.skein.core.model.Document
 import us.aherrera.skein.core.model.DocumentHit
 import us.aherrera.skein.core.model.DocumentKind
+import us.aherrera.skein.core.model.DocumentRevision
 import us.aherrera.skein.core.model.IngestItem
 import us.aherrera.skein.core.model.IngestReason
 import us.aherrera.skein.core.model.Message
 import us.aherrera.skein.core.model.NewDocument
 import us.aherrera.skein.core.model.NewMessage
+import us.aherrera.skein.core.model.RevisionHash
+import us.aherrera.skein.core.model.RevisionHashing
+import us.aherrera.skein.core.model.RevisionReason
 import us.aherrera.skein.core.model.TimelineFilter
 import us.aherrera.skein.core.model.VaultRepository
 import java.io.InputStream
@@ -75,6 +81,12 @@ public class InMemoryVaultRepository(
     private val ingestQueue: MutableMap<DocId, IngestItem> = linkedMapOf()
     private val mimeTypes: MutableMap<DocId, String> = linkedMapOf()
 
+    // `document_revisions` (migration 003 / POST_REVIEW_RESOLUTIONS.md §1.3),
+    // keyed by (documentId, revisionHash) exactly like the table's primary
+    // key so a re-captured content address updates its row rather than
+    // appending a duplicate.
+    private val revisions: MutableMap<Pair<DocId, RevisionHash>, DocumentRevision> = linkedMapOf()
+
     // Emits after every committed write. Observers re-query on tick.
     private val changeBus: MutableSharedFlow<Unit> =
         MutableSharedFlow(replay = 0, extraBufferCapacity = 16)
@@ -100,6 +112,15 @@ public class InMemoryVaultRepository(
                     new.frontmatter.forEach { (k, v) -> if (k != FRONTMATTER_ID_KEY) put(k, v) }
                     put(FRONTMATTER_ID_KEY, JsonPrimitive(chosenId))
                 }
+            // §1.3: for every citable (non-attachment) kind `content_hash`
+            // IS the document's RevisionHash. Attachments keep the
+            // SHA-256-over-bytes shape (`createAttachment`).
+            val revisionHash =
+                if (new.kind == DocumentKind.ATTACHMENT) {
+                    null
+                } else {
+                    RevisionHashing.compute(new.bodyMd, frontmatterWithId)
+                }
             val doc =
                 Document(
                     id = chosenId,
@@ -110,9 +131,12 @@ public class InMemoryVaultRepository(
                     updatedAt = now,
                     personaId = new.personaId,
                     frontmatter = frontmatterWithId,
-                    contentHash = new.bodyMd?.let(::sha256Hex),
+                    contentHash = revisionHash ?: new.bodyMd?.let(::sha256Hex),
                 )
             documents[chosenId] = doc
+            if (revisionHash != null) {
+                captureRevision(chosenId, new.bodyMd, frontmatterWithId, revisionHash, now)
+            }
             // DB trigger simulation: enqueue ingest for non-attachment docs.
             if (new.kind != DocumentKind.ATTACHMENT) {
                 ingestQueue[chosenId] =
@@ -136,14 +160,22 @@ public class InMemoryVaultRepository(
         writeLock.withLock {
             val existing = requireNotNull(documents[id]) { "no document with id=$id" }
             val now = clock()
+            val citable = existing.kind != DocumentKind.ATTACHMENT
+            val hash =
+                if (citable) RevisionHashing.compute(bodyMd, existing.frontmatter) else sha256Hex(bodyMd)
             val updated =
                 existing.copy(
                     title = title,
                     bodyMd = bodyMd,
                     updatedAt = now,
-                    contentHash = sha256Hex(bodyMd),
+                    contentHash = hash,
                 )
             documents[id] = updated
+            // Nothing to capture when the content address did not move:
+            // §1.4's "newRevision is idempotent when content is unchanged".
+            if (citable && hash != existing.contentHash) {
+                captureRevision(id, bodyMd, existing.frontmatter, hash, now)
+            }
             if (existing.kind != DocumentKind.ATTACHMENT) {
                 ingestQueue[id] =
                     IngestItem(
@@ -168,12 +200,24 @@ public class InMemoryVaultRepository(
                     frontmatter.forEach { (k, v) -> if (k != FRONTMATTER_ID_KEY) put(k, v) }
                     put(FRONTMATTER_ID_KEY, JsonPrimitive(id))
                 }
+            val now = clock()
+            val citable = existing.kind != DocumentKind.ATTACHMENT
+            // §1.3's hash covers the normalized frontmatter too, so a
+            // frontmatter rewrite re-addresses the document — unless the
+            // rewrite is cosmetic (key reordering, or touching only `id`),
+            // which canonicalization folds away.
+            val hash =
+                if (citable) RevisionHashing.compute(existing.bodyMd, withId) else existing.contentHash
             val updated =
                 existing.copy(
                     frontmatter = withId,
-                    updatedAt = clock(),
+                    updatedAt = now,
+                    contentHash = hash,
                 )
             documents[id] = updated
+            if (citable && hash != null && hash != existing.contentHash) {
+                captureRevision(id, existing.bodyMd, withId, hash, now)
+            }
             emitChange()
             updated
         }
@@ -181,6 +225,8 @@ public class InMemoryVaultRepository(
     override suspend fun deleteDocument(id: DocId) {
         writeLock.withLock {
             documents.remove(id)
+            // `document_revisions.document_id` is ON DELETE CASCADE (003).
+            revisions.keys.removeAll { it.first == id }
             messagesByChat.remove(id)
             ingestQueue.remove(id)
             mimeTypes.remove(id)
@@ -253,8 +299,9 @@ public class InMemoryVaultRepository(
                     role = message.role,
                     contentMd = message.contentMd,
                     modelId = message.modelId,
-                    retrievedChunks = message.retrievedChunks,
+                    retrievedChunks = if (message.citations == null) message.retrievedChunks else emptyList(),
                     createdAt = now,
+                    citations = message.citations,
                 )
             messagesByChat.getOrPut(chatDocId) { mutableListOf() } += row
             // Re-materialize the chat's body_md as a Markdown transcript so
@@ -266,13 +313,18 @@ public class InMemoryVaultRepository(
                     val rolePrefix = m.role.name.lowercase()
                     "**$rolePrefix:** ${m.contentMd}"
                 }
+            // A chat is chunked and indexed like a note, so its transcript
+            // needs a revision address too (§1.2 step 3) — see the matching
+            // comment in `VaultRepositoryImpl.appendMessage`.
+            val hash = RevisionHashing.compute(transcript, chat.frontmatter)
             val rewritten =
                 chat.copy(
                     bodyMd = transcript,
                     updatedAt = now,
-                    contentHash = sha256Hex(transcript),
+                    contentHash = hash,
                 )
             documents[chatDocId] = rewritten
+            if (hash != chat.contentHash) captureRevision(chatDocId, transcript, chat.frontmatter, hash, now)
             ingestQueue[chatDocId] =
                 IngestItem(
                     docId = chatDocId,
@@ -288,6 +340,53 @@ public class InMemoryVaultRepository(
 
     override fun observeMessages(chatDocId: DocId): Flow<List<Message>> =
         changeTicks().map { listMessages(chatDocId) }.distinctUntilChanged()
+
+    // ------------------------------------------------------------------
+    // Document revisions (migration 003, POST_REVIEW_RESOLUTIONS.md §1)
+    // ------------------------------------------------------------------
+
+    override suspend fun currentRevision(id: DocId): DocumentRevision? {
+        val hash = documents[id]?.contentHash ?: return null
+        return revisions[id to hash]
+    }
+
+    override suspend fun getRevision(
+        id: DocId,
+        revisionHash: RevisionHash,
+    ): DocumentRevision? = revisions[id to revisionHash]
+
+    override suspend fun revisionMatches(citation: Citation): Boolean =
+        documents[citation.documentId]?.contentHash == citation.revisionHash
+
+    /**
+     * Mirrors `VaultSql.UPSERT_DOCUMENT_REVISION`: the content address is the
+     * key, so re-capturing unchanged content reuses the row and moves it back
+     * to the head of the document's history (which is what makes a
+     * `A -> B -> A` edit sequence resolve to A again).
+     */
+    private fun captureRevision(
+        docId: DocId,
+        bodyMd: String?,
+        frontmatter: JsonObject,
+        revisionHash: RevisionHash,
+        capturedAt: Long,
+    ) {
+        val nextOrd =
+            (revisions.keys.filter { it.first == docId }.maxOfOrNull { revisions.getValue(it).revisionOrd } ?: -1) + 1
+        revisions[docId to revisionHash] =
+            DocumentRevision(
+                documentId = docId,
+                revisionHash = revisionHash,
+                revisionOrd = nextOrd,
+                // The snapshot holds the CANONICAL bytes that were hashed,
+                // so the row alone reproduces `revisionHash`.
+                bodyMdSnapshot = RevisionHashing.canonicalBody(bodyMd),
+                frontmatterSnapshot =
+                    Json.parseToJsonElement(RevisionHashing.canonicalFrontmatter(frontmatter)) as JsonObject,
+                capturedAt = capturedAt,
+                reason = RevisionReason.INGEST,
+            )
+    }
 
     // ------------------------------------------------------------------
     // Attachments
