@@ -46,4 +46,24 @@ object ShellTestTags {
 
     /** Opens the OS biometric-enrolment settings when no strong biometric is enrolled. */
     const val VAULT_SETUP_ENROL_BUTTON = "vault_setup_enrol_button"
+
+    // skein-v9g (E3.I11): "Restore from a passphrase export" on VaultSetupScreen.
+
+    /** Opens the document picker for a `skein-recovery-*.json` file. */
+    const val VAULT_RESTORE_BUTTON = "vault_restore_button"
+
+    /** Passphrase entry for the chosen recovery file. */
+    const val VAULT_RESTORE_PASSPHRASE_FIELD = "vault_restore_passphrase_field"
+
+    /** Runs the import + `setup(existingMaster)` attempt. */
+    const val VAULT_RESTORE_SUBMIT_BUTTON = "vault_restore_submit_button"
+
+    /** Abandons the restore and returns to the normal setup call to action. */
+    const val VAULT_RESTORE_CANCEL_BUTTON = "vault_restore_cancel_button"
+
+    /** Shown while the key derivation and the wrap prompts are running. */
+    const val VAULT_RESTORE_PROGRESS = "vault_restore_progress"
+
+    /** User-facing message after a failed restore attempt. */
+    const val VAULT_RESTORE_MESSAGE = "vault_restore_message"
 }

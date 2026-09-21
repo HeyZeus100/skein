@@ -67,13 +67,18 @@ dependencies {
     implementation(project(":core:vault"))
     implementation(libs.androidx.biometric)
 
+    // skein-v9g (E3.I11): `VaultSetupScreen`'s "Restore from a passphrase
+    // export" launches `ACTION_OPEN_DOCUMENT` through
+    // `rememberLauncherForActivityResult`, so this is now a main-source-set
+    // dependency at every variant. It also still covers what the
+    // `debugImplementation` below used to: `lintDebug` resolves
+    // `src/debug/AndroidManifest.xml`'s `androidx.activity.ComponentActivity`
+    // reference against the *debug variant's* own compile classpath, not the
+    // test classpath, and a `testImplementation`-only dependency isn't
+    // visible to it (it trips lint's `MissingClass` check).
+    implementation(libs.androidx.activity.compose)
+
     debugImplementation(libs.compose.ui.tooling)
-    // `lintDebug` resolves `src/debug/AndroidManifest.xml`'s
-    // `androidx.activity.ComponentActivity` reference against the *debug
-    // variant's* own compile classpath, not the test classpath — a
-    // `testImplementation`-only dependency (below) isn't visible to it and
-    // trips lint's `MissingClass` check. Same artifact, both scopes.
-    debugImplementation(libs.androidx.activity.compose)
 
     testImplementation(libs.junit)
     // skein-ank2: VaultSetupStateTest drives the setup state holder's

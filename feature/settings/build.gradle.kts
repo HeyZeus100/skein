@@ -48,6 +48,19 @@ dependencies {
     // `:feature:shell` (see `SettingsViewModel`'s doc on why `:app` — not
     // `:feature:shell` — owns wiring `SecurityPrefs` into this screen).
     implementation(project(":feature:shell"))
+    // skein-v9g (E3.I11): Settings › Security › "Export vault key
+    // (passphrase)" evaluates the passphrase floor with
+    // `:core:vault`'s `PassphraseStrength` — the one definition of that
+    // floor, so this screen cannot drift below what
+    // `PassphraseKeyExport.export` enforces. Only that object is used here:
+    // the crypto itself and the in-memory master stay behind the host's
+    // callbacks, exactly as `SecurityPrefs` does. `:feature:shell` depends
+    // on `:core:vault` too, but as `implementation`, so it is not visible
+    // transitively — hence this direct declaration.
+    implementation(project(":core:vault"))
+    // The export's `ACTION_CREATE_DOCUMENT` destination picker
+    // (`rememberLauncherForActivityResult`). Previously debug-only, below.
+    implementation(libs.androidx.activity.compose)
 
     debugImplementation(libs.compose.ui.tooling)
 
@@ -65,6 +78,4 @@ dependencies {
     androidTestImplementation(libs.androidx.test.runner)
     androidTestImplementation(libs.androidx.test.rules)
     androidTestImplementation(libs.androidx.activity.compose)
-
-    debugImplementation(libs.androidx.activity.compose)
 }

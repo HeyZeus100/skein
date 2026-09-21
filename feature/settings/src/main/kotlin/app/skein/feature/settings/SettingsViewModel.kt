@@ -49,12 +49,21 @@ class SettingsViewModel(
     lockOnBackgroundFlow: Flow<Boolean> = flowOf(DEFAULT_LOCK_ON_BACKGROUND),
     private val onSetLockOnBackground: suspend (Boolean) -> Unit = {},
     strongBoxUnavailableFallbackFlow: Flow<Boolean> = flowOf(DEFAULT_STRONGBOX_UNAVAILABLE_FALLBACK),
+    // E3.I11 (skein-v9g): the opt-in passphrase export of the vault key.
+    // Same additive, defaulted shape — an unwired host gets a disabled row
+    // whose callbacks refuse, never a half-wired export.
+    vaultUnlockedFlow: Flow<Boolean> = flowOf(false),
+    /** Presents a FRESH biometric / device-credential prompt. Wired by the host. */
+    val reauthenticate: suspend () -> Boolean = { false },
+    /** Wraps the in-memory master under the passphrase, or `null` while locked. */
+    val buildRecoveryExport: suspend (CharArray) -> ByteArray? = { null },
 ) {
     private var flagSecureEnabledState: Boolean by mutableStateOf(DEFAULT_FLAG_SECURE_ENABLED)
     private var idleTimeoutMinutesState: Int by mutableStateOf(DEFAULT_IDLE_TIMEOUT_MINUTES)
     private var lockOnScreenOffState: Boolean by mutableStateOf(DEFAULT_LOCK_ON_SCREEN_OFF)
     private var lockOnBackgroundState: Boolean by mutableStateOf(DEFAULT_LOCK_ON_BACKGROUND)
     private var strongBoxUnavailableFallbackState: Boolean by mutableStateOf(DEFAULT_STRONGBOX_UNAVAILABLE_FALLBACK)
+    private var vaultUnlockedState: Boolean by mutableStateOf(false)
 
     /** Mirrors `SecurityPrefs.flagSecureEnabled`. Defaults secure until the first emission arrives. */
     val flagSecureEnabled: Boolean get() = flagSecureEnabledState
@@ -71,6 +80,9 @@ class SettingsViewModel(
     /** Mirrors `SecurityPrefs.strongBoxUnavailableFallback`. Read-only — no setter. */
     val strongBoxUnavailableFallback: Boolean get() = strongBoxUnavailableFallbackState
 
+    /** Whether the vault is currently unlocked — the export row's hard gate. Read-only. */
+    val vaultUnlocked: Boolean get() = vaultUnlockedState
+
     init {
         scope.launch {
             flagSecureEnabledFlow.collect { enabled -> flagSecureEnabledState = enabled }
@@ -86,6 +98,9 @@ class SettingsViewModel(
         }
         scope.launch {
             strongBoxUnavailableFallbackFlow.collect { fallback -> strongBoxUnavailableFallbackState = fallback }
+        }
+        scope.launch {
+            vaultUnlockedFlow.collect { unlocked -> vaultUnlockedState = unlocked }
         }
     }
 
@@ -141,6 +156,10 @@ fun rememberSettingsViewModel(
     lockOnBackgroundFlow: Flow<Boolean> = flowOf(false),
     onSetLockOnBackground: suspend (Boolean) -> Unit = {},
     strongBoxUnavailableFallbackFlow: Flow<Boolean> = flowOf(false),
+    // E3.I11 (skein-v9g): additive, defaulted — see SettingsViewModel's ctor.
+    vaultUnlockedFlow: Flow<Boolean> = flowOf(false),
+    reauthenticate: suspend () -> Boolean = { false },
+    buildRecoveryExport: suspend (CharArray) -> ByteArray? = { null },
 ): SettingsViewModel {
     val scope = rememberCoroutineScope()
     return remember(
@@ -153,6 +172,9 @@ fun rememberSettingsViewModel(
         lockOnBackgroundFlow,
         onSetLockOnBackground,
         strongBoxUnavailableFallbackFlow,
+        vaultUnlockedFlow,
+        reauthenticate,
+        buildRecoveryExport,
     ) {
         SettingsViewModel(
             scope = scope,
@@ -165,6 +187,9 @@ fun rememberSettingsViewModel(
             lockOnBackgroundFlow = lockOnBackgroundFlow,
             onSetLockOnBackground = onSetLockOnBackground,
             strongBoxUnavailableFallbackFlow = strongBoxUnavailableFallbackFlow,
+            vaultUnlockedFlow = vaultUnlockedFlow,
+            reauthenticate = reauthenticate,
+            buildRecoveryExport = buildRecoveryExport,
         )
     }
 }

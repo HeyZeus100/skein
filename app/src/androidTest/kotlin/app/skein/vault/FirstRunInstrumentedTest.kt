@@ -81,6 +81,13 @@ class FirstRunInstrumentedTest {
             return SetupResult.Success(masterKeyVersion = 1, strongBoxBacked = false)
         }
 
+        /** skein-v9g: the passphrase-import overload; not exercised by this test. */
+        override suspend fun setup(
+            activity: FragmentActivity,
+            prompt: BiometricPrompt.PromptInfo,
+            existingMaster: ByteArray,
+        ): SetupResult = error("setup(existingMaster) is not exercised by this test")
+
         override fun isInitialised(): Boolean = initialised
 
         override suspend fun unlock(

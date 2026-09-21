@@ -64,6 +64,13 @@ fun SettingsScreen(
     lockOnBackground: Boolean = false,
     onLockOnBackgroundChange: (Boolean) -> Unit = {},
     strongBoxUnavailableFallback: Boolean = false,
+    // E3.I11 (skein-v9g): the opt-in passphrase export of the vault key.
+    // Additive and defaulted to the inert shape — a host that does not wire
+    // these gets a row that is present but disabled, and can never reach the
+    // crypto. `onBuildRecoveryExport` returning `null` means "locked".
+    vaultUnlocked: Boolean = false,
+    onReauthenticate: suspend () -> Boolean = { false },
+    onBuildRecoveryExport: suspend (CharArray) -> ByteArray? = { null },
 ) {
     Box(modifier = modifier.fillMaxSize()) {
         Column(
@@ -92,6 +99,11 @@ fun SettingsScreen(
                     onEnabledChange = onLockOnBackgroundChange,
                 )
                 StrongBoxStatusRow(strongBoxUnavailableFallback = strongBoxUnavailableFallback)
+                RecoveryKeyExportSection(
+                    vaultUnlocked = vaultUnlocked,
+                    onReauthenticate = onReauthenticate,
+                    onBuildExport = onBuildRecoveryExport,
+                )
                 SettingsPlaceholderRow(label = "Biometric unlock", caption = "Coming in v1.1")
             }
 
@@ -140,6 +152,9 @@ fun SettingsScreen(
         lockOnBackground = viewModel.lockOnBackground,
         onLockOnBackgroundChange = viewModel::setLockOnBackground,
         strongBoxUnavailableFallback = viewModel.strongBoxUnavailableFallback,
+        vaultUnlocked = viewModel.vaultUnlocked,
+        onReauthenticate = viewModel.reauthenticate,
+        onBuildRecoveryExport = viewModel.buildRecoveryExport,
     )
 }
 

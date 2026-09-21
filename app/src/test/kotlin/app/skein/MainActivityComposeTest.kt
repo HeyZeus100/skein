@@ -92,6 +92,32 @@ class MainActivityComposeTest {
         }
     }
 
+    // skein-v9g (E3.I11): the recovery / device-migration entry point.
+
+    @Test
+    fun `a fresh install offers the restore-from-export entry point`() {
+        app.keyProvider.initialised = false
+
+        ActivityScenario.launch(MainActivity::class.java).use {
+            awaitTag(ShellTestTags.VAULT_SETUP_ROOT)
+
+            composeRule.onNodeWithTag(ShellTestTags.VAULT_RESTORE_BUTTON).assertExists()
+        }
+    }
+
+    @Test
+    fun `the restore entry point does not run a generating setup`() {
+        app.keyProvider.initialised = false
+
+        ActivityScenario.launch(MainActivity::class.java).use {
+            awaitTag(ShellTestTags.VAULT_SETUP_ROOT)
+            composeRule.onNodeWithTag(ShellTestTags.VAULT_RESTORE_BUTTON).assertExists()
+
+            // Opening the picker must not mint a fresh master behind the user's back.
+            assertEquals(0, app.keyProvider.setupCalls.get())
+        }
+    }
+
     @Test
     fun `a fresh install never calls unlock before setup has run`() {
         app.keyProvider.initialised = false
