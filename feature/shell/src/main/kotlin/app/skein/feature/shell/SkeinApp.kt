@@ -1,5 +1,6 @@
 package app.skein.feature.shell
 
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.MaterialTheme
@@ -93,6 +94,37 @@ import java.util.UUID
  * `null` (the default) keeps pre-`skein-64y9` behaviour exactly: the
  * hardcoded `DestinationPlaceholder` in the left pane, and `TabHost`'s own
  * "No tabs open" placeholder when single-pane has no active tab.
+ *
+ * [overlay] is the seam bd `skein-0td0` adds: a fourth slot, the same shape
+ * as [timelinePane] — `:feature:shell` hands back two callbacks
+ * (`openPreview`/`openPinned`, named after [TabsState.openPreview]/
+ * [TabsState.openPinned] since that's exactly what they call) that close
+ * over *this composable's own* [primaryTabsState] — and lets `:app` decide
+ * what, if anything, to draw on top of the whole shell. This is for content
+ * that lives *alongside* [AdaptivePaneHost] rather than inside one of its
+ * panes or tabs, the same relationship [app.skein.feature.graph.GraphScreen]
+ * already has to `SkeinApp` per its own file header (an overlay opened from
+ * the ✦ button, drawn over everything, dismissed by its own `onClose`).
+ * Before this slot existed, `:app` had to hand-roll that relationship itself
+ * — wrapping `SkeinApp` in its own `Box` in `MainActivity` — which put the
+ * overlay outside `SkeinApp` entirely and left it with no way to reach
+ * [primaryTabsState] to actually open a tab (bd `skein-0td0`'s bug: tapping
+ * a graph node only dismissed the overlay). Composed last inside this
+ * function's own `Box`, so it always paints over [AdaptivePaneHost] — it
+ * does not participate in that host's pane layout at all, matching how
+ * [timelinePane]'s doc above describes [destinationContent] and
+ * [noteTabContent] as slots `:feature:shell` cannot own real screens for,
+ * except one level further out: this slot isn't shown *inside* any pane.
+ *
+ * A dedicated `overlay` slot (rather than reusing [timelinePane] or
+ * threading a `TabOpener` through [destinationContent]) was picked because
+ * every existing slot is scoped to *content shown in a specific place*
+ * (a pane, a tab) — an overlay drawn over the whole shell, shown or hidden
+ * by `:app`'s own state (`graphDocId`), is a different shape and forcing it
+ * into one of those slots would mean either drawing it inside a pane (wrong
+ * — it must cover the nav drawer/command bar too) or growing
+ * [destinationContent] a second, unrelated purpose. `null` (the default)
+ * means "nothing to draw", matching every other slot's null-safe default.
  */
 @Composable
 fun SkeinApp(
@@ -112,6 +144,12 @@ fun SkeinApp(
             expanded: Boolean,
             onEntryOpen: (docId: String, title: String) -> Unit,
             onEntryPin: (docId: String, title: String) -> Unit,
+        ) -> Unit
+    )? = null,
+    overlay: (
+        @Composable (
+            openPreview: (docId: String, title: String) -> Unit,
+            openPinned: (docId: String, title: String) -> Unit,
         ) -> Unit
     )? = null,
     windowSizeClass: WindowSizeClass = currentWindowAdaptiveInfoV2().windowSizeClass,
@@ -136,78 +174,92 @@ fun SkeinApp(
         val onTimelineEntryPin: (docId: String, title: String) -> Unit = { docId, title ->
             primaryTabsState.openPinned(Tab(TabId(UUID.randomUUID().toString()), docId, title, TabKind.NOTE))
         }
+        // Same shape as the timeline callbacks above, minted for `overlay`
+        // instead: both ultimately just call `primaryTabsState.openPreview`/
+        // `openPinned` with a fresh `TabId`, so `:app`'s overlay content
+        // (e.g. `GraphScreen`) gets real tab-opening semantics without
+        // needing its own `TabsState` handle.
+        val onOverlayOpenPreview: (docId: String, title: String) -> Unit = { docId, title ->
+            primaryTabsState.openPreview(Tab(TabId(UUID.randomUUID().toString()), docId, title, TabKind.NOTE))
+        }
+        val onOverlayOpenPinned: (docId: String, title: String) -> Unit = { docId, title ->
+            primaryTabsState.openPinned(Tab(TabId(UUID.randomUUID().toString()), docId, title, TabKind.NOTE))
+        }
 
-        NavDrawer(
-            open = navState.drawerOpen,
-            activeDestination = navState.destination,
-            onNavigate = navState::navigate,
-            onDismiss = navState::closeDrawer,
-        ) {
-            Column(
-                modifier =
-                    Modifier
-                        .fillMaxSize()
-                        .testTag(ShellTestTags.SKEIN_SHELL_ROOT),
+        Box(Modifier.fillMaxSize()) {
+            NavDrawer(
+                open = navState.drawerOpen,
+                activeDestination = navState.destination,
+                onNavigate = navState::navigate,
+                onDismiss = navState::closeDrawer,
             ) {
-                CommandBar(
-                    query = navState.query,
-                    onQueryChange = navState::setQuery,
-                    onMenuClick = navState::openDrawer,
-                    modelName = "qwen",
-                    modelActive = true,
-                )
-                AdaptivePaneHost(
-                    layoutState = layoutState,
-                    modifier = Modifier.weight(1f),
-                    windowSizeClass = windowSizeClass,
-                    posture = posture,
-                    timeline = {
-                        timelinePane?.invoke(true, onTimelineEntryOpen, onTimelineEntryPin)
-                            ?: DestinationPlaceholder(label = "Timeline")
-                    },
-                    primary = { splitAvailable ->
-                        TabHost(
-                            tabsState = primaryTabsState,
-                            splitAvailable = splitAvailable,
-                            onOpenInSplit = splitCoordinator::openInSplit,
-                            emptyContent = {
-                                if (isSinglePane && timelinePane != null) {
-                                    timelinePane(false, onTimelineEntryOpen, onTimelineEntryPin)
-                                } else {
-                                    EmptyTabHostPlaceholder()
-                                }
-                            },
-                            content = { tab ->
-                                tabContent(
-                                    tab = tab,
-                                    tabsState = primaryTabsState,
-                                    destinationContent = destinationContent,
-                                    noteTabContent = noteTabContent,
-                                    flushRegistry = flushRegistry,
-                                    navState = navState,
-                                )
-                            },
-                        )
-                    },
-                    secondary = { splitAvailable ->
-                        TabHost(
-                            tabsState = secondaryTabsState,
-                            splitAvailable = splitAvailable,
-                            onEmpty = splitCoordinator::exitSplitIfSecondaryEmpty,
-                            content = { tab ->
-                                tabContent(
-                                    tab = tab,
-                                    tabsState = secondaryTabsState,
-                                    destinationContent = destinationContent,
-                                    noteTabContent = noteTabContent,
-                                    flushRegistry = flushRegistry,
-                                    navState = navState,
-                                )
-                            },
-                        )
-                    },
-                )
+                Column(
+                    modifier =
+                        Modifier
+                            .fillMaxSize()
+                            .testTag(ShellTestTags.SKEIN_SHELL_ROOT),
+                ) {
+                    CommandBar(
+                        query = navState.query,
+                        onQueryChange = navState::setQuery,
+                        onMenuClick = navState::openDrawer,
+                        modelName = "qwen",
+                        modelActive = true,
+                    )
+                    AdaptivePaneHost(
+                        layoutState = layoutState,
+                        modifier = Modifier.weight(1f),
+                        windowSizeClass = windowSizeClass,
+                        posture = posture,
+                        timeline = {
+                            timelinePane?.invoke(true, onTimelineEntryOpen, onTimelineEntryPin)
+                                ?: DestinationPlaceholder(label = "Timeline")
+                        },
+                        primary = { splitAvailable ->
+                            TabHost(
+                                tabsState = primaryTabsState,
+                                splitAvailable = splitAvailable,
+                                onOpenInSplit = splitCoordinator::openInSplit,
+                                emptyContent = {
+                                    if (isSinglePane && timelinePane != null) {
+                                        timelinePane(false, onTimelineEntryOpen, onTimelineEntryPin)
+                                    } else {
+                                        EmptyTabHostPlaceholder()
+                                    }
+                                },
+                                content = { tab ->
+                                    tabContent(
+                                        tab = tab,
+                                        tabsState = primaryTabsState,
+                                        destinationContent = destinationContent,
+                                        noteTabContent = noteTabContent,
+                                        flushRegistry = flushRegistry,
+                                        navState = navState,
+                                    )
+                                },
+                            )
+                        },
+                        secondary = { splitAvailable ->
+                            TabHost(
+                                tabsState = secondaryTabsState,
+                                splitAvailable = splitAvailable,
+                                onEmpty = splitCoordinator::exitSplitIfSecondaryEmpty,
+                                content = { tab ->
+                                    tabContent(
+                                        tab = tab,
+                                        tabsState = secondaryTabsState,
+                                        destinationContent = destinationContent,
+                                        noteTabContent = noteTabContent,
+                                        flushRegistry = flushRegistry,
+                                        navState = navState,
+                                    )
+                                },
+                            )
+                        },
+                    )
+                }
             }
+            overlay?.invoke(onOverlayOpenPreview, onOverlayOpenPinned)
         }
     }
 }

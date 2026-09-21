@@ -11,6 +11,8 @@ import androidx.test.core.app.ActivityScenario
 import androidx.test.core.app.ApplicationProvider
 import app.skein.core.vault.key.SetupResult
 import app.skein.core.vault.key.UnlockResult
+import app.skein.feature.editor.notetab.NoteTabTestTags
+import app.skein.feature.graph.GraphTestTags
 import app.skein.feature.shell.testing.ShellTestTags
 import app.skein.system.SecurityPrefs
 import kotlinx.coroutines.flow.first
@@ -53,6 +55,12 @@ class MainActivityComposeTest {
     private fun awaitTag(tag: String) {
         composeRule.waitUntil(timeoutMillis = WAIT_MILLIS) {
             composeRule.onAllNodesWithTag(tag).fetchSemanticsNodes().isNotEmpty()
+        }
+    }
+
+    private fun awaitContentDescription(description: String) {
+        composeRule.waitUntil(timeoutMillis = WAIT_MILLIS) {
+            composeRule.onAllNodesWithContentDescription(description).fetchSemanticsNodes().isNotEmpty()
         }
     }
 
@@ -262,6 +270,61 @@ class MainActivityComposeTest {
             // `TimelineRail` glyph, accessible via its kind label.
             composeRule.onNodeWithContentDescription("Note").assertExists()
             composeRule.onNodeWithText("No tabs open", substring = true).assertDoesNotExist()
+        }
+    }
+
+    // ---- skein-0td0: graph overlay opens the tapped node as a real tab --------
+
+    @Test
+    @Config(qualifiers = "w400dp-h800dp")
+    fun `the unlocked shell shows the graph overlay once graphDocId is set`() {
+        runBlocking {
+            app.repository.createDocument(
+                NewDocument(kind = DocumentKind.NOTE, title = "Graph Me", bodyMd = "content"),
+            )
+        }
+
+        ActivityScenario.launch(MainActivity::class.java).use {
+            awaitTag(ShellTestTags.SKEIN_SHELL_ROOT)
+            awaitContentDescription("Note")
+
+            composeRule.onNodeWithContentDescription("Note").performClick()
+            awaitTag(NoteTabTestTags.GRAPH_BUTTON)
+            composeRule.onNodeWithTag(NoteTabTestTags.GRAPH_BUTTON).performClick()
+
+            awaitTag(GraphTestTags.CANVAS)
+            composeRule.onNodeWithTag(GraphTestTags.CANVAS).assertExists()
+        }
+    }
+
+    @Test
+    @Config(qualifiers = "w400dp-h800dp")
+    fun `tapping a graph node opens it as a NOTE tab and dismisses the overlay`() {
+        runBlocking {
+            app.repository.createDocument(
+                NewDocument(kind = DocumentKind.NOTE, title = "Graph Me", bodyMd = "content"),
+            )
+        }
+
+        ActivityScenario.launch(MainActivity::class.java).use {
+            awaitTag(ShellTestTags.SKEIN_SHELL_ROOT)
+            awaitContentDescription("Note")
+
+            composeRule.onNodeWithContentDescription("Note").performClick()
+            awaitTag(NoteTabTestTags.GRAPH_BUTTON)
+            composeRule.onNodeWithTag(NoteTabTestTags.GRAPH_BUTTON).performClick()
+            awaitTag(GraphTestTags.CANVAS)
+
+            // The seeded document is the graph's only (center) node, so a
+            // plain tap on the canvas — its default gesture target, per
+            // `GraphViewInstrumentedTest` — deterministically lands on it.
+            composeRule.onNodeWithTag(GraphTestTags.CANVAS).performClick()
+
+            composeRule.waitUntil(timeoutMillis = WAIT_MILLIS) {
+                composeRule.onAllNodesWithTag(GraphTestTags.CANVAS).fetchSemanticsNodes().isEmpty()
+            }
+            composeRule.onNodeWithTag(GraphTestTags.CANVAS).assertDoesNotExist()
+            composeRule.onNodeWithTag(NoteTabTestTags.ROOT).assertExists()
         }
     }
 
