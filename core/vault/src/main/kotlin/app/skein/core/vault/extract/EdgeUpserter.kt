@@ -19,13 +19,27 @@
 // Unresolved wikilink edges carry weight 0.5 (below the resolved default of
 // `EdgeKind.WIKILINK.weight` = 1.0) per the plan text; resolved edges and
 // tag edges keep their `EdgeKind` default weight.
+//
+// CITE edge (skein-ax9.1, E5.I8b — the remainder of this bead's scope not
+// covered by skein-ys2): a document's `source:` frontmatter
+// (`FrontmatterKeys.SOURCE`) names the `DocId` of the attachment it was
+// extracted from (see that constant's kdoc in `core/model/.../Transfer.kt`)
+// — already a real node id, not a title, so unlike wikilinks this needs no
+// sentinel/resolution step. `upsert(document)` replaces exactly the `CITE`
+// edge set for the document (one edge when `source:` is present, none when
+// it's absent), scoped via `replaceEdges(docId, {CITE}, …)` so `WIKILINK`/
+// `TAG`/`ENTITY` edges on the same source are untouched.
 
 package app.skein.core.vault.extract
 
+import kotlinx.serialization.json.JsonObject
+import kotlinx.serialization.json.JsonPrimitive
+import kotlinx.serialization.json.contentOrNull
 import us.aherrera.skein.core.model.DocId
 import us.aherrera.skein.core.model.Document
 import us.aherrera.skein.core.model.Edge
 import us.aherrera.skein.core.model.EdgeKind
+import us.aherrera.skein.core.model.FrontmatterKeys
 import us.aherrera.skein.core.model.IndexStore
 import us.aherrera.skein.core.model.VaultRepository
 
@@ -77,6 +91,36 @@ public class EdgeUpserter(
             wikilinks = WikilinkExtractor.extract(body),
             tags = TagExtractor.extract(body, document.frontmatter),
         )
+        upsertCitation(document.id, document.frontmatter)
+    }
+
+    /**
+     * Replaces [docId]'s `CITE` edge set from its `source:` frontmatter: one
+     * edge to the attachment id when present, none when absent. Preserves
+     * `createdAt` on an unchanged citation the same way [replaceKind] does
+     * for `WIKILINK`/`TAG`.
+     */
+    private suspend fun upsertCitation(
+        docId: DocId,
+        frontmatter: JsonObject,
+    ) {
+        val existing = indexStore.edgesFrom(docId).filter { it.kind == EdgeKind.CITE }
+        val sourceId = (frontmatter[FrontmatterKeys.SOURCE] as? JsonPrimitive)?.contentOrNull
+        val desired =
+            if (sourceId == null) {
+                emptyList()
+            } else {
+                val prior = existing.firstOrNull { it.dstId == sourceId }
+                listOf(
+                    Edge(
+                        srcId = docId,
+                        dstId = sourceId,
+                        kind = EdgeKind.CITE,
+                        createdAt = prior?.createdAt ?: clock(),
+                    ),
+                )
+            }
+        indexStore.replaceEdges(docId, setOf(EdgeKind.CITE), desired)
     }
 
     private suspend fun upsertWikilinks(
