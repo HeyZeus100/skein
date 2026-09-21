@@ -390,7 +390,108 @@ public data class Entity(
 // IndexStore (plan §4.2)
 // -----------------------------------------------------------------------------
 
+/**
+ * One committed mutation of the index, published by
+ * [IndexStore.observeChanges].
+ *
+ * This is the `core/model` twin of `core/vault`'s internal
+ * `TableChange`/`ChangeBus` pair (which deliberately covers only the
+ * tables `VaultRepositoryImpl` writes — see that file's header). Feature
+ * and RAG modules may only depend on the contracts in this module, so the
+ * index's own invalidation vocabulary has to live here rather than in
+ * `core/vault`.
+ *
+ * ## Why a notification stream and not a query-shaped flow
+ *
+ * An `observeEdgesTo(docId): Flow<List<Edge>>` would have been the other
+ * candidate (bd `skein-rkxi`). It was rejected because every real consumer
+ * runs a *composite* query, not a single `edgesTo`: the backlinks drawer
+ * reads `edgesTo(docId)` **and** `edgesTo("title:<lowercased title>")`
+ * (the unresolved-wikilink sentinel) **and** `chunksForDocs` for the
+ * excerpt. A per-query flow would force each implementor to re-implement
+ * that composition — or force the consumer to subscribe to several flows
+ * and re-join them. A narrow "something changed, re-query" tick keeps
+ * every implementor's obligation to a single `tryEmit` and lets each
+ * consumer own its own query shape, exactly as `ChangeBus` already does
+ * for documents.
+ *
+ * ## Coverage
+ *
+ * Every write that can change what a *read* on this contract returns has a
+ * case here. [IndexStore.upsertEntity] deliberately does not: entity rows
+ * are write-once, name-addressed, and only ever read back by the same
+ * ingest pass that wrote them (`findEntitiesByName`), so there is no
+ * observer to notify. Adding a case for it later is a purely additive
+ * change.
+ */
+public sealed interface IndexChange {
+    /** [IndexStore.replaceChunks] rewrote every chunk (and its FTS/vec rows) of [docId]. */
+    public data class ChunksReplaced(
+        public val docId: DocId,
+    ) : IndexChange
+
+    /** [IndexStore.putEmbeddings] wrote vectors for [chunkIds] — `knn` results may have moved. */
+    public data class EmbeddingsUpdated(
+        public val chunkIds: List<ChunkId>,
+    ) : IndexChange
+
+    /**
+     * [IndexStore.replaceEdges] rewrote the [kinds] edges whose `src_id` is
+     * [srcId]. [kinds] is the caller's nominated filter, so a consumer that
+     * only cares about (say) backlinks can drop every event whose [kinds]
+     * does not contain [EdgeKind.WIKILINK] without re-querying.
+     *
+     * Note this names the *source* of the rewritten edges. A backlinks
+     * consumer watching a destination cannot tell from the event alone
+     * whether its own document was affected — it re-queries and diffs.
+     */
+    public data class EdgesReplaced(
+        public val srcId: String,
+        public val kinds: Set<EdgeKind>,
+    ) : IndexChange
+}
+
 public interface IndexStore {
+    /**
+     * Hot stream of committed index mutations, for consumers that need to
+     * invalidate a cached read (backlinks drawers, graph views, retrieval
+     * caches) without polling.
+     *
+     * ## Emission guarantee
+     *
+     * An [IndexChange] is **emitted after the outermost commit that changed
+     * the index, and never for rolled-back work**. Concretely:
+     *   • The mutation is durable and visible to any subsequent read on
+     *     this store *before* the event is published.
+     *   • The event is published before the mutating call returns, so a
+     *     collector that subscribed beforehand is guaranteed to be offered
+     *     it.
+     *   • A mutating call that throws — at any point, including from
+     *     inside a nested call sharing the same transaction — publishes
+     *     nothing. Changes queued by an inner call are discarded with the
+     *     rollback.
+     *   • A no-op call publishes nothing: `replaceEdges(src, kinds =
+     *     emptySet(), …)` and `putEmbeddings(emptyList())` are silent.
+     *     `replaceChunks(doc, chunks = emptyList(), …)` is *not* silent —
+     *     it still deletes the document's existing chunks.
+     *
+     * ## Ordering and coalescing
+     *
+     * Events reach a collector in the order they were published — one
+     * event per successful mutating call, never one per row. There is no
+     * replay: a subscriber sees only changes made after it subscribes, so
+     * a consumer that also needs "state as of subscription time" must seed
+     * its own first query (the `onStart { emit(Unit) }` pattern).
+     *
+     * Implementations are permitted to **drop the oldest undelivered
+     * events** for a collector that falls far enough behind to exhaust the
+     * buffer; the newest event is never dropped in favour of an older one,
+     * and a mutating call never blocks waiting for a slow collector.
+     * Consumers must therefore treat each event as "re-query now" rather
+     * than as an entry in a delta log that must be replayed in full.
+     */
+    public fun observeChanges(): Flow<IndexChange>
+
     /**
      * Deletes the document's old chunks (FTS/vec rows follow via triggers)
      * and inserts the new ones. Returns new ids in `ord` order.

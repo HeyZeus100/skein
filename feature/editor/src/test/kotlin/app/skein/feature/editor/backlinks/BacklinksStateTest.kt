@@ -132,6 +132,54 @@ class BacklinksStateTest {
         }
 
     @Test
+    fun `an edge re-index with no accompanying document write still refreshes the drawer`() =
+        runTest {
+            // The skein-9jj gap, now closed by IndexStore.observeChanges
+            // (bd skein-rkxi): a background IngestWorker commits the edge
+            // long after the document write that triggered it, so no
+            // observeTimeline tick follows the edge write. Both documents
+            // therefore already exist *before* the drawer subscribes —
+            // nothing here touches `documents` afterwards.
+            val repo = newRepo()
+            val index = InMemoryIndexStore()
+            val target = repo.note("Watched Note")
+            val source = repo.note("Deferred Linker", body = "See also [[Watched Note]].")
+            val state = BacklinksState(target.id, repo, index, backgroundScope)
+            subscribe(state)
+            assertTrue(state.backlinks.value.isEmpty())
+
+            index.link(source, target.id)
+            runCurrent()
+
+            assertEquals(listOf(source.id), state.backlinks.value.map { it.document.id })
+        }
+
+    @Test
+    fun `an edge re-index of a kind the drawer does not care about leaves the rows alone`() =
+        runTest {
+            val repo = newRepo()
+            val index = InMemoryIndexStore()
+            val target = repo.note("Watched Note")
+            val source = repo.note("Linker", body = "See also [[Watched Note]].")
+            index.link(source, target.id)
+            val state = BacklinksState(target.id, repo, index, backgroundScope)
+            subscribe(state)
+            val before = state.backlinks.value
+
+            // An ENTITY-kind rewrite is not a wikilink re-index, so it is
+            // filtered out — the drawer must not churn on every ingest.
+            index.replaceEdges(
+                srcId = source.id,
+                kinds = setOf(EdgeKind.ENTITY),
+                edges = listOf(Edge(srcId = source.id, dstId = "entity:1", kind = EdgeKind.ENTITY, createdAt = 0L)),
+            )
+            runCurrent()
+
+            assertEquals(before.map { it.document.id }, state.backlinks.value.map { it.document.id })
+            assertEquals(listOf(source.id), state.backlinks.value.map { it.document.id })
+        }
+
+    @Test
     fun `tapping a row routes the source document id through onOpen`() =
         runTest {
             val repo = newRepo()

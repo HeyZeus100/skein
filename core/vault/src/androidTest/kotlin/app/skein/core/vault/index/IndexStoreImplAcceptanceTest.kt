@@ -9,6 +9,11 @@
 //     `k` (timing is logged, not asserted, per the plan).
 //   • `replaceEdges(src, kinds={WIKILINK}, …)` leaves an ENTITY edge on
 //     the same source untouched.
+//   • `observeChanges()` publishes nothing for a transaction that rolled
+//     back (bd `skein-rkxi`). This is the one clause of
+//     `IndexStore.observeChanges`'s guarantee that `IndexStoreContractTest`
+//     cannot check portably — `InMemoryIndexStore` has no transaction to
+//     roll back — so it is pinned here, against the real BEGIN/ROLLBACK.
 //
 // Follow-up (skein-k3b2): pending CI emulator; this class compiles as
 // part of `:app:check` and will run once skein-k3b2 lands.
@@ -19,15 +24,21 @@ import androidx.test.ext.junit.runners.AndroidJUnit4
 import app.skein.core.vault.db.SkeinSQLiteConnection
 import app.skein.core.vault.db.SkeinSQLiteDriver
 import com.google.common.truth.Truth.assertThat
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.test.UnconfinedTestDispatcher
+import kotlinx.coroutines.test.runCurrent
 import kotlinx.coroutines.test.runTest
 import org.junit.After
 import org.junit.Test
 import org.junit.runner.RunWith
 import us.aherrera.skein.core.model.Edge
 import us.aherrera.skein.core.model.EdgeKind
+import us.aherrera.skein.core.model.IndexChange
 import us.aherrera.skein.core.model.NewChunk
 import kotlin.random.Random
 
+@OptIn(ExperimentalCoroutinesApi::class)
 @RunWith(AndroidJUnit4::class)
 public class IndexStoreImplAcceptanceTest {
     private val opened: MutableList<IndexStoreImpl> = mutableListOf()
@@ -151,9 +162,88 @@ public class IndexStoreImplAcceptanceTest {
             assertThat(remaining.single().dstId).isEqualTo(dstEntity)
         }
 
+    @Test
+    public fun `a replaceChunks whose insert aborts rolls back and publishes no IndexChange`(): Unit =
+        runTest {
+            val (idx, conn) = freshIndexWithConnection()
+            val docId = "01924a4b-4d29-7000-8000-00000000R011"
+            val survivingIds =
+                idx.replaceChunks(
+                    docId = docId,
+                    chunks = listOf(NewChunk(ord = 0, text = "original text", tokenCount = 2)),
+                    embedderId = "fake",
+                    embedderVersion = 1,
+                )
+
+            val seen = mutableListOf<IndexChange>()
+            val collector =
+                backgroundScope.launch(UnconfinedTestDispatcher(testScheduler)) {
+                    idx.observeChanges().collect { seen += it }
+                }
+            runCurrent()
+
+            // Fail the write *mid-transaction*, after its DELETE has
+            // already run — an ABORT trigger on INSERT is the most
+            // DDL-agnostic way to do that, and exercises exactly the path
+            // `IndexStoreImpl.transaction` rolls back on.
+            conn
+                .prepare(
+                    "CREATE TRIGGER chunks_reject_insert BEFORE INSERT ON chunks " +
+                        "BEGIN SELECT RAISE(ABORT, 'injected failure'); END",
+                ).use { it.step() }
+
+            val thrown =
+                runCatching {
+                    idx.replaceChunks(
+                        docId = docId,
+                        chunks = listOf(NewChunk(ord = 0, text = "replacement text", tokenCount = 2)),
+                        embedderId = "fake",
+                        embedderVersion = 1,
+                    )
+                }.exceptionOrNull()
+            runCurrent()
+
+            assertThat(thrown).isNotNull()
+            // The rollback restored the pre-call chunks …
+            assertThat(idx.getChunks(survivingIds).keys).containsExactlyElementsIn(survivingIds)
+            // … and nothing was published for work that never committed.
+            assertThat(seen).isEmpty()
+            collector.cancel()
+        }
+
+    @Test
+    public fun `a committed replaceChunks publishes exactly one ChunksReplaced`(): Unit =
+        runTest {
+            val idx = freshIndex()
+            val docId = "01924a4b-4d29-7000-8000-00000000R012"
+            val seen = mutableListOf<IndexChange>()
+            val collector =
+                backgroundScope.launch(UnconfinedTestDispatcher(testScheduler)) {
+                    idx.observeChanges().collect { seen += it }
+                }
+            runCurrent()
+
+            idx.replaceChunks(
+                docId = docId,
+                chunks =
+                    listOf(
+                        NewChunk(ord = 0, text = "alpha", tokenCount = 1),
+                        NewChunk(ord = 1, text = "beta", tokenCount = 1),
+                    ),
+                embedderId = "fake",
+                embedderVersion = 1,
+            )
+            runCurrent()
+
+            assertThat(seen).containsExactly(IndexChange.ChunksReplaced(docId))
+            collector.cancel()
+        }
+
     // ------------------------------------------------------------------
 
-    private fun freshIndex(): IndexStoreImpl {
+    private fun freshIndex(): IndexStoreImpl = freshIndexWithConnection().first
+
+    private fun freshIndexWithConnection(): Pair<IndexStoreImpl, SkeinSQLiteConnection> {
         val driver = SkeinSQLiteDriver()
         val conn = driver.openWithKey(":memory:", passphrase = null) as SkeinSQLiteConnection
         val sql =
@@ -166,7 +256,7 @@ public class IndexStoreImplAcceptanceTest {
         }
         val impl = IndexStoreImpl(conn)
         opened += impl
-        return impl
+        return impl to conn
     }
 
     private companion object {

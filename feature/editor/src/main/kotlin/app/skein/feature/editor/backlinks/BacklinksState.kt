@@ -36,34 +36,43 @@
 // `:core:vault` (bd `skein-03f` guardrails extend to every `:feature:*`
 // surface that isn't the vault-owning coordinator).
 //
-// ## Live updates without `ChangeBus`
+// ## Live updates: two merged invalidation signals
 //
-// The plan says backlinks "update live via the `ChangeBus`", but
-// `ChangeBus`/`TableChange` (`core/vault/.../repository/ChangeBus.kt`)
-// are `core/vault`-internal and not part of the `VaultRepository`/
-// `IndexStore` contracts this module is allowed to depend on — and
-// `IndexStoreImpl` documents its own `ChangeBus` slot as still
-// *reserved*, not wired to anything yet (see that file's header, "E7.I5").
-// There is therefore no edge-level invalidation stream to subscribe to
-// today. The next best available signal is
-// [VaultRepository.observeTimeline]: both the real and in-memory
-// implementations tick that flow on *every* committed `documents` write,
-// not just the current document's — see `VaultRepositoryImpl
-// .observeTimeline` (`changeTicks { it is TableChange.Documents }`, no
-// `docId` filter) and `InMemoryVaultRepository`'s equivalent. Editing a
-// source note (the write that precedes re-indexing its wikilinks) is
-// itself such a write, so re-querying `edgesTo` on every timeline tick
-// (with `limit = 1` — only the tick matters, not the page contents) does
-// catch "a link was added elsewhere" without the caller reopening this
-// note. The gap this doesn't close: if edge re-indexing runs
-// asynchronously well after the triggering document write commits (e.g.
-// a background `IngestWorker`), a tick that fires before the edge write
-// lands won't be followed by another one once the edge write alone
-// completes, since `IndexStore` has no wired signal of its own. Closing
-// that gap needs `IndexStoreImpl`'s reserved `ChangeBus` slot to actually
-// wire up and surface through the `IndexStore` interface — tracked as
-// follow-on work, not this bead's to fix under its no-`core/vault`-edits
-// constraint.
+// [invalidationTicks] merges two sources, and needs both.
+//
+//  1. **`IndexStore.observeChanges()`** (bd `skein-rkxi`) — the primary
+//     signal. `IndexStoreImpl` publishes an `IndexChange` after the
+//     outermost commit of every index write, so a `WIKILINK`-kind
+//     `EdgesReplaced` is exactly "somebody's wikilinks were just
+//     re-indexed". This closes the gap the original `skein-9jj`
+//     implementation documented: when edge re-indexing lands
+//     asynchronously, well after the triggering document write committed
+//     (a background `IngestWorker`), the edge write now ticks on its own
+//     account instead of leaving the drawer stale until the next
+//     unrelated document write.
+//
+//     The event names the edges' *source*, not their destination, so it
+//     cannot say whether this note was affected — the filter is therefore
+//     "any `EdgesReplaced` that nominated `WIKILINK`", and the drawer
+//     re-queries and lets the result speak. That is the same fan-out
+//     `observeTimeline` already had, narrowed from "any document write
+//     anywhere" to "any wikilink re-index anywhere". Chunk-level changes
+//     (`ChunksReplaced`) are deliberately *not* subscribed: they fire per
+//     document for every ingest pass, and the only thing they affect here
+//     is an excerpt whose source-document body write already ticked (2).
+//
+//  2. **[VaultRepository.observeTimeline]** — kept as a fallback, not
+//     removed. It is the only one of the two that emits an initial value
+//     at subscription time (`onStart { emit(Unit) }` in
+//     `VaultRepositoryImpl.changeTicks`), so it is what seeds the drawer's
+//     very first query; `observeChanges` has no replay by contract. It
+//     also still covers renames and deletes of the *target* note, which
+//     change [titleSentinel] and the target title the excerpt search looks
+//     for without any edge being rewritten.
+//
+// Both flows remain `core/model` contracts. `ChangeBus`/`TableChange`
+// (`core/vault/.../repository/ChangeBus.kt`) stay `core/vault`-internal
+// and this module still has no `:core:vault` dependency (bd `skein-03f`).
 package app.skein.feature.editor.backlinks
 
 import kotlinx.coroutines.CoroutineScope
@@ -72,13 +81,16 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.merge
 import kotlinx.coroutines.flow.stateIn
 import us.aherrera.skein.core.model.Chunk
 import us.aherrera.skein.core.model.DocId
 import us.aherrera.skein.core.model.Document
 import us.aherrera.skein.core.model.EdgeKind
+import us.aherrera.skein.core.model.IndexChange
 import us.aherrera.skein.core.model.IndexStore
 import us.aherrera.skein.core.model.TimelineFilter
 import us.aherrera.skein.core.model.VaultRepository
@@ -100,7 +112,9 @@ public data class BacklinkGroup(
  * @param vaultRepository already-open; used for `getDocument` (target
  *   title + resolving each backlinking source) and `observeTimeline` (the
  *   live-update trigger — see file header).
- * @param indexStore already-open; used for `edgesTo` and `chunksForDocs`.
+ * @param indexStore already-open; used for `edgesTo`, `chunksForDocs`,
+ *   and `observeChanges` (the primary live-update trigger — see file
+ *   header).
  * @param scope owner of the shared [backlinks] flow — a Compose
  *   `rememberCoroutineScope()` in the app, `backgroundScope` in tests.
  * @param onOpen invoked with a backlinking document's id on row tap — the
@@ -142,7 +156,15 @@ public class BacklinksState(
         onOpen(document.id)
     }
 
-    private fun invalidationTicks(): Flow<Unit> = vaultRepository.observeTimeline(TimelineFilter(), limit = 1).map {}
+    /** See the file header: the index stream is the primary signal, the timeline tick the seed and fallback. */
+    private fun invalidationTicks(): Flow<Unit> =
+        merge(
+            vaultRepository.observeTimeline(TimelineFilter(), limit = 1).map {},
+            indexStore
+                .observeChanges()
+                .filter { it is IndexChange.EdgesReplaced && EdgeKind.WIKILINK in it.kinds }
+                .map {},
+        )
 
     private suspend fun queryBacklinks(target: DocId): List<BacklinkGroup> {
         val targetDoc = vaultRepository.getDocument(target) ?: return emptyList()

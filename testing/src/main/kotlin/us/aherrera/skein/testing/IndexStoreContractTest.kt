@@ -3,10 +3,22 @@
 // backed `IndexStoreImplTest` in `E2.I15`.
 //
 // The five semantic tests below mirror the plan `E0.I11` acceptance
-// criteria bullet list exactly.
+// criteria bullet list exactly. The `observeChanges` block after them
+// covers the invalidation-stream contract added by bd `skein-rkxi` — see
+// `IndexStore.observeChanges`'s kdoc for the guarantee being pinned here.
+// The one clause this suite cannot cover portably is "nothing is emitted
+// for rolled-back work": only a store with a real transaction can be made
+// to roll back, so that lives in `IndexStoreImplAcceptanceTest`
+// (`:core:vault` androidTest).
 
 package us.aherrera.skein.testing
 
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.test.TestScope
+import kotlinx.coroutines.test.UnconfinedTestDispatcher
+import kotlinx.coroutines.test.runCurrent
 import kotlinx.coroutines.test.runTest
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertFalse
@@ -15,6 +27,7 @@ import org.junit.Test
 import us.aherrera.skein.core.model.ChunkId
 import us.aherrera.skein.core.model.Edge
 import us.aherrera.skein.core.model.EdgeKind
+import us.aherrera.skein.core.model.IndexChange
 import us.aherrera.skein.core.model.IndexStore
 import us.aherrera.skein.core.model.NewChunk
 
@@ -211,6 +224,181 @@ public abstract class IndexStoreContractTest {
             )
             assertTrue("expected the seed to appear in the neighborhood", ids[0] in visited)
         }
+
+    // ------------------------------------------------------------------
+    // AC (skein-rkxi): observeChanges emits after the mutating call
+    // ------------------------------------------------------------------
+
+    @Test
+    public fun observeChanges_emits_ChunksReplaced_by_the_time_replaceChunks_returns(): Unit =
+        runTest {
+            val idx = index()
+            val docId = "01924a4b-4d29-7000-8000-00000000E0E1"
+            val seen = collectChanges(idx)
+
+            idx.replaceChunks(
+                docId = docId,
+                chunks = listOf(NewChunk(ord = 0, text = "alpha", tokenCount = 1)),
+                embedderId = "fake",
+                embedderVersion = 1,
+            )
+
+            // No `runCurrent()` between the call and the assertion: the
+            // contract is that the event is published *before* the
+            // mutating call returns, not merely eventually.
+            assertEquals(listOf(IndexChange.ChunksReplaced(docId)), seen)
+        }
+
+    @Test
+    public fun observeChanges_emits_ChunksReplaced_even_when_the_new_chunk_list_is_empty(): Unit =
+        runTest {
+            val idx = index()
+            val docId = "01924a4b-4d29-7000-8000-00000000E0E2"
+            idx.replaceChunks(
+                docId = docId,
+                chunks = listOf(NewChunk(ord = 0, text = "alpha", tokenCount = 1)),
+                embedderId = "fake",
+                embedderVersion = 1,
+            )
+            val seen = collectChanges(idx)
+
+            // Clearing a document's chunks is still a change to the index.
+            idx.replaceChunks(docId = docId, chunks = emptyList(), embedderId = "fake", embedderVersion = 1)
+
+            assertEquals(listOf(IndexChange.ChunksReplaced(docId)), seen)
+        }
+
+    @Test
+    public fun observeChanges_emits_EdgesReplaced_carrying_the_nominated_kinds(): Unit =
+        runTest {
+            val idx = index()
+            val src = "01924a4b-4d29-7000-8000-00000000E0E3"
+            val dst = "01924a4b-4d29-7000-8000-00000000E0E4"
+            val seen = collectChanges(idx)
+
+            idx.replaceEdges(
+                srcId = src,
+                kinds = setOf(EdgeKind.WIKILINK, EdgeKind.TAG),
+                edges = listOf(Edge(srcId = src, dstId = dst, kind = EdgeKind.WIKILINK, createdAt = 0L)),
+            )
+
+            assertEquals(
+                listOf(IndexChange.EdgesReplaced(src, setOf(EdgeKind.WIKILINK, EdgeKind.TAG))),
+                seen,
+            )
+        }
+
+    @Test
+    public fun observeChanges_is_silent_for_a_no_op_replaceEdges(): Unit =
+        runTest {
+            val idx = index()
+            val seen = collectChanges(idx)
+
+            idx.replaceEdges(srcId = "any-src", kinds = emptySet(), edges = emptyList())
+
+            assertEquals(emptyList<IndexChange>(), seen)
+        }
+
+    @Test
+    public fun observeChanges_emits_EmbeddingsUpdated_with_the_written_chunk_ids(): Unit =
+        runTest {
+            val idx = index()
+            val docId = "01924a4b-4d29-7000-8000-00000000E0E5"
+            val ids =
+                idx.replaceChunks(
+                    docId = docId,
+                    chunks = listOf(NewChunk(ord = 0, text = "alpha", tokenCount = 1)),
+                    embedderId = "fake",
+                    embedderVersion = 1,
+                )
+            val seen = collectChanges(idx)
+
+            idx.putEmbeddings(listOf(ids.single() to basis(axis = 0)))
+
+            assertEquals(listOf(IndexChange.EmbeddingsUpdated(ids)), seen)
+        }
+
+    @Test
+    public fun observeChanges_delivers_one_event_per_call_in_publication_order(): Unit =
+        runTest {
+            val idx = index()
+            val docA = "01924a4b-4d29-7000-8000-00000000E0E6"
+            val docB = "01924a4b-4d29-7000-8000-00000000E0E7"
+            val seen = collectChanges(idx)
+
+            // Two chunks in ONE call must still produce exactly one event —
+            // the stream is a re-query tick, not a per-row delta log.
+            idx.replaceChunks(
+                docId = docA,
+                chunks =
+                    listOf(
+                        NewChunk(ord = 0, text = "alpha", tokenCount = 1),
+                        NewChunk(ord = 1, text = "beta", tokenCount = 1),
+                    ),
+                embedderId = "fake",
+                embedderVersion = 1,
+            )
+            idx.replaceEdges(
+                srcId = docA,
+                kinds = setOf(EdgeKind.WIKILINK),
+                edges = listOf(Edge(srcId = docA, dstId = docB, kind = EdgeKind.WIKILINK, createdAt = 0L)),
+            )
+            idx.replaceChunks(
+                docId = docB,
+                chunks = listOf(NewChunk(ord = 0, text = "gamma", tokenCount = 1)),
+                embedderId = "fake",
+                embedderVersion = 1,
+            )
+
+            assertEquals(
+                listOf(
+                    IndexChange.ChunksReplaced(docA),
+                    IndexChange.EdgesReplaced(docA, setOf(EdgeKind.WIKILINK)),
+                    IndexChange.ChunksReplaced(docB),
+                ),
+                seen,
+            )
+        }
+
+    @Test
+    public fun observeChanges_does_not_replay_changes_made_before_subscribing(): Unit =
+        runTest {
+            val idx = index()
+            val docId = "01924a4b-4d29-7000-8000-00000000E0E8"
+            idx.replaceChunks(
+                docId = docId,
+                chunks = listOf(NewChunk(ord = 0, text = "alpha", tokenCount = 1)),
+                embedderId = "fake",
+                embedderVersion = 1,
+            )
+
+            val seen = collectChanges(idx)
+
+            assertEquals(emptyList<IndexChange>(), seen)
+        }
+
+    /**
+     * Subscribes to [IndexStore.observeChanges] on an unconfined test
+     * dispatcher and returns the live-appended list of what it saw.
+     *
+     * Unconfined matters: it makes the collector run eagerly at every
+     * emission point, so a test can assert "the event was already
+     * published when the mutating call returned" without an intervening
+     * `runCurrent()`. The [runCurrent] below is only to let the
+     * subscription itself register before the test mutates anything —
+     * `observeChanges` has no replay, so a late subscriber sees nothing.
+     */
+    @OptIn(ExperimentalCoroutinesApi::class)
+    private fun TestScope.collectChanges(idx: IndexStore): List<IndexChange> {
+        val seen = mutableListOf<IndexChange>()
+        val job: Job =
+            backgroundScope.launch(UnconfinedTestDispatcher(testScheduler)) {
+                idx.observeChanges().collect { seen += it }
+            }
+        runCurrent()
+        check(job.isActive) { "observeChanges collector died before the test body ran" }
+        return seen
+    }
 
     private companion object {
         const val INT8_DIM: Int = 256
