@@ -1,11 +1,24 @@
 // `NoteTab` (plan `E6.I9`, bd `skein-u01`, spec §8.5): the note tab's
-// content — header (title, ✦ graph button), the editor, and the
+// content — header (title, share menu, ✦ graph button), the editor, and the
 // collapsible backlinks drawer. Pure rendering over [NoteTabState]; every
 // vault read/write happens in that state holder, not here (same discipline
 // `BacklinksDrawer`/`SkeinEditor` already follow).
+//
+// The share menu (bd `skein-fay`, plan `E6.I16`) is the one place in this
+// file that reaches past [NoteTabState] for something Android-shaped: intent
+// *construction* stays in the pure `app.skein.feature.editor.share` helpers
+// (`ShareIntents`/`SaveAsIntents`, both driven from [NoteTabState]), but
+// firing them (`Context.startActivity`, the `ACTION_CREATE_DOCUMENT`
+// activity-result launcher, and `PrintManager`) needs a live `Context`/
+// `ActivityResultRegistry`, which only exists here, in the composable.
 
 package app.skein.feature.editor.notetab
 
+import android.app.Activity
+import android.print.PrintAttributes
+import android.print.PrintManager
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -14,6 +27,8 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.DropdownMenu
+import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
@@ -21,17 +36,28 @@ import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.unit.dp
+import app.skein.core.export.pdf.PdfExportService
 import app.skein.core.markdown.render.MarkdownStyle
+import app.skein.core.vault.session.UnlockState
 import app.skein.feature.editor.SkeinEditor
 import app.skein.feature.editor.backlinks.BacklinksDrawer
+import app.skein.feature.editor.share.SaveAsFormat
+import app.skein.feature.editor.share.ShareIntents
 import app.skein.feature.shell.input.SecureTextField
 import app.skein.feature.shell.theme.LocalSkeinTokens
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.launch
 import us.aherrera.skein.core.model.DocId
 import us.aherrera.skein.core.model.IndexStore
 import us.aherrera.skein.core.model.VaultRepository
@@ -58,6 +84,15 @@ import java.time.Duration
  *   registers it against `app.skein.feature.shell.tabs.FlushRegistry`
  *   keyed by this tab's id (`docs/design/LOCK_POLICY_INDEXING.md` §4.3).
  *   [unregisterFlush] is called on disposal (tab closed / composable left).
+ * @param unlockState bd `skein-fay`: when supplied, the share menu (glyph
+ *   button in the header) is disabled while this is anything other than
+ *   [UnlockState.Unlocked] — sharing/saving while locked is already
+ *   impossible by construction (`VaultRepository`/`ExportServiceImpl` calls
+ *   fail once the vault is closed), but the affordance itself should not
+ *   invite a tap that can only fail. Defaults to `null` ("always enabled"),
+ *   matching every existing caller (`app.skein.MainActivity`, off-limits to
+ *   this bead) that does not yet thread a live `UnlockManager.state` down
+ *   to this composable — a future host wiring is additive, not breaking.
  */
 @Composable
 public fun NoteTab(
@@ -71,6 +106,7 @@ public fun NoteTab(
     registerFlush: (suspend (Duration) -> Boolean) -> Unit = {},
     unregisterFlush: () -> Unit = {},
     markdownStyle: MarkdownStyle = MarkdownStyle.Default,
+    unlockState: StateFlow<UnlockState>? = null,
 ) {
     val scope = rememberCoroutineScope()
     val state =
@@ -90,6 +126,33 @@ public fun NoteTab(
         onDispose { unregisterFlush() }
     }
 
+    var unlocked by remember { mutableStateOf(true) }
+    if (unlockState != null) {
+        DisposableEffect(unlockState) {
+            val job =
+                scope.launch {
+                    unlockState.collectLatest { unlocked = it is UnlockState.Unlocked }
+                }
+            onDispose { job.cancel() }
+        }
+    }
+
+    val context = LocalContext.current
+    var pendingSaveAsFormat by remember { mutableStateOf<SaveAsFormat?>(null) }
+    val saveAsLauncher =
+        rememberLauncherForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+            val format = pendingSaveAsFormat
+            pendingSaveAsFormat = null
+            val uri = result.data?.data
+            if (format != null && result.resultCode == Activity.RESULT_OK && uri != null) {
+                scope.launch {
+                    context.contentResolver.openOutputStream(uri)?.use { out ->
+                        state.writeSaveAs(format, out)
+                    }
+                }
+            }
+        }
+
     Column(
         modifier = modifier.fillMaxSize().testTag(NoteTabTestTags.ROOT),
     ) {
@@ -97,6 +160,22 @@ public fun NoteTab(
             title = state.title,
             onTitleChange = state::onTitleChange,
             onOpenGraph = { onOpenGraph(docId) },
+            shareMenuEnabled = unlocked,
+            onShareAsText = {
+                context.startActivity(ShareIntents.chooser(state.shareAsTextIntent(), title = state.title))
+            },
+            onSaveAs = { format ->
+                pendingSaveAsFormat = format
+                saveAsLauncher.launch(state.saveAsDocumentIntent(format))
+            },
+            onExportPdf = {
+                scope.launch {
+                    state.flush()
+                    val printManager = context.getSystemService(PrintManager::class.java) ?: return@launch
+                    val printAdapter = PdfExportService(context, vaultRepository).printAdapter(docId)
+                    printManager.print("Skein – ${state.title}", printAdapter, PrintAttributes.Builder().build())
+                }
+            },
         )
         HorizontalDivider()
         when {
@@ -126,6 +205,10 @@ private fun NoteTabHeader(
     title: String,
     onTitleChange: (String) -> Unit,
     onOpenGraph: () -> Unit,
+    shareMenuEnabled: Boolean,
+    onShareAsText: () -> Unit,
+    onSaveAs: (SaveAsFormat) -> Unit,
+    onExportPdf: () -> Unit,
 ) {
     val glyphs = LocalSkeinTokens.current.glyphs
     Surface(color = MaterialTheme.colorScheme.surface) {
@@ -139,6 +222,12 @@ private fun NoteTabHeader(
                 modifier = Modifier.weight(1f).testTag(NoteTabTestTags.TITLE_FIELD),
                 singleLine = true,
                 textStyle = MaterialTheme.typography.titleMedium,
+            )
+            ShareMenuButton(
+                enabled = shareMenuEnabled,
+                onShareAsText = onShareAsText,
+                onSaveAs = onSaveAs,
+                onExportPdf = onExportPdf,
             )
             // Restrained glyph set (spec §8.1): the ✦ glyph rendered as
             // plain Text inside the IconButton rather than a Material
@@ -155,11 +244,84 @@ private fun NoteTabHeader(
     }
 }
 
-/** Stable test tags for [NoteTab] and [NoteTabHeader]. */
+/**
+ * bd `skein-fay` (plan `E6.I16`): the note header's "share source" menu —
+ * "Share as text" (`ACTION_SEND`/`EXTRA_TEXT`), "Save as .md"/"Save as
+ * .docx" (`ACTION_CREATE_DOCUMENT`), and "Export as PDF" (the already-shipped
+ * `PrintManager` path, `E2.I11`). One glyph button local to this module
+ * (not `LocalSkeinTokens.Glyphs`, which is owned by `:feature:shell` — see
+ * this bead's non-negotiables) opens the menu; each item just forwards to
+ * the callback [NoteTab] wired against real platform calls.
+ */
+@Composable
+private fun ShareMenuButton(
+    enabled: Boolean,
+    onShareAsText: () -> Unit,
+    onSaveAs: (SaveAsFormat) -> Unit,
+    onExportPdf: () -> Unit,
+) {
+    var expanded by remember { mutableStateOf(false) }
+    Box {
+        IconButton(
+            onClick = { expanded = true },
+            enabled = enabled,
+            modifier = Modifier.size(40.dp).testTag(NoteTabTestTags.SHARE_BUTTON),
+        ) {
+            // Local glyph, not from `LocalSkeinTokens.Glyphs` — that registry
+            // lives in `:feature:shell`, off-limits to this bead (another
+            // agent is editing shell/app concurrently). "↗" reads as
+            // "send/export out" without pulling in a Material icon asset,
+            // matching the restrained-glyph convention above.
+            Text(text = "↗", style = MaterialTheme.typography.titleMedium)
+        }
+        DropdownMenu(expanded = expanded, onDismissRequest = { expanded = false }) {
+            DropdownMenuItem(
+                text = { Text("Share as text") },
+                onClick = {
+                    expanded = false
+                    onShareAsText()
+                },
+                modifier = Modifier.testTag(NoteTabTestTags.SHARE_MENU_TEXT),
+            )
+            DropdownMenuItem(
+                text = { Text("Save as Markdown (.md)") },
+                onClick = {
+                    expanded = false
+                    onSaveAs(SaveAsFormat.MARKDOWN)
+                },
+                modifier = Modifier.testTag(NoteTabTestTags.SHARE_MENU_SAVE_MARKDOWN),
+            )
+            DropdownMenuItem(
+                text = { Text("Save as Word (.docx)") },
+                onClick = {
+                    expanded = false
+                    onSaveAs(SaveAsFormat.DOCX)
+                },
+                modifier = Modifier.testTag(NoteTabTestTags.SHARE_MENU_SAVE_DOCX),
+            )
+            DropdownMenuItem(
+                text = { Text("Export as PDF") },
+                onClick = {
+                    expanded = false
+                    onExportPdf()
+                },
+                modifier = Modifier.testTag(NoteTabTestTags.SHARE_MENU_EXPORT_PDF),
+            )
+        }
+    }
+}
+
+/** Stable test tags for [NoteTab], [NoteTabHeader], and [ShareMenuButton]. */
 public object NoteTabTestTags {
     public const val ROOT: String = "app.skein.feature.editor.notetab.NoteTab"
     public const val TITLE_FIELD: String = "app.skein.feature.editor.notetab.NoteTab.title"
     public const val GRAPH_BUTTON: String = "app.skein.feature.editor.notetab.NoteTab.graphButton"
     public const val LOADING: String = "app.skein.feature.editor.notetab.NoteTab.loading"
     public const val ERROR: String = "app.skein.feature.editor.notetab.NoteTab.error"
+    public const val SHARE_BUTTON: String = "app.skein.feature.editor.notetab.NoteTab.shareButton"
+    public const val SHARE_MENU_TEXT: String = "app.skein.feature.editor.notetab.NoteTab.shareMenu.text"
+    public const val SHARE_MENU_SAVE_MARKDOWN: String =
+        "app.skein.feature.editor.notetab.NoteTab.shareMenu.saveMarkdown"
+    public const val SHARE_MENU_SAVE_DOCX: String = "app.skein.feature.editor.notetab.NoteTab.shareMenu.saveDocx"
+    public const val SHARE_MENU_EXPORT_PDF: String = "app.skein.feature.editor.notetab.NoteTab.shareMenu.exportPdf"
 }

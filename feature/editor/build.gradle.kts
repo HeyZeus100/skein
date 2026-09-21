@@ -29,6 +29,16 @@ android {
         sourceCompatibility = JavaVersion.VERSION_17
         targetCompatibility = JavaVersion.VERSION_17
     }
+
+    testOptions {
+        unitTests {
+            // bd `skein-fay`: `ShareMenuTest`'s Robolectric Compose host
+            // needs merged resources to render `MaterialTheme`/`DropdownMenu`
+            // — same reason `:feature:shell`'s `SecureTextFieldTest`/
+            // `SkeinAppTest` set this (bd memory `robolectric-sdk37-needs-java21`).
+            isIncludeAndroidResources = true
+        }
+    }
 }
 
 dependencies {
@@ -56,19 +66,23 @@ dependencies {
     // has no dependency back on this module (see its own build.gradle.kts
     // note on `:core:markdown`), so this does not create a cycle.
     implementation(project(":core:vault"))
+    // bd `skein-fay` (E6.I16): "Export as PDF" calls `PdfExportService`
+    // directly (it needs an Android `Context` to build the
+    // `PrintDocumentAdapter`'s layout pipeline, per that class's own
+    // header) rather than through `ExportService`'s pure-Kotlin contract,
+    // which has no PDF method by design.
+    implementation(project(":core:export"))
     // §9 IME hardening: SecureImeInterceptor + SecureBasicTextField.
     // RawTextFieldTest requires every text-input Composable to go
     // through one of :feature:shell's two allowlisted wrappers.
     implementation(project(":feature:shell"))
+    // bd `skein-fay`: the "Save as..." menu launches `ACTION_CREATE_DOCUMENT`
+    // via `rememberLauncherForActivityResult` from `NoteTab`'s main-source
+    // composable (not just a debug preview), so this is a real
+    // `implementation` dependency now, not the debug-only one below.
+    implementation(libs.androidx.activity.compose)
 
     debugImplementation(libs.compose.ui.tooling)
-    // `lintDebug` resolves `src/debug/AndroidManifest.xml`'s
-    // `androidx.activity.ComponentActivity` reference against the debug
-    // variant's compile classpath, not the test classpath — same note as
-    // :feature:shell's build script. Without this a `MissingClass` lint
-    // error fires even though only the androidTest classpath needs the
-    // class at runtime.
-    debugImplementation(libs.androidx.activity.compose)
 
     testImplementation(libs.junit)
     // EditorAutosaveTest (bd skein-twb) drives EditorState directly with
@@ -80,13 +94,19 @@ dependencies {
     // pure JVM (docs/TESTING.md), so this pulls no Android test
     // infrastructure onto the JVM `test` classpath.
     testImplementation(project(":testing"))
+    // bd `skein-fay`: `ShareIntentsTest`/`SaveAsIntentsTest` build real
+    // `android.content.Intent`s (needs Robolectric's shadow — the compile
+    // `android.jar` stub throws on every method body), and `ShareMenuTest`
+    // is a Robolectric Compose UI test over `NoteTab`'s header menu — same
+    // shape as `:feature:shell`'s `SecureTextFieldTest`/`SkeinAppTest`.
+    testImplementation(libs.robolectric)
+    testImplementation(libs.androidx.test.ext.junit)
+    testImplementation(libs.compose.ui.test.junit4)
+    testImplementation(libs.androidx.activity.compose)
 
     // On-device Compose UI test (skein-03f acceptance: compile the UI
     // test even where the local worktree cannot run it; bd `skein-k3b2`
-    // tracks the CI emulator gate). Placed under `androidTest` so the
-    // JVM `test` classpath does not pull in the Compose UI test deps —
-    // those pull kotlinx-coroutines-test / androidx.collection variants
-    // that are not yet pinned in `gradle/verification-metadata.xml`.
+    // tracks the CI emulator gate).
     androidTestImplementation(platform(libs.compose.bom))
     androidTestImplementation(libs.compose.ui.test.junit4)
     androidTestImplementation(libs.androidx.test.ext.junit)

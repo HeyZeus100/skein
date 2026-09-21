@@ -8,16 +8,21 @@
 
 package app.skein.feature.editor.notetab
 
+import android.content.Intent
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.text.input.TextFieldValue
 import app.skein.core.vault.codec.Frontmatter
+import app.skein.core.vault.export.ExportServiceImpl
 import app.skein.feature.editor.AutosaveStatus
 import app.skein.feature.editor.EditorState
 import app.skein.feature.editor.WikilinkTarget
 import app.skein.feature.editor.backlinks.BacklinksState
+import app.skein.feature.editor.share.SaveAsFormat
+import app.skein.feature.editor.share.SaveAsIntents
+import app.skein.feature.editor.share.ShareIntents
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.flow.first
@@ -31,6 +36,7 @@ import us.aherrera.skein.core.model.FrontmatterKeys
 import us.aherrera.skein.core.model.IndexStore
 import us.aherrera.skein.core.model.NewDocument
 import us.aherrera.skein.core.model.VaultRepository
+import java.io.OutputStream
 import java.time.Duration
 
 /**
@@ -88,6 +94,14 @@ public class NoteTabState(
     public var editorState: EditorState by mutableStateOf(EditorState(autosaveScope = scope))
         private set
 
+    /**
+     * bd `skein-fay` (E6.I16): backs [shareAsTextIntent] and [writeSaveAs].
+     * Depends only on [VaultRepository] (see that class's own header) so it
+     * works unmodified against the [InMemoryVaultRepository][us.aherrera.skein.testing.InMemoryVaultRepository]
+     * fake this state's own tests already seed.
+     */
+    private val exportService = ExportServiceImpl(vaultRepository)
+
     /** Backlinks drawer state (bd `skein-9jj`) over the same repository/index pair. */
     public val backlinksState: BacklinksState =
         BacklinksState(
@@ -123,6 +137,46 @@ public class NoteTabState(
      * didn't complete in time.
      */
     public suspend fun flush(deadline: Duration = Duration.ofSeconds(2)): Boolean = editorState.flush(deadline)
+
+    /**
+     * bd `skein-fay` v1 scope item 1 ("share as text"): builds the
+     * `ACTION_SEND` intent (via [ShareIntents], pure Kotlin, unit-tested on
+     * its own) from what is currently on screen — the live editor buffer,
+     * not the last-flushed vault row — split back into body text with the
+     * same [Frontmatter.parse] every save path uses.
+     */
+    public fun shareAsTextIntent(): Intent {
+        val (_, body) = Frontmatter.parse(editorState.source)
+        return ShareIntents.shareAsText(title = title, bodyMd = body)
+    }
+
+    /**
+     * bd `skein-fay` v1 scope item 2 ("save as..."): builds the
+     * `ACTION_CREATE_DOCUMENT` intent (via [SaveAsIntents]) for [format],
+     * suggesting the current [title] as the filename.
+     */
+    public fun saveAsDocumentIntent(format: SaveAsFormat): Intent =
+        SaveAsIntents.createDocument(format, suggestedTitle = title)
+
+    /**
+     * Streams this note into [outputStream] once `ACTION_CREATE_DOCUMENT`
+     * (launched from [saveAsDocumentIntent]) has handed the caller a
+     * destination `Uri` and it opened a stream on it. [flush]es any pending
+     * autosave first so a just-typed edit is never silently missing from
+     * the exported bytes; per `docs/design/POST_REVIEW_RESOLUTIONS.md`
+     * §4.2 there is no local staging file here — [ExportServiceImpl] writes
+     * straight into the caller-supplied stream.
+     */
+    public suspend fun writeSaveAs(
+        format: SaveAsFormat,
+        outputStream: OutputStream,
+    ) {
+        flush()
+        when (format) {
+            SaveAsFormat.MARKDOWN -> exportService.exportMarkdown(docId, outputStream)
+            SaveAsFormat.DOCX -> exportService.exportDocx(docId, outputStream, template = null)
+        }
+    }
 
     /**
      * bd `skein-6rr` (`E7.I3`): the editor's buffer is the document's
