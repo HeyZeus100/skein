@@ -56,7 +56,38 @@ android {
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro",
             )
+
+            // skein-8jtj: AGP otherwise packages
+            // `META-INF/version-control-info.textproto` describing the git
+            // checkout the build ran in. That entry was the *only* thing
+            // that differed between a release APK built in this repo's git
+            // worktree and one built from a clone of the same commit at a
+            // different path: a worktree yields
+            // `generate_error_reason: NO_VALID_GIT_FOUND` (42 bytes) while a
+            // normal clone embeds `revision: "<sha>"` (~120 bytes). That
+            // makes the APK's sha256 depend on *how the tree was obtained*
+            // rather than on its contents, which defeats the whole point of
+            // the reproducible-build check and of E1.I8 (skein-ddp)'s
+            // cross-machine hash comparison. It also changes on every commit
+            // and leaks repo metadata into a FOSS build.
+            vcsInfo {
+                include = false
+            }
         }
+    }
+
+    // skein-8jtj / E1.I8 (skein-ddp): never embed Play's dependency-metadata
+    // blob. AGP writes it into the APK Signing Block, compressed and
+    // encrypted to a Google public key, so it is nondeterministic by
+    // construction — two signings of identical inputs need not produce
+    // identical bytes. It is absent today only because the `release` build
+    // type has no signing config yet (an unsigned APK has no Signing Block
+    // at all); the moment E1.I8's signed pipeline lands it would silently
+    // break the reproducible-build check. Disabling it now is also simply
+    // correct for a FOSS/F-Droid build, which ships no Play metadata.
+    dependenciesInfo {
+        includeInApk = false
+        includeInBundle = false
     }
 
     buildFeatures {

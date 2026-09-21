@@ -1,11 +1,19 @@
 name: Reproducible build check
 
-# On a release tag, build the foss release APK twice from clean checkouts
-# and diff the SHA-256 sums, per spec §10 (docs/REPRODUCIBLE_BUILDS.md).
+# On a release tag, build the unsigned foss release APK twice from clean
+# checkouts and require the two to be byte-identical, per spec §10. The
+# recipe, the must-match toolchain and how to reproduce this locally are
+# documented in docs/VERIFICATION.md § "Build reproducibility".
 # This does not sign the APK and never touches a keystore — see E1.I8 for
-# the signed release pipeline. Full byte-for-byte reproducibility also
-# depends on the native library determinism work in E1.I4/E1.I5; until that
-# lands this job may legitimately fail, which is expected and documented.
+# the signed release pipeline.
+#
+# skein-8jtj re-verified this after E1.I11 (skein-4je) turned on R8 for the
+# release build type: two clean builds of the same commit are byte-identical
+# (716/716 entries), and so is a build from a separate clone at a different
+# path, once `vcsInfo { include = false }` stops AGP embedding
+# META-INF/version-control-info.textproto. The native .so determinism work
+# (E1.I4/E1.I5, skein-ej1b) has landed, so this job is now expected to pass
+# rather than to fail legitimately.
 on:
   push:
     tags:
@@ -69,30 +77,53 @@ jobs:
       - name: Set up Gradle
         uses: gradle/actions/setup-gradle@748248ddd2a24f49513d8f472f81c3a07d4d50e1 # v4.4.4
 
-      - name: Build 1 - assemble foss release
-        run: ./gradlew clean assembleFossRelease --stacktrace
+      # Negative case first: prove the comparator can actually fail before
+      # trusting a green result from it. Without this, "the APKs matched" and
+      # "the comparison silently no-opped" look identical in the log.
+      - name: Self-test the APK comparator
+        run: ./tools/ci/compare-apk-entries.sh --self-test
 
-      - name: Build 1 - stash APK
+      # `--no-build-cache` is load-bearing, not a speed knob. Both builds run
+      # in one job against the same Gradle build cache, so without it build 2
+      # restores `:app:minifyFossReleaseWithR8`, `:app:dexBuilder*` and
+      # friends FROM-CACHE — it copies build 1's outputs instead of
+      # recomputing them, and the comparison below becomes vacuous. That is
+      # exactly the R8 determinism this job exists to check (skein-8jtj), so
+      # both builds are forced to re-execute every task.
+      - name: Build 1 - assemble foss release
+        run: ./gradlew clean :app:assembleFossRelease --no-build-cache --stacktrace
+
+      - name: Build 1 - stash unsigned APK
         run: |
           mkdir -p /tmp/rb-build1
-          cp app/build/outputs/apk/foss/release/*.apk /tmp/rb-build1/
+          cp app/build/outputs/apk/foss/release/app-foss-release-unsigned.apk \
+             /tmp/rb-build1/
 
       - name: Build 2 - assemble foss release
-        run: ./gradlew clean assembleFossRelease --stacktrace
+        run: ./gradlew clean :app:assembleFossRelease --no-build-cache --stacktrace
 
-      - name: Build 2 - stash APK
+      - name: Build 2 - stash unsigned APK
         run: |
           mkdir -p /tmp/rb-build2
-          cp app/build/outputs/apk/foss/release/*.apk /tmp/rb-build2/
+          cp app/build/outputs/apk/foss/release/app-foss-release-unsigned.apk \
+             /tmp/rb-build2/
 
-      - name: Compare SHA-256
+      # The contract is still the whole-file sha256, but comparing entry by
+      # entry is what makes a failure actionable: it names the offending
+      # entries instead of printing two hashes that differ. See the script's
+      # header for why this is not just `sha256sum a b`.
+      - name: Compare unsigned release APKs entry by entry
         run: |
-          sha1=$(sha256sum /tmp/rb-build1/*.apk | awk '{print $1}')
-          sha2=$(sha256sum /tmp/rb-build2/*.apk | awk '{print $1}')
-          echo "Build 1 sha256: $sha1"
-          echo "Build 2 sha256: $sha2"
-          if [ "$sha1" != "$sha2" ]; then
-            echo "::error::Reproducible build check FAILED: SHA-256 sums differ between the two builds."
-            exit 1
-          fi
-          echo "Reproducible build check PASSED: identical SHA-256 sums."
+          ./tools/ci/compare-apk-entries.sh \
+            /tmp/rb-build1/app-foss-release-unsigned.apk \
+            /tmp/rb-build2/app-foss-release-unsigned.apk \
+            "double-build of ${GITHUB_SHA}" | tee /tmp/rb-compare.log
+          exit "${PIPESTATUS[0]}"
+
+      - name: Upload comparison report on failure
+        if: failure()
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: apk-entry-diff
+          path: /tmp/rb-compare.log
+          if-no-files-found: ignore
