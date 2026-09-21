@@ -86,8 +86,14 @@ import java.util.concurrent.atomic.AtomicLong
  *
  * @param keyProvider the Layer-0/Layer-1 crypto owner. Not modified here.
  * @param clock source of "now" for idle-lock math and [UnlockState.Unlocked.since].
- * @param idleTimeout after this much time without a [poke], and while
- *   `state == Unlocked`, the poller fires [lock] with [LockReason.IDLE_TIMEOUT].
+ * @param idleTimeout the initial value seeded into [policy] (`LockPolicy.idleTimeout`),
+ *   NOT clamped to the plan's allowed range — this is an internal/test seam
+ *   (production always passes the [LockPolicy.DEFAULT_IDLE_TIMEOUT] default;
+ *   tests use short values for a fast idle-tick clock). After this much time
+ *   without a [poke], and while `state == Unlocked`, the poller fires [lock]
+ *   with [LockReason.IDLE_TIMEOUT]. Callers that need to change this live
+ *   (`E3.I14`, Settings › Security) use [configure] instead, which DOES
+ *   clamp — see its doc.
  * @param idleTickInterval how often the background poller wakes up. Only
  *   consulted when [scope] is non-null.
  * @param observerBudgetMillis the shared deadline the [LockObserver] notify
@@ -104,7 +110,7 @@ public class UnlockManager
     constructor(
         private val keyProvider: VaultKeyProvider,
         private val clock: Clock = Clock.systemUTC(),
-        private val idleTimeout: Duration = Duration.ofMinutes(5),
+        idleTimeout: Duration = LockPolicy.DEFAULT_IDLE_TIMEOUT,
         private val idleTickInterval: Duration = Duration.ofSeconds(30),
         private val observerBudgetMillis: Long = DEFAULT_OBSERVER_BUDGET_MILLIS,
         private val scope: CoroutineScope? = null,
@@ -115,6 +121,17 @@ public class UnlockManager
 
         private val _authorizationToken = MutableStateFlow<AuthorizationToken?>(null)
         public val authorizationToken: StateFlow<AuthorizationToken?> = _authorizationToken.asStateFlow()
+
+        // `E3.I14` (skein-up0) — live-updatable lock policy. Seeded verbatim
+        // from the ctor's `idleTimeout` — the ctor is an internal/test seam
+        // (existing JVM tests rely on sub-minute values for a fast idle-tick
+        // clock), NOT the user-facing Settings path, so it is deliberately
+        // NOT clamped here. [configure] IS the user-facing path (Settings ›
+        // Security, via `SecurityPrefs`) and clamps every value it accepts —
+        // that is where the plan's "never allow a value outside the allowed
+        // range/ceiling" non-negotiable is actually enforced.
+        private val _policy = MutableStateFlow(LockPolicy(idleTimeout = idleTimeout))
+        public val policy: StateFlow<LockPolicy> = _policy.asStateFlow()
 
         // Serialises every state-transitioning entry point (`unlock`, `lock`,
         // `recoverAndRewrap`). Read-only access to `_state.value` outside the
@@ -415,10 +432,38 @@ public class UnlockManager
             val cur = _state.value
             if (cur !is UnlockState.Unlocked) return
             val elapsed = clock.millis() - lastActivityMillis
-            if (elapsed > idleTimeout.toMillis()) {
+            if (elapsed > _policy.value.idleTimeout.toMillis()) {
                 lockAndAwait(LockReason.IDLE_TIMEOUT)
             }
         }
+
+        // ---- lock policy (E3.I14 / skein-up0) -----------------------------
+
+        /**
+         * Applies a new [LockPolicy] live — the idle-timeout half takes
+         * effect on the very next idle-timer tick (or the next
+         * [pollIdleTimerForTest] in tests), no restart or re-unlock needed.
+         * [LockPolicy.idleTimeout] is always clamped to
+         * `[LockPolicy.MIN_IDLE_TIMEOUT, LockPolicy.MAX_IDLE_TIMEOUT]` —
+         * callers (Settings › Security, via `SecurityPrefs`) can only ever
+         * tighten the effective policy relative to the plan's ceiling, never
+         * weaken it, regardless of what value they pass in.
+         *
+         * [LockPolicy.lockOnScreenOff]/[LockPolicy.lockOnBackground] are read
+         * by the `:app`-side screen-off/`ProcessLifecycleOwner` hooks
+         * (`app.skein.vault.LockPolicyObserver`) at the moment each trigger
+         * fires; this method only stores the value they read.
+         */
+        public fun configure(newPolicy: LockPolicy) {
+            _policy.value = newPolicy.copy(idleTimeout = clampIdleTimeout(newPolicy.idleTimeout))
+        }
+
+        private fun clampIdleTimeout(duration: Duration): Duration =
+            when {
+                duration < LockPolicy.MIN_IDLE_TIMEOUT -> LockPolicy.MIN_IDLE_TIMEOUT
+                duration > LockPolicy.MAX_IDLE_TIMEOUT -> LockPolicy.MAX_IDLE_TIMEOUT
+                else -> duration
+            }
 
         // ---- observers ---------------------------------------------------
 

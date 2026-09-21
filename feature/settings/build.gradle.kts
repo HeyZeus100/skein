@@ -12,6 +12,7 @@ android {
 
     defaultConfig {
         minSdk = 30
+        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         // skein-ugo (E3.I4): `:feature:shell` now depends on `:core:vault`
         // (skein-e2ki's "distribution" foss/dev flavor dimension, for its
         // native `.so` ABI filters). This module has no flavors of its own
@@ -53,4 +54,17 @@ dependencies {
     testImplementation(libs.junit)
     testImplementation(libs.kotlinx.coroutines.test)
     testImplementation(libs.turbine)
+
+    // On-device Compose UI test for the E3.I14 (skein-up0) idle-timeout
+    // selector surviving activity recreation — compile the UI test even
+    // where the local worktree cannot run it; bd `skein-k3b2` tracks the CI
+    // emulator gate (same pattern as `:feature:graph`'s `GraphViewInstrumentedTest`).
+    androidTestImplementation(platform(libs.compose.bom))
+    androidTestImplementation(libs.compose.ui.test.junit4)
+    androidTestImplementation(libs.androidx.test.ext.junit)
+    androidTestImplementation(libs.androidx.test.runner)
+    androidTestImplementation(libs.androidx.test.rules)
+    androidTestImplementation(libs.androidx.activity.compose)
+
+    debugImplementation(libs.androidx.activity.compose)
 }

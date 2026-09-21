@@ -18,10 +18,23 @@ public enum class LockReason {
     IDLE_TIMEOUT,
 
     /**
-     * `ProcessLifecycleOwner` reported the app going to background with the
-     * `lockOnScreenOff` policy enabled (`LOCK_POLICY_INDEXING.md` §4.5).
+     * The device screen turned off (`Intent.ACTION_SCREEN_OFF`) while
+     * [LockPolicy.lockOnScreenOff] was enabled (the secure default; plan
+     * `E3.I14`, `LOCK_POLICY_INDEXING.md` §4.5). Fires regardless of
+     * whether Skein is currently the foreground app — see
+     * [BACKGROUND_POLICY] for the separate "left foreground" signal.
      */
     SCREEN_OFF_POLICY,
+
+    /**
+     * `ProcessLifecycleOwner` reported Skein leaving the foreground
+     * (`Lifecycle.Event.ON_STOP` — task switch, home button, screen off)
+     * while [LockPolicy.lockOnBackground] was enabled. Off by default;
+     * this is a stricter opt-in on top of [SCREEN_OFF_POLICY], not a
+     * replacement for it (screen-off with the screen still resting on the
+     * lock screen fires [SCREEN_OFF_POLICY] independently of this).
+     */
+    BACKGROUND_POLICY,
 
     /**
      * The process is shutting down. Wired to `Runtime.addShutdownHook` in
