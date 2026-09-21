@@ -57,12 +57,15 @@ public interface VaultKeyProvider {
      * entries (biometric-bound and device-credential-bound, per
      * `ATTACHMENT_ENCRYPTION.md` §3.2), generates a 32-byte
      * `master_key_material` via `SecureRandom`, wraps it under each
-     * Layer-0 key, and writes the wrapped bytes to
-     * `attachment_master_key` (`001_initial.sql` §"Attachment key hierarchy").
+     * Layer-0 key, and persists the wrapped bytes to the key-envelope file
+     * (`keys/key-envelope.v1`, `VAULT_FORMAT.md` §1 — outside the SQLCipher
+     * database this master keys; `ATTACHMENT_ENCRYPTION.md` §3.4 amendment).
      *
      * Prompts the biometric flow at least once against [activity] with
      * [prompt]. A user cancel of either wrap prompt aborts setup cleanly —
-     * no partial state is left in `attachment_master_key`.
+     * no partial state is left behind. Refused with [SetupResult.Failed]
+     * when a wrapped master is already persisted: setup replaces the
+     * Layer-0 aliases, so running it twice would strand the existing vault.
      */
     public suspend fun setup(
         activity: FragmentActivity,
@@ -104,10 +107,9 @@ public interface VaultKeyProvider {
      * Recovery from `KeyPermanentlyInvalidatedException` on a Layer-0 key.
      * Unwraps `master_key_material` via [survivingFactor], generates a
      * fresh Layer-0 entry for the OTHER (dead) factor, rewraps the
-     * SAME bytes under the new entry, atomically bumps
-     * `attachment_master_key.key_version`, and only then deletes the
-     * dead alias. See `ATTACHMENT_ENCRYPTION.md` §3.5 for the failure-mode
-     * enumeration.
+     * SAME bytes under the new entry, atomically bumps the envelope's
+     * `key_version`, and only then deletes the dead alias. See
+     * `ATTACHMENT_ENCRYPTION.md` §3.5 for the failure-mode enumeration.
      *
      * On success, the master key material remains in memory as
      * `currentKey`. Caller is responsible for `lock()`-triggered
@@ -181,7 +183,7 @@ public sealed class UnlockResult {
         public val factor: VaultKeyProvider.Factor,
     ) : UnlockResult()
 
-    /** `attachment_master_key` has no active row — call [VaultKeyProvider.setup] first. */
+    /** No key envelope exists yet (`keys/key-envelope.v1`) — call [VaultKeyProvider.setup] first. */
     public object NotInitialised : UnlockResult()
 
     public data class Failed(

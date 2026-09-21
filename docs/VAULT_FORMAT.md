@@ -25,7 +25,8 @@ On-disk layout, encryption, data model, and wire format for Skein vaults. This d
 
 - `vault.db` — SQLCipher-encrypted database (see section 2)
 - `attachments/` — directory of encrypted attachment blobs, named `<uuidv7>` with no extension
-- Other app-private files reserved for future use (model caches, key material wrapped under StrongBox, etc.)
+- `keys/key-envelope.v1` — **[shipped]** the vault master key, wrapped under the two `AndroidKeyStore` Layer-0 aliases (biometric-bound and device-credential-bound; StrongBox where available). It is read by `VaultKeyProvider` *before* `vault.db` can be opened — the same 32-byte master keys the database — so it lives beside the database rather than inside it (`docs/design/ATTACHMENT_ENCRYPTION.md` §3.4, 2026-09-20 amendment). Binary, big-endian: 8-byte magic `SKEINKEY`; `u16` format version (`1`); `u32 key_version`; `i64 created_at` (Unix ms); one flags byte (bit 0 = StrongBox-backed); a factor count (`2`); then one record per factor — factor id (`0x01` biometric, `0x02` device credential), alias, wrapped bytes, wrap IV and optional tag, each `u16`-length-prefixed, zero length meaning "this factor is currently dead" (the GCM tag rides inside the wrapped bytes in v1); and a trailing SHA-256 over everything before it. Written atomically (temp file in `keys/`, fsync, rename). It holds only Keystore-wrapped bytes, never the plaintext master. Source: `core/vault/src/main/kotlin/app/skein/core/vault/key/FileMasterKeyStorage.kt`. Excluded from cloud backup and device transfer by the `keys/` rule (`docs/BACKUP_EXCLUSIONS.md`).
+- Other app-private files reserved for future use (model caches, etc.)
 
 No user-readable Markdown or configuration files live on disk inside the vault. The on-disk layout is opaque; the Markdown representation is materialized on demand via `ExportService.exportMarkdown()` or `ExportService.exportVaultZip()` (see section 6).
 
@@ -154,6 +155,8 @@ Unique constraint: `(canonical_name, entity_type)`.
 #### `attachment_master_key` and `attachment_keys`
 
 **[v1 design, in progress]** Key wrapping tables for the attachment content encryption (see section 5). Details in `docs/design/ATTACHMENT_ENCRYPTION.md` §3.4.
+
+`attachment_master_key` is **vestigial** as of `skein-txrh`: the wrapped master it was designed to hold is persisted in `keys/key-envelope.v1` (section 1), because the same master keys `vault.db` itself and a row inside the database could never be read before the database is opened. Nothing reads or writes the table; its removal in a later migration is tracked as `skein-7d0l`. `attachment_keys` is schema-locked but not yet populated.
 
 ### Encryption and locking
 
@@ -463,7 +466,7 @@ The following are **not** stable or will ship as **[v1 design, in progress]**:
 
 - **Export staging** — Migration 005 (export staging tables and the plaintext-sweep machinery) is deferred to a later release.
 
-- **Encryption keys and wrapping** — The key wrapping tables (`attachment_master_key`, `attachment_keys`) are schema-locked but the key derivation, wrapping, and unwrapping logic is **[v1 design, in progress]** (plan task `E3.I6`, design `docs/design/ATTACHMENT_ENCRYPTION.md` §3.4).
+- **Encryption keys and wrapping** — The vault master's Keystore wrapping and the `keys/key-envelope.v1` file that holds it are **[shipped]** (section 1; `skein-txrh`). The per-attachment key wrapping table (`attachment_keys`) is schema-locked but its derivation, wrapping, and unwrapping logic is **[v1 design, in progress]** (plan task `E3.I6`, design `docs/design/ATTACHMENT_ENCRYPTION.md` §3.4); `attachment_master_key` is vestigial and slated for removal (`skein-7d0l`).
 
 - **Vault locking and unlock state machine** — The biometric-gated unlock flow and vault re-locking after timeout are specified but not yet implemented (plan tasks `E3.I2`, `E3.I3a`, `E3.I3b`).
 

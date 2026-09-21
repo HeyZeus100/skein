@@ -6,7 +6,13 @@ internal class FakeMasterKeyStorage : MasterKeyStorage {
     private var active: MasterKeyRow? = null
     val rewrapCalls: MutableList<Rewrap> = mutableListOf()
 
-    override fun readActive(): MasterKeyRow? = active
+    /** When set, every [readActive] throws it — simulates a corrupt / unreadable envelope (skein-txrh). */
+    var failReadsWith: MasterKeyStorageException? = null
+
+    override fun readActive(): MasterKeyRow? {
+        failReadsWith?.let { throw it }
+        return active
+    }
 
     override fun writeInitial(row: MasterKeyRow): Int {
         active = row

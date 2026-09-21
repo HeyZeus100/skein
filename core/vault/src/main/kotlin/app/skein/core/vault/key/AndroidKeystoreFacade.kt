@@ -23,8 +23,14 @@ import javax.crypto.spec.GCMParameterSpec
 
 internal class AndroidKeystoreFacade(
     private val context: Context,
-    private val keyStore: KeyStore = KeyStore.getInstance(ANDROID_KEY_STORE).apply { load(null) },
+    keyStoreProvider: () -> KeyStore = { KeyStore.getInstance(ANDROID_KEY_STORE).apply { load(null) } },
 ) : KeystoreFacade {
+    // skein-txrh: loaded on first use, not at construction — the facade is
+    // built at the `:app` composition root (`VaultKeyProviders.forDevice`)
+    // where nothing should touch the Keystore yet, and JVM/Robolectric
+    // hosts that instantiate the app have no `AndroidKeyStore` provider.
+    private val keyStore: KeyStore by lazy(keyStoreProvider)
+
     override fun hasStrongBox(): Boolean =
         Build.VERSION.SDK_INT >= Build.VERSION_CODES.P &&
             context.packageManager.hasSystemFeature(PackageManager.FEATURE_STRONGBOX_KEYSTORE)
