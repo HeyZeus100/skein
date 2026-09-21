@@ -110,6 +110,62 @@ class OffsetMappingTest {
         assertEquals(0, transformed.offsetMapping.transformedToOriginal(0))
     }
 
+    // ------------------------------------------------------------------
+    // bd skein-6rr (E7.I3): the offset table must stay monotone across a
+    // hidden (collapsed) frontmatter block, exactly like every other
+    // hidden run this file already covers.
+    // ------------------------------------------------------------------
+
+    @Test
+    fun `offset mapping is monotone and round-trips with a collapsed frontmatter block`() {
+        val doc = "---\nid: 0192abc\ntags: [a, b, c]\n---\n" + generateMixedSyntaxDocument(lineCount = 50)
+        val transformed = transform(doc, cursor = doc.length + 1, style = style, frontmatterExpanded = false)
+        val mapping = transformed.offsetMapping
+
+        for (t in 0..transformed.text.length) {
+            val original = mapping.transformedToOriginal(t)
+            assertEquals(
+                "originalToTransformed(transformedToOriginal($t)) should equal $t",
+                t,
+                mapping.originalToTransformed(original),
+            )
+        }
+
+        var previous = mapping.originalToTransformed(0)
+        for (r in 1..doc.length) {
+            val current = mapping.originalToTransformed(r)
+            assertTrue("originalToTransformed must be monotone at r=$r", current >= previous)
+            previous = current
+        }
+    }
+
+    @Test
+    fun `every raw offset inside a collapsed frontmatter block clamps to the start of the visible body`() {
+        val source = "---\nid: 0192abc\ntags: [a, b]\n---\nbody text"
+        val transformed = transform(source, cursor = 0, style = style, frontmatterExpanded = false)
+        val mapping = transformed.offsetMapping
+        val blockEnd = source.indexOf("body text")
+
+        for (r in 0..blockEnd) {
+            assertEquals(
+                "raw offset $r (inside the hidden block) should clamp to transformed 0",
+                0,
+                mapping.originalToTransformed(r),
+            )
+        }
+    }
+
+    @Test
+    fun `expanding the frontmatter block restores identity offsets throughout`() {
+        val source = "---\nid: 0192abc\n---\nbody"
+        val transformed = transform(source, cursor = 0, style = style, frontmatterExpanded = true)
+        val mapping = transformed.offsetMapping
+
+        for (r in 0..source.length) {
+            assertEquals(r, mapping.originalToTransformed(r))
+        }
+    }
+
     /**
      * A 200-line fixture with headings, bold, italic, inline code,
      * wikilinks, list items and a fenced code block. Deterministic so a

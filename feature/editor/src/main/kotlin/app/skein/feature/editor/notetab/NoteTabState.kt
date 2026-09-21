@@ -13,6 +13,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.text.input.TextFieldValue
+import app.skein.core.vault.codec.Frontmatter
 import app.skein.feature.editor.AutosaveStatus
 import app.skein.feature.editor.EditorState
 import app.skein.feature.editor.WikilinkTarget
@@ -21,8 +22,12 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
+import kotlinx.serialization.json.JsonObject
+import kotlinx.serialization.json.JsonPrimitive
+import kotlinx.serialization.json.buildJsonObject
 import us.aherrera.skein.core.model.DocId
 import us.aherrera.skein.core.model.DocumentKind
+import us.aherrera.skein.core.model.FrontmatterKeys
 import us.aherrera.skein.core.model.IndexStore
 import us.aherrera.skein.core.model.NewDocument
 import us.aherrera.skein.core.model.VaultRepository
@@ -100,7 +105,14 @@ public class NoteTabState(
     /** Inline title edit (header, spec §8.5) — persisted immediately against the current body text. */
     public fun onTitleChange(newTitle: String) {
         title = newTitle
-        scope.launch { vaultRepository.updateBody(docId, newTitle, editorState.source) }
+        scope.launch {
+            // `editorState.source` is the *whole* buffer (frontmatter block
+            // + body, see [load]'s kdoc) — split it before writing, or a
+            // title edit would silently smuggle the frontmatter header into
+            // `bodyMd`.
+            val (_, body) = Frontmatter.parse(editorState.source)
+            vaultRepository.updateBody(docId, newTitle, body)
+        }
     }
 
     /**
@@ -112,6 +124,16 @@ public class NoteTabState(
      */
     public suspend fun flush(deadline: Duration = Duration.ofSeconds(2)): Boolean = editorState.flush(deadline)
 
+    /**
+     * bd `skein-6rr` (`E7.I3`): the editor's buffer is the document's
+     * frontmatter block *and* body concatenated — `Frontmatter.render`
+     * (`:core:vault`) — so [EditorState] can hide/show the block and guard
+     * its `id:` line without `NoteTabState` (or `EditorState` itself)
+     * needing a second, parallel text field. `render` emits no `---`
+     * header at all when [us.aherrera.skein.core.model.Document.frontmatter]
+     * is empty, so a document without frontmatter seeds the editor with
+     * exactly its body — byte-identical to pre-`E7.I3` behavior.
+     */
     private suspend fun load() {
         loading = true
         loadError = null
@@ -124,14 +146,38 @@ public class NoteTabState(
         title = document.title
         editorState =
             EditorState(
-                initial = TextFieldValue(document.bodyMd.orEmpty()),
+                initial = TextFieldValue(Frontmatter.render(document.frontmatter, document.bodyMd.orEmpty())),
                 onLinkOpen = ::onWikilinkClicked,
-                onSave = { value -> vaultRepository.updateBody(docId, title, value.text) },
+                onSave = { value -> saveEditorValue(value) },
                 autosaveDebounce = autosaveDebounce,
                 autosaveScope = scope,
             )
         loading = false
         watchFirstEdit()
+    }
+
+    /**
+     * Splits the editor's combined buffer back into frontmatter + body
+     * (`Frontmatter.parse`) and writes each half through its own
+     * `VaultRepository` call. `id` is force-pinned back to [docId] right
+     * before the write — belt-and-suspenders alongside `EditorState`'s
+     * `ProtectedIdGuard`, so a changed (or, per that guard's deliberately
+     * narrow scope, even a structurally-removed) id can never reach the
+     * vault. A document with no frontmatter block parses to an empty
+     * [JsonObject] and is left alone — no `updateFrontmatter` call, exactly
+     * the pre-`E7.I3` single-`updateBody` write.
+     */
+    private suspend fun saveEditorValue(value: TextFieldValue) {
+        val (frontmatter, body) = Frontmatter.parse(value.text)
+        if (frontmatter.isNotEmpty()) {
+            val pinned: JsonObject =
+                buildJsonObject {
+                    frontmatter.forEach { (key, element) -> if (key != FrontmatterKeys.ID) put(key, element) }
+                    put(FrontmatterKeys.ID, JsonPrimitive(docId))
+                }
+            vaultRepository.updateFrontmatter(docId, pinned)
+        }
+        vaultRepository.updateBody(docId, title, body)
     }
 
     /**

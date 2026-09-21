@@ -179,4 +179,63 @@ class LivePreviewTransformerTest {
         val transformed = transform(source, cursor = openFenceOffset, style = style)
         assertTrue(transformed.text.text.contains("```"))
     }
+
+    // ------------------------------------------------------------------
+    // bd skein-6rr (E7.I3): frontmatter hide/show
+    // ------------------------------------------------------------------
+
+    private val frontmatterSource = "---\nid: 0192abc\ntags: [a, b]\n---\nbody text"
+
+    @Test
+    fun `frontmatter block is hidden entirely when collapsed`() {
+        val transformed = transform(frontmatterSource, cursor = 0, style = style, frontmatterExpanded = false)
+
+        assertEquals("body text", transformed.text.text)
+    }
+
+    @Test
+    fun `frontmatter block renders its raw lines when expanded`() {
+        val transformed = transform(frontmatterSource, cursor = 0, style = style, frontmatterExpanded = true)
+
+        assertEquals(frontmatterSource, transformed.text.text)
+    }
+
+    @Test
+    fun `collapsing is independent of caret position`() {
+        // Cursor placed inside the block's raw range doesn't reveal it —
+        // collapse is driven by the explicit flag, not "is this line
+        // active", unlike every other hidden construct in this file.
+        val transformed =
+            transform(
+                frontmatterSource,
+                cursor = frontmatterSource.indexOf("tags"),
+                style = style,
+                frontmatterExpanded = false,
+            )
+
+        assertEquals("body text", transformed.text.text)
+    }
+
+    @Test
+    fun `a document without a frontmatter block is unaffected by the expanded flag`() {
+        val source = "# Heading\nbody"
+        val collapsed = transform(source, cursor = source.indexOf("body"), style = style, frontmatterExpanded = false)
+        val expanded = transform(source, cursor = source.indexOf("body"), style = style, frontmatterExpanded = true)
+
+        assertEquals("Heading\nbody", collapsed.text.text)
+        assertEquals(collapsed.text.text, expanded.text.text)
+    }
+
+    @Test
+    fun `a fenced code block after a collapsed frontmatter block still gets fence detection`() {
+        val source = "---\nid: 1\n---\npara\n```\ncode\n```\nafter"
+        val transformed = transform(source, cursor = 0, style = style, frontmatterExpanded = false)
+
+        // Cursor 0 (inactive for every remaining line) → fence markers hide,
+        // interior content survives — exactly like the fence-only fixture
+        // above, just with a frontmatter block skipped first.
+        assertFalse(transformed.text.text.contains("```"))
+        assertTrue(transformed.text.text.contains("code"))
+        assertFalse("frontmatter id must not leak into the visible text", transformed.text.text.contains("id: 1"))
+    }
 }

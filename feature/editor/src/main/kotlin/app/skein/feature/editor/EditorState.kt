@@ -10,6 +10,7 @@ import androidx.compose.runtime.snapshotFlow
 import androidx.compose.runtime.snapshots.Snapshot
 import androidx.compose.ui.text.TextRange
 import androidx.compose.ui.text.input.TextFieldValue
+import app.skein.feature.editor.frontmatter.ProtectedIdGuard
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -64,6 +65,29 @@ import java.time.Duration
  * or `recovery_drafts` — it only guarantees the current content is handed
  * to [onSave] and bounds the wait, returning whether it completed in
  * time.
+ *
+ * ## Frontmatter hide/show and protected `id` (`E7.I3`, bd `skein-6rr`)
+ *
+ * [value] is the *whole* rendered document — `Frontmatter.render(fm, body)`
+ * (`:core:vault`, skein-3fn) when the note has frontmatter, exactly [source]
+ * otherwise — so this class's existing raw-text/autosave contract needed no
+ * change: `NoteTabState` seeds [initial] with the combined text and its
+ * [onSave] splits it back apart with `Frontmatter.parse` before writing to
+ * the vault. [frontmatterExpanded] (default `false`, collapsed) is purely a
+ * *rendering* flag `SkeinEditor`/`LivePreviewTransformer` read to hide or
+ * show that leading block; it never affects [value] itself, so a document
+ * with no frontmatter block behaves byte-for-byte as it did before this
+ * property existed.
+ *
+ * [onValueChange] additionally runs every proposed edit through
+ * [ProtectedIdGuard]: an edit that changes the frontmatter block's `id:`
+ * line while leaving the rest of the block's shape intact is reverted
+ * (only that line, not the whole edit) and [idEditRejected] flips `true`
+ * for one call so the UI can show a subtle indicator (see
+ * `app.skein.feature.editor.frontmatter.FrontmatterChip`'s
+ * `showIdProtectedHint`). A document with no frontmatter block never trips
+ * the guard — [ProtectedIdGuard.guard] is a no-op unless it can find a
+ * recognizable `id:` line in *both* the previous and the proposed text.
  */
 public class EditorState(
     initial: TextFieldValue = TextFieldValue(""),
@@ -72,11 +96,32 @@ public class EditorState(
     private val onSave: suspend (TextFieldValue) -> Unit = {},
     public val autosaveDebounce: Duration = Duration.ofMillis(500),
     internal val autosaveScope: CoroutineScope = CoroutineScope(SupervisorJob() + Dispatchers.Default),
+    initialFrontmatterExpanded: Boolean = false,
 ) {
     public var value: TextFieldValue by mutableStateOf(initial)
         internal set
 
     private val autosaveStatusState = mutableStateOf(AutosaveStatus.IDLE)
+
+    private val frontmatterExpandedState = mutableStateOf(initialFrontmatterExpanded)
+
+    /** Collapsed (`false`, the default) shows the one-line chip; `true` shows the frontmatter block's raw lines inline. */
+    public val frontmatterExpanded: State<Boolean> get() = frontmatterExpandedState
+
+    /** Flips [frontmatterExpanded] — wired to `FrontmatterChip`'s tap. */
+    public fun toggleFrontmatter() {
+        frontmatterExpandedState.value = !frontmatterExpandedState.value
+    }
+
+    private val idEditRejectedState = mutableStateOf(false)
+
+    /**
+     * `true` for exactly the [onValueChange] call that just rejected an
+     * `id:` line edit (see the class kdoc); flips back `false` on the next
+     * call regardless of outcome, so it behaves like a one-shot event a UI
+     * observes with `LaunchedEffect(state.idEditRejected.value)`.
+     */
+    public val idEditRejected: State<Boolean> get() = idEditRejectedState
 
     /** "saved" / "saving" / "unsaved changes" / error state for a note-header chip. */
     public val autosaveStatus: State<AutosaveStatus> get() = autosaveStatusState
@@ -107,8 +152,24 @@ public class EditorState(
      * autosave to snapshot the raw Markdown on debounce.
      */
     public fun onValueChange(newValue: TextFieldValue) {
-        value = newValue
-        if (newValue.text != lastSavedText) {
+        val guard = ProtectedIdGuard.guard(previous = value.text, next = newValue.text)
+        val effective =
+            if (guard.rejected) {
+                val length = guard.text.length
+                newValue.copy(
+                    text = guard.text,
+                    selection =
+                        TextRange(
+                            newValue.selection.start.coerceIn(0, length),
+                            newValue.selection.end.coerceIn(0, length),
+                        ),
+                )
+            } else {
+                newValue
+            }
+        idEditRejectedState.value = guard.rejected
+        value = effective
+        if (effective.text != lastSavedText) {
             autosaveStatusState.value = AutosaveStatus.UNSAVED
         }
         // Real Compose UI (AndroidComposeView's GlobalSnapshotManager) batches

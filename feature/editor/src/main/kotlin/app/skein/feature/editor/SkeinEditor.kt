@@ -1,6 +1,7 @@
 package app.skein.feature.editor
 
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.LocalContentColor
 import androidx.compose.material3.MaterialTheme
@@ -26,6 +27,9 @@ import app.skein.feature.editor.autocomplete.Suggestion
 import app.skein.feature.editor.autocomplete.WikilinkAutocompletePopup
 import app.skein.feature.editor.autocomplete.rememberWikilinkAutocompleteState
 import app.skein.feature.editor.autocomplete.wikilinkAutocompleteKeyEvents
+import app.skein.feature.editor.frontmatter.FrontmatterBlock
+import app.skein.feature.editor.frontmatter.FrontmatterChip
+import app.skein.feature.editor.frontmatter.FrontmatterChipLabel
 import app.skein.feature.shell.input.SecureBasicTextField
 import kotlin.math.roundToInt
 
@@ -61,12 +65,21 @@ import kotlin.math.roundToInt
  * (the default) reproduces the exact pre-`E7.I5` behavior byte-for-byte —
  * no popup, no extra key handling, no layout capture.
  *
+ * ## Frontmatter hide/show (`E7.I3`, bd `skein-6rr`)
+ *
+ * When [EditorState.source] opens with a well-formed `---…---` frontmatter
+ * block, a [FrontmatterChip] is placed above the field. Collapsed (the
+ * default — [EditorState.frontmatterExpanded]), the chip shows a one-line
+ * summary and [LivePreviewTransformer] hides the block's raw lines from the
+ * field entirely; tapping the chip expands it, revealing those lines
+ * inline for editing (the `id:` line is still protected — see
+ * [EditorState.idEditRejected]). A document with no frontmatter block never
+ * shows a chip and the field behaves exactly as before this feature landed.
+ *
  * ## What this composable does not do (yet)
  *
  * - Slash commands — `E7.I6` / bd `skein-6sd`.
  * - Selection-menu inline AI — `E7.I7` / bd `skein-2cd`.
- * - Frontmatter fold — `E7.I3` / bd `skein-6rr`. The frontmatter block is
- *   rendered as raw text like any other content until that issue lands.
  * - Wikilink tap routing — the transformer already emits a `TAG_WIKILINK`
  *   string annotation over each rendered link (see
  *   [LivePreviewTransformer]), but wiring a tap detector on top of a
@@ -85,25 +98,49 @@ public fun SkeinEditor(
     wikilinkSuggest: (suspend (String) -> List<Suggestion>)? = null,
     onCreateWikilink: suspend (String) -> Unit = {},
 ) {
+    val frontmatterExpanded = state.frontmatterExpanded.value
     val transformation =
-        remember(state.value, markdownStyle, state.knownWikilinkTitles) {
+        remember(state.value, markdownStyle, state.knownWikilinkTitles, frontmatterExpanded) {
             LivePreviewTransformation(
                 cursor = state.cursor,
                 style = markdownStyle,
                 knownWikilinks = state.knownWikilinkTitles,
+                frontmatterExpanded = frontmatterExpanded,
             )
         }
     val cursorColor = LocalContentColor.current
 
+    val frontmatterEndLineIndex =
+        remember(state.source) { FrontmatterBlock.endLineIndex(buildLines(state.source), state.source) }
+    val idEditRejected = state.idEditRejected.value
+
+    val chip: @Composable () -> Unit = {
+        if (frontmatterEndLineIndex >= 0) {
+            val label =
+                remember(state.source, frontmatterEndLineIndex) {
+                    FrontmatterChipLabel.build(state.source, buildLines(state.source), frontmatterEndLineIndex)
+                }
+            FrontmatterChip(
+                label = label,
+                expanded = frontmatterExpanded,
+                onToggle = { state.toggleFrontmatter() },
+                showIdProtectedHint = idEditRejected,
+            )
+        }
+    }
+
     if (wikilinkSuggest == null) {
-        SecureBasicTextField(
-            value = state.value,
-            onValueChange = { newValue -> state.onValueChange(newValue) },
-            modifier = modifier.padding(4.dp).testTag(testTag),
-            textStyle = MaterialTheme.typography.bodyLarge,
-            visualTransformation = transformation,
-            cursorBrush = SolidColor(cursorColor),
-        )
+        Column {
+            chip()
+            SecureBasicTextField(
+                value = state.value,
+                onValueChange = { newValue -> state.onValueChange(newValue) },
+                modifier = modifier.padding(4.dp).testTag(testTag),
+                textStyle = MaterialTheme.typography.bodyLarge,
+                visualTransformation = transformation,
+                cursorBrush = SolidColor(cursorColor),
+            )
+        }
         return
     }
 
@@ -113,8 +150,8 @@ public fun SkeinEditor(
 
     var textLayoutResult by remember { mutableStateOf<TextLayoutResult?>(null) }
     val transformedCursorOffset =
-        remember(state.value, markdownStyle, state.knownWikilinkTitles) {
-            transform(state.source, state.cursor, markdownStyle, state.knownWikilinkTitles)
+        remember(state.value, markdownStyle, state.knownWikilinkTitles, frontmatterExpanded) {
+            transform(state.source, state.cursor, markdownStyle, state.knownWikilinkTitles, frontmatterExpanded)
                 .offsetMapping
                 .originalToTransformed(state.cursor)
         }
@@ -128,22 +165,25 @@ public fun SkeinEditor(
             }
         }
 
-    Box {
-        SecureBasicTextField(
-            value = state.value,
-            onValueChange = { newValue -> state.onValueChange(newValue) },
-            modifier =
-                modifier
-                    .padding(4.dp)
-                    .testTag(testTag)
-                    .wikilinkAutocompleteKeyEvents(autocompleteState),
-            textStyle = MaterialTheme.typography.bodyLarge,
-            visualTransformation = transformation,
-            cursorBrush = SolidColor(cursorColor),
-            onTextLayout = { layoutResult -> textLayoutResult = layoutResult },
-        )
-        if (popupOffset != null) {
-            WikilinkAutocompletePopup(state = autocompleteState, offset = popupOffset)
+    Column {
+        chip()
+        Box {
+            SecureBasicTextField(
+                value = state.value,
+                onValueChange = { newValue -> state.onValueChange(newValue) },
+                modifier =
+                    modifier
+                        .padding(4.dp)
+                        .testTag(testTag)
+                        .wikilinkAutocompleteKeyEvents(autocompleteState),
+                textStyle = MaterialTheme.typography.bodyLarge,
+                visualTransformation = transformation,
+                cursorBrush = SolidColor(cursorColor),
+                onTextLayout = { layoutResult -> textLayoutResult = layoutResult },
+            )
+            if (popupOffset != null) {
+                WikilinkAutocompletePopup(state = autocompleteState, offset = popupOffset)
+            }
         }
     }
 }
@@ -164,8 +204,10 @@ internal class LivePreviewTransformation(
     private val cursor: Int,
     private val style: MarkdownStyle,
     private val knownWikilinks: Set<String>?,
+    private val frontmatterExpanded: Boolean = false,
 ) : VisualTransformation {
-    override fun filter(text: AnnotatedString): TransformedText = transform(text.text, cursor, style, knownWikilinks)
+    override fun filter(text: AnnotatedString): TransformedText =
+        transform(text.text, cursor, style, knownWikilinks, frontmatterExpanded)
 }
 
 /**
