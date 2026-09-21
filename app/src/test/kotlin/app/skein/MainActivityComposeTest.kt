@@ -7,8 +7,14 @@ import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
 import androidx.test.core.app.ActivityScenario
 import androidx.test.core.app.ApplicationProvider
+import app.skein.core.vault.key.SetupResult
 import app.skein.core.vault.key.UnlockResult
 import app.skein.feature.shell.testing.ShellTestTags
+import app.skein.system.SecurityPrefs
+import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.runBlocking
+import org.junit.Assert.assertEquals
+import org.junit.Assert.assertTrue
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -23,8 +29,13 @@ import org.robolectric.annotation.Config
  * [TestSkeinApplication] — an in-memory vault behind a scripted key
  * provider — and each test launches the activity itself (an
  * `ActivityScenario` + [createEmptyComposeRule]) so it can script the
- * unlock outcome first. Pinned to SDK 34 (bd memory
+ * setup / unlock outcomes first. Pinned to SDK 34 (bd memory
  * `robolectric-sdk37-needs-java21`).
+ *
+ * skein-ank2 added the first-run gate: the scripted provider's
+ * `initialised` flag stands in for the key envelope on disk, so the tests
+ * below cover fresh install → setup → unlock → shell, second launch →
+ * unlock only, and the corrupt-envelope message.
  */
 @RunWith(RobolectricTestRunner::class)
 @Config(sdk = [34], application = TestSkeinApplication::class)
@@ -43,10 +54,143 @@ class MainActivityComposeTest {
 
     @Test
     fun `MainActivity shows the biometric unlock screen while the vault is locked`() {
-        app.keyProvider.nextUnlock = { UnlockResult.NotInitialised }
+        app.keyProvider.nextUnlock = { UnlockResult.UserCancelled }
 
         ActivityScenario.launch(MainActivity::class.java).use {
+            awaitTag(ShellTestTags.BIOMETRIC_UNLOCK_ROOT)
+
             composeRule.onNodeWithTag(ShellTestTags.BIOMETRIC_UNLOCK_ROOT).assertExists()
+        }
+    }
+
+    // ---- skein-ank2: first-run gate ---------------------------------------------
+
+    @Test
+    fun `a fresh install shows the vault setup screen instead of the unlock prompt`() {
+        app.keyProvider.initialised = false
+
+        ActivityScenario.launch(MainActivity::class.java).use {
+            awaitTag(ShellTestTags.VAULT_SETUP_ROOT)
+
+            composeRule.onNodeWithTag(ShellTestTags.BIOMETRIC_UNLOCK_ROOT).assertDoesNotExist()
+        }
+    }
+
+    @Test
+    fun `a fresh install never calls unlock before setup has run`() {
+        app.keyProvider.initialised = false
+
+        ActivityScenario.launch(MainActivity::class.java).use {
+            awaitTag(ShellTestTags.VAULT_SETUP_ROOT)
+
+            assertEquals(0, app.keyProvider.setupCalls.get())
+        }
+    }
+
+    @Test
+    fun `a provisioned vault goes straight to unlock without calling setup`() {
+        app.keyProvider.nextUnlock = { UnlockResult.UserCancelled }
+
+        ActivityScenario.launch(MainActivity::class.java).use {
+            awaitTag(ShellTestTags.BIOMETRIC_UNLOCK_ROOT)
+
+            assertEquals(0, app.keyProvider.setupCalls.get())
+        }
+    }
+
+    @Test
+    fun `completing setup on a fresh install unlocks, opens the vault, and lands in the shell`() {
+        app.keyProvider.initialised = false
+
+        ActivityScenario.launch(MainActivity::class.java).use {
+            awaitTag(ShellTestTags.VAULT_SETUP_ROOT)
+            composeRule.onNodeWithTag(ShellTestTags.VAULT_SETUP_BEGIN_BUTTON).performClick()
+            awaitTag(ShellTestTags.SKEIN_SHELL_ROOT)
+
+            assertEquals(1, app.keyProvider.setupCalls.get())
+        }
+    }
+
+    @Test
+    fun `the first open seeds the default persona`() {
+        app.keyProvider.initialised = false
+
+        ActivityScenario.launch(MainActivity::class.java).use {
+            awaitTag(ShellTestTags.VAULT_SETUP_ROOT)
+            composeRule.onNodeWithTag(ShellTestTags.VAULT_SETUP_BEGIN_BUTTON).performClick()
+            awaitTag(ShellTestTags.SKEIN_SHELL_ROOT)
+
+            val personas = runBlocking { app.personaService.observeAll().first() }
+            assertTrue("expected the first persona to exist once the shell is up", personas.isNotEmpty())
+        }
+    }
+
+    @Test
+    fun `setup refused as already initialised routes to unlock without a second setup`() {
+        app.keyProvider.initialised = false
+        app.keyProvider.nextSetup = { SetupResult.AlreadyInitialised }
+        app.keyProvider.nextUnlock = { UnlockResult.UserCancelled }
+
+        ActivityScenario.launch(MainActivity::class.java).use {
+            awaitTag(ShellTestTags.VAULT_SETUP_ROOT)
+            composeRule.onNodeWithTag(ShellTestTags.VAULT_SETUP_BEGIN_BUTTON).performClick()
+            awaitTag(ShellTestTags.BIOMETRIC_UNLOCK_ROOT)
+
+            assertEquals(1, app.keyProvider.setupCalls.get())
+        }
+    }
+
+    @Test
+    fun `a cancelled setup stays on the setup screen with a retry`() {
+        app.keyProvider.initialised = false
+        app.keyProvider.nextSetup = { SetupResult.UserCancelled }
+
+        ActivityScenario.launch(MainActivity::class.java).use {
+            awaitTag(ShellTestTags.VAULT_SETUP_ROOT)
+            composeRule.onNodeWithTag(ShellTestTags.VAULT_SETUP_BEGIN_BUTTON).performClick()
+            awaitTag(ShellTestTags.VAULT_SETUP_RETRY_BUTTON)
+
+            composeRule.onNodeWithTag(ShellTestTags.BIOMETRIC_UNLOCK_ROOT).assertDoesNotExist()
+        }
+    }
+
+    @Test
+    fun `a StrongBox fallback during setup is recorded for Settings`() {
+        app.keyProvider.initialised = false
+        app.keyProvider.nextSetup = { SetupResult.StrongBoxUnavailableFallback(masterKeyVersion = 1) }
+        val prefs = SecurityPrefs(app)
+
+        ActivityScenario.launch(MainActivity::class.java).use {
+            awaitTag(ShellTestTags.VAULT_SETUP_ROOT)
+            composeRule.onNodeWithTag(ShellTestTags.VAULT_SETUP_BEGIN_BUTTON).performClick()
+            awaitTag(ShellTestTags.SKEIN_SHELL_ROOT)
+
+            composeRule.waitUntil(timeoutMillis = WAIT_MILLIS) {
+                runBlocking { prefs.strongBoxUnavailableFallback.first() }
+            }
+        }
+    }
+
+    @Test
+    fun `a corrupt key envelope shows the non-destructive message and never offers setup`() {
+        app.keyProvider.nextUnlock = { UnlockResult.Failed("key envelope corrupt") }
+
+        ActivityScenario.launch(MainActivity::class.java).use {
+            awaitTag(ShellTestTags.BIOMETRIC_UNLOCK_MESSAGE)
+
+            composeRule.onNodeWithText("Nothing has been changed", substring = true).assertExists()
+            composeRule.onNodeWithTag(ShellTestTags.VAULT_SETUP_ROOT).assertDoesNotExist()
+        }
+    }
+
+    @Test
+    fun `an ordinary unlock failure shows the generic message, not the envelope one`() {
+        app.keyProvider.nextUnlock = { UnlockResult.Failed("cipher init failed: KeyStoreException") }
+
+        ActivityScenario.launch(MainActivity::class.java).use {
+            awaitTag(ShellTestTags.BIOMETRIC_UNLOCK_MESSAGE)
+
+            composeRule.onNodeWithText("Authentication failed.").assertExists()
         }
     }
 
@@ -73,9 +217,11 @@ class MainActivityComposeTest {
 
     @Test
     fun `MainActivity does not render the shell while the vault is locked`() {
-        app.keyProvider.nextUnlock = { UnlockResult.NotInitialised }
+        app.keyProvider.nextUnlock = { UnlockResult.UserCancelled }
 
         ActivityScenario.launch(MainActivity::class.java).use {
+            awaitTag(ShellTestTags.BIOMETRIC_UNLOCK_ROOT)
+
             composeRule.onNodeWithTag(ShellTestTags.SKEIN_SHELL_ROOT).assertDoesNotExist()
         }
     }

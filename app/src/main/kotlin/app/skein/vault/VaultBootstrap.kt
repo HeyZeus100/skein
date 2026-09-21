@@ -6,6 +6,14 @@
 // is `Unlocked`):
 //   1. `openVault()` — create-or-open the SQLCipher file and build the
 //      service graph (`DeviceVaultOpener` on a device).
+//   1b. `seed(session)` (skein-ank2) — first-run content the shell expects
+//      before it lands: production ensures the first persona exists
+//      (`PersonaService.default()`, spec §8.7 "create first persona"),
+//      which is idempotent, so it runs on every open rather than only the
+//      one that created `vault.db` — a crash between create and seed can
+//      never leave a persona-less vault. Runs before the session is
+//      exposed or the provider installed; a seed failure closes the vault
+//      and reports `BringUpResult.Failed`.
 //   2. `VaultDocumentsProvider.install(Services(repository, exportService,
 //      unlockManager.state))` — the provider stops failing closed.
 //   3. `VaultDocumentsProvider.notifyRootsChanged(context)` — an open
@@ -102,12 +110,15 @@ sealed class BringUpResult {
  * See the file header for the sequences. [openVault] runs on [scope] so a
  * caller cancelled mid-open (an Activity being destroyed) cannot leave a
  * half-opened vault behind; concurrent [bringUp] calls share one open.
+ * [seed] runs against the freshly opened session on the same scope before
+ * anything else sees it (file header, step 1b).
  */
 class VaultBootstrap(
     private val unlockManager: UnlockManager,
     private val openVault: suspend () -> VaultSession,
     private val provider: DocumentsProviderPort,
     private val scope: CoroutineScope,
+    private val seed: suspend (VaultSession) -> Unit = {},
 ) {
     private val mutex = Mutex()
     private val sessionState = MutableStateFlow<VaultSession?>(null)
@@ -141,6 +152,7 @@ class VaultBootstrap(
     private suspend fun openAndInstall(): BringUpResult =
         try {
             val opened = openVault()
+            seedOrClose(opened)?.let { return it }
             mutex.withLock {
                 if (unlockManager.state.value !is UnlockState.Unlocked) {
                     // A lock landed while the file was opening: never expose
@@ -164,6 +176,18 @@ class VaultBootstrap(
             BringUpResult.Failed(e.message ?: "vault open failed")
         } finally {
             inFlight = null
+        }
+
+    /** Runs [seed] on [opened]; on failure closes it and returns the [BringUpResult] to report, else `null`. */
+    private suspend fun seedOrClose(opened: VaultSession): BringUpResult? =
+        try {
+            seed(opened)
+            null
+        } catch (t: Throwable) {
+            runCatching { opened.close() }
+            if (t is kotlin.coroutines.cancellation.CancellationException) throw t
+            // Class name only: nothing key-derived, nothing from the vault.
+            BringUpResult.Failed("vault could not be prepared: ${t.javaClass.simpleName}")
         }
 
     private inner class LockHandler : LockObserver {

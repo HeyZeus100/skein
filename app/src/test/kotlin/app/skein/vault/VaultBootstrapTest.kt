@@ -11,11 +11,13 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.awaitCancellation
 import kotlinx.coroutines.cancel
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.runBlocking
 import org.junit.After
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertNull
 import org.junit.Assert.assertSame
+import org.junit.Assert.assertTrue
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.robolectric.Robolectric
@@ -61,6 +63,7 @@ class VaultBootstrapTest {
     private class Harness(
         budgetMillis: Long = UnlockManager.DEFAULT_OBSERVER_BUDGET_MILLIS,
         private val onRelease: suspend () -> Unit = {},
+        seed: suspend (VaultSession) -> Unit = {},
     ) {
         val events: MutableList<String> = Collections.synchronizedList(mutableListOf())
         val keyProvider = ScriptedVaultKeyProvider(events)
@@ -101,6 +104,7 @@ class VaultBootstrapTest {
                 },
                 provider = provider,
                 scope = scope,
+                seed = seed,
             )
 
         private val activity: FragmentActivity = Robolectric.buildActivity(FragmentActivity::class.java).get()
@@ -121,7 +125,8 @@ class VaultBootstrapTest {
     private fun harness(
         budgetMillis: Long = UnlockManager.DEFAULT_OBSERVER_BUDGET_MILLIS,
         onRelease: suspend () -> Unit = {},
-    ): Harness = Harness(budgetMillis, onRelease).also { harness = it }
+        seed: suspend (VaultSession) -> Unit = {},
+    ): Harness = Harness(budgetMillis, onRelease, seed).also { harness = it }
 
     @After
     fun tearDown() {
@@ -253,6 +258,66 @@ class VaultBootstrapTest {
             val result = h.bootstrap.bringUp()
 
             assertEquals(BringUpResult.NotUnlocked, result)
+        }
+
+    // ---- seed (skein-ank2) --------------------------------------------------------
+
+    @Test
+    fun `bringUp runs the seed after open and before the provider sees the session`() =
+        runBlocking {
+            // Arrange
+            val h =
+                harness(
+                    seed = { session ->
+                        session.personaService.default()
+                        harness!!.events += "seed"
+                    },
+                )
+            h.unlock()
+            // Act
+            h.bootstrap.bringUp()
+            // Assert
+            assertEquals(listOf("open", "seed", "install(services)", "notifyRoots"), h.events.toList())
+        }
+
+    @Test
+    fun `the production seed leaves the vault with a first persona`() =
+        runBlocking {
+            val h = harness(seed = VaultServices::seedFirstPersona)
+            h.unlock()
+
+            val result = h.bootstrap.bringUp() as BringUpResult.Ready
+
+            val personaService = result.session.personaService
+            assertEquals(1, personaService.observeAll().first().size)
+        }
+
+    @Test
+    fun `the seed is idempotent across a lock and a second open`() =
+        runBlocking {
+            val h = harness(seed = VaultServices::seedFirstPersona)
+            h.unlock()
+            h.bootstrap.bringUp()
+            h.lock()
+            h.unlock()
+
+            val result = h.bootstrap.bringUp() as BringUpResult.Ready
+
+            val personaService = result.session.personaService
+            assertEquals(1, personaService.observeAll().first().size)
+        }
+
+    @Test
+    fun `a seed that throws closes the vault and reports Failed without installing`() =
+        runBlocking {
+            val h = harness(seed = { throw IllegalStateException("seed boom") })
+            h.unlock()
+
+            val result = h.bootstrap.bringUp()
+
+            assertTrue("expected Failed, got $result", result is BringUpResult.Failed)
+            assertEquals(listOf("open", "close"), h.events.toList())
+            assertNull(h.bootstrap.session.value)
         }
 
     // ---- lock -------------------------------------------------------------------

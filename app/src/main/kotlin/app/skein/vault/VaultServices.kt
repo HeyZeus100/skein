@@ -40,8 +40,11 @@ class VaultServices(
          * shutdown-hook lock), [DeviceVaultOpener] under `filesDir`, and the
          * real `VaultDocumentsProvider`. One [VaultPaths] is shared by the key
          * provider and the opener so the envelope sits beside the `vault.db`
-         * it unlocks. Until `setup()` has run once on the device, every unlock
-         * reports `NotInitialised` and the vault stays closed.
+         * it unlocks. Until `setup()` has run once on the device
+         * (`VaultSetupScreen`, skein-ank2 — gated on
+         * `keyProvider.isInitialised()`), every unlock reports
+         * `NotInitialised` and the vault stays closed. Every open seeds the
+         * first persona ([seedFirstPersona]) before the session is exposed.
          */
         fun forDevice(context: Context): VaultServices {
             val app = context.applicationContext
@@ -66,8 +69,18 @@ class VaultServices(
                     openVault = opener::open,
                     provider = DocumentsProviderPort.forContext(app),
                     scope = scope,
+                    seed = ::seedFirstPersona,
                 )
             return VaultServices(keyProvider, unlockManager, bootstrap)
+        }
+
+        /**
+         * Spec §8.7 "create first persona": `PersonaService.default()` returns
+         * the first-created persona or creates "Default" when there is none —
+         * idempotent, so every open may run it (skein-ank2).
+         */
+        suspend fun seedFirstPersona(session: VaultSession) {
+            session.personaService.default()
         }
     }
 }

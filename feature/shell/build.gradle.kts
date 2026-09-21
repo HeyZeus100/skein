@@ -76,6 +76,9 @@ dependencies {
     debugImplementation(libs.androidx.activity.compose)
 
     testImplementation(libs.junit)
+    // skein-ank2: VaultSetupStateTest drives the setup state holder's
+    // launched work under `runTest` / `backgroundScope`.
+    testImplementation(libs.kotlinx.coroutines.test)
     // E3.I9: SecureTextFieldTest asserts the EditorInfo flags a Robolectric
     // Compose host produces (bd memory `compose-ui-test-infra-robolectric-compose-ui-test`
     // — this is the module's first real Compose UI test infra, added here

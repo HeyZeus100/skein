@@ -55,6 +55,8 @@ class AtRestEncryptionInstrumentedTest {
             prompt: BiometricPrompt.PromptInfo,
         ): SetupResult = SetupResult.Success(masterKeyVersion = 1, strongBoxBacked = false)
 
+        override fun isInitialised(): Boolean = true
+
         override suspend fun unlock(
             activity: FragmentActivity,
             prompt: BiometricPrompt.PromptInfo,

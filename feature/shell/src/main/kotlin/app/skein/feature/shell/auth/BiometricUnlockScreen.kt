@@ -33,11 +33,17 @@
 // or logged either — spec §7 / `LOCK_POLICY_INDEXING.md` §5.1 "no key
 // material in state event payloads", extended here to "no internal
 // diagnostics in the UI users see").
+//
+// skein-ank2: two `Failed` reasons ARE inspected (never shown) — the
+// bounded phrases the provider uses for a corrupt / unreadable key envelope
+// (`EnvelopeUnreadable`) — so that state gets its own non-destructive
+// message instead of the generic "Authentication failed." No reset is
+// offered here; see that file. `NotInitialised` can now route to the
+// host's setup screen ([onNotInitialised]) instead of dead-ending in a
+// retry.
 
 package app.skein.feature.shell.auth
 
-import android.content.Context
-import android.content.ContextWrapper
 import androidx.biometric.BiometricManager
 import androidx.biometric.BiometricPrompt
 import androidx.compose.foundation.layout.Arrangement
@@ -62,7 +68,6 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import androidx.fragment.app.FragmentActivity
 import app.skein.core.vault.key.VaultKeyProvider
 import app.skein.core.vault.session.UnlockManager
 import app.skein.core.vault.session.UnlockOutcome
@@ -83,13 +88,20 @@ import us.aherrera.skein.core.model.AuthorizationToken
  *  - [UnlockOutcome.KeyPermanentlyInvalidated] calls [onRecoveryRequired]
  *    so the host can route to `UnlockManager.recoverAndRewrap`'s UI
  *    (`E3.I5`+ — out of scope here).
+ *  - [UnlockOutcome.NotInitialised] calls [onNotInitialised] when the host
+ *    supplies one (skein-ank2: the gate then shows `VaultSetupScreen`);
+ *    without it, the retry affordance with an explanatory message.
+ *  - [UnlockOutcome.Failed] for a corrupt / unreadable key envelope shows a
+ *    distinct message that promises nothing was changed and offers no
+ *    reset ([EnvelopeUnreadable]); every other failure shows the generic
+ *    retry text.
  *
  * The prompt is presented automatically on first composition (and again on
  * every retry tap) — there is no separate "tap to unlock" gate in front of
  * it, since the host is expected to only show this screen while
  * `UnlockManager.state` is `Locked`/`RecoveryRequired` in the first place.
  *
- * Requires a [FragmentActivity] host, resolved by unwrapping
+ * Requires a `FragmentActivity` host, resolved by unwrapping
  * [LocalContext]; when the current context is not (wrapped around) a
  * `FragmentActivity` — e.g. a plain `@Preview` — the screen renders the
  * retry state with an explanatory message instead of crashing.
@@ -100,6 +112,7 @@ public fun BiometricUnlockScreen(
     onUnlocked: (AuthorizationToken) -> Unit,
     onRecoveryRequired: () -> Unit,
     modifier: Modifier = Modifier,
+    onNotInitialised: (() -> Unit)? = null,
     biometricPromptTitle: String = "Unlock Skein",
     biometricPromptSubtitle: String = "Authenticate to open your vault",
     biometricPromptNegativeButton: String = "Cancel",
@@ -143,6 +156,7 @@ public fun BiometricUnlockScreen(
                 outcome = outcome,
                 onUnlocked = onUnlocked,
                 onRecoveryRequired = onRecoveryRequired,
+                onNotInitialised = onNotInitialised,
                 onRetry = { message -> uiState = BiometricUnlockUiState.Retry(message) },
             )
         }
@@ -206,41 +220,43 @@ private sealed class BiometricUnlockUiState {
 }
 
 /**
- * Maps an [UnlockOutcome] to the three UI-facing effects, unwrapping
+ * Maps an [UnlockOutcome] to the UI-facing effects, unwrapping
  * [UnlockOutcome.Coalesced] (already unlocked this session — no second
- * prompt was shown) down to its underlying outcome first.
+ * prompt was shown) down to its underlying outcome first. Internal so the
+ * mapping is unit-testable on the JVM (`BiometricUnlockOutcomeTest`).
  */
-private tailrec fun handleOutcome(
+internal tailrec fun handleOutcome(
     outcome: UnlockOutcome,
     onUnlocked: (AuthorizationToken) -> Unit,
     onRecoveryRequired: () -> Unit,
+    onNotInitialised: (() -> Unit)?,
     onRetry: (String) -> Unit,
 ) {
     when (outcome) {
         is UnlockOutcome.Success -> onUnlocked(outcome.token)
         is UnlockOutcome.Coalesced ->
-            handleOutcome(outcome.outcome, onUnlocked, onRecoveryRequired, onRetry)
+            handleOutcome(outcome.outcome, onUnlocked, onRecoveryRequired, onNotInitialised, onRetry)
         is UnlockOutcome.KeyPermanentlyInvalidated -> onRecoveryRequired()
         UnlockOutcome.UserCancelled ->
             onRetry("Authentication was cancelled.")
         UnlockOutcome.NotInitialised ->
-            onRetry("The vault has not been set up yet.")
+            if (onNotInitialised != null) onNotInitialised() else onRetry(NOT_SET_UP_MESSAGE)
         is UnlockOutcome.IllegalTransition ->
             onRetry("Unlock is not available right now.")
         is UnlockOutcome.Failed ->
-            onRetry("Authentication failed.")
+            onRetry(
+                if (EnvelopeUnreadable.matches(outcome.reason)) {
+                    EnvelopeUnreadable.UNLOCK_MESSAGE
+                } else {
+                    GENERIC_FAILURE_MESSAGE
+                },
+            )
     }
 }
-
-/** Unwraps a possibly-decorated [Context] down to its hosting [FragmentActivity], if any. */
-private tailrec fun Context.findFragmentActivity(): FragmentActivity? =
-    when (this) {
-        is FragmentActivity -> this
-        is ContextWrapper -> baseContext.findFragmentActivity()
-        else -> null
-    }
 
 private val SPACING = 12.dp
 
 private const val NO_HOST_ACTIVITY_MESSAGE =
     "Unable to present the biometric prompt: no host activity available."
+private const val NOT_SET_UP_MESSAGE = "The vault has not been set up yet."
+private const val GENERIC_FAILURE_MESSAGE = "Authentication failed."

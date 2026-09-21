@@ -19,10 +19,13 @@ private val Context.securityPrefsDataStore: DataStore<Preferences> by preference
 )
 
 /**
- * Runtime security settings (E3.I8, spec §9). Today this is a single flag:
- * whether [app.skein.MainActivity] sets `FLAG_SECURE`. Default is `true`
- * (secure by default) — some users need screen recording for accessibility,
- * so the setting can be turned off, but never defaults off.
+ * Runtime security settings (E3.I8, spec §9):
+ *  - whether [app.skein.MainActivity] sets `FLAG_SECURE`. Default is `true`
+ *    (secure by default) — some users need screen recording for
+ *    accessibility, so the setting can be turned off, but never defaults off;
+ *  - whether first-run vault setup fell back from StrongBox to a TEE-backed
+ *    Layer-0 key (skein-ank2, recorded from `SetupResult` for Settings ›
+ *    Security per skein-3el). Informational: it changes no behaviour.
  */
 class SecurityPrefs(
     private val context: Context,
@@ -39,11 +42,30 @@ class SecurityPrefs(
         }
     }
 
+    /**
+     * True when `VaultKeyProvider.setup` reported
+     * `SetupResult.StrongBoxUnavailableFallback` — the vault's Layer-0 keys
+     * live in the TEE, not StrongBox. False (the default) until setup has
+     * run, and after a setup that got StrongBox.
+     */
+    val strongBoxUnavailableFallback: Flow<Boolean> =
+        context.securityPrefsDataStore.data.map { prefs ->
+            prefs[Keys.STRONGBOX_UNAVAILABLE_FALLBACK] ?: DEFAULT_STRONGBOX_UNAVAILABLE_FALLBACK
+        }
+
+    suspend fun setStrongBoxUnavailableFallback(fallback: Boolean) {
+        context.securityPrefsDataStore.edit { prefs ->
+            prefs[Keys.STRONGBOX_UNAVAILABLE_FALLBACK] = fallback
+        }
+    }
+
     private object Keys {
         val FLAG_SECURE_ENABLED = booleanPreferencesKey("flag_secure_enabled")
+        val STRONGBOX_UNAVAILABLE_FALLBACK = booleanPreferencesKey("strongbox_unavailable_fallback")
     }
 
     companion object {
         const val DEFAULT_FLAG_SECURE_ENABLED = true
+        const val DEFAULT_STRONGBOX_UNAVAILABLE_FALLBACK = false
     }
 }

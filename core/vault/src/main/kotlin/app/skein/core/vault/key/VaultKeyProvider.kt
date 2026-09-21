@@ -24,6 +24,10 @@
 //     surviving factor and re-wrapping the SAME 32 bytes under a fresh
 //     Keystore entry for the dead factor. The master's bytes never change
 //     across a rewrap — that is the load-bearing invariant of §3.6.
+//   • `isInitialised()` (skein-ank2) is the prompt-free "has `setup()` run
+//     on this device?" probe the first-run gate switches on, so the shell
+//     can route to setup or unlock WITHOUT issuing a biometric prompt to
+//     find out.
 //
 // Namespace note (`skein-0j1`): package `app.skein.core.vault.key`
 // matches the `app.skein.core.vault.db` namespace introduced by
@@ -63,14 +67,35 @@ public interface VaultKeyProvider {
      *
      * Prompts the biometric flow at least once against [activity] with
      * [prompt]. A user cancel of either wrap prompt aborts setup cleanly —
-     * no partial state is left behind. Refused with [SetupResult.Failed]
-     * when a wrapped master is already persisted: setup replaces the
-     * Layer-0 aliases, so running it twice would strand the existing vault.
+     * no partial state is left behind. Refused with
+     * [SetupResult.AlreadyInitialised] when a wrapped master is already
+     * persisted: setup replaces the Layer-0 aliases, so running it twice
+     * would strand the existing vault. Refused with [SetupResult.Failed]
+     * when an envelope exists but cannot be read — only a user-initiated
+     * reset may discard it.
      */
     public suspend fun setup(
         activity: FragmentActivity,
         prompt: BiometricPrompt.PromptInfo,
     ): SetupResult
+
+    /**
+     * Whether [setup] has run on this device — i.e. whether a key envelope
+     * (`keys/key-envelope.v1`) exists. Cheap and prompt-free: reads the
+     * envelope, never touches the Keystore, never presents a prompt.
+     *
+     * Returns `true` for an envelope that exists but cannot be read
+     * (corrupt / I/O failure): [setup] is refused in that state and only a
+     * user-initiated, explicitly destructive reset may discard it, so the
+     * caller must route to [unlock] — which reports the typed reason —
+     * rather than offer a re-setup. A `false` therefore always means "no
+     * envelope at all" (the state in which [unlock] would report
+     * [UnlockResult.NotInitialised]).
+     *
+     * Added by skein-ank2 for the first-run gate. Performs one small file
+     * read; call it off the main thread.
+     */
+    public fun isInitialised(): Boolean
 
     /**
      * Transitions from locked to unlocked. Presents [prompt] on [activity]
@@ -158,6 +183,15 @@ public sealed class SetupResult {
      * enrols a biometric.
      */
     public object NoBiometricEnrolled : SetupResult()
+
+    /**
+     * A wrapped master is already persisted, so setup was refused before
+     * touching the Keystore (it would recreate the Layer-0 aliases and
+     * strand the `vault.db` the existing master keys). The caller routes
+     * to [VaultKeyProvider.unlock] instead. Typed (skein-ank2) so the UI
+     * never string-matches a [Failed] reason for this branch.
+     */
+    public object AlreadyInitialised : SetupResult()
 
     /** Any other failure — message deliberately does NOT include key material. */
     public data class Failed(
