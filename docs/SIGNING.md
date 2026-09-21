@@ -27,7 +27,7 @@ needs to answer two questions:
    is out-of-band knowledge (published here, and ideally cross-checked via
    a channel other than the download itself, e.g. this doc's git history).
 
-Reproducible builds (`docs/REPRODUCIBLE_BUILDS.md`,
+Reproducible builds (`docs/VERIFICATION.md` § "Build reproducibility",
 `.github/workflows/reproducible-build.yml`) answer a third, related
 question — "does this source tag actually produce these bytes?" — but that
 check runs on the *unsigned* APK. Signing happens after, by hand, on a
