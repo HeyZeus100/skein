@@ -18,10 +18,13 @@ kotlin {
 dependencies {
     // `:core:model` carries the shared, pure-Kotlin domain types the plan's
     // §4 interface contracts (InferenceEngine, VaultRepository, IndexStore,
-    // RetrievalService, PersonaService, EmbedderService) are built from as
-    // those land (E0.I10-I13, E0.I17). `:testing`'s scaffold fakes in
-    // `app.skein.testing.fakes` are self-contained until then — see the KDoc
-    // on each fake.
+    // RetrievalService, PersonaService, EmbedderService) are built from.
+    // Now that E0.I10-I13/I17 have landed, `:testing`'s fakes in
+    // `us.aherrera.skein.testing` implement those real interfaces directly
+    // (see the KDoc on each fake). The pre-contract `app.skein.testing.fakes`
+    // scaffold this comment used to describe was retired by `E10.I2`
+    // (skein-0j1) once it was fully superseded — nothing outside its own
+    // tests ever referenced it.
     implementation(project(":core:model"))
 
     // Exposed as `api`: every consumer of `:testing` (testImplementation)
