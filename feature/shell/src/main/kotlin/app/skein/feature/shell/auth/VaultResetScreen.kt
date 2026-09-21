@@ -28,7 +28,6 @@ import androidx.compose.foundation.layout.widthIn
 import androidx.compose.material3.Button
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedButton
-import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -40,6 +39,7 @@ import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import app.skein.core.vault.lifecycle.VaultReset
+import app.skein.feature.shell.input.SecureTextField
 import app.skein.feature.shell.testing.ShellTestTags
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
@@ -100,7 +100,10 @@ private fun TypeConfirmationStep(
         style = MaterialTheme.typography.bodyMedium,
         textAlign = TextAlign.Center,
     )
-    OutlinedTextField(
+    // skein-k6ar: SecureTextField is the only permitted text input
+    // (RawTextFieldTest) — the typed phrase is not a secret, but the field
+    // must still opt out of keyboard learning/suggestions like every other.
+    SecureTextField(
         value = state.typedText,
         onValueChange = state::onTypedTextChange,
         label = { Text("Type RESET to continue") },
