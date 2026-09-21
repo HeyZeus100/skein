@@ -44,6 +44,10 @@ native/sqlite/
 │                             # `:core:vault`. Fetches OpenSSL at configure
 │                             # time (sha256-pinned), builds libcrypto.a per
 │                             # ABI, then links libskein_sqlite.so.
+├── cmake/
+│   ├── extract_openssl.cmake     # Per-ABI pristine OpenSSL tree from the
+│   │                             # pinned tarball (skein-doq0)
+│   └── verify_openssl_abi.cmake  # Post-install libcrypto.a ELF Machine guard
 ├── skein_extra_init.c        # Chains sqlcipher_extra_init + sqlite-vec auto-ext
 ├── host_harness.c            # macOS host smoke test (kept for local dev)
 ├── openssl.sha256            # Pinned OpenSSL tarball hash
@@ -88,6 +92,43 @@ The pipeline is:
    with the SQLCipher amalgamation, `sqlite-vec.c`, and `skein_extra_init.c`.
 4. AGP strips the release `.so`, packages it under `lib/<abi>/`, and hands
    it to `:app` via the standard AAR jniLibs mechanism.
+
+### Cross-ABI / host-harness pollution
+
+OpenSSL only supports in-tree builds, so step 2 needs a *writable source tree
+per ABI*. It creates one by extracting `openssl-3.5.4.tar.gz` straight into
+`<cxx build dir>/openssl-3.5.4-<abi>/`. It deliberately does **not** copy
+`third_party/openssl-3.5.4/`.
+
+That matters because `third_party/openssl-3.5.4/` is a working directory: the
+manual recipe in §4 below and the host harness both invite you to run
+`./Configure` and `make` in it. Until `skein-doq0` the CMake build copied that
+directory into the per-ABI build tree, so any `.o`/`.a`/`Makefile`/
+`configdata.pm` left behind came with it — `make` treated them as up to date
+and an arm64 build installed a `libcrypto.a` full of x86_64 objects. The
+symptom was an opaque link failure minutes later:
+
+```
+ld.lld: error: openssl-3.5.4-arm64-v8a-install/lib/libcrypto.a(libdefault-lib-pbkdf2_fips.o) is incompatible with aarch64linux
+```
+
+Two things keep that from recurring:
+
+* **Per-ABI extraction** (`cmake/extract_openssl.cmake`) — every ABI's source
+  is the sha256-verified tarball's bytes and nothing else, so whatever state
+  `third_party/openssl-3.5.4/` is in cannot reach a `.so`. This is also what
+  keeps rebuilds byte-identical: the compile inputs no longer depend on the
+  checkout's history.
+* **A post-install ABI guard** (`cmake/verify_openssl_abi.cmake`) — after
+  `make install_dev`, `llvm-readelf -h` reads the first member of the
+  installed `libcrypto.a` and fails the build immediately unless its ELF
+  `Machine` matches `ANDROID_ABI` (`AArch64` for `arm64-v8a`,
+  `Advanced Micro Devices X86-64` for `x86_64`).
+
+So `./gradlew :app:assembleDevDebug` followed by `:app:assembleFossDebug` in
+one checkout is safe, as is running §4's recipe by hand. If you ever do see
+the guard fire, wipe `core/vault/.cxx` and `core/vault/build/intermediates/cxx`
+and rebuild.
 
 Expected artifact sizes (measured on the spike, arm64-v8a):
 
@@ -177,6 +218,12 @@ make -j8 build_libs && make install_dev
 Build time on Apple M-series (measured): ~60 seconds per ABI. `libcrypto.a`
 is ~11 MB per ABI. `no-engine no-dso` are important — they drop the dynamic
 provider loader and shave ~1 MB.
+
+Note the `make distclean` between the two ABIs: OpenSSL builds in-tree, so
+without it the second `Configure` inherits the first ABI's objects. This
+recipe leaves build products in `third_party/openssl-3.5.4/`, which is fine —
+the Gradle build extracts its own per-ABI tree from the tarball and never
+reads this one (see "Cross-ABI / host-harness pollution" above).
 
 ### 5. Build the .so per ABI
 

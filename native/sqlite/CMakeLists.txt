@@ -112,10 +112,16 @@ endif()
 # -----------------------------------------------------------------------------
 # 2. Map ABI → OpenSSL Configure target
 # -----------------------------------------------------------------------------
+#
+# `OPENSSL_EXPECTED_ELF_MACHINE` is the `Machine:` string `llvm-readelf -h`
+# prints for an object compiled for this ABI; the post-install guard in
+# section 4a compares it against libcrypto.a's first member (skein-doq0).
 if(ANDROID_ABI STREQUAL "arm64-v8a")
   set(OPENSSL_TARGET "android-arm64")
+  set(OPENSSL_EXPECTED_ELF_MACHINE "AArch64")
 elseif(ANDROID_ABI STREQUAL "x86_64")
   set(OPENSSL_TARGET "android-x86_64")
+  set(OPENSSL_EXPECTED_ELF_MACHINE "Advanced Micro Devices X86-64")
 else()
   message(FATAL_ERROR
     "Unsupported ANDROID_ABI=${ANDROID_ABI}. Only arm64-v8a (production) and "
@@ -163,6 +169,10 @@ else()
   endif()
 endif()
 
+# Reference extraction under third_party/. It is the tree README.md §4's manual
+# recipe and the host harness work in, and it is NOT the input to the per-ABI
+# Android builds: since skein-doq0 those extract the pinned tarball themselves
+# (see section 4), so anything you leave lying around here cannot reach a .so.
 if(NOT EXISTS "${OPENSSL_SRC_DIR}/Configure")
   message(STATUS "Extracting OpenSSL ${OPENSSL_VERSION}…")
   file(ARCHIVE_EXTRACT INPUT "${OPENSSL_TARBALL}"
@@ -214,10 +224,9 @@ set(_OPENSSL_CONFIGURE_ARGS
   "--libdir=lib"
 )
 
-# OpenSSL only supports in-tree builds, so we copy the source into a per-ABI
-# BINARY_DIR (via the CONFIGURE_COMMAND) and run ./Configure + make there.
-# `cmake -E chdir` handles the WORKING_DIRECTORY hop for each command, because
-# ExternalProject_Add's COMMAND blocks don't take a WORKING_DIRECTORY keyword.
+# OpenSSL only supports in-tree builds, so each ABI gets its own source tree
+# in BINARY_DIR (materialised by the CONFIGURE_COMMAND below) and runs
+# ./Configure + make there.
 set(_OPENSSL_ENV
   ${CMAKE_COMMAND} -E env
     "ANDROID_NDK_ROOT=${ANDROID_NDK}"
@@ -225,26 +234,66 @@ set(_OPENSSL_ENV
     "SOURCE_DATE_EPOCH=${_SOURCE_DATE_EPOCH}"
 )
 
+# Helper scripts driving the two steps that must not depend on ambient state:
+# a pristine per-ABI source tree, and an ABI sanity check on the result. Both
+# are plain CMake script-mode files (no shell), so they behave identically on
+# a developer's zsh and on CI's runner.
+set(_OPENSSL_EXTRACT_SCRIPT "${SKEIN_SQLITE_ROOT}/cmake/extract_openssl.cmake")
+set(_OPENSSL_ABI_GUARD_SCRIPT "${SKEIN_SQLITE_ROOT}/cmake/verify_openssl_abi.cmake")
+foreach(_openssl_script "${_OPENSSL_EXTRACT_SCRIPT}" "${_OPENSSL_ABI_GUARD_SCRIPT}")
+  if(NOT EXISTS "${_openssl_script}")
+    message(FATAL_ERROR "Missing OpenSSL build helper script: ${_openssl_script}")
+  endif()
+endforeach()
+
 ExternalProject_Add(openssl_ep
   SOURCE_DIR        "${OPENSSL_SRC_DIR}"
   BINARY_DIR        "${OPENSSL_BUILD_DIR}"
   INSTALL_DIR       "${OPENSSL_PREFIX}"
   DOWNLOAD_COMMAND  ""
   UPDATE_COMMAND    ""
-  # Copy the upstream source into BINARY_DIR then run Configure in place. Both
-  # the copy and the Configure invocation are one CMake `COMMAND` block each
-  # so ExternalProject can log/rerun them independently.
+  # skein-doq0: BINARY_DIR is (re)created by extracting the sha256-pinned
+  # tarball, NOT by copying ${OPENSSL_SRC_DIR}. The shared extraction under
+  # third_party/ is a working directory README.md §4 tells you to run
+  # ./Configure + make in, and copying it dragged that ABI's .o files,
+  # Makefile and configdata.pm into the next ABI's build — `make` then saw
+  # them as up to date and installed a libcrypto.a full of foreign-arch
+  # objects. Extracting per ABI makes that structurally impossible and pins
+  # every ABI's inputs to the exact bytes openssl.sha256 names. Each step is
+  # its own CMake `COMMAND` block so ExternalProject can log/rerun them
+  # independently. `cmake -E chdir` handles the WORKING_DIRECTORY hop,
+  # because ExternalProject_Add's COMMAND blocks don't take a
+  # WORKING_DIRECTORY keyword — the extract step chdirs to a directory it is
+  # not about to delete.
   CONFIGURE_COMMAND
-    ${CMAKE_COMMAND} -E copy_directory "${OPENSSL_SRC_DIR}" "${OPENSSL_BUILD_DIR}"
+    ${CMAKE_COMMAND} -E chdir "${SKEIN_SQLITE_ROOT}"
+      ${CMAKE_COMMAND}
+        "-DOPENSSL_TARBALL=${OPENSSL_TARBALL}"
+        "-DOPENSSL_SHA256=${OPENSSL_SHA256}"
+        "-DOPENSSL_ARCHIVE_ROOT=openssl-${OPENSSL_VERSION}"
+        "-DOPENSSL_BUILD_DIR=${OPENSSL_BUILD_DIR}"
+        -P "${_OPENSSL_EXTRACT_SCRIPT}"
   COMMAND
     ${CMAKE_COMMAND} -E chdir "${OPENSSL_BUILD_DIR}"
       ${_OPENSSL_ENV} perl ./Configure ${_OPENSSL_CONFIGURE_ARGS}
   BUILD_COMMAND
     ${CMAKE_COMMAND} -E chdir "${OPENSSL_BUILD_DIR}"
       ${_OPENSSL_ENV} make -j build_libs
+  # Install, then immediately prove the installed archive is for this ABI.
+  # Without the guard a wrong-arch libcrypto.a only surfaces minutes later as
+  # an opaque `ld.lld: error: ... is incompatible with aarch64linux`.
   INSTALL_COMMAND
     ${CMAKE_COMMAND} -E chdir "${OPENSSL_BUILD_DIR}"
       ${_OPENSSL_ENV} make install_dev
+  COMMAND
+    ${CMAKE_COMMAND}
+      "-DLIBCRYPTO=${OPENSSL_LIBCRYPTO}"
+      "-DLLVM_AR=${_NDK_TOOLCHAIN_BIN}/llvm-ar"
+      "-DLLVM_READELF=${_NDK_TOOLCHAIN_BIN}/llvm-readelf"
+      "-DTARGET_ABI=${ANDROID_ABI}"
+      "-DEXPECTED_MACHINE=${OPENSSL_EXPECTED_ELF_MACHINE}"
+      "-DSCRATCH_DIR=${CMAKE_CURRENT_BINARY_DIR}"
+      -P "${_OPENSSL_ABI_GUARD_SCRIPT}"
   BUILD_BYPRODUCTS "${OPENSSL_LIBCRYPTO}"
   USES_TERMINAL_BUILD TRUE
   LOG_CONFIGURE ON
