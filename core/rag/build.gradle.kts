@@ -1,5 +1,10 @@
 plugins {
     alias(libs.plugins.android.library)
+    // E5.I2 (skein-bpt): `app.skein.core.rag.tokenizers` parses Hugging Face
+    // `tokenizer.json` files with kotlinx.serialization (already pinned in the
+    // version catalog and already on this module's runtime classpath via
+    // `:core:model`'s `api` dependency — no new library is introduced).
+    alias(libs.plugins.kotlin.serialization)
 }
 
 android {
@@ -24,6 +29,10 @@ dependencies {
     // dependency of its own.
     api(project(":core:model"))
     implementation(libs.kotlinx.coroutines.android)
+    // skein-bpt: `:core:model` already exposes this as `api`; naming it here
+    // keeps the tokenizers package's direct use of kotlinx.serialization
+    // explicit rather than relying on a transitive.
+    implementation(libs.kotlinx.serialization.json)
 
     testImplementation(libs.junit)
     testImplementation(libs.truth)
