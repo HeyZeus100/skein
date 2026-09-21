@@ -66,6 +66,17 @@ jobs:
       - name: Assemble foss debug APK
         run: ./gradlew assembleFossDebug --stacktrace
 
+      # E10.I9 / skein-rfz2: fails the build if a new exported component
+      # (activity/service/provider/receiver) shows up in the merged
+      # manifest beyond the debug allowlist (MainActivity,
+      # VaultDocumentsProvider, and debug-only PreviewActivity), plus the
+      # rest of the spec §9 manifest posture. `aapt2` ships in the
+      # build-tools package installed above; it's not on PATH by default.
+      - name: Manifest audit (exported components, permissions, backup posture)
+        run: |
+          export PATH="$ANDROID_HOME/build-tools/36.0.0:$PATH"
+          ./tools/ci/manifest-audit.sh app/build/outputs/apk/foss/debug/app-foss-debug.apk
+
       # tools/ci/validate-manifests.py (E0.I15) validates
       # app/src/main/assets/models/*.skein.json against the manifest schema.
       # Skipped gracefully until that script lands so this workflow doesn't
