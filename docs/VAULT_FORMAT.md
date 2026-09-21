@@ -1,6 +1,6 @@
 # Vault Format
 
-On-disk layout, encryption, data model, and wire format for Skein vaults. This document describes the shipped v1 surface.
+On-disk layout, encryption, data model, and wire format for Skein vaults. This document describes the shipped surface as of 2026-09-21.
 
 ## Status
 
@@ -249,26 +249,29 @@ Generated and formatted by `core/vault/src/main/kotlin/app/skein/core/vault/id/U
 
 ## Attachment container (SKAT)
 
-**[shipped]** Each file in the `attachments/` directory is a streaming, chunked container named `SKAT` (Skein-Chunked-Attachment, defined in `core/vault/src/main/kotlin/app/skein/core/vault/blob/SkatFormat.kt`).
+**[shipped]** Each file in the `attachments/` directory is a streaming, chunked container named `SKAT` (Skein-Chunked-Attachment, defined in `core/vault/src/main/kotlin/app/skein/core/vault/blob/SkatFormat.kt`). **Layout updated v1 → v2 (2026-09-21, skein-yn8d/0nh8):** 48-byte salted header, per-chunk final flag in AAD, HKDF info string includes file salt, reader termination from authenticated flag only.
 
 ### File layout
 
 A SKAT file is a sequence of:
 
-1. **Header (32 bytes, fixed layout)**
-2. **Chunks (repeating: encrypted plaintext + authentication tag)**
+1. **Header (48 bytes, fixed layout)**
+2. **Chunks (repeating: final flag + plaintext length + encrypted plaintext + authentication tag)**
 
 ### Header
 
 | Offset | Size | Field | Value |
 |--------|------|-------|-------|
 | 0 | 4 | Magic | `SKAT` (ASCII) |
-| 4 | 1 | Version | 1 (current) |
-| 5 | 4 | Chunk size (little-endian) | 1,048,576 (1 MiB) — `CHUNK_SIZE` |
-| 9 | 8 | Total plaintext bytes (little-endian) | Length of the original unencrypted file |
-| 17 | 15 | Reserved | All zeros |
+| 4 | 1 | Version | 2 (current) |
+| 5 | 4 | Chunk size (little-endian) | 1,048,576 (1 MiB) |
+| 9 | 16 | File salt | Random per-write (SecureRandom), fresh on each write |
+| 25 | 8 | Total plaintext bytes (little-endian) | Length of the original unencrypted file — **unauthenticated** |
+| 33 | 15 | Reserved | All zeros |
 
-The first 9 bytes (magic + version + chunk size) form the "static header," which is fed into every chunk's AAD (see below). The `totalPlaintextBytes` field at offset 9 is **not** part of chunk AAD; it is patched in after streaming completes so the container genuinely streams rather than buffering.
+**Static header (bytes 0–24):** The first 25 bytes (magic, version, chunk size, file salt) form the "static header" and are known before streaming begins. All 25 bytes are fed into every chunk's AAD. The file salt (offset 9–24) is random and fresh per write, making each key unique even if the same attachment ID is overwritten out-of-band (backup restore, file manager, filesystem write).
+
+**Total plaintext bytes (offset 25–32):** Patched in after the attachment is closed, once the total is known. Deliberately placed *after* the static prefix because it cannot be authenticated by any chunk tag (the reader does not have it until reading completes). The field serves `size(id)` for O(1) length lookups only; the reader never consults it for framing or termination.
 
 ### Chunk framing
 
@@ -278,59 +281,83 @@ Plaintext is split into chunks of up to 1 MiB each:
 - **Chunk index 1:** bytes 1,048,576–2,097,151 of plaintext
 - (and so on)
 
-The last chunk may be shorter than 1 MiB.
+The last chunk may be shorter than 1 MiB. Every container ends with exactly one chunk carrying the final flag, including an empty attachment (a single final frame with `plain_len = 0`).
 
-Each chunk is encrypted with:
-- **Algorithm:** AES-256-GCM (Galois/Counter Mode)
-- **Key:** Derived from the vault master key via HKDF-SHA256 (see section 5.4 below)
-- **Nonce (IV):** 12 bytes — chunk index, little-endian, zero-padded to 12 bytes
-- **AAD (Additional Authenticated Data):** Static header (9 bytes) + chunk index (8 bytes, little-endian)
-- **Ciphertext:** Encrypted plaintext chunk
-- **Authentication tag:** 16 bytes (128 bits)
+Each chunk frame is:
 
-Bytes written to disk per chunk:
+| Field | Size | Notes |
+|-------|------|-------|
+| Final flag | 1 byte | `0x00` interior chunk, `0xFF` final chunk |
+| Plain length (LE) | 4 bytes | Plaintext length in this chunk (0 to `chunk_size`) |
+| Ciphertext | variable | AES-256-GCM ciphertext |
+| GCM tag | 16 bytes | Authentication tag (128 bits) |
 
-```
-[ciphertext (variable)] || [auth_tag (16 bytes)]
-```
-
-If a chunk's plaintext is *P* bytes, its encrypted form is *P* + 16 bytes.
+Interior chunks always have `plain_len == chunk_size`. Only the final-flagged chunk may have `0 ≤ plain_len < chunk_size`.
 
 ### Per-attachment key derivation
 
-**[shipped]** Each attachment is assigned a unique content encryption key, derived deterministically from the vault master key and the attachment UUID. This is critical for GCM safety — see section 5.5 below.
+**[shipped]** Each attachment write derives a unique content encryption key from the vault master key, the attachment UUID, and a fresh random file salt.
 
-**Derivation:**
+**Derivation (v2, skein-yn8d):**
 
 ```
+file_salt = 16 fresh SecureRandom bytes (stored in header at offset 9)
+info = "skein-attachment-v2" || file_salt (36 bytes total)
 content_key = HKDF-SHA256(
   salt        = vault_master_key,
   ikm         = attachment_uuid.utf8Bytes,
-  info        = "skein-attachment-v1",
+  info        = info,
   L           = 32 bytes
 )
 ```
 
-The salt (master key) is wiped immediately after the derivation step. The content key is wiped after the file is written or read.
+The salt (master key) and content key are wiped immediately after derivation. The file salt is stored in the container header and is therefore authenticated by every chunk tag (via the static header in the AAD).
+
+**Distinction from v1:** v1 derived the key deterministically from `(master, id)` alone, making any two writes to the same ID produce an identical key. v2's random per-write salt ensures that even two writes to the same ID derive distinct keys, closing a threat vector where backup restore or filesystem overwrite could land two containers with shared GCM `(key, nonce)` pairs.
+
+**v1 compatibility:** Containers with version 1 are refused outright with `AttachmentException.UnsupportedVersion`. No released Skein vault exists, so no migration is needed. Carrying a v1 reader would keep both the old key derivation and the old termination semantics reachable from released code.
 
 Implementation: `core/vault/src/main/kotlin/app/skein/core/vault/blob/FileAttachmentStore.kt`, using the hand-rolled `Hkdf.kt` (RFC 5869).
 
+### AAD composition (v2, skein-0nh8)
+
+The Additional Authenticated Data for chunk `i` is:
+
+```
+aad = static_header(25) || chunk_index_LE(8) || final_flag(1) || plain_len_LE(4)
+```
+
+(Total 38 bytes.)
+
+All four components are authenticated together by the GCM tag, ensuring:
+- The file salt (inside static header) cannot be swapped without breaking every tag.
+- The chunk sequence cannot be reordered.
+- The final flag is authenticated, so "this is the end of the attachment" is a cryptographic statement.
+- The plaintext length in each chunk cannot be altered without causing tag verification to fail.
+
+### Nonce (IV)
+
+**[shipped]** The GCM nonce is 12 bytes: the chunk index (8 bytes, little-endian) zero-padded to 12 bytes. Chunk 0 has nonce `0x00000000_00000000_00000000`, chunk 1 has nonce `0x01000000_00000000_00000000`, etc.
+
+```
+nonce = chunk_index_LE(8) || 0x00000000
+```
+
+### Reader termination and error handling
+
+**[shipped]** The reader terminates when it encounters a chunk frame with the final flag set to `0xFF`. Termination **always** comes from the authenticated final flag, never from the `totalPlaintextBytes` header field.
+
+- **Normal termination:** A chunk with `finalFlag = 0xFF` is read and authenticated. The reader returns all decrypted bytes seen so far.
+- **Data after final chunk:** If the file pointer is not at EOF after a final-flagged frame is authenticated, the file is corrupt → `AttachmentCorruptException("data after final chunk")`.
+- **EOF without final flag:** If EOF is reached while reading a chunk header or before any chunk has the final flag set → `AttachmentTruncatedException`.
+- **Truncated chunk:** If a frame header promises more ciphertext bytes than the file holds → `AttachmentTruncatedException`.
+- **Tag verification failure:** If the GCM tag does not verify (including any bit flip in the AAD, frame header, or ciphertext) → `AttachmentCorruptException`.
+
 ### Write-once enforcement
 
-**[shipped]** Once an attachment is written to `attachments/<uuid>`, it cannot be overwritten. Any attempt to write a second attachment with the same UUID raises `AttachmentException.AlreadyExists`. This prevents GCM nonce reuse (see section 5.5).
+**[shipped]** Once an attachment is written to `attachments/<uuid>`, it cannot be overwritten. Any attempt to write a second attachment with the same UUID raises `AttachmentException.AlreadyExists`. This is enforced by a TOCTOU-minimal check immediately before the atomic move.
 
-### Truncation detection
-
-**[shipped]** The `totalPlaintextBytes` field in the header makes truncation detectable. If trailing chunks are missing, the plaintext size is known at decode time, and a read that stops short of that size is detected as a truncation error rather than a successful decode of a shorter file.
-
-### GCM IV reuse risk mitigation
-
-**[v1 design, in progress]** AES-256-GCM requires that a given `(key, nonce)` pair is used to encrypt at most one plaintext. Without the write-once invariant, an overwrite would reuse `(content_key, nonce)` on different plaintext — a critical cryptographic failure.
-
-The v1 design avoids this by construction:
-- Each attachment UUID gets a unique per-attachment content key (derived from the vault master key via HKDF).
-- The nonce is deterministic: `nonce = chunk_index`, zero-padded to 12 bytes.
-- Because `content_key` is unique per UUID and a UUID identifies exactly one plaintext for its lifetime (write-once), the pair `(content_key, nonce)` is used exactly once, ever, for exactly one plaintext. There is no way to reach an unsafe state without violating the write-once invariant — which the store enforces.
+Before v2, write-once was a critical defense against GCM `(key, nonce)` reuse. v2's random per-write salt makes the write-once check redundant for GCM safety; it is retained for data-loss prevention (an attachment ID identifies exactly one plaintext for its lifetime).
 
 ---
 
