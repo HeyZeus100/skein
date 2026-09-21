@@ -1,6 +1,6 @@
 package app.skein.core.agent.tools
 
-/**
+/*
  * Vault tool primitives — the stable, versioned surface every Skein AI-facing
  * caller reaches through when it needs to read, write, patch, or search vault
  * content. Interfaces only; no implementation lives in this module (skein-fvne).
