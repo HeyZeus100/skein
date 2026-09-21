@@ -97,5 +97,10 @@ android-library = { id = "com.android.library", version.ref = "agp" }
 kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }
 kotlin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }
 kotlin-compose = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
+# NOTE: no kotlin-parcelize entry — like kotlin-android above, AGP 9 already
+# puts `org.jetbrains.kotlin.plugin.parcelize` on the build classpath through
+# its built-in Kotlin support, so a versioned catalog alias is rejected
+# ("already on the classpath with an unknown version"). `:core:ipc` (E0.I16)
+# applies it by bare id instead.
 ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
 ktlint = { id = "org.jlleitschuh.gradle.ktlint", version.ref = "ktlint-gradle" }

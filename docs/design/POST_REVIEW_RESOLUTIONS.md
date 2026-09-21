@@ -583,6 +583,11 @@ Plan:
   outside the manifest.
 - `E0.I16` (AIDL contract) — `LoadRequest` and `EmbedderLoadRequest` gain a
   `ManifestBinding` field (§3 shows the exact shape after the IPC design lands).
+  **Applied 2026-09-21 (`skein-mfw`)**, with one judgment call (J2 in plan
+  §4.7): `:embedder` loads up to three independent models and a
+  `ManifestBinding.manifestId` addresses one `models` row, so
+  `EmbedderLoadRequest` takes three bindings — `embedBinding` plus nullable
+  `nerBinding` / `rerankBinding` — not one.
 - `E3.I5` (`ModelVerifier`) — split into `ModelVerifier.fdSha256` (existing)
   and `ModelVerifier.postMmapBlake3` (new). Add companion-verify helper.
 - `E3.I6` (Sigstore) — no behavioral change; documentation clarification only.
@@ -680,6 +685,13 @@ References (Android):
 ### 3.3 Concrete architectural artifacts
 
 #### AIDL contract (v2 — supersedes plan §4.7 v1)
+
+> **Applied 2026-09-21 (`skein-mfw`).** Plan §4.7 now carries the merged
+> contract — these v2 shapes, plus §2.3's `ManifestBinding`, plus the
+> `LOCK_POLICY_INDEXING.md` §7.6/§5.2 additions — and `core/ipc` implements
+> it. Read plan §4.7, not this block, for the signatures that are actually
+> locked; the elisions below (`// ...`, omitted `tokenCount`/`status`) are
+> filled in there.
 
 ```aidl
 // core/ipc/src/main/aidl/us/aherrera/skein/ipc/IInferenceService.aidl
@@ -1343,6 +1355,17 @@ should apply these deltas verbatim:
 1. **§4.7 (AIDL contract)** — replace v1 AIDL with the v2 shapes in §3.3
    (this doc), including `ManifestBinding`, `SharedMemRef`, `onTokens`
    `dropped` field, new `ErrorCode` values, and `TransportRules` cap.
+   **Applied 2026-09-21 (`skein-mfw`).** Plan §4.7 is now the merged v2
+   contract and `core/ipc` implements it. Two deltas from the wording above,
+   both recorded in §4.7 and in `Parcels.kt`'s header: `TransportRules` is
+   NOT part of `core/ipc` — §3.3 marks it illustrative and places it in
+   `core/inference`, and item 12 below assigns it to `E4.I3`/`E4.I4`, so
+   `core/ipc` carries the wire shape and documents the cap rather than
+   declaring it; and four points (`AttestationRefParcel`'s shape, three
+   `ManifestBinding`s on `EmbedderLoadRequest`, `inputFd` on
+   `ExtractEntitiesRequest`/`RerankRequest`, and the `TransportRules`
+   placement) required judgment calls because no document was explicit —
+   they are written up as J1–J4 in plan §4.7.
 2. **§4.8 (`ModelManifest`)** — bump to `manifest_version: 2`; add
    `companions.size_bytes` and `companions.required`; add
    `attestation.covers`. Note both v1 and v2 accepted by parser during
@@ -1352,6 +1375,9 @@ should apply these deltas verbatim:
 4. **E0.I15** — parser accepts v1 and v2; refuses to LOAD a v1 manifest
    that references companions.
 5. **E0.I16** — dependency stays under it; test targets updated to v2.
+   **Applied 2026-09-21 (`skein-mfw`).** The E0.I16 acceptance criteria now
+   name every v2 Parcelable, and `core/ipc`'s `ParcelRoundTripTest`,
+   `AidlContractTest` and `BinderSizeGuardTest` cover them.
 6. **E2.I2 / E2.I4** — `VaultRepository` gains `newRevision`,
    `getRevision`, and revision-aware `replaceChunks`.
 7. **E2.I6** — manifest snippet in §4.3 is the authoritative form.

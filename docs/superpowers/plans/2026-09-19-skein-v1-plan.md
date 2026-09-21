@@ -547,7 +547,20 @@ Int8 quantization is fixed as: `q = round(clamp(x * 127, -127, 127))` on the L2-
 
 ### 4.7 AIDL — `E0.I16`
 
-Module `core/ipc` holds the `.aidl` files and `@Parcelize` classes shared by `:app`-side clients and the two isolated services. Both service modules depend only on `core/ipc` and `core/model` (enforced by `E1.I2`).
+Module `core/ipc` holds the `.aidl` files and `@Parcelize` classes shared by `:app`-side clients and the two isolated services. Both service modules depend only on `core/ipc` and `core/model` (enforced by `E1.I2`). Module namespace is `us.aherrera.skein.ipc` (contract module; implementation modules use `app.skein.*`).
+
+**Coordinator decision, 2026-09-21 (`skein-mfw`) — this section is the merged v2 contract.** `POST_REVIEW_RESOLUTIONS.md` §5 item 1 instructed the reconciliation pass to "replace v1 AIDL with the v2 shapes in §3.3 (this doc), including `ManifestBinding`, `SharedMemRef`, `onTokens` `dropped` field, new `ErrorCode` values, and `TransportRules` cap". That pass is `E0.I16`, and the shapes below are the union of three authorities, resolved in this precedence:
+
+1. `POST_REVIEW_RESOLUTIONS.md` §3.3 (the `skein-pn1l` answer: Binder's 1 MiB buffer is per-process and shared across all in-flight transactions) and §2.3 (the `skein-st1r` answer: `ManifestBinding` / `ManifestFileRef`, every file hash-verified pre- and post-mmap) **win** wherever they and the former v1 text described the same thing — `LoadRequest.binding`, `GenerateRequest.attachmentFds`, `onTokens(..., dropped)`, oneway `cancel`, `EmbedRequest.inputFd`, `EmbedResult`, and `ErrorCode` 7/8/9/10.
+2. The `LOCK_POLICY_INDEXING.md` §7.6/§5.2 (2026-09-20) additions previously inlined here are **additive on top**: `sessionEpoch: Long` on every request Parcelable, `oneway onSessionLocking(long, long)` and `oneway onSessionLocked(long)` on both services, `oneway cancel(int)` on `IEmbedderService`, `ErrorCode.SESSION_LOCKED = 11`. The 2026-09-20 coordinator decision (`skein-ltcr`) that gave `embed`/`extractEntities`/`rerank` wrapping request Parcelables rather than trailing scalar AIDL parameters also stands — see the note after the code blocks.
+3. Where §3.3 elides a signature (`// ...`), the v1 text fills the gap and **nothing is dropped**: `tokenCount`, `IInferenceService.embed`'s `float[]` return, `status()`, `SamplingParcel`, `ChatMessageParcel`, `GenStats`, `EngineStatus`, `EntitySpanParcel`, `ExtractEntitiesRequest`, `RerankRequest`.
+
+Four points required a judgment call because no document is explicit; all four are also recorded in `Parcels.kt`'s header and on `bd note skein-mfw`:
+
+- **J1 `AttestationRefParcel`** is named by §2.3 (`ManifestBinding.attestation`, "sigstore bundle fd + covers") but never defined. Defined below as a read-only bundle fd plus the manifest's `attestation.covers` vocabulary (`main` | `companions` | `all`, per `skein-cqiu`).
+- **J2 `EmbedderLoadRequest`** — `POST_REVIEW_RESOLUTIONS.md` §2.5 says it "gains a `ManifestBinding` field", but `:embedder` loads up to three independent models (embed, NER, rerank) while `ManifestBinding.manifestId` "ties this load to a specific `models` row" (singular). It therefore takes three: `embedBinding` plus nullable `nerBinding` / `rerankBinding`. Every file the v1 shape listed (model + tokenizer for each of the three) is still reachable, now as a `ManifestFileRef` with the appropriate `role`.
+- **J3 `ExtractEntitiesRequest` / `RerankRequest`** each carry an `inputFd: SharedMemRef?`, because §3.3 states "extractEntities and rerank follow the same 'inline or shared-memory' rule" while eliding their signatures. Without the field the wire contract could not express the rule the document states.
+- **J4 `TransportRules`** is explicitly "illustrative" in §3.3 and placed in `core/inference`; §5 item 12 assigns its implementation to `E4.I3`/`E4.I4`. It is **not** declared in `core/ipc` — that module is the wire shape, not the client policy that decides inline-vs-fd. Its constants are documented in `Parcels.kt`'s header so the contract reads on its own.
 
 ```
 core/ipc/src/main/aidl/us/aherrera/skein/ipc/IInferenceService.aidl
@@ -566,15 +579,18 @@ import us.aherrera.skein.ipc.EmbedRequest;
 import us.aherrera.skein.ipc.EngineStatus;
 
 interface IInferenceService {
-    /** Blocks until the file is hashed, verified against req.expectedSha256, and mmapped. Returns ErrorCode.OK (0) or an ErrorCode. */
+    /** Sync. Verifies EVERY fd in req.binding.files against its expected sha256 pre-mmap, takes a shared read lock on the main file, then re-digests the mapped bytes with a distinct algorithm post-mmap (POST_REVIEW_RESOLUTIONS.md §2.3). Returns ErrorCode.OK (0) or an ErrorCode. */
     int load(in LoadRequest req);
-    /** Asynchronous. Tokens arrive on cb; exactly one onDone or onError per requestId. */
+    /** Async. cb must be a fresh IInferenceCallback (client-owned). Tokens arrive on cb; exactly one onDone or onError per requestId. req.messages + req.sampling stay inside the inline budget; attachments travel in req.attachmentFds. */
     void generate(in GenerateRequest req, in IInferenceCallback cb);
-    void cancel(int requestId);
+    /** oneway. The service acknowledges by emitting onDone(stopReason = "CANCELLED"). */
+    oneway void cancel(int requestId);
+    /** Sync. Releases the mmap, the fd read lock and the KV cache. Idempotent. */
     void unload();
     /** Only when the loaded model has the EMBEDDING capability. Flattened row-major. req.isQuery is ignored (no "search_query:" prefix behavior on this engine). */
     float[] embed(in EmbedRequest req);
     int tokenCount(String text);
+    /** Sync. Small. Never call while a generate is in flight (returns a BUSY state). */
     EngineStatus status();
     // LOCK_POLICY_INDEXING.md §7.6/§5.2 (2026-09-20), additive to the v2 AIDL contract:
     /** oneway. Pushed the instant SessionState enters LOCKING; see LOCK_POLICY_INDEXING.md §5.2. */
@@ -590,8 +606,10 @@ package us.aherrera.skein.ipc;
 import us.aherrera.skein.ipc.GenStats;
 
 oneway interface IInferenceCallback {
-    void onTokens(int requestId, in String[] pieces, in int[] ids);   // batched every ≤20 ms
+    /** Batched every <= 20 ms, <= 16 KiB of pieces + ids per call. dropped > 0 iff the service shed earlier batches under backpressure (the callback queue holds <= 8 batches, oldest dropped first — POST_REVIEW_RESOLUTIONS.md §3.2 rule 4). */
+    void onTokens(int requestId, in String[] pieces, in int[] ids, int dropped);
     void onDone(int requestId, in GenStats stats);
+    /** code is an ErrorCode. */
     void onError(int requestId, int code, String message);
 }
 ```
@@ -601,15 +619,19 @@ oneway interface IInferenceCallback {
 package us.aherrera.skein.ipc;
 import us.aherrera.skein.ipc.EmbedderLoadRequest;
 import us.aherrera.skein.ipc.EmbedRequest;
+import us.aherrera.skein.ipc.EmbedResult;
 import us.aherrera.skein.ipc.ExtractEntitiesRequest;
 import us.aherrera.skein.ipc.RerankRequest;
 import us.aherrera.skein.ipc.EntitySpanParcel;
 
 interface IEmbedderService {
+    /** Sync. Verifies every fd in each of req's bindings, pre- and post-mmap, exactly as IInferenceService.load does. */
     int load(in EmbedderLoadRequest req);
-    /** 256 int8 per text, concatenated. req.isQuery selects the "search_query: " prefix. Max 32 texts per call. */
-    byte[] embed(in EmbedRequest req);
+    /** Texts either inline (within the 32 KiB budget) or in req.inputFd (shared memory). Returns 256 int8 per text, concatenated row-major — <= 8 KiB for the 32-text maximum. req.isQuery selects the "search_query: " prefix. Max 32 texts per call. */
+    EmbedResult embed(in EmbedRequest req);
+    /** Same "inline or shared-memory" rule as embed: req.text or req.inputFd. */
     List<EntitySpanParcel> extractEntities(in ExtractEntitiesRequest req);
+    /** Same "inline or shared-memory" rule as embed: req.candidates or req.inputFd. One score per candidate. */
     float[] rerank(in RerankRequest req);
     int tokenCount(String text);
     void unload();
@@ -625,27 +647,51 @@ interface IEmbedderService {
 
 ```kotlin
 // core/ipc/src/main/kotlin/us/aherrera/skein/ipc/Parcels.kt
-package us.aherrera.skein.ipc
-
-import android.os.Parcelable
-import android.os.ParcelFileDescriptor
-import kotlinx.parcelize.Parcelize
 
 object ErrorCode {
     const val OK = 0; const val HASH_MISMATCH = 1; const val INVALID_MODEL = 2; const val OOM = 3
-    const val NOT_LOADED = 4; const val BUSY = 5; const val CANCELLED = 6; const val INTERNAL = 99
+    const val NOT_LOADED = 4; const val BUSY = 5; const val CANCELLED = 6
+    // POST_REVIEW_RESOLUTIONS.md §2.3/§3.2 (v2):
+    const val HASH_MISMATCH_POST_MMAP = 7; const val TX_TOO_LARGE = 8
+    const val MODEL_IN_USE = 9; const val COMPANION_HASH_MISMATCH = 10
     const val SESSION_LOCKED = 11   // LOCK_POLICY_INDEXING.md §7.6/§5.2 (2026-09-20): IsolatedSessionGate.guard() refusal
+    const val INTERNAL = 99
 }
 
+// POST_REVIEW_RESOLUTIONS.md §3.2: large payloads never travel inline.
+@Parcelize data class SharedMemRef(
+    val fd: ParcelFileDescriptor,   // MemoryFile (ashmem) or app-private tmpfile, read-only; the SERVICE owns and closes it
+    val sizeBytes: Long,
+    val mimeHint: String,           // 'image/png' | 'image/jpeg' | 'text/plain; charset=utf-8' | 'application/octet-stream'
+    val role: String,               // 'image' | 'audio' | 'input-texts' | ...
+) : Parcelable
+
+// POST_REVIEW_RESOLUTIONS.md §2.3: every file a service opens, as an fd, hash-verified pre- and post-mmap.
+@Parcelize data class ManifestFileRef(
+    val role: String,               // 'main' | the seven companion roles fixed by skein-cqiu
+    val fd: ParcelFileDescriptor,   // opened read-only by :app; the service hashes THIS fd then mmaps THIS fd (TOCTOU defense)
+    val expectedSha256: String,     // 64 hex, lowercase, constant-time compared
+    val expectedSizeBytes: Long,
+) : Parcelable
+
+@Parcelize data class AttestationRefParcel(   // J1
+    val bundleFd: ParcelFileDescriptor,
+    val covers: List<String>,       // manifest attestation.covers: 'main' | 'companions' | 'all'
+) : Parcelable
+
+@Parcelize data class ManifestBinding(
+    val manifestId: String,         // ties this load to a specific models row
+    val manifestVersion: Int,       // 2 (skein-cqiu)
+    val files: List<ManifestFileRef>,
+    val attestation: AttestationRefParcel?,
+) : Parcelable
+
 @Parcelize data class LoadRequest(
-    val modelFd: ParcelFileDescriptor,          // opened read-only by :app; service hashes THIS fd then mmaps THIS fd (TOCTOU defense)
-    val expectedSha256: String,
-    val mmprojFd: ParcelFileDescriptor?,
-    val expectedMmprojSha256: String?,
+    val binding: ManifestBinding,
     val contextLength: Int,
     val threads: Int,
     val gpuLayers: Int,                         // 0 = CPU only; from MEASUREMENTS.md
-    val embeddingMode: Boolean,                 // true when loading nomic GGUF in :embedder (GGUF path)
+    val embeddingMode: Boolean,                 // true when loading an embedding GGUF (GGUF path)
     val sessionEpoch: Long,                     // LOCK_POLICY_INDEXING.md §7.6/§5.2 (2026-09-20): IsolatedSessionGate.guard() input
 ) : Parcelable
 
@@ -658,8 +704,8 @@ object ErrorCode {
 
 @Parcelize data class GenerateRequest(
     val requestId: Int,
-    val messages: List<ChatMessageParcel>,
-    val images: List<ByteArray>,                // PNG/JPEG bytes, ≤ 4 MiB each, only with mmproj loaded
+    val messages: List<ChatMessageParcel>,      // capped by the client; overflow -> attachmentFds
+    val attachmentFds: List<SharedMemRef>,      // images, audio, oversized text — images only with mmproj loaded
     val sampling: SamplingParcel,
     val sessionEpoch: Long,                     // LOCK_POLICY_INDEXING.md §7.6/§5.2 (2026-09-20): IsolatedSessionGate.guard() input
 ) : Parcelable
@@ -670,11 +716,11 @@ object ErrorCode {
 
 @Parcelize data class EngineStatus(val state: String, val modelSha256: String?, val contextLength: Int, val tokensPerSec: Float) : Parcelable
 
-@Parcelize data class EmbedderLoadRequest(
-    val embedModelFd: ParcelFileDescriptor, val embedModelSha256: String, val embedFormat: String,   // "onnx" | "gguf"
-    val embedTokenizerFd: ParcelFileDescriptor?,                                                       // tokenizer.json for ONNX path
-    val nerModelFd: ParcelFileDescriptor?, val nerModelSha256: String?, val nerTokenizerFd: ParcelFileDescriptor?,
-    val rerankModelFd: ParcelFileDescriptor?, val rerankModelSha256: String?, val rerankTokenizerFd: ParcelFileDescriptor?,
+@Parcelize data class EmbedderLoadRequest(      // J2: three models, three bindings
+    val embedBinding: ManifestBinding,          // embedding model + (ONNX path) its 'tokenizer' companion
+    val embedFormat: String,                    // "onnx" | "gguf"
+    val nerBinding: ManifestBinding?,
+    val rerankBinding: ManifestBinding?,
     val threads: Int,
     val sessionEpoch: Long,                     // LOCK_POLICY_INDEXING.md §7.6/§5.2 (2026-09-20): IsolatedSessionGate.guard() input
 ) : Parcelable
@@ -683,27 +729,37 @@ object ErrorCode {
 
 // LOCK_POLICY_INDEXING.md §7.6/§5.2 (2026-09-20); wrapping Parcelables added by coordinator decision, 2026-09-20 (`skein-ltcr`) — see note below.
 @Parcelize data class EmbedRequest(
-    val texts: List<String>,
+    val texts: List<String>,                    // inline while within the 32 KiB budget
+    val inputFd: SharedMemRef? = null,          // else populated instead of texts (POST_REVIEW §3.3)
     val isQuery: Boolean = false,               // IEmbedderService.embed only ("search_query: " prefix); IInferenceService.embed ignores this field
     val sessionEpoch: Long,                     // LOCK_POLICY_INDEXING.md §7.6/§5.2 (2026-09-20): IsolatedSessionGate.guard() input
+) : Parcelable
+
+@Parcelize data class EmbedResult(
+    val flat: ByteArray,                        // row-major int8[texts * 256]; <= 8 KiB per call
+    val droppedInputs: Int,                     // 0 in normal operation
 ) : Parcelable
 
 @Parcelize data class ExtractEntitiesRequest(
     val text: String,
     val labels: List<String>,
+    val inputFd: SharedMemRef? = null,          // J3
     val sessionEpoch: Long,                     // LOCK_POLICY_INDEXING.md §7.6/§5.2 (2026-09-20): IsolatedSessionGate.guard() input
 ) : Parcelable
 
 @Parcelize data class RerankRequest(
     val query: String,
     val candidates: List<String>,
+    val inputFd: SharedMemRef? = null,          // J3
     val sessionEpoch: Long,                     // LOCK_POLICY_INDEXING.md §7.6/§5.2 (2026-09-20): IsolatedSessionGate.guard() input
 ) : Parcelable
 ```
 
 **Coordinator decision, 2026-09-20 (`skein-ltcr`):** LOCK_POLICY_INDEXING.md §7.6/§5.2 says "every existing request-carrying method (`load`, `generate`, `embed`, `extractEntities`, `rerank`) gains a `sessionEpoch: Long` field on its request Parcelable" but `IEmbedderService.embed(in String[] texts, boolean isQuery)`, `extractEntities(String text, in String[] labels)`, and `IInferenceService.embed(in String[] texts)`/`rerank(String query, in String[] candidates)` took raw scalar/array parameters, not a wrapped Parcelable. Resolved by adding the simpler of the two options on the table: wrapping request Parcelables (`EmbedRequest`, `ExtractEntitiesRequest`, `RerankRequest`, above) rather than a plain trailing `sessionEpoch: Long` AIDL parameter on each method — this keeps all request-carrying methods on a consistent "one Parcelable in" shape (matching `LoadRequest`/`GenerateRequest`/`EmbedderLoadRequest`) and gives future fields (e.g. a request-scoped timeout or trace id) one place to land instead of accreting positional AIDL parameters across three interfaces. `IInferenceService.embed` and `IEmbedderService.embed` share the single `EmbedRequest` shape; `IInferenceService.embed` always treats `isQuery` as `false` since it has no "search_query: " prefix behavior. `IsolatedSessionGate.guard()` (§5.3) reads `req.sessionEpoch` off each of the three the same way it already does for `LoadRequest`/`GenerateRequest`/`EmbedderLoadRequest`, so this does not change `E4.I3`/`E5.I1`'s gate implementation, only the per-call signatures shown above.
 
-Binder transaction limit is 1 MiB; clients batch ≤ 32 texts per `EmbedRequest` and the inference client never sends more than one image per message.
+**Transport (`POST_REVIEW_RESOLUTIONS.md` §3.2; measured by `E0.I16`'s `BinderSizeGuardTest`).** Binder's transaction buffer is 1 MiB *per process*, shared across every in-flight transaction. The aggregate inline payload of any single call (arguments AND response) is therefore bounded to 32 KiB defensive / 128 KiB hard refuse, enforced client-side by `TransportRules` (`E4.I3`/`E4.I4`) before the call is marshalled. Clients batch <= 32 texts per `EmbedRequest`, and the inference client never sends more than one image per message.
+
+**Image / large-payload transport decision (`E0.I16` acceptance criterion 4).** The bead framed this as "inline `ByteArray` <= 512 KiB, else `MemoryFile`-backed fd". Measured, a `GenerateRequest` carrying one 4 MiB image inline parcels to well over 1 MiB on its own, so the guard's fallback branch is the one that applies — and §3.2's aggregate argument makes the rule unconditional rather than a 512 KiB threshold: **images, audio and oversized text never travel inline; there is no inline attachment field in this contract.** Every attachment is a `SharedMemRef`, and the receiving service owns the fd and must `close()` it on success and failure alike. Measured with the same test, a 4 MiB image carried as a `SharedMemRef` adds under 1 KiB to the transaction. 512 KiB inline remains legal for a single transaction but not for the aggregate budget `skein-pn1l` is about, so it is superseded.
 
 ### 4.8 `ModelManifest` JSON schema — `E0.I15`
 
@@ -1403,23 +1459,23 @@ priority: 0
 labels: blocks-others
 deps: E0.I10, E0.I15, E1.I1
 ```
-**Description:** Land §4.7: the three `.aidl` interfaces, the `parcelable` declarations, and `Parcels.kt`. Add a Robolectric round-trip test for every Parcelable and a `Binder` size guard test (a `GenerateRequest` with one 4 MiB image plus 16K tokens of text must be under 1 MiB after excluding the image, i.e. images travel as shared-memory `ParcelFileDescriptor` if the guard fails — decide here and document). **Amended by `docs/design/LOCK_POLICY_INDEXING.md` §7.6 (2026-09-20):** §4.7's AIDL now additionally includes `onSessionLocking(long epoch, long budgetMillis)` and `onSessionLocked(long epoch)` (oneway) on both `IInferenceService` and `IEmbedderService`, and `cancel(int requestId)` (oneway) on `IEmbedderService` (previously absent — `POST_REVIEW_RESOLUTIONS.md` §3.3 defined `embed` as synchronous with no cancellation path). `LoadRequest`, `GenerateRequest`, and `EmbedderLoadRequest` each gain a `sessionEpoch: Long` field; `ErrorCode.SESSION_LOCKED = 11` is added. **Coordinator decision, 2026-09-20 (`skein-ltcr`):** `IInferenceService.embed`, `IEmbedderService.embed`, `IEmbedderService.extractEntities`, and `IEmbedderService.rerank` gain the new wrapping request Parcelables `EmbedRequest`, `ExtractEntitiesRequest`, and `RerankRequest` (see the plan doc's §4.7 code blocks, updated in this pass, for exact signatures) rather than a trailing scalar `sessionEpoch: Long` AIDL parameter.
+**Description:** Land §4.7: the three `.aidl` interfaces, the `parcelable` declarations, and `Parcels.kt`. Add a Robolectric round-trip test for every Parcelable and a `Binder` size guard test (a `GenerateRequest` with one 4 MiB image plus 16K tokens of text must be under 1 MiB after excluding the image, i.e. images travel as shared-memory `ParcelFileDescriptor` if the guard fails — decide here and document). **Amended by `docs/design/LOCK_POLICY_INDEXING.md` §7.6 (2026-09-20):** §4.7's AIDL now additionally includes `onSessionLocking(long epoch, long budgetMillis)` and `onSessionLocked(long epoch)` (oneway) on both `IInferenceService` and `IEmbedderService`, and `cancel(int requestId)` (oneway) on `IEmbedderService` (previously absent — `POST_REVIEW_RESOLUTIONS.md` §3.3 defined `embed` as synchronous with no cancellation path). `LoadRequest`, `GenerateRequest`, and `EmbedderLoadRequest` each gain a `sessionEpoch: Long` field; `ErrorCode.SESSION_LOCKED = 11` is added. **Coordinator decision, 2026-09-20 (`skein-ltcr`):** `IInferenceService.embed`, `IEmbedderService.embed`, `IEmbedderService.extractEntities`, and `IEmbedderService.rerank` gain the new wrapping request Parcelables `EmbedRequest`, `ExtractEntitiesRequest`, and `RerankRequest` (see the plan doc's §4.7 code blocks, updated in this pass, for exact signatures) rather than a trailing scalar `sessionEpoch: Long` AIDL parameter. **Coordinator decision, 2026-09-21 (`skein-mfw`), applying `POST_REVIEW_RESOLUTIONS.md` §5 items 1 and 5:** §4.7 is now the merged v2 contract — §3.3's v2 shapes (`SharedMemRef`, `GenerateRequest.attachmentFds`, `EmbedRequest.inputFd`, `EmbedResult`, `onTokens(..., dropped)`, oneway `cancel`, `ErrorCode` 7/8/9/10) and §2.3's `ManifestBinding`/`ManifestFileRef` on `LoadRequest`/`EmbedderLoadRequest`, with the LOCK_POLICY additions layered on top. Test targets below are updated to v2. See §4.7 for the precedence rules and the four recorded judgment calls (J1–J4).
 
 **Acceptance criteria:**
 - [ ] `./gradlew :core:ipc:assembleDebug` generates Java stubs for `IInferenceService`, `IInferenceCallback`, `IEmbedderService`
-- [ ] Parcel round-trip tests pass for `LoadRequest` (with a real `ParcelFileDescriptor` from a temp file), `GenerateRequest`, `GenStats`, `EngineStatus`, `EmbedderLoadRequest`, `EntitySpanParcel`
-- [ ] `ErrorCode` constants documented in KDoc with the `InferenceException` they map to, including the new `SESSION_LOCKED = 11`
-- [ ] Decision on image transport recorded in the file header (inline `ByteArray` ≤ 512 KiB, else `MemoryFile`-backed fd)
+- [ ] Parcel round-trip tests pass for every Parcelable in §4.7 — `SharedMemRef`, `ManifestFileRef`, `AttestationRefParcel`, `ManifestBinding`, `LoadRequest`, `ChatMessageParcel`, `SamplingParcel`, `GenerateRequest`, `GenStats`, `EngineStatus`, `EmbedderLoadRequest`, `EntitySpanParcel`, `EmbedRequest`, `EmbedResult`, `ExtractEntitiesRequest`, `RerankRequest` — with a real `ParcelFileDescriptor` from a temp file behind every fd field
+- [ ] `ErrorCode` constants documented in KDoc with the `InferenceException` they map to, including the v2 additions (7/8/9/10) and `SESSION_LOCKED = 11`; codes with no subclass in the locked `E0.I10` hierarchy say so explicitly
+- [ ] Decision on image transport recorded in the file header: measured, inline is not viable at all — every attachment travels as a `SharedMemRef` (`MemoryFile`-backed fd), and the 512 KiB inline fallback is superseded by §3.2's 32 KiB aggregate budget
 - [ ] `onSessionLocking`/`onSessionLocked` present on both `IInferenceService` and `IEmbedderService`; `IEmbedderService.cancel(requestId)` present; round-trip/AIDL-generation tests cover the new methods compiling and being invokable on a fake `Binder`
 
 **Files:**
-- Create: `core/ipc/build.gradle.kts` (`buildFeatures { aidl = true }`, `kotlin-parcelize`), `core/ipc/src/main/aidl/us/aherrera/skein/ipc/*.aidl`, `core/ipc/src/main/kotlin/us/aherrera/skein/ipc/Parcels.kt`, `core/ipc/src/test/kotlin/us/aherrera/skein/ipc/ParcelRoundTripTest.kt`
+- Create: `core/ipc/build.gradle.kts` (`buildFeatures { aidl = true }`, `kotlin-parcelize` applied by bare id — AGP 9 already carries it on the build classpath, so a versioned catalog alias is rejected), `core/ipc/src/main/aidl/us/aherrera/skein/ipc/*.aidl`, `core/ipc/src/main/kotlin/us/aherrera/skein/ipc/Parcels.kt`, `core/ipc/src/test/kotlin/us/aherrera/skein/ipc/{ParcelRoundTripTest,AidlContractTest,BinderSizeGuardTest}.kt`
 
 **Interfaces:**
 - Produces: §4.7; consumed by `E4.I3`, `E4.I4`, `E5.I1`, `E5.I3`
 
 **Steps:**
-- [ ] Step 1: Write `ParcelRoundTripTest` (Robolectric 4.17): `Parcel.obtain()`, `writeParcelable`, `setDataPosition(0)`, `readParcelable`, `assertEquals`. Run → FAIL.
+- [ ] Step 1: Write `ParcelRoundTripTest` (Robolectric 4.17): `Parcel.obtain()`, `writeParcelable`, `setDataPosition(0)`, `readParcelable`, `assertEquals`. Write it with `Parcelable.PARCELABLE_WRITE_RETURN_VALUE` — Robolectric's `ShadowParcelFileDescriptor` only resolves a descriptor read back out of a `Parcel` once the sender's `ParcelFileDescriptor` has been closed, which is what that flag does. Run → FAIL.
 - [ ] Step 2: Add the AIDL files and `Parcels.kt`; run → PASS.
 - [ ] Step 3: Add the size guard test using `Parcel.dataSize()`; adjust the image transport rule; commit with `-s`.
 
