@@ -1,7 +1,9 @@
 package app.skein
 
 import app.skein.core.vault.provider.VaultDocumentsProvider
+import app.skein.core.vault.session.LockPolicy
 import app.skein.core.vault.session.UnlockManager
+import app.skein.system.SecurityPrefs
 import app.skein.vault.DocumentsProviderPort
 import app.skein.vault.ScriptedVaultKeyProvider
 import app.skein.vault.VaultBootstrap
@@ -11,11 +13,14 @@ import app.skein.vault.VaultSession
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
+import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.launch
 import us.aherrera.skein.testing.FakeExportService
 import us.aherrera.skein.testing.FakeImportService
 import us.aherrera.skein.testing.InMemoryIndexStore
 import us.aherrera.skein.testing.InMemoryPersonaService
 import us.aherrera.skein.testing.InMemoryVaultRepository
+import java.time.Duration
 
 /**
  * Robolectric stand-in for [SkeinApplication] (`@Config(application = ...)`):
@@ -59,6 +64,40 @@ class TestSkeinApplication : SkeinApplication() {
                 scope = scope,
                 seed = VaultServices::seedFirstPersona,
             )
+        wireLockPolicyForTest(unlockManager, scope)
         return VaultServices(keyProvider, unlockManager, bootstrap)
+    }
+
+    /**
+     * Test-only mirror of `VaultServices.forDevice`'s private
+     * `wireLockPolicy` (skein-up0/skein-qsux): collects this same
+     * [SecurityPrefs] instance `MainActivity` reads/writes into
+     * [UnlockManager.configure], live, for the lifetime of [scope] — so a
+     * Robolectric test that drives Settings › Security through the real
+     * `MainActivity` UI can assert `unlockManager.policy` reflects a change
+     * without `MainActivity` itself ever calling `configure` (that stays the
+     * production wiring's sole responsibility; see `VaultServices.forDevice`'s
+     * doc). Duplicated rather than reused because `wireLockPolicy` is a
+     * private implementation detail of `VaultServices`'s companion, and this
+     * worktree's task is scoped to `:app`'s test sources only.
+     */
+    private fun wireLockPolicyForTest(
+        unlockManager: UnlockManager,
+        scope: CoroutineScope,
+    ) {
+        val securityPrefs = SecurityPrefs(this)
+        scope.launch {
+            combine(
+                securityPrefs.idleTimeoutMinutes,
+                securityPrefs.lockOnScreenOff,
+                securityPrefs.lockOnBackground,
+            ) { minutes, lockOnScreenOff, lockOnBackground ->
+                LockPolicy(
+                    idleTimeout = Duration.ofMinutes(minutes.toLong()),
+                    lockOnScreenOff = lockOnScreenOff,
+                    lockOnBackground = lockOnBackground,
+                )
+            }.collect { policy -> unlockManager.configure(policy) }
+        }
     }
 }
