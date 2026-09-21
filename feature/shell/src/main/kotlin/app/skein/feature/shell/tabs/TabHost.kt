@@ -29,6 +29,12 @@ import app.skein.feature.shell.theme.LocalSkeinTokens
  *
  * Content is mocked (`E6.I6`+ wires up real chat/note/attachment screens);
  * [content] defaults to a placeholder that just names the kind and doc key.
+ *
+ * [emptyContent] is what's shown instead of [content] while there's no
+ * active tab; it defaults to [EmptyTabHostPlaceholder]'s "No tabs open —
+ * back to timeline" message. `SkeinApp` (bd `skein-64y9`) overrides this on
+ * the primary pane in single-pane layouts so the timeline itself — not a
+ * dead end — is what a fresh launch with no tabs lands on.
  */
 @Composable
 fun TabHost(
@@ -39,6 +45,7 @@ fun TabHost(
     onOpenInSplit: (TabId) -> Unit = {},
     /** Fires when the active tab becomes `null` (last tab closed) — the host screen returns focus to the timeline. */
     onEmpty: () -> Unit = {},
+    emptyContent: @Composable () -> Unit = { EmptyTabHostPlaceholder() },
     content: @Composable (Tab) -> Unit = { tab -> MockTabContent(tab) },
 ) {
     val tokens = LocalSkeinTokens.current
@@ -76,15 +83,20 @@ fun TabHost(
             if (activeTab != null) {
                 content(activeTab)
             } else {
-                EmptyTabHostPlaceholder()
+                emptyContent()
             }
         }
     }
 }
 
-/** Spec §8.3: "Closing preview when it was the only tab returns focus to timeline." Mock-only visual here. */
+/**
+ * Spec §8.3: "Closing preview when it was the only tab returns focus to
+ * timeline." Mock-only visual here. `internal` (not `private`) so `SkeinApp`
+ * can reuse it as the non-timeline-slot branch of its `emptyContent`
+ * override (bd `skein-64y9`).
+ */
 @Composable
-private fun EmptyTabHostPlaceholder(modifier: Modifier = Modifier) {
+internal fun EmptyTabHostPlaceholder(modifier: Modifier = Modifier) {
     Surface(modifier = modifier.fillMaxSize(), color = MaterialTheme.colorScheme.background) {
         Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
             Text(

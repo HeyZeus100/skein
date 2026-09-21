@@ -1,7 +1,9 @@
 package app.skein
 
 import androidx.compose.ui.test.junit4.v2.createEmptyComposeRule
+import androidx.compose.ui.test.onAllNodesWithContentDescription
 import androidx.compose.ui.test.onAllNodesWithTag
+import androidx.compose.ui.test.onNodeWithContentDescription
 import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
@@ -20,6 +22,8 @@ import org.junit.Test
 import org.junit.runner.RunWith
 import org.robolectric.RobolectricTestRunner
 import org.robolectric.annotation.Config
+import us.aherrera.skein.core.model.DocumentKind
+import us.aherrera.skein.core.model.NewDocument
 
 /**
  * E10.I1's sample Compose UI test, extended by skein-2ige: a
@@ -234,6 +238,30 @@ class MainActivityComposeTest {
             awaitTag(VaultGateTestTags.OPEN_FAILED)
 
             composeRule.onNodeWithTag(VaultGateTestTags.RETRY).assertExists()
+        }
+    }
+
+    @Test
+    @Config(qualifiers = "w400dp-h800dp")
+    fun `the unlocked shell shows the timeline instead of No tabs open`() {
+        runBlocking {
+            app.repository.createDocument(
+                NewDocument(kind = DocumentKind.NOTE, title = "Seeded Note", bodyMd = "content"),
+            )
+        }
+
+        ActivityScenario.launch(MainActivity::class.java).use {
+            awaitTag(ShellTestTags.SKEIN_SHELL_ROOT)
+            composeRule.waitUntil(timeoutMillis = WAIT_MILLIS) {
+                composeRule.onAllNodesWithContentDescription("Note").fetchSemanticsNodes().isNotEmpty()
+            }
+
+            // skein-64y9: a fresh launch (no tabs open, compact/single-pane
+            // width) now lands on the timeline instead of `TabHost`'s "No
+            // tabs open" placeholder — the seeded note shows up as a
+            // `TimelineRail` glyph, accessible via its kind label.
+            composeRule.onNodeWithContentDescription("Note").assertExists()
+            composeRule.onNodeWithText("No tabs open", substring = true).assertDoesNotExist()
         }
     }
 
