@@ -87,7 +87,10 @@ The pipeline is:
 2. CMake fetches `openssl-3.5.4.tar.gz` (sha256 verified against
    `openssl.sha256`), extracts it, and — via `ExternalProject_Add` — runs
    `./Configure android-<abi> -D__ANDROID_API__=26 no-shared no-tests
-   no-dso no-engine no-legacy` followed by `make build_libs install_dev`.
+   no-dso no-engine no-legacy --prefix=/skein-openssl
+   --openssldir=/skein-openssl/ssl` followed by `make build_libs` and
+   `make DESTDIR=<cxx build dir>/openssl-3.5.4-<abi>-install install_dev`.
+   The prefix is synthetic on purpose — see [Reproducibility](#reproducibility).
 3. `libcrypto.a` is statically linked into `libskein_sqlite.so` together
    with the SQLCipher amalgamation, `sqlite-vec.c`, and `skein_extra_init.c`.
 4. AGP strips the release `.so`, packages it under `lib/<abi>/`, and hands
@@ -129,6 +132,84 @@ So `./gradlew :app:assembleDevDebug` followed by `:app:assembleFossDebug` in
 one checkout is safe, as is running §4's recipe by hand. If you ever do see
 the guard fire, wipe `core/vault/.cxx` and `core/vault/build/intermediates/cxx`
 and rebuild.
+
+### Reproducibility
+
+`lib/arm64-v8a/libskein_sqlite.so` is byte-identical across rebuilds **and
+across checkouts at different absolute paths** — that second half is what
+`E1.I8`'s cross-machine hash CI compares, and what `skein-ej1b` fixed.
+
+Canonical `sha256` of the packaged (stripped) arm64-v8a `.so`
+(OpenSSL 3.5.4 / SQLCipher 4.17.0 / sqlite-vec 0.1.9 / NDK r27c):
+
+```
+5e39a3b3d594d5339b1bbf3e44fccf27d24bf2234d2ff72971f67175c201e84e
+```
+
+(the unstripped `.so` is `7a3db743214cd53240310beec39d56395176dcb61800b5ad21b8c65a2fa7226a`,
+but only the stripped one is a cross-machine contract — see the NDK caveat
+below.)
+
+**What makes it constant**
+
+* **A synthetic OpenSSL prefix.** OpenSSL compiles `--prefix`-derived paths
+  into `crypto/info.c` as the `OPENSSLDIR` / `ENGINESDIR` / `MODULESDIR`
+  string literals, and those objects end up in `libcrypto.a` and then in the
+  `.so`. Pointing `--prefix` at the real per-ABI install dir therefore baked
+  `…/core/vault/.cxx/Debug/<agp-hash>/arm64-v8a/…` into the shipped library
+  and made its hash depend on where the repo happened to be checked out.
+  We configure with a fixed `--prefix=/skein-openssl` and an explicit
+  `--openssldir=/skein-openssl/ssl` instead, and relocate the actual install
+  with `make DESTDIR=…` — a *make command-line* variable, because OpenSSL's
+  generated Makefile has its own `DESTDIR=` assignment that beats the
+  environment. The three directories are inert regardless: `no-dso`,
+  `no-engine` and `no-legacy` mean nothing is ever loaded from them, and
+  SQLCipher never reads an OpenSSL config file.
+* **`-ffile-prefix-map` on the OpenSSL compile**, passed as a make-time
+  `CPPFLAGS` override rather than as a Configure argument. Flags given to
+  Configure land in the Makefile's `CFLAGS`, and `crypto/buildinf.h` is
+  generated from `$(CC) $(LIB_CFLAGS) $(CPPFLAGS_Q)` — so the flag text,
+  absolute paths and all, would be compiled straight back into `info.c`'s
+  `compiler: …` string, trading one path leak for another. `CPPFLAGS` reaches
+  every compile via `LIB_CPPFLAGS` but is absent from the `buildinf.h` recipe.
+* **`-ffile-prefix-map` on our own translation units** (`sqlite3.c`,
+  `sqlite-vec.c`, `skein_extra_init.c`, `skein_jni.c`), mapping the source
+  tree to `/skein/native/sqlite` and the CMake binary dir to `/skein/build`.
+* `-Wl,--build-id=none`, `-fno-ident`, `-Wdate-time`, a sorted/deduped
+  version script, and `SOURCE_DATE_EPOCH` (see `E1.I4`).
+
+**How to verify**
+
+```bash
+# 1. No checkout path survives in the packaged .so.
+strings -a app/build/intermediates/stripped_native_libs/fossDebug/\
+stripFossDebugDebugSymbols/out/lib/arm64-v8a/libskein_sqlite.so \
+  | grep -E '/Users/|/home/|/private/|\.cxx'      # must print nothing
+
+# 2. The baked OpenSSL dirs are the synthetic ones.
+strings -a .../libskein_sqlite.so | grep -E 'OPENSSLDIR|ENGINESDIR|MODULESDIR'
+#   OPENSSLDIR: "/skein-openssl/ssl"
+#   ENGINESDIR: "/skein-openssl/lib/engines-3"
+#   MODULESDIR: "/skein-openssl/lib/ossl-modules"
+
+# 3. Same bytes from a checkout at a different path.
+git worktree add /tmp/skein-repro HEAD
+(cd /tmp/skein-repro && ./gradlew :app:assembleFossDebug)
+shasum -a 256 */app/build/intermediates/stripped_native_libs/fossDebug/\
+stripFossDebugDebugSymbols/out/lib/arm64-v8a/libskein_sqlite.so
+git worktree remove /tmp/skein-repro
+```
+
+**Caveat: the unstripped `.so` is not path-independent.** Its DWARF still
+records the NDK's own sysroot (`…/android-sdk/ndk/27.3.13750724/…`), which
+depends on where the NDK is installed rather than on the checkout. AGP strips
+that before packaging, so it does not affect the shipped artifact; compare
+stripped `.so`s (or APK entries) when checking reproducibility across
+machines, never the `merged_native_libs` copy.
+
+Changing any of the above — the prefix, the flags, the pinned versions —
+changes the canonical hash, so it has to be re-recorded here in the same
+commit.
 
 Expected artifact sizes (measured on the spike, arm64-v8a):
 
@@ -224,6 +305,11 @@ without it the second `Configure` inherits the first ABI's objects. This
 recipe leaves build products in `third_party/openssl-3.5.4/`, which is fine —
 the Gradle build extracts its own per-ABI tree from the tarball and never
 reads this one (see "Cross-ABI / host-harness pollution" above).
+
+This recipe is for poking at OpenSSL by hand; it is **not** the reproducible
+build. Its `--prefix=$(pwd)/…` is exactly the thing
+[Reproducibility](#reproducibility) removes from the production Configure
+line, so a `.so` built this way will not match the canonical hash.
 
 ### 5. Build the .so per ABI
 
