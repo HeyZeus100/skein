@@ -441,12 +441,26 @@ touches exactly one table (`attachment_master_key`), and `attachment_keys` is un
 > Keystore wrapping: the file holds only wrapped bytes, never the plaintext master (§6;
 > `FileMasterKeyStorageTest` asserts no window of the master appears in it).
 >
-> **`attachment_master_key` is now vestigial.** Nothing reads or writes it.
-> `001_initial.sql` is deliberately not edited by this amendment (migrations are
-> numbered and owned separately); its removal, together with a decision on
-> `attachment_keys.master_key_version`'s foreign key, is `skein-7d0l`. `attachment_keys`
-> itself is unaffected in shape: its `master_key_version` now names the envelope's
-> `key_version`.
+> **`attachment_master_key` is now vestigial — and dropped (`skein-7d0l`).** Nothing
+> read or wrote it. `001_initial.sql` was deliberately not edited by this amendment
+> (migrations are numbered and owned separately); its removal, together with a
+> decision on `attachment_keys.master_key_version`'s foreign key, was tracked as
+> `skein-7d0l` and shipped as `migrations/007_drop_attachment_master_key.sql`
+> (`PRAGMA user_version = 7`).
+>
+> **`attachment_keys` was dropped too, not merely de-FK'd.** The DDL above sketched a
+> Layer-2 table keyed by `master_key_version` under the assumption that the shipped
+> attachment store would wrap and persist a per-attachment content key. It doesn't:
+> `FileAttachmentStore` (`core/vault/.../blob/FileAttachmentStore.kt`, E2.I5 /
+> skein-1nr, "SKAT v2") derives a fresh key per *write* via HKDF-SHA256 from the vault
+> master key plus a random per-file salt stored in the container header itself, wipes
+> its copy of both the master and the derived key immediately after use, and persists
+> no wrapped key material anywhere. `attachment_keys` therefore had zero production
+> writers from the moment it was created — a whole-repo grep at `skein-7d0l` time found
+> no INSERT/SELECT/UPDATE against it outside `001_initial.sql`'s own DDL and this
+> schema's test-expectation lists. §3.4–§3.8 below (storage shape, recovery flow, key
+> invariant, failure modes) describe that superseded Layer-1/Layer-2 wrap design and are
+> kept here as historical design record, not as a description of the shipped schema.
 >
 > **Behaviour changes at the provider seam.** `VaultKeyProvider.setup()` is refused
 > (`SetupResult.Failed("already initialised")`) once an envelope exists, because setup
@@ -842,9 +856,12 @@ For the coordinator to apply — this document does not touch
    reference to this document's §2/§3/§5 as their design source, so implementers don't
    have to reconstruct the key hierarchy from the beads alone.
 3. `docs/Handoffs/skein-v1-autonomous-completion.md` §5.4 ("Data model — SQL schema —
-   from spec §5 with post-review amendments") should list `attachment_master_key` and
-   `attachment_keys` (§3.4 here) alongside the other post-review schema additions
-   (e.g. `document_revisions` from `POST_REVIEW_RESOLUTIONS.md` §1).
+   from spec §5 with post-review amendments") lists `attachment_master_key` and
+   `attachment_keys` (§3.4 here) as post-review schema additions; that line is now
+   stale as of `skein-7d0l` (`migrations/007_drop_attachment_master_key.sql` drops both
+   — see the §3.4 amendment above) and should note the removal rather than describe
+   them as live schema, left to that handoff doc's own owner since it's a point-in-time
+   snapshot rather than a living reference.
 4. The v2 recovery-code / escrow mechanism flagged as out-of-scope in §3.8 is a
    candidate for a new bead (not filed by this agent, per scope guardrails — no new
    beads beyond closing the four assigned ones) if the coordinator judges the residual
