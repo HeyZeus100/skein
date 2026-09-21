@@ -106,6 +106,13 @@ dependencies {
     implementation(project(":feature:timeline")) {
         exclude(module = "testing")
     }
+    // skein-z2u (E6.I11): `MainActivity` mounts `GraphScreen` as the ✦
+    // button's overlay target. Unlike `:feature:timeline` above,
+    // `:feature:graph` only reaches `:testing` via `testImplementation`/
+    // `androidTestImplementation` (no `debugImplementation` edge for design-time
+    // previews), so it never reaches this module's runtime/debug classpath
+    // and no `exclude` is needed here.
+    implementation(project(":feature:graph"))
 
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.activity.compose)
