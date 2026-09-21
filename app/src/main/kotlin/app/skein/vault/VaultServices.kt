@@ -8,12 +8,17 @@ import android.content.Context
 import app.skein.core.vault.key.VaultKeyProvider
 import app.skein.core.vault.key.VaultKeyProviders
 import app.skein.core.vault.lifecycle.VaultPaths
+import app.skein.core.vault.session.LockPolicy
 import app.skein.core.vault.session.UnlockManager
+import app.skein.system.SecurityPrefs
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.launch
 import java.io.File
+import java.time.Duration
 
 /**
  * Everything the vault needs across lock/unlock cycles. [keyProvider] and
@@ -74,7 +79,41 @@ class VaultServices(
                     scope = scope,
                     seed = ::seedFirstPersona,
                 )
+            wireLockPolicy(app, unlockManager, scope)
             return VaultServices(keyProvider, unlockManager, bootstrap)
+        }
+
+        /**
+         * `E3.I14` (skein-up0): applies Settings › Security's lock-policy
+         * prefs into [UnlockManager.configure] live, for the lifetime of the
+         * process, and wires the screen-off/background lock triggers
+         * ([LockPolicyObserver]). This — not `MainActivity`, which only
+         * reads/writes `SecurityPrefs` for display — is the single source of
+         * truth that turns a persisted preference into an effective policy,
+         * so a change made from any host (Settings screen, a future
+         * quick-settings tile, …) takes effect without that host needing to
+         * know about `UnlockManager` at all.
+         */
+        private fun wireLockPolicy(
+            context: Context,
+            unlockManager: UnlockManager,
+            scope: CoroutineScope,
+        ) {
+            val securityPrefs = SecurityPrefs(context)
+            scope.launch {
+                combine(
+                    securityPrefs.idleTimeoutMinutes,
+                    securityPrefs.lockOnScreenOff,
+                    securityPrefs.lockOnBackground,
+                ) { minutes, lockOnScreenOff, lockOnBackground ->
+                    LockPolicy(
+                        idleTimeout = Duration.ofMinutes(minutes.toLong()),
+                        lockOnScreenOff = lockOnScreenOff,
+                        lockOnBackground = lockOnBackground,
+                    )
+                }.collect { policy -> unlockManager.configure(policy) }
+            }
+            LockPolicyObserver.registerWith(context, unlockManager)
         }
 
         /**

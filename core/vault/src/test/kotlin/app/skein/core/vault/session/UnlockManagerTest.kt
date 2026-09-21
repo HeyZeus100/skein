@@ -375,6 +375,67 @@ class UnlockManagerTest {
             assertThat(h.manager.lastActivityForTest()).isEqualTo(beforePoke)
         }
 
+    // -------------------------------------------------------------- lock policy (E3.I14)
+
+    @Test
+    fun `initial policy matches the ctor idleTimeout and secure defaults`() =
+        runTest {
+            // Arrange
+            val h = Harness(idleTimeoutMillis = 60_000L)
+            // Act / Assert
+            assertThat(h.manager.policy.value.idleTimeout).isEqualTo(Duration.ofMillis(60_000L))
+            assertThat(h.manager.policy.value.lockOnScreenOff).isTrue()
+            assertThat(h.manager.policy.value.lockOnBackground).isFalse()
+        }
+
+    @Test
+    fun `configure updates idle timeout used by the idle poller`() =
+        runTest {
+            // Arrange: 5-minute timeout would NOT lock after 90s
+            val h = Harness(idleTimeoutMillis = Duration.ofMinutes(5).toMillis())
+            h.unlockOk()
+            // Act: tighten to the 1-minute floor
+            h.manager.configure(LockPolicy(idleTimeout = Duration.ofMinutes(1)))
+            h.clock.advance(90_000L)
+            h.manager.pollIdleTimerForTest()
+            // Assert: the new, shorter timeout applied immediately
+            assertThat(h.manager.state.value).isEqualTo(UnlockState.Locked)
+        }
+
+    @Test
+    fun `configure clamps an idle timeout above the plan ceiling`() =
+        runTest {
+            // Arrange
+            val h = Harness()
+            // Act
+            h.manager.configure(LockPolicy(idleTimeout = Duration.ofMinutes(999)))
+            // Assert
+            assertThat(h.manager.policy.value.idleTimeout).isEqualTo(LockPolicy.MAX_IDLE_TIMEOUT)
+        }
+
+    @Test
+    fun `configure clamps an idle timeout below the plan floor`() =
+        runTest {
+            // Arrange
+            val h = Harness()
+            // Act
+            h.manager.configure(LockPolicy(idleTimeout = Duration.ZERO))
+            // Assert
+            assertThat(h.manager.policy.value.idleTimeout).isEqualTo(LockPolicy.MIN_IDLE_TIMEOUT)
+        }
+
+    @Test
+    fun `configure updates lockOnScreenOff and lockOnBackground flags`() =
+        runTest {
+            // Arrange
+            val h = Harness()
+            // Act
+            h.manager.configure(LockPolicy(lockOnScreenOff = false, lockOnBackground = true))
+            // Assert
+            assertThat(h.manager.policy.value.lockOnScreenOff).isFalse()
+            assertThat(h.manager.policy.value.lockOnBackground).isTrue()
+        }
+
     // -------------------------------------------------------------- recovery
 
     @Test

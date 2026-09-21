@@ -54,6 +54,16 @@ fun SettingsScreen(
     onExportVaultClick: () -> Unit = {},
     onEraseVaultClick: () -> Unit = {},
     onViewNoticeClick: () -> Unit = {},
+    // E3.I14 (skein-up0): additive, defaulted to the plan's secure defaults —
+    // see [SettingsViewModel]'s ctor doc for why the existing call sites
+    // that don't pass these keep compiling unchanged.
+    idleTimeoutMinutes: Int = 5,
+    onIdleTimeoutMinutesChange: (Int) -> Unit = {},
+    lockOnScreenOff: Boolean = true,
+    onLockOnScreenOffChange: (Boolean) -> Unit = {},
+    lockOnBackground: Boolean = false,
+    onLockOnBackgroundChange: (Boolean) -> Unit = {},
+    strongBoxUnavailableFallback: Boolean = false,
 ) {
     Box(modifier = modifier.fillMaxSize()) {
         Column(
@@ -69,8 +79,20 @@ fun SettingsScreen(
                     flagSecureEnabled = flagSecureEnabled,
                     onFlagSecureEnabledChange = onFlagSecureEnabledChange,
                 )
+                IdleTimeoutRow(
+                    minutes = idleTimeoutMinutes,
+                    onMinutesChange = onIdleTimeoutMinutesChange,
+                )
+                LockOnScreenOffToggle(
+                    enabled = lockOnScreenOff,
+                    onEnabledChange = onLockOnScreenOffChange,
+                )
+                LockOnBackgroundToggle(
+                    enabled = lockOnBackground,
+                    onEnabledChange = onLockOnBackgroundChange,
+                )
+                StrongBoxStatusRow(strongBoxUnavailableFallback = strongBoxUnavailableFallback)
                 SettingsPlaceholderRow(label = "Biometric unlock", caption = "Coming in v1.1")
-                SettingsPlaceholderRow(label = "Auto-lock timer", caption = "Coming in v1.1")
             }
 
             SettingsSection(title = "Models") {
@@ -111,6 +133,13 @@ fun SettingsScreen(
         onExportVaultClick = onExportVaultClick,
         onEraseVaultClick = onEraseVaultClick,
         onViewNoticeClick = onViewNoticeClick,
+        idleTimeoutMinutes = viewModel.idleTimeoutMinutes,
+        onIdleTimeoutMinutesChange = viewModel::setIdleTimeoutMinutes,
+        lockOnScreenOff = viewModel.lockOnScreenOff,
+        onLockOnScreenOffChange = viewModel::setLockOnScreenOff,
+        lockOnBackground = viewModel.lockOnBackground,
+        onLockOnBackgroundChange = viewModel::setLockOnBackground,
+        strongBoxUnavailableFallback = viewModel.strongBoxUnavailableFallback,
     )
 }
 
@@ -214,9 +243,13 @@ private fun SettingsPlaceholderRow(
     }
 }
 
-/** A non-interactive label/value pair, e.g. About's version row. */
+/**
+ * A non-interactive label/value pair, e.g. About's version row.
+ * Internal (not private) so [StrongBoxStatusRow] can reuse it for `E3.I14`'s
+ * read-only hardware-backing row.
+ */
 @Composable
-private fun SettingsInfoRow(
+internal fun SettingsInfoRow(
     label: String,
     value: String,
     modifier: Modifier = Modifier,

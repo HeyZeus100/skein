@@ -122,6 +122,9 @@ dependencies {
     // adds no new artifact to the runtime classpath (license audit unchanged).
     implementation(libs.androidx.biometric)
     implementation(libs.androidx.lifecycle.runtime.ktx)
+    // E3.I14 (skein-up0): ProcessLifecycleOwner, for LockPolicyObserver's
+    // "lock when app leaves foreground" trigger.
+    implementation(libs.androidx.lifecycle.process)
     // E3.I8: SecurityPrefs (FLAG_SECURE toggle) persistence.
     implementation(libs.androidx.datastore.preferences)
     implementation(libs.kotlinx.coroutines.core)
