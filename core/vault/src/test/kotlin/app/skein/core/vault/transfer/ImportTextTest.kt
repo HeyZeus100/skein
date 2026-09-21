@@ -347,18 +347,9 @@ public class ImportTextTest {
     // ------------------------------------------------------------------
     // Entry points owned by other beads
     // ------------------------------------------------------------------
-
-    @Test
-    public fun `importPdf is deferred to its owning bead`() =
-        runTest {
-            val service = ImportServiceImpl(InMemoryVaultRepository())
-            try {
-                service.importPdf("doc.pdf", stream("%PDF-1.4"), personaId = null)
-                throw AssertionError("expected UnsupportedOperationException")
-            } catch (expected: UnsupportedOperationException) {
-                assertThat(expected).hasMessageThat().contains("skein-qdo")
-            }
-        }
+    // `importPdf` (`E2.I8`, bd `skein-qdo`) is implemented — see
+    // `ImportPdfTest`/`ImportPdfMemorySmokeTest` — so it no longer has a
+    // "deferred" test here.
 
     @Test
     public fun `importImage is deferred to its owning bead`() =
