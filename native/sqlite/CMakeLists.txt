@@ -15,6 +15,9 @@ project(skein_sqlite C)
 #   * `-fno-ident` removes `.comment` toolchain strings
 #   * `-Wdate-time -Werror=date-time` fails the build on any __DATE__/__TIME__
 #   * `SOURCE_DATE_EPOCH` honoured by every subordinate build (OpenSSL, ar, ld)
+#   * OpenSSL is configured with a fixed synthetic `--prefix`/`--openssldir`
+#     and installed via `DESTDIR`, so no checkout path is compiled into
+#     libcrypto.a (skein-ej1b) — see section 3.
 # -----------------------------------------------------------------------------
 
 set(CMAKE_C_STANDARD 11)
@@ -140,7 +143,22 @@ set(OPENSSL_TARBALL      "${SKEIN_SQLITE_ROOT}/third_party/openssl-${OPENSSL_VER
 
 # Per-ABI build tree, kept under the CMake build dir so `./gradlew clean` wipes it.
 set(OPENSSL_BUILD_DIR    "${CMAKE_CURRENT_BINARY_DIR}/openssl-${OPENSSL_VERSION}-${ANDROID_ABI}")
-set(OPENSSL_PREFIX       "${CMAKE_CURRENT_BINARY_DIR}/openssl-${OPENSSL_VERSION}-${ANDROID_ABI}-install")
+
+# Reproducibility (skein-ej1b): OpenSSL compiles its `--prefix`-derived
+# directories into crypto/info.c as the string constants OPENSSLDIR,
+# ENGINESDIR and MODULESDIR. Those objects end up in libcrypto.a and get
+# linked into libskein_sqlite.so, so a build-tree --prefix leaks the absolute
+# checkout path (…/core/vault/.cxx/Debug/<agp-hash>/…) into the shipped .so
+# and makes its sha256 depend on where the repo happens to live. They are
+# dead strings for us — `no-dso no-engine no-legacy` means nothing is ever
+# loaded from them and SQLCipher never reads a config file — so we bake a
+# fixed, synthetic prefix instead and stage the real install tree underneath
+# it with DESTDIR (see INSTALL_COMMAND below). The *baked* strings are then
+# constant on every machine, while OPENSSL_PREFIX stays a build-tree path for
+# linking and header lookup.
+set(OPENSSL_BAKED_PREFIX "/skein-openssl")
+set(OPENSSL_DESTDIR      "${CMAKE_CURRENT_BINARY_DIR}/openssl-${OPENSSL_VERSION}-${ANDROID_ABI}-install")
+set(OPENSSL_PREFIX       "${OPENSSL_DESTDIR}${OPENSSL_BAKED_PREFIX}")
 set(OPENSSL_LIBCRYPTO    "${OPENSSL_PREFIX}/lib/libcrypto.a")
 set(OPENSSL_INCLUDE_DIR  "${OPENSSL_PREFIX}/include")
 
@@ -212,6 +230,13 @@ endif()
 
 # OpenSSL Configure disables shared, DSO, engine and tests: shaves ~1 MB from
 # libcrypto.a and removes the runtime dynamic-provider loader (spec §5 hardening).
+#
+# `--prefix` / `--openssldir` are deliberately *not* the real install location
+# (skein-ej1b): every value derived from them is compiled into libcrypto.a as
+# a string literal, so they must be identical on every machine. The real
+# staging root is supplied at install time via DESTDIR. `--openssldir` is
+# passed explicitly rather than left to default to `<prefix>/ssl` so the
+# baked value stays pinned even if a future OpenSSL changes that default.
 set(_OPENSSL_CONFIGURE_ARGS
   "${OPENSSL_TARGET}"
   "-D__ANDROID_API__=${_ANDROID_API_LEVEL}"
@@ -220,9 +245,27 @@ set(_OPENSSL_CONFIGURE_ARGS
   no-dso
   no-engine
   no-legacy
-  "--prefix=${OPENSSL_PREFIX}"
+  "--prefix=${OPENSSL_BAKED_PREFIX}"
+  "--openssldir=${OPENSSL_BAKED_PREFIX}/ssl"
   "--libdir=lib"
 )
+
+# `-ffile-prefix-map` for the libcrypto translation units, so `__FILE__` (and
+# any debug-info path) cannot carry the per-ABI build tree's absolute path.
+#
+# This is passed as a *make command-line* `CPPFLAGS` override rather than as a
+# Configure argument, and the difference matters (skein-ej1b). Flags handed to
+# Configure land in the generated Makefile's `CFLAGS`, and `crypto/buildinf.h`
+# is generated from `$(CC) $(LIB_CFLAGS) $(CPPFLAGS_Q)` — so the flag *text*,
+# absolute paths and all, gets compiled into crypto/info.c's "compiler: …"
+# string and lands right back in the .so, trading one path leak for another.
+# `CPPFLAGS` reaches every compile through `LIB_CPPFLAGS`/`DSO_CPPFLAGS`/
+# `BIN_CPPFLAGS` but is absent from the buildinf.h recipe, which records the
+# frozen `CPPFLAGS_Q` literal instead. Overriding it on the command line
+# drops the Makefile's own `CPPFLAGS=-D__ANDROID_API__=…`, so that is restated
+# here; `CPPFLAGS_Q` (and therefore the recorded string) is unaffected.
+set(_OPENSSL_MAKE_CPPFLAGS
+  "CPPFLAGS=-D__ANDROID_API__=${_ANDROID_API_LEVEL} -ffile-prefix-map=${OPENSSL_BUILD_DIR}=/skein/openssl -ffile-prefix-map=${CMAKE_CURRENT_BINARY_DIR}=/skein/build")
 
 # OpenSSL only supports in-tree builds, so each ABI gets its own source tree
 # in BINARY_DIR (materialised by the CONFIGURE_COMMAND below) and runs
@@ -278,13 +321,18 @@ ExternalProject_Add(openssl_ep
       ${_OPENSSL_ENV} perl ./Configure ${_OPENSSL_CONFIGURE_ARGS}
   BUILD_COMMAND
     ${CMAKE_COMMAND} -E chdir "${OPENSSL_BUILD_DIR}"
-      ${_OPENSSL_ENV} make -j build_libs
+      ${_OPENSSL_ENV} make -j "${_OPENSSL_MAKE_CPPFLAGS}" build_libs
   # Install, then immediately prove the installed archive is for this ABI.
   # Without the guard a wrong-arch libcrypto.a only surfaces minutes later as
   # an opaque `ld.lld: error: ... is incompatible with aarch64linux`.
+  # DESTDIR relocates the install under the per-ABI build tree without touching
+  # the prefix baked into libcrypto.a (skein-ej1b). It has to be a *make
+  # command-line* variable: OpenSSL's generated Makefile contains its own
+  # `DESTDIR=` assignment, which would otherwise win over the environment and
+  # send `make install_dev` at the literal /skein-openssl.
   INSTALL_COMMAND
     ${CMAKE_COMMAND} -E chdir "${OPENSSL_BUILD_DIR}"
-      ${_OPENSSL_ENV} make install_dev
+      ${_OPENSSL_ENV} make "DESTDIR=${OPENSSL_DESTDIR}" "${_OPENSSL_MAKE_CPPFLAGS}" install_dev
   COMMAND
     ${CMAKE_COMMAND}
       "-DLIBCRYPTO=${OPENSSL_LIBCRYPTO}"
