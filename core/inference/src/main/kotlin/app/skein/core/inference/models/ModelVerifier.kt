@@ -42,6 +42,52 @@ data class FileDigests(
     val sizeBytes: Long,
 )
 
+/**
+ * Cooperative cancellation for a streaming digest (plan `E3.I5`: "verification
+ * is cancellable — unload during verify aborts within one read").
+ *
+ * Polled once per [ModelVerifier.READ_CHUNK_BYTES] chunk, at the top of the
+ * read loop, so an `unload` arriving mid-verify costs at most the read already
+ * in flight rather than the ~10 s a 2.5 GB model takes to hash. Implementations
+ * are called from the hashing thread and must not block.
+ */
+fun interface VerifyCancellation {
+    fun isCancelled(): Boolean
+
+    companion object {
+        /** The production default for a load nobody can cancel (import, tests). */
+        val Never: VerifyCancellation = VerifyCancellation { false }
+    }
+}
+
+/**
+ * Progress for one verification call, feeding `EngineStatus.state = "verifying"`.
+ *
+ * [bytesHashed] is cumulative *within the call it was passed to*: over one
+ * file for the single-file digests, over every file of the binding for
+ * [ModelVerifier.verifyBeforeMmap], and restarting at zero for the post-mmap
+ * pass — the two gates read the same bytes twice, and pretending otherwise
+ * would make a progress bar run to 200 %.
+ */
+fun interface VerifyProgress {
+    fun onBytesHashed(bytesHashed: Long)
+
+    companion object {
+        val None: VerifyProgress = VerifyProgress { }
+    }
+}
+
+/** Outcome of a cancellable streaming digest. */
+sealed interface DigestOutcome {
+    /** The digest ran to the end of the input. [hex] is lowercase hex. */
+    data class Digested(
+        val hex: String,
+    ) : DigestOutcome
+
+    /** The cancellation signal fired between chunks; no digest exists, and none is implied about the bytes. */
+    data object Cancelled : DigestOutcome
+}
+
 /** Streams bytes through both digests in a single pass. */
 internal class DigestAccumulator {
     private val sha256 = MessageDigest.getInstance("SHA-256")
@@ -110,32 +156,99 @@ object ModelVerifier {
         return accumulator.finish()
     }
 
-    /** Streaming SHA-256 of [input], lowercase hex. */
+    /** Streaming SHA-256 of [input], lowercase hex. Uncancellable; see [sha256]. */
     fun sha256Hex(input: InputStream): String = digests(input).sha256
 
     /**
-     * Streaming SHA-256 over [channel] from position 0, using absolute reads so
-     * the channel's own position — and therefore any concurrent mapping of the
-     * same channel — is untouched.
+     * Streaming SHA-256 over [channel] from position 0, lowercase hex.
+     * Uncancellable; see [sha256].
      */
-    fun sha256Hex(channel: FileChannel): String {
+    fun sha256Hex(channel: FileChannel): String = hexOf(sha256(channel))
+
+    /**
+     * Cancellable streaming SHA-256 of [input].
+     *
+     * Does not close [input]. The cancellation signal is checked before each
+     * chunk, so a cancel costs at most one outstanding [READ_CHUNK_BYTES] read.
+     */
+    fun sha256(
+        input: InputStream,
+        cancellation: VerifyCancellation = VerifyCancellation.Never,
+        progress: VerifyProgress = VerifyProgress.None,
+    ): DigestOutcome {
+        val digest = MessageDigest.getInstance("SHA-256")
+        val buffer = ByteArray(READ_CHUNK_BYTES)
+        var hashed = 0L
+        while (true) {
+            if (cancellation.isCancelled()) return DigestOutcome.Cancelled
+            val read = input.read(buffer)
+            if (read < 0) break
+            digest.update(buffer, 0, read)
+            hashed += read
+            progress.onBytesHashed(hashed)
+        }
+        return DigestOutcome.Digested(Hex.encode(digest.digest()))
+    }
+
+    /**
+     * Cancellable streaming SHA-256 over [channel] from position 0.
+     *
+     * Uses absolute reads, so the channel's own position — and therefore any
+     * concurrent mapping of the same channel — is untouched. [channel] is the
+     * channel of the descriptor the loader was handed; hashing a *path* here
+     * instead would reintroduce the swap-the-file race (MODEL_STORE.md §3).
+     */
+    fun sha256(
+        channel: FileChannel,
+        cancellation: VerifyCancellation = VerifyCancellation.Never,
+        progress: VerifyProgress = VerifyProgress.None,
+    ): DigestOutcome {
         val digest = MessageDigest.getInstance("SHA-256")
         val buffer = ByteBuffer.allocate(READ_CHUNK_BYTES)
         var position = 0L
         val size = channel.size()
         while (position < size) {
+            if (cancellation.isCancelled()) return DigestOutcome.Cancelled
             buffer.clear()
             val read = channel.read(buffer, position)
             if (read <= 0) break
             buffer.flip()
             digest.update(buffer)
             position += read
+            progress.onBytesHashed(position)
         }
-        return Hex.encode(digest.digest())
+        return DigestOutcome.Digested(Hex.encode(digest.digest()))
     }
 
-    /** BLAKE3-256 over every remaining byte of [mapped], lowercase hex. */
+    /** BLAKE3-256 over every remaining byte of [mapped], lowercase hex. Uncancellable; see [blake3]. */
     fun blake3Hex(mapped: ByteBuffer): String = Blake3.hexDigest(mapped)
+
+    /**
+     * Cancellable BLAKE3-256 over every remaining byte of [mapped].
+     *
+     * The post-mmap gate reads the whole model a second time, so it needs the
+     * same abort-within-one-chunk property the pre-mmap gate has. [mapped]'s
+     * position is untouched — a duplicate view is consumed.
+     */
+    fun blake3(
+        mapped: ByteBuffer,
+        cancellation: VerifyCancellation = VerifyCancellation.Never,
+        progress: VerifyProgress = VerifyProgress.None,
+    ): DigestOutcome {
+        val hasher = Blake3.Hasher()
+        val view = mapped.duplicate()
+        val scratch = ByteArray(READ_CHUNK_BYTES)
+        var hashed = 0L
+        while (view.hasRemaining()) {
+            if (cancellation.isCancelled()) return DigestOutcome.Cancelled
+            val n = minOf(scratch.size, view.remaining())
+            view.get(scratch, 0, n)
+            hasher.update(scratch, 0, n)
+            hashed += n
+            progress.onBytesHashed(hashed)
+        }
+        return DigestOutcome.Digested(Hex.encode(hasher.digest()))
+    }
 
     /**
      * Constant-time digest comparison.
@@ -158,38 +271,58 @@ object ModelVerifier {
      * Gate 1: every bound file's SHA-256, checked before anything is mapped.
      *
      * The main file is hashed through [mainChannel] — the channel the shared
-     * lock is held on — so the bytes hashed are the bytes of the fd we will
-     * map, not of whatever the path resolves to a moment later. Companions are
-     * hashed by path on every load (§2.2: "verify each file's hash before use,
-     * not just at import").
+     * lock is held on, or the pinned descriptor's — so the bytes hashed are
+     * the bytes of the fd we will map, not of whatever the path resolves to a
+     * moment later.
+     *
+     * Companions are hashed on every load, not only at import (§2.2: "verify
+     * each file's hash before use"). A companion listed in [companionChannels]
+     * is hashed through its own descriptor, with the same anti-swap guarantee
+     * the main file gets; one that is not falls back to its store path, which
+     * is what the app-side loader wants (it holds the shared lock and the
+     * directory is `0500`) and what a service handed descriptors should not
+     * rely on.
      */
     @Suppress("ReturnCount")
     fun verifyBeforeMmap(
         binding: ManifestBinding,
         mainChannel: FileChannel,
+        cancellation: VerifyCancellation = VerifyCancellation.Never,
+        progress: VerifyProgress = VerifyProgress.None,
+        companionChannels: Map<ModelFileRole, FileChannel> = emptyMap(),
     ): ModelVerification {
+        var done = 0L
         for (file in binding.files) {
-            val actual =
+            val base = done
+            val step = VerifyProgress { bytes -> progress.onBytesHashed(base + bytes) }
+            val channel = if (file.role == ModelFileRole.MAIN) mainChannel else companionChannels[file.role]
+            val outcome =
                 try {
-                    if (file.role == ModelFileRole.MAIN) {
-                        if (mainChannel.size() != file.expectedSizeBytes) {
+                    if (channel != null) {
+                        if (channel.size() != file.expectedSizeBytes) {
                             return refuse(ModelVerification.SizeMismatch(file.role))
                         }
-                        sha256Hex(mainChannel)
+                        sha256(channel, cancellation, step)
                     } else {
                         if (!file.path.isFile) return refuse(ModelVerification.FileMissing(file.role))
                         if (file.path.length() != file.expectedSizeBytes) {
                             return refuse(ModelVerification.SizeMismatch(file.role))
                         }
-                        FileInputStream(file.path).use { sha256Hex(it) }
+                        FileInputStream(file.path).use { sha256(it, cancellation, step) }
                     }
                 } catch (e: IOException) {
                     SkeinLog.w(TAG, "pre-mmap read failed role=${file.role.wire}", e)
                     return refuse(ModelVerification.IoFailure(file.role, "read"))
                 }
+            val actual =
+                when (outcome) {
+                    DigestOutcome.Cancelled -> return refuse(ModelVerification.Cancelled(file.role))
+                    is DigestOutcome.Digested -> outcome.hex
+                }
             if (!constantTimeEquals(file.expectedSha256, actual)) {
                 return refuse(ModelVerification.HashMismatch(file.role, DigestAlgorithm.SHA256))
             }
+            done += file.expectedSizeBytes
         }
         return ModelVerification.Verified
     }
@@ -203,15 +336,18 @@ object ModelVerifier {
     fun verifyAfterMmap(
         binding: ManifestBinding,
         mapped: ByteBuffer,
-    ): ModelVerification {
-        val expected = binding.main.expectedBlake3
-        val actual = blake3Hex(mapped)
-        return if (constantTimeEquals(expected, actual)) {
-            ModelVerification.Verified
-        } else {
-            refuse(ModelVerification.Tampered(ModelFileRole.MAIN))
+        cancellation: VerifyCancellation = VerifyCancellation.Never,
+        progress: VerifyProgress = VerifyProgress.None,
+    ): ModelVerification =
+        when (val outcome = blake3(mapped, cancellation, progress)) {
+            DigestOutcome.Cancelled -> refuse(ModelVerification.Cancelled(ModelFileRole.MAIN))
+            is DigestOutcome.Digested ->
+                if (constantTimeEquals(binding.main.expectedBlake3, outcome.hex)) {
+                    ModelVerification.Verified
+                } else {
+                    refuse(ModelVerification.Tampered(ModelFileRole.MAIN))
+                }
         }
-    }
 
     /**
      * The full §2 load gate: verify, map, re-verify.
@@ -221,21 +357,40 @@ object ModelVerifier {
      * unload without doing so. [hook] is the test seam described on
      * [LoadPhaseHook] and defaults to a no-op.
      */
-    @Suppress("ReturnCount")
     fun verifyForLoad(
         handle: ModelHandle,
         binding: ManifestBinding,
         hook: LoadPhaseHook = LoadPhaseHook.None,
+        cancellation: VerifyCancellation = VerifyCancellation.Never,
+        progress: VerifyProgress = VerifyProgress.None,
+    ): LoadVerification = verifyForLoad(handle.mainChannel, binding, hook, cancellation, progress)
+
+    /**
+     * The same gate over a bare channel, for the loader that has a descriptor
+     * rather than a store handle.
+     *
+     * [mainChannel] must be the channel of the descriptor the loader was
+     * handed — [PinnedModelFile.channel] on the service side, the shared-lock
+     * channel on the store side. It is never re-derived from a path here: that
+     * is the whole point (MODEL_STORE.md §3).
+     */
+    @Suppress("ReturnCount")
+    fun verifyForLoad(
+        mainChannel: FileChannel,
+        binding: ManifestBinding,
+        hook: LoadPhaseHook = LoadPhaseHook.None,
+        cancellation: VerifyCancellation = VerifyCancellation.Never,
+        progress: VerifyProgress = VerifyProgress.None,
+        companionChannels: Map<ModelFileRole, FileChannel> = emptyMap(),
     ): LoadVerification {
-        val channel = handle.mainChannel
-        val preMmap = verifyBeforeMmap(binding, channel)
+        val preMmap = verifyBeforeMmap(binding, mainChannel, cancellation, progress, companionChannels)
         if (preMmap is ModelVerification.Refusal) return LoadVerification.Refused(preMmap)
 
         hook.afterPreMmapVerify(binding)
 
         val mapped =
             try {
-                channel.map(FileChannel.MapMode.READ_ONLY, 0L, channel.size())
+                mainChannel.map(FileChannel.MapMode.READ_ONLY, 0L, mainChannel.size())
             } catch (e: IOException) {
                 SkeinLog.w(TAG, "mmap failed", e)
                 return LoadVerification.Refused(ModelVerification.IoFailure(ModelFileRole.MAIN, "mmap"))
@@ -243,12 +398,59 @@ object ModelVerifier {
 
         hook.afterMap(mapped)
 
-        val postMmap = verifyAfterMmap(binding, mapped)
+        val postMmap = verifyAfterMmap(binding, mapped, cancellation, progress)
         if (postMmap is ModelVerification.Refusal) return LoadVerification.Refused(postMmap)
 
         SkeinLog.i(TAG, "model verified: both digests matched files=${binding.files.size}")
         return LoadVerification.Ready(mapped)
     }
+
+    /**
+     * The fd load discipline end to end: verify the pinned descriptor's own
+     * channel, map that channel, re-verify the mapping, and report the
+     * `/proc/self/fd/<n>` path the native engine is to be given.
+     *
+     * On refusal the pin is closed before returning, so a model that failed
+     * either gate has no descriptor left to hand to
+     * `llama_model_load_from_file` even if the caller ignores the result. On
+     * success the pin stays open — the engine's path only resolves while it
+     * is, and the caller closes it on unload.
+     */
+    fun verifyPinned(
+        model: PinnedModel,
+        binding: ManifestBinding,
+        hook: LoadPhaseHook = LoadPhaseHook.None,
+        cancellation: VerifyCancellation = VerifyCancellation.Never,
+        progress: VerifyProgress = VerifyProgress.None,
+    ): PinnedLoad {
+        val companions = model.companions.mapValues { (_, pin) -> pin.channel }
+        return when (
+            val result =
+                verifyForLoad(model.main.channel, binding, hook, cancellation, progress, companions)
+        ) {
+            is LoadVerification.Ready -> PinnedLoad.Ready(model, result.mapped)
+            is LoadVerification.Refused -> {
+                model.close()
+                PinnedLoad.Refused(result.refusal)
+            }
+        }
+    }
+
+    /** [verifyPinned] for a load whose companions stay in the store rather than arriving as descriptors. */
+    fun verifyPinned(
+        pinned: PinnedModelFile,
+        binding: ManifestBinding,
+        hook: LoadPhaseHook = LoadPhaseHook.None,
+        cancellation: VerifyCancellation = VerifyCancellation.Never,
+        progress: VerifyProgress = VerifyProgress.None,
+    ): PinnedLoad = verifyPinned(PinnedModel(pinned), binding, hook, cancellation, progress)
+
+    /** Unwraps an outcome produced with [VerifyCancellation.Never], which cannot be [DigestOutcome.Cancelled]. */
+    private fun hexOf(outcome: DigestOutcome): String =
+        when (outcome) {
+            is DigestOutcome.Digested -> outcome.hex
+            DigestOutcome.Cancelled -> error("an uncancellable digest reported cancellation")
+        }
 
     /** Logs the refusal's log-safe summary — never a path, never a digest — and returns it. */
     private fun refuse(refusal: ModelVerification.Refusal): ModelVerification.Refusal {

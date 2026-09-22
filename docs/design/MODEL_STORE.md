@@ -160,3 +160,48 @@ here), and an `attestation` object with `covers` (it was a bare
 `core/model/src/main/resources/schema/model-manifest.schema.json`, and
 `tools/ci/validate-manifests.py` enforces §3's rule that a *shipped* default
 manifest must declare `blake3` while an imported model need not.
+
+**Update 2026-09-21 (`skein-v2s` / `E3.I5`).** The two gates gained the last
+two properties plan `E3.I5` asked for, and the fd half of the discipline
+became a type.
+
+*Cancellable.* Both gates poll a `VerifyCancellation` at the top of their read
+loop, once per 4 MiB chunk, so an `unload` arriving mid-verify costs at most
+the read already in flight rather than the ~10 s a 2.5 GB model takes to hash.
+A cancelled pass is `ModelVerification.Cancelled(role)` — deliberately not a
+`HashMismatch`, because a cancelled digest proves nothing about the bytes in
+either direction and "this model is tampered" is not the right thing to tell a
+user who backgrounded the app. `VerifyProgress` reports cumulative bytes for
+`EngineStatus.state = "verifying"`; each gate counts its own pass, since the
+two read the same bytes twice.
+
+*Pinned by descriptor.* `PinnedModelFile` is the `dup`'d descriptor the loader
+was handed, made into a type so "never resolve the model by path again" is
+structural rather than a comment: it exposes a `FileChannel` and a
+`/proc/self/fd/<n>` `enginePath`, and no path to re-open by accident. The
+`dup` itself is supplied by the caller (`DescriptorDup`), because
+`ParcelFileDescriptor` lives in `android.os` and a `java.io.FileDescriptor`
+will not report its own number — that keeps the type pure-JVM and
+JVM-testable. `PinnedModel` groups the main descriptor with any companion that
+arrived as an fd; a companion that did not falls back to its store path, which
+is right for the app-side loader (shared lock, `0500` directory) and wrong for
+a service that was handed descriptors it could pin instead.
+`ModelVerifier.verifyPinned` runs both gates over those descriptors and closes
+them all on refusal, so a model that failed either gate has no fd left to hand
+to `llama_model_load_from_file` even if the caller ignores the result.
+
+`ModelVerifierCancellationTest` measures promptness through the progress
+callback rather than the clock, `PinnedModelFileTest` renames a different file
+over a verified path and asserts the pin still reads the verified bytes (the
+JVM half of `E10.I16`; `skein-d4o3` owns the device-lane version with a real
+`ParcelFileDescriptor` and a real `/proc` open), and
+`ModelVerifierLargeFixtureTest` checks the chunked readers against an
+independent `MessageDigest` pass over a generated 100 MB fixture.
+
+Still not wired: the service side. `skein-nxk` (`E4.I3`) and `skein-lbw`
+(`E5.I1`) own the `dup` of the received `ParcelFileDescriptor`, the
+`ModelVerification.Refusal → ErrorCode` mapping (`HASH_MISMATCH`,
+`HASH_MISMATCH_POST_MMAP`, `COMPANION_HASH_MISMATCH`, `MODEL_IN_USE`, and
+`CANCELLED` for the new `Cancelled`) and the `EngineStatus` progress
+reporting. `:core:inference` deliberately does not depend on `:core:ipc`, so
+none of that mapping lives here.
