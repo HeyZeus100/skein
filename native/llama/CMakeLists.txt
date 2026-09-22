@@ -287,6 +287,215 @@ if(SKEIN_LLAMA_VULKAN)
       "CPU-only libskein_llama.so.")
   endif()
 
+  # ---------------------------------------------------------------------------
+  # 5a. Shader source patches (bd skein-ylux)
+  # ---------------------------------------------------------------------------
+  # NDK r27c's glslc (`shaderc v2022.3`) mis-folds an `int -> float ->
+  # float16_t` constant conversion in a large shader: for
+  #
+  #     data_d[...] = D_TYPE(0);          // D_TYPE == float16_t
+  #
+  # it emits `OpFConvert %half %float_<uninitialised>` — an `OpConstant
+  # %float` whose 32-bit literal is whatever was in memory. Observed values
+  # for one unchanged command line: 0, -8, +inf, -nan. That makes the .spv,
+  # and therefore libskein_llama.so, not a function of its inputs (measured:
+  # 8 cold builds at one path produced 4 distinct sha256, every differing byte
+  # inside `tri_f16` / `diag_f16`), and it is also a miscompile — the else
+  # branch stores +inf instead of zero. Writing the literal as `0.0` removes
+  # the conversion and glslang folds it correctly and deterministically.
+  #
+  # We cannot fix glslc (it is an NDK prebuilt) and we do not write into
+  # `third_party/`. So: copy the shader sources into the build tree, patch the
+  # COPY, and point the glslc that ggml-vulkan invokes at a wrapper that
+  # redirects reads of the pristine directory to the copy. The submodule stays
+  # byte-for-byte pristine; `git status` in it is empty after a build.
+  #
+  # Every input and output of that rewrite is sha256-pinned in
+  # `patches/PINS.txt`, so a submodule pin bump that touches a patched shader
+  # fails here by name instead of applying a stale hunk. Same shape as
+  # native/sqlite's amalgamation pins (docs/design/AMALGAMATION_POLICY.md):
+  # cheap hashes on every configure, and a loud, attributable failure.
+  option(SKEIN_LLAMA_SHADER_PATCHES
+    "skein: apply native/llama/patches/*.patch to a build-tree copy of llama.cpp's Vulkan shader sources"
+    ON)
+
+  set(_skein_shaders_src     "${LLAMA_CPP_DIR}/ggml/src/ggml-vulkan/vulkan-shaders")
+  set(_skein_shaders_patched "${CMAKE_CURRENT_BINARY_DIR}/vulkan-shaders-patched")
+  # What ggml-vulkan will actually be told to run. Unpatched builds keep the
+  # NDK binary directly, so `-DSKEIN_LLAMA_SHADER_PATCHES=OFF` is a true
+  # bypass — which is exactly how tools/rb/so-determinism.sh reintroduces the
+  # defect to prove it can still detect it.
+  set(_glslc_effective "${_glslc}")
+
+  if(SKEIN_LLAMA_SHADER_PATCHES)
+    if(CMAKE_HOST_WIN32)
+      message(FATAL_ERROR
+        "SKEIN_LLAMA_SHADER_PATCHES needs a POSIX /bin/sh for the glslc "
+        "wrapper and there is no Windows equivalent wired here. Configure "
+        "with -DSKEIN_LLAMA_SHADER_PATCHES=OFF to build without it — but note "
+        "that libskein_llama.so is then NOT reproducible (bd skein-ylux).")
+    endif()
+
+    find_program(SKEIN_PATCH_EXECUTABLE NAMES patch)
+    if(NOT SKEIN_PATCH_EXECUTABLE)
+      message(FATAL_ERROR
+        "`patch` was not found on PATH. It applies native/llama/patches/*.patch "
+        "to the build-tree copy of llama.cpp's Vulkan shaders (bd skein-ylux). "
+        "Install it (it is in POSIX base on macOS and in `patch`/`diffutils` on "
+        "Linux), or configure with -DSKEIN_LLAMA_SHADER_PATCHES=OFF and accept "
+        "a non-reproducible libskein_llama.so.")
+    endif()
+
+    # 1. Copy the shader tree into the build dir. `configure_file(COPYONLY)`
+    #    rather than `file(COPY)` because it registers each source file as a
+    #    CMake reconfigure dependency: an upstream shader whose CONTENT changes
+    #    under a pin bump re-triggers configure, which re-copies from pristine
+    #    and re-checks the pins. (`file(GLOB CONFIGURE_DEPENDS)` only notices
+    #    the file SET changing, which is not enough here.) The copy is
+    #    overwritten from pristine on every configure, so patching is
+    #    idempotent rather than cumulative.
+    file(GLOB _skein_shader_srcs LIST_DIRECTORIES false "${_skein_shaders_src}/*")
+    file(GLOB _skein_shader_ft   LIST_DIRECTORIES false "${_skein_shaders_src}/feature-tests/*")
+    if(_skein_shader_srcs STREQUAL "")
+      message(FATAL_ERROR
+        "No files under ${_skein_shaders_src} — upstream moved the Vulkan "
+        "shader directory. Review native/llama/README.md §4 before bumping the pin.")
+    endif()
+    foreach(_f IN LISTS _skein_shader_srcs)
+      get_filename_component(_n "${_f}" NAME)
+      configure_file("${_f}" "${_skein_shaders_patched}/${_n}" COPYONLY)
+    endforeach()
+    foreach(_f IN LISTS _skein_shader_ft)
+      get_filename_component(_n "${_f}" NAME)
+      configure_file("${_f}" "${_skein_shaders_patched}/feature-tests/${_n}" COPYONLY)
+    endforeach()
+
+    # 2. Parse patches/PINS.txt into three buckets. Checked in phases, because
+    #    a `before` hash is only meaningful before any patch has been applied
+    #    and an `after` hash only after all of them have.
+    set(_skein_patch_dir "${SKEIN_LLAMA_ROOT}/patches")
+    set(_skein_pins_file "${_skein_patch_dir}/PINS.txt")
+    if(NOT EXISTS "${_skein_pins_file}")
+      message(FATAL_ERROR "Missing ${_skein_pins_file}.")
+    endif()
+    file(STRINGS "${_skein_pins_file}" _skein_pin_lines ENCODING UTF-8)
+    set(_skein_pin_patch "")
+    set(_skein_pin_before "")
+    set(_skein_pin_after "")
+    foreach(_line IN LISTS _skein_pin_lines)
+      string(STRIP "${_line}" _line)
+      if(_line STREQUAL "" OR _line MATCHES "^#")
+        continue()
+      endif()
+      # CMake's regex engine has no `{n}`, so the hash is matched loosely and
+      # its length checked separately (same idiom as the PINNED_COMMIT parser).
+      if(NOT _line MATCHES "^(patch|before|after)[ \t]+([0-9a-f]+)[ \t]+([^ \t]+)$")
+        message(FATAL_ERROR
+          "patches/PINS.txt: unparsable record (expected `<patch|before|after> "
+          "<64-hex> <name>`):\n  ${_line}")
+      endif()
+      set(_kind "${CMAKE_MATCH_1}")
+      set(_want "${CMAKE_MATCH_2}")
+      set(_name "${CMAKE_MATCH_3}")
+      string(LENGTH "${_want}" _want_len)
+      if(NOT _want_len EQUAL 64)
+        message(FATAL_ERROR
+          "patches/PINS.txt: `${_want}` is not a full sha256:\n  ${_line}")
+      endif()
+      list(APPEND _skein_pin_${_kind} "${_want}=${_name}")
+    endforeach()
+    if(_skein_pin_patch STREQUAL "" OR _skein_pin_before STREQUAL ""
+       OR _skein_pin_after STREQUAL "")
+      message(FATAL_ERROR
+        "patches/PINS.txt must list at least one `patch`, one `before` and one "
+        "`after` record; a patch with no pinned before/after hashes is not a "
+        "pin at all.")
+    endif()
+
+    # 3. Verify the patch files and the pristine copies, then apply, then
+    #    verify the results.
+    macro(_skein_check_sha _ck_kind _ck_record _ck_root)
+      string(REPLACE "=" ";" _rec_parts "${_ck_record}")
+      list(GET _rec_parts 0 _rec_want)
+      list(GET _rec_parts 1 _rec_name)
+      set(_rec_path "${_ck_root}/${_rec_name}")
+      if(NOT EXISTS "${_rec_path}")
+        message(FATAL_ERROR
+          "patches/PINS.txt names `${_rec_name}` (${_ck_kind}) but ${_rec_path} "
+          "does not exist.")
+      endif()
+      file(SHA256 "${_rec_path}" _rec_got)
+      if(NOT _rec_got STREQUAL "${_rec_want}")
+        message(FATAL_ERROR
+          "Shader patch pin MISMATCH (${_ck_kind}) for `${_rec_name}`:\n"
+          "  expected ${_rec_want}\n"
+          "  actual   ${_rec_got}\n"
+          "  file     ${_rec_path}\n"
+          "libskein_llama.so's bytes are defined by these files. If you bumped "
+          "third_party/llama.cpp, regenerate native/llama/patches/*.patch "
+          "against the new upstream source, re-run tools/rb/so-determinism.sh, "
+          "and update native/llama/patches/PINS.txt in the same commit. See "
+          "native/llama/README.md §4.")
+      endif()
+    endmacro()
+
+    foreach(_rec IN LISTS _skein_pin_patch)
+      _skein_check_sha("patch" "${_rec}" "${_skein_patch_dir}")
+    endforeach()
+    foreach(_rec IN LISTS _skein_pin_before)
+      _skein_check_sha("before" "${_rec}" "${_skein_shaders_patched}")
+    endforeach()
+
+    foreach(_rec IN LISTS _skein_pin_patch)
+      string(REPLACE "=" ";" _rec_parts "${_rec}")
+      list(GET _rec_parts 1 _patch_name)
+      execute_process(
+        COMMAND "${SKEIN_PATCH_EXECUTABLE}" -p1 --batch --forward
+                -i "${_skein_patch_dir}/${_patch_name}"
+        WORKING_DIRECTORY "${_skein_shaders_patched}"
+        RESULT_VARIABLE _patch_rc
+        OUTPUT_VARIABLE _patch_out
+        ERROR_VARIABLE _patch_err)
+      if(NOT _patch_rc EQUAL 0)
+        message(FATAL_ERROR
+          "Applying native/llama/patches/${_patch_name} to "
+          "${_skein_shaders_patched} failed (rc=${_patch_rc}):\n"
+          "${_patch_out}\n${_patch_err}")
+      endif()
+    endforeach()
+
+    foreach(_rec IN LISTS _skein_pin_after)
+      _skein_check_sha("after" "${_rec}" "${_skein_shaders_patched}")
+    endforeach()
+
+    list(LENGTH _skein_pin_patch _skein_patch_count)
+    list(LENGTH _skein_pin_after _skein_patched_file_count)
+    message(STATUS
+      "skein_llama: applied ${_skein_patch_count} shader patch(es) to "
+      "${_skein_patched_file_count} file(s) in ${_skein_shaders_patched}")
+
+    # 4. The wrapper that makes ggml-vulkan read the patched copy.
+    set(SKEIN_GLSLC_ORIG_DIR    "${_skein_shaders_src}")
+    set(SKEIN_GLSLC_PATCHED_DIR "${_skein_shaders_patched}")
+    set(SKEIN_GLSLC_REAL        "${_glslc}")
+    set(_skein_glslc_wrapper "${CMAKE_CURRENT_BINARY_DIR}/skein-glslc")
+    configure_file(
+      "${SKEIN_LLAMA_ROOT}/cmake/skein-glslc.sh.in"
+      "${_skein_glslc_wrapper}"
+      @ONLY)
+    file(CHMOD "${_skein_glslc_wrapper}"
+      PERMISSIONS OWNER_READ OWNER_WRITE OWNER_EXECUTE
+                  GROUP_READ GROUP_EXECUTE
+                  WORLD_READ WORLD_EXECUTE)
+    set(_glslc_effective "${_skein_glslc_wrapper}")
+  else()
+    message(WARNING
+      "skein_llama: SKEIN_LLAMA_SHADER_PATCHES=OFF — libskein_llama.so will be "
+      "built from unpatched Vulkan shader sources and is NOT reproducible "
+      "(bd skein-ylux). This is only ever correct as a deliberate negative "
+      "control.")
+  endif()
+
   set(_vk_include "${VULKAN_HEADERS_DIR}/include")
   if(NOT EXISTS "${_vk_include}/vulkan/vulkan.hpp")
     message(FATAL_ERROR
@@ -324,7 +533,10 @@ if(SKEIN_LLAMA_VULKAN)
   set(Vulkan_INCLUDE_DIR      "${_vk_include}" CACHE PATH "" FORCE)
   set(Vulkan_INCLUDE_DIRS     "${_vk_include}" CACHE PATH "" FORCE)
   set(Vulkan_LIBRARY          "${_vk_library}" CACHE FILEPATH "" FORCE)
-  set(Vulkan_GLSLC_EXECUTABLE "${_glslc}"      CACHE FILEPATH "" FORCE)
+  # NB: `_glslc_effective`, not `_glslc` — see §5a. With shader patches on
+  # this is the wrapper in the build tree, which redirects shader reads to the
+  # patched copy and then execs the NDK binary.
+  set(Vulkan_GLSLC_EXECUTABLE "${_glslc_effective}" CACHE FILEPATH "" FORCE)
 
   # `find_package(SPIRV-Headers CONFIG REQUIRED)` in ggml-vulkan wants an
   # installed CMake package. The submodule is header-only and is never

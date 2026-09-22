@@ -185,6 +185,7 @@ same flags:
 | `GGML_NATIVE=OFF` | `-march` depending on the *host* CPU |
 | `LLAMA_BUILD_IS_DEV=OFF` | a `-dev` suffix that tracks nothing |
 | `SOURCE_DATE_EPOCH` honoured (fallback `1767225600`) | timestamps |
+| `patches/` + the `glslc` wrapper (§5a) | a shader compiler that mis-folds a constant into uninitialised memory |
 
 These are applied with `add_compile_options` / `add_link_options` **before**
 `add_subdirectory(llama.cpp)`, which is the only way to reach ~900 upstream
@@ -195,6 +196,97 @@ tree": the submodules are consumed strictly read-only, and every generated
 byte — SPIR-V, the `vulkan-shaders-gen` host tool, every object file — lands
 under `inference-service/.cxx/`, which `./gradlew clean` wipes. Nothing in this
 directory writes into `third_party/`.
+
+### The shader compiler is not deterministic, and what we do about it
+
+Everything in the table above addresses *environmental* nondeterminism —
+paths, clocks, caches, host CPUs. `libskein_llama.so` was nondeterministic
+anyway (bd `skein-ylux`): eight cold builds of one commit, at one path, with
+one `SOURCE_DATE_EPOCH`, produced **four** distinct sha256.
+
+The diff is small enough to quote. Two differing libraries are the same size,
+and `cmp -l` finds four differing bytes:
+
+```
+20284477   0 370
+20284478   0 377
+20284479   0 377
+20284480   0 377
+```
+
+`llvm-readelf -S` puts that offset in `.rodata`, and searching the build's
+`vulkan-shaders.spv/` for the surrounding bytes names the shader: `tri_f16`.
+Disassembled, the difference is one operand:
+
+```
+%float_0         = OpConstant %float 0              # build A
+%float_0x1p_128  = OpConstant %float 0x1p+128       # build B  (+inf)
+       ...
+%467 = OpFConvert %half %float_0                    # the live store
+```
+
+That constant is `D_TYPE(0)` — `vulkan-shaders/tri.comp:40`, and the same
+line at `vulkan-shaders/diag.comp:26`. `D_TYPE` is `float16_t` for the `_f16`
+variants, so the integer literal has to be converted `int -> float ->
+float16_t`, and **NDK r27c's `glslc` (`shaderc v2022.3`) mis-folds that
+conversion**: it emits an `OpConstant %float` whose 32-bit literal is
+uninitialised memory. Forty compiles of one unchanged command line produced
+five distinct `.spv`, with and without `-O`; the observed garbage included
+`0`, `-8`, `+inf` and `-nan`. It is a small enough shader in a big enough
+module that the `_f32` variants, which need no conversion, are unaffected
+(40/40 identical).
+
+So it was never an ordering bug in `vulkan-shaders-gen` — that generator
+already `std::sort`s its table before emitting. It is a compiler defect, and
+it is also a **miscompile**: the else branch of `tri`/`diag` stored `+inf`
+instead of zero whenever the garbage was not 0.
+
+We cannot fix `glslc` (an NDK prebuilt) and we do not write into
+`third_party/`. §5a of `CMakeLists.txt` therefore:
+
+1. copies `ggml/src/ggml-vulkan/vulkan-shaders/` into the `.cxx` build tree
+   (`configure_file(COPYONLY)`, so a content change upstream re-triggers
+   configure);
+2. checks the pristine files against the `before` hashes in
+   `patches/PINS.txt`, applies `patches/*.patch` to the **copy**, and checks
+   the result against the `after` hashes;
+3. generates `skein-glslc`, a wrapper that rewrites any argument naming a
+   file under the pristine shader directory to the copy and then execs the
+   real `glslc` — and *refuses to compile* a `.comp`/`.glsl` from anywhere
+   else, so a silent bypass is a build failure rather than a returning flake;
+4. points `Vulkan_GLSLC_EXECUTABLE` at that wrapper before
+   `add_subdirectory(llama.cpp)`.
+
+The patch itself is one character per site (`D_TYPE(0)` → `D_TYPE(0.0)`).
+glslang then folds it correctly, and the emitted SPIR-V is byte-identical to
+the *correct* output of the unpatched source — so the fix removes the flake
+without changing the library the build was supposed to produce. The recorded
+sha256 in "Proving it" below is unchanged by it.
+
+`git status` inside `third_party/llama.cpp` is empty after a build. Nothing
+here writes into the submodule.
+
+**When you bump the pin**, a `before`/`after` mismatch in `patches/PINS.txt`
+is the expected failure if upstream touched `tri.comp` or `diag.comp`.
+Regenerate the patch against the new source, re-run
+`tools/rb/so-determinism.sh -n 20`, and update `PINS.txt` in the same commit.
+If upstream has taken the fix (or the NDK's glslang has), drop the patch
+entirely — but prove it with the loop, not by reading the changelog.
+
+### Checking it
+
+```bash
+tools/rb/so-determinism.sh                      # 2 cold builds, compared
+tools/rb/so-determinism.sh -n 20 --keep /tmp/so # the acceptance run
+tools/rb/so-determinism.sh --negative-control   # put the defect back
+tools/rb/so-determinism.sh --self-test          # no SDK needed
+```
+
+`--negative-control` builds with `-Pskein.llama.shaderPatches=false`, i.e.
+with §5a bypassed, and **expects to fail** — it is what makes a green run
+from the check mean something. CI runs the two-build form in the
+`native-determinism` job of `.github/workflows/reproducible-build.yml`, and
+the `--self-test` in that workflow's `self-tests` job.
 
 ### The ELF guard
 
@@ -236,8 +328,12 @@ Recorded for `b29c606e` / NDK r27c / macOS arm64, **as of E4.I1 (bd
 |---|---|
 | A1, clean build | `99d1eb4fb2e558bfd69d132b656855a0ba4e9f40039c2510ccf0dae05abd309b` |
 | A2, second clean build | `99d1eb4fb2e558bfd69d132b656855a0ba4e9f40039c2510ccf0dae05abd309b` |
+| A3…A22, `tools/rb/so-determinism.sh -n 20` (bd `skein-ylux`) | `99d1eb4f…` ×20 |
 
-25,303,280 bytes in both. `strings` on the result finds no machine-specific
+25,303,280 bytes in all of them — and note that the `skein-ylux` fix did not
+move this value: the patched shader sources compile to the same SPIR-V the
+unpatched ones produced when glslc happened to get the constant right. What
+changed is that "happened to" became "always". `strings` on the result finds no machine-specific
 path: the only absolute-looking strings are the constant, remapped
 `/skein/third_party/llama.cpp/…` that ggml's `GGML_ASSERT` bakes in from
 `__FILE__`, and those are identical on every machine by construction — which

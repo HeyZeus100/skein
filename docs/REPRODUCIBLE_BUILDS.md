@@ -187,28 +187,43 @@ rm -rf core/vault/.cxx inference-service/.cxx
 
 Better: do not rebuild in place. Let `tools/rb/verify.sh` clone.
 
-### Known open defect: `libskein_llama.so` (bd `skein-ylux`)
+### Closed defect: `libskein_llama.so` (bd `skein-ylux`)
 
-As of 2026-09-21 there is one **known, intermittent** source of
-irreproducibility, and you should check it before concluding anything else.
+**There are no known open irreproducibility defects.**
+`known_irreproducible` in `reproducible-builds.yml` is empty, and
+`tools/rb/manifest-check.py` will not let an entry sit there describing a
+build that has been fixed. A differing entry is a real differing entry.
 
-`libskein_llama.so` is not yet deterministic. Two cold builds of the same
-commit, at the *same* absolute path, with the *same* `SOURCE_DATE_EPOCH`,
-produced different libraries — roughly one build in seven across the seven
-release builds measured while `E1.I8` was being verified. The entry keeps its
-size, compression method and mtime; only the ELF bytes and the CRC change.
-`libskein_sqlite.so` was deterministic in every one of them.
+There *was* one, and it is worth knowing about because it is the shape of
+defect this whole document exists to catch. Between 2026-09-21 and its fix,
+`libskein_llama.so` differed between cold builds of the same commit, at the
+same absolute path, with the same `SOURCE_DATE_EPOCH` — about one build in
+seven on a CI runner, and four distinct hashes across eight builds on a
+16-core laptop. The entry kept its size, compression method and mtime; only
+the ELF bytes and the CRC changed.
 
-So if `verify.sh` reports **exactly one** differing entry and that entry is
-`lib/arm64-v8a/libskein_llama.so`, you have most likely hit this flake rather
-than a tampered release. Rebuild; it will usually agree the second time. If
-any *other* entry differs, or if `libskein_llama.so` differs repeatedly,
-treat it as real and report it per `SECURITY.md`.
+The cause was not the build system. `cmp -l` on two differing libraries found
+**four** differing bytes, inside the SPIR-V for one embedded Vulkan shader.
+NDK r27c's `glslc` (`shaderc v2022.3`) mis-folds the `int -> float ->
+float16_t` conversion in `D_TYPE(0)` in ggml-vulkan's `tri.comp` and
+`diag.comp`, emitting an `OpConstant %float` whose literal is uninitialised
+memory — observed as `0`, `-8`, `+inf` and `-nan` for one unchanged command
+line. (It was also a miscompile: the shader stored `+inf` where it meant
+zero.) The fix writes the literal as `0.0`, which glslang folds correctly and
+deterministically; it is a sha256-pinned patch applied to a **copy** of the
+shader sources in the build tree, so `third_party/` stays pristine. Full
+write-up: `native/llama/README.md` §4.
 
-This is being fixed at the source (`native/llama`); the leading suspect is
-ordering in the Vulkan shader generator, which compiles ~1100 variants in
-parallel. Until it lands, the two-runner CI check can fail intermittently,
-and such a failure is not evidence of a compromise.
+Two things now guard it:
+
+| Guard | Cost | Fails when |
+|---|---|---|
+| sha256 pins in `native/llama/patches/PINS.txt`, checked at CMake configure | milliseconds, every build | the patch, the pristine shader or the patched result is not what was measured — e.g. a submodule pin bump touched a patched file |
+| `native-determinism` job in `.github/workflows/reproducible-build.yml` | two native builds, one runner | the library stops being a function of its sources, for any reason |
+
+Run the second one yourself with `tools/rb/so-determinism.sh` (see
+`--help`); `--negative-control` puts the defect back and proves the check
+still catches it.
 
 ### When it does not reproduce
 
