@@ -114,6 +114,28 @@ sealed interface ModelVerification {
         override val summary: String get() = "post-mmap digest mismatch; bytes changed role=${role.wire}"
     }
 
+    /**
+     * The caller cancelled the verification while a digest was streaming — in
+     * practice an `unload` that arrived during the ~10 s a 2.5 GB model takes
+     * to hash (plan `E3.I5`).
+     *
+     * Deliberately not a [HashMismatch]: a cancelled pass proves nothing about
+     * the bytes in either direction, and reporting "this model is tampered"
+     * because the user backgrounded the app would be a false alarm the threat
+     * model (`E3.I12`) would then have to answer for. The natural wire code is
+     * `ErrorCode.CANCELLED`, not one of the hash-mismatch codes — the mapping
+     * itself belongs to the service (`skein-nxk`), since `:core:inference`
+     * must not depend on `:core:ipc`.
+     *
+     * [role] is the file that was being hashed when the signal was seen, or
+     * null when the cancellation was observed outside a per-file pass.
+     */
+    data class Cancelled(
+        val role: ModelFileRole?,
+    ) : Refusal {
+        override val summary: String get() = "verification cancelled role=${role?.wire ?: "n/a"}"
+    }
+
     /** A manifest entry names a file that is not present in the store directory. */
     data class FileMissing(
         val role: ModelFileRole,
