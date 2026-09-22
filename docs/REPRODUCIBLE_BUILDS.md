@@ -108,6 +108,42 @@ not, and the Gradle build itself never refuses a non-Temurin JDK.
 | `--strict` | treat a toolchain deviation as a failure |
 | `--self-test` | run the script's own negative cases — no clone, no build |
 
+### The `.cxx` trap (read this before rebuilding by hand)
+
+`verify.sh` always builds in a brand-new clone, and every CI runner is fresh,
+so neither is affected. **A rebuild in a tree you have already built is a
+different story**, and it is the likeliest way to get a wrong answer here.
+
+AGP keeps the CMake/ninja build *outside* `build/`, in `<module>/.cxx/`.
+`./gradlew clean` does not remove it, and ninja only rebuilds on file-content
+changes — so changing an **environment variable**, `SOURCE_DATE_EPOCH` above
+all, does not invalidate anything. The "rebuild" relinks the old objects and
+ships a stale `.so`.
+
+Measured on 2026-09-21 while verifying `E1.I8`, same commit throughout:
+
+| Build | Path | `SOURCE_DATE_EPOCH` | `.cxx` | `libskein_sqlite.so` |
+|-------|------|---------------------|--------|----------------------|
+| 0 | A | 1790007384 | cold | `1f1f1ecc…` |
+| A | A | 1790008784 | **reused** | `1f1f1ecc…` — *not recompiled at all* |
+| B | B | 1790008784 | cold | `a2c3cab6…` |
+
+`libskein_llama.so` showed the same shape from the other direction: builds 0
+and B (both cold, *different paths*) were byte-identical, while build A's
+incremental relink shifted two bytes. So the native libraries are
+path-independent and reproducible — **when they are actually rebuilt**.
+
+So when rebuilding in place, remove the native intermediates too
+(`reproducible-builds.yml` lists them under
+`artifact.clean_native_intermediates`):
+
+```bash
+rm -rf core/vault/.cxx inference-service/.cxx
+./gradlew clean :app:assembleFossRelease --no-build-cache
+```
+
+Better: do not rebuild in place. Let `tools/rb/verify.sh` clone.
+
 ### When it does not reproduce
 
 Work outward from the cheapest explanation.

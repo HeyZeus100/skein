@@ -33,6 +33,26 @@ artifact:
   # outputs instead of recomputing them. The APKs then match because they
   # were copied. See docs/VERIFICATION.md.
   gradle_args: ["clean", "--no-build-cache"]
+  # ...and those two flags are NOT sufficient on a tree that has been built
+  # before. AGP keeps the native (CMake/ninja) build out of `build/`, in
+  # `<module>/.cxx/`, and `clean` does not remove it. ninja then rebuilds
+  # only on file-content changes, so an ENVIRONMENT change -- notably
+  # SOURCE_DATE_EPOCH -- leaves the previous `.so` in place and the "rebuild"
+  # silently ships a stale library.
+  #
+  # Measured on 2026-09-21 while verifying E1.I8: building the same commit at
+  # the same path with a different SOURCE_DATE_EPOCH reproduced
+  # libskein_sqlite.so byte-for-byte from the STALE tree (it had not been
+  # recompiled at all), and an incremental relink shifted two bytes in
+  # libskein_llama.so. With `.cxx` removed, the same commit built at two
+  # different absolute paths produced an identical APK, 730/730 entries.
+  #
+  # CI is immune (every runner is fresh) and tools/rb/verify.sh is immune (it
+  # builds in a brand-new clone). A developer re-checking reproducibility in
+  # a tree they have already built is NOT, so the recipe includes this.
+  clean_native_intermediates:
+    - "core/vault/.cxx"
+    - "inference-service/.cxx"
 
 toolchain:
   jdk:

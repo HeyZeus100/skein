@@ -285,6 +285,24 @@ class Checker:
             "--no-build-cache" in wf,
             "reproducible-build.yml does not pass --no-build-cache",
         )
+        # `clean` does not remove AGP's native intermediates, so the manifest
+        # has to name them -- and they have to be where it says they are, or
+        # the recipe it hands a verifier is wrong.
+        native_dirs = art.get("clean_native_intermediates") or []
+        self.expect_true(
+            "the manifest names the native intermediate dirs `clean` misses",
+            bool(native_dirs),
+            "artifact.clean_native_intermediates is empty; a rebuild in an "
+            "already-built tree will silently reuse stale .so files",
+        )
+        for rel in native_dirs:
+            module = os.path.dirname(rel)
+            self.expect_true(
+                f"{rel} belongs to a module with an externalNativeBuild",
+                "externalNativeBuild" in self.read(f"{module}/build.gradle.kts"),
+                f"{module}/build.gradle.kts has no externalNativeBuild, so "
+                f"{rel} is not a native intermediate dir",
+            )
 
     def run(self) -> int:
         print(f"manifest-check: {os.path.relpath(self.manifest_path, self.repo)}")

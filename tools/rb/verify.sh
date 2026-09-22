@@ -193,8 +193,21 @@ compare_stage() {
     hr
     local w
     w=$(mktemp -d) || return 2
-    unzip -l "$stripped" | sed '1,3d;$d' | awk '{print $1, $4}' | LC_ALL=C sort > "$w/released.txt"
-    unzip -l "$rebuilt" | sed '1,3d;$d' | awk '{print $1, $4}' | LC_ALL=C sort > "$w/rebuilt.txt"
+    # `unzip -l` prints `Length Date Time Name` rows between an Archive:/header
+    # preamble and a `---- / N files` trailer. Rows are selected by "$1 is a
+    # bare integer" rather than by line number, so neither the preamble, the
+    # separator rules nor the totals line can leak in; the name is rebuilt
+    # from $4..$NF so an entry name containing a space is not truncated.
+    listing() {
+        unzip -l "$1" | awk '
+            $1 ~ /^[0-9]+$/ && NF >= 4 {
+                name = $4
+                for (i = 5; i <= NF; i++) name = name " " $i
+                print $1, name
+            }' | LC_ALL=C sort
+    }
+    listing "$stripped" > "$w/released.txt"
+    listing "$rebuilt" > "$w/rebuilt.txt"
     if diff -u "$w/released.txt" "$w/rebuilt.txt" > "$w/listing.diff"; then
         log "[ok]   $(wc -l < "$w/released.txt" | tr -d ' ') entries, same names and uncompressed sizes"
     else
@@ -302,6 +315,15 @@ run_verify() {
     elif [ -f "$REPO_ROOT/local.properties" ]; then
         cp "$REPO_ROOT/local.properties" "$clone/local.properties"
     fi
+
+    # Belt and braces: the clone is new, so `<module>/.cxx` cannot exist yet.
+    # It is removed anyway because `--workdir` can point at a directory that
+    # has been used before, and a surviving `.cxx` is the one failure mode
+    # that produces a CONFIDENTLY WRONG answer rather than an error --
+    # `./gradlew clean` does not touch it, and ninja does not rebuild when
+    # only SOURCE_DATE_EPOCH has changed, so the "rebuild" would relink stale
+    # objects. See docs/REPRODUCIBLE_BUILDS.md § "The .cxx trap".
+    rm -rf "$clone"/*/.cxx "$clone"/*/*/.cxx
 
     local epoch
     epoch=$("$clone/tools/rb/source-date-epoch.sh" HEAD)
