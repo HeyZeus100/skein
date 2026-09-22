@@ -55,6 +55,9 @@ dependencies {
     // `:core:ipc`'s `ParcelRoundTripTest` needs it (AGP's mockable
     // `android.jar` only throws `Stub!` for `android.os` types).
     testImplementation(libs.robolectric)
+    // skein-4c7 (E4.I7): ContextBudget/TokenCounter are suspend APIs; their
+    // JVM tests drive them with `kotlinx.coroutines.test.runTest`.
+    testImplementation(libs.kotlinx.coroutines.test)
     // E10.I3 (skein-gzr): `LlamaCppEngineTest`'s `@Ignore`d placeholder
     // subclasses `InferenceEngineContractTest` from `:testing`, the same
     // way every other contract-suite consumer does.
