@@ -12,12 +12,20 @@
 
 package app.skein.core.inference.models
 
+import app.skein.core.verify.DigestAlgorithm
+import app.skein.core.verify.LoadPhaseHook
+import app.skein.core.verify.LoadVerification
+import app.skein.core.verify.ModelFileRole
+import app.skein.core.verify.ModelVerification
+import app.skein.core.verify.ModelVerifier
+import app.skein.core.verify.VerifyBinding
 import com.google.common.truth.Truth.assertThat
 import org.junit.After
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import org.junit.rules.TemporaryFolder
+import us.aherrera.skein.core.model.Blake3
 import java.io.File
 import java.nio.MappedByteBuffer
 
@@ -75,7 +83,7 @@ class ModelVerifierTest {
     fun `pre-mmap gate passes for an untouched import`() {
         val open = openHandle()
 
-        assertThat(ModelVerifier.verifyBeforeMmap(binding(), open.mainChannel)).isEqualTo(ModelVerification.Verified)
+        assertThat(ModelVerifier.verifyBeforeMmap(open, binding())).isEqualTo(ModelVerification.Verified)
     }
 
     @Test
@@ -99,7 +107,7 @@ class ModelVerifierTest {
         val open = openHandle()
         val attacker =
             object : LoadPhaseHook {
-                override fun afterPreMmapVerify(binding: ManifestBinding) {
+                override fun afterPreMmapVerify(binding: VerifyBinding) {
                     overwriteByte(stored.main.path, offset = 1_024L, byte = 0x5A)
                 }
             }
@@ -214,6 +222,6 @@ class ModelVerifierTest {
     }
 
     private companion object {
-        val FOREIGN_BLAKE3 = Blake3.hexDigest("not the model".toByteArray())
+        val FOREIGN_BLAKE3 = Blake3.hex("not the model".toByteArray())
     }
 }

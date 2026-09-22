@@ -10,6 +10,7 @@
 
 package app.skein.core.inference.models
 
+import app.skein.core.verify.ModelVerifier
 import com.google.common.truth.Truth.assertThat
 import org.junit.Test
 

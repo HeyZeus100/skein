@@ -16,6 +16,13 @@
 
 package app.skein.core.inference.models
 
+import app.skein.core.verify.DigestOutcome
+import app.skein.core.verify.LoadVerification
+import app.skein.core.verify.ModelFileRole
+import app.skein.core.verify.ModelVerification
+import app.skein.core.verify.ModelVerifier
+import app.skein.core.verify.VerifyCancellation
+import app.skein.core.verify.VerifyProgress
 import com.google.common.truth.Truth.assertThat
 import org.junit.After
 import org.junit.Before
@@ -102,7 +109,13 @@ class ModelVerifierCancellationTest {
 
     @Test
     fun `a cancelled pre-mmap gate refuses with Cancelled, not HashMismatch`() {
-        val result = ModelVerifier.verifyBeforeMmap(binding(), handle.mainChannel, signal, cancelAfterFirstChunk)
+        val result =
+            ModelVerifier.verifyBeforeMmap(
+                binding().toVerifyBinding(),
+                handle.mainChannel,
+                signal,
+                cancelAfterFirstChunk,
+            )
 
         assertThat(result).isEqualTo(ModelVerification.Cancelled(ModelFileRole.MAIN))
     }
@@ -133,7 +146,7 @@ class ModelVerifierCancellationTest {
     fun `progress covers every byte of the binding when nothing cancels`() {
         val seen = AtomicLong(0)
 
-        ModelVerifier.verifyBeforeMmap(binding(), handle.mainChannel, progress = { seen.set(it) })
+        ModelVerifier.verifyBeforeMmap(binding().toVerifyBinding(), handle.mainChannel, progress = { seen.set(it) })
 
         assertThat(seen.get()).isEqualTo(stored.files.values.sumOf { it.sizeBytes })
     }

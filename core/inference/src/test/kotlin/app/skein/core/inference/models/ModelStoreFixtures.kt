@@ -6,6 +6,9 @@
 
 package app.skein.core.inference.models
 
+import app.skein.core.verify.ModelFileRole
+import us.aherrera.skein.core.model.Blake3
+import us.aherrera.skein.core.model.Hex
 import java.io.ByteArrayInputStream
 import java.io.File
 import java.io.RandomAccessFile
@@ -107,7 +110,7 @@ internal fun manifestJson(
 }
 
 private fun blake3Field(entry: FixtureFile): String =
-    if (entry.declareBlake3) ",\n      \"blake3\": \"${Blake3.hexDigest(entry.content)}\"" else ""
+    if (entry.declareBlake3) ",\n      \"blake3\": \"${Blake3.hex(entry.content)}\"" else ""
 
 internal fun parsedManifest(files: List<FixtureFile> = defaultFixtureFiles()): ModelManifest =
     (ModelManifest.parse(manifestJson(files)) as ManifestParse.Parsed).manifest

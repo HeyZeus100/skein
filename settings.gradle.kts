@@ -28,6 +28,7 @@ include(
     ":core:vault",
     ":core:security",
     ":core:inference",
+    ":core:verify",
     ":core:rag",
     ":core:markdown",
     ":core:export",

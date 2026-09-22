@@ -29,6 +29,15 @@ dependencies {
     // logs refusals through `SkeinLog` (:core:model), which the NoRawLogging
     // guard requires instead of android.util.Log.
     api(project(":core:model"))
+    // skein-nxk (E4.I3, coordinator decision skein-hiwb): `ModelVerifier`,
+    // `ModelVerification`, `ModelFileRole` and the pinned-descriptor types moved
+    // to the pure-JVM `:core:verify` so `:inference-service` (isolatedProcess,
+    // allowlisted for pure-JVM project deps only) can run the same verifier this
+    // module's store-side loader does. `api`, not `implementation`: those types
+    // appear in this module's own public signatures (`ManifestBinding.bind`
+    // returns a `ModelVerification.Refusal`, `BoundFile.role` is a
+    // `ModelFileRole`), so consumers must see them.
+    api(project(":core:verify"))
     // skein-28wm (POST_REVIEW_RESOLUTIONS §2.3 / §3.3): `WireBindings.toWire`
     // returns `us.aherrera.skein.ipc.ManifestBinding` (and takes/produces its
     // `ManifestFileRef` / `AttestationRefParcel`), so that type is part of this

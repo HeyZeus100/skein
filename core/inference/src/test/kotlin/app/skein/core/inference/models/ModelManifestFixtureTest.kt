@@ -21,6 +21,8 @@
 
 package app.skein.core.inference.models
 
+import app.skein.core.verify.ModelFileRole
+import app.skein.core.verify.ModelVerification
 import com.google.common.truth.Truth.assertThat
 import org.junit.Test
 import us.aherrera.skein.core.model.Capability

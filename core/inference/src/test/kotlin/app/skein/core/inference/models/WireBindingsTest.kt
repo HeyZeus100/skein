@@ -12,6 +12,7 @@ package app.skein.core.inference.models
 import android.os.Parcel
 import android.os.ParcelFileDescriptor
 import android.os.Parcelable
+import app.skein.core.verify.ModelFileRole
 import com.google.common.truth.Truth.assertThat
 import org.junit.Assert.assertThrows
 import org.junit.Rule

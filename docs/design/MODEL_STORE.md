@@ -83,9 +83,14 @@ Every load runs both, in this order, over the same model:
 Two different algorithms rather than SHA-256 twice: a second pass with the same
 `MessageDigest` shares every bug the first one has, and BLAKE3 is faster than
 SHA-256 on aarch64, so the second pass is close to free at load time. BLAKE3 is
-hand-rolled (`Blake3.kt`, unkeyed mode only, ~300 lines) for the same reason
-`Hkdf.kt` is: no third-party crypto. It is pinned to all 35 official reference
-vectors, extended output included.
+hand-rolled (`core/model/src/main/kotlin/us/aherrera/skein/core/model/Blake3.kt`,
+unkeyed mode only) for the same reason `Hkdf.kt` is: no third-party crypto. It
+is pinned to all 35 official reference vectors
+(`core/model/src/test/.../Blake3VectorTest.kt`, vector file under
+`core/model/src/test/resources/blake3/`). `skein-nxk` deleted the second,
+duplicate BLAKE3 that `:core:inference` carried; extended (XOF) output is not
+exposed by the surviving implementation and therefore no longer asserted — see
+`skein-fjyw`.
 
 Where the expected BLAKE3 comes from:
 
@@ -177,8 +182,13 @@ two read the same bytes twice.
 
 *Pinned by descriptor.* `PinnedModelFile` is the `dup`'d descriptor the loader
 was handed, made into a type so "never resolve the model by path again" is
-structural rather than a comment: it exposes a `FileChannel` and a
-`/proc/self/fd/<n>` `enginePath`, and no path to re-open by accident. The
+structural rather than a comment: it exposes a `FileChannel` and the
+descriptor number, and no path to re-open by accident. (It also still exposes a
+`/proc/self/fd/<n>` `enginePath`; `skein-lnp2` found that an isolated process
+cannot re-open that path — a `/proc/self/fd` open is a fresh `open(2)` checked
+against the isolated uid, and the model file is `0400` owned by the app uid —
+so the service hands llama.cpp the descriptor itself, not the path. See
+`skein-nxk`.) The
 `dup` itself is supplied by the caller (`DescriptorDup`), because
 `ParcelFileDescriptor` lives in `android.os` and a `java.io.FileDescriptor`
 will not report its own number — that keeps the type pure-JVM and
@@ -198,10 +208,35 @@ JVM half of `E10.I16`; `skein-d4o3` owns the device-lane version with a real
 `ModelVerifierLargeFixtureTest` checks the chunked readers against an
 independent `MessageDigest` pass over a generated 100 MB fixture.
 
+### Where these types live (updated by `skein-nxk`, coordinator decision `skein-hiwb`)
+
+`ModelVerifier`, `ModelVerification`, `ModelFileRole`, `LoadPhaseHook`,
+`PinnedModelFile`/`PinnedModel`/`DescriptorDup`/`DupedDescriptor`/`PinResult`/
+`PinnedLoad` and the `VerifyBinding`/`VerifyFile` vocabulary are in the
+pure-Kotlin/JVM **`:core:verify`** module (`app.skein.core.verify`), not
+`:core:inference`. The reason is the isolation allowlist: `:core:inference` is
+an Android library and `IsolationGuardPlugin` forbids `:inference-service` /
+`:embedder-service` from depending on it, so the §2 load gate had to move
+somewhere both the app-side `ModelManager` and the isolated services can reach.
+`:core:verify` is on `PURE_JVM_MODULES` and on `COMMON_SERVICE_PROJECT_ALLOWLIST`.
+
+`ImmutableModelStore`, `ModelManifest`, `ManifestBinding` and `WireBindings`
+stay in `:core:inference`, which depends on `:core:verify` and supplies
+`ManifestBinding.toVerifyBinding()` plus the `ModelHandle` overloads of
+`verifyBeforeMmap`/`verifyForLoad` (`core/inference/.../VerifyBindings.kt`).
+
+Because the wire `ManifestFileRef` carries no BLAKE3, a service-side
+`VerifyBinding` has `expectedBlake3 = null`; the verifier then computes BLAKE3
+in the SAME single pre-mmap read that computes SHA-256 and uses it as gate 2's
+expectation. The two gates still read the file at two different times through
+two different views, which is what detects the in-place write; what a
+null expectation cannot add is detection of a file that was already wrong
+before the load began, and `expectedSha256` covers that on every file.
+
 Still not wired: the service side. `skein-nxk` (`E4.I3`) and `skein-lbw`
 (`E5.I1`) own the `dup` of the received `ParcelFileDescriptor`, the
 `ModelVerification.Refusal → ErrorCode` mapping (`HASH_MISMATCH`,
 `HASH_MISMATCH_POST_MMAP`, `COMPANION_HASH_MISMATCH`, `MODEL_IN_USE`, and
 `CANCELLED` for the new `Cancelled`) and the `EngineStatus` progress
-reporting. `:core:inference` deliberately does not depend on `:core:ipc`, so
-none of that mapping lives here.
+reporting. Neither `:core:inference` nor `:core:verify` depends on
+`:core:ipc`, so none of that mapping lives here.
