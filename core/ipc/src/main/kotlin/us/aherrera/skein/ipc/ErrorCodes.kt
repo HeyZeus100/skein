@@ -106,4 +106,59 @@ object ErrorCodes {
             // An unrecognised code: see the `code` parameter's KDoc.
             else -> InferenceException.Internal(message)
         }
+
+    // ========================================================================
+    // Sync entry points that cannot return a code (judgment call J7, skein-nxk)
+    // ========================================================================
+    //
+    // `load` returns an `int` and `generate` reports through
+    // `IInferenceCallback.onError`, so both carry an [ErrorCode] naturally.
+    // `IInferenceService.embed` returns `float[]` and `tokenCount` returns an
+    // `int` that is a COUNT — neither has a slot for an error code, and
+    // widening their signatures would not be additive to a locked contract.
+    //
+    // The usual Android answer, `android.os.ServiceSpecificException`, carries
+    // exactly this (an int plus a message) — but it is not in the public
+    // `android.jar` (checked against platform android-37.0: absent), so it
+    // cannot be referenced from a module that compiles against the public SDK.
+    //
+    // Binder DOES transport a fixed set of standard unchecked exceptions
+    // faithfully across a transaction, `IllegalStateException` among them. So
+    // the convention is: the service throws an `IllegalStateException` whose
+    // message begins with [FAILURE_PREFIX] followed by the numeric code, and
+    // the client turns it back into the right `InferenceException`. Both halves
+    // live here so the two sides cannot drift — that is the whole reason this
+    // is in `:core:ipc` and not in either implementation.
+
+    /** Marks an [IllegalStateException] as a coded service failure. */
+    const val FAILURE_PREFIX: String = "skein-error:"
+
+    /**
+     * The exception a sync entry point with no code slot throws.
+     *
+     * @param message a fixed diagnostic. **Never** prompt, document or token
+     *   text: this crosses a process boundary and lands in a log (spec §9).
+     */
+    fun asServiceFailure(
+        code: Int,
+        message: String = "",
+    ): IllegalStateException = IllegalStateException("$FAILURE_PREFIX$code $message".trim())
+
+    /**
+     * The [ErrorCode] a service encoded in [throwable], or null when it is not
+     * one of these — an ordinary `IllegalStateException` from somewhere else
+     * must not be silently reinterpreted as a coded refusal.
+     */
+    fun codeOf(throwable: Throwable): Int? {
+        val message = throwable.message ?: return null
+        if (!message.startsWith(FAILURE_PREFIX)) return null
+        val digits = message.removePrefix(FAILURE_PREFIX).substringBefore(' ')
+        return digits.toIntOrNull()
+    }
+
+    /** [codeOf] plus [toException]: what a client does with a caught sync failure. */
+    fun toExceptionOrNull(throwable: Throwable): InferenceException? {
+        val code = codeOf(throwable) ?: return null
+        return toException(code, throwable.message?.substringAfter(' ', "").orEmpty())
+    }
 }

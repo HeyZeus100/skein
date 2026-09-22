@@ -89,6 +89,19 @@
 //       that E4.I3 and E4.I4 could disagree about. ADDITIVE — the field
 //       defaults to null and an inline message parcels exactly as before.
 //
+//   J6. `IInferenceService.onSessionUnlocked(long epoch)` (skein-nxk). The
+//       LOCK_POLICY_INDEXING.md §5.2 delta added only the two LOCKING pushes,
+//       but §5.3's gate starts at `SessionEpoch.NONE` and §6.1 invariant I6
+//       requires it to refuse "every request until an explicit onUnlocked is
+//       received" — and §5.3's own prose says ":app re-sends onUnlocked on
+//       every fresh bind". There was no method to send that on, so as locked
+//       the contract could never authorize a service: every call would refuse
+//       with `SESSION_LOCKED`, forever, including the very first load after a
+//       normal unlock. Adding the push is additive (a new `oneway` method) and
+//       is the only reading under which §5.3 and §6.1 are both satisfiable.
+//       `IEmbedderService` needs the symmetric addition; that is `skein-6j93`,
+//       filed rather than done here because `:embedder-service` is `E5.I1`'s.
+//
 // ============================================================================
 // IMAGE / LARGE-PAYLOAD TRANSPORT DECISION (E0.I16 acceptance criterion 4)
 // ============================================================================

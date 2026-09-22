@@ -49,20 +49,31 @@ enum class HandleKind : std::uint8_t {
 struct Entry {
     HandleKind kind;
     void *ptr;
+    /*
+     * A second owned resource whose lifetime is tied to `ptr` (E4.I3, bd
+     * skein-nxk). Used by kModel loaded from a descriptor: llama.cpp's
+     * FILE*-based loader does NOT take ownership of the stream
+     * (llama_file's impl(FILE*) sets owns_fp = false and its destructor only
+     * fcloses when that is true), so the FILE* must outlive the model and be
+     * closed by us, after llama_model_free. Parking it here rather than in a
+     * side map means it cannot be orphaned by a handle that is removed on some
+     * other path. nullptr for every other handle kind.
+     */
+    void *aux;
     /* Only meaningful for kContext; the address is passed to
      * llama_set_abort_callback and must outlive every decode on that context. */
     std::atomic<bool> cancel_flag;
 
-    Entry(HandleKind k, void *p) : kind(k), ptr(p), cancel_flag(false) {}
+    Entry(HandleKind k, void *p, void *a) : kind(k), ptr(p), aux(a), cancel_flag(false) {}
 };
 
 class HandleRegistry {
   public:
-    /* Mints a handle for `ptr`. Never returns 0. */
-    std::int64_t Add(HandleKind kind, void *ptr) {
+    /* Mints a handle for `ptr`, optionally owning `aux` alongside it. Never returns 0. */
+    std::int64_t Add(HandleKind kind, void *ptr, void *aux = nullptr) {
         std::lock_guard<std::mutex> guard(mutex_);
         const std::int64_t id = next_id_++;
-        entries_.emplace(id, std::make_unique<Entry>(kind, ptr));
+        entries_.emplace(id, std::make_unique<Entry>(kind, ptr, aux));
         return id;
     }
 
@@ -82,13 +93,19 @@ class HandleRegistry {
      * and destruction are separate so no llama.cpp teardown runs while the
      * registry lock is held.
      */
-    void *Remove(std::int64_t id, HandleKind kind) {
+    void *Remove(std::int64_t id, HandleKind kind, void **aux_out = nullptr) {
         std::lock_guard<std::mutex> guard(mutex_);
         auto it = entries_.find(id);
         if (it == entries_.end() || it->second->kind != kind) {
+            if (aux_out != nullptr) {
+                *aux_out = nullptr;
+            }
             return nullptr;
         }
         void *ptr = it->second->ptr;
+        if (aux_out != nullptr) {
+            *aux_out = it->second->aux;
+        }
         entries_.erase(it);
         return ptr;
     }
