@@ -246,13 +246,18 @@ public class IndexStoreImplAcceptanceTest {
     private fun freshIndexWithConnection(): Pair<IndexStoreImpl, SkeinSQLiteConnection> {
         val driver = SkeinSQLiteDriver()
         val conn = driver.openWithKey(":memory:", passphrase = null) as SkeinSQLiteConnection
-        val sql =
-            requireNotNull(
-                javaClass.classLoader?.getResourceAsStream("migrations/001_initial.sql"),
-            ) { "migrations/001_initial.sql not on the classpath" }
-                .use { it.readBytes().toString(Charsets.UTF_8) }
-        for (statement in splitOnSentinel(sql)) {
-            conn.prepare(statement).use { it.step() }
+        // skein-zx15: chunks.revision_hash (003) and chunks.byte_start/
+        // byte_end (008) are written by every replaceChunks call, so the
+        // schema here must include those migrations too, not just 001.
+        for (fileName in SCHEMA_MIGRATION_FILES) {
+            val sql =
+                requireNotNull(
+                    javaClass.classLoader?.getResourceAsStream("migrations/$fileName"),
+                ) { "migrations/$fileName not on the classpath" }
+                    .use { it.readBytes().toString(Charsets.UTF_8) }
+            for (statement in splitOnSentinel(sql)) {
+                conn.prepare(statement).use { it.step() }
+            }
         }
         val impl = IndexStoreImpl(conn)
         opened += impl
@@ -260,6 +265,18 @@ public class IndexStoreImplAcceptanceTest {
     }
 
     private companion object {
+        // skein-zx15: schema for a fresh :memory: chunks/ingest_queue
+        // table that has chunks.revision_hash (003) and
+        // chunks.byte_start/byte_end (008) — every replaceChunks call
+        // in this suite writes those columns.
+        val SCHEMA_MIGRATION_FILES: List<String> =
+            listOf(
+                "001_initial.sql",
+                "003_document_revisions.sql",
+                "007_drop_attachment_master_key.sql",
+                "008_ingest_attempts.sql",
+            )
+
         fun splitOnSentinel(sql: String): List<String> {
             val raw = sql.split("--;")
             val cleaned =

@@ -128,7 +128,7 @@ class IngestSchedulerTest {
                 pacer = pacer,
                 // The production composition (`IngestPipelines.forSession`)
                 // with the injectable [beforeLink] hook in front of its link step.
-                pipelines = { session, attempts, pace ->
+                pipelines = { session, pace ->
                     val upserter = EdgeUpserter(session.repository, session.indexStore)
                     val resolver = DanglingResolver(session.repository, session.indexStore)
                     IngestPipeline(
@@ -140,7 +140,6 @@ class IngestSchedulerTest {
                             upserter.upsert(document)
                             resolver.resolveFor(document)
                         },
-                        attempts = attempts,
                         pace = pace,
                         warn = { events += "warn" },
                     )
@@ -371,7 +370,7 @@ class IngestSchedulerTest {
             assertEquals(2, h.repository.peekIngestQueue().size)
         }
 
-    // ---- bounded retries (in-memory IngestAttempts until migration 003 lands) --------
+    // ---- bounded retries (persisted ingest_queue.attempts, migration 008, skein-zx15) ----
 
     @Test
     fun `a document whose link step keeps failing stays queued for two passes and is dropped on the third`() =
@@ -394,9 +393,12 @@ class IngestSchedulerTest {
         }
 
     @Test
-    fun `a lock resets the attempt counter so the next session starts the count over`() =
+    fun `the attempt counter is persisted, not session-scoped — it survives a lock and unlock`() =
         runBlocking {
-            // Arrange — two failing passes, then lock/unlock.
+            // Arrange — two failing passes, then lock/unlock. Migration 008
+            // moved the counter from an `IngestScheduler`-local `IngestAttempts`
+            // (which used to reset in `onLocked`) into `ingest_queue.attempts`,
+            // so it is no longer cleared by a lock/unlock cycle.
             val h = harness()
             h.unlock()
             h.bringUp()
@@ -407,9 +409,11 @@ class IngestSchedulerTest {
             h.lock()
             h.unlock()
             h.bringUp()
-            // Act — without the reset this third consecutive failure would drop the entry.
+            // Act — this is the third consecutive failure overall (the first
+            // two happened before the lock), so it drops the entry.
             h.scheduler.runPending(h.epoch())
             // Assert
-            assertEquals(listOf(poisoned.id), h.repository.peekIngestQueue().map { it.docId })
+            assertEquals(emptyList<Any>(), h.repository.peekIngestQueue())
+            assertEquals(3, h.events.count { it == "warn" })
         }
 }

@@ -148,7 +148,7 @@ class IngestWorkerInstrumentedTest {
                     object : IngestPacer {
                         override fun pace(): IngestPace = IngestPace.FULL
                     },
-                pipelines = { session, attempts, pace -> IngestPipelines.forSession(session, pace, attempts) },
+                pipelines = { session, pace -> IngestPipelines.forSession(session, pace) },
                 scope = scope,
                 debounceMillis = 100L,
             )

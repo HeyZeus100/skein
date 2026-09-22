@@ -199,6 +199,47 @@ public abstract class VaultRepositoryContractTest {
         }
 
     // ------------------------------------------------------------------
+    // AC: recordIngestFailure increments a persisted counter (migration
+    // 008, skein-zx15) that survives a re-fetch of the queue and is reset
+    // by an ordinary re-queue (INSERT OR REPLACE semantics)
+    // ------------------------------------------------------------------
+
+    @Test
+    public fun recordIngestFailure_increments_and_persists_across_dequeue(): Unit =
+        runTest {
+            val r = repo()
+            val d = r.createDocument(NewDocument(kind = DocumentKind.NOTE, title = "a", bodyMd = "x"))
+
+            assertEquals(1, r.recordIngestFailure(d.id))
+            assertEquals(2, r.recordIngestFailure(d.id))
+            assertEquals(2, r.dequeueIngest(10).single { it.docId == d.id }.attempts)
+        }
+
+    @Test
+    public fun recordIngestFailure_returns_zero_and_writes_nothing_once_the_entry_is_gone(): Unit =
+        runTest {
+            val r = repo()
+            val d = r.createDocument(NewDocument(kind = DocumentKind.NOTE, title = "a", bodyMd = "x"))
+            val queued = r.dequeueIngest(10).single { it.docId == d.id }
+            r.completeIngest(d.id, queued.queuedAt)
+
+            assertEquals(0, r.recordIngestFailure(d.id))
+        }
+
+    @Test
+    public fun recordIngestFailure_count_resets_when_the_document_is_re_queued(): Unit =
+        runTest {
+            val r = repo()
+            val d = r.createDocument(NewDocument(kind = DocumentKind.NOTE, title = "a", bodyMd = "x"))
+            r.recordIngestFailure(d.id)
+            r.recordIngestFailure(d.id)
+
+            r.updateBody(d.id, "a", "y") // re-queues via INSERT OR REPLACE
+
+            assertEquals(0, r.dequeueIngest(10).single { it.docId == d.id }.attempts)
+        }
+
+    // ------------------------------------------------------------------
     // AC: createAttachment/openAttachment round-trip 1 MiB of random bytes
     // ------------------------------------------------------------------
 

@@ -179,7 +179,7 @@ internal object VaultSql {
     // ------------------------------------------------------------------
 
     const val SELECT_INGEST_QUEUE: String =
-        "SELECT doc_id, reason, queued_at FROM ingest_queue ORDER BY queued_at ASC LIMIT ?"
+        "SELECT doc_id, reason, queued_at, attempts FROM ingest_queue ORDER BY queued_at ASC LIMIT ?"
 
     // Deletes the row only if `queued_at` still equals the value the
     // caller last observed — the "no-op when re-queued" acceptance
@@ -191,6 +191,15 @@ internal object VaultSql {
     const val ENQUEUE_REEMBED_ALL: String =
         "INSERT OR REPLACE INTO ingest_queue(doc_id, reason, queued_at) " +
             "SELECT id, 'reembed', ? FROM documents WHERE kind != 'attachment'"
+
+    // Migration 008 (skein-zx15): the persisted retry counter behind
+    // `VaultRepository.recordIngestFailure`. `RETURNING attempts` in the
+    // same statement as the increment avoids a read-modify-write race
+    // window — the UPDATE's own WHERE is what makes "no row" (the entry
+    // completed or the document was deleted concurrently) observable as
+    // "no row returned" rather than a silent no-op.
+    const val INCREMENT_INGEST_ATTEMPTS: String =
+        "UPDATE ingest_queue SET attempts = attempts + 1 WHERE doc_id = ? RETURNING attempts"
 
     // ------------------------------------------------------------------
     // Transactions

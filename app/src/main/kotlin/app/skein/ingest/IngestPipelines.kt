@@ -7,11 +7,15 @@
 // `null` until a span source exists (`EntityIndexer` is landed, GLiNER —
 // skein-eq1 — is not). Diagnostics go through `SkeinLog` (the pipeline's and
 // the steps' default sink), never `android.util.Log`.
+//
+// skein-zx15: `IngestPipeline` no longer takes an `IngestAttempts` — its
+// bounded-retry counter is `ingest_queue.attempts` (migration 008), read
+// and written through `session.repository` itself, so there is nothing left
+// for this factory to thread through.
 
 package app.skein.ingest
 
 import app.skein.core.rag.chunk.Chunker
-import app.skein.core.rag.ingest.IngestAttempts
 import app.skein.core.rag.ingest.IngestPace
 import app.skein.core.rag.ingest.IngestPipeline
 import app.skein.core.rag.ingest.IngestSteps
@@ -24,15 +28,12 @@ import us.aherrera.skein.core.model.EmbedderService
 
 object IngestPipelines {
     /**
-     * A pipeline for [session]. [attempts] is the session's failure counter
-     * (`IngestScheduler` owns it so it outlives one run); [embedder] is
-     * `null` until skein-079 lands (vectors are then recorded as pending —
-     * `IngestSteps` file header).
+     * A pipeline for [session]. [embedder] is `null` until skein-079 lands
+     * (vectors are then recorded as pending — `IngestSteps` file header).
      */
     fun forSession(
         session: VaultSession,
         pace: () -> IngestPace,
-        attempts: IngestAttempts = IngestAttempts(),
         embedder: EmbedderService? = null,
     ): IngestPipeline {
         val upserter = EdgeUpserter(session.repository, session.indexStore)
@@ -47,7 +48,6 @@ object IngestPipelines {
                     resolver.resolveFor(document)
                 },
             entities = null,
-            attempts = attempts,
             pace = pace,
         )
     }

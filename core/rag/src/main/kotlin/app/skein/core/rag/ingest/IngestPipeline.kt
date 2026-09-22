@@ -34,20 +34,35 @@
 // stops it with [IngestOutcome.Locked]. The thermal/lock mapping lives in
 // `:app`; this class only understands the four paces.
 //
-// ## Failure isolation and bounded retries
+// ## Failure isolation and bounded retries (migration 008, skein-zx15)
 //
 // bd skein-7v3 wants a failing entity step to leave the document chunked
 // and linked, and a persistently failing document dropped after three
-// attempts via an `ingest_attempts` column — that column is migration 003,
-// which has NOT landed, so no schema is touched here. What this class does
-// today: an entity or vector failure is warned (no content) and the entry
-// still completes; a lexical or link failure is counted in the injected
-// [IngestAttempts] (in-memory, per session — see that file's header), the
-// entry is left queued and skipped for the rest of *this* run (so one
-// poisoned document cannot starve the batch), and on the
-// [IngestAttempts.maxAttempts]th consecutive failure the entry is dropped
-// (`completeIngest`) with a content-free `SkeinLog.w`. Follow-up bead
-// skein-zx15 moves the counter into the column once 003 lands.
+// attempts via an `ingest_attempts` column. That column landed as
+// `ingest_queue.attempts` in migration 008 (skein-zx15): an entity or
+// vector failure is still warned (no content) and the entry still
+// completes; a lexical or link failure increments the persisted counter
+// via [VaultRepository.recordIngestFailure] and the entry is left queued
+// and skipped for the rest of *this* run (so one poisoned document cannot
+// starve the batch — [run]'s `skipped` set), and on the [MAX_ATTEMPTS]th
+// consecutive failure the entry is dropped (`completeIngest`) with a
+// content-free `SkeinLog.w`. Persisting the count (rather than the
+// `IngestAttempts` in-memory counter skein-7v3 shipped as a stand-in)
+// means the "at most 3 times" budget now survives a lock/unlock cycle or a
+// process restart, not just one unlocked session.
+//
+// ## Revision hash and byte-offset stamping (migration 003 + 008)
+//
+// After loading the document, [ingest] reads
+// [VaultRepository.currentRevision] — already captured synchronously by
+// the repository on `createDocument`/`updateBody`/`updateFrontmatter`
+// (skein-uo5n) — and passes its `revisionHash` straight through to
+// [IngestSteps.indexLexical], which stamps it onto every
+// `chunks.revision_hash` this pass writes and derives
+// `chunks.byte_start`/`chunks.byte_end` from `Chunk.start`/`Chunk.end`
+// against the same `body` string (skein-s9hm, folded into skein-zx15).
+// This pipeline does not compute or upsert a revision itself — that
+// remains the repository's job, and is idempotent there already (§1.4).
 //
 // Every warning goes through [warn], which defaults to `SkeinLog.w` and
 // only ever carries step names, exception class names and counts.
@@ -138,12 +153,12 @@ public fun interface EntityStep {
  * See the file header. Construct one per open vault session; [run] may be
  * called repeatedly (each call drains what is queued at that moment).
  *
- * @param repository dequeues/completes `ingest_queue` entries and loads documents.
+ * @param repository dequeues/completes `ingest_queue` entries, loads documents, and
+ *   (migration 008) persists the per-document retry counter and current revision hash.
  * @param chunker cuts each body into the chunks whose `start`/`end` are the citation locators.
  * @param steps lexical and vector writes (`IngestSteps`).
  * @param links graph step (`EdgeUpserter.upsert` + `DanglingResolver.resolveFor` in `:app`).
  * @param entities entity step, or `null` while no span source exists (GLiNER, skein-eq1).
- * @param attempts per-document failure counter shared across runs of one session (file header).
  * @param pace consulted before every dequeue and every document.
  * @param warn content-free diagnostics sink; `SkeinLog.w` by default.
  */
@@ -153,7 +168,6 @@ public class IngestPipeline(
     private val steps: IngestSteps,
     private val links: LinkStep,
     private val entities: EntityStep? = null,
-    private val attempts: IngestAttempts = IngestAttempts(),
     private val pace: () -> IngestPace = { IngestPace.FULL },
     private val warn: (String) -> Unit = { SkeinLog.w(TAG, it) },
 ) {
@@ -219,17 +233,23 @@ public class IngestPipeline(
             // attachment (never queued by the triggers; indexed via its
             // derived note). Nothing to index; clear the entry.
             repository.completeIngest(item.docId, item.queuedAt)
-            attempts.clear(item.docId)
             return DocumentResult.Skipped
         }
 
         checkpoint()
         val chunks = chunker.chunk(body)
 
+        // The repository already captured (or reused, if unchanged —
+        // §1.4 idempotency) a revision for this exact content on the write
+        // that queued this entry (skein-uo5n); the pipeline only reads it.
+        // See the file header's "Revision hash and byte-offset stamping".
+        checkpoint()
+        val revisionHash = repository.currentRevision(document.id)?.revisionHash
+
         checkpoint()
         val chunkIds =
             try {
-                steps.indexLexical(document.id, chunks)
+                steps.indexLexical(document.id, chunks, revisionHash, body)
             } catch (t: Throwable) {
                 rethrowIfCancelled(t)
                 return mandatoryStepFailed(item, "lexical", t)
@@ -274,30 +294,30 @@ public class IngestPipeline(
         // when the document changed mid-run (`queued_at` advanced) — the
         // bumped entry is then re-ingested by the next dequeue.
         repository.completeIngest(document.id, item.queuedAt)
-        attempts.clear(document.id)
         return DocumentResult.Indexed(chunkCount = chunkIds.size, vectorsPending = vectorsPending)
     }
 
     /**
-     * A lexical or link failure: count it, and either leave the entry queued
-     * ([DocumentResult.Failed]) or — on the [IngestAttempts.maxAttempts]th
-     * consecutive failure — drop it ([DocumentResult.Dropped]). Both
-     * warnings carry the step name, the exception class and counts only.
+     * A lexical or link failure: increment the persisted `ingest_queue.attempts`
+     * counter ([VaultRepository.recordIngestFailure], migration 008) and
+     * either leave the entry queued ([DocumentResult.Failed]) or — on the
+     * [MAX_ATTEMPTS]th consecutive failure — drop it ([DocumentResult.Dropped]).
+     * Both warnings carry the step name, the exception class and counts only.
+     * Dropping deletes the row (`completeIngest`), which is itself what
+     * forgets the count — no separate reset call is needed.
      */
     private suspend fun mandatoryStepFailed(
         item: IngestItem,
         step: String,
         cause: Throwable,
     ): DocumentResult {
-        val failures = attempts.recordFailure(item.docId)
-        val max = attempts.maxAttempts
+        val failures = repository.recordIngestFailure(item.docId)
         val what = "$step step failed with ${cause.javaClass.simpleName}"
-        if (failures < max) {
-            warn("ingest: $what (attempt $failures of $max); entry left queued")
+        if (failures < MAX_ATTEMPTS) {
+            warn("ingest: $what (attempt $failures of $MAX_ATTEMPTS); entry left queued")
             return DocumentResult.Failed
         }
-        warn("ingest: $what on attempt $failures of $max; dropping the entry")
-        attempts.clear(item.docId)
+        warn("ingest: $what on attempt $failures of $MAX_ATTEMPTS; dropping the entry")
         repository.completeIngest(item.docId, item.queuedAt)
         return DocumentResult.Dropped
     }
@@ -314,6 +334,9 @@ public class IngestPipeline(
 
         /** Entries dequeued per pass under [IngestPace.REDUCED] (bd skein-7v3 acceptance: batch size 16). */
         public const val REDUCED_BATCH: Int = 16
+
+        /** Consecutive mandatory-step failures after which an entry is dropped (bd skein-7v3: "at most 3 times"). */
+        public const val MAX_ATTEMPTS: Int = 3
 
         /** `SkeinLog` tag for the default [warn] sink. */
         public const val TAG: String = "IngestPipeline"

@@ -351,23 +351,20 @@ class IngestPipelineTest {
             assertThat(warnings.single()).contains("link step failed")
         }
 
-    // ---- bounded retries (in-memory IngestAttempts until migration 003 lands) -------
+    // ---- bounded retries (persisted ingest_queue.attempts, migration 008, skein-zx15) ----
 
     @Test
     fun `a document failing a mandatory step stays queued for two runs and is dropped on the third, without content`() =
         runTest {
-            // Arrange — one attempts counter shared by every run, as the scheduler holds it.
+            // Arrange — every pipeline() call shares the same repository, so
+            // the persisted attempts counter (not an in-memory object this
+            // test has to thread through) is what carries the count across
+            // the three separate `run()` calls below.
             val h = Harness()
             val poisoned = h.note("Poisoned", "Body with secret details.")
-            val attempts = IngestAttempts()
             val warnings = mutableListOf<String>()
 
-            fun pipeline() =
-                h.pipeline(
-                    links = { throw IllegalStateException("boom") },
-                    attempts = attempts,
-                    warn = { warnings += it },
-                )
+            fun pipeline() = h.pipeline(links = { throw IllegalStateException("boom") }, warn = { warnings += it })
             // Act
             pipeline().run()
             pipeline().run()
@@ -389,12 +386,11 @@ class IngestPipelineTest {
         }
 
     @Test
-    fun `a successful ingest resets the document's failure count`() =
+    fun `a successful ingest resets the document's persisted failure count`() =
         runTest {
             // Arrange — fail twice, succeed once, then fail twice more after an edit re-queues the note.
             val h = Harness()
             val doc = h.note("Flaky", "Body.")
-            val attempts = IngestAttempts()
             var fail = true
 
             fun pipeline() =
@@ -403,7 +399,6 @@ class IngestPipelineTest {
                         if (fail) throw IllegalStateException("boom")
                         h.realLinks.link(document)
                     },
-                    attempts = attempts,
                 )
             pipeline().run()
             pipeline().run()
@@ -415,8 +410,104 @@ class IngestPipelineTest {
             pipeline().run()
             pipeline().run()
             // Assert
-            assertThat(h.repository.peekIngestQueue().map { it.docId }).containsExactly(doc.id)
-            assertThat(attempts.failures(doc.id)).isEqualTo(2)
+            val queued = h.repository.peekIngestQueue()
+            assertThat(queued.map { it.docId }).containsExactly(doc.id)
+            assertThat(queued.single().attempts).isEqualTo(2)
+        }
+
+    @Test
+    fun `the persisted failure count survives a fresh IngestPipeline instance sharing the same repository`() =
+        runTest {
+            // Proves the counter is no longer the pipeline-local IngestAttempts
+            // object skein-7v3 shipped as a stand-in: a *different*
+            // IngestPipeline built straight from IngestPipeline's own
+            // constructor (bypassing the Harness factory that used to thread
+            // a shared IngestAttempts through) still sees the prior failures.
+            val h = Harness()
+            h.note("Poisoned", "Body.")
+            val failingLinks = LinkStep { throw IllegalStateException("boom") }
+
+            fun freshPipeline() =
+                IngestPipeline(
+                    repository = h.repository,
+                    chunker = Chunker(ApproximateTokenizer),
+                    steps = IngestSteps(h.index),
+                    links = failingLinks,
+                )
+            freshPipeline().run()
+            freshPipeline().run()
+
+            val third = freshPipeline().run()
+
+            assertThat(third).isEqualTo(IngestOutcome.Drained(0, 0))
+            assertThat(h.repository.peekIngestQueue()).isEmpty()
+        }
+
+    // ---- revision hash + byte-offset stamping (migration 003 + 008, skein-zx15 / skein-s9hm) ----
+
+    @Test
+    fun `ingest stamps chunks_revision_hash equal to the repository's current revision for the document`() =
+        runTest {
+            val h = Harness()
+            val doc = h.note("Revisioned", "Some body text for revision stamping.")
+
+            h.pipeline().run()
+
+            val expected = h.repository.currentRevision(doc.id)?.revisionHash
+            assertThat(expected).isNotNull()
+            val chunkIds = h.index.chunksForDocs(setOf(doc.id), limitPerDoc = 10).map { it.id }
+            assertThat(chunkIds).isNotEmpty()
+            for (id in chunkIds) assertThat(h.index.revisionHashOf(id)).isEqualTo(expected)
+        }
+
+    @Test
+    fun `re-ingesting an unchanged document is idempotent — same revision hash, single revision row`() =
+        runTest {
+            val h = Harness()
+            val doc = h.note("Stable", "Unchanging body text.")
+
+            h.pipeline().run()
+            val firstHash = h.repository.currentRevision(doc.id)?.revisionHash
+            val firstChunkIds =
+                h.index
+                    .chunksForDocs(setOf(doc.id), limitPerDoc = 10)
+                    .map { it.id }
+                    .toSet()
+
+            // Re-queue the same, unchanged content and ingest again.
+            h.repository.forceQueue(IngestItem(doc.id, us.aherrera.skein.core.model.IngestReason.UPDATED, 999_999L))
+            h.pipeline().run()
+
+            val secondHash = h.repository.currentRevision(doc.id)?.revisionHash
+            val secondChunkIds = h.index.chunksForDocs(setOf(doc.id), limitPerDoc = 10).map { it.id }
+            assertThat(secondHash).isEqualTo(firstHash)
+            for (id in secondChunkIds) assertThat(h.index.revisionHashOf(id)).isEqualTo(firstHash)
+            // replaceChunks always deletes+reinserts, so ids may differ, but
+            // there is still exactly one row per original chunk.
+            assertThat(secondChunkIds).hasSize(firstChunkIds.size)
+        }
+
+    @Test
+    fun `chunk byte offsets are UTF-8, not UTF-16 char offsets, for a multi-byte body`() =
+        runTest {
+            val h = Harness()
+            // "café — 日本" — é is 2 UTF-8 bytes vs 1 char; the em dash is 3
+            // bytes vs 1 char; each CJK character is 3 bytes vs 1 char. The
+            // whole line's UTF-8 byte length exceeds its UTF-16 char length,
+            // so a correct byte_end must differ from the char end skein-s9hm
+            // flagged core/rag's `Chunk.end` as being.
+            val body = "café — 日本"
+            val doc = h.note("Multibyte", body)
+
+            h.pipeline().run()
+
+            val chunk = h.index.chunksForDocs(setOf(doc.id), limitPerDoc = 10).single()
+            val range = h.index.byteRangeOf(chunk.id)
+            assertThat(range).isNotNull()
+            val (byteStart, byteEnd) = requireNotNull(range)
+            assertThat(byteStart).isEqualTo(0)
+            assertThat(byteEnd).isEqualTo(body.toByteArray(Charsets.UTF_8).size)
+            assertThat(byteEnd).isNotEqualTo(body.length)
         }
 
     @Test
@@ -600,7 +691,6 @@ class IngestPipelineTest {
             embedder: EmbedderService? = null,
             links: LinkStep = realLinks,
             entities: EntityStep? = null,
-            attempts: IngestAttempts = IngestAttempts(),
             pace: () -> IngestPace = { IngestPace.FULL },
             warn: (String) -> Unit = {},
         ): IngestPipeline =
@@ -610,7 +700,6 @@ class IngestPipelineTest {
                 steps = IngestSteps(index, embedder, warn),
                 links = links,
                 entities = entities,
-                attempts = attempts,
                 pace = pace,
                 warn = warn,
             )

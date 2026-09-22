@@ -66,6 +66,7 @@ import us.aherrera.skein.core.model.Entity
 import us.aherrera.skein.core.model.IndexChange
 import us.aherrera.skein.core.model.IndexStore
 import us.aherrera.skein.core.model.NewChunk
+import us.aherrera.skein.core.model.RevisionHash
 import us.aherrera.skein.core.model.ScoredChunk
 
 public class IndexStoreImpl(
@@ -111,6 +112,7 @@ public class IndexStoreImpl(
         chunks: List<NewChunk>,
         embedderId: String,
         embedderVersion: Int,
+        revisionHash: RevisionHash?,
     ): List<ChunkId> =
         mutex.withLock {
             transaction {
@@ -130,6 +132,11 @@ public class IndexStoreImpl(
                             stmt.bindLong(4, c.tokenCount.toLong())
                             stmt.bindText(5, embedderId)
                             stmt.bindLong(6, embedderVersion.toLong())
+                            if (revisionHash == null) stmt.bindNull(7) else stmt.bindText(7, revisionHash)
+                            val byteStart = c.byteStart
+                            val byteEnd = c.byteEnd
+                            if (byteStart == null) stmt.bindNull(8) else stmt.bindLong(8, byteStart.toLong())
+                            if (byteEnd == null) stmt.bindNull(9) else stmt.bindLong(9, byteEnd.toLong())
                             check(stmt.step()) {
                                 "INSERT ... RETURNING id yielded no row for doc chunk"
                             }

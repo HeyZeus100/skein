@@ -71,7 +71,9 @@ Indexes: `documents_updated` (by `updated_at` DESC), `documents_persona` (by `pe
 | `token_count` | INTEGER | Cached token count (model-dependent) |
 | `embedder_id` | TEXT | Model ID that produced the embedding |
 | `embedder_version` | INTEGER | Embedder version (for cache invalidation) |
-| `revision_hash` | TEXT | **[v1 design, in progress]** Added by migration 003: the `document_revisions.revision_hash` this chunk was cut from, so retrieval can emit a `(revision_hash, locator)` citation tuple without re-hashing the document. Carries no foreign key — see migration 003's header for why. Populated by the retrieval/ingest pipeline (plan `E5.I13`), not yet written by shipped code. |
+| `revision_hash` | TEXT | Added by migration 003: the `document_revisions.revision_hash` this chunk was cut from, so retrieval can emit a `(revision_hash, locator)` citation tuple without re-hashing the document. Carries no foreign key — see migration 003's header for why. **[shipped]** as of migration 008 (`skein-zx15`): `IngestSteps.indexLexical` stamps it from `VaultRepository.currentRevision(docId)?.revisionHash` on every ingest pass. |
+| `byte_start` | INTEGER | **[shipped]** Added by migration 008 (`skein-zx15`, folding in `skein-s9hm`): the chunk's UTF-8 byte offset into `documents.body_md`, derived from `core/rag`'s `Chunk.start` (a UTF-16 **char** offset, which disagrees with the byte offset for any non-ASCII body). Nullable — null exactly when `byte_end` is. |
+| `byte_end` | INTEGER | **[shipped]** Added by migration 008; the matching UTF-8 byte offset for `Chunk.end`. `[byte_start, byte_end)` is the byte-anchored locator range `docs/design/POST_REVIEW_RESOLUTIONS.md` §1.3 describes. |
 
 Indexes: `chunks_doc` (by `doc_id`), `idx_chunks_revision` (by `revision_hash`).
 
@@ -151,6 +153,7 @@ Primary key: `(document_id, revision_hash)` — the hash *is* the content addres
 | `doc_id` | TEXT PRIMARY KEY REFERENCES documents(id) ON DELETE CASCADE | Document pending re-index |
 | `reason` | TEXT | Why it was queued (`created`, `updated`, etc.) |
 | `queued_at` | INTEGER | Unix milliseconds since epoch |
+| `attempts` | INTEGER NOT NULL DEFAULT 0 | **[shipped]** Added by migration 008 (`skein-zx15`): consecutive mandatory-step (lexical/link) ingest failures, via `VaultRepository.recordIngestFailure`. `IngestPipeline` drops the entry after the 3rd. Every `INSERT OR REPLACE` into this table (the `documents_ai_ingest`/`documents_au_ingest` triggers, `ENQUEUE_REEMBED_ALL`) resets it to 0 — a fresh queue entry gets a fresh retry budget. |
 
 #### `edges` (wikilinks, tags, entity graph)
 
@@ -466,24 +469,27 @@ Fields:
 001_initial.sql
 003_document_revisions.sql
 007_drop_attachment_master_key.sql
+008_ingest_attempts.sql
 ```
 
 Each migration is a file named `NNN_<description>.sql` where `NNN` is a zero-padded integer (001, 002, etc.). Migrations are applied in INDEX.txt order (sorted numerically by `NNN`, not by manifest line order). Statements within a migration are separated by the `--;` sentinel at end-of-line (not a bare `;`, which also terminates inner statements inside multi-line trigger bodies); comment lines (`--`) and blank lines are ignored.
 
 ### Current migrations
 
-**[shipped]** Three migrations exist:
+**[shipped]** Four migrations exist:
 
 - `001_initial.sql` — v1 schema (see section 2)
 - `003_document_revisions.sql` — adds `document_revisions` and `chunks.revision_hash` for citation stability across re-ingestion (`skein-uo5n`, design `docs/design/POST_REVIEW_RESOLUTIONS.md` §1.3; see section 2's `document_revisions` entry above)
 - `007_drop_attachment_master_key.sql` — drops the vestigial `attachment_master_key` table and the never-populated `attachment_keys` table (`skein-7d0l`; see section 2's `attachment_master_key` entry above). `PRAGMA user_version` reaches 7, not 2, because migration numbers 002 and 004–006 are reserved by landed plan/design docs and an open bead (`skein-voys`) for not-yet-landed migrations (`002_attestation_status`, `004_post_mmap_blake3`, `005_export_stages`, `006_recovery_drafts`) and taking one of them here would collide when those land.
+- `008_ingest_attempts.sql` — adds `ingest_queue.attempts` (the persisted E5.I10 bounded-retry counter) and `chunks.byte_start`/`chunks.byte_end` (the UTF-8 byte offsets `skein-s9hm` flagged as missing from 003) — `skein-zx15`. This is the v1 plan's own `E5.I10` migration, originally slotted as `003_ingest_attempts.sql`; `skein-voys` tracked the renumbering once `skein-uo5n` took 003 for `document_revisions` first, and 008 is the first number free of every other reservation above.
 
-Migrations apply in ascending numeric order, so on a fresh database 003 runs before 007; a device that installed at v1 runs 003 then 007 and reaches the same schema. Future migrations are tracked in the plan and design docs; 002 and 004–006 above are reserved but not yet in-tree.
+Migrations apply in ascending numeric order, so on a fresh database 003 runs before 007 and 008; a device that installed at v1 runs 003, then 007, then 008, and reaches the same schema. Future migrations are tracked in the plan and design docs; 002 and 004–006 above are reserved but not yet in-tree.
 
 ### Migration changelog
 
 - **003** (`skein-uo5n`) — adds `document_revisions` (content-addressed body/frontmatter snapshots) and the `chunks.revision_hash` reverse pointer; changes the *meaning* of `documents.content_hash` for non-attachment documents to the BLAKE3-256 revision hash, and the *shape* of `messages.retrieved_chunks` to citation-record-v1 (the legacy bare-chunk-id array stays readable as `record_version: 0`). No column is dropped and no 001 DDL is edited.
 - **007** (`skein-7d0l`) — drops `attachment_master_key` and `attachment_keys` (superseded by the `keys/key-envelope.v1` file and `FileAttachmentStore`'s per-write HKDF derivation, respectively; neither table was ever populated by shipped code).
+- **008** (`skein-zx15`) — adds `ingest_queue.attempts NOT NULL DEFAULT 0` (`IngestPipeline`'s bounded-retry counter, previously an in-memory `IngestAttempts` stand-in that reset on every lock/unlock) and the nullable `chunks.byte_start`/`chunks.byte_end` (populated by `IngestSteps.indexLexical` from `core/rag`'s `Chunk.start`/`Chunk.end` UTF-16 char offsets, converted to UTF-8 byte offsets). No column is dropped and no 001/003/007 DDL is edited.
 
 ### Migration safety
 

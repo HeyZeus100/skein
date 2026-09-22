@@ -3483,7 +3483,9 @@ deps: E5.I3, E5.I5, E5.I6, E5.I7, E5.I8, E5.I9, E4.I9, E2.I4, E3.I3b
 - [ ] New invariant/regression tests from `LOCK_POLICY_INDEXING.md` §6.1/§6.3 pass: `WorkManagerNeverEnqueuesWhileLockedTest` (no `skein-ingest` work is ever `ENQUEUED`/`RUNNING` while `phase == LOCKED`, including a `documents.updated_at` trigger firing while locked) and `LockDuringIngestBatchTest` (a real ingest batch against `:embedder`, `lock(USER_REQUESTED)` mid-batch, `onSessionLocking` observed within ~50 ms, batch completes within budget or is cancelled with fds closed)
 
 **Files:**
-- Create: `core/rag/src/main/kotlin/us/aherrera/skein/rag/ingest/{IngestWorker,IngestPipeline,IngestScheduler}.kt`, `core/vault/src/main/resources/migrations/003_ingest_attempts.sql`, `core/rag/src/test/kotlin/.../IngestPipelineTest.kt` (fakes), `core/rag/src/androidTest/.../IngestWorkerTest.kt`
+- Create: `core/rag/src/main/kotlin/us/aherrera/skein/rag/ingest/{IngestWorker,IngestPipeline,IngestScheduler}.kt`, `core/vault/src/main/resources/migrations/008_ingest_attempts.sql`, `core/rag/src/test/kotlin/.../IngestPipelineTest.kt` (fakes), `core/rag/src/androidTest/.../IngestWorkerTest.kt`
+
+**Coordinator decision, 2026-09-21 (`skein-voys`):** this item's own migration file, listed above, moves from `003_ingest_attempts.sql` to `008_ingest_attempts.sql`. `skein-uo5n` landed `003_document_revisions.sql` (`POST_REVIEW_RESOLUTIONS.md` §1.3) first and took `003`; 002 and 004–006 are reserved (see `007_drop_attachment_master_key.sql`'s own header and `E3.I3a`'s `006_recovery_drafts.sql` decision above) and 007 is already landed, so 008 is the next free number. `skein-zx15` landed the migration under this new name and closed `skein-voys`.
 
 **Interfaces:**
 - Produces: `IngestScheduler.schedulePeriodic()`, `IngestScheduler.indexNow()`, `IngestProgress: StateFlow<Progress>`

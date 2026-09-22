@@ -33,7 +33,7 @@ class MigratorTest {
     }
 
     @Test
-    fun `main migrations index lists exactly 001_initial, 003_document_revisions and 007_drop_attachment_master_key`() {
+    fun `main migrations index lists exactly 001, 003, 007 and 008`() {
         // Exercises the real production manifest shipped in
         // src/main/resources/migrations/INDEX.txt against the default
         // constructor overload.
@@ -49,6 +49,7 @@ class MigratorTest {
             "001_initial.sql",
             "003_document_revisions.sql",
             "007_drop_attachment_master_key.sql",
+            "008_ingest_attempts.sql",
         )
         // migrator itself isn't exercised beyond construction here — the
         // functional discover-then-apply path is covered on-device.

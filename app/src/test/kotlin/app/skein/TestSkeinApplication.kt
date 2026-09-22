@@ -108,7 +108,7 @@ class TestSkeinApplication : SkeinApplication() {
                     object : IngestPacer {
                         override fun pace(): IngestPace = IngestPace.FULL
                     },
-                pipelines = { session, attempts, pace -> IngestPipelines.forSession(session, pace, attempts) },
+                pipelines = { session, pace -> IngestPipelines.forSession(session, pace) },
                 scope = scope,
             ).also { it.start() }
         return VaultServices(keyProvider, unlockManager, bootstrap, ingest, vaultReset)
