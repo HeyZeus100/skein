@@ -22,6 +22,7 @@ An offline-first personal knowledge system with an on-device LLM as its interfac
 
 ## Where things live
 
+- **Architecture:** [`docs/ARCHITECTURE.md`](docs/ARCHITECTURE.md) — module map, process topology, startup sequence, and conventions; read this first
 - **Changelog:** [`CHANGELOG.md`](CHANGELOG.md) — release history and unreleased changes (Keep A Changelog format)
 - **Design spec:** `docs/superpowers/specs/2026-09-19-skein-design.md`
 - **Implementation plan:** `docs/superpowers/plans/` *(generation in progress)*

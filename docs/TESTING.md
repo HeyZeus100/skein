@@ -1,7 +1,8 @@
 # Testing (E10.I1)
 
 Skein's tests run in three tiers. This doc explains each one, when to use
-it, and where its shared utilities live.
+it, and where its shared utilities live. For the module map and dependency
+guards this doc's module list assumes, see `docs/ARCHITECTURE.md`.
 
 ## The three lanes
 
