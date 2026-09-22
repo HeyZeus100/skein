@@ -1,6 +1,6 @@
 # Skein v1 — Autonomous Completion Handoff
 
-**Status:** Working document, updated 2026-09-20 · `main` at commit `760d8ee`
+**Status:** Working document, updated 2026-09-22 · `main` at commit `ad98b7b` (local; `origin/main` is `c94e1c4` — the skein-nxk merge is not pushed yet, see §2.0)
 **Purpose:** Everything a coordinator (human or agent) needs to spin up an autonomous multi-agent loop that drives Skein v1 to shippable release. Written so a fresh Claude session with no prior context can pick this up and execute.
 **Authority:** Advisory + operational. Non-negotiables in §3 override anything below.
 
@@ -8,18 +8,19 @@
 
 ## 0. TL;DR for a fresh session
 
-You are the coordinator for the Skein Android app. Skein is a private, on-device, GrapheneOS-first personal knowledge system with an on-device LLM. It is ~25% complete by shipping functionality; substrate + design is ~85% done. The remaining 75% is Kotlin/JNI/Compose implementation against designs that already exist.
+You are the coordinator for the Skein Android app — a private, on-device, GrapheneOS-first personal knowledge system with an on-device LLM. **The substrate is largely built; the user loop is not.** The vault, editor, ingest, retrieval, prompt assembly, citation records, export engine, AIDL contract, JNI layer and the isolated inference service all exist on `main` with tests. What does not exist is the path a user actually walks: no chat surface, no app-side engine client binding the service, no model import UI, no inline-AI/approve step. Read the seven-step table in §2.1 before believing any other status statement in this repository.
 
 To continue, in this order:
 
 1. Read this file.
-2. Read `docs/superpowers/specs/2026-09-19-skein-design.md` (approved spec — authoritative).
-3. Read `docs/superpowers/plans/2026-09-19-skein-v1-plan.md` (implementation plan; 167 issues).
-4. Read `docs/design/POST_REVIEW_RESOLUTIONS.md` (architecture for the 4 hardest subsystems).
-5. Read `docs/Handoffs/skein-fold-m0-hardware-handoff.md` (Fold lab operational state).
-6. Run `bd prime` then `bd ready --limit 30` to see the queue.
-7. Never touch the Fold except through the dedicated hardware-runner agent (§7.4).
-8. Use worktree-isolated dispatch (§6.2) and follow the merge protocol (§6.4).
+2. Read `docs/ARCHITECTURE.md` (module map, process topology, startup sequence — re-verified at `ad98b7b`).
+3. Run `bd prime`, then `bd ready`, to see the queue; §8 says which of it to take.
+4. Read `docs/superpowers/specs/2026-09-19-skein-design.md` (approved spec) and `docs/superpowers/plans/2026-09-19-skein-v1-plan.md` (implementation plan) when an issue points you at a section — both are authoritative, and several plan sections carry dated coordinator amendments that win over the original text.
+5. Read `docs/design/POST_REVIEW_RESOLUTIONS.md` for the four hardest subsystems (citations, model verification, Binder, export).
+6. Never touch the Fold except through the dedicated hardware-runner agent (§7.4 / §4.10).
+7. Use worktree-isolated dispatch (§6.2) and the merge protocol (§6.4).
+
+Do **not** treat §2 of any earlier revision of this handoff, or any "planned"/"stub"/"not yet landed" label dated before `ad98b7b`, as current — the 2026-09-20 inventory said the vault schema, key management, JNI, AIDL and inference service were "completely absent"; all of them have since landed.
 
 The definition of done for v1 is the seven-step loop from spec §11 executed once on-device with real data:
 
@@ -70,166 +71,63 @@ Never drift into these under any autonomous decision-making:
 
 ---
 
-## 2. Current State (2026-09-20, main @ 760d8ee)
+## 2. Current State (2026-09-22, main @ ad98b7b)
 
-### 2.1 By raw metrics
+### 2.0 Read this first — repository state the tree cannot tell you
 
-- ~60 bd issues closed
-- ~140 bd issues open (implementation + v2/v3 vision + some duplicates)
-- ~80 commits on `main`
-- ~250–400 agent-hours consumed (Sonnet + Opus + Haiku + Fable)
-- ~85% design complete, ~30% code complete, ~15% end-to-end-usable complete
-- Fable's original v1 estimate: 1,148 agent-hours. Estimated remaining: **235–360 agent-hours**.
+- `main` is **one merge ahead of `origin/main`**: `ad98b7b` (skein-nxk, the inference service) is verified locally (full native build, both isolation guards, `jni-symbols.sh`, `no-content-logging.sh`, manifest audit — all green) but **not pushed**; `origin/main` is `c94e1c4`. The main checkout also carries one **uncommitted** file the nxk merge needs to compile its instrumented tests: `core/inference/src/androidTest/kotlin/app/skein/core/inference/models/ImmutableModelStoreInstrumentedTest.kt` (the `LoadPhaseHook.afterPreMmapVerify` override re-typed from `ManifestBinding` to `VerifyBinding`). Commit that fix, check CI, then push — in that order. A stray untracked `Untitled/` directory (an empty `.git`, not ours) can be deleted.
+- The API **weekly limit** was hit on 2026-09-22 (resets 2026-09-27 18:00 America/Los_Angeles). Every subagent in flight was terminated; three left uncommitted work in their worktrees (§2.3). Until the reset, work is coordinator-only.
+- CI on `main` was red on **every push from 2026-09-20 until 2026-09-21 ~20:00 PT** and nobody noticed for a day because local verification was green: a missing Linux `aapt2` checksum in `gradle/verification-metadata.xml` (fixed at `f0bba85`; bd memory `verification-metadata-linux-classifier`), then one Compose test's 5 s ceiling on the 2-core runner (fixed at `9812787`). Later runs were cancelled by successive pushes; **no run on `main` has yet been observed green end to end.** Run `gh run list --branch main --limit 5` before dispatching anything (§4.9).
+- `bd stats`: 181 closed / 337 total, 94 ready. 317 commits on `main`.
+- The M0.5 gate review (`skein-pe3`) is complete — 18 findings, no P0, five P1 (three fixed in-bead by skein-nxk, one by skein-va7y, one re-scoped as skein-w2vj) — and **awaits the owner's sign-off**; the bead is `in_progress` with `needs-human-review`.
 
-### 2.2 What SHIPS today (verified by inspection of `main`)
+### 2.1 The seven-step loop — what actually runs
 
-**Foundations**
-- Gradle 21-module scaffold (`:app`, 9 `:core:*`, 2 isolated services, 10 `:feature:*`, `:testing`)
-- Version catalog pinned; `gradle/verification-metadata.xml` covers 1130 SHA-256-verified artifacts
-- CI (unit + lint + assemble on every push/PR, ~5.5 min), DCO check, dependency review, Dependabot (gradle + actions, weekly), reproducible-build workflow on release tags
-- Build guards (module isolation, INTERNET/GMS denylist, license audit) — `checkManifestGuards` proved value by rejecting ONNX Runtime 1.29 for adding INTERNET
-- `foss` flavor arm64-v8a only; `dev` flavor adds x86_64 for emulator
+| Step | State | Evidence on `main` (confirm before trusting) |
+|---|---|---|
+| Unlock | **Shipped** | `core/vault/.../session/UnlockManager.kt`, `app/.../vault/{VaultBootstrap,DeviceVaultOpener}.kt`, `feature/shell/.../auth/{VaultSetupScreen,BiometricUnlockScreen,VaultResetScreen}.kt`; StrongBox-backed `VaultKeyProviderImpl`; passphrase export/import (skein-v9g); reset (skein-v3wb). `needs-human-review` flags remain on v3wb (affordance placement) and v9g (PBKDF2-over-Argon2id, UX copy). |
+| Write | **Shipped** | `feature/editor` (21 files): `SkeinEditor` live preview, autosave, `[[` wikilink autocomplete, frontmatter chip, `NoteTab`, `BacklinksDrawer`; the timeline and graph screens are real too. |
+| Import | **Partial** | Engine landed: `ImportServiceImpl` handles text/Markdown/code/PDF (skein-qdo) and never overwrites by frontmatter id (skein-ddpt). **No UI calls it yet** — no import screen or share-target receiver is wired; image/vision ingest does not exist; `feature/onboarding` is still `Placeholder.kt`. |
+| Index | **Partial** | `IngestWorker`/`IngestScheduler` (skein-7v3) populate FTS and wikilink/tag edges during unlocked sessions; migration 008 stamps `chunks.revision_hash` + UTF-8 byte offsets and persists `ingest_attempts` (skein-zx15); `documentRevisions_gc` runs once per unlock (skein-a2yr). **Vectors stay "pending"** — the real `EmbedderService` is not wired (skein-hwsa, blocked on skein-079 / skein-lbw). |
+| Ask | **Missing** | `feature/chat` is `Placeholder.kt`. `inference-service/.../InferenceService.kt` **is implemented** (skein-nxk: `IsolatedSessionGate` on every entry point, pinned-fd verification, `loadModelFromFd`, segmented tokenization that never parses specials in content, streaming with backpressure, cancel, OOM handling; 157 JVM tests) and **is not bound from `:app`** — no `LlamaCppEngine`/`ModelManager` client exists (skein-1uw / skein-cyq). `RetrievalServiceImpl`, `PromptAssemblerImpl` and `ContextBudget` exist and are exercised only by tests. |
+| Cite | **Partial** | Schema and types are complete: migration 003 `document_revisions` + `citation-record-v1` (skein-uo5n), read-side `Chunk`/`Retrieved.locator` with the CRLF remap (skein-g32i), `CitationParser` + `CitationRecords` (skein-n5q). **No citation UI**, and nothing produces chat turns yet. |
+| Approve | **Missing** | No inline-AI selection menu, slash commands or approve-diff in the editor; `:core:agent`'s `AuthorizationToken` primitives are interface-only. |
+| Export | **Partial** | `ExportServiceImpl` (Markdown, zip, DOCX, PDF), "Share as text" / "Save as…" UI (skein-fay), `VaultDocumentsProvider`, and the staged-plaintext lifetime — migration 005 `export_stages`, `StagedPlaintextSweeper`, `BootReceiver`, on-lock sweep (skein-0m1z). PDF export does not yet record a stage row (skein-efwt), so the 10-minute bound is not live, and the outbound share-sheet loop is not closed end to end. |
 
-**Native vault backend**
-- `libskein_sqlite.so` — SQLCipher 4.17.0 + OpenSSL 3.5.4 (static) + sqlite-vec v0.1.9 + FTS5
-- 6.6 MB stripped arm64-v8a; byte-identical rebuilds; ELF NEEDED lists only `liblog libandroid libm libdl libc` (no runtime `libcrypto.so`)
-- Integrity: `SHA256SUMS.txt` in-tree, CMake `FATAL_ERROR` on hash drift, `reproducible-build.yml` regenerates + diffs on release tags
-- Amalgamation-committed policy locked in `docs/design/AMALGAMATION_POLICY.md`
+Cross-cutting substrate that is done and must not be re-dispatched: `libskein_sqlite.so` (SQLCipher + sqlite-vec + FTS5, reproducible); `libskein_llama.so` (llama.cpp v0.4.1 + Vulkan, reproducible after skein-ylux's pinned fix for an NDK `glslc` miscompile; 24-symbol JNI surface, skein-3aw); `:core:ipc` AIDL v2 + `TransportRules` (skein-mfw / skein-nxk); `:core:verify` (`ModelVerifier`, `PinnedModelFile`, shared by `:app` and both isolated processes); `ModelManifest` v2 schema/parser/CI validator (skein-3v9); `ImmutableModelStore`; `PromptGuard`; `ThermalGovernor`; tokenizers, chunker and PPR ranking; the two-runner reproducible-build workflow and `tools/rb/*` (skein-ddp); `contractReport`; the consolidated `:testing` fakes and builders.
 
-**UI shell (no live content yet)**
-- Compose theme + IBM Plex Mono + terminal/editor aesthetic + WCAG AAA contrast
-- Adaptive layout: fold posture detection, dual-pane on unfolded, icon rail, timeline collapse, split coordinator
-- Tab system: preview/pinned semantics (Cursor-style), Recent dropdown on folded phone
-- Nav drawer + hamburger + command bar (with SecureTextField, from skein-yb3m)
-- Settings screen with Security/Models/Vault/About sections
-- About screen with license list (LicensesRepository reads `licenses.json`, groups by SPDX)
-- MainActivity + SKEIN_SHELL_ROOT test tag; FLAG_SECURE runtime toggle
+### 2.2 Already merged — delete the worktree and the `claude/agent-*` branch; do not cherry-pick
 
-**Security substrate**
-- Manifest baseline: `allowBackup=true` scoped by `dataExtractionRules`; `fullBackupContent=@xml/backup_rules_legacy` (API 30 path); `hasFragileUserData`; `ProfileInstallReceiver` removed
-- Data extraction exclusions cover `vault.db*`, `attachments/`, `models/`, `cache/staging_export/`, `keys/`, sensitive shared prefs
-- FLAG_SECURE-on-default + notification `VISIBILITY_SECRET` helper + recents `setTaskDescription` stub (API 33 guarded)
-- SecureTextField primitive (`InterceptPlatformTextInput` + `IME_FLAG_NO_PERSONALIZED_LEARNING` + `TYPE_TEXT_FLAG_NO_SUGGESTIONS`)
-- `RawTextFieldTest` source-scan enforces SecureTextField at every call site
+Every commit below is an ancestor of `ad98b7b` (`git merge-base --is-ancestor <sha> HEAD`). Worktrees live under `/private/tmp/claude-501/-Users-andrewherrera/2a94e1c2-1397-433c-b622-a3763240b60e/scratchpad/worktrees/`; their gitdirs under `/Users/andrewherrera/skein/.git/worktrees/`. Remove with `git worktree remove --force <path>` from the main checkout (an `rm -rf` alone strands the gitdir), then delete the topic branch locally and on origin if it still exists.
 
-**Markdown**
-- `:core:markdown` AST with GFM + first-class wikilinks (`org.jetbrains:markdown` under the hood, wrapped)
-- Compose `AnnotatedString` renderer
-- 38 unit tests; 200KB perf smoke
+| Bead | Topic commit | Merge on `main` | Worktree |
+|---|---|---|---|
+| skein-a2yr revision GC + chat-snapshot bound | `504bef6` | `6042328` | `agent-a19ed0eaf0351252f` |
+| skein-ylux `libskein_llama.so` determinism (NDK `glslc` miscompile; pinned shader patch) | `56ce51c` | `05bc17b` | `agent-ae4ceb02af18cd84b` |
+| skein-ddpt import must not overwrite by UUID | `590be04` | `3592e8a` | `agent-a2ef4dca71c364020` |
+| skein-va7y `lock()` always zeroizes | `6ececba` | `3d7f68f` | `agent-a362e017d435bf526` |
+| skein-zh7o SYSTEM history rendered as data | `6b7b8dd` | `544b99b` | `agent-ad11841ef6af3a1b4` |
+| skein-fsn notifications | `83b4092` (Sonnet takeover; its history also contains the Haiku commit `e7f992c`, whose production code was reviewed unchanged and whose claimed tests never existed) | `c94e1c4` | `agent-a87bdf96b68a09598` and `agent-a10c5d97b52fe7c28` |
+| skein-ddp reproducible builds | `2a49b7b` | `0be4b5c` | `agent-a5bbd8b65c4e8c25a` |
+| skein-nxk `:inference` service + `:core:verify` | `c95f726` (+ `658dda1`) | `ad98b7b` — **not yet pushed** | `agent-a7ea8995bc2f98dcf` |
 
-**ONNX Runtime**
-- Wired into `:embedder-service` (`onnxruntime-android 1.27.0`, MIT)
-- `OnnxSession` wrapper isolates ONNX types from callers
-- Smoke test with a bundled 1×1 identity model
-- ONNX 1.29 explicitly blocked (vendor added INTERNET permission)
+Every other directory under `worktrees/` belongs to an earlier, already-merged bead; apply the same ancestor test before deleting it.
 
-**Test infrastructure**
-- `:testing` pure Kotlin JVM module (added to `PURE_JVM_MODULES` isolation-guard allowlist)
-- 6 interface fakes for plan §4 contracts (Inference/Vault/Index/Retrieval/Persona/Embedder) — scaffold only
-- JVM / Robolectric (SDK 34 per bd memory) / instrumented tier structure
-- `docs/TESTING.md` documents tier + how to run
-- `RawTextFieldTest` in `:testing`
+### 2.3 Uncommitted, not on `main` — replay onto current `main`; do not merge the stale branch
 
-**Design substrate**
-- Spec: `docs/superpowers/specs/2026-09-19-skein-design.md` (post-review resolutions applied)
-- Plan: `docs/superpowers/plans/2026-09-19-skein-v1-plan.md` (1148 hours, 167 issues, 6 milestones)
-- Roadmap: `docs/ROADMAP.md`
-- Artifact Engine v2 sketch: `docs/design/ARTIFACT_ENGINE.md`
-- Post-review architectural decisions: `docs/design/POST_REVIEW_RESOLUTIONS.md` (citation stability, model verification, Binder contracts, export flow)
-- Vault tool primitives: `docs/design/VAULT_TOOL_PRIMITIVES.md` + `:core:agent` interfaces (`VaultReader/Writer/Patcher/Search/Links/Tags/Personas`, `AuthorizationToken`, `RevisionConflict`)
-- Amalgamation policy: `docs/design/AMALGAMATION_POLICY.md`
-- Skill guardrails: `docs/design/SKILL_GUARDRAILS.md`
+| Bead | Worktree | Base | What is there | Disposition |
+|---|---|---|---|---|
+| skein-p8rn Migrator applied-migrations ledger | `agent-adb5c4627bac86c44` | `220dd9c` | Modified `core/vault/.../db/migrations/Migrator.kt`, `MigratorTest.kt`, `MigratorInstrumentedTest.kt`, `005_export_stages.sql` (header), `docs/VAULT_FORMAT.md`. **No commit.** No applied-migrations ledger exists on `main`; a DB already at `user_version` 8 silently never receives a gap-filling reserved migration (005 today; 002/004/006 later). | Read the diff; replay onto current `main` (which now has 008 and skein-a2yr's repository changes); verify per the bead's ACs; or discard and re-dispatch after the limit resets. |
+| skein-3yal `onError` / diagnostic sanitization | `agent-afaa68822117effd9` | `05bc17b` | Modified `core/ipc/.../ErrorCodes.kt` + `ErrorMappingTest.kt`, `core/model/.../Inference.kt`, `app/.../system/AndroidSkeinLogSink.kt`; new `core/model/.../DiagnosticSanitizationTest.kt`, `app/.../system/AndroidSkeinLogSinkTest.kt`. **No commit.** `sanitizeDiagnostic` is not on `main`. | This is the fix that keeps a compromised isolated process from injecting arbitrary text into logcat/UI through `onError(message)` (review finding, P2). Replay onto current `main` — skein-nxk has since added `ErrorCodes.asServiceFailure/codeOf` in the same file — verify, commit. |
+| skein-mzm5 reentrant transactions in the in-memory fake | `agent-a3fe26b001f8786e1` | `6042328` | Modified `testing/.../InMemoryVaultRepository.kt` and `VaultRepositoryContractTest.kt` — the agent was **mid-refactor** (replacing `writeLock.withLock` sites with a `writeTx`) when the limit hit; almost certainly does not compile. | Read the diff before deciding; the new contract-test cases may be worth keeping, the half-done fake edit probably not. Discarding and re-dispatching is acceptable. |
 
-**Docs on `main`**
-- `README.md`, `LICENSE` (Apache 2.0), `NOTICE` (11 SPDX-tagged third-party attributions)
-- `CONTRIBUTING.md` (DCO + bd workflow), `GOVERNANCE.md` (BDFL year 1), `CODE_OF_CONDUCT.md`, `SECURITY.md`
-- `PRIVACY.md` (400 lines, 11 sections, every claim tagged `[shipped]` / `[v1 design]` / `[v2 roadmap]`)
-- `docs/BD_TAXONOMY.md`, `docs/TESTING.md`, `docs/VERIFICATION.md`, `docs/BACKUP_EXCLUSIONS.md`
-- `docs/Handoffs/skein-fold-m0-hardware-handoff.md` (this file's sibling)
+### 2.4 Human decisions outstanding (surface these; never decide them autonomously)
 
-**Hardware lab**
-- Pixel 9 Pro Fold provisioned, GrapheneOS Android 17
-- ADB over USB works; `skein-fold-agent` SSH-over-ADB alias verified end-to-end
-- Termux env frozen: clang, cmake, git, wget, python, openssh, vulkan-headers/loader/tools, shaderc, spirv-headers, spirv-tools
-- Stable llama.cpp binaries at `~/skein-device/bin/{llama-bench,llama-cli}-{cpu,vulkan}` with SHA-256 recorded
-- Mali-G715 Vulkan proven; Q3_K_M smoke inference completed (23.47 pp / 5.61 tg — smoke only, NOT formal)
-- Baseline captured to `tools/m0-benchmark/output/baseline/{device-baseline,llama-binaries.sha256}-2026-09-20.*`
-
-### 2.3 What's DESIGNED but not implemented
-
-Every architecture-level question has a resolution doc. Zero of these have Kotlin/JNI implementations:
-
-- **Attachment encryption** — `skein-wa1l` immutable-write-per-UUID + fresh per-attachment key + deterministic IV from UUID prefix
-- **Model verification** — `skein-st1r` immutable store + `FileChannel.tryLock` + SHA-256 pre-mmap + BLAKE3-256 post-mmap + companion-file hashes + `ManifestBinding v2`
-- **Binder contracts** — `skein-pn1l` AIDL v2 with 32 KiB inline cap, 128 KiB refuse ceiling, `SharedMemRef` via ParcelFileDescriptor, `linkToDeath` both directions, backpressure via `dropped` field
-- **Export flow** — `skein-7ki2` DocumentsProvider-only, `grantUriPermissions=false` + declared `<grant-uri-permission android:pathPrefix>` subsets, WorkManager 10-min TTL + `BOOT_COMPLETED` cleanup + immediate sweep on lock
-- **Citation stability** — `skein-uo5n` `document_revisions` table (BLAKE3 content-addressed) + versioned `citation-record-v1` JSON with `(document_id, revision_hash, locator, excerpt, excerpt_hash, source_kind)` + source-changed banner
-- **Canonical storage** — `skein-vhtu` SQLCipher-primary + DocumentsProvider-exposes-Markdown-as-files
-- **Lock policy** — `skein-3xyu` unlocked-session indexing only; lock cancels across all 3 processes
-- **RC split** — `skein-4pqj` E0.I23 → 23a (produce) + 23b (validate); E10.I15 depends on 23b
-- **Vault tool primitives** — `:core:agent` interfaces defined; implementations in `:core:vault` + `:core:rag` (E2/E5)
-
-### 2.4 What's COMPLETELY ABSENT
-
-The seven-step user loop has zero cells wired end-to-end. Concretely, none of these code paths exist:
-
-- SQLite schema creation (documents / chunks / edges / entities / messages / personas / models / ingest_queue)
-- SQLCipher key derivation + biometric-gated unwrap + StrongBox wrapping
-- `VaultRepository` implementation (interface-only in `:core:agent`)
-- `DocumentsProvider` implementation
-- Attachment write path (encryption per skein-wa1l)
-- Migration framework (revisions 001–005 designed, none applied)
-- `:inference` isolated service Binder impl
-- `LlamaCppEngine` JNI wrapper
-- Model manifest handling + hash-verified SAF import
-- Model load with `FileChannel.tryLock` + dual-hash discipline
-- AIDL contracts + backpressure
-- Token streaming from `:inference` to `:app` UI
-- `:embedder` real integration (only smoke test)
-- Chunker
-- Embedding generation
-- GLiNER entity extraction
-- Vector search (sqlite-vec cosine)
-- Lexical search (FTS5 BM25)
-- Personalized PageRank
-- Ingest worker (WorkManager, unlocked-session gated)
-- `RetrievalService` implementation
-- Prompt assembler with retrieved-content-is-data separation
-- Live-preview Markdown editor UI (Compose)
-- Wikilink autocomplete
-- Backlinks panel
-- Inline AI: selection menu + slash commands
-- Selection menu actions (rewrite, continue, summarize, ask, extract entities)
-- Chat surface streaming tokens with citations
-- Context panel (retrieved chunks preview)
-- Local 2-hop graph view
-- Timeline surface (wiki-native chronological)
-- Note rendering, chat rendering, AI-output rendering
-- PDF text extraction (PdfBox-Android or similar)
-- Image → Gemma 4 vision analysis path
-- DOCX minimal writer
-- DOCX template loader
-- MD/PDF/DOCX export orchestration
-- Export staging cache + WorkManager expiry + BOOT_COMPLETED cleanup
-- Share targets (`ACTION_SEND` receivers) for text/image/file/PDF
-- Share source (share sheet integration for outbound)
-- First-run onboarding flow
-- Three-way model picker UI (Gemma 4 / Qwen abliterated / BYOG)
-- Model download UX (SAF picker + hash verify + sigstore attestation)
-- Persona editor
-- Persona-scoped filtering in timeline
-- `VoiceInteractionService` (locked-down, `onHandleAssist` no-op)
-- Formal M0 benchmarks (only smoke)
-- MEASUREMENTS.md contents
-- THREAT_MODEL.md
-- Vendored androidx.sqlite JNI driver (skein-e2ki)
-- Instrumented AndroidTest wrapping libskein_sqlite.so (skein-k3b2)
-- Release signing setup (skein-6pf, needs user keystore)
-- Reproducible-build 3rd-party verification
-- Accrescent submission
-- F-Droid main MR
-- IzzyOnDroid submission
-
+- **skein-pe3** — M0.5 gate sign-off (§2.0).
+- **skein-gtym** (P0) — the Vulkan `libskein_llama.so` is 24.1 MiB vs the ≤ 12 MB budget (1,115 embedded SPIR-V variants; upstream has no knob): ship CPU-only arm64 (4.3 MiB, loses the measured Mali prompt-processing win), trim the shader set with a carried patch, or raise the budget — a MEASUREMENTS.md (skein-5hr) + APK-budget (skein-jn3) decision.
+- **skein-zond** (P0) — real default-model manifests need the model downloads (skein-bxk, human) and a policy on `LicenseRef-Qwen-Research` in the FOSS audit.
+- `needs-human-review` on skein-v3wb and skein-v9g (§2.1, Unlock).
+- **skein-72vx** — whether ingest may use a foreground service / expedited work.
 ---
 
 ## 3. Non-negotiables (loop MUST enforce; never violate)
@@ -359,40 +257,41 @@ Other agents consume produced artifacts (`tools/m0-benchmark/output/`) but never
 
 ## 5. Architecture snapshot (for a fresh session)
 
-### 5.1 Module DAG (as of `main`)
+### 5.1 Module DAG (as of `ad98b7b`; `settings.gradle.kts` lists exactly these 23 — re-read it and `docs/ARCHITECTURE.md` §2.1 before trusting a row)
 
 ```
-:app
-├── :feature:shell         (theme + nav + adaptive layout + tabs + split)
-├── :feature:timeline      (placeholder)
-├── :feature:chat          (placeholder)
-├── :feature:editor        (placeholder — AST parser in :core:markdown)
-├── :feature:graph         (placeholder)
-├── :feature:models        (placeholder)
-├── :feature:personas      (placeholder)
-├── :feature:onboarding    (placeholder)
-├── :feature:build         (placeholder — not sure what this is; may be dead)
-├── :feature:settings      (Settings + About + FlagSecureToggle)
-├── :inference-service     (isolated process; stub)
-├── :embedder-service      (isolated process; smoke test only)
-├── :core:vault            (placeholder — schema + repo not implemented)
-├── :core:rag              (placeholder)
-├── :core:markdown         (AST + renderer — real)
-├── :core:model            (data types — pure Kotlin JVM)
-├── :core:agent            (vault tool primitives — interface only)
-├── :core:security         (placeholder)
-├── :core:ipc              (placeholder — AIDL contracts not defined)
-├── :core:export           (placeholder)
-├── :core:inference        (placeholder — engine interface not defined)
-└── :core:build            (placeholder — meta module)
+:app                     (composition root: VaultServices, MainActivity, ingest wiring, notifications, export staging, BootReceiver)
+├── :feature:shell       (theme, nav, adaptive layout, tabs, unlock/setup/reset screens, SecureTextField)
+├── :feature:editor      (SkeinEditor live preview, autosave, wikilink autocomplete, note tabs, backlinks)
+├── :feature:timeline    (timeline screen + rail)
+├── :feature:graph       (local graph screen)
+├── :feature:settings    (Settings incl. Security lock policy, Indexing hint, About)
+├── :feature:chat        (Placeholder.kt — E6.I8 skein-6as, blocked on skein-1uw)
+├── :feature:personas    (Placeholder.kt)
+├── :feature:onboarding  (Placeholder.kt)
+├── :feature:models      (Placeholder.kt)
+├── :inference-service   (isolated :inference process; InferenceService IMPLEMENTED — skein-nxk; libskein_llama.so + 24-symbol JNI — skein-ca2/3aw/ylux)
+├── :embedder-service    (isolated :embedder process; ONNX Runtime session smoke only — skein-lbw pending)
+├── :core:vault          (SQLCipher driver, migrations 001/003/005/007/008, VaultRepositoryImpl, IndexStoreImpl, keys, UnlockManager, attachments, import/export impls, DocumentsProvider)
+├── :core:rag            (Chunker, tokenizers, recall stages, PPR, RetrievalServiceImpl, PromptAssemblerImpl, CitationParser, IngestPipeline)
+├── :core:inference      (ImmutableModelStore, ModelManifest v2, WireBindings, ContextBudget/TokenCounter, ThermalGovernor)
+├── :core:verify         (pure JVM; ModelVerifier, PinnedModelFile — shared with both isolated processes)
+├── :core:ipc            (AIDL v2 + Parcelables + ErrorCodes.toException + TransportRules)
+├── :core:security       (PromptGuard, CitationFilter)
+├── :core:export         (export helpers, PDF staging, ExportStage)
+├── :core:markdown       (AST + renderer — pure JVM)
+├── :core:model          (locked contracts, Blake3, Revisions, CitationRecordJson, SkeinLog — pure JVM)
+└── :core:agent          (vault tool primitives — interfaces only)
 
-:testing (pure JVM; shared fakes + RawTextFieldTest)
+:testing (pure JVM; fakes, builders, contract suites, RawTextFieldTest)
 ```
 
-Guards enforce:
-- `PURE_JVM_MODULES` allowlist: `:core:model`, `:core:markdown`, `:core:agent`, `:testing` (per IsolationGuardPlugin)
-- Service modules (`:inference-service`, `:embedder-service`) may depend on `:core:ipc`, `:core:model`, `:core:security`, `:testing` — nothing UI-side
-- `:app` may depend on everything (single leaf module for wiring)
+`feature/build/` and `core/build/` on disk are stray build-output directories, not modules.
+
+Guards enforce (`build-logic/guards/src/main/kotlin/app/skein/gradle/IsolationGuardPlugin.kt`):
+- `PURE_JVM_MODULES` = `:core:model`, `:core:markdown`, `:core:agent`, `:core:verify`, `:testing`
+- Service modules may declare project deps only on `:core:ipc`, `:core:model`, `:core:verify` (plus `com.microsoft.onnxruntime` for `:embedder-service`) — nothing UI-side
+- `:app` is the single wiring leaf
 
 ### 5.2 The seven-step loop — where each step lives
 
@@ -422,7 +321,7 @@ The schema is fully specified in `docs/superpowers/specs/2026-09-19-skein-design
 - `export_stages` — from POST_REVIEW_RESOLUTIONS §4
 - `attachment_master_key`, `attachment_keys` — from `docs/design/ATTACHMENT_ENCRYPTION.md` §3.4 (the 3-layer attachment key hierarchy; see also `docs/design/LOCK_POLICY_INDEXING.md` for the lock-triggered cancellation semantics that apply to in-flight attachment work)
 
-Migrations 001–005 pre-numbered in POST_REVIEW_RESOLUTIONS. First migration to run against SQLCipher will be 001 (base schema) once `:core:vault` implementation lands. Note: `docs/superpowers/plans/2026-09-19-skein-v1-plan.md` currently has an independent migration 003 (`ingest_attempts`, from its own `E5.I10`) that has not yet been reconciled with POST_REVIEW_RESOLUTIONS' 003–005 numbering, nor with `LOCK_POLICY_INDEXING.md`'s proposed `006_recovery_drafts.sql` — see the `> COORDINATOR TODO` on `E3.I3` in the plan doc.
+Migrations shipped on `main`: `001_initial`, `003_document_revisions`, `005_export_stages`, `007_drop_attachment_master_key`, `008_ingest_attempts` (`core/vault/src/main/resources/migrations/INDEX.txt`; `PRAGMA user_version` reaches 8; `Migrator` applies in numeric order). 002, 004 and 006 stay reserved (`skein-voys`, `docs/VAULT_FORMAT.md` §7). `Migrator` applies only versions above the current `user_version`, so a reserved number landing after a higher one is skipped on an already-migrated database — the applied-migrations ledger that fixes this (skein-p8rn) is uncommitted in its worktree (§2.3).
 
 ---
 
@@ -641,118 +540,20 @@ Concrete patterns encountered this session. The loop should be prepared for all 
 
 ---
 
-## 8. Track A — non-hardware v1 implementation queue (ordered)
+## 8. Next work (ordered; replaces the 2026-09-20 queue)
 
-The order below reflects the critical path from Fable's plan §5 plus dependencies discovered during design. **Each row is a bd issue or a group of related issues.** Loop should follow this order roughly (dependencies enforce partial order; parallel where possible).
+The old "immediate wave" (vendor the sqlite JNI driver, M0 harness adaptation) is done and merged. Do **not** open a broad wave. The next chain is one product path, in this order:
 
-### 8.1 Immediate wave (unblocks everything downstream)
+1. **Land the local state.** Commit the uncommitted androidTest fix in the main checkout (§2.0), confirm `gh run list --branch main --limit 5` is not red for a reason you have not diagnosed, push `main` (`ad98b7b`), and let one CI run finish without a competing push.
+2. **Salvage or discard §2.3.** Replay skein-3yal first (it is a security fix), then skein-p8rn, onto current `main` after reading their diffs; read skein-mzm5's diff and discard the half-refactor unless its contract cases stand on their own.
+3. **Delete the merged worktrees in §2.2** (and any other whose commit is an ancestor of `HEAD`) with `git worktree remove --force`, never `rm -rf` alone.
+4. **One product chain, serially — nothing in parallel that touches the same modules:**
+   1. **skein-1uw** — app-side `LlamaCppEngine` over the bound `IInferenceService` (Opus). Read the bead's NOTES first: four beads left instructions there (`TokenCounter` over `tokenCount` — skein-4c7; `ErrorCodes.toException` with `HashMismatch(expected, actual)` built client-side — skein-udbm; `ModelNotifier` calls — skein-fsn; `sessionEpoch` threading + `DeathRecipient` + `SessionLocked` — plan E4.I4 as amended). Nothing in `:app` binds `:inference` today.
+   2. **Hash-verified model import** — skein-cyq (`ModelManager`/`ModelRegistry`, migration 004 `models.post_mmap_blake3`; wait for the p8rn ledger or accept the documented gap-fill caveat) over `ImmutableModelStore` + `WireBindings.toWire`. The tiny GGUF for the emulator lane comes from skein-80p (E4.I2), not from a real model download (skein-bxk is a human task).
+   3. **A streaming answer with one citation on the chat surface** — `feature/chat` (E6.I8, skein-6as) over `RetrievalServiceImpl` → `ContextBudget` → `PromptAssemblerImpl` → engine → `CitationParser` → `CitationRecords` → `VaultRepository.appendMessage`. Chat-template application and sampling defaults are skein-5oi. `ChatMessageParcel.contentFd` (skein-nxk J5) is how a long prompt spills.
+5. **Then, and only then:** a Fold smoke that exercises "ask" (successor to skein-94fh) and the formal M0 matrix (Track B, §9). Formal M0 and the Fold smoke wait until that path exists.
 
-| Priority | Issue(s) | Rationale | Tier |
-|---|---|---|---|
-| P0 | `skein-e2ki` — vendor androidx.sqlite JNI driver | Every downstream vault operation needs this to open SQLCipher through Kotlin. **Blocks: everything vault-related.** | Opus |
-| P0 | `skein-79od` (in flight now) — M0 harness adaptation | Unblocks formal M0 → embedder path decision → downstream retrieval work | (running) |
-
-### 8.2 Vault core (once JNI driver lands)
-
-| Issue | Description | Depends on |
-|---|---|---|
-| E2.I1 | SQLite schema DDL + migration 001 | e2ki |
-| E2.I2 | `VaultRepository` implementation (documents, chunks, messages, personas) | E2.I1 |
-| E2.I3 | SQLCipher key management (StrongBox-backed) | e2ki, E2.I1 |
-| E2.I4 | Biometric unlock flow (`BiometricPrompt` → key unwrap) | E2.I3 |
-| E2.I5 | Attachment write path (immutable-write per skein-wa1l) | E2.I2, wa1l |
-| E2.I6 | Export staging + WorkManager TTL + BootReceiver | 7ki2 design |
-| E2.I7 | DocumentsProvider implementation | E2.I2, vhtu |
-| Migration 003 | `document_revisions` table (uo5n) | E2.I1 |
-| Migration 005 | `export_stages` table (7ki2) | E2.I1 |
-
-### 8.3 Inference service (parallel with vault after e2ki)
-
-| Issue | Description | Depends on |
-|---|---|---|
-| E4.I1 | `LlamaCppEngine` JNI wrapper | native/llama.cpp build |
-| E4.I2 | Model manifest handling + hash-verified SAF import | ModelManifest v2 (st1r) |
-| E4.I3 | AIDL contracts + `SharedMemRef` | pn1l design |
-| E4.I4 | `:inference-service` Binder impl + token streaming Flow | E4.I1, E4.I3 |
-| E4.I5 | `linkToDeath` + backpressure + service-death recovery | E4.I3 |
-| E4.I6 | Model file `FileChannel.tryLock` + dual-hash discipline | st1r |
-| Migration 004 | `models.post_mmap_blake3` column | E4.I2 |
-
-### 8.4 Embedder service (parallel with inference)
-
-| Issue | Description | Depends on |
-|---|---|---|
-| E5.I1 | Embedder AIDL contract | pn1l |
-| E5.I2 | GLiNER entity extraction wiring | Embedder AIDL |
-| E5.I3 | Embedding generation path (choose nomic vs Qwen3 post-M0) | M0 decision |
-| E5.I4 | Chunker (~512 tokens, 64 overlap) | none |
-| E5.I5 | sqlite-vec vector search | e2ki, chunker |
-| E5.I6 | FTS5 BM25 lexical search | e2ki |
-| E5.I7 | Personalized PageRank over edges | E5.I4, E5.I5 |
-| E5.I8 | `RetrievalService` implementation | E5.I5, E5.I6, E5.I7 |
-| E5.I9 | Prompt assembler with retrieved-content-is-data separation | E5.I8, q3r7 |
-| E5.I10 | Ingest worker (WorkManager, unlocked-session gated) | E2, E5.I4 |
-| Migration 002 | Real citation-record-v1 in `messages.retrieved_chunks` | uo5n |
-
-### 8.5 Editor surface
-
-| Issue | Description | Depends on |
-|---|---|---|
-| E7.I1 | Live-preview Markdown editor Composable | :core:markdown |
-| E7.I2 | Wikilink autocomplete | :core:markdown |
-| E7.I3 | Backlinks panel | E2 |
-| E7.I4 | Inline AI selection menu | :core:agent, :inference |
-| E7.I5 | Slash commands (`/ai continue`, `/link related`) | E7.I4 |
-| E7.I6 | Local 2-hop graph view | E5.I7 |
-
-### 8.6 Chat surface
-
-| Issue | Description | Depends on |
-|---|---|---|
-| E6.I8 | Chat screen with streaming tokens | E4.I4, E5.I8, E5.I9 |
-| E6.I9 | Inline citations with source-changed banner | uo5n |
-| E6.I10 | Context panel toggle | E5.I8 |
-| E6.I11 | Chat history rendering | E2.I2 |
-| E6.I12 | Model swap UI in chat header | E4.I2 |
-
-### 8.7 Timeline
-
-| Issue | Description | Depends on |
-|---|---|---|
-| E6.I13 | Wiki-native timeline (chats + notes + AI outputs mixed) | E2.I2 |
-| E6.I14 (done) | Settings screen ✓ | shipped |
-| E6.I15 | Persona-scoped filtering | Personas |
-
-### 8.8 Import/export
-
-| Issue | Description | Depends on |
-|---|---|---|
-| Import.I1 | PDF text extraction (PdfBox-Android) | none |
-| Import.I2 | Image → Gemma 4 vision path | E4.I2 (multimodal support) |
-| Import.I3 | Share target (`ACTION_SEND` receivers) | none |
-| Export.I1 | DOCX minimal writer | none |
-| Export.I2 | DOCX template loader | Export.I1 |
-| Export.I3 | MD/PDF/DOCX export orchestration | E2.I6 |
-
-### 8.9 Personas, onboarding, model management
-
-| Issue | Description | Depends on |
-|---|---|---|
-| P.I1 | Persona editor | E2 |
-| P.I2 | First-run flow | none |
-| P.I3 | Three-way model picker | E4.I2 |
-| P.I4 | Model download UX (SAF picker + verify + attestation) | E4.I2 |
-| P.I5 | Assistant integration (locked-down `VoiceInteractionService`) | none (small) |
-
-### 8.10 Distribution
-
-| Issue | Description | Depends on |
-|---|---|---|
-| `skein-6pf` | Release signing setup | needs user keystore |
-| Dist.I1 | F-Droid metadata prep + MR | signing |
-| Dist.I2 | Obtainium manifest publish | signing |
-| Dist.I3 | Accrescent application | signing |
-| `skein-mkq` | CHANGELOG.md + release-notes template | none |
+Everything else in `bd ready` — the review follow-ups (skein-8c9r, 6j93, x9xn, 556t, i1y1, 5g42, qvxb …), the embedder service (skein-lbw / skein-079 / skein-hwsa), inline AI (E7), onboarding, personas, the models UI, distribution — is deferred behind that chain unless it unblocks it.
 
 ---
 
@@ -897,6 +698,11 @@ If you (a fresh Claude session) picked this up with no prior context:
 | Build guards | `build-logic/guards/` |
 | Interface stubs | `core/agent/src/main/kotlin/app/skein/core/agent/tools/VaultTools.kt` |
 | Compose shell | `feature/shell/` |
+| Architecture (module map, startup sequence, guards) | `docs/ARCHITECTURE.md` |
+| Native llama.cpp build, JNI, reproducibility | `native/llama/` (README §4 hashes, §8 JNI; `patches/` for the pinned shader fix) |
+| Reproducible-build tooling + toolchain manifest | `tools/rb/`, `reproducible-builds.yml`, `.github/workflows/reproducible-build.yml` |
+| CI helper scripts (manifest audit, JNI symbols, no-content logging, submodules) | `tools/ci/` |
+| Agent worktrees (scratchpad) | `/private/tmp/claude-501/-Users-andrewherrera/2a94e1c2-1397-433c-b622-a3763240b60e/scratchpad/worktrees/` (gitdirs under `.git/worktrees/`) |
 
 ---
 

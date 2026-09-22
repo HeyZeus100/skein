@@ -2,7 +2,7 @@
 
 Personal knowledge system for Android. Offline. On-device LLM. GrapheneOS-first.
 
-> **Status:** Pre-alpha. Design spec approved 2026-09-19. Implementation plan generation in progress. No shipping releases yet.
+> **Status:** Pre-alpha, no release. The design spec (2026-09-19) and the implementation plan (`docs/superpowers/plans/2026-09-19-skein-v1-plan.md`) exist and drive the work. Vault unlock and the Markdown editor run on a device; the isolated inference service is implemented but not yet bound from the app, so on-device ask does not work and there is no chat surface yet.
 
 ## What Skein is
 
@@ -25,9 +25,9 @@ An offline-first personal knowledge system with an on-device LLM as its interfac
 - **Architecture:** [`docs/ARCHITECTURE.md`](docs/ARCHITECTURE.md) — module map, process topology, startup sequence, and conventions; read this first
 - **Changelog:** [`CHANGELOG.md`](CHANGELOG.md) — release history and unreleased changes (Keep A Changelog format)
 - **Design spec:** `docs/superpowers/specs/2026-09-19-skein-design.md`
-- **Implementation plan:** `docs/superpowers/plans/` *(generation in progress)*
+- **Implementation plan:** [`docs/superpowers/plans/2026-09-19-skein-v1-plan.md`](docs/superpowers/plans/2026-09-19-skein-v1-plan.md)
 - **Threat model:** `docs/THREAT_MODEL.md` *(pending, delivered by M3)*
-- **Privacy notes:** `docs/PRIVACY.md` *(pending)*
+- **Privacy notes:** [`docs/PRIVACY.md`](docs/PRIVACY.md)
 - **Vault format:** [`docs/VAULT_FORMAT.md`](docs/VAULT_FORMAT.md) — on-disk layout, encryption, data model, and wire format
 - **Dependency notes:** [`docs/DEPENDENCY_NOTES.md`](docs/DEPENDENCY_NOTES.md) — pins, re-evaluation procedures, and fallback options for key dependencies (e.g., ONNX Runtime)
 - **Security policy:** [`SECURITY.md`](SECURITY.md)

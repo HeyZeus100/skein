@@ -1,13 +1,14 @@
 # Architecture
 
-> **Status:** written by `E0.I18`/skein-edc from the state of the tree at
-> commit `c3d22b8` (2026-09-21) — every module row, dependency edge and guard
-> reference below is verified against a build file or a `build-logic/guards`
-> source file, cited inline. Where a step in the startup sequence is not yet
-> implemented, its diagram participant is labelled `planned (skein-xxxx)` and
-> cites the bead that owns it — nothing below is invented. Kept in sync going
-> forward is `E9.I10`/skein-4aw's job (ARCHITECTURE.md refresh at M3); until
-> then, re-verify a claim against the cited file before trusting it blindly.
+> **Status:** written by `E0.I18`/skein-edc at commit `c3d22b8` and re-verified
+> against the tree at commit `ad98b7b` (2026-09-22) — every module row,
+> dependency edge and guard reference below is verified against a build file
+> or a `build-logic/guards` source file, cited inline. Where a step in the
+> startup sequence is not yet implemented, its diagram participant is
+> labelled `planned (skein-xxxx)` and cites the bead that owns it — nothing
+> below is invented. Kept in sync going forward is `E9.I10`/skein-4aw's job
+> (ARCHITECTURE.md refresh at M3); until then, re-verify a claim against the
+> cited file before trusting it blindly.
 
 This document is the one every dispatched agent reads first (see §6, "How to
 pick up an issue"). It answers three questions: what are the modules and what
@@ -36,9 +37,11 @@ Spec §4.1: *"`:app` → biometric unlock → StrongBox key unwrap → SQLCipher
 open → bind `:inference` → hash-verify current model → mmap → ready."* The
 diagram below names the real class/function for every step that exists in
 this tree today, and labels the rest `planned` with the bead that owns it —
-as of commit `c3d22b8`, everything up to and including "vault open, provider
-installed" is implemented and unit-tested; binding the isolated service and
-loading a model into it is not.
+as of commit `ad98b7b`, everything up to and including "vault open, provider
+installed" is implemented and unit-tested; the isolated `InferenceService`
+and the verifier it calls are implemented (skein-nxk, skein-v2s); the
+`:app`-side client that binds the service, imports a model and builds the
+`LoadRequest` is not.
 
 ```mermaid
 sequenceDiagram
@@ -51,13 +54,13 @@ sequenceDiagram
     participant VL as VaultLifecycle
     participant Mig as Migrator
     participant VDP as VaultDocumentsProvider
-    participant MM as ModelManager, planned skein-1uw
-    participant IS as InferenceService, planned skein-nxk
-    participant MV as ModelVerifier, implemented not yet wired
-    participant Eng as LlamaCppEngine, planned skein-1uw
+    participant MM as ModelManager / LlamaCppEngine, planned skein-cyq / skein-1uw
+    participant IS as InferenceService, implemented skein-nxk
+    participant MV as ModelVerifier in :core:verify, implemented
+    participant LN as LlamaNative JNI, implemented skein-3aw
 
     Note over MA: runs in :app
-    Note over IS,Eng: IS runs in the isolated :inference process
+    Note over IS,LN: IS, MV and LN run in the isolated :inference process
 
     User->>MA: launch app
     MA->>UM: unlock(activity, prompt, factor)
@@ -78,23 +81,23 @@ sequenceDiagram
     VB-->>MA: BringUpResult.Ready(session)
 
     rect rgba(128,128,128,0.08)
-    Note over MA,Eng: planned, not yet implemented: E4.I3 skein-nxk (InferenceService), E4.I4 skein-1uw (ModelManager, LlamaCppEngine)
+    Note over MA,MM: planned, not yet implemented in :app - E4.I5 skein-cyq (ModelManager, import), E4.I4 skein-1uw (LlamaCppEngine client)
     MA->>MM: load default model
     MM->>IS: bindService, isolatedProcess true
-    MM->>IS: load(LoadRequest with ManifestBinding fds, sha256, size, sessionEpoch)
-    IS->>MV: verifyBeforeMmap(fd) - pre-mmap SHA-256, streamed over the open channel
-    MV-->>IS: FileDigests, or ModelVerification.HashMismatch
-    IS->>IS: dup the fd, mmap it via proc self fd
-    IS->>MV: verifyAfterMmap(mappedBuffer) - post-mmap BLAKE3-256
-    MV-->>IS: Ready, or ModelVerification.Tampered
-    IS->>Eng: create context: contextLength, threads, gpuLayers
-    Eng-->>IS: EngineStatus state ready
-    IS-->>MM: onDone / status()
+    MM->>IS: load(LoadRequest(binding of fds + expected sha256/size, sessionEpoch))
     end
+    IS->>IS: IsolatedSessionGate.guard(sessionEpoch)
+    IS->>MV: PinnedModelFile.pin(dup fd) per ManifestFileRef, then verifyPinned(...)
+    Note right of MV: gate 1 streams SHA-256 over the pinned channel, gate 2 BLAKE3 over the mapped bytes, a refusal closes every fd
+    MV-->>IS: PinnedLoad.Ready, or a ModelVerification refusal mapped to an ErrorCode
+    IS->>LN: loadModelFromFd(fd, gpuLayers) then newContext(contextLength, threads, ...)
+    Note right of LN: llama_model_load_from_file_ptr over the dup'd fd - no path, no /proc/self/fd re-open
+    LN-->>IS: model and context handles
+    IS-->>MM: ErrorCode.OK, status().state == ready
     MM-->>MA: ready
 ```
 
-Every arrow above the shaded box is a real call in this tree:
+Every arrow outside the shaded box is a real call in this tree:
 
 - `UnlockManager.unlock`/`unlockWith` — `core/vault/src/main/kotlin/app/skein/core/vault/session/UnlockManager.kt`
 - `VaultKeyProvider.unlock` — `core/vault/src/main/kotlin/app/skein/core/vault/key/VaultKeyProvider.kt` (contract); `VaultKeyProviderImpl` for the Keystore unwrap
@@ -102,12 +105,14 @@ Every arrow above the shaded box is a real call in this tree:
 - `DeviceVaultOpener.open` / `createOrOpen` — `app/src/main/kotlin/app/skein/vault/DeviceVaultOpener.kt`
 - `VaultLifecycle.create` / `.open` and `Migrator.migrate` — `core/vault/src/main/kotlin/app/skein/core/vault/lifecycle/VaultLifecycle.kt`
 - `VaultDocumentsProvider.install` / `.notifyRootsChanged` — called through the `DocumentsProviderPort` seam in `VaultBootstrap.kt`
+- `InferenceService.onBind` returns an `IInferenceService.Stub` — `inference-service/src/main/kotlin/app/skein/inference/service/InferenceService.kt`, declared in `inference-service/src/main/AndroidManifest.xml` with `isolatedProcess="true"`, `exported="false"`, `process=":inference"`; `load`, `generate`, `cancel`, `unload`, `embed`, `tokenCount`, `status` and the `onSessionLocking`/`onSessionLocked`/`onSessionUnlocked` gate methods are implemented (skein-nxk, `E4.I3`); `IsolatedSessionGate` guards every plaintext-touching entry point (`docs/design/LOCK_POLICY_INDEXING.md` §5.3)
+- `ModelVerifier.verifyPinned` / `verifyBeforeMmap` / `verifyAfterMmap` and `PinnedModelFile.pin` — `core/verify/src/main/kotlin/app/skein/core/verify/{ModelVerifier,PinnedModelFile}.kt` (extracted from `:core:inference` by skein-nxk per coordinator decision `skein-hiwb`, so both isolated services may depend on them — §2.1)
+- `LlamaNative.loadModelFromFd` / `newContext` / `tokenize` / `decodePrompt` / `sampleNext` / `freeContextSecure` — `inference-service/src/main/kotlin/app/skein/inference/service/LlamaNative.kt` over `native/llama/jni/skein_jni.cpp` (skein-3aw; 24 `Java_` symbols, checked by `tools/ci/jni-symbols.sh`)
 
-Everything inside the shaded box is designed but not wired:
+Only the shaded box is designed but not wired:
 
-- `InferenceService` exists today only as a stub — `inference-service/src/main/kotlin/app/skein/inference/service/InferenceService.kt`'s `onBind` returns `null`; the AIDL-backed `IInferenceService.Stub` implementation, the bind flow, and `load`/`generate` are `E4.I3` (skein-nxk).
-- `ModelManager`/`ModelRegistry` (the `:app`-side caller that imports a model, builds a `LoadRequest`, and binds the service) is `E4.I5`, not yet landed; the client-side `InferenceEngine` implementation (`LlamaCppEngine`) that talks to it is `E4.I4` (skein-1uw).
-- `ModelVerifier.verifyBeforeMmap` / `.verifyAfterMmap` / `.verifyForLoad` (`core/inference/src/main/kotlin/app/skein/core/inference/models/ModelVerifier.kt:167,203,225`) and `ImmutableModelStore` (`.../models/ImmutableModelStore.kt`) **are** implemented and unit-tested as pure logic (`skein-st1r`) — see `docs/design/MODEL_STORE.md` §3 for the two-gate design and §6 ("Not yet wired") for the explicit list of what still has to call them: `E4.I5`'s import flow and `E0.I16`'s `ManifestBinding` Parcelable (the latter has since landed — see §2.3 below).
+- `ModelManager`/`ModelRegistry` — the `:app`-side caller that imports a model through `ImmutableModelStore`, builds the wire `ManifestBinding` with `WireBindings.toWire` (`core/inference/.../models/WireBindings.kt`, skein-28wm) and binds the service — is `E4.I5` (skein-cyq), not yet landed. The client-side `InferenceEngine` implementation (`LlamaCppEngine`) that talks to the service, maps codes via `ErrorCodes.toException` and threads the `sessionEpoch` is `E4.I4` (skein-1uw). Until it lands nothing in `:app` binds `:inference` — `grep -rn IInferenceService app/src/main core/inference/src/main` finds no client.
+- `ImmutableModelStore` (`core/inference/.../models/ImmutableModelStore.kt`) and the `ModelManifest` v2 parser are implemented and tested (skein-st1r, skein-3v9); `docs/design/MODEL_STORE.md` §6 lists what still has to call them.
 
 ## 2. Module map
 
@@ -122,16 +127,16 @@ application/service module depends on it).
 |---|---|---|---|---|---|
 | `:app` | Android application | `:app` | `:core:model`, `:core:vault`, `:inference-service`, `:embedder-service`, `:feature:shell`, `:feature:settings`, `:feature:editor`, `:feature:timeline`, `:feature:graph`, `:core:rag`, `:core:inference`; androidx.work/biometric/lifecycle/datastore, Compose. Guarded: `checkDependencyGuards*` (bans GMS/Firebase/Play Core/ML Kit transitively), `checkManifestGuards*` (bans `INTERNET`/exported components), `licenseAudit*RuntimeClasspath` (foss variant license allowlist) | `app/build.gradle.kts` | E1 (scaffold, `E1.I1`); vault bring-up `E3` |
 | `:core:model` | Pure Kotlin/JVM | wherever it's linked (every process) | `kotlinx-coroutines-core` (api), `kotlinx-serialization-json` (api); no project deps | `core/model/build.gradle.kts`; isolation-guarded (`IsolationGuardPlugin.PURE_JVM_MODULES` includes `:core:model`) | E0 (contracts: `E0.I10`–`E0.I13`) |
-| `:core:ipc` | Android library (AIDL + Parcelize) | contract-only today — no module's `build.gradle.kts` currently declares a dependency on it (`grep -rl "core:ipc" **/build.gradle.kts` finds none); it is what `:inference-service`/`:embedder-service`/`:app` will depend on once the bind flow lands (`E4.I3` skein-nxk, `E4.I5`) | `androidx.core.ktx`; **landing:** an `api(project(":core:model"))` edge for `ErrorCodes.toException` (`skein-k7e9`) is not yet present in this worktree's build file | `core/ipc/build.gradle.kts`; contract itself in `core/ipc/src/main/aidl/**` + `Parcels.kt` | E0 (`E0.I16`, v2) |
+| `:core:ipc` | Android library (AIDL + Parcelize) | `:app` (via `:core:inference`) and the isolated `:inference` process | `api(:core:model)` (skein-k7e9, for `ErrorCodes.toException` → `InferenceException`), `androidx.core.ktx`; consumed by `:core:inference` (`api`) and `:inference-service` (`implementation`); `:embedder-service` will depend on it when skein-lbw lands | `core/ipc/build.gradle.kts`; contract in `core/ipc/src/main/aidl/**` + `Parcels.kt`, `ErrorCodes.kt`, `TransportRules.kt` | E0 (`E0.I16`, v2) |
 | `:core:vault` | Android library (+ native `libskein_sqlite.so`) | `:app` | `api(:core:model)`, `implementation(:core:markdown)`, androidx.biometric/sqlite, pdfbox-android | `core/vault/build.gradle.kts` | E2 (vault); keys/unlock `E3.I2`/`E3.I3a` |
 | `:core:security` | Android library | `:app` | `api(:core:model)`; test-only `:testing`, `:core:markdown` | `core/security/build.gradle.kts` | E3 (`E3.I10`, PromptGuard) |
-| `:core:inference` | Android library | `:app` | `api(:core:model)`, `api(:core:verify)`, kotlinx-coroutines-core, kotlinx-serialization-json | `core/inference/build.gradle.kts` | E4 (models/thermal: `skein-st1r`, `E4.I9`) |
+| `:core:inference` | Android library | `:app` | `api(:core:model)`, `api(:core:verify)`, `api(:core:ipc)` (skein-28wm — `WireBindings` returns the wire `ManifestBinding`), kotlinx-coroutines-core, kotlinx-serialization-json | `core/inference/build.gradle.kts` | E4 (models/thermal: `skein-st1r`, `E4.I9`; `ContextBudget`/`TokenCounter` `E4.I7`) |
 | `:core:verify` | Pure Kotlin/JVM | wherever it's linked — `:app` (via `:core:inference`) AND both isolated processes | `api(:core:model)`; no other project deps | `core/verify/build.gradle.kts`; isolation-guarded BOTH ways (`IsolationGuardPlugin.PURE_JVM_MODULES` forbids it an Android plugin, and it is on `COMMON_SERVICE_PROJECT_ALLOWLIST` so the two services may depend on it) | E3/E4 (`E3.I5` verifier `skein-v2s`, extracted here by `E4.I3` per coordinator decision `skein-hiwb`) |
 | `:core:rag` | Android library | `:app` | `api(:core:model)`, kotlinx-coroutines-android, kotlinx-serialization-json; test-only `:core:vault`, `:testing` (main source set deliberately has no `:core:vault` edge — see the module's own build-file comment) | `core/rag/build.gradle.kts` | E5 (RAG/ingest) |
 | `:core:markdown` | Pure Kotlin/JVM | wherever it's linked | `jetbrains.markdown`, `kotlinx-serialization-json`, `compose-ui`/`compose-ui-graphics` (JVM target only — no Android plugin) | `core/markdown/build.gradle.kts`; isolation-guarded (`PURE_JVM_MODULES`) | E7 (`E7.I2`) |
 | `:core:export` | Android library | `:app` | `:core:markdown`, `:core:model`, `:core:vault` (`SafeFileName` reuse), androidx-core-ktx, coroutines-core | `core/export/build.gradle.kts` | E2 (`E2.I10`–`E2.I12`) |
 | `:core:agent` | Pure Kotlin/JVM | wherever it's linked | `implementation(:core:model)`; no project deps beyond that | `core/agent/build.gradle.kts`; isolation-guarded (`PURE_JVM_MODULES`) | **not in the v1 plan's epic numbering** — added by `docs/design/VAULT_TOOL_PRIMITIVES.md` (`skein-fvne`); see §7 drift note |
-| `:inference-service` | Android library (`android:isolatedProcess`), native `libskein_llama.so` | `:inference` | Isolation-guard allowlist: project deps limited to `{:core:ipc, :core:model, :core:verify}`, external groups limited to `{org.jetbrains.kotlin, org.jetbrains.kotlinx}` — nothing else compiles | `inference-service/build.gradle.kts`; enforced by `IsolationGuardTask.SERVICE_ALLOWLISTS[":inference-service"]` (`build-logic/guards/.../IsolationGuardPlugin.kt`) | E4 (native build `E4.I1`; service impl `E4.I3`, not yet landed) |
+| `:inference-service` | Android library (`android:isolatedProcess`), native `libskein_llama.so` | `:inference` | `implementation(:core:model)`, `implementation(:core:ipc)`, `implementation(:core:verify)` — the isolation-guard allowlist limits project deps to exactly `{:core:ipc, :core:model, :core:verify}` and external groups to `{org.jetbrains.kotlin, org.jetbrains.kotlinx}`; nothing else compiles | `inference-service/build.gradle.kts`; enforced by `IsolationGuardTask.SERVICE_ALLOWLISTS[":inference-service"]` (`build-logic/guards/.../IsolationGuardPlugin.kt`); manifest `inference-service/src/main/AndroidManifest.xml` | E1/E4 (native build `E1.I4` skein-ca2 + `E4.I1` skein-3aw; service impl `E4.I3` skein-nxk — **implemented**) |
 | `:embedder-service` | Android library (`android:isolatedProcess`) | `:embedder` | Same allowlist as `:inference-service` plus `com.microsoft.onnxruntime` | `embedder-service/build.gradle.kts`; `IsolationGuardTask.SERVICE_ALLOWLISTS[":embedder-service"]` | E5 (embedder) |
 | `:feature:shell` | Android library + Compose | `:app` | `:core:vault`, androidx.biometric/window, material3-adaptive, coroutines. **Must never depend on `:feature:settings` or `:feature:editor`** — those depend on it, not the reverse (see `feature/settings/build.gradle.kts`'s and `app/build.gradle.kts`'s E6.I14 comments) | `feature/shell/build.gradle.kts` | E6 (`E6.I1`) |
 | `:feature:timeline` | Android library + Compose | `:app` | `:core:model` only — deliberately no `:core:vault` or `:feature:shell` edge ("the screen takes an already-open repository and never unlocks anything itself") | `feature/timeline/build.gradle.kts` | E6 (`E6.I7`) |
@@ -168,10 +173,10 @@ All five are wired into `check` (`build.gradle.kts`'s `subprojects {}` block, or
 
 The wire contract between `:app` and the two isolated services is defined once, in `core/ipc/src/main/aidl/**` (the `.aidl` files enumerated in §2.1's table) plus the Parcelable/constant definitions in `core/ipc/src/main/kotlin/us/aherrera/skein/ipc/Parcels.kt`. Landed by `skein-mfw` (`E0.I16`, v2 — supersedes plan §4.7 v1 per `docs/design/POST_REVIEW_RESOLUTIONS.md` §3.3/§2.3). Load-bearing rules, all cited in `Parcels.kt`'s own header comment:
 
-- **No large payload ever travels inline.** Images, audio and oversized text are always a `SharedMemRef` (a `ParcelFileDescriptor` over ashmem/tmpfile + size + MIME hint), never a `ByteArray` field — Binder's 1 MiB per-process transaction buffer is shared across *all* in-flight transactions, so a single 4 MiB image alone would blow it. The inline budget for everything else is 32 KiB hard / 128 KiB refuse per transaction, enforced client-side by `TransportRules` (assigned to `E4.I3`/`E4.I4`, not yet in this contract module — `:core:ipc` is wire-shape only).
+- **No large payload ever travels inline.** Images, audio and oversized text are always a `SharedMemRef` (a `ParcelFileDescriptor` over ashmem/tmpfile + size + MIME hint), never a `ByteArray` field — Binder's 1 MiB per-process transaction buffer is shared across *all* in-flight transactions, so a single 4 MiB image alone would blow it. The inline budget for everything else is 32 KiB hard / 128 KiB refuse per transaction: `TransportRules` (`core/ipc/src/main/kotlin/us/aherrera/skein/ipc/TransportRules.kt`, skein-nxk) declares the caps and `TransportRulesTest` proves a full-budget prompt must spill; a spilled chat message keeps its role and order via `ChatMessageParcel.contentFd` (J5). The service enforces the caps today; the client half is skein-1uw's.
 - **Every model load is fd-based and hash-gated.** `ManifestFileRef` carries an already-open read-only fd plus `expectedSha256`/`expectedSizeBytes` for one file (main model or a named companion role); `ManifestBinding` bundles the full set for one model plus an optional `AttestationRefParcel`. The service hashes and mmaps *that exact fd* — it never re-opens a path (POST_REVIEW_RESOLUTIONS.md §2.3; see §1.1's diagram for how this connects to `ModelVerifier`).
 - **Every request carries a `sessionEpoch`.** `IsolatedSessionGate.guard()` (service-side, `LOCK_POLICY_INDEXING.md` §5.3) admits a call only when `req.sessionEpoch == authorizedEpoch`, otherwise refuses with `ErrorCode.SESSION_LOCKED = 11` — this is what closes the race between a lock landing and a call already queued on Binder's thread pool.
-- **`ErrorCode`** (`object ErrorCode` in `Parcels.kt`) enumerates every failure a synchronous AIDL call or `onError` can report (`OK`=0 through `INTERNAL`=99); each constant's KDoc names the `InferenceException` subclass (or lack of one) it maps to. **Landing:** `ErrorCodes.toException` plus the `api(project(":core:model"))` edge that would let `:core:ipc` reference `InferenceException` directly (`skein-k7e9`) had not merged as of this worktree's base (`c3d22b8`) — today that mapping lives client-side.
+- **`ErrorCode`** (`object ErrorCode` in `Parcels.kt`) enumerates every failure a synchronous AIDL call or `onError` can report (`OK`=0 through `INTERNAL`=99, plus `SESSION_LOCKED`=11); `ErrorCodes.toException(code, message)` (`core/ipc/src/main/kotlin/us/aherrera/skein/ipc/ErrorCodes.kt`, skein-k7e9) maps every failing code to a distinct `InferenceException` subclass (`OK` and `CANCELLED` → none; an unrecognised code → `Internal`, so forward version skew degrades instead of crashing) — this is why `:core:ipc` carries an `api(project(":core:model"))` edge. `ErrorCodes.asServiceFailure`/`codeOf` (skein-nxk) carry a code across a synchronous AIDL failure, since `ServiceSpecificException` is absent from the public `android.jar`. Sanitising the service-supplied `message` before it reaches an exception or logcat is the open review finding skein-3yal.
 
 ## 3. Conventions
 
@@ -190,7 +195,7 @@ Interface/contract types live under `us.aherrera.skein.*` (`:core:model`'s domai
 
 ### 3.3 Migration numbering
 
-Migrations live in `core/vault/src/main/resources/migrations/`, one `NNN_<description>.sql` file per line in `INDEX.txt` (numeric order, not file-listing order — `ClassLoader.getResources` can't list a JAR directory). As of this worktree, three are shipped: `001_initial.sql`, `003_document_revisions.sql`, `007_drop_attachment_master_key.sql` (`PRAGMA user_version` reaches 7). Numbers **002 and 004–006 are reserved, not free** — `docs/VAULT_FORMAT.md`'s "Current migrations" section explains why: `002_attestation_status`, `004_post_mmap_blake3`, `005_export_stages`, and `006_recovery_drafts` are claimed by landed design docs and the open coordination bead `skein-voys` for migrations that haven't landed yet; taking one of those numbers for something else would collide. A migration numbered **008** (revision-stamped chunks, `skein-zx15`) is reported as merging into `main` concurrently with this bead and is not yet present in this worktree's `INDEX.txt` — do not assume its shape from this document; read `INDEX.txt` and the migration file directly before adding a ninth.
+Migrations live in `core/vault/src/main/resources/migrations/`, one `NNN_<description>.sql` file per line in `INDEX.txt` (`Migrator` applies them in numeric order regardless of the manifest's line order — `ClassLoader.getResources` can't list a JAR directory, hence the manifest). As of commit `ad98b7b`, five are shipped: `001_initial.sql`, `003_document_revisions.sql`, `005_export_stages.sql`, `007_drop_attachment_master_key.sql`, `008_ingest_attempts.sql` (`PRAGMA user_version` reaches 8). Numbers **002, 004 and 006 are reserved, not free** — `docs/VAULT_FORMAT.md` §7 explains why: `002_attestation_status`, `004_post_mmap_blake3` and `006_recovery_drafts` are claimed by landed design docs and the coordination bead `skein-voys`; taking one of those numbers for something else would collide. Caveat (`skein-p8rn`): `Migrator` applies only versions above the current `user_version`, so a reserved number landing after a higher one — as 005 did after 007/008 — is skipped on an already-migrated database; the applied-migrations ledger that fixes this is uncommitted in its worktree as of this stamp (see the handoff §2.3). Read `INDEX.txt` and the migration file directly before adding a ninth.
 
 ### 3.4 Native builds and submodules
 
@@ -272,12 +277,11 @@ logged — see `app.skein.testing.SkeinLogCapture`'s KDoc.
 #### llama.cpp: `LlamaLogRedactor`
 
 `app.skein.inference.service.LlamaLogRedactor` (`:inference-service`, pure
-Kotlin, no JNI dependency) is the redactor the future `llama_log_set`
-native callback will call before anything from llama.cpp itself reaches
-`SkeinLog` — llama.cpp logs prompt text directly at points `SkeinLog`'s own
-marker check never sees, since that text never goes through `SkeinLog` at
-all until this redactor has already run. `LlamaLogRedactor.forward(level,
-message)`:
+Kotlin, no JNI dependency) is the redactor the native `llama_log_set`
+callback calls before anything from llama.cpp itself reaches `SkeinLog` —
+llama.cpp logs prompt text directly at points `SkeinLog`'s own marker check
+never sees, since that text never goes through `SkeinLog` at all until this
+redactor has already run. `LlamaLogRedactor.forward(level, message)`:
 
 - drops (returns `null` for) anything at `DEBUG`/`INFO` — llama.cpp's own
   verbose/info logging is never forwarded, sensitive or not;
@@ -287,10 +291,14 @@ message)`:
   are preserved; only the content is replaced, and a message may contain
   more than one marker.
 
-Wiring the real native `llama_log_set` callback to call this is out of
-scope for `E1.I11`/skein-4je — it lands with the llama.cpp build itself
-(`E1.I4`/`E4.I1`, skein-ca2/skein-3aw) — this issue only ships the pure
-Kotlin redactor those issues will call.
+The native side is wired (skein-3aw, `E4.I1`): `LlamaNative.setLogCallback()`
+→ `Java_app_skein_inference_service_LlamaNative_setLogCallback` in
+`native/llama/jni/skein_jni.cpp` installs a `llama_log_set` callback that
+calls back into `LlamaNative.onNativeLog(level, message)`, which routes
+through `LlamaLogRedactor.forward` before `SkeinLog`. Independently,
+`tools/ci/no-content-logging.sh` (skein-nxk, a `ci.yml` step) fails if any
+`SkeinLog` call in the service sources references a prompt/token/piece
+variable.
 
 ## 4. Test conventions
 
