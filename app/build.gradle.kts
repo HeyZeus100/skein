@@ -159,6 +159,15 @@ dependencies {
     // and `ThermalGovernor` (`:core:inference`) for batch pacing.
     implementation(project(":core:rag"))
     implementation(project(":core:inference"))
+    // skein-0m1z (POST_REVIEW_RESOLUTIONS.md §4.3): `ExportStageCoordinator`
+    // implements `:core:export`'s `ExportStageRecorder` port — the seam that
+    // turns a spooled PDF into an `export_stages` row plus a
+    // `StagedPlaintextSweeper` request — and `BootReceiver`/`VaultServices`
+    // read `PdfStaging.STAGING_DIR_NAME` rather than re-declaring it. Adds no
+    // external artifact: `:core:export`'s own dependencies (`:core:markdown`,
+    // `:core:model`, `:core:vault`, core-ktx, coroutines) are all already on
+    // this module's runtime classpath.
+    implementation(project(":core:export"))
     // E5.I10: WorkManager runs the pass as unique one-time work (no
     // constraints gate — `docs/design/LOCK_POLICY_INDEXING.md` §3.2/§7.1).
     // Its manifest-merged permissions are stripped in AndroidManifest.xml
@@ -187,6 +196,10 @@ dependencies {
     implementation(libs.material3)
 
     testImplementation(libs.junit)
+    // skein-0m1z: the export-stage tests assert with Truth, as every other
+    // module's tests in this repo already do. Test-only — no runtime or
+    // license-audit classpath impact.
+    testImplementation(libs.truth)
     testImplementation(libs.robolectric)
     testImplementation(libs.androidx.test.ext.junit)
     // E10.I1: Robolectric-backed Compose UI test sample (MainActivityComposeTest).

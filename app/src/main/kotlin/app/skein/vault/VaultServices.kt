@@ -7,6 +7,7 @@ package app.skein.vault
 import android.content.Context
 import android.os.PowerManager
 import androidx.work.WorkManager
+import app.skein.core.export.pdf.PdfStaging
 import app.skein.core.inference.thermal.ThermalGovernor
 import app.skein.core.vault.key.VaultKeyProvider
 import app.skein.core.vault.key.VaultKeyProviders
@@ -15,6 +16,7 @@ import app.skein.core.vault.lifecycle.VaultReset
 import app.skein.core.vault.session.LockPolicy
 import app.skein.core.vault.session.UnlockManager
 import app.skein.core.vault.session.UnlockState
+import app.skein.export.stage.ExportStageCoordinator
 import app.skein.ingest.IngestPipelines
 import app.skein.ingest.IngestScheduler
 import app.skein.ingest.ThermalIngestPacer
@@ -44,6 +46,13 @@ class VaultServices(
     /** E5.I10 (skein-7v3): enqueues ingest on open/document change, cancels it on lock, runs `IngestWorker`'s pass. */
     val ingest: IngestScheduler,
     val vaultReset: VaultReset,
+    /**
+     * skein-0m1z (POST_REVIEW_RESOLUTIONS.md §4.3): records staged export
+     * plaintext, runs `StagedPlaintextSweeper`'s pass, and sweeps on lock.
+     * Also the `ExportStageRecorder` to hand `PdfExportService` when E2.I11's
+     * PDF export UI is wired up.
+     */
+    val exportStages: ExportStageCoordinator,
 ) {
     /** The open vault's services, or `null` while locked / not yet brought up. */
     val session: StateFlow<VaultSession?> get() = bootstrap.session
@@ -53,15 +62,15 @@ class VaultServices(
         const val ATTACHMENTS_DIR: String = "attachments"
 
         /**
-         * `cache/staging_export/` — MUST match `core/export/pdf/PdfStaging.STAGING_DIR_NAME`.
-         * Duplicated as a literal (rather than a dependency on `:core:export`
-         * from `:app`) the same way `EnvelopeUnreadable`'s reason strings are
-         * kept in step with `MasterKeyStorageException.Kind` verbatim rather
-         * than shared — see `VaultReset`'s own doc on why this directory,
-         * under `cacheDir` rather than `filesDir`, is still in [VaultReset]'s
+         * `cache/staging_export/` — the export staging directory. skein-0m1z
+         * made `:app` depend on `:core:export` (for the `ExportStageRecorder`
+         * port [ExportStageCoordinator] implements), so this is now the real
+         * `PdfStaging.STAGING_DIR_NAME` rather than a literal kept in step by
+         * hand. See `VaultReset`'s own doc on why this directory, under
+         * `cacheDir` rather than `filesDir`, is still in [VaultReset]'s
          * deletion set.
          */
-        private const val EXPORT_STAGING_DIR_NAME: String = "staging_export"
+        private const val EXPORT_STAGING_DIR_NAME: String = PdfStaging.STAGING_DIR_NAME
 
         /**
          * Production wiring: the device `VaultKeyProvider`
@@ -120,8 +129,31 @@ class VaultServices(
                 )
             wireLockPolicy(app, unlockManager, scope)
             val ingest = wireIngest(app, unlockManager, bootstrap, scope)
-            return VaultServices(keyProvider, unlockManager, bootstrap, ingest, vaultReset)
+            val exportStages = wireExportStages(app, unlockManager, bootstrap, scope)
+            return VaultServices(keyProvider, unlockManager, bootstrap, ingest, vaultReset, exportStages)
         }
+
+        /**
+         * skein-0m1z (POST_REVIEW_RESOLUTIONS.md §4.3): the staged-plaintext
+         * lifetime machinery. Registers itself as a HIGH-priority lock
+         * observer (like [wireIngest]'s scheduler) so the sweep runs while
+         * the master key is still live and the vault still open — see
+         * [ExportStageCoordinator]'s header for why that is `onLocking` and
+         * not `onLocked`.
+         */
+        private fun wireExportStages(
+            context: Context,
+            unlockManager: UnlockManager,
+            bootstrap: VaultBootstrap,
+            scope: CoroutineScope,
+        ): ExportStageCoordinator =
+            ExportStageCoordinator(
+                unlockManager = unlockManager,
+                repository = { bootstrap.session.value?.exportStages },
+                workManager = { WorkManager.getInstance(context) },
+                stagingDir = File(context.cacheDir, EXPORT_STAGING_DIR_NAME),
+                scope = scope,
+            )
 
         /**
          * E5.I10 (skein-7v3): the ingest pass over the open session —

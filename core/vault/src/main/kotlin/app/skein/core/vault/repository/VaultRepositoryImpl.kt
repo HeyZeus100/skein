@@ -68,6 +68,8 @@ package app.skein.core.vault.repository
 import androidx.sqlite.SQLiteConnection
 import androidx.sqlite.SQLiteStatement
 import app.skein.core.vault.blob.AttachmentStore
+import app.skein.core.vault.export.stage.ExportStageRepository
+import app.skein.core.vault.export.stage.ExportStageRow
 import app.skein.core.vault.id.Uuid7
 import app.skein.core.vault.index.FtsQuerySanitizer
 import kotlinx.coroutines.CoroutineDispatcher
@@ -118,6 +120,11 @@ public class VaultRepositoryImpl(
     private val clock: () -> Long = System::currentTimeMillis,
     private val io: CoroutineDispatcher = Dispatchers.IO,
 ) : VaultRepository,
+    // skein-0m1z: `export_stages` (migration 005) is vault-internal
+    // bookkeeping, so it is a `:core:vault` interface rather than an
+    // addition to the `:core:model` `VaultRepository` contract (which the
+    // `InMemoryVaultRepository` fake mirrors). See its KDoc.
+    ExportStageRepository,
     AutoCloseable {
     private val writerMutex: Mutex = Mutex()
     private val readerSlots: List<ReaderSlot> = readers.map { ReaderSlot(it) }
@@ -591,6 +598,80 @@ public class VaultRepositoryImpl(
             publish(TableChange.IngestQueue)
         }
     }
+
+    // ------------------------------------------------------------------
+    // Export stages (migration 005, skein-0m1z)
+    // ------------------------------------------------------------------
+    //
+    // Implemented here rather than in a class of its own so a stage row
+    // shares this repository's single writer connection, its [writerMutex]
+    // and its reentrant transaction plumbing: a second writing connection
+    // to the same SQLCipher file would serialize on SQLite's own lock with
+    // no coordination with the writes already in flight here.
+
+    override suspend fun insertStage(row: ExportStageRow) {
+        writeTx {
+            writer.prepare(VaultSql.INSERT_EXPORT_STAGE).use { stmt ->
+                stmt.bindText(1, row.stageId)
+                stmt.bindText(2, row.path)
+                stmt.bindText(3, row.origin)
+                if (row.documentId == null) stmt.bindNull(4) else stmt.bindText(4, row.documentId)
+                if (row.revisionHash == null) stmt.bindNull(5) else stmt.bindText(5, row.revisionHash)
+                stmt.bindLong(6, row.createdAt)
+                stmt.bindLong(7, row.expiresAt)
+                stmt.bindLong(8, if (row.swept) 1L else 0L)
+                stmt.step()
+            }
+        }
+    }
+
+    override suspend fun getStage(stageId: String): ExportStageRow? =
+        withReader { conn ->
+            conn.prepare(VaultSql.SELECT_EXPORT_STAGE).use { stmt ->
+                stmt.bindText(1, stageId)
+                if (stmt.step()) readExportStage(stmt) else null
+            }
+        }
+
+    override suspend fun listUnsweptStages(): List<ExportStageRow> =
+        withReader { conn ->
+            conn.prepare(VaultSql.SELECT_UNSWEPT_EXPORT_STAGES).use { stmt ->
+                buildList { while (stmt.step()) add(readExportStage(stmt)) }
+            }
+        }
+
+    override suspend fun markStageSwept(stageId: String): Boolean =
+        writeTx {
+            writer.prepare(VaultSql.MARK_EXPORT_STAGE_SWEPT).use { stmt ->
+                stmt.bindText(1, stageId)
+                stmt.step()
+            }
+            changedRows() > 0
+        }
+
+    override suspend fun markAllStagesSwept(): Int =
+        writeTx {
+            writer.prepare(VaultSql.MARK_ALL_EXPORT_STAGES_SWEPT).use { it.step() }
+            changedRows()
+        }
+
+    /** Rows touched by the statement just run on [writer]; must be read before any other statement. */
+    private fun changedRows(): Int =
+        writer.prepare(VaultSql.SELECT_CHANGES).use { stmt ->
+            if (stmt.step()) stmt.getLong(0).toInt() else 0
+        }
+
+    private fun readExportStage(stmt: SQLiteStatement): ExportStageRow =
+        ExportStageRow(
+            stageId = stmt.getText(0),
+            path = stmt.getText(1),
+            origin = stmt.getText(2),
+            documentId = if (stmt.isNull(3)) null else stmt.getText(3),
+            revisionHash = if (stmt.isNull(4)) null else stmt.getText(4),
+            createdAt = stmt.getLong(5),
+            expiresAt = stmt.getLong(6),
+            swept = stmt.getLong(7) != 0L,
+        )
 
     // ------------------------------------------------------------------
     // Transactions

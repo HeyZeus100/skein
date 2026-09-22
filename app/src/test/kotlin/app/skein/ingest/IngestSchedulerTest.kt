@@ -14,6 +14,7 @@ import app.skein.core.vault.key.VaultKeyProvider
 import app.skein.core.vault.provider.VaultDocumentsProvider
 import app.skein.core.vault.session.LockReason
 import app.skein.core.vault.session.UnlockManager
+import app.skein.export.stage.FakeExportStageRepository
 import app.skein.vault.BringUpResult
 import app.skein.vault.DocumentsProviderPort
 import app.skein.vault.ScriptedVaultKeyProvider
@@ -109,6 +110,7 @@ class IngestSchedulerTest {
                         personaService = InMemoryPersonaService(),
                         exportService = FakeExportService(),
                         importService = FakeImportService(),
+                        exportStages = FakeExportStageRepository(),
                     ) { events += "close" }
                 },
                 provider =

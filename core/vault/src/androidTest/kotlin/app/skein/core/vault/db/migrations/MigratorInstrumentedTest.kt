@@ -73,6 +73,12 @@ class MigratorInstrumentedTest {
                 // 003_document_revisions.sql (skein-uo5n): content-addressed
                 // revision history, per POST_REVIEW_RESOLUTIONS.md §1.3.
                 "document_revisions",
+                // 005_export_stages.sql (skein-0m1z): the staged-plaintext
+                // ledger, per POST_REVIEW_RESOLUTIONS.md §4.3. 005 is a
+                // RESERVED number lower than the already-landed 007/008;
+                // `Migrator` sorts numerically, so a fresh database applies
+                // it between 003 and 007 and still ends at user_version 8.
+                "export_stages",
             )
             // 007_drop_attachment_master_key.sql (skein-7d0l): the vestigial
             // Layer-1 wrapped-master table (superseded by the app-private
@@ -99,6 +105,8 @@ class MigratorInstrumentedTest {
                 "idx_documents_kind_updated",
                 "idx_document_revisions_doc",
                 "idx_chunks_revision",
+                // 005 (skein-0m1z): the sweeper's "what has expired" index.
+                "idx_export_stages_expires",
             )
             // Dropping attachment_keys drops its index with it (no explicit
             // DROP INDEX needed — verified empirically against sqlite3
@@ -201,6 +209,59 @@ class MigratorInstrumentedTest {
 
             exec(conn, "DELETE FROM documents WHERE id = 'doc-rev';")
             assertThat(revisionCount(conn, "doc-rev")).isEqualTo(0)
+        }
+    }
+
+    // --- 005: export_stages defaults and document cascade ---
+
+    @Test
+    fun exportStageDefaultsToUnsweptAndCascadesWithItsDocument() {
+        val dbFile = tempDbFile()
+        Migrator(SkeinSQLiteDriver(randomKey(13))).migrate(dbFile.absolutePath)
+
+        SkeinSQLiteDriver(randomKey(13)).open(dbFile.absolutePath).use { conn ->
+            // FK enforcement is off by default in SQLite; the cascade below
+            // only fires with it on, and `VaultLifecycle` turns it on for
+            // every production connection.
+            exec(conn, "PRAGMA foreign_keys = ON;")
+            insertNote(conn, id = "doc-stage", title = "Title", bodyMd = "body", createdAt = 100, updatedAt = 100)
+            exec(
+                conn,
+                "INSERT INTO export_stages(stage_id, path, origin, document_id, created_at, expires_at) " +
+                    "VALUES ('stage-1', '/cache/staging_export/stage-1-x.pdf', 'pdf_export', 'doc-stage', 100, 700);",
+            )
+
+            // `swept` defaults to 0 -- a freshly recorded stage is always
+            // pending, never accidentally born already-swept.
+            assertThat(sweptFlag(conn, "stage-1")).isEqualTo(0L)
+
+            // Deleting the document takes its stage row with it. The FILE is
+            // still removed, because StagedPlaintextSweep.sweepAll sweeps the
+            // staging DIRECTORY and not only the rows -- see 005's header.
+            exec(conn, "DELETE FROM documents WHERE id = 'doc-stage';")
+            assertThat(stageCount(conn, "stage-1")).isEqualTo(0L)
+        }
+    }
+
+    private fun sweptFlag(
+        conn: SQLiteConnection,
+        stageId: String,
+    ): Long {
+        conn.prepare("SELECT swept FROM export_stages WHERE stage_id = ?;").use { stmt ->
+            stmt.bindText(1, stageId)
+            check(stmt.step()) { "no export_stages row for stage_id=$stageId" }
+            return stmt.getLong(0)
+        }
+    }
+
+    private fun stageCount(
+        conn: SQLiteConnection,
+        stageId: String,
+    ): Long {
+        conn.prepare("SELECT COUNT(*) FROM export_stages WHERE stage_id = ?;").use { stmt ->
+            stmt.bindText(1, stageId)
+            check(stmt.step()) { "COUNT(*) returned no row" }
+            return stmt.getLong(0)
         }
     }
 

@@ -2,7 +2,9 @@ package app.skein
 
 import android.app.Application
 import androidx.work.Configuration
+import androidx.work.DelegatingWorkerFactory
 import app.skein.core.model.SkeinLog
+import app.skein.export.stage.StagedPlaintextSweeper
 import app.skein.ingest.IngestWorker
 import app.skein.system.AndroidSkeinLogSink
 import app.skein.vault.VaultServices
@@ -37,12 +39,23 @@ open class SkeinApplication :
     Configuration.Provider {
     val vault: VaultServices by lazy { createVaultServices() }
 
+    /**
+     * skein-0m1z adds a second custom worker ([StagedPlaintextSweeper]), so
+     * the single factory becomes a [DelegatingWorkerFactory] chain. Each
+     * factory returns `null` for classes that are not its own, and
+     * WorkManager falls back to reflection once every delegate has declined
+     * — so adding one here never changes how any existing worker is built.
+     */
     override val workManagerConfiguration: Configuration
         get() =
             Configuration
                 .Builder()
-                .setWorkerFactory(IngestWorker.Factory { vault.ingest })
-                .build()
+                .setWorkerFactory(
+                    DelegatingWorkerFactory().apply {
+                        addFactory(IngestWorker.Factory { vault.ingest })
+                        addFactory(StagedPlaintextSweeper.Factory { vault.exportStages })
+                    },
+                ).build()
 
     override fun onCreate() {
         super.onCreate()

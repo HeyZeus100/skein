@@ -33,7 +33,7 @@ class MigratorTest {
     }
 
     @Test
-    fun `main migrations index lists exactly 001, 003, 007 and 008`() {
+    fun `main migrations index lists exactly 001, 003, 005, 007 and 008`() {
         // Exercises the real production manifest shipped in
         // src/main/resources/migrations/INDEX.txt against the default
         // constructor overload.
@@ -48,6 +48,14 @@ class MigratorTest {
         assertThat(listedFiles.toList()).containsExactly(
             "001_initial.sql",
             "003_document_revisions.sql",
+            // 005_export_stages.sql (skein-0m1z) fills a number RESERVED for
+            // it (bd skein-voys, docs/VAULT_FORMAT.md §7) that is lower than
+            // the already-landed 007/008. `Migrator` sorts by the leading
+            // NNN, not by this file's line order, so a fresh database still
+            // applies 001 -> 003 -> 005 -> 007 -> 008 and still ends at
+            // user_version 8. See that migration's "UPGRADE-PATH CAVEAT"
+            // header for the one case this does not cover.
+            "005_export_stages.sql",
             "007_drop_attachment_master_key.sql",
             "008_ingest_attempts.sql",
         )

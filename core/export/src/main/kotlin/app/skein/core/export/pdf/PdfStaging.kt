@@ -2,9 +2,10 @@
 // copied into the print framework's destination `ParcelFileDescriptor` —
 // `cache/staging_export/`, the exact directory `docs/design/
 // POST_REVIEW_RESOLUTIONS.md` §4.3 excludes from both `data_extraction_rules.xml`
-// (API 31+) and `backup_rules_legacy.xml` (API 30), and the directory name
-// `skein-0m1z`'s future `ExportStageRepository`/`StagedPlaintextSweeper`
-// will scan. Always under `context.cacheDir` — never a user-writable path.
+// (API 31+) and `backup_rules_legacy.xml` (API 30), and the directory
+// `skein-0m1z`'s `StagedPlaintextSweep`/`BootReceiver` now sweep (via
+// [STAGING_DIR_NAME], which `:app` reads rather than re-declaring). Always
+// under `context.cacheDir` — never a user-writable path.
 
 package app.skein.core.export.pdf
 
