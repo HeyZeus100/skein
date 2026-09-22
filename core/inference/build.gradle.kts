@@ -29,6 +29,19 @@ dependencies {
     // logs refusals through `SkeinLog` (:core:model), which the NoRawLogging
     // guard requires instead of android.util.Log.
     api(project(":core:model"))
+    // skein-28wm (POST_REVIEW_RESOLUTIONS §2.3 / §3.3): `WireBindings.toWire`
+    // returns `us.aherrera.skein.ipc.ManifestBinding` (and takes/produces its
+    // `ManifestFileRef` / `AttestationRefParcel`), so that type is part of this
+    // module's public API surface and the edge must be `api`, not
+    // `implementation` — the same reasoning `:core:ipc` gives for its own
+    // `api(project(":core:model"))` edge. `:core:inference` is an app-side
+    // module (unlike `:inference-service` / `:embedder-service`): neither
+    // `IsolationGuardPlugin`'s `PURE_JVM_MODULES` nor its
+    // `SERVICE_ALLOWLISTS` name `:core:inference`, so no guard restricts what
+    // it may depend on, and this edge does not touch either isolated
+    // service's own declared dependencies (verified by running both
+    // services' `checkIsolationGuards` after adding this line).
+    api(project(":core:ipc"))
     // skein-st1r: `ModelManifest.parse` reads the `*.skein.json` manifest with
     // kotlinx.serialization's tree API (`parseToJsonElement`) — no compiler
     // plugin, no new library (`:core:model` already exposes this as `api`;
@@ -37,6 +50,11 @@ dependencies {
 
     testImplementation(libs.junit)
     testImplementation(libs.truth)
+    // skein-28wm: `WireBindingsTest` opens real `ParcelFileDescriptor`s and
+    // Parcel-round-trips the produced wire `ManifestBinding`, the same reason
+    // `:core:ipc`'s `ParcelRoundTripTest` needs it (AGP's mockable
+    // `android.jar` only throws `Stub!` for `android.os` types).
+    testImplementation(libs.robolectric)
     // E10.I3 (skein-gzr): `LlamaCppEngineTest`'s `@Ignore`d placeholder
     // subclasses `InferenceEngineContractTest` from `:testing`, the same
     // way every other contract-suite consumer does.
