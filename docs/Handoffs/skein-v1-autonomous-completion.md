@@ -77,7 +77,7 @@ Never drift into these under any autonomous decision-making:
 
 - `main` is **one merge ahead of `origin/main`**: `ad98b7b` (skein-nxk, the inference service) is verified locally (full native build, both isolation guards, `jni-symbols.sh`, `no-content-logging.sh`, manifest audit — all green) but **not pushed**; `origin/main` is `c94e1c4`. The main checkout also carries one **uncommitted** file the nxk merge needs to compile its instrumented tests: `core/inference/src/androidTest/kotlin/app/skein/core/inference/models/ImmutableModelStoreInstrumentedTest.kt` (the `LoadPhaseHook.afterPreMmapVerify` override re-typed from `ManifestBinding` to `VerifyBinding`). Commit that fix, check CI, then push — in that order. A stray untracked `Untitled/` directory (an empty `.git`, not ours) can be deleted.
 - The API **weekly limit** was hit on 2026-09-22 (resets 2026-09-27 18:00 America/Los_Angeles). Every subagent in flight was terminated; three left uncommitted work in their worktrees (§2.3). Until the reset, work is coordinator-only.
-- CI on `main` was red on **every push from 2026-09-20 until 2026-09-21 ~20:00 PT** and nobody noticed for a day because local verification was green: a missing Linux `aapt2` checksum in `gradle/verification-metadata.xml` (fixed at `f0bba85`; bd memory `verification-metadata-linux-classifier`), then one Compose test's 5 s ceiling on the 2-core runner (fixed at `9812787`). Later runs were cancelled by successive pushes; **no run on `main` has yet been observed green end to end.** Run `gh run list --branch main --limit 5` before dispatching anything (§4.9).
+- CI on `main` was red on **every push from 2026-09-20 until 2026-09-21 ~20:00 PT** and nobody noticed for a day because local verification was green: a missing Linux `aapt2` checksum in `gradle/verification-metadata.xml` (fixed at `f0bba85`; bd memory `verification-metadata-linux-classifier`), then one Compose test's 5 s ceiling on the 2-core runner (fixed at `9812787`). **At `c94e1c4` both `CI` and the two-runner `Reproducible build check` are green** (runs 35682300562 / 35682300542 — 1 of the 3 consecutive commits skein-egyu needs). The `Emulator instrumented tests` lane is red for a workflow reason (`sdkmanager` not on PATH → no adb → `dexBuilderDevDebugAndroidTest`), filed as a bug; exclude it with `tools/loop/ci-status.sh --require-green --ignore Emulator` until fixed, and run that script before dispatching anything (§4.9).
 - `bd stats`: 181 closed / 337 total, 94 ready. 317 commits on `main`.
 - The M0.5 gate review (`skein-pe3`) is complete — 18 findings, no P0, five P1 (three fixed in-bead by skein-nxk, one by skein-va7y, one re-scoped as skein-w2vj) — and **awaits the owner's sign-off**; the bead is `in_progress` with `needs-human-review`.
 
@@ -107,7 +107,7 @@ Every commit below is an ancestor of `ad98b7b` (`git merge-base --is-ancestor <s
 | skein-ddpt import must not overwrite by UUID | `590be04` | `3592e8a` | `agent-a2ef4dca71c364020` |
 | skein-va7y `lock()` always zeroizes | `6ececba` | `3d7f68f` | `agent-a362e017d435bf526` |
 | skein-zh7o SYSTEM history rendered as data | `6b7b8dd` | `544b99b` | `agent-ad11841ef6af3a1b4` |
-| skein-fsn notifications | `83b4092` (Sonnet takeover; its history also contains the Haiku commit `e7f992c`, whose production code was reviewed unchanged and whose claimed tests never existed) | `c94e1c4` | `agent-a87bdf96b68a09598` and `agent-a10c5d97b52fe7c28` |
+| skein-fsn notifications | `83b4092` (Sonnet takeover; its history also contains the Haiku commits `8fa1e49`/`e7f992c` — production code reviewed unchanged; `e7f992c` claimed "AC tests, verification PASS" while *deleting* the one trivial test `8fa1e49` had added, so the merged tree had no tests until the takeover) | `c94e1c4` | `agent-a87bdf96b68a09598` and `agent-a10c5d97b52fe7c28` |
 | skein-ddp reproducible builds | `2a49b7b` | `0be4b5c` | `agent-a5bbd8b65c4e8c25a` |
 | skein-nxk `:inference` service + `:core:verify` | `c95f726` (+ `658dda1`) | `ad98b7b` — **not yet pushed** | `agent-a7ea8995bc2f98dcf` |
 
@@ -120,6 +120,8 @@ Every other directory under `worktrees/` belongs to an earlier, already-merged b
 | skein-p8rn Migrator applied-migrations ledger | `agent-adb5c4627bac86c44` | `220dd9c` | Modified `core/vault/.../db/migrations/Migrator.kt`, `MigratorTest.kt`, `MigratorInstrumentedTest.kt`, `005_export_stages.sql` (header), `docs/VAULT_FORMAT.md`. **No commit.** No applied-migrations ledger exists on `main`; a DB already at `user_version` 8 silently never receives a gap-filling reserved migration (005 today; 002/004/006 later). | Read the diff; replay onto current `main` (which now has 008 and skein-a2yr's repository changes); verify per the bead's ACs; or discard and re-dispatch after the limit resets. |
 | skein-3yal `onError` / diagnostic sanitization | `agent-afaa68822117effd9` | `05bc17b` | Modified `core/ipc/.../ErrorCodes.kt` + `ErrorMappingTest.kt`, `core/model/.../Inference.kt`, `app/.../system/AndroidSkeinLogSink.kt`; new `core/model/.../DiagnosticSanitizationTest.kt`, `app/.../system/AndroidSkeinLogSinkTest.kt`. **No commit.** `sanitizeDiagnostic` is not on `main`. | This is the fix that keeps a compromised isolated process from injecting arbitrary text into logcat/UI through `onError(message)` (review finding, P2). Replay onto current `main` — skein-nxk has since added `ErrorCodes.asServiceFailure/codeOf` in the same file — verify, commit. |
 | skein-mzm5 reentrant transactions in the in-memory fake | `agent-a3fe26b001f8786e1` | `6042328` | Modified `testing/.../InMemoryVaultRepository.kt` and `VaultRepositoryContractTest.kt` — the agent was **mid-refactor** (replacing `writeLock.withLock` sites with a `writeTx`) when the limit hit; almost certainly does not compile. | Read the diff before deciding; the new contract-test cases may be worth keeping, the half-done fake edit probably not. Discarding and re-dispatching is acceptable. |
+
+`tools/loop/worktree-gc.sh` (dry run at `417cc9f`) also reports **10 more dirty worktrees and 2 unmerged branches from earlier sessions** — content untriaged: the unmerged `agent-ad4910b68c56be89e` (`14d7fd1`) carries a candidate fix for the open skein-ebcx on top of superseded E1.I3 CI fixups (cherry-pick the one commit; noted on the bead), and `agent-a70cb19763b6d9959` (`8d25695`, a skein-qsux WIP) is superseded. The triage bead lists every one; the script never removes a dirty or unmerged worktree.
 
 ### 2.4 Human decisions outstanding (surface these; never decide them autonomously)
 
@@ -406,6 +408,23 @@ Every dispatch prompt should end with these mandatory sections:
 - Do NOT weaken any non-negotiable in docs/Handoffs/skein-v1-autonomous-completion.md §3.
 - Prefer authoritative spec/design docs over this prompt when they conflict.
   Document deviations via `bd note <id>` before closing.
+
+## Ponytail ladder (MANDATORY before writing any code — https://github.com/dietrichgebert/ponytail, MIT)
+Read the problem completely first — be lazy about the solution, never about
+reading. Then, for every piece of code you are about to write, stop at the
+FIRST rung that answers it:
+1. Does this need to exist?   → no: skip it (YAGNI)
+2. Already in this codebase?  → reuse it, don't rewrite
+3. Stdlib does it?            → use it
+4. Native platform feature?   → use it
+5. Installed dependency?      → use it
+6. One line?                  → one line
+7. Only then: the minimum that works
+Never skip validation, error handling, security or the tests the bead's
+acceptance criteria name — the ladder trims code, not guardrails. Name the
+rung you stopped at for any non-obvious choice in your hand-back.
+(Coordinator sessions also run the `ponytail` Claude Code plugin — installed
+2026-09-22; subagents get the ladder from this block regardless.)
 
 ## Close, commit, push
 ```bash
