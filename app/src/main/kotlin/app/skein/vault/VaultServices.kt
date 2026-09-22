@@ -145,7 +145,7 @@ class VaultServices(
                 session = bootstrap.session,
                 port = WorkManagerIngestWorkPort(WorkManager.getInstance(context)),
                 pacer = ThermalIngestPacer.forGovernor(thermal),
-                pipelines = { session, attempts, pace -> IngestPipelines.forSession(session, pace, attempts) },
+                pipelines = { session, pace -> IngestPipelines.forSession(session, pace) },
                 scope = scope,
             ).also { it.start() }
         }

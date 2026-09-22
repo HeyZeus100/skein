@@ -459,6 +459,14 @@ public class InMemoryVaultRepository(
         }
     }
 
+    override suspend fun recordIngestFailure(docId: DocId): Int =
+        writeLock.withLock {
+            val current = ingestQueue[docId] ?: return@withLock 0
+            val next = current.attempts + 1
+            ingestQueue[docId] = current.copy(attempts = next)
+            next
+        }
+
     override suspend fun enqueueReembedAll() {
         writeLock.withLock {
             val now = clock()

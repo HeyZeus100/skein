@@ -74,8 +74,11 @@ public class VaultRepositoryImplContractTest : VaultRepositoryContractTest() {
         // 001 plus 003 (`document_revisions`, skein-uo5n): the inherited
         // contract suite now covers POST_REVIEW_RESOLUTIONS.md §1's revision
         // and citation-record semantics, which need 003's table. 007 drops
-        // only tables this class never touches, so it is still skipped.
-        for (migration in listOf("001_initial.sql", "003_document_revisions.sql")) {
+        // only tables this class never touches, so it is still skipped. 008
+        // (skein-zx15) is needed too: `dequeueIngest`/`recordIngestFailure`
+        // now read/write `ingest_queue.attempts`, which only exists once 008
+        // has applied.
+        for (migration in listOf("001_initial.sql", "003_document_revisions.sql", "008_ingest_attempts.sql")) {
             val sql =
                 requireNotNull(
                     javaClass.classLoader?.getResourceAsStream("migrations/$migration"),

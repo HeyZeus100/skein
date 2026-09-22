@@ -32,18 +32,21 @@
 //   • The idle timer is never touched (`UnlockManager.poke` is not called
 //     here): background ingest must not keep the vault open past the
 //     user's own inactivity timeout.
-//   • Bounded retries. One `IngestAttempts` counter per unlocked session
-//     (the in-memory stand-in for the not-yet-landed `ingest_attempts`
-//     column — see that file's header) is shared by every pass of the
-//     session and reset on lock (§4.5), so a poisoned document is dropped
-//     after three failing passes rather than retried forever.
+//   • Bounded retries. `ingest_queue.attempts` (migration 008, skein-zx15)
+//     is a persisted, per-document counter read and written through
+//     `session.repository`, so a poisoned document is dropped after three
+//     failing passes total — not per unlocked session. This scheduler no
+//     longer owns an in-memory counter to reset on lock (the pre-008
+//     `IngestAttempts` stand-in it used to hold did, and reset in
+//     `onLocked`; that reset is gone along with the field, since the
+//     persisted count is meant to survive the lock/unlock boundary it used
+//     to be cleared by).
 //
 // A cold start sweeps whatever unique work a previous process left behind
 // (`port.cancel()` in `init`): the vault is locked on every process start.
 
 package app.skein.ingest
 
-import app.skein.core.rag.ingest.IngestAttempts
 import app.skein.core.rag.ingest.IngestOutcome
 import app.skein.core.rag.ingest.IngestPace
 import app.skein.core.rag.ingest.IngestPipeline
@@ -74,8 +77,8 @@ data class IngestProgress(
     val vectorsPending: Int = 0,
 )
 
-/** Builds the pipeline for one pass: the open session, the session's failure counter, and the pace callback. */
-typealias IngestPipelineFactory = (VaultSession, IngestAttempts, () -> IngestPace) -> IngestPipeline
+/** Builds the pipeline for one pass: the open session and the pace callback. */
+typealias IngestPipelineFactory = (VaultSession, () -> IngestPace) -> IngestPipeline
 
 /**
  * See the file header.
@@ -104,9 +107,6 @@ class IngestScheduler(
     val progress: StateFlow<IngestProgress> = progressState.asStateFlow()
 
     private val runMutex = Mutex()
-
-    /** Per-session failure counter (file header); reset in [onLocked]. */
-    private val attempts = IngestAttempts()
 
     init {
         port.cancel()
@@ -141,7 +141,7 @@ class IngestScheduler(
             val open = session.value
             if (open == null || !authorized(sessionEpoch)) return@withLock IngestOutcome.Locked(0, 0)
             val pipeline =
-                pipelines(open, attempts) {
+                pipelines(open) {
                     if (session.value !== open || !authorized(sessionEpoch)) IngestPace.LOCKED else pacer.pace()
                 }
             pacer.begin()
@@ -174,7 +174,6 @@ class IngestScheduler(
 
     override fun onLocked(epoch: Long) {
         progressState.value = IngestProgress()
-        attempts.reset()
     }
 
     override fun onUnlocked(epoch: Long) = Unit

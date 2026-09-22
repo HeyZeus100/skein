@@ -550,6 +550,7 @@ public class VaultRepositoryImpl(
                             docId = stmt.getText(0),
                             reason = IngestReason.fromDb(stmt.getText(1)),
                             queuedAt = stmt.getLong(2),
+                            attempts = stmt.getLong(3).toInt(),
                         )
                 }
                 out
@@ -569,6 +570,17 @@ public class VaultRepositoryImpl(
             publish(TableChange.IngestQueue)
         }
     }
+
+    override suspend fun recordIngestFailure(docId: DocId): Int =
+        writeTx {
+            val next =
+                writer.prepare(VaultSql.INCREMENT_INGEST_ATTEMPTS).use { stmt ->
+                    stmt.bindText(1, docId)
+                    if (stmt.step()) stmt.getLong(0).toInt() else 0
+                }
+            if (next > 0) publish(TableChange.IngestQueue)
+            next
+        }
 
     override suspend fun enqueueReembedAll() {
         writeTx {

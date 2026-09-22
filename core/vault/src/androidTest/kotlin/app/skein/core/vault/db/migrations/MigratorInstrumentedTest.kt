@@ -48,17 +48,17 @@ class MigratorInstrumentedTest {
     // --- Fresh migrate: version + full schema object set (§4.9) ---
 
     @Test
-    fun freshDatabaseMigratesToVersion7WithAllSchemaObjects() {
+    fun freshDatabaseMigratesToVersion8WithAllSchemaObjects() {
         val dbFile = tempDbFile()
 
         val result = Migrator(SkeinSQLiteDriver(randomKey(1))).migrate(dbFile.absolutePath)
 
         assertThat(result.fromVersion).isEqualTo(0)
-        assertThat(result.toVersion).isEqualTo(7)
+        assertThat(result.toVersion).isEqualTo(8)
 
         SkeinSQLiteDriver(randomKey(1)).open(dbFile.absolutePath).use { conn ->
             val inspector = SchemaInspector(conn)
-            assertThat(inspector.userVersion()).isEqualTo(7)
+            assertThat(inspector.userVersion()).isEqualTo(8)
             assertThat(inspector.tables()).containsAtLeast(
                 "documents",
                 "chunks",
@@ -110,6 +110,73 @@ class MigratorInstrumentedTest {
             // `(revision_hash, locator)` tuple). It carries no FK clause —
             // see that migration's "Deviations from §1.3" header note.
             assertThat(columnsOf(conn, "chunks")).contains("revision_hash")
+            // 008 (skein-zx15): the UTF-8 byte-offset columns 003 deferred,
+            // plus the persisted ingest_queue retry counter.
+            assertThat(columnsOf(conn, "chunks")).containsAtLeast("byte_start", "byte_end")
+            assertThat(columnsOf(conn, "ingest_queue")).contains("attempts")
+        }
+    }
+
+    // --- 008: ingest_queue.attempts defaults to 0 and survives INSERT OR REPLACE resetting it ---
+
+    @Test
+    fun ingestQueueAttemptsDefaultsToZeroAndResetsOnReQueue() {
+        val dbFile = tempDbFile()
+        Migrator(SkeinSQLiteDriver(randomKey(11))).migrate(dbFile.absolutePath)
+
+        SkeinSQLiteDriver(randomKey(11)).open(dbFile.absolutePath).use { conn ->
+            insertNote(conn, id = "doc-attempts", title = "Title", bodyMd = "body", createdAt = 100, updatedAt = 100)
+            assertThat(readAttempts(conn, "doc-attempts")).isEqualTo(0L)
+
+            exec(conn, "UPDATE ingest_queue SET attempts = 2 WHERE doc_id = 'doc-attempts';")
+            assertThat(readAttempts(conn, "doc-attempts")).isEqualTo(2L)
+
+            // A body edit re-queues via documents_au_ingest's INSERT OR
+            // REPLACE, which resets attempts to its column default — a
+            // fresh edit gets a fresh retry budget (migration header).
+            exec(conn, "UPDATE documents SET body_md = 'changed', updated_at = 200 WHERE id = 'doc-attempts';")
+            assertThat(readAttempts(conn, "doc-attempts")).isEqualTo(0L)
+        }
+    }
+
+    // --- 008: chunks.byte_start/byte_end round-trip ---
+
+    @Test
+    fun chunkByteOffsetColumnsRoundTrip() {
+        val dbFile = tempDbFile()
+        Migrator(SkeinSQLiteDriver(randomKey(12))).migrate(dbFile.absolutePath)
+
+        SkeinSQLiteDriver(randomKey(12)).open(dbFile.absolutePath).use { conn ->
+            insertNote(conn, id = "doc-offsets", title = "Title", bodyMd = null, createdAt = 100, updatedAt = 100)
+            conn
+                .prepare(
+                    "INSERT INTO chunks(id, doc_id, ord, text, byte_start, byte_end) VALUES (?, ?, ?, ?, ?, ?);",
+                ).use { stmt ->
+                    stmt.bindLong(1, 1)
+                    stmt.bindText(2, "doc-offsets")
+                    stmt.bindLong(3, 0)
+                    stmt.bindText(4, "café")
+                    stmt.bindLong(5, 0)
+                    stmt.bindLong(6, 5) // "café" is 5 UTF-8 bytes (é is 2 bytes), 4 UTF-16 chars.
+                    stmt.step()
+                }
+
+            conn.prepare("SELECT byte_start, byte_end FROM chunks WHERE id = 1;").use { stmt ->
+                assertThat(stmt.step()).isTrue()
+                assertThat(stmt.getLong(0)).isEqualTo(0L)
+                assertThat(stmt.getLong(1)).isEqualTo(5L)
+            }
+        }
+    }
+
+    private fun readAttempts(
+        conn: SQLiteConnection,
+        docId: String,
+    ): Long {
+        conn.prepare("SELECT attempts FROM ingest_queue WHERE doc_id = ?;").use { stmt ->
+            stmt.bindText(1, docId)
+            check(stmt.step()) { "no ingest_queue row for doc_id=$docId" }
+            return stmt.getLong(0)
         }
     }
 
@@ -180,11 +247,11 @@ class MigratorInstrumentedTest {
         // Now point a full-manifest Migrator (001 + 007) at the same file.
         val upgraded = Migrator(SkeinSQLiteDriver(randomKey(9))).migrate(dbFile.absolutePath)
         assertThat(upgraded.fromVersion).isEqualTo(1)
-        assertThat(upgraded.toVersion).isEqualTo(7)
+        assertThat(upgraded.toVersion).isEqualTo(8)
 
         SkeinSQLiteDriver(randomKey(9)).open(dbFile.absolutePath).use { conn ->
             val inspector = SchemaInspector(conn)
-            assertThat(inspector.userVersion()).isEqualTo(7)
+            assertThat(inspector.userVersion()).isEqualTo(8)
             assertThat(inspector.tables()).containsNoneOf("attachment_master_key", "attachment_keys")
 
             // The pre-existing, unrelated document row survived the
@@ -201,12 +268,12 @@ class MigratorInstrumentedTest {
     fun runningMigrateTwiceIsANoop() {
         val dbFile = tempDbFile()
         val first = Migrator(SkeinSQLiteDriver(randomKey(2))).migrate(dbFile.absolutePath)
-        assertThat(first.toVersion).isEqualTo(7)
+        assertThat(first.toVersion).isEqualTo(8)
 
         val second = Migrator(SkeinSQLiteDriver(randomKey(2))).migrate(dbFile.absolutePath)
 
-        assertThat(second.fromVersion).isEqualTo(7)
-        assertThat(second.toVersion).isEqualTo(7)
+        assertThat(second.fromVersion).isEqualTo(8)
+        assertThat(second.toVersion).isEqualTo(8)
     }
 
     // --- Broken migration -> ROLLBACK ---

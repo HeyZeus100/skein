@@ -40,17 +40,25 @@ public class IndexStoreImplContractTest : IndexStoreContractTest() {
     override fun index(): IndexStore {
         // Fresh unencrypted in-memory DB per test (no key argument to
         // SkeinSQLiteDriver; verifyExtensions still asserts vec/FTS5
-        // linkage). Then run migration 001 statement-by-statement, using
-        // the same trigger-aware splitter as `SchemaLoadInstrumentedTest`.
+        // linkage). Then run every production migration statement-by-
+        // statement, using the same trigger-aware splitter as
+        // `SchemaLoadInstrumentedTest`. All four are needed, not just 001:
+        // `IndexStoreImpl.replaceChunks` (skein-zx15) writes
+        // `chunks.revision_hash` (003) and `chunks.byte_start`/`byte_end`
+        // (008) on every insert, so a chunks table with only 001's columns
+        // would fail every `replaceChunks` call in this suite with "no such
+        // column".
         val driver = SkeinSQLiteDriver()
         val conn = driver.openWithKey(":memory:", passphrase = null) as SkeinSQLiteConnection
-        val sql =
-            requireNotNull(
-                javaClass.classLoader?.getResourceAsStream("migrations/001_initial.sql"),
-            ) { "migrations/001_initial.sql not on the classpath" }
-                .use { it.readBytes().toString(Charsets.UTF_8) }
-        for (statement in splitOnSentinel(sql)) {
-            conn.prepare(statement).use { it.step() }
+        for (fileName in SCHEMA_MIGRATION_FILES) {
+            val sql =
+                requireNotNull(
+                    javaClass.classLoader?.getResourceAsStream("migrations/$fileName"),
+                ) { "migrations/$fileName not on the classpath" }
+                    .use { it.readBytes().toString(Charsets.UTF_8) }
+            for (statement in splitOnSentinel(sql)) {
+                conn.prepare(statement).use { it.step() }
+            }
         }
         val impl = IndexStoreImpl(conn)
         openImpls += impl
@@ -58,6 +66,18 @@ public class IndexStoreImplContractTest : IndexStoreContractTest() {
     }
 
     private companion object {
+        // skein-zx15: schema for a fresh :memory: chunks/ingest_queue
+        // table that has chunks.revision_hash (003) and
+        // chunks.byte_start/byte_end (008) — every replaceChunks call
+        // in this suite writes those columns.
+        val SCHEMA_MIGRATION_FILES: List<String> =
+            listOf(
+                "001_initial.sql",
+                "003_document_revisions.sql",
+                "007_drop_attachment_master_key.sql",
+                "008_ingest_attempts.sql",
+            )
+
         /**
          * Split the migration SQL on the `--;` sentinel used by
          * `001_initial.sql` (see file header) — mirrors what the

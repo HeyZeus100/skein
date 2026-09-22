@@ -210,6 +210,13 @@ public data class IngestItem(
     val docId: DocId,
     val reason: IngestReason,
     val queuedAt: Long,
+    /**
+     * `ingest_queue.attempts` as of the dequeue (migration 008,
+     * skein-zx15) — the number of consecutive mandatory-step failures
+     * already recorded for this entry. Defaults to 0 so every pre-008
+     * caller (fakes, other constructors) keeps compiling unchanged.
+     */
+    val attempts: Int = 0,
 )
 
 // -----------------------------------------------------------------------------
@@ -404,6 +411,23 @@ public interface VaultRepository {
 
     public suspend fun enqueueReembedAll()
 
+    /**
+     * Increments `ingest_queue.attempts` for [docId] (migration 008,
+     * skein-zx15 — the persisted counterpart of the plan's "re-queued at
+     * most 3 times" rule, E5.I10) and returns the new value. Replaces the
+     * `IngestPipeline`-local `IngestAttempts` in-memory counter: because
+     * the count now lives in the row itself, it survives a lock/unlock
+     * cycle or a process restart rather than resetting with it, and it is
+     * implicitly cleared whenever the row is deleted ([completeIngest]) or
+     * replaced by a fresh `INSERT OR REPLACE` (a document edit re-queues
+     * with `attempts` back at its column default, 0).
+     *
+     * Returns 0, and writes nothing, if [docId] is no longer queued (the
+     * entry completed or the document was deleted concurrently) — the
+     * caller has nothing left to bound retries on.
+     */
+    public suspend fun recordIngestFailure(docId: DocId): Int
+
     public suspend fun <T> transaction(block: suspend () -> T): T
 }
 
@@ -456,6 +480,21 @@ public data class NewChunk(
     val ord: Int,
     val text: String,
     val tokenCount: Int,
+    /**
+     * `[byteStart, byteEnd)` UTF-8 byte offsets into the document's
+     * `body_md` this chunk was cut from — migration 008 (skein-zx15,
+     * folding in skein-s9hm), `chunks.byte_start`/`chunks.byte_end`.
+     * Additive and nullable: a caller that has no offsets to report (or
+     * predates 008) still compiles and still gets a row, just with no
+     * byte-anchored locator. Null exactly when the other is null. See
+     * `docs/design/POST_REVIEW_RESOLUTIONS.md` §1.3 — these are the
+     * "byte offsets into body_md" locators anchor to, in contrast to
+     * `core/rag`'s `Chunk.start`/`Chunk.end`, which are UTF-16 char
+     * offsets (the Kotlin `String` native unit) and disagree with the
+     * byte offsets for any body containing non-ASCII text.
+     */
+    val byteStart: Int? = null,
+    val byteEnd: Int? = null,
 )
 
 public data class ScoredChunk(
@@ -579,12 +618,22 @@ public interface IndexStore {
     /**
      * Deletes the document's old chunks (FTS/vec rows follow via triggers)
      * and inserts the new ones. Returns new ids in `ord` order.
+     *
+     * @param revisionHash stamped into every inserted row's
+     *   `chunks.revision_hash` (migration 003's reverse pointer, populated
+     *   as of migration 008 / skein-zx15) — the caller's
+     *   `VaultRepository.currentRevision(docId)?.revisionHash` at ingest
+     *   time. Additive and defaulted (coordinator decision, skein-zx15,
+     *   2026-09-21): a caller with no revision to report (or predating
+     *   008) still compiles and gets rows with a null `revision_hash`,
+     *   exactly as migration 003 shipped.
      */
     public suspend fun replaceChunks(
         docId: DocId,
         chunks: List<NewChunk>,
         embedderId: String,
         embedderVersion: Int,
+        revisionHash: RevisionHash? = null,
     ): List<ChunkId>
 
     /** Each `ByteArray` is exactly 256 int8 values. */

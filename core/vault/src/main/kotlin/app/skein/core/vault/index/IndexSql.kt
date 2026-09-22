@@ -39,8 +39,9 @@ internal object IndexSql {
         "DELETE FROM chunks WHERE doc_id = ?"
 
     const val INSERT_CHUNK_RETURNING_ID: String =
-        "INSERT INTO chunks(doc_id, ord, text, token_count, embedder_id, embedder_version) " +
-            "VALUES (?, ?, ?, ?, ?, ?) RETURNING id"
+        "INSERT INTO chunks(doc_id, ord, text, token_count, embedder_id, embedder_version, " +
+            "revision_hash, byte_start, byte_end) " +
+            "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?) RETURNING id"
 
     const val SELECT_CHUNK_COLUMNS: String =
         "id, doc_id, ord, text, token_count, embedder_id, embedder_version"

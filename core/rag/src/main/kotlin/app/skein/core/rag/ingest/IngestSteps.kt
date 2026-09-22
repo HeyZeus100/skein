@@ -57,6 +57,7 @@ import us.aherrera.skein.core.model.DocId
 import us.aherrera.skein.core.model.EmbedderService
 import us.aherrera.skein.core.model.IndexStore
 import us.aherrera.skein.core.model.NewChunk
+import us.aherrera.skein.core.model.RevisionHash
 
 /**
  * Ingest-time indexing steps (spec §7.1 steps 2-3 as writes): [indexLexical]
@@ -87,11 +88,18 @@ public class IngestSteps(
      * Replaces [docId]'s chunk rows with [chunks] (in `ord` order; `text` is
      * each chunk's [Chunk.embeddingText], so the heading breadcrumb is
      * searchable and embedded alongside the body slice) and returns the new
-     * chunk ids positionally paired with [chunks]. An empty [chunks] still
-     * deletes the document's old rows. The citation locators (`Chunk.start`/
-     * `Chunk.end`) are the caller's to keep — this store shape has no offset
-     * columns until migration 003 (`docs/design/POST_REVIEW_RESOLUTIONS.md`
-     * §1.3).
+     * chunk ids positionally paired with [chunks].
+     *
+     * [revisionHash] is stamped verbatim into every row's `chunks.revision_hash`
+     * (migration 003's reverse pointer, populated as of migration 008 —
+     * skein-zx15) — callers pass `VaultRepository.currentRevision(docId)?.revisionHash`.
+     * [body] is the exact `document.bodyMd` [chunks] were cut from
+     * (`Chunk.start`/[Chunk.end] are UTF-16 char offsets into it); when
+     * supplied, each row's `chunks.byte_start`/`chunks.byte_end` are the
+     * matching **UTF-8 byte** offsets (skein-s9hm, folded into skein-zx15 —
+     * `core/rag`'s char offsets disagree with byte offsets for any non-ASCII
+     * body). Both parameters are optional and default to `null` — an empty
+     * [chunks] still deletes the document's old rows either way.
      *
      * After the write, one `bm25` probe verifies the FTS5 shadow rows exist
      * (file header) and calls [warn] — without content — if they do not.
@@ -99,9 +107,21 @@ public class IngestSteps(
     public suspend fun indexLexical(
         docId: DocId,
         chunks: List<Chunk>,
+        revisionHash: RevisionHash? = null,
+        body: String? = null,
     ): List<ChunkId> {
-        val rows = chunks.map { NewChunk(ord = it.ord, text = it.embeddingText, tokenCount = it.tokenCount) }
-        val ids = index.replaceChunks(docId, rows, embedderId, embedderVersion)
+        val rows =
+            chunks.map { c ->
+                val offsets = body?.let { byteOffsetsUtf8(it, c.start, c.end) }
+                NewChunk(
+                    ord = c.ord,
+                    text = c.embeddingText,
+                    tokenCount = c.tokenCount,
+                    byteStart = offsets?.first,
+                    byteEnd = offsets?.second,
+                )
+            }
+        val ids = index.replaceChunks(docId, rows, embedderId, embedderVersion, revisionHash)
         verifyLexicalRows(chunks, ids)
         return ids
     }
@@ -183,5 +203,27 @@ public class IngestSteps(
 
         /** Generous: the fresh chunk only has to appear somewhere in the top-k, not first. */
         private const val PROBE_K: Int = 50
+
+        /**
+         * `[charStart, charEnd)` UTF-16 char offsets into [body] → the
+         * matching UTF-8 byte offsets (skein-s9hm). Encodes the `[0,
+         * charStart)` prefix to get the byte start, plus the chunk's own
+         * `[charStart, charEnd)` slice for its byte length — never [body]'s
+         * tail past [charEnd]. Called once per chunk, so for `n` chunks
+         * this is `O(n)` encodes of overlapping prefixes rather than one
+         * cumulative pass; accepted for correctness-first here (chunk
+         * counts per document are small — tens, not thousands) and not
+         * worth the bookkeeping to make incremental unless a document with
+         * enough chunks makes it measurable.
+         */
+        private fun byteOffsetsUtf8(
+            body: String,
+            charStart: Int,
+            charEnd: Int,
+        ): Pair<Int, Int> {
+            val byteStart = body.substring(0, charStart).toByteArray(Charsets.UTF_8).size
+            val byteEnd = byteStart + body.substring(charStart, charEnd).toByteArray(Charsets.UTF_8).size
+            return byteStart to byteEnd
+        }
     }
 }

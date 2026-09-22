@@ -23,6 +23,7 @@ import us.aherrera.skein.core.model.Entity
 import us.aherrera.skein.core.model.IndexChange
 import us.aherrera.skein.core.model.IndexStore
 import us.aherrera.skein.core.model.NewChunk
+import us.aherrera.skein.core.model.RevisionHash
 import us.aherrera.skein.core.model.ScoredChunk
 import java.util.concurrent.ConcurrentHashMap
 import java.util.concurrent.atomic.AtomicInteger
@@ -68,9 +69,10 @@ public class CountingIndexStore(
         chunks: List<NewChunk>,
         embedderId: String,
         embedderVersion: Int,
+        revisionHash: RevisionHash?,
     ): List<ChunkId> {
         record("replaceChunks")
-        return delegate.replaceChunks(docId, chunks, embedderId, embedderVersion)
+        return delegate.replaceChunks(docId, chunks, embedderId, embedderVersion, revisionHash)
     }
 
     override suspend fun putEmbeddings(embeddings: List<Pair<ChunkId, ByteArray>>) {

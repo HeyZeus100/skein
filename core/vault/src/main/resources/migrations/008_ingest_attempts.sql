@@ -1,0 +1,82 @@
+-- Skein vault DB migration 008: persisted `ingest_queue.attempts` counter,
+-- plus the `chunks.byte_start`/`chunks.byte_end` UTF-8 byte-offset columns
+-- migration 003 deferred. skein-zx15 (E5.I10 follow-up; absorbs skein-s9hm
+-- and closes skein-voys).
+--
+-- Sources of truth:
+--   • bd skein-zx15 NOTES, coordinator decision 2026-09-21, point (1): "one
+--     migration for everything this bead needs (ingest_attempts + any chunk
+--     byte-offset columns §1.3 requires)" and point (3): fold in skein-s9hm
+--     (char-vs-byte offsets).
+--   • bd skein-voys: the v1 plan's own `E5.I10` migration
+--     (`003_ingest_attempts.sql`) collided with `003_document_revisions.sql`
+--     (skein-uo5n, landed 2026-09-21) and with 002/004-006 (reserved by
+--     other not-yet-landed POST_REVIEW_RESOLUTIONS/LOCK_POLICY_INDEXING
+--     migrations) and 007 (already landed, skein-7d0l). 008 is the first
+--     free number — see skein-voys's own note for the full reservation
+--     ledger.
+--   • docs/superpowers/plans/2026-09-19-skein-v1-plan.md E5.I10: "each
+--     step's failure is logged and the doc is re-queued with reason=updated
+--     at most 3 times ... then dropped with a content-free SkeinLog.w" —
+--     this migration is what makes that counter survive a lock/unlock
+--     cycle or a process restart; the in-memory stand-in it replaces
+--     (`core/rag/.../ingest/IngestAttempts.kt`, skein-7v3) reset on every
+--     lock, which under-delivered the plan's "at most 3 times" cap across
+--     sessions.
+--   • docs/design/POST_REVIEW_RESOLUTIONS.md §1.3: citation-record-v1's
+--     `locator` is `{byte_start, byte_end, chunk_ord?}`, "byte offsets into
+--     the revision's body_md_snapshot" — §1.3 already anticipated a
+--     `chunks.revision_hash` reverse pointer (added by 003) but not the
+--     byte-offset columns themselves; skein-s9hm flagged that `core/rag`'s
+--     `Chunk.start`/`Chunk.end` are UTF-16 **char** offsets, which disagree
+--     with byte offsets for any non-ASCII body. `chunks.byte_start`/
+--     `chunks.byte_end` are the durable, ingest-time-computed byte anchors;
+--     `IngestSteps.indexLexical` (skein-zx15) derives them from
+--     `Chunk.start`/`Chunk.end` against the same `documents.body_md` the
+--     chunker sliced (not a canonicalized variant — there is no
+--     canonicalization gap here because neither the raw column value nor
+--     `Chunk.start`/`Chunk.end` are ever LF-normalized).
+--
+-- Applied by `Migrator` under `PRAGMA user_version = 8`. Ordering: 008 runs
+-- after 001, 003 and 007 on a fresh install and reaches the same schema as
+-- an incremental upgrade from any of those versions — nothing here
+-- references an object 003 or 007 touch, so the three are independent of
+-- each other in application order.
+--
+-- ===== `ingest_queue.attempts` =====
+--
+-- `NOT NULL DEFAULT 0` so every existing (and future `INSERT OR REPLACE`,
+-- see 001's `documents_ai_ingest`/`documents_au_ingest` triggers) row reads
+-- back a real integer, never NULL. `INSERT OR REPLACE` — the shape every
+-- write into `ingest_queue` already uses (001's triggers,
+-- `VaultSql.ENQUEUE_REEMBED_ALL`, `IngestScheduler`'s re-queue on the next
+-- document event) — replaces the WHOLE row, so a document that fails,
+-- fails again, and is then *edited* before its third attempt gets a fresh
+-- `attempts = 0` on the next queue insert: new content deserves a fresh
+-- retry budget, and this falls out of ordinary `INSERT OR REPLACE`
+-- semantics with no extra code. `IngestPipeline.mandatoryStepFailed`
+-- increments this column via `VaultRepository.recordIngestFailure` on a
+-- lexical/link step failure and drops the entry (`completeIngest`, which
+-- deletes the row) on the third consecutive failure — deleting the row is
+-- itself what "forgets" the count; no separate reset call is needed.
+--
+-- ===== `chunks.byte_start` / `chunks.byte_end` =====
+--
+-- Nullable, no default: an unindexed-for-vectors-but-lexically-indexed
+-- chunk row (the embedder-less mode `IngestSteps` file header describes)
+-- still has real byte offsets from the moment it is written by
+-- `indexLexical`, so in practice these are populated alongside
+-- `chunks.revision_hash` on every row this migration's era of code writes.
+-- They stay nullable rather than `NOT NULL` because 003's own
+-- `chunks.revision_hash` precedent is nullable for the same reason: a row
+-- written by test fixtures or a future caller that has no offsets to
+-- report must not be forced to fabricate one. No FK, no UNIQUE, no CHECK
+-- `byte_end > byte_start` — SQLite's `ALTER TABLE ADD COLUMN` accepts only
+-- unconstrained (or simply-defaulted) column additions in this codebase's
+-- established style (see 003's own header, deviation 1).
+
+ALTER TABLE ingest_queue ADD COLUMN attempts INTEGER NOT NULL DEFAULT 0;--;
+
+ALTER TABLE chunks ADD COLUMN byte_start INTEGER;--;
+
+ALTER TABLE chunks ADD COLUMN byte_end INTEGER;--;
