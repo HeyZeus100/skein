@@ -46,29 +46,44 @@
 // document, so deduping here is a real savings) — never one store call per
 // ranked chunk.
 //
-// ## locator / revisionHash
+// ## locator / revisionHash (skein-g32i)
 //
-// Both stay `null`. `Retrieved.locator` would come from a chunk's stored
-// byte offsets, but the v1 `chunks` table (`001_initial.sql`) has no such
-// columns — `id, doc_id, ord, text, token_count, embedder_id,
-// embedder_version` only, and `us.aherrera.skein.core.model.Chunk` mirrors
-// exactly that. The *chunker's* own `app.skein.core.rag.chunk.Chunk` does
-// carry `[start, end)`, but those offsets exist only during ingest
-// (`IngestSteps`) and are not persisted anywhere this class — running
-// post-recall, against already-committed chunks — can read back. So there
-// is nothing to populate `locator` from yet; it is additive over plan
-// `§4.3` for exactly this reason (see `Retrieval.kt`'s kdoc on the field).
-// `Retrieved.revisionHash` is `null` until `skein-uo5n`'s Migration 003
-// (`document_revisions` + `chunks.revision_hash`) lands and a producer for
-// it exists in the repository layer.
+// `Retrieved.revisionHash` is `chunk.revisionHash` verbatim — `chunks.revision_hash`
+// (migration 003, populated as of migration 008 / skein-zx15) stamped at
+// ingest time from `VaultRepository.currentRevision(docId)?.revisionHash`.
+// Null exactly when the chunk row predates 008 or was written with no
+// revision to report — `Retrieved.revisionHash` degrades the same way.
+//
+// `Retrieved.locator` is built from `chunk.byteStart`/`chunk.byteEnd`
+// (migration 008), but those columns anchor to the RAW `documents.body_md`
+// the chunker sliced at ingest time — NOT the canonicalized
+// `document_revisions.body_md_snapshot` that `docs/design/POST_REVIEW_RESOLUTIONS.md`
+// §1.3 defines a citation locator against (skein-zx15's deviation 6 /
+// skein-g32i's note). `RevisionHashing.canonicalBody` only ever (a) deletes
+// the `\r` of a `\r\n` pair, shifting every following byte offset left by
+// one, or (b) rewrites a lone `\r` to `\n` in place, which shifts nothing
+// (both are single-byte ASCII). So [locatorFor] remaps a raw byte offset to
+// its canonical counterpart by counting, over the *raw* bytes strictly
+// before it, how many are the `\r` of a `\r\n` pair — a deterministic,
+// read-time-only fix that needs no new store call (this class already
+// hydrates `document.bodyMd`, the exact raw bytes the offsets index). For
+// an LF-only body the count is always zero, so the remap is a no-op and
+// the raw/canonical offsets agree, matching every fixture without a CRLF.
+//
+// A chunk missing either offset, or a document with no `bodyMd` (an
+// attachment is never chunked, so should not occur, but is not assumed),
+// degrades `locator` to `null` rather than throwing — the item is still
+// assembled, just without a byte-anchored citation.
 
 package app.skein.core.rag.rank
 
+import us.aherrera.skein.core.model.Chunk
 import us.aherrera.skein.core.model.ChunkId
 import us.aherrera.skein.core.model.CitationSourceKind
 import us.aherrera.skein.core.model.DocId
 import us.aherrera.skein.core.model.Document
 import us.aherrera.skein.core.model.IndexStore
+import us.aherrera.skein.core.model.Locator
 import us.aherrera.skein.core.model.RecallSource
 import us.aherrera.skein.core.model.Retrieved
 import us.aherrera.skein.core.model.ScoredChunk
@@ -76,8 +91,8 @@ import us.aherrera.skein.core.model.VaultRepository
 
 /**
  * Bridges [PprRanker]/[ScoreFusion]'s `List<ScoredChunk>` output to
- * `List<Retrieved>`. See the file header for the mapping and for why
- * [locator]/`revisionHash` stay null.
+ * `List<Retrieved>`. See the file header for the mapping, and for how
+ * `revisionHash`/`locator` are populated (or degrade to `null`).
  *
  * @param index backs the batched chunk hydration (`getChunks`).
  * @param repo backs the per-document hydration (`getDocument`, deduped).
@@ -125,11 +140,58 @@ public class RetrievedAssembler(
                     score = scored.score,
                     sourceKind = document.kind,
                     recalledBy = recalledByChunk[scored.chunkId] ?: emptySet(),
-                    revisionHash = null,
-                    locator = null,
+                    revisionHash = chunk.revisionHash,
+                    locator = locatorFor(chunk, document),
                 )
         }
         return out
+    }
+
+    /**
+     * Builds [chunk]'s [Locator] by remapping its RAW `documents.body_md`
+     * byte offsets onto [document]'s canonical `body_md` — see the file
+     * header for why the remap is needed and why it is correct. Returns
+     * `null` when [chunk] has no offsets to report, or when they no longer
+     * fit [document]'s current `bodyMd` (a stale chunk row that predates
+     * the document's latest edit) — a defensive degrade, never a throw.
+     */
+    private fun locatorFor(
+        chunk: Chunk,
+        document: Document,
+    ): Locator? {
+        val byteStart = chunk.byteStart
+        val byteEnd = chunk.byteEnd
+        if (byteStart == null || byteEnd == null) return null
+        val rawBytes = (document.bodyMd ?: return null).toByteArray(Charsets.UTF_8)
+        if (byteStart < 0 || byteEnd < byteStart || byteEnd > rawBytes.size) return null
+        return Locator(
+            byteStart = canonicalByteOffset(rawBytes, byteStart),
+            byteEnd = canonicalByteOffset(rawBytes, byteEnd),
+            chunkOrd = chunk.ord,
+        )
+    }
+
+    /**
+     * Maps a UTF-8 byte offset into [rawBytes] (the RAW `documents.body_md`
+     * `chunks.byte_start`/`byte_end` index) onto the matching offset into
+     * `RevisionHashing.canonicalBody`'s output, by counting how many bytes
+     * strictly before [rawOffset] are the `\r` of a `\r\n` pair — the only
+     * byte `canonicalBody` ever deletes (see the file header). A lone `\r`
+     * is rewritten to `\n` in place and shifts nothing. Both `\r` and `\n`
+     * are single-byte ASCII, so this scan never misreads a multi-byte UTF-8
+     * sequence's continuation bytes as either.
+     */
+    private fun canonicalByteOffset(
+        rawBytes: ByteArray,
+        rawOffset: Int,
+    ): Int {
+        var deleted = 0
+        for (i in 0 until rawOffset) {
+            if (rawBytes[i] == CARRIAGE_RETURN && i + 1 < rawBytes.size && rawBytes[i + 1] == LINE_FEED) {
+                deleted++
+            }
+        }
+        return rawOffset - deleted
     }
 
     /** One [VaultRepository.getDocument] call per distinct id in [docIds], never per chunk. */
@@ -162,5 +224,11 @@ public class RetrievedAssembler(
         /** Built once from the single locked bridge, [RecallSource.citationSourceKind] — not re-specified here. */
         val RECALL_SOURCE_BY_CITATION_KIND: Map<CitationSourceKind, RecallSource> =
             RecallSource.entries.associateBy { it.citationSourceKind }
+
+        /** ASCII `\r` — single UTF-8 byte, see [canonicalByteOffset]. */
+        val CARRIAGE_RETURN: Byte = '\r'.code.toByte()
+
+        /** ASCII `\n` — single UTF-8 byte, see [canonicalByteOffset]. */
+        val LINE_FEED: Byte = '\n'.code.toByte()
     }
 }

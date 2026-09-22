@@ -510,6 +510,12 @@ public class IndexStoreImpl(
             if (stmt.isNull(5)) null else stmt.getText(5)
         val embedderVersion =
             if (stmt.isNull(6)) null else stmt.getLong(6).toInt()
+        val revisionHash =
+            if (stmt.isNull(7)) null else stmt.getText(7)
+        val byteStart =
+            if (stmt.isNull(8)) null else stmt.getLong(8).toInt()
+        val byteEnd =
+            if (stmt.isNull(9)) null else stmt.getLong(9).toInt()
         return Chunk(
             id = stmt.getLong(0),
             docId = stmt.getText(1),
@@ -518,6 +524,9 @@ public class IndexStoreImpl(
             tokenCount = stmt.getLong(4).toInt(),
             embedderId = embedderId,
             embedderVersion = embedderVersion,
+            revisionHash = revisionHash,
+            byteStart = byteStart,
+            byteEnd = byteEnd,
         )
     }
 
