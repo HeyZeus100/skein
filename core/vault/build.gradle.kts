@@ -200,3 +200,21 @@ tasks.register<Exec>("verifyAmalgamationHashes") {
     workingDir = rootDir
     commandLine("native/sqlite/verify_amalgamation.sh", "--verify")
 }
+
+// skein-hwtn: AGP's own `clean` task only deletes `layout.buildDirectory`.
+// `.cxx/` — the CMake/ninja configuration cache and object files for this
+// module's externalNativeBuild — lives outside `build/`, directly under the
+// project directory, and AGP deliberately excludes it from `clean` so that
+// re-running CMake configure/build after a clean stays fast (the ninja
+// build graph and CMake server state survive). That's a reasonable
+// build-speed tradeoff for the common case, but it is exactly what breaks
+// the reproducibility contract in docs/VERIFICATION.md: ninja only
+// recompiles on file-content changes, so an environment-only change like
+// `SOURCE_DATE_EPOCH` invalidates nothing and a "clean rebuild" instead
+// relinks stale objects into a stale `.so` (see skein-hwtn / the E1.I8
+// verification notes). Deleting `.cxx` from `clean` here restores "clean
+// means clean" for the one thing that actually needs it: a developer
+// re-checking reproducibility in a tree they have already built.
+tasks.named("clean", Delete::class) {
+    delete(layout.projectDirectory.dir(".cxx"))
+}

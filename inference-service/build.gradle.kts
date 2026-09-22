@@ -130,3 +130,12 @@ dependencies {
     androidTestImplementation(libs.androidx.test.runner)
     androidTestImplementation(libs.truth)
 }
+
+// skein-hwtn: see core/vault/build.gradle.kts for the full rationale. AGP
+// deliberately leaves `.cxx/` (this module's CMake/ninja state for
+// native/llama/CMakeLists.txt) out of `clean` for build-speed reasons, but
+// that means ninja never re-detects an environment-only change such as
+// `SOURCE_DATE_EPOCH` and a "clean rebuild" ships a stale libskein_llama.so.
+tasks.named("clean", Delete::class) {
+    delete(layout.projectDirectory.dir(".cxx"))
+}
