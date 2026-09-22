@@ -5,8 +5,9 @@ isolated inference process (`:inference-service`, `android:isolatedProcess`).
 One `.so`, statically linked, no runtime `dlopen` of backends, no network at
 build time.
 
-Owned by **E1.I4 / bd `skein-ca2`**. The JNI bindings on top of it are
-**E4.I1 / bd `skein-3aw`** — `jni_stub.cpp` here is a deliberate placeholder.
+The build is owned by **E1.I4 / bd `skein-ca2`**; the JNI bindings under
+`jni/` by **E4.I1 / bd `skein-3aw`**, which replaced `jni_stub.cpp` with
+`jni/skein_jni.cpp` (see [§8](#8-the-jni-layer-e4i1)).
 
 ---
 
@@ -14,9 +15,14 @@ Owned by **E1.I4 / bd `skein-ca2`**. The JNI bindings on top of it are
 
 | ABI | Flavor | Backends | Stripped size (release) |
 |---|---|---|---|
-| `arm64-v8a` | `foss`, `dev` | CPU + Vulkan | 25,270,688 B = **24.10 MiB** |
+| `arm64-v8a` | `foss`, `dev` | CPU + Vulkan | 25,303,280 B = **24.13 MiB** |
 | `arm64-v8a` | (`-DSKEIN_LLAMA_VULKAN=OFF`) | CPU | 4,469,616 B = 4.26 MiB |
-| `x86_64` | `dev` only | CPU | 4,987,624 B = 4.76 MiB |
+| `x86_64` | `dev` only | CPU | 5,020,936 B = 4.79 MiB |
+
+(The first and third rows were re-measured after E4.I1 added the JNI layer:
++32,592 B and +33,312 B respectively. The CPU-only arm64 row is E1.I4's
+figure — that configuration is not built by any variant, so it was not
+re-measured; expect the same ~33 KB.)
 
 `x86_64` exists for the emulator lane only. Android emulators expose at best a
 software Vulkan ICD, and no measurement backs running inference on one, so that
@@ -143,11 +149,21 @@ The generated `skein_llama.exports.ld` then trims the set with `local: *;`.
 
 The whitelist is scraped at configure time from the public headers
 (`include/llama.h`, `ggml/include/*.h`) for identifiers with the `llama_`,
-`ggml_` and `gguf_` prefixes, plus our own `skein_*` and the `JNI_On{Load,
-Unload}` hooks E4.I1 will need. 875 symbols; deduped and sorted so the script
+`ggml_` and `gguf_` prefixes, plus our own `skein_*` (`skein_llama_*` and
+E4.I1's `skein_ctx_free_secure`), the `JNI_On{Load,Unload}` hooks, and the
+glob `Java_app_skein_inference_service_LlamaNative_*` for E4.I1's JNI entry
+points. 876 named symbols plus that one glob; deduped and sorted so the script
 bytes — and therefore the `.so` bytes — reproduce identically. A configure-time
 assertion fails the build if the scrape loses any of `llama_backend_init`,
 `llama_model_load_from_file`, `llama_decode` or `llama_sampler_chain_init`.
+
+The `Java_…` entries are a glob rather than twenty hand-mangled names because
+those names are mechanically derived from `LlamaNative.kt` and a CMake list of
+them would drift on the first added function. The glob does not loosen the
+export set — `local: *;` plus "whitelist ∩ defined" still bounds it — and
+`tools/ci/jni-symbols.sh` asserts the stronger property E4.I1's acceptance
+criteria name: the `.so`'s `Java_` symbols are *exactly* the `external fun`s
+`LlamaNative.kt` declares, in both directions.
 
 `-Wl,--undefined-version` is set because the headers declare APIs whose
 definitions the option set compiles out; the exported set stays bounded by
@@ -210,28 +226,42 @@ different path**. A `git worktree` is not a valid second location for this
 check (skein-8jtj): it shares object storage and AGP treats it differently
 from a real clone.
 
-Recorded for `b29c606e` / NDK r27c / macOS arm64:
+The `.so`'s bytes are a function of its sources, so **this table changes
+whenever `jni/` changes** and must be re-recorded in the same commit.
+
+Recorded for `b29c606e` / NDK r27c / macOS arm64, **as of E4.I1 (bd
+`skein-3aw`, JNI bindings)**:
 
 | Build | sha256 of `lib/arm64-v8a/libskein_llama.so` |
 |---|---|
-| A, first clean build | `76fd7ce5dc9cb9774c6dcc64401d508830486e9427648286686161fdf779e2cf` |
-| A, second clean build | `76fd7ce5dc9cb9774c6dcc64401d508830486e9427648286686161fdf779e2cf` |
-| B, separate clone, different path | `76fd7ce5dc9cb9774c6dcc64401d508830486e9427648286686161fdf779e2cf` |
+| A1, clean build | `99d1eb4fb2e558bfd69d132b656855a0ba4e9f40039c2510ccf0dae05abd309b` |
+| A2, second clean build | `99d1eb4fb2e558bfd69d132b656855a0ba4e9f40039c2510ccf0dae05abd309b` |
 
-25,270,688 bytes in all three. `strings` on the result finds no machine-specific
+25,303,280 bytes in both. `strings` on the result finds no machine-specific
 path: the only absolute-looking strings are the constant, remapped
 `/skein/third_party/llama.cpp/…` that ggml's `GGML_ASSERT` bakes in from
 `__FILE__`, and those are identical on every machine by construction — which
 is the whole point of `-ffile-prefix-map`.
 
+The **B, separate clone at a different path** leg is E1.I4's and was *not*
+re-run for E4.I1: that bead's work happened in a `git worktree`, which
+skein-8jtj established is not a valid second location for this check. What
+E1.I4 proved — that no absolute path from the build machine reaches the
+artifact — is a property of the compile/link flags (§4) and of the POST_BUILD
+ELF guard that still runs on every build, neither of which E4.I1 touched.
+Re-running leg B against this revision is bd `skein-7zsq`.
+
+Previous record, for reference: E1.I4 / `jni_stub.cpp` produced
+`76fd7ce5dc9cb9774c6dcc64401d508830486e9427648286686161fdf779e2cf`
+(25,270,688 B) across A1/A2/B.
+
 ## 5. What is deliberately NOT here
 
-- **JNI bindings.** `jni_stub.cpp` declares no `Java_…` methods. E4.I1 owns
-  the contract; an empty stub cannot accidentally freeze one.
-- **`llama_log_set` wiring.** `LlamaLogRedactor.kt` (E1.I11 / bd `skein-4je`)
-  exists and is tested, but routing ggml/llama log callbacks through it is part
-  of E4.I1. A half-wired sink that fell through to `__android_log_write` would
-  ship unredacted prompt text in the meantime.
+- **Inference policy.** Batching, stop strings, UTF-8 stream buffering,
+  sampling defaults, thermal backoff: all Kotlin, in `E4.I3`/`E4.I6`. The JNI
+  layer added by E4.I1 (§8) is a thin translation of types, nothing more.
+- **`mtmd` / vision.** `modelHasVision()` is a metadata probe only; the
+  multimodal entry points are `E4.I11`.
 - **On-device runs.** Anything touching the Fold is the hardware runner's
   (bd `skein-k3b2`). Host-side reproducibility and symbol checks are this
   bead's gate.
@@ -273,3 +303,67 @@ also pressures E1.I10 (bd `skein-jn3`, ≤ 30 MB `foss` release APK), which the
 This is a `docs/MEASUREMENTS.md` question (bd `skein-5hr`) plus an APK-budget
 question (bd `skein-jn3`), and it is filed separately rather than decided here.
 The build is arranged so that whichever way it goes, the change is one line.
+
+## 8. The JNI layer (E4.I1)
+
+`jni/skein_jni.cpp` replaced `jni_stub.cpp` in bd `skein-3aw`. Four files, no
+third-party JNI dependency (spec §6):
+
+| File | What it is |
+|---|---|
+| `jni/skein_jni.cpp` | one `Java_…` entry point per `external fun`, `JNI_OnLoad`/`JNI_OnUnload`, the `llama_log_set` sink, and `skein_ctx_free_secure` |
+| `jni/skein_jni.h` | the error-code vocabulary shared with `LlamaException.kt`, and `skein_ctx_free_secure`'s declaration |
+| `jni/handles.h` | the opaque handle registry |
+| `jni/utf8.h` | real UTF-8 ⇄ UTF-16 conversion (JNI's "UTF" is *modified* UTF-8; llama.cpp's is not) |
+
+The Kotlin half is
+`inference-service/src/main/kotlin/app/skein/inference/service/{LlamaNative,LlamaException}.kt`.
+(Package note: the plan's file list says `us.aherrera.skein.inference.service`;
+the module's namespace is and remains `app.skein.inference.service` — contracts
+live under `us.aherrera.skein.*`, implementation modules under `app.skein.*`.)
+
+**Handles are not pointers.** A `Long` handed to Kotlin is a monotonically
+increasing token minted by `handles.h`, never reused, resolved through a mutex
+-guarded map. A stale, forged, `0` or wrong-kind handle is a map miss and
+raises `IllegalStateException`; nothing is dereferenced. That also makes
+`handleCount()` — the acceptance criteria's leak check — literally `map.size()`
+rather than a counter that can drift.
+
+**Nothing crosses the boundary uncaught, and no message carries content.**
+Every entry point is wrapped in `SKEIN_JNI_TRY`/`SKEIN_JNI_CATCH`, which
+rethrows as `LlamaException(code, message)`. Messages are built from fixed
+strings and numbers only — never `e.what()`, never llama.cpp's own error
+strings, both of which can quote the input that failed (spec §9).
+
+**Logging.** `setLogCallback()` installs the `llama_log_set` sink that E1.I4
+deliberately left unwired. It maps `ggml_log_level` to `LlamaLogLevel`, calls
+`LlamaLogRedactor.forward` (E1.I11), and forwards the survivors to `SkeinLog`.
+`GGML_LOG_LEVEL_NONE`/`CONT` map to DEBUG and are therefore dropped, as is
+everything at DEBUG/INFO. The JNI sources contain no `std::cout`, `printf` or
+`__android_log_*`; `tools/ci/jni-symbols.sh` greps for them.
+
+**Secure context free** (`docs/design/LOCK_POLICY_INDEXING.md` §4.5, consumed
+by E4.I3's `onLocked`): `skein_ctx_free_secure(ctx)` calls
+`llama_memory_clear(mem, data = true)` — which `ggml_backend_buffer_clear(buf, 0)`s
+every KV buffer — *before* `llama_free(ctx)`. `freeContext` and
+`freeContextSecure` both route through it: there is deliberately no
+non-zeroing free path, because every context in this process has held
+decrypted prompt and retrieved-context tokens. `secureFreeCount()` is the
+dev-visible counter E4.I3's lock tests assert on.
+
+**CI gate.** `tools/ci/jni-symbols.sh` (wired into `ci.yml` after
+`assembleFossDebug`) fails if the `.so`'s `Java_` symbols are not exactly the
+`external fun`s in `LlamaNative.kt` — in either direction — or if the JNI
+sources grow a direct-output call. Run it by hand with
+
+```bash
+./gradlew :inference-service:assembleDevDebug
+tools/ci/jni-symbols.sh          # all built ABIs
+```
+
+**What is not covered host-side.** The behavioural acceptance criteria
+(tokenize/piece round-trip, chat template, decode + sample, embed, the
+sub-100 ms cancel, `INVALID_MODEL` with `handleCount() == 0`) live in
+`inference-service/src/androidTest/.../LlamaNativeTest.kt`, which needs the
+tiny GGUF that bd `skein-80p` (E4.I2) fetches and an emulator or the Fold. The
+test compiles on every CI run and skips itself when the asset is absent.

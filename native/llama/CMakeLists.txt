@@ -460,13 +460,18 @@ configure_file(
   "${CMAKE_CURRENT_BINARY_DIR}/generated/skein_llama_config.h"
   @ONLY)
 
+# E4.I1 (bd skein-3aw) replaced `jni_stub.cpp` with the real bindings. The
+# stub's other job — forcing the C++ toolchain (and with it the static libc++
+# llama.cpp/ggml need) into the link — is served by `skein_jni.cpp`, which is
+# C++ as well.
 add_library(skein_llama SHARED
-  "${SKEIN_LLAMA_ROOT}/jni_stub.cpp"
+  "${SKEIN_LLAMA_ROOT}/jni/skein_jni.cpp"
   "${SKEIN_LLAMA_ROOT}/skein_llama_backend.c"
 )
 
 target_include_directories(skein_llama PRIVATE
   "${CMAKE_CURRENT_BINARY_DIR}/generated"
+  "${SKEIN_LLAMA_ROOT}/jni"
   "${LLAMA_CPP_DIR}/include"
   "${LLAMA_CPP_DIR}/ggml/include"
 )
@@ -567,15 +572,30 @@ foreach(_header IN LISTS _skein_llama_api_headers)
   endforeach()
 endforeach()
 
-# Our own surface. `skein_llama_default_backend` is the one symbol Kotlin can
-# call today (E4.I1 adds the JNI proper); the JNI_* hooks are exported so the
-# ART runtime can find them once jni_stub.cpp stops being a stub.
+# Our own surface.
+#   skein_llama_*            E1.I4's build-introspection accessors
+#   skein_ctx_free_secure    E4.I1's KV-zeroing context free
+#                            (docs/design/LOCK_POLICY_INDEXING.md §4.5, called
+#                            by E4.I3's onLocked path)
+#   JNI_On{Load,Unload}      found by the ART runtime at System.loadLibrary
+#   Java_…LlamaNative_*      the JNI entry points (E4.I1)
+#
+# The JNI entry points are matched with a glob rather than enumerated: their
+# names are mechanically derived from `LlamaNative.kt`, and a hand-kept list of
+# twenty mangled names in CMake would drift the first time a function is added.
+# Bounding the set is not this glob's job anyway — `local: *;` plus
+# "whitelist ∩ defined" already does that, and `tools/ci/jni-symbols.sh`
+# asserts the stronger property the acceptance criteria actually name: the
+# `Java_` symbols in the .so are EXACTLY the `external fun`s declared in
+# `LlamaNative.kt`, no more and no fewer.
 list(APPEND _skein_llama_exports
   skein_llama_default_backend
   skein_llama_vulkan_available
   skein_llama_version
+  skein_ctx_free_secure
   JNI_OnLoad
   JNI_OnUnload
+  "Java_app_skein_inference_service_LlamaNative_*"
 )
 
 list(REMOVE_DUPLICATES _skein_llama_exports)
