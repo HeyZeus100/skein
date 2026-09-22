@@ -1,0 +1,35 @@
+# native/llama/patches — pins for the local patches applied to llama.cpp's
+# Vulkan shader sources (bd skein-ylux).
+#
+# The submodule tree under `third_party/` is NEVER written to. At CMake
+# configure time `native/llama/CMakeLists.txt` §5a copies
+# `third_party/llama.cpp/ggml/src/ggml-vulkan/vulkan-shaders/` into
+# `<cxx build dir>/vulkan-shaders-patched/`, applies each `patch` record
+# below to that copy, and points the `glslc` the shader generator invokes at
+# a wrapper that redirects reads of the pristine directory to the copy.
+#
+# Every hash below is checked on every configure, in this order:
+#
+#   patch  <sha256> <file under native/llama/patches/>
+#          the patch file itself, so an edited patch cannot apply silently
+#   before <sha256> <file relative to vulkan-shaders/>
+#          the PRISTINE upstream file, so a submodule pin bump that touches a
+#          patched file fails loudly here instead of applying a stale hunk
+#   after  <sha256> <file relative to vulkan-shaders/>
+#          the patched result, so the bytes that are compiled are pinned
+#          regardless of which `patch(1)` implementation applied them
+#
+# Any mismatch is a FATAL_ERROR naming the file. Re-pinning is deliberate:
+# regenerate the patch against the new upstream file, re-measure determinism
+# (tools/rb/so-determinism.sh), and update this file in the same commit.
+#
+# Pinned for third_party/llama.cpp @ b29c606e28a01b1bc8c1351026a0fa6e616bf6c4
+# (see native/llama/PINNED_COMMIT).
+
+patch  885340c86327fd325f283d20cfb019105e00e1c277e8cd9fbd7545d3078bcdd0 0001-vulkan-shaders-float16-zero-literal.patch
+
+before d6a159dee17942418133028d25e6f327c97478e539f4dc9e01587b89dd5f9a73 tri.comp
+after  545a9f4d7a1b18a28168bf696d5af10559791d70baf2e31b34226c365a5292f4 tri.comp
+
+before 644cdf399ba67106aa44215e81df1496722a8e8ec275cc87ac37907bc1225a15 diag.comp
+after  910859f1c721891ce06af73d69f3ddc177cff6ea9d2de75518a773b8aafef7c5 diag.comp

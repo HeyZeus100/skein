@@ -15,6 +15,17 @@ plugins {
 // "cpu" from `skein_llama_default_backend()` regardless of this value.
 val skeinLlamaDefaultBackend = "vulkan"
 
+// E1.I8 followup (bd skein-ylux): `native/llama/CMakeLists.txt` §5a patches a
+// build-tree copy of llama.cpp's Vulkan shader sources to work around an NDK
+// glslc miscompile that makes libskein_llama.so nondeterministic. It is ON by
+// default and there is no reason to turn it off for a real build — the switch
+// exists so `tools/rb/so-determinism.sh --negative-control` can reintroduce
+// the defect and prove the determinism check still catches it. Plumbed here
+// because CMake options reach the native build only through AGP's
+// `externalNativeBuild.cmake.arguments`.
+val skeinLlamaShaderPatches =
+    (providers.gradleProperty("skein.llama.shaderPatches").orNull ?: "true").toBoolean()
+
 android {
     namespace = "app.skein.inference.service"
     compileSdk = 37
@@ -46,6 +57,8 @@ android {
                     listOf(
                         "-DANDROID_STL=c++_static",
                         "-DSKEIN_LLAMA_DEFAULT_BACKEND=$skeinLlamaDefaultBackend",
+                        "-DSKEIN_LLAMA_SHADER_PATCHES=" +
+                            if (skeinLlamaShaderPatches) "ON" else "OFF",
                     )
                 targets += "skein_llama"
             }
