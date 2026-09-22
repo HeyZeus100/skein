@@ -133,14 +133,37 @@ public data class ImportResult(
     val documentId: DocId,
     val attachmentId: DocId?,
     val created: Boolean,
+    /**
+     * Set when the imported content's frontmatter carried an
+     * [FrontmatterKeys.ID] that already names a document in the vault.
+     * [documentId] is always a *different*, freshly created document in
+     * that case (see [ImportService.importText]) — this field exists so
+     * the caller can tell the user "a document with this id already
+     * exists" rather than the import silently landing as an unrelated
+     * new note. `null` when the import created or would-create under an
+     * id nothing else already uses.
+     */
+    val conflictWith: DocId? = null,
 )
 
 public interface ImportService {
     /**
-     * Any `text/…` MIME type, `text/markdown`, or source code. If the
-     * content has frontmatter with an [FrontmatterKeys.ID] that already
-     * exists in the vault, updates that document instead
-     * ([ImportResult.created] is `false`).
+     * Any `text/…` MIME type, `text/markdown`, or source code.
+     *
+     * Never overwrites an existing document, regardless of its
+     * [DocumentKind] (`NOTE`, `CHAT`, `AIOUT`, or `ATTACHMENT`). Document
+     * ids are UUIDv7s that appear in every export and every
+     * wikilink-resolved edge, so a shared or imported file naming one in
+     * its frontmatter [FrontmatterKeys.ID] is not proof the user intends
+     * to replace that document — a crafted file could otherwise replace
+     * an existing note's body/frontmatter or turn a chat transcript into
+     * arbitrary text with no confirmation. If the frontmatter `id`
+     * already names a document, this always creates a *new* document
+     * (under a freshly minted id, `created` is `true`) and reports the
+     * collision via [ImportResult.conflictWith] so the caller can surface
+     * it to the user. Otherwise creates a new document, reusing the
+     * frontmatter `id` as that document's id when present so a file
+     * exported from another Skein vault keeps its identity.
      */
     public suspend fun importText(
         displayName: String,
