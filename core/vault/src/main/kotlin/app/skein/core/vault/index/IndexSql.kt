@@ -44,7 +44,7 @@ internal object IndexSql {
             "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?) RETURNING id"
 
     const val SELECT_CHUNK_COLUMNS: String =
-        "id, doc_id, ord, text, token_count, embedder_id, embedder_version"
+        "id, doc_id, ord, text, token_count, embedder_id, embedder_version, revision_hash, byte_start, byte_end"
 
     fun selectChunksByIds(count: Int): String =
         "SELECT $SELECT_CHUNK_COLUMNS FROM chunks WHERE id IN (${placeholders(count)})"

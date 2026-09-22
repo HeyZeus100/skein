@@ -125,6 +125,71 @@ public abstract class IndexStoreContractTest {
         }
 
     // ------------------------------------------------------------------
+    // AC (skein-g32i, migration 008): replaceChunks/getChunks round-trip
+    // revision_hash/byte_start/byte_end
+    // ------------------------------------------------------------------
+
+    @Test
+    public fun replaceChunks_stamps_revisionHash_and_byte_offsets_that_getChunks_reads_back(): Unit =
+        runTest {
+            val idx = index()
+            val docId = "01924a4b-4d29-7000-8000-00000000F0F1"
+
+            val ids =
+                idx.replaceChunks(
+                    docId = docId,
+                    chunks = listOf(NewChunk(ord = 0, text = "alpha", tokenCount = 1, byteStart = 3, byteEnd = 9)),
+                    embedderId = "fake",
+                    embedderVersion = 1,
+                    revisionHash = "a".repeat(64),
+                )
+
+            val chunk = idx.getChunks(ids).getValue(ids.single())
+            assertEquals("a".repeat(64), chunk.revisionHash)
+            assertEquals(3, chunk.byteStart)
+            assertEquals(9, chunk.byteEnd)
+        }
+
+    @Test
+    public fun replaceChunks_with_no_revisionHash_or_offsets_reads_back_null_for_all_three(): Unit =
+        runTest {
+            val idx = index()
+            val docId = "01924a4b-4d29-7000-8000-00000000F0F2"
+
+            val ids =
+                idx.replaceChunks(
+                    docId = docId,
+                    chunks = listOf(NewChunk(ord = 0, text = "alpha", tokenCount = 1)),
+                    embedderId = "fake",
+                    embedderVersion = 1,
+                )
+
+            val chunk = idx.getChunks(ids).getValue(ids.single())
+            assertEquals(null, chunk.revisionHash)
+            assertEquals(null, chunk.byteStart)
+            assertEquals(null, chunk.byteEnd)
+        }
+
+    @Test
+    public fun chunksForDocs_also_reads_back_revisionHash_and_byte_offsets(): Unit =
+        runTest {
+            val idx = index()
+            val docId = "01924a4b-4d29-7000-8000-00000000F0F3"
+            idx.replaceChunks(
+                docId = docId,
+                chunks = listOf(NewChunk(ord = 0, text = "alpha", tokenCount = 1, byteStart = 0, byteEnd = 5)),
+                embedderId = "fake",
+                embedderVersion = 1,
+                revisionHash = "b".repeat(64),
+            )
+
+            val chunk = idx.chunksForDocs(setOf(docId), limitPerDoc = 10).single()
+            assertEquals("b".repeat(64), chunk.revisionHash)
+            assertEquals(0, chunk.byteStart)
+            assertEquals(5, chunk.byteEnd)
+        }
+
+    // ------------------------------------------------------------------
     // AC: bm25 finds an exact term
     // ------------------------------------------------------------------
 

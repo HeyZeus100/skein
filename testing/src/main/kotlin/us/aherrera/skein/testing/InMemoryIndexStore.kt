@@ -42,17 +42,6 @@ public class InMemoryIndexStore : IndexStore {
     private val chunks: MutableMap<ChunkId, Chunk> = linkedMapOf()
     private val embeddings: MutableMap<ChunkId, ByteArray> = linkedMapOf()
 
-    /**
-     * Migration 008 (skein-zx15) side-tables: `us.aherrera.skein.core.model.Chunk`
-     * (the read-side type `getChunks`/`chunksForDocs` return) is out of this
-     * bead's scope to extend, so `replaceChunks`'s additive `revisionHash`
-     * and `NewChunk.byteStart`/`byteEnd` are kept here instead, keyed by the
-     * assigned [ChunkId], for tests that need to assert what was stamped
-     * (`revisionHashOf`/`byteRangeOf`) without a real SQL round-trip.
-     */
-    private val chunkRevisionHash: MutableMap<ChunkId, RevisionHash?> = linkedMapOf()
-    private val chunkByteRange: MutableMap<ChunkId, Pair<Int, Int>?> = linkedMapOf()
-
     // Kind-scoped bucket over (srcId -> edges) is more expensive to
     // maintain but makes `replaceEdges` a simple filter.
     private val edges: MutableList<Edge> = mutableListOf()
@@ -104,8 +93,6 @@ public class InMemoryIndexStore : IndexStore {
                 for (id in oldIds) {
                     this.chunks.remove(id)
                     this.embeddings.remove(id)
-                    this.chunkRevisionHash.remove(id)
-                    this.chunkByteRange.remove(id)
                 }
                 // Insert new chunks in `ord` order.
                 val out = ArrayList<ChunkId>(chunks.size)
@@ -120,12 +107,10 @@ public class InMemoryIndexStore : IndexStore {
                             tokenCount = c.tokenCount,
                             embedderId = embedderId,
                             embedderVersion = embedderVersion,
+                            revisionHash = revisionHash,
+                            byteStart = c.byteStart,
+                            byteEnd = c.byteEnd,
                         )
-                    this.chunkRevisionHash[newId] = revisionHash
-                    val byteStart = c.byteStart
-                    val byteEnd = c.byteEnd
-                    this.chunkByteRange[newId] =
-                        if (byteStart == null || byteEnd == null) null else byteStart to byteEnd
                     out += newId
                 }
                 out
@@ -136,11 +121,26 @@ public class InMemoryIndexStore : IndexStore {
         return ids
     }
 
-    /** See [chunkRevisionHash]'s kdoc. Null for an unknown [chunkId] too. */
-    public fun revisionHashOf(chunkId: ChunkId): RevisionHash? = chunkRevisionHash[chunkId]
+    /**
+     * Migration 008 (skein-zx15) helper, folded onto the real
+     * [Chunk.revisionHash] by skein-g32i (it used to live in a side-table
+     * here because `Chunk` had not yet been extended). Null for an unknown
+     * [chunkId] too.
+     */
+    public fun revisionHashOf(chunkId: ChunkId): RevisionHash? = chunks[chunkId]?.revisionHash
 
-    /** See [chunkByteRange]'s kdoc: `[byteStart, byteEnd)`, or null when either side was null. */
-    public fun byteRangeOf(chunkId: ChunkId): Pair<Int, Int>? = chunkByteRange[chunkId]
+    /**
+     * Migration 008 (skein-zx15) helper, folded onto the real
+     * [Chunk.byteStart]/[Chunk.byteEnd] by skein-g32i: `[byteStart,
+     * byteEnd)`, or null for an unknown [chunkId] or one written with no
+     * offsets to report.
+     */
+    public fun byteRangeOf(chunkId: ChunkId): Pair<Int, Int>? {
+        val c = chunks[chunkId] ?: return null
+        val start = c.byteStart
+        val end = c.byteEnd
+        return if (start == null || end == null) null else start to end
+    }
 
     override suspend fun putEmbeddings(embeddings: List<Pair<ChunkId, ByteArray>>) {
         if (embeddings.isEmpty()) return

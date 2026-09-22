@@ -474,6 +474,27 @@ public data class Chunk(
     val tokenCount: Int,
     val embedderId: String?,
     val embedderVersion: Int?,
+    /**
+     * `chunks.revision_hash` (migration 003, populated as of migration 008 —
+     * skein-zx15) — the [RevisionHash] this row was stamped with at ingest
+     * time. Additive and nullable: a row written before 008, or by a fake
+     * that has no revision to report, still compiles and reads back `null`.
+     * See `docs/design/POST_REVIEW_RESOLUTIONS.md` §1.3.
+     */
+    val revisionHash: RevisionHash? = null,
+    /**
+     * `[byteStart, byteEnd)` — `chunks.byte_start`/`chunks.byte_end`
+     * (migration 008, skein-zx15/skein-s9hm): UTF-8 byte offsets into the
+     * RAW `documents.body_md` this chunk was cut from at ingest time — NOT
+     * the canonicalized `document_revisions.body_md_snapshot` §1.3's
+     * locator anchors to (see `RevisionHashing.canonicalBody`; the two
+     * disagree for a CRLF body). A citation producer (`RetrievedAssembler`,
+     * skein-g32i) remaps these onto the canonical snapshot before building
+     * a `Locator`. Additive and nullable, same rule as [revisionHash]: null
+     * exactly when the row predates 008 or the caller had no offsets.
+     */
+    val byteStart: Int? = null,
+    val byteEnd: Int? = null,
 )
 
 public data class NewChunk(
