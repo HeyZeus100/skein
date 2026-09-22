@@ -17,6 +17,16 @@
 
 package app.skein.core.inference.models
 
+import app.skein.core.verify.DigestAlgorithm
+import app.skein.core.verify.DigestOutcome
+import app.skein.core.verify.DupedDescriptor
+import app.skein.core.verify.ModelFileRole
+import app.skein.core.verify.ModelVerification
+import app.skein.core.verify.ModelVerifier
+import app.skein.core.verify.PinResult
+import app.skein.core.verify.PinnedLoad
+import app.skein.core.verify.PinnedModel
+import app.skein.core.verify.PinnedModelFile
 import com.google.common.truth.Truth.assertThat
 import org.junit.After
 import org.junit.Before
@@ -110,7 +120,7 @@ class PinnedModelFileTest {
     @Test
     fun `a load verified through the pin survives the path being swapped`() {
         val pinned = pin(stored.main.path)
-        val binding = binding()
+        val binding = binding().toVerifyBinding()
 
         replacePath(stored.main.path, bytesOf(99, 4_096))
         val result = ModelVerifier.verifyPinned(pinned, binding)
@@ -126,7 +136,7 @@ class PinnedModelFileTest {
         val tokenizer = File(stored.directory, TOKENIZER_FILE)
 
         replacePath(tokenizer, bytesOf(98, 512))
-        val result = ModelVerifier.verifyPinned(model, binding())
+        val result = ModelVerifier.verifyPinned(model, binding().toVerifyBinding())
 
         assertThat(result)
             .isEqualTo(
@@ -140,7 +150,7 @@ class PinnedModelFileTest {
         val model = PinnedModel(pin(stored.main.path), mapOf(ModelFileRole.TOKENIZER to pin(tokenizer)))
 
         replacePath(tokenizer, bytesOf(98, 512))
-        val result = ModelVerifier.verifyPinned(model, binding())
+        val result = ModelVerifier.verifyPinned(model, binding().toVerifyBinding())
 
         assertThat(result).isInstanceOf(PinnedLoad.Ready::class.java)
     }
@@ -161,7 +171,7 @@ class PinnedModelFileTest {
     fun `a verified pin stays open for the model's lifetime`() {
         val pinned = pin(stored.main.path)
 
-        ModelVerifier.verifyPinned(pinned, binding())
+        ModelVerifier.verifyPinned(pinned, binding().toVerifyBinding())
 
         assertThat(pinned.isOpen).isTrue()
     }
@@ -190,7 +200,7 @@ class PinnedModelFileTest {
         overwriteByte(stored.main.path, 0L, 0x7f)
         val pinned = pin(stored.main.path)
 
-        ModelVerifier.verifyPinned(pinned, binding())
+        ModelVerifier.verifyPinned(pinned, binding().toVerifyBinding())
 
         assertThat(pinned.isOpen).isFalse()
     }
@@ -200,7 +210,7 @@ class PinnedModelFileTest {
         overwriteByte(stored.main.path, 0L, 0x7f)
         val pinned = pin(stored.main.path)
 
-        val result = ModelVerifier.verifyPinned(pinned, binding())
+        val result = ModelVerifier.verifyPinned(pinned, binding().toVerifyBinding())
 
         assertThat(result)
             .isEqualTo(PinnedLoad.Refused(ModelVerification.HashMismatch(ModelFileRole.MAIN, DigestAlgorithm.SHA256)))

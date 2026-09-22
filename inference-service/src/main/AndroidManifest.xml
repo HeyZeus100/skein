@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  E4.I3 (bd skein-nxk) — the `:inference` process declaration.
+
+  Spec §4.1 and plan §2.4 fix all three attributes, and each is a
+  non-negotiable rather than a tuning choice:
+
+    android:isolatedProcess="true"
+        The service runs under a dedicated, unprivileged uid in the
+        99000–99999 range with NO permissions of its own, no access to the
+        app's data directory, and no ability to open any path it is not handed
+        a descriptor for. llama.cpp parses attacker-influenced GGUF bytes and
+        runs attacker-influenced prompts through hand-written C++; this is the
+        blast radius for when that goes wrong. It is also why the load path
+        takes descriptors (see `LlamaNative.loadModelFromFd` and bd
+        skein-lnp2): an isolated process genuinely cannot open the model file,
+        not even through `/proc/self/fd/<n>`.
+
+    android:exported="false"
+        Only `:app` may bind. Combined with `isolatedProcess`, an exported
+        service would be an unauthenticated inference endpoint for any app on
+        the device.
+
+    android:process=":inference"
+        A private process name (leading colon), so it is a separate process
+        from `:app` and from `:embedder`. The name is what
+        `adb shell ps -A | grep :inference` matches in the acceptance criteria.
+
+  `tools/ci/manifest-audit.sh` and `:app`'s `ManifestPolicyTest` assert these
+  on the MERGED manifest — the service ships inside the app's APK, so the
+  merged document is the one that is actually installed.
+
+  No `<intent-filter>`: the client binds by explicit `ComponentName`. An
+  intent filter would make the service implicitly resolvable, which is the
+  usual way an `exported="false"` intention gets undone later.
+-->
+<manifest xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <application>
+        <service
+            android:name="app.skein.inference.service.InferenceService"
+            android:exported="false"
+            android:isolatedProcess="true"
+            android:process=":inference" />
+    </application>
+
+</manifest>

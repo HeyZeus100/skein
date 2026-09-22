@@ -17,7 +17,7 @@
 // no code. `sha256sum` itself is not invoked: shelling out would make the test
 // depend on the host's coreutils.
 
-package app.skein.core.inference.models
+package app.skein.core.verify
 
 import com.google.common.truth.Truth.assertThat
 import org.junit.ClassRule

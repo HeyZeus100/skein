@@ -15,7 +15,7 @@
 // carried in the typed fields for the caller that legitimately needs them
 // (tests, the model-manager UI) and never formatted into a log line.
 
-package app.skein.core.inference.models
+package app.skein.core.verify
 
 /** Which of the two digests in §2's dual-hash discipline a result refers to. */
 enum class DigestAlgorithm(

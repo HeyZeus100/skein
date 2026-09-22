@@ -35,6 +35,12 @@
 package app.skein.core.inference.models
 
 import app.skein.core.model.SkeinLog
+import app.skein.core.verify.DigestAccumulator
+import app.skein.core.verify.DigestAlgorithm
+import app.skein.core.verify.FileDigests
+import app.skein.core.verify.ModelFileRole
+import app.skein.core.verify.ModelVerification
+import app.skein.core.verify.ModelVerifier
 import java.io.Closeable
 import java.io.File
 import java.io.FileInputStream

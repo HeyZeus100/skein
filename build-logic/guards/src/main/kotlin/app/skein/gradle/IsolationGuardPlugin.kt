@@ -17,13 +17,21 @@ import org.gradle.api.artifacts.ProjectDependency
  *    E10.I1, so `:core:*` and other pure-JVM modules can depend on it
  *    (`testImplementation`) without pulling the Android SDK onto their
  *    classpath.
+ *  - `:core:verify` also stays pure Kotlin/JVM (no Android Gradle plugin), per
+ *    E4.I3 / coordinator decision `skein-hiwb`. It holds `ModelVerifier`,
+ *    `ModelVerification`, `ModelFileRole` and the pinned-descriptor types —
+ *    the POST_REVIEW_RESOLUTIONS.md §2 load gate, which BOTH the app-side
+ *    `ModelManager` and the two isolated services must run over the same code.
+ *    It could not stay in `:core:inference`, an Android library the service
+ *    allowlist below (correctly) forbids; this entry is what stops it drifting
+ *    back across that line.
  *  - `:inference-service` / `:embedder-service` may depend only on
- *    `:core:ipc`, `:core:model`, the Kotlin stdlib/coroutines, and (embedder
- *    only) `onnxruntime-android` — never `:core:vault`, `:core:security`, or
- *    `:app`.
+ *    `:core:ipc`, `:core:model`, `:core:verify`, the Kotlin stdlib/coroutines,
+ *    and (embedder only) `onnxruntime-android` — never `:core:inference`,
+ *    `:core:vault`, `:core:security`, or `:app`.
  *
- * Apply to `:core:model`, `:core:agent`, `:testing`, `:inference-service`,
- * and `:embedder-service`. The
+ * Apply to `:core:model`, `:core:agent`, `:core:verify`, `:testing`,
+ * `:inference-service`, and `:embedder-service`. The
  * allowlist is keyed by [Project.getPath] rather than exposed as a DSL
  * extension because the isolated module set is a fixed, non-negotiable part
  * of the architecture (spec §2.6, plan §2.4), not something a module author
@@ -89,9 +97,10 @@ class IsolationGuardPlugin : Plugin<Project> {
     companion object {
         private val MAIN_DEPENDENCY_CONFIGURATIONS = listOf("implementation", "api", "compileOnly", "runtimeOnly")
 
-        private val PURE_JVM_MODULES = setOf(":core:model", ":core:markdown", ":core:agent", ":testing")
+        private val PURE_JVM_MODULES =
+            setOf(":core:model", ":core:markdown", ":core:agent", ":core:verify", ":testing")
 
-        private val COMMON_SERVICE_PROJECT_ALLOWLIST = setOf(":core:ipc", ":core:model")
+        private val COMMON_SERVICE_PROJECT_ALLOWLIST = setOf(":core:ipc", ":core:model", ":core:verify")
         private val COMMON_SERVICE_EXTERNAL_ALLOWLIST = setOf("org.jetbrains.kotlin", "org.jetbrains.kotlinx")
 
         private val SERVICE_ALLOWLISTS = mapOf(

@@ -134,13 +134,34 @@ dependencies {
     // :core:model is on the isolation allowlist (build-logic/guards).
     implementation(project(":core:model"))
 
+    // E4.I3 (bd skein-nxk): the AIDL contract this service implements
+    // (`IInferenceService.Stub`, the request/response Parcelables, `ErrorCode`)
+    // and `TransportRules`. On the isolation allowlist since E1.I2.
+    implementation(project(":core:ipc"))
+
+    // E4.I3 (bd skein-nxk, coordinator decision skein-hiwb): the
+    // POST_REVIEW_RESOLUTIONS.md §2 load gate — `ModelVerifier`,
+    // `PinnedModelFile`, `ModelVerification`. Pure Kotlin/JVM and on the
+    // isolation allowlist; this is the module that exists so the isolated
+    // process can run the same verifier the app-side loader does.
+    implementation(project(":core:verify"))
+
     testImplementation(libs.junit)
+    testImplementation(libs.truth)
+    // The Stub's entry points take Parcelables and the service is a
+    // `android.app.Service`, neither of which has a JVM implementation in AGP's
+    // mockable android.jar — the same reason :core:ipc's round-trip tests run
+    // under Robolectric.
+    testImplementation(libs.robolectric)
 
     // Instrumented-only; the isolation guard scans implementation/api/
     // compileOnly/runtimeOnly, not the test configurations, so the androidx.test
     // runner does not enter the isolated process's production classpath.
     androidTestImplementation(libs.androidx.test.ext.junit)
     androidTestImplementation(libs.androidx.test.runner)
+    // E4.I3 (bd skein-nxk): `ServiceTestRule` binds the real service over a
+    // real Binder in InferenceServiceInstrumentedTest.
+    androidTestImplementation(libs.androidx.test.rules)
     androidTestImplementation(libs.truth)
 }
 

@@ -6,11 +6,15 @@
 
 package app.skein.core.inference.models
 
+import app.skein.core.verify.DigestAlgorithm
+import app.skein.core.verify.ModelFileRole
+import app.skein.core.verify.ModelVerification
 import com.google.common.truth.Truth.assertThat
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import org.junit.rules.TemporaryFolder
+import us.aherrera.skein.core.model.Blake3
 import java.io.File
 import java.nio.file.attribute.PosixFilePermission
 import java.util.concurrent.CountDownLatch
@@ -56,7 +60,7 @@ class ImmutableModelStoreTest {
 
         val imported = importOk(files)
 
-        assertThat(imported.main.blake3).isEqualTo(Blake3.hexDigest(files.first().content))
+        assertThat(imported.main.blake3).isEqualTo(Blake3.hex(files.first().content))
     }
 
     @Test
@@ -121,7 +125,7 @@ class ImmutableModelStoreTest {
         val files = defaultFixtureFiles()
         val manifest = parsedManifest(files.withRole(ModelFileRole.MAIN) { it.copy(declareBlake3 = true) })
         val tweaked =
-            manifest.copy(main = manifest.main.copy(blake3 = Blake3.hexDigest(bytesOf(77, 4_096))))
+            manifest.copy(main = manifest.main.copy(blake3 = Blake3.hex(bytesOf(77, 4_096))))
 
         val result = store.import(tweaked, sourceOf(files))
 

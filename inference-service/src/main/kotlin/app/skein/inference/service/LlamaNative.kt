@@ -83,8 +83,42 @@ object LlamaNative {
     external fun setLogCallback()
 
     /**
-     * Loads a GGUF from [path] (typically `/proc/self/fd/<dup>` — `E4.I3`
-     * never hands a real filesystem path to the isolated process).
+     * Loads a GGUF from an ALREADY-OPEN descriptor. **This is the entry point
+     * the isolated service uses**; [loadModel] is for dev harnesses only.
+     *
+     * `skein-lnp2` (M0.5 adversarial review) established that the isolated
+     * process cannot load by path at all — not the store path (app-private,
+     * `0400`, owned by the app uid) and not `/proc/self/fd/<n>` either, because
+     * opening that is a fresh `open(2)` whose DAC and SELinux checks run against
+     * the isolated uid, and AOSP's `isolated_app` policy denies `app_data_file`
+     * opens outright. Only a descriptor inherited over Binder works.
+     *
+     * The native side `dup`s [fd] and wraps the duplicate in a `FILE*` for
+     * `llama_model_load_from_file_ptr`, so the caller keeps ownership of its own
+     * descriptor — `PinnedModelFile` holds it for the model's lifetime and
+     * closes it on unload. llama.cpp maps the stream through `fileno()`; no path
+     * is resolved anywhere.
+     *
+     * @param fd a readable descriptor positioned anywhere; the loader seeks.
+     * @return a model handle, never `0` on success.
+     * @throws LlamaException [LlamaErrorCode.INVALID_MODEL] if the descriptor
+     *   does not contain a loadable GGUF, [LlamaErrorCode.INVALID_ARGUMENT] if
+     *   it cannot be duplicated.
+     *
+     * Thread: the inference worker thread. Blocks for seconds on a large model.
+     */
+    external fun loadModelFromFd(
+        fd: Int,
+        nGpuLayers: Int,
+        useMmap: Boolean,
+    ): Long
+
+    /**
+     * Loads a GGUF from [path].
+     *
+     * **Dev harnesses and the JNI instrumented tests only.** The isolated
+     * `:inference` process cannot open any path it would want to load — see
+     * [loadModelFromFd], which is what `E4.I3` calls.
      *
      * @param nGpuLayers layers to offload; `0` is CPU-only, negative means all.
      * @param useMmap maps to `LLAMA_LOAD_MODE_MMAP` vs `LLAMA_LOAD_MODE_NONE`

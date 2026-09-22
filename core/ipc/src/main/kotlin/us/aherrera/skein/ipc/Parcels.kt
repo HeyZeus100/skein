@@ -64,6 +64,44 @@
 //       that decides inline-vs-fd. The numbers it will carry are documented
 //       below so the contract is readable on its own.
 //
+//       J4 ADDENDUM (skein-nxk, coordinator decision `skein-hiwb`): reversed
+//       on placement, kept on substance. `TransportRules` now DOES live in this
+//       module, as `TransportRules.kt`. §3.3's `core/inference` placement was
+//       written before the isolation allowlist was enforced and cannot work:
+//       `:core:inference` is an Android library, `IsolationGuardPlugin` forbids
+//       `:inference-service`/`:embedder-service` from depending on it, and a
+//       transport budget the two isolated services cannot see is a budget
+//       nothing enforces. The J4 reasoning that `:core:ipc` is "the wire shape,
+//       not the policy" still holds for anything model- or engine-shaped; these
+//       particular numbers are properties of the Binder transport itself, which
+//       is what this module is.
+//
+//   J5. `ChatMessageParcel.contentFd` (skein-nxk, answering the M0.5 review
+//       finding `skein-0rkg`). §3.3 said oversized text spills to
+//       `GenerateRequest.attachmentFds` with `role = "text"`, but measured
+//       against `TokenBudget` a NORMAL prompt is ~60 KB of text and therefore
+//       ~120 KB of UTF-16 Parcel — over the 32 KiB budget and at the 128 KiB
+//       refusal wall — so nearly every real `generate` must spill, and the
+//       spill shape as specified carries neither a message index nor a chat
+//       role. `ChatMessageParcel` therefore takes an optional per-message
+//       descriptor instead: role stays attached to its own content, ordering
+//       stays the list index, and nothing has to invent a framing convention
+//       that E4.I3 and E4.I4 could disagree about. ADDITIVE — the field
+//       defaults to null and an inline message parcels exactly as before.
+//
+//   J6. `IInferenceService.onSessionUnlocked(long epoch)` (skein-nxk). The
+//       LOCK_POLICY_INDEXING.md §5.2 delta added only the two LOCKING pushes,
+//       but §5.3's gate starts at `SessionEpoch.NONE` and §6.1 invariant I6
+//       requires it to refuse "every request until an explicit onUnlocked is
+//       received" — and §5.3's own prose says ":app re-sends onUnlocked on
+//       every fresh bind". There was no method to send that on, so as locked
+//       the contract could never authorize a service: every call would refuse
+//       with `SESSION_LOCKED`, forever, including the very first load after a
+//       normal unlock. Adding the push is additive (a new `oneway` method) and
+//       is the only reading under which §5.3 and §6.1 are both satisfiable.
+//       `IEmbedderService` needs the symmetric addition; that is `skein-6j93`,
+//       filed rather than done here because `:embedder-service` is `E5.I1`'s.
+//
 // ============================================================================
 // IMAGE / LARGE-PAYLOAD TRANSPORT DECISION (E0.I16 acceptance criterion 4)
 // ============================================================================
@@ -338,11 +376,33 @@ data class LoadRequest(
     val sessionEpoch: Long,
 ) : Parcelable
 
-/** @param role `system` | `user` | `assistant` (`us.aherrera.skein.core.model.Role.wire`). */
+/**
+ * One turn of the prompt.
+ *
+ * Exactly one of [content] and [contentFd] carries the text: [content] while
+ * the message marshals inside `TransportRules.INLINE_BUDGET_BYTES`, otherwise
+ * [contentFd] with [content] empty. Judgment call J5 in this file's header —
+ * the answer to `skein-0rkg`, which measured that a NORMAL prompt (persona +
+ * history + ~3K tokens of retrieved context) marshals to roughly 120 KB, so
+ * spilling is the common case rather than an edge one.
+ *
+ * Spilling per MESSAGE rather than per REQUEST is the whole point: [role] is
+ * the only place the data/instruction boundary survives onto the wire, and a
+ * spill that concatenated every turn into one fd would erase it — retrieved
+ * document text could then be reassembled into the `system` turn. Ordering is
+ * the list index in [GenerateRequest.messages] and needs no separate field.
+ *
+ * @param role `system` | `user` | `assistant` (`us.aherrera.skein.core.model.Role.wire`).
+ * @param content the inline text, or `""` when it travelled in [contentFd].
+ * @param contentFd UTF-8 bytes of this one message's content, owned and closed
+ *   by the receiving service like every other fd (§3.2 rule 3), with
+ *   `role = TransportRules.ROLE_MESSAGE`. Null for an inline message.
+ */
 @Parcelize
 data class ChatMessageParcel(
     val role: String,
     val content: String,
+    val contentFd: SharedMemRef? = null,
 ) : Parcelable
 
 @Parcelize

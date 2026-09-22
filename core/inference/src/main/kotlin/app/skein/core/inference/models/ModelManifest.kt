@@ -46,6 +46,8 @@
 
 package app.skein.core.inference.models
 
+import app.skein.core.verify.ModelFileRole
+import app.skein.core.verify.ModelVerification
 import kotlinx.serialization.json.JsonElement
 import kotlinx.serialization.json.JsonObject
 import kotlinx.serialization.json.JsonPrimitive
@@ -58,42 +60,6 @@ import us.aherrera.skein.core.model.CompanionFile
 import us.aherrera.skein.core.model.CompanionRole
 import us.aherrera.skein.core.model.Model
 import us.aherrera.skein.core.model.ModelFormat
-
-/** Role of one file inside a model manifest. `main` is the mmap'd model itself; the rest are companions. */
-enum class ModelFileRole(
-    val wire: String,
-) {
-    MAIN("main"),
-    MMPROJ("mmproj"),
-    TOKENIZER("tokenizer"),
-    TOKENIZER_CONFIG("tokenizer_config"),
-    CONFIG("config"),
-    GENERATION_CONFIG("generation_config"),
-    LICENSE("license"),
-    SPECIAL_TOKENS_MAP("special_tokens_map"),
-    ;
-
-    /**
-     * The `:core:model` contract role this manifest role maps onto, or null
-     * for [MAIN] (which is `Model.path`, not a companion).
-     */
-    val companionRole: CompanionRole?
-        get() =
-            when (this) {
-                MAIN -> null
-                MMPROJ -> CompanionRole.MMPROJ
-                TOKENIZER -> CompanionRole.TOKENIZER
-                TOKENIZER_CONFIG -> CompanionRole.TOKENIZER_CONFIG
-                CONFIG -> CompanionRole.CONFIG
-                GENERATION_CONFIG -> CompanionRole.GENERATION_CONFIG
-                LICENSE -> CompanionRole.LICENSE
-                SPECIAL_TOKENS_MAP -> CompanionRole.SPECIAL_TOKENS_MAP
-            }
-
-    companion object {
-        fun fromWire(wire: String): ModelFileRole? = entries.firstOrNull { it.wire == wire }
-    }
-}
 
 /**
  * One manifest-covered file.

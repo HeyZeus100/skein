@@ -86,4 +86,47 @@ class IsolationGuardTaskTest {
         assertTrue(error.message!!.contains("GUARD VIOLATION"))
         assertTrue(error.message!!.contains("pure Kotlin/JVM"))
     }
+
+    // E4.I3 (skein-nxk, coordinator decision skein-hiwb): `:core:verify` holds
+    // the POST_REVIEW_RESOLUTIONS.md §2 load gate that both isolated services
+    // must run, so it joins the service allowlist AND the pure-JVM set. The two
+    // facts are one decision: an allowlisted module that later applied an
+    // Android plugin would smuggle the Android SDK into the isolated process,
+    // which is exactly what the allowlist exists to prevent.
+
+    @Test
+    fun `passes for an inference-service dependency on core verify`() {
+        val task = newTask()
+        task.modulePath.set(":inference-service")
+        task.allowedProjectPaths.set(setOf(":core:ipc", ":core:model", ":core:verify"))
+        task.declaredProjectDependencies.set(setOf(":core:ipc", ":core:model", ":core:verify"))
+
+        task.checkIsolation()
+    }
+
+    @Test
+    fun `fails when inference-service depends on core inference`() {
+        val task = newTask()
+        task.modulePath.set(":inference-service")
+        task.allowedProjectPaths.set(setOf(":core:ipc", ":core:model", ":core:verify"))
+        task.declaredProjectDependencies.set(setOf(":core:inference"))
+
+        val error = runCatching { task.checkIsolation() }.exceptionOrNull()
+            ?: throw AssertionError("expected a GradleException for a :core:inference dependency")
+        assertTrue(error.message!!.contains("GUARD VIOLATION"))
+        assertTrue(error.message!!.contains(":core:inference"))
+    }
+
+    @Test
+    fun `fails when core verify applies an Android plugin`() {
+        val task = newTask()
+        task.modulePath.set(":core:verify")
+        task.forbidAndroidPlugin.set(true)
+        task.hasAndroidPlugin.set(true)
+
+        val error = runCatching { task.checkIsolation() }.exceptionOrNull()
+            ?: throw AssertionError("expected a GradleException for an Android plugin on :core:verify")
+        assertTrue(error.message!!.contains("GUARD VIOLATION"))
+        assertTrue(error.message!!.contains(":core:verify"))
+    }
 }

@@ -60,7 +60,8 @@ public object Blake3 {
     private val MSG_PERMUTATION: IntArray =
         intArrayOf(2, 6, 3, 10, 7, 0, 4, 13, 1, 11, 12, 5, 9, 14, 15, 8)
 
-    private val HEX: CharArray = "0123456789abcdef".toCharArray()
+    /** 1 MiB copies out of a mapped region — see [hexDigest]. */
+    private const val HEX_DIGEST_CHUNK: Int = 1024 * 1024
 
     /** 32-byte BLAKE3 digest of [input]. */
     public fun hash(input: ByteArray): ByteArray = Hasher().update(input).digest()
@@ -72,13 +73,28 @@ public object Blake3 {
     public fun hexUtf8(input: String): String = hex(input.toByteArray(Charsets.UTF_8))
 
     /** Lowercase hex encoding of [bytes]. */
-    public fun toHex(bytes: ByteArray): String {
-        val sb = StringBuilder(bytes.size * 2)
-        for (b in bytes) {
-            sb.append(HEX[(b.toInt() ushr 4) and 0x0F])
-            sb.append(HEX[b.toInt() and 0x0F])
+    public fun toHex(bytes: ByteArray): String = Hex.encode(bytes)
+
+    /**
+     * Lowercase hex BLAKE3-256 over every REMAINING byte of [buffer], without
+     * disturbing its position.
+     *
+     * skein-nxk (E4.I3): the post-mmap gate of POST_REVIEW_RESOLUTIONS.md §2.2
+     * digests a `MappedByteBuffer` — the very bytes about to reach llama.cpp —
+     * and must not consume the caller's view while doing it. Chunked rather
+     * than copied whole: the buffer is a multi-gigabyte model mapping, and
+     * `ByteArray(buffer.remaining())` would defeat the point of mapping it.
+     */
+    public fun hexDigest(buffer: java.nio.ByteBuffer): String {
+        val hasher = Hasher()
+        val view = buffer.duplicate()
+        val scratch = ByteArray(minOf(view.remaining().coerceAtLeast(1), HEX_DIGEST_CHUNK))
+        while (view.hasRemaining()) {
+            val n = minOf(scratch.size, view.remaining())
+            view.get(scratch, 0, n)
+            hasher.update(scratch, 0, n)
         }
-        return sb.toString()
+        return toHex(hasher.digest())
     }
 
     // ------------------------------------------------------------------

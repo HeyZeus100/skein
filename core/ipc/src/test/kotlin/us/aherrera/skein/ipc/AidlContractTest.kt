@@ -62,6 +62,32 @@ class AidlContractTest {
         assertThat(fake.lockedCalls).containsExactly(11L)
     }
 
+    // skein-nxk, judgment call J6. LOCK_POLICY_INDEXING.md §5.3 says ":app
+    // re-sends onUnlocked on every fresh bind" and §6.1 invariant I6 says the
+    // service refuses everything until it arrives — but §5.2's AIDL delta added
+    // only the two LOCKING pushes, so there was no method to send it on and a
+    // service could never be authorized at all.
+    @Test
+    fun inferenceServiceOnSessionUnlockedIsInvokableOverBinder() {
+        val fake = FakeInferenceService()
+        val proxy = IInferenceService.Stub.asInterface(fake.asBinder())
+
+        proxy.onSessionUnlocked(11L)
+
+        assertThat(fake.unlockedCalls).containsExactly(11L)
+    }
+
+    @Test
+    fun inferenceServiceOnSessionUnlockedIsIndependentOfTheLockPushes() {
+        val fake = FakeInferenceService()
+        val proxy = IInferenceService.Stub.asInterface(fake.asBinder())
+
+        proxy.onSessionUnlocked(11L)
+
+        assertThat(fake.lockedCalls).isEmpty()
+        assertThat(fake.lockingCalls).isEmpty()
+    }
+
     @Test
     fun inferenceServiceCancelIsInvokableOverBinder() {
         val fake = FakeInferenceService()
@@ -166,6 +192,7 @@ class AidlContractTest {
     private class FakeInferenceService : IInferenceService.Stub() {
         val lockingCalls = mutableListOf<Pair<Long, Long>>()
         val lockedCalls = mutableListOf<Long>()
+        val unlockedCalls = mutableListOf<Long>()
         val cancelledRequestIds = mutableListOf<Int>()
         val embedRequests = mutableListOf<EmbedRequest>()
 
@@ -200,6 +227,13 @@ class AidlContractTest {
 
         override fun onSessionLocked(epoch: Long) {
             lockedCalls += epoch
+        }
+
+        // skein-nxk, judgment call J6: the unlock push §5.3 requires and §5.2
+        // forgot. Without it `IsolatedSessionGate` can never leave
+        // `SessionEpoch.NONE` and every call refuses with SESSION_LOCKED.
+        override fun onSessionUnlocked(epoch: Long) {
+            unlockedCalls += epoch
         }
     }
 

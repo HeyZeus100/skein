@@ -34,7 +34,7 @@
 //
 // and must not close `duplicate` itself — closing the pin closes it.
 
-package app.skein.core.inference.models
+package app.skein.core.verify
 
 import app.skein.core.model.SkeinLog
 import java.io.Closeable

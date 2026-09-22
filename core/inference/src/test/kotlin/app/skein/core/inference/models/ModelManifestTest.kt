@@ -3,8 +3,11 @@
 
 package app.skein.core.inference.models
 
+import app.skein.core.verify.ModelFileRole
+import app.skein.core.verify.ModelVerification
 import com.google.common.truth.Truth.assertThat
 import org.junit.Test
+import us.aherrera.skein.core.model.Blake3
 
 class ModelManifestTest {
     @Test
@@ -33,7 +36,7 @@ class ModelManifestTest {
     fun `declared blake3 is preserved`() {
         val files = defaultFixtureFiles().withRole(ModelFileRole.MAIN) { it.copy(declareBlake3 = true) }
 
-        assertThat(parsedManifest(files).main.blake3).isEqualTo(Blake3.hexDigest(files.first().content))
+        assertThat(parsedManifest(files).main.blake3).isEqualTo(Blake3.hex(files.first().content))
     }
 
     @Test

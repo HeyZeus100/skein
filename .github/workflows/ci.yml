@@ -92,6 +92,17 @@ jobs:
       - name: JNI symbol surface (libskein_llama.so)
         run: ./tools/ci/jni-symbols.sh
 
+      # E4.I3 / skein-nxk: the content-logging gate that bead's acceptance
+      # criteria name. The isolated services are the processes that hold
+      # decrypted prompts, retrieved document text and generated tokens at
+      # once; spec §9 forbids logging any of it at ANY level in ANY build.
+      # SkeinLog's own level gate and LlamaLogRedactor both handle llama.cpp's
+      # output, but neither can see a first-party
+      # `SkeinLog.w(TAG, "prompt=$prompt")` added while debugging and
+      # forgotten. Source-only, so it needs nothing built.
+      - name: No prompt/token content in service logs
+        run: ./tools/ci/no-content-logging.sh
+
       # E10.I9 / skein-rfz2: fails the build if a new exported component
       # (activity/service/provider/receiver) shows up in the merged
       # manifest beyond the debug allowlist (MainActivity,

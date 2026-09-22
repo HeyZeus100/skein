@@ -53,4 +53,17 @@ interface IInferenceService {
     oneway void onSessionLocking(long epoch, long budgetMillis);
     /** oneway. Pushed once LOCKING's budget has elapsed or all in-flight work acknowledged. Idempotent. */
     oneway void onSessionLocked(long epoch);
+    /**
+     * oneway. Pushed on unlock AND on every fresh bind — judgment call J6, see
+     * `Parcels.kt`'s header (skein-nxk).
+     *
+     * `IsolatedSessionGate` (LOCK_POLICY_INDEXING.md §5.3) starts at
+     * `SessionEpoch.NONE` and refuses everything; §5.3 says ":app re-sends
+     * onUnlocked on every fresh bind" and §6.1 invariant I6 says the service
+     * "refuses every request until an explicit onUnlocked is received". §5.2's
+     * AIDL delta listed only the two LOCKING pushes, so there was no method to
+     * send it on and the gate could never be authorized — every call would
+     * refuse with SESSION_LOCKED forever. This is that method. Additive.
+     */
+    oneway void onSessionUnlocked(long epoch);
 }

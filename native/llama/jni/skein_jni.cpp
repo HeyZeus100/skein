@@ -32,10 +32,13 @@
 
 #include <jni.h>
 
+#include <unistd.h>
+
 #include <algorithm>
 #include <atomic>
 #include <cmath>
 #include <cstdint>
+#include <cstdio>
 #include <cstring>
 #include <exception>
 #include <new>
@@ -377,16 +380,79 @@ Java_app_skein_inference_service_LlamaNative_loadModel(
     SKEIN_JNI_CATCH(0)
 }
 
+/*
+ * Loads a GGUF from an ALREADY-OPEN descriptor (E4.I3, bd skein-nxk, closing
+ * the defect bd skein-lnp2 found).
+ *
+ * WHY A DESCRIPTOR AND NOT A PATH. The isolated `:inference` process cannot
+ * open the model by path — not the real one (app-private, 0400, owned by
+ * another uid) and not `/proc/self/fd/<n>` either, because that is a fresh
+ * open(2) whose DAC and SELinux checks run against the isolated uid, and
+ * AOSP's isolated_app policy denies app_data_file opens outright. The
+ * descriptor handed over Binder is the only way in.
+ *
+ * `llama_model_load_from_file_ptr` takes the stream and llama.cpp maps it via
+ * fileno() — no path is resolved anywhere in that path.
+ *
+ * OWNERSHIP. We dup() first: the caller's fd belongs to its PinnedModelFile,
+ * which keeps it open for the model's lifetime and closes it on unload, and
+ * fclose() on a stream we did not own would close it underneath the pin.
+ * llama.cpp does NOT take ownership of the FILE* (llama_file's impl(FILE*)
+ * sets owns_fp = false), so the stream is parked in the handle entry's `aux`
+ * and closed by freeModel after llama_model_free.
+ *
+ * Thread: the inference worker thread. Blocks for seconds on a large model.
+ */
+extern "C" JNIEXPORT jlong JNICALL
+Java_app_skein_inference_service_LlamaNative_loadModelFromFd(
+    JNIEnv *env, jobject /*thiz*/, jint fd, jint n_gpu_layers, jboolean use_mmap) {
+    SKEIN_JNI_TRY
+    if (fd < 0) {
+        ThrowLlama(env, ErrorCode::kInvalidArgument, "model descriptor is negative");
+        return 0;
+    }
+    const int owned_fd = ::dup(static_cast<int>(fd));
+    if (owned_fd < 0) {
+        ThrowLlama(env, ErrorCode::kInvalidArgument, "could not duplicate the model descriptor");
+        return 0;
+    }
+    std::FILE *file = ::fdopen(owned_fd, "rb");
+    if (file == nullptr) {
+        ::close(owned_fd);
+        ThrowLlama(env, ErrorCode::kInvalidArgument, "could not open a stream over the model descriptor");
+        return 0;
+    }
+
+    llama_model_params params = llama_model_default_params();
+    params.n_gpu_layers = n_gpu_layers;
+    params.load_mode = (use_mmap == JNI_TRUE) ? LLAMA_LOAD_MODE_MMAP : LLAMA_LOAD_MODE_NONE;
+
+    llama_model *model = llama_model_load_from_file_ptr(file, params);
+    if (model == nullptr) {
+        std::fclose(file);
+        ThrowLlama(env, ErrorCode::kInvalidModel, "model load failed (not a loadable GGUF)");
+        return 0;
+    }
+    return static_cast<jlong>(Handles().Add(HandleKind::kModel, model, file));
+    SKEIN_JNI_CATCH(0)
+}
+
 /* Thread: the inference worker thread, with every context of this model freed. */
 extern "C" JNIEXPORT void JNICALL
 Java_app_skein_inference_service_LlamaNative_freeModel(JNIEnv *env, jobject /*thiz*/, jlong handle) {
     SKEIN_JNI_TRY
-    void *ptr = Handles().Remove(static_cast<std::int64_t>(handle), HandleKind::kModel);
+    void *stream = nullptr;
+    void *ptr = Handles().Remove(static_cast<std::int64_t>(handle), HandleKind::kModel, &stream);
     if (ptr == nullptr) {
         ThrowBadHandle(env, "model");
         return;
     }
     llama_model_free(static_cast<llama_model *>(ptr));
+    /* After llama_model_free, never before: the mapping llama.cpp holds was
+     * made from this stream's descriptor. nullptr for a path-loaded model. */
+    if (stream != nullptr) {
+        std::fclose(static_cast<std::FILE *>(stream));
+    }
     SKEIN_JNI_CATCH()
 }
 

@@ -438,6 +438,31 @@ deliberately left unwired. It maps `ggml_log_level` to `LlamaLogLevel`, calls
 everything at DEBUG/INFO. The JNI sources contain no `std::cout`, `printf` or
 `__android_log_*`; `tools/ci/jni-symbols.sh` greps for them.
 
+**Loading from a descriptor** (E4.I3, bd `skein-nxk`, closing the defect bd
+`skein-lnp2` found). `loadModelFromFd(fd, nGpuLayers, useMmap)` is the entry
+point the isolated service uses; `loadModel(path)` remains for dev harnesses
+and `LlamaNativeTest`. The isolated `:inference` process cannot open the model
+by ANY path — not the store path (app-private, `0400`, owned by the app uid)
+and not `/proc/self/fd/<n>` either, because opening that is a fresh `open(2)`
+whose DAC and SELinux checks run against the isolated uid, and AOSP's
+`isolated_app` policy denies `app_data_file` opens outright. Only a descriptor
+inherited over Binder works.
+
+**No llama.cpp patch was needed for it.** Upstream at the pinned commit already
+exposes `llama_model_load_from_file_ptr(FILE *, llama_model_params)`
+(`include/llama.h`), and the `FILE *` threads all the way down —
+`llama_model_loader`'s `file != nullptr` branch calls
+`gguf_init_from_file_ptr` and constructs `llama_file(FILE *)`, whose
+`file_id()` is `fileno(fp)`, which is exactly what `llama_mmap` maps. No path
+is resolved anywhere on that route. So the JNI side is all of it:
+`dup(fd)` (the caller's descriptor belongs to its `PinnedModelFile`), then
+`fdopen`, then the public loader. **Ownership matters here**: llama.cpp sets
+`owns_fp = false` for that constructor and never closes the stream, so the
+`FILE *` is parked in the handle registry's `aux` slot and `freeModel` closes
+it *after* `llama_model_free` — before would pull the mapping out from under
+the model. `third_party/` is untouched, and the version-script scrape already
+exports the symbol because it matches the `LLAMA_API` grep.
+
 **Secure context free** (`docs/design/LOCK_POLICY_INDEXING.md` §4.5, consumed
 by E4.I3's `onLocked`): `skein_ctx_free_secure(ctx)` calls
 `llama_memory_clear(mem, data = true)` — which `ggml_backend_buffer_clear(buf, 0)`s

@@ -23,6 +23,8 @@
 
 package app.skein.core.inference.models
 
+import app.skein.core.verify.ModelFileRole
+import app.skein.core.verify.ModelVerification
 import java.io.File
 
 /** One file the loader is allowed to open, with both expected digests resolved. */
