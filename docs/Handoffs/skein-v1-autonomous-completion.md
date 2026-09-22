@@ -1,6 +1,6 @@
 # Skein v1 — Autonomous Completion Handoff
 
-**Status:** Working document, updated 2026-09-22 · `main` at commit `ad98b7b` (local; `origin/main` is `c94e1c4` — the skein-nxk merge is not pushed yet, see §2.0)
+**Status:** Working document, updated 2026-09-22 · code state verified at `ad98b7b` (skein-nxk merge) and pushed to `origin/main` on 2026-09-22 — the code head is `ac4a5df`; this file's own revision is the commit after it (see §2.0)
 **Purpose:** Everything a coordinator (human or agent) needs to spin up an autonomous multi-agent loop that drives Skein v1 to shippable release. Written so a fresh Claude session with no prior context can pick this up and execute.
 **Authority:** Advisory + operational. Non-negotiables in §3 override anything below.
 
@@ -75,7 +75,7 @@ Never drift into these under any autonomous decision-making:
 
 ### 2.0 Read this first — repository state the tree cannot tell you
 
-- `main` is **one merge ahead of `origin/main`**: `ad98b7b` (skein-nxk, the inference service) is verified locally (full native build, both isolation guards, `jni-symbols.sh`, `no-content-logging.sh`, manifest audit — all green) but **not pushed**; `origin/main` is `c94e1c4`. The main checkout also carries one **uncommitted** file the nxk merge needs to compile its instrumented tests: `core/inference/src/androidTest/kotlin/app/skein/core/inference/models/ImmutableModelStoreInstrumentedTest.kt` (the `LoadPhaseHook.afterPreMmapVerify` override re-typed from `ManifestBinding` to `VerifyBinding`). Commit that fix, check CI, then push — in that order. A stray untracked `Untitled/` directory (an empty `.git`, not ours) can be deleted.
+- `ad98b7b` (skein-nxk, the inference service) was verified locally — full native build, both isolation guards, `jni-symbols.sh`, `no-content-logging.sh`, manifest audit, all green — and **pushed on 2026-09-22 as part of `ac4a5df`**, which also carries the instrumented-test fix the merge needed (`ImmutableModelStoreInstrumentedTest`'s `LoadPhaseHook.afterPreMmapVerify` override re-typed to `VerifyBinding`), the docs refresh (`417cc9f`), the loop scripts + ponytail template (`01d8a05`, `f98a760`). Check `tools/loop/ci-status.sh --require-green --ignore Emulator` for that head before dispatching. A stray untracked `Untitled/` directory (an empty `.git`, not ours) in the main checkout can be deleted.
 - The API **weekly limit** was hit on 2026-09-22 (resets 2026-09-27 18:00 America/Los_Angeles). Every subagent in flight was terminated; three left uncommitted work in their worktrees (§2.3). Until the reset, work is coordinator-only.
 - CI on `main` was red on **every push from 2026-09-20 until 2026-09-21 ~20:00 PT** and nobody noticed for a day because local verification was green: a missing Linux `aapt2` checksum in `gradle/verification-metadata.xml` (fixed at `f0bba85`; bd memory `verification-metadata-linux-classifier`), then one Compose test's 5 s ceiling on the 2-core runner (fixed at `9812787`). **At `c94e1c4` both `CI` and the two-runner `Reproducible build check` are green** (runs 35682300562 / 35682300542 — 1 of the 3 consecutive commits skein-egyu needs). The `Emulator instrumented tests` lane is red for a workflow reason (`sdkmanager` not on PATH → no adb → `dexBuilderDevDebugAndroidTest`), filed as a bug; exclude it with `tools/loop/ci-status.sh --require-green --ignore Emulator` until fixed, and run that script before dispatching anything (§4.9).
 - `bd stats`: 181 closed / 337 total, 94 ready. 317 commits on `main`.
@@ -596,7 +596,7 @@ Concrete patterns encountered this session. The loop should be prepared for all 
 
 The old "immediate wave" (vendor the sqlite JNI driver, M0 harness adaptation) is done and merged. Do **not** open a broad wave. The next chain is one product path, in this order:
 
-1. **Land the local state.** Commit the uncommitted androidTest fix in the main checkout (§2.0), confirm `gh run list --branch main --limit 5` is not red for a reason you have not diagnosed, push `main` (`ad98b7b`), and let one CI run finish without a competing push.
+1. **Confirm CI on the pushed head.** `main` was pushed at `ac4a5df` (§2.0); run `tools/loop/ci-status.sh --require-green --ignore Emulator` and do not dispatch until that head has a completed, non-cancelled green run of `CI` and `Reproducible build check` (that run is also commit 2 of 3 for skein-egyu).
 2. **Salvage or discard §2.3.** Replay skein-3yal first (it is a security fix), then skein-p8rn, onto current `main` after reading their diffs; read skein-mzm5's diff and discard the half-refactor unless its contract cases stand on their own.
 3. **Delete the merged worktrees in §2.2** (and any other whose commit is an ancestor of `HEAD`) with `git worktree remove --force`, never `rm -rf` alone.
 4. **One product chain, serially — nothing in parallel that touches the same modules:**
