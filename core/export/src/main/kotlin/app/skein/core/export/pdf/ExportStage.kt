@@ -5,13 +5,14 @@
 // zero-staging `ACTION_CREATE_DOCUMENT` Markdown/zip path (`ExportServiceImpl`,
 // skein-90d, NOT modified by this bead).
 //
-// `skein-0m1z` (open, tracked separately, NOT implemented by this bead) owns
-// turning [ExportStageRecorder] into a real `export_stages` (Migration 005)
-// row plus the `StagedPlaintextSweeper`/`BootReceiver` that actually deletes
-// the file after `expiresAt`. Until that lands, [NoOpExportStageRecorder] is
-// the default — the file is still staged under the directory/naming the
-// design doc specifies and [expiresAt] is still computed and available to
-// wire up, but nothing sweeps it yet. See `bd show skein-0m1z`.
+// `skein-0m1z` has LANDED: `app.skein.export.stage.ExportStageCoordinator`
+// (`:app`) is the real [ExportStageRecorder] — it writes the `export_stages`
+// row (Migration 005) and enqueues the `StagedPlaintextSweeper` that deletes
+// the file after [ExportStage.expiresAt], alongside the `BootReceiver` and
+// on-lock sweeps. [NoOpExportStageRecorder] remains the DEFAULT only because
+// nothing constructs [PdfExportService] yet (E2.I11's PDF export UI is not
+// wired); whoever wires it MUST pass the coordinator instead. See
+// `bd show skein-0m1z`.
 //
 // No `android.*` import — [ExportStageFactory.create] is plain-JUnit-testable.
 
@@ -34,11 +35,12 @@ public fun interface ExportStageRecorder {
 }
 
 /**
- * Default [ExportStageRecorder] until `skein-0m1z` wires up the real
- * `ExportStageRepository`. Intentionally inert: recording nothing here is
- * safe (the file is still on disk, under the directory §4.3 excludes from
- * backups) but means nothing sweeps it until that bead lands — do not ship
- * past `skein-0m1z` with this still as the production default.
+ * Inert [ExportStageRecorder], the default only because no production call
+ * site constructs [PdfExportService] yet. Recording nothing leaves the file
+ * on disk under the directory §4.3 excludes from backups, and the boot purge
+ * and on-lock sweep still delete it — but nothing bounds its life to ten
+ * minutes. The real recorder is `ExportStageCoordinator` in `:app`
+ * (skein-0m1z); E2.I11's PDF export UI must pass that, not this.
  */
 public object NoOpExportStageRecorder : ExportStageRecorder {
     override fun record(stage: ExportStage) {

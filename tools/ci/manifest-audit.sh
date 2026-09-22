@@ -61,6 +61,7 @@ minSdkVersion:'30'
 targetSdkVersion:'37'
 uses-permission: name='android.permission.POST_NOTIFICATIONS'
 uses-permission: name='android.permission.USE_BIOMETRIC'
+uses-permission: name='android.permission.RECEIVE_BOOT_COMPLETED'
 uses-permission: name='android.permission.USE_FINGERPRINT'
 uses-permission: name='app.skein.DYNAMIC_RECEIVER_NOT_EXPORTED_PERMISSION'
 application: label='Skein' icon=''
@@ -81,6 +82,8 @@ N: android=http://schemas.android.com/apk/res/android (line=2)
         A: http://schemas.android.com/apk/res/android:name(0x01010003)="android.permission.POST_NOTIFICATIONS" (Raw: "android.permission.POST_NOTIFICATIONS")
       E: uses-permission (line=23)
         A: http://schemas.android.com/apk/res/android:name(0x01010003)="android.permission.USE_BIOMETRIC" (Raw: "android.permission.USE_BIOMETRIC")
+      E: uses-permission (line=24)
+        A: http://schemas.android.com/apk/res/android:name(0x01010003)="android.permission.RECEIVE_BOOT_COMPLETED" (Raw: "android.permission.RECEIVE_BOOT_COMPLETED")
       E: uses-permission (line=26)
         A: http://schemas.android.com/apk/res/android:name(0x01010003)="android.permission.USE_FINGERPRINT" (Raw: "android.permission.USE_FINGERPRINT")
       E: uses-permission (line=32)
@@ -107,10 +110,24 @@ N: android=http://schemas.android.com/apk/res/android (line=2)
             A: http://schemas.android.com/apk/res/android:name(0x01010003)="app.skein.embedder.service.EmbedderService" (Raw: "app.skein.embedder.service.EmbedderService")
             A: http://schemas.android.com/apk/res/android:exported(0x01010010)=false
             A: http://schemas.android.com/apk/res/android:isolatedProcess(0x010103a9)=true
+          E: service (line=78)
+            A: http://schemas.android.com/apk/res/android:name(0x01010003)="androidx.work.impl.background.systemjob.SystemJobService" (Raw: "androidx.work.impl.background.systemjob.SystemJobService")
+            A: http://schemas.android.com/apk/res/android:permission(0x01010006)="android.permission.BIND_JOB_SERVICE" (Raw: "android.permission.BIND_JOB_SERVICE")
+            A: http://schemas.android.com/apk/res/android:exported(0x01010010)=true
           E: provider (line=94)
             A: http://schemas.android.com/apk/res/android:name(0x01010003)="app.skein.core.vault.provider.VaultDocumentsProvider" (Raw: "app.skein.core.vault.provider.VaultDocumentsProvider")
             A: http://schemas.android.com/apk/res/android:permission(0x01010006)="android.permission.MANAGE_DOCUMENTS" (Raw: "android.permission.MANAGE_DOCUMENTS")
             A: http://schemas.android.com/apk/res/android:exported(0x01010010)=true
+          E: receiver (line=128)
+            A: http://schemas.android.com/apk/res/android:name(0x01010003)="app.skein.export.stage.BootReceiver" (Raw: "app.skein.export.stage.BootReceiver")
+            A: http://schemas.android.com/apk/res/android:enabled(0x0101000e)=true
+            A: http://schemas.android.com/apk/res/android:exported(0x01010010)=false
+            A: http://schemas.android.com/apk/res/android:directBootAware(0x01010505)=false
+              E: intent-filter (line=134)
+                  E: action (line=135)
+                    A: http://schemas.android.com/apk/res/android:name(0x01010003)="android.intent.action.BOOT_COMPLETED" (Raw: "android.intent.action.BOOT_COMPLETED")
+                  E: action (line=136)
+                    A: http://schemas.android.com/apk/res/android:name(0x01010003)="android.intent.action.LOCKED_BOOT_COMPLETED" (Raw: "android.intent.action.LOCKED_BOOT_COMPLETED")
           E: receiver (line=150)
             A: http://schemas.android.com/apk/res/android:name(0x01010003)="app.skein.debug.RogueReceiver" (Raw: "app.skein.debug.RogueReceiver")
             A: http://schemas.android.com/apk/res/android:exported(0x01010010)=true
@@ -204,14 +221,22 @@ if [[ -n "$(app_attr_value networkSecurityConfig)" ]]; then
   fail "android:networkSecurityConfig is present (should be absent -- no network)"
 fi
 
-# --- Permission set is exactly {POST_NOTIFICATIONS, USE_BIOMETRIC}, plus
-#     two androidx-injected additions accepted as safe-by-construction
-#     (mirrors ManifestPolicyTest's ANDROIDX_INJECTED_PERMISSIONS): the
+# --- Permission set is exactly {POST_NOTIFICATIONS, USE_BIOMETRIC,
+#     RECEIVE_BOOT_COMPLETED}, plus two androidx-injected additions accepted
+#     as safe-by-construction (mirrors ManifestPolicyTest's
+#     ANDROIDX_INJECTED_PERMISSIONS): the
 #     DYNAMIC_RECEIVER_NOT_EXPORTED_PERMISSION shim, and USE_FINGERPRINT
 #     (androidx.biometric:1.1.0, maxSdkVersion=28 -- a no-op given this
 #     app's minSdk=30, but aapt2 badging surfaces it regardless of
 #     maxSdkVersion since that only gates the runtime grant). Identical
-#     across debug and release -- verified against both real APKs. ---
+#     across debug and release -- verified against both real APKs.
+#
+#     RECEIVE_BOOT_COMPLETED was added by skein-0m1z per
+#     docs/design/POST_REVIEW_RESOLUTIONS.md §4.3, which specifies a
+#     BootReceiver that deletes staged export plaintext stranded by a crash
+#     or reboot. It reverses E5.I10's removal of the same permission (which
+#     was about WorkManager's own boot receiver, still removed); see the
+#     AndroidManifest.xml comment on the uses-permission element. ---
 declared_permissions="$(
   grep -o "uses-permission: name='[^']*'" <<<"$badging" \
     | sed -E "s/.*name='([^']*)'/\1/" \
@@ -219,6 +244,7 @@ declared_permissions="$(
 )"
 expected_permissions="$(printf '%s\n' \
   "android.permission.POST_NOTIFICATIONS" \
+  "android.permission.RECEIVE_BOOT_COMPLETED" \
   "android.permission.USE_BIOMETRIC" \
   "android.permission.USE_FINGERPRINT" \
   "app.skein.DYNAMIC_RECEIVER_NOT_EXPORTED_PERMISSION" \
@@ -290,9 +316,11 @@ exported_components="$(
     }
   ' <<<"$xmltree" | sort -u
 )"
+#       - both: WorkManager's JobScheduler bridge (see below).
 release_exported_components="$(printf '%s\n' \
   "activity:app.skein.MainActivity" \
   "provider:app.skein.core.vault.provider.VaultDocumentsProvider" \
+  "service:androidx.work.impl.background.systemjob.SystemJobService" \
   | sort -u
 )"
 case "$variant" in
@@ -307,6 +335,47 @@ case "$variant" in
 esac
 if [[ "$exported_components" != "$expected_exported_components" ]]; then
   fail "exported component set is [$(tr '\n' ' ' <<<"$exported_components")], expected ($variant) [$(tr '\n' ' ' <<<"$expected_exported_components")]"
+fi
+
+# --- WorkManager's SystemJobService is exported because JobScheduler can only
+#     bind to an exported job service. That is only acceptable while the
+#     platform's signature-level BIND_JOB_SERVICE guards it -- "exported, but
+#     only to the OS", the same posture as the MANAGE_DOCUMENTS-guarded
+#     DocumentsProvider. Allowlisting the component by name alone would let a
+#     future merge drop that guard unnoticed, so the guard itself is asserted.
+#
+#     skein-0m1z: this component and this check were MISSING from the list
+#     above even though :app has depended on androidx.work since E5.I10
+#     (skein-7v3) -- the exact "script drifted from ManifestPolicyTest" bug
+#     this file's own header warns about (skein-rfz2). ManifestPolicyTest has
+#     asserted both facts since E5.I10; this restores parity. ---
+workmanager_job_service_permission="$(
+  awk '
+    /^ *E: / {
+      line = $0
+      sub(/^ *E: /, "", line)
+      sub(/ \(line=.*/, "", line)
+      element = line
+      name = ""
+      permission = ""
+    }
+    /android:name\(0x01010003\)=/ && name == "" {
+      match($0, /"[^"]*"/)
+      name = substr($0, RSTART + 1, RLENGTH - 2)
+    }
+    /android:permission\(0x01010006\)=/ {
+      match($0, /"[^"]*"/)
+      permission = substr($0, RSTART + 1, RLENGTH - 2)
+      if (element == "service" && name == "androidx.work.impl.background.systemjob.SystemJobService") {
+        print permission
+      }
+    }
+  ' <<<"$xmltree" | head -n1
+)"
+if grep -q "service:androidx.work.impl.background.systemjob.SystemJobService" <<<"$exported_components"; then
+  if [[ "$workmanager_job_service_permission" != "android.permission.BIND_JOB_SERVICE" ]]; then
+    fail "SystemJobService is exported without BIND_JOB_SERVICE (found: '${workmanager_job_service_permission}')"
+  fi
 fi
 
 # --- Isolated services stay isolated and unexported. ---

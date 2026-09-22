@@ -98,6 +98,11 @@ class DeviceVaultOpener(
                     personaService = personaService,
                     exportService = ExportServiceImpl(repository),
                     importService = ImportServiceImpl(repository, context = context),
+                    // skein-0m1z: `VaultRepositoryImpl` is also the
+                    // `ExportStageRepository` (migration 005), so a stage row
+                    // shares the writer connection and transaction plumbing
+                    // above rather than opening a second writing connection.
+                    exportStages = repository,
                 ) {
                     // Closing must run to completion even when the lock
                     // observer budget cancels the caller. `lifecycle.close()`

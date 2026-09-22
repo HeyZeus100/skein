@@ -3,6 +3,7 @@
 
 package app.skein.vault
 
+import app.skein.core.vault.export.stage.ExportStageRepository
 import us.aherrera.skein.core.model.ExportService
 import us.aherrera.skein.core.model.ImportService
 import us.aherrera.skein.core.model.IndexStore
@@ -29,6 +30,15 @@ class VaultSession(
     val personaService: PersonaService,
     val exportService: ExportService,
     val importService: ImportService,
+    /**
+     * skein-0m1z: `export_stages` (migration 005) for this open vault —
+     * where `ExportStageCoordinator` records staged plaintext and marks it
+     * swept. A `:core:vault` interface rather than a `:core:model` contract
+     * (see its KDoc), and `null`-able only in the sense that the whole
+     * session is: while locked there is no session and nothing to sweep by
+     * row.
+     */
+    val exportStages: ExportStageRepository,
     private val release: suspend () -> Unit,
 ) {
     private val closed = AtomicBoolean(false)

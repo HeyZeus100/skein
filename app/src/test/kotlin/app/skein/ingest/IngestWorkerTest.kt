@@ -20,6 +20,7 @@ import app.skein.core.rag.ingest.IngestPace
 import app.skein.core.vault.key.VaultKeyProvider
 import app.skein.core.vault.provider.VaultDocumentsProvider
 import app.skein.core.vault.session.UnlockManager
+import app.skein.export.stage.FakeExportStageRepository
 import app.skein.vault.BringUpResult
 import app.skein.vault.DocumentsProviderPort
 import app.skein.vault.ScriptedVaultKeyProvider
@@ -270,6 +271,7 @@ class IngestWorkerTest {
                         personaService = InMemoryPersonaService(),
                         exportService = FakeExportService(),
                         importService = FakeImportService(),
+                        exportStages = FakeExportStageRepository(),
                     ) {}
                 },
                 provider =

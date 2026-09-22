@@ -1,11 +1,14 @@
 package app.skein
 
+import androidx.work.WorkManager
 import app.skein.core.rag.ingest.IngestPace
 import app.skein.core.vault.lifecycle.VaultReset
 import app.skein.core.vault.provider.VaultDocumentsProvider
 import app.skein.core.vault.session.LockPolicy
 import app.skein.core.vault.session.UnlockManager
 import app.skein.core.vault.session.UnlockState
+import app.skein.export.stage.ExportStageCoordinator
+import app.skein.export.stage.FakeExportStageRepository
 import app.skein.ingest.IngestPacer
 import app.skein.ingest.IngestPipelines
 import app.skein.ingest.IngestScheduler
@@ -91,6 +94,7 @@ class TestSkeinApplication : SkeinApplication() {
                         personaService = personaService,
                         exportService = FakeExportService(),
                         importService = FakeImportService(),
+                        exportStages = FakeExportStageRepository(),
                     ) {}
                 },
                 provider =
@@ -122,7 +126,19 @@ class TestSkeinApplication : SkeinApplication() {
                 pipelines = { session, pace -> IngestPipelines.forSession(session, pace) },
                 scope = scope,
             ).also { it.start() }
-        return VaultServices(keyProvider, unlockManager, bootstrap, ingest, vaultReset)
+        // skein-0m1z: the real coordinator over the test session's fake
+        // repository. `workManager` is a lambda and is only resolved by
+        // `record()`, which no test in this source set calls, so a test that
+        // never initialises WorkManager is unaffected.
+        val exportStages =
+            ExportStageCoordinator(
+                unlockManager = unlockManager,
+                repository = { bootstrap.session.value?.exportStages },
+                workManager = { WorkManager.getInstance(this) },
+                stagingDir = File(cacheDir, "staging_export"),
+                scope = scope,
+            )
+        return VaultServices(keyProvider, unlockManager, bootstrap, ingest, vaultReset, exportStages)
     }
 
     /**

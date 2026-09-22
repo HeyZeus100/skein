@@ -2,6 +2,7 @@ package app.skein.vault
 
 import app.skein.core.vault.session.LockReason
 import app.skein.core.vault.session.UnlockState
+import app.skein.export.stage.FakeExportStageRepository
 import org.junit.Assert.assertEquals
 import org.junit.Test
 import us.aherrera.skein.core.model.AuthorizationToken
@@ -25,6 +26,7 @@ class VaultGatePhaseTest {
             personaService = InMemoryPersonaService(),
             exportService = FakeExportService(),
             importService = FakeImportService(),
+            exportStages = FakeExportStageRepository(),
         ) {}
 
     private val unlocked = UnlockState.Unlocked(since = 1L, token = AuthorizationToken(1L))

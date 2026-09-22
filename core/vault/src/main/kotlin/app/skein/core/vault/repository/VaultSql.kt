@@ -202,6 +202,39 @@ internal object VaultSql {
         "UPDATE ingest_queue SET attempts = attempts + 1 WHERE doc_id = ? RETURNING attempts"
 
     // ------------------------------------------------------------------
+    // Export stages (migration 005, skein-0m1z)
+    // ------------------------------------------------------------------
+
+    const val EXPORT_STAGE_COLUMNS: String =
+        "stage_id, path, origin, document_id, revision_hash, created_at, expires_at, swept"
+
+    // `INSERT OR REPLACE`: re-recording the same stage id (a retried export
+    // that reuses its id) must overwrite rather than throw, and the row it
+    // replaces described the same file anyway.
+    const val INSERT_EXPORT_STAGE: String =
+        "INSERT OR REPLACE INTO export_stages($EXPORT_STAGE_COLUMNS) VALUES (?, ?, ?, ?, ?, ?, ?, ?)"
+
+    const val SELECT_EXPORT_STAGE: String =
+        "SELECT $EXPORT_STAGE_COLUMNS FROM export_stages WHERE stage_id = ?"
+
+    // Oldest expiry first so a caller sweeping in order clears the most
+    // overdue plaintext first. Uses idx_export_stages_expires.
+    const val SELECT_UNSWEPT_EXPORT_STAGES: String =
+        "SELECT $EXPORT_STAGE_COLUMNS FROM export_stages WHERE swept = 0 ORDER BY expires_at ASC"
+
+    // `AND swept = 0` is what makes "there was no such unswept row"
+    // observable through `changes()` rather than silently counting an
+    // already-swept row as freshly swept.
+    const val MARK_EXPORT_STAGE_SWEPT: String =
+        "UPDATE export_stages SET swept = 1 WHERE stage_id = ? AND swept = 0"
+
+    const val MARK_ALL_EXPORT_STAGES_SWEPT: String =
+        "UPDATE export_stages SET swept = 1 WHERE swept = 0"
+
+    /** `changes()` for the statement just executed on this connection — how a bare UPDATE reports its row count. */
+    const val SELECT_CHANGES: String = "SELECT changes()"
+
+    // ------------------------------------------------------------------
     // Transactions
     // ------------------------------------------------------------------
 

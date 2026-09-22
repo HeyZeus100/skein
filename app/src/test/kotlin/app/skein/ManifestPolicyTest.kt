@@ -49,18 +49,24 @@ class ManifestPolicyTest {
     // --- Permissions -------------------------------------------------------
 
     @Test
-    fun `permission set is exactly POST_NOTIFICATIONS and USE_BIOMETRIC plus known androidx shims`() {
+    fun `permission set is exactly the three declared plus known androidx shims`() {
         val packageInfo = packageManager.getPackageInfo(packageName, PackageManager.GET_PERMISSIONS)
         val requested = packageInfo.requestedPermissions?.toSet().orEmpty()
 
-        // No unexpected permission crept in beyond the declared two plus the
-        // documented androidx-injected shim.
+        // No unexpected permission crept in beyond the declared three plus
+        // the documented androidx-injected shims.
         assertEquals(emptySet<String>(), requested - ALLOWED_PERMISSIONS)
-        // The two we actually declared are both present.
+        // The three we actually declared are all present.
         assertEquals(
             setOf(
                 "android.permission.POST_NOTIFICATIONS",
                 "android.permission.USE_BIOMETRIC",
+                // skein-0m1z (POST_REVIEW_RESOLUTIONS.md §4.3): required for
+                // BootReceiver's BOOT_COMPLETED delivery. Reverses E5.I10's
+                // removal of the same permission, which concerned
+                // WorkManager's own boot receiver (still removed) — see the
+                // AndroidManifest.xml comment.
+                "android.permission.RECEIVE_BOOT_COMPLETED",
             ),
             requested - ANDROIDX_INJECTED_PERMISSIONS,
         )
@@ -108,6 +114,85 @@ class ManifestPolicyTest {
             exportedReceivers.isEmpty(),
         )
     }
+
+    // --- BootReceiver (skein-0m1z, POST_REVIEW_RESOLUTIONS.md §4.3/§4.4) ---
+
+    @Test
+    fun `the BootReceiver is declared and enabled`() {
+        val packageInfo = packageManager.getPackageInfo(packageName, PackageManager.GET_RECEIVERS)
+        val receiver =
+            requireNotNull(packageInfo.receivers.orEmpty().firstOrNull { it.name == BOOT_RECEIVER }) {
+                "$BOOT_RECEIVER not declared in the manifest"
+            }
+
+        assertTrue("$BOOT_RECEIVER must be enabled", receiver.enabled)
+    }
+
+    @Test
+    fun `the BootReceiver is not exported`() {
+        // §4.4 asks for this by name ("BootReceiver (not exported: verify)").
+        // The broader "no receiver is exported" test above would also catch a
+        // regression, but this pins the requirement to the component §4.3
+        // actually introduced.
+        val packageInfo = packageManager.getPackageInfo(packageName, PackageManager.GET_RECEIVERS)
+        val receiver = packageInfo.receivers.orEmpty().first { it.name == BOOT_RECEIVER }
+
+        assertFalse("$BOOT_RECEIVER must not be exported", receiver.exported)
+    }
+
+    @Test
+    fun `the BootReceiver source declaration matches POST_REVIEW_RESOLUTIONS 4_3 verbatim`() {
+        val element = bootReceiverElement()
+
+        assertEquals("true", element.getAttributeNS(ANDROID_NS, "enabled"))
+        assertEquals("false", element.getAttributeNS(ANDROID_NS, "exported"))
+        // directBootAware="false" is §4.3's deliberate choice: the vault and
+        // the staging directory are both credential-encrypted, so nothing is
+        // readable before first unlock. Its consequence is that
+        // LOCKED_BOOT_COMPLETED (declared below) is never actually delivered
+        // — the platform dispatches it only to direct-boot-aware components.
+        // See BootReceiver.kt's header.
+        assertEquals("false", element.getAttributeNS(ANDROID_NS, "directBootAware"))
+    }
+
+    @Test
+    fun `the BootReceiver listens for both boot actions POST_REVIEW_RESOLUTIONS 4_3 names`() {
+        val actions =
+            bootReceiverElement()
+                .childElements("intent-filter")
+                .flatMap { it.childElements("action") }
+                .map { it.getAttributeNS(ANDROID_NS, "name") }
+
+        assertEquals(
+            listOf(
+                "android.intent.action.BOOT_COMPLETED",
+                "android.intent.action.LOCKED_BOOT_COMPLETED",
+            ),
+            actions,
+        )
+    }
+
+    @Test
+    fun `no FileProvider was reintroduced alongside the BootReceiver`() {
+        // §4.3's receiver block and its "No FileProvider entry. Removing it
+        // is a v1 acceptance criterion." note are the same snippet; keeping
+        // the pairing asserted here means a future edit to that block cannot
+        // quietly restore one.
+        val packageInfo = packageManager.getPackageInfo(packageName, PackageManager.GET_PROVIDERS)
+
+        assertTrue(
+            packageInfo.providers
+                .orEmpty()
+                .none { it.name.endsWith("FileProvider") },
+        )
+    }
+
+    private fun bootReceiverElement(): Element =
+        requireNotNull(
+            applicationElement()
+                .childElements("receiver")
+                .firstOrNull { it.getAttributeNS(ANDROID_NS, "name") == BOOT_RECEIVER },
+        ) { "$BOOT_RECEIVER not declared in the source manifest" }
 
     // --- DocumentsProvider (E2.I6, POST_REVIEW_RESOLUTIONS.md §4.3) --------
 
@@ -391,6 +476,10 @@ class ManifestPolicyTest {
             setOf(
                 "android.permission.POST_NOTIFICATIONS",
                 "android.permission.USE_BIOMETRIC",
+                "android.permission.RECEIVE_BOOT_COMPLETED",
             ) + ANDROIDX_INJECTED_PERMISSIONS
+
+        /** skein-0m1z: `BootReceiver`, the one receiver Skein declares itself (never exported). */
+        const val BOOT_RECEIVER = "app.skein.export.stage.BootReceiver"
     }
 }

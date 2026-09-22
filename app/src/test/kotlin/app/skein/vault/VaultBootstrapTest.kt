@@ -6,6 +6,7 @@ import app.skein.core.vault.key.VaultKeyProvider
 import app.skein.core.vault.provider.VaultDocumentsProvider
 import app.skein.core.vault.session.LockReason
 import app.skein.core.vault.session.UnlockManager
+import app.skein.export.stage.FakeExportStageRepository
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
@@ -97,6 +98,7 @@ class VaultBootstrapTest {
                         personaService = InMemoryPersonaService(),
                         exportService = FakeExportService(),
                         importService = FakeImportService(),
+                        exportStages = FakeExportStageRepository(),
                     ) {
                         events += "close"
                         onRelease()

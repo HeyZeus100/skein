@@ -18,18 +18,34 @@
     <uses-permission android:name="android.permission.USE_BIOMETRIC" />
 
     <!--
+        skein-0m1z (docs/design/POST_REVIEW_RESOLUTIONS.md §4.3): the third
+        declared permission, and the only one with a manifest component
+        behind it. §4.3 specifies a `BootReceiver` registered for
+        BOOT_COMPLETED + LOCKED_BOOT_COMPLETED that recovers staged export
+        plaintext left behind by a crash, kill or reboot; the platform
+        delivers neither action without this permission.
+
+        This REVERSES the E5.I10 (skein-7v3) removal recorded below, and only
+        for this reason: that removal's rationale was "WorkManager's boot
+        receiver would only reschedule persisted work after a reboot ...
+        nothing may run from boot", which remains true of WorkManager's own
+        receiver (still removed, and its rescheduling is unnecessary because
+        `IngestScheduler` re-enqueues on unlock). Skein's own BootReceiver is
+        a different thing entirely: it deletes plaintext rather than starting
+        work, and it is precisely the reboot case that strands that plaintext
+        on disk. See `app/src/main/kotlin/app/skein/export/stage/BootReceiver.kt`.
+    -->
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
+
+    <!--
         E5.I10 (skein-7v3): androidx.work:work-runtime merges four
-        uses-permissions of its own. None is needed by the ingest worker's
-        usage and one (ACCESS_NETWORK_STATE) is on the manifest guard's
-        denylist, so all four are removed from the merged manifest:
+        uses-permissions of its own. Three are still removed from the merged
+        manifest; RECEIVE_BOOT_COMPLETED is now declared above for Skein's own
+        BootReceiver (skein-0m1z) rather than removed:
           - ACCESS_NETWORK_STATE: only consulted by WorkManager's network
             constraint tracker, which is never registered because
             `IngestWorker` runs with `NetworkType.NOT_REQUIRED`
             (LOCK_POLICY_INDEXING.md §3.2: no constraints gate at all).
-          - RECEIVE_BOOT_COMPLETED: WorkManager's boot receiver would only
-            reschedule persisted work after a reboot; the vault is locked
-            after a reboot and `IngestScheduler` re-enqueues on unlock
-            (invariant I2, §6.1), so nothing may run from boot.
           - FOREGROUND_SERVICE: expedited/foreground work is not used
             (on API 30 it would need a foreground service + notification).
           - WAKE_LOCK: only acquired by the pre-API-23 alarm scheduler and
@@ -37,9 +53,6 @@
     -->
     <uses-permission
         android:name="android.permission.ACCESS_NETWORK_STATE"
-        tools:node="remove" />
-    <uses-permission
-        android:name="android.permission.RECEIVE_BOOT_COMPLETED"
         tools:node="remove" />
     <uses-permission
         android:name="android.permission.FOREGROUND_SERVICE"
@@ -122,6 +135,38 @@
             <grant-uri-permission android:pathPrefix="/document/note:" />
             <grant-uri-permission android:pathPrefix="/document/att:" />
         </provider>
+
+        <!--
+            skein-0m1z (docs/design/POST_REVIEW_RESOLUTIONS.md §4.3, verbatim
+            apart from the class name): recovers staged export plaintext
+            (`cache/staging_export/`) that a crash, kill or reboot stranded on
+            disk, by deleting it on the next cold start.
+
+            exported="false" — this receiver is triggered only by the two
+            protected system broadcasts below, which the OS delivers to
+            unexported receivers; nothing else may reach it, and the
+            "no exported receiver" baseline (ManifestPolicyTest) is preserved.
+
+            directBootAware="false" is §4.3's deliberate choice, and its stated
+            consequence is worth spelling out: the platform delivers
+            LOCKED_BOOT_COMPLETED ONLY to direct-boot-aware components, so that
+            action never actually fires while this attribute is false. It is
+            declared because §4.3 declares it, and because making this receiver
+            direct-boot-aware would gain nothing today — the vault AND the
+            staging directory are both credential-encrypted, so neither is
+            readable before the user's first unlock. BOOT_COMPLETED, which does
+            fire, is the action that carries the recovery. See BootReceiver.kt.
+        -->
+        <receiver
+            android:name="app.skein.export.stage.BootReceiver"
+            android:enabled="true"
+            android:exported="false"
+            android:directBootAware="false">
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
+                <action android:name="android.intent.action.LOCKED_BOOT_COMPLETED" />
+            </intent-filter>
+        </receiver>
 
         <!--
             E3.I1 (spec §9): androidx.profileinstaller ships an exported
