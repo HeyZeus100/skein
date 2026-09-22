@@ -46,6 +46,12 @@ gradlePlugin {
             id = "app.skein.guard.logging"
             implementationClass = "app.skein.gradle.NoRawLoggingGuardPlugin"
         }
+        // E10.I3 (skein-gzr): not a "guard.*" id — contractReport reports,
+        // it does not gate the build (see ContractReportPlugin's KDoc).
+        register("contractReport") {
+            id = "app.skein.contractreport"
+            implementationClass = "app.skein.gradle.ContractReportPlugin"
+        }
     }
 }
 
