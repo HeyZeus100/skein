@@ -74,7 +74,7 @@ public class FakePromptAssembler : PromptAssembler {
         val messages =
             buildList {
                 add(ChatMessage(role = Role.SYSTEM, content = systemContent))
-                kept.forEach { add(ChatMessage(role = it.role, content = it.contentMd)) }
+                kept.forEach { add(ChatMessage(role = historyRole(it.role), content = it.contentMd)) }
                 add(ChatMessage(role = Role.USER, content = finalUserContent))
             }
 
@@ -93,6 +93,13 @@ public class FakePromptAssembler : PromptAssembler {
         val query = "User: $userQuery"
         return if (survivors.isEmpty()) query else renderBlock(survivors) + "\n\n" + query
     }
+
+    /**
+     * Mirrors `PromptAssemblerImpl.historyRole` (skein-zh7o): a stored or
+     * imported `Role.SYSTEM` history turn is re-roled to [Role.USER] so it
+     * is rendered as data, never as a second instruction segment.
+     */
+    private fun historyRole(role: Role): Role = if (role == Role.SYSTEM) Role.USER else role
 
     /** `Retrieved context:` followed by one `[N] <title> · <kind>` header per item and its verbatim text. */
     private fun renderBlock(survivors: List<Retrieved>): String =
