@@ -475,6 +475,16 @@ class MainActivityComposeTest {
     }
 
     private companion object {
-        const val WAIT_MILLIS = 5_000L
+        /**
+         * Ceiling for every `waitUntil` here. `waitUntil` returns as soon as
+         * its condition holds, so this only bounds the failure case; it must
+         * be generous because a Robolectric + Compose activity launch on a
+         * 2-core GitHub runner can take well over 5 s under load (the
+         * "retrying after a failed open" case timed out at 5 s on CI even
+         * after skein-spe3 made its retry path deterministic, while 154
+         * sibling tests passed — skein-6krr family). 30 s is a failure
+         * budget, not an expected duration.
+         */
+        const val WAIT_MILLIS = 30_000L
     }
 }
