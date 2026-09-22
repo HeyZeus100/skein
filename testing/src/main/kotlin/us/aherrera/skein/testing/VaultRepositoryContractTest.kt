@@ -540,6 +540,147 @@ public abstract class VaultRepositoryContractTest {
             assertNull("revisions cascade with their document (§1.3)", r.getRevision(note.id, citation.revisionHash))
         }
 
+    // ------------------------------------------------------------------
+    // documentRevisions_gc sweep (skein-a2yr, POST_REVIEW_RESOLUTIONS.md
+    // §1.2 step 4) and the chat-snapshot bound it lands alongside.
+    // ------------------------------------------------------------------
+
+    @Test
+    public fun sweep_keeps_a_superseded_revision_still_cited_by_a_message(): Unit =
+        runTest {
+            val r = repo()
+            val note = r.createDocument(NewDocument(kind = DocumentKind.NOTE, title = "note", bodyMd = NOTE_BODY))
+            val citedHash = requireNotNull(note.contentHash)
+            val chat = r.createDocument(NewDocument(kind = DocumentKind.CHAT, title = "chat", bodyMd = ""))
+            r.appendMessage(
+                chat.id,
+                NewMessage(
+                    role = Role.ASSISTANT,
+                    contentMd = "see [1]",
+                    citations = citationRecordFor(note.id, citedHash),
+                ),
+            )
+            Thread.sleep(2L)
+            r.updateBody(note.id, title = "note", bodyMd = "an entirely different body")
+
+            // Not asserting the deleted count here: appendMessage's own
+            // chat-creation revision (the empty transcript, superseded and
+            // uncited the moment the first turn rewrites the body) is a
+            // separate, legitimate orphan the sweep is expected to remove —
+            // see `sweep_removes_an_uncited_superseded_revision` for that
+            // case in isolation. This test only asserts the CITED revision's
+            // survival.
+            r.sweepUnreferencedRevisions()
+
+            assertNotNull(
+                "a revision still cited by a message must survive the sweep",
+                r.getRevision(note.id, citedHash),
+            )
+        }
+
+    @Test
+    public fun sweep_removes_an_uncited_superseded_revision(): Unit =
+        runTest {
+            val r = repo()
+            val note = r.createDocument(NewDocument(kind = DocumentKind.NOTE, title = "note", bodyMd = "original"))
+            val originalHash = requireNotNull(note.contentHash)
+            Thread.sleep(2L)
+            r.updateBody(note.id, title = "note", bodyMd = "replacement")
+            assertNotNull(
+                "sanity: the superseded revision exists before the sweep",
+                r.getRevision(note.id, originalHash),
+            )
+
+            val deleted = r.sweepUnreferencedRevisions()
+
+            assertEquals(1, deleted)
+            assertNull("an uncited superseded revision must be swept", r.getRevision(note.id, originalHash))
+        }
+
+    @Test
+    public fun sweep_never_removes_the_current_revision(): Unit =
+        runTest {
+            val r = repo()
+            val note = r.createDocument(NewDocument(kind = DocumentKind.NOTE, title = "note", bodyMd = "only version"))
+            val currentHash = requireNotNull(note.contentHash)
+
+            val deleted = r.sweepUnreferencedRevisions()
+
+            assertEquals("an uncited but CURRENT revision must never be swept", 0, deleted)
+            assertEquals(currentHash, requireNotNull(r.currentRevision(note.id)).revisionHash)
+        }
+
+    @Test
+    public fun deleting_a_document_cascades_its_revisions_ahead_of_any_sweep(): Unit =
+        runTest {
+            val r = repo()
+            val note = r.createDocument(NewDocument(kind = DocumentKind.NOTE, title = "note", bodyMd = "one"))
+            val hash = requireNotNull(note.contentHash)
+
+            r.deleteDocument(note.id)
+
+            assertNull(
+                "delete must cascade the revision immediately, not wait for a sweep",
+                r.getRevision(note.id, hash),
+            )
+            assertEquals(
+                "a sweep afterward finds nothing left orphaned by the already-cascaded delete",
+                0,
+                r.sweepUnreferencedRevisions(),
+            )
+        }
+
+    @Test
+    public fun sweep_is_idempotent(): Unit =
+        runTest {
+            val r = repo()
+            val note = r.createDocument(NewDocument(kind = DocumentKind.NOTE, title = "note", bodyMd = "original"))
+            Thread.sleep(2L)
+            r.updateBody(note.id, title = "note", bodyMd = "replacement")
+
+            val first = r.sweepUnreferencedRevisions()
+            val second = r.sweepUnreferencedRevisions()
+
+            assertEquals(1, first)
+            assertEquals("a second sweep with no new orphans must find nothing left to remove", 0, second)
+        }
+
+    @Test
+    public fun a_chat_documents_snapshots_stay_bounded_and_its_citations_still_resolve(): Unit =
+        runTest {
+            val r = repo()
+            val chat = r.createDocument(NewDocument(kind = DocumentKind.CHAT, title = "chat", bodyMd = ""))
+            repeat(20) { i ->
+                r.appendMessage(chat.id, NewMessage(role = Role.USER, contentMd = "turn $i " + "x".repeat(500)))
+            }
+
+            val current = requireNotNull(r.currentRevision(chat.id))
+            assertEquals(
+                "a chat document's archived snapshot must stay empty regardless of transcript size " +
+                    "(bounds storage to O(N) turns instead of O(N^2) bytes) — skein-a2yr",
+                "",
+                current.bodyMdSnapshot,
+            )
+            // The transcript itself is untouched — only the archived copy is skipped.
+            assertTrue(
+                "the live document body must still hold the full transcript",
+                requireNotNull(r.getDocument(chat.id)!!.bodyMd).contains("turn 19"),
+            )
+            val citationIntoChat =
+                Citation(
+                    marker = 1,
+                    documentId = chat.id,
+                    revisionHash = current.revisionHash,
+                    locator = Locator(byteStart = 0, byteEnd = 4),
+                    excerpt = "turn",
+                    sourceKind = CitationSourceKind.LEXICAL,
+                )
+            assertTrue(
+                "a citation into a chat turn must still resolve as live despite the skipped snapshot",
+                r.revisionMatches(citationIntoChat),
+            )
+        }
+
     private fun citationRecordFor(
         docId: String,
         revisionHash: String,

@@ -155,6 +155,26 @@ internal object VaultSql {
     const val SELECT_REVISION_MATCHES: String =
         "SELECT 1 FROM documents WHERE id = ? AND content_hash = ?"
 
+    // `documentRevisions_gc` (skein-a2yr, POST_REVIEW_RESOLUTIONS.md §1.2 step
+    // 4). SQLite cannot express "referenced from inside a JSON column" as a
+    // constraint (003's own header explains why), and the reference must be
+    // decoded via `CitationRecordJson.decode` rather than matched as a
+    // substring — so this is two plain queries plus an in-Kotlin set
+    // difference in `VaultRepositoryImpl.sweepUnreferencedRevisions`, not a
+    // single DELETE. `SELECT_SWEEPABLE_REVISIONS` finds every revision that
+    // is not its document's current one (candidates only — cited-but-
+    // superseded rows are filtered back out in Kotlin against the set built
+    // from `SELECT_ALL_RETRIEVED_CHUNKS`); `DELETE_DOCUMENT_REVISION` removes
+    // one row the Kotlin side decided is truly orphaned.
+    const val SELECT_SWEEPABLE_REVISIONS: String =
+        "SELECT r.document_id, r.revision_hash FROM document_revisions r " +
+            "WHERE NOT EXISTS (" +
+            "SELECT 1 FROM documents d WHERE d.id = r.document_id AND d.content_hash = r.revision_hash" +
+            ")"
+
+    const val DELETE_DOCUMENT_REVISION: String =
+        "DELETE FROM document_revisions WHERE document_id = ? AND revision_hash = ?"
+
     // ------------------------------------------------------------------
     // Messages
     // ------------------------------------------------------------------
@@ -166,6 +186,10 @@ internal object VaultSql {
     const val SELECT_MESSAGES_FOR_CHAT: String =
         "SELECT id, chat_doc_id, role, content_md, model_id, retrieved_chunks, created_at " +
             "FROM messages WHERE chat_doc_id = ? ORDER BY created_at ASC"
+
+    /** Every message's citation payload, for `sweepUnreferencedRevisions`'s referenced-revision scan. No ordering needed. */
+    const val SELECT_ALL_RETRIEVED_CHUNKS: String =
+        "SELECT retrieved_chunks FROM messages"
 
     // ------------------------------------------------------------------
     // Attachments

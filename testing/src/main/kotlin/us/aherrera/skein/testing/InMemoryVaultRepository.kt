@@ -135,7 +135,7 @@ public class InMemoryVaultRepository(
                 )
             documents[chosenId] = doc
             if (revisionHash != null) {
-                captureRevision(chosenId, new.bodyMd, frontmatterWithId, revisionHash, now)
+                captureRevision(chosenId, new.kind, new.bodyMd, frontmatterWithId, revisionHash, now)
             }
             // DB trigger simulation: enqueue ingest for non-attachment docs.
             if (new.kind != DocumentKind.ATTACHMENT) {
@@ -174,7 +174,7 @@ public class InMemoryVaultRepository(
             // Nothing to capture when the content address did not move:
             // §1.4's "newRevision is idempotent when content is unchanged".
             if (citable && hash != existing.contentHash) {
-                captureRevision(id, bodyMd, existing.frontmatter, hash, now)
+                captureRevision(id, existing.kind, bodyMd, existing.frontmatter, hash, now)
             }
             if (existing.kind != DocumentKind.ATTACHMENT) {
                 ingestQueue[id] =
@@ -216,7 +216,7 @@ public class InMemoryVaultRepository(
                 )
             documents[id] = updated
             if (citable && hash != null && hash != existing.contentHash) {
-                captureRevision(id, existing.bodyMd, withId, hash, now)
+                captureRevision(id, existing.kind, existing.bodyMd, withId, hash, now)
             }
             emitChange()
             updated
@@ -324,7 +324,7 @@ public class InMemoryVaultRepository(
                     contentHash = hash,
                 )
             documents[chatDocId] = rewritten
-            if (hash != chat.contentHash) captureRevision(chatDocId, transcript, chat.frontmatter, hash, now)
+            if (hash != chat.contentHash) captureRevision(chatDocId, chat.kind, transcript, chat.frontmatter, hash, now)
             ingestQueue[chatDocId] =
                 IngestItem(
                     docId = chatDocId,
@@ -359,13 +359,48 @@ public class InMemoryVaultRepository(
         documents[citation.documentId]?.contentHash == citation.revisionHash
 
     /**
+     * Mirrors `VaultRepositoryImpl.sweepUnreferencedRevisions` (skein-a2yr,
+     * POST_REVIEW_RESOLUTIONS.md §1.2 step 4): removes every revision that is
+     * neither its document's current one nor named by any message's
+     * citation-record-v1 `retrieved` list (which already covers every
+     * `cited` marker — see `CitationRecordJson.encode`'s own invariant).
+     */
+    override suspend fun sweepUnreferencedRevisions(): Int =
+        writeLock.withLock {
+            val referenced: Set<Pair<DocId, RevisionHash>> =
+                messagesByChat.values
+                    .asSequence()
+                    .flatten()
+                    .mapNotNull { it.citations }
+                    .flatMap { record -> record.retrieved.asSequence() }
+                    .map { it.documentId to it.revisionHash }
+                    .toSet()
+            val toRemove =
+                revisions.keys.filter { key ->
+                    val (docId, hash) = key
+                    hash != documents[docId]?.contentHash && key !in referenced
+                }
+            toRemove.forEach { revisions.remove(it) }
+            toRemove.size
+        }
+
+    /**
      * Mirrors `VaultSql.UPSERT_DOCUMENT_REVISION`: the content address is the
      * key, so re-capturing unchanged content reuses the row and moves it back
      * to the head of the document's history (which is what makes a
      * `A -> B -> A` edit sequence resolve to A again).
+     *
+     * **Chat bound (skein-a2yr).** For [DocumentKind.CHAT] the stored
+     * `bodyMdSnapshot` is the empty string rather than the canonicalized
+     * transcript — see `VaultRepository.currentRevision`'s KDoc and
+     * `VaultRepositoryImpl.captureRevision`'s matching note for the full
+     * rationale (unbounded per-turn archiving would make storage quadratic
+     * in turn count). [revisionHash] is unaffected, so citation replay for a
+     * chat turn still works.
      */
     private fun captureRevision(
         docId: DocId,
+        kind: DocumentKind,
         bodyMd: String?,
         frontmatter: JsonObject,
         revisionHash: RevisionHash,
@@ -373,14 +408,17 @@ public class InMemoryVaultRepository(
     ) {
         val nextOrd =
             (revisions.keys.filter { it.first == docId }.maxOfOrNull { revisions.getValue(it).revisionOrd } ?: -1) + 1
+        val bodySnapshot = if (kind == DocumentKind.CHAT) "" else RevisionHashing.canonicalBody(bodyMd)
         revisions[docId to revisionHash] =
             DocumentRevision(
                 documentId = docId,
                 revisionHash = revisionHash,
                 revisionOrd = nextOrd,
                 // The snapshot holds the CANONICAL bytes that were hashed,
-                // so the row alone reproduces `revisionHash`.
-                bodyMdSnapshot = RevisionHashing.canonicalBody(bodyMd),
+                // so the row alone reproduces `revisionHash` — except for a
+                // chat document, where the empty string above intentionally
+                // trades that self-verifying property for bounded storage.
+                bodyMdSnapshot = bodySnapshot,
                 frontmatterSnapshot =
                     Json.parseToJsonElement(RevisionHashing.canonicalFrontmatter(frontmatter)) as JsonObject,
                 capturedAt = capturedAt,

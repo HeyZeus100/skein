@@ -358,6 +358,21 @@ public interface VaultRepository {
      * [appendMessage]; capture is idempotent, so re-writing identical content
      * reuses the existing row rather than growing history (§1.4
      * `DocumentRevisionsRepositoryTest`).
+     *
+     * **Chat bound (skein-a2yr).** For a `kind = CHAT` document the captured
+     * row's `bodyMdSnapshot` is the empty string, never the re-materialized
+     * transcript: `appendMessage` recomputes the whole transcript on every
+     * turn, so archiving it in full on every turn would make
+     * `document_revisions` storage quadratic in turn count for a long chat
+     * (`003_document_revisions.sql`'s former "Known cost, tracked
+     * separately" header note). The transcript itself is always fully
+     * reconstructible from `messages` (`listMessages`/`observeMessages`), so
+     * nothing is lost — only the archived copy is skipped. `revisionHash` is
+     * still the exact hash of the real transcript, so [revisionMatches] and
+     * citation replay for a citation into a chat turn are unaffected; only a
+     * diff view that reads an *archived* chat revision's [DocumentRevision.bodyMdSnapshot]
+     * would see nothing where a note would show its old text (no such view
+     * exists yet — see `docs/VAULT_FORMAT.md`'s Retention section).
      */
     public suspend fun currentRevision(id: DocId): DocumentRevision?
 
@@ -381,6 +396,38 @@ public interface VaultRepository {
      * A citation whose document no longer exists is not a match.
      */
     public suspend fun revisionMatches(citation: Citation): Boolean
+
+    /**
+     * The `documentRevisions_gc` sweep (POST_REVIEW_RESOLUTIONS.md §1.2 step
+     * 4, skein-a2yr): deletes every `document_revisions` row that is
+     * *neither*
+     *   - a document's current revision (the row whose `revisionHash`
+     *     equals that document's [Document.contentHash]), *nor*
+     *   - referenced by any `messages.retrieved_chunks` citation-record-v1
+     *     entry — a citation "references" `(documentId, revisionHash)` when
+     *     that pair appears anywhere in a message's [CitationRecord.retrieved]
+     *     list. Every [CitationRecord.cited] marker names an entry in
+     *     `retrieved` by construction ([CitationRecordJson.encode] requires
+     *     it), so scanning `retrieved` alone already covers every cited
+     *     revision too. A legacy (`record_version: 0`) payload carries no
+     *     revision hash and so never keeps a row alive.
+     *
+     * A document's current revision is never removed, cited or not — only a
+     * *superseded* revision can become an orphan. Deleting a document
+     * already cascades its revisions immediately ([deleteDocument]); this
+     * sweep has nothing left to do for a deleted document's rows by the time
+     * it runs.
+     *
+     * Idempotent: a second call with no new orphans since the first deletes
+     * nothing and returns 0. Intended to run at most once per unlocked
+     * session, from inside the authorized-unlock maintenance pass
+     * (`docs/design/LOCK_POLICY_INDEXING.md`) — never while locked, and
+     * never as a reason to extend the vault key's lifetime.
+     *
+     * @return the number of rows deleted — a bare count, the only thing
+     *   about this operation ever safe to log (spec §9: never log content).
+     */
+    public suspend fun sweepUnreferencedRevisions(): Int
 
     // ---- attachments (blob store, encrypted at rest) ----
 
