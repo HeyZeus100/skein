@@ -82,6 +82,16 @@ jobs:
       - name: Assemble foss debug APK
         run: ./gradlew assembleFossDebug --stacktrace
 
+      # E4.I1 / skein-3aw: the JNI surface gate. Fails if the `Java_` symbols
+      # exported by libskein_llama.so are not EXACTLY the `external fun`s
+      # declared by LlamaNative.kt (a mismatch is an UnsatisfiedLinkError that
+      # would otherwise only surface on a device), or if the JNI sources grew a
+      # std::cout/printf that would print prompt text past LlamaLogRedactor.
+      # assembleFossDebug above builds the arm64-v8a .so; the dev flavor's
+      # x86_64 one is covered in emulator.yml's lane.
+      - name: JNI symbol surface (libskein_llama.so)
+        run: ./tools/ci/jni-symbols.sh
+
       # E10.I9 / skein-rfz2: fails the build if a new exported component
       # (activity/service/provider/receiver) shows up in the merged
       # manifest beyond the debug allowlist (MainActivity,
