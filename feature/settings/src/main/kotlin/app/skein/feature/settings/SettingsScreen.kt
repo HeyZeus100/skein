@@ -21,6 +21,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.unit.dp
 
 /**
@@ -105,6 +106,14 @@ fun SettingsScreen(
                     onBuildExport = onBuildRecoveryExport,
                 )
                 SettingsPlaceholderRow(label = "Biometric unlock", caption = "Coming in v1.1")
+            }
+
+            SettingsSection(title = "Indexing") {
+                SettingsInfoRow(
+                    label = "Notifications",
+                    value = "Indexing progress shown while documents are processed",
+                    modifier = Modifier.testTag("settings_indexing_hint"),
+                )
             }
 
             SettingsSection(title = "Models") {

@@ -1,6 +1,7 @@
 package app.skein
 
 import android.app.ActivityManager
+import android.content.pm.PackageManager
 import android.os.Build
 import android.os.Bundle
 import android.view.WindowManager
@@ -213,6 +214,20 @@ class MainActivity : FragmentActivity() {
             securityPrefs.flagSecureEnabled.collect { enabled -> applyFlagSecure(enabled) }
         }
 
+        // E6.I18 (skein-fsn): lazy POST_NOTIFICATIONS request. Ask at most once
+        // per install (denial is remembered in SecurityPrefs). The actual
+        // notification posting happens via IngestScheduler's notifier, but the
+        // permission request must come from an Activity.
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            lifecycleScope.launch {
+                val alreadyAsked = securityPrefs.postNotificationsAsked.first()
+                if (!alreadyAsked) {
+                    securityPrefs.setPostNotificationsAsked(true)
+                    requestPermissions(arrayOf(android.Manifest.permission.POST_NOTIFICATIONS), 0)
+                }
+            }
+        }
+
         val vault = (application as SkeinApplication).vault
         setContent {
             VaultGate(
@@ -222,7 +237,26 @@ class MainActivity : FragmentActivity() {
                     // skein-ank2: recorded for Settings › Security (skein-3el).
                     lifecycleScope.launch { securityPrefs.setStrongBoxUnavailableFallback(!strongBoxBacked) }
                 },
-                unlockedContent = { session -> UnlockedShell(session) },
+                unlockedContent = { session ->
+                    // E6.I18 (skein-fsn): wire IndexingNotifier to observe and post
+                    // progress notifications. Use in-memory permission check to skip
+                    // posting attempts when POST_NOTIFICATIONS is denied.
+                    LaunchedEffect(Unit) {
+                        val notifier =
+                            app.skein.notify.IndexingNotifier(
+                                applicationContext,
+                                vault.ingest.progress,
+                                hasPermission = {
+                                    ContextCompat.checkSelfPermission(
+                                        applicationContext,
+                                        android.Manifest.permission.POST_NOTIFICATIONS,
+                                    ) == PackageManager.PERMISSION_GRANTED
+                                },
+                            )
+                        lifecycleScope.launch { notifier.observeAndNotify() }
+                    }
+                    UnlockedShell(session)
+                },
             )
         }
     }
