@@ -116,6 +116,28 @@ class SecurityPrefs(
         }
     }
 
+    // ---- E6.I18 (skein-fsn) — notification permissions ---------------------------
+    //
+    // Lazy POST_NOTIFICATIONS runtime request from MainActivity when the first
+    // indexing or model notification would be posted while an Activity is in the
+    // foreground. A denial is remembered so it is asked at most once per install.
+
+    /**
+     * True after [setPostNotificationsAsked] has been called (permission was
+     * requested once, whether granted or denied). Used by MainActivity to avoid
+     * re-prompting after a denial.
+     */
+    val postNotificationsAsked: Flow<Boolean> =
+        context.securityPrefsDataStore.data.map { prefs ->
+            prefs[Keys.POST_NOTIFICATIONS_ASKED] ?: DEFAULT_POST_NOTIFICATIONS_ASKED
+        }
+
+    suspend fun setPostNotificationsAsked(asked: Boolean) {
+        context.securityPrefsDataStore.edit { prefs ->
+            prefs[Keys.POST_NOTIFICATIONS_ASKED] = asked
+        }
+    }
+
     /**
      * Test-only: `Context.securityPrefsDataStore` is a `preferencesDataStore`
      * delegate — its underlying `DataStore` instance (and in-memory
@@ -137,6 +159,7 @@ class SecurityPrefs(
         val IDLE_TIMEOUT_MINUTES = intPreferencesKey("idle_timeout_minutes")
         val LOCK_ON_SCREEN_OFF = booleanPreferencesKey("lock_on_screen_off")
         val LOCK_ON_BACKGROUND = booleanPreferencesKey("lock_on_background")
+        val POST_NOTIFICATIONS_ASKED = booleanPreferencesKey("post_notifications_asked")
     }
 
     companion object {
@@ -148,6 +171,8 @@ class SecurityPrefs(
         const val DEFAULT_LOCK_ON_BACKGROUND = false
         const val MIN_IDLE_TIMEOUT_MINUTES = 1
         const val MAX_IDLE_TIMEOUT_MINUTES = 60
+
+        const val DEFAULT_POST_NOTIFICATIONS_ASKED = false
 
         /** The values Settings › Security offers for idle timeout. */
         val ALLOWED_IDLE_TIMEOUT_MINUTES = listOf(1, 5, 15, 30, 60)

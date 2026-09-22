@@ -32,6 +32,17 @@ android {
         sourceCompatibility = JavaVersion.VERSION_17
         targetCompatibility = JavaVersion.VERSION_17
     }
+
+    testOptions {
+        unitTests {
+            // E6.I18 (skein-fsn): SettingsScreenTest is this module's first
+            // Robolectric-backed Compose UI test — same reason as :app's
+            // ManifestPolicyTest / :feature:shell's SecureTextFieldTest (bd
+            // memory `robolectric-sdk37-needs-java21`): merged resources
+            // need to be on the classpath for the Compose host to resolve.
+            isIncludeAndroidResources = true
+        }
+    }
 }
 
 dependencies {
@@ -67,6 +78,18 @@ dependencies {
     testImplementation(libs.junit)
     testImplementation(libs.kotlinx.coroutines.test)
     testImplementation(libs.turbine)
+    // E6.I18 (skein-fsn): SettingsScreenTest asserts the Indexing hint row
+    // (`settings_indexing_hint`) via a Robolectric-hosted Compose rule —
+    // same infra as `:feature:shell`'s SecureTextFieldTest.
+    testImplementation(libs.robolectric)
+    testImplementation(libs.androidx.test.ext.junit)
+    testImplementation(libs.compose.ui.test.junit4)
+    // Host activity for the Compose test rule: `:feature:settings` declares
+    // its own debug-only `androidx.activity.ComponentActivity` registration
+    // (src/debug/AndroidManifest.xml) rather than relying on
+    // `ui-test-manifest`'s generic registration, which does not merge into
+    // a *library* module's manifest (see `:feature:shell`'s equivalent file).
+    testImplementation(libs.androidx.activity.compose)
 
     // On-device Compose UI test for the E3.I14 (skein-up0) idle-timeout
     // selector surviving activity recreation — compile the UI test even
