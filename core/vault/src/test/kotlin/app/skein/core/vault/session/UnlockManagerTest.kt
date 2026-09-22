@@ -294,6 +294,145 @@ class UnlockManagerTest {
         }
 
     @Test
+    fun `throwing HIGH observer does not skip keyProvider lock and reaches Locked`() =
+        runTest {
+            // Arrange: a HIGH observer whose onLocking always throws
+            val h = Harness()
+            val throwingObs =
+                object : LockObserver {
+                    override val priority = LockObserverPriority.HIGH
+
+                    override suspend fun onLocking(
+                        epoch: Long,
+                        budgetMillis: Long,
+                    ): Unit = throw IllegalStateException("boom")
+
+                    override fun onLocked(epoch: Long) = Unit
+
+                    override fun onUnlocked(epoch: Long) = Unit
+                }
+            h.manager.addLockObserver(throwingObs)
+            h.unlockOk()
+            // Act
+            h.manager.lockAndAwait(LockReason.USER_REQUESTED)
+            // Assert: zeroize still ran, state reached Locked, key is gone,
+            // and the throw is reported like a timed-out observer.
+            assertThat(h.provider.lockCallCount.get()).isEqualTo(1)
+            assertThat(h.provider.stateAtLock).isInstanceOf(UnlockState.Locking::class.java)
+            assertThat(h.manager.state.value).isEqualTo(UnlockState.Locked)
+            assertThat(h.provider.currentKey()).isNull()
+            assertThat(h.manager.lastEffectiveLockReasonForTest()).isEqualTo(LockReason.FORCE_TIMEOUT)
+        }
+
+    @Test
+    fun `throwing LOW observer does not skip keyProvider lock and reaches Locked`() =
+        runTest {
+            // Arrange: a LOW observer whose onLocking always throws
+            val h = Harness()
+            val throwingObs =
+                object : LockObserver {
+                    override val priority = LockObserverPriority.LOW
+
+                    override suspend fun onLocking(
+                        epoch: Long,
+                        budgetMillis: Long,
+                    ): Unit = throw IllegalStateException("boom")
+
+                    override fun onLocked(epoch: Long) = Unit
+
+                    override fun onUnlocked(epoch: Long) = Unit
+                }
+            h.manager.addLockObserver(throwingObs)
+            h.unlockOk()
+            // Act
+            h.manager.lockAndAwait(LockReason.USER_REQUESTED)
+            // Assert
+            assertThat(h.provider.lockCallCount.get()).isEqualTo(1)
+            assertThat(h.provider.stateAtLock).isInstanceOf(UnlockState.Locking::class.java)
+            assertThat(h.manager.state.value).isEqualTo(UnlockState.Locked)
+            assertThat(h.provider.currentKey()).isNull()
+            assertThat(h.manager.lastEffectiveLockReasonForTest()).isEqualTo(LockReason.FORCE_TIMEOUT)
+        }
+
+    @Test
+    fun `throwing observer does not prevent later same- and lower-priority observers from running`() =
+        runTest {
+            // Arrange: a throwing HIGH observer alongside a surviving HIGH
+            // sibling and a surviving LOW observer.
+            val h = Harness()
+            val called = mutableSetOf<String>()
+            val throwingHigh =
+                object : LockObserver {
+                    override val priority = LockObserverPriority.HIGH
+
+                    override suspend fun onLocking(
+                        epoch: Long,
+                        budgetMillis: Long,
+                    ): Unit = throw IllegalStateException("boom")
+
+                    override fun onLocked(epoch: Long) = Unit
+
+                    override fun onUnlocked(epoch: Long) = Unit
+                }
+
+            fun okObs(
+                tag: String,
+                p: LockObserverPriority,
+            ) = object : LockObserver {
+                override val priority = p
+
+                override suspend fun onLocking(
+                    epoch: Long,
+                    budgetMillis: Long,
+                ) {
+                    called.add(tag)
+                }
+
+                override fun onLocked(epoch: Long) = Unit
+
+                override fun onUnlocked(epoch: Long) = Unit
+            }
+            h.manager.addLockObserver(throwingHigh)
+            h.manager.addLockObserver(okObs("high-sibling", LockObserverPriority.HIGH))
+            h.manager.addLockObserver(okObs("low", LockObserverPriority.LOW))
+            h.unlockOk()
+            // Act
+            h.manager.lockAndAwait(LockReason.USER_REQUESTED)
+            // Assert: both the surviving HIGH sibling and the LOW observer
+            // ran despite the earlier throw.
+            assertThat(called).containsExactly("high-sibling", "low")
+            assertThat(h.manager.state.value).isEqualTo(UnlockState.Locked)
+        }
+
+    @Test
+    fun `unlock succeeds after a lock in which an observer threw`() =
+        runTest {
+            // Arrange: a HIGH observer that always throws in onLocking
+            val h = Harness()
+            val throwingObs =
+                object : LockObserver {
+                    override val priority = LockObserverPriority.HIGH
+
+                    override suspend fun onLocking(
+                        epoch: Long,
+                        budgetMillis: Long,
+                    ): Unit = throw IllegalStateException("boom")
+
+                    override fun onLocked(epoch: Long) = Unit
+
+                    override fun onUnlocked(epoch: Long) = Unit
+                }
+            h.manager.addLockObserver(throwingObs)
+            h.unlockOk()
+            h.manager.lockAndAwait(LockReason.USER_REQUESTED)
+            // Act: a second unlock after the throwing-observer lock
+            val outcome = h.unlockOk()
+            // Assert: the manager is not wedged — unlock proceeds normally
+            assertThat(outcome).isInstanceOf(UnlockOutcome.Success::class.java)
+            assertThat(h.manager.state.value).isInstanceOf(UnlockState.Unlocked::class.java)
+        }
+
+    @Test
     fun `addLockObserver disposable removes the observer`() =
         runTest {
             // Arrange

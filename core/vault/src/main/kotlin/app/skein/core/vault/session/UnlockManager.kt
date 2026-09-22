@@ -53,6 +53,7 @@ package app.skein.core.vault.session
 
 import androidx.biometric.BiometricPrompt
 import androidx.fragment.app.FragmentActivity
+import app.skein.core.model.SkeinLog
 import app.skein.core.vault.key.RewrapResult
 import app.skein.core.vault.key.UnlockResult
 import app.skein.core.vault.key.VaultKeyProvider
@@ -151,6 +152,11 @@ public class UnlockManager
         // latest write on modern Android/JVMs.
         @Volatile
         private var lastActivityMillis: Long = 0L
+
+        // Test-only observability for the `effectiveReason` computed on the
+        // most recent lock cycle — see `lastEffectiveLockReasonForTest`.
+        @Volatile
+        private var lastEffectiveLockReason: LockReason? = null
 
         // Observers registered in this process. Copy-on-read snapshot when
         // notifying, so registrations arriving mid-notify are picked up on
@@ -305,6 +311,7 @@ public class UnlockManager
 
             val allAcked = notifyOnLocking(epoch, observerBudgetMillis)
             val effectiveReason = if (allAcked) reason else LockReason.FORCE_TIMEOUT
+            lastEffectiveLockReason = effectiveReason
 
             // ORDER MATTERS — the key MUST be zeroed BEFORE state → Locked
             // so no observer racing on state.value == Locked can access a
@@ -487,9 +494,25 @@ public class UnlockManager
 
         /**
          * Runs the notify-and-await pass under a single shared deadline. HIGH
-         * priority runs before LOW, per `LOCK_POLICY_INDEXING.md` §5.1. Returns
-         * `true` if every observer returned within the budget, `false` on
-         * timeout — the caller tags the outcome as [LockReason.FORCE_TIMEOUT].
+         * priority runs before LOW, per `LOCK_POLICY_INDEXING.md` §5.1.
+         *
+         * skein-va7y: a throwing `onLocking` used to propagate straight out
+         * of this function, which left `doLockLocked` BEFORE
+         * `keyProvider.lock()` and wedged `_state` in `Locking` forever (a
+         * later `lock()` no-ops on `is Locking`, `unlock()` refuses with
+         * `IllegalTransition`) — and crashed the process on the production
+         * scope, which installs no `CoroutineExceptionHandler`. Each
+         * observer now runs inside its own [notifyTier] catch, so a throw
+         * from one observer can never stop [doLockLocked] from reaching
+         * `keyProvider.lock()`, and never stops any other observer — same
+         * tier or the next — from being notified.
+         *
+         * Returns `true` only if every observer returned within the budget
+         * AND none of them threw; `false` in either case, and the caller
+         * (deliberately, per the fix above) tags the outcome as
+         * [LockReason.FORCE_TIMEOUT] just as it would a real timeout — from
+         * the caller's side a throwing observer and a timed-out one look
+         * identical: the budget was not cleanly honoured.
          */
         private suspend fun notifyOnLocking(
             epoch: Long,
@@ -499,18 +522,56 @@ public class UnlockManager
             if (snapshot.isEmpty()) return true
             val high = snapshot.filter { it.priority == LockObserverPriority.HIGH }
             val low = snapshot.filter { it.priority == LockObserverPriority.LOW }
+            var allOk = true
             val outcome =
                 withTimeoutOrNull(budgetMillis) {
-                    coroutineScope {
-                        high.map { async { it.onLocking(epoch, budgetMillis) } }.awaitAll()
-                    }
-                    coroutineScope {
-                        low.map { async { it.onLocking(epoch, budgetMillis) } }.awaitAll()
-                    }
-                    Unit
+                    if (!notifyTier(high, epoch, budgetMillis)) allOk = false
+                    if (!notifyTier(low, epoch, budgetMillis)) allOk = false
                 }
-            return outcome != null
+            return outcome != null && allOk
         }
+
+        /**
+         * Notifies one [LockObserverPriority] tier concurrently. Each
+         * observer's `onLocking` is isolated in its own [runCatching]: a
+         * throwing observer is caught, logged (its class name only — never
+         * the exception message, which could embed caller-supplied content;
+         * spec §9) and counted as a per-observer failure, but it never
+         * cancels its siblings in this tier and never stops the caller from
+         * moving on to the next tier or to `keyProvider.lock()`.
+         *
+         * `CancellationException` (notably [kotlinx.coroutines.TimeoutCancellationException]
+         * from the enclosing [withTimeoutOrNull] expiring) is deliberately
+         * NOT swallowed here — it is rethrown so structured concurrency and
+         * the shared budget deadline keep cooperating exactly as before this
+         * fix.
+         */
+        private suspend fun notifyTier(
+            tier: List<LockObserver>,
+            epoch: Long,
+            budgetMillis: Long,
+        ): Boolean =
+            if (tier.isEmpty()) {
+                true
+            } else {
+                coroutineScope {
+                    tier
+                        .map { observer ->
+                            async {
+                                runCatching { observer.onLocking(epoch, budgetMillis) }
+                                    .onFailure { t ->
+                                        if (t is CancellationException) throw t
+                                        SkeinLog.w(
+                                            TAG,
+                                            "onLocking observer threw ${t.javaClass.simpleName}; " +
+                                                "proceeding to keyProvider.lock() regardless",
+                                        )
+                                    }.isSuccess
+                            }
+                        }.awaitAll()
+                        .all { it }
+                }
+            }
 
         private fun notifyOnLocked(
             epoch: Long,
@@ -546,7 +607,17 @@ public class UnlockManager
 
         internal fun observerCountForTest(): Int = synchronized(observersLock) { observers.size }
 
+        /**
+         * The `effectiveReason` computed on the most recent [doLockLocked]
+         * pass (`null` before any lock cycle has run). skein-va7y: a
+         * throwing observer is treated exactly like a timed-out one, so this
+         * is `LockReason.FORCE_TIMEOUT` in both cases — tests assert on this
+         * to confirm the two are indistinguishable from the caller's side.
+         */
+        internal fun lastEffectiveLockReasonForTest(): LockReason? = lastEffectiveLockReason
+
         public companion object {
             public const val DEFAULT_OBSERVER_BUDGET_MILLIS: Long = 500L
+            private const val TAG: String = "UnlockManager"
         }
     }
