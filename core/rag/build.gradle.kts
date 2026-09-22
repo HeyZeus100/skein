@@ -33,6 +33,11 @@ dependencies {
     // `VaultRepository` (`:core:model`) — no SQL, no Android framework
     // dependency of its own.
     api(project(":core:model"))
+    // E5.I15 (skein-82g): `PromptAssemblerImpl` composes `PromptGuard.wrapRetrieved`
+    // (`:core:security`, E3.I10) around the §7.3 retrieved-context segment. `implementation`
+    // because `PromptAssemblerImpl`'s own public surface (`PromptAssembler`) never exposes a
+    // `:core:security` type — only `:core:model` ones.
+    implementation(project(":core:security"))
     implementation(libs.kotlinx.coroutines.android)
     // skein-bpt: `:core:model` already exposes this as `api`; naming it here
     // keeps the tokenizers package's direct use of kotlinx.serialization

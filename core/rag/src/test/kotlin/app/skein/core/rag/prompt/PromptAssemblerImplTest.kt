@@ -20,17 +20,9 @@
 // that task's KDoc).
 package app.skein.core.rag.prompt
 
-import org.junit.Ignore
 import us.aherrera.skein.core.model.PromptAssembler
 import us.aherrera.skein.testing.PromptAssemblerContractTest
 
-@Ignore("pending skein-82g")
 class PromptAssemblerImplTest : PromptAssemblerContractTest() {
-    override fun assembler(): PromptAssembler =
-        TODO(
-            "skein-82g (E5.I15): construct PromptAssemblerImpl(). See " +
-                "core/security's GuardedPromptAssemblerContractTest/GuardedReferenceAssembler for the " +
-                "exact §7.3 layout + PromptGuard.wrapRetrieved placement this must match, and " +
-                "core/rag's own PromptAssemblerImpl.kt (to be created here) for where it lives.",
-        )
+    override fun assembler(): PromptAssembler = PromptAssemblerImpl()
 }
