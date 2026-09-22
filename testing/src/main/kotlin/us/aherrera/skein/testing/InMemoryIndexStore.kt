@@ -124,7 +124,8 @@ public class InMemoryIndexStore : IndexStore {
                     this.chunkRevisionHash[newId] = revisionHash
                     val byteStart = c.byteStart
                     val byteEnd = c.byteEnd
-                    this.chunkByteRange[newId] = if (byteStart == null || byteEnd == null) null else byteStart to byteEnd
+                    this.chunkByteRange[newId] =
+                        if (byteStart == null || byteEnd == null) null else byteStart to byteEnd
                     out += newId
                 }
                 out
