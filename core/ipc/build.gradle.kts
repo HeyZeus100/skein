@@ -40,6 +40,19 @@ android {
 dependencies {
     implementation(libs.androidx.core.ktx)
 
+    // skein-k7e9: `ErrorCodes.toException` returns
+    // `us.aherrera.skein.core.model.InferenceException`, so the type is part of
+    // this module's public API and the edge must be `api`, not
+    // `implementation`. `:core:model` is pure Kotlin/JVM; the `build-logic`
+    // guards permit this edge (reasoning in `ErrorCodes.kt`'s header):
+    // `DependencyGuardTask` bans only GMS/Firebase/Play/ML Kit groups, and
+    // `IsolationGuardTask` keeps `:core:model` free of the Android plugin
+    // (unchanged — being consumed by an Android library is not applying one)
+    // and restricts only the DECLARED project dependencies of
+    // `:inference-service` / `:embedder-service`, whose allowlist already
+    // names `:core:ipc` and `:core:model` together.
+    api(project(":core:model"))
+
     testImplementation(libs.junit)
     testImplementation(libs.truth)
     // E0.I16: `Parcel.obtain()` / `ParcelFileDescriptor` are `android.os`

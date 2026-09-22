@@ -120,16 +120,23 @@ import kotlinx.parcelize.Parcelize
  * Result codes returned by the synchronous AIDL entry points and carried by
  * [IInferenceCallback.onError].
  *
- * The `:app`-side client (`E4.I4`) translates each code into the
- * `us.aherrera.skein.core.model.InferenceException` subclass named below.
- * That hierarchy is locked (`E0.I10`) and has six subclasses —
- * `ModelNotLoaded`, `HashMismatch`, `InvalidModel`, `ServiceDied`,
- * `OutOfMemory`, `Busy` — so the codes introduced by
- * `POST_REVIEW_RESOLUTIONS.md` §3.3 and `LOCK_POLICY_INDEXING.md` §7.6 have
- * no dedicated subclass yet. Each mapping below says exactly what the client
- * throws today; extending the hierarchy additively is filed as a follow-up
- * (POST_REVIEW_RESOLUTIONS.md §3.4 asks `ErrorMappingTest` to assert "every
- * new `ErrorCode` maps to a distinct `InferenceException` subclass").
+ * Each code translates into the `us.aherrera.skein.core.model.InferenceException`
+ * subclass named below. [ErrorCodes.toException] in this package IS that
+ * translation — the table below is its prose form, and `ErrorMappingTest`
+ * asserts the two agree by reflecting over the constants declared here.
+ *
+ * `skein-k7e9` closed the gap this KDoc used to record. The `E0.I10` hierarchy
+ * had six subclasses (`ModelNotLoaded`, `HashMismatch`, `InvalidModel`,
+ * `ServiceDied`, `OutOfMemory`, `Busy`) and twelve codes needed mapping, so
+ * five codes shared a subclass with another code or fell back to a plain
+ * `java.lang` exception. Six subclasses were added to `E0.I10` ADDITIVELY —
+ * `PostMmapHashMismatch`, `CompanionHashMismatch`, `TransactionTooLarge`,
+ * `ModelInUse`, `SessionLocked`, `Internal` — so every code now has a
+ * dedicated one, as `POST_REVIEW_RESOLUTIONS.md` §3.4 requires ("every new
+ * `ErrorCode` maps to a distinct `InferenceException` subclass"). The original
+ * six are untouched: same names, same messages.
+ *
+ * Two codes map to NO exception, deliberately: [OK] and [CANCELLED].
  *
  * `InferenceException.ServiceDied` deliberately has no code: process death is
  * observed through `linkToDeath`, never returned over a transaction that by
@@ -166,8 +173,9 @@ object ErrorCode {
      * bytes, with a distinct algorithm, differed from the pre-mmap digest —
      * i.e. the file was mutated between verification and use.
      *
-     * No dedicated subclass yet; the client throws
-     * `InferenceException.HashMismatch` and distinguishes it by message.
+     * → `InferenceException.PostMmapHashMismatch` (`skein-k7e9`). Distinct
+     * from [HASH_MISMATCH]'s subclass: this one means an active TOCTOU
+     * attempt, not a stale or corrupt download.
      */
     const val HASH_MISMATCH_POST_MMAP = 7
 
@@ -178,8 +186,9 @@ object ErrorCode {
      * so it exists for a service that is handed an oversized transaction by a
      * client that skipped the guard.
      *
-     * No dedicated subclass, and none of the six locked ones fits; the client
-     * surfaces it as `IllegalArgumentException`.
+     * → `InferenceException.TransactionTooLarge` (`skein-k7e9`). It used to be
+     * a plain `IllegalArgumentException`, which no caller could tell apart
+     * from an ordinary argument bug.
      */
     const val TX_TOO_LARGE = 8
 
@@ -188,8 +197,9 @@ object ErrorCode {
      * file could not be taken (`FileChannel.tryLock` returned null), so
      * another holder is using it. Also what `ModelManager.delete` reports.
      *
-     * No dedicated subclass yet; the client throws
-     * `InferenceException.Busy` and distinguishes it by message.
+     * → `InferenceException.ModelInUse` (`skein-k7e9`). Distinct from
+     * [BUSY]'s subclass: "another holder has the file" and "this service
+     * already has a request in flight" have different remedies.
      */
     const val MODEL_IN_USE = 9
 
@@ -198,8 +208,8 @@ object ErrorCode {
      * (tokenizer, mmproj, config, ...) while the main file verified. The
      * failing [ManifestFileRef.role] is carried in the error message.
      *
-     * No dedicated subclass yet; the client throws
-     * `InferenceException.HashMismatch`.
+     * → `InferenceException.CompanionHashMismatch` (`skein-k7e9`), which
+     * appends that role to its message.
      */
     const val COMPANION_HASH_MISMATCH = 10
 
@@ -208,12 +218,25 @@ object ErrorCode {
      * refused the call because `req.sessionEpoch` is not the epoch this
      * service is currently authorized for — the vault locked underneath it.
      *
-     * No dedicated subclass yet; the client treats it as a lock event and
-     * cancels the caller's flow rather than surfacing an engine error.
+     * → `InferenceException.SessionLocked` (`skein-k7e9`), which plan `E4.I4`
+     * requires to be "distinct from `ServiceDied` — the service is alive and
+     * refusing, not dead". Having its own type does not change what a client
+     * DOES with it: this is still a lock event, so the client cancels the
+     * caller's flow and prompts for unlock rather than rendering an engine
+     * error. The type is what lets it tell a refusal apart from a death or a
+     * completed call in the first place.
      */
     const val SESSION_LOCKED = 11
 
-    /** Unclassified service-side failure. No dedicated subclass yet; the client throws `IllegalStateException`. */
+    /**
+     * Unclassified service-side failure.
+     *
+     * → `InferenceException.Internal` (`skein-k7e9`), which is also where
+     * [ErrorCodes.toException] sends any code this build does not recognise.
+     * It used to be a plain `IllegalStateException`, which the `stream`
+     * contract ("errors close the flow with an `InferenceException`", plan
+     * §4.1) did not permit.
+     */
     const val INTERNAL = 99
 }
 
