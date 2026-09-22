@@ -6,6 +6,7 @@ import org.junit.Assert.assertFalse
 import org.junit.Assert.assertTrue
 import org.junit.Test
 import java.io.File
+import kotlin.io.path.createTempDirectory
 
 /**
  * `E10.I3` (skein-gzr): TDD for the `contractReport` parser, written before
@@ -229,7 +230,7 @@ class ContractReportTaskTest {
         name: String,
         content: String,
     ): File {
-        val dir = createTempDir(prefix = "contract-report-test")
+        val dir = createTempDirectory(prefix = "contract-report-test").toFile()
         val file = File(dir, name)
         file.writeText(content)
         return file

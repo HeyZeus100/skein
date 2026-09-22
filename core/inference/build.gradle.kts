@@ -37,6 +37,10 @@ dependencies {
 
     testImplementation(libs.junit)
     testImplementation(libs.truth)
+    // E10.I3 (skein-gzr): `LlamaCppEngineTest`'s `@Ignore`d placeholder
+    // subclasses `InferenceEngineContractTest` from `:testing`, the same
+    // way every other contract-suite consumer does.
+    testImplementation(project(":testing"))
 
     // skein-7p0 (E4.I9): ThermalGovernorInstrumentedTest binds ThermalGovernor
     // to a real PowerManager (compiled unconditionally; on-device run is
