@@ -167,7 +167,15 @@ public class VaultRepositoryImpl(
                 stmt.step()
             }
             if (revisionHash != null) {
-                captureRevision(chosenId, new.bodyMd, frontmatterWithId, revisionHash, now, RevisionReason.INGEST)
+                captureRevision(
+                    chosenId,
+                    new.kind,
+                    new.bodyMd,
+                    frontmatterWithId,
+                    revisionHash,
+                    now,
+                    RevisionReason.INGEST,
+                )
             }
             publish(TableChange.Documents(chosenId))
             Document(
@@ -217,7 +225,7 @@ public class VaultRepositoryImpl(
             // Nothing to capture when the content address did not move:
             // §1.4's "newRevision is idempotent when content is unchanged".
             if (citable && hash != existing.contentHash) {
-                captureRevision(id, bodyMd, existing.frontmatter, hash, now, RevisionReason.INGEST)
+                captureRevision(id, existing.kind, bodyMd, existing.frontmatter, hash, now, RevisionReason.INGEST)
             }
             // documents_au_ingest (001_initial.sql) enqueues ingest_queue
             // automatically when body_md/title actually change — no manual
@@ -249,7 +257,7 @@ public class VaultRepositoryImpl(
                 stmt.step()
             }
             if (citable && hash != null && hash != existing.contentHash) {
-                captureRevision(id, existing.bodyMd, withId, hash, now, RevisionReason.INGEST)
+                captureRevision(id, existing.kind, existing.bodyMd, withId, hash, now, RevisionReason.INGEST)
             }
             publish(TableChange.Documents(id))
             existing.copy(frontmatter = withId, updatedAt = now, contentHash = hash)
@@ -376,7 +384,7 @@ public class VaultRepositoryImpl(
             // citation into a chat would resolve against a `content_hash`
             // with no `document_revisions` row behind it (§1.2 step 3).
             if (hash != chat.contentHash) {
-                captureRevision(chatDocId, transcript, chat.frontmatter, hash, now, RevisionReason.INGEST)
+                captureRevision(chatDocId, chat.kind, transcript, chat.frontmatter, hash, now, RevisionReason.INGEST)
             }
             // documents_au_ingest fires on this body_md change, enqueuing
             // the chat for re-index automatically.
@@ -442,6 +450,52 @@ public class VaultRepositoryImpl(
             }
         }
 
+    override suspend fun sweepUnreferencedRevisions(): Int =
+        writeTx {
+            val referenced = collectReferencedRevisions()
+            val candidates = ArrayList<Pair<DocId, RevisionHash>>()
+            writer.prepare(VaultSql.SELECT_SWEEPABLE_REVISIONS).use { stmt ->
+                while (stmt.step()) candidates += stmt.getText(0) to stmt.getText(1)
+            }
+            var deleted = 0
+            for ((docId, hash) in candidates) {
+                if (docId to hash in referenced) continue
+                writer.prepare(VaultSql.DELETE_DOCUMENT_REVISION).use { stmt ->
+                    stmt.bindText(1, docId)
+                    stmt.bindText(2, hash)
+                    stmt.step()
+                }
+                deleted++
+            }
+            deleted
+        }
+
+    /**
+     * Every `(documentId, revisionHash)` pair named by any message's
+     * citation-record-v1 payload, decoded via [CitationRecordJson.decode]
+     * (never string-matched — §1.3 is explicit that SQLite enforces no JSON
+     * schema and this codec is the only enforcement point). Scanning
+     * `retrieved` alone is sufficient: every `cited` marker names an entry
+     * in `retrieved` by construction ([CitationRecordJson.encode] requires
+     * it). A legacy or unreadable payload decodes to something other than
+     * [RetrievedChunksPayload.V1] and contributes nothing.
+     */
+    private fun collectReferencedRevisions(): Set<Pair<DocId, RevisionHash>> {
+        val referenced = HashSet<Pair<DocId, RevisionHash>>()
+        writer.prepare(VaultSql.SELECT_ALL_RETRIEVED_CHUNKS).use { stmt ->
+            while (stmt.step()) {
+                if (stmt.isNull(0)) continue
+                val payload = CitationRecordJson.decode(stmt.getText(0))
+                if (payload is RetrievedChunksPayload.V1) {
+                    for (citation in payload.record.retrieved) {
+                        referenced += citation.documentId to citation.revisionHash
+                    }
+                }
+            }
+        }
+        return referenced
+    }
+
     /**
      * Records [revisionHash] as a `document_revisions` row for [docId], per
      * POST_REVIEW_RESOLUTIONS.md §1.3. Idempotent by construction: the hash
@@ -451,9 +505,22 @@ public class VaultRepositoryImpl(
      *
      * Always called from inside the caller's `writeTx`, so the revision and
      * the `documents` row it addresses commit together or not at all.
+     *
+     * **Chat bound (skein-a2yr).** For [DocumentKind.CHAT] the stored
+     * `body_md_snapshot` is the empty string rather than
+     * `RevisionHashing.canonicalBody(bodyMd)`: `appendMessage` passes the
+     * whole re-materialized transcript as [bodyMd] on every turn, so
+     * archiving it in full every turn would make storage quadratic in turn
+     * count (`003_document_revisions.sql`'s former "Known cost, tracked
+     * separately" note; see `VaultRepository.currentRevision`'s KDoc for the
+     * full rationale). [revisionHash] itself is unaffected — it is computed
+     * by the caller from the real transcript before this method runs — so
+     * citation replay for a chat turn is unaffected; only the archived-copy
+     * bytes are skipped.
      */
     private fun captureRevision(
         docId: DocId,
+        kind: DocumentKind,
         bodyMd: String?,
         frontmatter: JsonObject,
         revisionHash: RevisionHash,
@@ -465,14 +532,18 @@ public class VaultRepositoryImpl(
                 stmt.bindText(1, docId)
                 if (stmt.step()) stmt.getLong(0) + 1 else 0L
             }
+        val bodySnapshot = if (kind == DocumentKind.CHAT) "" else RevisionHashing.canonicalBody(bodyMd)
         writer.prepare(VaultSql.UPSERT_DOCUMENT_REVISION).use { stmt ->
             stmt.bindText(1, docId)
             stmt.bindText(2, revisionHash)
             stmt.bindLong(3, nextOrd)
             // The snapshot stores the CANONICAL bytes that were hashed, so
             // `RevisionHashing.compute(bodyMdSnapshot, frontmatterSnapshot)`
-            // reproduces `revision_hash` from the row alone.
-            stmt.bindText(4, RevisionHashing.canonicalBody(bodyMd))
+            // reproduces `revision_hash` from the row alone — EXCEPT for a
+            // chat document, where the empty string above intentionally
+            // breaks that self-verifying property in exchange for bounded
+            // storage (see this method's KDoc).
+            stmt.bindText(4, bodySnapshot)
             stmt.bindText(5, RevisionHashing.canonicalFrontmatter(frontmatter))
             stmt.bindLong(6, capturedAt)
             stmt.bindText(7, reason.db)

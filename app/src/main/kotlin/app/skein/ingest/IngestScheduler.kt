@@ -32,6 +32,17 @@
 //   • The idle timer is never touched (`UnlockManager.poke` is not called
 //     here): background ingest must not keep the vault open past the
 //     user's own inactivity timeout.
+//   • `documentRevisions_gc` (skein-a2yr, POST_REVIEW_RESOLUTIONS.md §1.2
+//     step 4): the first authorized `runPending` call for a given
+//     `sessionEpoch` also runs `VaultRepository.sweepUnreferencedRevisions()`
+//     before the ingest pipeline, at most once per unlocked session — see
+//     [sweepRevisionsOnceForEpoch]. This is the "nightly-during-unlock" sweep
+//     `LOCK_POLICY_INDEXING.md` requires run inside the authorized-unlock
+//     pass, never at lock time or as a reason to extend the key's lifetime:
+//     it runs under the same `sessionEpoch` authorization as the ingest
+//     pass it shares `runMutex` and the `Locked`/stale-epoch bail-out with,
+//     and [onLocked] resets the once-per-epoch gate so the next unlock gets
+//     its own sweep.
 //   • Bounded retries. `ingest_queue.attempts` (migration 008, skein-zx15)
 //     is a persisted, per-document counter read and written through
 //     `session.repository`, so a poisoned document is dropped after three
@@ -47,6 +58,7 @@
 
 package app.skein.ingest
 
+import app.skein.core.model.SkeinLog
 import app.skein.core.rag.ingest.IngestOutcome
 import app.skein.core.rag.ingest.IngestPace
 import app.skein.core.rag.ingest.IngestPipeline
@@ -69,6 +81,7 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
 import us.aherrera.skein.core.model.TimelineFilter
+import us.aherrera.skein.core.model.VaultRepository
 
 /** Counts only — safe for `SecureNotification` (E3.I8 / skein-fsn) and Settings › Indexing. */
 data class IngestProgress(
@@ -108,6 +121,10 @@ class IngestScheduler(
 
     private val runMutex = Mutex()
 
+    /** [sessionEpoch] the `documentRevisions_gc` sweep last ran for, or null. Guards [sweepRevisionsOnceForEpoch]. */
+    @Volatile
+    private var lastSweptEpoch: Long? = null
+
     init {
         port.cancel()
         unlockManager.addLockObserver(this)
@@ -140,6 +157,7 @@ class IngestScheduler(
         runMutex.withLock {
             val open = session.value
             if (open == null || !authorized(sessionEpoch)) return@withLock IngestOutcome.Locked(0, 0)
+            sweepRevisionsOnceForEpoch(sessionEpoch, open.repository)
             val pipeline =
                 pipelines(open) {
                     if (session.value !== open || !authorized(sessionEpoch)) IngestPace.LOCKED else pacer.pace()
@@ -174,11 +192,35 @@ class IngestScheduler(
 
     override fun onLocked(epoch: Long) {
         progressState.value = IngestProgress()
+        // Next unlock gets a fresh sessionEpoch and so must get its own sweep.
+        lastSweptEpoch = null
     }
 
     override fun onUnlocked(epoch: Long) = Unit
 
     // ---- internals -----------------------------------------------------
+
+    /**
+     * Runs `documentRevisions_gc` (skein-a2yr) at most once per unlocked
+     * session: a no-op unless this is the first authorized [runPending] call
+     * seen for [sessionEpoch] this unlock. Always called from inside
+     * [runMutex] (only [runPending] calls this), and only once the caller
+     * has already confirmed the session is authorized under [sessionEpoch]
+     * — this never runs while locked or under a stale epoch.
+     *
+     * The count-only log line is the only thing this ever logs — spec §9
+     * forbids logging content, and `sweepUnreferencedRevisions` never
+     * returns anything but a count.
+     */
+    private suspend fun sweepRevisionsOnceForEpoch(
+        sessionEpoch: Long,
+        repository: VaultRepository,
+    ) {
+        if (lastSweptEpoch == sessionEpoch) return
+        lastSweptEpoch = sessionEpoch
+        val removed = repository.sweepUnreferencedRevisions()
+        SkeinLog.i(TAG, "documentRevisions_gc: removed $removed unreferenced revision(s)")
+    }
 
     private fun enqueueIfAuthorized() {
         val epoch = currentEpoch() ?: return
@@ -192,5 +234,8 @@ class IngestScheduler(
     companion object {
         /** Coalesces a burst of edits (autosave ticks) into one pass. */
         const val DEFAULT_DEBOUNCE_MILLIS: Long = 2_000L
+
+        /** `SkeinLog` tag for the `documentRevisions_gc` count-only log line. */
+        private const val TAG: String = "IngestScheduler"
     }
 }

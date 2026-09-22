@@ -54,10 +54,26 @@
 -- §1.2 step 4: a revision row lives as long as any
 -- `messages.retrieved_chunks` entry references it. That reference lives
 -- inside a JSON payload, which SQLite cannot express as a foreign key, so
--- retention is enforced by the (not-yet-landed) `documentRevisions_gc`
--- sweep rather than by a constraint here. Nothing in this migration deletes
--- a revision; `ON DELETE CASCADE` from `documents` is the only automatic
--- removal, and it fires only when the whole document goes away.
+-- retention is enforced by `VaultRepository.sweepUnreferencedRevisions()`
+-- (skein-a2yr) rather than by a constraint here — it decodes every
+-- message's citation-record-v1 payload via `CitationRecordJson.decode`
+-- (never a string match on the JSON text) and deletes every row that is
+-- neither a document's current revision nor named by one of those decoded
+-- citations. Nothing in this migration's own DDL deletes a revision;
+-- `ON DELETE CASCADE` from `documents` is the only *automatic* removal
+-- (fires only when the whole document goes away), and the sweep is invoked
+-- from the app layer at most once per unlocked session, inside the same
+-- authorized-unlock maintenance pass ingest runs in
+-- (`docs/design/LOCK_POLICY_INDEXING.md`) — never at lock time.
+--
+-- A `messages.retrieved_chunks` excerpt is a *second, independent* copy of
+-- cited text (the JSON `excerpt` field, up to 1024 chars) that lives inside
+-- the `messages` row itself, not in this table — the sweep above never
+-- touches it, so deleting or editing away the source document does not
+-- scrub the excerpt out of past chat citation records. That gap is real
+-- (raised as skein-koda) and is intentionally left to a follow-up: purging
+-- it needs a user-visible action ("purge history for this note"), which is
+-- out of this migration's and this sweep's scope.
 --
 -- ===== Deviations from §1.3 (both forced, both narrow) =====
 --
@@ -85,14 +101,26 @@
 --    is read back as text, so it is declared with the affinity it actually
 --    wants. The stored bytes are the same canonical JSON either way.
 --
--- ===== Known cost, tracked separately =====
+-- ===== Chat snapshot bound (skein-a2yr; resolves the cost noted below) =====
 --
 -- `body_md_snapshot` stores the whole body, per §1.3 ("Not the excerpt; the
--- whole body at revision time"). For a chat document, whose `body_md` is
--- re-materialized from `messages` on every append, that makes snapshot
--- storage quadratic in the number of turns until the §1.2-step-4 GC runs.
--- Accepted here (correctness first; the bytes already exist in `messages`),
--- and filed as a follow-up alongside the GC job itself.
+-- whole body at revision time") — for every kind EXCEPT `chat`. A chat
+-- document's `body_md` is re-materialized from `messages` on every append,
+-- which would make snapshot storage quadratic in the number of turns if
+-- archived in full on every turn (the cost this header used to describe as
+-- "tracked separately"). `VaultRepositoryImpl.captureRevision` (and its
+-- `InMemoryVaultRepository` twin) resolves this by storing the empty string
+-- for a `kind = 'chat'` document's `body_md_snapshot` instead of the
+-- transcript — the row still exists (so `currentRevision`/`getRevision`
+-- return non-null and RAG can still stamp `chunks.revision_hash`) and
+-- `revision_hash` is still the exact hash of the real transcript (computed
+-- by the caller before this row is written), so a citation into a chat turn
+-- still resolves correctly via `revisionMatches`'s direct
+-- `documents.content_hash` comparison, which never reads this table. What is
+-- lost is only the archived *diff-view* copy: reading an old chat revision's
+-- `bodyMdSnapshot` back returns "", not its old text (no UI reads it today).
+-- See `VaultRepository.currentRevision`'s KDoc and `docs/VAULT_FORMAT.md`'s
+-- Retention section for the full rationale.
 --
 -- ===== `messages.retrieved_chunks` =====
 --

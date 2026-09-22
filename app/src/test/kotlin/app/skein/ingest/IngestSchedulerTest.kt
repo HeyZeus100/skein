@@ -372,6 +372,59 @@ class IngestSchedulerTest {
             assertEquals(2, h.repository.peekIngestQueue().size)
         }
 
+    // ---- documentRevisions_gc sweep (skein-a2yr, POST_REVIEW_RESOLUTIONS.md §1.2 step 4) ----
+
+    @Test
+    fun `runPending sweeps an orphaned revision via documentRevisions_gc`() =
+        runBlocking {
+            val h = harness()
+            h.unlock()
+            h.bringUp()
+            val note = h.note("N", "original")
+            val orphanHash = requireNotNull(note.contentHash)
+            h.repository.updateBody(note.id, "N", "replacement")
+
+            h.scheduler.runPending(h.epoch())
+
+            assertEquals(null, h.repository.getRevision(note.id, orphanHash))
+        }
+
+    @Test
+    fun `the documentRevisions_gc sweep runs at most once per unlocked session`() =
+        runBlocking {
+            // Arrange — an orphan created before the first pass is swept by it.
+            val h = harness()
+            h.unlock()
+            h.bringUp()
+            val noteA = h.note("A", "one")
+            val orphanA = requireNotNull(noteA.contentHash)
+            h.repository.updateBody(noteA.id, "A", "two")
+            h.scheduler.runPending(h.epoch())
+            assertEquals(null, h.repository.getRevision(noteA.id, orphanA))
+
+            // Act — a second orphan created AFTER this session's one-time sweep,
+            // then another runPending call under the SAME epoch.
+            val noteB = h.note("B", "one")
+            val orphanB = requireNotNull(noteB.contentHash)
+            h.repository.updateBody(noteB.id, "B", "two")
+            h.scheduler.runPending(h.epoch())
+
+            // Assert — still there: the sweep does not run a second time this session.
+            assertEquals(
+                "a second orphan created after this session's one-time sweep must survive until the next unlock",
+                "one",
+                h.repository.getRevision(noteB.id, orphanB)?.bodyMdSnapshot,
+            )
+
+            // A new unlocked session (fresh epoch) gets its own sweep.
+            h.lock()
+            h.unlock()
+            h.bringUp()
+            h.scheduler.runPending(h.epoch())
+
+            assertEquals(null, h.repository.getRevision(noteB.id, orphanB))
+        }
+
     // ---- bounded retries (persisted ingest_queue.attempts, migration 008, skein-zx15) ----
 
     @Test
