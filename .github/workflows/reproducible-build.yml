@@ -1,29 +1,110 @@
 name: Reproducible build check
 
-# On a release tag, build the unsigned foss release APK twice from clean
-# checkouts and require the two to be byte-identical, per spec §10. The
-# recipe, the must-match toolchain and how to reproduce this locally are
-# documented in docs/VERIFICATION.md § "Build reproducibility".
-# This does not sign the APK and never touches a keystore — see E1.I8 for
-# the signed release pipeline.
+# E1.I8 (skein-ddp). Build the unsigned foss release APK TWICE, on two
+# separate runners, from two different absolute paths, and require the two to
+# be byte-identical. On a mismatch, upload a diffoscope report as the
+# `apk-diff` artifact.
 #
-# skein-8jtj re-verified this after E1.I11 (skein-4je) turned on R8 for the
-# release build type: two clean builds of the same commit are byte-identical
-# (716/716 entries), and so is a build from a separate clone at a different
-# path, once `vcsInfo { include = false }` stops AGP embedding
-# META-INF/version-control-info.textproto. The native .so determinism work
-# (E1.I4/E1.I5, skein-ej1b) has landed, so this job is now expected to pass
-# rather than to fail legitimately.
+# Why two runners and not two builds in one job (skein-8jtj's design, which
+# this replaces): a single job shares one filesystem, one Gradle user home,
+# one JDK install and one ~/.gradle/caches. `--no-build-cache` stops the task
+# outputs being *restored*, but it does not make the two builds independent —
+# anything that leaks through the daemon, the Kotlin compile daemon, the
+# `.cxx` intermediates or a path-dependent absolute string is identical by
+# construction and therefore invisible. Two runners is the comparison the
+# spec actually asks for: "could someone else, elsewhere, get these bytes?"
+#
+# The two builds also deliberately check out to paths of different depth and
+# length (`rb-a/skein` vs `rb-b/nested/deeper/skein`), because the one real
+# historical failure here was path-dependent
+# (`META-INF/version-control-info.textproto`, fixed by
+# `vcsInfo { include = false }`), and native builds embed absolute paths
+# unless `-ffile-prefix-map` covers every one of them.
+#
+# Naming: the plan calls this file `rb.yml`. It is kept as
+# `reproducible-build.yml` because ~15 files across `native/`, `docs/` and
+# `tools/` name it by path, four of them under `native/` which skein-ddp is
+# explicitly not allowed to touch (skein-3aw is editing it concurrently). The
+# rename is a separate, atomic, repo-wide change; the *substance* of the AC —
+# two builds on separate jobs — is what this file implements.
+#
+# The recipe, the must-match toolchain and how to reproduce this locally are
+# documented in docs/VERIFICATION.md § "Build reproducibility" and
+# docs/REPRODUCIBLE_BUILDS.md; the toolchain itself is pinned in
+# reproducible-builds.yml at the repo root.
+#
+# Triggers: the acceptance criterion is "sha256 equal on 3 consecutive main
+# commits", so the double build runs on every push to `main` as well as on
+# release tags. Pull requests run ONLY the fast `self-tests` job (see its
+# `if:`) -- two 90-minute runners per PR would be absurd, but a PR that bumps
+# AGP without updating reproducible-builds.yml should fail at review time,
+# not three merges later.
 on:
   push:
+    branches: [main]
     tags:
       - "v*"
+  pull_request:
   workflow_dispatch:
+
+# On main and tags: queue rather than cancel. The acceptance criterion is
+# "sha256 equal on 3 consecutive main commits", which a cancel-in-progress
+# policy would quietly make unobservable -- a superseded commit would have no
+# result at all. On pull requests only the fast self-tests job runs, so
+# cancelling a superseded push there costs nothing.
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
 
 permissions:
   contents: read
 
 jobs:
+  # Fast gate. Everything here runs in well under a minute and catches the
+  # failure modes that would otherwise burn two 90-minute runners: a manifest
+  # that has drifted from the toolchain it claims to describe, or a
+  # verification tool that no longer fails on its own negative case.
+  self-tests:
+    name: Toolchain manifest and tool self-tests
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Checkout
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v4.3.0
+
+      - name: Set up Python
+        uses: actions/setup-python@e797f83bcb11b83ae66e0230d6156d7c80228e7c # v6.0.0
+        with:
+          python-version: "3.12"
+
+      - name: Install PyYAML (reproducible-builds.yml parser)
+        run: python -m pip install --disable-pip-version-check "PyYAML==6.0.2"
+
+      # reproducible-builds.yml copies values that live elsewhere. This fails
+      # if any copy has drifted from its source of truth.
+      - name: reproducible-builds.yml agrees with the tree
+        run: python3 tools/rb/manifest-check.py
+
+      # Negative cases: each tool must be shown to FAIL when it should,
+      # before a green run from it means anything.
+      - name: manifest-check self-test
+        run: python3 tools/rb/manifest-check.py --self-test
+
+      - name: SOURCE_DATE_EPOCH derivation self-test
+        run: ./tools/rb/source-date-epoch.sh --self-test
+
+      - name: strip-signature self-test
+        run: python3 tools/rb/strip-signature.py --self-test
+
+      - name: normalize-apk self-test
+        run: python3 tools/rb/normalize-apk.py --self-test
+
+      - name: APK comparator self-test
+        run: ./tools/ci/compare-apk-entries.sh --self-test
+
+      - name: verify.sh self-test
+        run: ./tools/rb/verify.sh --self-test
+
   # E0.I7 followup (skein-2lq9): the SQLCipher amalgamation
   # (native/sqlite/amalgamation/{sqlite3.c,sqlite3.h,sqlite3ext.h}) is
   # checked into git rather than regenerated by every build -- see
@@ -31,13 +112,14 @@ jobs:
   # check that those committed files are still byte-identical to what the
   # pinned SQLCipher release produces fresh: it downloads the tarball,
   # verifies its sha256, reruns the documented configure/make recipe, and
-  # diffs the output. It runs only on release tags (not every PR) because it
-  # needs tclsh + a C toolchain and takes on the order of a minute; the fast
+  # diffs the output. It runs only on release tags (not on every main commit,
+  # and not on PRs) because it needs tclsh + a C toolchain; the fast
   # per-build check (SHA256SUMS.txt vs. files on disk, no network/toolchain)
   # is wired into native/sqlite/CMakeLists.txt and runs on every build via
   # AGP's externalNativeBuild.
   amalgamation-integrity:
     name: Verify SQLCipher amalgamation matches pinned source
+    if: startsWith(github.ref, 'refs/tags/v')
     runs-on: ubuntu-latest
     timeout-minutes: 10
     steps:
@@ -50,23 +132,41 @@ jobs:
       - name: Regenerate amalgamation from pinned SQLCipher release and diff
         run: ./native/sqlite/verify_amalgamation.sh --regenerate
 
-  reproducible-build:
-    name: Double-build and diff
+  # The two independent builds. A matrix, so the two runners execute one
+  # definition rather than two copies that can drift apart -- but with
+  # deliberately different checkout paths, which is the part of "a different
+  # machine" that is cheap to simulate and historically the part that broke.
+  build:
+    name: Build ${{ matrix.id }} (unsigned foss release)
+    needs: self-tests
+    # Not on pull requests: two 90-minute runners per PR is not a sane cost
+    # for a check whose failures are almost always introduced on main by a
+    # toolchain bump, which `self-tests` already catches on the PR.
+    if: github.event_name != 'pull_request'
     runs-on: ubuntu-latest
-    # E1.I4 (skein-ca2) raised this from 30: each of the two builds now also
-    # compiles llama.cpp + ggml and ~1100 Vulkan shader variants.
+    # E1.I4 (skein-ca2): each build compiles llama.cpp + ggml and ~1100
+    # Vulkan shader variants on top of the OpenSSL/SQLCipher build from E1.I5.
     timeout-minutes: 90
-    env:
-      # Pin build timestamps to the commit so both builds see identical
-      # inputs.
-      SOURCE_DATE_EPOCH: ${{ github.event.repository.pushed_at }}
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - id: a
+            path: rb-a/skein
+          - id: b
+            path: rb-b/nested/deeper/skein
     steps:
-      - name: Checkout (build 1)
+      - name: Checkout (build ${{ matrix.id }})
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v4.3.0
         with:
-          # E1.I4: libskein_llama.so is built from third_party/ submodules; the
-          # APK this job double-builds contains it.
+          # E1.I4: libskein_llama.so is built from third_party/ submodules;
+          # the APK this job builds contains it.
           submodules: true
+          path: ${{ matrix.path }}
+
+      - name: Verify third_party submodule pins
+        working-directory: ${{ matrix.path }}
+        run: ./tools/ci/check-submodules.sh
 
       - name: Set up JDK 17 (Temurin)
         uses: actions/setup-java@de7274f081f381c8f8158605e0321c36c376e2e6 # v4.8.0
@@ -82,54 +182,196 @@ jobs:
 
       - name: Set up Gradle
         uses: gradle/actions/setup-gradle@748248ddd2a24f49513d8f472f81c3a07d4d50e1 # v4.4.4
+        with:
+          # Never write the build cache from this workflow. A cache entry
+          # produced by build A and restored by build B would make the
+          # comparison compare a copy with its original.
+          cache-read-only: true
 
-      # Negative case first: prove the comparator can actually fail before
-      # trusting a green result from it. Without this, "the APKs matched" and
-      # "the comparison silently no-opped" look identical in the log.
+      # SOURCE_DATE_EPOCH must be a function of the SOURCE. The previous
+      # revision of this file used `github.event.repository.pushed_at`, which
+      # is the time of the *push*: re-running the workflow on the same tag
+      # produced a different value, and nobody rebuilding locally could ever
+      # match it. tools/rb/source-date-epoch.sh derives it from the commit's
+      # committer date, which every checkout of that commit agrees on.
+      #
+      # `$GITHUB_ENV` takes bare `NAME=value` lines, so the script's own
+      # `--export` form (which prints `export NAME=value`, for `eval`) must
+      # NOT be piped into it -- GitHub would read the key as
+      # `export SOURCE_DATE_EPOCH` and drop it.
+      - name: Derive SOURCE_DATE_EPOCH from the commit
+        working-directory: ${{ matrix.path }}
+        run: |
+          epoch="$(./tools/rb/source-date-epoch.sh HEAD)"
+          echo "SOURCE_DATE_EPOCH=${epoch}" >> "$GITHUB_ENV"
+          echo "SOURCE_DATE_EPOCH=${epoch}"
+
+      # `--no-build-cache` is load-bearing, not a speed knob: Gradle's build
+      # cache is keyed on task inputs, so without it a build can restore
+      # `:app:minifyFossReleaseWithR8`, `:app:dexBuilder*` and friends
+      # FROM-CACHE -- copying outputs instead of recomputing them, which is
+      # exactly the R8/dex determinism this workflow exists to check.
+      - name: Assemble foss release
+        working-directory: ${{ matrix.path }}
+        run: ./gradlew clean :app:assembleFossRelease --no-build-cache --stacktrace
+
+      - name: Record hash and build context
+        working-directory: ${{ matrix.path }}
+        run: |
+          apk=app/build/outputs/apk/foss/release/app-foss-release-unsigned.apk
+          mkdir -p "$RUNNER_TEMP/out"
+          cp "$apk" "$RUNNER_TEMP/out/"
+          ( cd "$RUNNER_TEMP/out" && sha256sum app-foss-release-unsigned.apk \
+              > "SHA256SUMS-${{ matrix.id }}.txt" )
+          {
+            echo "build_id=${{ matrix.id }}"
+            echo "abs_path=$PWD"
+            echo "commit=$GITHUB_SHA"
+            echo "source_date_epoch=$SOURCE_DATE_EPOCH"
+            echo "runner=$RUNNER_OS/$RUNNER_ARCH"
+            java -version 2>&1 | sed 's/^/jdk: /'
+          } > "$RUNNER_TEMP/out/context-${{ matrix.id }}.txt"
+          cat "$RUNNER_TEMP/out/SHA256SUMS-${{ matrix.id }}.txt"
+          cat "$RUNNER_TEMP/out/context-${{ matrix.id }}.txt"
+
+      - name: Upload build ${{ matrix.id }}
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: rb-build-${{ matrix.id }}
+          path: ${{ runner.temp }}/out/
+          if-no-files-found: error
+          # The APK is ~100 MB and only useful while the run is being
+          # triaged; a short retention keeps two of them per main commit from
+          # accumulating.
+          retention-days: 7
+          compression-level: 0
+
+  compare:
+    name: Compare the two builds
+    needs: build
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - name: Checkout
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v4.3.0
+
+      - name: Download build a
+        uses: actions/download-artifact@018cc2cf5baa6db3ef3c5f8a56943fffe632ef53 # v6.0.0
+        with:
+          name: rb-build-a
+          path: /tmp/rb-a
+
+      - name: Download build b
+        uses: actions/download-artifact@018cc2cf5baa6db3ef3c5f8a56943fffe632ef53 # v6.0.0
+        with:
+          name: rb-build-b
+          path: /tmp/rb-b
+
+      - name: Show both build contexts
+        run: |
+          cat /tmp/rb-a/context-a.txt
+          echo
+          cat /tmp/rb-b/context-b.txt
+
+      # Prove the comparator can fail before trusting a green result from it.
+      # (self-tests ran this too; repeated here because *this* job is the one
+      # whose verdict is being trusted, and it is a two-second check.)
       - name: Self-test the APK comparator
         run: ./tools/ci/compare-apk-entries.sh --self-test
 
-      # `--no-build-cache` is load-bearing, not a speed knob. Both builds run
-      # in one job against the same Gradle build cache, so without it build 2
-      # restores `:app:minifyFossReleaseWithR8`, `:app:dexBuilder*` and
-      # friends FROM-CACHE — it copies build 1's outputs instead of
-      # recomputing them, and the comparison below becomes vacuous. That is
-      # exactly the R8 determinism this job exists to check (skein-8jtj), so
-      # both builds are forced to re-execute every task.
-      - name: Build 1 - assemble foss release
-        run: ./gradlew clean :app:assembleFossRelease --no-build-cache --stacktrace
-
-      - name: Build 1 - stash unsigned APK
+      # The contract, stated the way the acceptance criterion states it.
+      - name: sha256sum -c across runners
+        id: sums
+        continue-on-error: true
         run: |
-          mkdir -p /tmp/rb-build1
-          cp app/build/outputs/apk/foss/release/app-foss-release-unsigned.apk \
-             /tmp/rb-build1/
+          cd /tmp/rb-a
+          sed 's#app-foss-release-unsigned.apk#/tmp/rb-b/&#' SHA256SUMS-a.txt \
+            > /tmp/expected-b.txt
+          cat SHA256SUMS-a.txt /tmp/rb-b/SHA256SUMS-b.txt
+          sha256sum -c /tmp/expected-b.txt
 
-      - name: Build 2 - assemble foss release
-        run: ./gradlew clean :app:assembleFossRelease --no-build-cache --stacktrace
-
-      - name: Build 2 - stash unsigned APK
-        run: |
-          mkdir -p /tmp/rb-build2
-          cp app/build/outputs/apk/foss/release/app-foss-release-unsigned.apk \
-             /tmp/rb-build2/
-
-      # The contract is still the whole-file sha256, but comparing entry by
-      # entry is what makes a failure actionable: it names the offending
-      # entries instead of printing two hashes that differ. See the script's
-      # header for why this is not just `sha256sum a b`.
+      # Entry-by-entry, so a failure names the offending entries instead of
+      # printing two hashes that differ.
       - name: Compare unsigned release APKs entry by entry
+        id: compare
+        continue-on-error: true
         run: |
           ./tools/ci/compare-apk-entries.sh \
-            /tmp/rb-build1/app-foss-release-unsigned.apk \
-            /tmp/rb-build2/app-foss-release-unsigned.apk \
-            "double-build of ${GITHUB_SHA}" | tee /tmp/rb-compare.log
+            /tmp/rb-a/app-foss-release-unsigned.apk \
+            /tmp/rb-b/app-foss-release-unsigned.apk \
+            "two-runner build of ${GITHUB_SHA}" | tee /tmp/rb-compare.log
           exit "${PIPESTATUS[0]}"
 
-      - name: Upload comparison report on failure
-        if: failure()
+      # Classify the diff (timestamp-only? order-only? real payload?) before
+      # the heavyweight tool runs. Diagnostic only -- it never decides.
+      - name: Classify the difference
+        if: steps.compare.outcome == 'failure' || steps.sums.outcome == 'failure'
+        run: |
+          python3 tools/rb/normalize-apk.py \
+            /tmp/rb-a/app-foss-release-unsigned.apk \
+            /tmp/rb-b/app-foss-release-unsigned.apk | tee /tmp/rb-classify.log
+
+      # diffoscope is GPL-3.0. That is fine here and nowhere else: it runs on
+      # the CI runner as a diagnostic tool and never enters the app's
+      # classpath or the APK (the foss flavor's permissive-only rule is
+      # enforced by `licenseAuditFossRelease`, E1.I7).
+      - name: Install diffoscope
+        if: steps.compare.outcome == 'failure' || steps.sums.outcome == 'failure'
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y --no-install-recommends \
+            diffoscope binutils unzip python3-magic
+          diffoscope --version
+
+      - name: Produce the diffoscope report
+        if: steps.compare.outcome == 'failure' || steps.sums.outcome == 'failure'
+        run: |
+          mkdir -p /tmp/apk-diff
+          cp /tmp/rb-compare.log /tmp/rb-classify.log /tmp/apk-diff/ || true
+          cp /tmp/rb-a/context-a.txt /tmp/rb-b/context-b.txt /tmp/apk-diff/ || true
+          # diffoscope exits 1 when the inputs differ -- which is the whole
+          # reason this step runs -- so its status must not fail the step.
+          diffoscope \
+            --html /tmp/apk-diff/apk-diff.html \
+            --text /tmp/apk-diff/apk-diff.txt \
+            --max-report-size 40000000 \
+            --exclude-directory-metadata=yes \
+            /tmp/rb-a/app-foss-release-unsigned.apk \
+            /tmp/rb-b/app-foss-release-unsigned.apk || true
+          ls -la /tmp/apk-diff
+
+      - name: Upload apk-diff
+        if: steps.compare.outcome == 'failure' || steps.sums.outcome == 'failure'
         uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
         with:
-          name: apk-entry-diff
-          path: /tmp/rb-compare.log
-          if-no-files-found: ignore
+          name: apk-diff
+          path: /tmp/apk-diff/
+          if-no-files-found: warn
+          retention-days: 30
+
+      # The verdict. Separate from the comparison steps so the diffoscope
+      # report is always produced and uploaded before the job goes red.
+      - name: Verdict
+        run: |
+          if [ "${{ steps.compare.outcome }}" = "failure" ] \
+            || [ "${{ steps.sums.outcome }}" = "failure" ]; then
+            echo "::error::The two runners produced different APKs for ${GITHUB_SHA}."
+            echo "::error::Download the 'apk-diff' artifact for the diffoscope report."
+            # Read this before treating a red run as an alarm. skein-ylux:
+            # libskein_llama.so is intermittently nondeterministic (measured
+            # at roughly 1 build in 7), so a failure whose ONLY differing
+            # entry is that library is the known flake, not a compromise.
+            # Any other differing entry is real. Recorded in
+            # reproducible-builds.yml under `known_irreproducible`; remove
+            # this note when that bead closes.
+            # compare-apk-entries.sh prints two 9-space-indented "A <hash>" /
+            # "B <hash>" lines per differing entry, so exactly two of them
+            # means exactly one entry differed. A membership or ordering
+            # failure produces none of those lines and so never matches here.
+            hashlines="$(grep -c '^         [AB] [0-9a-f]' /tmp/rb-compare.log || true)"
+            if [ "$hashlines" = "2" ] && grep -q 'libskein_llama\.so' /tmp/rb-compare.log; then
+              echo "::warning::The only differing entry is libskein_llama.so -- this is the known skein-ylux flake, not a compromise. Re-run."
+            fi
+            exit 1
+          fi
+          echo "Both runners produced a byte-identical app-foss-release-unsigned.apk."

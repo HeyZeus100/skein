@@ -1,0 +1,227 @@
+# reproducible-builds.yml — Skein's toolchain manifest for reproducible builds
+#
+# E1.I8 (skein-ddp). This is a PROJECT-LOCAL file, not an implementation of
+# some external standard: there is no `.reproducible-builds.yml` ecosystem
+# spec (re-verified 2026-09-19, see docs/superpowers/specs/…-skein-design.md).
+# It exists so that a verifier, `tools/rb/verify.sh` and CI all read the
+# must-match toolchain from ONE place instead of three, and so that
+# "which NDK was this APK built with?" has an answer that travels with the
+# commit.
+#
+# It is DESCRIPTIVE, not authoritative. Every value below is copied from the
+# file that actually drives the build (named in `source:`), and
+# `tools/rb/manifest-check.sh` fails if any of them drifts apart. Never fix a
+# drift by editing this file alone — edit the source of truth, then re-run
+# the checker.
+#
+# Reproducibility here is CONDITIONAL on matching this toolchain. AGP writes
+# its own version into the APK, and JDK/NDK/aapt2 codegen is not stable
+# across versions; that is the normal contract for an Android build, not a
+# defect. See docs/VERIFICATION.md § "Must-match toolchain".
+
+schema: skein-reproducible-builds/1
+
+# The artifact this manifest makes reproducible. Signatures are out of scope
+# by design — a third party cannot reproduce them and does not need to; they
+# rebuild the UNSIGNED APK and check the signature separately against the
+# published certificate (docs/SIGNING.md).
+artifact:
+  gradle_task: ":app:assembleFossRelease"
+  path: "app/build/outputs/apk/foss/release/app-foss-release-unsigned.apk"
+  # Flags that are load-bearing, not speed knobs: Gradle's build cache is
+  # keyed on task inputs, so a second build sharing a cache RESTORES R8/dex
+  # outputs instead of recomputing them. The APKs then match because they
+  # were copied. See docs/VERIFICATION.md.
+  gradle_args: ["clean", "--no-build-cache"]
+  # ...and those two flags are NOT sufficient on a tree that has been built
+  # before. AGP keeps the native (CMake/ninja) build out of `build/`, in
+  # `<module>/.cxx/`, and `clean` does not remove it. ninja then rebuilds
+  # only on file-content changes, so an ENVIRONMENT change -- notably
+  # SOURCE_DATE_EPOCH -- leaves the previous `.so` in place and the "rebuild"
+  # silently ships a stale library.
+  #
+  # Measured on 2026-09-21 while verifying E1.I8: building the same commit at
+  # the same path with a different SOURCE_DATE_EPOCH reproduced
+  # libskein_sqlite.so byte-for-byte from the STALE tree (it had not been
+  # recompiled at all), and an incremental relink shifted two bytes in
+  # libskein_llama.so. With `.cxx` removed, the same commit built at two
+  # different absolute paths produced an identical APK, 730/730 entries.
+  #
+  # CI is immune (every runner is fresh) and tools/rb/verify.sh is immune (it
+  # builds in a brand-new clone). A developer re-checking reproducibility in
+  # a tree they have already built is NOT, so the recipe includes this.
+  clean_native_intermediates:
+    - "core/vault/.cxx"
+    - "inference-service/.cxx"
+
+toolchain:
+  jdk:
+    vendor: temurin
+    version: "17.0.20+8"
+    # Local developer builds on another 17.0.x JDK are supported and the
+    # Gradle build does NOT refuse them; only CI and tools/rb/verify.sh
+    # --strict pin the vendor. A vendor/version deviation is reported by
+    # verify.sh as a named deviation rather than silently ignored.
+    source: ".tool-versions"
+    language_level: 17
+
+  android_ndk:
+    version: "27.3.13750724" # r27c
+    source: "core/vault/build.gradle.kts, inference-service/build.gradle.kts (ndkVersion)"
+
+  gradle:
+    version: "9.7.1"
+    distribution_url: "https://services.gradle.org/distributions/gradle-9.7.1-bin.zip"
+    # sha256 of the checked-in wrapper JAR — the binary this repo asks you to
+    # execute. The distribution ZIP itself is NOT pinned via
+    # `distributionSha256Sum` yet; see skein-ddp's follow-up bead.
+    wrapper_jar_sha256: "7a9ce74cff467ca1bf60a4fcd9f05185acceda4d0f382434d393e17864262c5d"
+    source: "gradle/wrapper/gradle-wrapper.properties, gradle/wrapper/gradle-wrapper.jar"
+
+  agp:
+    version: "9.4.1"
+    # AGP writes this verbatim into
+    # META-INF/com/android/build/gradle/app-metadata.properties as
+    # `androidGradlePluginVersion`. A diff in that entry means "you are on the
+    # wrong AGP", not "the build is nondeterministic".
+    source: "gradle/libs.versions.toml [versions].agp"
+
+  kotlin:
+    version: "2.4.20"
+    source: "gradle/libs.versions.toml [versions].kotlin"
+
+  android_sdk:
+    compile_sdk: 37
+    target_sdk: 37
+    min_sdk: 30
+    build_tools: "36.0.0"
+    source: "app/build.gradle.kts, .github/workflows/*.yml (sdkmanager step)"
+
+# How SOURCE_DATE_EPOCH is derived. It must be a function of the SOURCE, not
+# of the wall clock or of CI metadata, or two builds of one commit can differ.
+#
+# It is consumed by native/sqlite/CMakeLists.txt (passed into the OpenSSL
+# sub-build's environment) and read by native/llama/CMakeLists.txt. Neither
+# Gradle nor AGP can inject an environment variable into the CMake process,
+# so the derivation lives in the SHELL layer: tools/rb/source-date-epoch.sh
+# is the single implementation, and .github/workflows/reproducible-build.yml
+# and tools/rb/verify.sh both call it.
+source_date_epoch:
+  derivation: "git -C <repo> log -1 --format=%ct <commit>"
+  # Honoured if already exported (so a tarball rebuild with no .git can still
+  # pin it explicitly).
+  honours_ambient_env: true
+  # What native/{llama,sqlite}/CMakeLists.txt use when the variable is unset
+  # entirely — 2026-01-01T00:00:00Z. Kept here so a verifier building from a
+  # git-less export knows which value to export to match a CI build that had
+  # git. NOTE: these differ, so ALWAYS export the derived value.
+  cmake_fallback_constant: 1767225600
+  implementation: "tools/rb/source-date-epoch.sh"
+
+# Native inputs. llama.cpp and its Vulkan/SPIR-V headers are pinned by git
+# commit; SQLCipher, sqlite-vec and OpenSSL are pinned by RELEASE TARBALL
+# sha256 rather than by commit, because the vendored artifact is a generated
+# amalgamation / release tarball, not a checkout.
+native:
+  submodules:
+    - path: third_party/llama.cpp
+      commit: b29c606e28a01b1bc8c1351026a0fa6e616bf6c4
+      tag: v0.4.1
+    - path: third_party/Vulkan-Headers
+      commit: 8864cdc896bbc2a9b6eb36b3218fc9ef57908d77
+      tag: vulkan-sdk-1.4.350.0
+    - path: third_party/SPIRV-Headers
+      commit: ad9184e76a66b1001c29db9b0a3e87f646c64de0
+      tag: vulkan-sdk-1.4.350.0
+  source: "native/llama/PINNED_COMMIT (enforced by tools/ci/check-submodules.sh)"
+
+  tarballs:
+    - name: sqlcipher
+      version: "4.17.0"
+      sha256: 79c0e164b9c059e7487bf8f29272f601cca5f3312cc267461f81e349962a5058
+      source: "native/sqlite/sqlcipher.sha256"
+    - name: sqlite-vec
+      version: "0.1.9"
+      sha256: 9823e737d9934dcbe85dff75d3fca81018a9beee803d70fa77b16faab5d61dc9
+      source: "native/sqlite/sqlite-vec.sha256"
+    - name: openssl
+      version: "3.5.4"
+      sha256: 967311f84955316969bdb1d8d4b983718ef42338639c621ec4c34fddef355e99
+      source: "native/sqlite/openssl.sha256"
+
+# Settings that exist ONLY to keep the build deterministic. Each is asserted
+# by tools/rb/manifest-check.sh, so removing one fails CI rather than
+# silently un-reproducing the release.
+determinism_settings:
+  - key: "android.buildTypes.release.vcsInfo.include"
+    value: false
+    file: "app/build.gradle.kts"
+    why: >
+      AGP otherwise packages META-INF/version-control-info.textproto
+      describing the git checkout the build ran in — a worktree yields
+      NO_VALID_GIT_FOUND, a clone embeds the revision sha. That makes the
+      APK hash depend on how the tree was obtained (skein-8jtj).
+  - key: "android.dependenciesInfo.includeInApk"
+    value: false
+    file: "app/build.gradle.kts"
+    why: >
+      Play's dependency-metadata blob is written into the APK Signing Block
+      compressed and encrypted to a Google public key, so it is
+      nondeterministic by construction. Absent today only because `release`
+      has no signing config; disabled pre-emptively so E1.I9's signed
+      pipeline cannot reintroduce it.
+  - key: "android.dependenciesInfo.includeInBundle"
+    value: false
+    file: "app/build.gradle.kts"
+    why: "Same blob, bundle path."
+
+# Settings deliberately NOT changed by E1.I8, recorded so the next reader
+# does not re-litigate them.
+# Known, measured, OPEN defects in the reproducibility claim. Recorded here
+# rather than in a comment somewhere, because a manifest that describes an
+# aspirational build is worse than one that admits what is broken.
+known_irreproducible:
+  - artifact: "lib/arm64-v8a/libskein_llama.so"
+    bead: skein-ylux
+    status: open
+    since: "2026-09-21"
+    symptom: >
+      Intermittently nondeterministic: two cold builds of one commit, at the
+      SAME absolute path, with the SAME SOURCE_DATE_EPOCH, produced different
+      libraries (roughly 1 build in 7 across the 7 release builds measured
+      while E1.I8 was verified). Entry size, compression method and mtime are
+      unchanged; only the ELF bytes and the CRC differ. libskein_sqlite.so
+      was deterministic in all of them.
+    consequence: >
+      The two-runner CI comparison can fail intermittently, and a verifier can
+      fail to reproduce a genuine release. A single differing entry that IS
+      this library is most likely the flake; any other differing entry is not.
+    suspect: >
+      Ordering in the Vulkan shader pipeline -- GGML_VULKAN=ON builds
+      vulkan-shaders-gen, which compiles ~1100 variants in parallel and then
+      emits a generated source embedding them.
+
+non_changes:
+  - key: "android.enableR8.fullMode"
+    state: "AGP default (true since AGP 8.0); not overridden in gradle.properties"
+    why: >
+      Full mode is already on. What is *scoped down* is app/proguard-rules.pro
+      (-dontobfuscate + blanket -keep), and that is a SIZE/keep-rule-audit
+      question, not a reproducibility one: skein-8jtj measured all three
+      classes*.dex byte-identical across every pair compared, so R8 is
+      already deterministic here. Re-enabling obfuscation and real shrinking
+      changes app behaviour and needs the per-module keep-rule audit; it is
+      tracked separately rather than smuggled into this issue.
+  - key: "kotlin.incremental=false"
+    state: "not set"
+    why: >
+      The plan sketch suggested it for release builds. Every reproducibility
+      build runs `clean` + `--no-build-cache`, which makes Kotlin incremental
+      compilation moot, and setting it globally would slow every local dev
+      build. The 716/716-entry match was measured without it.
+  - key: "tools/rb/normalize-apk.py"
+    state: "diagnostic only, never invoked by the build or by CI's verdict"
+    why: >
+      Normalizing entry order/timestamps after the fact would HIDE
+      nondeterminism rather than fix it. The build itself must be
+      deterministic; that script exists only to explain a diff.
