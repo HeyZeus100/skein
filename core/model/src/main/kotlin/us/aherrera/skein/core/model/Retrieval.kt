@@ -182,7 +182,12 @@ public data class AssembledPrompt(
  *    [ChatMessage]s, never one concatenated string. The instruction segment
  *    is the single leading [Role.SYSTEM] message, whose content is exactly
  *    `persona?.systemPrompt ?: ""` — nothing derived from `retrieved` is ever
- *    placed there, and no assembler may append to it.
+ *    placed there, and no assembler may append to it. This extends to
+ *    `history`: a stored or imported turn may itself carry [Role.SYSTEM]
+ *    (design spec §5's `messages.role` column allows it), but an assembler
+ *    renders every such turn as data — re-roled to [Role.USER], never
+ *    dropped — so `history` can never produce a second instruction segment
+ *    (skein-zh7o).
  * 2. **A labelled data segment.** Every retrieved chunk lives in one
  *    [Role.USER] message — the last one — that begins with the literal line
  *    `Retrieved context:`, so the model reads the block as quoted material.

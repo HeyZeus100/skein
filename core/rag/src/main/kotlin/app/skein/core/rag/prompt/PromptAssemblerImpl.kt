@@ -103,7 +103,7 @@ public class PromptAssemblerImpl : PromptAssembler {
         val messages =
             buildList {
                 add(ChatMessage(role = Role.SYSTEM, content = systemContent))
-                kept.forEach { add(ChatMessage(role = it.role, content = it.contentMd)) }
+                kept.forEach { add(ChatMessage(role = historyRole(it.role), content = it.contentMd)) }
                 add(ChatMessage(role = Role.USER, content = finalUserContent))
             }
 
@@ -161,6 +161,18 @@ public class PromptAssemblerImpl : PromptAssembler {
         }
         return kept to dropped
     }
+
+    /**
+     * The role a history [Message] is rendered with, per `Retrieval.kt`'s
+     * locked "the instruction segment is the single leading `Role.SYSTEM`
+     * message" invariant (skein-zh7o). A stored or imported (skein-ddpt)
+     * transcript can carry a `Role.SYSTEM` turn — spec §5's `messages.role`
+     * column allows it — but copying that role verbatim into history would
+     * render it as a *second* instruction segment. It is re-roled to
+     * [Role.USER] instead: rendered as data, exactly like every other
+     * history turn, never dropped and never treated as an instruction.
+     */
+    private fun historyRole(role: Role): Role = if (role == Role.SYSTEM) Role.USER else role
 
     private companion object {
         private const val QUERY_PREFIX: String = "User: "
