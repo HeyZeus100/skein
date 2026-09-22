@@ -71,8 +71,41 @@ It will:
 6. **Strip the APK Signing Block** from the published APK
    (`tools/rb/strip-signature.py`) so a signed release can be compared with a
    locally built unsigned one.
-7. **Compare** — `unzip -l` listings, then whole-file sha256, then
-   `tools/ci/compare-apk-entries.sh` entry by entry.
+7. **Compare** — see below for what "match" means.
+
+### What counts as a match
+
+It depends on whether the APK you downloaded was signed, and the difference
+is not a technicality.
+
+**A published, signed release is compared entry by entry.** `apksigner` does
+not merely append its signing block: it rewrites the archive. Measured with
+build-tools 37.0.0 and this project's own signing options
+(`tools/release/sign.sh`: v1 off, v2+v3 on), signing a 98 056 573-byte
+unsigned APK and stripping the block off again gives **98 058 597** bytes —
+2 024 bytes of alignment padding in local header extra fields, diverging from
+byte 167 — while **all 730 entries keep their order, compression method,
+sizes, mtimes and content hashes**. `--alignment-preserved true` does not
+avoid it. So:
+
+```
+strip(sign(unsigned)) != unsigned     byte for byte
+strip(sign(unsigned)) == unsigned     entry for entry
+```
+
+`verify.sh` therefore takes its verdict from the entry table (name, method,
+CRC, uncompressed size, compressed size, content sha256, per entry) plus the
+stored order, and *reports* the whole-file sha256 with that explanation. No
+entry can be substituted, recompressed, added, removed or reordered without
+failing. A verdict that insisted on the whole-file hash would fail on every
+genuine release, which is worse than useless — people would learn to ignore
+it.
+
+**An unsigned APK is still held to the whole-file sha256.** Nothing has
+touched the archive, so anything weaker would be weaker than the check CI
+already runs between its two runners. `verify.sh --self-test` asserts both
+halves of this, including that the tolerance for a re-laid-out archive does
+not hide a tampered entry.
 
 ### Reading the result
 
@@ -133,6 +166,16 @@ and B (both cold, *different paths*) were byte-identical, while build A's
 incremental relink shifted two bytes. So the native libraries are
 path-independent and reproducible — **when they are actually rebuilt**.
 
+And `SOURCE_DATE_EPOCH` really does change the bytes, so getting its value
+right is not bookkeeping. Two cold builds at the *same* path differing only
+in the epoch produced different `libskein_sqlite.so` (`1f1f1ecc…` at
+1790007384 vs `a2c3cab6…` at 1790008784) — it reaches OpenSSL through
+`native/sqlite/CMakeLists.txt`. `libskein_llama.so` was unaffected (that
+CMakeLists reads the variable but does not use it). This is why the workflow
+no longer derives the epoch from `github.event.repository.pushed_at`: that is
+the time of the *push*, so it changed on every re-run and no local rebuild
+could ever have matched a release.
+
 So when rebuilding in place, remove the native intermediates too
 (`reproducible-builds.yml` lists them under
 `artifact.clean_native_intermediates`):
@@ -143,6 +186,29 @@ rm -rf core/vault/.cxx inference-service/.cxx
 ```
 
 Better: do not rebuild in place. Let `tools/rb/verify.sh` clone.
+
+### Known open defect: `libskein_llama.so` (bd `skein-ylux`)
+
+As of 2026-09-21 there is one **known, intermittent** source of
+irreproducibility, and you should check it before concluding anything else.
+
+`libskein_llama.so` is not yet deterministic. Two cold builds of the same
+commit, at the *same* absolute path, with the *same* `SOURCE_DATE_EPOCH`,
+produced different libraries — roughly one build in seven across the seven
+release builds measured while `E1.I8` was being verified. The entry keeps its
+size, compression method and mtime; only the ELF bytes and the CRC change.
+`libskein_sqlite.so` was deterministic in every one of them.
+
+So if `verify.sh` reports **exactly one** differing entry and that entry is
+`lib/arm64-v8a/libskein_llama.so`, you have most likely hit this flake rather
+than a tampered release. Rebuild; it will usually agree the second time. If
+any *other* entry differs, or if `libskein_llama.so` differs repeatedly,
+treat it as real and report it per `SECURITY.md`.
+
+This is being fixed at the source (`native/llama`); the leading suspect is
+ordering in the Vulkan shader generator, which compiles ~1100 variants in
+parallel. Until it lands, the two-runner CI check can fail intermittently,
+and such a failure is not evidence of a compromise.
 
 ### When it does not reproduce
 

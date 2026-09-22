@@ -177,6 +177,30 @@ determinism_settings:
 
 # Settings deliberately NOT changed by E1.I8, recorded so the next reader
 # does not re-litigate them.
+# Known, measured, OPEN defects in the reproducibility claim. Recorded here
+# rather than in a comment somewhere, because a manifest that describes an
+# aspirational build is worse than one that admits what is broken.
+known_irreproducible:
+  - artifact: "lib/arm64-v8a/libskein_llama.so"
+    bead: skein-ylux
+    status: open
+    since: "2026-09-21"
+    symptom: >
+      Intermittently nondeterministic: two cold builds of one commit, at the
+      SAME absolute path, with the SAME SOURCE_DATE_EPOCH, produced different
+      libraries (roughly 1 build in 7 across the 7 release builds measured
+      while E1.I8 was verified). Entry size, compression method and mtime are
+      unchanged; only the ELF bytes and the CRC differ. libskein_sqlite.so
+      was deterministic in all of them.
+    consequence: >
+      The two-runner CI comparison can fail intermittently, and a verifier can
+      fail to reproduce a genuine release. A single differing entry that IS
+      this library is most likely the flake; any other differing entry is not.
+    suspect: >
+      Ordering in the Vulkan shader pipeline -- GGML_VULKAN=ON builds
+      vulkan-shaders-gen, which compiles ~1100 variants in parallel and then
+      emits a generated source embedding them.
+
 non_changes:
   - key: "android.enableR8.fullMode"
     state: "AGP default (true since AGP 8.0); not overridden in gradle.properties"

@@ -15,23 +15,40 @@ APK, check that it matches the released APK's *payload*, and check the
 signature separately against the published certificate
 (`apksigner verify --print-certs`, see docs/SIGNING.md).
 
-What signing actually adds
---------------------------
-`apksigner` v2/v3 does not touch a single local file entry or central
-directory record. It inserts one opaque region — the **APK Signing Block** —
-between the last local file entry and the central directory, and bumps the
-"offset of start of central directory" field in the End Of Central Directory
-record to account for it. Removing that region and restoring the offset gives
-back the original unsigned bytes exactly, which is why this script's headline
-mode is byte-exact rather than a re-zip.
+What signing adds, and what it also quietly changes
+---------------------------------------------------
+The **APK Signing Block** is one opaque region inserted between the last
+local file entry and the central directory, with the "offset of start of
+central directory" field in the End Of Central Directory record bumped to
+account for it. This script removes that region and restores the offset.
 
-v1 (JAR) signing is different: it *adds entries*
-(`META-INF/MANIFEST.MF`, `META-INF/*.SF`, `META-INF/*.RSA|DSA|EC`). Skein's
-`minSdk` is 30, so apksigner signs v2+v3 only and no such entries exist; if
-they ever do, `--drop-v1` removes them, but the result is a REBUILT zip whose
-byte layout is apksigner's, not AGP's. That output is only meaningful for the
-entry-wise comparison (`--manifest`), and the script says so rather than
-pretending the whole-file sha256 still means something.
+That is not the whole story, and the difference matters. **`apksigner` also
+rewrites the archive.** Measured against build-tools 37.0.0 on 2026-09-21
+with this project's real signing options (`tools/release/sign.sh`: v1 off,
+v2+v3 on), signing a 98 056 573-byte unsigned APK and stripping the block
+again yields 98 058 597 bytes — 2 024 bytes of alignment padding in local
+header extra fields, differing from byte 167 onwards. `--alignment-preserved
+true` does **not** avoid it. So:
+
+    strip(sign(unsigned)) != unsigned        (byte-for-byte)
+    strip(sign(unsigned)) == unsigned        (entry for entry: all 730
+                                              entries, same stored order,
+                                              same method/size/mtime, same
+                                              content sha256)
+
+Which is why `tools/rb/verify.sh` takes its verdict on a *signed* input from
+the entry table, not from the whole-file sha256, and says so in its output.
+The whole-file sha256 remains the right contract for comparing two *unsigned*
+builds of the same commit — that is what
+`.github/workflows/reproducible-build.yml` does.
+
+v1 (JAR) signing is different again: it *adds entries*
+(`META-INF/MANIFEST.MF`, `META-INF/*.SF`, `META-INF/*.RSA|DSA|EC`).
+`tools/release/sign.sh` passes `--v1-signing-enabled false`, and Skein's
+`minSdk` is 30, so a real release has none. An APK that does have them is
+refused by default rather than quietly stripped, because it means the APK was
+not signed by this project's pipeline; `--drop-v1` removes them if you know
+why you want that.
 
 This script never *normalises* anything. Reordering entries or rewriting
 timestamps to force a match would hide exactly the nondeterminism the
@@ -189,13 +206,18 @@ def _rebuild_without(path: str, drop: set[str]) -> None:
 def manifest(path: str) -> str:
     """A canonical, signature-free entry table.
 
-    Sorted by name so it diffs cleanly, and carrying the fields that make a
-    difference explainable: compression method, CRC, sizes and the content
-    sha256. Stored ORDER is deliberately not encoded here — order is checked
-    by tools/ci/compare-apk-entries.sh, which compares it unsorted precisely
-    because a reordering is a real failure.
+    This is the verdict-bearing view for a SIGNED input, because apksigner
+    re-lays-out the archive (see the module docstring) and the whole-file
+    sha256 therefore cannot be the contract there.
+
+    Sorted by name so it diffs cleanly, and carrying every field that could
+    hide a substitution: compression method, CRC, uncompressed size,
+    *compressed* size (a recompression at a different level keeps the content
+    hash but changes this) and the content sha256. Stored ORDER is
+    deliberately not encoded here — order is compared separately, unsorted,
+    because a reordering is a real failure and sorting would erase it.
     """
-    drop = {n for n in v1_signature_entries(path)}
+    drop = set(v1_signature_entries(path))
     rows = []
     with zipfile.ZipFile(path) as zf:
         for info in sorted(zf.infolist(), key=lambda i: i.filename):
@@ -204,9 +226,18 @@ def manifest(path: str) -> str:
             digest = hashlib.sha256(zf.read(info.filename)).hexdigest()
             rows.append(
                 f"{info.filename}\tmethod={info.compress_type}\t"
-                f"crc={info.CRC:08x}\tsize={info.file_size}\tsha256={digest}"
+                f"crc={info.CRC:08x}\tsize={info.file_size}\t"
+                f"csize={info.compress_size}\tsha256={digest}"
             )
     return "\n".join(rows) + "\n"
+
+
+def stored_order(path: str) -> str:
+    """Entry names in stored order, signature entries removed."""
+    drop = set(v1_signature_entries(path))
+    with zipfile.ZipFile(path) as zf:
+        names = [n for n in zf.namelist() if n not in drop]
+    return "\n".join(names) + "\n"
 
 
 # --------------------------------------------------------------------------
@@ -360,7 +391,39 @@ def self_test() -> int:
             print("[FAIL] --drop-v1 left v1 entries behind")
             failures += 1
 
-        # 5. Garbage in must not silently produce garbage out.
+        # 5. The realistic signed case: apksigner re-lays-out the archive, so
+        #    the same content comes back with different whole-file bytes. The
+        #    entry table and the stored order must be invariant under that,
+        #    or verify.sh's verdict for a signed release is worthless.
+        relaid = os.path.join(tmp, "relaid.apk")
+        with zipfile.ZipFile(unsigned) as src, zipfile.ZipFile(relaid, "w") as dst:
+            for info in src.infolist():
+                out_info = zipfile.ZipInfo(info.filename, date_time=info.date_time)
+                out_info.compress_type = info.compress_type
+                # Alignment padding, exactly where apksigner puts it.
+                out_info.extra = b"\x00" * 24
+                dst.writestr(out_info, src.read(info.filename))
+        if open(relaid, "rb").read() != original:
+            print("[ok]   re-layout changes the whole-file bytes (fixture is realistic)")
+        else:
+            print("[FAIL] re-layout fixture did not change the file")
+            failures += 1
+        if manifest(relaid) == manifest(unsigned) and stored_order(relaid) == stored_order(
+            unsigned
+        ):
+            print("[ok]   entry table and stored order are invariant under re-layout")
+        else:
+            print("[FAIL] re-layout changed the entry table or the stored order")
+            failures += 1
+        # ...and the entry table must still catch a tampered entry in a
+        # re-laid-out archive, or the invariance above would just be blindness.
+        if manifest(relaid) != manifest(tampered_out):
+            print("[ok]   a re-laid-out archive with tampered content still differs")
+        else:
+            print("[FAIL] re-layout invariance hid a tampered entry")
+            failures += 1
+
+        # 6. Garbage in must not silently produce garbage out.
         junk = os.path.join(tmp, "junk.bin")
         with open(junk, "wb") as fh:
             fh.write(b"not a zip at all")
@@ -373,7 +436,7 @@ def self_test() -> int:
 
     print()
     if failures == 0:
-        print("SELF-TEST PASSED (9/9)")
+        print("SELF-TEST PASSED (12/12)")
         return 0
     print(f"SELF-TEST FAILED ({failures} check(s))")
     return 1
@@ -387,6 +450,16 @@ def main(argv: list[str]) -> int:
         "--manifest",
         action="store_true",
         help="print a canonical, signature-free entry table instead of stripping",
+    )
+    ap.add_argument(
+        "--order",
+        action="store_true",
+        help="print entry names in stored order (signature entries removed)",
+    )
+    ap.add_argument(
+        "--is-signed",
+        action="store_true",
+        help="exit 0 if the APK carries an APK Signing Block, 1 if not",
     )
     ap.add_argument(
         "--drop-v1",
@@ -405,6 +478,12 @@ def main(argv: list[str]) -> int:
         if args.manifest:
             sys.stdout.write(manifest(args.apk))
             return 0
+        if args.order:
+            sys.stdout.write(stored_order(args.apk))
+            return 0
+        if args.is_signed:
+            with open(args.apk, "rb") as fh:
+                return 0 if find_signing_block(fh.read()) is not None else 1
         if not args.output:
             ap.error("need -o/--output")
         report = strip(args.apk, args.output, drop_v1=args.drop_v1)

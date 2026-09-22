@@ -178,9 +178,20 @@ class Checker:
         )
         self.expect_true(
             "the CI workflow derives SOURCE_DATE_EPOCH via the shared script",
-            "tools/rb/source-date-epoch.sh --export" in wf_code,
+            "tools/rb/source-date-epoch.sh" in wf_code,
             "reproducible-build.yml does not call tools/rb/source-date-epoch.sh; "
             "a second derivation would let CI and a local verifier disagree",
+        )
+        # `$GITHUB_ENV` parses bare `NAME=value` lines. Piping the script's
+        # `--export` output (which prints `export NAME=value`, for `eval`)
+        # into it makes GitHub read the key as `export SOURCE_DATE_EPOCH` and
+        # silently drop the variable -- the build then falls back to CMake's
+        # constant and nothing says so.
+        self.expect_true(
+            "the CI workflow does not pipe --export into $GITHUB_ENV",
+            "source-date-epoch.sh --export >> " not in wf_code,
+            "`--export` prints `export NAME=value`, which $GITHUB_ENV cannot "
+            "parse; write `SOURCE_DATE_EPOCH=$(...)` instead",
         )
 
     def check_submodule_pins(self) -> None:
@@ -304,6 +315,28 @@ class Checker:
                 f"{rel} is not a native intermediate dir",
             )
 
+    def check_known_irreproducible(self) -> None:
+        """The manifest is allowed to admit open defects, but not vaguely.
+
+        Every entry must name the artifact, the bead tracking it and its
+        status, so "we know about this one" can never become a shrug that
+        outlives the bug.
+        """
+        for entry in self.m.get("known_irreproducible") or []:
+            name = entry.get("artifact", "<unnamed>")
+            self.expect_true(
+                f"known_irreproducible[{name}] is fully specified",
+                all(entry.get(k) for k in ("artifact", "bead", "status", "symptom")),
+                "needs artifact, bead, status and symptom; got "
+                f"{sorted(entry)}",
+            )
+            self.expect_true(
+                f"known_irreproducible[{name}] is still open",
+                entry.get("status") == "open",
+                f"status is {entry.get('status')!r}; a closed defect should be "
+                "deleted from the manifest, not left describing a fixed build",
+            )
+
     def run(self) -> int:
         print(f"manifest-check: {os.path.relpath(self.manifest_path, self.repo)}")
         print(f"schema: {self.m.get('schema')}")
@@ -317,6 +350,7 @@ class Checker:
         self.check_submodule_pins()
         self.check_tarballs()
         self.check_determinism_settings()
+        self.check_known_irreproducible()
         self.check_artifact()
         print()
         if self.failures:

@@ -37,8 +37,11 @@
 #      --print-certs`) so you can check them against docs/SIGNING.md -- that
 #      is a SEPARATE claim from reproducibility and is reported, never merged
 #      into the verdict.
-#   7. Compares `unzip -l` listings, then hands the two APKs to
-#      tools/ci/compare-apk-entries.sh, whose sha256 verdict is the contract.
+#   7. Compares them. The verdict is the entry table plus the stored order;
+#      the whole-file sha256 is the contract only when the published APK was
+#      UNSIGNED, because apksigner re-lays-out the archive (see the block
+#      above compare_stage for the measurement). The detailed
+#      tools/ci/compare-apk-entries.sh report is printed either way.
 #
 # Exit status: 0 = reproduced, 1 = did not reproduce, 2 = could not run the
 # check at all (bad usage, clone/build failure). "Could not check" is never
@@ -151,7 +154,10 @@ check_toolchain() {
         deviation "NDK $want_ndk not found under \$ANDROID_HOME/ndk (AGP may download it)"
     fi
 
-    if [ -x "$REPO_ROOT/tools/rb/manifest-check.py" ] && [ -d "$REPO_ROOT/.git" ]; then
+    # `-e`, not `-d`: in a git WORKTREE `.git` is a file pointing at the real
+    # git dir, and a `-d` test silently skipped this check there -- exactly
+    # the environment the reproducibility work is done in.
+    if [ -x "$REPO_ROOT/tools/rb/manifest-check.py" ] && [ -e "$REPO_ROOT/.git" ]; then
         if python3 "$REPO_ROOT/tools/rb/manifest-check.py" > /tmp/verify-manifest.log 2>&1; then
             log "  manifest     : agrees with the tree"
         else
@@ -174,14 +180,44 @@ find_apksigner() {
 #
 # Factored out so the self-test can drive the exact code path that produces
 # the verdict, without a clone or a 90-minute build in between.
+#
+# WHAT COUNTS AS A MATCH depends on whether the published APK was signed, and
+# getting this wrong in either direction is bad:
+#
+#   * Unsigned published APK -> the whole-file sha256 IS the contract. Nothing
+#     has touched the archive, so anything weaker would be weaker than the
+#     check CI already runs between its two runners.
+#
+#   * Signed published APK -> the whole-file sha256 CANNOT be the contract,
+#     because apksigner does not merely append its signing block: it rewrites
+#     the archive. Measured with build-tools 37.0.0 and this project's own
+#     signing options (tools/release/sign.sh: v1 off, v2+v3 on), signing a
+#     98 056 573-byte APK and stripping the block again gives 98 058 597
+#     bytes -- 2 024 bytes of alignment padding in local header extra fields
+#     -- while all 730 entries keep their order, method, sizes, mtimes and
+#     content hashes. `--alignment-preserved true` does not avoid it. So the
+#     verdict is the ENTRY TABLE plus the STORED ORDER, and the whole-file
+#     sha256 is reported with that explanation rather than quietly dropped.
+#
+# The entry table (strip-signature.py --manifest) carries name, compression
+# method, CRC, uncompressed size, compressed size and content sha256 per
+# entry; the stored order is compared unsorted, because a reordering changes
+# the bytes and is a real failure. Between them, no entry can be substituted,
+# recompressed, added, removed or moved without failing.
 compare_stage() {
     local released="$1" rebuilt="$2" label="${3:-verify}"
-    local rc=0 stripped
+    local rc=0 stripped signed=0
     stripped="$(dirname "$rebuilt")/released-stripped.apk"
 
     hr
     log "Stripping signatures from the published APK"
     hr
+    if python3 "$SCRIPT_DIR/strip-signature.py" --is-signed "$released" 2> /dev/null; then
+        signed=1
+        log "  the published APK carries an APK Signing Block"
+    else
+        log "  the published APK has no APK Signing Block"
+    fi
     if ! python3 "$SCRIPT_DIR/strip-signature.py" "$released" -o "$stripped"; then
         log "[FAIL] could not strip signatures from $released"
         return 2
@@ -189,30 +225,26 @@ compare_stage() {
     log ""
 
     hr
-    log "Entry listings (unzip -l)"
+    log "Entry table and stored order (verdict-bearing)"
     hr
     local w
     w=$(mktemp -d) || return 2
-    # `unzip -l` prints `Length Date Time Name` rows between an Archive:/header
-    # preamble and a `---- / N files` trailer. Rows are selected by "$1 is a
-    # bare integer" rather than by line number, so neither the preamble, the
-    # separator rules nor the totals line can leak in; the name is rebuilt
-    # from $4..$NF so an entry name containing a space is not truncated.
-    listing() {
-        unzip -l "$1" | awk '
-            $1 ~ /^[0-9]+$/ && NF >= 4 {
-                name = $4
-                for (i = 5; i <= NF; i++) name = name " " $i
-                print $1, name
-            }' | LC_ALL=C sort
-    }
-    listing "$stripped" > "$w/released.txt"
-    listing "$rebuilt" > "$w/rebuilt.txt"
-    if diff -u "$w/released.txt" "$w/rebuilt.txt" > "$w/listing.diff"; then
-        log "[ok]   $(wc -l < "$w/released.txt" | tr -d ' ') entries, same names and uncompressed sizes"
+    python3 "$SCRIPT_DIR/strip-signature.py" --manifest "$stripped" > "$w/man-a.txt" 2> /dev/null
+    python3 "$SCRIPT_DIR/strip-signature.py" --manifest "$rebuilt" > "$w/man-b.txt" 2> /dev/null
+    if diff -u "$w/man-a.txt" "$w/man-b.txt" > "$w/man.diff"; then
+        log "[ok]   $(wc -l < "$w/man-a.txt" | tr -d ' ') entries identical (name, method, crc, sizes, sha256)"
     else
-        log "[FAIL] entry listings differ:"
-        sed 's/^/       /' "$w/listing.diff"
+        log "[FAIL] the entry table differs:"
+        sed 's/^/       /' "$w/man.diff"
+        rc=1
+    fi
+    python3 "$SCRIPT_DIR/strip-signature.py" --order "$stripped" > "$w/ord-a.txt" 2> /dev/null
+    python3 "$SCRIPT_DIR/strip-signature.py" --order "$rebuilt" > "$w/ord-b.txt" 2> /dev/null
+    if diff -u "$w/ord-a.txt" "$w/ord-b.txt" > "$w/ord.diff"; then
+        log "[ok]   stored order identical"
+    else
+        log "[FAIL] stored order differs (this changes the archive bytes):"
+        sed 's/^/       /' "$w/ord.diff"
         rc=1
     fi
     log ""
@@ -223,21 +255,38 @@ compare_stage() {
     local sa sb
     sa=$(sha256_of "$stripped")
     sb=$(sha256_of "$rebuilt")
-    log "  published (signatures stripped) : $sa"
-    log "  rebuilt from source             : $sb"
+    log "  published (signing block removed) : $sa"
+    log "  rebuilt from source               : $sb"
     if [ "$sa" = "$sb" ]; then
-        log "[ok]   sha256 identical"
+        log "[ok]   whole-file sha256 identical"
+    elif [ "$signed" -eq 1 ]; then
+        log "[note] whole-file sha256 differs, which is EXPECTED for a signed"
+        log "       release: apksigner re-lays-out the archive (alignment"
+        log "       padding in local header extra fields), so these bytes can"
+        log "       never match a freshly built unsigned APK. The verdict is"
+        log "       the entry table and the stored order above. See"
+        log "       tools/rb/strip-signature.py's header for the measurement."
     else
-        log "[FAIL] sha256 differs"
+        log "[FAIL] whole-file sha256 differs, and the published APK was NOT"
+        log "       signed -- nothing has touched the archive, so these bytes"
+        log "       should have matched exactly."
         rc=1
     fi
     log ""
 
     hr
-    log "Entry-by-entry comparison"
+    log "Detailed entry-by-entry report"
     hr
-    if ! "$REPO_ROOT/tools/ci/compare-apk-entries.sh" "$stripped" "$rebuilt" "$label"; then
-        rc=1
+    # Informational. Its 4th check is the whole-file sha256, which is not the
+    # contract for a signed input, so its exit status is deliberately NOT
+    # folded into `rc` -- the entry table above already decided.
+    "$REPO_ROOT/tools/ci/compare-apk-entries.sh" "$stripped" "$rebuilt" "$label" || true
+    if [ "$signed" -eq 1 ]; then
+        log ""
+        log "  ^ that report's own RESULT line is the whole-file sha256, which"
+        log "    a signed release can never satisfy (see the note above). It is"
+        log "    printed for its per-entry detail; this script's verdict is the"
+        log "    RESULT line at the very bottom."
     fi
 
     if [ "$rc" -ne 0 ]; then
@@ -431,6 +480,24 @@ def sign(src, dst, payload=b"z" * 700):
 
 sign(os.path.join(w, "honest-unsigned.apk"), os.path.join(w, "honest-signed.apk"))
 sign(os.path.join(w, "tampered-unsigned.apk"), os.path.join(w, "tampered-signed.apk"))
+
+# The realistic signed case: apksigner does not just append its block, it
+# re-lays-out the archive (alignment padding in local header extra fields),
+# so a real signed release can NEVER strip back to the rebuilt APK's bytes.
+# These two fixtures are what stops verify.sh regressing to a whole-file
+# sha256 verdict that would fail on every genuine release.
+def relayout(src, dst):
+    with zipfile.ZipFile(src) as s, zipfile.ZipFile(dst, "w") as d:
+        for info in s.infolist():
+            out = zipfile.ZipInfo(info.filename, date_time=info.date_time)
+            out.compress_type = info.compress_type
+            out.extra = b"\x00" * 24
+            d.writestr(out, s.read(info.filename))
+
+relayout(os.path.join(w, "honest-unsigned.apk"), os.path.join(w, "honest-relaid.apk"))
+relayout(os.path.join(w, "tampered-unsigned.apk"), os.path.join(w, "tampered-relaid.apk"))
+sign(os.path.join(w, "honest-relaid.apk"), os.path.join(w, "honest-relaid-signed.apk"))
+sign(os.path.join(w, "tampered-relaid.apk"), os.path.join(w, "tampered-relaid-signed.apk"))
 PY
 
     # Positive case: a signed release built from the same source reproduces.
@@ -452,6 +519,45 @@ PY
         log "[ok]   self-test: a tampered classes.dex is reported as a mismatch and named"
     else
         log "[FAIL] self-test: a tampered release was NOT caught (rc=$rc)"
+        printf '%s\n' "$out" | sed 's/^/       /'
+        failures=$((failures + 1))
+    fi
+
+    # The realistic signed case. apksigner re-lays-out the archive, so the
+    # stripped release can never be byte-identical to the rebuild. An honest
+    # release must still verify; if this ever fails, the verdict has
+    # regressed to a whole-file sha256 that no real release can satisfy.
+    out=$(compare_stage "$w/honest-relaid-signed.apk" "$w/rebuilt.apk" "self-test/relaid-honest" 2>&1)
+    rc=$?
+    if [ "$rc" -eq 0 ] && printf '%s' "$out" | grep -q 'EXPECTED for a signed'; then
+        log "[ok]   self-test: a re-laid-out signed release verifies, with the sha256 explained"
+    else
+        log "[FAIL] self-test: a re-laid-out signed release did not verify (rc=$rc)"
+        printf '%s\n' "$out" | sed 's/^/       /'
+        failures=$((failures + 1))
+    fi
+
+    # ...and that tolerance must not be blindness: the same re-layout with a
+    # tampered entry must still be caught.
+    out=$(compare_stage "$w/tampered-relaid-signed.apk" "$w/rebuilt.apk" "self-test/relaid-tampered" 2>&1)
+    rc=$?
+    if [ "$rc" -eq 1 ] && printf '%s' "$out" | grep -q 'classes.dex'; then
+        log "[ok]   self-test: a re-laid-out signed release with tampered content is caught"
+    else
+        log "[FAIL] self-test: re-layout tolerance hid a tampered entry (rc=$rc)"
+        printf '%s\n' "$out" | sed 's/^/       /'
+        failures=$((failures + 1))
+    fi
+
+    # An UNSIGNED published APK must still be held to the whole-file sha256:
+    # nothing touched its archive, so anything less would be a weaker check
+    # than CI's.
+    out=$(compare_stage "$w/honest-relaid.apk" "$w/rebuilt.apk" "self-test/unsigned-relaid" 2>&1)
+    rc=$?
+    if [ "$rc" -eq 1 ] && printf '%s' "$out" | grep -q 'was NOT'; then
+        log "[ok]   self-test: an unsigned APK is still held to the whole-file sha256"
+    else
+        log "[FAIL] self-test: an unsigned APK escaped the whole-file sha256 check (rc=$rc)"
         printf '%s\n' "$out" | sed 's/^/       /'
         failures=$((failures + 1))
     fi
@@ -504,7 +610,7 @@ PY
     rm -rf "$w"
     log ""
     if [ "$failures" -eq 0 ]; then
-        log "SELF-TEST PASSED (5/5)"
+        log "SELF-TEST PASSED (8/8)"
         return 0
     fi
     log "SELF-TEST FAILED ($failures check(s))"

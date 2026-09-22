@@ -194,9 +194,17 @@ jobs:
       # produced a different value, and nobody rebuilding locally could ever
       # match it. tools/rb/source-date-epoch.sh derives it from the commit's
       # committer date, which every checkout of that commit agrees on.
+      #
+      # `$GITHUB_ENV` takes bare `NAME=value` lines, so the script's own
+      # `--export` form (which prints `export NAME=value`, for `eval`) must
+      # NOT be piped into it -- GitHub would read the key as
+      # `export SOURCE_DATE_EPOCH` and drop it.
       - name: Derive SOURCE_DATE_EPOCH from the commit
         working-directory: ${{ matrix.path }}
-        run: ./tools/rb/source-date-epoch.sh --export >> "$GITHUB_ENV"
+        run: |
+          epoch="$(./tools/rb/source-date-epoch.sh HEAD)"
+          echo "SOURCE_DATE_EPOCH=${epoch}" >> "$GITHUB_ENV"
+          echo "SOURCE_DATE_EPOCH=${epoch}"
 
       # `--no-build-cache` is load-bearing, not a speed knob: Gradle's build
       # cache is keyed on task inputs, so without it a build can restore
@@ -349,6 +357,21 @@ jobs:
             || [ "${{ steps.sums.outcome }}" = "failure" ]; then
             echo "::error::The two runners produced different APKs for ${GITHUB_SHA}."
             echo "::error::Download the 'apk-diff' artifact for the diffoscope report."
+            # Read this before treating a red run as an alarm. skein-ylux:
+            # libskein_llama.so is intermittently nondeterministic (measured
+            # at roughly 1 build in 7), so a failure whose ONLY differing
+            # entry is that library is the known flake, not a compromise.
+            # Any other differing entry is real. Recorded in
+            # reproducible-builds.yml under `known_irreproducible`; remove
+            # this note when that bead closes.
+            # compare-apk-entries.sh prints two 9-space-indented "A <hash>" /
+            # "B <hash>" lines per differing entry, so exactly two of them
+            # means exactly one entry differed. A membership or ordering
+            # failure produces none of those lines and so never matches here.
+            hashlines="$(grep -c '^         [AB] [0-9a-f]' /tmp/rb-compare.log || true)"
+            if [ "$hashlines" = "2" ] && grep -q 'libskein_llama\.so' /tmp/rb-compare.log; then
+              echo "::warning::The only differing entry is libskein_llama.so -- this is the known skein-ylux flake, not a compromise. Re-run."
+            fi
             exit 1
           fi
           echo "Both runners produced a byte-identical app-foss-release-unsigned.apk."
