@@ -220,6 +220,24 @@ outputs were copied, not because they were recomputed — which tells you
 nothing about determinism. `.github/workflows/reproducible-build.yml` passes
 this flag for the same reason.
 
+### `.cxx` and `./gradlew clean`
+
+`core/vault` and `inference-service` both configure `externalNativeBuild`
+(CMake/ninja). The intermediates for that build — including ninja's own
+build graph, which only recompiles a translation unit whose *file contents*
+changed — land in `<module>/.cxx/`, outside `build/`. AGP's own `clean` task
+does not touch it, by design: reusing that configuration across a clean
+keeps IDE syncs and rebuilds fast. That is a reasonable tradeoff in general,
+but it is a trap for exactly this recipe: `SOURCE_DATE_EPOCH` (or any other
+environment-only input) changes nothing ninja looks at, so re-running
+`./gradlew clean :app:assembleFossRelease` in a tree you have already built
+would silently relink the *previous* build's objects into a stale `.so`
+instead of recompiling — a confidently wrong reproducibility result, not a
+build failure (skein-hwtn). `core/vault/build.gradle.kts` and
+`inference-service/build.gradle.kts` extend their `clean` tasks to also
+delete `.cxx`, so the recipe above is safe to re-run in an existing
+checkout and not just a fresh clone.
+
 ### Comparing two APKs
 
 `sha256sum` on the whole file is the contract, but when it fails it tells
