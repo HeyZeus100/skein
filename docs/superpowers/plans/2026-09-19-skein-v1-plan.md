@@ -3159,9 +3159,11 @@ deps: E4.I4, E0.I8
 **Description:** Spec §6: effective context cap 16K (or the value in `MEASUREMENTS.md` `context_length_cap`). `ContextBudget(engine, config)` computes `TokenBudget` for `PromptAssembler` (§4.3): `contextLength − reserveForAnswer − systemTokens − safetyMargin(128)`, splitting the remainder as `maxRetrievedTokens = min(3072, 40 %)` and the rest for history. Token counts come from `IInferenceService.tokenCount` with an LRU cache keyed by content hash so re-counting history each turn is cheap.
 
 **Acceptance criteria:**
-- [ ] Unit tests: with `contextLength=16384`, `maxTokens=1024`, system 200 tokens → history budget 11 976 and retrieved 3 072 (arithmetic pinned)
+- [ ] Unit tests: with `contextLength=16384`, `maxTokens=1024`, system 200 tokens → history budget 11 960 and retrieved 3 072 (arithmetic pinned)
 - [ ] Cache hit ratio ≥ 90 % on a 20-turn simulated conversation (counts only new turns)
 - [ ] `PromptAssembler` (`E5.I15`) drops oldest turns first until `estimatedTokens ≤ budget`; test with 50 turns
+
+**Coordinator decision, 2026-09-21 (`skein-4c7`):** the AC above originally pinned "history budget 11 976"; that was a typo. Working the documented formula (`contextLength − reserveForAnswer − systemTokens − safetyMargin(128)`, then `maxRetrievedTokens = min(3072, 40 %)` of the remainder) with this AC's own inputs gives 16384 − 1024 − 200 − 128 = 15032, retrieved = min(3072, 40 % × 15032) = 3072, history = 15032 − 3072 = **11 960** — not 11 976, which is unreachable under this formula for any regrouping of the same four inputs. The documented formula and `safetyMargin = 128` win; the AC text is corrected to 11 960 above.
 
 **Files:**
 - Create: `core/inference/src/main/kotlin/us/aherrera/skein/inference/ContextBudget.kt`, `core/inference/src/test/kotlin/.../ContextBudgetTest.kt`
