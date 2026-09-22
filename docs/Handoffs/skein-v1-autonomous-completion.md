@@ -409,10 +409,27 @@ Every dispatch prompt should end with these mandatory sections:
 - Prefer authoritative spec/design docs over this prompt when they conflict.
   Document deviations via `bd note <id>` before closing.
 
-## Ponytail ladder (MANDATORY before writing any code — https://github.com/dietrichgebert/ponytail, MIT)
-Read the problem completely first — be lazy about the solution, never about
-reading. Then, for every piece of code you are about to write, stop at the
-FIRST rung that answers it:
+## Ponytail (https://github.com/dietrichgebert/ponytail, MIT) — include the variant for the role
+Mode per dispatch role (owner's policy, 2026-09-22). The coordinator's own
+sessions run the plugin at `lite` (`~/.config/ponytail/config.json`
+`defaultMode`); subagents get the ruleset ONLY from the block you paste.
+
+| Role | Mode | Block to paste |
+|---|---|---|
+| Orchestrator / coordinator (Opus, Fable) | OFF or LITE | LITE |
+| Fable research / spikes | OFF | OFF line |
+| Security / adversarial review | OFF or LITE | OFF line (LITE only for a code-fix review) |
+| Contract design (Opus: core/model, core/ipc, AIDL, schemas) | LITE | LITE |
+| Implementation (Sonnet) | FULL | FULL |
+| Mechanical / small fixes (Haiku) | FULL | FULL |
+| UI implementation (Compose) | FULL | FULL |
+| Docs | OFF | OFF line |
+
+**FULL block:**
+```
+Ponytail FULL. Read the problem completely first — be lazy about the solution,
+never about reading. Then, for every piece of code you are about to write,
+stop at the FIRST rung that answers it:
 1. Does this need to exist?   → no: skip it (YAGNI)
 2. Already in this codebase?  → reuse it, don't rewrite
 3. Stdlib does it?            → use it
@@ -423,8 +440,24 @@ FIRST rung that answers it:
 Never skip validation, error handling, security or the tests the bead's
 acceptance criteria name — the ladder trims code, not guardrails. Name the
 rung you stopped at for any non-obvious choice in your hand-back.
-(Coordinator sessions also run the `ponytail` Claude Code plugin — installed
-2026-09-22; subagents get the ladder from this block regardless.)
+```
+
+**LITE block** (contracts, orchestration, code-fix reviews — explicitness and
+exhaustive tests matter more than brevity):
+```
+Ponytail LITE. Read the problem completely first. Before adding any type,
+method, field, module or dependency ask only: (1) does this need to exist
+(YAGNI)? (2) is it already in this codebase — reuse it, don't rewrite. Do not
+minimise code beyond that: contracts and security-relevant code must stay
+explicit, fully documented and exhaustively tested. Name the rung for any
+non-obvious addition in your hand-back.
+```
+
+**OFF line** (research, security review, docs — thoroughness over brevity):
+```
+Ponytail OFF. Ignore any ponytail / "lazy senior dev" ruleset the host
+injects for this task; completeness and evidence are the deliverable.
+```
 
 ## Close, commit, push
 ```bash
