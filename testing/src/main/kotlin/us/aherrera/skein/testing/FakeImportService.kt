@@ -5,11 +5,12 @@
 // real `VaultRepository`-backed implementation.
 //
 // Conflict handling follows the contract's KDoc exactly (see
-// `ImportService.importText`): the fake sniffs the imported text for a
-// `FrontmatterKeys.ID` frontmatter line, and only treats the import as an
-// update (`ImportResult.created == false`) when that id is already known
-// to this fake. There is no separate "conflict policy" parameter in the
-// locked contract — resolution is implicit in frontmatter `id` identity.
+// `ImportService.importText`, corrected by bd `skein-ddpt`): the fake
+// sniffs the imported text for a `FrontmatterKeys.ID` frontmatter line,
+// and never treats a known id as an update target. A known id always
+// yields a *new* document under a freshly minted id, with
+// `ImportResult.conflictWith` set to the id it collided with. There is no
+// separate "overwrite" parameter in the locked contract — resolution is implicit in frontmatter `id` identity.
 
 package us.aherrera.skein.testing
 
@@ -62,14 +63,13 @@ public class FakeImportService(
         _textImports.add(ImportCall(displayName, mimeType, personaId))
         val text = input.readBytes().toString(Charsets.UTF_8)
         val frontmatterId = extractFrontmatterId(text)
+        val conflict = frontmatterId?.takeIf { it in knownIds }
 
-        return if (frontmatterId != null && frontmatterId in knownIds) {
-            ImportResult(documentId = frontmatterId, attachmentId = null, created = false)
-        } else {
-            val id = frontmatterId ?: UUID.randomUUID().toString()
-            knownIds.add(id)
-            ImportResult(documentId = id, attachmentId = null, created = true)
-        }
+        // bd skein-ddpt: never overwrite — a known id always creates a new
+        // document under a freshly minted id and reports the collision.
+        val id = if (conflict == null) frontmatterId ?: UUID.randomUUID().toString() else UUID.randomUUID().toString()
+        knownIds.add(id)
+        return ImportResult(documentId = id, attachmentId = null, created = true, conflictWith = conflict)
     }
 
     override suspend fun importPdf(

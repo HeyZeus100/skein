@@ -48,8 +48,11 @@ public class ImportTextTest {
     // ------------------------------------------------------------------
 
     @Test
-    public fun `markdown exported by ExportServiceImpl round-trips through importText as an in-place update`() =
+    public fun `re-importing markdown exported by ExportServiceImpl creates a new document and reports the conflict`() =
         runTest {
+            // bd skein-ddpt: a file carrying an existing document's id in its
+            // frontmatter (e.g. one round-tripped through export, or a
+            // crafted/shared file) must never silently overwrite it.
             var clock = 1_000L
             val repo = InMemoryVaultRepository(clock = { clock })
             val original =
@@ -76,15 +79,20 @@ public class ImportTextTest {
                     personaId = null,
                 )
 
-            assertThat(result).isEqualTo(ImportResult(documentId = original.id, attachmentId = null, created = false))
-            val updated = repo.getDocument(original.id)!!
-            assertThat(updated.createdAt).isEqualTo(1_000L)
-            assertThat(updated.updatedAt).isEqualTo(2_000L)
-            assertThat(updated.title).isEqualTo("Round Trip")
-            assertThat(updated.bodyMd).isEqualTo(original.bodyMd)
-            assertThat(updated.frontmatter[FrontmatterKeys.ID]).isEqualTo(JsonPrimitive(original.id))
-            assertThat(updated.frontmatter[FrontmatterKeys.TAGS]).isEqualTo(original.frontmatter[FrontmatterKeys.TAGS])
-            assertThat(updated.frontmatter[FrontmatterKeys.KIND]).isEqualTo(JsonPrimitive("note"))
+            assertThat(result.created).isTrue()
+            assertThat(result.documentId).isNotEqualTo(original.id)
+            assertThat(result.conflictWith).isEqualTo(original.id)
+
+            val untouched = repo.getDocument(original.id)!!
+            assertThat(untouched.createdAt).isEqualTo(1_000L)
+            assertThat(untouched.updatedAt).isEqualTo(1_000L)
+            assertThat(untouched.bodyMd).isEqualTo(original.bodyMd)
+
+            val created = repo.getDocument(result.documentId)!!
+            assertThat(created.title).isEqualTo("Round Trip")
+            assertThat(created.bodyMd).isEqualTo(original.bodyMd)
+            assertThat(created.frontmatter[FrontmatterKeys.ID]).isEqualTo(JsonPrimitive(created.id))
+            assertThat(created.frontmatter[FrontmatterKeys.KIND]).isEqualTo(JsonPrimitive("note"))
         }
 
     @Test
@@ -110,7 +118,7 @@ public class ImportTextTest {
         }
 
     @Test
-    public fun `re-importing a known id twice keeps one document and preserves createdAt`() =
+    public fun `re-importing a known id twice creates a second document and preserves the original`() =
         runTest {
             var clock = 10L
             val repo = InMemoryVaultRepository(clock = { clock })
@@ -122,29 +130,78 @@ public class ImportTextTest {
             val second = service.importText("note.md", "text/markdown", text.replace("version one", "version two"))
 
             assertThat(first.created).isTrue()
-            assertThat(second.created).isFalse()
-            assertThat(second.documentId).isEqualTo(first.documentId)
-            val doc = repo.getDocument(first.documentId)!!
-            assertThat(doc.createdAt).isEqualTo(10L)
-            assertThat(doc.updatedAt).isEqualTo(20L)
-            assertThat(doc.bodyMd).isEqualTo("version two")
-            assertThat(repo.searchTitles("", limit = 100)).hasSize(1)
+            assertThat(second.created).isTrue()
+            assertThat(second.documentId).isNotEqualTo(first.documentId)
+            assertThat(second.conflictWith).isEqualTo(first.documentId)
+
+            val original = repo.getDocument(first.documentId)!!
+            assertThat(original.createdAt).isEqualTo(10L)
+            assertThat(original.updatedAt).isEqualTo(10L)
+            assertThat(original.bodyMd).isEqualTo("version one")
+
+            val secondDoc = repo.getDocument(second.documentId)!!
+            assertThat(secondDoc.createdAt).isEqualTo(20L)
+            assertThat(secondDoc.bodyMd).isEqualTo("version two")
+            assertThat(repo.searchTitles("", limit = 100)).hasSize(2)
         }
 
     @Test
-    public fun `a frontmatter id that names an attachment is refused rather than overwritten`() =
+    public fun `a frontmatter id that names an attachment creates a new note and reports the conflict`() =
         runTest {
             val repo = InMemoryVaultRepository()
             val attachment = repo.createAttachment("blob", "application/octet-stream") { it.write(byteArrayOf(1)) }
             val service = ImportServiceImpl(repo, now = { fixedNow })
 
-            try {
-                service.importText("note.md", "text/markdown", "---\nid: ${attachment.id}\n---\nbody")
-                throw AssertionError("expected IllegalStateException")
-            } catch (expected: IllegalStateException) {
-                // expected: an ATTACHMENT has no Markdown body to update in place.
-            }
+            val result = service.importText("note.md", "text/markdown", "---\nid: ${attachment.id}\n---\nbody")
+
+            assertThat(result.created).isTrue()
+            assertThat(result.documentId).isNotEqualTo(attachment.id)
+            assertThat(result.conflictWith).isEqualTo(attachment.id)
             assertThat(repo.getDocument(attachment.id)!!.kind).isEqualTo(DocumentKind.ATTACHMENT)
+            assertThat(repo.getDocument(result.documentId)!!.kind).isEqualTo(DocumentKind.NOTE)
+        }
+
+    @Test
+    public fun `a frontmatter id that names a chat document is never overwritten`() =
+        runTest {
+            // bd skein-ddpt AC 2: a colliding id is refused as an update
+            // target regardless of the existing document's kind — a chat
+            // transcript must never be turned into arbitrary imported text.
+            val repo = InMemoryVaultRepository()
+            val chat =
+                repo.createDocument(
+                    NewDocument(kind = DocumentKind.CHAT, title = "Chat", bodyMd = "original transcript"),
+                )
+            val service = ImportServiceImpl(repo, now = { fixedNow })
+
+            val result = service.importText("note.md", "text/markdown", "---\nid: ${chat.id}\n---\nmalicious body")
+
+            assertThat(result.created).isTrue()
+            assertThat(result.documentId).isNotEqualTo(chat.id)
+            assertThat(result.conflictWith).isEqualTo(chat.id)
+            val untouched = repo.getDocument(chat.id)!!
+            assertThat(untouched.kind).isEqualTo(DocumentKind.CHAT)
+            assertThat(untouched.bodyMd).isEqualTo("original transcript")
+        }
+
+    @Test
+    public fun `a frontmatter id that names an aiout document is never overwritten`() =
+        runTest {
+            val repo = InMemoryVaultRepository()
+            val aiout =
+                repo.createDocument(
+                    NewDocument(kind = DocumentKind.AIOUT, title = "AI Output", bodyMd = "original output"),
+                )
+            val service = ImportServiceImpl(repo, now = { fixedNow })
+
+            val result = service.importText("note.md", "text/markdown", "---\nid: ${aiout.id}\n---\nmalicious body")
+
+            assertThat(result.created).isTrue()
+            assertThat(result.documentId).isNotEqualTo(aiout.id)
+            assertThat(result.conflictWith).isEqualTo(aiout.id)
+            val untouched = repo.getDocument(aiout.id)!!
+            assertThat(untouched.kind).isEqualTo(DocumentKind.AIOUT)
+            assertThat(untouched.bodyMd).isEqualTo("original output")
         }
 
     /**

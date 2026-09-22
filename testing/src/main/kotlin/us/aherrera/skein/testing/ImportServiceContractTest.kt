@@ -51,15 +51,17 @@ public abstract class ImportServiceContractTest {
 
             assertTrue("expected a freshly-created document", result.created)
             assertNotNull("expected a non-null documentId", result.documentId)
+            assertNull("no frontmatter id means no possible conflict", result.conflictWith)
         }
 
     // ------------------------------------------------------------------
-    // `importText`: "If the content has frontmatter with an `id` that
-    // exists, updates it (created=false)."
+    // `importText` (bd skein-ddpt): a frontmatter `id` that already names a
+    // document is never an update target — it always creates a *new*
+    // document and reports the collision via `ImportResult.conflictWith`.
     // ------------------------------------------------------------------
 
     @Test
-    public fun importText_with_a_known_frontmatter_id_updates_instead_of_creating(): Unit =
+    public fun importText_with_a_known_frontmatter_id_creates_a_new_document_and_reports_the_conflict(): Unit =
         runTest {
             val service = service()
             val content =
@@ -73,10 +75,20 @@ public abstract class ImportServiceContractTest {
             val first = service.importText("note.md", "text/markdown", stream(content), personaId = null)
             assertTrue("first import of a not-yet-seen id must create", first.created)
             assertEquals("fixed-id-123", first.documentId)
+            assertNull("first import of a not-yet-seen id has no conflict", first.conflictWith)
 
             val second = service.importText("note.md", "text/markdown", stream(content), personaId = null)
-            assertTrue("re-importing a known frontmatter id must update, not create", !second.created)
-            assertEquals("update must resolve to the same document", first.documentId, second.documentId)
+            assertTrue("re-importing a known frontmatter id must still create, never update", second.created)
+            assertNotEquals(
+                "a colliding import must never resolve to the existing document",
+                first.documentId,
+                second.documentId,
+            )
+            assertEquals(
+                "the collision must be reported so the caller can surface it",
+                first.documentId,
+                second.conflictWith,
+            )
         }
 
     // ------------------------------------------------------------------

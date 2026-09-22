@@ -43,25 +43,29 @@
 //          parsed for code — a YAML file's own `---` document markers are
 //          content, not metadata.
 //       4. Prose (Markdown / plain text): split frontmatter from body with
-//          `Frontmatter.parse`. If the frontmatter carries an `id` that
-//          already exists in the vault, update that document in place
-//          (`ImportResult.created = false`; the repository preserves
-//          `createdAt`). Otherwise create a NOTE — under the frontmatter
-//          `id` if there was one, so a file exported from another Skein
-//          vault keeps its identity — titled from the frontmatter `title`,
-//          else the first `# heading`, else the file name without its
-//          extension.
+//          `Frontmatter.parse`. `importText` never overwrites an existing
+//          document (bd `skein-ddpt`, P2: an imported/shared file's
+//          frontmatter `id` is not proof the user intends to replace
+//          whatever it names — ids are visible in every export and every
+//          wikilink-resolved edge). If the frontmatter carries an `id`
+//          that already names a document (any `DocumentKind`), a *new*
+//          NOTE is created under a freshly minted id and
+//          `ImportResult.conflictWith` is set to the existing document's
+//          id. Otherwise create a NOTE — under the frontmatter `id` if
+//          there was one and it collides with nothing, so a file exported
+//          from another Skein vault keeps its identity — titled from the
+//          frontmatter `title`, else the first `# heading`, else the file
+//          name without its extension.
 //   - Malformed frontmatter (an unterminated header) is not an error: the
 //     locked `ImportResult` has no failure variant, and `Frontmatter.parse`
 //     returns empty frontmatter + the whole text as the body in that case,
 //     so the file simply imports as a plain note (see `ImportTextTest`).
-//   - There is no separate conflict policy in the locked contract (see
-//     `FakeImportService`'s header): resolution is implicit in frontmatter
-//     `id` identity, exactly as `ImportServiceContractTest` exercises it. The
-//     only refusal is a frontmatter `id` that names an ATTACHMENT, which
-//     has no Markdown body to overwrite. `personaId` applies to created
-//     documents only — `VaultRepository` has no operation for reassigning
-//     an existing document's persona, so an in-place update leaves it as is.
+//   - Conflict policy (bd `skein-ddpt`): resolution is "always create,
+//     never update", uniformly for every `DocumentKind` a colliding id
+//     might name (NOTE, CHAT, AIOUT, or ATTACHMENT) — there is no special
+//     case for ATTACHMENT any more, since nothing is ever updated in
+//     place. `FakeImportService` mirrors this. `personaId` applies to the
+//     created document as usual.
 //   - Memory (bd `skein-ad5` AC 4): the decode pass keeps one growable
 //     buffer (pre-sized from `available()` when the stream knows its
 //     length) and hands the repository a single `String`; the title scan
@@ -256,19 +260,24 @@ public class ImportServiceImpl(
         val frontmatterId = frontmatter.string(FrontmatterKeys.ID)?.takeIf { it.isNotBlank() }
         val title = deriveTitle(frontmatter, body, displayName)
 
-        val existing = frontmatterId?.let { repository.getDocument(it) }
-        if (existing != null) {
-            check(existing.kind != DocumentKind.ATTACHMENT) {
-                "frontmatter id ${existing.id} names an ATTACHMENT, which has no Markdown body to update"
+        // bd skein-ddpt: never overwrite an existing document, regardless of
+        // its kind. A frontmatter `id` that already names one is a
+        // collision to report, not an update to perform — reuse the
+        // frontmatter id for the new document only when nothing already
+        // has it.
+        val conflict = frontmatterId?.let { repository.getDocument(it) }
+        // On a conflict, the parsed frontmatter's `id` key names the
+        // *existing* document — it must not leak into the new document's
+        // frontmatter, or `VaultRepository.createDocument`'s "no explicit
+        // id? fall back to the frontmatter's id" rule would mint the new
+        // document under the very id that just collided (`require(chosenId
+        // !in documents)` then rejects it as a duplicate).
+        val sourceFrontmatter =
+            if (conflict == null) {
+                frontmatter
+            } else {
+                JsonObject(frontmatter.filterKeys { it != FrontmatterKeys.ID })
             }
-            repository.updateBody(existing.id, title, body)
-            val updated =
-                repository.updateFrontmatter(
-                    existing.id,
-                    reconcileFrontmatter(frontmatter, existing.kind, title, existing),
-                )
-            return ImportResult(documentId = updated.id, attachmentId = null, created = false)
-        }
 
         val created =
             repository.createDocument(
@@ -277,11 +286,16 @@ public class ImportServiceImpl(
                     title = title,
                     bodyMd = body,
                     personaId = personaId,
-                    frontmatter = reconcileFrontmatter(frontmatter, DocumentKind.NOTE, title, existing = null),
-                    id = frontmatterId,
+                    frontmatter = reconcileFrontmatter(sourceFrontmatter, DocumentKind.NOTE, title, existing = null),
+                    id = if (conflict == null) frontmatterId else null,
                 ),
             )
-        return ImportResult(documentId = created.id, attachmentId = null, created = true)
+        return ImportResult(
+            documentId = created.id,
+            attachmentId = null,
+            created = true,
+            conflictWith = conflict?.id,
+        )
     }
 
     /** See the file header for which canonical keys are kept, refreshed, or filled in. */
