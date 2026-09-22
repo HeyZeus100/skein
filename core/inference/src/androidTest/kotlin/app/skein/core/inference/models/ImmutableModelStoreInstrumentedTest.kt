@@ -28,6 +28,7 @@ import app.skein.core.verify.LoadVerification
 import app.skein.core.verify.ModelFileRole
 import app.skein.core.verify.ModelVerification
 import app.skein.core.verify.ModelVerifier
+import app.skein.core.verify.VerifyBinding
 import com.google.common.truth.Truth.assertThat
 import org.junit.After
 import org.junit.Before
@@ -106,7 +107,7 @@ class ImmutableModelStoreInstrumentedTest {
         val handle = (store.open(MODEL_ID) as OpenResult.Opened).handle
         val attacker =
             object : LoadPhaseHook {
-                override fun afterPreMmapVerify(binding: ManifestBinding) {
+                override fun afterPreMmapVerify(binding: VerifyBinding) {
                     // The actor §2.2 says `0400` cannot exclude: same UID,
                     // chmod back, pwrite. On device this is the root/recovery
                     // case made reproducible.
