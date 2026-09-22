@@ -19,6 +19,10 @@ plugins {
     // declarative `plugins {}` block at least once; the imperative
     // `apply(plugin = ...)` form alone cannot look it up in `build-logic`.
     id("app.skein.guard.logging") apply false
+    // E10.I3 (skein-gzr): same reason as `app.skein.guard.logging` above —
+    // declared here so the imperative `apply(plugin = ...)` below can
+    // resolve this included-build plugin id.
+    id("app.skein.contractreport") apply false
 }
 
 subprojects {
@@ -34,6 +38,11 @@ subprojects {
 // checkDependencyGuards / checkIsolationGuards tasks (wired into their own
 // `check` individually).
 apply(plugin = "lifecycle-base")
+
+// E10.I3 (skein-gzr): registers the root-level `contractReport` task (see
+// `ContractReportPlugin`'s KDoc). Deliberately NOT wired into `check` or
+// any CI workflow — that is a follow-up bead once `skein-ddp` lands.
+apply(plugin = "app.skein.contractreport")
 
 tasks.named("check") {
     dependsOn(gradle.includedBuild("build-logic").task(":guards:test"))

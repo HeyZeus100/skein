@@ -183,3 +183,73 @@ smarter.
 `checkDependencyGuards`, `checkIsolationGuards`, `licenseAudit`. None of the
 test infrastructure above bypasses them — `:testing` is itself subject to
 `checkIsolationGuards` (pure-JVM enforcement) the same as any other module.
+
+## Contract test bases wired to real implementations (`E10.I3`)
+
+Every abstract contract suite in `:testing` (`InferenceEngineContractTest`,
+`VaultRepositoryContractTest`, `IndexStoreContractTest`,
+`RetrievalServiceContractTest`, `PromptAssemblerContractTest`,
+`PersonaServiceContractTest`, `EmbedderContractTest`,
+`ImportServiceContractTest`, `ExportServiceContractTest`) has:
+
+- a fake-backed JVM subclass in `testing/src/test` (all nine — `E10.I2`),
+- a real-implementation subclass where one has landed (`VaultRepositoryImpl`,
+  `IndexStoreImpl`, `PersonaServiceImpl` in `core/vault`'s `androidTest`;
+  `RetrievalServiceImpl` in `core/rag/src/test`; `ImportServiceImpl` in
+  `core/vault/src/test`), and
+- for the three implementations that did not exist as of `E10.I3`
+  (`LlamaCppEngine` / `E4.I4` / skein-1uw, `EmbedderServiceImpl` / `E5.I3` /
+  skein-079, `PromptAssemblerImpl` / `E5.I15` / skein-82g), an `@Ignore`d
+  placeholder subclass — named exactly what the real subclass will be
+  named (e.g. `LlamaCppEngineTest`), so the implementing agent edits this
+  same file in place rather than creating a new one.
+
+**Why the two instrumented placeholders (`LlamaCppEngineTest`,
+`EmbedderServiceImplTest`) live in `src/test`, not `src/androidTest`, even
+though their real implementations will need to be instrumented:** the
+placeholder never builds a working instance — every overridden hook is
+`TODO()` and the class is `@Ignore`d — so nothing about it needs the
+Android runtime yet. Keeping it JVM-runnable is what lets `./gradlew test`
+(no device) produce a "skipped" JUnit result for `contractReport` to
+report as pending, honoring this repo's non-negotiable against touching an
+emulator/device from an autonomous session. `PromptAssemblerImplTest`'s
+placeholder is JVM for a different, permanent reason: `PromptAssemblerImpl`
+is plain Kotlin over `core/model` types with no Android dependency at all
+(`GuardedPromptAssemblerContractTest` in `core/security/src/test` already
+proves the §7.3 + `PromptGuard` layout entirely on the JVM), so `src/test`
+is where its real contract subclass will stay too.
+
+Each placeholder's `@Ignore("pending skein-<id>")` reason is for humans
+reading the file — Gradle's JUnit XML writer drops the `@Ignore` message,
+so it is never what `contractReport` reads back. The bead id `contractReport`
+prints comes from `ContractReportTask.SUITES`, a static registry in
+`build-logic/guards` mapping each suite/implementation pair to its bead;
+see that file's KDoc for why.
+
+### `contractReport`
+
+```bash
+./gradlew test contractReport   # fresh JVM results, then the table
+./gradlew contractReport        # reports on whatever XML already exists
+```
+
+Prints (and writes to `build/reports/contract/contractReport.txt`) a
+suite × implementation × status table, one row per known suite/subclass
+pair, parsed from every module's JUnit XML under `build/test-results`:
+
+- `passed` — every discovered testcase for that class passed.
+- `failed` — at least one testcase failed or errored (always wins over a
+  stale `pendingBead`, so a placeholder that starts failing once its
+  `@Ignore` is removed is never masked as still "pending").
+- `pending <bead>` — no failures, at least one testcase skipped, and the
+  registry names a bead — the three `E10.I3` placeholders above.
+- `not run` — no JUnit XML exists for that class at all. This is expected
+  (not a failure) for every `androidTest`-only real subclass
+  (`VaultRepositoryImpl`, `IndexStoreImpl`, `PersonaServiceImpl`) in this
+  environment: `connectedAndroidTest` needs a real device/emulator, which
+  is gated behind `.github/workflows/emulator.yml`'s nightly/dispatch run,
+  not part of `check` (see "Instrumented tests" above).
+
+`contractReport` is **not** wired into `check` or any CI workflow — that is
+a follow-up bead (filed alongside `E10.I3`) once the `.github/workflows`
+owner in flight during that session lands.
