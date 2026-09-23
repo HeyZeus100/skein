@@ -556,10 +556,27 @@ public class LlamaCppEngine(
      * `IInferenceService.onSessionUnlocked` — the push without which the
      * service refuses everything (`LOCK_POLICY_INDEXING.md` §6.1 invariant I6).
      *
+     * SUSPENDS UNTIL THE SERVICE HAS APPLIED IT (bd skein-gg11.8). The AIDL
+     * method is two-way, so the transaction returns only once the isolated
+     * process's `IsolatedSessionGate` holds [epoch]; when this function
+     * returns, the next [load] or [stream] — from this coroutine or any other —
+     * carries an epoch the gate already admits. While the push was `oneway`,
+     * Binder was free to dispatch that next call on a different thread of the
+     * service's pool ahead of the still-queued push, and the first request
+     * after an unlock could be refused `SESSION_LOCKED` on a perfectly
+     * unlocked vault. Nothing in the service's handler blocks, so the cost is
+     * one round trip.
+     *
      * The engine remembers [epoch] and RE-SENDS it on every fresh bind, which
      * is what §5.3 requires and what nothing else is placed to do: `:app` holds
      * the session, but the engine holds the binding and is the only thing that
      * knows when a new one was made.
+     *
+     * A failed push is swallowed rather than raised, and that stays correct
+     * now that the call is two-way: the only way it fails is that the service
+     * died, the remembered epoch outlives the binding, and [connect] re-sends
+     * it — synchronously — on the rebind. An epoch the vault has since locked
+     * is forgotten by [onSessionLocked], so the re-send cannot resurrect it.
      *
      * Called by the vault's lock-policy observer (`skein-whg8`), never by this
      * class.
@@ -570,7 +587,16 @@ public class LlamaCppEngine(
         withContext(io) { runCatching { service.onSessionUnlocked(epoch) } }
     }
 
-    /** `IInferenceService.onSessionLocking` — the cancel budget starts (§5.2). */
+    /**
+     * `IInferenceService.onSessionLocking` — the cancel budget starts (§5.2).
+     *
+     * Still `oneway`, deliberately: `:app` sends this while tearing the session
+     * down and about to zero the master key, and a wedged or compromised
+     * isolated process must not be able to block or delay that. Refusal does
+     * not depend on the round trip — the service revokes admission as the first
+     * act of its handler, and every request independently carries its epoch.
+     * See the note above the three methods in `IInferenceService.aidl`.
+     */
     public suspend fun onSessionLocking(
         epoch: Long,
         budgetMillis: Long,
@@ -580,11 +606,13 @@ public class LlamaCppEngine(
     }
 
     /**
-     * `IInferenceService.onSessionLocked` — the budget has elapsed.
+     * `IInferenceService.onSessionLocked` — the budget has elapsed. `oneway`,
+     * for the reason [onSessionLocking] gives.
      *
      * Also FORGETS the authorized epoch, so a later rebind cannot re-authorize
      * a session the vault has locked. Without that, "the vault is locked" would
-     * last exactly until the isolated process next restarted.
+     * last exactly until the isolated process next restarted. Forgetting
+     * happens BEFORE the push, so it holds even if the push never lands.
      */
     public suspend fun onSessionLocked(epoch: Long) {
         authorizedEpoch.compareAndSet(epoch, EPOCH_NONE)
@@ -615,15 +643,24 @@ public class LlamaCppEngine(
         // behind a ten-second `load` it has nothing to do with.
         return bindGate.withLock {
             connection.get() ?: connector.connect(::onServiceDeath).also { service ->
-                connection.set(service)
                 // §5.3: ":app re-sends onUnlocked on every fresh bind". A
                 // service that has not been told an epoch refuses everything,
                 // so without this the first call after a death would fail with
                 // SESSION_LOCKED on a vault that is perfectly unlocked.
+                //
+                // PUSHED BEFORE THE BINDING IS PUBLISHED (bd skein-gg11.8).
+                // `connection.set` is what every other caller's fast path at
+                // the top of this function reads; publishing first would let a
+                // concurrent `load` pick the binding up and be dispatched
+                // while this re-send was still in flight — the very race the
+                // two-way push closes, reintroduced one line higher up. The
+                // push is two-way, so by the time the binding is visible the
+                // service's gate already holds the epoch.
                 val epoch = authorizedEpoch.get()
                 if (epoch != EPOCH_NONE) {
                     withContext(io) { runCatching { service.onSessionUnlocked(epoch) } }
                 }
+                connection.set(service)
             }
         }
     }
