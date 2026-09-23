@@ -125,6 +125,29 @@ class BinderSizeGuardTest {
         assertThat(parcelSize(request)).isLessThan(INLINE_HARD_LIMIT_BYTES)
     }
 
+    // -------------------------------------------------------------- gg11.2
+
+    @Test
+    fun aBackendReportStaysTwoOrdersOfMagnitudeInsideTheInlineBudget() {
+        val report =
+            BackendReport(
+                errorCode = ErrorCode.OK,
+                devices =
+                    List(8) {
+                        // Every registered ggml device, generously overcounted: a
+                        // real build has CPU + at most one Vulkan device.
+                        BackendDeviceParcel(type = BackendDeviceType.GPU, name = "Vulkan")
+                    },
+                cpuFeatures = listOf("NEON", "ARM_FMA", "FP16_VA", "DOTPROD", "MATMUL_INT8", "SVE", "SME", "SME2"),
+                gpuLayersOffloaded = 99,
+                nOutputsMax = 512,
+                nBatch = 512,
+                nUbatch = 512,
+            )
+
+        assertThat(parcelSize(report)).isLessThan(ONE_KIBIBYTE)
+    }
+
     private fun modelInspection(): ModelInspection =
         ModelInspection(
             errorCode = ErrorCode.OK,

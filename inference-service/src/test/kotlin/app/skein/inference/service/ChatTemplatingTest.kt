@@ -28,10 +28,80 @@
 package app.skein.inference.service
 
 import org.junit.Assert.assertEquals
+import org.junit.Assert.assertThrows
 import org.junit.Assert.assertTrue
 import org.junit.Test
 
 class ChatTemplatingTest {
+    // -------------------------------------------------- render, skein-5oi AC1
+
+    @Test
+    fun `render uses the model's own template when one applies`() {
+        val result =
+            ChatTemplating.render(FakeLlamaBackend(), MODEL, arrayOf("user"), arrayOf("hi"), addAssistantPrefix = true)
+
+        assertEquals(
+            RenderedPrompt("<|im_start|>user\nhi<|im_end|>\n<|im_start|>assistant\n", usedFallback = false),
+            result,
+        )
+    }
+
+    @Test
+    fun `render falls back to ChatML when the backend reports no template`() {
+        val noTemplate =
+            object : FakeLlamaBackend() {
+                override fun applyChatTemplate(
+                    model: Long,
+                    roles: Array<String>,
+                    contents: Array<String>,
+                    addAssistant: Boolean,
+                ): String = throw LlamaException(LlamaErrorCode.TEMPLATE_UNSUPPORTED, "no template")
+            }
+
+        val result =
+            ChatTemplating.render(noTemplate, MODEL, arrayOf("user"), arrayOf("hi"), addAssistantPrefix = true)
+
+        assertEquals(
+            RenderedPrompt("<|im_start|>user\nhi<|im_end|>\n<|im_start|>assistant\n", usedFallback = true),
+            result,
+        )
+    }
+
+    @Test
+    fun `render's fallback marks usedFallback true`() {
+        val noTemplate =
+            object : FakeLlamaBackend() {
+                override fun applyChatTemplate(
+                    model: Long,
+                    roles: Array<String>,
+                    contents: Array<String>,
+                    addAssistant: Boolean,
+                ): String = throw LlamaException(LlamaErrorCode.TEMPLATE_UNSUPPORTED, "no template")
+            }
+
+        val result = ChatTemplating.render(noTemplate, MODEL, arrayOf("user"), arrayOf("hi"), addAssistantPrefix = true)
+
+        assertTrue(result.usedFallback)
+    }
+
+    @Test
+    fun `render propagates a non-template failure instead of falling back`() {
+        val oom =
+            object : FakeLlamaBackend() {
+                override fun applyChatTemplate(
+                    model: Long,
+                    roles: Array<String>,
+                    contents: Array<String>,
+                    addAssistant: Boolean,
+                ): String = throw LlamaException(LlamaErrorCode.OUT_OF_MEMORY, "native allocation failed")
+            }
+
+        assertThrows(LlamaException::class.java) {
+            ChatTemplating.render(oom, MODEL, arrayOf("user"), arrayOf("hi"), addAssistantPrefix = true)
+        }
+    }
+
+    // ------------------------------------------------------------- segment
     @Test
     fun `a rendered prompt with no content still yields the scaffolding`() {
         val segments = ChatTemplating.segment("<|im_start|>assistant\n", emptyList())

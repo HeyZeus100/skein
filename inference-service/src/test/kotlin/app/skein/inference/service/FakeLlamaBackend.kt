@@ -174,6 +174,41 @@ open class FakeLlamaBackend : LlamaBackend {
 
     override fun secureFreeCount(): Int = secureFrees.size
 
+    /** Overridable per test; a bare compile-time-only report by default (no model, nothing offloaded). */
+    var backendReportResult: NativeBackendReport =
+        NativeBackendReport(
+            devices = emptyList(),
+            cpuFeatures = listOf("NEON"),
+            gpuLayersOffloaded = 0,
+            nOutputsMax = null,
+            nBatch = null,
+            nUbatch = null,
+        )
+
+    val backendReportCalls = mutableListOf<Triple<Long, Long, Int>>()
+
+    override fun backendReport(
+        model: Long,
+        context: Long,
+        gpuLayers: Int,
+    ): NativeBackendReport {
+        backendReportCalls += Triple(model, context, gpuLayers)
+        return backendReportResult
+    }
+
+    /** Lines this fake hands back from [drainLoadLogLines]; script before triggering a load. */
+    var scriptedLoadLogLines: List<String> = emptyList()
+    var loadLogCaptureCalls: Int = 0
+        private set
+    private var capturedLoadLogLines: List<String> = emptyList()
+
+    override fun beginLoadLogCapture() {
+        loadLogCaptureCalls++
+        capturedLoadLogLines = scriptedLoadLogLines
+    }
+
+    override fun drainLoadLogLines(): List<String> = capturedLoadLogLines
+
     companion object {
         const val KV_CLEAR = "kvClear"
         const val DECODE_PROMPT = "decodePrompt"

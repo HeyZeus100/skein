@@ -17,6 +17,9 @@ package app.skein.inference.service
 
 import android.os.ParcelFileDescriptor
 import app.skein.core.model.SkeinLog
+import app.skein.ipc.BackendDeviceParcel
+import app.skein.ipc.BackendDeviceType
+import app.skein.ipc.BackendReportRequest
 import app.skein.ipc.ChatMessageParcel
 import app.skein.ipc.ErrorCode
 import app.skein.ipc.GenerateRequest
@@ -924,6 +927,236 @@ class InferenceEngineStateTest {
         ).isEqualTo("CANCELLED")
     }
 
+    // -------------------------------------------------- backend report (gg11.2)
+
+    @Test
+    fun `a cold service refuses backendReport`() {
+        val report = engine.backendReport(BackendReportRequest(sessionEpoch = epoch))
+
+        assertThat(report.errorCode).isEqualTo(ErrorCode.SESSION_LOCKED)
+    }
+
+    @Test
+    fun `a refused backendReport claims no devices or features`() {
+        val report = engine.backendReport(BackendReportRequest(sessionEpoch = epoch))
+
+        assertThat(listOf(report.devices, report.cpuFeatures)).isEqualTo(listOf(emptyList<Any>(), emptyList<Any>()))
+    }
+
+    @Test
+    fun `backendReport with nothing loaded reports the compile-time part only`() {
+        engine.onSessionUnlocked(epoch)
+
+        val report = engine.backendReport(BackendReportRequest(sessionEpoch = epoch))
+
+        assertThat(report.errorCode).isEqualTo(ErrorCode.OK)
+        assertThat(report.devices).isEmpty()
+        assertThat(report.gpuLayersOffloaded).isEqualTo(0)
+        assertThat(listOf(report.nOutputsMax, report.nBatch, report.nUbatch)).isEqualTo(listOf(null, null, null))
+    }
+
+    @Test
+    fun `backendReport with nothing loaded still reports compiled CPU features`() {
+        engine.onSessionUnlocked(epoch)
+
+        assertThat(engine.backendReport(BackendReportRequest(sessionEpoch = epoch)).cpuFeatures).isNotEmpty()
+    }
+
+    @Test
+    fun `backendReport passes 0 handles when nothing is loaded`() {
+        engine.onSessionUnlocked(epoch)
+
+        engine.backendReport(BackendReportRequest(sessionEpoch = epoch))
+
+        assertThat(backend.backendReportCalls.single()).isEqualTo(Triple(0L, 0L, 0))
+    }
+
+    @Test
+    fun `backendReport with a loaded model passes its handles and the gpuLayers it was loaded with`() {
+        engine.onSessionUnlocked(epoch)
+        engine.load(loadRequest(gpuLayers = 0))
+        backend.backendReportCalls.clear()
+
+        engine.backendReport(BackendReportRequest(sessionEpoch = epoch))
+
+        val (model, context, gpuLayers) = backend.backendReportCalls.single()
+        assertThat(model).isNotEqualTo(0L)
+        assertThat(context).isNotEqualTo(0L)
+        assertThat(gpuLayers).isEqualTo(0)
+    }
+
+    @Test
+    fun `backendReport forwards the native device list`() {
+        backend.backendReportResult =
+            NativeBackendReport(
+                devices = listOf(NativeBackendDevice(type = BackendDeviceType.CPU, name = "CPU")),
+                cpuFeatures = listOf("NEON", "DOTPROD"),
+                gpuLayersOffloaded = 0,
+                nOutputsMax = 1,
+                nBatch = 512,
+                nUbatch = 512,
+            )
+        engine.onSessionUnlocked(epoch)
+        engine.load(loadRequest())
+
+        val report = engine.backendReport(BackendReportRequest(sessionEpoch = epoch))
+
+        assertThat(report.devices).containsExactly(BackendDeviceParcel(type = BackendDeviceType.CPU, name = "CPU"))
+        assertThat(report.cpuFeatures).containsExactly("NEON", "DOTPROD").inOrder()
+        assertThat(listOf(report.nOutputsMax, report.nBatch, report.nUbatch)).isEqualTo(listOf(1, 512, 512))
+    }
+
+    // --------------------------------------- redacted load-error lines (gg11.2)
+
+    @Test
+    fun `a failing load carries its redacted log lines in the local diagnostic`() {
+        val invalid =
+            object : FakeLlamaBackend() {
+                override fun loadModelFromFd(
+                    fd: Int,
+                    nGpuLayers: Int,
+                    useMmap: Boolean,
+                ): Long = throw LlamaException(LlamaErrorCode.INVALID_MODEL, "model load failed")
+            }
+        invalid.scriptedLoadLogLines = listOf("truncated tensor blk.0.attn_q.weight")
+        val engine = InferenceEngineState(invalid, InlineTaskRunner(), CallbackDispatcher(InlineTaskRunner()))
+        engine.onSessionUnlocked(epoch)
+        val logged = mutableListOf<String>()
+        SkeinLog.testHook = { _, message, _ -> logged += message }
+
+        try {
+            engine.load(loadRequest())
+        } finally {
+            SkeinLog.testHook = null
+        }
+
+        assertThat(logged.any { it.contains("truncated tensor blk.0.attn_q.weight") }).isTrue()
+    }
+
+    @Test
+    fun `a successful load carries no captured log lines`() {
+        backend.scriptedLoadLogLines = listOf("this must never be attached")
+        val logged = mutableListOf<String>()
+        SkeinLog.testHook = { _, message, _ -> logged += message }
+
+        try {
+            engine.onSessionUnlocked(epoch)
+            engine.load(loadRequest())
+        } finally {
+            SkeinLog.testHook = null
+        }
+
+        assertThat(logged.any { it.contains("this must never be attached") }).isFalse()
+    }
+
+    @Test
+    fun `a captured line containing a path is redacted before it is attached`() {
+        val invalid =
+            object : FakeLlamaBackend() {
+                override fun loadModelFromFd(
+                    fd: Int,
+                    nGpuLayers: Int,
+                    useMmap: Boolean,
+                ): Long = throw LlamaException(LlamaErrorCode.INVALID_MODEL, "model load failed")
+            }
+        invalid.scriptedLoadLogLines = listOf("failed to open /data/data/app.skein/files/models/model.gguf")
+        val engine = InferenceEngineState(invalid, InlineTaskRunner(), CallbackDispatcher(InlineTaskRunner()))
+        engine.onSessionUnlocked(epoch)
+        val logged = mutableListOf<String>()
+        SkeinLog.testHook = { _, message, _ -> logged += message }
+
+        try {
+            engine.load(loadRequest())
+        } finally {
+            SkeinLog.testHook = null
+        }
+
+        val combined = logged.joinToString(" ")
+        assertThat(combined).doesNotContain("/data/data/app.skein")
+        assertThat(combined).contains("<redacted path>")
+    }
+
+    @Test
+    fun `a failing inspect carries its redacted log lines in the local diagnostic`() {
+        val invalid =
+            object : FakeLlamaBackend() {
+                override fun loadModelFromFd(
+                    fd: Int,
+                    nGpuLayers: Int,
+                    useMmap: Boolean,
+                ): Long = throw LlamaException(LlamaErrorCode.INVALID_MODEL, "model load failed")
+            }
+        invalid.scriptedLoadLogLines = listOf("unknown architecture")
+        val engine = InferenceEngineState(invalid, InlineTaskRunner(), CallbackDispatcher(InlineTaskRunner()))
+        engine.onSessionUnlocked(epoch)
+        val logged = mutableListOf<String>()
+        SkeinLog.testHook = { _, message, _ -> logged += message }
+
+        try {
+            engine.inspect(inspectRequest())
+        } finally {
+            SkeinLog.testHook = null
+        }
+
+        assertThat(logged.any { it.contains("unknown architecture") }).isTrue()
+    }
+
+    // ------------------------------------------------ ChatML fallback (skein-5oi)
+
+    @Test
+    fun `a generation using the ChatML fallback surfaces a warning in status`() {
+        val noTemplate =
+            object : FakeLlamaBackend() {
+                override fun applyChatTemplate(
+                    model: Long,
+                    roles: Array<String>,
+                    contents: Array<String>,
+                    addAssistant: Boolean,
+                ): String = throw LlamaException(LlamaErrorCode.TEMPLATE_UNSUPPORTED, "no template")
+            }
+        val engine = InferenceEngineState(noTemplate, InlineTaskRunner(), CallbackDispatcher(InlineTaskRunner()))
+        engine.onSessionUnlocked(epoch)
+        engine.load(loadRequest())
+        val cb = RecordingCallback()
+
+        engine.generate(generateRequest(), cb)
+
+        assertThat(engine.status().usedChatTemplateFallback).isTrue()
+    }
+
+    @Test
+    fun `a generation with the model's own template reports no fallback warning`() {
+        engine.onSessionUnlocked(epoch)
+        engine.load(loadRequest())
+        val cb = RecordingCallback()
+
+        engine.generate(generateRequest(), cb)
+
+        assertThat(engine.status().usedChatTemplateFallback).isFalse()
+    }
+
+    @Test
+    fun `a fresh load resets a previous generation's fallback warning`() {
+        val noTemplate =
+            object : FakeLlamaBackend() {
+                override fun applyChatTemplate(
+                    model: Long,
+                    roles: Array<String>,
+                    contents: Array<String>,
+                    addAssistant: Boolean,
+                ): String = throw LlamaException(LlamaErrorCode.TEMPLATE_UNSUPPORTED, "no template")
+            }
+        val engine = InferenceEngineState(noTemplate, InlineTaskRunner(), CallbackDispatcher(InlineTaskRunner()))
+        engine.onSessionUnlocked(epoch)
+        engine.load(loadRequest())
+        engine.generate(generateRequest(), RecordingCallback())
+        assertThat(engine.status().usedChatTemplateFallback).isTrue()
+
+        engine.load(loadRequest())
+
+        assertThat(engine.status().usedChatTemplateFallback).isFalse()
+    }
+
     // ------------------------------------------------------------ fixtures
 
     private fun loadRequest(
@@ -932,12 +1165,13 @@ class InferenceEngineStateTest {
         tokenizerSha256: String? = null,
         mainSize: Long? = null,
         mainRole: String = "main",
+        gpuLayers: Int = 0,
     ): LoadRequest =
         LoadRequest(
             binding = binding(mainSha256, tokenizerSha256, mainSize, mainRole),
             contextLength = 2048,
             threads = 4,
-            gpuLayers = 0,
+            gpuLayers = gpuLayers,
             embeddingMode = false,
             sessionEpoch = epoch,
         )

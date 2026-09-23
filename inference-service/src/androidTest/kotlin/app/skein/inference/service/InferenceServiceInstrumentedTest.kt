@@ -32,6 +32,8 @@ import androidx.test.core.app.ApplicationProvider
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.platform.app.InstrumentationRegistry
 import androidx.test.rule.ServiceTestRule
+import app.skein.ipc.BackendDeviceType
+import app.skein.ipc.BackendReportRequest
 import app.skein.ipc.ChatMessageParcel
 import app.skein.ipc.ErrorCode
 import app.skein.ipc.GenStats
@@ -202,6 +204,61 @@ class InferenceServiceInstrumentedTest {
         assertThat(callback.errorCode.get()).isEqualTo(ErrorCode.SESSION_LOCKED)
     }
 
+    // --------------------------------------- R-1 control pair (bd skein-gg11.2)
+    //
+    // REGRESSION_TEST_PROPOSAL.md R-1: "a CPU-configured load has exactly one
+    // backend". The positive half (nGpuLayers = 0) runs unconditionally; the
+    // control (nGpuLayers = 99) only asserts anything on a build/device that
+    // actually has a Vulkan device to report, per that document's own
+    // "pair with a positive control" note. On the x86_64 CI emulator lane
+    // there is no Vulkan device even on a Vulkan-enabled build, so this half
+    // is expected to `assumeTrue`-skip there and run for real on the Fold
+    // runner (bd skein-k3b2) / a Vulkan-capable device.
+
+    @Test
+    fun cpuOnlyLoadReportsExactlyOneCpuDevice() {
+        val service = loadedService() // gpuLayers = 0 (loadRequest's default)
+
+        val report = service.backendReport(BackendReportRequest(sessionEpoch = EPOCH))
+
+        assertThat(report.errorCode).isEqualTo(ErrorCode.OK)
+        assertThat(report.devices).hasSize(1)
+        assertThat(report.devices.single().type).isEqualTo(BackendDeviceType.CPU)
+    }
+
+    @Test
+    fun cpuOnlyLoadReportsNoGpuOrIgpuDevice() {
+        val service = loadedService()
+
+        val report = service.backendReport(BackendReportRequest(sessionEpoch = EPOCH))
+
+        assertThat(
+            report.devices.none { it.type == BackendDeviceType.GPU || it.type == BackendDeviceType.IGPU },
+        ).isTrue()
+    }
+
+    @Test
+    fun aHighGpuLayersLoadReportsAGpuDeviceWhenVulkanIsAvailable() {
+        val service = bind()
+        val model = assumeModel()
+        service.onSessionUnlocked(EPOCH)
+        assertThat(service.load(loadRequest(model, gpuLayers = 99))).isEqualTo(ErrorCode.OK)
+
+        val report = service.backendReport(BackendReportRequest(sessionEpoch = EPOCH))
+
+        // Guard, per the bead's own instruction: on the x86_64 emulator there
+        // is no Vulkan device even when the build compiled Vulkan support in,
+        // so the control half of R-1 is inert on that lane and this test
+        // skips rather than fails there.
+        assumeTrue(
+            "no Vulkan device reported on this build/device",
+            report.devices.any { it.name == "Vulkan" },
+        )
+        assertThat(
+            report.devices.any { it.type == BackendDeviceType.GPU || it.type == BackendDeviceType.IGPU },
+        ).isTrue()
+    }
+
     // ------------------------------------------------------------- fixtures
 
     private fun bind(): IInferenceService {
@@ -224,6 +281,7 @@ class InferenceServiceInstrumentedTest {
     private fun loadRequest(
         model: File,
         sha256: String? = null,
+        gpuLayers: Int = 0,
     ): LoadRequest =
         LoadRequest(
             binding =
@@ -243,7 +301,7 @@ class InferenceServiceInstrumentedTest {
                 ),
             contextLength = 512,
             threads = 2,
-            gpuLayers = 0,
+            gpuLayers = gpuLayers,
             embeddingMode = false,
             sessionEpoch = EPOCH,
         )

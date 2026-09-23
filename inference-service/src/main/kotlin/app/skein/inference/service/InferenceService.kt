@@ -47,6 +47,9 @@ import app.skein.core.verify.VerifyBinding
 import app.skein.core.verify.VerifyCancellation
 import app.skein.core.verify.VerifyFile
 import app.skein.core.verify.VerifyProgress
+import app.skein.ipc.BackendDeviceParcel
+import app.skein.ipc.BackendReport
+import app.skein.ipc.BackendReportRequest
 import app.skein.ipc.ChatMessageParcel
 import app.skein.ipc.EmbedRequest
 import app.skein.ipc.EngineStatus
@@ -120,6 +123,8 @@ class InferenceService : Service() {
 
             override fun inspect(req: InspectRequest): ModelInspection = engine.inspect(req)
 
+            override fun backendReport(req: BackendReportRequest): BackendReport = engine.backendReport(req)
+
             override fun generate(
                 req: GenerateRequest,
                 cb: IInferenceCallback,
@@ -172,6 +177,9 @@ internal class InferenceEngineState(
     private var state: String = EngineState.UNLOADED
     private var lastTokensPerSec: Float = 0f
 
+    /** `E4.I6`'s ChatML fallback (skein-5oi): whether the most recent generation used it. Reset on every fresh load. */
+    private var lastUsedChatTemplateFallback: Boolean = false
+
     /** Raised while an `unload` is waiting for a verification to notice. */
     private val unloadRequested = AtomicBoolean(false)
 
@@ -182,6 +190,11 @@ internal class InferenceEngineState(
         val contextLength: Int,
         val modelSha256: String,
         val embeddingMode: Boolean,
+        /**
+         * bd skein-gg11.2: the value this model was ACTUALLY loaded with —
+         * `backendReport` re-derives the device list from it.
+         */
+        val gpuLayers: Int,
     )
 
     private class ActiveRequest(
@@ -224,6 +237,10 @@ internal class InferenceEngineState(
         return try {
             val handles =
                 worker.submitBlocking {
+                    // bd skein-gg11.2 (OL-19): start capturing WARN/ERROR log
+                    // lines immediately before the native load call, so a
+                    // failure below can attach the first few, redacted.
+                    backend.beginLoadLogCapture()
                     val model =
                         backend.loadModelFromFd(
                             fd = pinnedModel.main.descriptorNumber,
@@ -254,15 +271,18 @@ internal class InferenceEngineState(
                         contextLength = req.contextLength,
                         modelSha256 = binding.main.expectedSha256,
                         embeddingMode = req.embeddingMode,
+                        gpuLayers = req.gpuLayers,
                     )
                 state = EngineState.READY
+                lastUsedChatTemplateFallback = false
             }
             SkeinLog.i(TAG, "model loaded files=${req.binding.files.size} ctx=${req.contextLength}")
             ErrorCode.OK
         } catch (e: LlamaException) {
             pinnedModel.close()
             synchronized(lock) { state = EngineState.UNLOADED }
-            SkeinLog.w(TAG, "load failed: ${ServiceErrorMapping.diagnostic(e)}")
+            val detail = ServiceErrorMapping.loadFailureDetail(e, backend.drainLoadLogLines())
+            SkeinLog.w(TAG, "load failed: $detail")
             ServiceErrorMapping.toErrorCode(e)
         }
     }
@@ -324,7 +344,11 @@ internal class InferenceEngineState(
         return try {
             worker.submitBlocking { readInspection(prepared.pinned) }
         } catch (e: LlamaException) {
-            SkeinLog.w(TAG, "inspect failed: ${ServiceErrorMapping.diagnostic(e)}")
+            // bd skein-gg11.2 (OL-19): `readInspection` began capturing
+            // before its own `loadModelFromFd`, so the same redacted-detail
+            // treatment applies to an inspection that fails to load.
+            val detail = ServiceErrorMapping.loadFailureDetail(e, backend.drainLoadLogLines())
+            SkeinLog.w(TAG, "inspect failed: $detail")
             ModelInspection.refused(ServiceErrorMapping.toErrorCode(e))
         } finally {
             // The inspection's descriptors die with it. Nothing outlives the
@@ -343,6 +367,8 @@ internal class InferenceEngineState(
      * keeps the model's whole lifetime on one thread.
      */
     private fun readInspection(pinned: PinnedModel): ModelInspection {
+        // bd skein-gg11.2 (OL-19): see the identical comment in `load`.
+        backend.beginLoadLogCapture()
         val model =
             backend.loadModelFromFd(
                 fd = pinned.main.descriptorNumber,
@@ -468,13 +494,20 @@ internal class InferenceEngineState(
             // between turns rather than only at free).
             backend.kvClear(model.context)
 
-            val rendered =
-                backend.applyChatTemplate(
+            // E4.I6 (skein-5oi): the model's own template, or the ChatML
+            // fallback when the GGUF embeds none llama.cpp can apply. A
+            // missing template is a warning `status()` surfaces, not a
+            // refusal.
+            val renderedPrompt =
+                ChatTemplating.render(
+                    backend,
                     model.model,
                     req.messages.map { it.role }.toTypedArray(),
                     contents.toTypedArray(),
-                    true,
+                    addAssistantPrefix = true,
                 )
+            synchronized(lock) { lastUsedChatTemplateFallback = renderedPrompt.usedFallback }
+            val rendered = renderedPrompt.text
             // skein-0ztk: scaffolding with parseSpecial=true, CONTENT with
             // parseSpecial=false, so a note containing the model's own control
             // token text cannot forge a chat turn.
@@ -703,8 +736,47 @@ internal class InferenceEngineState(
                 modelSha256 = loaded?.modelSha256,
                 contextLength = loaded?.contextLength ?: 0,
                 tokensPerSec = lastTokensPerSec,
+                usedChatTemplateFallback = lastUsedChatTemplateFallback,
             )
         }
+
+    // ------------------------------------------------------- backend report
+
+    /**
+     * bd skein-gg11.2 (OL-05, `docs/design/SKEIN_HUB.md` §12). Works with a
+     * loaded model and without one: with nothing loaded, `model`/`context`
+     * are `0` and the native side reports the compile-time CPU feature list
+     * only (see `LlamaNative.backendReport`'s KDoc).
+     *
+     * Routed through the worker like every other native call touching a
+     * live context — deliberately NOT refused with BUSY: unlike `inspect`,
+     * this reads existing state rather than allocating, so it is safe to
+     * let it wait behind an in-flight generation rather than adding a
+     * second refusal path.
+     */
+    fun backendReport(req: BackendReportRequest): BackendReport {
+        if (gate.guard(req.sessionEpoch) is GateResult.Refuse) {
+            return BackendReport.refused(ErrorCode.SESSION_LOCKED)
+        }
+        val current = synchronized(lock) { loaded }
+        val native =
+            worker.submitBlocking {
+                backend.backendReport(
+                    model = current?.model ?: 0L,
+                    context = current?.context ?: 0L,
+                    gpuLayers = current?.gpuLayers ?: 0,
+                )
+            }
+        return BackendReport(
+            errorCode = ErrorCode.OK,
+            devices = native.devices.map { BackendDeviceParcel(type = it.type, name = it.name) },
+            cpuFeatures = native.cpuFeatures,
+            gpuLayersOffloaded = native.gpuLayersOffloaded,
+            nOutputsMax = native.nOutputsMax,
+            nBatch = native.nBatch,
+            nUbatch = native.nUbatch,
+        )
+    }
 
     // ------------------------------------------------------------ lock gate
 

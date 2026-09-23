@@ -46,6 +46,7 @@
 #include <vector>
 
 #include "ggml-backend.h"
+#include "ggml-cpu.h"
 #include "ggml.h"
 #include "handles.h"
 #include "llama.h"
@@ -304,6 +305,49 @@ std::vector<ggml_backend_dev_t> CpuOnlyDevices() {
     }
     devices.push_back(nullptr); /* llama_model_params.devices is nullptr-terminated (llama.h:315) */
     return devices;
+}
+
+/*
+ * backendReport() helper (bd skein-gg11.2, OL-05/R-1). Every registered
+ * device, unfiltered -- the set llama_prepare_model_devices would use when
+ * params.devices is left at its nullptr default (gpuLayers > 0). No trailing
+ * nullptr: unlike CpuOnlyDevices() this is never handed to
+ * llama_model_params.devices, only walked for reporting.
+ */
+std::vector<ggml_backend_dev_t> AllRegisteredDevices() {
+    std::vector<ggml_backend_dev_t> devices;
+    const std::size_t count = ggml_backend_dev_count();
+    devices.reserve(count);
+    for (std::size_t i = 0; i < count; ++i) {
+        ggml_backend_dev_t dev = ggml_backend_dev_get(i);
+        if (dev != nullptr) {
+            devices.push_back(dev);
+        }
+    }
+    return devices;
+}
+
+/*
+ * The allowlisted short name for a device's backend registry (bd
+ * skein-gg11.2). SKEIN_HUB.md §12 / design spec §9: only a name matched
+ * against a fixed list crosses this boundary, never `ggml_backend_reg_name`
+ * forwarded verbatim -- a future backend (BLAS, CUDA, Metal) reports as
+ * "other" until this list is deliberately extended, rather than leaking an
+ * arbitrary registry string.
+ */
+const char *AllowlistedBackendName(ggml_backend_dev_t dev) {
+    ggml_backend_reg_t reg = ggml_backend_dev_backend_reg(dev);
+    const char *reg_name = (reg != nullptr) ? ggml_backend_reg_name(reg) : nullptr;
+    if (reg_name == nullptr) {
+        return "other";
+    }
+    if (std::strcmp(reg_name, "CPU") == 0) {
+        return "CPU";
+    }
+    if (std::strcmp(reg_name, "Vulkan") == 0) {
+        return "Vulkan";
+    }
+    return "other";
 }
 
 }  // namespace
@@ -605,7 +649,19 @@ Java_app_skein_inference_service_LlamaNative_newContext(
         return 0;
     }
 
-    const std::int64_t id = Handles().Add(HandleKind::kContext, ctx);
+    /* backendReport() (bd skein-gg11.2) has no public llama.cpp accessor for
+     * the RESOLVED n_outputs_max -- llama_context keeps it internally and
+     * `0` (this function's own default when embeddings is set) means
+     * "n_batch" to llama.cpp, not "zero". The resolved value is exactly what
+     * was just decided two lines above, so it is stashed in the handle
+     * registry's `aux` slot (unused for kContext until now) rather than
+     * recomputed by guesswork later. Never a pointer: `aux` here is a plain
+     * `uint32_t` round-tripped through `void*`, read back nowhere except
+     * backendReport(). */
+    const std::uint32_t effective_n_outputs_max = params.embeddings ? params.n_batch : 1u;
+    void *stashed_n_outputs_max = reinterpret_cast<void *>(static_cast<std::uintptr_t>(effective_n_outputs_max));
+
+    const std::int64_t id = Handles().Add(HandleKind::kContext, ctx, stashed_n_outputs_max);
     Entry *entry = Handles().Get(id, HandleKind::kContext);
     /* The abort callback is installed after registration because its user data
      * IS the registry entry — that is what makes setCancelFlag from another
@@ -1224,4 +1280,123 @@ Java_app_skein_inference_service_LlamaNative_secureFreeCount(JNIEnv *env, jobjec
     SKEIN_JNI_TRY
     return static_cast<jint>(g_secure_free_count.load(std::memory_order_relaxed));
     SKEIN_JNI_CATCH(0)
+}
+
+/*
+ * backendReport() (bd skein-gg11.2, OL-05, REGRESSION_TEST_PROPOSAL.md's
+ * "prerequisite" section). One external, per the bead's own instruction, so
+ * every field is packed into one semicolon-delimited jstring rather than
+ * several JNI calls; `NativeBackendReport.parse` (LlamaBackend.kt) is the
+ * other half of this format. Nothing here reads a GGUF string value, a path
+ * or byte content -- every field is either a fixed count/number or a name
+ * matched against AllowlistedBackendName()'s fixed list (spec §9,
+ * SKEIN_HUB.md §12).
+ *
+ * `model_handle == 0` is the documented "no model loaded" case (a fresh
+ * service, or a bare `inspect` that already freed its model): the
+ * compile-time CPU feature list is still reported (it needs no model), but
+ * `devices` is empty and `gpu_layers_offloaded` is 0. `context_handle == 0`
+ * similarly reports no n_outputs_max/n_batch/n_ubatch (-1 sentinel).
+ *
+ * DEVICE LIST HONESTY. llama.cpp exposes no public accessor for
+ * `model->devices` or a live context's backend list (only internal headers
+ * this translation unit does not include declare either), so the device
+ * list below is not read back from the loaded model -- it is RE-DERIVED via
+ * the exact same rule loadModel/loadModelFromFd apply at load time:
+ * CpuOnlyDevices() when `gpu_layers <= 0`, every registered device
+ * otherwise. This is faithful only when the caller passes the SAME
+ * gpuLayers value the model was actually loaded with, which is why the
+ * service (not this function) is the one that remembers it.
+ *
+ * Thread: any for the compile-time part (model/context both 0); the
+ * inference worker thread when `context_handle != 0`, same rule as every
+ * other context-touching call.
+ */
+extern "C" JNIEXPORT jstring JNICALL
+Java_app_skein_inference_service_LlamaNative_backendReport(
+    JNIEnv *env, jobject /*thiz*/, jlong model_handle, jlong context_handle, jint gpu_layers) {
+    SKEIN_JNI_TRY
+    llama_model *model = nullptr;
+    if (model_handle != 0) {
+        model = ModelOf(env, model_handle);
+        if (model == nullptr) {
+            return nullptr; /* bad handle: ModelOf already threw */
+        }
+    }
+    Entry *ctx_entry = nullptr;
+    if (context_handle != 0) {
+        ctx_entry = ContextEntryOf(env, context_handle);
+        if (ctx_entry == nullptr) {
+            return nullptr; /* bad handle: ContextEntryOf already threw */
+        }
+    }
+
+    std::string out;
+
+    /* CPU features compiled into this ggml-cpu -- build-time facts, need no
+     * model. ARM-only: Skein ships arm64-v8a exclusively (spec §1/§4). */
+    out += "cpu_features=";
+    bool first_feature = true;
+    auto add_feature = [&](const char *name, int has) {
+        if (has == 0) {
+            return;
+        }
+        if (!first_feature) {
+            out += ",";
+        }
+        out += name;
+        first_feature = false;
+    };
+    add_feature("NEON", ggml_cpu_has_neon());
+    add_feature("ARM_FMA", ggml_cpu_has_arm_fma());
+    add_feature("FP16_VA", ggml_cpu_has_fp16_va());
+    add_feature("DOTPROD", ggml_cpu_has_dotprod());
+    add_feature("MATMUL_INT8", ggml_cpu_has_matmul_int8());
+    add_feature("SVE", ggml_cpu_has_sve());
+    add_feature("SME", ggml_cpu_has_sme());
+    add_feature("SME2", ggml_cpu_has_sme2());
+    out += ";";
+
+    /* Devices: only meaningful with a model loaded (see the honesty note
+     * above). */
+    out += "devices=";
+    int gpu_layers_offloaded = 0;
+    if (model != nullptr) {
+        std::vector<ggml_backend_dev_t> devices =
+            (gpu_layers <= 0) ? CpuOnlyDevices() : AllRegisteredDevices();
+        bool first_device = true;
+        for (ggml_backend_dev_t dev : devices) {
+            if (dev == nullptr) {
+                continue; /* CpuOnlyDevices()'s nullptr terminator */
+            }
+            if (!first_device) {
+                out += ",";
+            }
+            out += std::to_string(static_cast<int>(ggml_backend_dev_type(dev)));
+            out += ":";
+            out += AllowlistedBackendName(dev);
+            first_device = false;
+        }
+        if (gpu_layers > 0) {
+            const int32_t n_layer = llama_model_n_layer(model);
+            if (n_layer > 0) {
+                gpu_layers_offloaded = std::min(gpu_layers, n_layer);
+            }
+        }
+    }
+    out += ";";
+    out += "gpu_layers_offloaded=" + std::to_string(gpu_layers_offloaded) + ";";
+
+    if (ctx_entry != nullptr) {
+        auto *ctx = static_cast<llama_context *>(ctx_entry->ptr);
+        const std::uintptr_t stashed_n_outputs_max = reinterpret_cast<std::uintptr_t>(ctx_entry->aux);
+        out += "n_outputs_max=" + std::to_string(static_cast<long long>(stashed_n_outputs_max)) + ";";
+        out += "n_batch=" + std::to_string(static_cast<int>(llama_n_batch(ctx))) + ";";
+        out += "n_ubatch=" + std::to_string(static_cast<int>(llama_n_ubatch(ctx)));
+    } else {
+        out += "n_outputs_max=-1;n_batch=-1;n_ubatch=-1";
+    }
+
+    return skein::Utf8ToJString(env, out);
+    SKEIN_JNI_CATCH(nullptr)
 }

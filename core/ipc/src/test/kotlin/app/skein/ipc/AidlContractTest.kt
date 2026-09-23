@@ -122,6 +122,30 @@ class AidlContractTest {
         assertThat(inspection.architecture).isEqualTo("gemma3")
     }
 
+    // bd skein-gg11.2 (OL-05). Same purpose as the `inspect` pair above: the
+    // `FakeInferenceService` below only compiles if `backendReport` exists
+    // with this signature, and these two prove a `BackendReport` survives
+    // the generated Binder plumbing in both directions.
+    @Test
+    fun inferenceServiceBackendReportIsInvokableOverBinder() {
+        val fake = FakeInferenceService()
+        val proxy = IInferenceService.Stub.asInterface(fake.asBinder())
+
+        proxy.backendReport(BackendReportRequest(sessionEpoch = 9L))
+
+        assertThat(fake.backendReportRequests.single().sessionEpoch).isEqualTo(9L)
+    }
+
+    @Test
+    fun inferenceServiceBackendReportReturnsABackendReportAcrossBinder() {
+        val fake = FakeInferenceService()
+        val proxy = IInferenceService.Stub.asInterface(fake.asBinder())
+
+        val report = proxy.backendReport(BackendReportRequest(sessionEpoch = 9L))
+
+        assertThat(report.cpuFeatures).containsExactly("NEON")
+    }
+
     @Test
     fun inferenceServiceEmbedAcceptsTheWrappingEmbedRequest() {
         val fake = FakeInferenceService()
@@ -229,6 +253,7 @@ class AidlContractTest {
         val cancelledRequestIds = mutableListOf<Int>()
         val embedRequests = mutableListOf<EmbedRequest>()
         val inspectRequests = mutableListOf<InspectRequest>()
+        val backendReportRequests = mutableListOf<BackendReportRequest>()
 
         override fun load(req: LoadRequest): Int = ErrorCode.OK
 
@@ -245,6 +270,19 @@ class AidlContractTest {
                 hasChatTemplate = true,
                 chatTemplateOk = true,
                 tokenizerModel = "llama",
+            )
+        }
+
+        override fun backendReport(req: BackendReportRequest): BackendReport {
+            backendReportRequests += req
+            return BackendReport(
+                errorCode = ErrorCode.OK,
+                devices = listOf(BackendDeviceParcel(type = BackendDeviceType.CPU, name = "CPU")),
+                cpuFeatures = listOf("NEON"),
+                gpuLayersOffloaded = 0,
+                nOutputsMax = 1,
+                nBatch = 512,
+                nUbatch = 512,
             )
         }
 

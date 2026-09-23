@@ -298,12 +298,73 @@ class ParcelRoundTripTest {
                 modelSha256 = "a".repeat(64),
                 contextLength = 4096,
                 tokensPerSec = 9.25f,
+                usedChatTemplateFallback = true,
             )
 
         val restored = roundTrip(original)
 
         assertThat(restored).isEqualTo(original)
     }
+
+    @Test
+    fun engineStatusRoundTripDefaultsTheFallbackWarningToFalse() {
+        val original = EngineStatus(state = "READY", modelSha256 = null, contextLength = 4096, tokensPerSec = 0f)
+
+        val restored = roundTrip(original)
+
+        assertThat(restored.usedChatTemplateFallback).isFalse()
+    }
+
+    // -------------------------------------------------------------- gg11.2
+
+    @Test
+    fun backendReportRequestRoundTripPreservesSessionEpoch() {
+        val original = BackendReportRequest(sessionEpoch = 5L)
+
+        val restored = roundTrip(original)
+
+        assertThat(restored.sessionEpoch).isEqualTo(5L)
+    }
+
+    @Test
+    fun backendReportRoundTripsToAnEqualValue() {
+        val original = backendReport()
+
+        val restored = roundTrip(original)
+
+        assertThat(restored).isEqualTo(original)
+    }
+
+    @Test
+    fun backendReportRoundTripPreservesDeviceOrder() {
+        val original = backendReport()
+
+        val restored = roundTrip(original)
+
+        assertThat(restored.devices).containsExactlyElementsIn(original.devices).inOrder()
+    }
+
+    @Test
+    fun aRefusedBackendReportCarriesOnlyItsErrorCode() {
+        val refused = BackendReport.refused(ErrorCode.SESSION_LOCKED)
+
+        val restored = roundTrip(refused)
+
+        assertThat(
+            listOf(restored.errorCode, restored.devices, restored.cpuFeatures, restored.nOutputsMax),
+        ).isEqualTo(listOf(ErrorCode.SESSION_LOCKED, emptyList<BackendDeviceParcel>(), emptyList<String>(), null))
+    }
+
+    private fun backendReport(): BackendReport =
+        BackendReport(
+            errorCode = ErrorCode.OK,
+            devices = listOf(BackendDeviceParcel(type = BackendDeviceType.CPU, name = "CPU")),
+            cpuFeatures = listOf("NEON", "DOTPROD"),
+            gpuLayersOffloaded = 0,
+            nOutputsMax = 1,
+            nBatch = 512,
+            nUbatch = 512,
+        )
 
     @Test
     fun engineStatusRoundTripPreservesNullModelSha256() {

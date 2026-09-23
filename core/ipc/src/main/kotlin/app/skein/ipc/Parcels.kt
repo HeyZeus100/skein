@@ -588,13 +588,104 @@ data class GenStats(
     val tokensPerSec: Float,
 ) : Parcelable
 
+/**
+ * @param usedChatTemplateFallback `E4.I6`'s ChatML fallback (skein-5oi) was
+ *   used for the most recent generation because the loaded GGUF embeds no
+ *   chat template llama.cpp can apply. A warning, not a refusal — additive,
+ *   defaults `false` so every existing construction site is unaffected.
+ */
 @Parcelize
 data class EngineStatus(
     val state: String,
     val modelSha256: String?,
     val contextLength: Int,
     val tokensPerSec: Float,
+    val usedChatTemplateFallback: Boolean = false,
 ) : Parcelable
+
+/**
+ * `ggml_backend_dev_type` ordinals, mirrored exactly (`ggml-backend.h`) so a
+ * device's [BackendDeviceParcel.type] means the same thing on both sides of
+ * the JNI boundary without a second translation table.
+ */
+object BackendDeviceType {
+    const val CPU = 0
+    const val GPU = 1
+    const val IGPU = 2
+    const val ACCEL = 3
+
+    /** Anything this build does not recognise (ggml's META, or a future type) — never a refusal. */
+    const val OTHER = 99
+}
+
+/**
+ * One device [BackendReport.devices] lists.
+ *
+ * @param type a [BackendDeviceType] ordinal.
+ * @param name an ALLOWLISTED short name — `"CPU"`, `"Vulkan"`, or `"other"`
+ *   for anything not on `skein_jni.cpp`'s fixed list. Never a raw
+ *   `ggml_backend_reg_name` (`docs/design/SKEIN_HUB.md` §12).
+ */
+@Parcelize
+data class BackendDeviceParcel(
+    val type: Int,
+    val name: String,
+) : Parcelable
+
+/** `bd skein-gg11.2`. @param sessionEpoch `IsolatedSessionGate.guard()` input, see file header. */
+@Parcelize
+data class BackendReportRequest(
+    val sessionEpoch: Long,
+) : Parcelable
+
+/**
+ * `IInferenceService.backendReport`'s reply (bd skein-gg11.2, OL-05,
+ * `docs/design/SKEIN_HUB.md` §12 / design spec §9): which backend devices
+ * and CPU features this build and this load actually have. Every field is
+ * either a count/number or a name matched against a fixed allowlist inside
+ * the isolated process — never a GGUF string, a path, or free text (spec
+ * §9's no-raw-content rule).
+ *
+ * **Only [errorCode] is meaningful unconditionally** — the same convention
+ * [ModelInspection] uses. When it is not [ErrorCode.OK] the session was
+ * locked and nothing else was read.
+ *
+ * @param devices empty when no model is loaded. With a model loaded, the
+ *   list the load actually used — CPU/ACCEL only at `gpuLayers <= 0` (R-1),
+ *   every registered device otherwise.
+ * @param cpuFeatures the ARM CPU feature names this `ggml-cpu` was compiled
+ *   with (`ggml_cpu_has_neon`/`dotprod`/`matmul_int8`/`sve`/`fp16_va`/…).
+ *   Always populated — a build-time fact, needs no model.
+ * @param gpuLayersOffloaded the count of layers actually offloaded; `0`
+ *   when no model is loaded or the load was CPU-only.
+ * @param nOutputsMax the live context's `n_outputs_max`; null with no context.
+ * @param nBatch the live context's `n_batch`; null with no context.
+ * @param nUbatch the live context's `n_ubatch`; null with no context.
+ */
+@Parcelize
+data class BackendReport(
+    val errorCode: Int,
+    val devices: List<BackendDeviceParcel>,
+    val cpuFeatures: List<String>,
+    val gpuLayersOffloaded: Int,
+    val nOutputsMax: Int?,
+    val nBatch: Int?,
+    val nUbatch: Int?,
+) : Parcelable {
+    companion object {
+        /** The report that did not happen: [code] and nothing else — mirrors [ModelInspection.refused]. */
+        fun refused(code: Int): BackendReport =
+            BackendReport(
+                errorCode = code,
+                devices = emptyList(),
+                cpuFeatures = emptyList(),
+                gpuLayersOffloaded = 0,
+                nOutputsMax = null,
+                nBatch = null,
+                nUbatch = null,
+            )
+    }
+}
 
 /**
  * `:embedder` loads up to three independent models, each its own `models` row
