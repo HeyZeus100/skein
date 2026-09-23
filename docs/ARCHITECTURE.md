@@ -2,7 +2,7 @@
 
 > **Status:** written by `E0.I18`/skein-edc at commit `c3d22b8`, re-verified
 > against the tree at commit `ad98b7b` (2026-09-22), and amended for the
-> on-device fixes of 2026-09-22/23 through `34903e8` (see "Delta since
+> on-device fixes of 2026-09-22/23 through `c681057` (see "Delta since
 > `ad98b7b`" below) — every module row,
 > dependency edge and guard reference below is verified against a build file
 > or a `build-logic/guards` source file, cited inline. Where a step in the
@@ -32,7 +32,7 @@ already in flight, and the concepts recorded as ADRs with the one thing that mus
 keep each of them possible. Before adding a type, a module or a dependency, check that review's §4 for
 a "must not do now" line that covers it.
 
-### 0.1 Delta since `ad98b7b` (2026-09-22 → 2026-09-23, through `34903e8`)
+### 0.1 Delta since `ad98b7b` (2026-09-22 → 2026-09-23, through `c681057`)
 
 The first on-device smoke (Fold, skein-94fh) produced these changes; each is on `main` and verified by a test named in its merge commit. Nothing below changes the module map or the dependency guards except where stated.
 
@@ -40,10 +40,11 @@ The first on-device smoke (Fold, skein-94fh) produced these changes; each is on 
 - **Vault open on device:** `libskein_sqlite_jni.so` exports are named for `SkeinSQLiteNativeImpl`; `tools/ci/sqlite-jni-symbols.sh` gates that surface in CI alongside `jni-symbols.sh` (skein-8ryv). Add it to the §2.2 guard list when reading that section.
 - **Biometric prompts:** `AndroidBiometricAuthenticator` derives a per-factor `PromptInfo` (biometric-only for the biometric wrap, credential-only for the credential wrap); `UnlockResult.DeviceLocked` covers the keyguard race at screen-on, and `BiometricUnlockScreen` does not auto-present until the device is unlocked (skein-f9ls, skein-9psb).
 - **Shell:** window insets applied once at the root (`EdgeToEdgeSurface`, `enableEdgeToEdge`); the command bar hosts a `CommandRegistry` with the `/` palette, `/new note`, and title/body search (skein-ps0 slice A; slice B still open); `AppearancePrefs` (System/Light/Dark) feeds every `SkeinTheme` call site except the graph overlay (skein-7jc5); the editor has its own surface colour token.
-- **Editor:** `NoteTab` passes the wikilink suggestion source, rendered wikilinks open on tap via an Initial-pass pointer peek, hardware Up/Down are handled by the editor because Compose's own handling skips the `OffsetMapping` on shorter rendered lines (skein-pnqo, skein-hacu).
-- **Graph:** `GraphSimulation` steps `ForceLayout` at frame rate with per-node drag detected on the Initial pointer pass so it wins over pan (skein-67ak).
+- **Editor:** `NoteTab` passes the wikilink suggestion source, rendered wikilinks open on tap via an Initial-pass pointer peek, hardware Up/Down are handled by the editor because Compose's own handling skips the `OffsetMapping` on shorter rendered lines, and Left/Right move the caret through the same `OffsetMapping` (skein-pnqo, skein-hacu, skein-ex7d).
+- **Graph:** `GraphSimulation` steps `ForceLayout` at frame rate with per-node drag detected on the Initial pointer pass so it wins over pan (skein-67ak); the integrator is damped semi-implicit Euler with force and velocity caps and no reheat on drag, so a dragged node leads and its neighbours follow without jitter (skein-8g4c).
+- **Identifiers:** every package, the AIDL package, the `:core:ipc` namespace and the DocumentsProvider authority live under `app.skein.*` (`app.skein.documents`); the former `us.aherrera.skein.*` contract prefix is gone (skein-376c, `c681057`). No personal name appears in a code identifier; the schema `$id` and attestation fixtures are a pending decision (skein-a4e4).
 - **Launcher icon:** generated deterministically by `tools/icons/generate_launcher_icons.py` from `docs/branding/`; the manifest points `android:icon`/`roundIcon` at it (skein-t9h2).
-- **Designed, not implemented:** `docs/design/SKEIN_HUB.md` (a separate `app.skein.hub` APK as the only holder of `INTERNET`, a Core-initiated read-only URI handoff, GGUF inspection only inside `:inference`, one signature permission per capability) and `docs/design/NORTH_STAR_REVIEW.md` (the direction review; seams recorded on beads, deferred concepts as ADR entries). Nothing in this tree implements either; Core still declares no `INTERNET` permission (spec §2.1). The proposed wording for a §1.2 here and for the spec's §2 awaits the owner.
+- **Designed, not implemented:** `docs/design/SKEIN_HUB.md` (a separate `app.skein.hub` APK as the only holder of `INTERNET`, a Core-initiated read-only URI handoff, GGUF inspection only inside `:inference`, one signature permission per capability) and `docs/design/NORTH_STAR_REVIEW.md` (the direction review; seams recorded on beads, deferred concepts as ADR entries). Nothing in this tree implements either; Core still declares no `INTERNET` permission (spec §2.1). The owner accepted the design on 2026-09-23: §1.2 below and the spec's §2 non-negotiable 11 carry the wording, and the H1–H16 beads are filed (handoff §2.0).
 
 ## 1. Process topology and startup
 
@@ -67,7 +68,7 @@ Spec §4.1: *"`:app` → biometric unlock → StrongBox key unwrap → SQLCipher
 open → bind `:inference` → hash-verify current model → mmap → ready."* The
 diagram below names the real class/function for every step that exists in
 this tree today, and labels the rest `planned` with the bead that owns it —
-as of commit `34903e8`, everything up to and including "vault open, provider
+as of commit `c681057`, everything up to and including "vault open, provider
 installed" is implemented, unit-tested and **verified on the Fold** (setup,
 unlock, screen-off lock and same-process reopen, note creation, wikilinks,
 graph — see §0); the isolated `InferenceService`
