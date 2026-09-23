@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!--
+        skein-t9h2: solid background colour for the adaptive launcher icon,
+        sampled from the owner's artwork (docs/branding/skein-icon-app-logo.png);
+        the swirl sits on a pure-black fill. Kept in sync with
+        BACKGROUND_COLOR in tools/icons/generate_launcher_icons.py.
+    -->
+    <color name="ic_launcher_background">#000000</color>
+</resources>
