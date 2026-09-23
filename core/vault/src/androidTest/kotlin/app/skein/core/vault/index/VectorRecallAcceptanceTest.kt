@@ -58,7 +58,11 @@ public class VectorRecallAcceptanceTest {
     @Test
     public fun recallRanksTheChunkMatchingTheQueryVectorFirstScoresMappedTo01(): Unit =
         runTest {
-            val idx = freshIndex()
+            val (idx, conn) = freshIndexWithConnection()
+            // skein-ci54: chunks.doc_id REFERENCES documents(id) under
+            // PRAGMA foreign_keys = ON.
+            seedDocument(conn, "01924a4b-4d29-7000-8000-00000000D111")
+            seedDocument(conn, "01924a4b-4d29-7000-8000-00000000D112")
             val chunkA =
                 idx
                     .replaceChunks(
@@ -122,7 +126,31 @@ public class VectorRecallAcceptanceTest {
         return Int8Quantizer.quantize(raw)
     }
 
-    private fun freshIndex(): IndexStoreImpl {
+    /**
+     * Precondition helper (skein-ci54): inserts a minimal `documents` row
+     * for [docId] so a subsequent `replaceChunks(docId, ...)` call
+     * satisfies `chunks.doc_id REFERENCES documents(id) ON DELETE CASCADE`
+     * (`001_initial.sql`) under `PRAGMA foreign_keys = ON` (skein-gg11.10).
+     * Production always creates the document through `VaultRepository`
+     * before RAG ingest ever calls `IndexStore.replaceChunks`; this
+     * fixture never did, which is exactly the fixture debt skein-ci54
+     * closes. Columns beyond `id`/`kind`/`title`/timestamps are
+     * irrelevant to every test in this file.
+     */
+    private fun seedDocument(
+        conn: SkeinSQLiteConnection,
+        docId: String,
+    ) {
+        conn
+            .prepare(
+                "INSERT INTO documents(id, kind, title, created_at, updated_at) VALUES (?, 'note', 'seed', 0, 0)",
+            ).use { stmt ->
+                stmt.bindText(1, docId)
+                stmt.step()
+            }
+    }
+
+    private fun freshIndexWithConnection(): Pair<IndexStoreImpl, SkeinSQLiteConnection> {
         val driver = SkeinSQLiteDriver()
         val conn = driver.openWithKey(":memory:", passphrase = null) as SkeinSQLiteConnection
         // skein-zx15: chunks.revision_hash (003) and chunks.byte_start/
@@ -140,7 +168,7 @@ public class VectorRecallAcceptanceTest {
         }
         val impl = IndexStoreImpl(conn)
         opened += impl
-        return impl
+        return impl to conn
     }
 
     /**

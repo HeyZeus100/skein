@@ -29,6 +29,7 @@ package app.skein.core.vault.repository
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import app.skein.core.model.DocumentKind
 import app.skein.core.model.NewDocument
+import app.skein.core.model.PersonaId
 import app.skein.core.model.TimelineFilter
 import app.skein.core.model.VaultRepository
 import app.skein.core.vault.blob.InMemoryAttachmentStore
@@ -97,6 +98,23 @@ public class VaultRepositoryImplContractTest : VaultRepositoryContractTest() {
             )
         openImpls += impl
         return impl
+    }
+
+    /**
+     * skein-ci54: `VaultRepository` has no persona CRUD (that is
+     * `PersonaService`'s table), so this inserts a minimal row directly on
+     * the same connection `repo()` just opened — only the row's existence
+     * matters for `documents.persona_id REFERENCES personas(id)` under
+     * `PRAGMA foreign_keys = ON`.
+     */
+    override fun seedPersona(id: PersonaId) {
+        openConnections
+            .last()
+            .prepare("INSERT INTO personas(id, name, created_at) VALUES (?, 'seed', 0)")
+            .use { stmt ->
+                stmt.bindText(1, id)
+                stmt.step()
+            }
     }
 
     // ------------------------------------------------------------------
