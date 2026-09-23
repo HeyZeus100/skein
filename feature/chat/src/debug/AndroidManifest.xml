@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <!--
+        skein-6as: a debug-only host Activity for Robolectric-backed Compose
+        UI tests (`ChatScreenTest`) in this module. `:feature:chat` is an
+        Android library: `androidx.compose.ui:ui-test-manifest`'s own
+        placeholder `ComponentActivity` registration does not merge into a
+        library's manifest, so this module declares its own, mirroring
+        `:feature:shell/src/debug/AndroidManifest.xml` and
+        `:feature:editor/src/debug/AndroidManifest.xml`. Debug-variant only
+        (this file lives in `src/debug/`, not `src/main/`) — it never ships
+        in a release build.
+    -->
+    <application>
+        <activity
+            android:name="androidx.activity.ComponentActivity"
+            android:exported="false" />
+    </application>
+
+</manifest>
