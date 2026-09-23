@@ -183,6 +183,18 @@ class IngestWorkerInstrumentedTest {
     private fun uniqueInfos(): List<WorkInfo> =
         workManager.getWorkInfosForUniqueWork(WorkManagerIngestWorkPort.UNIQUE_WORK_NAME).get()
 
+    private fun awaitTerminalState(timeoutMillis: Long = 10_000L): List<WorkInfo> {
+        val deadline = System.currentTimeMillis() + timeoutMillis
+        while (System.currentTimeMillis() < deadline) {
+            val infos = uniqueInfos()
+            if (infos.all { it.state.isFinished }) {
+                return infos
+            }
+            Thread.sleep(50)
+        }
+        return uniqueInfos()
+    }
+
     @Test
     fun three_queued_notes_are_chunked_searchable_and_linked_after_one_pass() {
         val session = unlockAndBringUp()
@@ -199,7 +211,7 @@ class IngestWorkerInstrumentedTest {
 
         scheduler.indexNow()
 
-        assertEquals(listOf(WorkInfo.State.SUCCEEDED), uniqueInfos().map { it.state })
+        assertEquals(listOf(WorkInfo.State.SUCCEEDED), awaitTerminalState().map { it.state })
         runBlocking {
             assertEquals(emptyList<Any>(), session.repository.dequeueIngest(10))
             val hit = session.indexStore.bm25("glacial-mimeograph", k = 5).single()
