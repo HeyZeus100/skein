@@ -1,7 +1,9 @@
 # Architecture
 
-> **Status:** written by `E0.I18`/skein-edc at commit `c3d22b8` and re-verified
-> against the tree at commit `ad98b7b` (2026-09-22) — every module row,
+> **Status:** written by `E0.I18`/skein-edc at commit `c3d22b8`, re-verified
+> against the tree at commit `ad98b7b` (2026-09-22), and amended for the
+> on-device fixes of 2026-09-22/23 through `34903e8` (see "Delta since
+> `ad98b7b`" below) — every module row,
 > dependency edge and guard reference below is verified against a build file
 > or a `build-logic/guards` source file, cited inline. Where a step in the
 > startup sequence is not yet implemented, its diagram participant is
@@ -14,6 +16,19 @@ This document is the one every dispatched agent reads first (see §6, "How to
 pick up an issue"). It answers three questions: what are the modules and what
 may each depend on (§2), what actually happens when the app starts (§1), and
 what conventions hold across all of it (§3–§5).
+
+## 0. Delta since `ad98b7b` (2026-09-22 → 2026-09-23, through `34903e8`)
+
+The first on-device smoke (Fold, skein-94fh) produced these changes; each is on `main` and verified by a test named in its merge commit. Nothing below changes the module map or the dependency guards except where stated.
+
+- **Lock sequence:** `LockObserverPriority` gained `TEARDOWN`; `UnlockManager` runs it after the HIGH/LOW pass under its own budget window and even when that pass timed out, and `VaultBootstrap`'s session close lives there (skein-1bx4). `DeviceVaultOpener` creates one `VaultLifecycle` per open, and `VaultLifecycle.close()` is total. The gate logs a failed bring-up reason at W (`VaultGate`, fixed text only).
+- **Vault open on device:** `libskein_sqlite_jni.so` exports are named for `SkeinSQLiteNativeImpl`; `tools/ci/sqlite-jni-symbols.sh` gates that surface in CI alongside `jni-symbols.sh` (skein-8ryv). Add it to the §2.2 guard list when reading that section.
+- **Biometric prompts:** `AndroidBiometricAuthenticator` derives a per-factor `PromptInfo` (biometric-only for the biometric wrap, credential-only for the credential wrap); `UnlockResult.DeviceLocked` covers the keyguard race at screen-on, and `BiometricUnlockScreen` does not auto-present until the device is unlocked (skein-f9ls, skein-9psb).
+- **Shell:** window insets applied once at the root (`EdgeToEdgeSurface`, `enableEdgeToEdge`); the command bar hosts a `CommandRegistry` with the `/` palette, `/new note`, and title/body search (skein-ps0 slice A; slice B still open); `AppearancePrefs` (System/Light/Dark) feeds every `SkeinTheme` call site except the graph overlay (skein-7jc5); the editor has its own surface colour token.
+- **Editor:** `NoteTab` passes the wikilink suggestion source, rendered wikilinks open on tap via an Initial-pass pointer peek, hardware Up/Down are handled by the editor because Compose's own handling skips the `OffsetMapping` on shorter rendered lines (skein-pnqo, skein-hacu).
+- **Graph:** `GraphSimulation` steps `ForceLayout` at frame rate with per-node drag detected on the Initial pointer pass so it wins over pan (skein-67ak).
+- **Launcher icon:** generated deterministically by `tools/icons/generate_launcher_icons.py` from `docs/branding/`; the manifest points `android:icon`/`roundIcon` at it (skein-t9h2).
+- **Designed, not implemented:** `docs/design/SKEIN_HUB.md` (a separate `app.skein.hub` APK as the only holder of `INTERNET`, a Core-initiated read-only URI handoff, GGUF inspection only inside `:inference`, one signature permission per capability) and `docs/design/NORTH_STAR_REVIEW.md` (the direction review; seams recorded on beads, deferred concepts as ADR entries). Nothing in this tree implements either; Core still declares no `INTERNET` permission (spec §2.1). The proposed wording for a §1.2 here and for the spec's §2 awaits the owner.
 
 ## 1. Process topology and startup
 
@@ -37,8 +52,10 @@ Spec §4.1: *"`:app` → biometric unlock → StrongBox key unwrap → SQLCipher
 open → bind `:inference` → hash-verify current model → mmap → ready."* The
 diagram below names the real class/function for every step that exists in
 this tree today, and labels the rest `planned` with the bead that owns it —
-as of commit `ad98b7b`, everything up to and including "vault open, provider
-installed" is implemented and unit-tested; the isolated `InferenceService`
+as of commit `34903e8`, everything up to and including "vault open, provider
+installed" is implemented, unit-tested and **verified on the Fold** (setup,
+unlock, screen-off lock and same-process reopen, note creation, wikilinks,
+graph — see §0); the isolated `InferenceService`
 and the verifier it calls are implemented (skein-nxk, skein-v2s); the
 `:app`-side client that binds the service, imports a model and builds the
 `LoadRequest` is not.
