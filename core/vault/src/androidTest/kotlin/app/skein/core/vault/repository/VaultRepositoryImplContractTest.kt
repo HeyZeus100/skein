@@ -34,6 +34,7 @@ import app.skein.core.model.VaultRepository
 import app.skein.core.vault.blob.InMemoryAttachmentStore
 import app.skein.core.vault.db.SkeinSQLiteConnection
 import app.skein.core.vault.db.SkeinSQLiteDriver
+import app.skein.core.vault.testutil.splitMigrationStatements
 import app.skein.testing.VaultRepositoryContractTest
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.first
@@ -84,7 +85,7 @@ public class VaultRepositoryImplContractTest : VaultRepositoryContractTest() {
                     javaClass.classLoader?.getResourceAsStream("migrations/$migration"),
                 ) { "migrations/$migration not on the classpath" }
                     .use { it.readBytes().toString(Charsets.UTF_8) }
-            for (statement in splitOnSentinel(sql)) {
+            for (statement in splitMigrationStatements(sql)) {
                 conn.prepare(statement).use { it.step() }
             }
         }
@@ -201,29 +202,4 @@ public class VaultRepositoryImplContractTest : VaultRepositoryContractTest() {
                 assertEquals(before + 1, latest.size)
             }
         }
-
-    private companion object {
-        /**
-         * Split the migration SQL on the `--;` sentinel used by
-         * `001_initial.sql` (see its file header) — mirrors what the
-         * production `MigrationStatementSplitter` does, and the identical
-         * helper in `IndexStoreImplContractTest`. Trailing whitespace and
-         * empty statements are dropped.
-         */
-        fun splitOnSentinel(sql: String): List<String> {
-            val raw = sql.split("--;")
-            val cleaned =
-                raw.map { chunk ->
-                    chunk
-                        .lineSequence()
-                        .map { it.trimEnd() }
-                        .filter { line -> line.isNotBlank() && !line.trimStart().startsWith("--") }
-                        .joinToString(separator = "\n")
-                        .trim()
-                        .removeSuffix(";")
-                        .trim()
-                }
-            return cleaned.filter { it.isNotEmpty() }
-        }
-    }
 }

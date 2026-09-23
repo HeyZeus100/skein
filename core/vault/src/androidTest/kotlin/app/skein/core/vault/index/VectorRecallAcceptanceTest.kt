@@ -31,6 +31,7 @@ import app.skein.core.model.NewChunk
 import app.skein.core.rag.recall.VectorRecall
 import app.skein.core.vault.db.SkeinSQLiteConnection
 import app.skein.core.vault.db.SkeinSQLiteDriver
+import app.skein.core.vault.testutil.splitMigrationStatements
 import com.google.common.truth.Truth.assertThat
 import kotlinx.coroutines.test.runTest
 import org.junit.After
@@ -133,7 +134,7 @@ public class VectorRecallAcceptanceTest {
                     javaClass.classLoader?.getResourceAsStream("migrations/$fileName"),
                 ) { "migrations/$fileName not on the classpath" }
                     .use { it.readBytes().toString(Charsets.UTF_8) }
-            for (statement in splitOnSentinel(sql)) {
+            for (statement in splitMigrationStatements(sql)) {
                 conn.prepare(statement).use { it.step() }
             }
         }
@@ -196,21 +197,5 @@ public class VectorRecallAcceptanceTest {
 
         const val VECTOR_DIM: Int = 256
         const val HALF_DIM: Int = VECTOR_DIM / 2
-
-        fun splitOnSentinel(sql: String): List<String> {
-            val raw = sql.split("--;")
-            val cleaned =
-                raw.map { chunk ->
-                    chunk
-                        .lineSequence()
-                        .map { it.trimEnd() }
-                        .filter { line -> line.isNotBlank() && !line.trimStart().startsWith("--") }
-                        .joinToString(separator = "\n")
-                        .trim()
-                        .removeSuffix(";")
-                        .trim()
-                }
-            return cleaned.filter { it.isNotEmpty() }
-        }
     }
 }

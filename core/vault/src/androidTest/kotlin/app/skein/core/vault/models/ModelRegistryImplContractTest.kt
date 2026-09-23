@@ -20,6 +20,7 @@ import androidx.test.ext.junit.runners.AndroidJUnit4
 import app.skein.core.model.ModelRegistry
 import app.skein.core.vault.db.SkeinSQLiteConnection
 import app.skein.core.vault.db.SkeinSQLiteDriver
+import app.skein.core.vault.testutil.splitMigrationStatements
 import app.skein.testing.ModelRegistryContractTest
 import org.junit.After
 import org.junit.runner.RunWith
@@ -51,7 +52,7 @@ public class ModelRegistryImplContractTest : ModelRegistryContractTest() {
                     javaClass.classLoader?.getResourceAsStream("migrations/$migration"),
                 ) { "migrations/$migration not on the classpath" }
                     .use { it.readBytes().toString(Charsets.UTF_8) }
-            for (statement in splitOnSentinel(sql)) {
+            for (statement in splitMigrationStatements(sql)) {
                 conn.prepare(statement).use { it.step() }
             }
         }
@@ -70,29 +71,5 @@ public class ModelRegistryImplContractTest : ModelRegistryContractTest() {
             )
 
         return ModelRegistryImpl(connection = conn, prefs = prefs)
-    }
-
-    private companion object {
-        /**
-         * Split the migration SQL on the `--;` sentinel used by
-         * `001_initial.sql` (see its file header) — mirrors what the
-         * production `MigrationStatementSplitter` does, and the identical
-         * helper in `VaultRepositoryImplContractTest`.
-         */
-        fun splitOnSentinel(sql: String): List<String> {
-            val raw = sql.split("--;")
-            val cleaned =
-                raw.map { chunk ->
-                    chunk
-                        .lineSequence()
-                        .map { it.trimEnd() }
-                        .filter { line -> line.isNotBlank() && !line.trimStart().startsWith("--") }
-                        .joinToString(separator = "\n")
-                        .trim()
-                        .removeSuffix(";")
-                        .trim()
-                }
-            return cleaned.filter { it.isNotEmpty() }
-        }
     }
 }
