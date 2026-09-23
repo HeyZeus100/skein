@@ -139,13 +139,37 @@ class LlamaCppEngineInstrumentedTest : InferenceEngineContractTest() {
         )
 
     /**
-     * Longer than the contract's default so a generation is still in flight
-     * when `second_stream_fails_busy` starts its second collector and when
-     * `cancel_stops_within_100ms` cancels. Greedy and seeded so the run is
+     * A small, bounded generation. Greedy and seeded so the run is
      * deterministic.
+     *
+     * skein-gg11.12: this used to be `maxTokens = 256`, "longer than the
+     * contract's default so a generation is still in flight when
+     * `second_stream_fails_busy` starts its second collector and when
+     * `cancel_stops_within_100ms` cancels". Both `stream_emits_done_last`
+     * and `serviceDeathFailsTheStreamAndTheNextLoadRebinds` then timed out
+     * with `UncompletedCoroutinesError: After waiting for 1m` on the
+     * emulator (run 35879189936) — 256 tokens implies throughput under
+     * 256 / 60 ≈ 4.3 tokens/sec on this lane's (unaccelerated, no-SIMD)
+     * x86_64 CPU for a model this size (SmolLM2-135M-Instruct Q2_K, 88 MiB
+     * — tools/models/test-model.lock). 32 tokens at that same rate is
+     * ~7.5s, leaving roughly 50s of headroom in `runTest`'s 60s budget for
+     * model load, the AIDL round trips and — for the death test — a second
+     * load on rebind; even at a far more pessimistic 1 token/sec, 32
+     * tokens is 32s and still comfortably inside budget.
+     *
+     * Cancel/busy do not actually need MORE tokens than this to hold: the
+     * production `stream()` (`LlamaCppEngine.kt`) buffers the whole
+     * generation with `Channel.UNLIMITED` and only tears the flow down in
+     * `awaitClose`, which runs when the DOWNSTREAM collector cancels or
+     * drains the flow — not when the native side finishes producing
+     * tokens. `cancel_stops_within_100ms` and `second_stream_fails_busy`
+     * (`InferenceEngineContractTest`) both suspend their collector forever
+     * on the FIRST token (`awaitCancellation()` / `holdFirst.await()`), so
+     * the engine stays busy/cancellable regardless of how many further
+     * tokens the native side has queued up in the meantime.
      */
     override fun samplingParams(): SamplingParams =
-        SamplingParams(temperature = 0f, topK = 1, maxTokens = 256, seed = 1L)
+        SamplingParams(temperature = 0f, topK = 1, maxTokens = 32, seed = 1L)
 
     // ------------------------------------------------- acceptance 2: death
 
@@ -258,9 +282,28 @@ class LlamaCppEngineInstrumentedTest : InferenceEngineContractTest() {
         return out.readBytes()
     }
 
+    /**
+     * skein-gg11.12: `am kill` (`ActivityManagerService.killBackgroundProcesses`
+     * under the hood, even run as a shell command) is documented to decline a
+     * process the platform considers important — precisely what
+     * `BIND_IMPORTANT` asks for on this binding (`ServiceConnector.kt`'s
+     * `AndroidServiceConnector`) — so it is not expected to kill an isolated,
+     * `BIND_IMPORTANT`-bound process here. It previously got the same 10s
+     * [DEATH_WAIT_SECONDS] wait as the real kill below, which — on a lane
+     * where it never succeeds — was 10s taken straight out of `runTest`'s 60s
+     * budget for nothing; that (plus the 256-token generation
+     * `samplingParams()` used to ask for) is why this test timed out
+     * (`UncompletedCoroutinesError`, emulator run 35879189936). It keeps a
+     * brief courtesy wait in case platform behaviour ever differs, then falls
+     * through to a real `SIGKILL`: `kill -9 <pid>`, sent with the shell UID's
+     * own process-management privileges via `UiAutomation.executeShellCommand`
+     * — NOT the app's own `ActivityManager` access, which is what `am kill`
+     * used above resolves to and is exactly what `BIND_IMPORTANT` lets the
+     * platform refuse. `kill -9` is not subject to that refusal.
+     */
     private fun killInferenceProcess(): Boolean {
         shell("am kill ${context.packageName}:inference")
-        if (waitForDeath()) return true
+        if (waitForDeath(timeoutSeconds = AM_KILL_COURTESY_WAIT_SECONDS)) return true
         val pid =
             shell("ps -A")
                 .lineSequence()
@@ -280,8 +323,8 @@ class LlamaCppEngineInstrumentedTest : InferenceEngineContractTest() {
         }
     }
 
-    private fun waitForDeath(): Boolean {
-        val deadline = System.nanoTime() + TimeUnit.SECONDS.toNanos(10)
+    private fun waitForDeath(timeoutSeconds: Long = DEATH_WAIT_SECONDS): Boolean {
+        val deadline = System.nanoTime() + TimeUnit.SECONDS.toNanos(timeoutSeconds)
         while (System.nanoTime() < deadline) {
             if (shell("ps -A").lineSequence().none { it.contains(":inference") }) return true
             Thread.sleep(100L)
@@ -303,5 +346,11 @@ class LlamaCppEngineInstrumentedTest : InferenceEngineContractTest() {
 
         /** Any non-`NONE` epoch; the service is told the same one by the harness below. */
         const val EPOCH = 1L
+
+        /** skein-gg11.12: a courtesy window only — `am kill` is not expected to succeed. */
+        const val AM_KILL_COURTESY_WAIT_SECONDS = 2L
+
+        /** The real wait: after `kill -9`, the shell-privileged `SIGKILL`. */
+        const val DEATH_WAIT_SECONDS = 10L
     }
 }
