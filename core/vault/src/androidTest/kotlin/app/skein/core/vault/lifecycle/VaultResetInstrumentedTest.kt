@@ -7,6 +7,9 @@
 package app.skein.core.vault.lifecycle
 
 import android.content.Context
+import android.util.Log
+import androidx.biometric.BiometricManager
+import androidx.biometric.BiometricManager.Authenticators.BIOMETRIC_STRONG
 import androidx.test.core.app.ApplicationProvider
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import app.skein.core.vault.key.AndroidKeystoreFacade
@@ -81,6 +84,13 @@ class VaultResetInstrumentedTest {
 
     @Test
     fun reset_removes_real_Keystore_aliases() {
+        // Skip if no biometric is enrolled on the emulator.
+        val biometricManager = BiometricManager.from(context)
+        if (biometricManager.canAuthenticate(BIOMETRIC_STRONG) != BiometricManager.BIOMETRIC_SUCCESS) {
+            Log.i(TAG, "Skipped: no enrolled biometric (test requires BIOMETRIC_STRONG)")
+            return
+        }
+
         // Arrange: provision both Layer-0 aliases the way `setup()` would.
         keystore.createKey(
             alias = VaultKeyProviderImpl.ALIAS_BIOMETRIC,
@@ -116,5 +126,9 @@ class VaultResetInstrumentedTest {
         // Assert
         assertThat(result).isEqualTo(VaultResetResult.RefusedUnlocked)
         assertThat(dbFile.exists()).isTrue()
+    }
+
+    private companion object {
+        const val TAG = "VaultResetTest"
     }
 }
