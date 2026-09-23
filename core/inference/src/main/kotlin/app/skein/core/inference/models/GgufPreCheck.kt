@@ -57,6 +57,16 @@ import java.nio.channels.FileChannel
  * size (`channel.size()`) — so neither a truncated prefix nor a length
  * claiming bytes beyond the actual file can be read as if it were valid.
  *
+ * The prefix is a *bound on work*, not a bound on the file: a genuine
+ * model's key/value section is several MiB (a 150k-entry tokenizer alone
+ * is ~5 MB of strings), so the walk routinely runs out of prefix inside
+ * it. Once the header has validated, that is inconclusive rather than
+ * bad — the result is [GgufPreCheckResult.Plausible] carrying whatever the
+ * walk read before the prefix ended, and the sandboxed inspection in
+ * `:inference` remains the authority. Only a header that does not fit,
+ * a bad magic/version/count, an absurd key, or a length pointing past
+ * the real file refuses.
+ *
  * Every failure mode is a typed [GgufPreCheckResult.Refused] value, never
  * an exception: a hostile or corrupt header is data to be rejected, not a
  * condition allowed to crash the caller.
@@ -143,31 +153,52 @@ public object GgufPreCheck {
         var architecture: String? = null
         var fileType: Long? = null
 
+        // Running out of the bounded prefix INSIDE the key/value section is
+        // not a verdict on the file. Every real LLM's metadata is far larger
+        // than the prefix: the smoke model's `tokenizer.ggml.tokens` and
+        // `tokenizer.ggml.merges` arrays are 2.6 MB and 2.7 MB, and its
+        // key/value section ends at 5.66 MiB - so refusing on
+        // PREFIX_EXHAUSTED rejected every genuine model after the copy and
+        // only the lane's tiny fixture ever passed. The header (magic,
+        // version, both counts) has already been validated by this point;
+        // whatever the walk managed to read is reported, and the real,
+        // sandboxed inspection in `:inference` remains the authority. Any
+        // OTHER reason found before the prefix ran out (a length past the
+        // file's end, an absurd key, a bad array) still refuses.
+        fun exhaustedOrRefuse(reason: GgufPreCheckResult.Reason): GgufPreCheckResult =
+            if (reason == GgufPreCheckResult.Reason.PREFIX_EXHAUSTED) {
+                GgufPreCheckResult.Plausible(architecture = architecture, fileType = fileType)
+            } else {
+                refuse(reason)
+            }
+
         for (i in 0 until kvCount) {
-            val keyLength = cursor.readCount(wide) ?: return refuse(GgufPreCheckResult.Reason.PREFIX_EXHAUSTED)
+            val keyLength =
+                cursor.readCount(wide) ?: return exhaustedOrRefuse(GgufPreCheckResult.Reason.PREFIX_EXHAUSTED)
             if (keyLength < 0 || keyLength > MAX_KEY_LENGTH) {
                 return refuse(GgufPreCheckResult.Reason.KEY_TOO_LONG)
             }
             val key =
                 cursor.readAsciiOrRefuse(keyLength)
-                    ?: return refuse(cursor.lastRefusal ?: GgufPreCheckResult.Reason.PREFIX_EXHAUSTED)
+                    ?: return exhaustedOrRefuse(cursor.lastRefusal ?: GgufPreCheckResult.Reason.PREFIX_EXHAUSTED)
 
-            val valueType = cursor.readU32() ?: return refuse(GgufPreCheckResult.Reason.PREFIX_EXHAUSTED)
+            val valueType =
+                cursor.readU32() ?: return exhaustedOrRefuse(GgufPreCheckResult.Reason.PREFIX_EXHAUSTED)
 
             when (key) {
                 KEY_ARCHITECTURE -> {
                     val (value, refusal) = cursor.readValueCapturingString(valueType.toInt(), wide)
-                    if (refusal != null) return refuse(refusal)
+                    if (refusal != null) return exhaustedOrRefuse(refusal)
                     architecture = value
                 }
                 KEY_FILE_TYPE -> {
                     val (value, refusal) = cursor.readValueCapturingLong(valueType.toInt(), wide)
-                    if (refusal != null) return refuse(refusal)
+                    if (refusal != null) return exhaustedOrRefuse(refusal)
                     fileType = value
                 }
                 else -> {
                     val refusal = cursor.skipValue(valueType.toInt(), wide)
-                    if (refusal != null) return refuse(refusal)
+                    if (refusal != null) return exhaustedOrRefuse(refusal)
                 }
             }
         }

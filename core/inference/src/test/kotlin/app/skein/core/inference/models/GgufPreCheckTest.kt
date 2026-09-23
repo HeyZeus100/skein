@@ -201,6 +201,45 @@ class GgufPreCheckTest {
     }
 
     @Test
+    fun metadata_larger_than_the_prefix_is_plausible_not_refused() {
+        // The Fold smoke case: a real model's key/value section is several
+        // MiB (Qwen2.5 3B: tokens 2.6 MB, merges 2.7 MB, section end at
+        // 5.66 MiB) while the pre-check reads a 1 MiB prefix. Running out of
+        // prefix INSIDE the section must be inconclusive - the header has
+        // validated and the allowlisted keys read before the big arrays are
+        // still reported - not a refusal that deletes the imported file.
+        val vocab = (0 until 200_000).map { "token-$it" }
+        val bytes =
+            header(version = 3, tensorCount = 434, kvCount = 3) {
+                stringKv("general.architecture", "qwen2")
+                u32Kv("general.file_type", 12)
+                arrayOfStringsKv("tokenizer.ggml.tokens", vocab)
+            }
+        val prefixBytes = 64 * 1024
+        assertTrue("fixture must overflow the prefix", bytes.size > prefixBytes)
+        val prefix = ByteBuffer.wrap(bytes, 0, prefixBytes).slice().order(ByteOrder.LITTLE_ENDIAN)
+        val totalSizeBytes = bytes.size.toLong() + 1_500_000_000L // the tensor data that follows in a real file
+
+        val result = GgufPreCheck.check(prefix, totalSizeBytes)
+
+        assertTrue("expected Plausible, got $result", result is GgufPreCheckResult.Plausible)
+        assertEquals("qwen2", (result as GgufPreCheckResult.Plausible).architecture)
+        assertEquals(12L, result.fileType)
+    }
+
+    @Test
+    fun a_prefix_ending_inside_the_header_itself_is_still_refused() {
+        // Inconclusive only applies after the header validated: magic,
+        // version and both counts must all be present.
+        val bytes = header(version = 3, tensorCount = 1, kvCount = 1)
+        val cutInsideCounts = ByteBuffer.wrap(bytes, 0, 12).slice().order(ByteOrder.LITTLE_ENDIAN)
+
+        val result = GgufPreCheck.check(cutInsideCounts, totalSizeBytes = 4_096L)
+
+        assertEquals(GgufPreCheckResult.Reason.TRUNCATED_HEADER, reasonOf(result))
+    }
+
+    @Test
     fun a_length_claiming_bytes_beyond_the_real_file_is_refused() {
         // A string value's length header is kept intact, but the file is
         // truncated inside the value's own declared span — a structural

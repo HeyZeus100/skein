@@ -177,13 +177,22 @@ jobs:
             # Dismiss first, then set the PIN (the credential does not
             # re-lock a dismissed keyguard; stayon keeps it from re-arming),
             # then verify and, if the keyguard is somehow up, type the PIN.
+            # Run 35930315535 showed the runner hands control over BEFORE the
+            # boot actually completes: the setup lines ran at 22:49:12, the
+            # BOOT_COMPLETED broadcast posted at 22:50:42 and SystemUI raised
+            # the lockscreen at 22:50:37 - after the PIN existed, so it came
+            # up as a PIN keyguard nothing had dismissed. Wait for the real
+            # boot-complete signals first, give SystemUI a moment, THEN
+            # dismiss, THEN set the PIN, then poll: if the keyguard is (still
+            # or again) up, wake, dismiss and type the PIN.
+            for i in $(seq 1 60); do if [ "$(adb shell getprop sys.boot_completed | tr -d '\r')" = "1" ] && [ "$(adb shell getprop dev.bootcomplete | tr -d '\r')" = "1" ] && [ "$(adb shell getprop init.svc.bootanim | tr -d '\r')" = "stopped" ]; then break; fi; sleep 5; done
+            sleep 20
             adb shell input keyevent KEYCODE_WAKEUP
             adb shell wm dismiss-keyguard || true
             adb shell locksettings set-pin 1234
             adb shell svc power stayon true
             adb shell settings put system screen_off_timeout 2147483647
-            adb shell wm dismiss-keyguard || true
-            if adb shell dumpsys activity activities | grep -q 'mKeyguardShowing=true'; then adb shell input keyevent KEYCODE_MENU; sleep 1; adb shell input text 1234; adb shell input keyevent KEYCODE_ENTER; sleep 2; fi
+            for i in $(seq 1 24); do if adb shell dumpsys activity activities | grep -q 'mKeyguardShowing=true'; then adb shell input keyevent KEYCODE_WAKEUP; adb shell wm dismiss-keyguard || true; sleep 1; adb shell input text 1234; adb shell input keyevent KEYCODE_ENTER; sleep 2; fi; sleep 5; done
             adb shell dumpsys activity activities | grep -E 'mKeyguardShowing|mAodShowing' | head -2
             # skein-gg11.14: the lane uploaded no logcat, so a test that
             # fails because a foreign activity covers MainActivity (the

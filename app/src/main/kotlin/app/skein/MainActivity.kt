@@ -46,6 +46,7 @@ import androidx.lifecycle.lifecycleScope
 import app.skein.core.inference.models.ImportOutcome
 import app.skein.core.inference.models.ImportProgress
 import app.skein.core.inference.models.ImportSource
+import app.skein.core.inference.models.describe
 import app.skein.core.model.DocId
 import app.skein.core.model.EngineState
 import app.skein.core.model.ModelStatus
@@ -457,14 +458,15 @@ class MainActivity : FragmentActivity() {
                                                 "Imported \"${outcome.record.model.name}\" and set as default"
                                         }
                                         is ImportOutcome.Refused ->
-                                            // No refusal detail beyond its
-                                            // type reaches the UI — spec §9
-                                            // keeps a service diagnostic and
-                                            // model-file content out of any
-                                            // surface, and `ImportRefusal`'s
-                                            // own subtypes carry nothing else
-                                            // user-facing.
-                                            importStatusText = "Import failed: ${outcome.refusal.javaClass.simpleName}"
+                                            // Kind + reason, never content:
+                                            // `describe()` is spec §9-safe (a
+                                            // pre-check reason name, a store
+                                            // refusal summary, an inspection
+                                            // error code). The bare class name
+                                            // shown before ("FromStore") gave
+                                            // the owner nothing to act on
+                                            // during Fold smoke #2.
+                                            importStatusText = "Import failed: ${outcome.refusal.describe()}"
                                     }
                                     modelsListVersion++
                                 }

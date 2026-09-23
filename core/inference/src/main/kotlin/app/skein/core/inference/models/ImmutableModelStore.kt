@@ -194,6 +194,10 @@ class ImmutableModelStore(
 
     fun isOpen(id: String): Boolean = synchronized(monitor) { openModels.containsKey(id) }
 
+    /** True when [directory] holds no promoted file — only `*.tmp` leftovers, or nothing at all. */
+    private fun isStaleStaging(directory: File): Boolean =
+        directory.listFiles()?.none { it.isFile && !it.name.endsWith(TEMP_SUFFIX) } ?: true
+
     /**
      * Imports every file [manifest] declares into `modelsRoot/<id>/`,
      * verifying SHA-256 (and BLAKE3, when the manifest declares it) while
@@ -217,8 +221,19 @@ class ImmutableModelStore(
             // §2.2: a fresh id is mandatory while the old one is loaded, and
             // re-import over an idle id is refused too — delete first.
             if (openModels.containsKey(id)) return ImportResult.Refused(ModelVerification.InUse(id))
-            if (registry.containsKey(id) || directory.exists()) {
-                return ImportResult.Refused(ModelVerification.AlreadyImported(id))
+            if (registry.containsKey(id)) return ImportResult.Refused(ModelVerification.AlreadyImported(id))
+            if (directory.exists()) {
+                // A directory this instance does not know is either a finished
+                // import from an earlier process (a promoted file is present:
+                // refuse, exactly as before) or the staging directory of an
+                // import the process died in the middle of - only `*.tmp`
+                // leftovers, or nothing at all. The Fold produced the second
+                // kind when the app was swiped away mid-copy, and every later
+                // import of the same file was then refused AlreadyImported.
+                // Stale staging is removed here and the import proceeds.
+                if (!isStaleStaging(directory)) return ImportResult.Refused(ModelVerification.AlreadyImported(id))
+                SkeinLog.w(TAG, "removing a staging directory left by an interrupted import")
+                deleteTree(directory)
             }
         }
 

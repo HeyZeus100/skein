@@ -47,6 +47,7 @@ import app.skein.core.model.ModelId
 import app.skein.core.model.ModelOrigin
 import app.skein.core.model.ModelRecord
 import app.skein.core.model.ModelRegistry
+import app.skein.core.model.SkeinLog
 import app.skein.core.verify.ModelFileRole
 import app.skein.core.verify.ModelVerification
 import app.skein.ipc.ErrorCode
@@ -128,6 +129,12 @@ public class ModelManager(
             if (outcome is ImportOutcome.Imported) {
                 val total = outcome.record.model.sizeBytes
                 emit(ImportProgress.InProgress(bytesProcessed = total, totalBytes = total))
+            }
+            if (outcome is ImportOutcome.Refused) {
+                // Kind and reason only — no path, no model content (spec §9).
+                // The Fold's first refused import left nothing in logcat at
+                // all, which is why this line exists.
+                SkeinLog.w(TAG, "import refused: ${outcome.refusal.describe()}")
             }
             emit(ImportProgress.Done(outcome))
         }
@@ -446,6 +453,8 @@ public class ModelManager(
     }
 
     public companion object {
+        private const val TAG = "ModelManager"
+
         /** `docs/design/SKEIN_HUB.md` §3.2: a declared size outside this range refuses before any allocation. */
         public const val MAX_ARTIFACT_BYTES: Long = 16L * 1024 * 1024 * 1024
 
@@ -555,6 +564,20 @@ public sealed interface ImportRefusal {
         val refusal: ModelVerification.Refusal,
     ) : ImportRefusal
 }
+
+/**
+ * A one-line, content-free description of an [ImportRefusal] for logs and
+ * the status row: the refusal kind plus the reason it carries (a pre-check
+ * reason name, a store refusal summary, an inspection error code) — never a
+ * path, never bytes of the file.
+ */
+public fun ImportRefusal.describe(): String =
+    when (this) {
+        is ImportRefusal.StructurallyInvalid -> "StructurallyInvalid(${reason.name})"
+        is ImportRefusal.FromStore -> "FromStore(${refusal.summary})"
+        is ImportRefusal.InspectionFailed -> "InspectionFailed($errorCode)"
+        else -> javaClass.simpleName
+    }
 
 /** Outcome of [ModelManager.delete]. */
 public sealed interface DeleteOutcome {

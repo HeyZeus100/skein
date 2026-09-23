@@ -71,6 +71,28 @@ class ImmutableModelStoreTest {
     }
 
     @Test
+    fun `a staging directory left by an interrupted import does not block the next import`() {
+        val stale = File(root, MODEL_ID).also { it.mkdirs() }
+        File(stale, "model.gguf.tmp").writeBytes(bytesOf(7, 4_096))
+
+        val imported = importOk(defaultFixtureFiles())
+
+        assertThat(imported.directory.list()!!.filter { it.endsWith(".tmp") }).isEmpty()
+        assertThat(imported.files.keys).contains(ModelFileRole.MAIN)
+    }
+
+    @Test
+    fun `a directory holding a promoted file is still refused as already imported`() {
+        val finished = File(root, MODEL_ID).also { it.mkdirs() }
+        File(finished, "model.gguf").writeBytes(bytesOf(7, 4_096))
+
+        val result = store.import(parsedManifest(defaultFixtureFiles()), sourceOf(defaultFixtureFiles()))
+
+        assertThat((result as ImportResult.Refused).refusal).isEqualTo(ModelVerification.AlreadyImported(MODEL_ID))
+        assertThat(File(finished, "model.gguf").exists()).isTrue()
+    }
+
+    @Test
     fun `imported files are sealed read-only`() {
         val imported = importOk(defaultFixtureFiles())
 
