@@ -182,14 +182,39 @@ public class VaultKeyProviderImpl internal constructor(
         val newMaster = existingMaster?.copyOf() ?: ByteArray(MASTER_KEY_LEN).also(random::nextBytes)
         try {
             val bioWrap =
-                wrapUnder(VaultKeyProvider.Factor.BIOMETRIC, newMaster, auth) ?: run {
-                    cleanupOnSetupFail()
-                    return SetupResult.UserCancelled
+                when (val attempt = wrapUnder(VaultKeyProvider.Factor.BIOMETRIC, newMaster, auth)) {
+                    is WrapAttempt.Wrapped -> attempt.wrap
+                    WrapAttempt.UserCancelled -> {
+                        cleanupOnSetupFail()
+                        return SetupResult.UserCancelled
+                    }
+                    is WrapAttempt.Rejected -> {
+                        // skein-f9ls: a keystore rejection (e.g.
+                        // UserNotAuthenticatedException) used to propagate
+                        // out of setup() uncaught, orphaning both freshly
+                        // created aliases with no envelope ever written.
+                        // Clean them up exactly like a user cancel.
+                        cleanupOnSetupFail()
+                        return SetupResult.Failed(
+                            "${factorLabel(VaultKeyProvider.Factor.BIOMETRIC)} wrap rejected by keystore: " +
+                                attempt.exceptionSimpleName,
+                        )
+                    }
                 }
             val credWrap =
-                wrapUnder(VaultKeyProvider.Factor.DEVICE_CREDENTIAL, newMaster, auth) ?: run {
-                    cleanupOnSetupFail()
-                    return SetupResult.UserCancelled
+                when (val attempt = wrapUnder(VaultKeyProvider.Factor.DEVICE_CREDENTIAL, newMaster, auth)) {
+                    is WrapAttempt.Wrapped -> attempt.wrap
+                    WrapAttempt.UserCancelled -> {
+                        cleanupOnSetupFail()
+                        return SetupResult.UserCancelled
+                    }
+                    is WrapAttempt.Rejected -> {
+                        cleanupOnSetupFail()
+                        return SetupResult.Failed(
+                            "${factorLabel(VaultKeyProvider.Factor.DEVICE_CREDENTIAL)} wrap rejected by keystore: " +
+                                attempt.exceptionSimpleName,
+                        )
+                    }
                 }
 
             val version =
@@ -324,8 +349,21 @@ public class VaultKeyProviderImpl internal constructor(
             keystore.createKey(aliasFor(deadFactor), deadFactor, row.strongBoxBacked)
 
             val newWrap =
-                wrapUnder(deadFactor, recoveredMaster, auth)
-                    ?: return RewrapResult.UserCancelled
+                when (val attempt = wrapUnder(deadFactor, recoveredMaster, auth)) {
+                    is WrapAttempt.Wrapped -> attempt.wrap
+                    WrapAttempt.UserCancelled -> return RewrapResult.UserCancelled
+                    // skein-f9ls: same gap as setup()'s wrapUnder call, on the
+                    // shared function — a keystore rejection here used to
+                    // escape rewrapWith() uncaught instead of a typed Failed.
+                    // The envelope still holds the previous generation (the
+                    // surviving factor keeps working); the next recovery
+                    // attempt starts over from step 1, same as any other
+                    // Failed outcome from this method.
+                    is WrapAttempt.Rejected ->
+                        return RewrapResult.Failed(
+                            "${factorLabel(deadFactor)} wrap rejected by keystore: ${attempt.exceptionSimpleName}",
+                        )
+                }
 
             val newVersion =
                 try {
@@ -380,27 +418,49 @@ public class VaultKeyProviderImpl internal constructor(
         listOf(ALIAS_BIOMETRIC, ALIAS_CREDENTIAL).forEach(keystore::deleteEntry)
     }
 
+    /**
+     * Wraps [masterBytes] under [factor]'s Layer-0 alias. Returns
+     * [WrapAttempt.Rejected] (never throws) when the authorised cipher's
+     * `doFinal` is rejected by the keystore (skein-f9ls secondary defect):
+     * previously that exception propagated out of `setup()` / `rewrapWith()`
+     * uncaught, past `cleanupOnSetupFail()`, orphaning the freshly created
+     * Layer-0 aliases. [WrapAttempt.Rejected.exceptionSimpleName] is the
+     * exception's class name ONLY — never its message, which on some
+     * providers can echo constructor arguments — so no key material or
+     * keystore-internal detail reaches a `Failed(reason)` the UI might log.
+     */
     private suspend fun wrapUnder(
         factor: VaultKeyProvider.Factor,
         masterBytes: ByteArray,
         auth: AuthenticateFn,
-    ): Wrap? {
+    ): WrapAttempt {
         val cipher: Cipher =
             try {
                 keystore.encryptCipher(aliasFor(factor))
             } catch (_: KeyPermanentlyInvalidatedException) {
-                return null
+                return WrapAttempt.UserCancelled
             }
         val authorized =
             when (val r = auth(factor, cipher)) {
                 is AuthResult.Success -> r.cipher
-                AuthResult.UserCancelled -> return null
-                is AuthResult.Error -> return null
+                AuthResult.UserCancelled -> return WrapAttempt.UserCancelled
+                is AuthResult.Error -> return WrapAttempt.UserCancelled
             }
-        val wrapped = authorized.doFinal(masterBytes)
+        val wrapped =
+            try {
+                authorized.doFinal(masterBytes)
+            } catch (t: Throwable) {
+                return WrapAttempt.Rejected(t.javaClass.simpleName)
+            }
         val iv = authorized.iv ?: error("Cipher did not expose an IV after doFinal")
-        return Wrap(wrapped, iv)
+        return WrapAttempt.Wrapped(Wrap(wrapped, iv))
     }
+
+    private fun factorLabel(factor: VaultKeyProvider.Factor): String =
+        when (factor) {
+            VaultKeyProvider.Factor.BIOMETRIC -> "biometric"
+            VaultKeyProvider.Factor.DEVICE_CREDENTIAL -> "device credential"
+        }
 
     private fun aliasFor(factor: VaultKeyProvider.Factor): String =
         when (factor) {
@@ -441,6 +501,21 @@ public class VaultKeyProviderImpl internal constructor(
         val wrappedBytes: ByteArray,
         val iv: ByteArray,
     )
+
+    /** Outcome of [wrapUnder] — see its KDoc for the [Rejected] case. */
+    private sealed class WrapAttempt {
+        data class Wrapped(
+            val wrap: Wrap,
+        ) : WrapAttempt()
+
+        /** User dismissed the prompt, or the cipher init itself was invalidated. */
+        object UserCancelled : WrapAttempt()
+
+        /** [exceptionSimpleName] only — never the exception's message. */
+        data class Rejected(
+            val exceptionSimpleName: String,
+        ) : WrapAttempt()
+    }
 
     /** Test-only accessor for asserting the master `ByteArray` was zeroed on `lock()`. */
     internal fun masterForTest(): ByteArray? = master

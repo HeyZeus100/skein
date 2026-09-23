@@ -25,6 +25,21 @@ internal class FakeKeystoreFacade(
     var strongBoxProbed: Boolean = false
         private set
 
+    /**
+     * skein-f9ls: aliases whose next [encryptCipher] returns a Cipher that
+     * throws on `doFinal` — simulating a keystore rejection of the wrap
+     * (e.g. `UserNotAuthenticatedException`) without needing a real
+     * `AndroidKeyStore`. The JVM has no such exception to throw naturally,
+     * so this pre-consumes the returned `Cipher` with a throwaway `doFinal`
+     * call: `AES/GCM/NoPadding` refuses a second `doFinal` without a fresh
+     * IV, so `VaultKeyProviderImpl.wrapUnder`'s real `doFinal(masterBytes)`
+     * call throws `IllegalStateException` — a stand-in exception class, but
+     * `wrapUnder` only ever surfaces `t.javaClass.simpleName`, so the
+     * behaviour under test (cleanup + a typed `Failed`) is exercised
+     * identically to the real rejection.
+     */
+    val rejectWrapForAlias: MutableSet<String> = mutableSetOf()
+
     override fun hasStrongBox(): Boolean {
         strongBoxProbed = true
         return strongBoxAvailable
@@ -53,7 +68,13 @@ internal class FakeKeystoreFacade(
     override fun encryptCipher(alias: String): Cipher {
         checkNotInvalidated(alias)
         val key = keys[alias] ?: error("no key at alias '$alias'")
-        return Cipher.getInstance("AES/GCM/NoPadding").apply { init(Cipher.ENCRYPT_MODE, key) }
+        val cipher = Cipher.getInstance("AES/GCM/NoPadding").apply { init(Cipher.ENCRYPT_MODE, key) }
+        if (alias in rejectWrapForAlias) {
+            // Consume this cipher instance so the caller's own `doFinal`
+            // throws — see `rejectWrapForAlias`'s KDoc.
+            cipher.doFinal(ByteArray(0))
+        }
+        return cipher
     }
 
     override fun decryptCipher(

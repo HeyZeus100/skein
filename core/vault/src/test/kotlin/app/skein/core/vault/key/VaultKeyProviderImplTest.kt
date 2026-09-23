@@ -176,6 +176,76 @@ class VaultKeyProviderImplTest {
             assertThat(keystore.createCalls).isEmpty()
         }
 
+    // ---- wrap rejection cleanup (skein-f9ls) --------------------------
+
+    @Test
+    fun `setup cleans up both aliases and reports Failed when the biometric wrap is rejected`() =
+        runTest {
+            // Arrange
+            val keystore = FakeKeystoreFacade(strongBoxAvailable = true)
+            keystore.rejectWrapForAlias += VaultKeyProviderImpl.ALIAS_BIOMETRIC
+            val provider = newProvider(keystore = keystore)
+            // Act
+            val result = provider.setupNoUi()
+            // Assert — no partial state left behind, per the setup() contract.
+            assertThat(result).isInstanceOf(SetupResult.Failed::class.java)
+            assertThat((result as SetupResult.Failed).reason)
+                .isEqualTo("biometric wrap rejected by keystore: IllegalStateException")
+            assertThat(keystore.containsAlias(VaultKeyProviderImpl.ALIAS_BIOMETRIC)).isFalse()
+            assertThat(keystore.containsAlias(VaultKeyProviderImpl.ALIAS_CREDENTIAL)).isFalse()
+        }
+
+    @Test
+    fun `setup cleans up both aliases and reports Failed when the device credential wrap is rejected`() =
+        runTest {
+            // Arrange — the biometric wrap succeeds; only the second (device
+            // credential) wrap is rejected by the keystore.
+            val keystore = FakeKeystoreFacade(strongBoxAvailable = true)
+            keystore.rejectWrapForAlias += VaultKeyProviderImpl.ALIAS_CREDENTIAL
+            val provider = newProvider(keystore = keystore)
+            // Act
+            val result = provider.setupNoUi()
+            // Assert
+            assertThat(result).isInstanceOf(SetupResult.Failed::class.java)
+            assertThat((result as SetupResult.Failed).reason)
+                .isEqualTo("device credential wrap rejected by keystore: IllegalStateException")
+            assertThat(keystore.containsAlias(VaultKeyProviderImpl.ALIAS_BIOMETRIC)).isFalse()
+            assertThat(keystore.containsAlias(VaultKeyProviderImpl.ALIAS_CREDENTIAL)).isFalse()
+        }
+
+    @Test
+    fun `setup rejection does not persist an envelope`() =
+        runTest {
+            // Arrange
+            val keystore = FakeKeystoreFacade(strongBoxAvailable = true)
+            keystore.rejectWrapForAlias += VaultKeyProviderImpl.ALIAS_BIOMETRIC
+            val storage = FakeMasterKeyStorage()
+            val provider = newProvider(keystore = keystore, storage = storage)
+            // Act
+            provider.setupNoUi()
+            // Assert — a subsequent setup is not refused with AlreadyInitialised.
+            assertThat(storage.readActive()).isNull()
+        }
+
+    @Test
+    fun `rewrap reports Failed when the re-wrap is rejected by the keystore`() =
+        runTest {
+            // Arrange — setup succeeds, then the surviving factor is used to
+            // recover, but re-wrapping the dead factor under its fresh alias
+            // is rejected.
+            val keystore = FakeKeystoreFacade(strongBoxAvailable = true)
+            val provider = newProvider(keystore = keystore)
+            provider.setupNoUi()
+            keystore.invalidatedAliases += VaultKeyProviderImpl.ALIAS_BIOMETRIC
+            keystore.rejectWrapForAlias += VaultKeyProviderImpl.ALIAS_BIOMETRIC
+            // Act
+            val result = provider.rewrapNoUi(VaultKeyProvider.Factor.DEVICE_CREDENTIAL)
+            // Assert
+            assertThat(result).isInstanceOf(RewrapResult.Failed::class.java)
+            assertThat((result as RewrapResult.Failed).reason)
+                .isEqualTo("biometric wrap rejected by keystore: IllegalStateException")
+        }
+
     // ---- unlock / lock ------------------------------------------------
 
     @Test
