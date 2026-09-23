@@ -358,19 +358,18 @@ Re-running leg B against this revision is bd `skein-7zsq`.
 **As of skein-gg11.1 (E-2/E-3 fix: CPU-only device restriction in `loadModel`/
 `loadModelFromFd`, `n_outputs_max = 1` in `newContext`; `jni/` changed, still
 24 exported symbols — `tools/ci/jni-symbols.sh` green)** the value moved
-again: `assembleFossRelease` on a macOS arm64 host (NDK r27c, same
-`b29c606e` pin) gave
-`8ed1d2d782f0195043fe2baa924611bd4c4631747c94922931325b89f55eed94`,
-25,305,800 bytes. This is **one build, not the A1/A2 clean-build pair** this
-section's own recipe asks for — `./gradlew :inference-service:assembleFossDebug`
-and `tools/ci/jni-symbols.sh` were the mandated verification for this bead,
-and this single `assembleFossRelease` run was added only to keep this table's
-convention (a Release, not Debug, artifact); it was not preceded by
-`./gradlew clean`, and the two-clean-build and separate-clone legs were not
-re-run. `.github/workflows/reproducible-build.yml` does not parse or assert
-against this table (grep confirms the only reference is a pointer string in
-an error message), so this entry is documentation, not a CI gate; the
-coordinator re-records it from the `native-determinism` CI artefact.
+again. The `Reproducible build check` run 35844509126 on `609ea95`
+("Two cold builds of libskein_llama.so, compared", arm64-v8a, shader
+patches ON, `SOURCE_DATE_EPOCH` 1790156516, same `b29c606e` pin) produced
+`92353e595be12f46eb01d87038ea4df236e5e969c9391e35c71d4ffd6951b457`
+from **both** cold builds — that is the A1/A2 pair this section's recipe
+asks for, on the Linux runners. For reference, the implementing agent's
+single `assembleFossRelease` on a macOS arm64 host (NDK r27c, no `clean`)
+gave `8ed1d2d782f0195043fe2baa924611bd4c4631747c94922931325b89f55eed94`,
+25,305,800 bytes; the host build is not expected to match the runner
+build byte for byte and is not a record. Leg B (separate clone) is still
+bd `skein-7zsq`. `.github/workflows/reproducible-build.yml` does not parse
+or assert against this table; this entry is documentation, not a CI gate.
 
 Previous record, for reference: E1.I4 / `jni_stub.cpp` produced
 `76fd7ce5dc9cb9774c6dcc64401d508830486e9427648286686161fdf779e2cf`
