@@ -6,6 +6,7 @@ import android.os.Build
 import android.os.Bundle
 import android.view.WindowManager
 import androidx.activity.compose.setContent
+import androidx.activity.enableEdgeToEdge
 import androidx.biometric.BiometricManager
 import androidx.biometric.BiometricPrompt
 import androidx.compose.foundation.layout.Arrangement
@@ -16,7 +17,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Button
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -46,6 +46,7 @@ import app.skein.feature.shell.SkeinApp
 import app.skein.feature.shell.auth.BiometricUnlockScreen
 import app.skein.feature.shell.auth.VaultResetScreen
 import app.skein.feature.shell.auth.VaultSetupScreen
+import app.skein.feature.shell.layout.EdgeToEdgeSurface
 import app.skein.feature.shell.nav.Destination
 import app.skein.feature.shell.tabs.FlushRegistry
 import app.skein.feature.shell.theme.SkeinTheme
@@ -184,6 +185,13 @@ class MainActivity : FragmentActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        // skein-1vfg: targetSdk 37 already forces edge-to-edge on Android
+        // 15+ regardless of this call, but minSdk is 30 — `enableEdgeToEdge`
+        // is what makes the status/navigation bar scrims transparent (rather
+        // than the opaque platform default) on API 30-34 too, so the same
+        // Compose-side inset handling below looks the same on every
+        // supported OS version instead of only on 15+.
+        enableEdgeToEdge()
         securityPrefs = SecurityPrefs(applicationContext)
 
         // Recents thumbnail suppression (spec §9): FLAG_SECURE already stops
@@ -495,12 +503,12 @@ private fun VaultGate(
     }
     when (val phase = gatePhase(session, unlockState, recoveryRequired, provisioned)) {
         is GatePhase.Open -> unlockedContent(phase.session)
-        GatePhase.Opening -> SkeinTheme { OpeningVault(vault.bootstrap) }
-        GatePhase.RecoveryRequired -> SkeinTheme { RecoveryRequiredNotice() }
-        GatePhase.Probing -> SkeinTheme { ProbingVault() }
+        GatePhase.Opening -> SkeinTheme { EdgeToEdgeSurface { m -> OpeningVault(vault.bootstrap, modifier = m) } }
+        GatePhase.RecoveryRequired -> SkeinTheme { EdgeToEdgeSurface { m -> RecoveryRequiredNotice(modifier = m) } }
+        GatePhase.Probing -> SkeinTheme { EdgeToEdgeSurface { m -> ProbingVault(modifier = m) } }
         GatePhase.Setup ->
             SkeinTheme {
-                Surface(modifier = Modifier.fillMaxSize(), color = MaterialTheme.colorScheme.background) {
+                EdgeToEdgeSurface { m ->
                     VaultSetupScreen(
                         keyProvider = vault.keyProvider,
                         onProvisioned = { strongBoxBacked ->
@@ -508,12 +516,13 @@ private fun VaultGate(
                             provisioned = true
                         },
                         onAlreadyInitialised = { provisioned = true },
+                        modifier = m,
                     )
                 }
             }
         GatePhase.Unlock ->
             SkeinTheme {
-                Surface(modifier = Modifier.fillMaxSize(), color = MaterialTheme.colorScheme.background) {
+                EdgeToEdgeSurface { m ->
                     if (resetRequested) {
                         VaultResetScreen(
                             vaultReset = vault.vaultReset,
@@ -526,6 +535,7 @@ private fun VaultGate(
                                 provisioned = false
                             },
                             onDismiss = { resetRequested = false },
+                            modifier = m,
                         )
                     } else {
                         BiometricUnlockScreen(
@@ -534,6 +544,7 @@ private fun VaultGate(
                             onRecoveryRequired = { recoveryRequired = true },
                             onNotInitialised = { provisioned = false },
                             onResetRequested = { resetRequested = true },
+                            modifier = m,
                         )
                     }
                 }
@@ -543,14 +554,15 @@ private fun VaultGate(
 
 /** The envelope probe is a sub-millisecond file read; a bare surface avoids a spinner flash. */
 @Composable
-private fun ProbingVault() {
-    Surface(modifier = Modifier.fillMaxSize(), color = MaterialTheme.colorScheme.background) {
-        Box(modifier = Modifier.fillMaxSize().testTag(VaultGateTestTags.PROBING))
-    }
+private fun ProbingVault(modifier: Modifier = Modifier) {
+    Box(modifier = modifier.testTag(VaultGateTestTags.PROBING))
 }
 
 @Composable
-private fun OpeningVault(bootstrap: VaultBootstrap) {
+private fun OpeningVault(
+    bootstrap: VaultBootstrap,
+    modifier: Modifier = Modifier,
+) {
     var attempt by remember { mutableIntStateOf(0) }
     var failure by remember { mutableStateOf<String?>(null) }
     LaunchedEffect(bootstrap, attempt) {
@@ -561,32 +573,30 @@ private fun OpeningVault(bootstrap: VaultBootstrap) {
                 is BringUpResult.Failed -> result.reason
             }
     }
-    Surface(modifier = Modifier.fillMaxSize(), color = MaterialTheme.colorScheme.background) {
-        Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
-            val reason = failure
-            if (reason == null) {
-                Column(
-                    horizontalAlignment = Alignment.CenterHorizontally,
-                    verticalArrangement = Arrangement.spacedBy(GATE_SPACING),
-                    modifier = Modifier.testTag(VaultGateTestTags.OPENING),
-                ) {
-                    CircularProgressIndicator()
-                    Text(text = "Opening vault…", style = MaterialTheme.typography.bodyMedium)
-                }
-            } else {
-                Column(
-                    horizontalAlignment = Alignment.CenterHorizontally,
-                    verticalArrangement = Arrangement.spacedBy(GATE_SPACING),
-                    modifier = Modifier.padding(horizontal = GATE_GUTTER).testTag(VaultGateTestTags.OPEN_FAILED),
-                ) {
-                    Text(
-                        text = "The vault could not be opened: $reason",
-                        style = MaterialTheme.typography.bodyMedium,
-                        textAlign = TextAlign.Center,
-                    )
-                    Button(onClick = { attempt++ }, modifier = Modifier.testTag(VaultGateTestTags.RETRY)) {
-                        Text("Try again")
-                    }
+    Box(modifier = modifier, contentAlignment = Alignment.Center) {
+        val reason = failure
+        if (reason == null) {
+            Column(
+                horizontalAlignment = Alignment.CenterHorizontally,
+                verticalArrangement = Arrangement.spacedBy(GATE_SPACING),
+                modifier = Modifier.testTag(VaultGateTestTags.OPENING),
+            ) {
+                CircularProgressIndicator()
+                Text(text = "Opening vault…", style = MaterialTheme.typography.bodyMedium)
+            }
+        } else {
+            Column(
+                horizontalAlignment = Alignment.CenterHorizontally,
+                verticalArrangement = Arrangement.spacedBy(GATE_SPACING),
+                modifier = Modifier.padding(horizontal = GATE_GUTTER).testTag(VaultGateTestTags.OPEN_FAILED),
+            ) {
+                Text(
+                    text = "The vault could not be opened: $reason",
+                    style = MaterialTheme.typography.bodyMedium,
+                    textAlign = TextAlign.Center,
+                )
+                Button(onClick = { attempt++ }, modifier = Modifier.testTag(VaultGateTestTags.RETRY)) {
+                    Text("Try again")
                 }
             }
         }
@@ -595,16 +605,14 @@ private fun OpeningVault(bootstrap: VaultBootstrap) {
 
 /** `KeyPermanentlyInvalidated` surfaced; the rewrap UI (`E3.I5`+) is not wired in this bring-up. */
 @Composable
-private fun RecoveryRequiredNotice() {
-    Surface(modifier = Modifier.fillMaxSize(), color = MaterialTheme.colorScheme.background) {
-        Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
-            Text(
-                text = "The biometric key was invalidated. Recovery is not available in this build yet.",
-                style = MaterialTheme.typography.bodyMedium,
-                textAlign = TextAlign.Center,
-                modifier = Modifier.padding(horizontal = GATE_GUTTER).testTag(VaultGateTestTags.RECOVERY_REQUIRED),
-            )
-        }
+private fun RecoveryRequiredNotice(modifier: Modifier = Modifier) {
+    Box(modifier = modifier, contentAlignment = Alignment.Center) {
+        Text(
+            text = "The biometric key was invalidated. Recovery is not available in this build yet.",
+            style = MaterialTheme.typography.bodyMedium,
+            textAlign = TextAlign.Center,
+            modifier = Modifier.padding(horizontal = GATE_GUTTER).testTag(VaultGateTestTags.RECOVERY_REQUIRED),
+        )
     }
 }
 

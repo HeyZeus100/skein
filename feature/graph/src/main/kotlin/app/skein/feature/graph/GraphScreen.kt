@@ -13,13 +13,13 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.unit.dp
+import app.skein.feature.shell.layout.EdgeToEdgeSurface
 import app.skein.feature.shell.theme.SkeinTheme
 import us.aherrera.skein.core.model.DocId
 import us.aherrera.skein.core.model.IndexStore
@@ -43,8 +43,15 @@ public fun GraphScreen(
     val state = rememberGraphState(docId = docId, vaultRepository = vaultRepository, indexStore = indexStore)
 
     SkeinTheme {
-        Surface(modifier = modifier.fillMaxSize(), color = MaterialTheme.colorScheme.background) {
-            Box(Modifier.fillMaxSize()) {
+        // skein-1vfg: the ✕ close button sat in the same status-bar-clipped
+        // spot the shell's hamburger did (`Alignment.TopEnd`, no inset), so
+        // this overlay gets the same edge-to-edge treatment as every other
+        // full-screen root outside `SkeinApp` — background painted to the
+        // window edges, content (the canvas, legend, and close button) inset
+        // from the status bar / cutout / navigation bar via the shared
+        // `EdgeToEdgeSurface`.
+        EdgeToEdgeSurface(modifier = modifier) { contentModifier ->
+            Box(contentModifier) {
                 GraphView(
                     state = state,
                     modifier = Modifier.fillMaxSize(),

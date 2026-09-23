@@ -11,6 +11,9 @@ import androidx.compose.ui.test.onRoot
 import androidx.compose.ui.test.performClick
 import androidx.compose.ui.test.performTextInput
 import androidx.compose.ui.test.printToLog
+import androidx.core.graphics.Insets
+import androidx.core.view.ViewCompat
+import androidx.core.view.WindowInsetsCompat
 import androidx.test.core.app.ActivityScenario
 import androidx.test.core.app.ApplicationProvider
 import app.skein.core.vault.key.SetupResult
@@ -474,6 +477,57 @@ class MainActivityComposeTest {
         }
     }
 
+    // ---- skein-1vfg: shell root clears a simulated status bar inset ------------
+
+    /**
+     * Hardware-verified on the Pixel 9 Pro Fold: with no window-insets
+     * handling anywhere in `app/src/main`/`feature/shell/src/main`, the
+     * command bar's hamburger button rendered half under the status bar and
+     * clock. Robolectric reports zero-size system-bar insets by default, so
+     * this dispatches a synthetic, non-zero status bar inset straight at the
+     * decor view — the same `WindowInsetsCompat` propagation path a real
+     * device's `WindowInsetsAnimation`/layout pass uses — and asserts the
+     * hamburger button (the one Compose already tags via its
+     * `contentDescription`, so `CommandBar` itself needs no test-only
+     * modifier added) sits at or below it. Before `SkeinApp`'s root Column
+     * picked up `.windowInsetsPadding(WindowInsets.safeDrawing)`, this
+     * assertion fails at `top == 0`.
+     */
+    @Test
+    fun `the hamburger menu button clears a simulated status bar inset`() {
+        ActivityScenario.launch(MainActivity::class.java).use { scenario ->
+            awaitTag(ShellTestTags.SKEIN_SHELL_ROOT)
+
+            scenario.onActivity { activity ->
+                val decorView = activity.window.decorView
+                val simulatedInsets =
+                    WindowInsetsCompat
+                        .Builder()
+                        .setInsets(
+                            WindowInsetsCompat.Type.statusBars(),
+                            Insets.of(0, STATUS_BAR_INSET_PX, 0, 0),
+                        ).setInsets(
+                            WindowInsetsCompat.Type.systemBars(),
+                            Insets.of(0, STATUS_BAR_INSET_PX, 0, 0),
+                        ).build()
+                ViewCompat.dispatchApplyWindowInsets(decorView, simulatedInsets)
+            }
+            composeRule.waitForIdle()
+
+            val hamburgerTop =
+                composeRule
+                    .onNodeWithContentDescription("Open navigation drawer")
+                    .fetchSemanticsNode()
+                    .boundsInRoot.top
+
+            assertTrue(
+                "hamburger button top ($hamburgerTop px) must be at/below the simulated status bar " +
+                    "inset ($STATUS_BAR_INSET_PX px) — it must not render under the status bar/clock",
+                hamburgerTop >= STATUS_BAR_INSET_PX,
+            )
+        }
+    }
+
     private companion object {
         /**
          * Ceiling for every `waitUntil` here. `waitUntil` returns as soon as
@@ -486,5 +540,12 @@ class MainActivityComposeTest {
          * budget, not an expected duration.
          */
         const val WAIT_MILLIS = 30_000L
+
+        /**
+         * Arbitrary but realistic (a real status bar is roughly 24-40dp,
+         * i.e. well over 60px at any density) non-zero inset, dispatched
+         * manually since Robolectric never reports a real one on its own.
+         */
+        const val STATUS_BAR_INSET_PX = 130
     }
 }
