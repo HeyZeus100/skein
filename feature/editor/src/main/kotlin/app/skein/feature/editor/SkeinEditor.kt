@@ -16,12 +16,19 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.SolidColor
+import androidx.compose.ui.input.key.Key
+import androidx.compose.ui.input.key.KeyEventType
+import androidx.compose.ui.input.key.key
+import androidx.compose.ui.input.key.onPreviewKeyEvent
+import androidx.compose.ui.input.key.type
 import androidx.compose.ui.input.pointer.PointerEventPass
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.TextLayoutResult
+import androidx.compose.ui.text.TextRange
 import androidx.compose.ui.text.input.TransformedText
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.IntOffset
@@ -171,13 +178,69 @@ public fun SkeinEditor(
             }
         }
 
+    // bd skein-hacu (hardware-verified): Compose Foundation's own hardware
+    // Up/Down handling (`BaseTextPreparedSelection.jumpByLinesOffset`) has
+    // a shortcut for when the cached horizontal position overshoots the
+    // target line's width — it returns `TextLayoutResult.getLineEnd` in
+    // *transformed* coordinates directly, skipping `OffsetMapping
+    // .transformedToOriginal` entirely. Every inactive line in this
+    // editor's live preview is shorter than its raw source (hidden
+    // `#`/`**`/`[[…]]` markers), so moving into a shorter inactive line
+    // routinely overshoots and hits that shortcut, landing the caret at a
+    // transformed offset used as if it were already raw (device symptom:
+    // "arrow keys do nothing / move the wrong thing"). This modifier
+    // replaces vertical hardware-key movement with one that always
+    // converts through the real `OffsetMapping` and always clamps to the
+    // target line's own bounds first, so the framework's shortcut is never
+    // reached. Left/Right/Home/End are unaffected — the framework's own
+    // handling already round-trips them correctly (`OffsetMappingTest`,
+    // `SkeinEditorInteractionTest`).
+    val verticalArrowKeyModifier =
+        Modifier.onPreviewKeyEvent { event ->
+            if (event.type != KeyEventType.KeyDown) return@onPreviewKeyEvent false
+            val lineDelta =
+                when (event.key) {
+                    Key.DirectionDown -> 1
+                    Key.DirectionUp -> -1
+                    else -> return@onPreviewKeyEvent false
+                }
+            val layout = textLayoutResult ?: return@onPreviewKeyEvent false
+            val mapping =
+                transform(state.source, state.cursor, markdownStyle, state.knownWikilinkTitles, frontmatterExpanded)
+                    .offsetMapping
+            val transformedLen = layout.layoutInput.text.length
+            val transformedOffset = mapping.originalToTransformed(state.cursor).coerceIn(0, transformedLen)
+            val currentLine = layout.getLineForOffset(transformedOffset)
+            val targetLine = currentLine + lineDelta
+            val newOriginalOffset =
+                when {
+                    targetLine < 0 -> 0
+                    targetLine >= layout.lineCount -> state.source.length
+                    else -> {
+                        val x = layout.getCursorRect(transformedOffset).left
+                        val y = (layout.getLineTop(targetLine) + layout.getLineBottom(targetLine)) / 2f
+                        val hit = layout.getOffsetForPosition(Offset(x, y))
+                        val clampedHit =
+                            hit.coerceIn(layout.getLineStart(targetLine), layout.getLineEnd(targetLine, true))
+                        mapping.transformedToOriginal(clampedHit)
+                    }
+                }
+            state.onValueChange(state.value.copy(selection = TextRange(newOriginalOffset)))
+            true
+        }
+
     if (wikilinkSuggest == null) {
         Column {
             chip()
             SecureBasicTextField(
                 value = state.value,
                 onValueChange = { newValue -> state.onValueChange(newValue) },
-                modifier = modifier.padding(4.dp).testTag(testTag).then(wikilinkTapModifier),
+                modifier =
+                    modifier
+                        .padding(4.dp)
+                        .testTag(testTag)
+                        .then(verticalArrowKeyModifier)
+                        .then(wikilinkTapModifier),
                 textStyle = MaterialTheme.typography.bodyLarge,
                 visualTransformation = transformation,
                 cursorBrush = SolidColor(cursorColor),
@@ -218,6 +281,7 @@ public fun SkeinEditor(
                         .padding(4.dp)
                         .testTag(testTag)
                         .wikilinkAutocompleteKeyEvents(autocompleteState)
+                        .then(verticalArrowKeyModifier)
                         .then(wikilinkTapModifier),
                 textStyle = MaterialTheme.typography.bodyLarge,
                 visualTransformation = transformation,
