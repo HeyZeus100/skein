@@ -59,8 +59,46 @@ import java.util.concurrent.atomic.AtomicLong
 import java.util.concurrent.atomic.AtomicReference
 
 private const val TINY_GGUF_ASSET = "tiny.gguf"
-private const val EPOCH = 7L
 private const val CANCEL_BUDGET_MILLIS = 200L
+
+// bd skein-gg11.6. `ServiceTestRule` binds the REAL `:inference` process, and
+// nothing tears its in-memory `IsolatedSessionGate` down between test methods
+// inside one instrumentation run (Android is free to keep an isolated
+// process warm across a rapid unbind/rebind when nothing else claims the
+// component). A single shared epoch constant let one test's lock — or
+// unlock — leak into the next: run 35847825560 showed
+// `aHashMismatchIsRefusedAndLeavesTheServiceUnloaded` getting SESSION_LOCKED
+// (11) instead of HASH_MISMATCH (1), because a PRECEDING test's lock was
+// still in effect when this one unlocked-then-loaded with the SAME epoch. A
+// monotonic counter, shared across every test instance in this process
+// (companion-shaped: a top-level `val`, not a member — JUnit4 makes a fresh
+// instance per @Test), makes an accidental epoch collision across methods
+// structurally impossible, regardless of process reuse or method order.
+private val epochSequence = AtomicLong(1_000L)
+
+private fun nextEpoch(): Long = epochSequence.incrementAndGet()
+
+// bd skein-gg11.6. `onSessionUnlocked`/`onSessionLocking`/`onSessionLocked`
+// are all `oneway` (`IInferenceService.aidl`): the call returns to the
+// calling thread the instant the transaction is enqueued, with NO guarantee
+// the service has processed it. Binder orders oneway transactions relative
+// to EACH OTHER on the same target binder, but gives no ordering guarantee
+// relative to a LATER two-way call from the same calling thread — that call
+// can be dispatched to a different, already-idle thread in the target's
+// binder-thread pool and run concurrently with the still-queued oneway push.
+// A test that fires a lock/unlock push and immediately issues a synchronous
+// call assuming the push already landed is racing the service, not testing
+// it. This is the mechanism behind both the SESSION_LOCKED leak above and
+// the historical `errorCode == -1` on `aLockedServiceRefusesTheNextGenerate`
+// (`generate` raced ahead of the lock, so it ran to a normal completion and
+// delivered `onDone` instead of `onError`, leaving `LatchCallback.errorCode`
+// at its untouched `-1` sentinel). The fix is a bounded poll of the gate's
+// OWN observable state through `backendReport` — side-effect-free and gated
+// identically to every other plaintext entry point — never a fixed sleep and
+// never an assumption about oneway delivery order.
+private const val GATE_SETTLE_TIMEOUT_MILLIS = 5_000L
+private const val GATE_POLL_INTERVAL_MILLIS = 20L
+private const val NANOS_PER_MILLI = 1_000_000L
 
 @RunWith(AndroidJUnit4::class)
 class InferenceServiceInstrumentedTest {
@@ -68,6 +106,9 @@ class InferenceServiceInstrumentedTest {
     val serviceRule: ServiceTestRule = ServiceTestRule()
 
     private lateinit var context: Context
+
+    /** bd skein-gg11.6: unique per test method — see the file header note. */
+    private val epoch: Long = nextEpoch()
 
     @Before
     fun setUp() {
@@ -95,7 +136,8 @@ class InferenceServiceInstrumentedTest {
     fun anUnlockedServiceLoadsFromADescriptor() {
         val service = bind()
         val model = assumeModel()
-        service.onSessionUnlocked(EPOCH)
+        service.onSessionUnlocked(epoch)
+        service.awaitGateAdmits(epoch)
 
         // The load that `skein-lnp2` says cannot work by path: this process is
         // isolated, the fd is all it gets, and OK here is the proof.
@@ -113,7 +155,8 @@ class InferenceServiceInstrumentedTest {
     fun aHashMismatchIsRefusedAndLeavesTheServiceUnloaded() {
         val service = bind()
         val model = assumeModel()
-        service.onSessionUnlocked(EPOCH)
+        service.onSessionUnlocked(epoch)
+        service.awaitGateAdmits(epoch)
 
         val code = service.load(loadRequest(model, sha256 = "00".repeat(32)))
 
@@ -177,25 +220,51 @@ class InferenceServiceInstrumentedTest {
     fun lockingMidGenerationCancelsAndZeroesTheKvCache() {
         val service = loadedService()
         val callback = LatchCallback()
-        val before = LlamaNative.secureFreeCount()
 
         service.generate(generateRequest(maxTokens = 512), callback)
-        callback.awaitFirstBatch()
-        service.onSessionLocking(EPOCH, CANCEL_BUDGET_MILLIS)
-        service.onSessionLocked(EPOCH)
+        // bd skein-gg11.6: gate the lock on a REAL onTokens, not
+        // `awaitFirstBatch()` (which also counts down on onDone/onError) — a
+        // lock issued before a single token has streamed is not testing
+        // "mid-generation" cancellation.
+        assertThat(callback.awaitFirstTokens()).isTrue()
+        service.onSessionLocking(epoch, CANCEL_BUDGET_MILLIS)
+        service.onSessionLocked(epoch)
 
         assertThat(callback.awaitTerminal()).isTrue()
         assertThat(callback.stats.get()?.stopReason).isEqualTo("CANCELLED")
-        // LOCK_POLICY_INDEXING.md §4.5: "freed" is not "zeroed". The counter is
-        // the only way to prove the zero-then-free path actually ran.
-        assertThat(LlamaNative.secureFreeCount()).isGreaterThan(before)
+        // bd skein-gg11.6: NOT `LlamaNative.secureFreeCount()`. That counter is
+        // a process-local `std::atomic<int>` (native/llama/jni/skein_jni.cpp)
+        // and this test class runs in the TEST's own process, never in
+        // `:inference` — `android:isolatedProcess="true"`
+        // (inference-service/src/main/AndroidManifest.xml) guarantees a
+        // genuinely separate OS process with its own independent copy of the
+        // native library's static state. Calling `LlamaNative.secureFreeCount()`
+        // from here reads a counter that can NEVER observe what
+        // `freeContextSecure` does inside the isolated process — the
+        // assertion was unconditionally false on every run, not flaky timing.
+        // What IS observable across the AIDL boundary is `status()`, which
+        // (per LOCK_POLICY_INDEXING.md §4.1: "diagnostic calls that touch no
+        // plaintext" stay answerable while locked) is gated on nothing and
+        // flips to "unloaded" only once `unload()` — the one code path that
+        // ever calls `freeContextSecure` — has run. `onSessionLocked` is
+        // `oneway`, so poll for it rather than asserting immediately. The
+        // SPECIFIC zero-then-free call, same-process against
+        // `FakeLlamaBackend`, is proven deterministically in
+        // `InferenceEngineStateTest`'s "lock gate: mid-generation" section.
+        service.awaitUnloaded()
+        assertThat(service.status().state).isEqualTo("unloaded")
     }
 
     @Test
     fun aLockedServiceRefusesTheNextGenerate() {
         val service = loadedService()
-        service.onSessionLocking(EPOCH, CANCEL_BUDGET_MILLIS)
-        service.onSessionLocked(EPOCH)
+        service.onSessionLocking(epoch, CANCEL_BUDGET_MILLIS)
+        service.onSessionLocked(epoch)
+        // bd skein-gg11.6: `onSessionLocked` is oneway; wait for the gate to
+        // actually observe the revoked epoch before racing a `generate`
+        // against it — this is the exact mechanism that produced the
+        // historical `errorCode == -1` (see the file header note).
+        service.awaitGateRefuses(epoch)
         val callback = LatchCallback()
 
         service.generate(generateRequest(), callback)
@@ -219,7 +288,7 @@ class InferenceServiceInstrumentedTest {
     fun cpuOnlyLoadReportsExactlyOneCpuDevice() {
         val service = loadedService() // gpuLayers = 0 (loadRequest's default)
 
-        val report = service.backendReport(BackendReportRequest(sessionEpoch = EPOCH))
+        val report = service.backendReport(BackendReportRequest(sessionEpoch = epoch))
 
         assertThat(report.errorCode).isEqualTo(ErrorCode.OK)
         assertThat(report.devices).hasSize(1)
@@ -230,7 +299,7 @@ class InferenceServiceInstrumentedTest {
     fun cpuOnlyLoadReportsNoGpuOrIgpuDevice() {
         val service = loadedService()
 
-        val report = service.backendReport(BackendReportRequest(sessionEpoch = EPOCH))
+        val report = service.backendReport(BackendReportRequest(sessionEpoch = epoch))
 
         assertThat(
             report.devices.none { it.type == BackendDeviceType.GPU || it.type == BackendDeviceType.IGPU },
@@ -241,10 +310,11 @@ class InferenceServiceInstrumentedTest {
     fun aHighGpuLayersLoadReportsAGpuDeviceWhenVulkanIsAvailable() {
         val service = bind()
         val model = assumeModel()
-        service.onSessionUnlocked(EPOCH)
+        service.onSessionUnlocked(epoch)
+        service.awaitGateAdmits(epoch)
         assertThat(service.load(loadRequest(model, gpuLayers = 99))).isEqualTo(ErrorCode.OK)
 
-        val report = service.backendReport(BackendReportRequest(sessionEpoch = EPOCH))
+        val report = service.backendReport(BackendReportRequest(sessionEpoch = epoch))
 
         // Guard, per the bead's own instruction: on the x86_64 emulator there
         // is no Vulkan device even when the build compiled Vulkan support in,
@@ -273,9 +343,55 @@ class InferenceServiceInstrumentedTest {
     private fun loadedService(): IInferenceService {
         val service = bind()
         val model = assumeModel()
-        service.onSessionUnlocked(EPOCH)
+        service.onSessionUnlocked(epoch)
+        service.awaitGateAdmits(epoch)
         assertThat(service.load(loadRequest(model))).isEqualTo(ErrorCode.OK)
         return service
+    }
+
+    /**
+     * bd skein-gg11.6: `onSessionUnlocked` is `oneway`; poll the gate's own
+     * observable state (through the side-effect-free, identically-gated
+     * `backendReport`) rather than assuming the push has already landed by
+     * the time this call returns. See the file header note.
+     */
+    private fun IInferenceService.awaitGateAdmits(sessionEpoch: Long) = awaitGate(sessionEpoch, admitted = true)
+
+    /** The `onSessionLocking`/`onSessionLocked` counterpart of [awaitGateAdmits]. */
+    private fun IInferenceService.awaitGateRefuses(sessionEpoch: Long) = awaitGate(sessionEpoch, admitted = false)
+
+    private fun IInferenceService.awaitGate(
+        sessionEpoch: Long,
+        admitted: Boolean,
+    ) {
+        val deadlineNanos = System.nanoTime() + GATE_SETTLE_TIMEOUT_MILLIS * NANOS_PER_MILLI
+        while (System.nanoTime() < deadlineNanos) {
+            val report = backendReport(BackendReportRequest(sessionEpoch = sessionEpoch))
+            val isAdmitted = report.errorCode != ErrorCode.SESSION_LOCKED
+            if (isAdmitted == admitted) return
+            Thread.sleep(GATE_POLL_INTERVAL_MILLIS)
+        }
+        throw AssertionError(
+            "gate for sessionEpoch=$sessionEpoch never reached admitted=$admitted within ${GATE_SETTLE_TIMEOUT_MILLIS}ms",
+        )
+    }
+
+    /**
+     * bd skein-gg11.6: `unload()` — the only code path that ever calls
+     * `freeContextSecure` — flips `status().state` to "unloaded" as one of
+     * its first acts, before the (also queued, also asynchronous from this
+     * thread's perspective) native free even runs. `status()` is gated on
+     * nothing (LOCK_POLICY_INDEXING.md §4.1), so this is a side-effect-free,
+     * bounded wait for the lock's release path to have actually executed,
+     * not an assumption about `onSessionLocked`'s oneway delivery.
+     */
+    private fun IInferenceService.awaitUnloaded() {
+        val deadlineNanos = System.nanoTime() + GATE_SETTLE_TIMEOUT_MILLIS * NANOS_PER_MILLI
+        while (System.nanoTime() < deadlineNanos) {
+            if (status().state == "unloaded") return
+            Thread.sleep(GATE_POLL_INTERVAL_MILLIS)
+        }
+        throw AssertionError("service never reported unloaded within ${GATE_SETTLE_TIMEOUT_MILLIS}ms")
     }
 
     private fun loadRequest(
@@ -303,7 +419,7 @@ class InferenceServiceInstrumentedTest {
             threads = 2,
             gpuLayers = gpuLayers,
             embeddingMode = false,
-            sessionEpoch = EPOCH,
+            sessionEpoch = epoch,
         )
 
     private fun generateRequest(
@@ -324,7 +440,7 @@ class InferenceServiceInstrumentedTest {
                 seed = 1L,
                 stop = emptyList(),
             ),
-        sessionEpoch = EPOCH,
+        sessionEpoch = epoch,
     )
 
     private fun sha256Of(file: File): String {
@@ -360,6 +476,9 @@ class InferenceServiceInstrumentedTest {
         val droppedTotal = AtomicLong(0)
 
         private val firstBatch = CountDownLatch(1)
+
+        /** bd skein-gg11.6: counts down on a REAL onTokens only — see [awaitFirstTokens]. */
+        private val firstTokens = CountDownLatch(1)
         private val terminal = CountDownLatch(1)
 
         override fun onTokens(
@@ -371,6 +490,7 @@ class InferenceServiceInstrumentedTest {
             batches.incrementAndGet()
             droppedTotal.addAndGet(dropped.toLong())
             firstBatch.countDown()
+            firstTokens.countDown()
         }
 
         override fun onDone(
@@ -395,6 +515,9 @@ class InferenceServiceInstrumentedTest {
         }
 
         fun awaitFirstBatch() = firstBatch.await(AWAIT_SECONDS, TimeUnit.SECONDS)
+
+        /** Unlike [awaitFirstBatch], only a real onTokens satisfies this. */
+        fun awaitFirstTokens() = firstTokens.await(AWAIT_SECONDS, TimeUnit.SECONDS)
 
         fun awaitTerminal() = terminal.await(AWAIT_SECONDS, TimeUnit.SECONDS)
     }

@@ -431,6 +431,102 @@ class InferenceEngineStateTest {
         assertThat(backend.cacheAndDecodeCalls.count { it == FakeLlamaBackend.KV_CLEAR }).isEqualTo(2)
     }
 
+    // ------------------------------------------- lock gate: mid-generation (bd skein-gg11.6)
+    //
+    // The instrumented lane proves TIMING (cancel honoured within the wall-clock
+    // budget) and cross-process delivery; this proves the LOGIC underneath it —
+    // that a lock arriving mid-generation cancels the request, frees the
+    // context through the zeroing path (not a plain free), and refuses the
+    // next `generate` — deterministically, with `InlineTaskRunner` standing in
+    // for the single-worker-thread serialization the device lane exercises for
+    // real. `BlockingBackend` (the same fixture "an inspection during a
+    // generation is refused with BUSY" uses) nests the lock push inside the
+    // first `sampleNext`, so it runs synchronously mid-loop.
+
+    @Test
+    fun `a lock mid-generation cancels the in-flight request`() {
+        var lockingEngine: InferenceEngineState? = null
+        val blocking =
+            BlockingBackend {
+                lockingEngine?.onSessionLocking(epoch, LOCK_BUDGET_MILLIS)
+                lockingEngine?.onSessionLocked(epoch)
+            }
+        lockingEngine = InferenceEngineState(blocking, InlineTaskRunner(), CallbackDispatcher(InlineTaskRunner()))
+        lockingEngine.onSessionUnlocked(epoch)
+        lockingEngine.load(loadRequest())
+        val cb = RecordingCallback()
+
+        lockingEngine.generate(generateRequest(maxTokens = 8), cb)
+
+        assertThat(
+            cb.done
+                .single()
+                .second.stopReason,
+        ).isEqualTo("CANCELLED")
+        // The native abort flag, not only the Kotlin-side `cancelled` bit —
+        // `cancel`/`cancelInFlight` set this from whichever thread observes
+        // the lock, exactly as a client-initiated cancel does.
+        assertThat(blocking.cancelFlags.any { it.second }).isTrue()
+    }
+
+    @Test
+    fun `a lock mid-generation frees the context through the zeroing path, after this turn's own KV clear`() {
+        var lockingEngine: InferenceEngineState? = null
+        val blocking =
+            BlockingBackend {
+                lockingEngine?.onSessionLocking(epoch, LOCK_BUDGET_MILLIS)
+                lockingEngine?.onSessionLocked(epoch)
+            }
+        lockingEngine = InferenceEngineState(blocking, InlineTaskRunner(), CallbackDispatcher(InlineTaskRunner()))
+        lockingEngine.onSessionUnlocked(epoch)
+        lockingEngine.load(loadRequest())
+
+        lockingEngine.generate(generateRequest(maxTokens = 8), RecordingCallback())
+
+        // Ordering: E-4's kvClear (this turn's own, at generate's start) must
+        // already have happened before the lock ever gets a chance to free the
+        // context — `cacheAndDecodeCalls` and `secureFrees` are two different
+        // lists, but with `InlineTaskRunner` there is exactly one thread, so
+        // `cacheAndDecodeCalls` recording KV_CLEAR before `secureFrees` gains
+        // its entry is a real ordering fact, not an artifact of two lists
+        // filling independently.
+        assertThat(blocking.cacheAndDecodeCalls.first()).isEqualTo(FakeLlamaBackend.KV_CLEAR)
+        assertThat(blocking.secureFrees).hasSize(1)
+    }
+
+    @Test
+    fun `a lock mid-generation refuses the next generate with SESSION_LOCKED`() {
+        var lockingEngine: InferenceEngineState? = null
+        val blocking =
+            BlockingBackend {
+                lockingEngine?.onSessionLocking(epoch, LOCK_BUDGET_MILLIS)
+                lockingEngine?.onSessionLocked(epoch)
+            }
+        lockingEngine = InferenceEngineState(blocking, InlineTaskRunner(), CallbackDispatcher(InlineTaskRunner()))
+        lockingEngine.onSessionUnlocked(epoch)
+        lockingEngine.load(loadRequest())
+        lockingEngine.generate(generateRequest(maxTokens = 8), RecordingCallback())
+        val cb = RecordingCallback()
+
+        lockingEngine.generate(generateRequest(requestId = 2), cb)
+
+        assertThat(cb.errors.single().second).isEqualTo(ErrorCode.SESSION_LOCKED)
+    }
+
+    @Test
+    fun `locking twice with nothing in flight is idempotent`() {
+        engine.onSessionUnlocked(epoch)
+        engine.load(loadRequest())
+
+        engine.onSessionLocking(epoch, LOCK_BUDGET_MILLIS)
+        engine.onSessionLocked(epoch)
+        engine.onSessionLocking(epoch, LOCK_BUDGET_MILLIS)
+        engine.onSessionLocked(epoch)
+
+        assertThat(backend.secureFrees).hasSize(1)
+        assertThat(engine.status().state).isEqualTo("unloaded")
+    }
+
     // ------------------------------------------------------------- inspect
     //
     // H1 (skein-91yy), docs/design/SKEIN_HUB.md §3.3. `inspect` exists so the
@@ -1284,6 +1380,9 @@ class InferenceEngineStateTest {
         val MODEL_BYTES = ByteArray(4_096) { (it % 251).toByte() }
         val TOKENIZER_BYTES = ByteArray(512) { (it % 97).toByte() }
         var counter = 0
+
+        /** bd skein-gg11.6: the `budgetMillis` passed to `onSessionLocking` in the lock-gate tests. */
+        const val LOCK_BUDGET_MILLIS = 200L
 
         /**
          * Distinctive on purpose: the logging tests assert this exact string
