@@ -4,6 +4,7 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
@@ -15,6 +16,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
+import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import app.skein.feature.shell.input.SecureTextField
@@ -37,6 +39,9 @@ import app.skein.feature.shell.theme.LocalSkeinTokens
  * @param modelName short model identifier, e.g. `"qwen"`.
  * @param modelActive `true` renders [app.skein.feature.shell.theme.SkeinTokens.Glyphs.modelActive]
  *   (`●`), `false` renders [app.skein.feature.shell.theme.SkeinTokens.Glyphs.modelPaused] (`⏸`).
+ * @param onSubmit fired on the IME's Enter/Search action — `CommandBarHost`
+ *   wires this to [CommandBarState.onSubmit] (E6.I4 slice A): runs the
+ *   matched `/` command, or opens the top plain-text search hit.
  */
 @Composable
 fun CommandBar(
@@ -46,6 +51,7 @@ fun CommandBar(
     modelName: String,
     modelActive: Boolean,
     modifier: Modifier = Modifier,
+    onSubmit: () -> Unit = {},
 ) {
     val tokens = LocalSkeinTokens.current
     val isCommand = query.startsWith("/")
@@ -73,6 +79,8 @@ fun CommandBar(
                 textStyle = MaterialTheme.typography.bodyMedium,
                 placeholder = { Text("search or /command") },
                 leadingIcon = { Text(text = tokens.glyphs.searchPrompt, style = MaterialTheme.typography.bodyMedium) },
+                imeAction = ImeAction.Search,
+                keyboardActions = KeyboardActions(onSearch = { onSubmit() }),
                 colors =
                     TextFieldDefaults.colors(
                         focusedContainerColor = Color.Transparent,

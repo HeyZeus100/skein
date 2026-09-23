@@ -93,4 +93,12 @@ object ShellTestTags {
 
     /** User-facing message after a failed restore attempt. */
     const val VAULT_RESTORE_MESSAGE = "vault_restore_message"
+
+    // E6.I4 slice A (skein-ps0): CommandBar's `/` palette and plain-text search results.
+
+    /** Root of `app.skein.feature.shell.nav.CommandPalette`, shown while the query starts with `/`. */
+    const val COMMAND_PALETTE = "command_palette"
+
+    /** Root of `app.skein.feature.shell.nav.SearchResults`, shown while plain-text search has hits. */
+    const val SEARCH_RESULTS = "search_results"
 }

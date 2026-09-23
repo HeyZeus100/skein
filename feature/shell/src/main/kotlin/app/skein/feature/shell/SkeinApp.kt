@@ -8,7 +8,9 @@ import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.adaptive.currentWindowAdaptiveInfoV2
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.testTag
 import androidx.window.core.layout.WindowSizeClass
@@ -19,10 +21,14 @@ import app.skein.feature.shell.layout.classifyWidth
 import app.skein.feature.shell.layout.computeAdaptiveLayout
 import app.skein.feature.shell.layout.rememberAdaptiveLayoutState
 import app.skein.feature.shell.layout.rememberFoldPosture
-import app.skein.feature.shell.nav.CommandBar
+import app.skein.feature.shell.nav.CommandBarHost
+import app.skein.feature.shell.nav.CommandBarState
+import app.skein.feature.shell.nav.CommandRegistry
+import app.skein.feature.shell.nav.CommandScope
 import app.skein.feature.shell.nav.Destination
 import app.skein.feature.shell.nav.NavDrawer
 import app.skein.feature.shell.nav.NavState
+import app.skein.feature.shell.nav.newNoteCommand
 import app.skein.feature.shell.nav.rememberNavState
 import app.skein.feature.shell.split.rememberSplitCoordinator
 import app.skein.feature.shell.tabs.EmptyTabHostPlaceholder
@@ -37,6 +43,8 @@ import app.skein.feature.shell.tabs.rememberTabsState
 import app.skein.feature.shell.testing.ShellTestTags
 import app.skein.feature.shell.theme.SkeinTheme
 import app.skein.feature.shell.theme.SkeinThemeMode
+import us.aherrera.skein.core.model.PersonaId
+import us.aherrera.skein.core.model.VaultRepository
 import java.util.UUID
 
 /**
@@ -125,10 +133,27 @@ import java.util.UUID
  * — it must cover the nav drawer/command bar too) or growing
  * [destinationContent] a second, unrelated purpose. `null` (the default)
  * means "nothing to draw", matching every other slot's null-safe default.
+ *
+ * [vaultRepository] / [personaId] are `E6.I4` slice A's (bd `skein-ps0`)
+ * seam for the command bar's `/new note` command and plain-text search:
+ * unlike [noteTabContent]/[timelinePane]/[overlay], these aren't
+ * `:app`-only screen slots — [CommandBar] itself lives in this module and
+ * `VaultRepository` is already on this module's classpath (`:core:vault`
+ * `api`-exposes `:core:model`, and `:feature:editor`'s `NoteTab` takes the
+ * same type directly for the same reason), so there's no cross-module
+ * dependency-direction problem in taking it as a plain parameter here.
+ * `null` (the default) keeps every existing caller — every `SkeinAppTest`
+ * case, every preview — compiling and behaving unchanged: a search-less,
+ * command-less bar with no crash. `:app`'s `MainActivity` passes
+ * `session.repository`; `personaId` stays `null` until the shell has a
+ * "current persona" concept of its own to expose (coordinator note
+ * 2026-09-22).
  */
 @Composable
 fun SkeinApp(
     themeMode: SkeinThemeMode = SkeinThemeMode.SYSTEM,
+    vaultRepository: VaultRepository? = null,
+    personaId: PersonaId? = null,
     destinationContent: @Composable (Destination) -> Unit = { destination ->
         DestinationPlaceholder(label = destination.name)
     },
@@ -186,6 +211,34 @@ fun SkeinApp(
             primaryTabsState.openPinned(Tab(TabId(UUID.randomUUID().toString()), docId, title, TabKind.NOTE))
         }
 
+        // E6.I4 slice A (skein-ps0): the `/` palette's command source.
+        // `/new note` is (re-)registered whenever `vaultRepository` changes
+        // — `null` unregisters it, so a shell with no vault wired shows an
+        // empty (but not broken) palette instead of a command that would
+        // NPE if run. `E7.I6` registers `CommandScope.EDITOR` commands into
+        // this same registry without touching this effect.
+        val commandRegistry = remember { CommandRegistry() }
+        LaunchedEffect(vaultRepository, personaId, primaryTabsState) {
+            if (vaultRepository != null) {
+                commandRegistry.register(
+                    CommandScope.GLOBAL,
+                    listOf(newNoteCommand(vaultRepository, personaId, primaryTabsState)),
+                )
+            } else {
+                commandRegistry.unregister(CommandScope.GLOBAL)
+            }
+        }
+        val commandBarScope = rememberCoroutineScope()
+        val commandBarState =
+            remember(vaultRepository, commandRegistry, primaryTabsState) {
+                CommandBarState(
+                    vaultRepository = vaultRepository,
+                    registry = commandRegistry,
+                    onOpenPreview = onTimelineEntryOpen,
+                    searchScope = commandBarScope,
+                )
+            }
+
         Box(Modifier.fillMaxSize()) {
             NavDrawer(
                 open = navState.drawerOpen,
@@ -199,10 +252,9 @@ fun SkeinApp(
                             .fillMaxSize()
                             .testTag(ShellTestTags.SKEIN_SHELL_ROOT),
                 ) {
-                    CommandBar(
-                        query = navState.query,
-                        onQueryChange = navState::setQuery,
-                        onMenuClick = navState::openDrawer,
+                    CommandBarHost(
+                        navState = navState,
+                        commandBarState = commandBarState,
                         modelName = "qwen",
                         modelActive = true,
                     )

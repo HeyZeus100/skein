@@ -13,6 +13,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import app.skein.feature.shell.theme.SkeinTheme
 import app.skein.feature.shell.theme.SkeinThemeMode
+import us.aherrera.skein.core.model.DocumentKind
 
 /**
  * Shared preview scaffold: [NavDrawer] wrapping [CommandBar] over a
@@ -78,4 +79,78 @@ private fun OpenDrawerFoldedPreview() {
 @Composable
 private fun ActiveQueryPreview() {
     NavPreviewScaffold(navState = remember { NavState(initialQuery = "/new note") })
+}
+
+// ---- E6.I4 slice A (skein-ps0): `/` palette + plain-text search results --------
+
+/** Sample palette content: [CommandPalette] itself needs no `VaultRepository` — [Command.run] never fires from a preview tap. */
+private val samplePaletteCommands =
+    listOf(
+        Command(keyword = "new note", hint = "[title] — create a note and open it pinned") {},
+    )
+
+private val sampleSearchResults =
+    listOf(
+        SearchResult(docId = "1", title = "Quarterly planning", kind = DocumentKind.NOTE),
+        SearchResult(docId = "2", title = "Chat about quarterly goals", kind = DocumentKind.CHAT),
+    )
+
+/** Typing `/` shows the filtered palette below the bar (spec §8.2) — phone width. */
+@Preview(name = "Command palette — folded 400dp", widthDp = 400, heightDp = 500, showBackground = true)
+@Composable
+private fun CommandPaletteFoldedPreview() {
+    SkeinTheme(mode = SkeinThemeMode.DARK) {
+        Column(modifier = Modifier.fillMaxSize()) {
+            CommandBar(query = "/new", onQueryChange = {}, onMenuClick = {}, modelName = "qwen", modelActive = true)
+            CommandPalette(commands = samplePaletteCommands, onSelect = {})
+        }
+    }
+}
+
+/** Same palette — unfolded/dual-pane width. */
+@Preview(name = "Command palette — unfolded 1000dp", widthDp = 1000, heightDp = 500, showBackground = true)
+@Composable
+private fun CommandPaletteUnfoldedPreview() {
+    SkeinTheme(mode = SkeinThemeMode.DARK) {
+        Column(modifier = Modifier.fillMaxSize()) {
+            CommandBar(query = "/new", onQueryChange = {}, onMenuClick = {}, modelName = "qwen", modelActive = true)
+            CommandPalette(commands = samplePaletteCommands, onSelect = {})
+        }
+    }
+}
+
+/** Plain-text search: title hits before body hits, each with a kind glyph (spec §8.2) — phone width. */
+@Preview(name = "Search results — folded 400dp", widthDp = 400, heightDp = 500, showBackground = true)
+@Composable
+private fun SearchResultsFoldedPreview() {
+    SkeinTheme(mode = SkeinThemeMode.DARK) {
+        Column(modifier = Modifier.fillMaxSize()) {
+            CommandBar(
+                query = "quarterly",
+                onQueryChange = {},
+                onMenuClick = {},
+                modelName = "qwen",
+                modelActive = true,
+            )
+            SearchResults(results = sampleSearchResults, onResultClick = {})
+        }
+    }
+}
+
+/** Same search results — unfolded/dual-pane width. */
+@Preview(name = "Search results — unfolded 1000dp", widthDp = 1000, heightDp = 500, showBackground = true)
+@Composable
+private fun SearchResultsUnfoldedPreview() {
+    SkeinTheme(mode = SkeinThemeMode.DARK) {
+        Column(modifier = Modifier.fillMaxSize()) {
+            CommandBar(
+                query = "quarterly",
+                onQueryChange = {},
+                onMenuClick = {},
+                modelName = "qwen",
+                modelActive = true,
+            )
+            SearchResults(results = sampleSearchResults, onResultClick = {})
+        }
+    }
 }

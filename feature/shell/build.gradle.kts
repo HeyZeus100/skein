@@ -67,6 +67,13 @@ dependencies {
     implementation(project(":core:vault"))
     implementation(libs.androidx.biometric)
 
+    // E6.I4 slice A (skein-ps0): CommandBarState/BuiltinCommands speak
+    // `VaultRepository`/`NewDocument`/etc. directly (the type is already on
+    // this module's classpath via `:core:vault`'s `api(":core:model")`
+    // exposure — declared explicitly here too, matching `:feature:timeline`'s
+    // own convention, since main source now references it by name).
+    implementation(project(":core:model"))
+
     // skein-v9g (E3.I11): `VaultSetupScreen`'s "Restore from a passphrase
     // export" launches `ACTION_OPEN_DOCUMENT` through
     // `rememberLauncherForActivityResult`, so this is now a main-source-set
@@ -84,6 +91,11 @@ dependencies {
     // skein-ank2: VaultSetupStateTest drives the setup state holder's
     // launched work under `runTest` / `backgroundScope`.
     testImplementation(libs.kotlinx.coroutines.test)
+    // E6.I4 slice A (skein-ps0): CommandBarStateTest/BuiltinCommandsTest use
+    // `InMemoryVaultRepository` for search/create-document behavior and
+    // `SkeinLogCaptureRule` for the no-logging assertion — same
+    // `testImplementation(project(":testing"))` shape as `:feature:timeline`.
+    testImplementation(project(":testing"))
     // E3.I9: SecureTextFieldTest asserts the EditorInfo flags a Robolectric
     // Compose host produces (bd memory `compose-ui-test-infra-robolectric-compose-ui-test`
     // — this is the module's first real Compose UI test infra, added here
