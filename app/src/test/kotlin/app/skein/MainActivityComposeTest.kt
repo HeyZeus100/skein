@@ -1,5 +1,6 @@
 package app.skein
 
+import androidx.compose.ui.semantics.SemanticsActions
 import androidx.compose.ui.test.ComposeTimeoutException
 import androidx.compose.ui.test.junit4.v2.createEmptyComposeRule
 import androidx.compose.ui.test.onAllNodesWithContentDescription
@@ -10,6 +11,7 @@ import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.onRoot
 import androidx.compose.ui.test.performClick
+import androidx.compose.ui.test.performSemanticsAction
 import androidx.compose.ui.test.performTextInput
 import androidx.compose.ui.test.printToLog
 import androidx.compose.ui.test.printToString
@@ -232,7 +234,9 @@ class MainActivityComposeTest {
 
         ActivityScenario.launch(MainActivity::class.java).use {
             awaitTag(ShellTestTags.VAULT_SETUP_ROOT)
-            composeRule.onNodeWithTag(ShellTestTags.VAULT_SETUP_BEGIN_BUTTON).performClick()
+            composeRule
+                .onNodeWithTag(ShellTestTags.VAULT_SETUP_BEGIN_BUTTON)
+                .performSemanticsAction(SemanticsActions.OnClick)
             awaitTag(ShellTestTags.SKEIN_SHELL_ROOT)
 
             assertEquals(1, app.keyProvider.setupCalls.get())
@@ -245,7 +249,9 @@ class MainActivityComposeTest {
 
         ActivityScenario.launch(MainActivity::class.java).use {
             awaitTag(ShellTestTags.VAULT_SETUP_ROOT)
-            composeRule.onNodeWithTag(ShellTestTags.VAULT_SETUP_BEGIN_BUTTON).performClick()
+            composeRule
+                .onNodeWithTag(ShellTestTags.VAULT_SETUP_BEGIN_BUTTON)
+                .performSemanticsAction(SemanticsActions.OnClick)
             awaitTag(ShellTestTags.SKEIN_SHELL_ROOT)
 
             val personas = runBlocking { app.personaService.observeAll().first() }
@@ -261,7 +267,9 @@ class MainActivityComposeTest {
 
         ActivityScenario.launch(MainActivity::class.java).use {
             awaitTag(ShellTestTags.VAULT_SETUP_ROOT)
-            composeRule.onNodeWithTag(ShellTestTags.VAULT_SETUP_BEGIN_BUTTON).performClick()
+            composeRule
+                .onNodeWithTag(ShellTestTags.VAULT_SETUP_BEGIN_BUTTON)
+                .performSemanticsAction(SemanticsActions.OnClick)
             awaitTag(ShellTestTags.BIOMETRIC_UNLOCK_ROOT)
 
             assertEquals(1, app.keyProvider.setupCalls.get())
@@ -275,7 +283,9 @@ class MainActivityComposeTest {
 
         ActivityScenario.launch(MainActivity::class.java).use {
             awaitTag(ShellTestTags.VAULT_SETUP_ROOT)
-            composeRule.onNodeWithTag(ShellTestTags.VAULT_SETUP_BEGIN_BUTTON).performClick()
+            composeRule
+                .onNodeWithTag(ShellTestTags.VAULT_SETUP_BEGIN_BUTTON)
+                .performSemanticsAction(SemanticsActions.OnClick)
             awaitTag(ShellTestTags.VAULT_SETUP_RETRY_BUTTON)
 
             composeRule.onNodeWithTag(ShellTestTags.BIOMETRIC_UNLOCK_ROOT).assertDoesNotExist()
@@ -290,7 +300,9 @@ class MainActivityComposeTest {
 
         ActivityScenario.launch(MainActivity::class.java).use {
             awaitTag(ShellTestTags.VAULT_SETUP_ROOT)
-            composeRule.onNodeWithTag(ShellTestTags.VAULT_SETUP_BEGIN_BUTTON).performClick()
+            composeRule
+                .onNodeWithTag(ShellTestTags.VAULT_SETUP_BEGIN_BUTTON)
+                .performSemanticsAction(SemanticsActions.OnClick)
             awaitTag(ShellTestTags.SKEIN_SHELL_ROOT)
 
             composeRule.waitUntil(timeoutMillis = WAIT_MILLIS) {
@@ -330,14 +342,20 @@ class MainActivityComposeTest {
 
         ActivityScenario.launch(MainActivity::class.java).use {
             awaitTag(ShellTestTags.BIOMETRIC_UNLOCK_MESSAGE)
-            composeRule.onNodeWithTag(ShellTestTags.BIOMETRIC_UNLOCK_RESET_BUTTON).performClick()
+            composeRule
+                .onNodeWithTag(ShellTestTags.BIOMETRIC_UNLOCK_RESET_BUTTON)
+                .performSemanticsAction(SemanticsActions.OnClick)
             awaitTag(ShellTestTags.VAULT_RESET_ROOT)
 
             composeRule.onNodeWithTag(ShellTestTags.VAULT_RESET_CONFIRM_FIELD).performTextInput("RESET")
-            composeRule.onNodeWithTag(ShellTestTags.VAULT_RESET_CONTINUE_BUTTON).performClick()
+            composeRule
+                .onNodeWithTag(ShellTestTags.VAULT_RESET_CONTINUE_BUTTON)
+                .performSemanticsAction(SemanticsActions.OnClick)
             awaitTag(ShellTestTags.VAULT_RESET_FINAL_BUTTON)
 
-            composeRule.onNodeWithTag(ShellTestTags.VAULT_RESET_FINAL_BUTTON).performClick()
+            composeRule
+                .onNodeWithTag(ShellTestTags.VAULT_RESET_FINAL_BUTTON)
+                .performSemanticsAction(SemanticsActions.OnClick)
             awaitTag(ShellTestTags.VAULT_SETUP_ROOT)
 
             composeRule.onNodeWithTag(ShellTestTags.BIOMETRIC_UNLOCK_ROOT).assertDoesNotExist()
@@ -350,10 +368,14 @@ class MainActivityComposeTest {
 
         ActivityScenario.launch(MainActivity::class.java).use {
             awaitTag(ShellTestTags.BIOMETRIC_UNLOCK_MESSAGE)
-            composeRule.onNodeWithTag(ShellTestTags.BIOMETRIC_UNLOCK_RESET_BUTTON).performClick()
+            composeRule
+                .onNodeWithTag(ShellTestTags.BIOMETRIC_UNLOCK_RESET_BUTTON)
+                .performSemanticsAction(SemanticsActions.OnClick)
             awaitTag(ShellTestTags.VAULT_RESET_ROOT)
 
-            composeRule.onNodeWithTag(ShellTestTags.VAULT_RESET_CANCEL_BUTTON).performClick()
+            composeRule
+                .onNodeWithTag(ShellTestTags.VAULT_RESET_CANCEL_BUTTON)
+                .performSemanticsAction(SemanticsActions.OnClick)
             awaitTag(ShellTestTags.BIOMETRIC_UNLOCK_ROOT)
 
             composeRule.onNodeWithTag(ShellTestTags.VAULT_RESET_ROOT).assertDoesNotExist()
@@ -455,7 +477,9 @@ class MainActivityComposeTest {
 
             composeRule.onNodeWithContentDescription("Note").performClick()
             awaitTag(NoteTabTestTags.GRAPH_BUTTON)
-            composeRule.onNodeWithTag(NoteTabTestTags.GRAPH_BUTTON).performClick()
+            composeRule
+                .onNodeWithTag(NoteTabTestTags.GRAPH_BUTTON)
+                .performSemanticsAction(SemanticsActions.OnClick)
 
             awaitTag(GraphTestTags.CANVAS)
             composeRule.onNodeWithTag(GraphTestTags.CANVAS).assertExists()
@@ -477,7 +501,9 @@ class MainActivityComposeTest {
 
             composeRule.onNodeWithContentDescription("Note").performClick()
             awaitTag(NoteTabTestTags.GRAPH_BUTTON)
-            composeRule.onNodeWithTag(NoteTabTestTags.GRAPH_BUTTON).performClick()
+            composeRule
+                .onNodeWithTag(NoteTabTestTags.GRAPH_BUTTON)
+                .performSemanticsAction(SemanticsActions.OnClick)
             awaitTag(GraphTestTags.CANVAS)
 
             // The seeded document is the graph's only (center) node, so a
@@ -504,8 +530,12 @@ class MainActivityComposeTest {
 
             // Open the hamburger drawer and navigate to Settings (E6.I3's
             // CommandBar `≡` / NavDrawer "Settings" entry).
-            composeRule.onNodeWithContentDescription("Open navigation drawer").performClick()
-            composeRule.onNodeWithText("Settings", substring = true).performClick()
+            composeRule
+                .onNodeWithContentDescription("Open navigation drawer")
+                .performSemanticsAction(SemanticsActions.OnClick)
+            composeRule
+                .onNodeWithText("Settings", substring = true)
+                .performSemanticsAction(SemanticsActions.OnClick)
             composeRule.onRoot().printToLog("SKEIN_DEBUG")
 
             // Settings › Security's IdleTimeoutRow defaults to 5 minutes
@@ -516,8 +546,12 @@ class MainActivityComposeTest {
             composeRule.waitUntil(timeoutMillis = WAIT_MILLIS) {
                 composeRule.onAllNodesWithText("5 minutes").fetchSemanticsNodes().isNotEmpty()
             }
-            composeRule.onNodeWithText("5 minutes").performClick()
-            composeRule.onNodeWithText("1 minute").performClick()
+            composeRule
+                .onNodeWithText("5 minutes")
+                .performSemanticsAction(SemanticsActions.OnClick)
+            composeRule
+                .onNodeWithText("1 minute")
+                .performSemanticsAction(SemanticsActions.OnClick)
 
             // Persisted to the real DataStore-backed SecurityPrefs...
             val prefs = SecurityPrefs(app)
@@ -555,7 +589,9 @@ class MainActivityComposeTest {
             composeRule.onNodeWithTag(VaultGateTestTags.OPEN_FAILED).assertExists()
 
             app.failOpenWith = null
-            composeRule.onNodeWithTag(VaultGateTestTags.RETRY).performClick()
+            composeRule
+                .onNodeWithTag(VaultGateTestTags.RETRY)
+                .performSemanticsAction(SemanticsActions.OnClick)
             // The retry's LaunchedEffect(bootstrap, attempt) clears the
             // failure and calls bringUp() again immediately; bringUp()
             // itself is gated on openSignal below, so OPENING must already
