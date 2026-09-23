@@ -64,7 +64,7 @@ This mirrors, deliberately, the separation `MODEL_STORE.md` §4 already draws be
 (the hard digest gate) and **origin trust** (the soft attestation badge). Hub adds a third, and it is
 softer than both:
 
-- **Sender authentication** (`us.aherrera.skein.permission.MODEL_TRANSFER`, `signature`, plus an
+- **Sender authentication** (`app.skein.permission.MODEL_TRANSFER`, `signature`, plus an
   explicit `checkSignatures` call) answers *"is the app on the other end genuinely Skein Hub?"*
   It is a hard gate on **who**, and it buys exactly one thing: an unrelated app cannot impersonate
   Hub to harvest a user's gated-model downloads, and cannot pose as Hub to Core.
@@ -109,7 +109,7 @@ mechanics are wrong: a URI grant attached to a broadcast is short-lived and not 
 20-second, multi-gigabyte copy would be racing the grant.
 
 **A1 is rejected** because it costs an exported activity with a public intent-filter. Guarding it with
-`android:permission="us.aherrera.skein.permission.MODEL_TRANSFER"` would make it unreachable by other
+`android:permission="app.skein.permission.MODEL_TRANSFER"` would make it unreachable by other
 apps, but `ManifestPolicyTest`'s `EXPECTED_EXPORTED_COMPONENTS` and `manifest-audit.sh`'s
 `release_exported_components` would both need a new entry, and spec §9's "no exported components"
 would acquire a second exception beside the `DocumentsProvider`. The design does not need it: A2 gets
@@ -149,12 +149,12 @@ share of users, and must stay first-class.
 
 ```xml
 <!-- hub/app/src/main/AndroidManifest.xml -->
-<permission android:name="us.aherrera.skein.permission.MODEL_TRANSFER"
+<permission android:name="app.skein.permission.MODEL_TRANSFER"
             android:protectionLevel="signature" />
-<uses-permission android:name="us.aherrera.skein.permission.MODEL_TRANSFER" />
+<uses-permission android:name="app.skein.permission.MODEL_TRANSFER" />
 <activity android:name="app.skein.hub.transfer.ArtifactPickerActivity"
           android:exported="true"
-          android:permission="us.aherrera.skein.permission.MODEL_TRANSFER"
+          android:permission="app.skein.permission.MODEL_TRANSFER"
           android:excludeFromRecents="true">
     <intent-filter>
         <action android:name="us.aherrera.skein.action.PICK_MODEL_ARTIFACT" />
@@ -165,12 +165,12 @@ share of users, and must stay first-class.
 
 ```xml
 <!-- app/src/main/AndroidManifest.xml (Core) — the ONLY two additions -->
-<uses-permission android:name="us.aherrera.skein.permission.MODEL_TRANSFER" />
+<uses-permission android:name="app.skein.permission.MODEL_TRANSFER" />
 <queries><package android:name="app.skein.hub" /></queries>
 ```
 
 Naming note: the brief wrote `us.skein.permission.MODEL_TRANSFER` "conceptually"; this document uses
-`us.aherrera.skein.permission.MODEL_TRANSFER` to match the namespace already in the tree
+`app.skein.permission.MODEL_TRANSFER` to match the namespace already in the tree
 (`us.aherrera.skein.documents`, `us.aherrera.skein.ipc`).
 
 `<queries>` is required: Core targets SDK 37, so without it `resolveActivity` and
@@ -778,7 +778,7 @@ future"); any Core → Hub channel (§6.3).
 
 | Attacker | What they try | What this design provides |
 |---|---|---|
-| **Malicious app impersonating Hub** | Install `app.skein.hub`-alike; answer Core's picker intent; hand Core a crafted GGUF or harvest the user's downloads | Core resolves an **explicit `ComponentName`** and calls `checkSignatures(self, app.skein.hub) == SIGNATURE_MATCH` **before** starting the intent (§2.4); a different signer fails closed with a visible reason. Hub's picker is itself guarded by `us.aherrera.skein.permission.MODEL_TRANSFER` (`signature`), so an unrelated app cannot invoke Hub either. **And if both were bypassed, the outcome is the "malicious GGUF" row** — because nothing downstream of the handoff trusts the sender. No exported Core component exists for the impostor to reach in the first place (§2.2). |
+| **Malicious app impersonating Hub** | Install `app.skein.hub`-alike; answer Core's picker intent; hand Core a crafted GGUF or harvest the user's downloads | Core resolves an **explicit `ComponentName`** and calls `checkSignatures(self, app.skein.hub) == SIGNATURE_MATCH` **before** starting the intent (§2.4); a different signer fails closed with a visible reason. Hub's picker is itself guarded by `app.skein.permission.MODEL_TRANSFER` (`signature`), so an unrelated app cannot invoke Hub either. **And if both were bypassed, the outcome is the "malicious GGUF" row** — because nothing downstream of the handoff trusts the sender. No exported Core component exists for the impostor to reach in the first place (§2.2). |
 | **Compromised Hub** (our own signed app, taken over) | Exfiltrate vault data; make Core load a hostile model; command Core | Cannot read the vault: no Core surface is exported to Hub, and `VaultDocumentsProvider` is `MANAGE_DOCUMENTS`-guarded so same-signature buys nothing (I2). Cannot command Core: Core is always the initiator and Hub has no way to start, wake or message Core (I3). Cannot certify a model: `id`, digests, size, format, capabilities and context are all Core-derived (§3.4); a lying `transferDigest` yields `TransferDigestMismatch`; a hostile `name`/`license`/`source` is display-only and sanitised. Can at most offer bad bytes → next row. |
 | **Malicious GGUF** (crafted parser exploit) | Reach vault data or Android permissions through llama.cpp | Parsed **only** inside `:inference`: `isolatedProcess="true"`, no permissions, no filesystem, no sockets, holding nothing but the dup'd model fd and one Binder connection (spec §2.6, §9; `ARCHITECTURE.md` §1). `inspect` (§3.3) runs in that same process, so even the *acceptance decision* is made without `:app` parsing a byte. `:app` only ever copies and hashes opaque bytes. Blast radius of a full llama.cpp RCE is a process with no data and no capabilities. `IsolatedSessionGate` additionally refuses every call while the vault is locked. |
 | **TOCTOU between Core's hash and mmap** | Swap or rewrite the bytes after verification, before or during the mapping | Unchanged by this design and load-bearing for it. Gate 1 streams SHA-256 over the **open channel the shared lock is held on**, never a re-opened path; gate 2 re-digests the `MappedByteBuffer` itself with BLAKE3-256, so a write landing *between* the gates reports `Tampered`, distinct from `HashMismatch` (`MODEL_STORE.md` §3). `PinnedModelFile` makes "never resolve by path again" structural, and the service hands llama.cpp the **descriptor**, not `/proc/self/fd/<n>` (`skein-lnp2`, `skein-nxk`). Hub-specific addition: Core hashes **the bytes it wrote into its own store**, in the same single pass that writes them — never a separate pass over Hub's `content://` stream, which Hub could serve differently twice. |
