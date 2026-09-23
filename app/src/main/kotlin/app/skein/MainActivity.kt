@@ -306,6 +306,15 @@ class MainActivity : FragmentActivity() {
         val timelinePersonaSource = remember(session) { session.personaService.observeAll() }
         val timelinePaneState = rememberTimelineState(repo = session.repository, personaSource = timelinePersonaSource)
         SkeinApp(
+            // E6.I4 slice A (skein-ps0): the command bar's `/new note` and
+            // plain-text search. Same `session.repository` instance the
+            // timeline above observes, so a note created via `/new note`
+            // shows up there with no extra wiring (`VaultRepositoryImpl`'s
+            // change bus re-emits `observeTimeline` on any write through
+            // this repository). No "current persona" concept exists in this
+            // shell yet (only the full list `personaService.observeAll()`
+            // surfaces), so `personaId` stays the `SkeinApp` default (null).
+            vaultRepository = session.repository,
             destinationContent = { destination ->
                 when (destination) {
                     Destination.TIMELINE -> TimelineDestination(session)
