@@ -68,13 +68,20 @@ Spec §4.1: *"`:app` → biometric unlock → StrongBox key unwrap → SQLCipher
 open → bind `:inference` → hash-verify current model → mmap → ready."* The
 diagram below names the real class/function for every step that exists in
 this tree today, and labels the rest `planned` with the bead that owns it —
-as of commit `c681057`, everything up to and including "vault open, provider
-installed" is implemented, unit-tested and **verified on the Fold** (setup,
-unlock, screen-off lock and same-process reopen, note creation, wikilinks,
-graph — see §0); the isolated `InferenceService`
-and the verifier it calls are implemented (skein-nxk, skein-v2s); the
-`:app`-side client that binds the service, imports a model and builds the
-`LoadRequest` is not.
+as of commit `8b6ac79` (2026-09-23), everything up to and including "vault
+open, provider installed" is implemented, unit-tested and **verified on the
+Fold** (setup, unlock, screen-off lock and same-process reopen, note
+creation, wikilinks, graph — see §0); the isolated `InferenceService` and
+the verifier it calls are implemented (skein-nxk, skein-v2s); and the
+`:app`-side path is now wired end to end but **not yet verified on the
+Fold**: `app.skein.models.ModelServices` builds `ImmutableModelStore`,
+`ModelRegistryImpl`, `ModelManager` and `LlamaCppEngine` once per unlocked
+session (skein-whg8), `/import model` copies and hash-verifies a picked
+GGUF (skein-cyq), `LlamaCppEngine` binds `:inference`, pushes the session
+epoch (two-way, skein-gg11.8) and builds the `LoadRequest` with
+`gpuLayers = 0` (skein-1uw, skein-gg11.1), `/chat` streams through
+`SendPipeline` (skein-6as), and the TEARDOWN lock tier unloads the model
+before the key is zeroed. The first on-device proof is skein-830f.
 
 ```mermaid
 sequenceDiagram
