@@ -128,7 +128,18 @@ jobs:
           arch: x86_64
           target: google_apis
           disable-animations: true
-          script: ./gradlew connectedDevDebugAndroidTest --stacktrace
+          # skein-f0sy: the keystore tests create auth-bound keys, which the
+          # platform refuses without a secure lock screen ("Secure lock screen
+          # must be enabled to create keys requiring user authentication",
+          # run 35845304360). Set a PIN, keep the screen on and the keyguard
+          # dismissed, then run. Biometric enrolment is not scriptable on the
+          # emulator; tests that need an enrolled biometric must assume-skip.
+          script: |
+            adb shell locksettings set-pin 1234
+            adb shell svc power stayon true
+            adb shell settings put system screen_off_timeout 2147483647
+            adb shell wm dismiss-keyguard || true
+            ./gradlew connectedDevDebugAndroidTest --stacktrace
 
       - name: Upload instrumented test reports
         if: always()

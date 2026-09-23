@@ -24,7 +24,9 @@
 -- SQL statement below individually. Statements are separated by a bare `;`
 -- at end of line + newline; comment lines (`--`) and blank lines are ignored.
 -- Any string literal or trigger body that would contain a `;` on its own
--- line MUST use the `--;` sentinel convention (`E0.I11` plan step 4) — the
+-- line MUST use the dash-dash-semicolon sentinel convention (`E0.I11` plan
+-- step 4; the sentinel is spelled out here rather than written literally so
+-- that a splitter cutting on the bare sequence cannot cut this comment) — the
 -- current file does not need it because every trigger body is a single-line
 -- statement.
 --

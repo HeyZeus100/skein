@@ -45,24 +45,22 @@ private const val TINY_GGUF_ASSET = "tiny.gguf"
 // (native/llama/jni/skein_jni.cpp), which is pure argmax with no RNG, so
 // [seed] does not affect this sequence.
 //
-// Computed off-device: no emulator/adb is available in this dispatch's
-// environment, so this was produced by a throwaway host harness that mirrors
-// LlamaNative's decodePrompt/sampleNext/newSampler call sequence exactly,
-// linked against `third_party/llama.cpp` at the pinned commit
-// (native/llama/PINNED_COMMIT) built for the host CPU backend, and confirmed
-// identical across three independent runs. It has NOT been confirmed against
-// the CI x86_64 emulator's own CPU backend — greedy argmax is expected to
-// agree across CPU SIMD implementations for a model this size (no near-ties
-// observed), but if the first `emulator.yml` run after this lands disagrees,
-// that is the confirming run: update this array to match it, in a commit
-// explaining that specifically (cross-arch float divergence), not "test
-// flaked" — this chain has no randomness to flake.
+// Recorded from the CI x86_64 emulator (API 35, `emulator.yml` run
+// 35845304360, 2026-09-23), which is where this test asserts. The value
+// first pinned here was computed on a macOS arm64 host build of the same
+// pinned llama.cpp (28, 284, 339, 5248, …) and diverged from the emulator at
+// index 1: the two CPU backends use different matmul kernels, and for a Q2_K
+// 135M model the second-token logits are close enough that the argmax flips.
+// Greedy argmax is deterministic per backend (`sameSeedTwiceProducesTheSameIds`
+// passed on the same run), so a mismatch here is never a flake: it is a
+// backend, tokenizer, model-file or sampling change, and the commit that
+// updates this array must say which.
 //
-// If this ever needs to change for a DIFFERENT reason — a `third_party/
-// llama.cpp` submodule bump that altered greedy sampling, tokenization, or
-// the pinned model file — the commit message must say why.
+// If this ever needs to change — a `third_party/llama.cpp` submodule bump
+// that altered greedy sampling, tokenization, or the pinned model file — the
+// commit message must say why.
 private val GOLDEN_GREEDY_IDS =
-    intArrayOf(28, 284, 339, 5248, 441, 915, 5348, 563, 260, 905, 28, 339, 5248, 5348, 563, 260)
+    intArrayOf(28, 837, 260, 3372, 282, 260, 6128, 359, 7452, 12602, 284, 15289, 288, 260, 4340, 27485)
 
 @RunWith(AndroidJUnit4::class)
 class LlamaNativeTest {
