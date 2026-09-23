@@ -387,6 +387,34 @@ Previous record, for reference: E1.I4 / `jni_stub.cpp` produced
 `76fd7ce5dc9cb9774c6dcc64401d508830486e9427648286686161fdf779e2cf`
 (25,270,688 B) across A1/A2/B.
 
+**As of skein-gg11.5 (16 KiB ELF LOAD-segment alignment: `-Wl,-z,max-page-size=16384`
+and `-Wl,-z,common-page-size=16384` added to `target_link_options(skein_llama
+…)` in `CMakeLists.txt` §7a — see §4's guard section above; no `jni/` change,
+still 25 exported symbols — `tools/ci/jni-symbols.sh` green)** the value
+moves again, because the added flags change the ELF program headers.
+`tools/ci/elf-alignment.sh` now PASSES for both `libskein_llama.so` and
+`libskein_sqlite_jni.so`, every built ABI (`arm64-v8a`, and the `dev`
+flavor's `x86_64`). The previous CI-recorded value was
+`92353e595be12f46eb01d87038ea4df236e5e969c9391e35c71d4ffd6951b457` at `609ea95`
+(run 35844509126, per the skein-gg11.1 entry above).
+
+**Local host build only — not a CI record.** A single
+`./gradlew clean :inference-service:assembleFossRelease` on this macOS arm64
+host (NDK r27c, `SOURCE_DATE_EPOCH` unset → the deterministic fallback
+`1767225600`) gave:
+
+| Build | sha256 of `lib/arm64-v8a/libskein_llama.so` |
+|---|---|
+| host build (this bead, skein-gg11.5), macOS arm64, NDK r27c | `530b83ad5126f81fc82fff6bc232506b2acd20e5de8f2b8551744b5b6e2e447c` (25,309,976 B) |
+
+As this section's own convention states, a single host build is not the
+record — the coordinator re-records the authoritative A1/A2 pair from the
+`native-determinism` / `reproducible-build.yml` two-cold-build CI artifact
+once this branch lands, the same way the skein-gg11.1 entry above was
+superseded by run 35844509126's value. This row exists only so a reviewer
+can see that the flag change produces *a* new, self-consistent hash on a
+real build, not that this specific hash is the one to trust.
+
 ## 5. What is deliberately NOT here
 
 - **Inference policy.** Batching, stop strings, UTF-8 stream buffering,

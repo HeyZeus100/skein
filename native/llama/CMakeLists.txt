@@ -846,6 +846,26 @@ message(STATUS
 target_link_options(skein_llama PRIVATE
   "-Wl,--build-id=none"
   "-Wl,--no-rosegment"
+  # 16 KiB ELF LOAD-segment alignment (bd skein-gg11.5 / skein-xth5, PP-48,
+  # OfflineLLM row OL-46). NDK r27c's default `max-page-size` is 4 KiB, which
+  # SIGBUSes on load on a 16 KiB-page-size Android 16 kernel — exactly the
+  # mmap Skein performs to map a GGUF model. OL-46's preferred remedy,
+  # `-DANDROID_SUPPORT_FLEXIBLE_PAGE_SIZES=ON`, is an NDK-toolchain-file
+  # variable that must be supplied as a `-D` at the *initial* `cmake`
+  # invocation (before `project()` triggers the toolchain file) — so it would
+  # have to be duplicated into both inference-service/build.gradle.kts's and
+  # core/vault/build.gradle.kts's `externalNativeBuild.cmake.arguments`, and
+  # again into anything invoking cmake outside Gradle. These two explicit
+  # linker flags do the same job (set PT_LOAD's `p_align`) from inside the one
+  # CMakeLists.txt every build path already shares: AGP's externalNativeBuild
+  # for both `libskein_llama.so` and `libskein_sqlite_jni.so`, and
+  # tools/rb/so-determinism.sh / the reproducible-build workflow, which build
+  # through `./gradlew … assembleFossRelease` rather than around it. One
+  # source of truth, no Gradle-arguments duplication. `max-page-size` is what
+  # the dynamic linker reads; `common-page-size` is set identically so a
+  # tool/linker version that instead consults it agrees.
+  "-Wl,-z,max-page-size=16384"
+  "-Wl,-z,common-page-size=16384"
   "-Wl,--version-script,${_SKEIN_LLAMA_EXPORTS_LD}"
   # The headers declare APIs whose definitions are compiled out by the option
   # set above (backend-specific entry points, training/opt helpers, …). Their
