@@ -53,20 +53,36 @@ class ExportStageRepositoryContractTest {
     private fun repository(): VaultRepositoryImpl {
         val driver = SkeinSQLiteDriver()
         val conn = driver.openWithKey(":memory:", passphrase = null) as SkeinSQLiteConnection
-        // 005 needs 001 (`documents`, its FK parent). 003/007/008 touch
-        // nothing this class reads, so they are skipped — same selective
-        // application `VaultRepositoryImplContractTest` uses.
-        for (migration in listOf("001_initial.sql", "005_export_stages.sql")) {
+        // Load every migration in order from the migration manifest (INDEX.txt),
+        // so that all required schema objects exist. This includes 003's
+        // `document_revisions` table, which is needed for operations like
+        // createDocument and deleteDocument.
+        val indexText =
+            requireNotNull(
+                javaClass.classLoader?.getResourceAsStream("migrations/INDEX.txt"),
+            ) { "migrations/INDEX.txt not on the classpath" }
+                .use { it.readBytes().toString(Charsets.UTF_8) }
+        val migrationFiles =
+            indexText
+                .lineSequence()
+                .map { it.trim() }
+                .filter { it.isNotEmpty() && !it.startsWith("#") }
+                .toList()
+        for (migration in migrationFiles) {
             val sql =
-                requireNotNull(javaClass.classLoader?.getResourceAsStream("migrations/$migration")) {
-                    "migrations/$migration not on the classpath"
-                }.use { it.readBytes().toString(Charsets.UTF_8) }
-            for (statement in splitMigrationStatements(sql)) conn.prepare(statement).use { it.step() }
+                requireNotNull(
+                    javaClass.classLoader?.getResourceAsStream("migrations/$migration"),
+                ) { "migrations/$migration not on the classpath" }
+                    .use { it.readBytes().toString(Charsets.UTF_8) }
+            for (statement in splitMigrationStatements(sql)) {
+                conn.prepare(statement).use { it.step() }
+            }
         }
         // The cascade below only fires with FK enforcement on, which
         // `VaultLifecycle` sets for every production connection.
         conn.prepare("PRAGMA foreign_keys = ON;").use { it.step() }
-        return VaultRepositoryImpl(writer = conn, attachments = InMemoryAttachmentStore()).also { open += it }
+        return VaultRepositoryImpl(writer = conn, attachments = InMemoryAttachmentStore())
+            .also { open += it }
     }
 
     private fun row(
