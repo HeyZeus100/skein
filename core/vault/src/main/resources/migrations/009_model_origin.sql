@@ -29,11 +29,15 @@
 --                       every pre-existing row stays valid; `ModelManager`
 --                       backfills a real name for any row imported before
 --                       this migration on next read.
---   context_length   — backs `Model.contextLength`. Defaults to
---                       `ModelManifest.DEFAULT_CONTEXT_LENGTH` (16384).
---   companions       — JSON array of `{role, path, sha256}`, the same
---                       style as the pre-existing `capabilities` JSON
---                       column.
+--   (NOT added here: `context_length`, `companions` and `license_spdx`
+--                       already exist — `001_initial.sql` adds them with
+--                       ALTER TABLE at its end, together with `name`. The
+--                       first cut of this migration re-added all three and
+--                       every real vault open failed with "duplicate column
+--                       name: context_length" (emulator run 35851243301,
+--                       2026-09-23); the JVM fake driver executes no DDL, so
+--                       `MigrationColumnUniquenessTest` now replays the DDL
+--                       text in INDEX order and fails on any repeat.)
 --   post_mmap_blake3 — see the deviation note above. Nullable: a row
 --                       written before this migration has no recorded
 --                       BLAKE3; `ModelVerifier` computes one at next load
@@ -45,19 +49,15 @@
 --                       through the document picker — there was no Hub and
 --                       no bundled-default provenance path yet.
 --   source_url,
---   source_revision,
---   license_spdx     — Hub-hint provenance (`docs/design/SKEIN_HUB.md`
---                       §3.4's "Hub hint" row). All nullable: absent for
+--   source_revision  — Hub-hint provenance (`docs/design/SKEIN_HUB.md`
+--                       §3.4's "Hub hint" row), alongside the pre-existing
+--                       `license_spdx` from `001`. All nullable: absent for
 --                       every non-Hub import, and never trusted for
 --                       anything load-bearing — display/audit only.
 --
 -- Applied by `Migrator` under `PRAGMA user_version = 9`.
 
 ALTER TABLE models ADD COLUMN display_name TEXT NOT NULL DEFAULT '';--;
-
-ALTER TABLE models ADD COLUMN context_length INTEGER NOT NULL DEFAULT 16384;--;
-
-ALTER TABLE models ADD COLUMN companions TEXT;--;
 
 ALTER TABLE models ADD COLUMN post_mmap_blake3 TEXT;--;
 
@@ -66,5 +66,3 @@ ALTER TABLE models ADD COLUMN origin TEXT NOT NULL DEFAULT 'document_picker';--;
 ALTER TABLE models ADD COLUMN source_url TEXT;--;
 
 ALTER TABLE models ADD COLUMN source_revision TEXT;--;
-
-ALTER TABLE models ADD COLUMN license_spdx TEXT;--;
