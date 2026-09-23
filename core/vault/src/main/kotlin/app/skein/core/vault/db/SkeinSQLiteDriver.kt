@@ -8,26 +8,34 @@ import androidx.sqlite.SQLiteDriver
  * bundle.
  *
  * The primary constructor takes the raw vault key (32 bytes, sourced from
- * `VaultKeyProvider`, `E3.I2`). [open] runs the §4.9 connection setup on
- * every call where a key was supplied to the constructor:
+ * `VaultKeyProvider`, `E3.I2`). [open] runs the §4.9 connection setup PRAGMA
+ * sequence on every call:
  *  1. `PRAGMA key = "x'<hex>'"` — the key hex-encoded and passed through
  *     SQLCipher's `x'...'` blob-literal form so raw (non-UTF8) key
- *     material round-trips correctly.
- *  2. `PRAGMA cipher_memory_security = ON;`
+ *     material round-trips correctly. Only run when a key was supplied to
+ *     the constructor ([applyKey]).
+ *  2. `PRAGMA cipher_memory_security = ON;` — also key-only ([applyKey]).
  *  3. `PRAGMA foreign_keys = ON;`
  *  4. `PRAGMA journal_mode = WAL;`
  *
+ * Steps 3 and 4 ([applyConnectionPragmas]) are **unconditional** — they run
+ * whether or not a key was supplied, and whether the connection was opened
+ * via [open] or the deprecated [openWithKey]. Gating them on "was a key
+ * supplied" was `skein-gg11.10`'s bug: an unkeyed connection (`:memory:` /
+ * dev harness, or `openWithKey(fileName, passphrase = null)`) silently ran
+ * with `PRAGMA foreign_keys` at SQLite's OFF default, so a
+ * `document_revisions` row never cascaded off its deleted `documents` row —
+ * see [applyConnectionPragmas]'s KDoc.
+ *
  * The constructor's [key] `ByteArray` is zeroed in place immediately after
- * those pragmas run — whether [open] succeeds or throws. This module never
+ * [applyKey] runs — whether [open] succeeds or throws. This module never
  * persists the key; callers must not reuse the array afterward. A driver
  * instance is a single-use secret holder: it is intended to back exactly
  * one keyed [open] call. Construct a fresh driver (with a fresh key copy
  * from `VaultKeyProvider`) per connection that needs the key applied.
  *
- * After the pragmas (or immediately, when no key was supplied — e.g. the
- * no-arg constructor used for `:memory:` / dev harnesses), [open] runs
- * three sanity probes and throws [SkeinSQLiteException] if any of them
- * fails to return / execute:
+ * After the pragmas, [open] runs three sanity probes and throws
+ * [SkeinSQLiteException] if any of them fails to return / execute:
  *  1. `PRAGMA cipher_version;` — asserts SQLCipher is active. If the file
  *     exists and holds ciphertext but no key was supplied, the read raises
  *     [EncryptedDatabaseWithoutKeyException] instead. If a key WAS
@@ -59,7 +67,7 @@ public class SkeinSQLiteDriver internal constructor(
             val k = key
             if (k != null) {
                 try {
-                    applyKeyAndPragmas(handle, k)
+                    applyKey(handle, k)
                 } finally {
                     // Zero the constructor's copy whether keying/pragma
                     // application succeeded or threw, then drop the
@@ -68,6 +76,12 @@ public class SkeinSQLiteDriver internal constructor(
                     key = null
                 }
             }
+            // Unconditional, regardless of whether a key was supplied: an
+            // unkeyed (`:memory:` / dev harness) connection must still
+            // enforce FK constraints and use WAL, exactly like a keyed
+            // production connection — see [applyConnectionPragmas]'s KDoc
+            // for why these must NOT be gated on `keySupplied`.
+            applyConnectionPragmas(handle)
             return finishOpen(handle, keySupplied)
         } catch (t: Throwable) {
             closeQuietly(handle)
@@ -103,6 +117,15 @@ public class SkeinSQLiteDriver internal constructor(
                     passphrase.fill(0)
                 }
             }
+            // Same [applyConnectionPragmas] call the primary open() makes —
+            // this deprecated entry point predates the §4.9 PRAGMA setup
+            // but must not skip the two PRAGMAs that apply regardless of
+            // whether a key was supplied (skein-gg11.10: an unkeyed
+            // `openWithKey(fileName, passphrase = null)` connection —
+            // exactly what every unencrypted-`:memory:` contract test uses
+            // — silently ran with FK enforcement OFF, so a document delete
+            // never cascaded to `document_revisions` on the real driver).
+            applyConnectionPragmas(handle)
             return finishOpen(handle, keySupplied)
         } catch (t: Throwable) {
             // Best-effort close; also zero the passphrase if we didn't
@@ -113,14 +136,48 @@ public class SkeinSQLiteDriver internal constructor(
         }
     }
 
-    /** Applies the §4.9 connection setup PRAGMAs using the raw vault key [k]. */
-    private fun applyKeyAndPragmas(
+    /**
+     * Applies the two key-only §4.9 PRAGMAs (`PRAGMA key`,
+     * `PRAGMA cipher_memory_security`) using the raw vault key [k]. Only
+     * meaningful when a key was actually supplied — SQLCipher's `PRAGMA
+     * key` must be the very first statement run on a freshly-opened
+     * connection when used, so this always runs before
+     * [applyConnectionPragmas].
+     */
+    private fun applyKey(
         handle: Long,
         k: ByteArray,
     ) {
         val hex = k.joinToString(separator = "") { byte -> "%02x".format(byte.toInt() and 0xFF) }
         native.nativeExec(handle, "PRAGMA key = \"x'$hex'\";")
         native.nativeExec(handle, "PRAGMA cipher_memory_security = ON;")
+    }
+
+    /**
+     * Applies the two §4.9 PRAGMAs that are NOT key-specific
+     * (`PRAGMA foreign_keys`, `PRAGMA journal_mode`) — called
+     * unconditionally by both [open] and [openWithKey], whether or not a
+     * key was supplied.
+     *
+     * These two must never be gated behind "was a key supplied" the way
+     * [applyKey]'s pair are: `PRAGMA foreign_keys` defaults OFF per
+     * SQLite connection regardless of encryption, and an unkeyed
+     * connection (`:memory:` / dev harness, or the deprecated
+     * [openWithKey] called with `passphrase = null`) is exactly the shape
+     * every JVM-unreachable, real-SQLite contract test opens against
+     * (skein-gg11.10: `VaultRepositoryImplContractTest` builds its
+     * connection via `driver.openWithKey(":memory:", passphrase = null)`
+     * — before this fix, that connection never ran `PRAGMA
+     * foreign_keys = ON` at all, so `document_revisions`' `ON DELETE
+     * CASCADE` from `documents` never fired and a document delete left
+     * its revision rows behind on the real driver, exactly the failure
+     * `deleting_a_document_cascades_its_revisions_ahead_of_any_sweep` /
+     * `a_citation_into_a_deleted_document_does_not_match` caught on the
+     * emulator lane). Production connections (`ConnectionPool.open`, via
+     * the keyed `SkeinSQLiteDriver(key)` constructor and [open]) already
+     * ran these two correctly — the gap was specific to the unkeyed path.
+     */
+    private fun applyConnectionPragmas(handle: Long) {
         native.nativeExec(handle, "PRAGMA foreign_keys = ON;")
         native.nativeExec(handle, "PRAGMA journal_mode = WAL;")
     }

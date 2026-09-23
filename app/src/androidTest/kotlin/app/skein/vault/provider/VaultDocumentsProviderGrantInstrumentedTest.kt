@@ -93,8 +93,21 @@ import java.security.SecureRandom
 
 @RunWith(AndroidJUnit4::class)
 class VaultDocumentsProviderGrantInstrumentedTest {
-    /** Test-only provider: a random in-memory key, unlock always succeeds. Mirrors `VaultBootstrapInstrumentedTest`. */
+    /**
+     * Test-only provider: unlock always succeeds, over ONE random in-memory
+     * key. Never real material. Mirrors `VaultBootstrapInstrumentedTest`,
+     * including the skein-7yy2 fix documented there: [wrapped] stands in for
+     * the wrapped master at rest so every [unlock] unwraps THE SAME bytes,
+     * which is what lets [read_worksAgain_afterLockThenReUnlock_usingTheSameDocumentId]
+     * reopen the vault file the first unlock created. Minting fresh random
+     * key material per [unlock] made the second bring-up fail with the
+     * correct-but-fatal `OpenResult.WrongKey` ("the unlocked key does not
+     * open this vault").
+     */
     private class RandomKeyVaultKeyProvider : VaultKeyProvider {
+        /** The "wrapped" master: what every [unlock] unwraps. Not handed to callers, never zeroed. */
+        private val wrapped: ByteArray = ByteArray(KEY_LENGTH).also(SecureRandom()::nextBytes)
+
         @Volatile
         private var master: ByteArray? = null
         private var epoch = 0L
@@ -118,7 +131,7 @@ class VaultDocumentsProviderGrantInstrumentedTest {
             prompt: BiometricPrompt.PromptInfo,
             factor: VaultKeyProvider.Factor,
         ): UnlockResult {
-            master = ByteArray(KEY_LENGTH).also(SecureRandom()::nextBytes)
+            master = wrapped.copyOf()
             return UnlockResult.Success(AuthorizationToken(++epoch))
         }
 

@@ -17,6 +17,28 @@
 // every request Parcelable also carries `sessionEpoch` and [guard] is the first
 // statement of every entry point that touches plaintext. Belt and suspenders,
 // closing a race the push alone cannot.
+//
+// WHY EVERY HANDLER FLIPS THE FLAG FIRST (bd skein-gg11.8). LOCK_POLICY_INDEXING
+// §4.1 is normative about this: the revocation "happens on the Binder thread
+// handling `onSessionLocking` and is visible to every subsequent call before
+// `onSessionLocking` even returns". [onLocking] and [onLocked] therefore write
+// `authorizedEpoch` BEFORE they cancel anything or free anything: the callbacks
+// they then invoke can take real time (a native context free zeroes the KV
+// cache first), and for the whole of that window the gate must already be shut.
+// Reordering those two statements would admit a `generate` that arrived while a
+// lock push was still unwinding. `IsolatedSessionGateTest`'s "has already
+// revoked by the time …" pair asks the gate what it answers from INSIDE each
+// callback; `InferenceEngineStateTest`'s "a generate arriving while a lock push
+// is still unwinding is refused" parks the release inside `freeContextSecure`
+// on a second thread and issues a real `generate` against it. Both fail if the
+// two statements swap, so the ordering cannot be lost silently.
+//
+// `onSessionUnlocked` is the one push that is NOT `oneway` (skein-gg11.8; see
+// the note above the three methods in `IInferenceService.aidl`): a two-way
+// transaction returns to `:app` only after [onUnlocked] has run, so the caller's
+// next `load`/`generate` cannot be dispatched ahead of the push that authorizes
+// it. Nothing here blocks, which is what makes that round trip cheap enough to
+// be worth making: [onUnlocked] is two atomic writes.
 
 package app.skein.inference.service
 
@@ -70,7 +92,15 @@ class IsolatedSessionGate(
             GateResult.Refuse(ErrorCode.SESSION_LOCKED)
         }
 
-    /** `:app` authorized [epoch]; sent on unlock and again on every fresh bind. */
+    /**
+     * `:app` authorized [epoch]; sent on unlock and again on every fresh bind.
+     *
+     * Reached from a TWO-WAY binder transaction (skein-gg11.8), so it must stay
+     * as short as it is: the caller is blocked until it returns, and what the
+     * caller is buying with that round trip is the guarantee that its next
+     * request will be admitted. Idempotent — re-sending the same epoch (the
+     * fresh-bind re-send of §5.3) authorizes the same session again.
+     */
     fun onUnlocked(epoch: Long) {
         released.set(false)
         authorizedEpoch.set(epoch)
@@ -82,7 +112,11 @@ class IsolatedSessionGate(
      *
      * A push naming an epoch that is not the authorized one is stale — the
      * session already moved on — and is ignored rather than revoking the
-     * current one.
+     * current one. (`onSessionUnlocked` is two-way and the lock pushes are
+     * `oneway`, so a newer unlock really can overtake an older queued lock;
+     * this check is what makes that harmless.)
+     *
+     * Revocation first, cancellation second — see this file's header.
      */
     fun onLocking(
         epoch: Long,
@@ -97,6 +131,10 @@ class IsolatedSessionGate(
      * LOCKING's budget elapsed (or everything acknowledged). Unconditionally
      * frees remaining request state. Idempotent, and valid even if the
      * `onLocking` push was lost — that push is `oneway`.
+     *
+     * Revocation first, release second — see this file's header. The release
+     * is the slow half (it frees a native context, zeroing the KV cache on the
+     * way), and the gate is already shut for all of it.
      */
     fun onLocked(epoch: Long) {
         if (!appliesTo(epoch)) return

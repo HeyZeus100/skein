@@ -398,14 +398,20 @@ flavor's `x86_64`). The previous CI-recorded value was
 `92353e595be12f46eb01d87038ea4df236e5e969c9391e35c71d4ffd6951b457` at `609ea95`
 (run 35844509126, per the skein-gg11.1 entry above).
 
-**Local host build only — not a CI record.** A single
-`./gradlew clean :inference-service:assembleFossRelease` on this macOS arm64
+**CI record (coordinator, 2026-09-23):** the `Reproducible build check` run
+35850454854 on `c4ba11e` ("Two cold builds of libskein_llama.so, compared",
+arm64-v8a, shader patches ON) produced
+`0ff0272490bded46bd075e190d253524f4a4dd09eb29a5ef5778e21eeb3392a5`
+from **both** cold builds — the A1/A2 pair for the 16 KiB-aligned library.
+
+The implementing agent's single
+`./gradlew clean :inference-service:assembleFossRelease` on a macOS arm64
 host (NDK r27c, `SOURCE_DATE_EPOCH` unset → the deterministic fallback
-`1767225600`) gave:
+`1767225600`) gave, for reference only:
 
 | Build | sha256 of `lib/arm64-v8a/libskein_llama.so` |
 |---|---|
-| host build (this bead, skein-gg11.5), macOS arm64, NDK r27c | `530b83ad5126f81fc82fff6bc232506b2acd20e5de8f2b8551744b5b6e2e447c` (25,309,976 B) |
+| host build (skein-gg11.5), macOS arm64, NDK r27c | `530b83ad5126f81fc82fff6bc232506b2acd20e5de8f2b8551744b5b6e2e447c` (25,309,976 B) |
 
 As this section's own convention states, a single host build is not the
 record — the coordinator re-records the authoritative A1/A2 pair from the

@@ -145,4 +145,68 @@ class IsolatedSessionGateTest {
 
         assertEquals(GateResult.Admit, gate.guard(8L))
     }
+
+    // ------------------------- a push that is still unwinding (bd skein-gg11.8)
+    //
+    // The two lock pushes are `oneway`, so `:app` cannot be blocked by this
+    // process while it tears a session down — which means "the gate is shut"
+    // can never be something the CALLER waits for. It has to be true from the
+    // first instruction of the handler instead, because everything after that
+    // instruction takes real time: `onCancelRequests` reaches into a running
+    // generation and `onReleaseState` frees a native context, zeroing the KV
+    // cache on the way. LOCK_POLICY_INDEXING.md §4.1 states this as a
+    // requirement ("visible to every subsequent call before `onSessionLocking`
+    // even returns"); these two hold the handler open at exactly that point —
+    // the callbacks run INSIDE it — and ask the gate what it would answer.
+
+    @Test
+    fun `onLocking has already revoked by the time cancellation runs`() {
+        lateinit var gate: IsolatedSessionGate
+        var duringCancel: GateResult? = null
+        gate = IsolatedSessionGate(onCancelRequests = { duringCancel = gate.guard(7L) })
+        gate.onUnlocked(7L)
+
+        gate.onLocking(7L, 500L)
+
+        assertTrue(duringCancel is GateResult.Refuse)
+    }
+
+    @Test
+    fun `onLocked has already revoked by the time the release runs`() {
+        lateinit var gate: IsolatedSessionGate
+        var duringRelease: GateResult? = null
+        gate = IsolatedSessionGate(onReleaseState = { duringRelease = gate.guard(7L) })
+        gate.onUnlocked(7L)
+
+        gate.onLocked(7L)
+
+        assertTrue(duringRelease is GateResult.Refuse)
+    }
+
+    // ------------------------------- the unlock push is two-way (skein-gg11.8)
+    //
+    // `onSessionUnlocked` returns to `:app` only once [IsolatedSessionGate.onUnlocked]
+    // has run, so `:app` re-sends it on every fresh bind (§5.3) knowing the
+    // next request will be admitted. Re-sending the epoch that is already
+    // authorized is therefore the COMMON case, not an edge one.
+
+    @Test
+    fun `unlocking twice with the same epoch is idempotent`() {
+        val gate = IsolatedSessionGate()
+        gate.onUnlocked(7L)
+        gate.onUnlocked(7L)
+
+        assertEquals(GateResult.Admit, gate.guard(7L))
+    }
+
+    @Test
+    fun `unlocking twice does not resurrect an epoch a lock revoked in between`() {
+        val gate = IsolatedSessionGate()
+        gate.onUnlocked(7L)
+        gate.onLocked(7L)
+        gate.onUnlocked(8L)
+        gate.onUnlocked(8L)
+
+        assertTrue(gate.guard(7L) is GateResult.Refuse)
+    }
 }

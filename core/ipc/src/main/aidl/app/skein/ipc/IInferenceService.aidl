@@ -92,13 +92,51 @@ interface IInferenceService {
     int tokenCount(String text);
     /** Sync. Small. Never call while a generate is in flight (returns a BUSY state). */
     EngineStatus status();
-    // LOCK_POLICY_INDEXING.md §7.6/§5.2 (2026-09-20), additive to the v2 AIDL contract:
+    // LOCK_POLICY_INDEXING.md §7.6/§5.2 (2026-09-20), additive to the v2 AIDL contract.
+    //
+    // WHY THE THREE PUSHES ARE NOT ALL THE SAME SHAPE (bd skein-gg11.8).
+    // Binder orders `oneway` transactions only relative to EACH OTHER on the
+    // same binder object. It gives NO ordering guarantee between a `oneway`
+    // call and a LATER two-way call from the same calling thread: the two-way
+    // call can be dispatched to a different, already-idle thread in this
+    // process's binder-thread pool and be serviced BEFORE the still-queued
+    // `oneway` push. So the direction of each push decides its shape:
+    //
+    //   * UNLOCK is two-way. The caller's very next `load`/`generate` carries
+    //     the epoch this push authorizes; if the push can be overtaken, that
+    //     first call is refused SESSION_LOCKED on a perfectly unlocked vault —
+    //     a spurious refusal on a busy device. A two-way transaction returns to
+    //     the caller only after `IsolatedSessionGate.onUnlocked` has run, so
+    //     "the push landed" is something the caller can simply know instead of
+    //     poll for. The handler is an `AtomicLong` write: no work is added to
+    //     the caller's critical path, only the round trip.
+    //
+    //   * The two LOCK pushes stay `oneway`, deliberately. `:app` sends them
+    //     while it is tearing the session down and is about to zero the master
+    //     key; it must never be able to be BLOCKED by this process. A two-way
+    //     lock push would hand a wedged — or compromised — isolated process a
+    //     lever over when (or whether) the vault locks, which is precisely the
+    //     fail-safe direction. Refusal after a lock does not depend on the
+    //     round trip: `onLocking`/`onLocked` revoke authorization as their
+    //     FIRST act, before any cancellation or free, and every request
+    //     independently carries `sessionEpoch` for the calls already sitting on
+    //     the thread pool when the push arrives (LOCK_POLICY_INDEXING.md §4.1,
+    //     §5.2). Losing a race here can only refuse work, never admit it.
+    //
+    // A two-way unlock CAN overtake a queued `oneway` lock push for an older
+    // epoch. That is why both lock handlers check the epoch they name against
+    // the authorized one and ignore a stale push (`IsolatedSessionGate`).
     /** oneway. Pushed the instant SessionState enters LOCKING; see LOCK_POLICY_INDEXING.md §5.2. */
     oneway void onSessionLocking(long epoch, long budgetMillis);
     /** oneway. Pushed once LOCKING's budget has elapsed or all in-flight work acknowledged. Idempotent. */
     oneway void onSessionLocked(long epoch);
     /**
-     * oneway. Pushed on unlock AND on every fresh bind — judgment call J6, see
+     * Sync (bd skein-gg11.8 — see the note above for why this one is not
+     * `oneway`). Returns only once the gate has been authorized for `epoch`,
+     * so the caller's next request cannot race the push that authorizes it.
+     * Idempotent: re-sending the same epoch authorizes the same session again.
+     *
+     * Pushed on unlock AND on every fresh bind — judgment call J6, see
      * `Parcels.kt`'s header (skein-nxk).
      *
      * `IsolatedSessionGate` (LOCK_POLICY_INDEXING.md §5.3) starts at
@@ -109,5 +147,5 @@ interface IInferenceService {
      * send it on and the gate could never be authorized — every call would
      * refuse with SESSION_LOCKED forever. This is that method. Additive.
      */
-    oneway void onSessionUnlocked(long epoch);
+    void onSessionUnlocked(long epoch);
 }

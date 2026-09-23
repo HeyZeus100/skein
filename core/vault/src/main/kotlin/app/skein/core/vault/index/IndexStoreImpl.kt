@@ -68,12 +68,35 @@ import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
+import java.util.concurrent.atomic.AtomicLong
 
 public class IndexStoreImpl(
     private val connection: SQLiteConnection,
 ) : IndexStore,
     AutoCloseable {
     private val mutex: Mutex = Mutex()
+
+    /**
+     * Monotonic `chunks.id` generator (skein-x0ro), seeded once from
+     * [IndexSql.SELECT_MAX_CHUNK_ID] so a reopened vault keeps counting up
+     * from every id already on disk. [replaceChunks] binds ids from this
+     * counter explicitly instead of letting SQLite auto-assign the rowid:
+     * SQLite's default rule ("largest existing ROWID + 1, or 1 if the
+     * table is empty") would otherwise hand a brand-new chunk the exact id
+     * of a just-deleted one the moment a document's entire chunk set is
+     * replaced — a real citation-integrity hazard (a stale reference would
+     * silently resolve to unrelated new content instead of "source
+     * unknown"; see `docs/design/NORTH_STAR_REVIEW.md` §3, row F2). This
+     * counter guarantees uniqueness for the lifetime of this instance,
+     * which under the single-writer design (file header) is the whole
+     * guarantee this class needs to provide.
+     */
+    private val nextChunkId: AtomicLong =
+        AtomicLong(
+            connection.prepare(IndexSql.SELECT_MAX_CHUNK_ID).use { stmt ->
+                if (stmt.step()) stmt.getLong(0) else 0L
+            },
+        )
 
     /**
      * The invalidation stream behind [observeChanges] — the once-reserved
@@ -122,25 +145,28 @@ public class IndexStoreImpl(
                 }
                 val ids = ArrayList<ChunkId>(chunks.size)
                 if (chunks.isNotEmpty()) {
-                    connection.prepare(IndexSql.INSERT_CHUNK_RETURNING_ID).use { stmt ->
+                    connection.prepare(IndexSql.INSERT_CHUNK).use { stmt ->
                         for (c in chunks.sortedBy { it.ord }) {
                             stmt.reset()
                             stmt.clearBindings()
-                            stmt.bindText(1, docId)
-                            stmt.bindLong(2, c.ord.toLong())
-                            stmt.bindText(3, c.text)
-                            stmt.bindLong(4, c.tokenCount.toLong())
-                            stmt.bindText(5, embedderId)
-                            stmt.bindLong(6, embedderVersion.toLong())
-                            if (revisionHash == null) stmt.bindNull(7) else stmt.bindText(7, revisionHash)
+                            // Explicit id from `nextChunkId` (skein-x0ro) —
+                            // see that field's KDoc for why this must not
+                            // be left to SQLite's rowid auto-assignment.
+                            val id = nextChunkId.incrementAndGet()
+                            stmt.bindLong(1, id)
+                            stmt.bindText(2, docId)
+                            stmt.bindLong(3, c.ord.toLong())
+                            stmt.bindText(4, c.text)
+                            stmt.bindLong(5, c.tokenCount.toLong())
+                            stmt.bindText(6, embedderId)
+                            stmt.bindLong(7, embedderVersion.toLong())
+                            if (revisionHash == null) stmt.bindNull(8) else stmt.bindText(8, revisionHash)
                             val byteStart = c.byteStart
                             val byteEnd = c.byteEnd
-                            if (byteStart == null) stmt.bindNull(8) else stmt.bindLong(8, byteStart.toLong())
-                            if (byteEnd == null) stmt.bindNull(9) else stmt.bindLong(9, byteEnd.toLong())
-                            check(stmt.step()) {
-                                "INSERT ... RETURNING id yielded no row for doc chunk"
-                            }
-                            ids += stmt.getLong(0)
+                            if (byteStart == null) stmt.bindNull(9) else stmt.bindLong(9, byteStart.toLong())
+                            if (byteEnd == null) stmt.bindNull(10) else stmt.bindLong(10, byteEnd.toLong())
+                            stmt.step()
+                            ids += id
                         }
                     }
                 }

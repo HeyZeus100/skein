@@ -14,6 +14,7 @@ import androidx.test.ext.junit.runners.AndroidJUnit4
 import app.skein.core.model.IndexStore
 import app.skein.core.vault.db.SkeinSQLiteConnection
 import app.skein.core.vault.db.SkeinSQLiteDriver
+import app.skein.core.vault.testutil.splitMigrationStatements
 import app.skein.testing.IndexStoreContractTest
 import org.junit.After
 import org.junit.runner.RunWith
@@ -56,7 +57,7 @@ public class IndexStoreImplContractTest : IndexStoreContractTest() {
                     javaClass.classLoader?.getResourceAsStream("migrations/$fileName"),
                 ) { "migrations/$fileName not on the classpath" }
                     .use { it.readBytes().toString(Charsets.UTF_8) }
-            for (statement in splitOnSentinel(sql)) {
+            for (statement in splitMigrationStatements(sql)) {
                 conn.prepare(statement).use { it.step() }
             }
         }
@@ -77,27 +78,5 @@ public class IndexStoreImplContractTest : IndexStoreContractTest() {
                 "007_drop_attachment_master_key.sql",
                 "008_ingest_attempts.sql",
             )
-
-        /**
-         * Split the migration SQL on the `--;` sentinel used by
-         * `001_initial.sql` (see file header) — mirrors what the
-         * production `MigrationStatementSplitter` does. Trailing
-         * whitespace and empty statements are dropped.
-         */
-        fun splitOnSentinel(sql: String): List<String> {
-            val raw = sql.split("--;")
-            val cleaned =
-                raw.map { chunk ->
-                    chunk
-                        .lineSequence()
-                        .map { it.trimEnd() }
-                        .filter { line -> line.isNotBlank() && !line.trimStart().startsWith("--") }
-                        .joinToString(separator = "\n")
-                        .trim()
-                        .removeSuffix(";")
-                        .trim()
-                }
-            return cleaned.filter { it.isNotEmpty() }
-        }
     }
 }

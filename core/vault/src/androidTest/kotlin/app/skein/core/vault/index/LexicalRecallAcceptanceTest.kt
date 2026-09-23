@@ -19,6 +19,7 @@ import app.skein.core.model.NewChunk
 import app.skein.core.rag.recall.LexicalRecall
 import app.skein.core.vault.db.SkeinSQLiteConnection
 import app.skein.core.vault.db.SkeinSQLiteDriver
+import app.skein.core.vault.testutil.splitMigrationStatements
 import com.google.common.truth.Truth.assertThat
 import kotlinx.coroutines.test.runTest
 import org.junit.After
@@ -149,7 +150,7 @@ public class LexicalRecallAcceptanceTest {
                     javaClass.classLoader?.getResourceAsStream("migrations/$fileName"),
                 ) { "migrations/$fileName not on the classpath" }
                     .use { it.readBytes().toString(Charsets.UTF_8) }
-            for (statement in splitOnSentinel(sql)) {
+            for (statement in splitMigrationStatements(sql)) {
                 conn.prepare(statement).use { it.step() }
             }
         }
@@ -170,21 +171,5 @@ public class LexicalRecallAcceptanceTest {
                 "007_drop_attachment_master_key.sql",
                 "008_ingest_attempts.sql",
             )
-
-        fun splitOnSentinel(sql: String): List<String> {
-            val raw = sql.split("--;")
-            val cleaned =
-                raw.map { chunk ->
-                    chunk
-                        .lineSequence()
-                        .map { it.trimEnd() }
-                        .filter { line -> line.isNotBlank() && !line.trimStart().startsWith("--") }
-                        .joinToString(separator = "\n")
-                        .trim()
-                        .removeSuffix(";")
-                        .trim()
-                }
-            return cleaned.filter { it.isNotEmpty() }
-        }
     }
 }

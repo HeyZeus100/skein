@@ -43,6 +43,7 @@ import app.skein.core.vault.db.SkeinSQLiteException
 import app.skein.core.vault.db.migrations.MigrateResult
 import app.skein.core.vault.db.migrations.MigrationStatementSplitter
 import app.skein.core.vault.db.migrations.Migrator
+import app.skein.core.vault.db.migrations.SCHEMA_MIGRATIONS_TABLE_NAME
 import app.skein.core.vault.db.migrations.SchemaInspector
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -150,6 +151,14 @@ public class VaultLifecycle(
     private val paths: VaultPaths,
     private val readerCount: Int = ConnectionPool.DEFAULT_READER_COUNT,
     private val busyTimeoutMs: Long = ConnectionPool.DEFAULT_BUSY_TIMEOUT_MS,
+    // skein-hctx: the classpath directory `expectedMigrationObjectNames`
+    // walks to derive the integrity-check catalogue. Defaults to the same
+    // production manifest `Migrator` itself defaults to; overridable ONLY
+    // so a test can point both this and its `migrator` factory's own
+    // `migrationsPath` at a throwaway fixture manifest (proving a new
+    // migration file needs no change to the derivation code below) without
+    // ever needing to touch this default for production callers.
+    private val migrationsResourcePath: String = MIGRATIONS_PATH,
 ) {
     private val lock = Mutex()
     private var pool: ConnectionPool? = null
@@ -372,9 +381,12 @@ public class VaultLifecycle(
     /**
      * Runs `PRAGMA integrity_check` on the live connection and separately
      * verifies that every object the bundled migration manifest
-     * (`migrations/INDEX.txt`) declares is present in `sqlite_master` —
-     * i.e. the live schema has not drifted from what the migrations would
-     * produce. Returns [IntegrityResult.NotOpen] if the vault is not
+     * (`migrations/INDEX.txt`) declares — plus the `schema_migrations`
+     * ledger table [Migrator] creates outside that manifest — is present
+     * in `sqlite_master`, i.e. the live schema has not drifted from what
+     * the migrations would produce. See [expectedMigrationObjectNames]
+     * for how that catalogue is derived rather than hand-kept
+     * (skein-hctx). Returns [IntegrityResult.NotOpen] if the vault is not
      * currently open.
      */
     public suspend fun integrityCheck(): IntegrityResult =
@@ -454,10 +466,28 @@ public class VaultLifecycle(
      * double's classpath does not always carry the production manifest,
      * and reporting drift from an inconclusive check would be a false
      * positive.
+     *
+     * This replay is what keeps the catalogue from going stale
+     * (skein-hctx): it is never hand-listed, so it cannot fall behind a
+     * migration that drops an object (007 did, for `attachment_keys` /
+     * `idx_attachment_keys_version` — see the header note above) NOR
+     * behind one that adds a new object (008 did, and skein-cyq's 009
+     * will). Landing a new migration only ever means appending a line to
+     * `migrations/INDEX.txt` and adding the file it names; nothing here
+     * needs to change for the new objects to become part of [expected].
+     * The one addition this replay cannot discover on its own is
+     * [SCHEMA_MIGRATIONS_TABLE_NAME] itself: the ledger table is created
+     * by [Migrator] directly (`ensureLedgerTable`), not by any file the
+     * manifest lists, so it is added explicitly below via the constant
+     * `app.skein.core.vault.db.migrations` exposes for exactly this — a
+     * single symbol reference, not a second hand-kept name, so it tracks
+     * a rename of that constant automatically and can never drift from
+     * what [Migrator] actually creates.
      */
     private fun expectedMigrationObjectNames(): Set<String> {
         val classLoader = requireNotNull(javaClass.classLoader) { "no class loader available" }
-        val indexStream = classLoader.getResourceAsStream("$MIGRATIONS_PATH/INDEX.txt") ?: return emptySet()
+        val indexStream =
+            classLoader.getResourceAsStream("$migrationsResourcePath/INDEX.txt") ?: return emptySet()
         val fileNames =
             indexStream
                 .use { it.readBytes().toString(Charsets.UTF_8) }
@@ -474,48 +504,85 @@ public class VaultLifecycle(
         for (fileName in fileNames) {
             val sql =
                 classLoader
-                    .getResourceAsStream("$MIGRATIONS_PATH/$fileName")
+                    .getResourceAsStream("$migrationsResourcePath/$fileName")
                     ?.use { it.readBytes().toString(Charsets.UTF_8) }
                     ?: continue
             for (statement in MigrationStatementSplitter.split(sql)) {
                 applyStatement(statement, names, dependentsOf)
             }
         }
+        names += SCHEMA_MIGRATIONS_TABLE_NAME
         return names
     }
 
+    /**
+     * Matches [statement] against the CREATE/DROP regexes below AFTER
+     * stripping its `--`-prefixed comment lines — NOT the raw,
+     * comment-inclusive text (skein-hctx). A [MigrationStatementSplitter]
+     * chunk is "everything up to and including the next `--;` sentinel",
+     * so a statement with a multi-line header comment (any migration
+     * whose header precedes its first real DDL) has that whole comment
+     * glued onto the front of the SAME chunk its real statement ends —
+     * `007_drop_attachment_master_key.sql`'s header is the sharpest case,
+     * since it *illustrates* `DROP TABLE attachment_keys; DROP TABLE
+     * attachment_master_key;` as prose while explaining FK-drop ordering.
+     * Matching the raw chunk finds that illustrative "DROP TABLE
+     * attachment_master_key" first (`.find` stops at the first match) and
+     * never reaches the real `DROP TABLE attachment_keys;` at the chunk's
+     * end — `names` then never drops `attachment_keys` /
+     * `idx_attachment_keys_version`, and every fresh vault reports
+     * permanent false-positive [IntegrityResult.SchemaDrift] forever. This
+     * is the literal skein-hctx bug: comment text, not a hand-kept list,
+     * was what kept "expecting" those two objects. Stripping comment
+     * lines first mirrors `Migrator.migrationWitness`'s own
+     * `stripCommentLines` (added for the identical hazard) and leaves a
+     * clean, single-line statement unaffected either way.
+     */
     private fun applyStatement(
         statement: String,
         names: MutableSet<String>,
         dependentsOf: MutableMap<String, String>,
     ) {
-        CREATE_TABLE_REGEX.find(statement)?.let { names += it.groupValues[1] }
-        CREATE_INDEX_REGEX.find(statement)?.let { match ->
+        val ddl = stripCommentLines(statement)
+        CREATE_TABLE_REGEX.find(ddl)?.let { names += it.groupValues[1] }
+        CREATE_INDEX_REGEX.find(ddl)?.let { match ->
             val (indexName, table) = match.destructured
             names += indexName
             dependentsOf[indexName] = table
         }
-        CREATE_TRIGGER_REGEX.find(statement)?.let { match ->
+        CREATE_TRIGGER_REGEX.find(ddl)?.let { match ->
             val (triggerName, table) = match.destructured
             names += triggerName
             dependentsOf[triggerName] = table
         }
-        DROP_TABLE_REGEX.find(statement)?.let { match ->
+        DROP_TABLE_REGEX.find(ddl)?.let { match ->
             val table = match.groupValues[1]
             names -= table
             val cascaded = dependentsOf.filterValues { it == table }.keys
             names -= cascaded
             cascaded.forEach { dependentsOf.remove(it) }
         }
-        DROP_INDEX_REGEX.find(statement)?.let { match ->
+        DROP_INDEX_REGEX.find(ddl)?.let { match ->
             names -= match.groupValues[1]
             dependentsOf.remove(match.groupValues[1])
         }
-        DROP_TRIGGER_REGEX.find(statement)?.let { match ->
+        DROP_TRIGGER_REGEX.find(ddl)?.let { match ->
             names -= match.groupValues[1]
             dependentsOf.remove(match.groupValues[1])
         }
     }
+
+    /**
+     * Drops every line of [statement] that is (after trimming) a `--`
+     * comment, mirroring `Migrator.migrationWitness`'s identically-named,
+     * identically-motivated helper (skein-hctx) — see [applyStatement]'s
+     * doc for why matching the raw, comment-inclusive text is wrong.
+     */
+    private fun stripCommentLines(statement: String): String =
+        statement
+            .lineSequence()
+            .filter { line -> !line.trimStart().startsWith("--") }
+            .joinToString("\n")
 
     private companion object {
         const val TAG = "VaultLifecycle"

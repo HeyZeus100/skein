@@ -42,8 +42,30 @@ import java.security.SecureRandom
 
 @RunWith(AndroidJUnit4::class)
 class VaultBootstrapInstrumentedTest {
-    /** Test-only provider: a random in-memory key, unlock always succeeds. */
+    /**
+     * Test-only provider: unlock always succeeds, over ONE random in-memory
+     * key. Never real material.
+     *
+     * skein-7yy2 — [wrapped] stands in for the wrapped master at rest, which
+     * is what makes this fake model the real provider (and the real
+     * provider's own JVM regression, `VaultKeyProviderImplTest`'s "a second
+     * unlock after lock unwraps the same master bytes"): every [unlock]
+     * unwraps THE SAME bytes into a fresh live buffer, and [lock] zeroes
+     * only that live buffer. This previously minted a brand-new random key
+     * on every [unlock], so the second unlock in
+     * [a_second_unlock_reopens_the_same_vault_file] presented a key that had
+     * never encrypted anything and `DeviceVaultOpener.createOrOpen` — taking
+     * the `dbFile.exists()` branch against the file the FIRST key created —
+     * correctly reported `OpenResult.WrongKey`, i.e. "the unlocked key does
+     * not open this vault". `FirstRunInstrumentedTest`'s
+     * `EnvelopeModellingKeyProvider` already modelled this correctly, which
+     * is why its `second_launch_unlocks_without_setup` passed in the same
+     * run over the same real `DeviceVaultOpener` and the same real SQLCipher.
+     */
     private class RandomKeyVaultKeyProvider : VaultKeyProvider {
+        /** The "wrapped" master: what every [unlock] unwraps. Not handed to callers, never zeroed. */
+        private val wrapped: ByteArray = ByteArray(KEY_LENGTH).also(SecureRandom()::nextBytes)
+
         @Volatile
         private var master: ByteArray? = null
         private var epoch = 0L
@@ -67,7 +89,7 @@ class VaultBootstrapInstrumentedTest {
             prompt: BiometricPrompt.PromptInfo,
             factor: VaultKeyProvider.Factor,
         ): UnlockResult {
-            master = ByteArray(KEY_LENGTH).also(SecureRandom()::nextBytes)
+            master = wrapped.copyOf()
             return UnlockResult.Success(AuthorizationToken(++epoch))
         }
 

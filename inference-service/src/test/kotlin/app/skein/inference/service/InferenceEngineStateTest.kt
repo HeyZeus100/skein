@@ -38,6 +38,8 @@ import org.robolectric.RobolectricTestRunner
 import org.robolectric.annotation.Config
 import java.io.File
 import java.security.MessageDigest
+import java.util.concurrent.CountDownLatch
+import java.util.concurrent.TimeUnit
 
 @RunWith(RobolectricTestRunner::class)
 @Config(sdk = [34])
@@ -429,6 +431,156 @@ class InferenceEngineStateTest {
         engine.generate(generateRequest(requestId = 2, maxTokens = 4), RecordingCallback())
 
         assertThat(backend.cacheAndDecodeCalls.count { it == FakeLlamaBackend.KV_CLEAR }).isEqualTo(2)
+    }
+
+    // ------------------------------------------- lock gate: mid-generation (bd skein-gg11.6)
+    //
+    // The instrumented lane proves TIMING (cancel honoured within the wall-clock
+    // budget) and cross-process delivery; this proves the LOGIC underneath it —
+    // that a lock arriving mid-generation cancels the request, frees the
+    // context through the zeroing path (not a plain free), and refuses the
+    // next `generate` — deterministically, with `InlineTaskRunner` standing in
+    // for the single-worker-thread serialization the device lane exercises for
+    // real. `BlockingBackend` (the same fixture "an inspection during a
+    // generation is refused with BUSY" uses) nests the lock push inside the
+    // first `sampleNext`, so it runs synchronously mid-loop.
+
+    @Test
+    fun `a lock mid-generation cancels the in-flight request`() {
+        var lockingEngine: InferenceEngineState? = null
+        val blocking =
+            BlockingBackend {
+                lockingEngine?.onSessionLocking(epoch, LOCK_BUDGET_MILLIS)
+                lockingEngine?.onSessionLocked(epoch)
+            }
+        lockingEngine = InferenceEngineState(blocking, InlineTaskRunner(), CallbackDispatcher(InlineTaskRunner()))
+        lockingEngine.onSessionUnlocked(epoch)
+        lockingEngine.load(loadRequest())
+        val cb = RecordingCallback()
+
+        lockingEngine.generate(generateRequest(maxTokens = 8), cb)
+
+        assertThat(
+            cb.done
+                .single()
+                .second.stopReason,
+        ).isEqualTo("CANCELLED")
+        // The native abort flag, not only the Kotlin-side `cancelled` bit —
+        // `cancel`/`cancelInFlight` set this from whichever thread observes
+        // the lock, exactly as a client-initiated cancel does.
+        assertThat(blocking.cancelFlags.any { it.second }).isTrue()
+    }
+
+    @Test
+    fun `a lock mid-generation frees the context through the zeroing path, after this turn's own KV clear`() {
+        var lockingEngine: InferenceEngineState? = null
+        val blocking =
+            BlockingBackend {
+                lockingEngine?.onSessionLocking(epoch, LOCK_BUDGET_MILLIS)
+                lockingEngine?.onSessionLocked(epoch)
+            }
+        lockingEngine = InferenceEngineState(blocking, InlineTaskRunner(), CallbackDispatcher(InlineTaskRunner()))
+        lockingEngine.onSessionUnlocked(epoch)
+        lockingEngine.load(loadRequest())
+
+        lockingEngine.generate(generateRequest(maxTokens = 8), RecordingCallback())
+
+        // Ordering: E-4's kvClear (this turn's own, at generate's start) must
+        // already have happened before the lock ever gets a chance to free the
+        // context — `cacheAndDecodeCalls` and `secureFrees` are two different
+        // lists, but with `InlineTaskRunner` there is exactly one thread, so
+        // `cacheAndDecodeCalls` recording KV_CLEAR before `secureFrees` gains
+        // its entry is a real ordering fact, not an artifact of two lists
+        // filling independently.
+        assertThat(blocking.cacheAndDecodeCalls.first()).isEqualTo(FakeLlamaBackend.KV_CLEAR)
+        assertThat(blocking.secureFrees).hasSize(1)
+    }
+
+    @Test
+    fun `a lock mid-generation refuses the next generate with SESSION_LOCKED`() {
+        var lockingEngine: InferenceEngineState? = null
+        val blocking =
+            BlockingBackend {
+                lockingEngine?.onSessionLocking(epoch, LOCK_BUDGET_MILLIS)
+                lockingEngine?.onSessionLocked(epoch)
+            }
+        lockingEngine = InferenceEngineState(blocking, InlineTaskRunner(), CallbackDispatcher(InlineTaskRunner()))
+        lockingEngine.onSessionUnlocked(epoch)
+        lockingEngine.load(loadRequest())
+        lockingEngine.generate(generateRequest(maxTokens = 8), RecordingCallback())
+        val cb = RecordingCallback()
+
+        lockingEngine.generate(generateRequest(requestId = 2), cb)
+
+        assertThat(cb.errors.single().second).isEqualTo(ErrorCode.SESSION_LOCKED)
+    }
+
+    // ------------------------ lock gate: a push still unwinding (bd skein-gg11.8)
+    //
+    // `onSessionLocking`/`onSessionLocked` stay `oneway` so that `:app` — which
+    // sends them while tearing a session down and about to zero the master key
+    // — can never be blocked by this process. The price of that choice is that
+    // "the push landed" is not something the caller can wait for, so refusal
+    // must not depend on the handler having FINISHED: it has to hold from the
+    // handler's first instruction, through the whole of the release, which
+    // frees a native context and is the slowest thing either push does.
+    //
+    // This runs the release on a second thread and parks it inside
+    // `freeContextSecure` — the exact middle of the lock's unwind — then issues
+    // a `generate` from the test thread. `IsolatedSessionGateTest` proves the
+    // same ordering at the gate; this proves it survives the whole service
+    // entry point, including that the refusal does not simply queue behind the
+    // lock on the engine's own monitor.
+
+    @Test
+    fun `a generate arriving while a lock push is still unwinding is refused`() {
+        val releasing = CountDownLatch(1)
+        val mayFinish = CountDownLatch(1)
+        val parked =
+            object : FakeLlamaBackend() {
+                override fun freeContextSecure(ctx: Long) {
+                    releasing.countDown()
+                    check(mayFinish.await(AWAIT_SECONDS, TimeUnit.SECONDS)) { "the test never released the lock push" }
+                    super.freeContextSecure(ctx)
+                }
+            }
+        val parkedEngine = InferenceEngineState(parked, InlineTaskRunner(), CallbackDispatcher(InlineTaskRunner()))
+        parkedEngine.onSessionUnlocked(epoch)
+        parkedEngine.load(loadRequest())
+        val locker = Thread { parkedEngine.onSessionLocked(epoch) }.apply { isDaemon = true }
+        val cb = RecordingCallback()
+
+        locker.start()
+        check(releasing.await(AWAIT_SECONDS, TimeUnit.SECONDS)) { "the lock push never reached the release" }
+        parkedEngine.generate(generateRequest(), cb)
+        mayFinish.countDown()
+        locker.join(AWAIT_SECONDS * 1_000L)
+
+        assertThat(cb.errors.single().second).isEqualTo(ErrorCode.SESSION_LOCKED)
+    }
+
+    @Test
+    fun `unlocking twice with the same epoch still admits`() {
+        engine.onSessionUnlocked(epoch)
+        engine.onSessionUnlocked(epoch)
+
+        // `:app` re-sends the unlock on every fresh bind (§5.3), so a service
+        // that is already authorized receives the push it already applied.
+        assertThat(engine.load(loadRequest())).isEqualTo(ErrorCode.OK)
+    }
+
+    @Test
+    fun `locking twice with nothing in flight is idempotent`() {
+        engine.onSessionUnlocked(epoch)
+        engine.load(loadRequest())
+
+        engine.onSessionLocking(epoch, LOCK_BUDGET_MILLIS)
+        engine.onSessionLocked(epoch)
+        engine.onSessionLocking(epoch, LOCK_BUDGET_MILLIS)
+        engine.onSessionLocked(epoch)
+
+        assertThat(backend.secureFrees).hasSize(1)
+        assertThat(engine.status().state).isEqualTo("unloaded")
     }
 
     // ------------------------------------------------------------- inspect
@@ -1284,6 +1436,12 @@ class InferenceEngineStateTest {
         val MODEL_BYTES = ByteArray(4_096) { (it % 251).toByte() }
         val TOKENIZER_BYTES = ByteArray(512) { (it % 97).toByte() }
         var counter = 0
+
+        /** bd skein-gg11.6: the `budgetMillis` passed to `onSessionLocking` in the lock-gate tests. */
+        const val LOCK_BUDGET_MILLIS = 200L
+
+        /** bd skein-gg11.8: how long a latch handshake between two test threads may take before it is a hang. */
+        const val AWAIT_SECONDS = 5L
 
         /**
          * Distinctive on purpose: the logging tests assert this exact string

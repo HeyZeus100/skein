@@ -442,6 +442,84 @@ class LlamaCppEngineBehaviourTest {
             assertThat(service.lockingPushes).containsExactly(21L)
         }
 
+    // ------------------------------ admission after an unlock (bd skein-gg11.8)
+    //
+    // `onSessionUnlocked` is the one session push that is NOT `oneway`: it
+    // returns only once the service's `IsolatedSessionGate` holds the epoch
+    // (`IInferenceService.aidl`, and `AidlContractTest` asserts the transaction
+    // flag itself). What these prove is the half that lives on THIS side of the
+    // wire — that the engine does not hand the push off and return early, and
+    // that a `load` issued the instant the push returns is admitted even when
+    // the service is slow to apply it. `FakeInferenceService.enforceSessionGate`
+    // makes the fake refuse exactly as the service does, and
+    // `unlockApplyDelayMillis` makes the window wide.
+
+    @Test
+    fun aGateEnforcingServiceRefusesALoadItWasNeverUnlockedFor(): Unit =
+        runTest {
+            service.enforceSessionGate = true
+
+            val failure = engine.load(fixture.model()).exceptionOrNull()
+
+            // The control for the two tests below: without it they would be
+            // green against a fake that admits everything.
+            assertThat(failure).isInstanceOf(InferenceException.SessionLocked::class.java)
+        }
+
+    @Test
+    fun aLoadIssuedStraightAfterAnUnlockPushIsAdmitted(): Unit =
+        runTest {
+            engine.load(fixture.model()).getOrThrow() // bind first; this one is ungated
+            service.enforceSessionGate = true
+            service.unlockApplyDelayMillis = SLOW_APPLY_MILLIS
+            epoch = 21L
+
+            engine.onSessionUnlocked(21L)
+
+            assertThat(engine.load(fixture.model()).isSuccess).isTrue()
+        }
+
+    @Test
+    fun theFirstLoadAfterARebindIsAdmitted(): Unit =
+        runTest {
+            epoch = 21L
+            engine.onSessionUnlocked(21L)
+            engine.load(fixture.model()).getOrThrow()
+            service.enforceSessionGate = true
+            service.unlockApplyDelayMillis = SLOW_APPLY_MILLIS
+            connector.killService()
+            service.forgetSession()
+
+            // §5.3's re-send, on the path that has no caller to sequence it.
+            assertThat(engine.load(fixture.model()).isSuccess).isTrue()
+        }
+
+    @Test
+    fun aLoadConcurrentWithARebindDoesNotOvertakeTheResentUnlock(): Unit =
+        runTest {
+            epoch = 21L
+            engine.onSessionUnlocked(21L)
+            engine.load(fixture.model()).getOrThrow()
+            service.enforceSessionGate = true
+            service.unlockApplyDelayMillis = SLOW_APPLY_MILLIS
+            connector.killService()
+            service.forgetSession()
+
+            // `inspect` binds on its own lock, not `load`'s, so these two
+            // really do reach `connect` concurrently. `connect` pushes the
+            // remembered epoch and publishes the binding only afterwards: the
+            // load either finds nothing published yet and waits on the bind
+            // lock, or finds a binding whose authorization has already landed.
+            // Publishing first — which is what this file's engine used to do —
+            // lets the load pick up a binding mid-push and be refused.
+            val rebinding = launch(Dispatchers.IO) { engine.inspect(fixture.binding()) }
+            awaitUnlockPushes(2)
+            val racer = engine.load(fixture.model())
+            rebinding.join()
+
+            assertThat(racer.isSuccess).isTrue()
+        }
+
     // ------------------------------------------------------- the LoadRequest
 
     @Test
@@ -602,6 +680,13 @@ class LlamaCppEngineBehaviourTest {
     private companion object {
         /** A string no fixed log text could contain by accident. */
         const val MARKER = "zzq-marker-9f31"
+
+        /**
+         * bd skein-gg11.8: how long the fake service spends applying an unlock
+         * push. Long enough that a `load` racing it would land first on any
+         * machine; short enough not to matter to the suite's wall clock.
+         */
+        const val SLOW_APPLY_MILLIS = 150L
     }
 
     private fun params(): SamplingParams = SamplingParams(maxTokens = 8, topP = 0.91f)
@@ -617,6 +702,20 @@ class LlamaCppEngineBehaviourTest {
             Thread.sleep(1L)
         }
         assertThat(engine.status.value.state).isEqualTo(state)
+    }
+
+    /**
+     * bd skein-gg11.8: waits until the fake has RECEIVED [count] unlock pushes.
+     * It records each one on entry, before it spends
+     * `unlockApplyDelayMillis` applying it, so this returns while the push is
+     * still in flight — which is the moment the racing call has to be issued at.
+     */
+    private fun awaitUnlockPushes(count: Int) {
+        val deadline = System.nanoTime() + TimeUnit.SECONDS.toNanos(10)
+        while (service.unlockedPushes.size < count && System.nanoTime() < deadline) {
+            Thread.sleep(1L)
+        }
+        assertThat(service.unlockedPushes.size).isAtLeast(count)
     }
 
     private fun awaitGenerateStarted() {

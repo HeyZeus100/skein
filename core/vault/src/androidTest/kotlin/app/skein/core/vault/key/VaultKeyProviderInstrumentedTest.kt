@@ -20,6 +20,9 @@
 
 package app.skein.core.vault.key
 
+import android.util.Log
+import androidx.biometric.BiometricManager
+import androidx.biometric.BiometricManager.Authenticators.BIOMETRIC_STRONG
 import androidx.test.core.app.ApplicationProvider
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.google.common.truth.Truth.assertThat
@@ -73,6 +76,14 @@ class VaultKeyProviderInstrumentedTest {
     @Test
     fun encryptCipher_on_authRequired_key_requires_user_authentication() =
         runBlocking {
+            // Skip if no biometric is enrolled on the emulator.
+            val context = ApplicationProvider.getApplicationContext<android.content.Context>()
+            val biometricManager = BiometricManager.from(context)
+            if (biometricManager.canAuthenticate(BIOMETRIC_STRONG) != BiometricManager.BIOMETRIC_SUCCESS) {
+                Log.i(TAG, "Skipped: no enrolled biometric (test requires BIOMETRIC_STRONG)")
+                return@runBlocking
+            }
+
             // Arrange
             keystore.createKey(
                 alias = VaultKeyProviderImpl.ALIAS_BIOMETRIC,
@@ -92,4 +103,8 @@ class VaultKeyProviderInstrumentedTest {
             // Zero the transient plaintext even on the failure path.
             java.util.Arrays.fill(master, 0)
         }
+
+    private companion object {
+        const val TAG = "VaultKeyProviderTest"
+    }
 }

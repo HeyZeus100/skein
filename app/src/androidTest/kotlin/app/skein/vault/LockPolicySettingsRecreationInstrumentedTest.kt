@@ -36,12 +36,15 @@
 
 package app.skein.vault
 
+import android.Manifest
 import android.content.Context
+import android.os.Build
 import androidx.biometric.BiometricPrompt
 import androidx.fragment.app.FragmentActivity
 import androidx.test.core.app.ActivityScenario
 import androidx.test.core.app.ApplicationProvider
 import androidx.test.ext.junit.runners.AndroidJUnit4
+import androidx.test.platform.app.InstrumentationRegistry
 import app.skein.MainActivity
 import app.skein.core.vault.key.RewrapResult
 import app.skein.core.vault.key.SetupResult
@@ -108,8 +111,47 @@ class LockPolicySettingsRecreationInstrumentedTest {
 
     @Before
     fun resetPrefs() {
+        grantPostNotifications()
         runBlocking { securityPrefs.clearAllForTest() }
         wireLockPolicy()
+    }
+
+    /**
+     * skein-7yy2 — keeps the system's runtime-permission dialog from sitting
+     * on top of the real [MainActivity] this test recreates.
+     *
+     * This is the only test in `:app`'s instrumented suite that calls
+     * [SecurityPrefs.clearAllForTest], and that resets
+     * `postNotificationsAsked` to its `false` default. The production
+     * [MainActivity] reads that flag in `onCreate` and, while it is false,
+     * calls `requestPermissions(POST_NOTIFICATIONS)` —
+     * `android.permission.POST_NOTIFICATIONS` is declared in
+     * `app/src/main/AndroidManifest.xml` and is a runtime permission at this
+     * module's `targetSdk = 37` on the lane's API 35 image. The system's
+     * grant dialog is an Activity of its own, so it lands ON TOP of
+     * [MainActivity], which drops to PAUSED; `ActivityScenario.recreate()`
+     * then spends its whole budget waiting for a RESUMED state that cannot
+     * arrive — "Activity never becomes requested state [RESUMED] (last
+     * lifecycle transition = PAUSED)", emulator run 35847825560, 45.5s.
+     *
+     * Pre-granting makes that `requestPermissions` call a silent no-op with
+     * no window of its own, and also dismisses a dialog an earlier test in
+     * the same run may have left standing. It changes nothing this test
+     * asserts: the assertions below are entirely about
+     * `SecurityPrefs.lockOnScreenOff` surviving a real [MainActivity]
+     * recreation, and they are untouched.
+     *
+     * The keyguard is deliberately NOT handled here: this test never turns
+     * the screen off, and `.github/workflows/emulator.yml` boots the lane
+     * with `svc power stayon true`, a maximum `screen_off_timeout` and
+     * `wm dismiss-keyguard`, so nothing re-arms it.
+     */
+    private fun grantPostNotifications() {
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.TIRAMISU) return
+        InstrumentationRegistry.getInstrumentation().uiAutomation.grantRuntimePermission(
+            context.packageName,
+            Manifest.permission.POST_NOTIFICATIONS,
+        )
     }
 
     @After
