@@ -2,6 +2,9 @@
 
 **Status:** Design, not implemented. Bead `skein-1m7v` (epic `skein-rkrq`).
 **Date:** 2026-09-22
+**Amended:** 2026-09-22 by `skein-utrb` — §1.1 invariant I6 and the new §1.3 record the capability
+split decision of `docs/design/NORTH_STAR_BRIEF.md` §10, with the matching clarification in §2.3 and
+one REJECT row in §8. Nothing else in this document changed; §§1.2, 2–7 and 9–12 stand as written.
 **Authority reconciled:** `docs/research/POCKETPAL_RECON_BRIEF.md` §§7–16, 19, 20, 23–26 (the owner's
 briefing); spec `docs/superpowers/specs/2026-09-19-skein-design.md` §2 (non-negotiables) and §9
 (threat model); `docs/design/MODEL_STORE.md`; `ModelManifest` v2
@@ -9,7 +12,8 @@ briefing); spec `docs/superpowers/specs/2026-09-19-skein-design.md` §2 (non-neg
 (`skein-hiwb`); `:core:ipc` AIDL v2 and `docs/design/POST_REVIEW_RESOLUTIONS.md` §3; plan `E4.I5`
 (`skein-cyq`) and `E4.I6` (`skein-5oi`); `E0.I4` (`skein-bxk`), `E0.I8` (`skein-5hr`);
 `docs/ARCHITECTURE.md`; `app/src/main/AndroidManifest.xml` + `ManifestPolicyTest` +
-`tools/ci/manifest-audit.sh`.
+`tools/ci/manifest-audit.sh`; `docs/design/NORTH_STAR_BRIEF.md` §10 (capability separation) as read by
+`docs/design/NORTH_STAR_REVIEW.md` §5.
 **Constraint honoured throughout:** `docs/Handoffs/skein-v1-autonomous-completion.md` §3 — Core keeps
 zero `INTERNET`, zero GMS, zero telemetry, isolated inference, and every model file dual-hash-verified
 before mmap. Nothing below relaxes any of those; several things below tighten them.
@@ -48,7 +52,7 @@ this repository.
                        (Core asks; Hub answers; bytes only)
 ```
 
-### 1.1 The five invariants, and what enforces each
+### 1.1 The six invariants, and what enforces each
 
 | # | Invariant (brief §§9–15) | Enforced by |
 |---|---|---|
@@ -57,6 +61,7 @@ this repository.
 | I3 | Hub never commands Core. | The transfer is **Core-initiated** (§2). Hub has no way to start, wake or message Core: no exported receiver, no exported service, no intent-filter Hub can resolve. The channel is one call, from Core, returning bytes. |
 | I4 | Core distrusts every artifact. | §3's acceptance pipeline: Core re-hashes what it wrote, structurally inspects inside `:inference`, and derives every load-bearing manifest field itself. Hub's declared digest is an integrity cross-check, never an authority. |
 | I5 | HF credentials never enter Core. | The channel carries a `content://` URI and a small bundle of display hints (§3.4). There is no field for a token, and Hub's token lives in Hub's Keystore. Core has no code path that could accept one. |
+| I6 | Installing Hub authorises no network behaviour by itself. | Each Hub capability that crosses the boundary is its own `signature` permission guarding its own Hub entry point, and Core declares only the ones it implements (§1.3). In v1 that is exactly one, `MODEL_TRANSFER`; frontier inference is not a refused call but an absent one. |
 
 ### 1.2 Authentication and trust are two different gates
 
@@ -76,6 +81,48 @@ softer than both:
 
 Stated as the rule a reviewer should hold us to: **a same-signature sender may hand Core bytes; it may
 not hand Core a conclusion.**
+
+### 1.3 Hub capabilities are separate permissions — decided
+
+`NORTH_STAR_BRIEF.md` §10: installing Hub must not be blanket authorisation for network behaviour, and
+"a user who enables model downloads has not necessarily authorized sending context to a frontier
+model". The decision, argued in `NORTH_STAR_REVIEW.md` §5:
+
+**Each Hub capability that crosses the trust boundary gets its own `signature`-protected permission,
+guarding its own Hub entry point. Core declares a `<uses-permission>` only for the capabilities it
+implements. There is no capability-grant record.**
+
+| Brief §10 capability | Crosses the boundary? | Permission | v1 status |
+|---|---|---|---|
+| `MODEL_DISCOVERY` | no — search and resolve run wholly inside Hub (§4.3) | none, and none is needed | Hub-internal |
+| `MODEL_DOWNLOAD` | yes, as the artifact handoff (§2) | `app.skein.permission.MODEL_TRANSFER` | **declared by both apps** |
+| `FRONTIER_INFERENCE` | yes, if it ever exists | `app.skein.permission.FRONTIER_INFERENCE` | name reserved; **declared by neither app** |
+| `BRAIN_PACK_DOWNLOAD` | yes, as a pack handoff | `app.skein.permission.BRAIN_PACK_TRANSFER` | name reserved; declared by neither app |
+| `SKILL_DOWNLOAD` | yes, as a skill handoff | `app.skein.permission.SKILL_TRANSFER` | name reserved; declared by neither app |
+
+Three consequences, and they are the reason for the shape:
+
+1. **An undeclared capability is absent, not refused.** Core's manifest declares no
+   `FRONTIER_INFERENCE`, so no Core code path — including a buggy or compromised one — can invoke a
+   frontier entry point. `ManifestPolicyTest` and `tools/ci/manifest-audit.sh` already assert Core's
+   permission set, so the enabled set *is* that assertion, and a user can read it in the OS app-info
+   screen.
+2. **Core answers "downloads enabled, frontier not" locally, from three facts it owns.** For a given
+   capability, `HubPicker.availability(capability)` returns `Available` only when Core declares the
+   matching permission, `checkSignatures(self, app.skein.hub) == SIGNATURE_MATCH` (§2.4), and Hub
+   exposes that capability's guarded entry point. No new data format, no Hub → Core state flow
+   (§4.4, §6.3 stand unchanged).
+3. **The user's runtime toggle stays inside Hub** and is reported per call as a typed
+   `HubAvailability.Unavailable` reason on a cancelled result — never cached in Core. Caching it would
+   make Core rely on a claim Hub makes about itself, which I4 forbids.
+
+A capability-grant record was considered and rejected: being Hub-supplied, I4 would let Core treat it
+only as a hint, so it would enforce nothing while costing a schema, a signature, a freshness and
+revocation story, a hint-quarantine path (§3.4) and its own test suite — machinery with no v1 caller.
+
+Nothing above changes v1's implementation surface: exactly one permission exists, it is the one §2.3
+already specifies, and the other four names are reserved here so that adding a capability later is a
+new permission beside `MODEL_TRANSFER` rather than a widening of it.
 
 ---
 
@@ -172,6 +219,11 @@ share of users, and must stay first-class.
 Naming note: the brief wrote `us.skein.permission.MODEL_TRANSFER` "conceptually"; this document uses
 `app.skein.permission.MODEL_TRANSFER` to match the namespace already in the tree
 (`us.aherrera.skein.documents`, `us.aherrera.skein.ipc`).
+
+Scope note (§1.3): `MODEL_TRANSFER` is the Core-visible leg of the `MODEL_DOWNLOAD` capability and
+nothing else. It does not cover frontier inference, brain packs or skills, and it must never be
+widened to — each of those is its own permission guarding its own entry point, declared by neither app
+until the capability ships.
 
 `<queries>` is required: Core targets SDK 37, so without it `resolveActivity` and
 `getPackageInfo("app.skein.hub", …)` return nothing and Hub is invisible. It is a **package-visibility
@@ -722,6 +774,7 @@ measurement asks for it.
 | A model-router, speculative decoding, or draft models in v1 | Spec §3.2 (router is v2, conditional on measurement); §7. |
 | React Native, `llama.rn`, or Qualcomm-specific backends in either app | Brief §3, §28. Hub is Kotlin/Compose like Core. |
 | Distributing Hub through Play, or bundling GMS in Hub | Spec §10, §2.2. Hub ships the same way Core does. |
+| A blanket Hub permission covering future network capabilities, or a Hub-supplied capability-grant record in place of per-capability permissions | §1.3, I6. Installing Hub authorises nothing by itself, and a grant record Core would have to distrust (I4) enforces nothing. |
 
 ---
 
