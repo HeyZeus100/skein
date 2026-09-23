@@ -33,6 +33,7 @@ import app.skein.core.vault.blob.InMemoryAttachmentStore
 import app.skein.core.vault.db.SkeinSQLiteConnection
 import app.skein.core.vault.db.SkeinSQLiteDriver
 import app.skein.core.vault.repository.VaultRepositoryImpl
+import app.skein.core.vault.testutil.splitMigrationStatements
 import com.google.common.truth.Truth.assertThat
 import kotlinx.coroutines.runBlocking
 import org.junit.After
@@ -60,7 +61,7 @@ class ExportStageRepositoryContractTest {
                 requireNotNull(javaClass.classLoader?.getResourceAsStream("migrations/$migration")) {
                     "migrations/$migration not on the classpath"
                 }.use { it.readBytes().toString(Charsets.UTF_8) }
-            for (statement in splitOnSentinel(sql)) conn.prepare(statement).use { it.step() }
+            for (statement in splitMigrationStatements(sql)) conn.prepare(statement).use { it.step() }
         }
         // The cascade below only fires with FK enforcement on, which
         // `VaultLifecycle` sets for every production connection.
@@ -221,25 +222,4 @@ class ExportStageRepositoryContractTest {
 
             assertThat(repo.getStage("stage-1")).isNotNull()
         }
-
-    /**
-     * Splits migration SQL on the `--;` sentinel. `MigrationStatementSplitter`
-     * is `internal` to the main source set and invisible from this separate
-     * `androidTest` compilation — the same helper is already duplicated in
-     * `VaultRepositoryImplContractTest`, `IndexStoreImplContractTest` and
-     * `MigratorInstrumentedTest` for that reason.
-     */
-    private fun splitOnSentinel(sql: String): List<String> =
-        sql
-            .split("--;")
-            .map { chunk ->
-                chunk
-                    .lineSequence()
-                    .map { it.trimEnd() }
-                    .filter { line -> line.isNotBlank() && !line.trimStart().startsWith("--") }
-                    .joinToString(separator = "\n")
-                    .trim()
-                    .removeSuffix(";")
-                    .trim()
-            }.filter { it.isNotEmpty() }
 }

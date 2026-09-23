@@ -18,6 +18,7 @@ import androidx.sqlite.SQLiteConnection
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.platform.app.InstrumentationRegistry
 import app.skein.core.vault.db.SkeinSQLiteDriver
+import app.skein.core.vault.testutil.splitMigrationStatements
 import com.google.common.truth.Truth.assertThat
 import org.junit.After
 import org.junit.Test
@@ -280,7 +281,7 @@ class MigratorInstrumentedTest {
         // itself is `internal` to the main source set and not visible from
         // `androidTest` (a separate compilation), so this splits on the
         // same `--;` sentinel locally -- mirroring the identical workaround
-        // already used by `VaultRepositoryImplContractTest.splitOnSentinel`
+        // already used by `splitMigrationStatements`
         // / `IndexStoreImplContractTest` / `PersonaServiceImplContractTest`
         // in this module.
         SkeinSQLiteDriver(randomKey(9)).open(dbFile.absolutePath).use { conn ->
@@ -289,7 +290,7 @@ class MigratorInstrumentedTest {
                     "migrations/001_initial.sql not on the classpath"
                 }.use { it.readBytes().toString(Charsets.UTF_8) }
             exec(conn, "BEGIN IMMEDIATE;")
-            for (statement in splitOnSentinel(sql)) exec(conn, statement)
+            for (statement in splitMigrationStatements(sql)) exec(conn, statement)
             exec(conn, "PRAGMA user_version = 1;")
             exec(conn, "COMMIT;")
 
@@ -450,7 +451,7 @@ class MigratorInstrumentedTest {
                 "migrations/$fileName not on the classpath"
             }.use { it.readBytes().toString(Charsets.UTF_8) }
         exec(conn, "BEGIN IMMEDIATE;")
-        for (statement in splitOnSentinel(sql)) exec(conn, statement)
+        for (statement in splitMigrationStatements(sql)) exec(conn, statement)
         exec(conn, "PRAGMA user_version = $version;")
         exec(conn, "COMMIT;")
     }
@@ -721,30 +722,6 @@ class MigratorInstrumentedTest {
         sql: String,
     ) {
         conn.prepare(sql).use { it.step() }
-    }
-
-    /**
-     * Split migration SQL on the `--;` sentinel (`001_initial.sql`'s file
-     * header) -- mirrors production `MigrationStatementSplitter`, which is
-     * `internal` and not visible from this separate `androidTest`
-     * compilation. Same helper already duplicated in
-     * `VaultRepositoryImplContractTest`, `IndexStoreImplContractTest`, and
-     * `PersonaServiceImplContractTest` in this module.
-     */
-    private fun splitOnSentinel(sql: String): List<String> {
-        val raw = sql.split("--;")
-        val cleaned =
-            raw.map { chunk ->
-                chunk
-                    .lineSequence()
-                    .map { it.trimEnd() }
-                    .filter { line -> line.isNotBlank() && !line.trimStart().startsWith("--") }
-                    .joinToString(separator = "\n")
-                    .trim()
-                    .removeSuffix(";")
-                    .trim()
-            }
-        return cleaned.filter { it.isNotEmpty() }
     }
 
     private companion object {

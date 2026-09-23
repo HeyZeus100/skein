@@ -20,6 +20,7 @@ import androidx.test.ext.junit.runners.AndroidJUnit4
 import app.skein.core.model.PersonaService
 import app.skein.core.vault.db.SkeinSQLiteConnection
 import app.skein.core.vault.db.SkeinSQLiteDriver
+import app.skein.core.vault.testutil.splitMigrationStatements
 import app.skein.testing.PersonaServiceContractTest
 import org.junit.After
 import org.junit.runner.RunWith
@@ -55,35 +56,11 @@ public class PersonaServiceImplContractTest : PersonaServiceContractTest() {
                 javaClass.classLoader?.getResourceAsStream("migrations/001_initial.sql"),
             ) { "migrations/001_initial.sql not on the classpath" }
                 .use { it.readBytes().toString(Charsets.UTF_8) }
-        for (statement in splitOnSentinel(sql)) {
+        for (statement in splitMigrationStatements(sql)) {
             conn.prepare(statement).use { it.step() }
         }
         val impl = PersonaServiceImpl(conn)
         openImpls += impl
         return impl
-    }
-
-    private companion object {
-        /**
-         * Split the migration SQL on the `--;` sentinel used by
-         * `001_initial.sql` (see file header) — mirrors what the
-         * production `MigrationStatementSplitter` does. Trailing
-         * whitespace and empty statements are dropped.
-         */
-        fun splitOnSentinel(sql: String): List<String> {
-            val raw = sql.split("--;")
-            val cleaned =
-                raw.map { chunk ->
-                    chunk
-                        .lineSequence()
-                        .map { it.trimEnd() }
-                        .filter { line -> line.isNotBlank() && !line.trimStart().startsWith("--") }
-                        .joinToString(separator = "\n")
-                        .trim()
-                        .removeSuffix(";")
-                        .trim()
-                }
-            return cleaned.filter { it.isNotEmpty() }
-        }
     }
 }
