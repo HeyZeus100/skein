@@ -47,19 +47,19 @@ import app.skein.core.verify.VerifyBinding
 import app.skein.core.verify.VerifyCancellation
 import app.skein.core.verify.VerifyFile
 import app.skein.core.verify.VerifyProgress
-import us.aherrera.skein.ipc.ChatMessageParcel
-import us.aherrera.skein.ipc.EmbedRequest
-import us.aherrera.skein.ipc.EngineStatus
-import us.aherrera.skein.ipc.ErrorCode
-import us.aherrera.skein.ipc.ErrorCodes
-import us.aherrera.skein.ipc.GenStats
-import us.aherrera.skein.ipc.GenerateRequest
-import us.aherrera.skein.ipc.IInferenceCallback
-import us.aherrera.skein.ipc.IInferenceService
-import us.aherrera.skein.ipc.LoadRequest
-import us.aherrera.skein.ipc.ManifestFileRef
-import us.aherrera.skein.ipc.SharedMemRef
-import us.aherrera.skein.ipc.TransportRules
+import app.skein.ipc.ChatMessageParcel
+import app.skein.ipc.EmbedRequest
+import app.skein.ipc.EngineStatus
+import app.skein.ipc.ErrorCode
+import app.skein.ipc.ErrorCodes
+import app.skein.ipc.GenStats
+import app.skein.ipc.GenerateRequest
+import app.skein.ipc.IInferenceCallback
+import app.skein.ipc.IInferenceService
+import app.skein.ipc.LoadRequest
+import app.skein.ipc.ManifestFileRef
+import app.skein.ipc.SharedMemRef
+import app.skein.ipc.TransportRules
 import java.io.FileInputStream
 import java.io.IOException
 import java.util.concurrent.atomic.AtomicBoolean
@@ -75,7 +75,7 @@ internal object EngineState {
     const val GENERATING = "generating"
 }
 
-/** `GenStats.stopReason` values — `us.aherrera.skein.core.model.StopReason` names. */
+/** `GenStats.stopReason` values — `app.skein.core.model.StopReason` names. */
 internal object StopReasons {
     const val EOS = "EOS"
     const val LENGTH = "LENGTH"

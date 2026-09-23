@@ -15,7 +15,7 @@
 
 package app.skein.core.vault.session
 
-import us.aherrera.skein.core.model.AuthorizationToken
+import app.skein.core.model.AuthorizationToken
 
 /** One of the phases in the [UnlockManager] state machine. */
 public sealed class UnlockState {

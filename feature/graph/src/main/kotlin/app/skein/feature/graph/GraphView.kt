@@ -57,11 +57,11 @@ import androidx.compose.ui.text.drawText
 import androidx.compose.ui.text.rememberTextMeasurer
 import androidx.compose.ui.unit.IntSize
 import androidx.compose.ui.unit.dp
-import us.aherrera.skein.core.model.DocId
-import us.aherrera.skein.core.model.DocumentKind
-import us.aherrera.skein.core.model.EdgeKind
-import us.aherrera.skein.core.model.IndexStore
-import us.aherrera.skein.core.model.VaultRepository
+import app.skein.core.model.DocId
+import app.skein.core.model.DocumentKind
+import app.skein.core.model.EdgeKind
+import app.skein.core.model.IndexStore
+import app.skein.core.model.VaultRepository
 
 private val CENTER_RADIUS = 18.dp
 private val NODE_RADIUS = 12.dp

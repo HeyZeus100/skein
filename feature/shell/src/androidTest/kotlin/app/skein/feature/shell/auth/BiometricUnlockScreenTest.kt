@@ -7,6 +7,7 @@ import androidx.compose.ui.test.junit4.createAndroidComposeRule
 import androidx.compose.ui.test.onNodeWithTag
 import androidx.fragment.app.FragmentActivity
 import androidx.test.ext.junit.runners.AndroidJUnit4
+import app.skein.core.model.AuthorizationToken
 import app.skein.core.vault.key.RewrapResult
 import app.skein.core.vault.key.SetupResult
 import app.skein.core.vault.key.UnlockResult
@@ -19,7 +20,6 @@ import org.junit.Assert.assertTrue
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
-import us.aherrera.skein.core.model.AuthorizationToken
 
 /**
  * On-device Compose UI test for [BiometricUnlockScreen] (bd `skein-ugo`,

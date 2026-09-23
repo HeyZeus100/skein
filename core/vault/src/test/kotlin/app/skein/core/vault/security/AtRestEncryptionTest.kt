@@ -41,15 +41,15 @@ import app.skein.core.vault.key.FakeKeystoreFacade
 import app.skein.core.vault.key.FileMasterKeyStorage
 import app.skein.core.vault.key.VaultKeyProvider
 import app.skein.core.vault.key.VaultKeyProviderImpl
+import app.skein.testing.InMemoryVaultRepository
 import app.skein.testing.TempDirRule
+import app.skein.testing.fixtures.SyntheticVault
 import com.google.common.truth.Truth.assertThat
 import com.google.common.truth.Truth.assertWithMessage
 import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.test.runTest
 import org.junit.Rule
 import org.junit.Test
-import us.aherrera.skein.testing.InMemoryVaultRepository
-import us.aherrera.skein.testing.fixtures.SyntheticVault
 import java.io.File
 import java.security.SecureRandom
 

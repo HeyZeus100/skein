@@ -9,6 +9,12 @@
 
 package app.skein.feature.timeline
 
+import app.skein.core.model.Document
+import app.skein.core.model.DocumentKind
+import app.skein.core.model.Persona
+import app.skein.core.model.PersonaId
+import app.skein.core.model.TimelineFilter
+import app.skein.core.model.VaultRepository
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.Flow
@@ -21,12 +27,6 @@ import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
-import us.aherrera.skein.core.model.Document
-import us.aherrera.skein.core.model.DocumentKind
-import us.aherrera.skein.core.model.Persona
-import us.aherrera.skein.core.model.PersonaId
-import us.aherrera.skein.core.model.TimelineFilter
-import us.aherrera.skein.core.model.VaultRepository
 
 /**
  * State holder for [TimelineScreen] and [TimelineRail].

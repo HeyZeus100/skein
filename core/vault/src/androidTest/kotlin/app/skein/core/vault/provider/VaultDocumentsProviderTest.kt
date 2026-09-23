@@ -28,8 +28,14 @@ import android.os.ParcelFileDescriptor
 import android.provider.DocumentsContract
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.platform.app.InstrumentationRegistry
+import app.skein.core.model.AuthorizationToken
+import app.skein.core.model.DocumentKind
+import app.skein.core.model.IngestReason
+import app.skein.core.model.TimelineFilter
 import app.skein.core.vault.export.ExportServiceImpl
 import app.skein.core.vault.session.UnlockState
+import app.skein.testing.InMemoryVaultRepository
+import app.skein.testing.fixtures.SyntheticVault
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.runBlocking
@@ -39,12 +45,6 @@ import org.junit.Assert.assertTrue
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
-import us.aherrera.skein.core.model.AuthorizationToken
-import us.aherrera.skein.core.model.DocumentKind
-import us.aherrera.skein.core.model.IngestReason
-import us.aherrera.skein.core.model.TimelineFilter
-import us.aherrera.skein.testing.InMemoryVaultRepository
-import us.aherrera.skein.testing.fixtures.SyntheticVault
 import java.io.ByteArrayOutputStream
 import java.io.FileNotFoundException
 

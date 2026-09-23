@@ -18,15 +18,15 @@
 // about it — that is `RetrievalServiceImplTest`'s job.
 package app.skein.core.rag.retrieval
 
+import app.skein.core.model.DocumentKind
+import app.skein.core.model.NewChunk
+import app.skein.core.model.NewDocument
+import app.skein.core.model.RetrievalService
+import app.skein.core.model.Retrieved
+import app.skein.testing.InMemoryIndexStore
+import app.skein.testing.InMemoryVaultRepository
+import app.skein.testing.RetrievalServiceContractTest
 import kotlinx.coroutines.runBlocking
-import us.aherrera.skein.core.model.DocumentKind
-import us.aherrera.skein.core.model.NewChunk
-import us.aherrera.skein.core.model.NewDocument
-import us.aherrera.skein.core.model.RetrievalService
-import us.aherrera.skein.core.model.Retrieved
-import us.aherrera.skein.testing.InMemoryIndexStore
-import us.aherrera.skein.testing.InMemoryVaultRepository
-import us.aherrera.skein.testing.RetrievalServiceContractTest
 
 class RetrievalServiceImplContractTest : RetrievalServiceContractTest() {
     override fun retrievalService(results: List<Retrieved>): RetrievalService {

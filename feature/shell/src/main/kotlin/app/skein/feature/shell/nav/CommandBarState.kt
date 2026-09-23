@@ -5,14 +5,14 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.compose.runtime.snapshotFlow
+import app.skein.core.model.DocId
+import app.skein.core.model.DocumentKind
+import app.skein.core.model.VaultRepository
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.flow.debounce
 import kotlinx.coroutines.launch
-import us.aherrera.skein.core.model.DocId
-import us.aherrera.skein.core.model.DocumentKind
-import us.aherrera.skein.core.model.VaultRepository
 
 /** One plain-text search hit — title or body — tagged with [kind] for the results list's glyph (spec §8.2). */
 data class SearchResult(

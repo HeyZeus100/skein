@@ -26,9 +26,9 @@
 
 package app.skein.core.inference
 
+import app.skein.core.model.TokenBudget
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
-import us.aherrera.skein.core.model.TokenBudget
 import java.security.MessageDigest
 
 /**

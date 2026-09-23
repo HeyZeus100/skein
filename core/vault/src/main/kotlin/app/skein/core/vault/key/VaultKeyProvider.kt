@@ -32,14 +32,14 @@
 // Namespace note (`skein-0j1`): package `app.skein.core.vault.key`
 // matches the `app.skein.core.vault.db` namespace introduced by
 // `skein-e2ki`. A separate coordinator task (`skein-0j1`) will reconcile
-// the whole module tree to `us.aherrera.skein.*` at once; this file
+// the whole module tree to `app.skein.*` at once; this file
 // deliberately does not do that reconciliation piecemeal.
 
 package app.skein.core.vault.key
 
 import androidx.biometric.BiometricPrompt
 import androidx.fragment.app.FragmentActivity
-import us.aherrera.skein.core.model.AuthorizationToken
+import app.skein.core.model.AuthorizationToken
 
 /**
  * Owns the vault's Layer 0 → Layer 1 unlock/rewrap lifecycle.

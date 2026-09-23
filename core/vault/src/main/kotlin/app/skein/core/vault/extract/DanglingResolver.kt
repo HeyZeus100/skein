@@ -34,12 +34,12 @@
 
 package app.skein.core.vault.extract
 
+import app.skein.core.model.Document
+import app.skein.core.model.EdgeKind
+import app.skein.core.model.IndexStore
+import app.skein.core.model.TimelineFilter
+import app.skein.core.model.VaultRepository
 import kotlinx.coroutines.flow.first
-import us.aherrera.skein.core.model.Document
-import us.aherrera.skein.core.model.EdgeKind
-import us.aherrera.skein.core.model.IndexStore
-import us.aherrera.skein.core.model.TimelineFilter
-import us.aherrera.skein.core.model.VaultRepository
 
 /**
  * Rewrites `EdgeUpserter`'s unresolved-wikilink sentinel edges to the real

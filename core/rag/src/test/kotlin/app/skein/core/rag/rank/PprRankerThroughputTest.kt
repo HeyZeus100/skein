@@ -13,20 +13,20 @@
 
 package app.skein.core.rag.rank
 
+import app.skein.core.model.ChunkId
+import app.skein.core.model.CitationSourceKind
+import app.skein.core.model.DocId
+import app.skein.core.model.DocumentKind
+import app.skein.core.model.Edge
+import app.skein.core.model.EdgeKind
+import app.skein.core.model.NewChunk
+import app.skein.core.model.NewDocument
+import app.skein.core.model.ScoredChunk
+import app.skein.testing.InMemoryIndexStore
+import app.skein.testing.InMemoryVaultRepository
 import com.google.common.truth.Truth.assertThat
 import kotlinx.coroutines.runBlocking
 import org.junit.Test
-import us.aherrera.skein.core.model.ChunkId
-import us.aherrera.skein.core.model.CitationSourceKind
-import us.aherrera.skein.core.model.DocId
-import us.aherrera.skein.core.model.DocumentKind
-import us.aherrera.skein.core.model.Edge
-import us.aherrera.skein.core.model.EdgeKind
-import us.aherrera.skein.core.model.NewChunk
-import us.aherrera.skein.core.model.NewDocument
-import us.aherrera.skein.core.model.ScoredChunk
-import us.aherrera.skein.testing.InMemoryIndexStore
-import us.aherrera.skein.testing.InMemoryVaultRepository
 import kotlin.random.Random
 import kotlin.system.measureNanoTime
 

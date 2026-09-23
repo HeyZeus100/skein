@@ -69,15 +69,15 @@
 
 package app.skein.core.rag.ingest
 
+import app.skein.core.model.DocId
+import app.skein.core.model.Document
+import app.skein.core.model.IngestItem
 import app.skein.core.model.SkeinLog
+import app.skein.core.model.VaultRepository
 import app.skein.core.rag.chunk.Chunker
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.currentCoroutineContext
 import kotlinx.coroutines.ensureActive
-import us.aherrera.skein.core.model.DocId
-import us.aherrera.skein.core.model.Document
-import us.aherrera.skein.core.model.IngestItem
-import us.aherrera.skein.core.model.VaultRepository
 
 /** What the caller asks the pipeline to do next — see the file header. */
 public enum class IngestPace {

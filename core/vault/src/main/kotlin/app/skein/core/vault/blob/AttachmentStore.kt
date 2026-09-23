@@ -7,7 +7,7 @@
 // list, plus an in-memory stand-in so `VaultRepositoryImpl` has something
 // to run against until `E2.I5` lands.
 //
-// The shape matches `us.aherrera.skein.testing.AttachmentStore` (the JVM
+// The shape matches `app.skein.testing.AttachmentStore` (the JVM
 // fake `InMemoryVaultRepository` uses) on purpose — see that file's header
 // for why `:testing` can't depend on `:core:vault` and ships its own copy
 // instead. When `E2.I5` replaces [InMemoryAttachmentStore] here with a
@@ -16,7 +16,7 @@
 
 package app.skein.core.vault.blob
 
-import us.aherrera.skein.core.model.DocId
+import app.skein.core.model.DocId
 import java.io.ByteArrayInputStream
 import java.io.ByteArrayOutputStream
 import java.io.InputStream

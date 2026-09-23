@@ -1,5 +1,5 @@
 // `RetrievedAssembler` (skein-wqli, E5.I13 prep) tests. `skein-x4f` locked
-// `us.aherrera.skein.core.model.Retrieved`; this bridges `PprRanker`'s
+// `app.skein.core.model.Retrieved`; this bridges `PprRanker`'s
 // `List<ScoredChunk>` (plus the per-stage recall lists already keyed by
 // `CitationSourceKind`, since `RetrievalServiceImpl` builds that map for
 // `PprRanker.rank` anyway) onto it, so `skein-do6` never re-derives a
@@ -9,17 +9,17 @@
 
 package app.skein.core.rag.rank
 
+import app.skein.core.model.CitationSourceKind
+import app.skein.core.model.DocumentKind
+import app.skein.core.model.NewChunk
+import app.skein.core.model.NewDocument
+import app.skein.core.model.RecallSource
+import app.skein.core.model.ScoredChunk
+import app.skein.testing.InMemoryIndexStore
+import app.skein.testing.InMemoryVaultRepository
 import com.google.common.truth.Truth.assertThat
 import kotlinx.coroutines.runBlocking
 import org.junit.Test
-import us.aherrera.skein.core.model.CitationSourceKind
-import us.aherrera.skein.core.model.DocumentKind
-import us.aherrera.skein.core.model.NewChunk
-import us.aherrera.skein.core.model.NewDocument
-import us.aherrera.skein.core.model.RecallSource
-import us.aherrera.skein.core.model.ScoredChunk
-import us.aherrera.skein.testing.InMemoryIndexStore
-import us.aherrera.skein.testing.InMemoryVaultRepository
 
 class RetrievedAssemblerTest {
     @Test

@@ -20,6 +20,8 @@ import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.test.core.app.ActivityScenario
 import androidx.test.core.app.ApplicationProvider
+import app.skein.core.model.DocumentKind
+import app.skein.core.model.NewDocument
 import app.skein.core.vault.key.SetupResult
 import app.skein.core.vault.key.UnlockResult
 import app.skein.feature.editor.notetab.NoteTabTestTags
@@ -40,8 +42,6 @@ import org.junit.Test
 import org.junit.runner.RunWith
 import org.robolectric.RobolectricTestRunner
 import org.robolectric.annotation.Config
-import us.aherrera.skein.core.model.DocumentKind
-import us.aherrera.skein.core.model.NewDocument
 import java.time.Duration
 
 /**

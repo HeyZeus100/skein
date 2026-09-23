@@ -58,6 +58,7 @@ package app.skein.core.vault.session
 
 import androidx.biometric.BiometricPrompt
 import androidx.fragment.app.FragmentActivity
+import app.skein.core.model.AuthorizationToken
 import app.skein.core.model.SkeinLog
 import app.skein.core.vault.key.RewrapResult
 import app.skein.core.vault.key.UnlockResult
@@ -77,7 +78,6 @@ import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
 import kotlinx.coroutines.withTimeoutOrNull
-import us.aherrera.skein.core.model.AuthorizationToken
 import java.time.Clock
 import java.time.Duration
 import java.util.concurrent.atomic.AtomicLong

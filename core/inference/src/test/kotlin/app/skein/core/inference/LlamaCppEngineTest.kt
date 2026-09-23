@@ -29,10 +29,10 @@
 // for this suite/implementation to point at it and drop `pendingBead`.
 package app.skein.core.inference
 
+import app.skein.core.model.InferenceEngine
+import app.skein.core.model.Model
+import app.skein.testing.InferenceEngineContractTest
 import org.junit.Ignore
-import us.aherrera.skein.core.model.InferenceEngine
-import us.aherrera.skein.core.model.Model
-import us.aherrera.skein.testing.InferenceEngineContractTest
 
 @Ignore("pending skein-1uw")
 class LlamaCppEngineTest : InferenceEngineContractTest() {

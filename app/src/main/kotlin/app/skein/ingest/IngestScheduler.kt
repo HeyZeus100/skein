@@ -59,6 +59,8 @@
 package app.skein.ingest
 
 import app.skein.core.model.SkeinLog
+import app.skein.core.model.TimelineFilter
+import app.skein.core.model.VaultRepository
 import app.skein.core.rag.ingest.IngestOutcome
 import app.skein.core.rag.ingest.IngestPace
 import app.skein.core.rag.ingest.IngestPipeline
@@ -80,8 +82,6 @@ import kotlinx.coroutines.flow.withIndex
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
-import us.aherrera.skein.core.model.TimelineFilter
-import us.aherrera.skein.core.model.VaultRepository
 
 /** Counts only — safe for `SecureNotification` (E3.I8 / skein-fsn) and Settings › Indexing. */
 data class IngestProgress(

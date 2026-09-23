@@ -145,6 +145,8 @@ A milestone is a gate, not a bucket. Nothing in milestone N+1 is dispatched unti
 
 ## 4. Interface contracts (M0.5 deliverables)
 
+**skein-376c, 2026-09-23:** every `us/aherrera/skein/…` path and `us.aherrera.skein.*` package below was renamed to `app/skein/…` / `app.skein.*` (owner decision: no personal name in identifiers). This section is left as historical record of the M0.5 file lists and is not rewritten to match; read every `us.aherrera.skein` reference below as `app.skein`.
+
 These are the exact artifacts that must exist, compile, and be merged before M1 parallel work starts. Each is owned by one M0.5 issue. Package prefix is `us.aherrera.skein` (see Open Question OQ-1). Everything under `core/model` is pure Kotlin/JVM: no Android imports, so it can be unit-tested on the JVM and consumed by every process.
 
 ### 4.1 `InferenceEngine` and inference types — `E0.I10`

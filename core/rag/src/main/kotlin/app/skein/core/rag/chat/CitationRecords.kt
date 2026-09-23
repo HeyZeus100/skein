@@ -39,13 +39,13 @@
 // both fields, so this path is defensive, not a live v1 scenario.
 package app.skein.core.rag.chat
 
-import us.aherrera.skein.core.model.AssembledPrompt
-import us.aherrera.skein.core.model.Citation
-import us.aherrera.skein.core.model.CitationRecord
-import us.aherrera.skein.core.model.CitationRecordJson
-import us.aherrera.skein.core.model.CitationSourceKind
-import us.aherrera.skein.core.model.RecallSource
-import us.aherrera.skein.core.model.Retrieved
+import app.skein.core.model.AssembledPrompt
+import app.skein.core.model.Citation
+import app.skein.core.model.CitationRecord
+import app.skein.core.model.CitationRecordJson
+import app.skein.core.model.CitationSourceKind
+import app.skein.core.model.RecallSource
+import app.skein.core.model.Retrieved
 
 /** Builds the citation-record-v1 [CitationRecord] for a finished streamed turn. */
 public object CitationRecords {

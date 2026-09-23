@@ -3,12 +3,12 @@
 
 package app.skein.vault
 
+import app.skein.core.model.ExportService
+import app.skein.core.model.ImportService
+import app.skein.core.model.IndexStore
+import app.skein.core.model.PersonaService
+import app.skein.core.model.VaultRepository
 import app.skein.core.vault.export.stage.ExportStageRepository
-import us.aherrera.skein.core.model.ExportService
-import us.aherrera.skein.core.model.ImportService
-import us.aherrera.skein.core.model.IndexStore
-import us.aherrera.skein.core.model.PersonaService
-import us.aherrera.skein.core.model.VaultRepository
 import java.util.concurrent.atomic.AtomicBoolean
 import kotlin.coroutines.cancellation.CancellationException
 

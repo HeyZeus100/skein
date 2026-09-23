@@ -422,9 +422,10 @@ third-party JNI dependency (spec §6):
 
 The Kotlin half is
 `inference-service/src/main/kotlin/app/skein/inference/service/{LlamaNative,LlamaException}.kt`.
-(Package note: the plan's file list says `us.aherrera.skein.inference.service`;
-the module's namespace is and remains `app.skein.inference.service` — contracts
-live under `us.aherrera.skein.*`, implementation modules under `app.skein.*`.)
+(Package note: the plan's file list originally said `us.aherrera.skein.inference.service`
+for contract modules while this implementation module's namespace was always
+`app.skein.inference.service`; skein-376c renamed every contract module onto
+the same `app.skein.*` prefix, so both now agree.)
 
 **Handles are not pointers.** A `Long` handed to Kotlin is a monotonically
 increasing token minted by `handles.h`, never reused, resolved through a mutex

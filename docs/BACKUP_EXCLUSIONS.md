@@ -72,7 +72,7 @@ allows, the D2D/device-transfer path Seedvault actually uses.
 - A GrapheneOS device (or the Fold once M0-provisioned) with Seedvault set
   up as the active backup transport (Settings → System → Backup) and at
   least one backup destination configured (USB drive or a second device).
-- `us.aherrera.skein`-equivalent package (`app.skein`) installed in debug or
+- `app.skein` installed in debug or
   dev build, with the vault unlocked and containing at least one document,
   one attachment, and (if present) one downloaded model, so there is
   something in every excluded path to prove is *absent* from the result.

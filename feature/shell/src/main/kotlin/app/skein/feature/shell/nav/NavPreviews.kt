@@ -11,10 +11,10 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import app.skein.core.model.DocumentKind
 import app.skein.feature.shell.SkeinApp
 import app.skein.feature.shell.theme.SkeinTheme
 import app.skein.feature.shell.theme.SkeinThemeMode
-import us.aherrera.skein.core.model.DocumentKind
 
 /**
  * Shared preview scaffold: [NavDrawer] wrapping [CommandBar] over a

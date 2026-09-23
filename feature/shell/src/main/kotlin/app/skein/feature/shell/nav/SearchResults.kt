@@ -15,9 +15,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
+import app.skein.core.model.DocumentKind
 import app.skein.feature.shell.tabs.TabKind
 import app.skein.feature.shell.testing.ShellTestTags
-import us.aherrera.skein.core.model.DocumentKind
 
 /**
  * Kind glyph for a search result row (spec §8.2: "results list with kind

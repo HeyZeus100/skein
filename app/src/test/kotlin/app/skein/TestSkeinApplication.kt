@@ -14,6 +14,11 @@ import app.skein.ingest.IngestPipelines
 import app.skein.ingest.IngestScheduler
 import app.skein.ingest.IngestWorkPort
 import app.skein.system.SecurityPrefs
+import app.skein.testing.FakeExportService
+import app.skein.testing.FakeImportService
+import app.skein.testing.InMemoryIndexStore
+import app.skein.testing.InMemoryPersonaService
+import app.skein.testing.InMemoryVaultRepository
 import app.skein.vault.DocumentsProviderPort
 import app.skein.vault.ScriptedVaultKeyProvider
 import app.skein.vault.VaultBootstrap
@@ -26,11 +31,6 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.launch
-import us.aherrera.skein.testing.FakeExportService
-import us.aherrera.skein.testing.FakeImportService
-import us.aherrera.skein.testing.InMemoryIndexStore
-import us.aherrera.skein.testing.InMemoryPersonaService
-import us.aherrera.skein.testing.InMemoryVaultRepository
 import java.io.File
 import java.time.Duration
 

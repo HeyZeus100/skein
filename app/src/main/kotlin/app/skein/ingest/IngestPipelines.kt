@@ -15,6 +15,7 @@
 
 package app.skein.ingest
 
+import app.skein.core.model.EmbedderService
 import app.skein.core.rag.chunk.Chunker
 import app.skein.core.rag.ingest.IngestPace
 import app.skein.core.rag.ingest.IngestPipeline
@@ -24,7 +25,6 @@ import app.skein.core.rag.tokenizers.ApproximateTokenizer
 import app.skein.core.vault.extract.DanglingResolver
 import app.skein.core.vault.extract.EdgeUpserter
 import app.skein.vault.VaultSession
-import us.aherrera.skein.core.model.EmbedderService
 
 object IngestPipelines {
     /**

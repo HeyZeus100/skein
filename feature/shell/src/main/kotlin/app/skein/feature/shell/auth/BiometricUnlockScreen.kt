@@ -83,6 +83,7 @@ import androidx.core.content.ContextCompat
 import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleEventObserver
+import app.skein.core.model.AuthorizationToken
 import app.skein.core.vault.key.VaultKeyProvider
 import app.skein.core.vault.session.UnlockManager
 import app.skein.core.vault.session.UnlockOutcome
@@ -92,7 +93,6 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.callbackFlow
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
-import us.aherrera.skein.core.model.AuthorizationToken
 
 /**
  * Presents a `BiometricPrompt` (via [UnlockManager.unlock]) and routes on

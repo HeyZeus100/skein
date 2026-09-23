@@ -67,7 +67,7 @@ class ManifestGuardTaskTest {
         // XML parser rejects).
         val provider = listOf(
             """<provider android:name="app.skein.core.vault.provider.VaultDocumentsProvider"""",
-            """    android:authorities="us.aherrera.skein.documents"""",
+            """    android:authorities="app.skein.documents"""",
             """    android:exported="true"""",
             """    android:grantUriPermissions="false"""",
             """    android:permission="android.permission.MANAGE_DOCUMENTS">""",

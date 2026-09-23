@@ -75,6 +75,14 @@
 // and this module still has no `:core:vault` dependency (bd `skein-03f`).
 package app.skein.feature.editor.backlinks
 
+import app.skein.core.model.Chunk
+import app.skein.core.model.DocId
+import app.skein.core.model.Document
+import app.skein.core.model.EdgeKind
+import app.skein.core.model.IndexChange
+import app.skein.core.model.IndexStore
+import app.skein.core.model.TimelineFilter
+import app.skein.core.model.VaultRepository
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.Flow
@@ -86,14 +94,6 @@ import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.merge
 import kotlinx.coroutines.flow.stateIn
-import us.aherrera.skein.core.model.Chunk
-import us.aherrera.skein.core.model.DocId
-import us.aherrera.skein.core.model.Document
-import us.aherrera.skein.core.model.EdgeKind
-import us.aherrera.skein.core.model.IndexChange
-import us.aherrera.skein.core.model.IndexStore
-import us.aherrera.skein.core.model.TimelineFilter
-import us.aherrera.skein.core.model.VaultRepository
 
 /** One row of the backlinks drawer: a document that links to the current note. */
 public data class BacklinkGroup(

@@ -1,7 +1,7 @@
 // SQL-backed `VaultRepository` implementation (E2.I4, plan §4.2).
 //
 // This is the on-device implementation that backs the JVM
-// `us.aherrera.skein.testing.InMemoryVaultRepository` fake — the
+// `app.skein.testing.InMemoryVaultRepository` fake — the
 // "specification by fake" both this class and `VaultRepositoryContractTest`
 // (shared, in `:testing`) are written against.
 //
@@ -67,6 +67,25 @@ package app.skein.core.vault.repository
 
 import androidx.sqlite.SQLiteConnection
 import androidx.sqlite.SQLiteStatement
+import app.skein.core.model.Citation
+import app.skein.core.model.CitationRecordJson
+import app.skein.core.model.DocId
+import app.skein.core.model.Document
+import app.skein.core.model.DocumentHit
+import app.skein.core.model.DocumentKind
+import app.skein.core.model.DocumentRevision
+import app.skein.core.model.IngestItem
+import app.skein.core.model.IngestReason
+import app.skein.core.model.Message
+import app.skein.core.model.NewDocument
+import app.skein.core.model.NewMessage
+import app.skein.core.model.RetrievedChunksPayload
+import app.skein.core.model.RevisionHash
+import app.skein.core.model.RevisionHashing
+import app.skein.core.model.RevisionReason
+import app.skein.core.model.Role
+import app.skein.core.model.TimelineFilter
+import app.skein.core.model.VaultRepository
 import app.skein.core.vault.blob.AttachmentStore
 import app.skein.core.vault.export.stage.ExportStageRepository
 import app.skein.core.vault.export.stage.ExportStageRow
@@ -86,25 +105,6 @@ import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.JsonObject
 import kotlinx.serialization.json.JsonPrimitive
 import kotlinx.serialization.json.buildJsonObject
-import us.aherrera.skein.core.model.Citation
-import us.aherrera.skein.core.model.CitationRecordJson
-import us.aherrera.skein.core.model.DocId
-import us.aherrera.skein.core.model.Document
-import us.aherrera.skein.core.model.DocumentHit
-import us.aherrera.skein.core.model.DocumentKind
-import us.aherrera.skein.core.model.DocumentRevision
-import us.aherrera.skein.core.model.IngestItem
-import us.aherrera.skein.core.model.IngestReason
-import us.aherrera.skein.core.model.Message
-import us.aherrera.skein.core.model.NewDocument
-import us.aherrera.skein.core.model.NewMessage
-import us.aherrera.skein.core.model.RetrievedChunksPayload
-import us.aherrera.skein.core.model.RevisionHash
-import us.aherrera.skein.core.model.RevisionHashing
-import us.aherrera.skein.core.model.RevisionReason
-import us.aherrera.skein.core.model.Role
-import us.aherrera.skein.core.model.TimelineFilter
-import us.aherrera.skein.core.model.VaultRepository
 import java.io.InputStream
 import java.io.OutputStream
 import java.security.MessageDigest

@@ -11,6 +11,15 @@ import androidx.compose.ui.test.moveTo
 import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.performTouchInput
 import androidx.compose.ui.test.up
+import app.skein.core.model.DocId
+import app.skein.core.model.DocumentKind
+import app.skein.core.model.Edge
+import app.skein.core.model.EdgeKind
+import app.skein.core.model.IndexStore
+import app.skein.core.model.NewDocument
+import app.skein.core.model.VaultRepository
+import app.skein.testing.InMemoryIndexStore
+import app.skein.testing.InMemoryVaultRepository
 import kotlinx.coroutines.runBlocking
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertNotEquals
@@ -20,15 +29,6 @@ import org.junit.Test
 import org.junit.runner.RunWith
 import org.robolectric.RobolectricTestRunner
 import org.robolectric.annotation.Config
-import us.aherrera.skein.core.model.DocId
-import us.aherrera.skein.core.model.DocumentKind
-import us.aherrera.skein.core.model.Edge
-import us.aherrera.skein.core.model.EdgeKind
-import us.aherrera.skein.core.model.IndexStore
-import us.aherrera.skein.core.model.NewDocument
-import us.aherrera.skein.core.model.VaultRepository
-import us.aherrera.skein.testing.InMemoryIndexStore
-import us.aherrera.skein.testing.InMemoryVaultRepository
 
 /**
  * bd `skein-67ak`: Robolectric Compose UI test proving [GraphView]'s per-node

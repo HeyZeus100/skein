@@ -9,10 +9,10 @@
 
 package app.skein.core.vault.session
 
+import app.skein.core.model.AuthorizationToken
 import app.skein.core.vault.key.RewrapResult
 import app.skein.core.vault.key.UnlockResult
 import app.skein.core.vault.key.VaultKeyProvider
-import us.aherrera.skein.core.model.AuthorizationToken
 
 /** Outcome of [UnlockManager.unlock]. */
 public sealed class UnlockOutcome {

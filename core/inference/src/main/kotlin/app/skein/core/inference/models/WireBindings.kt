@@ -12,7 +12,7 @@
 //   actually holds, matched against the manifest, with each `BoundFile`
 //   carrying an absolute `java.io.File` path plus its expected SHA-256/size.
 //
-//   `us.aherrera.skein.ipc.ManifestBinding` (WIRE-SIDE, `:core:ipc`, landed by
+//   `app.skein.ipc.ManifestBinding` (WIRE-SIDE, `:core:ipc`, landed by
 //   `skein-mfw`) — the Binder `Parcelable` carrying the SAME information
 //   across a process boundary: `ManifestFileRef.fd` is an opened, read-only
 //   `ParcelFileDescriptor` in place of `BoundFile.path`, because
@@ -22,7 +22,7 @@
 //
 // THIS FILE MAPS STORE-SIDE -> WIRE ([WireBindings.toWire]), i.e.
 // `app.skein.core.inference.models.ManifestBinding` ->
-// `us.aherrera.skein.ipc.ManifestBinding`. `skein-cqiu`'s closing decision:
+// `app.skein.ipc.ManifestBinding`. `skein-cqiu`'s closing decision:
 // the wire type "is a straight mapping from it, not a second parser" — every
 // `BoundFile` becomes exactly one `ManifestFileRef`; nothing here re-derives a
 // digest, re-reads the manifest JSON, or re-runs `ManifestBinding.bind`'s
@@ -43,7 +43,7 @@
 //   * [toWire] itself opens one [android.os.ParcelFileDescriptor] per
 //     [BoundFile] (plus one more when an attestation bundle is
 //     supplied) and hands them back inside the returned wire
-//     [us.aherrera.skein.ipc.ManifestBinding]. If opening file N of M fails,
+//     [app.skein.ipc.ManifestBinding]. If opening file N of M fails,
 //     every descriptor already opened for files 1..N-1 (and the attestation
 //     fd, if it was opened first) is closed before the `IOException`
 //     propagates — `WireBindingsTest`'s
@@ -83,7 +83,7 @@
 // implementation, `E3.I6`, as not yet wired). Given that, [toWire] takes the
 // already-resolved bundle [java.io.File] as an explicit parameter rather than
 // deriving one, and skips attestation (returns a null
-// [us.aherrera.skein.ipc.AttestationRefParcel], logged, never thrown) when
+// [app.skein.ipc.AttestationRefParcel], logged, never thrown) when
 // [attestation] is non-null but no [attestationBundle] was supplied — origin
 // trust is `POST_REVIEW_RESOLUTIONS.md` §2.5's SOFT gate, so its absence must
 // never block a load the digest gate would otherwise allow.
@@ -92,11 +92,11 @@ package app.skein.core.inference.models
 
 import android.os.ParcelFileDescriptor
 import app.skein.core.model.SkeinLog
-import us.aherrera.skein.ipc.AttestationRefParcel
-import us.aherrera.skein.ipc.ManifestFileRef
+import app.skein.ipc.AttestationRefParcel
+import app.skein.ipc.ManifestFileRef
 import java.io.File
 import java.io.IOException
-import us.aherrera.skein.ipc.ManifestBinding as WireManifestBinding
+import app.skein.ipc.ManifestBinding as WireManifestBinding
 
 private const val TAG = "WireBindings"
 

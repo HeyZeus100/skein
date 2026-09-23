@@ -2,7 +2,7 @@
 // `skein-bkp`).
 //
 // This is the on-device implementation that backs the JVM
-// `us.aherrera.skein.testing.InMemoryPersonaService` fake — the
+// `app.skein.testing.InMemoryPersonaService` fake — the
 // "specification by fake" both this class and `PersonaServiceContractTest`
 // (shared, in `:testing`) are written against. Its behaviour must stay
 // behaviorally equivalent to that fake, modulo the one difference its own
@@ -60,6 +60,10 @@ package app.skein.core.vault.persona
 
 import androidx.sqlite.SQLiteConnection
 import androidx.sqlite.SQLiteStatement
+import app.skein.core.model.ModelId
+import app.skein.core.model.Persona
+import app.skein.core.model.PersonaId
+import app.skein.core.model.PersonaService
 import app.skein.core.vault.id.Uuid7
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
@@ -71,10 +75,6 @@ import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
 import kotlinx.coroutines.withContext
-import us.aherrera.skein.core.model.ModelId
-import us.aherrera.skein.core.model.Persona
-import us.aherrera.skein.core.model.PersonaId
-import us.aherrera.skein.core.model.PersonaService
 
 public class PersonaServiceImpl(
     private val connection: SQLiteConnection,

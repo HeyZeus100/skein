@@ -7,8 +7,8 @@
 package app.skein.inference.service
 
 import android.os.IBinder
-import us.aherrera.skein.ipc.GenStats
-import us.aherrera.skein.ipc.IInferenceCallback
+import app.skein.ipc.GenStats
+import app.skein.ipc.IInferenceCallback
 
 class RecordingCallback : IInferenceCallback.Stub() {
     val tokenBatches = mutableListOf<Array<String>>()

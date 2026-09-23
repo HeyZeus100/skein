@@ -18,6 +18,8 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.testTag
 import androidx.window.core.layout.WindowSizeClass
+import app.skein.core.model.PersonaId
+import app.skein.core.model.VaultRepository
 import app.skein.feature.shell.layout.AdaptivePaneHost
 import app.skein.feature.shell.layout.FoldPosture
 import app.skein.feature.shell.layout.PaneLayoutState
@@ -47,8 +49,6 @@ import app.skein.feature.shell.tabs.rememberTabsState
 import app.skein.feature.shell.testing.ShellTestTags
 import app.skein.feature.shell.theme.SkeinTheme
 import app.skein.feature.shell.theme.SkeinThemeMode
-import us.aherrera.skein.core.model.PersonaId
-import us.aherrera.skein.core.model.VaultRepository
 import java.util.UUID
 
 /**

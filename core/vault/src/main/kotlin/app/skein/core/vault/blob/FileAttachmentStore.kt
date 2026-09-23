@@ -16,7 +16,7 @@
 
 package app.skein.core.vault.blob
 
-import us.aherrera.skein.core.model.DocId
+import app.skein.core.model.DocId
 import java.io.File
 import java.io.IOException
 import java.io.InputStream

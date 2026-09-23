@@ -9,6 +9,11 @@ import app.skein.core.vault.session.LockObserverPriority
 import app.skein.core.vault.session.LockReason
 import app.skein.core.vault.session.UnlockManager
 import app.skein.export.stage.FakeExportStageRepository
+import app.skein.testing.FakeExportService
+import app.skein.testing.FakeImportService
+import app.skein.testing.InMemoryIndexStore
+import app.skein.testing.InMemoryPersonaService
+import app.skein.testing.InMemoryVaultRepository
 import kotlinx.coroutines.CompletableDeferred
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -28,11 +33,6 @@ import org.junit.runner.RunWith
 import org.robolectric.Robolectric
 import org.robolectric.RobolectricTestRunner
 import org.robolectric.annotation.Config
-import us.aherrera.skein.testing.FakeExportService
-import us.aherrera.skein.testing.FakeImportService
-import us.aherrera.skein.testing.InMemoryIndexStore
-import us.aherrera.skein.testing.InMemoryPersonaService
-import us.aherrera.skein.testing.InMemoryVaultRepository
 import java.util.Collections
 
 /**

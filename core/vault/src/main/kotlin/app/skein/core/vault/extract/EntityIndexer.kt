@@ -40,11 +40,11 @@
 
 package app.skein.core.vault.extract
 
-import us.aherrera.skein.core.model.Document
-import us.aherrera.skein.core.model.Edge
-import us.aherrera.skein.core.model.EdgeKind
-import us.aherrera.skein.core.model.EntitySpan
-import us.aherrera.skein.core.model.IndexStore
+import app.skein.core.model.Document
+import app.skein.core.model.Edge
+import app.skein.core.model.EdgeKind
+import app.skein.core.model.EntitySpan
+import app.skein.core.model.IndexStore
 import java.text.Normalizer
 
 /**

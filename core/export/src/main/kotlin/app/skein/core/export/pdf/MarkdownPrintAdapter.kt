@@ -20,7 +20,7 @@ import app.skein.core.export.pdf.layout.Page
 import app.skein.core.export.pdf.layout.PageGeometry
 import app.skein.core.export.pdf.layout.Paginator
 import app.skein.core.markdown.layout.PrintBlock
-import us.aherrera.skein.core.model.DocId
+import app.skein.core.model.DocId
 import java.io.FileInputStream
 import java.io.FileOutputStream
 import java.io.IOException

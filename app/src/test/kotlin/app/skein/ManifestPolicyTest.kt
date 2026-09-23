@@ -412,7 +412,7 @@ class ManifestPolicyTest {
          * so this test does not depend on `:core:vault`.
          */
         const val DOCUMENTS_PROVIDER = "app.skein.core.vault.provider.VaultDocumentsProvider"
-        const val DOCUMENTS_AUTHORITY = "us.aherrera.skein.documents"
+        const val DOCUMENTS_AUTHORITY = "app.skein.documents"
         const val MANAGE_DOCUMENTS = "android.permission.MANAGE_DOCUMENTS"
 
         /**

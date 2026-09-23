@@ -1,15 +1,15 @@
 package app.skein.feature.shell.nav
 
+import app.skein.core.model.DocumentKind
 import app.skein.feature.shell.tabs.TabKind
 import app.skein.feature.shell.tabs.TabState
 import app.skein.feature.shell.tabs.TabsState
+import app.skein.testing.InMemoryVaultRepository
 import kotlinx.coroutines.test.runTest
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertNull
 import org.junit.Assert.assertTrue
 import org.junit.Test
-import us.aherrera.skein.core.model.DocumentKind
-import us.aherrera.skein.testing.InMemoryVaultRepository
 
 /**
  * `/new note [title]` (plan `E6.I4` slice A, bd `skein-ps0`, coordinator

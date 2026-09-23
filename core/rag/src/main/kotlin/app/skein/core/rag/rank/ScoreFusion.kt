@@ -43,10 +43,10 @@
 
 package app.skein.core.rag.rank
 
-import us.aherrera.skein.core.model.ChunkId
-import us.aherrera.skein.core.model.CitationSourceKind
-import us.aherrera.skein.core.model.DocId
-import us.aherrera.skein.core.model.ScoredChunk
+import app.skein.core.model.ChunkId
+import app.skein.core.model.CitationSourceKind
+import app.skein.core.model.DocId
+import app.skein.core.model.ScoredChunk
 
 /**
  * Reciprocal-rank fusion of the recall stages plus the final

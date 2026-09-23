@@ -21,6 +21,10 @@
 package app.skein.core.vault.index
 
 import androidx.test.ext.junit.runners.AndroidJUnit4
+import app.skein.core.model.Edge
+import app.skein.core.model.EdgeKind
+import app.skein.core.model.IndexChange
+import app.skein.core.model.NewChunk
 import app.skein.core.vault.db.SkeinSQLiteConnection
 import app.skein.core.vault.db.SkeinSQLiteDriver
 import com.google.common.truth.Truth.assertThat
@@ -32,10 +36,6 @@ import kotlinx.coroutines.test.runTest
 import org.junit.After
 import org.junit.Test
 import org.junit.runner.RunWith
-import us.aherrera.skein.core.model.Edge
-import us.aherrera.skein.core.model.EdgeKind
-import us.aherrera.skein.core.model.IndexChange
-import us.aherrera.skein.core.model.NewChunk
 import kotlin.random.Random
 
 @OptIn(ExperimentalCoroutinesApi::class)

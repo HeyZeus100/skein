@@ -42,13 +42,13 @@ import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.unit.dp
+import app.skein.core.model.Document
+import app.skein.core.model.Persona
+import app.skein.core.model.TimelineFilter
+import app.skein.core.model.VaultRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.flowOf
-import us.aherrera.skein.core.model.Document
-import us.aherrera.skein.core.model.Persona
-import us.aherrera.skein.core.model.TimelineFilter
-import us.aherrera.skein.core.model.VaultRepository
 import java.time.LocalDate
 import java.time.ZoneId
 import java.util.Locale

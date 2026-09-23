@@ -4,6 +4,7 @@
 
 package app.skein.core.vault.codec
 
+import app.skein.core.model.FrontmatterExamples
 import com.google.common.truth.Truth.assertThat
 import kotlinx.serialization.json.JsonArray
 import kotlinx.serialization.json.JsonPrimitive
@@ -11,7 +12,6 @@ import kotlinx.serialization.json.buildJsonObject
 import kotlinx.serialization.json.put
 import kotlinx.serialization.json.putJsonArray
 import org.junit.Test
-import us.aherrera.skein.core.model.FrontmatterExamples
 
 public class FrontmatterTest {
     // ---- acceptance criterion 2: basic parse ----

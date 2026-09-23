@@ -17,7 +17,7 @@ package app.skein.inference.service
 
 import app.skein.core.verify.ModelFileRole
 import app.skein.core.verify.ModelVerification
-import us.aherrera.skein.ipc.ErrorCode
+import app.skein.ipc.ErrorCode
 
 /** `ModelVerification.Refusal` / `LlamaException` -> `ErrorCode`. */
 object ServiceErrorMapping {

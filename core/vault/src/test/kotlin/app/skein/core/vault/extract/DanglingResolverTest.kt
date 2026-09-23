@@ -11,15 +11,15 @@
 
 package app.skein.core.vault.extract
 
+import app.skein.core.model.DocumentKind
+import app.skein.core.model.Edge
+import app.skein.core.model.EdgeKind
+import app.skein.core.model.NewDocument
+import app.skein.testing.InMemoryIndexStore
+import app.skein.testing.InMemoryVaultRepository
 import com.google.common.truth.Truth.assertThat
 import kotlinx.coroutines.test.runTest
 import org.junit.Test
-import us.aherrera.skein.core.model.DocumentKind
-import us.aherrera.skein.core.model.Edge
-import us.aherrera.skein.core.model.EdgeKind
-import us.aherrera.skein.core.model.NewDocument
-import us.aherrera.skein.testing.InMemoryIndexStore
-import us.aherrera.skein.testing.InMemoryVaultRepository
 
 public class DanglingResolverTest {
     @Test

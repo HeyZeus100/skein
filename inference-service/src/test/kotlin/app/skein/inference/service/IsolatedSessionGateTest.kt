@@ -9,10 +9,10 @@
 
 package app.skein.inference.service
 
+import app.skein.ipc.ErrorCode
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertTrue
 import org.junit.Test
-import us.aherrera.skein.ipc.ErrorCode
 
 class IsolatedSessionGateTest {
     @Test

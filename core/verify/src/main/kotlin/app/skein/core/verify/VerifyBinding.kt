@@ -12,7 +12,7 @@
 //     manifest declared or import computed.
 //   * `:inference-service` holds neither. It runs `isolatedProcess=true`, it
 //     cannot open `:app`'s files by path at all, and what it is handed over
-//     Binder is a `us.aherrera.skein.ipc.ManifestBinding` whose
+//     Binder is a `app.skein.ipc.ManifestBinding` whose
 //     `ManifestFileRef` carries `role`, `fd`, `expectedSha256` and
 //     `expectedSizeBytes` — no path and **no BLAKE3**.
 //

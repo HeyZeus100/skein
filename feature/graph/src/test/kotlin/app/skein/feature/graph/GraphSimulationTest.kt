@@ -1,9 +1,9 @@
 package app.skein.feature.graph
 
+import app.skein.core.model.EdgeKind
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertTrue
 import org.junit.Test
-import us.aherrera.skein.core.model.EdgeKind
 
 /**
  * `GraphSimulation` (bd `skein-8g4c`, fixing bd `skein-67ak`'s jitter): pure

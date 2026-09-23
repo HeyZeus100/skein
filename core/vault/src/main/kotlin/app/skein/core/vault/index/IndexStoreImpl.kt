@@ -1,7 +1,7 @@
 // SQL-backed `IndexStore` implementation (E2.I15, plan §4.2).
 //
 // This is the on-device implementation that backs the in-memory
-// `us.aherrera.skein.testing.InMemoryIndexStore` fake used by unit tests
+// `app.skein.testing.InMemoryIndexStore` fake used by unit tests
 // in the rest of the codebase. Its behaviour is verified by the shared
 // `IndexStoreContractTest` (in `:testing`) via the instrumented
 // `IndexStoreImplContractTest` subclass in `src/androidTest/`.
@@ -51,23 +51,23 @@ package app.skein.core.vault.index
 
 import androidx.sqlite.SQLiteConnection
 import androidx.sqlite.SQLiteStatement
+import app.skein.core.model.Chunk
+import app.skein.core.model.ChunkId
+import app.skein.core.model.DocId
+import app.skein.core.model.Edge
+import app.skein.core.model.EdgeKind
+import app.skein.core.model.Entity
+import app.skein.core.model.IndexChange
+import app.skein.core.model.IndexStore
+import app.skein.core.model.NewChunk
+import app.skein.core.model.RevisionHash
+import app.skein.core.model.ScoredChunk
 import kotlinx.coroutines.channels.BufferOverflow
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
-import us.aherrera.skein.core.model.Chunk
-import us.aherrera.skein.core.model.ChunkId
-import us.aherrera.skein.core.model.DocId
-import us.aherrera.skein.core.model.Edge
-import us.aherrera.skein.core.model.EdgeKind
-import us.aherrera.skein.core.model.Entity
-import us.aherrera.skein.core.model.IndexChange
-import us.aherrera.skein.core.model.IndexStore
-import us.aherrera.skein.core.model.NewChunk
-import us.aherrera.skein.core.model.RevisionHash
-import us.aherrera.skein.core.model.ScoredChunk
 
 public class IndexStoreImpl(
     private val connection: SQLiteConnection,

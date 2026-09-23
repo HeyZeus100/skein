@@ -13,7 +13,7 @@
 
 package app.skein.core.verify
 
-import us.aherrera.skein.core.model.CompanionRole
+import app.skein.core.model.CompanionRole
 
 /** Role of one file inside a model manifest. `main` is the mmap'd model itself; the rest are companions. */
 enum class ModelFileRole(

@@ -1,20 +1,20 @@
 package app.skein.vault
 
+import app.skein.core.model.AuthorizationToken
 import app.skein.core.vault.session.LockReason
 import app.skein.core.vault.session.UnlockState
 import app.skein.export.stage.FakeExportStageRepository
+import app.skein.testing.FakeExportService
+import app.skein.testing.FakeImportService
+import app.skein.testing.InMemoryIndexStore
+import app.skein.testing.InMemoryPersonaService
+import app.skein.testing.InMemoryVaultRepository
 import app.skein.testing.SkeinLogCaptureRule
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertNull
 import org.junit.Assert.assertTrue
 import org.junit.Rule
 import org.junit.Test
-import us.aherrera.skein.core.model.AuthorizationToken
-import us.aherrera.skein.testing.FakeExportService
-import us.aherrera.skein.testing.FakeImportService
-import us.aherrera.skein.testing.InMemoryIndexStore
-import us.aherrera.skein.testing.InMemoryPersonaService
-import us.aherrera.skein.testing.InMemoryVaultRepository
 
 /**
  * skein-ank2: the vault gate's routing, in isolation from Compose. The

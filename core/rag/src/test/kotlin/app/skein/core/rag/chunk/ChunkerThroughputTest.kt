@@ -1,13 +1,13 @@
 package app.skein.core.rag.chunk
 
+import app.skein.core.model.TimelineFilter
 import app.skein.core.rag.tokenizers.TokenizerFixtures
+import app.skein.testing.InMemoryVaultRepository
+import app.skein.testing.fixtures.SyntheticVault
 import com.google.common.truth.Truth.assertThat
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.runBlocking
 import org.junit.Test
-import us.aherrera.skein.core.model.TimelineFilter
-import us.aherrera.skein.testing.InMemoryVaultRepository
-import us.aherrera.skein.testing.fixtures.SyntheticVault
 import kotlin.system.measureNanoTime
 
 /**

@@ -5,7 +5,7 @@
 
 package app.skein.core.rag.chat
 
-import us.aherrera.skein.core.model.Retrieved
+import app.skein.core.model.Retrieved
 
 /**
  * One piece of a parsed assistant reply, in stream order.

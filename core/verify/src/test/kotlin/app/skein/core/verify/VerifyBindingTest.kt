@@ -68,7 +68,7 @@ class VerifyBindingTest {
 
     @Test
     fun `expectedBlake3 is optional — the wire binding carries no post-mmap digest`() {
-        // `us.aherrera.skein.ipc.ManifestFileRef` has `expectedSha256` and
+        // `app.skein.ipc.ManifestFileRef` has `expectedSha256` and
         // `expectedSizeBytes` and nothing else, so a service-side binding
         // cannot supply one. `ModelVerifier` falls back to the BLAKE3 it
         // observed during the pre-mmap pass — see `ModelVerifierPinnedTest`.

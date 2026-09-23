@@ -1,20 +1,20 @@
 package app.skein.core.rag.recall
 
+import app.skein.core.model.Chunk
+import app.skein.core.model.ChunkId
+import app.skein.core.model.DocId
+import app.skein.core.model.DocumentKind
+import app.skein.core.model.Edge
+import app.skein.core.model.EdgeKind
+import app.skein.core.model.IndexStore
+import app.skein.core.model.NewChunk
+import app.skein.core.model.NewDocument
+import app.skein.core.model.VaultRepository
+import app.skein.testing.InMemoryIndexStore
+import app.skein.testing.InMemoryVaultRepository
 import com.google.common.truth.Truth.assertThat
 import kotlinx.coroutines.test.runTest
 import org.junit.Test
-import us.aherrera.skein.core.model.Chunk
-import us.aherrera.skein.core.model.ChunkId
-import us.aherrera.skein.core.model.DocId
-import us.aherrera.skein.core.model.DocumentKind
-import us.aherrera.skein.core.model.Edge
-import us.aherrera.skein.core.model.EdgeKind
-import us.aherrera.skein.core.model.IndexStore
-import us.aherrera.skein.core.model.NewChunk
-import us.aherrera.skein.core.model.NewDocument
-import us.aherrera.skein.core.model.VaultRepository
-import us.aherrera.skein.testing.InMemoryIndexStore
-import us.aherrera.skein.testing.InMemoryVaultRepository
 
 /**
  * `GraphRecall` (skein-7tw, plan `E5.I11`) tests. Fixtures are hand-built

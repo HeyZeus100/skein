@@ -27,6 +27,8 @@
 package app.skein.core.vault.export.stage
 
 import androidx.test.ext.junit.runners.AndroidJUnit4
+import app.skein.core.model.DocumentKind
+import app.skein.core.model.NewDocument
 import app.skein.core.vault.blob.InMemoryAttachmentStore
 import app.skein.core.vault.db.SkeinSQLiteConnection
 import app.skein.core.vault.db.SkeinSQLiteDriver
@@ -36,8 +38,6 @@ import kotlinx.coroutines.runBlocking
 import org.junit.After
 import org.junit.Test
 import org.junit.runner.RunWith
-import us.aherrera.skein.core.model.DocumentKind
-import us.aherrera.skein.core.model.NewDocument
 
 @RunWith(AndroidJUnit4::class)
 class ExportStageRepositoryContractTest {

@@ -28,7 +28,7 @@
 // 1. Retrieved items are trimmed from the *end* of the list until the
 //    `PromptGuard.wrapRetrieved` rendering of the survivors costs at most
 //    `budget.maxRetrievedTokens`. Only survivors appear in
-//    [us.aherrera.skein.core.model.AssembledPrompt.citations].
+//    [app.skein.core.model.AssembledPrompt.citations].
 // 2. History turns are then dropped oldest-first until the assembled
 //    prompt's total token cost is at most `contextLength - reserveForAnswer`.
 //    The system message and the final (retrieved + query) user message are
@@ -60,16 +60,16 @@
 // `countTokens`, that is invisible to this class either way.
 package app.skein.core.rag.prompt
 
-import us.aherrera.skein.core.model.AssembledPrompt
-import us.aherrera.skein.core.model.ChatMessage
-import us.aherrera.skein.core.model.Message
-import us.aherrera.skein.core.model.Persona
-import us.aherrera.skein.core.model.Prompt
-import us.aherrera.skein.core.model.PromptAssembler
-import us.aherrera.skein.core.model.Retrieved
-import us.aherrera.skein.core.model.Role
-import us.aherrera.skein.core.model.TokenBudget
-import us.aherrera.skein.security.prompt.PromptGuard
+import app.skein.core.model.AssembledPrompt
+import app.skein.core.model.ChatMessage
+import app.skein.core.model.Message
+import app.skein.core.model.Persona
+import app.skein.core.model.Prompt
+import app.skein.core.model.PromptAssembler
+import app.skein.core.model.Retrieved
+import app.skein.core.model.Role
+import app.skein.core.model.TokenBudget
+import app.skein.security.prompt.PromptGuard
 
 /**
  * Production [PromptAssembler]: the design spec §7.3 layout with

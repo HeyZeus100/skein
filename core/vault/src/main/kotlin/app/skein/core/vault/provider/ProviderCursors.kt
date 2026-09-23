@@ -20,13 +20,13 @@
 package app.skein.core.vault.provider
 
 import android.provider.DocumentsContract
+import app.skein.core.model.Document
+import app.skein.core.model.DocumentKind
 import app.skein.core.vault.codec.Frontmatter
 import app.skein.core.vault.export.AttachmentExtensions
 import app.skein.core.vault.export.SafeFileName
 import kotlinx.serialization.json.JsonPrimitive
 import kotlinx.serialization.json.longOrNull
-import us.aherrera.skein.core.model.Document
-import us.aherrera.skein.core.model.DocumentKind
 
 /** One provider cursor row: column name → `String` / `Long` / `Int` / `null`. */
 internal typealias ProviderRow = Map<String, Any?>

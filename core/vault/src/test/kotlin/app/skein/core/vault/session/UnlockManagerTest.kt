@@ -19,6 +19,7 @@
 
 package app.skein.core.vault.session
 
+import app.skein.core.model.AuthorizationToken
 import app.skein.core.vault.key.RewrapResult
 import app.skein.core.vault.key.UnlockResult
 import app.skein.core.vault.key.VaultKeyProvider
@@ -30,7 +31,6 @@ import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.test.runTest
 import kotlinx.coroutines.yield
 import org.junit.Test
-import us.aherrera.skein.core.model.AuthorizationToken
 import java.time.Duration
 
 private val UNLOCK_BIOMETRIC = VaultKeyProvider.Factor.BIOMETRIC

@@ -36,6 +36,7 @@ import androidx.compose.ui.unit.dp
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.lifecycleScope
+import app.skein.core.model.DocId
 import app.skein.core.vault.key.PassphraseKeyExport
 import app.skein.core.vault.session.UnlockState
 import app.skein.feature.editor.notetab.NoteTab
@@ -70,7 +71,6 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.suspendCancellableCoroutine
 import kotlinx.coroutines.withContext
-import us.aherrera.skein.core.model.DocId
 import kotlin.coroutines.resume
 import android.graphics.Color as AndroidColor
 

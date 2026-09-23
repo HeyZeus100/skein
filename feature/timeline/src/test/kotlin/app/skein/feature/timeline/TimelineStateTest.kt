@@ -1,5 +1,13 @@
 package app.skein.feature.timeline
 
+import app.skein.core.model.Document
+import app.skein.core.model.DocumentKind
+import app.skein.core.model.FrontmatterKeys
+import app.skein.core.model.NewDocument
+import app.skein.core.model.Persona
+import app.skein.core.model.TimelineFilter
+import app.skein.core.model.VaultRepository
+import app.skein.testing.InMemoryVaultRepository
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flowOf
@@ -16,14 +24,6 @@ import org.junit.Assert.assertFalse
 import org.junit.Assert.assertNull
 import org.junit.Assert.assertTrue
 import org.junit.Test
-import us.aherrera.skein.core.model.Document
-import us.aherrera.skein.core.model.DocumentKind
-import us.aherrera.skein.core.model.FrontmatterKeys
-import us.aherrera.skein.core.model.NewDocument
-import us.aherrera.skein.core.model.Persona
-import us.aherrera.skein.core.model.TimelineFilter
-import us.aherrera.skein.core.model.VaultRepository
-import us.aherrera.skein.testing.InMemoryVaultRepository
 import java.util.concurrent.atomic.AtomicLong
 
 /**

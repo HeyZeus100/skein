@@ -32,16 +32,16 @@ class ContractReportTaskTest {
     @Test
     fun `parses a passing JUnit XML file into a passed class result`() {
         val file = fixture(
-            "TEST-us.aherrera.skein.testing.FakeInferenceEngineTest.xml",
+            "TEST-app.skein.testing.FakeInferenceEngineTest.xml",
             junitXml(
-                classname = "us.aherrera.skein.testing.FakeInferenceEngineTest",
+                classname = "app.skein.testing.FakeInferenceEngineTest",
                 testcases = listOf(TestCaseFixture("stream_emits_done_last")),
             ),
         )
 
         val results = ContractReportTask.parseResults(setOf(file))
 
-        val result = results.getValue("us.aherrera.skein.testing.FakeInferenceEngineTest")
+        val result = results.getValue("app.skein.testing.FakeInferenceEngineTest")
         assertEquals(1, result.passed)
         assertEquals(0, result.failed)
         assertEquals(0, result.skipped)
@@ -95,7 +95,7 @@ class ContractReportTaskTest {
         val entry = ContractReportTask.ContractEntry(
             suite = "InferenceEngine",
             implementation = "FakeInferenceEngine",
-            testClassName = "us.aherrera.skein.testing.FakeInferenceEngineTest",
+            testClassName = "app.skein.testing.FakeInferenceEngineTest",
         )
         val results = mapOf(
             entry.testClassName to ContractReportTask.ClassResult(passed = 6, failed = 0, skipped = 0),

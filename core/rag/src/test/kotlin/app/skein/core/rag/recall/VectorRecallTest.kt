@@ -16,18 +16,18 @@
 
 package app.skein.core.rag.recall
 
+import app.skein.core.model.Capability
+import app.skein.core.model.ChunkId
+import app.skein.core.model.DocId
+import app.skein.core.model.EmbedderService
+import app.skein.core.model.Model
+import app.skein.core.model.ModelFormat
+import app.skein.core.model.NewChunk
+import app.skein.testing.FakeEmbedderService
+import app.skein.testing.InMemoryIndexStore
 import com.google.common.truth.Truth.assertThat
 import kotlinx.coroutines.test.runTest
 import org.junit.Test
-import us.aherrera.skein.core.model.Capability
-import us.aherrera.skein.core.model.ChunkId
-import us.aherrera.skein.core.model.DocId
-import us.aherrera.skein.core.model.EmbedderService
-import us.aherrera.skein.core.model.Model
-import us.aherrera.skein.core.model.ModelFormat
-import us.aherrera.skein.core.model.NewChunk
-import us.aherrera.skein.testing.FakeEmbedderService
-import us.aherrera.skein.testing.InMemoryIndexStore
 
 class VectorRecallTest {
     @Test

@@ -14,6 +14,12 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.text.input.TextFieldValue
+import app.skein.core.model.DocId
+import app.skein.core.model.DocumentKind
+import app.skein.core.model.FrontmatterKeys
+import app.skein.core.model.IndexStore
+import app.skein.core.model.NewDocument
+import app.skein.core.model.VaultRepository
 import app.skein.core.vault.codec.Frontmatter
 import app.skein.core.vault.export.ExportServiceImpl
 import app.skein.feature.editor.AutosaveStatus
@@ -32,12 +38,6 @@ import kotlinx.coroutines.launch
 import kotlinx.serialization.json.JsonObject
 import kotlinx.serialization.json.JsonPrimitive
 import kotlinx.serialization.json.buildJsonObject
-import us.aherrera.skein.core.model.DocId
-import us.aherrera.skein.core.model.DocumentKind
-import us.aherrera.skein.core.model.FrontmatterKeys
-import us.aherrera.skein.core.model.IndexStore
-import us.aherrera.skein.core.model.NewDocument
-import us.aherrera.skein.core.model.VaultRepository
 import java.io.OutputStream
 import java.time.Duration
 
@@ -99,7 +99,7 @@ public class NoteTabState(
     /**
      * bd `skein-fay` (E6.I16): backs [shareAsTextIntent] and [writeSaveAs].
      * Depends only on [VaultRepository] (see that class's own header) so it
-     * works unmodified against the [InMemoryVaultRepository][us.aherrera.skein.testing.InMemoryVaultRepository]
+     * works unmodified against the [InMemoryVaultRepository][app.skein.testing.InMemoryVaultRepository]
      * fake this state's own tests already seed.
      */
     private val exportService = ExportServiceImpl(vaultRepository)
@@ -186,7 +186,7 @@ public class NoteTabState(
      * (`:core:vault`) — so [EditorState] can hide/show the block and guard
      * its `id:` line without `NoteTabState` (or `EditorState` itself)
      * needing a second, parallel text field. `render` emits no `---`
-     * header at all when [us.aherrera.skein.core.model.Document.frontmatter]
+     * header at all when [app.skein.core.model.Document.frontmatter]
      * is empty, so a document without frontmatter seeds the editor with
      * exactly its body — byte-identical to pre-`E7.I3` behavior.
      */

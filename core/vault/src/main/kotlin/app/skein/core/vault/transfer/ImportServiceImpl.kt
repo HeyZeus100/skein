@@ -83,18 +83,18 @@
 package app.skein.core.vault.transfer
 
 import android.content.Context
+import app.skein.core.model.Document
+import app.skein.core.model.DocumentKind
+import app.skein.core.model.FrontmatterKeys
+import app.skein.core.model.ImportResult
+import app.skein.core.model.ImportService
+import app.skein.core.model.NewDocument
+import app.skein.core.model.PersonaId
+import app.skein.core.model.VaultRepository
 import app.skein.core.vault.codec.Frontmatter
 import kotlinx.serialization.json.JsonObject
 import kotlinx.serialization.json.JsonPrimitive
 import kotlinx.serialization.json.buildJsonObject
-import us.aherrera.skein.core.model.Document
-import us.aherrera.skein.core.model.DocumentKind
-import us.aherrera.skein.core.model.FrontmatterKeys
-import us.aherrera.skein.core.model.ImportResult
-import us.aherrera.skein.core.model.ImportService
-import us.aherrera.skein.core.model.NewDocument
-import us.aherrera.skein.core.model.PersonaId
-import us.aherrera.skein.core.model.VaultRepository
 import java.io.IOException
 import java.io.InputStream
 import java.io.InputStreamReader

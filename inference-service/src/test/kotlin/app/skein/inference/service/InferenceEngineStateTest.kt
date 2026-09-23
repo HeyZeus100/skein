@@ -16,6 +16,13 @@
 package app.skein.inference.service
 
 import android.os.ParcelFileDescriptor
+import app.skein.ipc.ChatMessageParcel
+import app.skein.ipc.ErrorCode
+import app.skein.ipc.GenerateRequest
+import app.skein.ipc.LoadRequest
+import app.skein.ipc.ManifestBinding
+import app.skein.ipc.ManifestFileRef
+import app.skein.ipc.SamplingParcel
 import com.google.common.truth.Truth.assertThat
 import org.junit.Rule
 import org.junit.Test
@@ -23,13 +30,6 @@ import org.junit.rules.TemporaryFolder
 import org.junit.runner.RunWith
 import org.robolectric.RobolectricTestRunner
 import org.robolectric.annotation.Config
-import us.aherrera.skein.ipc.ChatMessageParcel
-import us.aherrera.skein.ipc.ErrorCode
-import us.aherrera.skein.ipc.GenerateRequest
-import us.aherrera.skein.ipc.LoadRequest
-import us.aherrera.skein.ipc.ManifestBinding
-import us.aherrera.skein.ipc.ManifestFileRef
-import us.aherrera.skein.ipc.SamplingParcel
 import java.io.File
 import java.security.MessageDigest
 

@@ -19,7 +19,7 @@ import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.semantics.clearAndSetSemantics
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.unit.dp
-import us.aherrera.skein.core.model.Document
+import app.skein.core.model.Document
 
 /** Plan `E6.I7`: "in rail mode the timeline shows only kind glyphs for the 20 most recent items". */
 public const val RAIL_ITEMS: Int = 20

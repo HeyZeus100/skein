@@ -61,7 +61,15 @@
 // `ScoreFusion`, or `RetrievedAssembler` — it only composes them.
 package app.skein.core.rag.retrieval
 
+import app.skein.core.model.CitationSourceKind
+import app.skein.core.model.EmbedderService
+import app.skein.core.model.IndexStore
+import app.skein.core.model.PersonaId
+import app.skein.core.model.RetrievalService
+import app.skein.core.model.Retrieved
+import app.skein.core.model.ScoredChunk
 import app.skein.core.model.SkeinLog
+import app.skein.core.model.VaultRepository
 import app.skein.core.rag.rank.PprRanker
 import app.skein.core.rag.rank.RankerConfig
 import app.skein.core.rag.rank.RetrievedAssembler
@@ -74,14 +82,6 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
 import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.withTimeoutOrNull
-import us.aherrera.skein.core.model.CitationSourceKind
-import us.aherrera.skein.core.model.EmbedderService
-import us.aherrera.skein.core.model.IndexStore
-import us.aherrera.skein.core.model.PersonaId
-import us.aherrera.skein.core.model.RetrievalService
-import us.aherrera.skein.core.model.Retrieved
-import us.aherrera.skein.core.model.ScoredChunk
-import us.aherrera.skein.core.model.VaultRepository
 import java.util.concurrent.atomic.AtomicBoolean
 
 /**

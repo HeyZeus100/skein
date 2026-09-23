@@ -1,6 +1,10 @@
 package app.skein.feature.shell.nav
 
+import app.skein.core.model.DocumentKind
+import app.skein.core.model.NewDocument
+import app.skein.core.model.VaultRepository
 import app.skein.testing.FakeClock
+import app.skein.testing.InMemoryVaultRepository
 import app.skein.testing.SkeinLogCaptureRule
 import kotlinx.coroutines.test.advanceTimeBy
 import kotlinx.coroutines.test.runCurrent
@@ -10,10 +14,6 @@ import org.junit.Assert.assertFalse
 import org.junit.Assert.assertTrue
 import org.junit.Rule
 import org.junit.Test
-import us.aherrera.skein.core.model.DocumentKind
-import us.aherrera.skein.core.model.NewDocument
-import us.aherrera.skein.core.model.VaultRepository
-import us.aherrera.skein.testing.InMemoryVaultRepository
 
 /** Counts [searchTitles] calls by delegation — [InMemoryVaultRepository] itself is `final`. */
 private class CountingSearchRepository(

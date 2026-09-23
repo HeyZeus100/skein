@@ -80,7 +80,7 @@ abstract class ContractReportTask : DefaultTask() {
     companion object {
 
         /**
-         * Every abstract contract suite in `testing/src/main/kotlin/us/aherrera/skein/testing/`
+         * Every abstract contract suite in `testing/src/main/kotlin/app/skein/testing/`
          * (as of `E10.I3`), crossed with every known subclass:
          *  - the fake-backed JVM subclass in `testing/src/test` (all nine suites have one — `E10.I2`/skein-0j1),
          *  - the real-implementation subclass where one exists (`E2.I4`, `E2.I15`, `E2.I14`, `E2.I13`, `E5.I13`),
@@ -100,7 +100,7 @@ abstract class ContractReportTask : DefaultTask() {
             ContractEntry(
                 suite = "InferenceEngine",
                 implementation = "FakeInferenceEngine",
-                testClassName = "us.aherrera.skein.testing.FakeInferenceEngineTest",
+                testClassName = "app.skein.testing.FakeInferenceEngineTest",
             ),
             ContractEntry(
                 suite = "InferenceEngine",
@@ -111,7 +111,7 @@ abstract class ContractReportTask : DefaultTask() {
             ContractEntry(
                 suite = "VaultRepository",
                 implementation = "InMemoryVaultRepository",
-                testClassName = "us.aherrera.skein.testing.InMemoryVaultRepositoryTest",
+                testClassName = "app.skein.testing.InMemoryVaultRepositoryTest",
             ),
             ContractEntry(
                 suite = "VaultRepository",
@@ -121,7 +121,7 @@ abstract class ContractReportTask : DefaultTask() {
             ContractEntry(
                 suite = "IndexStore",
                 implementation = "InMemoryIndexStore",
-                testClassName = "us.aherrera.skein.testing.InMemoryIndexStoreTest",
+                testClassName = "app.skein.testing.InMemoryIndexStoreTest",
             ),
             ContractEntry(
                 suite = "IndexStore",
@@ -131,7 +131,7 @@ abstract class ContractReportTask : DefaultTask() {
             ContractEntry(
                 suite = "RetrievalService",
                 implementation = "FakeRetrievalService",
-                testClassName = "us.aherrera.skein.testing.FakeRetrievalServiceTest",
+                testClassName = "app.skein.testing.FakeRetrievalServiceTest",
             ),
             ContractEntry(
                 suite = "RetrievalService",
@@ -141,12 +141,12 @@ abstract class ContractReportTask : DefaultTask() {
             ContractEntry(
                 suite = "PromptAssembler",
                 implementation = "FakePromptAssembler",
-                testClassName = "us.aherrera.skein.testing.FakePromptAssemblerTest",
+                testClassName = "app.skein.testing.FakePromptAssemblerTest",
             ),
             ContractEntry(
                 suite = "PromptAssembler",
                 implementation = "GuardedReferenceAssembler",
-                testClassName = "us.aherrera.skein.security.prompt.GuardedPromptAssemblerContractTest",
+                testClassName = "app.skein.security.prompt.GuardedPromptAssemblerContractTest",
             ),
             ContractEntry(
                 suite = "PromptAssembler",
@@ -157,7 +157,7 @@ abstract class ContractReportTask : DefaultTask() {
             ContractEntry(
                 suite = "PersonaService",
                 implementation = "InMemoryPersonaService",
-                testClassName = "us.aherrera.skein.testing.InMemoryPersonaServiceTest",
+                testClassName = "app.skein.testing.InMemoryPersonaServiceTest",
             ),
             ContractEntry(
                 suite = "PersonaService",
@@ -167,7 +167,7 @@ abstract class ContractReportTask : DefaultTask() {
             ContractEntry(
                 suite = "EmbedderService",
                 implementation = "FakeEmbedderService",
-                testClassName = "us.aherrera.skein.testing.FakeEmbedderServiceTest",
+                testClassName = "app.skein.testing.FakeEmbedderServiceTest",
             ),
             ContractEntry(
                 suite = "EmbedderService",
@@ -178,7 +178,7 @@ abstract class ContractReportTask : DefaultTask() {
             ContractEntry(
                 suite = "ImportService",
                 implementation = "FakeImportService",
-                testClassName = "us.aherrera.skein.testing.FakeImportServiceTest",
+                testClassName = "app.skein.testing.FakeImportServiceTest",
             ),
             ContractEntry(
                 suite = "ImportService",
@@ -188,7 +188,7 @@ abstract class ContractReportTask : DefaultTask() {
             ContractEntry(
                 suite = "ExportService",
                 implementation = "FakeExportService",
-                testClassName = "us.aherrera.skein.testing.FakeExportServiceTest",
+                testClassName = "app.skein.testing.FakeExportServiceTest",
             ),
         )
 

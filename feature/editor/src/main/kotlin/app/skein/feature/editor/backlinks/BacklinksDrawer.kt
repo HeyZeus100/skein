@@ -30,9 +30,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
-import us.aherrera.skein.core.model.DocId
-import us.aherrera.skein.core.model.IndexStore
-import us.aherrera.skein.core.model.VaultRepository
+import app.skein.core.model.DocId
+import app.skein.core.model.IndexStore
+import app.skein.core.model.VaultRepository
 
 /**
  * The backlinks drawer surface. Collapsed by default (per plan `E6.I9`'s

@@ -26,8 +26,8 @@
 // them visually subordinate to real documents.
 package app.skein.feature.graph
 
-import us.aherrera.skein.core.model.DocumentKind
-import us.aherrera.skein.core.model.EdgeKind
+import app.skein.core.model.DocumentKind
+import app.skein.core.model.EdgeKind
 
 /** Which of the four node-id shapes [Edge]'s convention produces a given node id is. */
 public enum class GraphNodeKind {
