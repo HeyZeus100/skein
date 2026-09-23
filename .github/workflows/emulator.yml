@@ -69,11 +69,17 @@ jobs:
       # missing.
       - name: Put Android SDK cmdline-tools / platform-tools / emulator on PATH
         run: |
-          cmdline_tools_bin="$(find "$ANDROID_HOME/cmdline-tools" -maxdepth 2 -type f -name sdkmanager -exec dirname {} \; | sort -V | tail -n1)"
+          # The runner image keeps it at cmdline-tools/<version>/bin/sdkmanager,
+          # three levels below cmdline-tools (run 35844061827 failed here with
+          # -maxdepth 2); search deeper and show the tree on failure.
+          cmdline_tools_bin="$(find "$ANDROID_HOME/cmdline-tools" -maxdepth 4 -type f -name sdkmanager -exec dirname {} \; | sort -V | tail -n1)"
           if [ -z "$cmdline_tools_bin" ]; then
             echo "::error::no sdkmanager found under \$ANDROID_HOME/cmdline-tools ($ANDROID_HOME)" >&2
+            find "$ANDROID_HOME" -maxdepth 4 -name 'sdkmanager*' 2>/dev/null >&2 || true
+            ls -la "$ANDROID_HOME" "$ANDROID_HOME/cmdline-tools" 2>/dev/null >&2 || true
             exit 1
           fi
+          echo "sdkmanager at $cmdline_tools_bin"
           echo "$cmdline_tools_bin" >> "$GITHUB_PATH"
           echo "$ANDROID_HOME/platform-tools" >> "$GITHUB_PATH"
           echo "$ANDROID_HOME/emulator" >> "$GITHUB_PATH"
