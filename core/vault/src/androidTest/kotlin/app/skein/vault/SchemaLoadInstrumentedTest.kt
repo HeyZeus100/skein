@@ -21,7 +21,7 @@ import org.junit.runner.RunWith
 @RunWith(AndroidJUnit4::class)
 public class SchemaLoadInstrumentedTest {
     @Test
-    public fun `001_initial_sql loads statement-by-statement on the spike driver`() {
+    public fun test001InitialSqlLoadsStatementByStatementOnTheSpikeDriver() {
         val sql =
             requireNotNull(
                 SchemaLoadInstrumentedTest::class.java.classLoader

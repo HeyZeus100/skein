@@ -55,7 +55,7 @@ public class VectorRecallAcceptanceTest {
     }
 
     @Test
-    public fun `recall ranks the chunk matching the query vector first, scores mapped to 0,1`(): Unit =
+    public fun recallRanksTheChunkMatchingTheQueryVectorFirstScoresMappedTo01(): Unit =
         runTest {
             val idx = freshIndex()
             val chunkA =

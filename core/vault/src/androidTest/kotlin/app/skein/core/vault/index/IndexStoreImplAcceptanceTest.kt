@@ -56,7 +56,7 @@ public class IndexStoreImplAcceptanceTest {
     }
 
     @Test
-    public fun `bm25 does not throw on twenty adversarial query strings`(): Unit =
+    public fun bm25DoesNotThrowOnTwentyAdversarialQueryStrings(): Unit =
         runTest {
             val idx = freshIndex()
             // Seed the corpus with something searchable so FTS5 has real
@@ -102,7 +102,7 @@ public class IndexStoreImplAcceptanceTest {
         }
 
     @Test
-    public fun `knn returns exactly k rows over a 10 000-vector corpus`(): Unit =
+    public fun knnReturnsExactlyKRowsOverA10000VectorCorpus(): Unit =
         runTest {
             val idx = freshIndex()
             val docId = "01924a4b-4d29-7000-8000-000000010000"
@@ -133,7 +133,7 @@ public class IndexStoreImplAcceptanceTest {
         }
 
     @Test
-    public fun `replaceEdges with WIKILINK does not touch ENTITY edges of the same source`(): Unit =
+    public fun replaceEdgesWithWIKILINKDoesNotTouchENTITYEdgesOfTheSameSource(): Unit =
         runTest {
             val idx = freshIndex()
             val src = "01924a4b-4d29-7000-8000-00000000E001"
@@ -163,7 +163,7 @@ public class IndexStoreImplAcceptanceTest {
         }
 
     @Test
-    public fun `a replaceChunks whose insert aborts rolls back and publishes no IndexChange`(): Unit =
+    public fun aReplaceChunksWhoseInsertAbortsRollsBackAndPublishesNoIndexChange(): Unit =
         runTest {
             val (idx, conn) = freshIndexWithConnection()
             val docId = "01924a4b-4d29-7000-8000-00000000R011"
@@ -212,7 +212,7 @@ public class IndexStoreImplAcceptanceTest {
         }
 
     @Test
-    public fun `a committed replaceChunks publishes exactly one ChunksReplaced`(): Unit =
+    public fun aCommittedReplaceChunksPublishesExactlyOneChunksReplaced(): Unit =
         runTest {
             val idx = freshIndex()
             val docId = "01924a4b-4d29-7000-8000-00000000R012"

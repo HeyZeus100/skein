@@ -42,7 +42,7 @@ public class LexicalRecallAcceptanceTest {
     }
 
     @Test
-    public fun `recall of sqlite cipher ranks the both-terms chunk first with scores normalized to 0,1`(): Unit =
+    public fun recallOfSqliteCipherRanksTheBothTermsChunkFirstWithScoresNormalizedTo01(): Unit =
         runTest {
             val idx = freshIndex()
             idx.replaceChunks(
@@ -91,7 +91,7 @@ public class LexicalRecallAcceptanceTest {
         }
 
     @Test
-    public fun `LexicalRecall does not throw on twenty adversarial query strings`(): Unit =
+    public fun lexicalRecallDoesNotThrowOnTwentyAdversarialQueryStrings(): Unit =
         runTest {
             val idx = freshIndex()
             idx.replaceChunks(
