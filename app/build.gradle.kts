@@ -204,6 +204,12 @@ dependencies {
     // dependency at the version the rest of the app already resolves, so this
     // adds no new artifact to the runtime classpath (license audit unchanged).
     implementation(libs.androidx.biometric)
+    // skein-gg11.13: the fragment version biometric resolves (1.2.5) crashed
+    // every `rememberLauncherForActivityResult` launch from `MainActivity`
+    // ("Can only use lower 16 bits for requestCode" — the ActivityResult
+    // registry issues codes >= 0x10000 and FragmentActivity < 1.3 still
+    // validated the legacy rule). Pinned to 1.9.1; same Apache-2.0 group.
+    implementation(libs.androidx.fragment)
     implementation(libs.androidx.lifecycle.runtime.ktx)
     // E3.I14 (skein-up0): ProcessLifecycleOwner, for LockPolicyObserver's
     // "lock when app leaves foreground" trigger.

@@ -1,5 +1,6 @@
 package app.skein
 
+import android.content.Intent
 import androidx.compose.ui.semantics.SemanticsActions
 import androidx.compose.ui.test.ComposeTimeoutException
 import androidx.compose.ui.test.hasSetTextAction
@@ -42,6 +43,7 @@ import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.robolectric.RobolectricTestRunner
+import org.robolectric.Shadows.shadowOf
 import org.robolectric.annotation.Config
 
 /**
@@ -63,6 +65,11 @@ import org.robolectric.annotation.Config
  * launch call itself is one line (`importLauncher.launch(...)`), and the
  * business logic it triggers — `ModelManager.import` then `setDefault` then
  * `manifestCache.refresh()` — is exactly what this test exercises.
+ *
+ * That rung was wrong for one thing: the launch line itself crashed on the
+ * Fold (skein-gg11.13, a FragmentActivity request-code check), so the picker
+ * launch now has its own case below — `import model launches the document
+ * picker` — which only needs Robolectric's `nextStartedActivityForResult`.
  */
 @RunWith(RobolectricTestRunner::class)
 @Config(sdk = [34], application = TestSkeinApplication::class)
@@ -252,6 +259,33 @@ class AskPathComposeTest {
             composeRule.onNode(hasSetTextAction()).performImeAction()
             awaitText(imported.record.model.name)
             composeRule.onNodeWithText(MODELS_DEFAULT_MARKER, substring = true).assertExists()
+        }
+    }
+
+    /**
+     * skein-gg11.13: `/import model` must reach the system document picker.
+     * The launch goes through `FragmentActivity.startActivityForResult`, and
+     * fragment 1.2.5 (pulled in by biometric) rejected the ActivityResult
+     * registry's request codes with "Can only use lower 16 bits for
+     * requestCode" — the first `/import model` on the Fold crashed the app
+     * three times while the test above, which drove `ModelManager.import`
+     * directly, stayed green. Robolectric hosts the real `FragmentActivity`,
+     * so this case reproduces that crash class on every push.
+     */
+    @Test
+    fun `import model launches the document picker`() {
+        ActivityScenario.launch(MainActivity::class.java).use { scenario ->
+            awaitTag(ShellTestTags.SKEIN_SHELL_ROOT)
+
+            composeRule.onNode(hasSetTextAction()).performTextInput("/import model")
+            composeRule.onNode(hasSetTextAction()).performImeAction()
+            composeRule.waitForIdle()
+
+            scenario.onActivity { activity ->
+                val started = shadowOf(activity).nextStartedActivityForResult
+                requireNotNull(started) { "/import model started no activity for result (the picker never launched)" }
+                assertEquals(Intent.ACTION_OPEN_DOCUMENT, started.intent.action)
+            }
         }
     }
 
