@@ -188,8 +188,10 @@ jobs:
             # testInstrumentationRunnerArguments (no build-file change) and
             # excludes `@Ignore`d tests from the run entirely, so the lane's
             # failure count stops being inflated by tests that never ran.
-            ./gradlew connectedDevDebugAndroidTest --continue --stacktrace \
-              -Pandroid.testInstrumentationRunnerArguments.notAnnotation=org.junit.Ignore
+            # One line on purpose: android-emulator-runner executes each
+            # script line as its own command, so a backslash continuation
+            # reached Gradle as a task named '\' (run 35877745743).
+            ./gradlew connectedDevDebugAndroidTest --continue --stacktrace -Pandroid.testInstrumentationRunnerArguments.notAnnotation=org.junit.Ignore
 
       - name: Upload instrumented test reports
         if: always()
