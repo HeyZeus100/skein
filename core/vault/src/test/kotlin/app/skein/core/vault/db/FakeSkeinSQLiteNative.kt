@@ -123,7 +123,22 @@ internal class FakeSkeinSQLiteNative : SkeinSQLiteNative {
         return when {
             "cipher_version" in sql -> true
             "vec_version" in sql -> vecProbeReturnsRow
-            else -> true
+            // The single-row PRAGMA reads this fake models state for.
+            "journal_mode" in sql -> true
+            "foreign_keys" in sql -> true
+            "user_version" in sql -> true
+            "busy_timeout" in sql -> true
+            // skein-p8rn: everything else -- `sqlite_master` probes,
+            // `schema_migrations` reads, `PRAGMA table_info`, `PRAGMA
+            // integrity_check`, and any future generic multi-row query --
+            // has no modeled row data in this fake (it only simulates a
+            // handful of PRAGMA scalars, never real table contents). Report
+            // "no rows" rather than the previous unconditional `true`, which
+            // made any `while (stmt.step())` loop over one of these queries
+            // spin forever the moment a caller (skein-p8rn's
+            // `Migrator.readLedgerVersions`/`columnExists`) started actually
+            // looping instead of calling `step()` exactly once.
+            else -> false
         }
     }
 
