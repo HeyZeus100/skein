@@ -1,5 +1,6 @@
 package app.skein
 
+import androidx.compose.ui.test.ComposeTimeoutException
 import androidx.compose.ui.test.junit4.v2.createEmptyComposeRule
 import androidx.compose.ui.test.onAllNodesWithContentDescription
 import androidx.compose.ui.test.onAllNodesWithTag
@@ -11,6 +12,7 @@ import androidx.compose.ui.test.onRoot
 import androidx.compose.ui.test.performClick
 import androidx.compose.ui.test.performTextInput
 import androidx.compose.ui.test.printToLog
+import androidx.compose.ui.test.printToString
 import androidx.core.graphics.Insets
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
@@ -23,8 +25,11 @@ import app.skein.feature.graph.GraphTestTags
 import app.skein.feature.shell.testing.ShellTestTags
 import app.skein.system.SecurityPrefs
 import kotlinx.coroutines.CompletableDeferred
+import kotlinx.coroutines.TimeoutCancellationException
+import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.withTimeout
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertTrue
 import org.junit.Rule
@@ -62,14 +67,90 @@ class MainActivityComposeTest {
         get() = ApplicationProvider.getApplicationContext()
 
     private fun awaitTag(tag: String) {
-        composeRule.waitUntil(timeoutMillis = WAIT_MILLIS) {
+        awaitCondition("a node with test tag \"$tag\" to appear") {
             composeRule.onAllNodesWithTag(tag).fetchSemanticsNodes().isNotEmpty()
         }
     }
 
     private fun awaitContentDescription(description: String) {
-        composeRule.waitUntil(timeoutMillis = WAIT_MILLIS) {
+        awaitCondition("a node with content description \"$description\" to appear") {
             composeRule.onAllNodesWithContentDescription(description).fetchSemanticsNodes().isNotEmpty()
+        }
+    }
+
+    /**
+     * skein-lds9: a bare `waitUntil` timeout says only "timed out after
+     * 30000ms" — useless on CI, where no test stdout is uploaded and the
+     * Gradle log cannot say which of several `awaitTag`/`awaitContentDescription`
+     * calls in a test actually stalled (run 35799373878 could only be
+     * narrowed to "one of the two `awaitTag` calls" by reading the line
+     * number of the thrown `ComposeTimeoutException`). [description] names
+     * the condition so `waitUntil`'s own message says which one it was, and
+     * on timeout this also dumps everything needed to tell "the vault
+     * genuinely never opened" apart from "it opened but the tag never
+     * rendered": [UnlockManager.state], whether `VaultBootstrap.session` is
+     * already non-null, whether the retry test's
+     * [TestSkeinApplication.openReadySignal] ever completed, and the
+     * semantics tree that was actually on screen.
+     */
+    private fun awaitCondition(
+        description: String,
+        condition: () -> Boolean,
+    ) {
+        try {
+            composeRule.waitUntil(
+                conditionDescription = description,
+                timeoutMillis = WAIT_MILLIS,
+                condition = condition,
+            )
+        } catch (e: ComposeTimeoutException) {
+            throw AssertionError(diagnosticsFor(description), e)
+        }
+    }
+
+    private fun diagnosticsFor(description: String): String {
+        val tree =
+            runCatching { composeRule.onRoot().printToString() }
+                .getOrElse { "<failed to capture semantics tree: $it>" }
+        return """
+            |Timed out waiting for $description
+            |  unlockManager.state = ${app.vault.unlockManager.state.value}
+            |  bootstrap.session != null: ${app.vault.bootstrap.session.value != null}
+            |  openReadySignal.isCompleted: ${app.openReadySignal.isCompleted}
+            |  semantics tree (truncated to 4000 chars):
+            |${tree.take(4_000)}
+            """.trimMargin()
+    }
+
+    /**
+     * skein-lds9 step 3: awaits the open completing through the same
+     * `StateFlow` `VaultBootstrap`/`VaultGate` themselves observe, instead of
+     * only ever polling for the shell's tag via Compose's `waitUntil` (which
+     * has to advance the Compose test clock and idle Robolectric's main
+     * looper on every 10 ms poll to notice a recomposition). `bootstrap`'s
+     * open runs on its own `CoroutineScope` (`Dispatchers.Default` in
+     * [TestSkeinApplication]) and flips `session` the instant it completes;
+     * a direct `Flow` await here needs neither the Robolectric main looper
+     * nor a Compose recomposition to observe that, so it removes one
+     * synchronization hop — and that hop's own polling overhead — from the
+     * retry path's already-tight budget on CI's shared 2-core runner
+     * (skein-lds9 notes: `Dispatchers.Default` parallelism 2 shared with
+     * other Gradle test workers running concurrently). Once this returns,
+     * the shell tag only needs one more (typically immediate) recomposition
+     * to appear, so the final `awaitTag` keeps its role as a safety net
+     * rather than the thing actually carrying the wait.
+     */
+    private fun awaitSessionOpen() {
+        try {
+            runBlocking {
+                withTimeout(WAIT_MILLIS) {
+                    app.vault.bootstrap.session
+                        .filterNotNull()
+                        .first()
+                }
+            }
+        } catch (e: TimeoutCancellationException) {
+            throw AssertionError(diagnosticsFor("bootstrap.session to become non-null"), e)
         }
     }
 
@@ -467,10 +548,27 @@ class MainActivityComposeTest {
 
         ActivityScenario.launch(MainActivity::class.java).use {
             awaitTag(VaultGateTestTags.RETRY)
+            // skein-lds9: pin down which side of the click the stall was on
+            // (the failure state never rendering vs. the retry never
+            // starting a new open) instead of only ever seeing a timeout on
+            // the final shell tag.
+            composeRule.onNodeWithTag(VaultGateTestTags.OPEN_FAILED).assertExists()
+
             app.failOpenWith = null
             composeRule.onNodeWithTag(VaultGateTestTags.RETRY).performClick()
+            // The retry's LaunchedEffect(bootstrap, attempt) clears the
+            // failure and calls bringUp() again immediately; bringUp()
+            // itself is gated on openSignal below, so OPENING must already
+            // be showing before that signal is completed.
+            awaitTag(VaultGateTestTags.OPENING)
+
             // Allow the retry to complete by signaling the open is ready.
             openSignal.complete(Unit)
+            // skein-lds9: await the open through VaultBootstrap.session
+            // directly first — see awaitSessionOpen's doc — so the final
+            // tag poll below is only confirming a recomposition that has
+            // already been triggered, not carrying the wait itself.
+            awaitSessionOpen()
             awaitTag(ShellTestTags.SKEIN_SHELL_ROOT)
 
             composeRule.onNodeWithTag(ShellTestTags.SKEIN_SHELL_ROOT).assertExists()
