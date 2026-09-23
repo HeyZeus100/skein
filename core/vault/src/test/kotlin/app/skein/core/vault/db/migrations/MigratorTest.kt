@@ -33,7 +33,7 @@ class MigratorTest {
     }
 
     @Test
-    fun `main migrations index lists exactly 001, 003, 005, 007 and 008`() {
+    fun `main migrations index lists exactly 001, 003, 005, 007, 008 and 009`() {
         // Exercises the real production manifest shipped in
         // src/main/resources/migrations/INDEX.txt against the default
         // constructor overload.
@@ -58,6 +58,11 @@ class MigratorTest {
             "005_export_stages.sql",
             "007_drop_attachment_master_key.sql",
             "008_ingest_attempts.sql",
+            // 009_model_origin.sql (skein-cyq, H0-amended): the model
+            // registry's provenance columns, plus `post_mmap_blake3`
+            // (deviation — see that migration's own header for why it
+            // carries a column originally reserved for migration 004).
+            "009_model_origin.sql",
         )
         // migrator itself isn't exercised beyond construction here — the
         // functional discover-then-apply path is covered on-device.
