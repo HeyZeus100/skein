@@ -152,6 +152,74 @@ class ParcelRoundTripTest {
             .isEqualTo(listOf(8192, 4, 0, false))
     }
 
+    // ------------------------------------------- H1 (skein-91yy), §3.3
+
+    @Test
+    fun inspectRequestRoundTripPreservesMainModelFdContents() {
+        val original = InspectRequest(binding = manifestBinding(), sessionEpoch = 5L)
+
+        val restored = roundTrip(original)
+
+        assertThat(
+            readAll(
+                restored.binding.files
+                    .first { it.role == "main" }
+                    .fd,
+            ),
+        ).isEqualTo("model-bytes")
+    }
+
+    @Test
+    fun inspectRequestRoundTripPreservesSessionEpoch() {
+        val original = InspectRequest(binding = manifestBinding(), sessionEpoch = 5L)
+
+        val restored = roundTrip(original)
+
+        assertThat(restored.sessionEpoch).isEqualTo(5L)
+    }
+
+    @Test
+    fun modelInspectionRoundTripsToAnEqualValue() {
+        val original = modelInspection()
+
+        val restored = roundTrip(original)
+
+        assertThat(restored).isEqualTo(original)
+    }
+
+    @Test
+    fun modelInspectionRoundTripPreservesEveryNullableField() {
+        val original = ModelInspection.refused(ErrorCode.HASH_MISMATCH)
+
+        val restored = roundTrip(original)
+
+        assertThat(
+            listOf(
+                restored.architecture,
+                restored.quantization,
+                restored.parameterCount,
+                restored.contextLength,
+                restored.embeddingWidth,
+                restored.tokenizerModel,
+            ),
+        ).containsExactly(null, null, null, null, null, null)
+    }
+
+    @Test
+    fun aRefusedInspectionCarriesOnlyItsErrorCode() {
+        val refused = ModelInspection.refused(ErrorCode.SESSION_LOCKED)
+
+        assertThat(refused.errorCode).isEqualTo(ErrorCode.SESSION_LOCKED)
+    }
+
+    @Test
+    fun aRefusedInspectionClaimsNoCapability() {
+        val refused = ModelInspection.refused(ErrorCode.INVALID_MODEL)
+
+        assertThat(listOf(refused.hasVision, refused.hasChatTemplate, refused.chatTemplateOk))
+            .containsExactly(false, false, false)
+    }
+
     @Test
     fun chatMessageParcelRoundTripsToAnEqualValue() {
         val original = ChatMessageParcel(role = "user", content = "hello")
@@ -431,6 +499,20 @@ class ParcelRoundTripTest {
             gpuLayers = 0,
             embeddingMode = false,
             sessionEpoch = 1L,
+        )
+
+    private fun modelInspection(): ModelInspection =
+        ModelInspection(
+            errorCode = ErrorCode.OK,
+            architecture = "gemma3",
+            quantization = "Q4_K_M",
+            parameterCount = null,
+            contextLength = 8192,
+            embeddingWidth = 2560,
+            hasVision = true,
+            hasChatTemplate = true,
+            chatTemplateOk = true,
+            tokenizerModel = "llama",
         )
 
     private fun manifestBinding(): ManifestBinding =

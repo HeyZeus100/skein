@@ -789,7 +789,7 @@ Ordering rule from epic `skein-rkrq`: nothing here may precede the v1 ask path
 | # | Title | Tier | Depends on | Note |
 |---|---|---|---|---|
 | H0 | *Amend* `skein-cyq`: drop `GgufMetadataProbe`, adopt `ImportSource`, add the size ceiling and `ArtifactTooLarge`, correct the store path, Core-assign `id` | — | — | A description edit on the existing bead (§3.6), made by the coordinator before `skein-cyq` is claimed. Not a new bead. |
-| H1 | `IInferenceService.inspect` + `ModelInspection` Parcelable + service implementation | opus | `skein-nxk` (done) | §3.3. Touches the locked AIDL contract, so it is an additive `E0.I16`-class change and wants the same care. Must land **before** `skein-cyq` is implemented. |
+| H1 | `IInferenceService.inspect` + `ModelInspection` Parcelable + service implementation | opus | `skein-nxk` (done) | **LANDED 2026-09-23 (`skein-91yy`).** §3.3. Touches the locked AIDL contract, so it is an additive `E0.I16`-class change and wants the same care. Must land **before** `skein-cyq` is implemented. Two deviations from §3.3's sketch, recorded as judgment call J8 in `core/ipc/.../Parcels.kt`: the method takes an `InspectRequest` (binding + `sessionEpoch`), because §3.3's literal signature has nowhere to carry the epoch the lock gate needs; and `parameterCount`/`contextLength`/`embeddingWidth` are nullable, with `parameterCount` null for every GGUF llama.cpp's own tooling writes — the real count needs `llama_model_n_params`, which has no JNI entry point, and H1 adds no native code. |
 | H2 | `ModelInspector` seam + `LlamaCppEngine.inspect` | sonnet | H1, `skein-1uw` | The `TokenCounter` precedent; folds into `skein-1uw`'s work if it has not started. |
 
 **Tier 1 — after `skein-6as`. The transfer channel.**

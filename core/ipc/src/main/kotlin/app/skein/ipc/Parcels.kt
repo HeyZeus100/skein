@@ -102,6 +102,37 @@
 //       `IEmbedderService` needs the symmetric addition; that is `skein-6j93`,
 //       filed rather than done here because `:embedder-service` is `E5.I1`'s.
 //
+//   J8. `InspectRequest` (skein-91yy / H1). `docs/design/SKEIN_HUB.md` §3.3
+//       writes the new method as `ModelInspection inspect(in ManifestBinding
+//       binding)`. It is declared below as `inspect(in InspectRequest req)`
+//       instead, because §3.3's literal signature has nowhere to put
+//       `sessionEpoch` and this file's own rule — "every request Parcelable
+//       carries `sessionEpoch`" — is what makes
+//       `IsolatedSessionGate.guard()` the first statement of an entry point.
+//       The alternatives were both worse: putting the epoch on
+//       `ManifestBinding` would duplicate it inside `LoadRequest`, which
+//       already carries one, and taking the epoch as a bare second AIDL
+//       argument would repeat the defect `skein-x9xn` files against
+//       `tokenCount(String)` — a signature with no request Parcelable can
+//       never be widened additively, so that method is gated on the weaker
+//       "some session is authorized". `InspectRequest` is `LoadRequest`
+//       minus the engine knobs an inspection has no use for (no
+//       `contextLength`, `threads` or `embeddingMode`: `inspect` creates no
+//       `llama_context`), following the coordinator decision on `skein-ltcr`
+//       that request-carrying methods take exactly one Parcelable.
+//
+//       NULLABILITY ADDENDUM. §3.3's sketch types `parameterCount`,
+//       `contextLength` and `embeddingWidth` as non-null with `0` meaning
+//       "the GGUF does not state it". They are nullable below instead, so a
+//       consumer cannot mistake an unanswered field for a real zero — and
+//       `parameterCount` in particular is unanswerable through the JNI
+//       surface this bead is allowed to use: llama.cpp computes it with
+//       `llama_model_n_params`, which has no `external fun`, and neither
+//       llama.cpp's GGUF writer nor `gguf-py` emits a `general.parameter_count`
+//       key. It is read opportunistically and is null for every GGUF the
+//       project's own tooling produces. Recorded on `bd skein-91yy`; adding
+//       the native accessor is a separate bead, since H1 adds no native code.
+//
 // ============================================================================
 // IMAGE / LARGE-PAYLOAD TRANSPORT DECISION (E0.I16 acceptance criterion 4)
 // ============================================================================
@@ -375,6 +406,119 @@ data class LoadRequest(
     val embeddingMode: Boolean,
     val sessionEpoch: Long,
 ) : Parcelable
+
+/**
+ * Everything `IInferenceService.inspect` needs: which model to look at, and
+ * for which session (judgment call J8 in this file's header).
+ *
+ * Deliberately *not* a [LoadRequest]: an inspection creates no
+ * `llama_context`, so `contextLength`, `threads` and `embeddingMode` have
+ * nothing to configure, and `gpuLayers` would allocate VRAM for a metadata
+ * read.
+ *
+ * @param binding the same wire binding [LoadRequest] carries, verified by the
+ *   same pre-mmap gate with the same refusals. The service OWNS every fd in it
+ *   and closes them all, on success and on refusal alike (§3.2 rule 3).
+ * @param sessionEpoch `IsolatedSessionGate.guard()` input, see file header.
+ */
+@Parcelize
+data class InspectRequest(
+    val binding: ManifestBinding,
+    val sessionEpoch: Long,
+) : Parcelable
+
+/**
+ * What `IInferenceService.inspect` found — `docs/design/SKEIN_HUB.md` §3.3.
+ *
+ * Every field is derived by llama.cpp itself, inside the isolated process,
+ * through JNI entry points that already exist (`modelMeta`, `modelHasVision`,
+ * `modelNEmbd`, `applyChatTemplate`). That is the point of the method: §3.3
+ * deletes the plan's pure-Kotlin `GgufMetadataProbe`, which would have parsed
+ * attacker-controlled length fields in the process that holds the vault, and
+ * replaces it with a read performed where a parser exploit has nothing to
+ * steal. `:app` never opens a GGUF except to copy and hash opaque bytes.
+ *
+ * **Only [errorCode] is meaningful unconditionally.** When it is not
+ * [ErrorCode.OK] nothing was read — the verification refused, the model did
+ * not load, or the session was locked — and every other field is null or
+ * false. A caller reads the code first.
+ *
+ * Total inline payload is a few hundred bytes, two orders of magnitude inside
+ * [TransportRules.INLINE_BUDGET_BYTES]; `BinderSizeGuardTest` pins that.
+ *
+ * Nothing here is trusted as identity: `skein-cyq`'s `ModelManager` compares
+ * [architecture] against its own allowlist and clamps [contextLength] against
+ * `InferenceConfig.contextLengthCap`, and size/digests/id stay Core-derived
+ * (§3.4). A hostile GGUF can lie in every field below; none of them is a gate.
+ *
+ * @param errorCode [ErrorCode.OK], or the refusal — the same codes `load`
+ *   returns for the same binding ([ErrorCode.HASH_MISMATCH],
+ *   [ErrorCode.COMPANION_HASH_MISMATCH], [ErrorCode.HASH_MISMATCH_POST_MMAP],
+ *   [ErrorCode.INVALID_MODEL], [ErrorCode.MODEL_IN_USE], [ErrorCode.OOM],
+ *   [ErrorCode.SESSION_LOCKED]), plus [ErrorCode.BUSY] when a generation is in
+ *   flight.
+ * @param architecture GGUF `general.architecture` (`llama`, `gemma3`, …), or
+ *   null when the file declares none.
+ * @param quantization GGUF `general.file_type` rendered as the `llama_ftype`
+ *   name it denotes (`Q4_K_M`, `F16`, …), or null when the file declares none.
+ *   A value this build does not recognise renders as `ftype <n>` rather than
+ *   being dropped, so a newer quantisation is still reportable.
+ * @param parameterCount GGUF `general.parameter_count` when a producer
+ *   happened to write one. **Null for every GGUF llama.cpp's own tooling
+ *   writes** — see the nullability addendum in this file's header: the real
+ *   count needs `llama_model_n_params`, which has no JNI entry point, and H1
+ *   adds no native code.
+ * @param contextLength GGUF `<architecture>.context_length` — the training
+ *   context, NOT a promise the device can allocate a KV cache that big. Null
+ *   when the file declares none.
+ * @param embeddingWidth `llama_model_n_embd`, the width
+ *   `IInferenceService.embed` would return. Null when the inspection refused.
+ * @param hasVision `LlamaNative.modelHasVision` — the GGUF carries `clip.*` or
+ *   `*.vision.*` metadata, so a `mmproj` companion is required (`E4.I11`).
+ * @param hasChatTemplate the GGUF declares `tokenizer.chat_template`. A false
+ *   here is a warning, not a refusal: `E4.I6`'s ChatML fallback covers it.
+ * @param chatTemplateOk `llama_chat_apply_template` succeeded on a two-message
+ *   probe of fixed, non-user strings. False when the model embeds no template
+ *   or one llama.cpp's non-Jinja renderer cannot apply.
+ * @param tokenizerModel GGUF `tokenizer.ggml.model` (`llama`, `gpt2`, `bert`,
+ *   …) — §3.3's "tokenizer presence" row, and the only tokenizer identity the
+ *   existing JNI surface can answer. Null when the file declares none.
+ */
+@Parcelize
+data class ModelInspection(
+    val errorCode: Int,
+    val architecture: String?,
+    val quantization: String?,
+    val parameterCount: Long?,
+    val contextLength: Int?,
+    val embeddingWidth: Int?,
+    val hasVision: Boolean,
+    val hasChatTemplate: Boolean,
+    val chatTemplateOk: Boolean,
+    val tokenizerModel: String?,
+) : Parcelable {
+    companion object {
+        /**
+         * The inspection that did not happen: [code] and nothing else.
+         *
+         * One constructor for every refusal path, so a new field cannot be
+         * accidentally populated on one refusal and left null on another.
+         */
+        fun refused(code: Int): ModelInspection =
+            ModelInspection(
+                errorCode = code,
+                architecture = null,
+                quantization = null,
+                parameterCount = null,
+                contextLength = null,
+                embeddingWidth = null,
+                hasVision = false,
+                hasChatTemplate = false,
+                chatTemplateOk = false,
+                tokenizerModel = null,
+            )
+    }
+}
 
 /**
  * One turn of the prompt.

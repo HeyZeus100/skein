@@ -213,6 +213,40 @@ class TransportRulesTest {
         assertThat(ChatMessageParcel(role = "user", content = "hello").contentFd).isNull()
     }
 
+    // --------------------------------------- skein-0rkg recommendation 2
+    //
+    // The decision (2026-09-23): there is NO larger inline cap for
+    // `GenerateRequest`. The three tests below are that decision in executable
+    // form — the budget is the same number for a generate as for anything
+    // else, a full-budget prompt therefore must spill, and the spilled form
+    // fits with room to spare, which is what makes "always spill" a workable
+    // rule rather than merely a strict one. The reasoning is in
+    // `TransportRules.kt`'s header.
+
+    @Test
+    fun aGenerateRequestGetsNoLargerInlineCapThanAnyOtherCall() {
+        val prompt = TransportRules.marshalledSize(fullBudgetRequest())
+
+        assertThat(TransportRules.mustSpill(prompt)).isTrue()
+    }
+
+    @Test
+    fun aFullBudgetPromptSpilledPerMessageFitsTheInlineBudget() {
+        val spilled = fullBudgetRequestSpilledPerMessage()
+
+        assertThat(TransportRules.marshalledSize(spilled))
+            .isLessThan(TransportRules.INLINE_BUDGET_BYTES)
+    }
+
+    @Test
+    fun aFullBudgetPromptSpilledPerMessageKeepsEveryRole() {
+        val spilled = fullBudgetRequestSpilledPerMessage()
+
+        assertThat(spilled.messages.map { it.role })
+            .containsExactly("system", "user", "assistant")
+            .inOrder()
+    }
+
     // ------------------------------------------------------------- fixtures
 
     private fun sampling() =
@@ -231,6 +265,23 @@ class TransportRulesTest {
         GenerateRequest(
             requestId = 1,
             messages = listOf(ChatMessageParcel(role = "user", content = "lorem ipsum ".repeat(5_000))),
+            attachmentFds = emptyList(),
+            sampling = sampling(),
+            sessionEpoch = 1L,
+        )
+
+    /**
+     * The same ~15K-token prompt as [fullBudgetRequest], carried the way the
+     * contract says it must be: every turn's text out of band, each keeping
+     * its own role and position.
+     */
+    private fun fullBudgetRequestSpilledPerMessage(): GenerateRequest =
+        GenerateRequest(
+            requestId = 1,
+            messages =
+                listOf("system", "user", "assistant").map { role ->
+                    ChatMessageParcel(role = role, content = "", contentFd = sharedMemRef(TransportRules.ROLE_MESSAGE))
+                },
             attachmentFds = emptyList(),
             sampling = sampling(),
             sessionEpoch = 1L,

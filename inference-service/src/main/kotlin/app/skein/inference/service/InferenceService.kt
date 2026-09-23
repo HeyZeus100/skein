@@ -56,8 +56,11 @@ import app.skein.ipc.GenStats
 import app.skein.ipc.GenerateRequest
 import app.skein.ipc.IInferenceCallback
 import app.skein.ipc.IInferenceService
+import app.skein.ipc.InspectRequest
 import app.skein.ipc.LoadRequest
+import app.skein.ipc.ManifestBinding
 import app.skein.ipc.ManifestFileRef
+import app.skein.ipc.ModelInspection
 import app.skein.ipc.SharedMemRef
 import app.skein.ipc.TransportRules
 import java.io.FileInputStream
@@ -114,6 +117,8 @@ class InferenceService : Service() {
     private val binder =
         object : IInferenceService.Stub() {
             override fun load(req: LoadRequest): Int = engine.load(req)
+
+            override fun inspect(req: InspectRequest): ModelInspection = engine.inspect(req)
 
             override fun generate(
                 req: GenerateRequest,
@@ -193,8 +198,7 @@ internal class InferenceEngineState(
 
     fun load(req: LoadRequest): Int {
         if (gate.guard(req.sessionEpoch) is GateResult.Refuse) {
-            closeAll(req.binding.files)
-            req.binding.attestation?.let { closeQuietly(it.bundleFd) }
+            closeReceived(req.binding)
             return ErrorCode.SESSION_LOCKED
         }
 
@@ -204,68 +208,17 @@ internal class InferenceEngineState(
         // room for both.
         unload()
 
-        // Origin trust is a soft gate (POST_REVIEW_RESOLUTIONS.md §2.5) and
-        // E3.I6 has not landed, so the bundle is closed unread rather than
-        // leaked. It must never block a load the digest gate would allow.
-        req.binding.attestation?.let { closeQuietly(it.bundleFd) }
-
-        val pins = mutableMapOf<ModelFileRole, PinnedModelFile>()
-        var refusal: ModelVerification.Refusal? = null
-        for (ref in req.binding.files) {
-            val role = ModelFileRole.fromWire(ref.role)
-            if (role == null) {
-                refusal = ModelVerification.CompanionMissing(null, ref.role)
-                break
-            }
-            when (val pin = pinDescriptor(ref.fd)) {
-                is PinResult.Refused -> {
-                    refusal = pin.refusal
-                    break
-                }
-
-                is PinResult.Pinned -> pins[role] = pin.file
-            }
-        }
-        // §3.2 rule 3: we own every descriptor we were handed, and the pins
-        // hold duplicates. Close the originals whether or not pinning worked.
-        closeAll(req.binding.files)
-
-        if (refusal != null) {
-            pins.values.forEach { it.close() }
-            return refuse(refusal)
-        }
-        val mainPin = pins[ModelFileRole.MAIN]
-        if (mainPin == null) {
-            pins.values.forEach { it.close() }
-            return refuse(ModelVerification.CompanionMissing(ModelFileRole.MAIN, "main"))
-        }
-
-        val binding =
-            verifyBinding(req.binding.files) ?: run {
-                pins.values.forEach { it.close() }
-                return refuse(ModelVerification.MalformedManifest("binding does not describe a loadable model"))
-            }
-        val pinnedModel = PinnedModel(mainPin, pins - ModelFileRole.MAIN)
-
         synchronized(lock) { state = EngineState.VERIFYING }
         unloadRequested.set(false)
-        val verified =
-            ModelVerifier.verifyPinned(
-                model = pinnedModel,
-                binding = binding,
-                cancellation = VerifyCancellation { unloadRequested.get() },
-                progress = VerifyProgress { /* state is already "verifying"; see status() */ },
-            )
-        when (verified) {
-            is PinnedLoad.Refused -> {
-                // verifyPinned already closed every descriptor on refusal, so
-                // there is nothing left that could reach llama.cpp even if this
-                // code were wrong about the rest.
-                return refuse(verified.refusal)
+        // `unload` aborts a verification in progress: a ten-second hash of a
+        // model the user has navigated away from must not pin the worker.
+        val prepared =
+            when (val outcome = pinAndVerify(req.binding, VerifyCancellation { unloadRequested.get() })) {
+                is VerifyOutcome.Refused -> return refuse(outcome.refusal)
+                is VerifyOutcome.Verified -> outcome
             }
-
-            is PinnedLoad.Ready -> Unit
-        }
+        val pinnedModel = prepared.pinned
+        val binding = prepared.binding
 
         synchronized(lock) { state = EngineState.LOADING }
         return try {
@@ -313,6 +266,135 @@ internal class InferenceEngineState(
             ServiceErrorMapping.toErrorCode(e)
         }
     }
+
+    // ----------------------------------------------------------- inspect
+
+    /**
+     * H1 (`skein-91yy`), `docs/design/SKEIN_HUB.md` §3.3.
+     *
+     * Verifies the binding through exactly the code path [load] verifies with
+     * — [pinAndVerify] is that path, and it is called from both, so "the same
+     * gate" is structural rather than a promise two functions make separately
+     * — then loads the MODEL ONLY, reads its metadata, and frees it.
+     *
+     * NO CONTEXT. `newContext` is the expensive half of a load: it allocates a
+     * KV cache sized to `contextLength`, hundreds of megabytes, for a model
+     * the user has not yet agreed to use. An OOM there would also be
+     * indistinguishable from an OOM during a real load. `gpuLayers` is 0 for
+     * the same reason — offloading weights to the GPU for a metadata read
+     * would reserve VRAM and return nothing for it.
+     *
+     * LEAVES THE SERVICE AS IT FOUND IT. A model loaded before this call is
+     * still loaded, with the same handles and the same KV cache, after it: the
+     * inspection's own model handle is separate and is freed here. [state] is
+     * never touched, so a concurrent `status()` does not see an inspection as
+     * a load. What it will not do is queue behind a generation — the single
+     * worker thread owns every native call, so an inspection posted during one
+     * would hold a binder thread for the whole generation. It answers
+     * [ErrorCode.BUSY] instead, which is the same answer a second `generate`
+     * gets and for the same reason.
+     *
+     * Refusals are a [ModelInspection.errorCode], never an exception: this
+     * call's whole purpose is to let `ModelManager` decide whether to accept a
+     * file, and "it did not verify" is an answer to that question.
+     */
+    fun inspect(req: InspectRequest): ModelInspection {
+        if (gate.guard(req.sessionEpoch) is GateResult.Refuse) {
+            closeReceived(req.binding)
+            return ModelInspection.refused(ErrorCode.SESSION_LOCKED)
+        }
+        if (synchronized(lock) { active != null }) {
+            closeReceived(req.binding)
+            return ModelInspection.refused(ErrorCode.BUSY)
+        }
+
+        // Not `unloadRequested`: that flag belongs to the load path, where it
+        // stays raised after an `unload` until the next load lowers it, and an
+        // inspection holds no engine state for an `unload` to reclaim.
+        val prepared =
+            when (val outcome = pinAndVerify(req.binding, VerifyCancellation { false })) {
+                is VerifyOutcome.Refused -> {
+                    SkeinLog.w(TAG, "inspect refused: ${ServiceErrorMapping.diagnostic(outcome.refusal)}")
+                    return ModelInspection.refused(ServiceErrorMapping.toErrorCode(outcome.refusal))
+                }
+
+                is VerifyOutcome.Verified -> outcome
+            }
+
+        return try {
+            worker.submitBlocking { readInspection(prepared.pinned) }
+        } catch (e: LlamaException) {
+            SkeinLog.w(TAG, "inspect failed: ${ServiceErrorMapping.diagnostic(e)}")
+            ModelInspection.refused(ServiceErrorMapping.toErrorCode(e))
+        } finally {
+            // The inspection's descriptors die with it. Nothing outlives the
+            // call — that is what "leaves the service in whatever state it was
+            // in" means for fds as well as for handles.
+            prepared.pinned.close()
+        }
+    }
+
+    /**
+     * Loads [pinned]'s main file as a model, reads every field
+     * [ModelInspection] carries, and frees the model.
+     *
+     * Runs on the worker: `loadModelFromFd` and `freeModel` are the worker's
+     * calls (`LlamaNative`'s threading notes), and doing the reads there too
+     * keeps the model's whole lifetime on one thread.
+     */
+    private fun readInspection(pinned: PinnedModel): ModelInspection {
+        val model =
+            backend.loadModelFromFd(
+                fd = pinned.main.descriptorNumber,
+                nGpuLayers = 0,
+                useMmap = true,
+            )
+        return try {
+            val architecture = backend.modelMeta(model, KEY_ARCHITECTURE)
+            ModelInspection(
+                errorCode = ErrorCode.OK,
+                architecture = architecture,
+                quantization = backend.modelMeta(model, KEY_FILE_TYPE)?.let { GgufFileType.render(it) },
+                // Opportunistic: llama.cpp's own writer emits no such key, and
+                // the real count needs `llama_model_n_params`, which has no
+                // JNI entry point. H1 adds no native code — see skein-91yy.
+                parameterCount = backend.modelMeta(model, KEY_PARAMETER_COUNT)?.trim()?.toLongOrNull(),
+                contextLength =
+                    architecture
+                        ?.let { backend.modelMeta(model, "$it$KEY_SUFFIX_CONTEXT_LENGTH") }
+                        ?.trim()
+                        ?.toIntOrNull(),
+                embeddingWidth = backend.modelNEmbd(model),
+                hasVision = backend.modelHasVision(model),
+                hasChatTemplate = backend.modelMeta(model, KEY_CHAT_TEMPLATE) != null,
+                chatTemplateOk = chatTemplateApplies(model),
+                tokenizerModel = backend.modelMeta(model, KEY_TOKENIZER_MODEL),
+            )
+        } finally {
+            runCatching { backend.freeModel(model) }
+        }
+    }
+
+    /**
+     * Whether `llama_chat_apply_template` can render a two-turn conversation.
+     *
+     * The probe is two fixed ASCII strings. It must never be built from
+     * anything the caller supplied: this runs before the model is accepted, so
+     * the one thing it may not do is hand attacker-influenced text to a
+     * template renderer it is trying to decide it can trust.
+     */
+    private fun chatTemplateApplies(model: Long): Boolean =
+        try {
+            backend
+                .applyChatTemplate(model, TEMPLATE_PROBE_ROLES, TEMPLATE_PROBE_TURNS, true)
+                .isNotEmpty()
+        } catch (e: LlamaException) {
+            // TEMPLATE_UNSUPPORTED is the expected outcome for a GGUF with no
+            // template, and E4.I6's ChatML fallback covers it — a false here,
+            // not a refusal (§3.3's structural-checks table).
+            SkeinLog.i(TAG, "chat template probe declined: ${ServiceErrorMapping.diagnostic(e)}")
+            false
+        }
 
     // ------------------------------------------------------------ generate
 
@@ -373,6 +455,19 @@ internal class InferenceEngineState(
         val startedAt = SystemClock.elapsedRealtime()
         var sampler = 0L
         try {
+            // E-4 (OfflineLLM review, `research/upstream/offlinellm/KV_CACHE_ANALYSIS.md`).
+            // Every request starts its prompt at position 0, so every cell the
+            // previous request left in the cache is stale. Correctness rested
+            // on llama.cpp purging a cell when a later decode overwrites its
+            // position — an invariant of somebody else's implementation, never
+            // asserted on a device, and one whose failure mode is the previous
+            // conversation leaking into this answer. Clearing is explicit,
+            // costs one `llama_memory_clear`, and also means the KV pages do
+            // not hold the last session's plaintext token state between
+            // requests (LOCK_POLICY_INDEXING.md §4.5's reasoning, applied
+            // between turns rather than only at free).
+            backend.kvClear(model.context)
+
             val rendered =
                 backend.applyChatTemplate(
                     model.model,
@@ -628,6 +723,105 @@ internal class InferenceEngineState(
 
     // ------------------------------------------------------------- helpers
 
+    /** What [pinAndVerify] decided. */
+    private sealed interface VerifyOutcome {
+        /** Every file pinned and verified; [pinned] is open and the caller owns it. */
+        class Verified(
+            val pinned: PinnedModel,
+            val binding: VerifyBinding,
+        ) : VerifyOutcome
+
+        /** Nothing is open: every descriptor was closed before this was returned. */
+        class Refused(
+            val refusal: ModelVerification.Refusal,
+        ) : VerifyOutcome
+    }
+
+    /**
+     * POST_REVIEW_RESOLUTIONS.md §2's load gate, once, for both entry points
+     * that open a model file.
+     *
+     * `load` and `inspect` MUST verify identically — §3.3's whole argument for
+     * inspecting inside the isolated process is that the acceptance decision
+     * and the load run the same gate over the same descriptors — so they call
+     * this rather than each carrying a copy that could drift.
+     *
+     * On [VerifyOutcome.Refused] nothing is left open: the pin loop closes the
+     * descriptors it was handed either way, and `verifyPinned` closes the pins
+     * on refusal, so no file can reach llama.cpp after a mismatch even if the
+     * caller mishandles the result.
+     */
+    private fun pinAndVerify(
+        binding: ManifestBinding,
+        cancellation: VerifyCancellation,
+    ): VerifyOutcome {
+        // Origin trust is a soft gate (POST_REVIEW_RESOLUTIONS.md §2.5) and
+        // E3.I6 has not landed, so the bundle is closed unread rather than
+        // leaked. It must never block a load the digest gate would allow.
+        binding.attestation?.let { closeQuietly(it.bundleFd) }
+
+        val pins = mutableMapOf<ModelFileRole, PinnedModelFile>()
+        var refusal: ModelVerification.Refusal? = null
+        for (ref in binding.files) {
+            val role = ModelFileRole.fromWire(ref.role)
+            if (role == null) {
+                refusal = ModelVerification.CompanionMissing(null, ref.role)
+                break
+            }
+            when (val pin = pinDescriptor(ref.fd)) {
+                is PinResult.Refused -> {
+                    refusal = pin.refusal
+                    break
+                }
+
+                is PinResult.Pinned -> pins[role] = pin.file
+            }
+        }
+        // §3.2 rule 3: we own every descriptor we were handed, and the pins
+        // hold duplicates. Close the originals whether or not pinning worked.
+        closeAll(binding.files)
+
+        if (refusal != null) {
+            pins.values.forEach { it.close() }
+            return VerifyOutcome.Refused(refusal)
+        }
+        val mainPin = pins[ModelFileRole.MAIN]
+        if (mainPin == null) {
+            pins.values.forEach { it.close() }
+            return VerifyOutcome.Refused(ModelVerification.CompanionMissing(ModelFileRole.MAIN, "main"))
+        }
+        val verifyBinding =
+            verifyBinding(binding.files) ?: run {
+                pins.values.forEach { it.close() }
+                return VerifyOutcome.Refused(
+                    ModelVerification.MalformedManifest("binding does not describe a loadable model"),
+                )
+            }
+
+        val pinnedModel = PinnedModel(mainPin, pins - ModelFileRole.MAIN)
+        return when (
+            val verified =
+                ModelVerifier.verifyPinned(
+                    model = pinnedModel,
+                    binding = verifyBinding,
+                    cancellation = cancellation,
+                    progress = VerifyProgress { /* `load` already set state to "verifying"; see status() */ },
+                )
+        ) {
+            // verifyPinned already closed every descriptor on refusal, so
+            // there is nothing left that could reach llama.cpp even if this
+            // code were wrong about the rest.
+            is PinnedLoad.Refused -> VerifyOutcome.Refused(verified.refusal)
+            is PinnedLoad.Ready -> VerifyOutcome.Verified(pinnedModel, verifyBinding)
+        }
+    }
+
+    /** §3.2 rule 3 for a binding we are refusing before we pin anything. */
+    private fun closeReceived(binding: ManifestBinding) {
+        closeAll(binding.files)
+        binding.attestation?.let { closeQuietly(it.bundleFd) }
+    }
+
     private fun refuse(refusal: ModelVerification.Refusal): Int {
         synchronized(lock) { state = EngineState.UNLOADED }
         SkeinLog.w(TAG, "load refused: ${ServiceErrorMapping.diagnostic(refusal)}")
@@ -780,5 +974,22 @@ internal class InferenceEngineState(
         const val PROMPT_BATCH_TOKENS = 512
 
         const val MILLIS_PER_SECOND = 1_000f
+
+        // GGUF metadata keys (`gguf-py/gguf/constants.py`'s `Keys.General` /
+        // `Keys.LLM` / `Keys.Tokenizer`), read through `modelMeta`. H1.
+        const val KEY_ARCHITECTURE = "general.architecture"
+        const val KEY_FILE_TYPE = "general.file_type"
+
+        /** Non-standard; see [readInspection]. Null for llama.cpp's own output. */
+        const val KEY_PARAMETER_COUNT = "general.parameter_count"
+
+        /** Appended to the architecture: `llama.context_length`, `gemma3.context_length`, … */
+        const val KEY_SUFFIX_CONTEXT_LENGTH = ".context_length"
+        const val KEY_CHAT_TEMPLATE = "tokenizer.chat_template"
+        const val KEY_TOKENIZER_MODEL = "tokenizer.ggml.model"
+
+        /** The two-turn probe behind `ModelInspection.chatTemplateOk`. Fixed strings, never input. */
+        val TEMPLATE_PROBE_ROLES = arrayOf("user", "assistant")
+        val TEMPLATE_PROBE_TURNS = arrayOf("probe", "probe")
     }
 }

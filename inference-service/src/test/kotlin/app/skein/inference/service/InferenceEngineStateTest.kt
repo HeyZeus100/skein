@@ -16,12 +16,15 @@
 package app.skein.inference.service
 
 import android.os.ParcelFileDescriptor
+import app.skein.core.model.SkeinLog
 import app.skein.ipc.ChatMessageParcel
 import app.skein.ipc.ErrorCode
 import app.skein.ipc.GenerateRequest
+import app.skein.ipc.InspectRequest
 import app.skein.ipc.LoadRequest
 import app.skein.ipc.ManifestBinding
 import app.skein.ipc.ManifestFileRef
+import app.skein.ipc.ModelInspection
 import app.skein.ipc.SamplingParcel
 import com.google.common.truth.Truth.assertThat
 import org.junit.Rule
@@ -385,6 +388,426 @@ class InferenceEngineStateTest {
         assertThat(request.attachmentFds.all { isClosed(it.fd) }).isTrue()
     }
 
+    // ------------------------------------------------- KV cache hygiene (E-4)
+    //
+    // OfflineLLM review finding E-4. Every request decodes its prompt from
+    // position 0, so whatever the previous request left in the cache is stale;
+    // correctness used to rest on llama.cpp purging a cell when a later decode
+    // overwrites its position — an unasserted invariant of somebody else's
+    // implementation, whose failure mode is the previous conversation bleeding
+    // into this answer.
+
+    @Test
+    fun `a generation clears the KV cache exactly once`() {
+        engine.onSessionUnlocked(epoch)
+        engine.load(loadRequest())
+
+        engine.generate(generateRequest(maxTokens = 4), RecordingCallback())
+
+        assertThat(backend.cacheAndDecodeCalls.count { it == FakeLlamaBackend.KV_CLEAR }).isEqualTo(1)
+    }
+
+    @Test
+    fun `a generation clears the KV cache before it decodes anything`() {
+        engine.onSessionUnlocked(epoch)
+        engine.load(loadRequest())
+
+        engine.generate(generateRequest(maxTokens = 4), RecordingCallback())
+
+        assertThat(backend.cacheAndDecodeCalls.first()).isEqualTo(FakeLlamaBackend.KV_CLEAR)
+    }
+
+    @Test
+    fun `a second generation clears the first generation's cache`() {
+        engine.onSessionUnlocked(epoch)
+        engine.load(loadRequest())
+
+        engine.generate(generateRequest(requestId = 1, maxTokens = 4), RecordingCallback())
+        engine.generate(generateRequest(requestId = 2, maxTokens = 4), RecordingCallback())
+
+        assertThat(backend.cacheAndDecodeCalls.count { it == FakeLlamaBackend.KV_CLEAR }).isEqualTo(2)
+    }
+
+    // ------------------------------------------------------------- inspect
+    //
+    // H1 (skein-91yy), docs/design/SKEIN_HUB.md §3.3. `inspect` exists so the
+    // ACCEPTANCE decision about an untrusted GGUF is made inside the isolated
+    // process, without `:app` parsing a byte and without paying for a
+    // `llama_context` on a model nobody has agreed to use yet.
+
+    @Test
+    fun `a cold service refuses inspect`() {
+        assertThat(engine.inspect(inspectRequest()).errorCode).isEqualTo(ErrorCode.SESSION_LOCKED)
+    }
+
+    @Test
+    fun `a cold service closes the descriptors an inspect was refused with`() {
+        val request = inspectRequest()
+
+        engine.inspect(request)
+
+        assertThat(request.binding.files.all { isClosed(it.fd) }).isTrue()
+    }
+
+    @Test
+    fun `an inspect for the wrong epoch is refused`() {
+        engine.onSessionUnlocked(epoch)
+
+        assertThat(engine.inspect(inspectRequest(epoch = epoch + 1)).errorCode)
+            .isEqualTo(ErrorCode.SESSION_LOCKED)
+    }
+
+    @Test
+    fun `an unlocked service inspects`() {
+        engine.onSessionUnlocked(epoch)
+
+        assertThat(engine.inspect(inspectRequest()).errorCode).isEqualTo(ErrorCode.OK)
+    }
+
+    @Test
+    fun `an inspection reports the architecture the file declares`() {
+        engine.onSessionUnlocked(epoch)
+        backend.meta["general.architecture"] = ARCHITECTURE
+
+        assertThat(engine.inspect(inspectRequest()).architecture).isEqualTo(ARCHITECTURE)
+    }
+
+    @Test
+    fun `an inspection renders the file type as a quantisation name`() {
+        engine.onSessionUnlocked(epoch)
+        backend.meta["general.file_type"] = "15"
+
+        assertThat(engine.inspect(inspectRequest()).quantization).isEqualTo("Q4_K_M")
+    }
+
+    @Test
+    fun `an inspection reports the context length the architecture declares`() {
+        engine.onSessionUnlocked(epoch)
+        backend.meta["general.architecture"] = ARCHITECTURE
+        backend.meta["$ARCHITECTURE.context_length"] = "8192"
+
+        assertThat(engine.inspect(inspectRequest()).contextLength).isEqualTo(8192)
+    }
+
+    @Test
+    fun `an inspection has no context length when the file declares none`() {
+        engine.onSessionUnlocked(epoch)
+        backend.meta["general.architecture"] = ARCHITECTURE
+
+        assertThat(engine.inspect(inspectRequest()).contextLength).isNull()
+    }
+
+    @Test
+    fun `an inspection reports the embedding width llama cpp computes`() {
+        engine.onSessionUnlocked(epoch)
+
+        assertThat(engine.inspect(inspectRequest()).embeddingWidth).isEqualTo(4)
+    }
+
+    @Test
+    fun `an inspection reports that a chat template is present`() {
+        engine.onSessionUnlocked(epoch)
+        backend.meta["tokenizer.chat_template"] = "{{ messages }}"
+
+        assertThat(engine.inspect(inspectRequest()).hasChatTemplate).isTrue()
+    }
+
+    @Test
+    fun `an inspection reports a missing chat template without refusing`() {
+        engine.onSessionUnlocked(epoch)
+
+        assertThat(engine.inspect(inspectRequest()).hasChatTemplate).isFalse()
+    }
+
+    @Test
+    fun `an inspection reports that the chat template applies`() {
+        engine.onSessionUnlocked(epoch)
+
+        assertThat(engine.inspect(inspectRequest()).chatTemplateOk).isTrue()
+    }
+
+    @Test
+    fun `a template llama cpp cannot apply is reported, not refused`() {
+        val unsupported =
+            object : FakeLlamaBackend() {
+                override fun applyChatTemplate(
+                    model: Long,
+                    roles: Array<String>,
+                    contents: Array<String>,
+                    addAssistant: Boolean,
+                ): String = throw LlamaException(LlamaErrorCode.TEMPLATE_UNSUPPORTED, "no template")
+            }
+        val engine = InferenceEngineState(unsupported, InlineTaskRunner(), CallbackDispatcher(InlineTaskRunner()))
+        engine.onSessionUnlocked(epoch)
+
+        val inspection = engine.inspect(inspectRequest())
+
+        assertThat(listOf(inspection.errorCode, inspection.chatTemplateOk))
+            .isEqualTo(listOf(ErrorCode.OK, false))
+    }
+
+    @Test
+    fun `an inspection reports the tokenizer the file declares`() {
+        engine.onSessionUnlocked(epoch)
+        backend.meta["tokenizer.ggml.model"] = "gpt2"
+
+        assertThat(engine.inspect(inspectRequest()).tokenizerModel).isEqualTo("gpt2")
+    }
+
+    @Test
+    fun `an inspection reports vision metadata`() {
+        val vision =
+            object : FakeLlamaBackend() {
+                override fun modelHasVision(model: Long): Boolean = true
+            }
+        val engine = InferenceEngineState(vision, InlineTaskRunner(), CallbackDispatcher(InlineTaskRunner()))
+        engine.onSessionUnlocked(epoch)
+
+        assertThat(engine.inspect(inspectRequest()).hasVision).isTrue()
+    }
+
+    // The GGUF keys llama.cpp's own writer emits carry no parameter count and
+    // `llama_model_n_params` has no JNI entry point, so this field is null for
+    // every file the project's tooling produces. Recorded on skein-91yy.
+    @Test
+    fun `an inspection has no parameter count when the file declares none`() {
+        engine.onSessionUnlocked(epoch)
+
+        assertThat(engine.inspect(inspectRequest()).parameterCount).isNull()
+    }
+
+    @Test
+    fun `an inspection reports a parameter count a file does declare`() {
+        engine.onSessionUnlocked(epoch)
+        backend.meta["general.parameter_count"] = "4300000000"
+
+        assertThat(engine.inspect(inspectRequest()).parameterCount).isEqualTo(4_300_000_000L)
+    }
+
+    @Test
+    fun `an inspection never creates a context`() {
+        engine.onSessionUnlocked(epoch)
+
+        engine.inspect(inspectRequest())
+
+        assertThat(backend.newContextCalls).isEqualTo(0)
+    }
+
+    @Test
+    fun `an inspection loads the model from a descriptor, never a path`() {
+        engine.onSessionUnlocked(epoch)
+
+        engine.inspect(inspectRequest())
+
+        assertThat(backend.loadedFds).hasSize(1)
+    }
+
+    @Test
+    fun `an inspection frees the model it loaded`() {
+        engine.onSessionUnlocked(epoch)
+
+        engine.inspect(inspectRequest())
+
+        assertThat(backend.liveModels).isEmpty()
+    }
+
+    @Test
+    fun `an inspection closes every descriptor it received`() {
+        engine.onSessionUnlocked(epoch)
+        val request = inspectRequest()
+
+        engine.inspect(request)
+
+        assertThat(request.binding.files.all { isClosed(it.fd) }).isTrue()
+    }
+
+    @Test
+    fun `an inspection leaves a loaded model loaded`() {
+        engine.onSessionUnlocked(epoch)
+        engine.load(loadRequest())
+
+        engine.inspect(inspectRequest())
+
+        assertThat(engine.status().state).isEqualTo("ready")
+    }
+
+    @Test
+    fun `an inspection leaves the loaded model's handles alone`() {
+        engine.onSessionUnlocked(epoch)
+        engine.load(loadRequest())
+        val loadedModel = backend.liveModels.single()
+
+        engine.inspect(inspectRequest())
+
+        assertThat(backend.liveModels).containsExactly(loadedModel)
+    }
+
+    @Test
+    fun `an inspection does not free the loaded context`() {
+        engine.onSessionUnlocked(epoch)
+        engine.load(loadRequest())
+
+        engine.inspect(inspectRequest())
+
+        assertThat(backend.secureFrees).isEmpty()
+    }
+
+    @Test
+    fun `an inspection during a generation is refused with BUSY`() {
+        var busyEngine: InferenceEngineState? = null
+        var inspected: ModelInspection? = null
+        val blocking = BlockingBackend { inspected = busyEngine?.inspect(inspectRequest()) }
+        busyEngine = InferenceEngineState(blocking, InlineTaskRunner(), CallbackDispatcher(InlineTaskRunner()))
+        busyEngine.onSessionUnlocked(epoch)
+        busyEngine.load(loadRequest())
+
+        busyEngine.generate(generateRequest(maxTokens = 4), RecordingCallback())
+
+        assertThat(inspected?.errorCode).isEqualTo(ErrorCode.BUSY)
+    }
+
+    @Test
+    fun `an inspection refused as BUSY still closes its descriptors`() {
+        var busyEngine: InferenceEngineState? = null
+        val request = inspectRequest()
+        val blocking = BlockingBackend { busyEngine?.inspect(request) }
+        busyEngine = InferenceEngineState(blocking, InlineTaskRunner(), CallbackDispatcher(InlineTaskRunner()))
+        busyEngine.onSessionUnlocked(epoch)
+        busyEngine.load(loadRequest())
+
+        busyEngine.generate(generateRequest(maxTokens = 4), RecordingCallback())
+
+        assertThat(request.binding.files.all { isClosed(it.fd) }).isTrue()
+    }
+
+    // ----------------------------------------- inspect: the same load gate
+
+    @Test
+    fun `an inspection of a mismatched main file refuses with HASH_MISMATCH`() {
+        engine.onSessionUnlocked(epoch)
+
+        assertThat(engine.inspect(inspectRequest(mainSha256 = "00".repeat(32))).errorCode)
+            .isEqualTo(ErrorCode.HASH_MISMATCH)
+    }
+
+    @Test
+    fun `an inspection of a mismatched main file never reaches the engine`() {
+        engine.onSessionUnlocked(epoch)
+
+        engine.inspect(inspectRequest(mainSha256 = "00".repeat(32)))
+
+        assertThat(backend.loadedFds).isEmpty()
+    }
+
+    @Test
+    fun `an inspection of a mismatched companion refuses with COMPANION_HASH_MISMATCH`() {
+        engine.onSessionUnlocked(epoch)
+
+        assertThat(engine.inspect(inspectRequest(tokenizerSha256 = "00".repeat(32))).errorCode)
+            .isEqualTo(ErrorCode.COMPANION_HASH_MISMATCH)
+    }
+
+    @Test
+    fun `an inspection of a mis-sized file refuses with INVALID_MODEL`() {
+        engine.onSessionUnlocked(epoch)
+
+        assertThat(engine.inspect(inspectRequest(mainSize = 99_999L)).errorCode)
+            .isEqualTo(ErrorCode.INVALID_MODEL)
+    }
+
+    @Test
+    fun `an inspection of an unknown role refuses with INVALID_MODEL`() {
+        engine.onSessionUnlocked(epoch)
+
+        assertThat(engine.inspect(inspectRequest(mainRole = "not-a-role")).errorCode)
+            .isEqualTo(ErrorCode.INVALID_MODEL)
+    }
+
+    @Test
+    fun `a refused inspection closes every descriptor it received`() {
+        engine.onSessionUnlocked(epoch)
+        val request = inspectRequest(mainSha256 = "00".repeat(32))
+
+        engine.inspect(request)
+
+        assertThat(request.binding.files.all { isClosed(it.fd) }).isTrue()
+    }
+
+    @Test
+    fun `a refused inspection leaves a loaded model loaded`() {
+        engine.onSessionUnlocked(epoch)
+        engine.load(loadRequest())
+
+        engine.inspect(inspectRequest(mainSha256 = "00".repeat(32)))
+
+        assertThat(engine.status().state).isEqualTo("ready")
+    }
+
+    @Test
+    fun `a file llama cpp will not load reports INVALID_MODEL`() {
+        val invalid =
+            object : FakeLlamaBackend() {
+                override fun loadModelFromFd(
+                    fd: Int,
+                    nGpuLayers: Int,
+                    useMmap: Boolean,
+                ): Long = throw LlamaException(LlamaErrorCode.INVALID_MODEL, "not a gguf")
+            }
+        val engine = InferenceEngineState(invalid, InlineTaskRunner(), CallbackDispatcher(InlineTaskRunner()))
+        engine.onSessionUnlocked(epoch)
+
+        assertThat(engine.inspect(inspectRequest()).errorCode).isEqualTo(ErrorCode.INVALID_MODEL)
+    }
+
+    @Test
+    fun `an allocation failure during an inspection reports OOM`() {
+        val oom =
+            object : FakeLlamaBackend() {
+                override fun loadModelFromFd(
+                    fd: Int,
+                    nGpuLayers: Int,
+                    useMmap: Boolean,
+                ): Long = throw LlamaException(LlamaErrorCode.OUT_OF_MEMORY, "mmap")
+            }
+        val engine = InferenceEngineState(oom, InlineTaskRunner(), CallbackDispatcher(InlineTaskRunner()))
+        engine.onSessionUnlocked(epoch)
+
+        assertThat(engine.inspect(inspectRequest()).errorCode).isEqualTo(ErrorCode.OOM)
+    }
+
+    // The service is the one process holding an untrusted GGUF's own strings.
+    // `general.architecture` is attacker-controlled, so an inspection that
+    // logged what it read would be a way to write chosen text into logcat.
+    @Test
+    fun `an inspection never logs what it read`() {
+        val logged = mutableListOf<String>()
+        SkeinLog.testHook = { _, message, _ -> logged += message }
+        try {
+            engine.onSessionUnlocked(epoch)
+            backend.meta["general.architecture"] = ARCHITECTURE
+
+            engine.inspect(inspectRequest())
+        } finally {
+            SkeinLog.testHook = null
+        }
+
+        assertThat(logged.none { it.contains(ARCHITECTURE) }).isTrue()
+    }
+
+    @Test
+    fun `a refused inspection never logs a digest`() {
+        val logged = mutableListOf<String>()
+        SkeinLog.testHook = { _, message, _ -> logged += message }
+        try {
+            engine.onSessionUnlocked(epoch)
+            engine.inspect(inspectRequest(mainSha256 = "00".repeat(32)))
+        } finally {
+            SkeinLog.testHook = null
+        }
+
+        assertThat(logged.none { it.contains("00".repeat(32)) }).isTrue()
+    }
+
     // ---------------------------------------------------------------- busy
 
     @Test
@@ -509,36 +932,59 @@ class InferenceEngineStateTest {
         tokenizerSha256: String? = null,
         mainSize: Long? = null,
         mainRole: String = "main",
-    ): LoadRequest {
-        val main = fixture("model.gguf", MODEL_BYTES)
-        val tokenizer = fixture("tokenizer.json", TOKENIZER_BYTES)
-        return LoadRequest(
-            binding =
-                ManifestBinding(
-                    manifestId = "fixture",
-                    manifestVersion = 2,
-                    files =
-                        listOf(
-                            ManifestFileRef(
-                                role = mainRole,
-                                fd = open(main),
-                                expectedSha256 = mainSha256 ?: sha256(MODEL_BYTES),
-                                expectedSizeBytes = mainSize ?: MODEL_BYTES.size.toLong(),
-                            ),
-                            ManifestFileRef(
-                                role = "tokenizer",
-                                fd = open(tokenizer),
-                                expectedSha256 = tokenizerSha256 ?: sha256(TOKENIZER_BYTES),
-                                expectedSizeBytes = TOKENIZER_BYTES.size.toLong(),
-                            ),
-                        ),
-                    attestation = null,
-                ),
+    ): LoadRequest =
+        LoadRequest(
+            binding = binding(mainSha256, tokenizerSha256, mainSize, mainRole),
             contextLength = 2048,
             threads = 4,
             gpuLayers = 0,
             embeddingMode = false,
             sessionEpoch = epoch,
+        )
+
+    /**
+     * The same binding `load` is given, so an `inspect` test and a `load` test
+     * exercising the same refusal really are exercising the same input.
+     */
+    private fun inspectRequest(
+        epoch: Long = this.epoch,
+        mainSha256: String? = null,
+        tokenizerSha256: String? = null,
+        mainSize: Long? = null,
+        mainRole: String = "main",
+    ): InspectRequest =
+        InspectRequest(
+            binding = binding(mainSha256, tokenizerSha256, mainSize, mainRole),
+            sessionEpoch = epoch,
+        )
+
+    private fun binding(
+        mainSha256: String? = null,
+        tokenizerSha256: String? = null,
+        mainSize: Long? = null,
+        mainRole: String = "main",
+    ): ManifestBinding {
+        val main = fixture("model.gguf", MODEL_BYTES)
+        val tokenizer = fixture("tokenizer.json", TOKENIZER_BYTES)
+        return ManifestBinding(
+            manifestId = "fixture",
+            manifestVersion = 2,
+            files =
+                listOf(
+                    ManifestFileRef(
+                        role = mainRole,
+                        fd = open(main),
+                        expectedSha256 = mainSha256 ?: sha256(MODEL_BYTES),
+                        expectedSizeBytes = mainSize ?: MODEL_BYTES.size.toLong(),
+                    ),
+                    ManifestFileRef(
+                        role = "tokenizer",
+                        fd = open(tokenizer),
+                        expectedSha256 = tokenizerSha256 ?: sha256(TOKENIZER_BYTES),
+                        expectedSizeBytes = TOKENIZER_BYTES.size.toLong(),
+                    ),
+                ),
+            attestation = null,
         )
     }
 
@@ -604,5 +1050,12 @@ class InferenceEngineStateTest {
         val MODEL_BYTES = ByteArray(4_096) { (it % 251).toByte() }
         val TOKENIZER_BYTES = ByteArray(512) { (it % 97).toByte() }
         var counter = 0
+
+        /**
+         * Distinctive on purpose: the logging tests assert this exact string
+         * never reaches a log line, which a plausible value like "llama" could
+         * pass by coincidence.
+         */
+        const val ARCHITECTURE = "arch-from-an-untrusted-file"
     }
 }

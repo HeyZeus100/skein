@@ -28,6 +28,19 @@ open class FakeLlamaBackend : LlamaBackend {
     /** Cancel-flag transitions, as (ctx, flag). */
     val cancelFlags = mutableListOf<Pair<Long, Boolean>>()
 
+    /**
+     * GGUF metadata this fake's models declare, by key. Empty means every
+     * `modelMeta` answers null, which is what a GGUF stating nothing does.
+     */
+    val meta = mutableMapOf<String, String>()
+
+    /**
+     * The KV-cache and decode calls, in the order they were made — the two
+     * whose ORDER is load-bearing (E-4: a request's cache must be cleared
+     * before its first decode, not after).
+     */
+    val cacheAndDecodeCalls = mutableListOf<String>()
+
     private var nextHandle = 1L
 
     override fun backendInit() {
@@ -51,13 +64,24 @@ open class FakeLlamaBackend : LlamaBackend {
         liveModels -= model
     }
 
+    /**
+     * How many contexts were ever asked for — not how many are live. `inspect`
+     * must create none at all, and a context created and freed again would
+     * leave [liveContexts] empty just the same.
+     */
+    var newContextCalls: Int = 0
+        private set
+
     override fun newContext(
         model: Long,
         nCtx: Int,
         nThreads: Int,
         nBatch: Int,
         embeddings: Boolean,
-    ): Long = (nextHandle++).also { liveContexts += it }
+    ): Long {
+        newContextCalls++
+        return (nextHandle++).also { liveContexts += it }
+    }
 
     override fun freeContextSecure(ctx: Long) {
         liveContexts -= ctx
@@ -113,7 +137,10 @@ open class FakeLlamaBackend : LlamaBackend {
         ctx: Long,
         tokens: IntArray,
         nPast: Int,
-    ): Int = nPast + tokens.size
+    ): Int {
+        cacheAndDecodeCalls += DECODE_PROMPT
+        return nPast + tokens.size
+    }
 
     override fun sampleNext(
         ctx: Long,
@@ -125,7 +152,9 @@ open class FakeLlamaBackend : LlamaBackend {
         tokens: IntArray,
     ): FloatArray = FloatArray(4) { 0.5f }
 
-    override fun kvClear(ctx: Long) = Unit
+    override fun kvClear(ctx: Long) {
+        cacheAndDecodeCalls += KV_CLEAR
+    }
 
     override fun setCancelFlag(
         ctx: Long,
@@ -137,11 +166,16 @@ open class FakeLlamaBackend : LlamaBackend {
     override fun modelMeta(
         model: Long,
         key: String,
-    ): String? = null
+    ): String? = meta[key]
 
     override fun modelHasVision(model: Long): Boolean = false
 
     override fun modelNEmbd(model: Long): Int = 4
 
     override fun secureFreeCount(): Int = secureFrees.size
+
+    companion object {
+        const val KV_CLEAR = "kvClear"
+        const val DECODE_PROMPT = "decodePrompt"
+    }
 }

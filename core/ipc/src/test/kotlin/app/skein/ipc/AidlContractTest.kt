@@ -98,6 +98,30 @@ class AidlContractTest {
         assertThat(fake.cancelledRequestIds).containsExactly(3)
     }
 
+    // H1 (skein-91yy), SKEIN_HUB.md §3.3. The additive `inspect` method: the
+    // `FakeInferenceService` below only compiles if it exists with this
+    // signature, and these two prove a `ModelInspection` survives the
+    // generated Binder plumbing in both directions.
+    @Test
+    fun inferenceServiceInspectIsInvokableOverBinder() {
+        val fake = FakeInferenceService()
+        val proxy = IInferenceService.Stub.asInterface(fake.asBinder())
+
+        proxy.inspect(InspectRequest(binding = binding(), sessionEpoch = 9L))
+
+        assertThat(fake.inspectRequests.single().sessionEpoch).isEqualTo(9L)
+    }
+
+    @Test
+    fun inferenceServiceInspectReturnsAModelInspectionAcrossBinder() {
+        val fake = FakeInferenceService()
+        val proxy = IInferenceService.Stub.asInterface(fake.asBinder())
+
+        val inspection = proxy.inspect(InspectRequest(binding = binding(), sessionEpoch = 9L))
+
+        assertThat(inspection.architecture).isEqualTo("gemma3")
+    }
+
     @Test
     fun inferenceServiceEmbedAcceptsTheWrappingEmbedRequest() {
         val fake = FakeInferenceService()
@@ -189,14 +213,40 @@ class AidlContractTest {
         assertThat(fake.dropped).isEqualTo(4)
     }
 
+    /** A binding with no descriptors: `inspect`'s marshalling, not its verifier. */
+    private fun binding(): ManifestBinding =
+        ManifestBinding(
+            manifestId = "fixture",
+            manifestVersion = 2,
+            files = emptyList(),
+            attestation = null,
+        )
+
     private class FakeInferenceService : IInferenceService.Stub() {
         val lockingCalls = mutableListOf<Pair<Long, Long>>()
         val lockedCalls = mutableListOf<Long>()
         val unlockedCalls = mutableListOf<Long>()
         val cancelledRequestIds = mutableListOf<Int>()
         val embedRequests = mutableListOf<EmbedRequest>()
+        val inspectRequests = mutableListOf<InspectRequest>()
 
         override fun load(req: LoadRequest): Int = ErrorCode.OK
+
+        override fun inspect(req: InspectRequest): ModelInspection {
+            inspectRequests += req
+            return ModelInspection(
+                errorCode = ErrorCode.OK,
+                architecture = "gemma3",
+                quantization = "Q4_K_M",
+                parameterCount = null,
+                contextLength = 8192,
+                embeddingWidth = 2560,
+                hasVision = false,
+                hasChatTemplate = true,
+                chatTemplateOk = true,
+                tokenizerModel = "llama",
+            )
+        }
 
         override fun generate(
             req: GenerateRequest,

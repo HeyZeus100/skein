@@ -22,6 +22,8 @@ import app.skein.ipc.LoadRequest;
 import app.skein.ipc.GenerateRequest;
 import app.skein.ipc.EmbedRequest;
 import app.skein.ipc.EngineStatus;
+import app.skein.ipc.InspectRequest;
+import app.skein.ipc.ModelInspection;
 
 interface IInferenceService {
     /**
@@ -32,6 +34,25 @@ interface IInferenceService {
      * ErrorCode.
      */
     int load(in LoadRequest req);
+    /**
+     * Sync. Additive, H1 (bd skein-91yy), docs/design/SKEIN_HUB.md §3.3.
+     *
+     * Verifies EVERY fd in req.binding.files exactly as load does — same
+     * pre-mmap gate, same refusals, same ErrorCodes — then loads the MODEL
+     * ONLY (no llama_context, no KV cache, no GPU offload), reads metadata
+     * through the existing JNI entry points, frees the model, and returns the
+     * findings. Never allocates the hundreds of megabytes a context for a
+     * model the user has not yet accepted would cost.
+     *
+     * Leaves the service in whatever state it was in: a model loaded before
+     * the call is still loaded, with the same handles, after it. Refused with
+     * ErrorCode.BUSY while a generate is in flight, rather than queueing
+     * behind it on the single worker thread.
+     *
+     * Never throws for a refusal: the outcome is ModelInspection.errorCode.
+     * The service OWNS and closes every fd in req.binding on every path.
+     */
+    ModelInspection inspect(in InspectRequest req);
     /**
      * Async. cb must be a fresh IInferenceCallback (client-owned). Tokens
      * arrive on cb; exactly one onDone or onError per requestId.
