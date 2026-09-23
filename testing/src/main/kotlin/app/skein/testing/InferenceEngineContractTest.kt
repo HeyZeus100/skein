@@ -31,6 +31,7 @@ import app.skein.core.model.Role
 import app.skein.core.model.SamplingParams
 import app.skein.core.model.Token
 import kotlinx.coroutines.CompletableDeferred
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.awaitCancellation
 import kotlinx.coroutines.cancelAndJoin
@@ -39,6 +40,7 @@ import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.toList
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.test.runTest
+import kotlinx.coroutines.withContext
 import kotlinx.coroutines.withTimeout
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertFalse
@@ -131,31 +133,42 @@ public abstract class InferenceEngineContractTest {
             engine.load(textModel()).getOrThrow()
 
             // Bound the whole test on real time — the assertion is about
-            // wall-clock latency, not virtual delays.
-            withTimeout(1_000L) {
-                val job: Job =
-                    launch {
-                        try {
-                            engine.stream(samplePrompt(), samplingParams()).collect {
-                                // Suspend forever to guarantee we're mid-stream
-                                // when cancel arrives.
-                                awaitCancellation()
+            // wall-clock latency, not virtual delays. Under `runTest` a bare
+            // `withTimeout` counts VIRTUAL time, which auto-advances whenever
+            // the test dispatcher is idle: an engine that does its work on a
+            // real thread (the production `LlamaCppEngine` streams through a
+            // bound service on `Dispatchers.IO`) then times out "after 1s of
+            // virtual time" while the real thread is still busy, and the
+            // `delay(10L)` grace never waits at all. Hopping to a real
+            // single-threaded dispatcher makes both the timeout and the grace
+            // real (the exception's own advice), so the 100 ms bound measures
+            // the engine, not the scheduler (skein-1uw, 2026-09-23).
+            withContext(Dispatchers.Default.limitedParallelism(1)) {
+                withTimeout(1_000L) {
+                    val job: Job =
+                        launch {
+                            try {
+                                engine.stream(samplePrompt(), samplingParams()).collect {
+                                    // Suspend forever to guarantee we're mid-stream
+                                    // when cancel arrives.
+                                    awaitCancellation()
+                                }
+                            } catch (_: Throwable) {
+                                // Any exception (including CancellationException)
+                                // counts as "stopped".
                             }
-                        } catch (_: Throwable) {
-                            // Any exception (including CancellationException)
-                            // counts as "stopped".
                         }
-                    }
 
-                // Give the flow a chance to start.
-                delay(10L)
-                val startNs = System.nanoTime()
-                job.cancelAndJoin()
-                val elapsedMs = (System.nanoTime() - startNs) / 1_000_000
-                assertTrue(
-                    "expected cancellation within 100 ms, took $elapsedMs ms",
-                    elapsedMs < 100L,
-                )
+                    // Give the flow a chance to start.
+                    delay(10L)
+                    val startNs = System.nanoTime()
+                    job.cancelAndJoin()
+                    val elapsedMs = (System.nanoTime() - startNs) / 1_000_000
+                    assertTrue(
+                        "expected cancellation within 100 ms, took $elapsedMs ms",
+                        elapsedMs < 100L,
+                    )
+                }
             }
         }
 

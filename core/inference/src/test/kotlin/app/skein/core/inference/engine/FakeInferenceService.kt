@@ -27,6 +27,8 @@ package app.skein.core.inference.engine
 import android.os.Binder
 import android.os.IBinder
 import android.os.ParcelFileDescriptor
+import app.skein.ipc.BackendReport
+import app.skein.ipc.BackendReportRequest
 import app.skein.ipc.EmbedRequest
 import app.skein.ipc.EngineStatus
 import app.skein.ipc.ErrorCode
@@ -156,6 +158,24 @@ internal class FakeInferenceService : IInferenceService {
         epochs += req.sessionEpoch
         closeAll(req.binding)
         return inspectResult
+    }
+
+    /**
+     * skein-gg11.2 added this AIDL method after the engine branch was cut; the
+     * engine never calls it (its seam is `engineStatus()`), so the fake answers
+     * with an empty, CPU-only report.
+     */
+    override fun backendReport(req: BackendReportRequest): BackendReport {
+        epochs += req.sessionEpoch
+        return BackendReport(
+            errorCode = ErrorCode.OK,
+            devices = emptyList(),
+            cpuFeatures = emptyList(),
+            gpuLayersOffloaded = 0,
+            nOutputsMax = null,
+            nBatch = null,
+            nUbatch = null,
+        )
     }
 
     override fun generate(
