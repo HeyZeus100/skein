@@ -168,6 +168,13 @@ dependencies {
     // edge for design-time previews), so it never reaches this module's
     // runtime/debug classpath and needs no `exclude` either.
     implementation(project(":feature:graph"))
+    // skein-whg8: `MainActivity` wires the real `ChatScreen`/`SendPipeline`
+    // (feature/chat) into `SkeinApp`'s new `chatTabContent` slot, and the
+    // minimal `/models` list screen (feature/models) into its `overlay`
+    // slot — the same dependency-direction reason as `:feature:editor` and
+    // `:feature:settings` above (`:feature:shell` cannot depend on either).
+    implementation(project(":feature:chat"))
+    implementation(project(":feature:models"))
     // E5.I10 (skein-7v3): `IngestScheduler`/`IngestWorker` compose the
     // on-device ingest pass — `Chunker` + `IngestPipeline`/`IngestSteps`
     // (`:core:rag`), `EdgeUpserter`/`DanglingResolver` (`:core:vault`, above)

@@ -6,25 +6,32 @@ import android.os.Build
 import android.os.Bundle
 import android.view.WindowManager
 import androidx.activity.SystemBarStyle
+import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.biometric.BiometricManager
 import androidx.biometric.BiometricPrompt
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Button
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.produceState
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
@@ -36,11 +43,20 @@ import androidx.compose.ui.unit.dp
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.lifecycleScope
+import app.skein.core.inference.models.ImportOutcome
+import app.skein.core.inference.models.ImportProgress
+import app.skein.core.inference.models.ImportSource
 import app.skein.core.model.DocId
+import app.skein.core.model.EngineState
+import app.skein.core.model.ModelStatus
 import app.skein.core.vault.key.PassphraseKeyExport
 import app.skein.core.vault.session.UnlockState
+import app.skein.feature.chat.ChatScreen
+import app.skein.feature.editor.autocomplete.Suggestion
 import app.skein.feature.editor.notetab.NoteTab
 import app.skein.feature.graph.GraphScreen
+import app.skein.feature.models.ModelListItem
+import app.skein.feature.models.ModelsScreen
 import app.skein.feature.settings.SettingsScreen
 import app.skein.feature.settings.rememberSettingsViewModel
 import app.skein.feature.shell.DestinationPlaceholder
@@ -49,8 +65,12 @@ import app.skein.feature.shell.auth.BiometricUnlockScreen
 import app.skein.feature.shell.auth.VaultResetScreen
 import app.skein.feature.shell.auth.VaultSetupScreen
 import app.skein.feature.shell.layout.EdgeToEdgeSurface
+import app.skein.feature.shell.nav.Command
 import app.skein.feature.shell.nav.Destination
 import app.skein.feature.shell.tabs.FlushRegistry
+import app.skein.feature.shell.tabs.Tab
+import app.skein.feature.shell.tabs.TabId
+import app.skein.feature.shell.tabs.TabKind
 import app.skein.feature.shell.theme.SkeinTheme
 import app.skein.feature.shell.theme.SkeinThemeMode
 import app.skein.feature.timeline.TimelineRail
@@ -59,12 +79,15 @@ import app.skein.feature.timeline.rememberTimelineState
 import app.skein.system.AppearancePrefs
 import app.skein.system.SecurityPrefs
 import app.skein.vault.GatePhase
+import app.skein.vault.TabsStateTabController
 import app.skein.vault.VaultBootstrap
 import app.skein.vault.VaultServices
 import app.skein.vault.VaultSession
 import app.skein.vault.gateOpenFailure
 import app.skein.vault.gatePhase
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
@@ -336,6 +359,12 @@ class MainActivity : FragmentActivity() {
         // lock sequence yet — `E3.I3b` owns that — this only keeps the
         // handle from being thrown away.
         val flushRegistry = remember { FlushRegistry() }
+        // skein-whg8: the ask-path composition root for this session — see
+        // `DeviceVaultOpener`'s edit. `null` only for the pre-existing test
+        // fixtures in this source set that build a `VaultSession` with no
+        // `Context` (`TestSkeinApplication` now supplies a real one — see
+        // that file's own edit); every device session has one.
+        val models = session.models
         // skein-z2u (E6.I11): the ✦ button's real navigation target.
         // `GraphScreen` is its own `SkeinTheme` wrapper drawn as an overlay
         // *alongside* `SkeinApp`'s panes (see that composable's own file
@@ -357,6 +386,166 @@ class MainActivity : FragmentActivity() {
         // with the rest of this shell's timeline surface.
         val timelinePersonaSource = remember(session) { session.personaService.observeAll() }
         val timelinePaneState = rememberTimelineState(repo = session.repository, personaSource = timelinePersonaSource)
+
+        // ---- skein-whg8: ask-path chip, /import model, /models -----------
+
+        // The command-bar chip (skein-12c's one-line placeholder): observes
+        // `ModelServices.engineStatus` when a session has one, or a fixed
+        // UNLOADED flow otherwise, so `collectAsState` below is always
+        // called against a real flow (never conditionally skipped — Compose
+        // requires the same composable calls in the same order every
+        // recomposition).
+        val noModelServicesStatus =
+            remember { MutableStateFlow(ModelStatus(modelId = null, state = EngineState.UNLOADED)) }
+        val engineStatus by (models?.engineStatus ?: noModelServicesStatus).collectAsState()
+        val modelStatusName = engineStatus.modelId ?: "no model"
+        val modelStatusActive = engineStatus.state == EngineState.READY || engineStatus.state == EngineState.GENERATING
+
+        // `/models`' list — re-read whenever `modelsListVersion` is bumped
+        // (import success, set-default, delete) rather than polled.
+        var modelsOverlayOpen by remember { mutableStateOf(false) }
+        var modelsListVersion by remember { mutableIntStateOf(0) }
+        val modelListItems by
+            produceState(initialValue = emptyList<ModelListItem>(), models, modelsListVersion) {
+                value =
+                    models?.let { services ->
+                        val defaultId = services.registry.default()
+                        services.registry.list().map { record ->
+                            ModelListItem(
+                                id = record.model.id,
+                                displayName = record.model.name,
+                                sizeBytes = record.model.sizeBytes,
+                                licenseSpdx = record.licenseSpdx ?: "UNKNOWN",
+                                isDefault = record.model.id == defaultId,
+                                isLoaded = services.isLoaded(record.model.id),
+                            )
+                        }
+                    } ?: emptyList()
+            }
+        // Whether `/chat`'s first-send has anything to load — read live so a
+        // chat tab opened before `/import model` finishes turns into a real
+        // conversation the moment a default lands, with no need to reopen
+        // the tab (DoD item 3: "never crash", not "never confuse").
+        val hasDefaultModel by
+            produceState(initialValue = false, models, modelsListVersion) {
+                value = models?.registry?.default() != null
+            }
+
+        val modelImportScope = rememberCoroutineScope()
+        var importStatusText by remember { mutableStateOf<String?>(null) }
+        val importLauncher =
+            rememberLauncherForActivityResult(ActivityResultContracts.OpenDocument()) { uri ->
+                val services = models
+                if (uri != null && services != null) {
+                    modelImportScope.launch {
+                        importStatusText = "Importing model…"
+                        services.manager.import(ImportSource.Picked(uri)).collectLatest { progress ->
+                            when (progress) {
+                                is ImportProgress.InProgress ->
+                                    importStatusText =
+                                        if (progress.totalBytes > 0) {
+                                            "Importing model… ${progress.bytesProcessed}/${progress.totalBytes} bytes"
+                                        } else {
+                                            "Importing model…"
+                                        }
+                                is ImportProgress.Done -> {
+                                    when (val outcome = progress.outcome) {
+                                        is ImportOutcome.Imported -> {
+                                            services.manager.setDefault(outcome.record.model.id)
+                                            services.manifestCache.refresh()
+                                            importStatusText =
+                                                "Imported \"${outcome.record.model.name}\" and set as default"
+                                        }
+                                        is ImportOutcome.Refused ->
+                                            // No refusal detail beyond its
+                                            // type reaches the UI — spec §9
+                                            // keeps a service diagnostic and
+                                            // model-file content out of any
+                                            // surface, and `ImportRefusal`'s
+                                            // own subtypes carry nothing else
+                                            // user-facing.
+                                            importStatusText = "Import failed: ${outcome.refusal.javaClass.simpleName}"
+                                    }
+                                    modelsListVersion++
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+
+        // `/chat` (`BuiltinCommands.chatCommand`) opens the tab; this is the
+        // real content `SkeinApp`'s `chatTabContent` slot renders for it.
+        val chatContent: @Composable (
+            tab: Tab,
+            openPreview: (docId: String, title: String, kind: TabKind) -> TabId,
+        ) -> Unit = { tab, openPreview ->
+            val services = models
+            when {
+                services == null ->
+                    // Every existing no-Context test fixture in this source
+                    // set; never true on a device.
+                    Text(
+                        text = "Chat is unavailable in this build.",
+                        modifier = Modifier.padding(16.dp),
+                    )
+                !hasDefaultModel ->
+                    // DoD item 3: "A /chat with no default model must say
+                    // so and offer /import model, never crash."
+                    Column(
+                        modifier =
+                            Modifier
+                                .fillMaxSize()
+                                .padding(16.dp)
+                                .testTag(MainActivityTestTags.CHAT_NO_MODEL_GUIDANCE),
+                    ) {
+                        Text(
+                            text = "No model yet.",
+                            style = MaterialTheme.typography.titleMedium,
+                        )
+                        Text(
+                            text = "Use /import model to add one, then come back to this chat.",
+                            style = MaterialTheme.typography.bodyMedium,
+                            modifier = Modifier.padding(top = 8.dp),
+                        )
+                    }
+                else -> {
+                    val tabController = remember(openPreview) { TabsStateTabController(openPreview) }
+                    ChatScreen(
+                        docId = tab.docId,
+                        vaultRepository = session.repository,
+                        sendPipeline = services.sendPipeline,
+                        tabController = tabController,
+                        wikilinkSuggest = { query ->
+                            session.repository.searchTitles(query).map { document -> Suggestion(document.title) }
+                        },
+                        modifier = Modifier.fillMaxSize(),
+                        importService = session.importService,
+                        currentPersonaId = { null },
+                    )
+                }
+            }
+        }
+
+        val modelCommands: List<Command> =
+            listOfNotNull(
+                models?.let { services ->
+                    Command(
+                        keyword = "import model",
+                        hint = "— pick a GGUF file to import and set as default",
+                    ) {
+                        importLauncher.launch(arrayOf("application/octet-stream", "*/*"))
+                    }
+                },
+                Command(
+                    keyword = "models",
+                    hint = "— list imported models",
+                ) {
+                    modelsListVersion++
+                    modelsOverlayOpen = true
+                },
+            )
+
         SkeinApp(
             // bd `skein-l9oi`: the same activity-wide mode `VaultGate`'s
             // pre-unlock screens already got.
@@ -370,6 +559,10 @@ class MainActivity : FragmentActivity() {
             // shell yet (only the full list `personaService.observeAll()`
             // surfaces), so `personaId` stays the `SkeinApp` default (null).
             vaultRepository = session.repository,
+            chatTabContent = chatContent,
+            extraCommands = modelCommands,
+            modelStatusName = modelStatusName,
+            modelStatusActive = modelStatusActive,
             destinationContent = { destination ->
                 when (destination) {
                     Destination.TIMELINE -> TimelineDestination(session)
@@ -476,6 +669,55 @@ class MainActivity : FragmentActivity() {
                         onClose = { graphDocId = null },
                     )
                 }
+                // skein-whg8: `/models` — mutually exclusive with the graph
+                // overlay above in practice (both close themselves), same
+                // single `overlay` slot `SkeinApp`'s own doc says this
+                // module supplies real screens through.
+                if (modelsOverlayOpen && models != null) {
+                    ModelsScreen(
+                        models = modelListItems,
+                        onSetDefault = { id ->
+                            modelImportScope.launch {
+                                models.manager.setDefault(id)
+                                modelsListVersion++
+                            }
+                        },
+                        onDelete = { id ->
+                            modelImportScope.launch {
+                                models.manager.delete(id)
+                                models.manifestCache.refresh()
+                                modelsListVersion++
+                            }
+                        },
+                        onDismiss = { modelsOverlayOpen = false },
+                    )
+                }
+                // skein-whg8: `/import model`'s two progress milestones (DoD
+                // item 3), shown in a row rather than a full `Snackbar` host
+                // — this shell has none wired up yet and adding one is out
+                // of this bead's scope. Composed inside `overlay` so it
+                // paints over everything else without a second root `Box`
+                // (see this slot's own KDoc on `SkeinApp`). Content is fixed
+                // text plus a model NAME the user just picked and Core
+                // itself assigned (never a path, a digest or a service
+                // diagnostic — spec §9).
+                importStatusText?.let { message ->
+                    Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.BottomCenter) {
+                        Surface(
+                            color = MaterialTheme.colorScheme.secondaryContainer,
+                            modifier = Modifier.fillMaxWidth().testTag(MainActivityTestTags.IMPORT_STATUS_ROW),
+                        ) {
+                            Row(
+                                modifier = Modifier.fillMaxWidth().padding(12.dp),
+                                horizontalArrangement = Arrangement.SpaceBetween,
+                                verticalAlignment = Alignment.CenterVertically,
+                            ) {
+                                Text(text = message, style = MaterialTheme.typography.bodySmall)
+                                TextButton(onClick = { importStatusText = null }) { Text("Dismiss") }
+                            }
+                        }
+                    }
+                }
             },
         )
     }
@@ -518,6 +760,12 @@ private fun TimelineDestination(session: VaultSession) {
     val personaSource = remember(session) { session.personaService.observeAll() }
     val state = rememberTimelineState(repo = session.repository, personaSource = personaSource)
     TimelineScreen(state = state, onEntryClick = {}, modifier = Modifier.fillMaxSize())
+}
+
+/** skein-whg8: test tags for the ask-path UI this file wires directly (chat/import/models have their own modules' tags). */
+object MainActivityTestTags {
+    const val IMPORT_STATUS_ROW = "main_activity_import_status_row"
+    const val CHAT_NO_MODEL_GUIDANCE = "main_activity_chat_no_model_guidance"
 }
 
 /** Test tags for the vault gate's own states (the unlock/setup screens and the shell carry their own). */
