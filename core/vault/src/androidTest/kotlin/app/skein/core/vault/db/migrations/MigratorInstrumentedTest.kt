@@ -629,7 +629,11 @@ class MigratorInstrumentedTest {
         rowId: Long,
         embedding: ByteArray,
     ) {
-        conn.prepare("INSERT INTO chunks_vec(rowid, embedding) VALUES (?, ?);").use { stmt ->
+        // `chunks_vec.embedding` is declared `int8[256]` (001_initial.sql);
+        // sqlite-vec needs the `vec_int8(?)` constructor around the bound
+        // parameter or it reads a bare BLOB as float32 and rejects it
+        // (skein-2hzi). Matches `IndexSql.UPSERT_EMBEDDING`.
+        conn.prepare("INSERT INTO chunks_vec(rowid, embedding) VALUES (?, vec_int8(?));").use { stmt ->
             stmt.bindLong(1, rowId)
             stmt.bindBlob(2, embedding)
             stmt.step()
