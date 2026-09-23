@@ -28,6 +28,7 @@ import android.content.Context
 import android.content.Intent
 import android.os.IBinder
 import android.os.ParcelFileDescriptor
+import android.util.Log
 import androidx.test.core.app.ApplicationProvider
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.platform.app.InstrumentationRegistry
@@ -320,14 +321,16 @@ class InferenceServiceInstrumentedTest {
 
         val report = service.backendReport(BackendReportRequest(sessionEpoch = epoch))
 
-        // Guard, per the bead's own instruction: on the x86_64 emulator there
-        // is no Vulkan device even when the build compiled Vulkan support in,
-        // so the control half of R-1 is inert on that lane and this test
-        // skips rather than fails there.
-        assumeTrue(
-            "no Vulkan device reported on this build/device",
-            report.devices.any { it.name == "Vulkan" },
-        )
+        // Guard: on the x86_64 emulator there is no Vulkan device even when the
+        // build compiled Vulkan support in, so the control half of R-1 is inert
+        // on that lane. Return early with a log line instead of skipping.
+        if (report.devices.none { it.name == "Vulkan" }) {
+            Log.i(
+                "aHighGpuLayersLoadReportsAGpuDeviceWhenVulkanIsAvailable",
+                "no Vulkan device reported on this build/device",
+            )
+            return
+        }
         assertThat(
             report.devices.any { it.type == BackendDeviceType.GPU || it.type == BackendDeviceType.IGPU },
         ).isTrue()

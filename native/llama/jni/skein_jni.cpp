@@ -1334,7 +1334,7 @@ Java_app_skein_inference_service_LlamaNative_backendReport(
     std::string out;
 
     /* CPU features compiled into this ggml-cpu -- build-time facts, need no
-     * model. ARM-only: Skein ships arm64-v8a exclusively (spec §1/§4). */
+     * model. Allowlisted names from ggml-cpu.h's ggml_cpu_has_* functions. */
     out += "cpu_features=";
     bool first_feature = true;
     auto add_feature = [&](const char *name, int has) {
@@ -1347,6 +1347,15 @@ Java_app_skein_inference_service_LlamaNative_backendReport(
         out += name;
         first_feature = false;
     };
+    /* x86 features */
+    add_feature("SSE3", ggml_cpu_has_sse3());
+    add_feature("SSSE3", ggml_cpu_has_ssse3());
+    add_feature("AVX", ggml_cpu_has_avx());
+    add_feature("AVX2", ggml_cpu_has_avx2());
+    add_feature("F16C", ggml_cpu_has_f16c());
+    add_feature("FMA", ggml_cpu_has_fma());
+    add_feature("AVX512", ggml_cpu_has_avx512());
+    /* ARM features */
     add_feature("NEON", ggml_cpu_has_neon());
     add_feature("ARM_FMA", ggml_cpu_has_arm_fma());
     add_feature("FP16_VA", ggml_cpu_has_fp16_va());
