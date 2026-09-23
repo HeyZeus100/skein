@@ -4,9 +4,12 @@ import androidx.biometric.BiometricPrompt
 import androidx.fragment.app.FragmentActivity
 import app.skein.core.vault.key.VaultKeyProvider
 import app.skein.core.vault.provider.VaultDocumentsProvider
+import app.skein.core.vault.session.LockObserver
+import app.skein.core.vault.session.LockObserverPriority
 import app.skein.core.vault.session.LockReason
 import app.skein.core.vault.session.UnlockManager
 import app.skein.export.stage.FakeExportStageRepository
+import kotlinx.coroutines.CompletableDeferred
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
@@ -16,6 +19,7 @@ import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.runBlocking
 import org.junit.After
 import org.junit.Assert.assertEquals
+import org.junit.Assert.assertNotSame
 import org.junit.Assert.assertNull
 import org.junit.Assert.assertSame
 import org.junit.Assert.assertTrue
@@ -67,6 +71,13 @@ class VaultBootstrapTest {
         seed: suspend (VaultSession) -> Unit = {},
     ) {
         val events: MutableList<String> = Collections.synchronizedList(mutableListOf())
+
+        /**
+         * The ordinal of every session whose release lambda was invoked, in
+         * invocation order (skein-1bx4). `events` only records that *a*
+         * close happened; these tests need to know *which* session's.
+         */
+        val closedSessions: MutableList<Int> = Collections.synchronizedList(mutableListOf())
         val keyProvider = ScriptedVaultKeyProvider(events)
         val manager =
             UnlockManager(
@@ -89,7 +100,7 @@ class VaultBootstrapTest {
             VaultBootstrap(
                 unlockManager = manager,
                 openVault = {
-                    opens++
+                    val ordinal = ++opens
                     events += "open"
                     duringOpen()
                     VaultSession(
@@ -101,6 +112,7 @@ class VaultBootstrapTest {
                         exportStages = FakeExportStageRepository(),
                     ) {
                         events += "close"
+                        closedSessions += ordinal
                         onRelease()
                     }
                 },
@@ -120,6 +132,32 @@ class VaultBootstrapTest {
         suspend fun unlock() = manager.unlock(activity, prompt, VaultKeyProvider.Factor.BIOMETRIC)
 
         suspend fun lock() = manager.lockAndAwait(LockReason.USER_REQUESTED)
+
+        /**
+         * Registers a HIGH-priority observer that blocks until [gate]
+         * completes — the "slow observer" of skein-1bx4's repro: it eats the
+         * whole shared notify budget, so the lock is tagged `FORCE_TIMEOUT`
+         * before the vault close is even reached.
+         */
+        fun addSlowObserver(gate: CompletableDeferred<Unit>) {
+            manager.addLockObserver(
+                object : LockObserver {
+                    override val priority = LockObserverPriority.HIGH
+
+                    override suspend fun onLocking(
+                        epoch: Long,
+                        budgetMillis: Long,
+                    ) {
+                        events += "slowObserver"
+                        gate.await()
+                    }
+
+                    override fun onLocked(epoch: Long) = Unit
+
+                    override fun onUnlocked(epoch: Long) = Unit
+                },
+            )
+        }
     }
 
     private var harness: Harness? = null
@@ -373,5 +411,103 @@ class VaultBootstrapTest {
             h.lock()
             // Assert
             assertNull(h.bootstrap.session.value)
+        }
+
+    // ---- lock → re-unlock (skein-1bx4) -------------------------------------------
+
+    /**
+     * The device P0, at this layer: on the Pixel 9 Pro Fold every screen-off
+     * lock left the next unlock unable to reopen the vault until the process
+     * was killed. The slow observer here is what made the lock sequence
+     * non-deterministic in the first place — it burns the whole shared notify
+     * budget, which used to cancel the enclosing `withTimeoutOrNull` and take
+     * the vault close (then a LOW observer) down with it, deferring the close
+     * onto `onLocked`'s backstop where it ran, asynchronously, against
+     * whatever session came next.
+     */
+    @Test
+    fun `a slow observer's lock leaves the session the next unlock opens untouched`() =
+        runBlocking {
+            // Arrange
+            val gate = CompletableDeferred<Unit>()
+            val h = harness(budgetMillis = 50L)
+            h.addSlowObserver(gate)
+            h.unlock()
+            val first = (h.bootstrap.bringUp() as BringUpResult.Ready).session
+            h.lock()
+            gate.complete(Unit) // release the (already cancelled) observer
+            // Act — re-unlock at once, exactly as the user does on the device.
+            h.unlock()
+            val second = (h.bootstrap.bringUp() as BringUpResult.Ready).session
+            // Assert — a second, distinct session is open and published, and
+            // only the first one was ever closed.
+            assertNotSame(first, second)
+            assertSame(second, h.bootstrap.session.value)
+            assertEquals(listOf(1), h.closedSessions.toList())
+        }
+
+    @Test
+    fun `the vault closes before the key is zeroed even when an observer overran the budget`() =
+        runBlocking {
+            // Arrange — the non-negotiable the TEARDOWN tier protects.
+            val gate = CompletableDeferred<Unit>()
+            val h = harness(budgetMillis = 50L)
+            h.addSlowObserver(gate)
+            h.unlock()
+            h.bootstrap.bringUp()
+            h.events.clear()
+            // Act
+            h.lock()
+            gate.complete(Unit) // release the (already cancelled) observer
+            // Assert — "close" precedes "keyLock" (ScriptedVaultKeyProvider
+            // records the zeroization) on the lock path itself.
+            val order = h.events.toList()
+            assertTrue("expected a close in $order", order.contains("close"))
+            assertTrue("expected close before keyLock in $order", order.indexOf("close") < order.indexOf("keyLock"))
+        }
+
+    /**
+     * Fix contract item 3: a close that is still unwinding when the next
+     * unlock lands must not reach into the session that unlock opened. In
+     * production the structural half of this lives in `DeviceVaultOpener`
+     * (one `VaultLifecycle`, and so one `ConnectionPool`, per `open()` call);
+     * here the assertion is the observable one — the stale release lambda is
+     * invoked for session 1 and for session 1 only.
+     */
+    @Test
+    fun `a stale session close landing after a reopen never closes the new session`() =
+        runBlocking {
+            // Arrange — session 1's release blocks, so its close is still in
+            // flight while session 2 is opened.
+            val release = CompletableDeferred<Unit>()
+            val h = harness(budgetMillis = 50L, onRelease = { release.await() })
+            h.unlock()
+            val first = (h.bootstrap.bringUp() as BringUpResult.Ready).session
+            h.lock()
+            h.unlock()
+            val second = (h.bootstrap.bringUp() as BringUpResult.Ready).session
+            // Act — the stale close finally completes, after the reopen.
+            release.complete(Unit)
+            // Assert
+            assertNotSame(first, second)
+            assertSame(second, h.bootstrap.session.value)
+            assertEquals(listOf(1), h.closedSessions.toList())
+        }
+
+    @Test
+    fun `the session is unpublished before its connections are closed`() =
+        runBlocking {
+            // Arrange — anything reading `bootstrap.session.value` during the
+            // close (ExportStageCoordinator's repository lambda, and whatever
+            // it has already launched on the process scope) must see null
+            // rather than a session being torn down under it.
+            var sessionDuringClose: VaultSession? = null
+            val h = harness(onRelease = { sessionDuringClose = harness!!.bootstrap.session.value })
+            h.unlock()
+            h.bootstrap.bringUp()
+            // Act
+            h.lock()
+            // Assert
+            assertNull(sessionDuringClose)
         }
 }

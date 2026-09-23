@@ -36,6 +36,7 @@
 package app.skein.core.vault.lifecycle
 
 import androidx.sqlite.SQLiteConnection
+import app.skein.core.model.SkeinLog
 import app.skein.core.vault.db.EncryptedDatabaseWithoutKeyException
 import app.skein.core.vault.db.SkeinSQLiteDriver
 import app.skein.core.vault.db.SkeinSQLiteException
@@ -308,20 +309,52 @@ public class VaultLifecycle(
      * every connection in the pool via [ConnectionPool.closeAll] (readers
      * first, writer last), and transitions [isOpen] to `false`. A no-op
      * when already closed.
+     *
+     * **This call is total (skein-1bx4): it always leaves this lifecycle
+     * closed, and it never throws.** The state reset happens FIRST and
+     * unconditionally, and the checkpoint is best-effort — a failure is
+     * logged (exception class name only, never a message, which could carry
+     * a path or caller-supplied text) and the pool is torn down regardless.
+     *
+     * That is not defensive padding, it is the fix for the bug this note
+     * names. The checkpoint's `prepare()` throws
+     * `IllegalStateException("SkeinSQLiteConnection is closed")` if the
+     * writer was already closed by whoever else holds it — which is exactly
+     * what `app.skein.vault.VaultSession.close` used to do by calling its
+     * services' `close()` before this method. The throw then escaped
+     * `lock.withLock` before the three state assignments below the
+     * `try/finally`, so a single failed close left this instance reporting
+     * [isOpen] `true` over a pool whose connections were all shut: every
+     * later [open] took the idempotent already-open branch, handed back the
+     * dead pool from [connectionPool], and the caller died in
+     * [ConnectionPool.writer] with [ConnectionPoolClosedException] until the
+     * process was killed.
+     *
+     * Ordering note: the checkpoint runs while the pool's reader connections
+     * are still open (they are idle on the lock path, and
+     * [ConnectionPool.closeAll] closes them immediately afterwards,
+     * readers-first). A reader holding a read transaction can make `TRUNCATE`
+     * fail; that costs WAL residue, never correctness, and is logged.
      */
     public suspend fun close() {
         lock.withLock {
             val livePool = pool
-            if (livePool != null) {
-                try {
-                    livePool.writer().prepare("PRAGMA wal_checkpoint(TRUNCATE);").use { it.step() }
-                } finally {
-                    livePool.closeAll()
-                }
-            }
+            // Before anything that can fail: `close` must mean closed even if
+            // the checkpoint below does not survive.
             pool = null
             lastOpen = null
             mutableIsOpen.value = false
+            if (livePool == null) return@withLock
+            try {
+                livePool.writer().prepare("PRAGMA wal_checkpoint(TRUNCATE);").use { it.step() }
+            } catch (t: Throwable) {
+                SkeinLog.w(
+                    TAG,
+                    "WAL checkpoint on close failed (${t.javaClass.simpleName}); closing the pool regardless",
+                )
+            } finally {
+                livePool.closeAll()
+            }
         }
     }
 
@@ -485,6 +518,7 @@ public class VaultLifecycle(
     }
 
     private companion object {
+        const val TAG = "VaultLifecycle"
         const val DEFAULT_PERSONA_NAME = "Default"
         const val MIGRATIONS_PATH = "migrations"
         val CREATE_TABLE_REGEX =

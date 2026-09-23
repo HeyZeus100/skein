@@ -53,11 +53,11 @@ import app.skein.feature.timeline.TimelineRail
 import app.skein.feature.timeline.TimelineScreen
 import app.skein.feature.timeline.rememberTimelineState
 import app.skein.system.SecurityPrefs
-import app.skein.vault.BringUpResult
 import app.skein.vault.GatePhase
 import app.skein.vault.VaultBootstrap
 import app.skein.vault.VaultServices
 import app.skein.vault.VaultSession
+import app.skein.vault.gateOpenFailure
 import app.skein.vault.gatePhase
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.first
@@ -555,11 +555,9 @@ private fun OpeningVault(bootstrap: VaultBootstrap) {
     var failure by remember { mutableStateOf<String?>(null) }
     LaunchedEffect(bootstrap, attempt) {
         failure = null
-        failure =
-            when (val result = bootstrap.bringUp()) {
-                is BringUpResult.Ready, BringUpResult.NotUnlocked -> null
-                is BringUpResult.Failed -> result.reason
-            }
+        // skein-1bx4: `gateOpenFailure` also logs the reason at W — see its
+        // KDoc for why that is safe and why it is not done inline here.
+        failure = gateOpenFailure(bootstrap.bringUp())
     }
     Surface(modifier = Modifier.fillMaxSize(), color = MaterialTheme.colorScheme.background) {
         Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {

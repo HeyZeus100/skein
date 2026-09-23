@@ -20,12 +20,17 @@
 // and this file NEVER touches it. What this file guarantees is the ORDER of
 // operations on entry to `LOCKED`:
 //    1. Transition state → `Locking`.
-//    2. Notify observers within a bounded budget (`observerBudgetMillis`);
-//       on timeout, tag the reason as `FORCE_TIMEOUT` but do not extend.
-//    3. Call `keyProvider.lock()` — this is what zeros the key.
-//    4. Only then transition state → `Locked` (or `RecoveryRequired` if the
+//    2. Notify the HIGH then LOW observers within a bounded budget
+//       (`observerBudgetMillis`); on timeout, tag the reason as
+//       `FORCE_TIMEOUT` but do not extend.
+//    3. Notify the TEARDOWN tier — the vault connection close, the plan's
+//       `E3.I3a` step (3) — under its own fresh window of the same budget,
+//       whether or not step 2 acknowledged in time (skein-1bx4). The vault
+//       is therefore always closed BEFORE the key is zeroed.
+//    4. Call `keyProvider.lock()` — this is what zeros the key.
+//    5. Only then transition state → `Locked` (or `RecoveryRequired` if the
 //       lock was triggered by a `KeyPermanentlyInvalidated` async fault).
-//    5. Fire `onLocked` on every observer (post-zero cleanup only).
+//    6. Fire `onLocked` on every observer (post-zero cleanup only).
 // The unit tests assert this ordering by injecting a fake `VaultKeyProvider`
 // that snapshots `state.value` at the moment `lock()` is invoked; the
 // snapshot MUST be `Locking(_)` on every lock cycle, never `Locked` (which
@@ -310,7 +315,15 @@ public class UnlockManager
             val epoch = _authorizationToken.value?.epoch ?: recoveryEpoch.get()
 
             val allAcked = notifyOnLocking(epoch, observerBudgetMillis)
-            val effectiveReason = if (allAcked) reason else LockReason.FORCE_TIMEOUT
+            // skein-1bx4 — the plan's step (3), `VaultManager.close()`, runs
+            // after the notify-and-await window regardless of how that window
+            // ended ("elapsed OR all acknowledged") and still BEFORE the key
+            // is zeroed. It gets its own fresh window of the same budget: a
+            // `HIGH` observer burning the shared one must not be able to skip
+            // the vault close onto `onLocked`'s post-zeroization backstop,
+            // and a wedged close must not be able to hold the key alive.
+            val torndown = notifyTeardown(epoch, observerBudgetMillis)
+            val effectiveReason = if (allAcked && torndown) reason else LockReason.FORCE_TIMEOUT
             lastEffectiveLockReason = effectiveReason
 
             // ORDER MATTERS — the key MUST be zeroed BEFORE state → Locked
@@ -496,6 +509,9 @@ public class UnlockManager
          * Runs the notify-and-await pass under a single shared deadline. HIGH
          * priority runs before LOW, per `LOCK_POLICY_INDEXING.md` §5.1.
          *
+         * skein-1bx4: [LockObserverPriority.TEARDOWN] is deliberately NOT
+         * part of this pass — see [notifyTeardown].
+         *
          * skein-va7y: a throwing `onLocking` used to propagate straight out
          * of this function, which left `doLockLocked` BEFORE
          * `keyProvider.lock()` and wedged `_state` in `Locking` forever (a
@@ -527,6 +543,39 @@ public class UnlockManager
                 withTimeoutOrNull(budgetMillis) {
                     if (!notifyTier(high, epoch, budgetMillis)) allOk = false
                     if (!notifyTier(low, epoch, budgetMillis)) allOk = false
+                }
+            return outcome != null && allOk
+        }
+
+        /**
+         * skein-1bx4 — the vault-close tier, run after [notifyOnLocking] has
+         * finished (however it finished) and before `keyProvider.lock()`.
+         *
+         * Its own `withTimeoutOrNull` window, not a share of
+         * [notifyOnLocking]'s, for the two reasons
+         * [LockObserverPriority.TEARDOWN] documents: a `HIGH`/`LOW` observer
+         * that exhausts the shared budget used to cancel the enclosing
+         * timeout and take the vault close down with it — leaving the vault
+         * open across `keyProvider.lock()` and the connections to be closed
+         * later, off the lock path, by `onLocked`'s backstop — and a close
+         * that never returns must still not be able to keep the master key
+         * alive. The budget VALUE is unchanged: this is the same
+         * [observerBudgetMillis], granted a second time to a tier that the
+         * plan places outside the notify-and-await window entirely.
+         *
+         * Returns `true` only if the tier is empty, or every observer in it
+         * returned within the window without throwing.
+         */
+        private suspend fun notifyTeardown(
+            epoch: Long,
+            budgetMillis: Long,
+        ): Boolean {
+            val tier = snapshotObservers().filter { it.priority == LockObserverPriority.TEARDOWN }
+            if (tier.isEmpty()) return true
+            var allOk = true
+            val outcome =
+                withTimeoutOrNull(budgetMillis) {
+                    if (!notifyTier(tier, epoch, budgetMillis)) allOk = false
                 }
             return outcome != null && allOk
         }
