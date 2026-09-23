@@ -45,6 +45,7 @@
 #include <string>
 #include <vector>
 
+#include "ggml-backend.h"
 #include "ggml.h"
 #include "handles.h"
 #include "llama.h"
@@ -247,6 +248,64 @@ bool ReadMeta(const llama_model *model, const char *key, std::string *out) {
     return true;
 }
 
+/*
+ * CPU-only device restriction (bd skein-gg11.1, escalation E-2,
+ * research/upstream/offlinellm/README.md "E-2" and VULKAN_ANALYSIS.md).
+ * Implemented independently from llama.h/ggml-backend.h per
+ * MODEL_PROVENANCE_ANALYSIS.md §4 (the technique — filter
+ * ggml_backend_dev_count()/ggml_backend_dev_get()/ggml_backend_dev_type()
+ * results to CPU/ACCEL — is a documented use of a public API, not copied
+ * from OfflineLLM's implementation; that upstream permalink is cited in
+ * VULKAN_ANALYSIS.md as prior art only).
+ *
+ * Three verified mechanisms this closes, one sentence each:
+ *   1. With params.devices left at its nullptr default, llama_prepare_model_devices
+ *      appends every registered device (including an integrated Vulkan GPU) to
+ *      model->devices regardless of n_gpu_layers, because that function only
+ *      consults n_gpu_layers for layer *placement*, never device *membership*
+ *      (third_party/llama.cpp/src/llama.cpp:158-215, the "default device
+ *      selection" branch taken when params.devices == nullptr).
+ *   2. Once a GPU device is in model->devices, llama_context initialises a
+ *      backend for it and the scheduler offloads ops to it whenever op_offload
+ *      is true (the default) and the op is at least ggml-vulkan's 32-token
+ *      threshold — Skein's 512-token prompt chunks always qualify.
+ *   3. llama_context also relocates the CPU scheduler buffer (and, once ARM
+ *      repack kernels are compiled in, displaces the CPU repack buffer type)
+ *      to the first device's host buffer type whenever model.devices is
+ *      non-empty (third_party/llama.cpp/src/llama-context.cpp:410-417).
+ *
+ * Returns a nullptr-terminated vector of every device whose type is CPU or
+ * ACCEL. Defensive by construction: a null device handle from the registry is
+ * skipped rather than dereferenced, and a machine with zero CPU/ACCEL devices
+ * (should not happen — ggml always registers a CPU backend — but nothing here
+ * assumes it) still yields a valid one-element {nullptr} array, which
+ * llama_prepare_model_devices reads as "no additional devices" and leaves
+ * model->devices empty; llama_context's own backend_cpu is created
+ * unconditionally and separately from model->devices
+ * (llama-context.cpp:353), so an empty device list still runs on the CPU.
+ */
+std::vector<ggml_backend_dev_t> CpuOnlyDevices() {
+    std::vector<ggml_backend_dev_t> devices;
+    const std::size_t count = ggml_backend_dev_count();
+    devices.reserve(count + 1);
+    for (std::size_t i = 0; i < count; ++i) {
+        ggml_backend_dev_t dev = ggml_backend_dev_get(i);
+        if (dev == nullptr) {
+            continue; /* defensive: the registry contract does not promise this, but never dereference a null device */
+        }
+        /* `auto`, not `enum ggml_backend_dev_type`: ggml-backend.h declares a
+         * function and an enum with the same name (the same trap `embed()`
+         * below already documents for llama_pooling_type), and the function
+         * hides the type tag in C++. */
+        const auto type = ggml_backend_dev_type(dev);
+        if (type == GGML_BACKEND_DEVICE_TYPE_CPU || type == GGML_BACKEND_DEVICE_TYPE_ACCEL) {
+            devices.push_back(dev);
+        }
+    }
+    devices.push_back(nullptr); /* llama_model_params.devices is nullptr-terminated (llama.h:315) */
+    return devices;
+}
+
 }  // namespace
 
 /* ------------------------------------------------------------------------ */
@@ -366,6 +425,21 @@ Java_app_skein_inference_service_LlamaNative_loadModel(
      * what spec §6 requires ("model file mmap'd read-only"); NONE is the
      * fallback for filesystems where mmap is refused. */
     params.load_mode = (use_mmap == JNI_TRUE) ? LLAMA_LOAD_MODE_MMAP : LLAMA_LOAD_MODE_NONE;
+    /* E-2: CPU-only means CPU-only. See CpuOnlyDevices() above for the three
+     * mechanisms this closes. `cpu_only_devices` is a function-local vector,
+     * which is sufficient lifetime: llama_prepare_model_devices dereferences
+     * params.devices once, synchronously, inside llama_model_load_from_file
+     * below, and copies out the individual (registry-owned, not ours)
+     * ggml_backend_dev_t pointers into model->devices — it does not retain
+     * params.devices itself past that call
+     * (third_party/llama.cpp/src/llama.cpp:181-183). Nothing needs to be
+     * stashed in the handle registry. gpuLayers > 0 leaves params.devices at
+     * its nullptr default, matching upstream's own device selection. */
+    std::vector<ggml_backend_dev_t> cpu_only_devices;
+    if (n_gpu_layers <= 0) {
+        cpu_only_devices = CpuOnlyDevices();
+        params.devices = cpu_only_devices.data();
+    }
 
     llama_model *model = llama_model_load_from_file(native_path.c_str(), params);
     if (model == nullptr) {
@@ -426,6 +500,15 @@ Java_app_skein_inference_service_LlamaNative_loadModelFromFd(
     llama_model_params params = llama_model_default_params();
     params.n_gpu_layers = n_gpu_layers;
     params.load_mode = (use_mmap == JNI_TRUE) ? LLAMA_LOAD_MODE_MMAP : LLAMA_LOAD_MODE_NONE;
+    /* E-2: CPU-only means CPU-only — see loadModel above and CpuOnlyDevices()
+     * for the full rationale and the lifetime argument (unchanged here:
+     * llama_model_load_from_file_ptr routes to the same synchronous
+     * llama_prepare_model_devices call). */
+    std::vector<ggml_backend_dev_t> cpu_only_devices;
+    if (n_gpu_layers <= 0) {
+        cpu_only_devices = CpuOnlyDevices();
+        params.devices = cpu_only_devices.data();
+    }
 
     llama_model *model = llama_model_load_from_file_ptr(file, params);
     if (model == nullptr) {
@@ -485,6 +568,36 @@ Java_app_skein_inference_service_LlamaNative_newContext(
     params.embeddings = (embeddings == JNI_TRUE);
     /* Pooling is left UNSPECIFIED so the model's own pooling type applies; a
      * causal model then reports NONE and `embed` mean-pools by hand. */
+
+    /* E-3: cap the logits reservation (research/upstream/offlinellm/README.md
+     * "E-3", MEMORY_ANALYSIS.md). n_outputs_max defaults to 0, which
+     * llama.cpp resolves to n_batch (third_party/llama.cpp/src/llama-context.cpp:249),
+     * so an uncapped context reserves an n_batch x n_vocab x 4-byte logits
+     * tensor in its compute buffer (~297 MiB for a 151936-vocab Qwen 2.5 3B
+     * at n_batch=512) that a generation context never reads.
+     *
+     * Invariant that makes n_outputs_max = 1 safe for a GENERATION context:
+     * decodePrompt (below) requests the last chunk's last position only —
+     * `batch.logits[i] = (is_last_chunk && i == count - 1) ? 1 : 0` — and
+     * sampleNext samples position -1. One output row is all this JNI ever
+     * asks llama_decode for on that path.
+     *
+     * This does NOT extend to an EMBEDDINGS context. embed() (Group 5, below)
+     * sets `batch.logits[i] = 1` for every token, because mean pooling (or
+     * reading the model's own pooling layer) needs an output row per token.
+     * n_outputs_max is not a logits-only knob: llama_context::output_reserve
+     * sizes both `logits` and `embd` off the same n_outputs_max ceiling
+     * (llama-context.cpp:2070-2071, `logits.size = n_vocab*n_outputs_max`,
+     * `embd.size = n_embd_out*n_outputs_max`) and hard-asserts
+     * `n_outputs_max <= cparams.n_outputs_max` on every decode
+     * (llama-context.cpp:2202) — so capping it to 1 here would abort the
+     * embeddings context the first time embed() decodes more than one token.
+     * Verified by reading output_reserve in full, not assumed. Hence the
+     * guard: only a non-embeddings context gets the cap; an embeddings
+     * context keeps the default (0 -> n_batch), unchanged from today. */
+    if (!params.embeddings) {
+        params.n_outputs_max = 1;
+    }
 
     llama_context *ctx = llama_init_from_model(model, params);
     if (ctx == nullptr) {

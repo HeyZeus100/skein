@@ -355,6 +355,23 @@ artifact — is a property of the compile/link flags (§4) and of the POST_BUILD
 ELF guard that still runs on every build, neither of which E4.I1 touched.
 Re-running leg B against this revision is bd `skein-7zsq`.
 
+**As of skein-gg11.1 (E-2/E-3 fix: CPU-only device restriction in `loadModel`/
+`loadModelFromFd`, `n_outputs_max = 1` in `newContext`; `jni/` changed, still
+24 exported symbols — `tools/ci/jni-symbols.sh` green)** the value moved
+again: `assembleFossRelease` on a macOS arm64 host (NDK r27c, same
+`b29c606e` pin) gave
+`8ed1d2d782f0195043fe2baa924611bd4c4631747c94922931325b89f55eed94`,
+25,305,800 bytes. This is **one build, not the A1/A2 clean-build pair** this
+section's own recipe asks for — `./gradlew :inference-service:assembleFossDebug`
+and `tools/ci/jni-symbols.sh` were the mandated verification for this bead,
+and this single `assembleFossRelease` run was added only to keep this table's
+convention (a Release, not Debug, artifact); it was not preceded by
+`./gradlew clean`, and the two-clean-build and separate-clone legs were not
+re-run. `.github/workflows/reproducible-build.yml` does not parse or assert
+against this table (grep confirms the only reference is a pointer string in
+an error message), so this entry is documentation, not a CI gate; the
+coordinator re-records it from the `native-determinism` CI artefact.
+
 Previous record, for reference: E1.I4 / `jni_stub.cpp` produced
 `76fd7ce5dc9cb9774c6dcc64401d508830486e9427648286686161fdf779e2cf`
 (25,270,688 B) across A1/A2/B.
