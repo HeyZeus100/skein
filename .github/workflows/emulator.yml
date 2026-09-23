@@ -166,10 +166,25 @@ jobs:
           # dismissed, then run. Biometric enrolment is not scriptable on the
           # emulator; tests that need an enrolled biometric must assume-skip.
           script: |
+            # skein-gg11.14: ORDER MATTERS. The image boots into the swipe
+            # lockscreen (KeyguardTransitionRepository GONE -> LOCKSCREEN at
+            # boot). `wm dismiss-keyguard` can dismiss that, but not a PIN
+            # keyguard - so setting the PIN first left every test of runs
+            # 35923736113 / 35927969853 executing behind the lock screen:
+            # each launched Activity was RESUMED for 3-20 ms and STOPPED,
+            # and only the one test that waits for RESUMED a second time
+            # (LockPolicySettingsRecreationInstrumentedTest) failed.
+            # Dismiss first, then set the PIN (the credential does not
+            # re-lock a dismissed keyguard; stayon keeps it from re-arming),
+            # then verify and, if the keyguard is somehow up, type the PIN.
+            adb shell input keyevent KEYCODE_WAKEUP
+            adb shell wm dismiss-keyguard || true
             adb shell locksettings set-pin 1234
             adb shell svc power stayon true
             adb shell settings put system screen_off_timeout 2147483647
             adb shell wm dismiss-keyguard || true
+            if adb shell dumpsys activity activities | grep -q 'mKeyguardShowing=true'; then adb shell input keyevent KEYCODE_MENU; sleep 1; adb shell input text 1234; adb shell input keyevent KEYCODE_ENTER; sleep 2; fi
+            adb shell dumpsys activity activities | grep -E 'mKeyguardShowing|mAodShowing' | head -2
             # skein-gg11.14: the lane uploaded no logcat, so a test that
             # fails because a foreign activity covers MainActivity (the
             # STOPPED-after-recreate class of failure) could not be
