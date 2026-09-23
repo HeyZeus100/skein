@@ -30,18 +30,22 @@
 -- 008 in either direction; a fresh install reaches `PRAGMA user_version` 8
 -- exactly as before this file existed.
 --
--- !! UPGRADE-PATH CAVEAT (skein-0m1z; follow-up bead filed) !!
--- `Migrator.migrate` applies only migrations whose version is strictly
--- GREATER than the database's current `PRAGMA user_version`. A database
--- that already reached user_version 8 before this file landed will
--- therefore NEVER apply 005, and `export_stages` will simply not exist
--- there. That is a property of the 002/004-006 gap-reservation scheme, not
--- of this table, and it is why `SqlExportStageRepository` probes for the
--- table and fails loudly rather than silently not recording a stage: a
--- missing table must never be mistaken for "nothing to sweep". Pre-v1 there
--- are no shipped installs, so every real database is created fresh; the
--- general fix (an applied-migrations ledger instead of a single
--- `user_version` high-water mark) is tracked separately.
+-- !! UPGRADE-PATH NOTE (skein-0m1z; resolved by skein-p8rn) !!
+-- This migration originally shipped with an UPGRADE-PATH CAVEAT here:
+-- `Migrator.migrate` used to apply only migrations whose version was
+-- strictly GREATER than the database's current `PRAGMA user_version`, so a
+-- database that already reached user_version 8 before this file landed
+-- would never apply 005, and `export_stages` would simply not exist there.
+-- `Migrator` now maintains a `schema_migrations` ledger (skein-p8rn) that
+-- tracks exactly which versions have run, seeded from `PRAGMA user_version`
+-- plus a live-schema check for any database that predates the ledger, so a
+-- gap-filler like this one is applied exactly once no matter how many
+-- higher-numbered migrations (007, 008) already shipped ahead of it. See
+-- `Migrator`'s KDoc ("Seeding a pre-ledger database") for the seeding
+-- algorithm, and `docs/VAULT_FORMAT.md` §7 for the summary.
+-- `SqlExportStageRepository` still probes for the table and fails loudly
+-- rather than silently not recording a stage, as defense in depth: a
+-- missing table must never be mistaken for "nothing to sweep".
 --
 -- ===== Columns =====
 --

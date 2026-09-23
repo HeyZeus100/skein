@@ -335,6 +335,124 @@ class MigratorInstrumentedTest {
 
         assertThat(second.fromVersion).isEqualTo(8)
         assertThat(second.toVersion).isEqualTo(8)
+
+        SkeinSQLiteDriver(randomKey(2)).open(dbFile.absolutePath).use { conn ->
+            // The second, no-op migrate() must not have re-inserted (or
+            // duplicated) any ledger row -- schema_migrations.version is the
+            // primary key, so a re-insert would have thrown rather than
+            // silently duplicating, but assert the exact set too.
+            assertThat(ledgerVersions(conn)).containsExactly(1L, 3L, 5L, 7L, 8L)
+        }
+    }
+
+    // --- schema_migrations ledger (skein-p8rn) ---
+
+    @Test
+    fun freshDatabaseLedgerListsEveryAppliedVersion() {
+        val dbFile = tempDbFile()
+        Migrator(SkeinSQLiteDriver(randomKey(14))).migrate(dbFile.absolutePath)
+
+        SkeinSQLiteDriver(randomKey(14)).open(dbFile.absolutePath).use { conn ->
+            assertThat(ledgerVersions(conn)).containsExactly(1L, 3L, 5L, 7L, 8L)
+        }
+    }
+
+    /**
+     * The exact hazard skein-p8rn fixes: a database that reached
+     * `user_version` 8 via 001 -> 003 -> 007 -> 008 -- built here by
+     * applying those four migrations' own statements directly, mirroring a
+     * real device that installed before `005_export_stages.sql` (skein-0m1z)
+     * landed -- has no `export_stages` table and no `schema_migrations`
+     * ledger. Under the OLD `version > user_version` rule this database
+     * would never apply 005 (5 is not greater than 8): `export_stages`
+     * would silently never exist, and `StagedPlaintextSweeper` would have
+     * nothing to sweep without ever knowing it was missing a table.
+     *
+     * Against the ledger-aware `Migrator`, the first `migrate()` call must
+     * seed 001/003/007/008 as already applied (their effects are all
+     * observable on this database) while correctly leaving 005 out of the
+     * seed (its witness table, `export_stages`, is absent) -- and then
+     * apply 005 for real, in this same call, without lowering
+     * `user_version` back down to 5.
+     */
+    @Test
+    fun ledgerSeedsPre005DatabaseAndStillAppliesTheGapFillerWithoutLoweringUserVersion() {
+        val dbFile = tempDbFile()
+
+        SkeinSQLiteDriver(randomKey(15)).open(dbFile.absolutePath).use { conn ->
+            applyRawMigrationSkippingLedger(conn, "001_initial.sql", version = 1)
+            applyRawMigrationSkippingLedger(conn, "003_document_revisions.sql", version = 3)
+            applyRawMigrationSkippingLedger(conn, "007_drop_attachment_master_key.sql", version = 7)
+            applyRawMigrationSkippingLedger(conn, "008_ingest_attempts.sql", version = 8)
+
+            val inspector = SchemaInspector(conn)
+            assertThat(inspector.userVersion()).isEqualTo(8)
+            assertThat(inspector.tables()).doesNotContain("export_stages")
+            assertThat(ledgerTableExistsRaw(conn)).isFalse()
+        }
+
+        val result = Migrator(SkeinSQLiteDriver(randomKey(15))).migrate(dbFile.absolutePath)
+
+        assertThat(result.fromVersion).isEqualTo(8)
+        // The gap-filler applied, but user_version must stay at the max
+        // ever applied (8), never fall back to 005's own version number.
+        assertThat(result.toVersion).isEqualTo(8)
+
+        SkeinSQLiteDriver(randomKey(15)).open(dbFile.absolutePath).use { conn ->
+            val inspector = SchemaInspector(conn)
+            assertThat(inspector.userVersion()).isEqualTo(8)
+            assertThat(inspector.tables()).contains("export_stages")
+            assertThat(inspector.indexes()).contains("idx_export_stages_expires")
+            assertThat(ledgerVersions(conn)).containsExactly(1L, 3L, 5L, 7L, 8L)
+
+            // The table is not just present but usable: a stage row can be
+            // inserted and defaults exactly as 005's header specifies.
+            insertNote(conn, id = "doc-hazard", title = "Title", bodyMd = "body", createdAt = 100, updatedAt = 100)
+            exec(
+                conn,
+                "INSERT INTO export_stages(stage_id, path, origin, document_id, created_at, expires_at) " +
+                    "VALUES ('stage-hazard', '/cache/staging_export/x.pdf', 'pdf_export', 'doc-hazard', 100, 700);",
+            )
+            assertThat(sweptFlag(conn, "stage-hazard")).isEqualTo(0L)
+        }
+    }
+
+    /** Raw `SELECT version FROM schema_migrations` — mirrors `Migrator`'s own read, for test assertions. */
+    private fun ledgerVersions(conn: SQLiteConnection): List<Long> {
+        val versions = mutableListOf<Long>()
+        conn.prepare("SELECT version FROM schema_migrations;").use { stmt ->
+            while (stmt.step()) versions += stmt.getLong(0)
+        }
+        return versions
+    }
+
+    private fun ledgerTableExistsRaw(conn: SQLiteConnection): Boolean =
+        conn.prepare("SELECT 1 FROM sqlite_master WHERE type = 'table' AND name = 'schema_migrations';").use { stmt ->
+            stmt.step()
+        }
+
+    /**
+     * Applies one production migration file's own statements directly
+     * (bypassing `Migrator` and its ledger entirely) and sets
+     * `PRAGMA user_version` to [version] by hand -- builds a database that
+     * mimics one migrated entirely by pre-skein-p8rn code, the same
+     * technique [rowsSeededBeforeMigration007SurviveTheDropAndDocumentsIsUnaffected]
+     * uses for a single migration, generalized to a specific subset run in
+     * order.
+     */
+    private fun applyRawMigrationSkippingLedger(
+        conn: SQLiteConnection,
+        fileName: String,
+        version: Int,
+    ) {
+        val sql =
+            requireNotNull(Migrator::class.java.classLoader?.getResourceAsStream("migrations/$fileName")) {
+                "migrations/$fileName not on the classpath"
+            }.use { it.readBytes().toString(Charsets.UTF_8) }
+        exec(conn, "BEGIN IMMEDIATE;")
+        for (statement in splitOnSentinel(sql)) exec(conn, statement)
+        exec(conn, "PRAGMA user_version = $version;")
+        exec(conn, "COMMIT;")
     }
 
     // --- Broken migration -> ROLLBACK ---
