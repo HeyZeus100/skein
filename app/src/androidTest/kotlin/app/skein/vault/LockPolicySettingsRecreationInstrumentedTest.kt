@@ -112,7 +112,35 @@ class LockPolicySettingsRecreationInstrumentedTest {
     @Before
     fun resetPrefs() {
         grantPostNotifications()
-        runBlocking { securityPrefs.clearAllForTest() }
+        runBlocking {
+            securityPrefs.clearAllForTest()
+            // skein-2rn4 — belt-and-suspenders with [grantPostNotifications]
+            // below: seed the DataStore flag itself, not just the OS-level
+            // grant, so the production [MainActivity] never calls
+            // `requestPermissions` at all for the activity this test
+            // recreates. See [grantPostNotifications]'s KDoc for why an
+            // already-granted permission is not enough on its own — this is
+            // the fix for the STOPPED failure that remained after skein-7yy2
+            // pre-granted the permission (run 35853455054): `requestPermissions`
+            // still starts the system's `GrantPermissionsActivity` even when
+            // every requested permission is already granted, and only that
+            // activity's own `onCreate`/view-model decides there is nothing
+            // to ask and finishes itself — but it still lands ON TOP of
+            // [MainActivity] for that window, and unlike the plain grant
+            // dialog (a resizable/overlay-style prompt that only drops the
+            // host to PAUSED), a full launched Activity taking over the
+            // window drops the host all the way to STOPPED. `recreate()`
+            // then spends its whole budget waiting for a RESUMED state that
+            // cannot arrive while that window is resolving — "Activity never
+            // becomes requested state [RESUMED] (last lifecycle transition =
+            // STOPPED)". Seeding `postNotificationsAsked = true` up front
+            // means the `if (!alreadyAsked)` guard in `MainActivity.onCreate`
+            // is false on every activity instance this test creates
+            // (including the one `recreate()` makes), so `requestPermissions`
+            // — and therefore `GrantPermissionsActivity` — is never invoked
+            // at all, not merely invoked-and-immediately-dismissed.
+            securityPrefs.setPostNotificationsAsked(true)
+        }
         wireLockPolicy()
     }
 
@@ -134,10 +162,17 @@ class LockPolicySettingsRecreationInstrumentedTest {
      * arrive — "Activity never becomes requested state [RESUMED] (last
      * lifecycle transition = PAUSED)", emulator run 35847825560, 45.5s.
      *
-     * Pre-granting makes that `requestPermissions` call a silent no-op with
-     * no window of its own, and also dismisses a dialog an earlier test in
-     * the same run may have left standing. It changes nothing this test
-     * asserts: the assertions below are entirely about
+     * Pre-granting makes that `requestPermissions` call resolve without the
+     * user ever needing to interact, and also dismisses a dialog an earlier
+     * test in the same run may have left standing. It is NOT sufficient by
+     * itself, though (see [resetPrefs]'s `setPostNotificationsAsked(true)`
+     * seed, added for skein-2rn4): the system still launches
+     * `GrantPermissionsActivity` for the call itself and only that
+     * activity's own logic decides everything is already granted and
+     * self-finishes — the launch briefly happens regardless. Kept alongside
+     * the DataStore seed as a backstop (e.g. for any earlier test in the run
+     * that left a real, un-actioned grant dialog standing). Changes nothing
+     * this test asserts: the assertions below are entirely about
      * `SecurityPrefs.lockOnScreenOff` surviving a real [MainActivity]
      * recreation, and they are untouched.
      *
