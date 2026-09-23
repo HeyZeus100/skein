@@ -16,7 +16,8 @@
 --     updated alongside this file.
 --
 -- Applied by `Migrator` under `PRAGMA user_version = 3`. Statements are
--- separated by the `--;` sentinel, per 001_initial.sql's loader convention.
+-- separated by the dash-dash-semicolon sentinel, per 001_initial.sql's loader
+-- convention (spelled out so a naive splitter cannot cut this comment).
 --
 -- Ordering note: migrations apply in ascending numeric order, so on a fresh
 -- database 003 runs BEFORE 007_drop_attachment_master_key.sql. Nothing here
@@ -130,7 +131,7 @@
 -- bare-chunk-id-array shape as `record_version: 0` (§1.5). Enforcement is
 -- in that Kotlin codec; SQLite enforces no JSON schema. Note also that this
 -- file must not end with a comment-only chunk: `Migrator` prepares every
--- `--;`-separated chunk as a statement, and a chunk with no SQL in it has
+-- sentinel-separated chunk as a statement, and a chunk with no SQL in it has
 -- nothing to prepare.
 
 CREATE TABLE document_revisions (

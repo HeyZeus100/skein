@@ -139,7 +139,10 @@ jobs:
             adb shell svc power stayon true
             adb shell settings put system screen_off_timeout 2147483647
             adb shell wm dismiss-keyguard || true
-            ./gradlew connectedDevDebugAndroidTest --stacktrace
+            # --continue: report every module's instrumented results, not
+            # just the first module that fails (run 35846736749 stopped
+            # before :inference-service ran).
+            ./gradlew connectedDevDebugAndroidTest --continue --stacktrace
 
       - name: Upload instrumented test reports
         if: always()

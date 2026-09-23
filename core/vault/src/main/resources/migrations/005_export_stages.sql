@@ -22,7 +22,8 @@
 --     record becomes durable.
 --
 -- Applied by `Migrator` under `PRAGMA user_version = 5`. Statements are
--- separated by the `--;` sentinel, per 001_initial.sql's loader convention.
+-- separated by the dash-dash-semicolon sentinel, per 001_initial.sql's loader
+-- convention (spelled out so a naive splitter cannot cut this comment).
 --
 -- Ordering note: migrations apply in ascending numeric order, so on a fresh
 -- database 005 runs after 001 and 003 and before 007 and 008. It references
