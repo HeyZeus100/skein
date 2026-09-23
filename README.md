@@ -2,7 +2,7 @@
 
 Personal knowledge system for Android. Offline. On-device LLM. GrapheneOS-first.
 
-> **Status:** Pre-alpha, no release. The design spec (2026-09-19) and the implementation plan (`docs/superpowers/plans/2026-09-19-skein-v1-plan.md`) exist and drive the work. Vault setup, unlock, lock and reopen, note creation from the command bar (`/new note`), the Markdown editor, the Files-app root and the timeline run on a Pixel 9 Pro Fold as of 2026-09-22; the isolated inference service is implemented but not yet bound from the app, so on-device ask does not work and there is no chat surface yet.
+> **Status:** Pre-alpha, no release. The design spec (2026-09-19) and the implementation plan (`docs/superpowers/plans/2026-09-19-skein-v1-plan.md`) exist and drive the work. Vault setup, unlock, lock and reopen, note creation from the command bar (`/new note`), the Markdown editor with wikilink autocomplete and link following, the live graph, a light/dark/system theme, the Files-app root and the timeline run on a Pixel 9 Pro Fold as of 2026-09-22; the isolated inference service is implemented but not yet bound from the app, so on-device ask does not work and there is no chat surface yet.
 
 ## What Skein is
 
