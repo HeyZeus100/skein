@@ -29,12 +29,6 @@ jobs:
     # assembles the `dev` flavor, which builds libskein_llama.so for both
     # arm64-v8a (CPU + Vulkan) and x86_64 (CPU).
     timeout-minutes: 90
-    env:
-      # skein-qj5l: native/sqlite/CMakeLists.txt reads this env var (no
-      # build-file change needed) and fetches the pinned OpenSSL tarball
-      # here instead of into the checkout, so the "Cache the pinned OpenSSL
-      # tarball" step below can restore/save it across runs.
-      SKEIN_OPENSSL_TARBALL_DIR: ${{ runner.temp }}/skein-openssl
     steps:
       - name: Checkout
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v4.3.0
@@ -71,6 +65,11 @@ jobs:
       # CMake still SHA256-verifies whatever this restores before using it
       # (native/sqlite/CMakeLists.txt §3) and retries once on a mismatch --
       # a stale or corrupt cache entry is refetched, never trusted blind.
+      # The `runner` context is not available in job-level `env` (GitHub
+      # rejects the workflow file), so the directory is exported from a step.
+      - name: Choose the OpenSSL tarball cache directory
+        run: echo "SKEIN_OPENSSL_TARBALL_DIR=$RUNNER_TEMP/skein-openssl" >> "$GITHUB_ENV"
+
       - name: Derive pinned OpenSSL sha256 (cache key)
         id: openssl-pin
         run: |

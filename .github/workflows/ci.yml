@@ -33,12 +33,6 @@ jobs:
     # Vulkan shader variants through glslc on top of the OpenSSL/SQLCipher
     # build E1.I5 already does.
     timeout-minutes: 45
-    env:
-      # skein-qj5l: native/sqlite/CMakeLists.txt reads this env var (no
-      # build-file change needed) and fetches the pinned OpenSSL tarball
-      # here instead of into the checkout, so the "Cache the pinned OpenSSL
-      # tarball" step below can restore/save it across runs.
-      SKEIN_OPENSSL_TARBALL_DIR: ${{ runner.temp }}/skein-openssl
     steps:
       - name: Checkout
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v4.3.0
@@ -76,6 +70,13 @@ jobs:
       # never drift from the pin it names), so `assembleFossDebug` below
       # only downloads it on a pin change. CMake still sha256-verifies
       # whatever this restores and retries once on a mismatch.
+      # The `runner` context is not available in job-level `env` (GitHub
+      # rejects the workflow file), so the directory is exported from a step;
+      # native/sqlite/CMakeLists.txt reads SKEIN_OPENSSL_TARBALL_DIR at
+      # configure time.
+      - name: Choose the OpenSSL tarball cache directory
+        run: echo "SKEIN_OPENSSL_TARBALL_DIR=$RUNNER_TEMP/skein-openssl" >> "$GITHUB_ENV"
+
       - name: Derive pinned OpenSSL sha256 (cache key)
         id: openssl-pin
         run: |
