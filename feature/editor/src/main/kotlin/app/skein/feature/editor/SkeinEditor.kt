@@ -241,7 +241,15 @@ public fun SkeinEditor(
                         .testTag(testTag)
                         .then(verticalArrowKeyModifier)
                         .then(wikilinkTapModifier),
-                textStyle = MaterialTheme.typography.bodyLarge,
+                // bd `skein-jit3`: `bodyLarge` carries no color, and
+                // `BasicTextField` (unlike `Text`) does not fall back to
+                // `LocalContentColor` for an unspecified one — it silently
+                // paints opaque black. `markdownStyle.bodyColor` is the
+                // caller's theme-derived color (`NoteTab` resolves it from
+                // the editor's own surface token); this is the caret/raw
+                // line's color, so it must be explicit here, not just on the
+                // styled spans `LivePreviewTransformation` applies elsewhere.
+                textStyle = MaterialTheme.typography.bodyLarge.copy(color = markdownStyle.bodyColor),
                 visualTransformation = transformation,
                 cursorBrush = SolidColor(cursorColor),
                 onTextLayout = { layoutResult -> textLayoutResult = layoutResult },
@@ -283,7 +291,10 @@ public fun SkeinEditor(
                         .wikilinkAutocompleteKeyEvents(autocompleteState)
                         .then(verticalArrowKeyModifier)
                         .then(wikilinkTapModifier),
-                textStyle = MaterialTheme.typography.bodyLarge,
+                // bd `skein-jit3`: see the other `SecureBasicTextField` call
+                // above (the `wikilinkSuggest == null` branch) for why this
+                // must be explicit rather than left unspecified.
+                textStyle = MaterialTheme.typography.bodyLarge.copy(color = markdownStyle.bodyColor),
                 visualTransformation = transformation,
                 cursorBrush = SolidColor(cursorColor),
                 onTextLayout = { layoutResult -> textLayoutResult = layoutResult },

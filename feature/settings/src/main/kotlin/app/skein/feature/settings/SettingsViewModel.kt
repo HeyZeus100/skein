@@ -7,6 +7,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
+import app.skein.feature.shell.theme.SkeinThemeMode
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flowOf
@@ -57,6 +58,11 @@ class SettingsViewModel(
     val reauthenticate: suspend () -> Boolean = { false },
     /** Wraps the in-memory master under the passphrase, or `null` while locked. */
     val buildRecoveryExport: suspend (CharArray) -> ByteArray? = { null },
+    // bd `skein-l9oi`: Settings > Appearance. Same additive, defaulted shape
+    // as the E3.I14 params above — an unwired host gets SYSTEM and a setter
+    // that does nothing, never a half-wired toggle.
+    themeModeFlow: Flow<SkeinThemeMode> = flowOf(DEFAULT_THEME_MODE),
+    private val onSetThemeMode: suspend (SkeinThemeMode) -> Unit = {},
 ) {
     private var flagSecureEnabledState: Boolean by mutableStateOf(DEFAULT_FLAG_SECURE_ENABLED)
     private var idleTimeoutMinutesState: Int by mutableStateOf(DEFAULT_IDLE_TIMEOUT_MINUTES)
@@ -64,6 +70,7 @@ class SettingsViewModel(
     private var lockOnBackgroundState: Boolean by mutableStateOf(DEFAULT_LOCK_ON_BACKGROUND)
     private var strongBoxUnavailableFallbackState: Boolean by mutableStateOf(DEFAULT_STRONGBOX_UNAVAILABLE_FALLBACK)
     private var vaultUnlockedState: Boolean by mutableStateOf(false)
+    private var themeModeState: SkeinThemeMode by mutableStateOf(DEFAULT_THEME_MODE)
 
     /** Mirrors `SecurityPrefs.flagSecureEnabled`. Defaults secure until the first emission arrives. */
     val flagSecureEnabled: Boolean get() = flagSecureEnabledState
@@ -83,6 +90,9 @@ class SettingsViewModel(
     /** Whether the vault is currently unlocked — the export row's hard gate. Read-only. */
     val vaultUnlocked: Boolean get() = vaultUnlockedState
 
+    /** Mirrors `AppearancePrefs.themeMode`. Defaults to `SYSTEM` until the first emission arrives. */
+    val themeMode: SkeinThemeMode get() = themeModeState
+
     init {
         scope.launch {
             flagSecureEnabledFlow.collect { enabled -> flagSecureEnabledState = enabled }
@@ -101,6 +111,9 @@ class SettingsViewModel(
         }
         scope.launch {
             vaultUnlockedFlow.collect { unlocked -> vaultUnlockedState = unlocked }
+        }
+        scope.launch {
+            themeModeFlow.collect { mode -> themeModeState = mode }
         }
     }
 
@@ -133,12 +146,19 @@ class SettingsViewModel(
         scope.launch { onSetLockOnBackground(enabled) }
     }
 
+    /** Same optimistic-update shape as [setFlagSecureEnabled], for Settings › Appearance. */
+    fun setThemeMode(mode: SkeinThemeMode) {
+        themeModeState = mode
+        scope.launch { onSetThemeMode(mode) }
+    }
+
     private companion object {
         const val DEFAULT_FLAG_SECURE_ENABLED = true
         const val DEFAULT_IDLE_TIMEOUT_MINUTES = 5
         const val DEFAULT_LOCK_ON_SCREEN_OFF = true
         const val DEFAULT_LOCK_ON_BACKGROUND = false
         const val DEFAULT_STRONGBOX_UNAVAILABLE_FALLBACK = false
+        val DEFAULT_THEME_MODE = SkeinThemeMode.SYSTEM
     }
 }
 
@@ -160,6 +180,9 @@ fun rememberSettingsViewModel(
     vaultUnlockedFlow: Flow<Boolean> = flowOf(false),
     reauthenticate: suspend () -> Boolean = { false },
     buildRecoveryExport: suspend (CharArray) -> ByteArray? = { null },
+    // bd `skein-l9oi`: additive, defaulted — see [SettingsViewModel]'s ctor.
+    themeModeFlow: Flow<SkeinThemeMode> = flowOf(SkeinThemeMode.SYSTEM),
+    onSetThemeMode: suspend (SkeinThemeMode) -> Unit = {},
 ): SettingsViewModel {
     val scope = rememberCoroutineScope()
     return remember(
@@ -175,6 +198,8 @@ fun rememberSettingsViewModel(
         vaultUnlockedFlow,
         reauthenticate,
         buildRecoveryExport,
+        themeModeFlow,
+        onSetThemeMode,
     ) {
         SettingsViewModel(
             scope = scope,
@@ -190,6 +215,8 @@ fun rememberSettingsViewModel(
             vaultUnlockedFlow = vaultUnlockedFlow,
             reauthenticate = reauthenticate,
             buildRecoveryExport = buildRecoveryExport,
+            themeModeFlow = themeModeFlow,
+            onSetThemeMode = onSetThemeMode,
         )
     }
 }

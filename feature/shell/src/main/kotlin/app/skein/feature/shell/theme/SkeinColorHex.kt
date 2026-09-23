@@ -36,4 +36,24 @@ internal object SkeinColorHex {
     const val LIGHT_OUTLINE = 0xFFC3CBD3L
     const val LIGHT_ERROR = 0xFFB3261EL
     const val LIGHT_ON_ERROR = 0xFFFFFFFFL
+
+    // Editor surface (bd `skein-jit3`) — the tab pane's body (`NoteTab`,
+    // outside its header) renders directly on `ColorScheme.background` with
+    // no `Surface` of its own, and `SkeinEditor`'s `BasicTextField` textStyle
+    // (`MaterialTheme.typography.bodyLarge`) carries no explicit color, so
+    // Compose Foundation's own default (opaque black — confirmed by
+    // rendering the real composition under Robolectric and sampling pixels,
+    // see `skein-jit3`'s bd notes) painted near-black text on
+    // DARK_BACKGROUND (near-black): ratio ~1.09, nowhere near AA. These give
+    // the editor its own surface, one container step lighter than the pane
+    // in dark / one step darker than the plain surface in light — reusing
+    // the existing surfaceVariant/onSurface/onSurfaceVariant tones (already
+    // AAA/AA-verified below) rather than minting new hex values.
+    const val DARK_EDITOR_SURFACE = DARK_SURFACE_VARIANT
+    const val DARK_ON_EDITOR_SURFACE = DARK_ON_SURFACE
+    const val DARK_ON_EDITOR_SURFACE_MUTED = DARK_ON_SURFACE_VARIANT
+
+    const val LIGHT_EDITOR_SURFACE = LIGHT_SURFACE_VARIANT
+    const val LIGHT_ON_EDITOR_SURFACE = LIGHT_ON_SURFACE
+    const val LIGHT_ON_EDITOR_SURFACE_MUTED = LIGHT_ON_SURFACE_VARIANT
 }

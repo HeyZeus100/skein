@@ -40,6 +40,29 @@ fun ThemeGallery(modifier: Modifier = Modifier) {
                 Swatch("background", MaterialTheme.colorScheme.background)
             }
 
+            // bd `skein-jit3`: the editor's own surface, rendered here so a
+            // theme-gallery screenshot catches a regression back to
+            // rendering editor text on `background`/`surface` instead.
+            val editorColors = LocalSkeinEditorColors.current
+            Surface(color = editorColors.surface, contentColor = editorColors.onSurface) {
+                Column(
+                    modifier = Modifier.padding(12.dp),
+                    verticalArrangement = Arrangement.spacedBy(4.dp),
+                ) {
+                    Text("editor surface", style = MaterialTheme.typography.labelSmall)
+                    Text(
+                        "The quick brown fox jumps over the lazy dog.",
+                        style = MaterialTheme.typography.bodyLarge,
+                        color = editorColors.onSurface,
+                    )
+                    Text(
+                        "muted / frontmatter / broken wikilink",
+                        style = MaterialTheme.typography.bodyMedium,
+                        color = editorColors.onSurfaceMuted,
+                    )
+                }
+            }
+
             Text(
                 text =
                     with(tokens.glyphs) {

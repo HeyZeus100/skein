@@ -54,6 +54,7 @@ import app.skein.feature.editor.backlinks.BacklinksDrawer
 import app.skein.feature.editor.share.SaveAsFormat
 import app.skein.feature.editor.share.ShareIntents
 import app.skein.feature.shell.input.SecureTextField
+import app.skein.feature.shell.theme.LocalSkeinEditorColors
 import app.skein.feature.shell.theme.LocalSkeinTokens
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.collectLatest
@@ -137,6 +138,28 @@ public fun NoteTab(
         }
     }
 
+    // bd `skein-jit3`: the tab pane this composable renders in has no
+    // `Surface` of its own (it sits directly on `ColorScheme.background`),
+    // and `SkeinEditor`'s `BasicTextField` does not consult `LocalContentColor`
+    // the way `Text` does — an unspecified color there silently renders
+    // opaque black (Compose Foundation's own default), which read as
+    // dark-on-dark on the pane background. Wrapping the editor in its own
+    // `Surface`, painted with the editor's dedicated surface token, gives it
+    // somewhere real to sit; deriving `markdownStyle`'s colors from that same
+    // token (rather than leaving the caller's default unresolved) is what
+    // actually fixes the text, since `Surface.contentColor` alone cannot
+    // reach `BasicTextField`'s `textStyle`. Only substitutes when the caller
+    // left `markdownStyle` at its module default — an explicit caller
+    // override (e.g. a future chat-bubble-style caller) passes through
+    // untouched.
+    val editorColors = LocalSkeinEditorColors.current
+    val effectiveMarkdownStyle =
+        if (markdownStyle === MarkdownStyle.Default) {
+            markdownStyle.copy(bodyColor = editorColors.onSurface, mutedColor = editorColors.onSurfaceMuted)
+        } else {
+            markdownStyle
+        }
+
     val context = LocalContext.current
     var pendingSaveAsFormat by remember { mutableStateOf<SaveAsFormat?>(null) }
     val saveAsLauncher =
@@ -190,18 +213,24 @@ public fun NoteTab(
                     color = MaterialTheme.colorScheme.error,
                 )
             else ->
-                SkeinEditor(
-                    state = state.editorState,
+                Surface(
                     modifier = Modifier.weight(1f).fillMaxWidth(),
-                    markdownStyle = markdownStyle,
-                    // bd skein-pnqo: without these two, SkeinEditor takes its
-                    // wikilinkSuggest == null branch and never composes the
-                    // `[[` popup at all (hardware-verified — see that bead).
-                    // NoteTabState is the one place in this module allowed to
-                    // touch VaultRepository, so both lambdas just forward.
-                    wikilinkSuggest = state::searchWikilinkSuggestions,
-                    onCreateWikilink = state::createWikilink,
-                )
+                    color = editorColors.surface,
+                    contentColor = editorColors.onSurface,
+                ) {
+                    SkeinEditor(
+                        state = state.editorState,
+                        modifier = Modifier.fillMaxWidth(),
+                        markdownStyle = effectiveMarkdownStyle,
+                        // bd skein-pnqo: without these two, SkeinEditor takes its
+                        // wikilinkSuggest == null branch and never composes the
+                        // `[[` popup at all (hardware-verified — see that bead).
+                        // NoteTabState is the one place in this module allowed to
+                        // touch VaultRepository, so both lambdas just forward.
+                        wikilinkSuggest = state::searchWikilinkSuggestions,
+                        onCreateWikilink = state::createWikilink,
+                    )
+                }
         }
         BacklinksDrawer(state = state.backlinksState, modifier = Modifier.fillMaxWidth())
     }

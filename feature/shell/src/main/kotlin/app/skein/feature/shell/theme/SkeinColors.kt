@@ -3,6 +3,7 @@ package app.skein.feature.shell.theme
 import androidx.compose.material3.ColorScheme
 import androidx.compose.material3.darkColorScheme
 import androidx.compose.material3.lightColorScheme
+import androidx.compose.runtime.staticCompositionLocalOf
 import androidx.compose.ui.graphics.Color
 
 /**
@@ -43,6 +44,16 @@ object SkeinColors {
     val LightOutline = Color(SkeinColorHex.LIGHT_OUTLINE)
     val LightError = Color(SkeinColorHex.LIGHT_ERROR)
     val LightOnError = Color(SkeinColorHex.LIGHT_ON_ERROR)
+
+    // Editor surface (bd `skein-jit3`) — see `SkeinColorHex`'s doc on these
+    // constants for why the editor needs a surface distinct from `surface`/
+    // `background`.
+    val DarkEditorSurface = Color(SkeinColorHex.DARK_EDITOR_SURFACE)
+    val DarkOnEditorSurface = Color(SkeinColorHex.DARK_ON_EDITOR_SURFACE)
+    val DarkOnEditorSurfaceMuted = Color(SkeinColorHex.DARK_ON_EDITOR_SURFACE_MUTED)
+    val LightEditorSurface = Color(SkeinColorHex.LIGHT_EDITOR_SURFACE)
+    val LightOnEditorSurface = Color(SkeinColorHex.LIGHT_ON_EDITOR_SURFACE)
+    val LightOnEditorSurfaceMuted = Color(SkeinColorHex.LIGHT_ON_EDITOR_SURFACE_MUTED)
 
     val dark: ColorScheme =
         darkColorScheme(
@@ -98,3 +109,34 @@ object SkeinColors {
             surfaceContainerHighest = LightSurfaceVariant,
         )
 }
+
+/**
+ * The editor's own surface (bd `skein-jit3`): distinct from `ColorScheme`'s
+ * `surface`/`background` so `NoteTab` has somewhere real to put
+ * [app.skein.feature.editor.SkeinEditor] and derive
+ * [app.skein.core.markdown.render.MarkdownStyle]'s colors from, independent
+ * of whatever happens to render behind the tab pane. [SkeinTheme] provides
+ * the dark or light variant via [LocalSkeinEditorColors] based on the
+ * resolved [SkeinThemeMode] — callers should not need to branch on dark/light
+ * themselves.
+ */
+data class SkeinEditorColors(
+    val surface: Color,
+    val onSurface: Color,
+    val onSurfaceMuted: Color,
+)
+
+/**
+ * Defaults to the dark variant (matching [SkeinTheme]'s dark-default), but
+ * every real composition gets the resolved value from [SkeinTheme] itself —
+ * this default only matters for a `@Preview`/test that renders below
+ * [LocalSkeinEditorColors]'s provider without going through [SkeinTheme].
+ */
+val LocalSkeinEditorColors =
+    staticCompositionLocalOf {
+        SkeinEditorColors(
+            surface = SkeinColors.DarkEditorSurface,
+            onSurface = SkeinColors.DarkOnEditorSurface,
+            onSurfaceMuted = SkeinColors.DarkOnEditorSurfaceMuted,
+        )
+    }
