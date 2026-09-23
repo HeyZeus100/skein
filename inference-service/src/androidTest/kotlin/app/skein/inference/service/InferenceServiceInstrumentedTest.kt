@@ -78,24 +78,31 @@ private val epochSequence = AtomicLong(1_000L)
 
 private fun nextEpoch(): Long = epochSequence.incrementAndGet()
 
-// bd skein-gg11.6. `onSessionUnlocked`/`onSessionLocking`/`onSessionLocked`
-// are all `oneway` (`IInferenceService.aidl`): the call returns to the
+// bd skein-gg11.6, amended by bd skein-gg11.8. A `oneway` call returns to the
 // calling thread the instant the transaction is enqueued, with NO guarantee
 // the service has processed it. Binder orders oneway transactions relative
 // to EACH OTHER on the same target binder, but gives no ordering guarantee
 // relative to a LATER two-way call from the same calling thread — that call
 // can be dispatched to a different, already-idle thread in the target's
 // binder-thread pool and run concurrently with the still-queued oneway push.
-// A test that fires a lock/unlock push and immediately issues a synchronous
-// call assuming the push already landed is racing the service, not testing
-// it. This is the mechanism behind both the SESSION_LOCKED leak above and
-// the historical `errorCode == -1` on `aLockedServiceRefusesTheNextGenerate`
-// (`generate` raced ahead of the lock, so it ran to a normal completion and
-// delivered `onDone` instead of `onError`, leaving `LatchCallback.errorCode`
-// at its untouched `-1` sentinel). The fix is a bounded poll of the gate's
-// OWN observable state through `backendReport` — side-effect-free and gated
-// identically to every other plaintext entry point — never a fixed sleep and
-// never an assumption about oneway delivery order.
+// A test that fires such a push and immediately issues a synchronous call
+// assuming it landed is racing the service, not testing it. This is the
+// mechanism behind both the SESSION_LOCKED leak above and the historical
+// `errorCode == -1` on `aLockedServiceRefusesTheNextGenerate` (`generate`
+// raced ahead of the lock, so it ran to a normal completion and delivered
+// `onDone` instead of `onError`, leaving `LatchCallback.errorCode` at its
+// untouched `-1` sentinel).
+//
+// skein-gg11.8 removed HALF of that problem from the contract rather than
+// from the tests: `onSessionUnlocked` is no longer `oneway`, so the call
+// returns only once the gate holds the epoch and no test (and no production
+// caller) has to wait for admission any more. The `awaitGateAdmits` helper
+// this file used to carry is gone with it. The two LOCK pushes are still
+// `oneway` on purpose — `:app` must never be blockable by this process while
+// it tears a session down — so anything depending on a lock having LANDED
+// still polls the gate's OWN observable state through `backendReport`
+// (side-effect-free, gated identically to every other plaintext entry point),
+// never a fixed sleep and never an assumption about delivery order.
 private const val GATE_SETTLE_TIMEOUT_MILLIS = 5_000L
 private const val GATE_POLL_INTERVAL_MILLIS = 20L
 private const val NANOS_PER_MILLI = 1_000_000L
@@ -137,7 +144,6 @@ class InferenceServiceInstrumentedTest {
         val service = bind()
         val model = assumeModel()
         service.onSessionUnlocked(epoch)
-        service.awaitGateAdmits(epoch)
 
         // The load that `skein-lnp2` says cannot work by path: this process is
         // isolated, the fd is all it gets, and OK here is the proof.
@@ -156,7 +162,6 @@ class InferenceServiceInstrumentedTest {
         val service = bind()
         val model = assumeModel()
         service.onSessionUnlocked(epoch)
-        service.awaitGateAdmits(epoch)
 
         val code = service.load(loadRequest(model, sha256 = "00".repeat(32)))
 
@@ -311,7 +316,6 @@ class InferenceServiceInstrumentedTest {
         val service = bind()
         val model = assumeModel()
         service.onSessionUnlocked(epoch)
-        service.awaitGateAdmits(epoch)
         assertThat(service.load(loadRequest(model, gpuLayers = 99))).isEqualTo(ErrorCode.OK)
 
         val report = service.backendReport(BackendReportRequest(sessionEpoch = epoch))
@@ -344,35 +348,27 @@ class InferenceServiceInstrumentedTest {
         val service = bind()
         val model = assumeModel()
         service.onSessionUnlocked(epoch)
-        service.awaitGateAdmits(epoch)
         assertThat(service.load(loadRequest(model))).isEqualTo(ErrorCode.OK)
         return service
     }
 
     /**
-     * bd skein-gg11.6: `onSessionUnlocked` is `oneway`; poll the gate's own
-     * observable state (through the side-effect-free, identically-gated
-     * `backendReport`) rather than assuming the push has already landed by
-     * the time this call returns. See the file header note.
+     * The `onSessionLocking`/`onSessionLocked` wait. Those two pushes are still
+     * `oneway` (bd skein-gg11.8), so poll the gate's own observable state —
+     * through the side-effect-free, identically-gated `backendReport` — rather
+     * than assuming the push has landed. There is no `awaitGateAdmits`
+     * counterpart any more: `onSessionUnlocked` is two-way and has already
+     * been applied by the time it returns. See the file header note.
      */
-    private fun IInferenceService.awaitGateAdmits(sessionEpoch: Long) = awaitGate(sessionEpoch, admitted = true)
-
-    /** The `onSessionLocking`/`onSessionLocked` counterpart of [awaitGateAdmits]. */
-    private fun IInferenceService.awaitGateRefuses(sessionEpoch: Long) = awaitGate(sessionEpoch, admitted = false)
-
-    private fun IInferenceService.awaitGate(
-        sessionEpoch: Long,
-        admitted: Boolean,
-    ) {
+    private fun IInferenceService.awaitGateRefuses(sessionEpoch: Long) {
         val deadlineNanos = System.nanoTime() + GATE_SETTLE_TIMEOUT_MILLIS * NANOS_PER_MILLI
         while (System.nanoTime() < deadlineNanos) {
             val report = backendReport(BackendReportRequest(sessionEpoch = sessionEpoch))
-            val isAdmitted = report.errorCode != ErrorCode.SESSION_LOCKED
-            if (isAdmitted == admitted) return
+            if (report.errorCode == ErrorCode.SESSION_LOCKED) return
             Thread.sleep(GATE_POLL_INTERVAL_MILLIS)
         }
         throw AssertionError(
-            "gate for sessionEpoch=$sessionEpoch never reached admitted=$admitted within ${GATE_SETTLE_TIMEOUT_MILLIS}ms",
+            "gate for sessionEpoch=$sessionEpoch never revoked within ${GATE_SETTLE_TIMEOUT_MILLIS}ms",
         )
     }
 

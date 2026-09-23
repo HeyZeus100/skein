@@ -46,6 +46,7 @@ import java.io.FileInputStream
 import java.util.concurrent.CopyOnWriteArrayList
 import java.util.concurrent.TimeUnit
 import java.util.concurrent.atomic.AtomicBoolean
+import java.util.concurrent.atomic.AtomicLong
 import java.util.concurrent.atomic.AtomicReference
 
 /** One message as the service saw it: the role, and the content whether inline or spilled. */
@@ -103,6 +104,35 @@ internal class FakeInferenceService : IInferenceService {
     var statusResult: EngineStatus =
         EngineStatus(state = "ready", modelSha256 = null, contextLength = 512, tokensPerSec = 0f)
 
+    // ----------------------------------------------- the lock gate, modelled
+    //
+    // bd skein-gg11.8. The real service refuses every plaintext entry point
+    // whose `sessionEpoch` is not the one `onSessionUnlocked` authorized
+    // (`IsolatedSessionGate`), and it is that refusal the engine used to race:
+    // while the unlock push was `oneway`, Binder could dispatch the engine's
+    // next `load` ahead of it and the service would answer SESSION_LOCKED on a
+    // perfectly unlocked vault.
+    //
+    // OFF by default, on purpose. Most of this suite is about spilling,
+    // streaming, cancellation, death and status — properties that have nothing
+    // to do with admission, and that pushing an unlock into every test would
+    // only obscure. The tests that ARE about admission turn it on.
+
+    /** When true, every epoch-carrying entry point is gated exactly as the service gates it. */
+    var enforceSessionGate: Boolean = false
+
+    /**
+     * How long [onSessionUnlocked] spends APPLYING the push before it returns.
+     *
+     * A two-way AIDL method returns to the caller only after the service's
+     * handler has run, so a deliberately slow one is how a JVM test makes the
+     * window the engine used to race wide enough to fail in.
+     */
+    var unlockApplyDelayMillis: Long = 0L
+
+    /** `SessionEpoch.NONE` — the cold-start value; nothing matches it. */
+    private val authorizedEpoch = AtomicLong(0L)
+
     // ------------------------------------------------------------ recording
 
     val loads = CopyOnWriteArrayList<LoadRequest>()
@@ -138,6 +168,16 @@ internal class FakeInferenceService : IInferenceService {
         val cancelled: AtomicBoolean,
     )
 
+    /**
+     * The gate a RESTARTED isolated process comes back with (§6.1 invariant
+     * I1, bd skein-gg11.8): `SessionEpoch.NONE`, refusing everything until
+     * `:app` re-sends the unlock. A test that kills the service calls this,
+     * because this fake object survives a death that a real process would not.
+     */
+    fun forgetSession() {
+        authorizedEpoch.set(0L)
+    }
+
     /** Blocks until the in-flight generation's worker has finished. */
     fun awaitIdle(timeoutMillis: Long = 5_000L) {
         active.get()?.thread?.join(timeoutMillis)
@@ -149,6 +189,7 @@ internal class FakeInferenceService : IInferenceService {
         loads += req
         epochs += req.sessionEpoch
         closeAll(req.binding)
+        if (refuses(req.sessionEpoch)) return ErrorCode.SESSION_LOCKED
         beforeLoadReturns?.invoke()
         return loadCode
     }
@@ -157,6 +198,7 @@ internal class FakeInferenceService : IInferenceService {
         inspects += req
         epochs += req.sessionEpoch
         closeAll(req.binding)
+        if (refuses(req.sessionEpoch)) return ModelInspection.refused(ErrorCode.SESSION_LOCKED)
         return inspectResult
     }
 
@@ -196,6 +238,10 @@ internal class FakeInferenceService : IInferenceService {
             }
         req.messages.forEach { message -> message.contentFd?.let { close(it.fd) } }
 
+        if (refuses(req.sessionEpoch)) {
+            cb.onError(req.requestId, ErrorCode.SESSION_LOCKED, "session is locked")
+            return
+        }
         if (active.get() != null) {
             cb.onError(req.requestId, ErrorCode.BUSY, "a request is already in flight")
             return
@@ -260,6 +306,9 @@ internal class FakeInferenceService : IInferenceService {
 
     override fun embed(req: EmbedRequest): FloatArray {
         epochs += req.sessionEpoch
+        if (refuses(req.sessionEpoch)) {
+            throw ErrorCodes.asServiceFailure(ErrorCode.SESSION_LOCKED, "session is locked")
+        }
         embedError?.let { throw ErrorCodes.asServiceFailure(it, "embed refused") }
         return embedResult
     }
@@ -276,19 +325,44 @@ internal class FakeInferenceService : IInferenceService {
         budgetMillis: Long,
     ) {
         lockingPushes += epoch
+        revoke(epoch)
     }
 
     override fun onSessionLocked(epoch: Long) {
         lockedPushes += epoch
+        revoke(epoch)
     }
 
+    /**
+     * The one session push that is NOT `oneway` (bd skein-gg11.8), modelled as
+     * the AIDL now declares it: the caller is blocked for the whole of this
+     * method, so the gate holds `epoch` by the time the engine's own
+     * `onSessionUnlocked` returns. [unlockApplyDelayMillis] stretches that
+     * window; the sleep is the service being slow, not the transport.
+     */
     override fun onSessionUnlocked(epoch: Long) {
         unlockedPushes += epoch
+        if (unlockApplyDelayMillis > 0L) Thread.sleep(unlockApplyDelayMillis)
+        authorizedEpoch.set(epoch)
     }
 
     override fun asBinder(): IBinder = binder
 
     // -------------------------------------------------------------- helpers
+
+    /**
+     * `IsolatedSessionGate.guard`, to the letter: epoch 0 is
+     * `SessionEpoch.NONE` and never matches, even against a gate that has not
+     * been authorized at all.
+     */
+    private fun refuses(sessionEpoch: Long): Boolean =
+        enforceSessionGate && (sessionEpoch == 0L || sessionEpoch != authorizedEpoch.get())
+
+    /** A lock push for the authorized epoch (or for none) revokes; a stale one does not. */
+    private fun revoke(epoch: Long) {
+        val current = authorizedEpoch.get()
+        if (current == 0L || current == epoch) authorizedEpoch.set(0L)
+    }
 
     private fun closeAll(binding: ManifestBinding) {
         binding.files.forEach { close(it.fd) }

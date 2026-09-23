@@ -18,11 +18,15 @@
 
 package app.skein.ipc
 
+import android.os.IBinder
+import android.os.IInterface
+import android.os.Parcel
 import com.google.common.truth.Truth.assertThat
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.robolectric.RobolectricTestRunner
 import org.robolectric.annotation.Config
+import java.io.FileDescriptor
 
 @RunWith(RobolectricTestRunner::class)
 @Config(sdk = [34])
@@ -86,6 +90,57 @@ class AidlContractTest {
 
         assertThat(fake.lockedCalls).isEmpty()
         assertThat(fake.lockingCalls).isEmpty()
+    }
+
+    // bd skein-gg11.8. THE shape assertions for the three session pushes.
+    //
+    // Every other test in this file talks to a `Stub` through
+    // `Stub.asInterface(fake.asBinder())`, which — because the binder is local
+    // — hands back the stub itself and never marshals anything. That proves
+    // the SIGNATURES exist; it cannot see whether a method is `oneway`,
+    // because `oneway` is not part of the Java signature (both shapes are
+    // `void`). It lives in ONE observable place: the `flags` argument the
+    // generated `Proxy` passes to `IBinder.transact` — `FLAG_ONEWAY` with a
+    // null reply parcel for a `oneway` method, `0` with a real reply parcel
+    // for a two-way one.
+    //
+    // [RecordingBinder] is a non-local `IBinder`, so `asInterface` returns a
+    // real `Proxy` and these three tests read that argument directly. They are
+    // the regression guard for the race skein-gg11.8 fixed: if someone
+    // re-adds `oneway` to `onSessionUnlocked`, the engine's first `load` after
+    // an unlock can be refused SESSION_LOCKED again, and the first of these
+    // fails. If someone REMOVES `oneway` from either lock push, `:app`'s lock
+    // sequence becomes blockable by the isolated process, and the other two
+    // fail. See `IInferenceService.aidl`'s note above the three methods.
+
+    @Test
+    fun onSessionUnlockedIsATwoWayTransaction() {
+        val binder = RecordingBinder()
+        val proxy = IInferenceService.Stub.asInterface(binder)
+
+        proxy.onSessionUnlocked(11L)
+
+        assertThat(binder.transactions.single().oneway).isFalse()
+    }
+
+    @Test
+    fun onSessionLockingIsAOnewayTransaction() {
+        val binder = RecordingBinder()
+        val proxy = IInferenceService.Stub.asInterface(binder)
+
+        proxy.onSessionLocking(11L, 2000L)
+
+        assertThat(binder.transactions.single().oneway).isTrue()
+    }
+
+    @Test
+    fun onSessionLockedIsAOnewayTransaction() {
+        val binder = RecordingBinder()
+        val proxy = IInferenceService.Stub.asInterface(binder)
+
+        proxy.onSessionLocked(11L)
+
+        assertThat(binder.transactions.single().oneway).isTrue()
     }
 
     @Test
@@ -245,6 +300,74 @@ class AidlContractTest {
             files = emptyList(),
             attestation = null,
         )
+
+    /**
+     * A binder that is NOT local, so `Stub.asInterface` returns a generated
+     * `Proxy` and every call actually reaches [transact] — where the `oneway`
+     * bit lives (bd skein-gg11.8).
+     *
+     * It answers a two-way transaction the way the driver would: an empty
+     * "no exception" header, rewound, so the generated proxy's
+     * `reply.readException()` finds a well-formed reply instead of garbage.
+     */
+    private class RecordingBinder : IBinder {
+        data class Transaction(
+            val code: Int,
+            val oneway: Boolean,
+        )
+
+        val transactions = mutableListOf<Transaction>()
+
+        override fun transact(
+            code: Int,
+            data: Parcel,
+            reply: Parcel?,
+            flags: Int,
+        ): Boolean {
+            // A `oneway` proxy passes FLAG_ONEWAY *and* a null reply parcel;
+            // a two-way one passes 0 and a real parcel to read the result
+            // (here, just the exception header) out of. Recording the flag and
+            // asserting the parcel agrees with it means a future AIDL
+            // generator that expresses this differently cannot quietly pass.
+            val oneway = flags and IBinder.FLAG_ONEWAY != 0
+            check(oneway == (reply == null)) { "FLAG_ONEWAY and the reply parcel disagree" }
+            transactions += Transaction(code, oneway)
+            reply?.apply {
+                writeNoException()
+                setDataPosition(0)
+            }
+            return true
+        }
+
+        override fun getInterfaceDescriptor(): String = IInferenceService.Stub.DESCRIPTOR
+
+        override fun pingBinder(): Boolean = true
+
+        override fun isBinderAlive(): Boolean = true
+
+        /** Null is the point: a local binder would short-circuit `asInterface`. */
+        override fun queryLocalInterface(descriptor: String): IInterface? = null
+
+        override fun dump(
+            fd: FileDescriptor,
+            args: Array<out String>?,
+        ) = Unit
+
+        override fun dumpAsync(
+            fd: FileDescriptor,
+            args: Array<out String>?,
+        ) = Unit
+
+        override fun linkToDeath(
+            recipient: IBinder.DeathRecipient,
+            flags: Int,
+        ) = Unit
+
+        override fun unlinkToDeath(
+            recipient: IBinder.DeathRecipient,
+            flags: Int,
+        ): Boolean = true
+    }
 
     private class FakeInferenceService : IInferenceService.Stub() {
         val lockingCalls = mutableListOf<Pair<Long, Long>>()

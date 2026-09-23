@@ -38,6 +38,8 @@ import org.robolectric.RobolectricTestRunner
 import org.robolectric.annotation.Config
 import java.io.File
 import java.security.MessageDigest
+import java.util.concurrent.CountDownLatch
+import java.util.concurrent.TimeUnit
 
 @RunWith(RobolectricTestRunner::class)
 @Config(sdk = [34])
@@ -511,6 +513,60 @@ class InferenceEngineStateTest {
         lockingEngine.generate(generateRequest(requestId = 2), cb)
 
         assertThat(cb.errors.single().second).isEqualTo(ErrorCode.SESSION_LOCKED)
+    }
+
+    // ------------------------ lock gate: a push still unwinding (bd skein-gg11.8)
+    //
+    // `onSessionLocking`/`onSessionLocked` stay `oneway` so that `:app` — which
+    // sends them while tearing a session down and about to zero the master key
+    // — can never be blocked by this process. The price of that choice is that
+    // "the push landed" is not something the caller can wait for, so refusal
+    // must not depend on the handler having FINISHED: it has to hold from the
+    // handler's first instruction, through the whole of the release, which
+    // frees a native context and is the slowest thing either push does.
+    //
+    // This runs the release on a second thread and parks it inside
+    // `freeContextSecure` — the exact middle of the lock's unwind — then issues
+    // a `generate` from the test thread. `IsolatedSessionGateTest` proves the
+    // same ordering at the gate; this proves it survives the whole service
+    // entry point, including that the refusal does not simply queue behind the
+    // lock on the engine's own monitor.
+
+    @Test
+    fun `a generate arriving while a lock push is still unwinding is refused`() {
+        val releasing = CountDownLatch(1)
+        val mayFinish = CountDownLatch(1)
+        val parked =
+            object : FakeLlamaBackend() {
+                override fun freeContextSecure(ctx: Long) {
+                    releasing.countDown()
+                    check(mayFinish.await(AWAIT_SECONDS, TimeUnit.SECONDS)) { "the test never released the lock push" }
+                    super.freeContextSecure(ctx)
+                }
+            }
+        val parkedEngine = InferenceEngineState(parked, InlineTaskRunner(), CallbackDispatcher(InlineTaskRunner()))
+        parkedEngine.onSessionUnlocked(epoch)
+        parkedEngine.load(loadRequest())
+        val locker = Thread { parkedEngine.onSessionLocked(epoch) }.apply { isDaemon = true }
+        val cb = RecordingCallback()
+
+        locker.start()
+        check(releasing.await(AWAIT_SECONDS, TimeUnit.SECONDS)) { "the lock push never reached the release" }
+        parkedEngine.generate(generateRequest(), cb)
+        mayFinish.countDown()
+        locker.join(AWAIT_SECONDS * 1_000L)
+
+        assertThat(cb.errors.single().second).isEqualTo(ErrorCode.SESSION_LOCKED)
+    }
+
+    @Test
+    fun `unlocking twice with the same epoch still admits`() {
+        engine.onSessionUnlocked(epoch)
+        engine.onSessionUnlocked(epoch)
+
+        // `:app` re-sends the unlock on every fresh bind (§5.3), so a service
+        // that is already authorized receives the push it already applied.
+        assertThat(engine.load(loadRequest())).isEqualTo(ErrorCode.OK)
     }
 
     @Test
@@ -1383,6 +1439,9 @@ class InferenceEngineStateTest {
 
         /** bd skein-gg11.6: the `budgetMillis` passed to `onSessionLocking` in the lock-gate tests. */
         const val LOCK_BUDGET_MILLIS = 200L
+
+        /** bd skein-gg11.8: how long a latch handshake between two test threads may take before it is a hang. */
+        const val AWAIT_SECONDS = 5L
 
         /**
          * Distinctive on purpose: the logging tests assert this exact string
