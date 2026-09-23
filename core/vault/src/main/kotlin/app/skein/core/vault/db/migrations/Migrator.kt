@@ -487,6 +487,63 @@ internal fun seedVersions(
     isApplied: (Migration) -> Boolean,
 ): List<Int> = candidates.filter(isApplied).map { it.version }
 
+/**
+ * Name of the `schema_migrations` ledger table [Migrator.migrate] creates
+ * (see this class's own doc, "The `schema_migrations` ledger") before
+ * judging any migration. Mirrors [Migrator]'s private `LEDGER_TABLE`
+ * constant — kept in sync by hand since the ledger table's name is a
+ * fixed architectural constant of this class, not something derived from
+ * the migration manifest and therefore not something that can drift the
+ * way a migration-produced object name could.
+ *
+ * Exposed (skein-hctx) so `VaultLifecycle`'s integrity-check catalogue can
+ * require this table's presence without a second, disconnected hand-kept
+ * literal of its own: the table is created by this class directly, never
+ * by a file `migrations/INDEX.txt` lists, so nothing that walks the
+ * migration manifest could ever discover it on its own.
+ */
+public const val SCHEMA_MIGRATIONS_TABLE_NAME: String = "schema_migrations"
+
+/**
+ * The highest migration version listed on [classLoader]'s
+ * `<migrationsPath>/INDEX.txt` manifest — the `PRAGMA user_version` (and
+ * `schema_migrations` high-water mark) a fresh [Migrator.migrate] call
+ * converges on for a vault with nothing already applied.
+ *
+ * Exposed (skein-hctx) so a caller — a test in particular — can assert
+ * against "whatever the manifest currently lists" instead of a version
+ * number pinned as a literal, which silently goes stale the moment a new
+ * migration file is appended to the manifest: exactly what left
+ * `VaultLifecycleInstrumentedTest` asserting `toVersion == 1` while the
+ * shipped manifest had already grown to 008.
+ */
+public fun latestMigrationVersion(
+    migrationsPath: String = "migrations",
+    classLoader: ClassLoader =
+        requireNotNull(Migrator::class.java.classLoader) {
+            "latestMigrationVersion requires a non-null class loader to load the bundled migration manifest"
+        },
+): Int {
+    val indexPath = "$migrationsPath/INDEX.txt"
+    val indexText =
+        classLoader.getResourceAsStream(indexPath)?.use { it.readBytes().toString(Charsets.UTF_8) }
+            ?: throw MigrationDiscoveryException("migration index not found on classpath: $indexPath")
+    return indexText
+        .lineSequence()
+        .map { it.trim() }
+        .filter { it.isNotEmpty() && !it.startsWith("#") }
+        .map { fileName ->
+            val match =
+                LATEST_VERSION_FILE_NAME_REGEX.matchEntire(fileName)
+                    ?: throw MigrationDiscoveryException(
+                        "migration file name in $migrationsPath/INDEX.txt doesn't match NNN_*.sql: $fileName",
+                    )
+            match.groupValues[1].toInt()
+        }.max()
+}
+
+private val LATEST_VERSION_FILE_NAME_REGEX = Regex("""(\d+)_[^/]+\.sql""")
+
 private val CREATE_TABLE_REGEX = Regex("""(?i)\bCREATE\s+TABLE\s+(\w+)""")
 private val CREATE_VIRTUAL_TABLE_REGEX = Regex("""(?i)\bCREATE\s+VIRTUAL\s+TABLE\s+(\w+)""")
 private val ALTER_ADD_COLUMN_REGEX = Regex("""(?i)\bALTER\s+TABLE\s+(\w+)\s+ADD\s+COLUMN\s+(\w+)""")

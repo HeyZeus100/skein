@@ -1,0 +1,5 @@
+# Test fixture (skein-hctx), NOT the production manifest. Same as
+# migrations-hctx-v1/INDEX.txt plus one additional migration (002_gadgets.sql)
+# -- stands in for a migration landing after this fix (e.g. skein-cyq's 009).
+001_widgets.sql
+002_gadgets.sql

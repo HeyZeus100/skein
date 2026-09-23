@@ -1,0 +1,7 @@
+# Test fixture (skein-hctx), NOT the production manifest. A single trivial
+# migration, used by VaultLifecycleTest to prove the integrity check's
+# expected-object catalogue is derived from whatever manifest is pointed at
+# rather than hand-kept. See migrations-hctx-v2/INDEX.txt, which lists an
+# ADDITIONAL migration (a new CREATE TABLE) with zero VaultLifecycle code
+# changes required for that widened catalogue to take effect.
+001_widgets.sql

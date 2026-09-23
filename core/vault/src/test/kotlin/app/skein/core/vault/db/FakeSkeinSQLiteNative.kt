@@ -61,6 +61,27 @@ internal class FakeSkeinSQLiteNative : SkeinSQLiteNative {
 
     private var nextStmtHandle = 100L
 
+    /**
+     * Simulated `sqlite_master`: object name -> its type (`"table"`,
+     * `"index"` or `"trigger"`), built by watching every statement handed
+     * to [nativePrepare] for the same `CREATE`/`DROP` DDL forms
+     * `VaultLifecycle.applyStatement` matches against the migration files
+     * themselves (skein-hctx) — this fake has no real SQL engine, so it is
+     * the only way a JVM test can observe "what a real freshly-migrated
+     * vault's `sqlite_master` would actually contain" without one.
+     * [dependentsOf] tracks which table an index/trigger was declared `ON`
+     * so a later `DROP TABLE` cascades to them, exactly as SQLite itself
+     * does (and as `VaultLifecycle`'s own replay already accounts for).
+     */
+    private val schemaObjectType = mutableMapOf<String, String>()
+    private val dependentsOf = mutableMapOf<String, String>()
+
+    /** Per-statement `sqlite_master` query results not yet handed out via [nativeStep]. */
+    private val sqliteMasterCursors = mutableMapOf<Long, MutableList<String>>()
+
+    /** The `sqlite_master.name` value the last [nativeStep] on this handle produced. */
+    private val sqliteMasterCurrentValue = mutableMapOf<Long, String>()
+
     override fun nativeOpen(fileName: String): Long = DB_HANDLE
 
     override fun nativeClose(dbHandle: Long) {
@@ -109,8 +130,73 @@ internal class FakeSkeinSQLiteNative : SkeinSQLiteNative {
         BUSY_TIMEOUT_SET_REGEX.find(sql)?.let { match ->
             busyTimeoutMs = match.groupValues[1].toLong()
         }
+        trackSchemaDdl(sql)
         return nextStmtHandle++
     }
+
+    /**
+     * Applies [sql] to [schemaObjectType] / [dependentsOf] the same way a
+     * real engine would — see [schemaObjectType]'s doc. Statements arrive
+     * here already split one-per-call (`Migrator`'s `execStatement`
+     * convention), so `.find()` per DDL form is sufficient; a statement
+     * matches at most one of these.
+     *
+     * [sql] is matched AFTER stripping its `--`-prefixed comment lines,
+     * not the raw text: a `MigrationStatementSplitter` chunk is
+     * "everything up to and including the next `--;` sentinel", so a
+     * migration's multi-line header comment is glued onto the front of
+     * the SAME chunk its real DDL ends (007's header illustrates the very
+     * `DROP TABLE attachment_keys；DROP TABLE attachment_master_key`
+     * statements it explains, as prose). A real SQL engine's tokenizer
+     * ignores `--` comments unconditionally when it parses a statement,
+     * so this fake must too, to actually model "what a real freshly
+     * migrated vault's sqlite_master would contain" (skein-hctx) rather
+     * than reproducing the exact bug this fake exists to catch.
+     */
+    private fun trackSchemaDdl(sql: String) {
+        val ddl = stripCommentLines(sql)
+        CREATE_TABLE_REGEX.find(ddl)?.let { schemaObjectType[it.groupValues[1]] = "table" }
+        CREATE_INDEX_REGEX.find(ddl)?.let { match ->
+            val (name, table) = match.destructured
+            schemaObjectType[name] = "index"
+            dependentsOf[name] = table
+        }
+        CREATE_TRIGGER_REGEX.find(ddl)?.let { match ->
+            val (name, table) = match.destructured
+            schemaObjectType[name] = "trigger"
+            dependentsOf[name] = table
+        }
+        DROP_TABLE_REGEX.find(ddl)?.let { match ->
+            val table = match.groupValues[1]
+            schemaObjectType.remove(table)
+            val cascaded = dependentsOf.filterValues { it == table }.keys.toList()
+            cascaded.forEach {
+                schemaObjectType.remove(it)
+                dependentsOf.remove(it)
+            }
+        }
+        DROP_INDEX_REGEX.find(ddl)?.let { match ->
+            schemaObjectType.remove(match.groupValues[1])
+            dependentsOf.remove(match.groupValues[1])
+        }
+        DROP_TRIGGER_REGEX.find(ddl)?.let { match ->
+            schemaObjectType.remove(match.groupValues[1])
+            dependentsOf.remove(match.groupValues[1])
+        }
+    }
+
+    /**
+     * Drops every line of [statement] that is (after trimming) a `--`
+     * comment. Mirrors `Migrator.migrationWitness`'s and
+     * `VaultLifecycle.applyStatement`'s identically-named,
+     * identically-motivated helper (skein-hctx) — see [trackSchemaDdl]'s
+     * doc.
+     */
+    private fun stripCommentLines(statement: String): String =
+        statement
+            .lineSequence()
+            .filter { line -> !line.trimStart().startsWith("--") }
+            .joinToString("\n")
 
     override fun nativeFinalize(stmtHandle: Long) = Unit
 
@@ -128,12 +214,35 @@ internal class FakeSkeinSQLiteNative : SkeinSQLiteNative {
             "foreign_keys" in sql -> true
             "user_version" in sql -> true
             "busy_timeout" in sql -> true
-            // skein-p8rn: everything else -- `sqlite_master` probes,
-            // `schema_migrations` reads, `PRAGMA table_info`, `PRAGMA
-            // integrity_check`, and any future generic multi-row query --
-            // has no modeled row data in this fake (it only simulates a
-            // handful of PRAGMA scalars, never real table contents). Report
-            // "no rows" rather than the previous unconditional `true`, which
+            // skein-hctx: `SELECT name FROM sqlite_master WHERE type = '...'`
+            // (SchemaInspector.tables()/indexes()/triggers(), the same
+            // queries VaultLifecycle.integrityCheck() issues) is the one
+            // multi-row query this fake models for real, against
+            // [schemaObjectType] -- see that field's doc. One name is
+            // queued per row and handed out across successive step()
+            // calls on the SAME stmtHandle, exhausting (returning false)
+            // once the queue built for this handle on its first step() is
+            // empty.
+            "sqlite_master" in sql -> {
+                val rows =
+                    sqliteMasterCursors.getOrPut(stmtHandle) {
+                        val type = SQLITE_MASTER_TYPE_QUERY_REGEX.find(sql)?.groupValues?.get(1)
+                        schemaObjectType.filterValues { it == type }.keys.toMutableList()
+                    }
+                if (rows.isEmpty()) {
+                    false
+                } else {
+                    sqliteMasterCurrentValue[stmtHandle] = rows.removeAt(0)
+                    true
+                }
+            }
+            // skein-p8rn: everything else -- `schema_migrations` reads
+            // beyond the ledger's own membership, `PRAGMA table_info`,
+            // `PRAGMA integrity_check`, and any future generic multi-row
+            // query -- has no modeled row data in this fake (it only
+            // simulates a handful of PRAGMA scalars and the sqlite_master
+            // catalogue above, never arbitrary table contents). Report "no
+            // rows" rather than the previous unconditional `true`, which
             // made any `while (stmt.step())` loop over one of these queries
             // spin forever the moment a caller (skein-p8rn's
             // `Migrator.readLedgerVersions`/`columnExists`) started actually
@@ -171,6 +280,7 @@ internal class FakeSkeinSQLiteNative : SkeinSQLiteNative {
             "cipher_version" in sql -> fakeCipherVersion
             "vec_version" in sql -> fakeVecVersion
             "journal_mode" in sql -> journalMode
+            "sqlite_master" in sql -> sqliteMasterCurrentValue[stmtHandle] ?: ""
             else -> ""
         }
     }
@@ -245,6 +355,24 @@ internal class FakeSkeinSQLiteNative : SkeinSQLiteNative {
         const val DB_HANDLE: Long = 42L
         private val USER_VERSION_SET_REGEX = Regex("""PRAGMA\s+user_version\s*=\s*(\d+)""", RegexOption.IGNORE_CASE)
         private val BUSY_TIMEOUT_SET_REGEX = Regex("""PRAGMA\s+busy_timeout\s*=\s*(\d+)""", RegexOption.IGNORE_CASE)
+
+        // Mirrors VaultLifecycle's own CREATE/DROP matching (skein-hctx) --
+        // see schemaObjectType's doc for why this fake needs its own copy
+        // rather than sharing that private, production-side logic.
+        private val SQLITE_MASTER_TYPE_QUERY_REGEX = Regex("""sqlite_master\s+WHERE\s+type\s*=\s*'(\w+)'""")
+        private val CREATE_TABLE_REGEX =
+            Regex("""(?i)CREATE\s+(?:VIRTUAL\s+)?TABLE\s+(?:IF\s+NOT\s+EXISTS\s+)?["`]?(\w+)["`]?""")
+        private val CREATE_INDEX_REGEX =
+            Regex(
+                """(?i)CREATE\s+(?:UNIQUE\s+)?INDEX\s+(?:IF\s+NOT\s+EXISTS\s+)?["`]?(\w+)["`]?\s+ON\s+["`]?(\w+)["`]?""",
+            )
+        private val CREATE_TRIGGER_REGEX =
+            Regex(
+                """(?is)CREATE\s+TRIGGER\s+(?:IF\s+NOT\s+EXISTS\s+)?["`]?(\w+)["`]?.*?\bON\s+["`]?(\w+)["`]?""",
+            )
+        private val DROP_TABLE_REGEX = Regex("""(?i)DROP\s+TABLE\s+(?:IF\s+EXISTS\s+)?["`]?(\w+)["`]?""")
+        private val DROP_INDEX_REGEX = Regex("""(?i)DROP\s+INDEX\s+(?:IF\s+EXISTS\s+)?["`]?(\w+)["`]?""")
+        private val DROP_TRIGGER_REGEX = Regex("""(?i)DROP\s+TRIGGER\s+(?:IF\s+EXISTS\s+)?["`]?(\w+)["`]?""")
 
         // From sqlite3.h: SQLITE_INTEGER=1, FLOAT=2, TEXT=3, BLOB=4, NULL=5.
         private const val SQLITE_TYPE_INTEGER = 1

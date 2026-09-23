@@ -63,6 +63,90 @@ class VaultLifecycleTest {
 
     private fun key(fill: Byte = 0x42): ByteArray = ByteArray(32) { fill }
 
+    /**
+     * Same wiring as [newLifecycle], but the [Migrator] it hands to
+     * `driverFactory`'s caller AND the catalogue-derivation side
+     * ([VaultLifecycle]'s `migrationsResourcePath`) both point at
+     * [migrationsPath] instead of the production `migrations/` manifest —
+     * used by the skein-hctx fixture tests below to prove a new migration
+     * (a new manifest + file) needs no change to [VaultLifecycle] itself.
+     */
+    private fun newLifecycleWithMigrations(
+        dir: File,
+        fake: FakeSkeinSQLiteNative,
+        migrationsPath: String,
+    ): VaultLifecycle {
+        val paths = VaultPaths(vaultDir = dir)
+        val driverFactory: (ByteArray) -> SkeinSQLiteDriver = { key ->
+            paths.databaseFile.parentFile?.mkdirs()
+            if (!paths.databaseFile.exists()) paths.databaseFile.createNewFile()
+            SkeinSQLiteDriver(fake, key)
+        }
+        return VaultLifecycle(
+            driverFactory = driverFactory,
+            migrator = { driver -> Migrator(driver, migrationsPath = migrationsPath) },
+            paths = paths,
+            migrationsResourcePath = migrationsPath,
+        )
+    }
+
+    // ---- skein-hctx: the integrity check's expected-object catalogue is
+    // derived from the applied migrations rather than hand-kept, so it
+    // cannot go stale the way it did when migration 007 dropped
+    // `attachment_keys` / `idx_attachment_keys_version` but the catalogue
+    // still expected them. ----
+
+    @Test
+    fun `integrityCheck on a freshly created vault reports Ok`() =
+        runTest {
+            // Exercises the REAL production manifest (001, 003, 005, 007,
+            // 008) end to end: if `expectedMigrationObjectNames` were ever
+            // reverted to a hand-kept set naming `attachment_keys` /
+            // `idx_attachment_keys_version` (007 drops both) or forgot
+            // `schema_migrations` (the ledger `Migrator` creates outside
+            // the manifest), this would fail with SchemaDrift instead.
+            val lifecycle = newLifecycle(tempDir.root, healthyFake())
+
+            lifecycle.create(key(1))
+            val result = lifecycle.integrityCheck()
+
+            assertThat(result).isEqualTo(IntegrityResult.Ok)
+        }
+
+    @Test
+    fun `integrityCheck reports SchemaDrift naming an object the live schema is missing`() =
+        runTest {
+            val lifecycle = newLifecycle(tempDir.root, healthyFake())
+            lifecycle.create(key(1))
+            // Simulates drift: something removed an index the manifest
+            // still expects, independently of any migration ever running.
+            val writer = lifecycle.connectionPool().writer()
+            writer.prepare("DROP INDEX idx_documents_persona;").use { it.step() }
+
+            val result = lifecycle.integrityCheck()
+
+            assertThat(result).isEqualTo(IntegrityResult.SchemaDrift(listOf("idx_documents_persona")))
+        }
+
+    @Test
+    fun `a fixture migration that adds a table needs no VaultLifecycle change to stay Ok`() =
+        runTest {
+            // migrations-hctx-v2 lists one more migration (a new CREATE
+            // TABLE) than migrations-hctx-v1. Both run through the exact
+            // same, unmodified VaultLifecycle/expectedMigrationObjectNames
+            // code -- only the fixture manifest differs -- proving that
+            // landing a migration like skein-cyq's upcoming 009 needs no
+            // catalogue code change, only the new migration file itself.
+            val v1 = newLifecycleWithMigrations(File(tempDir.root, "v1"), healthyFake(), "migrations-hctx-v1")
+            val v2 = newLifecycleWithMigrations(File(tempDir.root, "v2"), healthyFake(), "migrations-hctx-v2")
+
+            v1.create(key(1))
+            v2.create(key(2))
+
+            assertThat(v1.integrityCheck()).isEqualTo(IntegrityResult.Ok)
+            assertThat(v2.integrityCheck()).isEqualTo(IntegrityResult.Ok)
+        }
+
     @Test
     fun `create then open then close then open then close round trip`() =
         runTest {

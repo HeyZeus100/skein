@@ -18,6 +18,7 @@ import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.platform.app.InstrumentationRegistry
 import app.skein.core.vault.db.SkeinSQLiteDriver
 import app.skein.core.vault.db.migrations.Migrator
+import app.skein.core.vault.db.migrations.latestMigrationVersion
 import com.google.common.truth.Truth.assertThat
 import kotlinx.coroutines.runBlocking
 import org.junit.After
@@ -66,7 +67,11 @@ class VaultLifecycleInstrumentedTest {
 
             val openResult = lifecycle.open(randomKey(1))
             assertThat(openResult).isInstanceOf(OpenResult.Success::class.java)
-            assertThat((openResult as OpenResult.Success).migration.toVersion).isEqualTo(1)
+            // skein-hctx: assert against the manifest's own highest version
+            // (`Migrator.latestMigrationVersion()`), not a literal that goes
+            // stale the moment a new migration lands -- this pinned `1`
+            // while the shipped manifest had already grown to 008.
+            assertThat((openResult as OpenResult.Success).migration.toVersion).isEqualTo(latestMigrationVersion())
             assertThat(lifecycle.isOpen.value).isTrue()
 
             lifecycle.close()
