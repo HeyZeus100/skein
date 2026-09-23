@@ -234,6 +234,16 @@ jobs:
     # E1.I4 (skein-ca2): each build compiles llama.cpp + ggml and ~1100
     # Vulkan shader variants on top of the OpenSSL/SQLCipher build from E1.I5.
     timeout-minutes: 90
+    env:
+      # skein-qj5l: native/sqlite/CMakeLists.txt reads this env var (no
+      # build-file change needed) and fetches the pinned OpenSSL tarball
+      # here instead of into the checkout. Deliberately OUTSIDE
+      # matrix.path/checkout — this job's whole point is two independent
+      # checkouts at different absolute paths, and the tarball's own
+      # location is never baked into the .so (only OPENSSL_BAKED_PREFIX is,
+      # see native/sqlite/CMakeLists.txt §3), so sharing this env var's
+      # value across both matrix legs cannot reintroduce a path leak.
+      SKEIN_OPENSSL_TARBALL_DIR: ${{ runner.temp }}/skein-openssl
     strategy:
       fail-fast: false
       matrix:
@@ -266,6 +276,28 @@ jobs:
       - name: Install required Android SDK platform
         run: |
           sdkmanager "platforms;android-37" "build-tools;36.0.0" || true
+
+      # skein-qj5l: same rationale as ci.yml/emulator.yml — cache the pinned
+      # OpenSSL tarball, keyed on the pin's own sha256 read out of the
+      # checkout (matrix.path) so the key can never drift from the pin it
+      # names. CMake still sha256-verifies whatever this restores and
+      # retries once on a mismatch before trusting it.
+      - name: Derive pinned OpenSSL sha256 (cache key)
+        id: openssl-pin
+        working-directory: ${{ matrix.path }}
+        run: |
+          sha="$(grep -m1 '^set(OPENSSL_SHA256' native/sqlite/CMakeLists.txt | sed -E 's/.*"([0-9a-f]+)".*/\1/')"
+          if [ -z "$sha" ]; then
+            echo "::error::could not read OPENSSL_SHA256 from native/sqlite/CMakeLists.txt" >&2
+            exit 1
+          fi
+          echo "sha256=$sha" >> "$GITHUB_OUTPUT"
+
+      - name: Cache the pinned OpenSSL tarball
+        uses: actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0
+        with:
+          path: ${{ env.SKEIN_OPENSSL_TARBALL_DIR }}
+          key: openssl-tarball-${{ steps.openssl-pin.outputs.sha256 }}
 
       - name: Set up Gradle
         uses: gradle/actions/setup-gradle@748248ddd2a24f49513d8f472f81c3a07d4d50e1 # v4.4.4

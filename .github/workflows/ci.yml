@@ -33,6 +33,12 @@ jobs:
     # Vulkan shader variants through glslc on top of the OpenSSL/SQLCipher
     # build E1.I5 already does.
     timeout-minutes: 45
+    env:
+      # skein-qj5l: native/sqlite/CMakeLists.txt reads this env var (no
+      # build-file change needed) and fetches the pinned OpenSSL tarball
+      # here instead of into the checkout, so the "Cache the pinned OpenSSL
+      # tarball" step below can restore/save it across runs.
+      SKEIN_OPENSSL_TARBALL_DIR: ${{ runner.temp }}/skein-openssl
     steps:
       - name: Checkout
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v4.3.0
@@ -63,6 +69,28 @@ jobs:
       - name: Install required Android SDK platform
         run: |
           sdkmanager "platforms;android-37" "build-tools;36.0.0" || true
+
+      # skein-qj5l: same rationale as emulator.yml — cache the pinned
+      # OpenSSL tarball outside the checkout, keyed on the pin's own
+      # sha256 (read out of native/sqlite/CMakeLists.txt so the key can
+      # never drift from the pin it names), so `assembleFossDebug` below
+      # only downloads it on a pin change. CMake still sha256-verifies
+      # whatever this restores and retries once on a mismatch.
+      - name: Derive pinned OpenSSL sha256 (cache key)
+        id: openssl-pin
+        run: |
+          sha="$(grep -m1 '^set(OPENSSL_SHA256' native/sqlite/CMakeLists.txt | sed -E 's/.*"([0-9a-f]+)".*/\1/')"
+          if [ -z "$sha" ]; then
+            echo "::error::could not read OPENSSL_SHA256 from native/sqlite/CMakeLists.txt" >&2
+            exit 1
+          fi
+          echo "sha256=$sha" >> "$GITHUB_OUTPUT"
+
+      - name: Cache the pinned OpenSSL tarball
+        uses: actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0
+        with:
+          path: ${{ env.SKEIN_OPENSSL_TARBALL_DIR }}
+          key: openssl-tarball-${{ steps.openssl-pin.outputs.sha256 }}
 
       # Handles Gradle dependency + build-cache caching automatically; no
       # separate actions/cache step needed.

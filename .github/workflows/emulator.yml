@@ -29,6 +29,12 @@ jobs:
     # assembles the `dev` flavor, which builds libskein_llama.so for both
     # arm64-v8a (CPU + Vulkan) and x86_64 (CPU).
     timeout-minutes: 90
+    env:
+      # skein-qj5l: native/sqlite/CMakeLists.txt reads this env var (no
+      # build-file change needed) and fetches the pinned OpenSSL tarball
+      # here instead of into the checkout, so the "Cache the pinned OpenSSL
+      # tarball" step below can restore/save it across runs.
+      SKEIN_OPENSSL_TARBALL_DIR: ${{ runner.temp }}/skein-openssl
     steps:
       - name: Checkout
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v4.3.0
@@ -54,6 +60,32 @@ jobs:
         with:
           path: inference-service/src/androidTest/assets/tiny.gguf
           key: tiny-gguf-${{ hashFiles('tools/models/test-model.lock') }}
+
+      # skein-qj5l: run 35849974011 failed core/vault's CMake configure on
+      # this lane when a single `file(DOWNLOAD)` of the pinned OpenSSL
+      # tarball came back corrupt (a transient bad download -- the upstream
+      # file itself was unchanged). Cache the tarball outside the checkout,
+      # keyed on the pin's own sha256 (read straight out of
+      # native/sqlite/CMakeLists.txt so the key can never drift from the
+      # pin it names), so a run only re-downloads when the pin changes.
+      # CMake still SHA256-verifies whatever this restores before using it
+      # (native/sqlite/CMakeLists.txt §3) and retries once on a mismatch --
+      # a stale or corrupt cache entry is refetched, never trusted blind.
+      - name: Derive pinned OpenSSL sha256 (cache key)
+        id: openssl-pin
+        run: |
+          sha="$(grep -m1 '^set(OPENSSL_SHA256' native/sqlite/CMakeLists.txt | sed -E 's/.*"([0-9a-f]+)".*/\1/')"
+          if [ -z "$sha" ]; then
+            echo "::error::could not read OPENSSL_SHA256 from native/sqlite/CMakeLists.txt" >&2
+            exit 1
+          fi
+          echo "sha256=$sha" >> "$GITHUB_OUTPUT"
+
+      - name: Cache the pinned OpenSSL tarball
+        uses: actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0
+        with:
+          path: ${{ env.SKEIN_OPENSSL_TARBALL_DIR }}
+          key: openssl-tarball-${{ steps.openssl-pin.outputs.sha256 }}
 
       # skein-f0sy: ubuntu-latest runners ship a pre-licensed Android SDK
       # under $ANDROID_HOME (see ci.yml for why android-actions/setup-android
