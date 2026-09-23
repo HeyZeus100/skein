@@ -46,9 +46,10 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Path
 import androidx.compose.ui.graphics.drawscope.DrawScope
 import androidx.compose.ui.graphics.drawscope.Stroke
+import androidx.compose.ui.input.pointer.PointerEventPass
 import androidx.compose.ui.input.pointer.PointerInputScope
 import androidx.compose.ui.input.pointer.pointerInput
-import androidx.compose.ui.input.pointer.positionChange
+import androidx.compose.ui.input.pointer.positionChangeIgnoreConsumed
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.text.TextMeasurer
 import androidx.compose.ui.text.TextStyle
@@ -270,18 +271,61 @@ private fun tappedDocument(
 }
 
 /**
- * bd `skein-67ak`: per-node drag, coexisting with `Modifier.transformable`'s
- * own pan/zoom detection over the very same pointer stream (see the file
- * header for the modifier-order argument). The trick is
- * [androidx.compose.ui.input.pointer.PointerInputChange.consume]: a press
- * that lands on a node ([GraphHitTest]) is tracked here pointer-move by
- * pointer-move, and only once it exceeds touch slop do we `consume()` each
- * change — from that point on, `transformable`'s own gesture detector (which
- * only reacts to *unconsumed* changes) sees nothing to pan with. A press
- * that never hits a node returns immediately without consuming anything, so
- * `transformable` — and, for a plain tap/long-press that never exceeds
- * slop, `detectTapGestures` in the sibling `pointerInput` block — see the
- * exact same raw, unconsumed events they always have.
+ * bd `skein-67ak` (reopened): per-node drag, coexisting with
+ * `Modifier.transformable`'s own pan/zoom detection over the very same
+ * pointer stream (see the file header for the modifier-order argument). The
+ * trick is [androidx.compose.ui.input.pointer.PointerInputChange.consume]: a
+ * press that lands on a node ([GraphHitTest]) is tracked here pointer-move
+ * by pointer-move, and only once it exceeds touch slop do we `consume()`
+ * each change — from that point on, `transformable`'s own gesture detector
+ * (which only reacts to *unconsumed* changes) sees nothing to pan with. A
+ * press that never hits a node returns immediately without consuming
+ * anything, so `transformable` — and, for a plain tap/long-press that never
+ * exceeds slop, `detectTapGestures` in the sibling `pointerInput` block —
+ * see the exact same raw, unconsumed events they always have.
+ *
+ * ## Why this has to run on [PointerEventPass.Initial] (device-verified miss)
+ *
+ * Compose dispatches one round of pointer input in three passes:
+ * [PointerEventPass.Initial] top-down (outer modifier to inner), then
+ * [PointerEventPass.Main] bottom-up (inner to outer), then
+ * [PointerEventPass.Final] top-down again. This `pointerInput` block is
+ * declared *before* `.transformable(transformState)` in the modifier chain
+ * (see the `Canvas`'s `modifier =` below), which makes `transformable` the
+ * *inner* pointer input node. On the default `Main` pass — what the first
+ * version of this function used — `transformable`'s own gesture detector
+ * therefore sees every move *before* this one does, consumes it once it
+ * exceeds its own slop, and this block would then read
+ * [androidx.compose.ui.input.pointer.PointerInputChange.positionChange],
+ * which is always `Offset.Zero` for an already-consumed change. Slop here
+ * never accumulates, [GraphSimulation.beginDrag] never fires, and a drag
+ * that starts on a node falls through to `transformable` and pans the whole
+ * canvas as a rigid picture instead — this is the bug a real finger hit on
+ * the Fold (bd note, 2026-09-22) despite the original `GraphViewDragTest`
+ * passing (that test used a one-node fixture, where a rigid pan and a true
+ * per-node drag move the only node by the identical amount and are
+ * indistinguishable by a screen-position assertion — see the rewritten
+ * test's kdoc).
+ *
+ * Running Initial-pass-first (top-down) instead makes this block — the
+ * *outer* node — see every down/move *before* `transformable` gets a
+ * chance to, the same look-first-consume-conditionally pattern
+ * `SkeinEditor`'s wikilink-tap routing uses on `PointerEventPass.Initial`
+ * (see that file's "Wikilink tap routing" kdoc section) to run ahead of
+ * `BasicTextField`'s own cursor-placement gesture. Slop is accumulated from
+ * [androidx.compose.ui.input.pointer.PointerInputChange.positionChangeIgnoreConsumed]
+ * rather than `positionChange()` — nothing has consumed anything yet this
+ * early, but `IgnoreConsumed` makes that independent of pass ordering, same
+ * defensive habit as reading a raw value before deciding whether to act on
+ * it. Once the hit and slop are both established, `change.consume()` is
+ * called right here, in the Initial pass — that consumed flag is visible to
+ * every later pass on the same [androidx.compose.ui.input.pointer.PointerInputChange]
+ * instance, so when `transformable`'s Main-pass detector runs immediately
+ * after, it finds nothing left to pan with. A press on empty space, or one
+ * that never leaves slop, consumes nothing at any pass, so `transformable`
+ * (pan/zoom) and `detectTapGestures` (tap/long-press) in the sibling
+ * `pointerInput` block below see the exact same raw, unconsumed events they
+ * always have.
  *
  * The dragged node is pinned to the pointer *in world space*
  * ([GraphTransform.screenToWorld]) rather than screen space, so it tracks
@@ -309,7 +353,7 @@ private suspend fun PointerInputScope.detectNodeDrag(
         )
 
     awaitEachGesture {
-        val down = awaitFirstDown(requireUnconsumed = false)
+        val down = awaitFirstDown(requireUnconsumed = false, pass = PointerEventPass.Initial)
         val screenPositions =
             simulation.positions.mapValues { (_, world) ->
                 GraphTransform.worldToScreen(world, canvasCenter, baseScale, zoom(), Vec2(pan().x, pan().y))
@@ -325,13 +369,14 @@ private suspend fun PointerInputScope.detectNodeDrag(
         var dragging = false
 
         while (true) {
-            val change = awaitPointerEvent().changes.firstOrNull { it.id == pointerId }
+            val change =
+                awaitPointerEvent(pass = PointerEventPass.Initial).changes.firstOrNull { it.id == pointerId }
             if (change == null || !change.pressed) {
                 if (dragging) simulation.endDrag(hitId)
                 break
             }
             if (!dragging) {
-                accumulatedSlop += change.positionChange()
+                accumulatedSlop += change.positionChangeIgnoreConsumed()
                 if (accumulatedSlop.getDistance() <= touchSlop) continue
                 dragging = true
                 simulation.beginDrag(hitId)
