@@ -431,6 +431,35 @@ object LlamaNative {
      */
     external fun secureFreeCount(): Int
 
+    /**
+     * `skein-gg11.2` (OL-05, `docs/design/SKEIN_HUB.md` §12): a privacy-safe
+     * diagnostic of which backend devices and CPU features this build
+     * actually has, packed into one semicolon-delimited line —
+     * [NativeBackendReport.parse] (`LlamaBackend.kt`) is the other half of
+     * this format. One external rather than several structured return types,
+     * per the bead's own instruction; every field is either a count/number or
+     * a name matched against a fixed allowlist in `skein_jni.cpp`'s
+     * `AllowlistedBackendName` — never a raw GGUF string, a path, or a byte
+     * dump.
+     *
+     * @param model `0` for the compile-time-only report (no model loaded):
+     *   the CPU feature list is still populated, `devices` is empty.
+     * @param context `0` when no context exists (a bare `inspect`, or nothing
+     *   loaded): `n_outputs_max`/`n_batch`/`n_ubatch` are absent.
+     * @param gpuLayers the value [model] was ACTUALLY loaded with — the
+     *   report re-derives the device list via the same rule
+     *   [loadModelFromFd] applied, and is only truthful if this matches.
+     *   Ignored when [model] is `0`.
+     *
+     * Thread: any when [context] is `0`; the inference worker thread
+     * otherwise (same rule as every other context-touching call).
+     */
+    external fun backendReport(
+        model: Long,
+        context: Long,
+        gpuLayers: Int,
+    ): String
+
     // ------------------------------------------------ called from native code
 
     /**
@@ -457,10 +486,69 @@ object LlamaNative {
                 4 -> LlamaLogLevel.ERROR
                 else -> LlamaLogLevel.DEBUG
             }
+        captureIfLoading(mapped, message)
         val safe = LlamaLogRedactor.forward(mapped, message) ?: return
         when (mapped) {
             LlamaLogLevel.ERROR -> SkeinLog.e(LOG_TAG, safe)
             else -> SkeinLog.w(LOG_TAG, safe)
         }
     }
+
+    // -------------------------------------------------- load-error capture
+
+    // `skein-gg11.2` (OL-19, `JNI_ANALYSIS.md` §5): the first few WARN/ERROR
+    // lines llama.cpp logs during a load attempt are the informative ones —
+    // llama.cpp's own errors cascade specific ("missing tensor blk.0…") to
+    // generic ("model load failed"). Every such line already crosses into
+    // Kotlin through [onNativeLog] above; this is a small ring buffer over
+    // that existing callback, not a second native log path. Capturing is
+    // GATED by [loadLogCapturing] so a WARN/ERROR from an unrelated call
+    // (a decode, an embed) between two loads never contaminates the next
+    // failure's detail — only `InferenceEngineState.load`/`readInspection`
+    // toggle it, immediately before a load attempt.
+    private val loadLogLock = Any()
+    private var loadLogCapturing = false
+    private val loadLogLines = mutableListOf<String>()
+
+    private const val MAX_CAPTURED_LOAD_LOG_LINES = 4
+    private const val MAX_CAPTURED_LOAD_LOG_LINE_CHARS = 160
+
+    private fun captureIfLoading(
+        level: LlamaLogLevel,
+        message: String,
+    ) {
+        if (level < LlamaLogLevel.WARN) return
+        synchronized(loadLogLock) {
+            if (loadLogCapturing && loadLogLines.size < MAX_CAPTURED_LOAD_LOG_LINES) {
+                loadLogLines += message.take(MAX_CAPTURED_LOAD_LOG_LINE_CHARS)
+            }
+        }
+    }
+
+    /**
+     * Clears any lines left over from a previous attempt and starts
+     * recording. Call immediately before [loadModelFromFd]/[loadModel] on the
+     * inference worker thread.
+     */
+    fun beginLoadLogCapture() {
+        synchronized(loadLogLock) {
+            loadLogCapturing = true
+            loadLogLines.clear()
+        }
+    }
+
+    /**
+     * Stops recording and returns what was captured since
+     * [beginLoadLogCapture], oldest first, RAW — callers MUST run each line
+     * through [LlamaLogRedactor.redact] before it reaches an exception
+     * message or a log line (spec §9's no-raw-content rule applies to a load
+     * failure's detail exactly as it applies to everything else this process
+     * logs). Already capped in count and per-line length, so a hostile GGUF
+     * that spams warnings during a load cannot grow this without bound.
+     */
+    fun drainLoadLogLines(): List<String> =
+        synchronized(loadLogLock) {
+            loadLogCapturing = false
+            loadLogLines.toList()
+        }
 }

@@ -48,7 +48,64 @@ data class Segment(
     val text: String,
 )
 
+/**
+ * What [ChatTemplating.render] produced.
+ *
+ * @param text the rendered prompt — the model's own template, or the ChatML
+ *   fallback when it has none llama.cpp can apply.
+ * @param usedFallback `true` when [text] is the ChatML fallback, `false`
+ *   when it is the GGUF's own template. `E4.I3`/`E4.I6` (skein-5oi) surface
+ *   this as a warning rather than a refusal — a missing template degrades
+ *   the prompt, it does not block the model.
+ */
+data class RenderedPrompt(
+    val text: String,
+    val usedFallback: Boolean,
+)
+
 object ChatTemplating {
+    /**
+     * Renders [roles]/[contents] with the model's own chat template
+     * (`LlamaBackend.applyChatTemplate`), falling back to a fixed ChatML
+     * rendering when the GGUF embeds no template llama.cpp can apply
+     * ([LlamaErrorCode.TEMPLATE_UNSUPPORTED] — `E4.I6`'s fallback, skein-5oi).
+     *
+     * Any OTHER failure (OOM, a decode error) is NOT a template problem and
+     * is rethrown rather than silently degraded to ChatML.
+     */
+    fun render(
+        backend: LlamaBackend,
+        model: Long,
+        roles: Array<String>,
+        contents: Array<String>,
+        addAssistantPrefix: Boolean,
+    ): RenderedPrompt =
+        try {
+            RenderedPrompt(backend.applyChatTemplate(model, roles, contents, addAssistantPrefix), usedFallback = false)
+        } catch (e: LlamaException) {
+            if (e.code != LlamaErrorCode.TEMPLATE_UNSUPPORTED) throw e
+            RenderedPrompt(chatMlFallback(roles, contents, addAssistantPrefix), usedFallback = true)
+        }
+
+    /**
+     * ChatML: the widest-adopted convention among open chat models with no
+     * embedded template, and the shape `FakeLlamaBackend`'s own default
+     * `applyChatTemplate` already produces for tests.
+     */
+    private fun chatMlFallback(
+        roles: Array<String>,
+        contents: Array<String>,
+        addAssistantPrefix: Boolean,
+    ): String =
+        buildString {
+            for (i in roles.indices) {
+                append("<|im_start|>").append(roles[i]).append('\n')
+                append(contents[i])
+                append("<|im_end|>\n")
+            }
+            if (addAssistantPrefix) append("<|im_start|>assistant\n")
+        }
+
     /**
      * Splits [rendered] into alternating scaffold/content spans by locating
      * each of [contents] in order.

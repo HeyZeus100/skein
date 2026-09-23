@@ -24,6 +24,8 @@ import app.skein.ipc.EmbedRequest;
 import app.skein.ipc.EngineStatus;
 import app.skein.ipc.InspectRequest;
 import app.skein.ipc.ModelInspection;
+import app.skein.ipc.BackendReportRequest;
+import app.skein.ipc.BackendReport;
 
 interface IInferenceService {
     /**
@@ -53,6 +55,27 @@ interface IInferenceService {
      * The service OWNS and closes every fd in req.binding on every path.
      */
     ModelInspection inspect(in InspectRequest req);
+    /**
+     * Sync. Additive, bd skein-gg11.2 (OL-05, docs/design/SKEIN_HUB.md §12).
+     *
+     * A privacy-safe diagnostic: which backend devices this build's CURRENT
+     * load actually selected (CPU-only at gpuLayers<=0, R-1), which ARM CPU
+     * features the linked ggml-cpu was compiled with, how many layers were
+     * actually offloaded, and the live context's n_outputs_max/n_batch/
+     * n_ubatch. Every field is allowlist-built inside the isolated process
+     * (a fixed device-name allowlist, ggml's own compiled-in feature flags,
+     * plain counts) -- never a GGUF string, a path, or free text.
+     *
+     * Works with a loaded model AND without one: with nothing loaded it
+     * returns the compile-time CPU feature list only (devices empty,
+     * gpuLayersOffloaded 0, the context fields null).
+     *
+     * Refused with ErrorCode.SESSION_LOCKED like every other entry point.
+     * Never BUSY -- unlike inspect, this reads existing state rather than
+     * allocating, so it is safe to let it queue behind an in-flight
+     * generate on the single worker thread.
+     */
+    BackendReport backendReport(in BackendReportRequest req);
     /**
      * Async. cb must be a fresh IInferenceCallback (client-owned). Tokens
      * arrive on cb; exactly one onDone or onError per requestId.

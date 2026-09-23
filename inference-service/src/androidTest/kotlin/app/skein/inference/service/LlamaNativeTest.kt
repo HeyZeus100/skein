@@ -137,6 +137,35 @@ class LlamaNativeTest {
         assertThat(prompt).contains("Hello world")
     }
 
+    // skein-5oi AC1 (dispatched with bd skein-gg11.2): the tiny model carries
+    // its own `tokenizer.chat_template`, so `ChatTemplating.render` must use
+    // it — never the ChatML fallback — and the render must contain the
+    // model's own turn markers around the content. The fallback half (a
+    // backend reporting "no template") needs no device and is a JVM test:
+    // `ChatTemplatingTest`'s "render falls back to ChatML…" cases.
+    @Test
+    fun chatTemplatingRenderUsesTheModelsOwnTemplateAndMarkersAroundTheContent() {
+        // Arrange
+        loadTinyModel()
+        val rendered =
+            ChatTemplating.render(
+                backend = NativeLlamaBackend,
+                model = model,
+                roles = arrayOf("user"),
+                contents = arrayOf("Hello world"),
+                addAssistantPrefix = true,
+            )
+
+        // Assert — the model's own template, not the fixed ChatML fallback:
+        // this tiny model's template is NOT the literal fallback string, so
+        // asserting `usedFallback == false` plus content survival is the
+        // portable check (the exact marker syntax is the model's, not
+        // Skein's, so it is not pinned here — `applyChatTemplateContainsTheUserMessage`
+        // above already exercises the raw call this wraps).
+        assertThat(rendered.usedFallback).isFalse()
+        assertThat(rendered.text).contains("Hello world")
+    }
+
     @Test
     fun decodePromptThenEightSamplesYieldsEightIds() {
         // Arrange
@@ -284,6 +313,20 @@ class LlamaNativeTest {
         assertThrowsIllegalState { LlamaNative.modelHasVision(0L) }
         assertThrowsIllegalState { LlamaNative.modelNEmbd(0L) }
         assertThrowsIllegalState { LlamaNative.isEog(0L, 1) }
+    }
+
+    // ------------------------------------------------------ bd skein-gg11.2
+
+    @Test
+    fun backendReportWithNoModelReportsOnlyCompileTimeCpuFeatures() {
+        // Act — 0/0 is the documented "nothing loaded" case, not a bad
+        // handle: it must not throw, unlike zeroHandlesThrowIllegalStateException's list.
+        val report = NativeBackendReport.parse(LlamaNative.backendReport(model = 0L, context = 0L, gpuLayers = 0))
+
+        // Assert
+        assertThat(report.devices).isEmpty()
+        assertThat(report.cpuFeatures).isNotEmpty()
+        assertThat(listOf(report.nOutputsMax, report.nBatch, report.nUbatch)).isEqualTo(listOf(null, null, null))
     }
 
     @Test

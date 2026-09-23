@@ -113,4 +113,36 @@ object ServiceErrorMapping {
      * forward verbatim.
      */
     fun diagnostic(exception: LlamaException): String = exception.message ?: "native failure"
+
+    /**
+     * `skein-gg11.2` (OL-19, `JNI_ANALYSIS.md` §5): [diagnostic] plus up to
+     * [MAX_ATTACHED_LOAD_LOG_LINES] of the WARN/ERROR lines llama.cpp logged
+     * during the failed load/inspect — llama.cpp's own errors cascade
+     * specific ("missing tensor blk.0.attn_q.weight") to generic ("model
+     * load failed"), and the earliest lines are the informative ones.
+     *
+     * [capturedLines] is UNTRUSTED — it is [LlamaBackend.drainLoadLogLines]'s
+     * RAW output, sourced from the file that just failed to load — so every
+     * line is run through [LlamaLogRedactor.redact] here, before it is
+     * anywhere near this string, exactly as spec §9's no-raw-content rule
+     * requires of everything else this process logs (the app side sanitizes
+     * a second time regardless — `skein-3yal`). An empty [capturedLines] (a
+     * successful load, or a failure that logged nothing) leaves the base
+     * [diagnostic] unchanged — this must never be called on a success path.
+     */
+    fun loadFailureDetail(
+        exception: LlamaException,
+        capturedLines: List<String>,
+    ): String {
+        val base = diagnostic(exception)
+        if (capturedLines.isEmpty()) return base
+        val redacted = capturedLines.take(MAX_ATTACHED_LOAD_LOG_LINES).map { LlamaLogRedactor.redact(it) }
+        return (listOf(base) + redacted).joinToString(" | ")
+    }
+
+    /**
+     * Mirrors `LlamaNative.MAX_CAPTURED_LOAD_LOG_LINES`; defensive here too,
+     * since a fake backend is not bound by that native cap.
+     */
+    private const val MAX_ATTACHED_LOAD_LOG_LINES = 4
 }

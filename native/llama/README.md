@@ -372,6 +372,18 @@ against this table (grep confirms the only reference is a pointer string in
 an error message), so this entry is documentation, not a CI gate; the
 coordinator re-records it from the `native-determinism` CI artefact.
 
+**As of skein-gg11.2 (`backendReport` diagnostic: one new external in
+`jni/skein_jni.cpp`, plus a 3-line `n_outputs_max` stash in `newContext`'s
+existing `Handles().Add`; no other native change — the redacted load-error
+capture is Kotlin-only, in `LlamaNative.kt`)** the declared/exported symbol
+count moved again: `jni/` now has **25** exported symbols, still exactly
+matching `tools/ci/jni-symbols.sh`'s dynamically-derived expectation (that
+script greps `LlamaNative.kt` for `external fun` rather than hard-coding a
+count, so it needed no edit for this bead — see its own header). A fresh
+clean-build hash pair was not re-recorded here; the coordinator's
+`native-determinism` CI artifact is authoritative for the next entry, per
+this section's own convention.
+
 Previous record, for reference: E1.I4 / `jni_stub.cpp` produced
 `76fd7ce5dc9cb9774c6dcc64401d508830486e9427648286686161fdf779e2cf`
 (25,270,688 B) across A1/A2/B.

@@ -118,4 +118,34 @@ class LlamaLogRedactorTest {
         // Assert
         assertEquals("context shifted by 128 tokens", result)
     }
+
+    // ---------------------------------------------------- skein-gg11.2 (OL-19)
+
+    @Test
+    fun redact_replaces_a_filesystem_path_with_a_placeholder() {
+        // Act
+        val result = LlamaLogRedactor.redact("failed to open /data/data/app.skein/files/models/model.gguf")
+
+        // Assert
+        assertEquals("failed to open <redacted path>", result)
+    }
+
+    @Test
+    fun redact_does_not_treat_a_single_slash_as_a_path() {
+        // Act — a throughput unit, not a path: only one `/segment`.
+        val result = LlamaLogRedactor.redact("decoded at 12.3 GB/s")
+
+        // Assert
+        assertEquals("decoded at 12.3 GB/s", result)
+    }
+
+    @Test
+    fun redact_replaces_a_path_even_with_no_marker_present() {
+        // Act — the realistic load-error shape: no `prompt:`/`text:` marker,
+        // just a path llama.cpp echoed back.
+        val result = LlamaLogRedactor.redact("error loading model: /proc/self/fd/61")
+
+        // Assert
+        assertEquals("error loading model: <redacted path>", result)
+    }
 }

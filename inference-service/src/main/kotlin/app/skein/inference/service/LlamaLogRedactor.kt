@@ -16,7 +16,9 @@ enum class LlamaLogLevel { DEBUG, INFO, WARN, ERROR }
  * native `llama_log_set` callback that calls this lands with the llama.cpp
  * build itself (skein-ca2/skein-3aw), out of scope for `E1.I11`/skein-4je.
  *
- * Two independent rules, per `E1.I11`'s acceptance criteria:
+ * Three rules, the third added by `skein-gg11.2` (OL-19,
+ * `JNI_ANALYSIS.md` §5) for load-error lines folded into a failed load's
+ * diagnostic, per `E1.I11`'s acceptance criteria plus that bead's own:
  *  - [forward] drops (returns `null` for) anything at [LlamaLogLevel.DEBUG]
  *    or [LlamaLogLevel.INFO] — llama.cpp's own verbose/info logging is not
  *    useful in a release build and is never forwarded, sensitive or not.
@@ -25,9 +27,17 @@ enum class LlamaLogLevel { DEBUG, INFO, WARN, ERROR }
  *    `<redacted N chars>` where `N` is the length of the text that would
  *    have followed the marker. A message with no marker passes through
  *    unchanged; a message is free to contain more than one marker.
+ *  - [redact] also replaces any filesystem-path-shaped substring (two or
+ *    more `/segment` runs) with `<redacted path>` — a load-error line is
+ *    UNTRUSTED input to this function (it can originate in a hostile GGUF's
+ *    own load-failure text) and design spec §9 forbids a path crossing this
+ *    boundary exactly as it forbids prompt content.
  */
 object LlamaLogRedactor {
     private val markers = listOf("prompt:", "text:")
+
+    /** Two or more `/segment` runs — a bare `a/b` (e.g. a throughput unit like `GB/s`) does not match. */
+    private val pathPattern = Regex("""(?:/[^\s/]+){2,}/?""")
 
     /** Level-gate + redact in one call: `null` means "drop, do not log at all". */
     fun forward(
@@ -41,31 +51,34 @@ object LlamaLogRedactor {
     /**
      * `redact("prompt: hello world") == "prompt: <redacted 11 chars>"` —
      * `E1.I11` AC(c). The marker and a single separating space (if present)
-     * are preserved; only the content after them is replaced.
+     * are preserved; only the content after them is replaced. Any
+     * filesystem path is replaced first (see this object's KDoc), so a path
+     * appearing outside a marker's span is still caught.
      */
     fun redact(message: String): String {
-        val matches = findMarkers(message)
-        if (matches.isEmpty()) return message
+        val pathSafe = pathPattern.replace(message, "<redacted path>")
+        val matches = findMarkers(pathSafe)
+        if (matches.isEmpty()) return pathSafe
 
         val result = StringBuilder()
         var cursor = 0
         for ((index, match) in matches.withIndex()) {
             // Everything since the previous match's content, including this
             // marker itself, is copied through untouched.
-            result.append(message, cursor, match.markerEnd)
+            result.append(pathSafe, cursor, match.markerEnd)
 
             var contentStart = match.markerEnd
-            val hadSeparatingSpace = contentStart < message.length && message[contentStart] == ' '
+            val hadSeparatingSpace = contentStart < pathSafe.length && pathSafe[contentStart] == ' '
             if (hadSeparatingSpace) contentStart += 1
 
-            val contentEnd = if (index + 1 < matches.size) matches[index + 1].start else message.length
-            val content = message.substring(contentStart, contentEnd)
+            val contentEnd = if (index + 1 < matches.size) matches[index + 1].start else pathSafe.length
+            val content = pathSafe.substring(contentStart, contentEnd)
 
             if (hadSeparatingSpace) result.append(' ')
             result.append("<redacted ").append(content.length).append(" chars>")
             cursor = contentEnd
         }
-        result.append(message, cursor, message.length)
+        result.append(pathSafe, cursor, pathSafe.length)
         return result.toString()
     }
 
