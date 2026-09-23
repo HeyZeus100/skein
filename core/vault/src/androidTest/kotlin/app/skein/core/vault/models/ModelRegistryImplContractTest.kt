@@ -11,6 +11,22 @@
 // this module. This class is compiled (so any broken statement is caught)
 // by the ordinary Gradle `check` path; running it for real is gated on
 // that follow-up.
+//
+// skein-gg11.11: `registry()` previously named each call's `SharedPreferences`
+// file via a per-instance `AtomicInteger` counter. JUnit4 instantiates a new
+// test-class instance per `@Test` method, so that counter reset to 0 for
+// every method and every method's first (usually only) `registry()` call
+// landed on the same file name (`ui_prefs_test_1`). `SharedPreferences`
+// files are keyed by name and persist for the life of the instrumentation
+// process, so a test that wrote a value (e.g.
+// `setDefault_accepts_an_id_with_no_backing_row`, which sets the default to
+// `"row-does-not-exist"`) leaked it into whichever test ran later against
+// that same file name — including `default_is_null_for_a_fresh_registry`,
+// which then saw `"row-does-not-exist"` instead of `null` (emulator run
+// 35853455054). `default()` itself was never at fault: it is a plain
+// `prefs.getString(KEY, null)`. Fixed by clearing the (fixed-name) prefs
+// file synchronously on every `registry()` call, so each call is isolated
+// regardless of how many test-class instances share the process.
 
 package app.skein.core.vault.models
 
@@ -24,12 +40,10 @@ import app.skein.core.vault.testutil.splitMigrationStatements
 import app.skein.testing.ModelRegistryContractTest
 import org.junit.After
 import org.junit.runner.RunWith
-import java.util.concurrent.atomic.AtomicInteger
 
 @RunWith(AndroidJUnit4::class)
 public class ModelRegistryImplContractTest : ModelRegistryContractTest() {
     private val openConnections: MutableList<SkeinSQLiteConnection> = mutableListOf()
-    private val prefsCounter = AtomicInteger(0)
 
     @After
     public fun tearDown() {
@@ -59,17 +73,17 @@ public class ModelRegistryImplContractTest : ModelRegistryContractTest() {
         openConnections += conn
 
         val context = ApplicationProvider.getApplicationContext<Context>()
-        // A uniquely-named prefs file per registry() call, so
+        // Fixed prefs file name, cleared synchronously on every call, so
         // `ModelRegistryContractTest`'s "fresh registry per test method"
-        // contract holds even though `SharedPreferences` files persist
-        // across an app's process — this instrumented run is one process
-        // for many test methods.
-        val prefs =
-            context.getSharedPreferences(
-                "ui_prefs_test_${prefsCounter.incrementAndGet()}",
-                Context.MODE_PRIVATE,
-            )
+        // contract holds regardless of how many test-class instances share
+        // this instrumentation process — see the file header.
+        val prefs = context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
+        prefs.edit().clear().commit()
 
         return ModelRegistryImpl(connection = conn, prefs = prefs)
+    }
+
+    private companion object {
+        const val PREFS_NAME = "ui_prefs_test"
     }
 }
