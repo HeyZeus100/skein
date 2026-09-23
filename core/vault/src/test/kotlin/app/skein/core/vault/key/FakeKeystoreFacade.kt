@@ -10,6 +10,7 @@
 package app.skein.core.vault.key
 
 import android.security.keystore.KeyPermanentlyInvalidatedException
+import android.security.keystore.UserNotAuthenticatedException
 import java.security.SecureRandom
 import javax.crypto.Cipher
 import javax.crypto.KeyGenerator
@@ -24,6 +25,18 @@ internal class FakeKeystoreFacade(
     val createCalls: MutableList<Triple<String, VaultKeyProvider.Factor, Boolean>> = mutableListOf()
     var strongBoxProbed: Boolean = false
         private set
+
+    /**
+     * skein-9psb: aliases whose next [decryptCipher] throws
+     * [UserNotAuthenticatedException] — simulating the real Keystore's
+     * "device is locked" `Cipher.init` failure (`isDeviceLockedFailure` in
+     * `VaultKeyProviderImpl`) without needing a real `AndroidKeyStore`.
+     * Unlike `android.security.KeyStoreException` (package-private
+     * constructor, cannot be constructed outside `android.security`),
+     * `UserNotAuthenticatedException` is public and directly constructible,
+     * and matches by type only — the message here is never asserted on.
+     */
+    val deviceLockedAliases: MutableSet<String> = mutableSetOf()
 
     /**
      * skein-f9ls: aliases whose next [encryptCipher] returns a Cipher that
@@ -82,6 +95,11 @@ internal class FakeKeystoreFacade(
         iv: ByteArray,
     ): Cipher {
         checkNotInvalidated(alias)
+        if (alias in deviceLockedAliases) {
+            // skein-9psb: simulate the platform's behaviour on a locked
+            // device — Cipher.init throws before any authentication step.
+            throw UserNotAuthenticatedException("simulated: device locked")
+        }
         val key = keys[alias] ?: error("no key at alias '$alias'")
         return Cipher.getInstance("AES/GCM/NoPadding").apply {
             init(Cipher.DECRYPT_MODE, key, GCMParameterSpec(128, iv))

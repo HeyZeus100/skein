@@ -136,6 +136,21 @@ class UnlockManagerTest {
         }
 
     @Test
+    fun `unlock DeviceLocked leaves state Locked and is not a Failed`() =
+        runTest {
+            // Arrange
+            val h = Harness()
+            // Act
+            val outcome =
+                h.manager.unlockWith(UNLOCK_BIOMETRIC) {
+                    UnlockResult.DeviceLocked
+                }
+            // Assert — skein-9psb: typed, distinct from Failed; no reason string exists.
+            assertThat(outcome).isEqualTo(UnlockOutcome.DeviceLocked)
+            assertThat(h.manager.state.value).isEqualTo(UnlockState.Locked)
+        }
+
+    @Test
     fun `unlock when already Unlocked returns Coalesced`() =
         runTest {
             // Arrange: already unlocked

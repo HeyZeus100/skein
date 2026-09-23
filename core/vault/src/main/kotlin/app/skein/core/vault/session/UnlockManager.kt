@@ -263,8 +263,18 @@ public class UnlockManager
                         _state.value = UnlockState.Locked
                         UnlockOutcome.NotInitialised
                     }
+                    // skein-9psb: NOT a failure — the caller (`BiometricUnlockScreen`)
+                    // waits and retries silently. Still logged (kind only,
+                    // never a reason string — there is none here) so a
+                    // device log explains a future occurrence of this race.
+                    UnlockResult.DeviceLocked -> {
+                        _state.value = UnlockState.Locked
+                        SkeinLog.w(TAG, "unlock outcome: kind=DeviceLocked")
+                        UnlockOutcome.DeviceLocked
+                    }
                     is UnlockResult.Failed -> {
                         _state.value = UnlockState.Locked
+                        SkeinLog.w(TAG, "unlock outcome: kind=Failed")
                         UnlockOutcome.Failed(result.reason)
                     }
                 }

@@ -34,6 +34,14 @@ object ShellTestTags {
      */
     const val BIOMETRIC_UNLOCK_RESET_BUTTON = "biometric_unlock_reset_button"
 
+    /**
+     * skein-9psb: shown while the auto-present gate is shut (device locked /
+     * host not yet resumed) or while waiting out an `UnlockOutcome.DeviceLocked`
+     * retry — never alongside [BIOMETRIC_UNLOCK_MESSAGE], and never with a
+     * retry button, since neither case is a failure.
+     */
+    const val BIOMETRIC_UNLOCK_WAITING_MESSAGE = "biometric_unlock_waiting_message"
+
     // skein-ank2: VaultSetupScreen tags.
 
     /** Root container of `app.skein.feature.shell.auth.VaultSetupScreen`. */
