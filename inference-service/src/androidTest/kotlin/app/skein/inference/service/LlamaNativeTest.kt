@@ -62,6 +62,29 @@ private const val TINY_GGUF_ASSET = "tiny.gguf"
 private val GOLDEN_GREEDY_IDS =
     intArrayOf(28, 837, 260, 3372, 282, 260, 6128, 359, 7452, 12602, 284, 15289, 288, 260, 4340, 27485)
 
+// bd skein-gg11.7: allowlist of CPU feature names reported by backendReport.
+// Must mirror the names appended in native/llama/jni/skein_jni.cpp's backendReport.
+private val CPU_FEATURES_ALLOWLIST =
+    setOf(
+        // x86
+        "SSE3",
+        "SSSE3",
+        "AVX",
+        "AVX2",
+        "F16C",
+        "FMA",
+        "AVX512",
+        // ARM
+        "NEON",
+        "ARM_FMA",
+        "FP16_VA",
+        "DOTPROD",
+        "MATMUL_INT8",
+        "SVE",
+        "SME",
+        "SME2",
+    )
+
 @RunWith(AndroidJUnit4::class)
 class LlamaNativeTest {
     private val context: Context get() = ApplicationProvider.getApplicationContext()
@@ -324,6 +347,11 @@ class LlamaNativeTest {
         // Assert
         assertThat(report.devices).isEmpty()
         assertThat(report.cpuFeatures).isNotEmpty()
+        // CPU features are reported on every ABI (x86 and ARM); all must be
+        // allowlisted names from the native side's CPU_FEATURES_ALLOWLIST mirror.
+        for (feature in report.cpuFeatures) {
+            assertThat(feature).isIn(CPU_FEATURES_ALLOWLIST)
+        }
         assertThat(listOf(report.nOutputsMax, report.nBatch, report.nUbatch)).isEqualTo(listOf(null, null, null))
     }
 
