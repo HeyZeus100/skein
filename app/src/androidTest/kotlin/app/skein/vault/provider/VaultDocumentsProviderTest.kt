@@ -13,13 +13,38 @@
 // subsets — see the class header of `VaultDocumentsProvider`) so the
 // framework's own `DocumentsProvider.attachInfo` sanity checks run too.
 //
+// skein-vn6m: moved here from `core/vault`'s androidTest source set. That
+// module's test APK never declares the `app.skein.documents` provider (it
+// is only declared in `app/src/main/AndroidManifest.xml`), so a write in
+// this class that reaches `ContentResolver.notifyChange` — see
+// `openDocument_write_updatesTheNoteAndEnqueuesIngest` below — failed
+// there with `SecurityException: Failed to find provider
+// app.skein.documents for user 0`: the OS has to resolve the authority to
+// an installed provider to delivering the change notification, and in
+// `core/vault`'s test APK nothing declares it. Running in `:app`'s test
+// APK (self-instrumented against the real app, whose manifest DOES
+// declare it) fixes that without adding a second manifest declaration
+// under the same authority (an install-conflict risk the previous attempt
+// at this bead introduced and which was rejected).
+//
+// `VaultDocumentsProvider`'s test-injection constructor is `internal` to
+// `:core:vault` and therefore invisible here, so this test wires the fake
+// [VaultDocumentsProvider.Services] through the provider's PUBLIC
+// `install`/no-arg-constructor pair instead — exactly the path the real
+// app wiring uses (`VaultBootstrap`) — and tears the static registration
+// back down to `null` after every test so it can't leak into another
+// test's provider instance. `ProviderIds`/`ProviderCursors` are also
+// `internal` to `:core:vault`; see `ProviderTestIds.kt` next to this file
+// for why a minimal duplicate — not a move — is the right fix.
+//
 // Follow-up (skein-k3b2): no emulator was available in this worktree,
 // matching every other `*InstrumentedTest`/`*ContractTest` in the module.
-// This class is compiled by `compileFossDebugAndroidTestKotlin`; running it
+// This class is compiled by `compileDevDebugAndroidTestKotlin`; running it
 // for real is gated on that follow-up. The `DocumentsContract`-level
-// grant/exported-components audit is `E10.I9` (skein-fubu).
+// grant/exported-components audit is `E10.I9` (skein-fubu), covered by
+// `VaultDocumentsProviderGrantInstrumentedTest` in this same package.
 
-package app.skein.core.vault.provider
+package app.skein.vault.provider
 
 import android.content.Context
 import android.content.pm.ProviderInfo
@@ -33,12 +58,14 @@ import app.skein.core.model.DocumentKind
 import app.skein.core.model.IngestReason
 import app.skein.core.model.TimelineFilter
 import app.skein.core.vault.export.ExportServiceImpl
+import app.skein.core.vault.provider.VaultDocumentsProvider
 import app.skein.core.vault.session.UnlockState
 import app.skein.testing.InMemoryVaultRepository
 import app.skein.testing.fixtures.SyntheticVault
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.runBlocking
+import org.junit.After
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertFalse
 import org.junit.Assert.assertTrue
@@ -53,12 +80,14 @@ public class VaultDocumentsProviderTest {
     private val repo = InMemoryVaultRepository()
     private val export = ExportServiceImpl(repo)
     private val unlockState = MutableStateFlow<UnlockState>(UnlockState.Locked)
-    private val provider =
-        VaultDocumentsProvider { VaultDocumentsProvider.Services(repo, export, unlockState) }
+    private val provider = VaultDocumentsProvider()
 
     @Before
     public fun setUp() {
         val context: Context = InstrumentationRegistry.getInstrumentation().targetContext
+        // Public wiring path (no `internal` test constructor is visible
+        // from `:app`) — see this file's header.
+        VaultDocumentsProvider.install(VaultDocumentsProvider.Services(repo, export, unlockState))
         val info =
             ProviderInfo().apply {
                 authority = VaultDocumentsProvider.AUTHORITY
@@ -72,6 +101,13 @@ public class VaultDocumentsProviderTest {
         provider.attachInfo(context, info)
         SyntheticVault.seed(repo, size = SyntheticVault.Preset.SMALL)
         unlockState.value = UnlockState.Unlocked(since = 0L, token = AuthorizationToken(1L))
+    }
+
+    @After
+    public fun tearDown() {
+        // Undo the static `install` above so it can't leak into another
+        // test's [VaultDocumentsProvider] instance.
+        VaultDocumentsProvider.install(null)
     }
 
     private fun Cursor.column(name: String): List<String?> =
