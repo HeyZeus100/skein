@@ -170,6 +170,16 @@ jobs:
             adb shell svc power stayon true
             adb shell settings put system screen_off_timeout 2147483647
             adb shell wm dismiss-keyguard || true
+            # skein-gg11.14: the lane uploaded no logcat, so a test that
+            # fails because a foreign activity covers MainActivity (the
+            # STOPPED-after-recreate class of failure) could not be
+            # diagnosed from the artefact. Widen the ring so the whole run
+            # fits, clear it, and dump it next to the reports afterwards
+            # (same line as Gradle below, so the dump runs while the
+            # emulator is still alive and the step still fails on Gradle's
+            # own exit code).
+            adb logcat -G 64M
+            adb logcat -c
             # --continue: report every module's instrumented results, not
             # just the first module that fails (run 35846736749 stopped
             # before :inference-service ran).
@@ -191,7 +201,7 @@ jobs:
             # One line on purpose: android-emulator-runner executes each
             # script line as its own command, so a backslash continuation
             # reached Gradle as a task named '\' (run 35877745743).
-            ./gradlew connectedDevDebugAndroidTest --continue --stacktrace -Pandroid.testInstrumentationRunnerArguments.notAnnotation=org.junit.Ignore
+            ./gradlew connectedDevDebugAndroidTest --continue --stacktrace -Pandroid.testInstrumentationRunnerArguments.notAnnotation=org.junit.Ignore; RC=$?; mkdir -p app/build/outputs/androidTest-results/connected/lane-logcat; adb logcat -d -v threadtime > app/build/outputs/androidTest-results/connected/lane-logcat/logcat.txt; exit $RC
 
       - name: Upload instrumented test reports
         if: always()
