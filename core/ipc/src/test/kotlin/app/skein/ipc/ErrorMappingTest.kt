@@ -263,4 +263,86 @@ class ErrorMappingTest {
 
         assertThat(messages.none { it.contains("user:") || it.contains("assistant:") }).isTrue()
     }
+
+    // ------------------------------------------------------------------
+    // skein-3yal — the wire `message` is UNTRUSTED (a compromised
+    // `:inference`/`:embedder` can send an unbounded string with embedded
+    // control characters). `toException` must sanitise it before it reaches
+    // any subclass's message, without changing the mapping itself.
+    // ------------------------------------------------------------------
+
+    /** Codes whose subclass has a slot for the service's detail. */
+    private val codesWithADetailSlot =
+        listOf(
+            ErrorCode.INVALID_MODEL,
+            ErrorCode.HASH_MISMATCH_POST_MMAP,
+            ErrorCode.TX_TOO_LARGE,
+            ErrorCode.MODEL_IN_USE,
+            ErrorCode.COMPANION_HASH_MISMATCH,
+            ErrorCode.SESSION_LOCKED,
+            ErrorCode.INTERNAL,
+        )
+
+    @Test
+    fun aHostileTenKilobyteMessageWithControlCharactersIsCappedAndSingleLine() {
+        val hostile =
+            buildString {
+                repeat(200) {
+                    append("evil-line-$it\n")
+                    append("\u001B[31mred\u001B[0m")
+                    append("\u0000")
+                }
+            }
+        check(hostile.length > 5_000) { "fixture must exceed a few KB to exercise the cap" }
+
+        for (code in codesWithADetailSlot) {
+            val message = ErrorCodes.toException(code, hostile)?.message
+            assertThat(message).isNotNull()
+            requireNotNull(message)
+
+            assertThat(message.length).isAtMost(200 + expectations.getValue(code).messageWithoutDetail!!.length + 2)
+            assertThat(message).doesNotContain("\n")
+            assertThat(message).doesNotContain("\r")
+            assertThat(message).doesNotContain("\u001B")
+            assertThat(message).doesNotContain("\u0000")
+            assertThat(message.lines()).hasSize(1)
+        }
+    }
+
+    @Test
+    fun theFixedPrefixSurvivesSanitizationOfAHostileDetail() {
+        val hostile = "\u0000\u001B[31m".repeat(1_000) + "tail"
+
+        for (code in codesWithADetailSlot) {
+            val message = ErrorCodes.toException(code, hostile)?.message
+            val prefix = expectations.getValue(code).messageWithoutDetail!!
+
+            assertThat(message).isNotNull()
+            assertThat(message).startsWith(prefix)
+        }
+    }
+
+    @Test
+    fun sanitizationDoesNotChangeTheMappingItself() {
+        val hostile = "\u0000".repeat(500)
+        val declared = declaredErrorCodes()
+
+        val mismatches =
+            declared.filterNot { (_, code) ->
+                ErrorCodes.toException(code, hostile)?.javaClass == expectations.getValue(code).type
+            }
+
+        assertThat(mismatches).isEmpty()
+    }
+
+    @Test
+    fun aCleanDetailIsStillAppendedVerbatim() {
+        // Regression guard for `aServiceDetailIsAppendedVerbatimAndNothingElseIs`:
+        // sanitization must be the identity function on clean, short input.
+        val detail = "role=tokenizer"
+
+        val message = ErrorCodes.toException(ErrorCode.MODEL_IN_USE, detail)?.message
+
+        assertThat(message).isEqualTo("model file is in use: role=tokenizer")
+    }
 }
