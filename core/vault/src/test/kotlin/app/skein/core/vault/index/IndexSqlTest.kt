@@ -95,6 +95,18 @@ public class IndexSqlTest {
     }
 
     @Test
+    public fun `UPSERT_EMBEDDING wraps the bound blob in vec_int8 for the int8 vec0 column`() {
+        // skein-2hzi: `chunks_vec.embedding` is declared `int8[256]`
+        // (001_initial.sql). A bare BLOB parameter is read by sqlite-vec
+        // as 64 float32s and the int8 column rejects it ("expected int8,
+        // but a float32 vector was provided") — the parameter must be
+        // wrapped in the `vec_int8(?)` constructor. Locks this in because
+        // the JVM fake driver cannot execute sqlite-vec to catch a
+        // regression here at runtime (see `FakeSkeinSQLiteNative`).
+        assertThat(IndexSql.UPSERT_EMBEDDING).contains("vec_int8(?)")
+    }
+
+    @Test
     public fun `vec int8 dimension matches migration DDL`() {
         // The vec0 table in `001_initial.sql` is `int8[256]`. Any drift
         // between the DDL and this constant would silently corrupt

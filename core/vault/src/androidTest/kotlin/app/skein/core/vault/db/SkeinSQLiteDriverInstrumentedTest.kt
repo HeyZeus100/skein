@@ -185,7 +185,13 @@ class SkeinSQLiteDriverInstrumentedTest {
         SkeinSQLiteDriver(key).open(dbFile.absolutePath).use { conn ->
             val connection = conn as SkeinSQLiteConnection
             connection.exec("CREATE VIRTUAL TABLE vec_round_trip USING vec0(embedding int8[256])")
-            connection.prepare("INSERT INTO vec_round_trip(rowid, embedding) VALUES(1, ?)").use { insert ->
+            // An int8-declared vec0 column needs the `vec_int8(?)`
+            // constructor around the bound parameter (skein-2hzi) — a bare
+            // 256-byte BLOB is read as 64 float32s by sqlite-vec and the
+            // column rejects it ("expected int8, but a float32 vector was
+            // provided"). `IndexSql.UPSERT_EMBEDDING` already does this in
+            // production; this test binds the same way.
+            connection.prepare("INSERT INTO vec_round_trip(rowid, embedding) VALUES(1, vec_int8(?))").use { insert ->
                 insert.bindBlob(1, vector)
                 assertThat(insert.step()).isFalse() // DONE, no row
             }
