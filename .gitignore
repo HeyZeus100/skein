@@ -41,6 +41,11 @@ replay_pid*
 *.bin
 /models/
 
+# skein-80p (E4.I2): the tiny GGUF `fetchTestModel` downloads for
+# LlamaNativeTest -- already covered by the `*.gguf` rule above; named
+# explicitly so it's obvious this is deliberate. See tools/models/README.md.
+inference-service/src/androidTest/assets/
+
 # Vault / test data
 vault.db*
 *.sqlite*
