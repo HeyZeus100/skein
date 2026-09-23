@@ -28,6 +28,29 @@
 //     negates it before handing it back as `DocumentHit.rank`, matching
 //     the "higher is better" convention `IndexStoreImpl.bm25()` already
 //     established for `ScoredChunk.score`.
+//   • `SEARCH_BODIES_BM25`'s shape (skein-gg11.10): FTS5's `bm25()` and
+//     `snippet()` may only be called from a SELECT whose FROM directly
+//     names the FTS5 table alongside the `MATCH` constraint — nothing may
+//     sit between that call and the live FTS5 cursor it reads. An earlier
+//     version wrapped `bm25(chunks_fts)`/`snippet(chunks_fts, ...)` in a
+//     `WITH ranked AS (...)` CTE that ALSO computed
+//     `ROW_NUMBER() OVER (PARTITION BY ...)` in the same SELECT: the
+//     window function stops SQLite from flattening that CTE into the
+//     outer query, so by the time `bm25()`/`snippet()` would run, the
+//     plan has already detached them from the top-level query context FTS5
+//     requires — `SkeinSQLiteException: unable to use function bm25 in the
+//     requested context` (real device only; the JVM fake driver runs no
+//     SQL and cannot catch this). The fix nests two derived tables instead
+//     of one CTE, so the aux-function call and the window function never
+//     share a SELECT: the innermost `matched` subquery is bm25()/snippet()
+//     alone against `chunks_fts MATCH ?` — textually identical in shape to
+//     `IndexSql.BM25_QUERY`, which is proven to work on-device — with no
+//     join, no window function, nothing else in scope. The middle `scored`
+//     subquery only reads `matched`'s already-materialized `bm25_rank`/
+//     `snippet` columns (plain REAL/TEXT by that point, no FTS5 cursor
+//     involved) to join `chunks` (for `doc_id`) and rank with
+//     `ROW_NUMBER()`. The outer SELECT joins `documents` and keeps `rn = 1`
+//     exactly as before.
 //   • Placeholders are always positional (`?`); the only text ever
 //     concatenated into a query is this object's own literal SQL — no user
 //     string is ever formatted into a query. FTS5 MATCH input goes through
@@ -69,19 +92,28 @@ internal object VaultSql {
             "FROM documents WHERE title LIKE ? ESCAPE '\\' ORDER BY updated_at DESC LIMIT ?"
 
     const val SEARCH_BODIES_BM25: String =
-        "WITH ranked AS (" +
-            "SELECT chunks.doc_id AS doc_id, " +
-            "bm25(chunks_fts) AS bm25_rank, " +
-            "snippet(chunks_fts, 0, '[', ']', '…', 12) AS snippet, " +
-            "ROW_NUMBER() OVER (PARTITION BY chunks.doc_id ORDER BY bm25(chunks_fts) ASC) AS rn " +
-            "FROM chunks_fts JOIN chunks ON chunks.id = chunks_fts.rowid " +
+        // Outer: documents joined onto the already-deduped `scored` rows.
+        "SELECT d.id, d.kind, d.title, d.body_md, d.created_at, d.updated_at, d.persona_id, d.frontmatter, " +
+            "d.content_hash, scored.bm25_rank, scored.snippet " +
+            "FROM (" +
+            // Middle: ROW_NUMBER() partitions by doc_id over `matched`'s
+            // already-materialized bm25_rank column — no FTS5 aux-function
+            // call at this level, so the window function is safe here.
+            "SELECT chunks.doc_id AS doc_id, matched.bm25_rank AS bm25_rank, matched.snippet AS snippet, " +
+            "ROW_NUMBER() OVER (PARTITION BY chunks.doc_id ORDER BY matched.bm25_rank ASC) AS rn " +
+            "FROM (" +
+            // Innermost: bm25()/snippet() alone against `chunks_fts MATCH
+            // ?` — same flat shape as IndexSql.BM25_QUERY, proven to work
+            // on-device. No join, no window function shares this SELECT.
+            "SELECT rowid, bm25(chunks_fts) AS bm25_rank, snippet(chunks_fts, 0, '[', ']', '…', 12) AS snippet " +
+            "FROM chunks_fts " +
             "WHERE chunks_fts MATCH ?" +
-            ") " +
-            "SELECT d.id, d.kind, d.title, d.body_md, d.created_at, d.updated_at, d.persona_id, d.frontmatter, " +
-            "d.content_hash, ranked.bm25_rank, ranked.snippet " +
-            "FROM ranked JOIN documents d ON d.id = ranked.doc_id " +
-            "WHERE ranked.rn = 1 " +
-            "ORDER BY ranked.bm25_rank ASC " +
+            ") AS matched " +
+            "JOIN chunks ON chunks.id = matched.rowid" +
+            ") AS scored " +
+            "JOIN documents d ON d.id = scored.doc_id " +
+            "WHERE scored.rn = 1 " +
+            "ORDER BY scored.bm25_rank ASC " +
             "LIMIT ?"
 
     // Bind order: 1,2 = personaId (nullable text, bound twice); 3,4 =

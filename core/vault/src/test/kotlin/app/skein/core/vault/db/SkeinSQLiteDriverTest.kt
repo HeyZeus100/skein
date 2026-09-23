@@ -137,6 +137,63 @@ class SkeinSQLiteDriverTest {
         assertThat(fake.execCalls.none { it.contains("cipher_memory_security") }).isTrue()
     }
 
+    // --- skein-gg11.10: PRAGMA foreign_keys / journal_mode must never be
+    // gated on "was a key supplied" — see SkeinSQLiteDriver's class KDoc
+    // and applyConnectionPragmas' KDoc for the on-device failure this
+    // fixes (document_revisions never cascaded because the unkeyed
+    // `:memory:` contract-test connection never ran `PRAGMA
+    // foreign_keys = ON` at all). ---
+
+    @Test
+    fun `open with no key still applies PRAGMA foreign_keys = ON and journal_mode = WAL`() {
+        val fake =
+            FakeSkeinSQLiteNative().apply {
+                fakeCipherVersion = "4.17.0 community"
+                fakeVecVersion = "v0.1.9"
+            }
+        val driver = SkeinSQLiteDriver(fake)
+
+        driver.open("vault.db").close()
+
+        assertThat(fake.execCalls).contains("PRAGMA foreign_keys = ON;")
+        assertThat(fake.execCalls).contains("PRAGMA journal_mode = WAL;")
+    }
+
+    @Test
+    fun `openWithKey with a null passphrase still applies PRAGMA foreign_keys = ON and journal_mode = WAL`() {
+        val fake =
+            FakeSkeinSQLiteNative().apply {
+                fakeCipherVersion = "4.17.0 community"
+                fakeVecVersion = "v0.1.9"
+            }
+        val driver = SkeinSQLiteDriver(fake)
+
+        driver.openWithKey("db.file", passphrase = null).close()
+
+        // This is exactly the connection shape
+        // `VaultRepositoryImplContractTest.repo()` opens (`openWithKey(":memory:",
+        // passphrase = null)`) — before this fix, neither PRAGMA ran on it,
+        // so `document_revisions`' `ON DELETE CASCADE` never fired on the
+        // real driver.
+        assertThat(fake.execCalls).contains("PRAGMA foreign_keys = ON;")
+        assertThat(fake.execCalls).contains("PRAGMA journal_mode = WAL;")
+    }
+
+    @Test
+    fun `openWithKey with a real passphrase still applies PRAGMA foreign_keys = ON and journal_mode = WAL`() {
+        val fake =
+            FakeSkeinSQLiteNative().apply {
+                fakeCipherVersion = "4.17.0 community"
+                fakeVecVersion = "v0.1.9"
+            }
+        val driver = SkeinSQLiteDriver(fake)
+
+        driver.openWithKey("db.file", passphrase = "hunter2".toByteArray()).close()
+
+        assertThat(fake.execCalls).contains("PRAGMA foreign_keys = ON;")
+        assertThat(fake.execCalls).contains("PRAGMA journal_mode = WAL;")
+    }
+
     @Test
     fun `PRAGMA journal_mode reports wal and PRAGMA foreign_keys reports 1 after keyed open`() {
         val fake =
