@@ -33,4 +33,22 @@ public object GraphTransform {
         val effectiveScale = baseScale * zoom
         return Vec2(world.x * effectiveScale, world.y * effectiveScale) + canvasCenter + pan
     }
+
+    /**
+     * The exact inverse of [worldToScreen] — bd `skein-67ak`: per-node drag
+     * pins a node to "the pointer in world space", which means every drag
+     * delta (a screen-space pointer position) must be converted back into
+     * the same world coordinates [ForceLayout]/[GraphSimulation] work in.
+     */
+    public fun screenToWorld(
+        screen: Vec2,
+        canvasCenter: Vec2,
+        baseScale: Float,
+        zoom: Float,
+        pan: Vec2,
+    ): Vec2 {
+        val effectiveScale = baseScale * zoom
+        val unpanned = screen - canvasCenter - pan
+        return Vec2(unpanned.x / effectiveScale, unpanned.y / effectiveScale)
+    }
 }
