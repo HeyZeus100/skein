@@ -59,9 +59,13 @@ public class IndexStoreImplAcceptanceTest {
     @Test
     public fun bm25DoesNotThrowOnTwentyAdversarialQueryStrings(): Unit =
         runTest {
-            val idx = freshIndex()
+            val (idx, conn) = freshIndexWithConnection()
             // Seed the corpus with something searchable so FTS5 has real
             // work to do — an empty index would trivially pass.
+            // skein-ci54: the document row must exist first —
+            // chunks.doc_id REFERENCES documents(id) under
+            // PRAGMA foreign_keys = ON.
+            seedDocument(conn, "01924a4b-4d29-7000-8000-00000000B111")
             idx.replaceChunks(
                 docId = "01924a4b-4d29-7000-8000-00000000B111",
                 chunks =
@@ -105,8 +109,11 @@ public class IndexStoreImplAcceptanceTest {
     @Test
     public fun knnReturnsExactlyKRowsOverA10000VectorCorpus(): Unit =
         runTest {
-            val idx = freshIndex()
+            val (idx, conn) = freshIndexWithConnection()
             val docId = "01924a4b-4d29-7000-8000-000000010000"
+            // skein-ci54: chunks.doc_id REFERENCES documents(id) under
+            // PRAGMA foreign_keys = ON.
+            seedDocument(conn, docId)
             val n = 10_000
             val chunks = List(n) { i -> NewChunk(ord = i, text = "chunk-$i", tokenCount = 1) }
             val ids = idx.replaceChunks(docId, chunks, "fake", 1)
@@ -168,6 +175,9 @@ public class IndexStoreImplAcceptanceTest {
         runTest {
             val (idx, conn) = freshIndexWithConnection()
             val docId = "01924a4b-4d29-7000-8000-00000000R011"
+            // skein-ci54: chunks.doc_id REFERENCES documents(id) under
+            // PRAGMA foreign_keys = ON.
+            seedDocument(conn, docId)
             val survivingIds =
                 idx.replaceChunks(
                     docId = docId,
@@ -215,8 +225,11 @@ public class IndexStoreImplAcceptanceTest {
     @Test
     public fun aCommittedReplaceChunksPublishesExactlyOneChunksReplaced(): Unit =
         runTest {
-            val idx = freshIndex()
+            val (idx, conn) = freshIndexWithConnection()
             val docId = "01924a4b-4d29-7000-8000-00000000R012"
+            // skein-ci54: chunks.doc_id REFERENCES documents(id) under
+            // PRAGMA foreign_keys = ON.
+            seedDocument(conn, docId)
             val seen = mutableListOf<IndexChange>()
             val collector =
                 backgroundScope.launch(UnconfinedTestDispatcher(testScheduler)) {
@@ -241,6 +254,30 @@ public class IndexStoreImplAcceptanceTest {
         }
 
     // ------------------------------------------------------------------
+
+    /**
+     * Precondition helper (skein-ci54): inserts a minimal `documents` row
+     * for [docId] so a subsequent `replaceChunks(docId, ...)` call
+     * satisfies `chunks.doc_id REFERENCES documents(id) ON DELETE CASCADE`
+     * (`001_initial.sql`) under `PRAGMA foreign_keys = ON` (skein-gg11.10).
+     * Production always creates the document through `VaultRepository`
+     * before RAG ingest ever calls `IndexStore.replaceChunks`; this
+     * fixture never did, which is exactly the fixture debt skein-ci54
+     * closes. Columns beyond `id`/`kind`/`title`/timestamps are
+     * irrelevant to every test in this file.
+     */
+    private fun seedDocument(
+        conn: SkeinSQLiteConnection,
+        docId: String,
+    ) {
+        conn
+            .prepare(
+                "INSERT INTO documents(id, kind, title, created_at, updated_at) VALUES (?, 'note', 'seed', 0, 0)",
+            ).use { stmt ->
+                stmt.bindText(1, docId)
+                stmt.step()
+            }
+    }
 
     private fun freshIndex(): IndexStoreImpl = freshIndexWithConnection().first
 

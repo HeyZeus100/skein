@@ -14,6 +14,7 @@
 package app.skein.testing
 
 import app.skein.core.model.ChunkId
+import app.skein.core.model.DocId
 import app.skein.core.model.Edge
 import app.skein.core.model.EdgeKind
 import app.skein.core.model.IndexChange
@@ -35,6 +36,32 @@ public abstract class IndexStoreContractTest {
     /** Fresh index per test method. */
     protected abstract fun index(): IndexStore
 
+    /**
+     * Precondition helper (skein-ci54): creates a `documents` row for
+     * [docId] against the same backing store [index] just opened, so a
+     * subsequent `replaceChunks(docId, ...)` call satisfies
+     * `chunks.doc_id REFERENCES documents(id) ON DELETE CASCADE`
+     * (`001_initial.sql`) under `PRAGMA foreign_keys = ON` (skein-gg11.10 —
+     * the pragma now runs on every connection, matching production, which
+     * is exactly why the fixtures below can no longer skip this row the
+     * way they used to). `IndexStore` itself has no `documents` table
+     * access — a real ingest pass always creates the document (via
+     * `VaultRepository`) before calling `IndexStore.replaceChunks` — so
+     * each concrete subclass seeds the row through whatever backs its own
+     * [index]: `IndexStoreImplContractTest` inserts directly on the SQL
+     * connection it opened; `InMemoryIndexStoreTest` is a documented no-op
+     * because `InMemoryIndexStore` has no `documents` table and never
+     * enforced this key (see that class's override for why).
+     *
+     * Not needed before a `replaceEdges`/`edgesTo`/`neighborhood` call:
+     * `edges` carries no foreign key on `src_id`/`dst_id` at all
+     * (`001_initial.sql` — deliberately unenforced, per `003_document_
+     * revisions.sql`'s header note on `edges.src_id`/`dst_id`), and a node
+     * id there may be a bare document UUID, an `entity:<id>`, or a
+     * `tag:<name>` (see `Edge`'s KDoc), so those calls need no parent row.
+     */
+    protected abstract fun seedDocument(docId: DocId): Unit
+
     // Orthogonal-ish int8 vectors: e0 concentrated on axis 0, e1 on axis 1.
     // Norm is small but nonzero → cosine is well-defined.
     private fun basis(axis: Int): ByteArray =
@@ -54,6 +81,7 @@ public abstract class IndexStoreContractTest {
         runTest {
             val idx = index()
             val docId = "01924a4b-4d29-7000-8000-00000000D0C1"
+            seedDocument(docId)
             val firstIds: List<ChunkId> =
                 idx.replaceChunks(
                     docId = docId,
@@ -93,6 +121,8 @@ public abstract class IndexStoreContractTest {
             val idx = index()
             val docA = "01924a4b-4d29-7000-8000-00000000A0A0"
             val docB = "01924a4b-4d29-7000-8000-00000000B0B0"
+            seedDocument(docA)
+            seedDocument(docB)
             val idsA =
                 idx.replaceChunks(
                     docId = docA,
@@ -134,6 +164,7 @@ public abstract class IndexStoreContractTest {
         runTest {
             val idx = index()
             val docId = "01924a4b-4d29-7000-8000-00000000F0F1"
+            seedDocument(docId)
 
             val ids =
                 idx.replaceChunks(
@@ -155,6 +186,7 @@ public abstract class IndexStoreContractTest {
         runTest {
             val idx = index()
             val docId = "01924a4b-4d29-7000-8000-00000000F0F2"
+            seedDocument(docId)
 
             val ids =
                 idx.replaceChunks(
@@ -175,6 +207,7 @@ public abstract class IndexStoreContractTest {
         runTest {
             val idx = index()
             val docId = "01924a4b-4d29-7000-8000-00000000F0F3"
+            seedDocument(docId)
             idx.replaceChunks(
                 docId = docId,
                 chunks = listOf(NewChunk(ord = 0, text = "alpha", tokenCount = 1, byteStart = 0, byteEnd = 5)),
@@ -198,6 +231,7 @@ public abstract class IndexStoreContractTest {
         runTest {
             val idx = index()
             val docId = "01924a4b-4d29-7000-8000-00000000C1C1"
+            seedDocument(docId)
             idx.replaceChunks(
                 docId = docId,
                 chunks =
@@ -299,6 +333,7 @@ public abstract class IndexStoreContractTest {
         runTest {
             val idx = index()
             val docId = "01924a4b-4d29-7000-8000-00000000E0E1"
+            seedDocument(docId)
             val seen = collectChanges(idx)
 
             idx.replaceChunks(
@@ -319,6 +354,7 @@ public abstract class IndexStoreContractTest {
         runTest {
             val idx = index()
             val docId = "01924a4b-4d29-7000-8000-00000000E0E2"
+            seedDocument(docId)
             idx.replaceChunks(
                 docId = docId,
                 chunks = listOf(NewChunk(ord = 0, text = "alpha", tokenCount = 1)),
@@ -369,6 +405,7 @@ public abstract class IndexStoreContractTest {
         runTest {
             val idx = index()
             val docId = "01924a4b-4d29-7000-8000-00000000E0E5"
+            seedDocument(docId)
             val ids =
                 idx.replaceChunks(
                     docId = docId,
@@ -389,6 +426,8 @@ public abstract class IndexStoreContractTest {
             val idx = index()
             val docA = "01924a4b-4d29-7000-8000-00000000E0E6"
             val docB = "01924a4b-4d29-7000-8000-00000000E0E7"
+            seedDocument(docA)
+            seedDocument(docB)
             val seen = collectChanges(idx)
 
             // Two chunks in ONE call must still produce exactly one event —
@@ -430,6 +469,7 @@ public abstract class IndexStoreContractTest {
         runTest {
             val idx = index()
             val docId = "01924a4b-4d29-7000-8000-00000000E0E8"
+            seedDocument(docId)
             idx.replaceChunks(
                 docId = docId,
                 chunks = listOf(NewChunk(ord = 0, text = "alpha", tokenCount = 1)),

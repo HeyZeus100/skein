@@ -22,6 +22,7 @@ import app.skein.core.model.DocumentKind
 import app.skein.core.model.Locator
 import app.skein.core.model.NewDocument
 import app.skein.core.model.NewMessage
+import app.skein.core.model.PersonaId
 import app.skein.core.model.RevisionHashing
 import app.skein.core.model.Role
 import app.skein.core.model.TimelineFilter
@@ -50,6 +51,25 @@ public abstract class VaultRepositoryContractTest {
      * temp DB.
      */
     protected abstract fun repo(): VaultRepository
+
+    /**
+     * Precondition helper (skein-ci54): creates a `personas` row for [id]
+     * against the same backing store the most recent [repo] call opened,
+     * so a document created afterward with `personaId = id` satisfies
+     * `documents.persona_id REFERENCES personas(id)` (`001_initial.sql`)
+     * under `PRAGMA foreign_keys = ON` (skein-gg11.10 — the pragma now
+     * runs on every connection, matching production). `VaultRepository`
+     * itself owns no persona CRUD (that is `PersonaService`'s table), so
+     * each concrete subclass seeds the row through whatever backs its own
+     * [repo]: the SQL-backed `VaultRepositoryImplContractTest` inserts
+     * directly on the connection it opened; `InMemoryVaultRepositoryTest`
+     * is a documented no-op because `InMemoryVaultRepository` never
+     * tracks or enforces this key (see that class's override for why).
+     *
+     * Call [repo] first — `seedPersona` targets whatever backing store the
+     * most recent [repo] call opened.
+     */
+    protected abstract fun seedPersona(id: PersonaId): Unit
 
     // ------------------------------------------------------------------
     // AC: create→get round-trip preserves frontmatter `id`
@@ -115,6 +135,10 @@ public abstract class VaultRepositoryContractTest {
             val r = repo()
             val alice = "01924a4b-4d29-7000-8000-00000000A1CE"
             val bob = "01924a4b-4d29-7000-8000-00000000B0B0"
+            // skein-ci54: documents.persona_id REFERENCES personas(id)
+            // under PRAGMA foreign_keys = ON.
+            seedPersona(alice)
+            seedPersona(bob)
             val d1 =
                 r.createDocument(
                     NewDocument(kind = DocumentKind.NOTE, title = "d1", bodyMd = "1", personaId = alice),

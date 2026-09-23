@@ -11,6 +11,7 @@
 package app.skein.core.vault.index
 
 import androidx.test.ext.junit.runners.AndroidJUnit4
+import app.skein.core.model.DocId
 import app.skein.core.model.IndexStore
 import app.skein.core.vault.db.SkeinSQLiteConnection
 import app.skein.core.vault.db.SkeinSQLiteDriver
@@ -22,6 +23,11 @@ import org.junit.runner.RunWith
 @RunWith(AndroidJUnit4::class)
 public class IndexStoreImplContractTest : IndexStoreContractTest() {
     private val openImpls: MutableList<IndexStoreImpl> = mutableListOf()
+
+    // skein-ci54: kept alongside `openImpls` (same connection, same
+    // lifetime) so `seedDocument` can insert on the connection the most
+    // recent `index()` call opened.
+    private val openConnections: MutableList<SkeinSQLiteConnection> = mutableListOf()
 
     @After
     public fun tearDown() {
@@ -36,6 +42,26 @@ public class IndexStoreImplContractTest : IndexStoreContractTest() {
             }
         }
         openImpls.clear()
+        openConnections.clear()
+    }
+
+    /**
+     * skein-ci54: `IndexStore` has no `documents` table access, so this
+     * inserts a minimal row directly on the same connection `index()` just
+     * opened — the id/kind/title/timestamps beyond `id` are irrelevant to
+     * every case in the shared suite; only the row's existence matters for
+     * `chunks.doc_id REFERENCES documents(id) ON DELETE CASCADE` under
+     * `PRAGMA foreign_keys = ON`.
+     */
+    override fun seedDocument(docId: DocId) {
+        openConnections
+            .last()
+            .prepare(
+                "INSERT INTO documents(id, kind, title, created_at, updated_at) VALUES (?, 'note', 'seed', 0, 0)",
+            ).use { stmt ->
+                stmt.bindText(1, docId)
+                stmt.step()
+            }
     }
 
     override fun index(): IndexStore {
@@ -63,6 +89,7 @@ public class IndexStoreImplContractTest : IndexStoreContractTest() {
         }
         val impl = IndexStoreImpl(conn)
         openImpls += impl
+        openConnections += conn
         return impl
     }
 
