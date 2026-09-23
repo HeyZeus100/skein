@@ -261,14 +261,14 @@ abstract class FetchTestModelTask : DefaultTask() {
 // for the richer manifest this is NOT trying to be).
 val testModelLockFile = rootProject.file("tools/models/test-model.lock")
 val testModelLock: Map<String, String> =
-    testModelLockFile.readLines()
+    testModelLockFile
+        .readLines()
         .map { it.trim() }
         .filter { it.isNotEmpty() && !it.startsWith("#") }
         .mapNotNull { line ->
             val idx = line.indexOf('=')
             if (idx < 0) null else line.substring(0, idx).trim() to line.substring(idx + 1).trim()
-        }
-        .toMap()
+        }.toMap()
 
 val fetchTestModel =
     tasks.register<FetchTestModelTask>("fetchTestModel") {
