@@ -19,6 +19,8 @@ import app.skein.core.vault.export.ExportServiceImpl
 import app.skein.feature.editor.AutosaveStatus
 import app.skein.feature.editor.EditorState
 import app.skein.feature.editor.WikilinkTarget
+import app.skein.feature.editor.autocomplete.Suggestion
+import app.skein.feature.editor.autocomplete.TitleMatcher
 import app.skein.feature.editor.backlinks.BacklinksState
 import app.skein.feature.editor.share.SaveAsFormat
 import app.skein.feature.editor.share.SaveAsIntents
@@ -247,6 +249,36 @@ public class NoteTabState(
                 .first()
             onPinRequested()
         }
+    }
+
+    /**
+     * bd `skein-pnqo` (`E7.I5` wiring): backs [SkeinEditor][app.skein.feature.editor.SkeinEditor]'s
+     * `wikilinkSuggest` — this is the one place in `:feature:editor` allowed
+     * to touch [VaultRepository] (see this class's own header), so the `[[`
+     * popup's title lookup lives here rather than in [NoteTab]. Capped at
+     * [TitleMatcher.DEFAULT_LIMIT] and excludes this note's own [title] — a
+     * self-link resolves fine through [onWikilinkClicked] but offering it as
+     * a suggestion for "the note you're already in" is confusing noise, not
+     * a real navigation target.
+     */
+    public suspend fun searchWikilinkSuggestions(query: String): List<Suggestion> =
+        vaultRepository
+            .searchTitles(query, limit = TitleMatcher.DEFAULT_LIMIT)
+            .map { it.title }
+            .filter { it != title }
+            .map { Suggestion(title = it) }
+
+    /**
+     * bd `skein-pnqo`: backs [SkeinEditor][app.skein.feature.editor.SkeinEditor]'s
+     * `onCreateWikilink` — the popup's "Create" row already inserted
+     * `[[title]]` into the buffer ([app.skein.feature.editor.autocomplete.WikilinkAutocompleteState.confirm])
+     * before invoking this callback; all that's left is persisting an empty
+     * `NOTE` with that title so a later tap on that same link resolves it
+     * through [onWikilinkClicked]'s `findByTitle` instead of creating a
+     * second document with the same title.
+     */
+    public suspend fun createWikilink(title: String) {
+        vaultRepository.createDocument(NewDocument(kind = DocumentKind.NOTE, title = title, bodyMd = ""))
     }
 
     /** Backlink row tap hands back only a [DocId] — fetch its title for the tab label before opening. */

@@ -194,6 +194,13 @@ public fun NoteTab(
                     state = state.editorState,
                     modifier = Modifier.weight(1f).fillMaxWidth(),
                     markdownStyle = markdownStyle,
+                    // bd skein-pnqo: without these two, SkeinEditor takes its
+                    // wikilinkSuggest == null branch and never composes the
+                    // `[[` popup at all (hardware-verified — see that bead).
+                    // NoteTabState is the one place in this module allowed to
+                    // touch VaultRepository, so both lambdas just forward.
+                    wikilinkSuggest = state::searchWikilinkSuggestions,
+                    onCreateWikilink = state::createWikilink,
                 )
         }
         BacklinksDrawer(state = state.backlinksState, modifier = Modifier.fillMaxWidth())

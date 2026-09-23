@@ -1,5 +1,8 @@
 package app.skein.feature.editor
 
+import androidx.compose.foundation.gestures.awaitEachGesture
+import androidx.compose.foundation.gestures.awaitFirstDown
+import androidx.compose.foundation.gestures.waitForUpOrCancellation
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
@@ -14,6 +17,8 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.SolidColor
+import androidx.compose.ui.input.pointer.PointerEventPass
+import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.TextLayoutResult
@@ -76,18 +81,27 @@ import kotlin.math.roundToInt
  * [EditorState.idEditRejected]). A document with no frontmatter block never
  * shows a chip and the field behaves exactly as before this feature landed.
  *
+ * ## Wikilink tap routing (bd `skein-pnqo`)
+ *
+ * [LivePreviewTransformer] emits a `TAG_WIKILINK` string annotation over
+ * each rendered link's *transformed* text. A `pointerInput` on the field
+ * (present in both branches below, keyed off the [TextLayoutResult] that
+ * `onTextLayout` captures) peeks at every touch during
+ * [PointerEventPass.Initial] — strictly before `BasicTextField`'s own
+ * tap-to-place-cursor gesture, which runs on the default `Main` pass —
+ * maps the touch to a transformed-text offset with
+ * [TextLayoutResult.getOffsetForPosition], and looks up a `TAG_WIKILINK`
+ * annotation there. Only when one is found does it consume the gesture and
+ * call [EditorState.onLinkOpen]; otherwise the touch is left completely
+ * untouched so the field's own cursor placement/selection behaves exactly
+ * as if this modifier weren't there. Because [LivePreviewTransformer] never
+ * emits `TAG_WIKILINK` on the caret's own (raw-source) line, a link is only
+ * ever tappable on a *rendered* line — matching Obsidian.
+ *
  * ## What this composable does not do (yet)
  *
  * - Slash commands — `E7.I6` / bd `skein-6sd`.
  * - Selection-menu inline AI — `E7.I7` / bd `skein-2cd`.
- * - Wikilink tap routing — the transformer already emits a `TAG_WIKILINK`
- *   string annotation over each rendered link (see
- *   [LivePreviewTransformer]), but wiring a tap detector on top of a
- *   `VisualTransformation`-driven `BasicTextField` needs a
- *   [androidx.compose.foundation.text.ClickableText]-style overlay
- *   `Layout` that `E7.I5`'s autocomplete popup issue is the natural home
- *   for. [EditorState.onLinkOpen] is defined and passes through untouched
- *   so that later wiring is a pure-additive change to this file.
  */
 @Composable
 public fun SkeinEditor(
@@ -129,16 +143,45 @@ public fun SkeinEditor(
         }
     }
 
+    var textLayoutResult by remember { mutableStateOf<TextLayoutResult?>(null) }
+
+    // bd skein-pnqo: shared by both branches below — see the class kdoc's
+    // "Wikilink tap routing" section for why PointerEventPass.Initial is
+    // what keeps this from stealing the field's own cursor-placement tap.
+    val wikilinkTapModifier =
+        Modifier.pointerInput(state) {
+            awaitEachGesture {
+                val down = awaitFirstDown(pass = PointerEventPass.Initial)
+                val target =
+                    textLayoutResult?.let { layout ->
+                        val transformedOffset = layout.getOffsetForPosition(down.position)
+                        layout.layoutInput.text
+                            .getStringAnnotations(TAG_WIKILINK, transformedOffset, transformedOffset)
+                            .firstOrNull()
+                            ?.item
+                    }
+                if (target != null) {
+                    down.consume()
+                    val up = waitForUpOrCancellation(pass = PointerEventPass.Initial)
+                    up?.consume()
+                    if (up != null) {
+                        state.onLinkOpen(WikilinkTarget(title = target))
+                    }
+                }
+            }
+        }
+
     if (wikilinkSuggest == null) {
         Column {
             chip()
             SecureBasicTextField(
                 value = state.value,
                 onValueChange = { newValue -> state.onValueChange(newValue) },
-                modifier = modifier.padding(4.dp).testTag(testTag),
+                modifier = modifier.padding(4.dp).testTag(testTag).then(wikilinkTapModifier),
                 textStyle = MaterialTheme.typography.bodyLarge,
                 visualTransformation = transformation,
                 cursorBrush = SolidColor(cursorColor),
+                onTextLayout = { layoutResult -> textLayoutResult = layoutResult },
             )
         }
         return
@@ -148,7 +191,6 @@ public fun SkeinEditor(
     val autocompleteState = rememberWikilinkAutocompleteState(host, wikilinkSuggest, onCreateWikilink)
     LaunchedEffect(state.value) { autocompleteState.onTextChanged() }
 
-    var textLayoutResult by remember { mutableStateOf<TextLayoutResult?>(null) }
     val transformedCursorOffset =
         remember(state.value, markdownStyle, state.knownWikilinkTitles, frontmatterExpanded) {
             transform(state.source, state.cursor, markdownStyle, state.knownWikilinkTitles, frontmatterExpanded)
@@ -175,7 +217,8 @@ public fun SkeinEditor(
                     modifier
                         .padding(4.dp)
                         .testTag(testTag)
-                        .wikilinkAutocompleteKeyEvents(autocompleteState),
+                        .wikilinkAutocompleteKeyEvents(autocompleteState)
+                        .then(wikilinkTapModifier),
                 textStyle = MaterialTheme.typography.bodyLarge,
                 visualTransformation = transformation,
                 cursorBrush = SolidColor(cursorColor),
