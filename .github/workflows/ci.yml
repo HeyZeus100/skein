@@ -92,6 +92,15 @@ jobs:
       - name: JNI symbol surface (libskein_llama.so)
         run: ./tools/ci/jni-symbols.sh
 
+      # skein-8ryv: the sqlite JNI surface gate. Fails if the `Java_` symbols
+      # exported by libskein_sqlite_jni.so are not EXACTLY the `external
+      # fun`s declared on SkeinSQLiteNativeImpl (a mismatch is the
+      # UnsatisfiedLinkError on nativeOpen that only a device run caught —
+      # the vault never opened). assembleFossDebug above builds
+      # core/vault's arm64-v8a .so.
+      - name: JNI symbol surface (libskein_sqlite_jni.so)
+        run: ./tools/ci/sqlite-jni-symbols.sh
+
       # E4.I3 / skein-nxk: the content-logging gate that bead's acceptance
       # criteria name. The isolated services are the processes that hold
       # decrypted prompts, retrieved document text and generated tokens at
