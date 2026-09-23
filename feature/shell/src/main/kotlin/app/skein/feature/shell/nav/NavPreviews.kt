@@ -11,6 +11,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import app.skein.feature.shell.SkeinApp
 import app.skein.feature.shell.theme.SkeinTheme
 import app.skein.feature.shell.theme.SkeinThemeMode
 import us.aherrera.skein.core.model.DocumentKind
@@ -153,4 +154,26 @@ private fun SearchResultsUnfoldedPreview() {
             SearchResults(results = sampleSearchResults, onResultClick = {})
         }
     }
+}
+
+// ---- skein-1vfg: real system bars over the real shell, not the placeholder scaffold above -----
+
+/**
+ * The real [SkeinApp] (not [NavPreviewScaffold]'s nav-only stand-in) with
+ * `showSystemUi = true`, so the status bar + clock actually render — the
+ * only way a `@Preview` can show whether the command bar and its hamburger
+ * clear them (skein-1vfg: they didn't, before `WindowInsets.safeDrawing` was
+ * applied at `SkeinApp`'s root). Folded/phone width.
+ */
+@Preview(name = "SkeinApp with system bars — folded ~400dp", widthDp = 400, heightDp = 800, showSystemUi = true)
+@Composable
+private fun SkeinAppSystemBarsFoldedPreview() {
+    SkeinApp(themeMode = SkeinThemeMode.DARK)
+}
+
+/** Same real shell, unfolded/dual-pane width (Fold open). */
+@Preview(name = "SkeinApp with system bars — unfolded ~1000dp", widthDp = 1000, heightDp = 900, showSystemUi = true)
+@Composable
+private fun SkeinAppSystemBarsUnfoldedPreview() {
+    SkeinApp(themeMode = SkeinThemeMode.DARK)
 }

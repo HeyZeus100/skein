@@ -1,8 +1,12 @@
 package app.skein.feature.shell
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.safeDrawing
+import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
@@ -239,7 +243,21 @@ fun SkeinApp(
                 )
             }
 
-        Box(Modifier.fillMaxSize()) {
+        // skein-1vfg: targetSdk 37 forces edge-to-edge on Android 15+, and
+        // nothing below handled window insets, so the command bar and its
+        // hamburger glyph rendered half under the status bar/clock. The
+        // background is painted to the true window edges (this `Box`, via
+        // `.background(...)`, is the outermost layer) while the CONTENT —
+        // this `Column`, everything `CommandBarHost`/`AdaptivePaneHost`
+        // render — is inset by `WindowInsets.safeDrawing` (status bar,
+        // display cutout, navigation bar). `safeDrawing` already unions
+        // `ime()` in too, so the command bar's palette/search results and
+        // any focused text field below them clear the keyboard the same
+        // way, with no second `imePadding()` call. `overlay` (e.g.
+        // `GraphScreen`) insets itself via the same
+        // `app.skein.feature.shell.layout.EdgeToEdgeSurface` this modifier
+        // pair is shared with.
+        Box(Modifier.fillMaxSize().background(MaterialTheme.colorScheme.background)) {
             NavDrawer(
                 open = navState.drawerOpen,
                 activeDestination = navState.destination,
@@ -250,6 +268,7 @@ fun SkeinApp(
                     modifier =
                         Modifier
                             .fillMaxSize()
+                            .windowInsetsPadding(WindowInsets.safeDrawing)
                             .testTag(ShellTestTags.SKEIN_SHELL_ROOT),
                 ) {
                     CommandBarHost(
