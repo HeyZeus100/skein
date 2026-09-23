@@ -8,16 +8,17 @@
 // and persists the envelope. The user therefore confirms TWICE — once per
 // factor — and the explanation says so up front.
 //
-// PromptInfo: `AndroidBiometricAuthenticator` presents the SAME `PromptInfo`
-// for both wrap prompts, and the second wraps under a key bound to
-// `AUTH_DEVICE_CREDENTIAL`, so the prompt must allow `DEVICE_CREDENTIAL` as
-// well as `BIOMETRIC_STRONG` (androidx.biometric supports crypto-backed
-// device-credential prompts from API 30, this app's minSdk). A prompt that
-// allows device credential may not carry a negative button (the builder
-// throws), which is why — unlike the unlock screen — none is set here.
-// Deriving a factor-specific `PromptInfo` inside `:core:vault` is a
-// follow-up noted on the bd; the shape here is what the provider's current
-// contract supports.
+// PromptInfo: this screen builds ONE `PromptInfo` and `VaultKeyProvider.setup`
+// passes it unchanged to both Layer-0 wrap prompts (biometric-bound, then
+// device-credential-bound) — but `AndroidBiometricAuthenticator.authenticate`
+// (skein-f9ls) derives a factor-narrowed `PromptInfo` from it per prompt, so
+// the biometric wrap only ever offers `BIOMETRIC_STRONG` and the
+// device-credential wrap only ever offers `DEVICE_CREDENTIAL`. That
+// derivation also supplies the "Step 1 of 2" / "Step 2 of 2" subtitle since
+// no subtitle is set below — see `promptInfoForFactor`'s KDoc in
+// `:core:vault`. `setAllowedAuthenticators` here only needs to satisfy this
+// PromptInfo's OWN `.build()` validation (which requires a supported
+// combination), not describe what either prompt actually shows.
 //
 // No destructive path exists on this screen: a refused setup (an envelope
 // already exists, readable or not) routes the host to unlock via
@@ -87,7 +88,6 @@ public fun VaultSetupScreen(
     onAlreadyInitialised: () -> Unit,
     modifier: Modifier = Modifier,
     promptTitle: String = "Set up your vault",
-    promptSubtitle: String = "Confirm with your fingerprint or face, then with your screen lock",
 ) {
     val context = LocalContext.current
     val hostActivity = remember(context) { context.findFragmentActivity() }
@@ -95,12 +95,14 @@ public fun VaultSetupScreen(
     val currentOnProvisioned by rememberUpdatedState(onProvisioned)
     val currentOnAlreadyInitialised by rememberUpdatedState(onAlreadyInitialised)
 
+    // No subtitle is set here — `promptInfoForFactor` (skein-f9ls) supplies
+    // the per-prompt "Step 1 of 2" / "Step 2 of 2" text instead. See the
+    // header comment above.
     val promptInfo =
-        remember(promptTitle, promptSubtitle) {
+        remember(promptTitle) {
             BiometricPrompt.PromptInfo
                 .Builder()
                 .setTitle(promptTitle)
-                .setSubtitle(promptSubtitle)
                 .setAllowedAuthenticators(
                     BiometricManager.Authenticators.BIOMETRIC_STRONG or
                         BiometricManager.Authenticators.DEVICE_CREDENTIAL,
