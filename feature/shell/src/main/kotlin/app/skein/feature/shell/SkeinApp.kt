@@ -27,6 +27,7 @@ import app.skein.feature.shell.layout.classifyWidth
 import app.skein.feature.shell.layout.computeAdaptiveLayout
 import app.skein.feature.shell.layout.rememberAdaptiveLayoutState
 import app.skein.feature.shell.layout.rememberFoldPosture
+import app.skein.feature.shell.nav.Command
 import app.skein.feature.shell.nav.CommandBarHost
 import app.skein.feature.shell.nav.CommandBarState
 import app.skein.feature.shell.nav.CommandRegistry
@@ -34,6 +35,7 @@ import app.skein.feature.shell.nav.CommandScope
 import app.skein.feature.shell.nav.Destination
 import app.skein.feature.shell.nav.NavDrawer
 import app.skein.feature.shell.nav.NavState
+import app.skein.feature.shell.nav.chatCommand
 import app.skein.feature.shell.nav.newNoteCommand
 import app.skein.feature.shell.nav.rememberNavState
 import app.skein.feature.shell.split.rememberSplitCoordinator
@@ -168,6 +170,30 @@ fun SkeinApp(
         onOpenDocument: (docId: String, title: String) -> Unit,
         flushRegistry: FlushRegistry,
     ) -> Unit = { tab, _, _, _ -> MockTabContent(tab) },
+    // skein-whg8: same slot shape/reasoning as [noteTabContent] — real chat
+    // content lives in `:feature:chat`, which this module cannot depend on
+    // (`ChatScreen` itself depends on `:feature:shell` for `SkeinTheme`/
+    // tokens, so the edge cannot run the other way). `openPreview` mirrors
+    // `TabsState.openPreview`'s own signature exactly (docId/title/kind in,
+    // the new tab's [TabId] out) so `:app`'s adapter for `feature.chat`'s
+    // `TabController` seam is a one-line delegation, not a reimplementation.
+    chatTabContent: @Composable (
+        tab: Tab,
+        openPreview: (docId: String, title: String, kind: TabKind) -> TabId,
+    ) -> Unit = { tab, _ -> MockTabContent(tab) },
+    // skein-whg8: `/import model` and `/models` (:app-only business logic —
+    // SAF picker, `ModelManager`) alongside `/chat` (a shell builtin, see
+    // `BuiltinCommands.kt`) in the same GLOBAL registration below.
+    // `CommandRegistry.register` REPLACES a scope's whole list, so every
+    // GLOBAL command this shell knows about is assembled in one place.
+    extraCommands: List<Command> = emptyList(),
+    // skein-whg8 (skein-12c's one-line placeholder chip): the command bar's
+    // model status glyph — previously hardcoded here as "qwen"/true. `:app`
+    // now derives it from the open session's `ModelServices.engineStatus`;
+    // these defaults keep every pre-existing preview/test that doesn't pass
+    // them rendering exactly as before.
+    modelStatusName: String = "qwen",
+    modelStatusActive: Boolean = true,
     timelinePane: (
         @Composable (
             expanded: Boolean,
@@ -222,11 +248,14 @@ fun SkeinApp(
         // NPE if run. `E7.I6` registers `CommandScope.EDITOR` commands into
         // this same registry without touching this effect.
         val commandRegistry = remember { CommandRegistry() }
-        LaunchedEffect(vaultRepository, personaId, primaryTabsState) {
+        LaunchedEffect(vaultRepository, personaId, primaryTabsState, extraCommands) {
             if (vaultRepository != null) {
                 commandRegistry.register(
                     CommandScope.GLOBAL,
-                    listOf(newNoteCommand(vaultRepository, personaId, primaryTabsState)),
+                    listOf(
+                        newNoteCommand(vaultRepository, personaId, primaryTabsState),
+                        chatCommand(vaultRepository, personaId, primaryTabsState),
+                    ) + extraCommands,
                 )
             } else {
                 commandRegistry.unregister(CommandScope.GLOBAL)
@@ -274,8 +303,8 @@ fun SkeinApp(
                     CommandBarHost(
                         navState = navState,
                         commandBarState = commandBarState,
-                        modelName = "qwen",
-                        modelActive = true,
+                        modelName = modelStatusName,
+                        modelActive = modelStatusActive,
                     )
                     AdaptivePaneHost(
                         layoutState = layoutState,
@@ -308,6 +337,7 @@ fun SkeinApp(
                                         tabsState = primaryTabsState,
                                         destinationContent = destinationContent,
                                         noteTabContent = noteTabContent,
+                                        chatTabContent = chatTabContent,
                                         flushRegistry = flushRegistry,
                                         navState = navState,
                                     )
@@ -325,6 +355,7 @@ fun SkeinApp(
                                         tabsState = secondaryTabsState,
                                         destinationContent = destinationContent,
                                         noteTabContent = noteTabContent,
+                                        chatTabContent = chatTabContent,
                                         flushRegistry = flushRegistry,
                                         navState = navState,
                                     )
@@ -364,6 +395,10 @@ private fun tabContent(
         onOpenDocument: (docId: String, title: String) -> Unit,
         flushRegistry: FlushRegistry,
     ) -> Unit,
+    chatTabContent: @Composable (
+        tab: Tab,
+        openPreview: (docId: String, title: String, kind: TabKind) -> TabId,
+    ) -> Unit,
     flushRegistry: FlushRegistry,
     navState: NavState,
 ) {
@@ -377,6 +412,10 @@ private fun tabContent(
                 },
                 flushRegistry,
             )
+        TabKind.CHAT ->
+            chatTabContent(tab) { docId, title, kind ->
+                tabsState.openPreview(Tab(TabId(UUID.randomUUID().toString()), docId, title, kind))
+            }
         else -> destinationContent(navState.destination)
     }
 }

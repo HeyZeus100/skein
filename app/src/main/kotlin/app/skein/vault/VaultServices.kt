@@ -5,10 +5,15 @@
 package app.skein.vault
 
 import android.content.Context
+import android.content.pm.PackageManager
+import android.os.Build
 import android.os.PowerManager
+import androidx.core.content.ContextCompat
 import androidx.work.WorkManager
 import app.skein.core.export.pdf.PdfStaging
 import app.skein.core.inference.thermal.ThermalGovernor
+import app.skein.core.model.EngineState
+import app.skein.core.model.ModelStatus
 import app.skein.core.vault.key.VaultKeyProvider
 import app.skein.core.vault.key.VaultKeyProviders
 import app.skein.core.vault.lifecycle.VaultPaths
@@ -21,12 +26,16 @@ import app.skein.ingest.IngestPipelines
 import app.skein.ingest.IngestScheduler
 import app.skein.ingest.ThermalIngestPacer
 import app.skein.ingest.WorkManagerIngestWorkPort
+import app.skein.notify.ModelNotifier
 import app.skein.system.SecurityPrefs
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.flatMapLatest
+import kotlinx.coroutines.flow.flowOf
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 import java.io.File
 import java.time.Duration
@@ -118,6 +127,14 @@ class VaultServices(
                     // E2.I8 (skein-qdo): real `AssetManager` for
                     // `ImportServiceImpl.importPdf`'s `PDFBoxResourceLoader.init`.
                     context = app,
+                    // skein-whg8: `LlamaCppEngine`'s per-request epoch,
+                    // read fresh (never captured) from the live
+                    // `UnlockManager` — see `LlamaCppEngine`'s own
+                    // `sessionEpoch` ctor doc for why a snapshot is the bug
+                    // this shape prevents. `0L` (the engine's own
+                    // `EPOCH_NONE`) while locked/recovering — no request can
+                    // reach the engine then anyway.
+                    sessionEpoch = { unlockManager.authorizationToken.value?.epoch ?: 0L },
                 )
             val bootstrap =
                 VaultBootstrap(
@@ -130,6 +147,7 @@ class VaultServices(
             wireLockPolicy(app, unlockManager, scope)
             val ingest = wireIngest(app, unlockManager, bootstrap, scope)
             val exportStages = wireExportStages(app, unlockManager, bootstrap, scope)
+            wireModelNotifications(app, bootstrap, scope)
             return VaultServices(keyProvider, unlockManager, bootstrap, ingest, vaultReset, exportStages)
         }
 
@@ -180,6 +198,44 @@ class VaultServices(
                 pipelines = { session, pace -> IngestPipelines.forSession(session, pace) },
                 scope = scope,
             ).also { it.start() }
+        }
+
+        /**
+         * skein-whg8: drives [ModelNotifier] by observing the open
+         * session's `ModelServices.engineStatus` — `LlamaCppEngine` itself must
+         * not call the notifier (`:core:inference` has no edge into `:app`;
+         * see that class's own header), so this is the one place that does,
+         * exactly the way [wireIngest]'s scheduler and [wireExportStages]'s
+         * coordinator already watch [bootstrap]'s session flow rather than a
+         * snapshot. `flatMapLatest` re-subscribes to the current session's
+         * status flow (or a fixed "no session" one) every time the session
+         * itself changes, so a lock/re-unlock cycle can never leave this
+         * collector attached to a status flow whose engine no longer exists.
+         */
+        @OptIn(kotlinx.coroutines.ExperimentalCoroutinesApi::class)
+        private fun wireModelNotifications(
+            context: Context,
+            bootstrap: VaultBootstrap,
+            scope: CoroutineScope,
+        ) {
+            val hasPermission: () -> Boolean = {
+                Build.VERSION.SDK_INT < Build.VERSION_CODES.TIRAMISU ||
+                    ContextCompat.checkSelfPermission(context, android.Manifest.permission.POST_NOTIFICATIONS) ==
+                    PackageManager.PERMISSION_GRANTED
+            }
+            val notifier = ModelNotifier(context, hasPermission)
+            scope.launch {
+                bootstrap.session
+                    .map { it?.models?.engineStatus }
+                    .flatMapLatest { status -> status ?: flowOf<ModelStatus?>(null) }
+                    .collect { status ->
+                        when (status?.state) {
+                            null, EngineState.UNLOADED, EngineState.ERROR -> notifier.dismissModelNotification()
+                            EngineState.LOADING -> notifier.notifyModelLoading("Loading model…")
+                            EngineState.READY, EngineState.GENERATING -> notifier.notifyModelLoaded("Model ready")
+                        }
+                    }
+            }
         }
 
         /**

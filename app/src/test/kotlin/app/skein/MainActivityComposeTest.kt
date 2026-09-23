@@ -405,13 +405,19 @@ class MainActivityComposeTest {
 
     @Test
     fun `the CommandBar renders the model status once unlocked`() {
+        // skein-whg8: this chip used to be a hardcoded "qwen"/true; it now
+        // reflects the session's real `ModelServices.engineStatus`, and
+        // `TestSkeinApplication`'s default fixture registers no model —
+        // "no model" is the honest chip text for that case (skein-whg8's
+        // own AskPathComposeTest scripts a registered/active model and
+        // asserts the chip shows its id instead).
         ActivityScenario.launch(MainActivity::class.java).use {
             awaitTag(ShellTestTags.SKEIN_SHELL_ROOT)
 
-            // CommandBar composes this as "<name> · ●", so substring-match
+            // CommandBar composes this as "<name> · ●"/"⏸", so substring-match
             // rather than exact so a future icon or separator change doesn't
             // break the test.
-            composeRule.onNodeWithText("qwen", substring = true).assertExists()
+            composeRule.onNodeWithText("no model", substring = true).assertExists()
         }
     }
 

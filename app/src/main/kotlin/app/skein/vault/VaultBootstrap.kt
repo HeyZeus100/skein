@@ -182,6 +182,17 @@ class VaultBootstrap(
                         ),
                     )
                     provider.notifyRootsChanged()
+                    // skein-whg8 — LOCK_POLICY_INDEXING.md §6.1 invariant I6:
+                    // the isolated service refuses everything until it is
+                    // told the epoch explicitly; the engine holds the
+                    // binding and re-sends this on every fresh rebind by
+                    // itself, but the FIRST push per session has to come
+                    // from here, where the just-confirmed `Unlocked` state
+                    // (and its token) is in hand.
+                    val unlocked = unlockManager.state.value as? UnlockState.Unlocked
+                    if (unlocked != null) {
+                        opened.models?.unlocked(unlocked.token.epoch)
+                    }
                     BringUpResult.Ready(opened)
                 }
             }
@@ -214,6 +225,25 @@ class VaultBootstrap(
                 val current = sessionState.value ?: return@withLock
                 provider.install(null)
                 provider.notifyRootsChanged()
+                // skein-whg8 (epic skein-gg11 DoD step 5) — the model must
+                // be unloaded BEFORE the key is zeroed, which this TEARDOWN
+                // tier's `onLocking` runs ahead of (`UnlockManager.doLockLocked`:
+                // the teardown pass, then `keyProvider.lock()`). Captured
+                // from `current` (this mutex's own reference) rather than
+                // re-reading `sessionState.value`/`bootstrap.session.value`,
+                // because another TEARDOWN observer could race a re-read
+                // against this same lock cycle — see this file's own header
+                // on why `VaultBootstrap` is itself the TEARDOWN tier.
+                // `ModelServices.onLocking` itself pushes the locking notice,
+                // then unloads (guarded — a session that never loaded a
+                // model asks the delegate for nothing), then pushes the
+                // epoch-forget — see that method's own KDoc for why the last
+                // push cannot safely wait for `onLocked`'s backstop. KNOWN
+                // GAP: a `current` whose `onLocking` is cut off by
+                // `FORCE_TIMEOUT` before reaching this line skips the unload
+                // too; there is no backstop retry for it the way there is
+                // for the session close itself (`bd note`d on skein-whg8).
+                current.models?.onLocking(epoch, budgetMillis)
                 // The reference goes before the connections do — see the
                 // file header, "Steps 3 and 4 are in that order on purpose".
                 sessionState.value = null
@@ -234,7 +264,13 @@ class VaultBootstrap(
             // send a second, late `lifecycle.close()` after the next unlock
             // had already reopened the vault.
             val leftover = sessionState.getAndUpdate { null } ?: return
-            scope.launch { runCatching { leftover.close() } }
+            scope.launch {
+                // Defense in depth (skein-whg8): idempotent even when
+                // `onLocking` already ran `models.onLocking` — `onLocked`'s
+                // own push no-ops on a repeat epoch (see that method's KDoc).
+                runCatching { leftover.models?.onLocked(epoch) }
+                runCatching { leftover.close() }
+            }
         }
 
         override fun onUnlocked(epoch: Long) = Unit

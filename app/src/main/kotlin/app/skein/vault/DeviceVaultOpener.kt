@@ -39,6 +39,7 @@ import app.skein.core.vault.lifecycle.VaultPaths
 import app.skein.core.vault.persona.PersonaServiceImpl
 import app.skein.core.vault.repository.VaultRepositoryImpl
 import app.skein.core.vault.transfer.ImportServiceImpl
+import app.skein.models.ModelServices
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.NonCancellable
@@ -63,6 +64,11 @@ class DeviceVaultOpener(
     // one, PDF import still works, just always falls back to the "no text
     // layer" notice (see `PdfImporter.extract`'s KDoc).
     private val context: Context? = null,
+    // skein-whg8: the vault's live `SessionEpoch`, read fresh by
+    // `LlamaCppEngine` on every request (see that class's own ctor doc).
+    // Defaulted so every pre-existing call site (every test fixture in this
+    // source set, none of which builds a [ModelServices]) keeps compiling.
+    private val sessionEpoch: () -> Long = { 0L },
 ) {
     /**
      * A [VaultLifecycle] — and therefore a `ConnectionPool` — for ONE
@@ -85,8 +91,9 @@ class DeviceVaultOpener(
             paths = paths,
             // One reader per service that isn't the repository's own writer:
             // 2 for VaultRepositoryImpl's reader pool, 1 for IndexStoreImpl,
-            // 1 for PersonaServiceImpl.
-            readerCount = REPOSITORY_READER_CONNECTIONS + 2,
+            // 1 for PersonaServiceImpl, 1 for ModelRegistryImpl (skein-whg8 —
+            // "ModelRegistryImpl over the session's pool").
+            readerCount = REPOSITORY_READER_CONNECTIONS + 3,
         )
 
     suspend fun open(): VaultSession =
@@ -100,6 +107,7 @@ class DeviceVaultOpener(
                 val repositoryReaders = readers.subList(0, REPOSITORY_READER_CONNECTIONS)
                 val indexConnection = readers[REPOSITORY_READER_CONNECTIONS]
                 val personaConnection = readers[REPOSITORY_READER_CONNECTIONS + 1]
+                val modelsConnection = readers[REPOSITORY_READER_CONNECTIONS + 2]
 
                 val repository =
                     VaultRepositoryImpl(
@@ -109,6 +117,26 @@ class DeviceVaultOpener(
                     )
                 val indexStore = IndexStoreImpl(indexConnection)
                 val personaService = PersonaServiceImpl(personaConnection)
+                // skein-whg8: the ask-path composition root, built only when
+                // there is a real Context to build it from (every existing
+                // test fixture in this source set calls `open()` with none —
+                // see this class's `context` param doc). `null` here means
+                // `VaultSession.models` is `null` too; `/chat` degrades to
+                // "no default model, try /import model" rather than crash.
+                val models =
+                    context?.let {
+                        ModelServices.forSession(
+                            context = it,
+                            connection = modelsConnection,
+                            // "ui_prefs" — `ModelRegistryImpl`'s own file
+                            // header names this exact SharedPreferences file.
+                            prefs = it.getSharedPreferences("ui_prefs", Context.MODE_PRIVATE),
+                            sessionEpoch = sessionEpoch,
+                            vaultRepository = repository,
+                            indexStore = indexStore,
+                            personaProvider = { personaService.default() },
+                        )
+                    }
                 VaultSession(
                     repository = repository,
                     indexStore = indexStore,
@@ -120,6 +148,7 @@ class DeviceVaultOpener(
                     // shares the writer connection and transaction plumbing
                     // above rather than opening a second writing connection.
                     exportStages = repository,
+                    models = models,
                 ) {
                     // Closing must run to completion even when the lock
                     // observer budget cancels the caller.

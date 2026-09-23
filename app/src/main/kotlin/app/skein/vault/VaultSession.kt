@@ -9,6 +9,7 @@ import app.skein.core.model.IndexStore
 import app.skein.core.model.PersonaService
 import app.skein.core.model.VaultRepository
 import app.skein.core.vault.export.stage.ExportStageRepository
+import app.skein.models.ModelServices
 import java.util.concurrent.atomic.AtomicBoolean
 import kotlin.coroutines.cancellation.CancellationException
 
@@ -39,6 +40,18 @@ class VaultSession(
      * row.
      */
     val exportStages: ExportStageRepository,
+    /**
+     * skein-whg8: the ask-path composition root for this session — the
+     * model store/registry/manager, the managed
+     * [InferenceEngine][app.skein.core.model.InferenceEngine], and the chat
+     * [app.skein.feature.chat.SendPipeline] — or `null` when the opener was
+     * built with no [android.content.Context] (every existing test fixture
+     * in this source set, which predates this bead). [DeviceVaultOpener] is
+     * the only production caller that ever supplies one. Optional and
+     * trailing so every pre-existing `VaultSession(...)` call site in this
+     * module's tests keeps compiling unchanged.
+     */
+    val models: ModelServices? = null,
     private val release: suspend () -> Unit,
 ) {
     private val closed = AtomicBoolean(false)
