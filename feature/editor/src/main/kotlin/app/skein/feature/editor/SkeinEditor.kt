@@ -192,9 +192,9 @@ public fun SkeinEditor(
     // replaces vertical hardware-key movement with one that always
     // converts through the real `OffsetMapping` and always clamps to the
     // target line's own bounds first, so the framework's shortcut is never
-    // reached. Left/Right/Home/End are unaffected — the framework's own
-    // handling already round-trips them correctly (`OffsetMappingTest`,
-    // `SkeinEditorInteractionTest`).
+    // reached. See [horizontalArrowKeyModifier] below for the matching
+    // Left/Right fix (bd skein-ex7d) — Home/End are still left to the
+    // framework's own handling, which is not device-reported as broken.
     val verticalArrowKeyModifier =
         Modifier.onPreviewKeyEvent { event ->
             if (event.type != KeyEventType.KeyDown) return@onPreviewKeyEvent false
@@ -229,6 +229,92 @@ public fun SkeinEditor(
             true
         }
 
+    // bd skein-ex7d (hardware-verified, owner report 2026-09-23): with a
+    // Bluetooth keyboard paired to a Pixel 9 Pro Fold, hardware Left/Right
+    // stop moving the caret after a touch tap, while Up/Down (this file's
+    // `verticalArrowKeyModifier`, skein-hacu) keep working. Investigation
+    // (bd note, this bead):
+    //  - Ruled out: the `OffsetMapping` itself. `OffsetMappingTest` already
+    //    proves a 200-line mixed-syntax fixture round-trips and stays
+    //    monotone, and `SkeinEditorInteractionTest` now drives a full
+    //    character-by-character Right traversal from offset 0 to the end
+    //    of a 3-line heading/bold/wikilink fixture (and Left the other way)
+    //    asserting the caret is *never* stuck — it passes even against the
+    //    framework's own unmodified Left/Right handling under Robolectric.
+    //  - Ruled out: `wikilinkAutocompleteKeyEvents` and this file's own
+    //    `verticalArrowKeyModifier` — neither one's `when` branches on
+    //    `Key.DirectionLeft`/`Key.DirectionRight`, so neither can be
+    //    pre-empting them (bd skein-hacu's suspect (b) test above,
+    //    `arrow_keys_still_move_the_caret_when_the_wikilink_autocomplete
+    //    _popup_is_not_visible`, already covers this for the popup case).
+    //  - Not reproducible under Robolectric: a *real* `performTouchInput`
+    //    tap (not the `requestFocus()` semantics action the rest of this
+    //    suite uses) followed by a hardware Right press still moves the
+    //    caret in Robolectric's simulated focus/input pipeline
+    //    (`right_arrow_moves_the_caret_after_a_real_touch_tap_not_just
+    //    _requestFocus`) — Robolectric cannot fully model the physical
+    //    device's touch-then-hardware-key focus handoff, so this suspect
+    //    (d) cannot be conclusively confirmed or excluded from a JVM test.
+    //
+    // The one real asymmetry between the working keys and the broken ones
+    // is architectural: Up/Down are handled by this editor's own
+    // `onPreviewKeyEvent` (fires for any KeyDown while a *descendant* of
+    // this modifier chain holds focus — the same node Up/Down already
+    // proves reliable on-device), while Left/Right were left entirely to
+    // `BasicTextField`'s own internal key routing, which is implemented
+    // deeper in Foundation's `CoreTextField` and requires its own specific
+    // internal focus target to hold focus. Whatever the exact on-device
+    // failure mode is (suspect (b)'s modifier-state mapping or suspect
+    // (d)'s deeper touch-focus target — Robolectric can rule out neither),
+    // removing the editor's dependence on that internal routing removes
+    // the asymmetry entirely: this modifier now computes Left/Right
+    // through the very same `OffsetMapping` plumbing as `verticalArrowKey
+    // Modifier` and always consumes the key, exactly like the vertical
+    // fix. A non-collapsed selection collapses to its near edge (Right ->
+    // `selection.max`, Left -> `selection.min`) rather than stepping from
+    // `selection.start`, matching ordinary text-field behavior.
+    val horizontalArrowKeyModifier =
+        Modifier.onPreviewKeyEvent { event ->
+            if (event.type != KeyEventType.KeyDown) return@onPreviewKeyEvent false
+            val delta =
+                when (event.key) {
+                    Key.DirectionRight -> 1
+                    Key.DirectionLeft -> -1
+                    else -> return@onPreviewKeyEvent false
+                }
+            val selection = state.value.selection
+            val newOriginalOffset =
+                if (!selection.collapsed) {
+                    if (delta > 0) selection.max else selection.min
+                } else {
+                    val mapping =
+                        transform(
+                            state.source,
+                            state.cursor,
+                            markdownStyle,
+                            state.knownWikilinkTitles,
+                            frontmatterExpanded,
+                        ).offsetMapping
+                    val transformedLen = mapping.originalToTransformed(state.source.length)
+                    val currentTransformed = mapping.originalToTransformed(selection.start).coerceIn(0, transformedLen)
+                    val targetTransformed = (currentTransformed + delta).coerceIn(0, transformedLen)
+                    val stepped = mapping.transformedToOriginal(targetTransformed)
+                    // Defensive monotonicity guard (bd skein-ex7d suspect
+                    // (a)): if the transformed step somehow resolved back
+                    // to the same original offset — a hidden-marker
+                    // boundary reading as "stuck" — fall back to stepping
+                    // by one character in original coordinates so the
+                    // caret always moves rather than appearing frozen.
+                    if (stepped == selection.start) {
+                        (selection.start + delta).coerceIn(0, state.source.length)
+                    } else {
+                        stepped
+                    }
+                }
+            state.onValueChange(state.value.copy(selection = TextRange(newOriginalOffset)))
+            true
+        }
+
     if (wikilinkSuggest == null) {
         Column {
             chip()
@@ -240,6 +326,7 @@ public fun SkeinEditor(
                         .padding(4.dp)
                         .testTag(testTag)
                         .then(verticalArrowKeyModifier)
+                        .then(horizontalArrowKeyModifier)
                         .then(wikilinkTapModifier),
                 // bd `skein-jit3`: `bodyLarge` carries no color, and
                 // `BasicTextField` (unlike `Text`) does not fall back to
@@ -290,6 +377,7 @@ public fun SkeinEditor(
                         .testTag(testTag)
                         .wikilinkAutocompleteKeyEvents(autocompleteState)
                         .then(verticalArrowKeyModifier)
+                        .then(horizontalArrowKeyModifier)
                         .then(wikilinkTapModifier),
                 // bd `skein-jit3`: see the other `SecureBasicTextField` call
                 // above (the `wikilinkSuggest == null` branch) for why this

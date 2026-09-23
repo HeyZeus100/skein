@@ -5,6 +5,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.input.key.Key
 import androidx.compose.ui.semantics.SemanticsActions
+import androidx.compose.ui.semantics.SemanticsProperties
 import androidx.compose.ui.test.ExperimentalTestApi
 import androidx.compose.ui.test.SemanticsNodeInteraction
 import androidx.compose.ui.test.click
@@ -377,6 +378,126 @@ class SkeinEditorInteractionTest {
         node.performKeyInput { pressKey(Key.DirectionUp) }
         composeRule.waitForIdle()
         assertTrue("Up from line 1 must land back on line 0", state.cursor in line0Start..line0End)
+    }
+
+    /**
+     * bd skein-ex7d: after a *real* touch tap (not the `requestFocus()`
+     * semantics action every other test in this class uses to sidestep
+     * exactly this question) the field must still hold real keyboard
+     * focus, so a hardware key arriving right after reaches the field's
+     * own key handling rather than being lost to Compose/Android focus
+     * traversal (suspect (d) in the bead). This is the one property this
+     * suite can actually exercise for that suspect — see this file's kdoc
+     * note on the mechanism finding for why the owner's device symptom
+     * itself is not reproducible under Robolectric.
+     */
+    @Test
+    fun right_arrow_moves_the_caret_after_a_real_touch_tap_not_just_requestFocus() {
+        val start = hiddenMarkerDoc.indexOf("plain")
+        val state = EditorState(initial = TextFieldValue(hiddenMarkerDoc, selection = TextRange(start)))
+        composeRule.setContent { MaterialTheme { SkeinEditor(state = state) } }
+        composeRule.waitForIdle()
+
+        val node = composeRule.onNodeWithTag(SKEIN_EDITOR_TEST_TAG)
+        val layout = node.textLayoutResult()
+        val lineIndex = 1
+        val y = (layout.getLineTop(lineIndex) + layout.getLineBottom(lineIndex)) / 2f
+        node.performTouchInput { click(Offset(1f, y)) }
+        composeRule.waitForIdle()
+
+        assertTrue(
+            "the field must hold keyboard focus after a real tap",
+            node.fetchSemanticsNode().config[SemanticsProperties.Focused],
+        )
+        val afterTap = state.cursor
+
+        node.performKeyInput { pressKey(Key.DirectionRight) }
+        composeRule.waitForIdle()
+
+        assertTrue(
+            "Right after a real tap (not requestFocus) must move the caret: afterTap=$afterTap afterRight=${state.cursor}",
+            state.cursor != afterTap,
+        )
+    }
+
+    @Test
+    fun right_arrow_steps_from_document_start_to_end_without_ever_getting_stuck() {
+        val state = EditorState(initial = TextFieldValue(hiddenMarkerDoc, selection = TextRange(0)))
+        composeRule.setContent { MaterialTheme { SkeinEditor(state = state) } }
+        composeRule.waitForIdle()
+
+        val node = composeRule.onNodeWithTag(SKEIN_EDITOR_TEST_TAG)
+        node.requestFocus()
+        composeRule.waitForIdle()
+
+        var previous = state.cursor
+        var presses = 0
+        val maxPresses = hiddenMarkerDoc.length + 5
+        while (state.cursor < hiddenMarkerDoc.length && presses < maxPresses) {
+            node.performKeyInput { pressKey(Key.DirectionRight) }
+            composeRule.waitForIdle()
+            presses++
+            assertTrue(
+                "Right press #$presses must strictly advance the caret past $previous (was ${state.cursor})",
+                state.cursor > previous,
+            )
+            previous = state.cursor
+        }
+        assertEquals("Right must eventually reach the document end", hiddenMarkerDoc.length, state.cursor)
+    }
+
+    @Test
+    fun left_arrow_steps_from_document_end_to_start_without_ever_getting_stuck() {
+        val state =
+            EditorState(initial = TextFieldValue(hiddenMarkerDoc, selection = TextRange(hiddenMarkerDoc.length)))
+        composeRule.setContent { MaterialTheme { SkeinEditor(state = state) } }
+        composeRule.waitForIdle()
+
+        val node = composeRule.onNodeWithTag(SKEIN_EDITOR_TEST_TAG)
+        node.requestFocus()
+        composeRule.waitForIdle()
+
+        var previous = state.cursor
+        var presses = 0
+        val maxPresses = hiddenMarkerDoc.length + 5
+        while (state.cursor > 0 && presses < maxPresses) {
+            node.performKeyInput { pressKey(Key.DirectionLeft) }
+            composeRule.waitForIdle()
+            presses++
+            assertTrue(
+                "Left press #$presses must strictly retreat the caret past $previous (was ${state.cursor})",
+                state.cursor < previous,
+            )
+            previous = state.cursor
+        }
+        assertEquals("Left must eventually reach the document start", 0, state.cursor)
+    }
+
+    @Test
+    fun right_and_left_arrows_collapse_a_selection_to_its_edge_instead_of_moving_relative_to_the_start() {
+        // A non-collapsed selection on the active line -- Right must
+        // collapse to the selection's end, Left to its start, matching
+        // ordinary text-field selection-collapse behavior (not "move one
+        // char from wherever `selection.start` happens to be").
+        val from = hiddenMarkerDoc.indexOf("plain")
+        val to = from + "plain".length
+        val state = EditorState(initial = TextFieldValue(hiddenMarkerDoc, selection = TextRange(from, to)))
+        composeRule.setContent { MaterialTheme { SkeinEditor(state = state) } }
+        composeRule.waitForIdle()
+
+        val node = composeRule.onNodeWithTag(SKEIN_EDITOR_TEST_TAG)
+        node.requestFocus()
+        composeRule.waitForIdle()
+
+        node.performKeyInput { pressKey(Key.DirectionRight) }
+        composeRule.waitForIdle()
+        assertEquals("Right on a selection collapses to its end", to, state.cursor)
+
+        state.onValueChange(state.value.copy(selection = TextRange(from, to)))
+        composeRule.waitForIdle()
+        node.performKeyInput { pressKey(Key.DirectionLeft) }
+        composeRule.waitForIdle()
+        assertEquals("Left on a selection collapses to its start", from, state.cursor)
     }
 
     /** `TextLayoutResult` behind [node] via the `GetTextLayoutResult` semantics action — the real rendered layout, not a re-derived one. */
