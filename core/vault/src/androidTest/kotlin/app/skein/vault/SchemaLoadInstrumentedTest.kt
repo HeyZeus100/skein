@@ -96,7 +96,7 @@ public class SchemaLoadInstrumentedTest {
                 }
                 if (c == ';' && depth == 0) {
                     val stmt = current.toString().trim()
-                    if (stmt.isNotEmpty()) out += stmt
+                    if (isStatement(stmt)) out += stmt
                     current.setLength(0)
                     i++
                     continue
@@ -105,9 +105,19 @@ public class SchemaLoadInstrumentedTest {
                 i++
             }
             val tail = current.toString().trim()
-            if (tail.isNotEmpty()) out += tail
+            if (isStatement(tail)) out += tail
             return out
         }
+
+        /**
+         * The migration files end every statement with the `--;` sentinel
+         * (`MigrationStatementSplitter`), so splitting on a bare `;` leaves
+         * a comment-only `--` fragment after each real statement. Preparing
+         * a comment-only string yields no statement (SQLite returns a null
+         * handle; `nativeStep` refuses it), so such fragments are not
+         * statements and must not be executed.
+         */
+        private fun isStatement(fragment: String): Boolean = fragment.isNotEmpty() && !fragment.startsWith("--")
 
         const val BEGIN: String = "BEGIN"
         const val END: String = "END"
