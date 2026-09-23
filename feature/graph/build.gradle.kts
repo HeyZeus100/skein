@@ -29,6 +29,23 @@ android {
         sourceCompatibility = JavaVersion.VERSION_17
         targetCompatibility = JavaVersion.VERSION_17
     }
+
+    testOptions {
+        unitTests {
+            // bd skein-67ak: GraphViewDragTest is this module's first
+            // Robolectric-backed Compose UI test — without this, AGP never
+            // registers a `mergeDebugUnitTestManifest`/
+            // `processDebugUnitTestManifest` task pair for this module, so
+            // the `<activity android:name="androidx.activity.ComponentActivity">`
+            // declared in `src/debug/AndroidManifest.xml` (for
+            // `GraphViewInstrumentedTest`) never reaches the unit-test
+            // classpath and `createAndroidComposeRule` fails to resolve a
+            // host activity. Same fix `:feature:shell`'s `SecureTextFieldTest`/
+            // `:feature:settings`'s `SettingsScreenTest` needed first (bd
+            // memory `robolectric-sdk37-needs-java21`).
+            isIncludeAndroidResources = true
+        }
+    }
 }
 
 dependencies {
@@ -77,6 +94,21 @@ dependencies {
     // `:testing` is pure JVM (docs/TESTING.md), so this pulls no Android
     // test infrastructure onto the JVM `test` classpath.
     testImplementation(project(":testing"))
+    // bd skein-67ak: GraphViewDragTest drives real `GraphView` gestures
+    // (`performTouchInput { down/moveTo/up }`) to assert a drag starting on
+    // a node moves that node — not the pan offset — while a drag on empty
+    // space pans; same Robolectric Compose UI test infra `:feature:shell`'s
+    // `SecureTextFieldTest` first established here (bd memory
+    // `compose-ui-test-infra-robolectric-compose-ui-test`), this module's
+    // first use of it.
+    testImplementation(libs.robolectric)
+    testImplementation(libs.androidx.test.ext.junit)
+    testImplementation(libs.compose.ui.test.junit4)
+    // Host activity for the Compose test rule — this module already ships
+    // its own debug-only `androidx.activity.ComponentActivity` registration
+    // (`src/debug/AndroidManifest.xml`, for `GraphViewInstrumentedTest`),
+    // same reuse `:feature:shell`'s own Robolectric test relies on.
+    testImplementation(libs.androidx.activity.compose)
 
     // On-device Compose UI test (skein-z2u acceptance: compile the UI test
     // even where the local worktree cannot run it; bd `skein-k3b2` tracks

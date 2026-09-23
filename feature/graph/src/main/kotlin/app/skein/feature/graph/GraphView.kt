@@ -1,14 +1,26 @@
-// `GraphView` (bd `skein-z2u`, plan `E6.I11`, spec §8.6): pure rendering
-// over [GraphState] on a `Canvas` — no vault/index access happens in this
-// file (same guardrail as `SkeinEditor`/`BacklinksDrawer`); every read goes
-// through the state holder. Pan/zoom is `Canvas`-local UI state (not part
-// of [GraphState], which is data-only) via `Modifier.transformable`; tap and
-// long-press hit-testing reuse the pure [GraphHitTest]/[GraphTransform] math
-// so the coordinate arithmetic itself has a JVM unit test independent of
-// any actual gesture.
+// `GraphView` (bd `skein-z2u`/`skein-67ak`, plan `E6.I11`, spec §8.6): pure
+// rendering over [GraphState] on a `Canvas` — no vault/index access happens
+// in this file (same guardrail as `SkeinEditor`/`BacklinksDrawer`); every
+// read goes through the state holder. Pan/zoom is `Canvas`-local UI state
+// (not part of [GraphState], which is data-only) via `Modifier.transformable`;
+// tap and long-press hit-testing reuse the pure [GraphHitTest]/[GraphTransform]
+// math so the coordinate arithmetic itself has a JVM unit test independent
+// of any actual gesture.
+//
+// bd `skein-67ak`: node positions are no longer `GraphState.positions`
+// rendered verbatim — that one-shot layout now only *seeds* a per-composable
+// [GraphSimulation], which a `withFrameNanos` loop below steps continuously
+// (capped at 60 Hz, stopping when idle — see that class's file header) and
+// which a per-node drag gesture pins directly. See [detectNodeDrag] for how
+// a press starting on a node claims the gesture (moving that node, not
+// panning) while a press on empty space is left completely unconsumed for
+// `Modifier.transformable` — declared right after it in the modifier chain —
+// to keep handling pan/zoom exactly as before.
 package app.skein.feature.graph
 
 import androidx.compose.foundation.Canvas
+import androidx.compose.foundation.gestures.awaitEachGesture
+import androidx.compose.foundation.gestures.awaitFirstDown
 import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.gestures.rememberTransformableState
 import androidx.compose.foundation.gestures.transformable
@@ -17,13 +29,16 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableFloatStateOf
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
+import androidx.compose.runtime.withFrameNanos
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
@@ -31,7 +46,9 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Path
 import androidx.compose.ui.graphics.drawscope.DrawScope
 import androidx.compose.ui.graphics.drawscope.Stroke
+import androidx.compose.ui.input.pointer.PointerInputScope
 import androidx.compose.ui.input.pointer.pointerInput
+import androidx.compose.ui.input.pointer.positionChange
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.text.TextMeasurer
 import androidx.compose.ui.text.TextStyle
@@ -59,6 +76,9 @@ private const val MAX_ZOOM = 4f
 /** Edge stroke width scales linearly with `weight` (plan `E6.I11` AC: 1.0 → 3 dp, 0.4 → 1.2 dp). */
 private const val STROKE_WIDTH_PER_WEIGHT_DP = 3f
 
+/** bd `skein-67ak` deliverable 4: caps the live simulation's frame loop at 60 Hz regardless of display refresh rate. */
+private const val FRAME_INTERVAL_NANOS = 1_000_000_000L / 60L
+
 /**
  * The graph `Canvas`: edges (kind-styled), nodes (label, hop ring), the
  * center node highlighted, pan/zoom, tap → [openPreview], long-press →
@@ -80,7 +100,7 @@ public fun GraphView(
 ) {
     val nodes by state.nodes.collectAsState()
     val edges by state.edges.collectAsState()
-    val positions by state.positions.collectAsState()
+    val initialPositions by state.positions.collectAsState()
     val loading by state.loading.collectAsState()
     val centerDocId = state.centerDocId
 
@@ -93,6 +113,44 @@ public fun GraphView(
         }
     val textMeasurer = rememberTextMeasurer()
     val nodeById = remember(nodes) { nodes.associateBy { it.id } }
+
+    // bd skein-67ak: one `GraphSimulation` per graph "generation". `nodes`/
+    // `edges` are freshly built `List`s on every `GraphState.load()` call
+    // (initial load, or a live `EdgesReplaced` reload) but compare
+    // structurally equal when nothing actually changed, so keying `remember`
+    // on them only resets the running simulation (re-seeding it from the
+    // newly computed `initialPositions`) when the graph itself really
+    // changed — never on every recomposition, and never once per animation
+    // frame (that key is `positions`, deliberately excluded here).
+    val simulation =
+        remember(nodes, edges) {
+            GraphSimulation(
+                nodeIds = nodes.map { it.id },
+                edges = edges,
+                initialPositions = initialPositions,
+                centerId = centerDocId,
+            )
+        }
+    var positions by remember(simulation) { mutableStateOf(simulation.positions) }
+    // Bumped once, right when a drag transitions the simulation from idle to
+    // active (see [detectNodeDrag]) — restarts the frame loop below, which
+    // has otherwise already exited (deliverable 4: the loop actually stops,
+    // it doesn't just skip work, once idle).
+    var restartPulse by remember(simulation) { mutableIntStateOf(0) }
+
+    LaunchedEffect(simulation, restartPulse) {
+        var lastFrameNanos = -1L
+        var active = true
+        while (active) {
+            withFrameNanos { frameTimeNanos ->
+                if (lastFrameNanos < 0 || frameTimeNanos - lastFrameNanos >= FRAME_INTERVAL_NANOS) {
+                    lastFrameNanos = frameTimeNanos
+                    active = simulation.step()
+                    positions = simulation.positions
+                }
+            }
+        }
+    }
 
     val colors = rememberGraphColors()
     val labelStyle = MaterialTheme.typography.labelSmall.copy(color = colors.label)
@@ -108,16 +166,39 @@ public fun GraphView(
                     Modifier
                         .fillMaxSize()
                         .testTag(GraphTestTags.CANVAS)
-                        .transformable(transformState)
-                        .pointerInput(nodes, positions) {
+                        // Declared *before* `.transformable(...)`: a press that
+                        // hits a node consumes the gesture here (moving the
+                        // node, never panning); a press on empty space leaves
+                        // every event unconsumed so `.transformable(...)`
+                        // right after it handles pan/zoom exactly as before.
+                        .pointerInput(nodes, simulation) {
+                            val hitRadiusPx = HIT_RADIUS.toPx()
+                            detectNodeDrag(
+                                simulation = simulation,
+                                zoom = { zoom },
+                                pan = { pan },
+                                hitRadiusPx = hitRadiusPx,
+                                // Every pointer move during a drag: redraw
+                                // immediately so the dragged node feels
+                                // pinned to the finger (don't wait for the
+                                // physics loop's own next frame).
+                                onPositionsChanged = { positions = simulation.positions },
+                                // Exactly once, right as a press turns into
+                                // an actual drag: the physics loop may have
+                                // already gone idle and stopped (deliverable
+                                // 4), so this bumps the key that restarts it.
+                                onDragStarted = { restartPulse++ },
+                            )
+                        }.transformable(transformState)
+                        .pointerInput(nodes, simulation) {
                             val hitRadiusPx = HIT_RADIUS.toPx()
                             detectTapGestures(
                                 onTap = { offset ->
-                                    tappedDocument(positions, nodeById, size, zoom, pan, offset, hitRadiusPx)
+                                    tappedDocument(simulation.positions, nodeById, size, zoom, pan, offset, hitRadiusPx)
                                         ?.let(openPreview)
                                 },
                                 onLongPress = { offset ->
-                                    tappedDocument(positions, nodeById, size, zoom, pan, offset, hitRadiusPx)
+                                    tappedDocument(simulation.positions, nodeById, size, zoom, pan, offset, hitRadiusPx)
                                         ?.let(openPinned)
                                 },
                             )
@@ -186,6 +267,89 @@ private fun tappedDocument(
     val hitId = GraphHitTest.nodeAt(screenPositions, Vec2(tapOffset.x, tapOffset.y), hitRadiusPx) ?: return null
     val node = nodeById[hitId] ?: return null
     return if (node.kind == GraphNodeKind.DOCUMENT) node.id else null
+}
+
+/**
+ * bd `skein-67ak`: per-node drag, coexisting with `Modifier.transformable`'s
+ * own pan/zoom detection over the very same pointer stream (see the file
+ * header for the modifier-order argument). The trick is
+ * [androidx.compose.ui.input.pointer.PointerInputChange.consume]: a press
+ * that lands on a node ([GraphHitTest]) is tracked here pointer-move by
+ * pointer-move, and only once it exceeds touch slop do we `consume()` each
+ * change — from that point on, `transformable`'s own gesture detector (which
+ * only reacts to *unconsumed* changes) sees nothing to pan with. A press
+ * that never hits a node returns immediately without consuming anything, so
+ * `transformable` — and, for a plain tap/long-press that never exceeds
+ * slop, `detectTapGestures` in the sibling `pointerInput` block — see the
+ * exact same raw, unconsumed events they always have.
+ *
+ * The dragged node is pinned to the pointer *in world space*
+ * ([GraphTransform.screenToWorld]) rather than screen space, so it tracks
+ * correctly under the current pan/zoom and stays put if either changes
+ * mid-drag (they can't, in practice, since this gesture consumes the
+ * pointer `transformable` would otherwise use — but computing in world
+ * space is what "the node follows the pointer" means for [GraphSimulation],
+ * which knows nothing about screen coordinates).
+ */
+private suspend fun PointerInputScope.detectNodeDrag(
+    simulation: GraphSimulation,
+    zoom: () -> Float,
+    pan: () -> Offset,
+    hitRadiusPx: Float,
+    onPositionsChanged: () -> Unit,
+    onDragStarted: () -> Unit,
+) {
+    val touchSlop = viewConfiguration.touchSlop
+    val canvasCenter = Vec2(size.width / 2f, size.height / 2f)
+    val baseScale =
+        GraphTransform.baseScale(
+            size.width.toFloat(),
+            size.height.toFloat(),
+            ForceLayout.DEFAULT_WORLD_EXTENT,
+        )
+
+    awaitEachGesture {
+        val down = awaitFirstDown(requireUnconsumed = false)
+        val screenPositions =
+            simulation.positions.mapValues { (_, world) ->
+                GraphTransform.worldToScreen(world, canvasCenter, baseScale, zoom(), Vec2(pan().x, pan().y))
+            }
+        val hitId = GraphHitTest.nodeAt(screenPositions, Vec2(down.position.x, down.position.y), hitRadiusPx)
+        // No node under the press: don't consume anything — this is either
+        // a pan/zoom (transformable) or a tap/long-press on empty space
+        // (which today's `tappedDocument` already treats as a no-op).
+        if (hitId == null) return@awaitEachGesture
+
+        val pointerId = down.id
+        var accumulatedSlop = Offset.Zero
+        var dragging = false
+
+        while (true) {
+            val change = awaitPointerEvent().changes.firstOrNull { it.id == pointerId }
+            if (change == null || !change.pressed) {
+                if (dragging) simulation.endDrag(hitId)
+                break
+            }
+            if (!dragging) {
+                accumulatedSlop += change.positionChange()
+                if (accumulatedSlop.getDistance() <= touchSlop) continue
+                dragging = true
+                simulation.beginDrag(hitId)
+                onDragStarted()
+            }
+            change.consume()
+            val worldPosition =
+                GraphTransform.screenToWorld(
+                    Vec2(change.position.x, change.position.y),
+                    canvasCenter,
+                    baseScale,
+                    zoom(),
+                    Vec2(pan().x, pan().y),
+                )
+            simulation.dragTo(hitId, worldPosition)
+            onPositionsChanged()
+        }
+    }
 }
 
 /** Precomputed [MaterialTheme] colors — resolved once in composition, then read from the (non-composable) draw scope. */

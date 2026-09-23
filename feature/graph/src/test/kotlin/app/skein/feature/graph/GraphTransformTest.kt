@@ -64,6 +64,38 @@ class GraphTransformTest {
         assertEquals(Vec2(65f, 55f), screen)
     }
 
+    // bd skein-67ak: screenToWorld backs per-node drag ("pin the node to the
+    // pointer in world space") — it must be the exact inverse of worldToScreen.
+
+    @Test
+    fun `screenToWorld is the exact inverse of worldToScreen`() {
+        val world = Vec2(37f, -114f)
+        val canvasCenter = Vec2(400f, 300f)
+        val baseScale = 0.8f
+        val zoom = 1.6f
+        val pan = Vec2(12f, -30f)
+
+        val screen = GraphTransform.worldToScreen(world, canvasCenter, baseScale, zoom, pan)
+        val roundTripped = GraphTransform.screenToWorld(screen, canvasCenter, baseScale, zoom, pan)
+
+        assertEquals(world.x, roundTripped.x, 0.001f)
+        assertEquals(world.y, roundTripped.y, 0.001f)
+    }
+
+    @Test
+    fun `screenToWorld maps the canvas center back to the world origin at zoom 1 with no pan`() {
+        val world =
+            GraphTransform.screenToWorld(
+                screen = Vec2(400f, 300f),
+                canvasCenter = Vec2(400f, 300f),
+                baseScale = 1f,
+                zoom = 1f,
+                pan = Vec2(0f, 0f),
+            )
+
+        assertEquals(Vec2(0f, 0f), world)
+    }
+
     @Test
     fun `two points that differ in world space stay distinct on screen`() {
         val a = GraphTransform.worldToScreen(Vec2(10f, 0f), Vec2(0f, 0f), baseScale = 1f, zoom = 1f, pan = Vec2(0f, 0f))
