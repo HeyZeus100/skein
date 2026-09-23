@@ -34,6 +34,12 @@ Copied from the spec; every issue's requirements implicitly include these.
 
 ## 1. Executive summary
 
+**What this is:** v1 is the first shippable slice of a user-owned cognitive runtime
+(`docs/design/NORTH_STAR_BRIEF.md`) — a private brain the user owns, reasoned over by replaceable
+models — and not an Android notes app that happens to embed an LLM. The scope below is unchanged by
+that framing; it governs which of two equally cheap implementations to prefer, nothing more
+(`docs/design/NORTH_STAR_REVIEW.md`).
+
 **What ships:** the spec's v1 surface — encrypted single vault, personas, wiki timeline, live-preview Markdown editor with wikilinks/backlinks, inline AI actions and slash commands, hybrid RAG (sqlite-vec int8/256-d + FTS5 BM25 + personalized PageRank over the wikilink/tag/entity graph) with clickable citations, GLiNER entities, import (text/MD/code/PDF/images), export (MD/PDF/DOCX), share in/out, assistant no-op integration, local 2-hop graph, two default models (Qwen 2.5 3B abliterated, Gemma 4 E4B) plus any user GGUF — as a reproducible, signed `foss` APK.
 
 **Shape of the work:** 11 epics, 167 issues, 1 148 estimated agent-hours, six milestone gates. Tier mix by hours: Sonnet 62 % (110 issues, 712 h), Opus 30 % (33 issues, 340 h — native builds, isolation, keys, verifiers, PPR, editor core, contracts), Haiku 4 % (16 issues, 46 h), Fable 4 % (8 issues, 50 h — measurement synthesis, adversarial reviews, threat model, grants). 42 issues are `blocks-others`, 14 are `needs-hardware` (86 serial device hours in total, 32 of them in week 1), 17 need human review, 1 is a spike.

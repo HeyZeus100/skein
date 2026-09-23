@@ -17,7 +17,22 @@ pick up an issue"). It answers three questions: what are the modules and what
 may each depend on (§2), what actually happens when the app starts (§1), and
 what conventions hold across all of it (§3–§5).
 
-## 0. Delta since `ad98b7b` (2026-09-22 → 2026-09-23, through `34903e8`)
+## 0. North star
+
+Skein is built as a **user-owned cognitive runtime**, not as an Android notes app with a local LLM.
+The long-term architecture — a Skein Brain (sources, derived knowledge, skills, provenance, history)
+served by one Agent Runtime, reasoning through replaceable models — is stated in
+`docs/design/NORTH_STAR_BRIEF.md`. That document is direction, not scope: it explicitly does not
+expand v1 (its §24–§25).
+
+What it means for the code in this repository is settled in
+`docs/design/NORTH_STAR_REVIEW.md`: where the current architecture already *is* the right seam
+(with the type or file that proves it), the small number of boundaries being adopted inside work
+already in flight, and the concepts recorded as ADRs with the one thing that must not be done now to
+keep each of them possible. Before adding a type, a module or a dependency, check that review's §4 for
+a "must not do now" line that covers it.
+
+### 0.1 Delta since `ad98b7b` (2026-09-22 → 2026-09-23, through `34903e8`)
 
 The first on-device smoke (Fold, skein-94fh) produced these changes; each is on `main` and verified by a test named in its merge commit. Nothing below changes the module map or the dependency guards except where stated.
 
@@ -130,6 +145,28 @@ Only the shaded box is designed but not wired:
 
 - `ModelManager`/`ModelRegistry` — the `:app`-side caller that imports a model through `ImmutableModelStore`, builds the wire `ManifestBinding` with `WireBindings.toWire` (`core/inference/.../models/WireBindings.kt`, skein-28wm) and binds the service — is `E4.I5` (skein-cyq), not yet landed. The client-side `InferenceEngine` implementation (`LlamaCppEngine`) that talks to the service, maps codes via `ErrorCodes.toException` and threads the `sessionEpoch` is `E4.I4` (skein-1uw). Until it lands nothing in `:app` binds `:inference` — `grep -rn IInferenceService app/src/main core/inference/src/main` finds no client.
 - `ImmutableModelStore` (`core/inference/.../models/ImmutableModelStore.kt`) and the `ModelManifest` v2 parser are implemented and tested (skein-st1r, skein-3v9); `docs/design/MODEL_STORE.md` §6 lists what still has to call them.
+
+### 1.2 The second APK: Skein Hub (designed, not implemented)
+
+Network-side model acquisition lives in a **separate application**, `app.skein.hub`, built from its
+own Gradle build under `hub/` and signed with the same key. Hub holds `INTERNET`; Core
+(`app.skein`) holds none, in any variant, forever (spec §2.1, §2.11). Design: `docs/design/SKEIN_HUB.md`.
+
+Four properties are structural rather than conventional, and each has an enforcement point:
+
+- **Core exports nothing to Hub.** The exported-component set stays `{MainActivity,
+  VaultDocumentsProvider, SystemJobService}` — `ManifestPolicyTest`, `tools/ci/manifest-audit.sh`.
+- **Core initiates every transfer.** Core starts an explicit `startActivityForResult` at Hub's picker
+  and receives a one-shot, read-only, non-persistable `content://` grant. Hub cannot start, wake or
+  message Core.
+- **Core distrusts the artifact.** Core copies the bytes into `filesDir/models/<id>/` while hashing
+  them, cross-checks Hub's digest for transfer integrity only, and derives every load-bearing manifest
+  field itself. Hub's `name`/`license`/`source` are display hints.
+- **The GGUF is parsed only in `:inference`.** `IInferenceService.inspect` runs the structural and
+  metadata inspection inside the isolated process; `:app` never parses a model file.
+
+Hub is optional. `external downloader → document picker → Core → validate → import` is the baseline
+path and is asserted by a test that runs with Hub absent. Hub ships after v1 (spec §3.1).
 
 ## 2. Module map
 

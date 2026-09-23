@@ -41,10 +41,13 @@ Positioning: closer to an AI-native Obsidian than a chat app. The LLM is the int
 8. **Every document has a stable UUIDv7** in its frontmatter (locks in v2 sync compatibility).
 9. **All data is app-private**, encrypted at rest with StrongBox-backed keys, exposed to other apps only via a `DocumentsProvider`.
 10. **User owns the vault format.** Content is Markdown; storage is SQLCipher; Obsidian-compatibility is at the **content layer** — Markdown syntax + `[[wikilinks]]` + frontmatter UUIDv7. Skein's DocumentsProvider exposes vault content **as Markdown files** to other apps (Obsidian, external editors, backup tools) via the system file picker. There is no plaintext-Markdown-on-disk representation; the on-disk representation is always SQLCipher-encrypted.
+11. **Network-side model acquisition lives in a separate application** (Skein Hub, `app.skein.hub`), which is the only Skein APK that may ever hold `INTERNET`. Skein Core exports no component to it, never receives a command from it, and treats every artifact it supplies as untrusted binary input: Core re-hashes what it writes, inspects it only inside the isolated inference process, and derives every load-bearing manifest field itself. A signature-level permission authenticates the sender and never the file. Hub never reads the vault, and Hub is optional — import via the system document picker is the baseline path and keeps working with Hub absent. (Design: `docs/design/SKEIN_HUB.md`; approved 2026-09-23.)
 
 ## 3. Scope
 
 ### 3.1 v1 (this spec)
+
+- Model acquisition in v1 is the document picker plus two bundled defaults; Skein Hub (`docs/design/SKEIN_HUB.md`) is designed but ships after v1.
 
 Product surface:
 - Single vault; multi-persona (persona = system prompt + optional default model)
