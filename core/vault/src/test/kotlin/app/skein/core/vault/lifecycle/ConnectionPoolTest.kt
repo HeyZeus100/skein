@@ -59,6 +59,24 @@ class ConnectionPoolTest {
     }
 
     @Test
+    fun `open runs PRAGMA foreign_keys = ON on every connection, writer and every reader`() {
+        // skein-gg11.10: PRAGMA foreign_keys is per-connection and defaults
+        // OFF in SQLite — a pragma applied on the writer does not carry to
+        // the reader connections `ConnectionPool.open` also opens. Each
+        // connection here comes from its own `driverFactory` call (its own
+        // fresh `SkeinSQLiteDriver`, per that factory's single-use
+        // contract), so this pins that EVERY one of them — not just the
+        // first opened — actually runs the pragma, the way
+        // `document_revisions`' `ON DELETE CASCADE` needs it to on
+        // whichever connection a delete lands on.
+        val fake = healthyFake()
+        ConnectionPool.open(driverFactory(fake), "vault.db", key(), readerCount = 2)
+
+        val foreignKeysExecCount = fake.execCalls.count { it == "PRAGMA foreign_keys = ON;" }
+        assertThat(foreignKeysExecCount).isEqualTo(3) // 1 writer + 2 readers
+    }
+
+    @Test
     fun `open uses the default busy_timeout when none is supplied`() {
         val fake = healthyFake()
         ConnectionPool.open(driverFactory(fake), "vault.db", key(), readerCount = 0)
