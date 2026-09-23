@@ -1,3 +1,7 @@
+import java.io.IOException
+import java.net.URI
+import java.security.MessageDigest
+
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.compose)
@@ -236,5 +240,126 @@ dependencies {
     // real, on-device E2E tests (e.g., LockPolicySettingsRecreationInstrumentedTest
     // evolved to drive SettingsScreen/LockPolicyControls through createAndroidComposeRule).
     androidTestImplementation(libs.compose.ui.test.junit4)
+    // skein-1uw (E4.I4): `LlamaCppEngineInstrumentedTest` subclasses
+    // `InferenceEngineContractTest` from `:testing`, the way every other
+    // contract-suite consumer does, and asserts with Truth. `androidTest`
+    // only — `:testing`'s `api(libs.junit)` (EPL-1.0) never reaches the
+    // fossDebug RUNTIME classpath, so `licenseAuditFossDebugRuntimeClasspath`
+    // is unaffected (this is the distinction the `:feature:timeline` comment
+    // above records: `debugImplementation` would have been the problem).
+    androidTestImplementation(project(":testing"))
+    androidTestImplementation(libs.truth)
     debugImplementation(libs.compose.ui.tooling)
+}
+
+// skein-1uw (E4.I4): the tiny GGUF `LlamaCppEngineInstrumentedTest` loads
+// through the real `:inference` service.
+//
+// DUPLICATION, ON PURPOSE AND ONLY FOR NOW. This is a copy of
+// `inference-service/build.gradle.kts`'s `fetchTestModel` (skein-80p), reading
+// the SAME `tools/models/test-model.lock` and enforcing the same sha256 gate.
+// It is copied rather than shared because the two modules have no build-logic
+// home in common today: sharing it means a new convention plugin in
+// `build-logic/`, which is a different module's scope. **A follow-up bead
+// should lift both copies into `build-logic/` as one task type** — if the lock
+// file's parser or the verification rule ever differs between the two copies,
+// one lane will install a model the other refused. Until then, any change here
+// must be made in both files.
+//
+// Network-gated per spec §9 ("the app never does"): wired ONLY into the
+// androidTest asset-merge tasks, so no production variant of `:app` can ever
+// trigger a download. The destination is git-ignored (`.gitignore`'s `*.gguf`).
+abstract class FetchTestModelTask : DefaultTask() {
+    @get:Input
+    abstract val modelUrl: Property<String>
+
+    @get:Input
+    abstract val expectedSha256: Property<String>
+
+    @get:OutputFile
+    abstract val outputFile: RegularFileProperty
+
+    @TaskAction
+    fun fetch() {
+        val dest = outputFile.get().asFile
+        val expected = expectedSha256.get().lowercase()
+
+        if (dest.isFile && sha256Of(dest) == expected) {
+            logger.lifecycle("fetchTestModel: ${dest.name} present and verified, skipping download")
+            return
+        }
+
+        dest.parentFile.mkdirs()
+        val tmp = File(dest.parentFile, "${dest.name}.download")
+        logger.lifecycle("fetchTestModel: downloading ${modelUrl.get()}")
+        try {
+            URI(modelUrl.get()).toURL().openStream().use { input ->
+                tmp.outputStream().use { output -> input.copyTo(output) }
+            }
+        } catch (e: IOException) {
+            tmp.delete()
+            throw GradleException(
+                "fetchTestModel: failed to download ${modelUrl.get()} -- ${e.message}. " +
+                    "This task needs network (CI and a developer's Mac have it; the app never does).",
+                e,
+            )
+        }
+
+        val actual = sha256Of(tmp)
+        if (actual != expected) {
+            tmp.delete()
+            throw GradleException(
+                "fetchTestModel: sha256 mismatch for ${modelUrl.get()}\n" +
+                    "  expected (tools/models/test-model.lock): $expected\n" +
+                    "  actual:                                  $actual\n" +
+                    "Refusing to install an unverified test model.",
+            )
+        }
+
+        if (!tmp.renameTo(dest)) {
+            tmp.copyTo(dest, overwrite = true)
+            tmp.delete()
+        }
+        logger.lifecycle("fetchTestModel: verified sha256 $actual, wrote ${dest.path}")
+    }
+
+    private fun sha256Of(file: File): String {
+        val digest = MessageDigest.getInstance("SHA-256")
+        file.inputStream().use { input ->
+            val buffer = ByteArray(1 shl 16)
+            while (true) {
+                val n = input.read(buffer)
+                if (n < 0) break
+                digest.update(buffer, 0, n)
+            }
+        }
+        return digest.digest().joinToString("") { "%02x".format(it) }
+    }
+}
+
+// Same `key=value` parser as inference-service's copy; see the note above.
+val testModelLockFile = rootProject.file("tools/models/test-model.lock")
+val testModelLock: Map<String, String> =
+    testModelLockFile
+        .readLines()
+        .map { it.trim() }
+        .filter { it.isNotEmpty() && !it.startsWith("#") }
+        .mapNotNull { line ->
+            val idx = line.indexOf('=')
+            if (idx < 0) null else line.substring(0, idx).trim() to line.substring(idx + 1).trim()
+        }.toMap()
+
+val fetchTestModel =
+    tasks.register<FetchTestModelTask>("fetchTestModel") {
+        group = "verification"
+        description = "Downloads and sha256-verifies the tiny GGUF for LlamaCppEngineInstrumentedTest (skein-1uw)"
+        modelUrl.set(testModelLock.getValue("url"))
+        expectedSha256.set(testModelLock.getValue("sha256"))
+        outputFile.set(layout.projectDirectory.file("src/androidTest/assets/tiny.gguf"))
+    }
+
+// Only merge*AndroidTestAssets — never merge*Assets, so the app's own
+// production assets cannot trigger a download.
+tasks.matching { it.name.contains("AndroidTestAssets") }.configureEach {
+    dependsOn(fetchTestModel)
 }

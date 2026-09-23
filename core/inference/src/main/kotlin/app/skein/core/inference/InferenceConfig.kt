@@ -24,6 +24,26 @@ package app.skein.core.inference
  *   is applied.
  * @param tokenCountCacheSize bound on the content-hash token-count LRU
  *   cache [ContextBudget] keeps over its [TokenCounter].
+ * @param threads the `LoadRequest.threads` `app.skein.core.inference.engine.LlamaCppEngine`
+ *   sends (`skein-1uw`, plan `E4.I4`: "`threads`, `gpuLayers` via
+ *   `InferenceConfig`"). `docs/MEASUREMENTS.md`'s `threads` row (`skein-5hr`)
+ *   is the intended source and **does not exist yet**, so no number is
+ *   invented here: 4 is the value the M0 benchmark actually ran with
+ *   (`tools/m0-benchmark/run.sh`, `threads_for_backend() { echo "4"; }`), and
+ *   it is the only thread count this repository has ever measured anything at.
+ *   `skein-brwf` replaces it from PP-59 and additionally splits generation
+ *   threads from prompt-batch threads (OfflineLLM OL-29) — which needs a new
+ *   `LoadRequest` field the contract owner has to add, since the landed
+ *   `app.skein.ipc.LoadRequest` carries one `threads` only.
+ * @param gpuLayers the `LoadRequest.gpuLayers` the engine sends. **0, and a
+ *   deliberate 0.** `:inference` is an `isolatedProcess`, which may not be
+ *   granted GPU access at all, so an engine that assumed offload would be
+ *   assuming a permission it cannot check; and OfflineLLM escalation E-2
+ *   (epic `skein-gg11` plan revision 1) found that llama.cpp still initialised
+ *   the Vulkan backend at `n_gpu_layers = 0` until `skein-gg11.1` restricted
+ *   `llama_model_params.devices` in the JNI (OL-01). Raising this is a
+ *   `docs/MEASUREMENTS.md` decision (`inference_backend` / `gpu_layers`,
+ *   `skein-5hr`/`skein-9cg`) taken per model, never a client default.
  */
 public data class InferenceConfig(
     val contextLengthCap: Int = 16_384,
@@ -31,4 +51,11 @@ public data class InferenceConfig(
     val maxRetrievedTokensCap: Int = 3_072,
     val retrievedFraction: Double = 0.40,
     val tokenCountCacheSize: Int = 256,
-)
+    val threads: Int = DEFAULT_THREADS,
+    val gpuLayers: Int = 0,
+) {
+    public companion object {
+        /** See [InferenceConfig.threads]: the M0 benchmark's thread count, not an invented one. */
+        public const val DEFAULT_THREADS: Int = 4
+    }
+}
