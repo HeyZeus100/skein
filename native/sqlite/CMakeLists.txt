@@ -526,6 +526,16 @@ target_link_options(skein_sqlite PRIVATE
   # Determinism: no build-id note in the .so, no path leakage in DT_RUNPATH.
   "-Wl,--build-id=none"
   "-Wl,--no-rosegment"
+  # 16 KiB ELF LOAD-segment alignment (bd skein-gg11.5 / skein-xth5, PP-48,
+  # OfflineLLM row OL-46) — see native/llama/CMakeLists.txt §7a for the full
+  # rationale for these two explicit flags over
+  # `-DANDROID_SUPPORT_FLEXIBLE_PAGE_SIZES=ON`. Applied here too, even though
+  # `tools/ci/elf-alignment.sh` only globs for `libskein_sqlite_jni.so`: this
+  # library is also `dlopen`'d (as `libskein_sqlite_jni.so`'s `DT_NEEDED`
+  # dependency) on the same 16 KiB-page device, so it needs the same
+  # alignment to load at all.
+  "-Wl,-z,max-page-size=16384"
+  "-Wl,-z,common-page-size=16384"
   # Whitelist the exported symbol set; `local: *;` in the script hides
   # everything else. Kept alongside `-fvisibility=hidden` as defense in depth:
   # even a helper accidentally emitted with default visibility stays local.
@@ -597,6 +607,11 @@ target_compile_options(skein_sqlite_jni PRIVATE
 target_link_options(skein_sqlite_jni PRIVATE
   "-Wl,--build-id=none"
   "-Wl,--no-rosegment"
+  # 16 KiB ELF LOAD-segment alignment (bd skein-gg11.5 / skein-xth5, PP-48,
+  # OfflineLLM row OL-46) — see native/llama/CMakeLists.txt §7a for the
+  # rationale. This is the library tools/ci/elf-alignment.sh checks by name.
+  "-Wl,-z,max-page-size=16384"
+  "-Wl,-z,common-page-size=16384"
 )
 
 set_target_properties(skein_sqlite_jni PROPERTIES

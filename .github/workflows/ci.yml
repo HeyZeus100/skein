@@ -96,20 +96,17 @@ jobs:
       - name: Assemble foss debug APK
         run: ./gradlew assembleFossDebug --stacktrace
 
-      # skein-xth5 (recon docs/research/POCKETPAL_RECON.md §8.1 B-8 / PP-48):
-      # every PT_LOAD segment of the shipped native libraries must be aligned
-      # to >= 16 KiB, or mmap'ing them on a 16 KiB-page-size Android 16
-      # device SIGBUSes at load time -- exactly the operation Skein performs
-      # to map GGUF models. `continue-on-error` because native/llama and
-      # core/vault are pinned to NDK r27c (ndkVersion in both modules'
-      # build.gradle.kts), whose linker still defaults to a 4 KiB max page
-      # size; fixing that (-Wl,-z,max-page-size=16384) changes the
-      # reproducible-build hashes recorded in native/llama/README.md §4 and
-      # is out of scope for this dispatch (coordinator call, tracked on
-      # skein-xth5) -- this step's job is to make the risk visible in every
-      # CI run, not to block on a fix nobody has reviewed yet.
+      # skein-xth5 / skein-gg11.5 (recon docs/research/POCKETPAL_RECON.md §8.1
+      # B-8 / PP-48, OfflineLLM row OL-46): every PT_LOAD segment of the
+      # shipped native libraries must be aligned to >= 16 KiB, or mmap'ing
+      # them on a 16 KiB-page-size Android 16 device SIGBUSes at load time --
+      # exactly the operation Skein performs to map GGUF models.
+      # native/llama/CMakeLists.txt and native/sqlite/CMakeLists.txt now link
+      # every target with `-Wl,-z,max-page-size=16384` /
+      # `-Wl,-z,common-page-size=16384` (skein-gg11.5), so this is blocking:
+      # a regression here means a real device-load crash, not a known,
+      # tracked gap.
       - name: 16 KiB ELF LOAD-segment alignment (libskein_llama.so, libskein_sqlite_jni.so)
-        continue-on-error: true
         run: ./tools/ci/elf-alignment.sh
 
       # E4.I1 / skein-3aw: the JNI surface gate. Fails if the `Java_` symbols
