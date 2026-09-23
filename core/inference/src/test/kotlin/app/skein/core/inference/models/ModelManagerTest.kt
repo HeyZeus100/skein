@@ -21,6 +21,9 @@ import app.skein.ipc.ErrorCode
 import app.skein.ipc.ModelInspection
 import app.skein.testing.InMemoryModelRegistry
 import com.google.common.truth.Truth.assertThat
+import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.asCoroutineDispatcher
 import kotlinx.coroutines.flow.toList
 import kotlinx.coroutines.test.runTest
 import org.junit.Before
@@ -31,6 +34,7 @@ import org.junit.runner.RunWith
 import org.robolectric.RobolectricTestRunner
 import java.io.ByteArrayInputStream
 import java.io.File
+import java.util.concurrent.Executors
 
 @RunWith(RobolectricTestRunner::class)
 class ModelManagerTest {
@@ -54,6 +58,7 @@ class ModelManagerTest {
         inspector: ModelInspector = fakeInspector(),
         pickedReader: PickedFileReader = FakePickedFileReader(),
         bundled: ModelBytesSource = sourceOf(defaultFixtureFiles()),
+        io: CoroutineDispatcher = Dispatchers.IO,
     ): ModelManager =
         ModelManager(
             registry = registry,
@@ -63,6 +68,7 @@ class ModelManagerTest {
             bundledSource = bundled,
             freeBytes = { free },
             isLoaded = { loaded.contains(it) },
+            io = io,
         )
 
     private fun fakeInspector(
@@ -171,6 +177,66 @@ class ModelManagerTest {
             val record = (outcomeOf(events) as ImportOutcome.Imported).record
             assertThat(record.licenseSpdx).isEqualTo(ModelManager.UNKNOWN_LICENSE)
             assertThat(record.model.sizeBytes).isEqualTo(bytes.size.toLong())
+        }
+
+    @Test
+    fun `a picked import reports monotonic progress across both passes and ends complete`(): Unit =
+        runTest {
+            // Fold smoke #2: the row showed nothing while 1.6 GB was hashed
+            // and copied. Progress must tick through the hash pass and the
+            // copy pass against twice the size, never go backwards, and the
+            // last tick before Done must read complete.
+            // Larger than the store's copy buffer, so the copy pass takes
+            // several reads and produces interior ticks of its own.
+            val bytes = validGguf(bytesOf(42, 8 shl 20))
+            val uri = Uri.parse("content://fake.authority/picked/2")
+            val events =
+                manager(pickedReader = FakePickedFileReader(bytes = bytes))
+                    .import(ImportSource.Picked(uri))
+                    .toList()
+
+            val ticks = events.filterIsInstance<ImportProgress.InProgress>()
+            assertThat(events.last()).isInstanceOf(ImportProgress.Done::class.java)
+            assertThat(ticks.size).isAtLeast(3)
+            assertThat(ticks.zipWithNext().all { (a, b) -> b.bytesProcessed >= a.bytesProcessed }).isTrue()
+            val last = ticks.last()
+            assertThat(last.totalBytes).isEqualTo(2L * bytes.size)
+            assertThat(last.bytesProcessed).isEqualTo(last.totalBytes)
+            // At least one tick lands inside each pass.
+            assertThat(ticks.any { it.totalBytes > 0 && it.bytesProcessed in 1 until bytes.size.toLong() }).isTrue()
+            assertThat(
+                ticks.any { it.bytesProcessed > bytes.size.toLong() && it.bytesProcessed < last.totalBytes },
+            ).isTrue()
+        }
+
+    @Test
+    fun `the import does its reading on the io dispatcher not on the collector's thread`(): Unit =
+        runTest {
+            // The Fold froze because the caller's scope was Main and the
+            // manager read 1.6 GB on it. The blocking work must happen on
+            // the injected dispatcher regardless of where the flow is collected.
+            val executor = Executors.newSingleThreadExecutor { runnable -> Thread(runnable, "import-io") }
+            val io = executor.asCoroutineDispatcher()
+            try {
+                val bytes = validGguf(bytesOf(42, 16_384))
+                var openedOn: String? = null
+                val reader =
+                    PickedFileReader { uri ->
+                        openedOn = Thread.currentThread().name
+                        FakePickedFileReader(bytes = bytes).open(uri)
+                    }
+                val events =
+                    manager(pickedReader = reader, io = io)
+                        .import(ImportSource.Picked(Uri.parse("content://fake.authority/picked/3")))
+                        .toList()
+
+                assertThat(outcomeOf(events)).isInstanceOf(ImportOutcome.Imported::class.java)
+                // kotlinx's debug agent suffixes " @coroutine#N" under runTest.
+                assertThat(openedOn).startsWith("import-io")
+            } finally {
+                io.close()
+                executor.shutdownNow()
+            }
         }
 
     @Test

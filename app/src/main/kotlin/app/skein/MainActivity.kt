@@ -21,6 +21,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Button
 import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
@@ -434,22 +435,32 @@ class MainActivity : FragmentActivity() {
 
         val modelImportScope = rememberCoroutineScope()
         var importStatusText by remember { mutableStateOf<String?>(null) }
+        // Fraction of the whole import (hash pass + copy pass) for the bar in
+        // the status row; null when no import is running or the total is
+        // still unknown. The manager's flow runs on its IO dispatcher, so
+        // these state writes are the only work this scope does per tick.
+        var importProgress by remember { mutableStateOf<Float?>(null) }
         val importLauncher =
             rememberLauncherForActivityResult(ActivityResultContracts.OpenDocument()) { uri ->
                 val services = models
                 if (uri != null && services != null) {
                     modelImportScope.launch {
                         importStatusText = "Importing model…"
+                        importProgress = null
                         services.manager.import(ImportSource.Picked(uri)).collectLatest { progress ->
                             when (progress) {
                                 is ImportProgress.InProgress ->
-                                    importStatusText =
-                                        if (progress.totalBytes > 0) {
-                                            "Importing model… ${progress.bytesProcessed}/${progress.totalBytes} bytes"
-                                        } else {
-                                            "Importing model…"
-                                        }
+                                    if (progress.totalBytes > 0) {
+                                        val fraction =
+                                            (progress.bytesProcessed.toFloat() / progress.totalBytes).coerceIn(0f, 1f)
+                                        importProgress = fraction
+                                        importStatusText = "Importing model… ${(fraction * 100).toInt()}%"
+                                    } else {
+                                        importProgress = null
+                                        importStatusText = "Importing model…"
+                                    }
                                 is ImportProgress.Done -> {
+                                    importProgress = null
                                     when (val outcome = progress.outcome) {
                                         is ImportOutcome.Imported -> {
                                             services.manager.setDefault(outcome.record.model.id)
@@ -714,7 +725,19 @@ class MainActivity : FragmentActivity() {
                                 horizontalArrangement = Arrangement.SpaceBetween,
                                 verticalAlignment = Alignment.CenterVertically,
                             ) {
-                                Text(text = message, style = MaterialTheme.typography.bodySmall)
+                                Column(modifier = Modifier.weight(1f)) {
+                                    Text(text = message, style = MaterialTheme.typography.bodySmall)
+                                    importProgress?.let { fraction ->
+                                        LinearProgressIndicator(
+                                            progress = { fraction },
+                                            modifier =
+                                                Modifier
+                                                    .fillMaxWidth()
+                                                    .padding(top = 6.dp)
+                                                    .testTag(MainActivityTestTags.IMPORT_PROGRESS_BAR),
+                                        )
+                                    }
+                                }
                                 TextButton(onClick = { importStatusText = null }) { Text("Dismiss") }
                             }
                         }
@@ -767,6 +790,7 @@ private fun TimelineDestination(session: VaultSession) {
 /** skein-whg8: test tags for the ask-path UI this file wires directly (chat/import/models have their own modules' tags). */
 object MainActivityTestTags {
     const val IMPORT_STATUS_ROW = "main_activity_import_status_row"
+    const val IMPORT_PROGRESS_BAR = "main_activity_import_progress_bar"
     const val CHAT_NO_MODEL_GUIDANCE = "main_activity_chat_no_model_guidance"
 }
 

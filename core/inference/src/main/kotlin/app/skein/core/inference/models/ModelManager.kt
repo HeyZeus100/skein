@@ -51,10 +51,16 @@ import app.skein.core.model.SkeinLog
 import app.skein.core.verify.ModelFileRole
 import app.skein.core.verify.ModelVerification
 import app.skein.ipc.ErrorCode
+import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.channels.ProducerScope
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.buffer
+import kotlinx.coroutines.flow.channelFlow
+import kotlinx.coroutines.flow.flowOn
 import java.io.File
 import java.io.IOException
+import java.io.InputStream
 import java.security.MessageDigest
 
 /**
@@ -98,37 +104,45 @@ public class ModelManager(
     private val isLoaded: (ModelId) -> Boolean,
     private val config: InferenceConfig = InferenceConfig(),
     private val clock: () -> Long = System::currentTimeMillis,
+    /**
+     * Where [import] does its work. Both passes are blocking reads of the
+     * whole artifact (a SHA-256 pass, then the hashed copy into the store);
+     * on the Fold the caller was a `rememberCoroutineScope` on Main, so a
+     * 1.6 GB import froze rendering for minutes (the owner saw a black
+     * screen after the picker closed) and was swiped away as "stuck".
+     */
+    private val io: CoroutineDispatcher = Dispatchers.IO,
 ) {
     /**
      * Imports [source], reporting progress as it goes and terminating with
      * exactly one [ImportProgress.Done].
      *
-     * PROGRESS GRANULARITY (deviation, recorded here because it follows
-     * directly from a constraint on code this bead does not touch):
-     * [ImmutableModelStore.import] — EXISTS, unchanged — takes no progress
-     * callback, so the actual byte-by-byte copy it performs is not
-     * observable from here. This flow therefore reports two milestones
-     * around that call (a `0` tick before it starts, a `total/total` tick
-     * once it succeeds) rather than continuous intra-copy progress; a
-     * continuous version would need a new parameter on
-     * `ImmutableModelStore.import`, which `docs/design/SKEIN_HUB.md` §3.1
-     * step 3 marks EXISTS/unchanged. This still satisfies the bead's own
-     * acceptance criterion ("progress reached 100%"): the tick emitted
-     * immediately before [ImportProgress.Done] on every successful import
-     * has `bytesProcessed == totalBytes`.
+     * PROGRESS: continuous, without touching [ImmutableModelStore.import]
+     * (EXISTS/unchanged per `docs/design/SKEIN_HUB.md` §3.1 step 3) — the
+     * bytes are counted on the way *in*, by a counting stream wrapped
+     * around the [ModelBytesSource] the store reads from, plus the hash
+     * pass's own loop. A picked import's total is twice its size (hash
+     * pass, then copy pass); a bundled import's is its size. Ticks are
+     * throttled to 1 % and the tick emitted immediately before
+     * [ImportProgress.Done] on every successful import reads
+     * `bytesProcessed == totalBytes`. The whole flow runs on [io].
      */
     public fun import(source: ImportSource): Flow<ImportProgress> =
-        flow {
-            emit(ImportProgress.InProgress(bytesProcessed = 0L, totalBytes = declaredSizeHintOf(source)))
+        channelFlow {
+            send(ImportProgress.InProgress(bytesProcessed = 0L, totalBytes = declaredSizeHintOf(source)))
+            val reporter = ProgressReporter(this)
             val outcome =
                 when (source) {
-                    is ImportSource.Bundled -> importBundled(source.manifest)
-                    is ImportSource.Picked -> importPicked(source.uri)
+                    is ImportSource.Bundled -> importBundled(source.manifest, reporter)
+                    is ImportSource.Picked -> importPicked(source.uri, reporter)
                     is ImportSource.HubOffer -> ImportOutcome.Refused(ImportRefusal.Unsupported)
                 }
             if (outcome is ImportOutcome.Imported) {
-                val total = outcome.record.model.sizeBytes
-                emit(ImportProgress.InProgress(bytesProcessed = total, totalBytes = total))
+                // Whole-import total: for a picked file that is two passes
+                // over the artifact (hash, then copy), so the final tick is
+                // (2·size, 2·size); a bundled import has only the copy.
+                val total = reporter.totalBytes.takeIf { it > 0 } ?: outcome.record.model.sizeBytes
+                send(ImportProgress.InProgress(bytesProcessed = total, totalBytes = total))
             }
             if (outcome is ImportOutcome.Refused) {
                 // Kind and reason only — no path, no model content (spec §9).
@@ -136,8 +150,8 @@ public class ModelManager(
                 // all, which is why this line exists.
                 SkeinLog.w(TAG, "import refused: ${outcome.refusal.describe()}")
             }
-            emit(ImportProgress.Done(outcome))
-        }
+            send(ImportProgress.Done(outcome))
+        }.buffer(PROGRESS_BUFFER_TICKS).flowOn(io)
 
     private fun declaredSizeHintOf(source: ImportSource): Long =
         when (source) {
@@ -205,12 +219,16 @@ public class ModelManager(
     // ImportSource.Bundled — manifest already fully declared.
     // ------------------------------------------------------------------
 
-    private suspend fun importBundled(manifest: ModelManifest): ImportOutcome {
+    private suspend fun importBundled(
+        manifest: ModelManifest,
+        reporter: ProgressReporter,
+    ): ImportOutcome {
         sizeRefusal(manifest.main.sizeBytes)?.let { return ImportOutcome.Refused(it) }
         spaceRefusal(manifest.main.sizeBytes)?.let { return ImportOutcome.Refused(it) }
+        reporter.totalBytes = manifest.main.sizeBytes
 
         val storedModel =
-            when (val result = store.import(manifest, bundledSource)) {
+            when (val result = store.import(manifest, countingSource(bundledSource, reporter))) {
                 is ImportResult.Refused -> return ImportOutcome.Refused(ImportRefusal.FromStore(result.refusal))
                 is ImportResult.Imported -> result.model
             }
@@ -240,7 +258,10 @@ public class ModelManager(
     // ImportSource.Picked — no manifest; generated from a real inspection.
     // ------------------------------------------------------------------
 
-    private suspend fun importPicked(uri: Uri): ImportOutcome {
+    private suspend fun importPicked(
+        uri: Uri,
+        reporter: ProgressReporter,
+    ): ImportOutcome {
         val handle =
             try {
                 pickedFileReader.open(uri)
@@ -272,7 +293,9 @@ public class ModelManager(
 
         // Pass 1: hash-only, read-only. No disk write happens here — see
         // this file's header for why a second read is the right trade-off.
-        val (sha256, observedSize) = hashOnly(handle)
+        // Progress counts both passes against twice the declared size.
+        reporter.totalBytes = declaredSize * 2
+        val (sha256, observedSize) = hashOnly(handle, reporter)
 
         // The provider's declared size may have lied; re-check the size
         // this pass actually observed, still before any write.
@@ -300,7 +323,7 @@ public class ModelManager(
         // Pass 2: the real, hashed, single-pass copy into the store —
         // ImmutableModelStore.import, unchanged.
         val storedModel =
-            when (val result = store.import(manifest, pickedBytesSource(uri))) {
+            when (val result = store.import(manifest, pickedBytesSource(uri, reporter))) {
                 is ImportResult.Refused -> return ImportOutcome.Refused(ImportRefusal.FromStore(result.refusal))
                 is ImportResult.Imported -> result.model
             }
@@ -416,10 +439,26 @@ public class ModelManager(
         }
     }
 
-    private fun pickedBytesSource(uri: Uri): ModelBytesSource =
-        ModelBytesSource { _ -> pickedFileReader.open(uri).stream }
+    private fun pickedBytesSource(
+        uri: Uri,
+        reporter: ProgressReporter,
+    ): ModelBytesSource =
+        ModelBytesSource { _ ->
+            CountingInputStream(pickedFileReader.open(uri).stream, reporter::advance)
+        }
 
-    private fun hashOnly(handle: PickedFileHandle): Pair<String, Long> =
+    private fun countingSource(
+        inner: ModelBytesSource,
+        reporter: ProgressReporter,
+    ): ModelBytesSource =
+        ModelBytesSource { file ->
+            inner.open(file)?.let { CountingInputStream(it, reporter::advance) }
+        }
+
+    private fun hashOnly(
+        handle: PickedFileHandle,
+        reporter: ProgressReporter,
+    ): Pair<String, Long> =
         handle.use {
             val digest = MessageDigest.getInstance("SHA-256")
             val buffer = ByteArray(HASH_BUFFER_BYTES)
@@ -429,9 +468,52 @@ public class ModelManager(
                 if (read < 0) break
                 digest.update(buffer, 0, read)
                 total += read
+                reporter.advance(read)
             }
             Hex.encode(digest.digest()) to total
         }
+
+    /**
+     * Throttled progress from the blocking read loops into the flow: at most
+     * one tick per 1 % of [totalBytes] (or per [REPORT_STEP_BYTES] while the
+     * total is unknown). Single producer — every read loop runs on the flow's
+     * own [io] coroutine — so no synchronisation is needed; `trySend` never
+     * blocks a read, and a dropped tick only costs a little smoothness.
+     */
+    private class ProgressReporter(
+        private val scope: ProducerScope<ImportProgress>,
+    ) {
+        var totalBytes: Long = UNKNOWN_TOTAL_BYTES
+        private var processed = 0L
+        private var lastReported = 0L
+
+        fun advance(bytes: Int) {
+            processed += bytes
+            val step = if (totalBytes > 0) maxOf(totalBytes / 100, 1L) else REPORT_STEP_BYTES
+            if (processed - lastReported >= step) {
+                lastReported = processed
+                scope.trySend(ImportProgress.InProgress(bytesProcessed = processed, totalBytes = totalBytes))
+            }
+        }
+    }
+
+    /** Wraps [inner] and reports every byte that passes through to [onBytes]. */
+    private class CountingInputStream(
+        private val inner: InputStream,
+        private val onBytes: (Int) -> Unit,
+    ) : InputStream() {
+        override fun read(): Int = inner.read().also { if (it >= 0) onBytes(1) }
+
+        override fun read(
+            b: ByteArray,
+            off: Int,
+            len: Int,
+        ): Int = inner.read(b, off, len).also { if (it > 0) onBytes(it) }
+
+        override fun available(): Int = inner.available()
+
+        override fun close(): Unit = inner.close()
+    }
 
     private fun sizeRefusal(sizeBytes: Long): ImportRefusal.ArtifactTooLarge? =
         if (sizeBytes < 1 || sizeBytes > MAX_ARTIFACT_BYTES) ImportRefusal.ArtifactTooLarge(sizeBytes) else null
@@ -467,6 +549,15 @@ public class ModelManager(
         public const val UNKNOWN_TOTAL_BYTES: Long = -1L
 
         private const val HASH_BUFFER_BYTES = 1 shl 16
+        private const val REPORT_STEP_BYTES = 8L shl 20
+
+        /**
+         * Room for every 1 % tick of an import plus its milestones, so a
+         * collector that only runs when the producer suspends (a test's
+         * `toList()`, a busy main thread) never sees `trySend` drop the
+         * later ticks: the throttle bounds an import to ≤ 101 ticks.
+         */
+        private const val PROGRESS_BUFFER_TICKS = 128
         private const val ID_HASH_SUFFIX_LENGTH = 12
         private const val MAX_ID_LENGTH = 64
         private val ID_PATTERN = Regex("^[a-z0-9][a-z0-9.-]{2,63}$")
