@@ -49,10 +49,21 @@
 // `SharedMemRef`, so no prompt text, document body or attachment can reach an
 // exception message. `ErrorMappingTest` pins this down by asserting that every
 // code's message with no detail is a fixed, documented constant.
+//
+// `skein-3yal`: that diagnostic string is itself UNTRUSTED — it is the
+// isolated `:inference`/`:embedder` process's own free-form text, and design
+// spec §9's threat model treats that process as compromisable. `toException`
+// therefore runs it through `sanitizeDiagnostic`
+// (`:core:model`/`Inference.kt`) before it reaches any subclass, capping its
+// length and stripping control characters/newlines/ANSI escapes, so a
+// compromised service cannot use `onError`'s `message` for log forging or to
+// smuggle an unbounded string into an exception. See `ErrorMappingTest`'s
+// "skein-3yal" section.
 
 package app.skein.ipc
 
 import app.skein.core.model.InferenceException
+import app.skein.core.model.sanitizeDiagnostic
 
 /**
  * Translates an [ErrorCode] constant into the
@@ -76,6 +87,18 @@ object ErrorCodes {
      *   [InferenceException.OutOfMemory], [InferenceException.ModelNotLoaded],
      *   [InferenceException.Busy]) have no slot for it and must not gain one,
      *   so for those codes the diagnostic is dropped here.
+     *
+     *   `message` is UNTRUSTED (`skein-3yal`, `bd show skein-3yal`): it comes
+     *   from `IInferenceCallback.onError`, i.e. from the isolated
+     *   `:inference`/`:embedder` process, which design spec §9's threat model
+     *   treats as compromisable (a crafted GGUF). Before it reaches any
+     *   subclass's message it is run through
+     *   [app.skein.core.model.sanitizeDiagnostic], which caps its
+     *   length and strips control characters (including newlines and ANSI
+     *   escapes) — see that function's KDoc. A clean, short, printable detail
+     *   (the only kind this codebase's own service code ever sends) passes
+     *   through unchanged, so this is additive hardening, not a behavior
+     *   change for well-behaved callers.
      * @return the exception to raise, or `null` for the two codes that are
      *   documented NOT to be engine faults: [ErrorCode.OK] (success) and
      *   [ErrorCode.CANCELLED] (the caller sees `StopReason.CANCELLED` on
@@ -89,23 +112,27 @@ object ErrorCodes {
     fun toException(
         code: Int,
         message: String = "",
-    ): InferenceException? =
-        when (code) {
+    ): InferenceException? {
+        // skein-3yal: `message` is the untrusted service's raw diagnostic —
+        // sanitize once, here, before it can reach any subclass's message.
+        val detail = sanitizeDiagnostic(message)
+        return when (code) {
             ErrorCode.OK, ErrorCode.CANCELLED -> null
             ErrorCode.HASH_MISMATCH -> InferenceException.HashMismatch(expected = "", actual = "")
-            ErrorCode.INVALID_MODEL -> InferenceException.InvalidModel(message)
+            ErrorCode.INVALID_MODEL -> InferenceException.InvalidModel(detail)
             ErrorCode.OOM -> InferenceException.OutOfMemory()
             ErrorCode.NOT_LOADED -> InferenceException.ModelNotLoaded()
             ErrorCode.BUSY -> InferenceException.Busy()
-            ErrorCode.HASH_MISMATCH_POST_MMAP -> InferenceException.PostMmapHashMismatch(message)
-            ErrorCode.TX_TOO_LARGE -> InferenceException.TransactionTooLarge(message)
-            ErrorCode.MODEL_IN_USE -> InferenceException.ModelInUse(message)
-            ErrorCode.COMPANION_HASH_MISMATCH -> InferenceException.CompanionHashMismatch(message)
-            ErrorCode.SESSION_LOCKED -> InferenceException.SessionLocked(message)
-            ErrorCode.INTERNAL -> InferenceException.Internal(message)
+            ErrorCode.HASH_MISMATCH_POST_MMAP -> InferenceException.PostMmapHashMismatch(detail)
+            ErrorCode.TX_TOO_LARGE -> InferenceException.TransactionTooLarge(detail)
+            ErrorCode.MODEL_IN_USE -> InferenceException.ModelInUse(detail)
+            ErrorCode.COMPANION_HASH_MISMATCH -> InferenceException.CompanionHashMismatch(detail)
+            ErrorCode.SESSION_LOCKED -> InferenceException.SessionLocked(detail)
+            ErrorCode.INTERNAL -> InferenceException.Internal(detail)
             // An unrecognised code: see the `code` parameter's KDoc.
-            else -> InferenceException.Internal(message)
+            else -> InferenceException.Internal(detail)
         }
+    }
 
     // ========================================================================
     // Sync entry points that cannot return a code (judgment call J7, skein-nxk)

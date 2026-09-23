@@ -277,6 +277,50 @@ private fun withDetail(
     detail: String,
 ): String = if (detail.isBlank()) base else "$base: $detail"
 
+// ============================================================================
+// skein-3yal — additive, ADDITIVE-only: `sanitizeDiagnostic` is a new public
+// helper, not a change to any locked signature above. See `bd show skein-3yal`.
+// ============================================================================
+
+/**
+ * The bound length (in `Char`s) a sanitized diagnostic may reach. Chosen to
+ * be generous enough for a real one-line error detail (a role name, a byte
+ * count, a lock epoch — see the call sites above) while being far too small
+ * for a document, prompt, or chunk body to survive intact.
+ */
+const val MAX_SANITIZED_DIAGNOSTIC_LENGTH: Int = 200
+
+/**
+ * Neutralises a diagnostic string that originates in the UNTRUSTED isolated
+ * `:inference`/`:embedder` process before it is allowed anywhere near an
+ * exception message or a log line (design spec §9's threat model: a
+ * crafted-GGUF compromise of that process is in scope; `bd show skein-3yal`).
+ *
+ * `IInferenceCallback.onError(requestId, code, message)`'s `message` is
+ * free-form and unbounded — a compromised service can send a multi-hundred-KB
+ * string, embedded newlines (log-forging: splitting one logcat line into many
+ * to spoof surrounding entries), terminal/ANSI escape sequences, or NUL
+ * bytes. This function is the one place both `ErrorCodes.toException`
+ * (`:core:ipc`) and `AndroidSkeinLogSink` (`:app`) call to make that safe to
+ * surface:
+ *
+ * 1. Strips every Unicode `ISO control` character (`Char.isISOControl`: the
+ *    C0 set incl. `\n`/`\r`/NUL and the ANSI escape introducer `\u001B`,
+ *    DEL, and the C1 set U+0080–U+009F) so the result is always a single line of otherwise
+ *    unmodified text with no control-character side effects on a terminal or
+ *    log viewer.
+ * 2. Caps the result to [MAX_SANITIZED_DIAGNOSTIC_LENGTH] characters so an
+ *    unbounded string cannot bloat an exception message, a log line, or
+ *    (transitively) whatever UI happens to render either.
+ *
+ * This bounds the diagnostic; it does not attempt to detect or block
+ * meaningful content smuggled within that bound (e.g. 200 clean characters
+ * of a note title). Callers that render a diagnostic to a user — `:app`'s
+ * chat surface (`skein-1uw`/`skein-6as`) — must still treat it as untrusted,
+ * potentially attacker-chosen text and never render it as trusted UI copy.
+ */
+fun sanitizeDiagnostic(raw: String): String = raw.filterNot { it.isISOControl() }.take(MAX_SANITIZED_DIAGNOSTIC_LENGTH)
+
 /** Verbatim from the design spec §6. */
 interface InferenceEngine {
     suspend fun load(model: Model): Result<Unit>
