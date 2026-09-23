@@ -87,7 +87,7 @@ class ExportStageRepositoryContractTest {
     // --- insert / get ------------------------------------------------------
 
     @Test
-    fun insertedStageReadsBackWithEveryColumnIntact() =
+    fun insertedStageReadsBackWithEveryColumnIntact(): Unit =
         runBlocking {
             val repo = repository()
             val inserted = row("stage-1")
@@ -98,13 +98,13 @@ class ExportStageRepositoryContractTest {
         }
 
     @Test
-    fun anUnrecordedStageIdReadsBackAsNull() =
+    fun anUnrecordedStageIdReadsBackAsNull(): Unit =
         runBlocking {
             assertThat(repository().getStage("never-recorded")).isNull()
         }
 
     @Test
-    fun aFreshlyInsertedStageIsNotSwept() =
+    fun aFreshlyInsertedStageIsNotSwept(): Unit =
         runBlocking {
             val repo = repository()
 
@@ -114,7 +114,7 @@ class ExportStageRepositoryContractTest {
         }
 
     @Test
-    fun reinsertingTheSameStageIdReplacesTheRowRatherThanThrowing() =
+    fun reinsertingTheSameStageIdReplacesTheRowRatherThanThrowing(): Unit =
         runBlocking {
             val repo = repository()
             repo.insertStage(row("stage-1", expiresAt = 100L))
@@ -127,7 +127,7 @@ class ExportStageRepositoryContractTest {
     // --- listUnswept -------------------------------------------------------
 
     @Test
-    fun listUnsweptOmitsRowsAlreadyMarkedSwept() =
+    fun listUnsweptOmitsRowsAlreadyMarkedSwept(): Unit =
         runBlocking {
             val repo = repository()
             repo.insertStage(row("stage-1"))
@@ -137,7 +137,7 @@ class ExportStageRepositoryContractTest {
         }
 
     @Test
-    fun listUnsweptReturnsTheMostOverduePlaintextFirst() =
+    fun listUnsweptReturnsTheMostOverduePlaintextFirst(): Unit =
         runBlocking {
             val repo = repository()
             repo.insertStage(row("later", expiresAt = 900L))
@@ -149,7 +149,7 @@ class ExportStageRepositoryContractTest {
     // --- markSwept ---------------------------------------------------------
 
     @Test
-    fun markingAStageSweptReportsTrueTheFirstTime() =
+    fun markingAStageSweptReportsTrueTheFirstTime(): Unit =
         runBlocking {
             val repo = repository()
             repo.insertStage(row("stage-1"))
@@ -158,7 +158,7 @@ class ExportStageRepositoryContractTest {
         }
 
     @Test
-    fun markingAnAlreadySweptStageReportsFalse() =
+    fun markingAnAlreadySweptStageReportsFalse(): Unit =
         runBlocking {
             val repo = repository()
             repo.insertStage(row("stage-1"))
@@ -168,13 +168,13 @@ class ExportStageRepositoryContractTest {
         }
 
     @Test
-    fun markingAnUnknownStageReportsFalse() =
+    fun markingAnUnknownStageReportsFalse(): Unit =
         runBlocking {
             assertThat(repository().markStageSwept("never-recorded")).isFalse()
         }
 
     @Test
-    fun markAllStagesSweptReportsHowManyRowsItChanged() =
+    fun markAllStagesSweptReportsHowManyRowsItChanged(): Unit =
         runBlocking {
             val repo = repository()
             repo.insertStage(row("stage-1"))
@@ -185,7 +185,7 @@ class ExportStageRepositoryContractTest {
         }
 
     @Test
-    fun markAllStagesSweptLeavesNothingUnswept() =
+    fun markAllStagesSweptLeavesNothingUnswept(): Unit =
         runBlocking {
             val repo = repository()
             repo.insertStage(row("stage-1"))
@@ -199,7 +199,7 @@ class ExportStageRepositoryContractTest {
     // --- cascade (§1 tie-in; see the header for the deviation) ------------
 
     @Test
-    fun deletingTheDocumentCascadesItsStageRowAway() =
+    fun deletingTheDocumentCascadesItsStageRowAway(): Unit =
         runBlocking {
             val repo = repository()
             val doc = repo.createDocument(NewDocument(kind = DocumentKind.NOTE, title = "Note", bodyMd = "body"))
@@ -211,7 +211,7 @@ class ExportStageRepositoryContractTest {
         }
 
     @Test
-    fun aStageWithNoDocumentSurvivesUnrelatedDocumentDeletes() =
+    fun aStageWithNoDocumentSurvivesUnrelatedDocumentDeletes(): Unit =
         runBlocking {
             val repo = repository()
             val doc = repo.createDocument(NewDocument(kind = DocumentKind.NOTE, title = "Note", bodyMd = "body"))
