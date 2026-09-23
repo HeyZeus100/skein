@@ -174,7 +174,23 @@ jobs:
             # --continue: report every module's instrumented results, not
             # just the first module that fails (run 35846736749 stopped
             # before :inference-service ran).
-            ./gradlew connectedDevDebugAndroidTest --continue --stacktrace
+            #
+            # skein-i1dz: AGP 9.4.1's UTP-backed connected-test result
+            # listener only knows PASSED/FAILED/ABORTED, so an `@Ignore`d
+            # on-device test (e.g.
+            # VaultDocumentsProviderGrantInstrumentedTest.grantUriPermission_refusesAUriOutsideTheDeclaredPathPrefixes)
+            # is written to the JUnit XML as an empty, textless `<failure/>`
+            # instead of `<skipped/>` -- a known, long-standing AGP/UTP
+            # defect (see https://issuetracker.google.com/issues/195108337
+            # and https://issuetracker.google.com/issues/238566475), not a
+            # local misconfiguration; there is no orchestrator/runner-arg
+            # config here to begin with. `notAnnotation` is AGP's own
+            # documented command-line override for
+            # testInstrumentationRunnerArguments (no build-file change) and
+            # excludes `@Ignore`d tests from the run entirely, so the lane's
+            # failure count stops being inflated by tests that never ran.
+            ./gradlew connectedDevDebugAndroidTest --continue --stacktrace \
+              -Pandroid.testInstrumentationRunnerArguments.notAnnotation=org.junit.Ignore
 
       - name: Upload instrumented test reports
         if: always()
