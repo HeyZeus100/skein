@@ -330,7 +330,15 @@ Recorded for `b29c606e` / NDK r27c / macOS arm64, **as of E4.I1 (bd
 | A2, second clean build | `99d1eb4fb2e558bfd69d132b656855a0ba4e9f40039c2510ccf0dae05abd309b` |
 | A3…A22, `tools/rb/so-determinism.sh -n 20` (bd `skein-ylux`) | `99d1eb4f…` ×20 |
 
-25,303,280 bytes in all of them — and note that the `skein-ylux` fix did not
+**As of E4.I3 (bd `skein-nxk`, the isolated service; `jni/` grew to 24
+exported symbols — `tools/ci/jni-symbols.sh`)** the value moved, as this
+section says it must: two consecutive clean builds on the same toolchain
+gave `79981c08ae595f7db85d128322c7029ec16dd4b7c2f414dc222a4d0ddad66fb2`,
+25,304,664 bytes (recorded by the coordinator at `ad98b7b`; the 20-run
+`so-determinism.sh` series has not been repeated since). The table above
+is kept as the E4.I1 record.
+
+25,303,280 bytes in all of the E4.I1 builds — and note that the `skein-ylux` fix did not
 move this value: the patched shader sources compile to the same SPIR-V the
 unpatched ones produced when glslc happened to get the constant right. What
 changed is that "happened to" became "always". `strings` on the result finds no machine-specific
