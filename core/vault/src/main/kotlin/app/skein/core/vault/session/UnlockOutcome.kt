@@ -34,6 +34,16 @@ public sealed class UnlockOutcome {
     public object NotInitialised : UnlockOutcome()
 
     /**
+     * skein-9psb: the Layer-0 alias reported that the device is currently
+     * locked — `Cipher.init` raced the keyguard's own unlock signal (see
+     * `VaultKeyProviderImpl.isDeviceLockedFailure` / `UnlockResult.DeviceLocked`).
+     * NOT a failure: the caller should wait (e.g. for `ACTION_USER_PRESENT`
+     * or the next lifecycle `RESUME`) and retry silently, with no failure
+     * text shown.
+     */
+    public object DeviceLocked : UnlockOutcome()
+
+    /**
      * Another `unlock()` call was already in flight; this call rejoined that
      * call's outcome. The returned [outcome] is the resolved result of the
      * first call, verbatim.
@@ -87,6 +97,7 @@ internal fun UnlockResult.toOutcomeWithoutToken(): UnlockOutcome =
         is UnlockResult.UserCancelled -> UnlockOutcome.UserCancelled
         is UnlockResult.KeyPermanentlyInvalidated -> UnlockOutcome.KeyPermanentlyInvalidated(factor)
         is UnlockResult.NotInitialised -> UnlockOutcome.NotInitialised
+        is UnlockResult.DeviceLocked -> UnlockOutcome.DeviceLocked
         is UnlockResult.Failed -> UnlockOutcome.Failed(reason)
     }
 

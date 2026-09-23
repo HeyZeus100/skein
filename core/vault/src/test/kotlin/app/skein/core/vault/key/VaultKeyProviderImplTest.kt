@@ -8,6 +8,7 @@
 package app.skein.core.vault.key
 
 import android.security.keystore.KeyPermanentlyInvalidatedException
+import android.security.keystore.UserNotAuthenticatedException
 import com.google.common.truth.Truth.assertThat
 import kotlinx.coroutines.test.runTest
 import org.junit.Test
@@ -437,6 +438,60 @@ class VaultKeyProviderImplTest {
             // Assert
             assertThat(result).isEqualTo(UnlockResult.KeyPermanentlyInvalidated(VaultKeyProvider.Factor.BIOMETRIC))
         }
+
+    // ---- device-locked cipher-init (skein-9psb) ------------------------
+
+    @Test
+    fun `unlock returns DeviceLocked when the keystore reports the device is locked`() =
+        runTest {
+            // Arrange
+            val keystore = FakeKeystoreFacade(strongBoxAvailable = true)
+            val provider = newProvider(keystore = keystore)
+            provider.setupNoUi()
+            keystore.deviceLockedAliases += VaultKeyProviderImpl.ALIAS_BIOMETRIC
+            // Act
+            val result = provider.unlockNoUi(VaultKeyProvider.Factor.BIOMETRIC)
+            // Assert — a distinct, typed outcome, never the generic Failed(reason).
+            assertThat(result).isEqualTo(UnlockResult.DeviceLocked)
+        }
+
+    @Test
+    fun `unlock does not leave a master key behind when the device is locked`() =
+        runTest {
+            // Arrange
+            val keystore = FakeKeystoreFacade(strongBoxAvailable = true)
+            val provider = newProvider(keystore = keystore)
+            provider.setupNoUi()
+            keystore.deviceLockedAliases += VaultKeyProviderImpl.ALIAS_BIOMETRIC
+            // Act
+            provider.unlockNoUi(VaultKeyProvider.Factor.BIOMETRIC)
+            // Assert
+            assertThat(provider.currentKey()).isNull()
+        }
+
+    @Test
+    fun `isDeviceLockedFailure recognises UserNotAuthenticatedException by type`() {
+        // Arrange
+        val exception = UserNotAuthenticatedException("simulated: device locked")
+        // Act / Assert
+        assertThat(isDeviceLockedFailure(exception)).isTrue()
+    }
+
+    @Test
+    fun `isDeviceLockedFailure never matches on message text alone`() {
+        // Arrange — an ordinary failure whose message happens to mention "locked".
+        val exception = IllegalStateException("device locked (not really — just a coincidental message)")
+        // Act / Assert
+        assertThat(isDeviceLockedFailure(exception)).isFalse()
+    }
+
+    @Test
+    fun `isDeviceLockedFailure does not match KeyPermanentlyInvalidatedException`() {
+        // Arrange — a different typed recovery path; must not be conflated.
+        val exception = KeyPermanentlyInvalidatedException("simulated")
+        // Act / Assert
+        assertThat(isDeviceLockedFailure(exception)).isFalse()
+    }
 
     // ---- AuthorizationToken epoch -------------------------------------
 

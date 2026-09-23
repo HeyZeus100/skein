@@ -21,6 +21,7 @@ class BiometricUnlockOutcomeTest {
         var notInitialised = false
         var retryMessage: String? = null
         var envelopeUnreadableMessage: String? = null
+        var deviceLocked = false
     }
 
     private fun run(
@@ -41,6 +42,7 @@ class BiometricUnlockOutcomeTest {
                 } else {
                     null
                 },
+            onDeviceLocked = { effects.deviceLocked = true },
         )
         return effects
     }
@@ -105,6 +107,31 @@ class BiometricUnlockOutcomeTest {
         val effects = run(UnlockOutcome.Coalesced(UnlockOutcome.NotInitialised))
 
         assertTrue(effects.notInitialised)
+    }
+
+    // ---- skein-9psb: DeviceLocked is not a failure ------------------------
+
+    @Test
+    fun `DeviceLocked routes to onDeviceLocked, never onRetry`() {
+        val effects = run(UnlockOutcome.DeviceLocked)
+
+        assertTrue(effects.deviceLocked)
+        assertNull(effects.retryMessage)
+    }
+
+    @Test
+    fun `DeviceLocked never invokes onUnlocked or onRecoveryRequired`() {
+        val effects = run(UnlockOutcome.DeviceLocked)
+
+        assertFalse(effects.unlocked)
+        assertFalse(effects.recovery)
+    }
+
+    @Test
+    fun `a coalesced DeviceLocked is unwrapped before routing`() {
+        val effects = run(UnlockOutcome.Coalesced(UnlockOutcome.DeviceLocked))
+
+        assertTrue(effects.deviceLocked)
     }
 
     // ---- skein-v3wb: the reset-affordance routing ---------------------------

@@ -33,6 +33,7 @@ package app.skein.core.vault.key
 
 import android.security.keystore.KeyPermanentlyInvalidatedException
 import android.security.keystore.StrongBoxUnavailableException
+import android.security.keystore.UserNotAuthenticatedException
 import androidx.biometric.BiometricPrompt
 import androidx.fragment.app.FragmentActivity
 import us.aherrera.skein.core.model.AuthorizationToken
@@ -274,6 +275,7 @@ public class VaultKeyProviderImpl internal constructor(
             } catch (_: KeyPermanentlyInvalidatedException) {
                 return UnlockResult.KeyPermanentlyInvalidated(factor)
             } catch (t: Throwable) {
+                if (isDeviceLockedFailure(t)) return UnlockResult.DeviceLocked
                 return UnlockResult.Failed("cipher init failed: ${t.javaClass.simpleName}")
             }
         val authorized =
@@ -536,3 +538,42 @@ public class VaultKeyProviderImpl internal constructor(
  * tests pass a lambda that returns `AuthResult.Success(cipher)` unchanged.
  */
 private typealias AuthenticateFn = suspend (VaultKeyProvider.Factor, Cipher) -> AuthResult
+
+/**
+ * skein-9psb: true iff [t] is the platform reporting "the device is
+ * currently locked" (equivalently: "the user has not authenticated within
+ * the key's validity window") for a `setUnlockedDeviceRequired`/per-use-auth
+ * Layer-0 alias — never a real cipher/key defect. Matched structurally —
+ * exception type, and where available the typed `requiresUserAuthentication()`
+ * accessor — NEVER by message text, which could carry caller-supplied
+ * content (spec §9).
+ *
+ * Two shapes are recognised, both confirmed against this project's
+ * min/target SDK range (30-37, `app/build.gradle.kts`):
+ *  - [UserNotAuthenticatedException] (public API since 23, so always on the
+ *    classpath at minSdk 30 — no version gate needed): `Cipher.init`'s
+ *    declared `throws InvalidKeyException` is satisfied by this subclass,
+ *    which is what the device-locked / auth-window-expired condition has
+ *    surfaced as since keystore1. Matched directly by type.
+ *  - `android.security.KeyStoreException` (public API since 33 — confirmed
+ *    via `android-37.0`'s `api-versions.xml`; NOT available on this
+ *    project's API 30-32 floor) reporting `requiresUserAuthentication() ==
+ *    true`. HARDWARE-VERIFIED (bd skein-9psb, Pixel 9 Pro Fold) as the
+ *    literal class `t.javaClass.simpleName` observed for this exact race.
+ *    Its constructor is package-private to `android.security` (`javap
+ *    android.security.KeyStoreException`), so it cannot be constructed from
+ *    this module's tests — matched here by exact class name + reflection on
+ *    the typed accessor, rather than a direct `is`/`catch` type reference,
+ *    which would risk the verifier eagerly resolving (and failing to find)
+ *    a type that does not exist below API 33 even on a device where this
+ *    branch is never taken.
+ */
+internal fun isDeviceLockedFailure(t: Throwable): Boolean {
+    if (t is UserNotAuthenticatedException) return true
+    if (t.javaClass.name != ANDROID_KEYSTORE_EXCEPTION_CLASS_NAME) return false
+    return runCatching {
+        t.javaClass.getMethod("requiresUserAuthentication").invoke(t) as? Boolean
+    }.getOrNull() == true
+}
+
+private const val ANDROID_KEYSTORE_EXCEPTION_CLASS_NAME = "android.security.KeyStoreException"

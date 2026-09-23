@@ -249,6 +249,21 @@ public sealed class UnlockResult {
     /** No key envelope exists yet (`keys/key-envelope.v1`) — call [VaultKeyProvider.setup] first. */
     public object NotInitialised : UnlockResult()
 
+    /**
+     * skein-9psb: `Cipher.init` on the Layer-0 alias reported that the
+     * device is currently locked (or, equivalently, that the user has not
+     * authenticated within the key's validity window) —
+     * `setUnlockedDeviceRequired`/per-use-auth enforcement, NOT a corrupt or
+     * missing key. Hardware-verified on the Pixel 9 Pro Fold: on screen-on
+     * with a keyguard, the host activity resumes ~100ms before the keystore
+     * itself learns the device is unlocked, so a prompt presented in that
+     * window hits this exact race. Typed (like `SetupResult.AlreadyInitialised`,
+     * skein-ank2) so the UI can wait-and-retry silently instead of showing a
+     * failure — matched in [VaultKeyProviderImpl] by exception type/error
+     * code only, never by message text.
+     */
+    public object DeviceLocked : UnlockResult()
+
     public data class Failed(
         public val reason: String,
     ) : UnlockResult()
