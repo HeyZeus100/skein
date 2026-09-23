@@ -138,8 +138,26 @@ set(OPENSSL_VERSION "3.5.4")
 set(OPENSSL_SHA256  "967311f84955316969bdb1d8d4b983718ef42338639c621ec4c34fddef355e99")
 set(OPENSSL_URL     "https://github.com/openssl/openssl/releases/download/openssl-${OPENSSL_VERSION}/openssl-${OPENSSL_VERSION}.tar.gz")
 
+# skein-qj5l: the tarball's directory is overridable via the
+# SKEIN_OPENSSL_TARBALL_DIR *environment* variable (read here, not a Gradle
+# -D flag) so CI can point it at an actions/cache directory -- outside the
+# checkout, keyed on OPENSSL_SHA256 above -- and restore/save across runs
+# without any build-file change. Local/dev builds set nothing and get
+# exactly today's behaviour: the tarball lives under this tree's own
+# third_party/, alongside the extracted source (OPENSSL_SRC_DIR below, which
+# is NOT affected by this override -- see native/sqlite/README.md and
+# tools/rb, which both still expect it at that fixed path).
+if(DEFINED ENV{SKEIN_OPENSSL_TARBALL_DIR})
+  set(SKEIN_OPENSSL_TARBALL_DIR "$ENV{SKEIN_OPENSSL_TARBALL_DIR}")
+else()
+  set(SKEIN_OPENSSL_TARBALL_DIR "${SKEIN_SQLITE_ROOT}/third_party")
+endif()
+if(NOT EXISTS "${SKEIN_OPENSSL_TARBALL_DIR}")
+  file(MAKE_DIRECTORY "${SKEIN_OPENSSL_TARBALL_DIR}")
+endif()
+
 set(OPENSSL_SRC_DIR      "${SKEIN_SQLITE_ROOT}/third_party/openssl-${OPENSSL_VERSION}")
-set(OPENSSL_TARBALL      "${SKEIN_SQLITE_ROOT}/third_party/openssl-${OPENSSL_VERSION}.tar.gz")
+set(OPENSSL_TARBALL      "${SKEIN_OPENSSL_TARBALL_DIR}/openssl-${OPENSSL_VERSION}.tar.gz")
 
 # Per-ABI build tree, kept under the CMake build dir so `./gradlew clean` wipes it.
 set(OPENSSL_BUILD_DIR    "${CMAKE_CURRENT_BINARY_DIR}/openssl-${OPENSSL_VERSION}-${ANDROID_ABI}")
@@ -162,9 +180,33 @@ set(OPENSSL_PREFIX       "${OPENSSL_DESTDIR}${OPENSSL_BAKED_PREFIX}")
 set(OPENSSL_LIBCRYPTO    "${OPENSSL_PREFIX}/lib/libcrypto.a")
 set(OPENSSL_INCLUDE_DIR  "${OPENSSL_PREFIX}/include")
 
-# Fetch once (per repo). If the tarball is missing or its sha256 doesn't match,
-# re-download. This runs at CMake configure time so subsequent builds are fast.
-if(NOT EXISTS "${OPENSSL_TARBALL}")
+# Fetch once (per repo, or per CI cache dir -- skein-qj5l). If the tarball is
+# missing or its sha256 doesn't match, (re-)download it. A cache hit that
+# turns out to be a wrong-hash file is treated exactly like a bad fresh
+# download: removed and refetched. One retry absorbs a single transient bad
+# download (e.g. a rate-limited/truncated response) before this is treated
+# as a real failure; TLS_VERIFY and EXPECTED_HASH stay on for every attempt
+# -- the pin is the security boundary, a cache or a retry is only ever a
+# copy that gets hash-verified before use.
+set(_openssl_attempts_left 2)
+while(_openssl_attempts_left GREATER 0)
+  math(EXPR _openssl_attempts_left "${_openssl_attempts_left} - 1")
+
+  set(_openssl_need_download FALSE)
+  if(NOT EXISTS "${OPENSSL_TARBALL}")
+    set(_openssl_need_download TRUE)
+  else()
+    file(SHA256 "${OPENSSL_TARBALL}" _openssl_existing_sha)
+    if(NOT _openssl_existing_sha STREQUAL "${OPENSSL_SHA256}")
+      message(STATUS "OpenSSL tarball at ${OPENSSL_TARBALL} does not match the pin -- refetching")
+      set(_openssl_need_download TRUE)
+    endif()
+  endif()
+
+  if(NOT _openssl_need_download)
+    break()
+  endif()
+
   message(STATUS "Fetching OpenSSL ${OPENSSL_VERSION} tarball (${OPENSSL_URL})…")
   file(DOWNLOAD "${OPENSSL_URL}" "${OPENSSL_TARBALL}"
        EXPECTED_HASH SHA256=${OPENSSL_SHA256}
@@ -172,20 +214,40 @@ if(NOT EXISTS "${OPENSSL_TARBALL}")
        TLS_VERIFY ON
        STATUS _dl_status)
   list(GET _dl_status 0 _dl_code)
-  if(NOT _dl_code EQUAL 0)
-    file(REMOVE "${OPENSSL_TARBALL}")
-    message(FATAL_ERROR "Failed to download OpenSSL: ${_dl_status}")
+  if(_dl_code EQUAL 0)
+    break()
   endif()
-else()
-  file(SHA256 "${OPENSSL_TARBALL}" _existing_sha)
-  if(NOT _existing_sha STREQUAL "${OPENSSL_SHA256}")
-    message(STATUS "OpenSSL tarball sha mismatch — refetching")
-    file(DOWNLOAD "${OPENSSL_URL}" "${OPENSSL_TARBALL}"
-         EXPECTED_HASH SHA256=${OPENSSL_SHA256}
-         SHOW_PROGRESS
-         TLS_VERIFY ON)
+
+  # Diagnose without ever printing the payload itself: the size on disk (a
+  # rate-limit/error page is typically a few KB; the pinned tarball is
+  # ~53 MB) and whether the first bytes are gzip's magic number (1f8b) --
+  # anything else is almost certainly an HTML/text error page, not a
+  # truncated-but-genuine tarball.
+  set(_openssl_bad_size -1)
+  set(_openssl_looks_like_html FALSE)
+  if(EXISTS "${OPENSSL_TARBALL}")
+    file(SIZE "${OPENSSL_TARBALL}" _openssl_bad_size)
+    if(_openssl_bad_size GREATER 0)
+      file(READ "${OPENSSL_TARBALL}" _openssl_first_bytes LIMIT 2 HEX)
+      if(NOT _openssl_first_bytes STREQUAL "1f8b")
+        set(_openssl_looks_like_html TRUE)
+      endif()
+    endif()
   endif()
-endif()
+  file(REMOVE "${OPENSSL_TARBALL}")
+
+  if(_openssl_attempts_left GREATER 0)
+    message(WARNING
+      "OpenSSL download attempt failed (${_dl_status}); received "
+      "${_openssl_bad_size} bytes, looks-like-html=${_openssl_looks_like_html}. "
+      "Retrying once…")
+  else()
+    message(FATAL_ERROR
+      "Failed to download OpenSSL after retrying once: ${_dl_status}\n"
+      "Received ${_openssl_bad_size} bytes; looks-like-html=${_openssl_looks_like_html} "
+      "(the payload itself is never printed here -- see native/sqlite/README.md).")
+  endif()
+endwhile()
 
 # Reference extraction under third_party/. It is the tree README.md §4's manual
 # recipe and the host harness work in, and it is NOT the input to the per-ABI
