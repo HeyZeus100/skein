@@ -88,6 +88,75 @@ class BinderSizeGuardTest {
         assertThat(parcelBytes).isLessThan(INLINE_HARD_LIMIT_BYTES)
     }
 
+    // H1 (skein-91yy). SKEIN_HUB.md §3.3: "Total inline payload is a few
+    // hundred bytes — two orders of magnitude inside
+    // TransportRules.INLINE_BUDGET_BYTES (32 KiB)." `inspect` is a synchronous
+    // call whose ARGUMENT is a handful of descriptors and whose RESPONSE is
+    // this, so both halves have to stay small for the aggregate budget the
+    // §3.2 rules are about; measuring against 1 KiB rather than 32 KiB is what
+    // makes this a regression test for a field added carelessly later.
+    @Test
+    fun aModelInspectionStaysTwoOrdersOfMagnitudeInsideTheInlineBudget() {
+        val parcelBytes = parcelSize(modelInspection())
+
+        assertThat(parcelBytes).isLessThan(ONE_KIBIBYTE)
+    }
+
+    @Test
+    fun aModelInspectionWithHostileLengthMetadataStillFitsTheInlineBudget() {
+        // Every string field comes out of the GGUF, which is attacker-
+        // controlled: llama.cpp will hand back a 4 KiB `general.architecture`
+        // if the file says so. Four such fields must still not approach the
+        // budget, or `inspect` becomes a way to pressure the shared buffer.
+        val hostile =
+            modelInspection().copy(
+                architecture = "a".repeat(FOUR_KIBIBYTES),
+                quantization = "q".repeat(FOUR_KIBIBYTES),
+                tokenizerModel = "t".repeat(FOUR_KIBIBYTES),
+            )
+
+        assertThat(parcelSize(hostile)).isLessThan(INLINE_HARD_LIMIT_BYTES)
+    }
+
+    @Test
+    fun anInspectRequestForAModelAndFourCompanionsStaysInsideTheInlineBudget() {
+        val request = InspectRequest(binding = binding(companions = 4), sessionEpoch = 1L)
+
+        assertThat(parcelSize(request)).isLessThan(INLINE_HARD_LIMIT_BYTES)
+    }
+
+    private fun modelInspection(): ModelInspection =
+        ModelInspection(
+            errorCode = ErrorCode.OK,
+            architecture = "gemma3",
+            quantization = "Q4_K_M",
+            parameterCount = 4_300_000_000L,
+            contextLength = 131_072,
+            embeddingWidth = 2560,
+            hasVision = true,
+            hasChatTemplate = true,
+            chatTemplateOk = true,
+            tokenizerModel = "llama",
+        )
+
+    private fun binding(companions: Int): ManifestBinding =
+        ManifestBinding(
+            manifestId = "gemma-3n-e4b-it",
+            manifestVersion = 2,
+            files =
+                (listOf("main") + List(companions) { "companion-$it" }).map { role ->
+                    val file = temporaryFolder.newFile("$role.bin")
+                    file.writeBytes(ByteArray(16))
+                    ManifestFileRef(
+                        role = role,
+                        fd = ParcelFileDescriptor.open(file, ParcelFileDescriptor.MODE_READ_ONLY),
+                        expectedSha256 = "ab".repeat(32),
+                        expectedSizeBytes = 16L,
+                    )
+                },
+            attestation = null,
+        )
+
     private fun fourMebibyteImageRef(): SharedMemRef {
         val file = temporaryFolder.newFile("image.png")
         file.writeBytes(ByteArray(FOUR_MEBIBYTES))
@@ -139,6 +208,11 @@ class BinderSizeGuardTest {
         const val INLINE_HARD_LIMIT_BYTES = 32 * 1024
 
         const val FOUR_MEBIBYTES = 4 * 1024 * 1024
+
+        /** SKEIN_HUB.md §3.3's "a few hundred bytes", rounded up. */
+        const val ONE_KIBIBYTE = 1024
+
+        const val FOUR_KIBIBYTES = 4 * 1024
 
         const val MAX_TEXTS_PER_EMBED = 32
 
