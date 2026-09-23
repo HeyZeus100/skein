@@ -38,6 +38,7 @@
 package app.skein.inference
 
 import android.app.UiAutomation
+import android.util.Log
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.platform.app.InstrumentationRegistry
 import app.skein.core.inference.engine.AndroidServiceConnector
@@ -88,10 +89,11 @@ class LlamaCppEngineInstrumentedTest : InferenceEngineContractTest() {
 
     @Before
     fun setUp() {
-        val bytes =
-            runCatching { context.assets.open(MODEL_ASSET).use { it.readBytes() } }.getOrNull()
-        assumeTrue("$MODEL_ASSET is absent; run :app:fetchTestModel on a lane with network", bytes != null)
-        val model = bytes!!
+        val model = loadTinyModel()
+        if (model == null) {
+            Log.d("LlamaCppEngineInstrumentedTest", "androidTest asset tiny.gguf absent (fetched by E4.I2 / skein-80p)")
+            return
+        }
 
         modelSha256 = sha256(model)
         // A fresh id per run: the store refuses re-import over an existing one
@@ -230,6 +232,27 @@ class LlamaCppEngineInstrumentedTest : InferenceEngineContractTest() {
             }
             """.trimIndent()
         return (ModelManifest.parse(json) as ManifestParse.Parsed).manifest
+    }
+
+    /**
+     * Copies `tiny.gguf` out of the instrumentation assets (test APK) and
+     * returns its bytes, or returns null when the asset was not fetched.
+     * Mirrors the pattern from inference-service's LlamaNativeTest.
+     */
+    private fun loadTinyModel(): ByteArray? {
+        val instrumentationAssets = InstrumentationRegistry.getInstrumentation().context.assets
+        val available =
+            runCatching { instrumentationAssets.list("")?.contains(MODEL_ASSET) == true }
+                .getOrDefault(false)
+        if (!available) return null
+
+        val out = File(context.cacheDir, MODEL_ASSET)
+        if (!out.exists() || out.length() == 0L) {
+            instrumentationAssets.open(MODEL_ASSET).use { input ->
+                out.outputStream().use { output -> input.copyTo(output) }
+            }
+        }
+        return out.readBytes()
     }
 
     private fun killInferenceProcess(): Boolean {
