@@ -173,12 +173,58 @@ public object ForceLayout {
     ): StepResult {
         if (nodeIds.size <= 1) return StepResult(positions, 0f)
 
+        val displacement = computeForces(nodeIds, edges, positions, worldExtent)
+
+        val next = LinkedHashMap<String, Vec2>()
+        var totalDisplacement = 0f
+        for (id in nodeIds) {
+            val current = positions[id] ?: continue
+            if (id in pinned) {
+                next[id] = current
+                continue
+            }
+            val disp = displacement.getValue(id)
+            val dist = disp.length().coerceAtLeast(MIN_DISTANCE)
+            val capped = disp * (minOf(dist, temperature) / dist)
+            next[id] = current + capped
+            totalDisplacement += capped.length()
+        }
+
+        return StepResult(next, totalDisplacement)
+    }
+
+    /**
+     * The raw Fruchterman-Reingold force on every node in [nodeIds] — the
+     * same repulsion `k²/d` (every pair) plus attraction `d²/k × weight`
+     * (each of [edges]) math [step] itself uses, extracted so a caller can
+     * apply it under a different integration scheme entirely. [step]
+     * literally calls this and then caps/applies the result by its own
+     * `temperature`; bd `skein-8g4c`'s live, continuous simulation
+     * ([GraphSimulation]) calls this directly instead and integrates it as a
+     * damped velocity (semi-implicit Euler) rather than a temperature-capped
+     * displacement — [step]'s hard temperature cap is exactly what made a
+     * held drag's every pointer event re-inject a full jump of energy into
+     * its neighbours and made them vibrate; velocity+damping smooths that
+     * out while reusing the identical force computation. Not itself capped
+     * or applied to [positions] — purely the force vectors, unpinned.
+     *
+     * Same total-over-any-subset discipline as [step]/[compute]: a
+     * [positions] entry missing for some id in [nodeIds] (or an [edges]
+     * endpoint outside [positions]) is skipped rather than throwing.
+     */
+    public fun computeForces(
+        nodeIds: List<String>,
+        edges: List<GraphEdge>,
+        positions: Map<String, Vec2>,
+        worldExtent: Float = DEFAULT_WORLD_EXTENT,
+    ): Map<String, Vec2> {
+        val displacement = LinkedHashMap<String, Vec2>()
+        for (id in nodeIds) displacement[id] = Vec2(0f, 0f)
+        if (nodeIds.size <= 1) return displacement
+
         val area = worldExtent * worldExtent
         val k = sqrt(area / nodeIds.size)
         val relevantEdges = edges.filter { it.srcId in positions && it.dstId in positions && it.srcId != it.dstId }
-
-        val displacement = LinkedHashMap<String, Vec2>()
-        for (id in nodeIds) displacement[id] = Vec2(0f, 0f)
 
         // Repulsion: every pair, force = k² / d.
         for (i in nodeIds.indices) {
@@ -207,21 +253,6 @@ public object ForceLayout {
             displacement[edge.dstId] = displacement.getValue(edge.dstId) + shift
         }
 
-        val next = LinkedHashMap<String, Vec2>()
-        var totalDisplacement = 0f
-        for (id in nodeIds) {
-            val current = positions[id] ?: continue
-            if (id in pinned) {
-                next[id] = current
-                continue
-            }
-            val disp = displacement.getValue(id)
-            val dist = disp.length().coerceAtLeast(MIN_DISTANCE)
-            val capped = disp * (minOf(dist, temperature) / dist)
-            next[id] = current + capped
-            totalDisplacement += capped.length()
-        }
-
-        return StepResult(next, totalDisplacement)
+        return displacement
     }
 }
