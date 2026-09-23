@@ -31,9 +31,9 @@
 // where a device exists — no agent runs it, and the coordinator's emulator
 // lane is where its result comes from. The model is `tiny.gguf`, fetched and
 // sha256-verified by `app/build.gradle.kts`'s `fetchTestModel` from
-// `tools/models/test-model.lock`; an absent asset makes every test here
-// `assume`-skip rather than fail, so a device lane without network degrades
-// to "not run".
+// `tools/models/test-model.lock`; an absent asset is a hard failure with the
+// fetch instruction (the lane records assumption skips as failures, and the
+// fetch task guarantees the asset there).
 
 package app.skein.inference
 
@@ -74,6 +74,8 @@ import java.io.ByteArrayInputStream
 import java.io.File
 import java.security.MessageDigest
 import java.util.concurrent.TimeUnit
+import kotlin.time.Duration
+import kotlin.time.Duration.Companion.seconds
 
 @RunWith(AndroidJUnit4::class)
 class LlamaCppEngineInstrumentedTest : InferenceEngineContractTest() {
@@ -171,6 +173,18 @@ class LlamaCppEngineInstrumentedTest : InferenceEngineContractTest() {
     override fun samplingParams(): SamplingParams =
         SamplingParams(temperature = 0f, topK = 1, maxTokens = 32, seed = 1L)
 
+    /**
+     * Each contract case loads the 88 MiB model into the real isolated process
+     * (hash, mmap, `llama_model_load`) before it streams; on the CI emulator's
+     * unaccelerated x86_64 CPU that plus one bounded generation exceeded the
+     * contract's 60 s default even at 32 tokens (runs 35879189936 and
+     * 35885158666 — only the two cases that wait for a generation to finish
+     * timed out; the cancel/busy cases, which stop at the first token, pass).
+     * The Fold finishes in seconds. The budget is widened here; no assertion
+     * changes.
+     */
+    override val testTimeout: Duration = 180.seconds
+
     // ------------------------------------------------- acceptance 2: death
 
     /**
@@ -190,7 +204,7 @@ class LlamaCppEngineInstrumentedTest : InferenceEngineContractTest() {
      */
     @Test
     fun serviceDeathFailsTheStreamAndTheNextLoadRebinds(): Unit =
-        runTest {
+        runTest(timeout = testTimeout) {
             engine.load(textModel()).getOrThrow()
 
             // The kill must land WHILE the stream is in flight, so it runs on
@@ -214,7 +228,7 @@ class LlamaCppEngineInstrumentedTest : InferenceEngineContractTest() {
 
     @Test
     fun inspectReadsMetadataWithoutLoading(): Unit =
-        runTest {
+        runTest(timeout = testTimeout) {
             // H2 (skein-ktvz): the acceptance path for an imported model, run
             // against the real isolated process rather than a fake.
             val inspection = engine.inspect(binding())

@@ -48,6 +48,8 @@ import org.junit.Assert.assertNotNull
 import org.junit.Assert.assertTrue
 import org.junit.Assert.fail
 import org.junit.Test
+import kotlin.time.Duration
+import kotlin.time.Duration.Companion.seconds
 
 /**
  * Contract suite for `InferenceEngine` (spec § 4.1). Concrete subclasses
@@ -93,6 +95,15 @@ public abstract class InferenceEngineContractTest {
 
     protected open fun samplingParams(): SamplingParams = SamplingParams(maxTokens = 8)
 
+    /**
+     * Wall-clock budget for each test body (`runTest`'s `timeout`). The fake
+     * and the JVM engine finish in milliseconds; an implementation that loads
+     * a real model and generates on a slow device (the x86_64 CI emulator
+     * with no SIMD, skein-gg11.12) overrides this rather than weakening any
+     * assertion.
+     */
+    protected open val testTimeout: Duration = 60.seconds
+
     // ------------------------------------------------------------------
     // §4.1 — "Exactly one `Token.Done` is emitted last on any non-
     // exceptional path."
@@ -100,7 +111,7 @@ public abstract class InferenceEngineContractTest {
 
     @Test
     public fun stream_emits_done_last(): Unit =
-        runTest {
+        runTest(timeout = testTimeout) {
             val engine = engine()
             engine.load(textModel()).getOrThrow()
 
@@ -128,7 +139,7 @@ public abstract class InferenceEngineContractTest {
 
     @Test
     public fun cancel_stops_within_100ms(): Unit =
-        runTest {
+        runTest(timeout = testTimeout) {
             val engine = engine()
             engine.load(textModel()).getOrThrow()
 
@@ -179,7 +190,7 @@ public abstract class InferenceEngineContractTest {
 
     @Test
     public fun second_stream_fails_busy(): Unit =
-        runTest {
+        runTest(timeout = testTimeout) {
             val engine = engine()
             engine.load(textModel()).getOrThrow()
 
@@ -222,7 +233,7 @@ public abstract class InferenceEngineContractTest {
 
     @Test
     public fun embed_without_capability_throws_invalid_model(): Unit =
-        runTest {
+        runTest(timeout = testTimeout) {
             val engine = engine()
             val textOnly = textModel()
             assertFalse(
@@ -246,7 +257,7 @@ public abstract class InferenceEngineContractTest {
 
     @Test
     public fun load_bad_hash_returns_failure(): Unit =
-        runTest {
+        runTest(timeout = testTimeout) {
             val engine = engine()
             val bad = textModel().copy(sha256 = badHashSentinel)
             val result: Result<Unit> = engine.load(bad)
@@ -267,7 +278,7 @@ public abstract class InferenceEngineContractTest {
 
     @Test
     public fun unload_then_stream_throws_not_loaded(): Unit =
-        runTest {
+        runTest(timeout = testTimeout) {
             val engine = engine()
             engine.load(textModel()).getOrThrow()
             engine.unload()
