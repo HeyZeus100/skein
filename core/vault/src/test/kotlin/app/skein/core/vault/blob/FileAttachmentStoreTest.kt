@@ -177,6 +177,34 @@ class FileAttachmentStoreTest {
             assertThat(containsSubsequence(rawFile, masterBytes)).isFalse()
         }
 
+    /**
+     * skein-7yy2 — the `masterKey` supplier's own contract (this class's
+     * KDoc: the store "takes the returned array back as its own to wipe
+     * (`fill(0)`) the moment the per-file key has been derived"). It is the
+     * production-side half of `DeviceVaultOpener.keyCopy()`'s promise that no
+     * copy of the master key it hands out survives the call, and the property
+     * `AtRestEncryptionInstrumentedTest` could not assert on device (the copy
+     * the app makes there is never visible to the test). Every array the
+     * supplier hands out — one per `write`, one per `open` — is recorded here
+     * and checked after both paths have run.
+     */
+    @Test
+    fun `every master key copy the supplier hands out is wiped after the file key is derived`() =
+        runTest {
+            // Arrange
+            val handedOut = mutableListOf<ByteArray>()
+            val store = newStore { master().also(handedOut::add) }
+            val id = "doc-master-wipe"
+
+            // Act — both call paths that derive a file key.
+            store.write(id) { out -> out.write(randomBytes(64)) }
+            store.open(id).use { it.readBytes() }
+
+            // Assert
+            check(handedOut.size >= 2) { "expected a master key copy per write and per open, got ${handedOut.size}" }
+            assertThat(handedOut.all { copy -> copy.all { it == 0.toByte() } }).isTrue()
+        }
+
     // ---- skein-yn8d: random per-write file salt ----
 
     @Test

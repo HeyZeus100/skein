@@ -325,6 +325,33 @@ class VaultKeyProviderImplTest {
             assertThat(before.all { it == 0.toByte() }).isTrue()
         }
 
+    /**
+     * skein-7yy2 — the property two `:app` instrumented fakes got wrong (they
+     * minted fresh random key material on every `unlock`, so the second
+     * unlock could not open the vault file the first one created).
+     * `lock()` zeroes the LIVE buffer only; the wrapped master it was
+     * unwrapped from is untouched, so the next unlock hands back the same
+     * bytes and the same vault file reopens. Capturing `firstMaster` as a
+     * copy is what makes this an aliasing check too: if `unlock` handed back
+     * the very buffer `lock()` zeroed, `currentKey()` would now be all-zero
+     * and unequal to it.
+     */
+    @Test
+    fun `a second unlock after lock unwraps the same master bytes`() =
+        runTest {
+            // Arrange — setup, unlock, snapshot the master, lock.
+            val provider = newProvider()
+            provider.setupNoUi()
+            provider.unlockNoUi(VaultKeyProvider.Factor.BIOMETRIC)
+            val firstMaster = provider.currentKey()!!.copyOf()
+            check(firstMaster.any { it != 0.toByte() }) { "the fake keystore produced an all-zero master" }
+            provider.lock()
+            // Act
+            provider.unlockNoUi(VaultKeyProvider.Factor.BIOMETRIC)
+            // Assert
+            assertThat(provider.currentKey()).isEqualTo(firstMaster)
+        }
+
     @Test
     fun `lock is idempotent`() =
         runTest {
