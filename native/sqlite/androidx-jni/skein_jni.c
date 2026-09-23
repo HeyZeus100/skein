@@ -1,6 +1,15 @@
 /*
- * skein_jni.c — minimal JNI shim mapping the `SkeinSQLiteNative` Kotlin
+ * skein_jni.c — minimal JNI shim mapping the `SkeinSQLiteNativeImpl` Kotlin
  * `external fun`s onto `sqlite3_*` calls in libskein_sqlite.so.
+ *
+ * JNI resolves a native method by the DECLARING class of the `external fun`,
+ * not by the interface it overrides. The `external fun`s live on
+ * `internal object SkeinSQLiteNativeImpl : SkeinSQLiteNative` in
+ * `core/vault/src/main/kotlin/app/skein/core/vault/db/SkeinSQLiteNative.kt`,
+ * so every exported symbol below MUST be
+ * `Java_app_skein_core_vault_db_SkeinSQLiteNativeImpl_<name>` — NOT
+ * `..._SkeinSQLiteNative_<name>` (the bare interface name never resolves;
+ * see bd skein-8ryv). tools/ci/sqlite-jni-symbols.sh guards this.
  *
  * Pattern is a direct descendant of the AOSP androidx.sqlite bundled JNI
  * driver at
@@ -71,7 +80,7 @@ static sqlite3_stmt *stmt_ptr(jlong handle) {
 /* ------------------------------------------------------------------ */
 
 JNIEXPORT jlong JNICALL
-Java_app_skein_core_vault_db_SkeinSQLiteNative_nativeOpen(
+Java_app_skein_core_vault_db_SkeinSQLiteNativeImpl_nativeOpen(
         JNIEnv *env, jclass klass, jstring fileName) {
     (void)klass;
     const char *path = (*env)->GetStringUTFChars(env, fileName, NULL);
@@ -93,7 +102,7 @@ Java_app_skein_core_vault_db_SkeinSQLiteNative_nativeOpen(
 }
 
 JNIEXPORT void JNICALL
-Java_app_skein_core_vault_db_SkeinSQLiteNative_nativeClose(
+Java_app_skein_core_vault_db_SkeinSQLiteNativeImpl_nativeClose(
         JNIEnv *env, jclass klass, jlong handle) {
     (void)env;
     (void)klass;
@@ -104,7 +113,7 @@ Java_app_skein_core_vault_db_SkeinSQLiteNative_nativeClose(
 }
 
 JNIEXPORT void JNICALL
-Java_app_skein_core_vault_db_SkeinSQLiteNative_nativeKey(
+Java_app_skein_core_vault_db_SkeinSQLiteNativeImpl_nativeKey(
         JNIEnv *env, jclass klass, jlong handle, jbyteArray passphrase, jint length) {
     (void)klass;
     sqlite3 *db = db_ptr(handle);
@@ -129,7 +138,7 @@ Java_app_skein_core_vault_db_SkeinSQLiteNative_nativeKey(
 }
 
 JNIEXPORT void JNICALL
-Java_app_skein_core_vault_db_SkeinSQLiteNative_nativeExec(
+Java_app_skein_core_vault_db_SkeinSQLiteNativeImpl_nativeExec(
         JNIEnv *env, jclass klass, jlong handle, jstring sql) {
     (void)klass;
     sqlite3 *db = db_ptr(handle);
@@ -153,7 +162,7 @@ Java_app_skein_core_vault_db_SkeinSQLiteNative_nativeExec(
 }
 
 JNIEXPORT jlong JNICALL
-Java_app_skein_core_vault_db_SkeinSQLiteNative_nativeChanges(
+Java_app_skein_core_vault_db_SkeinSQLiteNativeImpl_nativeChanges(
         JNIEnv *env, jclass klass, jlong handle) {
     (void)env;
     (void)klass;
@@ -162,7 +171,7 @@ Java_app_skein_core_vault_db_SkeinSQLiteNative_nativeChanges(
 }
 
 JNIEXPORT jlong JNICALL
-Java_app_skein_core_vault_db_SkeinSQLiteNative_nativeLastInsertRowId(
+Java_app_skein_core_vault_db_SkeinSQLiteNativeImpl_nativeLastInsertRowId(
         JNIEnv *env, jclass klass, jlong handle) {
     (void)env;
     (void)klass;
@@ -175,7 +184,7 @@ Java_app_skein_core_vault_db_SkeinSQLiteNative_nativeLastInsertRowId(
 /* ------------------------------------------------------------------ */
 
 JNIEXPORT jlong JNICALL
-Java_app_skein_core_vault_db_SkeinSQLiteNative_nativePrepare(
+Java_app_skein_core_vault_db_SkeinSQLiteNativeImpl_nativePrepare(
         JNIEnv *env, jclass klass, jlong handle, jstring sql) {
     (void)klass;
     sqlite3 *db = db_ptr(handle);
@@ -201,7 +210,7 @@ Java_app_skein_core_vault_db_SkeinSQLiteNative_nativePrepare(
 }
 
 JNIEXPORT void JNICALL
-Java_app_skein_core_vault_db_SkeinSQLiteNative_nativeFinalize(
+Java_app_skein_core_vault_db_SkeinSQLiteNativeImpl_nativeFinalize(
         JNIEnv *env, jclass klass, jlong stmtHandle) {
     (void)env;
     (void)klass;
@@ -212,7 +221,7 @@ Java_app_skein_core_vault_db_SkeinSQLiteNative_nativeFinalize(
 }
 
 JNIEXPORT void JNICALL
-Java_app_skein_core_vault_db_SkeinSQLiteNative_nativeReset(
+Java_app_skein_core_vault_db_SkeinSQLiteNativeImpl_nativeReset(
         JNIEnv *env, jclass klass, jlong stmtHandle) {
     (void)klass;
     sqlite3_stmt *stmt = stmt_ptr(stmtHandle);
@@ -226,7 +235,7 @@ Java_app_skein_core_vault_db_SkeinSQLiteNative_nativeReset(
 }
 
 JNIEXPORT void JNICALL
-Java_app_skein_core_vault_db_SkeinSQLiteNative_nativeClearBindings(
+Java_app_skein_core_vault_db_SkeinSQLiteNativeImpl_nativeClearBindings(
         JNIEnv *env, jclass klass, jlong stmtHandle) {
     (void)klass;
     sqlite3_stmt *stmt = stmt_ptr(stmtHandle);
@@ -240,7 +249,7 @@ Java_app_skein_core_vault_db_SkeinSQLiteNative_nativeClearBindings(
 }
 
 JNIEXPORT jboolean JNICALL
-Java_app_skein_core_vault_db_SkeinSQLiteNative_nativeStep(
+Java_app_skein_core_vault_db_SkeinSQLiteNativeImpl_nativeStep(
         JNIEnv *env, jclass klass, jlong stmtHandle) {
     (void)klass;
     sqlite3_stmt *stmt = stmt_ptr(stmtHandle);
@@ -264,7 +273,7 @@ Java_app_skein_core_vault_db_SkeinSQLiteNative_nativeStep(
 /* ------------------------------------------------------------------ */
 
 JNIEXPORT jint JNICALL
-Java_app_skein_core_vault_db_SkeinSQLiteNative_nativeColumnCount(
+Java_app_skein_core_vault_db_SkeinSQLiteNativeImpl_nativeColumnCount(
         JNIEnv *env, jclass klass, jlong stmtHandle) {
     (void)env;
     (void)klass;
@@ -273,7 +282,7 @@ Java_app_skein_core_vault_db_SkeinSQLiteNative_nativeColumnCount(
 }
 
 JNIEXPORT jstring JNICALL
-Java_app_skein_core_vault_db_SkeinSQLiteNative_nativeColumnName(
+Java_app_skein_core_vault_db_SkeinSQLiteNativeImpl_nativeColumnName(
         JNIEnv *env, jclass klass, jlong stmtHandle, jint index) {
     (void)klass;
     sqlite3_stmt *stmt = stmt_ptr(stmtHandle);
@@ -285,7 +294,7 @@ Java_app_skein_core_vault_db_SkeinSQLiteNative_nativeColumnName(
 }
 
 JNIEXPORT jint JNICALL
-Java_app_skein_core_vault_db_SkeinSQLiteNative_nativeColumnType(
+Java_app_skein_core_vault_db_SkeinSQLiteNativeImpl_nativeColumnType(
         JNIEnv *env, jclass klass, jlong stmtHandle, jint index) {
     (void)env;
     (void)klass;
@@ -294,7 +303,7 @@ Java_app_skein_core_vault_db_SkeinSQLiteNative_nativeColumnType(
 }
 
 JNIEXPORT jstring JNICALL
-Java_app_skein_core_vault_db_SkeinSQLiteNative_nativeColumnText(
+Java_app_skein_core_vault_db_SkeinSQLiteNativeImpl_nativeColumnText(
         JNIEnv *env, jclass klass, jlong stmtHandle, jint index) {
     (void)klass;
     sqlite3_stmt *stmt = stmt_ptr(stmtHandle);
@@ -306,7 +315,7 @@ Java_app_skein_core_vault_db_SkeinSQLiteNative_nativeColumnText(
 }
 
 JNIEXPORT jlong JNICALL
-Java_app_skein_core_vault_db_SkeinSQLiteNative_nativeColumnLong(
+Java_app_skein_core_vault_db_SkeinSQLiteNativeImpl_nativeColumnLong(
         JNIEnv *env, jclass klass, jlong stmtHandle, jint index) {
     (void)env;
     (void)klass;
@@ -315,7 +324,7 @@ Java_app_skein_core_vault_db_SkeinSQLiteNative_nativeColumnLong(
 }
 
 JNIEXPORT jdouble JNICALL
-Java_app_skein_core_vault_db_SkeinSQLiteNative_nativeColumnDouble(
+Java_app_skein_core_vault_db_SkeinSQLiteNativeImpl_nativeColumnDouble(
         JNIEnv *env, jclass klass, jlong stmtHandle, jint index) {
     (void)env;
     (void)klass;
@@ -324,7 +333,7 @@ Java_app_skein_core_vault_db_SkeinSQLiteNative_nativeColumnDouble(
 }
 
 JNIEXPORT jbyteArray JNICALL
-Java_app_skein_core_vault_db_SkeinSQLiteNative_nativeColumnBlob(
+Java_app_skein_core_vault_db_SkeinSQLiteNativeImpl_nativeColumnBlob(
         JNIEnv *env, jclass klass, jlong stmtHandle, jint index) {
     (void)klass;
     sqlite3_stmt *stmt = stmt_ptr(stmtHandle);
@@ -349,7 +358,7 @@ Java_app_skein_core_vault_db_SkeinSQLiteNative_nativeColumnBlob(
 /* ------------------------------------------------------------------ */
 
 JNIEXPORT void JNICALL
-Java_app_skein_core_vault_db_SkeinSQLiteNative_nativeBindNull(
+Java_app_skein_core_vault_db_SkeinSQLiteNativeImpl_nativeBindNull(
         JNIEnv *env, jclass klass, jlong stmtHandle, jint index) {
     (void)klass;
     sqlite3_stmt *stmt = stmt_ptr(stmtHandle);
@@ -363,7 +372,7 @@ Java_app_skein_core_vault_db_SkeinSQLiteNative_nativeBindNull(
 }
 
 JNIEXPORT void JNICALL
-Java_app_skein_core_vault_db_SkeinSQLiteNative_nativeBindLong(
+Java_app_skein_core_vault_db_SkeinSQLiteNativeImpl_nativeBindLong(
         JNIEnv *env, jclass klass, jlong stmtHandle, jint index, jlong value) {
     (void)klass;
     sqlite3_stmt *stmt = stmt_ptr(stmtHandle);
@@ -377,7 +386,7 @@ Java_app_skein_core_vault_db_SkeinSQLiteNative_nativeBindLong(
 }
 
 JNIEXPORT void JNICALL
-Java_app_skein_core_vault_db_SkeinSQLiteNative_nativeBindDouble(
+Java_app_skein_core_vault_db_SkeinSQLiteNativeImpl_nativeBindDouble(
         JNIEnv *env, jclass klass, jlong stmtHandle, jint index, jdouble value) {
     (void)klass;
     sqlite3_stmt *stmt = stmt_ptr(stmtHandle);
@@ -391,7 +400,7 @@ Java_app_skein_core_vault_db_SkeinSQLiteNative_nativeBindDouble(
 }
 
 JNIEXPORT void JNICALL
-Java_app_skein_core_vault_db_SkeinSQLiteNative_nativeBindText(
+Java_app_skein_core_vault_db_SkeinSQLiteNativeImpl_nativeBindText(
         JNIEnv *env, jclass klass, jlong stmtHandle, jint index, jstring value) {
     (void)klass;
     sqlite3_stmt *stmt = stmt_ptr(stmtHandle);
@@ -411,7 +420,7 @@ Java_app_skein_core_vault_db_SkeinSQLiteNative_nativeBindText(
 }
 
 JNIEXPORT void JNICALL
-Java_app_skein_core_vault_db_SkeinSQLiteNative_nativeBindBlob(
+Java_app_skein_core_vault_db_SkeinSQLiteNativeImpl_nativeBindBlob(
         JNIEnv *env, jclass klass, jlong stmtHandle, jint index, jbyteArray value) {
     (void)klass;
     sqlite3_stmt *stmt = stmt_ptr(stmtHandle);

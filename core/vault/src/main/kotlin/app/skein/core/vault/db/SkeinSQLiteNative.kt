@@ -118,9 +118,13 @@ public interface SkeinSQLiteNative {
  * class access.
  *
  * Every method is `external`, resolved by name against the JNI shim built
- * from `native/sqlite/androidx-jni/skein_jni.c`. The `Native` suffix in
- * the class name is REQUIRED — the C symbol names `Java_app_skein_..._Native_nativeOpen`
- * are baked into `skein_jni.c` at compile time.
+ * from `native/sqlite/androidx-jni/skein_jni.c`. JNI resolves a native
+ * method by the DECLARING class of the `external fun` — never by an
+ * interface it overrides — so the exported C symbols must follow THIS
+ * object's fully-qualified name, currently
+ * `Java_app_skein_core_vault_db_SkeinSQLiteNativeImpl_<name>`. Renaming this
+ * object requires renaming every symbol in `skein_jni.c` to match.
+ * `tools/ci/sqlite-jni-symbols.sh` guards that the two stay in sync.
  */
 internal object SkeinSQLiteNativeImpl : SkeinSQLiteNative {
     init {
