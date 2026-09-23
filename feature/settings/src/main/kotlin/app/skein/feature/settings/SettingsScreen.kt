@@ -23,6 +23,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.unit.dp
+import app.skein.feature.shell.theme.SkeinThemeMode
 
 /**
  * Settings screen (plan `E6.I14`): Security, Models, Vault, and About
@@ -72,6 +73,11 @@ fun SettingsScreen(
     vaultUnlocked: Boolean = false,
     onReauthenticate: suspend () -> Boolean = { false },
     onBuildRecoveryExport: suspend (CharArray) -> ByteArray? = { null },
+    // bd `skein-l9oi`: additive, defaulted to the spec's default (System) —
+    // see [SettingsViewModel]'s ctor doc for why existing call sites that
+    // don't pass these keep compiling unchanged.
+    themeMode: SkeinThemeMode = SkeinThemeMode.SYSTEM,
+    onThemeModeChange: (SkeinThemeMode) -> Unit = {},
 ) {
     Box(modifier = modifier.fillMaxSize()) {
         Column(
@@ -82,6 +88,10 @@ fun SettingsScreen(
                     .fillMaxWidth()
                     .verticalScroll(rememberScrollState()),
         ) {
+            SettingsSection(title = "Appearance") {
+                ThemeModeRow(mode = themeMode, onModeChange = onThemeModeChange)
+            }
+
             SettingsSection(title = "Security") {
                 FlagSecureToggle(
                     flagSecureEnabled = flagSecureEnabled,
@@ -164,6 +174,8 @@ fun SettingsScreen(
         vaultUnlocked = viewModel.vaultUnlocked,
         onReauthenticate = viewModel.reauthenticate,
         onBuildRecoveryExport = viewModel.buildRecoveryExport,
+        themeMode = viewModel.themeMode,
+        onThemeModeChange = viewModel::setThemeMode,
     )
 }
 

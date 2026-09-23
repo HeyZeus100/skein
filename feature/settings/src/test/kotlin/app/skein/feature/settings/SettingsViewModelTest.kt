@@ -1,5 +1,6 @@
 package app.skein.feature.settings
 
+import app.skein.feature.shell.theme.SkeinThemeMode
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.test.runTest
 import org.junit.Assert.assertEquals
@@ -229,5 +230,57 @@ class SettingsViewModelTest {
             testScheduler.runCurrent()
 
             assertTrue(viewModel.strongBoxUnavailableFallback)
+        }
+
+    // ---- bd `skein-l9oi` — Settings > Appearance ---------------------------
+
+    @Test
+    fun `themeMode defaults to SYSTEM before the source flow's first emission`() =
+        runTest {
+            val viewModel =
+                SettingsViewModel(
+                    scope = backgroundScope,
+                    flagSecureEnabledFlow = MutableStateFlow(true),
+                    onSetFlagSecureEnabled = {},
+                    themeModeFlow = MutableStateFlow(SkeinThemeMode.DARK),
+                )
+
+            assertEquals(SkeinThemeMode.SYSTEM, viewModel.themeMode)
+        }
+
+    @Test
+    fun `themeMode reflects the source flow's current emission`() =
+        runTest {
+            val viewModel =
+                SettingsViewModel(
+                    scope = backgroundScope,
+                    flagSecureEnabledFlow = MutableStateFlow(true),
+                    onSetFlagSecureEnabled = {},
+                    themeModeFlow = MutableStateFlow(SkeinThemeMode.DARK),
+                )
+            testScheduler.runCurrent()
+
+            assertEquals(SkeinThemeMode.DARK, viewModel.themeMode)
+        }
+
+    @Test
+    fun `setThemeMode updates state optimistically and persists`() =
+        runTest {
+            val persisted = mutableListOf<SkeinThemeMode>()
+            val viewModel =
+                SettingsViewModel(
+                    scope = backgroundScope,
+                    flagSecureEnabledFlow = MutableStateFlow(true),
+                    onSetFlagSecureEnabled = {},
+                    themeModeFlow = MutableStateFlow(SkeinThemeMode.SYSTEM),
+                    onSetThemeMode = { persisted += it },
+                )
+            testScheduler.runCurrent()
+
+            viewModel.setThemeMode(SkeinThemeMode.LIGHT)
+            testScheduler.runCurrent()
+
+            assertEquals(SkeinThemeMode.LIGHT, viewModel.themeMode)
+            assertEquals(listOf(SkeinThemeMode.LIGHT), persisted)
         }
 }

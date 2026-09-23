@@ -5,6 +5,7 @@ import android.content.pm.PackageManager
 import android.os.Build
 import android.os.Bundle
 import android.view.WindowManager
+import androidx.activity.SystemBarStyle
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.biometric.BiometricManager
@@ -50,9 +51,11 @@ import app.skein.feature.shell.layout.EdgeToEdgeSurface
 import app.skein.feature.shell.nav.Destination
 import app.skein.feature.shell.tabs.FlushRegistry
 import app.skein.feature.shell.theme.SkeinTheme
+import app.skein.feature.shell.theme.SkeinThemeMode
 import app.skein.feature.timeline.TimelineRail
 import app.skein.feature.timeline.TimelineScreen
 import app.skein.feature.timeline.rememberTimelineState
+import app.skein.system.AppearancePrefs
 import app.skein.system.SecurityPrefs
 import app.skein.vault.GatePhase
 import app.skein.vault.VaultBootstrap
@@ -69,6 +72,7 @@ import kotlinx.coroutines.suspendCancellableCoroutine
 import kotlinx.coroutines.withContext
 import us.aherrera.skein.core.model.DocId
 import kotlin.coroutines.resume
+import android.graphics.Color as AndroidColor
 
 /**
  * Single Activity for the `:app` process (spec §4.1). Hosts [SkeinApp], the
@@ -95,6 +99,7 @@ import kotlin.coroutines.resume
  */
 class MainActivity : FragmentActivity() {
     private lateinit var securityPrefs: SecurityPrefs
+    private lateinit var appearancePrefs: AppearancePrefs
 
     // Stable field references (unlike e.g. `securityPrefs::setFlagSecureEnabled`
     // evaluated inline, which allocates a new bound-reference instance on
@@ -107,6 +112,10 @@ class MainActivity : FragmentActivity() {
     private val setIdleTimeoutMinutes: suspend (Int) -> Unit = { securityPrefs.setIdleTimeoutMinutes(it) }
     private val setLockOnScreenOff: suspend (Boolean) -> Unit = { securityPrefs.setLockOnScreenOff(it) }
     private val setLockOnBackground: suspend (Boolean) -> Unit = { securityPrefs.setLockOnBackground(it) }
+
+    // bd `skein-l9oi`: Settings > Appearance. Same stable-field-reference
+    // reasoning as the setters above.
+    private val setThemeMode: suspend (SkeinThemeMode) -> Unit = { appearancePrefs.setThemeMode(it) }
 
     // E3.I11 (skein-v9g): the two seams Settings › Security's recovery export
     // needs. Stable field references for the same `remember(...)`-keying
@@ -185,14 +194,31 @@ class MainActivity : FragmentActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        securityPrefs = SecurityPrefs(applicationContext)
+        appearancePrefs = AppearancePrefs(applicationContext)
+
         // skein-1vfg: targetSdk 37 already forces edge-to-edge on Android
         // 15+ regardless of this call, but minSdk is 30 — `enableEdgeToEdge`
         // is what makes the status/navigation bar scrims transparent (rather
         // than the opaque platform default) on API 30-34 too, so the same
         // Compose-side inset handling below looks the same on every
         // supported OS version instead of only on 15+.
-        enableEdgeToEdge()
-        securityPrefs = SecurityPrefs(applicationContext)
+        //
+        // bd `skein-l9oi`: the style must follow the resolved theme mode —
+        // SYSTEM keeps the platform's own auto day/night detection (the
+        // default `enableEdgeToEdge()` behavior), LIGHT/DARK force status/
+        // navigation bar icon contrast to match the explicit override
+        // regardless of the device's own day/night setting. Applied
+        // synchronously here (same "never a frame where the default is
+        // briefly wrong" reasoning as `applyFlagSecure` below) from a
+        // blocking read of the DataStore's in-memory cache; live changes
+        // (Settings, or the system flipping day/night while mode is SYSTEM)
+        // are re-applied from Compose below.
+        val initialThemeMode = runBlocking { appearancePrefs.themeMode.first() }
+        enableEdgeToEdge(
+            statusBarStyle = edgeToEdgeStyleFor(initialThemeMode),
+            navigationBarStyle = edgeToEdgeStyleFor(initialThemeMode),
+        )
 
         // Recents thumbnail suppression (spec §9): FLAG_SECURE already stops
         // the OS from capturing a snapshot at all, but the task description
@@ -238,8 +264,23 @@ class MainActivity : FragmentActivity() {
 
         val vault = (application as SkeinApplication).vault
         setContent {
+            // bd `skein-l9oi`: the single collection point for the whole
+            // activity — every `SkeinTheme`/`SkeinApp` call site below
+            // (VaultGate's own screens and, inside `unlockedContent`,
+            // `SkeinApp` itself) takes this same value, so setup/unlock
+            // honour the user's choice exactly like the shell does. Live:
+            // flipping Settings › Appearance recomposes immediately, same
+            // as `FLAG_SECURE`'s live-update handling above.
+            val themeMode by appearancePrefs.themeMode.collectAsState(initial = SkeinThemeMode.SYSTEM)
+            LaunchedEffect(themeMode) {
+                enableEdgeToEdge(
+                    statusBarStyle = edgeToEdgeStyleFor(themeMode),
+                    navigationBarStyle = edgeToEdgeStyleFor(themeMode),
+                )
+            }
             VaultGate(
                 vault = vault,
+                themeMode = themeMode,
                 onUnlocked = { lifecycleScope.launch { vault.bootstrap.bringUp() } },
                 onProvisioned = { strongBoxBacked ->
                     // skein-ank2: recorded for Settings › Security (skein-3el).
@@ -263,14 +304,17 @@ class MainActivity : FragmentActivity() {
                             )
                         lifecycleScope.launch { notifier.observeAndNotify() }
                     }
-                    UnlockedShell(session)
+                    UnlockedShell(session, themeMode)
                 },
             )
         }
     }
 
     @Composable
-    private fun UnlockedShell(session: VaultSession) {
+    private fun UnlockedShell(
+        session: VaultSession,
+        themeMode: SkeinThemeMode,
+    ) {
         // skein-v9g: Settings › Security's recovery export needs the key
         // provider and the unlock state. Read from the Application rather
         // than threaded through `VaultGate`'s `unlockedContent` lambda, so
@@ -314,6 +358,9 @@ class MainActivity : FragmentActivity() {
         val timelinePersonaSource = remember(session) { session.personaService.observeAll() }
         val timelinePaneState = rememberTimelineState(repo = session.repository, personaSource = timelinePersonaSource)
         SkeinApp(
+            // bd `skein-l9oi`: the same activity-wide mode `VaultGate`'s
+            // pre-unlock screens already got.
+            themeMode = themeMode,
             // E6.I4 slice A (skein-ps0): the command bar's `/new note` and
             // plain-text search. Same `session.repository` instance the
             // timeline above observes, so a note created via `/new note`
@@ -356,6 +403,9 @@ class MainActivity : FragmentActivity() {
                                 vaultUnlockedFlow = vaultUnlockedFlow,
                                 reauthenticate = reauthenticateForExport,
                                 buildRecoveryExport = buildRecoveryExport,
+                                // bd `skein-l9oi`: Settings › Appearance.
+                                themeModeFlow = appearancePrefs.themeMode,
+                                onSetThemeMode = setThemeMode,
                             )
                         SettingsScreen(
                             viewModel = settingsViewModel,
@@ -430,6 +480,19 @@ class MainActivity : FragmentActivity() {
         )
     }
 
+    /**
+     * bd `skein-l9oi`: SYSTEM keeps the platform's own auto day/night
+     * detection (`enableEdgeToEdge()`'s own default); an explicit LIGHT/DARK
+     * override forces status/navigation bar icon contrast to match,
+     * regardless of the device's own day/night setting.
+     */
+    private fun edgeToEdgeStyleFor(mode: SkeinThemeMode): SystemBarStyle =
+        when (mode) {
+            SkeinThemeMode.SYSTEM -> SystemBarStyle.auto(AndroidColor.TRANSPARENT, AndroidColor.TRANSPARENT)
+            SkeinThemeMode.LIGHT -> SystemBarStyle.light(AndroidColor.TRANSPARENT, AndroidColor.TRANSPARENT)
+            SkeinThemeMode.DARK -> SystemBarStyle.dark(AndroidColor.TRANSPARENT)
+        }
+
     private fun applyFlagSecure(enabled: Boolean) {
         if (enabled) {
             window.setFlags(WindowManager.LayoutParams.FLAG_SECURE, WindowManager.LayoutParams.FLAG_SECURE)
@@ -489,6 +552,10 @@ private fun VaultGate(
     onUnlocked: () -> Unit,
     onProvisioned: (strongBoxBacked: Boolean) -> Unit,
     unlockedContent: @Composable (VaultSession) -> Unit,
+    // bd `skein-l9oi`: setup/unlock must honour the user's choice too, not
+    // just the shell — these screens render before there is a session to
+    // thread it through `unlockedContent`, so it comes in as its own param.
+    themeMode: SkeinThemeMode = SkeinThemeMode.SYSTEM,
 ) {
     val unlockState by vault.unlockManager.state.collectAsState()
     val session by vault.session.collectAsState()
@@ -503,11 +570,14 @@ private fun VaultGate(
     }
     when (val phase = gatePhase(session, unlockState, recoveryRequired, provisioned)) {
         is GatePhase.Open -> unlockedContent(phase.session)
-        GatePhase.Opening -> SkeinTheme { EdgeToEdgeSurface { m -> OpeningVault(vault.bootstrap, modifier = m) } }
-        GatePhase.RecoveryRequired -> SkeinTheme { EdgeToEdgeSurface { m -> RecoveryRequiredNotice(modifier = m) } }
-        GatePhase.Probing -> SkeinTheme { EdgeToEdgeSurface { m -> ProbingVault(modifier = m) } }
+        GatePhase.Opening ->
+            SkeinTheme(mode = themeMode) { EdgeToEdgeSurface { m -> OpeningVault(vault.bootstrap, modifier = m) } }
+        GatePhase.RecoveryRequired ->
+            SkeinTheme(mode = themeMode) { EdgeToEdgeSurface { m -> RecoveryRequiredNotice(modifier = m) } }
+        GatePhase.Probing ->
+            SkeinTheme(mode = themeMode) { EdgeToEdgeSurface { m -> ProbingVault(modifier = m) } }
         GatePhase.Setup ->
-            SkeinTheme {
+            SkeinTheme(mode = themeMode) {
                 EdgeToEdgeSurface { m ->
                     VaultSetupScreen(
                         keyProvider = vault.keyProvider,
@@ -521,7 +591,7 @@ private fun VaultGate(
                 }
             }
         GatePhase.Unlock ->
-            SkeinTheme {
+            SkeinTheme(mode = themeMode) {
                 EdgeToEdgeSurface { m ->
                     if (resetRequested) {
                         VaultResetScreen(
