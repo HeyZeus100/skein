@@ -110,6 +110,7 @@ native/sqlite/third_party/sqlite-vec-*/sqlite-vec.h.tmpl
 native/sqlite/third_party/sqlite-vec-*/test.sql
 native/sqlite/third_party/sqlite-vec-*/tmp-static.py
 
-# Reference clones for reconnaissance (bd epic skein-rkrq): pinned by SHA in
-# docs/research/*_RECON.md, never committed - see docs/research/POCKETPAL_RECON_BRIEF.md section 4.
-research/upstream/
+# Reference clones for reconnaissance (bd epic skein-rkrq): pinned by SHA in the
+# analysis documents, never committed. Clones live under research/clones/<name>/;
+# the tracked analyses live under research/upstream/<name>/ (OfflineLLM directive).
+research/clones/
