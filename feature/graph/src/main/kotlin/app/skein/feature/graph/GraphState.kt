@@ -25,7 +25,7 @@
 //
 // Same shape as `:feature:editor`'s `BacklinksState` (see that file's
 // header, "Live updates: two merged invalidation signals"): a graph is
-// re-queried on every [us.aherrera.skein.core.model.IndexChange.EdgesReplaced]
+// re-queried on every [app.skein.core.model.IndexChange.EdgesReplaced]
 // event, unfiltered by `srcId`/`kinds`. The event names only the rewritten
 // edges' *source*, never their destination, so — per `IndexStore
 // .observeChanges`'s own kdoc — a consumer "cannot tell from the event
@@ -42,6 +42,11 @@
 // `VaultRepositoryImpl.changeTicks`).
 package app.skein.feature.graph
 
+import app.skein.core.model.DocId
+import app.skein.core.model.Edge
+import app.skein.core.model.IndexChange
+import app.skein.core.model.IndexStore
+import app.skein.core.model.VaultRepository
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -52,11 +57,6 @@ import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.onStart
-import us.aherrera.skein.core.model.DocId
-import us.aherrera.skein.core.model.Edge
-import us.aherrera.skein.core.model.IndexChange
-import us.aherrera.skein.core.model.IndexStore
-import us.aherrera.skein.core.model.VaultRepository
 
 /**
  * @param docId the document this graph is centered on.

@@ -18,6 +18,14 @@
 package app.skein.core.vault.provider
 
 import android.provider.DocumentsContract
+import app.skein.core.model.AuthorizationToken
+import app.skein.core.model.Document
+import app.skein.core.model.DocumentKind
+import app.skein.core.model.FrontmatterKeys
+import app.skein.core.model.IngestReason
+import app.skein.core.model.NewDocument
+import app.skein.core.model.NewMessage
+import app.skein.core.model.Role
 import app.skein.core.vault.codec.Frontmatter
 import app.skein.core.vault.export.ExportServiceImpl
 import app.skein.core.vault.key.UnlockResult
@@ -27,6 +35,7 @@ import app.skein.core.vault.session.LockReason
 import app.skein.core.vault.session.TestClock
 import app.skein.core.vault.session.UnlockManager
 import app.skein.core.vault.session.UnlockState
+import app.skein.testing.InMemoryVaultRepository
 import com.google.common.truth.Truth.assertThat
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.test.runTest
@@ -34,15 +43,6 @@ import kotlinx.serialization.json.JsonArray
 import kotlinx.serialization.json.JsonPrimitive
 import kotlinx.serialization.json.buildJsonObject
 import org.junit.Test
-import us.aherrera.skein.core.model.AuthorizationToken
-import us.aherrera.skein.core.model.Document
-import us.aherrera.skein.core.model.DocumentKind
-import us.aherrera.skein.core.model.FrontmatterKeys
-import us.aherrera.skein.core.model.IngestReason
-import us.aherrera.skein.core.model.NewDocument
-import us.aherrera.skein.core.model.NewMessage
-import us.aherrera.skein.core.model.Role
-import us.aherrera.skein.testing.InMemoryVaultRepository
 import java.io.ByteArrayInputStream
 import java.io.ByteArrayOutputStream
 import java.io.FileNotFoundException

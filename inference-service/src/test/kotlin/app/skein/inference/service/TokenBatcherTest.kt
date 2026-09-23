@@ -15,10 +15,10 @@
 
 package app.skein.inference.service
 
+import app.skein.ipc.TransportRules
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertTrue
 import org.junit.Test
-import us.aherrera.skein.ipc.TransportRules
 
 class TokenBatcherTest {
     private val sent = mutableListOf<TokenBatch>()

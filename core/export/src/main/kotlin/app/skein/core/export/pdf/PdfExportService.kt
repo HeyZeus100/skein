@@ -18,10 +18,10 @@ import android.content.Context
 import android.print.PrintDocumentAdapter
 import app.skein.core.markdown.MarkdownAst
 import app.skein.core.markdown.layout.MarkdownFlattener
+import app.skein.core.model.DocId
+import app.skein.core.model.DocumentKind
+import app.skein.core.model.VaultRepository
 import kotlinx.coroutines.runBlocking
-import us.aherrera.skein.core.model.DocId
-import us.aherrera.skein.core.model.DocumentKind
-import us.aherrera.skein.core.model.VaultRepository
 
 /**
  * Renders a vault document to PDF via [android.print.PrintManager]. The

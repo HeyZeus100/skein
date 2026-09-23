@@ -111,7 +111,7 @@ Content-addressed snapshots of every state a document has been in that could hav
 
 Primary key: `(document_id, revision_hash)` — the hash *is* the content address, so re-writing content a document has held before reuses its row rather than appending a duplicate. Indexes: `idx_document_revisions_doc` (by `document_id`, `revision_ord` DESC).
 
-**Revision hash (normative).** BLAKE3-256, lowercase hex, over `"skein/revision/v1\0"` ‖ `u64le(len(frontmatter))` ‖ canonical frontmatter ‖ canonical body, all UTF-8, where the canonical body folds `\r\n` and `\r` to `\n` (a null body is the empty string) and the canonical frontmatter is compact JSON with object keys sorted recursively and the `id` key removed (it always equals `documents.id`, and keeping it would make two byte-identical notes hash differently). The single implementation is `RevisionHashing` in `core/model/src/main/kotlin/us/aherrera/skein/core/model/Revisions.kt`; `Blake3` beside it is a pure-Kotlin BLAKE3-256 pinned to the published test vectors. Consequences: a CRLF↔LF-only edit, a frontmatter key reordering, a retitle, and a `persona_id` change all leave the revision — and therefore every citation into the document — untouched; a body or frontmatter-value edit re-addresses it.
+**Revision hash (normative).** BLAKE3-256, lowercase hex, over `"skein/revision/v1\0"` ‖ `u64le(len(frontmatter))` ‖ canonical frontmatter ‖ canonical body, all UTF-8, where the canonical body folds `\r\n` and `\r` to `\n` (a null body is the empty string) and the canonical frontmatter is compact JSON with object keys sorted recursively and the `id` key removed (it always equals `documents.id`, and keeping it would make two byte-identical notes hash differently). The single implementation is `RevisionHashing` in `core/model/src/main/kotlin/app/skein/core/model/Revisions.kt`; `Blake3` beside it is a pure-Kotlin BLAKE3-256 pinned to the published test vectors. Consequences: a CRLF↔LF-only edit, a frontmatter key reordering, a retitle, and a `persona_id` change all leave the revision — and therefore every citation into the document — untouched; a body or frontmatter-value edit re-addresses it.
 
 **Write path.** `VaultRepositoryImpl` (and its `InMemoryVaultRepository` twin) captures a revision on `createDocument`, `updateBody`, `updateFrontmatter`, and on the transcript rewrite inside `appendMessage`, inside the same transaction as the `documents` write. Capture is skipped when the content address did not move. Attachments never get rows.
 
@@ -203,7 +203,7 @@ Unique constraint: `(canonical_name, entity_type)`.
 
 ### Canonical keys
 
-Defined in `core/model/src/main/kotlin/us/aherrera/skein/core/model/Transfer.kt` (`FrontmatterKeys`):
+Defined in `core/model/src/main/kotlin/app/skein/core/model/Transfer.kt` (`FrontmatterKeys`):
 
 | Key | Type | Required | Notes |
 |-----|------|----------|-------|
@@ -247,7 +247,7 @@ This is the body of the canonical example note. `docs/VAULT_FORMAT.md`
 (`E9.I5`) reproduces this exact text as its worked frontmatter example.
 ```
 
-(This example is pinned as `FrontmatterExamples.NOTE` in `core/model/src/main/kotlin/us/aherrera/skein/core/model/Transfer.kt` and is CI-tested to match this document.)
+(This example is pinned as `FrontmatterExamples.NOTE` in `core/model/src/main/kotlin/app/skein/core/model/Transfer.kt` and is CI-tested to match this document.)
 
 ### Obsidian compatibility
 
@@ -535,7 +535,7 @@ The following are **not** stable or will ship as **[v1 design, in progress]**:
 
 - **Design spec:** `docs/superpowers/specs/2026-09-19-skein-design.md` (§2.10 frontmatter, §4.9 data model, §5 SQLCipher/schema, §7 retrieval)
 - **Schema source:** `core/vault/src/main/resources/migrations/001_initial.sql`
-- **Frontmatter keys and example:** `core/model/src/main/kotlin/us/aherrera/skein/core/model/Transfer.kt`
+- **Frontmatter keys and example:** `core/model/src/main/kotlin/app/skein/core/model/Transfer.kt`
 - **Frontmatter codec:** `core/vault/src/main/kotlin/app/skein/core/vault/codec/Frontmatter.kt`
 - **UUIDv7 generator:** `core/vault/src/main/kotlin/app/skein/core/vault/id/Uuid7.kt`
 - **SKAT format:** `core/vault/src/main/kotlin/app/skein/core/vault/blob/SkatFormat.kt`

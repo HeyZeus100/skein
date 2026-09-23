@@ -8,12 +8,14 @@
 // sampling defaults, thermal backoff) lives below this line. Policy is
 // `E4.I3`'s (`InferenceService`) and `E4.I6`'s.
 //
-// PACKAGE DEVIATION (recorded in bd skein-3aw): the plan's Files list says
-// `us.aherrera.skein.inference.service`. This module's namespace has been
-// `app.skein.inference.service` since E1.I2 — the repo convention is that
-// *contracts* live under `us.aherrera.skein.*` and *implementation modules*
-// under `app.skein.*` (cf. `:core:model`, which holds both). Following the
-// module wins over the plan's path string.
+// PACKAGE DEVIATION (recorded in bd skein-3aw): the plan's Files list
+// originally said `us.aherrera.skein.inference.service`. This module's
+// namespace has been `app.skein.inference.service` since E1.I2 — the repo
+// convention at the time was that *contracts* lived under
+// `us.aherrera.skein.*` and *implementation modules* under `app.skein.*`
+// (cf. `:core:model`, which holds both). Following the module won over the
+// plan's path string; skein-376c later renamed every contract module onto
+// `app.skein.*` too, so the deviation is now moot.
 //
 // HANDLES. A handle is an opaque, never-reused `Long` token minted by the
 // native registry in `native/llama/jni/handles.h`, not a pointer. A stale or

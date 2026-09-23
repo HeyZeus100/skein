@@ -130,13 +130,12 @@ built speculatively.
 
 ### Fakes
 
-`us.aherrera.skein.testing` (note: **not** `app.skein.testing` — that
-package holds the pure-JVM JUnit rules above; the fakes below live under
-the plan's locked `us.aherrera.skein` contract-code prefix, alongside the
-abstract contract suites, `core/model`'s interfaces, and the concrete
-`*Impl` classes' `androidTest` contract subclasses) has one scripted or
-in-memory fake implementing each real, locked plan §4 service contract,
-plus a consistent builder DSL over them:
+`app.skein.testing` — the same package as the pure-JVM JUnit rules above
+(skein-376c merged what used to be a separate `us.aherrera.skein.testing`
+prefix into it) — also holds the abstract contract suites, `core/model`'s
+interfaces, and the concrete `*Impl` classes' `androidTest` contract
+subclasses. It has one scripted or in-memory fake implementing each real,
+locked plan §4 service contract, plus a consistent builder DSL over them:
 
 | Fake / builder | Stands in for | Approximation to know about |
 |---|---|---|
@@ -152,7 +151,7 @@ plus a consistent builder DSL over them:
 Every fake's KDoc says exactly what it's faithful to and what it
 approximates — read it before trusting a fake's behavior in a new test.
 
-**Behavioural recorders**, also in `us.aherrera.skein.testing`:
+**Behavioural recorders**, also in `app.skein.testing`:
 
 - `CountingIndexStore(delegate)` — wraps any `IndexStore` (normally
   `InMemoryIndexStore`) and counts calls per method name (`counts`,

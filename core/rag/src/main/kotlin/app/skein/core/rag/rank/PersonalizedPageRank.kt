@@ -58,7 +58,7 @@
 
 package app.skein.core.rag.rank
 
-import us.aherrera.skein.core.model.Edge
+import app.skein.core.model.Edge
 import kotlin.math.abs
 
 /**

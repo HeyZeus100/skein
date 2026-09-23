@@ -41,9 +41,9 @@
 
 package app.skein.core.rag.recall
 
-import us.aherrera.skein.core.model.EmbedderService
-import us.aherrera.skein.core.model.IndexStore
-import us.aherrera.skein.core.model.ScoredChunk
+import app.skein.core.model.EmbedderService
+import app.skein.core.model.IndexStore
+import app.skein.core.model.ScoredChunk
 
 /**
  * Vector (sqlite-vec / cosine KNN) recall (spec §7.2 recall step 1). See

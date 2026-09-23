@@ -32,11 +32,11 @@
 
 package app.skein.core.rag.recall
 
-import us.aherrera.skein.core.model.DocId
-import us.aherrera.skein.core.model.Edge
-import us.aherrera.skein.core.model.IndexStore
-import us.aherrera.skein.core.model.ScoredChunk
-import us.aherrera.skein.core.model.VaultRepository
+import app.skein.core.model.DocId
+import app.skein.core.model.Edge
+import app.skein.core.model.IndexStore
+import app.skein.core.model.ScoredChunk
+import app.skein.core.model.VaultRepository
 
 /**
  * Graph-seed recall (spec §7.2 step 3). See file header for the algorithm.

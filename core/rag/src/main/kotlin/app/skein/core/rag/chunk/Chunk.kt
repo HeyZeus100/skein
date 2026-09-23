@@ -1,5 +1,5 @@
 // `Chunk` (bd skein-92u, E5.I5). The chunker's own output type — deliberately
-// distinct from `us.aherrera.skein.core.model.Chunk`/`NewChunk` (the
+// distinct from `app.skein.core.model.Chunk`/`NewChunk` (the
 // persisted-row shapes `IndexStore.replaceChunks` speaks in), because those
 // types are plan-locked (`core/model/.../Vault.kt`, not to be edited here)
 // and carry no offset/heading-path metadata. `IngestSteps` (skein-4uu/7v3)

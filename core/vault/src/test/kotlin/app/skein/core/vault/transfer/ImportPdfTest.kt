@@ -20,6 +20,9 @@
 
 package app.skein.core.vault.transfer
 
+import app.skein.core.model.DocumentKind
+import app.skein.core.model.FrontmatterKeys
+import app.skein.testing.InMemoryVaultRepository
 import com.google.common.truth.Truth.assertThat
 import com.tom_roush.pdfbox.android.PDFBoxResourceLoader
 import kotlinx.coroutines.test.runTest
@@ -30,9 +33,6 @@ import org.junit.runner.RunWith
 import org.robolectric.RobolectricTestRunner
 import org.robolectric.RuntimeEnvironment
 import org.robolectric.annotation.Config
-import us.aherrera.skein.core.model.DocumentKind
-import us.aherrera.skein.core.model.FrontmatterKeys
-import us.aherrera.skein.testing.InMemoryVaultRepository
 import java.io.ByteArrayInputStream
 
 @RunWith(RobolectricTestRunner::class)

@@ -12,10 +12,14 @@ import androidx.compose.ui.test.captureToImage
 import androidx.compose.ui.test.junit4.createAndroidComposeRule
 import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.performTextInput
+import app.skein.core.model.DocumentKind
+import app.skein.core.model.NewDocument
 import app.skein.feature.editor.SKEIN_EDITOR_TEST_TAG
 import app.skein.feature.shell.theme.SkeinColors
 import app.skein.feature.shell.theme.SkeinTheme
 import app.skein.feature.shell.theme.SkeinThemeMode
+import app.skein.testing.InMemoryIndexStore
+import app.skein.testing.InMemoryVaultRepository
 import kotlinx.coroutines.runBlocking
 import org.junit.Assert.assertTrue
 import org.junit.Rule
@@ -24,10 +28,6 @@ import org.junit.runner.RunWith
 import org.robolectric.RobolectricTestRunner
 import org.robolectric.annotation.Config
 import org.robolectric.annotation.GraphicsMode
-import us.aherrera.skein.core.model.DocumentKind
-import us.aherrera.skein.core.model.NewDocument
-import us.aherrera.skein.testing.InMemoryIndexStore
-import us.aherrera.skein.testing.InMemoryVaultRepository
 import kotlin.math.max
 import kotlin.math.min
 import kotlin.math.pow

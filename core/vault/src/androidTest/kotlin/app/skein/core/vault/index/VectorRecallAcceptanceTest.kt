@@ -23,6 +23,11 @@
 package app.skein.core.vault.index
 
 import androidx.test.ext.junit.runners.AndroidJUnit4
+import app.skein.core.model.EmbedderService
+import app.skein.core.model.EntitySpan
+import app.skein.core.model.Int8Quantizer
+import app.skein.core.model.Model
+import app.skein.core.model.NewChunk
 import app.skein.core.rag.recall.VectorRecall
 import app.skein.core.vault.db.SkeinSQLiteConnection
 import app.skein.core.vault.db.SkeinSQLiteDriver
@@ -31,11 +36,6 @@ import kotlinx.coroutines.test.runTest
 import org.junit.After
 import org.junit.Test
 import org.junit.runner.RunWith
-import us.aherrera.skein.core.model.EmbedderService
-import us.aherrera.skein.core.model.EntitySpan
-import us.aherrera.skein.core.model.Int8Quantizer
-import us.aherrera.skein.core.model.Model
-import us.aherrera.skein.core.model.NewChunk
 import kotlin.math.sqrt
 
 @RunWith(AndroidJUnit4::class)

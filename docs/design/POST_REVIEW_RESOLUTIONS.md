@@ -218,7 +218,7 @@ into the revision's `body_md_snapshot`:
 #### Kotlin surfaces (illustrative)
 
 ```kotlin
-// core/rag/src/main/kotlin/us/aherrera/skein/rag/cite/CitationRecord.kt
+// core/rag/src/main/kotlin/app/skein/rag/cite/CitationRecord.kt
 // PURELY illustrative — not code to compile in this branch.
 
 data class Locator(val byteStart: Int, val byteEnd: Int, val chunkOrd: Int?)
@@ -463,7 +463,7 @@ sense; the audit surface benefits from them being hashed.
 #### `ManifestBinding` and expanded `LoadRequest` (Parcelable)
 
 ```kotlin
-// core/ipc/src/main/kotlin/us/aherrera/skein/ipc/ManifestBinding.kt
+// core/ipc/src/main/kotlin/app/skein/ipc/ManifestBinding.kt
 
 @Parcelize data class ManifestFileRef(
     val role: String,                       // 'main' | 'mmproj' | 'tokenizer' | ...
@@ -701,12 +701,12 @@ References (Android):
 > filled in there.
 
 ```aidl
-// core/ipc/src/main/aidl/us/aherrera/skein/ipc/IInferenceService.aidl
-package us.aherrera.skein.ipc;
-import us.aherrera.skein.ipc.IInferenceCallback;
-import us.aherrera.skein.ipc.LoadRequest;
-import us.aherrera.skein.ipc.GenerateRequest;
-import us.aherrera.skein.ipc.EngineStatus;
+// core/ipc/src/main/aidl/app/skein/ipc/IInferenceService.aidl
+package app.skein.ipc;
+import app.skein.ipc.IInferenceCallback;
+import app.skein.ipc.LoadRequest;
+import app.skein.ipc.GenerateRequest;
+import app.skein.ipc.EngineStatus;
 
 interface IInferenceService {
     /**
@@ -738,8 +738,8 @@ interface IInferenceService {
 
 ```aidl
 // IInferenceCallback.aidl
-package us.aherrera.skein.ipc;
-import us.aherrera.skein.ipc.GenStats;
+package app.skein.ipc;
+import app.skein.ipc.GenStats;
 
 oneway interface IInferenceCallback {
     /**
@@ -758,10 +758,10 @@ oneway interface IInferenceCallback {
 
 ```aidl
 // IEmbedderService.aidl
-package us.aherrera.skein.ipc;
-import us.aherrera.skein.ipc.EmbedderLoadRequest;
-import us.aherrera.skein.ipc.EmbedRequest;
-import us.aherrera.skein.ipc.EmbedResult;
+package app.skein.ipc;
+import app.skein.ipc.EmbedderLoadRequest;
+import app.skein.ipc.EmbedRequest;
+import app.skein.ipc.EmbedResult;
 
 interface IEmbedderService {
     int load(in EmbedderLoadRequest req);
@@ -783,7 +783,7 @@ interface IEmbedderService {
 #### Parcelable shapes (with shared-memory attachment refs)
 
 ```kotlin
-// core/ipc/src/main/kotlin/us/aherrera/skein/ipc/Parcels.kt (v2)
+// core/ipc/src/main/kotlin/app/skein/ipc/Parcels.kt (v2)
 
 @Parcelize data class SharedMemRef(
     val fd: ParcelFileDescriptor,   // MemoryFile.getFileDescriptor().dup() -> PFD
@@ -837,7 +837,7 @@ object ErrorCode {
 #### Client-side transport rules (illustrative)
 
 ```kotlin
-// core/inference/src/main/kotlin/us/aherrera/skein/inference/TransportRules.kt
+// core/inference/src/main/kotlin/app/skein/inference/TransportRules.kt
 
 object TransportRules {
     /** Hard cap; anything above must go through SharedMemRef. */
@@ -1102,8 +1102,8 @@ References (Android):
     android:hasFragileUserData="true">
 
     <provider
-        android:name="us.aherrera.skein.vault.provider.VaultDocumentsProvider"
-        android:authorities="us.aherrera.skein.documents"
+        android:name="app.skein.vault.provider.VaultDocumentsProvider"
+        android:authorities="app.skein.documents"
         android:exported="true"
         android:permission="android.permission.MANAGE_DOCUMENTS"
         android:grantUriPermissions="false">
@@ -1117,7 +1117,7 @@ References (Android):
     </provider>
 
     <receiver
-        android:name="us.aherrera.skein.export.stage.BootReceiver"
+        android:name="app.skein.export.stage.BootReceiver"
         android:enabled="true"
         android:exported="false"
         android:directBootAware="false">
@@ -1214,7 +1214,7 @@ CREATE INDEX idx_export_stages_expires ON export_stages(expires_at);
 #### Kotlin surfaces — sweeper and boot receiver (illustrative)
 
 ```kotlin
-// feature/shell/src/main/kotlin/us/aherrera/skein/export/stage/StagedPlaintextSweeper.kt
+// feature/shell/src/main/kotlin/app/skein/export/stage/StagedPlaintextSweeper.kt
 
 class StagedPlaintextSweeper(
     context: Context,
@@ -1249,7 +1249,7 @@ class StagedPlaintextSweeper(
     }
 }
 
-// feature/shell/src/main/kotlin/us/aherrera/skein/export/stage/BootReceiver.kt
+// feature/shell/src/main/kotlin/app/skein/export/stage/BootReceiver.kt
 
 class BootReceiver : BroadcastReceiver() {
     override fun onReceive(context: Context, intent: Intent) {

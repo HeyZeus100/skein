@@ -3,16 +3,16 @@
 // `tags:` frontmatter array (via `Frontmatter.parse`, skein-3fn / E2.I3),
 // merged and deduplicated case-insensitively (lowercased, matching the
 // `tag:<lowercased-name>` edge-target convention documented on
-// `us.aherrera.skein.core.model.Edge`).
+// `app.skein.core.model.Edge`).
 
 package app.skein.core.vault.extract
 
+import app.skein.core.model.FrontmatterKeys
 import app.skein.core.vault.codec.Frontmatter
 import kotlinx.serialization.json.JsonArray
 import kotlinx.serialization.json.JsonObject
 import kotlinx.serialization.json.JsonPrimitive
 import kotlinx.serialization.json.contentOrNull
-import us.aherrera.skein.core.model.FrontmatterKeys
 
 /**
  * Extracts the tag set for a document: `#tag` occurrences in the Markdown

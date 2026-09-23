@@ -50,14 +50,14 @@
 
 package app.skein.core.rag.ingest
 
+import app.skein.core.model.ChunkId
+import app.skein.core.model.DocId
+import app.skein.core.model.EmbedderService
+import app.skein.core.model.IndexStore
+import app.skein.core.model.NewChunk
+import app.skein.core.model.RevisionHash
 import app.skein.core.model.SkeinLog
 import app.skein.core.rag.chunk.Chunk
-import us.aherrera.skein.core.model.ChunkId
-import us.aherrera.skein.core.model.DocId
-import us.aherrera.skein.core.model.EmbedderService
-import us.aherrera.skein.core.model.IndexStore
-import us.aherrera.skein.core.model.NewChunk
-import us.aherrera.skein.core.model.RevisionHash
 
 /**
  * Ingest-time indexing steps (spec §7.1 steps 2-3 as writes): [indexLexical]

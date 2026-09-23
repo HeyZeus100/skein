@@ -36,12 +36,12 @@
 
 package app.skein.core.vault.transfer
 
+import app.skein.testing.InMemoryVaultRepository
 import com.google.common.truth.Truth.assertThat
 import com.sun.management.ThreadMXBean
 import kotlinx.coroutines.test.runTest
 import org.junit.Assume.assumeTrue
 import org.junit.Test
-import us.aherrera.skein.testing.InMemoryVaultRepository
 import java.io.ByteArrayInputStream
 import java.lang.management.ManagementFactory
 

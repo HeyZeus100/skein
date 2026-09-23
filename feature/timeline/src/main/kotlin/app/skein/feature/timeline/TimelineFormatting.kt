@@ -6,11 +6,11 @@
 
 package app.skein.feature.timeline
 
+import app.skein.core.model.Document
+import app.skein.core.model.DocumentKind
+import app.skein.core.model.FrontmatterKeys
 import kotlinx.serialization.json.JsonArray
 import kotlinx.serialization.json.JsonPrimitive
-import us.aherrera.skein.core.model.Document
-import us.aherrera.skein.core.model.DocumentKind
-import us.aherrera.skein.core.model.FrontmatterKeys
 import java.time.Instant
 import java.time.LocalDate
 import java.time.ZoneId

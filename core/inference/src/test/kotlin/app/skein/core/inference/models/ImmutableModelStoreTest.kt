@@ -6,6 +6,7 @@
 
 package app.skein.core.inference.models
 
+import app.skein.core.model.Blake3
 import app.skein.core.verify.DigestAlgorithm
 import app.skein.core.verify.ModelFileRole
 import app.skein.core.verify.ModelVerification
@@ -14,7 +15,6 @@ import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import org.junit.rules.TemporaryFolder
-import us.aherrera.skein.core.model.Blake3
 import java.io.File
 import java.nio.file.attribute.PosixFilePermission
 import java.util.concurrent.CountDownLatch

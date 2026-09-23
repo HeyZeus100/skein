@@ -1,8 +1,13 @@
 package app.skein.feature.editor.notetab
 
 import androidx.compose.ui.text.input.TextFieldValue
+import app.skein.core.model.Document
+import app.skein.core.model.DocumentKind
+import app.skein.core.model.NewDocument
 import app.skein.core.vault.codec.Frontmatter
 import app.skein.feature.editor.WikilinkTarget
+import app.skein.testing.InMemoryIndexStore
+import app.skein.testing.InMemoryVaultRepository
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.advanceTimeBy
 import kotlinx.coroutines.test.runCurrent
@@ -16,11 +21,6 @@ import org.junit.Assert.assertNotNull
 import org.junit.Assert.assertNull
 import org.junit.Assert.assertTrue
 import org.junit.Test
-import us.aherrera.skein.core.model.Document
-import us.aherrera.skein.core.model.DocumentKind
-import us.aherrera.skein.core.model.NewDocument
-import us.aherrera.skein.testing.InMemoryIndexStore
-import us.aherrera.skein.testing.InMemoryVaultRepository
 import java.time.Duration
 
 /**

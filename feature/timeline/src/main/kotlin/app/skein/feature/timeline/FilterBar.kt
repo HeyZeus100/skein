@@ -20,10 +20,10 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.unit.dp
-import us.aherrera.skein.core.model.DocumentKind
-import us.aherrera.skein.core.model.Persona
-import us.aherrera.skein.core.model.PersonaId
-import us.aherrera.skein.core.model.TimelineFilter
+import app.skein.core.model.DocumentKind
+import app.skein.core.model.Persona
+import app.skein.core.model.PersonaId
+import app.skein.core.model.TimelineFilter
 
 /**
  * Plan `E6.I7` filter bar: persona dropdown, kind toggles, tag chips — one

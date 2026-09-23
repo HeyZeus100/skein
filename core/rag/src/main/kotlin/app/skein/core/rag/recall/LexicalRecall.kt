@@ -42,8 +42,8 @@
 
 package app.skein.core.rag.recall
 
-import us.aherrera.skein.core.model.IndexStore
-import us.aherrera.skein.core.model.ScoredChunk
+import app.skein.core.model.IndexStore
+import app.skein.core.model.ScoredChunk
 
 /**
  * Lexical (FTS5/BM25) recall (spec §7.2 recall step 2). See file header for

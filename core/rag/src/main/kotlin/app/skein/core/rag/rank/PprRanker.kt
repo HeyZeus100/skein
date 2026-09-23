@@ -54,14 +54,14 @@
 
 package app.skein.core.rag.rank
 
-import us.aherrera.skein.core.model.ChunkId
-import us.aherrera.skein.core.model.CitationSourceKind
-import us.aherrera.skein.core.model.DocId
-import us.aherrera.skein.core.model.Edge
-import us.aherrera.skein.core.model.IndexStore
-import us.aherrera.skein.core.model.PersonaId
-import us.aherrera.skein.core.model.ScoredChunk
-import us.aherrera.skein.core.model.VaultRepository
+import app.skein.core.model.ChunkId
+import app.skein.core.model.CitationSourceKind
+import app.skein.core.model.DocId
+import app.skein.core.model.Edge
+import app.skein.core.model.IndexStore
+import app.skein.core.model.PersonaId
+import app.skein.core.model.ScoredChunk
+import app.skein.core.model.VaultRepository
 
 /**
  * Personalized-PageRank ranker and score fusion (spec §7.2 rank step). See

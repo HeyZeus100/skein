@@ -9,22 +9,22 @@
 
 package app.skein.core.rag.chat
 
+import app.skein.core.model.AssembledPrompt
+import app.skein.core.model.CitationRecordJson
+import app.skein.core.model.CitationSourceKind
+import app.skein.core.model.DocumentKind
+import app.skein.core.model.Locator
+import app.skein.core.model.NewDocument
+import app.skein.core.model.NewMessage
+import app.skein.core.model.Prompt
+import app.skein.core.model.RecallSource
+import app.skein.core.model.Retrieved
+import app.skein.core.model.RetrievedChunksPayload
+import app.skein.core.model.Role
+import app.skein.testing.InMemoryVaultRepository
 import com.google.common.truth.Truth.assertThat
 import kotlinx.coroutines.runBlocking
 import org.junit.Test
-import us.aherrera.skein.core.model.AssembledPrompt
-import us.aherrera.skein.core.model.CitationRecordJson
-import us.aherrera.skein.core.model.CitationSourceKind
-import us.aherrera.skein.core.model.DocumentKind
-import us.aherrera.skein.core.model.Locator
-import us.aherrera.skein.core.model.NewDocument
-import us.aherrera.skein.core.model.NewMessage
-import us.aherrera.skein.core.model.Prompt
-import us.aherrera.skein.core.model.RecallSource
-import us.aherrera.skein.core.model.Retrieved
-import us.aherrera.skein.core.model.RetrievedChunksPayload
-import us.aherrera.skein.core.model.Role
-import us.aherrera.skein.testing.InMemoryVaultRepository
 
 class CitationRecordsTest {
     private val hash = "b".repeat(64)

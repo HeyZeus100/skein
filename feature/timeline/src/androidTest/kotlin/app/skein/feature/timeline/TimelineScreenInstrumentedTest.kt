@@ -17,6 +17,12 @@ import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
 import androidx.compose.ui.test.performTouchInput
 import androidx.test.ext.junit.runners.AndroidJUnit4
+import app.skein.core.model.Document
+import app.skein.core.model.DocumentKind
+import app.skein.core.model.FrontmatterKeys
+import app.skein.core.model.NewDocument
+import app.skein.core.model.Persona
+import app.skein.testing.InMemoryVaultRepository
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.runBlocking
 import kotlinx.serialization.json.JsonArray
@@ -28,12 +34,6 @@ import org.junit.Assert.assertNull
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
-import us.aherrera.skein.core.model.Document
-import us.aherrera.skein.core.model.DocumentKind
-import us.aherrera.skein.core.model.FrontmatterKeys
-import us.aherrera.skein.core.model.NewDocument
-import us.aherrera.skein.core.model.Persona
-import us.aherrera.skein.testing.InMemoryVaultRepository
 import java.util.concurrent.atomic.AtomicLong
 
 /**

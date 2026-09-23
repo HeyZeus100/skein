@@ -204,7 +204,7 @@ share of users, and must stay first-class.
           android:permission="app.skein.permission.MODEL_TRANSFER"
           android:excludeFromRecents="true">
     <intent-filter>
-        <action android:name="us.aherrera.skein.action.PICK_MODEL_ARTIFACT" />
+        <action android:name="app.skein.action.PICK_MODEL_ARTIFACT" />
         <category android:name="android.intent.category.DEFAULT" />
     </intent-filter>
 </activity>
@@ -218,7 +218,7 @@ share of users, and must stay first-class.
 
 Naming note: the brief wrote `us.skein.permission.MODEL_TRANSFER` "conceptually"; this document uses
 `app.skein.permission.MODEL_TRANSFER` to match the namespace already in the tree
-(`us.aherrera.skein.documents`, `us.aherrera.skein.ipc`).
+(`app.skein.documents`, `app.skein.ipc`).
 
 Scope note (§1.3): `MODEL_TRANSFER` is the Core-visible leg of the `MODEL_DOWNLOAD` capability and
 nothing else. It does not cover frontier inference, brain packs or skills, and it must never be
@@ -348,7 +348,7 @@ running in the process that holds the vault. **This design deletes it** (§3.6).
 Its replacement is one AIDL method:
 
 ```aidl
-// core/ipc/src/main/aidl/us/aherrera/skein/ipc/IInferenceService.aidl   (one added method)
+// core/ipc/src/main/aidl/app/skein/ipc/IInferenceService.aidl   (one added method)
 /**
  * Sync. Verifies every fd in `binding` exactly as `load` does, then loads the MODEL ONLY
  * (no llama_context, no KV cache), reads metadata, frees it, and returns the findings.
@@ -359,7 +359,7 @@ ModelInspection inspect(in ManifestBinding binding);
 ```
 
 ```kotlin
-// core/ipc/src/main/kotlin/us/aherrera/skein/ipc/Parcels.kt  (+ ModelInspection.aidl)
+// core/ipc/src/main/kotlin/app/skein/ipc/Parcels.kt  (+ ModelInspection.aidl)
 @Parcelize data class ModelInspection(
     val errorCode: Int,           // ErrorCode.OK, INVALID_MODEL, HASH_MISMATCH, OOM, SESSION_LOCKED…
     val architecture: String?,    // general.architecture
@@ -436,7 +436,7 @@ in doubt is whether Hub sent what it meant to.
 The hint bundle itself:
 
 ```kotlin
-// core/model/src/main/kotlin/us/aherrera/skein/core/model/ModelOrigin.kt   (NEW, pure JVM)
+// core/model/src/main/kotlin/app/skein/core/model/ModelOrigin.kt   (NEW, pure JVM)
 public data class ArtifactOffer(
     val transferDigest: String?,   // Hub's post-download SHA-256, hex, or null
     val declaredSizeBytes: Long,

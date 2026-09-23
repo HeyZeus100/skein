@@ -20,7 +20,7 @@
 
 package app.skein.inference.service
 
-import us.aherrera.skein.ipc.ErrorCode
+import app.skein.ipc.ErrorCode
 import java.util.concurrent.atomic.AtomicBoolean
 import java.util.concurrent.atomic.AtomicLong
 

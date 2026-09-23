@@ -15,20 +15,20 @@
 
 package app.skein.core.rag.rank
 
+import app.skein.core.model.Capability
+import app.skein.core.model.Document
+import app.skein.core.model.Edge
+import app.skein.core.model.EdgeKind
+import app.skein.core.model.EmbedderService
+import app.skein.core.model.Model
+import app.skein.core.model.ModelFormat
+import app.skein.core.model.NewChunk
 import app.skein.core.rag.chunk.Chunker
 import app.skein.core.rag.ingest.IngestSteps
 import app.skein.core.rag.tokenizers.TokenizerFixtures
-import us.aherrera.skein.core.model.Capability
-import us.aherrera.skein.core.model.Document
-import us.aherrera.skein.core.model.Edge
-import us.aherrera.skein.core.model.EdgeKind
-import us.aherrera.skein.core.model.EmbedderService
-import us.aherrera.skein.core.model.Model
-import us.aherrera.skein.core.model.ModelFormat
-import us.aherrera.skein.core.model.NewChunk
-import us.aherrera.skein.testing.FakeEmbedderService
-import us.aherrera.skein.testing.InMemoryIndexStore
-import us.aherrera.skein.testing.InMemoryVaultRepository
+import app.skein.testing.FakeEmbedderService
+import app.skein.testing.InMemoryIndexStore
+import app.skein.testing.InMemoryVaultRepository
 
 internal object RankFixtures {
     private val WIKILINK = Regex("\\[\\[([^\\]]+)]]")

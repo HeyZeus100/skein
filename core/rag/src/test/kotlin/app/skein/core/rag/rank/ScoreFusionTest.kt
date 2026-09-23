@@ -5,11 +5,11 @@
 
 package app.skein.core.rag.rank
 
+import app.skein.core.model.ChunkId
+import app.skein.core.model.CitationSourceKind
+import app.skein.core.model.ScoredChunk
 import com.google.common.truth.Truth.assertThat
 import org.junit.Test
-import us.aherrera.skein.core.model.ChunkId
-import us.aherrera.skein.core.model.CitationSourceKind
-import us.aherrera.skein.core.model.ScoredChunk
 
 class ScoreFusionTest {
     @Test

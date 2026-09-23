@@ -20,8 +20,8 @@
 // that task's KDoc).
 package app.skein.core.rag.prompt
 
-import us.aherrera.skein.core.model.PromptAssembler
-import us.aherrera.skein.testing.PromptAssemblerContractTest
+import app.skein.core.model.PromptAssembler
+import app.skein.testing.PromptAssemblerContractTest
 
 class PromptAssemblerImplTest : PromptAssemblerContractTest() {
     override fun assembler(): PromptAssembler = PromptAssemblerImpl()

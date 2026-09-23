@@ -17,6 +17,9 @@ import androidx.test.core.app.ActivityScenario
 import androidx.test.core.app.ApplicationProvider
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import app.skein.MainActivity
+import app.skein.core.model.AuthorizationToken
+import app.skein.core.model.DocumentKind
+import app.skein.core.model.NewDocument
 import app.skein.core.vault.key.RewrapResult
 import app.skein.core.vault.key.SetupResult
 import app.skein.core.vault.key.UnlockResult
@@ -35,9 +38,6 @@ import org.junit.Assert.assertTrue
 import org.junit.Assert.fail
 import org.junit.Test
 import org.junit.runner.RunWith
-import us.aherrera.skein.core.model.AuthorizationToken
-import us.aherrera.skein.core.model.DocumentKind
-import us.aherrera.skein.core.model.NewDocument
 import java.io.File
 import java.security.SecureRandom
 

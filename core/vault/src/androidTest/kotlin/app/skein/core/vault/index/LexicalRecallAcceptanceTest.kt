@@ -15,6 +15,7 @@
 package app.skein.core.vault.index
 
 import androidx.test.ext.junit.runners.AndroidJUnit4
+import app.skein.core.model.NewChunk
 import app.skein.core.rag.recall.LexicalRecall
 import app.skein.core.vault.db.SkeinSQLiteConnection
 import app.skein.core.vault.db.SkeinSQLiteDriver
@@ -23,7 +24,6 @@ import kotlinx.coroutines.test.runTest
 import org.junit.After
 import org.junit.Test
 import org.junit.runner.RunWith
-import us.aherrera.skein.core.model.NewChunk
 
 @RunWith(AndroidJUnit4::class)
 public class LexicalRecallAcceptanceTest {

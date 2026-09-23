@@ -603,7 +603,7 @@ implements this (§7).
 ### 5.1 `SessionState` and `LockObserver` — the `:app`-side contract
 
 ```kotlin
-// core/security/src/main/kotlin/us/aherrera/skein/security/session/SessionState.kt
+// core/security/src/main/kotlin/app/skein/security/session/SessionState.kt
 // ILLUSTRATIVE — sketch, not implementation.
 
 /** Supersedes/extends UnlockManager.UnlockState (E3.I3) with an explicit
@@ -673,8 +673,8 @@ this is additive to the v2 AIDL contract, not a v3 renumbering, since it
 only adds methods:
 
 ```aidl
-// core/ipc/src/main/aidl/us/aherrera/skein/ipc/IInferenceService.aidl
-// core/ipc/src/main/aidl/us/aherrera/skein/ipc/IEmbedderService.aidl
+// core/ipc/src/main/aidl/app/skein/ipc/IInferenceService.aidl
+// core/ipc/src/main/aidl/app/skein/ipc/IEmbedderService.aidl
 // ILLUSTRATIVE delta — additive to both interfaces identically.
 
 /**

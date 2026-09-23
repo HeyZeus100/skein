@@ -83,7 +83,7 @@ Every load runs both, in this order, over the same model:
 Two different algorithms rather than SHA-256 twice: a second pass with the same
 `MessageDigest` shares every bug the first one has, and BLAKE3 is faster than
 SHA-256 on aarch64, so the second pass is close to free at load time. BLAKE3 is
-hand-rolled (`core/model/src/main/kotlin/us/aherrera/skein/core/model/Blake3.kt`,
+hand-rolled (`core/model/src/main/kotlin/app/skein/core/model/Blake3.kt`,
 unkeyed mode only) for the same reason `Hkdf.kt` is: no third-party crypto. It
 is pinned to all 35 official reference vectors
 (`core/model/src/test/.../Blake3VectorTest.kt`, vector file under

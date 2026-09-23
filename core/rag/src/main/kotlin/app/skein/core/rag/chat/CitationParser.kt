@@ -66,7 +66,7 @@
 // backing the pending-text and in-progress-bracket buffers.
 package app.skein.core.rag.chat
 
-import us.aherrera.skein.core.model.Retrieved
+import app.skein.core.model.Retrieved
 
 /**
  * Incremental citation parser. One instance per streamed assistant turn —

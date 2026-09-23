@@ -37,9 +37,9 @@
 
 package app.skein.core.verify
 
+import app.skein.core.model.Blake3
+import app.skein.core.model.Hex
 import app.skein.core.model.SkeinLog
-import us.aherrera.skein.core.model.Blake3
-import us.aherrera.skein.core.model.Hex
 import java.io.FileInputStream
 import java.io.IOException
 import java.io.InputStream

@@ -27,9 +27,14 @@
 package app.skein.core.vault.repository
 
 import androidx.test.ext.junit.runners.AndroidJUnit4
+import app.skein.core.model.DocumentKind
+import app.skein.core.model.NewDocument
+import app.skein.core.model.TimelineFilter
+import app.skein.core.model.VaultRepository
 import app.skein.core.vault.blob.InMemoryAttachmentStore
 import app.skein.core.vault.db.SkeinSQLiteConnection
 import app.skein.core.vault.db.SkeinSQLiteDriver
+import app.skein.testing.VaultRepositoryContractTest
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
@@ -42,11 +47,6 @@ import org.junit.Assert.assertEquals
 import org.junit.Assert.assertTrue
 import org.junit.Test
 import org.junit.runner.RunWith
-import us.aherrera.skein.core.model.DocumentKind
-import us.aherrera.skein.core.model.NewDocument
-import us.aherrera.skein.core.model.TimelineFilter
-import us.aherrera.skein.core.model.VaultRepository
-import us.aherrera.skein.testing.VaultRepositoryContractTest
 
 @RunWith(AndroidJUnit4::class)
 public class VaultRepositoryImplContractTest : VaultRepositoryContractTest() {

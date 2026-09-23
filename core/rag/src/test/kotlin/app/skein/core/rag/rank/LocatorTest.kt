@@ -14,15 +14,15 @@
 
 package app.skein.core.rag.rank
 
+import app.skein.core.model.DocumentKind
+import app.skein.core.model.NewChunk
+import app.skein.core.model.NewDocument
+import app.skein.core.model.ScoredChunk
+import app.skein.testing.InMemoryIndexStore
+import app.skein.testing.InMemoryVaultRepository
 import com.google.common.truth.Truth.assertThat
 import kotlinx.coroutines.runBlocking
 import org.junit.Test
-import us.aherrera.skein.core.model.DocumentKind
-import us.aherrera.skein.core.model.NewChunk
-import us.aherrera.skein.core.model.NewDocument
-import us.aherrera.skein.core.model.ScoredChunk
-import us.aherrera.skein.testing.InMemoryIndexStore
-import us.aherrera.skein.testing.InMemoryVaultRepository
 
 class LocatorTest {
     @Test

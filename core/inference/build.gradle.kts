@@ -39,7 +39,7 @@ dependencies {
     // `ModelFileRole`), so consumers must see them.
     api(project(":core:verify"))
     // skein-28wm (POST_REVIEW_RESOLUTIONS §2.3 / §3.3): `WireBindings.toWire`
-    // returns `us.aherrera.skein.ipc.ManifestBinding` (and takes/produces its
+    // returns `app.skein.ipc.ManifestBinding` (and takes/produces its
     // `ManifestFileRef` / `AttestationRefParcel`), so that type is part of this
     // module's public API surface and the edge must be `api`, not
     // `implementation` — the same reasoning `:core:ipc` gives for its own

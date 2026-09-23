@@ -4,7 +4,17 @@
 
 package app.skein.core.rag.ingest
 
+import app.skein.core.model.Capability
+import app.skein.core.model.ChunkId
+import app.skein.core.model.EmbedderService
+import app.skein.core.model.IndexChange
+import app.skein.core.model.IndexStore
+import app.skein.core.model.Model
+import app.skein.core.model.ModelFormat
+import app.skein.core.model.NewChunk
 import app.skein.core.rag.chunk.Chunk
+import app.skein.testing.FakeEmbedderService
+import app.skein.testing.InMemoryIndexStore
 import app.skein.testing.SkeinLogCaptureRule
 import com.google.common.truth.Truth.assertThat
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -16,16 +26,6 @@ import kotlinx.coroutines.test.runCurrent
 import kotlinx.coroutines.test.runTest
 import org.junit.Rule
 import org.junit.Test
-import us.aherrera.skein.core.model.Capability
-import us.aherrera.skein.core.model.ChunkId
-import us.aherrera.skein.core.model.EmbedderService
-import us.aherrera.skein.core.model.IndexChange
-import us.aherrera.skein.core.model.IndexStore
-import us.aherrera.skein.core.model.Model
-import us.aherrera.skein.core.model.ModelFormat
-import us.aherrera.skein.core.model.NewChunk
-import us.aherrera.skein.testing.FakeEmbedderService
-import us.aherrera.skein.testing.InMemoryIndexStore
 
 class IngestStepsTest {
     /** Also fails the test if any captured `SkeinLog` entry carries content (spec §9). */
@@ -187,7 +187,7 @@ class IngestStepsTest {
                     override suspend fun bm25(
                         query: String,
                         k: Int,
-                    ) = emptyList<us.aherrera.skein.core.model.ScoredChunk>()
+                    ) = emptyList<app.skein.core.model.ScoredChunk>()
                 }
             val steps = IngestSteps(broken, warn = { warnings += it })
 
@@ -206,7 +206,7 @@ class IngestStepsTest {
                     override suspend fun bm25(
                         query: String,
                         k: Int,
-                    ) = emptyList<us.aherrera.skein.core.model.ScoredChunk>()
+                    ) = emptyList<app.skein.core.model.ScoredChunk>()
                 }
 
             IngestSteps(broken).indexLexical("doc-a", listOf(chunk(0, "Confidential words in this chunk.")))

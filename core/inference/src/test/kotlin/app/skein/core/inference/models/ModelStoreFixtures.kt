@@ -6,9 +6,9 @@
 
 package app.skein.core.inference.models
 
+import app.skein.core.model.Blake3
+import app.skein.core.model.Hex
 import app.skein.core.verify.ModelFileRole
-import us.aherrera.skein.core.model.Blake3
-import us.aherrera.skein.core.model.Hex
 import java.io.ByteArrayInputStream
 import java.io.File
 import java.io.RandomAccessFile

@@ -15,12 +15,20 @@ import androidx.work.testing.SynchronousExecutor
 import androidx.work.testing.TestListenableWorkerBuilder
 import androidx.work.testing.WorkManagerTestInitHelper
 import androidx.work.workDataOf
+import app.skein.core.model.DocumentKind
+import app.skein.core.model.EdgeKind
+import app.skein.core.model.NewDocument
 import app.skein.core.rag.ingest.IngestOutcome
 import app.skein.core.rag.ingest.IngestPace
 import app.skein.core.vault.key.VaultKeyProvider
 import app.skein.core.vault.provider.VaultDocumentsProvider
 import app.skein.core.vault.session.UnlockManager
 import app.skein.export.stage.FakeExportStageRepository
+import app.skein.testing.FakeExportService
+import app.skein.testing.FakeImportService
+import app.skein.testing.InMemoryIndexStore
+import app.skein.testing.InMemoryPersonaService
+import app.skein.testing.InMemoryVaultRepository
 import app.skein.vault.BringUpResult
 import app.skein.vault.DocumentsProviderPort
 import app.skein.vault.ScriptedVaultKeyProvider
@@ -40,14 +48,6 @@ import org.junit.runner.RunWith
 import org.robolectric.Robolectric
 import org.robolectric.RobolectricTestRunner
 import org.robolectric.annotation.Config
-import us.aherrera.skein.core.model.DocumentKind
-import us.aherrera.skein.core.model.EdgeKind
-import us.aherrera.skein.core.model.NewDocument
-import us.aherrera.skein.testing.FakeExportService
-import us.aherrera.skein.testing.FakeImportService
-import us.aherrera.skein.testing.InMemoryIndexStore
-import us.aherrera.skein.testing.InMemoryPersonaService
-import us.aherrera.skein.testing.InMemoryVaultRepository
 
 /**
  * E5.I10 (skein-7v3): `WorkManagerIngestWorkPort` against a real WorkManager

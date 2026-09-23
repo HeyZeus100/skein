@@ -1,10 +1,10 @@
 package app.skein.feature.graph
 
+import app.skein.core.model.EdgeKind
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertNotEquals
 import org.junit.Assert.assertTrue
 import org.junit.Test
-import us.aherrera.skein.core.model.EdgeKind
 
 /**
  * `ForceLayout` (bd `skein-z2u`, plan `E6.I11`) tests. Pure Kotlin, no

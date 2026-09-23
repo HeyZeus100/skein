@@ -32,16 +32,16 @@
 
 package app.skein.core.vault.extract
 
+import app.skein.core.model.DocId
+import app.skein.core.model.Document
+import app.skein.core.model.Edge
+import app.skein.core.model.EdgeKind
+import app.skein.core.model.FrontmatterKeys
+import app.skein.core.model.IndexStore
+import app.skein.core.model.VaultRepository
 import kotlinx.serialization.json.JsonObject
 import kotlinx.serialization.json.JsonPrimitive
 import kotlinx.serialization.json.contentOrNull
-import us.aherrera.skein.core.model.DocId
-import us.aherrera.skein.core.model.Document
-import us.aherrera.skein.core.model.Edge
-import us.aherrera.skein.core.model.EdgeKind
-import us.aherrera.skein.core.model.FrontmatterKeys
-import us.aherrera.skein.core.model.IndexStore
-import us.aherrera.skein.core.model.VaultRepository
 
 /**
  * Computes and applies the `WIKILINK`/`TAG` edge delta for a document.

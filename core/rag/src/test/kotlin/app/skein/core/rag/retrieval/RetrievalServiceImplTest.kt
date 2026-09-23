@@ -6,22 +6,22 @@
 
 package app.skein.core.rag.retrieval
 
+import app.skein.core.model.Capability
+import app.skein.core.model.DocumentKind
+import app.skein.core.model.EmbedderService
+import app.skein.core.model.EntitySpan
+import app.skein.core.model.Model
+import app.skein.core.model.ModelFormat
+import app.skein.core.model.NewChunk
+import app.skein.core.model.NewDocument
+import app.skein.core.model.RecallSource
+import app.skein.testing.FakeEmbedderService
+import app.skein.testing.InMemoryIndexStore
+import app.skein.testing.InMemoryVaultRepository
 import com.google.common.truth.Truth.assertThat
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.test.runTest
 import org.junit.Test
-import us.aherrera.skein.core.model.Capability
-import us.aherrera.skein.core.model.DocumentKind
-import us.aherrera.skein.core.model.EmbedderService
-import us.aherrera.skein.core.model.EntitySpan
-import us.aherrera.skein.core.model.Model
-import us.aherrera.skein.core.model.ModelFormat
-import us.aherrera.skein.core.model.NewChunk
-import us.aherrera.skein.core.model.NewDocument
-import us.aherrera.skein.core.model.RecallSource
-import us.aherrera.skein.testing.FakeEmbedderService
-import us.aherrera.skein.testing.InMemoryIndexStore
-import us.aherrera.skein.testing.InMemoryVaultRepository
 
 class RetrievalServiceImplTest {
     // ------------------------------------------------------------------

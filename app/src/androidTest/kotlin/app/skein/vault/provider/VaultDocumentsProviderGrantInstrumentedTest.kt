@@ -1,6 +1,6 @@
 // `E10.I9` (bd `skein-fubu`): the `DocumentsContract`-level grant audit
 // against the REAL, manifest-registered `VaultDocumentsProvider` (authority
-// `us.aherrera.skein.documents`, `app/src/main/AndroidManifest.xml`) rather
+// `app.skein.documents`, `app/src/main/AndroidManifest.xml`) rather
 // than a directly-instantiated instance (`core/vault`'s
 // `VaultDocumentsProviderTest` already covers the direct-instantiation
 // cursor/pipe plumbing). This test drives the provider the way DocumentsUI
@@ -59,6 +59,9 @@ import androidx.test.core.app.ActivityScenario
 import androidx.test.core.app.ApplicationProvider
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import app.skein.MainActivity
+import app.skein.core.model.AuthorizationToken
+import app.skein.core.model.DocumentKind
+import app.skein.core.model.NewDocument
 import app.skein.core.vault.key.RewrapResult
 import app.skein.core.vault.key.SetupResult
 import app.skein.core.vault.key.UnlockResult
@@ -84,9 +87,6 @@ import org.junit.Assert.assertTrue
 import org.junit.Ignore
 import org.junit.Test
 import org.junit.runner.RunWith
-import us.aherrera.skein.core.model.AuthorizationToken
-import us.aherrera.skein.core.model.DocumentKind
-import us.aherrera.skein.core.model.NewDocument
 import java.io.File
 import java.io.FileNotFoundException
 import java.security.SecureRandom
@@ -181,7 +181,7 @@ class VaultDocumentsProviderGrantInstrumentedTest {
     }
 
     /** Seeds one NOTE document directly through the open vault's real repository. */
-    private fun seedNote(title: String = "Grant test note"): us.aherrera.skein.core.model.Document {
+    private fun seedNote(title: String = "Grant test note"): app.skein.core.model.Document {
         val session = checkNotNull(bootstrap.session.value) { "vault is not open" }
         return runBlocking {
             session.repository.createDocument(

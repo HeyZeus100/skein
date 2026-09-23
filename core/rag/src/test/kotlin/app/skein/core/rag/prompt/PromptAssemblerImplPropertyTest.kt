@@ -17,15 +17,15 @@
 // most trials do force some history to be dropped.
 package app.skein.core.rag.prompt
 
+import app.skein.core.model.DocumentKind
+import app.skein.core.model.Message
+import app.skein.core.model.Persona
+import app.skein.core.model.RecallSource
+import app.skein.core.model.Retrieved
+import app.skein.core.model.Role
+import app.skein.core.model.TokenBudget
 import org.junit.Assert.assertTrue
 import org.junit.Test
-import us.aherrera.skein.core.model.DocumentKind
-import us.aherrera.skein.core.model.Message
-import us.aherrera.skein.core.model.Persona
-import us.aherrera.skein.core.model.RecallSource
-import us.aherrera.skein.core.model.Retrieved
-import us.aherrera.skein.core.model.Role
-import us.aherrera.skein.core.model.TokenBudget
 import kotlin.random.Random
 
 class PromptAssemblerImplPropertyTest {

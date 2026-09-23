@@ -8,7 +8,7 @@
 // Packing algorithm, in order:
 //  1. Strip a leading `---`-delimited frontmatter block, if present (bd:
 //     "frontmatter is stripped first"). `bodyMd` is normally already
-//     frontmatter-free (`us.aherrera.skein.core.model.Document.bodyMd` is a
+//     frontmatter-free (`app.skein.core.model.Document.bodyMd` is a
 //     separate column from `frontmatter`) — this is a defensive no-op for
 //     that normal case, and what makes the "body with only frontmatter"
 //     acceptance criterion (zero chunks) hold for a caller that passes a

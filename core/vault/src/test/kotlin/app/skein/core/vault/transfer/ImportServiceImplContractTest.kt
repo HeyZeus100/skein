@@ -24,14 +24,14 @@
 
 package app.skein.core.vault.transfer
 
+import app.skein.core.model.ImportService
+import app.skein.testing.ImportServiceContractTest
+import app.skein.testing.InMemoryVaultRepository
 import org.junit.AssumptionViolatedException
 import org.junit.Rule
 import org.junit.rules.TestRule
 import org.junit.runner.Description
 import org.junit.runners.model.Statement
-import us.aherrera.skein.core.model.ImportService
-import us.aherrera.skein.testing.ImportServiceContractTest
-import us.aherrera.skein.testing.InMemoryVaultRepository
 
 public class ImportServiceImplContractTest : ImportServiceContractTest() {
     override fun service(): ImportService = ImportServiceImpl(InMemoryVaultRepository())

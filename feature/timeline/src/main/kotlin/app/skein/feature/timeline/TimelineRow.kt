@@ -22,8 +22,8 @@ import androidx.compose.ui.semantics.clearAndSetSemantics
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
-import us.aherrera.skein.core.model.Document
-import us.aherrera.skein.core.model.DocumentKind
+import app.skein.core.model.Document
+import app.skein.core.model.DocumentKind
 
 /**
  * One timeline row (plan `E6.I7`): kind glyph, title, stripped body

@@ -1,7 +1,7 @@
 // skein-3aw (E4.I1) — the one exception type the JNI layer throws.
 //
 // Vocabulary alignment: the codes below map 1:1 onto the failures
-// `us.aherrera.skein.core.model.InferenceException` / `StopReason` already
+// `app.skein.core.model.InferenceException` / `StopReason` already
 // name (E0.I10's locked contract), so `E4.I3`'s AIDL layer can translate
 // without inventing a second taxonomy:
 //

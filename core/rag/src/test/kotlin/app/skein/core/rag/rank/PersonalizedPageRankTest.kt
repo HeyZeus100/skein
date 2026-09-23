@@ -27,10 +27,10 @@
 
 package app.skein.core.rag.rank
 
+import app.skein.core.model.Edge
+import app.skein.core.model.EdgeKind
 import com.google.common.truth.Truth.assertThat
 import org.junit.Test
-import us.aherrera.skein.core.model.Edge
-import us.aherrera.skein.core.model.EdgeKind
 import kotlin.random.Random
 
 class PersonalizedPageRankTest {

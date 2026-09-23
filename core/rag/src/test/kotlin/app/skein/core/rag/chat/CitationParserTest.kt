@@ -13,11 +13,11 @@
 
 package app.skein.core.rag.chat
 
+import app.skein.core.model.DocumentKind
+import app.skein.core.model.RecallSource
+import app.skein.core.model.Retrieved
 import com.google.common.truth.Truth.assertThat
 import org.junit.Test
-import us.aherrera.skein.core.model.DocumentKind
-import us.aherrera.skein.core.model.RecallSource
-import us.aherrera.skein.core.model.Retrieved
 
 class CitationParserTest {
     private fun retrieved(

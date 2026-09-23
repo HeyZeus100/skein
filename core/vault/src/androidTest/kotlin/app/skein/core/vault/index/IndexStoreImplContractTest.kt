@@ -11,12 +11,12 @@
 package app.skein.core.vault.index
 
 import androidx.test.ext.junit.runners.AndroidJUnit4
+import app.skein.core.model.IndexStore
 import app.skein.core.vault.db.SkeinSQLiteConnection
 import app.skein.core.vault.db.SkeinSQLiteDriver
+import app.skein.testing.IndexStoreContractTest
 import org.junit.After
 import org.junit.runner.RunWith
-import us.aherrera.skein.core.model.IndexStore
-import us.aherrera.skein.testing.IndexStoreContractTest
 
 @RunWith(AndroidJUnit4::class)
 public class IndexStoreImplContractTest : IndexStoreContractTest() {

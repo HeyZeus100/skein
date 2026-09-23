@@ -1,7 +1,7 @@
 package app.skein.feature.timeline
 
-import us.aherrera.skein.core.model.DocumentKind
-import us.aherrera.skein.core.model.PersonaId
+import app.skein.core.model.DocumentKind
+import app.skein.core.model.PersonaId
 import java.time.LocalDate
 
 /**

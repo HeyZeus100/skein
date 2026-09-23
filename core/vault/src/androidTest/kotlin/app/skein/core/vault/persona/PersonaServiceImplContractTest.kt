@@ -17,12 +17,12 @@
 package app.skein.core.vault.persona
 
 import androidx.test.ext.junit.runners.AndroidJUnit4
+import app.skein.core.model.PersonaService
 import app.skein.core.vault.db.SkeinSQLiteConnection
 import app.skein.core.vault.db.SkeinSQLiteDriver
+import app.skein.testing.PersonaServiceContractTest
 import org.junit.After
 import org.junit.runner.RunWith
-import us.aherrera.skein.core.model.PersonaService
-import us.aherrera.skein.testing.PersonaServiceContractTest
 
 @RunWith(AndroidJUnit4::class)
 public class PersonaServiceImplContractTest : PersonaServiceContractTest() {

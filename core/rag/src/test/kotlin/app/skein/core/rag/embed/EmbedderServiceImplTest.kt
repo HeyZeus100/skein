@@ -29,10 +29,10 @@
 // to point at it and drop `pendingBead`.
 package app.skein.core.rag.embed
 
+import app.skein.core.model.EmbedderService
+import app.skein.core.model.Model
+import app.skein.testing.EmbedderContractTest
 import org.junit.Ignore
-import us.aherrera.skein.core.model.EmbedderService
-import us.aherrera.skein.core.model.Model
-import us.aherrera.skein.testing.EmbedderContractTest
 
 @Ignore("pending skein-079")
 class EmbedderServiceImplTest : EmbedderContractTest() {

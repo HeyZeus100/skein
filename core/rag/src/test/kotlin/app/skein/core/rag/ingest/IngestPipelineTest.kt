@@ -6,11 +6,26 @@
 
 package app.skein.core.rag.ingest
 
+import app.skein.core.model.Capability
+import app.skein.core.model.DocId
+import app.skein.core.model.Document
+import app.skein.core.model.DocumentKind
+import app.skein.core.model.EdgeKind
+import app.skein.core.model.EmbedderService
+import app.skein.core.model.IngestItem
+import app.skein.core.model.Model
+import app.skein.core.model.ModelFormat
+import app.skein.core.model.NewDocument
+import app.skein.core.model.VaultRepository
 import app.skein.core.rag.chunk.Chunker
 import app.skein.core.rag.tokenizers.ApproximateTokenizer
 import app.skein.core.vault.extract.DanglingResolver
 import app.skein.core.vault.extract.EdgeUpserter
+import app.skein.testing.FakeEmbedderService
+import app.skein.testing.InMemoryIndexStore
+import app.skein.testing.InMemoryVaultRepository
 import app.skein.testing.SkeinLogCaptureRule
+import app.skein.testing.fixtures.SyntheticVault
 import com.google.common.truth.Truth.assertThat
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.CompletableDeferred
@@ -19,21 +34,6 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.test.runTest
 import org.junit.Rule
 import org.junit.Test
-import us.aherrera.skein.core.model.Capability
-import us.aherrera.skein.core.model.DocId
-import us.aherrera.skein.core.model.Document
-import us.aherrera.skein.core.model.DocumentKind
-import us.aherrera.skein.core.model.EdgeKind
-import us.aherrera.skein.core.model.EmbedderService
-import us.aherrera.skein.core.model.IngestItem
-import us.aherrera.skein.core.model.Model
-import us.aherrera.skein.core.model.ModelFormat
-import us.aherrera.skein.core.model.NewDocument
-import us.aherrera.skein.core.model.VaultRepository
-import us.aherrera.skein.testing.FakeEmbedderService
-import us.aherrera.skein.testing.InMemoryIndexStore
-import us.aherrera.skein.testing.InMemoryVaultRepository
-import us.aherrera.skein.testing.fixtures.SyntheticVault
 
 class IngestPipelineTest {
     /** Also fails any test in which a captured `SkeinLog` entry carries content (spec §9). */
@@ -475,7 +475,7 @@ class IngestPipelineTest {
                     .toSet()
 
             // Re-queue the same, unchanged content and ingest again.
-            h.repository.forceQueue(IngestItem(doc.id, us.aherrera.skein.core.model.IngestReason.UPDATED, 999_999L))
+            h.repository.forceQueue(IngestItem(doc.id, app.skein.core.model.IngestReason.UPDATED, 999_999L))
             h.pipeline().run()
 
             val secondHash = h.repository.currentRevision(doc.id)?.revisionHash
@@ -563,7 +563,7 @@ class IngestPipelineTest {
             val h = Harness()
             val doc = h.note("Gone", "Body.")
             h.repository.deleteDocument(doc.id)
-            h.repository.forceQueue(IngestItem(doc.id, us.aherrera.skein.core.model.IngestReason.CREATED, 1L))
+            h.repository.forceQueue(IngestItem(doc.id, app.skein.core.model.IngestReason.CREATED, 1L))
 
             val outcome = h.pipeline().run()
 

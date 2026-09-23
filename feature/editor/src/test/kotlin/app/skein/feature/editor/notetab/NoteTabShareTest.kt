@@ -2,7 +2,12 @@ package app.skein.feature.editor.notetab
 
 import android.content.Intent
 import androidx.compose.ui.text.input.TextFieldValue
+import app.skein.core.model.Document
+import app.skein.core.model.DocumentKind
+import app.skein.core.model.NewDocument
 import app.skein.feature.editor.share.SaveAsFormat
+import app.skein.testing.InMemoryIndexStore
+import app.skein.testing.InMemoryVaultRepository
 import kotlinx.coroutines.test.runCurrent
 import kotlinx.coroutines.test.runTest
 import org.junit.Assert.assertEquals
@@ -11,11 +16,6 @@ import org.junit.Test
 import org.junit.runner.RunWith
 import org.robolectric.RobolectricTestRunner
 import org.robolectric.annotation.Config
-import us.aherrera.skein.core.model.Document
-import us.aherrera.skein.core.model.DocumentKind
-import us.aherrera.skein.core.model.NewDocument
-import us.aherrera.skein.testing.InMemoryIndexStore
-import us.aherrera.skein.testing.InMemoryVaultRepository
 import java.io.ByteArrayOutputStream
 
 /**

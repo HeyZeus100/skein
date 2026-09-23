@@ -8,14 +8,14 @@
 package app.skein.core.vault.provider
 
 import android.provider.DocumentsContract
+import app.skein.core.model.Document
+import app.skein.core.model.DocumentKind
+import app.skein.core.model.FrontmatterKeys
 import app.skein.core.vault.codec.Frontmatter
 import com.google.common.truth.Truth.assertThat
 import kotlinx.serialization.json.JsonPrimitive
 import kotlinx.serialization.json.buildJsonObject
 import org.junit.Test
-import us.aherrera.skein.core.model.Document
-import us.aherrera.skein.core.model.DocumentKind
-import us.aherrera.skein.core.model.FrontmatterKeys
 
 public class ProviderCursorsTest {
     private val note =

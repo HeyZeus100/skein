@@ -16,7 +16,7 @@
 
 package app.skein.core.vault.repository
 
-import us.aherrera.skein.core.model.DocId
+import app.skein.core.model.DocId
 
 /** One committed write `VaultRepositoryImpl` just made, for `ChangeBus` consumers to filter on. */
 public sealed interface TableChange {

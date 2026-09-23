@@ -1,13 +1,13 @@
 package app.skein.feature.shell.nav
 
+import app.skein.core.model.DocumentKind
+import app.skein.core.model.NewDocument
+import app.skein.core.model.PersonaId
+import app.skein.core.model.VaultRepository
 import app.skein.feature.shell.tabs.Tab
 import app.skein.feature.shell.tabs.TabId
 import app.skein.feature.shell.tabs.TabKind
 import app.skein.feature.shell.tabs.TabsState
-import us.aherrera.skein.core.model.DocumentKind
-import us.aherrera.skein.core.model.NewDocument
-import us.aherrera.skein.core.model.PersonaId
-import us.aherrera.skein.core.model.VaultRepository
 import java.util.UUID
 
 /**

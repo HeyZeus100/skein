@@ -18,9 +18,9 @@ package app.skein.inference.service
 import app.skein.core.verify.DigestAlgorithm
 import app.skein.core.verify.ModelFileRole
 import app.skein.core.verify.ModelVerification
+import app.skein.ipc.ErrorCode
 import org.junit.Assert.assertEquals
 import org.junit.Test
-import us.aherrera.skein.ipc.ErrorCode
 
 class ServiceErrorMappingTest {
     // ------------------------------------------------ verification refusals

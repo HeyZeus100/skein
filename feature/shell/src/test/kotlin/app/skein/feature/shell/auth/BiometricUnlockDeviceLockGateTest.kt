@@ -21,6 +21,7 @@ import androidx.compose.ui.test.junit4.createAndroidComposeRule
 import androidx.compose.ui.test.onNodeWithTag
 import androidx.fragment.app.FragmentActivity
 import androidx.test.core.app.ApplicationProvider
+import app.skein.core.model.AuthorizationToken
 import app.skein.core.vault.key.RewrapResult
 import app.skein.core.vault.key.SetupResult
 import app.skein.core.vault.key.UnlockResult
@@ -34,7 +35,6 @@ import org.junit.runner.RunWith
 import org.robolectric.RobolectricTestRunner
 import org.robolectric.Shadows.shadowOf
 import org.robolectric.annotation.Config
-import us.aherrera.skein.core.model.AuthorizationToken
 import java.util.concurrent.atomic.AtomicInteger
 
 @RunWith(RobolectricTestRunner::class)

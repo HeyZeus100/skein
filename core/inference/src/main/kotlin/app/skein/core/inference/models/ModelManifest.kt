@@ -46,6 +46,11 @@
 
 package app.skein.core.inference.models
 
+import app.skein.core.model.Capability
+import app.skein.core.model.CompanionFile
+import app.skein.core.model.CompanionRole
+import app.skein.core.model.Model
+import app.skein.core.model.ModelFormat
 import app.skein.core.verify.ModelFileRole
 import app.skein.core.verify.ModelVerification
 import kotlinx.serialization.json.JsonElement
@@ -55,11 +60,6 @@ import kotlinx.serialization.json.booleanOrNull
 import kotlinx.serialization.json.jsonArray
 import kotlinx.serialization.json.jsonPrimitive
 import kotlinx.serialization.json.longOrNull
-import us.aherrera.skein.core.model.Capability
-import us.aherrera.skein.core.model.CompanionFile
-import us.aherrera.skein.core.model.CompanionRole
-import us.aherrera.skein.core.model.Model
-import us.aherrera.skein.core.model.ModelFormat
 
 /**
  * One manifest-covered file.

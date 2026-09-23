@@ -14,7 +14,7 @@
 
 package app.skein.inference.service
 
-import us.aherrera.skein.ipc.TransportRules
+import app.skein.ipc.TransportRules
 
 /** One `onTokens` payload. */
 data class TokenBatch(

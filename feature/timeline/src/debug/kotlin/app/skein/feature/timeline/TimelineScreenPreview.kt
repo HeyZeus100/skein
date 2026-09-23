@@ -17,14 +17,14 @@ import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import app.skein.core.model.Persona
+import app.skein.testing.InMemoryVaultRepository
+import app.skein.testing.fixtures.SyntheticVault
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.flow.flowOf
-import us.aherrera.skein.core.model.Persona
-import us.aherrera.skein.testing.InMemoryVaultRepository
-import us.aherrera.skein.testing.fixtures.SyntheticVault
 import java.util.concurrent.atomic.AtomicLong
 
 @Preview(showBackground = true, widthDp = 380, heightDp = 720, name = "Medium vault (compact)")

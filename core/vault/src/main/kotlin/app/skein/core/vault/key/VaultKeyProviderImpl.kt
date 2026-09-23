@@ -36,7 +36,7 @@ import android.security.keystore.StrongBoxUnavailableException
 import android.security.keystore.UserNotAuthenticatedException
 import androidx.biometric.BiometricPrompt
 import androidx.fragment.app.FragmentActivity
-import us.aherrera.skein.core.model.AuthorizationToken
+import app.skein.core.model.AuthorizationToken
 import java.security.SecureRandom
 import java.util.concurrent.atomic.AtomicLong
 import javax.crypto.Cipher

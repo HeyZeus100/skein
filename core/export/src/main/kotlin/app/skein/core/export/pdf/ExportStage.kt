@@ -18,7 +18,7 @@
 
 package app.skein.core.export.pdf
 
-import us.aherrera.skein.core.model.DocId
+import app.skein.core.model.DocId
 
 /** One row `skein-0m1z`'s `export_stages` table (Migration 005) will eventually persist. */
 public data class ExportStage(

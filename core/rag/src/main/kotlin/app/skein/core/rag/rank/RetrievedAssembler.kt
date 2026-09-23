@@ -1,13 +1,13 @@
 // `RetrievedAssembler` (skein-wqli, E5.I13 prep). Bridges the fused,
 // ranked `List<ScoredChunk>` that [PprRanker.rank] / [ScoreFusion.combine]
-// return onto `us.aherrera.skein.core.model.Retrieved` (locked verbatim by
+// return onto `app.skein.core.model.Retrieved` (locked verbatim by
 // `E0.I12`/skein-x4f), so `RetrievalServiceImpl` (`E5.I13`, skein-do6) can
 // call `PprRanker.rank` and this assembler and be done — no re-deriving a
 // document id, title or provenance set from a chunk id by hand.
 //
 // This is additive: it does not touch `PprRanker`, `ScoreFusion` or any
 // recall stage's public signature. It lives in `app.skein.core.rag.rank`
-// (not `us.aherrera.skein.core.model`) — bridging `core/rag`'s producer
+// (not `app.skein.core.model`) — bridging `core/rag`'s producer
 // types to `core/model`'s locked consumer type is exactly the "namespace"
 // note on skein-wqli; the two packages stay where they are.
 //
@@ -77,17 +77,17 @@
 
 package app.skein.core.rag.rank
 
-import us.aherrera.skein.core.model.Chunk
-import us.aherrera.skein.core.model.ChunkId
-import us.aherrera.skein.core.model.CitationSourceKind
-import us.aherrera.skein.core.model.DocId
-import us.aherrera.skein.core.model.Document
-import us.aherrera.skein.core.model.IndexStore
-import us.aherrera.skein.core.model.Locator
-import us.aherrera.skein.core.model.RecallSource
-import us.aherrera.skein.core.model.Retrieved
-import us.aherrera.skein.core.model.ScoredChunk
-import us.aherrera.skein.core.model.VaultRepository
+import app.skein.core.model.Chunk
+import app.skein.core.model.ChunkId
+import app.skein.core.model.CitationSourceKind
+import app.skein.core.model.DocId
+import app.skein.core.model.Document
+import app.skein.core.model.IndexStore
+import app.skein.core.model.Locator
+import app.skein.core.model.RecallSource
+import app.skein.core.model.Retrieved
+import app.skein.core.model.ScoredChunk
+import app.skein.core.model.VaultRepository
 
 /**
  * Bridges [PprRanker]/[ScoreFusion]'s `List<ScoredChunk>` output to

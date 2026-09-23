@@ -15,7 +15,7 @@
 
 package app.skein.core.vault.provider
 
-import us.aherrera.skein.core.model.DocId
+import app.skein.core.model.DocId
 
 internal object ProviderIds {
     /** `DocumentsContract.Root.COLUMN_ROOT_ID` of the single root. */

@@ -81,11 +81,11 @@ import android.os.CancellationSignal
 import android.os.ParcelFileDescriptor
 import android.provider.DocumentsContract
 import android.provider.DocumentsProvider
+import app.skein.core.model.ExportService
+import app.skein.core.model.VaultRepository
 import app.skein.core.vault.session.UnlockState
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.runBlocking
-import us.aherrera.skein.core.model.ExportService
-import us.aherrera.skein.core.model.VaultRepository
 import java.io.FileNotFoundException
 import java.io.IOException
 import kotlin.concurrent.thread
@@ -259,7 +259,7 @@ public class VaultDocumentsProvider internal constructor(
 
     public companion object {
         /** Plan `E2.I6` "Produces: provider authority"; must match `android:authorities` in the app manifest. */
-        public const val AUTHORITY: String = "us.aherrera.skein.documents"
+        public const val AUTHORITY: String = "app.skein.documents"
 
         /** Root icon when `ProviderInfo.applicationInfo.icon` is unavailable (the manifest's own app icon). */
         internal const val DEFAULT_ROOT_ICON_RES_ID: Int = android.R.drawable.sym_def_app_icon

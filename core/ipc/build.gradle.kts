@@ -12,13 +12,14 @@ plugins {
 }
 
 android {
-    // E0.I16 (skein-mfw): contract modules live under `us.aherrera.skein.*`
-    // (implementation modules use `app.skein.*`). The AIDL package
-    // (`us.aherrera.skein.ipc`, plan §4.7) is what `:inference-service`,
+    // E0.I16 (skein-mfw): contract modules and implementation modules both
+    // live under `app.skein.*` (skein-376c unified what used to be a
+    // separate `us.aherrera.skein.*` contract-module prefix into it). The
+    // AIDL package (`app.skein.ipc`, plan §4.7) is what `:inference-service`,
     // `:embedder-service` and the `:app`-side clients import, so the module
     // namespace matches it rather than the `app.skein.core.ipc` placeholder
     // that E1.I1 scaffolded.
-    namespace = "us.aherrera.skein.ipc"
+    namespace = "app.skein.ipc"
     compileSdk = 37
 
     defaultConfig {
@@ -41,7 +42,7 @@ dependencies {
     implementation(libs.androidx.core.ktx)
 
     // skein-k7e9: `ErrorCodes.toException` returns
-    // `us.aherrera.skein.core.model.InferenceException`, so the type is part of
+    // `app.skein.core.model.InferenceException`, so the type is part of
     // this module's public API and the edge must be `api`, not
     // `implementation`. `:core:model` is pure Kotlin/JVM; the `build-logic`
     // guards permit this edge (reasoning in `ErrorCodes.kt`'s header):

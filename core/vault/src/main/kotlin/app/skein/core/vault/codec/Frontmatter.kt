@@ -17,11 +17,11 @@
 
 package app.skein.core.vault.codec
 
+import app.skein.core.model.FrontmatterKeys
 import kotlinx.serialization.json.JsonArray
 import kotlinx.serialization.json.JsonElement
 import kotlinx.serialization.json.JsonObject
 import kotlinx.serialization.json.JsonPrimitive
-import us.aherrera.skein.core.model.FrontmatterKeys
 
 public object Frontmatter {
     private val CANONICAL_ORDER =

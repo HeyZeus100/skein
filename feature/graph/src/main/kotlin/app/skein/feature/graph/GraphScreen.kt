@@ -19,11 +19,11 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.unit.dp
+import app.skein.core.model.DocId
+import app.skein.core.model.IndexStore
+import app.skein.core.model.VaultRepository
 import app.skein.feature.shell.layout.EdgeToEdgeSurface
 import app.skein.feature.shell.theme.SkeinTheme
-import us.aherrera.skein.core.model.DocId
-import us.aherrera.skein.core.model.IndexStore
-import us.aherrera.skein.core.model.VaultRepository
 
 /**
  * @param onOpenPreview see [GraphView.openPreview].

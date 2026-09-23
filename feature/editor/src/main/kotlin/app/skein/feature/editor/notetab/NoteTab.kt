@@ -48,6 +48,9 @@ import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.unit.dp
 import app.skein.core.export.pdf.PdfExportService
 import app.skein.core.markdown.render.MarkdownStyle
+import app.skein.core.model.DocId
+import app.skein.core.model.IndexStore
+import app.skein.core.model.VaultRepository
 import app.skein.core.vault.session.UnlockState
 import app.skein.feature.editor.SkeinEditor
 import app.skein.feature.editor.backlinks.BacklinksDrawer
@@ -59,9 +62,6 @@ import app.skein.feature.shell.theme.LocalSkeinTokens
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
-import us.aherrera.skein.core.model.DocId
-import us.aherrera.skein.core.model.IndexStore
-import us.aherrera.skein.core.model.VaultRepository
 import java.time.Duration
 
 /**

@@ -8,11 +8,11 @@ package app.skein.core.vault.session
 
 import androidx.biometric.BiometricPrompt
 import androidx.fragment.app.FragmentActivity
+import app.skein.core.model.AuthorizationToken
 import app.skein.core.vault.key.RewrapResult
 import app.skein.core.vault.key.SetupResult
 import app.skein.core.vault.key.UnlockResult
 import app.skein.core.vault.key.VaultKeyProvider
-import us.aherrera.skein.core.model.AuthorizationToken
 import java.util.concurrent.atomic.AtomicInteger
 import java.util.concurrent.atomic.AtomicLong
 
