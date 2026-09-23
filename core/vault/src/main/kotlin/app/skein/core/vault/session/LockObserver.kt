@@ -51,9 +51,11 @@ public interface LockObserver {
 }
 
 /**
- * Two-tier ordering: flush-needing observers (e.g. editor autosave) run first
- * so they can consume the live key; pure-clear observers run after so their
- * work is not blocked by a slow flush.
+ * Three-tier ordering, in declaration order — `UnlockManager` runs one tier
+ * to completion before starting the next. Flush-needing observers (e.g.
+ * editor autosave) run first so they can consume the live key; pure-clear
+ * observers run after so their work is not blocked by a slow flush; the
+ * vault connection closes last, once nothing else can still touch it.
  */
 public enum class LockObserverPriority {
     /**
@@ -69,4 +71,34 @@ public enum class LockObserverPriority {
      * before deciding whether to short-circuit to a recovery draft.
      */
     LOW,
+
+    /**
+     * The vault connection close, and nothing else (skein-1bx4).
+     *
+     * This tier is the v1 plan's `E3.I3a` step (3) — "once the registry
+     * reports its budget window elapsed **or** all observers acknowledged,
+     * `UnlockManager` proceeds: (3) `VaultManager.close()` … (5) only then
+     * zero the key array". `:core:vault` holds no handle on the `:app`
+     * session graph, so that step is expressed here as an observer rather
+     * than as a call `UnlockManager` makes directly; `TEARDOWN` is what
+     * gives it the position the plan specifies.
+     *
+     * Two properties `HIGH`/`LOW` do not have, both relied upon by
+     * `app.skein.vault.VaultBootstrap`:
+     *  - it runs after **every** other observer has returned, so no observer
+     *    can still be mid-`onLocking` against a session whose connections
+     *    are being closed (the `E7.I4` editor-flush ordering gap
+     *    `LOCK_POLICY_INDEXING.md` §4.4 and `VaultBootstrap`'s own header
+     *    flag for `E3.I3b`);
+     *  - it runs on the lock path **even when the `HIGH`/`LOW` pass
+     *    exhausted the shared budget** — under its own fresh window of the
+     *    same budget — because the vault must be closed before
+     *    `VaultKeyProvider.lock()` zeroes the key, not afterwards by a
+     *    best-effort `onLocked` backstop.
+     *
+     * Nothing but the session close belongs here: an observer in this tier
+     * runs after the flush window has already closed, so it must not expect
+     * to write anything of its own.
+     */
+    TEARDOWN,
 }

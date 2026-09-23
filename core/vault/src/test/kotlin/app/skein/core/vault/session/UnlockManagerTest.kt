@@ -293,6 +293,197 @@ class UnlockManagerTest {
             assertThat(order).containsExactly("high", "low").inOrder()
         }
 
+    // ------------------------------------------------ TEARDOWN (skein-1bx4)
+
+    @Test
+    fun `TEARDOWN observers run after both HIGH and LOW`() =
+        runTest {
+            // Arrange
+            val h = Harness()
+            val order = mutableListOf<String>()
+
+            fun obs(
+                tag: String,
+                p: LockObserverPriority,
+            ) = object : LockObserver {
+                override val priority = p
+
+                override suspend fun onLocking(
+                    epoch: Long,
+                    budgetMillis: Long,
+                ) {
+                    order.add(tag)
+                }
+
+                override fun onLocked(epoch: Long) = Unit
+
+                override fun onUnlocked(epoch: Long) = Unit
+            }
+            h.manager.addLockObserver(obs("teardown", LockObserverPriority.TEARDOWN))
+            h.manager.addLockObserver(obs("low", LockObserverPriority.LOW))
+            h.manager.addLockObserver(obs("high", LockObserverPriority.HIGH))
+            h.unlockOk()
+            // Act
+            h.manager.lockAndAwait(LockReason.USER_REQUESTED)
+            // Assert
+            assertThat(order).containsExactly("high", "low", "teardown").inOrder()
+        }
+
+    @Test
+    fun `TEARDOWN runs before the key is zeroed`() =
+        runTest {
+            // Arrange — the non-negotiable this tier exists to keep: the
+            // vault closes while the master key is still live.
+            val h = Harness()
+            var zeroizedBeforeTeardown: Boolean? = null
+            val teardown =
+                object : LockObserver {
+                    override val priority = LockObserverPriority.TEARDOWN
+
+                    override suspend fun onLocking(
+                        epoch: Long,
+                        budgetMillis: Long,
+                    ) {
+                        // `lock()` is the call that zeroes the master key.
+                        zeroizedBeforeTeardown = h.provider.lockCallCount.get() > 0
+                    }
+
+                    override fun onLocked(epoch: Long) = Unit
+
+                    override fun onUnlocked(epoch: Long) = Unit
+                }
+            h.manager.addLockObserver(teardown)
+            h.unlockOk()
+            // Act
+            h.manager.lockAndAwait(LockReason.USER_REQUESTED)
+            // Assert
+            assertThat(zeroizedBeforeTeardown).isFalse()
+            assertThat(h.provider.lockCallCount.get()).isEqualTo(1)
+        }
+
+    /**
+     * The regression this tier was added for: a HIGH observer that burns the
+     * shared budget used to cancel the enclosing `withTimeoutOrNull` and take
+     * the whole rest of the notify pass with it, so the vault close never ran
+     * on the lock path at all — it was left to `onLocked`'s backstop, AFTER
+     * zeroization, on another coroutine. See `LockObserverPriority.TEARDOWN`.
+     */
+    @Test
+    fun `TEARDOWN still runs when a HIGH observer exhausts the shared budget`() =
+        runTest {
+            // Arrange
+            val h = Harness(budgetMillis = 100L)
+            val hang = CompletableDeferred<Unit>()
+            val hangingHigh =
+                object : LockObserver {
+                    override val priority = LockObserverPriority.HIGH
+
+                    override suspend fun onLocking(
+                        epoch: Long,
+                        budgetMillis: Long,
+                    ) {
+                        hang.await()
+                    }
+
+                    override fun onLocked(epoch: Long) = Unit
+
+                    override fun onUnlocked(epoch: Long) = Unit
+                }
+            var tornDown = false
+            var zeroizedBeforeTeardown: Boolean? = null
+            val teardown =
+                object : LockObserver {
+                    override val priority = LockObserverPriority.TEARDOWN
+
+                    override suspend fun onLocking(
+                        epoch: Long,
+                        budgetMillis: Long,
+                    ) {
+                        tornDown = true
+                        zeroizedBeforeTeardown = h.provider.lockCallCount.get() > 0
+                    }
+
+                    override fun onLocked(epoch: Long) = Unit
+
+                    override fun onUnlocked(epoch: Long) = Unit
+                }
+            h.manager.addLockObserver(hangingHigh)
+            h.manager.addLockObserver(teardown)
+            h.unlockOk()
+            // Act
+            h.manager.lockAndAwait(LockReason.USER_REQUESTED)
+            // Assert — the close ran, on the lock path, before zeroization.
+            assertThat(tornDown).isTrue()
+            assertThat(zeroizedBeforeTeardown).isFalse()
+            assertThat(h.provider.lockCallCount.get()).isEqualTo(1)
+            assertThat(h.manager.state.value).isEqualTo(UnlockState.Locked)
+            assertThat(h.manager.lastEffectiveLockReasonForTest()).isEqualTo(LockReason.FORCE_TIMEOUT)
+            hang.complete(Unit) // release the observer for cleanup
+        }
+
+    @Test
+    fun `a TEARDOWN observer that never acks still cannot hold the key alive`() =
+        runTest {
+            // Arrange — the teardown window is bounded too: a wedged close
+            // must not be able to postpone zeroization indefinitely.
+            val h = Harness(budgetMillis = 100L)
+            val hang = CompletableDeferred<Unit>()
+            val hangingTeardown =
+                object : LockObserver {
+                    override val priority = LockObserverPriority.TEARDOWN
+
+                    override suspend fun onLocking(
+                        epoch: Long,
+                        budgetMillis: Long,
+                    ) {
+                        hang.await()
+                    }
+
+                    override fun onLocked(epoch: Long) = Unit
+
+                    override fun onUnlocked(epoch: Long) = Unit
+                }
+            h.manager.addLockObserver(hangingTeardown)
+            h.unlockOk()
+            // Act
+            h.manager.lockAndAwait(LockReason.USER_REQUESTED)
+            // Assert
+            assertThat(h.provider.lockCallCount.get()).isEqualTo(1)
+            assertThat(h.provider.stateAtLock).isInstanceOf(UnlockState.Locking::class.java)
+            assertThat(h.manager.state.value).isEqualTo(UnlockState.Locked)
+            assertThat(h.manager.lastEffectiveLockReasonForTest()).isEqualTo(LockReason.FORCE_TIMEOUT)
+            hang.complete(Unit) // release the observer for cleanup
+        }
+
+    @Test
+    fun `a throwing TEARDOWN observer does not skip keyProvider lock`() =
+        runTest {
+            // Arrange
+            val h = Harness()
+            val throwingTeardown =
+                object : LockObserver {
+                    override val priority = LockObserverPriority.TEARDOWN
+
+                    override suspend fun onLocking(
+                        epoch: Long,
+                        budgetMillis: Long,
+                    ): Unit = throw IllegalStateException("boom")
+
+                    override fun onLocked(epoch: Long) = Unit
+
+                    override fun onUnlocked(epoch: Long) = Unit
+                }
+            h.manager.addLockObserver(throwingTeardown)
+            h.unlockOk()
+            // Act
+            h.manager.lockAndAwait(LockReason.USER_REQUESTED)
+            // Assert
+            assertThat(h.provider.lockCallCount.get()).isEqualTo(1)
+            assertThat(h.manager.state.value).isEqualTo(UnlockState.Locked)
+            assertThat(h.provider.currentKey()).isNull()
+            assertThat(h.manager.lastEffectiveLockReasonForTest()).isEqualTo(LockReason.FORCE_TIMEOUT)
+        }
+
     @Test
     fun `throwing HIGH observer does not skip keyProvider lock and reaches Locked`() =
         runTest {

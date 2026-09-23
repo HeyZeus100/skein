@@ -25,18 +25,31 @@
 // has returned):
 //   1. `install(null)` — the provider fails closed again.
 //   2. `notifyRootsChanged` — an open picker drops the root.
-//   3. `session.close()` — every connection closes (`VaultLifecycle.close`
-//      last, so its WAL checkpoint sees no other readers).
-//   4. the session reference is dropped.
+//   3. the session reference is dropped.
+//   4. `session.close()` — every connection closes.
 // `onLocked` (after zeroization) is the hard backstop: if `onLocking` was
 // cut off by the observer budget (`FORCE_TIMEOUT`) the reference is dropped
 // regardless and the leftover release is retried off the lock path.
 //
-// Priority is LOW so isolated-service proxies (HIGH, §5.1) push their
-// `onSessionLocking` before the connection goes away. Within LOW the
-// current `UnlockManager` runs observers concurrently; once the editor's
-// autosave flush (`E7.I4`, also LOW) exists, `E3.I3b`'s registry must order
-// it ahead of this observer (§4.4 step 1 before step 2) — noted on the bd.
+// Steps 3 and 4 are in that order on purpose (skein-1bx4). Nothing outside
+// this observer may hold a session whose connections are being closed
+// under it: `session` reads `null` from the first instant of teardown, so
+// every `bootstrap.session.value` consumer — `ExportStageCoordinator`'s
+// `repository` lambda and `IngestScheduler`'s subscription, plus whatever
+// each of them has already launched on the process scope — degrades to
+// "nothing to do" instead of racing the close. It also means a close that
+// fails cannot leave a stale session reference behind for the next unlock
+// to trip over.
+//
+// Priority is TEARDOWN (skein-1bx4), the tier `UnlockManager` runs after
+// every HIGH and LOW observer has returned and still before
+// `keyProvider.lock()` — the position the v1 plan's `E3.I3a` step (3)
+// gives the vault close. This was LOW, which happened to order correctly
+// against today's two HIGH observers but left the gap this file's header
+// already flagged: the editor's autosave flush (`E7.I4`) is also LOW, and
+// `UnlockManager` runs a tier concurrently, so it would have raced the
+// close (§4.4 step 1 before step 2). TEARDOWN closes that gap now rather
+// than waiting for `E3.I3b`'s registry, which inherits the same ordering.
 //
 // No key material is held here: `openVault` copies the key from
 // `VaultKeyProvider` per connection and the callee zeroes each copy.
@@ -191,7 +204,7 @@ class VaultBootstrap(
         }
 
     private inner class LockHandler : LockObserver {
-        override val priority: LockObserverPriority = LockObserverPriority.LOW
+        override val priority: LockObserverPriority = LockObserverPriority.TEARDOWN
 
         override suspend fun onLocking(
             epoch: Long,
@@ -201,14 +214,25 @@ class VaultBootstrap(
                 val current = sessionState.value ?: return@withLock
                 provider.install(null)
                 provider.notifyRootsChanged()
-                current.close()
+                // The reference goes before the connections do — see the
+                // file header, "Steps 3 and 4 are in that order on purpose".
                 sessionState.value = null
+                current.close()
             }
         }
 
         override fun onLocked(epoch: Long) {
             // Backstop after zeroization: nothing key-derived is touched here,
             // only the reference is dropped and the (idempotent) release retried.
+            //
+            // skein-1bx4 — this now fires only when [onLocking] never got as
+            // far as unpublishing the session (its tier cancelled before it
+            // reached the mutex, or no notify pass ran at all). Once
+            // `sessionState` is `null`, the close is already in flight inside
+            // `VaultSession.close`'s `NonCancellable`, so it WILL complete and
+            // there is nothing to retry — retrying it there is what used to
+            // send a second, late `lifecycle.close()` after the next unlock
+            // had already reopened the vault.
             val leftover = sessionState.getAndUpdate { null } ?: return
             scope.launch { runCatching { leftover.close() } }
         }

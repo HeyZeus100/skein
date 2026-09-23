@@ -237,4 +237,81 @@ class VaultLifecycleTest {
                 // expected
             }
         }
+
+    // ---- skein-1bx4: close is total, and only ever closes its own pool ----
+
+    /**
+     * The device P0: `app.skein.vault.VaultSession.close` closed its
+     * services — and with them the pool's WRITER connection — before calling
+     * this method, so the WAL checkpoint's `prepare()` hit a closed
+     * `SkeinSQLiteConnection` and threw. The throw escaped `close()` before
+     * it could clear `pool` / `lastOpen` / `isOpen`, and the lifecycle was
+     * then permanently stuck claiming to be open over a dead pool.
+     */
+    @Test
+    fun `close still closes the lifecycle when the writer was already closed under it`() =
+        runTest {
+            val lifecycle = newLifecycle(tempDir.root, healthyFake())
+            lifecycle.create(key(1))
+            // Exactly what VaultRepositoryImpl.close() does to the pool's writer.
+            lifecycle.connectionPool().writer().close()
+
+            lifecycle.close()
+
+            assertThat(lifecycle.isOpen.value).isFalse()
+        }
+
+    @Test
+    fun `a vault whose writer was closed under it reopens onto a fresh pool`() =
+        runTest {
+            val fake = healthyFake()
+            val lifecycle = newLifecycle(tempDir.root, fake)
+            lifecycle.create(key(1))
+            val deadPool = lifecycle.connectionPool()
+            deadPool.writer().close()
+            lifecycle.close()
+
+            lifecycle.open(key(2))
+
+            // Not the stale pool handed back by the already-open branch of
+            // open(): a live one, whose writer accepts statements.
+            val reopened = lifecycle.connectionPool()
+            assertThat(reopened).isNotSameInstanceAs(deadPool)
+            reopened.writer().prepare("PRAGMA journal_mode;").use { it.step() }
+        }
+
+    @Test
+    fun `a stale close after a reopen does not close the new pool`() =
+        runTest {
+            // One vault file, two lifecycles: `stale` stands in for the
+            // VaultLifecycle a previous VaultSession opened, `fresh` for the
+            // one the re-unlock opened. A leftover close on the first — the
+            // onLocked backstop's retry, or a close that overran the observer
+            // budget — must not reach the second one's connections.
+            val fake = healthyFake()
+            val stale = newLifecycle(tempDir.root, fake)
+            stale.create(key(1))
+            stale.close()
+            val fresh = newLifecycle(tempDir.root, fake)
+            fresh.open(key(2))
+            val freshPool = fresh.connectionPool()
+
+            stale.close()
+
+            assertThat(fresh.isOpen.value).isTrue()
+            assertThat(freshPool.readers()).hasSize(2)
+            freshPool.writer().prepare("PRAGMA journal_mode;").use { it.step() }
+        }
+
+    @Test
+    fun `close is idempotent and never throws on a second call`() =
+        runTest {
+            val lifecycle = newLifecycle(tempDir.root, healthyFake())
+            lifecycle.create(key(1))
+
+            lifecycle.close()
+            lifecycle.close()
+
+            assertThat(lifecycle.isOpen.value).isFalse()
+        }
 }

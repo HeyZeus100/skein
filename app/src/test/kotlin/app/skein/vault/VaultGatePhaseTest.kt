@@ -3,7 +3,11 @@ package app.skein.vault
 import app.skein.core.vault.session.LockReason
 import app.skein.core.vault.session.UnlockState
 import app.skein.export.stage.FakeExportStageRepository
+import app.skein.testing.SkeinLogCaptureRule
 import org.junit.Assert.assertEquals
+import org.junit.Assert.assertNull
+import org.junit.Assert.assertTrue
+import org.junit.Rule
 import org.junit.Test
 import us.aherrera.skein.core.model.AuthorizationToken
 import us.aherrera.skein.testing.FakeExportService
@@ -66,5 +70,55 @@ class VaultGatePhaseTest {
         val locking = UnlockState.Locking(LockReason.IDLE_TIMEOUT)
 
         assertEquals(GatePhase.Unlock, gatePhase(null, locking, false, provisioned = true))
+    }
+
+    // ---- gateOpenFailure (skein-1bx4) ----------------------------------------
+
+    /** Fails the test if anything `isSensitiveContent` flags reaches `SkeinLog`. */
+    @get:Rule
+    val logCapture = SkeinLogCaptureRule()
+
+    /** Verbatim what `DeviceVaultOpener` produced on the device in skein-1bx4. */
+    private val deviceReason = "vault services failed to start: ConnectionPoolClosedException"
+
+    @Test
+    fun `a failed bring-up surfaces its reason`() {
+        val reason = gateOpenFailure(BringUpResult.Failed(deviceReason))
+
+        assertEquals(deviceReason, reason)
+    }
+
+    @Test
+    fun `a failed bring-up logs its reason at W`() {
+        gateOpenFailure(BringUpResult.Failed(deviceReason))
+
+        assertEquals(
+            listOf("vault bring-up failed: $deviceReason"),
+            logCapture.captured().filter { it.tag == VAULT_GATE_TAG }.map { it.message },
+        )
+    }
+
+    @Test
+    fun `the logged reason is never flagged as content`() {
+        // The rule itself fails the test on a sensitive entry; asserting it
+        // here as well names the property rather than relying on a silent
+        // rule to carry it.
+        gateOpenFailure(BringUpResult.Failed("vault could not be prepared: SkeinSQLiteException"))
+
+        assertTrue(logCapture.captured().none { it.isSensitive })
+    }
+
+    @Test
+    fun `a successful bring-up reports nothing and logs nothing`() {
+        assertNull(gateOpenFailure(BringUpResult.Ready(session)))
+
+        assertTrue(logCapture.captured().none { it.tag == VAULT_GATE_TAG })
+    }
+
+    @Test
+    fun `a lock landing mid-open is not reported as a failure`() {
+        assertNull(gateOpenFailure(BringUpResult.NotUnlocked))
+
+        assertTrue(logCapture.captured().none { it.tag == VAULT_GATE_TAG })
     }
 }

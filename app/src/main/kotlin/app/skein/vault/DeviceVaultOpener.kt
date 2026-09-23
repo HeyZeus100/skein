@@ -5,7 +5,9 @@
 // Connections (skein-4qol): `VaultLifecycle` owns a `ConnectionPool` — one
 // writer + N readers, each keyed from a single copy and carrying
 // `busy_timeout` — built once `lifecycle.open`/`create` has proven the key
-// and brought the schema up to date. This file no longer constructs
+// and brought the schema up to date. Every `open()` call builds its OWN
+// `VaultLifecycle` (skein-1bx4 — see `newLifecycle`), so the pool a session
+// closes is always the pool that session opened. This file no longer constructs
 // `SkeinSQLiteDriver` itself; it draws every service connection from
 // `lifecycle.connectionPool()` instead. One connection per service (writer
 // + readers for the repository, one each for the index store and the
@@ -62,7 +64,21 @@ class DeviceVaultOpener(
     // layer" notice (see `PdfImporter.extract`'s KDoc).
     private val context: Context? = null,
 ) {
-    private val lifecycle =
+    /**
+     * A [VaultLifecycle] — and therefore a `ConnectionPool` — for ONE
+     * [open] call (skein-1bx4).
+     *
+     * This used to be a single instance held for the life of the process,
+     * shared by every session the process ever opened. `VaultSession.close`
+     * ends in `lifecycle.close()`, so any late or leftover close (the one
+     * `VaultBootstrap.LockHandler.onLocked` retries as a backstop, or a
+     * close that overran the lock observer budget) acted on whatever pool
+     * that shared instance happened to hold at the time — after a quick
+     * re-unlock, the pool belonging to the NEW session. One lifecycle per
+     * open makes that structurally impossible: a session's close can only
+     * ever reach the pool its own open created.
+     */
+    private fun newLifecycle(): VaultLifecycle =
         VaultLifecycle(
             driverFactory = { key -> SkeinSQLiteDriver(key) },
             migrator = { driver -> Migrator(driver) },
@@ -75,8 +91,9 @@ class DeviceVaultOpener(
 
     suspend fun open(): VaultSession =
         withContext(io) {
+            val lifecycle = newLifecycle()
             try {
-                createOrOpen()
+                createOrOpen(lifecycle)
                 val pool = lifecycle.connectionPool()
                 val writer = pool.writer()
                 val readers = pool.readers()
@@ -105,15 +122,30 @@ class DeviceVaultOpener(
                     exportStages = repository,
                 ) {
                     // Closing must run to completion even when the lock
-                    // observer budget cancels the caller. `lifecycle.close()`
-                    // closes every pool connection (readers, then writer) —
-                    // including any the services above already closed
-                    // themselves, which is a harmless no-op per connection.
+                    // observer budget cancels the caller.
+                    //
+                    // skein-1bx4 — `lifecycle.close()` runs FIRST, not last.
+                    // It checkpoints the WAL with TRUNCATE against the pool's
+                    // writer and then closes every pool connection (readers
+                    // in reverse-open order, writer last). Every connection
+                    // the three services below hold IS a pool connection, so
+                    // running them first only guaranteed that the checkpoint
+                    // found its writer already closed — `prepare()` on a
+                    // closed `SkeinSQLiteConnection` throws
+                    // `IllegalStateException`, the TRUNCATE never once ran on
+                    // device, and the throw escaped this lambda into
+                    // `VaultBootstrap.LockHandler.onLocking`. In this order
+                    // the checkpoint sees a live writer, and the services'
+                    // own `close()` calls afterwards are the harmless
+                    // per-connection no-ops the old comment claimed they
+                    // were (`SkeinSQLiteConnection.close` is idempotent).
+                    // They are kept so each service still releases anything
+                    // it owns beyond a pool connection.
                     withContext(io + NonCancellable) {
+                        lifecycle.close()
                         repository.close()
                         indexStore.close()
                         personaService.close()
-                        lifecycle.close()
                     }
                 }
             } catch (t: Throwable) {
@@ -125,7 +157,7 @@ class DeviceVaultOpener(
             }
         }
 
-    private suspend fun createOrOpen() {
+    private suspend fun createOrOpen(lifecycle: VaultLifecycle) {
         val dbFile = paths.databaseFile
         if (dbFile.exists()) {
             when (val result = lifecycle.open(keyCopy())) {
