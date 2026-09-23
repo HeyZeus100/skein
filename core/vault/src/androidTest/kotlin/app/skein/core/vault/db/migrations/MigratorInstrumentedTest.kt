@@ -18,6 +18,7 @@ import androidx.sqlite.SQLiteConnection
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.platform.app.InstrumentationRegistry
 import app.skein.core.vault.db.SkeinSQLiteDriver
+import app.skein.core.vault.db.migrations.latestMigrationVersion
 import app.skein.core.vault.testutil.splitMigrationStatements
 import com.google.common.truth.Truth.assertThat
 import org.junit.After
@@ -46,20 +47,40 @@ class MigratorInstrumentedTest {
     /** Deterministic per-test key: same [seed] always yields the same 32 bytes. */
     private fun randomKey(seed: Byte): ByteArray = ByteArray(32) { (seed + it).toByte() }
 
+    /** Extracts the expected migration versions from migrations/INDEX.txt. */
+    private fun expectedMigrationVersions(): List<Long> {
+        val indexText =
+            requireNotNull(
+                Migrator::class.java.classLoader?.getResourceAsStream("migrations/INDEX.txt"),
+            ) { "migrations/INDEX.txt not on the classpath" }
+                .use { it.readBytes().toString(Charsets.UTF_8) }
+        return indexText
+            .lineSequence()
+            .map { it.trim() }
+            .filter { it.isNotEmpty() && !it.startsWith("#") }
+            .map { fileName ->
+                // Extract the leading digits from filenames like "001_initial.sql"
+                val match =
+                    Regex("^(\\d+)_").find(fileName)
+                        ?: throw IllegalArgumentException("migration file name doesn't match NNN_*.sql: $fileName")
+                match.groupValues[1].toLong()
+            }.toList()
+    }
+
     // --- Fresh migrate: version + full schema object set (§4.9) ---
 
     @Test
-    fun freshDatabaseMigratesToVersion8WithAllSchemaObjects() {
+    fun freshDatabaseMigratesToLatestVersionWithAllSchemaObjects() {
         val dbFile = tempDbFile()
 
         val result = Migrator(SkeinSQLiteDriver(randomKey(1))).migrate(dbFile.absolutePath)
 
         assertThat(result.fromVersion).isEqualTo(0)
-        assertThat(result.toVersion).isEqualTo(8)
+        assertThat(result.toVersion).isEqualTo(latestMigrationVersion())
 
         SkeinSQLiteDriver(randomKey(1)).open(dbFile.absolutePath).use { conn ->
             val inspector = SchemaInspector(conn)
-            assertThat(inspector.userVersion()).isEqualTo(8)
+            assertThat(inspector.userVersion()).isEqualTo(latestMigrationVersion())
             assertThat(inspector.tables()).containsAtLeast(
                 "documents",
                 "chunks",
@@ -309,11 +330,11 @@ class MigratorInstrumentedTest {
         // Now point a full-manifest Migrator (001 + 007) at the same file.
         val upgraded = Migrator(SkeinSQLiteDriver(randomKey(9))).migrate(dbFile.absolutePath)
         assertThat(upgraded.fromVersion).isEqualTo(1)
-        assertThat(upgraded.toVersion).isEqualTo(8)
+        assertThat(upgraded.toVersion).isEqualTo(latestMigrationVersion())
 
         SkeinSQLiteDriver(randomKey(9)).open(dbFile.absolutePath).use { conn ->
             val inspector = SchemaInspector(conn)
-            assertThat(inspector.userVersion()).isEqualTo(8)
+            assertThat(inspector.userVersion()).isEqualTo(latestMigrationVersion())
             assertThat(inspector.tables()).containsNoneOf("attachment_master_key", "attachment_keys")
 
             // The pre-existing, unrelated document row survived the
@@ -330,19 +351,20 @@ class MigratorInstrumentedTest {
     fun runningMigrateTwiceIsANoop() {
         val dbFile = tempDbFile()
         val first = Migrator(SkeinSQLiteDriver(randomKey(2))).migrate(dbFile.absolutePath)
-        assertThat(first.toVersion).isEqualTo(8)
+        val latestVersion = latestMigrationVersion()
+        assertThat(first.toVersion).isEqualTo(latestVersion)
 
         val second = Migrator(SkeinSQLiteDriver(randomKey(2))).migrate(dbFile.absolutePath)
 
-        assertThat(second.fromVersion).isEqualTo(8)
-        assertThat(second.toVersion).isEqualTo(8)
+        assertThat(second.fromVersion).isEqualTo(latestVersion)
+        assertThat(second.toVersion).isEqualTo(latestVersion)
 
         SkeinSQLiteDriver(randomKey(2)).open(dbFile.absolutePath).use { conn ->
             // The second, no-op migrate() must not have re-inserted (or
             // duplicated) any ledger row -- schema_migrations.version is the
             // primary key, so a re-insert would have thrown rather than
             // silently duplicating, but assert the exact set too.
-            assertThat(ledgerVersions(conn)).containsExactly(1L, 3L, 5L, 7L, 8L)
+            assertThat(ledgerVersions(conn)).containsExactly(*expectedMigrationVersions().toTypedArray())
         }
     }
 
@@ -354,7 +376,7 @@ class MigratorInstrumentedTest {
         Migrator(SkeinSQLiteDriver(randomKey(14))).migrate(dbFile.absolutePath)
 
         SkeinSQLiteDriver(randomKey(14)).open(dbFile.absolutePath).use { conn ->
-            assertThat(ledgerVersions(conn)).containsExactly(1L, 3L, 5L, 7L, 8L)
+            assertThat(ledgerVersions(conn)).containsExactly(*expectedMigrationVersions().toTypedArray())
         }
     }
 
@@ -395,16 +417,16 @@ class MigratorInstrumentedTest {
         val result = Migrator(SkeinSQLiteDriver(randomKey(15))).migrate(dbFile.absolutePath)
 
         assertThat(result.fromVersion).isEqualTo(8)
-        // The gap-filler applied, but user_version must stay at the max
-        // ever applied (8), never fall back to 005's own version number.
-        assertThat(result.toVersion).isEqualTo(8)
+        // The gap-fillers applied (e.g., 005), and any later migrations (e.g., 009)
+        // will also apply, so user_version is now the max ever applied.
+        assertThat(result.toVersion).isEqualTo(latestMigrationVersion())
 
         SkeinSQLiteDriver(randomKey(15)).open(dbFile.absolutePath).use { conn ->
             val inspector = SchemaInspector(conn)
-            assertThat(inspector.userVersion()).isEqualTo(8)
+            assertThat(inspector.userVersion()).isEqualTo(latestMigrationVersion())
             assertThat(inspector.tables()).contains("export_stages")
             assertThat(inspector.indexes()).contains("idx_export_stages_expires")
-            assertThat(ledgerVersions(conn)).containsExactly(1L, 3L, 5L, 7L, 8L)
+            assertThat(ledgerVersions(conn)).containsExactly(*expectedMigrationVersions().toTypedArray())
 
             // The table is not just present but usable: a stage row can be
             // inserted and defaults exactly as 005's header specifies.
