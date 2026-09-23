@@ -2,7 +2,7 @@ package app.skein.feature.shell.nav
 
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.material3.IconButton
@@ -14,6 +14,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.input.ImeAction
@@ -21,6 +22,15 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import app.skein.feature.shell.input.SecureTextField
 import app.skein.feature.shell.theme.LocalSkeinTokens
+
+/**
+ * Test tag on [CommandBar]'s placeholder [Text] (`skein-wr7m`) — lets a
+ * Robolectric test find that specific node via the unmerged semantics tree
+ * (the field's own semantics otherwise merge the placeholder into the
+ * enclosing [SecureTextField] node) to assert it isn't vertically clipped by
+ * [app.skein.feature.shell.theme.SkeinTokens.commandBarHeight].
+ */
+const val COMMAND_BAR_PLACEHOLDER_TEST_TAG = "commandBarPlaceholder"
 
 /**
  * Persistent top command bar (spec §8.2/§8.4, plan `E6.I3`): `≡` hamburger ·
@@ -57,7 +67,14 @@ fun CommandBar(
     val isCommand = query.startsWith("/")
 
     Surface(
-        modifier = modifier.fillMaxWidth().height(tokens.commandBarHeight),
+        // `heightIn(min = ...)`, not `height(...)` (skein-wr7m): a fixed exact
+        // height coerced SecureTextField's decoration box below the space its
+        // bodyMedium placeholder line + 16dp top/bottom content padding
+        // actually need, clipping the bottom of "search or /command". A floor
+        // lets the bar grow to fit that content on any device/font metrics
+        // while still matching `commandBarHeight`'s intended compact height
+        // whenever the content already fits within it.
+        modifier = modifier.fillMaxWidth().heightIn(min = tokens.commandBarHeight),
         color = MaterialTheme.colorScheme.surface,
     ) {
         Row(
@@ -77,7 +94,9 @@ fun CommandBar(
                 modifier = Modifier.weight(1f),
                 singleLine = true,
                 textStyle = MaterialTheme.typography.bodyMedium,
-                placeholder = { Text("search or /command") },
+                placeholder = {
+                    Text("search or /command", modifier = Modifier.testTag(COMMAND_BAR_PLACEHOLDER_TEST_TAG))
+                },
                 leadingIcon = { Text(text = tokens.glyphs.searchPrompt, style = MaterialTheme.typography.bodyMedium) },
                 imeAction = ImeAction.Search,
                 keyboardActions = KeyboardActions(onSearch = { onSubmit() }),
