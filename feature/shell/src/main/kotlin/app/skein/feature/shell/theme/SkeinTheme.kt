@@ -29,6 +29,20 @@ fun SkeinTheme(
             SkeinThemeMode.DARK -> true
         }
     val colorScheme = if (useDarkTheme) SkeinColors.dark else SkeinColors.light
+    val editorColors =
+        if (useDarkTheme) {
+            SkeinEditorColors(
+                surface = SkeinColors.DarkEditorSurface,
+                onSurface = SkeinColors.DarkOnEditorSurface,
+                onSurfaceMuted = SkeinColors.DarkOnEditorSurfaceMuted,
+            )
+        } else {
+            SkeinEditorColors(
+                surface = SkeinColors.LightEditorSurface,
+                onSurface = SkeinColors.LightOnEditorSurface,
+                onSurfaceMuted = SkeinColors.LightOnEditorSurfaceMuted,
+            )
+        }
     val shapes =
         Shapes(
             extraSmall = RoundedCornerShape(tokens.cornerRadius),
@@ -38,7 +52,10 @@ fun SkeinTheme(
             extraLarge = RoundedCornerShape(tokens.cornerRadius),
         )
 
-    CompositionLocalProvider(LocalSkeinTokens provides tokens) {
+    CompositionLocalProvider(
+        LocalSkeinTokens provides tokens,
+        LocalSkeinEditorColors provides editorColors,
+    ) {
         MaterialTheme(
             colorScheme = colorScheme,
             typography = SkeinTypography,
