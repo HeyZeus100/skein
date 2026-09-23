@@ -43,8 +43,18 @@ import java.security.SecureRandom
 
 @RunWith(AndroidJUnit4::class)
 class AtRestEncryptionInstrumentedTest {
-    /** Same test-only key provider `VaultBootstrapInstrumentedTest` uses: a random in-memory key, unlock always succeeds. */
+    /**
+     * Same test-only key provider `VaultBootstrapInstrumentedTest` uses, and
+     * it models the real provider's envelope semantics (skein-7yy2): ONE
+     * random master is minted at construction and kept for the test's
+     * lifetime standing in for the wrapped master at rest, every [unlock]
+     * unwraps it into a FRESH live buffer, and [lock] zeroes that live
+     * buffer in place. Never real key material.
+     */
     private class RandomKeyVaultKeyProvider : VaultKeyProvider {
+        /** The "wrapped" master: what every [unlock] unwraps. Not handed to callers, never zeroed. */
+        private val wrapped: ByteArray = ByteArray(KEY_LENGTH).also(SecureRandom()::nextBytes)
+
         @Volatile
         var master: ByteArray? = null
             private set
@@ -69,7 +79,7 @@ class AtRestEncryptionInstrumentedTest {
             prompt: BiometricPrompt.PromptInfo,
             factor: VaultKeyProvider.Factor,
         ): UnlockResult {
-            master = ByteArray(KEY_LENGTH).also(SecureRandom()::nextBytes)
+            master = wrapped.copyOf()
             return UnlockResult.Success(AuthorizationToken(++epoch))
         }
 
@@ -146,8 +156,31 @@ class AtRestEncryptionInstrumentedTest {
         val attachmentMarker = marker()
 
         unlockThroughManager()
-        val liveKeySnapshot = keyProvider.currentKey()!!.copyOf()
-        val liveKeyHex = hex(liveKeySnapshot)
+        // skein-7yy2 — two DIFFERENT things, previously conflated into one
+        // `copyOf()`:
+        //
+        //  * [liveKey] is the provider's OWN buffer, held BY REFERENCE. Per
+        //    `VaultKeyProvider.currentKey`'s contract ("the buffer surfaced
+        //    here is the same one that will be zeroed on `lock()`") this is
+        //    the array the zeroization assertion below must read, and the
+        //    same shape `VaultKeyProviderImplTest`'s "lock zeroes the master
+        //    ByteArray in place" uses against the real provider.
+        //  * [diskScanCopy] is a copy the TEST owns, used only to search the
+        //    files below for key bytes. Nothing in production ever sees it,
+        //    so nothing in production can zero it — asserting that it came
+        //    back zeroed (the old line 218) was unsatisfiable by
+        //    construction, not a finding about the app.
+        //
+        // Production's only master-key seam is `DeviceVaultOpener.keyCopy()`,
+        // which hands each callee a fresh copy that the callee zeroes:
+        // `VaultLifecycle.open`/`create` zero the argument plus their
+        // `migrationKey`/`liveKey`, `ConnectionPool.open` zeroes the array it
+        // fans out and each `SkeinSQLiteDriver` zeroes its own copy after the
+        // `PRAGMA key`, and `FileAttachmentStore` zeroes the `masterKey()`
+        // result in a `finally` once the per-file HKDF is done.
+        val liveKey = keyProvider.currentKey()!!
+        val diskScanCopy = liveKey.copyOf()
+        val liveKeyHex = hex(diskScanCopy)
 
         val session = runBlocking { newOpener().open() }
         val noteDoc =
@@ -196,7 +229,7 @@ class AtRestEncryptionInstrumentedTest {
             val asLatin1 = String(bytes, Charsets.ISO_8859_1)
             assertFalse("note marker leaked in ${file.name}", asLatin1.contains(noteMarkerHex))
             assertFalse("attachment marker leaked in ${file.name}", containsSubsequence(bytes, attachmentMarker))
-            assertFalse("raw master key leaked in ${file.name}", containsSubsequence(bytes, liveKeySnapshot))
+            assertFalse("raw master key leaked in ${file.name}", containsSubsequence(bytes, diskScanCopy))
             assertFalse("hex master key leaked in ${file.name}", asLatin1.contains(liveKeyHex))
         }
 
@@ -211,17 +244,28 @@ class AtRestEncryptionInstrumentedTest {
         // Act — lock via `UnlockManager`.
         runBlocking { manager.lockAndAwait(LockReason.USER_REQUESTED) }
 
-        // Assert — the key array is zeroed and the `masterKey()` seam
-        // (`DeviceVaultOpener.keyCopy()`) throws for any caller reaching
-        // for it after lock.
+        // Assert — no live key material survives the lock, at the three
+        // seams this process can observe (spec §3/§9,
+        // `LOCK_POLICY_INDEXING.md` §4.4): the provider reports no key, the
+        // buffer it handed out while unlocked was zeroed IN PLACE rather
+        // than merely dropped, and the `masterKey()` seam
+        // (`DeviceVaultOpener.keyCopy()`) throws for any caller reaching for
+        // it afterwards.
         assertNull(keyProvider.currentKey())
-        assertTrue(liveKeySnapshot.all { it == 0.toByte() })
+        assertTrue(
+            "lock() must zero the master buffer in place; a reference taken while unlocked still reads key bytes",
+            liveKey.all { it == 0.toByte() },
+        )
         try {
             runBlocking { newOpener().open() }
             fail("expected VaultOpenException: vault locked")
         } catch (e: VaultOpenException) {
             assertEquals("vault locked", e.message)
         }
+
+        // The test's own scan copy is the last key-shaped array this process
+        // holds; wipe it so the suite leaves nothing behind either.
+        diskScanCopy.fill(0)
     }
 
     private companion object {
