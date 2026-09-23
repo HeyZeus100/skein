@@ -38,10 +38,27 @@ internal object IndexSql {
     const val DELETE_CHUNKS_FOR_DOC: String =
         "DELETE FROM chunks WHERE doc_id = ?"
 
-    const val INSERT_CHUNK_RETURNING_ID: String =
-        "INSERT INTO chunks(doc_id, ord, text, token_count, embedder_id, embedder_version, " +
+    // `chunks.id` (INTEGER PRIMARY KEY, i.e. a rowid alias) is bound
+    // explicitly rather than left for SQLite to auto-assign. SQLite's
+    // default ROWID rule is "largest existing ROWID + 1, or 1 if the table
+    // is empty" (SQLite docs, "ROWID Tables") — `replaceChunks` deleting a
+    // doc's only chunks can empty `chunks` entirely, so relying on
+    // auto-assignment (the previous `... RETURNING id` shape) let the very
+    // next inserted chunk land back on an id that used to name different,
+    // just-deleted content (skein-x0ro). `IndexStoreImpl` computes the
+    // bound value from its own monotonic `nextChunkId` counter so an id is
+    // never reused for the lifetime of the instance, regardless of how
+    // many times `chunks` empties out.
+    const val INSERT_CHUNK: String =
+        "INSERT INTO chunks(id, doc_id, ord, text, token_count, embedder_id, embedder_version, " +
             "revision_hash, byte_start, byte_end) " +
-            "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?) RETURNING id"
+            "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)"
+
+    // Seeds `IndexStoreImpl.nextChunkId` at construction time from
+    // whatever ids already exist on disk, so a reopened vault keeps
+    // handing out ids above every id already present in `chunks`.
+    const val SELECT_MAX_CHUNK_ID: String =
+        "SELECT COALESCE(MAX(id), 0) FROM chunks"
 
     const val SELECT_CHUNK_COLUMNS: String =
         "id, doc_id, ord, text, token_count, embedder_id, embedder_version, revision_hash, byte_start, byte_end"

@@ -73,11 +73,25 @@ public class IndexSqlTest {
     }
 
     @Test
-    public fun `INSERT_CHUNK_RETURNING_ID uses RETURNING clause to avoid lastInsertRowId race`() {
-        // The `RETURNING id` clause avoids a second SELECT last_insert_rowid()
-        // round trip and — critically — is safe under concurrent writers
-        // because the row id is returned atomically with the INSERT.
-        assertThat(IndexSql.INSERT_CHUNK_RETURNING_ID).contains("RETURNING id")
+    public fun `INSERT_CHUNK binds an explicit id instead of relying on rowid auto-assignment`() {
+        // skein-x0ro: SQLite's default rowid rule ("largest existing
+        // ROWID + 1, or 1 if the table is empty") reuses an id the moment
+        // `chunks` empties out — exactly what `replaceChunks` does when it
+        // deletes a document's only chunks. `IndexStoreImpl` binds `id`
+        // itself from its own monotonic counter, so `id` must be the
+        // FIRST column/placeholder here, and there must be no `RETURNING`
+        // clause for the store to depend on instead.
+        assertThat(IndexSql.INSERT_CHUNK).contains("INSERT INTO chunks(id, doc_id,")
+        assertThat(IndexSql.INSERT_CHUNK).doesNotContain("RETURNING")
+    }
+
+    @Test
+    public fun `SELECT_MAX_CHUNK_ID seeds the chunk-id counter from every id already on disk`() {
+        assertThat(IndexSql.SELECT_MAX_CHUNK_ID).contains("MAX(id)")
+        assertThat(IndexSql.SELECT_MAX_CHUNK_ID).contains("FROM chunks")
+        // COALESCE(..., 0) so an empty table seeds the counter at 0, not
+        // NULL — `nextChunkId.incrementAndGet()` needs a real Long.
+        assertThat(IndexSql.SELECT_MAX_CHUNK_ID).contains("COALESCE(MAX(id), 0)")
     }
 
     @Test
