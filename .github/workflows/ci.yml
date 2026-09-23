@@ -79,6 +79,20 @@ jobs:
       - name: ktlint, Android lint, unit tests, guards
         run: ./gradlew ktlintCheck lint check --stacktrace
 
+      # skein-lds9: when a unit test fails, keep the JUnit XML (full failure
+      # message, stdout/stderr per test) so an intermittent failure on this
+      # runner can be diagnosed from the run page instead of re-run blind.
+      - name: Upload unit-test reports on failure
+        if: failure()
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: unit-test-results
+          path: |
+            **/build/test-results/**/*.xml
+            **/build/reports/tests/**
+          if-no-files-found: ignore
+          retention-days: 14
+
       - name: Assemble foss debug APK
         run: ./gradlew assembleFossDebug --stacktrace
 

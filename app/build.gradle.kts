@@ -116,6 +116,17 @@ android {
     }
 }
 
+// skein-lds9: Gradle's console prints only the exception class and line for a
+// failed test, which hid the diagnostics MainActivityComposeTest attaches to a
+// timeout. Print the full message and cause chain so a CI failure explains
+// itself without the JUnit XML (which ci.yml also uploads on failure).
+tasks.withType<Test>().configureEach {
+    testLogging {
+        events("failed")
+        exceptionFormat = org.gradle.api.tasks.testing.logging.TestExceptionFormat.FULL
+    }
+}
+
 dependencies {
     implementation(project(":core:model"))
     // E1.I5: pulls libskein_sqlite.so (SQLCipher + sqlite-vec + FTS5) into the
