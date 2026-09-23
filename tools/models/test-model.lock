@@ -1,0 +1,22 @@
+# tools/models/test-model.lock -- skein-80p (E4.I2)
+#
+# Pins the tiny GGUF that inference-service's `fetchTestModel` Gradle task
+# downloads into the androidTest assets directory for LlamaNativeTest's
+# device-lane acceptance tests. The task refuses to hand the file to a test
+# build unless its sha256 matches EXACTLY what is recorded here -- a mismatch
+# is a hard failure, never a silent skip or a "close enough" size check (see
+# tools/models/README.md for why this model, its licence, and the
+# provenance record).
+#
+# Format: one `key=value` pair per line, shell-sourceable, blank lines and
+# `#` comments ignored. Keep this file ASCII-only.
+#
+# Bumping this pin: download the new file, verify its sha256 and size
+# yourself (never copy a hash from a webpage without checking it against the
+# bytes you actually have), update every field below in the same commit as
+# tools/models/README.md, and say why in the commit message.
+
+url=https://huggingface.co/bartowski/SmolLM2-135M-Instruct-GGUF/resolve/main/SmolLM2-135M-Instruct-Q2_K.gguf
+sha256=741ad12b64088fedc17c33aacb22e48be1972ef36a39f03666dd68bd15614fb9
+size_bytes=88202080
+license=apache-2.0

@@ -36,6 +36,34 @@ import kotlin.math.sqrt
 
 private const val TINY_GGUF_ASSET = "tiny.gguf"
 
+// skein-80p (E4.I2): the exact 16-token id sequence a greedy decode of
+// "Hello world" produces on the pinned tiny model
+// (bartowski/SmolLM2-135M-Instruct-GGUF, Q2_K — tools/models/test-model.lock)
+// with the params `goldenGreedySequenceIsPinned` uses below (nCtx = 512,
+// nThreads = 2, nBatch = 256, newSampler(temp = 0f, ...)). temp <= 0f makes
+// `newSampler` build a chain of ONLY `llama_sampler_init_greedy()`
+// (native/llama/jni/skein_jni.cpp), which is pure argmax with no RNG, so
+// [seed] does not affect this sequence.
+//
+// Computed off-device: no emulator/adb is available in this dispatch's
+// environment, so this was produced by a throwaway host harness that mirrors
+// LlamaNative's decodePrompt/sampleNext/newSampler call sequence exactly,
+// linked against `third_party/llama.cpp` at the pinned commit
+// (native/llama/PINNED_COMMIT) built for the host CPU backend, and confirmed
+// identical across three independent runs. It has NOT been confirmed against
+// the CI x86_64 emulator's own CPU backend — greedy argmax is expected to
+// agree across CPU SIMD implementations for a model this size (no near-ties
+// observed), but if the first `emulator.yml` run after this lands disagrees,
+// that is the confirming run: update this array to match it, in a commit
+// explaining that specifically (cross-arch float divergence), not "test
+// flaked" — this chain has no randomness to flake.
+//
+// If this ever needs to change for a DIFFERENT reason — a `third_party/
+// llama.cpp` submodule bump that altered greedy sampling, tokenization, or
+// the pinned model file — the commit message must say why.
+private val GOLDEN_GREEDY_IDS =
+    intArrayOf(28, 284, 339, 5248, 441, 915, 5348, 563, 260, 905, 28, 339, 5248, 5348, 563, 260)
+
 @RunWith(AndroidJUnit4::class)
 class LlamaNativeTest {
     private val context: Context get() = ApplicationProvider.getApplicationContext()
@@ -273,11 +301,74 @@ class LlamaNativeTest {
         assertThat(LlamaNative.handleCount()).isEqualTo(1) // the model only
     }
 
+    // ---------------------------------------------------------- AC 4 (skein-80p)
+
+    @Test
+    fun goldenGreedySequenceIsPinned() {
+        // Arrange
+        loadTinyModel()
+        ctx = LlamaNative.newContext(model, nCtx = 512, nThreads = 2, nBatch = 256, embeddings = false)
+        sampler = LlamaNative.newSampler(0.0f, 1, 1.0f, 0.0f, 1.0f, seed = 1234L)
+        val prompt = LlamaNative.tokenize(model, "Hello world", addBos = true, parseSpecial = false)
+
+        // Act
+        var nPast = LlamaNative.decodePrompt(ctx, prompt, nPast = 0)
+        val sampled = IntArray(GOLDEN_GREEDY_IDS.size)
+        for (i in sampled.indices) {
+            val id = LlamaNative.sampleNext(ctx, sampler)
+            sampled[i] = id
+            nPast = LlamaNative.decodePrompt(ctx, intArrayOf(id), nPast)
+        }
+
+        // Assert
+        assertThat(sampled).isEqualTo(GOLDEN_GREEDY_IDS)
+    }
+
+    @Test
+    fun sameSeedTwiceProducesTheSameIds() {
+        // Arrange
+        loadTinyModel()
+        val prompt = LlamaNative.tokenize(model, "Hello world", addBos = true, parseSpecial = false)
+
+        // Act — two independent contexts + samplers over the same loaded
+        // model, identical params, the greedy chain (temp = 0f) newSampler
+        // documents. handleCount() bookkeeping for these two is closed out
+        // inside decodeAndSample so tearDown only sees the model handle.
+        val first = decodeAndSample(prompt, seed = 1234L, count = 16)
+        val second = decodeAndSample(prompt, seed = 1234L, count = 16)
+
+        // Assert
+        assertThat(second).isEqualTo(first)
+    }
+
     // -------------------------------------------------------------- helpers
 
     private fun assertThrowsIllegalState(block: () -> Unit) {
         val failure = runCatching(block).exceptionOrNull()
         assertThat(failure).isInstanceOf(IllegalStateException::class.java)
+    }
+
+    /** Decodes [prompt] then samples [count] ids, freeing its own context/sampler when done. */
+    private fun decodeAndSample(
+        prompt: IntArray,
+        seed: Long,
+        count: Int,
+    ): IntArray {
+        val localCtx = LlamaNative.newContext(model, nCtx = 512, nThreads = 2, nBatch = 256, embeddings = false)
+        val localSampler = LlamaNative.newSampler(0.0f, 1, 1.0f, 0.0f, 1.0f, seed)
+        try {
+            var nPast = LlamaNative.decodePrompt(localCtx, prompt, nPast = 0)
+            val ids = IntArray(count)
+            for (i in ids.indices) {
+                val id = LlamaNative.sampleNext(localCtx, localSampler)
+                ids[i] = id
+                nPast = LlamaNative.decodePrompt(localCtx, intArrayOf(id), nPast)
+            }
+            return ids
+        } finally {
+            LlamaNative.freeSampler(localSampler)
+            LlamaNative.freeContext(localCtx)
+        }
     }
 
     /**

@@ -1,3 +1,7 @@
+import java.io.IOException
+import java.net.URI
+import java.security.MessageDigest
+
 plugins {
     alias(libs.plugins.android.library)
     // E1.I2: isolation guard — this module may depend only on :core:ipc,
@@ -172,4 +176,115 @@ dependencies {
 // `SOURCE_DATE_EPOCH` and a "clean rebuild" ships a stale libskein_llama.so.
 tasks.named("clean", Delete::class) {
     delete(layout.projectDirectory.dir(".cxx"))
+}
+
+// skein-80p (E4.I2): downloads the tiny GGUF `LlamaNativeTest`'s device-lane
+// acceptance tests load, pinned by URL + sha256 in
+// tools/models/test-model.lock (tools/models/README.md has the full
+// provenance: model, licence, and why it was chosen). Network-gated per
+// spec §9 ("the app never does") — this task is wired ONLY into the
+// androidTest asset-merge tasks below, so :app and every non-test variant
+// never runs it. The destination lives under `src/androidTest/assets/`,
+// which is git-ignored (`.gitignore`'s `*.gguf` rule); verify with
+// `git status` before committing anything in this area.
+abstract class FetchTestModelTask : DefaultTask() {
+    @get:Input
+    abstract val modelUrl: Property<String>
+
+    @get:Input
+    abstract val expectedSha256: Property<String>
+
+    @get:OutputFile
+    abstract val outputFile: RegularFileProperty
+
+    @TaskAction
+    fun fetch() {
+        val dest = outputFile.get().asFile
+        val expected = expectedSha256.get().lowercase()
+
+        if (dest.isFile && sha256Of(dest) == expected) {
+            logger.lifecycle("fetchTestModel: ${dest.name} present and verified, skipping download")
+            return
+        }
+
+        dest.parentFile.mkdirs()
+        val tmp = File(dest.parentFile, "${dest.name}.download")
+        logger.lifecycle("fetchTestModel: downloading ${modelUrl.get()}")
+        try {
+            URI(modelUrl.get()).toURL().openStream().use { input ->
+                tmp.outputStream().use { output -> input.copyTo(output) }
+            }
+        } catch (e: IOException) {
+            tmp.delete()
+            throw GradleException(
+                "fetchTestModel: failed to download ${modelUrl.get()} -- ${e.message}. " +
+                    "This task needs network (CI and a developer's Mac have it; the app never does).",
+                e,
+            )
+        }
+
+        val actual = sha256Of(tmp)
+        if (actual != expected) {
+            tmp.delete()
+            throw GradleException(
+                "fetchTestModel: sha256 mismatch for ${modelUrl.get()}\n" +
+                    "  expected (tools/models/test-model.lock): $expected\n" +
+                    "  actual:                                  $actual\n" +
+                    "Refusing to install an unverified test model.",
+            )
+        }
+
+        if (!tmp.renameTo(dest)) {
+            tmp.copyTo(dest, overwrite = true)
+            tmp.delete()
+        }
+        logger.lifecycle("fetchTestModel: verified sha256 $actual, wrote ${dest.path}")
+    }
+
+    private fun sha256Of(file: File): String {
+        val digest = MessageDigest.getInstance("SHA-256")
+        file.inputStream().use { input ->
+            val buffer = ByteArray(1 shl 16)
+            while (true) {
+                val n = input.read(buffer)
+                if (n < 0) break
+                digest.update(buffer, 0, n)
+            }
+        }
+        return digest.digest().joinToString("") { "%02x".format(it) }
+    }
+}
+
+// tools/models/test-model.lock's parser: `key=value`, blank lines and `#`
+// comments ignored -- deliberately not YAML (no parser dependency needed in
+// a Gradle script for four scalar fields; see tools/m0-benchmark/models.yaml
+// for the richer manifest this is NOT trying to be).
+val testModelLockFile = rootProject.file("tools/models/test-model.lock")
+val testModelLock: Map<String, String> =
+    testModelLockFile.readLines()
+        .map { it.trim() }
+        .filter { it.isNotEmpty() && !it.startsWith("#") }
+        .mapNotNull { line ->
+            val idx = line.indexOf('=')
+            if (idx < 0) null else line.substring(0, idx).trim() to line.substring(idx + 1).trim()
+        }
+        .toMap()
+
+val fetchTestModel =
+    tasks.register<FetchTestModelTask>("fetchTestModel") {
+        group = "verification"
+        description = "Downloads and sha256-verifies the tiny GGUF for LlamaNativeTest (skein-80p)"
+        modelUrl.set(testModelLock.getValue("url"))
+        expectedSha256.set(testModelLock.getValue("sha256"))
+        outputFile.set(layout.projectDirectory.file("src/androidTest/assets/tiny.gguf"))
+    }
+
+// Every merge*AndroidTestAssets task (mergeFossDebugAndroidTestAssets,
+// mergeDevDebugAndroidTestAssets, ...) needs `tiny.gguf` on disk before it
+// runs; matched by name rather than AGP's internal task type so this does
+// not depend on AGP's task-class package across versions. This does NOT
+// touch merge*Assets (no "AndroidTest" in the name) -- the app's own
+// production assets never trigger a download.
+tasks.matching { it.name.contains("AndroidTestAssets") }.configureEach {
+    dependsOn(fetchTestModel)
 }
