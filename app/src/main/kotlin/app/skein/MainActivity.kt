@@ -90,6 +90,7 @@ import app.skein.vault.gateOpenFailure
 import app.skein.vault.gatePhase
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.first
@@ -407,15 +408,34 @@ class MainActivity : FragmentActivity() {
         // the status row AND the chip — the row sits under the keyboard when
         // the command bar has focus (Fold smoke #2), the chip never does.
         var importProgress by remember { mutableStateOf<Float?>(null) }
+        // `/models`' overlay + list version (declared here because the chip
+        // below re-reads the default with the same version key).
+        var modelsOverlayOpen by remember { mutableStateOf(false) }
+        var modelsListVersion by remember { mutableIntStateOf(0) }
+        // The registry's default, for the chip while nothing is loaded yet:
+        // "no model" after a successful import read as a failure to the
+        // owner (Fold smoke #2). Re-read with the `/models` list.
+        val defaultModelName by
+            produceState(initialValue = null as String?, models, modelsListVersion) {
+                value =
+                    models?.let { services ->
+                        services.registry.default()?.let { id ->
+                            services.registry
+                                .get(id)
+                                ?.model
+                                ?.name
+                        }
+                    }
+            }
         val modelStatusName =
             importProgress?.let { "importing ${(it * 100).toInt()}%" }
-                ?: (engineStatus.modelId ?: "no model")
+                ?: engineStatus.modelId
+                ?: defaultModelName?.let { "${it.take(CHIP_NAME_MAX)} · not loaded" }
+                ?: "no model"
         val modelStatusActive = engineStatus.state == EngineState.READY || engineStatus.state == EngineState.GENERATING
 
         // `/models`' list — re-read whenever `modelsListVersion` is bumped
         // (import success, set-default, delete) rather than polled.
-        var modelsOverlayOpen by remember { mutableStateOf(false) }
-        var modelsListVersion by remember { mutableIntStateOf(0) }
         val modelListItems by
             produceState(initialValue = emptyList<ModelListItem>(), models, modelsListVersion) {
                 value =
@@ -453,6 +473,22 @@ class MainActivity : FragmentActivity() {
                     modelsListVersion++
                     importStatusText = "Registered ${ids.joinToString()} from an earlier import and set as default"
                 }
+            }
+        }
+        // A success row clears itself: it is composed in the overlay slot at
+        // the bottom, full width, which is exactly where the chat tab's
+        // composer sits — on the Fold the "Registered … and set as default"
+        // row hid the message bar until Dismiss was found. Failures and a
+        // running import stay until dismissed.
+        LaunchedEffect(importStatusText) {
+            val text = importStatusText ?: return@LaunchedEffect
+            val transient =
+                text.startsWith("Imported ") ||
+                    text.startsWith("Registered ") ||
+                    text.startsWith("An import is already running")
+            if (transient) {
+                delay(STATUS_ROW_AUTO_DISMISS_MILLIS)
+                if (importStatusText == text) importStatusText = null
             }
         }
         // One import at a time: a second pick while one runs would race the
@@ -993,3 +1029,9 @@ private fun RecoveryRequiredNotice(modifier: Modifier = Modifier) {
 
 private val GATE_SPACING = 12.dp
 private val GATE_GUTTER = 24.dp
+
+/** Longest model name the command-bar chip shows before "· not loaded"; an adopted row's name is its 60-char id. */
+private const val CHIP_NAME_MAX = 20
+
+/** How long a transient import/rescue success row stays before clearing itself. */
+private const val STATUS_ROW_AUTO_DISMISS_MILLIS = 6_000L
