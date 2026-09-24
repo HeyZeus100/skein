@@ -240,6 +240,87 @@ class ModelManagerTest {
         }
 
     @Test
+    fun `a sealed directory whose registration was lost is adopted at unlock and becomes the default`(): Unit =
+        runTest {
+            // Fold smoke #2 (skein-gg11.18): the copy finished, the vault
+            // locked, the import coroutine died, the registry never saw the
+            // model. A fresh session (new store instance, empty registry over
+            // the same root) must register the sealed directory without a
+            // second copy.
+            val bytes = validGguf(bytesOf(42, 65_536))
+            val first =
+                outcomeOf(
+                    manager(pickedReader = FakePickedFileReader(bytes = bytes))
+                        .import(ImportSource.Picked(Uri.parse("content://fake.authority/picked/4")))
+                        .toList(),
+                ) as ImportOutcome.Imported
+            val id = first.record.model.id
+            assertThat(File(root, id).resolve(ModelManager.GENERATED_MAIN_FILE_NAME).isFile).isTrue()
+
+            // "Next process lifetime": nothing in memory, the row was never written.
+            store = ImmutableModelStore(root)
+            registry = InMemoryModelRegistry()
+
+            val adopted = manager().adoptOrphans()
+
+            assertThat(adopted.map { it.id }).containsExactly(id)
+            assertThat(adopted.single().outcome).isInstanceOf(ImportOutcome.Imported::class.java)
+            val record = registry.get(id)
+            assertThat(record).isNotNull()
+            assertThat(record!!.model.sha256).isEqualTo(first.record.model.sha256)
+            assertThat(record.blake3).isNull()
+            assertThat(registry.default()).isEqualTo(id)
+            assertThat(store.stored(id)).isNotNull()
+        }
+
+    @Test
+    fun `a staging directory and a registered directory are not adopted`(): Unit =
+        runTest {
+            File(root, "half-copied-model").also { it.mkdirs() }.resolve("model.gguf.tmp").writeBytes(bytesOf(1, 512))
+            val files = defaultFixtureFiles()
+            outcomeOf(manager().import(ImportSource.Bundled(parsedManifest(files))).toList()) as ImportOutcome.Imported
+
+            val adopted = manager().adoptOrphans()
+
+            assertThat(adopted).isEmpty()
+            assertThat(registry.get("half-copied-model")).isNull()
+        }
+
+    @Test
+    fun `a transient inspection failure keeps the sealed files, a verdict on the file deletes them`(): Unit =
+        runTest {
+            val bytes = validGguf(bytesOf(42, 16_384))
+            val locked =
+                outcomeOf(
+                    manager(
+                        inspector = fakeInspector(errorCode = ErrorCode.SESSION_LOCKED),
+                        pickedReader = FakePickedFileReader(bytes = bytes),
+                    ).import(ImportSource.Picked(Uri.parse("content://fake.authority/picked/5")))
+                        .toList(),
+                )
+            assertThat(
+                (locked as ImportOutcome.Refused).refusal,
+            ).isInstanceOf(ImportRefusal.InspectionFailed::class.java)
+            val kept = root.listFiles()!!.filter { it.isDirectory }
+            assertThat(kept).hasSize(1)
+            assertThat(kept.single().resolve(ModelManager.GENERATED_MAIN_FILE_NAME).isFile).isTrue()
+
+            // Sealed 0500/0400: only the store itself can remove it.
+            store.delete(kept.single().name)
+            assertThat(kept.single().exists()).isFalse()
+            val bad =
+                outcomeOf(
+                    manager(
+                        inspector = fakeInspector(errorCode = ErrorCode.INVALID_MODEL),
+                        pickedReader = FakePickedFileReader(bytes = bytes),
+                    ).import(ImportSource.Picked(Uri.parse("content://fake.authority/picked/6")))
+                        .toList(),
+                )
+            assertThat((bad as ImportOutcome.Refused).refusal).isInstanceOf(ImportRefusal.InspectionFailed::class.java)
+            assertThat(root.listFiles()!!.filter { it.isDirectory }).isEmpty()
+        }
+
+    @Test
     fun `AC4 insufficient space refuses before any write`(): Unit =
         runTest {
             free = 0L

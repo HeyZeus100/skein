@@ -37,6 +37,7 @@ import app.skein.core.inference.engine.LlamaCppEngine
 import app.skein.core.inference.engine.StoreModelPinSource
 import app.skein.core.inference.models.ContentResolverPickedFileReader
 import app.skein.core.inference.models.ImmutableModelStore
+import app.skein.core.inference.models.ImportOutcome
 import app.skein.core.inference.models.ModelBytesSource
 import app.skein.core.inference.models.ModelInspector
 import app.skein.core.inference.models.ModelManager
@@ -57,7 +58,14 @@ import app.skein.core.rag.retrieval.RetrievalServiceImpl
 import app.skein.core.vault.models.ModelRegistryImpl
 import app.skein.core.verify.ModelFileRole
 import app.skein.feature.chat.SendPipeline
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.SupervisorJob
+import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.withTimeoutOrNull
 import java.io.File
@@ -89,7 +97,19 @@ public class ModelServices(
     private val pushOnSessionUnlocked: suspend (epoch: Long) -> Unit = { _ -> },
     private val pushOnSessionLocking: suspend (epoch: Long, budgetMillis: Long) -> Unit = { _, _ -> },
     private val pushOnSessionLocked: suspend (epoch: Long) -> Unit = { _ -> },
+    /** Runs [ModelManager.adoptOrphans] off the unlock path; cancelled on lock. */
+    private val scope: CoroutineScope = CoroutineScope(SupervisorJob() + Dispatchers.IO),
 ) {
+    private val rescuedState = MutableStateFlow<List<ModelId>>(emptyList())
+    private var rescueJob: Job? = null
+
+    /**
+     * Ids of sealed store directories that [unlocked] registered this session
+     * (skein-gg11.18) — the shell bumps its `/models` list and tells the user.
+     * Empty until a rescue lands; never cleared within the session.
+     */
+    public val rescued: StateFlow<List<ModelId>> = rescuedState.asStateFlow()
+
     /** Synchronous "is this the model currently loaded" read for `/models`' "delete refused while loaded" row. */
     public fun isLoaded(id: ModelId): Boolean {
         val status = engineStatus.value
@@ -105,6 +125,18 @@ public class ModelServices(
     public suspend fun unlocked(epoch: Long) {
         manifestCache.refresh()
         pushOnSessionUnlocked(epoch)
+        // After the epoch push, so `inspect` is authorised. Off this path:
+        // a rescue re-hashes the sealed file (seconds for 1.6 GB) and binds
+        // the isolated service, neither of which the unlock should wait on.
+        rescueJob?.cancel()
+        rescueJob =
+            scope.launch {
+                val adopted = manager.adoptOrphans().filter { it.outcome is ImportOutcome.Imported }.map { it.id }
+                if (adopted.isNotEmpty()) {
+                    manifestCache.refresh()
+                    rescuedState.value = rescuedState.value + adopted
+                }
+            }
     }
 
     /**
@@ -125,6 +157,7 @@ public class ModelServices(
         epoch: Long,
         budgetMillis: Long,
     ) {
+        rescueJob?.cancel()
         pushOnSessionLocking(epoch, budgetMillis)
         engine.unload()
         pushOnSessionLocked(epoch)

@@ -18,6 +18,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Button
 import androidx.compose.material3.CircularProgressIndicator
@@ -88,6 +89,7 @@ import app.skein.vault.VaultSession
 import app.skein.vault.gateOpenFailure
 import app.skein.vault.gatePhase
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.first
@@ -400,7 +402,14 @@ class MainActivity : FragmentActivity() {
         val noModelServicesStatus =
             remember { MutableStateFlow(ModelStatus(modelId = null, state = EngineState.UNLOADED)) }
         val engineStatus by (models?.engineStatus ?: noModelServicesStatus).collectAsState()
-        val modelStatusName = engineStatus.modelId ?: "no model"
+        // Fraction of the whole import (hash pass + copy pass); null when no
+        // import is running or the total is still unknown. Drives the bar in
+        // the status row AND the chip — the row sits under the keyboard when
+        // the command bar has focus (Fold smoke #2), the chip never does.
+        var importProgress by remember { mutableStateOf<Float?>(null) }
+        val modelStatusName =
+            importProgress?.let { "importing ${(it * 100).toInt()}%" }
+                ?: (engineStatus.modelId ?: "no model")
         val modelStatusActive = engineStatus.state == EngineState.READY || engineStatus.state == EngineState.GENERATING
 
         // `/models`' list — re-read whenever `modelsListVersion` is bumped
@@ -435,55 +444,72 @@ class MainActivity : FragmentActivity() {
 
         val modelImportScope = rememberCoroutineScope()
         var importStatusText by remember { mutableStateOf<String?>(null) }
-        // Fraction of the whole import (hash pass + copy pass) for the bar in
-        // the status row; null when no import is running or the total is
-        // still unknown. The manager's flow runs on its IO dispatcher, so
-        // these state writes are the only work this scope does per tick.
-        var importProgress by remember { mutableStateOf<Float?>(null) }
+        // skein-gg11.18: a sealed copy whose registration was lost (the vault
+        // locked mid-import) is registered again at unlock by ModelServices;
+        // refresh `/models` and say so, since the user never saw it land.
+        LaunchedEffect(models) {
+            models?.rescued?.collect { ids ->
+                if (ids.isNotEmpty()) {
+                    modelsListVersion++
+                    importStatusText = "Registered ${ids.joinToString()} from an earlier import and set as default"
+                }
+            }
+        }
+        // One import at a time: a second pick while one runs would race the
+        // same staging directory (and the Fold owner did exactly that).
+        var importJob by remember { mutableStateOf<Job?>(null) }
         val importLauncher =
             rememberLauncherForActivityResult(ActivityResultContracts.OpenDocument()) { uri ->
                 val services = models
                 if (uri != null && services != null) {
-                    modelImportScope.launch {
-                        importStatusText = "Importing model…"
-                        importProgress = null
-                        services.manager.import(ImportSource.Picked(uri)).collectLatest { progress ->
-                            when (progress) {
-                                is ImportProgress.InProgress ->
-                                    if (progress.totalBytes > 0) {
-                                        val fraction =
-                                            (progress.bytesProcessed.toFloat() / progress.totalBytes).coerceIn(0f, 1f)
-                                        importProgress = fraction
-                                        importStatusText = "Importing model… ${(fraction * 100).toInt()}%"
-                                    } else {
-                                        importProgress = null
-                                        importStatusText = "Importing model…"
-                                    }
-                                is ImportProgress.Done -> {
-                                    importProgress = null
-                                    when (val outcome = progress.outcome) {
-                                        is ImportOutcome.Imported -> {
-                                            services.manager.setDefault(outcome.record.model.id)
-                                            services.manifestCache.refresh()
-                                            importStatusText =
-                                                "Imported \"${outcome.record.model.name}\" and set as default"
+                    if (importJob?.isActive == true) {
+                        importStatusText = "An import is already running — wait for it to finish"
+                        return@rememberLauncherForActivityResult
+                    }
+                    importJob =
+                        modelImportScope.launch {
+                            importStatusText = "Importing model…"
+                            importProgress = null
+                            services.manager.import(ImportSource.Picked(uri)).collectLatest { progress ->
+                                when (progress) {
+                                    is ImportProgress.InProgress ->
+                                        if (progress.totalBytes > 0) {
+                                            val fraction =
+                                                (progress.bytesProcessed.toFloat() / progress.totalBytes).coerceIn(
+                                                    0f,
+                                                    1f,
+                                                )
+                                            importProgress = fraction
+                                            importStatusText = "Importing model… ${(fraction * 100).toInt()}%"
+                                        } else {
+                                            importProgress = null
+                                            importStatusText = "Importing model…"
                                         }
-                                        is ImportOutcome.Refused ->
-                                            // Kind + reason, never content:
-                                            // `describe()` is spec §9-safe (a
-                                            // pre-check reason name, a store
-                                            // refusal summary, an inspection
-                                            // error code). The bare class name
-                                            // shown before ("FromStore") gave
-                                            // the owner nothing to act on
-                                            // during Fold smoke #2.
-                                            importStatusText = "Import failed: ${outcome.refusal.describe()}"
+                                    is ImportProgress.Done -> {
+                                        importProgress = null
+                                        when (val outcome = progress.outcome) {
+                                            is ImportOutcome.Imported -> {
+                                                services.manager.setDefault(outcome.record.model.id)
+                                                services.manifestCache.refresh()
+                                                importStatusText =
+                                                    "Imported \"${outcome.record.model.name}\" and set as default"
+                                            }
+                                            is ImportOutcome.Refused ->
+                                                // Kind + reason, never content:
+                                                // `describe()` is spec §9-safe (a
+                                                // pre-check reason name, a store
+                                                // refusal summary, an inspection
+                                                // error code). The bare class name
+                                                // shown before ("FromStore") gave
+                                                // the owner nothing to act on
+                                                // during Fold smoke #2.
+                                                importStatusText = "Import failed: ${outcome.refusal.describe()}"
+                                        }
+                                        modelsListVersion++
                                     }
-                                    modelsListVersion++
                                 }
                             }
                         }
-                    }
                 }
             }
 
@@ -547,7 +573,11 @@ class MainActivity : FragmentActivity() {
                         keyword = "import model",
                         hint = "— pick a GGUF file to import and set as default",
                     ) {
-                        importLauncher.launch(arrayOf("application/octet-stream", "*/*"))
+                        if (importJob?.isActive == true) {
+                            importStatusText = "An import is already running — wait for it to finish"
+                        } else {
+                            importLauncher.launch(arrayOf("application/octet-stream", "*/*"))
+                        }
                     }
                 },
                 Command(
@@ -715,7 +745,10 @@ class MainActivity : FragmentActivity() {
                 // itself assigned (never a path, a digest or a service
                 // diagnostic — spec §9).
                 importStatusText?.let { message ->
-                    Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.BottomCenter) {
+                    // imePadding: the command bar takes focus back when the
+                    // picker closes and the keyboard covered this row (Fold
+                    // smoke #2: "pops up momentarily then disappears").
+                    Box(modifier = Modifier.fillMaxSize().imePadding(), contentAlignment = Alignment.BottomCenter) {
                         Surface(
                             color = MaterialTheme.colorScheme.secondaryContainer,
                             modifier = Modifier.fillMaxWidth().testTag(MainActivityTestTags.IMPORT_STATUS_ROW),

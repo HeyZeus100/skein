@@ -192,6 +192,68 @@ class ImmutableModelStore(
 
     fun stored(id: String): StoredModel? = synchronized(monitor) { registry[id] }
 
+    /**
+     * Directories under the store root that hold a promoted `[mainFileName]`
+     * and no `*.tmp` leftovers, yet are unknown to this instance — a finished
+     * import whose registration never landed (the Fold: the import coroutine
+     * was cancelled by a vault lock after the copy). `ModelManager.adoptOrphans`
+     * turns these back into registry rows; nothing else reads them.
+     */
+    fun orphanedDirectories(mainFileName: String): List<File> =
+        synchronized(monitor) {
+            (modelsRoot.listFiles() ?: emptyArray())
+                .filter { it.isDirectory && isSafeId(it.name) && !registry.containsKey(it.name) }
+                .filter { dir -> File(dir, mainFileName).isFile && !isStaleStaging(dir) }
+                .filter { dir -> dir.listFiles()?.none { it.name.endsWith(TEMP_SUFFIX) } ?: false }
+                .sortedBy { it.name }
+        }
+
+    /**
+     * Registers a sealed, already-copied directory as if it had just been
+     * imported: the caller has re-hashed `[mainFileName]` (SHA-256) and
+     * passes what it measured; BLAKE3 is left empty (no post-mmap
+     * expectation, exactly like a rehydrated row without one). Sealing is
+     * re-applied — it is idempotent on an already-sealed directory.
+     */
+    fun adoptSealed(
+        id: String,
+        mainFileName: String,
+        sha256: String,
+        sizeBytes: Long,
+    ): AdoptResult {
+        if (!isSafeId(
+                id,
+            )
+        ) {
+            return AdoptResult.Refused(
+                ModelVerification.MalformedManifest("model id is not a plain directory name"),
+            )
+        }
+        val directory = File(modelsRoot, id)
+        val main = File(directory, mainFileName)
+        if (!main.isFile) return AdoptResult.Refused(ModelVerification.FileMissing(ModelFileRole.MAIN))
+        synchronized(monitor) {
+            if (registry.containsKey(id)) return AdoptResult.Refused(ModelVerification.AlreadyImported(id))
+        }
+        var enforcement = seal(main, FILE_MODE_0400)
+        enforcement = weakest(enforcement, seal(directory, DIRECTORY_MODE_0500))
+        val stored = StoredFile(ModelFileRole.MAIN, main, sha256, blake3 = "", sizeBytes)
+        val model = StoredModel(id, directory, mapOf(ModelFileRole.MAIN to stored), enforcement)
+        synchronized(monitor) { registry[id] = model }
+        SkeinLog.i(TAG, "adopted a sealed model directory enforcement=$enforcement")
+        return AdoptResult.Adopted(model)
+    }
+
+    sealed interface AdoptResult {
+        data class Adopted(
+            val model: StoredModel,
+        ) : AdoptResult
+
+        data class Refused(
+            val refusal: ModelVerification.Refusal,
+        ) : AdoptResult
+    }
+
     fun isOpen(id: String): Boolean = synchronized(monitor) { openModels.containsKey(id) }
 
     /** True when [directory] holds no promoted file — only `*.tmp` leftovers, or nothing at all. */

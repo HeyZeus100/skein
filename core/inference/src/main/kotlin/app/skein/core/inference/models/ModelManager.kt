@@ -58,6 +58,7 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.buffer
 import kotlinx.coroutines.flow.channelFlow
 import kotlinx.coroutines.flow.flowOn
+import kotlinx.coroutines.withContext
 import java.io.File
 import java.io.IOException
 import java.io.InputStream
@@ -215,6 +216,68 @@ public class ModelManager(
         return results
     }
 
+    /**
+     * Registers every sealed store directory that has no registry row — a
+     * finished copy whose registration never landed. On the Fold the vault's
+     * idle lock cancelled the import coroutine while `inspect` was in flight,
+     * leaving a verified 1.6 GB `model.gguf` that `/models` could not see and
+     * a re-import refused as `AlreadyImported`.
+     *
+     * Runs the same tail as a picked import (pre-check, binding, sandboxed
+     * inspection, `upsert`) over a fresh SHA-256 of the sealed file — the
+     * copy-time BLAKE3 was lost with the cancelled coroutine and re-deriving
+     * it in Kotlin would cost minutes, so the row carries none, which
+     * `ManifestCache` treats as "no post-mmap expectation". The display name
+     * is the directory name (the picked file's own name did not survive). A
+     * rescued model becomes the default when none is set. Call after the
+     * engine has been authorised for the session (`inspect` needs the epoch).
+     */
+    public suspend fun adoptOrphans(): List<AdoptOutcome> =
+        withContext(io) {
+            val outcomes = mutableListOf<AdoptOutcome>()
+            for (directory in store.orphanedDirectories(GENERATED_MAIN_FILE_NAME)) {
+                val id = directory.name
+                if (!ID_PATTERN.matches(id) || registry.get(id) != null) continue
+                val main = File(directory, GENERATED_MAIN_FILE_NAME)
+                val (sha256, size) = hashFile(main)
+                val manifest = generatedManifest(id = id, displayName = id, sha256 = sha256, sizeBytes = size)
+                val stored =
+                    when (val adopted = store.adoptSealed(id, GENERATED_MAIN_FILE_NAME, sha256, size)) {
+                        is ImmutableModelStore.AdoptResult.Refused -> {
+                            SkeinLog.w(TAG, "adoption refused: ${adopted.refusal.summary}")
+                            outcomes +=
+                                AdoptOutcome(id, ImportOutcome.Refused(ImportRefusal.FromStore(adopted.refusal)))
+                            continue
+                        }
+                        is ImmutableModelStore.AdoptResult.Adopted -> adopted.model
+                    }
+                val outcome =
+                    finishGeneratedImport(
+                        manifest = manifest,
+                        storedModel = stored,
+                        displayName = id,
+                        origin = ModelOrigin.PICKED,
+                        sourceUrl = null,
+                        sourceRevision = null,
+                    )
+                when (outcome) {
+                    is ImportOutcome.Imported -> {
+                        if (registry.default() == null) setDefault(id)
+                        SkeinLog.i(TAG, "adopted an orphaned model into the registry")
+                    }
+                    is ImportOutcome.Refused -> SkeinLog.w(TAG, "adoption refused: ${outcome.refusal.describe()}")
+                }
+                outcomes += AdoptOutcome(id, outcome)
+            }
+            outcomes
+        }
+
+    /** One [adoptOrphans] entry: the directory's id and how its registration went. */
+    public data class AdoptOutcome(
+        val id: ModelId,
+        val outcome: ImportOutcome,
+    )
+
     // ------------------------------------------------------------------
     // ImportSource.Bundled — manifest already fully declared.
     // ------------------------------------------------------------------
@@ -302,23 +365,7 @@ public class ModelManager(
         sizeRefusal(observedSize)?.let { return ImportOutcome.Refused(it) }
 
         val id = deriveId(displayName, sha256)
-        val manifest =
-            ModelManifest(
-                id = id,
-                manifestVersion = ModelManifest.SUPPORTED_VERSION,
-                name = displayName?.takeIf { it.isNotBlank() } ?: id,
-                format = ModelFormat.GGUF,
-                capabilities = setOf(Capability.TEXT),
-                license = ManifestLicense(spdx = UNKNOWN_LICENSE),
-                main =
-                    ManifestFile(
-                        role = ModelFileRole.MAIN,
-                        file = GENERATED_MAIN_FILE_NAME,
-                        sha256 = sha256,
-                        sizeBytes = observedSize,
-                    ),
-                companions = emptyList(),
-            )
+        val manifest = generatedManifest(id = id, displayName = displayName, sha256 = sha256, sizeBytes = observedSize)
 
         // Pass 2: the real, hashed, single-pass copy into the store —
         // ImmutableModelStore.import, unchanged.
@@ -364,7 +411,15 @@ public class ModelManager(
 
         val inspection = modelInspector.inspect(binding)
         if (inspection.errorCode != ErrorCode.OK) {
-            store.delete(manifest.id)
+            // Only a verdict on the FILE deletes the sealed copy. A locked
+            // session, a busy or dead service say nothing about the bytes —
+            // keep them, and `adoptOrphans` registers them at the next
+            // unlock instead of the user copying 1.6 GB again.
+            if (inspection.errorCode in MODEL_IS_BAD_CODES) {
+                store.delete(manifest.id)
+            } else {
+                SkeinLog.w(TAG, "inspection unavailable (code ${inspection.errorCode}); sealed files kept for adoption")
+            }
             return ImportOutcome.Refused(ImportRefusal.InspectionFailed(inspection.errorCode))
         }
 
@@ -410,7 +465,9 @@ public class ModelManager(
         val record =
             ModelRecord(
                 model = model,
-                blake3 = storedModel.main.blake3,
+                // An adopted directory carries no BLAKE3 (empty) — the row
+                // then has no post-mmap expectation, like a rehydrated row.
+                blake3 = storedModel.main.blake3.takeIf { it.isNotEmpty() },
                 origin = origin,
                 sourceUrl = sourceUrl,
                 sourceRevision = sourceRevision,
@@ -524,6 +581,45 @@ public class ModelManager(
         return if (available < required) ImportRefusal.InsufficientSpace(required, available) else null
     }
 
+    /** The manifest a no-manifest source (picked file, adopted directory) gets: TEXT, UNKNOWN licence, one MAIN file. */
+    private fun generatedManifest(
+        id: String,
+        displayName: String?,
+        sha256: String,
+        sizeBytes: Long,
+    ): ModelManifest =
+        ModelManifest(
+            id = id,
+            manifestVersion = ModelManifest.SUPPORTED_VERSION,
+            name = displayName?.takeIf { it.isNotBlank() } ?: id,
+            format = ModelFormat.GGUF,
+            capabilities = setOf(Capability.TEXT),
+            license = ManifestLicense(spdx = UNKNOWN_LICENSE),
+            main =
+                ManifestFile(
+                    role = ModelFileRole.MAIN,
+                    file = GENERATED_MAIN_FILE_NAME,
+                    sha256 = sha256,
+                    sizeBytes = sizeBytes,
+                ),
+            companions = emptyList(),
+        )
+
+    /** SHA-256 and size of a file on disk, streamed; used to adopt a sealed directory. */
+    private fun hashFile(file: File): Pair<String, Long> =
+        file.inputStream().use { stream ->
+            val digest = MessageDigest.getInstance("SHA-256")
+            val buffer = ByteArray(HASH_BUFFER_BYTES)
+            var total = 0L
+            while (true) {
+                val read = stream.read(buffer)
+                if (read < 0) break
+                digest.update(buffer, 0, read)
+                total += read
+            }
+            Hex.encode(digest.digest()) to total
+        }
+
     private fun deriveId(
         displayName: String?,
         sha256: String,
@@ -550,6 +646,15 @@ public class ModelManager(
 
         private const val HASH_BUFFER_BYTES = 1 shl 16
         private const val REPORT_STEP_BYTES = 8L shl 20
+
+        /** Inspection codes that are a verdict on the file itself; anything else is transient. */
+        private val MODEL_IS_BAD_CODES =
+            setOf(
+                ErrorCode.INVALID_MODEL,
+                ErrorCode.HASH_MISMATCH,
+                ErrorCode.HASH_MISMATCH_POST_MMAP,
+                ErrorCode.COMPANION_HASH_MISMATCH,
+            )
 
         /**
          * Room for every 1 % tick of an import plus its milestones, so a
