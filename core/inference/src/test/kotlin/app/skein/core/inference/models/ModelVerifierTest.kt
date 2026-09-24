@@ -20,6 +20,7 @@ import app.skein.core.verify.ModelFileRole
 import app.skein.core.verify.ModelVerification
 import app.skein.core.verify.ModelVerifier
 import app.skein.core.verify.VerifyBinding
+import app.skein.core.verify.VerifyFile
 import com.google.common.truth.Truth.assertThat
 import org.junit.After
 import org.junit.Before
@@ -135,6 +136,59 @@ class ModelVerifierTest {
             (result as LoadVerification.Refused).refusal,
         ).isEqualTo(ModelVerification.Tampered(ModelFileRole.MAIN))
     }
+
+    @Test
+    fun `without a declared blake3 the post-mmap gate re-hashes the mapping with sha256 and still catches the write`() {
+        // skein-gg11.18 adopted rows carry no BLAKE3; gate 2 must still be a
+        // second digest over the MAPPING, taken after gate 1 read the file.
+        val open = openHandle()
+        val attacker =
+            object : LoadPhaseHook {
+                override fun afterPreMmapVerify(binding: VerifyBinding) {
+                    overwriteByte(stored.main.path, offset = 1_024L, byte = 0x5A)
+                }
+            }
+
+        val result = ModelVerifier.verifyForLoad(open.mainChannel, sha256OnlyBinding(), attacker)
+
+        assertThat(
+            (result as LoadVerification.Refused).refusal,
+        ).isEqualTo(ModelVerification.Tampered(ModelFileRole.MAIN))
+    }
+
+    @Test
+    fun `without a declared blake3 an untouched model passes both gates`() {
+        val result = ModelVerifier.verifyForLoad(openHandle().mainChannel, sha256OnlyBinding())
+
+        assertThat(result).isInstanceOf(LoadVerification.Ready::class.java)
+    }
+
+    @Test
+    fun `the pre-mmap pass observes a blake3 only when asked`() {
+        // Default off: the pure-Kotlin BLAKE3 is the 13-minute pass on the
+        // Fold (skein-gg11.17) and gate 2 no longer depends on it.
+        val open = openHandle()
+
+        val channel = open.mainChannel
+
+        assertThat(ModelVerifier.verifyBeforeMmapDetailed(sha256OnlyBinding(), channel).mainBlake3).isNull()
+        assertThat(
+            ModelVerifier.verifyBeforeMmapDetailed(sha256OnlyBinding(), channel, observeBlake3 = true).mainBlake3,
+        ).isEqualTo(stored.main.blake3)
+    }
+
+    private fun sha256OnlyBinding(): VerifyBinding =
+        VerifyBinding(
+            listOf(
+                VerifyFile(
+                    role = ModelFileRole.MAIN,
+                    expectedSha256 = stored.main.sha256,
+                    expectedSizeBytes = stored.main.sizeBytes,
+                    expectedBlake3 = null,
+                    path = stored.main.path,
+                ),
+            ),
+        )
 
     @Test
     fun `modification before the pre-mmap gate is caught by sha256, not by blake3`() {

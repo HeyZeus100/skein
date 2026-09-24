@@ -22,17 +22,23 @@
 //                               only through the channel it was given, which
 //                               is the anti-swap rule `PinnedModelFile`'s
 //                               header states.
-//   [VerifyFile.expectedBlake3] null service-side. The post-mmap gate then
-//                               compares the mapped bytes against the BLAKE3
-//                               that the *pre-mmap pass over the same
-//                               descriptor* observed, computed in the same
-//                               single read. That still detects the §2.4
-//                               in-place write — the two digests are taken at
-//                               two different times over two different views
-//                               of the file, which is the entire mechanism —
-//                               it simply cannot also detect a file that was
-//                               already wrong before the load began. That case
-//                               is what `expectedSha256` is for, and it is
+//   [VerifyFile.expectedBlake3] null service-side, and null for a row that
+//                               was adopted from a sealed directory rather
+//                               than imported (skein-gg11.18). The post-mmap
+//                               gate then re-hashes the mapped bytes with
+//                               SHA-256 against the same `expectedSha256` the
+//                               pre-mmap pass checked. That still detects the
+//                               §2.4 in-place write — the two digests are taken
+//                               at two different times over two different
+//                               views of the file, which is the entire
+//                               mechanism. (Until skein-gg11.17 lands a native
+//                               BLAKE3 the pre-mmap pass no longer *observes*
+//                               a BLAKE3 for gate 2: the pure-Kotlin one cost
+//                               13 minutes per pass on the Fold, so a declared
+//                               BLAKE3 is the only way gate 2 uses that
+//                               algorithm.) Gate 2 cannot detect a file that
+//                               was already wrong before the load began; that
+//                               case is what `expectedSha256` is for, and it is
 //                               checked either way.
 
 package app.skein.core.verify
