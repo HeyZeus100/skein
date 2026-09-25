@@ -84,6 +84,8 @@ class SendPipelineTest {
         vault: InMemoryVaultRepository,
         engine: InferenceEngine,
         retrievalService: RetrievalService = FakeRetrievalService(emptyList()),
+        countTokens: (String) -> Int = { it.length / 4 },
+        warmUp: suspend () -> Unit = {},
     ): SendPipeline =
         SendPipeline(
             vaultRepository = vault,
@@ -92,8 +94,40 @@ class SendPipelineTest {
             engine = engine,
             personaProvider = { null },
             budgetFor = { _, _ -> budget() },
-            countTokens = { it.length / 4 },
+            countTokens = countTokens,
+            warmUp = warmUp,
         )
+
+    @Test
+    fun `send warms the engine before the prompt is assembled`() =
+        runTest {
+            // skein-gg11.22: the real token counter needs the bound service,
+            // and the model used to be loaded only by stream() - after
+            // assembly - so every first send died counting tokens.
+            val (vault, chatId) = newChat()
+            val engine = scriptedEngine("q" to listOf("answer"))
+            var warmed = false
+            var everyCountAfterWarmUp = true
+            val pipeline =
+                pipeline(
+                    vault,
+                    engine,
+                    countTokens = { text ->
+                        if (!warmed) everyCountAfterWarmUp = false
+                        text.length / 4
+                    },
+                    warmUp = {
+                        warmed = true
+                        engine.load(textModel()).getOrThrow()
+                    },
+                )
+
+            pipeline.send(chatId, "q").toList()
+
+            assertThat(warmed).isTrue()
+            assertThat(everyCountAfterWarmUp).isTrue()
+            assertThat(vault.listMessages(chatId).last().role).isEqualTo(Role.ASSISTANT)
+        }
 
     @Test
     fun `send persists user then retrieves then assembles then streams then persists assistant with citations`() =

@@ -16,6 +16,7 @@ import app.skein.core.model.Message
 import app.skein.core.model.PersonaId
 import app.skein.core.model.Retrieved
 import app.skein.core.model.Role
+import app.skein.core.model.SkeinLog
 import app.skein.core.model.VaultRepository
 import app.skein.core.rag.chat.Segment
 import kotlinx.coroutines.CoroutineScope
@@ -44,6 +45,8 @@ public data class ChatMessageUi(
 )
 
 /** Error banner state (spec §8.4: `ServiceDied` -> "model process restarted, retry"). */
+private const val CHAT_VM_TAG = "ChatViewModel"
+
 public enum class ChatBanner { NONE, SERVICE_DIED, ENGINE_ERROR }
 
 /**
@@ -226,6 +229,10 @@ public class ChatViewModel(
                         ChatTurnState.Done
                     }
             } catch (e: InferenceException) {
+                // Kind only, never the prompt (spec §9). The Fold's first
+                // send failed with nothing at all in logcat, which is why
+                // this line exists.
+                SkeinLog.w(CHAT_VM_TAG, "send failed: ${e.javaClass.simpleName}")
                 turnState = ChatTurnState.Failed(e)
                 lastFailedText = text
             } finally {

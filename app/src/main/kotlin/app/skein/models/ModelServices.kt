@@ -268,6 +268,7 @@ public class ModelServices(
                     budgetFor = contextBudget::computeBudget,
                     countTokens = syncCountTokens(contextBudget),
                     samplingParams = { SamplingParams() },
+                    warmUp = managed::warmUp,
                 )
 
             return ModelServices(

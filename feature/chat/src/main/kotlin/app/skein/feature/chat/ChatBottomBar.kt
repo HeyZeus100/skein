@@ -35,6 +35,12 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.input.key.Key
+import androidx.compose.ui.input.key.KeyEventType
+import androidx.compose.ui.input.key.isShiftPressed
+import androidx.compose.ui.input.key.key
+import androidx.compose.ui.input.key.onPreviewKeyEvent
+import androidx.compose.ui.input.key.type
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.text.TextRange
@@ -142,10 +148,25 @@ public fun ChatBottomBar(
         SecureBasicTextField(
             value = fieldValue,
             onValueChange = { newValue ->
-                val wasEmpty = fieldValue.text.isEmpty()
-                fieldValue = newValue
-                autocompleteState.onTextChanged()
-                if (wasEmpty && newValue.text == "/") onSlashCommand()
+                // Enter sends (Fold smoke #2: the soft keyboard's Enter put a
+                // newline in a multi-line field and the owner had to find the
+                // ⏎ button). A soft keyboard commits "\n" as text, so a single
+                // trailing newline typed at the end is the send gesture;
+                // Shift+Enter on a hardware keyboard inserts the newline via
+                // the key handler below. The `[[` popup keeps Enter for itself.
+                val typedNewline =
+                    !autocompleteState.isVisible &&
+                        newValue.text.length == fieldValue.text.length + 1 &&
+                        newValue.text.endsWith("\n") &&
+                        newValue.selection.end == newValue.text.length
+                if (typedNewline) {
+                    if (fieldValue.text.isNotBlank()) sendCurrentText()
+                } else {
+                    val wasEmpty = fieldValue.text.isEmpty()
+                    fieldValue = newValue
+                    autocompleteState.onTextChanged()
+                    if (wasEmpty && newValue.text == "/") onSlashCommand()
+                }
             },
             textStyle = LocalTextStyle.current.copy(color = MaterialTheme.colorScheme.onSurface),
             imeAction = ImeAction.Send,
@@ -154,7 +175,26 @@ public fun ChatBottomBar(
                 Modifier
                     .weight(1f)
                     .testTag(COMPOSER_TEST_TAG)
-                    .wikilinkAutocompleteKeyEvents(autocompleteState),
+                    .wikilinkAutocompleteKeyEvents(autocompleteState)
+                    .onPreviewKeyEvent { event ->
+                        val enter = event.key == Key.Enter || event.key == Key.NumPadEnter
+                        if (!enter || event.type != KeyEventType.KeyDown || autocompleteState.isVisible) {
+                            false
+                        } else if (event.isShiftPressed) {
+                            val text = fieldValue.text
+                            val start = fieldValue.selection.start
+                            val end = fieldValue.selection.end
+                            fieldValue =
+                                TextFieldValue(
+                                    text = text.substring(0, start) + "\n" + text.substring(end),
+                                    selection = TextRange(start + 1),
+                                )
+                            true
+                        } else {
+                            sendCurrentText()
+                            true
+                        }
+                    },
         )
         IconButton(
             onClick = { attachLauncher.launch(arrayOf("*/*")) },

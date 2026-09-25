@@ -113,6 +113,15 @@ public class ManagedInferenceEngine(
             )
         }
 
+    /**
+     * Loads the registry default if nothing is loaded — the same lazy load
+     * [stream] performs, exposed so `SendPipeline` can run it BEFORE prompt
+     * assembly (whose token counting needs the bound service). Throws
+     * [InferenceException.ModelNotLoaded] when there is no default, and
+     * whatever the delegate's load failed with otherwise.
+     */
+    public suspend fun warmUp(): Unit = ensureLoaded()
+
     private suspend fun ensureLoaded() {
         val current = _status.value.state
         if (current == EngineState.READY || current == EngineState.GENERATING) return

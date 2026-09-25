@@ -163,6 +163,15 @@ public class SendPipeline(
     private val countTokens: (String) -> Int,
     private val samplingParams: () -> SamplingParams = { SamplingParams() },
     private val coalesceInterval: Duration = COALESCE_INTERVAL_DEFAULT,
+    /**
+     * Runs before the prompt is assembled, so that [countTokens] finds a
+     * loaded model. The real engine's token counter needs the bound
+     * `:inference` service, but the model was only loaded lazily by
+     * `engine.stream`, which runs AFTER assembly — so on the Fold every
+     * first send died in [countTokens] with `ModelNotLoaded` before anything
+     * bound (skein-gg11.22). The app passes `ManagedInferenceEngine.warmUp`.
+     */
+    private val warmUp: suspend () -> Unit = {},
 ) {
     private val _lastOutcome = MutableStateFlow<TurnOutcome?>(null)
 
@@ -195,6 +204,11 @@ public class SendPipeline(
         channelFlow {
             val priorHistory = vaultRepository.listMessages(chatDocId)
             vaultRepository.appendMessage(chatDocId, NewMessage(role = Role.USER, contentMd = text))
+
+            // Load (or confirm) the model first: assembly counts tokens
+            // through the engine, and the stream below would otherwise be
+            // the first thing to load it.
+            warmUp()
 
             val persona = personaProvider()
             val retrieved = retrievalService.retrieveContext(text, RETRIEVAL_K, persona?.id)
