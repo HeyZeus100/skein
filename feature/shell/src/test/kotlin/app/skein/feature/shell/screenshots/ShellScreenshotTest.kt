@@ -105,6 +105,9 @@ internal fun AppShell(
                     state = timelineState,
                     onEntryClick = { document -> onEntryOpen(document.id, document.title) },
                     onEntryLongPress = { document -> onEntryPin(document.id, document.title) },
+                    // Stage H5: MainActivity wires the New note / New chat buttons.
+                    onNewNote = {},
+                    onNewChat = {},
                     expanded = true,
                     zone = UX_ZONE,
                     now = { UX_NOW },
