@@ -78,8 +78,15 @@
         android:label="@string/app_name"
         android:theme="@android:style/Theme.Material.NoActionBar">
 
+        <!--
+            AL-02 (docs/ux/ADAPTIVE_LAYOUT_SPEC.md §7.5): fold, unfold, rotation
+            and resize recompose instead of recreating the Activity. No
+            "density": both Fold panels share one densityDpi (measured).
+            ManifestPolicyTest pins this exact set.
+        -->
         <activity
             android:name="app.skein.MainActivity"
+            android:configChanges="screenSize|smallestScreenSize|screenLayout|orientation|keyboard|keyboardHidden|navigation"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

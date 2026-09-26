@@ -320,6 +320,31 @@ class ManifestPolicyTest {
         }
     }
 
+    // --- AL-02: configChanges (docs/ux/ADAPTIVE_LAYOUT_SPEC.md §7.5) ---------
+
+    @Test
+    fun `MainActivity declares exactly the size, orientation and keyboard configChanges and not density`() {
+        val activity =
+            requireNotNull(
+                applicationElement()
+                    .childElements("activity")
+                    .firstOrNull { it.getAttributeNS(ANDROID_NS, "name") == "app.skein.MainActivity" },
+            ) { "app.skein.MainActivity not declared in the source manifest" }
+
+        assertEquals(
+            setOf(
+                "screenSize",
+                "smallestScreenSize",
+                "screenLayout",
+                "orientation",
+                "keyboard",
+                "keyboardHidden",
+                "navigation",
+            ),
+            activity.getAttributeNS(ANDROID_NS, "configChanges").split("|").toSet(),
+        )
+    }
+
     // --- Backup / extraction posture (raw manifest parse) -------------------
 
     @Test
