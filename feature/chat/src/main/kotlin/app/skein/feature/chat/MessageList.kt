@@ -28,6 +28,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.unit.dp
+import app.skein.core.designsystem.theme.LocalSkeinColors
 import app.skein.core.model.Role
 
 public const val MESSAGE_LIST_TEST_TAG: String = "app.skein.feature.chat.MessageList"
@@ -154,17 +155,19 @@ public fun UserBubble(
         when (state) {
             SentMessageState.QUEUED -> MaterialTheme.colorScheme.surfaceVariant
             SentMessageState.PICKED_UP -> MaterialTheme.colorScheme.primaryContainer
-            SentMessageState.SETTLED, null -> MaterialTheme.colorScheme.surface
+            // skein-xtov.23.2: boxed in its own colour so it stays distinct from the
+            // unboxed assistant answer now that `surface` = the page (§6.3, §10.15).
+            SentMessageState.SETTLED, null -> LocalSkeinColors.current.userMessageContainer
         }
     Surface(
         modifier = modifier.testTag(userBubbleTestTag(state)),
         color = containerColor,
-        shape = RoundedCornerShape(8.dp),
+        shape = RoundedCornerShape(topStart = 16.dp, topEnd = 4.dp, bottomEnd = 16.dp, bottomStart = 16.dp),
     ) {
         Text(
             text = text,
             style = MaterialTheme.typography.bodyMedium,
-            color = MaterialTheme.colorScheme.onSurface,
+            color = LocalSkeinColors.current.onUserMessage,
             modifier = Modifier.padding(12.dp),
         )
     }
