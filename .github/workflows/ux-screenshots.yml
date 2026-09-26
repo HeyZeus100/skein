@@ -26,6 +26,7 @@ on:
   pull_request:
     paths:
       - "feature/**"
+      - "core/designsystem/**"
       - "app/src/**"
       - "testing-ui/**"
       - "testing-fakes/**"
@@ -110,12 +111,12 @@ jobs:
             echo
             rows=""
             total=0
-            for dir in feature/*/build/outputs/roborazzi; do
+            for dir in feature/*/build/outputs/roborazzi core/designsystem/build/outputs/roborazzi; do
               [ -d "$dir" ] || continue
-              module="$(echo "$dir" | sed -E 's#feature/([^/]+)/build.*#\1#')"
+              module="$(echo "$dir" | sed -E 's#^(feature|core)/([^/]+)/build.*#\1:\2#')"
               count="$(find "$dir" -name '*_compare.png' | wc -l | tr -d ' ')"
               [ "$count" -gt 0 ] || continue
-              rows="${rows}${count}\t:feature:${module}\n"
+              rows="${rows}${count}\t:${module}\n"
               total=$((total + count))
             done
             if [ "$total" -eq 0 ]; then
