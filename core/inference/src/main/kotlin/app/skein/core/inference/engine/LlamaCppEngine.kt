@@ -371,6 +371,14 @@ public class LlamaCppEngine(
                         ) {
                             if (id != requestId) return
                             stats?.let {
+                                // Numbers only (spec §9) — the smoke's TTFT and tok/s record.
+                                SkeinLog.i(
+                                    TAG,
+                                    "generation done: reason=${it.stopReason} n_in=${it.promptTokens} " +
+                                        "n_out=${it.generatedTokens} ttft=${it.ttftMs}ms rate=${"%.2f".format(
+                                            it.tokensPerSec,
+                                        )}/s",
+                                )
                                 trySend(it.toToken())
                                 _status.update { current ->
                                     current.copy(state = EngineState.READY, tokensPerSec = it.tokensPerSec)

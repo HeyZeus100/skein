@@ -515,13 +515,26 @@ internal class InferenceEngineState(
 
             var nPast = 0
             var index = 0
+            // Numbers only (spec §9): the Fold's first real prompt sat in this
+            // loop for ten minutes with nothing in logcat to say how big it
+            // was or how fast a chunk went (skein-gg11.24).
+            val chunkCount = (promptIds.size + PROMPT_BATCH_TOKENS - 1) / PROMPT_BATCH_TOKENS
+            SkeinLog.i(
+                TAG,
+                "prefill start: n_in=${promptIds.size} batches=$chunkCount ctx=${model.contextLength}",
+            )
+            var chunkIndex = 0
             while (index < promptIds.size) {
                 if (request.cancelled.get()) {
                     complete(request, StopReasons.CANCELLED, promptIds.size, 0, 0L, startedAt)
                     return
                 }
                 val end = minOf(index + PROMPT_BATCH_TOKENS, promptIds.size)
+                val chunkStarted = SystemClock.elapsedRealtime()
                 nPast = backend.decodePrompt(model.context, promptIds.copyOfRange(index, end), nPast)
+                chunkIndex++
+                val chunkMs = SystemClock.elapsedRealtime() - chunkStarted
+                SkeinLog.i(TAG, "prefill batch $chunkIndex/$chunkCount: n=${end - index} ms=$chunkMs")
                 index = end
             }
 
@@ -965,6 +978,11 @@ internal class InferenceEngineState(
         val elapsed = (SystemClock.elapsedRealtime() - startedAt).coerceAtLeast(1L)
         val rate = generated * MILLIS_PER_SECOND / elapsed.toFloat()
         synchronized(lock) { lastTokensPerSec = rate }
+        SkeinLog.i(
+            TAG,
+            "generation done: reason=$stopReason n_in=$promptTokens n_out=$generated " +
+                "ttft=${ttftMs}ms elapsed=${elapsed}ms rate=${"%.2f".format(rate)}/s",
+        )
         finish(request)
         val stats =
             GenStats(
