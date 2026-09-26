@@ -521,6 +521,8 @@ class ScenarioInferenceEngine(
 | `S-MARKDOWN-HEAVY` | Answer from `F-MD-MIXED` with split citation markers | `chat-content-stress`, streaming citation buffering |
 | `S-LONG-ANSWER` | Answer 2,000 pieces @ 0 ms | streaming cost and the 2,000-token budget (§12) |
 
+**As built (UT-4, skein-xtov.23.18).** `testing-fakes/src/main/kotlin/app/skein/testing/scenario/`; catalogue members are camelCase (`Scenarios.slowPrefill` is `S-SLOW-PREFILL`). Differences from the sketch above: the side channel is a constructor callback, `onActivity: (ScenarioActivity) -> Unit` (wrap it in a `MutableSharedFlow` if a reducer wants a flow); the stop latency is scenario data (`Scenario.stopLatencyMs`), because it is what the model does; the gate is counting — `gate.release(n)`, `gate.open()`, and `gate.heldAt` names the `Checkpoint` (`LoadModel`, `Retrieve`, `PrefillChunk(i)`, `Piece(id)`, `Stopping`) it waits at; `engine.retrievalService()` plays the scenario's `Retrieve` step over F-SOURCES. A `cancel()` with no stream running is dropped, as the real engine's is today (CMS-P1-04), so bead C2's pre-stream-stop test can use the engine as is. The corpus is `app.skein.testing.corpus.Corpus`; the guard is the Gradle task `checkNoTestDoublesInMain` (`docs/TESTING.md`), not a CI shell script.
+
 ### 6.4 How each consumer uses it
 
 | Consumer | Uses |

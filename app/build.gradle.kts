@@ -157,10 +157,12 @@ dependencies {
     // `debugImplementation(project(":testing"))` for its design-time
     // previews, which dragged `:testing` and its `api` deps (JUnit 4 —
     // EPL-1.0, off the foss allowlist — and kotlinx-coroutines-test) into
-    // the fossDebug APK and failed `licenseAuditFossDebugRuntimeClasspath`;
-    // it now declares `debugCompileOnly` instead (skein-64y9), so this
-    // exclude is no longer needed. This app's unit tests get `:testing`
-    // through their own `testImplementation` edge below.
+    // the fossDebug APK and failed `licenseAuditFossDebugRuntimeClasspath`.
+    // It now declares `debugImplementation(project(":testing-fakes"))`
+    // (skein-xtov.23.18): the JUnit-free fakes, whose runtime closure is
+    // `:core:model` + coroutines-core, so debug APKs carry the preview fakes
+    // and release APKs never do. No exclude is needed. This app's unit
+    // tests get `:testing` through their own `testImplementation` edge below.
     implementation(project(":feature:timeline"))
     // skein-z2u (E6.I11): `MainActivity` mounts `GraphScreen` as the ✦
     // button's overlay target. `:feature:graph` only reaches `:testing` via

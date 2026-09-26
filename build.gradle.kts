@@ -25,6 +25,8 @@ plugins {
     // declared here so the imperative `apply(plugin = ...)` below can
     // resolve this included-build plugin id.
     id("app.skein.contractreport") apply false
+    // skein-xtov.23.18: same reason — applied imperatively in `subprojects`.
+    id("app.skein.guard.testdoubles") apply false
 }
 
 subprojects {
@@ -32,6 +34,10 @@ subprojects {
     // E1.I11 (skein-4je): NoRawLogging — every module's `check` fails on a
     // raw `android.util.Log`/`println` call outside `SkeinLog.kt` (spec §9).
     apply(plugin = "app.skein.guard.logging")
+    // skein-xtov.23.18 (UX_TEST_PLAN.md §6.1): `checkNoTestDoublesInMain` —
+    // every module's `check` fails if `src/main`, or a non-test, non-debug
+    // configuration, reaches the `:testing`/`:testing-fakes` test doubles.
+    apply(plugin = "app.skein.guard.testdoubles")
 }
 
 // The root project has no source of its own; `lifecycle-base` gives it a

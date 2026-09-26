@@ -71,22 +71,18 @@ dependencies {
     debugImplementation(libs.androidx.activity.compose)
     // `TimelineScreenPreview` (src/debug) seeds the design-time `@Preview`s
     // with `InMemoryVaultRepository` + `SyntheticVault.Preset.MEDIUM`.
-    // `debugCompileOnly`, not `debugImplementation` (bd `skein-64y9`):
-    // `:testing` `api`-exposes JUnit 4 (EPL-1.0, off the foss allowlist) and
-    // kotlinx-coroutines-test, and Gradle's runtime classpath is transitive
-    // regardless of the `api`/`implementation` split at the *declaring*
-    // edge — an `implementation`-scoped dependency still rides the runtime
-    // classpath of anything that needs to load the class that depends on
-    // it. `debugImplementation` therefore dragged `:testing` (+ its `api`
-    // deps) into every consumer's debug runtime classpath — e.g. `:app`'s
-    // `licenseAuditFossDebugRuntimeClasspath` — even though the only thing
-    // that ever calls into `:testing` here is a `@Preview` function Android
-    // Studio's tooling renders, never code that runs in a shipped debug
-    // build. `debugCompileOnly` keeps `:testing` resolvable to *compile*
-    // `TimelineScreenPreview.kt` in this module's own debug variant without
-    // putting it on any consumer's runtime classpath, so `:app` no longer
-    // needs `exclude(module = "testing")`.
-    debugCompileOnly(project(":testing"))
+    // skein-xtov.23.18 (UT-4): from `:testing-fakes`, the JUnit-free half of
+    // `:testing`. This used to be `debugCompileOnly(project(":testing"))`
+    // (bd `skein-64y9`) because `:testing` `api`-exposes JUnit 4 (EPL-1.0,
+    // off the foss allowlist) and a `debugImplementation` edge failed `:app`'s
+    // `licenseAuditFossDebugRuntimeClasspath`; but compile-only left the
+    // fakes on no runtime classpath, so nothing could actually run the
+    // preview. `:testing-fakes`' runtime closure is `:core:model` +
+    // coroutines-core, both already in the APK, so it can ride the debug
+    // runtime classpath. Debug only: `checkNoTestDoublesInMain` fails the
+    // build if a non-debug, non-test configuration (or any `src/main` file)
+    // reaches `app.skein.testing`.
+    debugImplementation(project(":testing-fakes"))
 
     // `TimelineStateTest` drives the state holder directly with
     // `runTest`/`backgroundScope` (JVM, no Robolectric/Compose UI test

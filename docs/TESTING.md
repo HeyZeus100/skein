@@ -33,7 +33,7 @@ fast and dependency-free:
   point the (not-yet-landed) `SkeinLog` facade's `isSensitive` test hook
   will call into. `SkeinLogCaptureRule` fails a test if anything tagged
   sensitive was logged during it.
-- `app.skein.testing.fakes.*` — scripted/in-memory stand-ins for the plan's
+- `app.skein.testing.*` fakes — scripted/in-memory stand-ins for the plan's
   §4 service contracts (`InferenceEngine`, `VaultRepository`, `IndexStore`,
   `RetrievalService`, `PersonaService`, `EmbedderService`). See
   "Fakes" below.
@@ -97,11 +97,83 @@ Run against an already-running device/emulator with:
 tools/test/run-emulator.sh   # checks `adb devices` first, then runs connectedDevDebugAndroidTest
 ```
 
-## The `:testing` module
+## The `:testing` and `:testing-fakes` modules
 
 `:testing` is a pure Kotlin/JVM library (`org.jetbrains.kotlin.jvm`, no
 Android Gradle plugin) depending only on `:core:model`. Add it as
 `testImplementation(project(":testing"))` from any module.
+
+Since skein-xtov.23.18 it is two modules, in the same `app.skein.testing…`
+packages (no import changed):
+
+| Module | Holds | Use it from |
+|---|---|---|
+| `:testing` | the JUnit-bound half: the abstract `*ContractTest` suites, `MainDispatcherRule`, `TempDirRule`, `SkeinLogCapture`. `api`-exposes JUnit 4, kotlinx-coroutines-test **and `:testing-fakes`** | `testImplementation` / `androidTestImplementation` only |
+| `:testing-fakes` | everything JUnit-free: the fakes below, `FakeClock`, the builders, `SyntheticVault`, the fixture corpus (`app.skein.testing.corpus.Corpus`, UX_TEST_PLAN.md §6.2) and the scenario engine (`app.skein.testing.scenario`, §6.3) | tests (via `:testing`), and `debugImplementation` for `src/debug` previews and lab harnesses |
+
+Why the split: `:testing` carries JUnit 4 (EPL-1.0, off the foss allowlist),
+so a `debugImplementation(project(":testing"))` edge failed `:app`'s
+`licenseAuditFossDebugRuntimeClasspath` (skein-64y9), and the
+`debugCompileOnly` workaround left the preview fakes on no runtime classpath.
+`:testing-fakes`' runtime closure is `:core:model` + coroutines-core, both
+already in the APK, so `:feature:timeline` now uses
+`debugImplementation(project(":testing-fakes"))`: debug APKs carry the
+preview fakes, release APKs never do.
+
+**`checkNoTestDoublesInMain`** (`build-logic`, applied to every module,
+part of `check`) keeps it that way. It fails the build if
+
+1. a dependency onto `:testing` or `:testing-*` is declared in a
+   configuration that is not `test…`/`androidTest…` — or, for
+   `:testing-fakes`, not debug-only (`debug…`, `…Debug…`). `:testing` is never
+   allowed outside tests, not even in debug;
+2. any `src/main/kotlin` file mentions `app.skein.testing` in code (a
+   debug-only edge is on `src/main`'s debug compile classpath too, so this is
+   what stops a production file importing a fake).
+
+Previews and harnesses that use fakes therefore live in `src/debug`.
+
+**Checking that a preview renders with a fake** (`TimelineScreenPreview`,
+`feature/timeline/src/debug`): the fakes must be on the debug *runtime*
+classpath, which `./gradlew :feature:timeline:dependencies --configuration
+debugRuntimeClasspath` shows (`project ':testing-fakes'`, no `junit`).
+Then, in Android Studio, open `TimelineScreenPreview.kt` in Split view: each
+`@Preview` should render 500 synthetic documents, not a
+`NoClassDefFoundError: app/skein/testing/…` render error. On the emulator or
+the Fold, the preview's gutter "Run" action installs the debug APK and
+launches it in `androidx.compose.ui.tooling.PreviewActivity`; the same works
+by hand with `adb shell am start -n <debug applicationId>/androidx.compose.ui.tooling.PreviewActivity
+--es composable app.skein.feature.timeline.TimelineScreenPreviewKt.TimelineScreen_MediumVault_Compact`.
+(Not run from an agent session: no Studio, no `adb`.)
+
+### The scenario engine (UX_TEST_PLAN.md §6.3)
+
+`ScenarioInferenceEngine(scenario, pacing, onActivity)` implements the real
+`InferenceEngine`, so `SendPipeline`, `CitationParser`, persistence and
+cancellation run for real against chat states no model has to produce:
+
+- a `Scenario` is plain data: timed `Step`s (`LoadModel`, `Retrieve`,
+  `Prefill`, `Reason`, `Answer`, `Stall`, `Fail`, `Finish`) plus the stop
+  latency. `Scenarios` is the §6.3 catalogue (`fastAnswer` = S-FAST-ANSWER,
+  `slowPrefill`, `reasoning`, `reasoningExhausted`, `stopMidStream`,
+  `stopDuringPrefill`, `failServiceDied`, `failOomOnLoad`, `contextFull`,
+  `modelLoading`, `markdownHeavy`, `longAnswer`);
+- `load()` plays `LoadModel`; `stream()` plays the rest; reasoning is a
+  `<think>…</think>` span inside `Token.Text`; `Fail` closes the flow with
+  its `InferenceException`; `cancel()` lands as `Done(CANCELLED)` after the
+  scenario's stop latency; `retrievalService()` plays `Retrieve` over the
+  F-SOURCES passages (`DelayingRetrievalService`);
+- `Pacing.RealTime(scale)` uses `delay` — virtual time under `runTest`, wall
+  clock in the lab (`RealTime(0.25)`); `Pacing.Gated(ScenarioGate())` turns
+  every duration into a `Checkpoint` the test releases (`gate.release(n)`,
+  `gate.open()`, `gate.heldAt`) — the only pacing for Robolectric/Compose
+  tests; `Pacing.Instant` skips waits;
+- `onActivity` receives what the token contract cannot carry yet
+  (`ModelStarting`/`ModelReady`, `RetrievalStarted`/`RetrievalDone(passages,
+  documents)`, `PrefillProgress(processed, total)`), for the chat's activity
+  reducer in tests and the lab.
+
+It passes `InferenceEngineContractTest` (`ScenarioInferenceEngineContractTest`).
 
 ### Why `:testing` has no Android dependencies
 
@@ -180,9 +252,11 @@ smarter.
 ## Guard tasks
 
 `check` also runs `build-logic/guards`' tasks: `checkManifestGuards`,
-`checkDependencyGuards`, `checkIsolationGuards`, `licenseAudit`. None of the
+`checkDependencyGuards`, `checkIsolationGuards`, `licenseAudit`,
+`checkNoRawLogging`, `checkNoTestDoublesInMain`. None of the
 test infrastructure above bypasses them — `:testing` is itself subject to
-`checkIsolationGuards` (pure-JVM enforcement) the same as any other module.
+`checkIsolationGuards` (pure-JVM enforcement) the same as any other module,
+and so is `:testing-fakes`.
 
 ## Contract test bases wired to real implementations (`E10.I3`)
 

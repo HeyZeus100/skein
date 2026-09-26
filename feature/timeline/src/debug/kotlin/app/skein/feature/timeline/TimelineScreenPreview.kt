@@ -3,9 +3,9 @@
 // `SyntheticVault.Preset.MEDIUM` (500 documents) so Android Studio's
 // preview panel renders realistic content without an emulator.
 //
-// Lives under `src/debug/` (not `main`): `:testing` — the fake repository
-// and the synthetic vault — is a `debugImplementation` dependency only, so
-// neither ever reaches a release build.
+// Lives under `src/debug/` (not `main`): `:testing-fakes` — the fake
+// repository and the synthetic vault — is a `debugImplementation` dependency
+// only, so neither ever reaches a release build.
 
 package app.skein.feature.timeline
 

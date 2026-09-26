@@ -16,7 +16,8 @@ import org.gradle.api.artifacts.ProjectDependency
  *  - `:testing` also stays pure Kotlin/JVM (no Android Gradle plugin), per
  *    E10.I1, so `:core:*` and other pure-JVM modules can depend on it
  *    (`testImplementation`) without pulling the Android SDK onto their
- *    classpath.
+ *    classpath. `:testing-fakes` (its JUnit-free half, skein-xtov.23.18)
+ *    likewise.
  *  - `:core:verify` also stays pure Kotlin/JVM (no Android Gradle plugin), per
  *    E4.I3 / coordinator decision `skein-hiwb`. It holds `ModelVerifier`,
  *    `ModelVerification`, `ModelFileRole` and the pinned-descriptor types —
@@ -31,7 +32,7 @@ import org.gradle.api.artifacts.ProjectDependency
  *    `:core:vault`, `:core:security`, or `:app`.
  *
  * Apply to `:core:model`, `:core:agent`, `:core:verify`, `:testing`,
- * `:inference-service`, and `:embedder-service`. The
+ * `:testing-fakes`, `:inference-service`, and `:embedder-service`. The
  * allowlist is keyed by [Project.getPath] rather than exposed as a DSL
  * extension because the isolated module set is a fixed, non-negotiable part
  * of the architecture (spec §2.6, plan §2.4), not something a module author
@@ -98,7 +99,7 @@ class IsolationGuardPlugin : Plugin<Project> {
         private val MAIN_DEPENDENCY_CONFIGURATIONS = listOf("implementation", "api", "compileOnly", "runtimeOnly")
 
         private val PURE_JVM_MODULES =
-            setOf(":core:model", ":core:markdown", ":core:agent", ":core:verify", ":testing")
+            setOf(":core:model", ":core:markdown", ":core:agent", ":core:verify", ":testing", ":testing-fakes")
 
         private val COMMON_SERVICE_PROJECT_ALLOWLIST = setOf(":core:ipc", ":core:model", ":core:verify")
         private val COMMON_SERVICE_EXTERNAL_ALLOWLIST = setOf("org.jetbrains.kotlin", "org.jetbrains.kotlinx")

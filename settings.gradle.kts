@@ -45,4 +45,5 @@ include(
     ":feature:onboarding",
     ":feature:models",
     ":testing",
+    ":testing-fakes",
 )

@@ -104,6 +104,11 @@ abstract class ContractReportTask : DefaultTask() {
             ),
             ContractEntry(
                 suite = "InferenceEngine",
+                implementation = "ScenarioInferenceEngine",
+                testClassName = "app.skein.testing.ScenarioInferenceEngineContractTest",
+            ),
+            ContractEntry(
+                suite = "InferenceEngine",
                 implementation = "LlamaCppEngine",
                 testClassName = "app.skein.core.inference.LlamaCppEngineTest",
                 pendingBead = "skein-1uw",

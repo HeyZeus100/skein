@@ -209,27 +209,30 @@ application/service module depends on it).
 | `:feature:settings` | Android library + Compose | `:app` | `:feature:shell` (one-way — shell must never depend back), `:core:vault` (`PassphraseStrength`) | `feature/settings/build.gradle.kts` | E6 (`E6.I14`) |
 | `:feature:onboarding` | Android library (stub) | `:app` | `androidx.core.ktx` only | `feature/onboarding/build.gradle.kts` | E6 (`E6.I12`, not yet implemented) |
 | `:feature:models` | Android library (stub) | `:app` | `androidx.core.ktx` only | `feature/models/build.gradle.kts` | E6 (`E6.I13`, not yet implemented) |
-| `:testing` | Pure Kotlin/JVM | test classpaths only (`testImplementation`/`androidTestImplementation`) | `implementation(:core:model)`; `api` JUnit4 + `kotlinx-coroutines-test` | `testing/build.gradle.kts`; isolation-guarded (`PURE_JVM_MODULES`) so `:core:*` can depend on it without pulling in the Android SDK | E10 (`E10.I1`) |
+| `:testing` | Pure Kotlin/JVM | test classpaths only (`testImplementation`/`androidTestImplementation`) | `implementation(:core:model)`; `api` JUnit4 + `kotlinx-coroutines-test` + `:testing-fakes` | `testing/build.gradle.kts`; isolation-guarded (`PURE_JVM_MODULES`) so `:core:*` can depend on it without pulling in the Android SDK | E10 (`E10.I1`) |
+| `:testing-fakes` | Pure Kotlin/JVM | tests (through `:testing`) and debug-only previews (`debugImplementation`, `:feature:timeline`) | `implementation(:core:model)`, kotlinx-coroutines-core; no JUnit | `testing-fakes/build.gradle.kts`; the JUnit-free fakes, fixture corpus and `ScenarioInferenceEngine` (skein-xtov.23.18); isolation-guarded | UX Wave 2 (UT-4) |
 
-(23 modules total: `:app`, `:core:agent`, `:core:model`, `:core:ipc`,
+(25 modules total: `:app`, `:core:agent`, `:core:model`, `:core:ipc`,
 `:core:vault`, `:core:security`, `:core:inference`, `:core:verify`, `:core:rag`,
-`:core:markdown`, `:core:export`, `:inference-service`,
+`:core:markdown`, `:core:export`, `:core:designsystem`, `:inference-service`,
 `:embedder-service`, `:feature:shell`, `:feature:timeline`,
 `:feature:chat`, `:feature:editor`, `:feature:graph`, `:feature:personas`,
-`:feature:settings`, `:feature:onboarding`, `:feature:models`, `:testing` —
-`grep include settings.gradle.kts` lists all 23 in one `include(...)` block.)
+`:feature:settings`, `:feature:onboarding`, `:feature:models`, `:testing`,
+`:testing-fakes` — `grep include settings.gradle.kts` lists all 25 in one
+`include(...)` block.)
 
 ### 2.2 The dependency guards, and what each one enforces
 
 Four Gradle plugins under `build-logic/guards` (`build-logic/guards/src/main/kotlin/app/skein/gradle/`) are the actual enforcement mechanism behind the table above — not just convention:
 
 - **`DependencyGuardPlugin`/`DependencyGuardTask`** (`checkDependencyGuards*`, applied to `:app` only via `id("app.skein.guard.dependency")`) — walks every `*RuntimeClasspath`'s *resolved* dependency graph (direct + transitive) and fails if any resolved group is `com.google.android.gms`, `com.google.firebase`, `com.google.android.play`, or `com.google.mlkit` (or a subpackage). Spec §2.2.
-- **`IsolationGuardPlugin`/`IsolationGuardTask`** (`checkIsolationGuards`, applied per-module via `id("app.skein.guard.isolation")`) — two independent checks depending on which allowlist a module's path matches: (a) `:core:model`, `:core:markdown`, `:core:agent`, `:core:verify`, `:testing` must never apply an Android Gradle plugin; (b) `:inference-service`/`:embedder-service` may declare only the project/external dependencies in `IsolationGuardTask.SERVICE_ALLOWLISTS`. Spec §2.6, plan §2.4.
+- **`IsolationGuardPlugin`/`IsolationGuardTask`** (`checkIsolationGuards`, applied per-module via `id("app.skein.guard.isolation")`) — two independent checks depending on which allowlist a module's path matches: (a) `:core:model`, `:core:markdown`, `:core:agent`, `:core:verify`, `:testing`, `:testing-fakes` must never apply an Android Gradle plugin; (b) `:inference-service`/`:embedder-service` may declare only the project/external dependencies in `IsolationGuardTask.SERVICE_ALLOWLISTS`. Spec §2.6, plan §2.4.
 - **`ManifestGuardPlugin`/`ManifestGuardTask`** (`checkManifestGuards*`, applied to `:app` only via `id("app.skein.guard.manifest")`) — inspects every variant's *merged* manifest (via the Variant API, `SingleArtifact.MERGED_MANIFEST`) for banned permissions/components and the isolation attributes on the two services. Spec §2.1/§2.2/§2.6.
 - **`LicenseAuditPlugin`/`LicenseAuditTask`** (`licenseAudit*RuntimeClasspath`, applied to `:app` via `id("app.skein.guard.license")`) — resolves each foss-variant runtime dependency's POM, extracts its license, and fails if it's outside `tools/licenses/allowlist.txt`. Spec §10, `E1.I7`.
 - **`NoRawLoggingGuardPlugin`/`NoRawLoggingGuardTask`** (`checkNoRawLogging`, applied to *every* subproject from the root `build.gradle.kts`, the same way `ktlint` is) — fails if any `src/main/kotlin` file other than `SkeinLog.kt` (and, in `:app`, `AndroidSkeinLogSink.kt`) calls `android.util.Log.*` or `println`. Spec §9, `E1.I11`. See §3.5 below.
+- **`NoTestDoublesInMainGuardPlugin`/`NoTestDoublesInMainGuardTask`** (`checkNoTestDoublesInMain`, applied to every subproject from the root `build.gradle.kts` except the `:testing*` modules themselves) — fails if a dependency onto `:testing`/`:testing-*` sits in a configuration that is not test-only (or, for `:testing-fakes`, debug-only), or if any `src/main/kotlin` file uses the `app.skein.testing` package. skein-xtov.23.18, `docs/TESTING.md`.
 
-All five are wired into `check` (`build.gradle.kts`'s `subprojects {}` block, or the plugin's own `project.tasks.matching { it.name == "check" }.configureEach { dependsOn(...) }`), so `./gradlew check` runs all of them — no separate command is needed to exercise them (this bead did not run Gradle; the wiring is verified by reading the plugin source, not by executing it).
+All of them are wired into `check` (`build.gradle.kts`'s `subprojects {}` block, or the plugin's own `project.tasks.matching { it.name == "check" }.configureEach { dependsOn(...) }`), so `./gradlew check` runs all of them — no separate command is needed to exercise them (this bead did not run Gradle; the wiring is verified by reading the plugin source, not by executing it).
 
 ### 2.3 The IPC contract (`:core:ipc`)
 

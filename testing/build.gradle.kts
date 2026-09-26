@@ -27,6 +27,13 @@ dependencies {
     // tests ever referenced it.
     implementation(project(":core:model"))
 
+    // skein-xtov.23.18 (UT-4): the JUnit-free fakes (InMemoryVaultRepository,
+    // FakeInferenceEngine, SyntheticVault, the fixture corpus, the scenario
+    // engine, …) live in `:testing-fakes`, same packages. `api` so every
+    // `testImplementation(project(":testing"))` consumer still sees them
+    // unchanged; only the JUnit-bound rules and contract suites stay here.
+    api(project(":testing-fakes"))
+
     // Exposed as `api`: every consumer of `:testing` (testImplementation)
     // gets JUnit4 and coroutines-test transitively, so `MainDispatcherRule`
     // (a JUnit `TestRule` built on `TestDispatcher`) compiles for them

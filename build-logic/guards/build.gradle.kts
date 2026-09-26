@@ -46,6 +46,11 @@ gradlePlugin {
             id = "app.skein.guard.logging"
             implementationClass = "app.skein.gradle.NoRawLoggingGuardPlugin"
         }
+        // skein-xtov.23.18: :testing/:testing-fakes stay out of production code.
+        register("noTestDoublesInMain") {
+            id = "app.skein.guard.testdoubles"
+            implementationClass = "app.skein.gradle.NoTestDoublesInMainGuardPlugin"
+        }
         // E10.I3 (skein-gzr): not a "guard.*" id — contractReport reports,
         // it does not gate the build (see ContractReportPlugin's KDoc).
         register("contractReport") {
