@@ -47,6 +47,14 @@ dependencies {
     // fix `:feature:shell`'s build file already applies for the same reason
     // (see that file's own comment).
     implementation(libs.androidx.activity.compose)
+    // skein-xtov.23.6 (DS6): `SkeinIcons` for the model row's leading glyph.
+    // Not `:feature:shell` — this module stays shell-free (see the
+    // test-only dependency below); `:core:designsystem` is the whole point
+    // of DS1's extraction (docs/ux/DESIGN_SYSTEM.md §13.1): a UI/tokens-only
+    // module with no vault/inference dependency of its own, so depending on
+    // it doesn't compromise this screen's "plain data and function types"
+    // boundary (this file's header comment).
+    implementation(project(":core:designsystem"))
 
     debugImplementation(libs.compose.ui.tooling)
 

@@ -23,6 +23,16 @@ android {
         sourceCompatibility = JavaVersion.VERSION_17
         targetCompatibility = JavaVersion.VERSION_17
     }
+
+    testOptions {
+        unitTests {
+            // skein-xtov.23.6 (DS6): SkeinIconsTest resolves every
+            // `R.drawable.ic_skein_*` id and enumerates the merged resource
+            // set — Robolectric only sees those without this on (same
+            // reason `:core:vault`'s Robolectric tests need it).
+            isIncludeAndroidResources = true
+        }
+    }
 }
 
 dependencies {
@@ -40,4 +50,8 @@ dependencies {
     debugImplementation(libs.compose.ui.tooling)
 
     testImplementation(libs.junit)
+    // skein-xtov.23.6 (DS6): SkeinIconsTest resolves `R.drawable` ids and
+    // reads back their resource names, which needs a real `Resources` —
+    // same Robolectric-on-the-JVM setup as `:core:vault`'s tests.
+    testImplementation(libs.robolectric)
 }

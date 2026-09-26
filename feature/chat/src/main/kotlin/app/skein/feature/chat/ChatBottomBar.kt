@@ -2,8 +2,15 @@
 // `SecureBasicTextField` reply, `[[` wikilink autocomplete (E7.I5, shared),
 // `/` command palette (an injected callback — see [onSlashCommand]'s doc:
 // the palette itself lives in `:feature:shell`'s `CommandRegistry`, out of
-// this bead's reach per the hard boundary), 📎 attach (SAF `OpenDocument` ->
-// `ImportService` -> `[[attachment title]]`), ⏎ send.
+// this bead's reach per the hard boundary), attach (SAF `OpenDocument` ->
+// `ImportService` -> `[[attachment title]]`), send.
+//
+// skein-xtov.23.6 (DS6, docs/ux/DESIGN_SYSTEM.md §9.3): attach/send/stop
+// were the colour-emoji/Unicode glyphs 📎/⏎/■ — this composer survives
+// Wave 3, so it's swapped to `SkeinIcons` (Material Symbols `add`/
+// `arrow_upward`/`stop`) here. The `$` prompt glyph is `LocalSkeinTokens`
+// (a `:feature:shell` theme token DS2/DS4 are editing concurrently) and
+// stays out of this bead's scope.
 //
 // Uses `SecureBasicTextField` (not the String-only `SecureTextField`) —
 // both live in `:feature:shell`'s `input` package and both are on
@@ -24,6 +31,7 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.text.KeyboardActions
+import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.LocalTextStyle
 import androidx.compose.material3.MaterialTheme
@@ -44,10 +52,12 @@ import androidx.compose.ui.input.key.onPreviewKeyEvent
 import androidx.compose.ui.input.key.type
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.testTag
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextRange
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.unit.dp
+import app.skein.core.designsystem.icons.SkeinIcons
 import app.skein.feature.editor.autocomplete.AutocompleteHost
 import app.skein.feature.editor.autocomplete.Suggestion
 import app.skein.feature.editor.autocomplete.WikilinkAutocompletePopup
@@ -166,7 +176,7 @@ public fun ChatBottomBar(
             onValueChange = { newValue ->
                 // Enter sends (Fold smoke #2: the soft keyboard's Enter put a
                 // newline in a multi-line field and the owner had to find the
-                // ⏎ button). A soft keyboard commits "\n" as text, so a single
+                // send button). A soft keyboard commits "\n" as text, so a single
                 // trailing newline typed at the end is the send gesture;
                 // Shift+Enter on a hardware keyboard inserts the newline via
                 // the key handler below. The `[[` popup keeps Enter for itself.
@@ -216,11 +226,11 @@ public fun ChatBottomBar(
             onClick = { attachLauncher.launch(ATTACHABLE_MIME_TYPES) },
             modifier = Modifier.testTag(ATTACH_BUTTON_TEST_TAG),
         ) {
-            Text("📎")
+            Icon(painter = painterResource(SkeinIcons.Attach), contentDescription = "Attach a file")
         }
         if (isGenerating) {
             IconButton(onClick = onCancel, modifier = Modifier.testTag(CANCEL_BUTTON_TEST_TAG)) {
-                Text("■")
+                Icon(painter = painterResource(SkeinIcons.Stop), contentDescription = "Stop generating")
             }
         } else {
             IconButton(
@@ -228,7 +238,7 @@ public fun ChatBottomBar(
                 enabled = fieldValue.text.isNotBlank(),
                 modifier = Modifier.testTag(SEND_BUTTON_TEST_TAG),
             ) {
-                Text("⏎")
+                Icon(painter = painterResource(SkeinIcons.Send), contentDescription = "Send message")
             }
         }
     }
@@ -244,9 +254,10 @@ private fun queryDisplayName(
     }
 
 /**
- * What 📎 offers (UX-P0-12): text, PDF, and the generic types source files
- * often arrive as. No `image/…` until image import exists (E2.I9); a
- * provider that ignores the filter still lands in the error message above.
+ * What the attach button offers (UX-P0-12): text, PDF, and the generic
+ * types source files often arrive as. No `image/…` until image import
+ * exists (E2.I9); a provider that ignores the filter still lands in the
+ * error message above.
  */
 internal val ATTACHABLE_MIME_TYPES =
     arrayOf("text/*", "application/pdf", "application/json", "application/xml", "application/octet-stream")

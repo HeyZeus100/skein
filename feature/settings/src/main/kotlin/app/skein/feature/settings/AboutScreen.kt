@@ -13,6 +13,7 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.HorizontalDivider
+import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
@@ -27,8 +28,10 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalClipboardManager
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.unit.dp
+import app.skein.core.designsystem.icons.SkeinIcons
 import app.skein.feature.shell.input.SecureTextField
 
 /**
@@ -131,6 +134,13 @@ private fun AboutHeader(
 ) {
     Column(modifier = modifier.padding(top = 16.dp, bottom = 8.dp)) {
         TextButton(onClick = onBack, modifier = Modifier.padding(bottom = 4.dp)) {
+            // skein-xtov.23.6 (DS6, §9.3): the row's own "Back" text already
+            // labels the action, so the leading glyph is decorative.
+            Icon(
+                painter = painterResource(SkeinIcons.Back),
+                contentDescription = null,
+                modifier = Modifier.padding(end = 4.dp),
+            )
             Text("Back")
         }
         Text(text = appName, style = MaterialTheme.typography.headlineSmall)

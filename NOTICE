@@ -274,6 +274,24 @@ its output is recorded, to prove the Kotlin reimplementation agrees with it.
 
 ---
 
+## Bundled Icons
+
+### Material Symbols
+
+- **SPDX:** `Apache-2.0`
+- **Repository:** https://github.com/google/material-design-icons
+- **Version:** commit `bd8cb85bd4bad964fe6918f79665bb40c3a8efef`
+- **Where it ships:** ~50 icons converted from the upstream Outlined SVGs
+  (weight 400, grade 0, optical size 24, fill 0; fill 1 for the five
+  primary-destination "selected" variants) into Android vector drawables
+  under `core/designsystem/src/main/res/drawable/ic_skein_*.xml` by
+  `tools/icons/fetch_material_symbols.py` (re-run that script to update the
+  pin). Accessed in code through `SkeinIcons`
+  (`app.skein.core.designsystem.icons.SkeinIcons`).
+- **Attribution:** Copyright (c) Google LLC.
+
+---
+
 ## AndroidX / Compose / Kotlin
 
 All Jetpack, Compose, and Kotlin standard-library dependencies are pulled
