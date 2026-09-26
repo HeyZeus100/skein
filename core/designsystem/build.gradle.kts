@@ -12,16 +12,22 @@
 // return type is `:core:markdown`'s `MarkdownStyle` — a caller needs that
 // type on its own classpath, not just this function.
 //
-// skein-xtov.23.8 (DS8): the `components` package's behaviour/semantics
-// tests and screenshots need Roborazzi + `:testing-ui`, wired exactly like
-// the feature modules (skein-xtov.23.16's `roborazzi { outputDir }`, so the
-// goldens land in ux-baselines/core-designsystem/). `compare { outputDir }`
-// is `@ExperimentalRoborazziApi` — the same build-script opt-in they use.
+// skein-xtov.23.8 (DS8) / skein-xtov.23.9 (DS9): the `components` package's
+// behaviour/semantics tests and screenshots (structural components, and this
+// bead's focus ring/keycaps/chips/tooltip) need Roborazzi + `:testing-ui`,
+// wired exactly like the feature modules (skein-xtov.23.16's `roborazzi {
+// outputDir }`, so the goldens land in ux-baselines/core-designsystem/).
+// `compare { outputDir }` is `@ExperimentalRoborazziApi` — the standard
+// build-script-scoped opt-in every other Roborazzi-wired module already
+// carries (e.g. `:feature:settings`), not a suppression of a real warning
+// elsewhere.
 @file:OptIn(com.github.takahirom.roborazzi.ExperimentalRoborazziApi::class)
 
 plugins {
     alias(libs.plugins.android.library)
     alias(libs.plugins.kotlin.compose)
+    // skein-xtov.23.8 (DS8) / skein-xtov.23.9 (DS9): component screenshot
+    // tests (docs/ux/UX_TEST_PLAN.md).
     alias(libs.plugins.roborazzi)
 }
 
@@ -53,6 +59,11 @@ android {
     }
 }
 
+// skein-xtov.23.8 (DS8) / skein-xtov.23.9 (DS9), docs/ux/UX_TEST_PLAN.md
+// §4.1: committed goldens live under the repo-root
+// ux-baselines/core-designsystem/ (one directory per module, same
+// convention as the seven feature modules); compare/verify write their
+// _compare/_actual pairs into this module's own git-ignored build/ dir.
 roborazzi {
     outputDir.set(rootProject.layout.projectDirectory.dir("ux-baselines/core-designsystem"))
     compare {
@@ -84,16 +95,24 @@ dependencies {
     // Context (androidx.test.ext.junit for ApplicationProvider).
     testImplementation(libs.robolectric)
     testImplementation(libs.androidx.test.ext.junit)
-    // skein-xtov.23.8 (DS8): Compose UI tests + Roborazzi captures of the
-    // `components` package (same set as `:feature:models`; the explicit
-    // activity/coroutines-test entries pin versions the way that module's
-    // comments explain). `:testing-ui` test-depends back on this module for
-    // its preview-annotation test — a configuration-level cycle only, no
-    // task cycle (each side needs only the other's main classes).
+    // skein-xtov.23.8 (DS8) / skein-xtov.23.9 (DS9): Compose UI tests +
+    // Roborazzi captures of the `components` package (same set as
+    // `:feature:models`; the explicit activity/coroutines-test entries pin
+    // versions the way that module's comments explain). `:testing-ui`
+    // test-depends back on this module for its preview-annotation test — a
+    // configuration-level cycle only, no task cycle (each side needs only
+    // the other's main classes).
     testImplementation(libs.roborazzi)
     testImplementation(libs.roborazzi.compose)
     testImplementation(project(":testing-ui"))
     testImplementation(libs.compose.ui.test.junit4)
+    // Pins the transitive `androidx.activity`/`androidx.savedstate` versions
+    // `compose.ui.test.junit4` otherwise resolves independently to an old,
+    // unverified pair (1.2.1 / 1.1.0) — same fix `:testing-ui` documents on
+    // its own identical dependency.
     testImplementation(libs.androidx.activity.compose)
+    // Same reason: pins `kotlinx-coroutines-test` to the version every other
+    // Roborazzi-wired module already verifies, instead of the unverified
+    // 1.9.0 `compose.ui.test.junit4`/Robolectric otherwise resolve to.
     testImplementation(libs.kotlinx.coroutines.test)
 }
