@@ -70,4 +70,12 @@ dependencies {
 
     testImplementation(libs.junit)
     testImplementation(libs.truth)
+
+    // skein-xtov.23.20 (ML-1): SkeinPreviewAnnotationsMatchSkeinDeviceTest
+    // reflects on `:core:designsystem`'s `@SkeinXxxPreviews` annotation
+    // classes and their `androidx.compose.ui.tooling.preview.Preview` values
+    // — a plain JVM reflection test, so `testImplementation` (not `api`) is
+    // enough; nothing here is part of this module's own public surface.
+    testImplementation(project(":core:designsystem"))
+    testImplementation(libs.compose.ui.tooling.preview)
 }

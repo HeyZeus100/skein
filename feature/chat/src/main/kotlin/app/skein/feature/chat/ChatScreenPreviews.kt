@@ -26,6 +26,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import app.skein.core.designsystem.preview.SkeinFoldPreviews
 import app.skein.core.model.DocumentKind
 import app.skein.core.model.Locator
 import app.skein.core.model.RecallSource
@@ -115,7 +116,9 @@ private fun PreviewChatLayout(showContextPanel: Boolean) {
     }
 }
 
-@Preview(name = "Chat — phone (412dp)", widthDp = 412, heightDp = 800, showBackground = true)
+// skein-xtov.23.20 (ML-1 example): the measured Fold windows, replacing the
+// ad hoc 412 dp width below (no density, matched no real device).
+@SkeinFoldPreviews
 @Composable
 private fun ChatScreenPhonePreview() {
     PreviewChatLayout(showContextPanel = false)

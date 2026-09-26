@@ -7,6 +7,8 @@ import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import app.skein.core.designsystem.preview.SkeinDevicePreviews
+import app.skein.core.designsystem.preview.SkeinFoldPreviews
 import app.skein.feature.shell.theme.SkeinTheme
 import app.skein.feature.shell.theme.SkeinThemeMode
 
@@ -35,8 +37,12 @@ private fun SettingsScreenPreviewScaffold(
     }
 }
 
-/** Default/empty state: no settings changed from their defaults (FLAG_SECURE on). */
-@Preview(name = "Settings — default state", widthDp = 400, heightDp = 900, showBackground = true)
+/**
+ * Default/empty state: no settings changed from their defaults (FLAG_SECURE
+ * on). skein-xtov.23.20 (ML-1 example): the measured Fold windows, replacing
+ * the ad hoc 400 dp width this preview used before (no density).
+ */
+@SkeinFoldPreviews
 @Composable
 private fun SettingsScreenDefaultPreview() {
     SettingsScreenPreviewScaffold(flagSecureEnabled = true)
@@ -49,8 +55,12 @@ private fun SettingsScreenToggledOffPreview() {
     SettingsScreenPreviewScaffold(flagSecureEnabled = false)
 }
 
-/** Folded phone: narrow single-column width (spec §8.2 compact breakpoint). */
-@Preview(name = "Settings — folded phone (360dp)", widthDp = 360, heightDp = 800, showBackground = true)
+/**
+ * Folded phone: narrow single-column width (spec §8.2 compact breakpoint).
+ * skein-xtov.23.20 (ML-1 example): tier T1's four measured windows in place
+ * of the single ad hoc 360 dp width this preview used before.
+ */
+@SkeinDevicePreviews
 @Composable
 private fun SettingsScreenFoldedPreview() {
     SettingsScreenPreviewScaffold()
