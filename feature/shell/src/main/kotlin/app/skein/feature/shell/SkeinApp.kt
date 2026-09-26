@@ -107,7 +107,7 @@ import java.util.UUID
  *
  * `null` (the default) keeps pre-`skein-64y9` behaviour exactly: the
  * hardcoded `DestinationPlaceholder` in the left pane, and `TabHost`'s own
- * "No tabs open" placeholder when single-pane has no active tab.
+ * empty-pane placeholder when single-pane has no active tab.
  *
  * [overlay] is the seam bd `skein-0td0` adds: a fourth slot, the same shape
  * as [timelinePane] — `:feature:shell` hands back two callbacks
@@ -290,7 +290,10 @@ fun SkeinApp(
             NavDrawer(
                 open = navState.drawerOpen,
                 activeDestination = navState.destination,
-                onNavigate = navState::navigate,
+                onNavigate = { destination ->
+                    navState.navigate(destination)
+                    primaryTabsState.deactivate()
+                },
                 onDismiss = navState::closeDrawer,
             ) {
                 Column(

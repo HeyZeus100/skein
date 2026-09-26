@@ -45,6 +45,7 @@ import androidx.compose.ui.unit.dp
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.lifecycleScope
+import app.skein.core.inference.models.DeleteOutcome
 import app.skein.core.inference.models.ImportOutcome
 import app.skein.core.inference.models.ImportProgress
 import app.skein.core.inference.models.ImportSource
@@ -60,9 +61,8 @@ import app.skein.feature.editor.notetab.NoteTab
 import app.skein.feature.graph.GraphScreen
 import app.skein.feature.models.ModelListItem
 import app.skein.feature.models.ModelsScreen
-import app.skein.feature.settings.SettingsScreen
+import app.skein.feature.settings.SettingsRoute
 import app.skein.feature.settings.rememberSettingsViewModel
-import app.skein.feature.shell.DestinationPlaceholder
 import app.skein.feature.shell.SkeinApp
 import app.skein.feature.shell.auth.BiometricUnlockScreen
 import app.skein.feature.shell.auth.VaultResetScreen
@@ -112,9 +112,7 @@ import android.graphics.Color as AndroidColor
  * open, renders the shell with the Timeline destination fed by the live
  * repository. Wires the
  * Settings destination (`E6.I14`) to the real
- * [app.skein.feature.settings.SettingsScreen] via `destinationContent`; the
- * remaining drawer destinations still fall back to [DestinationPlaceholder]
- * until their own issues land (`E6.I8`+ / `E7.I3`+).
+ * [app.skein.feature.settings.SettingsRoute] via `destinationContent`.
  *
  * A [FragmentActivity] because `UnlockManager.unlock` presents the
  * `BiometricPrompt` against one (`E3.I2`/`E3.I4`).
@@ -679,12 +677,13 @@ class MainActivity : FragmentActivity() {
                                 themeModeFlow = appearancePrefs.themeMode,
                                 onSetThemeMode = setThemeMode,
                             )
-                        SettingsScreen(
+                        // UX-P0-13: SettingsRoute, not SettingsScreen, so
+                        // "Open-source licenses" actually opens them.
+                        SettingsRoute(
                             viewModel = settingsViewModel,
                             appVersion = "${BuildConfig.VERSION_NAME} (${BuildConfig.VERSION_CODE})",
                         )
                     }
-                    else -> DestinationPlaceholder(label = destination.name)
                 }
             },
             flushRegistry = flushRegistry,
@@ -764,7 +763,12 @@ class MainActivity : FragmentActivity() {
                         },
                         onDelete = { id ->
                             modelImportScope.launch {
-                                models.manager.delete(id)
+                                // LC-27: a refusal is shown, never swallowed.
+                                if (models.manager.delete(id) is DeleteOutcome.Refused) {
+                                    val name = modelListItems.firstOrNull { it.id == id }?.displayName ?: id
+                                    importStatusText =
+                                        "Couldn't delete “$name”. It's in use right now. Try again in a moment."
+                                }
                                 models.manifestCache.refresh()
                                 modelsListVersion++
                             }

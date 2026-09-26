@@ -67,23 +67,12 @@ fun AdaptivePaneHost(
                     secondary = secondary,
                 )
             }
-            TimelineMode.RAIL -> {
-                IconRail(
-                    onExpand = layoutState::toggleTimeline,
-                    modifier = Modifier.fillMaxHeight(),
-                )
-                RightZone(
-                    modifier = Modifier.weight(1f).fillMaxHeight(),
-                    result = result,
-                    splitAvailable = splitAvailable,
-                    primary = primary,
-                    secondary = secondary,
-                )
-            }
-            TimelineMode.HIDDEN -> {
-                // Compact/medium/tabletop: only the right zone is composed at
-                // all — no zero-width timeline placeholder (acceptance
-                // criterion: "width 400 dp → only the right pane").
+            TimelineMode.RAIL, TimelineMode.HIDDEN -> {
+                // Compact/medium/tabletop, and split view (RAIL): only the
+                // right zone is composed — no zero-width timeline
+                // placeholder ("width 400 dp → only the right pane"). The
+                // 40 dp icon rail split view used to show is gone: all five
+                // of its buttons were dead (UX-P0-03, AL-01).
                 RightZone(
                     modifier = Modifier.weight(1f).fillMaxHeight(),
                     result = result,

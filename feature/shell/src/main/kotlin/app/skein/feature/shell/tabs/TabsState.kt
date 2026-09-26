@@ -121,6 +121,15 @@ class TabsState private constructor(
         activeId = tabId
     }
 
+    /**
+     * Leaves every tab open but shows none, so a drawer destination can take
+     * the pane (AL-01: drawer items were inert while any tab was active).
+     * Selecting a tab again activates it.
+     */
+    fun deactivate() {
+        activeId = null
+    }
+
     /** Switches the active tab and bumps it to the front of the recency order. No-op if [tabId] isn't open. */
     fun activate(tabId: TabId) {
         if (tabs.none { it.id == tabId }) return

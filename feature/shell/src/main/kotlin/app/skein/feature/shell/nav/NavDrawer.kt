@@ -25,17 +25,13 @@ private data class DrawerEntry(
 private fun drawerEntries(glyphs: SkeinTokens.Glyphs): List<DrawerEntry> =
     listOf(
         DrawerEntry(Destination.TIMELINE, glyphs.timeline, "Timeline"),
-        DrawerEntry(Destination.NOTES, glyphs.notes, "Notes"),
-        DrawerEntry(Destination.GRAPH, glyphs.graph, "Graph"),
-        DrawerEntry(Destination.PERSONAS, glyphs.personas, "Personas"),
-        // Reuses the context-panel glyph (⚹) — IconRail already does the same for Settings (spec §8.2).
+        // Reuses the context-panel glyph (⚹) for Settings (spec §8.2).
         DrawerEntry(Destination.SETTINGS, glyphs.context, "Settings"),
     )
 
 /**
- * `ModalNavigationDrawer` (Material 3) hosting the five hamburger
- * destinations (spec §8.2, plan `E6.I3`): Timeline · Notes · Graph ·
- * Personas · Settings, in that order. Modal at every width — there is no
+ * `ModalNavigationDrawer` (Material 3) hosting the hamburger destinations
+ * (spec §8.2, plan `E6.I3`): Timeline · Settings. Modal at every width — there is no
  * `PermanentNavigationDrawer` variant, so the dual-pane 30/70 split (spec
  * §8.2) is never squeezed by a persistent drawer rail.
  *

@@ -62,16 +62,16 @@ class NavStateTest {
     fun `navigate switches the active destination`() {
         val state = NavState()
 
-        state.navigate(Destination.GRAPH)
+        state.navigate(Destination.SETTINGS)
 
-        assertEquals(Destination.GRAPH, state.destination)
+        assertEquals(Destination.SETTINGS, state.destination)
     }
 
     @Test
     fun `navigate closes the drawer`() {
         val state = NavState(initialDrawerOpen = true)
 
-        state.navigate(Destination.NOTES)
+        state.navigate(Destination.SETTINGS)
 
         assertFalse(state.drawerOpen)
     }
@@ -122,14 +122,14 @@ class NavStateTest {
         val original =
             NavState(
                 initialDrawerOpen = true,
-                initialDestination = Destination.PERSONAS,
+                initialDestination = Destination.SETTINGS,
                 initialQuery = "/model qwen",
             )
 
         val saved = NavState.Saver.saveWith(fakeSaverScope, original)
         val restored = NavState.Saver.restore(saved!!)!!
 
-        val expected = Triple(true, Destination.PERSONAS, "/model qwen")
+        val expected = Triple(true, Destination.SETTINGS, "/model qwen")
         val actual = Triple(restored.drawerOpen, restored.destination, restored.query)
         assertEquals(expected, actual)
     }

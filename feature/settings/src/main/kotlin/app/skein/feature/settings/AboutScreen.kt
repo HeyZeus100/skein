@@ -33,7 +33,7 @@ import app.skein.feature.shell.input.SecureTextField
 
 /**
  * Full-screen third-party notices view (plan `E9.I8`), reached from
- * Settings' About section ("View NOTICE" — see [SettingsScreen]). Renders
+ * Settings' About section ("Open-source licenses" — see [SettingsScreen]). Renders
  * [appName]/[appVersion], a short attribution blurb, and every entry from
  * `licenses.json` (loaded via [licensesRepository]), grouped by SPDX license
  * identifier and filtered by the search field.

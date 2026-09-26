@@ -26,16 +26,14 @@ import androidx.compose.ui.unit.dp
 import app.skein.feature.shell.theme.SkeinThemeMode
 
 /**
- * Settings screen (plan `E6.I14`): Security, Models, Vault, and About
- * sections, plus room for the sections later issues add (`E3.I14`, `E6.I7`,
- * `E6.I10`, `E6.I12`, `E9.I8`). Only the Security section is wired to real
- * state today ([FlagSecureToggle], via [SettingsViewModel]) — Models and
- * Vault are placeholder rows on purpose (their functionality lands in
- * `skein-bxk` + the first-run picker, and in `E2.I10`/vault-erase issues,
- * respectively); About shows the version the host passes in and a "View
- * NOTICE" row — [onViewNoticeClick] fires on tap, and [SettingsRoute] below
- * is what actually wires it to [AboutScreen] (`E9.I8`/`skein-dun`)'s real
- * licenses screen and `assets/licenses.json`.
+ * Settings screen (plan `E6.I14`): Appearance, Security, Indexing and About
+ * sections. Every row does something: the inert Models and Vault
+ * placeholder rows (Export/Erase vault did nothing when tapped) and the
+ * "Coming in v1.1" biometric row are hidden until they work (UX-P0-13,
+ * Stage H). About shows the version the host passes in and an
+ * "Open-source licenses" row — [onViewNoticeClick] fires on tap, and
+ * [SettingsRoute] below is what actually wires it to [AboutScreen]
+ * (`E9.I8`/`skein-dun`)'s real licenses screen and `assets/licenses.json`.
  *
  * Stateless: takes the current [flagSecureEnabled] value and a change
  * callback rather than a [SettingsViewModel] directly, so it can be
@@ -53,8 +51,6 @@ fun SettingsScreen(
     onFlagSecureEnabledChange: (Boolean) -> Unit,
     appVersion: String,
     modifier: Modifier = Modifier,
-    onExportVaultClick: () -> Unit = {},
-    onEraseVaultClick: () -> Unit = {},
     onViewNoticeClick: () -> Unit = {},
     // E3.I14 (skein-up0): additive, defaulted to the plan's secure defaults —
     // see [SettingsViewModel]'s ctor doc for why the existing call sites
@@ -115,7 +111,6 @@ fun SettingsScreen(
                     onReauthenticate = onReauthenticate,
                     onBuildExport = onBuildRecoveryExport,
                 )
-                SettingsPlaceholderRow(label = "Biometric unlock", caption = "Coming in v1.1")
             }
 
             SettingsSection(title = "Indexing") {
@@ -126,21 +121,9 @@ fun SettingsScreen(
                 )
             }
 
-            SettingsSection(title = "Models") {
-                val modelCaption = "Available once the first-run model picker lands (skein-bxk)"
-                SettingsPlaceholderRow(label = "Qwen 2.5 3B Instruct", caption = modelCaption)
-                SettingsPlaceholderRow(label = "Gemma 4 E4B", caption = modelCaption)
-                SettingsPlaceholderRow(label = "Import your own GGUF", caption = modelCaption)
-            }
-
-            SettingsSection(title = "Vault") {
-                SettingsPlaceholderRow(label = "Export vault", onClick = onExportVaultClick)
-                SettingsPlaceholderRow(label = "Erase vault", destructive = true, onClick = onEraseVaultClick)
-            }
-
             SettingsSection(title = "About", showDivider = false) {
                 SettingsInfoRow(label = "Version", value = appVersion)
-                SettingsPlaceholderRow(label = "View NOTICE", onClick = onViewNoticeClick)
+                SettingsLinkRow(label = "Open-source licenses", onClick = onViewNoticeClick)
             }
         }
     }
@@ -152,8 +135,6 @@ fun SettingsScreen(
     viewModel: SettingsViewModel,
     appVersion: String,
     modifier: Modifier = Modifier,
-    onExportVaultClick: () -> Unit = {},
-    onEraseVaultClick: () -> Unit = {},
     onViewNoticeClick: () -> Unit = {},
 ) {
     SettingsScreen(
@@ -161,8 +142,6 @@ fun SettingsScreen(
         onFlagSecureEnabledChange = viewModel::setFlagSecureEnabled,
         appVersion = appVersion,
         modifier = modifier,
-        onExportVaultClick = onExportVaultClick,
-        onEraseVaultClick = onEraseVaultClick,
         onViewNoticeClick = onViewNoticeClick,
         idleTimeoutMinutes = viewModel.idleTimeoutMinutes,
         onIdleTimeoutMinutesChange = viewModel::setIdleTimeoutMinutes,
@@ -181,7 +160,7 @@ fun SettingsScreen(
 
 /**
  * Self-contained Settings entry point (`E9.I8`): renders [SettingsScreen]
- * and swaps to [AboutScreen] as a full-screen overlay when "View NOTICE" is
+ * and swaps to [AboutScreen] as a full-screen overlay when "Open-source licenses" is
  * tapped, swapping back on [AboutScreen]'s back action. This is the
  * "overlay — simplest for v1" wiring called for in `skein-dun`; a real
  * nav-graph destination for About is a followup once `:feature:shell`'s
@@ -196,8 +175,6 @@ fun SettingsRoute(
     viewModel: SettingsViewModel,
     appVersion: String,
     modifier: Modifier = Modifier,
-    onExportVaultClick: () -> Unit = {},
-    onEraseVaultClick: () -> Unit = {},
 ) {
     var showAbout by remember { mutableStateOf(false) }
 
@@ -212,8 +189,6 @@ fun SettingsRoute(
             viewModel = viewModel,
             appVersion = appVersion,
             modifier = modifier,
-            onExportVaultClick = onExportVaultClick,
-            onEraseVaultClick = onEraseVaultClick,
             onViewNoticeClick = { showAbout = true },
         )
     }
@@ -241,41 +216,22 @@ private fun SettingsSection(
     }
 }
 
-/**
- * An inert row naming a setting that doesn't exist yet, optionally with a
- * [caption] explaining when it will (e.g. "Coming in v1.1"). Only clickable
- * when [onClick] is supplied — Security's v1.1 rows and every Models row
- * pass none, since there is nothing to navigate to yet; Vault's rows pass
- * one so the host can wire the real SAF/erase flows in later issues without
- * this screen changing shape.
- */
+/** A tappable row that opens another screen (About's licenses). */
 @Composable
-private fun SettingsPlaceholderRow(
+private fun SettingsLinkRow(
     label: String,
+    onClick: () -> Unit,
     modifier: Modifier = Modifier,
-    caption: String? = null,
-    destructive: Boolean = false,
-    onClick: (() -> Unit)? = null,
 ) {
-    val rowModifier = if (onClick != null) modifier.clickable(onClick = onClick) else modifier
     Row(
-        modifier = rowModifier.fillMaxWidth().padding(horizontal = 16.dp, vertical = 12.dp),
+        modifier = modifier.clickable(onClick = onClick).fillMaxWidth().padding(horizontal = 16.dp, vertical = 12.dp),
         verticalAlignment = Alignment.CenterVertically,
     ) {
-        Column {
-            Text(
-                text = label,
-                style = MaterialTheme.typography.bodyLarge,
-                color = if (destructive) MaterialTheme.colorScheme.error else MaterialTheme.colorScheme.onSurface,
-            )
-            if (caption != null) {
-                Text(
-                    text = caption,
-                    style = MaterialTheme.typography.bodySmall,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant,
-                )
-            }
-        }
+        Text(
+            text = label,
+            style = MaterialTheme.typography.bodyLarge,
+            color = MaterialTheme.colorScheme.onSurface,
+        )
     }
 }
 

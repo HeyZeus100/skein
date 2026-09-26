@@ -4,11 +4,15 @@
 package app.skein.feature.models.screenshots
 
 import androidx.compose.ui.test.junit4.createAndroidComposeRule
+import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.onRoot
+import androidx.compose.ui.test.performClick
 import app.skein.feature.models.ModelListItem
 import app.skein.feature.models.ModelsScreen
 import app.skein.feature.shell.theme.SkeinTheme
+import com.github.takahirom.roborazzi.ExperimentalRoborazziApi
 import com.github.takahirom.roborazzi.RoborazziActivity
+import com.github.takahirom.roborazzi.captureScreenRoboImage
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -74,6 +78,27 @@ class ModelsScreenshotTest(
             }
         }
         composeRule.onRoot().captureUx(spec, "models-empty")
+    }
+
+    /** Stage H (LC-27): Delete asks first. Whole screen, so the dialog window is in the capture. */
+    @OptIn(ExperimentalRoborazziApi::class)
+    @Test
+    fun modelsDeleteConfirm() {
+        val model =
+            ModelListItem(
+                id = "llama-3.2-1b-instruct-q4_k_m",
+                displayName = "Llama-3.2-1B-Instruct-Q4_K_M.gguf",
+                sizeBytes = 807_690_000L,
+                licenseSpdx = "LicenseRef-Llama-3.2-Community",
+                isDefault = false,
+                isLoaded = false,
+            )
+        composeRule.setContent {
+            SkeinTheme { ModelsScreen(listOf(model), onSetDefault = {}, onDelete = {}, onDismiss = {}) }
+        }
+        composeRule.onNodeWithText("Delete").performClick()
+        composeRule.waitForIdle()
+        captureScreenRoboImage("build/outputs/roborazzi/${spec.device.dir}/models-delete-confirm${spec.suffix}.png")
     }
 
     companion object {

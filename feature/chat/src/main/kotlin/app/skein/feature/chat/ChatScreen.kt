@@ -22,7 +22,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.unit.dp
 import app.skein.core.model.DocId
+import app.skein.core.model.DocumentKind
 import app.skein.core.model.ImportService
+import app.skein.core.model.NewDocument
 import app.skein.core.model.PersonaId
 import app.skein.core.model.VaultRepository
 import app.skein.feature.editor.autocomplete.Suggestion
@@ -53,7 +55,13 @@ public fun ChatScreen(
     modifier: Modifier = Modifier,
     importService: ImportService? = null,
     currentPersonaId: () -> PersonaId? = { null },
-    onCreateWikilink: suspend (String) -> Unit = {},
+    // UX-P0-14: the `[[` popup's `Create "x"` row must create the note it
+    // names (it used to create nothing); an existing title is left alone.
+    onCreateWikilink: suspend (String) -> Unit = { title ->
+        if (vaultRepository.findByTitle(title) == null) {
+            vaultRepository.createDocument(NewDocument(kind = DocumentKind.NOTE, title = title, bodyMd = ""))
+        }
+    },
     onSlashCommand: () -> Unit = {},
 ) {
     val scope = rememberCoroutineScope()

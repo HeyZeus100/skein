@@ -9,7 +9,10 @@ import androidx.compose.ui.test.onNodeWithContentDescription
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
 import androidx.window.core.layout.WindowSizeClass
+import app.skein.feature.shell.layout.AdaptiveLayoutState
+import app.skein.feature.shell.layout.AdaptivePaneHost
 import app.skein.feature.shell.layout.FoldPosture
+import app.skein.feature.shell.layout.TimelineMode
 import app.skein.feature.shell.nav.Destination
 import org.junit.Rule
 import org.junit.Test
@@ -50,7 +53,7 @@ class SkeinAppTest {
         composeRule.onNodeWithText("TIMELINE_COMPACT").assertDoesNotExist()
         // The right zone still has no tabs open — the slot only replaces the
         // hardcoded left-pane placeholder, not `TabHost`'s own empty state.
-        composeRule.onNodeWithText("No tabs open — back to timeline").assertExists()
+        composeRule.onNodeWithText(EMPTY_PANE).assertExists()
     }
 
     @Test
@@ -67,7 +70,7 @@ class SkeinAppTest {
 
         composeRule.onNodeWithText("TIMELINE_COMPACT").assertExists()
         composeRule.onNodeWithText("TIMELINE_EXPANDED").assertDoesNotExist()
-        composeRule.onNodeWithText("No tabs open — back to timeline").assertDoesNotExist()
+        composeRule.onNodeWithText(EMPTY_PANE).assertDoesNotExist()
     }
 
     @Test
@@ -101,7 +104,7 @@ class SkeinAppTest {
         }
 
         composeRule.onNodeWithText("Timeline").assertExists()
-        composeRule.onNodeWithText("No tabs open — back to timeline").assertExists()
+        composeRule.onNodeWithText(EMPTY_PANE).assertExists()
     }
 
     @Test
@@ -110,7 +113,7 @@ class SkeinAppTest {
             SkeinApp(windowSizeClass = compactWidth, posture = FoldPosture.Unknown)
         }
 
-        composeRule.onNodeWithText("No tabs open — back to timeline").assertExists()
+        composeRule.onNodeWithText(EMPTY_PANE).assertExists()
     }
 
     // ---- skein-0td0: the `overlay` slot -----------------------------------------
@@ -127,7 +130,7 @@ class SkeinAppTest {
 
         // The shell root (nav/command bar/pane host) is still composed
         // underneath — the overlay is additive, not a replacement.
-        composeRule.onNodeWithText("No tabs open — back to timeline").assertExists()
+        composeRule.onNodeWithText(EMPTY_PANE).assertExists()
         composeRule.onNodeWithText("OVERLAY_CONTENT").assertExists()
     }
 
@@ -179,7 +182,7 @@ class SkeinAppTest {
             SkeinApp(windowSizeClass = compactWidth, posture = FoldPosture.Unknown)
         }
 
-        composeRule.onNodeWithText("No tabs open — back to timeline").assertExists()
+        composeRule.onNodeWithText(EMPTY_PANE).assertExists()
     }
 
     // ---- skein-5cr5: emptyContent consults navState.destination ---------------
@@ -202,7 +205,7 @@ class SkeinAppTest {
         navigateViaDrawer("Settings")
 
         composeRule.onNodeWithText("DEST_${Destination.SETTINGS.name}").assertExists()
-        composeRule.onNodeWithText("No tabs open — back to timeline").assertDoesNotExist()
+        composeRule.onNodeWithText(EMPTY_PANE).assertDoesNotExist()
     }
 
     @Test
@@ -218,7 +221,7 @@ class SkeinAppTest {
         navigateViaDrawer("Settings")
 
         composeRule.onNodeWithText("DEST_${Destination.SETTINGS.name}").assertExists()
-        composeRule.onNodeWithText("No tabs open — back to timeline").assertDoesNotExist()
+        composeRule.onNodeWithText(EMPTY_PANE).assertDoesNotExist()
     }
 
     @Test
@@ -236,12 +239,14 @@ class SkeinAppTest {
 
         navigateViaDrawer("Timeline")
 
-        composeRule.onNodeWithText("No tabs open — back to timeline").assertExists()
+        composeRule.onNodeWithText(EMPTY_PANE).assertExists()
         composeRule.onNodeWithText("DEST_${Destination.SETTINGS.name}").assertDoesNotExist()
     }
 
+    // UX-P0-03 / AL-01: this used to pin the defect ("an open tab still wins
+    // over a non-TIMELINE destination"); drawer items now work with a tab open.
     @Test
-    fun `an open tab still wins over a non-TIMELINE destination`() {
+    fun `drawer Settings shows Settings while a tab is open`() {
         composeRule.setContent {
             SkeinApp(
                 windowSizeClass = compactWidth,
@@ -262,7 +267,54 @@ class SkeinAppTest {
 
         navigateViaDrawer("Settings")
 
-        composeRule.onNodeWithText("NOTE_CONTENT_doc-1").assertExists()
-        composeRule.onNodeWithText("DEST_${Destination.SETTINGS.name}").assertDoesNotExist()
+        composeRule.onNodeWithText("DEST_${Destination.SETTINGS.name}").assertExists()
+        composeRule.onNodeWithText("NOTE_CONTENT_doc-1").assertDoesNotExist()
+
+        // Timeline is the way home: the landing comes back, the tab stays open.
+        navigateViaDrawer("Timeline")
+
+        composeRule.onNodeWithText("OPEN_ENTRY").assertExists()
+        composeRule.onNodeWithText("Recent", substring = true).assertExists()
+    }
+
+    // ---- Stage H (skein-xtov.22): hide the dead ------------------------------
+
+    @Test
+    fun `the drawer offers only destinations that have a screen`() {
+        composeRule.setContent {
+            SkeinApp(windowSizeClass = compactWidth, posture = FoldPosture.Unknown)
+        }
+
+        composeRule.onNodeWithContentDescription("Open navigation drawer").performClick()
+
+        composeRule.onNodeWithText("Timeline", substring = true).assertExists()
+        composeRule.onNodeWithText("Settings", substring = true).assertExists()
+        listOf("Notes", "Graph", "Personas").forEach { label ->
+            composeRule.onNodeWithText(label, substring = true).assertDoesNotExist()
+        }
+    }
+
+    @Test
+    fun `split view has no dead icon rail`() {
+        composeRule.setContent {
+            AdaptivePaneHost(
+                layoutState = AdaptiveLayoutState(initialSplitEnabled = true, initialTimelineMode = TimelineMode.RAIL),
+                windowSizeClass = expandedWidth,
+                posture = FoldPosture.Unknown,
+                timeline = { Text("TIMELINE") },
+                primary = { Text("PRIMARY") },
+                secondary = { Text("SECONDARY") },
+            )
+        }
+
+        composeRule.onNodeWithText("PRIMARY").assertExists()
+        composeRule.onNodeWithText("SECONDARY").assertExists()
+        listOf("Expand timeline", "Timeline", "Graph", "Personas", "Settings").forEach { label ->
+            composeRule.onNodeWithContentDescription(label).assertDoesNotExist()
+        }
+    }
+
+    private companion object {
+        const val EMPTY_PANE = "Open a chat or note from the list"
     }
 }

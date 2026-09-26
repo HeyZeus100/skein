@@ -10,8 +10,8 @@ import androidx.compose.runtime.setValue
 
 /**
  * How the timeline (left) pane is rendered when it's not hidden entirely by
- * a narrow width (spec §8.2): the full 30%-width pane, or collapsed to the
- * 40 dp icon rail via `◂`.
+ * a narrow width (spec §8.2): the full 30%-width pane, or collapsed away
+ * ([RAIL], forced while split view is on).
  */
 enum class TimelineMode { FULL, RAIL, HIDDEN }
 

@@ -31,8 +31,8 @@ import app.skein.feature.shell.theme.LocalSkeinTokens
  * [content] defaults to a placeholder that just names the kind and doc key.
  *
  * [emptyContent] is what's shown instead of [content] while there's no
- * active tab; it defaults to [EmptyTabHostPlaceholder]'s "No tabs open —
- * back to timeline" message. `SkeinApp` (bd `skein-64y9`) overrides this on
+ * active tab; it defaults to [EmptyTabHostPlaceholder]'s "Open a chat or
+ * note from the list" message. `SkeinApp` (bd `skein-64y9`) overrides this on
  * the primary pane in single-pane layouts so the timeline itself — not a
  * dead end — is what a fresh launch with no tabs lands on.
  */
@@ -100,7 +100,7 @@ internal fun EmptyTabHostPlaceholder(modifier: Modifier = Modifier) {
     Surface(modifier = modifier.fillMaxSize(), color = MaterialTheme.colorScheme.background) {
         Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
             Text(
-                text = "No tabs open — back to timeline",
+                text = "Open a chat or note from the list",
                 style = MaterialTheme.typography.bodyMedium,
                 color = MaterialTheme.colorScheme.onSurfaceVariant,
             )

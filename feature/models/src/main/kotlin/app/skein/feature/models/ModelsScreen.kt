@@ -19,13 +19,19 @@ import androidx.compose.foundation.layout.safeDrawing
 import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.testTag
@@ -49,6 +55,8 @@ public data class ModelListItem(
  * A minimal list: display name, size, licence SPDX, the default marker, a
  * delete action (disabled while [ModelListItem.isLoaded]) and a set-default
  * action. skein-ym3 replaces this with the full management screen.
+ *
+ * Delete asks first (LC-27): [onDelete] only fires once the user confirms.
  */
 @Composable
 public fun ModelsScreen(
@@ -58,6 +66,17 @@ public fun ModelsScreen(
     onDismiss: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
+    var pendingDelete by remember { mutableStateOf<ModelListItem?>(null) }
+    pendingDelete?.let { model ->
+        DeleteModelDialog(
+            model = model,
+            onConfirm = {
+                pendingDelete = null
+                onDelete(model.id)
+            },
+            onDismiss = { pendingDelete = null },
+        )
+    }
     Surface(
         modifier = modifier.fillMaxSize().testTag(MODELS_SCREEN_TEST_TAG),
         color = MaterialTheme.colorScheme.background,
@@ -87,7 +106,7 @@ public fun ModelsScreen(
             } else {
                 LazyColumn(modifier = Modifier.fillMaxSize()) {
                     items(models, key = { it.id }) { model ->
-                        ModelRow(model = model, onSetDefault = onSetDefault, onDelete = onDelete)
+                        ModelRow(model = model, onSetDefault = onSetDefault, onDelete = { pendingDelete = model })
                         HorizontalDivider()
                     }
                 }
@@ -100,7 +119,7 @@ public fun ModelsScreen(
 private fun ModelRow(
     model: ModelListItem,
     onSetDefault: (String) -> Unit,
-    onDelete: (String) -> Unit,
+    onDelete: () -> Unit,
 ) {
     Row(
         modifier = Modifier.fillMaxWidth().padding(horizontal = 16.dp, vertical = 12.dp),
@@ -127,8 +146,32 @@ private fun ModelRow(
         if (!model.isDefault) {
             TextButton(onClick = { onSetDefault(model.id) }) { Text("Set default") }
         }
-        Button(onClick = { onDelete(model.id) }, enabled = !model.isLoaded) { Text("Delete") }
+        Button(onClick = onDelete, enabled = !model.isLoaded) { Text("Delete") }
     }
+}
+
+/** LC-27 / `OBJECT_LIFECYCLE_SPEC.md` §9: name the model, say what is lost, repeat the verb. */
+@Composable
+private fun DeleteModelDialog(
+    model: ModelListItem,
+    onConfirm: () -> Unit,
+    onDismiss: () -> Unit,
+) {
+    val consequence =
+        "This frees ${humanSize(model.sizeBytes)}. To use it again, you'll need to import it again." +
+            if (model.isDefault) " Chats will need another model." else ""
+    AlertDialog(
+        onDismissRequest = onDismiss,
+        title = { Text("Delete \u201C${model.displayName}\u201D?") },
+        text = { Text(consequence) },
+        confirmButton = {
+            TextButton(
+                onClick = onConfirm,
+                colors = ButtonDefaults.textButtonColors(contentColor = MaterialTheme.colorScheme.error),
+            ) { Text("Delete") }
+        },
+        dismissButton = { TextButton(onClick = onDismiss) { Text("Cancel") } },
+    )
 }
 
 private fun humanSize(bytes: Long): String {

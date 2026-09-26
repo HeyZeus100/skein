@@ -9,12 +9,12 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 
 /**
- * The five hamburger-drawer destinations (spec §8.2), in the order the
- * drawer must render them: Timeline · Notes · Graph · Personas · Settings.
- * Wiring the actual destination screens is out of scope for `E6.I3`
- * (`E6.I8`+ / `E7.I3`+); this enum only names where nav can point.
+ * The hamburger-drawer destinations, in drawer order. Only destinations
+ * with a real screen belong here: Notes, Graph and Personas were
+ * placeholders that rendered their enum name, so they are gone until
+ * their screens exist (UX-P0-03, AL-01).
  */
-enum class Destination { TIMELINE, NOTES, GRAPH, PERSONAS, SETTINGS }
+enum class Destination { TIMELINE, SETTINGS }
 
 /**
  * `@Stable` state holder for the persistent nav layer (plan `E6.I3`):
