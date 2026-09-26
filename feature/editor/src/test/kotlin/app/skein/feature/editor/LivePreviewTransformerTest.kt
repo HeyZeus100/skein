@@ -238,4 +238,18 @@ class LivePreviewTransformerTest {
         assertTrue(transformed.text.text.contains("code"))
         assertFalse("frontmatter id must not leak into the visible text", transformed.text.text.contains("id: 1"))
     }
+
+    @Test
+    fun transformedToOriginalZeroMapsPastFrontmatter() {
+        // UX-P0-10 / K-P0-2: transformed 0 is the first visible character — the
+        // body start — never raw 0 in front of the hidden `---`.
+        val bodyStart = frontmatterSource.indexOf("body text")
+        val mapping = transform(frontmatterSource, cursor = bodyStart, style = style).offsetMapping
+        assertEquals(bodyStart, mapping.transformedToOriginal(0))
+
+        // An empty body (every new note) has no visible text at all, so every tap resolves to transformed 0.
+        val emptyBody = "---\nid: 0192abc\n---\n"
+        val emptyMapping = transform(emptyBody, cursor = emptyBody.length, style = style).offsetMapping
+        assertEquals(emptyBody.length, emptyMapping.transformedToOriginal(0))
+    }
 }

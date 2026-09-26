@@ -698,6 +698,7 @@ class MainActivity : FragmentActivity() {
                     onOpenGraph = { docId -> graphDocId = docId },
                     registerFlush = { flush -> registry.register(tab.id, flush) },
                     unregisterFlush = { registry.unregister(tab.id) },
+                    unlockManager = vaultForSettings.unlockManager,
                 )
             },
             timelinePane = { expanded, onEntryOpen, onEntryPin ->

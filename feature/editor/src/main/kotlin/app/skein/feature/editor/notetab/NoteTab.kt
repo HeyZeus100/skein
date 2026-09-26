@@ -17,6 +17,7 @@ package app.skein.feature.editor.notetab
 import android.app.Activity
 import android.print.PrintAttributes
 import android.print.PrintManager
+import android.widget.Toast
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.layout.Box
@@ -46,11 +47,16 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.compose.LifecycleEventEffect
 import app.skein.core.export.pdf.PdfExportService
 import app.skein.core.markdown.render.MarkdownStyle
 import app.skein.core.model.DocId
 import app.skein.core.model.IndexStore
 import app.skein.core.model.VaultRepository
+import app.skein.core.vault.session.LockObserver
+import app.skein.core.vault.session.LockObserverPriority
+import app.skein.core.vault.session.UnlockManager
 import app.skein.core.vault.session.UnlockState
 import app.skein.feature.editor.SkeinEditor
 import app.skein.feature.editor.backlinks.BacklinksDrawer
@@ -59,6 +65,10 @@ import app.skein.feature.editor.share.ShareIntents
 import app.skein.feature.shell.input.SecureTextField
 import app.skein.feature.shell.theme.LocalSkeinEditorColors
 import app.skein.feature.shell.theme.LocalSkeinTokens
+import kotlinx.coroutines.CancellationException
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
@@ -94,6 +104,10 @@ import java.time.Duration
  *   matching every existing caller (`app.skein.MainActivity`, off-limits to
  *   this bead) that does not yet thread a live `UnlockManager.state` down
  *   to this composable — a future host wiring is additive, not breaking.
+ * @param unlockManager UX-P0-11: when supplied, pending edits are flushed
+ *   in the lock sequence's `LOW` tier, while the vault is still open
+ *   ([FlushBeforeLock]). Pending edits are also flushed when this tab leaves
+ *   composition and when the Activity stops, with or without it.
  */
 @Composable
 public fun NoteTab(
@@ -108,6 +122,7 @@ public fun NoteTab(
     unregisterFlush: () -> Unit = {},
     markdownStyle: MarkdownStyle = MarkdownStyle.Default,
     unlockState: StateFlow<UnlockState>? = null,
+    unlockManager: UnlockManager? = null,
 ) {
     val scope = rememberCoroutineScope()
     val state =
@@ -124,7 +139,18 @@ public fun NoteTab(
 
     DisposableEffect(state) {
         registerFlush(state::flush)
-        onDispose { unregisterFlush() }
+        onDispose {
+            unregisterFlush()
+            // UX-P0-11: `scope` dies with this composition (tab close, note →
+            // chat, lock, fold) and takes the debounce and any in-flight write
+            // with it, so the last edits are flushed on a scope that outlives it.
+            flushScope.launch { state.flush() }
+        }
+    }
+    LifecycleEventEffect(Lifecycle.Event.ON_STOP) { flushScope.launch { state.flush() } }
+    DisposableEffect(state, unlockManager) {
+        val handle = unlockManager?.addLockObserver(FlushBeforeLock(state))
+        onDispose { handle?.dispose() }
     }
 
     var unlocked by remember { mutableStateOf(true) }
@@ -169,9 +195,18 @@ public fun NoteTab(
             val uri = result.data?.data
             if (format != null && result.resultCode == Activity.RESULT_OK && uri != null) {
                 scope.launch {
-                    context.contentResolver.openOutputStream(uri)?.use { out ->
-                        state.writeSaveAs(format, out)
-                    }
+                    // UX-P0-12: a destination that can't be opened or written must not crash the app.
+                    val saved =
+                        try {
+                            val out = context.contentResolver.openOutputStream(uri)
+                            out?.use { state.writeSaveAs(format, it) }
+                            out != null
+                        } catch (e: CancellationException) {
+                            throw e
+                        } catch (e: Exception) {
+                            false
+                        }
+                    if (!saved) Toast.makeText(context, SAVE_AS_FAILED_MESSAGE, Toast.LENGTH_LONG).show()
                 }
             }
         }
@@ -235,6 +270,37 @@ public fun NoteTab(
         BacklinksDrawer(state = state.backlinksState, modifier = Modifier.fillMaxWidth())
     }
 }
+
+/**
+ * UX-P0-11: where [NoteTab] flushes on dispose and on stop — process-lived,
+ * unlike the tab's `rememberCoroutineScope`. [NoteTabState.flush] is bounded
+ * and never throws: a vault that already closed only marks the save failed.
+ */
+private val flushScope = CoroutineScope(SupervisorJob() + Dispatchers.Main)
+
+/**
+ * UX-P0-11: flushes a tab before the vault locks. `LOW` runs while the vault
+ * is still open: `UnlockManager` awaits every `HIGH`/`LOW` observer before
+ * `VaultBootstrap`'s `TEARDOWN` tier closes it.
+ */
+internal class FlushBeforeLock(
+    private val state: NoteTabState,
+) : LockObserver {
+    override val priority: LockObserverPriority = LockObserverPriority.LOW
+
+    override suspend fun onLocking(
+        epoch: Long,
+        budgetMillis: Long,
+    ) {
+        state.flush(Duration.ofMillis(budgetMillis))
+    }
+
+    override fun onLocked(epoch: Long) = Unit
+
+    override fun onUnlocked(epoch: Long) = Unit
+}
+
+internal const val SAVE_AS_FAILED_MESSAGE: String = "Couldn't save the file. Try another location."
 
 @Composable
 private fun NoteTabHeader(

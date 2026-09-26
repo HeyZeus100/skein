@@ -133,7 +133,9 @@ internal fun transform(
                 }
 
                 override fun transformedToOriginal(offset: Int): Int {
-                    if (offset <= 0) return 0
+                    // UX-P0-10: the first visible char, not raw 0 — which sits
+                    // in front of a hidden frontmatter block (or `# ` prefix).
+                    if (offset <= 0) return offsets[0]
                     if (offset >= effectiveVisibleLen) return source.length
                     return offsets[offset]
                 }

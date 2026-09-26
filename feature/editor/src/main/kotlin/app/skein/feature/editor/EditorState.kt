@@ -10,6 +10,7 @@ import androidx.compose.runtime.snapshotFlow
 import androidx.compose.runtime.snapshots.Snapshot
 import androidx.compose.ui.text.TextRange
 import androidx.compose.ui.text.input.TextFieldValue
+import app.skein.feature.editor.frontmatter.FrontmatterBlock
 import app.skein.feature.editor.frontmatter.ProtectedIdGuard
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.CoroutineScope
@@ -98,7 +99,9 @@ public class EditorState(
     internal val autosaveScope: CoroutineScope = CoroutineScope(SupervisorJob() + Dispatchers.Default),
     initialFrontmatterExpanded: Boolean = false,
 ) {
-    public var value: TextFieldValue by mutableStateOf(initial)
+    public var value: TextFieldValue by mutableStateOf(
+        if (initialFrontmatterExpanded) initial else initial.selectionFrom(FrontmatterBlock.bodyStart(initial.text)),
+    )
         internal set
 
     private val autosaveStatusState = mutableStateOf(AutosaveStatus.IDLE)
@@ -111,6 +114,7 @@ public class EditorState(
     /** Flips [frontmatterExpanded] — wired to `FrontmatterChip`'s tap. */
     public fun toggleFrontmatter() {
         frontmatterExpandedState.value = !frontmatterExpandedState.value
+        if (!frontmatterExpandedState.value) value = value.selectionFrom(FrontmatterBlock.bodyStart(value.text))
     }
 
     private val idEditRejectedState = mutableStateOf(false)
@@ -153,7 +157,7 @@ public class EditorState(
      */
     public fun onValueChange(newValue: TextFieldValue) {
         val guard = ProtectedIdGuard.guard(previous = value.text, next = newValue.text)
-        val effective =
+        val guarded =
             if (guard.rejected) {
                 val length = guard.text.length
                 newValue.copy(
@@ -167,6 +171,7 @@ public class EditorState(
             } else {
                 newValue
             }
+        val effective = keepOutOfHiddenFrontmatter(guarded)
         idEditRejectedState.value = guard.rejected
         value = effective
         if (effective.text != lastSavedText) {
@@ -179,6 +184,27 @@ public class EditorState(
         // explicit flush here, the debounce collector's `snapshotFlow { value }`
         // below never observes this write. Safe/idempotent to call unconditionally.
         Snapshot.sendApplyNotifications()
+    }
+
+    /**
+     * UX-P0-10 (`docs/ux/KNOWLEDGE_UX_SPEC.md` §6.4 hotfix): a collapsed
+     * block is invisible, so nothing the user does may reach into it. The
+     * caret/selection is clamped to the body start, and a delete ending
+     * there (Backspace, an IME delete) is dropped rather than eating the
+     * block's closing line, which would save the `id:` lines into the body.
+     */
+    private fun keepOutOfHiddenFrontmatter(proposed: TextFieldValue): TextFieldValue {
+        if (frontmatterExpandedState.value) return proposed
+        val old = value.text
+        val oldBodyStart = FrontmatterBlock.bodyStart(old)
+        val removed = old.length - proposed.text.length
+        if (removed in 1..oldBodyStart &&
+            proposed.text == old.removeRange(oldBodyStart - removed, oldBodyStart) &&
+            !proposed.text.startsWith(old.substring(0, oldBodyStart))
+        ) {
+            return value
+        }
+        return proposed.selectionFrom(FrontmatterBlock.bodyStart(proposed.text))
     }
 
     /** The current raw Markdown source. Handed unchanged to autosave. */
@@ -251,6 +277,10 @@ public class EditorState(
             )
     }
 }
+
+/** This value with both selection ends moved to at least [min]. */
+private fun TextFieldValue.selectionFrom(min: Int): TextFieldValue =
+    copy(selection = TextRange(selection.start.coerceAtLeast(min), selection.end.coerceAtLeast(min)))
 
 /**
  * Autosave lifecycle for the note-header chip (`E7.I4`, bd `skein-twb`).

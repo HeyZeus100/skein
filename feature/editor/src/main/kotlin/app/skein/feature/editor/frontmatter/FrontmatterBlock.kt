@@ -14,6 +14,7 @@ package app.skein.feature.editor.frontmatter
 
 import app.skein.feature.editor.FenceKind
 import app.skein.feature.editor.Line
+import app.skein.feature.editor.buildLines
 
 /**
  * Locates the leading YAML frontmatter block of a document already split
@@ -43,5 +44,16 @@ internal object FrontmatterBlock {
             if (line.text(source) == DELIMITER) return i
         }
         return -1
+    }
+
+    /**
+     * Raw offset of the first body character after the leading block (the
+     * start of the line after its closing `---`), or `0` when [source] has
+     * no block. Everything before it is what the collapsed chip hides.
+     */
+    fun bodyStart(source: String): Int {
+        val lines = buildLines(source)
+        val end = endLineIndex(lines, source)
+        return if (end < 0) 0 else lines.getOrNull(end + 1)?.start ?: source.length
     }
 }
