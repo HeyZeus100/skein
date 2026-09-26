@@ -1,6 +1,8 @@
 plugins {
     alias(libs.plugins.android.library)
     alias(libs.plugins.kotlin.compose)
+    // skein-xtov.9: JVM screenshot tests (docs/ux/research/ROBORAZZI_SPIKE.md).
+    alias(libs.plugins.roborazzi)
 }
 
 android {
@@ -110,6 +112,13 @@ dependencies {
     // `ui-test-manifest`'s generic registration, which does not merge into
     // a *library* module's manifest (see that file's comment).
     testImplementation(libs.androidx.activity.compose)
+    // skein-xtov.9: Roborazzi screenshot tests. `:feature:timeline` is
+    // test-only here so the shell captures render the same timeline pane /
+    // landing content `:app` wires into `SkeinApp` (timeline does not depend
+    // on this module, so there is no cycle).
+    testImplementation(libs.roborazzi)
+    testImplementation(libs.roborazzi.compose)
+    testImplementation(project(":feature:timeline"))
 
     // skein-ugo (E3.I4): BiometricUnlockScreenTest — on-device Compose UI
     // test, matching `:feature:editor`'s `SkeinEditorInstrumentedTest`

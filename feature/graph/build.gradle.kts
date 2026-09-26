@@ -1,6 +1,8 @@
 plugins {
     alias(libs.plugins.android.library)
     alias(libs.plugins.kotlin.compose)
+    // skein-xtov.9: JVM screenshot tests (docs/ux/research/ROBORAZZI_SPIKE.md).
+    alias(libs.plugins.roborazzi)
 }
 
 android {
@@ -102,6 +104,9 @@ dependencies {
     // `compose-ui-test-infra-robolectric-compose-ui-test`), this module's
     // first use of it.
     testImplementation(libs.robolectric)
+    // skein-xtov.9: Roborazzi screenshot tests (screenshots/ test package).
+    testImplementation(libs.roborazzi)
+    testImplementation(libs.roborazzi.compose)
     testImplementation(libs.androidx.test.ext.junit)
     testImplementation(libs.compose.ui.test.junit4)
     // Host activity for the Compose test rule — this module already ships

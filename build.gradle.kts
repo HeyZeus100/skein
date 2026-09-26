@@ -12,6 +12,8 @@ plugins {
     alias(libs.plugins.kotlin.serialization) apply false
     alias(libs.plugins.kotlin.compose) apply false
     alias(libs.plugins.ktlint) apply false
+    // skein-xtov.9: JVM screenshot tests, applied per feature module.
+    alias(libs.plugins.roborazzi) apply false
     // E1.I11 (skein-4je): registered here (like ktlint above) so the
     // `apply(plugin = "app.skein.guard.logging")` call in `subprojects`
     // below can resolve it — an included-build plugin ID is only

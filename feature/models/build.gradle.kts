@@ -1,6 +1,8 @@
 plugins {
     alias(libs.plugins.android.library)
     alias(libs.plugins.kotlin.compose)
+    // skein-xtov.9: JVM screenshot tests (docs/ux/research/ROBORAZZI_SPIKE.md).
+    alias(libs.plugins.roborazzi)
 }
 
 android {
@@ -9,6 +11,10 @@ android {
 
     defaultConfig {
         minSdk = 30
+        // skein-xtov.9: the test-only `:feature:shell` dependency pulls in
+        // `:core:vault`'s "distribution" flavor dimension — resolve it to
+        // `foss`, same as every other feature module.
+        missingDimensionStrategy("distribution", "foss")
     }
 
     buildFeatures {
@@ -47,6 +53,12 @@ dependencies {
     testImplementation(libs.junit)
     testImplementation(libs.truth)
     testImplementation(libs.robolectric)
+    // skein-xtov.9: Roborazzi screenshot tests (screenshots/ test package).
+    testImplementation(libs.roborazzi)
+    testImplementation(libs.roborazzi.compose)
+    // `SkeinTheme` for the captures (`:app` shows this screen inside
+    // `SkeinApp`'s theme). Test-only: main source stays shell-free.
+    testImplementation(project(":feature:shell"))
     testImplementation(libs.androidx.test.ext.junit)
     testImplementation(libs.compose.ui.test.junit4)
     testImplementation(libs.androidx.activity.compose)

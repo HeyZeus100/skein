@@ -1,6 +1,8 @@
 plugins {
     alias(libs.plugins.android.library)
     alias(libs.plugins.kotlin.compose)
+    // skein-xtov.9: JVM screenshot tests (docs/ux/research/ROBORAZZI_SPIKE.md).
+    alias(libs.plugins.roborazzi)
 }
 
 android {
@@ -100,6 +102,9 @@ dependencies {
     // is a Robolectric Compose UI test over `NoteTab`'s header menu — same
     // shape as `:feature:shell`'s `SecureTextFieldTest`/`SkeinAppTest`.
     testImplementation(libs.robolectric)
+    // skein-xtov.9: Roborazzi screenshot tests (screenshots/ test package).
+    testImplementation(libs.roborazzi)
+    testImplementation(libs.roborazzi.compose)
     testImplementation(libs.androidx.test.ext.junit)
     testImplementation(libs.compose.ui.test.junit4)
     testImplementation(libs.androidx.activity.compose)

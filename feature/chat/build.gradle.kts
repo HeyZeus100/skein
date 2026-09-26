@@ -1,6 +1,8 @@
 plugins {
     alias(libs.plugins.android.library)
     alias(libs.plugins.kotlin.compose)
+    // skein-xtov.9: JVM screenshot tests (docs/ux/research/ROBORAZZI_SPIKE.md).
+    alias(libs.plugins.roborazzi)
 }
 
 android {
@@ -92,6 +94,9 @@ dependencies {
     // `RecordingTabController`/`Builders` — the bead's named fakes.
     testImplementation(project(":testing"))
     testImplementation(libs.robolectric)
+    // skein-xtov.9: Roborazzi screenshot tests (screenshots/ test package).
+    testImplementation(libs.roborazzi)
+    testImplementation(libs.roborazzi.compose)
     testImplementation(libs.androidx.test.ext.junit)
     testImplementation(libs.compose.ui.test.junit4)
     testImplementation(libs.androidx.activity.compose)

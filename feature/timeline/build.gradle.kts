@@ -1,6 +1,8 @@
 plugins {
     alias(libs.plugins.android.library)
     alias(libs.plugins.kotlin.compose)
+    // skein-xtov.9: JVM screenshot tests (docs/ux/research/ROBORAZZI_SPIKE.md).
+    alias(libs.plugins.roborazzi)
 }
 
 android {
@@ -13,6 +15,10 @@ android {
         // first androidTest source set (compile-only in this milestone; the
         // on-device lane is bd `skein-k3b2`).
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+        // skein-xtov.9: the test-only `:feature:shell` dependency pulls in
+        // `:core:vault`'s "distribution" flavor dimension — resolve it to
+        // `foss`, same as every other feature module.
+        missingDimensionStrategy("distribution", "foss")
     }
 
     buildFeatures {
@@ -22,6 +28,14 @@ android {
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_17
         targetCompatibility = JavaVersion.VERSION_17
+    }
+
+    testOptions {
+        unitTests {
+            // skein-xtov.9: Robolectric Compose screenshot tests need merged
+            // resources (fonts) on the classpath — same as every other module.
+            isIncludeAndroidResources = true
+        }
     }
 }
 
@@ -80,6 +94,17 @@ dependencies {
     testImplementation(libs.junit)
     testImplementation(libs.kotlinx.coroutines.test)
     testImplementation(project(":testing"))
+    // skein-xtov.9: Roborazzi screenshot tests (screenshots/ test package) —
+    // the same Robolectric Compose infra `:feature:graph` uses, plus
+    // `:feature:shell` (test-only) for `SkeinTheme`, which `:app` wraps this
+    // screen in. Main source still does not depend on `:feature:shell`.
+    testImplementation(libs.robolectric)
+    testImplementation(libs.roborazzi)
+    testImplementation(libs.roborazzi.compose)
+    testImplementation(libs.androidx.test.ext.junit)
+    testImplementation(libs.compose.ui.test.junit4)
+    testImplementation(libs.androidx.activity.compose)
+    testImplementation(project(":feature:shell"))
 
     // On-device Compose UI test (skein-2qv acceptance: compile the UI test
     // even where the local worktree cannot run it; bd `skein-k3b2` tracks

@@ -1,6 +1,8 @@
 plugins {
     alias(libs.plugins.android.library)
     alias(libs.plugins.kotlin.compose)
+    // skein-xtov.9: JVM screenshot tests (docs/ux/research/ROBORAZZI_SPIKE.md).
+    alias(libs.plugins.roborazzi)
     // E9.I8: LicensesRepository deserializes assets/licenses.json via
     // kotlinx.serialization (LicenseEntry).
     alias(libs.plugins.kotlin.serialization)
@@ -82,6 +84,9 @@ dependencies {
     // (`settings_indexing_hint`) via a Robolectric-hosted Compose rule —
     // same infra as `:feature:shell`'s SecureTextFieldTest.
     testImplementation(libs.robolectric)
+    // skein-xtov.9: Roborazzi screenshot tests (screenshots/ test package).
+    testImplementation(libs.roborazzi)
+    testImplementation(libs.roborazzi.compose)
     testImplementation(libs.androidx.test.ext.junit)
     testImplementation(libs.compose.ui.test.junit4)
     // Host activity for the Compose test rule: `:feature:settings` declares

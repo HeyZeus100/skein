@@ -36,6 +36,11 @@ androidx-work-testing = "2.11.2"
 turbine = "1.2.1"
 truth = "1.4.5"
 ktlint-gradle = "14.2.0"
+# skein-xtov.9: JVM screenshot tests (Robolectric native graphics) — the only
+# visual evidence the UX overhaul can produce, since FLAG_SECURE blacks out
+# device screenshots. 1.75.0 is the latest release (2026-09-21); AGP 9 support
+# landed in 1.x (#782, Jan 2026). See docs/ux/research/ROBORAZZI_SPIKE.md.
+roborazzi = "1.75.0"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "androidx-core-ktx" }
@@ -94,6 +99,8 @@ androidx-work-testing = { group = "androidx.work", name = "work-testing", versio
 robolectric = { group = "org.robolectric", name = "robolectric", version.ref = "robolectric" }
 turbine = { group = "app.cash.turbine", name = "turbine", version.ref = "turbine" }
 truth = { group = "com.google.truth", name = "truth", version.ref = "truth" }
+roborazzi = { group = "io.github.takahirom.roborazzi", name = "roborazzi", version.ref = "roborazzi" }
+roborazzi-compose = { group = "io.github.takahirom.roborazzi", name = "roborazzi-compose", version.ref = "roborazzi" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
@@ -110,3 +117,4 @@ kotlin-compose = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "ko
 # applies it by bare id instead.
 ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
 ktlint = { id = "org.jlleitschuh.gradle.ktlint", version.ref = "ktlint-gradle" }
+roborazzi = { id = "io.github.takahirom.roborazzi", version.ref = "roborazzi" }
