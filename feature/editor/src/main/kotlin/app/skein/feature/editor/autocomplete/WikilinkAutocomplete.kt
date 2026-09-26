@@ -1,5 +1,6 @@
 package app.skein.feature.editor.autocomplete
 
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
@@ -117,7 +118,18 @@ public fun WikilinkAutocompletePopup(
     ) {
         Surface(
             modifier = modifier.testTag(WIKILINK_AUTOCOMPLETE_TEST_TAG).width(240.dp),
-            tonalElevation = 4.dp,
+            // skein-xtov.23.7 (DS7, DESIGN_SYSTEM.md §5.3): no tonal
+            // elevation — was the `pending-DS7` allow-list entry in
+            // `NoShadowOrGradientTest`. This popup had no explicit `color`,
+            // so it relied entirely on the (now-removed) tonal tint to read
+            // as distinct from the page underneath; an explicit
+            // `surfaceContainer` plus the spec's 1 dp `outlineVariant`
+            // floating-layer border (§5.3 "floating layers... get their
+            // level's container colour plus a 1 dp outlineVariant border")
+            // keeps that same separation without elevation.
+            color = MaterialTheme.colorScheme.surfaceContainer,
+            border = BorderStroke(1.dp, MaterialTheme.colorScheme.outlineVariant),
+            tonalElevation = 0.dp,
         ) {
             Column {
                 state.suggestions.forEachIndexed { index, suggestion ->

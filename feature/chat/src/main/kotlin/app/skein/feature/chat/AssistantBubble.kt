@@ -147,8 +147,11 @@ public fun MarkdownWithCitations(
         )
         for (citation in citations.values.sortedBy { it.marker }) {
             if (isExcerptExpanded(citation.marker)) {
+                // skein-xtov.23.7 (DS7, DESIGN_SYSTEM.md §5.3): no shadow or
+                // tonal elevation — was the `pending-DS7` allow-list entry in
+                // `NoShadowOrGradientTest`.
                 Surface(
-                    tonalElevation = 2.dp,
+                    tonalElevation = 0.dp,
                     shape = RoundedCornerShape(4.dp),
                     modifier = Modifier.padding(top = 4.dp),
                 ) {

@@ -19,9 +19,7 @@ import androidx.compose.foundation.layout.safeDrawing
 import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
-import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
@@ -38,6 +36,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
+import app.skein.core.designsystem.components.SkeinDestructiveDialog
 import app.skein.core.designsystem.icons.SkeinIcons
 
 public const val MODELS_SCREEN_TEST_TAG: String = "app.skein.feature.models.ModelsScreen"
@@ -161,7 +160,11 @@ private fun ModelRow(
     }
 }
 
-/** LC-27 / `OBJECT_LIFECYCLE_SPEC.md` §9: name the model, say what is lost, repeat the verb. */
+/**
+ * LC-27 / `OBJECT_LIFECYCLE_SPEC.md` §9: name the model, say what is lost,
+ * repeat the verb. skein-xtov.23.7 (DS7): now [SkeinDestructiveDialog] —
+ * Cancel focused by default, TalkBack pane-title semantics, shadow-free.
+ */
 @Composable
 private fun DeleteModelDialog(
     model: ModelListItem,
@@ -171,17 +174,11 @@ private fun DeleteModelDialog(
     val consequence =
         "This frees ${humanSize(model.sizeBytes)}. To use it again, you'll need to import it again." +
             if (model.isDefault) " Chats will need another model." else ""
-    AlertDialog(
-        onDismissRequest = onDismiss,
-        title = { Text("Delete \u201C${model.displayName}\u201D?") },
-        text = { Text(consequence) },
-        confirmButton = {
-            TextButton(
-                onClick = onConfirm,
-                colors = ButtonDefaults.textButtonColors(contentColor = MaterialTheme.colorScheme.error),
-            ) { Text("Delete") }
-        },
-        dismissButton = { TextButton(onClick = onDismiss) { Text("Cancel") } },
+    SkeinDestructiveDialog(
+        title = "Delete \u201C${model.displayName}\u201D?",
+        consequence = consequence,
+        onConfirm = onConfirm,
+        onDismiss = onDismiss,
     )
 }
 

@@ -23,9 +23,15 @@ import java.io.File
  * tracking note left for whichever issue builds the real Lint module.
  *
  * skein-xtov.23.12 (DS14): extended with the rest of §14.9's list. Four
- * `Surface(tonalElevation = <n>.dp)` overlays predate `SkeinSnackbar`/DS7 and
- * are allow-listed below rather than fixed here — this bead adds guards, it
- * doesn't refactor screens.
+ * `Surface(tonalElevation = <n>.dp)` overlays predated `SkeinSnackbar`/DS7
+ * and were allow-listed below rather than fixed at the time — this bead
+ * added guards, it didn't refactor screens.
+ *
+ * skein-xtov.23.7 (DS7): the three `pending-DS7` entries (`AssistantBubble`,
+ * `GraphLegend`, `WikilinkAutocomplete`) are fixed now — each call site's
+ * `tonalElevation` literal is `0.dp` — so the allow-list below is gone;
+ * only `retireWave34` (out of DS7's scope, Wave 3/4's own timeline cleanup)
+ * remains.
  */
 class NoShadowOrGradientTest {
     private val forbidden =
@@ -42,14 +48,6 @@ class NoShadowOrGradientTest {
             // and "(", so they don't match either — only a direct `Snackbar(...)`
             // construction does.
             Regex("""\bSnackbar\s*\("""),
-        )
-
-    /** 2026-09-26, dated per DS14: pending DS7 (Wave 2, shadow-free overlays) — not a Wave 3/4 deletion. */
-    private val pendingDs7ElevationLiteral =
-        setOf(
-            "feature/chat/src/main/kotlin/app/skein/feature/chat/AssistantBubble.kt",
-            "feature/graph/src/main/kotlin/app/skein/feature/graph/GraphLegend.kt",
-            "feature/editor/src/main/kotlin/app/skein/feature/editor/autocomplete/WikilinkAutocomplete.kt",
         )
 
     /** 2026-09-26, dated per DS14: retire in Wave 3/4 — timeline's legacy chrome (DS6 adoption 3-10), not fixed here. */
@@ -83,7 +81,7 @@ class NoShadowOrGradientTest {
 
         val elevationOffenders =
             files
-                .filterNot { (_, rel) -> rel in retireWave34 || rel in pendingDs7ElevationLiteral }
+                .filterNot { (_, rel) -> rel in retireWave34 }
                 .flatMap { (file, _) ->
                     file
                         .readLines()

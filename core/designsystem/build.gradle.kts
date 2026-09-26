@@ -26,8 +26,8 @@
 plugins {
     alias(libs.plugins.android.library)
     alias(libs.plugins.kotlin.compose)
-    // skein-xtov.23.8 (DS8) / skein-xtov.23.9 (DS9): component screenshot
-    // tests (docs/ux/UX_TEST_PLAN.md).
+    // skein-xtov.23.7 (DS7) / skein-xtov.23.8 (DS8) / skein-xtov.23.9 (DS9):
+    // component screenshot tests (docs/ux/UX_TEST_PLAN.md).
     alias(libs.plugins.roborazzi)
 }
 
@@ -95,13 +95,13 @@ dependencies {
     // Context (androidx.test.ext.junit for ApplicationProvider).
     testImplementation(libs.robolectric)
     testImplementation(libs.androidx.test.ext.junit)
-    // skein-xtov.23.8 (DS8) / skein-xtov.23.9 (DS9): Compose UI tests +
-    // Roborazzi captures of the `components` package (same set as
-    // `:feature:models`; the explicit activity/coroutines-test entries pin
-    // versions the way that module's comments explain). `:testing-ui`
-    // test-depends back on this module for its preview-annotation test — a
-    // configuration-level cycle only, no task cycle (each side needs only
-    // the other's main classes).
+    // skein-xtov.23.7 (DS7) / skein-xtov.23.8 (DS8) / skein-xtov.23.9 (DS9):
+    // Compose UI tests + Roborazzi captures of the `components` package
+    // (same set as `:feature:models`; the explicit activity/coroutines-test
+    // entries pin versions the way that module's comments explain).
+    // `:testing-ui` test-depends back on this module for its
+    // preview-annotation test — a configuration-level cycle only, no task
+    // cycle (each side needs only the other's main classes).
     testImplementation(libs.roborazzi)
     testImplementation(libs.roborazzi.compose)
     testImplementation(project(":testing-ui"))

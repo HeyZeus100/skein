@@ -29,9 +29,16 @@ public fun GraphLegend(modifier: Modifier = Modifier) {
     val colors = rememberGraphColors()
     Surface(
         modifier = modifier.testTag(GraphTestTags.LEGEND),
+        // skein-xtov.23.7 (DS7, DESIGN_SYSTEM.md §5.3): no tonal elevation —
+        // was the `pending-DS7` allow-list entry in `NoShadowOrGradientTest`.
+        // `color` is already an explicit alpha'd literal, not
+        // `colorScheme.surface` itself, so Material's tonal-elevation tint
+        // never applied here in the first place (`ColorScheme
+        // .applyTonalElevation` only tints an exact `colorScheme.surface`
+        // match) — this line names the token, not a visual change.
         color = MaterialTheme.colorScheme.surface.copy(alpha = 0.92f),
         shape = MaterialTheme.shapes.small,
-        tonalElevation = 2.dp,
+        tonalElevation = 0.dp,
     ) {
         Column(
             modifier = Modifier.padding(8.dp),
