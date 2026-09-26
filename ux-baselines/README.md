@@ -160,6 +160,53 @@ Every PR that changes pixels carries, in its body under **UX evidence**:
 `Implemented redesigned chat.` is not evidence, with or without a passing
 build. A UI PR without the **UX evidence** section is not reviewed.
 
+## CI (bead UT-3)
+
+`.github/workflows/ux-screenshots.yml` runs `./gradlew --no-build-cache
+verifyRoborazziDebug --continue` for the seven Roborazzi-wired feature
+modules, on every PR that touches `feature/**`, `app/src/**`,
+`testing-ui/**`, `testing-fakes/**`, `ux-baselines/**` or the version
+catalog, and on every push to `main`. It also asserts a verify never
+modifies a golden (`git diff --exit-code -- ux-baselines/`) and enforces
+the §4.4 size budget. On failure it writes a job summary (mismatch count
+per module, worst first) and uploads `**/build/outputs/roborazzi/**` +
+`**/build/reports/roborazzi/**` as the `ux-screenshot-diffs` artifact.
+
+**Why non-blocking.** Roborazzi's native graphics come from
+`org.robolectric:nativeruntime-dist-compat`, one artifact bundling
+mac-aarch64/mac-x86_64/linux-x86_64/windows natives — nothing guarantees
+identical rendering across hosts, and the goldens above were recorded only
+on macOS arm64 (§4.2). The job runs `continue-on-error: true` from the day
+it lands so the first runs on `main` can measure real Mac↔Linux parity
+without blocking every PR on an unmeasured risk (`UX_TEST_PLAN.md` §4.3).
+No comparison tolerance is set up front — §4.3 prescribes none in advance —
+so this job stays an exact comparison on `ubuntu-latest` until the
+measurement says otherwise.
+
+**The flip criterion (§4.3).** After the coordinator reads the first
+`ubuntu-latest` runs against the committed goldens:
+
+- 0 differing images → stay on `ubuntu-latest`, no tolerance.
+- anti-aliasing-level differences only → stay on `ubuntu-latest`, add a
+  CI-only `changeThreshold` (0.001–0.01) read from a system property; the
+  Mac stays at 0.
+- larger differences → move the job to `macos-latest`.
+
+Then, once the Wave 3 shell has merged (shell goldens stop churning), 10
+consecutive green runs land on `main`, and no determinism bug is open
+against a screenshot test: flip `continue-on-error` to `false` and record
+the flip in the workflow's own comment and in `docs/TESTING.md`.
+
+**Fetching the diff artefact** from a failed run:
+
+```sh
+gh run download <run-id> -n ux-screenshot-diffs
+open ux-screenshot-diffs/feature/*/build/reports/roborazzi/index.html
+```
+
+`gh run list --workflow=ux-screenshots.yml` finds `<run-id>` if it isn't
+already at hand.
+
 ## What stays frozen
 
 `before/`, `device-before/`, `stage-h/` and `wave2/` are historical review
