@@ -49,7 +49,7 @@ import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.compose.LifecycleEventEffect
-import app.skein.core.designsystem.theme.SkeinMono
+import app.skein.core.designsystem.theme.rememberSkeinMarkdownStyle
 import app.skein.core.export.pdf.PdfExportService
 import app.skein.core.markdown.render.MarkdownStyle
 import app.skein.core.model.DocId
@@ -121,7 +121,7 @@ public fun NoteTab(
     onOpenGraph: (DocId) -> Unit = {},
     registerFlush: (suspend (Duration) -> Boolean) -> Unit = {},
     unregisterFlush: () -> Unit = {},
-    markdownStyle: MarkdownStyle = MarkdownStyle.Default,
+    markdownStyle: MarkdownStyle = rememberSkeinMarkdownStyle(),
     unlockState: StateFlow<UnlockState>? = null,
     unlockManager: UnlockManager? = null,
 ) {
@@ -172,25 +172,14 @@ public fun NoteTab(
     // opaque black (Compose Foundation's own default), which read as
     // dark-on-dark on the pane background. Wrapping the editor in its own
     // `Surface`, painted with the editor's dedicated surface token, gives it
-    // somewhere real to sit; deriving `markdownStyle`'s colors from that same
-    // token (rather than leaving the caller's default unresolved) is what
-    // actually fixes the text, since `Surface.contentColor` alone cannot
-    // reach `BasicTextField`'s `textStyle`. Only substitutes when the caller
-    // left `markdownStyle` at its module default — an explicit caller
-    // override (e.g. a future chat-bubble-style caller) passes through
-    // untouched.
+    // somewhere real to sit. `markdownStyle`'s default is now
+    // `rememberSkeinMarkdownStyle()` (skein-xtov.23.10), which already reads
+    // `onSurface` — the same value `editorColors.onSurface` forwards
+    // (§6.4: the editor's pair folded into the page colours) — so the text
+    // is themed correctly without this composable substituting into an
+    // explicit caller override the way the pre-DS10 `===
+    // MarkdownStyle.Default` check did.
     val editorColors = LocalSkeinEditorColors.current
-    val effectiveMarkdownStyle =
-        if (markdownStyle === MarkdownStyle.Default) {
-            markdownStyle.copy(
-                bodyColor = editorColors.onSurface,
-                mutedColor = editorColors.onSurfaceMuted,
-                // Code spans stay in Skein Mono inside Skein Sans prose (IA decision D4, skein-xtov.23.4).
-                codeFontFamily = SkeinMono,
-            )
-        } else {
-            markdownStyle
-        }
 
     val context = LocalContext.current
     var pendingSaveAsFormat by remember { mutableStateOf<SaveAsFormat?>(null) }
@@ -262,7 +251,7 @@ public fun NoteTab(
                     SkeinEditor(
                         state = state.editorState,
                         modifier = Modifier.fillMaxWidth(),
-                        markdownStyle = effectiveMarkdownStyle,
+                        markdownStyle = markdownStyle,
                         // bd skein-pnqo: without these two, SkeinEditor takes its
                         // wikilinkSuggest == null branch and never composes the
                         // `[[` popup at all (hardware-verified — see that bead).

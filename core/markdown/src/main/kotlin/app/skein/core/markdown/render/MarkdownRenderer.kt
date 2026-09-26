@@ -90,7 +90,7 @@ object MarkdownRenderer {
         when (block) {
             is Heading -> withStyle(style.headingStyle(block.level)) { appendInlines(block.inlines, style, citations) }
             is Paragraph -> appendInlines(block.inlines, style, citations)
-            is CodeBlock -> withStyle(style.codeStyle) { append(block.text) }
+            is CodeBlock -> withStyle(style.codeBlockStyle) { append(block.text) }
             is Quote -> appendQuote(block, style, citations)
             is BulletList -> appendListItems(block.items, style, citations, depth) { style.bulletMarker }
             is OrderedList -> {

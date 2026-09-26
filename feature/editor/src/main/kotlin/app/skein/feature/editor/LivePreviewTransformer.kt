@@ -168,14 +168,14 @@ private fun renderLine(
     when (line.fence) {
         FenceKind.OPEN, FenceKind.CLOSE -> {
             if (isActive) {
-                withSpan(builder, style.codeStyle) {
+                withSpan(builder, style.codeBlockStyle) {
                     for (k in line.start until line.end) appendRaw(k)
                 }
             }
             return
         }
         FenceKind.INSIDE -> {
-            withSpan(builder, style.codeStyle) {
+            withSpan(builder, style.codeBlockStyle) {
                 for (k in line.start until line.end) appendRaw(k)
             }
             return

@@ -1,6 +1,5 @@
 package app.skein.core.designsystem.theme
 
-import app.skein.core.designsystem.theme.GuardSupport.relativeToRepo
 import org.junit.Assert.assertFalse
 import org.junit.Assert.assertTrue
 import org.junit.Test
@@ -15,20 +14,19 @@ import org.junit.Test
  * here: its palette is stored as raw `0xAARRGGBB` `Long`s in
  * [SkeinColorHex]/`SkeinPalette` and only ever wrapped as `Color(p.someRole)`
  * (a variable, not a literal), so this guard never fires on the theme files.
+ *
+ * `core/markdown/.../MarkdownStyle.kt` no longer needs an allow-list entry
+ * either: skein-xtov.23.10 (DS10, Wave 2 markdown tokens) moved its colours
+ * out to `rememberSkeinMarkdownStyle()` here and left only named framework
+ * constants ([androidx.compose.ui.graphics.Color.Gray] etc.) in
+ * `MarkdownStyle.Default`, so this guard already covers it with no exception.
  */
 class NoHardCodedColorTest {
-    /** 2026-09-26, dated per DS14: pending DS10 (Wave 2, markdown tokens) — not fixed here, this bead adds guards only. */
-    private val pendingDs10 =
-        setOf(
-            "core/markdown/src/main/kotlin/app/skein/core/markdown/render/MarkdownStyle.kt",
-        )
-
     @Test
     fun `no hard-coded Color(0x…) literal outside the theme`() {
         val offenders =
             GuardSupport
                 .productionKotlinFiles("feature", "core/designsystem", "core/markdown")
-                .filterNot { it.relativeToRepo() in pendingDs10 }
                 .flatMap { file ->
                     file
                         .readLines()

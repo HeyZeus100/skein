@@ -33,6 +33,7 @@ import androidx.compose.ui.text.input.TransformedText
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
+import app.skein.core.designsystem.theme.rememberSkeinMarkdownStyle
 import app.skein.core.markdown.render.MarkdownStyle
 import app.skein.feature.editor.autocomplete.EditorAutocompleteHost
 import app.skein.feature.editor.autocomplete.Suggestion
@@ -59,9 +60,11 @@ import kotlin.math.roundToInt
  * known titles through [EditorState.knownWikilinkTitles].
  *
  * The [MarkdownStyle] argument threads the theme's color/typography
- * tokens through — the shell hands `SkeinColors` here, the chat bubble
- * renderer hands its own; `MarkdownStyle.Default` is the fallback used by
- * `SkeinEditorPreview`.
+ * tokens through; it defaults to `:core:designsystem`'s
+ * `rememberSkeinMarkdownStyle()` (skein-xtov.23.10), so `NoteTab` — this
+ * module's one real caller — gets the themed style without passing it
+ * explicitly. `MarkdownStyle.Default` (the neutral, unthemed value) is used
+ * only by `SkeinEditorReadOnlyPreview`.
  *
  * ## Wikilink autocomplete popup (`E7.I5`, bd `skein-zzu`)
  *
@@ -114,7 +117,7 @@ import kotlin.math.roundToInt
 public fun SkeinEditor(
     state: EditorState,
     modifier: Modifier = Modifier,
-    markdownStyle: MarkdownStyle = MarkdownStyle.Default,
+    markdownStyle: MarkdownStyle = rememberSkeinMarkdownStyle(),
     testTag: String = SKEIN_EDITOR_TEST_TAG,
     wikilinkSuggest: (suspend (String) -> List<Suggestion>)? = null,
     onCreateWikilink: suspend (String) -> Unit = {},

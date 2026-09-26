@@ -2,6 +2,15 @@
 // bundled fonts, extracted from `:feature:shell`. Depends on Compose only —
 // never on a feature module or `:core:vault` — so features can depend on it
 // without pulling in the shell.
+//
+// skein-xtov.23.10 (DS10): also depends on `:core:markdown` for
+// `rememberSkeinMarkdownStyle()` (theme/SkeinMarkdownStyle.kt). That module
+// must stay pure Kotlin/JVM (`app.skein.guard.isolation`, E7.I2) and declares
+// zero project dependencies of its own, so this is the only direction that
+// doesn't cycle: `:core:markdown` can never depend back on this Android
+// module. `api`, not `implementation`, since `rememberSkeinMarkdownStyle()`'s
+// return type is `:core:markdown`'s `MarkdownStyle` — a caller needs that
+// type on its own classpath, not just this function.
 plugins {
     alias(libs.plugins.android.library)
     alias(libs.plugins.kotlin.compose)
@@ -46,6 +55,7 @@ dependencies {
     implementation(libs.compose.ui.tooling.preview)
     implementation(libs.compose.foundation)
     implementation(libs.material3)
+    api(project(":core:markdown"))
 
     debugImplementation(libs.compose.ui.tooling)
 
