@@ -511,7 +511,23 @@ internal class InferenceEngineState(
             // skein-0ztk: scaffolding with parseSpecial=true, CONTENT with
             // parseSpecial=false, so a note containing the model's own control
             // token text cannot forge a chat turn.
-            val promptIds = ChatTemplating.tokenize(backend, model.model, ChatTemplating.segment(rendered, contents))
+            val layout = ChatTemplating.segmentDetailed(rendered, contents)
+            val tokenized = ChatTemplating.tokenizeDetailed(backend, model.model, layout.segments)
+            val promptIds = tokenized.ids
+            // skein-gg11.28, numbers only (spec §9): how the render was split
+            // and how many ids each side produced. `closed=true` is
+            // ChatTemplating's fail-closed path — the chrome went in as
+            // ordinary text and the answer will read like a raw continuation.
+            val chrome = layout.scaffoldSpans
+            val data = layout.contentSpans
+            val nChrome = tokenized.scaffoldIds
+            val nData = tokenized.contentIds
+            val closed = layout.failedClosed
+            val tmplFallback = renderedPrompt.usedFallback
+            SkeinLog.i(
+                TAG,
+                "prefill layout: chrome=$chrome data=$data n_chrome=$nChrome n_data=$nData closed=$closed tmpl_fallback=$tmplFallback",
+            )
 
             var nPast = 0
             var index = 0

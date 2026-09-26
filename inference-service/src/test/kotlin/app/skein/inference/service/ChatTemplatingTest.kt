@@ -229,6 +229,38 @@ class ChatTemplatingTest {
         assertEquals(rendered, segments.joinToString("") { it.text })
     }
 
+    // ------------------------------------------- layout report, skein-gg11.28
+
+    // The fail-closed path is silent by design (the header explains why it
+    // must degrade rather than refuse), but the service has to be able to say
+    // in numbers whether it happened: the Fold's first real answer looked
+    // exactly like chrome-as-text and nothing in the log could confirm or
+    // deny it.
+
+    @Test
+    fun `a clean split reports failedClosed false with its span counts`() {
+        val rendered = "<|im_start|>user\nhi<|im_end|>\n"
+
+        val layout = ChatTemplating.segmentDetailed(rendered, listOf("hi"))
+
+        assertEquals(false, layout.failedClosed)
+        assertEquals(2, layout.scaffoldSpans)
+        assertEquals(1, layout.contentSpans)
+        assertEquals(ChatTemplating.segment(rendered, listOf("hi")), layout.segments)
+    }
+
+    @Test
+    fun `a mutated content reports failedClosed true and no scaffold spans`() {
+        val rendered = "<|im_start|>user\nhello<|im_end|>\n"
+
+        val layout = ChatTemplating.segmentDetailed(rendered, listOf("  hello  "))
+
+        assertEquals(true, layout.failedClosed)
+        assertEquals(0, layout.scaffoldSpans)
+        assertEquals(1, layout.contentSpans)
+        assertEquals(rendered, layout.segments.joinToString("") { it.text })
+    }
+
     // ------------------------------------------------------------ tokenizing
 
     @Test
@@ -288,6 +320,20 @@ class ChatTemplatingTest {
         ChatTemplating.tokenize(backend, MODEL, listOf(Segment(SegmentKind.CONTENT, "")))
 
         assertTrue(backend.calls.isEmpty())
+    }
+
+    @Test
+    fun `tokenizeDetailed counts scaffold and content ids separately`() {
+        val backend = RecordingTokenizer()
+        val segments = ChatTemplating.segment("<|im_start|>user\nhi<|im_end|>", listOf("hi"))
+
+        val out = ChatTemplating.tokenizeDetailed(backend, MODEL, segments)
+
+        // RecordingTokenizer emits one id per character of each segment.
+        assertEquals("<|im_start|>user\n".length + "<|im_end|>".length, out.scaffoldIds)
+        assertEquals("hi".length, out.contentIds)
+        assertEquals(out.scaffoldIds + out.contentIds, out.ids.size)
+        assertEquals(ChatTemplating.tokenize(RecordingTokenizer(), MODEL, segments).toList(), out.ids.toList())
     }
 
     private companion object {

@@ -120,13 +120,35 @@ object ChatTemplating {
     fun segment(
         rendered: String,
         contents: List<String>,
-    ): List<Segment> {
+    ): List<Segment> = segmentDetailed(rendered, contents).segments
+
+    /**
+     * [segment]'s result plus the facts the service may log about the split —
+     * counts and a flag, never text. [failedClosed] is this file's fail-closed
+     * path. It is silent by design, and this is the one place it is reported:
+     * the Fold's first real answer (skein-gg11.28) read exactly like chrome
+     * tokenized as ordinary text, and nothing in the log could confirm or
+     * deny that.
+     */
+    class Segmentation(
+        val segments: List<Segment>,
+        val failedClosed: Boolean,
+    ) {
+        val scaffoldSpans: Int get() = segments.count { it.kind == SegmentKind.SCAFFOLD }
+        val contentSpans: Int get() = segments.count { it.kind == SegmentKind.CONTENT }
+    }
+
+    /** [segment], reporting whether it failed closed. */
+    fun segmentDetailed(
+        rendered: String,
+        contents: List<String>,
+    ): Segmentation {
         val segments = mutableListOf<Segment>()
         var cursor = 0
         for (content in contents) {
             if (content.isEmpty()) continue
             val at = rendered.indexOf(content, cursor)
-            if (at < 0) return failClosed(rendered)
+            if (at < 0) return Segmentation(failClosed(rendered), failedClosed = true)
             if (at > cursor) segments += Segment(SegmentKind.SCAFFOLD, rendered.substring(cursor, at))
             segments += Segment(SegmentKind.CONTENT, content)
             cursor = at + content.length
@@ -134,7 +156,7 @@ object ChatTemplating {
         if (cursor < rendered.length) {
             segments += Segment(SegmentKind.SCAFFOLD, rendered.substring(cursor))
         }
-        return segments
+        return Segmentation(segments, failedClosed = false)
     }
 
     /**
@@ -148,8 +170,24 @@ object ChatTemplating {
         backend: LlamaBackend,
         model: Long,
         segments: List<Segment>,
-    ): IntArray {
+    ): IntArray = tokenizeDetailed(backend, model, segments).ids
+
+    /** [tokenize]'s ids plus how many came from each kind of segment (counts only). */
+    class TokenizedPrompt(
+        val ids: IntArray,
+        val scaffoldIds: Int,
+        val contentIds: Int,
+    )
+
+    /** [tokenize], reporting the per-kind id counts the service logs. */
+    fun tokenizeDetailed(
+        backend: LlamaBackend,
+        model: Long,
+        segments: List<Segment>,
+    ): TokenizedPrompt {
         val ids = mutableListOf<Int>()
+        var scaffoldIds = 0
+        var contentIds = 0
         var first = true
         for (segment in segments) {
             if (segment.text.isEmpty()) continue
@@ -161,9 +199,10 @@ object ChatTemplating {
                     parseSpecial = segment.kind == SegmentKind.SCAFFOLD,
                 )
             tokens.forEach { ids += it }
+            if (segment.kind == SegmentKind.SCAFFOLD) scaffoldIds += tokens.size else contentIds += tokens.size
             first = false
         }
-        return ids.toIntArray()
+        return TokenizedPrompt(ids.toIntArray(), scaffoldIds, contentIds)
     }
 
     /** The whole render as content: nothing gets `parseSpecial = true`. See this file's header. */
