@@ -6,6 +6,7 @@ import android.os.Build
 import android.os.Bundle
 import android.view.WindowManager
 import androidx.activity.SystemBarStyle
+import androidx.activity.compose.BackHandler
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
@@ -739,6 +740,9 @@ class MainActivity : FragmentActivity() {
                 // on the primary pane — then dismiss the overlay, same as
                 // `onClose` already did.
                 graphDocId?.let { docId ->
+                    // UX-P0-04 (Stage H7): Back closes the overlay instead of
+                    // leaving the app. Wave 3 replaces overlays with routes.
+                    BackHandler { graphDocId = null }
                     GraphScreen(
                         docId = docId,
                         vaultRepository = session.repository,
@@ -765,6 +769,7 @@ class MainActivity : FragmentActivity() {
                 // single `overlay` slot `SkeinApp`'s own doc says this
                 // module supplies real screens through.
                 if (modelsOverlayOpen && models != null) {
+                    BackHandler { modelsOverlayOpen = false }
                     ModelsScreen(
                         models = modelListItems,
                         onSetDefault = { id ->
