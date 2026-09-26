@@ -116,7 +116,7 @@ The geometry is measured, not assumed (`docs/ux/audit/DEVICE_BEFORE_PASS.md`): t
 |---|---|---|---|---|---|
 | **Compact** (Fold outer, phones, split-screen halves) | **Modal drawer** from ☰ in the top bar. No bottom bar (it would fight the composer and the keyboard). | 1 | Conversation, full-width composer | List → full-screen item | Canvas; node detail as a sheet |
 | **Compact height** (outer landscape; any window < 600 dp tall) | Modal drawer | 1 | as Compact | as Compact | as Compact |
-| **Medium** (larger Display size on the inner screen, tablets portrait) | **Navigation rail** (collapsed) | 1 (Knowledge may use 2 — prototype) | as Compact, max readable width ~720 dp, centred | List → item | Canvas + side sheet |
+| **Medium** (larger Display size on the inner screen, tablets portrait) | **Navigation rail** (collapsed) | 1 (Knowledge may use 2 — prototype) | as Compact, prose capped at 576 dp (~79 characters), centred | List → item | Canvas + side sheet |
 | **Expanded** (Fold inner, any orientation) | **Navigation rail** (80 dp) | 2 | **Conversations \| Chat** | **Knowledge list \| Item** | **Canvas \| Selected node** |
 | **Large** (≥ 1200 dp: tablets landscape, desktop windows) | Expanded rail or permanent drawer | 3 | Conversations \| Chat \| Context | List \| Item \| Connections | Canvas \| Node \| Related |
 
@@ -336,6 +336,8 @@ Wave 2 design system → Wave 3 navigation shell (this IA, with today's screens 
 ## 8a. Revisions after spec review (2026-09-26)
 
 `CHAT_UX_SPEC.md` §23 proposed six refinements; all are adopted above: ✎ New chat (not ⌕) in the Compact chat header, with the palette reached from the drawer's ⌕ field and `/`; date groups *Today · Yesterday · Previous 7 days · Previous 30 days · by month*; regenerate only the latest answer in v1; the header's model label means "answers next" until per-chat models exist; a Model sheet (persona row only once personas exist); chat search on Compact through the palette's *Chats* section.
+
+`DESIGN_SYSTEM.md` §18 proposed five more; all adopted: prose width capped at **576 dp** on every window class (720 dp was ~99 characters per line); in chat history the ⋮ is visible on the selected row and on hover/focus, with long-press and TalkBack actions everywhere (no column of identical icons); a visible author label on assistant turns only; the emoji in this document's sketches are placeholders for the design system's icon set; the Expanded extra pane (context inspector / Connections) is **320 dp**, keeping the chat ≥ 420 dp at stock density.
 
 ## 9. Decisions needing owner sign-off (they amend spec §8)
 
