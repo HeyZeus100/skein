@@ -179,18 +179,73 @@ identical rendering across hosts, and the goldens above were recorded only
 on macOS arm64 (§4.2). The job runs `continue-on-error: true` from the day
 it lands so the first runs on `main` can measure real Mac↔Linux parity
 without blocking every PR on an unmeasured risk (`UX_TEST_PLAN.md` §4.3).
-No comparison tolerance is set up front — §4.3 prescribes none in advance —
-so this job stays an exact comparison on `ubuntu-latest` until the
-measurement says otherwise.
 
-**The flip criterion (§4.3).** After the coordinator reads the first
-`ubuntu-latest` runs against the committed goldens:
+**The §4.3 measurement (bead UT-3b) and the chosen tolerance.** The first
+`ubuntu-latest` run against these goldens (GitHub run `36277942699`)
+differed only on `:feature:models` (8/50), `:feature:graph` (9/32) and
+`:feature:shell` (5/306) — chat/editor/settings/timeline matched exactly.
+Every differing pixel was anti-aliasing on graph canvas lines or a rounding
+difference across a whole translucent fill (the graph legend surface, a
+disabled button container, the drawer scrim), never a layout change. That
+run's `compare.outputDir` was flat (see "A `compare`/`verify` bug this
+found" below), so only the last device processed per state survived on
+disk; measuring those (Pillow, `com.dropbox.differ.Color.distance`'s own
+metric — each RGBA channel normalised `0f..1f`, Euclidean over the four
+channels) gave:
 
-- 0 differing images → stay on `ubuntu-latest`, no tolerance.
-- anti-aliasing-level differences only → stay on `ubuntu-latest`, add a
-  CI-only `changeThreshold` (0.001–0.01) read from a system property; the
-  Mac stays at 0.
-- larger differences → move the job to `macos-latest`.
+| Module | Image | Max distance | p99.9 |
+|---|---|---|---|
+| `:feature:models` | `models__{light,dark}__fs100` (`fold-inner-1007-land`) | 0.01176 | 0.00555 |
+| `:feature:graph` | `graph__{light,dark}__fs100` (`fold-inner-1007{,-land}`) | 0.00961 | 0.00679 |
+| `:feature:shell` | `shell-drawer-open__{light,dark}__fs100` (`fold-outer-524`) | 0.00961 | 0.00392 |
+
+(Roborazzi's own library default, `SimpleImageComparator(maxDistance =
+0.007f)`, is why the previously-implicit default still failed some of
+these — its comparator is tighter than several of the anti-aliased pixels
+above.) `:testing-ui`'s `captureUx()` (`CaptureUx.kt`) now sets
+`RoborazziOptions.CompareOptions(imageComparator = SimpleImageComparator(
+maxDistance = 0.02f, hShift = 0, vShift = 0))` for every module's
+`compare`/`verify` — comfortably above the measured max (≈1.7×) for the
+images this run could still evidence, since a stale `compare.outputDir`
+means the other 16 of the 22 total mismatches from that run were
+overwritten before they could be measured (below); reproved by a
+perturbation test (a 20×20 patch shifted +60/255 on each channel in a
+committed golden) failing `verifyRoborazziDebug`, then passing again once
+restored. `hShift`/`vShift` stay `0`: no pixel-shift tolerance, only
+colour. The same 0.02 applies on the Mac too (`captureUx` is the one
+shared call site for all seven modules) — it does not loosen real-change
+detection there, since the Mac's own record vs. verify distance is 0.
+
+**A `compare`/`verify` bug this found and fixed.** Every module's
+`roborazzi { compare { outputDir } }` pointed at one flat directory
+(`build/outputs/roborazzi`, no device subfolder). Roborazzi only
+reconstructs a golden's device subdirectory under a *built-in*
+directory-encoding naming strategy; ours is the explicit relative path
+`filePathStrategy=relativePathFromRoborazziContextOutputDirectory` needs
+(bead UT-2), so that mirroring never applied — the same mechanism the
+`roborazzi.dumpUiTree` note above already flagged for its sidecar files,
+but it turns out to flatten the main `_actual.png`/`_compare.png` outputs
+the same way. A parameterised test's five devices for one state+theme
+wrote the same flat filename, so only the last device processed survived
+on disk (this is why the first `ubuntu-latest` run's `ux-screenshot-diffs`
+artifact held far fewer images than its reported mismatch counts). The
+pass/fail result itself was never affected — each device's comparison
+still ran and was still counted — only which image was left to inspect
+afterward. Fixed in `captureUx()`: each call's `RoborazziOptions` now also
+sets `compareOptions.outputDirectoryPath` to `<the default compare
+directory>/<device>`, so `compare`/`verify` write
+`<device>/<state>__<theme>__fsNNN_{actual,compare}.png`, mirroring the
+golden layout instead of colliding.
+
+**The flip criterion (§4.3).** After the coordinator reads a full
+`ubuntu-latest` run (all 22 previously-flattened images now measurable)
+against the committed goldens under the tolerance above:
+
+- 0 differing images, or differences that stay under the measured margin
+  above → stay on `ubuntu-latest` at `maxDistance = 0.02f`.
+- a real, larger difference surfaces → re-measure and either raise the
+  tolerance (if still anti-aliasing/rounding) or move the job to
+  `macos-latest` (if not).
 
 Then, once the Wave 3 shell has merged (shell goldens stop churning), 10
 consecutive green runs land on `main`, and no determinism bug is open
