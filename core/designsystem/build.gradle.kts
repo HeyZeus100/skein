@@ -11,9 +11,18 @@
 // module. `api`, not `implementation`, since `rememberSkeinMarkdownStyle()`'s
 // return type is `:core:markdown`'s `MarkdownStyle` — a caller needs that
 // type on its own classpath, not just this function.
+//
+// skein-xtov.23.8 (DS8): the `components` package's behaviour/semantics
+// tests and screenshots need Roborazzi + `:testing-ui`, wired exactly like
+// the feature modules (skein-xtov.23.16's `roborazzi { outputDir }`, so the
+// goldens land in ux-baselines/core-designsystem/). `compare { outputDir }`
+// is `@ExperimentalRoborazziApi` — the same build-script opt-in they use.
+@file:OptIn(com.github.takahirom.roborazzi.ExperimentalRoborazziApi::class)
+
 plugins {
     alias(libs.plugins.android.library)
     alias(libs.plugins.kotlin.compose)
+    alias(libs.plugins.roborazzi)
 }
 
 android {
@@ -44,6 +53,13 @@ android {
     }
 }
 
+roborazzi {
+    outputDir.set(rootProject.layout.projectDirectory.dir("ux-baselines/core-designsystem"))
+    compare {
+        outputDir.set(layout.buildDirectory.dir("outputs/roborazzi"))
+    }
+}
+
 dependencies {
     // Not used directly: pins the transitive `androidx.core` to the verified
     // version every other module declares (Compose alone resolves older,
@@ -68,4 +84,16 @@ dependencies {
     // Context (androidx.test.ext.junit for ApplicationProvider).
     testImplementation(libs.robolectric)
     testImplementation(libs.androidx.test.ext.junit)
+    // skein-xtov.23.8 (DS8): Compose UI tests + Roborazzi captures of the
+    // `components` package (same set as `:feature:models`; the explicit
+    // activity/coroutines-test entries pin versions the way that module's
+    // comments explain). `:testing-ui` test-depends back on this module for
+    // its preview-annotation test — a configuration-level cycle only, no
+    // task cycle (each side needs only the other's main classes).
+    testImplementation(libs.roborazzi)
+    testImplementation(libs.roborazzi.compose)
+    testImplementation(project(":testing-ui"))
+    testImplementation(libs.compose.ui.test.junit4)
+    testImplementation(libs.androidx.activity.compose)
+    testImplementation(libs.kotlinx.coroutines.test)
 }
