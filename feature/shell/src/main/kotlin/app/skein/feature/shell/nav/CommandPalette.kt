@@ -17,10 +17,9 @@ import app.skein.feature.shell.testing.ShellTestTags
 /**
  * The `/` command palette (spec §8.2): [commands] — already filtered by
  * [CommandBarState.paletteCommands] as the user types after the leading
- * `/` — rendered as a list below [CommandBar]. Tapping a row fills the
- * command bar with `/<keyword> ` via [onSelect], leaving the argument (e.g.
- * a note title) to be typed next; [Command.run] itself still only fires on
- * Enter ([CommandBarState.onSubmit]).
+ * `/` — rendered as a list below [CommandBar]. Tapping a row runs that
+ * command with no argument via [onSelect] (`/new note` makes an "Untitled"
+ * note); Enter ([CommandBarState.onSubmit]) runs a typed `/<keyword> arg`.
  */
 @Composable
 fun CommandPalette(

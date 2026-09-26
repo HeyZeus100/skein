@@ -51,8 +51,10 @@ import app.skein.core.inference.models.ImportProgress
 import app.skein.core.inference.models.ImportSource
 import app.skein.core.inference.models.describe
 import app.skein.core.model.DocId
+import app.skein.core.model.DocumentKind
 import app.skein.core.model.EngineState
 import app.skein.core.model.ModelStatus
+import app.skein.core.model.NewDocument
 import app.skein.core.vault.key.PassphraseKeyExport
 import app.skein.core.vault.session.UnlockState
 import app.skein.feature.chat.ChatScreen
@@ -702,10 +704,20 @@ class MainActivity : FragmentActivity() {
             },
             timelinePane = { expanded, onEntryOpen, onEntryPin ->
                 if (expanded) {
+                    // UX-P0-16: the timeline's New chat / New note buttons create
+                    // and open (pinned; SkeinApp opens a chat as a chat).
+                    val create: (DocumentKind, String) -> Unit = { kind, title ->
+                        coroutineScope.launch {
+                            val document = session.repository.createDocument(NewDocument(kind, title, bodyMd = ""))
+                            onEntryPin(document.id, document.title)
+                        }
+                    }
                     TimelineScreen(
                         state = timelinePaneState,
                         onEntryClick = { document -> onEntryOpen(document.id, document.title) },
                         onEntryLongPress = { document -> onEntryPin(document.id, document.title) },
+                        onNewNote = { create(DocumentKind.NOTE, "Untitled") },
+                        onNewChat = { create(DocumentKind.CHAT, "Chat") },
                         expanded = true,
                         modifier = Modifier.fillMaxSize(),
                     )

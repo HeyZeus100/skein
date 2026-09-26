@@ -4,6 +4,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalFocusManager
 import kotlinx.coroutines.launch
 
 /**
@@ -33,6 +34,7 @@ fun CommandBarHost(
     modifier: Modifier = Modifier,
 ) {
     val scope = rememberCoroutineScope()
+    val focusManager = LocalFocusManager.current
 
     Column(modifier = modifier) {
         CommandBar(
@@ -56,10 +58,15 @@ fun CommandBarHost(
         if (navState.isCommand) {
             CommandPalette(
                 commands = commandBarState.paletteCommands,
+                // UX-P0-16: a tapped row runs its command (it used to only
+                // fill "/chat " and then show "No matching commands").
                 onSelect = { command ->
-                    val filled = "/${command.keyword} "
-                    navState.setQuery(filled)
-                    commandBarState.onQueryChanged(filled)
+                    scope.launch {
+                        command.run("")
+                        navState.clear()
+                        commandBarState.onQueryChanged("")
+                        focusManager.clearFocus()
+                    }
                 },
             )
         } else if (commandBarState.results.isNotEmpty()) {
