@@ -1,3 +1,8 @@
+// skein-xtov.23.16 (UT-2): `roborazzi.compare { outputDir }` below is
+// `@ExperimentalRoborazziApi` (checked with `javap`); this is the standard
+// build-script-scoped opt-in, not a suppression of a real warning elsewhere.
+@file:OptIn(com.github.takahirom.roborazzi.ExperimentalRoborazziApi::class)
+
 plugins {
     alias(libs.plugins.android.library)
     alias(libs.plugins.kotlin.compose)
@@ -36,6 +41,18 @@ android {
             // resources (fonts) on the classpath — same as every other module.
             isIncludeAndroidResources = true
         }
+    }
+}
+
+// skein-xtov.23.16 (UT-2), docs/ux/UX_TEST_PLAN.md §4.1: committed goldens
+// live under the repo-root ux-baselines/feature-timeline/ (one directory per
+// module); compare/verify write their _compare/_actual pairs into this
+// module's own git-ignored build/ dir, so `git status ux-baselines/` only
+// ever shows a deliberate record (never a stray compare run).
+roborazzi {
+    outputDir.set(rootProject.layout.projectDirectory.dir("ux-baselines/feature-timeline"))
+    compare {
+        outputDir.set(layout.buildDirectory.dir("outputs/roborazzi"))
     }
 }
 

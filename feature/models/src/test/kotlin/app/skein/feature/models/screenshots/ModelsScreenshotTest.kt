@@ -101,7 +101,12 @@ class ModelsScreenshotTest(
         }
         composeRule.onNodeWithText("Delete").performClick()
         composeRule.waitForIdle()
-        captureScreenRoboImage("build/outputs/roborazzi/${spec.device.dir}/models-delete-confirm${spec.suffix}.png")
+        // A whole-screen capture (the confirmation dialog floats in its own
+        // window, off `composeRule.onRoot()`), so this bypasses `captureUx` —
+        // but still resolves against the module's `roborazzi.outputDir` via
+        // `filePathStrategy` (docs/ux/UX_TEST_PLAN.md §3.5/§4.1), like every
+        // other capture in this module.
+        captureScreenRoboImage("${spec.device.dir}/models-delete-confirm${spec.nameSuffix}.png")
     }
 
     companion object {

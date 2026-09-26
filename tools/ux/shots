@@ -1,0 +1,292 @@
+#!/usr/bin/env bash
+#
+# skein-xtov.23.16 / skein-xtov.23.22 (UT-2 / ML-6): the Mac UX loop's
+# wrapper over the Roborazzi Gradle commands in
+# docs/ux/MAC_UX_LAB_PLAN.md §4.2, so nobody retypes
+# `--no-build-cache`/`-Proborazzi.test.*`/`rm -rf build/intermediates/roborazzi`
+# by hand. It runs *only* on the Mac (docs/ux/UX_TEST_PLAN.md §4.2: "the Mac
+# only, never CI") and never touches `adb` or an emulator (`DEVICE_RUNNER.md`).
+#
+# Usage:
+#   tools/ux/shots smoke   [<module>] [--tests <pattern>]
+#   tools/ux/shots compare [<module>] [--tests <pattern>]
+#   tools/ux/shots verify  [<module>] [--tests <pattern>]
+#   tools/ux/shots record  <module> (--tests <pattern> | --all)
+#   tools/ux/shots open    [<module>]
+#   tools/ux/shots watch   <module> <pattern>
+#
+# <module> is one of: chat editor graph models settings shell timeline
+# (the seven Roborazzi-wired feature modules). Omit it on smoke/compare/verify
+# to run every module in one invocation.
+#
+# Record-scope guard (UX_TEST_PLAN.md §4.2: "an implementer records only the
+# states its bead names"): `record` refuses to run without either `--tests
+# <pattern>` (the normal case — a bead's record scope) or the explicit
+# `--all` (a full re-record, e.g. a design-token change that legitimately
+# moves every image, or this bead's own initial commit under the new naming).
+# There is no third way to skip this guard.
+#
+# Every Gradle invocation redirects straight to a log file
+# (`.agent-logs/ux/<UTC>-<command>.log`) and the *shell's* exit code ($?) is
+# what this script checks and propagates — never a pipe (`| tee`, `| grep`)
+# into something that could swallow Gradle's real exit status.
+#
+# Requires JAVA_HOME set to a JDK 17 (see docs/TESTING.md); does not set it
+# for you since the path is machine-specific.
+set -euo pipefail
+
+repo_root="$(cd "$(dirname "${BASH_SOURCE[0]}")/../.." && pwd)"
+cd "$repo_root"
+
+log_dir=".agent-logs/ux"
+mkdir -p "$log_dir"
+
+# All seven Roborazzi-wired feature modules (docs/ux/research/ROBORAZZI_SPIKE.md
+# §2; `:feature:onboarding`/`:feature:personas` have no screenshot tests yet).
+all_modules="chat editor graph models settings shell timeline"
+
+usage() {
+  cat >&2 <<'USAGE'
+Usage:
+  tools/ux/shots smoke   [<module>] [--tests <pattern>]
+  tools/ux/shots compare [<module>] [--tests <pattern>]
+  tools/ux/shots verify  [<module>] [--tests <pattern>]
+  tools/ux/shots record  <module> (--tests <pattern> | --all)
+  tools/ux/shots open    [<module>]
+  tools/ux/shots watch   <module> <pattern>
+
+<module>: chat editor graph models settings shell timeline
+USAGE
+  exit 1
+}
+
+# Validates a module short name and echoes it back (fail-closed: an unknown
+# name is a hard error, never silently ignored).
+check_module() {
+  local m="$1"
+  for known in $all_modules; do
+    if [[ "$m" == "$known" ]]; then
+      echo "$m"
+      return 0
+    fi
+  done
+  echo "shots: unknown module '$m' (expected one of: $all_modules)" >&2
+  exit 1
+}
+
+log_path() {
+  local command="$1"
+  local stamp
+  stamp="$(date -u +%Y%m%dT%H%M%SZ)"
+  echo "$log_dir/${stamp}-${command}.log"
+}
+
+# Runs a Gradle command with output redirected straight to a log file (never
+# piped through anything that could mask its exit code), reports the log
+# path and EXIT= line the way every other agent-run Gradle command in this
+# repo does, and returns Gradle's own exit status.
+run_gradle() {
+  local command_name="$1"
+  shift
+  local log
+  log="$(log_path "$command_name")"
+  echo "shots: ./gradlew $* > $log 2>&1" >&2
+  local exit_code=0
+  ./gradlew "$@" >"$log" 2>&1 || exit_code=$?
+  echo "shots: EXIT=$exit_code (log: $log)" >&2
+  return "$exit_code"
+}
+
+# Parses the trailing "[<module>] [--tests <pattern>]" shape smoke/compare/
+# verify share. Sets the globals `module` (empty means "every module") and
+# `tests_pattern` (empty means "no --tests filter").
+parse_module_and_tests() {
+  module=""
+  tests_pattern=""
+  while [[ $# -gt 0 ]]; do
+    case "$1" in
+      --tests)
+        [[ $# -ge 2 ]] || {
+          echo "shots: --tests needs a pattern" >&2
+          exit 1
+        }
+        tests_pattern="$2"
+        shift 2
+        ;;
+      --tests=*)
+        tests_pattern="${1#--tests=}"
+        shift
+        ;;
+      -*)
+        echo "shots: unknown flag '$1'" >&2
+        exit 1
+        ;;
+      *)
+        [[ -z "$module" ]] || {
+          echo "shots: unexpected extra argument '$1'" >&2
+          exit 1
+        }
+        module="$(check_module "$1")"
+        shift
+        ;;
+    esac
+  done
+}
+
+# smoke / compare / verify share everything except the Roborazzi task-type
+# property; `""` (smoke) means "run the plain test task, write and compare
+# nothing" (docs/ux/research/ROBORAZZI_SPIKE.md §3).
+run_tiered() {
+  local command_name="$1" # smoke | compare | verify
+  local task_property="$2" # "" | roborazzi.test.compare | roborazzi.test.verify
+  shift 2
+  parse_module_and_tests "$@"
+
+  local gradle_args=(--no-build-cache)
+  if [[ -z "$module" ]]; then
+    # Every module in one invocation. compare/verify have root aggregate
+    # tasks (MAC_UX_LAB_PLAN.md §4.2); smoke has none, so list every
+    # module's plain test task explicitly.
+    if [[ "$command_name" == "smoke" ]]; then
+      for m in $all_modules; do
+        gradle_args+=(":feature:$m:testDebugUnitTest")
+      done
+    else
+      gradle_args+=("${command_name}RoborazziDebug")
+    fi
+    gradle_args+=(--continue)
+  else
+    gradle_args+=(":feature:$module:testDebugUnitTest" --continue)
+    [[ -n "$task_property" ]] && gradle_args+=("-P${task_property}=true")
+  fi
+  [[ -n "$tests_pattern" ]] && gradle_args+=(--tests "$tests_pattern")
+
+  run_gradle "$command_name" "${gradle_args[@]}"
+}
+
+cmd_record() {
+  local module=""
+  local tests_pattern=""
+  local record_all=0
+  while [[ $# -gt 0 ]]; do
+    case "$1" in
+      --tests)
+        [[ $# -ge 2 ]] || {
+          echo "shots: --tests needs a pattern" >&2
+          exit 1
+        }
+        tests_pattern="$2"
+        shift 2
+        ;;
+      --tests=*)
+        tests_pattern="${1#--tests=}"
+        shift
+        ;;
+      --all)
+        record_all=1
+        shift
+        ;;
+      -*)
+        echo "shots: unknown flag '$1'" >&2
+        exit 1
+        ;;
+      *)
+        [[ -z "$module" ]] || {
+          echo "shots: unexpected extra argument '$1'" >&2
+          exit 1
+        }
+        module="$(check_module "$1")"
+        shift
+        ;;
+    esac
+  done
+
+  [[ -n "$module" ]] || {
+    echo "shots: 'record' needs a <module>" >&2
+    usage
+  }
+  if [[ -n "$tests_pattern" && "$record_all" -eq 1 ]]; then
+    echo "shots: pass --tests OR --all, not both" >&2
+    exit 1
+  fi
+  if [[ -z "$tests_pattern" && "$record_all" -eq 0 ]]; then
+    echo "shots: refusing to record — pass --tests '<pattern>' to record a" \
+      "bead's record scope, or --all to record every screenshot test in" \
+      "this module (docs/ux/UX_TEST_PLAN.md §4.2's record-scope rule)" >&2
+    exit 1
+  fi
+
+  echo "shots: git status before recording (for review, not a gate):" >&2
+  git status --short >&2 || true
+
+  # The build-cache gotcha (MAC_UX_LAB_PLAN.md §4.3): a cached record run
+  # restores an earlier run's files, including stale *_compare.png. Clean
+  # intermediates and outputs, and always --no-build-cache.
+  rm -rf "feature/$module/build/intermediates/roborazzi" "feature/$module/build/outputs/roborazzi"
+
+  local gradle_args=(--no-build-cache ":feature:$module:testDebugUnitTest" "-Proborazzi.test.record=true")
+  [[ -n "$tests_pattern" ]] && gradle_args+=(--tests "$tests_pattern")
+
+  local exit_code=0
+  run_gradle record "${gradle_args[@]}" || exit_code=$?
+
+  echo "shots: git status --short ux-baselines/ after recording — every" \
+    "changed path must be inside the record scope you intended:" >&2
+  git status --short ux-baselines/ >&2 || true
+
+  return "$exit_code"
+}
+
+cmd_open() {
+  local module="${1:-}"
+  if [[ -n "$module" ]]; then
+    module="$(check_module "$module")"
+    local report="feature/$module/build/reports/roborazzi/index.html"
+    [[ -f "$report" ]] || {
+      echo "shots: no report at $report yet (run 'shots compare' or 'shots verify' first)" >&2
+      exit 1
+    }
+    open "$report"
+    return 0
+  fi
+  local opened=0
+  for m in $all_modules; do
+    local report="feature/$m/build/reports/roborazzi/index.html"
+    if [[ -f "$report" ]]; then
+      open "$report"
+      opened=1
+    fi
+  done
+  [[ "$opened" -eq 1 ]] || echo "shots: no reports found under any feature/*/build/reports/roborazzi/" >&2
+}
+
+cmd_watch() {
+  [[ $# -eq 2 ]] || {
+    echo "shots: 'watch' needs <module> <pattern>" >&2
+    usage
+  }
+  local module tests_pattern
+  module="$(check_module "$1")"
+  tests_pattern="$2"
+  # Gradle's own continuous build re-runs the task on every source change
+  # (MAC_UX_LAB_PLAN.md §4.5); this one command stays in the foreground
+  # until Ctrl-C, so it is not routed through run_gradle's one-shot log file.
+  ./gradlew --continuous --no-build-cache ":feature:$module:testDebugUnitTest" \
+    --tests "$tests_pattern" -Proborazzi.test.compare=true
+}
+
+[[ $# -ge 1 ]] || usage
+command_name="$1"
+shift
+case "$command_name" in
+  smoke) run_tiered smoke "" "$@" ;;
+  compare) run_tiered compare roborazzi.test.compare "$@" ;;
+  verify) run_tiered verify roborazzi.test.verify "$@" ;;
+  record) cmd_record "$@" ;;
+  open) cmd_open "$@" ;;
+  watch) cmd_watch "$@" ;;
+  *)
+    echo "shots: unknown command '$command_name'" >&2
+    usage
+    ;;
+esac

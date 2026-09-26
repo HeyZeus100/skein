@@ -30,13 +30,20 @@ fun skeinComposeRule(): AndroidComposeTestRule<ActivityScenarioRule<RoborazziAct
 }
 
 /**
- * Captures this node to `build/outputs/roborazzi/<device>/<screen><suffix>.png`.
+ * Captures this node to
+ * `<device>/<stateId>__<theme>__fs<NNN>.png` (docs/ux/UX_TEST_PLAN.md §3.5), a
+ * path *relative to the Roborazzi output directory* — resolved by each
+ * module's `roborazzi { outputDir.set(...) }` (bead UT-2) plus
+ * `roborazzi.record.filePathStrategy=relativePathFromRoborazziContextOutputDirectory`
+ * in the root `gradle.properties`, which is what makes a relative
+ * `filePath` here resolve against that directory instead of the JVM's
+ * working directory (`FileWithRecordFilePathStrategy`, roborazzi-core 1.75.0).
  * A no-op unless Gradle runs with `-Proborazzi.test.record=true` (or
  * `verify`/`compare`); plain `testDebugUnitTest` still composes the screen.
  */
 fun SemanticsNodeInteraction.captureUx(
     spec: UxSpec,
-    screen: String,
+    stateId: String,
 ) {
-    captureRoboImage("build/outputs/roborazzi/${spec.device.dir}/$screen${spec.suffix}.png")
+    captureRoboImage("${spec.device.dir}/$stateId${spec.nameSuffix}.png")
 }
