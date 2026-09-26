@@ -8,8 +8,12 @@ import kotlin.math.pow
  * WCAG 2.x relative-luminance contrast ratio, computed directly from packed
  * `0xAARRGGBB` values (see [SkeinColorHex]). Pure arithmetic — no Compose or
  * Android APIs — so it can run as a plain JVM unit test with no Robolectric.
+ *
+ * skein-xtov.23.19 (UT-5): widened from `internal` to public so `:testing-ui`'s
+ * token-contrast helper (`ContrastAssertions.kt`) can call [ratio] directly
+ * instead of re-implementing the same luminance math a second time.
  */
-internal object WcagContrast {
+object WcagContrast {
     /** Contrast ratio of two colors, always ≥ 1.0 (order of arguments doesn't matter). */
     fun ratio(
         a: Long,

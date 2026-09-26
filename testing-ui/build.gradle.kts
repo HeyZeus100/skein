@@ -1,5 +1,10 @@
 plugins {
     alias(libs.plugins.android.library)
+    // skein-xtov.23.19 (UT-5): `RecompositionCounter.Track` is a `@Composable`
+    // function other modules call — it needs the Compose compiler plugin
+    // applied here too, not just where it's consumed (same reason
+    // `:core:designsystem` applies it).
+    alias(libs.plugins.kotlin.compose)
 }
 
 // skein-xtov.23.15 (UT-1) / skein-xtov.23.14 (UT-0), docs/ux/UX_TEST_PLAN.md §5:
@@ -20,6 +25,10 @@ android {
         minSdk = 30
     }
 
+    buildFeatures {
+        compose = true
+    }
+
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_17
         targetCompatibility = JavaVersion.VERSION_17
@@ -37,6 +46,18 @@ dependencies {
     api(libs.androidx.test.ext.junit)
     api(libs.roborazzi)
     api(libs.roborazzi.compose)
+
+    // skein-xtov.23.19 (UT-5): the token-contrast helper reads a
+    // `ColorScheme`/`SkeinExtendedColors` and reuses `WcagContrast.ratio`
+    // instead of re-deriving WCAG luminance math — `api` since both types
+    // appear in `ContrastAssertions.kt`'s public signatures, same reason the
+    // block above is `api` and not `implementation`.
+    api(project(":core:designsystem"))
+    // `ColorScheme` (from `:core:designsystem`'s own public API) needs
+    // material3 on this module's own compile classpath; every real consumer
+    // already depends on material3 itself, same `implementation`-though-it's-
+    // in-a-public-signature choice `:core:designsystem` makes for the same type.
+    implementation(libs.material3)
 
     // `RuntimeEnvironment.setQualifiers`/`setFontScale` are called only
     // inside `UxDeviceRule.before()`'s body, never in a public signature, so
@@ -70,6 +91,9 @@ dependencies {
 
     testImplementation(libs.junit)
     testImplementation(libs.truth)
+    // Self-test fixtures only (deliberately good/bad clickable and text
+    // composables for UT-5's helpers) — not used by any main-sourceSet file.
+    testImplementation(libs.compose.foundation)
 
     // skein-xtov.23.20 (ML-1): SkeinPreviewAnnotationsMatchSkeinDeviceTest
     // reflects on `:core:designsystem`'s `@SkeinXxxPreviews` annotation
