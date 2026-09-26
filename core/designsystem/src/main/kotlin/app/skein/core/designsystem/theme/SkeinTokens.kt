@@ -8,13 +8,29 @@ import androidx.compose.ui.unit.dp
  * Layout and glyph tokens that are not part of Material's [androidx.compose.material3.ColorScheme]
  * / [androidx.compose.material3.Typography] / [androidx.compose.material3.Shapes] triad but are
  * still shared across the shell (spec §8.1–§8.3, plan `E6.I1`). Consumed via [LocalSkeinTokens].
+ *
+ * skein-xtov.23.5 (DS5): every field below is timeline-era and superseded by
+ * `docs/ux/DESIGN_SYSTEM.md`'s own tokens — [SkeinSpacing], [SkeinSize],
+ * [SkeinLayout], [SkeinMotion] and [SkeinShapes]/[SkeinRadius] — which this
+ * `data class` cannot become without breaking every current caller
+ * mid-wave. Left in place (`@Deprecated`, not removed) so today's screens
+ * keep compiling; Wave 3 deletes both this class and its last caller.
  */
 data class SkeinTokens(
     /** Width of the collapsed timeline icon rail (spec §8.2: "40 px icon rail"). */
+    @Deprecated(
+        "Timeline-era: the new IA's collapsed nav rail is SkeinSize.rail (80 dp, not 40).",
+        ReplaceWith("SkeinSize.rail"),
+    )
     val railWidth: Dp = 40.dp,
     /** Fraction of the dual-pane width given to the timeline when expanded (spec §8.2: 30%). */
+    @Deprecated(
+        "Timeline-era: panes are fixed widths now (§4.2/§4.4), not a proportional split. " +
+            "See SkeinSize.listPane / SkeinSize.extraPane.",
+    )
     val timelineShare: Float = 0.30f,
     /** Height of a preview tab (spec §8.3). */
+    @Deprecated("Timeline-era: preview tabs are not part of the new IA; no direct successor.")
     val tabHeight: Dp = 36.dp,
     /**
      * *Minimum* height of the persistent top command bar (spec §8.2, applied
@@ -43,10 +59,23 @@ data class SkeinTokens(
      * guarantees (`skein-yb3m`) — `commandBarHeight` has exactly one call
      * site.
      */
+    @Deprecated(
+        "Timeline-era: the new IA's top app bar is SkeinSize.topBar (§4.4, grows with font scale).",
+        ReplaceWith("SkeinSize.topBar"),
+    )
     val commandBarHeight: Dp = 56.dp,
     /** Corner radius applied via [androidx.compose.material3.Shapes] (spec `E6.I1`: 4 dp corners). */
+    @Deprecated(
+        "Timeline-era: one radius everywhere is gone. See SkeinRadius's scale (§5.1); " +
+            "radiusXs is this token's exact former value.",
+        ReplaceWith("SkeinRadius.radiusXs"),
+    )
     val cornerRadius: Dp = 4.dp,
     /** Restrained status/action glyph set used across the command bar, tabs, and context panel. */
+    @Deprecated(
+        "Timeline-era: spec §14.11 bans Unicode glyphs as UI icons. DS6's SkeinIcons " +
+            "(Material Symbols) is the successor; not yet built as of DS5.",
+    )
     val glyphs: Glyphs = Glyphs(),
 ) {
     /** Accent glyphs (spec §8.1–§8.4): `≡ $ ◐ ▤ ✦ ◈ ⚹ ● ⏸ ◌ ! ◂ ⧉`. */

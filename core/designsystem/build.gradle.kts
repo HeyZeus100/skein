@@ -53,5 +53,9 @@ dependencies {
     // skein-xtov.23.6 (DS6): SkeinIconsTest resolves `R.drawable` ids and
     // reads back their resource names, which needs a real `Resources` —
     // same Robolectric-on-the-JVM setup as `:core:vault`'s tests.
+    // skein-xtov.23.5 (DS5): also exercised directly by SkeinReducedMotionTest,
+    // which fakes Settings.Global.ANIMATOR_DURATION_SCALE against a real
+    // Context (androidx.test.ext.junit for ApplicationProvider).
     testImplementation(libs.robolectric)
+    testImplementation(libs.androidx.test.ext.junit)
 }
