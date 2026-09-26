@@ -48,17 +48,17 @@ class TabsState private constructor(
 
     /**
      * Single-click semantics: replaces the current preview tab (if any) with
-     * [tab], reusing it in place if it's already previewing the same
-     * [Tab.docId]. Always activates the result.
+     * [tab]. A tab already open for the same [Tab.docId], preview or pinned,
+     * is reused instead (UX-P0-05: no second tab for the same chat). Always
+     * activates the result.
      */
     fun openPreview(tab: Tab): TabId {
         val incoming = tab.copy(state = TabState.PREVIEW)
-        val existingIndex = tabs.indexOfFirst { it.state == TabState.PREVIEW }
-        if (existingIndex >= 0 && tabs[existingIndex].docId == incoming.docId) {
-            val existingId = tabs[existingIndex].id
-            activate(existingId)
-            return existingId
+        tabs.firstOrNull { it.docId == incoming.docId }?.let { open ->
+            activate(open.id)
+            return open.id
         }
+        val existingIndex = tabs.indexOfFirst { it.state == TabState.PREVIEW }
         tabs =
             if (existingIndex >= 0) {
                 tabs.toMutableList().apply { set(existingIndex, incoming) }
@@ -71,13 +71,14 @@ class TabsState private constructor(
 
     /**
      * Double-click / "open in new tab" semantics: opens [tab] already
-     * pinned. Reuses an existing pinned tab for the same [Tab.docId] instead
-     * of duplicating it.
+     * pinned. Reuses a tab already open for the same [Tab.docId] instead of
+     * duplicating it, pinning it if it was a preview.
      */
     fun openPinned(tab: Tab): TabId {
         val incoming = tab.copy(state = TabState.PINNED)
-        val existing = tabs.firstOrNull { it.pinned && it.docId == incoming.docId }
+        val existing = tabs.firstOrNull { it.docId == incoming.docId }
         if (existing != null) {
+            pin(existing.id)
             activate(existing.id)
             return existing.id
         }

@@ -125,6 +125,32 @@ class TabsStateTest {
         assertEquals(1, state.tabs.size)
     }
 
+    // UX-P0-05: the same chat could be open twice (the /chat tab plus a
+    // timeline preview).
+    @Test
+    fun `opening a preview for a doc already open pinned activates that tab instead of duplicating`() {
+        val state = TabsState()
+        state.openPinned(tab("chat", docId = "doc-chat", kind = TabKind.CHAT))
+        state.openPreview(tab("other", docId = "doc-other"))
+
+        val id = state.openPreview(tab("chat-again", docId = "doc-chat", kind = TabKind.CHAT))
+
+        assertEquals(TabId("chat"), id)
+        assertEquals(TabId("chat"), state.activeId)
+        assertEquals(2, state.tabs.size)
+    }
+
+    @Test
+    fun `opening pinned for a doc already previewed pins that tab instead of duplicating`() {
+        val state = TabsState()
+        state.openPreview(tab("a", docId = "doc-a"))
+
+        state.openPinned(tab("a-again", docId = "doc-a"))
+
+        assertEquals(listOf(TabId("a")), state.tabs.map { it.id })
+        assertTrue(state.tabs.single().pinned)
+    }
+
     @Test
     fun `closing the active tab when it is the only tab clears the active id`() {
         val state = TabsState()

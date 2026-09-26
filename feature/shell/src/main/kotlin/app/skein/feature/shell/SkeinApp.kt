@@ -18,6 +18,7 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.testTag
 import androidx.window.core.layout.WindowSizeClass
+import app.skein.core.model.DocumentKind
 import app.skein.core.model.PersonaId
 import app.skein.core.model.VaultRepository
 import app.skein.feature.shell.layout.AdaptivePaneHost
@@ -51,6 +52,7 @@ import app.skein.feature.shell.tabs.rememberTabsState
 import app.skein.feature.shell.testing.ShellTestTags
 import app.skein.feature.shell.theme.SkeinTheme
 import app.skein.feature.shell.theme.SkeinThemeMode
+import kotlinx.coroutines.launch
 import java.util.UUID
 
 /**
@@ -223,22 +225,30 @@ fun SkeinApp(
         val isSinglePane =
             computeAdaptiveLayout(classifyWidth(windowSizeClass), posture, layoutState).paneLayoutState ==
                 PaneLayoutState.SINGLE_PANE
+        // UX-P0-05: every open builder — timeline, search, the overlay slot
+        // (graph node taps), note links — routes through here and opens the
+        // document as its own kind, so a past chat opens as a chat with its
+        // composer instead of as an editable transcript. `TabsState` reuses
+        // a tab already open for the same document.
+        val openScope = rememberCoroutineScope()
+        val openDocument: (TabsState, String, String, Boolean) -> Unit = { tabs, docId, title, pinned ->
+            openScope.launch {
+                // ponytail: attachments still open in the note editor until the
+                // file viewer exists (Wave 6); only CHAT gets its own screen here.
+                val isChat = vaultRepository?.getDocument(docId)?.kind == DocumentKind.CHAT
+                val kind = if (isChat) TabKind.CHAT else TabKind.NOTE
+                val tab = Tab(TabId(UUID.randomUUID().toString()), docId, title, kind)
+                if (pinned) tabs.openPinned(tab) else tabs.openPreview(tab)
+            }
+        }
+        // Also handed to `overlay`, so `:app`'s overlay content (e.g.
+        // `GraphScreen`) gets real tab-opening semantics without needing its
+        // own `TabsState` handle.
         val onTimelineEntryOpen: (docId: String, title: String) -> Unit = { docId, title ->
-            primaryTabsState.openPreview(Tab(TabId(UUID.randomUUID().toString()), docId, title, TabKind.NOTE))
+            openDocument(primaryTabsState, docId, title, false)
         }
         val onTimelineEntryPin: (docId: String, title: String) -> Unit = { docId, title ->
-            primaryTabsState.openPinned(Tab(TabId(UUID.randomUUID().toString()), docId, title, TabKind.NOTE))
-        }
-        // Same shape as the timeline callbacks above, minted for `overlay`
-        // instead: both ultimately just call `primaryTabsState.openPreview`/
-        // `openPinned` with a fresh `TabId`, so `:app`'s overlay content
-        // (e.g. `GraphScreen`) gets real tab-opening semantics without
-        // needing its own `TabsState` handle.
-        val onOverlayOpenPreview: (docId: String, title: String) -> Unit = { docId, title ->
-            primaryTabsState.openPreview(Tab(TabId(UUID.randomUUID().toString()), docId, title, TabKind.NOTE))
-        }
-        val onOverlayOpenPinned: (docId: String, title: String) -> Unit = { docId, title ->
-            primaryTabsState.openPinned(Tab(TabId(UUID.randomUUID().toString()), docId, title, TabKind.NOTE))
+            openDocument(primaryTabsState, docId, title, true)
         }
 
         // E6.I4 slice A (skein-ps0): the `/` palette's command source.
@@ -343,6 +353,7 @@ fun SkeinApp(
                                         chatTabContent = chatTabContent,
                                         flushRegistry = flushRegistry,
                                         navState = navState,
+                                        openDocument = openDocument,
                                     )
                                 },
                             )
@@ -361,6 +372,7 @@ fun SkeinApp(
                                         chatTabContent = chatTabContent,
                                         flushRegistry = flushRegistry,
                                         navState = navState,
+                                        openDocument = openDocument,
                                     )
                                 },
                             )
@@ -368,7 +380,7 @@ fun SkeinApp(
                     )
                 }
             }
-            overlay?.invoke(onOverlayOpenPreview, onOverlayOpenPinned)
+            overlay?.invoke(onTimelineEntryOpen, onTimelineEntryPin)
         }
     }
 }
@@ -382,10 +394,9 @@ fun SkeinApp(
  * mechanics. Every other kind (chat/attachment, not yet real screens) keeps
  * the pre-`E6.I9` behavior of falling back to [destinationContent].
  *
- * `onOpenDocument` mints a fresh [TabId] for the resolved document and opens
- * it as a preview (Cursor-style single-click semantics, `E6.I5`) — the same
- * "reuse the existing preview for this docId" behavior any other preview
- * open gets, courtesy of [TabsState.openPreview] itself.
+ * `onOpenDocument` opens the resolved document as a preview through
+ * `openDocument`, i.e. as its own kind (UX-P0-05), reusing any tab already
+ * open for it.
  */
 @Composable
 private fun tabContent(
@@ -404,15 +415,14 @@ private fun tabContent(
     ) -> Unit,
     flushRegistry: FlushRegistry,
     navState: NavState,
+    openDocument: (TabsState, String, String, Boolean) -> Unit,
 ) {
     when (tab.kind) {
         TabKind.NOTE ->
             noteTabContent(
                 tab,
                 { tabsState.pin(tab.id) },
-                { docId, title ->
-                    tabsState.openPreview(Tab(TabId(UUID.randomUUID().toString()), docId, title, TabKind.NOTE))
-                },
+                { docId, title -> openDocument(tabsState, docId, title, false) },
                 flushRegistry,
             )
         TabKind.CHAT ->
