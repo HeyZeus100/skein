@@ -17,6 +17,7 @@ package app.skein.feature.chat
 import android.content.ContentResolver
 import android.net.Uri
 import android.provider.OpenableColumns
+import android.widget.Toast
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.layout.Row
@@ -54,6 +55,7 @@ import app.skein.feature.editor.autocomplete.rememberWikilinkAutocompleteState
 import app.skein.feature.editor.autocomplete.wikilinkAutocompleteKeyEvents
 import app.skein.feature.shell.input.SecureBasicTextField
 import app.skein.feature.shell.theme.LocalSkeinTokens
+import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.launch
 import java.io.InputStream
 
@@ -124,13 +126,27 @@ public fun ChatBottomBar(
                 val resolver = context.contentResolver
                 val mimeType = resolver.getType(uri) ?: DEFAULT_MIME_TYPE
                 val displayName = queryDisplayName(resolver, uri) ?: uri.lastPathSegment ?: DEFAULT_ATTACHMENT_NAME
-                resolver.openInputStream(uri)?.use { input ->
-                    val inserted = onAttach(displayName, mimeType, input)
-                    if (inserted != null) {
-                        val separator = if (fieldValue.text.isEmpty() || fieldValue.text.endsWith(" ")) "" else " "
-                        val newText = fieldValue.text + separator + inserted
-                        fieldValue = TextFieldValue(text = newText, selection = TextRange(newText.length))
+                // UX-P0-12: an import failure (images are not supported yet and
+                // throw) is reported, never an uncaught crash.
+                try {
+                    resolver.openInputStream(uri)?.use { input ->
+                        val inserted = onAttach(displayName, mimeType, input)
+                        if (inserted != null) {
+                            val separator = if (fieldValue.text.isEmpty() || fieldValue.text.endsWith(" ")) "" else " "
+                            val newText = fieldValue.text + separator + inserted
+                            fieldValue = TextFieldValue(text = newText, selection = TextRange(newText.length))
+                        }
                     }
+                } catch (e: CancellationException) {
+                    throw e
+                } catch (e: Exception) {
+                    val message =
+                        if (e is UnsupportedOperationException) {
+                            "Skein can't import images yet. Attach a text file or PDF."
+                        } else {
+                            "Couldn't attach “$displayName”."
+                        }
+                    Toast.makeText(context, message, Toast.LENGTH_LONG).show()
                 }
             }
         }
@@ -197,7 +213,7 @@ public fun ChatBottomBar(
                     },
         )
         IconButton(
-            onClick = { attachLauncher.launch(arrayOf("*/*")) },
+            onClick = { attachLauncher.launch(ATTACHABLE_MIME_TYPES) },
             modifier = Modifier.testTag(ATTACH_BUTTON_TEST_TAG),
         ) {
             Text("📎")
@@ -226,6 +242,14 @@ private fun queryDisplayName(
         val nameIndex = cursor.getColumnIndex(OpenableColumns.DISPLAY_NAME)
         if (nameIndex >= 0 && cursor.moveToFirst()) cursor.getString(nameIndex) else null
     }
+
+/**
+ * What 📎 offers (UX-P0-12): text, PDF, and the generic types source files
+ * often arrive as. No `image/…` until image import exists (E2.I9); a
+ * provider that ignores the filter still lands in the error message above.
+ */
+internal val ATTACHABLE_MIME_TYPES =
+    arrayOf("text/*", "application/pdf", "application/json", "application/xml", "application/octet-stream")
 
 private const val DEFAULT_MIME_TYPE = "application/octet-stream"
 private const val DEFAULT_ATTACHMENT_NAME = "attachment"
