@@ -3,15 +3,18 @@
 // exactly what is composed here.
 package app.skein.feature.models.screenshots
 
-import androidx.compose.ui.test.junit4.createAndroidComposeRule
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.onRoot
 import androidx.compose.ui.test.performClick
 import app.skein.feature.models.ModelListItem
 import app.skein.feature.models.ModelsScreen
 import app.skein.feature.shell.theme.SkeinTheme
+import app.skein.testing.ui.UxDeviceRule
+import app.skein.testing.ui.UxSpec
+import app.skein.testing.ui.captureUx
+import app.skein.testing.ui.skeinComposeRule
+import app.skein.testing.ui.uxSpecs
 import com.github.takahirom.roborazzi.ExperimentalRoborazziApi
-import com.github.takahirom.roborazzi.RoborazziActivity
 import com.github.takahirom.roborazzi.captureScreenRoboImage
 import org.junit.Rule
 import org.junit.Test
@@ -30,7 +33,7 @@ class ModelsScreenshotTest(
     val deviceRule = UxDeviceRule(spec)
 
     @get:Rule(order = 1)
-    val composeRule = createAndroidComposeRule<RoborazziActivity>()
+    val composeRule = skeinComposeRule()
 
     @Test
     fun models() {

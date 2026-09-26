@@ -46,4 +46,5 @@ include(
     ":feature:models",
     ":testing",
     ":testing-fakes",
+    ":testing-ui",
 )

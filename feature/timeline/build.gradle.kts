@@ -97,6 +97,11 @@ dependencies {
     testImplementation(libs.robolectric)
     testImplementation(libs.roborazzi)
     testImplementation(libs.roborazzi.compose)
+    // skein-xtov.23.15 (UT-1): the shared device matrix / captureUx /
+    // skeinComposeRule helper module (docs/ux/UX_TEST_PLAN.md §5), replacing
+    // this module's own copy of UxScreenshots.kt (and UxFixtures.kt, which
+    // stays here — it is fixture vault content, not the generic helper).
+    testImplementation(project(":testing-ui"))
     testImplementation(libs.androidx.test.ext.junit)
     testImplementation(libs.compose.ui.test.junit4)
     testImplementation(libs.androidx.activity.compose)

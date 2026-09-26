@@ -11,7 +11,6 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.test.ExperimentalTestApi
-import androidx.compose.ui.test.junit4.createAndroidComposeRule
 import androidx.compose.ui.test.onAllNodesWithTag
 import androidx.compose.ui.test.onAllNodesWithText
 import androidx.compose.ui.test.onNodeWithTag
@@ -50,7 +49,13 @@ import app.skein.feature.shell.theme.SkeinTheme
 import app.skein.testing.FakeRetrievalService
 import app.skein.testing.InMemoryVaultRepository
 import app.skein.testing.scriptedEngine
-import com.github.takahirom.roborazzi.RoborazziActivity
+import app.skein.testing.ui.UX_FONT_150
+import app.skein.testing.ui.UxDeviceRule
+import app.skein.testing.ui.UxSpec
+import app.skein.testing.ui.assumeStandard
+import app.skein.testing.ui.captureUx
+import app.skein.testing.ui.skeinComposeRule
+import app.skein.testing.ui.uxSpecs
 import kotlinx.coroutines.awaitCancellation
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
@@ -73,7 +78,7 @@ class ChatScreenshotTest(
     val deviceRule = UxDeviceRule(spec)
 
     @get:Rule(order = 1)
-    val composeRule = createAndroidComposeRule<RoborazziActivity>()
+    val composeRule = skeinComposeRule()
 
     private val vault = InMemoryVaultRepository(clock = { 1_790_000_000_000L })
     private val launchPlan = runBlocking { vault.note("Fold launch plan", "Targets M2 for the ask path.") }

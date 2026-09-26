@@ -4,7 +4,6 @@
 // directly in the in-memory index (same fixture style as `GraphStateTest`).
 package app.skein.feature.graph.screenshots
 
-import androidx.compose.ui.test.junit4.createAndroidComposeRule
 import androidx.compose.ui.test.onRoot
 import app.skein.core.model.DocId
 import app.skein.core.model.DocumentKind
@@ -15,7 +14,11 @@ import app.skein.feature.graph.GraphScreen
 import app.skein.feature.shell.theme.SkeinTheme
 import app.skein.testing.InMemoryIndexStore
 import app.skein.testing.InMemoryVaultRepository
-import com.github.takahirom.roborazzi.RoborazziActivity
+import app.skein.testing.ui.UxDeviceRule
+import app.skein.testing.ui.UxSpec
+import app.skein.testing.ui.captureUx
+import app.skein.testing.ui.skeinComposeRule
+import app.skein.testing.ui.uxSpecs
 import kotlinx.coroutines.runBlocking
 import org.junit.Rule
 import org.junit.Test
@@ -34,7 +37,7 @@ class GraphScreenshotTest(
     val deviceRule = UxDeviceRule(spec)
 
     @get:Rule(order = 1)
-    val composeRule = createAndroidComposeRule<RoborazziActivity>()
+    val composeRule = skeinComposeRule()
 
     @Test
     fun graph() {

@@ -64,6 +64,10 @@ dependencies {
     // skein-xtov.9: Roborazzi screenshot tests (screenshots/ test package).
     testImplementation(libs.roborazzi)
     testImplementation(libs.roborazzi.compose)
+    // skein-xtov.23.15 (UT-1): the shared device matrix / captureUx /
+    // skeinComposeRule helper module (docs/ux/UX_TEST_PLAN.md §5), replacing
+    // this module's own copy of UxScreenshots.kt.
+    testImplementation(project(":testing-ui"))
     // `SkeinTheme` for the captures (`:app` shows this screen inside
     // `SkeinApp`'s theme). Test-only: main source stays shell-free.
     testImplementation(project(":feature:shell"))

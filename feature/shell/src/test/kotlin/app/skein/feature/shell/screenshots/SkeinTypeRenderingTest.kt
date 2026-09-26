@@ -18,7 +18,6 @@ import androidx.compose.material3.Text
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.semantics.SemanticsActions
 import androidx.compose.ui.test.SemanticsMatcher
-import androidx.compose.ui.test.junit4.createAndroidComposeRule
 import androidx.compose.ui.test.onRoot
 import androidx.compose.ui.text.TextLayoutResult
 import androidx.compose.ui.text.TextMeasurer
@@ -36,7 +35,11 @@ import app.skein.core.designsystem.theme.SkeinSans
 import app.skein.core.designsystem.theme.SkeinTheme
 import app.skein.core.designsystem.theme.SkeinThemeMode
 import app.skein.core.designsystem.theme.SkeinTypography
-import com.github.takahirom.roborazzi.RoborazziActivity
+import app.skein.testing.ui.SkeinDevice
+import app.skein.testing.ui.UxDeviceRule
+import app.skein.testing.ui.UxSpec
+import app.skein.testing.ui.captureUx
+import app.skein.testing.ui.skeinComposeRule
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertFalse
 import org.junit.Assert.assertTrue
@@ -51,13 +54,16 @@ import org.robolectric.annotation.GraphicsMode
 @Config(sdk = [34])
 @GraphicsMode(GraphicsMode.Mode.NATIVE)
 class SkeinTypeRenderingTest {
-    private val spec = UxSpec(UxDevice.FOLD_OUTER, dark = false, fontScale = 2f)
+    // docs/ux/UX_TEST_PLAN.md §3.1 mapping table: font scale 2.0 "on fold-outer"
+    // uses fold-outer-443, the narrowest of the two measured cover sizes
+    // (skein-xtov.23.14 / UT-0 — the spike's single provisional FOLD_OUTER).
+    private val spec = UxSpec(SkeinDevice.FOLD_OUTER_443, dark = false, fontScale = 2f)
 
     @get:Rule(order = 0)
     val deviceRule = UxDeviceRule(spec)
 
     @get:Rule(order = 1)
-    val composeRule = createAndroidComposeRule<RoborazziActivity>()
+    val composeRule = skeinComposeRule()
 
     private val measurer by lazy {
         TextMeasurer(

@@ -7,7 +7,6 @@ package app.skein.feature.shell.screenshots
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.test.junit4.createAndroidComposeRule
 import androidx.compose.ui.test.onNodeWithContentDescription
 import androidx.compose.ui.test.onRoot
 import androidx.compose.ui.test.performClick
@@ -19,7 +18,14 @@ import app.skein.feature.timeline.TimelineRail
 import app.skein.feature.timeline.TimelineScreen
 import app.skein.feature.timeline.rememberTimelineState
 import app.skein.testing.fakeVault
-import com.github.takahirom.roborazzi.RoborazziActivity
+import app.skein.testing.ui.SkeinDevice
+import app.skein.testing.ui.UX_FONT_150
+import app.skein.testing.ui.UxDeviceRule
+import app.skein.testing.ui.UxSpec
+import app.skein.testing.ui.assumeStandard
+import app.skein.testing.ui.captureUx
+import app.skein.testing.ui.skeinComposeRule
+import app.skein.testing.ui.uxSpecs
 import org.junit.Assume.assumeTrue
 import org.junit.Rule
 import org.junit.Test
@@ -38,7 +44,7 @@ class ShellScreenshotTest(
     val deviceRule = UxDeviceRule(spec)
 
     @get:Rule(order = 1)
-    val composeRule = createAndroidComposeRule<RoborazziActivity>()
+    val composeRule = skeinComposeRule()
 
     /** A vault with a week of notes/chats and a default model that is not loaded yet — the usual launch. */
     @Test
@@ -76,7 +82,7 @@ class ShellScreenshotTest(
     companion object {
         @JvmStatic
         @ParameterizedRobolectricTestRunner.Parameters(name = "{0}")
-        fun parameters(): List<Array<Any>> = uxSpecs(UxSpec(UxDevice.FOLD_INNER_STOCK, dark = false), *UX_FONT_150)
+        fun parameters(): List<Array<Any>> = uxSpecs(UxSpec(SkeinDevice.FOLD_INNER_852, dark = false), *UX_FONT_150)
     }
 }
 

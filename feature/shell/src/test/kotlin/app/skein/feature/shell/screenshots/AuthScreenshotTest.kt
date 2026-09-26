@@ -24,6 +24,10 @@ import app.skein.feature.shell.auth.BiometricUnlockScreen
 import app.skein.feature.shell.auth.VaultSetupScreen
 import app.skein.feature.shell.layout.EdgeToEdgeSurface
 import app.skein.feature.shell.theme.SkeinTheme
+import app.skein.testing.ui.UxDeviceRule
+import app.skein.testing.ui.UxSpec
+import app.skein.testing.ui.captureUx
+import app.skein.testing.ui.uxSpecs
 import kotlinx.coroutines.awaitCancellation
 import org.junit.Rule
 import org.junit.Test

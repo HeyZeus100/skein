@@ -10,14 +10,17 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.test.junit4.createAndroidComposeRule
 import androidx.compose.ui.test.onRoot
 import app.skein.core.model.VaultRepository
 import app.skein.feature.shell.theme.SkeinTheme
 import app.skein.feature.timeline.TimelineScreen
 import app.skein.feature.timeline.rememberTimelineState
 import app.skein.testing.fakeVault
-import com.github.takahirom.roborazzi.RoborazziActivity
+import app.skein.testing.ui.UxDeviceRule
+import app.skein.testing.ui.UxSpec
+import app.skein.testing.ui.captureUx
+import app.skein.testing.ui.skeinComposeRule
+import app.skein.testing.ui.uxSpecs
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -35,7 +38,7 @@ class TimelineScreenshotTest(
     val deviceRule = UxDeviceRule(spec)
 
     @get:Rule(order = 1)
-    val composeRule = createAndroidComposeRule<RoborazziActivity>()
+    val composeRule = skeinComposeRule()
 
     @Test
     fun timeline() {

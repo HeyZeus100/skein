@@ -9,7 +9,6 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.test.junit4.createAndroidComposeRule
 import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.onRoot
 import androidx.compose.ui.test.performClick
@@ -24,7 +23,11 @@ import app.skein.feature.editor.notetab.NoteTab
 import app.skein.feature.shell.theme.SkeinTheme
 import app.skein.testing.InMemoryIndexStore
 import app.skein.testing.InMemoryVaultRepository
-import com.github.takahirom.roborazzi.RoborazziActivity
+import app.skein.testing.ui.UxDeviceRule
+import app.skein.testing.ui.UxSpec
+import app.skein.testing.ui.captureUx
+import app.skein.testing.ui.skeinComposeRule
+import app.skein.testing.ui.uxSpecs
 import kotlinx.coroutines.runBlocking
 import org.junit.Rule
 import org.junit.Test
@@ -43,7 +46,7 @@ class NoteTabScreenshotTest(
     val deviceRule = UxDeviceRule(spec)
 
     @get:Rule(order = 1)
-    val composeRule = createAndroidComposeRule<RoborazziActivity>()
+    val composeRule = skeinComposeRule()
 
     private var nextId = 1
     private val repo = InMemoryVaultRepository(clock = { 1_790_000_000_000L })

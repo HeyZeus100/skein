@@ -125,6 +125,10 @@ dependencies {
     testImplementation(libs.roborazzi)
     testImplementation(libs.roborazzi.compose)
     testImplementation(project(":feature:timeline"))
+    // skein-xtov.23.15 (UT-1): the shared device matrix / captureUx /
+    // skeinComposeRule helper module (docs/ux/UX_TEST_PLAN.md §5), replacing
+    // this module's own copy of UxScreenshots.kt.
+    testImplementation(project(":testing-ui"))
 
     // skein-ugo (E3.I4): BiometricUnlockScreenTest — on-device Compose UI
     // test, matching `:feature:editor`'s `SkeinEditorInstrumentedTest`
