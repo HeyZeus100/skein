@@ -4,6 +4,7 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
@@ -123,13 +124,18 @@ fun CommandBar(
             }
 
             val statusGlyph = if (modelActive) tokens.glyphs.modelActive else tokens.glyphs.modelPaused
+            // UX-P0-02: one line, ellipsized and width-capped, so a long model
+            // id can never crush the command field on the outer screen.
             Text(
                 text = "$modelName · $statusGlyph",
                 style = MaterialTheme.typography.labelMedium,
                 color = MaterialTheme.colorScheme.onSurface,
+                maxLines = 1,
+                overflow = TextOverflow.Ellipsis,
                 modifier =
                     Modifier
                         .padding(horizontal = 8.dp)
+                        .widthIn(max = MODEL_CHIP_MAX_WIDTH)
                         .semantics {
                             contentDescription =
                                 "Model status: $modelName, ${if (modelActive) "active" else "paused"}"
@@ -138,3 +144,6 @@ fun CommandBar(
         }
     }
 }
+
+/** Stage H6 stop-gap (the chip leaves in Wave 3): the field keeps >= ~220 dp on a 411 dp cover screen. */
+private val MODEL_CHIP_MAX_WIDTH = 120.dp

@@ -6,18 +6,26 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.testTag
+import androidx.compose.ui.semantics.SemanticsActions
 import androidx.compose.ui.test.getUnclippedBoundsInRoot
+import androidx.compose.ui.test.hasSetTextAction
 import androidx.compose.ui.test.junit4.createAndroidComposeRule
+import androidx.compose.ui.test.onNodeWithContentDescription
 import androidx.compose.ui.test.onNodeWithTag
+import androidx.compose.ui.test.performSemanticsAction
+import androidx.compose.ui.text.TextLayoutResult
 import androidx.compose.ui.unit.DpRect
+import androidx.compose.ui.unit.dp
 import app.skein.feature.shell.theme.SkeinTheme
 import app.skein.feature.shell.theme.SkeinThemeMode
+import org.junit.Assert.assertEquals
 import org.junit.Assert.assertTrue
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.robolectric.RobolectricTestRunner
 import org.robolectric.annotation.Config
+import org.robolectric.annotation.GraphicsMode
 
 /**
  * `skein-wr7m` (hardware-verified on the Pixel 9 Pro Fold): [CommandBar]'s
@@ -111,6 +119,38 @@ class CommandBarLayoutTest {
         )
 
         assertBoundsContain(outer = barBounds, inner = placeholderBounds)
+    }
+
+    /**
+     * UX-P0-02 / CMS-P0-06 (Stage H6, skein-xtov.22): on the Fold's cover
+     * screen a loaded model's untruncated id (51 characters) took the bar's
+     * width first and collapsed the command field to ~0 dp. The chip is now
+     * one line, ellipsized and width-capped, so the field keeps its width.
+     */
+    @Test
+    @Config(qualifiers = "w411dp-h923dp")
+    @GraphicsMode(GraphicsMode.Mode.NATIVE) // real text measurement, so a long name can wrap
+    fun `a long model name never crushes the command field on the cover screen`() {
+        composeRule.setContent {
+            SkeinTheme(mode = SkeinThemeMode.DARK) {
+                CommandBar(
+                    query = "/",
+                    onQueryChange = {},
+                    onMenuClick = {},
+                    modelName = "qwen2.5-3b-instruct-abliterated-q3_k_m-3f9a1c2b7e",
+                    modelActive = true,
+                )
+            }
+        }
+
+        val field = composeRule.onNode(hasSetTextAction()).getUnclippedBoundsInRoot()
+        val chipLayout = mutableListOf<TextLayoutResult>()
+        composeRule
+            .onNodeWithContentDescription("Model status", substring = true)
+            .performSemanticsAction(SemanticsActions.GetTextLayoutResult) { it(chipLayout) }
+
+        assertTrue("command field is ${field.right - field.left} wide", field.right - field.left >= 100.dp)
+        assertEquals("the chip wraps", 1, chipLayout.single().lineCount)
     }
 
     private fun assertBoundsContain(
