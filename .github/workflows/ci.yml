@@ -125,6 +125,18 @@ jobs:
       - name: Assemble foss debug APK
         run: ./gradlew assembleFossDebug --stacktrace
 
+      # skein-gg11.24: AGP configures debug variants with CMAKE_BUILD_TYPE=Debug,
+      # whose NDK flags carry no -O at all, so llama.cpp/ggml compiled at -O0
+      # and one 106-token prompt batch on the Fold had not finished after 98 s.
+      # native/llama/CMakeLists.txt §4a adds -O2 for the Debug configuration;
+      # this gate reads every compile_commands.json the assemble above
+      # configured and fails if any llama.cpp/JNI translation unit is below
+      # -O2 again. Blocking: the debug APK is the one every device smoke
+      # installs, so an -O0 native build makes every on-device number
+      # meaningless.
+      - name: Native optimisation level (libskein_llama.so translation units)
+        run: ./tools/ci/native-opt-level.sh
+
       # skein-xth5 / skein-gg11.5 (recon docs/research/POCKETPAL_RECON.md §8.1
       # B-8 / PP-48, OfflineLLM row OL-46): every PT_LOAD segment of the
       # shipped native libraries must be aligned to >= 16 KiB, or mmap'ing

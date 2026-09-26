@@ -93,6 +93,15 @@ The `.so` lands in the AAR's `jni/<abi>/` and, from there, in the APK's
 `lib/<abi>/`. Nothing else is required — no Vulkan SDK, no `glslc` on `PATH`,
 no network access beyond the one-time submodule clone.
 
+Both variants compile llama.cpp/ggml at `-O2`. AGP configures debug variants
+as CMake `Debug`, whose NDK flags (`-g -fno-limit-debug-info`) carry no `-O`
+at all, so until bd skein-gg11.24 every debug `.so` shipped -O0 inference
+kernels (a 106-token prompt batch on the Fold ran for more than 98 s).
+`CMakeLists.txt` §4a now adds `-O2` for that configuration and
+`tools/ci/native-opt-level.sh` fails CI if any llama.cpp/JNI translation unit
+drops below it. Release variants configure as `RelWithDebInfo`
+(`-O2 -g -DNDEBUG`); those are the bytes §4 pins, and §4a does not touch them.
+
 ### Shaders
 
 Vulkan shaders are **compiled from source at build time**, not vendored as

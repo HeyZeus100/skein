@@ -251,6 +251,27 @@ add_link_options(
 )
 
 # -----------------------------------------------------------------------------
+# 4a. Optimisation level for the Debug configuration (bd skein-gg11.24)
+# -----------------------------------------------------------------------------
+# AGP configures debug variants with CMAKE_BUILD_TYPE=Debug, and the NDK's
+# Debug flags are `-g -fno-limit-debug-info` — no `-O` at all — so every one of
+# llama.cpp/ggml's translation units compiled at -O0. For inference kernels
+# that is not "a bit slower": on the Fold (Pixel 9 Pro Fold, foss-debug from
+# 2d8d193) one 106-token prompt batch had not finished after 98 s on four
+# cores, and the shipped .so disassembled to 241 stack spills per 1000
+# instructions. The debug APK is the one every device smoke installs, so an
+# -O0 native build makes every on-device number meaningless.
+#
+# Release variants configure as RelWithDebInfo (`-O2 -g -DNDEBUG`) and are
+# untouched — the generator expression is false there, so the reproducible
+# hashes in README.md §4 do not move. DWARF stays (`-g`): a debug .so is still
+# symbolised, it just is not a step-through build of ggml, which nobody here
+# does. Same scope rule as §4: it must precede `add_subdirectory(llama.cpp)`.
+# tools/ci/native-opt-level.sh fails CI if any llama.cpp/JNI translation unit
+# in any configured build drops below -O2 again.
+add_compile_options("$<$<CONFIG:Debug>:-O2>")
+
+# -----------------------------------------------------------------------------
 # 5. Vulkan wiring — NDK loader, pinned Khronos headers, NDK glslc
 # -----------------------------------------------------------------------------
 # No LunarG Vulkan SDK is installed or downloaded. Three inputs, all already
@@ -688,6 +709,8 @@ target_include_directories(skein_llama PRIVATE
   "${LLAMA_CPP_DIR}/ggml/include"
 )
 
+# The shim's own level: covered by §4a in Debug and by RelWithDebInfo's `-O2`
+# otherwise; kept explicit so it never depends on either.
 target_compile_options(skein_llama PRIVATE -O2)
 
 # The archives to absorb whole. A version script cannot export a symbol the
