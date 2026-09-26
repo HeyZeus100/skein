@@ -1,4 +1,4 @@
-package app.skein.feature.shell.theme
+package app.skein.core.designsystem.theme
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box

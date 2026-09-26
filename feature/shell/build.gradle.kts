@@ -59,6 +59,12 @@ dependencies {
     implementation(libs.material3.adaptive)
     implementation(libs.kotlinx.coroutines.core)
 
+    // skein-xtov.23.1 (DS1): the theme now lives in `:core:designsystem`.
+    // `api` because this module's one-wave forwarding shims
+    // (`theme/ThemeForwarding.kt`) expose its types, and modules that reach
+    // the theme through the shell must keep compiling.
+    api(project(":core:designsystem"))
+
     // skein-ugo (E3.I4): BiometricUnlockScreen drives `UnlockManager`
     // (`skein-pya`) above `VaultKeyProvider` (`skein-3el`); both live in
     // `:core:vault`, which `api`-exposes `:core:model`'s

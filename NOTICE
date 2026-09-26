@@ -258,7 +258,7 @@ its output is recorded, to prove the Kotlin reimplementation agrees with it.
 - **Source:** https://github.com/IBM/plex
 - **Version:** Latest release (4 variants: Regular, Italic, Bold, Bold Italic)
 - **Where it ships:** vendored TTF files under
-  `feature/shell/src/main/res/font/ibm_plex_mono_*.ttf`.
+  `core/designsystem/src/main/res/font/ibm_plex_mono_*.ttf`.
 - **Attribution:** Copyright (c) IBM Corp. Licensed under the SIL Open Font
   License v1.1.
 

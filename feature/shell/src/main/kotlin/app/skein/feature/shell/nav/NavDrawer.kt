@@ -12,8 +12,8 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import app.skein.core.designsystem.theme.SkeinTokens
 import app.skein.feature.shell.theme.LocalSkeinTokens
-import app.skein.feature.shell.theme.SkeinTokens
 
 /** One hamburger-drawer entry: its [Destination], display glyph, and label (spec §8.2 order). */
 private data class DrawerEntry(

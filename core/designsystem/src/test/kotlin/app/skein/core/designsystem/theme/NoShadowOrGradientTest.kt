@@ -1,4 +1,4 @@
-package app.skein.feature.shell.theme
+package app.skein.core.designsystem.theme
 
 import org.junit.Assert.assertTrue
 import org.junit.Test
@@ -29,10 +29,13 @@ class NoShadowOrGradientTest {
 
     @Test
     fun `no feature module uses Modifier-shadow or Brush-linearGradient`() {
-        val featureRoot = findFeatureRoot()
+        val repoRoot = findRepoRoot()
+        // skein-xtov.23.1: the theme left `feature/` for `:core:designsystem`;
+        // keep scanning it too.
         val offenders =
-            featureRoot
-                .walkTopDown()
+            listOf(File(repoRoot, "feature"), File(repoRoot, "core/designsystem"))
+                .asSequence()
+                .flatMap { it.walkTopDown() }
                 .filter { it.isFile && it.extension == "kt" }
                 .filter { !it.path.contains("${File.separator}build${File.separator}") }
                 .filter { it.name != "NoShadowOrGradientTest.kt" }
@@ -48,13 +51,12 @@ class NoShadowOrGradientTest {
         )
     }
 
-    /** Walks up from the test's working directory to the repo's `feature/` directory. */
-    private fun findFeatureRoot(): File {
+    /** Walks up from the test's working directory to the repo root. */
+    private fun findRepoRoot(): File {
         var dir: File? = File(".").absoluteFile
         while (dir != null) {
-            val candidate = File(dir, "feature")
-            if (candidate.isDirectory && File(dir, "settings.gradle.kts").isFile) {
-                return candidate
+            if (File(dir, "feature").isDirectory && File(dir, "settings.gradle.kts").isFile) {
+                return dir
             }
             dir = dir.parentFile
         }

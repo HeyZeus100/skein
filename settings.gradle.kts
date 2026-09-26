@@ -32,6 +32,7 @@ include(
     ":core:rag",
     ":core:markdown",
     ":core:export",
+    ":core:designsystem",
     ":inference-service",
     ":embedder-service",
     ":feature:shell",

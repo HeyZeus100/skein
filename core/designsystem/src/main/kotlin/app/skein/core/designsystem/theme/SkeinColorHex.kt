@@ -1,4 +1,4 @@
-package app.skein.feature.shell.theme
+package app.skein.core.designsystem.theme
 
 /**
  * Raw `0xAARRGGBB` values backing [SkeinColors]. Kept in a plain Kotlin

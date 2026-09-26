@@ -1,4 +1,4 @@
-package app.skein.feature.shell.theme
+package app.skein.core.designsystem.theme
 
 import androidx.compose.material3.Typography
 import androidx.compose.ui.text.TextStyle
@@ -7,7 +7,7 @@ import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.sp
-import app.skein.feature.shell.R
+import app.skein.core.designsystem.R
 
 /**
  * IBM Plex Mono (SIL OFL 1.1), bundled as `res/font` — no downloadable fonts,
