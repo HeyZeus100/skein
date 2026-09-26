@@ -100,11 +100,11 @@ Of the 11 navigation paradigms, 4 are fully dead (icon rail, 3 drawer destinatio
 |---|---|---|---|
 | **Context inspector** — what this chat is using: model & persona, attached notes/files, sources used by the last answer, context usage, activity | Context chip above the composer; "Sources" on an answer; Ctrl+Shift+I | Bottom sheet | Extra pane (replaces the conversation list while open) |
 | **Activity block** — per assistant turn: live steps, then "▸ Worked for 8.1s · 3 sources" | Inline in every answer | Inline, collapsible | Inline, collapsible |
-| **Model & persona sheet** — "who answers": persona, model, "Model details" link | Tap the chat header subtitle | Bottom sheet | Anchored menu/side sheet |
+| **Model sheet** — "who answers next": model list, "Model details" link; a persona row appears only once personas exist | Tap the chat header subtitle | Bottom sheet | Anchored menu/side sheet |
 | **Attach knowledge** picker | ＋ in the composer; `[[` inline | Full-screen picker | Anchored sheet |
 | **Connections** — Linked from, Links to, local graph, properties | A note's ✦ / "Connections"; a file's info | Bottom sheet or route | Extra pane beside the note |
 | **Node detail** | Selecting a node in Graph | Bottom sheet | Supporting pane beside the canvas |
-| **Command palette** — "Search or run a command" | ⌕ in any top bar; drawer search field; `/` at the start of the composer; Ctrl+K | Full-screen | Centred overlay (max 640 dp) |
+| **Command palette** — "Search or run a command" (also where chats are searched on Compact) | ⌕ in Medium+ top bars; the drawer's ⌕ field; `/` at the start of the composer; Ctrl+K | Full-screen | Centred overlay (max 640 dp) |
 | **Rename / Delete** | ⋮ on a chat or note (row or header), long-press on a row, palette | Dialog | Dialog |
 | **Model details** (filename, format, quantization, size, context, backend, hash, licence) | Models › a model › Details; model & persona sheet | Route | Detail pane |
 
@@ -123,7 +123,7 @@ The geometry is measured, not assumed (`docs/ux/audit/DEVICE_BEFORE_PASS.md`): t
 Three columns never appear on the Fold (§23 "additional panes only when they add value"): at 1043 dp a third pane would leave the chat narrower than the outer screen. On Expanded the context inspector / Connections is an **extra pane that takes the list's place** while open; Back restores the list.
 
 **What the drawer (Compact) contains, top to bottom** — PocketPal's restraint with Skein's depth:
-`[✎ New chat]` · `⌕ Search or run a command` · Chat · Knowledge · Graph · Models · Settings · — · **Chats**, grouped *Today / Yesterday / This week / Older*, each row titled and with ⋮ (Rename · Delete).
+`[✎ New chat]` · `⌕ Search or run a command` · Chat · Knowledge · Graph · Models · Settings · — · **Chats**, grouped *Today / Yesterday / Previous 7 days / Previous 30 days / then by month*, each row titled and with ⋮ (Rename · Delete).
 
 **What the rail (Expanded) contains:** `✎` New chat (top) · Chat · Knowledge · Graph · Models · Settings (bottom). The chat history lives in the Conversations list pane, not in the rail.
 
@@ -134,7 +134,7 @@ Three columns never appear on the Fold (§23 "additional panes only when they ad
 | Start a chat | 1 | Chat | Landing composer; ✎ in drawer/rail; Ctrl+N |
 | Switch chats | 1 | Chat | Drawer history (Compact); Conversations pane (Expanded); palette |
 | Rename / delete / search chats | 1 | Chat | ⋮ on row or header; long-press; search field atop the list |
-| Stop / retry | 1 | Chat | Send button becomes Stop while answering; Retry on a failed/any last answer |
+| Stop / retry | 1 | Chat | Send button becomes Stop while answering; Retry/Regenerate on the latest answer (older turns need branching — later) |
 | Attach knowledge | 1→2 | Chat composer | ＋ → "Add a note or file"; `[[` inline |
 | Inspect context | 2 | Context inspector | Context chip above the composer ("2 notes · Knowledge on"); "3 sources" on an answer |
 | Activity / reasoning | 1 (summary) / 2 (detail) | Activity block | Inline; tap to expand |
@@ -249,7 +249,7 @@ flowchart TD
 **Fold outer (Compact) — Chat**
 ```text
 ┌─────────────────────────────┐
-│ ☰  Skein UX redesign    ⌕ ⋮ │
+│ ☰  Skein UX redesign    ✎ ⋮ │
 │    Qwen 2.5 3B · Local ▾    │
 ├─────────────────────────────┤
 │ You                         │
@@ -332,6 +332,10 @@ Wave 2 design system → Wave 3 navigation shell (this IA, with today's screens 
 3. Does "Recent" deserve a slot in the rail? → no for v1 (palette empty state + Knowledge sort), revisit after usage.
 
 ---
+
+## 8a. Revisions after spec review (2026-09-26)
+
+`CHAT_UX_SPEC.md` §23 proposed six refinements; all are adopted above: ✎ New chat (not ⌕) in the Compact chat header, with the palette reached from the drawer's ⌕ field and `/`; date groups *Today · Yesterday · Previous 7 days · Previous 30 days · by month*; regenerate only the latest answer in v1; the header's model label means "answers next" until per-chat models exist; a Model sheet (persona row only once personas exist); chat search on Compact through the palette's *Chats* section.
 
 ## 9. Decisions needing owner sign-off (they amend spec §8)
 
