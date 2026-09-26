@@ -2,6 +2,7 @@ package app.skein.core.designsystem.theme
 
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.selection.LocalTextSelectionColors
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Shapes
 import androidx.compose.runtime.Composable
@@ -29,20 +30,7 @@ fun SkeinTheme(
             SkeinThemeMode.DARK -> true
         }
     val colorScheme = if (useDarkTheme) SkeinColors.dark else SkeinColors.light
-    val editorColors =
-        if (useDarkTheme) {
-            SkeinEditorColors(
-                surface = SkeinColors.DarkEditorSurface,
-                onSurface = SkeinColors.DarkOnEditorSurface,
-                onSurfaceMuted = SkeinColors.DarkOnEditorSurfaceMuted,
-            )
-        } else {
-            SkeinEditorColors(
-                surface = SkeinColors.LightEditorSurface,
-                onSurface = SkeinColors.LightOnEditorSurface,
-                onSurfaceMuted = SkeinColors.LightOnEditorSurfaceMuted,
-            )
-        }
+    val extendedColors = if (useDarkTheme) SkeinColors.darkExtended else SkeinColors.lightExtended
     val shapes =
         Shapes(
             extraSmall = RoundedCornerShape(tokens.cornerRadius),
@@ -54,13 +42,16 @@ fun SkeinTheme(
 
     CompositionLocalProvider(
         LocalSkeinTokens provides tokens,
-        LocalSkeinEditorColors provides editorColors,
+        LocalSkeinColors provides extendedColors,
+        LocalSkeinEditorColors provides colorScheme.editorColors(),
     ) {
         MaterialTheme(
             colorScheme = colorScheme,
             typography = SkeinTypography,
             shapes = shapes,
-            content = content,
-        )
+        ) {
+            // Inside MaterialTheme, which otherwise provides primary @ 40 %.
+            CompositionLocalProvider(LocalTextSelectionColors provides extendedColors.textSelectionColors, content)
+        }
     }
 }

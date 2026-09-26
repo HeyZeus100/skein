@@ -1,124 +1,323 @@
 package app.skein.core.designsystem.theme
 
+import androidx.compose.foundation.text.selection.TextSelectionColors
 import androidx.compose.material3.ColorScheme
-import androidx.compose.material3.darkColorScheme
-import androidx.compose.material3.lightColorScheme
+import androidx.compose.runtime.Immutable
 import androidx.compose.runtime.staticCompositionLocalOf
 import androidx.compose.ui.graphics.Color
 
+private const val MOVED = "Colour tokens v2 (skein-xtov.23.2): read the role from SkeinColors.dark/light"
+
 /**
- * Terminal/editor-inspired color tokens (spec §8.1, plan `E6.I1`).
- *
- * Dark is the default surface. Both schemes use a restrained cyan/violet
- * accent pair — cyan for interactive elements, violet reserved for
- * AI-generated content markers — and carry zero elevation (no gradients,
- * no drop shadows: enforced by [app.skein.feature.shell.lint]).
+ * Skein's colour (docs/ux/DESIGN_SYSTEM.md §6): every one of Material 3's 48
+ * `ColorScheme` roles set explicitly in both themes, so nothing falls back to
+ * Material's baseline purple, plus the Skein-only roles in [SkeinExtendedColors].
+ * Dynamic colour is off by design (§12). Zero elevation, no gradients, no
+ * shadows (enforced by `NoShadowOrGradientTest`).
  */
 object SkeinColors {
-    // Dark (default) palette.
-    val DarkBackground = Color(SkeinColorHex.DARK_BACKGROUND)
-    val DarkSurface = Color(SkeinColorHex.DARK_SURFACE)
-    val DarkSurfaceVariant = Color(SkeinColorHex.DARK_SURFACE_VARIANT)
-    val DarkOnBackground = Color(SkeinColorHex.DARK_ON_BACKGROUND)
-    val DarkOnSurface = Color(SkeinColorHex.DARK_ON_SURFACE)
-    val DarkOnSurfaceVariant = Color(SkeinColorHex.DARK_ON_SURFACE_VARIANT)
-    val DarkPrimary = Color(SkeinColorHex.DARK_PRIMARY)
-    val DarkOnPrimary = Color(SkeinColorHex.DARK_ON_PRIMARY)
-    val DarkTertiary = Color(SkeinColorHex.DARK_TERTIARY)
-    val DarkOnTertiary = Color(SkeinColorHex.DARK_ON_TERTIARY)
-    val DarkOutline = Color(SkeinColorHex.DARK_OUTLINE)
-    val DarkError = Color(SkeinColorHex.DARK_ERROR)
-    val DarkOnError = Color(SkeinColorHex.DARK_ON_ERROR)
+    val dark: ColorScheme = colorScheme(SkeinColorHex.Dark)
+    val light: ColorScheme = colorScheme(SkeinColorHex.Light)
 
-    // Light (mirrored) palette.
-    val LightBackground = Color(SkeinColorHex.LIGHT_BACKGROUND)
-    val LightSurface = Color(SkeinColorHex.LIGHT_SURFACE)
-    val LightSurfaceVariant = Color(SkeinColorHex.LIGHT_SURFACE_VARIANT)
-    val LightOnBackground = Color(SkeinColorHex.LIGHT_ON_BACKGROUND)
-    val LightOnSurface = Color(SkeinColorHex.LIGHT_ON_SURFACE)
-    val LightOnSurfaceVariant = Color(SkeinColorHex.LIGHT_ON_SURFACE_VARIANT)
-    val LightPrimary = Color(SkeinColorHex.LIGHT_PRIMARY)
-    val LightOnPrimary = Color(SkeinColorHex.LIGHT_ON_PRIMARY)
-    val LightTertiary = Color(SkeinColorHex.LIGHT_TERTIARY)
-    val LightOnTertiary = Color(SkeinColorHex.LIGHT_ON_TERTIARY)
-    val LightOutline = Color(SkeinColorHex.LIGHT_OUTLINE)
-    val LightError = Color(SkeinColorHex.LIGHT_ERROR)
-    val LightOnError = Color(SkeinColorHex.LIGHT_ON_ERROR)
-
-    // Editor surface (bd `skein-jit3`) — see `SkeinColorHex`'s doc on these
-    // constants for why the editor needs a surface distinct from `surface`/
-    // `background`.
-    val DarkEditorSurface = Color(SkeinColorHex.DARK_EDITOR_SURFACE)
-    val DarkOnEditorSurface = Color(SkeinColorHex.DARK_ON_EDITOR_SURFACE)
-    val DarkOnEditorSurfaceMuted = Color(SkeinColorHex.DARK_ON_EDITOR_SURFACE_MUTED)
-    val LightEditorSurface = Color(SkeinColorHex.LIGHT_EDITOR_SURFACE)
-    val LightOnEditorSurface = Color(SkeinColorHex.LIGHT_ON_EDITOR_SURFACE)
-    val LightOnEditorSurfaceMuted = Color(SkeinColorHex.LIGHT_ON_EDITOR_SURFACE_MUTED)
-
-    val dark: ColorScheme =
-        darkColorScheme(
-            background = DarkBackground,
-            onBackground = DarkOnBackground,
-            surface = DarkSurface,
-            onSurface = DarkOnSurface,
-            surfaceVariant = DarkSurfaceVariant,
-            onSurfaceVariant = DarkOnSurfaceVariant,
-            primary = DarkPrimary,
-            onPrimary = DarkOnPrimary,
-            primaryContainer = DarkSurfaceVariant,
-            onPrimaryContainer = DarkPrimary,
-            tertiary = DarkTertiary,
-            onTertiary = DarkOnTertiary,
-            tertiaryContainer = DarkSurfaceVariant,
-            onTertiaryContainer = DarkTertiary,
-            outline = DarkOutline,
-            outlineVariant = DarkOutline,
-            error = DarkError,
-            onError = DarkOnError,
-            surfaceContainer = DarkSurface,
-            surfaceContainerLow = DarkBackground,
-            surfaceContainerLowest = DarkBackground,
-            surfaceContainerHigh = DarkSurfaceVariant,
-            surfaceContainerHighest = DarkSurfaceVariant,
+    val darkExtended: SkeinExtendedColors =
+        extendedColors(
+            SkeinColorHex.Dark,
+            dark,
+            codeBlockContainer = dark.surfaceContainerLowest,
+            codeInlineContainer = dark.surfaceContainerHighest,
+        )
+    val lightExtended: SkeinExtendedColors =
+        extendedColors(
+            SkeinColorHex.Light,
+            light,
+            codeBlockContainer = light.surfaceContainer,
+            codeInlineContainer = light.surfaceContainerHigh,
         )
 
-    val light: ColorScheme =
-        lightColorScheme(
-            background = LightBackground,
-            onBackground = LightOnBackground,
-            surface = LightSurface,
-            onSurface = LightOnSurface,
-            surfaceVariant = LightSurfaceVariant,
-            onSurfaceVariant = LightOnSurfaceVariant,
-            primary = LightPrimary,
-            onPrimary = LightOnPrimary,
-            primaryContainer = LightSurfaceVariant,
-            onPrimaryContainer = LightPrimary,
-            tertiary = LightTertiary,
-            onTertiary = LightOnTertiary,
-            tertiaryContainer = LightSurfaceVariant,
-            onTertiaryContainer = LightTertiary,
-            outline = LightOutline,
-            outlineVariant = LightOutline,
-            error = LightError,
-            onError = LightOnError,
-            surfaceContainer = LightSurface,
-            surfaceContainerLow = LightBackground,
-            surfaceContainerLowest = LightBackground,
-            surfaceContainerHigh = LightSurfaceVariant,
-            surfaceContainerHighest = LightSurfaceVariant,
-        )
+    // The v1 names, kept one wave so callers still compile (§13.2).
+
+    @Deprecated(MOVED, ReplaceWith("SkeinColors.dark.background"))
+    val DarkBackground get() = dark.background
+
+    @Deprecated(MOVED, ReplaceWith("SkeinColors.dark.surface"))
+    val DarkSurface get() = dark.surface
+
+    @Deprecated(MOVED, ReplaceWith("SkeinColors.dark.surfaceContainerHighest"))
+    val DarkSurfaceVariant get() = dark.surfaceVariant
+
+    @Deprecated(MOVED, ReplaceWith("SkeinColors.dark.onBackground"))
+    val DarkOnBackground get() = dark.onBackground
+
+    @Deprecated(MOVED, ReplaceWith("SkeinColors.dark.onSurface"))
+    val DarkOnSurface get() = dark.onSurface
+
+    @Deprecated(MOVED, ReplaceWith("SkeinColors.dark.onSurfaceVariant"))
+    val DarkOnSurfaceVariant get() = dark.onSurfaceVariant
+
+    @Deprecated(MOVED, ReplaceWith("SkeinColors.dark.primary"))
+    val DarkPrimary get() = dark.primary
+
+    @Deprecated(MOVED, ReplaceWith("SkeinColors.dark.onPrimary"))
+    val DarkOnPrimary get() = dark.onPrimary
+
+    @Deprecated(MOVED, ReplaceWith("SkeinColors.dark.tertiary"))
+    val DarkTertiary get() = dark.tertiary
+
+    @Deprecated(MOVED, ReplaceWith("SkeinColors.dark.onTertiary"))
+    val DarkOnTertiary get() = dark.onTertiary
+
+    @Deprecated(MOVED, ReplaceWith("SkeinColors.dark.outline"))
+    val DarkOutline get() = dark.outline
+
+    @Deprecated(MOVED, ReplaceWith("SkeinColors.dark.error"))
+    val DarkError get() = dark.error
+
+    @Deprecated(MOVED, ReplaceWith("SkeinColors.dark.onError"))
+    val DarkOnError get() = dark.onError
+
+    @Deprecated(MOVED, ReplaceWith("SkeinColors.light.background"))
+    val LightBackground get() = light.background
+
+    @Deprecated(MOVED, ReplaceWith("SkeinColors.light.surface"))
+    val LightSurface get() = light.surface
+
+    @Deprecated(MOVED, ReplaceWith("SkeinColors.light.surfaceContainerHighest"))
+    val LightSurfaceVariant get() = light.surfaceVariant
+
+    @Deprecated(MOVED, ReplaceWith("SkeinColors.light.onBackground"))
+    val LightOnBackground get() = light.onBackground
+
+    @Deprecated(MOVED, ReplaceWith("SkeinColors.light.onSurface"))
+    val LightOnSurface get() = light.onSurface
+
+    @Deprecated(MOVED, ReplaceWith("SkeinColors.light.onSurfaceVariant"))
+    val LightOnSurfaceVariant get() = light.onSurfaceVariant
+
+    @Deprecated(MOVED, ReplaceWith("SkeinColors.light.primary"))
+    val LightPrimary get() = light.primary
+
+    @Deprecated(MOVED, ReplaceWith("SkeinColors.light.onPrimary"))
+    val LightOnPrimary get() = light.onPrimary
+
+    @Deprecated(MOVED, ReplaceWith("SkeinColors.light.tertiary"))
+    val LightTertiary get() = light.tertiary
+
+    @Deprecated(MOVED, ReplaceWith("SkeinColors.light.onTertiary"))
+    val LightOnTertiary get() = light.onTertiary
+
+    @Deprecated(MOVED, ReplaceWith("SkeinColors.light.outline"))
+    val LightOutline get() = light.outline
+
+    @Deprecated(MOVED, ReplaceWith("SkeinColors.light.error"))
+    val LightError get() = light.error
+
+    @Deprecated(MOVED, ReplaceWith("SkeinColors.light.onError"))
+    val LightOnError get() = light.onError
+
+    // The editor's own pair folds into the page (§6.4): it sits on `surface`.
+
+    @Deprecated(MOVED, ReplaceWith("SkeinColors.dark.surface"))
+    val DarkEditorSurface get() = dark.surface
+
+    @Deprecated(MOVED, ReplaceWith("SkeinColors.dark.onSurface"))
+    val DarkOnEditorSurface get() = dark.onSurface
+
+    @Deprecated(MOVED, ReplaceWith("SkeinColors.dark.onSurfaceVariant"))
+    val DarkOnEditorSurfaceMuted get() = dark.onSurfaceVariant
+
+    @Deprecated(MOVED, ReplaceWith("SkeinColors.light.surface"))
+    val LightEditorSurface get() = light.surface
+
+    @Deprecated(MOVED, ReplaceWith("SkeinColors.light.onSurface"))
+    val LightOnEditorSurface get() = light.onSurface
+
+    @Deprecated(MOVED, ReplaceWith("SkeinColors.light.onSurfaceVariant"))
+    val LightOnEditorSurfaceMuted get() = light.onSurfaceVariant
 }
 
 /**
- * The editor's own surface (bd `skein-jit3`): distinct from `ColorScheme`'s
- * `surface`/`background` so `NoteTab` has somewhere real to put
- * [app.skein.feature.editor.SkeinEditor] and derive
- * [app.skein.core.markdown.render.MarkdownStyle]'s colors from, independent
- * of whatever happens to render behind the tab pane. [SkeinTheme] provides
- * the dark or light variant via [LocalSkeinEditorColors] based on the
- * resolved [SkeinThemeMode] — callers should not need to branch on dark/light
- * themselves.
+ * §6.4's mapping, written once for both themes. The constructor (not
+ * `darkColorScheme()`) has no defaults, so a role cannot be left unset.
+ */
+private fun colorScheme(p: SkeinPalette): ColorScheme =
+    ColorScheme(
+        primary = Color(p.primary),
+        onPrimary = Color(p.onPrimary),
+        primaryContainer = Color(p.primaryContainer),
+        onPrimaryContainer = Color(p.onPrimaryContainer),
+        inversePrimary = Color(p.inversePrimary),
+        secondary = Color(p.secondary),
+        onSecondary = Color(p.onSecondary),
+        secondaryContainer = Color(p.secondaryContainer),
+        onSecondaryContainer = Color(p.onSecondaryContainer),
+        tertiary = Color(p.tertiary),
+        onTertiary = Color(p.onTertiary),
+        tertiaryContainer = Color(p.tertiaryContainer),
+        onTertiaryContainer = Color(p.onTertiaryContainer),
+        background = Color(p.surface),
+        onBackground = Color(p.onSurface),
+        surface = Color(p.surface),
+        onSurface = Color(p.onSurface),
+        surfaceVariant = Color(p.surfaceContainerHighest),
+        onSurfaceVariant = Color(p.onSurfaceVariant),
+        // = surface: neutralises Material's tonal elevation tint.
+        surfaceTint = Color(p.surface),
+        inverseSurface = Color(p.inverseSurface),
+        inverseOnSurface = Color(p.inverseOnSurface),
+        error = Color(p.error),
+        onError = Color(p.onError),
+        errorContainer = Color(p.errorContainer),
+        onErrorContainer = Color(p.onErrorContainer),
+        outline = Color(p.outline),
+        outlineVariant = Color(p.outlineVariant),
+        scrim = Color(p.scrim),
+        surfaceBright = Color(p.surfaceBright),
+        surfaceDim = Color(p.surfaceDim),
+        surfaceContainer = Color(p.surfaceContainer),
+        surfaceContainerHigh = Color(p.surfaceContainerHigh),
+        surfaceContainerHighest = Color(p.surfaceContainerHighest),
+        surfaceContainerLow = Color(p.surfaceContainerLow),
+        surfaceContainerLowest = Color(p.surfaceContainerLowest),
+        primaryFixed = Color(SkeinColorHex.PRIMARY_FIXED),
+        primaryFixedDim = Color(SkeinColorHex.PRIMARY_FIXED_DIM),
+        onPrimaryFixed = Color(SkeinColorHex.ON_PRIMARY_FIXED),
+        onPrimaryFixedVariant = Color(SkeinColorHex.ON_PRIMARY_FIXED_VARIANT),
+        secondaryFixed = Color(SkeinColorHex.SECONDARY_FIXED),
+        secondaryFixedDim = Color(SkeinColorHex.SECONDARY_FIXED_DIM),
+        onSecondaryFixed = Color(SkeinColorHex.ON_SECONDARY_FIXED),
+        onSecondaryFixedVariant = Color(SkeinColorHex.ON_SECONDARY_FIXED_VARIANT),
+        tertiaryFixed = Color(SkeinColorHex.TERTIARY_FIXED),
+        tertiaryFixedDim = Color(SkeinColorHex.TERTIARY_FIXED_DIM),
+        onTertiaryFixed = Color(SkeinColorHex.ON_TERTIARY_FIXED),
+        onTertiaryFixedVariant = Color(SkeinColorHex.ON_TERTIARY_FIXED_VARIANT),
+    )
+
+/** §6.3: success and warning are new colours; everything else aliases a role. */
+private fun extendedColors(
+    p: SkeinPalette,
+    s: ColorScheme,
+    codeBlockContainer: Color,
+    codeInlineContainer: Color,
+) = SkeinExtendedColors(
+    success = Color(p.success),
+    onSuccess = Color(p.onSuccess),
+    successContainer = Color(p.successContainer),
+    onSuccessContainer = Color(p.onSuccessContainer),
+    warning = Color(p.warning),
+    onWarning = Color(p.onWarning),
+    warningContainer = Color(p.warningContainer),
+    onWarningContainer = Color(p.onWarningContainer),
+    destructive = s.error,
+    onDestructive = s.onError,
+    destructiveContainer = s.errorContainer,
+    info = s.primary,
+    onInfo = s.onPrimary,
+    infoContainer = s.primaryContainer,
+    onInfoContainer = s.onPrimaryContainer,
+    disabledContent = s.onSurface.copy(alpha = 0.38f),
+    disabledContainer = s.onSurface.copy(alpha = 0.12f),
+    selectionBackground = s.primary.copy(alpha = 0.30f),
+    selectionHandle = s.primary,
+    focusRing = s.primary,
+    link = s.primary,
+    codeBlockContainer = codeBlockContainer,
+    codeBlockBorder = s.outlineVariant,
+    onCodeBlock = s.onSurface,
+    codeBlockLabel = s.onSurfaceVariant,
+    codeInlineContainer = codeInlineContainer,
+    onCodeInline = s.onSurface,
+    citationContainer = s.primaryContainer,
+    onCitation = s.onPrimaryContainer,
+    activityText = s.onSurfaceVariant,
+    activityRunning = s.primary,
+    activityDone = s.onSurfaceVariant,
+    activityFailed = s.error,
+    reasoningContainer = s.surfaceContainerLow,
+    reasoningBorder = s.outlineVariant,
+    onReasoning = s.onSurfaceVariant,
+    userMessageContainer = s.secondaryContainer,
+    onUserMessage = s.onSecondaryContainer,
+    graphNote = s.primary,
+    graphChat = s.secondary,
+    graphFile = s.onSurfaceVariant,
+    graphAiOutput = s.tertiary,
+    graphTag = s.outline,
+    graphEdge = s.outline,
+    graphLabelPlate = s.surface.copy(alpha = 0.90f),
+)
+
+/**
+ * Skein's roles outside Material 3 (DESIGN_SYSTEM.md §6.3), read through
+ * [LocalSkeinColors]. Only success and warning are new colours; the rest name
+ * a role by intent (`codeBlockContainer`, not "whichever surface looks right").
+ */
+@Immutable
+data class SkeinExtendedColors(
+    val success: Color,
+    val onSuccess: Color,
+    val successContainer: Color,
+    val onSuccessContainer: Color,
+    val warning: Color,
+    val onWarning: Color,
+    val warningContainer: Color,
+    val onWarningContainer: Color,
+    val destructive: Color,
+    val onDestructive: Color,
+    val destructiveContainer: Color,
+    val info: Color,
+    val onInfo: Color,
+    val infoContainer: Color,
+    val onInfoContainer: Color,
+    /** Exempt from contrast; a disabled control must say why (§7.2). */
+    val disabledContent: Color,
+    val disabledContainer: Color,
+    val selectionBackground: Color,
+    val selectionHandle: Color,
+    val focusRing: Color,
+    /** Always underlined. */
+    val link: Color,
+    val codeBlockContainer: Color,
+    val codeBlockBorder: Color,
+    val onCodeBlock: Color,
+    val codeBlockLabel: Color,
+    val codeInlineContainer: Color,
+    val onCodeInline: Color,
+    val citationContainer: Color,
+    val onCitation: Color,
+    val activityText: Color,
+    val activityRunning: Color,
+    val activityDone: Color,
+    val activityFailed: Color,
+    val reasoningContainer: Color,
+    val reasoningBorder: Color,
+    val onReasoning: Color,
+    val userMessageContainer: Color,
+    val onUserMessage: Color,
+    /** Graph kinds are always paired with a distinct shape (§10.26). */
+    val graphNote: Color,
+    val graphChat: Color,
+    val graphFile: Color,
+    val graphAiOutput: Color,
+    val graphTag: Color,
+    val graphEdge: Color,
+    val graphLabelPlate: Color,
+) {
+    /** What [SkeinTheme] provides as `LocalTextSelectionColors`. */
+    val textSelectionColors: TextSelectionColors
+        get() = TextSelectionColors(handleColor = selectionHandle, backgroundColor = selectionBackground)
+}
+
+/**
+ * Provided by [SkeinTheme] for the resolved theme. The dark default only
+ * matters for a `@Preview`/test composed outside [SkeinTheme].
+ */
+val LocalSkeinColors = staticCompositionLocalOf { SkeinColors.darkExtended }
+
+/**
+ * The editor's own pair (bd `skein-jit3`), folded into the page colours by
+ * DS2 (§6.4): the editor now sits on `surface` like every other pane. Kept,
+ * and provided by [SkeinTheme], until the content-colour work (§6.7, DS3)
+ * gives the editor a real `Surface`.
  */
 data class SkeinEditorColors(
     val surface: Color,
@@ -126,17 +325,6 @@ data class SkeinEditorColors(
     val onSurfaceMuted: Color,
 )
 
-/**
- * Defaults to the dark variant (matching [SkeinTheme]'s dark-default), but
- * every real composition gets the resolved value from [SkeinTheme] itself —
- * this default only matters for a `@Preview`/test that renders below
- * [LocalSkeinEditorColors]'s provider without going through [SkeinTheme].
- */
-val LocalSkeinEditorColors =
-    staticCompositionLocalOf {
-        SkeinEditorColors(
-            surface = SkeinColors.DarkEditorSurface,
-            onSurface = SkeinColors.DarkOnEditorSurface,
-            onSurfaceMuted = SkeinColors.DarkOnEditorSurfaceMuted,
-        )
-    }
+internal fun ColorScheme.editorColors() = SkeinEditorColors(surface, onSurface, onSurfaceVariant)
+
+val LocalSkeinEditorColors = staticCompositionLocalOf { SkeinColors.dark.editorColors() }
