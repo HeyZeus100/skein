@@ -30,7 +30,7 @@ fun ThemeGallery(modifier: Modifier = Modifier) {
         ) {
             Text("Skein", style = MaterialTheme.typography.displayMedium)
             Text("terminal / editor shell", style = MaterialTheme.typography.headlineSmall)
-            Text("Body text sets in IBM Plex Mono.", style = MaterialTheme.typography.bodyLarge)
+            Text("Body text sets in Skein Sans.", style = MaterialTheme.typography.bodyLarge)
             Text("Secondary / label text.", style = MaterialTheme.typography.labelMedium)
 
             Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {

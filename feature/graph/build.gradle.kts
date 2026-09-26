@@ -14,7 +14,7 @@ android {
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         // skein-z2u (E6.I11): this module depends on `:feature:shell` for
         // `LocalSkeinTokens`/`SkeinTheme` (terminal/editor visual style,
-        // IBM Plex Mono) the same way `:feature:editor` does, which pulls in
+        // Skein Sans/Mono) the same way `:feature:editor` does, which pulls in
         // `:feature:shell`'s `:core:vault` dependency (skein-e2ki's
         // "distribution" foss/dev flavor dimension for its native `.so` ABI
         // filters). This module has no flavors of its own and doesn't care
@@ -71,7 +71,7 @@ dependencies {
     // `IndexStore`/`VaultRepository` and never unlocks anything itself.
     implementation(project(":core:model"))
     // `LocalSkeinTokens` (glyphs, corner radius) and `SkeinTheme`
-    // (all-monospace IBM Plex Mono `SkeinTypography`) for the graph legend
+    // (Skein Sans `SkeinTypography`) for the graph legend
     // and screen chrome — same terminal/editor visual style `NoteTab` and
     // `BacklinksDrawer` already render with.
     implementation(project(":feature:shell"))

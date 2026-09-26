@@ -49,6 +49,7 @@ import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.compose.LifecycleEventEffect
+import app.skein.core.designsystem.theme.SkeinMono
 import app.skein.core.export.pdf.PdfExportService
 import app.skein.core.markdown.render.MarkdownStyle
 import app.skein.core.model.DocId
@@ -181,7 +182,12 @@ public fun NoteTab(
     val editorColors = LocalSkeinEditorColors.current
     val effectiveMarkdownStyle =
         if (markdownStyle === MarkdownStyle.Default) {
-            markdownStyle.copy(bodyColor = editorColors.onSurface, mutedColor = editorColors.onSurfaceMuted)
+            markdownStyle.copy(
+                bodyColor = editorColors.onSurface,
+                mutedColor = editorColors.onSurfaceMuted,
+                // Code spans stay in Skein Mono inside Skein Sans prose (IA decision D4, skein-xtov.23.4).
+                codeFontFamily = SkeinMono,
+            )
         } else {
             markdownStyle
         }

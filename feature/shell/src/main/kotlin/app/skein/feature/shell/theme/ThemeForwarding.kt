@@ -60,10 +60,10 @@ typealias SkeinTokens = app.skein.core.designsystem.theme.SkeinTokens
 val LocalSkeinTokens = app.skein.core.designsystem.theme.LocalSkeinTokens
 
 @Deprecated(
-    "Moved to :core:designsystem (skein-xtov.23.1)",
-    ReplaceWith("PlexMonoFontFamily", "app.skein.core.designsystem.theme.PlexMonoFontFamily"),
+    "Plex Mono is now Skein Mono in :core:designsystem (skein-xtov.23.4)",
+    ReplaceWith("SkeinMono", "app.skein.core.designsystem.theme.SkeinMono"),
 )
-val PlexMonoFontFamily = app.skein.core.designsystem.theme.PlexMonoFontFamily
+val PlexMonoFontFamily = app.skein.core.designsystem.theme.SkeinMono
 
 @Deprecated(
     "Moved to :core:designsystem (skein-xtov.23.1)",

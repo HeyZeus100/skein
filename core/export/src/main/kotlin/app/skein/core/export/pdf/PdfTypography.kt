@@ -34,13 +34,12 @@ public class PdfTypography(
 
     /**
      * Serif is the "sans/serif fallback for prose" the plan calls for.
-     * IBM Plex Mono is bundled by `:feature:shell` (`res/font/ibm_plex_mono_*.ttf`)
-     * for the app's UI chrome — pulling that resource into `:core:export`
-     * would invert the feature -> core dependency direction, so code text
-     * below uses the platform's built-in monospace family instead of the
-     * bundled Plex Mono file. Swapping in the real font (e.g. a `Typeface`
-     * passed in by the caller, once it's exposed from a module `:core:export`
-     * can depend on) is a follow-up, not a functional gap in pagination.
+     * The app's own faces (Skein Sans / Skein Mono) are bundled by
+     * `:core:designsystem` (`res/font/skein_*.ttf`), which `:core:export` does
+     * not depend on, so code text below uses the platform's built-in monospace
+     * family instead of the bundled Skein Mono file. Swapping in the real font
+     * (e.g. a `Typeface` passed in by the caller) is a follow-up, not a
+     * functional gap in pagination.
      */
     public val bodyPaint: TextPaint =
         TextPaint(Paint.ANTI_ALIAS_FLAG).apply {

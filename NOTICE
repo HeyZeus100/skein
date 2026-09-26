@@ -252,15 +252,25 @@ its output is recorded, to prove the Kotlin reimplementation agrees with it.
 
 ## Bundled Fonts
 
-### IBM Plex Mono
+### Skein Sans and Skein Mono (modified IBM Plex)
 
 - **SPDX:** `OFL-1.1`
-- **Source:** https://github.com/IBM/plex
-- **Version:** Latest release (4 variants: Regular, Italic, Bold, Bold Italic)
-- **Where it ships:** vendored TTF files under
-  `core/designsystem/src/main/res/font/ibm_plex_mono_*.ttf`.
-- **Attribution:** Copyright (c) IBM Corp. Licensed under the SIL Open Font
-  License v1.1.
+- **Source:** https://github.com/IBM/plex — releases
+  `@ibm/plex-sans-variable@0.2.0` (IBM Plex Sans Var, font version 3.000) and
+  `@ibm/plex-mono@2.5.0` (IBM Plex Mono, font version 2.005); the archive
+  SHA-256s are pinned in `tools/fonts/build-skein-fonts.sh`, which rebuilds the
+  shipped files byte for byte.
+- **Where it ships:** `core/designsystem/src/main/res/font/skein_sans.ttf`,
+  `skein_sans_italic.ttf` and `skein_mono.ttf`, with the licence text at
+  `core/designsystem/src/main/assets/fonts/OFL.txt`.
+- **Modified Version:** Skein Sans and Skein Mono are modified (subset,
+  instanced) versions of IBM Plex Sans 3.000 and IBM Plex Mono 2.005: Latin
+  subset, hinting removed, the Sans roman instanced to `wdth` 100 and `wght`
+  400–600 and the italic to `wght` 400. "Plex" is a Reserved Font Name, so the
+  fonts are renamed "Skein Sans" and "Skein Mono" in their `name` tables, as
+  OFL-1.1 §3 requires.
+- **Attribution:** Copyright © 2017 IBM Corp. with Reserved Font Name "Plex".
+  Licensed under the SIL Open Font License v1.1.
 
 ---
 
@@ -283,7 +293,8 @@ from Maven Central under Apache-2.0. Individual attributions are listed in
   license (Apache-2.0, MIT, BSD-3-Clause, or public domain).
 - No GPL/LGPL in the `foss` variant, enforced by the `licenseAudit`
   Gradle task (`E1.I7`, `build-logic/guards/`).
-- Modifications: no upstream source is patched. The SQLCipher amalgamation
+- Modifications: no upstream source is patched, except the bundled fonts
+  (subset, instanced and renamed; see Bundled Fonts). The SQLCipher amalgamation
   is a byte-for-byte output of `./configure && make sqlite3.c` from the
   pinned tarball. sqlite-vec is vendored verbatim from its release tarball;
   its generated `sqlite-vec.h` is produced from the shipped `.tmpl` by the

@@ -29,8 +29,10 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import app.skein.core.designsystem.theme.SkeinMono
 import app.skein.core.markdown.MarkdownAst
 import app.skein.core.markdown.render.MarkdownRenderer
+import app.skein.core.markdown.render.MarkdownStyle
 
 /** Test tag for [MarkdownWithCitations]' rendered text (per message/bubble id, see `MessageList`). */
 public fun assistantTextTestTag(messageId: String): String = "app.skein.feature.chat.AssistantBubble.$messageId"
@@ -52,6 +54,9 @@ private sealed interface TextOrMarker {
 }
 
 private val MARKER_REGEX = Regex("\\[(\\d+)]")
+
+/** Code stays in Skein Mono while the prose around it is Skein Sans (IA decision D4, skein-xtov.23.4). */
+private val CHAT_MARKDOWN_STYLE = MarkdownStyle.Default.copy(codeFontFamily = SkeinMono)
 
 /** Splits [text] on `[N]` markers, in order. Grouped `[N, M]` markers are left as plain text (see `CitationParser`'s KDoc for that case; only single markers become interactive chips here). */
 private fun splitOnCitationMarkers(text: String): List<TextOrMarker> {
@@ -120,7 +125,10 @@ public fun MarkdownWithCitations(
                     when (segment) {
                         is TextOrMarker.Text ->
                             append(
-                                MarkdownRenderer.toAnnotatedString(MarkdownAst.parse(segment.text)),
+                                MarkdownRenderer.toAnnotatedString(
+                                    MarkdownAst.parse(segment.text),
+                                    CHAT_MARKDOWN_STYLE,
+                                ),
                             )
                         is TextOrMarker.Marker ->
                             if (segment.n in citations) {
