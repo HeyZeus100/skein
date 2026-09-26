@@ -125,13 +125,14 @@ fun CommandBar(
 
             val statusGlyph = if (modelActive) tokens.glyphs.modelActive else tokens.glyphs.modelPaused
             // UX-P0-02: one line, ellipsized and width-capped, so a long model
-            // id can never crush the command field on the outer screen.
+            // id can never crush the command field on the outer screen. The
+            // ellipsis goes in the middle so the status glyph stays visible.
             Text(
                 text = "$modelName · $statusGlyph",
                 style = MaterialTheme.typography.labelMedium,
                 color = MaterialTheme.colorScheme.onSurface,
                 maxLines = 1,
-                overflow = TextOverflow.Ellipsis,
+                overflow = TextOverflow.MiddleEllipsis,
                 modifier =
                     Modifier
                         .padding(horizontal = 8.dp)
