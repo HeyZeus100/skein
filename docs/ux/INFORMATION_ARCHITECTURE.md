@@ -339,6 +339,24 @@ Wave 2 design system → Wave 3 navigation shell (this IA, with today's screens 
 
 `DESIGN_SYSTEM.md` §18 proposed five more; all adopted: prose width capped at **576 dp** on every window class (720 dp was ~99 characters per line); in chat history the ⋮ is visible on the selected row and on hover/focus, with long-press and TalkBack actions everywhere (no column of identical icons); a visible author label on assistant turns only; the emoji in this document's sketches are placeholders for the design system's icon set; the Expanded extra pane (context inspector / Connections) is **320 dp**, keeping the chat ≥ 420 dp at stock density.
 
+## 8b. Spaces: domains built on personas (owner decision, 2026-09-26)
+
+The owner works across several domains and wants each to have its own knowledge base, its own instructions (an established workflow) and its own model, with chats and search staying inside it; later, other users should be able to build private, offline, domain-specific knowledge bases the same way. The storage already has this boundary: every document carries a `persona_id`, retrieval is filtered by persona (`RetrievalServiceImpl` → `PprRanker`), and a persona holds a system prompt and a default model. The product concept on top of it is a **Space**.
+
+| | Decision |
+|---|---|
+| Name | **Space** replaces "Persona" everywhere in the UI. "Persona" stays an internal/storage term. |
+| What a Space is | Its notes and files, its instructions, its default model; later its workflows and skills. |
+| Level 1 | There is always one default Space, and nothing about Spaces is shown while it is the only one. |
+| Level 2 | Creating a second Space adds a **Space switcher** at the top of the drawer (Compact) and the rail (Medium+). The current Space is part of navigation state (an id). |
+| Chat | A new chat runs in the current Space: its instructions, its model, retrieval scoped to its knowledge. The chat header's model label reflects the Space's model. |
+| Knowledge, Graph, search | Scoped to the current Space, with an "All Spaces" option in Knowledge and the palette. |
+| Import / export | "Import files…" and "Import a folder…" (Markdown, text, PDF; a folder keeps its `[[links]]`, so it arrives as a connected graph) import into the current Space. "Export Space" writes a zip of Markdown + attachments (the existing `exportVaultZip` format, filtered to the Space); "Export everything" writes the whole vault. Getting files from a computer: copy them to the phone (USB or a sync app) and import the folder — Skein never uploads. |
+| Managing Spaces | Settings › Spaces: name, instructions, default model; delete with explicit reassignment of its notes (`OBJECT_LIFECYCLE_SPEC.md` persona contract, LC-11). |
+| Later | Sharing a Space as a domain pack (knowledge + instructions + a model recommendation) for other users. Reserved, not built. |
+
+This supersedes the "Personas" rows above: the Model sheet's persona row becomes a Space row that appears once a second Space exists, and Settings › Personas becomes Settings › Spaces.
+
 ## 9. Decisions needing owner sign-off (they amend spec §8)
 
 | # | Spec today | Proposed | Why |

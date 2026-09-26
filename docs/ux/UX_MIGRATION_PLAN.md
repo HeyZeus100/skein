@@ -40,6 +40,21 @@ Bead ids in this plan are the specs' ids (e.g. `C1`, `KN-6.4`). Each is filed as
 
 Grouped by when they block. Each has a recommended default; silence means the default.
 
+### 2.0 Recorded decisions (owner, 2026-09-26)
+
+The owner reviewed this plan and accepted it. Every row below takes its recommended default except where noted.
+
+| Decision | Answer |
+|---|---|
+| D1–D8, DS-c, DS-d, §2.2, §2.3, §2.4 rows | Recommended defaults |
+| D7 / A-b / A-c / A-d (what survives a lock) | **Keep my place, drafts and the partial answer**: ids-only back stack across a lock, encrypted draft rows, a lock ends a live turn through the Stop path. Implementation still gets a security review (E3). |
+| DS-a / DS-b (look) | **IBM Plex Sans + Plex Mono for code and technical detail, desaturated cyan**, as in the review prototype |
+| A-e (tabletop) | Rarely or never: AL-20 stays in Wave 8 |
+| DS-e | No vector logo (trace the PNG); no Greek/Cyrillic |
+| K-d (keyboard suggestions in notes) | Stay off |
+| L-b (SQLite ≥ 3.42 readers) | No desktop SQLite reader in use; migration 010 is fine |
+| **New: Spaces** | Domains built on personas (`INFORMATION_ARCHITECTURE.md` §8b): own knowledge, instructions and model; bulk Markdown/folder import and Space/vault export |
+
 ### 2.1 Before Wave 2 (they shape everything)
 
 | # | Decision | Recommended | Source |
@@ -138,6 +153,7 @@ Sizes are the specs' (S/M/L). Every wave's exit includes: the P0 tests it owns a
 ### Wave 3 — Adaptive navigation shell
 **Entry:** Wave 2 exit; D7 security review done. **Beads** (`ADAPTIVE_LAYOUT_SPEC.md` §12): critical path AL-04 (decision function) → **AL-05 Nav3 spike, 4-day time box, gate G1–G10** (fallback: a hand-rolled back stack with the same keys, not Navigation Compose 2.x) → AL-06 (`:core:navigation` keys + Navigator; delivers LC-20) → AL-08 (`NavDisplay` host, session ViewModel store, lock/unlock sequence) → AL-09a/AL-09b (re-host every destination; delete tabs, timeline rail, overlays, split, `AdaptivePaneHost`) → AL-10/AL-11 → AL-15 (JVM A–G) → AL-17 (the owner's-device watcher: the Wave 3 validation gate). Beside it: AL-03, AL-07, AL-12, AL-13, AL-14, AL-16, AL-18, AL-19; UT-6, UT-7, UT-10, UT-13, UT-14 (UT-15 = AL-17). Later: AL-20 tabletop (Wave 8, earlier if A-e), AL-21 (Wave 10), AL-22 (Wave 6), AL-23 (Wave 7).
 **Scope:** the IA's shell with today's screens re-hosted: drawer/rail, top bars, list–detail panes, sheets vs extra panes, back handling, the palette seam, state that survives recreation, fold and lock. Timeline, tabs, split, icon rail and the command bar are removed here.
+**Added by the Spaces decision:** the current Space id in navigation state and the Space switcher slot at the top of the drawer/rail (hidden while only one Space exists).
 **Exit:** fold tests A, B, D (draft), G green on JVM and on the emulator lane; the hardware runner walks A/B/G on the Fold with the watcher (UT-15); no Stage H temporary wiring remains.
 
 ### Wave 4 — Chat
@@ -150,6 +166,7 @@ Sizes are the specs' (S/M/L). Every wave's exit includes: the P0 tests it owns a
 
 ### Wave 6 — Knowledge and notes
 **Entry:** Wave 3 exit (can run beside Waves 4–5 once the shell is in); §2.3 decided; KB-1–KB-7 and LC-05, LC-09, LC-24 landed for the beads that need them. **Beads:** KN-6.2–KN-6.13 (KN-6.1 is H1), LC-25, LC-26; UT-7 (E).
+**Added by the Spaces decision:** bulk import (multiple files, a folder via `OpenDocumentTree` keeping `[[links]]`, a Skein export zip) into the current Space as an app-scoped job with progress; export a note (Markdown), a Space and the whole vault (zip) through the existing `ExportService`; Knowledge scoped to the current Space with "All Spaces".
 **Exit:** the prompt §51 "Notes" block passes (create, edit, rename, delete, search); fold test E on the Fold.
 
 ### Wave 7 — Context inspector
@@ -162,6 +179,7 @@ Sizes are the specs' (S/M/L). Every wave's exit includes: the P0 tests it owns a
 
 ### Wave 9 — Models and settings
 **Entry:** Wave 4 exit (the model sheet and name resolver). **Beads:** a short Models & Settings spec bead first (from `JAN.md` §6.1–6.2, IA §3.2, `DESIGN_SYSTEM.md`, and the chat spec's model rules; no separate spec exists yet); then Models (On device · Available; details in mono; import progress in Models, never over the composer — supersedes `skein-gg11.21`'s UI half); Settings hierarchy (Appearance · Privacy & security · Personas · Knowledge & search · About · Advanced); LC-11, LC-28 with `skein-3iw`.
+**Added by the Spaces decision:** Settings › Spaces (create, name, instructions, default model, delete with reassignment — LC-11, LC-28) replaces Settings › Personas; `skein-3iw` is re-scoped to it.
 **Exit:** no implementation language in Settings; model technical details only in Details.
 
 ### Wave 10 — Command palette and power UX
@@ -229,7 +247,7 @@ Bugs found during Wave 0/1 and already filed: `skein-g1bd` (fake vs real excepti
 | `skein-ps0` E6.I4 Command bar (in progress) | Search + slash palette + model chip | **Superseded** by D1: its search and command registry move into the palette (Wave 10); the chip leaves in Wave 3. Stage H6 is its last change. |
 | `skein-3uh` E6.I22 New-chat flow, AI outputs as documents | "Chat · date" titles, pinned tab | **Re-scope** to CHAT L2 (provisional titles) + C9 (landing) + K-c (Save answer as note); no tabs. |
 | `skein-ym3` E6.I13 Model management screen | List, import, default, delete, details | **Re-scope** into Wave 9 (Models: On device · Available · Details). |
-| `skein-3iw` E6.I10 Personas screen | Persona list and editor | **Re-scope**: persona picked in the Model sheet (row appears when personas exist); managed in Settings › Personas (Wave 9); LC-11/LC-28. |
+| `skein-3iw` E6.I10 Personas screen | Persona list and editor | **Re-scope to Spaces** (IA §8b): the Space switcher appears once a second Space exists; managed in Settings › Spaces (Wave 9); LC-11/LC-28. |
 | `skein-7zw` E6.I12 Onboarding flow | First-run model choice, biometric, first persona | **Keep, restyle** in Wave 9 against the design system; first run lands on the Chat empty state. |
 | `skein-jvw` E6.I20 Accessibility pass | Glyph labels, tab roles, 48 dp | **Re-scope** to Wave 11 against the new UI (tabs no longer exist). |
 | `skein-t7k` E6.I19 Fold posture on-device validation | Checklist incl. tabs, split | **Re-scope** to fold tests A–G (UT-15 watcher) at the end of Waves 3, 4, 6, 8. |
