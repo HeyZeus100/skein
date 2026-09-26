@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!--
+        DS3 (skein-xtov.23.3, §6.6): the dark counterpart of
+        `values/themes.xml`'s `Theme.Skein.Launch` — same style name, so
+        `AndroidManifest.xml` references one style and the `values`/
+        `values-night` qualifier picks the resolved variant. Colours mirror
+        `SkeinColors.dark.surface` (`docs/ux/DESIGN_SYSTEM.md` §6.2).
+    -->
+    <style name="Theme.Skein.Launch" parent="android:Theme.Material.NoActionBar">
+        <item name="android:windowBackground">#0D1012</item>
+        <item name="android:statusBarColor">@android:color/transparent</item>
+        <item name="android:navigationBarColor">@android:color/transparent</item>
+        <item name="android:windowLightStatusBar">false</item>
+        <item name="android:windowLightNavigationBar">false</item>
+    </style>
+</resources>

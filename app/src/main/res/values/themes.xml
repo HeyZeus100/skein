@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!--
+        DS3 (skein-xtov.23.3, §6.6): DayNight launch theme so the
+        pre-Compose window and splash match light/dark, instead of the
+        previous `@android:style/Theme.Material.NoActionBar` — a *dark*
+        platform theme applied unconditionally, which gave a black flash at
+        launch in light mode. `values-night/themes.xml` is this style's dark
+        counterpart; the OS resolves whichever one applies before
+        `MainActivity.onCreate` (and its own `enableEdgeToEdge` call) ever
+        runs. Colours mirror `SkeinColors.light.surface`
+        (`docs/ux/DESIGN_SYSTEM.md` §6.2) — this module has no Compose
+        theme to read them from, so they're the same hex literally.
+    -->
+    <style name="Theme.Skein.Launch" parent="android:Theme.Material.Light.NoActionBar">
+        <item name="android:windowBackground">#F8FAFC</item>
+        <item name="android:statusBarColor">@android:color/transparent</item>
+        <item name="android:navigationBarColor">@android:color/transparent</item>
+        <item name="android:windowLightStatusBar">true</item>
+        <item name="android:windowLightNavigationBar">true</item>
+    </style>
+</resources>
