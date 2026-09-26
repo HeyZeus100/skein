@@ -14,6 +14,7 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -78,55 +79,66 @@ fun SettingsScreen(
     themeMode: SkeinThemeMode = SkeinThemeMode.SYSTEM,
     onThemeModeChange: (SkeinThemeMode) -> Unit = {},
 ) {
-    Box(modifier = modifier.fillMaxSize()) {
-        Column(
-            modifier =
-                Modifier
-                    .align(Alignment.TopCenter)
-                    .widthIn(max = MAX_CONTENT_WIDTH)
-                    .fillMaxWidth()
-                    .verticalScroll(rememberScrollState()),
-        ) {
-            SettingsSection(title = "Appearance") {
-                ThemeModeRow(mode = themeMode, onModeChange = onThemeModeChange)
-            }
+    // DS3 (skein-xtov.23.3, §6.7): a `Surface` root, not a bare `Box` — this
+    // screen is reached both through `SkeinApp`'s `destinationContent` slot
+    // and (in tests/previews) standalone, so its own root must set
+    // `LocalContentColor` rather than depend on a caller's Surface. Rows
+    // like `LockPolicyControls`' "Lock after inactivity" label set no
+    // colour of their own and were falling back to Compose's default black,
+    // illegible on the dark theme (a contained screen, not the whole shell,
+    // so `Surface`'s `clip` layer here is cheap — see `SkeinApp`'s own root
+    // for why that root uses `CompositionLocalProvider` instead).
+    Surface(modifier = modifier.fillMaxSize(), color = MaterialTheme.colorScheme.background) {
+        Box(modifier = Modifier.fillMaxSize()) {
+            Column(
+                modifier =
+                    Modifier
+                        .align(Alignment.TopCenter)
+                        .widthIn(max = MAX_CONTENT_WIDTH)
+                        .fillMaxWidth()
+                        .verticalScroll(rememberScrollState()),
+            ) {
+                SettingsSection(title = "Appearance") {
+                    ThemeModeRow(mode = themeMode, onModeChange = onThemeModeChange)
+                }
 
-            SettingsSection(title = "Security") {
-                FlagSecureToggle(
-                    flagSecureEnabled = flagSecureEnabled,
-                    onFlagSecureEnabledChange = onFlagSecureEnabledChange,
-                )
-                IdleTimeoutRow(
-                    minutes = idleTimeoutMinutes,
-                    onMinutesChange = onIdleTimeoutMinutesChange,
-                )
-                LockOnScreenOffToggle(
-                    enabled = lockOnScreenOff,
-                    onEnabledChange = onLockOnScreenOffChange,
-                )
-                LockOnBackgroundToggle(
-                    enabled = lockOnBackground,
-                    onEnabledChange = onLockOnBackgroundChange,
-                )
-                StrongBoxStatusRow(strongBoxUnavailableFallback = strongBoxUnavailableFallback)
-                RecoveryKeyExportSection(
-                    vaultUnlocked = vaultUnlocked,
-                    onReauthenticate = onReauthenticate,
-                    onBuildExport = onBuildRecoveryExport,
-                )
-            }
+                SettingsSection(title = "Security") {
+                    FlagSecureToggle(
+                        flagSecureEnabled = flagSecureEnabled,
+                        onFlagSecureEnabledChange = onFlagSecureEnabledChange,
+                    )
+                    IdleTimeoutRow(
+                        minutes = idleTimeoutMinutes,
+                        onMinutesChange = onIdleTimeoutMinutesChange,
+                    )
+                    LockOnScreenOffToggle(
+                        enabled = lockOnScreenOff,
+                        onEnabledChange = onLockOnScreenOffChange,
+                    )
+                    LockOnBackgroundToggle(
+                        enabled = lockOnBackground,
+                        onEnabledChange = onLockOnBackgroundChange,
+                    )
+                    StrongBoxStatusRow(strongBoxUnavailableFallback = strongBoxUnavailableFallback)
+                    RecoveryKeyExportSection(
+                        vaultUnlocked = vaultUnlocked,
+                        onReauthenticate = onReauthenticate,
+                        onBuildExport = onBuildRecoveryExport,
+                    )
+                }
 
-            SettingsSection(title = "Indexing") {
-                SettingsInfoRow(
-                    label = "Notifications",
-                    value = "Indexing progress shown while documents are processed",
-                    modifier = Modifier.testTag("settings_indexing_hint"),
-                )
-            }
+                SettingsSection(title = "Indexing") {
+                    SettingsInfoRow(
+                        label = "Notifications",
+                        value = "Indexing progress shown while documents are processed",
+                        modifier = Modifier.testTag("settings_indexing_hint"),
+                    )
+                }
 
-            SettingsSection(title = "About", showDivider = false) {
-                SettingsInfoRow(label = "Version", value = appVersion)
-                SettingsLinkRow(label = "Open-source licenses", onClick = onViewNoticeClick)
+                SettingsSection(title = "About", showDivider = false) {
+                    SettingsInfoRow(label = "Version", value = appVersion)
+                    SettingsLinkRow(label = "Open-source licenses", onClick = onViewNoticeClick)
+                }
             }
         }
     }

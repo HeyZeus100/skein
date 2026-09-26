@@ -87,34 +87,40 @@ fun AboutScreen(
                 }.groupedBySpdx()
         }
 
-    Box(modifier = modifier.fillMaxSize()) {
-        Column(
-            modifier =
-                Modifier
-                    .align(Alignment.TopCenter)
-                    .widthIn(max = MAX_CONTENT_WIDTH)
-                    .fillMaxWidth()
-                    .padding(horizontal = 16.dp),
-        ) {
-            AboutHeader(appName = appName, appVersion = appVersion, onBack = onBack)
+    // DS3 (skein-xtov.23.3, §6.7): a `Surface` root, same reasoning as
+    // `SettingsScreen`'s own root — this screen is composed standalone as
+    // often as it is through `SettingsRoute`'s overlay swap, so it cannot
+    // rely on an ancestor to supply `LocalContentColor`.
+    Surface(modifier = modifier.fillMaxSize(), color = MaterialTheme.colorScheme.background) {
+        Box(modifier = Modifier.fillMaxSize()) {
+            Column(
+                modifier =
+                    Modifier
+                        .align(Alignment.TopCenter)
+                        .widthIn(max = MAX_CONTENT_WIDTH)
+                        .fillMaxWidth()
+                        .padding(horizontal = 16.dp),
+            ) {
+                AboutHeader(appName = appName, appVersion = appVersion, onBack = onBack)
 
-            SecureTextField(
-                value = query,
-                onValueChange = { query = it },
-                modifier = Modifier.fillMaxWidth().padding(top = 8.dp, bottom = 4.dp),
-                singleLine = true,
-                label = { Text("Search licenses") },
-            )
+                SecureTextField(
+                    value = query,
+                    onValueChange = { query = it },
+                    modifier = Modifier.fillMaxWidth().padding(top = 8.dp, bottom = 4.dp),
+                    singleLine = true,
+                    label = { Text("Search licenses") },
+                )
 
-            when {
-                loadedLicenses == null -> LoadingState()
-                loadedLicenses.isEmpty() -> EmptyState()
-                filteredGroups.isEmpty() -> NoSearchResultsState(query = query)
-                else ->
-                    LicenseList(
-                        groups = filteredGroups,
-                        onViewClick = { urlDialogEntry = it },
-                    )
+                when {
+                    loadedLicenses == null -> LoadingState()
+                    loadedLicenses.isEmpty() -> EmptyState()
+                    filteredGroups.isEmpty() -> NoSearchResultsState(query = query)
+                    else ->
+                        LicenseList(
+                            groups = filteredGroups,
+                            onViewClick = { urlDialogEntry = it },
+                        )
+                }
             }
         }
     }

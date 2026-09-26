@@ -7,11 +7,13 @@ import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.safeDrawing
 import androidx.compose.foundation.layout.windowInsetsPadding
+import androidx.compose.material3.LocalContentColor
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.adaptive.currentWindowAdaptiveInfoV2
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
@@ -296,91 +298,111 @@ fun SkeinApp(
         // `GraphScreen`) insets itself via the same
         // `app.skein.feature.shell.layout.EdgeToEdgeSurface` this modifier
         // pair is shared with.
-        Box(Modifier.fillMaxSize().background(MaterialTheme.colorScheme.background)) {
-            NavDrawer(
-                open = navState.drawerOpen,
-                activeDestination = navState.destination,
-                onNavigate = { destination ->
-                    navState.navigate(destination)
-                    primaryTabsState.deactivate()
-                },
-                onDismiss = navState::closeDrawer,
-            ) {
-                Column(
-                    modifier =
-                        Modifier
-                            .fillMaxSize()
-                            .windowInsetsPadding(WindowInsets.safeDrawing)
-                            .testTag(ShellTestTags.SKEIN_SHELL_ROOT),
+        //
+        // DS3 (skein-xtov.23.3, §6.7): every pane/overlay this host composes
+        // (`AdaptivePaneHost`'s slots, `destinationContent`, `noteTabContent`,
+        // `TimelineRow` et al.) is a plain `Box`/`Column`/`LazyColumn` with no
+        // `Surface` of its own, so `Text` that sets no colour (the real bug:
+        // `TimelineRow`'s title, `LockPolicyControls`' "Lock after
+        // inactivity") fell back to Compose's hardcoded black — illegible on
+        // the dark theme (1.09:1). A root `Surface` here would fix that too,
+        // but Material3's `Surface` always applies `Modifier.clip(shape)`
+        // (even for the default `RectangleShape`), and wrapping this
+        // particular root — the whole shell, every pane, tab and overlay —
+        // in that `graphicsLayer` made `ComposeTestRule.waitUntil` hang
+        // indefinitely under Robolectric for two `OpenByKindTest` cases
+        // (confirmed: the awaited content was actually there, `waitUntil`
+        // just never re-checked). `CompositionLocalProvider` is the
+        // brief's sanctioned alternative ("a `Surface` … or sets
+        // `LocalContentColor`"): it supplies the same correct on-colour to
+        // this whole subtree with no draw-layer cost at all.
+        CompositionLocalProvider(LocalContentColor provides MaterialTheme.colorScheme.onBackground) {
+            Box(Modifier.fillMaxSize().background(MaterialTheme.colorScheme.background)) {
+                NavDrawer(
+                    open = navState.drawerOpen,
+                    activeDestination = navState.destination,
+                    onNavigate = { destination ->
+                        navState.navigate(destination)
+                        primaryTabsState.deactivate()
+                    },
+                    onDismiss = navState::closeDrawer,
                 ) {
-                    CommandBarHost(
-                        navState = navState,
-                        commandBarState = commandBarState,
-                        modelName = modelStatusName,
-                        modelActive = modelStatusActive,
-                    )
-                    AdaptivePaneHost(
-                        layoutState = layoutState,
-                        modifier = Modifier.weight(1f),
-                        windowSizeClass = windowSizeClass,
-                        posture = posture,
-                        timeline = {
-                            timelinePane?.invoke(true, onTimelineEntryOpen, onTimelineEntryPin)
-                                ?: DestinationPlaceholder(label = "Timeline")
-                        },
-                        primary = { splitAvailable ->
-                            TabHost(
-                                tabsState = primaryTabsState,
-                                splitAvailable = splitAvailable,
-                                onOpenInSplit = splitCoordinator::openInSplit,
-                                emptyContent = {
-                                    if (navState.destination == Destination.TIMELINE) {
-                                        if (isSinglePane && timelinePane != null) {
-                                            timelinePane(false, onTimelineEntryOpen, onTimelineEntryPin)
+                    Column(
+                        modifier =
+                            Modifier
+                                .fillMaxSize()
+                                .windowInsetsPadding(WindowInsets.safeDrawing)
+                                .testTag(ShellTestTags.SKEIN_SHELL_ROOT),
+                    ) {
+                        CommandBarHost(
+                            navState = navState,
+                            commandBarState = commandBarState,
+                            modelName = modelStatusName,
+                            modelActive = modelStatusActive,
+                        )
+                        AdaptivePaneHost(
+                            layoutState = layoutState,
+                            modifier = Modifier.weight(1f),
+                            windowSizeClass = windowSizeClass,
+                            posture = posture,
+                            timeline = {
+                                timelinePane?.invoke(true, onTimelineEntryOpen, onTimelineEntryPin)
+                                    ?: DestinationPlaceholder(label = "Timeline")
+                            },
+                            primary = { splitAvailable ->
+                                TabHost(
+                                    tabsState = primaryTabsState,
+                                    splitAvailable = splitAvailable,
+                                    onOpenInSplit = splitCoordinator::openInSplit,
+                                    emptyContent = {
+                                        if (navState.destination == Destination.TIMELINE) {
+                                            if (isSinglePane && timelinePane != null) {
+                                                timelinePane(false, onTimelineEntryOpen, onTimelineEntryPin)
+                                            } else {
+                                                EmptyTabHostPlaceholder()
+                                            }
                                         } else {
-                                            EmptyTabHostPlaceholder()
+                                            destinationContent(navState.destination)
                                         }
-                                    } else {
-                                        destinationContent(navState.destination)
-                                    }
-                                },
-                                content = { tab ->
-                                    tabContent(
-                                        tab = tab,
-                                        tabsState = primaryTabsState,
-                                        destinationContent = destinationContent,
-                                        noteTabContent = noteTabContent,
-                                        chatTabContent = chatTabContent,
-                                        flushRegistry = flushRegistry,
-                                        navState = navState,
-                                        openDocument = openDocument,
-                                    )
-                                },
-                            )
-                        },
-                        secondary = { splitAvailable ->
-                            TabHost(
-                                tabsState = secondaryTabsState,
-                                splitAvailable = splitAvailable,
-                                onEmpty = splitCoordinator::exitSplitIfSecondaryEmpty,
-                                content = { tab ->
-                                    tabContent(
-                                        tab = tab,
-                                        tabsState = secondaryTabsState,
-                                        destinationContent = destinationContent,
-                                        noteTabContent = noteTabContent,
-                                        chatTabContent = chatTabContent,
-                                        flushRegistry = flushRegistry,
-                                        navState = navState,
-                                        openDocument = openDocument,
-                                    )
-                                },
-                            )
-                        },
-                    )
+                                    },
+                                    content = { tab ->
+                                        tabContent(
+                                            tab = tab,
+                                            tabsState = primaryTabsState,
+                                            destinationContent = destinationContent,
+                                            noteTabContent = noteTabContent,
+                                            chatTabContent = chatTabContent,
+                                            flushRegistry = flushRegistry,
+                                            navState = navState,
+                                            openDocument = openDocument,
+                                        )
+                                    },
+                                )
+                            },
+                            secondary = { splitAvailable ->
+                                TabHost(
+                                    tabsState = secondaryTabsState,
+                                    splitAvailable = splitAvailable,
+                                    onEmpty = splitCoordinator::exitSplitIfSecondaryEmpty,
+                                    content = { tab ->
+                                        tabContent(
+                                            tab = tab,
+                                            tabsState = secondaryTabsState,
+                                            destinationContent = destinationContent,
+                                            noteTabContent = noteTabContent,
+                                            chatTabContent = chatTabContent,
+                                            flushRegistry = flushRegistry,
+                                            navState = navState,
+                                            openDocument = openDocument,
+                                        )
+                                    },
+                                )
+                            },
+                        )
+                    }
                 }
+                overlay?.invoke(onTimelineEntryOpen, onTimelineEntryPin)
             }
-            overlay?.invoke(onTimelineEntryOpen, onTimelineEntryPin)
         }
     }
 }

@@ -2,8 +2,11 @@ package app.skein.feature.shell
 
 import androidx.activity.ComponentActivity
 import androidx.compose.foundation.clickable
+import androidx.compose.material3.LocalContentColor
 import androidx.compose.material3.Text
+import androidx.compose.runtime.SideEffect
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.test.junit4.createAndroidComposeRule
 import androidx.compose.ui.test.onNodeWithContentDescription
 import androidx.compose.ui.test.onNodeWithText
@@ -14,6 +17,9 @@ import app.skein.feature.shell.layout.AdaptivePaneHost
 import app.skein.feature.shell.layout.FoldPosture
 import app.skein.feature.shell.layout.TimelineMode
 import app.skein.feature.shell.nav.Destination
+import app.skein.feature.shell.theme.SkeinThemeMode
+import org.junit.Assert.assertNotEquals
+import org.junit.Assert.assertNotNull
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -312,6 +318,40 @@ class SkeinAppTest {
         listOf("Expand timeline", "Timeline", "Graph", "Personas", "Settings").forEach { label ->
             composeRule.onNodeWithContentDescription(label).assertDoesNotExist()
         }
+    }
+
+    // ---- DS3 (skein-xtov.23.3): content colour at every pane root -------
+
+    /**
+     * §6.7 / §14 item 3: every pane root [SkeinApp] hosts must supply a
+     * [LocalContentColor] other than `Color.Black`/`Color.Unspecified` in
+     * the dark theme, so a `Text` that sets no colour of its own (e.g. the
+     * real bug: `TimelineRow`'s title, `LockPolicyControls`' "Lock after
+     * inactivity" label) never falls back to Compose's hardcoded black
+     * default. This probes the shell's `timelinePane` slot directly, the
+     * same slot that renders `TimelineRow`; before this bead's fix (the
+     * shell's root `Box.background(...)` with no `LocalContentColor`) this
+     * probe read `Color.Black`.
+     */
+    @Test
+    fun `dark theme provides a non-black content colour at the shell pane root`() {
+        var probeColor: Color? = null
+        composeRule.setContent {
+            SkeinApp(
+                themeMode = SkeinThemeMode.DARK,
+                windowSizeClass = expandedWidth,
+                posture = FoldPosture.Unknown,
+                timelinePane = { _, _, _ ->
+                    val current = LocalContentColor.current
+                    SideEffect { probeColor = current }
+                },
+            )
+        }
+        composeRule.waitForIdle()
+
+        assertNotNull("expected the pane root to provide a LocalContentColor", probeColor)
+        assertNotEquals(Color.Black, probeColor)
+        assertNotEquals(Color.Unspecified, probeColor)
     }
 
     private companion object {

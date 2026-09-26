@@ -45,6 +45,8 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.FragmentActivity
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.compose.LifecycleEventEffect
 import androidx.lifecycle.lifecycleScope
 import app.skein.core.inference.models.DeleteOutcome
 import app.skein.core.inference.models.ImportOutcome
@@ -244,10 +246,7 @@ class MainActivity : FragmentActivity() {
         // (Settings, or the system flipping day/night while mode is SYSTEM)
         // are re-applied from Compose below.
         val initialThemeMode = runBlocking { appearancePrefs.themeMode.first() }
-        enableEdgeToEdge(
-            statusBarStyle = edgeToEdgeStyleFor(initialThemeMode),
-            navigationBarStyle = edgeToEdgeStyleFor(initialThemeMode),
-        )
+        applyEdgeToEdgeStyle(initialThemeMode)
 
         // Recents thumbnail suppression (spec §9): FLAG_SECURE already stops
         // the OS from capturing a snapshot at all, but the task description
@@ -301,16 +300,26 @@ class MainActivity : FragmentActivity() {
             // flipping Settings › Appearance recomposes immediately, same
             // as `FLAG_SECURE`'s live-update handling above.
             val themeMode by appearancePrefs.themeMode.collectAsState(initial = SkeinThemeMode.SYSTEM)
-            LaunchedEffect(themeMode) {
-                enableEdgeToEdge(
-                    statusBarStyle = edgeToEdgeStyleFor(themeMode),
-                    navigationBarStyle = edgeToEdgeStyleFor(themeMode),
-                )
-            }
+            LaunchedEffect(themeMode) { applyEdgeToEdgeStyle(themeMode) }
+            // bd `skein-l9oi`/DS3: the system bars only reliably reflect the
+            // resolved theme right after `enableEdgeToEdge` runs — a
+            // `BiometricPrompt`/keyguard round trip (the vault gate's
+            // `Unlock` phase) and an activity resume (backgrounding,
+            // returning from Settings' own system screens) have both been
+            // observed to reset the window's appearance flags on-device
+            // (`DEVICE_BEFORE_PASS.md` row 10, row 01's white status-bar
+            // icons), so both are re-applied here rather than only when
+            // `themeMode`'s own value changes.
+            LifecycleEventEffect(Lifecycle.Event.ON_RESUME) { applyEdgeToEdgeStyle(themeMode) }
             VaultGate(
                 vault = vault,
                 themeMode = themeMode,
-                onUnlocked = { lifecycleScope.launch { vault.bootstrap.bringUp() } },
+                onUnlocked = {
+                    // "After the vault gate returns" (§6.6): re-apply
+                    // immediately on unlock, not only on the next ON_RESUME.
+                    applyEdgeToEdgeStyle(themeMode)
+                    lifecycleScope.launch { vault.bootstrap.bringUp() }
+                },
                 onProvisioned = { strongBoxBacked ->
                     // skein-ank2: recorded for Settings › Security (skein-3el).
                     lifecycleScope.launch { securityPrefs.setStrongBoxUnavailableFallback(!strongBoxBacked) }
@@ -839,17 +848,18 @@ class MainActivity : FragmentActivity() {
     }
 
     /**
-     * bd `skein-l9oi`: SYSTEM keeps the platform's own auto day/night
-     * detection (`enableEdgeToEdge()`'s own default); an explicit LIGHT/DARK
-     * override forces status/navigation bar icon contrast to match,
-     * regardless of the device's own day/night setting.
+     * DS3 (skein-xtov.23.3): the single call site for applying the resolved
+     * theme to the status/navigation bars, so every trigger — cold start,
+     * a live Settings › Appearance change, [Lifecycle.Event.ON_RESUME], and
+     * the vault gate's unlock callback — goes through the same mapping
+     * ([edgeToEdgeStyleFor]) instead of each re-deriving it.
      */
-    private fun edgeToEdgeStyleFor(mode: SkeinThemeMode): SystemBarStyle =
-        when (mode) {
-            SkeinThemeMode.SYSTEM -> SystemBarStyle.auto(AndroidColor.TRANSPARENT, AndroidColor.TRANSPARENT)
-            SkeinThemeMode.LIGHT -> SystemBarStyle.light(AndroidColor.TRANSPARENT, AndroidColor.TRANSPARENT)
-            SkeinThemeMode.DARK -> SystemBarStyle.dark(AndroidColor.TRANSPARENT)
-        }
+    private fun applyEdgeToEdgeStyle(mode: SkeinThemeMode) {
+        enableEdgeToEdge(
+            statusBarStyle = edgeToEdgeStyleFor(mode),
+            navigationBarStyle = edgeToEdgeStyleFor(mode),
+        )
+    }
 
     private fun applyFlagSecure(enabled: Boolean) {
         if (enabled) {
@@ -859,6 +869,23 @@ class MainActivity : FragmentActivity() {
         }
     }
 }
+
+/**
+ * bd `skein-l9oi`/DS3: SYSTEM keeps the platform's own auto day/night
+ * detection (`enableEdgeToEdge()`'s own default); an explicit LIGHT/DARK
+ * override forces status/navigation bar icon contrast to match, regardless
+ * of the device's own day/night setting. A top-level function (not a
+ * `MainActivity` member) — it closes over nothing instance-specific — so
+ * it's directly unit-testable (`MainActivitySystemBarsTest`) against a
+ * disposable `ComponentActivity`, without needing `MainActivity`'s own
+ * vault/DataStore/Compose bring-up.
+ */
+internal fun edgeToEdgeStyleFor(mode: SkeinThemeMode): SystemBarStyle =
+    when (mode) {
+        SkeinThemeMode.SYSTEM -> SystemBarStyle.auto(AndroidColor.TRANSPARENT, AndroidColor.TRANSPARENT)
+        SkeinThemeMode.LIGHT -> SystemBarStyle.light(AndroidColor.TRANSPARENT, AndroidColor.TRANSPARENT)
+        SkeinThemeMode.DARK -> SystemBarStyle.dark(AndroidColor.TRANSPARENT)
+    }
 
 /**
  * The Timeline destination over the open vault: `TimelineScreen` fed by the
