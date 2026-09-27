@@ -78,7 +78,7 @@ Indexes: `documents_updated` (by `updated_at` DESC), `documents_persona` (by `pe
 Indexes: `chunks_doc` (by `doc_id`), `idx_chunks_revision` (by `revision_hash`).
 
 Virtual tables:
-- `chunks_fts` — FTS5 external-content table over `chunks.text` for keyword search (BM25)
+- `chunks_fts` — FTS5 external-content table over `chunks.text` for keyword search (BM25). **[shipped]** From migration 010 it runs with FTS5 `secure-delete` on, so a deleted chunk's tokens are removed from `chunks_fts_data` instead of lingering until a segment merge. The first delete after 010 makes it an FTS5 format-version-5 table, readable only by SQLite 3.42 or later (see the 010 changelog entry).
 - `chunks_vec` — vec0 (SQLite-vec) virtual table for similarity search; dimension 256 (int8 quantized), cosine distance metric
 
 #### `messages` (chat history)
@@ -472,21 +472,26 @@ Fields:
 # Add new migrations by appending a line here AND adding the file below.
 001_initial.sql
 003_document_revisions.sql
+005_export_stages.sql
 007_drop_attachment_master_key.sql
 008_ingest_attempts.sql
+009_model_origin.sql
+010_fts_secure_delete.sql
 ```
 
 Each migration is a file named `NNN_<description>.sql` where `NNN` is a zero-padded integer (001, 002, etc.). Migrations are applied in INDEX.txt order (sorted numerically by `NNN`, not by manifest line order). Statements within a migration are separated by the `--;` sentinel at end-of-line (not a bare `;`, which also terminates inner statements inside multi-line trigger bodies); comment lines (`--`) and blank lines are ignored.
 
 ### Current migrations
 
-**[shipped]** Five migrations exist:
+**[shipped]** Seven migrations exist:
 
 - `001_initial.sql` — v1 schema (see section 2)
 - `003_document_revisions.sql` — adds `document_revisions` and `chunks.revision_hash` for citation stability across re-ingestion (`skein-uo5n`, design `docs/design/POST_REVIEW_RESOLUTIONS.md` §1.3; see section 2's `document_revisions` entry above)
 - `005_export_stages.sql` — adds `export_stages` and `idx_export_stages_expires`, the durable record of plaintext spooled to `cache/staging_export/` that the `StagedPlaintextSweeper`/`BootReceiver`/on-lock sweep delete on a bounded timer (`skein-0m1z`, design `docs/design/POST_REVIEW_RESOLUTIONS.md` §4.3). Filled a number that was RESERVED for it while 007 and 008 had already landed — see the ledger note below for why that no longer risks a silent skip.
 - `007_drop_attachment_master_key.sql` — drops the vestigial `attachment_master_key` table and the never-populated `attachment_keys` table (`skein-7d0l`; see section 2's `attachment_master_key` entry above). `PRAGMA user_version` reaches 7, not 2, because migration numbers 002, 004 and 006 are reserved by landed plan/design docs (`skein-voys`) for not-yet-landed migrations (`002_attestation_status`, `004_post_mmap_blake3`, `006_recovery_drafts`) and taking one of them here would collide when those land.
 - `008_ingest_attempts.sql` — adds `ingest_queue.attempts` (the persisted E5.I10 bounded-retry counter) and `chunks.byte_start`/`chunks.byte_end` (the UTF-8 byte offsets `skein-s9hm` flagged as missing from 003) — `skein-zx15`. This is the v1 plan's own `E5.I10` migration, originally slotted as `003_ingest_attempts.sql`; `skein-voys` tracked the renumbering once `skein-uo5n` took 003 for `document_revisions` first, and 008 is the first number free of every other reservation above.
+- `009_model_origin.sql` — adds the model registry's `display_name`, `post_mmap_blake3`, `origin`, `source_url` and `source_revision` columns to `models` (`skein-cyq`; see that file's header for why `post_mmap_blake3`, reserved for 004, lands here).
+- `010_fts_secure_delete.sql` — turns on FTS5 `secure-delete` for `chunks_fts` and runs one `optimize` (`skein-cash` LC-07, design `docs/ux/OBJECT_LIFECYCLE_SPEC.md` §3.7). DML only: it creates no schema object. See the changelog entry below for the one-way format change.
 
 Migrations apply in ascending numeric order, so on a fresh database 003 runs before 005, which runs before 007 and 008; a device that installed at v1 runs 003, 005, 007, then 008, and reaches the same schema. Future migrations are tracked in the plan and design docs; 002, 004 and 006 above are reserved but not yet in-tree.
 
@@ -504,6 +509,7 @@ The ledger fixes *whether* a migration eventually runs, not *when* relative to h
 - **007** (`skein-7d0l`) — drops `attachment_master_key` and `attachment_keys` (superseded by the `keys/key-envelope.v1` file and `FileAttachmentStore`'s per-write HKDF derivation, respectively; neither table was ever populated by shipped code).
 - **005** (`skein-0m1z`) — adds `export_stages` (`stage_id` PK, `path`, `origin`, nullable `document_id` cascading from `documents`, nullable `revision_hash`, `created_at`, `expires_at`, `swept`) and `idx_export_stages_expires`. `revision_hash` carries no foreign key, unlike `docs/design/POST_REVIEW_RESOLUTIONS.md` §4.3's sketch: `document_revisions`'s primary key is the composite `(document_id, revision_hash)`, so `revision_hash` alone is neither a primary key nor UNIQUE and SQLite rejects an FK onto it — the same reason 003's own `chunks.revision_hash` has none. No column is dropped and no 001/003 DDL is edited.
 - **008** (`skein-zx15`) — adds `ingest_queue.attempts NOT NULL DEFAULT 0` (`IngestPipeline`'s bounded-retry counter, previously an in-memory `IngestAttempts` stand-in that reset on every lock/unlock) and the nullable `chunks.byte_start`/`chunks.byte_end` (populated by `IngestSteps.indexLexical` from `core/rag`'s `Chunk.start`/`Chunk.end` UTF-16 char offsets, converted to UTF-8 byte offsets). No column is dropped and no 001/003/007 DDL is edited.
+- **010** (`skein-cash`, LC-07) — runs `INSERT INTO chunks_fts(chunks_fts, rank) VALUES ('secure-delete', 1)`, then one `INSERT INTO chunks_fts(chunks_fts) VALUES ('optimize')`. From then on an FTS delete (the `chunks_ad`/`chunks_au` triggers, so every chunk delete, note delete and re-ingest) removes the row's tokens from `chunks_fts_data` in place rather than writing a tombstone segment, and the `optimize` purges the residue of every delete made before the migration. The option is stored in `chunks_fts_config` and persists across reopen. **One-way format change:** the first FTS delete after 010 bumps `chunks_fts` from FTS5 on-disk format version 4 to **version 5** (`chunks_fts_config` key `version`), and the bump survives turning the option off. **Every reader of `vault.db` must be SQLite 3.42 or later**; an older SQLite (including an older `sqlite3` CLI or inspection tool) cannot read `chunks_fts`. The device build is SQLCipher 4.17.0 on SQLite 3.53.3. Costs: `optimize` rewrites the whole FTS index once, at the unlock that migrates, and each later FTS delete is somewhat slower. No schema object is created, dropped or altered, so ledger seeding and the integrity-check catalogue are unaffected.
 
 ### Migration safety
 

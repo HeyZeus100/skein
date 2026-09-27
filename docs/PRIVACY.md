@@ -74,6 +74,25 @@ Two structural facts apply to every row above:
   only while the vault is unlocked (spec §5, §9). This key-wrapping layer is
   **[v1 design, in progress]** — not yet implemented in `core/security`.
 
+**Deleted text leaves no residue in the search index.** **[shipped, from
+vault migration 010]** The keyword-search index (`chunks_fts`, SQLite FTS5)
+runs with FTS5 `secure-delete` on
+(`core/vault/src/main/resources/migrations/010_fts_secure_delete.sql`,
+`skein-cash`). When a note or chat is deleted, or a chunk of it is replaced
+because the note was edited and re-indexed, its words are removed from the
+index's pages (`chunks_fts_data`) as the delete commits. Nothing of them is
+left there for someone who later opens the vault with its key to read back.
+The migration also runs one FTS5 `optimize`, which purges what deletes made
+before 010 had left behind (before 010, FTS5 kept deleted words in those
+pages until a later merge). This claim covers the search index only. It does
+not cover quotes of the deleted text kept inside other chats' citation
+records (`skein-koda`, see the table above), a superseded revision still
+cited from a chat, pre-delete pages in the encrypted write-ahead log until
+the next lock checkpoints it, or old flash blocks.
+`docs/ux/OBJECT_LIFECYCLE_SPEC.md` §3.7 lists every residue and its limit.
+The emulator lane checks the claim with `MigratorInstrumentedTest`'s
+migration-010 cases.
+
 ## 2. What Skein does NOT collect
 
 None of the following exist in Skein, in any form, opt-in or otherwise:

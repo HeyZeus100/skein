@@ -33,7 +33,7 @@ class MigratorTest {
     }
 
     @Test
-    fun `main migrations index lists exactly 001, 003, 005, 007, 008 and 009`() {
+    fun `main migrations index lists exactly 001, 003, 005, 007, 008, 009 and 010`() {
         // Exercises the real production manifest shipped in
         // src/main/resources/migrations/INDEX.txt against the default
         // constructor overload.
@@ -65,6 +65,9 @@ class MigratorTest {
             // (deviation — see that migration's own header for why it
             // carries a column originally reserved for migration 004).
             "009_model_origin.sql",
+            // 010_fts_secure_delete.sql (skein-cash LC-07): FTS5
+            // secure-delete + one optimize on `chunks_fts`. DML only.
+            "010_fts_secure_delete.sql",
         )
         // migrator itself isn't exercised beyond construction here — the
         // functional discover-then-apply path is covered on-device.
@@ -245,6 +248,16 @@ class MigratorTest {
         val witness = migrationWitness(productionMigrationSql("008_ingest_attempts.sql"))
 
         assertThat(witness).isEqualTo(Witness.ColumnExists("ingest_queue", "attempts"))
+    }
+
+    @Test
+    fun `migrationWitness finds nothing in 010, so ledger seeding never marks it applied`() {
+        // 010 is two FTS5 special-command INSERTs and touches no schema
+        // object. With no witness, seeding leaves it pending (the safe
+        // default); both statements are idempotent, so that is harmless.
+        val witness = migrationWitness(productionMigrationSql("010_fts_secure_delete.sql"))
+
+        assertThat(witness).isNull()
     }
 
     @Test

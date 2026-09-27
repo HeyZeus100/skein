@@ -105,6 +105,31 @@ class MigrationStatementSplitterTest {
     }
 
     @Test
+    fun `010's FTS5 special-command INSERTs split into exactly two statements`() {
+        // FTS5 commands are INSERTs whose target column is the table's own
+        // name. Pins that the shipped file yields exactly these two, in order.
+        val sql =
+            requireNotNull(javaClass.classLoader?.getResourceAsStream("migrations/010_fts_secure_delete.sql")) {
+                "migrations/010_fts_secure_delete.sql not on the classpath"
+            }.use { it.readBytes().toString(Charsets.UTF_8) }
+
+        val statements =
+            MigrationStatementSplitter.split(sql).map { statement ->
+                statement
+                    .lines()
+                    .filterNot { it.trimStart().startsWith("--") }
+                    .joinToString("\n")
+                    .trim()
+            }
+
+        assertThat(statements)
+            .containsExactly(
+                "INSERT INTO chunks_fts(chunks_fts, rank) VALUES ('secure-delete', 1);",
+                "INSERT INTO chunks_fts(chunks_fts) VALUES ('optimize');",
+            ).inOrder()
+    }
+
+    @Test
     fun `empty input produces no statements`() {
         val statements = MigrationStatementSplitter.split("")
 

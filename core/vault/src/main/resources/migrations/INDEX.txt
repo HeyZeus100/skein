@@ -15,3 +15,4 @@
 007_drop_attachment_master_key.sql
 008_ingest_attempts.sql
 009_model_origin.sql
+010_fts_secure_delete.sql

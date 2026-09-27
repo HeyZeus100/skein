@@ -1,0 +1,83 @@
+-- Skein vault DB migration 010: turn on FTS5 `secure-delete` for
+-- `chunks_fts` and run one `optimize`, so text removed from `chunks` leaves
+-- no token residue in the FTS index. skein-cash, item LC-07.
+--
+-- Sources of truth:
+--   • docs/ux/OBJECT_LIFECYCLE_SPEC.md §3.7 ("Migration 010 specifics") —
+--     THE spec for this file — plus decision L9 (this migration is a
+--     release gate for the first delete UI), finding N6 (the one-way
+--     format bump below) and Appendix A (the residue experiment).
+--   • SQLite FTS5 docs, "The 'secure-delete' Configuration Option" and
+--     "The 'optimize' Command".
+--   • docs/VAULT_FORMAT.md's migration changelog and docs/PRIVACY.md §1,
+--     updated alongside this file.
+--
+-- Applied by `Migrator` under `PRAGMA user_version = 10`. Statements are
+-- separated by the dash-dash-semicolon sentinel, per 001_initial.sql's loader
+-- convention (spelled out so a naive splitter cannot cut this comment).
+--
+-- ===== Why =====
+--
+-- `chunks_fts` (001_initial.sql) is an external-content FTS5 table kept in
+-- sync by the `chunks_ad`/`chunks_au` triggers' FTS `'delete'` command. By
+-- default that command does not remove anything from the index pages: it
+-- appends a tombstone to a NEW segment, and the deleted row's tokens stay
+-- in `chunks_fts_data` — in the old segment, and spelled out again in the
+-- tombstone — until a later segment merge happens to drop them. `MATCH`
+-- stops finding the row at once, but anyone who later opens the vault with
+-- its key can read the deleted words out of `chunks_fts_data`. That covers
+-- every deleted note and chat, and every earlier version of an edited one,
+-- since re-ingest (`IndexStoreImpl.replaceChunks`) deletes and re-inserts
+-- a document's chunks. Appendix A measured it: residue in 2 blocks after a
+-- plain delete, 0 with `secure-delete` on, 0 after one `optimize`.
+-- `SQLITE_SECURE_DELETE` (native/sqlite/CMakeLists.txt) does not help here:
+-- it zeroes freed database pages, and these tokens sit in live FTS5 pages.
+--
+-- ===== What the two statements do =====
+--
+-- 1. `secure-delete` = 1. FTS5 stores the option in `chunks_fts_config`, so
+--    it persists across reopen and applies on every connection. From then
+--    on, a delete (including the `'delete'` half of `chunks_au`) removes
+--    the row's entries from the existing segment pages in place and writes
+--    no tombstone.
+-- 2. `optimize`. Merges every segment into one, dropping each entry a
+--    tombstone cancels. That purges the residue of every delete made
+--    BEFORE this migration, which statement 1 alone would leave behind.
+--
+-- ===== One-way format change (N6) =====
+--
+-- The first FTS delete after statement 1 bumps `chunks_fts` from on-disk
+-- format version 4 to version 5 (`chunks_fts_config`, key `version`). The
+-- bump is permanent: turning the option off again leaves the version at 5.
+-- SQLite older than 3.42.0 refuses a version-5 table, so every reader of a
+-- migrated vault file must be SQLite 3.42 or later. The device build is
+-- SQLCipher 4.17.0 on SQLite 3.53.3 (native/sqlite/amalgamation/sqlite3.h).
+-- Any external tool used to inspect `vault.db` must meet the same floor.
+--
+-- ===== Seeding, idempotency, integrity catalogue =====
+--
+-- This file creates, drops and alters no schema object. So:
+--   • `Migrator.migrationWitness` finds no witness for it, and ledger
+--     seeding leaves it pending (the safe default). Seeding only runs for a
+--     database that predates the `schema_migrations` ledger, and every such
+--     database has `user_version` < 10, so 010 is never even a candidate.
+--   • Both statements are idempotent: setting the option again is a no-op,
+--     and `optimize` on an already-merged index rewrites the same content.
+--   • `VaultLifecycle.integrityCheck()`'s expected-object catalogue, which
+--     is derived from the CREATE/DROP statements of the listed migrations,
+--     is unchanged.
+--
+-- ===== Cost =====
+--
+-- `optimize` rewrites the whole FTS index once, inside this migration's
+-- transaction, at the unlock that migrates. Every later FTS delete is
+-- somewhat slower (it rewrites the pages it touches). At personal-vault
+-- scale that is acceptable; the emulator lane measures it (LC-08).
+--
+-- Note: FTS5 special commands are INSERTs whose target column is the
+-- table's own name. They contain no sentinel, so `MigrationStatementSplitter`
+-- handles them like any other statement.
+
+INSERT INTO chunks_fts(chunks_fts, rank) VALUES ('secure-delete', 1);--;
+
+INSERT INTO chunks_fts(chunks_fts) VALUES ('optimize');--;

@@ -468,14 +468,168 @@ class MigratorInstrumentedTest {
         fileName: String,
         version: Int,
     ) {
-        val sql =
-            requireNotNull(Migrator::class.java.classLoader?.getResourceAsStream("migrations/$fileName")) {
-                "migrations/$fileName not on the classpath"
-            }.use { it.readBytes().toString(Charsets.UTF_8) }
         exec(conn, "BEGIN IMMEDIATE;")
-        for (statement in splitMigrationStatements(sql)) exec(conn, statement)
+        for (statement in splitMigrationStatements(productionMigrationSql(fileName))) exec(conn, statement)
         exec(conn, "PRAGMA user_version = $version;")
         exec(conn, "COMMIT;")
+    }
+
+    private fun productionMigrationSql(fileName: String): String =
+        requireNotNull(Migrator::class.java.classLoader?.getResourceAsStream("migrations/$fileName")) {
+            "migrations/$fileName not on the classpath"
+        }.use { it.readBytes().toString(Charsets.UTF_8) }
+
+    // --- 010: FTS5 secure-delete + optimize (skein-cash LC-07; OBJECT_LIFECYCLE_SPEC.md §11.3) ---
+    //
+    // Residue is probed the way the spec's Appendix A measured it: count the
+    // `chunks_fts_data` blocks whose raw bytes contain the token. Every test
+    // first asserts the token IS found while its chunk is live, so the probe
+    // can't pass vacuously. The tokens are chosen to share no prefix with the
+    // term sorted before them, so FTS5's prefix compression stores them whole.
+
+    @Test
+    fun migration010EnablesFts5SecureDelete() {
+        val dbFile = tempDbFile()
+        Migrator(SkeinSQLiteDriver(randomKey(16))).migrate(dbFile.absolutePath)
+
+        // A fresh connection reads the option back from `chunks_fts_config`.
+        SkeinSQLiteDriver(randomKey(16)).open(dbFile.absolutePath).use { conn ->
+            assertThat(ftsConfig(conn, "secure-delete")).isEqualTo(1L)
+            assertThat(ledgerVersions(conn)).contains(10L)
+        }
+    }
+
+    @Test
+    fun afterMigration010ADeletedTokenLeavesNoBytesInChunksFtsData() {
+        val dbFile = tempDbFile()
+        Migrator(SkeinSQLiteDriver(randomKey(17))).migrate(dbFile.absolutePath)
+
+        SkeinSQLiteDriver(randomKey(17)).open(dbFile.absolutePath).use { conn ->
+            exec(conn, "PRAGMA foreign_keys = ON;")
+            insertNote(conn, id = "doc-sd", title = "Title", bodyMd = null, createdAt = 100, updatedAt = 100)
+            insertChunk(conn, id = 1, docId = "doc-sd", ord = 0, text = "the walrus sleeps zanzibarx")
+            assertThat(ftsResidueBlocks(conn, "zanzibarx")).isGreaterThan(0L)
+
+            // Deleting the note cascades to its chunk, whose `chunks_ad`
+            // trigger issues the FTS 'delete' -- the real note-delete path.
+            exec(conn, "DELETE FROM documents WHERE id = 'doc-sd';")
+
+            assertThat(ftsMatchRowIds(conn, "zanzibarx")).isEmpty()
+            assertThat(ftsResidueBlocks(conn, "zanzibarx")).isEqualTo(0L)
+            // N6: the first secure delete bumps the FTS5 on-disk format to 5 (one-way).
+            assertThat(ftsConfig(conn, "version")).isEqualTo(5L)
+        }
+    }
+
+    @Test
+    fun afterMigration010ReChunkingLeavesNoResidue() {
+        val dbFile = tempDbFile()
+        Migrator(SkeinSQLiteDriver(randomKey(18))).migrate(dbFile.absolutePath)
+
+        SkeinSQLiteDriver(randomKey(18)).open(dbFile.absolutePath).use { conn ->
+            insertNote(conn, id = "doc-rc", title = "Title", bodyMd = null, createdAt = 100, updatedAt = 100)
+            insertChunk(conn, id = 1, docId = "doc-rc", ord = 0, text = "yellowtailx swims")
+            assertThat(ftsResidueBlocks(conn, "yellowtailx")).isGreaterThan(0L)
+
+            // `IndexStoreImpl.replaceChunks`' shape: delete the document's
+            // chunks and insert the new ones in one transaction.
+            exec(conn, "BEGIN IMMEDIATE;")
+            exec(conn, "DELETE FROM chunks WHERE doc_id = 'doc-rc';")
+            insertChunk(conn, id = 2, docId = "doc-rc", ord = 0, text = "brand new xylophonez body")
+            exec(conn, "COMMIT;")
+
+            assertThat(ftsResidueBlocks(conn, "yellowtailx")).isEqualTo(0L)
+            assertThat(ftsMatchRowIds(conn, "xylophonez")).containsExactly(2L)
+            assertThat(ftsResidueBlocks(conn, "xylophonez")).isGreaterThan(0L)
+
+            // An in-place text edit (`chunks_au`: FTS delete + insert) leaves none either.
+            exec(conn, "UPDATE chunks SET text = 'edited body' WHERE id = 2;")
+
+            assertThat(ftsResidueBlocks(conn, "xylophonez")).isEqualTo(0L)
+            assertThat(ftsMatchRowIds(conn, "edited")).containsExactly(2L)
+        }
+    }
+
+    @Test
+    fun migration010OptimizePurgesResidueWrittenBeforeIt() {
+        val dbFile = tempDbFile()
+
+        // A vault at 009, built from the production files (as the pre-005
+        // hazard test above does), holding the residue of a plain delete.
+        SkeinSQLiteDriver(randomKey(19)).open(dbFile.absolutePath).use { conn ->
+            applyRawMigrationSkippingLedger(conn, "001_initial.sql", version = 1)
+            applyRawMigrationSkippingLedger(conn, "003_document_revisions.sql", version = 3)
+            applyRawMigrationSkippingLedger(conn, "005_export_stages.sql", version = 5)
+            applyRawMigrationSkippingLedger(conn, "007_drop_attachment_master_key.sql", version = 7)
+            applyRawMigrationSkippingLedger(conn, "008_ingest_attempts.sql", version = 8)
+            applyRawMigrationSkippingLedger(conn, "009_model_origin.sql", version = 9)
+
+            insertNote(conn, id = "doc-old", title = "Old", bodyMd = null, createdAt = 100, updatedAt = 100)
+            insertNote(conn, id = "doc-kept", title = "Kept", bodyMd = null, createdAt = 100, updatedAt = 100)
+            insertChunk(conn, id = 1, docId = "doc-old", ord = 0, text = "the walrus sleeps zanzibarx")
+            insertChunk(conn, id = 2, docId = "doc-kept", ord = 0, text = "kept words stay here")
+            exec(conn, "DELETE FROM chunks WHERE id = 1;")
+
+            // Appendix A: a plain delete stops the match but leaves the bytes.
+            assertThat(ftsMatchRowIds(conn, "zanzibarx")).isEmpty()
+            assertThat(ftsResidueBlocks(conn, "zanzibarx")).isGreaterThan(0L)
+            assertThat(ftsConfig(conn, "secure-delete")).isNull()
+        }
+
+        val result = Migrator(SkeinSQLiteDriver(randomKey(19))).migrate(dbFile.absolutePath)
+        assertThat(result.fromVersion).isEqualTo(9)
+        assertThat(result.toVersion).isEqualTo(latestMigrationVersion())
+
+        SkeinSQLiteDriver(randomKey(19)).open(dbFile.absolutePath).use { conn ->
+            assertThat(ftsResidueBlocks(conn, "zanzibarx")).isEqualTo(0L)
+            assertThat(ftsConfig(conn, "secure-delete")).isEqualTo(1L)
+            assertThat(ftsMatchRowIds(conn, "kept")).containsExactly(2L)
+        }
+    }
+
+    @Test
+    fun migration010IsIdempotentOnRerun() {
+        val dbFile = tempDbFile()
+        Migrator(SkeinSQLiteDriver(randomKey(20))).migrate(dbFile.absolutePath)
+
+        SkeinSQLiteDriver(randomKey(20)).open(dbFile.absolutePath).use { conn ->
+            insertNote(conn, id = "doc-re", title = "Title", bodyMd = null, createdAt = 100, updatedAt = 100)
+            insertChunk(conn, id = 1, docId = "doc-re", ord = 0, text = "kept words stay here")
+
+            // The ledger stops `Migrator` from re-running 010, so replay its
+            // statements directly: both must succeed and change nothing.
+            for (statement in splitMigrationStatements(productionMigrationSql("010_fts_secure_delete.sql"))) {
+                exec(conn, statement)
+            }
+
+            assertThat(ftsConfig(conn, "secure-delete")).isEqualTo(1L)
+            assertThat(ftsMatchRowIds(conn, "kept")).containsExactly(1L)
+            // FTS5's own check of the index against the `chunks` content table; throws on a mismatch.
+            exec(conn, "INSERT INTO chunks_fts(chunks_fts, rank) VALUES ('integrity-check', 1);")
+        }
+    }
+
+    /** `chunks_fts_data` blocks whose raw bytes contain [token]'s UTF-8 bytes. */
+    private fun ftsResidueBlocks(
+        conn: SQLiteConnection,
+        token: String,
+    ): Long {
+        conn.prepare("SELECT COUNT(*) FROM chunks_fts_data WHERE instr(block, ?) > 0;").use { stmt ->
+            stmt.bindBlob(1, token.toByteArray(Charsets.UTF_8))
+            check(stmt.step()) { "COUNT(*) returned no row" }
+            return stmt.getLong(0)
+        }
+    }
+
+    /** `chunks_fts_config` value for [key], or null when FTS5 has never stored it. */
+    private fun ftsConfig(
+        conn: SQLiteConnection,
+        key: String,
+    ): Long? {
+        conn.prepare("SELECT v FROM chunks_fts_config WHERE k = ?;").use { stmt ->
+            stmt.bindText(1, key)
+            return if (stmt.step()) stmt.getLong(0) else null
+        }
     }
 
     // --- Broken migration -> ROLLBACK ---
