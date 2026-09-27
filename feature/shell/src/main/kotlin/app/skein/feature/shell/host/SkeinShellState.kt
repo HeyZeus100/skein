@@ -1,0 +1,131 @@
+// skein-xtov.24.7 (AL-08): what the shell hoists ABOVE `VaultGate`
+// (ADAPTIVE_LAYOUT_SPEC.md §7.1, §8.1): T1 (the navigation state, ids and
+// enums only, saved through `:core:navigation`'s total codec — never
+// `rememberNavBackStack`, §8.9 item 1), T2 (one entry `SaveableStateHolder`
+// per destination) and T3 (`SessionEntryStores`). A lock disposes the entries
+// but keeps all three, so unlocking lands the user where they were (§7.7).
+package app.skein.feature.shell.host
+
+import android.os.Bundle
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.DisposableEffect
+import androidx.compose.runtime.Stable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.key
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.saveable.SaveableStateHolder
+import androidx.compose.runtime.saveable.Saver
+import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.saveable.rememberSaveableStateHolder
+import androidx.compose.runtime.setValue
+import androidx.lifecycle.viewmodel.compose.viewModel
+import app.skein.core.model.DocumentKind
+import app.skein.core.model.VaultRepository
+import app.skein.core.navigation.Destination
+import app.skein.core.navigation.Navigator
+import app.skein.core.navigation.ObjectKind
+import app.skein.core.navigation.SkeinId
+import app.skein.core.navigation.SkeinNavCodec
+import app.skein.core.navigation.SkeinNavigationState
+import app.skein.core.vault.session.UnlockManager
+
+/**
+ * The hoisted shell state. [nav] is T1: every transition goes through
+ * [navigate], so the [Navigator]'s rules are the only way it changes. The
+ * transient raw ids it may hold and [sheets] are cleared by the lock (M1a, M12).
+ */
+@Stable
+class SkeinShellState internal constructor(
+    initial: SkeinNavigationState,
+    internal val entryState: Map<Destination, SaveableStateHolder>,
+    val stores: SessionEntryStores,
+) {
+    internal val navigator = Navigator()
+
+    var nav: SkeinNavigationState by mutableStateOf(initial)
+        private set
+
+    val sheets = SheetPresentation()
+
+    /** Applies one [Navigator] transition; a null result (Back not consumed) changes nothing. */
+    fun navigate(transition: Navigator.(SkeinNavigationState) -> SkeinNavigationState?) {
+        navigator.transition(nav)?.let { nav = it }
+    }
+
+    /** The lock's hook: transient entries close and their raw ids leave memory; sheets fall back to the peek. */
+    internal fun onLocked() {
+        nav = navigator.dropTransient(nav)
+        sheets.collapseAll()
+    }
+}
+
+/**
+ * Call once, above `VaultGate`, in the Activity's content (§8.8). Restores T1
+ * from the saved-state Bundle only (M4b), never from the Intent.
+ */
+@Composable
+fun rememberSkeinShellState(unlockManager: UnlockManager): SkeinShellState {
+    val stores = viewModel { SessionEntryStores(unlockManager) }
+    val entryState = Destination.entries.associateWith { key(it) { rememberSaveableStateHolder() } }
+    val shell =
+        rememberSaveable(saver = shellSaver(entryState, stores)) {
+            SkeinShellState(SkeinNavigationState.initial(), entryState, stores)
+        }
+    DisposableEffect(shell) {
+        val hook = stores.doOnLocked(shell::onLocked)
+        onDispose { hook.dispose() }
+    }
+    return shell
+}
+
+private fun shellSaver(
+    entryState: Map<Destination, SaveableStateHolder>,
+    stores: SessionEntryStores,
+): Saver<SkeinShellState, Bundle> =
+    Saver(
+        save = { bundleOf(SkeinNavCodec.encode(it.nav)) },
+        // Total (M4c): an unreadable Bundle restores the root stacks.
+        restore = { saved ->
+            val nav = runCatching { SkeinNavCodec.decode(treeOf(saved)) }.getOrElse { SkeinNavigationState.initial() }
+            SkeinShellState(nav, entryState, stores)
+        },
+    )
+
+/** The codec's saved form, 1:1: a map is a Bundle, a list an `ArrayList<Bundle>`, leaves `String`/`Int`. */
+private fun bundleOf(tree: Map<*, *>): Bundle =
+    Bundle().apply {
+        for ((k, v) in tree) {
+            val name = k as String
+            when (v) {
+                is String -> putString(name, v)
+                is Int -> putInt(name, v)
+                is List<*> -> putParcelableArrayList(name, v.mapTo(ArrayList()) { bundleOf(it as Map<*, *>) })
+            }
+        }
+    }
+
+@Suppress("DEPRECATION") // Bundle.get: the codec, not the Bundle, decides what a value may be.
+private fun treeOf(value: Any?): Any? =
+    when (value) {
+        is Bundle -> value.keySet().associateWith { treeOf(value.get(it)) }
+        is List<*> -> value.map(::treeOf)
+        else -> value
+    }
+
+/**
+ * B8's `kindsOf` until E2 builds it: one content-free `getDocument` per id.
+ * ponytail: documents only; a message focus degrades to the latest answer, and
+ * model details and a Space fall back to their roots, until B8/B9 answer them.
+ */
+fun navKindsOf(repository: VaultRepository): suspend (Set<SkeinId>) -> Map<SkeinId, ObjectKind> =
+    { ids ->
+        ids
+            .mapNotNull { id ->
+                when (repository.getDocument(id.value)?.kind) {
+                    null -> null
+                    DocumentKind.CHAT -> id to ObjectKind.CHAT
+                    DocumentKind.NOTE, DocumentKind.AIOUT -> id to ObjectKind.NOTE
+                    DocumentKind.ATTACHMENT -> id to ObjectKind.FILE
+                }
+            }.toMap()
+    }

@@ -73,6 +73,9 @@ import app.skein.feature.shell.SkeinApp
 import app.skein.feature.shell.auth.BiometricUnlockScreen
 import app.skein.feature.shell.auth.VaultResetScreen
 import app.skein.feature.shell.auth.VaultSetupScreen
+import app.skein.feature.shell.host.SkeinShellHost
+import app.skein.feature.shell.host.navKindsOf
+import app.skein.feature.shell.host.rememberSkeinShellState
 import app.skein.feature.shell.layout.EdgeToEdgeSurface
 import app.skein.feature.shell.nav.Command
 import app.skein.feature.shell.nav.Destination
@@ -260,6 +263,9 @@ class MainActivity : FragmentActivity() {
                     .setLabel(getString(R.string.app_name))
                     .build(),
             )
+            // skein-xtov.24.7 (SECURITY_REVIEW_D7.md M5a): no Recents snapshot of
+            // the pre-lock screen, whatever the FLAG_SECURE setting says.
+            setRecentsScreenshotEnabled(false)
         } else {
             setTaskDescription(ActivityManager.TaskDescription(getString(R.string.app_name)))
         }
@@ -312,6 +318,10 @@ class MainActivity : FragmentActivity() {
             // icons), so both are re-applied here rather than only when
             // `themeMode`'s own value changes.
             LifecycleEventEffect(Lifecycle.Event.ON_RESUME) { applyEdgeToEdgeStyle(themeMode) }
+            // skein-xtov.24.7 (AL-08): the NavDisplay shell, debug builds only and behind an
+            // extra until AL-09a/b make it the default; its state sits above the gate (spec §8.8).
+            val useNavShell = remember { BuildConfig.DEBUG && intent.getBooleanExtra(EXTRA_NAV_SHELL, false) }
+            val navShell = if (useNavShell) rememberSkeinShellState(vault.unlockManager) else null
             // skein-xtov.24.20 (UT-14, `UX_TEST_PLAN.md` §2.6): the Compose
             // root, so `tools/ux/fold-watch.sh`'s `uiautomator dump` can find
             // every tagged node below it by `resource-id` — debug builds
@@ -348,7 +358,13 @@ class MainActivity : FragmentActivity() {
                                 )
                             lifecycleScope.launch { notifier.observeAndNotify() }
                         }
-                        UnlockedShell(session, themeMode)
+                        if (navShell != null) {
+                            SkeinTheme(mode = themeMode) {
+                                EdgeToEdgeSurface { m -> SkeinShellHost(navShell, navKindsOf(session.repository), m) }
+                            }
+                        } else {
+                            UnlockedShell(session, themeMode)
+                        }
                     },
                 )
             }
@@ -935,6 +951,9 @@ private fun TimelineDestination(session: VaultSession) {
     val state = rememberTimelineState(repo = session.repository, personaSource = personaSource)
     TimelineScreen(state = state, onEntryClick = {}, modifier = Modifier.fillMaxSize())
 }
+
+/** Debug builds: `am start … --ez app.skein.debug.NAV_SHELL true` runs the AL-08 NavDisplay shell. */
+internal const val EXTRA_NAV_SHELL = "app.skein.debug.NAV_SHELL"
 
 /** skein-whg8: test tags for the ask-path UI this file wires directly (chat/import/models have their own modules' tags). */
 object MainActivityTestTags {

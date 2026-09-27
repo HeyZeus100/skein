@@ -76,6 +76,18 @@ dependencies {
     implementation(libs.material3.adaptive)
     implementation(libs.kotlinx.coroutines.core)
 
+    // skein-xtov.24.7 (AL-08): the `NavDisplay` shell host (spec §8). `api`
+    // for `:core:navigation` because the host's public surface speaks its
+    // keys (`SkeinKey`, `SkeinId`, `ObjectKind`). No
+    // `lifecycle-viewmodel-navigation3`: its entry decorator fails M12
+    // (spec §8.9 item 3); `SessionEntryStores` replaces it.
+    api(project(":core:navigation"))
+    implementation(libs.androidx.navigation3.runtime)
+    implementation(libs.androidx.navigation3.ui)
+    implementation(libs.material3.adaptive.layout)
+    implementation(libs.material3.adaptive.navigation3)
+    implementation(libs.androidx.lifecycle.viewmodel.compose)
+
     // skein-xtov.23.1 (DS1): the theme now lives in `:core:designsystem`.
     // `api` because this module's one-wave forwarding shims
     // (`theme/ThemeForwarding.kt`) expose its types, and modules that reach
