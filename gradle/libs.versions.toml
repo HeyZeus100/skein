@@ -17,6 +17,10 @@ androidx-fragment = "1.9.1"
 androidx-core-ktx = "1.19.0"
 androidx-activity-compose = "1.13.0"
 androidx-lifecycle = "2.11.0"
+# skein-xtov.24.4 (AL-05, the D8 gate): Navigation 3, latest stable
+# (2026-09). Its UI artifact lifts navigationevent-compose 1.0.0 -> 1.1.1
+# transitively; see docs/ux/ADAPTIVE_LAYOUT_SPEC.md §8.9 "Result".
+androidx-navigation3 = "1.2.0"
 # E3.I8: SecurityPrefs persists the FLAG_SECURE toggle via DataStore, not
 # SharedPreferences (spec §9 vault surfaces).
 androidx-datastore = "1.2.1"
@@ -74,11 +78,20 @@ compose-foundation = { group = "androidx.compose.foundation", name = "foundation
 material3 = { group = "androidx.compose.material3", name = "material3", version.ref = "material3" }
 material3-adaptive = { group = "androidx.compose.material3.adaptive", name = "adaptive", version.ref = "material3-adaptive" }
 material3-adaptive-layout = { group = "androidx.compose.material3.adaptive", name = "adaptive-layout", version.ref = "material3-adaptive" }
+# skein-xtov.24.4 (AL-05): the list-detail / supporting-pane scene strategies
+# for Navigation 3, at Skein's material3-adaptive version (also in the BOM).
+material3-adaptive-navigation3 = { group = "androidx.compose.material3.adaptive", name = "adaptive-navigation3", version.ref = "material3-adaptive" }
+androidx-navigation3-runtime = { group = "androidx.navigation3", name = "navigation3-runtime", version.ref = "androidx-navigation3" }
+androidx-navigation3-ui = { group = "androidx.navigation3", name = "navigation3-ui", version.ref = "androidx-navigation3" }
+androidx-lifecycle-viewmodel-navigation3 = { group = "androidx.lifecycle", name = "lifecycle-viewmodel-navigation3", version.ref = "androidx-lifecycle" }
 
 kotlinx-coroutines-core = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-core", version.ref = "kotlinx-coroutines" }
 kotlinx-coroutines-android = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-android", version.ref = "kotlinx-coroutines" }
 kotlinx-coroutines-test = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-test", version.ref = "kotlinx-coroutines" }
 kotlinx-serialization-json = { group = "org.jetbrains.kotlinx", name = "kotlinx-serialization-json", version.ref = "kotlinx-serialization" }
+# skein-xtov.24.4 (AL-05): `@Serializable` navigation keys need only the core
+# runtime (they are encoded into a Bundle, never to JSON).
+kotlinx-serialization-core = { group = "org.jetbrains.kotlinx", name = "kotlinx-serialization-core", version.ref = "kotlinx-serialization" }
 
 jetbrains-markdown = { group = "org.jetbrains", name = "markdown", version.ref = "jetbrains-markdown" }
 onnxruntime-android = { group = "com.microsoft.onnxruntime", name = "onnxruntime-android", version.ref = "onnxruntime" }
