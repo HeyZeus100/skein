@@ -19,7 +19,10 @@ import app.skein.core.model.Citation
 import app.skein.core.model.CitationRecord
 import app.skein.core.model.CitationSourceKind
 import app.skein.core.model.DocumentKind
+import app.skein.core.model.Edge
+import app.skein.core.model.EdgeKind
 import app.skein.core.model.IndexStore
+import app.skein.core.model.IngestReason
 import app.skein.core.model.Locator
 import app.skein.core.model.NewChunk
 import app.skein.core.model.NewDocument
@@ -960,6 +963,156 @@ public abstract class VaultRepositoryContractTest {
                 "the blob is gone once the delete committed",
                 runCatching { r.openAttachment(att.id).close() }.isFailure,
             )
+        }
+
+    // ------------------------------------------------------------------
+    // OBJECT_LIFECYCLE_SPEC.md §3.4 (LC-04): edges detach with a delete
+    // ------------------------------------------------------------------
+
+    @Test
+    public fun deleteDocument_removes_out_edges_of_every_kind(): Unit =
+        runTest {
+            val r = repo()
+            val idx = index()
+            val a = r.createDocument(NewDocument(kind = DocumentKind.NOTE, title = "a", bodyMd = "a"))
+            val b = r.createDocument(NewDocument(kind = DocumentKind.NOTE, title = "b", bodyMd = "b"))
+            val out =
+                listOf(
+                    Edge(srcId = a.id, dstId = b.id, kind = EdgeKind.WIKILINK, createdAt = 1L),
+                    Edge(srcId = a.id, dstId = "tag:x", kind = EdgeKind.TAG, createdAt = 1L),
+                    Edge(srcId = a.id, dstId = b.id, kind = EdgeKind.CITE, createdAt = 1L),
+                    Edge(srcId = a.id, dstId = "entity:1", kind = EdgeKind.ENTITY, createdAt = 1L),
+                )
+            idx.replaceEdges(a.id, EdgeKind.entries.toSet(), out)
+
+            r.deleteDocument(a.id)
+
+            assertTrue(idx.edgesFrom(a.id).isEmpty())
+            assertTrue("b keeps no edge from the deleted a", idx.edgesTo(b.id).isEmpty())
+        }
+
+    @Test
+    public fun deleteDocument_rewrites_wikilink_in_edges_to_the_title_sentinel_at_weight_half(): Unit =
+        runTest {
+            val r = repo()
+            val idx = index()
+            val plan = r.createDocument(NewDocument(kind = DocumentKind.NOTE, title = "Plan", bodyMd = "p"))
+            val c = r.createDocument(NewDocument(kind = DocumentKind.NOTE, title = "c", bodyMd = "[[Plan]]"))
+            idx.replaceEdges(
+                c.id,
+                setOf(EdgeKind.WIKILINK),
+                listOf(Edge(srcId = c.id, dstId = plan.id, kind = EdgeKind.WIKILINK, createdAt = 42L)),
+            )
+
+            r.deleteDocument(plan.id)
+
+            assertEquals(
+                listOf(
+                    Edge(srcId = c.id, dstId = "title:plan", kind = EdgeKind.WIKILINK, weight = 0.5, createdAt = 42L),
+                ),
+                idx.edgesFrom(c.id),
+            )
+            assertTrue(idx.edgesTo(plan.id).isEmpty())
+        }
+
+    @Test
+    public fun deleteDocument_sentinel_matches_EdgeUpserter_for_a_non_ascii_title(): Unit =
+        runTest {
+            val r = repo()
+            val idx = index()
+            val emile = r.createDocument(NewDocument(kind = DocumentKind.NOTE, title = "Émile", bodyMd = "e"))
+            val c = r.createDocument(NewDocument(kind = DocumentKind.NOTE, title = "c", bodyMd = "[[Émile]]"))
+            idx.replaceEdges(
+                c.id,
+                setOf(EdgeKind.WIKILINK),
+                listOf(Edge(srcId = c.id, dstId = emile.id, kind = EdgeKind.WIKILINK, createdAt = 1L)),
+            )
+
+            r.deleteDocument(emile.id)
+
+            // `EdgeUpserter.unresolvedTarget("Émile")`: Kotlin lowercases the
+            // É; SQLite's lower() would not.
+            assertEquals(listOf("title:émile"), idx.edgesFrom(c.id).map { it.dstId })
+        }
+
+    @Test
+    public fun deleteDocument_removes_cite_in_edges(): Unit =
+        runTest {
+            val r = repo()
+            val idx = index()
+            val pdf = r.createAttachment("report.pdf", "application/pdf") { it.write(byteArrayOf(1)) }
+            val text = r.createDocument(NewDocument(kind = DocumentKind.NOTE, title = "report", bodyMd = "t"))
+            idx.replaceEdges(
+                text.id,
+                setOf(EdgeKind.CITE),
+                listOf(Edge(srcId = text.id, dstId = pdf.id, kind = EdgeKind.CITE, createdAt = 1L)),
+            )
+
+            r.deleteDocument(pdf.id)
+
+            assertTrue(idx.edgesTo(pdf.id).isEmpty())
+            assertTrue(idx.edgesFrom(text.id).isEmpty())
+        }
+
+    @Test
+    public fun deleteDocument_requeues_the_surviving_document_with_the_same_title(): Unit =
+        runTest {
+            val r = repo()
+            val older = r.createDocument(NewDocument(kind = DocumentKind.NOTE, title = "Plan", bodyMd = "older"))
+            Thread.sleep(2L)
+            val newer = r.createDocument(NewDocument(kind = DocumentKind.NOTE, title = "plan", bodyMd = "newer"))
+            val queued = r.dequeueIngest(10).single { it.docId == older.id }
+            r.completeIngest(older.id, queued.queuedAt)
+
+            r.deleteDocument(newer.id)
+
+            assertTrue(
+                "the older 'Plan' now answers [[Plan]] and must be re-ingested to pick up its links",
+                r.dequeueIngest(10).any { it.docId == older.id && it.reason == IngestReason.UPDATED },
+            )
+        }
+
+    @Test
+    public fun deleteDocument_keeps_other_chats_citation_excerpts(): Unit =
+        runTest {
+            val r = repo()
+            val note = r.createDocument(NewDocument(kind = DocumentKind.NOTE, title = "note", bodyMd = NOTE_BODY))
+            val chat = r.createDocument(NewDocument(kind = DocumentKind.CHAT, title = "chat", bodyMd = ""))
+            val record = citationRecordFor(note.id, requireNotNull(note.contentHash))
+            r.appendMessage(chat.id, NewMessage(role = Role.ASSISTANT, contentMd = "see [1]", citations = record))
+
+            r.deleteDocument(note.id)
+
+            val kept = requireNotNull(r.listMessages(chat.id).single().citations).retrieved.single()
+            assertEquals("the quote stays, disclosed by the delete dialog (spec §3.7)", CITED_EXCERPT, kept.excerpt)
+            assertEquals(note.id, kept.documentId)
+        }
+
+    @Test
+    public fun countChatsCiting_counts_distinct_chats_by_decoded_citation_records(): Unit =
+        runTest {
+            val r = repo()
+            val note = r.createDocument(NewDocument(kind = DocumentKind.NOTE, title = "note", bodyMd = NOTE_BODY))
+            val other = r.createDocument(NewDocument(kind = DocumentKind.NOTE, title = "other", bodyMd = "o"))
+            val citesNote = citationRecordFor(note.id, requireNotNull(note.contentHash))
+            val citesOther = citationRecordFor(other.id, requireNotNull(other.contentHash))
+
+            suspend fun chatWith(vararg turns: NewMessage) {
+                val chat = r.createDocument(NewDocument(kind = DocumentKind.CHAT, title = "chat", bodyMd = ""))
+                for (turn in turns) r.appendMessage(chat.id, turn)
+            }
+            // Two turns quoting the note in one chat count once.
+            chatWith(
+                NewMessage(role = Role.ASSISTANT, contentMd = "a", citations = citesNote),
+                NewMessage(role = Role.ASSISTANT, contentMd = "b", citations = citesNote),
+            )
+            chatWith(NewMessage(role = Role.ASSISTANT, contentMd = "c", citations = citesNote))
+            chatWith(NewMessage(role = Role.ASSISTANT, contentMd = "d", citations = citesOther))
+            // A legacy chunk-id payload names no document.
+            chatWith(NewMessage(role = Role.ASSISTANT, contentMd = "e", retrievedChunks = listOf(1L, 2L)))
+
+            assertEquals(2, r.countChatsCiting(note.id))
+            assertEquals(1, r.countChatsCiting(other.id))
         }
 
     /**

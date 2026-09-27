@@ -91,6 +91,7 @@ import app.skein.core.vault.blob.AttachmentStore
 import app.skein.core.vault.export.stage.ExportStageRepository
 import app.skein.core.vault.export.stage.ExportStageRow
 import app.skein.core.vault.export.stage.StagedPlaintextSweep
+import app.skein.core.vault.extract.EdgeUpserter
 import app.skein.core.vault.id.Uuid7
 import app.skein.core.vault.index.FtsQuerySanitizer
 import kotlinx.coroutines.CoroutineDispatcher
@@ -275,13 +276,16 @@ public class VaultRepositoryImpl(
                 // Read before the DELETE: the `export_stages` rows cascade
                 // away with it, and their stage ids name the staged files.
                 val stages = selectExportStages(id)
+                detachEdges(id, doomed.title, deleting = true)
                 writer.prepare(VaultSql.DELETE_DOCUMENT).use { stmt ->
                     stmt.bindText(1, id)
                     stmt.step()
                 }
                 // `chunks` (→ FTS/vec via `chunks_ad`), `messages`,
                 // `document_revisions`, `ingest_queue` and `export_stages` all
-                // cascade off documents.id.
+                // cascade off documents.id; `edges` has no foreign key, hence
+                // [detachEdges].
+                requeueTitleSurvivor(doomed.title, id)
                 for ((stageId, path) in stages) {
                     afterCommit { File(path).parentFile?.let { StagedPlaintextSweep.purgeStage(it, stageId) } }
                 }
@@ -434,6 +438,23 @@ public class VaultRepositoryImpl(
         changeTicks { it is TableChange.Messages && it.chatDocId == chatDocId }
             .map { listMessages(chatDocId) }
             .distinctUntilChanged()
+
+    // ponytail: decodes every citation payload in the vault; runs once when a
+    // delete dialog opens. An index on a documentId side table if that is slow.
+    override suspend fun countChatsCiting(id: DocId): Int =
+        withReader { conn ->
+            conn.prepare(VaultSql.SELECT_OTHER_CHATS_RETRIEVED_CHUNKS).use { stmt ->
+                stmt.bindText(1, id)
+                val chats = HashSet<DocId>()
+                while (stmt.step()) {
+                    val payload = CitationRecordJson.decode(stmt.getText(1))
+                    if (payload is RetrievedChunksPayload.V1 && payload.record.retrieved.any { it.documentId == id }) {
+                        chats += stmt.getText(0)
+                    }
+                }
+                chats.size
+            }
+        }
 
     // ------------------------------------------------------------------
     // Document revisions (migration 003, POST_REVIEW_RESOLUTIONS.md §1)
@@ -743,6 +764,59 @@ public class VaultRepositoryImpl(
             writer.prepare(VaultSql.MARK_ALL_EXPORT_STAGES_SWEPT).use { it.step() }
             changedRows()
         }
+
+    /**
+     * OBJECT_LIFECYCLE_SPEC.md §3.4, run inside the caller's [writeTx] on the
+     * writer connection — the index connection cannot share this transaction.
+     * Resolved wikilinks into [id] become unresolved links to [oldTitle] at
+     * `EdgeUpserter.UNRESOLVED_WIKILINK_WEIGHT` (a source already holding that
+     * sentinel collapses into it: the key is `(src_id, dst_id, kind)`). With
+     * [deleting], every out-edge of [id] and every other in-edge (a CITE into
+     * an attachment) goes too. The sentinel is computed in Kotlin: SQLite's
+     * `lower()` folds ASCII only, so it would miss `EdgeUpserter`'s for a title
+     * like `Émile`.
+     */
+    private fun detachEdges(
+        id: DocId,
+        oldTitle: String,
+        deleting: Boolean,
+    ) {
+        if (deleting) {
+            writer.prepare(VaultSql.DELETE_EDGES_FROM).use { stmt ->
+                stmt.bindText(1, id)
+                stmt.step()
+            }
+        }
+        writer.prepare(VaultSql.DETACH_WIKILINKS_TO).use { stmt ->
+            stmt.bindText(1, EdgeUpserter.unresolvedTarget(oldTitle))
+            stmt.bindDouble(2, EdgeUpserter.UNRESOLVED_WIKILINK_WEIGHT)
+            stmt.bindText(3, id)
+            stmt.step()
+        }
+        writer.prepare(if (deleting) VaultSql.DELETE_EDGES_TO else VaultSql.DELETE_WIKILINKS_TO).use { stmt ->
+            stmt.bindText(1, id)
+            stmt.step()
+        }
+    }
+
+    /**
+     * Re-queues the document that now answers `[[title]]` — the most recently
+     * updated other non-attachment with that title, as `findByTitle` picks —
+     * so its ingest (`DanglingResolver.resolveFor`) attaches the sentinels
+     * [detachEdges] just wrote. Reason `updated`: `IngestReason.fromDb` throws
+     * on anything it does not know.
+     */
+    private fun requeueTitleSurvivor(
+        title: String,
+        exceptId: DocId,
+    ) {
+        writer.prepare(VaultSql.REQUEUE_TITLE_SURVIVOR).use { stmt ->
+            stmt.bindLong(1, clock())
+            stmt.bindText(2, title)
+            stmt.bindText(3, exceptId)
+            stmt.step()
+        }
+    }
 
     /** `(stageId, path)` of every export stage recorded for [documentId]. Writer connection: called inside [writeTx]. */
     private fun selectExportStages(documentId: DocId): List<Pair<String, String>> =

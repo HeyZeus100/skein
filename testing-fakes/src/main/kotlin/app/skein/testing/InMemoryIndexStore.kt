@@ -99,6 +99,32 @@ public class InMemoryIndexStore : IndexStore {
         }
     }
 
+    /**
+     * OBJECT_LIFECYCLE_SPEC.md §3.4 for the linked repository — the twin of
+     * `VaultRepositoryImpl.detachEdges`: WIKILINK edges into [docId] become
+     * edges to [sentinel] at the unresolved weight (collapsing into one the
+     * source already holds); with [deleting], every edge out of [docId] and
+     * every other edge into it goes too. Publishes nothing, like the device.
+     */
+    internal suspend fun detachEdges(
+        docId: DocId,
+        sentinel: String,
+        deleting: Boolean,
+    ) {
+        lock.withLock {
+            if (deleting) edges.removeAll { it.srcId == docId }
+            val detached =
+                edges
+                    .filter { it.dstId == docId && it.kind == EdgeKind.WIKILINK }
+                    .map { it.copy(dstId = sentinel, weight = UNRESOLVED_WIKILINK_WEIGHT) }
+            edges.removeAll { it.dstId == docId && (deleting || it.kind == EdgeKind.WIKILINK) }
+            for (edge in detached) {
+                edges.removeAll { it.srcId == edge.srcId && it.dstId == edge.dstId && it.kind == edge.kind }
+                edges += edge
+            }
+        }
+    }
+
     // ------------------------------------------------------------------
     // Chunks + embeddings
     // ------------------------------------------------------------------
@@ -355,6 +381,9 @@ public class InMemoryIndexStore : IndexStore {
 
         /** Matches `IndexStoreImpl.CHANGE_BUFFER_CAPACITY` / `ChangeBus.EXTRA_BUFFER_CAPACITY`. */
         const val CHANGE_BUFFER_CAPACITY: Int = 64
+
+        /** `EdgeUpserter.UNRESOLVED_WIKILINK_WEIGHT` (`:core:vault`). */
+        const val UNRESOLVED_WIKILINK_WEIGHT: Double = 0.5
 
         val WORD_SPLIT: Regex = Regex("[^A-Za-z0-9]+")
 

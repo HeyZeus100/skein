@@ -120,6 +120,28 @@ public class DanglingResolverTest {
             )
         }
 
+    /** OBJECT_LIFECYCLE_SPEC.md §3.2/§3.4 (LC-04): the designed resurrection-by-title, on a linked vault. */
+    @Test
+    public fun `a note created with a deleted note's title regains its backlinks`() =
+        runTest {
+            val index = InMemoryIndexStore()
+            val repo = InMemoryVaultRepository(clock = { 1_000L }, index = index)
+            val upserter = EdgeUpserter(repo, index, clock = { 1_000L })
+            val resolver = DanglingResolver(repo, index)
+            val plan = repo.createDocument(NewDocument(DocumentKind.NOTE, "Plan", "v1"))
+            val linker = repo.createDocument(NewDocument(DocumentKind.NOTE, "C", "see [[Plan]]"))
+            upserter.upsert(linker.id, WikilinkExtractor.extract(linker.bodyMd!!), emptySet())
+            check(index.edgesFrom(linker.id).single().dstId == plan.id)
+
+            repo.deleteDocument(plan.id)
+            check(index.edgesFrom(linker.id).single().dstId == "title:plan")
+            val reborn = repo.createDocument(NewDocument(DocumentKind.NOTE, "Plan", "v2"))
+            resolver.resolveFor(reborn)
+
+            assertThat(index.edgesTo(reborn.id, EdgeKind.WIKILINK).map { it.srcId }).containsExactly(linker.id)
+            assertThat(index.edgesTo(plan.id)).isEmpty()
+        }
+
     @Test
     public fun `resolveAll resolves every dangling sentinel across the vault and is idempotent`() =
         runTest {

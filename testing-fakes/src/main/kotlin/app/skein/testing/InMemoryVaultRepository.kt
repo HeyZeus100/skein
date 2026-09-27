@@ -246,19 +246,43 @@ public class InMemoryVaultRepository(
 
     override suspend fun deleteDocument(id: DocId) {
         writeTx {
-            documents.remove(id)
+            val doomed = documents.remove(id)
             // `document_revisions.document_id` is ON DELETE CASCADE (003).
             revisions.keys.removeAll { it.first == id }
             messagesByChat.remove(id)
             ingestQueue.remove(id)
             mimeTypes.remove(id)
-            // `chunks.doc_id` cascade on the linked index. Queued rather than
-            // applied here so a rolled-back `transaction { }` has nothing to
-            // undo on the index side.
-            index?.let { linked -> afterCommit { linked.cascadeDelete(id) } }
+            if (doomed != null) {
+                // The `chunks.doc_id` cascade and the §3.4 edge detach, on the
+                // linked index. Queued rather than applied here so a
+                // rolled-back `transaction { }` has nothing to undo there.
+                index?.let { linked ->
+                    afterCommit {
+                        linked.cascadeDelete(id)
+                        linked.detachEdges(id, unresolvedTarget(doomed.title), deleting = true)
+                    }
+                }
+                requeueTitleSurvivor(doomed.title, id)
+            }
             afterCommit { attachments.delete(id) }
             emitChange()
         }
+    }
+
+    /** Mirrors `VaultRepositoryImpl.requeueTitleSurvivor` (OBJECT_LIFECYCLE_SPEC.md §3.4). */
+    private fun requeueTitleSurvivor(
+        title: String,
+        exceptId: DocId,
+    ) {
+        val survivor =
+            documents.values
+                .filter {
+                    it.id != exceptId &&
+                        it.kind != DocumentKind.ATTACHMENT &&
+                        it.title.equals(title, ignoreCase = true)
+                }.maxByOrNull { it.updatedAt }
+                ?: return
+        ingestQueue[survivor.id] = IngestItem(docId = survivor.id, reason = IngestReason.UPDATED, queuedAt = clock())
     }
 
     override fun observeDocument(id: DocId): Flow<Document?> =
@@ -366,6 +390,11 @@ public class InMemoryVaultRepository(
 
     override fun observeMessages(chatDocId: DocId): Flow<List<Message>> =
         changeTicks().map { listMessages(chatDocId) }.distinctUntilChanged()
+
+    override suspend fun countChatsCiting(id: DocId): Int =
+        messagesByChat.count { (chatId, messages) ->
+            chatId != id && messages.any { m -> m.citations?.retrieved?.any { it.documentId == id } == true }
+        }
 
     // ------------------------------------------------------------------
     // Document revisions (migration 003, POST_REVIEW_RESOLUTIONS.md §1)
@@ -670,6 +699,14 @@ public class InMemoryVaultRepository(
 
     private companion object {
         const val FRONTMATTER_ID_KEY: String = "id"
+
+        /**
+         * `EdgeUpserter.unresolvedTarget` (`:core:vault`, out of this module's
+         * reach): Kotlin's Unicode-aware, locale-free `lowercase()`. The
+         * contract test `deleteDocument_sentinel_matches_EdgeUpserter_for_a_non_ascii_title`
+         * pins both to the same string.
+         */
+        fun unresolvedTarget(title: String): String = "title:${title.lowercase()}"
 
         fun sha256Hex(text: String): String = sha256Hex(text.toByteArray(Charsets.UTF_8))
 

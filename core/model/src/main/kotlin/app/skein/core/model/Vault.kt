@@ -322,6 +322,14 @@ public interface VaultRepository {
      * the attachment blob and staged export plaintext — are deleted only
      * after the commit, so a failed commit leaves the document whole.
      *
+     * Graph edges are detached in the same transaction (§3.4): every edge out
+     * of [id] goes; a resolved WIKILINK into [id] becomes an unresolved link
+     * to its title (`title:<lowercased title>`, weight 0.5), so the linking
+     * note keeps meaning `[[Title]]`; any other edge into [id] (a CITE into
+     * an attachment) goes. The document that now answers that title, if any,
+     * is re-queued for ingest so it picks those links up. Text in other
+     * documents and quotes in other chats are never rewritten.
+     *
      * Idempotent: a missing [id] is a successful no-op.
      *
      * Publishes, after the commit, a `Documents(id)` change (so
@@ -370,6 +378,16 @@ public interface VaultRepository {
     public suspend fun listMessages(chatDocId: DocId): List<Message>
 
     public fun observeMessages(chatDocId: DocId): Flow<List<Message>>
+
+    /**
+     * How many chats other than [id] quote [id]: the distinct chats holding a
+     * message whose citation-record-v1 `retrieved` list names [id] (decoded,
+     * never string-matched). Those excerpts outlive a delete of [id]
+     * (`OBJECT_LIFECYCLE_SPEC.md` §3.7), which the delete dialog discloses
+     * with this count. A legacy (`record_version: 0`) payload names no
+     * document and never counts; a missing [id] counts what still quotes it.
+     */
+    public suspend fun countChatsCiting(id: DocId): Int
 
     // ---- document revisions (POST_REVIEW_RESOLUTIONS.md §1, migration 003) ----
 
