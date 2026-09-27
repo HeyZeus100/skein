@@ -254,7 +254,7 @@ public fun ThinkingPlaceholder(modifier: Modifier = Modifier) {
         shape = RoundedCornerShape(8.dp),
     ) {
         Text(
-            text = "Writing answer…",
+            text = "Working…",
             style = MaterialTheme.typography.bodySmall,
             color = MaterialTheme.colorScheme.onSurfaceVariant,
             modifier = Modifier.padding(12.dp),

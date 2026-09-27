@@ -117,7 +117,7 @@ test updates and goldens.
 | " | `ENGINE_ERROR_BANNER_TEXT`: "generation failed, retry" | "Couldn't finish the answer." |
 | " | Retry button "retry" | "Try again" |
 | `feature/chat/.../AssistantBubble.kt` | "interrupted — stopped" | "Stopped" |
-| " | "thinking…" | "Writing answer…" |
+| " | "thinking…" | "Working…" (neutral: shown before the first token, while the model may still be reading the prompt; the activity block names the real step in Wave 4) |
 | `feature/chat/.../ChatBottomBar.kt` | contentDescription "Attach a file" | "Attach" |
 | " | contentDescription "Stop generating" | "Stop answer" |
 | " | contentDescription "Send message" | "Send" |
