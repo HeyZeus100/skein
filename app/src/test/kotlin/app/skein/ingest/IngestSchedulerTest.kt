@@ -45,6 +45,7 @@ import org.robolectric.Robolectric
 import org.robolectric.RobolectricTestRunner
 import org.robolectric.annotation.Config
 import java.util.Collections
+import java.util.concurrent.CopyOnWriteArrayList
 
 /**
  * E5.I10 (skein-7v3): `IngestScheduler` over a real [UnlockManager] (so the
@@ -89,7 +90,16 @@ class IngestSchedulerTest {
     }
 
     private inner class Harness {
-        val events: MutableList<String> = Collections.synchronizedList(mutableListOf())
+        // A `CopyOnWriteArrayList`, not `Collections.synchronizedList`: the
+        // scheduler's subscription (`start()`, launched on `scope`) appends
+        // to this list from a background coroutine while assertions and
+        // `awaitEnqueues` iterate it (`count`/`toList`/`filter`/`last`) on
+        // the test thread. `synchronizedList` only guards individual calls
+        // like `add`, not that iteration, so a concurrent append during an
+        // iteration threw `ConcurrentModificationException` (skein-mw6k).
+        // `CopyOnWriteArrayList`'s iterator is a stable snapshot, so
+        // concurrent iteration is always safe.
+        val events: MutableList<String> = CopyOnWriteArrayList()
         val keyProvider = ScriptedVaultKeyProvider(events)
         val manager = UnlockManager(keyProvider = keyProvider, scope = null, installShutdownHook = false)
         val repository = InMemoryVaultRepository()
