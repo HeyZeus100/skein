@@ -47,4 +47,6 @@ include(
     ":testing",
     ":testing-fakes",
     ":testing-ui",
+    // skein-xtov.24.4 (AL-05): throwaway Navigation 3 spike; delete with prototype/.
+    ":prototype:nav3",
 )

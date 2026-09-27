@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- skein-xtov.24.4 (AL-05): Robolectric hosts for the throwaway Nav3 gate tests. -->
+    <application>
+        <activity
+            android:name="androidx.activity.ComponentActivity"
+            android:exported="false" />
+        <activity
+            android:name="app.skein.prototype.nav3.ProtoActivity"
+            android:configChanges="screenSize|smallestScreenSize|screenLayout|orientation|keyboard|keyboardHidden|navigation"
+            android:exported="false" />
+    </application>
+</manifest>
