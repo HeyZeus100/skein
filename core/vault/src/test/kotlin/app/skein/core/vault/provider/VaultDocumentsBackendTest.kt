@@ -573,6 +573,56 @@ public class VaultDocumentsBackendTest {
             assertThat(after.bodyMd to after.frontmatter).isEqualTo(note.bodyMd to note.frontmatter)
         }
 
+    // OBJECT_LIFECYCLE_SPEC.md §3.1, N8 (LC-05): outbound boundaries render
+    // `title` from `documents.title`, never from the stale stored key.
+    @Test
+    public fun `export and saf render the current title into frontmatter`() =
+        runTest {
+            val h = Harness().apply { unlock() }
+            val note = h.note(title = "Old")
+            val renamed = requireNotNull(h.repo.renameDocument(note.id, "New"))
+            check(renamed.frontmatter[FrontmatterKeys.TITLE] == JsonPrimitive("Old")) { "the stored key stays stale" }
+
+            val exported = h.exported(renamed)
+            val read = ByteArrayOutputStream().also { h.backend.read(ProviderIds.note(note.id), it) }.toByteArray()
+
+            assertThat(Frontmatter.parse(exported.toString(Charsets.UTF_8)).first[FrontmatterKeys.TITLE])
+                .isEqualTo(JsonPrimitive("New"))
+            assertThat(read).isEqualTo(exported)
+            val listed = h.backend.document(ProviderIds.note(note.id))[DocumentsContract.Document.COLUMN_SIZE]
+            assertThat(read.size.toLong()).isEqualTo(listed)
+        }
+
+    @Test
+    public fun `a saf round trip does not revert a rename`() =
+        runTest {
+            val h = Harness().apply { unlock() }
+            val note = h.note(title = "Old")
+            h.repo.renameDocument(note.id, "New")
+
+            val out = ByteArrayOutputStream()
+            h.backend.read(ProviderIds.note(note.id), out)
+            h.backend.writeNote(ProviderIds.note(note.id), out.toByteArray())
+
+            assertThat(h.repo.getDocument(note.id)!!.title).isEqualTo("New")
+        }
+
+    @Test
+    public fun `writeNote keeps the stored title when the written one breaks the title rules`() =
+        runTest {
+            val h = Harness().apply { unlock() }
+            val note = h.note(title = "Kept")
+            val text =
+                Frontmatter.render(
+                    buildJsonObject { put(FrontmatterKeys.TITLE, JsonPrimitive("x".repeat(201))) },
+                    "b",
+                )
+
+            h.backend.writeNote(ProviderIds.note(note.id), text.toByteArray())
+
+            assertThat(h.repo.getDocument(note.id)!!.let { it.title to it.bodyMd }).isEqualTo("Kept" to "b")
+        }
+
     @Test
     public fun `writeNote normalizes CRLF line endings so the frontmatter block still parses`() =
         runTest {

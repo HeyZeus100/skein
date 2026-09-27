@@ -161,7 +161,7 @@ public class ExportServiceImpl(
     // ------------------------------------------------------------------
 
     private fun renderMarkdown(document: Document): ByteArray =
-        Frontmatter.render(document.frontmatter, document.bodyMd.orEmpty()).toByteArray(Charsets.UTF_8)
+        Frontmatter.renderDocument(document).toByteArray(Charsets.UTF_8)
 
     private suspend fun fetchAllDocuments(personaId: PersonaId? = null): List<Document> =
         repository

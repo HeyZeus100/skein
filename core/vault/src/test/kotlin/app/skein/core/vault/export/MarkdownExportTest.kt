@@ -23,6 +23,7 @@ import app.skein.testing.InMemoryVaultRepository
 import com.google.common.truth.Truth.assertThat
 import kotlinx.coroutines.test.runTest
 import kotlinx.serialization.json.JsonArray
+import kotlinx.serialization.json.JsonObject
 import kotlinx.serialization.json.JsonPrimitive
 import kotlinx.serialization.json.buildJsonObject
 import org.junit.Test
@@ -126,10 +127,13 @@ public class MarkdownExportTest {
             val exportedBytes = out.toByteArray()
 
             // Re-parsing the exported bytes with the same codec any real
-            // ImportService (E2.I7) will use recovers identical frontmatter + body.
+            // ImportService (E2.I7) will use recovers identical frontmatter + body,
+            // plus the `title` key export renders from `documents.title`
+            // (OBJECT_LIFECYCLE_SPEC.md §3.1).
             val (parsedFrontmatter, parsedBody) =
                 Frontmatter.parse(exportedBytes.toString(Charsets.UTF_8))
-            assertThat(parsedFrontmatter).isEqualTo(doc.frontmatter)
+            assertThat(parsedFrontmatter)
+                .isEqualTo(JsonObject(doc.frontmatter + (FrontmatterKeys.TITLE to JsonPrimitive(doc.title))))
             assertThat(parsedBody).isEqualTo(doc.bodyMd)
 
             // And the locked `ImportService.importText` contract (Transfer.kt)

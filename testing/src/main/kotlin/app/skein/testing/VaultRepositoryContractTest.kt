@@ -742,6 +742,9 @@ public abstract class VaultRepositoryContractTest {
             r.deleteDocument(chat.id)
 
             assertThrowsNoSuchElement { r.updateBody(note.id, "note", "late body") }
+            assertThrowsNoSuchElement { r.replaceBody(note.id, "late body") }
+            assertThrowsNoSuchElement { r.renameDocument(note.id, "late title") }
+            assertThrowsNoSuchElement { r.renameDocument(chat.id, "generated title", ifTitleIs = "chat") }
             val tags = buildJsonObject { put("tags", JsonPrimitive("t")) }
             assertThrowsNoSuchElement { r.updateFrontmatter(note.id, tags) }
             assertThrowsNoSuchElement { r.appendMessage(chat.id, NewMessage(role = Role.USER, contentMd = "late")) }
@@ -760,6 +763,7 @@ public abstract class VaultRepositoryContractTest {
             r.deleteDocument(note.id)
 
             assertThrowsNoSuchElement { r.updateBody(note.id, "draft", "v2 from a late autosave") }
+            assertThrowsNoSuchElement { r.replaceBody(note.id, "v2 from a late autosave") }
 
             assertNull(r.getDocument(note.id))
             assertNull(r.findByTitle("draft"))
@@ -1113,6 +1117,192 @@ public abstract class VaultRepositoryContractTest {
 
             assertEquals(2, r.countChatsCiting(note.id))
             assertEquals(1, r.countChatsCiting(other.id))
+        }
+
+    // ------------------------------------------------------------------
+    // OBJECT_LIFECYCLE_SPEC.md §4.3, §6.3, §11.2 (LC-05): rename, replaceBody,
+    // kind guards
+    // ------------------------------------------------------------------
+
+    @Test
+    public fun renameDocument_changes_only_the_title(): Unit =
+        runTest {
+            val r = repo()
+            val fm = buildJsonObject { put("title", JsonPrimitive("Old")) }
+            val before =
+                r.createDocument(
+                    NewDocument(kind = DocumentKind.NOTE, title = "Old", bodyMd = "body", frontmatter = fm),
+                )
+            Thread.sleep(2L)
+
+            val renamed = r.renameDocument(before.id, "New")
+
+            assertEquals(before.copy(title = "New"), renamed)
+            assertEquals(
+                "body, frontmatter (its stale title key included), hash and timestamps are untouched",
+                before.copy(title = "New"),
+                r.getDocument(before.id),
+            )
+        }
+
+    @Test
+    public fun renameDocument_keeps_content_hash_and_captures_no_revision(): Unit =
+        runTest {
+            val r = repo()
+            val note = r.createDocument(NewDocument(kind = DocumentKind.NOTE, title = "Old", bodyMd = "body"))
+            val revision = requireNotNull(r.currentRevision(note.id))
+
+            r.renameDocument(note.id, "New")
+
+            assertEquals(note.contentHash, r.getDocument(note.id)?.contentHash)
+            assertEquals(revision, r.currentRevision(note.id))
+            assertEquals("nothing to sweep: no revision was captured", 0, r.sweepUnreferencedRevisions())
+        }
+
+    @Test
+    public fun renameDocument_does_not_change_updated_at(): Unit =
+        runTest {
+            val r = repo()
+            val older = r.createDocument(NewDocument(kind = DocumentKind.NOTE, title = "older", bodyMd = "o"))
+            Thread.sleep(2L)
+            val newer = r.createDocument(NewDocument(kind = DocumentKind.NOTE, title = "newer", bodyMd = "n"))
+            Thread.sleep(2L)
+
+            r.renameDocument(older.id, "renamed")
+
+            assertEquals(older.updatedAt, r.getDocument(older.id)?.updatedAt)
+            assertEquals(
+                "Recent order is unchanged",
+                listOf(newer.id, older.id),
+                r.observeTimeline(TimelineFilter()).first().map { it.id },
+            )
+        }
+
+    @Test
+    public fun renameDocument_requeues_ingest_with_a_fresh_queued_at(): Unit =
+        runTest {
+            val r = repo()
+            val note = r.createDocument(NewDocument(kind = DocumentKind.NOTE, title = "Old", bodyMd = "body"))
+            val inFlight = r.dequeueIngest(10).single { it.docId == note.id }
+            Thread.sleep(2L)
+
+            r.renameDocument(note.id, "New")
+            r.completeIngest(note.id, inFlight.queuedAt)
+
+            val requeued = r.dequeueIngest(10).single { it.docId == note.id }
+            assertTrue("queued after the in-flight ingest (spec N9)", requeued.queuedAt > inFlight.queuedAt)
+            assertEquals(IngestReason.UPDATED, requeued.reason)
+        }
+
+    @Test
+    public fun renameDocument_detaches_wikilink_in_edges_to_the_old_title_sentinel(): Unit =
+        runTest {
+            val r = repo()
+            val idx = index()
+            val plan = r.createDocument(NewDocument(kind = DocumentKind.NOTE, title = "Plan", bodyMd = "p"))
+            val c = r.createDocument(NewDocument(kind = DocumentKind.NOTE, title = "c", bodyMd = "[[Plan]]"))
+            idx.replaceEdges(
+                c.id,
+                setOf(EdgeKind.WIKILINK),
+                listOf(Edge(srcId = c.id, dstId = plan.id, kind = EdgeKind.WIKILINK, createdAt = 7L)),
+            )
+
+            r.renameDocument(plan.id, "Roadmap")
+
+            assertEquals(
+                listOf(
+                    Edge(srcId = c.id, dstId = "title:plan", kind = EdgeKind.WIKILINK, weight = 0.5, createdAt = 7L),
+                ),
+                idx.edgesFrom(c.id),
+            )
+            assertTrue(idx.edgesTo(plan.id).isEmpty())
+        }
+
+    @Test
+    public fun renameDocument_keeps_cite_in_edges(): Unit =
+        runTest {
+            val r = repo()
+            val idx = index()
+            val pdf = r.createAttachment("report.pdf", "application/pdf") { it.write(byteArrayOf(1)) }
+            val text = r.createDocument(NewDocument(kind = DocumentKind.NOTE, title = "report", bodyMd = "t"))
+            val cite = Edge(srcId = text.id, dstId = pdf.id, kind = EdgeKind.CITE, createdAt = 1L)
+            idx.replaceEdges(text.id, setOf(EdgeKind.CITE), listOf(cite))
+
+            r.renameDocument(pdf.id, "Q3 report.pdf")
+
+            assertEquals(listOf(cite), idx.edgesTo(pdf.id))
+        }
+
+    @Test
+    public fun renameDocument_trims_collapses_line_breaks_and_rejects_blank_or_over_200(): Unit =
+        runTest {
+            val r = repo()
+            val note = r.createDocument(NewDocument(kind = DocumentKind.NOTE, title = "n", bodyMd = "b"))
+
+            assertEquals("a b c", r.renameDocument(note.id, "  a\r\n\tb\nc \t")?.title)
+            assertEquals("x".repeat(200), r.renameDocument(note.id, "x".repeat(200))?.title)
+            for (bad in listOf("", " \n\t ", "y".repeat(201))) {
+                assertTrue(runCatching { r.renameDocument(note.id, bad) }.exceptionOrNull() is IllegalArgumentException)
+            }
+            assertEquals("a rejected title writes nothing", "x".repeat(200), r.getDocument(note.id)?.title)
+        }
+
+    @Test
+    public fun renameDocument_with_ifTitleIs_writes_nothing_when_the_title_changed(): Unit =
+        runTest {
+            val r = repo()
+            val chat = r.createDocument(NewDocument(kind = DocumentKind.CHAT, title = "Chat", bodyMd = ""))
+            r.renameDocument(chat.id, "Mine")
+
+            assertNull(r.renameDocument(chat.id, "Generated", ifTitleIs = "Chat"))
+            assertEquals("a user rename wins over a generated title", "Mine", r.getDocument(chat.id)?.title)
+            assertEquals("Ours", r.renameDocument(chat.id, "Ours", ifTitleIs = "Mine")?.title)
+        }
+
+    @Test
+    public fun renameDocument_on_an_attachment_keeps_its_byte_hash(): Unit =
+        runTest {
+            val r = repo()
+            val pdf = r.createAttachment("report.pdf", "application/pdf") { it.write(byteArrayOf(1, 2, 3)) }
+
+            r.renameDocument(pdf.id, "Q3 report.pdf")
+
+            val renamed = requireNotNull(r.getDocument(pdf.id))
+            assertEquals("Q3 report.pdf", renamed.title)
+            assertEquals(pdf.contentHash, renamed.contentHash)
+            assertNull("an attachment has no body", renamed.bodyMd)
+        }
+
+    @Test
+    public fun updateBody_rejects_attachments_and_chats(): Unit =
+        runTest {
+            val r = repo()
+            val pdf = r.createAttachment("report.pdf", "application/pdf") { it.write(byteArrayOf(1)) }
+            val chat = r.createDocument(NewDocument(kind = DocumentKind.CHAT, title = "chat", bodyMd = ""))
+            r.appendMessage(chat.id, NewMessage(role = Role.USER, contentMd = "hi"))
+            val transcript = r.getDocument(chat.id)?.bodyMd
+
+            for (id in listOf(pdf.id, chat.id)) {
+                assertTrue(runCatching { r.updateBody(id, "t", "text") }.exceptionOrNull() is IllegalArgumentException)
+                assertTrue(runCatching { r.replaceBody(id, "text") }.exceptionOrNull() is IllegalArgumentException)
+            }
+            assertEquals(pdf.contentHash, r.getDocument(pdf.id)?.contentHash)
+            assertEquals(transcript, r.getDocument(chat.id)?.bodyMd)
+        }
+
+    @Test
+    public fun replaceBody_never_writes_the_title(): Unit =
+        runTest {
+            val r = repo()
+            val note = r.createDocument(NewDocument(kind = DocumentKind.NOTE, title = "Old", bodyMd = "v1"))
+            r.renameDocument(note.id, "New")
+
+            val saved = r.replaceBody(note.id, "v2")
+
+            assertEquals("New", saved.title)
+            assertEquals("New" to "v2", r.getDocument(note.id)?.let { it.title to it.bodyMd })
+            assertEquals(RevisionHashing.compute("v2", note.frontmatter), saved.contentHash)
+            assertTrue(r.dequeueIngest(10).any { it.docId == note.id })
         }
 
     /**

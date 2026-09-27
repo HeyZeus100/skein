@@ -135,8 +135,17 @@ internal object VaultSql {
     const val UPDATE_DOCUMENT_BODY: String =
         "UPDATE documents SET title = ?, body_md = ?, updated_at = ?, content_hash = ? WHERE id = ?"
 
-    const val UPDATE_CHAT_BODY: String =
+    // The body alone: `appendMessage`'s transcript and `replaceBody`. Never
+    // the title, so a body save cannot revert a rename.
+    const val UPDATE_BODY: String =
         "UPDATE documents SET body_md = ?, updated_at = ?, content_hash = ? WHERE id = ?"
+
+    // `renameDocument`: the title and nothing else — not `updated_at` (Recent
+    // order stays), not `content_hash` (the title is not in the revision hash).
+    // `documents_au_ingest` still fires; `REQUEUE_DOCUMENT` then moves its
+    // `queued_at` to now.
+    const val UPDATE_DOCUMENT_TITLE: String =
+        "UPDATE documents SET title = ? WHERE id = ?"
 
     // `content_hash` is set here as well as in [UPDATE_DOCUMENT_BODY]
     // because it now holds the document's `RevisionHash`, which covers the
@@ -282,6 +291,10 @@ internal object VaultSql {
     // write race window because the DELETE's own WHERE is the check.
     const val DELETE_INGEST_ITEM_IF_UNCHANGED: String =
         "DELETE FROM ingest_queue WHERE doc_id = ? AND queued_at = ?"
+
+    // Bind: 1 = document id, 2 = now. Resets `attempts` like any re-queue.
+    const val REQUEUE_DOCUMENT: String =
+        "INSERT OR REPLACE INTO ingest_queue(doc_id, reason, queued_at, attempts) VALUES (?, 'updated', ?, 0)"
 
     const val ENQUEUE_REEMBED_ALL: String =
         "INSERT OR REPLACE INTO ingest_queue(doc_id, reason, queued_at) " +

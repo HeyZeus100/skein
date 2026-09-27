@@ -74,6 +74,7 @@ import app.skein.core.model.Document
 import app.skein.core.model.DocumentHit
 import app.skein.core.model.DocumentKind
 import app.skein.core.model.DocumentRevision
+import app.skein.core.model.DocumentTitles
 import app.skein.core.model.IngestItem
 import app.skein.core.model.IngestReason
 import app.skein.core.model.Message
@@ -207,36 +208,94 @@ public class VaultRepositoryImpl(
         id: DocId,
         title: String,
         bodyMd: String,
+    ): Document = writeBody(id, title, bodyMd)
+
+    override suspend fun replaceBody(
+        id: DocId,
+        bodyMd: String,
+    ): Document = writeBody(id, title = null, bodyMd = bodyMd)
+
+    /** [updateBody] and, with a null [title], [replaceBody]. */
+    private suspend fun writeBody(
+        id: DocId,
+        title: String?,
+        bodyMd: String,
     ): Document =
         writeTx {
             val existing = requireDocument(id)
+            // A chat's body is the transcript `appendMessage` derives, and an
+            // attachment has none: its `content_hash` is its bytes' SHA-256
+            // (OBJECT_LIFECYCLE_SPEC.md §4.4, §7).
+            require(existing.kind != DocumentKind.CHAT && existing.kind != DocumentKind.ATTACHMENT) {
+                "the body of a ${existing.kind} document is not writable"
+            }
             val now = clock()
             // §1.3: the new content address of the document. Note it covers
             // `body_md` + frontmatter only — retitling alone leaves the
             // revision, and therefore every citation into this document,
-            // untouched. An attachment (which has no citable body) keeps the
-            // pre-003 SHA-256 shape; see `Document.contentHash`.
-            val citable = existing.kind != DocumentKind.ATTACHMENT
-            val hash = if (citable) RevisionHashing.compute(bodyMd, existing.frontmatter) else sha256Hex(bodyMd)
-            writer.prepare(VaultSql.UPDATE_DOCUMENT_BODY).use { stmt ->
-                stmt.bindText(1, title)
-                stmt.bindText(2, bodyMd)
-                stmt.bindLong(3, now)
-                stmt.bindText(4, hash)
-                stmt.bindText(5, id)
-                stmt.step()
+            // untouched.
+            val hash = RevisionHashing.compute(bodyMd, existing.frontmatter)
+            if (title == null) {
+                writer.prepare(VaultSql.UPDATE_BODY).use { stmt ->
+                    stmt.bindText(1, bodyMd)
+                    stmt.bindLong(2, now)
+                    stmt.bindText(3, hash)
+                    stmt.bindText(4, id)
+                    stmt.step()
+                }
+            } else {
+                writer.prepare(VaultSql.UPDATE_DOCUMENT_BODY).use { stmt ->
+                    stmt.bindText(1, title)
+                    stmt.bindText(2, bodyMd)
+                    stmt.bindLong(3, now)
+                    stmt.bindText(4, hash)
+                    stmt.bindText(5, id)
+                    stmt.step()
+                }
             }
             // Nothing to capture when the content address did not move:
             // §1.4's "newRevision is idempotent when content is unchanged".
-            if (citable && hash != existing.contentHash) {
+            if (hash != existing.contentHash) {
                 captureRevision(id, existing.kind, bodyMd, existing.frontmatter, hash, now, RevisionReason.INGEST)
             }
             // documents_au_ingest (001_initial.sql) enqueues ingest_queue
             // automatically when body_md/title actually change — no manual
             // enqueue here.
             publish(TableChange.Documents(id))
-            existing.copy(title = title, bodyMd = bodyMd, updatedAt = now, contentHash = hash)
+            existing.copy(title = title ?: existing.title, bodyMd = bodyMd, updatedAt = now, contentHash = hash)
         }
+
+    override suspend fun renameDocument(
+        id: DocId,
+        title: String,
+        ifTitleIs: String?,
+    ): Document? {
+        val newTitle = DocumentTitles.normalize(title)
+        return writeTx {
+            val existing = requireDocument(id)
+            when {
+                ifTitleIs != null && existing.title != ifTitleIs -> null
+                existing.title == newTitle -> existing
+                else -> {
+                    writer.prepare(VaultSql.UPDATE_DOCUMENT_TITLE).use { stmt ->
+                        stmt.bindText(1, newTitle)
+                        stmt.bindText(2, id)
+                        stmt.step()
+                    }
+                    detachEdges(id, existing.title, deleting = false)
+                    requeueTitleSurvivor(existing.title, id)
+                    // The ingest trigger re-queues at the unchanged
+                    // `updated_at`, which can equal the `queued_at` of an
+                    // ingest already in flight; that ingest's completeIngest
+                    // would then drop the post-rename entry (spec N9).
+                    if (existing.kind != DocumentKind.ATTACHMENT) requeue(id)
+                    publish(TableChange.Documents(id))
+                    publish(TableChange.IngestQueue)
+                    existing.copy(title = newTitle)
+                }
+            }
+        }
+    }
 
     override suspend fun updateFrontmatter(
         id: DocId,
@@ -394,7 +453,7 @@ public class VaultRepositoryImpl(
             // active), so it sees the row just inserted above.
             val transcript = renderTranscript(listMessages(chatDocId))
             val hash = RevisionHashing.compute(transcript, chat.frontmatter)
-            writer.prepare(VaultSql.UPDATE_CHAT_BODY).use { stmt ->
+            writer.prepare(VaultSql.UPDATE_BODY).use { stmt ->
                 stmt.bindText(1, transcript)
                 stmt.bindLong(2, now)
                 stmt.bindText(3, hash)
@@ -814,6 +873,18 @@ public class VaultRepositoryImpl(
             stmt.bindLong(1, clock())
             stmt.bindText(2, title)
             stmt.bindText(3, exceptId)
+            stmt.step()
+        }
+    }
+
+    /**
+     * Queues [id] for ingest at `queued_at` = now (reason `updated`, attempts
+     * reset), for a write the ingest trigger does not see or sees too late.
+     */
+    private fun requeue(id: DocId) {
+        writer.prepare(VaultSql.REQUEUE_DOCUMENT).use { stmt ->
+            stmt.bindText(1, id)
+            stmt.bindLong(2, clock())
             stmt.step()
         }
     }

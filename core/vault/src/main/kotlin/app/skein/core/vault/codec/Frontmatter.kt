@@ -17,6 +17,7 @@
 
 package app.skein.core.vault.codec
 
+import app.skein.core.model.Document
 import app.skein.core.model.FrontmatterKeys
 import kotlinx.serialization.json.JsonArray
 import kotlinx.serialization.json.JsonElement
@@ -89,6 +90,19 @@ public object Frontmatter {
             append(body)
         }
     }
+
+    /**
+     * [render] for a whole document at an outbound serialization boundary —
+     * Markdown export and a SAF read. The `title` key is rendered from
+     * `documents.title`, the document's name, whatever the stored frontmatter
+     * holds: a rename never rewrites that key, because the frontmatter is part
+     * of the revision hash (`docs/ux/OBJECT_LIFECYCLE_SPEC.md` §3.1, N8).
+     */
+    public fun renderDocument(document: Document): String =
+        render(
+            JsonObject(document.frontmatter + (FrontmatterKeys.TITLE to JsonPrimitive(document.title))),
+            document.bodyMd.orEmpty(),
+        )
 
     // -------------------------------------------------------------------
     // parse internals

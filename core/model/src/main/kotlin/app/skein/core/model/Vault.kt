@@ -121,6 +121,30 @@ public data class NewDocument(
     val id: DocId? = null,
 )
 
+/**
+ * The title rules (`docs/ux/OBJECT_LIFECYCLE_SPEC.md` §3.1 rule 4) that
+ * [VaultRepository.renameDocument] enforces. Titles are not unique.
+ */
+public object DocumentTitles {
+    public const val MAX_LENGTH: Int = 200
+
+    private val LINE_BREAKS_AND_TABS: Regex = Regex("[\\r\\n\\t]+")
+
+    /**
+     * Runs of `\r`, `\n` or `\t` become one space, then the result is trimmed.
+     *
+     * @throws IllegalArgumentException when the result is blank or longer than
+     *   [MAX_LENGTH] characters. The message names the length, never the text.
+     */
+    public fun normalize(raw: String): String {
+        val title = raw.replace(LINE_BREAKS_AND_TABS, " ").trim()
+        require(title.isNotEmpty() && title.length <= MAX_LENGTH) {
+            "a title must be 1-$MAX_LENGTH characters once normalized, was ${title.length}"
+        }
+        return title
+    }
+}
+
 public data class DocumentHit(
     val document: Document,
     val snippet: String,
@@ -300,13 +324,68 @@ public interface VaultRepository {
     /**
      * Rewrites title/body, bumps `updated_at`, recomputes `content_hash`. DB trigger enqueues ingest.
      *
+     * For a caller that deliberately sets both. An editor saving a body uses
+     * [replaceBody], and a rename uses [renameDocument]: a title carried by a
+     * body save would revert a rename made elsewhere
+     * (`docs/ux/OBJECT_LIFECYCLE_SPEC.md` N7).
+     *
      * @throws NoSuchElementException when [id] has no row; nothing is written.
+     * @throws IllegalArgumentException for a `CHAT` (its body is the derived
+     *   transcript, written only by [appendMessage]) or an `ATTACHMENT` (no
+     *   body; its `content_hash` is the SHA-256 of its bytes).
      */
     public suspend fun updateBody(
         id: DocId,
         title: String,
         bodyMd: String,
     ): Document
+
+    /**
+     * [updateBody] without the title: rewrites [id]'s body only, bumps
+     * `updated_at`, recomputes `content_hash` (capturing a revision when it
+     * moved) and re-queues ingest. The title is never written, so a late body
+     * save cannot revert a rename.
+     *
+     * @throws NoSuchElementException when [id] has no row; nothing is written.
+     * @throws IllegalArgumentException for a `CHAT` or an `ATTACHMENT`, as [updateBody].
+     */
+    public suspend fun replaceBody(
+        id: DocId,
+        bodyMd: String,
+    ): Document
+
+    /**
+     * Renames [id] (`docs/ux/OBJECT_LIFECYCLE_SPEC.md` §4.3, §6.3): the only
+     * write to `documents.title` after creation, and it writes nothing else.
+     *
+     * - [title] is normalized by [DocumentTitles.normalize].
+     * - `updated_at` (so Recent order), `body_md`, `content_hash`, revisions,
+     *   messages, citations and the frontmatter — its stale `title` key
+     *   included — are untouched. Serialization boundaries render `title`
+     *   from this column instead.
+     * - Resolved WIKILINK edges into [id] are detached to the old title's
+     *   unresolved sentinel, and the document that now answers the old title
+     *   is re-queued, as in [deleteDocument]. Edges keyed by id (CITE) stay.
+     * - [id] is re-queued for ingest with `queued_at` = now, so an ingest
+     *   already in flight cannot complete the new entry away; that ingest
+     *   attaches `[[new title]]` links.
+     * - [ifTitleIs] makes it a compare-and-set: when set and not exactly the
+     *   stored title, nothing is written and the result is null. A generated
+     *   title therefore never overwrites a user's rename.
+     * - A title that normalizes to the stored one writes nothing.
+     *
+     * Publishes a `Documents(id)` and an ingest-queue change after the commit.
+     *
+     * @return the renamed document, or null when [ifTitleIs] did not match.
+     * @throws NoSuchElementException when [id] has no row; nothing is written.
+     * @throws IllegalArgumentException when [title] breaks [DocumentTitles]'
+     *   rules; nothing is written.
+     */
+    public suspend fun renameDocument(
+        id: DocId,
+        title: String,
+        ifTitleIs: String? = null,
+    ): Document?
 
     /** @throws NoSuchElementException when [id] has no row; nothing is written. */
     public suspend fun updateFrontmatter(

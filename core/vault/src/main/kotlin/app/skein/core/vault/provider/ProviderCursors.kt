@@ -152,12 +152,12 @@ internal object ProviderCursors {
 
     /**
      * Byte length of exactly what `ExportServiceImpl.exportMarkdown` streams
-     * for [document] (`Frontmatter.render(frontmatter, body)` as UTF-8) —
+     * for [document] (`Frontmatter.renderDocument` as UTF-8) —
      * `VaultDocumentsBackendTest` pins the two together.
      */
     fun markdownSize(document: Document): Long =
         Frontmatter
-            .render(document.frontmatter, document.bodyMd.orEmpty())
+            .renderDocument(document)
             .toByteArray(Charsets.UTF_8)
             .size
             .toLong()

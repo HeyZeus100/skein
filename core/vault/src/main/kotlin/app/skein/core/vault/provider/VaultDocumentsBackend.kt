@@ -24,21 +24,21 @@
 //
 // Write path (`NOTE` kind only): the bytes a client wrote are decoded as
 // UTF-8 (BOM stripped, CRLF normalised to the vault's LF), split by
-// `Frontmatter.parse`, and persisted via `updateBody` (title from the
-// written `title:` key, else the existing title) followed by
-// `updateFrontmatter` when a frontmatter block was present. The
-// repository's own ingest trigger (`documents_au_ingest`, or the fake's
-// explicit enqueue) covers bd's "enqueues ingest". The two calls are
-// sequential rather than wrapped in `VaultRepository.transaction`: the
-// `:testing` fake's `transaction` holds a non-reentrant `Mutex` that
-// `updateBody` also takes, and a note written by an external editor is
-// consistent after either step alone.
+// `Frontmatter.parse`, and persisted in one `VaultRepository.transaction`:
+// `renameDocument` when the written `title:` key names something other than
+// the stored title (OBJECT_LIFECYCLE_SPEC.md §6.3 — an external rename gets
+// the same edge treatment as an in-app one; the read path renders that key
+// from `documents.title`, so a round trip never reverts a rename), then
+// `replaceBody`, then `updateFrontmatter` when a frontmatter block was
+// present. The repository's own ingest trigger (`documents_au_ingest`, or
+// the fake's explicit enqueue) covers bd's "enqueues ingest".
 
 package app.skein.core.vault.provider
 
 import app.skein.core.model.DocId
 import app.skein.core.model.Document
 import app.skein.core.model.DocumentKind
+import app.skein.core.model.DocumentTitles
 import app.skein.core.model.ExportService
 import app.skein.core.model.FrontmatterKeys
 import app.skein.core.model.TimelineFilter
@@ -182,9 +182,12 @@ internal class VaultDocumentsBackend(
             throw UnsupportedOperationException("only NOTE documents are writable; ${existing.kind} is read-only")
         }
         val (frontmatter, body) = Frontmatter.parse(decodeNoteText(bytes))
-        val title = frontmatterTitle(frontmatter) ?: existing.title
-        val updated = repository.updateBody(id.docId, title, body)
-        return if (frontmatter.isEmpty()) updated else repository.updateFrontmatter(id.docId, frontmatter)
+        return repository.transaction {
+            val title = frontmatterTitle(frontmatter)
+            if (title != null && title != existing.title) repository.renameDocument(id.docId, title)
+            val updated = repository.replaceBody(id.docId, body)
+            if (frontmatter.isEmpty()) updated else repository.updateFrontmatter(id.docId, frontmatter)
+        }
     }
 
     // ---- internals -----------------------------------------------------------------
@@ -236,10 +239,16 @@ internal class VaultDocumentsBackend(
             .removePrefix(UTF8_BOM)
             .replace("\r\n", "\n")
 
+    /**
+     * The written `title:` as a name [DocumentTitles] accepts, or null — no
+     * key, a multi-line (opaque) value, or one the rules reject (blank, over
+     * the length limit) — in which case the stored title stays.
+     */
     private fun frontmatterTitle(frontmatter: Map<String, Any?>): String? =
         (frontmatter[FrontmatterKeys.TITLE] as? JsonPrimitive)
             ?.content
-            ?.takeIf { it.isNotBlank() && '\n' !in it }
+            ?.takeIf { '\n' !in it }
+            ?.let { runCatching { DocumentTitles.normalize(it) }.getOrNull() }
 
     companion object {
         /** The exact message the plan specifies for every locked-vault refusal. */

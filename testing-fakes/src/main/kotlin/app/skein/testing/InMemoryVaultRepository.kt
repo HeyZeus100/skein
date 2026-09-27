@@ -38,6 +38,7 @@ import app.skein.core.model.Document
 import app.skein.core.model.DocumentHit
 import app.skein.core.model.DocumentKind
 import app.skein.core.model.DocumentRevision
+import app.skein.core.model.DocumentTitles
 import app.skein.core.model.IngestItem
 import app.skein.core.model.IngestReason
 import app.skein.core.model.Message
@@ -178,16 +179,29 @@ public class InMemoryVaultRepository(
         id: DocId,
         title: String,
         bodyMd: String,
+    ): Document = writeBody(id, title, bodyMd)
+
+    override suspend fun replaceBody(
+        id: DocId,
+        bodyMd: String,
+    ): Document = writeBody(id, title = null, bodyMd = bodyMd)
+
+    /** [updateBody] and, with a null [title], [replaceBody] — as `VaultRepositoryImpl.writeBody`. */
+    private suspend fun writeBody(
+        id: DocId,
+        title: String?,
+        bodyMd: String,
     ): Document =
         writeTx {
             val existing = requireDocument(id)
+            require(existing.kind != DocumentKind.CHAT && existing.kind != DocumentKind.ATTACHMENT) {
+                "the body of a ${existing.kind} document is not writable"
+            }
             val now = clock()
-            val citable = existing.kind != DocumentKind.ATTACHMENT
-            val hash =
-                if (citable) RevisionHashing.compute(bodyMd, existing.frontmatter) else sha256Hex(bodyMd)
+            val hash = RevisionHashing.compute(bodyMd, existing.frontmatter)
             val updated =
                 existing.copy(
-                    title = title,
+                    title = title ?: existing.title,
                     bodyMd = bodyMd,
                     updatedAt = now,
                     contentHash = hash,
@@ -195,20 +209,41 @@ public class InMemoryVaultRepository(
             documents[id] = updated
             // Nothing to capture when the content address did not move:
             // §1.4's "newRevision is idempotent when content is unchanged".
-            if (citable && hash != existing.contentHash) {
+            if (hash != existing.contentHash) {
                 captureRevision(id, existing.kind, bodyMd, existing.frontmatter, hash, now)
             }
-            if (existing.kind != DocumentKind.ATTACHMENT) {
-                ingestQueue[id] =
-                    IngestItem(
-                        docId = id,
-                        reason = IngestReason.UPDATED,
-                        queuedAt = now,
-                    )
-            }
+            ingestQueue[id] = IngestItem(docId = id, reason = IngestReason.UPDATED, queuedAt = now)
             emitChange()
             updated
         }
+
+    override suspend fun renameDocument(
+        id: DocId,
+        title: String,
+        ifTitleIs: String?,
+    ): Document? {
+        val newTitle = DocumentTitles.normalize(title)
+        return writeTx {
+            val existing = requireDocument(id)
+            when {
+                ifTitleIs != null && existing.title != ifTitleIs -> null
+                existing.title == newTitle -> existing
+                else -> {
+                    val renamed = existing.copy(title = newTitle)
+                    documents[id] = renamed
+                    index?.let { linked ->
+                        afterCommit { linked.detachEdges(id, unresolvedTarget(existing.title), deleting = false) }
+                    }
+                    requeueTitleSurvivor(existing.title, id)
+                    if (existing.kind != DocumentKind.ATTACHMENT) {
+                        ingestQueue[id] = IngestItem(docId = id, reason = IngestReason.UPDATED, queuedAt = clock())
+                    }
+                    emitChange()
+                    renamed
+                }
+            }
+        }
+    }
 
     override suspend fun updateFrontmatter(
         id: DocId,

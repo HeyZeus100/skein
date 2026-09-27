@@ -150,7 +150,7 @@ public class ProviderCursorsTest {
     public fun `markdown row size equals the rendered frontmatter plus body byte count`() {
         val expected =
             Frontmatter
-                .render(note.frontmatter, note.bodyMd!!)
+                .renderDocument(note)
                 .toByteArray(Charsets.UTF_8)
                 .size
                 .toLong()
