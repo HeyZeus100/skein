@@ -29,17 +29,34 @@ internal class DraftNoteRepository(
     override suspend fun getDocument(id: DocId): Document? =
         vault.getDocument(id) ?: if (id == draftId) empty() else null
 
-    override suspend fun updateBody(
+    // The editor saves a title through renameDocument and a body through
+    // replaceBody (skein-cash LC-05); either one's first non-blank write creates the row.
+    override suspend fun renameDocument(
         id: DocId,
         title: String,
-        bodyMd: String,
-    ): Document {
-        if (id != draftId) return vault.updateBody(id, title, bodyMd)
+        ifTitleIs: String?,
+    ): Document? {
+        if (id != draftId) return vault.renameDocument(id, title, ifTitleIs)
         return creating.withLock {
             when {
-                vault.getDocument(id) != null -> vault.updateBody(id, title, bodyMd)
-                title.isBlank() && bodyMd.isBlank() -> empty()
-                else -> vault.createDocument(NewDocument(DocumentKind.NOTE, title, bodyMd, id = id))
+                vault.getDocument(id) != null -> vault.renameDocument(id, title, ifTitleIs)
+                !ifTitleIs.isNullOrEmpty() -> null
+                title.isBlank() -> empty()
+                else -> vault.createDocument(NewDocument(DocumentKind.NOTE, title, "", id = id))
+            }
+        }
+    }
+
+    override suspend fun replaceBody(
+        id: DocId,
+        bodyMd: String,
+    ): Document {
+        if (id != draftId) return vault.replaceBody(id, bodyMd)
+        return creating.withLock {
+            when {
+                vault.getDocument(id) != null -> vault.replaceBody(id, bodyMd)
+                bodyMd.isBlank() -> empty()
+                else -> vault.createDocument(NewDocument(DocumentKind.NOTE, "", bodyMd, id = id))
             }
         }
     }
