@@ -143,10 +143,14 @@ public class IndexStoreImplAcceptanceTest {
     @Test
     public fun replaceEdgesWithWIKILINKDoesNotTouchENTITYEdgesOfTheSameSource(): Unit =
         runTest {
-            val idx = freshIndex()
+            val (idx, conn) = freshIndexWithConnection()
             val src = "01924a4b-4d29-7000-8000-00000000E001"
             val dstNote = "01924a4b-4d29-7000-8000-00000000E002"
             val dstEntity = "entity:1"
+            // OBJECT_LIFECYCLE_SPEC.md LC-06: an edge write from a document
+            // with no `documents` row is skipped, so the source must exist —
+            // as it always does for EntityIndexer, which writes from `document.id`.
+            seedDocument(conn, src)
 
             // Seed one WIKILINK and one ENTITY edge from the same source.
             idx.replaceEdges(
@@ -278,8 +282,6 @@ public class IndexStoreImplAcceptanceTest {
                 stmt.step()
             }
     }
-
-    private fun freshIndex(): IndexStoreImpl = freshIndexWithConnection().first
 
     private fun freshIndexWithConnection(): Pair<IndexStoreImpl, SkeinSQLiteConnection> {
         val driver = SkeinSQLiteDriver()
