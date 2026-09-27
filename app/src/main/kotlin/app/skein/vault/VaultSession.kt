@@ -56,11 +56,19 @@ class VaultSession(
 ) {
     private val closed = AtomicBoolean(false)
 
-    /** Releases the connections behind this session. Idempotent. */
+    /**
+     * Stops write admission and drains the repository within its bound, then
+     * releases connections even if drain times out. Quiesce remains outside
+     * the device release's NonCancellable region (SEC-D7 M8).
+     */
     suspend fun close() {
         if (!closed.compareAndSet(false, true)) return
         try {
-            release()
+            try {
+                repository.quiesce()
+            } finally {
+                release()
+            }
         } catch (e: CancellationException) {
             closed.set(false)
             throw e

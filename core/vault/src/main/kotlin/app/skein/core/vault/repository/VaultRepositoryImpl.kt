@@ -87,6 +87,8 @@ import app.skein.core.model.RevisionReason
 import app.skein.core.model.Role
 import app.skein.core.model.SkeinLog
 import app.skein.core.model.TimelineFilter
+import app.skein.core.model.VaultQuiesceTimeoutException
+import app.skein.core.model.VaultQuiescedException
 import app.skein.core.model.VaultRepository
 import app.skein.core.vault.blob.AttachmentStore
 import app.skein.core.vault.export.stage.ExportStageRepository
@@ -98,6 +100,8 @@ import app.skein.core.vault.index.FtsQuerySanitizer
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.ensureActive
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.filter
@@ -106,6 +110,7 @@ import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
 import kotlinx.coroutines.withContext
+import kotlinx.coroutines.withTimeoutOrNull
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.JsonArray
 import kotlinx.serialization.json.JsonObject
@@ -134,6 +139,9 @@ public class VaultRepositoryImpl(
     ExportStageRepository,
     AutoCloseable {
     private val writerMutex: Mutex = Mutex()
+    private val admissionLock = Any()
+    private var acceptingWrites = true
+    private var activeWriter: Job? = null
     private val readerSlots: List<ReaderSlot> = readers.map { ReaderSlot(it) }
     private val nextReaderIndex: AtomicInteger = AtomicInteger(0)
     private val changeBus: ChangeBus = ChangeBus()
@@ -981,7 +989,39 @@ public class VaultRepositoryImpl(
 
     override suspend fun <T> transaction(block: suspend () -> T): T = writeTx(block)
 
+    override suspend fun quiesce(timeoutMillis: Long) {
+        check(coroutineContext[TxContext.Key]?.owner !== this) { "cannot quiesce inside a write transaction" }
+        synchronized(admissionLock) { acceptingWrites = false }
+        var drained = false
+        try {
+            coroutineContext.ensureActive()
+            if (writerMutex.tryLock()) {
+                drained = true
+                writerMutex.unlock()
+                return
+            }
+            drained = withTimeoutOrNull(timeoutMillis.coerceIn(0L, 500L)) { writerMutex.withLock { true } } == true
+            if (!drained) throw VaultQuiesceTimeoutException()
+        } finally {
+            if (!drained) cancelWriter()
+        }
+    }
+
+    private fun cancelWriter() {
+        synchronized(admissionLock) {
+            acceptingWrites = false
+            activeWriter?.cancel(CancellationException("vault is closing"))
+        }
+    }
+
+    private fun checkWriteAdmission() {
+        synchronized(admissionLock) {
+            if (!acceptingWrites) throw VaultQuiescedException()
+        }
+    }
+
     override fun close() {
+        cancelWriter()
         writer.close()
         for (slot in readerSlots) slot.connection.close()
     }
@@ -1007,28 +1047,41 @@ public class VaultRepositoryImpl(
      * the commit already happened, and the unlock sweeps collect what is left.
      */
     private suspend fun <T> writeTx(block: suspend () -> T): T {
+        coroutineContext.ensureActive()
         val ambient = coroutineContext[TxContext.Key]
-        if (ambient != null) return block()
-        val tx = TxContext()
+        if (ambient?.owner === this) return block()
+        checkWriteAdmission()
+        val tx = TxContext(this)
         return withContext(io + tx) {
             writerMutex.withLock {
-                writer.prepare(VaultSql.BEGIN_IMMEDIATE).use { it.step() }
-                val result =
-                    try {
-                        block().also { writer.prepare(VaultSql.COMMIT).use { it.step() } }
-                    } catch (t: Throwable) {
-                        runCatching { writer.prepare(VaultSql.ROLLBACK).use { it.step() } }
-                        throw t
-                    }
-                for (change in tx.pending) changeBus.emit(change)
-                for (action in tx.afterCommit) {
-                    try {
-                        action()
-                    } catch (e: Exception) {
-                        SkeinLog.w(TAG, "after-commit action failed: ${e.javaClass.simpleName}")
-                    }
+                synchronized(admissionLock) {
+                    if (!acceptingWrites) throw VaultQuiescedException()
+                    activeWriter = coroutineContext[Job]
                 }
-                result
+                try {
+                    writer.prepare(VaultSql.BEGIN_IMMEDIATE).use { it.step() }
+                    val result =
+                        try {
+                            block().also {
+                                coroutineContext.ensureActive()
+                                writer.prepare(VaultSql.COMMIT).use { it.step() }
+                            }
+                        } catch (t: Throwable) {
+                            runCatching { writer.prepare(VaultSql.ROLLBACK).use { it.step() } }
+                            throw t
+                        }
+                    for (change in tx.pending) changeBus.emit(change)
+                    for (action in tx.afterCommit) {
+                        try {
+                            action()
+                        } catch (e: Exception) {
+                            SkeinLog.w(TAG, "after-commit action failed: ${e.javaClass.simpleName}")
+                        }
+                    }
+                    result
+                } finally {
+                    synchronized(admissionLock) { activeWriter = null }
+                }
             }
         }
     }
@@ -1047,7 +1100,7 @@ public class VaultRepositoryImpl(
      * [writerMutex] when no reader connections were supplied.
      */
     private suspend fun <T> withReader(block: (SQLiteConnection) -> T): T {
-        if (coroutineContext[TxContext.Key] != null) return block(writer)
+        if (coroutineContext[TxContext.Key]?.owner === this) return block(writer)
         if (readerSlots.isEmpty()) {
             return withContext(io) { writerMutex.withLock { block(writer) } }
         }
@@ -1233,7 +1286,9 @@ public class VaultRepositoryImpl(
     }
 
     /** Coroutine-context marker for an in-flight [writeTx]/[transaction]: makes nested writes and reads reentrant. */
-    private class TxContext : AbstractCoroutineContextElement(Key) {
+    private class TxContext(
+        val owner: VaultRepositoryImpl,
+    ) : AbstractCoroutineContextElement(Key) {
         val pending: MutableList<TableChange> = mutableListOf()
         val afterCommit: MutableList<suspend () -> Unit> = mutableListOf()
 

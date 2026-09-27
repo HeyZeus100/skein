@@ -19,6 +19,9 @@ import androidx.test.core.app.ApplicationProvider
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import app.skein.MainActivity
 import app.skein.core.model.AuthorizationToken
+import app.skein.core.model.DocumentKind
+import app.skein.core.model.NewDocument
+import app.skein.core.model.VaultQuiescedException
 import app.skein.core.vault.key.RewrapResult
 import app.skein.core.vault.key.SetupResult
 import app.skein.core.vault.key.UnlockResult
@@ -27,13 +30,19 @@ import app.skein.core.vault.lifecycle.VaultPaths
 import app.skein.core.vault.provider.VaultDocumentsProvider
 import app.skein.core.vault.session.LockReason
 import app.skein.core.vault.session.UnlockManager
+import kotlinx.coroutines.CompletableDeferred
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
+import kotlinx.coroutines.async
+import kotlinx.coroutines.awaitCancellation
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.runBlocking
 import org.junit.After
 import org.junit.Assert.assertEquals
+import org.junit.Assert.assertNotNull
+import org.junit.Assert.assertNull
+import org.junit.Assert.assertTrue
 import org.junit.Test
 import org.junit.runner.RunWith
 import java.io.File
@@ -185,6 +194,43 @@ class VaultBootstrapInstrumentedTest {
         unlockAndBringUp()
 
         assertEquals(1, rootCount())
+    }
+
+    @Test
+    fun timed_out_write_rolls_back_before_a_fresh_session_reopens_the_vault() {
+        unlockAndBringUp()
+        val old = checkNotNull(bootstrap.session.value).repository
+        val entered = CompletableDeferred<String>()
+        val saved =
+            runBlocking {
+                old.createDocument(NewDocument(kind = DocumentKind.NOTE, title = "committed", bodyMd = "kept"))
+            }
+        runBlocking {
+            val writing =
+                async(Dispatchers.IO) {
+                    old.transaction {
+                        val pending =
+                            old.createDocument(
+                                NewDocument(kind = DocumentKind.NOTE, title = "pending", bodyMd = "discard"),
+                            )
+                        entered.complete(pending.id)
+                        awaitCancellation()
+                    }
+                }
+            entered.await()
+            manager.lockAndAwait(LockReason.USER_REQUESTED)
+            writing.join()
+            assertTrue(writing.isCancelled)
+            assertNull(keyProvider.currentKey())
+            assertTrue(runCatching { old.transaction { } }.exceptionOrNull() is VaultQuiescedException)
+        }
+        unlockAndBringUp()
+        runBlocking {
+            val fresh = checkNotNull(bootstrap.session.value).repository
+            assertNotNull(fresh.getDocument(saved.id))
+            assertNull(fresh.getDocument(entered.await()))
+            fresh.createDocument(NewDocument(kind = DocumentKind.NOTE, title = "after reopen", bodyMd = null))
+        }
     }
 
     private companion object {

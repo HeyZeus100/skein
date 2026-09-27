@@ -298,6 +298,12 @@ public data class CitationRecord(
 // VaultRepository (plan §4.2)
 // -----------------------------------------------------------------------------
 
+/** A write reached a repository whose session is permanently closing. Contains no vault data. */
+public class VaultQuiescedException : IllegalStateException("vault is closing")
+
+/** Bounded writer drain expired; teardown must force-close and use its FORCE_TIMEOUT path. */
+public class VaultQuiesceTimeoutException : IllegalStateException("vault writer drain timed out")
+
 /**
  * Aggregate contract over the vault DB. Concrete implementations:
  *   • `app.skein.testing.InMemoryVaultRepository` (this milestone) —
@@ -316,6 +322,22 @@ public data class CitationRecord(
  * document back.
  */
 public interface VaultRepository {
+    /**
+     * Permanently refuses new write transactions, then waits for the admitted
+     * transaction (including nested calls) to finish. Queued writers are not
+     * admitted. Repeated calls are safe; a new session needs a new repository.
+     *
+     * The wait is cancellable and capped at 500 ms, or [timeoutMillis] when
+     * shorter (nonpositive means no wait). Timeout throws the content-free
+     * [VaultQuiesceTimeoutException]; cancellation propagates. Both cancel the
+     * admitted transaction and leave admission closed. They do not claim the
+     * writer drained: the owner must force-close in a finally block, without
+     * extending its key-lifetime deadline. Coroutine cancellation cannot
+     * preempt blocking native calls; physical close still needs device
+     * verification. Never call this from inside this repository's transaction.
+     */
+    public suspend fun quiesce(timeoutMillis: Long = 500L)
+
     // ---- documents ----
     public suspend fun createDocument(new: NewDocument): Document
 

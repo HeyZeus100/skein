@@ -150,8 +150,10 @@ class DeviceVaultOpener(
                     exportStages = repository,
                     models = models,
                 ) {
-                    // Closing must run to completion even when the lock
-                    // observer budget cancels the caller.
+                    // VaultSession quiesces the repository BEFORE entering
+                    // this NonCancellable release, under the teardown budget.
+                    // A timed-out drain closes admission, cancels the admitted
+                    // writer and still reaches this forced pool close.
                     //
                     // skein-1bx4 — `lifecycle.close()` runs FIRST, not last.
                     // It checkpoints the WAL with TRUNCATE against the pool's

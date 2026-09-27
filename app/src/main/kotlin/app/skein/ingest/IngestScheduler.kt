@@ -19,16 +19,16 @@
 //     lives only as long as the session.
 //   • Cancel before the vault closes. This is a HIGH-priority `LockObserver`:
 //     `UnlockManager` runs HIGH observers before LOW ones, and
-//     `VaultBootstrap`'s session-closing observer is LOW, so the unique
+//     `VaultBootstrap`'s session-closing observer is TEARDOWN, so the unique
 //     work is cancelled (and the worker's coroutine with it) before the
 //     connections go away and before the key is zeroed. Verified by
 //     `IngestSchedulerTest`'s ordering assertion.
 //   • Epoch-bound runs. `runPending(sessionEpoch)` refuses unless the vault
 //     is `Unlocked` under exactly that epoch and a session is open; the
 //     pipeline's pace callback re-checks both before every document, so a
-//     lock landing mid-batch stops the pass at the next document boundary
-//     (`IngestPace.LOCKED`) even if the WorkManager cancel is still in
-//     flight.
+//     lock landing mid-batch stops at the next document boundary. If write
+//     admission closes during the current document, the pipeline reports
+//     Locked immediately and retains its queue row for the next unlock.
 //   • The idle timer is never touched (`UnlockManager.poke` is not called
 //     here): background ingest must not keep the vault open past the
 //     user's own inactivity timeout.
@@ -60,6 +60,7 @@ package app.skein.ingest
 
 import app.skein.core.model.SkeinLog
 import app.skein.core.model.TimelineFilter
+import app.skein.core.model.VaultQuiescedException
 import app.skein.core.model.VaultRepository
 import app.skein.core.rag.ingest.IngestOutcome
 import app.skein.core.rag.ingest.IngestPace
@@ -157,7 +158,11 @@ class IngestScheduler(
         runMutex.withLock {
             val open = session.value
             if (open == null || !authorized(sessionEpoch)) return@withLock IngestOutcome.Locked(0, 0)
-            sweepRevisionsOnceForEpoch(sessionEpoch, open.repository)
+            try {
+                sweepRevisionsOnceForEpoch(sessionEpoch, open.repository)
+            } catch (_: VaultQuiescedException) {
+                return@withLock IngestOutcome.Locked(0, 0)
+            }
             val pipeline =
                 pipelines(open) {
                     if (session.value !== open || !authorized(sessionEpoch)) IngestPace.LOCKED else pacer.pace()

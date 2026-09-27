@@ -7,6 +7,7 @@ import app.skein.core.model.DocumentKind
 import app.skein.core.model.Edge
 import app.skein.core.model.EdgeKind
 import app.skein.core.model.NewDocument
+import app.skein.core.model.VaultQuiescedException
 import app.skein.core.rag.chunk.Chunker
 import app.skein.core.rag.ingest.IngestOutcome
 import app.skein.core.rag.ingest.IngestPace
@@ -104,7 +105,8 @@ class IngestSchedulerTest {
         val keyProvider = ScriptedVaultKeyProvider(events)
         val manager = UnlockManager(keyProvider = keyProvider, scope = null, installShutdownHook = false)
         val index = InMemoryIndexStore()
-        val repository = InMemoryVaultRepository(index = index)
+        var repository = InMemoryVaultRepository(index = index)
+        private var openedOnce = false
         val scope = CoroutineScope(SupervisorJob() + Dispatchers.Default)
         val pacer = ScriptedPacer()
 
@@ -115,6 +117,8 @@ class IngestSchedulerTest {
             VaultBootstrap(
                 unlockManager = manager,
                 openVault = {
+                    if (openedOnce) repository = repository.openNextSession()
+                    openedOnce = true
                     VaultSession(
                         repository = repository,
                         indexStore = index,
@@ -234,9 +238,9 @@ class IngestSchedulerTest {
         }
 
     @Test
-    fun `a document change while locked enqueues nothing`() =
+    fun `a refused document write while locked enqueues nothing`() =
         runBlocking {
-            // Invariant I2 (LOCK_POLICY_INDEXING.md §6.1): queue rows accumulate, no work runs.
+            // No write can be admitted after teardown; no work is enqueued.
             val h = harness()
             h.unlock()
             h.bringUp()
@@ -244,11 +248,13 @@ class IngestSchedulerTest {
             h.lock()
             h.events.clear()
 
-            h.note("Written while locked", "Body.")
+            assertTrue(
+                runCatching { h.note("Written while locked", "Body.") }.exceptionOrNull() is VaultQuiescedException,
+            )
             delay(300L)
 
             assertEquals(emptyList<String>(), h.events.filter { it.startsWith("enqueue(") })
-            assertEquals(1, h.repository.peekIngestQueue().size)
+            assertEquals(0, h.repository.peekIngestQueue().size)
         }
 
     @Test
@@ -362,7 +368,7 @@ class IngestSchedulerTest {
         }
 
     @Test
-    fun `a lock landing mid-batch stops the pass at the next document boundary`() =
+    fun `a lock landing mid-document leaves its queue entry for the next session`() =
         runBlocking {
             // Arrange — three queued notes; the first document's link step locks the vault.
             val h = harness()
@@ -378,9 +384,10 @@ class IngestSchedulerTest {
             }
             // Act
             val outcome = h.scheduler.runPending(h.epoch())
-            // Assert — one document finished, the other two stay queued for the next session.
-            assertEquals(IngestOutcome.Locked(1, 1), outcome)
-            assertEquals(2, h.repository.peekIngestQueue().size)
+            // The current document cannot complete bookkeeping after lock;
+            // all three queue entries survive for the next unlocked session.
+            assertEquals(IngestOutcome.Locked(0, 0), outcome)
+            assertEquals(3, h.repository.peekIngestQueue().size)
         }
 
     // ---- documentRevisions_gc sweep (skein-a2yr, POST_REVIEW_RESOLUTIONS.md §1.2 step 4) ----

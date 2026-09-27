@@ -50,7 +50,12 @@ import app.skein.core.model.RevisionHash
 import app.skein.core.model.RevisionHashing
 import app.skein.core.model.RevisionReason
 import app.skein.core.model.TimelineFilter
+import app.skein.core.model.VaultQuiesceTimeoutException
+import app.skein.core.model.VaultQuiescedException
 import app.skein.core.model.VaultRepository
+import kotlinx.coroutines.CancellationException
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.ensureActive
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -63,6 +68,7 @@ import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
 import kotlinx.coroutines.withContext
+import kotlinx.coroutines.withTimeoutOrNull
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.JsonObject
 import kotlinx.serialization.json.JsonPrimitive
@@ -94,6 +100,9 @@ public class InMemoryVaultRepository(
     private val index: InMemoryIndexStore? = null,
 ) : VaultRepository {
     private val writeLock: Mutex = Mutex()
+    private val admissionLock = Any()
+    private var acceptingWrites = true
+    private var activeWriter: Job? = null
 
     // Order preservation via LinkedHashMap; iteration order is insertion
     // order, which we don't rely on (queries sort by updated_at).
@@ -179,7 +188,7 @@ public class InMemoryVaultRepository(
 
     override suspend fun kindsOf(ids: Set<DocId>): Map<DocId, DocumentKind> {
         fun lookup(): Map<DocId, DocumentKind> = ids.mapNotNull { id -> documents[id]?.let { id to it.kind } }.toMap()
-        return if (coroutineContext[FakeTx] != null) lookup() else writeLock.withLock { lookup() }
+        return if (coroutineContext[FakeTx]?.owner === this) lookup() else writeLock.withLock { lookup() }
     }
 
     override suspend fun updateBody(
@@ -645,7 +654,7 @@ public class InMemoryVaultRepository(
      * outermost `transaction` start (the fake's rollback). The change tick and
      * after-commit actions run once, after [block] returns.
      */
-    override suspend fun <T> transaction(block: suspend () -> T): T = writeTx(rollback = true, block = block)
+    override suspend fun <T> transaction(block: suspend () -> T): T = writeTx(block = block)
 
     // ------------------------------------------------------------------
     // Test-only accessors (used by contract tests that need to peek at
@@ -678,34 +687,71 @@ public class InMemoryVaultRepository(
     }
 
     /**
-     * The fake's write transaction. A call nested in an open write (see
-     * [FakeTx]) runs [block] directly; the outermost call holds [writeLock]
-     * and, on success, runs the queued after-commit actions (failures
-     * swallowed, as on the real driver) and emits one change tick. With
-     * [rollback], a throw first restores the maps. Single write methods skip
-     * the snapshot: each validates before it mutates, so it is atomic already.
+     * Test counterpart of reopening the same vault file: copies persisted
+     * state into a fresh session, never re-enables this instance's gate.
+     * The index and attachment stores model the same durable backing stores.
      */
-    private suspend fun <T> writeTx(
-        rollback: Boolean = false,
-        block: suspend () -> T,
-    ): T {
-        if (coroutineContext[FakeTx] != null) return block()
-        return writeLock.withLock {
-            val tx = FakeTx()
-            val snapshot = if (rollback) snapshot() else null
-            val result =
-                try {
-                    withContext(tx) { block() }
-                } catch (t: Throwable) {
-                    snapshot?.let(::restore)
-                    throw t
-                }
-            for (action in tx.afterCommit) runCatching { action() }
-            if (tx.changed) {
-                changeBus.tryEmit(Unit)
-                ready.value = Unit
+    public suspend fun openNextSession(): InMemoryVaultRepository =
+        writeLock.withLock {
+            synchronized(admissionLock) { check(!acceptingWrites) { "previous session is still open" } }
+            val persisted = snapshot()
+            index?.prepareNextSession(this)
+            InMemoryVaultRepository(clock, attachments, index).also { it.restore(persisted) }
+        }
+
+    override suspend fun quiesce(timeoutMillis: Long) {
+        check(coroutineContext[FakeTx]?.owner !== this) { "cannot quiesce inside a write transaction" }
+        synchronized(admissionLock) { acceptingWrites = false }
+        var drained = false
+        try {
+            coroutineContext.ensureActive()
+            if (writeLock.tryLock()) {
+                drained = true
+                writeLock.unlock()
+                return
             }
-            result
+            drained = withTimeoutOrNull(timeoutMillis.coerceIn(0L, 500L)) { writeLock.withLock { true } } == true
+            if (!drained) throw VaultQuiesceTimeoutException()
+        } finally {
+            if (!drained) {
+                synchronized(admissionLock) { activeWriter?.cancel(CancellationException("vault is closing")) }
+            }
+        }
+    }
+
+    /** Every write snapshots for cancellation-safe rollback, including a timeout during quiesce. */
+    private suspend fun <T> writeTx(block: suspend () -> T): T {
+        coroutineContext.ensureActive()
+        if (coroutineContext[FakeTx]?.owner === this) return block()
+        synchronized(admissionLock) {
+            if (!acceptingWrites) throw VaultQuiescedException()
+        }
+        return writeLock.withLock {
+            val tx = FakeTx(this)
+            withContext(tx) {
+                synchronized(admissionLock) {
+                    if (!acceptingWrites) throw VaultQuiescedException()
+                    activeWriter = coroutineContext[Job]
+                }
+                val snapshot = snapshot()
+                try {
+                    val result =
+                        try {
+                            block().also { coroutineContext.ensureActive() }
+                        } catch (t: Throwable) {
+                            restore(snapshot)
+                            throw t
+                        }
+                    for (action in tx.afterCommit) runCatching { action() }
+                    if (tx.changed) {
+                        changeBus.tryEmit(Unit)
+                        ready.value = Unit
+                    }
+                    result
+                } finally {
+                    synchronized(admissionLock) { activeWriter = null }
+                }
+            }
         }
     }
 
@@ -740,7 +786,9 @@ public class InMemoryVaultRepository(
     )
 
     /** Coroutine-context marker for an open [writeTx], like `VaultRepositoryImpl.TxContext`. */
-    private class FakeTx : AbstractCoroutineContextElement(Key) {
+    private class FakeTx(
+        val owner: InMemoryVaultRepository,
+    ) : AbstractCoroutineContextElement(Key) {
         var changed: Boolean = false
         val afterCommit: MutableList<suspend () -> Unit> = mutableListOf()
 

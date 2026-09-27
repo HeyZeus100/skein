@@ -73,6 +73,7 @@ import app.skein.core.model.DocId
 import app.skein.core.model.Document
 import app.skein.core.model.IngestItem
 import app.skein.core.model.SkeinLog
+import app.skein.core.model.VaultQuiescedException
 import app.skein.core.model.VaultRepository
 import app.skein.core.rag.chunk.Chunker
 import kotlinx.coroutines.CancellationException
@@ -181,42 +182,48 @@ public class IngestPipeline(
         var vectorsPending = 0
         val skipped = HashSet<DocId>()
 
-        while (true) {
-            checkpoint()
-            val batchSize =
-                when (pace()) {
-                    IngestPace.FULL -> FULL_BATCH
-                    IngestPace.REDUCED -> REDUCED_BATCH
-                    IngestPace.PAUSED -> return IngestOutcome.Paused(processed, vectorsPending)
-                    IngestPace.LOCKED -> return IngestOutcome.Locked(processed, vectorsPending)
-                }
-            // Over-fetch by the number of entries already skipped so a
-            // poisoned document at the head of the queue never hides the
-            // healthy ones behind it.
-            val batch =
-                repository
-                    .dequeueIngest(batchSize + skipped.size)
-                    .filter { it.docId !in skipped }
-                    .take(batchSize)
-            if (batch.isEmpty()) return IngestOutcome.Drained(processed, vectorsPending)
-
-            for (item in batch) {
+        try {
+            while (true) {
                 checkpoint()
-                when (pace()) {
-                    IngestPace.PAUSED -> return IngestOutcome.Paused(processed, vectorsPending)
-                    IngestPace.LOCKED -> return IngestOutcome.Locked(processed, vectorsPending)
-                    IngestPace.FULL, IngestPace.REDUCED -> Unit
-                }
-                when (val result = ingest(item)) {
-                    is DocumentResult.Indexed -> {
-                        processed++
-                        if (result.vectorsPending) vectorsPending++
-                        onProgress(processed)
+                val batchSize =
+                    when (pace()) {
+                        IngestPace.FULL -> FULL_BATCH
+                        IngestPace.REDUCED -> REDUCED_BATCH
+                        IngestPace.PAUSED -> return IngestOutcome.Paused(processed, vectorsPending)
+                        IngestPace.LOCKED -> return IngestOutcome.Locked(processed, vectorsPending)
                     }
-                    DocumentResult.Skipped, DocumentResult.Dropped -> Unit
-                    DocumentResult.Failed -> skipped += item.docId
+                // Over-fetch by the number of entries already skipped so a
+                // poisoned document at the head of the queue never hides the
+                // healthy ones behind it.
+                val batch =
+                    repository
+                        .dequeueIngest(batchSize + skipped.size)
+                        .filter { it.docId !in skipped }
+                        .take(batchSize)
+                if (batch.isEmpty()) return IngestOutcome.Drained(processed, vectorsPending)
+
+                for (item in batch) {
+                    checkpoint()
+                    when (pace()) {
+                        IngestPace.PAUSED -> return IngestOutcome.Paused(processed, vectorsPending)
+                        IngestPace.LOCKED -> return IngestOutcome.Locked(processed, vectorsPending)
+                        IngestPace.FULL, IngestPace.REDUCED -> Unit
+                    }
+                    when (val result = ingest(item)) {
+                        is DocumentResult.Indexed -> {
+                            processed++
+                            if (result.vectorsPending) vectorsPending++
+                            onProgress(processed)
+                        }
+                        DocumentResult.Skipped, DocumentResult.Dropped -> Unit
+                        DocumentResult.Failed -> skipped += item.docId
+                    }
                 }
             }
+        } catch (_: VaultQuiescedException) {
+            // A lock can close admission between a step and final bookkeeping.
+            // Leave the queue entry intact; this is not a poisoned document.
+            return IngestOutcome.Locked(processed, vectorsPending)
         }
     }
 
@@ -250,7 +257,7 @@ public class IngestPipeline(
             try {
                 steps.indexLexical(document.id, chunks, revisionHash, body)
             } catch (t: Throwable) {
-                rethrowIfCancelled(t)
+                rethrowIfStopped(t)
                 return mandatoryStepFailed(item, "lexical", t)
             }
 
@@ -258,7 +265,7 @@ public class IngestPipeline(
         try {
             links.link(document)
         } catch (t: Throwable) {
-            rethrowIfCancelled(t)
+            rethrowIfStopped(t)
             return mandatoryStepFailed(item, "link", t)
         }
 
@@ -268,7 +275,7 @@ public class IngestPipeline(
             try {
                 entityStep.index(document)
             } catch (t: Throwable) {
-                rethrowIfCancelled(t)
+                rethrowIfStopped(t)
                 warn("ingest: entity step failed with ${t.javaClass.simpleName}; document stays chunked and linked")
             }
         }
@@ -282,7 +289,7 @@ public class IngestPipeline(
                     steps.indexVectors(chunkIds, chunks.map { it.embeddingText })
                     false
                 } catch (t: Throwable) {
-                    rethrowIfCancelled(t)
+                    rethrowIfStopped(t)
                     warn("ingest: vector step failed with ${t.javaClass.simpleName}; vectors left pending")
                     true
                 }
@@ -323,8 +330,8 @@ public class IngestPipeline(
 
     private suspend fun checkpoint() = currentCoroutineContext().ensureActive()
 
-    private fun rethrowIfCancelled(t: Throwable) {
-        if (t is CancellationException) throw t
+    private fun rethrowIfStopped(t: Throwable) {
+        if (t is CancellationException || t is VaultQuiescedException) throw t
     }
 
     public companion object {

@@ -83,6 +83,12 @@ public class InMemoryIndexStore : IndexStore {
         this.vault = vault
     }
 
+    /** Only the drained repository's openNextSession may hand this store to its successor. */
+    internal fun prepareNextSession(previous: InMemoryVaultRepository) {
+        check(vault === previous) { "index belongs to a different vault" }
+        vault = null
+    }
+
     /**
      * True when [nodeId] names a document (no `:`) the linked repository has
      * no row for — `IndexStoreImpl.documentMissing`. A standalone index has

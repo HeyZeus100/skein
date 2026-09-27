@@ -31,13 +31,20 @@ import app.skein.core.model.PersonaId
 import app.skein.core.model.RevisionHashing
 import app.skein.core.model.Role
 import app.skein.core.model.TimelineFilter
+import app.skein.core.model.VaultQuiesceTimeoutException
+import app.skein.core.model.VaultQuiescedException
 import app.skein.core.model.VaultRepository
+import kotlinx.coroutines.CompletableDeferred
+import kotlinx.coroutines.CoroutineStart
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.async
+import kotlinx.coroutines.awaitCancellation
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.channels.ReceiveChannel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.test.runTest
 import kotlinx.coroutines.withContext
 import kotlinx.coroutines.withTimeout
@@ -93,6 +100,84 @@ public abstract class VaultRepositoryContractTest {
      * `IndexStoreImpl` over the same database. Call [repo] first.
      */
     protected abstract fun index(): IndexStore
+
+    @Test
+    public fun quiesce_drains_nested_transaction_and_refuses_late_writes(): Unit =
+        runBlocking {
+            val r = repo()
+            val entered = CompletableDeferred<String>()
+            val finish = CompletableDeferred<Unit>()
+            val writing =
+                async {
+                    r.transaction {
+                        val doc =
+                            r.createDocument(
+                                NewDocument(kind = DocumentKind.NOTE, title = "before", bodyMd = "body"),
+                            )
+                        entered.complete(doc.id)
+                        finish.await()
+                        r.transaction { r.renameDocument(doc.id, "committed") }
+                    }
+                }
+            val id = entered.await()
+            val drain = async(start = CoroutineStart.UNDISPATCHED) { r.quiesce() }
+            assertTrue(
+                runCatching { r.createDocument(NewDocument(kind = DocumentKind.NOTE, title = "late", bodyMd = null)) }
+                    .exceptionOrNull() is VaultQuiescedException,
+            )
+            assertTrue(!drain.isCompleted)
+            finish.complete(Unit)
+            writing.await()
+            drain.await()
+            assertEquals("committed", r.getDocument(id)?.title)
+            r.quiesce()
+            assertTrue(runCatching { r.renameDocument(id, "too late") }.exceptionOrNull() is VaultQuiescedException)
+        }
+
+    @Test
+    public fun a_closed_repository_cannot_borrow_another_repositorys_transaction(): Unit =
+        runBlocking {
+            val closed = repo()
+            closed.quiesce()
+            val open = repo()
+            open.transaction {
+                assertTrue(runCatching { closed.transaction { } }.exceptionOrNull() is VaultQuiescedException)
+            }
+        }
+
+    @Test
+    public fun quiesce_timeout_rolls_back_and_never_reopens_admission(): Unit =
+        runBlocking {
+            val r = repo()
+            val entered = CompletableDeferred<String>()
+            val writing =
+                async {
+                    r.transaction {
+                        val doc =
+                            r.createDocument(
+                                NewDocument(kind = DocumentKind.NOTE, title = "discard", bodyMd = "body"),
+                            )
+                        entered.complete(doc.id)
+                        awaitCancellation()
+                    }
+                }
+            val id = entered.await()
+            val failure = runCatching { r.quiesce(timeoutMillis = 0) }.exceptionOrNull()
+            assertTrue(failure is VaultQuiesceTimeoutException)
+            writing.join()
+            assertTrue(writing.isCancelled)
+            assertNull(r.getDocument(id))
+            assertTrue(
+                runCatching { r.createDocument(NewDocument(kind = DocumentKind.NOTE, title = "late", bodyMd = null)) }
+                    .exceptionOrNull() is VaultQuiescedException,
+            )
+            val nextSession = repo()
+            val fresh =
+                nextSession.createDocument(
+                    NewDocument(kind = DocumentKind.NOTE, title = "new session", bodyMd = null),
+                )
+            assertNotNull(nextSession.getDocument(fresh.id))
+        }
 
     @Test
     public fun kindsOf_returns_only_requested_live_kinds_in_a_large_batch(): Unit =
