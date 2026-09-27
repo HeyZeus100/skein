@@ -156,7 +156,13 @@ private fun rememberModelsEntryDeps(
             if (ids.isNotEmpty()) {
                 version++
                 // A friendly name, never the raw model id (DESIGN_SYSTEM.md §11.5).
-                val names = ids.mapNotNull { id -> services.registry.get(id)?.model?.name }
+                val names =
+                    ids.mapNotNull { id ->
+                        services.registry
+                            .get(id)
+                            ?.model
+                            ?.name
+                    }
                 actionMessage = "Registered ${names.joinToString()} from an earlier import and set as default"
             }
         }
@@ -185,7 +191,11 @@ private fun rememberModelsEntryDeps(
                         when (progress) {
                             is ImportProgress.InProgress ->
                                 if (progress.totalBytes > 0) {
-                                    val fraction = (progress.bytesProcessed.toFloat() / progress.totalBytes).coerceIn(0f, 1f)
+                                    val fraction =
+                                        (progress.bytesProcessed.toFloat() / progress.totalBytes).coerceIn(
+                                            0f,
+                                            1f,
+                                        )
                                     importProgress = fraction
                                     actionMessage = "Importing model… ${(fraction * 100).toInt()}%"
                                 } else {

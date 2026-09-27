@@ -7,7 +7,7 @@ package app.skein.feature.shell.testing
  */
 object ShellTestTags {
     /**
-     * Root container of the Skein shell ([SkeinApp]).
+     * Root container of the Skein shell (`app.skein.feature.shell.host.SkeinShellHost`).
      * Used to verify the shell has been rendered without depending on
      * specific display text or UI layout details.
      */
@@ -101,31 +101,4 @@ object ShellTestTags {
 
     /** User-facing message after a failed restore attempt. */
     const val VAULT_RESTORE_MESSAGE = "vault_restore_message"
-
-    // E6.I4 slice A (skein-ps0): CommandBar's `/` palette and plain-text search results.
-
-    /** Root of `app.skein.feature.shell.nav.CommandPalette`, shown while the query starts with `/`. */
-    const val COMMAND_PALETTE = "command_palette"
-
-    /** Root of `app.skein.feature.shell.nav.SearchResults`, shown while plain-text search has hits. */
-    const val SEARCH_RESULTS = "search_results"
-
-    /**
-     * One `app.skein.feature.shell.nav.NavDrawer` entry, keyed by
-     * `Destination.name` — a stable identifier for tests, independent of
-     * the entry's display label (the tab-strip's own "Recent" fallback
-     * text otherwise collides with the Timeline/Recent drawer entry's
-     * label in a substring text query).
-     */
-    fun navDrawerItem(destinationName: String): String = "nav_drawer_item_$destinationName"
-
-    /** Root of `app.skein.feature.shell.tabs.RecentDropdown` (the folded-phone tab strip). */
-    const val RECENT_DROPDOWN = "recent_dropdown"
-
-    // skein-xtov.24.20 (UT-14): the hamburger drawer's own sheet, so the
-    // fold-watch device journeys (UX_TEST_PLAN.md §2.6) can find it as a
-    // whole, independent of which [navDrawerItem] entries it holds.
-
-    /** Root of `app.skein.feature.shell.nav.NavDrawer`'s `ModalDrawerSheet`. */
-    const val NAV_DRAWER = "nav_drawer"
 }

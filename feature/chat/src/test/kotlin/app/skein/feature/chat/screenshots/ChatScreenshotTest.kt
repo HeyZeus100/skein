@@ -1,7 +1,7 @@
-// skein-xtov.9 — "before" captures of the real ChatScreen (ViewModel,
-// SendPipeline, bottom bar), full window inside SkeinTheme — the content
-// `:app` hands `SkeinApp`'s `chatTabContent` slot, without the shell's
-// command bar / tab strip above it. Conversations are seeded straight into
+// skein-xtov.9 — captures of the real ChatScreen (ViewModel, SendPipeline,
+// bottom bar), full window inside SkeinTheme, without the shell entry's top
+// bar (ChatShellScreenshotTest captures the entries, the context inspector
+// included). Conversations are seeded straight into
 // the in-memory vault (with citation records) and turns are driven through
 // the same fakes `ChatScreenTest` uses.
 package app.skein.feature.chat.screenshots
@@ -11,12 +11,12 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.test.ExperimentalTestApi
-import androidx.compose.ui.test.onAllNodesWithTag
 import androidx.compose.ui.test.onAllNodesWithText
 import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.onRoot
 import androidx.compose.ui.test.performClick
 import androidx.compose.ui.test.performTextInput
+import app.skein.core.designsystem.theme.SkeinTheme
 import app.skein.core.model.Capability
 import app.skein.core.model.Citation
 import app.skein.core.model.CitationRecord
@@ -38,14 +38,10 @@ import app.skein.core.model.Token
 import app.skein.core.model.TokenBudget
 import app.skein.feature.chat.CANCEL_BUTTON_TEST_TAG
 import app.skein.feature.chat.COMPOSER_TEST_TAG
-import app.skein.feature.chat.CONTEXT_TOGGLE_TEST_TAG
 import app.skein.feature.chat.ChatScreen
 import app.skein.feature.chat.SEND_BUTTON_TEST_TAG
 import app.skein.feature.chat.SendPipeline
 import app.skein.feature.chat.SimplePromptAssembler
-import app.skein.feature.chat.TabController
-import app.skein.feature.chat.contextRowTestTag
-import app.skein.feature.shell.theme.SkeinTheme
 import app.skein.testing.FakeRetrievalService
 import app.skein.testing.InMemoryVaultRepository
 import app.skein.testing.scriptedEngine
@@ -124,24 +120,6 @@ class ChatScreenshotTest(
         composeRule.onRoot().captureUx(spec, "chat-streaming")
     }
 
-    /** The "◇ context" panel open after a completed turn, listing what retrieval returned. */
-    @Test
-    fun chatContextOpen() {
-        spec.assumeStandard()
-        val engine = scriptedEngine("What is blocking M2?" to listOf("Only the owner smoke test ", "[1]", " is left."))
-        runBlocking { engine.load(TEXT_MODEL).getOrThrow() }
-        showChat(longChat(), engine)
-        send("What is blocking M2?")
-        composeRule.waitUntil(timeoutMillis = 10_000) {
-            runBlocking { vault.listMessages(chatId).size } == LONG_CHAT_TURNS.size + 2
-        }
-        composeRule.onNodeWithTag(CONTEXT_TOGGLE_TEST_TAG).performClick()
-        composeRule.waitUntil(timeoutMillis = 10_000) {
-            composeRule.onAllNodesWithTag(contextRowTestTag(retrieved.first())).fetchSemanticsNodes().isNotEmpty()
-        }
-        composeRule.onRoot().captureUx(spec, "chat-context-open")
-    }
-
     private lateinit var chatId: String
 
     private fun newChat(): String =
@@ -199,7 +177,7 @@ class ChatScreenshotTest(
                         docId = docId,
                         vaultRepository = vault,
                         sendPipeline = pipeline,
-                        tabController = TabController { _, _, _ -> "tab" },
+                        onOpenSource = {},
                         wikilinkSuggest = { emptyList() },
                     )
                 }

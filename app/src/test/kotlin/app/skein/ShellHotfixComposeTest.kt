@@ -2,15 +2,16 @@ package app.skein
 
 import androidx.compose.ui.semantics.SemanticsActions
 import androidx.compose.ui.test.ComposeTimeoutException
-import androidx.compose.ui.test.hasSetTextAction
+import androidx.compose.ui.test.hasAnyAncestor
+import androidx.compose.ui.test.hasTestTag
+import androidx.compose.ui.test.hasText
 import androidx.compose.ui.test.junit4.v2.createEmptyComposeRule
-import androidx.compose.ui.test.onAllNodesWithContentDescription
 import androidx.compose.ui.test.onAllNodesWithTag
 import androidx.compose.ui.test.onNodeWithContentDescription
 import androidx.compose.ui.test.onNodeWithTag
+import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.onRoot
 import androidx.compose.ui.test.performClick
-import androidx.compose.ui.test.performImeAction
 import androidx.compose.ui.test.performSemanticsAction
 import androidx.compose.ui.test.performTextInput
 import androidx.compose.ui.test.printToString
@@ -18,30 +19,28 @@ import androidx.test.core.app.ActivityScenario
 import androidx.test.core.app.ApplicationProvider
 import app.skein.core.model.DocumentKind
 import app.skein.core.model.NewDocument
+import app.skein.core.model.TimelineFilter
+import app.skein.feature.chat.CHAT_SCREEN_TEST_TAG
+import app.skein.feature.chat.entries.ChatEntryTestTags
+import app.skein.feature.editor.entries.KnowledgeEntryTestTags
 import app.skein.feature.editor.notetab.NoteTabTestTags
 import app.skein.feature.graph.GraphTestTags
-import app.skein.feature.models.MODELS_SCREEN_TEST_TAG
+import app.skein.feature.models.MODELS_EMPTY_TEST_TAG
+import app.skein.feature.shell.host.SkeinSearchTestTags
 import app.skein.feature.shell.testing.ShellTestTags
-import app.skein.feature.timeline.TimelineTestTags
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.runBlocking
 import org.junit.Assert.assertFalse
+import org.junit.Assert.assertTrue
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.robolectric.RobolectricTestRunner
 import org.robolectric.annotation.Config
 
-/**
- * Stage H (skein-xtov.22) regressions that need the real `MainActivity`
- * wiring: a past chat reopens as a chat (H4, UX-P0-05), the timeline's
- * New chat / New note buttons create and open (H5, UX-P0-16), and system
- * Back closes the graph and models overlays (H7, UX-P0-04). Same harness
- * as [MainActivityComposeTest]: [TestSkeinApplication]'s in-memory vault,
- * which registers no model, so an opened chat shows the "No model yet"
- * guidance — the chat tab's content, never the note editor's.
- */
+/** Stage H behaviors retained by the default NavDisplay shell: open by kind, visible creation, search and Back. */
 @RunWith(RobolectricTestRunner::class)
-@Config(sdk = [34], application = TestSkeinApplication::class)
+@Config(sdk = [34], qualifiers = "w400dp-h800dp", application = TestSkeinApplication::class)
 class ShellHotfixComposeTest {
     @get:Rule
     val composeRule = createEmptyComposeRule()
@@ -68,50 +67,50 @@ class ShellHotfixComposeTest {
         }
     }
 
+    private fun navigateTo(label: String) {
+        composeRule.onNodeWithContentDescription("Open navigation").performSemanticsAction(SemanticsActions.OnClick)
+        composeRule.onNodeWithText(label).performSemanticsAction(SemanticsActions.OnClick)
+    }
+
     @Test
-    @Config(qualifiers = "w400dp-h800dp")
-    fun `a past chat reopened from the timeline opens as a chat, not in the note editor`() {
-        val pastChat = NewDocument(kind = DocumentKind.CHAT, title = "Chat", bodyMd = "")
-        runBlocking { app.repository.createDocument(pastChat) }
-
+    fun `a past chat reopened from Recent opens the chat screen`() {
+        runBlocking { app.repository.createDocument(NewDocument(DocumentKind.CHAT, "Past chat", "")) }
         ActivityScenario.launch(MainActivity::class.java).use {
-            awaitTag(ShellTestTags.SKEIN_SHELL_ROOT)
-            await("the chat's timeline entry") {
-                composeRule.onAllNodesWithContentDescription("Chat").fetchSemanticsNodes().isNotEmpty()
-            }
-
-            composeRule.onNodeWithContentDescription("Chat").performClick()
-
-            awaitTag(MainActivityTestTags.CHAT_NO_MODEL_GUIDANCE)
+            awaitTag(ChatEntryTestTags.LANDING)
+            composeRule
+                .onNode(
+                    hasText("Past chat") and hasAnyAncestor(hasTestTag(ChatEntryTestTags.LANDING)),
+                ).performClick()
+            awaitTag(CHAT_SCREEN_TEST_TAG)
             composeRule.onNodeWithTag(NoteTabTestTags.ROOT).assertDoesNotExist()
         }
     }
 
     @Test
-    @Config(qualifiers = "w1000dp-h900dp")
-    fun `the timeline New chat button creates a chat and opens it`() {
+    fun `the drawer New chat action opens an unsaved landing`() {
+        runBlocking { app.repository.createDocument(NewDocument(DocumentKind.NOTE, "Seeded note", "content")) }
         ActivityScenario.launch(MainActivity::class.java).use {
-            awaitTag(TimelineTestTags.NEW_CHAT)
-
-            composeRule.onNodeWithTag(TimelineTestTags.NEW_CHAT).performClick()
-
-            awaitTag(MainActivityTestTags.CHAT_NO_MODEL_GUIDANCE)
+            awaitTag(ChatEntryTestTags.LANDING)
+            navigateTo("Knowledge")
+            awaitTag(KnowledgeEntryTestTags.LIST)
+            navigateTo(" New chat")
+            awaitTag(ChatEntryTestTags.LANDING)
+            val chats =
+                runBlocking { app.repository.observeTimeline(TimelineFilter(kinds = setOf(DocumentKind.CHAT))).first() }
+            assertTrue("New chat must not create a blank document", chats.isEmpty())
         }
     }
 
     @Test
-    @Config(qualifiers = "w1000dp-h900dp")
-    fun `the timeline New note button creates a note and opens it`() {
+    fun `the Knowledge New note action opens an editor`() {
         ActivityScenario.launch(MainActivity::class.java).use {
-            awaitTag(TimelineTestTags.NEW_NOTE)
-
-            composeRule.onNodeWithTag(TimelineTestTags.NEW_NOTE).performClick()
-
+            awaitTag(ChatEntryTestTags.LANDING)
+            navigateTo("Knowledge")
+            awaitTag(KnowledgeEntryTestTags.NEW_NOTE_ACTION)
+            composeRule.onNodeWithTag(KnowledgeEntryTestTags.NEW_NOTE_ACTION).performClick()
             awaitTag(NoteTabTestTags.ROOT)
         }
     }
-
-    // ---- H7 (UX-P0-04 part): system Back closes the overlays -----------------
 
     private fun ActivityScenario<MainActivity>.pressBackAndAssertStillOpen() {
         onActivity { it.onBackPressedDispatcher.onBackPressed() }
@@ -120,45 +119,47 @@ class ShellHotfixComposeTest {
     }
 
     @Test
-    fun `system Back closes the models overlay instead of leaving the app`() {
+    fun `system Back from Models returns to Chat`() {
         ActivityScenario.launch(MainActivity::class.java).use { scenario ->
-            awaitTag(ShellTestTags.SKEIN_SHELL_ROOT)
-            composeRule.onNode(hasSetTextAction()).performTextInput("/models")
-            composeRule.onNode(hasSetTextAction()).performImeAction()
-            awaitTag(MODELS_SCREEN_TEST_TAG)
-
+            awaitTag(ChatEntryTestTags.LANDING)
+            navigateTo("Models")
+            awaitTag(MODELS_EMPTY_TEST_TAG)
             scenario.pressBackAndAssertStillOpen()
-
-            composeRule.onNodeWithTag(MODELS_SCREEN_TEST_TAG).assertDoesNotExist()
-            composeRule.onNodeWithTag(ShellTestTags.SKEIN_SHELL_ROOT).assertExists()
+            awaitTag(ChatEntryTestTags.LANDING)
+            composeRule.onNodeWithTag(MODELS_EMPTY_TEST_TAG).assertDoesNotExist()
         }
     }
 
     @Test
-    @Config(qualifiers = "w400dp-h800dp")
-    fun `system Back closes the graph overlay instead of leaving the app`() {
-        val note = NewDocument(kind = DocumentKind.NOTE, title = "Graph Me", bodyMd = "content")
-        runBlocking { app.repository.createDocument(note) }
-
+    fun `system Back from Graph returns to Chat`() {
+        runBlocking { app.repository.createDocument(NewDocument(DocumentKind.NOTE, "Graph Me", "content")) }
         ActivityScenario.launch(MainActivity::class.java).use { scenario ->
-            awaitTag(ShellTestTags.SKEIN_SHELL_ROOT)
-            await("the note's timeline entry") {
-                composeRule.onAllNodesWithContentDescription("Note").fetchSemanticsNodes().isNotEmpty()
-            }
-            composeRule.onNodeWithContentDescription("Note").performClick()
-            awaitTag(NoteTabTestTags.GRAPH_BUTTON)
-            composeRule.onNodeWithTag(NoteTabTestTags.GRAPH_BUTTON).performSemanticsAction(SemanticsActions.OnClick)
+            awaitTag(ChatEntryTestTags.LANDING)
+            navigateTo("Graph")
             awaitTag(GraphTestTags.CANVAS)
-
             scenario.pressBackAndAssertStillOpen()
-
+            awaitTag(ChatEntryTestTags.LANDING)
             composeRule.onNodeWithTag(GraphTestTags.CANVAS).assertDoesNotExist()
-            composeRule.onNodeWithTag(NoteTabTestTags.ROOT).assertExists()
+        }
+    }
+
+    @Test
+    fun `search remains reachable after removing the command bar and a result opens by kind`() {
+        runBlocking { app.repository.createDocument(NewDocument(DocumentKind.NOTE, "Searchable note", "content")) }
+        ActivityScenario.launch(MainActivity::class.java).use {
+            awaitTag(ShellTestTags.SKEIN_SHELL_ROOT)
+            navigateTo("Search or run a command")
+            awaitTag(SkeinSearchTestTags.FIELD)
+            composeRule.onNodeWithTag(SkeinSearchTestTags.FIELD).performTextInput("Searchable")
+            val result = hasText("Searchable note") and hasAnyAncestor(hasTestTag(SkeinSearchTestTags.OVERLAY))
+            await("search result") { composeRule.onAllNodes(result).fetchSemanticsNodes().isNotEmpty() }
+            composeRule.onNode(result).performClick()
+            awaitTag(NoteTabTestTags.ROOT)
+            composeRule.onNodeWithTag(SkeinSearchTestTags.OVERLAY).assertDoesNotExist()
         }
     }
 
     private companion object {
-        /** A failure budget, not an expected duration — see [MainActivityComposeTest]'s own. */
         const val WAIT_MILLIS = 30_000L
     }
 }

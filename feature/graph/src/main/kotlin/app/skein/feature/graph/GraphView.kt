@@ -85,10 +85,8 @@ private const val FRAME_INTERVAL_NANOS = 1_000_000_000L / 60L
  * center node highlighted, pan/zoom, tap → [openPreview], long-press →
  * [openPinned]. Labels are only drawn while `nodes.size <= 40` (plan text).
  *
- * @param openPreview a document node's tap payload — mirrors
- *   `TabsState.openPreview`'s Cursor-style single-click semantics.
- * @param openPinned a document node's long-press payload — mirrors
- *   `TabsState.openPinned`'s double-click/pin semantics. Sentinel
+ * @param openPreview a document node's tap payload; the shell selects its detail.
+ * @param openPinned a document node's long-press payload; the shell also selects its detail. Sentinel
  *   (entity/tag/unresolved-title) nodes never invoke either callback —
  *   they have no document to open.
  */

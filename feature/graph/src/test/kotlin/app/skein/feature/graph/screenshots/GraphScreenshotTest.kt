@@ -1,17 +1,14 @@
-// skein-xtov.9 — "before" captures of the graph overlay. `:app` draws
-// GraphScreen in `SkeinApp`'s overlay slot (full window, inside SkeinTheme),
-// which is what is composed here, over a small wikilink neighbourhood built
-// directly in the in-memory index (same fixture style as `GraphStateTest`).
 package app.skein.feature.graph.screenshots
 
 import androidx.compose.ui.test.onRoot
+import app.skein.core.designsystem.theme.SkeinTheme
 import app.skein.core.model.DocId
 import app.skein.core.model.DocumentKind
 import app.skein.core.model.Edge
 import app.skein.core.model.EdgeKind
 import app.skein.core.model.NewDocument
-import app.skein.feature.graph.GraphScreen
-import app.skein.feature.shell.theme.SkeinTheme
+import app.skein.feature.graph.entries.GraphHost
+import app.skein.feature.shell.host.SkeinShellState
 import app.skein.testing.InMemoryIndexStore
 import app.skein.testing.InMemoryVaultRepository
 import app.skein.testing.ui.UxDeviceRule
@@ -73,15 +70,9 @@ class GraphScreenshotTest(
                 link(index, id("Chat about quantisation"), id("Fold launch plan"), id("Model picker ideas"))
                 id("Fold launch plan")
             }
-        composeRule.setContent {
-            SkeinTheme {
-                GraphScreen(
-                    docId = center,
-                    vaultRepository = repo,
-                    indexStore = index,
-                )
-            }
-        }
+        lateinit var shell: SkeinShellState
+        composeRule.setContent { SkeinTheme { GraphHost(repo, index, size = null) { shell = it } } }
+        composeRule.runOnIdle { shell.navigate { openGraph(it, center) } }
         composeRule.waitForIdle()
         composeRule.onRoot().captureUx(spec, "graph")
     }

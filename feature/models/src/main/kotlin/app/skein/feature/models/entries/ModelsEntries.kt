@@ -86,7 +86,11 @@ private fun ModelsListEntry(
     Column(Modifier.fillMaxSize()) {
         shell.EntryTopBar(ModelsHomeKey, "Models") {
             deps.onImport?.let { onImport ->
-                EntryAction(SkeinIcons.ImportFile, "Import model", Modifier.testTag(ModelsEntryTestTags.IMPORT_ACTION)) {
+                EntryAction(
+                    SkeinIcons.ImportFile,
+                    "Import model",
+                    Modifier.testTag(ModelsEntryTestTags.IMPORT_ACTION),
+                ) {
                     onImport()
                 }
             }

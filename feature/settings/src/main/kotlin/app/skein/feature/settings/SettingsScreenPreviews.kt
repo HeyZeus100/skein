@@ -9,8 +9,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import app.skein.core.designsystem.preview.SkeinDevicePreviews
 import app.skein.core.designsystem.preview.SkeinFoldPreviews
-import app.skein.feature.shell.theme.SkeinTheme
-import app.skein.feature.shell.theme.SkeinThemeMode
+import app.skein.core.designsystem.theme.SkeinTheme
+import app.skein.core.designsystem.theme.SkeinThemeMode
 
 /**
  * Previews for [SettingsScreen] (plan `E6.I14`): the empty/default state,

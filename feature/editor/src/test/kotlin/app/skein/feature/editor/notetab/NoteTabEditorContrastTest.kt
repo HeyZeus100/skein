@@ -12,12 +12,12 @@ import androidx.compose.ui.test.captureToImage
 import androidx.compose.ui.test.junit4.createAndroidComposeRule
 import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.performTextInput
+import app.skein.core.designsystem.theme.SkeinColors
+import app.skein.core.designsystem.theme.SkeinTheme
+import app.skein.core.designsystem.theme.SkeinThemeMode
 import app.skein.core.model.DocumentKind
 import app.skein.core.model.NewDocument
 import app.skein.feature.editor.SKEIN_EDITOR_TEST_TAG
-import app.skein.feature.shell.theme.SkeinColors
-import app.skein.feature.shell.theme.SkeinTheme
-import app.skein.feature.shell.theme.SkeinThemeMode
 import app.skein.testing.InMemoryIndexStore
 import app.skein.testing.InMemoryVaultRepository
 import kotlinx.coroutines.runBlocking

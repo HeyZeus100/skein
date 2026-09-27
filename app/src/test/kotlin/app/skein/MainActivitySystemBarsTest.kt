@@ -5,7 +5,7 @@ import androidx.activity.ComponentActivity
 import androidx.activity.enableEdgeToEdge
 import androidx.core.view.WindowInsetsControllerCompat
 import androidx.test.core.app.ApplicationProvider
-import app.skein.feature.shell.theme.SkeinThemeMode
+import app.skein.core.designsystem.theme.SkeinThemeMode
 import app.skein.system.AppearancePrefs
 import kotlinx.coroutines.runBlocking
 import org.junit.Assert.assertEquals

@@ -1,7 +1,7 @@
 // skein-2qv (E6.I7): the Compose surface for the timeline — mixed
 // chronological list with persona / tag / kind filter chips, sticky day
-// headers, windowed paging, empty state, and the compact FABs / expanded
-// header actions for "New note" / "New chat".
+// headers, windowed paging and an empty state. Since skein-xtov.24.23 it is
+// the Knowledge list's body; creation actions live in the entries' top bars.
 //
 // Non-negotiables:
 //   • Compose-only; no View system, no third-party UI library.
@@ -16,7 +16,6 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -24,7 +23,6 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.SmallFloatingActionButton
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
@@ -39,8 +37,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalLocale
 import androidx.compose.ui.platform.testTag
-import androidx.compose.ui.semantics.contentDescription
-import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.unit.dp
 import app.skein.core.model.Document
 import app.skein.core.model.DocumentKind
@@ -63,15 +59,7 @@ private const val LOAD_MORE_THRESHOLD: Int = 10
  * @param state the state holder; build it once with [rememberTimelineState]
  *   (or directly with a real scope when hoisting) and pass the same
  *   instance on every recomposition.
- * @param onEntryClick single tap → the host opens a preview tab
- *   (`TabsState.openPreview`).
- * @param onEntryLongPress long press → the host opens a pinned tab
- *   (`TabsState.openPinned`).
- * @param onNewNote / [onNewChat] creation actions; `null` hides the
- *   corresponding control. Rendered as compact FABs by default and as
- *   header buttons when [expanded].
- * @param expanded true in the dual-pane / expanded width tier, where the
- *   plan puts the creation actions in a header instead of FABs.
+ * @param onEntryClick a tap → the host opens the entry by kind.
  * @param zone the zone used for day sections and dates.
  * @param now clock for the relative timestamps; injectable for previews and tests.
  */
@@ -80,10 +68,6 @@ public fun TimelineScreen(
     state: TimelineState,
     onEntryClick: (Document) -> Unit,
     modifier: Modifier = Modifier,
-    onEntryLongPress: (Document) -> Unit = {},
-    onNewNote: (() -> Unit)? = null,
-    onNewChat: (() -> Unit)? = null,
-    expanded: Boolean = false,
     zone: ZoneId = ZoneId.systemDefault(),
     now: () -> Long = System::currentTimeMillis,
 ) {
@@ -93,14 +77,9 @@ public fun TimelineScreen(
     val tags by state.tags.collectAsState()
     val hasMore by state.hasMore.collectAsState()
     val personaNames = remember(personas) { personas.associate { it.id to it.name } }
-    val hasActions = onNewNote != null || onNewChat != null
-    val showFabs = hasActions && !expanded
 
     Box(modifier = modifier.fillMaxSize().testTag(TimelineTestTags.ROOT)) {
         Column(modifier = Modifier.fillMaxSize()) {
-            if (hasActions && expanded) {
-                HeaderActions(onNewNote = onNewNote, onNewChat = onNewChat)
-            }
             FilterBar(
                 kinds = state.kinds,
                 filter = window.filter,
@@ -122,21 +101,12 @@ public fun TimelineScreen(
                     hasMore = hasMore,
                     onLoadMore = state::loadMore,
                     onEntryClick = onEntryClick,
-                    onEntryLongPress = onEntryLongPress,
                     personaNames = personaNames,
-                    reserveFabSpace = showFabs,
                     zone = zone,
                     nowMillis = now(),
                     modifier = Modifier.weight(1f),
                 )
             }
-        }
-        if (showFabs) {
-            FloatingActions(
-                onNewNote = onNewNote,
-                onNewChat = onNewChat,
-                modifier = Modifier.align(Alignment.BottomEnd).padding(16.dp),
-            )
         }
     }
 }
@@ -170,9 +140,7 @@ private fun EntryList(
     hasMore: Boolean,
     onLoadMore: () -> Unit,
     onEntryClick: (Document) -> Unit,
-    onEntryLongPress: (Document) -> Unit,
     personaNames: Map<String, String>,
-    reserveFabSpace: Boolean,
     zone: ZoneId,
     nowMillis: Long,
     modifier: Modifier = Modifier,
@@ -201,7 +169,7 @@ private fun EntryList(
     LazyColumn(
         state = listState,
         modifier = modifier.fillMaxWidth().testTag(TimelineTestTags.LIST),
-        contentPadding = PaddingValues(top = 4.dp, bottom = if (reserveFabSpace) 96.dp else 16.dp),
+        contentPadding = PaddingValues(top = 4.dp, bottom = 16.dp),
     ) {
         sections.forEach { section ->
             stickyHeader(key = "day:${section.day}", contentType = "day") { _ ->
@@ -213,7 +181,6 @@ private fun EntryList(
                     personaName = document.personaId?.let { personaNames[it] ?: it },
                     relativeTime = relativeTime(document.updatedAt, nowMillis, zone, locale),
                     onClick = { onEntryClick(document) },
-                    onLongClick = { onEntryLongPress(document) },
                 )
             }
         }
@@ -270,69 +237,6 @@ private fun EmptyState(
                 modifier = Modifier.testTag(TimelineTestTags.CLEAR_FILTERS),
             ) {
                 Text("Clear filters")
-            }
-        }
-    }
-}
-
-// ---------------------------------------------------------------------------
-// Creation actions: FABs (compact) / header buttons (expanded)
-// ---------------------------------------------------------------------------
-
-@Composable
-private fun HeaderActions(
-    onNewNote: (() -> Unit)?,
-    onNewChat: (() -> Unit)?,
-) {
-    Row(
-        modifier = Modifier.fillMaxWidth().padding(horizontal = 12.dp, vertical = 4.dp),
-        horizontalArrangement = Arrangement.spacedBy(4.dp, Alignment.End),
-        verticalAlignment = Alignment.CenterVertically,
-    ) {
-        if (onNewNote != null) {
-            TextButton(onClick = onNewNote, modifier = Modifier.testTag(TimelineTestTags.NEW_NOTE)) {
-                Text("📄 New note")
-            }
-        }
-        if (onNewChat != null) {
-            TextButton(onClick = onNewChat, modifier = Modifier.testTag(TimelineTestTags.NEW_CHAT)) {
-                Text("💬 New chat")
-            }
-        }
-    }
-}
-
-@Composable
-private fun FloatingActions(
-    onNewNote: (() -> Unit)?,
-    onNewChat: (() -> Unit)?,
-    modifier: Modifier = Modifier,
-) {
-    Column(
-        modifier = modifier,
-        horizontalAlignment = Alignment.End,
-        verticalArrangement = Arrangement.spacedBy(12.dp),
-    ) {
-        if (onNewChat != null) {
-            SmallFloatingActionButton(
-                onClick = onNewChat,
-                modifier =
-                    Modifier
-                        .testTag(TimelineTestTags.NEW_CHAT)
-                        .semantics { contentDescription = "New chat" },
-            ) {
-                Text("💬")
-            }
-        }
-        if (onNewNote != null) {
-            SmallFloatingActionButton(
-                onClick = onNewNote,
-                modifier =
-                    Modifier
-                        .testTag(TimelineTestTags.NEW_NOTE)
-                        .semantics { contentDescription = "New note" },
-            ) {
-                Text("📄")
             }
         }
     }

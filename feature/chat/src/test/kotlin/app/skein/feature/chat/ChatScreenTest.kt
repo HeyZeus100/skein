@@ -14,6 +14,7 @@ import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
 import androidx.compose.ui.test.performTextInput
+import app.skein.core.designsystem.theme.SkeinTheme
 import app.skein.core.model.Capability
 import app.skein.core.model.Document
 import app.skein.core.model.DocumentKind
@@ -31,13 +32,9 @@ import app.skein.core.model.Token
 import app.skein.core.model.TokenBudget
 import app.skein.feature.editor.autocomplete.Suggestion
 import app.skein.feature.editor.autocomplete.wikilinkSuggestionTestTag
-import app.skein.feature.shell.theme.SkeinTheme
 import app.skein.testing.FakeRetrievalService
 import app.skein.testing.InMemoryVaultRepository
-import app.skein.testing.RecordedTabKind
-import app.skein.testing.RecordingTabController
 import app.skein.testing.SkeinLogCaptureRule
-import app.skein.testing.TabAction
 import app.skein.testing.fakeVault
 import app.skein.testing.scriptedEngine
 import com.google.common.truth.Truth.assertThat
@@ -94,9 +91,6 @@ class ChatScreenTest {
         return vault to doc
     }
 
-    private fun tabController(recording: RecordingTabController): TabController =
-        TabController { docId, title, kind -> recording.openPreview(docId, title, RecordedTabKind.valueOf(kind.name)) }
-
     @Test
     fun `send shows user bubble, streaming bubble, citation chip - tap opens preview, second tap shows excerpt`() {
         val (vault, doc) = newChat()
@@ -112,7 +106,7 @@ class ChatScreenTest {
                 budgetFor = { _, _ -> budget() },
                 countTokens = { it.length / 4 },
             )
-        val recording = RecordingTabController()
+        val opened = mutableListOf<String>()
 
         composeRule.setContent {
             SkeinTheme {
@@ -120,7 +114,7 @@ class ChatScreenTest {
                     docId = doc.id,
                     vaultRepository = vault,
                     sendPipeline = pipeline,
-                    tabController = tabController(recording),
+                    onOpenSource = { opened += it },
                     wikilinkSuggest = { emptyList() },
                 )
             }
@@ -140,12 +134,11 @@ class ChatScreenTest {
             composeRule.onAllNodesWithTag(citationChipTestTag(1)).fetchSemanticsNodes().isNotEmpty()
         }
 
-        // Tap 1: opens the source as a preview tab.
+        // Tap 1: opens the source.
         composeRule.onNodeWithTag(citationChipTestTag(1)).performClick()
         composeRule.waitForIdle()
-        val opened = recording.actions.filterIsInstance<TabAction.OpenPreview>()
         assertThat(opened).isNotEmpty()
-        assertThat(opened.first().docId).isEqualTo("doc-1")
+        assertThat(opened.first()).isEqualTo("doc-1")
 
         // Tap 2 (same chip): expands the inline excerpt.
         composeRule.onNodeWithTag(citationChipTestTag(1)).performClick()
@@ -185,7 +178,7 @@ class ChatScreenTest {
                     docId = doc.id,
                     vaultRepository = vault,
                     sendPipeline = pipeline,
-                    tabController = TabController { _, _, _ -> "tab" },
+                    onOpenSource = {},
                     wikilinkSuggest = { emptyList() },
                 )
             }
@@ -211,46 +204,16 @@ class ChatScreenTest {
     }
 
     @Test
-    fun `context panel lists the retrieved item with its score`() {
-        val (vault, doc) = newChat()
-        val engine = scriptedEngine("q" to listOf("answer"))
-        runBlocking { engine.load(textModel()).getOrThrow() }
-        val pipeline =
-            SendPipeline(
-                vaultRepository = vault,
-                retrievalService = FakeRetrievalService(listOf(retrievedItem())),
-                promptAssembler = SimplePromptAssembler(),
-                engine = engine,
-                personaProvider = { null },
-                budgetFor = { _, _ -> budget() },
-                countTokens = { it.length / 4 },
-            )
+    fun `the context panel lists the retrieved item and a tap opens its source`() {
+        val opened = mutableListOf<String>()
         composeRule.setContent {
-            SkeinTheme {
-                ChatScreen(
-                    docId = doc.id,
-                    vaultRepository = vault,
-                    sendPipeline = pipeline,
-                    tabController = TabController { _, _, _ -> "tab" },
-                    wikilinkSuggest = { emptyList() },
-                )
-            }
+            SkeinTheme { ContextPanel(items = listOf(retrievedItem()), onOpenSource = { opened += it }) }
         }
 
-        composeRule.onNodeWithTag(COMPOSER_TEST_TAG).performTextInput("q")
-        composeRule.onNodeWithTag(SEND_BUTTON_TEST_TAG).performClick()
-        composeRule.waitUntil(timeoutMillis = 5_000) {
-            composeRule.onAllNodesWithText("q").fetchSemanticsNodes().isNotEmpty()
-        }
-        composeRule.waitForIdle()
-
-        composeRule.onNodeWithTag(CONTEXT_TOGGLE_TEST_TAG).performClick()
-
-        composeRule.waitUntil(timeoutMillis = 5_000) {
-            composeRule.onAllNodesWithTag(contextRowTestTag(retrievedItem())).fetchSemanticsNodes().isNotEmpty()
-        }
         composeRule.onNodeWithText("Source Note").assertIsDisplayed()
         composeRule.onNodeWithText("Relevant passage", substring = true).assertIsDisplayed()
+        composeRule.onNodeWithTag(contextRowTestTag(retrievedItem())).performClick()
+        assertThat(opened).containsExactly(retrievedItem().docId)
     }
 
     @Test
@@ -296,7 +259,7 @@ class ChatScreenTest {
                     docId = doc.id,
                     vaultRepository = vault,
                     sendPipeline = pipeline,
-                    tabController = TabController { _, _, _ -> "tab" },
+                    onOpenSource = {},
                     wikilinkSuggest = { emptyList() },
                 )
             }
@@ -346,7 +309,7 @@ class ChatScreenTest {
                     docId = doc.id,
                     vaultRepository = vault,
                     sendPipeline = pipeline,
-                    tabController = TabController { _, _, _ -> "tab" },
+                    onOpenSource = {},
                     wikilinkSuggest = { query ->
                         listOf(Suggestion(title = "Target Note")).filter {
                             it.title.contains(query, ignoreCase = true) ||

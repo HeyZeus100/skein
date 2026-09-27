@@ -7,7 +7,6 @@ import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.junit4.createAndroidComposeRule
 import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.performClick
-import androidx.compose.ui.test.performTextInput
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import app.skein.core.model.Document
 import app.skein.core.model.DocumentKind
@@ -57,31 +56,6 @@ class NoteTabInstrumentedTest {
         composeRule.onNodeWithTag(NoteTabTestTags.ROOT).assertIsDisplayed()
         composeRule.onNodeWithTag(SKEIN_EDITOR_TEST_TAG).assertIsDisplayed()
         composeRule.onNodeWithTag(BacklinksTestTags.HEADER).assertIsDisplayed()
-    }
-
-    @Test
-    fun typing_in_the_editor_requests_a_pin_exactly_once() {
-        val repo = InMemoryVaultRepository()
-        val index = InMemoryIndexStore()
-        val doc = runBlocking { repo.note("My Note", body = "") }
-        var pinCount = 0
-
-        composeRule.setContent {
-            MaterialTheme {
-                NoteTab(
-                    docId = doc.id,
-                    vaultRepository = repo,
-                    indexStore = index,
-                    onPin = { pinCount++ },
-                )
-            }
-        }
-        composeRule.waitForIdle()
-
-        composeRule.onNodeWithTag(SKEIN_EDITOR_TEST_TAG).performTextInput("hi")
-        composeRule.waitForIdle()
-
-        assertEquals(1, pinCount)
     }
 
     @Test

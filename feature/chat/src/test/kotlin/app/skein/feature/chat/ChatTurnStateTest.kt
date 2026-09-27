@@ -106,7 +106,7 @@ class ChatTurnStateTest {
                     chatDocId = doc.id,
                     vaultRepository = vault,
                     sendPipeline = pipeline,
-                    tabController = TabController { _, _, _ -> "tab-1" },
+                    onOpenSource = {},
                     scope = backgroundScope,
                 )
 

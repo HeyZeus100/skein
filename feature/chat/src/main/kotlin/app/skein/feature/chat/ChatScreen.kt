@@ -1,5 +1,5 @@
-// skein-6as (E6.I8). `ChatScreen(docId)` — spec §8.4: message list, header
-// toggle `⚹ context`, error banner, bottom bar. Ties `ChatViewModel` to the
+// skein-6as (E6.I8). `ChatScreen(docId)` — spec §8.4: message list, error
+// banner, bottom bar, under the host's own top bar. Ties `ChatViewModel` to the
 // Composables in this module; owns no business logic of its own.
 package app.skein.feature.chat
 
@@ -13,7 +13,6 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.remember
@@ -29,10 +28,8 @@ import app.skein.core.model.NewDocument
 import app.skein.core.model.PersonaId
 import app.skein.core.model.VaultRepository
 import app.skein.feature.editor.autocomplete.Suggestion
-import app.skein.feature.shell.theme.LocalSkeinTokens
 
 public const val CHAT_SCREEN_TEST_TAG: String = "app.skein.feature.chat.ChatScreen"
-public const val CONTEXT_TOGGLE_TEST_TAG: String = "app.skein.feature.chat.ContextToggle"
 public const val ERROR_BANNER_TEST_TAG: String = "app.skein.feature.chat.ErrorBanner"
 public const val RETRY_BUTTON_TEST_TAG: String = "app.skein.feature.chat.RetryButton"
 
@@ -45,9 +42,9 @@ public const val ENGINE_ERROR_BANNER_TEXT: String = "Couldn't finish the answer.
  * @param currentPersonaId read by 📎 attach's [ImportService] calls; `null`
  *   defers to whatever persona `sendPipeline` was wired with.
  * @param onSlashCommand see [ChatBottomBar]'s doc — the command-palette seam.
- * @param topBar replaces the built-in "Chat · Sources" header (and with it the
- *   inline context panel): the NavDisplay shell's entry draws its own bar and
- *   opens the inspector as an entry (skein-xtov.24.8).
+ * @param onOpenSource a citation tap: opens the cited document.
+ * @param topBar the NavDisplay shell entry's own bar; the context inspector is
+ *   an entry of its own (skein-xtov.24.8).
  * @param initialMessage sent once, when this screen's state is first created:
  *   the landing's first message, handed over when its chat was just created.
  */
@@ -56,7 +53,7 @@ public fun ChatScreen(
     docId: DocId,
     vaultRepository: VaultRepository,
     sendPipeline: SendPipeline,
-    tabController: TabController,
+    onOpenSource: (DocId) -> Unit,
     wikilinkSuggest: suspend (String) -> List<Suggestion>,
     modifier: Modifier = Modifier,
     importService: ImportService? = null,
@@ -69,17 +66,17 @@ public fun ChatScreen(
         }
     },
     onSlashCommand: () -> Unit = {},
-    topBar: (@Composable () -> Unit)? = null,
+    topBar: @Composable () -> Unit = {},
     initialMessage: String? = null,
 ) {
     val scope = rememberCoroutineScope()
     val viewModel =
-        remember(docId, vaultRepository, sendPipeline, tabController) {
+        remember(docId, vaultRepository, sendPipeline, onOpenSource) {
             ChatViewModel(
                 chatDocId = docId,
                 vaultRepository = vaultRepository,
                 sendPipeline = sendPipeline,
-                tabController = tabController,
+                onOpenSource = onOpenSource,
                 scope = scope,
                 importService = importService,
                 currentPersonaId = currentPersonaId,
@@ -89,31 +86,7 @@ public fun ChatScreen(
     LaunchedEffect(viewModel) { initialMessage?.let(viewModel::send) }
 
     Column(modifier = modifier.fillMaxSize().testTag(CHAT_SCREEN_TEST_TAG)) {
-        if (topBar != null) {
-            topBar()
-        } else {
-            Row(
-                modifier = Modifier.fillMaxWidth().padding(8.dp),
-                horizontalArrangement = Arrangement.SpaceBetween,
-                verticalAlignment = Alignment.CenterVertically,
-            ) {
-                Text(text = "Chat", style = MaterialTheme.typography.titleMedium)
-                TextButton(
-                    onClick = viewModel::toggleContextPanel,
-                    modifier = Modifier.testTag(CONTEXT_TOGGLE_TEST_TAG),
-                ) {
-                    Text("${LocalSkeinTokens.current.glyphs.context} Sources")
-                }
-            }
-        }
-
-        if (topBar == null && viewModel.contextPanelOpen) {
-            ContextPanel(
-                items = viewModel.contextItems,
-                tabController = tabController,
-                modifier = Modifier.fillMaxWidth(),
-            )
-        }
+        topBar()
 
         if (viewModel.banner != ChatBanner.NONE) {
             Surface(

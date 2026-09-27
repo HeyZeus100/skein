@@ -29,7 +29,7 @@ import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 
 /**
- * State holder for [TimelineScreen] and [TimelineRail].
+ * State holder for [TimelineScreen].
  *
  * [entries] mirrors `VaultRepository.observeTimeline(filter, limit)` for
  * the current [window]. Every mutator funnels through one

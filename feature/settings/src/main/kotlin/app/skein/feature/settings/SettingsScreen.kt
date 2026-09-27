@@ -28,7 +28,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import app.skein.core.designsystem.icons.SkeinIcons
 import app.skein.core.navigation.SettingsCategory
-import app.skein.feature.shell.theme.SkeinThemeMode
+import app.skein.core.designsystem.theme.SkeinThemeMode
 
 /**
  * Settings screen (plan `E6.I14`): Appearance, Security, Indexing and About

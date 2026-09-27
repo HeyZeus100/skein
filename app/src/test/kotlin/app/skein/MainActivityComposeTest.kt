@@ -13,7 +13,6 @@ import androidx.compose.ui.test.onRoot
 import androidx.compose.ui.test.performClick
 import androidx.compose.ui.test.performSemanticsAction
 import androidx.compose.ui.test.performTextInput
-import androidx.compose.ui.test.printToLog
 import androidx.compose.ui.test.printToString
 import androidx.core.graphics.Insets
 import androidx.core.view.ViewCompat
@@ -24,8 +23,11 @@ import app.skein.core.model.DocumentKind
 import app.skein.core.model.NewDocument
 import app.skein.core.vault.key.SetupResult
 import app.skein.core.vault.key.UnlockResult
+import app.skein.feature.chat.entries.ChatEntryTestTags
+import app.skein.feature.editor.entries.KnowledgeEntryTestTags
 import app.skein.feature.editor.notetab.NoteTabTestTags
 import app.skein.feature.graph.GraphTestTags
+import app.skein.feature.graph.entries.GraphEntryTestTags
 import app.skein.feature.shell.testing.ShellTestTags
 import app.skein.system.SecurityPrefs
 import kotlinx.coroutines.CompletableDeferred
@@ -404,20 +406,11 @@ class MainActivityComposeTest {
     }
 
     @Test
-    fun `the CommandBar renders the model status once unlocked`() {
-        // skein-whg8: this chip used to be a hardcoded "qwen"/true; it now
-        // reflects the session's real `ModelServices.engineStatus`, and
-        // `TestSkeinApplication`'s default fixture registers no model —
-        // "no model" is the honest chip text for that case (skein-whg8's
-        // own AskPathComposeTest scripts a registered/active model and
-        // asserts the chip shows its id instead).
+    fun `the landing explains that a model is needed once unlocked`() {
         ActivityScenario.launch(MainActivity::class.java).use {
-            awaitTag(ShellTestTags.SKEIN_SHELL_ROOT)
-
-            // CommandBar composes this as "<name> · ●"/"⏸", so substring-match
-            // rather than exact so a future icon or separator change doesn't
-            // break the test.
-            composeRule.onNodeWithText("no model", substring = true).assertExists()
+            awaitTag(ChatEntryTestTags.LANDING)
+            composeRule.onNodeWithText("Add a model to start").assertExists()
+            composeRule.onNodeWithText("Choose a model").assertExists()
         }
     }
 
@@ -445,84 +438,52 @@ class MainActivityComposeTest {
 
     @Test
     @Config(qualifiers = "w400dp-h800dp")
-    fun `the unlocked shell shows the timeline instead of No tabs open`() {
+    fun `the unlocked shell shows a titled recent note on the chat landing`() {
         runBlocking {
-            app.repository.createDocument(
-                NewDocument(kind = DocumentKind.NOTE, title = "Seeded Note", bodyMd = "content"),
-            )
+            app.repository.createDocument(NewDocument(DocumentKind.NOTE, "Seeded Note", "content"))
         }
-
         ActivityScenario.launch(MainActivity::class.java).use {
-            awaitTag(ShellTestTags.SKEIN_SHELL_ROOT)
-            composeRule.waitUntil(timeoutMillis = WAIT_MILLIS) {
-                composeRule.onAllNodesWithContentDescription("Note").fetchSemanticsNodes().isNotEmpty()
-            }
-
-            // skein-64y9: a fresh launch (no tabs open, compact/single-pane
-            // width) now lands on the timeline instead of `TabHost`'s "No
-            // tabs open" placeholder — the seeded note shows up as a
-            // `TimelineRail` glyph, accessible via its kind label.
-            composeRule.onNodeWithContentDescription("Note").assertExists()
+            awaitTag(ChatEntryTestTags.LANDING)
+            composeRule.onNodeWithText("Seeded Note").assertExists()
             composeRule.onNodeWithText("No tabs open", substring = true).assertDoesNotExist()
+            composeRule.onNodeWithText("Seeded Note").performClick()
+            awaitTag(NoteTabTestTags.ROOT)
         }
     }
 
-    // ---- skein-0td0: graph overlay opens the tapped node as a real tab --------
+    private fun openNoteGraph() {
+        runBlocking { app.repository.createDocument(NewDocument(DocumentKind.NOTE, "Graph Me", "content")) }
+        awaitTag(ChatEntryTestTags.LANDING)
+        composeRule.waitUntil(timeoutMillis = WAIT_MILLIS) {
+            composeRule.onAllNodesWithText("Graph Me").fetchSemanticsNodes().isNotEmpty()
+        }
+        composeRule.onNodeWithText("Graph Me").performClick()
+        awaitTag(NoteTabTestTags.GRAPH_BUTTON)
+        composeRule.onNodeWithTag(NoteTabTestTags.GRAPH_BUTTON).performSemanticsAction(SemanticsActions.OnClick)
+        awaitTag(KnowledgeEntryTestTags.CONNECTIONS)
+        composeRule.onNodeWithText("Open in Graph").performClick()
+        awaitTag(GraphTestTags.CANVAS)
+    }
 
     @Test
     @Config(qualifiers = "w400dp-h800dp")
-    fun `the unlocked shell shows the graph overlay once graphDocId is set`() {
-        runBlocking {
-            app.repository.createDocument(
-                NewDocument(kind = DocumentKind.NOTE, title = "Graph Me", bodyMd = "content"),
-            )
-        }
-
+    fun `the note connections route opens the graph destination`() {
         ActivityScenario.launch(MainActivity::class.java).use {
-            awaitTag(ShellTestTags.SKEIN_SHELL_ROOT)
-            awaitContentDescription("Note")
-
-            composeRule.onNodeWithContentDescription("Note").performClick()
-            awaitTag(NoteTabTestTags.GRAPH_BUTTON)
-            composeRule
-                .onNodeWithTag(NoteTabTestTags.GRAPH_BUTTON)
-                .performSemanticsAction(SemanticsActions.OnClick)
-
-            awaitTag(GraphTestTags.CANVAS)
+            openNoteGraph()
             composeRule.onNodeWithTag(GraphTestTags.CANVAS).assertExists()
         }
     }
 
     @Test
     @Config(qualifiers = "w400dp-h800dp")
-    fun `tapping a graph node opens it as a NOTE tab and dismisses the overlay`() {
-        runBlocking {
-            app.repository.createDocument(
-                NewDocument(kind = DocumentKind.NOTE, title = "Graph Me", bodyMd = "content"),
-            )
-        }
-
+    fun `selecting a graph node then Open navigates to its note`() {
         ActivityScenario.launch(MainActivity::class.java).use {
-            awaitTag(ShellTestTags.SKEIN_SHELL_ROOT)
-            awaitContentDescription("Note")
-
-            composeRule.onNodeWithContentDescription("Note").performClick()
-            awaitTag(NoteTabTestTags.GRAPH_BUTTON)
-            composeRule
-                .onNodeWithTag(NoteTabTestTags.GRAPH_BUTTON)
-                .performSemanticsAction(SemanticsActions.OnClick)
-            awaitTag(GraphTestTags.CANVAS)
-
-            // The seeded document is the graph's only (center) node, so a
-            // plain tap on the canvas — its default gesture target, per
-            // `GraphViewInstrumentedTest` — deterministically lands on it.
+            openNoteGraph()
             composeRule.onNodeWithTag(GraphTestTags.CANVAS).performClick()
-
-            composeRule.waitUntil(timeoutMillis = WAIT_MILLIS) {
-                composeRule.onAllNodesWithTag(GraphTestTags.CANVAS).fetchSemanticsNodes().isEmpty()
-            }
+            awaitTag(GraphEntryTestTags.NODE_DETAIL_OPEN)
+            composeRule.onNodeWithTag(GraphEntryTestTags.NODE_DETAIL_OPEN).performClick()
+            awaitTag(NoteTabTestTags.ROOT)
             composeRule.onNodeWithTag(GraphTestTags.CANVAS).assertDoesNotExist()
-            composeRule.onNodeWithTag(NoteTabTestTags.ROOT).assertExists()
         }
     }
 
@@ -535,15 +496,14 @@ class MainActivityComposeTest {
         ActivityScenario.launch(MainActivity::class.java).use {
             awaitTag(ShellTestTags.SKEIN_SHELL_ROOT)
 
-            // Open the hamburger drawer and navigate to Settings (E6.I3's
-            // CommandBar `≡` / NavDrawer "Settings" entry).
+            // Open the shell drawer and navigate to the security category.
             composeRule
-                .onNodeWithContentDescription("Open navigation drawer")
+                .onNodeWithContentDescription("Open navigation")
                 .performSemanticsAction(SemanticsActions.OnClick)
             composeRule
                 .onNodeWithText("Settings", substring = true)
                 .performSemanticsAction(SemanticsActions.OnClick)
-            composeRule.onRoot().printToLog("SKEIN_DEBUG")
+            composeRule.onNodeWithText("Privacy & security").performSemanticsAction(SemanticsActions.OnClick)
 
             // Settings › Security's IdleTimeoutRow defaults to 5 minutes
             // (SecurityPrefs.DEFAULT_IDLE_TIMEOUT_MINUTES) until wired
@@ -638,8 +598,7 @@ class MainActivityComposeTest {
      * decor view — the same `WindowInsetsCompat` propagation path a real
      * device's `WindowInsetsAnimation`/layout pass uses — and asserts the
      * hamburger button (the one Compose already tags via its
-     * `contentDescription`, so `CommandBar` itself needs no test-only
-     * modifier added) sits at or below it. Before `SkeinApp`'s root Column
+     * `contentDescription`) sits at or below it. Before the old shell root
      * picked up `.windowInsetsPadding(WindowInsets.safeDrawing)`, this
      * assertion fails at `top == 0`.
      */
@@ -666,7 +625,7 @@ class MainActivityComposeTest {
 
             val hamburgerTop =
                 composeRule
-                    .onNodeWithContentDescription("Open navigation drawer")
+                    .onNodeWithContentDescription("Open navigation")
                     .fetchSemanticsNode()
                     .boundsInRoot.top
 

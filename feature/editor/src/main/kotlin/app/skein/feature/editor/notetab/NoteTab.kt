@@ -49,23 +49,20 @@ import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.compose.LifecycleEventEffect
+import app.skein.core.designsystem.theme.LocalSkeinEditorColors
+import app.skein.core.designsystem.theme.LocalSkeinTokens
 import app.skein.core.designsystem.theme.rememberSkeinMarkdownStyle
 import app.skein.core.export.pdf.PdfExportService
 import app.skein.core.markdown.render.MarkdownStyle
 import app.skein.core.model.DocId
 import app.skein.core.model.IndexStore
 import app.skein.core.model.VaultRepository
-import app.skein.core.vault.session.LockObserver
-import app.skein.core.vault.session.LockObserverPriority
-import app.skein.core.vault.session.UnlockManager
 import app.skein.core.vault.session.UnlockState
 import app.skein.feature.editor.SkeinEditor
 import app.skein.feature.editor.backlinks.BacklinksDrawer
 import app.skein.feature.editor.share.SaveAsFormat
 import app.skein.feature.editor.share.ShareIntents
 import app.skein.feature.shell.input.SecureTextField
-import app.skein.feature.shell.theme.LocalSkeinEditorColors
-import app.skein.feature.shell.theme.LocalSkeinTokens
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -76,41 +73,29 @@ import kotlinx.coroutines.launch
 import java.time.Duration
 
 /**
- * Hosts [SkeinEditor] + [BacklinksDrawer] for [docId], wired as the shell's
- * tab content for `TabKind.NOTE` (`app.skein.feature.shell.SkeinApp`'s
- * `noteTabContent` slot — `:feature:shell` can't depend on this module
- * directly, see that file's doc, so the host supplies this composable as a
- * callback instead).
+ * Hosts [SkeinEditor] + [BacklinksDrawer] for [docId]: the Knowledge
+ * destination's note entry (`app.skein.feature.editor.entries.KnowledgeEntry`).
  *
- * @param onPin plan `E6.I9` acceptance: called once, the first time the
- *   editor's text actually changes. The host wires this to
- *   `TabsState.pin(tabId)`.
  * @param onOpenDocument a backlink tap or wikilink click resolved to a
- *   document — the host decides whether that means a preview tab, a pinned
- *   tab, or something else (mirrors `BacklinksState.onOpen`'s shape).
+ *   document — the host decides where it opens (mirrors `BacklinksState.onOpen`'s shape).
  * @param onOpenGraph the ✦ button (plan `E6.I9`: "navigates to
  *   `Route.Graph(docId)`") — callback only. The graph view itself is
  *   `E6.I11`; this issue only needs the affordance and the wired callback.
  * @param registerFlush called once, when this tab's [NoteTabState] is
  *   ready, with a `suspend (Duration) -> Boolean` flush handle — the host
- *   registers it against `app.skein.feature.shell.tabs.FlushRegistry`
- *   keyed by this tab's id (`docs/design/LOCK_POLICY_INDEXING.md` §4.3).
- *   [unregisterFlush] is called on disposal (tab closed / composable left).
+ *   registers it as a session pending writer, which the lock runs while the
+ *   vault is still open (`docs/design/LOCK_POLICY_INDEXING.md` §4.3).
+ *   [unregisterFlush] is called on disposal.
  * @param unlockState bd `skein-fay`: when supplied, the share menu (glyph
  *   button in the header) is disabled while this is anything other than
  *   [UnlockState.Unlocked] — sharing/saving while locked is already
  *   impossible by construction (`VaultRepository`/`ExportServiceImpl` calls
  *   fail once the vault is closed), but the affordance itself should not
- *   invite a tap that can only fail. Defaults to `null` ("always enabled"),
- *   matching every existing caller (`app.skein.MainActivity`, off-limits to
- *   this bead) that does not yet thread a live `UnlockManager.state` down
- *   to this composable — a future host wiring is additive, not breaking.
- * @param unlockManager UX-P0-11: when supplied, pending edits are flushed
- *   in the lock sequence's `LOW` tier, while the vault is still open
- *   ([FlushBeforeLock]). Pending edits are also flushed when this tab leaves
- *   composition and when the Activity stops, with or without it.
- * @param navigationIcon the header's leading ☰/←/✕ when the note is a
- *   NavDisplay entry (skein-xtov.24.8); none as a tab.
+ *   invite a tap that can only fail. Defaults to `null` ("always enabled").
+ * @param navigationIcon the header's leading ☰/←/✕ (skein-xtov.24.8).
+ *
+ * Pending edits are also flushed when this note leaves composition and when
+ * the Activity stops.
  */
 @Composable
 public fun NoteTab(
@@ -118,14 +103,12 @@ public fun NoteTab(
     vaultRepository: VaultRepository,
     indexStore: IndexStore,
     modifier: Modifier = Modifier,
-    onPin: () -> Unit = {},
     onOpenDocument: (DocId, String) -> Unit = { _, _ -> },
     onOpenGraph: (DocId) -> Unit = {},
     registerFlush: (suspend (Duration) -> Boolean) -> Unit = {},
     unregisterFlush: () -> Unit = {},
     markdownStyle: MarkdownStyle = rememberSkeinMarkdownStyle(),
     unlockState: StateFlow<UnlockState>? = null,
-    unlockManager: UnlockManager? = null,
     navigationIcon: (@Composable () -> Unit)? = null,
 ) {
     val scope = rememberCoroutineScope()
@@ -136,7 +119,6 @@ public fun NoteTab(
                 vaultRepository = vaultRepository,
                 indexStore = indexStore,
                 scope = scope,
-                onPinRequested = onPin,
                 onOpenDocument = onOpenDocument,
             )
         }
@@ -152,10 +134,6 @@ public fun NoteTab(
         }
     }
     LifecycleEventEffect(Lifecycle.Event.ON_STOP) { flushScope.launch { state.flush() } }
-    DisposableEffect(state, unlockManager) {
-        val handle = unlockManager?.addLockObserver(FlushBeforeLock(state))
-        onDispose { handle?.dispose() }
-    }
 
     var unlocked by remember { mutableStateOf(true) }
     if (unlockState != null) {
@@ -276,28 +254,6 @@ public fun NoteTab(
  * and never throws: a vault that already closed only marks the save failed.
  */
 private val flushScope = CoroutineScope(SupervisorJob() + Dispatchers.Main)
-
-/**
- * UX-P0-11: flushes a tab before the vault locks. `LOW` runs while the vault
- * is still open: `UnlockManager` awaits every `HIGH`/`LOW` observer before
- * `VaultBootstrap`'s `TEARDOWN` tier closes it.
- */
-internal class FlushBeforeLock(
-    private val state: NoteTabState,
-) : LockObserver {
-    override val priority: LockObserverPriority = LockObserverPriority.LOW
-
-    override suspend fun onLocking(
-        epoch: Long,
-        budgetMillis: Long,
-    ) {
-        state.flush(Duration.ofMillis(budgetMillis))
-    }
-
-    override fun onLocked(epoch: Long) = Unit
-
-    override fun onUnlocked(epoch: Long) = Unit
-}
 
 internal const val SAVE_AS_FAILED_MESSAGE: String = "Couldn't save the file. Try another location."
 

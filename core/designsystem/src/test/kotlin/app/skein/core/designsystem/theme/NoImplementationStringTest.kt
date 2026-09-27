@@ -24,11 +24,6 @@ class NoImplementationStringTest {
      */
     private val allowlist =
         setOf(
-            // DS1's one-wave forwarding shim: every "skein-xtov.23.1" is inside an
-            // `@Deprecated(...)` message, a compiler warning developers see in the
-            // IDE, never text a user reads. File is deleted once consumers import
-            // `:core:designsystem` directly (see its own header comment).
-            "feature/shell/src/main/kotlin/app/skein/feature/shell/theme/ThemeForwarding.kt",
             // `defaultRecoveryFileName()` returns "skein-recovery-YYYY-MM-DD.json"
             // (bd skein-v9g's spec'd export filename) — a deliberate product
             // string that happens to satisfy `skein-[a-z0-9]{3,}` ("recovery" is

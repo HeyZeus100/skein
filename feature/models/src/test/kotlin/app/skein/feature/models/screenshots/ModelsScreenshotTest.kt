@@ -1,14 +1,14 @@
-// skein-xtov.9 — "before" captures of `/models`. `:app` draws ModelsScreen in
-// `SkeinApp`'s overlay slot, i.e. full-window inside `SkeinTheme`, which is
-// exactly what is composed here.
 package app.skein.feature.models.screenshots
 
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.onRoot
 import androidx.compose.ui.test.performClick
+import app.skein.core.designsystem.theme.SkeinTheme
+import app.skein.core.navigation.Destination
 import app.skein.feature.models.ModelListItem
-import app.skein.feature.models.ModelsScreen
-import app.skein.feature.shell.theme.SkeinTheme
+import app.skein.feature.models.entries.ModelsEntryDeps
+import app.skein.feature.models.entries.ModelsHost
+import app.skein.feature.shell.host.SkeinShellState
 import app.skein.testing.ui.UxDeviceRule
 import app.skein.testing.ui.UxSpec
 import app.skein.testing.ui.captureUx
@@ -34,6 +34,14 @@ class ModelsScreenshotTest(
 
     @get:Rule(order = 1)
     val composeRule = skeinComposeRule()
+
+    private fun showModels(models: List<ModelListItem>) {
+        lateinit var shell: SkeinShellState
+        val deps = ModelsEntryDeps(models, onSetDefault = {}, onDelete = {}, onImport = {})
+        composeRule.setContent { SkeinTheme { ModelsHost(deps, size = null) { shell = it } } }
+        composeRule.runOnIdle { shell.navigate { switchTo(it, Destination.MODELS) } }
+        composeRule.waitForIdle()
+    }
 
     @Test
     fun models() {
@@ -64,22 +72,13 @@ class ModelsScreenshotTest(
                     isLoaded = false,
                 ),
             )
-        composeRule.setContent { SkeinTheme { ModelsScreen(models, onSetDefault = {}, onDelete = {}, onDismiss = {}) } }
+        showModels(models)
         composeRule.onRoot().captureUx(spec, "models")
     }
 
     @Test
     fun modelsEmpty() {
-        composeRule.setContent {
-            SkeinTheme {
-                ModelsScreen(
-                    emptyList(),
-                    onSetDefault = {},
-                    onDelete = {},
-                    onDismiss = {},
-                )
-            }
-        }
+        showModels(emptyList())
         composeRule.onRoot().captureUx(spec, "models-empty")
     }
 
@@ -96,9 +95,7 @@ class ModelsScreenshotTest(
                 isDefault = false,
                 isLoaded = false,
             )
-        composeRule.setContent {
-            SkeinTheme { ModelsScreen(listOf(model), onSetDefault = {}, onDelete = {}, onDismiss = {}) }
-        }
+        showModels(listOf(model))
         composeRule.onNodeWithText("Delete").performClick()
         composeRule.waitForIdle()
         // A whole-screen capture (the confirmation dialog floats in its own

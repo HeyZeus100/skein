@@ -17,15 +17,9 @@ public object TimelineTestTags {
     public const val CLEAR_FILTERS: String = "timeline_clear_filters"
     public const val PERSONA_CHIP: String = "timeline_persona_chip"
     public const val PERSONA_MENU_ALL: String = "timeline_persona_menu_all"
-    public const val RAIL: String = "timeline_rail"
-    public const val NEW_NOTE: String = "timeline_new_note"
-    public const val NEW_CHAT: String = "timeline_new_chat"
 
     /** Prefix shared by every [entryRow] tag — for "count the rows" matchers. */
     public const val ENTRY_ROW_PREFIX: String = "timeline_entry_"
-
-    /** Prefix shared by every [railEntry] tag. */
-    public const val RAIL_ENTRY_PREFIX: String = "timeline_rail_entry_"
 
     /** Prefix shared by every [dayHeader] tag. */
     public const val DAY_HEADER_PREFIX: String = "timeline_day_"
@@ -37,8 +31,6 @@ public object TimelineTestTags {
     public fun tagChip(tag: String): String = "timeline_tag_chip_$tag"
 
     public fun entryRow(docId: String): String = ENTRY_ROW_PREFIX + docId
-
-    public fun railEntry(docId: String): String = RAIL_ENTRY_PREFIX + docId
 
     public fun dayHeader(day: LocalDate): String = DAY_HEADER_PREFIX + day.toEpochDay()
 }

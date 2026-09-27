@@ -10,7 +10,7 @@ import androidx.compose.material3.Surface
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.test.onRoot
 import app.skein.feature.settings.SettingsScreen
-import app.skein.feature.shell.theme.SkeinTheme
+import app.skein.core.designsystem.theme.SkeinTheme
 import app.skein.testing.ui.UxDeviceRule
 import app.skein.testing.ui.UxSpec
 import app.skein.testing.ui.captureUx

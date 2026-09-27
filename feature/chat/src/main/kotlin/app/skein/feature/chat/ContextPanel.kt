@@ -1,6 +1,6 @@
-// skein-6as (E6.I8). Header toggle `⚹ context` (spec §8.4): the `Retrieved`
-// list for the last turn, with scores and `recalledBy`; each row opens the
-// source as a preview tab through `TabController`.
+// skein-6as (E6.I8). The context inspector's Knowledge section (spec §8.4,
+// CHAT_UX_SPEC.md §17): the `Retrieved` list for the last turn; each row opens
+// its source.
 package app.skein.feature.chat
 
 import androidx.compose.foundation.clickable
@@ -17,6 +17,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.unit.dp
+import app.skein.core.model.DocId
 import app.skein.core.model.Retrieved
 
 public const val CONTEXT_PANEL_TEST_TAG: String = "app.skein.feature.chat.ContextPanel"
@@ -26,14 +27,13 @@ public fun contextRowTestTag(retrieved: Retrieved): String =
     "app.skein.feature.chat.ContextPanel.row.${retrieved.chunkId}"
 
 /**
- * The `Retrieved` list for the last turn (spec §8.4), each row showing
- * [Retrieved.score] and [Retrieved.recalledBy], tapping it opens the source
- * document as a preview tab via [tabController].
+ * The `Retrieved` list for the last turn (spec §8.4); tapping a row opens its
+ * source document through [onOpenSource].
  */
 @Composable
 public fun ContextPanel(
     items: List<Retrieved>,
-    tabController: TabController,
+    onOpenSource: (DocId) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     Surface(
@@ -56,13 +56,8 @@ public fun ContextPanel(
                         Modifier
                             .fillMaxWidth()
                             .testTag(contextRowTestTag(retrieved))
-                            .clickable {
-                                tabController.openPreview(
-                                    retrieved.docId,
-                                    retrieved.docTitle,
-                                    ChatTabKind.NOTE,
-                                )
-                            }.padding(vertical = 6.dp),
+                            .clickable { onOpenSource(retrieved.docId) }
+                            .padding(vertical = 6.dp),
                     horizontalArrangement = Arrangement.SpaceBetween,
                 ) {
                     Column {

@@ -1,6 +1,5 @@
 package app.skein
 
-import android.content.Intent
 import androidx.compose.ui.semantics.SemanticsActions
 import androidx.compose.ui.test.ComposeTimeoutException
 import androidx.compose.ui.test.junit4.v2.createEmptyComposeRule
@@ -24,7 +23,7 @@ import org.robolectric.RobolectricTestRunner
 import org.robolectric.annotation.Config
 
 /**
- * skein-xtov.24.7 (AL-08): `MainActivity`'s debug-only switch to the
+ * skein-xtov.24.7 (AL-08): `MainActivity`'s default
  * NavDisplay shell. Its state is hoisted above `VaultGate`, the shell itself
  * composes only while the gate is open (M4a), and a lock takes it out of
  * composition until the next unlock. Same harness as [ShellHotfixComposeTest].
@@ -50,11 +49,10 @@ class NavShellComposeTest {
     }
 
     @Test
-    fun `the debug extra runs the NavDisplay shell behind the gate, across a lock`() {
-        val intent = Intent(app, MainActivity::class.java).putExtra(EXTRA_NAV_SHELL, true)
-        ActivityScenario.launch<MainActivity>(intent).use {
+    fun `the default shell is NavDisplay behind the gate, across a lock`() {
+        ActivityScenario.launch(MainActivity::class.java).use {
             awaitTag(SkeinShellHostTestTags.NAV_DISPLAY)
-            composeRule.onNodeWithTag(ShellTestTags.SKEIN_SHELL_ROOT).assertDoesNotExist()
+            composeRule.onNodeWithTag(ShellTestTags.SKEIN_SHELL_ROOT).assertExists()
             // skein-xtov.24.8: NavShell's real entries; a drawer window's Chat root is the landing.
             awaitTag(ChatEntryTestTags.LANDING)
 

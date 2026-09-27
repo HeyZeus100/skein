@@ -1,11 +1,13 @@
 // skein-xtov.24.8 (AL-09a): goldens for the Chat destination in the
-// NavDisplay shell on the owner's Fold — outer (524 dp: drawer, one pane) and
-// inner (1007 dp: rail, Conversations │ detail), light and dark. Recorded with
+// NavDisplay shell across the default window/theme matrix, plus cover-screen
+// large text and navigation drawer states. Recorded with
 // `tools/ux/shots record chat --tests
 // "app.skein.feature.chat.screenshots.ChatShellScreenshotTest"`.
 package app.skein.feature.chat.screenshots
 
+import androidx.compose.ui.test.onNodeWithContentDescription
 import androidx.compose.ui.test.onRoot
+import androidx.compose.ui.test.performClick
 import app.skein.core.designsystem.theme.SkeinTheme
 import app.skein.core.model.Document
 import app.skein.core.model.Role
@@ -19,7 +21,7 @@ import app.skein.feature.shell.host.SkeinShellState
 import app.skein.testing.FakeClock
 import app.skein.testing.fakeVault
 import app.skein.testing.scriptedEngine
-import app.skein.testing.ui.SkeinDevice
+import app.skein.testing.ui.UX_FONT_150
 import app.skein.testing.ui.UxDeviceRule
 import app.skein.testing.ui.UxSpec
 import app.skein.testing.ui.captureUx
@@ -78,8 +80,6 @@ class ChatShellScreenshotTest(
     private lateinit var shell: SkeinShellState
 
     private fun show() {
-        assumeTrue(spec.fontScale == 1f)
-        assumeTrue(spec.device == SkeinDevice.FOLD_OUTER_524 || spec.device == SkeinDevice.FOLD_INNER_1007)
         val pipeline = pipelineOver(vault, scriptedEngine())
         composeRule.setContent {
             SkeinTheme { EntriesHost(vault, pipeline, size = null, onShell = { shell = it }, clock = { NOW }) }
@@ -116,9 +116,19 @@ class ChatShellScreenshotTest(
         composeRule.onRoot().captureUx(spec, "shell-chat-inspector")
     }
 
+    /** The destination drawer replaces the retired tab-shell drawer on compact windows. */
+    @Test
+    fun drawerOpen() {
+        assumeTrue(spec.isFolded)
+        show()
+        composeRule.onNodeWithContentDescription("Open navigation").performClick()
+        composeRule.waitForIdle()
+        composeRule.onRoot().captureUx(spec, "shell-chat-drawer-open")
+    }
+
     companion object {
         @JvmStatic
         @ParameterizedRobolectricTestRunner.Parameters(name = "{0}")
-        fun parameters(): List<Array<Any>> = uxSpecs()
+        fun parameters(): List<Array<Any>> = uxSpecs(*UX_FONT_150)
     }
 }

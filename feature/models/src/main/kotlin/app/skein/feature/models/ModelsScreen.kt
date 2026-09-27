@@ -1,10 +1,3 @@
-// skein-whg8: the minimal `/models` list — skein-ym3 owns the full screen
-// later (management, import flow, per-model detail). This module takes only
-// plain data and function types (no `:core:inference`/`:core:vault` project
-// dependency), the same "smallest adapter" shape `feature/chat`'s
-// `TabController` follows for its own out-of-scope seam: `:app` is the one
-// place that can see both this module and the real `ModelManager`/
-// `ModelRegistry`, so it supplies the list and the callbacks.
 package app.skein.feature.models
 
 import androidx.compose.foundation.background
@@ -12,22 +5,19 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.safeDrawing
-import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.Button
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
@@ -46,11 +36,10 @@ import app.skein.core.designsystem.components.SkeinDestructiveDialog
 import app.skein.core.designsystem.components.SkeinEmptyState
 import app.skein.core.designsystem.icons.SkeinIcons
 
-public const val MODELS_SCREEN_TEST_TAG: String = "app.skein.feature.models.ModelsScreen"
 public const val MODELS_EMPTY_TEST_TAG: String = "app.skein.feature.models.ModelsEmpty"
 public const val MODELS_DEFAULT_MARKER: String = "default"
 
-/** One row `ModelsScreen` renders — everything `:app` already knows from `ModelRecord`/`Model`. */
+/** One model list row — everything `:app` already knows from `ModelRecord`/`Model`. */
 public data class ModelListItem(
     val id: String,
     val displayName: String,
@@ -60,121 +49,58 @@ public data class ModelListItem(
     val isLoaded: Boolean,
 )
 
-/**
- * A minimal list: display name, size, licence SPDX, the default marker, a
- * delete action (disabled while [ModelListItem.isLoaded]) and a set-default
- * action. skein-ym3 replaces this with the full management screen.
- *
- * Delete asks first (LC-27): [onDelete] only fires once the user confirms.
- */
-@Composable
-public fun ModelsScreen(
-    models: List<ModelListItem>,
-    onSetDefault: (String) -> Unit,
-    onDelete: (String) -> Unit,
-    onDismiss: () -> Unit,
-    modifier: Modifier = Modifier,
-) {
-    var pendingDelete by remember { mutableStateOf<ModelListItem?>(null) }
-    pendingDelete?.let { model ->
-        DeleteModelDialog(
-            model = model,
-            onConfirm = {
-                pendingDelete = null
-                onDelete(model.id)
-            },
-            onDismiss = { pendingDelete = null },
-        )
-    }
-    Surface(
-        modifier = modifier.fillMaxSize().testTag(MODELS_SCREEN_TEST_TAG),
-        color = MaterialTheme.colorScheme.background,
-    ) {
-        // This screen is composed in the shell's `overlay` slot, which is
-        // NOT inset by the shell (only the pane content is). Without this
-        // the header — and its Close button — rendered under the status bar
-        // on the Fold (button bounds y=64..102, status bar 0..136), so the
-        // overlay could not be closed by touch at all.
-        Column(modifier = Modifier.fillMaxSize().windowInsetsPadding(WindowInsets.safeDrawing)) {
-            Row(
-                modifier = Modifier.fillMaxWidth().padding(16.dp),
-                horizontalArrangement = Arrangement.SpaceBetween,
-                verticalAlignment = Alignment.CenterVertically,
-            ) {
-                Text(text = "Models", style = MaterialTheme.typography.titleLarge)
-                TextButton(onClick = onDismiss) { Text("Close") }
-            }
-            if (models.isEmpty()) {
-                Box(modifier = Modifier.fillMaxSize().testTag(MODELS_EMPTY_TEST_TAG)) {
-                    Text(
-                        text = "No models imported yet — import one from the command palette",
-                        style = MaterialTheme.typography.bodyMedium,
-                        modifier = Modifier.padding(16.dp),
-                    )
-                }
-            } else {
-                LazyColumn(modifier = Modifier.fillMaxSize()) {
-                    items(models, key = { it.id }) { model ->
-                        ModelRow(model = model, onSetDefault = onSetDefault, onDelete = { pendingDelete = model })
-                        HorizontalDivider()
-                    }
-                }
-            }
-        }
-    }
-}
-
 @Composable
 private fun ModelRow(
     model: ModelListItem,
     onSetDefault: (String) -> Unit,
     onDelete: () -> Unit,
-    // skein-xtov.24.9 (AL-09b): additive, defaulted — [ModelsScreen]'s
-    // existing call site keeps compiling unchanged. [ModelsListPane] below
-    // is the only caller that passes a real [onClick] (the list│details
-    // split); [selected] highlights the row backing the open details pane.
+    // The selected row backs the open detail pane; its tap opens those details.
     selected: Boolean = false,
     onClick: () -> Unit = {},
 ) {
-    Row(
+    Column(
         modifier =
             Modifier
                 .fillMaxWidth()
                 .clickable(onClick = onClick)
                 .background(if (selected) MaterialTheme.colorScheme.secondaryContainer else Color.Transparent)
                 .padding(horizontal = 16.dp, vertical = 12.dp),
-        horizontalArrangement = Arrangement.SpaceBetween,
-        verticalAlignment = Alignment.CenterVertically,
     ) {
-        // skein-xtov.23.6 (DS6, §9.3 "Model (destination; a model)"):
-        // decorative — the row's own name/size text already identifies it.
-        Icon(
-            painter = painterResource(SkeinIcons.Model),
-            contentDescription = null,
-            tint = MaterialTheme.colorScheme.onSurfaceVariant,
-            modifier = Modifier.padding(end = 12.dp),
-        )
-        Column(modifier = Modifier.weight(1f)) {
-            Row {
+        Row(verticalAlignment = Alignment.Top) {
+            // Decorative: the adjacent name already identifies this as a model.
+            Icon(
+                painter = painterResource(SkeinIcons.Model),
+                contentDescription = null,
+                tint = MaterialTheme.colorScheme.onSurfaceVariant,
+                modifier = Modifier.padding(end = 12.dp),
+            )
+            Column(modifier = Modifier.weight(1f)) {
                 Text(text = model.displayName, style = MaterialTheme.typography.titleSmall)
                 if (model.isDefault) {
                     Text(
-                        text = " · $MODELS_DEFAULT_MARKER",
+                        text = MODELS_DEFAULT_MARKER,
                         style = MaterialTheme.typography.labelMedium,
                         color = MaterialTheme.colorScheme.primary,
                     )
                 }
+                Text(
+                    text = "${humanSize(model.sizeBytes)} · ${model.licenseSpdx}",
+                    style = MaterialTheme.typography.bodySmall,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                )
             }
-            Text(
-                text = "${humanSize(model.sizeBytes)} · ${model.licenseSpdx}",
-                style = MaterialTheme.typography.bodySmall,
-                color = MaterialTheme.colorScheme.onSurfaceVariant,
-            )
         }
-        if (!model.isDefault) {
-            TextButton(onClick = { onSetDefault(model.id) }) { Text("Set default") }
+        // The adaptive list pane can be only 280 dp wide. Actions get their own
+        // wrapping row so long filenames and larger fonts retain readable width.
+        FlowRow(
+            modifier = Modifier.fillMaxWidth(),
+            horizontalArrangement = Arrangement.End,
+        ) {
+            if (!model.isDefault) {
+                TextButton(onClick = { onSetDefault(model.id) }) { Text("Set default") }
+            }
+            Button(onClick = onDelete, enabled = !model.isLoaded) { Text("Delete") }
         }
-        Button(onClick = onDelete, enabled = !model.isLoaded) { Text("Delete") }
     }
 }
 
@@ -214,7 +140,7 @@ private fun humanSize(bytes: Long): String {
 // -----------------------------------------------------------------------------
 // skein-xtov.24.9 (AL-09b): the Models destination's list│details panes, for
 // `:feature:shell`'s `ModelsHomeKey`/`ModelDetailsKey` entries. Same
-// [onSetDefault]/[onDelete] contract as [ModelsScreen] above — set
+// [onSetDefault]/[onDelete] contract as the retired overlay — set
 // default/delete/the delete confirmation dialog behave exactly as today,
 // only the surrounding chrome (a bare pane instead of a dismissible overlay)
 // differs.

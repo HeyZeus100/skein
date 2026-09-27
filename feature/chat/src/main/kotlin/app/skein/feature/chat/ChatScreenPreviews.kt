@@ -27,13 +27,13 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import app.skein.core.designsystem.preview.SkeinFoldPreviews
+import app.skein.core.designsystem.theme.LocalSkeinTokens
+import app.skein.core.designsystem.theme.SkeinTheme
 import app.skein.core.model.DocumentKind
 import app.skein.core.model.Locator
 import app.skein.core.model.RecallSource
 import app.skein.core.model.Retrieved
 import app.skein.core.model.Role
-import app.skein.feature.shell.theme.LocalSkeinTokens
-import app.skein.feature.shell.theme.SkeinTheme
 
 private fun sampleMessages(): List<ChatMessageUi> =
     listOf(
@@ -92,7 +92,7 @@ private fun PreviewChatLayout(showContextPanel: Boolean) {
                 TextButton(onClick = {}) { Text("${LocalSkeinTokens.current.glyphs.context} Sources") }
             }
             if (showContextPanel) {
-                ContextPanel(items = sampleRetrieved(), tabController = TabController { _, _, _ -> "tab-1" })
+                ContextPanel(items = sampleRetrieved(), onOpenSource = {})
             }
             MessageList(
                 messages = sampleMessages(),

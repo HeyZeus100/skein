@@ -12,7 +12,6 @@ import android.content.Intent
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
-import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.text.input.TextFieldValue
 import app.skein.core.model.DocId
 import app.skein.core.model.DocumentKind
@@ -22,7 +21,6 @@ import app.skein.core.model.NewDocument
 import app.skein.core.model.VaultRepository
 import app.skein.core.vault.codec.Frontmatter
 import app.skein.core.vault.export.ExportServiceImpl
-import app.skein.feature.editor.AutosaveStatus
 import app.skein.feature.editor.EditorState
 import app.skein.feature.editor.WikilinkTarget
 import app.skein.feature.editor.autocomplete.Suggestion
@@ -33,7 +31,6 @@ import app.skein.feature.editor.share.SaveAsIntents
 import app.skein.feature.editor.share.ShareIntents
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.filter
-import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 import kotlinx.serialization.json.JsonObject
 import kotlinx.serialization.json.JsonPrimitive
@@ -56,10 +53,6 @@ import java.time.Duration
  *   Compose `rememberCoroutineScope()` in the app, `backgroundScope` in
  *   tests. Also [EditorState.autosaveScope] and [BacklinksState]'s scope,
  *   so everything this tab owns tears down together.
- * @param onPinRequested fired exactly once, the first time the editor's
- *   text actually changes (not on the initial load) — the host wires this
- *   to `TabsState.pin(tabId)` (plan `E6.I9` acceptance: "typing in the
- *   editor calls `TabController.pin(tabId)` once").
  * @param onOpenDocument fired with a resolved id + display title whenever
  *   this tab wants another document opened — from a backlink row tap or a
  *   wikilink click. The host decides what "open" means (a preview tab,
@@ -70,7 +63,6 @@ public class NoteTabState(
     private val vaultRepository: VaultRepository,
     indexStore: IndexStore,
     private val scope: CoroutineScope,
-    public val onPinRequested: () -> Unit = {},
     public val onOpenDocument: (DocId, String) -> Unit = { _, _ -> },
     private val autosaveDebounce: Duration = Duration.ofMillis(500),
 ) {
@@ -219,7 +211,6 @@ public class NoteTabState(
                 autosaveScope = scope,
             )
         loading = false
-        watchFirstEdit()
     }
 
     /**
@@ -247,21 +238,6 @@ public class NoteTabState(
         // elsewhere (OBJECT_LIFECYCLE_SPEC.md N7). A chat or attachment body is
         // not writable; that throw lands in `EditorState`'s save error state.
         vaultRepository.replaceBody(docId, body)
-    }
-
-    /**
-     * A real user edit flips [EditorState.autosaveStatus] away from `IDLE`
-     * (see that class's `onValueChange` — a no-op cursor move never does
-     * this). The very first such transition after [load] is exactly "first
-     * edit" per the plan's pin semantics.
-     */
-    private fun watchFirstEdit() {
-        scope.launch {
-            snapshotFlow { editorState.autosaveStatus.value }
-                .filter { it != AutosaveStatus.IDLE }
-                .first()
-            onPinRequested()
-        }
     }
 
     /**

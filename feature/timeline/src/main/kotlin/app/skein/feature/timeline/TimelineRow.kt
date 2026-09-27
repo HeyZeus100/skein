@@ -1,7 +1,7 @@
 package app.skein.feature.timeline
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.combinedClickable
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -27,8 +27,7 @@ import app.skein.core.model.DocumentKind
 
 /**
  * One timeline row (plan `E6.I7`): kind glyph, title, stripped body
- * preview, persona chip, relative time. Single tap and long press are
- * routed separately so the host can map them to preview vs. pinned tabs.
+ * preview, persona chip, relative time. A tap opens the entry.
  */
 @Composable
 internal fun TimelineRow(
@@ -36,7 +35,6 @@ internal fun TimelineRow(
     personaName: String?,
     relativeTime: String,
     onClick: () -> Unit,
-    onLongClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
     val preview = remember(document.bodyMd) { previewOf(document.bodyMd) }
@@ -44,7 +42,7 @@ internal fun TimelineRow(
         modifier =
             modifier
                 .fillMaxWidth()
-                .combinedClickable(onClick = onClick, onLongClick = onLongClick)
+                .clickable(onClick = onClick)
                 .padding(horizontal = 16.dp, vertical = 10.dp)
                 .testTag(TimelineTestTags.entryRow(document.id)),
         horizontalArrangement = Arrangement.spacedBy(12.dp),

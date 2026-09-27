@@ -117,10 +117,10 @@ to find each one:
 | Send button | `SEND_BUTTON_TEST_TAG` | `feature/chat/.../ChatBottomBar.kt` |
 | Stop (cancel generation) button | `CANCEL_BUTTON_TEST_TAG` | `feature/chat/.../ChatBottomBar.kt` |
 | Chat destination root | `CHAT_SCREEN_TEST_TAG` | `feature/chat/.../ChatScreen.kt` |
-| Timeline destination root | `TimelineTestTags.ROOT` | `feature/timeline/.../TimelineTestTags.kt` |
+| Knowledge list (the timeline list inside it) | `KnowledgeEntryTestTags.LIST` / `TimelineTestTags.ROOT` | `feature/editor/.../entries/KnowledgeEntries.kt` |
 | Note tab root | `NoteTabTestTags.ROOT` | `feature/editor/.../NoteTab.kt` |
 | Note editor body (the markdown text field) | `SKEIN_EDITOR_TEST_TAG` | `feature/editor/.../SkeinEditor.kt` |
-| Hamburger nav drawer | `ShellTestTags.NAV_DRAWER` | `feature/shell/.../nav/NavDrawer.kt` |
+| Navigation drawer / rail | `SkeinNavContainerTestTags` | `feature/shell/.../container/SkeinNavContainerTestTags.kt` |
 | Chat context sheet/pane | `CONTEXT_PANEL_TEST_TAG` | `feature/chat/.../ContextPanel.kt` |
 | Graph canvas | `GraphTestTags.CANVAS` | `feature/graph/.../GraphTestTags.kt` |
 | Whole shell root | `ShellTestTags.SKEIN_SHELL_ROOT` | `feature/shell/.../testing/ShellTestTags.kt` |
@@ -261,11 +261,6 @@ approximates — read it before trusting a fake's behavior in a new test.
   `InMemoryIndexStore`) and counts calls per method name (`counts`,
   `countOf("bm25")`), for asserting *how many times* a pipeline touched the
   index without the index itself growing recording behavior.
-- `RecordingTabController(delegate = null)` — records `TabController`
-  (`openPreview`/`openPinned`/`pin`/`close`/`closeOthers`/`activate`) calls
-  in order. Not a locked contract — `feature/shell`'s real `TabsState` is a
-  concrete Compose `@Stable` class `:testing` cannot depend on; this is a
-  plain-JVM action vocabulary a shell test can assert against instead.
 
 **History**: `E0.I10`–`E0.I13`/`E0.I17` (locking the real interfaces) landed
 after `E10.I1` first scaffolded `:testing`, so an earlier, pre-contract

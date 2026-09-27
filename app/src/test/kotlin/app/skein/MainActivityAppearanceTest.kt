@@ -10,8 +10,8 @@ import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.performClick
 import androidx.test.core.app.ActivityScenario
 import androidx.test.core.app.ApplicationProvider
+import app.skein.core.designsystem.theme.SkeinThemeMode
 import app.skein.feature.shell.testing.ShellTestTags
-import app.skein.feature.shell.theme.SkeinThemeMode
 import app.skein.system.AppearancePrefs
 import kotlinx.coroutines.runBlocking
 import org.junit.Assert.assertTrue

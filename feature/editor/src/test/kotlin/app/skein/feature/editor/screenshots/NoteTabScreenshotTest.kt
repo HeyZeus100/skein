@@ -1,6 +1,6 @@
 // skein-xtov.9 — "before" captures of a note tab (editor + backlinks drawer),
-// full window inside SkeinTheme — the content `:app` hands `SkeinApp`'s
-// `noteTabContent` slot, without the shell's command bar / tab strip above it.
+// full window inside SkeinTheme, without shell chrome. KnowledgeShellScreenshotTest
+// covers the same editor inside the adaptive destination panes.
 // Backlinks are hand-built in the in-memory index the way `BacklinksStateTest`
 // does (one chunk + one WIKILINK edge per linking note).
 package app.skein.feature.editor.screenshots
@@ -12,6 +12,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.onRoot
 import androidx.compose.ui.test.performClick
+import app.skein.core.designsystem.theme.SkeinTheme
 import app.skein.core.model.Document
 import app.skein.core.model.DocumentKind
 import app.skein.core.model.Edge
@@ -20,7 +21,6 @@ import app.skein.core.model.NewChunk
 import app.skein.core.model.NewDocument
 import app.skein.feature.editor.backlinks.BacklinksTestTags
 import app.skein.feature.editor.notetab.NoteTab
-import app.skein.feature.shell.theme.SkeinTheme
 import app.skein.testing.InMemoryIndexStore
 import app.skein.testing.InMemoryVaultRepository
 import app.skein.testing.ui.UxDeviceRule

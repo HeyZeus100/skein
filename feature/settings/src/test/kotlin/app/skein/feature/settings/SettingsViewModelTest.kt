@@ -1,6 +1,6 @@
 package app.skein.feature.settings
 
-import app.skein.feature.shell.theme.SkeinThemeMode
+import app.skein.core.designsystem.theme.SkeinThemeMode
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.test.runTest
 import org.junit.Assert.assertEquals

@@ -149,4 +149,5 @@ dependencies {
     androidTestImplementation(libs.androidx.test.rules)
     androidTestImplementation(libs.androidx.activity.compose)
     androidTestImplementation(project(":testing"))
+    androidTestImplementation(project(":core:vault"))
 }

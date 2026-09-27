@@ -24,6 +24,7 @@ import app.skein.core.designsystem.components.SkeinAction
 import app.skein.core.designsystem.components.SkeinNotice
 import app.skein.core.designsystem.icons.SkeinIcons
 import app.skein.core.designsystem.theme.SkeinSpacing
+import app.skein.core.model.DocId
 import app.skein.core.model.DocumentKind
 import app.skein.core.model.ImportService
 import app.skein.core.model.Retrieved
@@ -44,7 +45,6 @@ import app.skein.core.navigation.contentKey
 import app.skein.feature.chat.ChatScreen
 import app.skein.feature.chat.ContextPanel
 import app.skein.feature.chat.SendPipeline
-import app.skein.feature.chat.TabController
 import app.skein.feature.editor.autocomplete.Suggestion
 import app.skein.feature.editor.entries.KnowledgeEntryDeps
 import app.skein.feature.editor.entries.SourceEntry
@@ -179,15 +179,14 @@ private fun ChatRoute(
     val scope = rememberCoroutineScope()
     val repository = deps.repository
     // A citation or an inspector passage (§8.3 rule 2): the source opens beside the chat, or over it on one pane.
-    val sources =
+    val sources: (DocId) -> Unit =
         remember(rawId) {
-            TabController { docId, _, _ ->
+            { docId ->
                 if (chatId != null) {
                     shell.navigate { openSource(it, chatId, docId) }
                 } else {
                     scope.launch { shell.followById(repository, docId) }
                 }
-                docId
             }
         }
     val first = remember(rawId) { deps.handoff.take(rawId) }
@@ -197,7 +196,7 @@ private fun ChatRoute(
         docId = rawId,
         vaultRepository = repository,
         sendPipeline = pipeline,
-        tabController = sources,
+        onOpenSource = sources,
         wikilinkSuggest = { query -> repository.searchTitles(query).map { Suggestion(it.title) } },
         importService = deps.importService,
         initialMessage = first,
@@ -260,16 +259,11 @@ private fun ChatInspector(
         SheetPeekRow("Context · ${sourcesLabel(items.size)}", Modifier.testTag(ChatEntryTestTags.INSPECTOR_PEEK))
         return
     }
-    val sources =
-        remember(key.chatId) {
-            TabController { docId, _, _ ->
-                shell.navigate { openSource(it, key.chatId, docId) }
-                docId
-            }
-        }
+    val sources: (DocId) -> Unit =
+        remember(key.chatId) { { docId -> shell.navigate { openSource(it, key.chatId, docId) } } }
     Column(Modifier.fillMaxSize().testTag(ChatEntryTestTags.INSPECTOR)) {
         shell.EntryTopBar(key, "Context")
-        ContextPanel(items = items, tabController = sources, modifier = Modifier.fillMaxWidth())
+        ContextPanel(items = items, onOpenSource = sources, modifier = Modifier.fillMaxWidth())
     }
 }
 

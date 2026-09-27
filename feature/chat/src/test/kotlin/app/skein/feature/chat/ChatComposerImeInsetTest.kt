@@ -27,10 +27,10 @@ import androidx.compose.ui.test.onNodeWithTag
 import androidx.core.graphics.Insets
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import app.skein.core.designsystem.theme.SkeinTheme
 import app.skein.core.model.Document
 import app.skein.core.model.TokenBudget
 import app.skein.feature.shell.layout.EdgeToEdgeSurface
-import app.skein.feature.shell.theme.SkeinTheme
 import app.skein.testing.FakeRetrievalService
 import app.skein.testing.fakeVault
 import app.skein.testing.scriptedEngine
@@ -92,7 +92,7 @@ class ChatComposerImeInsetTest(
                         docId = doc.id,
                         vaultRepository = vault,
                         sendPipeline = pipeline,
-                        tabController = TabController { _, _, _ -> "tab" },
+                        onOpenSource = {},
                         wikilinkSuggest = { emptyList() },
                         modifier = insetModifier,
                     )

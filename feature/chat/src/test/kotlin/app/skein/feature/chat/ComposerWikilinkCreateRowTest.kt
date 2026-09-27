@@ -7,9 +7,9 @@ import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
 import androidx.compose.ui.test.performTextInput
+import app.skein.core.designsystem.theme.SkeinTheme
 import app.skein.core.model.Document
 import app.skein.core.model.DocumentKind
-import app.skein.feature.shell.theme.SkeinTheme
 import app.skein.testing.FakeRetrievalService
 import app.skein.testing.fakeVault
 import app.skein.testing.scriptedEngine
@@ -52,7 +52,7 @@ class ComposerWikilinkCreateRowTest {
                     docId = chat.id,
                     vaultRepository = vault,
                     sendPipeline = pipeline,
-                    tabController = TabController { _, _, _ -> "tab" },
+                    onOpenSource = {},
                     wikilinkSuggest = { emptyList() },
                 )
             }

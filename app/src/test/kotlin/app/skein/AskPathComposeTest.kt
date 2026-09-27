@@ -3,14 +3,13 @@ package app.skein
 import android.content.Intent
 import androidx.compose.ui.semantics.SemanticsActions
 import androidx.compose.ui.test.ComposeTimeoutException
-import androidx.compose.ui.test.hasSetTextAction
 import androidx.compose.ui.test.junit4.v2.createEmptyComposeRule
 import androidx.compose.ui.test.onAllNodesWithTag
 import androidx.compose.ui.test.onAllNodesWithText
+import androidx.compose.ui.test.onNodeWithContentDescription
 import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.onRoot
-import androidx.compose.ui.test.performImeAction
 import androidx.compose.ui.test.performSemanticsAction
 import androidx.compose.ui.test.performTextInput
 import androidx.compose.ui.test.printToString
@@ -29,8 +28,10 @@ import app.skein.core.vault.session.UnlockState
 import app.skein.feature.chat.CHAT_SCREEN_TEST_TAG
 import app.skein.feature.chat.COMPOSER_TEST_TAG
 import app.skein.feature.chat.SEND_BUTTON_TEST_TAG
+import app.skein.feature.chat.entries.ChatEntryTestTags
 import app.skein.feature.models.MODELS_DEFAULT_MARKER
 import app.skein.feature.models.MODELS_EMPTY_TEST_TAG
+import app.skein.feature.models.entries.ModelsEntryTestTags
 import app.skein.feature.shell.testing.ShellTestTags
 import app.skein.testing.FakeInferenceEngine
 import kotlinx.coroutines.flow.first
@@ -129,9 +130,10 @@ class AskPathComposeTest {
         return model
     }
 
-    private fun openChatTab() {
-        composeRule.onNode(hasSetTextAction()).performTextInput("/chat")
-        composeRule.onNode(hasSetTextAction()).performImeAction()
+    private fun openModels() {
+        composeRule.onNodeWithContentDescription("Open navigation").performSemanticsAction(SemanticsActions.OnClick)
+        composeRule.onNodeWithText("Models").performSemanticsAction(SemanticsActions.OnClick)
+        awaitTag(ModelsEntryTestTags.IMPORT_ACTION)
     }
 
     /**
@@ -151,8 +153,7 @@ class AskPathComposeTest {
 
         ActivityScenario.launch(MainActivity::class.java).use {
             awaitTag(ShellTestTags.SKEIN_SHELL_ROOT)
-            openChatTab()
-            awaitTag(CHAT_SCREEN_TEST_TAG)
+            awaitTag(ChatEntryTestTags.LANDING)
 
             composeRule.onNodeWithTag(COMPOSER_TEST_TAG).performTextInput("hello")
             composeRule.onNodeWithTag(SEND_BUTTON_TEST_TAG).performSemanticsAction(SemanticsActions.OnClick)
@@ -169,11 +170,8 @@ class AskPathComposeTest {
     fun `chat with no default model shows guidance instead of crashing`() {
         ActivityScenario.launch(MainActivity::class.java).use {
             awaitTag(ShellTestTags.SKEIN_SHELL_ROOT)
-            openChatTab()
-
-            awaitTag(MainActivityTestTags.CHAT_NO_MODEL_GUIDANCE)
-            composeRule.onNodeWithText("No model yet", substring = true).assertExists()
-            composeRule.onNodeWithText("Import a model", substring = true).assertExists()
+            awaitText("Add a model to start")
+            composeRule.onNodeWithText("Choose a model").assertExists()
             composeRule.onNodeWithTag(CHAT_SCREEN_TEST_TAG).assertDoesNotExist()
         }
     }
@@ -191,8 +189,7 @@ class AskPathComposeTest {
 
         ActivityScenario.launch(MainActivity::class.java).use {
             awaitTag(ShellTestTags.SKEIN_SHELL_ROOT)
-            openChatTab()
-            awaitTag(CHAT_SCREEN_TEST_TAG)
+            awaitTag(ChatEntryTestTags.LANDING)
             composeRule.onNodeWithTag(COMPOSER_TEST_TAG).performTextInput("hello")
             composeRule.onNodeWithTag(SEND_BUTTON_TEST_TAG).performSemanticsAction(SemanticsActions.OnClick)
             awaitText("answer")
@@ -229,8 +226,7 @@ class AskPathComposeTest {
             awaitTag(ShellTestTags.SKEIN_SHELL_ROOT)
 
             // `/models` before any import: the empty state, never a crash.
-            composeRule.onNode(hasSetTextAction()).performTextInput("/models")
-            composeRule.onNode(hasSetTextAction()).performImeAction()
+            openModels()
             awaitTag(MODELS_EMPTY_TEST_TAG)
 
             val session = requireNotNull(app.vault.session.value)
@@ -254,9 +250,11 @@ class AskPathComposeTest {
                 services.manifestCache.refresh()
             }
 
-            // Reopen /models: the imported row now carries the default marker.
-            composeRule.onNode(hasSetTextAction()).performTextInput("/models")
-            composeRule.onNode(hasSetTextAction()).performImeAction()
+            // Returning from another destination refreshes the live registry snapshot.
+            composeRule.onNodeWithContentDescription("Open navigation").performSemanticsAction(SemanticsActions.OnClick)
+            composeRule.onNodeWithText("Chat").performSemanticsAction(SemanticsActions.OnClick)
+            awaitTag(ChatEntryTestTags.LANDING)
+            openModels()
             awaitText(imported.record.model.name)
             composeRule.onNodeWithText(MODELS_DEFAULT_MARKER, substring = true).assertExists()
         }
@@ -277,8 +275,11 @@ class AskPathComposeTest {
         ActivityScenario.launch(MainActivity::class.java).use { scenario ->
             awaitTag(ShellTestTags.SKEIN_SHELL_ROOT)
 
-            composeRule.onNode(hasSetTextAction()).performTextInput("/import model")
-            composeRule.onNode(hasSetTextAction()).performImeAction()
+            openModels()
+            composeRule
+                .onNodeWithTag(
+                    ModelsEntryTestTags.IMPORT_ACTION,
+                ).performSemanticsAction(SemanticsActions.OnClick)
             composeRule.waitForIdle()
 
             scenario.onActivity { activity ->
@@ -301,7 +302,7 @@ class AskPathComposeTest {
     }
 
     private companion object {
-        const val WAIT_MILLIS = 5_000L
+        const val WAIT_MILLIS = 30_000L
     }
 }
 

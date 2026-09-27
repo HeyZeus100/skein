@@ -6,7 +6,11 @@ import androidx.compose.ui.test.isDialog
 import androidx.compose.ui.test.junit4.createAndroidComposeRule
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
-import app.skein.feature.shell.theme.SkeinTheme
+import app.skein.core.designsystem.theme.SkeinTheme
+import app.skein.core.navigation.Destination
+import app.skein.feature.models.entries.ModelsEntryDeps
+import app.skein.feature.models.entries.ModelsHost
+import app.skein.feature.shell.host.SkeinShellState
 import com.github.takahirom.roborazzi.ExperimentalRoborazziApi
 import com.github.takahirom.roborazzi.RoborazziActivity
 import com.github.takahirom.roborazzi.registerRoborazziActivityToRobolectricIfNeeded
@@ -20,7 +24,7 @@ import org.robolectric.annotation.Config
 
 /**
  * LC-27 (Stage H, skein-xtov.22): `/models` Delete used to delete on one tap.
- * It now asks, in product language, and only [ModelsScreen]'s `onDelete`
+ * It now asks, in product language, and only [ModelsEntryDeps]'s `onDelete`
  * fires once the user confirms.
  */
 @OptIn(ExperimentalRoborazziApi::class)
@@ -49,11 +53,11 @@ class ModelDeleteConfirmationTest {
                 isDefault = true,
                 isLoaded = false,
             )
-        composeRule.setContent {
-            SkeinTheme {
-                ModelsScreen(listOf(model), onSetDefault = {}, onDelete = { deleted += it }, onDismiss = {})
-            }
-        }
+        lateinit var shell: SkeinShellState
+        val deps = ModelsEntryDeps(listOf(model), onSetDefault = {}, onDelete = { deleted += it })
+        composeRule.setContent { SkeinTheme { ModelsHost(deps, size = null) { shell = it } } }
+        composeRule.runOnIdle { shell.navigate { switchTo(it, Destination.MODELS) } }
+        composeRule.waitForIdle()
         composeRule.onNodeWithText("Delete").performClick()
     }
 

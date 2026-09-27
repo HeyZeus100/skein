@@ -14,7 +14,6 @@ import androidx.lifecycle.Lifecycle
 import app.skein.core.model.Document
 import app.skein.core.model.DocumentKind
 import app.skein.core.model.NewDocument
-import app.skein.core.vault.session.LockObserverPriority
 import app.skein.feature.editor.SKEIN_EDITOR_TEST_TAG
 import app.skein.testing.InMemoryIndexStore
 import app.skein.testing.InMemoryVaultRepository
@@ -29,6 +28,7 @@ import org.junit.runner.RunWith
 import org.robolectric.RobolectricTestRunner
 import org.robolectric.Shadows.shadowOf
 import org.robolectric.annotation.Config
+import java.time.Duration
 
 /**
  * UX-P0-11 / K-P0-9: an edit still inside the 500 ms autosave debounce is
@@ -91,11 +91,10 @@ class EditorFlushTest {
             val editor = state.editorState
             editor.onValueChange(TextFieldValue(editor.source + "typed", editor.value.selection))
 
-            val observer = FlushBeforeLock(state)
-            observer.onLocking(epoch = 1, budgetMillis = 500)
+            // The handle NoteTab hands `registerFlush`: the shell's session pending writer runs it at
+            // LOCKING, while the vault is still open (SessionEntryStores.onLocking).
+            state.flush(Duration.ofMillis(500))
 
-            // LOW runs while the vault is still open: `UnlockManager` finishes it before the TEARDOWN close.
-            assertEquals(LockObserverPriority.LOW, observer.priority)
             assertEquals("typed", savedBody())
         }
 

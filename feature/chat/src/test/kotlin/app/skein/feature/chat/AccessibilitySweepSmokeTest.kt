@@ -7,7 +7,7 @@ import androidx.activity.ComponentActivity
 import androidx.compose.ui.test.junit4.createAndroidComposeRule
 import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.performTextInput
-import app.skein.feature.shell.theme.SkeinTheme
+import app.skein.core.designsystem.theme.SkeinTheme
 import app.skein.testing.ui.ClickRecorder
 import app.skein.testing.ui.assertEveryActionIsNamed
 import app.skein.testing.ui.assertNoDeadControls

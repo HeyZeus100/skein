@@ -8,8 +8,8 @@ import androidx.compose.ui.test.captureToImage
 import androidx.compose.ui.test.junit4.createAndroidComposeRule
 import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.onNodeWithText
-import app.skein.feature.shell.theme.SkeinTheme
-import app.skein.feature.shell.theme.SkeinThemeMode
+import app.skein.core.designsystem.theme.SkeinTheme
+import app.skein.core.designsystem.theme.SkeinThemeMode
 import org.junit.Assert.assertTrue
 import org.junit.Rule
 import org.junit.Test

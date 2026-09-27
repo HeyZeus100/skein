@@ -58,13 +58,13 @@ import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.unit.dp
 import app.skein.core.designsystem.icons.SkeinIcons
+import app.skein.core.designsystem.theme.LocalSkeinTokens
 import app.skein.feature.editor.autocomplete.AutocompleteHost
 import app.skein.feature.editor.autocomplete.Suggestion
 import app.skein.feature.editor.autocomplete.WikilinkAutocompletePopup
 import app.skein.feature.editor.autocomplete.rememberWikilinkAutocompleteState
 import app.skein.feature.editor.autocomplete.wikilinkAutocompleteKeyEvents
 import app.skein.feature.shell.input.SecureBasicTextField
-import app.skein.feature.shell.theme.LocalSkeinTokens
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.launch
 import java.io.InputStream

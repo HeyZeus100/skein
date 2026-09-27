@@ -2,7 +2,7 @@ package app.skein.system
 
 import android.content.Context
 import androidx.test.core.app.ApplicationProvider
-import app.skein.feature.shell.theme.SkeinThemeMode
+import app.skein.core.designsystem.theme.SkeinThemeMode
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.runBlocking
 import org.junit.Assert.assertEquals

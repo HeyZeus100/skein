@@ -1,8 +1,6 @@
 // skein-6as (E6.I8). State holder for `ChatScreen` — deliberately a plain
 // `@Stable` class, not an `androidx.lifecycle.ViewModel`, matching
-// `NavState`/`TabsState`/`SettingsViewModel` (`:feature:shell`/
-// `:feature:settings`) — none of those use the AAC ViewModel either; see
-// `SettingsViewModel`'s own doc comment for the precedent this follows.
+// `SettingsViewModel` in `:feature:settings`; its entry owns its lifetime.
 package app.skein.feature.chat
 
 import androidx.compose.runtime.Stable
@@ -14,7 +12,6 @@ import app.skein.core.model.ImportService
 import app.skein.core.model.InferenceException
 import app.skein.core.model.Message
 import app.skein.core.model.PersonaId
-import app.skein.core.model.Retrieved
 import app.skein.core.model.Role
 import app.skein.core.model.SkeinLog
 import app.skein.core.model.VaultRepository
@@ -74,13 +71,10 @@ public enum class ChatBanner { NONE, SERVICE_DIED, ENGINE_ERROR }
  * [SendPipeline]'s streaming/outcome state into Compose state (via
  * [turnState] — see `ChatTurnState.kt`), and forwards UI gestures
  * (send/cancel/retry/citation tap/attach) to [sendPipeline] /
- * [tabController] / [importService].
+ * [onOpenSource] / [importService].
  *
- * @param tabController the seam this module defines for the shared tab
- *   system (`:feature:shell`'s `TabsState` has no interface a fake can
- *   implement yet — see `app.skein.testing.RecordingTabController`'s own
- *   header). The wiring bead (`skein-whg8`) adapts the real `TabsState` to
- *   this interface.
+ * @param onOpenSource opens a cited document (the shell's opened source,
+ *   ADAPTIVE_LAYOUT_SPEC.md §8.2 `ChatSourceKey`).
  * @param importService nullable so a host that hasn't wired attachment
  *   import yet still renders a working chat screen (📎 disabled).
  * @param currentPersonaId read once per [send] call; `null` means "use
@@ -93,7 +87,7 @@ public class ChatViewModel(
     private val chatDocId: DocId,
     private val vaultRepository: VaultRepository,
     private val sendPipeline: SendPipeline,
-    private val tabController: TabController,
+    private val onOpenSource: (DocId) -> Unit,
     private val scope: CoroutineScope,
     private val importService: ImportService? = null,
     private val currentPersonaId: () -> PersonaId? = { null },
@@ -131,13 +125,6 @@ public class ChatViewModel(
             }
         }
 
-    var contextPanelOpen: Boolean by mutableStateOf(false)
-        private set
-
-    /** The last turn's [Retrieved] offer, with scores and `recalledBy` — spec §8.4's context panel. */
-    var contextItems: List<Retrieved> by mutableStateOf(emptyList())
-        private set
-
     private var expandedCitations: Set<Pair<String, Int>> by mutableStateOf(emptySet())
     private var tappedOnce: Set<Pair<String, Int>> = emptySet()
     private var lastFailedText: String? = null
@@ -156,12 +143,6 @@ public class ChatViewModel(
                     val projected = ArrayList<ChatMessageUi>(list.size)
                     for (message in list) projected += toUi(message)
                     messages = projected
-                }
-            }
-        jobs +=
-            scope.launch {
-                sendPipeline.lastOutcome.collect { outcome ->
-                    if (outcome != null) contextItems = outcome.retrieved
                 }
             }
     }
@@ -272,10 +253,6 @@ public class ChatViewModel(
         send(text)
     }
 
-    public fun toggleContextPanel() {
-        contextPanelOpen = !contextPanelOpen
-    }
-
     /**
      * A citation chip tap (spec §8.4). First tap opens the source as a
      * preview tab; a second tap on the same chip additionally expands its
@@ -285,7 +262,7 @@ public class ChatViewModel(
         messageId: String,
         citation: ChatCitation,
     ) {
-        tabController.openPreview(citation.docId, citation.label, ChatTabKind.NOTE)
+        onOpenSource(citation.docId)
         val key = messageId to citation.marker
         expandedCitations =
             if (key in tappedOnce) {

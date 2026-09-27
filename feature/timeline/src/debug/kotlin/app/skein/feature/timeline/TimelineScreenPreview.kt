@@ -1,5 +1,4 @@
-// skein-2qv (E6.I7): design-time `@Preview`s for `TimelineScreen` and
-// `TimelineRail`, seeded with `InMemoryVaultRepository` +
+// skein-2qv (E6.I7): design-time `@Preview`s for `TimelineScreen`, seeded with `InMemoryVaultRepository` +
 // `SyntheticVault.Preset.MEDIUM` (500 documents) so Android Studio's
 // preview panel renders realistic content without an emulator.
 //
@@ -35,8 +34,6 @@ private fun TimelineScreen_MediumVault_Compact() {
         TimelineScreen(
             state = state,
             onEntryClick = {},
-            onNewNote = {},
-            onNewChat = {},
             modifier = Modifier.fillMaxSize(),
         )
     }
@@ -50,9 +47,6 @@ private fun TimelineScreen_MediumVault_Expanded() {
         TimelineScreen(
             state = state,
             onEntryClick = {},
-            onNewNote = {},
-            onNewChat = {},
-            expanded = true,
             modifier = Modifier.fillMaxSize(),
         )
     }
@@ -64,15 +58,6 @@ private fun TimelineScreen_Empty() {
     val state = rememberPreviewState()
     Surface(color = MaterialTheme.colorScheme.background) {
         TimelineScreen(state = state, onEntryClick = {}, modifier = Modifier.fillMaxSize())
-    }
-}
-
-@Preview(showBackground = true, widthDp = 40, heightDp = 720, name = "Rail")
-@Composable
-private fun TimelineRail_MediumVault() {
-    val state = rememberPreviewState { SyntheticVault.seed(it, size = SyntheticVault.Preset.MEDIUM) }
-    Surface(color = MaterialTheme.colorScheme.surface) {
-        TimelineRail(state = state, onEntryClick = {})
     }
 }
 

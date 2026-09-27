@@ -15,6 +15,7 @@ import androidx.compose.ui.test.junit4.createAndroidComposeRule
 import androidx.compose.ui.test.onRoot
 import androidx.fragment.app.FragmentActivity
 import androidx.test.core.app.ApplicationProvider
+import app.skein.core.designsystem.theme.SkeinTheme
 import app.skein.core.vault.key.RewrapResult
 import app.skein.core.vault.key.SetupResult
 import app.skein.core.vault.key.UnlockResult
@@ -23,7 +24,6 @@ import app.skein.core.vault.session.UnlockManager
 import app.skein.feature.shell.auth.BiometricUnlockScreen
 import app.skein.feature.shell.auth.VaultSetupScreen
 import app.skein.feature.shell.layout.EdgeToEdgeSurface
-import app.skein.feature.shell.theme.SkeinTheme
 import app.skein.testing.ui.UxDeviceRule
 import app.skein.testing.ui.UxSpec
 import app.skein.testing.ui.captureUx

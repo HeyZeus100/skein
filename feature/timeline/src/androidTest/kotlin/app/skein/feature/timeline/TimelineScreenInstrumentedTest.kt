@@ -4,18 +4,11 @@ import androidx.activity.ComponentActivity
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
-import androidx.compose.ui.semantics.SemanticsProperties
-import androidx.compose.ui.semantics.getOrNull
-import androidx.compose.ui.test.SemanticsMatcher
-import androidx.compose.ui.test.assertCountEquals
 import androidx.compose.ui.test.assertIsDisplayed
-import androidx.compose.ui.test.hasText
 import androidx.compose.ui.test.junit4.createAndroidComposeRule
-import androidx.compose.ui.test.longClick
 import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
-import androidx.compose.ui.test.performTouchInput
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import app.skein.core.model.Document
 import app.skein.core.model.DocumentKind
@@ -37,7 +30,7 @@ import org.junit.runner.RunWith
 import java.util.concurrent.atomic.AtomicLong
 
 /**
- * On-device Compose UI test for [TimelineScreen] and [TimelineRail]. Runs on
+ * On-device Compose UI test for [TimelineScreen]. Runs on
  * an emulator/device — no Robolectric — matching `:feature:editor`'s
  * `SkeinEditorInstrumentedTest`. bd `skein-k3b2` tracks the CI emulator
  * lane that will run this; until then it is compile-only.
@@ -126,37 +119,14 @@ class TimelineScreenInstrumentedTest {
     }
 
     @Test
-    fun tap_and_long_press_route_to_their_callbacks() {
+    fun a_tap_routes_to_its_callback() {
         val vault = seededVault()
         var clicked: Document? = null
-        var longPressed: Document? = null
-        showTimeline(vault.repo, onEntryClick = { clicked = it }, onEntryLongPress = { longPressed = it })
+        showTimeline(vault.repo, onEntryClick = { clicked = it })
 
         composeRule.onNodeWithTag(TimelineTestTags.entryRow(vault.alpha.id)).performClick()
         composeRule.waitForIdle()
         assertEquals(vault.alpha.id, clicked?.id)
-        assertNull(longPressed)
-
-        composeRule.onNodeWithTag(TimelineTestTags.entryRow(vault.beta.id)).performTouchInput { longClick() }
-        composeRule.waitForIdle()
-        assertEquals(vault.beta.id, longPressed?.id)
-    }
-
-    @Test
-    fun rail_renders_at_most_twenty_glyph_rows_and_no_titles() {
-        val repo = InMemoryVaultRepository(clock = ticking())
-        runBlocking { repeat(25) { repo.createDocument(note("Rail doc $it")) } }
-        composeRule.setContent {
-            MaterialTheme {
-                val scope = rememberCoroutineScope()
-                val state = remember { TimelineState(repo = repo, scope = scope) }
-                TimelineRail(state = state, onEntryClick = {})
-            }
-        }
-        composeRule.waitForIdle()
-
-        composeRule.onAllNodes(hasTestTagPrefix(TimelineTestTags.RAIL_ENTRY_PREFIX)).assertCountEquals(20)
-        composeRule.onAllNodes(hasText("Rail doc", substring = true)).assertCountEquals(0)
     }
 
     // ------------------------------------------------------------------
@@ -193,7 +163,6 @@ class TimelineScreenInstrumentedTest {
     private fun showTimeline(
         repo: InMemoryVaultRepository,
         onEntryClick: (Document) -> Unit = {},
-        onEntryLongPress: (Document) -> Unit = {},
     ): TimelineState {
         var captured: TimelineState? = null
         composeRule.setContent {
@@ -207,7 +176,7 @@ class TimelineScreenInstrumentedTest {
                             personaSource = flowOf(PERSONAS),
                         ).also { captured = it }
                     }
-                TimelineScreen(state = state, onEntryClick = onEntryClick, onEntryLongPress = onEntryLongPress)
+                TimelineScreen(state = state, onEntryClick = onEntryClick)
             }
         }
         composeRule.waitForIdle()
@@ -236,11 +205,6 @@ class TimelineScreenInstrumentedTest {
                     buildJsonObject { put(FrontmatterKeys.TAGS, JsonArray(tags.map(::JsonPrimitive))) }
                 },
         )
-
-    private fun hasTestTagPrefix(prefix: String): SemanticsMatcher =
-        SemanticsMatcher("testTag starts with '$prefix'") { node ->
-            node.config.getOrNull(SemanticsProperties.TestTag)?.startsWith(prefix) == true
-        }
 
     private companion object {
         val PERSONAS =

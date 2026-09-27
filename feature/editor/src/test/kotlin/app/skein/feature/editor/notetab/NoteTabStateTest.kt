@@ -90,43 +90,6 @@ class NoteTabStateTest {
         }
 
     @Test
-    fun `typing in the editor requests a pin exactly once`() =
-        runTest {
-            val repo = newRepo()
-            val doc = repo.note("My Note", body = "original")
-            var pinCount = 0
-            val state =
-                NoteTabState(doc.id, repo, InMemoryIndexStore(), backgroundScope, onPinRequested = { pinCount++ })
-            runCurrent()
-
-            state.editorState.onValueChange(TextFieldValue("a"))
-            advanceTimeBy(600)
-            runCurrent()
-            state.editorState.onValueChange(TextFieldValue("ab"))
-            advanceTimeBy(600)
-            runCurrent()
-
-            assertEquals(1, pinCount)
-        }
-
-    @Test
-    fun `a cursor-only change never requests a pin`() =
-        runTest {
-            val repo = newRepo()
-            val doc = repo.note("My Note", body = "original")
-            var pinCount = 0
-            val state =
-                NoteTabState(doc.id, repo, InMemoryIndexStore(), backgroundScope, onPinRequested = { pinCount++ })
-            runCurrent()
-
-            state.editorState.onValueChange(state.editorState.value.copy(selection = state.editorState.value.selection))
-            advanceTimeBy(600)
-            runCurrent()
-
-            assertEquals(0, pinCount)
-        }
-
-    @Test
     fun `flush persists a pending edit immediately without waiting for the debounce`() =
         runTest {
             val repo = newRepo()

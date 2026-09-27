@@ -60,16 +60,25 @@ class VaultResetClearsNavStateTest {
         chat.performClick()
         chat.assert(hasText("vm=2 t2=1"))
 
+        // Search is transient: both an ordinary lock and a reset must close it.
+        composeRule.runOnIdle { shell.openSearch() }
+        assertTrue(shell.searchOpen)
+
         // The reset screen is reachable only from the unlock screen: the vault is locked first.
         runBlocking { manager.lockAndAwait(LockReason.USER_REQUESTED) }
         open.value = false
         composeRule.waitForIdle()
         assertTrue("the stack and its T2 are saved across a lock", savedStateNames(CHAT_A.value))
+        assertFalse("search survives a lock", shell.searchOpen)
 
-        composeRule.runOnIdle { shell.resetForNewVault() }
+        composeRule.runOnIdle {
+            shell.openSearch()
+            shell.resetForNewVault()
+        }
         composeRule.waitForIdle()
 
         assertEquals(SkeinNavigationState.initial(), shell.nav)
+        assertFalse("search survives a reset", shell.searchOpen)
         assertEquals(0, shell.stores.size)
         assertFalse("an id of the reset vault is still in the saved state", savedStateNames(CHAT_A.value))
 
