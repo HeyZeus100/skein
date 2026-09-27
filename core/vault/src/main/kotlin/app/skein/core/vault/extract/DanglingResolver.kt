@@ -27,7 +27,10 @@
 // pass. The bead does not require an inverse ("un-resolve" a real edge back
 // to a sentinel on delete or retitle-away), so this file does not implement
 // one — see `skein-ax9.1`'s close reason for this explicitly noted
-// follow-up.
+// follow-up. That inverse now lives in the repository's own delete and
+// rename transactions (`VaultRepository.deleteDocument`/`renameDocument`,
+// OBJECT_LIFECYCLE_SPEC.md §3.4), which also re-queue the document that
+// answers the old title so this resolver re-attaches the links.
 //
 // Wiring this into `IngestWorker`'s `created`-ingest step (`E5.I10`,
 // bd `skein-7v3`) is out of this bead's scope; it doesn't exist yet.
