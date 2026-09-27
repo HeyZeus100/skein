@@ -84,9 +84,28 @@
             "density": both Fold panels share one densityDpi (measured).
             ManifestPolicyTest pins this exact set.
         -->
+        <!--
+            AL-03 (docs/ux/ADAPTIVE_LAYOUT_SPEC.md §6.7, §12; skills
+            assessment §6.4 "override 3"): declares `adjustResize` so the
+            IME's inset is dispatched to the window at all — without it the
+            platform default (`adjustPan` pre-`decorFitsSystemWindows=false`,
+            effectively unspecified once `enableEdgeToEdge()` turns on
+            edge-to-edge) never resizes the window, so Compose's own
+            `WindowInsets.ime`/`safeDrawing` never carries the keyboard's
+            height and the shell root's `.windowInsetsPadding(WindowInsets.
+            safeDrawing)` (`SkeinApp.kt`) has nothing to react to: the
+            composer stays put and the keyboard covers it. With
+            `adjustResize`, the window shrinks and Compose's own inset
+            plumbing (already wired at the shell root; §6.2 documents the
+            AL-11 follow-up that moves IME ownership onto the composer
+            itself) does the rest — no other change needed for this bead.
+            Verified on-device against Test D on both Fold displays
+            (skein-xtov.24.2); pinned by ManifestPolicyTest.
+        -->
         <activity
             android:name="app.skein.MainActivity"
             android:configChanges="screenSize|smallestScreenSize|screenLayout|orientation|keyboard|keyboardHidden|navigation"
+            android:windowSoftInputMode="adjustResize"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

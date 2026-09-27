@@ -345,6 +345,26 @@ class ManifestPolicyTest {
         )
     }
 
+    // --- AL-03: windowSoftInputMode (docs/ux/ADAPTIVE_LAYOUT_SPEC.md §6.7, §12) ---
+
+    @Test
+    fun `MainActivity declares adjustResize so the IME inset reaches Compose`() {
+        val activity =
+            requireNotNull(
+                applicationElement()
+                    .childElements("activity")
+                    .firstOrNull { it.getAttributeNS(ANDROID_NS, "name") == "app.skein.MainActivity" },
+            ) { "app.skein.MainActivity not declared in the source manifest" }
+
+        assertEquals(
+            "skein-xtov.24.2 (AL-03): without adjustResize the window never resizes for the IME, " +
+                "so SkeinApp's shell-root safeDrawing padding (which already unions ime()) has nothing " +
+                "to react to and the composer stays under the keyboard",
+            "adjustResize",
+            activity.getAttributeNS(ANDROID_NS, "windowSoftInputMode"),
+        )
+    }
+
     // --- Backup / extraction posture (raw manifest parse) -------------------
 
     @Test
