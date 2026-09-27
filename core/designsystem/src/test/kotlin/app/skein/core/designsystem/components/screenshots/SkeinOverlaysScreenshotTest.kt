@@ -26,10 +26,16 @@
 // field inside a Dialog window.
 package app.skein.core.designsystem.components.screenshots
 
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.remember
+import androidx.compose.ui.Modifier
 import androidx.compose.ui.test.onRoot
+import androidx.compose.ui.unit.dp
 import app.skein.core.designsystem.components.SkeinDestructiveDialog
 import app.skein.core.designsystem.components.SkeinSnackbarHost
 import app.skein.core.designsystem.theme.SkeinTheme
@@ -80,7 +86,11 @@ class SkeinOverlaysScreenshotTest(
         composeRule.setContent {
             SkeinTheme {
                 val hostState = remember { SnackbarHostState() }
-                SkeinSnackbarHost(hostState)
+                // Opaque page behind the snackbar: with nothing behind it the
+                // rounded corners are semi-transparent pixels whose alpha
+                // blending differs between the Mac and Linux renderers
+                // (skein-xtov.23.7 goldens failed only at the corners on CI).
+                OnPage { SkeinSnackbarHost(hostState) }
                 LaunchedEffect(Unit) {
                     hostState.showSnackbar(message = "Deleted “Skein UX redesign”", actionLabel = "Undo")
                 }
@@ -95,12 +105,17 @@ class SkeinOverlaysScreenshotTest(
         composeRule.setContent {
             SkeinTheme {
                 val hostState = remember { SnackbarHostState() }
-                SkeinSnackbarHost(hostState)
+                OnPage { SkeinSnackbarHost(hostState) }
                 LaunchedEffect(Unit) { hostState.showSnackbar(message = "Couldn't export “Fold launch plan”") }
             }
         }
         composeRule.waitForIdle()
         composeRule.onRoot().captureUx(spec, "snackbar-no-action")
+    }
+
+    @androidx.compose.runtime.Composable
+    private fun OnPage(content: @androidx.compose.runtime.Composable () -> Unit) {
+        Box(Modifier.background(MaterialTheme.colorScheme.background).padding(8.dp)) { content() }
     }
 
     companion object {
