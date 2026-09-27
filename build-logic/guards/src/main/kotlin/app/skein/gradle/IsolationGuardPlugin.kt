@@ -30,9 +30,12 @@ import org.gradle.api.artifacts.ProjectDependency
  *    `:core:ipc`, `:core:model`, `:core:verify`, the Kotlin stdlib/coroutines,
  *    and (embedder only) `onnxruntime-android` — never `:core:inference`,
  *    `:core:vault`, `:core:security`, or `:app`.
+ *  - `:core:navigation` stays pure Kotlin/JVM with no project dependencies at
+ *    all (skein-xtov.24.5, `docs/ux/ADAPTIVE_LAYOUT_SPEC.md` §8.1): features
+ *    depend on its keys, so it must never reach a feature module or the vault.
  *
- * Apply to `:core:model`, `:core:agent`, `:core:verify`, `:testing`,
- * `:testing-fakes`, `:inference-service`, and `:embedder-service`. The
+ * Apply to `:core:model`, `:core:agent`, `:core:verify`, `:core:navigation`,
+ * `:testing`, `:testing-fakes`, `:inference-service`, and `:embedder-service`. The
  * allowlist is keyed by [Project.getPath] rather than exposed as a DSL
  * extension because the isolated module set is a fixed, non-negotiable part
  * of the architecture (spec §2.6, plan §2.4), not something a module author
@@ -99,7 +102,15 @@ class IsolationGuardPlugin : Plugin<Project> {
         private val MAIN_DEPENDENCY_CONFIGURATIONS = listOf("implementation", "api", "compileOnly", "runtimeOnly")
 
         private val PURE_JVM_MODULES =
-            setOf(":core:model", ":core:markdown", ":core:agent", ":core:verify", ":testing", ":testing-fakes")
+            setOf(
+                ":core:model",
+                ":core:markdown",
+                ":core:agent",
+                ":core:verify",
+                ":core:navigation",
+                ":testing",
+                ":testing-fakes",
+            )
 
         private val COMMON_SERVICE_PROJECT_ALLOWLIST = setOf(":core:ipc", ":core:model", ":core:verify")
         private val COMMON_SERVICE_EXTERNAL_ALLOWLIST = setOf("org.jetbrains.kotlin", "org.jetbrains.kotlinx")
@@ -112,6 +123,11 @@ class IsolationGuardPlugin : Plugin<Project> {
             ":embedder-service" to ServiceAllowlist(
                 projectPaths = COMMON_SERVICE_PROJECT_ALLOWLIST,
                 externalGroups = COMMON_SERVICE_EXTERNAL_ALLOWLIST + "com.microsoft.onnxruntime",
+            ),
+            // Not a service, same mechanism: no project dependencies, stdlib only.
+            ":core:navigation" to ServiceAllowlist(
+                projectPaths = emptySet(),
+                externalGroups = setOf("org.jetbrains.kotlin"),
             ),
         )
     }

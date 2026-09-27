@@ -61,7 +61,7 @@ abstract class IsolationGuardTask : DefaultTask() {
         val allowedProjects = allowedProjectPaths.getOrElse(emptySet())
         (declaredProjectDependencies.getOrElse(emptySet()) - allowedProjects).sorted().forEach { path ->
             violations += "GUARD VIOLATION: module '$module' declares a forbidden project dependency on " +
-                "'$path'. Isolated service modules may depend only on ${allowedProjects.sorted()}."
+                "'$path'. Isolated modules may depend only on ${allowedProjects.sorted()}."
         }
 
         val allowedGroups = allowedExternalGroups.getOrElse(emptySet())

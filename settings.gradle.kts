@@ -33,6 +33,7 @@ include(
     ":core:markdown",
     ":core:export",
     ":core:designsystem",
+    ":core:navigation",
     ":inference-service",
     ":embedder-service",
     ":feature:shell",

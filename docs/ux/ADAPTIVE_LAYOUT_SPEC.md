@@ -1197,6 +1197,12 @@ The stack is identical in every mode. Only the rendering differs, so a fold neve
 
 The metadata helper and parameter names are those of `adaptive-navigation3` 1.3.0 (`ListDetailSceneStrategy.kt` L236–261, per `ANDROID_ADAPTIVE_SAMPLES.md` §4.2). The spike confirms the exact names, including how a scene key is passed.
 
+**As built (AL-06, 2026-09-26), in `:core:navigation`.** Where this differs from the table above, the module is authoritative:
+- **Not `@Serializable`, not `NavKey`.** The module is pure Kotlin/JVM with no dependencies. `NavKey` exists only for `rememberNavBackStack`/`NavKeySerializer`, which §8.9 rules out, and `NavDisplay` accepts any key type, so leaving it off makes that misuse a compile error. `SkeinNavCodec` is a hand-written total codec to a Bundle-shaped tree (maps, lists, `String` and `Int` leaves only) whose every string passes `SkeinNavCodec.isAllowedString`.
+- **Fields.** `NewChatKey(draftId)` carries a draft id (M9b keys the draft row by it). `KnowledgeHomeKey` has no filter; the chips are T2 enums (§7.3 row 19). Anchors are non-negative `Int` byte offsets (M1c). `PersonaKey` is not built (hidden until `skein-3iw`). Each key's pane role and scene key are `SkeinKey.role` and `SkeinKey.destination`.
+- **Foreign ids.** A non-canonical id (`tag:`/`title:`/`entity:` graph nodes, model filename slugs, foreign frontmatter ids) opens as a `TransientKey` whose raw id stays in memory; it is never saved (M1a, M2a).
+- **`contentKey`** is `tag/uuid…`, identity only (no anchor, no inspector focus). It is unique within a stack, not across stacks: the same note can be in Knowledge and, followed, in Graph.
+
 ### 8.3 Navigator rules (pure Kotlin, unit-tested)
 
 1. **Go to** (from the palette, drawer history, "Manage models ›", a deep link, "Open in Graph", or a chat row in Connections) **switches to the object's home destination** and makes the object that stack's detail. Chat and new chat go to Chat. Note and file go to Knowledge. Model goes to Models. Setting goes to Settings.
