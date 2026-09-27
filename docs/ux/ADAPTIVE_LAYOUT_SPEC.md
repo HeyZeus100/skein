@@ -1687,6 +1687,10 @@ These are refinements, not reversals. Each is flagged so that the owner can over
 
 ---
 
+## 13a. Reconciled with DESIGN_SYSTEM.md (2026-09-26, during AL-04)
+
+Where this spec and the design system gave different numbers, the design-system tokens in `SkeinSize` are authoritative and the window decision function (`SkeinWindowLayout.kt`) reads them: extra pane 320 dp on Expanded and 360 dp on Large (`extraPane` / `extraPaneLarge`); modal drawer max 320 dp (`drawerMax`, also capped at window − 56); prose capped at 576 dp (`readingMax`, not 720). The partition spacer stays 24 dp (`paneSpacer`) because it is the pane-expansion drag handle's hit area, but it is painted as a 1 dp divider on `surface` — never as a visible 24 dp gap (DESIGN_SYSTEM.md pane separation row).
+
 ## 14. Open questions for the owner
 
 1. **"Continue using apps on fold":** which setting do you use? The live-transition contract assumes "Always". With "Swipe up to continue" or "Never", a fold may turn the screen off. Your screen-off lock is off, yet a fold already came back locked once (`DEVICE_BEFORE_PASS.md` row 10), with the cause still unknown. The restore path (§7.7) brings you back to where you were in any case, but through the unlock screen.

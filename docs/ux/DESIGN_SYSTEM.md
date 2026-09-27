@@ -170,7 +170,7 @@ Skein does not use a column grid inside content. The macro grid is **panes** (fr
 | Horizontal gutter | 16 | 16 + side insets | 24 | List pane 12 (rows are inset pills) · detail 24 | 24 |
 | Reading column | window − 32 | ≤ 576, centred | ≤ 576, centred | ≤ 576, centred in the detail pane | ≤ 576 |
 | Top app bar | 64 (grows with font scale) | 56 | 64 | 64 per pane | 64 |
-| Pane separation | — | — | — | 1 dp `outlineVariant` divider, no spacer (set the adaptive directive's partition spacer to 0); list pane on `surfaceContainerLow`, detail on `surface` | same |
+| Pane separation | — | — | — | Visually a 1 dp `outlineVariant` divider only; the directive keeps its 24 dp partition spacer (`SkeinSize.paneSpacer`) as the hit area of the pane-expansion drag handle, painted as `surface` with the divider centred in it (reconciled 2026-09-26, skein-xtov.24.3); list pane on `surfaceContainerLow`, detail on `surface` | same |
 | Dialog width | 280 … window − 48 | 280 … 560 | 280 … 560 | 280 … 560 | 280 … 560 |
 | Bottom sheet | full width | → side sheet | max 640, centred | (panes instead) | (panes instead) |
 | Command palette | Full screen | Full screen | Overlay, max 560 | Overlay, max 640, top at 15 % of height | Overlay, max 640 |
