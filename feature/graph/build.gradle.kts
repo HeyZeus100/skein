@@ -113,6 +113,9 @@ dependencies {
     // `:testing` is pure JVM (docs/TESTING.md), so this pulls no Android
     // test infrastructure onto the JVM `test` classpath.
     testImplementation(project(":testing"))
+    // skein-xtov.24.9 (AL-09b): the entry tests host the real `SkeinShellHost`,
+    // whose session stores register with an `UnlockManager`.
+    testImplementation(project(":core:vault"))
     // bd skein-67ak: GraphViewDragTest drives real `GraphView` gestures
     // (`performTouchInput { down/moveTo/up }`) to assert a drag starting on
     // a node moves that node — not the pan offset — while a drag on empty

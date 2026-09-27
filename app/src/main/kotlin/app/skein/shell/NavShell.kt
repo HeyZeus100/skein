@@ -6,11 +6,18 @@
 package app.skein.shell
 
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.produceState
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import app.skein.BuildConfig
+import app.skein.core.inference.models.DeleteOutcome
 import app.skein.core.model.PersonaService
 import app.skein.core.navigation.Destination
 import app.skein.core.navigation.SkeinId
@@ -23,19 +30,39 @@ import app.skein.feature.chat.entries.rememberChatHistory
 import app.skein.feature.editor.entries.KnowledgeDetailPlaceholder
 import app.skein.feature.editor.entries.KnowledgeEntry
 import app.skein.feature.editor.entries.KnowledgeEntryDeps
+import app.skein.feature.graph.entries.GraphEntry
+import app.skein.feature.graph.entries.GraphEntryDeps
+import app.skein.feature.models.ModelListItem
+import app.skein.feature.models.entries.ModelsDetailPlaceholder
+import app.skein.feature.models.entries.ModelsEntry
+import app.skein.feature.models.entries.ModelsEntryDeps
+import app.skein.feature.settings.SettingsViewModel
+import app.skein.feature.settings.entries.SettingsDetailPlaceholder
+import app.skein.feature.settings.entries.SettingsEntry
+import app.skein.feature.settings.entries.SettingsEntryDeps
 import app.skein.feature.shell.container.SkeinSpace
 import app.skein.feature.shell.host.PlaceholderEntry
 import app.skein.feature.shell.host.SkeinShellHost
 import app.skein.feature.shell.host.SkeinShellState
 import app.skein.feature.shell.host.navKindsOf
+import app.skein.models.ModelServices
 import app.skein.vault.VaultSession
 import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.launch
 
-/** The NavDisplay shell over [session]; [shell] is hoisted above the vault gate (§8.8). */
+/**
+ * The NavDisplay shell over [session]; [shell] is hoisted above the vault
+ * gate (§8.8). [settingsViewModel] is `:app`'s own (Activity-scoped
+ * `SecurityPrefs`/`AppearancePrefs`/biometric reauthentication for the
+ * recovery-key export row) — built once by `MainActivity`, same as
+ * `UnlockedShell`'s copy, and handed in rather than rebuilt here so this file
+ * never needs a `FragmentActivity`.
+ */
 @Composable
 internal fun NavShell(
     session: VaultSession,
     shell: SkeinShellState,
+    settingsViewModel: SettingsViewModel,
     modifier: Modifier = Modifier,
 ) {
     val personas = session.personaService
@@ -57,6 +84,12 @@ internal fun NavShell(
             importService = session.importService,
             history = history,
         )
+    val graph = remember(session) { GraphEntryDeps(session.repository, session.indexStore) }
+    val modelsDeps = rememberModelsEntryDeps(models)
+    val settings =
+        remember(settingsViewModel) {
+            SettingsEntryDeps(settingsViewModel, "${BuildConfig.VERSION_NAME} (${BuildConfig.VERSION_CODE})")
+        }
     val kinds =
         remember(session) { navKindsOf(session.repository) { personas.observeAll().first().map { it.id } } }
     SkeinShellHost(
@@ -69,6 +102,8 @@ internal fun NavShell(
             when (destination) {
                 Destination.CHAT -> ChatDetailPlaceholder(shell, chat)
                 Destination.KNOWLEDGE -> KnowledgeDetailPlaceholder(shell)
+                Destination.MODELS -> ModelsDetailPlaceholder()
+                Destination.SETTINGS -> SettingsDetailPlaceholder(settings)
                 else -> PlaceholderEntry(null)
             }
         },
@@ -76,9 +111,66 @@ internal fun NavShell(
         when (key.destination) {
             Destination.CHAT -> ChatEntry(key, shell, chat)
             Destination.KNOWLEDGE -> KnowledgeEntry(key, shell, knowledge)
+            Destination.GRAPH -> GraphEntry(key, shell, graph)
+            Destination.MODELS -> ModelsEntry(key, shell, modelsDeps)
+            Destination.SETTINGS -> SettingsEntry(key, shell, settings)
             else -> PlaceholderEntry(key)
         }
     }
+}
+
+/**
+ * skein-xtov.24.9 (AL-09b): the live registry snapshot plus set-default/
+ * delete — the exact [app.skein.core.inference.models.ModelManager] calls
+ * `UnlockedShell`'s `/models` overlay used, unchanged (LC-27: a delete
+ * refusal is shown, never swallowed).
+ */
+@Composable
+private fun rememberModelsEntryDeps(models: ModelServices?): ModelsEntryDeps {
+    var version by remember { mutableIntStateOf(0) }
+    var actionMessage by remember { mutableStateOf<String?>(null) }
+    LaunchedEffect(models) {
+        models?.rescued?.collect { ids -> if (ids.isNotEmpty()) version++ }
+    }
+    val items by
+        produceState(initialValue = emptyList<ModelListItem>(), models, version) {
+            value =
+                models?.let { services ->
+                    val defaultId = services.registry.default()
+                    services.registry.list().map { record ->
+                        ModelListItem(
+                            id = record.model.id,
+                            displayName = record.model.name,
+                            sizeBytes = record.model.sizeBytes,
+                            licenseSpdx = record.licenseSpdx ?: "UNKNOWN",
+                            isDefault = record.model.id == defaultId,
+                            isLoaded = services.isLoaded(record.model.id),
+                        )
+                    }
+                } ?: emptyList()
+        }
+    val scope = rememberCoroutineScope()
+    return ModelsEntryDeps(
+        models = items,
+        onSetDefault = { id ->
+            scope.launch {
+                models?.manager?.setDefault(id)
+                version++
+            }
+        },
+        onDelete = { id ->
+            scope.launch {
+                val name = items.firstOrNull { it.id == id }?.displayName ?: id
+                if (models?.manager?.delete(id) is DeleteOutcome.Refused) {
+                    actionMessage = "Couldn't delete “$name”. It's in use right now. Try again in a moment."
+                }
+                models?.manifestCache?.refresh()
+                version++
+            }
+        },
+        actionMessage = actionMessage,
+        onDismissActionMessage = { actionMessage = null },
+    )
 }
 
 /**

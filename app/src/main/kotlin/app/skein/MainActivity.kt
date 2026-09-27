@@ -359,7 +359,34 @@ class MainActivity : FragmentActivity() {
                         }
                         if (navShell != null) {
                             SkeinTheme(mode = themeMode) {
-                                EdgeToEdgeSurface { m -> NavShell(session, navShell, m) }
+                                // skein-xtov.24.9 (AL-09b): the Settings destination's view
+                                // model — same construction as `UnlockedShell`'s copy below
+                                // (Activity-scoped `SecurityPrefs`/`AppearancePrefs`/biometric
+                                // reauthentication), built here because `NavShell` is a plain
+                                // top-level composable with no `FragmentActivity` of its own.
+                                val navShellVault = remember { (application as SkeinApplication).vault }
+                                val navShellVaultUnlockedFlow =
+                                    remember(navShellVault) {
+                                        navShellVault.unlockManager.state.map { it is UnlockState.Unlocked }
+                                    }
+                                val navShellSettingsViewModel =
+                                    rememberSettingsViewModel(
+                                        flagSecureEnabledFlow = securityPrefs.flagSecureEnabled,
+                                        onSetFlagSecureEnabled = setFlagSecureEnabled,
+                                        idleTimeoutMinutesFlow = securityPrefs.idleTimeoutMinutes,
+                                        onSetIdleTimeoutMinutes = setIdleTimeoutMinutes,
+                                        lockOnScreenOffFlow = securityPrefs.lockOnScreenOff,
+                                        onSetLockOnScreenOff = setLockOnScreenOff,
+                                        lockOnBackgroundFlow = securityPrefs.lockOnBackground,
+                                        onSetLockOnBackground = setLockOnBackground,
+                                        strongBoxUnavailableFallbackFlow = securityPrefs.strongBoxUnavailableFallback,
+                                        vaultUnlockedFlow = navShellVaultUnlockedFlow,
+                                        reauthenticate = reauthenticateForExport,
+                                        buildRecoveryExport = buildRecoveryExport,
+                                        themeModeFlow = appearancePrefs.themeMode,
+                                        onSetThemeMode = setThemeMode,
+                                    )
+                                EdgeToEdgeSurface { m -> NavShell(session, navShell, navShellSettingsViewModel, m) }
                             }
                         } else {
                             UnlockedShell(session, themeMode)

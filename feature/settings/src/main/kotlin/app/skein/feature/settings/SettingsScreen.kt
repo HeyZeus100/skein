@@ -27,6 +27,7 @@ import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import app.skein.core.designsystem.icons.SkeinIcons
+import app.skein.core.navigation.SettingsCategory
 import app.skein.feature.shell.theme.SkeinThemeMode
 
 /**
@@ -98,47 +99,23 @@ fun SettingsScreen(
                         .fillMaxWidth()
                         .verticalScroll(rememberScrollState()),
             ) {
-                SettingsSection(title = "Appearance") {
-                    ThemeModeRow(mode = themeMode, onModeChange = onThemeModeChange)
-                }
-
-                SettingsSection(title = "Security") {
-                    FlagSecureToggle(
-                        flagSecureEnabled = flagSecureEnabled,
-                        onFlagSecureEnabledChange = onFlagSecureEnabledChange,
-                    )
-                    IdleTimeoutRow(
-                        minutes = idleTimeoutMinutes,
-                        onMinutesChange = onIdleTimeoutMinutesChange,
-                    )
-                    LockOnScreenOffToggle(
-                        enabled = lockOnScreenOff,
-                        onEnabledChange = onLockOnScreenOffChange,
-                    )
-                    LockOnBackgroundToggle(
-                        enabled = lockOnBackground,
-                        onEnabledChange = onLockOnBackgroundChange,
-                    )
-                    StrongBoxStatusRow(strongBoxUnavailableFallback = strongBoxUnavailableFallback)
-                    RecoveryKeyExportSection(
-                        vaultUnlocked = vaultUnlocked,
-                        onReauthenticate = onReauthenticate,
-                        onBuildExport = onBuildRecoveryExport,
-                    )
-                }
-
-                SettingsSection(title = "Search") {
-                    SettingsInfoRow(
-                        label = "Notifications",
-                        value = "Shows a notification while documents are prepared for search",
-                        modifier = Modifier.testTag("settings_indexing_hint"),
-                    )
-                }
-
-                SettingsSection(title = "About", showDivider = false) {
-                    SettingsInfoRow(label = "Version", value = appVersion)
-                    SettingsLinkRow(label = "Open-source licenses", onClick = onViewNoticeClick)
-                }
+                AppearanceSection(themeMode = themeMode, onThemeModeChange = onThemeModeChange)
+                PrivacyAndSecuritySection(
+                    flagSecureEnabled = flagSecureEnabled,
+                    onFlagSecureEnabledChange = onFlagSecureEnabledChange,
+                    idleTimeoutMinutes = idleTimeoutMinutes,
+                    onIdleTimeoutMinutesChange = onIdleTimeoutMinutesChange,
+                    lockOnScreenOff = lockOnScreenOff,
+                    onLockOnScreenOffChange = onLockOnScreenOffChange,
+                    lockOnBackground = lockOnBackground,
+                    onLockOnBackgroundChange = onLockOnBackgroundChange,
+                    strongBoxUnavailableFallback = strongBoxUnavailableFallback,
+                    vaultUnlocked = vaultUnlocked,
+                    onReauthenticate = onReauthenticate,
+                    onBuildRecoveryExport = onBuildRecoveryExport,
+                )
+                KnowledgeAndSearchSection()
+                AboutSection(appVersion = appVersion, onViewNoticeClick = onViewNoticeClick)
             }
         }
     }
@@ -206,6 +183,173 @@ fun SettingsRoute(
             modifier = modifier,
             onViewNoticeClick = { showAbout = true },
         )
+    }
+}
+
+// -----------------------------------------------------------------------------
+// skein-xtov.24.9 (AL-09b): the sections above, extracted so the Settings
+// destination's categories (`:feature:shell`'s `SettingsCategoryEntry`) can
+// render exactly one of them per `SettingsCategoryKey` instead of
+// [SettingsScreen]'s single scrolling column. No behaviour changes: every
+// row below is the same composable, same params, same order as above.
+// -----------------------------------------------------------------------------
+
+@Composable
+fun AppearanceSection(
+    themeMode: SkeinThemeMode,
+    onThemeModeChange: (SkeinThemeMode) -> Unit,
+) {
+    SettingsSection(title = "Appearance") {
+        ThemeModeRow(mode = themeMode, onModeChange = onThemeModeChange)
+    }
+}
+
+@Composable
+fun PrivacyAndSecuritySection(
+    flagSecureEnabled: Boolean,
+    onFlagSecureEnabledChange: (Boolean) -> Unit,
+    idleTimeoutMinutes: Int,
+    onIdleTimeoutMinutesChange: (Int) -> Unit,
+    lockOnScreenOff: Boolean,
+    onLockOnScreenOffChange: (Boolean) -> Unit,
+    lockOnBackground: Boolean,
+    onLockOnBackgroundChange: (Boolean) -> Unit,
+    strongBoxUnavailableFallback: Boolean,
+    vaultUnlocked: Boolean,
+    onReauthenticate: suspend () -> Boolean,
+    onBuildRecoveryExport: suspend (CharArray) -> ByteArray?,
+) {
+    SettingsSection(title = "Security") {
+        FlagSecureToggle(
+            flagSecureEnabled = flagSecureEnabled,
+            onFlagSecureEnabledChange = onFlagSecureEnabledChange,
+        )
+        IdleTimeoutRow(
+            minutes = idleTimeoutMinutes,
+            onMinutesChange = onIdleTimeoutMinutesChange,
+        )
+        LockOnScreenOffToggle(
+            enabled = lockOnScreenOff,
+            onEnabledChange = onLockOnScreenOffChange,
+        )
+        LockOnBackgroundToggle(
+            enabled = lockOnBackground,
+            onEnabledChange = onLockOnBackgroundChange,
+        )
+        StrongBoxStatusRow(strongBoxUnavailableFallback = strongBoxUnavailableFallback)
+        RecoveryKeyExportSection(
+            vaultUnlocked = vaultUnlocked,
+            onReauthenticate = onReauthenticate,
+            onBuildExport = onBuildRecoveryExport,
+        )
+    }
+}
+
+@Composable
+fun KnowledgeAndSearchSection() {
+    SettingsSection(title = "Search") {
+        SettingsInfoRow(
+            label = "Notifications",
+            value = "Shows a notification while documents are prepared for search",
+            modifier = Modifier.testTag("settings_indexing_hint"),
+        )
+    }
+}
+
+@Composable
+fun AboutSection(
+    appVersion: String,
+    onViewNoticeClick: () -> Unit,
+) {
+    SettingsSection(title = "About", showDivider = false) {
+        SettingsInfoRow(label = "Version", value = appVersion)
+        SettingsLinkRow(label = "Open-source licenses", onClick = onViewNoticeClick)
+    }
+}
+
+/** Self-contained About category: the same [AboutScreen] swap [SettingsRoute] does, scoped to just this category. */
+@Composable
+fun AboutCategoryRoute(
+    appVersion: String,
+    modifier: Modifier = Modifier,
+) {
+    var showAbout by remember { mutableStateOf(false) }
+    if (showAbout) {
+        AboutScreen(appVersion = appVersion, onBack = { showAbout = false }, modifier = modifier)
+    } else {
+        CategoryColumn(modifier) {
+            AboutSection(appVersion = appVersion, onViewNoticeClick = { showAbout = true })
+        }
+    }
+}
+
+/**
+ * One [SettingsCategory]'s content (`:feature:shell`'s `SettingsCategoryEntry`
+ * calls this per `SettingsCategoryKey`, and once more, preselected on
+ * [SettingsCategory.APPEARANCE], as the Settings list's detail placeholder on
+ * Expanded — spec §8.2). [SettingsCategory.SPACES] is hidden until
+ * `skein-3iw` (IA §8a, matching the drawer's Personas row) and
+ * [SettingsCategory.ADVANCED] has no real settings yet (IA §7: "Local API /
+ * desktop tooling … nothing now") — both show a short placeholder rather than
+ * an empty column.
+ */
+@Composable
+fun SettingsCategoryScreen(
+    category: SettingsCategory,
+    viewModel: SettingsViewModel,
+    appVersion: String,
+    modifier: Modifier = Modifier,
+) {
+    when (category) {
+        SettingsCategory.ABOUT -> AboutCategoryRoute(appVersion = appVersion, modifier = modifier)
+        else ->
+            CategoryColumn(modifier) {
+                when (category) {
+                    SettingsCategory.APPEARANCE ->
+                        AppearanceSection(themeMode = viewModel.themeMode, onThemeModeChange = viewModel::setThemeMode)
+                    SettingsCategory.PRIVACY_AND_SECURITY ->
+                        PrivacyAndSecuritySection(
+                            flagSecureEnabled = viewModel.flagSecureEnabled,
+                            onFlagSecureEnabledChange = viewModel::setFlagSecureEnabled,
+                            idleTimeoutMinutes = viewModel.idleTimeoutMinutes,
+                            onIdleTimeoutMinutesChange = viewModel::setIdleTimeoutMinutes,
+                            lockOnScreenOff = viewModel.lockOnScreenOff,
+                            onLockOnScreenOffChange = viewModel::setLockOnScreenOff,
+                            lockOnBackground = viewModel.lockOnBackground,
+                            onLockOnBackgroundChange = viewModel::setLockOnBackground,
+                            strongBoxUnavailableFallback = viewModel.strongBoxUnavailableFallback,
+                            vaultUnlocked = viewModel.vaultUnlocked,
+                            onReauthenticate = viewModel.reauthenticate,
+                            onBuildRecoveryExport = viewModel.buildRecoveryExport,
+                        )
+                    SettingsCategory.KNOWLEDGE_AND_SEARCH -> KnowledgeAndSearchSection()
+                    SettingsCategory.SPACES ->
+                        SettingsInfoRow(label = "Spaces", value = "Coming soon")
+                    SettingsCategory.ADVANCED ->
+                        SettingsInfoRow(label = "Advanced", value = "Nothing here yet")
+                    SettingsCategory.ABOUT -> Unit // handled above
+                }
+            }
+    }
+}
+
+@Composable
+private fun CategoryColumn(
+    modifier: Modifier = Modifier,
+    content: @Composable ColumnScope.() -> Unit,
+) {
+    Surface(modifier = modifier.fillMaxSize(), color = MaterialTheme.colorScheme.background) {
+        Box(modifier = Modifier.fillMaxSize()) {
+            Column(
+                modifier =
+                    Modifier
+                        .align(Alignment.TopCenter)
+                        .widthIn(max = MAX_CONTENT_WIDTH)
+                        .fillMaxWidth()
+                        .verticalScroll(rememberScrollState()),
+                content = content,
+            )
+        }
     }
 }
 
