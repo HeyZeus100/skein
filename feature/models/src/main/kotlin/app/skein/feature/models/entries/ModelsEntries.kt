@@ -11,13 +11,16 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.unit.dp
+import app.skein.core.designsystem.icons.SkeinIcons
 import app.skein.core.navigation.Destination
 import app.skein.core.navigation.ModelDetailsKey
 import app.skein.core.navigation.ModelsHomeKey
@@ -26,13 +29,17 @@ import app.skein.feature.models.ModelDetailsPane
 import app.skein.feature.models.ModelListItem
 import app.skein.feature.models.ModelsEmptyDetail
 import app.skein.feature.models.ModelsListPane
+import app.skein.feature.shell.host.EntryAction
 import app.skein.feature.shell.host.EntryTopBar
 import app.skein.feature.shell.host.SkeinShellState
 
 /**
  * What the Models entries need from the open vault's [app.skein.core.inference.models.ModelManager]
  * (`:app` owns the real registry — same "smallest adapter" contract [ModelListItem] already
- * documents). [actionMessage], when non-null, is LC-27's delete refusal — shown, never swallowed.
+ * documents). [actionMessage], when non-null, is an import's progress or result, or LC-27's delete
+ * refusal — shown, never swallowed. [onImport] opens the system file picker for a model file
+ * (skein-xtov.24.23: the retired `/import model`); null where the session has no model services.
+ * [importProgress] is the running import's fraction, or null.
  */
 class ModelsEntryDeps(
     val models: List<ModelListItem>,
@@ -40,7 +47,15 @@ class ModelsEntryDeps(
     val onDelete: (String) -> Unit,
     val actionMessage: String? = null,
     val onDismissActionMessage: () -> Unit = {},
+    val onImport: (() -> Unit)? = null,
+    val importProgress: Float? = null,
 )
+
+object ModelsEntryTestTags {
+    const val IMPORT_ACTION = "models_entry_import_action"
+    const val STATUS_ROW = "models_entry_status_row"
+    const val PROGRESS_BAR = "models_entry_progress_bar"
+}
 
 /** One Models key's content (§8.2). */
 @Composable
@@ -69,8 +84,16 @@ private fun ModelsListEntry(
 ) {
     val selectedId = (shell.nav.stack(Destination.MODELS).lastOrNull() as? ModelDetailsKey)?.modelId?.value
     Column(Modifier.fillMaxSize()) {
-        shell.EntryTopBar(ModelsHomeKey, "Models")
-        deps.actionMessage?.let { message -> ActionMessageRow(message, deps.onDismissActionMessage) }
+        shell.EntryTopBar(ModelsHomeKey, "Models") {
+            deps.onImport?.let { onImport ->
+                EntryAction(SkeinIcons.ImportFile, "Import model", Modifier.testTag(ModelsEntryTestTags.IMPORT_ACTION)) {
+                    onImport()
+                }
+            }
+        }
+        deps.actionMessage?.let { message ->
+            ActionMessageRow(message, deps.importProgress, deps.onDismissActionMessage)
+        }
         ModelsListPane(
             models = deps.models,
             selectedId = selectedId,
@@ -78,6 +101,7 @@ private fun ModelsListEntry(
             onSetDefault = deps.onSetDefault,
             onDelete = deps.onDelete,
             modifier = Modifier.weight(1f).fillMaxSize(),
+            onImport = deps.onImport,
         )
     }
 }
@@ -100,16 +124,34 @@ private fun ModelDetailsEntry(
     }
 }
 
+/** An import's progress or result, or a delete refusal; [progress] draws the bar under a running import. */
 @Composable
 private fun ActionMessageRow(
     message: String,
+    progress: Float?,
     onDismiss: () -> Unit,
 ) {
     Row(
-        modifier = Modifier.fillMaxWidth().padding(horizontal = 16.dp, vertical = 8.dp),
+        modifier =
+            Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 16.dp, vertical = 8.dp)
+                .testTag(ModelsEntryTestTags.STATUS_ROW),
         verticalAlignment = Alignment.CenterVertically,
     ) {
-        Text(text = message, style = MaterialTheme.typography.bodySmall, modifier = Modifier.weight(1f))
+        Column(Modifier.weight(1f)) {
+            Text(text = message, style = MaterialTheme.typography.bodySmall)
+            progress?.let { fraction ->
+                LinearProgressIndicator(
+                    progress = { fraction },
+                    modifier =
+                        Modifier
+                            .fillMaxWidth()
+                            .padding(top = 6.dp)
+                            .testTag(ModelsEntryTestTags.PROGRESS_BAR),
+                )
+            }
+        }
         TextButton(onClick = onDismiss) { Text("Dismiss") }
     }
 }

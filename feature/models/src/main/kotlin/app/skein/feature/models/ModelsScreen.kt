@@ -41,7 +41,9 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
+import app.skein.core.designsystem.components.SkeinAction
 import app.skein.core.designsystem.components.SkeinDestructiveDialog
+import app.skein.core.designsystem.components.SkeinEmptyState
 import app.skein.core.designsystem.icons.SkeinIcons
 
 public const val MODELS_SCREEN_TEST_TAG: String = "app.skein.feature.models.ModelsScreen"
@@ -223,7 +225,8 @@ public const val MODELS_LIST_PANE_TEST_TAG: String = "app.skein.feature.models.M
 /**
  * The list pane: no title row or Close button (the host's own top bar and
  * Back supply that now). [selectedId] highlights the row whose details are
- * open beside it (Expanded); tapping a row invokes [onSelect].
+ * open beside it (Expanded); tapping a row invokes [onSelect]. With no models,
+ * the empty state offers [onImport] when there is one.
  */
 @Composable
 public fun ModelsListPane(
@@ -233,6 +236,7 @@ public fun ModelsListPane(
     onSetDefault: (String) -> Unit,
     onDelete: (String) -> Unit,
     modifier: Modifier = Modifier,
+    onImport: (() -> Unit)? = null,
 ) {
     var pendingDelete by remember { mutableStateOf<ModelListItem?>(null) }
     pendingDelete?.let { model ->
@@ -246,13 +250,12 @@ public fun ModelsListPane(
         )
     }
     if (models.isEmpty()) {
-        Box(modifier = modifier.fillMaxSize().testTag(MODELS_EMPTY_TEST_TAG)) {
-            Text(
-                text = "No models imported yet — import one from the command palette",
-                style = MaterialTheme.typography.bodyMedium,
-                modifier = Modifier.padding(16.dp),
-            )
-        }
+        SkeinEmptyState(
+            headline = "No models yet",
+            body = "Import a model file to start chatting. It runs on this device.",
+            primaryAction = onImport?.let { SkeinAction("Import model", SkeinIcons.ImportFile, onClick = it) },
+            modifier = modifier.fillMaxSize().testTag(MODELS_EMPTY_TEST_TAG),
+        )
     } else {
         LazyColumn(modifier = modifier.fillMaxSize().testTag(MODELS_LIST_PANE_TEST_TAG)) {
             items(models, key = { it.id }) { model ->

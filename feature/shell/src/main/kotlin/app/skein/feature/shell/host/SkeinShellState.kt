@@ -48,6 +48,18 @@ class SkeinShellState internal constructor(
 
     val sheets = SheetPresentation()
 
+    /** The search overlay (`SkeinSearch.kt`) is open. Composition-scoped (T8): the lock closes it. */
+    var searchOpen: Boolean by mutableStateOf(false)
+        private set
+
+    fun openSearch() {
+        searchOpen = true
+    }
+
+    fun closeSearch() {
+        searchOpen = false
+    }
+
     /** Applies one [Navigator] transition; a null result (Back not consumed) changes nothing. */
     fun navigate(transition: Navigator.(SkeinNavigationState) -> SkeinNavigationState?) {
         navigator.transition(nav)?.let { nav = it }
@@ -57,6 +69,7 @@ class SkeinShellState internal constructor(
     internal fun onLocked() {
         nav = navigator.dropTransient(nav)
         sheets.collapseAll()
+        searchOpen = false
     }
 
     /**
@@ -69,6 +82,7 @@ class SkeinShellState internal constructor(
     fun resetForNewVault() {
         nav = SkeinNavigationState.initial()
         sheets.collapseAll()
+        searchOpen = false
         stores.clearAll()
         onReset()
     }

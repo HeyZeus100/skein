@@ -76,6 +76,7 @@ class KnowledgeEntryDeps(
 object KnowledgeEntryTestTags {
     const val LIST = "knowledge_entry_list"
     const val NEW_NOTE_ACTION = "knowledge_entry_new_note_action"
+    const val SEARCH_ACTION = "knowledge_entry_search_action"
     const val EMPTY_DETAIL = "knowledge_entry_empty_detail"
     const val CONNECTIONS = "knowledge_entry_connections"
     const val CONNECTIONS_PEEK = "knowledge_entry_connections_peek"
@@ -163,7 +164,8 @@ fun SourceEntry(
 /**
  * The Knowledge list: the timeline's list pieces over notes, files and AI
  * outputs. A row opens its item by kind, replacing the detail (§8.3 rule 3).
- * ponytail: no search field, row menu or selected row yet (KNOWLEDGE_UX_SPEC.md
+ * ⌕ opens the shell's search overlay (the retired command bar's search).
+ * ponytail: no inline search field, row menu or selected row yet (KNOWLEDGE_UX_SPEC.md
  * §3–§4, Wave 6), and the filter chips are composition state, not T2 (§7.3 row 19).
  */
 @Composable
@@ -180,6 +182,9 @@ private fun KnowledgeList(
         )
     Column(Modifier.fillMaxSize().testTag(KnowledgeEntryTestTags.LIST)) {
         shell.EntryTopBar(KnowledgeHomeKey, "Knowledge") {
+            EntryAction(SkeinIcons.Search, "Search", Modifier.testTag(KnowledgeEntryTestTags.SEARCH_ACTION)) {
+                shell.openSearch()
+            }
             EntryAction(SkeinIcons.NewNote, "New note", Modifier.testTag(KnowledgeEntryTestTags.NEW_NOTE_ACTION)) {
                 shell.newNote()
             }

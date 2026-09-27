@@ -48,6 +48,7 @@ import androidx.navigationevent.NavigationEventInfo
 import androidx.navigationevent.compose.NavigationBackHandler
 import androidx.navigationevent.compose.rememberNavigationEventState
 import app.skein.core.designsystem.theme.SkeinSize
+import app.skein.core.model.Document
 import app.skein.core.navigation.ChatContextKey
 import app.skein.core.navigation.ChatHomeKey
 import app.skein.core.navigation.ConnectionsKey
@@ -72,6 +73,7 @@ import app.skein.feature.shell.layout.SecondarySurface
 import app.skein.feature.shell.layout.SkeinLayoutDecision
 import app.skein.feature.shell.layout.SkeinNavContainer
 import app.skein.feature.shell.layout.currentSkeinWindowLayout
+import app.skein.feature.shell.testing.ShellTestTags
 import kotlin.coroutines.cancellation.CancellationException
 
 /** The window decision, for entries (§8.6: "entries read `LocalSkeinWindowLayout` to decide"). */
@@ -88,7 +90,8 @@ object SkeinShellHostTestTags {
  * nothing until that is done; only then does `NavDisplay` compose.
  *
  * [entryContent] renders one key; [detailPlaceholder] fills an empty detail
- * pane beside a destination's list.
+ * pane beside a destination's list. [search], when given, backs the search
+ * overlay the drawer's search row and [SkeinShellState.openSearch] open.
  */
 @OptIn(ExperimentalMaterial3AdaptiveApi::class)
 @Composable
@@ -99,6 +102,7 @@ fun SkeinShellHost(
     history: List<ChatHistoryItem> = emptyList(),
     spaces: List<SkeinSpace> = emptyList(),
     detailPlaceholder: @Composable (Destination) -> Unit = { PlaceholderEntry(null) },
+    search: (suspend (String) -> List<Document>)? = null,
     entryContent: @Composable (SkeinKey) -> Unit = { PlaceholderEntry(it) },
 ) {
     val resolver by rememberUpdatedState(resolveKinds)
@@ -166,14 +170,14 @@ fun SkeinShellHost(
 
     val top = shell.nav.topLevel
     CompositionLocalProvider(LocalSkeinWindowLayout provides layout) {
-        Surface(modifier.fillMaxSize()) {
+        Surface(modifier.fillMaxSize().testTag(ShellTestTags.SKEIN_SHELL_ROOT)) {
             SkeinNavigationContainer(
                 decision = layout,
                 destination = SkeinDestination.valueOf(top.name),
                 onNavigate = { d -> shell.navigate { switchTo(it, Destination.valueOf(d.name)) } },
                 onNewChat = { shell.navigate { goTo(it, NewChatKey(SkeinId.random())) } },
-                // ponytail: the palette is not built yet (IA §3.6).
-                onSearch = {},
+                // ponytail: search only; the palette's commands come in Wave 10 (IA §3.6).
+                onSearch = { if (search != null) shell.openSearch() },
                 history = history,
                 spaces = spaces,
             ) {
@@ -190,6 +194,16 @@ fun SkeinShellHost(
                     transitionSpec = { crossFade() },
                     popTransitionSpec = { crossFade() },
                     onBack = { shell.navigate { back(it, mode) } },
+                )
+            }
+            if (shell.searchOpen && search != null) {
+                SkeinSearchOverlay(
+                    search = search,
+                    onOpen = { document ->
+                        shell.closeSearch()
+                        shell.open(document)
+                    },
+                    onDismiss = shell::closeSearch,
                 )
             }
         }

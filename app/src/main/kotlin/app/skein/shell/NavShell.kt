@@ -5,6 +5,8 @@
 // into them and dispatches a key to its destination.
 package app.skein.shell
 
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
@@ -18,6 +20,9 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import app.skein.BuildConfig
 import app.skein.core.inference.models.DeleteOutcome
+import app.skein.core.inference.models.ImportOutcome
+import app.skein.core.inference.models.ImportProgress
+import app.skein.core.inference.models.ImportSource
 import app.skein.core.model.PersonaService
 import app.skein.core.navigation.Destination
 import app.skein.core.navigation.SkeinId
@@ -45,8 +50,12 @@ import app.skein.feature.shell.host.PlaceholderEntry
 import app.skein.feature.shell.host.SkeinShellHost
 import app.skein.feature.shell.host.SkeinShellState
 import app.skein.feature.shell.host.navKindsOf
+import app.skein.feature.shell.host.vaultSearch
 import app.skein.models.ModelServices
 import app.skein.vault.VaultSession
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 
@@ -54,9 +63,8 @@ import kotlinx.coroutines.launch
  * The NavDisplay shell over [session]; [shell] is hoisted above the vault
  * gate (§8.8). [settingsViewModel] is `:app`'s own (Activity-scoped
  * `SecurityPrefs`/`AppearancePrefs`/biometric reauthentication for the
- * recovery-key export row) — built once by `MainActivity`, same as
- * `UnlockedShell`'s copy, and handed in rather than rebuilt here so this file
- * never needs a `FragmentActivity`.
+ * recovery-key export row) — built once by `MainActivity` and handed in
+ * rather than rebuilt here so this file never needs a `FragmentActivity`.
  */
 @Composable
 internal fun NavShell(
@@ -85,7 +93,7 @@ internal fun NavShell(
             history = history,
         )
     val graph = remember(session) { GraphEntryDeps(session.repository, session.indexStore) }
-    val modelsDeps = rememberModelsEntryDeps(models)
+    val modelsDeps = rememberModelsEntryDeps(models, shell)
     val settings =
         remember(settingsViewModel) {
             SettingsEntryDeps(settingsViewModel, "${BuildConfig.VERSION_NAME} (${BuildConfig.VERSION_CODE})")
@@ -98,6 +106,7 @@ internal fun NavShell(
         modifier = modifier,
         history = history,
         spaces = rememberSpaces(personas, shell),
+        search = remember(session) { vaultSearch(session.repository) },
         detailPlaceholder = { destination ->
             when (destination) {
                 Destination.CHAT -> ChatDetailPlaceholder(shell, chat)
@@ -122,18 +131,89 @@ internal fun NavShell(
 /**
  * skein-xtov.24.9 (AL-09b): the live registry snapshot plus set-default/
  * delete — the exact [app.skein.core.inference.models.ModelManager] calls
- * `UnlockedShell`'s `/models` overlay used, unchanged (LC-27: a delete
- * refusal is shown, never swallowed).
+ * the old `/models` overlay used, unchanged (LC-27: a delete refusal is
+ * shown, never swallowed). skein-xtov.24.23 (AL-09c): plus the retired
+ * `/import model` — the same picker, one import at a time, import then set
+ * default then refresh the manifest cache — with its progress and result in
+ * the Models list instead of a row over the composer (IA §4). The import runs
+ * in this composition's scope, as it did in the old shell's.
  */
 @Composable
-private fun rememberModelsEntryDeps(models: ModelServices?): ModelsEntryDeps {
+private fun rememberModelsEntryDeps(
+    models: ModelServices?,
+    shell: SkeinShellState,
+): ModelsEntryDeps {
     var version by remember { mutableIntStateOf(0) }
     var actionMessage by remember { mutableStateOf<String?>(null) }
+    var importProgress by remember { mutableStateOf<Float?>(null) }
+    var importJob by remember { mutableStateOf<Job?>(null) }
+    val scope = rememberCoroutineScope()
+    // skein-gg11.18: a sealed copy whose registration was lost (the vault locked mid-import) is
+    // registered again at unlock by ModelServices; refresh the list and say so, since the user never saw it land.
     LaunchedEffect(models) {
-        models?.rescued?.collect { ids -> if (ids.isNotEmpty()) version++ }
+        val services = models ?: return@LaunchedEffect
+        services.rescued.collect { ids ->
+            if (ids.isNotEmpty()) {
+                version++
+                // A friendly name, never the raw model id (DESIGN_SYSTEM.md §11.5).
+                val names = ids.mapNotNull { id -> services.registry.get(id)?.model?.name }
+                actionMessage = "Registered ${names.joinToString()} from an earlier import and set as default"
+            }
+        }
     }
+    // A success clears itself; a failure or a running import stays until dismissed.
+    LaunchedEffect(actionMessage) {
+        val text = actionMessage ?: return@LaunchedEffect
+        if (TRANSIENT_PREFIXES.any(text::startsWith)) {
+            delay(STATUS_AUTO_DISMISS_MILLIS)
+            if (actionMessage == text) actionMessage = null
+        }
+    }
+    val importLauncher =
+        rememberLauncherForActivityResult(ActivityResultContracts.OpenDocument()) { uri ->
+            val services = models
+            if (uri == null || services == null) return@rememberLauncherForActivityResult
+            if (importJob?.isActive == true) {
+                actionMessage = IMPORT_RUNNING
+                return@rememberLauncherForActivityResult
+            }
+            importJob =
+                scope.launch {
+                    actionMessage = "Importing model…"
+                    importProgress = null
+                    services.manager.import(ImportSource.Picked(uri)).collectLatest { progress ->
+                        when (progress) {
+                            is ImportProgress.InProgress ->
+                                if (progress.totalBytes > 0) {
+                                    val fraction = (progress.bytesProcessed.toFloat() / progress.totalBytes).coerceIn(0f, 1f)
+                                    importProgress = fraction
+                                    actionMessage = "Importing model… ${(fraction * 100).toInt()}%"
+                                } else {
+                                    importProgress = null
+                                    actionMessage = "Importing model…"
+                                }
+                            is ImportProgress.Done -> {
+                                importProgress = null
+                                actionMessage =
+                                    when (val outcome = progress.outcome) {
+                                        is ImportOutcome.Imported -> {
+                                            services.manager.setDefault(outcome.record.model.id)
+                                            services.manifestCache.refresh()
+                                            "Imported “${outcome.record.model.name}” and set as default"
+                                        }
+                                        // `describe()` is logged by ModelManager already, never shown (§11.5).
+                                        is ImportOutcome.Refused ->
+                                            "Couldn't import the model. Choose a different file and try again."
+                                    }
+                                version++
+                            }
+                        }
+                    }
+                }
+        }
+    // Re-read on every destination switch as well: an import can finish while Models is not showing.
     val items by
-        produceState(initialValue = emptyList<ModelListItem>(), models, version) {
+        produceState(initialValue = emptyList<ModelListItem>(), models, version, shell.nav.topLevel) {
             value =
                 models?.let { services ->
                     val defaultId = services.registry.default()
@@ -149,7 +229,6 @@ private fun rememberModelsEntryDeps(models: ModelServices?): ModelsEntryDeps {
                     }
                 } ?: emptyList()
         }
-    val scope = rememberCoroutineScope()
     return ModelsEntryDeps(
         models = items,
         onSetDefault = { id ->
@@ -170,8 +249,27 @@ private fun rememberModelsEntryDeps(models: ModelServices?): ModelsEntryDeps {
         },
         actionMessage = actionMessage,
         onDismissActionMessage = { actionMessage = null },
+        onImport =
+            models?.let {
+                {
+                    // One import at a time: a second pick while one runs would race the same staging directory.
+                    if (importJob?.isActive == true) {
+                        actionMessage = IMPORT_RUNNING
+                    } else {
+                        importLauncher.launch(arrayOf("application/octet-stream", "*/*"))
+                    }
+                }
+            },
+        importProgress = importProgress,
     )
 }
+
+private const val IMPORT_RUNNING = "An import is already running — wait for it to finish"
+
+/** The messages that clear themselves after [STATUS_AUTO_DISMISS_MILLIS]. */
+private val TRANSIENT_PREFIXES = listOf("Imported ", "Registered ", IMPORT_RUNNING)
+
+private const val STATUS_AUTO_DISMISS_MILLIS = 6_000L
 
 /**
  * The Space switcher's rows (IA §8b): every persona, the current Space selected
