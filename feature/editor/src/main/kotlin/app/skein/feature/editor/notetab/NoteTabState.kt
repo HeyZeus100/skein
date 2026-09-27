@@ -49,7 +49,7 @@ import java.time.Duration
  *   (see [app.skein.feature.editor.notetab.NoteTab]'s `remember(docId, ...)`),
  *   the same pattern `rememberBacklinksState` uses for cross-tab reuse.
  * @param vaultRepository already-open; used for `getDocument` (initial
- *   load), `updateBody` (autosave + title edits), and `findByTitle`/
+ *   load), `replaceBody` (autosave), `renameDocument` (title edits), and `findByTitle`/
  *   `createDocument` (wikilink open-or-create, spec §8.5).
  * @param indexStore already-open; handed straight through to [backlinksState].
  * @param scope owner of every suspend operation this state kicks off — a
@@ -118,16 +118,26 @@ public class NoteTabState(
         scope.launch { load() }
     }
 
-    /** Inline title edit (header, spec §8.5) — persisted immediately against the current body text. */
+    /**
+     * Inline title edit (header, spec §8.5) — persisted immediately, as a
+     * rename: the title only, never the body, so it works the same for a
+     * note, a chat or an attachment (OBJECT_LIFECYCLE_SPEC.md §6.3).
+     *
+     * The repository refuses a title its rules reject (blank or over-long
+     * mid-typing: IllegalArgumentException) and a document deleted under an
+     * open tab (NoSuchElementException). Neither may escape this launch: an
+     * uncaught throw here crashes the app. The last accepted title stays.
+     */
     public fun onTitleChange(newTitle: String) {
         title = newTitle
         scope.launch {
-            // `editorState.source` is the *whole* buffer (frontmatter block
-            // + body, see [load]'s kdoc) — split it before writing, or a
-            // title edit would silently smuggle the frontmatter header into
-            // `bodyMd`.
-            val (_, body) = Frontmatter.parse(editorState.source)
-            vaultRepository.updateBody(docId, newTitle, body)
+            try {
+                vaultRepository.renameDocument(docId, newTitle)
+            } catch (_: IllegalArgumentException) {
+                // Not a valid name (yet); keep the stored one.
+            } catch (_: NoSuchElementException) {
+                // Deleted under this tab; nothing to rename.
+            }
         }
     }
 
@@ -221,7 +231,7 @@ public class NoteTabState(
      * narrow scope, even a structurally-removed) id can never reach the
      * vault. A document with no frontmatter block parses to an empty
      * [JsonObject] and is left alone — no `updateFrontmatter` call, exactly
-     * the pre-`E7.I3` single-`updateBody` write.
+     * the pre-`E7.I3` single body write.
      */
     private suspend fun saveEditorValue(value: TextFieldValue) {
         val (frontmatter, body) = Frontmatter.parse(value.text)
@@ -233,7 +243,10 @@ public class NoteTabState(
                 }
             vaultRepository.updateFrontmatter(docId, pinned)
         }
-        vaultRepository.updateBody(docId, title, body)
+        // Body only: a save that re-sent [title] would revert a rename made
+        // elsewhere (OBJECT_LIFECYCLE_SPEC.md N7). A chat or attachment body is
+        // not writable; that throw lands in `EditorState`'s save error state.
+        vaultRepository.replaceBody(docId, body)
     }
 
     /**

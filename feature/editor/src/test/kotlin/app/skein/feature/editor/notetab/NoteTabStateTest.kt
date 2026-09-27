@@ -203,6 +203,31 @@ class NoteTabStateTest {
             assertEquals("body text", updated?.bodyMd)
         }
 
+    /**
+     * Attachments still open in this editor (the file viewer is Wave 6). A
+     * header title edit used to write `updateBody`, which the repository now
+     * refuses for an attachment or a chat — from an uncaught launch, which
+     * crashed the app. It renames instead; a blank mid-typing title is kept
+     * local. `backgroundScope` fails the test on any uncaught throw.
+     */
+    @Test
+    fun `a title edit on an attachment renames it and never throws`() =
+        runTest {
+            val repo = newRepo()
+            val pdf = repo.createAttachment("report.pdf", "application/pdf") { it.write(byteArrayOf(1, 2, 3)) }
+            val state = NoteTabState(pdf.id, repo, InMemoryIndexStore(), backgroundScope)
+            runCurrent()
+
+            state.onTitleChange("")
+            runCurrent()
+            state.onTitleChange("Q3 report.pdf")
+            runCurrent()
+
+            val renamed = repo.getDocument(pdf.id)
+            assertEquals("Q3 report.pdf", renamed?.title)
+            assertEquals("the bytes' hash is untouched", pdf.contentHash, renamed?.contentHash)
+        }
+
     @Test
     fun `a wikilink to an existing title resolves without creating a new document`() =
         runTest {
