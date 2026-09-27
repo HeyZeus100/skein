@@ -200,10 +200,18 @@ public abstract class VaultRepositoryContractTest {
     public fun kindsOf_reads_its_own_transaction_without_deadlocking(): Unit =
         runTest {
             val r = repo()
-            withTimeout(1_000) {
-                r.transaction {
-                    val note = r.createDocument(NewDocument(kind = DocumentKind.NOTE, title = "nested", bodyMd = null))
-                    assertEquals(mapOf(note.id to DocumentKind.NOTE), r.kindsOf(setOf(note.id)))
+            // The SQL implementation dispatches to real IO. Keep this deadline
+            // on a real clock: runTest's scheduler can otherwise advance a
+            // virtual timeout before the IO dispatcher has resumed the write.
+            withContext(Dispatchers.Default) {
+                withTimeout(1_000) {
+                    r.transaction {
+                        val note =
+                            r.createDocument(
+                                NewDocument(kind = DocumentKind.NOTE, title = "nested", bodyMd = null),
+                            )
+                        assertEquals(mapOf(note.id to DocumentKind.NOTE), r.kindsOf(setOf(note.id)))
+                    }
                 }
             }
         }
