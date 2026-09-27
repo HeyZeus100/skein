@@ -34,7 +34,7 @@ private fun MockTimeline() {
             modifier = Modifier.fillMaxSize().padding(16.dp),
             verticalArrangement = Arrangement.spacedBy(8.dp),
         ) {
-            Text("Timeline", style = MaterialTheme.typography.titleMedium)
+            Text("Recent", style = MaterialTheme.typography.titleMedium)
             repeat(5) { i -> Text("• entry $i", style = MaterialTheme.typography.bodyMedium) }
         }
     }

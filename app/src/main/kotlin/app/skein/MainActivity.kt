@@ -52,7 +52,6 @@ import app.skein.core.inference.models.DeleteOutcome
 import app.skein.core.inference.models.ImportOutcome
 import app.skein.core.inference.models.ImportProgress
 import app.skein.core.inference.models.ImportSource
-import app.skein.core.inference.models.describe
 import app.skein.core.model.DocId
 import app.skein.core.model.DocumentKind
 import app.skein.core.model.EngineState
@@ -214,7 +213,7 @@ class MainActivity : FragmentActivity() {
                 BiometricPrompt.PromptInfo
                     .Builder()
                     .setTitle("Confirm it is you")
-                    .setSubtitle("Skein is about to export your vault key")
+                    .setSubtitle("Skein is about to export your recovery key")
                     .setAllowedAuthenticators(
                         BiometricManager.Authenticators.BIOMETRIC_STRONG or
                             BiometricManager.Authenticators.DEVICE_CREDENTIAL,
@@ -478,10 +477,20 @@ class MainActivity : FragmentActivity() {
         // locked mid-import) is registered again at unlock by ModelServices;
         // refresh `/models` and say so, since the user never saw it land.
         LaunchedEffect(models) {
-            models?.rescued?.collect { ids ->
+            val services = models ?: return@LaunchedEffect
+            services.rescued.collect { ids ->
                 if (ids.isNotEmpty()) {
                     modelsListVersion++
-                    importStatusText = "Registered ${ids.joinToString()} from an earlier import and set as default"
+                    // UX-copy pass: a friendly name, never the raw model id
+                    // (DESIGN_SYSTEM.md §11.5 "internal ids or hashes").
+                    val names =
+                        ids.mapNotNull { id ->
+                            services.registry
+                                .get(id)
+                                ?.model
+                                ?.name
+                        }
+                    importStatusText = "Registered ${names.joinToString()} from an earlier import and set as default"
                 }
             }
         }
@@ -538,18 +547,19 @@ class MainActivity : FragmentActivity() {
                                                 services.manager.setDefault(outcome.record.model.id)
                                                 services.manifestCache.refresh()
                                                 importStatusText =
-                                                    "Imported \"${outcome.record.model.name}\" and set as default"
+                                                    "Imported “${outcome.record.model.name}” and set as default"
                                             }
                                             is ImportOutcome.Refused ->
-                                                // Kind + reason, never content:
-                                                // `describe()` is spec §9-safe (a
+                                                // `describe()` (spec §9-safe: a
                                                 // pre-check reason name, a store
                                                 // refusal summary, an inspection
-                                                // error code). The bare class name
-                                                // shown before ("FromStore") gave
-                                                // the owner nothing to act on
-                                                // during Fold smoke #2.
-                                                importStatusText = "Import failed: ${outcome.refusal.describe()}"
+                                                // error code) is logged by
+                                                // `ModelManager` already — never
+                                                // shown here, per DESIGN_SYSTEM.md
+                                                // §11.5 (no enum names / error
+                                                // codes in user-facing copy).
+                                                importStatusText =
+                                                    "Couldn't import the model. Choose a different file and try again."
                                         }
                                         modelsListVersion++
                                     }
@@ -585,11 +595,11 @@ class MainActivity : FragmentActivity() {
                                 .testTag(MainActivityTestTags.CHAT_NO_MODEL_GUIDANCE),
                     ) {
                         Text(
-                            text = "No model yet.",
+                            text = "No model yet",
                             style = MaterialTheme.typography.titleMedium,
                         )
                         Text(
-                            text = "Use /import model to add one, then come back to this chat.",
+                            text = "Import a model from the search bar above, then come back to this chat.",
                             style = MaterialTheme.typography.bodyMedium,
                             modifier = Modifier.padding(top = 8.dp),
                         )
@@ -617,7 +627,7 @@ class MainActivity : FragmentActivity() {
                 models?.let { services ->
                     Command(
                         keyword = "import model",
-                        hint = "— pick a GGUF file to import and set as default",
+                        hint = "— pick a model file to import and set as default",
                     ) {
                         if (importJob?.isActive == true) {
                             importStatusText = "An import is already running — wait for it to finish"
@@ -1042,7 +1052,7 @@ private fun OpeningVault(
                 modifier = Modifier.testTag(VaultGateTestTags.OPENING),
             ) {
                 CircularProgressIndicator()
-                Text(text = "Opening vault…", style = MaterialTheme.typography.bodyMedium)
+                Text(text = "Unlocking Skein…", style = MaterialTheme.typography.bodyMedium)
             }
         } else {
             Column(
@@ -1050,8 +1060,12 @@ private fun OpeningVault(
                 verticalArrangement = Arrangement.spacedBy(GATE_SPACING),
                 modifier = Modifier.padding(horizontal = GATE_GUTTER).testTag(VaultGateTestTags.OPEN_FAILED),
             ) {
+                // `reason` is a diagnostic for `gateOpenFailure`'s own log
+                // line (see its call site above) — never shown verbatim
+                // (DESIGN_SYSTEM.md §11.5: no stack traces / exception
+                // class names in user-facing copy).
                 Text(
-                    text = "The vault could not be opened: $reason",
+                    text = "Couldn't unlock Skein. Try again.",
                     style = MaterialTheme.typography.bodyMedium,
                     textAlign = TextAlign.Center,
                 )
@@ -1068,7 +1082,7 @@ private fun OpeningVault(
 private fun RecoveryRequiredNotice(modifier: Modifier = Modifier) {
     Box(modifier = modifier, contentAlignment = Alignment.Center) {
         Text(
-            text = "The biometric key was invalidated. Recovery is not available in this build yet.",
+            text = "Skein can't verify your fingerprint or face anymore, and can't recover this automatically.",
             style = MaterialTheme.typography.bodyMedium,
             textAlign = TextAlign.Center,
             modifier = Modifier.padding(horizontal = GATE_GUTTER).testTag(VaultGateTestTags.RECOVERY_REQUIRED),

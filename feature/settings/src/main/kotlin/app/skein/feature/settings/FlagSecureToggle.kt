@@ -39,7 +39,7 @@ fun FlagSecureToggle(
                     style = MaterialTheme.typography.bodyLarge,
                 )
                 val description =
-                    "On by default. Hides vault and chat content from recents, " +
+                    "On by default. Hides Skein and chat content from recents, " +
                         "screenshots, and screen recording apps."
                 Text(
                     text = description,

@@ -9,6 +9,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.test.junit4.createAndroidComposeRule
 import androidx.compose.ui.test.onNodeWithContentDescription
+import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
 import androidx.window.core.layout.WindowSizeClass
@@ -17,6 +18,7 @@ import app.skein.feature.shell.layout.AdaptivePaneHost
 import app.skein.feature.shell.layout.FoldPosture
 import app.skein.feature.shell.layout.TimelineMode
 import app.skein.feature.shell.nav.Destination
+import app.skein.feature.shell.testing.ShellTestTags
 import app.skein.feature.shell.theme.SkeinThemeMode
 import org.junit.Assert.assertNotEquals
 import org.junit.Assert.assertNotNull
@@ -109,7 +111,7 @@ class SkeinAppTest {
             SkeinApp(windowSizeClass = expandedWidth, posture = FoldPosture.Unknown)
         }
 
-        composeRule.onNodeWithText("Timeline").assertExists()
+        composeRule.onNodeWithText("Recent").assertExists()
         composeRule.onNodeWithText(EMPTY_PANE).assertExists()
     }
 
@@ -193,9 +195,13 @@ class SkeinAppTest {
 
     // ---- skein-5cr5: emptyContent consults navState.destination ---------------
 
-    private fun navigateViaDrawer(label: String) {
+    // Identifies the drawer entry by its stable per-destination tag, not its
+    // display label: the tab-strip's own "Recent" fallback text (shown
+    // whenever a tab exists) otherwise collides with the Timeline/Recent
+    // drawer entry's label in a substring text query.
+    private fun navigateViaDrawer(destination: Destination) {
         composeRule.onNodeWithContentDescription("Open navigation drawer").performClick()
-        composeRule.onNodeWithText(label, substring = true).performClick()
+        composeRule.onNodeWithTag(ShellTestTags.navDrawerItem(destination.name)).performClick()
     }
 
     @Test
@@ -208,7 +214,7 @@ class SkeinAppTest {
             )
         }
 
-        navigateViaDrawer("Settings")
+        navigateViaDrawer(Destination.SETTINGS)
 
         composeRule.onNodeWithText("DEST_${Destination.SETTINGS.name}").assertExists()
         composeRule.onNodeWithText(EMPTY_PANE).assertDoesNotExist()
@@ -224,7 +230,7 @@ class SkeinAppTest {
             )
         }
 
-        navigateViaDrawer("Settings")
+        navigateViaDrawer(Destination.SETTINGS)
 
         composeRule.onNodeWithText("DEST_${Destination.SETTINGS.name}").assertExists()
         composeRule.onNodeWithText(EMPTY_PANE).assertDoesNotExist()
@@ -240,10 +246,10 @@ class SkeinAppTest {
             )
         }
 
-        navigateViaDrawer("Settings")
+        navigateViaDrawer(Destination.SETTINGS)
         composeRule.onNodeWithText("DEST_${Destination.SETTINGS.name}").assertExists()
 
-        navigateViaDrawer("Timeline")
+        navigateViaDrawer(Destination.TIMELINE)
 
         composeRule.onNodeWithText(EMPTY_PANE).assertExists()
         composeRule.onNodeWithText("DEST_${Destination.SETTINGS.name}").assertDoesNotExist()
@@ -271,16 +277,19 @@ class SkeinAppTest {
         composeRule.onNodeWithText("OPEN_ENTRY").performClick()
         composeRule.onNodeWithText("NOTE_CONTENT_doc-1").assertExists()
 
-        navigateViaDrawer("Settings")
+        navigateViaDrawer(Destination.SETTINGS)
 
         composeRule.onNodeWithText("DEST_${Destination.SETTINGS.name}").assertExists()
         composeRule.onNodeWithText("NOTE_CONTENT_doc-1").assertDoesNotExist()
 
         // Timeline is the way home: the landing comes back, the tab stays open.
-        navigateViaDrawer("Timeline")
+        navigateViaDrawer(Destination.TIMELINE)
 
         composeRule.onNodeWithText("OPEN_ENTRY").assertExists()
-        composeRule.onNodeWithText("Recent", substring = true).assertExists()
+        // The tab-strip's own "Recent" fallback (not the drawer entry, which
+        // reuses the same label): confirms the note tab is still open, just
+        // deactivated, rather than closed outright.
+        composeRule.onNodeWithTag(ShellTestTags.RECENT_DROPDOWN).assertExists()
     }
 
     // ---- Stage H (skein-xtov.22): hide the dead ------------------------------
@@ -293,7 +302,7 @@ class SkeinAppTest {
 
         composeRule.onNodeWithContentDescription("Open navigation drawer").performClick()
 
-        composeRule.onNodeWithText("Timeline", substring = true).assertExists()
+        composeRule.onNodeWithText("Recent", substring = true).assertExists()
         composeRule.onNodeWithText("Settings", substring = true).assertExists()
         listOf("Notes", "Graph", "Personas").forEach { label ->
             composeRule.onNodeWithText(label, substring = true).assertDoesNotExist()

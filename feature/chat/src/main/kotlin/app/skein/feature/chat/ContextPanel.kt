@@ -17,7 +17,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.unit.dp
-import app.skein.core.model.RecallSource
 import app.skein.core.model.Retrieved
 
 public const val CONTEXT_PANEL_TEST_TAG: String = "app.skein.feature.chat.ContextPanel"
@@ -42,10 +41,10 @@ public fun ContextPanel(
         color = MaterialTheme.colorScheme.surfaceVariant,
     ) {
         Column(modifier = Modifier.padding(12.dp)) {
-            Text(text = "context", style = MaterialTheme.typography.labelLarge)
+            Text(text = "Sources", style = MaterialTheme.typography.labelLarge)
             if (items.isEmpty()) {
                 Text(
-                    text = "no retrieved context for this turn",
+                    text = "No sources for this turn",
                     style = MaterialTheme.typography.bodySmall,
                     color = MaterialTheme.colorScheme.onSurfaceVariant,
                 )
@@ -68,22 +67,20 @@ public fun ContextPanel(
                 ) {
                     Column {
                         Text(text = retrieved.docTitle, style = MaterialTheme.typography.bodyMedium)
+                        // IA §3.1 / DESIGN_SYSTEM.md §11.3: "score 0.83",
+                        // "recalled by: vector" are never shown — a raw
+                        // relevance score and retrieval-method breakdown are
+                        // implementation detail, not product language, at
+                        // any level. [Retrieved.recalledBy] still drives
+                        // which passages are listed at all.
                         Text(
-                            text = recalledByLabel(retrieved.recalledBy),
+                            text = "Relevant passage",
                             style = MaterialTheme.typography.labelSmall,
                             color = MaterialTheme.colorScheme.onSurfaceVariant,
                         )
                     }
-                    Text(
-                        text = "score %.2f".format(retrieved.score),
-                        style = MaterialTheme.typography.labelSmall,
-                        color = MaterialTheme.colorScheme.onSurfaceVariant,
-                    )
                 }
             }
         }
     }
 }
-
-private fun recalledByLabel(recalledBy: Set<RecallSource>): String =
-    if (recalledBy.isEmpty()) "recalled by: —" else "recalled by: " + recalledBy.joinToString { it.name.lowercase() }

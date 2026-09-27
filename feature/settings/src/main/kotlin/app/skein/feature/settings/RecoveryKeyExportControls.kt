@@ -215,13 +215,13 @@ class RecoveryExportState(
 
     companion object {
         const val REAUTH_FAILED_MESSAGE: String =
-            "Skein could not confirm it is you, so nothing was exported."
+            "Couldn't confirm it's you, so nothing was exported."
         const val LOCKED_MESSAGE: String =
-            "Your vault locked before the export finished. Unlock it and try again."
+            "Skein locked before the export finished. Unlock Skein and try again."
         const val WRITE_FAILED_MESSAGE: String =
-            "That file could not be written. Nothing was saved. Try a different location."
+            "Couldn't write that file. Nothing was saved. Try a different location."
         const val FAILED_MESSAGE: String =
-            "The export did not finish. Nothing was saved."
+            "Couldn't finish the export. Nothing was saved."
     }
 }
 
@@ -340,7 +340,7 @@ fun RecoveryKeyExportRow(
     ) {
         Column {
             Text(
-                text = "Export vault key (passphrase)",
+                text = "Export recovery key (passphrase)",
                 style = MaterialTheme.typography.bodyLarge,
                 color =
                     if (vaultUnlocked) {
@@ -371,7 +371,7 @@ fun RecoveryKeyExportDialog(
             AlertDialog(
                 modifier = modifier,
                 onDismissRequest = state::dismiss,
-                title = { Text("Export vault key") },
+                title = { Text("Export recovery key") },
                 text = {
                     Column {
                         Text(text = EXPORT_WARNING, style = MaterialTheme.typography.bodyMedium)
@@ -429,7 +429,7 @@ fun RecoveryKeyExportDialog(
             AlertDialog(
                 modifier = modifier,
                 onDismissRequest = {},
-                title = { Text("Export vault key") },
+                title = { Text("Export recovery key") },
                 text = { Text(busyCaption(phase), style = MaterialTheme.typography.bodyMedium) },
                 confirmButton = {},
             )
@@ -467,12 +467,12 @@ private const val LOG_TAG = "RecoveryExport"
 private const val RECOVERY_MIME_TYPE = "application/json"
 
 private const val ROW_CAPTION =
-    "Save a passphrase-protected copy of your vault key, so you can recover it on another device."
+    "Save a passphrase-protected copy of your key, so you can recover Skein on another device."
 
-private const val ROW_LOCKED_CAPTION = "Unlock your vault to export its key."
+private const val ROW_LOCKED_CAPTION = "Unlock Skein to export its key."
 
 private const val EXPORT_WARNING =
-    "Anyone who has this file AND this passphrase can read everything in your vault — on any device, " +
+    "Anyone who has this file AND this passphrase can read everything in Skein — on any device, " +
         "with no fingerprint and no screen lock. Choose a passphrase you use nowhere else, store the " +
         "file somewhere you trust, and never keep the two together. Skein cannot recover the " +
         "passphrase for you."
@@ -483,5 +483,4 @@ private const val DERIVING_MESSAGE =
 
 private const val SAVED_MESSAGE =
     "Your recovery file has been written to the location you chose. Keep it somewhere you trust, apart " +
-        "from the passphrase. To use it, choose \"Restore from a passphrase export\" when setting Skein " +
-        "up again."
+        "from the passphrase. To use it, choose “Recover Skein” when setting Skein up again."

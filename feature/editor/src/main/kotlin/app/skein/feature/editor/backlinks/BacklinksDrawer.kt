@@ -70,13 +70,13 @@ public fun BacklinksDrawer(
             horizontalArrangement = Arrangement.SpaceBetween,
             verticalAlignment = Alignment.CenterVertically,
         ) {
-            Text(text = "Backlinks", style = MaterialTheme.typography.titleSmall)
+            Text(text = "Linked from", style = MaterialTheme.typography.titleSmall)
             CountBadge(count = backlinks.size)
         }
         if (expanded) {
             if (backlinks.isEmpty()) {
                 Text(
-                    text = "No backlinks yet",
+                    text = "Nothing links here yet",
                     style = MaterialTheme.typography.bodySmall,
                     color = MaterialTheme.colorScheme.onSurfaceVariant,
                     modifier =

@@ -390,7 +390,7 @@ class MainActivityComposeTest {
         ActivityScenario.launch(MainActivity::class.java).use {
             awaitTag(ShellTestTags.BIOMETRIC_UNLOCK_MESSAGE)
 
-            composeRule.onNodeWithText("Authentication failed.").assertExists()
+            composeRule.onNodeWithText("Couldn't verify your identity.").assertExists()
         }
     }
 

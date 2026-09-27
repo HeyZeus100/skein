@@ -62,7 +62,7 @@ class IndexingNotifier(
         val total = progress.processed + progress.vectorsPending
         val contentText =
             if (total == 0) {
-                "Indexing…"
+                "Preparing for search…"
             } else {
                 "${progress.processed} of $total documents"
             }

@@ -46,7 +46,7 @@ public fun GraphLegend(modifier: Modifier = Modifier) {
         ) {
             LegendRow(color = colors.note, label = "Note")
             LegendRow(color = colors.chat, label = "Chat")
-            LegendRow(color = colors.attachment, label = "Attachment")
+            LegendRow(color = colors.attachment, label = "File")
             LegendRow(color = colors.aiout, label = "AI output")
             LegendRow(color = colors.sentinel, label = "Entity / tag", diamond = true)
         }

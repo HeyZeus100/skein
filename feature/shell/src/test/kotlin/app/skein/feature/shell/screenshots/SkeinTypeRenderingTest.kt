@@ -111,7 +111,7 @@ class SkeinTypeRenderingTest {
                         val mono = LocalSkeinMonoStyles.current
                         listOf(
                             "headlineMedium · Fold launch plan" to type.headlineMedium,
-                            "headlineSmall · Set up your vault" to type.headlineSmall,
+                            "headlineSmall · Set up Skein" to type.headlineSmall,
                             "titleLarge · Settings" to type.titleLarge,
                             "titleMedium · Why is the M2 ask path late?" to type.titleMedium,
                             "titleSmall · Privacy & security" to type.titleSmall,

@@ -17,8 +17,10 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.unit.dp
+import app.skein.feature.shell.testing.ShellTestTags
 import app.skein.feature.shell.theme.LocalSkeinTokens
 
 /**
@@ -38,7 +40,7 @@ fun RecentDropdown(
     val tokens = LocalSkeinTokens.current
     val active = tabs.firstOrNull { it.id == activeId }
 
-    Box(modifier = modifier) {
+    Box(modifier = modifier.testTag(ShellTestTags.RECENT_DROPDOWN)) {
         Row(
             verticalAlignment = Alignment.CenterVertically,
             modifier =

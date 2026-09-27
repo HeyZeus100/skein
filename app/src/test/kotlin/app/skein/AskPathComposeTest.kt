@@ -172,8 +172,8 @@ class AskPathComposeTest {
             openChatTab()
 
             awaitTag(MainActivityTestTags.CHAT_NO_MODEL_GUIDANCE)
-            composeRule.onNodeWithText("No model yet.", substring = true).assertExists()
-            composeRule.onNodeWithText("/import model", substring = true).assertExists()
+            composeRule.onNodeWithText("No model yet", substring = true).assertExists()
+            composeRule.onNodeWithText("Import a model", substring = true).assertExists()
             composeRule.onNodeWithTag(CHAT_SCREEN_TEST_TAG).assertDoesNotExist()
         }
     }

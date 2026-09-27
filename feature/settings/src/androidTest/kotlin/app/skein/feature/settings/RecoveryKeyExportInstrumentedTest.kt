@@ -1,5 +1,5 @@
 // skein-v9g (E3.I11) — on-device Compose UI test for Settings › Security ›
-// "Export vault key (passphrase)". Compiled here; the on-device run is
+// "Export recovery key (passphrase)". Compiled here; the on-device run is
 // gated on the CI emulator lane tracked by bd `skein-k3b2`, same as
 // `SettingsScreenLockPolicyInstrumentedTest`.
 //
@@ -47,7 +47,7 @@ class RecoveryKeyExportInstrumentedTest {
     fun the_row_is_present_while_the_vault_is_locked() {
         show(vaultUnlocked = false)
 
-        composeRule.onNodeWithText("Export vault key (passphrase)").assertIsDisplayed()
+        composeRule.onNodeWithText("Export recovery key (passphrase)").assertIsDisplayed()
     }
 
     @Test
@@ -58,10 +58,10 @@ class RecoveryKeyExportInstrumentedTest {
             true
         })
 
-        composeRule.onNodeWithText("Export vault key (passphrase)").performClick()
+        composeRule.onNodeWithText("Export recovery key (passphrase)").performClick()
         composeRule.waitForIdle()
 
-        composeRule.onNodeWithText("Export vault key").assertDoesNotExist()
+        composeRule.onNodeWithText("Export recovery key").assertDoesNotExist()
         assertEquals(0, reauthCalls)
     }
 
@@ -69,7 +69,7 @@ class RecoveryKeyExportInstrumentedTest {
     fun the_dialog_warns_before_it_asks_for_a_passphrase() {
         show(vaultUnlocked = true)
 
-        composeRule.onNodeWithText("Export vault key (passphrase)").performClick()
+        composeRule.onNodeWithText("Export recovery key (passphrase)").performClick()
         composeRule.waitForIdle()
 
         composeRule
@@ -86,7 +86,7 @@ class RecoveryKeyExportInstrumentedTest {
             true
         })
 
-        composeRule.onNodeWithText("Export vault key (passphrase)").performClick()
+        composeRule.onNodeWithText("Export recovery key (passphrase)").performClick()
         composeRule.waitForIdle()
         composeRule.onNodeWithText("Export").performClick()
         composeRule.waitForIdle()

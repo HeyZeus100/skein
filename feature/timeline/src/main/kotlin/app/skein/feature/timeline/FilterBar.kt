@@ -90,7 +90,7 @@ private fun PersonaDropdownChip(
     onPersona: (PersonaId?) -> Unit,
 ) {
     var open by remember { mutableStateOf(false) }
-    val label = personas.firstOrNull { it.id == selectedId }?.name ?: selectedId ?: "Persona"
+    val label = personas.firstOrNull { it.id == selectedId }?.name ?: selectedId ?: "Space"
     Box {
         FilterChip(
             selected = selectedId != null,
@@ -101,7 +101,7 @@ private fun PersonaDropdownChip(
         )
         DropdownMenu(expanded = open, onDismissRequest = { open = false }) {
             DropdownMenuItem(
-                text = { Text("All personas") },
+                text = { Text("All Spaces") },
                 onClick = {
                     open = false
                     onPersona(null)

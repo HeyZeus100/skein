@@ -35,8 +35,8 @@ public const val CONTEXT_TOGGLE_TEST_TAG: String = "app.skein.feature.chat.Conte
 public const val ERROR_BANNER_TEST_TAG: String = "app.skein.feature.chat.ErrorBanner"
 public const val RETRY_BUTTON_TEST_TAG: String = "app.skein.feature.chat.RetryButton"
 
-public const val SERVICE_DIED_BANNER_TEXT: String = "model process restarted, retry"
-public const val ENGINE_ERROR_BANNER_TEXT: String = "generation failed, retry"
+public const val SERVICE_DIED_BANNER_TEXT: String = "Couldn't finish the answer. The model had to restart."
+public const val ENGINE_ERROR_BANNER_TEXT: String = "Couldn't finish the answer."
 
 /**
  * @param wikilinkSuggest backs the bottom bar's `[[` popup — typically
@@ -84,9 +84,9 @@ public fun ChatScreen(
             horizontalArrangement = Arrangement.SpaceBetween,
             verticalAlignment = Alignment.CenterVertically,
         ) {
-            Text(text = "chat", style = MaterialTheme.typography.titleMedium)
+            Text(text = "Chat", style = MaterialTheme.typography.titleMedium)
             TextButton(onClick = viewModel::toggleContextPanel, modifier = Modifier.testTag(CONTEXT_TOGGLE_TEST_TAG)) {
-                Text("${LocalSkeinTokens.current.glyphs.context} context")
+                Text("${LocalSkeinTokens.current.glyphs.context} Sources")
             }
         }
 
@@ -120,7 +120,7 @@ public fun ChatScreen(
                         color = MaterialTheme.colorScheme.onErrorContainer,
                     )
                     Button(onClick = viewModel::retry, modifier = Modifier.testTag(RETRY_BUTTON_TEST_TAG)) {
-                        Text("retry")
+                        Text("Try again")
                     }
                 }
             }

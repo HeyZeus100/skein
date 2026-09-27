@@ -347,7 +347,7 @@ fun SkeinApp(
                             posture = posture,
                             timeline = {
                                 timelinePane?.invoke(true, onTimelineEntryOpen, onTimelineEntryPin)
-                                    ?: DestinationPlaceholder(label = "Timeline")
+                                    ?: DestinationPlaceholder(label = "Recent")
                             },
                             primary = { splitAvailable ->
                                 TabHost(

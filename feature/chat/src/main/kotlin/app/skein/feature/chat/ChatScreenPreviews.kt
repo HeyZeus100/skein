@@ -88,8 +88,8 @@ private fun PreviewChatLayout(showContextPanel: Boolean) {
                 horizontalArrangement = Arrangement.SpaceBetween,
                 verticalAlignment = Alignment.CenterVertically,
             ) {
-                Text(text = "chat", style = MaterialTheme.typography.titleMedium)
-                TextButton(onClick = {}) { Text("${LocalSkeinTokens.current.glyphs.context} context") }
+                Text(text = "Chat", style = MaterialTheme.typography.titleMedium)
+                TextButton(onClick = {}) { Text("${LocalSkeinTokens.current.glyphs.context} Sources") }
             }
             if (showContextPanel) {
                 ContextPanel(items = sampleRetrieved(), tabController = TabController { _, _, _ -> "tab-1" })

@@ -261,17 +261,18 @@ public class VaultRestoreState(
 
     internal companion object {
         const val WRONG_PASSPHRASE_MESSAGE: String =
-            "That passphrase did not unlock the recovery file. Check it and try again — " +
+            "Couldn't unlock the recovery file. Check the passphrase and try again — " +
                 "the file itself is unchanged."
         const val UNREADABLE_FILE_MESSAGE: String =
-            "That file is not a Skein recovery export. Choose the file you saved when you exported " +
-                "your vault key."
+            "Couldn't read that file. It's not a Skein recovery export. Choose the file you saved " +
+                "when you exported your key."
         const val UNSUPPORTED_FILE_MESSAGE: String =
-            "That recovery file was written by a newer version of Skein. Update the app, then try again."
+            "Couldn't use that recovery file. It was written by a newer version of Skein. Update the " +
+                "app, then try again."
         const val CANCELLED_MESSAGE: String =
-            "Restore was cancelled before your vault key was saved. Nothing has been changed."
+            "Recovery was cancelled before your key was saved. Nothing has been changed."
         const val FAILED_MESSAGE: String =
-            "Your vault key could not be restored. Nothing has been changed. Please try again."
+            "Couldn't recover Skein. Nothing has been changed. Try again."
     }
 }
 

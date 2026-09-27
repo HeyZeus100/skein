@@ -11,8 +11,10 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.unit.dp
 import app.skein.core.designsystem.theme.SkeinTokens
+import app.skein.feature.shell.testing.ShellTestTags
 import app.skein.feature.shell.theme.LocalSkeinTokens
 
 /** One hamburger-drawer entry: its [Destination], display glyph, and label (spec §8.2 order). */
@@ -24,7 +26,7 @@ private data class DrawerEntry(
 
 private fun drawerEntries(glyphs: SkeinTokens.Glyphs): List<DrawerEntry> =
     listOf(
-        DrawerEntry(Destination.TIMELINE, glyphs.timeline, "Timeline"),
+        DrawerEntry(Destination.TIMELINE, glyphs.timeline, "Recent"),
         // Reuses the context-panel glyph (⚹) for Settings (spec §8.2).
         DrawerEntry(Destination.SETTINGS, glyphs.context, "Settings"),
     )
@@ -73,7 +75,10 @@ fun NavDrawer(
                         label = { Text("${entry.glyph}  ${entry.label}") },
                         selected = entry.destination == activeDestination,
                         onClick = { onNavigate(entry.destination) },
-                        modifier = Modifier.padding(horizontal = 12.dp, vertical = 4.dp),
+                        modifier =
+                            Modifier
+                                .padding(horizontal = 12.dp, vertical = 4.dp)
+                                .testTag(ShellTestTags.navDrawerItem(entry.destination.name)),
                     )
                 }
             }

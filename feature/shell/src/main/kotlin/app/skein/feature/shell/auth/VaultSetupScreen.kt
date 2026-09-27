@@ -87,7 +87,7 @@ public fun VaultSetupScreen(
     onProvisioned: (strongBoxBacked: Boolean) -> Unit,
     onAlreadyInitialised: () -> Unit,
     modifier: Modifier = Modifier,
-    promptTitle: String = "Set up your vault",
+    promptTitle: String = "Set up Skein",
 ) {
     val context = LocalContext.current
     val hostActivity = remember(context) { context.findFragmentActivity() }
@@ -186,7 +186,7 @@ public fun VaultSetupScreen(
             when (val phase = state.uiState) {
                 VaultSetupUiState.Ready -> {
                     Text(
-                        text = "Set up your vault",
+                        text = "Set up Skein",
                         style = MaterialTheme.typography.titleLarge,
                         textAlign = TextAlign.Center,
                     )
@@ -199,7 +199,7 @@ public fun VaultSetupScreen(
                         onClick = state::begin,
                         modifier = Modifier.testTag(ShellTestTags.VAULT_SETUP_BEGIN_BUTTON),
                     ) {
-                        Text("Set up vault")
+                        Text("Set up Skein")
                     }
                     Text(
                         text = RESTORE_EXPLANATION,
@@ -213,7 +213,7 @@ public fun VaultSetupScreen(
                         },
                         modifier = Modifier.testTag(ShellTestTags.VAULT_RESTORE_BUTTON),
                     ) {
-                        Text("Restore from a passphrase export")
+                        Text("Recover Skein…")
                     }
                 }
 
@@ -278,7 +278,7 @@ private fun RestorePassphraseEntry(
     message: String?,
 ) {
     Text(
-        text = "Restore from a passphrase export",
+        text = "Recover Skein",
         style = MaterialTheme.typography.titleLarge,
         textAlign = TextAlign.Center,
     )
@@ -310,7 +310,7 @@ private fun RestorePassphraseEntry(
         enabled = state.canSubmit,
         modifier = Modifier.testTag(ShellTestTags.VAULT_RESTORE_SUBMIT_BUTTON),
     ) {
-        Text("Restore vault key")
+        Text("Recover Skein")
     }
     OutlinedButton(
         onClick = state::cancel,
@@ -373,13 +373,13 @@ private val GUTTER = 24.dp
 private val MAX_CONTENT_WIDTH = 480.dp
 
 private const val EXPLANATION =
-    "Skein keeps your notes in an encrypted vault on this device. Setting it up creates a key in " +
+    "Skein keeps your notes encrypted on this device. Setting it up creates a key in " +
         "your phone's secure hardware, protected by your fingerprint or face and by your screen lock. " +
         "You will be asked to confirm twice. Nothing leaves your device."
 
 private const val NO_BIOMETRIC_MESSAGE =
     "No fingerprint or face is enrolled on this device. Skein needs a strong biometric to protect " +
-        "your vault key. Add one in your device's security settings, then come back and try again."
+        "your key. Add one in your device's security settings, then come back and try again."
 
 /** Reason for a preview/no-activity host; mapped to the generic retry text, never shown. */
 private const val NO_HOST_ACTIVITY_REASON = "no host activity"
@@ -388,7 +388,7 @@ private const val NO_HOST_ACTIVITY_REASON = "no host activity"
 
 private const val RESTORE_EXPLANATION =
     "Moving from another device, or lost your fingerprint and screen lock at the same time? If you " +
-        "exported your vault key to a file, you can restore it here instead."
+        "exported a recovery file, you can use it to recover Skein here instead."
 
 private const val RESTORE_PASSPHRASE_EXPLANATION =
     "Enter the passphrase you chose when you exported this file. Skein will unlock the key inside it " +

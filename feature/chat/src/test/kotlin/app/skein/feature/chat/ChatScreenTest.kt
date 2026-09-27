@@ -250,7 +250,7 @@ class ChatScreenTest {
             composeRule.onAllNodesWithTag(contextRowTestTag(retrievedItem())).fetchSemanticsNodes().isNotEmpty()
         }
         composeRule.onNodeWithText("Source Note").assertIsDisplayed()
-        composeRule.onNodeWithText("score 0.87", substring = true).assertIsDisplayed()
+        composeRule.onNodeWithText("Relevant passage", substring = true).assertIsDisplayed()
     }
 
     @Test

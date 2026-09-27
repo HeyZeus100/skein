@@ -33,8 +33,8 @@ internal object EnvelopeUnreadable {
 
     /** Distinct from the generic failure text; promises nothing was changed unless the user explicitly resets. */
     const val UNLOCK_MESSAGE: String =
-        "Your vault's key file could not be read. Nothing has been changed and no data has been " +
-            "deleted. Unlocking is not possible until the vault is reset."
+        "Couldn't read Skein's key file, so it can't be unlocked. Nothing has been changed and no " +
+            "data has been deleted — resetting Skein is the only way to unlock it from here."
 
     fun matches(reason: String): Boolean = reason in REASONS
 }

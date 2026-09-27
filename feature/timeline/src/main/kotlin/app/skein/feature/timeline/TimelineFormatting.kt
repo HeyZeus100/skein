@@ -182,7 +182,7 @@ internal fun kindLabel(kind: DocumentKind): String =
     when (kind) {
         DocumentKind.NOTE -> "Note"
         DocumentKind.CHAT -> "Chat"
-        DocumentKind.ATTACHMENT -> "Attachment"
+        DocumentKind.ATTACHMENT -> "File"
         DocumentKind.AIOUT -> "AI output"
     }
 

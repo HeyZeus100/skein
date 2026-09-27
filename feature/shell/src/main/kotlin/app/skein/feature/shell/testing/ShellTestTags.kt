@@ -109,4 +109,16 @@ object ShellTestTags {
 
     /** Root of `app.skein.feature.shell.nav.SearchResults`, shown while plain-text search has hits. */
     const val SEARCH_RESULTS = "search_results"
+
+    /**
+     * One `app.skein.feature.shell.nav.NavDrawer` entry, keyed by
+     * `Destination.name` — a stable identifier for tests, independent of
+     * the entry's display label (the tab-strip's own "Recent" fallback
+     * text otherwise collides with the Timeline/Recent drawer entry's
+     * label in a substring text query).
+     */
+    fun navDrawerItem(destinationName: String): String = "nav_drawer_item_$destinationName"
+
+    /** Root of `app.skein.feature.shell.tabs.RecentDropdown` (the folded-phone tab strip). */
+    const val RECENT_DROPDOWN = "recent_dropdown"
 }

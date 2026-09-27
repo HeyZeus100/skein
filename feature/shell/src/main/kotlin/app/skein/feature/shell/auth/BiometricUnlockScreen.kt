@@ -153,7 +153,7 @@ public fun BiometricUnlockScreen(
     onNotInitialised: (() -> Unit)? = null,
     onResetRequested: (() -> Unit)? = null,
     biometricPromptTitle: String = "Unlock Skein",
-    biometricPromptSubtitle: String = "Authenticate to open your vault",
+    biometricPromptSubtitle: String = "Authenticate to open Skein",
     biometricPromptNegativeButton: String = "Cancel",
     isDeviceLocked: (() -> Boolean)? = null,
 ) {
@@ -311,7 +311,7 @@ public fun BiometricUnlockScreen(
                             onClick = reset,
                             modifier = Modifier.testTag(ShellTestTags.BIOMETRIC_UNLOCK_RESET_BUTTON),
                         ) {
-                            Text("Reset vault…")
+                            Text("Reset Skein…")
                         }
                     }
                 }
@@ -382,7 +382,7 @@ internal tailrec fun handleOutcome(
         UnlockOutcome.NotInitialised ->
             if (onNotInitialised != null) onNotInitialised() else onRetry(NOT_SET_UP_MESSAGE)
         is UnlockOutcome.IllegalTransition ->
-            onRetry("Unlock is not available right now.")
+            onRetry("Couldn't unlock right now. Try again in a moment.")
         // skein-9psb: NOT routed through onRetry — no failure text, no
         // reason string (there is none to carry: `UnlockOutcome.DeviceLocked`
         // is an object, matched by type only). The screen waits and retries
@@ -467,5 +467,5 @@ private val SPACING = 12.dp
 
 private const val NO_HOST_ACTIVITY_MESSAGE =
     "Unable to present the biometric prompt: no host activity available."
-private const val NOT_SET_UP_MESSAGE = "The vault has not been set up yet."
-private const val GENERIC_FAILURE_MESSAGE = "Authentication failed."
+private const val NOT_SET_UP_MESSAGE = "Skein hasn't been set up yet."
+private const val GENERIC_FAILURE_MESSAGE = "Couldn't verify your identity."

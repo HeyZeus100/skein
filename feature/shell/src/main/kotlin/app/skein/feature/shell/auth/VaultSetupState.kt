@@ -115,8 +115,8 @@ public class VaultSetupState(
 
     internal companion object {
         const val CANCELLED_MESSAGE: String =
-            "Setup was cancelled before your vault key was created. Nothing has been saved yet."
+            "Setup was cancelled before your key was created. Nothing has been saved yet."
         const val FAILED_MESSAGE: String =
-            "Your vault key could not be created. Nothing has been saved. Please try again."
+            "Couldn't create your key. Nothing has been saved. Try again."
     }
 }

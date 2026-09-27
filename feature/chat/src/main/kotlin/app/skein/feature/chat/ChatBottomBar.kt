@@ -226,11 +226,11 @@ public fun ChatBottomBar(
             onClick = { attachLauncher.launch(ATTACHABLE_MIME_TYPES) },
             modifier = Modifier.testTag(ATTACH_BUTTON_TEST_TAG),
         ) {
-            Icon(painter = painterResource(SkeinIcons.Attach), contentDescription = "Attach a file")
+            Icon(painter = painterResource(SkeinIcons.Attach), contentDescription = "Attach")
         }
         if (isGenerating) {
             IconButton(onClick = onCancel, modifier = Modifier.testTag(CANCEL_BUTTON_TEST_TAG)) {
-                Icon(painter = painterResource(SkeinIcons.Stop), contentDescription = "Stop generating")
+                Icon(painter = painterResource(SkeinIcons.Stop), contentDescription = "Stop answer")
             }
         } else {
             IconButton(
@@ -238,7 +238,7 @@ public fun ChatBottomBar(
                 enabled = fieldValue.text.isNotBlank(),
                 modifier = Modifier.testTag(SEND_BUTTON_TEST_TAG),
             ) {
-                Icon(painter = painterResource(SkeinIcons.Send), contentDescription = "Send message")
+                Icon(painter = painterResource(SkeinIcons.Send), contentDescription = "Send")
             }
         }
     }

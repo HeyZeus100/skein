@@ -193,7 +193,7 @@ private fun NoSearchResultsState(
 ) {
     Box(modifier = modifier.fillMaxWidth().padding(vertical = 32.dp), contentAlignment = Alignment.Center) {
         Text(
-            text = "No licenses match \"$query\".",
+            text = "No licenses match “$query”.",
             style = MaterialTheme.typography.bodyMedium,
             color = MaterialTheme.colorScheme.onSurfaceVariant,
         )

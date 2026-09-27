@@ -113,8 +113,8 @@ public class VaultResetConfirmState(
     internal companion object {
         const val CONFIRMATION_PHRASE: String = "RESET"
         const val REFUSED_UNLOCKED_MESSAGE: String =
-            "The vault is still unlocked. Lock it first, then try resetting again."
+            "Skein is still unlocked. Lock it first, then try resetting again."
         const val FAILED_MESSAGE: String =
-            "The vault could not be reset. Please try again."
+            "Couldn't reset Skein. Try again."
     }
 }

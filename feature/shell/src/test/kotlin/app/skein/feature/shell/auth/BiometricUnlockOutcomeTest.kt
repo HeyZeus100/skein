@@ -99,7 +99,7 @@ class BiometricUnlockOutcomeTest {
         val effects = run(UnlockOutcome.NotInitialised, withSetupRoute = false)
 
         assertFalse(effects.notInitialised)
-        assertEquals("The vault has not been set up yet.", effects.retryMessage)
+        assertEquals("Skein hasn't been set up yet.", effects.retryMessage)
     }
 
     @Test
@@ -168,7 +168,7 @@ class BiometricUnlockOutcomeTest {
             )
 
         assertNull(effects.envelopeUnreadableMessage)
-        assertEquals("Authentication failed.", effects.retryMessage)
+        assertEquals("Couldn't verify your identity.", effects.retryMessage)
     }
 
     @Test

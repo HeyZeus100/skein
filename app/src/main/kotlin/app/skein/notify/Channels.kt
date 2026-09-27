@@ -34,7 +34,7 @@ object Channels {
         val indexing =
             NotificationChannel(
                 INDEXING_CHANNEL_ID,
-                "Indexing",
+                "Preparing for search",
                 NotificationManager.IMPORTANCE_LOW,
             )
         notificationManager.createNotificationChannel(indexing)

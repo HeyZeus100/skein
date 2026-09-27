@@ -100,7 +100,7 @@ public fun ModelsScreen(
             if (models.isEmpty()) {
                 Box(modifier = Modifier.fillMaxSize().testTag(MODELS_EMPTY_TEST_TAG)) {
                     Text(
-                        text = "No models imported yet — use /import model",
+                        text = "No models imported yet — import one from the command palette",
                         style = MaterialTheme.typography.bodyMedium,
                         modifier = Modifier.padding(16.dp),
                     )

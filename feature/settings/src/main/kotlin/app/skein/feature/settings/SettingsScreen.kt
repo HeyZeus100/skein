@@ -127,10 +127,10 @@ fun SettingsScreen(
                     )
                 }
 
-                SettingsSection(title = "Indexing") {
+                SettingsSection(title = "Search") {
                     SettingsInfoRow(
                         label = "Notifications",
-                        value = "Indexing progress shown while documents are processed",
+                        value = "Shows a notification while documents are prepared for search",
                         modifier = Modifier.testTag("settings_indexing_hint"),
                     )
                 }

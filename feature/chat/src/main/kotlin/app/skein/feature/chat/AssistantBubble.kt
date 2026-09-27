@@ -204,7 +204,7 @@ public fun AssistantBubble(
             )
             if (message.interrupted) {
                 Text(
-                    text = "interrupted — stopped",
+                    text = "Stopped",
                     style = MaterialTheme.typography.labelSmall,
                     color = MaterialTheme.colorScheme.onSurfaceVariant,
                     modifier = Modifier.testTag(INTERRUPTED_BADGE_TEST_TAG),
@@ -254,7 +254,7 @@ public fun ThinkingPlaceholder(modifier: Modifier = Modifier) {
         shape = RoundedCornerShape(8.dp),
     ) {
         Text(
-            text = "thinking…",
+            text = "Writing answer…",
             style = MaterialTheme.typography.bodySmall,
             color = MaterialTheme.colorScheme.onSurfaceVariant,
             modifier = Modifier.padding(12.dp),

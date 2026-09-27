@@ -91,7 +91,7 @@ private fun TypeConfirmationStep(
     onDismiss: () -> Unit,
 ) {
     Text(
-        text = "Reset vault",
+        text = "Reset Skein",
         style = MaterialTheme.typography.titleLarge,
         textAlign = TextAlign.Center,
     )
@@ -170,7 +170,7 @@ private fun FinalConfirmStep(
             enabled = !state.resetting,
             modifier = Modifier.testTag(ShellTestTags.VAULT_RESET_FINAL_BUTTON),
         ) {
-            Text(if (state.resetting) "Resetting…" else "Permanently delete vault")
+            Text(if (state.resetting) "Resetting…" else "Permanently delete Skein")
         }
     }
 }
@@ -180,8 +180,8 @@ private val GUTTER = 24.dp
 private val MAX_CONTENT_WIDTH = 480.dp
 
 private const val TYPE_STEP_EXPLANATION =
-    "Your vault's key file cannot be read, so it cannot be unlocked. Resetting deletes your notes, " +
-        "attachments, and vault keys from this device — this cannot be undone. To continue, type RESET below."
+    "Skein's key file cannot be read, so it cannot be unlocked. Resetting deletes your notes, " +
+        "attachments, and keys from this device — this cannot be undone. To continue, type RESET below."
 
 private const val FINAL_STEP_EXPLANATION =
     "All notes, attachments, and keys on this device will be permanently deleted. There is no way " +
