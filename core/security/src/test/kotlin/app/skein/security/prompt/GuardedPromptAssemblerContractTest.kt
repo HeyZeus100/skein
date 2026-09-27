@@ -16,6 +16,8 @@
 
 package app.skein.security.prompt
 
+import app.skein.core.model.AnswerPolicy
+import app.skein.core.model.AnswerScope
 import app.skein.core.model.AssembledPrompt
 import app.skein.core.model.ChatMessage
 import app.skein.core.model.Message
@@ -40,10 +42,11 @@ internal class GuardedReferenceAssembler : PromptAssembler {
         userQuery: String,
         budget: TokenBudget,
         countTokens: (String) -> Int,
+        answerScope: AnswerScope,
     ): AssembledPrompt {
-        val systemContent = persona?.systemPrompt ?: ""
+        val systemContent = AnswerPolicy.systemPrompt(persona, answerScope)
 
-        var survivors = retrieved
+        var survivors = if (answerScope == AnswerScope.KNOWLEDGE) retrieved else emptyList()
         while (survivors.isNotEmpty() &&
             countTokens(PromptGuard.wrapRetrieved(survivors)) > budget.maxRetrievedTokens
         ) {

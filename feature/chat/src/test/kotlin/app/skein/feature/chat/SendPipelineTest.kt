@@ -83,7 +83,7 @@ class SendPipelineTest {
     private fun pipeline(
         vault: InMemoryVaultRepository,
         engine: InferenceEngine,
-        retrievalService: RetrievalService = FakeRetrievalService(emptyList()),
+        retrievalService: RetrievalService = FakeRetrievalService(listOf(retrievedItem())),
         countTokens: (String) -> Int = { it.length / 4 },
         warmUp: suspend () -> Unit = {},
     ): SendPipeline =

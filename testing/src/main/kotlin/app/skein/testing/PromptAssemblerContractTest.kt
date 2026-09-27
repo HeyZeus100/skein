@@ -14,7 +14,7 @@
 // Design spec §2 principle 10 / §7.3 / §9 require CaMeL-style separation:
 // retrieved vault text is data, never instructions. Four tests below encode
 // that and must not be weakened:
-//   • `system_message_is_exactly_the_persona_system_prompt`
+//   • `system_message_contains_trusted_policy_then_space_preferences`
 //   • `retrieved_text_never_appears_in_the_system_message`
 //   • `retrieved_text_never_appears_in_a_history_message`
 //   • `retrieved_text_is_passed_through_verbatim`
@@ -46,6 +46,8 @@
 
 package app.skein.testing
 
+import app.skein.core.model.AnswerPolicy
+import app.skein.core.model.AnswerScope
 import app.skein.core.model.AssembledPrompt
 import app.skein.core.model.ChatMessage
 import app.skein.core.model.DocumentKind
@@ -78,29 +80,56 @@ public abstract class PromptAssemblerContractTest {
     // ------------------------------------------------------------------
 
     @Test
-    public fun system_message_is_exactly_the_persona_system_prompt() {
+    public fun system_message_contains_trusted_policy_then_space_preferences() {
         val result = assemble(persona = persona("You are terse."), retrieved = corpus(2))
 
         val system = result.prompt.messages.first()
         assertEquals(Role.SYSTEM, system.role)
-        assertEquals("You are terse.", system.content)
+        assertEquals(AnswerPolicy.systemPrompt(persona("You are terse."), AnswerScope.KNOWLEDGE), system.content)
     }
 
     @Test
-    public fun system_message_is_empty_when_the_persona_is_null() {
+    public fun system_message_retains_policy_when_the_persona_is_null() {
         val result = assemble(persona = null, retrieved = corpus(2))
 
         val system = result.prompt.messages.first()
         assertEquals(Role.SYSTEM, system.role)
-        assertEquals("", system.content)
+        assertEquals(AnswerPolicy.systemPrompt(null, AnswerScope.KNOWLEDGE), system.content)
     }
 
     @Test
-    public fun system_message_is_empty_when_the_persona_system_prompt_is_null() {
+    public fun system_message_retains_policy_when_the_persona_system_prompt_is_null() {
         val result = assemble(persona = persona(null), retrieved = corpus(2))
 
         assertEquals(
-            "",
+            AnswerPolicy.systemPrompt(null, AnswerScope.KNOWLEDGE),
+            result.prompt.messages
+                .first()
+                .content,
+        )
+    }
+
+    @Test
+    public fun general_scope_does_not_offer_vault_passages_or_citation_markers() {
+        val result =
+            assembler().assemble(
+                persona = persona("Keep answers brief."),
+                history = emptyList(),
+                retrieved = corpus(2),
+                userQuery = "Explain a rainbow.",
+                budget = TokenBudget(16_384, 1024, 3072),
+                countTokens = ::countTokens,
+                answerScope = AnswerScope.GENERAL,
+            )
+        assertTrue(result.citations.isEmpty())
+        assertEquals(
+            "User: Explain a rainbow.",
+            result.prompt.messages
+                .last()
+                .content,
+        )
+        assertEquals(
+            AnswerPolicy.systemPrompt(persona("Keep answers brief."), AnswerScope.GENERAL),
             result.prompt.messages
                 .first()
                 .content,

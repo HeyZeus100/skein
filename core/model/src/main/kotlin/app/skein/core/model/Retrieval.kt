@@ -180,9 +180,9 @@ public data class AssembledPrompt(
  *
  * 1. **Typed role segments.** The output is a [Prompt] of role-tagged
  *    [ChatMessage]s, never one concatenated string. The instruction segment
- *    is the single leading [Role.SYSTEM] message, whose content is exactly
- *    `persona?.systemPrompt ?: ""` — nothing derived from `retrieved` is ever
- *    placed there, and no assembler may append to it. This extends to
+ *    is the single leading [Role.SYSTEM] message, whose content is the trusted [AnswerPolicy] for the selected scope followed
+ *    by Space preferences. Nothing derived from `retrieved` is ever placed
+ *    there. The application policy takes precedence over Space preferences. This extends to
  *    `history`: a stored or imported turn may itself carry [Role.SYSTEM]
  *    (design spec §5's `messages.role` column allows it), but an assembler
  *    renders every such turn as data — re-roled to [Role.USER], never
@@ -201,7 +201,7 @@ public data class AssembledPrompt(
  * ## Layout (design spec §7.3)
  *
  * ```text
- * SYSTEM     persona.systemPrompt, or "" when absent
+ * SYSTEM     application answer policy, followed by optional Space preferences
  * USER/ASST  recent chat turns, oldest first, bounded by the budget
  * USER       Retrieved context:
  *            [1] <docTitle> · <sourceKind.db>
@@ -220,6 +220,8 @@ public data class AssembledPrompt(
  * - When `retrieved` is empty there is no `Retrieved context:` block at all:
  *   the final [Role.USER] message is exactly `User: <userQuery>` and
  *   [AssembledPrompt.citations] is empty.
+ *
+ * General mode omits all retrieved items, even if a caller supplies them.
  *
  * ## Truncation (plan `E5.I15`, `E4.I7`)
  *
@@ -248,5 +250,6 @@ public interface PromptAssembler {
         userQuery: String,
         budget: TokenBudget,
         countTokens: (String) -> Int,
+        answerScope: AnswerScope = AnswerScope.KNOWLEDGE,
     ): AssembledPrompt
 }

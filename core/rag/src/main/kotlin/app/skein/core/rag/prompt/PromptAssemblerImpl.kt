@@ -1,65 +1,7 @@
-// `PromptAssemblerImpl` (skein-82g, E5.I15, plan
-// `docs/superpowers/plans/2026-09-19-skein-v1-plan.md` lines 3684-3701;
-// design spec §7.3). The production `PromptAssembler` (`:core:model`,
-// locked `E0.I12`/skein-x4f): the §7.3 layout — one leading SYSTEM message,
-// then history oldest-first, then one trailing USER message holding the
-// guarded retrieved-context block and the query — with `PromptGuard`
-// (`:core:security`, `E3.I10`/skein-xhi) applied around the retrieved
-// segment so a retrieved chunk is data, never an instruction (design spec §2
-// principle 10, §7.3, §9).
-//
-// ## This is a composition, not a rewrite
-//
-// `core/security`'s `GuardedPromptAssemblerContractTest`/
-// `GuardedReferenceAssembler` already proves — against the locked
-// `PromptAssemblerContractTest` — that "wrap survivors with
-// `PromptGuard.wrapRetrieved`, then greedily trim retrieved items from the
-// end until the wrapped block fits `maxRetrievedTokens`, then drop history
-// oldest-first until the whole prompt fits `contextLength - reserveForAnswer`"
-// satisfies every §7.3 assertion, including the CaMeL-separation ones. This
-// class is that exact composition, moved to its permanent home in
-// `:core:rag` (skein-82g's `PromptAssemblerImplTest : PromptAssemblerContractTest()`
-// runs the identical suite against it). Nothing here reimplements
-// `PromptGuard`'s neutralization or fencing — see that file for the
-// role-marker/fence rewriting this class relies on.
-//
-// ## Truncation order (plan `E5.I15`)
-//
-// 1. Retrieved items are trimmed from the *end* of the list until the
-//    `PromptGuard.wrapRetrieved` rendering of the survivors costs at most
-//    `budget.maxRetrievedTokens`. Only survivors appear in
-//    [app.skein.core.model.AssembledPrompt.citations].
-// 2. History turns are then dropped oldest-first until the assembled
-//    prompt's total token cost is at most `contextLength - reserveForAnswer`.
-//    The system message and the final (retrieved + query) user message are
-//    never dropped — a budget too small for them alone still returns a
-//    correctly-shaped prompt whose `estimatedTokens` may exceed the budget;
-//    `E4.I7`'s `ContextBudget` is responsible for not handing out a budget
-//    that tight in production.
-//
-// ## Token counting (`E4.I7`/skein-4c7 coordination)
-//
-// `PromptAssembler.assemble`'s locked signature (`:core:model`) already
-// supplies `countTokens: (String) -> Int` as a synchronous callback — the
-// caller (ultimately `ContextBudget`, backed by `IInferenceService.tokenCount`
-// plus an LRU cache) owns the async/caching seam. Coordinator note
-// (2026-09-21, skein-82g) additionally asks that estimation "go through the
-// same `TokenCounter` seam skein-4c7 declares" (`fun interface TokenCounter {
-// suspend fun count(text: String): Int }`, declared next to `ContextBudget`
-// in `core/inference`). As of this bead, skein-4c7 has not merged (no
-// `TokenCounter` type exists anywhere in the tree), but it also does not
-// change what this class does: `TokenCounter` is `ContextBudget`'s seam for
-// *producing* a `TokenBudget` and for caching repeated counts across turns —
-// it sits entirely upstream of `assemble`'s already-synchronous `countTokens`
-// parameter, which this class simply calls, exactly as `FakePromptAssembler`
-// and `GuardedReferenceAssembler` already do. No local `TokenCounter`
-// declaration is added here: there is no call site in this file that would
-// use one, and declaring an unused seam type in production code would be
-// dead weight the coordinator would have to delete at merge anyway. If
-// skein-4c7 lands with a different shape for how its cache feeds
-// `countTokens`, that is invisible to this class either way.
 package app.skein.core.rag.prompt
 
+import app.skein.core.model.AnswerPolicy
+import app.skein.core.model.AnswerScope
 import app.skein.core.model.AssembledPrompt
 import app.skein.core.model.ChatMessage
 import app.skein.core.model.Message
@@ -73,9 +15,9 @@ import app.skein.security.prompt.PromptGuard
 
 /**
  * Production [PromptAssembler]: the design spec §7.3 layout with
- * [PromptGuard.wrapRetrieved] fencing the retrieved-context segment. See the
- * file header for the truncation order and the CaMeL-style data/instruction
- * separation this composition provides.
+ * [PromptGuard.wrapRetrieved] fencing the retrieved-context segment and [AnswerPolicy] supplying the
+ * trusted instruction segment. Retrieved passages are trimmed first, then
+ * history, while the system and final user message are retained.
  *
  * Pure and deterministic, per the locked contract: no clock, no randomness,
  * no I/O, and — per spec §9 — no logging of [Retrieved.text], [Message.contentMd]
@@ -89,10 +31,16 @@ public class PromptAssemblerImpl : PromptAssembler {
         userQuery: String,
         budget: TokenBudget,
         countTokens: (String) -> Int,
+        answerScope: AnswerScope,
     ): AssembledPrompt {
-        val systemContent = persona?.systemPrompt ?: ""
+        val systemContent = AnswerPolicy.systemPrompt(persona, answerScope)
 
-        val survivors = trimRetrievedToBudget(retrieved, budget.maxRetrievedTokens, countTokens)
+        val survivors =
+            trimRetrievedToBudget(
+                if (answerScope == AnswerScope.KNOWLEDGE) retrieved else emptyList(),
+                budget.maxRetrievedTokens,
+                countTokens,
+            )
         val guardedBlock = PromptGuard.wrapRetrieved(survivors)
         val finalUserContent = finalUserMessage(guardedBlock, userQuery)
 

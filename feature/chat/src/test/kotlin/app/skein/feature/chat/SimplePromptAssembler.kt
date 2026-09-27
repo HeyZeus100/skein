@@ -13,6 +13,8 @@
 // / `PromptAssemblerContractTest`'s job, not this one's.
 package app.skein.feature.chat
 
+import app.skein.core.model.AnswerPolicy
+import app.skein.core.model.AnswerScope
 import app.skein.core.model.AssembledPrompt
 import app.skein.core.model.ChatMessage
 import app.skein.core.model.Message
@@ -31,10 +33,11 @@ internal class SimplePromptAssembler : PromptAssembler {
         userQuery: String,
         budget: TokenBudget,
         countTokens: (String) -> Int,
+        answerScope: AnswerScope,
     ): AssembledPrompt {
         val messages =
             buildList {
-                add(ChatMessage(role = Role.SYSTEM, content = persona?.systemPrompt ?: ""))
+                add(ChatMessage(role = Role.SYSTEM, content = AnswerPolicy.systemPrompt(persona, answerScope)))
                 history.forEach {
                     add(
                         ChatMessage(
@@ -52,7 +55,10 @@ internal class SimplePromptAssembler : PromptAssembler {
                 }
                 add(ChatMessage(role = Role.USER, content = userQuery))
             }
-        val citations = retrieved.mapIndexed { index, item -> (index + 1) to item }.toMap()
+        val citations =
+            (if (answerScope == AnswerScope.KNOWLEDGE) retrieved else emptyList())
+                .mapIndexed { index, item -> (index + 1) to item }
+                .toMap()
         return AssembledPrompt(
             prompt = Prompt(messages = messages),
             citations = citations,

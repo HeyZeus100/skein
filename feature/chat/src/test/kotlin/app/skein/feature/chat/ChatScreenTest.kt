@@ -159,6 +159,7 @@ class ChatScreenTest {
     @Test
     fun `cancel during streaming keeps the partial text and persists an interrupted turn`() {
         val (vault, doc) = newChat()
+        runBlocking { ChatKnowledge.setEnabled(vault, doc.id, false) }
         val pieces = (1..200).map { "t$it " }
         val engine = scriptedEngine("q" to pieces, tokenDelay = 15.milliseconds)
         runBlocking { engine.load(textModel()).getOrThrow() }
@@ -219,6 +220,7 @@ class ChatScreenTest {
     @Test
     fun `ServiceDied shows the banner and retry re-sends the same prompt`() {
         val (vault, doc) = newChat()
+        runBlocking { ChatKnowledge.setEnabled(vault, doc.id, false) }
         var callCount = 0
         val flakyEngine =
             object : InferenceEngine {

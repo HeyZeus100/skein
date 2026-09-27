@@ -8,7 +8,7 @@
 // Faithful to the contract:
 //   • Emits the design spec §7.3 layout exactly as `Retrieval.kt`'s
 //     `PromptAssembler` KDoc locks it: one leading SYSTEM message holding
-//     `persona?.systemPrompt ?: ""`, then the surviving history turns
+//     `AnswerPolicy.systemPrompt(persona, answerScope)`, then the surviving history turns
 //     oldest-first, then one USER message opening with `Retrieved context:`
 //     and closing with `User: <query>`.
 //   • Retrieved text is copied verbatim into the data segment and never
@@ -33,6 +33,8 @@
 
 package app.skein.testing
 
+import app.skein.core.model.AnswerPolicy
+import app.skein.core.model.AnswerScope
 import app.skein.core.model.AssembledPrompt
 import app.skein.core.model.ChatMessage
 import app.skein.core.model.Message
@@ -52,10 +54,11 @@ public class FakePromptAssembler : PromptAssembler {
         userQuery: String,
         budget: TokenBudget,
         countTokens: (String) -> Int,
+        answerScope: AnswerScope,
     ): AssembledPrompt {
-        val systemContent = persona?.systemPrompt ?: ""
+        val systemContent = AnswerPolicy.systemPrompt(persona, answerScope)
 
-        var survivors = retrieved
+        var survivors = if (answerScope == AnswerScope.KNOWLEDGE) retrieved else emptyList()
         while (survivors.isNotEmpty() && countTokens(renderBlock(survivors)) > budget.maxRetrievedTokens) {
             survivors = survivors.dropLast(1)
         }

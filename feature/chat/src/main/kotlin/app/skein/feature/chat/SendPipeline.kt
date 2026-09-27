@@ -30,6 +30,8 @@
 // it. Recorded as a deviation in `bd note skein-6as` per the working rules.
 package app.skein.feature.chat
 
+import app.skein.core.model.AnswerPolicy
+import app.skein.core.model.AnswerScope
 import app.skein.core.model.AssembledPrompt
 import app.skein.core.model.DocId
 import app.skein.core.model.InferenceEngine
@@ -79,6 +81,10 @@ private const val RETRIEVAL_K = 8
  * by scanning rendered text for this string. HTML-comment-shaped so it
  * renders as nothing extra if a caller ever forgets to strip it.
  */
+internal const val NO_KNOWLEDGE_EVIDENCE =
+    "I couldn't find enough evidence in Knowledge to answer that. " +
+        "Add a relevant note or turn Knowledge off to ask from general knowledge."
+
 internal const val INTERRUPTED_MARKER = "\n\n<!-- skein:interrupted stopReason=CANCELLED -->"
 
 /** Strips [INTERRUPTED_MARKER] back off, for the reload path. */
@@ -102,6 +108,8 @@ public data class TurnOutcome(
     val retrieved: List<Retrieved>,
     val assembled: AssembledPrompt,
     val assistantMessage: Message?,
+    val answerScope: AnswerScope = AnswerScope.KNOWLEDGE,
+    val generationSkipped: Boolean = false,
 )
 
 /**
@@ -202,6 +210,8 @@ public class SendPipeline(
         text: String,
     ): Flow<Segment> =
         channelFlow {
+            val chat = requireNotNull(vaultRepository.getDocument(chatDocId)) { "Chat no longer exists" }
+            val answerScope = if (ChatKnowledge.enabled(chat)) AnswerScope.KNOWLEDGE else AnswerScope.GENERAL
             val priorHistory = vaultRepository.listMessages(chatDocId)
             vaultRepository.appendMessage(chatDocId, NewMessage(role = Role.USER, contentMd = text))
 
@@ -211,10 +221,47 @@ public class SendPipeline(
             warmUp()
 
             val persona = personaProvider()
-            val retrieved = retrievalService.retrieveContext(text, RETRIEVAL_K, persona?.id)
+            val retrieved =
+                if (answerScope == AnswerScope.KNOWLEDGE) {
+                    retrievalService.retrieveContext(text, RETRIEVAL_K, persona?.id)
+                } else {
+                    emptyList()
+                }
             val params = samplingParams()
-            val budget = budgetFor(params.maxTokens, persona?.systemPrompt ?: "")
-            val assembled = promptAssembler.assemble(persona, priorHistory, retrieved, text, budget, countTokens)
+            val budget = budgetFor(params.maxTokens, AnswerPolicy.systemPrompt(persona, answerScope))
+            val assembled =
+                promptAssembler.assemble(
+                    persona,
+                    priorHistory,
+                    retrieved,
+                    text,
+                    budget,
+                    countTokens,
+                    answerScope,
+                )
+            // A missing/fully trimmed evidence set cannot support a vault answer.
+            // This is an app response, not a claim that the model verified truth.
+            if (answerScope == AnswerScope.KNOWLEDGE && assembled.citations.isEmpty()) {
+                val message =
+                    vaultRepository.appendMessage(
+                        chatDocId,
+                        NewMessage(role = Role.ASSISTANT, contentMd = NO_KNOWLEDGE_EVIDENCE),
+                    )
+                _lastOutcome.value =
+                    TurnOutcome(
+                        chatDocId = chatDocId,
+                        userQuery = text,
+                        stopReason = StopReason.EOS,
+                        interrupted = false,
+                        retrieved = retrieved,
+                        assembled = assembled,
+                        assistantMessage = message,
+                        answerScope = answerScope,
+                        generationSkipped = true,
+                    )
+                send(Segment.Text(NO_KNOWLEDGE_EVIDENCE))
+                return@channelFlow
+            }
 
             val parser = CitationParser(assembled.citations)
             val rawText = StringBuilder()
@@ -294,6 +341,7 @@ public class SendPipeline(
                     retrieved = retrieved,
                     assembled = assembled,
                     assistantMessage = assistantMessage,
+                    answerScope = answerScope,
                 )
         }.buffer(Channel.UNLIMITED)
 
