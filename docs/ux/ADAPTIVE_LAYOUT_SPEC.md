@@ -1334,6 +1334,99 @@ fun SkeinShell(
 
 Because the keys, rules and tests are written against `SkeinNavigator` over `List<SkeinKey>`, **the gate decides only the rendering layer.** AL-06 (keys and rules) proceeds either way.
 
+#### Result (2026-09-26, AL-05): **Navigation 3**
+
+**Verdict: Nav3.** None of the fallback triggers (G1, G3, G4, G6, G7) failed. G5 and G10 pass. G8 needs the device, so it is fixed forward in AL-17. G9 passes its licence, guard and metadata checks; its APK line holds for what Nav3 itself adds, but not for the total under today's no-shrink R8 rules (see G9). Nothing was forked. Beyond the §8.8 sketch, the gate needed about 160 lines of Skein code: the sheet scene (107), the T3 session stores (33) and the scene identity (19).
+
+**The prototype** lives in `prototype/nav3/` (`:prototype:nav3`). It is throwaway: nothing depends on it, and `:app` never sees it. To remove it, delete the directory and its `include` line. It hosts today's `ChatScreen`, `NoteTab` and `GraphScreen` unchanged, with fakes, behind `NavDisplay`, and it has:
+- Skein-owned stacks, one per destination;
+- `@Serializable` keys typed per `SECURITY_REVIEW_D7.md` M1;
+- the §8.4 chain, with the directive built from AL-04's `skeinWindowLayout`;
+- the hoisted `SaveableStateHolder` (T2) and Activity-scoped session entry stores (T3);
+- a stand-in gate with a lock sequence.
+
+The suite is 46 JVM tests in 8 classes, Robolectric `@Config(sdk = [34])`, about 25 s.
+
+| # | Result | Evidence |
+|---|---|---|
+| G1 | **Pass**: 4 items owned by other beads, focus fixed forward (notes below) | **Live** (`Nav3GateFoldLiveTest`, 10 tests): A1 flips 1043 → 524 → 1043 → 443 → 1043; B1 plus the peek variant; C1 streams 200 tokens across 4 flips; C2b; D1; E1; F1; G1 (drawer); G4 (dialog). **Recreation** (`Nav3GateFoldRecreationTest`, 6 tests): A2, B2, C2, E2, F2 and G6, each through `ActivityScenario.recreate()` at the `w524dp`/`w443dp`/`w1006dp`/`w1043dp` qualifiers. **Process death** (A3/B3): `Nav3GateRestorePrivacyTest`, restoring on 524 × 1175 with the inspector as a peek |
+| G2 | **Pass** | 4 live flips of window class (A1) and 3 flips mid-stream (C1): today's composition-owned `ChatViewModel` is never re-created (+0 `observeMessages` subscriptions); the entry's T3 probe keeps its serial; the engine streams once (`streams == 1`); all 200 tokens persist, with no interrupted marker |
+| G3 | **Pass**: 107 code lines, no fork | `SkeinSheetSceneStrategy` (`SheetScene.kt`; 170 lines with imports and KDoc). `Nav3GateScenesTest`: opened at 524 × 1175, it is a bottom sheet at half height over a scrim; Back pops it; a scrim tap pops it. After a 1043 → 524 shrink it is a peek docked **under** the chat, with no scrim; the composer above it takes input and sends. Tapping the peek expands it in place (same scene, same T3 holder). At 1175 × 524 it is a 360 dp side sheet. Captures are written to `prototype/nav3/build/nav3-gate-captures/`; they are evidence, not goldens |
+| G4 | **Pass** | Measured through the real scenes: 994 × 443 and 1175 × 524 give 1 pane (Material alone gives 2). 852 × 883 gives 2 panes with a 280 dp list; opening Context gives `Chat │ Context`, the list yields, and the extra pane is 280 dp. 1043 × 1006 gives a 320 dp list. 1280 × 800 gives 3 panes, 320 │ 512 │ 320. 791 × 820 gives 1 pane and a rail |
+| G5 | **Pass** after one change; the device check is fixed forward (AL-12) | `Nav3GateBackOrderTest`, 12 sequences: Phone pops; peek and sheet pops; Dual extra → detail → the root, where Back is left to the system; Knowledge and Graph roots switch to Chat with its stack unchanged; the drawer closes first; Esc pops but never switches or leaves; a **cancelled** predictive back changes nothing; a completed one pops the extra pane. Every consumed Back changes what is on screen. **The change:** `BackNavigationBehavior.PopUntilContentChange`. With §8.4's `PopUntilScaffoldValueChange`, Back from `Conversations │ Chat` on Dual is not consumed and **the app exits**, because `List │ Detail` and `List │ placeholder` are the same scaffold value |
+| G6 | **Pass** | Process death: the 3 stacks and the top-level destination come back identical from a Bundle round-tripped through a `Parcel` (6,607 bytes). `BundleScan` (M3a: an allowlist, deny by default) finds 0 violations. 11 sentinels (typed composer text, a T3 draft, editor text, and fixture titles, bodies and messages) give 0 hits in the raw parcel bytes. Before unlock, only the gate composes and the repository gets 0 reads (M4a). Decoding is total (M4c). Non-canonical ids (`tag:…`, `title:…`, `project-falcon-notes`, uppercase, braces) never become keys, and never appear in the exception message (M1, M2, M13). Sanitise drops a deleted id and keeps the rest (M4d). A control test shows the scan fails on a saveable string, a contentKey carrying a title, and an unknown Parcelable |
+| G7 | **Pass**, with Skein's T3 decorator | `Nav3GateLockTest`: at lock, every entry `ViewModel` of both destinations gets `onCleared` synchronously and the stores empty; the stacks and T2 are kept; unlock restores the place with fresh T3 holders. The same holds while the Activity is **stopped** (M12). The stock `rememberViewModelStoreNavEntryDecorator` **fails M12**: its store is cleared only when composition catches up (`StockDecorator` test). Drafts from the fake row are N/A until B3 |
+| G8 | **Fixed forward** | Device only (the spike had no adb): AL-17's watcher, 10 fold cycles, `gfxinfo` p90 |
+| G9 | **Pass on licences, guards and metadata; APK size has a caveat** | `licenseAudit`: every new artifact is Apache-2.0. `checkDependencyGuards` passes. Verification metadata: +211 lines, no OS classifiers, including the POMs that `licenseAudit` reads. **Release APK** (`assembleFossRelease`, unsigned): **+675 KiB** under today's `-keep class ** { *; }`, which does no shrinking until E1.I8. About 60 % of the added dex is `adaptive-layout` and `adaptive-navigation`, which the fallback needs too. What Nav3 itself adds is navigation3 (79 KB) + adaptive-navigation3 (24 KB) + navigationevent (+1 KB) of dex. With R8 allowed to shrink `androidx.navigation3`, `…material3.adaptive` and `androidx.navigationevent`, and the whole prototype shell wired into `:app`, the APK grows **+418 KiB**, of which 75 KB is the prototype's own code |
+| G10 | **Pass** | Runs in the existing Robolectric sdk-34 lane. Line direction: the navigation layer the prototype needed is about 545 code lines (keys 99, stacks and rules 103, sheet scene 107, T3 stores 33, scene identity 19, shell 184). §8.8 deletes about 2,400 main lines (layout 649, tabs 889, split 78, nav 710, `TimelineRail` 68), plus `SkeinApp`'s slots and most of `MainActivity`'s 1,100 lines, so the count goes **down** |
+
+**G1 notes.**
+- **Owned by other beads, not by the navigation layer:**
+  - C3 and C4 (lock or process death mid-stream) need B2, C1 and `CHAT_UX_SPEC.md` §9.11.
+  - The Model sheet (G2), the palette (G3) and the attach picker (G5) are not built yet; their state is T3, T4 or T8, and their rules are AL-13's.
+  - The navigation layer's share of Test G, that entry holders survive a flip, is covered by the G4 dialog test.
+- **The draft across a recreation:** today's `ChatBottomBar` keeps its text in `remember`, so a recreation loses it (A2 asserts that). A T3 draft (a `TextFieldState` in the entry `ViewModel`) survives. AL-10 moves the draft to T5 plus B3.
+- **Focus:**
+  - What happens: a scene change moves the entry with `movableContentOf`, which detaches the focused node, and focus falls to ☰.
+  - The prototype's fix: `LocalSceneIdentity` (a 19-line `SceneDecoratorStrategy`), a T3 focus flag and one `requestFocus()`. Focus then holds across 5 flips (D1, on a stand-in composer).
+  - AL-10 must give `ChatBottomBar` a `FocusRequester`. The fallback would re-parent too.
+- **The in-flight turn:**
+  - C1 passes live with today's composition-owned `ChatViewModel`, because the entry is moved, not disposed.
+  - C2 and C2b pass only with the turn held in T3 (`TurnHost`, `viewModelScope`). A source pushed on one pane, or a destination switch, disposes today's `ChatScreen`.
+  - That is `CHAT_UX_SPEC.md` C1, and it is the same under the fallback.
+
+**Nav3 serialization against `SECURITY_REVIEW_D7.md` M1–M3.**
+1. **The stock key serializer.** `rememberNavBackStack` and `NavKeySerializer` store the key's **Java class name** (not its `@SerialName`) and call `Class.forName` on it when restoring. An unknown or renamed class throws, which breaks M4c, and the class name is a string outside the allowlist, which breaks M3 (evidence test in `Nav3GateRestorePrivacyTest`). Skein does not use them:
+   - `NavDisplay` accepts any `List<T>`.
+   - The stacks are Skein's `SnapshotStateList`s, saved one small Bundle per key through savedstate's `encodeToSavedState(SkeinKey.serializer())`: a sealed class, `@SerialName` tags, and a `SkeinId` value class that is validated on decode.
+   - Each entry is decoded on its own, and a failure drops only that entry.
+2. **The default content key.** `NavEntry.contentKey` defaults to `"$key:${key::class}"`, the data class's `toString()`, and the saveable decorator stores it in the Bundle as a map key. Any field a key gains would therefore leak. Every entry sets its own `contentKey` as `tag/id…`.
+3. **The entry-provider DSL.** Its fallback throws `"Unknown screen $key"`, which puts a key in an exception message (M13). Use an exhaustive `when` over the sealed keys, with no fallback.
+4. **Compose's own strings.** The allowlist has to admit Compose's structural strings: `SaveableStateRegistry:<view id>` and the base-36 composite-key hashes, **as map keys only**. Everything else in the captured Bundle is one of:
+   - UUIDs;
+   - enum names;
+   - key tags and field names;
+   - `tag/uuid` content keys;
+   - a fixed list of framework keys and records (`BundleScan.kt`).
+
+**What AL-06, AL-07 and AL-08 must do differently from §8.**
+
+*Stacks and keys (AL-06, AL-08):*
+1. **Stacks:** do not use `rememberNavBackStack`. Use Skein-owned stacks and the total codec described above.
+2. **Destinations:** call `rememberDecoratedNavEntries(stack, decorators, provider)` once per destination, on every composition, and pass the current destination's list as `NavDisplay(entries = …)`. Handing `NavDisplay` a different `backStack` counts as popping the other destinations' entries, which clears their T2 and T3.
+
+*Holders, back and scenes (AL-08):*
+
+3. **T3:** do not use `rememberViewModelStoreNavEntryDecorator`. Use a ~30-line decorator over an Activity-scoped `SessionEntryStores`, whose `clearAll()` is the lock's session-closed hook (M12). `lifecycle-viewmodel-navigation3` is then not needed at runtime.
+4. **List-detail back:** use `BackNavigationBehavior.PopUntilContentChange`. This supersedes §8.4 step 2.
+5. **Strategies are compared by value.** `rememberSceneState` recomputes scenes only when the strategy list or the entries change. The sheet strategy therefore takes the set of expanded sheets as an input, with `equals`; it must not read that set as state.
+6. **Step 1 is a custom scene, not `AdaptStrategy.Levitate`:**
+   - a levitated pane is placed over the scaffold, so a bottom peek would cover the composer;
+   - it needs `shouldHandleSinglePaneLayout` on every one-pane scene;
+   - its scrim is fixed per strategy instance.
+
+   The prototype docks the peek below the entry instead.
+7. **Elision is a pop.** §8.3 rule 6a's elided `visibleStack` counts as a pop for Nav3: the elided entry's T2 and T3 are cleared. That is fine for `NewChatKey`, whose draft lives in the draft store, but never elide an entry that owns state.
+8. **Scene transitions:** pass `transitionSpec` and `popTransitionSpec` a 150 ms fade (§2.7).
+9. **Versions:** `navigationevent-compose` resolves to **1.1.1**, because Nav3 UI 1.2.0 requires it; not the 1.0.1 of §8.6.
+
+*The container (AL-07):*
+
+10. **Keep `NavDisplay` in one place.** It must stay at one position in the composition when the container changes between drawer and rail. Re-parenting it crashed (`SaveableStateHolder`: "Key chat/… was used multiple times"), and it would re-create every entry. The prototype keeps one `ModalNavigationDrawer`, with gestures off on rail windows and the rail as a sibling. Check that `NavigationSuiteScaffold` behaves the same way before using it.
+
+*Focus (AL-10):*
+
+11. **Focus after a scene move:** use `LocalSceneIdentity`, a T3 focus flag and one `requestFocus()` (G1 notes).
+
+**Dependencies (commit "build(nav)").** Nothing was downgraded, and nothing is OS-specific.
+- **Catalog:**
+  - `androidx-navigation3 = "1.2.0"`, for `navigation3-runtime` and `navigation3-ui`;
+  - `material3-adaptive-navigation3` 1.3.0, on the existing `material3-adaptive` version; it pulls in `adaptive-layout` and `adaptive-navigation` 1.3.0;
+  - `lifecycle-viewmodel-navigation3` 2.11.0, on the lifecycle version; used only by the evidence test;
+  - `kotlinx-serialization-core` 1.11.0.
+- **Resolved lift:** `navigationevent` and `navigationevent-compose` go from 1.0.0 to 1.1.1.
+- **Not added:** `material3-adaptive-navigation-suite` 1.4.0 belongs to AL-07.
+
 ---
 
 ## 9. Acceptance tests A–G
