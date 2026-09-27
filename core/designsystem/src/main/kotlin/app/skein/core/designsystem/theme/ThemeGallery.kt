@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
@@ -80,7 +81,13 @@ private fun Swatch(
     label: String,
     color: Color,
 ) {
-    Column {
+    // Fixed width (bug found recording DS13's gallery, skein-xtov.23.11): an
+    // un-weighted `fillMaxWidth()` Surface inside this Column's parent `Row`
+    // of four swatches each claimed the Row's full incoming width, so every
+    // swatch after the first painted off past the visible edge — invisible
+    // in an unconstrained `@Preview` canvas, but real once this composable
+    // was actually captured at a device width.
+    Column(Modifier.width(72.dp)) {
         Surface(
             modifier =
                 Modifier
