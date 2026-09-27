@@ -58,6 +58,14 @@ object SkeinLayout {
     /** Expanded's list-pane gutter: its rows are inset pills at a tighter gutter than the 24 dp detail pane uses. */
     val expandedListPaneGutter: Dp = 12.dp
 
+    /**
+     * Skein's height gate (`ADAPTIVE_LAYOUT_SPEC.md` §2.4): a window shorter
+     * than this is "short" — a drawer and one pane, whatever its width. It
+     * catches the closed Fold in landscape (1175 × 524 at 330 dpi), which
+     * Material classes as Medium height and would give two panes.
+     */
+    val twoPaneMinHeight: Dp = 600.dp
+
     fun of(windowClass: SkeinWindowClass): SkeinWindowLayout =
         when (windowClass) {
             SkeinWindowClass.COMPACT -> compact

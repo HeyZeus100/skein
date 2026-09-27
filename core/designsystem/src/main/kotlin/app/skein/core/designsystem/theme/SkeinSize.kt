@@ -49,8 +49,23 @@ object SkeinSize {
     /** Collapsed navigation rail width (IA §3.4). */
     val rail: Dp = 80.dp
 
+    /** Expanded navigation rail width, XL windows only (`ADAPTIVE_LAYOUT_SPEC.md` §2.4). */
+    val railExpanded: Dp = 240.dp
+
     /** List pane width on Expanded and Large. */
     val listPane: Dp = 320.dp
+
+    /** Narrowest list or extra pane: a title plus a date stays legible at font scale 1.0. */
+    val sidePaneMin: Dp = 280.dp
+
+    /** Narrowest detail pane the layout's width guard allows: chat bubbles plus the composer. */
+    val detailPaneMin: Dp = 360.dp
+
+    /** Detail width that earns side panes [listPane] instead of [sidePaneMin]. */
+    val detailPaneComfort: Dp = 480.dp
+
+    /** Gap between panes (Material's partition spacer); it hosts the pane-expansion drag handle. */
+    val paneSpacer: Dp = 24.dp
 
     /** Extra pane (context inspector, Connections) width on Expanded. [extraPaneLarge] is Large's own width. */
     val extraPane: Dp = 320.dp

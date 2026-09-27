@@ -204,6 +204,8 @@ Measured on Skein Sans: mean advance 0.456 em over English prose, so 7.29 dp per
 | `topBar` | 64 | Minimum; grows (§3.5) |
 | `composerMin` | 56 | Grows to 6 lines, then scrolls |
 | `rail` / `listPane` / `extraPane` | 80 / 320 / 320 (360 on Large) | IA §3.4 |
+| `railExpanded` | 240 | XL windows only (`ADAPTIVE_LAYOUT_SPEC.md` §2.4) |
+| `sidePaneMin` / `detailPaneMin` / `detailPaneComfort` / `paneSpacer`, and `SkeinLayout.twoPaneMinHeight` | 280 / 360 / 480 / 24, and 600 | The window decision's width guard and height gate (`ADAPTIVE_LAYOUT_SPEC.md` §2.4) |
 | `drawerMax` | 320 | and ≤ window − 56 |
 | `sheetMaxWidth` / `paletteMaxWidth` / `dialogMaxWidth` | 640 / 640 / 560 | |
 | `readingMax` | 576 | §4.3 |
