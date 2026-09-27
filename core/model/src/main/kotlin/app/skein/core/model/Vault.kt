@@ -314,6 +314,20 @@ public interface VaultRepository {
         frontmatter: JsonObject,
     ): Document
 
+    /**
+     * Hard-deletes [id] and all of its row-level derived state in one
+     * transaction (`docs/ux/OBJECT_LIFECYCLE_SPEC.md` §3.3): the row, its
+     * messages, chunks (with their lexical and vector rows), revisions, its
+     * ingest-queue entry and its export stages. Files outside the database —
+     * the attachment blob and staged export plaintext — are deleted only
+     * after the commit, so a failed commit leaves the document whole.
+     *
+     * Idempotent: a missing [id] is a successful no-op.
+     *
+     * Publishes, after the commit, a `Documents(id)` change (so
+     * [observeDocument] emits `null`), a `Messages(id)` change for a chat (so
+     * [observeMessages] emits an empty list) and an ingest-queue change.
+     */
     public suspend fun deleteDocument(id: DocId)
 
     public fun observeDocument(id: DocId): Flow<Document?>

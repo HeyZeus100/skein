@@ -29,8 +29,16 @@ import app.skein.core.model.RevisionHashing
 import app.skein.core.model.Role
 import app.skein.core.model.TimelineFilter
 import app.skein.core.model.VaultRepository
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.channels.Channel
+import kotlinx.coroutines.channels.ReceiveChannel
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.launch
 import kotlinx.coroutines.test.runTest
+import kotlinx.coroutines.withContext
+import kotlinx.coroutines.withTimeout
+import kotlinx.coroutines.withTimeoutOrNull
 import kotlinx.serialization.json.JsonPrimitive
 import kotlinx.serialization.json.buildJsonObject
 import org.junit.Assert.assertEquals
@@ -829,6 +837,177 @@ public abstract class VaultRepositoryContractTest {
             assertTrue("no lexical match survives the delete", idx.bm25("zanzibarx", k = 10).isEmpty())
         }
 
+    // ------------------------------------------------------------------
+    // OBJECT_LIFECYCLE_SPEC.md §3.3 (LC-03): delete, its ordering and signals
+    // ------------------------------------------------------------------
+
+    @Test
+    public fun deleteDocument_removes_the_row_and_getDocument_returns_null(): Unit =
+        runTest {
+            val r = repo()
+            val note = r.createDocument(NewDocument(kind = DocumentKind.NOTE, title = "n", bodyMd = "b"))
+
+            r.deleteDocument(note.id)
+
+            assertNull(r.getDocument(note.id))
+        }
+
+    @Test
+    public fun deleteDocument_is_idempotent_for_a_missing_id(): Unit =
+        runTest {
+            val r = repo()
+            val note = r.createDocument(NewDocument(kind = DocumentKind.NOTE, title = "n", bodyMd = "b"))
+            r.deleteDocument(note.id)
+
+            r.deleteDocument(note.id)
+            r.deleteDocument("01924a4b-4d29-7000-8000-00000000DEAD")
+
+            assertNull(r.getDocument(note.id))
+        }
+
+    @Test
+    public fun deleteDocument_removes_messages_revisions_and_the_ingest_queue_entry(): Unit =
+        runTest {
+            val r = repo()
+            val chat = r.createDocument(NewDocument(kind = DocumentKind.CHAT, title = "chat", bodyMd = ""))
+            r.appendMessage(chat.id, NewMessage(role = Role.USER, contentMd = "hello"))
+            val revision = requireNotNull(r.currentRevision(chat.id))
+            assertTrue("sanity: the chat is queued for ingest", r.dequeueIngest(10).any { it.docId == chat.id })
+
+            r.deleteDocument(chat.id)
+
+            assertTrue(r.listMessages(chat.id).isEmpty())
+            assertNull(r.getRevision(chat.id, revision.revisionHash))
+            assertTrue(r.dequeueIngest(10).none { it.docId == chat.id })
+        }
+
+    @Test
+    public fun observeDocument_emits_null_after_delete(): Unit =
+        runTest {
+            val r = repo()
+            val note = r.createDocument(NewDocument(kind = DocumentKind.NOTE, title = "n", bodyMd = "v0"))
+            live(r.observeDocument(note.id)) { seen ->
+                seen.primeWith(poke = { i ->
+                    r.updateBody(note.id, "n", "v$i")
+                }, landed = { d, i -> d?.bodyMd == "v$i" })
+                r.deleteDocument(note.id)
+                seen.awaitMatching { it == null }
+            }
+        }
+
+    /** EMU is the meaningful run: the fake ticks every flow on every write (spec §3.8). */
+    @Test
+    public fun observeMessages_emits_empty_after_the_chat_is_deleted(): Unit =
+        runTest {
+            val r = repo()
+            val chat = r.createDocument(NewDocument(kind = DocumentKind.CHAT, title = "chat", bodyMd = ""))
+            live(r.observeMessages(chat.id)) { seen ->
+                seen.primeWith(
+                    poke = { i -> r.appendMessage(chat.id, NewMessage(role = Role.USER, contentMd = "turn $i")) },
+                    landed = { messages, i -> messages.lastOrNull()?.contentMd == "turn $i" },
+                )
+                r.deleteDocument(chat.id)
+                seen.awaitMatching { it.isEmpty() }
+            }
+        }
+
+    @Test
+    public fun observeTimeline_drops_the_deleted_document(): Unit =
+        runTest {
+            val r = repo()
+            val note = r.createDocument(NewDocument(kind = DocumentKind.NOTE, title = "n", bodyMd = "v0"))
+            live(r.observeTimeline(TimelineFilter())) { seen ->
+                seen.primeWith(
+                    poke = { i -> r.updateBody(note.id, "n", "v$i") },
+                    landed = { docs, i -> docs.any { it.id == note.id && it.bodyMd == "v$i" } },
+                )
+                r.deleteDocument(note.id)
+                seen.awaitMatching { docs -> docs.none { it.id == note.id } }
+            }
+        }
+
+    @Test
+    public fun searchTitles_and_searchBodies_never_return_a_deleted_document(): Unit =
+        runTest {
+            val r = repo()
+            val note = r.createDocument(NewDocument(kind = DocumentKind.NOTE, title = "zanzibar", bodyMd = "zanzibarx"))
+            index().replaceChunks(note.id, listOf(NewChunk(ord = 0, text = "zanzibarx", tokenCount = 1)), "fake", 1)
+            assertTrue("sanity: found by title", r.searchTitles("zanzibar").any { it.id == note.id })
+            assertTrue("sanity: found by body", r.searchBodies("zanzibarx").any { it.document.id == note.id })
+
+            r.deleteDocument(note.id)
+
+            assertTrue(r.searchTitles("zanzibar").isEmpty())
+            assertTrue(r.searchBodies("zanzibarx").isEmpty())
+        }
+
+    @Test
+    public fun attachment_blob_is_deleted_only_after_commit(): Unit =
+        runTest {
+            val r = repo()
+            val att = r.createAttachment("a.bin", "application/octet-stream") { it.write(byteArrayOf(7)) }
+
+            r.transaction {
+                r.deleteDocument(att.id)
+                assertEquals(
+                    "the blob outlives the uncommitted delete",
+                    1,
+                    r.openAttachment(att.id).use { it.readBytes() }.size,
+                )
+            }
+
+            assertTrue(
+                "the blob is gone once the delete committed",
+                runCatching { r.openAttachment(att.id).close() }.isFailure,
+            )
+        }
+
+    /**
+     * Collects [flow] live and runs [body] against its emissions, on a real
+     * dispatcher with a real timeout: the SQL-backed impl queries on
+     * `Dispatchers.IO`, which `runTest`'s virtual clock cannot wait for.
+     */
+    private suspend fun <T> live(
+        flow: Flow<T>,
+        body: suspend (ReceiveChannel<T>) -> Unit,
+    ) {
+        withContext(Dispatchers.Default) {
+            val seen = Channel<T>(Channel.UNLIMITED)
+            val job = launch { flow.collect { seen.send(it) } }
+            try {
+                withTimeout(LIVE_TIMEOUT_MS) { body(seen) }
+            } finally {
+                job.cancel()
+            }
+        }
+    }
+
+    /**
+     * Takes the first (`onStart`) emission, then repeats [poke] until its
+     * effect arrives live. Only a change tick can deliver it, so from then on
+     * the collector is subscribed and cannot miss the next write's tick.
+     */
+    private suspend fun <T> ReceiveChannel<T>.primeWith(
+        poke: suspend (Int) -> Unit,
+        landed: (T, Int) -> Boolean,
+    ) {
+        receive()
+        var i = 0
+        while (true) {
+            i++
+            poke(i)
+            val n = i
+            if (withTimeoutOrNull(TICK_WAIT_MS) { awaitMatching { landed(it, n) } } != null) return
+        }
+    }
+
+    private suspend fun <T> ReceiveChannel<T>.awaitMatching(predicate: (T) -> Boolean): T {
+        while (true) {
+            val value = receive()
+            if (predicate(value)) return value
+        }
+    }
+
     private suspend fun assertThrowsNoSuchElement(block: suspend () -> Unit) {
         try {
             block()
@@ -860,5 +1039,11 @@ public abstract class VaultRepositoryContractTest {
     private companion object {
         const val NOTE_BODY: String = "the quantum paragraph the assistant cited"
         const val CITED_EXCERPT: String = "quantum paragraph"
+
+        /** Real-time bound for a live-flow test ([live]). */
+        const val LIVE_TIMEOUT_MS: Long = 10_000L
+
+        /** How long [primeWith] waits for one poke to arrive before poking again. */
+        const val TICK_WAIT_MS: Long = 200L
     }
 }

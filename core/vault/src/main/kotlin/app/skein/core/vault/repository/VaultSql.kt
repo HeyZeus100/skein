@@ -273,6 +273,11 @@ internal object VaultSql {
     const val SELECT_EXPORT_STAGE: String =
         "SELECT $EXPORT_STAGE_COLUMNS FROM export_stages WHERE stage_id = ?"
 
+    // `deleteDocument` reads these before its DELETE cascades the rows away,
+    // then purges each stage's files after COMMIT.
+    const val SELECT_EXPORT_STAGES_FOR_DOCUMENT: String =
+        "SELECT stage_id, path FROM export_stages WHERE document_id = ?"
+
     // Oldest expiry first so a caller sweeping in order clears the most
     // overdue plaintext first. Uses idx_export_stages_expires.
     const val SELECT_UNSWEPT_EXPORT_STAGES: String =

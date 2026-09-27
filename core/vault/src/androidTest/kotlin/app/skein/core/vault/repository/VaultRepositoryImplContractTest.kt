@@ -36,6 +36,7 @@ import app.skein.core.model.VaultRepository
 import app.skein.core.vault.blob.InMemoryAttachmentStore
 import app.skein.core.vault.db.SkeinSQLiteConnection
 import app.skein.core.vault.db.SkeinSQLiteDriver
+import app.skein.core.vault.export.stage.ExportStageRow
 import app.skein.core.vault.index.IndexStoreImpl
 import app.skein.core.vault.testutil.splitMigrationStatements
 import app.skein.testing.VaultRepositoryContractTest
@@ -48,9 +49,12 @@ import kotlinx.serialization.json.JsonPrimitive
 import kotlinx.serialization.json.buildJsonObject
 import org.junit.After
 import org.junit.Assert.assertEquals
+import org.junit.Assert.assertFalse
 import org.junit.Assert.assertTrue
 import org.junit.Test
 import org.junit.runner.RunWith
+import java.io.File
+import java.nio.file.Files
 
 @RunWith(AndroidJUnit4::class)
 public class VaultRepositoryImplContractTest : VaultRepositoryContractTest() {
@@ -81,8 +85,16 @@ public class VaultRepositoryImplContractTest : VaultRepositoryContractTest() {
         // only tables this class never touches, so it is still skipped. 008
         // (skein-zx15) is needed too: `dequeueIngest`/`recordIngestFailure`
         // now read/write `ingest_queue.attempts`, which only exists once 008
-        // has applied.
-        for (migration in listOf("001_initial.sql", "003_document_revisions.sql", "008_ingest_attempts.sql")) {
+        // has applied. 005 (`export_stages`) too: `deleteDocument` reads a
+        // document's stages before its DELETE (OBJECT_LIFECYCLE_SPEC.md LC-03).
+        val migrations =
+            listOf(
+                "001_initial.sql",
+                "003_document_revisions.sql",
+                "005_export_stages.sql",
+                "008_ingest_attempts.sql",
+            )
+        for (migration in migrations) {
             val sql =
                 requireNotNull(
                     javaClass.classLoader?.getResourceAsStream("migrations/$migration"),
@@ -126,6 +138,39 @@ public class VaultRepositoryImplContractTest : VaultRepositoryContractTest() {
                 stmt.step()
             }
     }
+
+    // ------------------------------------------------------------------
+    // OBJECT_LIFECYCLE_SPEC.md §11.1 EMU only (LC-03): staged plaintext
+    // ------------------------------------------------------------------
+
+    @Test
+    public fun staged_export_file_of_a_deleted_document_is_purged_after_commit(): Unit =
+        runBlocking {
+            val repo = repo() as VaultRepositoryImpl
+            val doc = repo.createDocument(NewDocument(kind = DocumentKind.NOTE, title = "n", bodyMd = "b"))
+            val staging = Files.createTempDirectory("staging_export").toFile()
+            val stageId = "01924a4b-4d29-7000-8000-000000005a6e"
+            val staged = File(staging, "$stageId-n.pdf").apply { writeText("PLAINTEXT") }
+            repo.insertStage(
+                ExportStageRow(
+                    stageId = stageId,
+                    path = staged.absolutePath,
+                    origin = "pdf_export",
+                    documentId = doc.id,
+                    revisionHash = doc.contentHash,
+                    createdAt = 0L,
+                    expiresAt = Long.MAX_VALUE,
+                ),
+            )
+
+            repo.transaction {
+                repo.deleteDocument(doc.id)
+                assertTrue("staged plaintext is untouched until COMMIT", staged.exists())
+            }
+
+            assertFalse("staged plaintext of a deleted document is gone after COMMIT", staged.exists())
+            staging.deleteRecursively()
+        }
 
     // ------------------------------------------------------------------
     // skein-2my AC: frontmatter.id is always the document id

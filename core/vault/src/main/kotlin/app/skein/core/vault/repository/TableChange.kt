@@ -25,7 +25,7 @@ public sealed interface TableChange {
         public val docId: DocId,
     ) : TableChange
 
-    /** A row was appended to `messages` for the given chat document. */
+    /** A row was appended to `messages` for the given chat document, or they all went with the chat. */
     public data class Messages(
         public val chatDocId: DocId,
     ) : TableChange

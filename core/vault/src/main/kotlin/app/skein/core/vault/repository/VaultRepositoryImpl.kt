@@ -84,11 +84,13 @@ import app.skein.core.model.RevisionHash
 import app.skein.core.model.RevisionHashing
 import app.skein.core.model.RevisionReason
 import app.skein.core.model.Role
+import app.skein.core.model.SkeinLog
 import app.skein.core.model.TimelineFilter
 import app.skein.core.model.VaultRepository
 import app.skein.core.vault.blob.AttachmentStore
 import app.skein.core.vault.export.stage.ExportStageRepository
 import app.skein.core.vault.export.stage.ExportStageRow
+import app.skein.core.vault.export.stage.StagedPlaintextSweep
 import app.skein.core.vault.id.Uuid7
 import app.skein.core.vault.index.FtsQuerySanitizer
 import kotlinx.coroutines.CoroutineDispatcher
@@ -105,6 +107,7 @@ import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.JsonObject
 import kotlinx.serialization.json.JsonPrimitive
 import kotlinx.serialization.json.buildJsonObject
+import java.io.File
 import java.io.InputStream
 import java.io.OutputStream
 import java.security.MessageDigest
@@ -263,18 +266,33 @@ public class VaultRepositoryImpl(
             existing.copy(frontmatter = withId, updatedAt = now, contentHash = hash)
         }
 
+    // OBJECT_LIFECYCLE_SPEC.md §3.3: every row-level effect in this one
+    // transaction; files outside the database only after its COMMIT.
     override suspend fun deleteDocument(id: DocId) {
         writeTx {
-            writer.prepare(VaultSql.DELETE_DOCUMENT).use { stmt ->
-                stmt.bindText(1, id)
-                stmt.step()
+            val doomed = getDocument(id)
+            if (doomed != null) {
+                // Read before the DELETE: the `export_stages` rows cascade
+                // away with it, and their stage ids name the staged files.
+                val stages = selectExportStages(id)
+                writer.prepare(VaultSql.DELETE_DOCUMENT).use { stmt ->
+                    stmt.bindText(1, id)
+                    stmt.step()
+                }
+                // `chunks` (→ FTS/vec via `chunks_ad`), `messages`,
+                // `document_revisions`, `ingest_queue` and `export_stages` all
+                // cascade off documents.id.
+                for ((stageId, path) in stages) {
+                    afterCommit { File(path).parentFile?.let { StagedPlaintextSweep.purgeStage(it, stageId) } }
+                }
+                if (doomed.kind == DocumentKind.CHAT) publish(TableChange.Messages(id))
+                publish(TableChange.IngestQueue)
             }
-            // `chunks`, `messages`, `ingest_queue` all cascade off
-            // documents.id (001_initial.sql FK `ON DELETE CASCADE`); the
-            // blob store does not, so it is cleaned up explicitly. A
-            // missing/never-written blob is a no-op for both stand-in and
-            // real (E2.I5) stores.
-            attachments.delete(id)
+            // The blob store is outside the database, so it goes after COMMIT:
+            // a failed COMMIT then leaves the attachment whole, bytes included.
+            // A missing blob is a no-op, which keeps a delete of a missing id
+            // idempotent.
+            afterCommit { attachments.delete(id) }
             publish(TableChange.Documents(id))
         }
     }
@@ -726,6 +744,13 @@ public class VaultRepositoryImpl(
             changedRows()
         }
 
+    /** `(stageId, path)` of every export stage recorded for [documentId]. Writer connection: called inside [writeTx]. */
+    private fun selectExportStages(documentId: DocId): List<Pair<String, String>> =
+        writer.prepare(VaultSql.SELECT_EXPORT_STAGES_FOR_DOCUMENT).use { stmt ->
+            stmt.bindText(1, documentId)
+            buildList { while (stmt.step()) add(stmt.getText(0) to stmt.getText(1)) }
+        }
+
     /** Rows touched by the statement just run on [writer]; must be read before any other statement. */
     private fun changedRows(): Int =
         writer.prepare(VaultSql.SELECT_CHANGES).use { stmt ->
@@ -769,6 +794,11 @@ public class VaultRepositoryImpl(
      * success commits and flushes every [TableChange] queued via [publish]
      * during [block] — on failure it rolls back and nothing is ever
      * published.
+     *
+     * After the flush it runs every action queued via [afterCommit] (files
+     * outside the database: OBJECT_LIFECYCLE_SPEC.md §3.3 rule T2). They never
+     * run for rolled-back work, and a failing one is logged, never thrown —
+     * the commit already happened, and the unlock sweeps collect what is left.
      */
     private suspend fun <T> writeTx(block: suspend () -> T): T {
         val ambient = coroutineContext[TxContext.Key]
@@ -777,17 +807,29 @@ public class VaultRepositoryImpl(
         return withContext(io + tx) {
             writerMutex.withLock {
                 writer.prepare(VaultSql.BEGIN_IMMEDIATE).use { it.step() }
-                try {
-                    val result = block()
-                    writer.prepare(VaultSql.COMMIT).use { it.step() }
-                    for (change in tx.pending) changeBus.emit(change)
-                    result
-                } catch (t: Throwable) {
-                    runCatching { writer.prepare(VaultSql.ROLLBACK).use { it.step() } }
-                    throw t
+                val result =
+                    try {
+                        block().also { writer.prepare(VaultSql.COMMIT).use { it.step() } }
+                    } catch (t: Throwable) {
+                        runCatching { writer.prepare(VaultSql.ROLLBACK).use { it.step() } }
+                        throw t
+                    }
+                for (change in tx.pending) changeBus.emit(change)
+                for (action in tx.afterCommit) {
+                    try {
+                        action()
+                    } catch (e: Exception) {
+                        SkeinLog.w(TAG, "after-commit action failed: ${e.javaClass.simpleName}")
+                    }
                 }
+                result
             }
         }
+    }
+
+    /** Queues [action] to run after the outermost COMMIT (see [writeTx]). Only valid inside [writeTx]. */
+    private suspend fun afterCommit(action: suspend () -> Unit) {
+        checkNotNull(coroutineContext[TxContext.Key]) { "afterCommit outside writeTx" }.afterCommit += action
     }
 
     /**
@@ -987,11 +1029,13 @@ public class VaultRepositoryImpl(
     /** Coroutine-context marker for an in-flight [writeTx]/[transaction]: makes nested writes and reads reentrant. */
     private class TxContext : AbstractCoroutineContextElement(Key) {
         val pending: MutableList<TableChange> = mutableListOf()
+        val afterCommit: MutableList<suspend () -> Unit> = mutableListOf()
 
         companion object Key : CoroutineContext.Key<TxContext>
     }
 
     private companion object {
+        const val TAG: String = "VaultRepository"
         const val FRONTMATTER_ID_KEY: String = "id"
         const val UNMATCHABLE_KIND: String = ""
         const val DOCUMENT_COLUMN_COUNT: Int = 9

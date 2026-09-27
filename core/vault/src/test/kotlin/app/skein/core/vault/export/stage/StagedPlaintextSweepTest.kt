@@ -110,6 +110,27 @@ class StagedPlaintextSweepTest {
         }
 
     @Test
+    fun `purges the plaintext by stage-id prefix when the row cascaded away with its document`() =
+        runTest {
+            val staged = stagedFile("stage-1-note.pdf")
+            val other = stagedFile("stage-2-other.pdf")
+
+            assertThat(sweep().sweepIfExpired("stage-1")).isEqualTo(SweepOutcome.UNKNOWN)
+
+            assertThat(staged.exists()).isFalse()
+            assertThat(other.exists()).isTrue()
+        }
+
+    @Test
+    fun `purgeStage never treats a blank stage id as a prefix of everything`() {
+        val file = stagedFile("stage-1-note.pdf")
+
+        assertThat(StagedPlaintextSweep.purgeStage(staging.root, " ")).isEqualTo(0)
+
+        assertThat(file.exists()).isTrue()
+    }
+
+    @Test
     fun `reports UNKNOWN for a row that is already swept`() =
         runTest {
             val file = stagedFile("stage-1-note.pdf")

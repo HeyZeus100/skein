@@ -50,9 +50,18 @@ public class StagedPlaintextSweep(
     /**
      * Sweeps one stage if it has reached its `expires_at`, per §4.3's
      * `StagedPlaintextSweeper.doWork`.
+     *
+     * A stage with no row at all — cascaded away with its deleted document —
+     * still has its files purged by stage-id prefix ([purgeStage]), so the
+     * timer cannot leave plaintext of a deleted document behind until the
+     * next lock (OBJECT_LIFECYCLE_SPEC.md LC-03).
      */
     public suspend fun sweepIfExpired(stageId: String): SweepOutcome {
-        val row = repository.getStage(stageId) ?: return SweepOutcome.UNKNOWN
+        val row = repository.getStage(stageId)
+        if (row == null) {
+            purgeStage(stagingDir, stageId)
+            return SweepOutcome.UNKNOWN
+        }
         if (row.swept) return SweepOutcome.UNKNOWN
         if (clock() < row.expiresAt) return SweepOutcome.PREMATURE
         deleteFile(row.path)
@@ -113,6 +122,26 @@ public class StagedPlaintextSweep(
                 }
             }
             return deleted
+        }
+
+        /**
+         * Deletes every file in [stagingDir] whose name starts with [stageId]
+         * — a staged file is named `<stageId>-<title>` (`PdfStaging.stagedFile`),
+         * so this finds a stage's plaintext without its row. A blank
+         * [stageId] matches nothing rather than everything.
+         *
+         * Returns the number of files deleted.
+         */
+        public fun purgeStage(
+            stagingDir: File,
+            stageId: String,
+        ): Int {
+            if (stageId.isBlank()) return 0
+            return stagingDir
+                .listFiles()
+                .orEmpty()
+                .filter { it.isFile && it.name.startsWith(stageId) }
+                .count(::deleteFile)
         }
 
         private fun deleteFile(file: File): Boolean {
