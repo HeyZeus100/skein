@@ -177,9 +177,6 @@ internal class InferenceEngineState(
     private var state: String = EngineState.UNLOADED
     private var lastTokensPerSec: Float = 0f
 
-    /** `E4.I6`'s ChatML fallback (skein-5oi): whether the most recent generation used it. Reset on every fresh load. */
-    private var lastUsedChatTemplateFallback: Boolean = false
-
     /** Raised while an `unload` is waiting for a verification to notice. */
     private val unloadRequested = AtomicBoolean(false)
 
@@ -274,7 +271,6 @@ internal class InferenceEngineState(
                         gpuLayers = req.gpuLayers,
                     )
                 state = EngineState.READY
-                lastUsedChatTemplateFallback = false
             }
             SkeinLog.i(TAG, "model loaded files=${req.binding.files.size} ctx=${req.contextLength}")
             ErrorCode.OK
@@ -416,8 +412,8 @@ internal class InferenceEngineState(
                 .isNotEmpty()
         } catch (e: LlamaException) {
             // TEMPLATE_UNSUPPORTED is the expected outcome for a GGUF with no
-            // template, and E4.I6's ChatML fallback covers it — a false here,
-            // not a refusal (§3.3's structural-checks table).
+            // template. Inspection reports the capability; generation now
+            // refuses rather than guessing an unrelated chat format.
             SkeinLog.i(TAG, "chat template probe declined: ${ServiceErrorMapping.diagnostic(e)}")
             false
         }
@@ -494,11 +490,9 @@ internal class InferenceEngineState(
             // between turns rather than only at free).
             backend.kvClear(model.context)
 
-            // E4.I6 (skein-5oi): the model's own template, or the ChatML
-            // fallback when the GGUF embeds none llama.cpp can apply. A
-            // missing template is a warning `status()` surfaces, not a
-            // refusal.
-            val renderedPrompt =
+            // skein-gg11.28: refuse unsupported or ambiguous boundaries before
+            // tokenization/decode. Never continue with template chrome as text.
+            val layout =
                 ChatTemplating.render(
                     backend,
                     model.model,
@@ -506,27 +500,18 @@ internal class InferenceEngineState(
                     contents.toTypedArray(),
                     addAssistantPrefix = true,
                 )
-            synchronized(lock) { lastUsedChatTemplateFallback = renderedPrompt.usedFallback }
-            val rendered = renderedPrompt.text
-            // skein-0ztk: scaffolding with parseSpecial=true, CONTENT with
-            // parseSpecial=false, so a note containing the model's own control
-            // token text cannot forge a chat turn.
-            val layout = ChatTemplating.segmentDetailed(rendered, contents)
             val tokenized = ChatTemplating.tokenizeDetailed(backend, model.model, layout.segments)
             val promptIds = tokenized.ids
-            // skein-gg11.28, numbers only (spec §9): how the render was split
-            // and how many ids each side produced. `closed=true` is
-            // ChatTemplating's fail-closed path — the chrome went in as
-            // ordinary text and the answer will read like a raw continuation.
+            // Keep the existing content-free diagnostic fields for the device
+            // baseline. A refused render now returns an error instead of a
+            // misleading successful generation with closed=true.
             val chrome = layout.scaffoldSpans
             val data = layout.contentSpans
             val nChrome = tokenized.scaffoldIds
             val nData = tokenized.contentIds
-            val closed = layout.failedClosed
-            val tmplFallback = renderedPrompt.usedFallback
             SkeinLog.i(
                 TAG,
-                "prefill layout: chrome=$chrome data=$data n_chrome=$nChrome n_data=$nData closed=$closed tmpl_fallback=$tmplFallback",
+                "prefill layout: chrome=$chrome data=$data n_chrome=$nChrome n_data=$nData closed=false tmpl_fallback=false",
             )
 
             var nPast = 0
@@ -765,7 +750,8 @@ internal class InferenceEngineState(
                 modelSha256 = loaded?.modelSha256,
                 contextLength = loaded?.contextLength ?: 0,
                 tokensPerSec = lastTokensPerSec,
-                usedChatTemplateFallback = lastUsedChatTemplateFallback,
+                // Retained wire field: unsupported templates now refuse.
+                usedChatTemplateFallback = false,
             )
         }
 

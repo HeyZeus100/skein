@@ -51,7 +51,7 @@ enum class LlamaErrorCode(
     /** `llama_tokenize` failed, or the piece/detokenize buffer could not be sized. */
     TOKENIZE_FAILED(7),
 
-    /** The GGUF embeds no chat template, or llama.cpp does not support the one it embeds. */
+    /** Missing/unsupported chat template, or content boundaries that cannot be safely verified. */
     TEMPLATE_UNSUPPORTED(8),
 
     /** The context was not created with `embeddings = true`, or the model has no pooling layer. */

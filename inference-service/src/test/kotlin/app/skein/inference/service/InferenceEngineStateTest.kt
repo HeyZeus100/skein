@@ -1253,10 +1253,10 @@ class InferenceEngineStateTest {
         assertThat(logged.any { it.contains("unknown architecture") }).isTrue()
     }
 
-    // ------------------------------------------------ ChatML fallback (skein-5oi)
+    // ------------------------------------------ template refusal (skein-gg11.28)
 
     @Test
-    fun `a generation using the ChatML fallback surfaces a warning in status`() {
+    fun `an unsupported template fails once before decode and never streams degraded text`() {
         val noTemplate =
             object : FakeLlamaBackend() {
                 override fun applyChatTemplate(
@@ -1266,46 +1266,71 @@ class InferenceEngineStateTest {
                     addAssistant: Boolean,
                 ): String = throw LlamaException(LlamaErrorCode.TEMPLATE_UNSUPPORTED, "no template")
             }
-        val engine = InferenceEngineState(noTemplate, InlineTaskRunner(), CallbackDispatcher(InlineTaskRunner()))
-        engine.onSessionUnlocked(epoch)
-        engine.load(loadRequest())
-        val cb = RecordingCallback()
-
-        engine.generate(generateRequest(), cb)
-
-        assertThat(engine.status().usedChatTemplateFallback).isTrue()
+        assertTemplateRefused(noTemplate)
     }
 
     @Test
-    fun `a generation with the model's own template reports no fallback warning`() {
+    fun `a template with unverifiable content boundaries fails before decode`() {
+        val droppedContent =
+            object : FakeLlamaBackend() {
+                override fun applyChatTemplate(
+                    model: Long,
+                    roles: Array<String>,
+                    contents: Array<String>,
+                    addAssistant: Boolean,
+                ): String = "<|im_start|>user\n<|im_end|>\n<|im_start|>assistant\n"
+            }
+        assertTemplateRefused(droppedContent)
+    }
+
+    private fun assertTemplateRefused(backend: FakeLlamaBackend) {
+        val engine = InferenceEngineState(backend, InlineTaskRunner(), CallbackDispatcher(InlineTaskRunner()))
         engine.onSessionUnlocked(epoch)
         engine.load(loadRequest())
         val cb = RecordingCallback()
 
         engine.generate(generateRequest(), cb)
 
+        assertThat(cb.errors).hasSize(1)
+        assertThat(cb.errors.single().second).isEqualTo(ErrorCode.INVALID_MODEL)
+        assertThat(cb.errors.single().third).isNotEmpty()
+        assertThat(cb.tokenBatches).isEmpty()
+        assertThat(cb.done).isEmpty()
+        assertThat(backend.cacheAndDecodeCalls).doesNotContain(FakeLlamaBackend.DECODE_PROMPT)
+        assertThat(backend.liveSamplers).isEmpty()
         assertThat(engine.status().usedChatTemplateFallback).isFalse()
+        assertThat(engine.status().state).isEqualTo("ready")
     }
 
     @Test
-    fun `a fresh load resets a previous generation's fallback warning`() {
-        val noTemplate =
+    fun `a refused render releases the generation slot for the next valid request`() {
+        val intermittent =
             object : FakeLlamaBackend() {
+                var supported = false
+
                 override fun applyChatTemplate(
                     model: Long,
                     roles: Array<String>,
                     contents: Array<String>,
                     addAssistant: Boolean,
-                ): String = throw LlamaException(LlamaErrorCode.TEMPLATE_UNSUPPORTED, "no template")
+                ): String {
+                    if (!supported) throw LlamaException(LlamaErrorCode.TEMPLATE_UNSUPPORTED, "no template")
+                    return super.applyChatTemplate(model, roles, contents, addAssistant)
+                }
             }
-        val engine = InferenceEngineState(noTemplate, InlineTaskRunner(), CallbackDispatcher(InlineTaskRunner()))
+        val engine = InferenceEngineState(intermittent, InlineTaskRunner(), CallbackDispatcher(InlineTaskRunner()))
         engine.onSessionUnlocked(epoch)
         engine.load(loadRequest())
-        engine.generate(generateRequest(), RecordingCallback())
-        assertThat(engine.status().usedChatTemplateFallback).isTrue()
+        val refused = RecordingCallback()
+        engine.generate(generateRequest(), refused)
+        assertThat(refused.errors).hasSize(1)
+        intermittent.supported = true
+        val accepted = RecordingCallback()
 
-        engine.load(loadRequest())
+        engine.generate(generateRequest(), accepted)
 
+        assertThat(accepted.errors).isEmpty()
+        assertThat(accepted.done).hasSize(1)
         assertThat(engine.status().usedChatTemplateFallback).isFalse()
     }
 

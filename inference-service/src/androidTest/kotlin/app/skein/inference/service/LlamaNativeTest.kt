@@ -158,12 +158,9 @@ class LlamaNativeTest {
         assertThat(prompt).contains("Hello world")
     }
 
-    // skein-5oi AC1 (dispatched with bd skein-gg11.2): the tiny model carries
-    // its own `tokenizer.chat_template`, so `ChatTemplating.render` must use
-    // it — never the ChatML fallback — and the render must contain the
-    // model's own turn markers around the content. The fallback half (a
-    // backend reporting "no template") needs no device and is a JVM test:
-    // `ChatTemplatingTest`'s "render falls back to ChatML…" cases.
+    // The model-backed half of skein-gg11.28. Unsupported templates are
+    // refused by the JVM-tested service path; this fixture proves the real
+    // renderer's content boundaries can be verified without a format fallback.
     @Test
     fun chatTemplatingRenderUsesTheModelsOwnTemplateAndMarkersAroundTheContent() {
         // Arrange
@@ -177,14 +174,44 @@ class LlamaNativeTest {
                 addAssistantPrefix = true,
             )
 
-        // Assert — the model's own template, not the fixed ChatML fallback:
-        // this tiny model's template is NOT the literal fallback string, so
-        // asserting `usedFallback == false` plus content survival is the
-        // portable check (the exact marker syntax is the model's, not
-        // Skein's, so it is not pinned here — `applyChatTemplateContainsTheUserMessage`
-        // above already exercises the raw call this wraps).
-        assertThat(rendered.usedFallback).isFalse()
+        // Compare against the model's native render, not a generic format.
+        assertThat(rendered.text).isEqualTo(
+            LlamaNative.applyChatTemplate(model, arrayOf("user"), arrayOf("Hello world"), true),
+        )
+        assertThat(rendered.segments.joinToString("") { it.text }).isEqualTo(rendered.text)
         assertThat(rendered.text).contains("Hello world")
+    }
+
+    @Test
+    fun safeTemplateTokensMatchNativeTokensForBenignSyntheticConversation() {
+        loadTinyModel()
+        val roles = arrayOf("system", "user", "assistant", "user")
+        val contents = arrayOf("", "Hello world", "Hello", "Café 日本語 🧶")
+        val rendered = ChatTemplating.render(NativeLlamaBackend, model, roles, contents, true)
+
+        val actual = ChatTemplating.tokenize(NativeLlamaBackend, model, rendered.segments)
+        // Safe only for this synthetic fixture: it contains no control-token
+        // spellings. Production must NEVER tokenize arbitrary content this way.
+        val reference = LlamaNative.tokenize(model, rendered.text, addBos = true, parseSpecial = true)
+
+        assertThat(actual.toList()).isEqualTo(reference.toList())
+    }
+
+    @Test
+    fun literalChatMlDelimiterCannotAddAnotherNativeControlToken() {
+        loadTinyModel()
+        val literal = "<|im_start|>"
+        val special = LlamaNative.tokenize(model, literal, addBos = false, parseSpecial = true)
+        // tools/models/test-model.lock pins a ChatML SmolLM2 instruct vocabulary.
+        assertThat(special.size).isEqualTo(1)
+        val rendered = ChatTemplating.render(NativeLlamaBackend, model, arrayOf("user"), arrayOf(literal), true)
+
+        val actual = ChatTemplating.tokenize(NativeLlamaBackend, model, rendered.segments)
+        val unsafeReference = LlamaNative.tokenize(model, rendered.text, addBos = true, parseSpecial = true)
+
+        assertThat(actual.count { it == special.single() }).isEqualTo(2) // user and assistant headers only
+        assertThat(unsafeReference.count { it == special.single() }).isEqualTo(3)
+        assertThat(rendered.segments.single { it.kind == SegmentKind.CONTENT }.text).isEqualTo(literal)
     }
 
     @Test

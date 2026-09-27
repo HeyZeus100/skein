@@ -18,20 +18,23 @@
 // the persona and the system prompt are content too, and a rule with an
 // exemption is a rule with an attack surface.
 //
-// HOW THE SEGMENTS ARE FOUND. `applyChatTemplate` returns one flat string, so
-// [segment] locates each message's content inside it by scanning forward,
-// never rescanning earlier text. Forward-only matters: the literal word "user"
-// occurs in ChatML chrome before it can occur as content, and a backtracking
-// search would mistake one for the other.
+// BOUNDARIES (skein-gg11.28). Looking for the content string in the render is
+// ambiguous: "user" matches the role header, and "<|im_start|>" matches the
+// opening control token. The actual message then ends up in SCAFFOLD. Instead
+// render a second time with unique placeholders, locate those placeholders,
+// and substitute the original content. The reconstructed text MUST equal the
+// original model render exactly. Empty contents stay empty during the probe
+// so a template that omits an empty system message keeps its normal shape.
 //
-// FAILING CLOSED. A template that mutates content — trims it, escapes it,
-// drops an empty turn — makes verbatim location impossible. [segment] then
-// returns ONE content segment covering the whole render, so nothing is
-// tokenized with `parseSpecial = true` at all. The model sees the chrome as
-// ordinary text and answers worse. That is the right trade: a degraded answer
-// is recoverable, a prompt-injection primitive is not.
+// FAIL CLOSED means refuse before tokenization/decode, not silently turn the
+// entire conversation into raw continuation text. Unsupported templates,
+// mutated/dropped/duplicated content and unprovable boundaries are explicit
+// TEMPLATE_UNSUPPORTED failures. A generic ChatML fallback is not evidence
+// that the loaded model was trained for that format.
 
 package app.skein.inference.service
+
+import java.util.UUID
 
 /** What a span of the rendered prompt is. */
 enum class SegmentKind {
@@ -49,29 +52,23 @@ data class Segment(
 )
 
 /**
- * What [ChatTemplating.render] produced.
- *
- * @param text the rendered prompt — the model's own template, or the ChatML
- *   fallback when it has none llama.cpp can apply.
- * @param usedFallback `true` when [text] is the ChatML fallback, `false`
- *   when it is the GGUF's own template. `E4.I3`/`E4.I6` (skein-5oi) surface
- *   this as a warning rather than a refusal — a missing template degrades
- *   the prompt, it does not block the model.
+ * A model render whose scaffold/content boundaries have been checked before
+ * tokenization. The segments concatenate to [text] exactly.
  */
 data class RenderedPrompt(
     val text: String,
-    val usedFallback: Boolean,
-)
+    val segments: List<Segment>,
+) {
+    val scaffoldSpans: Int get() = segments.count { it.kind == SegmentKind.SCAFFOLD }
+    val contentSpans: Int get() = segments.count { it.kind == SegmentKind.CONTENT }
+}
 
 object ChatTemplating {
     /**
-     * Renders [roles]/[contents] with the model's own chat template
-     * (`LlamaBackend.applyChatTemplate`), falling back to a fixed ChatML
-     * rendering when the GGUF embeds no template llama.cpp can apply
-     * ([LlamaErrorCode.TEMPLATE_UNSUPPORTED] — `E4.I6`'s fallback, skein-5oi).
-     *
-     * Any OTHER failure (OOM, a decode error) is NOT a template problem and
-     * is rethrown rather than silently degraded to ChatML.
+     * Uses the model's own template twice: the actual render and a boundary
+     * probe. Placeholders are never sent to the tokenizer, returned to the
+     * client or logged. A template that changes content or structure when
+     * probed is refused; native failures propagate without a format fallback.
      */
     fun render(
         backend: LlamaBackend,
@@ -79,85 +76,47 @@ object ChatTemplating {
         roles: Array<String>,
         contents: Array<String>,
         addAssistantPrefix: Boolean,
-    ): RenderedPrompt =
-        try {
-            RenderedPrompt(backend.applyChatTemplate(model, roles, contents, addAssistantPrefix), usedFallback = false)
-        } catch (e: LlamaException) {
-            if (e.code != LlamaErrorCode.TEMPLATE_UNSUPPORTED) throw e
-            RenderedPrompt(chatMlFallback(roles, contents, addAssistantPrefix), usedFallback = true)
-        }
-
-    /**
-     * ChatML: the widest-adopted convention among open chat models with no
-     * embedded template, and the shape `FakeLlamaBackend`'s own default
-     * `applyChatTemplate` already produces for tests.
-     */
-    private fun chatMlFallback(
-        roles: Array<String>,
-        contents: Array<String>,
-        addAssistantPrefix: Boolean,
-    ): String =
-        buildString {
-            for (i in roles.indices) {
-                append("<|im_start|>").append(roles[i]).append('\n')
-                append(contents[i])
-                append("<|im_end|>\n")
+    ): RenderedPrompt {
+        val rendered = backend.applyChatTemplate(model, roles, contents, addAssistantPrefix)
+        // The prefix is absent from BOTH actual content and the model render.
+        // Untrusted input therefore cannot forge one of the probe boundaries.
+        var prefix: String
+        do {
+            prefix = "SKEIN_BOUNDARY_${UUID.randomUUID()}_"
+        } while (prefix in rendered || contents.any { prefix in it })
+        val placeholders =
+            contents.mapIndexed {
+                index,
+                content,
+                ->
+                if (content.isEmpty()) "" else "$prefix${index}_END"
             }
-            if (addAssistantPrefix) append("<|im_start|>assistant\n")
-        }
-
-    /**
-     * Splits [rendered] into alternating scaffold/content spans by locating
-     * each of [contents] in order.
-     *
-     * The segments always concatenate back to [rendered] exactly — including
-     * on the fail-closed path — so no token can be silently added or lost by
-     * the split.
-     *
-     * An empty content string is skipped rather than searched for: it matches
-     * everywhere, and a message with no text contributes no content tokens.
-     */
-    fun segment(
-        rendered: String,
-        contents: List<String>,
-    ): List<Segment> = segmentDetailed(rendered, contents).segments
-
-    /**
-     * [segment]'s result plus the facts the service may log about the split —
-     * counts and a flag, never text. [failedClosed] is this file's fail-closed
-     * path. It is silent by design, and this is the one place it is reported:
-     * the Fold's first real answer (skein-gg11.28) read exactly like chrome
-     * tokenized as ordinary text, and nothing in the log could confirm or
-     * deny that.
-     */
-    class Segmentation(
-        val segments: List<Segment>,
-        val failedClosed: Boolean,
-    ) {
-        val scaffoldSpans: Int get() = segments.count { it.kind == SegmentKind.SCAFFOLD }
-        val contentSpans: Int get() = segments.count { it.kind == SegmentKind.CONTENT }
-    }
-
-    /** [segment], reporting whether it failed closed. */
-    fun segmentDetailed(
-        rendered: String,
-        contents: List<String>,
-    ): Segmentation {
+        val probe = backend.applyChatTemplate(model, roles, placeholders.toTypedArray(), addAssistantPrefix)
         val segments = mutableListOf<Segment>()
         var cursor = 0
-        for (content in contents) {
-            if (content.isEmpty()) continue
-            val at = rendered.indexOf(content, cursor)
-            if (at < 0) return Segmentation(failClosed(rendered), failedClosed = true)
-            if (at > cursor) segments += Segment(SegmentKind.SCAFFOLD, rendered.substring(cursor, at))
-            segments += Segment(SegmentKind.CONTENT, content)
-            cursor = at + content.length
+        for (index in contents.indices) {
+            val placeholder = placeholders[index]
+            if (placeholder.isEmpty()) continue
+            val at = probe.indexOf(placeholder, cursor)
+            if (at < 0 ||
+                probe.indexOf(placeholder) != at ||
+                probe.indexOf(placeholder, at + placeholder.length) >= 0
+            ) {
+                unsupportedBoundaries()
+            }
+            if (at > cursor) segments += Segment(SegmentKind.SCAFFOLD, probe.substring(cursor, at))
+            segments += Segment(SegmentKind.CONTENT, contents[index])
+            cursor = at + placeholder.length
         }
-        if (cursor < rendered.length) {
-            segments += Segment(SegmentKind.SCAFFOLD, rendered.substring(cursor))
+        if (cursor < probe.length) segments += Segment(SegmentKind.SCAFFOLD, probe.substring(cursor))
+        if (segments.any { prefix in it.text } || segments.joinToString("") { it.text } != rendered) {
+            unsupportedBoundaries()
         }
-        return Segmentation(segments, failedClosed = false)
+        return RenderedPrompt(rendered, segments)
     }
+
+    private fun unsupportedBoundaries(): Nothing =
+        throw LlamaException(LlamaErrorCode.TEMPLATE_UNSUPPORTED, "Chat template content boundaries cannot be verified")
 
     /**
      * Tokenizes [segments] with the flag each one's kind demands and
@@ -204,7 +163,4 @@ object ChatTemplating {
         }
         return TokenizedPrompt(ids.toIntArray(), scaffoldIds, contentIds)
     }
-
-    /** The whole render as content: nothing gets `parseSpecial = true`. See this file's header. */
-    private fun failClosed(rendered: String): List<Segment> = listOf(Segment(SegmentKind.CONTENT, rendered))
 }
