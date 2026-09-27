@@ -11,14 +11,10 @@ import app.skein.core.designsystem.preview.SkeinDevicePreviews
 import app.skein.core.designsystem.preview.SkeinFoldPreviews
 import app.skein.core.designsystem.theme.SkeinTheme
 import app.skein.core.designsystem.theme.SkeinThemeMode
+import app.skein.core.navigation.SettingsCategory
+import kotlinx.coroutines.flow.flowOf
 
-/**
- * Previews for [SettingsScreen] (plan `E6.I14`): the empty/default state,
- * the Security toggle flipped off, and both ends of the fold-width range —
- * a folded phone (single narrow column, spec §8.2's compact breakpoint) and
- * an unfolded/tablet width (where [MAX_CONTENT_WIDTH] keeps rows from
- * stretching edge to edge).
- */
+/** Privacy category previews at the supported phone and Fold widths. */
 @Composable
 private fun SettingsScreenPreviewScaffold(
     flagSecureEnabled: Boolean = true,
@@ -28,9 +24,9 @@ private fun SettingsScreenPreviewScaffold(
         Surface(
             modifier = Modifier.fillMaxSize().background(MaterialTheme.colorScheme.background),
         ) {
-            SettingsScreen(
-                flagSecureEnabled = flagSecureEnabled,
-                onFlagSecureEnabledChange = {},
+            SettingsCategoryScreen(
+                category = SettingsCategory.PRIVACY_AND_SECURITY,
+                viewModel = rememberSettingsViewModel(flowOf(flagSecureEnabled), {}),
                 appVersion = appVersion,
             )
         }

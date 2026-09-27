@@ -24,6 +24,8 @@ import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.junit4.createAndroidComposeRule
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
+import app.skein.core.navigation.SettingsCategory
+import kotlinx.coroutines.flow.flowOf
 import org.junit.Rule
 import org.junit.Test
 
@@ -35,12 +37,16 @@ class SettingsScreenLockPolicyInstrumentedTest {
     fun idleTimeoutSelectionSurvivesActivityRecreation() {
         composeRule.setContent {
             var minutes by rememberSaveable { mutableIntStateOf(5) }
-            SettingsScreen(
-                flagSecureEnabled = true,
-                onFlagSecureEnabledChange = {},
+            SettingsCategoryScreen(
+                category = SettingsCategory.PRIVACY_AND_SECURITY,
+                viewModel =
+                    rememberSettingsViewModel(
+                        flagSecureEnabledFlow = flowOf(true),
+                        onSetFlagSecureEnabled = {},
+                        idleTimeoutMinutesFlow = flowOf(minutes),
+                        onSetIdleTimeoutMinutes = { minutes = it },
+                    ),
                 appVersion = "test",
-                idleTimeoutMinutes = minutes,
-                onIdleTimeoutMinutesChange = { minutes = it },
             )
         }
 

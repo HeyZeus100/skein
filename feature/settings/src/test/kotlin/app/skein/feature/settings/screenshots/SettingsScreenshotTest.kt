@@ -1,7 +1,4 @@
-// skein-xtov.9 — "before" captures of Settings, full window, in the same
-// scaffold `SettingsScreenPreviews` uses (SkeinTheme + background Surface),
-// with every setting at its shipped default. In-app it sits below the
-// shell's command bar in the SETTINGS destination.
+// Category content captures at every UX device size; shell captures are separate.
 package app.skein.feature.settings.screenshots
 
 import androidx.compose.foundation.layout.fillMaxSize
@@ -9,13 +6,16 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.test.onRoot
-import app.skein.feature.settings.SettingsScreen
 import app.skein.core.designsystem.theme.SkeinTheme
+import app.skein.core.navigation.SettingsCategory
+import app.skein.feature.settings.SettingsCategoryScreen
+import app.skein.feature.settings.rememberSettingsViewModel
 import app.skein.testing.ui.UxDeviceRule
 import app.skein.testing.ui.UxSpec
 import app.skein.testing.ui.captureUx
 import app.skein.testing.ui.skeinComposeRule
 import app.skein.testing.ui.uxSpecs
+import kotlinx.coroutines.flow.flowOf
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -40,11 +40,15 @@ class SettingsScreenshotTest(
         composeRule.setContent {
             SkeinTheme {
                 Surface(modifier = Modifier.fillMaxSize(), color = MaterialTheme.colorScheme.background) {
-                    SettingsScreen(flagSecureEnabled = true, onFlagSecureEnabledChange = {}, appVersion = "0.1.0 (1)")
+                    SettingsCategoryScreen(
+                        category = SettingsCategory.PRIVACY_AND_SECURITY,
+                        viewModel = rememberSettingsViewModel(flowOf(true), {}),
+                        appVersion = "0.1.0 (1)",
+                    )
                 }
             }
         }
-        composeRule.onRoot().captureUx(spec, "settings")
+        composeRule.onRoot().captureUx(spec, "settings-privacy")
     }
 
     companion object {

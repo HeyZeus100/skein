@@ -10,6 +10,8 @@ import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.onNodeWithText
 import app.skein.core.designsystem.theme.SkeinTheme
 import app.skein.core.designsystem.theme.SkeinThemeMode
+import app.skein.core.navigation.SettingsCategory
+import kotlinx.coroutines.flow.flowOf
 import org.junit.Assert.assertTrue
 import org.junit.Rule
 import org.junit.Test
@@ -18,17 +20,7 @@ import org.robolectric.RobolectricTestRunner
 import org.robolectric.annotation.Config
 import org.robolectric.annotation.GraphicsMode
 
-/**
- * E6.I18 (skein-fsn): [SettingsScreen] shows a Settings › Indexing hint row
- * (`settings_indexing_hint`) explaining that indexing progress is surfaced
- * via notifications — the coordinator's decision note's "Settings hint" for
- * a denied/never-asked `POST_NOTIFICATIONS` permission (no separate crash or
- * empty state; the row is simply always present, independent of permission
- * state, since `SettingsScreen` itself never reads permission state).
- *
- * Pinned to SDK 34, matching every other Robolectric test in this repo (bd
- * memory `robolectric-sdk37-needs-java21`).
- */
+/** Category entry regressions: indexing guidance and readable security controls. */
 @RunWith(RobolectricTestRunner::class)
 @Config(sdk = [34])
 @GraphicsMode(GraphicsMode.Mode.NATIVE)
@@ -39,9 +31,9 @@ class SettingsScreenTest {
     @Test
     fun `shows the Indexing hint row`() {
         composeRule.setContent {
-            SettingsScreen(
-                flagSecureEnabled = true,
-                onFlagSecureEnabledChange = {},
+            SettingsCategoryScreen(
+                category = SettingsCategory.KNOWLEDGE_AND_SEARCH,
+                viewModel = rememberSettingsViewModel(flowOf(true), {}),
                 appVersion = "0.1.0 (1)",
             )
         }
@@ -49,25 +41,14 @@ class SettingsScreenTest {
         composeRule.onNodeWithTag("settings_indexing_hint").assertExists()
     }
 
-    /**
-     * DS3 (skein-xtov.23.3), §6.7 / §14 item 3: [SettingsScreen] is composed
-     * here with NO manual `Surface` wrapper (unlike `SettingsScreenshotTest`,
-     * which has always added one) — this is the exact shape `SkeinApp`'s
-     * `destinationContent` slot renders it in on a device. Before this
-     * bead's fix, `SettingsScreen`'s root was a bare `Box`, and rows like
-     * `LockPolicyControls`' "Lock after inactivity" label (no explicit
-     * `color =`) rendered near-black on the dark theme (the "Settings row
-     * titles dark-on-dark" bug this bead's report names). Sampling that
-     * exact row's rendered pixels is a real contrast check, not just a
-     * `LocalContentColor` probe.
-     */
+    /** The category supplies its own Surface, including when hosted without a wrapper. */
     @Test
     fun `Lock after inactivity row is legible on the dark theme, not near-black`() {
         composeRule.setContent {
             SkeinTheme(mode = SkeinThemeMode.DARK) {
-                SettingsScreen(
-                    flagSecureEnabled = true,
-                    onFlagSecureEnabledChange = {},
+                SettingsCategoryScreen(
+                    category = SettingsCategory.PRIVACY_AND_SECURITY,
+                    viewModel = rememberSettingsViewModel(flowOf(true), {}),
                     appVersion = "0.1.0 (1)",
                 )
             }

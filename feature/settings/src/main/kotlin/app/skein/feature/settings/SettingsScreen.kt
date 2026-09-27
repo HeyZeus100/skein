@@ -27,173 +27,10 @@ import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import app.skein.core.designsystem.icons.SkeinIcons
-import app.skein.core.navigation.SettingsCategory
 import app.skein.core.designsystem.theme.SkeinThemeMode
+import app.skein.core.navigation.SettingsCategory
 
-/**
- * Settings screen (plan `E6.I14`): Appearance, Security, Indexing and About
- * sections. Every row does something: the inert Models and Vault
- * placeholder rows (Export/Erase vault did nothing when tapped) and the
- * "Coming in v1.1" biometric row are hidden until they work (UX-P0-13,
- * Stage H). About shows the version the host passes in and an
- * "Open-source licenses" row — [onViewNoticeClick] fires on tap, and
- * [SettingsRoute] below is what actually wires it to [AboutScreen]
- * (`E9.I8`/`skein-dun`)'s real licenses screen and `assets/licenses.json`.
- *
- * Stateless: takes the current [flagSecureEnabled] value and a change
- * callback rather than a [SettingsViewModel] directly, so it can be
- * previewed and tested without standing up coroutines. The
- * [SettingsViewModel] overload below is the convenience entry point for
- * real hosts; [SettingsRoute] additionally wires up the About/NOTICE
- * navigation for hosts that don't need to customize it.
- *
- * @param appVersion the app's version to show in About (e.g. `"0.1.0 (1)"`
- *   from `:app`'s `BuildConfig` — `:feature:settings` has no access to it).
- */
-@Composable
-fun SettingsScreen(
-    flagSecureEnabled: Boolean,
-    onFlagSecureEnabledChange: (Boolean) -> Unit,
-    appVersion: String,
-    modifier: Modifier = Modifier,
-    onViewNoticeClick: () -> Unit = {},
-    // E3.I14 (skein-up0): additive, defaulted to the plan's secure defaults —
-    // see [SettingsViewModel]'s ctor doc for why the existing call sites
-    // that don't pass these keep compiling unchanged.
-    idleTimeoutMinutes: Int = 5,
-    onIdleTimeoutMinutesChange: (Int) -> Unit = {},
-    lockOnScreenOff: Boolean = true,
-    onLockOnScreenOffChange: (Boolean) -> Unit = {},
-    lockOnBackground: Boolean = false,
-    onLockOnBackgroundChange: (Boolean) -> Unit = {},
-    strongBoxUnavailableFallback: Boolean = false,
-    // E3.I11 (skein-v9g): the opt-in passphrase export of the vault key.
-    // Additive and defaulted to the inert shape — a host that does not wire
-    // these gets a row that is present but disabled, and can never reach the
-    // crypto. `onBuildRecoveryExport` returning `null` means "locked".
-    vaultUnlocked: Boolean = false,
-    onReauthenticate: suspend () -> Boolean = { false },
-    onBuildRecoveryExport: suspend (CharArray) -> ByteArray? = { null },
-    // bd `skein-l9oi`: additive, defaulted to the spec's default (System) —
-    // see [SettingsViewModel]'s ctor doc for why existing call sites that
-    // don't pass these keep compiling unchanged.
-    themeMode: SkeinThemeMode = SkeinThemeMode.SYSTEM,
-    onThemeModeChange: (SkeinThemeMode) -> Unit = {},
-) {
-    // DS3 (skein-xtov.23.3, §6.7): a `Surface` root, not a bare `Box` — this
-    // screen is reached both through `SkeinApp`'s `destinationContent` slot
-    // and (in tests/previews) standalone, so its own root must set
-    // `LocalContentColor` rather than depend on a caller's Surface. Rows
-    // like `LockPolicyControls`' "Lock after inactivity" label set no
-    // colour of their own and were falling back to Compose's default black,
-    // illegible on the dark theme (a contained screen, not the whole shell,
-    // so `Surface`'s `clip` layer here is cheap — see `SkeinApp`'s own root
-    // for why that root uses `CompositionLocalProvider` instead).
-    Surface(modifier = modifier.fillMaxSize(), color = MaterialTheme.colorScheme.background) {
-        Box(modifier = Modifier.fillMaxSize()) {
-            Column(
-                modifier =
-                    Modifier
-                        .align(Alignment.TopCenter)
-                        .widthIn(max = MAX_CONTENT_WIDTH)
-                        .fillMaxWidth()
-                        .verticalScroll(rememberScrollState()),
-            ) {
-                AppearanceSection(themeMode = themeMode, onThemeModeChange = onThemeModeChange)
-                PrivacyAndSecuritySection(
-                    flagSecureEnabled = flagSecureEnabled,
-                    onFlagSecureEnabledChange = onFlagSecureEnabledChange,
-                    idleTimeoutMinutes = idleTimeoutMinutes,
-                    onIdleTimeoutMinutesChange = onIdleTimeoutMinutesChange,
-                    lockOnScreenOff = lockOnScreenOff,
-                    onLockOnScreenOffChange = onLockOnScreenOffChange,
-                    lockOnBackground = lockOnBackground,
-                    onLockOnBackgroundChange = onLockOnBackgroundChange,
-                    strongBoxUnavailableFallback = strongBoxUnavailableFallback,
-                    vaultUnlocked = vaultUnlocked,
-                    onReauthenticate = onReauthenticate,
-                    onBuildRecoveryExport = onBuildRecoveryExport,
-                )
-                KnowledgeAndSearchSection()
-                AboutSection(appVersion = appVersion, onViewNoticeClick = onViewNoticeClick)
-            }
-        }
-    }
-}
-
-/** Convenience overload that reads [SettingsViewModel.flagSecureEnabled] and wires its setter. */
-@Composable
-fun SettingsScreen(
-    viewModel: SettingsViewModel,
-    appVersion: String,
-    modifier: Modifier = Modifier,
-    onViewNoticeClick: () -> Unit = {},
-) {
-    SettingsScreen(
-        flagSecureEnabled = viewModel.flagSecureEnabled,
-        onFlagSecureEnabledChange = viewModel::setFlagSecureEnabled,
-        appVersion = appVersion,
-        modifier = modifier,
-        onViewNoticeClick = onViewNoticeClick,
-        idleTimeoutMinutes = viewModel.idleTimeoutMinutes,
-        onIdleTimeoutMinutesChange = viewModel::setIdleTimeoutMinutes,
-        lockOnScreenOff = viewModel.lockOnScreenOff,
-        onLockOnScreenOffChange = viewModel::setLockOnScreenOff,
-        lockOnBackground = viewModel.lockOnBackground,
-        onLockOnBackgroundChange = viewModel::setLockOnBackground,
-        strongBoxUnavailableFallback = viewModel.strongBoxUnavailableFallback,
-        vaultUnlocked = viewModel.vaultUnlocked,
-        onReauthenticate = viewModel.reauthenticate,
-        onBuildRecoveryExport = viewModel.buildRecoveryExport,
-        themeMode = viewModel.themeMode,
-        onThemeModeChange = viewModel::setThemeMode,
-    )
-}
-
-/**
- * Self-contained Settings entry point (`E9.I8`): renders [SettingsScreen]
- * and swaps to [AboutScreen] as a full-screen overlay when "Open-source licenses" is
- * tapped, swapping back on [AboutScreen]'s back action. This is the
- * "overlay — simplest for v1" wiring called for in `skein-dun`; a real
- * nav-graph destination for About is a followup once `:feature:shell`'s
- * `Destination`/nav-graph work lands. [SettingsScreen] itself is untouched
- * by this — hosts that want to own the About navigation themselves (e.g. a
- * future real nav graph) can keep calling [SettingsScreen] directly and
- * wire [SettingsScreen]'s `onViewNoticeClick` to their own destination
- * instead of using this wrapper.
- */
-@Composable
-fun SettingsRoute(
-    viewModel: SettingsViewModel,
-    appVersion: String,
-    modifier: Modifier = Modifier,
-) {
-    var showAbout by remember { mutableStateOf(false) }
-
-    if (showAbout) {
-        AboutScreen(
-            appVersion = appVersion,
-            onBack = { showAbout = false },
-            modifier = modifier,
-        )
-    } else {
-        SettingsScreen(
-            viewModel = viewModel,
-            appVersion = appVersion,
-            modifier = modifier,
-            onViewNoticeClick = { showAbout = true },
-        )
-    }
-}
-
-// -----------------------------------------------------------------------------
-// skein-xtov.24.9 (AL-09b): the sections above, extracted so the Settings
-// destination's categories (`:feature:shell`'s `SettingsCategoryEntry`) can
-// render exactly one of them per `SettingsCategoryKey` instead of
-// [SettingsScreen]'s single scrolling column. No behaviour changes: every
-// row below is the same composable, same params, same order as above.
-// -----------------------------------------------------------------------------
-
+/** Shared sections for the NavDisplay Settings category entries. */
 @Composable
 fun AppearanceSection(
     themeMode: SkeinThemeMode,
@@ -267,7 +104,7 @@ fun AboutSection(
     }
 }
 
-/** Self-contained About category: the same [AboutScreen] swap [SettingsRoute] does, scoped to just this category. */
+/** About category with its licenses view and a return action. */
 @Composable
 fun AboutCategoryRoute(
     appVersion: String,
