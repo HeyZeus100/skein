@@ -339,6 +339,8 @@ class MainActivity : FragmentActivity() {
                         // skein-ank2: recorded for Settings › Security (skein-3el).
                         lifecycleScope.launch { securityPrefs.setStrongBoxUnavailableFallback(!strongBoxBacked) }
                     },
+                    // skein-xtov.24.21 (SECURITY_REVIEW_D7.md M4e): no id from the reset vault survives.
+                    onVaultReset = { navShell?.resetForNewVault() },
                     unlockedContent = { session ->
                         // E6.I18 (skein-fsn): wire IndexingNotifier to observe and post
                         // progress notifications. Use in-memory permission check to skip
@@ -1020,6 +1022,7 @@ private fun VaultGate(
     onUnlocked: () -> Unit,
     onProvisioned: (strongBoxBacked: Boolean) -> Unit,
     unlockedContent: @Composable (VaultSession) -> Unit,
+    onVaultReset: () -> Unit = {},
     // bd `skein-l9oi`: setup/unlock must honour the user's choice too, not
     // just the shell — these screens render before there is a session to
     // thread it through `unlockedContent`, so it comes in as its own param.
@@ -1071,6 +1074,7 @@ private fun VaultGate(
                                 // the same pattern onNotInitialised uses.
                                 resetRequested = false
                                 provisioned = false
+                                onVaultReset()
                             },
                             onDismiss = { resetRequested = false },
                             modifier = m,

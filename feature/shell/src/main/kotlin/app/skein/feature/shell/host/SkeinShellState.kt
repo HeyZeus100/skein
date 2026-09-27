@@ -12,6 +12,7 @@ import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.Stable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.key
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.SaveableStateHolder
 import androidx.compose.runtime.saveable.Saver
@@ -38,6 +39,7 @@ class SkeinShellState internal constructor(
     initial: SkeinNavigationState,
     internal val entryState: Map<Destination, SaveableStateHolder>,
     val stores: SessionEntryStores,
+    private val onReset: () -> Unit = {},
 ) {
     internal val navigator = Navigator()
 
@@ -56,6 +58,20 @@ class SkeinShellState internal constructor(
         nav = navigator.dropTransient(nav)
         sheets.collapseAll()
     }
+
+    /**
+     * M4e (SECURITY_REVIEW_D7.md): the vault was reset, so no id from it may
+     * survive. Every stack returns to its root and every session store is
+     * cleared now; [rememberSkeinShellState] then replaces this state with a
+     * fresh generation, which drops these T2 holders and unregisters this
+     * generation's saved-state entries, so the next saved Bundle holds none of them.
+     */
+    fun resetForNewVault() {
+        nav = SkeinNavigationState.initial()
+        sheets.collapseAll()
+        stores.clearAll()
+        onReset()
+    }
 }
 
 /**
@@ -65,10 +81,21 @@ class SkeinShellState internal constructor(
 @Composable
 fun rememberSkeinShellState(unlockManager: UnlockManager): SkeinShellState {
     val stores = viewModel { SessionEntryStores(unlockManager) }
+    // M4e: a vault reset starts a new generation. Everything saveable below is keyed by it, so the old
+    // generation's T1 and T2 leave composition and their saved-state entries are unregistered with them.
+    var generation by rememberSaveable { mutableIntStateOf(0) }
+    return key(generation) { rememberShellGeneration(stores) { generation++ } }
+}
+
+@Composable
+private fun rememberShellGeneration(
+    stores: SessionEntryStores,
+    onReset: () -> Unit,
+): SkeinShellState {
     val entryState = Destination.entries.associateWith { key(it) { rememberSaveableStateHolder() } }
     val shell =
-        rememberSaveable(saver = shellSaver(entryState, stores)) {
-            SkeinShellState(SkeinNavigationState.initial(), entryState, stores)
+        rememberSaveable(saver = shellSaver(entryState, stores, onReset)) {
+            SkeinShellState(SkeinNavigationState.initial(), entryState, stores, onReset)
         }
     DisposableEffect(shell) {
         val hook = stores.doOnLocked(shell::onLocked)
@@ -80,13 +107,14 @@ fun rememberSkeinShellState(unlockManager: UnlockManager): SkeinShellState {
 private fun shellSaver(
     entryState: Map<Destination, SaveableStateHolder>,
     stores: SessionEntryStores,
+    onReset: () -> Unit,
 ): Saver<SkeinShellState, Bundle> =
     Saver(
         save = { bundleOf(SkeinNavCodec.encode(it.nav)) },
         // Total (M4c): an unreadable Bundle restores the root stacks.
         restore = { saved ->
             val nav = runCatching { SkeinNavCodec.decode(treeOf(saved)) }.getOrElse { SkeinNavigationState.initial() }
-            SkeinShellState(nav, entryState, stores)
+            SkeinShellState(nav, entryState, stores, onReset)
         },
     )
 
