@@ -151,8 +151,8 @@ internal object VaultSql {
     // because it now holds the document's `RevisionHash`, which covers the
     // frontmatter too (migration 003 / POST_REVIEW_RESOLUTIONS.md §1.3). The
     // `documents_au_ingest` trigger is `AFTER UPDATE OF body_md, title`, so
-    // this statement still does not enqueue a re-index — a frontmatter-only
-    // edit changes the revision address without re-chunking anything.
+    // this statement does not enqueue a re-index; `updateFrontmatter` runs
+    // [REQUEUE_DOCUMENT] itself when the revision address moved (spec N4).
     const val UPDATE_DOCUMENT_FRONTMATTER: String =
         "UPDATE documents SET frontmatter = ?, updated_at = ?, content_hash = ? WHERE id = ?"
 
@@ -215,6 +215,37 @@ internal object VaultSql {
 
     const val DELETE_DOCUMENT_REVISION: String =
         "DELETE FROM document_revisions WHERE document_id = ? AND revision_hash = ?"
+
+    // ------------------------------------------------------------------
+    // Orphan sweep (OBJECT_LIFECYCLE_SPEC.md §3.3 race rule, LC-06)
+    // ------------------------------------------------------------------
+    //
+    // A node id with no `:` is a document id; `tag:`, `entity:` and `title:`
+    // nodes are never swept. Run in this order inside one transaction.
+
+    // Bind: 1 = now. The live, non-attachment sources of edges into a missing
+    // document, re-queued so their ingest recomputes the link.
+    const val REQUEUE_SOURCES_OF_ORPHAN_EDGES: String =
+        "INSERT OR REPLACE INTO ingest_queue(doc_id, reason, queued_at, attempts) " +
+            "SELECT DISTINCT s.id, 'updated', ?, 0 FROM edges e JOIN documents s ON s.id = e.src_id " +
+            "WHERE s.kind != 'attachment' AND instr(e.dst_id, ':') = 0 " +
+            "AND NOT EXISTS (SELECT 1 FROM documents d WHERE d.id = e.dst_id)"
+
+    const val DELETE_ORPHAN_EDGES_TO: String =
+        "DELETE FROM edges WHERE instr(dst_id, ':') = 0 " +
+            "AND NOT EXISTS (SELECT 1 FROM documents d WHERE d.id = edges.dst_id)"
+
+    const val DELETE_ORPHAN_EDGES_FROM: String =
+        "DELETE FROM edges WHERE instr(src_id, ':') = 0 " +
+            "AND NOT EXISTS (SELECT 1 FROM documents d WHERE d.id = edges.src_id)"
+
+    // vec0 has no foreign key: a vector written for a chunk that a racing
+    // delete already removed outlives it (LIFECYCLE_FINDINGS.md §12.2).
+    const val SELECT_ORPHAN_VECTOR_ROWIDS: String =
+        "SELECT rowid FROM chunks_vec WHERE rowid NOT IN (SELECT id FROM chunks)"
+
+    const val DELETE_VECTOR: String =
+        "DELETE FROM chunks_vec WHERE rowid = ?"
 
     // ------------------------------------------------------------------
     // Messages

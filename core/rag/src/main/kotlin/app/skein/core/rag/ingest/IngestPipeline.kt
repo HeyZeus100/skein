@@ -53,10 +53,10 @@
 //
 // ## Revision hash and byte-offset stamping (migration 003 + 008)
 //
-// After loading the document, [ingest] reads
-// [VaultRepository.currentRevision] — already captured synchronously by
-// the repository on `createDocument`/`updateBody`/`updateFrontmatter`
-// (skein-uo5n) — and passes its `revisionHash` straight through to
+// [ingest] takes the loaded document's `contentHash` — its revision hash,
+// captured synchronously by the repository on every write (skein-uo5n),
+// from the same read as the body it chunks (OBJECT_LIFECYCLE_SPEC.md N3) —
+// and passes it straight through to
 // [IngestSteps.indexLexical], which stamps it onto every
 // `chunks.revision_hash` this pass writes and derives
 // `chunks.byte_start`/`chunks.byte_end` from `Chunk.start`/`Chunk.end`
@@ -154,7 +154,7 @@ public fun interface EntityStep {
  * called repeatedly (each call drains what is queued at that moment).
  *
  * @param repository dequeues/completes `ingest_queue` entries, loads documents, and
- *   (migration 008) persists the per-document retry counter and current revision hash.
+ *   (migration 008) persists the per-document retry counter.
  * @param chunker cuts each body into the chunks whose `start`/`end` are the citation locators.
  * @param steps lexical and vector writes (`IngestSteps`).
  * @param links graph step (`EdgeUpserter.upsert` + `DanglingResolver.resolveFor` in `:app`).
@@ -239,12 +239,11 @@ public class IngestPipeline(
         checkpoint()
         val chunks = chunker.chunk(body)
 
-        // The repository already captured (or reused, if unchanged —
-        // §1.4 idempotency) a revision for this exact content on the write
-        // that queued this entry (skein-uo5n); the pipeline only reads it.
+        // The revision of the body just chunked: `contentHash` from the same
+        // read. A second read could already see an edit that landed since and
+        // stamp this old text with its revision (OBJECT_LIFECYCLE_SPEC.md N3).
         // See the file header's "Revision hash and byte-offset stamping".
-        checkpoint()
-        val revisionHash = repository.currentRevision(document.id)?.revisionHash
+        val revisionHash = document.contentHash
 
         checkpoint()
         val chunkIds =

@@ -53,12 +53,11 @@ public abstract class IndexStoreContractTest {
      * because `InMemoryIndexStore` has no `documents` table and never
      * enforced this key (see that class's override for why).
      *
-     * Not needed before a `replaceEdges`/`edgesTo`/`neighborhood` call:
-     * `edges` carries no foreign key on `src_id`/`dst_id` at all
-     * (`001_initial.sql` — deliberately unenforced, per `003_document_
-     * revisions.sql`'s header note on `edges.src_id`/`dst_id`), and a node
-     * id there may be a bare document UUID, an `entity:<id>`, or a
-     * `tag:<name>` (see `Edge`'s KDoc), so those calls need no parent row.
+     * Also needed before `replaceEdges` from a document-shaped `srcId` (one
+     * with no `:`): `edges` carries no foreign key, but the write checks that
+     * its source document still exists and skips it otherwise
+     * (OBJECT_LIFECYCLE_SPEC.md §3.3, LC-06). Destination ids — a document,
+     * an `entity:<id>` or a `tag:<name>` — need no row.
      */
     protected abstract fun seedDocument(docId: DocId): Unit
 
@@ -265,6 +264,8 @@ public abstract class IndexStoreContractTest {
             val src = "01924a4b-4d29-7000-8000-00000000A0A1"
             val dst = "01924a4b-4d29-7000-8000-00000000A0A2"
             val other = "01924a4b-4d29-7000-8000-00000000A0A3"
+            seedDocument(src)
+            seedDocument(other)
             idx.replaceEdges(
                 srcId = src,
                 kinds = setOf(EdgeKind.WIKILINK),
@@ -299,6 +300,7 @@ public abstract class IndexStoreContractTest {
             // adds one new node; with maxNodes = 3 we expect to reach at
             // most A + B + C (visited size caps expansion).
             val ids = (0..5).map { "node-$it" }
+            ids.forEach(::seedDocument)
             for (i in 0 until ids.size - 1) {
                 idx.replaceEdges(
                     srcId = ids[i],
@@ -375,6 +377,7 @@ public abstract class IndexStoreContractTest {
             val idx = index()
             val src = "01924a4b-4d29-7000-8000-00000000E0E3"
             val dst = "01924a4b-4d29-7000-8000-00000000E0E4"
+            seedDocument(src)
             val seen = collectChanges(idx)
 
             idx.replaceEdges(

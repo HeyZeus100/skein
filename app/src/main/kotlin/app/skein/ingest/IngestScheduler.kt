@@ -201,14 +201,15 @@ class IngestScheduler(
     // ---- internals -----------------------------------------------------
 
     /**
-     * Runs `documentRevisions_gc` (skein-a2yr) at most once per unlocked
+     * Runs `documentRevisions_gc` (skein-a2yr) and the index orphan sweep
+     * (`VaultRepository.sweepIndexOrphans`, LC-06) at most once per unlocked
      * session: a no-op unless this is the first authorized [runPending] call
      * seen for [sessionEpoch] this unlock. Always called from inside
      * [runMutex] (only [runPending] calls this), and only once the caller
      * has already confirmed the session is authorized under [sessionEpoch]
      * — this never runs while locked or under a stale epoch.
      *
-     * The count-only log line is the only thing this ever logs — spec §9
+     * The count-only log lines are the only thing this ever logs — spec §9
      * forbids logging content, and `sweepUnreferencedRevisions` never
      * returns anything but a count.
      */
@@ -220,6 +221,11 @@ class IngestScheduler(
         lastSweptEpoch = sessionEpoch
         val removed = repository.sweepUnreferencedRevisions()
         SkeinLog.i(TAG, "documentRevisions_gc: removed $removed unreferenced revision(s)")
+        // OBJECT_LIFECYCLE_SPEC.md §3.3 (LC-06): heal what an ingest racing a
+        // delete left in the index; runs before the pipeline so the sources it
+        // re-queues are re-linked in this same pass.
+        val orphans = repository.sweepIndexOrphans()
+        SkeinLog.i(TAG, "index orphan sweep: removed $orphans row(s)")
     }
 
     private fun enqueueIfAuthorized() {

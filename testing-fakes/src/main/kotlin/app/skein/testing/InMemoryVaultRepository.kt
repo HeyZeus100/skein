@@ -11,8 +11,10 @@
 // `transaction { }` restores a snapshot of every map.
 //
 // Linked vault (LC-02): pass an `InMemoryIndexStore` as `index` and the two
-// behave as one vault file — a delete cascades the document's chunks, as the
-// `chunks.doc_id` foreign key does on the device.
+// behave as one vault file — a delete cascades the document's chunks (the
+// `chunks.doc_id` foreign key on the device), a delete or rename detaches its
+// edges, the index skips writes for a deleted document, and
+// `sweepIndexOrphans` sweeps the index's edges and vectors.
 //
 // Not modelled here (deliberately):
 //   • isolation — reads never take the lock, so a reader can see a write
@@ -274,6 +276,8 @@ public class InMemoryVaultRepository(
             documents[id] = updated
             if (citable && hash != null && hash != existing.contentHash) {
                 captureRevision(id, existing.kind, existing.bodyMd, withId, hash, now)
+                // Spec N4: a re-addressed document is re-ingested, as `VaultRepositoryImpl` does.
+                ingestQueue[id] = IngestItem(docId = id, reason = IngestReason.UPDATED, queuedAt = now)
             }
             emitChange()
             updated
@@ -474,6 +478,20 @@ public class InMemoryVaultRepository(
             toRemove.size
         }
 
+    /** `VaultRepositoryImpl.sweepIndexOrphans` over the linked index; nothing to sweep without one. */
+    override suspend fun sweepIndexOrphans(): Int =
+        writeTx {
+            val linked = index ?: return@writeTx 0
+            val (removed, sources) = linked.sweepOrphans()
+            val now = clock()
+            for (source in sources) {
+                if (documents[source]?.kind == DocumentKind.ATTACHMENT) continue
+                ingestQueue[source] = IngestItem(docId = source, reason = IngestReason.UPDATED, queuedAt = now)
+            }
+            if (removed > 0) emitChange()
+            removed
+        }
+
     /**
      * Mirrors `VaultSql.UPSERT_DOCUMENT_REVISION`: the content address is the
      * key, so re-capturing unchanged content reuses the row and moves it back
@@ -631,6 +649,9 @@ public class InMemoryVaultRepository(
 
     /** Read-only view of ingest_queue for assertion in tests. */
     public fun peekIngestQueue(): List<IngestItem> = ingestQueue.values.toList()
+
+    /** For the linked [InMemoryIndexStore]: does [id] have a `documents` row? */
+    internal fun hasDocument(id: DocId): Boolean = id in documents
 
     /** Exposes the current version of `changeBus` for backpressure-free polling. */
     public val changes: StateFlow<Unit> get() = ready

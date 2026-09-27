@@ -387,7 +387,16 @@ public interface VaultRepository {
         ifTitleIs: String? = null,
     ): Document?
 
-    /** @throws NoSuchElementException when [id] has no row; nothing is written. */
+    /**
+     * Rewrites [id]'s frontmatter (its `id` key always pinned to [id]), bumps
+     * `updated_at` and recomputes `content_hash`. When that hash moves — the
+     * frontmatter is part of the revision — a revision is captured and ingest
+     * is re-queued, so tags re-link and new chunks carry the new revision
+     * (`docs/ux/OBJECT_LIFECYCLE_SPEC.md` N4). A cosmetic rewrite (key order,
+     * or only `id`) moves nothing.
+     *
+     * @throws NoSuchElementException when [id] has no row; nothing is written.
+     */
     public suspend fun updateFrontmatter(
         id: DocId,
         frontmatter: JsonObject,
@@ -554,6 +563,25 @@ public interface VaultRepository {
      *   about this operation ever safe to log (spec §9: never log content).
      */
     public suspend fun sweepUnreferencedRevisions(): Int
+
+    /**
+     * The orphan sweep of the same once-per-unlock maintenance pass
+     * (`docs/ux/OBJECT_LIFECYCLE_SPEC.md` §3.3 race rule): heals what an
+     * ingest racing a delete leaves behind — its index writes run on another
+     * connection, before or after the delete's transaction.
+     *   - An edge from a document that no longer exists is deleted.
+     *   - An edge into a document that no longer exists is deleted and its
+     *     source re-queued, so the source's ingest recomputes the link (the
+     *     unresolved-title sentinel, when nothing answers it).
+     *   - A vector row whose chunk is gone is deleted.
+     *
+     * A node id containing `:` (`tag:`, `entity:`, `title:`) is never taken
+     * for a document. Idempotent; like [sweepUnreferencedRevisions], it runs
+     * only inside the authorized-unlock maintenance pass.
+     *
+     * @return the number of rows deleted — a bare count, safe to log.
+     */
+    public suspend fun sweepIndexOrphans(): Int
 
     // ---- attachments (blob store, encrypted at rest) ----
 
@@ -804,7 +832,9 @@ public interface IndexStore {
      *     nothing. Changes queued by an inner call are discarded with the
      *     rollback.
      *   • A no-op call publishes nothing: `replaceEdges(src, kinds =
-     *     emptySet(), …)` and `putEmbeddings(emptyList())` are silent.
+     *     emptySet(), …)` and `putEmbeddings(emptyList())` are silent, and
+     *     so is a write skipped because its document is gone (see
+     *     [replaceChunks]).
      *     `replaceChunks(doc, chunks = emptyList(), …)` is *not* silent —
      *     it still deletes the document's existing chunks.
      *
@@ -829,11 +859,21 @@ public interface IndexStore {
      * Deletes the document's old chunks (FTS/vec rows follow via triggers)
      * and inserts the new ones. Returns new ids in `ord` order.
      *
+     * **Never for a deleted document** (`docs/ux/OBJECT_LIFECYCLE_SPEC.md`
+     * §3.3): inside its own transaction the write first checks that
+     * [docId] still has a `documents` row; when it has none, nothing is
+     * written or published and the result is empty. [replaceEdges] does the
+     * same for a document-shaped `srcId` (one with no `:`). So an ingest that
+     * races a delete either lands first — and the delete removes it — or
+     * writes nothing.
+     *
      * @param revisionHash stamped into every inserted row's
      *   `chunks.revision_hash` (migration 003's reverse pointer, populated
-     *   as of migration 008 / skein-zx15) — the caller's
-     *   `VaultRepository.currentRevision(docId)?.revisionHash` at ingest
-     *   time. Additive and defaulted (coordinator decision, skein-zx15,
+     *   as of migration 008 / skein-zx15) — the [Document.contentHash] of
+     *   the very snapshot the chunks were cut from, never a later read
+     *   (`docs/ux/OBJECT_LIFECYCLE_SPEC.md` N3: an edit landing mid-ingest
+     *   would otherwise label old text with the new revision). Additive and
+     *   defaulted (coordinator decision, skein-zx15,
      *   2026-09-21): a caller with no revision to report (or predating
      *   008) still compiles and gets rows with a null `revision_hash`,
      *   exactly as migration 003 shipped.

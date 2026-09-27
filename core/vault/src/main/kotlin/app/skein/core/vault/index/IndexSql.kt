@@ -38,6 +38,11 @@ internal object IndexSql {
     const val DELETE_CHUNKS_FOR_DOC: String =
         "DELETE FROM chunks WHERE doc_id = ?"
 
+    // The existence check every document-sourced write runs first, inside its
+    // own transaction (OBJECT_LIFECYCLE_SPEC.md §3.3 race rule).
+    const val DOCUMENT_EXISTS: String =
+        "SELECT 1 FROM documents WHERE id = ?"
+
     // `chunks.id` (INTEGER PRIMARY KEY, i.e. a rowid alias) is bound
     // explicitly rather than left for SQLite to auto-assign. SQLite's
     // default ROWID rule is "largest existing ROWID + 1, or 1 if the table

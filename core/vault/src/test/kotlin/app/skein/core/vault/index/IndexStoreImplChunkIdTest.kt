@@ -57,6 +57,8 @@ public class IndexStoreImplChunkIdTest {
                     embedderVersion = 1,
                 )
 
+            assertThat(firstIds).hasSize(2)
+            assertThat(secondIds).hasSize(1)
             assertThat(firstIds).containsNoneIn(secondIds)
         }
 }

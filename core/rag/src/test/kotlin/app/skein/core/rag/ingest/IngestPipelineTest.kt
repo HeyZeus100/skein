@@ -487,6 +487,53 @@ class IngestPipelineTest {
             assertThat(secondChunkIds).hasSize(firstChunkIds.size)
         }
 
+    /** OBJECT_LIFECYCLE_SPEC.md N3 (LC-06). */
+    @Test
+    fun `ingest stamps chunks with the revision of the body it chunked`() =
+        runTest {
+            val h = Harness()
+            val doc = h.note("Raced", "the body as it was chunked")
+            // An edit lands right after the pipeline's one read of the document.
+            var edited = false
+            val racing =
+                object : VaultRepository by h.repository {
+                    override suspend fun getDocument(id: DocId): Document? =
+                        h.repository.getDocument(id).also {
+                            if (id == doc.id && !edited) {
+                                edited = true
+                                h.repository.updateBody(id, "Raced", "an edit landing mid-ingest")
+                            }
+                        }
+                }
+            val item = h.repository.dequeueIngest(10).single { it.docId == doc.id }
+
+            IngestPipeline(racing, Chunker(ApproximateTokenizer), IngestSteps(h.index, null), links = {}).ingest(item)
+
+            val stamps = h.index.chunksForDocs(setOf(doc.id), limitPerDoc = 10).map { it.revisionHash }
+            assertThat(stamps).isNotEmpty()
+            assertThat(stamps.toSet()).containsExactly(doc.contentHash)
+        }
+
+    /** OBJECT_LIFECYCLE_SPEC.md §3.3 race rule, LIFECYCLE_FINDINGS.md §12.2 (LC-06). */
+    @Test
+    fun `ingest racing a delete leaves no edges for the deleted id`() =
+        runTest {
+            val h = Harness()
+            val doc = h.note("Doomed", "links to [[Elsewhere]] and #tagged")
+            // The worst spot: after the lexical step, before the link step.
+            val deleteThenLink =
+                LinkStep { document ->
+                    h.repository.deleteDocument(document.id)
+                    h.realLinks.link(document)
+                }
+
+            h.pipeline(links = deleteThenLink).run()
+
+            assertThat(h.index.edgesFrom(doc.id)).isEmpty()
+            assertThat(h.index.edgesTo(doc.id)).isEmpty()
+            assertThat(h.index.chunksForDocs(setOf(doc.id), limitPerDoc = 10)).isEmpty()
+        }
+
     @Test
     fun `chunk byte offsets are UTF-8, not UTF-16 char offsets, for a multi-byte body`() =
         runTest {
@@ -656,10 +703,11 @@ class IngestPipelineTest {
         }
     }
 
+    /** A linked vault (OBJECT_LIFECYCLE_SPEC.md LC-02): deletes reach [index] as they do on the device. */
     private class Harness {
         private var now = 1_700_000_000_000L
-        val repository = RecordingVault(InMemoryVaultRepository(clock = { ++now }))
         val index = InMemoryIndexStore()
+        val repository = RecordingVault(InMemoryVaultRepository(clock = { ++now }, index = index))
         val realLinks: LinkStep =
             object : LinkStep {
                 private val upserter = EdgeUpserter(repository, index)

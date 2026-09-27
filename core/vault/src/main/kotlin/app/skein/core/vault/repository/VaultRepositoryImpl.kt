@@ -321,6 +321,11 @@ public class VaultRepositoryImpl(
             }
             if (citable && hash != null && hash != existing.contentHash) {
                 captureRevision(id, existing.kind, existing.bodyMd, withId, hash, now, RevisionReason.INGEST)
+                // `documents_au_ingest` watches only body_md and title, so a
+                // re-addressed document would keep chunks stamped with the old
+                // revision and its tags would never re-link (spec N4).
+                requeue(id)
+                publish(TableChange.IngestQueue)
             }
             publish(TableChange.Documents(id))
             existing.copy(frontmatter = withId, updatedAt = now, contentHash = hash)
@@ -566,6 +571,35 @@ public class VaultRepositoryImpl(
                 deleted++
             }
             deleted
+        }
+
+    // On the writer connection, so an orphan in-edge's delete and its source's
+    // re-queue commit together (the re-queue must precede the delete).
+    override suspend fun sweepIndexOrphans(): Int =
+        writeTx {
+            writer.prepare(VaultSql.REQUEUE_SOURCES_OF_ORPHAN_EDGES).use { stmt ->
+                stmt.bindLong(1, clock())
+                stmt.step()
+            }
+            if (changedRows() > 0) publish(TableChange.IngestQueue)
+            var removed = 0
+            for (sql in listOf(VaultSql.DELETE_ORPHAN_EDGES_TO, VaultSql.DELETE_ORPHAN_EDGES_FROM)) {
+                writer.prepare(sql).use { it.step() }
+                removed += changedRows()
+            }
+            // Two steps rather than one `DELETE … NOT IN`: a vec0 point delete
+            // by rowid is the shape the `chunks_ad` trigger already runs.
+            val strayVectors =
+                writer.prepare(VaultSql.SELECT_ORPHAN_VECTOR_ROWIDS).use { stmt ->
+                    buildList { while (stmt.step()) add(stmt.getLong(0)) }
+                }
+            for (rowid in strayVectors) {
+                writer.prepare(VaultSql.DELETE_VECTOR).use { stmt ->
+                    stmt.bindLong(1, rowid)
+                    stmt.step()
+                }
+            }
+            removed + strayVectors.size
         }
 
     /**

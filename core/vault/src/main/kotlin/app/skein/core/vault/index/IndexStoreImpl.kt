@@ -139,6 +139,7 @@ public class IndexStoreImpl(
     ): List<ChunkId> =
         mutex.withLock {
             transaction {
+                if (documentMissing(docId)) return@transaction emptyList()
                 connection.prepare(IndexSql.DELETE_CHUNKS_FOR_DOC).use { stmt ->
                     stmt.bindText(1, docId)
                     stmt.step()
@@ -300,6 +301,7 @@ public class IndexStoreImpl(
         if (kinds.isEmpty()) return
         mutex.withLock {
             transaction {
+                if (documentMissing(srcId)) return@transaction
                 // Delete only the kinds the caller nominates — an unrelated
                 // ENTITY edge on the same source is preserved. This is the
                 // acceptance criterion `replaceEdges(src, kinds={WIKILINK},
@@ -514,6 +516,21 @@ public class IndexStoreImpl(
             throw t
         }
     }
+
+    /**
+     * OBJECT_LIFECYCLE_SPEC.md §3.3 race rule (1): true when [nodeId] names a
+     * document (no `:`, unlike `tag:`/`entity:`/`title:` nodes) that has no
+     * `documents` row. Called first inside [transaction]: this connection's
+     * `BEGIN IMMEDIATE` serializes against the repository's, so either the
+     * delete committed before this check, or it commits after this write and
+     * removes what it wrote.
+     */
+    private fun documentMissing(nodeId: String): Boolean =
+        ':' !in nodeId &&
+            connection.prepare(IndexSql.DOCUMENT_EXISTS).use { stmt ->
+                stmt.bindText(1, nodeId)
+                !stmt.step()
+            }
 
     /**
      * Queues [change] on the open transaction, or publishes it straight

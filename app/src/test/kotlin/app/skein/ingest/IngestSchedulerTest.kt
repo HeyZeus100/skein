@@ -4,6 +4,7 @@ import androidx.biometric.BiometricPrompt
 import androidx.fragment.app.FragmentActivity
 import app.skein.core.model.Document
 import app.skein.core.model.DocumentKind
+import app.skein.core.model.Edge
 import app.skein.core.model.EdgeKind
 import app.skein.core.model.NewDocument
 import app.skein.core.rag.chunk.Chunker
@@ -102,8 +103,8 @@ class IngestSchedulerTest {
         val events: MutableList<String> = CopyOnWriteArrayList()
         val keyProvider = ScriptedVaultKeyProvider(events)
         val manager = UnlockManager(keyProvider = keyProvider, scope = null, installShutdownHook = false)
-        val repository = InMemoryVaultRepository()
         val index = InMemoryIndexStore()
+        val repository = InMemoryVaultRepository(index = index)
         val scope = CoroutineScope(SupervisorJob() + Dispatchers.Default)
         val pacer = ScriptedPacer()
 
@@ -433,6 +434,35 @@ class IngestSchedulerTest {
             h.scheduler.runPending(h.epoch())
 
             assertEquals(null, h.repository.getRevision(noteB.id, orphanB))
+        }
+
+    @Test
+    fun `runPending sweeps index orphans before the pipeline re-links their sources`() =
+        runBlocking {
+            val h = harness()
+            h.unlock()
+            h.bringUp()
+            val linker = h.note("linker", "no links any more")
+            val gone = h.note("Gone", "g")
+            h.repository.deleteDocument(gone.id)
+            // What a resolver pass racing the delete leaves (OBJECT_LIFECYCLE_SPEC.md §3.3, LC-06).
+            h.index.replaceEdges(
+                linker.id,
+                setOf(EdgeKind.WIKILINK),
+                listOf(Edge(srcId = linker.id, dstId = gone.id, kind = EdgeKind.WIKILINK, createdAt = 1L)),
+            )
+            // Nothing queued: only the sweep can reach the edge.
+            h.repository.completeIngest(
+                linker.id,
+                h.repository
+                    .dequeueIngest(10)
+                    .single { it.docId == linker.id }
+                    .queuedAt,
+            )
+
+            h.scheduler.runPending(h.epoch())
+
+            assertEquals(emptyList<Edge>(), h.index.edgesTo(gone.id))
         }
 
     // ---- bounded retries (persisted ingest_queue.attempts, migration 008, skein-zx15) ----

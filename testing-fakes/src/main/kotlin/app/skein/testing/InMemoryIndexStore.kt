@@ -84,6 +84,29 @@ public class InMemoryIndexStore : IndexStore {
     }
 
     /**
+     * True when [nodeId] names a document (no `:`) the linked repository has
+     * no row for — `IndexStoreImpl.documentMissing`. A standalone index has
+     * no documents table, so nothing is missing from it.
+     */
+    private fun documentMissing(nodeId: String): Boolean = ':' !in nodeId && vault?.hasDocument(nodeId) == false
+
+    /**
+     * The linked repository's orphan sweep (`VaultRepositoryImpl.sweepIndexOrphans`):
+     * drops every edge with a missing document at either end and every vector
+     * with no chunk. Returns how many went, and the live sources of the
+     * dropped in-edges, which the repository re-queues.
+     */
+    internal suspend fun sweepOrphans(): Pair<Int, Set<String>> =
+        lock.withLock {
+            val orphans = edges.filter { documentMissing(it.srcId) || documentMissing(it.dstId) }
+            edges.removeAll(orphans.toSet())
+            val strays = embeddings.keys.filter { it !in chunks }
+            strays.forEach(embeddings::remove)
+            val sources = orphans.filter { documentMissing(it.dstId) && !documentMissing(it.srcId) }.map { it.srcId }
+            (orphans.size + strays.size) to sources.toSet()
+        }
+
+    /**
      * The linked repository deleted [docId]: its chunks and their vectors go,
      * as `chunks.doc_id ON DELETE CASCADE` plus the `chunks_ad` trigger do on
      * the device. Publishes nothing — on the device the cascade runs on the
@@ -138,6 +161,8 @@ public class InMemoryIndexStore : IndexStore {
     ): List<ChunkId> {
         val ids =
             lock.withLock {
+                // §3.3 race rule (1): nothing, not even the delete below, for a gone document.
+                if (documentMissing(docId)) return emptyList()
                 // Delete old chunks for the document (real DDL's ON DELETE
                 // CASCADE + `chunks_ad` trigger analog).
                 val oldIds =
@@ -293,6 +318,7 @@ public class InMemoryIndexStore : IndexStore {
         // rewrite, so it is a no-op and publishes nothing.
         if (kinds.isEmpty()) return
         lock.withLock {
+            if (documentMissing(srcId)) return
             this.edges.removeAll { it.srcId == srcId && it.kind in kinds }
             this.edges += edges
         }

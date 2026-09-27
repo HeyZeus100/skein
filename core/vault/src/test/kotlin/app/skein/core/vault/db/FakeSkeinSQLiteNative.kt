@@ -1,5 +1,7 @@
 package app.skein.core.vault.db
 
+import app.skein.core.vault.index.IndexSql
+
 /**
  * Host-JVM fake for [SkeinSQLiteNative]. Records every call so tests can
  * assert on ordering, argument values, and passphrase zeroing. Handles
@@ -214,6 +216,9 @@ internal class FakeSkeinSQLiteNative : SkeinSQLiteNative {
             "foreign_keys" in sql -> true
             "user_version" in sql -> true
             "busy_timeout" in sql -> true
+            // `IndexSql.DOCUMENT_EXISTS` (OBJECT_LIFECYCLE_SPEC.md LC-06):
+            // every document exists here, so `IndexStoreImpl`'s writes proceed.
+            sql == IndexSql.DOCUMENT_EXISTS -> true
             // skein-hctx: `SELECT name FROM sqlite_master WHERE type = '...'`
             // (SchemaInspector.tables()/indexes()/triggers(), the same
             // queries VaultLifecycle.integrityCheck() issues) is the one

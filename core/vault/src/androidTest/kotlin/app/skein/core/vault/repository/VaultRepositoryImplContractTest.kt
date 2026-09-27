@@ -173,6 +173,40 @@ public class VaultRepositoryImplContractTest : VaultRepositoryContractTest() {
         }
 
     // ------------------------------------------------------------------
+    // OBJECT_LIFECYCLE_SPEC.md §11.4 (LC-06): residue only raw SQL can plant
+    // ------------------------------------------------------------------
+
+    @Test
+    public fun orphan_edge_sweep_deletes_edges_from_missing_sources_and_stray_vectors(): Unit =
+        runBlocking {
+            val repo = repo()
+            val conn = openConnections.last()
+            // An edge from a document that is gone (residue of a delete made
+            // before edges were detached), and a vector for a chunk that is gone
+            // (an embedder racing a delete: vec0 has no foreign key).
+            conn
+                .prepare(
+                    "INSERT INTO edges(src_id, dst_id, kind, weight, created_at) VALUES (?, 'tag:x', 'tag', 0.4, 0)",
+                ).use {
+                    it.bindText(1, "01924a4b-4d29-7000-8000-000000000057")
+                    it.step()
+                }
+            conn.prepare("INSERT INTO chunks_vec(rowid, embedding) VALUES (?, vec_int8(?))").use {
+                it.bindLong(1, 424_242L)
+                it.bindBlob(2, ByteArray(256) { 1 })
+                it.step()
+            }
+
+            assertEquals(2, repo.sweepIndexOrphans())
+
+            conn.prepare("SELECT (SELECT count(*) FROM edges) + (SELECT count(*) FROM chunks_vec)").use {
+                it.step()
+                assertEquals(0L, it.getLong(0))
+            }
+            assertEquals("idempotent", 0, repo.sweepIndexOrphans())
+        }
+
+    // ------------------------------------------------------------------
     // skein-2my AC: frontmatter.id is always the document id
     // ------------------------------------------------------------------
 

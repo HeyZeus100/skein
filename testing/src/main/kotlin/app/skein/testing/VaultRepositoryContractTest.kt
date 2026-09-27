@@ -1305,6 +1305,113 @@ public abstract class VaultRepositoryContractTest {
             assertTrue(r.dequeueIngest(10).any { it.docId == note.id })
         }
 
+    // ------------------------------------------------------------------
+    // OBJECT_LIFECYCLE_SPEC.md §3.3 race rule, N4, §11.4 (LC-06): ingest
+    // integrity under delete and edit
+    // ------------------------------------------------------------------
+
+    @Test
+    public fun index_writes_for_a_missing_source_document_are_skipped(): Unit =
+        runTest {
+            val r = repo()
+            val idx = index()
+            val gone = r.createDocument(NewDocument(kind = DocumentKind.NOTE, title = "gone", bodyMd = "b"))
+            r.deleteDocument(gone.id)
+
+            // What an ingest that read the document before the delete writes after it.
+            val ids = idx.replaceChunks(gone.id, listOf(NewChunk(ord = 0, text = "late", tokenCount = 1)), "fake", 1)
+            idx.replaceEdges(
+                gone.id,
+                setOf(EdgeKind.WIKILINK, EdgeKind.TAG),
+                listOf(Edge(srcId = gone.id, dstId = "tag:late", kind = EdgeKind.TAG, createdAt = 1L)),
+            )
+
+            assertTrue(ids.isEmpty())
+            assertTrue(idx.chunksForDocs(listOf(gone.id), limitPerDoc = 10).isEmpty())
+            assertTrue(idx.edgesFrom(gone.id).isEmpty())
+        }
+
+    @Test
+    public fun orphan_edge_sweep_deletes_edges_to_missing_documents_and_requeues_their_sources(): Unit =
+        runTest {
+            val r = repo()
+            val idx = index()
+            val (linker, gone) = plantOrphanInEdge(r, idx)
+
+            assertEquals(1, r.sweepIndexOrphans())
+
+            assertTrue(idx.edgesTo(gone).isEmpty())
+            assertTrue(idx.edgesFrom(linker).isEmpty())
+            assertTrue(
+                "its ingest recomputes the link from the text",
+                r.dequeueIngest(10).any { it.docId == linker && it.reason == IngestReason.UPDATED },
+            )
+        }
+
+    @Test
+    public fun orphan_edge_sweep_is_idempotent(): Unit =
+        runTest {
+            val r = repo()
+            val idx = index()
+            val a = r.createDocument(NewDocument(kind = DocumentKind.NOTE, title = "a", bodyMd = "a"))
+            val b = r.createDocument(NewDocument(kind = DocumentKind.NOTE, title = "b", bodyMd = "b"))
+            val healthy =
+                listOf(
+                    Edge(srcId = a.id, dstId = b.id, kind = EdgeKind.WIKILINK, createdAt = 1L),
+                    Edge(srcId = a.id, dstId = "title:nowhere", kind = EdgeKind.WIKILINK, weight = 0.5, createdAt = 1L),
+                    Edge(srcId = a.id, dstId = "tag:x", kind = EdgeKind.TAG, createdAt = 1L),
+                    Edge(srcId = a.id, dstId = "entity:1", kind = EdgeKind.ENTITY, createdAt = 1L),
+                )
+            idx.replaceEdges(a.id, EdgeKind.entries.toSet(), healthy)
+            plantOrphanInEdge(r, idx)
+
+            assertEquals(1, r.sweepIndexOrphans())
+            assertEquals("a second sweep finds nothing", 0, r.sweepIndexOrphans())
+            assertEquals(
+                "live documents and non-document nodes are never swept",
+                healthy.toSet(),
+                idx.edgesFrom(a.id).toSet(),
+            )
+        }
+
+    @Test
+    public fun a_frontmatter_only_edit_requeues_ingest(): Unit =
+        runTest {
+            val r = repo()
+            val note = r.createDocument(NewDocument(kind = DocumentKind.NOTE, title = "n", bodyMd = "body"))
+            val created = r.dequeueIngest(10).single { it.docId == note.id }
+            r.completeIngest(note.id, created.queuedAt)
+
+            // Only `id`: canonicalization folds it away, so nothing moves.
+            r.updateFrontmatter(note.id, buildJsonObject { put("id", JsonPrimitive(note.id)) })
+            assertTrue(r.dequeueIngest(10).none { it.docId == note.id })
+
+            r.updateFrontmatter(note.id, buildJsonObject { put("tags", JsonPrimitive("new")) })
+            assertTrue("spec N4: tags re-link", r.dequeueIngest(10).any { it.docId == note.id })
+        }
+
+    /**
+     * An edge from a live note into a deleted one — what
+     * `DanglingResolver.resolveFor(deletedDocument)` writes when an ingest
+     * races the delete (the source is alive, so the write lands) — with the
+     * note's own ingest already completed. Returns `(linker, deleted)` ids.
+     */
+    private suspend fun plantOrphanInEdge(
+        r: VaultRepository,
+        idx: IndexStore,
+    ): Pair<String, String> {
+        val linker = r.createDocument(NewDocument(kind = DocumentKind.NOTE, title = "linker", bodyMd = "[[Gone]]"))
+        val gone = r.createDocument(NewDocument(kind = DocumentKind.NOTE, title = "Gone", bodyMd = "g"))
+        r.deleteDocument(gone.id)
+        idx.replaceEdges(
+            linker.id,
+            setOf(EdgeKind.WIKILINK),
+            listOf(Edge(srcId = linker.id, dstId = gone.id, kind = EdgeKind.WIKILINK, createdAt = 1L)),
+        )
+        r.completeIngest(linker.id, r.dequeueIngest(10).single { it.docId == linker.id }.queuedAt)
+        return linker.id to gone.id
+    }
+
     /**
      * Collects [flow] live and runs [body] against its emissions, on a real
      * dispatcher with a real timeout: the SQL-backed impl queries on
