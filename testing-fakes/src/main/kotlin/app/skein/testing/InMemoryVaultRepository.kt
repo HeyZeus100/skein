@@ -177,6 +177,11 @@ public class InMemoryVaultRepository(
 
     override suspend fun getDocument(id: DocId): Document? = documents[id]
 
+    override suspend fun kindsOf(ids: Set<DocId>): Map<DocId, DocumentKind> {
+        fun lookup(): Map<DocId, DocumentKind> = ids.mapNotNull { id -> documents[id]?.let { id to it.kind } }.toMap()
+        return if (coroutineContext[FakeTx] != null) lookup() else writeLock.withLock { lookup() }
+    }
+
     override suspend fun updateBody(
         id: DocId,
         title: String,

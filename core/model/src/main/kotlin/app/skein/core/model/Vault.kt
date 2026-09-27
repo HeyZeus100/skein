@@ -322,6 +322,16 @@ public interface VaultRepository {
     public suspend fun getDocument(id: DocId): Document?
 
     /**
+     * Content-free batch lookup for restoring navigation (SEC-D7 M4).
+     * Reads only ids and kinds, never titles, bodies or frontmatter. Missing
+     * or unrecognised kinds are omitted. Empty input does no database work.
+     * An unavailable store returns an empty map; coroutine cancellation is
+     * still propagated. Implementations bind ids as data in one query, with
+     * work and result size bounded by the requested set rather than the vault.
+     */
+    public suspend fun kindsOf(ids: Set<DocId>): Map<DocId, DocumentKind>
+
+    /**
      * Rewrites title/body, bumps `updated_at`, recomputes `content_hash`. DB trigger enqueues ingest.
      *
      * For a caller that deliberately sets both. An editor saving a body uses

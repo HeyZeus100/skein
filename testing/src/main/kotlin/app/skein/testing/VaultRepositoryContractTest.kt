@@ -94,6 +94,35 @@ public abstract class VaultRepositoryContractTest {
      */
     protected abstract fun index(): IndexStore
 
+    @Test
+    public fun kindsOf_returns_only_requested_live_kinds_in_a_large_batch(): Unit =
+        runTest {
+            val r = repo()
+            val note =
+                r.createDocument(
+                    NewDocument(kind = DocumentKind.NOTE, title = "private title", bodyMd = "private body"),
+                )
+            val chat = r.createDocument(NewDocument(kind = DocumentKind.CHAT, title = "chat", bodyMd = null))
+            val deleted = r.createDocument(NewDocument(kind = DocumentKind.NOTE, title = "deleted", bodyMd = null))
+            r.createDocument(NewDocument(kind = DocumentKind.NOTE, title = "not requested", bodyMd = null))
+            r.deleteDocument(deleted.id)
+            val ids = (0..1_100).mapTo(linkedSetOf()) { "missing-$it" } + setOf(note.id, chat.id, deleted.id)
+            assertEquals(mapOf(note.id to DocumentKind.NOTE, chat.id to DocumentKind.CHAT), r.kindsOf(ids))
+            assertEquals(emptyMap<String, DocumentKind>(), r.kindsOf(emptySet()))
+        }
+
+    @Test
+    public fun kindsOf_reads_its_own_transaction_without_deadlocking(): Unit =
+        runTest {
+            val r = repo()
+            withTimeout(1_000) {
+                r.transaction {
+                    val note = r.createDocument(NewDocument(kind = DocumentKind.NOTE, title = "nested", bodyMd = null))
+                    assertEquals(mapOf(note.id to DocumentKind.NOTE), r.kindsOf(setOf(note.id)))
+                }
+            }
+        }
+
     // ------------------------------------------------------------------
     // AC: create→get round-trip preserves frontmatter `id`
     // ------------------------------------------------------------------

@@ -112,8 +112,8 @@ private fun treeOf(value: Any?): Any? =
     }
 
 /**
- * B8's `kindsOf` until E2 builds it: one content-free `getDocument` per id, and
- * [spaceIds] (the persona ids) read once for the current Space.
+ * B8's content-free batch kind lookup, with [spaceIds] read once for the
+ * current Space. Missing or changed document kinds are sanitised by Navigator.
  * ponytail: a message focus degrades to the latest answer and model details
  * fall back to their root, until B8/B9 answer them.
  */
@@ -122,10 +122,11 @@ fun navKindsOf(
     spaceIds: suspend () -> Collection<String> = { emptyList() },
 ): suspend (Set<SkeinId>) -> Map<SkeinId, ObjectKind> =
     { ids ->
+        val kinds = repository.kindsOf(ids.mapTo(linkedSetOf()) { it.value })
         val spaces = spaceIds().toSet()
         ids
             .mapNotNull { id ->
-                repository.getDocument(id.value)?.let { id to it.kind.objectKind }
+                kinds[id.value]?.let { id to it.objectKind }
                     ?: id.takeIf { it.value in spaces }?.let { it to ObjectKind.SPACE }
             }.toMap()
     }

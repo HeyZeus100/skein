@@ -75,6 +75,11 @@ internal object VaultSql {
         "INSERT INTO documents(id, kind, title, body_md, created_at, updated_at, persona_id, frontmatter, " +
             "content_hash, mime_type, blob_size) VALUES (?, 'attachment', ?, NULL, ?, ?, NULL, ?, ?, ?, ?)"
 
+    // One JSON-array parameter avoids SQLite's variable-count limit even
+    // for a long restored stack. The primary-key lookup never reads content.
+    const val SELECT_DOCUMENT_KINDS: String =
+        "SELECT id, kind FROM documents WHERE id IN (SELECT value FROM json_each(?))"
+
     const val SELECT_DOCUMENT_BY_ID: String =
         "SELECT id, kind, title, body_md, created_at, updated_at, persona_id, frontmatter, content_hash " +
             "FROM documents WHERE id = ?"

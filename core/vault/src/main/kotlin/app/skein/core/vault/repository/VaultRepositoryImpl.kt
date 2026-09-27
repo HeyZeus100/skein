@@ -95,6 +95,7 @@ import app.skein.core.vault.export.stage.StagedPlaintextSweep
 import app.skein.core.vault.extract.EdgeUpserter
 import app.skein.core.vault.id.Uuid7
 import app.skein.core.vault.index.FtsQuerySanitizer
+import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
@@ -106,6 +107,7 @@ import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
 import kotlinx.coroutines.withContext
 import kotlinx.serialization.json.Json
+import kotlinx.serialization.json.JsonArray
 import kotlinx.serialization.json.JsonObject
 import kotlinx.serialization.json.JsonPrimitive
 import kotlinx.serialization.json.buildJsonObject
@@ -203,6 +205,31 @@ public class VaultRepositoryImpl(
                 if (stmt.step()) readDocument(stmt) else null
             }
         }
+
+    override suspend fun kindsOf(ids: Set<DocId>): Map<DocId, DocumentKind> {
+        if (ids.isEmpty()) return emptyMap()
+        return try {
+            withReader { conn ->
+                conn.prepare(VaultSql.SELECT_DOCUMENT_KINDS).use { stmt ->
+                    stmt.bindText(1, JsonArray(ids.map(::JsonPrimitive)).toString())
+                    buildMap {
+                        while (stmt.step()) {
+                            val id = stmt.getText(0)
+                            val kind = stmt.getText(1)
+                            DocumentKind.entries.firstOrNull { it.db == kind }?.let { put(id, it) }
+                        }
+                    }
+                }
+            }
+        } catch (e: CancellationException) {
+            throw e
+        } catch (e: Exception) {
+            // Restore fails closed. Never forward a database exception that
+            // might carry an id or content to logs or Android's crash store.
+            SkeinLog.w(TAG, "Kind lookup unavailable: ${e.javaClass.simpleName}")
+            emptyMap()
+        }
+    }
 
     override suspend fun updateBody(
         id: DocId,
