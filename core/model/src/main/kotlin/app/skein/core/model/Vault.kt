@@ -284,6 +284,12 @@ public data class CitationRecord(
  * All methods are model-agnostic — no embedder / inference / thermal
  * coupling. `MEASUREMENTS.md`-derived numerics (chunk size, embedder dim,
  * batch limits) belong in the RAG or embedder services, not here.
+ *
+ * **Writes never resurrect** (`docs/ux/OBJECT_LIFECYCLE_SPEC.md` §3.2). No
+ * write upserts: every write that names an existing document throws
+ * [NoSuchElementException] — and writes nothing — when that id has no row,
+ * so a late autosave or a late assistant turn cannot bring a deleted
+ * document back.
  */
 public interface VaultRepository {
     // ---- documents ----
@@ -291,13 +297,18 @@ public interface VaultRepository {
 
     public suspend fun getDocument(id: DocId): Document?
 
-    /** Rewrites title/body, bumps `updated_at`, recomputes `content_hash`. DB trigger enqueues ingest. */
+    /**
+     * Rewrites title/body, bumps `updated_at`, recomputes `content_hash`. DB trigger enqueues ingest.
+     *
+     * @throws NoSuchElementException when [id] has no row; nothing is written.
+     */
     public suspend fun updateBody(
         id: DocId,
         title: String,
         bodyMd: String,
     ): Document
 
+    /** @throws NoSuchElementException when [id] has no row; nothing is written. */
     public suspend fun updateFrontmatter(
         id: DocId,
         frontmatter: JsonObject,
@@ -332,6 +343,10 @@ public interface VaultRepository {
     /**
      * Appends [message] to the chat and re-materializes the chat document's
      * `body_md` as a Markdown transcript so chats are indexed like notes.
+     *
+     * @throws NoSuchElementException when [chatDocId] has no row (the chat
+     *   was deleted); nothing is written.
+     * @throws IllegalArgumentException when [chatDocId] is not a `CHAT`.
      */
     public suspend fun appendMessage(
         chatDocId: DocId,

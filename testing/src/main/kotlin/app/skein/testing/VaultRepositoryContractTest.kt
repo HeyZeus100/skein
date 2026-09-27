@@ -36,6 +36,7 @@ import org.junit.Assert.assertNotEquals
 import org.junit.Assert.assertNotNull
 import org.junit.Assert.assertNull
 import org.junit.Assert.assertTrue
+import org.junit.Assert.fail
 import org.junit.Test
 import java.io.ByteArrayOutputStream
 
@@ -704,6 +705,53 @@ public abstract class VaultRepositoryContractTest {
                 r.revisionMatches(citationIntoChat),
             )
         }
+
+    // ------------------------------------------------------------------
+    // OBJECT_LIFECYCLE_SPEC.md §3.2 (LC-01): writes never resurrect
+    // ------------------------------------------------------------------
+
+    @Test
+    public fun writes_to_a_deleted_document_throw_NoSuchElementException_and_write_nothing(): Unit =
+        runTest {
+            val r = repo()
+            val note = r.createDocument(NewDocument(kind = DocumentKind.NOTE, title = "note", bodyMd = "body"))
+            val chat = r.createDocument(NewDocument(kind = DocumentKind.CHAT, title = "chat", bodyMd = ""))
+            r.deleteDocument(note.id)
+            r.deleteDocument(chat.id)
+
+            assertThrowsNoSuchElement { r.updateBody(note.id, "note", "late body") }
+            val tags = buildJsonObject { put("tags", JsonPrimitive("t")) }
+            assertThrowsNoSuchElement { r.updateFrontmatter(note.id, tags) }
+            assertThrowsNoSuchElement { r.appendMessage(chat.id, NewMessage(role = Role.USER, contentMd = "late")) }
+
+            assertNull(r.getDocument(note.id))
+            assertNull(r.getDocument(chat.id))
+            assertTrue(r.listMessages(chat.id).isEmpty())
+            assertTrue(r.dequeueIngest(10).none { it.docId == note.id || it.docId == chat.id })
+        }
+
+    @Test
+    public fun a_late_autosave_never_resurrects_a_deleted_note(): Unit =
+        runTest {
+            val r = repo()
+            val note = r.createDocument(NewDocument(kind = DocumentKind.NOTE, title = "draft", bodyMd = "v1"))
+            r.deleteDocument(note.id)
+
+            assertThrowsNoSuchElement { r.updateBody(note.id, "draft", "v2 from a late autosave") }
+
+            assertNull(r.getDocument(note.id))
+            assertNull(r.findByTitle("draft"))
+            assertTrue(r.observeTimeline(TimelineFilter()).first().none { it.id == note.id })
+        }
+
+    private suspend fun assertThrowsNoSuchElement(block: suspend () -> Unit) {
+        try {
+            block()
+        } catch (_: NoSuchElementException) {
+            return
+        }
+        fail("expected NoSuchElementException")
+    }
 
     private fun citationRecordFor(
         docId: String,

@@ -158,7 +158,7 @@ public class InMemoryVaultRepository(
         bodyMd: String,
     ): Document =
         writeLock.withLock {
-            val existing = requireNotNull(documents[id]) { "no document with id=$id" }
+            val existing = requireDocument(id)
             val now = clock()
             val citable = existing.kind != DocumentKind.ATTACHMENT
             val hash =
@@ -193,7 +193,7 @@ public class InMemoryVaultRepository(
         frontmatter: JsonObject,
     ): Document =
         writeLock.withLock {
-            val existing = requireNotNull(documents[id]) { "no document with id=$id" }
+            val existing = requireDocument(id)
             // Preserve the id key across a frontmatter rewrite (§4.2 note).
             val withId =
                 buildJsonObject {
@@ -289,7 +289,7 @@ public class InMemoryVaultRepository(
         message: NewMessage,
     ): Message =
         writeLock.withLock {
-            val chat = requireNotNull(documents[chatDocId]) { "no chat document with id=$chatDocId" }
+            val chat = requireDocument(chatDocId)
             require(chat.kind == DocumentKind.CHAT) { "not a chat document: $chatDocId (kind=${chat.kind})" }
             val now = clock()
             val row =
@@ -545,6 +545,10 @@ public class InMemoryVaultRepository(
         changeBus.tryEmit(Unit)
         ready.value = Unit
     }
+
+    /** Mirrors `VaultRepositoryImpl.requireDocument`: a write to a missing id throws `NoSuchElementException` (spec §3.2). */
+    private fun requireDocument(id: DocId): Document =
+        documents[id] ?: throw NoSuchElementException("no document with id=$id")
 
     private suspend fun openAttachmentDigest(id: DocId): String {
         // Small enough for tests; a real impl would hash on the fly.
