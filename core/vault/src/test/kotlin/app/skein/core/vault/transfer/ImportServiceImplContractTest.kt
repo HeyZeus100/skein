@@ -24,7 +24,9 @@
 
 package app.skein.core.vault.transfer
 
+import app.skein.core.model.DocId
 import app.skein.core.model.ImportService
+import app.skein.core.model.PersonaId
 import app.skein.testing.ImportServiceContractTest
 import app.skein.testing.InMemoryVaultRepository
 import org.junit.AssumptionViolatedException
@@ -34,7 +36,11 @@ import org.junit.runner.Description
 import org.junit.runners.model.Statement
 
 public class ImportServiceImplContractTest : ImportServiceContractTest() {
-    override fun service(): ImportService = ImportServiceImpl(InMemoryVaultRepository())
+    private val repository = InMemoryVaultRepository()
+
+    override fun service(): ImportService = ImportServiceImpl(repository)
+
+    override suspend fun personaOf(id: DocId): PersonaId? = repository.getDocument(id)?.personaId
 
     /** See the file header: parks the inherited tests for entry points another bead owns. */
     @get:Rule

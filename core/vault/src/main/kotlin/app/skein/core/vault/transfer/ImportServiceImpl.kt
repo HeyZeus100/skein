@@ -23,6 +23,10 @@
 //      `source: <attachmentId>` frontmatter — the CITE edge from note to
 //      attachment is written by the ingest pipeline (`E5.I8`), not here.
 //
+// `importVaultZip` (bd `skein-a0mm`): `VaultZipImporter.kt` walks the
+// archive under its safety caps; `importArchivedDocument` below restores
+// one `<title>.md` entry — skipped, not copied, when its id already exists.
+//
 // Design notes:
 //   - Like `ExportServiceImpl` (`E2.I10`), this class depends only on
 //     `VaultRepository` (`core/model`), not the SQLCipher-backed
@@ -91,6 +95,7 @@ import app.skein.core.model.ImportService
 import app.skein.core.model.NewDocument
 import app.skein.core.model.PersonaId
 import app.skein.core.model.VaultRepository
+import app.skein.core.model.VaultZipImportResult
 import app.skein.core.vault.codec.Frontmatter
 import kotlinx.serialization.json.JsonObject
 import kotlinx.serialization.json.JsonPrimitive
@@ -168,6 +173,57 @@ public class ImportServiceImpl(
                 ),
             )
         return ImportResult(documentId = note.id, attachmentId = attachment.id, created = true)
+    }
+
+    override suspend fun importVaultZip(
+        input: InputStream,
+        personaId: PersonaId?,
+    ): VaultZipImportResult = importVaultZip(input, personaId, VaultZipLimits())
+
+    /** [importVaultZip] under explicit [limits]; tests shrink the caps rather than build gigabyte archives. */
+    internal suspend fun importVaultZip(
+        input: InputStream,
+        personaId: PersonaId?,
+        limits: VaultZipLimits,
+    ): VaultZipImportResult =
+        VaultZipImporter(repository, limits) { fileName, bytes, hint ->
+            importArchivedDocument(fileName, bytes, hint, personaId)
+        }.run(input)
+
+    /**
+     * One `<title>.md` entry of a vault zip, restored as exported: its own
+     * kind, id, title and frontmatter (verbatim). The manifest's kind and
+     * title win — they are the row's, where the frontmatter may lack or
+     * predate them. Skipped (`created == null`) when its id already names a
+     * document — never overwritten, never copied, unlike `importText` — and
+     * for a chat, whose messages the archive does not hold (a `CHAT` row's
+     * body is re-rendered from its messages on the next append).
+     */
+    private suspend fun importArchivedDocument(
+        fileName: String,
+        bytes: ByteArray,
+        hint: ManifestHint?,
+        personaId: PersonaId?,
+    ): ArchivedDocument {
+        val (frontmatter, body) = splitFrontmatter(readNormalized(bytes.inputStream()))
+        val source = frontmatter.string(FrontmatterKeys.SOURCE)
+        val kindName = hint?.kind ?: frontmatter.string(FrontmatterKeys.KIND)
+        val kind = kindName?.let { name -> DocumentKind.entries.firstOrNull { it.db == name } }
+        val id = (frontmatter.string(FrontmatterKeys.ID) ?: hint?.id)?.takeIf { it.isNotBlank() }
+        val restorable = kind == null || kind == DocumentKind.NOTE || kind == DocumentKind.AIOUT
+        if (!restorable || (id != null && repository.getDocument(id) != null)) return ArchivedDocument(null, source)
+        val created =
+            repository.createDocument(
+                NewDocument(
+                    kind = kind ?: DocumentKind.NOTE,
+                    title = hint?.title?.takeIf { it.isNotBlank() } ?: deriveTitle(frontmatter, body, fileName),
+                    bodyMd = body,
+                    personaId = personaId,
+                    frontmatter = frontmatter,
+                    id = id,
+                ),
+            )
+        return ArchivedDocument(created, source)
     }
 
     private fun titleFromDisplayName(displayName: String): String =

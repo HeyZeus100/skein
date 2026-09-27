@@ -11,7 +11,10 @@
 
 package app.skein.testing
 
+import app.skein.core.model.DocId
 import app.skein.core.model.ImportService
+import app.skein.core.model.PersonaId
+import app.skein.core.model.VaultZipImportResult
 import kotlinx.coroutines.test.runTest
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertNotEquals
@@ -20,6 +23,9 @@ import org.junit.Assert.assertNull
 import org.junit.Assert.assertTrue
 import org.junit.Test
 import java.io.ByteArrayInputStream
+import java.io.ByteArrayOutputStream
+import java.util.zip.ZipEntry
+import java.util.zip.ZipOutputStream
 
 /**
  * Contract suite for `ImportService` (plan §4.5). Concrete subclasses
@@ -30,7 +36,32 @@ public abstract class ImportServiceContractTest {
     /** A fresh implementation with no prior import history. */
     protected abstract fun service(): ImportService
 
+    /** The persona (Space) document [id] landed in, read back from whatever [service] wrote to. */
+    protected abstract suspend fun personaOf(id: DocId): PersonaId?
+
     private fun stream(text: String): ByteArrayInputStream = ByteArrayInputStream(text.toByteArray(Charsets.UTF_8))
+
+    /** A vault zip in `exportVaultZip`'s layout, entries in the given order. */
+    private fun vaultZip(vararg entries: Pair<String, String>): ByteArrayInputStream {
+        val out = ByteArrayOutputStream()
+        ZipOutputStream(out).use { zip ->
+            for ((name, text) in entries) {
+                zip.putNextEntry(ZipEntry(name))
+                zip.write(text.toByteArray(Charsets.UTF_8))
+                zip.closeEntry()
+            }
+        }
+        return ByteArrayInputStream(out.toByteArray())
+    }
+
+    /** Two notes, one citing a PDF through `source:`, the PDF, and the manifest — what an export of them writes. */
+    private fun sampleVaultZip(): ByteArrayInputStream =
+        vaultZip(
+            "Alpha.md" to "---\nid: zip-alpha\nkind: note\ntitle: Alpha\n---\nSee [[Beta]].",
+            "Beta.md" to "---\nid: zip-beta\nkind: note\ntitle: Beta\nsource: zip-pdf\n---\nExtracted text.",
+            "attachments/zip-pdf.pdf" to "%PDF-1.4 fake bytes",
+            ".skein/manifest.json" to "{}",
+        )
 
     // ------------------------------------------------------------------
     // `importText` of content with no frontmatter `id` always creates.
@@ -131,5 +162,102 @@ public abstract class ImportServiceContractTest {
                 "no VISION model is loaded for the default fixture, so no separate description document should exist",
                 result.attachmentId,
             )
+        }
+
+    // ------------------------------------------------------------------
+    // bd skein-a0mm: `personaId` is the Space the created documents land
+    // in; omitted, they stay unassigned.
+    // ------------------------------------------------------------------
+
+    @Test
+    public fun importText_lands_in_the_target_persona(): Unit =
+        runTest {
+            val service = service()
+
+            val targeted = service.importText("a.md", "text/markdown", stream("# a"), personaId = "space-1")
+            val unassigned = service.importText("b.md", "text/markdown", stream("# b"))
+
+            assertEquals("space-1", personaOf(targeted.documentId))
+            assertNull("the default keeps today's unassigned import", personaOf(unassigned.documentId))
+        }
+
+    @Test
+    public fun importPdf_lands_its_note_in_the_target_persona(): Unit =
+        runTest {
+            val service = service()
+
+            val result = service.importPdf("doc.pdf", stream("%PDF-1.4 fake bytes"), personaId = "space-1")
+
+            assertEquals("space-1", personaOf(result.documentId))
+        }
+
+    // ------------------------------------------------------------------
+    // `importVaultZip`: the inverse of `exportVaultZip`.
+    // ------------------------------------------------------------------
+
+    @Test
+    public fun importVaultZip_imports_every_document_and_attachment_into_the_target_persona(): Unit =
+        runTest {
+            val service = service()
+
+            val result = service.importVaultZip(sampleVaultZip(), personaId = "space-1")
+
+            assertEquals(VaultZipImportResult(imported = 3, skipped = 0, truncated = false), result)
+            assertEquals("space-1", personaOf("zip-alpha"))
+            assertEquals("space-1", personaOf("zip-beta"))
+        }
+
+    @Test
+    public fun importVaultZip_of_the_same_archive_twice_imports_nothing_the_second_time(): Unit =
+        runTest {
+            val service = service()
+            service.importVaultZip(sampleVaultZip())
+
+            val again = service.importVaultZip(sampleVaultZip())
+
+            assertEquals(
+                "known ids are skipped, and so is the PDF only a skipped note cites",
+                VaultZipImportResult(imported = 0, skipped = 3, truncated = false),
+                again,
+            )
+        }
+
+    @Test
+    public fun importVaultZip_never_overwrites_a_document_with_the_same_id(): Unit =
+        runTest {
+            val service = service()
+            service.importText(
+                "mine.md",
+                "text/markdown",
+                stream("---\nid: zip-alpha\n---\nmine"),
+                personaId = "space-2",
+            )
+
+            val result = service.importVaultZip(sampleVaultZip(), personaId = "space-1")
+
+            assertEquals(VaultZipImportResult(imported = 2, skipped = 1, truncated = false), result)
+            assertEquals("the existing document keeps its Space", "space-2", personaOf("zip-alpha"))
+        }
+
+    @Test
+    public fun importVaultZip_skips_and_counts_unsafe_names_chats_and_unexpected_entries(): Unit =
+        runTest {
+            val service = service()
+
+            val result =
+                service.importVaultZip(
+                    vaultZip(
+                        "../evil.md" to "---\nid: evil-1\n---\nx",
+                        "/absolute.md" to "---\nid: evil-2\n---\nx",
+                        "C:\\drive.md" to "---\nid: evil-3\n---\nx",
+                        "attachments/../../escape.pdf" to "x",
+                        "Chat.md" to "---\nid: zip-chat\nkind: chat\n---\n**user:** hi",
+                        "notes/nested.md" to "---\nid: zip-nested\n---\nx",
+                        "Good.md" to "---\nid: zip-good\n---\nfine",
+                    ),
+                )
+
+            assertEquals(VaultZipImportResult(imported = 1, skipped = 6, truncated = false), result)
+            assertNull("a skipped entry creates nothing", personaOf("evil-1"))
         }
 }

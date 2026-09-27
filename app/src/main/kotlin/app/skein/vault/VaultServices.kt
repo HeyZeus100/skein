@@ -4,6 +4,7 @@
 
 package app.skein.vault
 
+import android.content.ContentResolver
 import android.content.Context
 import android.content.pm.PackageManager
 import android.os.Build
@@ -28,6 +29,7 @@ import app.skein.ingest.ThermalIngestPacer
 import app.skein.ingest.WorkManagerIngestWorkPort
 import app.skein.notify.ModelNotifier
 import app.skein.system.SecurityPrefs
+import app.skein.transfer.FolderImportJob
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
@@ -62,6 +64,8 @@ class VaultServices(
      * PDF export UI is wired up.
      */
     val exportStages: ExportStageCoordinator,
+    /** skein-a0mm: "Import a folder…" into a Space — process-scoped, cancelled on lock. */
+    val folderImport: FolderImportJob,
 ) {
     /** The open vault's services, or `null` while locked / not yet brought up. */
     val session: StateFlow<VaultSession?> get() = bootstrap.session
@@ -148,8 +152,18 @@ class VaultServices(
             val ingest = wireIngest(app, unlockManager, bootstrap, scope)
             val exportStages = wireExportStages(app, unlockManager, bootstrap, scope)
             wireModelNotifications(app, bootstrap, scope)
-            return VaultServices(keyProvider, unlockManager, bootstrap, ingest, vaultReset, exportStages)
+            val folderImport = wireFolderImport(app.contentResolver, unlockManager, bootstrap, scope)
+            return VaultServices(keyProvider, unlockManager, bootstrap, ingest, vaultReset, exportStages, folderImport)
         }
+
+        /** skein-a0mm: the folder-import job, a HIGH lock observer so it stops before the session closes. */
+        fun wireFolderImport(
+            resolver: ContentResolver,
+            unlockManager: UnlockManager,
+            bootstrap: VaultBootstrap,
+            scope: CoroutineScope,
+        ): FolderImportJob =
+            FolderImportJob(resolver, bootstrap.session, scope).also { unlockManager.addLockObserver(it) }
 
         /**
          * skein-0m1z (POST_REVIEW_RESOLUTIONS.md §4.3): the staged-plaintext

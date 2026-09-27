@@ -19,8 +19,10 @@ import app.skein.core.model.FrontmatterKeys
 import app.skein.core.model.ImportResult
 import app.skein.core.model.ImportService
 import app.skein.core.model.PersonaId
+import app.skein.core.model.VaultZipImportResult
 import java.io.InputStream
 import java.util.UUID
+import java.util.zip.ZipInputStream
 
 /**
  * Scripted, in-memory `ImportService` for JVM tests.
@@ -45,6 +47,11 @@ public class FakeImportService(
 
     private val knownIds: MutableSet<DocId> = mutableSetOf()
 
+    private val personas: MutableMap<DocId, PersonaId?> = mutableMapOf()
+
+    /** The Space ([PersonaId]) the document [id] was imported into; `null` when unassigned or unknown. */
+    public fun personaOf(id: DocId): PersonaId? = personas[id]
+
     private val _textImports: MutableList<ImportCall> = mutableListOf()
     public val textImports: List<ImportCall> get() = _textImports
 
@@ -53,6 +60,11 @@ public class FakeImportService(
 
     private val _imageImports: MutableList<ImportCall> = mutableListOf()
     public val imageImports: List<ImportCall> get() = _imageImports
+
+    private val _vaultZipImports: MutableList<PersonaId?> = mutableListOf()
+
+    /** The target persona of each `importVaultZip` call, in call order. */
+    public val vaultZipImports: List<PersonaId?> get() = _vaultZipImports
 
     override suspend fun importText(
         displayName: String,
@@ -69,6 +81,7 @@ public class FakeImportService(
         // document under a freshly minted id and reports the collision.
         val id = if (conflict == null) frontmatterId ?: UUID.randomUUID().toString() else UUID.randomUUID().toString()
         knownIds.add(id)
+        personas[id] = personaId
         return ImportResult(documentId = id, attachmentId = null, created = true, conflictWith = conflict)
     }
 
@@ -83,6 +96,7 @@ public class FakeImportService(
         val attachmentId = UUID.randomUUID().toString()
         val noteId = UUID.randomUUID().toString()
         knownIds.add(noteId)
+        personas[noteId] = personaId
         return ImportResult(documentId = noteId, attachmentId = attachmentId, created = true)
     }
 
@@ -106,15 +120,82 @@ public class FakeImportService(
         }
     }
 
-    private fun extractFrontmatterId(text: String): DocId? {
+    /**
+     * Mirrors the contract without a store: a `.md` entry is skipped when
+     * its frontmatter id is known or it is a chat; an attachment always
+     * gets a fresh id and is skipped when its archive id is known or only
+     * skipped notes cite it; unsafe or unexpected names are skipped. No
+     * size caps — those are the real implementation's concern.
+     */
+    override suspend fun importVaultZip(
+        input: InputStream,
+        personaId: PersonaId?,
+    ): VaultZipImportResult {
+        _vaultZipImports.add(personaId)
+        var imported = 0
+        var skipped = 0
+        val citedByImported = mutableSetOf<DocId>()
+        val citedBySkipped = mutableSetOf<DocId>()
+        val zip = ZipInputStream(input)
+        while (true) {
+            val entry = zip.nextEntry ?: break
+            val text = zip.readBytes().toString(Charsets.UTF_8)
+            val name = entry.name
+            val normalized = name.replace('\\', '/')
+            val unsafe =
+                normalized.startsWith("/") ||
+                    DRIVE_PREFIX.containsMatchIn(normalized) ||
+                    normalized.split('/').any { it == ".." }
+            when {
+                entry.isDirectory || name == ".skein/manifest.json" -> Unit
+                unsafe -> skipped += 1
+                '/' !in name && name.endsWith(".md") -> {
+                    val id = frontmatterValue(text, FrontmatterKeys.ID)
+                    val source = frontmatterValue(text, FrontmatterKeys.SOURCE)
+                    if (frontmatterValue(text, FrontmatterKeys.KIND) == "chat" || (id != null && id in knownIds)) {
+                        skipped += 1
+                        source?.let(citedBySkipped::add)
+                    } else {
+                        val newId = id ?: UUID.randomUUID().toString()
+                        knownIds.add(newId)
+                        personas[newId] = personaId
+                        source?.let(citedByImported::add)
+                        imported += 1
+                    }
+                }
+                name.startsWith("attachments/") && name.count { it == '/' } == 1 -> {
+                    val archiveId = name.substringAfter('/').substringBeforeLast('.')
+                    if (archiveId in knownIds || (archiveId in citedBySkipped && archiveId !in citedByImported)) {
+                        skipped += 1
+                    } else {
+                        knownIds.add(UUID.randomUUID().toString())
+                        imported += 1
+                    }
+                }
+                else -> skipped += 1
+            }
+        }
+        return VaultZipImportResult(imported = imported, skipped = skipped)
+    }
+
+    private fun extractFrontmatterId(text: String): DocId? = frontmatterValue(text, FrontmatterKeys.ID)
+
+    private fun frontmatterValue(
+        text: String,
+        key: String,
+    ): String? {
         val lines = text.lines()
         if (lines.firstOrNull() != "---") return null
         val closingOffset = lines.drop(1).indexOfFirst { it == "---" }
         if (closingOffset < 0) return null
         return lines
             .subList(1, closingOffset + 1)
-            .firstOrNull { it.startsWith("${FrontmatterKeys.ID}:") }
+            .firstOrNull { it.startsWith("$key:") }
             ?.substringAfter(":")
             ?.trim()
+    }
+
+    private companion object {
+        val DRIVE_PREFIX: Regex = Regex("^[A-Za-z]:")
     }
 }

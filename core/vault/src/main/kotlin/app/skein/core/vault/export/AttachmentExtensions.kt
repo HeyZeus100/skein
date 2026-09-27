@@ -40,5 +40,15 @@ internal object AttachmentExtensions {
         return cleaned.ifEmpty { FALLBACK_EXTENSION }
     }
 
+    /**
+     * The inverse, for `importVaultZip` reading `attachments/<id>.<ext>`
+     * back: the first known MIME type for [extension], else
+     * `application/octet-stream` (a derived extension does not name its
+     * type unambiguously).
+     */
+    fun mimeTypeFor(extension: String): String =
+        KNOWN.entries.firstOrNull { it.value == extension.lowercase() }?.key ?: FALLBACK_MIME_TYPE
+
     private const val FALLBACK_EXTENSION: String = "bin"
+    private const val FALLBACK_MIME_TYPE: String = "application/octet-stream"
 }

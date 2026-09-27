@@ -90,8 +90,7 @@ abstract class ContractReportTask : DefaultTask() {
          *    `LlamaCppEngine` (`E4.I4` / skein-1uw), `EmbedderServiceImpl` (`E5.I3` / skein-079), and
          *    `PromptAssemblerImpl` (`E5.I15` / skein-82g).
          *
-         * `ExportServiceImpl` (`E2.I10`) has no contract subclass (real or stub) yet — it is out of
-         * `E10.I3`'s scope (see the bead's acceptance criteria); a follow-up bead tracks adding one.
+         * `ExportServiceImpl` (`E2.I10`) gained its real-implementation subclass with skein-a0mm.
          *
          * Update this list alongside any change to which contract subclasses exist — it is not derived
          * automatically from the source tree.
@@ -194,6 +193,11 @@ abstract class ContractReportTask : DefaultTask() {
                 suite = "ExportService",
                 implementation = "FakeExportService",
                 testClassName = "app.skein.testing.FakeExportServiceTest",
+            ),
+            ContractEntry(
+                suite = "ExportService",
+                implementation = "ExportServiceImpl",
+                testClassName = "app.skein.core.vault.export.ExportServiceImplContractTest",
             ),
         )
 

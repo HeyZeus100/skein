@@ -51,16 +51,21 @@ import app.skein.core.model.DocId
 import app.skein.core.model.Document
 import app.skein.core.model.DocumentKind
 import app.skein.core.model.ExportService
+import app.skein.core.model.FrontmatterKeys
+import app.skein.core.model.PersonaId
 import app.skein.core.model.TimelineFilter
 import app.skein.core.model.VaultRepository
 import app.skein.core.vault.codec.Frontmatter
 import app.skein.core.vault.export.docx.DocxWriter
+import kotlinx.coroutines.currentCoroutineContext
+import kotlinx.coroutines.ensureActive
 import kotlinx.coroutines.flow.first
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.JsonObject
 import kotlinx.serialization.json.JsonPrimitive
 import kotlinx.serialization.json.addJsonObject
 import kotlinx.serialization.json.buildJsonObject
+import kotlinx.serialization.json.contentOrNull
 import kotlinx.serialization.json.putJsonArray
 import java.io.InputStream
 import java.io.OutputStream
@@ -87,47 +92,52 @@ public class ExportServiceImpl(
 
     override suspend fun exportVaultZip(
         out: OutputStream,
+        personaId: PersonaId?,
         onProgress: (done: Int, total: Int) -> Unit,
     ) {
-        val allDocuments = fetchAllDocuments()
+        val allDocuments = if (personaId == null) fetchAllDocuments() else fetchSpace(personaId)
         val (attachments, content) = allDocuments.partition { it.kind == DocumentKind.ATTACHMENT }
-        val sortedContent = content.sortedBy { it.id }
-        val sortedAttachments = attachments.sortedBy { it.id }
-        val total = sortedContent.size + sortedAttachments.size
+        // skein-a0mm: every path is chosen before anything is written so the
+        // manifest can lead the archive — `importVaultZip` streams, and needs
+        // each entry's kind and title (in-app documents carry neither in
+        // their frontmatter) before it reaches the entry.
+        val usedNames = mutableSetOf<String>()
+        val documentEntries =
+            content.sortedBy { it.id }.map { document ->
+                ArchiveEntry(document, SafeFileName.uniqueName(SafeFileName.sanitize(document.title), "md", usedNames))
+            }
+        val attachmentEntries =
+            attachments.sortedBy { it.id }.map { document ->
+                val mimeType = repository.attachmentMimeType(document.id)
+                ArchiveEntry(
+                    document,
+                    "attachments/${document.id}.${AttachmentExtensions.forMimeType(mimeType)}",
+                    mimeType,
+                )
+            }
+        val total = documentEntries.size + attachmentEntries.size
         var done = 0
 
-        val usedNames = mutableSetOf<String>()
-        val documentManifestEntries = mutableListOf<Triple<DocId, String, String>>()
-        val attachmentManifestEntries = mutableListOf<Triple<DocId, String, String>>()
-
         ZipOutputStream(out).use { zip ->
-            for (document in sortedContent) {
-                val fileName = SafeFileName.uniqueName(SafeFileName.sanitize(document.title), "md", usedNames)
-                writeEntry(zip, fileName, renderMarkdown(document))
-                documentManifestEntries += Triple(document.id, document.kind.db, fileName)
-                done += 1
-                onProgress(done, total)
-            }
-
-            for (document in sortedAttachments) {
-                val mimeType = repository.attachmentMimeType(document.id)
-                val path = "attachments/${document.id}.${AttachmentExtensions.forMimeType(mimeType)}"
-                val bytes = repository.openAttachment(document.id).use(InputStream::readBytes)
-                writeEntry(zip, path, bytes)
-                attachmentManifestEntries += Triple(document.id, path, mimeType)
-                done += 1
-                onProgress(done, total)
-            }
-
             val personas = allDocuments.mapNotNull { it.personaId }.distinct().sorted()
-            val manifest = buildManifest(documentManifestEntries, attachmentManifestEntries, personas)
-            val manifestBytes =
-                MANIFEST_JSON
-                    .encodeToString(
-                        JsonObject.serializer(),
-                        manifest,
-                    ).toByteArray(Charsets.UTF_8)
-            writeEntry(zip, MANIFEST_PATH, manifestBytes)
+            val manifest = buildManifest(documentEntries, attachmentEntries, personas)
+            val manifestJson = MANIFEST_JSON.encodeToString(JsonObject.serializer(), manifest)
+            writeEntry(zip, MANIFEST_PATH, manifestJson.toByteArray(Charsets.UTF_8))
+
+            for (entry in documentEntries) {
+                currentCoroutineContext().ensureActive()
+                writeEntry(zip, entry.path, renderMarkdown(entry.document))
+                done += 1
+                onProgress(done, total)
+            }
+
+            for (entry in attachmentEntries) {
+                currentCoroutineContext().ensureActive()
+                val bytes = repository.openAttachment(entry.document.id).use(InputStream::readBytes)
+                writeEntry(zip, entry.path, bytes)
+                done += 1
+                onProgress(done, total)
+            }
         }
     }
 
@@ -153,12 +163,23 @@ public class ExportServiceImpl(
     private fun renderMarkdown(document: Document): ByteArray =
         Frontmatter.render(document.frontmatter, document.bodyMd.orEmpty()).toByteArray(Charsets.UTF_8)
 
-    private suspend fun fetchAllDocuments(): List<Document> =
+    private suspend fun fetchAllDocuments(personaId: PersonaId? = null): List<Document> =
         repository
             .observeTimeline(
-                filter = TimelineFilter(kinds = DocumentKind.entries.toSet()),
+                filter = TimelineFilter(personaId = personaId, kinds = DocumentKind.entries.toSet()),
                 limit = Int.MAX_VALUE,
             ).first()
+
+    /** A Space's documents plus the attachments they cite via `source:` (attachments have no persona). */
+    private suspend fun fetchSpace(personaId: PersonaId): List<Document> {
+        val documents = fetchAllDocuments(personaId)
+        val cited =
+            documents
+                .mapNotNull { (it.frontmatter[FrontmatterKeys.SOURCE] as? JsonPrimitive)?.contentOrNull }
+                .distinct()
+                .mapNotNull { id -> repository.getDocument(id)?.takeIf { it.kind == DocumentKind.ATTACHMENT } }
+        return (documents + cited).distinctBy { it.id }
+    }
 
     private fun writeEntry(
         zip: ZipOutputStream,
@@ -172,28 +193,37 @@ public class ExportServiceImpl(
         zip.closeEntry()
     }
 
+    /** One archive entry: the document, its path in the zip, and (attachments only) its MIME type. */
+    private class ArchiveEntry(
+        val document: Document,
+        val path: String,
+        val mimeType: String? = null,
+    )
+
     private fun buildManifest(
-        documents: List<Triple<DocId, String, String>>,
-        attachments: List<Triple<DocId, String, String>>,
+        documents: List<ArchiveEntry>,
+        attachments: List<ArchiveEntry>,
         personas: List<String>,
     ): JsonObject =
         buildJsonObject {
             put(MANIFEST_KEY_SCHEMA_VERSION, JsonPrimitive(MANIFEST_SCHEMA_VERSION))
             putJsonArray(MANIFEST_KEY_DOCUMENTS) {
-                for ((id, kind, path) in documents) {
+                for (entry in documents) {
                     addJsonObject {
-                        put("id", JsonPrimitive(id))
-                        put("kind", JsonPrimitive(kind))
-                        put("path", JsonPrimitive(path))
+                        put("id", JsonPrimitive(entry.document.id))
+                        put("kind", JsonPrimitive(entry.document.kind.db))
+                        put("path", JsonPrimitive(entry.path))
+                        put("title", JsonPrimitive(entry.document.title))
                     }
                 }
             }
             putJsonArray(MANIFEST_KEY_ATTACHMENTS) {
-                for ((id, path, mime) in attachments) {
+                for (entry in attachments) {
                     addJsonObject {
-                        put("id", JsonPrimitive(id))
-                        put("path", JsonPrimitive(path))
-                        put("mime", JsonPrimitive(mime))
+                        put("id", JsonPrimitive(entry.document.id))
+                        put("path", JsonPrimitive(entry.path))
+                        put("mime", JsonPrimitive(entry.mimeType))
+                        put("title", JsonPrimitive(entry.document.title))
                     }
                 }
             }

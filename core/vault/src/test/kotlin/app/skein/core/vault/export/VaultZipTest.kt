@@ -10,6 +10,7 @@
 package app.skein.core.vault.export
 
 import app.skein.core.model.DocumentKind
+import app.skein.core.model.FrontmatterKeys
 import app.skein.core.model.NewDocument
 import app.skein.core.model.NewMessage
 import app.skein.core.model.Role
@@ -19,6 +20,8 @@ import com.google.common.truth.Truth.assertThat
 import kotlinx.coroutines.test.runTest
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.JsonObject
+import kotlinx.serialization.json.JsonPrimitive
+import kotlinx.serialization.json.buildJsonObject
 import kotlinx.serialization.json.jsonArray
 import kotlinx.serialization.json.jsonObject
 import kotlinx.serialization.json.jsonPrimitive
@@ -151,6 +154,52 @@ public class VaultZipTest {
 
             assertThat(progress.last()).isEqualTo(3 to 3)
             assertThat(progress.map { it.first }).isEqualTo(listOf(1, 2, 3))
+        }
+
+    @Test
+    public fun `a Space export holds its documents and the attachments they cite, nothing else`() =
+        runTest {
+            val repo = InMemoryVaultRepository()
+            val cited =
+                repo.createAttachment(
+                    title = "paper.pdf",
+                    mimeType = "application/pdf",
+                ) { it.write(byteArrayOf(1)) }
+            val uncited =
+                repo.createAttachment(
+                    title = "other.pdf",
+                    mimeType = "application/pdf",
+                ) { it.write(byteArrayOf(2)) }
+            repo.createDocument(
+                NewDocument(
+                    kind = DocumentKind.NOTE,
+                    title = "Paper",
+                    bodyMd = "text",
+                    personaId = "law",
+                    frontmatter = buildJsonObject { put(FrontmatterKeys.SOURCE, JsonPrimitive(cited.id)) },
+                ),
+            )
+            repo.createDocument(
+                NewDocument(kind = DocumentKind.AIOUT, title = "Summary", bodyMd = "s", personaId = "law"),
+            )
+            repo.createDocument(
+                NewDocument(kind = DocumentKind.NOTE, title = "Elsewhere", bodyMd = "e", personaId = "cooking"),
+            )
+            repo.createDocument(NewDocument(kind = DocumentKind.NOTE, title = "Shared", bodyMd = "x"))
+
+            val out = ByteArrayOutputStream()
+            ExportServiceImpl(repo).exportVaultZip(out, personaId = "law")
+            val entries = readZipEntries(out.toByteArray())
+
+            assertThat(entries.keys).containsExactly(
+                "Paper.md",
+                "Summary.md",
+                "attachments/${cited.id}.pdf",
+                ".skein/manifest.json",
+            )
+            assertThat(entries.keys).doesNotContain("attachments/${uncited.id}.pdf")
+            assertThat(readManifest(out.toByteArray()).getValue("personas").jsonArray.map { it.jsonPrimitive.content })
+                .containsExactly("law")
         }
 
     private suspend fun exportZip(repo: InMemoryVaultRepository): ByteArray {

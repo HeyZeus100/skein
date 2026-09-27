@@ -14,6 +14,7 @@ package app.skein.testing
 import app.skein.core.model.Document
 import app.skein.core.model.DocumentKind
 import app.skein.core.model.ExportService
+import app.skein.core.model.PersonaId
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.cancelAndJoin
 import kotlinx.coroutines.delay
@@ -41,6 +42,7 @@ public abstract class ExportServiceContractTest {
         id: String,
         title: String = "Doc $id",
         body: String = "body of $id",
+        personaId: PersonaId? = null,
     ): Document =
         Document(
             id = id,
@@ -49,7 +51,7 @@ public abstract class ExportServiceContractTest {
             bodyMd = body,
             createdAt = 0L,
             updatedAt = 0L,
-            personaId = null,
+            personaId = personaId,
             frontmatter = JsonObject(emptyMap()),
             contentHash = null,
         )
@@ -115,12 +117,44 @@ public abstract class ExportServiceContractTest {
                 progressCalls,
             )
 
-            var entryCount = 0
-            ZipInputStream(out.toByteArray().inputStream()).use { zip ->
-                while (zip.nextEntry != null) entryCount++
-            }
-            assertEquals("expected one zip entry per document", docs.size, entryCount)
+            assertEquals("expected one .md entry per document", docs.size, markdownEntries(out).size)
         }
+
+    // ------------------------------------------------------------------
+    // bd skein-a0mm: `exportVaultZip(personaId = …)` writes one Space —
+    // exactly the documents whose persona is that id.
+    // ------------------------------------------------------------------
+
+    @Test
+    public fun exportVaultZip_with_a_persona_writes_only_that_spaces_documents(): Unit =
+        runTest {
+            val docs =
+                listOf(
+                    sampleDocument("a", personaId = "space-1"),
+                    sampleDocument("b", personaId = "space-2"),
+                    sampleDocument("c", personaId = null),
+                    sampleDocument("d", personaId = "space-1"),
+                )
+            val service = service(seed = docs)
+            val progressCalls = mutableListOf<Pair<Int, Int>>()
+
+            val out = ByteArrayOutputStream()
+            service.exportVaultZip(out, personaId = "space-1") { done, total -> progressCalls.add(done to total) }
+
+            assertEquals(setOf("Doc a.md", "Doc d.md"), markdownEntries(out).toSet())
+            assertEquals("progress counts the Space, not the vault", listOf(1 to 2, 2 to 2), progressCalls)
+        }
+
+    private fun markdownEntries(out: ByteArrayOutputStream): List<String> {
+        val names = mutableListOf<String>()
+        ZipInputStream(out.toByteArray().inputStream()).use { zip ->
+            while (true) {
+                val entry = zip.nextEntry ?: break
+                if (entry.name.endsWith(".md")) names += entry.name
+            }
+        }
+        return names
+    }
 
     // ------------------------------------------------------------------
     // Cancelling the collecting coroutine stops `exportVaultZip` promptly

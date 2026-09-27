@@ -193,7 +193,8 @@ class TestSkeinApplication : SkeinApplication() {
                 stagingDir = File(cacheDir, "staging_export"),
                 scope = scope,
             )
-        return VaultServices(keyProvider, unlockManager, bootstrap, ingest, vaultReset, exportStages)
+        val folderImport = VaultServices.wireFolderImport(contentResolver, unlockManager, bootstrap, scope)
+        return VaultServices(keyProvider, unlockManager, bootstrap, ingest, vaultReset, exportStages, folderImport)
     }
 
     /**

@@ -19,6 +19,7 @@ import app.skein.core.model.DocId
 import app.skein.core.model.Document
 import app.skein.core.model.ExportService
 import app.skein.core.model.FrontmatterKeys
+import app.skein.core.model.PersonaId
 import kotlinx.coroutines.currentCoroutineContext
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.ensureActive
@@ -82,11 +83,14 @@ public class FakeExportService(
 
     override suspend fun exportVaultZip(
         out: OutputStream,
+        personaId: PersonaId?,
         onProgress: (done: Int, total: Int) -> Unit,
     ) {
-        val total = documents.size
+        // No attachments in this fake, so a Space is just its documents.
+        val exported = if (personaId == null) documents.toList() else documents.filter { it.personaId == personaId }
+        val total = exported.size
         ZipOutputStream(out).use { zip ->
-            documents.forEachIndexed { index, document ->
+            exported.forEachIndexed { index, document ->
                 // Cooperative cancellation checkpoint, independent of
                 // `perDocEmitDelay` — a real implementation streaming
                 // thousands of documents must remain cancellable even with

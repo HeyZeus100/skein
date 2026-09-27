@@ -406,16 +406,27 @@ Before v2, write-once was a critical defense against GCM `(key, nonce)` reuse. v
 The ZIP archive contains:
 
 ```
-<title_0>.md                   # First document (notes/chats in title-sorted order)
+.skein/manifest.json           # Metadata manifest (first, so a streaming import reads it before the entries)
+<title_0>.md                   # Documents (notes, AI outputs, chats), id-sorted
 <title_1>.md
 ...
 attachments/<uuid_0>.<ext>     # Attachment blobs (id-sorted)
 attachments/<uuid_1>.<ext>
 ...
-.skein/manifest.json           # Metadata manifest
 ```
 
-Document filenames are derived from their `title` field, sanitized for safety, and de-duplicated with a `.1`, `.2` suffix if needed. Attachment filenames use the UUID and a file extension inferred from the MIME type (e.g. `.png`, `.pdf`).
+Document filenames are derived from their `title` field, sanitized for safety, and de-duplicated with a ` (2)`, ` (3)` suffix if needed. Attachment filenames use the UUID and a file extension inferred from the MIME type (e.g. `.png`, `.pdf`). Archives written before skein-a0mm put the manifest last.
+
+**Space export.** `exportVaultZip(personaId = …)` writes one Space in the same layout: the documents whose `persona_id` is that id, plus the attachments they cite through `source:` frontmatter (attachments have no persona). Documents with no persona belong to no Space; only the whole-vault export (`personaId = null`) writes them.
+
+### Import (`ImportService.importVaultZip`)
+
+**[shipped]** The inverse, streamed in one pass into a target Space:
+
+- Each top-level `.md` becomes a document of the manifest's `kind` and `title` (falling back to its frontmatter, then its first `# heading`, then its file name) under its frontmatter `id`, with the frontmatter kept verbatim. An id already in the vault is skipped, never overwritten or copied. Chats are skipped: the archive holds their rendered transcript, not their messages.
+- Each `attachments/<id>.<ext>` becomes an attachment under a **fresh** id, with the manifest's MIME type and title; notes from the same archive whose `source:` names it are rewritten to the new id. An attachment whose id is already in the vault, or which only skipped notes cite, is skipped.
+- The archive is untrusted: entry names are never used as paths, and a name with a `..` segment, a leading `/` or `\`, a drive prefix or a NUL is skipped. Other unexpected entries are skipped. Caps (`VaultZipLimits`): 50,000 entries, 256 MiB per entry, 2 GiB in total (skipped entries count), 10 MiB per `.md`, 32 MiB for the manifest. Exceeding an entry, entry-size or total cap, or a corrupt archive, stops the import early (`truncated`); an oversized `.md` or manifest is skipped.
+- The result reports `imported`, `skipped` and `truncated`.
 
 ### Manifest format
 
@@ -428,7 +439,8 @@ Document filenames are derived from their `title` field, sanitized for safety, a
     {
       "id": "018f2b6e-6c3a-7c3e-8f2a-6b1e2d3c4a5b",
       "kind": "note",
-      "path": "Example_Note.md"
+      "path": "Example Note.md",
+      "title": "Example Note"
     },
     ...
   ],
@@ -436,7 +448,8 @@ Document filenames are derived from their `title` field, sanitized for safety, a
     {
       "id": "018f2b6e-6c3a-7c3e-8f2a-6b1e2d3c4b5c",
       "path": "attachments/018f2b6e-6c3a-7c3e-8f2a-6b1e2d3c4b5c.png",
-      "mime": "image/png"
+      "mime": "image/png",
+      "title": "diagram.png"
     },
     ...
   ],
@@ -449,8 +462,8 @@ Document filenames are derived from their `title` field, sanitized for safety, a
 
 Fields:
 - `schemaVersion`: Current version is 1
-- `documents`: Array of exported documents with their IDs, kinds, and ZIP paths
-- `attachments`: Array of exported attachments with their IDs, paths, and MIME types
+- `documents`: Array of exported documents with their IDs, kinds, ZIP paths and titles (`title` added by skein-a0mm; the file name is a lossy, ASCII-only form of it)
+- `attachments`: Array of exported attachments with their IDs, paths, MIME types and titles (`title` added by skein-a0mm)
 - `personas`: Sorted list of distinct persona names used in the vault
 
 ### Entry timestamps

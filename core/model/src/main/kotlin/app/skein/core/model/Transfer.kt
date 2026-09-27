@@ -111,9 +111,20 @@ public interface ExportService {
         out: OutputStream,
     )
 
-    /** Whole vault: `<title>.md` per document, `attachments/<id>.<ext>` blobs, `.skein/manifest.json`. */
+    /**
+     * Whole vault: `.skein/manifest.json` (first, with each entry's id, kind and title), `<title>.md` per
+     * document, `attachments/<id>.<ext>` blobs.
+     *
+     * With a [personaId] only that Space is written: the documents whose
+     * `persona_id` is exactly [personaId] (a document with no persona
+     * belongs to no Space and is written only by the whole-vault export),
+     * plus the attachments those documents name in their
+     * [FrontmatterKeys.SOURCE] frontmatter, since attachments carry no
+     * persona of their own. `null` (the default) writes the whole vault.
+     */
     public suspend fun exportVaultZip(
         out: OutputStream,
+        personaId: PersonaId? = null,
         onProgress: (done: Int, total: Int) -> Unit = { _, _ -> },
     )
 
@@ -146,6 +157,29 @@ public data class ImportResult(
     val conflictWith: DocId? = null,
 )
 
+/**
+ * Outcome of [ImportService.importVaultZip].
+ *
+ * @property imported documents and attachments created.
+ * @property skipped entries not imported: an id already in the vault, an
+ *   unsafe or unexpected entry name, a document over the size cap, a chat
+ *   transcript, or an attachment only cited by notes that were skipped.
+ * @property truncated a safety cap (entry count, entry size, total size) or
+ *   a corrupt archive stopped the import early; what was imported before
+ *   that point stays.
+ */
+public data class VaultZipImportResult(
+    val imported: Int,
+    val skipped: Int,
+    val truncated: Boolean = false,
+)
+
+/**
+ * `personaId`, on every entry point, is the Space the created documents
+ * land in (`documents.persona_id`); `null` (the default) leaves them
+ * unassigned, which every Space's retrieval sees. Attachments never carry a
+ * persona; the note that cites one does.
+ */
 public interface ImportService {
     /**
      * Any `text/…` MIME type, `text/markdown`, or source code.
@@ -169,14 +203,14 @@ public interface ImportService {
         displayName: String,
         mimeType: String,
         input: InputStream,
-        personaId: PersonaId?,
+        personaId: PersonaId? = null,
     ): ImportResult
 
     /** Stores the PDF as an attachment and creates a NOTE with the extracted text and `source:` frontmatter. */
     public suspend fun importPdf(
         displayName: String,
         input: InputStream,
-        personaId: PersonaId?,
+        personaId: PersonaId? = null,
     ): ImportResult
 
     /** Stores the image as an attachment; if a VISION model is loaded, creates an AIOUT description linked with a CITE edge. */
@@ -186,4 +220,26 @@ public interface ImportService {
         input: InputStream,
         personaId: PersonaId?,
     ): ImportResult
+
+    /**
+     * The inverse of [ExportService.exportVaultZip]: each top-level
+     * `<title>.md` becomes a document of its kind and title (the manifest's,
+     * else its frontmatter's) under its frontmatter [FrontmatterKeys.ID], and
+     * each `attachments/<id>.<ext>` an attachment, in [personaId]'s Space.
+     *
+     * Never overwrites and never duplicates: an entry whose id already
+     * names a document is skipped and counted, so importing the same
+     * archive twice imports nothing the second time. Attachments get fresh
+     * ids, and the notes citing them are re-pointed. Chat transcripts are
+     * skipped (the archive holds their rendered text, not their messages).
+     * The archive is untrusted input: an entry name with a `..` segment, a
+     * leading `/` or `\`, or a drive prefix is skipped; nothing is written
+     * outside the vault; entry count and uncompressed size are capped
+     * ([VaultZipImportResult.truncated]). Reads [input] up to the end of the
+     * archive but does not close it; the caller owns it.
+     */
+    public suspend fun importVaultZip(
+        input: InputStream,
+        personaId: PersonaId? = null,
+    ): VaultZipImportResult
 }
