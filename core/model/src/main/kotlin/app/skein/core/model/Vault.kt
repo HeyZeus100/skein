@@ -490,6 +490,22 @@ public interface VaultRepository {
      */
     public suspend fun recordIngestFailure(docId: DocId): Int
 
+    /**
+     * Runs [block] as one write transaction: every write this repository
+     * makes inside it commits together, or — when [block] throws — none of
+     * them does.
+     *
+     * **Re-entrant** (skein-mzm5). Repository calls made inside [block],
+     * including a nested `transaction`, join the open transaction; they never
+     * wait on it and never deadlock. Reads inside [block] see its own
+     * uncommitted writes. Change events and after-commit work (file deletes,
+     * see [deleteDocument]) are published once, after the outermost commit,
+     * and never for rolled-back work.
+     *
+     * Only this repository's writes join. Do not write through an
+     * [IndexStore] inside [block]: on the device the index has its own
+     * connection, which waits behind the open transaction and can time out.
+     */
     public suspend fun <T> transaction(block: suspend () -> T): T
 }
 

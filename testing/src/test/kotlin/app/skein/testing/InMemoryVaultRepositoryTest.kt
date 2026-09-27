@@ -4,11 +4,21 @@
 
 package app.skein.testing
 
+import app.skein.core.model.IndexStore
 import app.skein.core.model.PersonaId
 import app.skein.core.model.VaultRepository
 
 public class InMemoryVaultRepositoryTest : VaultRepositoryContractTest() {
-    override fun repo(): VaultRepository = InMemoryVaultRepository()
+    private var lastIndex: InMemoryIndexStore? = null
+
+    /** A linked vault (LC-02): the repository and [index] share chunks and edges. */
+    override fun repo(): VaultRepository {
+        val index = InMemoryIndexStore()
+        lastIndex = index
+        return InMemoryVaultRepository(index = index)
+    }
+
+    override fun index(): IndexStore = checkNotNull(lastIndex) { "call repo() first" }
 
     /**
      * skein-ci54: `InMemoryVaultRepository` never tracked a `personas`

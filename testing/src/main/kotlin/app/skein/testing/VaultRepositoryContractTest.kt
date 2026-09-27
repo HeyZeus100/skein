@@ -19,7 +19,9 @@ import app.skein.core.model.Citation
 import app.skein.core.model.CitationRecord
 import app.skein.core.model.CitationSourceKind
 import app.skein.core.model.DocumentKind
+import app.skein.core.model.IndexStore
 import app.skein.core.model.Locator
+import app.skein.core.model.NewChunk
 import app.skein.core.model.NewDocument
 import app.skein.core.model.NewMessage
 import app.skein.core.model.PersonaId
@@ -71,6 +73,15 @@ public abstract class VaultRepositoryContractTest {
      * most recent [repo] call opened.
      */
     protected abstract fun seedPersona(id: PersonaId): Unit
+
+    /**
+     * The `IndexStore` of the vault the most recent [repo] call opened
+     * (LC-02): its chunks and edges are the ones that repository's deletes
+     * and renames act on. `InMemoryVaultRepositoryTest` links an
+     * `InMemoryIndexStore`; `VaultRepositoryImplContractTest` opens an
+     * `IndexStoreImpl` over the same database. Call [repo] first.
+     */
+    protected abstract fun index(): IndexStore
 
     // ------------------------------------------------------------------
     // AC: create→get round-trip preserves frontmatter `id`
@@ -742,6 +753,80 @@ public abstract class VaultRepositoryContractTest {
             assertNull(r.getDocument(note.id))
             assertNull(r.findByTitle("draft"))
             assertTrue(r.observeTimeline(TimelineFilter()).first().none { it.id == note.id })
+        }
+
+    // ------------------------------------------------------------------
+    // skein-mzm5 / LC-02: re-entrant transactions; the linked index
+    // ------------------------------------------------------------------
+
+    @Test
+    public fun transaction_nests_writes_without_deadlock(): Unit =
+        runTest {
+            val r = repo()
+            val doc =
+                r.transaction {
+                    val created = r.createDocument(NewDocument(kind = DocumentKind.NOTE, title = "n", bodyMd = "one"))
+                    assertNotNull("a read inside the transaction sees its own write", r.getDocument(created.id))
+                    r.transaction { r.updateBody(created.id, "n", "two") }
+                }
+            assertEquals("two", r.getDocument(doc.id)?.bodyMd)
+
+            var createdInFailedTx: String? = null
+            val failed =
+                runCatching {
+                    r.transaction {
+                        createdInFailedTx =
+                            r.createDocument(NewDocument(kind = DocumentKind.NOTE, title = "gone", bodyMd = "x")).id
+                        r.updateBody(doc.id, "n", "three")
+                        error("boom")
+                    }
+                }
+            assertTrue(failed.isFailure)
+            assertNull(
+                "a failed transaction leaves nothing it created",
+                r.getDocument(requireNotNull(createdInFailedTx)),
+            )
+            assertEquals("and undoes what it changed", "two", r.getDocument(doc.id)?.bodyMd)
+        }
+
+    @Test
+    public fun a_failed_transaction_rolls_back_every_delete_in_it(): Unit =
+        runTest {
+            val r = repo()
+            val a = r.createDocument(NewDocument(kind = DocumentKind.NOTE, title = "a", bodyMd = "a"))
+            val b = r.createAttachment("b.bin", "application/octet-stream") { it.write(byteArrayOf(1, 2, 3)) }
+
+            val failed =
+                runCatching {
+                    r.transaction {
+                        r.deleteDocument(a.id)
+                        r.deleteDocument(b.id)
+                        error("boom")
+                    }
+                }
+
+            assertTrue(failed.isFailure)
+            assertNotNull(r.getDocument(a.id))
+            assertNotNull(r.getDocument(b.id))
+            assertEquals(
+                "the blob outlives a rolled-back delete",
+                3,
+                r.openAttachment(b.id).use { it.readBytes() }.size,
+            )
+        }
+
+    @Test
+    public fun deleteDocument_removes_the_documents_chunks(): Unit =
+        runTest {
+            val r = repo()
+            val idx = index()
+            val note = r.createDocument(NewDocument(kind = DocumentKind.NOTE, title = "n", bodyMd = "zanzibarx"))
+            idx.replaceChunks(note.id, listOf(NewChunk(ord = 0, text = "zanzibarx walrus", tokenCount = 2)), "fake", 1)
+
+            r.deleteDocument(note.id)
+
+            assertTrue(idx.chunksForDocs(listOf(note.id), limitPerDoc = 10).isEmpty())
+            assertTrue("no lexical match survives the delete", idx.bm25("zanzibarx", k = 10).isEmpty())
         }
 
     private suspend fun assertThrowsNoSuchElement(block: suspend () -> Unit) {

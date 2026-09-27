@@ -3,11 +3,20 @@
 // `VaultRepositoryContractTest` on the JVM and every feature/RAG unit test
 // that needs a working vault without SQLCipher / native libraries.
 //
+// Transactions (skein-mzm5, OBJECT_LIFECYCLE_SPEC.md LC-02): one `Mutex`
+// serializes writes, and a coroutine-context marker ([FakeTx]) makes them
+// re-entrant exactly like `VaultRepositoryImpl`'s `TxContext` — a
+// `transaction { }` block's nested writes join it, change ticks and
+// after-commit actions go out once after the outermost write, and a failed
+// `transaction { }` restores a snapshot of every map.
+//
+// Linked vault (LC-02): pass an `InMemoryIndexStore` as `index` and the two
+// behave as one vault file — a delete cascades the document's chunks, as the
+// `chunks.doc_id` foreign key does on the device.
+//
 // Not modelled here (deliberately):
-//   • transactional isolation between concurrent writers — the fake uses one
-//     `Mutex` around every write so behavior is serialized rather than
-//     transactional in the DB sense; the SQL-backed `VaultRepositoryImpl`
-//     (`E2.I4`) provides real transactions.
+//   • isolation — reads never take the lock, so a reader can see a write
+//     that a later throw inside `transaction { }` undoes.
 //   • the DB-side ingest trigger — the fake enqueues on `createDocument`
 //     and `updateBody` explicitly, matching the observable effect of the
 //     `documents_ai_ingest` / `documents_au_ingest` triggers in
@@ -50,6 +59,7 @@ import kotlinx.coroutines.flow.merge
 import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
+import kotlinx.coroutines.withContext
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.JsonObject
 import kotlinx.serialization.json.JsonPrimitive
@@ -58,6 +68,9 @@ import java.io.InputStream
 import java.io.OutputStream
 import java.security.MessageDigest
 import java.util.UUID
+import kotlin.coroutines.AbstractCoroutineContextElement
+import kotlin.coroutines.CoroutineContext
+import kotlin.coroutines.coroutineContext
 
 /**
  * Coroutine-safe in-memory `VaultRepository`. See file header for what is
@@ -67,10 +80,15 @@ import java.util.UUID
  *   Tests inject a `FakeClock` to make timestamps deterministic.
  * @param attachments backing blob store — `InMemoryAttachmentStore()` is the
  *   default; a real vault would inject a SQLCipher-backed one.
+ * @param index the index of the same vault, or null for a repository with no
+ *   index behind it. When set, this repository's writes reach the index the
+ *   way they do through the shared database on the device (file header); an
+ *   index links to one repository only.
  */
 public class InMemoryVaultRepository(
     private val clock: () -> Long = System::currentTimeMillis,
     private val attachments: AttachmentStore = InMemoryAttachmentStore(),
+    private val index: InMemoryIndexStore? = null,
 ) : VaultRepository {
     private val writeLock: Mutex = Mutex()
 
@@ -92,12 +110,16 @@ public class InMemoryVaultRepository(
         MutableSharedFlow(replay = 0, extraBufferCapacity = 16)
     private val ready: MutableStateFlow<Unit> = MutableStateFlow(Unit)
 
+    init {
+        index?.link(this)
+    }
+
     // ------------------------------------------------------------------
     // Documents
     // ------------------------------------------------------------------
 
     override suspend fun createDocument(new: NewDocument): Document =
-        writeLock.withLock {
+        writeTx {
             val now = clock()
             val chosenId =
                 new.id
@@ -157,7 +179,7 @@ public class InMemoryVaultRepository(
         title: String,
         bodyMd: String,
     ): Document =
-        writeLock.withLock {
+        writeTx {
             val existing = requireDocument(id)
             val now = clock()
             val citable = existing.kind != DocumentKind.ATTACHMENT
@@ -192,7 +214,7 @@ public class InMemoryVaultRepository(
         id: DocId,
         frontmatter: JsonObject,
     ): Document =
-        writeLock.withLock {
+        writeTx {
             val existing = requireDocument(id)
             // Preserve the id key across a frontmatter rewrite (§4.2 note).
             val withId =
@@ -223,14 +245,18 @@ public class InMemoryVaultRepository(
         }
 
     override suspend fun deleteDocument(id: DocId) {
-        writeLock.withLock {
+        writeTx {
             documents.remove(id)
             // `document_revisions.document_id` is ON DELETE CASCADE (003).
             revisions.keys.removeAll { it.first == id }
             messagesByChat.remove(id)
             ingestQueue.remove(id)
             mimeTypes.remove(id)
-            attachments.delete(id)
+            // `chunks.doc_id` cascade on the linked index. Queued rather than
+            // applied here so a rolled-back `transaction { }` has nothing to
+            // undo on the index side.
+            index?.let { linked -> afterCommit { linked.cascadeDelete(id) } }
+            afterCommit { attachments.delete(id) }
             emitChange()
         }
     }
@@ -288,7 +314,7 @@ public class InMemoryVaultRepository(
         chatDocId: DocId,
         message: NewMessage,
     ): Message =
-        writeLock.withLock {
+        writeTx {
             val chat = requireDocument(chatDocId)
             require(chat.kind == DocumentKind.CHAT) { "not a chat document: $chatDocId (kind=${chat.kind})" }
             val now = clock()
@@ -366,7 +392,7 @@ public class InMemoryVaultRepository(
      * `cited` marker — see `CitationRecordJson.encode`'s own invariant).
      */
     override suspend fun sweepUnreferencedRevisions(): Int =
-        writeLock.withLock {
+        writeTx {
             val referenced: Set<Pair<DocId, RevisionHash>> =
                 messagesByChat.values
                     .asSequence()
@@ -441,7 +467,7 @@ public class InMemoryVaultRepository(
         val id = UUID.randomUUID().toString()
         val bytes = attachments.write(id, write)
         val digest = openAttachmentDigest(id)
-        return writeLock.withLock {
+        return writeTx {
             val now = clock()
             val frontmatter =
                 buildJsonObject {
@@ -486,11 +512,10 @@ public class InMemoryVaultRepository(
         docId: DocId,
         queuedAt: Long,
     ) {
-        writeLock.withLock {
-            val current = ingestQueue[docId] ?: return@withLock
+        writeTx {
             // Semantic (`E0.I11` AC): only remove the row when queued_at has
             // NOT advanced since [queuedAt].
-            if (current.queuedAt == queuedAt) {
+            if (ingestQueue[docId]?.queuedAt == queuedAt) {
                 ingestQueue.remove(docId)
                 emitChange()
             }
@@ -498,15 +523,19 @@ public class InMemoryVaultRepository(
     }
 
     override suspend fun recordIngestFailure(docId: DocId): Int =
-        writeLock.withLock {
-            val current = ingestQueue[docId] ?: return@withLock 0
-            val next = current.attempts + 1
-            ingestQueue[docId] = current.copy(attempts = next)
-            next
+        writeTx {
+            val current = ingestQueue[docId]
+            if (current == null) {
+                0
+            } else {
+                val next = current.attempts + 1
+                ingestQueue[docId] = current.copy(attempts = next)
+                next
+            }
         }
 
     override suspend fun enqueueReembedAll() {
-        writeLock.withLock {
+        writeTx {
             val now = clock()
             for (doc in documents.values) {
                 if (doc.kind != DocumentKind.ATTACHMENT) {
@@ -522,7 +551,14 @@ public class InMemoryVaultRepository(
     // Transactions
     // ------------------------------------------------------------------
 
-    override suspend fun <T> transaction(block: suspend () -> T): T = writeLock.withLock { block() }
+    /**
+     * Re-entrant, like `VaultRepositoryImpl` (skein-mzm5): repository calls
+     * made inside [block] join this transaction instead of waiting on
+     * [writeLock], and a throw restores every map to its state at the
+     * outermost `transaction` start (the fake's rollback). The change tick and
+     * after-commit actions run once, after [block] returns.
+     */
+    override suspend fun <T> transaction(block: suspend () -> T): T = writeTx(rollback = true, block = block)
 
     // ------------------------------------------------------------------
     // Test-only accessors (used by contract tests that need to peek at
@@ -541,9 +577,84 @@ public class InMemoryVaultRepository(
             ready,
         ).onStart { emit(Unit) }
 
-    private fun emitChange() {
-        changeBus.tryEmit(Unit)
-        ready.value = Unit
+    /** Marks the open write as changed; the tick itself goes out after its outermost commit ([writeTx]). */
+    private suspend fun emitChange() {
+        checkNotNull(coroutineContext[FakeTx]) { "emitChange outside writeTx" }.changed = true
+    }
+
+    /** Queues [action] to run after the outermost commit — `VaultRepositoryImpl`'s `TxContext.afterCommit`. */
+    private suspend fun afterCommit(action: suspend () -> Unit) {
+        checkNotNull(coroutineContext[FakeTx]) { "afterCommit outside writeTx" }.afterCommit += action
+    }
+
+    /**
+     * The fake's write transaction. A call nested in an open write (see
+     * [FakeTx]) runs [block] directly; the outermost call holds [writeLock]
+     * and, on success, runs the queued after-commit actions (failures
+     * swallowed, as on the real driver) and emits one change tick. With
+     * [rollback], a throw first restores the maps. Single write methods skip
+     * the snapshot: each validates before it mutates, so it is atomic already.
+     */
+    private suspend fun <T> writeTx(
+        rollback: Boolean = false,
+        block: suspend () -> T,
+    ): T {
+        if (coroutineContext[FakeTx] != null) return block()
+        return writeLock.withLock {
+            val tx = FakeTx()
+            val snapshot = if (rollback) snapshot() else null
+            val result =
+                try {
+                    withContext(tx) { block() }
+                } catch (t: Throwable) {
+                    snapshot?.let(::restore)
+                    throw t
+                }
+            for (action in tx.afterCommit) runCatching { action() }
+            if (tx.changed) {
+                changeBus.tryEmit(Unit)
+                ready.value = Unit
+            }
+            result
+        }
+    }
+
+    private fun snapshot(): Snapshot =
+        Snapshot(
+            documents = LinkedHashMap(documents),
+            messagesByChat = messagesByChat.mapValuesTo(LinkedHashMap()) { (_, v) -> v.toMutableList() },
+            ingestQueue = LinkedHashMap(ingestQueue),
+            mimeTypes = LinkedHashMap(mimeTypes),
+            revisions = LinkedHashMap(revisions),
+        )
+
+    private fun restore(snapshot: Snapshot) {
+        documents.clear()
+        documents.putAll(snapshot.documents)
+        messagesByChat.clear()
+        messagesByChat.putAll(snapshot.messagesByChat)
+        ingestQueue.clear()
+        ingestQueue.putAll(snapshot.ingestQueue)
+        mimeTypes.clear()
+        mimeTypes.putAll(snapshot.mimeTypes)
+        revisions.clear()
+        revisions.putAll(snapshot.revisions)
+    }
+
+    private class Snapshot(
+        val documents: Map<DocId, Document>,
+        val messagesByChat: Map<DocId, MutableList<Message>>,
+        val ingestQueue: Map<DocId, IngestItem>,
+        val mimeTypes: Map<DocId, String>,
+        val revisions: Map<Pair<DocId, RevisionHash>, DocumentRevision>,
+    )
+
+    /** Coroutine-context marker for an open [writeTx], like `VaultRepositoryImpl.TxContext`. */
+    private class FakeTx : AbstractCoroutineContextElement(Key) {
+        var changed: Boolean = false
+        val afterCommit: MutableList<suspend () -> Unit> = mutableListOf()
+
+        companion object Key : CoroutineContext.Key<FakeTx>
     }
 
     /** Mirrors `VaultRepositoryImpl.requireDocument`: a write to a missing id throws `NoSuchElementException` (spec §3.2). */

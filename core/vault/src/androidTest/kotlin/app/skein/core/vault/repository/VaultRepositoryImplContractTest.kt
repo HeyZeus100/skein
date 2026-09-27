@@ -28,6 +28,7 @@ package app.skein.core.vault.repository
 
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import app.skein.core.model.DocumentKind
+import app.skein.core.model.IndexStore
 import app.skein.core.model.NewDocument
 import app.skein.core.model.PersonaId
 import app.skein.core.model.TimelineFilter
@@ -35,6 +36,7 @@ import app.skein.core.model.VaultRepository
 import app.skein.core.vault.blob.InMemoryAttachmentStore
 import app.skein.core.vault.db.SkeinSQLiteConnection
 import app.skein.core.vault.db.SkeinSQLiteDriver
+import app.skein.core.vault.index.IndexStoreImpl
 import app.skein.core.vault.testutil.splitMigrationStatements
 import app.skein.testing.VaultRepositoryContractTest
 import kotlinx.coroutines.Dispatchers
@@ -99,6 +101,14 @@ public class VaultRepositoryImplContractTest : VaultRepositoryContractTest() {
         openImpls += impl
         return impl
     }
+
+    /**
+     * LC-02: an `IndexStoreImpl` over the connection the most recent [repo]
+     * call opened — one database, so the repository's deletes and renames act
+     * on the chunks and edges written here. Not closed separately: closing
+     * the repository closes the shared connection.
+     */
+    override fun index(): IndexStore = IndexStoreImpl(openConnections.last())
 
     /**
      * skein-ci54: `VaultRepository` has no persona CRUD (that is

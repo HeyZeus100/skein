@@ -71,6 +71,34 @@ public class InMemoryIndexStore : IndexStore {
 
     override fun observeChanges(): Flow<IndexChange> = changes.asSharedFlow()
 
+    /**
+     * The repository this index shares a vault with (LC-02), or null when the
+     * index stands alone. Set once, by `InMemoryVaultRepository`'s constructor.
+     */
+    @Volatile
+    private var vault: InMemoryVaultRepository? = null
+
+    internal fun link(vault: InMemoryVaultRepository) {
+        check(this.vault == null) { "an InMemoryIndexStore is linked to one repository only" }
+        this.vault = vault
+    }
+
+    /**
+     * The linked repository deleted [docId]: its chunks and their vectors go,
+     * as `chunks.doc_id ON DELETE CASCADE` plus the `chunks_ad` trigger do on
+     * the device. Publishes nothing — on the device the cascade runs on the
+     * repository's connection, which never reaches [observeChanges].
+     */
+    internal suspend fun cascadeDelete(docId: DocId) {
+        lock.withLock {
+            val doomed = chunks.values.filter { it.docId == docId }.map { it.id }
+            for (id in doomed) {
+                chunks.remove(id)
+                embeddings.remove(id)
+            }
+        }
+    }
+
     // ------------------------------------------------------------------
     // Chunks + embeddings
     // ------------------------------------------------------------------
