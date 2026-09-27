@@ -69,7 +69,7 @@ fun NavDrawer(
         modifier = modifier,
         drawerState = drawerState,
         drawerContent = {
-            ModalDrawerSheet {
+            ModalDrawerSheet(modifier = Modifier.testTag(ShellTestTags.NAV_DRAWER)) {
                 drawerEntries(tokens.glyphs).forEach { entry ->
                     NavigationDrawerItem(
                         label = { Text("${entry.glyph}  ${entry.label}") },

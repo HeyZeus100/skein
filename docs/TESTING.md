@@ -97,6 +97,38 @@ Run against an already-running device/emulator with:
 tools/test/run-emulator.sh   # checks `adb devices` first, then runs connectedDevDebugAndroidTest
 ```
 
+### Device test tags (L5, `UX_TEST_PLAN.md` §2.6, bead UT-14)
+
+`app/src/main/kotlin/app/skein/MainActivity.kt`'s `debugTestTagsModifier()`
+puts `Modifier.semantics { testTagsAsResourceId = true }` on the Compose
+root, gated on `BuildConfig.DEBUG` — never in a release build. With it set,
+every Compose `testTag` below the root shows up as an Android `resource-id`
+in `adb shell uiautomator dump`, which is how `tools/ux/fold-watch.sh`'s
+hardware-runner journeys (bead UT-15) find nodes on the owner's Fold.
+
+The stable tags a fold journey looks for already exist as `*TestTags`
+objects (or top-level `_TEST_TAG` constants, `:feature:chat`'s own
+convention) next to the composables they tag — this table just says where
+to find each one:
+
+| Node | Constant | Source |
+|---|---|---|
+| Chat composer (text field) | `COMPOSER_TEST_TAG` | `feature/chat/.../ChatBottomBar.kt` |
+| Send button | `SEND_BUTTON_TEST_TAG` | `feature/chat/.../ChatBottomBar.kt` |
+| Stop (cancel generation) button | `CANCEL_BUTTON_TEST_TAG` | `feature/chat/.../ChatBottomBar.kt` |
+| Chat destination root | `CHAT_SCREEN_TEST_TAG` | `feature/chat/.../ChatScreen.kt` |
+| Timeline destination root | `TimelineTestTags.ROOT` | `feature/timeline/.../TimelineTestTags.kt` |
+| Note tab root | `NoteTabTestTags.ROOT` | `feature/editor/.../NoteTab.kt` |
+| Note editor body (the markdown text field) | `SKEIN_EDITOR_TEST_TAG` | `feature/editor/.../SkeinEditor.kt` |
+| Hamburger nav drawer | `ShellTestTags.NAV_DRAWER` | `feature/shell/.../nav/NavDrawer.kt` |
+| Chat context sheet/pane | `CONTEXT_PANEL_TEST_TAG` | `feature/chat/.../ContextPanel.kt` |
+| Graph canvas | `GraphTestTags.CANVAS` | `feature/graph/.../GraphTestTags.kt` |
+| Whole shell root | `ShellTestTags.SKEIN_SHELL_ROOT` | `feature/shell/.../testing/ShellTestTags.kt` |
+
+"Destination root" above means whichever destination's own screen is
+current — there is no single generic tag for "the active destination"; the
+watcher picks the constant for whatever it just navigated to.
+
 ## The `:testing` and `:testing-fakes` modules
 
 `:testing` is a pure Kotlin/JVM library (`org.jetbrains.kotlin.jvm`, no

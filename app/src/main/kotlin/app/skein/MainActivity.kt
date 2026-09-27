@@ -41,6 +41,8 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.testTag
+import androidx.compose.ui.semantics.semantics
+import androidx.compose.ui.semantics.testTagsAsResourceId
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.core.content.ContextCompat
@@ -310,40 +312,46 @@ class MainActivity : FragmentActivity() {
             // icons), so both are re-applied here rather than only when
             // `themeMode`'s own value changes.
             LifecycleEventEffect(Lifecycle.Event.ON_RESUME) { applyEdgeToEdgeStyle(themeMode) }
-            VaultGate(
-                vault = vault,
-                themeMode = themeMode,
-                onUnlocked = {
-                    // "After the vault gate returns" (§6.6): re-apply
-                    // immediately on unlock, not only on the next ON_RESUME.
-                    applyEdgeToEdgeStyle(themeMode)
-                    lifecycleScope.launch { vault.bootstrap.bringUp() }
-                },
-                onProvisioned = { strongBoxBacked ->
-                    // skein-ank2: recorded for Settings › Security (skein-3el).
-                    lifecycleScope.launch { securityPrefs.setStrongBoxUnavailableFallback(!strongBoxBacked) }
-                },
-                unlockedContent = { session ->
-                    // E6.I18 (skein-fsn): wire IndexingNotifier to observe and post
-                    // progress notifications. Use in-memory permission check to skip
-                    // posting attempts when POST_NOTIFICATIONS is denied.
-                    LaunchedEffect(Unit) {
-                        val notifier =
-                            app.skein.notify.IndexingNotifier(
-                                applicationContext,
-                                vault.ingest.progress,
-                                hasPermission = {
-                                    ContextCompat.checkSelfPermission(
-                                        applicationContext,
-                                        android.Manifest.permission.POST_NOTIFICATIONS,
-                                    ) == PackageManager.PERMISSION_GRANTED
-                                },
-                            )
-                        lifecycleScope.launch { notifier.observeAndNotify() }
-                    }
-                    UnlockedShell(session, themeMode)
-                },
-            )
+            // skein-xtov.24.20 (UT-14, `UX_TEST_PLAN.md` §2.6): the Compose
+            // root, so `tools/ux/fold-watch.sh`'s `uiautomator dump` can find
+            // every tagged node below it by `resource-id` — debug builds
+            // only (see [debugTestTagsModifier]'s doc).
+            Box(modifier = debugTestTagsModifier()) {
+                VaultGate(
+                    vault = vault,
+                    themeMode = themeMode,
+                    onUnlocked = {
+                        // "After the vault gate returns" (§6.6): re-apply
+                        // immediately on unlock, not only on the next ON_RESUME.
+                        applyEdgeToEdgeStyle(themeMode)
+                        lifecycleScope.launch { vault.bootstrap.bringUp() }
+                    },
+                    onProvisioned = { strongBoxBacked ->
+                        // skein-ank2: recorded for Settings › Security (skein-3el).
+                        lifecycleScope.launch { securityPrefs.setStrongBoxUnavailableFallback(!strongBoxBacked) }
+                    },
+                    unlockedContent = { session ->
+                        // E6.I18 (skein-fsn): wire IndexingNotifier to observe and post
+                        // progress notifications. Use in-memory permission check to skip
+                        // posting attempts when POST_NOTIFICATIONS is denied.
+                        LaunchedEffect(Unit) {
+                            val notifier =
+                                app.skein.notify.IndexingNotifier(
+                                    applicationContext,
+                                    vault.ingest.progress,
+                                    hasPermission = {
+                                        ContextCompat.checkSelfPermission(
+                                            applicationContext,
+                                            android.Manifest.permission.POST_NOTIFICATIONS,
+                                        ) == PackageManager.PERMISSION_GRANTED
+                                    },
+                                )
+                            lifecycleScope.launch { notifier.observeAndNotify() }
+                        }
+                        UnlockedShell(session, themeMode)
+                    },
+                )
+            }
         }
     }
 
@@ -896,6 +904,19 @@ internal fun edgeToEdgeStyleFor(mode: SkeinThemeMode): SystemBarStyle =
         SkeinThemeMode.LIGHT -> SystemBarStyle.light(AndroidColor.TRANSPARENT, AndroidColor.TRANSPARENT)
         SkeinThemeMode.DARK -> SystemBarStyle.dark(AndroidColor.TRANSPARENT)
     }
+
+/**
+ * skein-xtov.24.20 (UT-14, `UX_TEST_PLAN.md` §2.6): exposes every Compose
+ * `testTag` below it as `resource-id` in `adb shell uiautomator dump`, which
+ * `tools/ux/fold-watch.sh`'s journeys need to find nodes on the owner's
+ * Fold — no module sets this today. Debug builds only: a release APK must
+ * not carry this (or any other) extra accessibility-tree metadata beyond
+ * what real users' assistive tech needs. [debug] defaults to
+ * [BuildConfig.DEBUG] but is a parameter so a test can exercise both
+ * branches directly rather than needing a second Gradle build type.
+ */
+internal fun debugTestTagsModifier(debug: Boolean = BuildConfig.DEBUG): Modifier =
+    if (debug) Modifier.semantics { testTagsAsResourceId = true } else Modifier
 
 /**
  * The Timeline destination over the open vault: `TimelineScreen` fed by the

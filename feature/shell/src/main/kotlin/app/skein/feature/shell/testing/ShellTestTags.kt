@@ -121,4 +121,11 @@ object ShellTestTags {
 
     /** Root of `app.skein.feature.shell.tabs.RecentDropdown` (the folded-phone tab strip). */
     const val RECENT_DROPDOWN = "recent_dropdown"
+
+    // skein-xtov.24.20 (UT-14): the hamburger drawer's own sheet, so the
+    // fold-watch device journeys (UX_TEST_PLAN.md §2.6) can find it as a
+    // whole, independent of which [navDrawerItem] entries it holds.
+
+    /** Root of `app.skein.feature.shell.nav.NavDrawer`'s `ModalDrawerSheet`. */
+    const val NAV_DRAWER = "nav_drawer"
 }
