@@ -1,6 +1,6 @@
 # Skein UX overhaul — handoff
 
-**Written:** 2026-09-26 evening, at `main` = `75342b2` (+ this commit) · **Epic:** `skein-xtov` · **Coordinator session:** UX workstream (a separate session owns inference; its handoff is `skein-v1-autonomous-completion.md` — don't edit it from here)
+**Written:** 2026-09-26 evening, at `main` = `902dd7c` (AL-07 merged; + this commit) · **Epic:** `skein-xtov` · **Coordinator session:** UX workstream (a separate session owns inference; its handoff is `skein-v1-autonomous-completion.md` — don't edit it from here)
 **Authority:** `docs/research/SKEIN_UI_UX_OVERHAUL_PROMPT.md` → `docs/ux/UX_MIGRATION_PLAN.md` (waves, gates, owner decisions §2.0) → the specs in `docs/ux/`.
 
 ---
