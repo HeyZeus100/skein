@@ -22,8 +22,11 @@ package app.skein.testing
 import app.skein.core.model.Persona
 import app.skein.core.model.PersonaService
 import kotlinx.coroutines.CompletableDeferred
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.cancelAndJoin
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.test.runTest
+import kotlinx.coroutines.withContext
 import kotlinx.coroutines.withTimeout
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertNotNull
@@ -103,23 +106,29 @@ public abstract class PersonaServiceContractTest {
     public fun observeAll_emits_after_create(): Unit =
         runTest {
             val s = service()
-            val sawCreated = CompletableDeferred<List<Persona>>()
-            val job =
-                launch {
-                    s.observeAll().collect { list ->
-                        if (list.any { it.name == "Assistant" } && !sawCreated.isCompleted) {
-                            sawCreated.complete(list)
+            // The SQL collector queries on real IO. Its deadline must use a
+            // real clock too, rather than runTest advancing virtual time while
+            // that query is still scheduled on another dispatcher.
+            withContext(Dispatchers.Default) {
+                val sawCreated = CompletableDeferred<List<Persona>>()
+                val job =
+                    launch {
+                        s.observeAll().collect { list ->
+                            if (list.any { it.name == "Assistant" } && !sawCreated.isCompleted) {
+                                sawCreated.complete(list)
+                            }
                         }
                     }
+                try {
+                    val created = s.create(name = "Assistant", systemPrompt = "be helpful", defaultModel = null)
+                    val observed = withTimeout(5_000L) { sawCreated.await() }
+                    assertTrue(
+                        "expected observeAll to emit a list containing the newly created persona",
+                        observed.any { it.id == created.id },
+                    )
+                } finally {
+                    job.cancelAndJoin()
                 }
-
-            val created = s.create(name = "Assistant", systemPrompt = "be helpful", defaultModel = null)
-
-            val observed = withTimeout(5_000L) { sawCreated.await() }
-            assertTrue(
-                "expected observeAll to emit a list containing the newly created persona",
-                observed.any { it.id == created.id },
-            )
-            job.cancel()
+            }
         }
 }
