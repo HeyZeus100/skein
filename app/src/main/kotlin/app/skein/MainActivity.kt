@@ -73,8 +73,6 @@ import app.skein.feature.shell.SkeinApp
 import app.skein.feature.shell.auth.BiometricUnlockScreen
 import app.skein.feature.shell.auth.VaultResetScreen
 import app.skein.feature.shell.auth.VaultSetupScreen
-import app.skein.feature.shell.host.SkeinShellHost
-import app.skein.feature.shell.host.navKindsOf
 import app.skein.feature.shell.host.rememberSkeinShellState
 import app.skein.feature.shell.layout.EdgeToEdgeSurface
 import app.skein.feature.shell.nav.Command
@@ -88,6 +86,7 @@ import app.skein.feature.shell.theme.SkeinThemeMode
 import app.skein.feature.timeline.TimelineRail
 import app.skein.feature.timeline.TimelineScreen
 import app.skein.feature.timeline.rememberTimelineState
+import app.skein.shell.NavShell
 import app.skein.system.AppearancePrefs
 import app.skein.system.SecurityPrefs
 import app.skein.vault.GatePhase
@@ -360,7 +359,7 @@ class MainActivity : FragmentActivity() {
                         }
                         if (navShell != null) {
                             SkeinTheme(mode = themeMode) {
-                                EdgeToEdgeSurface { m -> SkeinShellHost(navShell, navKindsOf(session.repository), m) }
+                                EdgeToEdgeSurface { m -> NavShell(session, navShell, m) }
                             }
                         } else {
                             UnlockedShell(session, themeMode)

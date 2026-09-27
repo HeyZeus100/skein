@@ -19,7 +19,6 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.saveable.rememberSaveableStateHolder
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.viewmodel.compose.viewModel
-import app.skein.core.model.DocumentKind
 import app.skein.core.model.VaultRepository
 import app.skein.core.navigation.Destination
 import app.skein.core.navigation.Navigator
@@ -113,19 +112,20 @@ private fun treeOf(value: Any?): Any? =
     }
 
 /**
- * B8's `kindsOf` until E2 builds it: one content-free `getDocument` per id.
- * ponytail: documents only; a message focus degrades to the latest answer, and
- * model details and a Space fall back to their roots, until B8/B9 answer them.
+ * B8's `kindsOf` until E2 builds it: one content-free `getDocument` per id, and
+ * [spaceIds] (the persona ids) read once for the current Space.
+ * ponytail: a message focus degrades to the latest answer and model details
+ * fall back to their root, until B8/B9 answer them.
  */
-fun navKindsOf(repository: VaultRepository): suspend (Set<SkeinId>) -> Map<SkeinId, ObjectKind> =
+fun navKindsOf(
+    repository: VaultRepository,
+    spaceIds: suspend () -> Collection<String> = { emptyList() },
+): suspend (Set<SkeinId>) -> Map<SkeinId, ObjectKind> =
     { ids ->
+        val spaces = spaceIds().toSet()
         ids
             .mapNotNull { id ->
-                when (repository.getDocument(id.value)?.kind) {
-                    null -> null
-                    DocumentKind.CHAT -> id to ObjectKind.CHAT
-                    DocumentKind.NOTE, DocumentKind.AIOUT -> id to ObjectKind.NOTE
-                    DocumentKind.ATTACHMENT -> id to ObjectKind.FILE
-                }
+                repository.getDocument(id.value)?.let { id to it.kind.objectKind }
+                    ?: id.takeIf { it.value in spaces }?.let { it to ObjectKind.SPACE }
             }.toMap()
     }

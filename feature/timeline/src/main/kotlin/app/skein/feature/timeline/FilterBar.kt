@@ -33,6 +33,7 @@ import app.skein.core.model.TimelineFilter
  */
 @Composable
 internal fun FilterBar(
+    kinds: Set<DocumentKind>,
     filter: TimelineFilter,
     personas: List<Persona>,
     tags: List<String>,
@@ -58,7 +59,7 @@ internal fun FilterBar(
                 onPersona = onPersona,
             )
         }
-        DocumentKind.entries.forEach { kind ->
+        DocumentKind.entries.filter { it in kinds }.forEach { kind ->
             FilterChip(
                 selected = kind in filter.kinds,
                 onClick = { onKind(kind) },

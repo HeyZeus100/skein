@@ -149,6 +149,26 @@ class TimelineStateTest {
         }
 
     @Test
+    fun `a list limited to some kinds never shows another, and all means its own kinds`() =
+        runTest {
+            val knowledge = setOf(DocumentKind.NOTE, DocumentKind.ATTACHMENT, DocumentKind.AIOUT)
+            val state = TimelineState(repo = newRepo(), scope = backgroundScope, kinds = knowledge)
+            assertEquals(knowledge, state.filter.kinds)
+
+            state.toggleKind(DocumentKind.CHAT)
+            assertEquals("a kind outside the list is ignored", knowledge, state.filter.kinds)
+
+            state.toggleKind(DocumentKind.NOTE)
+            state.toggleKind(DocumentKind.ATTACHMENT)
+            state.toggleKind(DocumentKind.AIOUT)
+            assertEquals("the last one off resets to the list's kinds", knowledge, state.filter.kinds)
+
+            state.toggleKind(DocumentKind.NOTE)
+            state.clearFilters()
+            assertEquals(state.unfiltered, state.filter)
+        }
+
+    @Test
     fun `setting a filter to its current value does not re-subscribe`() =
         runTest {
             val recorder = RecordingRepository(newRepo())

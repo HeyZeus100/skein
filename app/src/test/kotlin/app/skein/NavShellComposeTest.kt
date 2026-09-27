@@ -13,6 +13,7 @@ import androidx.test.core.app.ActivityScenario
 import androidx.test.core.app.ApplicationProvider
 import app.skein.core.vault.key.UnlockResult
 import app.skein.core.vault.session.LockReason
+import app.skein.feature.chat.entries.ChatEntryTestTags
 import app.skein.feature.shell.host.SkeinShellHostTestTags
 import app.skein.feature.shell.testing.ShellTestTags
 import kotlinx.coroutines.runBlocking
@@ -54,6 +55,8 @@ class NavShellComposeTest {
         ActivityScenario.launch<MainActivity>(intent).use {
             awaitTag(SkeinShellHostTestTags.NAV_DISPLAY)
             composeRule.onNodeWithTag(ShellTestTags.SKEIN_SHELL_ROOT).assertDoesNotExist()
+            // skein-xtov.24.8: NavShell's real entries; a drawer window's Chat root is the landing.
+            awaitTag(ChatEntryTestTags.LANDING)
 
             val succeed = app.keyProvider.nextUnlock
             app.keyProvider.nextUnlock = { UnlockResult.UserCancelled }

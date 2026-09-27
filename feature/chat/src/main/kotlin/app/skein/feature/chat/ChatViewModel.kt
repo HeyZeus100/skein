@@ -44,6 +44,25 @@ public data class ChatMessageUi(
     val createdAt: Long,
 )
 
+/**
+ * 📎 attach's import (also the landing's): routes by MIME type to the right
+ * [ImportService] entry point and returns the `[[title]]` to insert.
+ */
+internal suspend fun importAttachment(
+    service: ImportService,
+    displayName: String,
+    mimeType: String,
+    input: InputStream,
+    personaId: PersonaId?,
+): String {
+    when {
+        mimeType == "application/pdf" -> service.importPdf(displayName, input, personaId)
+        mimeType.startsWith("image/") -> service.importImage(displayName, mimeType, input, personaId)
+        else -> service.importText(displayName, mimeType, input, personaId)
+    }
+    return "[[$displayName]]"
+}
+
 /** Error banner state (spec §8.4: `ServiceDied` -> "model process restarted, retry"). */
 private const val CHAT_VM_TAG = "ChatViewModel"
 
@@ -287,15 +306,7 @@ public class ChatViewModel(
         displayName: String,
         mimeType: String,
         input: InputStream,
-    ): String? {
-        val service = importService ?: return null
-        when {
-            mimeType == "application/pdf" -> service.importPdf(displayName, input, currentPersonaId())
-            mimeType.startsWith("image/") -> service.importImage(displayName, mimeType, input, currentPersonaId())
-            else -> service.importText(displayName, mimeType, input, currentPersonaId())
-        }
-        return "[[$displayName]]"
-    }
+    ): String? = importService?.let { importAttachment(it, displayName, mimeType, input, currentPersonaId()) }
 
     private fun elapsedMs(startedAtNanos: Long): Long = (System.nanoTime() - startedAtNanos) / NANOS_PER_MILLI
 

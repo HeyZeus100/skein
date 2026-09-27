@@ -68,6 +68,8 @@ import kotlinx.coroutines.flow.update
  * @param availableTags initial tag chip candidates beyond what the loaded
  *   entries declare.
  * @param pageSize the `limit` step; the default matches the plan's 50.
+ * @param kinds every kind this list can show, and so every kind chip: the
+ *   Knowledge list leaves chats out (skein-xtov.24.8). "All kinds" means these.
  */
 public class TimelineState(
     private val repo: VaultRepository,
@@ -76,10 +78,15 @@ public class TimelineState(
     personaSource: Flow<List<Persona>> = flowOf(emptyList()),
     availableTags: Set<String> = emptySet(),
     private val pageSize: Int = DEFAULT_PAGE_SIZE,
+    public val kinds: Set<DocumentKind> = DocumentKind.entries.toSet(),
 ) {
     init {
         require(pageSize > 0) { "pageSize must be positive" }
+        require(kinds.isNotEmpty()) { "kinds must not be empty" }
     }
+
+    /** The unfiltered view: every one of [kinds]. */
+    public val unfiltered: TimelineFilter = TimelineFilter(kinds = kinds)
 
     /** The exact `(filter, limit)` pair currently handed to `observeTimeline`. */
     public data class Window(
@@ -87,7 +94,7 @@ public class TimelineState(
         val limit: Int,
     )
 
-    private val windowState = MutableStateFlow(Window(filter = initial, limit = pageSize))
+    private val windowState = MutableStateFlow(Window(initial.copy(kinds = within(initial.kinds)), pageSize))
 
     /** Observable window — the screen reads `filter` off it for chip selection state. */
     public val window: StateFlow<Window> = windowState.asStateFlow()
@@ -154,13 +161,13 @@ public class TimelineState(
     public fun toggleKind(kind: DocumentKind) {
         updateFilter { current ->
             val next = if (kind in current.kinds) current.kinds - kind else current.kinds + kind
-            current.copy(kinds = next.ifEmpty { DocumentKind.entries.toSet() })
+            current.copy(kinds = within(next))
         }
     }
 
     /** Reset every filter axis (the empty state's "Clear filters" action). */
     public fun clearFilters() {
-        updateFilter { TimelineFilter() }
+        updateFilter { unfiltered }
     }
 
     /** Widen the window by one page if the current page came back full; otherwise a no-op. */
@@ -179,6 +186,9 @@ public class TimelineState(
             if (next == w.filter) w else Window(filter = next, limit = pageSize)
         }
     }
+
+    /** [selected] cut to [kinds]; none left means all of them. */
+    private fun within(selected: Set<DocumentKind>): Set<DocumentKind> = (selected intersect kinds).ifEmpty { kinds }
 
     private fun normalizeTag(tag: String?): String? = tag?.trim()?.removePrefix("#")?.takeIf { it.isNotEmpty() }
 

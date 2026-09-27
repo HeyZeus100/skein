@@ -43,6 +43,7 @@ import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.unit.dp
 import app.skein.core.model.Document
+import app.skein.core.model.DocumentKind
 import app.skein.core.model.Persona
 import app.skein.core.model.TimelineFilter
 import app.skein.core.model.VaultRepository
@@ -101,6 +102,7 @@ public fun TimelineScreen(
                 HeaderActions(onNewNote = onNewNote, onNewChat = onNewChat)
             }
             FilterBar(
+                kinds = state.kinds,
                 filter = window.filter,
                 personas = personas,
                 tags = tags,
@@ -110,7 +112,7 @@ public fun TimelineScreen(
             )
             if (entries.isEmpty()) {
                 EmptyState(
-                    filtered = window.filter != TimelineFilter(),
+                    filtered = window.filter != state.unfiltered,
                     onClearFilters = state::clearFilters,
                     modifier = Modifier.weight(1f),
                 )
@@ -149,10 +151,11 @@ public fun rememberTimelineState(
     repo: VaultRepository,
     personaSource: Flow<List<Persona>> = flowOf(emptyList()),
     initial: TimelineFilter = TimelineFilter(),
+    kinds: Set<DocumentKind> = DocumentKind.entries.toSet(),
 ): TimelineState {
     val scope = rememberCoroutineScope()
     return remember(repo, personaSource) {
-        TimelineState(repo = repo, scope = scope, initial = initial, personaSource = personaSource)
+        TimelineState(repo = repo, scope = scope, initial = initial, personaSource = personaSource, kinds = kinds)
     }
 }
 

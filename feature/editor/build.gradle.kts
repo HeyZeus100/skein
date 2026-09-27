@@ -95,6 +95,10 @@ dependencies {
     // RawTextFieldTest requires every text-input Composable to go
     // through one of :feature:shell's two allowlisted wrappers.
     implementation(project(":feature:shell"))
+    // skein-xtov.24.8 (AL-09a): the Knowledge destination's list is the
+    // timeline's list with chats left out (`entries/KnowledgeEntries.kt`).
+    // `:feature:timeline` depends only on `:core:model`, so no cycle.
+    implementation(project(":feature:timeline"))
     // bd `skein-fay`: the "Save as..." menu launches `ACTION_CREATE_DOCUMENT`
     // via `rememberLauncherForActivityResult` from `NoteTab`'s main-source
     // composable (not just a debug preview), so this is a real

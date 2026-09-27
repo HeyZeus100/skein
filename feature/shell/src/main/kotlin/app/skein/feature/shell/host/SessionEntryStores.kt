@@ -80,6 +80,9 @@ class SessionEntryStores(
         generation++
     }
 
+    /** How many [addPendingWriter] registrations are live. */
+    val pendingWriterCount: Int get() = writers.size
+
     /** Work that must reach the vault before it closes (a draft, an editor's autosave); drained at LOCKING. */
     fun addPendingWriter(flush: suspend () -> Unit): DisposableHandle {
         writers += flush

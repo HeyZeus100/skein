@@ -15,6 +15,7 @@ import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
@@ -44,6 +45,11 @@ public const val ENGINE_ERROR_BANNER_TEXT: String = "Couldn't finish the answer.
  * @param currentPersonaId read by 📎 attach's [ImportService] calls; `null`
  *   defers to whatever persona `sendPipeline` was wired with.
  * @param onSlashCommand see [ChatBottomBar]'s doc — the command-palette seam.
+ * @param topBar replaces the built-in "Chat · Sources" header (and with it the
+ *   inline context panel): the NavDisplay shell's entry draws its own bar and
+ *   opens the inspector as an entry (skein-xtov.24.8).
+ * @param initialMessage sent once, when this screen's state is first created:
+ *   the landing's first message, handed over when its chat was just created.
  */
 @Composable
 public fun ChatScreen(
@@ -63,6 +69,8 @@ public fun ChatScreen(
         }
     },
     onSlashCommand: () -> Unit = {},
+    topBar: (@Composable () -> Unit)? = null,
+    initialMessage: String? = null,
 ) {
     val scope = rememberCoroutineScope()
     val viewModel =
@@ -78,19 +86,28 @@ public fun ChatScreen(
             )
         }
 
+    LaunchedEffect(viewModel) { initialMessage?.let(viewModel::send) }
+
     Column(modifier = modifier.fillMaxSize().testTag(CHAT_SCREEN_TEST_TAG)) {
-        Row(
-            modifier = Modifier.fillMaxWidth().padding(8.dp),
-            horizontalArrangement = Arrangement.SpaceBetween,
-            verticalAlignment = Alignment.CenterVertically,
-        ) {
-            Text(text = "Chat", style = MaterialTheme.typography.titleMedium)
-            TextButton(onClick = viewModel::toggleContextPanel, modifier = Modifier.testTag(CONTEXT_TOGGLE_TEST_TAG)) {
-                Text("${LocalSkeinTokens.current.glyphs.context} Sources")
+        if (topBar != null) {
+            topBar()
+        } else {
+            Row(
+                modifier = Modifier.fillMaxWidth().padding(8.dp),
+                horizontalArrangement = Arrangement.SpaceBetween,
+                verticalAlignment = Alignment.CenterVertically,
+            ) {
+                Text(text = "Chat", style = MaterialTheme.typography.titleMedium)
+                TextButton(
+                    onClick = viewModel::toggleContextPanel,
+                    modifier = Modifier.testTag(CONTEXT_TOGGLE_TEST_TAG),
+                ) {
+                    Text("${LocalSkeinTokens.current.glyphs.context} Sources")
+                }
             }
         }
 
-        if (viewModel.contextPanelOpen) {
+        if (topBar == null && viewModel.contextPanelOpen) {
             ContextPanel(
                 items = viewModel.contextItems,
                 tabController = tabController,

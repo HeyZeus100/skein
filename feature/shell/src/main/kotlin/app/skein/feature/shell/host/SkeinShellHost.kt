@@ -251,12 +251,12 @@ private fun crossFade(): ContentTransform = fadeIn(tween(FADE_MILLIS)) togetherW
 private const val FADE_MILLIS = 150
 
 /**
- * AL-08's stand-in entry until AL-09a/b re-host the real screens: the
+ * AL-08's stand-in entry for a destination not re-hosted yet (AL-09b's): the
  * destination and the pane, never an id or a title (M5, M13). The Chat root
  * follows §8.2: the landing in a drawer window, the Conversations list with a rail.
  */
 @Composable
-private fun PlaceholderEntry(key: SkeinKey?) {
+fun PlaceholderEntry(key: SkeinKey?) {
     val label =
         when {
             key == null -> "Nothing selected"

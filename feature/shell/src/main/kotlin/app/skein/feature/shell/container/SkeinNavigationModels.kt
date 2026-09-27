@@ -30,8 +30,10 @@ data class ChatHistoryItem(
     /** The open chat (IA §3.3): painted `secondaryContainer`, exposes `selected = true`. */
     val isSelected: Boolean = false,
     val onOpen: () -> Unit,
-    val onRename: () -> Unit,
-    val onDelete: () -> Unit,
+    /** Null hides the row's Rename… action (the dialogs are `OBJECT_LIFECYCLE_SPEC.md` LC-22's). */
+    val onRename: (() -> Unit)? = null,
+    /** Null hides the row's Delete… action (LC-22). */
+    val onDelete: (() -> Unit)? = null,
 )
 
 /**

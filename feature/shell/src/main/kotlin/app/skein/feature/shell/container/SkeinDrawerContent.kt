@@ -113,18 +113,25 @@ fun SkeinDrawerContent(
     }
 }
 
+/** One chat-history row (`CHAT_UX_SPEC.md` §12.3), shared by the drawer and Chat's Conversations pane. */
 @Composable
-private fun ChatHistoryRow(item: ChatHistoryItem) {
+fun ChatHistoryRow(
+    item: ChatHistoryItem,
+    modifier: Modifier = Modifier,
+) {
     SkeinListRow(
         title = item.title,
         onClick = item.onOpen,
+        modifier = modifier,
         supportingText = item.preview,
         trailingMeta = if (item.isAnswering) "Answering…" else item.timeLabel,
         selected = item.isSelected,
         menuActions =
-            listOf(
-                SkeinAction(label = "Rename…", icon = SkeinIcons.Rename, onClick = item.onRename),
-                SkeinAction(label = "Delete…", icon = SkeinIcons.Delete, destructive = true, onClick = item.onDelete),
+            listOfNotNull(
+                item.onRename?.let { SkeinAction(label = "Rename…", icon = SkeinIcons.Rename, onClick = it) },
+                item.onDelete?.let {
+                    SkeinAction(label = "Delete…", icon = SkeinIcons.Delete, destructive = true, onClick = it)
+                },
             ),
     )
 }

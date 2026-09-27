@@ -110,6 +110,9 @@ dependencies {
     // `InMemoryVaultRepository`/`InMemoryPersonaService`/`SkeinLogCapture`/
     // `RecordingTabController`/`Builders` — the bead's named fakes.
     testImplementation(project(":testing"))
+    // skein-xtov.24.8 (AL-09a): the entry tests host the real `SkeinShellHost`,
+    // whose session stores register with an `UnlockManager`.
+    testImplementation(project(":core:vault"))
     testImplementation(libs.robolectric)
     // skein-xtov.9: Roborazzi screenshot tests (screenshots/ test package).
     testImplementation(libs.roborazzi)

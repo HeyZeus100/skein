@@ -109,6 +109,8 @@ import java.time.Duration
  *   in the lock sequence's `LOW` tier, while the vault is still open
  *   ([FlushBeforeLock]). Pending edits are also flushed when this tab leaves
  *   composition and when the Activity stops, with or without it.
+ * @param navigationIcon the header's leading ☰/←/✕ when the note is a
+ *   NavDisplay entry (skein-xtov.24.8); none as a tab.
  */
 @Composable
 public fun NoteTab(
@@ -124,6 +126,7 @@ public fun NoteTab(
     markdownStyle: MarkdownStyle = rememberSkeinMarkdownStyle(),
     unlockState: StateFlow<UnlockState>? = null,
     unlockManager: UnlockManager? = null,
+    navigationIcon: (@Composable () -> Unit)? = null,
 ) {
     val scope = rememberCoroutineScope()
     val state =
@@ -210,6 +213,7 @@ public fun NoteTab(
         modifier = modifier.fillMaxSize().testTag(NoteTabTestTags.ROOT),
     ) {
         NoteTabHeader(
+            navigationIcon = navigationIcon,
             title = state.title,
             onTitleChange = state::onTitleChange,
             onOpenGraph = { onOpenGraph(docId) },
@@ -299,6 +303,7 @@ internal const val SAVE_AS_FAILED_MESSAGE: String = "Couldn't save the file. Try
 
 @Composable
 private fun NoteTabHeader(
+    navigationIcon: (@Composable () -> Unit)?,
     title: String,
     onTitleChange: (String) -> Unit,
     onOpenGraph: () -> Unit,
@@ -313,6 +318,7 @@ private fun NoteTabHeader(
             modifier = Modifier.fillMaxWidth().padding(horizontal = 8.dp, vertical = 4.dp),
             verticalAlignment = Alignment.CenterVertically,
         ) {
+            navigationIcon?.invoke()
             SecureTextField(
                 value = title,
                 onValueChange = onTitleChange,
