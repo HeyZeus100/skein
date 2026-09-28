@@ -26,6 +26,7 @@ import app.skein.core.designsystem.components.SkeinContextChip
 import app.skein.core.designsystem.components.SkeinNotice
 import app.skein.core.designsystem.icons.SkeinIcons
 import app.skein.core.designsystem.theme.SkeinSpacing
+import app.skein.core.model.ChatDraftKey
 import app.skein.core.model.DocId
 import app.skein.core.model.DocumentKind
 import app.skein.core.model.ImportService
@@ -45,8 +46,11 @@ import app.skein.core.navigation.TransientKind
 import app.skein.core.navigation.contentKey
 import app.skein.feature.chat.ChatKnowledge
 import app.skein.feature.chat.ChatScreen
+import app.skein.feature.chat.ChatTurnController
 import app.skein.feature.chat.ContextPanel
 import app.skein.feature.chat.SendPipeline
+import app.skein.feature.chat.drafts.SessionDraftStore
+import app.skein.feature.chat.drafts.rememberDraftComposerState
 import app.skein.feature.editor.autocomplete.Suggestion
 import app.skein.feature.editor.entries.KnowledgeEntryDeps
 import app.skein.feature.editor.entries.SourceEntry
@@ -89,6 +93,9 @@ class ChatEntryDeps(
     val handoff: ChatHandoff,
     val importService: ImportService? = null,
     val history: List<ChatHistoryItem> = emptyList(),
+    val turns: ChatTurnController? = null,
+    val drafts: SessionDraftStore? = null,
+    val defaultSpaceId: String? = null,
 )
 
 /**
@@ -192,7 +199,8 @@ private fun ChatRoute(
                 }
             }
         }
-    val first = remember(rawId) { deps.handoff.take(rawId) }
+    val first = remember(rawId) { if (deps.turns == null) deps.handoff.take(rawId) else null }
+    val composer = deps.drafts?.let { rememberDraftComposerState(it, ChatDraftKey.Existing(rawId)) }
     val onePane = LocalSkeinWindowLayout.current.maxPanes == 1
     val phone = LocalSkeinWindowLayout.current.navMode() == NavMode.PHONE
     ChatScreen(
@@ -203,6 +211,8 @@ private fun ChatRoute(
         wikilinkSuggest = { query -> repository.searchTitles(query).map { Suggestion(it.title) } },
         importService = deps.importService,
         initialMessage = first,
+        turnController = deps.turns,
+        composerState = composer,
         contextChip = {
             if (chatId != null) {
                 val label = if (ChatKnowledge.enabled(document.document)) "Knowledge on" else "Knowledge off"
@@ -275,7 +285,12 @@ private fun ChatInspector(
             ?.lastOutcome
             ?.collectAsState()
             ?.value
-    val outcome = lastOutcome?.takeIf { it.chatDocId == key.chatId.value }
+    val turn =
+        deps.turns
+            ?.state(key.chatId.value)
+            ?.collectAsState()
+            ?.value
+    val outcome = turn?.outcome ?: lastOutcome?.takeIf { deps.turns == null && it.chatDocId == key.chatId.value }
     // Only passages that survived the prompt budget were supplied to the model.
     val items =
         outcome

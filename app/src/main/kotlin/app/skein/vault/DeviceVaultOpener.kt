@@ -69,6 +69,7 @@ class DeviceVaultOpener(
     // Defaulted so every pre-existing call site (every test fixture in this
     // source set, none of which builds a [ModelServices]) keeps compiling.
     private val sessionEpoch: () -> Long = { 0L },
+    private val isLocking: () -> Boolean = { false },
 ) {
     /**
      * A [VaultLifecycle] — and therefore a `ConnectionPool` — for ONE
@@ -132,6 +133,7 @@ class DeviceVaultOpener(
                             // header names this exact SharedPreferences file.
                             prefs = it.getSharedPreferences("ui_prefs", Context.MODE_PRIVATE),
                             sessionEpoch = sessionEpoch,
+                            isLocking = isLocking,
                             vaultRepository = repository,
                             indexStore = indexStore,
                             personaProvider = { personaService.default() },

@@ -388,9 +388,10 @@ text; §7 lists exactly which plan items it amends.
 
 A lock transition has three sub-phases, corresponding to the `SessionPhase`
 states in §5: `UNLOCKED → LOCKING → LOCKED`. `LOCKING` is a bounded-time
-window (target budget: **2000 ms**) in which pending work is asked to stop
-and the one authorized write (a pending editor save, §4.3) is allowed to
-complete; `LOCKED` is the state in which the key is gone and no
+window in which HIGH and LOW observers share **500 ms** in total; TEARDOWN
+has a separate **500 ms** bound. Pending editor saves, one batched encrypted
+draft flush, and the frozen partial answer may complete in LOW before
+repository quiescence; `LOCKED` is the state in which the key is gone and no
 plaintext-capable code may run, full stop.
 
 ### 4.1 Stop new work in both isolated processes
@@ -487,7 +488,7 @@ different and acceptable thing).
 
 Concretely:
 
-1. `LockObserver.onLocking(epoch, budgetMillis = 2000)` is delivered to
+1. `LockObserver.onLocking(epoch, budgetMillis = 500)` is delivered to
    `EditorViewModel` (or whichever view model owns unsaved editor state)
    before the vault connection closes.
 2. The view model synchronously (off the main thread, but blocking its own
@@ -495,7 +496,7 @@ Concretely:
    this design does not add a new write path, it changes *when* autosave's
    existing debounce is force-flushed. If autosave already ran within the
    last debounce interval, this is a no-op (nothing pending).
-3. The write is given a hard deadline of `budgetMillis` (default 2000 ms,
+3. The write is given a hard deadline of `budgetMillis` (default 500 ms,
    configurable per §5 constant, generous relative to "single row UPDATE on
    SQLCipher" but bounded so a stalled write cannot indefinitely block
    lock). `withTimeoutOrNull(budgetMillis) { flush() }`.
@@ -526,9 +527,14 @@ a plan amendment against `E3.I3` and `E7.*` (editor).
 Ordering matters here and is now specified explicitly (the plan's `E3.I3`
 text lists the actions but not their order):
 
-1. Editor flush completes or times out (§4.3) — this is the last operation
-   permitted to use the live key.
-2. `VaultManager.close()` — the SQLCipher/`BundledSQLiteDriver` connection
+1. HIGH synchronously freezes chat publication and schedules engine cancel.
+   LOW completes or times out editor flush (§4.3), encrypted draft flush,
+   and the same once-only partial-answer commit used by Stop. The answer
+   waits for engine completion/readiness at most 150 ms within the remaining
+   shared HIGH/LOW deadline, without holding a writer lock. No late token
+   can change that snapshot, and a blank snapshot creates no assistant row.
+2. TEARDOWN stops repository write admission and performs bounded quiescence
+   before connection release. `VaultManager.close()` — the SQLCipher/`BundledSQLiteDriver` connection
    is closed. Before close, ensure `PRAGMA cipher_memory_security = ON` is
    set for the connection's lifetime (SQLCipher's own documented option to
    zero internal key-schedule and page-buffer memory on deallocation,
@@ -565,7 +571,7 @@ requires; each row names a specific field/scope and the action taken on
 | `UnlockManager.masterKey: ByteArray?` | Zero-fill, then null (§4.4.3) |
 | `VaultManager`'s `SQLiteConnection` | `close()` (§4.4.2) |
 | `EditorViewModel.pendingBody: MutableStateFlow<String>` | Flushed or recovery-drafted (§4.3), then cleared to empty/idle state |
-| `ChatViewModel`'s in-flight partial assistant output buffer | Discarded (not user-authored; only fully-persisted turns matter — see §4.2's cancellation of the underlying `generate` call) |
+| Session `ChatTurnController` partial assistant output | Frozen at `Locking`; persisted once through Stop's transaction within LOW's remaining deadline, with the interrupted marker and only visible citations. Blank, pending-delete, failed or timed-out output is dropped. All old flows and UI observers are cleared synchronously at session close/`onLocked`; durable unanswered USER rows offer retry without retaining private retry text. |
 | `RetrievalCache` (recent citation excerpts kept for UI snappiness) | `clear()` |
 | `IngestScheduler`'s in-memory queue/progress state (`IngestProgress` `StateFlow`) | Reset to `Idle`; WorkManager work cancelled (§4.2) |
 | `VaultScope` (the `SupervisorJob`+`Dispatchers.IO` scope every vault-touching coroutine is launched in) | `cancel()`; a fresh scope is created on next unlock rather than reusing a cancelled one |
@@ -632,7 +638,7 @@ interface SessionState {
      * then transitions to LOCKED regardless (hard backstop, §4.2).
      * Idempotent: calling lock() while already LOCKING/LOCKED is a no-op.
      */
-    fun lock(reason: LockReason, budgetMillis: Long = 2000)
+    fun lock(reason: LockReason, budgetMillis: Long = 500)
 
     /** E3.I3's existing idle-timer touch(); unchanged. */
     fun touch()
@@ -772,12 +778,21 @@ maliciously or accidentally re-bound service after a lock does not.
 
 ### 5.4 Lock transition sequence
 
+The app session owns HIGH/LOW chat observers even while its Activity is stopped.
+HIGH freezes per-chat output; LOW runs draft and partial-answer saves before
+TEARDOWN quiesces the repository, unloads the engine and releases connections.
+The controller never extends idle lock or any observer deadline. Queue entries
+have already committed USER rows; old-epoch jobs cannot dispatch after lock.
+`afterTransactionCommit` records memory-only send/finalizer acknowledgments
+synchronously after the outer commit, before cancellation can interrupt return.
+
+
 ```
 :app (SessionState)              :inference                :embedder
       |                               |                         |
 lock(reason) called                   |                         |
-      |--- onSessionLocking(e, 2000) ->|                         |
-      |--- onSessionLocking(e, 2000) ------------------------- ->|
+      |--- onSessionLocking(e, 500) ->|                         |
+      |--- onSessionLocking(e, 500) ------------------------- ->|
       |   [authorizedEpoch := NONE in both, immediately]         |
       |                               |                         |
       |--- LockObserver.onLocking() to EditorViewModel (flush)   |

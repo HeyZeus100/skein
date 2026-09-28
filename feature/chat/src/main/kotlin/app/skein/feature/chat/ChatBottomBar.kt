@@ -59,6 +59,7 @@ import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.unit.dp
 import app.skein.core.designsystem.icons.SkeinIcons
 import app.skein.core.designsystem.theme.LocalSkeinTokens
+import app.skein.feature.chat.drafts.DraftComposerState
 import app.skein.feature.editor.autocomplete.AutocompleteHost
 import app.skein.feature.editor.autocomplete.Suggestion
 import app.skein.feature.editor.autocomplete.WikilinkAutocompletePopup
@@ -96,24 +97,32 @@ public fun ChatBottomBar(
     modifier: Modifier = Modifier,
     onCreateWikilink: suspend (String) -> Unit = {},
     onSlashCommand: () -> Unit = {},
+    composerState: DraftComposerState? = null,
+    enabled: Boolean = true,
 ) {
-    var fieldValue by remember { mutableStateOf(TextFieldValue("")) }
+    val composerValue = remember(composerState) { ComposerValue(composerState) }
+    val writable = enabled && (composerState?.enabled ?: true)
     val scope = rememberCoroutineScope()
 
     val host =
-        remember {
+        remember(composerState) {
             object : AutocompleteHost {
                 override val textBeforeCursor: String
-                    get() = fieldValue.text.substring(0, fieldValue.selection.end.coerceIn(0, fieldValue.text.length))
+                    get() =
+                        composerValue.value.text.substring(
+                            0,
+                            composerValue.value.selection.end
+                                .coerceIn(0, composerValue.value.text.length),
+                        )
 
                 override fun replaceRange(
                     start: Int,
                     end: Int,
                     with: String,
                 ) {
-                    val text = fieldValue.text
+                    val text = composerValue.value.text
                     val newText = text.substring(0, start) + with + text.substring(end)
-                    fieldValue = TextFieldValue(text = newText, selection = TextRange(start + with.length))
+                    composerValue.value = TextFieldValue(text = newText, selection = TextRange(start + with.length))
                 }
             }
         }
@@ -121,10 +130,10 @@ public fun ChatBottomBar(
         rememberWikilinkAutocompleteState(host = host, suggest = wikilinkSuggest, onCreate = onCreateWikilink)
 
     fun sendCurrentText() {
-        val text = fieldValue.text
-        if (text.isBlank() || isGenerating) return
+        val text = composerValue.value.text
+        if (text.isBlank() || isGenerating || !writable) return
         onSend(text)
-        fieldValue = TextFieldValue("")
+        if (composerState == null) composerValue.value = TextFieldValue("")
         autocompleteState.dismiss()
     }
 
@@ -142,9 +151,16 @@ public fun ChatBottomBar(
                     resolver.openInputStream(uri)?.use { input ->
                         val inserted = onAttach(displayName, mimeType, input)
                         if (inserted != null) {
-                            val separator = if (fieldValue.text.isEmpty() || fieldValue.text.endsWith(" ")) "" else " "
-                            val newText = fieldValue.text + separator + inserted
-                            fieldValue = TextFieldValue(text = newText, selection = TextRange(newText.length))
+                            val separator =
+                                if (composerValue.value.text.isEmpty() ||
+                                    composerValue.value.text.endsWith(" ")
+                                ) {
+                                    ""
+                                } else {
+                                    " "
+                                }
+                            val newText = composerValue.value.text + separator + inserted
+                            composerValue.value = TextFieldValue(text = newText, selection = TextRange(newText.length))
                             Toast.makeText(context, "Added “$displayName” to Knowledge.", Toast.LENGTH_LONG).show()
                         }
                     }
@@ -173,7 +189,8 @@ public fun ChatBottomBar(
         )
         WikilinkAutocompletePopup(state = autocompleteState)
         SecureBasicTextField(
-            value = fieldValue,
+            value = composerValue.value,
+            enabled = writable,
             onValueChange = { newValue ->
                 // Enter sends (Fold smoke #2: the soft keyboard's Enter put a
                 // newline in a multi-line field and the owner had to find the
@@ -183,14 +200,14 @@ public fun ChatBottomBar(
                 // the key handler below. The `[[` popup keeps Enter for itself.
                 val typedNewline =
                     !autocompleteState.isVisible &&
-                        newValue.text.length == fieldValue.text.length + 1 &&
+                        newValue.text.length == composerValue.value.text.length + 1 &&
                         newValue.text.endsWith("\n") &&
                         newValue.selection.end == newValue.text.length
                 if (typedNewline) {
-                    if (fieldValue.text.isNotBlank()) sendCurrentText()
+                    if (composerValue.value.text.isNotBlank()) sendCurrentText()
                 } else {
-                    val wasEmpty = fieldValue.text.isEmpty()
-                    fieldValue = newValue
+                    val wasEmpty = composerValue.value.text.isEmpty()
+                    composerValue.value = newValue
                     autocompleteState.onTextChanged()
                     if (wasEmpty && newValue.text == "/") onSlashCommand()
                 }
@@ -208,10 +225,10 @@ public fun ChatBottomBar(
                         if (!enter || event.type != KeyEventType.KeyDown || autocompleteState.isVisible) {
                             false
                         } else if (event.isShiftPressed) {
-                            val text = fieldValue.text
-                            val start = fieldValue.selection.start
-                            val end = fieldValue.selection.end
-                            fieldValue =
+                            val text = composerValue.value.text
+                            val start = composerValue.value.selection.start
+                            val end = composerValue.value.selection.end
+                            composerValue.value =
                                 TextFieldValue(
                                     text = text.substring(0, start) + "\n" + text.substring(end),
                                     selection = TextRange(start + 1),
@@ -225,6 +242,7 @@ public fun ChatBottomBar(
         )
         IconButton(
             onClick = { attachLauncher.launch(ATTACHABLE_MIME_TYPES) },
+            enabled = writable,
             modifier = Modifier.testTag(ATTACH_BUTTON_TEST_TAG),
         ) {
             Icon(painter = painterResource(SkeinIcons.Attach), contentDescription = "Import file to Knowledge")
@@ -236,7 +254,7 @@ public fun ChatBottomBar(
         } else {
             IconButton(
                 onClick = { sendCurrentText() },
-                enabled = fieldValue.text.isNotBlank(),
+                enabled = writable && composerValue.value.text.isNotBlank(),
                 modifier = Modifier.testTag(SEND_BUTTON_TEST_TAG),
             ) {
                 Icon(painter = painterResource(SkeinIcons.Send), contentDescription = "Send")
@@ -265,3 +283,16 @@ internal val ATTACHABLE_MIME_TYPES =
 
 private const val DEFAULT_MIME_TYPE = "application/octet-stream"
 private const val DEFAULT_ATTACHMENT_NAME = "attachment"
+
+/** Production reads/writes the session store; the local value supports standalone previews/tests. */
+private class ComposerValue(
+    private val controlled: DraftComposerState?,
+) {
+    private var local by mutableStateOf(TextFieldValue(""))
+
+    var value: TextFieldValue
+        get() = controlled?.value ?: local
+        set(value) {
+            if (controlled != null) controlled.onValueChange(value) else local = value
+        }
+}

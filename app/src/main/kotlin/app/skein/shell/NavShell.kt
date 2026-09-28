@@ -77,6 +77,7 @@ internal fun NavShell(
     val knowledge =
         remember(session) { KnowledgeEntryDeps(session.repository, session.indexStore, personas.observeAll()) }
     val handoff = remember(session) { ChatHandoff() }
+    val defaultSpaceId by produceState<String?>(null, personas) { value = personas.default().id }
     val history = rememberChatHistory(session.repository, shell)
     val models = session.models
     // ponytail: re-read on every destination switch (the Models destination is where a model is added);
@@ -91,6 +92,9 @@ internal fun NavShell(
             handoff = handoff,
             importService = session.importService,
             history = history,
+            turns = models?.turns,
+            drafts = models?.drafts,
+            defaultSpaceId = defaultSpaceId,
         )
     val graph = remember(session) { GraphEntryDeps(session.repository, session.indexStore) }
     val modelsDeps = rememberModelsEntryDeps(models, shell)

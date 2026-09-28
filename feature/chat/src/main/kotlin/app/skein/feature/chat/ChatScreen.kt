@@ -12,6 +12,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
@@ -19,11 +20,15 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.unit.dp
+import app.skein.core.designsystem.components.SkeinAction
+import app.skein.core.designsystem.components.SkeinNotice
 import app.skein.core.model.DocId
 import app.skein.core.model.DocumentKind
 import app.skein.core.model.ImportService
 import app.skein.core.model.NewDocument
 import app.skein.core.model.VaultRepository
+import app.skein.feature.chat.drafts.DraftComposerState
+import app.skein.feature.chat.drafts.DraftLoadState
 import app.skein.feature.editor.autocomplete.Suggestion
 
 public const val CHAT_SCREEN_TEST_TAG: String = "app.skein.feature.chat.ChatScreen"
@@ -68,10 +73,12 @@ public fun ChatScreen(
     topBar: @Composable () -> Unit = {},
     contextChip: @Composable () -> Unit = {},
     initialMessage: String? = null,
+    turnController: ChatTurnController? = null,
+    composerState: DraftComposerState? = null,
 ) {
     val scope = rememberCoroutineScope()
     val viewModel =
-        remember(docId, vaultRepository, sendPipeline, onOpenSource) {
+        remember(docId, vaultRepository, sendPipeline, onOpenSource, turnController) {
             ChatViewModel(
                 chatDocId = docId,
                 vaultRepository = vaultRepository,
@@ -79,8 +86,11 @@ public fun ChatScreen(
                 onOpenSource = onOpenSource,
                 scope = scope,
                 importService = importService,
+                controller = turnController,
             )
         }
+
+    DisposableEffect(viewModel) { onDispose(viewModel::dispose) }
 
     LaunchedEffect(viewModel) { initialMessage?.let(viewModel::send) }
 
@@ -102,9 +112,17 @@ public fun ChatScreen(
 
         contextChip()
 
+        DraftLoadNotice(composerState)
         ChatBottomBar(
             isGenerating = viewModel.isGenerating,
-            onSend = viewModel::send,
+            onSend = { text ->
+                if (composerState == null) {
+                    viewModel.send(text)
+                } else {
+                    composerState.snapshot?.let { viewModel.enqueueControlled(it.draft.text, it.version) }
+                }
+            },
+            composerState = composerState,
             onCancel = viewModel::cancel,
             wikilinkSuggest = wikilinkSuggest,
             onAttach = viewModel::attach,
@@ -134,6 +152,7 @@ internal fun ChatErrorBanner(
                         ChatBanner.CONTEXT_FULL -> CONTEXT_FULL_BANNER_TEXT
                         ChatBanner.REQUEST_TOO_LARGE -> REQUEST_TOO_LARGE_BANNER_TEXT
                         ChatBanner.MODEL_CHANGED -> MODEL_CHANGED_BANNER_TEXT
+                        ChatBanner.NO_ANSWER_SAVED -> "No answer was saved."
                         else -> ENGINE_ERROR_BANNER_TEXT
                     },
                 style = MaterialTheme.typography.bodyMedium,
@@ -146,5 +165,16 @@ internal fun ChatErrorBanner(
                 ) { Text("Try again") }
             }
         }
+    }
+}
+
+@Composable
+internal fun DraftLoadNotice(composer: DraftComposerState?) {
+    if (composer?.status is DraftLoadState.LoadError) {
+        SkeinNotice(
+            title = "Draft couldn't be loaded",
+            body = "Try loading it again before writing a message.",
+            action = SkeinAction("Try again", onClick = composer::retryLoad),
+        )
     }
 }

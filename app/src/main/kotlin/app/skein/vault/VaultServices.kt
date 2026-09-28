@@ -139,6 +139,7 @@ class VaultServices(
                     // `EPOCH_NONE`) while locked/recovering — no request can
                     // reach the engine then anyway.
                     sessionEpoch = { unlockManager.authorizationToken.value?.epoch ?: 0L },
+                    isLocking = { unlockManager.state.value is UnlockState.Locking },
                 )
             val bootstrap =
                 VaultBootstrap(

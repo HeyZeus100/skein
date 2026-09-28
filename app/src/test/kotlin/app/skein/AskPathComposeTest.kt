@@ -28,6 +28,11 @@ import app.skein.core.model.Model
 import app.skein.core.model.ModelFormat
 import app.skein.core.model.ModelRecord
 import app.skein.core.model.NewDocument
+import app.skein.core.model.Prompt
+import app.skein.core.model.Role
+import app.skein.core.model.SamplingParams
+import app.skein.core.model.StopReason
+import app.skein.core.model.Token
 import app.skein.core.vault.session.LockReason
 import app.skein.core.vault.session.UnlockState
 import app.skein.feature.chat.CHAT_SCREEN_TEST_TAG
@@ -45,6 +50,7 @@ import kotlinx.coroutines.flow.toList
 import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.withTimeout
 import org.junit.Assert.assertEquals
+import org.junit.Assert.assertNull
 import org.junit.Assert.assertTrue
 import org.junit.Rule
 import org.junit.Test
@@ -234,6 +240,88 @@ class AskPathComposeTest {
         }
     }
 
+    @Test
+    fun `session turn survives navigation and Activity recreation and completes once`() {
+        app.enableSessionChat = true
+        val ready = kotlinx.coroutines.CompletableDeferred<Unit>()
+        val finish = kotlinx.coroutines.CompletableDeferred<Unit>()
+        var streams = 0
+        app.fakeInferenceEngine =
+            object : InferenceEngine by FakeInferenceEngine() {
+                override fun stream(
+                    prompt: Prompt,
+                    params: SamplingParams,
+                ) = kotlinx.coroutines.flow.flow {
+                    streams++
+                    ready.complete(Unit)
+                    finish.await()
+                    emit(Token.Text("The session answer", 1))
+                    emit(Token.Done(StopReason.EOS, 0, 1, 0, 0f))
+                }
+            }
+        registerDefaultModel()
+        ActivityScenario.launch(MainActivity::class.java).use { scenario ->
+            val chatId = openGeneralKnowledgeChat()
+            awaitCondition("controlled composer loaded") {
+                !composeRule
+                    .onNodeWithTag(
+                        COMPOSER_TEST_TAG,
+                    ).fetchSemanticsNode()
+                    .config
+                    .contains(androidx.compose.ui.semantics.SemanticsProperties.Disabled)
+            }
+            composeRule.onNodeWithTag(COMPOSER_TEST_TAG).performTextInput("hello")
+            composeRule.onNodeWithTag(SEND_BUTTON_TEST_TAG).performSemanticsAction(SemanticsActions.OnClick)
+            awaitCondition("generation admitted") { ready.isCompleted }
+            val session = app.vault.session.value!!
+            openModels()
+            composeRule.onNodeWithContentDescription("Open navigation").performSemanticsAction(SemanticsActions.OnClick)
+            composeRule.onNodeWithText("Chat").performSemanticsAction(SemanticsActions.OnClick)
+            awaitTag(CHAT_SCREEN_TEST_TAG)
+            scenario.recreate()
+            awaitTag(CHAT_SCREEN_TEST_TAG)
+            assertTrue(session === app.vault.session.value)
+            finish.complete(Unit)
+            awaitText("The session answer", substring = false)
+            assertEquals(1, streams)
+            assertEquals(
+                listOf(Role.USER, Role.ASSISTANT),
+                runBlocking { session.repository.listMessages(chatId).map { it.role } },
+            )
+        }
+    }
+
+    @Test
+    fun `lock while Activity is stopped clears session flow and keeps unanswered USER durable`() {
+        app.enableSessionChat = true
+        val ready = kotlinx.coroutines.CompletableDeferred<Unit>()
+        app.fakeInferenceEngine =
+            object : InferenceEngine by FakeInferenceEngine() {
+                override fun stream(
+                    prompt: Prompt,
+                    params: SamplingParams,
+                ) = kotlinx.coroutines.flow.flow<Token> {
+                    ready.complete(Unit)
+                    kotlinx.coroutines.awaitCancellation()
+                }
+            }
+        registerDefaultModel()
+        ActivityScenario.launch(MainActivity::class.java).use { scenario ->
+            val chatId = openGeneralKnowledgeChat()
+            composeRule.onNodeWithTag(COMPOSER_TEST_TAG).performTextInput("hello")
+            composeRule.onNodeWithTag(SEND_BUTTON_TEST_TAG).performSemanticsAction(SemanticsActions.OnClick)
+            awaitCondition("generation admitted") { ready.isCompleted }
+            val session = app.vault.session.value!!
+            val observed = session.models!!.turns!!.state(chatId)
+            scenario.moveToState(androidx.lifecycle.Lifecycle.State.CREATED)
+            lockAndAwait()
+            assertNull(observed.value.turn)
+            assertNull(observed.value.outcome)
+            assertTrue(observed.value.citations.isEmpty())
+            assertEquals(listOf(Role.USER), runBlocking { session.repository.listMessages(chatId).map { it.role } })
+        }
+    }
+
     /**
      * DoD item 2 / acceptance criterion 2: "lock during READY calls unload
      * exactly once" — and the companion half of skein-whg8's own JVM-test
@@ -392,9 +480,9 @@ private class CountingUnloadEngine(
     }
 
     override fun stream(
-        prompt: app.skein.core.model.Prompt,
-        params: app.skein.core.model.SamplingParams,
-    ): kotlinx.coroutines.flow.Flow<app.skein.core.model.Token> {
+        prompt: Prompt,
+        params: SamplingParams,
+    ): kotlinx.coroutines.flow.Flow<Token> {
         streamCalls++
         return delegate.stream(prompt, params)
     }

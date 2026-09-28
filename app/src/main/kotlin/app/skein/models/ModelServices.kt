@@ -59,11 +59,18 @@ import app.skein.core.rag.prompt.PromptAssemblerImpl
 import app.skein.core.rag.retrieval.RetrievalServiceImpl
 import app.skein.core.vault.models.ModelRegistryImpl
 import app.skein.core.verify.ModelFileRole
+import app.skein.feature.chat.ChatTurnController
 import app.skein.feature.chat.SendPipeline
+import app.skein.feature.chat.TurnModelSelection
+import app.skein.feature.chat.drafts.SessionDraftStore
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.SupervisorJob
+import kotlinx.coroutines.async
+import kotlinx.coroutines.cancel
+import kotlinx.coroutines.coroutineScope
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -72,6 +79,7 @@ import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.withTimeoutOrNull
 import java.io.File
 import java.io.IOException
+import java.util.concurrent.atomic.AtomicLong
 
 /**
  * Everything the ask path needs for one open vault, built by [forSession]
@@ -101,6 +109,9 @@ public class ModelServices(
     private val pushOnSessionLocked: suspend (epoch: Long) -> Unit = { _ -> },
     /** Runs [ModelManager.adoptOrphans] off the unlock path; cancelled on lock. */
     private val scope: CoroutineScope = CoroutineScope(SupervisorJob() + Dispatchers.IO),
+    public val turns: ChatTurnController? = null,
+    public val drafts: SessionDraftStore? = null,
+    private val markLockEpoch: (Long) -> Unit = {},
 ) {
     private val rescuedState = MutableStateFlow<List<ModelId>>(emptyList())
     private var rescueJob: Job? = null
@@ -175,6 +186,36 @@ public class ModelServices(
         pushOnSessionLocked(epoch)
     }
 
+    /** App-owned HIGH observer: freeze publication synchronously; no engine or writer wait. */
+    public fun freezeTurns(
+        epoch: Long,
+        budgetMillis: Long,
+    ) {
+        markLockEpoch(epoch)
+        turns?.onLockingHigh(epoch, budgetMillis)
+    }
+
+    /** Both LOW writers share the manager's remaining deadline, ahead of repository quiescence. */
+    public suspend fun flushTurnsAndDrafts(
+        epoch: Long,
+        budgetMillis: Long,
+    ) = coroutineScope {
+        val answers = async { turns?.onLockingLow(epoch, budgetMillis) }
+        val composer = async { drafts?.onLocking(epoch, budgetMillis) }
+        answers.await()
+        composer.await()
+        Unit
+    }
+
+    /** Pure memory teardown even if the Activity is stopped or normal observer dispatch timed out. */
+    public fun closeSessionState() {
+        turns?.close()
+        drafts?.close()
+        sendPipeline.clearSessionState()
+        markLockEpoch(0L)
+        scope.cancel()
+    }
+
     public companion object {
         /**
          * Production wiring — every constructor here is the one named on
@@ -202,7 +243,13 @@ public class ModelServices(
             personaProvider: suspend () -> Persona?,
             personaById: suspend (PersonaId) -> Persona?,
             config: InferenceConfig = InferenceConfig(),
+            isLocking: () -> Boolean = { false },
         ): ModelServices {
+            val scope = CoroutineScope(SupervisorJob() + Dispatchers.IO)
+            val epoch = sessionEpoch()
+            val lockEpoch = AtomicLong(0L)
+            val unlockedEpoch = { sessionEpoch().takeIf { it != 0L } }
+            val lockingEpoch = { lockEpoch.get().takeIf { it == epoch && isLocking() } }
             val store = ImmutableModelStore(File(context.filesDir, MODELS_DIR_NAME))
             val registry = ModelRegistryImpl(connection = connection, prefs = prefs)
             rehydrate(store, registry)
@@ -276,16 +323,42 @@ public class ModelServices(
                     samplingParams = { SamplingParams() },
                     measurePrompt = llamaCppEngine::measurePrompt,
                     personaById = personaById,
-                    prepareModel = { persona ->
+                    selectModel = { persona ->
                         val id =
                             persona?.defaultModel ?: registry.default() ?: throw InferenceException.ModelNotLoaded()
                         val selected = registry.get(id)?.model ?: throw InferenceException.ModelNotLoaded()
-                        managed.prepareForTurn(selected)
-                        contextBudget.useModel(selected)
-                        selected.id
+                        TurnModelSelection(selected.id) {
+                            managed.prepareForTurn(selected)
+                            contextBudget.useModel(selected)
+                        }
                     },
                 )
 
+            val drafts = SessionDraftStore(vaultRepository, epoch, unlockedEpoch, lockingEpoch, scope)
+            val turns =
+                ChatTurnController(
+                    repository = vaultRepository,
+                    pipeline = sendPipeline,
+                    epoch = epoch,
+                    unlockedEpoch = unlockedEpoch,
+                    lockingEpoch = lockingEpoch,
+                    scope = scope,
+                    awaitEngineIdle = {
+                        while (true) {
+                            val status =
+                                try {
+                                    llamaCppEngine.engineStatus().state
+                                } catch (_: InferenceException.ModelNotLoaded) {
+                                    break
+                                } catch (_: InferenceException.ServiceDied) {
+                                    break
+                                }
+                            if (status !in setOf("generating", "loading", "verifying")) break
+                            delay(20L)
+                        }
+                    },
+                    commitDraft = { key, version, append -> drafts.commitSend(key, version, append) },
+                )
             return ModelServices(
                 store = store,
                 registry = registry,
@@ -297,6 +370,10 @@ public class ModelServices(
                 pushOnSessionUnlocked = llamaCppEngine::onSessionUnlocked,
                 pushOnSessionLocking = llamaCppEngine::onSessionLocking,
                 pushOnSessionLocked = llamaCppEngine::onSessionLocked,
+                scope = scope,
+                turns = turns,
+                drafts = drafts,
+                markLockEpoch = lockEpoch::set,
             )
         }
 

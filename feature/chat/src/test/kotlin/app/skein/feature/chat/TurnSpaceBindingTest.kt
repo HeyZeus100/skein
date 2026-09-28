@@ -16,6 +16,7 @@ import app.skein.core.rag.prompt.PromptAssemblerImpl
 import app.skein.testing.FakeRetrievalService
 import app.skein.testing.InMemoryVaultRepository
 import app.skein.testing.scriptedEngine
+import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.CompletableDeferred
 import kotlinx.coroutines.async
 import kotlinx.coroutines.flow.Flow
@@ -104,7 +105,9 @@ class TurnSpaceBindingTest {
             assertEquals(1, fixture.engine.cancels)
 
             release.complete(Unit)
-            active.await()
+            assertTrue(runCatching { active.await() }.exceptionOrNull() is CancellationException)
+            assertEquals(0, fixture.retrieval.callCount)
+            assertEquals(1, fixture.repository.listMessages(first).size)
             fixture.pipeline.send(second, "Second after completion").toList()
             assertEquals(PERSONAL, fixture.prepared)
             assertEquals(2, fixture.repository.listMessages(second).size)

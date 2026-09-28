@@ -15,19 +15,11 @@
 // [budgetFor]) that the app wires in `skein-whg8` — see the class doc below
 // for exactly what a real `ContextBudget` plugs in as.
 //
-// ## The context-full branch (bead note / POCKETPAL_RECON.md PP-66/PP-67)
-//
-// The bead's dispatch note describes this as driven by a typed
-// `InferenceException` subclass for `CONTEXT_FULL`. That subclass does not
-// exist in the locked `core/model` contract this bead builds on
-// (`Inference.kt`'s `InferenceException` hierarchy has no `ContextFull`
-// case), and `inference-service/.../InferenceService.kt` (skein-3aw,
-// already landed) instead surfaces context exhaustion as a normal stream
-// completion — `Token.Done(reason = StopReason.LENGTH)` — never an
-// exception, never a message string. `StopReason.LENGTH` is itself the
-// typed, locked signal PP-67's test wants ("driven by a typed value, never
-// a message string"), so this class keys the context-full UX branch off
-// it. Recorded as a deviation in `bd note skein-6as` per the working rules.
+// Production chat uses ChatTurnController: USER admission and immutable
+// preferences precede the session queue, execution is scoped to that USER,
+// and the shared TurnFinalizer acknowledges one assistant commit. The legacy
+// send facade remains for direct callers. Exact formatted budget failures
+// are typed ContextFull before streaming; LENGTH means the answer limit.
 package app.skein.feature.chat
 
 import app.skein.core.model.AnswerPolicy
@@ -53,7 +45,6 @@ import app.skein.core.model.Token
 import app.skein.core.model.TokenBudget
 import app.skein.core.model.VaultRepository
 import app.skein.core.rag.chat.CitationParser
-import app.skein.core.rag.chat.CitationRecords
 import app.skein.core.rag.chat.Segment
 import app.skein.core.rag.prompt.ExactPromptAssembler
 import kotlinx.coroutines.CancellationException
@@ -65,6 +56,7 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.buffer
 import kotlinx.coroutines.flow.channelFlow
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.isActive
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.sync.Mutex
@@ -137,9 +129,9 @@ public data class TurnOutcome(
  *   flushing runs on its own coroutine (a 30 ms ticker) so a slow UI
  *   collector applying backpressure never delays the next iteration of the
  *   loop that is — on every iteration — available to observe the engine
- *   having stopped. [cancel] itself is a single non-suspending call to
- *   [InferenceEngine.cancel] (see `FakeInferenceEngine.cancel`'s `trySend`),
- *   independent of the flow's own coroutine.
+ *   having stopped. [cancel] delegates to [InferenceEngine.cancel]. The
+ *   session controller schedules it without blocking HIGH and caps LOW's
+ *   engine wait at 150 ms, independently of the persistence transaction.
  * - **App-side coalescing at ~30 ms (PP-63).** [coalesceInterval] batches
  *   [Segment]s emitted to the collector rather than emitting one per token.
  * - **Interrupted-turn contract (PP-64).** A turn whose stream ends with
@@ -149,8 +141,9 @@ public data class TurnOutcome(
  *   fails with an [app.skein.core.model.InferenceException] mid-stream
  *   persists nothing either (design spec's "rollback empty turn" branch) —
  *   the exception propagates out of [send] for the caller's error banner.
- * - **Context-full as a typed signal (PP-66/PP-67).** See the file header:
- *   `StopReason.LENGTH`, never a message string.
+ * - **Context-full as a typed signal (PP-66/PP-67).** Exact fitting throws
+ *   `InferenceException.ContextFull`; `StopReason.LENGTH` remains the normal
+ *   answer limit. Neither is inferred from exception text.
  *
  * @param personaProvider resolves the default Space for legacy unassigned chats.
  * @param personaById resolves an explicitly owned chat's Space. Missing owners fail before writing a turn.
@@ -193,6 +186,8 @@ public class SendPipeline(
     private val prepareModel: (suspend (Persona?) -> ModelId?)? = null,
     /** Production exact measurement. Null is retained for pure test/legacy assemblers only. */
     private val measurePrompt: (suspend (Prompt, SamplingParams) -> PromptMeasurement)? = null,
+    /** Snapshot the selected model without loading it while another chat is active. */
+    private val selectModel: (suspend (Persona?) -> TurnModelSelection)? = null,
 ) {
     private val turnGate = Mutex()
 
@@ -217,56 +212,128 @@ public class SendPipeline(
         }
     }
 
-    /**
-     * Runs one full turn for [chatDocId]/[text] and streams [Segment]s as
-     * they can be emitted with certainty (see [CitationParser]), coalesced
-     * at [coalesceInterval]. Completes normally once the turn is fully
-     * persisted (or determined to need no persistence); an
-     * [app.skein.core.model.InferenceException] thrown while streaming
-     * propagates out uncaught (design spec: "errors close the flow with an
-     * `InferenceException`") after persisting nothing beyond the USER turn.
-     */
+    /** Resolves the immutable Space/model snapshot before the durable USER write. Joins the caller's transaction. */
+    public suspend fun admit(
+        chatDocId: DocId,
+        text: String,
+    ): PreparedChatTurn {
+        var admitted: PreparedChatTurn? = null
+        vaultRepository.transaction {
+            val config = capture(chatDocId)
+            val user = vaultRepository.appendMessage(chatDocId, NewMessage(role = Role.USER, contentMd = text))
+            admitted = PreparedChatTurn(user, config.persona, config.scope, config.params, config.model)
+        }
+        return requireNotNull(admitted)
+    }
+
+    /** Re-executes a durable user row, without appending a duplicate USER after failure/unlock. */
+    public suspend fun resume(
+        chatDocId: DocId,
+        userMessageId: String,
+    ): PreparedChatTurn {
+        val user =
+            vaultRepository.listMessages(chatDocId).lastOrNull()?.takeIf {
+                it.id == userMessageId &&
+                    it.role == Role.USER
+            }
+                ?: throw IllegalStateException("The unanswered message is unavailable")
+        val config = capture(chatDocId)
+        return PreparedChatTurn(user, config.persona, config.scope, config.params, config.model)
+    }
+
+    private class AdmissionConfig(
+        val persona: Persona?,
+        val scope: AnswerScope,
+        val params: SamplingParams,
+        val model: TurnModelSelection?,
+    )
+
+    private suspend fun capture(chatDocId: DocId): AdmissionConfig {
+        val chat = requireNotNull(vaultRepository.getDocument(chatDocId)) { "Chat no longer exists" }
+        val ownerId = chat.personaId
+        val persona =
+            if (ownerId == null) {
+                personaProvider()
+            } else {
+                requireNotNull(
+                    personaById?.invoke(ownerId) ?: personaProvider()?.takeIf { it.id == ownerId },
+                ) { "The chat's Space is unavailable" }
+            }
+        return AdmissionConfig(
+            persona,
+            if (ChatKnowledge.enabled(chat)) AnswerScope.KNOWLEDGE else AnswerScope.GENERAL,
+            samplingParams(),
+            selectModel?.invoke(persona),
+        )
+    }
+
+    /** Legacy one-turn facade; the session controller uses [runPrepared] after queue admission. */
     public fun send(
         chatDocId: DocId,
         text: String,
+    ): Flow<Segment> = execute({ admit(chatDocId, text) }, {}, {}, persist = true)
+
+    /** Runs one already committed USER. Collection is owned by the session, never a composable. */
+    public fun runPrepared(
+        turn: PreparedChatTurn,
+        onContext: (TurnPromptContext) -> Unit,
+        onDone: (StopReason) -> Unit,
+    ): Flow<Segment> = execute({ turn }, onContext, onDone, persist = false)
+
+    internal fun finalizer(): TurnFinalizer = TurnFinalizer(vaultRepository)
+
+    internal fun publishOutcome(
+        snapshot: TurnAnswerSnapshot,
+        message: Message?,
+    ) {
+        _lastOutcome.value = snapshot.outcome(message)
+    }
+
+    public fun clearSessionState() {
+        _lastOutcome.value = null
+    }
+
+    private fun execute(
+        admission: suspend () -> PreparedChatTurn,
+        onContext: (TurnPromptContext) -> Unit,
+        onDone: (StopReason) -> Unit,
+        persist: Boolean,
     ): Flow<Segment> =
         channelFlow {
             if (!turnGate.tryLock()) throw InferenceException.Busy()
             preparationCancelled = false
-            activeChatId = chatDocId
             try {
-                val chat = requireNotNull(vaultRepository.getDocument(chatDocId)) { "Chat no longer exists" }
-                val answerScope = if (ChatKnowledge.enabled(chat)) AnswerScope.KNOWLEDGE else AnswerScope.GENERAL
-                val ownerId = chat.personaId
-                val persona =
-                    if (ownerId == null) {
-                        personaProvider()
-                    } else {
-                        requireNotNull(
-                            personaById?.invoke(ownerId)
-                                ?: personaProvider()?.takeIf { it.id == ownerId },
-                        ) { "The chat's Space is unavailable" }
-                    }
-                val priorHistory = vaultRepository.listMessages(chatDocId)
-                vaultRepository.appendMessage(chatDocId, NewMessage(role = Role.USER, contentMd = text))
-
-                // Load (or confirm) the model first: assembly counts tokens
-                // through the engine, and the stream below would otherwise be
-                // the first thing to load it.
+                val turn = admission()
+                activeChatId = turn.chatId
+                val chatDocId = turn.chatId
+                val text = turn.user.contentMd
+                val persona = turn.persona
+                val answerScope = turn.answerScope
+                // Later queued messages must never enter this turn's history.
+                val transcript = vaultRepository.listMessages(chatDocId)
+                val userIndex = transcript.indexOfFirst { it.id == turn.user.id }
+                check(userIndex >= 0) { "The unanswered message is unavailable" }
+                val priorHistory = transcript.take(userIndex)
                 val modelId =
-                    if (prepareModel != null) {
-                        prepareModel.invoke(persona)
-                    } else {
-                        warmUp()
-                        null
+                    when {
+                        turn.selectedModel != null -> {
+                            turn.selectedModel.prepare()
+                            turn.selectedModel.modelId
+                        }
+                        prepareModel != null -> prepareModel.invoke(persona)
+                        else -> {
+                            warmUp()
+                            null
+                        }
                     }
+                if (preparationCancelled) throw CancellationException("prompt preparation cancelled")
                 val retrieved =
                     if (answerScope == AnswerScope.KNOWLEDGE) {
                         retrievalService.retrieveContext(text, RETRIEVAL_K, persona?.id)
                     } else {
                         emptyList()
                     }
-                val params = samplingParams()
+                val params = turn.params
                 val budget = budgetFor(params.maxTokens, AnswerPolicy.systemPrompt(persona, answerScope))
                 val assembled =
                     if (measurePrompt != null) {
@@ -275,16 +342,7 @@ public class SendPipeline(
                             measurePrompt.invoke(prompt, sampling).also {
                                 if (preparationCancelled) throw CancellationException("prompt preparation cancelled")
                             }
-                        }.assemble(
-                            persona,
-                            priorHistory,
-                            retrieved,
-                            text,
-                            budget,
-                            countTokens,
-                            answerScope,
-                            params,
-                        )
+                        }.assemble(persona, priorHistory, retrieved, text, budget, countTokens, answerScope, params)
                     } else {
                         promptAssembler.assemble(
                             persona,
@@ -296,32 +354,23 @@ public class SendPipeline(
                             answerScope,
                         )
                     }
-                // A missing/fully trimmed evidence set cannot support a vault answer.
-                // This is an app response, not a claim that the model verified truth.
-                if (answerScope == AnswerScope.KNOWLEDGE && assembled.citations.isEmpty()) {
-                    val message =
-                        vaultRepository.appendMessage(
-                            chatDocId,
-                            NewMessage(role = Role.ASSISTANT, contentMd = NO_KNOWLEDGE_EVIDENCE),
+                if (preparationCancelled) throw CancellationException("prompt preparation cancelled")
+                val noEvidence = answerScope == AnswerScope.KNOWLEDGE && assembled.citations.isEmpty()
+                val context = TurnPromptContext(turn, retrieved, assembled, modelId, noEvidence)
+                onContext(context)
+                if (noEvidence) {
+                    val segments = listOf(Segment.Text(NO_KNOWLEDGE_EVIDENCE))
+                    send(segments.single())
+                    val snapshot = TurnAnswerSnapshot(context, NO_KNOWLEDGE_EVIDENCE, segments, StopReason.EOS)
+                    if (persist) {
+                        publishOutcome(
+                            snapshot,
+                            (finalizer().persist(snapshot) { true } as TurnPersistResult.Committed).message,
                         )
-                    _lastOutcome.value =
-                        TurnOutcome(
-                            chatDocId = chatDocId,
-                            userQuery = text,
-                            stopReason = StopReason.EOS,
-                            interrupted = false,
-                            retrieved = retrieved,
-                            assembled = assembled,
-                            assistantMessage = message,
-                            answerScope = answerScope,
-                            generationSkipped = true,
-                            persona = persona,
-                            modelId = modelId,
-                        )
-                    send(Segment.Text(NO_KNOWLEDGE_EVIDENCE))
+                    }
+                    onDone(StopReason.EOS)
                     return@channelFlow
                 }
-
                 val parser = CitationParser(assembled.citations)
                 val rawText = StringBuilder()
                 val allSegments = mutableListOf<Segment>()
@@ -337,7 +386,6 @@ public class SendPipeline(
                         } ?: return
                     for (segment in batch) send(segment)
                 }
-
                 val ticker =
                     launch {
                         while (isActive) {
@@ -362,49 +410,21 @@ public class SendPipeline(
                 } finally {
                     ticker.cancel()
                 }
-
                 val trailing = parser.flush()
                 if (trailing.isNotEmpty()) {
                     allSegments += trailing
                     pendingLock.withLock { pending += trailing }
                 }
                 drainPending()
-
                 val reason = doneReason ?: StopReason.EOS
-                val interrupted = reason == StopReason.CANCELLED
-                val finalText = rawText.toString()
-
-                val assistantMessage =
-                    if (finalText.isBlank()) {
-                        // PP-64: an empty turn leaves no ghost row — never persisted.
-                        null
-                    } else {
-                        val toPersist = if (interrupted) finalText + INTERRUPTED_MARKER else finalText
-                        vaultRepository.appendMessage(
-                            chatDocId,
-                            NewMessage(
-                                role = Role.ASSISTANT,
-                                contentMd = toPersist,
-                                modelId = modelId,
-                                // NORTH_STAR_REVIEW.md §3.6: `citations`, never `retrievedChunks`.
-                                citations = CitationRecords.fromStream(assembled, allSegments),
-                            ),
-                        )
-                    }
-
-                _lastOutcome.value =
-                    TurnOutcome(
-                        chatDocId = chatDocId,
-                        userQuery = text,
-                        stopReason = reason,
-                        interrupted = interrupted,
-                        retrieved = retrieved,
-                        assembled = assembled,
-                        assistantMessage = assistantMessage,
-                        answerScope = answerScope,
-                        persona = persona,
-                        modelId = modelId,
+                if (persist) {
+                    val snapshot = TurnAnswerSnapshot(context, rawText.toString(), allSegments.toList(), reason)
+                    publishOutcome(
+                        snapshot,
+                        (finalizer().persist(snapshot) { true } as TurnPersistResult.Committed).message,
                     )
+                }
+                onDone(reason)
             } finally {
                 activeChatId = null
                 turnGate.unlock()

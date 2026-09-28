@@ -21,7 +21,9 @@ import app.skein.core.vault.session.UnlockManager
 import app.skein.core.vault.session.UnlockState
 import app.skein.export.stage.ExportStageCoordinator
 import app.skein.export.stage.FakeExportStageRepository
+import app.skein.feature.chat.ChatTurnController
 import app.skein.feature.chat.SendPipeline
+import app.skein.feature.chat.drafts.SessionDraftStore
 import app.skein.ingest.IngestPacer
 import app.skein.ingest.IngestPipelines
 import app.skein.ingest.IngestScheduler
@@ -57,6 +59,7 @@ import java.io.File
 import java.nio.ByteBuffer
 import java.nio.ByteOrder
 import java.time.Duration
+import java.util.concurrent.atomic.AtomicLong
 
 /**
  * Robolectric stand-in for [SkeinApplication] (`@Config(application = ...)`):
@@ -89,6 +92,8 @@ class TestSkeinApplication : SkeinApplication() {
      * call-counting decorator around one.
      */
     var fakeInferenceEngine: InferenceEngine = FakeInferenceEngine()
+
+    var enableSessionChat: Boolean = false
 
     /** Backs `/models`, `/import model` and the default-model lookup [ManagedInferenceEngine.defaultModel] reads. */
     val modelRegistry = InMemoryModelRegistry()
@@ -150,7 +155,7 @@ class TestSkeinApplication : SkeinApplication() {
                         // skein-whg8: built fresh per open, over whatever
                         // `fakeInferenceEngine` the test scripted — see that
                         // field's own KDoc.
-                        models = buildTestModelServices(indexStore),
+                        models = buildTestModelServices(indexStore, unlockManager),
                     ) {}
                 },
                 provider =
@@ -209,7 +214,10 @@ class TestSkeinApplication : SkeinApplication() {
      * instance the enclosing [VaultSession] gets, so `RetrievalServiceImpl`
      * sees whatever a test indexes.
      */
-    private fun buildTestModelServices(indexStore: InMemoryIndexStore): ModelServices {
+    private fun buildTestModelServices(
+        indexStore: InMemoryIndexStore,
+        unlockManager: UnlockManager,
+    ): ModelServices {
         val store = ImmutableModelStore(File(filesDir, "test-models"))
         val managed =
             ManagedInferenceEngine(fakeInferenceEngine) {
@@ -268,6 +276,35 @@ class TestSkeinApplication : SkeinApplication() {
                 countTokens = syncCountTokens(contextBudget),
                 samplingParams = { SamplingParams() },
             )
+        val turnScope = CoroutineScope(SupervisorJob() + Dispatchers.Default)
+        val epoch = unlockManager.authorizationToken.value?.epoch ?: 0L
+        val lockEpoch = AtomicLong(0L)
+        val unlockedEpoch = { unlockManager.authorizationToken.value?.epoch }
+        val lockingEpoch = { lockEpoch.get().takeIf { unlockManager.state.value is UnlockState.Locking } }
+        val drafts =
+            if (enableSessionChat) {
+                SessionDraftStore(
+                    repository,
+                    epoch,
+                    unlockedEpoch,
+                    lockingEpoch,
+                    turnScope,
+                )
+            } else {
+                null
+            }
+        val turns =
+            drafts?.let { store ->
+                ChatTurnController(
+                    repository,
+                    sendPipeline,
+                    epoch,
+                    unlockedEpoch,
+                    lockingEpoch,
+                    turnScope,
+                    commitDraft = { key, version, append -> store.commitSend(key, version, append) },
+                )
+            }
         return ModelServices(
             store = store,
             registry = modelRegistry,
@@ -276,6 +313,10 @@ class TestSkeinApplication : SkeinApplication() {
             engineStatus = managed.status,
             sendPipeline = sendPipeline,
             manifestCache = manifestCache,
+            scope = turnScope,
+            turns = turns,
+            drafts = drafts,
+            markLockEpoch = lockEpoch::set,
         )
     }
 

@@ -17,6 +17,7 @@ import app.skein.core.model.Role
 import app.skein.core.model.SkeinLog
 import app.skein.core.model.VaultRepository
 import app.skein.core.rag.chat.Segment
+import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
@@ -64,7 +65,15 @@ internal suspend fun importAttachment(
 /** Error banner state (spec §8.4: `ServiceDied` -> "model process restarted, retry"). */
 private const val CHAT_VM_TAG = "ChatViewModel"
 
-public enum class ChatBanner { NONE, SERVICE_DIED, CONTEXT_FULL, REQUEST_TOO_LARGE, MODEL_CHANGED, ENGINE_ERROR }
+public enum class ChatBanner {
+    NONE,
+    SERVICE_DIED,
+    CONTEXT_FULL,
+    REQUEST_TOO_LARGE,
+    MODEL_CHANGED,
+    ENGINE_ERROR,
+    NO_ANSWER_SAVED,
+}
 
 /**
  * State holder for [ChatScreen]. Owns nothing [SendPipeline] doesn't already
@@ -87,6 +96,7 @@ public class ChatViewModel(
     private val onOpenSource: (DocId) -> Unit,
     private val scope: CoroutineScope,
     private val importService: ImportService? = null,
+    private val controller: ChatTurnController? = null,
 ) {
     var messages: List<ChatMessageUi> by mutableStateOf(emptyList())
         private set
@@ -113,6 +123,12 @@ public class ChatViewModel(
 
     val banner: ChatBanner
         get() {
+            if (controller != null &&
+                unansweredUserId != null &&
+                (turnState == null || turnState is ChatTurnState.Interrupted || turnState is ChatTurnState.Done)
+            ) {
+                return ChatBanner.NO_ANSWER_SAVED
+            }
             val failed = turnState as? ChatTurnState.Failed ?: return ChatBanner.NONE
             return when (failed.exception) {
                 is InferenceException.ServiceDied -> ChatBanner.SERVICE_DIED
@@ -125,13 +141,31 @@ public class ChatViewModel(
 
     /** An unchanged oversized request cannot succeed on retry. The composer remains editable. */
     val canRetry: Boolean
-        get() = lastFailedText != null && banner != ChatBanner.CONTEXT_FULL && banner != ChatBanner.REQUEST_TOO_LARGE
+        get() =
+            (
+                if (controller ==
+                    null
+                ) {
+                    lastFailedText != null
+                } else {
+                    retryUserId != null &&
+                        !isGenerating &&
+                        (turnState is ChatTurnState.Failed || unansweredUserId != null)
+                }
+            ) &&
+                banner != ChatBanner.CONTEXT_FULL &&
+                banner != ChatBanner.REQUEST_TOO_LARGE
 
     private var expandedCitations: Set<Pair<String, Int>> by mutableStateOf(emptySet())
     private var tappedOnce: Set<Pair<String, Int>> = emptySet()
     private var lastFailedText: String? = null
+    private var unansweredUserId: String? by mutableStateOf(null)
+    private var controllerUserId: String? by mutableStateOf(null)
+    private val retryUserId: String? get() = controllerUserId ?: unansweredUserId
 
     private val jobs: MutableList<Job> = mutableListOf()
+
+    private val removeCloseListener = controller?.observeClose(::clearPrivateState)
 
     init {
         jobs +=
@@ -144,9 +178,46 @@ public class ChatViewModel(
                     // plain loop instead.
                     val projected = ArrayList<ChatMessageUi>(list.size)
                     for (message in list) projected += toUi(message)
-                    messages = projected
+                    val publish = {
+                        messages = projected
+                        unansweredUserId = list.lastOrNull()?.takeIf { it.role == Role.USER }?.id
+                    }
+                    if (controller == null) publish() else controller.publishView(publish)
                 }
             }
+        if (controller != null) {
+            jobs +=
+                scope.launch {
+                    controller.state(chatDocId).collect { state ->
+                        controller.publishView {
+                            turnState = state.turn
+                            streamingCitations = state.citations
+                            controllerUserId = state.userMessageId
+                            lastFailedText = null
+                        }
+                    }
+                }
+        }
+    }
+
+    /** Cancels UI observers only. A session-owned generation continues after navigation. */
+    public fun dispose() {
+        jobs.forEach(Job::cancel)
+        jobs.clear()
+        removeCloseListener?.invoke()
+        clearPrivateState()
+    }
+
+    private fun clearPrivateState() {
+        jobs.forEach(Job::cancel)
+        messages = emptyList()
+        turnState = null
+        streamingCitations = emptyMap()
+        lastFailedText = null
+        unansweredUserId = null
+        controllerUserId = null
+        expandedCitations = emptySet()
+        tappedOnce = emptySet()
     }
 
     /** True once [messageId]/[marker] has been tapped more than once — the "second tap expands the excerpt" rule. */
@@ -181,6 +252,10 @@ public class ChatViewModel(
     /** Bottom bar ⏎ send (also used by [retry]). No-op while a generation is already running. */
     public fun send(text: String) {
         if (text.isBlank() || isGenerating) return
+        if (controller != null) {
+            enqueueControlled(text, null)
+            return
+        }
         lastFailedText = null
         streamingCitations = emptyMap()
         turnState = ChatTurnState.Queued
@@ -246,14 +321,57 @@ public class ChatViewModel(
 
     /** Cancel button while generating (spec §8.4). Forwards to [SendPipeline.cancel]; does not touch [messages]. */
     public fun cancel() {
-        scope.launch { sendPipeline.cancel(chatDocId) }
+        if (controller != null) {
+            controller.stop(chatDocId)
+        } else {
+            scope.launch { sendPipeline.cancel(chatDocId) }
+        }
+    }
+
+    /** The draft remains visible until the session controller's atomic send acknowledges this version. */
+    public fun enqueueControlled(
+        text: String,
+        version: Long?,
+    ) {
+        val turns = controller ?: return send(text)
+        if (text.isBlank() || isGenerating) return
+        val admission = turns.enqueue(chatDocId, text, version)
+        scope.launch {
+            try {
+                admission.await()
+            } catch (cancelled: CancellationException) {
+                throw cancelled
+            } catch (e: Exception) {
+                controller.publishView {
+                    turnState =
+                        ChatTurnState.Failed(e as? InferenceException ?: InferenceException.Internal())
+                }
+            }
+        }
     }
 
     /** Error banner's retry action — re-sends the exact prompt that failed. */
     public fun retry() {
         if (!canRetry) return
-        val text = lastFailedText ?: return
-        send(text)
+        if (controller != null) {
+            val userId = retryUserId ?: return
+            val retry = controller.retry(chatDocId, userId)
+            scope.launch {
+                try {
+                    retry.await()
+                } catch (cancelled: CancellationException) {
+                    throw cancelled
+                } catch (e: Exception) {
+                    controller.publishView {
+                        turnState =
+                            ChatTurnState.Failed(e as? InferenceException ?: InferenceException.Internal())
+                    }
+                }
+            }
+        } else {
+            val text = lastFailedText ?: return
+            send(text)
+        }
     }
 
     /**

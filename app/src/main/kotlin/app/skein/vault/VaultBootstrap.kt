@@ -143,6 +143,40 @@ class VaultBootstrap(
     private var inFlight: Deferred<BringUpResult>? = null
 
     init {
+        unlockManager.addLockObserver(
+            object : LockObserver {
+                override val priority = LockObserverPriority.HIGH
+
+                override suspend fun onLocking(
+                    epoch: Long,
+                    budgetMillis: Long,
+                ) {
+                    sessionState.value?.models?.freezeTurns(epoch, budgetMillis)
+                }
+
+                override fun onLocked(epoch: Long) {
+                    sessionState.value?.models?.closeSessionState()
+                }
+
+                override fun onUnlocked(epoch: Long) = Unit
+            },
+        )
+        unlockManager.addLockObserver(
+            object : LockObserver {
+                override val priority = LockObserverPriority.LOW
+
+                override suspend fun onLocking(
+                    epoch: Long,
+                    budgetMillis: Long,
+                ) {
+                    sessionState.value?.models?.flushTurnsAndDrafts(epoch, budgetMillis)
+                }
+
+                override fun onLocked(epoch: Long) = Unit
+
+                override fun onUnlocked(epoch: Long) = Unit
+            },
+        )
         unlockManager.addLockObserver(LockHandler())
     }
 
@@ -264,6 +298,7 @@ class VaultBootstrap(
             // send a second, late `lifecycle.close()` after the next unlock
             // had already reopened the vault.
             val leftover = sessionState.getAndUpdate { null } ?: return
+            leftover.models?.closeSessionState()
             scope.launch {
                 // Defense in depth (skein-whg8): idempotent even when
                 // `onLocking` already ran `models.onLocking` — `onLocked`'s

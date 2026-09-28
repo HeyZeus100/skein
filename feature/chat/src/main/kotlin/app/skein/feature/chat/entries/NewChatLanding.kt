@@ -17,8 +17,10 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalLocale
@@ -30,14 +32,18 @@ import app.skein.core.designsystem.components.SkeinSectionHeader
 import app.skein.core.designsystem.icons.SkeinIcons
 import app.skein.core.designsystem.theme.SkeinSize
 import app.skein.core.designsystem.theme.SkeinSpacing
+import app.skein.core.model.ChatDraftKey
 import app.skein.core.model.DocumentKind
 import app.skein.core.model.NewDocument
 import app.skein.core.model.TimelineFilter
 import app.skein.core.navigation.ChatHomeKey
 import app.skein.core.navigation.Destination
+import app.skein.core.navigation.NewChatKey
 import app.skein.core.navigation.ObjectKind
 import app.skein.core.navigation.SkeinKey
 import app.skein.feature.chat.ChatBottomBar
+import app.skein.feature.chat.DraftLoadNotice
+import app.skein.feature.chat.drafts.rememberDraftComposerState
 import app.skein.feature.chat.importAttachment
 import app.skein.feature.editor.autocomplete.Suggestion
 import app.skein.feature.editor.entries.newNote
@@ -46,6 +52,7 @@ import app.skein.feature.shell.host.LocalSkeinWindowLayout
 import app.skein.feature.shell.host.SkeinShellState
 import app.skein.feature.shell.host.open
 import app.skein.feature.shell.layout.SkeinNavContainer
+import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.launch
 import java.time.Instant
 import java.time.ZoneId
@@ -79,6 +86,19 @@ internal fun NewChatLanding(
         repository.observeTimeline(TimelineFilter(kinds = RECENT_KINDS), limit = recentCount)
     }.collectAsState(emptyList())
     val scope = rememberCoroutineScope()
+    val spaceId = shell.nav.space?.value ?: deps.defaultSpaceId
+    // The root has one stable, encrypted draft per Space, including process restoration.
+    val draftKey = spaceId?.let { ChatDraftKey.New(it, (key as? NewChatKey)?.draftId?.value ?: ROOT_DRAFT_ID) }
+    val composer =
+        if (deps.drafts != null &&
+            draftKey != null
+        ) {
+            rememberDraftComposerState(deps.drafts, draftKey)
+        } else {
+            null
+        }
+    var sending by remember(draftKey) { mutableStateOf(false) }
+    var sendFailed by remember(draftKey) { mutableStateOf(false) }
 
     Column(Modifier.fillMaxSize().testTag(ChatEntryTestTags.LANDING)) {
         // As the placeholder beside Conversations it follows the Chat root's rule: no navigation icon.
@@ -136,23 +156,64 @@ internal fun NewChatLanding(
         }
         val pipeline = deps.sendPipeline
         if (pipeline != null && deps.hasModel) {
+            DraftLoadNotice(composer)
+            if (sendFailed) Text("Couldn't send this message. Try again.", Modifier.padding(SkeinSpacing.space16))
             ChatBottomBar(
                 isGenerating = false,
+                composerState = composer,
+                enabled = !sending && (deps.turns == null || composer != null),
                 onSend = { text ->
-                    val selectedSpace = shell.nav.space?.value
-                    scope.launch {
-                        // §11.4: create on first send; the new chat's screen sends the message.
-                        val chat =
-                            repository.createDocument(
-                                NewDocument(
-                                    DocumentKind.CHAT,
-                                    provisionalTitle(text, deps.knowledge.clock()),
-                                    bodyMd = "",
-                                    personaId = selectedSpace,
-                                ),
-                            )
-                        deps.handoff.put(chat.id, text)
-                        shell.navigate { openDocument(it, chat.id, ObjectKind.CHAT) }
+                    val origin = shell.nav
+                    val selectedSpace = origin.space?.value
+                    val turns = deps.turns
+                    if (turns != null) {
+                        val snapshot = composer?.snapshot
+                        if (snapshot != null &&
+                            draftKey != null &&
+                            !sending &&
+                            draftKey.spaceId == (selectedSpace ?: deps.defaultSpaceId)
+                        ) {
+                            sending = true
+                            sendFailed = false
+                            val committed =
+                                turns.enqueueNew(
+                                    draftKey,
+                                    snapshot.version,
+                                    snapshot.draft.text,
+                                    provisionalTitle(snapshot.draft.text, deps.knowledge.clock()),
+                                )
+                            scope.launch {
+                                try {
+                                    val chatId = committed.await()
+                                    if (shell.nav ===
+                                        origin
+                                    ) {
+                                        shell.navigate { openDocument(it, chatId, ObjectKind.CHAT) }
+                                    }
+                                } catch (cancelled: CancellationException) {
+                                    throw cancelled
+                                } catch (_: Exception) {
+                                    sendFailed = true
+                                } finally {
+                                    sending = false
+                                }
+                            }
+                        }
+                    } else {
+                        scope.launch {
+                            // §11.4: create on first send; the new chat's screen sends the message.
+                            val chat =
+                                repository.createDocument(
+                                    NewDocument(
+                                        DocumentKind.CHAT,
+                                        provisionalTitle(text, deps.knowledge.clock()),
+                                        bodyMd = "",
+                                        personaId = selectedSpace,
+                                    ),
+                                )
+                            deps.handoff.put(chat.id, text)
+                            shell.navigate { openDocument(it, chat.id, ObjectKind.CHAT) }
+                        }
                     }
                 },
                 onCancel = {},
@@ -215,3 +276,5 @@ private val SENTENCE_END = Regex("""(?<=[.?!])\s+|\n+""")
 private val WHITESPACE = Regex("""\s+""")
 private const val MIN_WORDS = 3
 private const val TITLE_MAX = 48
+
+private const val ROOT_DRAFT_ID = "00000000-0000-0000-0000-000000000001"

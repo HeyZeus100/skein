@@ -63,6 +63,7 @@ class VaultSession(
      */
     suspend fun close() {
         if (!closed.compareAndSet(false, true)) return
+        models?.closeSessionState()
         try {
             try {
                 repository.quiesce()
