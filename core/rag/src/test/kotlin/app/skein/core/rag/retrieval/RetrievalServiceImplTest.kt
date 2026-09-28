@@ -10,11 +10,14 @@ import app.skein.core.model.Capability
 import app.skein.core.model.DocumentKind
 import app.skein.core.model.EmbedderService
 import app.skein.core.model.EntitySpan
+import app.skein.core.model.IndexStore
 import app.skein.core.model.Model
 import app.skein.core.model.ModelFormat
 import app.skein.core.model.NewChunk
 import app.skein.core.model.NewDocument
 import app.skein.core.model.RecallSource
+import app.skein.core.model.ScoredChunk
+import app.skein.core.rag.rank.RankerConfig
 import app.skein.testing.FakeEmbedderService
 import app.skein.testing.InMemoryIndexStore
 import app.skein.testing.InMemoryVaultRepository
@@ -24,6 +27,68 @@ import kotlinx.coroutines.test.runTest
 import org.junit.Test
 
 class RetrievalServiceImplTest {
+    @Test
+    fun `disabled recall stages perform no lookup and emit no missing embedder warning`() =
+        runTest {
+            val repo = InMemoryVaultRepository()
+            val backing = InMemoryIndexStore()
+            val index =
+                object : IndexStore by backing {
+                    override suspend fun bm25(
+                        query: String,
+                        k: Int,
+                    ): List<ScoredChunk> = error("disabled lexical ran")
+
+                    override suspend fun findEntitiesByName(names: Collection<String>) = error("disabled graph ran")
+                }
+            val warnings = mutableListOf<String>()
+            val service =
+                RetrievalServiceImpl(
+                    index,
+                    repo,
+                    null,
+                    warn = warnings::add,
+                    stages = RecallStages(false, false, false),
+                )
+            assertThat(service.retrieveContext("Project Willow")).isEmpty()
+            assertThat(warnings).isEmpty()
+        }
+
+    @Test
+    fun `lexical ablation retains lexical provenance and intentionally disabled vector is silent`() =
+        runTest {
+            val repo = InMemoryVaultRepository()
+            val index = InMemoryIndexStore()
+            seedNote(repo, index, title = "Sprocket", body = "sprocket fixture")
+            val warnings = mutableListOf<String>()
+            val service =
+                RetrievalServiceImpl(
+                    index,
+                    repo,
+                    null,
+                    config = RankerConfig(recallWeight = 1.0, pprWeight = 0.0, neighborHops = 0),
+                    warn = warnings::add,
+                    stages = RecallStages(vector = false, graph = false),
+                )
+            val results = service.retrieveContext("Sprocket")
+            assertThat(results).isNotEmpty()
+            assertThat(results.flatMap { it.recalledBy }).containsExactly(RecallSource.LEXICAL)
+            assertThat(warnings).isEmpty()
+        }
+
+    @Test
+    fun `graph ablation uses production title seeds without lexical provenance`() =
+        runTest {
+            val repo = InMemoryVaultRepository()
+            val index = InMemoryIndexStore()
+            seedNote(repo, index, title = "Sprocket", body = "sprocket fixture")
+            val service =
+                RetrievalServiceImpl(index, repo, null, stages = RecallStages(lexical = false, vector = false))
+            val results = service.retrieveContext("Sprocket")
+            assertThat(results).isNotEmpty()
+            assertThat(results.flatMap { it.recalledBy }).containsExactly(RecallSource.GRAPH)
+        }
+
     // ------------------------------------------------------------------
     // Embedder-optional degradation (plan `E5.I13`: "Empty vault or
     // embedder unavailable → degrade to lexical + graph only").

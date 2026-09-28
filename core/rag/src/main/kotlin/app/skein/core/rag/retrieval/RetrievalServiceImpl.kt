@@ -116,6 +116,7 @@ public class RetrievalServiceImpl(
     private val legacyPersonaId: PersonaId? = null,
     /** Explicit conversation-history retrieval only; automatic Knowledge evidence excludes CHAT. */
     includeChatHistory: Boolean = false,
+    private val stages: RecallStages = RecallStages(),
 ) : RetrievalService {
     private val lexicalRecall = LexicalRecall(index)
     private val graphRecall = GraphRecall(index, repository)
@@ -140,21 +141,23 @@ public class RetrievalServiceImpl(
     /** Spec §7.2 recall step: the three sources, fanned out concurrently on [io]. See file header. */
     private suspend fun recallAll(query: String): Map<CitationSourceKind, List<ScoredChunk>> =
         coroutineScope {
-            val lexicalDeferred = async(io) { recallStage(STAGE_LEXICAL) { lexicalRecall.recall(query) } }
-            val graphDeferred = async(io) { recallStage(STAGE_GRAPH) { graphRecall.recall(query) } }
+            val lexicalDeferred =
+                if (stages.lexical) async(io) { recallStage(STAGE_LEXICAL) { lexicalRecall.recall(query) } } else null
+            val graphDeferred =
+                if (stages.graph) async(io) { recallStage(STAGE_GRAPH) { graphRecall.recall(query) } } else null
             val vectorDeferred =
-                embedder?.let { service ->
+                embedder?.takeIf { stages.vector }?.let { service ->
                     async(io) { recallStage(STAGE_VECTOR) { VectorRecall(index, service).recall(query) } }
                 }
 
-            val vector = vectorDeferred?.await() ?: noEmbedderDegraded()
+            val vector = vectorDeferred?.await() ?: if (stages.vector) noEmbedderDegraded() else emptyList()
 
             // Deterministic merge: one entry per source, keyed by the fixed
             // `CitationSourceKind` enum regardless of `async` completion order.
             linkedMapOf(
-                CitationSourceKind.LEXICAL to lexicalDeferred.await(),
+                CitationSourceKind.LEXICAL to lexicalDeferred?.await().orEmpty(),
                 CitationSourceKind.VECTOR to vector,
-                CitationSourceKind.GRAPH to graphDeferred.await(),
+                CitationSourceKind.GRAPH to graphDeferred?.await().orEmpty(),
             )
         }
 
