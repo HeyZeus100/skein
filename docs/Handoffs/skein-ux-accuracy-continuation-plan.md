@@ -5,6 +5,10 @@
 
 This is the original continuation design and dispatch sequence, not a second task tracker. Beads owns status and acceptance evidence. The initial planning pass did not change the application or device. The owner subsequently authorized execution; see [the execution evidence](skein-ux-accuracy-execution.md) for implemented changes, observed failures and remaining verification limits.
 
+**Owner pause, 2026-09-28:** implementation is stopped. Future agents should begin
+with the [paused execution handoff](skein-ux-accuracy-resume-handoff.md) and await
+the owner's instruction to resume before executing this plan.
+
 ## 1. Recommendation and meaning of success
 
 Resume the existing UX architecture while making answer quality an immediate parallel priority. Recover the unfinished shell, prove the model receives a correct conversation, establish a real-model evaluation, repair evidence selection and context handling, and then select the strongest measured model configuration that the Fold can sustain.

@@ -1,5 +1,10 @@
 # UX and answer accuracy: execution evidence
 
+**Paused by the owner on 2026-09-28.** The current implementation checkpoint is
+`13b7337`. Read the [resume handoff](skein-ux-accuracy-resume-handoff.md) first for
+the latest successful gates, unmerged work, preserved artifacts and restart
+assignments. No further implementation or device work is authorized until resume.
+
 This records execution of the [continuation plan](skein-ux-accuracy-continuation-plan.md)
 authorized by the owner's “run it” instruction. Beads remains the task tracker.
 The original handoffs describe historical states; they are not proof that the
@@ -86,8 +91,13 @@ The artifacts bind the run to these complete SHA-256 values:
 At integrated `1435774`, model/vault/RAG/chat/testing checks, explicit ktlint,
 and affected AndroidTest compilation passed (540 Gradle tasks). An earlier
 integrated app suite exposed concurrent timeline iteration in the in-memory
-test repository; `skein-f17n` owns that correction. The controller's own suite
-passed, but that does not make the failed integrated app suite green.
+test repository. `927d071` corrected it; full integrated app/chat/shared testing
+checks, explicit ktlint and both app AndroidTest compilations then passed (863
+tasks). At `13b7337`, merged retrieval/inference checks and both Android native
+ABIs also passed (343 tasks). The native host tokenizer regression now matches
+the exact 30-token reference while preserving control isolation. New emulator
+and physical-device runs remain pending; the failed historical runs above are
+retained unchanged.
 
 ## Limits of the evidence
 

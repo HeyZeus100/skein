@@ -1,0 +1,186 @@
+From af196409c3505776f37d94663a9cb73b495228c3 Mon Sep 17 00:00:00 2001
+From: Andrew Herrera <andrew@aherrera.us>
+Date: Mon, 28 Sep 2026 13:05:14 -0700
+Subject: [PATCH] Record tokenizer overlay provenance in synthetic benchmark
+ runs
+
+---
+ .../benchmark/SyntheticAnswerBenchmarkTest.kt |  6 ++++
+ tools/eval/ANDROID_SYNTHETIC.md               | 10 ++++++-
+ tools/eval/prepare_android_benchmark.py       |  7 +++--
+ tools/eval/run_android_smoke.py               |  7 ++++-
+ tools/eval/test_prepare_android_benchmark.py  | 29 +++++++++++++++++++
+ 5 files changed, 54 insertions(+), 5 deletions(-)
+
+diff --git a/app/src/syntheticBenchmark/kotlin/app/skein/benchmark/SyntheticAnswerBenchmarkTest.kt b/app/src/syntheticBenchmark/kotlin/app/skein/benchmark/SyntheticAnswerBenchmarkTest.kt
+index 9ae9bfd..d7f3bfe 100644
+--- a/app/src/syntheticBenchmark/kotlin/app/skein/benchmark/SyntheticAnswerBenchmarkTest.kt
++++ b/app/src/syntheticBenchmark/kotlin/app/skein/benchmark/SyntheticAnswerBenchmarkTest.kt
+@@ -81,6 +81,7 @@ class SyntheticAnswerBenchmarkTest {
+             listOf(
+                 "model_sha256",
+                 "template_sha256",
++                "tokenizer_overlay_sha256",
+                 "fixture_sha256",
+                 "case_set_sha256",
+                 "expected_apk_sha256",
+@@ -171,6 +172,7 @@ class SyntheticAnswerBenchmarkTest {
+                     listOf("case_set_sha256", "fixture_sha256", "template_sha256", "build_sha", "llama_sha").forEach {
+                         put(it, config.getValue(it))
+                     }
++                    put("tokenizer_overlay_sha256", config.getValue("tokenizer_overlay_sha256"))
+                     put("model_sha256", JsonPrimitive(modelHash))
+                     put("apk_sha256", JsonPrimitive(apkHash))
+                     put(
+@@ -179,6 +181,10 @@ class SyntheticAnswerBenchmarkTest {
+                     )
+                     put("build_sha_provenance", JsonPrimitive("declared host build; installed APK digest verified"))
+                     put("llama_sha_provenance", JsonPrimitive("declared host source pin"))
++                    put(
++                        "tokenizer_overlay_sha256_provenance",
++                        JsonPrimitive("declared host SHA256 of native/llama/tokenizer-patches/PINS.txt"),
++                    )
+                     put(
+                         "template_sha256_provenance",
+                         JsonPrimitive("host GGUF raw tokenizer.chat_template bound by model_sha256"),
+diff --git a/tools/eval/ANDROID_SYNTHETIC.md b/tools/eval/ANDROID_SYNTHETIC.md
+index f5700d7..afcc29d 100644
+--- a/tools/eval/ANDROID_SYNTHETIC.md
++++ b/tools/eval/ANDROID_SYNTHETIC.md
+@@ -57,6 +57,7 @@ python3 tools/eval/prepare_android_benchmark.py \
+   --model-license VERIFIED_MANIFEST_LICENSE --apk /absolute/app-dev-debug.apk \
+   --fixture /absolute/development-input.jsonl --case-set-sha256 CASE_SET_SHA256 \
+   --build-sha FULL_BUILD_SHA --llama-sha FULL_PINNED_LLAMA_SHA \
++  --tokenizer-overlay-sha256 SHA256_OF_TOKENIZER_PATCH_PINS \
+   --run-id development-baseline-01 --context-length 4096 --seeds 17 \
+   --output-dir /absolute/new-run-directory
+ ```
+@@ -136,7 +137,14 @@ rows without this status also have unavailable post-budget evidence metadata and
+ must not be interpreted as verified empty source sets. Their files remain unchanged.
+ 
+ The manifest distinguishes declared host build/llama metadata from verified
+-installed APK and full-model hashes. `context.allocated` comes from the native
++installed APK and full-model hashes. `tokenizer_overlay_sha256` is the SHA256 of
++the exact `native/llama/tokenizer-patches/PINS.txt` in the reviewed build checkout;
++it identifies the tokenizer patch and its pinned input/output files separately
++from the upstream `llama_sha`. Both source identities are declared host provenance,
++not independently read back from the APK. The smoke runner computes the overlay
++digest before installing and checks it against the returned manifest. Older
++retained runs without this field predate the overlay and remain unchanged.
++`context.allocated` comes from the native
+ context through the isolated measurement API. Measurement count is checked
+ against generation statistics, but that count consistency is distinct from the
+ separate exact token-ID parity test. Memory is null because this harness does not
+diff --git a/tools/eval/prepare_android_benchmark.py b/tools/eval/prepare_android_benchmark.py
+index 422e98c..3f4378b 100644
+--- a/tools/eval/prepare_android_benchmark.py
++++ b/tools/eval/prepare_android_benchmark.py
+@@ -91,7 +91,7 @@ def gguf_template_metadata(path):
+ def main():
+     parser = argparse.ArgumentParser(description=__doc__)
+     for flag in ("model", "model-sha256", "model-license", "apk", "fixture", "case-set-sha256",
+-                 "build-sha", "llama-sha", "run-id", "output-dir"):
++                 "build-sha", "llama-sha", "tokenizer-overlay-sha256", "run-id", "output-dir"):
+         parser.add_argument("--" + flag, required=True)
+     parser.add_argument("--device-root", default="/data/user/0/app.skein/files/synthetic-benchmark")
+     parser.add_argument("--context-length", type=int, required=True)
+@@ -102,7 +102,7 @@ def main():
+     args = parser.parse_args()
+     if not re.fullmatch(r"[A-Za-z0-9_-]{1,100}", args.run_id):
+         parser.error("unsafe run id")
+-    for value in (args.model_sha256, args.case_set_sha256):
++    for value in (args.model_sha256, args.case_set_sha256, args.tokenizer_overlay_sha256):
+         if not re.fullmatch(r"[a-f0-9]{64}", value):
+             parser.error("full lowercase SHA256 required")
+     for value in (args.build_sha, args.llama_sha):
+@@ -134,7 +134,8 @@ def main():
+                   model_file=f"{root}/models/{args.model_sha256}/model.gguf", model_sha256=args.model_sha256,
+                   model_size=model.stat().st_size, model_license=args.model_license,
+                   template_sha256=metadata["template_sha256"], build_sha=args.build_sha,
+-                  llama_sha=args.llama_sha, expected_apk_sha256=file_sha256(args.apk), seeds=seeds,
++                  llama_sha=args.llama_sha, tokenizer_overlay_sha256=args.tokenizer_overlay_sha256,
++                  expected_apk_sha256=file_sha256(args.apk), seeds=seeds,
+                   sampling=sampling, context_length=args.context_length, threads=args.threads,
+                   case_timeout_ms=args.case_timeout_ms)
+     output = Path(args.output_dir)
+diff --git a/tools/eval/run_android_smoke.py b/tools/eval/run_android_smoke.py
+index 632bf24..cc810d7 100644
+--- a/tools/eval/run_android_smoke.py
++++ b/tools/eval/run_android_smoke.py
+@@ -113,6 +113,8 @@ def main():
+         summary["model_sha256"] = lock["sha256"]
+         llama_sha = command(["git", "rev-parse", "HEAD:third_party/llama.cpp"]).stdout.decode().strip()
+         summary["llama_sha"] = llama_sha
++        overlay_sha = file_sha256(repo / "native/llama/tokenizer-patches/PINS.txt")
++        summary["tokenizer_overlay_sha256"] = overlay_sha
+         for apk in apks.values():
+             device.install(apk)
+         app_root = device.private_root("app.skein")
+@@ -130,7 +132,8 @@ def main():
+         command([sys.executable, "tools/eval/prepare_android_benchmark.py", "--model", str(model),
+                  "--model-sha256", lock["sha256"], "--model-license", lock["license"], "--apk", str(apks["app"]),
+                  "--fixture", str(fixture_file), "--case-set-sha256", case_hash, "--build-sha", head,
+-                 "--llama-sha", llama_sha, "--run-id", run_id, "--output-dir", str(prepared),
++                 "--llama-sha", llama_sha, "--tokenizer-overlay-sha256", overlay_sha,
++                 "--run-id", run_id, "--output-dir", str(prepared),
+                  "--device-root", app_root, "--context-length", "1024", "--threads", "2",
+                  "--case-timeout-ms", "60000",
+                  "--sampling", str(sampling_file), "--seeds", "17"])
+@@ -163,6 +166,8 @@ def main():
+         manifest = json.loads((app_output / "run_manifest.json").read_text())
+         parity = json.loads((native_output / "native-parity.json").read_text())
+         require(manifest["build_sha"] == head and manifest["model_sha256"] == lock["sha256"]
++                and manifest["llama_sha"] == llama_sha
++                and manifest["tokenizer_overlay_sha256"] == overlay_sha
+                 and manifest["apk_sha256"] == summary["apk_sha256"]["app"]
+                 and manifest["fixture_sha256"] == file_sha256(fixture_file)
+                 and manifest["context"]["allocated"] > 0, "manifest provenance mismatch")
+diff --git a/tools/eval/test_prepare_android_benchmark.py b/tools/eval/test_prepare_android_benchmark.py
+index 1679674..3577373 100644
+--- a/tools/eval/test_prepare_android_benchmark.py
++++ b/tools/eval/test_prepare_android_benchmark.py
+@@ -1,5 +1,8 @@
+ import hashlib
++import json
+ import struct
++import subprocess
++import sys
+ import tempfile
+ import unittest
+ from pathlib import Path
+@@ -12,6 +15,32 @@ def string(value):
+ 
+ 
+ class RawTemplateMetadataTest(unittest.TestCase):
++    def test_preparation_requires_and_retains_complete_overlay_identity(self):
++        with tempfile.TemporaryDirectory() as directory:
++            root = Path(directory)
++            model = root / "public.gguf"
++            model.write_bytes(b"GGUF" + struct.pack("<IQQ", 3, 0, 1) +
++                              string(b"tokenizer.chat_template") + struct.pack("<I", 8) + string(b"{{ content }}"))
++            apk, fixture = root / "app.apk", root / "input.jsonl"
++            apk.write_bytes(b"synthetic apk")
++            fixture.write_text('{"case_id":"synthetic-only"}\n')
++            output = root / "prepared"
++            arguments = [sys.executable, str(Path(__file__).with_name("prepare_android_benchmark.py")),
++                         "--model", str(model), "--model-sha256", hashlib.sha256(model.read_bytes()).hexdigest(),
++                         "--model-license", "Apache-2.0", "--apk", str(apk), "--fixture", str(fixture),
++                         "--case-set-sha256", "b" * 64, "--build-sha", "c" * 40, "--llama-sha", "d" * 40,
++                         "--run-id", "overlay-test", "--context-length", "1024", "--output-dir", str(output)]
++            for extra in ([], ["--tokenizer-overlay-sha256", "short"]):
++                rejected = subprocess.run(arguments + extra, capture_output=True, timeout=10)
++                self.assertNotEqual(rejected.returncode, 0)
++                self.assertFalse(output.exists())
++            accepted = subprocess.run(arguments + ["--tokenizer-overlay-sha256", "e" * 64],
++                                      capture_output=True, timeout=10)
++            self.assertEqual(accepted.returncode, 0, accepted.stderr.decode())
++            config = json.loads((output / "config.json").read_text())
++            self.assertEqual(config["tokenizer_overlay_sha256"], "e" * 64)
++            self.assertEqual(config["llama_sha"], "d" * 40)
++
+     def inspect(self, data):
+         with tempfile.TemporaryDirectory() as root:
+             path = Path(root) / "public.gguf"
+-- 
+2.53.0
+
