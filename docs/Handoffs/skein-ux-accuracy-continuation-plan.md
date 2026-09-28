@@ -3,7 +3,7 @@
 **Prepared:** 2026-09-27. **Code audited:** `1579a3f2d0cc839f133e0d116dd33c5244b543ec`.
 **Planning bead:** `skein-i0zm`. **Implementation tracking:** existing `skein-xtov`, `skein-gg11`, and the beads referenced below.
 
-This is a continuation design and dispatch sequence, not a second task tracker. Beads owns status and acceptance evidence. The requested work for this session was planning; no application implementation, interrupted patch, model, or device was changed.
+This is the original continuation design and dispatch sequence, not a second task tracker. Beads owns status and acceptance evidence. The initial planning pass did not change the application or device. The owner subsequently authorized execution; see [the execution evidence](skein-ux-accuracy-execution.md) for implemented changes, observed failures and remaining verification limits.
 
 ## 1. Recommendation and meaning of success
 

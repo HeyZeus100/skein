@@ -1,0 +1,24 @@
+{
+  "schema_version": 1,
+  "mode": "tiny-model-smoke",
+  "quality_assessed": false,
+  "build_sha": "71cef4d5f562130b15f3270b1c93a3bb49ceba9c",
+  "complete": false,
+  "apk_sha256": {
+    "app": "77243235a40ec985cba89e9d54b914bdcde37f49eeb0d566884d7815f32eb82d",
+    "app_test": "fcd971876b19333f586b320d2f11f827d91579cd55702dc0b0c4c00f7b6b24dd",
+    "native_test": "74d98bf3ac364d51c6e08d8b8594f607044e8b0de92430b3611f48f35972573a"
+  },
+  "model_sha256": "741ad12b64088fedc17c33aacb22e48be1972ef36a39f03666dd68bd15614fb9",
+  "llama_sha": "b29c606e28a01b1bc8c1351026a0fa6e616bf6c4",
+  "answer_instrumentation_passed": true,
+  "parity_instrumentation_passed": false,
+  "answer_statuses": {
+    "ok": 2,
+    "timeout": 10,
+    "oom": 0,
+    "error": 0
+  },
+  "missing_case_seeds": [],
+  "error_code": "ValueError"
+}
