@@ -3,9 +3,9 @@
 // into one Space. Orchestration only: every file goes through
 // `ImportService.importText` into the target persona, so titles, frontmatter
 // ids and conflicts behave exactly like a single-file import, and the
-// ingest pass resolves the notes' `[[links]]` into edges afterwards
-// (`DanglingResolver` rewrites links that pointed at a note imported later),
-// so the folder arrives as a connected graph.
+// import session resolves unambiguous filename/path/alias links to UUIDs
+// after the files arrive. Unresolved links stay guarded even on cancellation;
+// ingest cannot mistake a duplicate basename for an unrelated same-title note.
 //
 // The shape follows MainActivity's model import (`ImportProgress` flow, one
 // import at a time, a `Job` to cancel) with the ownership skein-gg11.19 asks
@@ -43,6 +43,7 @@ import android.provider.DocumentsContract.Document
 import app.skein.core.model.PersonaId
 import app.skein.core.vault.session.LockObserver
 import app.skein.core.vault.session.LockObserverPriority
+import app.skein.core.vault.transfer.MarkdownImportLinker
 import app.skein.vault.VaultSession
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.CoroutineDispatcher
@@ -145,13 +146,15 @@ class FolderImportJob(
     ) {
         var imported = 0
         var skipped = 0
+        val links = MarkdownImportLinker(open.repository)
         try {
             val listing = list(treeUri)
             for ((index, file) in listing.files.withIndex()) {
                 currentCoroutineContext().ensureActive()
-                if (importOne(open, file, personaId)) imported += 1 else skipped += 1
+                if (importOne(open, file, personaId, links)) imported += 1 else skipped += 1
                 stateFlow.value = FolderImportState.Running(done = index + 1, total = listing.files.size)
             }
+            links.finish()
             val outcome = if (listing.complete) FolderImportOutcome.COMPLETED else FolderImportOutcome.INCOMPLETE
             stateFlow.value = FolderImportState.Finished(imported, skipped, outcome)
         } catch (e: CancellationException) {
@@ -165,10 +168,18 @@ class FolderImportJob(
         open: VaultSession,
         file: TreeFile,
         personaId: PersonaId?,
+        links: MarkdownImportLinker,
     ): Boolean {
         val bytes = read(file) ?: return false
         return try {
-            open.importService.importText(file.name, file.mimeType, bytes.inputStream(), personaId)
+            links.importText(
+                open.importService,
+                file.relativePath,
+                file.name,
+                file.mimeType,
+                bytes.inputStream(),
+                personaId,
+            )
             true
         } catch (e: CancellationException) {
             throw e
@@ -197,17 +208,17 @@ class FolderImportJob(
         var complete = true
         var rows = 0
         val listed = HashSet<String>()
-        val pending = ArrayDeque<Pair<String, Int>>()
+        val pending = ArrayDeque<Triple<String, Int, String>>()
         val rootId =
             try {
                 DocumentsContract.getTreeDocumentId(treeUri)
             } catch (_: IllegalArgumentException) {
                 return Listing(files, complete = false)
             }
-        pending += rootId to 0
+        pending += Triple(rootId, 0, "")
         while (pending.isNotEmpty()) {
             currentCoroutineContext().ensureActive()
-            val (directoryId, depth) = pending.removeFirst()
+            val (directoryId, depth, directoryPath) = pending.removeFirst()
             if (!listed.add(directoryId)) continue
             try {
                 val children = DocumentsContract.buildChildDocumentsUriUsingTree(treeUri, directoryId)
@@ -223,14 +234,25 @@ class FolderImportJob(
                         val id = it.getString(COLUMN_ID) ?: continue
                         val name = it.getString(COLUMN_NAME) ?: continue
                         if (name.startsWith('.')) continue
+                        if ('/' in name || '\\' in name || '\u0000' in name) {
+                            complete = false
+                            continue
+                        }
+                        val relativePath = if (directoryPath.isEmpty()) name else "$directoryPath/$name"
                         if (it.getString(COLUMN_MIME) == Document.MIME_TYPE_DIR) {
-                            if (depth < MAX_DEPTH) pending += id to depth + 1 else complete = false
+                            if (depth < MAX_DEPTH) pending += Triple(id, depth + 1, relativePath) else complete = false
                             continue
                         }
                         val mimeType = MIME_TYPES[name.substringAfterLast('.', "").lowercase()] ?: continue
                         val size = if (it.isNull(COLUMN_SIZE)) null else it.getLong(COLUMN_SIZE)
                         files +=
-                            TreeFile(DocumentsContract.buildDocumentUriUsingTree(treeUri, id), name, mimeType, size)
+                            TreeFile(
+                                DocumentsContract.buildDocumentUriUsingTree(treeUri, id),
+                                name,
+                                relativePath,
+                                mimeType,
+                                size,
+                            )
                     }
                 }
             } catch (_: RuntimeException) {
@@ -263,6 +285,7 @@ class FolderImportJob(
     private class TreeFile(
         val uri: Uri,
         val name: String,
+        val relativePath: String,
         val mimeType: String,
         val size: Long?,
     )

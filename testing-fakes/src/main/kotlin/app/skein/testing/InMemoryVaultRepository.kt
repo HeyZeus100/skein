@@ -248,7 +248,15 @@ public class InMemoryVaultRepository(
                     val renamed = existing.copy(title = newTitle)
                     documents[id] = renamed
                     index?.let { linked ->
-                        afterCommit { linked.detachEdges(id, unresolvedTarget(existing.title), deleting = false) }
+                        val bindings = wikilinkBindings(id, existing.title)
+                        afterCommit {
+                            linked.detachEdges(
+                                id,
+                                unresolvedTarget(existing.title),
+                                deleting = false,
+                                bindings = bindings,
+                            )
+                        }
                     }
                     requeueTitleSurvivor(existing.title, id)
                     if (existing.kind != DocumentKind.ATTACHMENT) {
@@ -260,6 +268,30 @@ public class InMemoryVaultRepository(
             }
         }
     }
+
+    private fun wikilinkBindings(
+        id: DocId,
+        oldTitle: String,
+    ): Map<DocId, Pair<Boolean, Boolean>> =
+        documents.mapValues { (_, source) ->
+            val targets = FakeWikilinkTargets.extract(source.bodyMd.orEmpty())
+            val idTargets = targets.filter { UUID_PATTERN.matches(id) && it.equals(id, ignoreCase = true) }.toSet()
+            val idBound = idTargets.isNotEmpty()
+            val unresolved =
+                (source.frontmatter["_skein_unresolved_import_links"] as? kotlinx.serialization.json.JsonArray)
+                    .orEmpty()
+                    .filterIsInstance<JsonPrimitive>()
+                    .map { it.content.lowercase() }
+                    .toSet()
+            val titleBound =
+                !idBound ||
+                    targets.any {
+                        it !in idTargets &&
+                            it.equals(oldTitle, ignoreCase = true) &&
+                            it.lowercase() !in unresolved
+                    }
+            idBound to titleBound
+        }
 
     override suspend fun updateFrontmatter(
         id: DocId,
@@ -310,9 +342,10 @@ public class InMemoryVaultRepository(
                 // linked index. Queued rather than applied here so a
                 // rolled-back `transaction { }` has nothing to undo there.
                 index?.let { linked ->
+                    val bindings = wikilinkBindings(id, doomed.title)
                     afterCommit {
                         linked.cascadeDelete(id)
-                        linked.detachEdges(id, unresolvedTarget(doomed.title), deleting = true)
+                        linked.detachEdges(id, unresolvedTarget(doomed.title), deleting = true, bindings = bindings)
                     }
                 }
                 requeueTitleSurvivor(doomed.title, id)
@@ -807,6 +840,7 @@ public class InMemoryVaultRepository(
     }
 
     private companion object {
+        val UUID_PATTERN = Regex("[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}")
         const val FRONTMATTER_ID_KEY: String = "id"
 
         /**

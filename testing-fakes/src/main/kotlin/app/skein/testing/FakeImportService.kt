@@ -137,6 +137,7 @@ public class FakeImportService(
         val citedByImported = mutableSetOf<DocId>()
         val citedBySkipped = mutableSetOf<DocId>()
         val zip = ZipInputStream(input)
+        var manifestSeen = false
         while (true) {
             val entry = zip.nextEntry ?: break
             val text = zip.readBytes().toString(Charsets.UTF_8)
@@ -147,9 +148,12 @@ public class FakeImportService(
                     DRIVE_PREFIX.containsMatchIn(normalized) ||
                     normalized.split('/').any { it == ".." }
             when {
-                entry.isDirectory || name == ".skein/manifest.json" -> Unit
+                entry.isDirectory -> Unit
+                name == ".skein/manifest.json" -> manifestSeen = true
                 unsafe -> skipped += 1
-                '/' !in name && name.endsWith(".md") -> {
+                normalized.endsWith(".md", ignoreCase = true) &&
+                    (!manifestSeen || '/' !in normalized) &&
+                    !normalized.startsWith("attachments/") -> {
                     val id = frontmatterValue(text, FrontmatterKeys.ID)
                     val source = frontmatterValue(text, FrontmatterKeys.SOURCE)
                     if (frontmatterValue(text, FrontmatterKeys.KIND) == "chat" || (id != null && id in knownIds)) {

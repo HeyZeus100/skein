@@ -122,6 +122,28 @@ class GraphRecallTest {
         }
 
     @Test
+    fun `unresolved imported targets are excluded from document chunk lookup`() =
+        runTest {
+            val repo = InMemoryVaultRepository()
+            val delegate = InMemoryIndexStore()
+            val index = CountingIndexStore(delegate)
+            val source = createDoc(repo, "Alpha")
+            addChunk(delegate, source, "alpha body")
+            index.replaceEdges(
+                source,
+                setOf(EdgeKind.WIKILINK),
+                listOf(
+                    Edge(source, "import:$source:ambiguous", EdgeKind.WIKILINK, weight = 0.5, createdAt = 0L),
+                ),
+            )
+
+            val results = GraphRecall(index, repo).recall("Alpha")
+
+            assertThat(results).hasSize(1)
+            assertThat(index.chunkLookupIds).containsExactly(source)
+        }
+
+    @Test
     fun `entity seed reaches its linked document at one hop`() =
         runTest {
             val repo = InMemoryVaultRepository()
@@ -287,6 +309,8 @@ class GraphRecallTest {
             private set
         var chunksForDocsCalls: Int = 0
             private set
+        var chunkLookupIds: Set<DocId> = emptySet()
+            private set
 
         override suspend fun neighborhood(
             seeds: Set<String>,
@@ -302,6 +326,7 @@ class GraphRecallTest {
             limitPerDoc: Int,
         ): List<Chunk> {
             chunksForDocsCalls++
+            chunkLookupIds = docIds.toSet()
             return delegate.chunksForDocs(docIds, limitPerDoc)
         }
     }

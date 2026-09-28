@@ -99,8 +99,9 @@ internal class ArchivedDocument(
 /**
  * One pass over a vault zip. Single use.
  *
- * @param importDocument turns a top-level `.md` entry's bytes into a document
- *   (or declines it); see `ImportServiceImpl.importArchivedDocument`.
+ * @param importDocument turns a `.md` entry's bytes into a document (or declines it);
+ *   see `ImportServiceImpl.importArchivedDocument`. Ordinary archives also accept nested
+ *   Markdown and get an import-session link pass. A manifest opts out of that pass.
  */
 internal class VaultZipImporter(
     private val repository: VaultRepository,
@@ -113,6 +114,8 @@ internal class VaultZipImporter(
 
     /** Manifest entries by archive path; empty until (and unless) the manifest leads the archive. */
     private var manifest: Map<String, JsonObject> = emptyMap()
+    private var manifestSeen = false
+    private val links = MarkdownImportLinker(repository)
 
     /** Archive attachment ids cited through `source:` by notes that were imported / skipped. */
     private val citedByImported = HashSet<DocId>()
@@ -139,7 +142,10 @@ internal class VaultZipImporter(
                 val reader = EntryReader(zip)
                 when {
                     entry.isDirectory -> Unit
-                    entry.name == MANIFEST_PATH -> if (!contentSeen) readManifest(reader)
+                    entry.name == MANIFEST_PATH -> {
+                        manifestSeen = true
+                        if (!contentSeen) readManifest(reader)
+                    }
                     else -> {
                         contentSeen = true
                         importEntry(entry.name, reader)
@@ -151,6 +157,7 @@ internal class VaultZipImporter(
             truncated = true
         }
         rewriteCitations()
+        if (manifestSeen) links.restoreOriginalGuards() else links.finish()
         return VaultZipImportResult(imported = imported, skipped = skipped, truncated = truncated)
     }
 
@@ -174,9 +181,12 @@ internal class VaultZipImporter(
         name: String,
         reader: EntryReader,
     ) {
+        val path = name.replace('\\', '/')
         when {
             !isSafeEntryName(name) -> skipped += 1
-            '/' !in name && name.endsWith(DOCUMENT_SUFFIX, ignoreCase = true) -> importDocumentEntry(name, reader)
+            name.endsWith(DOCUMENT_SUFFIX, ignoreCase = true) &&
+                (!manifestSeen || '/' !in path) &&
+                !path.startsWith(ATTACHMENTS_PREFIX) -> importDocumentEntry(if (manifestSeen) name else path, reader)
             name.startsWith(ATTACHMENTS_PREFIX) && name.indexOf('/', ATTACHMENTS_PREFIX.length) < 0 ->
                 importAttachmentEntry(name, reader)
             else -> skipped += 1
@@ -193,7 +203,12 @@ internal class VaultZipImporter(
             return
         }
         val hint = manifest[name]?.let { ManifestHint(it.string("id"), it.string("kind"), it.string("title")) }
-        val outcome = importDocument(name, bytes, hint)
+        val outcome =
+            if (manifestSeen) {
+                importDocument(name, bytes, hint)
+            } else {
+                links.importArchived(name) { importDocument(name.substringAfterLast('/'), bytes, hint) }
+            }
         val created = outcome.created
         if (created == null) {
             skipped += 1
@@ -237,7 +252,10 @@ internal class VaultZipImporter(
             val newId = newAttachmentIds[source] ?: continue
             repository.updateFrontmatter(
                 document.id,
-                JsonObject(document.frontmatter + (FrontmatterKeys.SOURCE to JsonPrimitive(newId))),
+                JsonObject(
+                    (repository.getDocument(document.id) ?: continue).frontmatter +
+                        (FrontmatterKeys.SOURCE to JsonPrimitive(newId)),
+                ),
             )
         }
     }
@@ -323,6 +341,7 @@ internal class VaultZipImporter(
                 !normalized.startsWith('/') &&
                 !DRIVE_PREFIX.containsMatchIn(normalized) &&
                 '\u0000' !in normalized &&
+                ':' !in normalized &&
                 normalized.split('/').none { it == ".." }
         }
     }

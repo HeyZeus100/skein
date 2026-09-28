@@ -35,6 +35,7 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.getValue
@@ -213,6 +214,19 @@ public fun NoteTab(
             },
         )
         HorizontalDivider()
+        state.linkNotice?.let { notice ->
+            Row(
+                modifier = Modifier.fillMaxWidth().padding(horizontal = 16.dp),
+                verticalAlignment = Alignment.CenterVertically,
+            ) {
+                Text(
+                    text = notice,
+                    modifier = Modifier.weight(1f).padding(vertical = 8.dp),
+                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                )
+                TextButton(onClick = state::dismissLinkNotice) { Text("Dismiss") }
+            }
+        }
         when {
             state.loading ->
                 Box(Modifier.weight(1f).fillMaxWidth(), Alignment.Center) {

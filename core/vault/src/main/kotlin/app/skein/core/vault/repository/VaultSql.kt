@@ -285,15 +285,18 @@ internal object VaultSql {
     const val DELETE_EDGES_FROM: String =
         "DELETE FROM edges WHERE src_id = ?"
 
-    // Bind: 1 = sentinel, 2 = sentinel weight, 3 = document id. INSERT OR
+    const val SELECT_WIKILINK_SOURCES_TO: String =
+        "SELECT src_id FROM edges WHERE dst_id = ? AND kind = 'wikilink'"
+
+    // Bind: 1 = sentinel, 2 = sentinel weight, 3 = document id, 4 = source id. INSERT OR
     // REPLACE because a source may already hold that sentinel (the key is
     // `(src_id, dst_id, kind)`): the two collapse into one edge.
     const val DETACH_WIKILINKS_TO: String =
         "INSERT OR REPLACE INTO edges(src_id, dst_id, kind, weight, created_at) " +
-            "SELECT src_id, ?, 'wikilink', ?, created_at FROM edges WHERE dst_id = ? AND kind = 'wikilink'"
+            "SELECT src_id, ?, 'wikilink', ?, created_at FROM edges WHERE dst_id = ? AND kind = 'wikilink' AND src_id = ?"
 
-    const val DELETE_WIKILINKS_TO: String =
-        "DELETE FROM edges WHERE dst_id = ? AND kind = 'wikilink'"
+    const val DELETE_WIKILINK_FROM_TO: String =
+        "DELETE FROM edges WHERE dst_id = ? AND src_id = ? AND kind = 'wikilink'"
 
     const val DELETE_EDGES_TO: String =
         "DELETE FROM edges WHERE dst_id = ?"

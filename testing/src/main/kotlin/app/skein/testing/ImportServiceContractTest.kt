@@ -240,7 +240,21 @@ public abstract class ImportServiceContractTest {
         }
 
     @Test
-    public fun importVaultZip_skips_and_counts_unsafe_names_chats_and_unexpected_entries(): Unit =
+    public fun importVaultZip_manifest_restoration_keeps_top_level_layout(): Unit =
+        runTest {
+            val result =
+                service().importVaultZip(
+                    vaultZip(
+                        ".skein/manifest.json" to "{}",
+                        "nested/Note.md" to "---\nid: nested-restored\n---\nbody",
+                        "Note.md" to "body",
+                    ),
+                )
+            assertEquals(VaultZipImportResult(imported = 1, skipped = 1, truncated = false), result)
+        }
+
+    @Test
+    public fun importVaultZip_imports_nested_markdown_and_skips_unsafe_names_and_chats(): Unit =
         runTest {
             val service = service()
 
@@ -255,9 +269,11 @@ public abstract class ImportServiceContractTest {
                         "notes/nested.md" to "---\nid: zip-nested\n---\nx",
                         "Good.md" to "---\nid: zip-good\n---\nfine",
                     ),
+                    personaId = "nested-space",
                 )
 
-            assertEquals(VaultZipImportResult(imported = 1, skipped = 6, truncated = false), result)
+            assertEquals(VaultZipImportResult(imported = 2, skipped = 5, truncated = false), result)
+            assertEquals("nested-space", personaOf("zip-nested"))
             assertNull("a skipped entry creates nothing", personaOf("evil-1"))
         }
 }

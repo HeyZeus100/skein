@@ -20,6 +20,7 @@ import app.skein.core.rag.ingest.IngestOutcome
 import app.skein.core.rag.ingest.IngestPace
 import app.skein.core.vault.export.ExportServiceImpl
 import app.skein.core.vault.transfer.ImportServiceImpl
+import app.skein.core.vault.transfer.ImportedLinkTargets
 import app.skein.export.stage.FakeExportStageRepository
 import app.skein.ingest.IngestPipelines
 import app.skein.testing.InMemoryIndexStore
@@ -130,6 +131,23 @@ class FolderImportJobTest {
                 assertEquals("space-1", document?.personaId)
             }
             assertNull("hidden files and folders are ignored", repository.findByTitle("workspace"))
+        }
+
+    @Test
+    fun filename_and_relative_links_resolve_with_heading_titles_and_duplicate_names_stay_unresolved() =
+        runBlocking {
+            write("Source.md", "[[one/Filename]] [[Filename]] [[Nickname]]")
+            write("one/Filename.md", "---\naliases: [Nickname]\n---\n# First display title\n[[../Source]]")
+            write("two/Filename.md", "# Second display title")
+            val job = job()
+            assertTrue(job.start(treeUri, personaId = null))
+            assertEquals(FolderImportState.Finished(3, 0, FolderImportOutcome.COMPLETED), job.finished())
+
+            val source = requireNotNull(repository.findByTitle("Source"))
+            val first = requireNotNull(repository.findByTitle("First display title"))
+            assertEquals("[[${first.id}|one/Filename]] [[Filename]] [[${first.id}|Nickname]]", source.bodyMd)
+            assertEquals("# First display title\n[[${source.id}|../Source]]", first.bodyMd)
+            assertTrue(ImportedLinkTargets.isAmbiguous(source.frontmatter, "Filename"))
         }
 
     @Test

@@ -95,8 +95,10 @@ import app.skein.core.vault.export.stage.ExportStageRepository
 import app.skein.core.vault.export.stage.ExportStageRow
 import app.skein.core.vault.export.stage.StagedPlaintextSweep
 import app.skein.core.vault.extract.EdgeUpserter
+import app.skein.core.vault.extract.WikilinkExtractor
 import app.skein.core.vault.id.Uuid7
 import app.skein.core.vault.index.FtsQuerySanitizer
+import app.skein.core.vault.transfer.ImportedLinkTargets
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
@@ -896,13 +898,15 @@ public class VaultRepositoryImpl(
     /**
      * OBJECT_LIFECYCLE_SPEC.md §3.4, run inside the caller's [writeTx] on the
      * writer connection — the index connection cannot share this transaction.
-     * Resolved wikilinks into [id] become unresolved links to [oldTitle] at
+     * Title-bound wikilinks into [id] become unresolved links to [oldTitle] at
      * `EdgeUpserter.UNRESOLVED_WIKILINK_WEIGHT` (a source already holding that
      * sentinel collapses into it: the key is `(src_id, dst_id, kind)`). With
      * [deleting], every out-edge of [id] and every other in-edge (a CITE into
      * an attachment) goes too. The sentinel is computed in Kotlin: SQLite's
      * `lower()` folds ASCII only, so it would miss `EdgeUpserter`'s for a title
-     * like `Émile`.
+     * like `Émile`. Explicit document-ID links survive rename and, on deletion,
+     * get an ID sentinel that a same-title replacement cannot claim. Source bodies
+     * are read one at a time on this same writer connection, with no index writes.
      */
     private fun detachEdges(
         id: DocId,
@@ -915,14 +919,58 @@ public class VaultRepositoryImpl(
                 stmt.step()
             }
         }
-        writer.prepare(VaultSql.DETACH_WIKILINKS_TO).use { stmt ->
-            stmt.bindText(1, EdgeUpserter.unresolvedTarget(oldTitle))
-            stmt.bindDouble(2, EdgeUpserter.UNRESOLVED_WIKILINK_WEIGHT)
-            stmt.bindText(3, id)
-            stmt.step()
+        val sources =
+            writer.prepare(VaultSql.SELECT_WIKILINK_SOURCES_TO).use { stmt ->
+                stmt.bindText(1, id)
+                buildList { while (stmt.step()) add(stmt.getText(0)) }
+            }
+        for (sourceId in sources) {
+            val source =
+                writer.prepare(VaultSql.SELECT_DOCUMENT_BY_ID).use { stmt ->
+                    stmt.bindText(1, sourceId)
+                    if (stmt.step()) readDocument(stmt) else null
+                }
+            val links = WikilinkExtractor.extract(source?.bodyMd.orEmpty())
+            val idLinks =
+                links.filter {
+                    ImportedLinkTargets.isDocumentId(id) && it.target.equals(id, ignoreCase = true)
+                }
+            val idBound = idLinks.isNotEmpty()
+            val titleBound =
+                !idBound ||
+                    links.any {
+                        it !in idLinks &&
+                            it.target.equals(oldTitle, ignoreCase = true) &&
+                            source?.let { doc -> ImportedLinkTargets.isUnresolved(doc.frontmatter, it.target) } != true
+                    }
+            if (titleBound) detachWikilink(sourceId, id, EdgeUpserter.unresolvedTarget(oldTitle))
+            if (idBound && deleting) detachWikilink(sourceId, id, ImportedLinkTargets.unresolvedTarget(sourceId, id))
+            if (deleting || !idBound) {
+                writer.prepare(VaultSql.DELETE_WIKILINK_FROM_TO).use { stmt ->
+                    stmt.bindText(1, id)
+                    stmt.bindText(2, sourceId)
+                    stmt.step()
+                }
+            }
         }
-        writer.prepare(if (deleting) VaultSql.DELETE_EDGES_TO else VaultSql.DELETE_WIKILINKS_TO).use { stmt ->
-            stmt.bindText(1, id)
+        if (deleting) {
+            writer.prepare(VaultSql.DELETE_EDGES_TO).use { stmt ->
+                stmt.bindText(1, id)
+                stmt.step()
+            }
+        }
+    }
+
+    private fun detachWikilink(
+        sourceId: DocId,
+        targetId: DocId,
+        sentinel: String,
+    ) {
+        writer.prepare(VaultSql.DETACH_WIKILINKS_TO).use { stmt ->
+            stmt.bindText(1, sentinel)
+            stmt.bindDouble(2, EdgeUpserter.UNRESOLVED_WIKILINK_WEIGHT)
+            stmt.bindText(3, targetId)
+            stmt.bindText(4, sourceId)
             stmt.step()
         }
     }

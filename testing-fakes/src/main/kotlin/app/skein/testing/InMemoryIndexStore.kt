@@ -139,14 +139,32 @@ public class InMemoryIndexStore : IndexStore {
         docId: DocId,
         sentinel: String,
         deleting: Boolean,
+        bindings: Map<DocId, Pair<Boolean, Boolean>>,
     ) {
         lock.withLock {
             if (deleting) edges.removeAll { it.srcId == docId }
             val detached =
                 edges
                     .filter { it.dstId == docId && it.kind == EdgeKind.WIKILINK }
-                    .map { it.copy(dstId = sentinel, weight = UNRESOLVED_WIKILINK_WEIGHT) }
-            edges.removeAll { it.dstId == docId && (deleting || it.kind == EdgeKind.WIKILINK) }
+                    .flatMap { edge ->
+                        val (idBound, titleBound) = bindings[edge.srcId] ?: (false to true)
+                        buildList {
+                            if (titleBound) add(edge.copy(dstId = sentinel, weight = UNRESOLVED_WIKILINK_WEIGHT))
+                            if (idBound &&
+                                deleting
+                            ) {
+                                add(
+                                    edge.copy(
+                                        dstId = "import:${edge.srcId}:${docId.lowercase()}",
+                                        weight = UNRESOLVED_WIKILINK_WEIGHT,
+                                    ),
+                                )
+                            }
+                        }
+                    }
+            edges.removeAll {
+                it.dstId == docId && (deleting || (it.kind == EdgeKind.WIKILINK && bindings[it.srcId]?.first != true))
+            }
             for (edge in detached) {
                 edges.removeAll { it.srcId == edge.srcId && it.dstId == edge.dstId && it.kind == edge.kind }
                 edges += edge

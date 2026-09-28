@@ -39,6 +39,7 @@ import app.skein.core.model.EdgeKind
 import app.skein.core.model.FrontmatterKeys
 import app.skein.core.model.IndexStore
 import app.skein.core.model.VaultRepository
+import app.skein.core.vault.transfer.ImportedLinkTargets
 import kotlinx.serialization.json.JsonObject
 import kotlinx.serialization.json.JsonPrimitive
 import kotlinx.serialization.json.contentOrNull
@@ -46,7 +47,7 @@ import kotlinx.serialization.json.contentOrNull
 /**
  * Computes and applies the `WIKILINK`/`TAG` edge delta for a document.
  *
- * @param vaultRepository used only for `findByTitle` target resolution.
+ * @param vaultRepository resolves UUID/title targets and reads imported-link guards from the source.
  * @param indexStore used for both the pre-upsert `edgesFrom` read (to
  *   preserve `createdAt` on edges that didn't change) and the
  *   `replaceEdges` write.
@@ -70,10 +71,19 @@ public class EdgeUpserter(
         wikilinks: List<Wikilink>,
         tags: Set<String>,
     ) {
+        upsertLinks(docId, wikilinks, tags, vaultRepository.getDocument(docId)?.frontmatter ?: JsonObject(emptyMap()))
+    }
+
+    private suspend fun upsertLinks(
+        docId: DocId,
+        wikilinks: List<Wikilink>,
+        tags: Set<String>,
+        frontmatter: JsonObject,
+    ) {
         val now = clock()
-        // One read of the current edge set serves both kinds' deltas.
+        // Keep the link text and guards from the same document revision.
         val existing = indexStore.edgesFrom(docId)
-        upsertWikilinks(docId, wikilinks, existing, now)
+        upsertWikilinks(docId, wikilinks, frontmatter, existing, now)
         upsertTags(docId, tags, existing, now)
     }
 
@@ -86,10 +96,11 @@ public class EdgeUpserter(
      */
     public suspend fun upsert(document: Document) {
         val body = document.bodyMd.orEmpty()
-        upsert(
+        upsertLinks(
             docId = document.id,
             wikilinks = WikilinkExtractor.extract(body),
             tags = TagExtractor.extract(body, document.frontmatter),
+            frontmatter = document.frontmatter,
         )
         upsertCitation(document.id, document.frontmatter)
     }
@@ -126,6 +137,7 @@ public class EdgeUpserter(
     private suspend fun upsertWikilinks(
         docId: DocId,
         wikilinks: List<Wikilink>,
+        frontmatter: JsonObject,
         existing: List<Edge>,
         now: Long,
     ) {
@@ -137,20 +149,33 @@ public class EdgeUpserter(
         }
         val desired =
             byTarget.values.map { link ->
-                val resolved = vaultRepository.findByTitle(link.target)
+                val guarded = ImportedLinkTargets.isUnresolved(frontmatter, link.target)
+                val resolved =
+                    when {
+                        guarded -> null
+                        ImportedLinkTargets.isDocumentId(link.target) ->
+                            vaultRepository.getDocument(link.target)
+                                ?: vaultRepository.getDocument(link.target.lowercase())
+                        else -> vaultRepository.findByTitle(link.target)
+                    }
                 if (resolved != null) {
                     Edge(srcId = docId, dstId = resolved.id, kind = EdgeKind.WIKILINK, createdAt = now)
                 } else {
                     Edge(
                         srcId = docId,
-                        dstId = unresolvedTarget(link.target),
+                        dstId =
+                            if (guarded || ImportedLinkTargets.isDocumentId(link.target)) {
+                                ImportedLinkTargets.unresolvedTarget(docId, link.target)
+                            } else {
+                                unresolvedTarget(link.target)
+                            },
                         kind = EdgeKind.WIKILINK,
                         weight = UNRESOLVED_WIKILINK_WEIGHT,
                         createdAt = now,
                     )
                 }
             }
-        replaceKind(docId, EdgeKind.WIKILINK, existing, desired)
+        replaceKind(docId, EdgeKind.WIKILINK, existing, desired.distinctBy { it.dstId })
     }
 
     private suspend fun upsertTags(

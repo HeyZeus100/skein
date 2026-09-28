@@ -5,6 +5,7 @@ import app.skein.core.model.Document
 import app.skein.core.model.DocumentKind
 import app.skein.core.model.NewDocument
 import app.skein.core.vault.codec.Frontmatter
+import app.skein.core.vault.transfer.ImportedLinkTargets
 import app.skein.feature.editor.WikilinkTarget
 import app.skein.testing.InMemoryIndexStore
 import app.skein.testing.InMemoryVaultRepository
@@ -208,6 +209,134 @@ class NoteTabStateTest {
             runCurrent()
 
             assertEquals(target.id to target.title, opened)
+        }
+
+    @Test
+    fun `UUID link opens same note after rename and missing UUID never creates a note`() =
+        runTest {
+            val repo = newRepo()
+            val target = repo.note("Old title")
+            val source = repo.note("Source", body = "[[${target.id}|Old title]]")
+            var opened: Pair<String, String>? = null
+            val state =
+                NoteTabState(source.id, repo, InMemoryIndexStore(), backgroundScope, onOpenDocument = { id, title ->
+                    opened = id to title
+                })
+            runCurrent()
+            repo.renameDocument(target.id, "New title")
+            state.editorState.onLinkOpen(WikilinkTarget(title = target.id))
+            runCurrent()
+            assertEquals(target.id to "New title", opened)
+
+            repo.deleteDocument(target.id)
+            opened = null
+            state.editorState.onLinkOpen(WikilinkTarget(title = target.id))
+            runCurrent()
+            assertNull(opened)
+            assertNull(repo.findByTitle(target.id))
+            assertEquals("The linked note is no longer available.", state.linkNotice)
+        }
+
+    @Test
+    fun `ambiguous and missing imported links display a notice without opening or creating a same-title note`() =
+        runTest {
+            val repo = newRepo()
+            repo.note("Duplicate")
+            repo.note("Duplicate")
+            val source =
+                repo.createDocument(
+                    NewDocument(
+                        DocumentKind.NOTE,
+                        "Source",
+                        "[[Duplicate]] [[Missing]]",
+                        frontmatter =
+                            buildJsonObject {
+                                put(
+                                    ImportedLinkTargets.UNRESOLVED,
+                                    JsonArray(listOf(JsonPrimitive("Duplicate"), JsonPrimitive("Missing"))),
+                                )
+                                put(ImportedLinkTargets.AMBIGUOUS, JsonArray(listOf(JsonPrimitive("Duplicate"))))
+                            },
+                    ),
+                )
+            var opens = 0
+            val state =
+                NoteTabState(source.id, repo, InMemoryIndexStore(), backgroundScope, onOpenDocument = {
+                    _,
+                    _,
+                    ->
+                    opens++
+                })
+            runCurrent()
+            state.editorState.onLinkOpen(WikilinkTarget(title = "Duplicate"))
+            runCurrent()
+            assertEquals(0, opens)
+            assertTrue(state.linkNotice.orEmpty().contains("more than one"))
+            state.dismissLinkNotice()
+            assertNull(state.linkNotice)
+            state.editorState.onLinkOpen(WikilinkTarget(title = "Missing"))
+            runCurrent()
+            assertEquals(0, opens)
+            assertNull(repo.findByTitle("Missing"))
+            assertNotNull(state.linkNotice)
+        }
+
+    @Test
+    fun `uppercase persisted UUID opens its original document`() =
+        runTest {
+            val repo = newRepo()
+            val target =
+                repo.createDocument(
+                    NewDocument(DocumentKind.NOTE, "Target", "body", id = "018F2B6E-6C3A-7C3E-8F2A-6B1E2D3C4A5B"),
+                )
+            val source = repo.note("Source", body = "[[${target.id}]]")
+            var opened: String? = null
+            val state =
+                NoteTabState(source.id, repo, InMemoryIndexStore(), backgroundScope, onOpenDocument = { id, _ ->
+                    opened =
+                        id
+                })
+            runCurrent()
+            state.editorState.onLinkOpen(WikilinkTarget(title = target.id))
+            runCurrent()
+            assertEquals(target.id, opened)
+        }
+
+    @Test
+    fun `stale imported editor buffer retains its guard after repository rewrite`() =
+        runTest {
+            val repo = newRepo()
+            repo.note("Filename")
+            val target = repo.note("Display title")
+            val source =
+                repo.createDocument(
+                    NewDocument(
+                        DocumentKind.NOTE,
+                        "Source",
+                        "[[Filename]]",
+                        frontmatter =
+                            buildJsonObject {
+                                put(ImportedLinkTargets.UNRESOLVED, JsonArray(listOf(JsonPrimitive("Filename"))))
+                            },
+                    ),
+                )
+            var opens = 0
+            val state =
+                NoteTabState(source.id, repo, InMemoryIndexStore(), backgroundScope, onOpenDocument = {
+                    _,
+                    _,
+                    ->
+                    opens++
+                })
+            runCurrent()
+            repo.transaction {
+                repo.updateFrontmatter(source.id, buildJsonObject { })
+                repo.replaceBody(source.id, "[[${target.id}|Filename]]")
+            }
+            state.editorState.onLinkOpen(WikilinkTarget(title = "Filename"))
+            runCurrent()
+            assertEquals(0, opens)
+            assertNotNull(state.linkNotice)
         }
 
     @Test

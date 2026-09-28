@@ -85,6 +85,60 @@ public class VaultZipImportTest {
         }
 
     @Test
+    public fun `ordinary nested Markdown archive resolves path links while keeping heading and frontmatter titles`() =
+        runTest {
+            val archive =
+                zip(
+                    "Source.md" to "[[sub/Filename]] [[Nickname]] [[sub\\Filename.md]]".toByteArray(),
+                    "sub/Filename.md" to
+                        "---\ntitle: Display title\naliases: [Nickname]\n---\n# Other heading".toByteArray(),
+                )
+            val target = InMemoryVaultRepository()
+            val result = ImportServiceImpl(target).importVaultZip(archive.inputStream())
+            val imported = requireNotNull(target.findByTitle("Display title"))
+            val source = requireNotNull(target.findByTitle("Source"))
+
+            assertThat(result).isEqualTo(VaultZipImportResult(2, 0, false))
+            assertThat(imported.bodyMd).isEqualTo("# Other heading")
+            assertThat(source.bodyMd).isEqualTo(
+                "[[${imported.id}|sub/Filename]] [[${imported.id}|Nickname]] [[${imported.id}|sub\\Filename.md]]",
+            )
+        }
+
+    @Test
+    public fun `late and malformed manifests preserve restored wikilinks and frontmatter`() =
+        runTest {
+            for (leading in listOf(true, false)) {
+                val metadata = ".skein/manifest.json" to "{malformed".toByteArray()
+                val note = "Source.md" to "---\ncustom: keep\n---\n[[Target]]".toByteArray()
+                val target = "Target.md" to "body".toByteArray()
+                val archive = if (leading) zip(metadata, note, target) else zip(note, target, metadata)
+                val repository = InMemoryVaultRepository()
+                ImportServiceImpl(repository).importVaultZip(archive.inputStream())
+                val source = requireNotNull(repository.findByTitle("Source"))
+
+                assertThat(source.bodyMd).isEqualTo("[[Target]]")
+                assertThat(source.frontmatter.keys).containsExactly("custom", "id")
+            }
+        }
+
+    @Test
+    public fun `truncated ordinary archive never rewrites a link to a file not imported`() =
+        runTest {
+            val archive = zip("Source.md" to "[[Target]]".toByteArray(), "Target.md" to "body".toByteArray())
+            val repository = InMemoryVaultRepository()
+            val result =
+                ImportServiceImpl(
+                    repository,
+                ).importVaultZip(archive.inputStream(), null, VaultZipLimits(maxEntries = 1))
+            val source = requireNotNull(repository.findByTitle("Source"))
+
+            assertThat(result).isEqualTo(VaultZipImportResult(1, 0, true))
+            assertThat(source.bodyMd).isEqualTo("[[Target]]")
+            assertThat(ImportedLinkTargets.isUnresolved(source.frontmatter, "Target")).isTrue()
+        }
+
+    @Test
     public fun `the entry count cap stops the import`() =
         runTest {
             val archive = zip(*Array(5) { "Note $it.md" to "body $it".toByteArray() })

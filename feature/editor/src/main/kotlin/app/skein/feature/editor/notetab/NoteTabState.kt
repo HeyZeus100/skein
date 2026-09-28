@@ -21,6 +21,7 @@ import app.skein.core.model.NewDocument
 import app.skein.core.model.VaultRepository
 import app.skein.core.vault.codec.Frontmatter
 import app.skein.core.vault.export.ExportServiceImpl
+import app.skein.core.vault.transfer.ImportedLinkTargets
 import app.skein.feature.editor.EditorState
 import app.skein.feature.editor.WikilinkTarget
 import app.skein.feature.editor.autocomplete.Suggestion
@@ -77,6 +78,14 @@ public class NoteTabState(
     /** Non-null if [docId] could not be loaded (e.g. deleted out from under an open tab). */
     public var loadError: String? by mutableStateOf(null)
         private set
+
+    /** A link that could not be resolved safely; leaves the current note open. */
+    public var linkNotice: String? by mutableStateOf(null)
+        private set
+
+    public fun dismissLinkNotice() {
+        linkNotice = null
+    }
 
     /**
      * The editor's state. Starts as an empty placeholder (never shown —
@@ -287,7 +296,35 @@ public class NoteTabState(
      */
     private fun onWikilinkClicked(target: WikilinkTarget) {
         scope.launch {
-            val existing = vaultRepository.findByTitle(target.title)
+            linkNotice = null
+            // The buffer may still show the imported spelling while the final pass has
+            // already rewritten the persisted body. Its guards must come from that same buffer.
+            val frontmatter = Frontmatter.parse(editorState.value.text).first
+            val persisted = vaultRepository.getDocument(docId)?.frontmatter ?: JsonObject(emptyMap())
+            if (ImportedLinkTargets.isUnresolved(frontmatter, target.title) ||
+                ImportedLinkTargets.isUnresolved(persisted, target.title)
+            ) {
+                linkNotice =
+                    if (ImportedLinkTargets.isAmbiguous(frontmatter, target.title) ||
+                        ImportedLinkTargets.isAmbiguous(persisted, target.title)
+                    ) {
+                        "This imported link matches more than one note and could not be resolved."
+                    } else {
+                        "This link's target was not resolved in the imported folder."
+                    }
+                return@launch
+            }
+            val isId = ImportedLinkTargets.isDocumentId(target.title)
+            val existing =
+                if (isId) {
+                    vaultRepository.getDocument(target.title) ?: vaultRepository.getDocument(target.title.lowercase())
+                } else {
+                    vaultRepository.findByTitle(target.title)
+                }
+            if (isId && existing == null) {
+                linkNotice = "The linked note is no longer available."
+                return@launch
+            }
             val doc =
                 existing
                     ?: vaultRepository.createDocument(

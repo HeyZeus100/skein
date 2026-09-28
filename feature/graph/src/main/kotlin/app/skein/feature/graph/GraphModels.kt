@@ -42,12 +42,17 @@ public object GraphNodeIds {
     private const val ENTITY_PREFIX: String = "entity:"
     private const val TAG_PREFIX: String = "tag:"
     private const val UNRESOLVED_TITLE_PREFIX: String = "title:"
+    private const val UNRESOLVED_IMPORT_PREFIX: String = "import:"
+    private val UUID_TARGET = Regex("[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}")
 
     public fun kindOf(nodeId: String): GraphNodeKind =
         when {
             nodeId.startsWith(ENTITY_PREFIX) -> GraphNodeKind.ENTITY
             nodeId.startsWith(TAG_PREFIX) -> GraphNodeKind.TAG
-            nodeId.startsWith(UNRESOLVED_TITLE_PREFIX) -> GraphNodeKind.UNRESOLVED_TITLE
+            nodeId.startsWith(
+                UNRESOLVED_TITLE_PREFIX,
+            ) ||
+                nodeId.startsWith(UNRESOLVED_IMPORT_PREFIX) -> GraphNodeKind.UNRESOLVED_TITLE
             else -> GraphNodeKind.DOCUMENT
         }
 
@@ -65,7 +70,13 @@ public object GraphNodeIds {
     public fun sentinelLabel(nodeId: String): String =
         when (kindOf(nodeId)) {
             GraphNodeKind.TAG -> "#" + nodeId.removePrefix(TAG_PREFIX)
-            GraphNodeKind.UNRESOLVED_TITLE -> nodeId.removePrefix(UNRESOLVED_TITLE_PREFIX)
+            GraphNodeKind.UNRESOLVED_TITLE ->
+                if (nodeId.startsWith(UNRESOLVED_IMPORT_PREFIX)) {
+                    val target = nodeId.removePrefix(UNRESOLVED_IMPORT_PREFIX).substringAfter(':')
+                    if (UUID_TARGET.matches(target)) "Unavailable note" else target
+                } else {
+                    nodeId.removePrefix(UNRESOLVED_TITLE_PREFIX)
+                }
             GraphNodeKind.ENTITY -> "Entity #" + nodeId.removePrefix(ENTITY_PREFIX)
             GraphNodeKind.DOCUMENT -> nodeId
         }

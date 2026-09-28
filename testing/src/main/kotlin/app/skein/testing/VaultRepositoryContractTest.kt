@@ -1341,6 +1341,112 @@ public abstract class VaultRepositoryContractTest {
         }
 
     @Test
+    public fun renameDocument_preserves_explicit_id_links_and_detaches_a_mixed_title_link(): Unit =
+        runTest {
+            val r = repo()
+            val idx = index()
+            val target = r.createDocument(NewDocument(DocumentKind.NOTE, "Plan", "body"))
+            val idOnly = r.createDocument(NewDocument(DocumentKind.NOTE, "ID source", "[[${target.id}#Section|Plan]]"))
+            val mixed =
+                r.createDocument(
+                    NewDocument(DocumentKind.NOTE, "Mixed source", "[[${target.id}|Plan]] [[Plan]]"),
+                )
+            for (source in listOf(idOnly, mixed)) {
+                idx.replaceEdges(
+                    source.id,
+                    setOf(EdgeKind.WIKILINK),
+                    listOf(Edge(source.id, target.id, EdgeKind.WIKILINK, createdAt = 7L)),
+                )
+            }
+
+            r.renameDocument(target.id, "Roadmap")
+
+            assertEquals(
+                listOf(Edge(idOnly.id, target.id, EdgeKind.WIKILINK, createdAt = 7L)),
+                idx.edgesFrom(idOnly.id),
+            )
+            assertEquals(setOf(target.id, "title:plan"), idx.edgesFrom(mixed.id).map { it.dstId }.toSet())
+            assertEquals(idOnly.bodyMd, r.getDocument(idOnly.id)?.bodyMd)
+        }
+
+    @Test
+    public fun deleteDocument_explicit_id_link_is_not_a_title_link_to_a_replacement(): Unit =
+        runTest {
+            val r = repo()
+            val idx = index()
+            val target = r.createDocument(NewDocument(DocumentKind.NOTE, "Plan", "body"))
+            val source = r.createDocument(NewDocument(DocumentKind.NOTE, "Source", "[[${target.id}|Plan]]"))
+            idx.replaceEdges(
+                source.id,
+                setOf(EdgeKind.WIKILINK),
+                listOf(Edge(source.id, target.id, EdgeKind.WIKILINK, createdAt = 9L)),
+            )
+
+            r.deleteDocument(target.id)
+            val replacement = r.createDocument(NewDocument(DocumentKind.NOTE, "Plan", "replacement"))
+
+            assertEquals(
+                listOf(
+                    Edge(
+                        source.id,
+                        "import:${source.id}:${target.id}",
+                        EdgeKind.WIKILINK,
+                        weight = 0.5,
+                        createdAt = 9L,
+                    ),
+                ),
+                idx.edgesFrom(source.id),
+            )
+            assertTrue(idx.edgesTo("title:plan").isEmpty())
+            assertTrue(idx.edgesTo(replacement.id).isEmpty())
+        }
+
+    @Test
+    public fun deleteDocument_id_spelling_equal_to_title_still_has_only_an_id_binding(): Unit =
+        runTest {
+            val r = repo()
+            val idx = index()
+            val target = r.createDocument(NewDocument(DocumentKind.NOTE, "Initial", "body"))
+            r.renameDocument(target.id, target.id)
+            val source = r.createDocument(NewDocument(DocumentKind.NOTE, "Source", "[[${target.id}]]"))
+            idx.replaceEdges(
+                source.id,
+                setOf(EdgeKind.WIKILINK),
+                listOf(Edge(source.id, target.id, EdgeKind.WIKILINK, createdAt = 1L)),
+            )
+            r.deleteDocument(target.id)
+            assertEquals(listOf("import:${source.id}:${target.id}"), idx.edgesFrom(source.id).map { it.dstId })
+        }
+
+    @Test
+    public fun renameDocument_does_not_treat_code_literal_id_as_a_link_binding(): Unit =
+        runTest {
+            val r = repo()
+            val idx = index()
+            val target = r.createDocument(NewDocument(DocumentKind.NOTE, "Plan", "body"))
+            val source =
+                r.createDocument(
+                    NewDocument(
+                        DocumentKind.NOTE,
+                        "Source",
+                        "`[[${target.id}]]`\n```md\n[[${target.id}]]\n```\n[[Plan]]",
+                    ),
+                )
+            idx.replaceEdges(
+                source.id,
+                setOf(EdgeKind.WIKILINK),
+                listOf(Edge(source.id, target.id, EdgeKind.WIKILINK, createdAt = 7L)),
+            )
+
+            r.renameDocument(target.id, "Roadmap")
+
+            assertEquals(
+                listOf(Edge(source.id, "title:plan", EdgeKind.WIKILINK, weight = 0.5, createdAt = 7L)),
+                idx.edgesFrom(source.id),
+            )
+        }
+
+    @Test
     public fun renameDocument_keeps_cite_in_edges(): Unit =
         runTest {
             val r = repo()

@@ -151,16 +151,18 @@ public class GraphRecall(
         private const val ENTITY_PREFIX: String = "entity:"
         private const val TAG_PREFIX: String = "tag:"
         private const val UNRESOLVED_TITLE_PREFIX: String = "title:"
+        private const val UNRESOLVED_IMPORT_PREFIX: String = "import:"
 
         private fun entityNode(entityId: Long): String = "$ENTITY_PREFIX$entityId"
 
         /**
          * `true` for a bare document id, `false` for the `entity:`/`tag:`/
-         * `title:` sentinel node ids (see file header's node-id convention).
+         * `title:`/`import:` sentinel node ids (see file header's node-id convention).
          */
         private fun isDocumentNode(nodeId: String): Boolean =
             !nodeId.startsWith(ENTITY_PREFIX) &&
                 !nodeId.startsWith(TAG_PREFIX) &&
-                !nodeId.startsWith(UNRESOLVED_TITLE_PREFIX)
+                !nodeId.startsWith(UNRESOLVED_TITLE_PREFIX) &&
+                !nodeId.startsWith(UNRESOLVED_IMPORT_PREFIX)
     }
 }
