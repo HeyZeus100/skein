@@ -1,0 +1,45 @@
+{
+  "schema_version": 1,
+  "synthetic": true,
+  "purpose": "reserved regression evaluation, not a blind external benchmark",
+  "splits": {
+    "development": {
+      "file": "development.json",
+      "sha256": "ae9b6ea542f7d632d2349b467a948a76477d620becd6c812e9d7a6d54087d1ea",
+      "cases": 12,
+      "categories": {
+        "direct": 1,
+        "synthesis": 1,
+        "follow_up": 1,
+        "missing": 1,
+        "weak_only": 1,
+        "conflict": 1,
+        "revised": 1,
+        "deleted": 1,
+        "injection": 1,
+        "spaces": 1,
+        "general": 1,
+        "calculation": 1
+      }
+    },
+    "reserved": {
+      "file": "reserved.json",
+      "sha256": "aaf2e8bcbed756164e731db5749b2849dea55df301254e9fdc32ba96533d76b3",
+      "cases": 80,
+      "categories": {
+        "direct": 8,
+        "synthesis": 8,
+        "follow_up": 6,
+        "missing": 8,
+        "weak_only": 6,
+        "conflict": 6,
+        "revised": 6,
+        "deleted": 6,
+        "injection": 6,
+        "spaces": 6,
+        "general": 6,
+        "calculation": 8
+      }
+    }
+  }
+}

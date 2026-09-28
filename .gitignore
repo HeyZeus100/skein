@@ -130,3 +130,6 @@ research/clones/
 # braces — the committed goldens themselves have neither suffix.
 ux-baselines/**/*_compare.png
 ux-baselines/**/*_actual.png
+
+# Local Python evaluation tooling bytecode
+__pycache__/

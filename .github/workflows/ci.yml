@@ -49,6 +49,9 @@ jobs:
       - name: Verify third_party submodule pins
         run: ./tools/ci/check-submodules.sh
 
+      - name: Validate synthetic answer evaluation fixtures and reporting
+        run: python3 -m unittest discover -s tools/eval -p 'test_*.py' -v
+
       - name: Set up JDK 17 (Temurin)
         uses: actions/setup-java@de7274f081f381c8f8158605e0321c36c376e2e6 # v4.8.0
         with:
