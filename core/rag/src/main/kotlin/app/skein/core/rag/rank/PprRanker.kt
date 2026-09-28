@@ -174,6 +174,7 @@ public class PprRanker(
                 verdictByDoc.getOrPut(docId) {
                     val document = repo.getDocument(docId)
                     document != null &&
+                        document.kind != DocumentKind.AIOUT &&
                         (includeChatHistory || document.kind != DocumentKind.CHAT) &&
                         if (legacyPersonaId != null) {
                             (document.personaId ?: legacyPersonaId) == personaId

@@ -22,6 +22,7 @@ class AuthoritativeEvidenceTest {
         runTest {
             val fixture = Fixture()
             val chat = fixture.source(DocumentKind.CHAT, "Prior invented answer")
+            val generated = fixture.source(DocumentKind.AIOUT, "Imported generated output")
             val note = fixture.source(DocumentKind.NOTE, "Source note")
             val file = fixture.source(DocumentKind.ATTACHMENT, "Imported source")
             val recall =
@@ -29,6 +30,7 @@ class AuthoritativeEvidenceTest {
                     CitationSourceKind.LEXICAL to
                         listOf(
                             ScoredChunk(chat.second, 1.0),
+                            ScoredChunk(generated.second, 0.9),
                             ScoredChunk(note.second, 0.5),
                             ScoredChunk(file.second, 0.4),
                         ),
@@ -44,6 +46,18 @@ class AuthoritativeEvidenceTest {
                 PprRanker(fixture.index, fixture.repo, RankerConfig(maxCandidates = 2))
                     .rank(recall, k = 2)
             assertEquals(setOf(note.second, file.second), ranked.map { it.chunkId }.toSet())
+        }
+
+    @Test
+    fun `generated artifacts are excluded even when conversation search is explicitly enabled`() =
+        runTest {
+            val fixture = Fixture()
+            fixture.source(DocumentKind.AIOUT, "brindle generated output", "work")
+            val default = RetrievalServiceImpl(fixture.index, fixture.repo, embedder = null)
+            val conversationSearch =
+                RetrievalServiceImpl(fixture.index, fixture.repo, embedder = null, includeChatHistory = true)
+            assertTrue(default.retrieveContext("brindle", k = 8, personaId = "work").isEmpty())
+            assertTrue(conversationSearch.retrieveContext("brindle", k = 8, personaId = "work").isEmpty())
         }
 
     @Test

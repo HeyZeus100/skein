@@ -1,6 +1,6 @@
 # Conversation provenance in automatic retrieval
 
-Automatic Knowledge retrieval excludes CHAT documents before fusion, candidate
+Automatic Knowledge retrieval excludes CHAT and AIOUT documents before fusion, candidate
 capping and final ranking. A prior answer is not reused as evidence merely
 because its transcript matches the next question or is connected in the graph.
 Notes and imported attachments remain eligible, subject to the existing Space
@@ -11,6 +11,10 @@ An explicit conversation-history retrieval caller can construct
 boundary and preserves `Retrieved.sourceKind = CHAT`; it does not reclassify a
 conversation as a source note. The automatic app pipeline does not enable this
 option. No new history-search UI is introduced by this seam.
+
+AIOUT includes generated artifacts restored from archives. These remain excluded
+even when conversation search is enabled; a user must explicitly promote generated
+material to a source note before automatic retrieval can consider it.
 
 This is a provenance rule, not a truth or relevance classifier. A note or imported
 file can still be wrong, stale or irrelevant. The per-source recall limits still
