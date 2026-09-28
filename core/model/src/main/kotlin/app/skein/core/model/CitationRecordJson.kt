@@ -5,9 +5,9 @@
 // is in the Kotlin serializer" — so this object is the enforcement point for
 // the `citation-record-v1.schema.json` constraints (marker range, list
 // cardinality, excerpt length, hash shape), not a thin `@Serializable`
-// mapping. Every constraint the schema states that can be checked on the
-// Kotlin side is checked in [CitationRecordJson.encode] and re-checked on
-// [CitationRecordJson.decode].
+// mapping. Encode and decode share semantic validation. For compatibility
+// with existing imported documents, document ids are nonblank opaque ids;
+// canonical import id reminting is a separate migration boundary.
 //
 // Both concrete `VaultRepository` implementations share this codec so the
 // JSON a message round-trips through is byte-identical whichever one wrote
@@ -53,6 +53,9 @@ public sealed interface RetrievedChunksPayload {
     ) : RetrievedChunksPayload
 }
 
+/** Excerpt integrity is independent of whether the source supports an answer's claims. */
+public enum class ExcerptIntegrity { VERIFIED, HASH_MISSING, ALTERED }
+
 /** Encodes/decodes the `messages.retrieved_chunks` payload per §1.3. */
 public object CitationRecordJson {
     /** The `record_version` this codec writes. */
@@ -78,6 +81,31 @@ public object CitationRecordJson {
      *   removes — so this fails loudly rather than writing a degraded row.
      */
     public fun encode(record: CitationRecord): String {
+        validateRecord(record)
+
+        val obj =
+            buildJsonObject {
+                put(KEY_RECORD_VERSION, JsonPrimitive(RECORD_VERSION))
+                put(
+                    KEY_RETRIEVED,
+                    buildJsonArray { record.retrieved.forEach { add(encodeCitation(it)) } },
+                )
+                put(KEY_CITED, buildJsonArray { record.cited.forEach { add(JsonPrimitive(it)) } })
+            }
+        return json.encodeToString(JsonObject.serializer(), obj)
+    }
+
+    /** A missing optional legacy hash is unknown integrity, never a verified excerpt. */
+    public fun excerptIntegrity(citation: Citation): ExcerptIntegrity {
+        val stored = citation.excerptHash ?: return ExcerptIntegrity.HASH_MISSING
+        return if (HASH_REGEX.matches(stored) && stored == RevisionHashing.excerptHash(citation.excerpt)) {
+            ExcerptIntegrity.VERIFIED
+        } else {
+            ExcerptIntegrity.ALTERED
+        }
+    }
+
+    private fun validateRecord(record: CitationRecord) {
         require(record.recordVersion == RECORD_VERSION) {
             "unsupported citation record_version=${record.recordVersion} (this codec writes $RECORD_VERSION)"
         }
@@ -91,17 +119,6 @@ public object CitationRecordJson {
         require(markers.toSet().size == markers.size) { "citation markers must be unique within a record" }
         require(record.cited.all { it in markers }) { "every `cited` marker must name an entry in `retrieved`" }
         for (citation in record.retrieved) validate(citation)
-
-        val obj =
-            buildJsonObject {
-                put(KEY_RECORD_VERSION, JsonPrimitive(RECORD_VERSION))
-                put(
-                    KEY_RETRIEVED,
-                    buildJsonArray { record.retrieved.forEach { add(encodeCitation(it)) } },
-                )
-                put(KEY_CITED, buildJsonArray { record.cited.forEach { add(JsonPrimitive(it)) } })
-            }
-        return json.encodeToString(JsonObject.serializer(), obj)
     }
 
     /**
@@ -129,6 +146,33 @@ public object CitationRecordJson {
         }
     }
 
+    /**
+     * Conservative retention references, not displayable or trusted citations.
+     * Invalid excerpts must not unpin their source revisions. Null means an
+     * ambiguous payload: callers must skip garbage collection rather than
+     * interpret the unreadable record as having no references. Legacy arrays
+     * carry no revision addresses and therefore contribute an empty set.
+     */
+    public fun revisionPins(text: String?): Set<Pair<DocId, RevisionHash>>? {
+        if (text.isNullOrBlank()) return emptySet()
+        val element = runCatching { json.parseToJsonElement(text) }.getOrNull() ?: return null
+        if (element is JsonArray) {
+            return if (decodeLegacy(element) is RetrievedChunksPayload.Legacy || element.isEmpty()) emptySet() else null
+        }
+        return runCatching {
+            val obj = element as JsonObject
+            require(obj.getValue(KEY_RECORD_VERSION).integer() == RECORD_VERSION)
+            (obj.getValue(KEY_RETRIEVED) as JsonArray)
+                .map { item ->
+                    val citation = item as JsonObject
+                    val id = citation.getValue(KEY_DOCUMENT_ID).string()
+                    val hash = citation.getValue(KEY_REVISION_HASH).string()
+                    require(id.isNotBlank() && HASH_REGEX.matches(hash))
+                    id to hash
+                }.toSet()
+        }.getOrNull()
+    }
+
     // ------------------------------------------------------------------
     // Internals
     // ------------------------------------------------------------------
@@ -142,21 +186,32 @@ public object CitationRecordJson {
 
     private fun decodeV1(obj: JsonObject): RetrievedChunksPayload {
         val version =
-            runCatching { (obj[KEY_RECORD_VERSION] as? JsonPrimitive)?.int }.getOrNull()
+            runCatching { obj.getValue(KEY_RECORD_VERSION).integer() }.getOrNull()
                 ?: return RetrievedChunksPayload.Empty
         if (version != RECORD_VERSION) return RetrievedChunksPayload.Empty
         return runCatching {
+            require(obj.keys == setOf(KEY_RECORD_VERSION, KEY_RETRIEVED, KEY_CITED))
             val retrieved =
-                (obj[KEY_RETRIEVED] as? JsonArray).orEmpty().map { decodeCitation(it as JsonObject) }
+                (obj.getValue(KEY_RETRIEVED) as JsonArray).map { decodeCitation(it as JsonObject) }
             val cited =
-                (obj[KEY_CITED] as? JsonArray).orEmpty().map { (it as JsonPrimitive).int }
-            RetrievedChunksPayload.V1(
-                CitationRecord(recordVersion = version, retrieved = retrieved, cited = cited),
-            ) as RetrievedChunksPayload
+                (obj.getValue(KEY_CITED) as JsonArray).map { it.integer() }
+            val record = CitationRecord(recordVersion = version, retrieved = retrieved, cited = cited)
+            validateRecord(record)
+            RetrievedChunksPayload.V1(record) as RetrievedChunksPayload
         }.getOrDefault(RetrievedChunksPayload.Empty)
     }
 
-    private fun JsonArray?.orEmpty(): List<JsonElement> = this ?: emptyList()
+    private fun JsonElement.integer(): Int {
+        val value = this as JsonPrimitive
+        require(!value.isString)
+        return value.int
+    }
+
+    private fun JsonElement.string(): String {
+        val value = this as JsonPrimitive
+        require(value.isString)
+        return value.content
+    }
 
     private fun validate(citation: Citation) {
         require(citation.marker in 1..MAX_CITATIONS) {
@@ -169,9 +224,13 @@ public object CitationRecordJson {
         require(citation.locator.byteStart >= 0 && citation.locator.byteEnd >= citation.locator.byteStart) {
             "citation locator byte range must be non-negative and non-inverted"
         }
+        require(citation.locator.chunkOrd == null || citation.locator.chunkOrd >= 0) {
+            "citation chunk ordinal must be non-negative"
+        }
         require(citation.excerpt.length <= MAX_EXCERPT_CHARS) {
             "citation excerpt is ${citation.excerpt.length} chars, schema maximum is $MAX_EXCERPT_CHARS"
         }
+        require(excerptIntegrity(citation) != ExcerptIntegrity.ALTERED) { "stored citation excerpt hash mismatch" }
     }
 
     private fun encodeCitation(citation: Citation): JsonObject =
@@ -196,20 +255,22 @@ public object CitationRecordJson {
         }
 
     private fun decodeCitation(obj: JsonObject): Citation {
+        require(obj.keys.all { it in CITATION_KEYS })
         val locator = obj.getValue(KEY_LOCATOR) as JsonObject
+        require(locator.keys.all { it in setOf(KEY_BYTE_START, KEY_BYTE_END, KEY_CHUNK_ORD) })
         return Citation(
-            marker = (obj.getValue(KEY_MARKER) as JsonPrimitive).int,
-            documentId = (obj.getValue(KEY_DOCUMENT_ID) as JsonPrimitive).content,
-            revisionHash = (obj.getValue(KEY_REVISION_HASH) as JsonPrimitive).content,
+            marker = obj.getValue(KEY_MARKER).integer(),
+            documentId = obj.getValue(KEY_DOCUMENT_ID).string(),
+            revisionHash = obj.getValue(KEY_REVISION_HASH).string(),
             locator =
                 Locator(
-                    byteStart = (locator.getValue(KEY_BYTE_START) as JsonPrimitive).int,
-                    byteEnd = (locator.getValue(KEY_BYTE_END) as JsonPrimitive).int,
-                    chunkOrd = (locator[KEY_CHUNK_ORD] as? JsonPrimitive)?.int,
+                    byteStart = locator.getValue(KEY_BYTE_START).integer(),
+                    byteEnd = locator.getValue(KEY_BYTE_END).integer(),
+                    chunkOrd = locator[KEY_CHUNK_ORD]?.integer(),
                 ),
-            excerpt = (obj.getValue(KEY_EXCERPT) as JsonPrimitive).content,
-            sourceKind = CitationSourceKind.fromDb((obj.getValue(KEY_SOURCE_KIND) as JsonPrimitive).content),
-            excerptHash = (obj[KEY_EXCERPT_HASH] as? JsonPrimitive)?.content,
+            excerpt = obj.getValue(KEY_EXCERPT).string(),
+            sourceKind = CitationSourceKind.fromDb(obj.getValue(KEY_SOURCE_KIND).string()),
+            excerptHash = obj[KEY_EXCERPT_HASH]?.string(),
         )
     }
 
@@ -226,4 +287,14 @@ public object CitationRecordJson {
     private const val KEY_EXCERPT: String = "excerpt"
     private const val KEY_EXCERPT_HASH: String = "excerpt_hash"
     private const val KEY_SOURCE_KIND: String = "source_kind"
+    private val CITATION_KEYS =
+        setOf(
+            KEY_MARKER,
+            KEY_DOCUMENT_ID,
+            KEY_REVISION_HASH,
+            KEY_LOCATOR,
+            KEY_EXCERPT,
+            KEY_EXCERPT_HASH,
+            KEY_SOURCE_KIND,
+        )
 }

@@ -27,10 +27,17 @@
 package app.skein.core.vault.repository
 
 import androidx.test.ext.junit.runners.AndroidJUnit4
+import app.skein.core.model.Citation
+import app.skein.core.model.CitationRecord
+import app.skein.core.model.CitationRecordJson
+import app.skein.core.model.CitationSourceKind
 import app.skein.core.model.DocumentKind
 import app.skein.core.model.IndexStore
+import app.skein.core.model.Locator
 import app.skein.core.model.NewDocument
+import app.skein.core.model.NewMessage
 import app.skein.core.model.PersonaId
+import app.skein.core.model.Role
 import app.skein.core.model.TimelineFilter
 import app.skein.core.model.VaultRepository
 import app.skein.core.vault.blob.InMemoryAttachmentStore
@@ -50,6 +57,8 @@ import kotlinx.serialization.json.buildJsonObject
 import org.junit.After
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertFalse
+import org.junit.Assert.assertNotNull
+import org.junit.Assert.assertNull
 import org.junit.Assert.assertTrue
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -139,6 +148,54 @@ public class VaultRepositoryImplContractTest : VaultRepositoryContractTest() {
                 stmt.step()
             }
     }
+
+    @Test
+    public fun altered_excerpt_does_not_unpin_other_citations_or_its_own_revision(): Unit =
+        runBlocking {
+            val repo = repo()
+            val notes = (1..2).map { repo.createDocument(NewDocument(DocumentKind.NOTE, "note $it", "original $it")) }
+            val chat = repo.createDocument(NewDocument(DocumentKind.CHAT, "chat", ""))
+            val record =
+                CitationRecord(
+                    retrieved =
+                        notes.mapIndexed { index, note ->
+                            Citation(
+                                index + 1,
+                                note.id,
+                                requireNotNull(note.contentHash),
+                                Locator(0, 10),
+                                "original ${index + 1}",
+                                CitationSourceKind.LEXICAL,
+                            )
+                        },
+                    cited = listOf(1, 2),
+                )
+            val message = repo.appendMessage(chat.id, NewMessage(Role.ASSISTANT, "see [1] and [2]", citations = record))
+            notes.forEach { repo.updateBody(it.id, it.title, "replacement") }
+            val altered = CitationRecordJson.encode(record).replace("original 1", "altered 1")
+            openConnections.last().prepare("UPDATE messages SET retrieved_chunks = ? WHERE id = ?").use {
+                it.bindText(1, altered)
+                it.bindText(2, message.id)
+                it.step()
+            }
+            val replay = repo.listMessages(chat.id).single()
+            assertEquals("see [1] and [2]", replay.contentMd)
+            assertNull(replay.citations)
+            repo.sweepUnreferencedRevisions()
+            notes.forEach {
+                assertNotNull(repo.getRevision(it.id, requireNotNull(it.contentHash)))
+                assertEquals(1, repo.countChatsCiting(it.id))
+            }
+
+            // A truncated payload cannot prove which revisions are safe to remove.
+            openConnections.last().prepare("UPDATE messages SET retrieved_chunks = ? WHERE id = ?").use {
+                it.bindText(1, "{truncated")
+                it.bindText(2, message.id)
+                it.step()
+            }
+            assertEquals(0, repo.sweepUnreferencedRevisions())
+            notes.forEach { assertNotNull(repo.getRevision(it.id, requireNotNull(it.contentHash))) }
+        }
 
     // ------------------------------------------------------------------
     // OBJECT_LIFECYCLE_SPEC.md §11.1 EMU only (LC-03): staged plaintext

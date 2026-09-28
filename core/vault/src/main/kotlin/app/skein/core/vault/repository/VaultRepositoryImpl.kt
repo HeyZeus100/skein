@@ -612,8 +612,8 @@ public class VaultRepositoryImpl(
                 stmt.bindText(1, id)
                 val chats = HashSet<DocId>()
                 while (stmt.step()) {
-                    val payload = CitationRecordJson.decode(stmt.getText(1))
-                    if (payload is RetrievedChunksPayload.V1 && payload.record.retrieved.any { it.documentId == id }) {
+                    val pins = CitationRecordJson.revisionPins(stmt.getText(1))
+                    if (pins?.any { it.first == id } == true) {
                         chats += stmt.getText(0)
                     }
                 }
@@ -656,7 +656,7 @@ public class VaultRepositoryImpl(
 
     override suspend fun sweepUnreferencedRevisions(): Int =
         writeTx {
-            val referenced = collectReferencedRevisions()
+            val referenced = collectReferencedRevisions() ?: return@writeTx 0
             val candidates = ArrayList<Pair<DocId, RevisionHash>>()
             writer.prepare(VaultSql.SELECT_SWEEPABLE_REVISIONS).use { stmt ->
                 while (stmt.step()) candidates += stmt.getText(0) to stmt.getText(1)
@@ -705,25 +705,18 @@ public class VaultRepositoryImpl(
 
     /**
      * Every `(documentId, revisionHash)` pair named by any message's
-     * citation-record-v1 payload, decoded via [CitationRecordJson.decode]
-     * (never string-matched — §1.3 is explicit that SQLite enforces no JSON
-     * schema and this codec is the only enforcement point). Scanning
-     * `retrieved` alone is sufficient: every `cited` marker names an entry
-     * in `retrieved` by construction ([CitationRecordJson.encode] requires
-     * it). A legacy or unreadable payload decodes to something other than
-     * [RetrievedChunksPayload.V1] and contributes nothing.
+     * citation-record-v1 payload. Retention deliberately tolerates a damaged
+     * excerpt while display validation rejects it. If even the pin addresses
+     * cannot be read, null prevents this entire sweep from deleting revisions.
+     * Legacy chunk-ID arrays contain no revision addresses.
      */
-    private fun collectReferencedRevisions(): Set<Pair<DocId, RevisionHash>> {
+    private fun collectReferencedRevisions(): Set<Pair<DocId, RevisionHash>>? {
         val referenced = HashSet<Pair<DocId, RevisionHash>>()
         writer.prepare(VaultSql.SELECT_ALL_RETRIEVED_CHUNKS).use { stmt ->
             while (stmt.step()) {
                 if (stmt.isNull(0)) continue
-                val payload = CitationRecordJson.decode(stmt.getText(0))
-                if (payload is RetrievedChunksPayload.V1) {
-                    for (citation in payload.record.retrieved) {
-                        referenced += citation.documentId to citation.revisionHash
-                    }
-                }
+                val pins = CitationRecordJson.revisionPins(stmt.getText(0)) ?: return null
+                referenced += pins
             }
         }
         return referenced
