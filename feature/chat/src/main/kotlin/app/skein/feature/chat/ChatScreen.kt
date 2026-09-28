@@ -25,7 +25,6 @@ import app.skein.core.model.DocId
 import app.skein.core.model.DocumentKind
 import app.skein.core.model.ImportService
 import app.skein.core.model.NewDocument
-import app.skein.core.model.PersonaId
 import app.skein.core.model.VaultRepository
 import app.skein.feature.editor.autocomplete.Suggestion
 
@@ -39,8 +38,6 @@ public const val ENGINE_ERROR_BANNER_TEXT: String = "Couldn't finish the answer.
 /**
  * @param wikilinkSuggest backs the bottom bar's `[[` popup — typically
  *   `{ query -> vaultRepository.searchTitles(query).map { Suggestion(it.title) } }`.
- * @param currentPersonaId read by 📎 attach's [ImportService] calls; `null`
- *   defers to whatever persona `sendPipeline` was wired with.
  * @param onSlashCommand see [ChatBottomBar]'s doc — the command-palette seam.
  * @param onOpenSource a citation tap: opens the cited document.
  * @param topBar the NavDisplay shell entry's own bar; the context inspector is
@@ -57,7 +54,6 @@ public fun ChatScreen(
     wikilinkSuggest: suspend (String) -> List<Suggestion>,
     modifier: Modifier = Modifier,
     importService: ImportService? = null,
-    currentPersonaId: () -> PersonaId? = { null },
     // UX-P0-14: the `[[` popup's `Create "x"` row must create the note it
     // names (it used to create nothing); an existing title is left alone.
     onCreateWikilink: suspend (String) -> Unit = { title ->
@@ -67,6 +63,7 @@ public fun ChatScreen(
     },
     onSlashCommand: () -> Unit = {},
     topBar: @Composable () -> Unit = {},
+    contextChip: @Composable () -> Unit = {},
     initialMessage: String? = null,
 ) {
     val scope = rememberCoroutineScope()
@@ -79,7 +76,6 @@ public fun ChatScreen(
                 onOpenSource = onOpenSource,
                 scope = scope,
                 importService = importService,
-                currentPersonaId = currentPersonaId,
             )
         }
 
@@ -124,6 +120,8 @@ public fun ChatScreen(
             onCitationTap = viewModel::onCitationTap,
             modifier = Modifier.weight(1f).fillMaxWidth(),
         )
+
+        contextChip()
 
         ChatBottomBar(
             isGenerating = viewModel.isGenerating,

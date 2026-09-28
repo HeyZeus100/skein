@@ -7,6 +7,7 @@ import androidx.activity.result.ActivityResultRegistry
 import androidx.activity.result.ActivityResultRegistryOwner
 import androidx.activity.result.contract.ActivityResultContract
 import androidx.compose.runtime.CompositionLocalProvider
+import androidx.compose.ui.test.assertContentDescriptionEquals
 import androidx.compose.ui.test.junit4.createAndroidComposeRule
 import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.performClick
@@ -75,7 +76,46 @@ class ImportFailureIsReportedTest {
         assertThat(offered).isNotEmpty()
         assertThat(offered.filter { it == "*/*" || it.startsWith("image/") }).isEmpty()
         assertThat(ShadowToast.getTextOfLatestToast()).isEqualTo(
-            "Skein can't import images yet. Attach a text file or PDF.",
+            "Skein can't import images yet. Import a text file or PDF.",
         )
+    }
+
+    @Test
+    fun `successful import says it was added to Knowledge without claiming attachment scope`() {
+        val picked = Uri.parse("content://test/evidence.txt")
+        shadowOf(composeRule.activity.contentResolver).registerInputStream(picked, ByteArrayInputStream(byteArrayOf(1)))
+        val owner =
+            object : ActivityResultRegistryOwner {
+                override val activityResultRegistry =
+                    object : ActivityResultRegistry() {
+                        override fun <I, O> onLaunch(
+                            requestCode: Int,
+                            contract: ActivityResultContract<I, O>,
+                            input: I,
+                            options: ActivityOptionsCompat?,
+                        ) {
+                            dispatchResult(requestCode, picked)
+                        }
+                    }
+            }
+        composeRule.setContent {
+            CompositionLocalProvider(LocalActivityResultRegistryOwner provides owner) {
+                SkeinTheme {
+                    ChatBottomBar(
+                        isGenerating = false,
+                        onSend = {},
+                        onCancel = {},
+                        wikilinkSuggest = { emptyList() },
+                        onAttach = { name, _, _ -> "[[$name]]" },
+                    )
+                }
+            }
+        }
+        composeRule
+            .onNodeWithTag(ATTACH_BUTTON_TEST_TAG)
+            .assertContentDescriptionEquals("Import file to Knowledge")
+            .performClick()
+        composeRule.waitForIdle()
+        assertThat(ShadowToast.getTextOfLatestToast()).isEqualTo("Added “evidence.txt” to Knowledge.")
     }
 }

@@ -8,6 +8,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import app.skein.core.model.DocId
+import app.skein.core.model.DocumentKind
 import app.skein.core.model.ImportService
 import app.skein.core.model.InferenceException
 import app.skein.core.model.Message
@@ -77,10 +78,6 @@ public enum class ChatBanner { NONE, SERVICE_DIED, ENGINE_ERROR }
  *   ADAPTIVE_LAYOUT_SPEC.md §8.2 `ChatSourceKey`).
  * @param importService nullable so a host that hasn't wired attachment
  *   import yet still renders a working chat screen (📎 disabled).
- * @param currentPersonaId read once per [send] call; `null` means "use
- *   `PersonaService.default()`" and is resolved by whatever
- *   `personaProvider` the app wired into [sendPipeline] — this class never
- *   talks to a `PersonaService` directly.
  */
 @Stable
 public class ChatViewModel(
@@ -90,7 +87,6 @@ public class ChatViewModel(
     private val onOpenSource: (DocId) -> Unit,
     private val scope: CoroutineScope,
     private val importService: ImportService? = null,
-    private val currentPersonaId: () -> PersonaId? = { null },
 ) {
     var messages: List<ChatMessageUi> by mutableStateOf(emptyList())
         private set
@@ -283,7 +279,14 @@ public class ChatViewModel(
         displayName: String,
         mimeType: String,
         input: InputStream,
-    ): String? = importService?.let { importAttachment(it, displayName, mimeType, input, currentPersonaId()) }
+    ): String? {
+        val service = importService ?: return null
+        // Import into the chat's owning Space, not whichever Space the drawer
+        // selected since this conversation opened. Resolve once before import.
+        val chat = requireNotNull(vaultRepository.getDocument(chatDocId)) { "Chat no longer exists" }
+        require(chat.kind == DocumentKind.CHAT)
+        return importAttachment(service, displayName, mimeType, input, chat.personaId)
+    }
 
     private fun elapsedMs(startedAtNanos: Long): Long = (System.nanoTime() - startedAtNanos) / NANOS_PER_MILLI
 

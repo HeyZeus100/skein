@@ -145,6 +145,7 @@ public fun ChatBottomBar(
                             val separator = if (fieldValue.text.isEmpty() || fieldValue.text.endsWith(" ")) "" else " "
                             val newText = fieldValue.text + separator + inserted
                             fieldValue = TextFieldValue(text = newText, selection = TextRange(newText.length))
+                            Toast.makeText(context, "Added “$displayName” to Knowledge.", Toast.LENGTH_LONG).show()
                         }
                     }
                 } catch (e: CancellationException) {
@@ -152,9 +153,9 @@ public fun ChatBottomBar(
                 } catch (e: Exception) {
                     val message =
                         if (e is UnsupportedOperationException) {
-                            "Skein can't import images yet. Attach a text file or PDF."
+                            "Skein can't import images yet. Import a text file or PDF."
                         } else {
-                            "Couldn't attach “$displayName”."
+                            "Couldn't import “$displayName”."
                         }
                     Toast.makeText(context, message, Toast.LENGTH_LONG).show()
                 }
@@ -226,7 +227,7 @@ public fun ChatBottomBar(
             onClick = { attachLauncher.launch(ATTACHABLE_MIME_TYPES) },
             modifier = Modifier.testTag(ATTACH_BUTTON_TEST_TAG),
         ) {
-            Icon(painter = painterResource(SkeinIcons.Attach), contentDescription = "Attach")
+            Icon(painter = painterResource(SkeinIcons.Attach), contentDescription = "Import file to Knowledge")
         }
         if (isGenerating) {
             IconButton(onClick = onCancel, modifier = Modifier.testTag(CANCEL_BUTTON_TEST_TAG)) {

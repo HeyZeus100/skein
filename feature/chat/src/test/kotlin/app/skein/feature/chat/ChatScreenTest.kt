@@ -212,7 +212,7 @@ class ChatScreenTest {
         }
 
         composeRule.onNodeWithText("Source Note").assertIsDisplayed()
-        composeRule.onNodeWithText("Relevant passage", substring = true).assertIsDisplayed()
+        composeRule.onNodeWithText("1 passage", substring = true).assertIsDisplayed()
         composeRule.onNodeWithTag(contextRowTestTag(retrievedItem())).performClick()
         assertThat(opened).containsExactly(retrievedItem().docId)
     }

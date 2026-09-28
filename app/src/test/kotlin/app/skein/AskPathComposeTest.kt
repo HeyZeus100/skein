@@ -3,6 +3,9 @@ package app.skein
 import android.content.Intent
 import androidx.compose.ui.semantics.SemanticsActions
 import androidx.compose.ui.test.ComposeTimeoutException
+import androidx.compose.ui.test.hasAnyAncestor
+import androidx.compose.ui.test.hasTestTag
+import androidx.compose.ui.test.hasText
 import androidx.compose.ui.test.junit4.v2.createEmptyComposeRule
 import androidx.compose.ui.test.onAllNodesWithTag
 import androidx.compose.ui.test.onAllNodesWithText
@@ -19,14 +22,17 @@ import app.skein.core.inference.models.ImportOutcome
 import app.skein.core.inference.models.ImportProgress
 import app.skein.core.inference.models.ImportSource
 import app.skein.core.model.Capability
+import app.skein.core.model.DocumentKind
 import app.skein.core.model.InferenceEngine
 import app.skein.core.model.Model
 import app.skein.core.model.ModelFormat
 import app.skein.core.model.ModelRecord
+import app.skein.core.model.NewDocument
 import app.skein.core.vault.session.LockReason
 import app.skein.core.vault.session.UnlockState
 import app.skein.feature.chat.CHAT_SCREEN_TEST_TAG
 import app.skein.feature.chat.COMPOSER_TEST_TAG
+import app.skein.feature.chat.ChatKnowledge
 import app.skein.feature.chat.SEND_BUTTON_TEST_TAG
 import app.skein.feature.chat.entries.ChatEntryTestTags
 import app.skein.feature.models.MODELS_DEFAULT_MARKER
@@ -89,9 +95,12 @@ class AskPathComposeTest {
         }
     }
 
-    private fun awaitText(text: String) {
+    private fun awaitText(
+        text: String,
+        substring: Boolean = true,
+    ) {
         awaitCondition("text \"$text\" to appear") {
-            composeRule.onAllNodesWithText(text, substring = true).fetchSemanticsNodes().isNotEmpty()
+            composeRule.onAllNodesWithText(text, substring = substring).fetchSemanticsNodes().isNotEmpty()
         }
     }
 
@@ -130,6 +139,25 @@ class AskPathComposeTest {
         return model
     }
 
+    /** The general-answer fixtures explicitly opt out of Knowledge; the default-on path has its own test. */
+    private fun openGeneralKnowledgeChat(): String {
+        awaitTag(ChatEntryTestTags.LANDING)
+        val repository = requireNotNull(app.vault.session.value).repository
+        val chat =
+            runBlocking {
+                repository.createDocument(NewDocument(DocumentKind.CHAT, "General knowledge test", null)).also {
+                    ChatKnowledge.setEnabled(repository, it.id, false)
+                }
+            }
+        val row = hasText(chat.title) and hasAnyAncestor(hasTestTag(ChatEntryTestTags.LANDING))
+        awaitCondition(
+            "the seeded general-knowledge chat",
+        ) { composeRule.onAllNodes(row).fetchSemanticsNodes().isNotEmpty() }
+        composeRule.onNode(row).performSemanticsAction(SemanticsActions.OnClick)
+        awaitTag(CHAT_SCREEN_TEST_TAG)
+        return chat.id
+    }
+
     private fun openModels() {
         composeRule.onNodeWithContentDescription("Open navigation").performSemanticsAction(SemanticsActions.OnClick)
         composeRule.onNodeWithText("Models").performSemanticsAction(SemanticsActions.OnClick)
@@ -148,17 +176,47 @@ class AskPathComposeTest {
         // `PromptAssemblerImpl.finalUserMessage` renders it as `"User: "`
         // plus the query verbatim (`PromptGuard.wrapRetrieved` returns "" for
         // an empty retrieval, so the guarded-context block is skipped).
-        app.fakeInferenceEngine = FakeInferenceEngine(script = mapOf("User: hello" to listOf("answer")))
+        app.fakeInferenceEngine = FakeInferenceEngine(script = mapOf("User: hello" to listOf(STREAMED_REPLY)))
         registerDefaultModel()
 
         ActivityScenario.launch(MainActivity::class.java).use {
             awaitTag(ShellTestTags.SKEIN_SHELL_ROOT)
-            awaitTag(ChatEntryTestTags.LANDING)
+            val chatId = openGeneralKnowledgeChat()
 
             composeRule.onNodeWithTag(COMPOSER_TEST_TAG).performTextInput("hello")
             composeRule.onNodeWithTag(SEND_BUTTON_TEST_TAG).performSemanticsAction(SemanticsActions.OnClick)
 
-            awaitText("answer")
+            awaitText(STREAMED_REPLY, substring = false)
+            assertEquals(
+                STREAMED_REPLY,
+                runBlocking {
+                    app.vault.session.value!!
+                        .repository
+                        .listMessages(chatId)
+                        .last()
+                        .contentMd
+                },
+            )
+        }
+    }
+
+    @Test
+    fun `Knowledge on with no evidence shows an app reply and does not invoke generation`() {
+        val counting =
+            CountingUnloadEngine(FakeInferenceEngine(script = mapOf("User: hello" to listOf(STREAMED_REPLY))))
+        app.fakeInferenceEngine = counting
+        registerDefaultModel()
+        ActivityScenario.launch(MainActivity::class.java).use {
+            awaitTag(ChatEntryTestTags.LANDING)
+            composeRule.onNodeWithTag(COMPOSER_TEST_TAG).performTextInput("hello")
+            composeRule.onNodeWithTag(SEND_BUTTON_TEST_TAG).performSemanticsAction(SemanticsActions.OnClick)
+            awaitText(
+                "I couldn't find enough evidence in Knowledge to answer that. " +
+                    "Add a relevant note or turn Knowledge off to ask from general knowledge.",
+                substring = false,
+            )
+            assertEquals(0, counting.streamCalls)
+            composeRule.onNodeWithText(STREAMED_REPLY).assertDoesNotExist()
         }
     }
 
@@ -183,16 +241,19 @@ class AskPathComposeTest {
      */
     @Test
     fun `locking the vault while a model is loaded unloads it exactly once`() {
-        val counting = CountingUnloadEngine(FakeInferenceEngine(script = mapOf("User: hello" to listOf("answer"))))
+        val counting =
+            CountingUnloadEngine(FakeInferenceEngine(script = mapOf("User: hello" to listOf(STREAMED_REPLY))))
         app.fakeInferenceEngine = counting
         registerDefaultModel()
 
         ActivityScenario.launch(MainActivity::class.java).use {
             awaitTag(ShellTestTags.SKEIN_SHELL_ROOT)
-            awaitTag(ChatEntryTestTags.LANDING)
+            openGeneralKnowledgeChat()
             composeRule.onNodeWithTag(COMPOSER_TEST_TAG).performTextInput("hello")
             composeRule.onNodeWithTag(SEND_BUTTON_TEST_TAG).performSemanticsAction(SemanticsActions.OnClick)
-            awaitText("answer")
+            awaitText(STREAMED_REPLY, substring = false)
+            assertEquals(1, counting.loadCalls)
+            assertEquals(1, counting.streamCalls)
 
             lockAndAwait()
 
@@ -303,6 +364,7 @@ class AskPathComposeTest {
 
     private companion object {
         const val WAIT_MILLIS = 30_000L
+        const val STREAMED_REPLY = "Fixture streamed reply"
     }
 }
 
@@ -319,6 +381,23 @@ private class CountingUnloadEngine(
 ) : InferenceEngine by delegate {
     var unloadCalls: Int = 0
         private set
+    var loadCalls: Int = 0
+        private set
+    var streamCalls: Int = 0
+        private set
+
+    override suspend fun load(model: Model): Result<Unit> {
+        loadCalls++
+        return delegate.load(model)
+    }
+
+    override fun stream(
+        prompt: app.skein.core.model.Prompt,
+        params: app.skein.core.model.SamplingParams,
+    ): kotlinx.coroutines.flow.Flow<app.skein.core.model.Token> {
+        streamCalls++
+        return delegate.stream(prompt, params)
+    }
 
     override suspend fun unload() {
         unloadCalls++

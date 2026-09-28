@@ -14,20 +14,21 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.produceState
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalLocale
 import androidx.compose.ui.platform.testTag
 import app.skein.core.designsystem.components.SkeinAction
+import app.skein.core.designsystem.components.SkeinContextChip
 import app.skein.core.designsystem.components.SkeinNotice
 import app.skein.core.designsystem.icons.SkeinIcons
 import app.skein.core.designsystem.theme.SkeinSpacing
 import app.skein.core.model.DocId
 import app.skein.core.model.DocumentKind
 import app.skein.core.model.ImportService
-import app.skein.core.model.Retrieved
 import app.skein.core.model.TimelineFilter
 import app.skein.core.model.VaultRepository
 import app.skein.core.navigation.ChatContextKey
@@ -42,6 +43,7 @@ import app.skein.core.navigation.SkeinKey
 import app.skein.core.navigation.TransientKey
 import app.skein.core.navigation.TransientKind
 import app.skein.core.navigation.contentKey
+import app.skein.feature.chat.ChatKnowledge
 import app.skein.feature.chat.ChatScreen
 import app.skein.feature.chat.ContextPanel
 import app.skein.feature.chat.SendPipeline
@@ -63,6 +65,7 @@ import app.skein.feature.shell.host.navMode
 import app.skein.feature.shell.host.open
 import app.skein.feature.shell.host.rememberEntryDocument
 import app.skein.feature.shell.layout.SkeinNavContainer
+import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.launch
 import java.time.Instant
 import java.time.ZoneId
@@ -200,17 +203,28 @@ private fun ChatRoute(
         wikilinkSuggest = { query -> repository.searchTitles(query).map { Suggestion(it.title) } },
         importService = deps.importService,
         initialMessage = first,
+        contextChip = {
+            if (chatId != null) {
+                val label = if (ChatKnowledge.enabled(document.document)) "Knowledge on" else "Knowledge off"
+                SkeinContextChip(
+                    label = label,
+                    contentDescription = "Context: $label. Inspect context.",
+                    modifier =
+                        Modifier
+                            .padding(
+                                horizontal = SkeinSpacing.space8,
+                            ).testTag(ChatEntryTestTags.CONTEXT_ACTION),
+                    onClick = {
+                        val inspector = ChatContextKey(chatId)
+                        shell.navigate { follow(it, inspector) }
+                        if (onePane) shell.sheets.expand(inspector.contentKey)
+                    },
+                )
+            }
+        },
         topBar = {
             Column {
                 shell.EntryTopBar(key, document.document.title.ifBlank { UNTITLED_CHAT }) {
-                    if (chatId != null) {
-                        EntryAction(SkeinIcons.Context, "Context", Modifier.testTag(ChatEntryTestTags.CONTEXT_ACTION)) {
-                            val inspector = ChatContextKey(chatId)
-                            shell.navigate { follow(it, inspector) }
-                            // The user asked for it: on one pane it opens as a sheet, not a peek (§2.5).
-                            if (onePane) shell.sheets.expand(inspector.contentKey)
-                        }
-                    }
                     if (phone) {
                         EntryAction(
                             SkeinIcons.NewChat,
@@ -250,20 +264,70 @@ private fun ChatInspector(
     shell: SkeinShellState,
     deps: ChatEntryDeps,
 ) {
-    val items by produceState(emptyList<Retrieved>(), deps.sendPipeline, key.chatId) {
-        deps.sendPipeline?.lastOutcome?.collect { outcome ->
-            if (outcome?.chatDocId == key.chatId.value) value = outcome.retrieved
-        }
-    }
-    if (LocalSheetMode.current == SheetMode.PEEK) {
-        SheetPeekRow("Context · ${sourcesLabel(items.size)}", Modifier.testTag(ChatEntryTestTags.INSPECTOR_PEEK))
+    val document = rememberEntryDocument(deps.repository, key.chatId.value)
+    if (document is EntryDocument.Gone) {
+        shell.GoneEntry(key.chatId.value, "This chat was deleted.", Destination.CHAT, "Go to Chats")
         return
     }
+    if (document !is EntryDocument.Present) return
+    val lastOutcome =
+        deps.sendPipeline
+            ?.lastOutcome
+            ?.collectAsState()
+            ?.value
+    val outcome = lastOutcome?.takeIf { it.chatDocId == key.chatId.value }
+    // Only passages that survived the prompt budget were supplied to the model.
+    val items =
+        outcome
+            ?.assembled
+            ?.citations
+            ?.values
+            ?.toList()
+            .orEmpty()
+    val sourceCount = items.distinctBy { it.docId }.size
+    val knowledgeEnabled = ChatKnowledge.enabled(document.document)
+    if (LocalSheetMode.current == SheetMode.PEEK) {
+        val knowledgeLabel = if (knowledgeEnabled) "Knowledge on" else "Knowledge off"
+        val summary = if (outcome == null) knowledgeLabel else "$knowledgeLabel · ${sourcesLabel(sourceCount)}"
+        SheetPeekRow(
+            summary,
+            Modifier.testTag(ChatEntryTestTags.INSPECTOR_PEEK),
+        )
+        return
+    }
+    val scope = rememberCoroutineScope()
+    var saving by remember(key.chatId) { mutableStateOf(false) }
+    var saveFailed by remember(key.chatId) { mutableStateOf(false) }
     val sources: (DocId) -> Unit =
         remember(key.chatId) { { docId -> shell.navigate { openSource(it, key.chatId, docId) } } }
     Column(Modifier.fillMaxSize().testTag(ChatEntryTestTags.INSPECTOR)) {
         shell.EntryTopBar(key, "Context")
-        ContextPanel(items = items, onOpenSource = sources, modifier = Modifier.fillMaxWidth())
+        ContextPanel(
+            items = items,
+            onOpenSource = sources,
+            knowledgeEnabled = knowledgeEnabled,
+            hasTurn = outcome != null,
+            knowledgeChangePending = saving,
+            knowledgeChangeFailed = saveFailed,
+            onKnowledgeChange = { enabled ->
+                if (!saving) {
+                    saving = true
+                    saveFailed = false
+                    scope.launch {
+                        try {
+                            ChatKnowledge.setEnabled(deps.repository, key.chatId.value, enabled)
+                        } catch (cancelled: CancellationException) {
+                            throw cancelled
+                        } catch (_: Exception) {
+                            saveFailed = true
+                        } finally {
+                            saving = false
+                        }
+                    }
+                }
+            },
+            modifier = Modifier.fillMaxWidth(),
+        )
     }
 }
 
