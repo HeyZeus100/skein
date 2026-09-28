@@ -63,9 +63,12 @@ relevance-rejection policy in `skein-gg11.32` separately from ranking.
 
 ## Metrics and initial gates
 
-Score the first eight distinct returned chunks, preserving order; deduplicate
-exact repeated chunk IDs. For answering-evidence recall, count each labelled
-answer span once, even if overlapping chunks both cover it.
+Score the first eight raw returned positions. An exact repeated chunk ID keeps
+its position but earns zero additional gain or evidence coverage; do not compress
+the ranking or promote a ninth result into the @8 window. For answering-evidence
+recall, count each labelled answer span once, even if overlapping chunks both
+cover it. For a span split across chunks, grade 3 and reciprocal-rank credit occur
+at the first raw rank where their byte-range union completes that span.
 
 - **Recall@8:** fraction of labelled grade-3 spans covered by the top eight.
   Macro-average over answerable queries; initial gate **≥ 0.75**.
@@ -106,3 +109,105 @@ Use this development corpus for relevance-policy iteration. Keep independently
 authored generation holdouts separate; never tune a prompt or threshold against
 them and still call them held-out. Test output content is allowed only in
 explicit synthetic evaluation artifacts, not normal application logs.
+
+## Real SQLite diagnostic harness
+
+`core/vault/src/androidTest/kotlin/app/skein/core/vault/eval/RealRetrievalEvaluationTest.kt`
+is an opt-in instrumented harness. Ordinary instrumentation runs skip it unless
+the `skein.retrieval.eval=true` argument is present. It uses an isolated encrypted
+`VaultLifecycle` with all production migrations, `VaultRepositoryImpl`,
+`IndexStoreImpl`, and four real personas. Seeding creates documents only. The
+same components as `app/IngestPipelines.forSession` perform ingestion:
+`Chunker(ApproximateTokenizer)`, `IngestSteps`, `EdgeUpserter`, and
+`DanglingResolver`. `RetrievalServiceImpl` performs every measured query.
+
+The current app has no production embedder or entity extractor. The harness
+therefore inserts no vectors or artificial entity/gold edges. It evaluates:
+
+- `lexical_only`: lexical recall, no vector/graph recall; existing ranker settings
+  `recallWeight=1`, `pprWeight=0`, `neighborHops=0` remove graph influence.
+- `graph_only`: real graph recall and the production ranker defaults.
+- `lexical_graph_default`: all default recall stages requested, with the existing
+  explicit no-embedder degradation. Ranker weights remain unchanged.
+
+`RecallStages` adds optional production stage switches with all stages enabled
+by default. It does not inject results or replace production ranking. Automatic
+Knowledge evidence excludes CHAT and AIOUT. The report records excluded document
+and chunk counts; any returned generated source is a hard provenance failure.
+Per-source recall still caps at 30 before eligibility filtering, so generated
+documents can consume recall capacity even though they cannot become evidence.
+The evaluator does not overfetch or tune this away.
+
+Null query persona aliases and unassigned documents resolve to the actual default
+Space. All current gold labels agree with this mapping. Each indexed row is
+checked against real chunker output, including heading breadcrumbs, source byte
+offsets and revision hashes. Only eligible NOTE/ATTACHMENT chunks enter the
+citation oracle: CHAT revision snapshots are deliberately empty/bounded by the
+repository contract. Eligible chunks must match their stored revision. A returned
+row must also match its actual indexed text and anchor; an arbitrary text suffix
+is not accepted as integrity proof.
+
+The pure scorer lives in `testing/eval/RetrievalMetrics.kt`. Ideal DCG is computed
+from positive chunks in the real indexed corpus, independently of retrieval
+candidates, using an exact bounded subset search. The current short gold notes
+have only one or two positive chunks per query. A future corpus exceeding 18
+positive chunks per query fails explicitly rather than approximating the oracle.
+Missing stored evidence or incomplete index coverage fails fixture validation.
+Gold resources and thresholds remain unchanged.
+
+Each query/mode has one untimed warm-up and three measured repetitions by
+default (`skein.retrieval.repetitions`, allowed range 2–10). Determinism compares
+ordered IDs, source kind, revision, locator, text, exact scores, and recall
+provenance. The report contains per-query and per-category recall/nDCG/MRR,
+numerators/denominators, raw rankings, scope/provenance/anchor violations, absence
+rejection and false rejection, and nearest-rank p50/p95. Absence rejection is the
+current production result-list behavior; no gold-aware or calibrated weak-source
+rejector is introduced by the harness.
+
+The report always identifies this implementation as `full_hybrid_gate=INELIGIBLE`
+because production vectors are unavailable. Ranking targets are still evaluated
+at 0.75/0.60 and reported as PASS, FAIL or INELIGIBLE. Diagnostic instrumentation
+success proves integrity, scope and determinism; it does not override a failed
+quality target or establish a full hybrid gate. `skein.retrieval.requireHybrid=true`
+deliberately fails after writing the report in the current implementation.
+
+## Running and collecting the report
+
+Build the dedicated library test APK; no inference-service model download is
+needed:
+
+```sh
+./gradlew --max-workers=2 :core:vault:assembleDevDebugAndroidTest
+```
+
+On an explicitly selected test emulator, install that APK and run only this
+class. The dev APK is under `core/vault/build/outputs/apk/androidTest/dev/debug/`.
+Use the package and runner in its generated AndroidManifest (`app.skein.core.vault.test`
+and `androidx.test.runner.AndroidJUnitRunner` with the current configuration):
+
+```sh
+adb -s "$ANDROID_SERIAL" install -r "$RETRIEVAL_TEST_APK"
+adb -s "$ANDROID_SERIAL" shell am instrument -w \
+  -e class app.skein.core.vault.eval.RealRetrievalEvaluationTest \
+  -e skein.retrieval.eval true \
+  -e skein.retrieval.revision "$(git rev-parse HEAD)" \
+  app.skein.core.vault.test/androidx.test.runner.AndroidJUnitRunner
+mkdir -p artifacts/eval
+adb -s "$ANDROID_SERIAL" exec-out run-as app.skein.core.vault.test \
+  cat files/artifacts/eval/retrieval.json > artifacts/eval/retrieval.json
+```
+
+The harness emits its actual package and relative artifact path through
+instrumentation status. Use those values if the test application ID changes.
+The temporary synthetic vault is closed and deleted afterward; the JSON remains
+in the test application's files directory. Early failures write `HARNESS_FAILED`
+with a fixed phase and exception class, not source text. Archive the JSON with the
+instrumentation result and build SHA before another run replaces it. If using
+Gradle connected tests instead of direct instrumentation, collect the report
+before any runner uninstall/cleanup removes the test package.
+
+This delivery is compile- and JVM-test-validated; it contains no claimed device
+scores. `skein-9744` remains open for the first actual baseline, reviewed failures,
+real production embedder/vector ablation, full-hybrid eligibility and enforced
+quality gate, and manual/nightly artifact wiring. A diagnostic run cannot close
+those remaining requirements.
