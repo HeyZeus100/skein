@@ -384,6 +384,24 @@ public abstract class PromptAssemblerContractTest {
     }
 
     @Test
+    public fun squeezing_one_token_drops_a_whole_oldest_exchange() {
+        val history = history(4)
+        val roomy = assemble(history = history)
+        val result = assemble(history = history, contextLength = roomy.estimatedTokens + RESERVE_FOR_ANSWER - 1)
+        assertEquals(2, result.droppedHistoryTurns)
+        assertEquals(Role.USER, historyMessagesOf(result).first().role)
+        assertEquals(history.takeLast(2).map { it.contentMd }, historyMessagesOf(result).map { it.content })
+    }
+
+    @Test
+    public fun leading_orphan_assistant_is_omitted_even_in_a_roomy_history() {
+        val history = history(4).drop(1)
+        val result = assemble(history = history)
+        assertEquals(1, result.droppedHistoryTurns)
+        assertEquals(Role.USER, historyMessagesOf(result).first().role)
+    }
+
+    @Test
     public fun estimated_tokens_never_exceed_the_prompt_budget() {
         val history = history(8)
         val retrieved = corpus(2)

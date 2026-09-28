@@ -20,6 +20,7 @@ import app.skein.core.model.StopReason
 import app.skein.core.model.Token
 import app.skein.ipc.ErrorCode
 import app.skein.ipc.ModelInspection
+import app.skein.ipc.PromptMeasurementParcel
 import app.skein.ipc.TransportRules
 import app.skein.testing.SkeinLogCaptureRule
 import com.google.common.truth.Truth.assertThat
@@ -671,6 +672,66 @@ class LlamaCppEngineBehaviourTest {
             engine.load(fixture.embeddingModel()).getOrThrow()
 
             assertThat(engine.embed("hello").toList()).containsExactly(1f, 2f, 3f).inOrder()
+        }
+
+    @Test
+    fun exactMeasurementCarriesFreshEpochSamplingAndLoadedIdentity(): Unit =
+        runTest {
+            engine.load(fixture.model()).getOrThrow()
+            epoch = 19L
+            val result = engine.measurePrompt(prompt("日本語 🧶"), params())
+            val req = service.measureRequests.single()
+            assertThat(req.sessionEpoch).isEqualTo(19L)
+            assertThat(req.expectedModelSha256).isEqualTo(fixture.model().sha256)
+            assertThat(req.sampling.maxTokens).isEqualTo(params().maxTokens)
+            assertThat(result.promptTokens).isEqualTo(17)
+            assertThat(result.contextLength).isEqualTo(512)
+        }
+
+    @Test
+    fun exactMeasurementRejectsChangedReturnedModelAndNeverUsesTokenCounter(): Unit =
+        runTest {
+            engine.load(fixture.model()).getOrThrow()
+            service.tokenCountResult = 0
+            service.measureResult = PromptMeasurementParcel(17, 512, "00".repeat(32))
+            assertThat(runCatching { engine.measurePrompt(prompt(), params()) }.exceptionOrNull())
+                .isInstanceOf(InferenceException.ModelChanged::class.java)
+            service.measureResult = null
+            service.measureError = ErrorCode.SESSION_LOCKED
+            assertThat(runCatching { engine.measurePrompt(prompt(), params()) }.exceptionOrNull())
+                .isInstanceOf(InferenceException.SessionLocked::class.java)
+        }
+
+    @Test
+    fun exactMeasurementSpillsMessagesAndClosesDescriptorsEvenOnRefusal(): Unit =
+        runTest {
+            engine.load(fixture.model()).getOrThrow()
+            service.measureError = ErrorCode.MODEL_CHANGED
+            val large = "é".repeat(20_000)
+            assertThat(runCatching { engine.measurePrompt(prompt(large), params()) }.exceptionOrNull())
+                .isInstanceOf(InferenceException.ModelChanged::class.java)
+            val fd =
+                service.measureRequests
+                    .single()
+                    .messages
+                    .single()
+                    .contentFd!!
+                    .fd
+            assertThat(runCatching { fd.fd }.getOrDefault(-1)).isLessThan(0)
+            assertThat(
+                temporaryFolder.root
+                    .resolve("spill")
+                    .listFiles()
+                    .orEmpty(),
+            ).isEmpty()
+        }
+
+    @Test
+    fun generationPreservesPreparedModelIdentity(): Unit =
+        runTest {
+            engine.load(fixture.model()).getOrThrow()
+            engine.stream(prompt().copy(expectedModelSha256 = "ab".repeat(32)), params()).toList()
+            assertThat(service.generates.single().expectedModelSha256).isEqualTo("ab".repeat(32))
         }
 
     // ------------------------------------------------------------- helpers

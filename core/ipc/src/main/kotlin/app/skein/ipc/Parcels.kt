@@ -297,6 +297,10 @@ object ErrorCode {
      */
     const val SESSION_LOCKED = 11
 
+    const val CONTEXT_FULL = 12
+
+    const val MODEL_CHANGED = 13
+
     /**
      * Unclassified service-side failure.
      *
@@ -576,6 +580,15 @@ data class GenerateRequest(
     val attachmentFds: List<SharedMemRef>,
     val sampling: SamplingParcel,
     val sessionEpoch: Long,
+    val expectedModelSha256: String? = null,
+) : Parcelable
+
+/** Exact service-side formatted size; no message content or template crosses back to the client. */
+@Parcelize
+data class PromptMeasurementParcel(
+    val promptTokens: Int,
+    val contextLength: Int,
+    val modelSha256: String,
 ) : Parcelable
 
 /** @param stopReason `app.skein.core.model.StopReason` name: EOS | LENGTH | STOP_STRING | CANCELLED. */

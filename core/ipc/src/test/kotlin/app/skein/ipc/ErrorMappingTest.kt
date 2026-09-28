@@ -56,6 +56,10 @@ class ErrorMappingTest {
                 Expectation(InferenceException.CompanionHashMismatch::class.java, "companion sha256 mismatch"),
             ErrorCode.SESSION_LOCKED to
                 Expectation(InferenceException.SessionLocked::class.java, "session locked"),
+            ErrorCode.CONTEXT_FULL to
+                Expectation(InferenceException.ContextFull::class.java, "prompt and answer exceed model context"),
+            ErrorCode.MODEL_CHANGED to
+                Expectation(InferenceException.ModelChanged::class.java, "model changed after prompt preparation"),
             ErrorCode.INTERNAL to
                 Expectation(InferenceException.Internal::class.java, "internal service failure"),
         )

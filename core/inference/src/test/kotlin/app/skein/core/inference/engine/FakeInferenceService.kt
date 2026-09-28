@@ -41,6 +41,7 @@ import app.skein.ipc.InspectRequest
 import app.skein.ipc.LoadRequest
 import app.skein.ipc.ManifestBinding
 import app.skein.ipc.ModelInspection
+import app.skein.ipc.PromptMeasurementParcel
 import app.skein.ipc.TransportRules
 import java.io.FileInputStream
 import java.util.concurrent.CopyOnWriteArrayList
@@ -311,6 +312,21 @@ internal class FakeInferenceService : IInferenceService {
         }
         embedError?.let { throw ErrorCodes.asServiceFailure(it, "embed refused") }
         return embedResult
+    }
+
+    var measureResult: PromptMeasurementParcel? = null
+    var measureError: Int? = null
+    val measureRequests = mutableListOf<GenerateRequest>()
+
+    override fun measurePrompt(req: GenerateRequest): PromptMeasurementParcel {
+        measureRequests += req
+        try {
+            measureError?.let { throw ErrorCodes.asServiceFailure(it) }
+            return measureResult ?: PromptMeasurementParcel(17, 512, req.expectedModelSha256.orEmpty())
+        } finally {
+            req.messages.forEach { it.contentFd?.fd?.close() }
+            req.attachmentFds.forEach { it.fd.close() }
+        }
     }
 
     override fun tokenCount(text: String?): Int {

@@ -64,10 +64,13 @@ import app.skein.ipc.LoadRequest
 import app.skein.ipc.ManifestBinding
 import app.skein.ipc.ManifestFileRef
 import app.skein.ipc.ModelInspection
+import app.skein.ipc.PromptMeasurementParcel
 import app.skein.ipc.SharedMemRef
 import app.skein.ipc.TransportRules
 import java.io.FileInputStream
 import java.io.IOException
+import java.nio.ByteBuffer
+import java.nio.charset.CodingErrorAction
 import java.util.concurrent.atomic.AtomicBoolean
 
 private const val TAG = "InferenceService"
@@ -148,6 +151,8 @@ class InferenceService : Service() {
             override fun onSessionLocked(epoch: Long) = engine.onSessionLocked(epoch)
 
             override fun onSessionUnlocked(epoch: Long) = engine.onSessionUnlocked(epoch)
+
+            override fun measurePrompt(req: GenerateRequest): PromptMeasurementParcel = engine.measurePrompt(req)
         }
 }
 
@@ -174,6 +179,7 @@ internal class InferenceEngineState(
 
     private var loaded: LoadedModel? = null
     private var active: ActiveRequest? = null
+    private var measuring = false
     private var state: String = EngineState.UNLOADED
     private var lastTokensPerSec: Float = 0f
 
@@ -257,7 +263,13 @@ internal class InferenceEngineState(
                             backend.freeModel(model)
                             throw e
                         }
-                    model to context
+                    try {
+                        Triple(model, context, backend.contextLength(context))
+                    } catch (e: Throwable) {
+                        backend.freeContextSecure(context)
+                        backend.freeModel(model)
+                        throw e
+                    }
                 }
             synchronized(lock) {
                 loaded =
@@ -265,14 +277,14 @@ internal class InferenceEngineState(
                         pinned = pinnedModel,
                         model = handles.first,
                         context = handles.second,
-                        contextLength = req.contextLength,
+                        contextLength = handles.third,
                         modelSha256 = binding.main.expectedSha256,
                         embeddingMode = req.embeddingMode,
                         gpuLayers = req.gpuLayers,
                     )
                 state = EngineState.READY
             }
-            SkeinLog.i(TAG, "model loaded files=${req.binding.files.size} ctx=${req.contextLength}")
+            SkeinLog.i(TAG, "model loaded files=${req.binding.files.size} ctx=${handles.third}")
             ErrorCode.OK
         } catch (e: LlamaException) {
             pinnedModel.close()
@@ -319,7 +331,7 @@ internal class InferenceEngineState(
             closeReceived(req.binding)
             return ModelInspection.refused(ErrorCode.SESSION_LOCKED)
         }
-        if (synchronized(lock) { active != null }) {
+        if (synchronized(lock) { active != null || measuring }) {
             closeReceived(req.binding)
             return ModelInspection.refused(ErrorCode.BUSY)
         }
@@ -439,7 +451,7 @@ internal class InferenceEngineState(
 
         val request = ActiveRequest(req.requestId, cb, req.sessionEpoch, model.context)
         synchronized(lock) {
-            if (active != null) {
+            if (active != null || measuring) {
                 // Only the SECOND request is refused; the first keeps streaming.
                 closeAttachments(req)
                 fail(cb, req.requestId, ErrorCode.BUSY, "a request is already in flight")
@@ -458,7 +470,12 @@ internal class InferenceEngineState(
             } catch (e: IOException) {
                 finish(request)
                 closeAttachments(req)
-                fail(cb, req.requestId, ErrorCode.INTERNAL, "could not read a spilled message")
+                fail(
+                    cb,
+                    req.requestId,
+                    (e as? MessageTransportException)?.code ?: ErrorCode.INTERNAL,
+                    "invalid message transport",
+                )
                 return
             }
         // E4.I11 owns images; until then attachments are consumed and closed
@@ -477,31 +494,25 @@ internal class InferenceEngineState(
         val startedAt = SystemClock.elapsedRealtime()
         var sampler = 0L
         try {
-            // E-4 (OfflineLLM review, `research/upstream/offlinellm/KV_CACHE_ANALYSIS.md`).
-            // Every request starts its prompt at position 0, so every cell the
-            // previous request left in the cache is stale. Correctness rested
-            // on llama.cpp purging a cell when a later decode overwrites its
-            // position — an invariant of somebody else's implementation, never
-            // asserted on a device, and one whose failure mode is the previous
-            // conversation leaking into this answer. Clearing is explicit,
-            // costs one `llama_memory_clear`, and also means the KV pages do
-            // not hold the last session's plaintext token state between
-            // requests (LOCK_POLICY_INDEXING.md §4.5's reasoning, applied
-            // between turns rather than only at free).
+            // The model may have been unloaded while spill descriptors were read.
+            // Check on the worker before touching any handle, not only at admission.
+            guardPreparedModel(req, model)
+            if (request.cancelled.get()) {
+                complete(request, StopReasons.CANCELLED, 0, 0, 0L, startedAt)
+                return
+            }
+            val (layout, tokenized) = formatPrompt(req, model, contents)
+            val promptIds = tokenized.ids
+            if (req.sampling.maxTokens < 0 ||
+                promptIds.size.toLong() + req.sampling.maxTokens > model.contextLength.toLong()
+            ) {
+                throw ErrorCodes.asServiceFailure(ErrorCode.CONTEXT_FULL)
+            }
+            guardPreparedModel(req, model)
+            // Never retain the previous request's KV state, and never prefill an
+            // over-budget prompt. The same formatted IDs were measured above.
             backend.kvClear(model.context)
 
-            // skein-gg11.28: refuse unsupported or ambiguous boundaries before
-            // tokenization/decode. Never continue with template chrome as text.
-            val layout =
-                ChatTemplating.render(
-                    backend,
-                    model.model,
-                    req.messages.map { it.role }.toTypedArray(),
-                    contents.toTypedArray(),
-                    addAssistantPrefix = true,
-                )
-            val tokenized = ChatTemplating.tokenizeDetailed(backend, model.model, layout.segments)
-            val promptIds = tokenized.ids
             // Keep the existing content-free diagnostic fields for the device
             // baseline. A refused render now returns an error instead of a
             // misleading successful generation with closed=true.
@@ -602,6 +613,9 @@ internal class InferenceEngineState(
             }
             batcher.flush()
             complete(request, stopReason, promptIds.size, generated, ttftMs, startedAt)
+        } catch (e: IllegalStateException) {
+            finish(request)
+            fail(request.callback, request.requestId, ErrorCodes.codeOf(e) ?: ErrorCode.INTERNAL, "request refused")
         } catch (e: LlamaException) {
             when (e.code) {
                 LlamaErrorCode.CANCELLED ->
@@ -634,9 +648,72 @@ internal class InferenceEngineState(
             }
         } finally {
             if (sampler != 0L) runCatching { backend.freeSampler(sampler) }
-            runCatching { backend.setCancelFlag(model.context, false) }
+            if (synchronized(lock) { loaded === model }) runCatching { backend.setCancelFlag(model.context, false) }
         }
     }
+
+    /** Exact preflight; shares formatting/tokenization with generation and never decodes. */
+    fun measurePrompt(req: GenerateRequest): PromptMeasurementParcel {
+        var admitted = false
+        try {
+            if (gate.guard(req.sessionEpoch) is GateResult.Refuse) {
+                throw ErrorCodes.asServiceFailure(ErrorCode.SESSION_LOCKED)
+            }
+            val model =
+                synchronized(lock) {
+                    if (active != null || measuring) throw ErrorCodes.asServiceFailure(ErrorCode.BUSY)
+                    val current = loaded ?: throw ErrorCodes.asServiceFailure(ErrorCode.NOT_LOADED)
+                    measuring = true
+                    admitted = true
+                    current
+                }
+            guardPreparedModel(req, model)
+            val contents = req.messages.map { readContent(it) }
+            return worker.submitBlocking {
+                guardPreparedModel(req, model)
+                val (_, tokens) = formatPrompt(req, model, contents)
+                guardPreparedModel(req, model)
+                PromptMeasurementParcel(tokens.ids.size, model.contextLength, model.modelSha256)
+            }
+        } catch (e: IOException) {
+            throw ErrorCodes.asServiceFailure(
+                (e as? MessageTransportException)?.code ?: ErrorCode.INTERNAL,
+                "invalid message transport",
+            )
+        } catch (e: LlamaException) {
+            throw ErrorCodes.asServiceFailure(ServiceErrorMapping.toErrorCode(e), ServiceErrorMapping.diagnostic(e))
+        } finally {
+            closeAttachments(req)
+            if (admitted) synchronized(lock) { measuring = false }
+        }
+    }
+
+    private fun guardPreparedModel(
+        req: GenerateRequest,
+        model: LoadedModel,
+    ) {
+        if (gate.guard(req.sessionEpoch) is GateResult.Refuse) {
+            throw ErrorCodes.asServiceFailure(ErrorCode.SESSION_LOCKED)
+        }
+        if (synchronized(lock) { loaded !== model } ||
+            (req.expectedModelSha256 != null && !req.expectedModelSha256.equals(model.modelSha256, ignoreCase = true))
+        ) {
+            throw ErrorCodes.asServiceFailure(ErrorCode.MODEL_CHANGED)
+        }
+    }
+
+    private fun formatPrompt(
+        req: GenerateRequest,
+        model: LoadedModel,
+        contents: List<String>,
+    ) = ChatTemplating
+        .render(
+            backend,
+            model.model,
+            req.messages.map { it.role }.toTypedArray(),
+            contents.toTypedArray(),
+            addAssistantPrefix = true,
+        ).let { layout -> layout to ChatTemplating.tokenizeDetailed(backend, model.model, layout.segments) }
 
     // -------------------------------------------------------------- cancel
 
@@ -1036,19 +1113,35 @@ internal class InferenceEngineState(
     private fun readUtf8(ref: SharedMemRef): String =
         try {
             FileInputStream(ref.fd.fileDescriptor).use { stream ->
-                val limit = ref.sizeBytes.coerceAtMost(TransportRules.INLINE_REFUSE_BYTES.toLong()).toInt()
-                val bytes = ByteArray(limit)
+                val cap = TransportRules.INLINE_REFUSE_BYTES
+                if (ref.sizeBytes > cap) throw MessageTransportException(ErrorCode.TX_TOO_LARGE)
+                if (ref.sizeBytes < 0) throw MessageTransportException(ErrorCode.INTERNAL)
+                val expected = ref.sizeBytes.toInt()
+                // At most cap + 1 bytes: reject metadata/EOF mismatches rather
+                // than silently truncating the prompt or trusting a hostile FD.
+                val bytes = ByteArray(expected + 1)
                 var read = 0
-                while (read < limit) {
-                    val n = stream.read(bytes, read, limit - read)
+                while (read < bytes.size) {
+                    val n = stream.read(bytes, read, bytes.size - read)
                     if (n < 0) break
                     read += n
                 }
-                String(bytes, 0, read, Charsets.UTF_8)
+                if (read > cap) throw MessageTransportException(ErrorCode.TX_TOO_LARGE)
+                if (read != expected) throw MessageTransportException(ErrorCode.INTERNAL)
+                Charsets.UTF_8
+                    .newDecoder()
+                    .onMalformedInput(CodingErrorAction.REPORT)
+                    .onUnmappableCharacter(CodingErrorAction.REPORT)
+                    .decode(ByteBuffer.wrap(bytes, 0, read))
+                    .toString()
             }
         } finally {
             closeQuietly(ref.fd)
         }
+
+    private class MessageTransportException(
+        val code: Int,
+    ) : IOException("invalid message transport")
 
     private fun closeAttachments(req: GenerateRequest) {
         req.attachmentFds.forEach { closeQuietly(it.fd) }

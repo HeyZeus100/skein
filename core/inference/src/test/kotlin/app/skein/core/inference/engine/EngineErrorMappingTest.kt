@@ -258,6 +258,8 @@ class EngineErrorMappingTest {
                 ErrorCode.MODEL_IN_USE to InferenceException.ModelInUse::class,
                 ErrorCode.COMPANION_HASH_MISMATCH to InferenceException.CompanionHashMismatch::class,
                 ErrorCode.SESSION_LOCKED to InferenceException.SessionLocked::class,
+                ErrorCode.CONTEXT_FULL to InferenceException.ContextFull::class,
+                ErrorCode.MODEL_CHANGED to InferenceException.ModelChanged::class,
                 ErrorCode.INTERNAL to InferenceException.Internal::class,
             )
     }

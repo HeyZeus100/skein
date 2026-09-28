@@ -159,6 +159,7 @@ object LlamaNative {
      *
      * Thread: the inference worker thread.
      */
+
     external fun newContext(
         model: Long,
         nCtx: Int,
@@ -166,6 +167,9 @@ object LlamaNative {
         nBatch: Int,
         embeddings: Boolean,
     ): Long
+
+    /** Actual llama_n_ctx for a live context. Worker thread only. */
+    external fun contextLength(ctx: Long): Int
 
     /**
      * Frees a context, zeroing its KV cache first — see [freeContextSecure],

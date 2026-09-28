@@ -69,6 +69,8 @@ open class FakeLlamaBackend : LlamaBackend {
      * must create none at all, and a context created and freed again would
      * leave [liveContexts] empty just the same.
      */
+    private val contextCapacities = mutableMapOf<Long, Int>()
+
     var newContextCalls: Int = 0
         private set
 
@@ -80,8 +82,13 @@ open class FakeLlamaBackend : LlamaBackend {
         embeddings: Boolean,
     ): Long {
         newContextCalls++
-        return (nextHandle++).also { liveContexts += it }
+        return (nextHandle++).also {
+            liveContexts += it
+            contextCapacities[it] = nCtx
+        }
     }
+
+    override fun contextLength(ctx: Long): Int = contextCapacities.getValue(ctx)
 
     override fun freeContextSecure(ctx: Long) {
         liveContexts -= ctx

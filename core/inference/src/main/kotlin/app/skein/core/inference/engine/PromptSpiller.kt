@@ -70,6 +70,7 @@ internal class PromptSpiller(
         messages: List<ChatMessage>,
         sampling: SamplingParcel,
         sessionEpoch: Long,
+        expectedModelSha256: String? = null,
     ): GenerateRequest {
         val parcels = messages.mapTo(mutableListOf()) { ChatMessageParcel(role = it.role.wire, content = it.content) }
         val opened = mutableListOf<ParcelFileDescriptor>()
@@ -84,7 +85,10 @@ internal class PromptSpiller(
             //    exceeds it alone. Spill the largest remaining inline message
             //    until the whole request fits; this terminates because a
             //    spilled message's parcel is a few hundred bytes.
-            while (TransportRules.mustSpill(requestSize(requestId, parcels, sampling, sessionEpoch))) {
+            while (TransportRules.mustSpill(
+                    requestSize(requestId, parcels, sampling, sessionEpoch, expectedModelSha256),
+                )
+            ) {
                 val largest =
                     parcels
                         .withIndex()
@@ -94,7 +98,8 @@ internal class PromptSpiller(
                 parcels[largest.index] = spill(largest.value, opened)
             }
 
-            val request = GenerateRequest(requestId, parcels.toList(), emptyList(), sampling, sessionEpoch)
+            val request =
+                GenerateRequest(requestId, parcels.toList(), emptyList(), sampling, sessionEpoch, expectedModelSha256)
             val size = TransportRules.marshalledSize(request)
             if (TransportRules.refuses(size)) {
                 throw InferenceException.TransactionTooLarge("$size bytes after spilling every message")
@@ -115,7 +120,11 @@ internal class PromptSpiller(
         parcels: List<ChatMessageParcel>,
         sampling: SamplingParcel,
         sessionEpoch: Long,
-    ): Int = TransportRules.marshalledSize(GenerateRequest(requestId, parcels, emptyList(), sampling, sessionEpoch))
+        expectedModelSha256: String? = null,
+    ): Int =
+        TransportRules.marshalledSize(
+            GenerateRequest(requestId, parcels, emptyList(), sampling, sessionEpoch, expectedModelSha256),
+        )
 
     @Throws(IOException::class)
     private fun spill(

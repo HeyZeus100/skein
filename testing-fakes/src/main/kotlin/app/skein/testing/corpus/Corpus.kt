@@ -558,6 +558,8 @@ public object Corpus {
             InferenceException.ServiceDied(),
             InferenceException.OutOfMemory(),
             InferenceException.Busy(),
+            InferenceException.ContextFull(),
+            InferenceException.ModelChanged(),
             InferenceException.PostMmapHashMismatch(),
             InferenceException.CompanionHashMismatch("tokenizer"),
             InferenceException.TransactionTooLarge(),

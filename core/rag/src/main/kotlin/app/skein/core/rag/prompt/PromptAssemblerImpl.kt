@@ -8,6 +8,7 @@ import app.skein.core.model.Message
 import app.skein.core.model.Persona
 import app.skein.core.model.Prompt
 import app.skein.core.model.PromptAssembler
+import app.skein.core.model.PromptHistory
 import app.skein.core.model.Retrieved
 import app.skein.core.model.Role
 import app.skein.core.model.TokenBudget
@@ -60,6 +61,7 @@ public class PromptAssemblerImpl : PromptAssembler {
             citations = survivors.mapIndexed { index, item -> (index + 1) to item }.toMap(),
             droppedHistoryTurns = dropped,
             estimatedTokens = messages.sumOf { countTokens(it.content) },
+            droppedRetrievedItems = retrieved.size - survivors.size,
         )
     }
 
@@ -91,7 +93,7 @@ public class PromptAssemblerImpl : PromptAssembler {
 
     /**
      * Drops [history] turns oldest-first until [fixedCost] plus the surviving
-     * turns' cost is at most [promptBudget]. Never drops below zero turns;
+     * exchanges' cost is at most [promptBudget]. Never drops below zero turns;
      * the system and final-user messages ([fixedCost]) are never touched
      * here, matching the KDoc's "never dropped" invariant.
      */
@@ -101,13 +103,13 @@ public class PromptAssemblerImpl : PromptAssembler {
         promptBudget: Int,
         countTokens: (String) -> Int,
     ): Pair<List<Message>, Int> {
-        var kept = history
-        var dropped = 0
-        while (kept.isNotEmpty() && fixedCost + kept.sumOf { countTokens(it.contentMd) } > promptBudget) {
-            kept = kept.drop(1)
-            dropped += 1
+        var kept = PromptHistory.withoutLeadingReplies(history)
+        while (kept.isNotEmpty() &&
+            fixedCost.toLong() + kept.sumOf { countTokens(it.contentMd).toLong() } > promptBudget
+        ) {
+            kept = PromptHistory.dropOldestExchange(kept)
         }
-        return kept to dropped
+        return kept to history.size - kept.size
     }
 
     /**
@@ -118,7 +120,7 @@ public class PromptAssemblerImpl : PromptAssembler {
      * column allows it — but copying that role verbatim into history would
      * render it as a *second* instruction segment. It is re-roled to
      * [Role.USER] instead: rendered as data, exactly like every other
-     * history turn, never dropped and never treated as an instruction.
+     * retained history turn, never treated as an instruction.
      */
     private fun historyRole(role: Role): Role = if (role == Role.SYSTEM) Role.USER else role
 

@@ -671,6 +671,16 @@ Java_app_skein_inference_service_LlamaNative_newContext(
     SKEIN_JNI_CATCH(0)
 }
 
+/* Thread: the inference worker thread. Returns the resolved native capacity. */
+extern "C" JNIEXPORT jint JNICALL
+Java_app_skein_inference_service_LlamaNative_contextLength(JNIEnv *env, jobject /*thiz*/, jlong ctx_handle) {
+    SKEIN_JNI_TRY
+    Entry *entry = ContextEntryOf(env, ctx_handle);
+    if (entry == nullptr) return 0;
+    return static_cast<jint>(llama_n_ctx(static_cast<llama_context *>(entry->ptr)));
+    SKEIN_JNI_CATCH(0)
+}
+
 namespace {
 
 /* Shared body of freeContext / freeContextSecure. */
@@ -918,6 +928,13 @@ Java_app_skein_inference_service_LlamaNative_decodePrompt(
     const jsize n_tokens = env->GetArrayLength(tokens);
     if (n_tokens == 0 || n_past < 0) {
         ThrowLlama(env, ErrorCode::kInvalidArgument, "empty token batch or negative n_past");
+        return 0;
+    }
+
+    /* Reject before any decode rather than relying on KV allocation failure or
+     * implicit cache eviction. Wide arithmetic also prevents position overflow. */
+    if (static_cast<std::int64_t>(n_past) + n_tokens > llama_n_ctx(ctx)) {
+        ThrowLlama(env, ErrorCode::kContextFull, "prompt and answer exceed model context");
         return 0;
     }
 

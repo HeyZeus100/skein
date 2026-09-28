@@ -26,6 +26,7 @@ import app.skein.ipc.InspectRequest;
 import app.skein.ipc.ModelInspection;
 import app.skein.ipc.BackendReportRequest;
 import app.skein.ipc.BackendReport;
+import app.skein.ipc.PromptMeasurementParcel;
 
 interface IInferenceService {
     /**
@@ -148,4 +149,6 @@ interface IInferenceService {
      * refuse with SESSION_LOCKED forever. This is that method. Additive.
      */
     void onSessionUnlocked(long epoch);
+    /** Sync. Exact formatted count against the pinned loaded model; owns and closes all received fds. */
+    PromptMeasurementParcel measurePrompt(in GenerateRequest req);
 }

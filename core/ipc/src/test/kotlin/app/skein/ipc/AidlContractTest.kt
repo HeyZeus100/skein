@@ -292,6 +292,28 @@ class AidlContractTest {
         assertThat(fake.dropped).isEqualTo(4)
     }
 
+    @Test
+    fun promptMeasurementUsesTheAppendedTransactionAndPreservesRequestIdentity() {
+        val stub = IInferenceService.Stub::class.java
+        val unlocked = stub.getDeclaredField("TRANSACTION_onSessionUnlocked").apply { isAccessible = true }.getInt(null)
+        val measure = stub.getDeclaredField("TRANSACTION_measurePrompt").apply { isAccessible = true }.getInt(null)
+        assertThat(measure).isEqualTo(unlocked + 1)
+        val fake = FakeInferenceService()
+        val proxy = IInferenceService.Stub.asInterface(fake.asBinder())
+        val request =
+            GenerateRequest(
+                41,
+                listOf(ChatMessageParcel("user", "synthetic")),
+                emptyList(),
+                SamplingParcel(0f, 1, 1f, 0f, 1f, 20, 1L, emptyList()),
+                8L,
+                "ab".repeat(32),
+            )
+        val measured = proxy.measurePrompt(request)
+        assertThat(measured).isEqualTo(PromptMeasurementParcel(17, 512, "test-sha"))
+        assertThat(fake.measureRequests.single()).isEqualTo(request)
+    }
+
     /** A binding with no descriptors: `inspect`'s marshalling, not its verifier. */
     private fun binding(): ManifestBinding =
         ManifestBinding(
@@ -377,6 +399,7 @@ class AidlContractTest {
         val embedRequests = mutableListOf<EmbedRequest>()
         val inspectRequests = mutableListOf<InspectRequest>()
         val backendReportRequests = mutableListOf<BackendReportRequest>()
+        val measureRequests = mutableListOf<GenerateRequest>()
 
         override fun load(req: LoadRequest): Int = ErrorCode.OK
 
@@ -423,6 +446,11 @@ class AidlContractTest {
         override fun embed(req: EmbedRequest): FloatArray {
             embedRequests += req
             return FloatArray(req.texts.size)
+        }
+
+        override fun measurePrompt(req: GenerateRequest): PromptMeasurementParcel {
+            measureRequests += req
+            return PromptMeasurementParcel(17, 512, "test-sha")
         }
 
         override fun tokenCount(text: String): Int = text.length

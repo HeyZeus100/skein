@@ -32,6 +32,22 @@ class ParcelRoundTripTest {
     val temporaryFolder: TemporaryFolder = TemporaryFolder()
 
     @Test
+    fun exactMeasurementRoundTripPreservesCountsAndIdentity() {
+        val original = PromptMeasurementParcel(417, 2048, "ab".repeat(32))
+        assertThat(roundTrip(original)).isEqualTo(original)
+    }
+
+    @Test
+    fun preparedModelIdentityRoundTripsAfterExistingGenerateFields() {
+        val original = generateRequest().copy(expectedModelSha256 = "cd".repeat(32))
+        val restored = roundTrip(original)
+        assertThat(restored.expectedModelSha256).isEqualTo(original.expectedModelSha256)
+        assertThat(restored.sessionEpoch).isEqualTo(original.sessionEpoch)
+        restored.attachmentFds.forEach { it.fd.close() }
+        original.attachmentFds.forEach { it.fd.close() }
+    }
+
+    @Test
     fun sharedMemRefRoundTripPreservesPayloadBytes() {
         val original = sharedMemRef("image.png", "png-bytes")
 

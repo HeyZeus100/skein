@@ -162,10 +162,16 @@ public data class AssembledPrompt(
     val prompt: Prompt,
     /** 1-based citation index → source, exactly the [N] markers present in the prompt. */
     val citations: Map<Int, Retrieved>,
-    /** How many of [PromptAssembler.assemble]'s `history` turns were dropped to fit the budget. */
+    /** Number of history messages omitted; trimming removes complete user-led exchanges. */
     val droppedHistoryTurns: Int,
-    /** Sum of `countTokens` over every assembled message; never exceeds `contextLength - reserveForAnswer`. */
+    /** Content-only estimate. This does not authorize generation or include chat-template overhead. */
     val estimatedTokens: Int,
+    /** Exact engine-formatted token count, absent for the pure content-only assembler. */
+    val formattedTokens: Int? = null,
+    /** Actual loaded context capacity from the exact measurement. */
+    val contextLength: Int? = null,
+    /** Number of retrieved items omitted from the supplied candidate list. */
+    val droppedRetrievedItems: Int = 0,
 )
 
 /**
@@ -185,8 +191,8 @@ public data class AssembledPrompt(
  *    there. The application policy takes precedence over Space preferences. This extends to
  *    `history`: a stored or imported turn may itself carry [Role.SYSTEM]
  *    (design spec §5's `messages.role` column allows it), but an assembler
- *    renders every such turn as data — re-roled to [Role.USER], never
- *    dropped — so `history` can never produce a second instruction segment
+ *    renders each retained turn as data — re-roled to [Role.USER] — so
+ *    `history` can never produce a second instruction segment
  *    (skein-zh7o).
  * 2. **A labelled data segment.** Every retrieved chunk lives in one
  *    [Role.USER] message — the last one — that begins with the literal line
@@ -227,11 +233,12 @@ public data class AssembledPrompt(
  *
  * Retrieved items are trimmed from the end until the retrieved block costs at
  * most [TokenBudget.maxRetrievedTokens]; only the survivors appear in
- * [AssembledPrompt.citations]. Then history turns are dropped oldest-first
- * until [AssembledPrompt.estimatedTokens] is at most
- * `contextLength - reserveForAnswer`, and
- * [AssembledPrompt.droppedHistoryTurns] counts exactly those turns. The
- * system message and the final user message are never dropped.
+ * [AssembledPrompt.citations]. Then complete user-led exchanges are dropped oldest-first (including
+ * any orphaned leading assistant messages), while retaining the mandatory
+ * system and final user message. [AssembledPrompt.droppedHistoryTurns] counts
+ * omitted messages, not exchanges. An oversized mandatory prompt can exceed
+ * the estimate budget; production must obtain an exact engine measurement
+ * including template overhead and refuse before generation if it cannot fit.
  */
 public interface PromptAssembler {
     /**

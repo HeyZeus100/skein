@@ -215,6 +215,52 @@ class LlamaNativeTest {
     }
 
     @Test
+    fun exactNativeCapacityAcceptsLastReservedPositionAndRefusesOneBeyond() {
+        loadTinyModel()
+        ctx = LlamaNative.newContext(model, nCtx = 64, nThreads = 2, nBatch = 64, embeddings = false)
+        val actualCapacity = LlamaNative.contextLength(ctx)
+        assertThat(actualCapacity).isAtLeast(64)
+        val layout = ChatTemplating.render(NativeLlamaBackend, model, arrayOf("user"), arrayOf("Hello"), true)
+        val ids = ChatTemplating.tokenize(NativeLlamaBackend, model, layout.segments)
+        assertThat(ids.size).isLessThan(actualCapacity)
+        val nPast = LlamaNative.decodePrompt(ctx, ids, 0)
+        val reserve = actualCapacity - ids.size
+        assertThat(LlamaNative.decodePrompt(ctx, IntArray(reserve) { ids.last() }, nPast)).isEqualTo(actualCapacity)
+        val failure =
+            runCatching {
+                LlamaNative.decodePrompt(
+                    ctx,
+                    intArrayOf(ids.last()),
+                    actualCapacity,
+                )
+            }.exceptionOrNull()
+        assertThat(failure).isInstanceOf(LlamaException::class.java)
+        assertThat((failure as LlamaException).code).isEqualTo(LlamaErrorCode.CONTEXT_FULL)
+    }
+
+    @Test
+    fun contextCapacityRejectsZeroWrongAndFreedHandles() {
+        assertThat(
+            runCatching {
+                LlamaNative.contextLength(0L)
+            }.exceptionOrNull(),
+        ).isInstanceOf(IllegalStateException::class.java)
+        loadTinyModel()
+        assertThat(
+            runCatching {
+                LlamaNative.contextLength(model)
+            }.exceptionOrNull(),
+        ).isInstanceOf(IllegalStateException::class.java)
+        val freed = LlamaNative.newContext(model, nCtx = 64, nThreads = 2, nBatch = 64, embeddings = false)
+        LlamaNative.freeContextSecure(freed)
+        assertThat(
+            runCatching {
+                LlamaNative.contextLength(freed)
+            }.exceptionOrNull(),
+        ).isInstanceOf(IllegalStateException::class.java)
+    }
+
+    @Test
     fun decodePromptThenEightSamplesYieldsEightIds() {
         // Arrange
         loadTinyModel()

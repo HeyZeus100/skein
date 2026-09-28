@@ -24,6 +24,7 @@ import app.skein.core.model.Message
 import app.skein.core.model.Persona
 import app.skein.core.model.Prompt
 import app.skein.core.model.PromptAssembler
+import app.skein.core.model.PromptHistory
 import app.skein.core.model.Retrieved
 import app.skein.core.model.Role
 import app.skein.core.model.TokenBudget
@@ -59,12 +60,13 @@ internal class GuardedReferenceAssembler : PromptAssembler {
         val fixedCost = countTokens(systemContent) + countTokens(finalUserContent)
         val promptBudget = budget.contextLength - budget.reserveForAnswer
 
-        var kept = history
-        var dropped = 0
-        while (kept.isNotEmpty() && fixedCost + kept.sumOf { countTokens(it.contentMd) } > promptBudget) {
-            kept = kept.drop(1)
-            dropped += 1
+        var kept = PromptHistory.withoutLeadingReplies(history)
+        while (kept.isNotEmpty() &&
+            fixedCost.toLong() + kept.sumOf { countTokens(it.contentMd).toLong() } > promptBudget
+        ) {
+            kept = PromptHistory.dropOldestExchange(kept)
         }
+        val dropped = history.size - kept.size
 
         val messages =
             buildList {

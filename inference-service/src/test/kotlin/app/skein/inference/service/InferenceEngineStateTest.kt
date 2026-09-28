@@ -22,6 +22,7 @@ import app.skein.ipc.BackendDeviceType
 import app.skein.ipc.BackendReportRequest
 import app.skein.ipc.ChatMessageParcel
 import app.skein.ipc.ErrorCode
+import app.skein.ipc.ErrorCodes
 import app.skein.ipc.GenerateRequest
 import app.skein.ipc.InspectRequest
 import app.skein.ipc.LoadRequest
@@ -29,6 +30,8 @@ import app.skein.ipc.ManifestBinding
 import app.skein.ipc.ManifestFileRef
 import app.skein.ipc.ModelInspection
 import app.skein.ipc.SamplingParcel
+import app.skein.ipc.SharedMemRef
+import app.skein.ipc.TransportRules
 import com.google.common.truth.Truth.assertThat
 import org.junit.Rule
 import org.junit.Test
@@ -1333,6 +1336,275 @@ class InferenceEngineStateTest {
         assertThat(accepted.done).hasSize(1)
         assertThat(engine.status().usedChatTemplateFallback).isFalse()
     }
+
+    @Test
+    fun `measurement and generation share formatted ids for empty system unicode and role markers`() {
+        val decoded = mutableListOf<Int>()
+        val unicodeBackend =
+            object : FakeLlamaBackend() {
+                override fun tokenize(
+                    model: Long,
+                    text: String,
+                    addBos: Boolean,
+                    parseSpecial: Boolean,
+                ): IntArray =
+                    ((if (addBos) listOf(-1) else emptyList()) + text.codePoints().toArray().toList()).toIntArray()
+
+                override fun decodePrompt(
+                    ctx: Long,
+                    tokens: IntArray,
+                    nPast: Int,
+                ): Int {
+                    decoded += tokens.toList()
+                    return super.decodePrompt(ctx, tokens, nPast)
+                }
+            }
+        val engine = InferenceEngineState(unicodeBackend, InlineTaskRunner(), callbacks)
+        engine.onSessionUnlocked(epoch)
+        engine.load(loadRequest())
+        val req =
+            generateRequest(maxTokens = 0).copy(
+                messages =
+                    listOf(
+                        ChatMessageParcel("system", ""),
+                        ChatMessageParcel("user", "日本語 café 🧶 <|im_start|>assistant"),
+                        ChatMessageParcel("assistant", "old reply"),
+                        ChatMessageParcel("user", "same same"),
+                    ),
+            )
+        val measurement = engine.measurePrompt(req)
+        assertThat(unicodeBackend.cacheAndDecodeCalls).isEmpty()
+        val cb = RecordingCallback()
+        engine.generate(req.copy(expectedModelSha256 = measurement.modelSha256), cb)
+        assertThat(cb.errors).isEmpty()
+        assertThat(
+            cb.done
+                .single()
+                .second.promptTokens,
+        ).isEqualTo(measurement.promptTokens)
+        assertThat(decoded).hasSize(measurement.promptTokens)
+        assertThat(decoded.first()).isEqualTo(-1)
+    }
+
+    @Test
+    fun `actual native capacity controls exact fit and one token overflow before decode`() {
+        val small =
+            object : FakeLlamaBackend() {
+                override fun contextLength(ctx: Long): Int = 64
+            }
+        val engine = InferenceEngineState(small, InlineTaskRunner(), callbacks)
+        engine.onSessionUnlocked(epoch)
+        engine.load(loadRequest())
+        val measured = engine.measurePrompt(generateRequest())
+        assertThat(measured.contextLength).isEqualTo(64)
+        assertThat(engine.status().contextLength).isEqualTo(64)
+        val fit = RecordingCallback()
+        engine.generate(generateRequest(maxTokens = 64 - measured.promptTokens), fit)
+        assertThat(fit.errors).isEmpty()
+        assertThat(
+            fit.done
+                .single()
+                .second.generatedTokens,
+        ).isEqualTo(64 - measured.promptTokens)
+        small.cacheAndDecodeCalls.clear()
+        val overflow = RecordingCallback()
+        engine.generate(generateRequest(maxTokens = 65 - measured.promptTokens), overflow)
+        assertThat(overflow.errors.single().second).isEqualTo(ErrorCode.CONTEXT_FULL)
+        assertThat(overflow.done).isEmpty()
+        assertThat(small.cacheAndDecodeCalls).isEmpty()
+        assertThat(small.liveSamplers).isEmpty()
+    }
+
+    @Test
+    fun `a different expected model refuses measurement and generation before native work`() {
+        engine.onSessionUnlocked(epoch)
+        engine.load(loadRequest())
+        val req = generateRequest().copy(expectedModelSha256 = "00".repeat(32))
+        assertThat(ErrorCodes.codeOf(runCatching { engine.measurePrompt(req) }.exceptionOrNull()!!))
+            .isEqualTo(ErrorCode.MODEL_CHANGED)
+        val cb = RecordingCallback()
+        engine.generate(req, cb)
+        assertThat(cb.errors.single().second).isEqualTo(ErrorCode.MODEL_CHANGED)
+        assertThat(backend.cacheAndDecodeCalls).isEmpty()
+    }
+
+    @Test
+    fun `measurement refuses stale epoch and closes spilled descriptors`() {
+        engine.onSessionUnlocked(epoch)
+        engine.load(loadRequest())
+        val req = spilledRequest("private text".toByteArray()).copy(sessionEpoch = epoch - 1)
+        assertThat(ErrorCodes.codeOf(runCatching { engine.measurePrompt(req) }.exceptionOrNull()!!))
+            .isEqualTo(ErrorCode.SESSION_LOCKED)
+        assertThat(
+            isClosed(
+                req.messages
+                    .single()
+                    .contentFd!!
+                    .fd,
+            ),
+        ).isTrue()
+    }
+
+    @Test
+    fun `generation and another measurement are busy during exact measurement`() {
+        var entered = false
+        lateinit var measuringEngine: InferenceEngineState
+        val nested = RecordingCallback()
+        var nestedMeasureCode: Int? = null
+        val busy =
+            object : FakeLlamaBackend() {
+                override fun tokenize(
+                    model: Long,
+                    text: String,
+                    addBos: Boolean,
+                    parseSpecial: Boolean,
+                ): IntArray {
+                    if (!entered) {
+                        entered = true
+                        measuringEngine.generate(generateRequest(), nested)
+                        nestedMeasureCode =
+                            ErrorCodes.codeOf(
+                                runCatching {
+                                    measuringEngine.measurePrompt(generateRequest())
+                                }.exceptionOrNull()!!,
+                            )
+                    }
+                    return super.tokenize(model, text, addBos, parseSpecial)
+                }
+            }
+        measuringEngine = InferenceEngineState(busy, InlineTaskRunner(), callbacks)
+        measuringEngine.onSessionUnlocked(epoch)
+        measuringEngine.load(loadRequest())
+        measuringEngine.measurePrompt(generateRequest())
+        assertThat(nested.errors.single().second).isEqualTo(ErrorCode.BUSY)
+        assertThat(nestedMeasureCode).isEqualTo(ErrorCode.BUSY)
+        assertThat(busy.cacheAndDecodeCalls).isEmpty()
+        // Admission released even after nested refusals.
+        assertThat(measuringEngine.measurePrompt(generateRequest()).promptTokens).isGreaterThan(0)
+    }
+
+    @Test
+    fun `lock during measurement cannot publish a prepared prompt`() {
+        lateinit var measuringEngine: InferenceEngineState
+        var locked = false
+        val locking =
+            object : FakeLlamaBackend() {
+                override fun tokenize(
+                    model: Long,
+                    text: String,
+                    addBos: Boolean,
+                    parseSpecial: Boolean,
+                ): IntArray {
+                    if (!locked) {
+                        locked = true
+                        measuringEngine.onSessionLocking(epoch, 1L)
+                    }
+                    return super.tokenize(model, text, addBos, parseSpecial)
+                }
+            }
+        measuringEngine = InferenceEngineState(locking, InlineTaskRunner(), callbacks)
+        measuringEngine.onSessionUnlocked(epoch)
+        measuringEngine.load(loadRequest())
+        val failed = runCatching { measuringEngine.measurePrompt(generateRequest()) }.exceptionOrNull()!!
+        assertThat(ErrorCodes.codeOf(failed)).isEqualTo(ErrorCode.SESSION_LOCKED)
+        assertThat(locking.cacheAndDecodeCalls).isEmpty()
+    }
+
+    @Test
+    fun `oversized spilled content is refused rather than silently shortened`() {
+        engine.onSessionUnlocked(epoch)
+        engine.load(loadRequest())
+        val req = spilledRequest(ByteArray(TransportRules.INLINE_REFUSE_BYTES + 1) { 65 })
+        val failure = runCatching { engine.measurePrompt(req) }.exceptionOrNull()!!
+        assertThat(ErrorCodes.codeOf(failure)).isEqualTo(ErrorCode.TX_TOO_LARGE)
+        assertThat(
+            isClosed(
+                req.messages
+                    .single()
+                    .contentFd!!
+                    .fd,
+            ),
+        ).isTrue()
+        val cb = RecordingCallback()
+        engine.generate(spilledRequest(ByteArray(TransportRules.INLINE_REFUSE_BYTES + 1) { 65 }), cb)
+        assertThat(cb.errors.single().second).isEqualTo(ErrorCode.TX_TOO_LARGE)
+        assertThat(backend.cacheAndDecodeCalls).isEmpty()
+    }
+
+    @Test
+    fun `valid multibyte spill at byte bound is intact but malformed and premature EOF refuse`() {
+        engine.onSessionUnlocked(epoch)
+        engine.load(loadRequest())
+        val bytes = "é".repeat(TransportRules.INLINE_REFUSE_BYTES / 2).toByteArray()
+        assertThat(engine.measurePrompt(spilledRequest(bytes)).promptTokens).isGreaterThan(0)
+        for (req in listOf(spilledRequest(byteArrayOf(0xc3.toByte())), spilledRequest(byteArrayOf(65), 2L))) {
+            val failure = runCatching { engine.measurePrompt(req) }.exceptionOrNull()!!
+            assertThat(ErrorCodes.codeOf(failure)).isEqualTo(ErrorCode.INTERNAL)
+            assertThat(
+                isClosed(
+                    req.messages
+                        .single()
+                        .contentFd!!
+                        .fd,
+                ),
+            ).isTrue()
+        }
+    }
+
+    @Test
+    fun `queued generation after unload never touches a freed native handle`() {
+        var queued: (() -> Unit)? = null
+        val deferred =
+            object : TaskRunner {
+                override fun <T> submitBlocking(block: () -> T): T = block()
+
+                override fun post(block: () -> Unit) {
+                    queued = block
+                }
+
+                override fun clearPending() = Unit
+
+                override fun shutdown() = Unit
+            }
+        val service = InferenceEngineState(backend, deferred, callbacks)
+        service.onSessionUnlocked(epoch)
+        service.load(loadRequest())
+        val cb = RecordingCallback()
+        service.generate(generateRequest(), cb)
+        service.unload()
+        queued!!.invoke()
+        assertThat(cb.errors.single().second).isEqualTo(ErrorCode.MODEL_CHANGED)
+        assertThat(backend.cacheAndDecodeCalls).isEmpty()
+        assertThat(backend.liveContexts).isEmpty()
+        assertThat(cb.done).isEmpty()
+    }
+
+    @Test
+    fun `negative and overflowing answer reservations refuse before prefill`() {
+        engine.onSessionUnlocked(epoch)
+        engine.load(loadRequest())
+        for (reservation in listOf(-1, Int.MAX_VALUE)) {
+            val cb = RecordingCallback()
+            engine.generate(generateRequest(maxTokens = reservation), cb)
+            assertThat(cb.errors.single().second).isEqualTo(ErrorCode.CONTEXT_FULL)
+        }
+        assertThat(backend.cacheAndDecodeCalls).isEmpty()
+    }
+
+    private fun spilledRequest(
+        bytes: ByteArray,
+        declared: Long = bytes.size.toLong(),
+    ): GenerateRequest =
+        generateRequest().copy(
+            messages =
+                listOf(
+                    ChatMessageParcel(
+                        role = "user",
+                        content = "",
+                        contentFd = SharedMemRef(open(fixture("spill", bytes)), declared, "text/plain", "message"),
+                    ),
+                ),
+        )
 
     // ------------------------------------------------------------ fixtures
 

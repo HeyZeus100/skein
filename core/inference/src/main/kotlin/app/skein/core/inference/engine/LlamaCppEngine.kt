@@ -85,6 +85,7 @@ import app.skein.core.model.InferenceException
 import app.skein.core.model.Model
 import app.skein.core.model.ModelStatus
 import app.skein.core.model.Prompt
+import app.skein.core.model.PromptMeasurement
 import app.skein.core.model.SamplingParams
 import app.skein.core.model.SkeinLog
 import app.skein.core.model.StopReason
@@ -340,6 +341,7 @@ public class LlamaCppEngine(
                         messages = prompt.messages,
                         sampling = sampling.toParcel(),
                         sessionEpoch = sessionEpoch(),
+                        expectedModelSha256 = prompt.expectedModelSha256,
                     )
 
                 val callback =
@@ -495,6 +497,43 @@ public class LlamaCppEngine(
             }
             releaseLoaded()
             _status.value = ModelStatus(modelId = null, state = EngineState.UNLOADED)
+        }
+    }
+
+    /** Service-side count of the exact template/tokenization path used by [stream]. */
+    public suspend fun measurePrompt(
+        prompt: Prompt,
+        params: SamplingParams,
+    ): PromptMeasurement {
+        val model = loadedModel.get() ?: throw InferenceException.ModelNotLoaded()
+        val service = connection.get() ?: throw InferenceException.ModelNotLoaded()
+        if (activeStream.get() != null) throw InferenceException.Busy()
+        val sampling = if (params == NO_OPINION) SamplingDefaults.forModel(model) else params
+        return withContext(io) {
+            val request =
+                spiller.encode(
+                    requestId = nextRequestId.getAndIncrement(),
+                    messages = prompt.messages,
+                    sampling = sampling.toParcel(),
+                    sessionEpoch = sessionEpoch(),
+                    expectedModelSha256 = prompt.expectedModelSha256 ?: model.sha256,
+                )
+            try {
+                val result = runRemote { service.measurePrompt(request) }
+                if (!result.modelSha256.equals(
+                        request.expectedModelSha256,
+                        ignoreCase = true,
+                    )
+                ) {
+                    throw InferenceException.ModelChanged()
+                }
+                if (result.promptTokens < 0 || result.contextLength <= 0) {
+                    throw InferenceException.Internal("invalid prompt measurement")
+                }
+                PromptMeasurement(result.promptTokens, result.contextLength, result.modelSha256)
+            } finally {
+                closeLocalCopies(request)
+            }
         }
     }
 

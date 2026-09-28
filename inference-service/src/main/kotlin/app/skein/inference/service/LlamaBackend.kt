@@ -112,6 +112,9 @@ interface LlamaBackend {
         embeddings: Boolean,
     ): Long
 
+    /** Actual allocated context capacity, not the requested load size. */
+    fun contextLength(ctx: Long): Int
+
     /** Zeroes the KV cache before freeing — LOCK_POLICY_INDEXING.md §4.5. */
     fun freeContextSecure(ctx: Long)
 
@@ -219,6 +222,8 @@ object NativeLlamaBackend : LlamaBackend {
         nBatch: Int,
         embeddings: Boolean,
     ): Long = LlamaNative.newContext(model, nCtx, nThreads, nBatch, embeddings)
+
+    override fun contextLength(ctx: Long): Int = LlamaNative.contextLength(ctx)
 
     override fun freeContextSecure(ctx: Long) = LlamaNative.freeContextSecure(ctx)
 

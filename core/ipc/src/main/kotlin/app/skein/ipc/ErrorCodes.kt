@@ -128,6 +128,8 @@ object ErrorCodes {
             ErrorCode.MODEL_IN_USE -> InferenceException.ModelInUse(detail)
             ErrorCode.COMPANION_HASH_MISMATCH -> InferenceException.CompanionHashMismatch(detail)
             ErrorCode.SESSION_LOCKED -> InferenceException.SessionLocked(detail)
+            ErrorCode.CONTEXT_FULL -> InferenceException.ContextFull()
+            ErrorCode.MODEL_CHANGED -> InferenceException.ModelChanged()
             ErrorCode.INTERNAL -> InferenceException.Internal(detail)
             // An unrecognised code: see the `code` parameter's KDoc.
             else -> InferenceException.Internal(detail)

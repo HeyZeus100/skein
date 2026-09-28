@@ -274,6 +274,7 @@ public class ModelServices(
                     budgetFor = contextBudget::computeBudget,
                     countTokens = syncCountTokens(contextBudget),
                     samplingParams = { SamplingParams() },
+                    measurePrompt = llamaCppEngine::measurePrompt,
                     personaById = personaById,
                     prepareModel = { persona ->
                         val id =

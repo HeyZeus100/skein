@@ -41,7 +41,9 @@ import app.skein.core.model.ModelId
 import app.skein.core.model.NewMessage
 import app.skein.core.model.Persona
 import app.skein.core.model.PersonaId
+import app.skein.core.model.Prompt
 import app.skein.core.model.PromptAssembler
+import app.skein.core.model.PromptMeasurement
 import app.skein.core.model.RetrievalService
 import app.skein.core.model.Retrieved
 import app.skein.core.model.Role
@@ -53,6 +55,8 @@ import app.skein.core.model.VaultRepository
 import app.skein.core.rag.chat.CitationParser
 import app.skein.core.rag.chat.CitationRecords
 import app.skein.core.rag.chat.Segment
+import app.skein.core.rag.prompt.ExactPromptAssembler
+import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
@@ -187,10 +191,14 @@ public class SendPipeline(
     private val personaById: (suspend (PersonaId) -> Persona?)? = null,
     /** Captures and prepares the model for this immutable Space snapshot. */
     private val prepareModel: (suspend (Persona?) -> ModelId?)? = null,
+    /** Production exact measurement. Null is retained for pure test/legacy assemblers only. */
+    private val measurePrompt: (suspend (Prompt, SamplingParams) -> PromptMeasurement)? = null,
 ) {
     private val turnGate = Mutex()
 
     @Volatile private var activeChatId: DocId? = null
+
+    @Volatile private var preparationCancelled = false
     private val _lastOutcome = MutableStateFlow<TurnOutcome?>(null)
 
     /** The most recently finished turn's metadata — the context panel's "last turn" (spec §8.4). */
@@ -203,7 +211,10 @@ public class SendPipeline(
      * persist the partial turn (see the class doc's B-3 note).
      */
     public suspend fun cancel(chatDocId: DocId? = null) {
-        if (chatDocId == null || activeChatId == chatDocId) engine.cancel()
+        if (chatDocId == null || activeChatId == chatDocId) {
+            preparationCancelled = true
+            engine.cancel()
+        }
     }
 
     /**
@@ -221,6 +232,7 @@ public class SendPipeline(
     ): Flow<Segment> =
         channelFlow {
             if (!turnGate.tryLock()) throw InferenceException.Busy()
+            preparationCancelled = false
             activeChatId = chatDocId
             try {
                 val chat = requireNotNull(vaultRepository.getDocument(chatDocId)) { "Chat no longer exists" }
@@ -257,15 +269,33 @@ public class SendPipeline(
                 val params = samplingParams()
                 val budget = budgetFor(params.maxTokens, AnswerPolicy.systemPrompt(persona, answerScope))
                 val assembled =
-                    promptAssembler.assemble(
-                        persona,
-                        priorHistory,
-                        retrieved,
-                        text,
-                        budget,
-                        countTokens,
-                        answerScope,
-                    )
+                    if (measurePrompt != null) {
+                        ExactPromptAssembler(promptAssembler) { prompt, sampling ->
+                            if (preparationCancelled) throw CancellationException("prompt preparation cancelled")
+                            measurePrompt.invoke(prompt, sampling).also {
+                                if (preparationCancelled) throw CancellationException("prompt preparation cancelled")
+                            }
+                        }.assemble(
+                            persona,
+                            priorHistory,
+                            retrieved,
+                            text,
+                            budget,
+                            countTokens,
+                            answerScope,
+                            params,
+                        )
+                    } else {
+                        promptAssembler.assemble(
+                            persona,
+                            priorHistory,
+                            retrieved,
+                            text,
+                            budget,
+                            countTokens,
+                            answerScope,
+                        )
+                    }
                 // A missing/fully trimmed evidence set cannot support a vault answer.
                 // This is an app response, not a claim that the model verified truth.
                 if (answerScope == AnswerScope.KNOWLEDGE && assembled.citations.isEmpty()) {
