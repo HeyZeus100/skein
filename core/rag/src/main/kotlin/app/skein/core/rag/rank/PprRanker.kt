@@ -58,6 +58,7 @@ package app.skein.core.rag.rank
 import app.skein.core.model.ChunkId
 import app.skein.core.model.CitationSourceKind
 import app.skein.core.model.DocId
+import app.skein.core.model.DocumentKind
 import app.skein.core.model.Edge
 import app.skein.core.model.IndexStore
 import app.skein.core.model.PersonaId
@@ -80,6 +81,8 @@ public class PprRanker(
     private val config: RankerConfig = RankerConfig.DEFAULT,
     /** In the Spaces app, old unassigned notes belong to this default Space. */
     private val legacyPersonaId: PersonaId? = null,
+    /** Only explicit conversation-history retrieval may include prior generated answers. */
+    private val includeChatHistory: Boolean = false,
 ) {
     private val fusion = ScoreFusion(config)
     private val pageRank = PersonalizedPageRank(config)
@@ -171,6 +174,7 @@ public class PprRanker(
                 verdictByDoc.getOrPut(docId) {
                     val document = repo.getDocument(docId)
                     document != null &&
+                        (includeChatHistory || document.kind != DocumentKind.CHAT) &&
                         if (legacyPersonaId != null) {
                             (document.personaId ?: legacyPersonaId) == personaId
                         } else {

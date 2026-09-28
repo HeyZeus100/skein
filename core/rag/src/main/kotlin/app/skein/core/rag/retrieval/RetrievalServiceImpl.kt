@@ -114,10 +114,12 @@ public class RetrievalServiceImpl(
     private val io: CoroutineDispatcher = Dispatchers.IO,
     private val warn: (String) -> Unit = { SkeinLog.w(TAG, it) },
     private val legacyPersonaId: PersonaId? = null,
+    /** Explicit conversation-history retrieval only; automatic Knowledge evidence excludes CHAT. */
+    includeChatHistory: Boolean = false,
 ) : RetrievalService {
     private val lexicalRecall = LexicalRecall(index)
     private val graphRecall = GraphRecall(index, repository)
-    private val ranker = PprRanker(index, repository, config, legacyPersonaId)
+    private val ranker = PprRanker(index, repository, config, legacyPersonaId, includeChatHistory)
     private val assembler = RetrievedAssembler(index, repository)
 
     /** Guards the "no embedder" degradation warning so it fires once per instance, not once per call. */
