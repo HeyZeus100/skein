@@ -64,7 +64,7 @@ internal suspend fun importAttachment(
 /** Error banner state (spec §8.4: `ServiceDied` -> "model process restarted, retry"). */
 private const val CHAT_VM_TAG = "ChatViewModel"
 
-public enum class ChatBanner { NONE, SERVICE_DIED, ENGINE_ERROR }
+public enum class ChatBanner { NONE, SERVICE_DIED, CONTEXT_FULL, REQUEST_TOO_LARGE, MODEL_CHANGED, ENGINE_ERROR }
 
 /**
  * State holder for [ChatScreen]. Owns nothing [SendPipeline] doesn't already
@@ -114,12 +114,18 @@ public class ChatViewModel(
     val banner: ChatBanner
         get() {
             val failed = turnState as? ChatTurnState.Failed ?: return ChatBanner.NONE
-            return if (failed.exception is InferenceException.ServiceDied) {
-                ChatBanner.SERVICE_DIED
-            } else {
-                ChatBanner.ENGINE_ERROR
+            return when (failed.exception) {
+                is InferenceException.ServiceDied -> ChatBanner.SERVICE_DIED
+                is InferenceException.ContextFull -> ChatBanner.CONTEXT_FULL
+                is InferenceException.TransactionTooLarge -> ChatBanner.REQUEST_TOO_LARGE
+                is InferenceException.ModelChanged -> ChatBanner.MODEL_CHANGED
+                else -> ChatBanner.ENGINE_ERROR
             }
         }
+
+    /** An unchanged oversized request cannot succeed on retry. The composer remains editable. */
+    val canRetry: Boolean
+        get() = lastFailedText != null && banner != ChatBanner.CONTEXT_FULL && banner != ChatBanner.REQUEST_TOO_LARGE
 
     private var expandedCitations: Set<Pair<String, Int>> by mutableStateOf(emptySet())
     private var tappedOnce: Set<Pair<String, Int>> = emptySet()
@@ -245,6 +251,7 @@ public class ChatViewModel(
 
     /** Error banner's retry action — re-sends the exact prompt that failed. */
     public fun retry() {
+        if (!canRetry) return
         val text = lastFailedText ?: return
         send(text)
     }

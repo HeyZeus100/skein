@@ -3,9 +3,7 @@
 // Composables in this module; owns no business logic of its own.
 package app.skein.feature.chat
 
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -34,6 +32,11 @@ public const val RETRY_BUTTON_TEST_TAG: String = "app.skein.feature.chat.RetryBu
 
 public const val SERVICE_DIED_BANNER_TEXT: String = "Couldn't finish the answer. The model had to restart."
 public const val ENGINE_ERROR_BANNER_TEXT: String = "Couldn't finish the answer."
+public const val CONTEXT_FULL_BANNER_TEXT: String =
+    "The request is too large for this model. Shorten your message and send again."
+public const val REQUEST_TOO_LARGE_BANNER_TEXT: String =
+    "The request is too large to send. Shorten your message and send again."
+public const val MODEL_CHANGED_BANNER_TEXT: String = "The model changed before the answer started. Try again."
 
 /**
  * @param wikilinkSuggest backs the bottom bar's `[[` popup — typically
@@ -85,31 +88,7 @@ public fun ChatScreen(
         topBar()
 
         if (viewModel.banner != ChatBanner.NONE) {
-            Surface(
-                color = MaterialTheme.colorScheme.errorContainer,
-                modifier = Modifier.fillMaxWidth().testTag(ERROR_BANNER_TEST_TAG),
-            ) {
-                Row(
-                    modifier = Modifier.fillMaxWidth().padding(8.dp),
-                    horizontalArrangement = Arrangement.SpaceBetween,
-                    verticalAlignment = Alignment.CenterVertically,
-                ) {
-                    Text(
-                        text =
-                            if (viewModel.banner ==
-                                ChatBanner.SERVICE_DIED
-                            ) {
-                                SERVICE_DIED_BANNER_TEXT
-                            } else {
-                                ENGINE_ERROR_BANNER_TEXT
-                            },
-                        color = MaterialTheme.colorScheme.onErrorContainer,
-                    )
-                    Button(onClick = viewModel::retry, modifier = Modifier.testTag(RETRY_BUTTON_TEST_TAG)) {
-                        Text("Try again")
-                    }
-                }
-            }
+            ChatErrorBanner(viewModel.banner, viewModel.canRetry, viewModel::retry)
         }
 
         MessageList(
@@ -133,5 +112,39 @@ public fun ChatScreen(
             onSlashCommand = onSlashCommand,
             modifier = Modifier.fillMaxWidth(),
         )
+    }
+}
+
+/** Fixed product copy only; transport diagnostics and user content never become error text. */
+@Composable
+internal fun ChatErrorBanner(
+    banner: ChatBanner,
+    canRetry: Boolean,
+    onRetry: () -> Unit,
+) {
+    Surface(
+        color = MaterialTheme.colorScheme.errorContainer,
+        modifier = Modifier.fillMaxWidth().testTag(ERROR_BANNER_TEST_TAG),
+    ) {
+        Column(modifier = Modifier.fillMaxWidth().padding(16.dp)) {
+            Text(
+                text =
+                    when (banner) {
+                        ChatBanner.SERVICE_DIED -> SERVICE_DIED_BANNER_TEXT
+                        ChatBanner.CONTEXT_FULL -> CONTEXT_FULL_BANNER_TEXT
+                        ChatBanner.REQUEST_TOO_LARGE -> REQUEST_TOO_LARGE_BANNER_TEXT
+                        ChatBanner.MODEL_CHANGED -> MODEL_CHANGED_BANNER_TEXT
+                        else -> ENGINE_ERROR_BANNER_TEXT
+                    },
+                style = MaterialTheme.typography.bodyMedium,
+                color = MaterialTheme.colorScheme.onErrorContainer,
+            )
+            if (canRetry) {
+                Button(
+                    onClick = onRetry,
+                    modifier = Modifier.align(Alignment.End).testTag(RETRY_BUTTON_TEST_TAG),
+                ) { Text("Try again") }
+            }
+        }
     }
 }
