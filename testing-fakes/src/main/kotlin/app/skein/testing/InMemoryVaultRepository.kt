@@ -17,8 +17,9 @@
 // `sweepIndexOrphans` sweeps the index's edges and vectors.
 //
 // Not modelled here (deliberately):
-//   • isolation — reads never take the lock, so a reader can see a write
-//     that a later throw inside `transaction { }` undoes.
+//   • full read isolation — timeline snapshots and batch kind lookups share
+//     the write lock; other reads can see a write that a later throw inside
+//     `transaction { }` undoes.
 //   • the DB-side ingest trigger — the fake enqueues on `createDocument`
 //     and `updateBody` explicitly, matching the observable effect of the
 //     `documents_ai_ingest` / `documents_au_ingest` triggers in
@@ -407,19 +408,26 @@ public class InMemoryVaultRepository(
         before: Long?,
     ): Flow<List<Document>> = changeTicks().map { queryTimeline(filter, limit, before) }.distinctUntilChanged()
 
-    private fun queryTimeline(
+    private suspend fun queryTimeline(
         filter: TimelineFilter,
         limit: Int,
         before: Long?,
-    ): List<Document> =
-        documents.values
-            .asSequence()
-            .filter { it.kind in filter.kinds }
-            .filter { filter.personaId == null || it.personaId == filter.personaId }
-            .filter { before == null || it.updatedAt < before }
-            .sortedByDescending { it.updatedAt }
-            .take(limit)
-            .toList()
+    ): List<Document> {
+        fun snapshot(): List<Document> =
+            documents.values
+                .asSequence()
+                .filter { it.kind in filter.kinds }
+                .filter { filter.personaId == null || it.personaId == filter.personaId }
+                .filter { before == null || it.updatedAt < before }
+                .sortedByDescending { it.updatedAt }
+                .take(limit)
+                .toList()
+
+        // Materialize under the same lock that protects writes and rollback.
+        // An owned transaction already holds it; other repositories' markers
+        // do not authorize access. This read never enters write admission.
+        return if (coroutineContext[FakeTx]?.owner === this) snapshot() else writeLock.withLock { snapshot() }
+    }
 
     override suspend fun findByTitle(title: String): Document? =
         documents.values.firstOrNull { it.title.equals(title, ignoreCase = true) }
