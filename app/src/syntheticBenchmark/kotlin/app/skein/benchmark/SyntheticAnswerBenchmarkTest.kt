@@ -81,6 +81,7 @@ class SyntheticAnswerBenchmarkTest {
             listOf(
                 "model_sha256",
                 "template_sha256",
+                "tokenizer_overlay_sha256",
                 "fixture_sha256",
                 "case_set_sha256",
                 "expected_apk_sha256",
@@ -171,6 +172,7 @@ class SyntheticAnswerBenchmarkTest {
                     listOf("case_set_sha256", "fixture_sha256", "template_sha256", "build_sha", "llama_sha").forEach {
                         put(it, config.getValue(it))
                     }
+                    put("tokenizer_overlay_sha256", config.getValue("tokenizer_overlay_sha256"))
                     put("model_sha256", JsonPrimitive(modelHash))
                     put("apk_sha256", JsonPrimitive(apkHash))
                     put(
@@ -179,6 +181,10 @@ class SyntheticAnswerBenchmarkTest {
                     )
                     put("build_sha_provenance", JsonPrimitive("declared host build; installed APK digest verified"))
                     put("llama_sha_provenance", JsonPrimitive("declared host source pin"))
+                    put(
+                        "tokenizer_overlay_sha256_provenance",
+                        JsonPrimitive("declared host SHA256 of native/llama/tokenizer-patches/PINS.txt"),
+                    )
                     put(
                         "template_sha256_provenance",
                         JsonPrimitive("host GGUF raw tokenizer.chat_template bound by model_sha256"),

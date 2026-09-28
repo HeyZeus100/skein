@@ -57,6 +57,7 @@ python3 tools/eval/prepare_android_benchmark.py \
   --model-license VERIFIED_MANIFEST_LICENSE --apk /absolute/app-dev-debug.apk \
   --fixture /absolute/development-input.jsonl --case-set-sha256 CASE_SET_SHA256 \
   --build-sha FULL_BUILD_SHA --llama-sha FULL_PINNED_LLAMA_SHA \
+  --tokenizer-overlay-sha256 SHA256_OF_TOKENIZER_PATCH_PINS \
   --run-id development-baseline-01 --context-length 4096 --seeds 17 \
   --output-dir /absolute/new-run-directory
 ```
@@ -136,7 +137,14 @@ rows without this status also have unavailable post-budget evidence metadata and
 must not be interpreted as verified empty source sets. Their files remain unchanged.
 
 The manifest distinguishes declared host build/llama metadata from verified
-installed APK and full-model hashes. `context.allocated` comes from the native
+installed APK and full-model hashes. `tokenizer_overlay_sha256` is the SHA256 of
+the exact `native/llama/tokenizer-patches/PINS.txt` in the reviewed build checkout;
+it identifies the tokenizer patch and its pinned input/output files separately
+from the upstream `llama_sha`. Both source identities are declared host provenance,
+not independently read back from the APK. The smoke runner computes the overlay
+digest before installing and checks it against the returned manifest. Older
+retained runs without this field predate the overlay and remain unchanged.
+`context.allocated` comes from the native
 context through the isolated measurement API. Measurement count is checked
 against generation statistics, but that count consistency is distinct from the
 separate exact token-ID parity test. Memory is null because this harness does not

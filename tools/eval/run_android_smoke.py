@@ -113,6 +113,8 @@ def main():
         summary["model_sha256"] = lock["sha256"]
         llama_sha = command(["git", "rev-parse", "HEAD:third_party/llama.cpp"]).stdout.decode().strip()
         summary["llama_sha"] = llama_sha
+        overlay_sha = file_sha256(repo / "native/llama/tokenizer-patches/PINS.txt")
+        summary["tokenizer_overlay_sha256"] = overlay_sha
         for apk in apks.values():
             device.install(apk)
         app_root = device.private_root("app.skein")
@@ -130,7 +132,8 @@ def main():
         command([sys.executable, "tools/eval/prepare_android_benchmark.py", "--model", str(model),
                  "--model-sha256", lock["sha256"], "--model-license", lock["license"], "--apk", str(apks["app"]),
                  "--fixture", str(fixture_file), "--case-set-sha256", case_hash, "--build-sha", head,
-                 "--llama-sha", llama_sha, "--run-id", run_id, "--output-dir", str(prepared),
+                 "--llama-sha", llama_sha, "--tokenizer-overlay-sha256", overlay_sha,
+                 "--run-id", run_id, "--output-dir", str(prepared),
                  "--device-root", app_root, "--context-length", "1024", "--threads", "2",
                  "--case-timeout-ms", "60000",
                  "--sampling", str(sampling_file), "--seeds", "17"])
@@ -163,6 +166,8 @@ def main():
         manifest = json.loads((app_output / "run_manifest.json").read_text())
         parity = json.loads((native_output / "native-parity.json").read_text())
         require(manifest["build_sha"] == head and manifest["model_sha256"] == lock["sha256"]
+                and manifest["llama_sha"] == llama_sha
+                and manifest["tokenizer_overlay_sha256"] == overlay_sha
                 and manifest["apk_sha256"] == summary["apk_sha256"]["app"]
                 and manifest["fixture_sha256"] == file_sha256(fixture_file)
                 and manifest["context"]["allocated"] > 0, "manifest provenance mismatch")

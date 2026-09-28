@@ -91,7 +91,7 @@ def gguf_template_metadata(path):
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     for flag in ("model", "model-sha256", "model-license", "apk", "fixture", "case-set-sha256",
-                 "build-sha", "llama-sha", "run-id", "output-dir"):
+                 "build-sha", "llama-sha", "tokenizer-overlay-sha256", "run-id", "output-dir"):
         parser.add_argument("--" + flag, required=True)
     parser.add_argument("--device-root", default="/data/user/0/app.skein/files/synthetic-benchmark")
     parser.add_argument("--context-length", type=int, required=True)
@@ -102,7 +102,7 @@ def main():
     args = parser.parse_args()
     if not re.fullmatch(r"[A-Za-z0-9_-]{1,100}", args.run_id):
         parser.error("unsafe run id")
-    for value in (args.model_sha256, args.case_set_sha256):
+    for value in (args.model_sha256, args.case_set_sha256, args.tokenizer_overlay_sha256):
         if not re.fullmatch(r"[a-f0-9]{64}", value):
             parser.error("full lowercase SHA256 required")
     for value in (args.build_sha, args.llama_sha):
@@ -134,7 +134,8 @@ def main():
                   model_file=f"{root}/models/{args.model_sha256}/model.gguf", model_sha256=args.model_sha256,
                   model_size=model.stat().st_size, model_license=args.model_license,
                   template_sha256=metadata["template_sha256"], build_sha=args.build_sha,
-                  llama_sha=args.llama_sha, expected_apk_sha256=file_sha256(args.apk), seeds=seeds,
+                  llama_sha=args.llama_sha, tokenizer_overlay_sha256=args.tokenizer_overlay_sha256,
+                  expected_apk_sha256=file_sha256(args.apk), seeds=seeds,
                   sampling=sampling, context_length=args.context_length, threads=args.threads,
                   case_timeout_ms=args.case_timeout_ms)
     output = Path(args.output_dir)
