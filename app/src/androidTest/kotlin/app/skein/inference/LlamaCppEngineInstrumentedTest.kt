@@ -62,11 +62,10 @@ import app.skein.core.model.SamplingParams
 import app.skein.testing.InferenceEngineContractTest
 import com.google.common.truth.Truth.assertThat
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.async
 import kotlinx.coroutines.flow.toList
-import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.test.runTest
-import org.junit.Assume.assumeTrue
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -191,16 +190,10 @@ class LlamaCppEngineInstrumentedTest : InferenceEngineContractTest() {
      * Kills the isolated process under an active `stream` and asserts the flow
      * fails with [InferenceException.ServiceDied], then that `load` rebinds.
      *
-     * HOW THE PROCESS IS KILLED, and why this way. The bead allows "a dev-only
-     * debug binder or `am kill`". A dev-only kill method on `IInferenceService`
-     * was rejected: it would be a method in the locked AIDL contract whose only
-     * purpose is to make the service killable, present in every build, and
-     * reachable by anything that can bind. The shell route adds no production
-     * surface at all. `am kill` is tried first; because the engine holds the
-     * binding with `BIND_IMPORTANT` the platform may decline to kill it, so the
-     * test falls back to `kill -9` on the pid `ps` reports. If neither works on
-     * a given lane the test `assume`-skips with the reason rather than
-     * reporting a failure it cannot distinguish from a real one.
+     * Android's supported `am crash <pid>` route asks system_server to crash
+     * this exact process. Unlike a shell-UID signal, it can target the isolated
+     * UID without a production debug Binder method. The original PID must
+     * disappear; inability to induce death is a test failure, not a skip.
      */
     @Test
     fun serviceDeathFailsTheStreamAndTheNextLoadRebinds(): Unit =
@@ -210,20 +203,21 @@ class LlamaCppEngineInstrumentedTest : InferenceEngineContractTest() {
             // The kill must land WHILE the stream is in flight, so it runs on
             // its own thread beside the collector rather than after it.
             val killer =
-                launch(Dispatchers.IO) {
+                async(Dispatchers.IO) {
                     awaitGenerating()
-                    killInferenceProcess()
+                    crashInferenceProcess()
                 }
 
             val failure =
                 runCatching {
                     engine.stream(samplePrompt("write a long story"), samplingParams()).toList()
                 }.exceptionOrNull()
-            killer.join()
+            val crashedPid = killer.await()
 
-            assumeTrue("could not kill the :inference process on this lane", failure != null)
             assertThat(failure).isInstanceOf(InferenceException.ServiceDied::class.java)
             assertThat(engine.load(textModel()).isSuccess).isTrue()
+            val reboundPid = checkNotNull(inferencePid()) { "reloaded inference process is absent" }
+            assertThat(reboundPid).isNotEqualTo(crashedPid)
         }
 
     @Test
@@ -297,37 +291,33 @@ class LlamaCppEngineInstrumentedTest : InferenceEngineContractTest() {
     }
 
     /**
-     * skein-gg11.12: `am kill` (`ActivityManagerService.killBackgroundProcesses`
-     * under the hood, even run as a shell command) is documented to decline a
-     * process the platform considers important — precisely what
-     * `BIND_IMPORTANT` asks for on this binding (`ServiceConnector.kt`'s
-     * `AndroidServiceConnector`) — so it is not expected to kill an isolated,
-     * `BIND_IMPORTANT`-bound process here. It previously got the same 10s
-     * [DEATH_WAIT_SECONDS] wait as the real kill below, which — on a lane
-     * where it never succeeds — was 10s taken straight out of `runTest`'s 60s
-     * budget for nothing; that (plus the 256-token generation
-     * `samplingParams()` used to ask for) is why this test timed out
-     * (`UncompletedCoroutinesError`, emulator run 35879189936). It keeps a
-     * brief courtesy wait in case platform behaviour ever differs, then falls
-     * through to a real `SIGKILL`: `kill -9 <pid>`, sent with the shell UID's
-     * own process-management privileges via `UiAutomation.executeShellCommand`
-     * — NOT the app's own `ActivityManager` access, which is what `am kill`
-     * used above resolves to and is exactly what `BIND_IMPORTANT` lets the
-     * platform refuse. `kill -9` is not subject to that refusal.
+     * AOSP android-15.0.0_r1 ActivityManagerShellCommand.runCrash accepts a
+     * numeric PID; AppErrors.scheduleAppCrashLocked selects that exact process
+     * and preserves protected-package checks. ProcessRecord.scheduleCrashLocked
+     * requests an exception in the target through system_server (skein-w8bh).
+     * Source: https://github.com/aosp-mirror/platform_frameworks_base/tree/android-15.0.0_r1/
+     * services/core/java/com/android/server/am
      */
-    private fun killInferenceProcess(): Boolean {
-        shell("am kill ${context.packageName}:inference")
-        if (waitForDeath(timeoutSeconds = AM_KILL_COURTESY_WAIT_SECONDS)) return true
-        val pid =
-            shell("ps -A")
+    private fun crashInferenceProcess(): Int {
+        val pid = checkNotNull(inferencePid()) { "active inference process is absent" }
+        check(pid != android.os.Process.myPid()) { "refusing to crash the test process" }
+        shell("am crash $pid")
+        check(waitForDeath(pid)) { "am crash did not terminate the selected inference process" }
+        return pid
+    }
+
+    private fun inferencePid(): Int? {
+        val baseName = "${context.packageName}:inference"
+        val isolatedName = "$baseName:app.skein.inference.service.InferenceService"
+        val matches =
+            shell("ps -A -o PID,NAME")
                 .lineSequence()
-                .firstOrNull { it.contains(":inference") }
-                ?.trim()
-                ?.split(Regex("\\s+"))
-                ?.getOrNull(1)
-                ?: return false
-        shell("kill -9 $pid")
-        return waitForDeath()
+                .map { it.trim().split(Regex("\\s+"), limit = 2) }
+                .filter { it.size == 2 && (it[1] == baseName || it[1] == isolatedName) }
+                .mapNotNull { it[0].toIntOrNull()?.takeIf { pid -> pid > 0 } }
+                .toList()
+        check(matches.size <= 1) { "multiple inference processes matched the test package" }
+        return matches.singleOrNull()
     }
 
     private fun awaitGenerating() {
@@ -335,12 +325,14 @@ class LlamaCppEngineInstrumentedTest : InferenceEngineContractTest() {
         while (engine.status.value.state != EngineState.GENERATING && System.nanoTime() < deadline) {
             Thread.sleep(25L)
         }
+        check(engine.status.value.state == EngineState.GENERATING) { "stream did not enter GENERATING" }
     }
 
-    private fun waitForDeath(timeoutSeconds: Long = DEATH_WAIT_SECONDS): Boolean {
-        val deadline = System.nanoTime() + TimeUnit.SECONDS.toNanos(timeoutSeconds)
+    private fun waitForDeath(pid: Int): Boolean {
+        val deadline = System.nanoTime() + TimeUnit.SECONDS.toNanos(DEATH_WAIT_SECONDS)
         while (System.nanoTime() < deadline) {
-            if (shell("ps -A").lineSequence().none { it.contains(":inference") }) return true
+            val alive = shell("ps -A -o PID").lineSequence().any { it.trim().toIntOrNull() == pid }
+            if (!alive) return true
             Thread.sleep(100L)
         }
         return false
@@ -361,10 +353,7 @@ class LlamaCppEngineInstrumentedTest : InferenceEngineContractTest() {
         /** Any non-`NONE` epoch; the service is told the same one by the harness below. */
         const val EPOCH = 1L
 
-        /** skein-gg11.12: a courtesy window only — `am kill` is not expected to succeed. */
-        const val AM_KILL_COURTESY_WAIT_SECONDS = 2L
-
-        /** The real wait: after `kill -9`, the shell-privileged `SIGKILL`. */
+        /** Bound the wait for Android's targeted crash request to terminate the original PID. */
         const val DEATH_WAIT_SECONDS = 10L
     }
 }
