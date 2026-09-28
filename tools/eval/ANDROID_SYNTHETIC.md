@@ -163,3 +163,16 @@ answer rows (including failures), instrumentation output, both manifests, and
 native ID arrays as a workflow artifact. It does not grade generated content;
 `quality_assessed` is always false. The ordinary emulator suite remains separate
 and must pass on the same source head before Fold consideration.
+
+### Fold telemetry follow-through
+
+The current harness deliberately leaves `memory` null. Before a Fold comparison,
+the released runner should record content-free case start/end events using device
+monotonic time, then align bounded host samples to each case/seed. Collect PSS for
+the exact observed `app.skein` and `app.skein:inference` PIDs, re-resolving the latter
+after any reload, and thermal status plus battery temperature before, during, and
+after each case. Record the sampling interval, unavailable samples, charging
+state, cooldown criteria, and observed maximum; a sampled maximum is not a proven
+instantaneous peak. No private vault inspection or broad app log collection is
+needed. Retain raw numeric observations separately from answer scoring, and keep
+memory/thermal findings explicitly unavailable until those measurements exist.
