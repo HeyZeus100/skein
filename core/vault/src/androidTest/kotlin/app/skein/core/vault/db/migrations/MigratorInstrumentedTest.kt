@@ -18,6 +18,7 @@ import androidx.sqlite.SQLiteConnection
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.platform.app.InstrumentationRegistry
 import app.skein.core.vault.db.SkeinSQLiteDriver
+import app.skein.core.vault.db.SkeinSQLiteException
 import app.skein.core.vault.db.migrations.latestMigrationVersion
 import app.skein.core.vault.testutil.splitMigrationStatements
 import com.google.common.truth.Truth.assertThat
@@ -70,8 +71,10 @@ class MigratorInstrumentedTest {
     @Test
     fun migration011UpgradesExistingVaultAndDraftForeignKeyPreventsResurrection() {
         val db = tempDbFile()
-        val driver = SkeinSQLiteDriver(randomKey(11))
-        driver.open(db.absolutePath).use { connection ->
+        // A keyed driver is single-use: open consumes and zeroes its key copy.
+        // Each phase recreates the same synthetic key, just as a fresh unlocked
+        // session supplies a new key copy; no driver/key lifetime is widened.
+        SkeinSQLiteDriver(randomKey(11)).open(db.absolutePath).use { connection ->
             val previous =
                 listOf(
                     "001_initial.sql",
@@ -91,10 +94,13 @@ class MigratorInstrumentedTest {
             connection.prepare("UPDATE documents SET kind = 'chat' WHERE id = 'draft-chat'").use { it.step() }
             connection.prepare("PRAGMA user_version = 10").use { it.step() }
         }
-        val result = Migrator(driver).migrate(db.absolutePath)
+        val result = Migrator(SkeinSQLiteDriver(randomKey(11))).migrate(db.absolutePath)
         assertThat(result.fromVersion).isEqualTo(10)
         assertThat(result.toVersion).isEqualTo(latestMigrationVersion())
-        driver.open(db.absolutePath).use { connection ->
+        assertThat(
+            runCatching { SkeinSQLiteDriver(randomKey(12)).open(db.absolutePath).use {} }.exceptionOrNull(),
+        ).isInstanceOf(SkeinSQLiteException::class.java)
+        SkeinSQLiteDriver(randomKey(11)).open(db.absolutePath).use { connection ->
             assertThat(SchemaInspector(connection).tables()).contains("chat_drafts")
             connection.prepare("SELECT title FROM documents WHERE id = 'draft-chat'").use {
                 assertThat(it.step()).isTrue()

@@ -187,8 +187,8 @@ class InferenceServiceInstrumentedTest {
         val service = loadedService()
         val callback = LatchCallback()
 
-        service.generate(generateRequest(maxTokens = 512), callback)
-        callback.awaitFirstBatch()
+        service.generate(longRequestWithinContext(service), callback)
+        assertThat(callback.awaitFirstTokens()).isTrue()
         val cancelledAt = System.currentTimeMillis()
         service.cancel(REQUEST_ID)
 
@@ -203,8 +203,8 @@ class InferenceServiceInstrumentedTest {
         val first = LatchCallback()
         val second = LatchCallback()
 
-        service.generate(generateRequest(requestId = REQUEST_ID, maxTokens = 512), first)
-        first.awaitFirstBatch()
+        service.generate(longRequestWithinContext(service), first)
+        assertThat(first.awaitFirstTokens()).isTrue()
         service.generate(generateRequest(requestId = REQUEST_ID + 1, maxTokens = 8), second)
 
         assertThat(second.awaitTerminal()).isTrue()
@@ -227,7 +227,7 @@ class InferenceServiceInstrumentedTest {
         val service = loadedService()
         val callback = LatchCallback()
 
-        service.generate(generateRequest(maxTokens = 512), callback)
+        service.generate(longRequestWithinContext(service), callback)
         // bd skein-gg11.6: gate the lock on a REAL onTokens, not
         // `awaitFirstBatch()` (which also counts down on onDone/onError) — a
         // lock issued before a single token has streamed is not testing
@@ -441,6 +441,36 @@ class InferenceServiceInstrumentedTest {
             ),
         sessionEpoch = epoch,
     )
+
+    /** Reserve a long stream within the actual formatted prompt's native context. */
+    private fun longRequestWithinContext(service: IInferenceService): GenerateRequest {
+        val request = generateRequest(maxTokens = 1)
+        val measured = service.measurePrompt(request)
+        val available = measured.contextLength - measured.promptTokens
+        assertThat(available).isGreaterThan(32)
+        return request.copy(
+            sampling = request.sampling.copy(maxTokens = available),
+            expectedModelSha256 = measured.modelSha256,
+        )
+    }
+
+    @Test
+    fun anOversizedAnswerReservationIsRefusedBeforeTokenStreaming() {
+        val service = loadedService()
+        val request = longRequestWithinContext(service)
+        val callback = LatchCallback()
+
+        service.generate(
+            request.copy(sampling = request.sampling.copy(maxTokens = request.sampling.maxTokens + 1)),
+            callback,
+        )
+
+        assertThat(callback.awaitTerminal()).isTrue()
+        assertThat(callback.errorCode.get()).isEqualTo(ErrorCode.CONTEXT_FULL)
+        assertThat(callback.batches.get()).isEqualTo(0)
+        assertThat(callback.terminals.get()).isEqualTo(1)
+        assertThat(service.status().state).isEqualTo("ready")
+    }
 
     private fun sha256Of(file: File): String {
         val digest = MessageDigest.getInstance("SHA-256")
