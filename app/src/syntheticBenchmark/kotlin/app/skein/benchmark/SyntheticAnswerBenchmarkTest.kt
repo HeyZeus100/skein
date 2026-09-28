@@ -293,6 +293,8 @@ class SyntheticAnswerBenchmarkTest {
                             code = error.javaClass.simpleName
                         }
                         val outcome = pipeline?.lastOutcome?.value
+                        val usedSourcesStatus =
+                            if (outcome == null) "unavailable_before_finalization" else "finalized_prompt"
                         val record = outcome?.assistantMessage?.citations
                         val cited = record?.retrieved?.filter { it.marker in record.cited }.orEmpty()
                         val row =
@@ -321,6 +323,7 @@ class SyntheticAnswerBenchmarkTest {
                                             .orEmpty(),
                                     ),
                                 )
+                                put("used_sources_status", JsonPrimitive(usedSourcesStatus))
                                 put("citations", JsonArray(cited.map { sourceJson(it.documentId, it.revisionHash) }))
                                 if (record !=
                                     null

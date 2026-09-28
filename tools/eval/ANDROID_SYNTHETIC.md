@@ -127,6 +127,14 @@ citations and available generation statistics. `exact_quotes` is omitted because
 the production citation parser exposes no validated quote-claim records. An empty
 citation/quote list is not evidence that generated quotations are accurate.
 
+`used_sources_status` is `finalized_prompt` when the pipeline supplied its completed
+turn outcome. If a timeout or error prevents finalization, it is
+`unavailable_before_finalization`; the schema-compatible `used_sources: []` then
+means the post-budget source set is unavailable, not that the prompt used no
+sources. `provided_sources` still records the host input. Older retained timeout
+rows without this status also have unavailable post-budget evidence metadata and
+must not be interpreted as verified empty source sets. Their files remain unchanged.
+
 The manifest distinguishes declared host build/llama metadata from verified
 installed APK and full-model hashes. `context.allocated` comes from the native
 context through the isolated measurement API. Measurement count is checked
