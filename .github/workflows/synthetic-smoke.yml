@@ -1,0 +1,65 @@
+name: Synthetic tiny-model smoke
+
+# Explicit release only: this proves harness/runtime wiring, never answer truth.
+on:
+  workflow_dispatch:
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: false
+
+permissions:
+  contents: read
+
+jobs:
+  smoke:
+    name: Opt-in isolated benchmark and native parity (API 35)
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v4.3.0
+        with:
+          submodules: true
+      - uses: actions/setup-java@de7274f081f381c8f8158605e0321c36c376e2e6 # v4.8.0
+        with:
+          distribution: temurin
+          java-version: "17"
+      - uses: gradle/actions/setup-gradle@748248ddd2a24f49513d8f472f81c3a07d4d50e1 # v4.4.4
+      - uses: actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0
+        with:
+          path: inference-service/src/androidTest/assets/tiny.gguf
+          key: tiny-gguf-${{ hashFiles('tools/models/test-model.lock') }}
+      - name: Configure SDK and KVM
+        run: |
+          cmdline_tools_bin="$(find "$ANDROID_HOME/cmdline-tools" -maxdepth 4 -type f -name sdkmanager -exec dirname {} \; | sort -V | tail -n1)"
+          test -n "$cmdline_tools_bin"
+          echo "$cmdline_tools_bin" >> "$GITHUB_PATH"
+          echo "$ANDROID_HOME/platform-tools" >> "$GITHUB_PATH"
+          echo "$ANDROID_HOME/emulator" >> "$GITHUB_PATH"
+          "$cmdline_tools_bin/sdkmanager" "platform-tools" "platforms;android-37" "build-tools;36.0.0"
+          echo 'KERNEL=="kvm", GROUP="kvm", MODE="0666", OPTIONS+="static_node=kvm"' | sudo tee /etc/udev/rules.d/99-kvm4all.rules
+          sudo udevadm control --reload-rules
+          sudo udevadm trigger --name-match=kvm
+      - name: Verify host tooling and build the explicit opt-in test APKs
+        run: |
+          python3 -m unittest discover -s tools/eval -p 'test_*.py'
+          ./gradlew -Pskein.syntheticBenchmark=true --max-workers=2 :app:assembleDevDebug :app:assembleDevDebugAndroidTest :inference-service:assembleDevDebugAndroidTest
+      - name: Run only the synthetic benchmark classes
+        uses: reactivecircus/android-emulator-runner@a421e43855164a8197daf9d8d40fe71c6996bb0d # v2.34.0
+        with:
+          api-level: 35
+          arch: x86_64
+          target: google_apis
+          disable-animations: true
+          script: |
+            serial="$(adb devices | awk '$1 ~ /^emulator-[0-9]+$/ && $2 == "device" {print $1}')"
+            test -n "$serial"
+            python3 tools/eval/run_android_smoke.py --serial "$serial" --expected-head "${{ github.sha }}" --output build/synthetic-smoke
+      - name: Retain synthetic rows, native token IDs, provenance and failures
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        with:
+          name: synthetic-tiny-smoke-${{ github.sha }}
+          path: build/synthetic-smoke/
+          if-no-files-found: warn
+          retention-days: 14

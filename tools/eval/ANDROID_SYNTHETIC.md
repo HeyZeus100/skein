@@ -144,3 +144,22 @@ It does not claim the host renderer and Android backend have identical logits.
 Use `answer_eval.py score` with independent manual reviews, as documented in
 `docs/ANSWER_EVAL.md`. Successful harness execution is not a factuality score or
 an Astra/ChatGPT-equivalence claim.
+
+## Released emulator smoke workflow
+
+`.github/workflows/synthetic-smoke.yml` is manual-only. Dispatch it against the
+reviewed pushed head after the coordinator releases the run. It assembles the
+opt-in APKs, provisions only the public tiny model pinned in
+`tools/models/test-model.lock`, exports all development cases without gold, and
+runs both exact classes. The helper `run_android_smoke.py` requires the full
+expected source commit and an explicit `emulator-NNNN` serial whose
+`ro.kernel.qemu` property is `1`; it refuses physical devices before installing.
+It installs with `-r` and never resets data or security settings.
+
+This smoke uses seed 17, a 4096 requested context, 64 answer tokens, and a 60-second
+case deadline. It fails on missing/duplicate rows, runtime errors, prompt-count
+inconsistency, provenance mismatch, or native token-ID mismatch. It preserves
+answer rows (including failures), instrumentation output, both manifests, and
+native ID arrays as a workflow artifact. It does not grade generated content;
+`quality_assessed` is always false. The ordinary emulator suite remains separate
+and must pass on the same source head before Fold consideration.
