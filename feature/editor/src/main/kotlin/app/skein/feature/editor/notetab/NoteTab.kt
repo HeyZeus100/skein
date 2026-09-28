@@ -35,7 +35,6 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.getValue
@@ -50,6 +49,8 @@ import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.compose.LifecycleEventEffect
+import app.skein.core.designsystem.components.SkeinAction
+import app.skein.core.designsystem.components.SkeinNotice
 import app.skein.core.designsystem.theme.LocalSkeinEditorColors
 import app.skein.core.designsystem.theme.LocalSkeinTokens
 import app.skein.core.designsystem.theme.rememberSkeinMarkdownStyle
@@ -215,17 +216,12 @@ public fun NoteTab(
         )
         HorizontalDivider()
         state.linkNotice?.let { notice ->
-            Row(
-                modifier = Modifier.fillMaxWidth().padding(horizontal = 16.dp),
-                verticalAlignment = Alignment.CenterVertically,
-            ) {
-                Text(
-                    text = notice,
-                    modifier = Modifier.weight(1f).padding(vertical = 8.dp),
-                    color = MaterialTheme.colorScheme.onSurfaceVariant,
-                )
-                TextButton(onClick = state::dismissLinkNotice) { Text("Dismiss") }
-            }
+            SkeinNotice(
+                title = "Link unavailable",
+                body = notice,
+                action = SkeinAction("Dismiss", onClick = state::dismissLinkNotice),
+                modifier = Modifier.padding(16.dp).testTag(NoteTabTestTags.LINK_NOTICE),
+            )
         }
         when {
             state.loading ->
@@ -391,6 +387,7 @@ public object NoteTabTestTags {
     public const val GRAPH_BUTTON: String = "app.skein.feature.editor.notetab.NoteTab.graphButton"
     public const val LOADING: String = "app.skein.feature.editor.notetab.NoteTab.loading"
     public const val ERROR: String = "app.skein.feature.editor.notetab.NoteTab.error"
+    public const val LINK_NOTICE: String = "app.skein.feature.editor.notetab.NoteTab.linkNotice"
     public const val SHARE_BUTTON: String = "app.skein.feature.editor.notetab.NoteTab.shareButton"
     public const val SHARE_MENU_TEXT: String = "app.skein.feature.editor.notetab.NoteTab.shareMenu.text"
     public const val SHARE_MENU_SAVE_MARKDOWN: String =

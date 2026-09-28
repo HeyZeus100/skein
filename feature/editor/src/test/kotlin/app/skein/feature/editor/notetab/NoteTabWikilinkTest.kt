@@ -5,25 +5,34 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.semantics.SemanticsActions
 import androidx.compose.ui.test.SemanticsNodeInteraction
+import androidx.compose.ui.test.assertHeightIsAtLeast
 import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.click
 import androidx.compose.ui.test.junit4.createAndroidComposeRule
 import androidx.compose.ui.test.onNodeWithTag
+import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
 import androidx.compose.ui.test.performTextInput
 import androidx.compose.ui.test.performTouchInput
 import androidx.compose.ui.text.TextLayoutResult
+import androidx.compose.ui.unit.dp
+import app.skein.core.designsystem.theme.SkeinTheme
 import app.skein.core.model.Document
 import app.skein.core.model.DocumentKind
 import app.skein.core.model.NewDocument
+import app.skein.core.vault.transfer.ImportedLinkTargets
 import app.skein.feature.editor.SKEIN_EDITOR_TEST_TAG
 import app.skein.feature.editor.autocomplete.WIKILINK_AUTOCOMPLETE_TEST_TAG
 import app.skein.feature.editor.autocomplete.wikilinkSuggestionTestTag
 import app.skein.testing.InMemoryIndexStore
 import app.skein.testing.InMemoryVaultRepository
 import kotlinx.coroutines.runBlocking
+import kotlinx.serialization.json.JsonArray
+import kotlinx.serialization.json.JsonPrimitive
+import kotlinx.serialization.json.buildJsonObject
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertNotNull
+import org.junit.Assert.assertNull
 import org.junit.Assert.assertTrue
 import org.junit.Rule
 import org.junit.Test
@@ -137,6 +146,79 @@ class NoteTabWikilinkTest {
 
         assertEquals(target.id, openedId)
         assertEquals("Target", openedTitle)
+    }
+
+    @Test
+    fun `ambiguous imported link notice can be dismissed without opening a different note`() {
+        assertImportedNotice(ambiguous = true)
+    }
+
+    @Test
+    fun `missing imported link notice can be dismissed without creating a note`() {
+        assertImportedNotice(ambiguous = false)
+    }
+
+    private fun assertImportedNotice(ambiguous: Boolean) {
+        val repo = InMemoryVaultRepository()
+        val index = InMemoryIndexStore()
+        val target = "Imported target"
+        val existing = if (ambiguous) runBlocking { repo.note(target) } else null
+        val doc =
+            runBlocking {
+                repo.createDocument(
+                    NewDocument(
+                        kind = DocumentKind.NOTE,
+                        title = "Imported source",
+                        bodyMd = "Imported notes\n[[$target]]",
+                        frontmatter =
+                            buildJsonObject {
+                                put(ImportedLinkTargets.UNRESOLVED, JsonArray(listOf(JsonPrimitive(target))))
+                                if (ambiguous) {
+                                    put(
+                                        ImportedLinkTargets.AMBIGUOUS,
+                                        JsonArray(listOf(JsonPrimitive(target))),
+                                    )
+                                }
+                            },
+                    ),
+                )
+            }
+        var opens = 0
+        composeRule.setContent {
+            SkeinTheme {
+                NoteTab(doc.id, repo, index, onOpenDocument = { _, _ -> opens++ })
+            }
+        }
+        composeRule.waitForIdle()
+
+        fun openLink() {
+            val node = composeRule.onNodeWithTag(SKEIN_EDITOR_TEST_TAG)
+            val layout = node.textLayoutResult()
+            val offset =
+                layout.layoutInput.text.text
+                    .lastIndexOf(target)
+            val line = layout.getLineForOffset(offset)
+            val y = (layout.getLineTop(line) + layout.getLineBottom(line)) / 2f
+            node.performTouchInput { click(Offset(1f, y)) }
+            composeRule.waitForIdle()
+        }
+        openLink()
+        composeRule.onNodeWithTag(NoteTabTestTags.LINK_NOTICE).assertIsDisplayed()
+        composeRule.onNodeWithText("Link unavailable").assertIsDisplayed()
+        val explanation = if (ambiguous) "more than one note" else "not resolved in the imported folder"
+        composeRule.onNodeWithText(explanation, substring = true).assertIsDisplayed()
+        composeRule.onNodeWithText("Dismiss").assertHeightIsAtLeast(48.dp).performClick()
+        composeRule.onNodeWithTag(NoteTabTestTags.LINK_NOTICE).assertDoesNotExist()
+        composeRule.onNodeWithTag(SKEIN_EDITOR_TEST_TAG).assertIsDisplayed()
+        assertEquals(0, opens)
+        if (existing == null) {
+            assertNull(runBlocking { repo.findByTitle(target) })
+        } else {
+            assertEquals(existing, runBlocking { repo.findByTitle(target) })
+        }
+        openLink()
+        composeRule.onNodeWithTag(NoteTabTestTags.LINK_NOTICE).assertIsDisplayed()
+        assertEquals(0, opens)
     }
 
     private suspend fun InMemoryVaultRepository.note(
