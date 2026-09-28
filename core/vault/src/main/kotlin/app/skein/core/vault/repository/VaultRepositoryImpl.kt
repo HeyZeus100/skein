@@ -1101,6 +1101,12 @@ public class VaultRepositoryImpl(
 
     override suspend fun <T> transaction(block: suspend () -> T): T = writeTx(block)
 
+    override suspend fun afterTransactionCommit(action: () -> Unit) {
+        val tx = coroutineContext[TxContext.Key]
+        check(tx?.owner === this) { "commit acknowledgement requires an owned transaction" }
+        tx.commitAcknowledgements += action
+    }
+
     override suspend fun quiesce(timeoutMillis: Long) {
         check(coroutineContext[TxContext.Key]?.owner !== this) { "cannot quiesce inside a write transaction" }
         synchronized(admissionLock) { acceptingWrites = false }
@@ -1182,6 +1188,15 @@ public class VaultRepositoryImpl(
                             runCatching { writer.prepare(VaultSql.ROLLBACK).use { it.step() } }
                             throw t
                         }
+                    // No suspension between COMMIT and these memory acknowledgements:
+                    // dispatcher-return cancellation must not resurrect a consumed draft.
+                    for (action in tx.commitAcknowledgements) {
+                        try {
+                            action()
+                        } catch (_: Throwable) {
+                            SkeinLog.w(TAG, "commit acknowledgement failed")
+                        }
+                    }
                     for (change in tx.pending) changeBus.emit(change)
                     for (action in tx.afterCommit) {
                         try {
@@ -1402,6 +1417,7 @@ public class VaultRepositoryImpl(
         val owner: VaultRepositoryImpl,
     ) : AbstractCoroutineContextElement(Key) {
         val pending: MutableList<TableChange> = mutableListOf()
+        val commitAcknowledgements: MutableList<() -> Unit> = mutableListOf()
         val afterCommit: MutableList<suspend () -> Unit> = mutableListOf()
 
         companion object Key : CoroutineContext.Key<TxContext>

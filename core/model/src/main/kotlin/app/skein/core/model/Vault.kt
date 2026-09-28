@@ -695,6 +695,20 @@ public interface VaultRepository {
      * connection, which waits behind the open transaction and can time out.
      */
     public suspend fun <T> transaction(block: suspend () -> T): T
+
+    /**
+     * Registers a memory-only acknowledgement in this repository's open [transaction].
+     * Runs once, in registration order, immediately after the outermost commit and
+     * before any suspension, event publication or dispatcher return. Never runs on
+     * rollback. This lets session owners acknowledge a durable send even if the
+     * caller is cancelled while returning from the transaction.
+     *
+     * [action] must be nonblocking and must not call the repository or perform I/O.
+     * An action's failure cannot roll back the committed write and does not prevent
+     * later acknowledgements. Registration outside an owned transaction fails with
+     * a fixed, content-free error. This adds no non-cancellable write window.
+     */
+    public suspend fun afterTransactionCommit(action: () -> Unit)
 }
 
 // -----------------------------------------------------------------------------

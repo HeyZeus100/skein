@@ -39,6 +39,7 @@ import app.skein.core.model.VaultRepository
 import kotlinx.coroutines.CompletableDeferred
 import kotlinx.coroutines.CoroutineStart
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitCancellation
 import kotlinx.coroutines.channels.Channel
@@ -61,6 +62,7 @@ import org.junit.Assert.assertTrue
 import org.junit.Assert.fail
 import org.junit.Test
 import java.io.ByteArrayOutputStream
+import kotlin.coroutines.coroutineContext
 
 /**
  * Contract suite for `VaultRepository` (plan §4.2). Concrete subclasses
@@ -102,6 +104,83 @@ public abstract class VaultRepositoryContractTest {
      * `IndexStoreImpl` over the same database. Call [repo] first.
      */
     protected abstract fun index(): IndexStore
+
+    @Test
+    public fun commit_acknowledgements_wait_for_outer_commit_and_never_run_on_rollback() =
+        runTest {
+            val repository = repo()
+            val acknowledgements = mutableListOf<Int>()
+            repository.transaction {
+                repository.afterTransactionCommit { acknowledgements += 1 }
+                repository.transaction {
+                    repository.afterTransactionCommit { acknowledgements += 2 }
+                }
+                assertTrue(acknowledgements.isEmpty())
+            }
+            assertEquals(listOf(1, 2), acknowledgements)
+            val failure =
+                runCatching {
+                    repository.transaction {
+                        repository.afterTransactionCommit { acknowledgements += 3 }
+                        error("rollback")
+                    }
+                }.exceptionOrNull()
+            assertTrue(failure is IllegalStateException)
+            assertEquals(listOf(1, 2), acknowledgements)
+        }
+
+    @Test
+    public fun commit_acknowledgement_registration_requires_this_repositorys_transaction() =
+        runTest {
+            val repository = repo()
+            val another = repo()
+            assertTrue(runCatching { repository.afterTransactionCommit {} }.exceptionOrNull() is IllegalStateException)
+            another.transaction {
+                assertTrue(
+                    runCatching { repository.afterTransactionCommit {} }.exceptionOrNull() is IllegalStateException,
+                )
+            }
+        }
+
+    @Test
+    public fun failing_acknowledgement_does_not_undo_commit_or_prevent_the_next_acknowledgement() =
+        runTest {
+            val repository = repo()
+            var acknowledged = false
+            val chat =
+                repository.transaction {
+                    repository.afterTransactionCommit { error("synthetic failure") }
+                    repository.afterTransactionCommit { acknowledged = true }
+                    repository.createDocument(NewDocument(DocumentKind.CHAT, "Committed", null))
+                }
+            assertTrue(acknowledged)
+            assertNotNull(repository.getDocument(chat.id))
+        }
+
+    @Test
+    public fun cancellation_immediately_after_commit_cannot_skip_acknowledgement_or_undo_the_send() =
+        runBlocking {
+            val repository = repo()
+            val chat = repository.createDocument(NewDocument(DocumentKind.CHAT, "Atomic send", null))
+            val key = ChatDraftKey.Existing(chat.id)
+            repository.writeDraft(key, ChatDraft("Question"))
+            var acknowledged = false
+            val sender =
+                launch(Dispatchers.Default) {
+                    val sendJob = coroutineContext[Job]!!
+                    repository.transaction {
+                        repository.appendMessage(chat.id, NewMessage(Role.USER, "Question"))
+                        repository.deleteDraft(key)
+                        repository.afterTransactionCommit { sendJob.cancel() }
+                        repository.afterTransactionCommit { acknowledged = true }
+                    }
+                }
+            withTimeout(5_000) { sender.join() }
+            assertTrue(sender.isCancelled)
+            assertTrue(acknowledged)
+            assertNull(repository.readDraft(key))
+            assertEquals(listOf("Question"), repository.listMessages(chat.id).map { it.contentMd })
+        }
 
     @Test
     public fun draft_roundtrip_preserves_unicode_selection_and_has_no_document_side_effects() =

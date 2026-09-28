@@ -716,6 +716,12 @@ public class InMemoryVaultRepository(
      */
     override suspend fun <T> transaction(block: suspend () -> T): T = writeTx(block = block)
 
+    override suspend fun afterTransactionCommit(action: () -> Unit) {
+        val tx = coroutineContext[FakeTx]
+        check(tx?.owner === this) { "commit acknowledgement requires an owned transaction" }
+        tx.commitAcknowledgements += action
+    }
+
     // ------------------------------------------------------------------
     // Test-only accessors (used by contract tests that need to peek at
     // internal state without going through the public interface).
@@ -802,6 +808,7 @@ public class InMemoryVaultRepository(
                             restore(snapshot)
                             throw t
                         }
+                    for (action in tx.commitAcknowledgements) runCatching { action() }
                     for (action in tx.afterCommit) runCatching { action() }
                     if (tx.changed) {
                         changeBus.tryEmit(Unit)
@@ -854,6 +861,7 @@ public class InMemoryVaultRepository(
         val owner: InMemoryVaultRepository,
     ) : AbstractCoroutineContextElement(Key) {
         var changed: Boolean = false
+        val commitAcknowledgements: MutableList<() -> Unit> = mutableListOf()
         val afterCommit: MutableList<suspend () -> Unit> = mutableListOf()
 
         companion object Key : CoroutineContext.Key<FakeTx>
