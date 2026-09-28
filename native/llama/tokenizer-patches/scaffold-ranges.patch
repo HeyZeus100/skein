@@ -1,0 +1,113 @@
+--- a/llama-vocab.cpp
++++ b/llama-vocab.cpp
+@@ -1881,7 +1881,8 @@
+ 
+     void init_tokenizer(enum llama_vocab_type type);
+ 
+-    void tokenizer_st_partition(std::forward_list<fragment_buffer_variant> & buffer, bool parse_special) const;
++    void tokenizer_st_partition(std::forward_list<fragment_buffer_variant> & buffer, bool parse_special,
++            const std::vector<std::pair<size_t, size_t>> * scaffold = nullptr) const;
+ 
+     std::string token_to_piece_for_cache(
+                   llama_token   token,
+@@ -1891,7 +1892,8 @@
+     std::vector<llama_token> tokenize(
+             const std::string & raw_text,
+                          bool   add_special,
+-                         bool   parse_special = false) const;
++                         bool   parse_special = false,
++            const std::vector<std::pair<size_t, size_t>> * scaffold = nullptr) const;
+ 
+     int32_t tokenize(
+                    const char * text,
+@@ -3223,7 +3225,8 @@
+ 
+ // #define PRETOKENIZERDEBUG
+ 
+-void llama_vocab::impl::tokenizer_st_partition(std::forward_list<fragment_buffer_variant> & buffer, bool parse_special) const {
++void llama_vocab::impl::tokenizer_st_partition(std::forward_list<fragment_buffer_variant> & buffer, bool parse_special,
++        const std::vector<std::pair<size_t, size_t>> * scaffold) const {
+     // for each special token
+     for (const llama_token special_id : cache_special_tokens) {
+         const auto & data = vocab.get_token_data(special_id);
+@@ -3256,6 +3259,22 @@
+                     //  are still relative to the source full raw_text
+                     //  string_view begins at pos 0 for the same reason
+                     auto match = std::string_view(raw_text.data(), raw_text_base_offset + raw_text_base_length).find(text, raw_text_base_offset);
++
++                    // Skein: authorize CONTROL/UNKNOWN spellings only when every byte
++                    // belongs to one proven template span. Rejected matches remain raw
++                    // text; in particular we do NOT split ordinary text at provenance
++                    // boundaries, so native BPE/SPM preprocessing and merges survive.
++                    // USER_DEFINED tokens retain upstream parse_special=false behavior.
++                    if (scaffold && (data.attr & (LLAMA_TOKEN_ATTR_CONTROL | LLAMA_TOKEN_ATTR_UNKNOWN))) {
++                        while (match != std::string::npos) {
++                            const bool allowed = std::any_of(scaffold->begin(), scaffold->end(), [&](const auto & span) {
++                                return span.first <= match && match + text.size() <= span.second;
++                            });
++                            if (allowed) break;
++                            match = std::string_view(raw_text.data(), raw_text_base_offset + raw_text_base_length)
++                                .find(text, match + 1);
++                        }
++                    }
+ 
+                     // no occurrences found, stop processing this fragment for a given special token
+                     if (match == std::string::npos) break;
+@@ -3389,7 +3408,8 @@
+ std::vector<llama_token> llama_vocab::impl::tokenize(
+         const std::string & raw_text,
+         bool add_special,
+-        bool parse_special) const {
++        bool parse_special,
++        const std::vector<std::pair<size_t, size_t>> * scaffold) const {
+     GGML_ASSERT(tokenizer && "Tokenizer not initialized. Call llama_vocab::init_tokenizer() first.");
+ 
+     std::vector<llama_token> output;
+@@ -3397,7 +3417,7 @@
+ 
+     if (!raw_text.empty()) {
+         fragment_buffer.emplace_front(raw_text, 0, raw_text.length());
+-        tokenizer_st_partition(fragment_buffer, parse_special);
++        tokenizer_st_partition(fragment_buffer, parse_special, scaffold);
+     }
+ 
+     switch (get_type()) {
+@@ -4168,6 +4188,13 @@
+     return pimpl->tokenize(raw_text, add_special, parse_special);
+ }
+ 
++std::vector<llama_token> llama_vocab::tokenize_scaffold(
++        const std::string & raw_text,
++        bool add_special,
++        const std::vector<std::pair<size_t, size_t>> & scaffold) const {
++    return pimpl->tokenize(raw_text, add_special, true, &scaffold);
++}
++
+ const std::string & llama_vocab::token_to_piece(llama_token token) const {
+     return pimpl->token_to_piece(token);
+ }
+--- a/llama-vocab.h
++++ b/llama-vocab.h
+@@ -5,6 +5,7 @@
+ #include <string>
+ #include <vector>
+ #include <memory>
++#include <utility>
+ 
+ // pre-tokenization types
+ enum llama_vocab_pre_type {
+@@ -174,6 +175,14 @@
+                          bool   add_special,
+                          bool   parse_special = false) const;
+ 
++    // Skein internal extension: sorted, disjoint UTF-8 byte ranges authorize
++    // control-token spellings. One full sequence preserves upstream tokenizer
++    // state; the caller validates range bounds before entering the tokenizer.
++    std::vector<llama_token> tokenize_scaffold(
++            const std::string & raw_text,
++                         bool   add_special,
++            const std::vector<std::pair<size_t, size_t>> & scaffold) const;
++
+     // does not write null-terminator to buf
+     int32_t token_to_piece(
+                   llama_token   token,

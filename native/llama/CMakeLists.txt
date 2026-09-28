@@ -663,6 +663,10 @@ skein_llama_opt(GGML_VULKAN         ${SKEIN_LLAMA_VULKAN})
 
 add_subdirectory("${LLAMA_CPP_DIR}" "${CMAKE_CURRENT_BINARY_DIR}/llama.cpp" EXCLUDE_FROM_ALL)
 
+include("${SKEIN_LLAMA_ROOT}/tokenizer-overlay.cmake")
+set(SKEIN_TOKENIZER_SOURCE_DIR "${CMAKE_CURRENT_BINARY_DIR}/tokenizer-src")
+skein_tokenizer_overlay("${LLAMA_CPP_DIR}" "${SKEIN_TOKENIZER_SOURCE_DIR}")
+
 # -----------------------------------------------------------------------------
 # 7. libskein_llama.so
 # -----------------------------------------------------------------------------
@@ -705,6 +709,7 @@ add_library(skein_llama SHARED
 target_include_directories(skein_llama PRIVATE
   "${CMAKE_CURRENT_BINARY_DIR}/generated"
   "${SKEIN_LLAMA_ROOT}/jni"
+  "${SKEIN_TOKENIZER_SOURCE_DIR}"
   "${LLAMA_CPP_DIR}/include"
   "${LLAMA_CPP_DIR}/ggml/include"
 )

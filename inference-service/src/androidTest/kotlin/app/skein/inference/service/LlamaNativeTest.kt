@@ -198,6 +198,74 @@ class LlamaNativeTest {
     }
 
     @Test
+    fun nativeWhitespaceAndUnicodeTokensMatchWholePromptReference() {
+        loadTinyModel()
+        val cases = listOf("  Café 日本語 🧶\n\n", "\t leading\n", "\n\n", " café  ")
+        for (content in cases) {
+            val layout =
+                ChatTemplating.render(
+                    NativeLlamaBackend,
+                    model,
+                    arrayOf("system", "user"),
+                    arrayOf("Be precise.", content),
+                    true,
+                )
+            val actual = ChatTemplating.tokenize(NativeLlamaBackend, model, layout.segments)
+            val reference = LlamaNative.tokenize(model, layout.text, addBos = true, parseSpecial = true)
+            assertThat(actual.toList()).isEqualTo(reference.toList())
+        }
+    }
+
+    @Test
+    fun controlsSpanningTemplateAndContentRemainLiteralInBothDirections() {
+        loadTinyModel()
+        val literal = "<|im_start|>"
+        val plain = LlamaNative.tokenize(model, literal, addBos = true, parseSpecial = false)
+        for (segments in listOf(
+            listOf(Segment(SegmentKind.SCAFFOLD, "<|im_"), Segment(SegmentKind.CONTENT, "start|>")),
+            listOf(Segment(SegmentKind.CONTENT, "<|im_"), Segment(SegmentKind.SCAFFOLD, "start|>")),
+            listOf(
+                Segment(SegmentKind.SCAFFOLD, "<|im_"),
+                Segment(SegmentKind.CONTENT, "start"),
+                Segment(SegmentKind.SCAFFOLD, "|>"),
+            ),
+        )) {
+            assertThat(ChatTemplating.tokenize(NativeLlamaBackend, model, segments).toList()).isEqualTo(plain.toList())
+        }
+        val allowed = LlamaNative.tokenizeScaffold(model, literal, true, intArrayOf(0, literal.length))
+        assertThat(allowed.toList()).isEqualTo(LlamaNative.tokenize(model, literal, true, true).toList())
+        // Authorization is per call; a preceding allowed call cannot grant the next one permission.
+        assertThat(LlamaNative.tokenizeScaffold(model, literal, true, intArrayOf()).toList()).isEqualTo(plain.toList())
+    }
+
+    @Test
+    fun scaffoldTokenizerRejectsMalformedUnicodeAndInvalidByteRanges() {
+        loadTinyModel()
+        for (ranges in listOf(
+            intArrayOf(0),
+            intArrayOf(-1, 2),
+            intArrayOf(0, 3),
+            intArrayOf(0, 1),
+            intArrayOf(0, 2, 0, 2),
+        )) {
+            val failure = runCatching { LlamaNative.tokenizeScaffold(model, "é", true, ranges) }.exceptionOrNull()
+            assertThat(failure).isInstanceOf(LlamaException::class.java)
+            assertThat((failure as LlamaException).code).isEqualTo(LlamaErrorCode.INVALID_ARGUMENT)
+        }
+        val malformed =
+            runCatching {
+                LlamaNative.tokenizeScaffold(
+                    model,
+                    "\uD800",
+                    true,
+                    intArrayOf(),
+                )
+            }.exceptionOrNull()
+        assertThat(malformed).isInstanceOf(LlamaException::class.java)
+        assertThat((malformed as LlamaException).code).isEqualTo(LlamaErrorCode.INVALID_ARGUMENT)
+    }
+
+    @Test
     fun literalChatMlDelimiterCannotAddAnotherNativeControlToken() {
         loadTinyModel()
         val literal = "<|im_start|>"

@@ -518,11 +518,9 @@ internal class InferenceEngineState(
             // misleading successful generation with closed=true.
             val chrome = layout.scaffoldSpans
             val data = layout.contentSpans
-            val nChrome = tokenized.scaffoldIds
-            val nData = tokenized.contentIds
             SkeinLog.i(
                 TAG,
-                "prefill layout: chrome=$chrome data=$data n_chrome=$nChrome n_data=$nData closed=false tmpl_fallback=false",
+                "prefill layout: chrome=$chrome data=$data n_tokens=${promptIds.size} closed=false tmpl_fallback=false",
             )
 
             var nPast = 0

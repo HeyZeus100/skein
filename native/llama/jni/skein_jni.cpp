@@ -50,6 +50,7 @@
 #include "ggml.h"
 #include "handles.h"
 #include "llama.h"
+#include "llama-vocab.h"
 #include "skein_jni.h"
 #include "utf8.h"
 
@@ -753,6 +754,74 @@ Java_app_skein_inference_service_LlamaNative_tokenize(
     }
     static_assert(sizeof(llama_token) == sizeof(jint), "llama_token must be a 32-bit int for this cast");
     env->SetIntArrayRegion(result, 0, n, reinterpret_cast<const jint *>(tokens.data()));
+    return result;
+    SKEIN_JNI_CATCH(nullptr)
+}
+
+/* Thread: any. Authorization is a per-call value, never global model state. */
+extern "C" JNIEXPORT jintArray JNICALL
+Java_app_skein_inference_service_LlamaNative_tokenizeScaffold(
+    JNIEnv *env, jobject /*thiz*/, jlong model_handle, jstring text, jboolean add_bos, jintArray scaffold_ranges) {
+    SKEIN_JNI_TRY
+    llama_model *model = ModelOf(env, model_handle);
+    if (model == nullptr) return nullptr;
+    if (text == nullptr || scaffold_ranges == nullptr) {
+        ThrowLlama(env, ErrorCode::kInvalidArgument, "tokenizer input is null");
+        return nullptr;
+    }
+    // A replacement character would change offsets relative to the Kotlin
+    // encoder. Reject malformed UTF-16 rather than silently changing the text.
+    const jsize length = env->GetStringLength(text);
+    const jchar *chars = env->GetStringChars(text, nullptr);
+    if (chars == nullptr) return nullptr;
+    bool valid = true;
+    for (jsize i = 0; i < length && valid; ++i) {
+        if (chars[i] >= 0xD800 && chars[i] <= 0xDBFF) {
+            valid = i + 1 < length && chars[i + 1] >= 0xDC00 && chars[i + 1] <= 0xDFFF;
+            if (valid) ++i;
+        } else if (chars[i] >= 0xDC00 && chars[i] <= 0xDFFF) {
+            valid = false;
+        }
+    }
+    env->ReleaseStringChars(text, chars);
+    if (!valid) {
+        ThrowLlama(env, ErrorCode::kInvalidArgument, "prompt contains invalid Unicode");
+        return nullptr;
+    }
+    const std::string input = skein::JStringToUtf8(env, text);
+    if (env->ExceptionCheck()) return nullptr;
+    const jsize count = env->GetArrayLength(scaffold_ranges);
+    if (count % 2 != 0) {
+        ThrowLlama(env, ErrorCode::kInvalidArgument, "invalid scaffold ranges");
+        return nullptr;
+    }
+    std::vector<jint> raw(count);
+    env->GetIntArrayRegion(scaffold_ranges, 0, count, raw.data());
+    if (env->ExceptionCheck()) return nullptr;
+    std::vector<std::pair<size_t, size_t>> scaffold;
+    size_t previous_end = 0;
+    const auto boundary = [&](size_t offset) {
+        return offset == input.size() || (static_cast<unsigned char>(input[offset]) & 0xC0) != 0x80;
+    };
+    for (jsize i = 0; i < count; i += 2) {
+        if (raw[i] < 0 || raw[i + 1] <= raw[i] || static_cast<size_t>(raw[i]) < previous_end ||
+            static_cast<size_t>(raw[i + 1]) > input.size() ||
+            !boundary(static_cast<size_t>(raw[i])) || !boundary(static_cast<size_t>(raw[i + 1]))) {
+            ThrowLlama(env, ErrorCode::kInvalidArgument, "invalid scaffold ranges");
+            return nullptr;
+        }
+        scaffold.emplace_back(raw[i], raw[i + 1]);
+        previous_end = raw[i + 1];
+    }
+    const auto tokens = llama_model_get_vocab(model)->tokenize_scaffold(input, add_bos == JNI_TRUE, scaffold);
+    if (tokens.size() > static_cast<size_t>(INT32_MAX)) {
+        ThrowLlama(env, ErrorCode::kTokenizeFailed, "tokenization failed");
+        return nullptr;
+    }
+    const jsize size = static_cast<jsize>(tokens.size());
+    jintArray result = env->NewIntArray(size);
+    if (result == nullptr) return nullptr;
+    env->SetIntArrayRegion(result, 0, size, reinterpret_cast<const jint *>(tokens.data()));
     return result;
     SKEIN_JNI_CATCH(nullptr)
 }

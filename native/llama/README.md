@@ -568,3 +568,16 @@ sub-100 ms cancel, `INVALID_MODEL` with `handleCount() == 0`) live in
 `inference-service/src/androidTest/.../LlamaNativeTest.kt`, which needs the
 tiny GGUF that bd `skein-80p` (E4.I2) fetches and an emulator or the Fold. The
 test compiles on every CI run and skips itself when the asset is absent.
+
+## Provenance-aware tokenizer overlay (2026-09-28)
+
+Prompt content boundaries must constrain control-token recognition without
+splitting ordinary BPE text. A real-model regression found that separate calls
+for a template newline and a user's leading spaces produce 31 tokens where the
+same native full-prompt reference produces 30. Skein now makes one native call
+with verified scaffold byte ranges. The explicit-context overlay preserves
+upstream tokenizer state while literal controls in message content remain
+inert. Its source hashes, build-tree-only application, regression instructions,
+and separate benchmark provenance identifier are documented in
+[`tokenizer-patches/README.md`](tokenizer-patches/README.md). The upstream commit
+pin does not change.

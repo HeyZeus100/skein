@@ -1,0 +1,6 @@
+# Pinned llama.cpp tokenizer overlay; never applied to third_party.
+patch 9ec403c393b6bed48daca3f2d3c24bf6c73689177d5363852ba9c9455b693cf8 scaffold-ranges.patch
+before b9588d7116c11573b378c43bf3c85f87249ad5eb9626324abded4abc7c91e6dc llama-vocab.cpp
+after 45ec117bf478a7187773b5729d2f868c7dea313d67a73577ed970cea6f93a401 llama-vocab.cpp
+before 068be48c160545eef87ea097339426697510465c02dc6a3324918eda514b490e llama-vocab.h
+after 8d2ced14b4322c3c0e39a9e8a08f8eb4af161be107313916cb3a61259c9aedbc llama-vocab.h

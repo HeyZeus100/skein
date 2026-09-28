@@ -3,13 +3,13 @@
 // is testable on the JVM against a fake instead of only on a device with a real
 // GGUF.
 //
-// `LlamaNative` itself is UNCHANGED and deliberately does not implement this
+// `LlamaNative` deliberately does not implement this
 // interface. `tools/ci/jni-symbols.sh` derives the expected JNI symbol set by
 // grepping `^\s*external fun <name>` out of `LlamaNative.kt` and requires exact
 // set equality against `nm -D` on `libskein_llama.so`; writing
 // `override external fun` would stop those lines matching and silently empty
 // the expected set. [NativeLlamaBackend] is therefore a forwarding object, and
-// the JNI surface stays exactly what E4.I1 declared.
+// JNI surface additions remain explicit and are checked against the native library.
 
 package app.skein.inference.service
 
@@ -136,6 +136,14 @@ interface LlamaBackend {
         parseSpecial: Boolean,
     ): IntArray
 
+    /** One complete prompt; only these half-open UTF-8 byte ranges may supply controls. */
+    fun tokenizeScaffold(
+        model: Long,
+        text: String,
+        addBos: Boolean,
+        scaffoldRanges: IntArray,
+    ): IntArray
+
     fun tokenToPieceBytes(
         model: Long,
         id: Int,
@@ -244,6 +252,13 @@ object NativeLlamaBackend : LlamaBackend {
         addBos: Boolean,
         parseSpecial: Boolean,
     ): IntArray = LlamaNative.tokenize(model, text, addBos, parseSpecial)
+
+    override fun tokenizeScaffold(
+        model: Long,
+        text: String,
+        addBos: Boolean,
+        scaffoldRanges: IntArray,
+    ): IntArray = LlamaNative.tokenizeScaffold(model, text, addBos, scaffoldRanges)
 
     override fun tokenToPieceBytes(
         model: Long,

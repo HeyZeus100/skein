@@ -168,8 +168,16 @@ class ChatTemplatingTest {
 
         ChatTemplating.tokenize(backend, MODEL, result.segments)
 
-        assertEquals(contents.toList(), backend.calls.filterNot { it.parseSpecial }.map { it.text })
-        assertEquals(4, backend.calls.count { it.parseSpecial })
+        val call = backend.calls.single()
+        assertEquals(result.text, call.text)
+        val bytes = call.text.toByteArray(Charsets.UTF_8)
+        val scaffold =
+            call.ranges
+                .toList()
+                .chunked(
+                    2,
+                ).joinToString("") { (start, end) -> bytes.copyOfRange(start, end).toString(Charsets.UTF_8) }
+        assertEquals(result.segments.filter { it.kind == SegmentKind.SCAFFOLD }.joinToString("") { it.text }, scaffold)
         assertTrue(backend.calls.none { "SKEIN_BOUNDARY_" in it.text })
     }
 
@@ -182,27 +190,51 @@ class ChatTemplatingTest {
     }
 
     @Test
-    fun `only the first nonempty segment adds BOS`() {
+    fun `whole sequence adds BOS once even with empty spans`() {
         val backend = RecordingTokenizer()
         val result = render(arrayOf("hi"))
 
         ChatTemplating.tokenize(backend, MODEL, listOf(Segment(SegmentKind.CONTENT, "")) + result.segments)
 
-        assertEquals(listOf(true, false, false), backend.calls.map { it.addBos })
-        assertEquals(listOf(true, false, true), backend.calls.map { it.parseSpecial })
+        assertEquals(listOf(true), backend.calls.map { it.addBos })
+        assertEquals(result.text, backend.calls.single().text)
     }
 
     @Test
-    fun `token ids retain segment order and diagnostic counts`() {
+    fun `token ids come from one complete sequence`() {
         val backend = RecordingTokenizer()
         val result = render(arrayOf("hi"))
 
         val tokenized = ChatTemplating.tokenizeDetailed(backend, MODEL, result.segments)
 
         assertEquals(backend.emitted.flatMap { it.toList() }, tokenized.ids.toList())
-        assertEquals(result.text.length - 2, tokenized.scaffoldIds)
-        assertEquals(2, tokenized.contentIds)
-        assertEquals(tokenized.ids.size, tokenized.scaffoldIds + tokenized.contentIds)
+        assertEquals(1, backend.calls.size)
+        assertEquals(result.text.length, tokenized.ids.size)
+    }
+
+    @Test
+    fun `scaffold ranges use UTF8 bytes after supplementary and multibyte content`() {
+        val backend = RecordingTokenizer()
+        val result = render(arrayOf("  Café 日本語 🧶\n\n", "hi"), arrayOf("user", "assistant"), backend)
+        ChatTemplating.tokenize(backend, MODEL, result.segments)
+        val call = backend.calls.single()
+        val bytes = call.text.toByteArray(Charsets.UTF_8)
+        val scaffold =
+            call.ranges.toList().chunked(2).map { (start, end) ->
+                bytes.copyOfRange(start, end).toString(Charsets.UTF_8)
+            }
+        assertEquals(result.segments.filter { it.kind == SegmentKind.SCAFFOLD }.map { it.text }, scaffold)
+    }
+
+    @Test
+    fun `malformed Unicode is rejected before native tokenization`() {
+        val backend = RecordingTokenizer()
+        val failed =
+            assertThrows(LlamaException::class.java) {
+                ChatTemplating.tokenize(backend, MODEL, listOf(Segment(SegmentKind.CONTENT, "\uD800")))
+            }
+        assertEquals(LlamaErrorCode.INVALID_ARGUMENT, failed.code)
+        assertTrue(backend.calls.isEmpty())
     }
 
     private fun render(
@@ -234,7 +266,7 @@ class ChatTemplatingTest {
     private data class TokenizeCall(
         val text: String,
         val addBos: Boolean,
-        val parseSpecial: Boolean,
+        val ranges: IntArray,
     )
 
     /** Records flags and ordering; does not pretend to reproduce a real model's vocabulary. */
@@ -242,13 +274,13 @@ class ChatTemplatingTest {
         val calls = mutableListOf<TokenizeCall>()
         val emitted = mutableListOf<IntArray>()
 
-        override fun tokenize(
+        override fun tokenizeScaffold(
             model: Long,
             text: String,
             addBos: Boolean,
-            parseSpecial: Boolean,
+            scaffoldRanges: IntArray,
         ): IntArray {
-            calls += TokenizeCall(text, addBos, parseSpecial)
+            calls += TokenizeCall(text, addBos, scaffoldRanges)
             return IntArray(text.length) { calls.size * 1000 + it }.also { emitted += it }
         }
     }

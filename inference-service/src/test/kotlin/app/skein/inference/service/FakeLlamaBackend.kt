@@ -115,6 +115,14 @@ open class FakeLlamaBackend : LlamaBackend {
         parseSpecial: Boolean,
     ): IntArray = IntArray(text.length.coerceAtMost(8)) { it + 1 }
 
+    // Policy tests use a scripted tokenizer, never this fake as vocabulary parity evidence.
+    override fun tokenizeScaffold(
+        model: Long,
+        text: String,
+        addBos: Boolean,
+        scaffoldRanges: IntArray,
+    ): IntArray = tokenize(model, text, addBos, parseSpecial = false)
+
     override fun tokenToPieceBytes(
         model: Long,
         id: Int,

@@ -243,6 +243,19 @@ object LlamaNative {
     ): IntArray
 
     /**
+     * Tokenizes one complete prompt with native sequence state intact. Each pair
+     * in [scaffoldRanges] is a sorted, disjoint half-open UTF-8 byte range. Only
+     * CONTROL/UNKNOWN spellings wholly inside a range may become controls.
+     * Malformed UTF-16 and invalid/non-codepoint-aligned ranges are rejected.
+     */
+    external fun tokenizeScaffold(
+        model: Long,
+        text: String,
+        addBos: Boolean,
+        scaffoldRanges: IntArray,
+    ): IntArray
+
+    /**
      * The raw bytes of one token's piece — **the UTF-8-safe accessor**, and
      * the one a streaming caller must use.
      *

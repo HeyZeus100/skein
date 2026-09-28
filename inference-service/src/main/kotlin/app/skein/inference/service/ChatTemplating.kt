@@ -12,9 +12,10 @@
 // real system turn: the fence is bypassed one layer below where any
 // string-level defence can see it.
 //
-// THE RULE, implemented here. Template scaffolding is tokenized with
-// `parseSpecial = true`. Message content is tokenized with
-// `parseSpecial = false`. Always, with no exception for "trusted" messages —
+// THE RULE, implemented here. One native tokenization preserves ordinary
+// text merges across scaffold/content boundaries. CONTROL/UNKNOWN spellings
+// are recognized only when wholly inside proven scaffold byte ranges. There
+// is no exception for "trusted" messages —
 // the persona and the system prompt are content too, and a rule with an
 // exemption is a rule with an attack surface.
 //
@@ -34,18 +35,21 @@
 
 package app.skein.inference.service
 
+import java.nio.CharBuffer
+import java.nio.charset.CharacterCodingException
+import java.nio.charset.CodingErrorAction
 import java.util.UUID
 
 /** What a span of the rendered prompt is. */
 enum class SegmentKind {
-    /** Written by the chat template. Tokenized with `parseSpecial = true`. */
+    /** Written by the chat template; may authorize control-token spellings. */
     SCAFFOLD,
 
-    /** Supplied by a message. Tokenized with `parseSpecial = false`, always. */
+    /** Supplied by a message; cannot authorize control-token spellings. */
     CONTENT,
 }
 
-/** One span of the rendered prompt, with the flag it must be tokenized under. */
+/** One proven provenance span of the rendered prompt. */
 data class Segment(
     val kind: SegmentKind,
     val text: String,
@@ -119,11 +123,9 @@ object ChatTemplating {
         throw LlamaException(LlamaErrorCode.TEMPLATE_UNSUPPORTED, "Chat template content boundaries cannot be verified")
 
     /**
-     * Tokenizes [segments] with the flag each one's kind demands and
-     * concatenates the ids.
-     *
-     * BOS is added on the first non-empty segment only: it is a property of the
-     * sequence, not of each span, and llama.cpp would happily add one per call.
+     * Tokenizes the complete sequence once. Splitting tokenizer calls at message
+     * boundaries changes BPE merges, whitespace preprocessing and BOS/EOS.
+     * Native partitioning instead restricts only CONTROL/UNKNOWN recognition.
      */
     fun tokenize(
         backend: LlamaBackend,
@@ -131,36 +133,43 @@ object ChatTemplating {
         segments: List<Segment>,
     ): IntArray = tokenizeDetailed(backend, model, segments).ids
 
-    /** [tokenize]'s ids plus how many came from each kind of segment (counts only). */
+    /** Exact sequence ids. Per-kind token counts do not exist across merged boundaries. */
     class TokenizedPrompt(
         val ids: IntArray,
-        val scaffoldIds: Int,
-        val contentIds: Int,
     )
 
-    /** [tokenize], reporting the per-kind id counts the service logs. */
     fun tokenizeDetailed(
         backend: LlamaBackend,
         model: Long,
         segments: List<Segment>,
     ): TokenizedPrompt {
-        val ids = mutableListOf<Int>()
-        var scaffoldIds = 0
-        var contentIds = 0
-        var first = true
+        val encoder =
+            Charsets.UTF_8
+                .newEncoder()
+                .onMalformedInput(CodingErrorAction.REPORT)
+                .onUnmappableCharacter(CodingErrorAction.REPORT)
+        val text = StringBuilder()
+        val ranges = mutableListOf<Int>()
+        var byteOffset = 0
         for (segment in segments) {
-            if (segment.text.isEmpty()) continue
-            val tokens =
-                backend.tokenize(
-                    model,
-                    segment.text,
-                    addBos = first,
-                    parseSpecial = segment.kind == SegmentKind.SCAFFOLD,
-                )
-            tokens.forEach { ids += it }
-            if (segment.kind == SegmentKind.SCAFFOLD) scaffoldIds += tokens.size else contentIds += tokens.size
-            first = false
+            val bytes =
+                try {
+                    encoder.encode(CharBuffer.wrap(segment.text)).remaining()
+                } catch (_: CharacterCodingException) {
+                    throw LlamaException(LlamaErrorCode.INVALID_ARGUMENT, "Prompt contains invalid Unicode")
+                }
+            val end = Math.addExact(byteOffset, bytes)
+            if (bytes > 0 && segment.kind == SegmentKind.SCAFFOLD) {
+                if (ranges.isNotEmpty() && ranges.last() == byteOffset) {
+                    ranges[ranges.lastIndex] = end
+                } else {
+                    ranges += byteOffset
+                    ranges += end
+                }
+            }
+            text.append(segment.text)
+            byteOffset = end
         }
-        return TokenizedPrompt(ids.toIntArray(), scaffoldIds, contentIds)
+        return TokenizedPrompt(backend.tokenizeScaffold(model, text.toString(), true, ranges.toIntArray()))
     }
 }
