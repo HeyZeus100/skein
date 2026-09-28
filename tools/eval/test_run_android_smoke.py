@@ -8,6 +8,35 @@ from run_android_smoke import Emulator
 
 
 class EmulatorSmokeSafetyTest(unittest.TestCase):
+    def test_optional_platform_lookup_failure_does_not_hide_missing_required_tools(self):
+        workflow = Path(__file__).resolve().parents[2] / ".github/workflows/synthetic-smoke.yml"
+        block = workflow.read_text().split("      - name: Configure SDK and KVM\n        run: |\n", 1)[1]
+        lines = []
+        for line in block.splitlines():
+            if not line.startswith("          "):
+                break
+            lines.append(line[10:])
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            sdk = root / "sdk"
+            manager = sdk / "cmdline-tools/1/bin/sdkmanager"
+            manager.parent.mkdir(parents=True)
+            manager.write_text('#!/bin/sh\ncase "$*" in *android-37*) exit 1;; esac\nexit 0\n')
+            manager.chmod(0o700)
+            for path in (sdk / "platform-tools/adb", sdk / "build-tools/36.0.0/aapt2", root / "sudo"):
+                path.parent.mkdir(parents=True, exist_ok=True)
+                path.write_text("#!/bin/sh\nexit 0\n")
+                path.chmod(0o700)
+            environment = {"PATH": f"{root}:/usr/bin:/bin", "ANDROID_HOME": str(sdk),
+                           "GITHUB_PATH": str(root / "path")}
+            result = subprocess.run(["/bin/bash", "-e", "-c", "\n".join(lines)], cwd=root,
+                                    env=environment, capture_output=True, timeout=10)
+            self.assertEqual(result.returncode, 0, result.stderr.decode())
+            (sdk / "platform-tools/adb").unlink()
+            missing = subprocess.run(["/bin/bash", "-e", "-c", "\n".join(lines)], cwd=root,
+                                     env=environment, capture_output=True, timeout=10)
+            self.assertNotEqual(missing.returncode, 0)
+
     def test_workflow_passes_serial_when_each_script_line_has_a_fresh_shell(self):
         workflow = Path(__file__).resolve().parents[2] / ".github/workflows/synthetic-smoke.yml"
         block = workflow.read_text().split("          script: |\n", 1)[1]
