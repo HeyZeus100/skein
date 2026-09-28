@@ -156,13 +156,23 @@ expected source commit and an explicit `emulator-NNNN` serial whose
 `ro.kernel.qemu` property is `1`; it refuses physical devices before installing.
 It installs with `-r` and never resets data or security settings.
 
-This smoke uses seed 17, a 4096 requested context, 64 answer tokens, and a 60-second
-case deadline. It fails on missing/duplicate rows, runtime errors, prompt-count
+The `tiny-structural-v2` smoke profile uses all 12 development cases, seed 17,
+a 1024 requested context, 2 CPU threads, 4 answer tokens, and a 60-second case
+deadline. It records that profile in `smoke_summary.json`. The public-model
+benchmark preparation defaults and caller-supplied sampling are unchanged.
+The smoke fails on missing/duplicate rows, runtime errors, prompt-count
 inconsistency, provenance mismatch, or native token-ID mismatch. It preserves
 answer rows (including failures), instrumentation output, both manifests, and
 native ID arrays as a workflow artifact. It does not grade generated content;
 `quality_assessed` is always false. The ordinary emulator suite remains separate
 and must pass on the same source head before Fold consideration.
+
+The earlier [run 36384222843](https://github.com/HeyZeus100/skein/actions/runs/36384222843)
+used context 4096, 4 threads and 64 answer tokens with the same 60-second deadline.
+It retained all 12 rows: 2 OK and 10 timeouts, plus 4/5 passing native parity cases
+(the Unicode whitespace case differed). Those failures remain part of the record.
+The smaller profile is a structural runtime check, not a retry of an equivalent
+quality/performance workload; its timings cannot establish a speed improvement.
 
 ### Fold telemetry follow-through
 

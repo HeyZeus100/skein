@@ -97,7 +97,9 @@ def main():
     output = Path(args.output).resolve()
     output.mkdir(parents=True, exist_ok=False)
     summary = dict(schema_version=1, mode="tiny-model-smoke", quality_assessed=False,
-                   build_sha=head, complete=False)
+                   build_sha=head, complete=False,
+                   profile=dict(name="tiny-structural-v2", context_length=1024, threads=2,
+                                max_tokens=4, case_timeout_ms=60000, seeds=[17]))
     try:
         lock = dict(line.split("=", 1) for line in (repo / "tools/models/test-model.lock").read_text().splitlines()
                     if line and not line.startswith("#"))
@@ -122,14 +124,15 @@ def main():
                                       for case in cases), encoding="utf-8")
         sampling_file = output / "sampling.json"
         sampling_file.write_text(json.dumps(dict(temperature=0.0, top_k=1, top_p=1.0, min_p=0.0,
-                                                  repeat_penalty=1.0, max_tokens=64, stop=[])))
+                                                  repeat_penalty=1.0, max_tokens=4, stop=[])))
         prepared = output / "prepared"
         run_id = "tiny-smoke-" + head[:12]
         command([sys.executable, "tools/eval/prepare_android_benchmark.py", "--model", str(model),
                  "--model-sha256", lock["sha256"], "--model-license", lock["license"], "--apk", str(apks["app"]),
                  "--fixture", str(fixture_file), "--case-set-sha256", case_hash, "--build-sha", head,
                  "--llama-sha", llama_sha, "--run-id", run_id, "--output-dir", str(prepared),
-                 "--device-root", app_root, "--context-length", "4096", "--case-timeout-ms", "60000",
+                 "--device-root", app_root, "--context-length", "1024", "--threads", "2",
+                 "--case-timeout-ms", "60000",
                  "--sampling", str(sampling_file), "--seeds", "17"])
         device.stage("app.skein", app_root, f"models/{lock['sha256']}/model.gguf", model)
         device.stage("app.skein", app_root, f"input/{run_id}.jsonl", prepared / "input.jsonl")
