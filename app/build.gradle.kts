@@ -17,6 +17,23 @@ android {
     namespace = "app.skein"
     compileSdk = 37
 
+    // Explicit build-time opt-in: synthetic model runs are absent from the
+    // ordinary test APK and must never run as part of the default device suite.
+    if (providers.gradleProperty("skein.syntheticBenchmark").orNull == "true") {
+        sourceSets {
+            getByName("androidTest") {
+                kotlin.directories.addAll(
+                    listOf("src/syntheticBenchmark/kotlin", "src/syntheticBenchmarkShared/kotlin"),
+                )
+            }
+            getByName("test") {
+                kotlin.directories.addAll(
+                    listOf("src/syntheticBenchmarkTest/kotlin", "src/syntheticBenchmarkShared/kotlin"),
+                )
+            }
+        }
+    }
+
     defaultConfig {
         applicationId = "app.skein"
         minSdk = 30

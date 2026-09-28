@@ -34,6 +34,14 @@ android {
     namespace = "app.skein.inference.service"
     compileSdk = 37
 
+    if (providers.gradleProperty("skein.syntheticBenchmark").orNull == "true") {
+        sourceSets {
+            getByName("androidTest") {
+                kotlin.directories.add("src/syntheticBenchmark/kotlin")
+            }
+        }
+    }
+
     // Pin the NDK to the same r27c the E0.I7 spike and :core:vault use. The
     // reproducibility contract in E1.I8 hashes the .so, and the Vulkan shader
     // set is decided by *this* NDK's bundled glslc (shaderc v2022.3), so a
