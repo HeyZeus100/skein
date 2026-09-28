@@ -34,6 +34,8 @@
 
 package app.skein.testing
 
+import app.skein.core.model.ChatDraft
+import app.skein.core.model.ChatDraftKey
 import app.skein.core.model.Citation
 import app.skein.core.model.DocId
 import app.skein.core.model.Document
@@ -109,6 +111,7 @@ public class InMemoryVaultRepository(
     private val documents: MutableMap<DocId, Document> = linkedMapOf()
     private val messagesByChat: MutableMap<DocId, MutableList<Message>> = linkedMapOf()
     private val ingestQueue: MutableMap<DocId, IngestItem> = linkedMapOf()
+    private val drafts: MutableMap<ChatDraftKey, ChatDraft> = linkedMapOf()
     private val mimeTypes: MutableMap<DocId, String> = linkedMapOf()
 
     // `document_revisions` (migration 003 / POST_REVIEW_RESOLUTIONS.md §1.3),
@@ -125,6 +128,24 @@ public class InMemoryVaultRepository(
     init {
         index?.link(this)
     }
+
+    override suspend fun readDraft(key: ChatDraftKey): ChatDraft? = drafts[key]
+
+    override suspend fun writeDraft(
+        key: ChatDraftKey,
+        draft: ChatDraft,
+    ) = writeTx {
+        if (key is ChatDraftKey.Existing) {
+            require(documents[key.chatId]?.kind == DocumentKind.CHAT) { "Draft owner is not an available chat" }
+        }
+        drafts[key] = draft
+    }
+
+    override suspend fun deleteDraft(key: ChatDraftKey) =
+        writeTx {
+            drafts.remove(key)
+            Unit
+        }
 
     // ------------------------------------------------------------------
     // Documents
@@ -331,7 +352,13 @@ public class InMemoryVaultRepository(
 
     override suspend fun deleteDocument(id: DocId) {
         writeTx {
-            val doomed = documents.remove(id)
+            val doomed =
+                documents.remove(id).also {
+                    drafts.keys.removeAll { key ->
+                        key is ChatDraftKey.Existing &&
+                            key.chatId == id
+                    }
+                }
             // `document_revisions.document_id` is ON DELETE CASCADE (003).
             revisions.keys.removeAll { it.first == id }
             messagesByChat.remove(id)
@@ -794,6 +821,7 @@ public class InMemoryVaultRepository(
             messagesByChat = messagesByChat.mapValuesTo(LinkedHashMap()) { (_, v) -> v.toMutableList() },
             ingestQueue = LinkedHashMap(ingestQueue),
             mimeTypes = LinkedHashMap(mimeTypes),
+            drafts = LinkedHashMap(drafts),
             revisions = LinkedHashMap(revisions),
         )
 
@@ -804,6 +832,8 @@ public class InMemoryVaultRepository(
         messagesByChat.putAll(snapshot.messagesByChat)
         ingestQueue.clear()
         ingestQueue.putAll(snapshot.ingestQueue)
+        drafts.clear()
+        drafts.putAll(snapshot.drafts)
         mimeTypes.clear()
         mimeTypes.putAll(snapshot.mimeTypes)
         revisions.clear()
@@ -815,6 +845,7 @@ public class InMemoryVaultRepository(
         val messagesByChat: Map<DocId, MutableList<Message>>,
         val ingestQueue: Map<DocId, IngestItem>,
         val mimeTypes: Map<DocId, String>,
+        val drafts: Map<ChatDraftKey, ChatDraft>,
         val revisions: Map<Pair<DocId, RevisionHash>, DocumentRevision>,
     )
 

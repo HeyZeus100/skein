@@ -16,3 +16,4 @@
 008_ingest_attempts.sql
 009_model_origin.sql
 010_fts_secure_delete.sql
+011_chat_drafts.sql

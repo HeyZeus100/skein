@@ -67,6 +67,8 @@ package app.skein.core.vault.repository
 
 import androidx.sqlite.SQLiteConnection
 import androidx.sqlite.SQLiteStatement
+import app.skein.core.model.ChatDraft
+import app.skein.core.model.ChatDraftKey
 import app.skein.core.model.Citation
 import app.skein.core.model.CitationRecordJson
 import app.skein.core.model.DocId
@@ -148,6 +150,68 @@ public class VaultRepositoryImpl(
     private val nextReaderIndex: AtomicInteger = AtomicInteger(0)
     private val changeBus: ChangeBus = ChangeBus()
     private val json: Json = Json { ignoreUnknownKeys = true }
+
+    override suspend fun readDraft(key: ChatDraftKey): ChatDraft? =
+        withReader { connection ->
+            connection.prepare(DraftSql.READ).use { statement ->
+                bindDraftKey(statement, key)
+                if (statement.step()) {
+                    val text = statement.getText(0)
+                    ChatDraft(
+                        text,
+                        statement.getLong(1).coerceIn(0L, text.length.toLong()).toInt(),
+                        statement.getLong(2).coerceIn(0L, text.length.toLong()).toInt(),
+                    )
+                } else {
+                    null
+                }
+            }
+        }
+
+    override suspend fun writeDraft(
+        key: ChatDraftKey,
+        draft: ChatDraft,
+    ) = writeTx {
+        if (key is ChatDraftKey.Existing) {
+            require(getDocument(key.chatId)?.kind == DocumentKind.CHAT) { "Draft owner is not an available chat" }
+        }
+        writer.prepare(DraftSql.UPSERT).use { statement ->
+            bindDraftKey(statement, key)
+            if (key is ChatDraftKey.Existing) statement.bindText(4, key.chatId) else statement.bindNull(4)
+            statement.bindText(5, draft.text)
+            statement.bindLong(6, draft.selectionStart.toLong())
+            statement.bindLong(7, draft.selectionEnd.toLong())
+            statement.step()
+        }
+        Unit
+    }
+
+    override suspend fun deleteDraft(key: ChatDraftKey) =
+        writeTx {
+            writer.prepare(DraftSql.DELETE).use { statement ->
+                bindDraftKey(statement, key)
+                statement.step()
+            }
+            Unit
+        }
+
+    private fun bindDraftKey(
+        statement: SQLiteStatement,
+        key: ChatDraftKey,
+    ) {
+        when (key) {
+            is ChatDraftKey.Existing -> {
+                statement.bindText(1, "chat")
+                statement.bindText(2, "")
+                statement.bindText(3, key.chatId)
+            }
+            is ChatDraftKey.New -> {
+                statement.bindText(1, "new")
+                statement.bindText(2, key.spaceId)
+                statement.bindText(3, key.draftId)
+            }
+        }
+    }
 
     // ------------------------------------------------------------------
     // Documents

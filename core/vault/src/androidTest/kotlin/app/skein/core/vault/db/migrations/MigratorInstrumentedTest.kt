@@ -67,6 +67,52 @@ class MigratorInstrumentedTest {
             }.toList()
     }
 
+    @Test
+    fun migration011UpgradesExistingVaultAndDraftForeignKeyPreventsResurrection() {
+        val db = tempDbFile()
+        val driver = SkeinSQLiteDriver(randomKey(11))
+        driver.open(db.absolutePath).use { connection ->
+            val previous =
+                listOf(
+                    "001_initial.sql",
+                    "003_document_revisions.sql",
+                    "005_export_stages.sql",
+                    "007_drop_attachment_master_key.sql",
+                    "008_ingest_attempts.sql",
+                    "009_model_origin.sql",
+                    "010_fts_secure_delete.sql",
+                )
+            for (migration in previous) {
+                for (statement in splitMigrationStatements(productionMigrationSql(migration))) {
+                    connection.prepare(statement).use { it.step() }
+                }
+            }
+            insertNote(connection, "draft-chat", "Existing chat", null, 1, 1)
+            connection.prepare("UPDATE documents SET kind = 'chat' WHERE id = 'draft-chat'").use { it.step() }
+            connection.prepare("PRAGMA user_version = 10").use { it.step() }
+        }
+        val result = Migrator(driver).migrate(db.absolutePath)
+        assertThat(result.fromVersion).isEqualTo(10)
+        assertThat(result.toVersion).isEqualTo(latestMigrationVersion())
+        driver.open(db.absolutePath).use { connection ->
+            assertThat(SchemaInspector(connection).tables()).contains("chat_drafts")
+            connection.prepare("SELECT title FROM documents WHERE id = 'draft-chat'").use {
+                assertThat(it.step()).isTrue()
+                assertThat(it.getText(0)).isEqualTo("Existing chat")
+            }
+            val insert =
+                "INSERT INTO chat_drafts VALUES " +
+                    "('chat', '', 'draft-chat', 'draft-chat', 'secret draft', 12, 12)"
+            connection.prepare(insert).use { it.step() }
+            connection.prepare("DELETE FROM documents WHERE id = 'draft-chat'").use { it.step() }
+            connection.prepare("SELECT COUNT(*) FROM chat_drafts").use {
+                it.step()
+                assertThat(it.getLong(0)).isEqualTo(0)
+            }
+            assertThat(runCatching { connection.prepare(insert).use { it.step() } }.isFailure).isTrue()
+        }
+    }
+
     // --- Fresh migrate: version + full schema object set (§4.9) ---
 
     @Test
@@ -101,6 +147,7 @@ class MigratorInstrumentedTest {
                 // `Migrator` sorts numerically, so a fresh database applies
                 // it between 003 and 007 and still ends at user_version 8.
                 "export_stages",
+                "chat_drafts",
             )
             // 007_drop_attachment_master_key.sql (skein-7d0l): the vestigial
             // Layer-1 wrapped-master table (superseded by the app-private

@@ -9,6 +9,8 @@
 
 package app.skein.core.vault.export
 
+import app.skein.core.model.ChatDraft
+import app.skein.core.model.ChatDraftKey
 import app.skein.core.model.DocumentKind
 import app.skein.core.model.FrontmatterKeys
 import app.skein.core.model.NewDocument
@@ -31,6 +33,24 @@ import java.io.ByteArrayOutputStream
 import java.util.zip.ZipInputStream
 
 public class VaultZipTest {
+    @Test
+    public fun `existing and new chat drafts never appear in a vault export`() =
+        runTest {
+            val repo = InMemoryVaultRepository()
+            val chat = repo.createDocument(NewDocument(DocumentKind.CHAT, "Conversation", null))
+            repo.appendMessage(chat.id, NewMessage(Role.USER, "Sent message"))
+            val before = exportZip(repo)
+            repo.writeDraft(ChatDraftKey.Existing(chat.id), ChatDraft("UNSENT_DRAFT_SENTINEL"))
+            repo.writeDraft(
+                ChatDraftKey.New("work", "11111111-1111-4111-8111-111111111111"),
+                ChatDraft("NEW_DRAFT_SENTINEL"),
+            )
+            assertThat(exportZip(repo)).isEqualTo(before)
+            for (bytes in readZipEntries(exportZip(repo)).values) {
+                assertThat(bytes.toString(Charsets.UTF_8)).doesNotContain("DRAFT_SENTINEL")
+            }
+        }
+
     @Test
     public fun `exportVaultZip writes one md per document, attachments folder, and a manifest`() =
         runTest {

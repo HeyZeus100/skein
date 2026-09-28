@@ -338,6 +338,23 @@ public interface VaultRepository {
      */
     public suspend fun quiesce(timeoutMillis: Long = 500L)
 
+    // ---- encrypted unsent drafts (D7 M6-M9) ----
+    public suspend fun readDraft(key: ChatDraftKey): ChatDraft?
+
+    /**
+     * Joins [transaction], writes no document/index/ingest state and emits no Documents event.
+     * Existing keys require a live CHAT; a missing/deleted/non-chat owner is refused with a
+     * fixed content-free error. The session DraftStore owns epoch/unlock admission; repository
+     * quiesce also refuses these writes. No fallback store or deferred retry is permitted.
+     */
+    public suspend fun writeDraft(
+        key: ChatDraftKey,
+        draft: ChatDraft,
+    )
+
+    /** Joins [transaction] so send can delete the draft atomically with create/USER append. */
+    public suspend fun deleteDraft(key: ChatDraftKey)
+
     // ---- documents ----
     public suspend fun createDocument(new: NewDocument): Document
 
@@ -395,9 +412,9 @@ public interface VaultRepository {
      *   messages, citations and the frontmatter — its stale `title` key
      *   included — are untouched. Serialization boundaries render `title`
      *   from this column instead.
-     * - Resolved WIKILINK edges into [id] are detached to the old title's
-     *   unresolved sentinel, and the document that now answers the old title
-     *   is re-queued, as in [deleteDocument]. Edges keyed by id (CITE) stay.
+     * - Title-bound WIKILINK edges into [id] detach to the old title's
+     *   unresolved sentinel, and the document now answering that title is
+     *   re-queued. Explicit UUID wikilinks and CITE edges keep their binding.
      * - [id] is re-queued for ingest with `queued_at` = now, so an ingest
      *   already in flight cannot complete the new entry away; that ingest
      *   attaches `[[new title]]` links.

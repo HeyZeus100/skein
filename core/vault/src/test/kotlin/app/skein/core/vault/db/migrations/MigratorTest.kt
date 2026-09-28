@@ -33,7 +33,7 @@ class MigratorTest {
     }
 
     @Test
-    fun `main migrations index lists exactly 001, 003, 005, 007, 008, 009 and 010`() {
+    fun `main migrations index lists every released migration through 011`() {
         // Exercises the real production manifest shipped in
         // src/main/resources/migrations/INDEX.txt against the default
         // constructor overload.
@@ -68,6 +68,7 @@ class MigratorTest {
             // 010_fts_secure_delete.sql (skein-cash LC-07): FTS5
             // secure-delete + one optimize on `chunks_fts`. DML only.
             "010_fts_secure_delete.sql",
+            "011_chat_drafts.sql",
         )
         // migrator itself isn't exercised beyond construction here — the
         // functional discover-then-apply path is covered on-device.

@@ -19,6 +19,8 @@ package app.skein.core.vault.provider
 
 import android.provider.DocumentsContract
 import app.skein.core.model.AuthorizationToken
+import app.skein.core.model.ChatDraft
+import app.skein.core.model.ChatDraftKey
 import app.skein.core.model.Document
 import app.skein.core.model.DocumentKind
 import app.skein.core.model.FrontmatterKeys
@@ -105,6 +107,22 @@ public class VaultDocumentsBackendTest {
     private fun Map<String, Any?>.mime(): Any? = this[DocumentsContract.Document.COLUMN_MIME_TYPE]
 
     // ---- roots ---------------------------------------------------------------
+
+    @Test
+    public fun `provider exposes sent conversation only and cannot address an unsaved draft`() =
+        runTest {
+            val h = Harness().apply { unlock() }
+            val chat = h.chat()
+            val draftId = "11111111-1111-4111-8111-111111111111"
+            h.repo.writeDraft(ChatDraftKey.Existing(chat.id), ChatDraft("UNSENT_DRAFT_SENTINEL"))
+            h.repo.writeDraft(ChatDraftKey.New("work", draftId), ChatDraft("NEW_DRAFT_SENTINEL"))
+            val out = ByteArrayOutputStream()
+            h.backend.read(ProviderIds.note(chat.id), out)
+            assertThat(out.toString("UTF-8")).contains("hello")
+            assertThat(out.toString("UTF-8")).doesNotContain("DRAFT_SENTINEL")
+            assertThat(runCatching { h.backend.document(ProviderIds.note(draftId)) }.exceptionOrNull())
+                .isInstanceOf(FileNotFoundException::class.java)
+        }
 
     @Test
     public fun `roots lists exactly one root when unlocked`() =

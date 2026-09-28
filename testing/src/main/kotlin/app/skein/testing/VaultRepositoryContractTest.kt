@@ -15,6 +15,8 @@
 
 package app.skein.testing
 
+import app.skein.core.model.ChatDraft
+import app.skein.core.model.ChatDraftKey
 import app.skein.core.model.Citation
 import app.skein.core.model.CitationRecord
 import app.skein.core.model.CitationSourceKind
@@ -100,6 +102,117 @@ public abstract class VaultRepositoryContractTest {
      * `IndexStoreImpl` over the same database. Call [repo] first.
      */
     protected abstract fun index(): IndexStore
+
+    @Test
+    public fun draft_roundtrip_preserves_unicode_selection_and_has_no_document_side_effects() =
+        runTest {
+            val repository = repo()
+            val chat = repository.createDocument(NewDocument(DocumentKind.CHAT, "Draft owner", null))
+            val key = ChatDraftKey.Existing(chat.id)
+            val queued = repository.dequeueIngest(100)
+            val draft = ChatDraft("Unsent 🌿 [[Note]]", 9, 2)
+            repository.writeDraft(key, draft)
+            assertEquals(draft, repository.readDraft(key))
+            assertEquals(chat, repository.getDocument(chat.id))
+            assertEquals(queued, repository.dequeueIngest(100))
+            assertTrue(repository.searchBodies("Unsent").isEmpty())
+            assertTrue(repository.searchTitles("Unsent").isEmpty())
+            assertTrue(repository.listMessages(chat.id).isEmpty())
+            repository.deleteDraft(key)
+            assertNull(repository.readDraft(key))
+        }
+
+    @Test
+    public fun new_draft_same_id_is_separate_in_each_space() =
+        runTest {
+            val repository = repo()
+            val draftId = "11111111-1111-4111-8111-111111111111"
+            val first = ChatDraftKey.New("space-a", draftId)
+            val second = ChatDraftKey.New("space-b", draftId)
+            repository.writeDraft(first, ChatDraft("First Space"))
+            assertNull(repository.readDraft(second))
+            repository.writeDraft(second, ChatDraft("Second Space"))
+            repository.deleteDraft(first)
+            assertEquals(ChatDraft("Second Space"), repository.readDraft(second))
+            assertTrue(repository.searchBodies("Space").isEmpty())
+            assertTrue(repository.observeTimeline(TimelineFilter(), 100).first().isEmpty())
+            assertTrue(repository.dequeueIngest(100).isEmpty())
+        }
+
+    @Test
+    public fun deleted_chat_cascades_draft_and_late_write_cannot_resurrect_it() =
+        runTest {
+            val repository = repo()
+            val chat = repository.createDocument(NewDocument(DocumentKind.CHAT, "Draft owner", null))
+            val key = ChatDraftKey.Existing(chat.id)
+            repository.writeDraft(key, ChatDraft("Private unsent draft"))
+            repository.deleteDocument(chat.id)
+            assertNull(repository.readDraft(key))
+            val error = runCatching { repository.writeDraft(key, ChatDraft("Private unsent draft")) }.exceptionOrNull()
+            assertTrue(error is IllegalArgumentException)
+            assertEquals("Draft owner is not an available chat", error?.message)
+            assertNull(repository.readDraft(key))
+            assertNull(repository.getDocument(chat.id))
+            val note = repository.createDocument(NewDocument(DocumentKind.NOTE, "Not chat", ""))
+            assertTrue(runCatching { repository.writeDraft(ChatDraftKey.Existing(note.id), ChatDraft("x")) }.isFailure)
+        }
+
+    @Test
+    public fun send_and_draft_clear_commit_together_or_both_roll_back() =
+        runTest {
+            val repository = repo()
+            val key = ChatDraftKey.New("space-a", "11111111-1111-4111-8111-111111111111")
+            val draft = ChatDraft("First message")
+            repository.writeDraft(key, draft)
+            var failedId: String? = null
+            runCatching {
+                repository.transaction {
+                    val chat = repository.createDocument(NewDocument(DocumentKind.CHAT, "New conversation", null))
+                    failedId = chat.id
+                    repository.appendMessage(chat.id, NewMessage(Role.USER, draft.text))
+                    repository.deleteDraft(key)
+                    error("Injected transaction failure")
+                }
+            }
+            assertNull(repository.getDocument(failedId!!))
+            assertEquals(draft, repository.readDraft(key))
+            val chat =
+                repository.transaction {
+                    val created = repository.createDocument(NewDocument(DocumentKind.CHAT, "New conversation", null))
+                    repository.appendMessage(created.id, NewMessage(Role.USER, draft.text))
+                    repository.deleteDraft(key)
+                    created
+                }
+            assertNull(repository.readDraft(key))
+            assertEquals(listOf(draft.text), repository.listMessages(chat.id).map { it.contentMd })
+        }
+
+    @Test
+    public fun draft_batch_rolls_back_and_quiesce_refuses_late_writes() =
+        runTest {
+            val repository = repo()
+            val first = ChatDraftKey.New("space-a", "11111111-1111-4111-8111-111111111111")
+            val second = ChatDraftKey.New("space-b", "11111111-1111-4111-8111-111111111111")
+            runCatching {
+                repository.transaction {
+                    repository.writeDraft(first, ChatDraft("First"))
+                    repository.writeDraft(second, ChatDraft("Second"))
+                    error("Injected flush failure")
+                }
+            }
+            assertNull(repository.readDraft(first))
+            assertNull(repository.readDraft(second))
+            repository.quiesce()
+            assertTrue(
+                runCatching {
+                    repository.writeDraft(
+                        first,
+                        ChatDraft("Late"),
+                    )
+                }.exceptionOrNull() is VaultQuiescedException,
+            )
+            assertTrue(runCatching { repository.deleteDraft(first) }.exceptionOrNull() is VaultQuiescedException)
+        }
 
     @Test
     public fun quiesce_drains_nested_transaction_and_refuses_late_writes(): Unit =

@@ -93,6 +93,7 @@ public class VaultRepositoryImplContractTest : VaultRepositoryContractTest() {
                 "003_document_revisions.sql",
                 "005_export_stages.sql",
                 "008_ingest_attempts.sql",
+                "011_chat_drafts.sql",
             )
         for (migration in migrations) {
             val sql =
