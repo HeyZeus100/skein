@@ -135,6 +135,7 @@ class DeviceVaultOpener(
                             vaultRepository = repository,
                             indexStore = indexStore,
                             personaProvider = { personaService.default() },
+                            personaById = personaService::get,
                         )
                     }
                 VaultSession(

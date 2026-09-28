@@ -113,10 +113,11 @@ public class RetrievalServiceImpl(
     private val recallTimeoutMillis: Long = DEFAULT_RECALL_TIMEOUT_MILLIS,
     private val io: CoroutineDispatcher = Dispatchers.IO,
     private val warn: (String) -> Unit = { SkeinLog.w(TAG, it) },
+    private val legacyPersonaId: PersonaId? = null,
 ) : RetrievalService {
     private val lexicalRecall = LexicalRecall(index)
     private val graphRecall = GraphRecall(index, repository)
-    private val ranker = PprRanker(index, repository, config)
+    private val ranker = PprRanker(index, repository, config, legacyPersonaId)
     private val assembler = RetrievedAssembler(index, repository)
 
     /** Guards the "no embedder" degradation warning so it fires once per instance, not once per call. */

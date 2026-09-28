@@ -16,7 +16,8 @@
 //      `DEFAULT_K = 30`).
 //   2. **Persona filter, before ranking.** Drop chunks whose document's
 //      `persona_id` is neither null nor the requested persona —
-//      persona-less documents are shared. Filtering happens on the recall
+//      persona-less documents are shared unless legacyPersonaId binds them
+//      to the app default Space. Filtering happens on the recall
 //      lists themselves, so the RRF ranks in step 3 are ranks *among
 //      surviving chunks*: a chunk is never penalised for sitting behind a
 //      chunk the caller is not allowed to see.
@@ -77,6 +78,8 @@ public class PprRanker(
     private val index: IndexStore,
     private val repo: VaultRepository,
     private val config: RankerConfig = RankerConfig.DEFAULT,
+    /** In the Spaces app, old unassigned notes belong to this default Space. */
+    private val legacyPersonaId: PersonaId? = null,
 ) {
     private val fusion = ScoreFusion(config)
     private val pageRank = PersonalizedPageRank(config)
@@ -94,11 +97,11 @@ public class PprRanker(
      * what "no vectors yet" (`VectorRecall` before skein-079 wires up the
      * embedder) should mean — see [ScoreFusion]'s file header.
      *
-     * [personaId] is the persona the retrieval is running under. A chunk
-     * survives only if its document's `personaId` is `null` (shared) or
-     * equal to [personaId]; **passing `null` therefore admits only shared
-     * documents**, which is the plan's rule read literally ("drop chunks
-     * whose document `persona_id` is neither null nor the given persona").
+     * [personaId] is the Space the retrieval is running under. With
+     * [legacyPersonaId], unassigned documents belong to that default Space
+     * and only matching owners survive; null never means All Spaces.
+     * Without that app binding, the legacy contract shares unassigned
+     * documents and a null query admits only those documents.
      * A chunk whose document row cannot be read at all is dropped too — an
      * orphan cannot be persona-checked, and surfacing it would be the
      * riskier of the two failure modes.
@@ -167,7 +170,12 @@ public class PprRanker(
             val allowed =
                 verdictByDoc.getOrPut(docId) {
                     val document = repo.getDocument(docId)
-                    document != null && (document.personaId == null || document.personaId == personaId)
+                    document != null &&
+                        if (legacyPersonaId != null) {
+                            (document.personaId ?: legacyPersonaId) == personaId
+                        } else {
+                            document.personaId == null || document.personaId == personaId
+                        }
                 }
             if (allowed) out[chunkId] = docId
         }

@@ -158,6 +158,32 @@ class PprRankerTest {
         }
 
     @Test
+    fun `Spaces binding keeps legacy notes in Default and contradictory Space notes separate`() =
+        runTest {
+            val vault = sixNodeVault()
+            vault.addDocument("legacy", personaId = null)
+            vault.addDocument("work-bay-74", personaId = "work")
+            vault.addDocument("research-bay-22", personaId = "research")
+            val ranker = PprRanker(vault.index, vault.repo, legacyPersonaId = "default")
+            val sources =
+                mapOf(
+                    CitationSourceKind.LEXICAL to
+                        listOf(
+                            scored(vault, "legacy"),
+                            scored(vault, "work-bay-74"),
+                            scored(vault, "research-bay-22"),
+                        ),
+                )
+            assertThat(ranker.rank(sources, personaId = "work").map { it.chunkId })
+                .containsExactly(vault.chunk("work-bay-74"))
+            assertThat(ranker.rank(sources, personaId = "research").map { it.chunkId })
+                .containsExactly(vault.chunk("research-bay-22"))
+            assertThat(ranker.rank(sources, personaId = "default").map { it.chunkId })
+                .containsExactly(vault.chunk("legacy"))
+            assertThat(ranker.rank(sources, personaId = null)).isEmpty()
+        }
+
+    @Test
     fun `a null persona admits only persona-less documents`() =
         runTest {
             val vault = sixNodeVault()

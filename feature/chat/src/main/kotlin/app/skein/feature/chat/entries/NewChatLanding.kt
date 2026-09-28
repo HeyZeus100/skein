@@ -139,6 +139,7 @@ internal fun NewChatLanding(
             ChatBottomBar(
                 isGenerating = false,
                 onSend = { text ->
+                    val selectedSpace = shell.nav.space?.value
                     scope.launch {
                         // §11.4: create on first send; the new chat's screen sends the message.
                         val chat =
@@ -147,6 +148,7 @@ internal fun NewChatLanding(
                                     DocumentKind.CHAT,
                                     provisionalTitle(text, deps.knowledge.clock()),
                                     bodyMd = "",
+                                    personaId = selectedSpace,
                                 ),
                             )
                         deps.handoff.put(chat.id, text)
@@ -156,7 +158,8 @@ internal fun NewChatLanding(
                 onCancel = {},
                 wikilinkSuggest = { query -> repository.searchTitles(query).map { Suggestion(it.title) } },
                 onAttach = { name, mime, input ->
-                    deps.importService?.let { importAttachment(it, name, mime, input, personaId = null) }
+                    val personaId = shell.nav.space?.value
+                    deps.importService?.let { importAttachment(it, name, mime, input, personaId) }
                 },
                 modifier = Modifier.fillMaxWidth(),
             )

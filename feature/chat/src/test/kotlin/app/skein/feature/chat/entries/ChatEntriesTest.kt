@@ -222,6 +222,19 @@ class ChatEntriesTest {
     }
 
     @Test
+    fun `first send binds the new chat to the selected Space`() {
+        setHost()
+        val selected = SkeinId.parse("aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa")!!
+        composeRule.runOnIdle { shell.navigate { switchSpace(it, selected) } }
+        composeRule.onNodeWithTag(COMPOSER_TEST_TAG).performTextInput("What blocks the release?")
+        composeRule.onNodeWithTag(SEND_BUTTON_TEST_TAG).performClick()
+        composeRule.waitUntil(WAIT_MILLIS) { shell.nav.stack(Destination.CHAT).last() is ChatKey }
+        val key = shell.nav.stack(Destination.CHAT).last() as ChatKey
+        val created = runBlocking { vault.getDocument(key.chatId.value) }!!
+        assertEquals(selected.value, created.personaId)
+    }
+
+    @Test
     fun `the history lists every chat, newest first, the open one selected`() {
         var history = emptyList<ChatHistoryItem>()
         composeRule.setContent {

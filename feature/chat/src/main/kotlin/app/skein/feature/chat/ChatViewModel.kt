@@ -240,7 +240,7 @@ public class ChatViewModel(
 
     /** Cancel button while generating (spec §8.4). Forwards to [SendPipeline.cancel]; does not touch [messages]. */
     public fun cancel() {
-        scope.launch { sendPipeline.cancel() }
+        scope.launch { sendPipeline.cancel(chatDocId) }
     }
 
     /** Error banner's retry action — re-sends the exact prompt that failed. */

@@ -77,6 +77,7 @@ public class ManagedInferenceEngine(
 
     /** Serialises [load] against itself so two racing first-sends load at most once. */
     private val loadGate = Mutex()
+    private var preparedModel: Model? = null
 
     override suspend fun load(model: Model): Result<Unit> = loadGate.withLock { loadLocked(model) }
 
@@ -88,6 +89,7 @@ public class ManagedInferenceEngine(
                 onSuccess = { ModelStatus(modelId = model.id, state = EngineState.READY) },
                 onFailure = { ModelStatus(modelId = null, state = EngineState.ERROR) },
             )
+        preparedModel = model.takeIf { result.isSuccess }
         return result
     }
 
@@ -99,12 +101,12 @@ public class ManagedInferenceEngine(
             ensureLoaded()
             _status.update { it.copy(state = EngineState.GENERATING) }
             emitAll(
-                delegate.stream(prompt, params).onCompletion {
+                delegate.stream(prompt, params).onCompletion { failure ->
                     _status.update { current ->
                         if (current.state ==
                             EngineState.GENERATING
                         ) {
-                            current.copy(state = EngineState.READY)
+                            current.copy(state = if (failure == null) EngineState.READY else EngineState.ERROR)
                         } else {
                             current
                         }
@@ -121,6 +123,15 @@ public class ManagedInferenceEngine(
      * whatever the delegate's load failed with otherwise.
      */
     public suspend fun warmUp(): Unit = ensureLoaded()
+
+    /** Prepare exactly the model captured for this turn, before counting its prompt. */
+    public suspend fun prepareForTurn(model: Model) {
+        loadGate.withLock {
+            if (_status.value.state == EngineState.GENERATING) throw InferenceException.Busy()
+            if (_status.value.state == EngineState.READY && preparedModel == model) return@withLock
+            loadLocked(model).getOrThrow()
+        }
+    }
 
     private suspend fun ensureLoaded() {
         val current = _status.value.state
@@ -149,6 +160,7 @@ public class ManagedInferenceEngine(
         loadGate.withLock {
             if (_status.value.state == EngineState.UNLOADED) return@withLock
             delegate.unload()
+            preparedModel = null
             _status.value = ModelStatus(modelId = null, state = EngineState.UNLOADED)
         }
     }

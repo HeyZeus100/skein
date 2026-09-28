@@ -35,9 +35,12 @@ import app.skein.core.model.AnswerScope
 import app.skein.core.model.AssembledPrompt
 import app.skein.core.model.DocId
 import app.skein.core.model.InferenceEngine
+import app.skein.core.model.InferenceException
 import app.skein.core.model.Message
+import app.skein.core.model.ModelId
 import app.skein.core.model.NewMessage
 import app.skein.core.model.Persona
+import app.skein.core.model.PersonaId
 import app.skein.core.model.PromptAssembler
 import app.skein.core.model.RetrievalService
 import app.skein.core.model.Retrieved
@@ -110,6 +113,8 @@ public data class TurnOutcome(
     val assistantMessage: Message?,
     val answerScope: AnswerScope = AnswerScope.KNOWLEDGE,
     val generationSkipped: Boolean = false,
+    val persona: Persona? = null,
+    val modelId: ModelId? = null,
 )
 
 /**
@@ -143,10 +148,9 @@ public data class TurnOutcome(
  * - **Context-full as a typed signal (PP-66/PP-67).** See the file header:
  *   `StopReason.LENGTH`, never a message string.
  *
- * @param personaProvider the persona to retrieve/assemble/persist under.
- *   Injected as a function (not a `PersonaService` reference) because the
- *   "current persona" is a `ui_prefs` concern (`E6.I10`) this module has no
- *   contract for.
+ * @param personaProvider resolves the default Space for legacy unassigned chats.
+ * @param personaById resolves an explicitly owned chat's Space. Missing owners fail before writing a turn.
+ * @param prepareModel prepares the model chosen for that Space snapshot before retrieval and token counting.
  * @param budgetFor mirrors `core.inference.ContextBudget.computeBudget`'s
  *   signature exactly (`suspend fun computeBudget(reserveForAnswer: Int,
  *   systemPrompt: String): TokenBudget`) so the app can wire a method
@@ -177,10 +181,16 @@ public class SendPipeline(
      * `:inference` service, but the model was only loaded lazily by
      * `engine.stream`, which runs AFTER assembly — so on the Fold every
      * first send died in [countTokens] with `ModelNotLoaded` before anything
-     * bound (skein-gg11.22). The app passes `ManagedInferenceEngine.warmUp`.
+     * bound (skein-gg11.22). Production uses [prepareModel]; this fallback is retained for test and legacy callers.
      */
     private val warmUp: suspend () -> Unit = {},
+    private val personaById: (suspend (PersonaId) -> Persona?)? = null,
+    /** Captures and prepares the model for this immutable Space snapshot. */
+    private val prepareModel: (suspend (Persona?) -> ModelId?)? = null,
 ) {
+    private val turnGate = Mutex()
+
+    @Volatile private var activeChatId: DocId? = null
     private val _lastOutcome = MutableStateFlow<TurnOutcome?>(null)
 
     /** The most recently finished turn's metadata — the context panel's "last turn" (spec §8.4). */
@@ -192,8 +202,8 @@ public class SendPipeline(
      * in-flight [send] call keeps running so it can flush, parse and
      * persist the partial turn (see the class doc's B-3 note).
      */
-    public suspend fun cancel() {
-        engine.cancel()
+    public suspend fun cancel(chatDocId: DocId? = null) {
+        if (chatDocId == null || activeChatId == chatDocId) engine.cancel()
     }
 
     /**
@@ -210,139 +220,165 @@ public class SendPipeline(
         text: String,
     ): Flow<Segment> =
         channelFlow {
-            val chat = requireNotNull(vaultRepository.getDocument(chatDocId)) { "Chat no longer exists" }
-            val answerScope = if (ChatKnowledge.enabled(chat)) AnswerScope.KNOWLEDGE else AnswerScope.GENERAL
-            val priorHistory = vaultRepository.listMessages(chatDocId)
-            vaultRepository.appendMessage(chatDocId, NewMessage(role = Role.USER, contentMd = text))
+            if (!turnGate.tryLock()) throw InferenceException.Busy()
+            activeChatId = chatDocId
+            try {
+                val chat = requireNotNull(vaultRepository.getDocument(chatDocId)) { "Chat no longer exists" }
+                val answerScope = if (ChatKnowledge.enabled(chat)) AnswerScope.KNOWLEDGE else AnswerScope.GENERAL
+                val ownerId = chat.personaId
+                val persona =
+                    if (ownerId == null) {
+                        personaProvider()
+                    } else {
+                        requireNotNull(
+                            personaById?.invoke(ownerId)
+                                ?: personaProvider()?.takeIf { it.id == ownerId },
+                        ) { "The chat's Space is unavailable" }
+                    }
+                val priorHistory = vaultRepository.listMessages(chatDocId)
+                vaultRepository.appendMessage(chatDocId, NewMessage(role = Role.USER, contentMd = text))
 
-            // Load (or confirm) the model first: assembly counts tokens
-            // through the engine, and the stream below would otherwise be
-            // the first thing to load it.
-            warmUp()
-
-            val persona = personaProvider()
-            val retrieved =
-                if (answerScope == AnswerScope.KNOWLEDGE) {
-                    retrievalService.retrieveContext(text, RETRIEVAL_K, persona?.id)
-                } else {
-                    emptyList()
-                }
-            val params = samplingParams()
-            val budget = budgetFor(params.maxTokens, AnswerPolicy.systemPrompt(persona, answerScope))
-            val assembled =
-                promptAssembler.assemble(
-                    persona,
-                    priorHistory,
-                    retrieved,
-                    text,
-                    budget,
-                    countTokens,
-                    answerScope,
-                )
-            // A missing/fully trimmed evidence set cannot support a vault answer.
-            // This is an app response, not a claim that the model verified truth.
-            if (answerScope == AnswerScope.KNOWLEDGE && assembled.citations.isEmpty()) {
-                val message =
-                    vaultRepository.appendMessage(
-                        chatDocId,
-                        NewMessage(role = Role.ASSISTANT, contentMd = NO_KNOWLEDGE_EVIDENCE),
+                // Load (or confirm) the model first: assembly counts tokens
+                // through the engine, and the stream below would otherwise be
+                // the first thing to load it.
+                val modelId =
+                    if (prepareModel != null) {
+                        prepareModel.invoke(persona)
+                    } else {
+                        warmUp()
+                        null
+                    }
+                val retrieved =
+                    if (answerScope == AnswerScope.KNOWLEDGE) {
+                        retrievalService.retrieveContext(text, RETRIEVAL_K, persona?.id)
+                    } else {
+                        emptyList()
+                    }
+                val params = samplingParams()
+                val budget = budgetFor(params.maxTokens, AnswerPolicy.systemPrompt(persona, answerScope))
+                val assembled =
+                    promptAssembler.assemble(
+                        persona,
+                        priorHistory,
+                        retrieved,
+                        text,
+                        budget,
+                        countTokens,
+                        answerScope,
                     )
+                // A missing/fully trimmed evidence set cannot support a vault answer.
+                // This is an app response, not a claim that the model verified truth.
+                if (answerScope == AnswerScope.KNOWLEDGE && assembled.citations.isEmpty()) {
+                    val message =
+                        vaultRepository.appendMessage(
+                            chatDocId,
+                            NewMessage(role = Role.ASSISTANT, contentMd = NO_KNOWLEDGE_EVIDENCE),
+                        )
+                    _lastOutcome.value =
+                        TurnOutcome(
+                            chatDocId = chatDocId,
+                            userQuery = text,
+                            stopReason = StopReason.EOS,
+                            interrupted = false,
+                            retrieved = retrieved,
+                            assembled = assembled,
+                            assistantMessage = message,
+                            answerScope = answerScope,
+                            generationSkipped = true,
+                            persona = persona,
+                            modelId = modelId,
+                        )
+                    send(Segment.Text(NO_KNOWLEDGE_EVIDENCE))
+                    return@channelFlow
+                }
+
+                val parser = CitationParser(assembled.citations)
+                val rawText = StringBuilder()
+                val allSegments = mutableListOf<Segment>()
+                val pending = mutableListOf<Segment>()
+                val pendingLock = Mutex()
+                var doneReason: StopReason? = null
+
+                suspend fun drainPending() {
+                    val batch =
+                        pendingLock.withLock {
+                            if (pending.isEmpty()) return@withLock null
+                            pending.toList().also { pending.clear() }
+                        } ?: return
+                    for (segment in batch) send(segment)
+                }
+
+                val ticker =
+                    launch {
+                        while (isActive) {
+                            delay(coalesceInterval)
+                            drainPending()
+                        }
+                    }
+                try {
+                    engine.stream(assembled.prompt, params).collect { token ->
+                        when (token) {
+                            is Token.Text -> {
+                                rawText.append(token.text)
+                                val segments = parser.push(token.text)
+                                if (segments.isNotEmpty()) {
+                                    allSegments += segments
+                                    pendingLock.withLock { pending += segments }
+                                }
+                            }
+                            is Token.Done -> doneReason = token.reason
+                        }
+                    }
+                } finally {
+                    ticker.cancel()
+                }
+
+                val trailing = parser.flush()
+                if (trailing.isNotEmpty()) {
+                    allSegments += trailing
+                    pendingLock.withLock { pending += trailing }
+                }
+                drainPending()
+
+                val reason = doneReason ?: StopReason.EOS
+                val interrupted = reason == StopReason.CANCELLED
+                val finalText = rawText.toString()
+
+                val assistantMessage =
+                    if (finalText.isBlank()) {
+                        // PP-64: an empty turn leaves no ghost row — never persisted.
+                        null
+                    } else {
+                        val toPersist = if (interrupted) finalText + INTERRUPTED_MARKER else finalText
+                        vaultRepository.appendMessage(
+                            chatDocId,
+                            NewMessage(
+                                role = Role.ASSISTANT,
+                                contentMd = toPersist,
+                                modelId = modelId,
+                                // NORTH_STAR_REVIEW.md §3.6: `citations`, never `retrievedChunks`.
+                                citations = CitationRecords.fromStream(assembled, allSegments),
+                            ),
+                        )
+                    }
+
                 _lastOutcome.value =
                     TurnOutcome(
                         chatDocId = chatDocId,
                         userQuery = text,
-                        stopReason = StopReason.EOS,
-                        interrupted = false,
+                        stopReason = reason,
+                        interrupted = interrupted,
                         retrieved = retrieved,
                         assembled = assembled,
-                        assistantMessage = message,
+                        assistantMessage = assistantMessage,
                         answerScope = answerScope,
-                        generationSkipped = true,
+                        persona = persona,
+                        modelId = modelId,
                     )
-                send(Segment.Text(NO_KNOWLEDGE_EVIDENCE))
-                return@channelFlow
-            }
-
-            val parser = CitationParser(assembled.citations)
-            val rawText = StringBuilder()
-            val allSegments = mutableListOf<Segment>()
-            val pending = mutableListOf<Segment>()
-            val pendingLock = Mutex()
-            var doneReason: StopReason? = null
-
-            suspend fun drainPending() {
-                val batch =
-                    pendingLock.withLock {
-                        if (pending.isEmpty()) return@withLock null
-                        pending.toList().also { pending.clear() }
-                    } ?: return
-                for (segment in batch) send(segment)
-            }
-
-            val ticker =
-                launch {
-                    while (isActive) {
-                        delay(coalesceInterval)
-                        drainPending()
-                    }
-                }
-            try {
-                engine.stream(assembled.prompt, params).collect { token ->
-                    when (token) {
-                        is Token.Text -> {
-                            rawText.append(token.text)
-                            val segments = parser.push(token.text)
-                            if (segments.isNotEmpty()) {
-                                allSegments += segments
-                                pendingLock.withLock { pending += segments }
-                            }
-                        }
-                        is Token.Done -> doneReason = token.reason
-                    }
-                }
             } finally {
-                ticker.cancel()
+                activeChatId = null
+                turnGate.unlock()
             }
-
-            val trailing = parser.flush()
-            if (trailing.isNotEmpty()) {
-                allSegments += trailing
-                pendingLock.withLock { pending += trailing }
-            }
-            drainPending()
-
-            val reason = doneReason ?: StopReason.EOS
-            val interrupted = reason == StopReason.CANCELLED
-            val finalText = rawText.toString()
-
-            val assistantMessage =
-                if (finalText.isBlank()) {
-                    // PP-64: an empty turn leaves no ghost row — never persisted.
-                    null
-                } else {
-                    val toPersist = if (interrupted) finalText + INTERRUPTED_MARKER else finalText
-                    vaultRepository.appendMessage(
-                        chatDocId,
-                        NewMessage(
-                            role = Role.ASSISTANT,
-                            contentMd = toPersist,
-                            // NORTH_STAR_REVIEW.md §3.6: `citations`, never `retrievedChunks`.
-                            citations = CitationRecords.fromStream(assembled, allSegments),
-                        ),
-                    )
-                }
-
-            _lastOutcome.value =
-                TurnOutcome(
-                    chatDocId = chatDocId,
-                    userQuery = text,
-                    stopReason = reason,
-                    interrupted = interrupted,
-                    retrieved = retrieved,
-                    assembled = assembled,
-                    assistantMessage = assistantMessage,
-                    answerScope = answerScope,
-                )
         }.buffer(Channel.UNLIMITED)
 
     private companion object {

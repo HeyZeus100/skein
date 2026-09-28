@@ -12,6 +12,7 @@ import androidx.compose.ui.unit.dp
 import app.skein.core.model.Capability
 import app.skein.core.model.Model
 import app.skein.core.model.ModelFormat
+import app.skein.core.model.Persona
 import app.skein.core.model.TokenBudget
 import app.skein.core.model.VaultRepository
 import app.skein.core.navigation.Destination
@@ -73,6 +74,7 @@ internal fun pipelineOver(
         promptAssembler = SimplePromptAssembler(),
         engine = engine,
         personaProvider = { null },
+        personaById = { Persona(it, "Fixture Space", null, null, 0) },
         budgetFor = { _, _ -> TokenBudget(contextLength = 16_384, reserveForAnswer = 1024, maxRetrievedTokens = 3072) },
         countTokens = { it.length / 4 },
     )

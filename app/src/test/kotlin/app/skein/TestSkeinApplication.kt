@@ -9,6 +9,7 @@ import app.skein.core.inference.models.ModelInspector
 import app.skein.core.inference.models.ModelManager
 import app.skein.core.inference.models.PickedFileHandle
 import app.skein.core.model.InferenceEngine
+import app.skein.core.model.InferenceException
 import app.skein.core.model.SamplingParams
 import app.skein.core.rag.ingest.IngestPace
 import app.skein.core.rag.prompt.PromptAssemblerImpl
@@ -254,6 +255,15 @@ class TestSkeinApplication : SkeinApplication() {
                 promptAssembler = PromptAssemblerImpl(),
                 engine = managed,
                 personaProvider = { personaService.default() },
+                personaById = personaService::get,
+                prepareModel = { persona ->
+                    val id =
+                        persona?.defaultModel ?: modelRegistry.default() ?: throw InferenceException.ModelNotLoaded()
+                    val selected = modelRegistry.get(id)?.model ?: throw InferenceException.ModelNotLoaded()
+                    managed.prepareForTurn(selected)
+                    contextBudget.useModel(selected)
+                    selected.id
+                },
                 budgetFor = contextBudget::computeBudget,
                 countTokens = syncCountTokens(contextBudget),
                 samplingParams = { SamplingParams() },

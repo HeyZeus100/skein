@@ -11,6 +11,8 @@
 
 package app.skein.core.inference
 
+import app.skein.core.model.Model
+import app.skein.core.model.ModelFormat
 import com.google.common.truth.Truth.assertThat
 import kotlinx.coroutines.test.runTest
 import org.junit.Test
@@ -18,6 +20,34 @@ import org.junit.Test
 class ContextBudgetTest {
     private val systemPrompt = "s".repeat(200)
     private val counter = TokenCounter { text -> if (text == systemPrompt) 200 else text.length }
+
+    @Test
+    fun `changing the model clears tokenizer counts and respects its smaller context`() =
+        runTest {
+            var tokenLength = 5
+            val budget = ContextBudget(TokenCounter { tokenLength })
+            val first =
+                Model(
+                    id = "a",
+                    name = "A",
+                    path = "/a",
+                    sha256 = "ab".repeat(32),
+                    format = ModelFormat.GGUF,
+                    capabilities = emptySet(),
+                    sizeBytes = 1,
+                    contextLength = 32768,
+                )
+            budget.useModel(first)
+            assertThat(budget.countTokens("same text")).isEqualTo(5)
+            tokenLength = 7
+            budget.useModel(first)
+            assertThat(budget.countTokens("same text")).isEqualTo(5)
+            assertThat(budget.computeBudget(1024, "policy").contextLength).isEqualTo(16384 - 128)
+
+            budget.useModel(first.copy(id = "b", sha256 = "cd".repeat(32), contextLength = 4096))
+            assertThat(budget.countTokens("same text")).isEqualTo(7)
+            assertThat(budget.computeBudget(1024, "policy").contextLength).isEqualTo(4096 - 128)
+        }
 
     @Test
     fun `maxRetrievedTokens is capped at 3072 for the pinned inputs`() =

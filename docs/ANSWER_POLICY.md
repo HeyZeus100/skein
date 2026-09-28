@@ -42,3 +42,29 @@ missing-evidence persistence, citation offers and changes between turns.
 Nonempty retrieval can still contain weak or irrelevant matches; relevance
 rejection is `skein-gg11.32`. Claim support, false abstention and correctness
 require the separate real-model evaluation in `skein-gg11.30`.
+
+## Space and model binding
+
+Each turn resolves the chat document's owning Space before model preparation.
+It snapshots that Space's instructions and preferred model once; changing shell
+navigation or editing Space preferences while loading does not redirect the turn.
+A new chat records the selected Space on its first send. Legacy unassigned chats
+use Default. An explicitly assigned but missing Space fails before saving a user
+message. The Space's configured model is used when present; otherwise the registry
+default is captured. An unavailable configured model fails rather than silently
+substituting another model. Generated assistant messages record the chosen model.
+
+Production retrieval treats legacy unassigned documents as belonging to Default,
+so they cannot become evidence in every Space. This is an explicit app binding;
+the lower-level retrieval API retains its legacy shared-document default for
+callers that do not supply a default Space identity. A null query Space is not an
+“All Spaces” request. A dedicated All Spaces control and full Knowledge/Graph
+navigation scoping remain part of the Spaces UX work.
+
+One session pipeline admits one turn at a time. A concurrent send fails with Busy
+before saving its user message or changing models, and a cancel from another chat
+does not cancel the active answer. Session-owned queuing/draft persistence remains
+AL-10 work. Model switches clear cached token counts and use the smaller of the
+model's advertised context and the app's context cap. These content counts still
+do not include exact template overhead; the formatted-prompt budget gate remains
+separate work.

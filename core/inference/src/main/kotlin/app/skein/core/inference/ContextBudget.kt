@@ -26,6 +26,7 @@
 
 package app.skein.core.inference
 
+import app.skein.core.model.Model
 import app.skein.core.model.TokenBudget
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
@@ -51,6 +52,19 @@ public class ContextBudget(
         }
     private var hits = 0
     private var misses = 0
+    private var modelIdentity: String? = null
+    private var activeContextLength = config.contextLengthCap
+
+    /** Switch the content-count cache and cap together after a model has loaded. */
+    public suspend fun useModel(model: Model) {
+        mutex.withLock {
+            if (modelIdentity != model.sha256) {
+                cache.clear()
+                modelIdentity = model.sha256
+            }
+            activeContextLength = minOf(model.contextLength, config.contextLengthCap)
+        }
+    }
 
     /** Cumulative cache hits since construction. */
     public val cacheHits: Int get() = hits
@@ -86,11 +100,11 @@ public class ContextBudget(
         systemPrompt: String,
     ): TokenBudget {
         val systemTokens = countTokens(systemPrompt)
-        val remainder = config.contextLengthCap - reserveForAnswer - systemTokens - config.safetyMargin
+        val remainder = activeContextLength - reserveForAnswer - systemTokens - config.safetyMargin
         val retrievedShare = (remainder * config.retrievedFraction).toInt()
         val maxRetrievedTokens = minOf(config.maxRetrievedTokensCap, retrievedShare).coerceAtLeast(0)
         return TokenBudget(
-            contextLength = config.contextLengthCap - config.safetyMargin,
+            contextLength = activeContextLength - config.safetyMargin,
             reserveForAnswer = reserveForAnswer,
             maxRetrievedTokens = maxRetrievedTokens,
         )

@@ -47,10 +47,12 @@ import app.skein.core.inference.models.StoredModel
 import app.skein.core.model.EngineState
 import app.skein.core.model.IndexStore
 import app.skein.core.model.InferenceEngine
+import app.skein.core.model.InferenceException
 import app.skein.core.model.ModelId
 import app.skein.core.model.ModelRegistry
 import app.skein.core.model.ModelStatus
 import app.skein.core.model.Persona
+import app.skein.core.model.PersonaId
 import app.skein.core.model.SamplingParams
 import app.skein.core.model.VaultRepository
 import app.skein.core.rag.prompt.PromptAssemblerImpl
@@ -187,10 +189,8 @@ public class ModelServices(
          *   itself — the caller (`VaultServices.forDevice`) supplies
          *   `{ unlockManager.authorizationToken.value?.epoch ?: 0L }`, never
          *   a captured value.
-         * @param personaProvider `{ personaService.default() }` — no
-         *   "current persona" concept exists in the shell yet (`SkeinApp`'s
-         *   own doc), so every turn resolves the same way `seedFirstPersona`
-         *   already does.
+         * @param personaProvider resolves the default Space for legacy unassigned chats and notes.
+         * @param personaById resolves an existing chat's owner independently of shell navigation.
          */
         public suspend fun forSession(
             context: Context,
@@ -200,6 +200,7 @@ public class ModelServices(
             vaultRepository: VaultRepository,
             indexStore: IndexStore,
             personaProvider: suspend () -> Persona?,
+            personaById: suspend (PersonaId) -> Persona?,
             config: InferenceConfig = InferenceConfig(),
         ): ModelServices {
             val store = ImmutableModelStore(File(context.filesDir, MODELS_DIR_NAME))
@@ -255,7 +256,12 @@ public class ModelServices(
 
             val contextBudget = ContextBudget(tokenCounter = llamaCppEngine, config = config)
             val retrievalService =
-                RetrievalServiceImpl(index = indexStore, repository = vaultRepository, embedder = null)
+                RetrievalServiceImpl(
+                    index = indexStore,
+                    repository = vaultRepository,
+                    embedder = null,
+                    legacyPersonaId = personaProvider()?.id,
+                )
             val promptAssembler = PromptAssemblerImpl()
 
             val sendPipeline =
@@ -268,7 +274,15 @@ public class ModelServices(
                     budgetFor = contextBudget::computeBudget,
                     countTokens = syncCountTokens(contextBudget),
                     samplingParams = { SamplingParams() },
-                    warmUp = managed::warmUp,
+                    personaById = personaById,
+                    prepareModel = { persona ->
+                        val id =
+                            persona?.defaultModel ?: registry.default() ?: throw InferenceException.ModelNotLoaded()
+                        val selected = registry.get(id)?.model ?: throw InferenceException.ModelNotLoaded()
+                        managed.prepareForTurn(selected)
+                        contextBudget.useModel(selected)
+                        selected.id
+                    },
                 )
 
             return ModelServices(
