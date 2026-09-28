@@ -103,6 +103,15 @@ data class ChatMessage(
 data class Prompt(
     val messages: List<ChatMessage>,
     val images: List<ByteArray> = emptyList(),
+    /** When prepared against a model, refuse measurement/generation after a model swap. */
+    val expectedModelSha256: String? = null,
+)
+
+/** Exact formatted prompt size and the loaded context capacity, measured inside the isolated engine. */
+data class PromptMeasurement(
+    val promptTokens: Int,
+    val contextLength: Int,
+    val modelSha256: String,
 )
 
 data class SamplingParams(
@@ -181,6 +190,10 @@ sealed class InferenceException(
     class OutOfMemory : InferenceException("out of memory")
 
     class Busy : InferenceException("a generation is already running")
+
+    class ContextFull : InferenceException("prompt and answer exceed model context")
+
+    class ModelChanged : InferenceException("model changed after prompt preparation")
 
     // ------------------------------------------------------------------
     // Added additively by `skein-k7e9`. Everything below this line is new.
