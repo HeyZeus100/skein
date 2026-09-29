@@ -1,3 +1,4 @@
+<!-- Workspace glyph: 24dp viewport and 2dp outline, matching the chrome icon weight. -->
 <vector xmlns:android="http://schemas.android.com/apk/res/android"
     android:width="24dp"
     android:height="24dp"
@@ -8,4 +9,5 @@
         android:strokeColor="#FF000000"
         android:strokeWidth="2"
         android:pathData="M5,5H19A2,2 0,0 1,21 7V17A2,2 0,0 1,19 19H5A2,2 0,0 1,3 17V7A2,2 0,0 1,5 5ZM12,5V19" />
+    <path android:fillColor="#FF000000" android:pathData="M5,7H10V17H5Z" />
 </vector>

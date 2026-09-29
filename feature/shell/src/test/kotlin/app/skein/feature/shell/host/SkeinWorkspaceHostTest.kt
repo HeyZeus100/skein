@@ -19,12 +19,14 @@ import androidx.compose.ui.geometry.Rect
 import androidx.compose.ui.graphics.asAndroidBitmap
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.testTag
-import androidx.compose.ui.semantics.SemanticsActions
 import androidx.compose.ui.semantics.SemanticsProperties
 import androidx.compose.ui.test.DeviceConfigurationOverride
 import androidx.compose.ui.test.WindowSize
+import androidx.compose.ui.test.assertContentDescriptionEquals
 import androidx.compose.ui.test.assertCountEquals
 import androidx.compose.ui.test.assertIsDisplayed
+import androidx.compose.ui.test.assertIsNotSelected
+import androidx.compose.ui.test.assertIsSelected
 import androidx.compose.ui.test.captureToImage
 import androidx.compose.ui.test.junit4.createAndroidComposeRule
 import androidx.compose.ui.test.onAllNodesWithTag
@@ -32,8 +34,6 @@ import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.onRoot
 import androidx.compose.ui.test.performClick
-import androidx.compose.ui.test.performSemanticsAction
-import androidx.compose.ui.text.TextLayoutResult
 import androidx.compose.ui.unit.Density
 import androidx.compose.ui.unit.DpSize
 import androidx.compose.ui.unit.dp
@@ -43,6 +43,7 @@ import androidx.window.core.layout.computeWindowSizeClass
 import app.skein.core.designsystem.components.LocalSkeinWindowPartitions
 import app.skein.core.designsystem.components.SkeinDestructiveDialog
 import app.skein.core.designsystem.theme.SkeinTheme
+import app.skein.core.designsystem.theme.SkeinThemeMode
 import app.skein.core.navigation.ChatKey
 import app.skein.core.navigation.NoteKey
 import app.skein.core.vault.session.UnlockManager
@@ -77,6 +78,45 @@ class SkeinWorkspaceHostTest {
     private val fontScale = mutableStateOf(1f)
     private val tabletopTop = mutableStateOf<Float?>(null)
     private val showPrimaryDialog = mutableStateOf(false)
+    private val theme = mutableStateOf(SkeinThemeMode.LIGHT)
+
+    @Test
+    fun `compact controls expose pane position and selection after swap`() {
+        setHost()
+        rule
+            .onNodeWithTag(WorkspaceTestTags.ACTIVATE_PRIMARY)
+            .assertContentDescriptionEquals("Left pane")
+            .assertIsSelected()
+        rule
+            .onNodeWithTag(WorkspaceTestTags.ACTIVATE_SECONDARY)
+            .assertContentDescriptionEquals("Right pane")
+            .assertIsNotSelected()
+            .performClick()
+        assertEquals(WorkspacePane.SECONDARY, workspace.activePane)
+        rule.onNodeWithTag(WorkspaceTestTags.ACTIVATE_SECONDARY).assertIsSelected()
+        rule.onNodeWithTag(WorkspaceTestTags.ACTIVATE_PRIMARY).assertIsNotSelected()
+        rule.onNodeWithTag(WorkspaceTestTags.SWAP_PANES).performClick()
+        rule
+            .onNodeWithTag(WorkspaceTestTags.ACTIVATE_SECONDARY)
+            .assertContentDescriptionEquals("Left pane")
+            .assertIsSelected()
+        rule
+            .onNodeWithTag(WorkspaceTestTags.ACTIVATE_PRIMARY)
+            .assertContentDescriptionEquals("Right pane")
+            .assertIsNotSelected()
+            .performClick()
+        assertEquals(WorkspacePane.PRIMARY, workspace.activePane)
+        rule
+            .onNodeWithTag(WorkspaceTestTags.TOGGLE_SPLIT)
+            .assertContentDescriptionEquals("Show split view")
+            .assertIsNotSelected()
+            .performClick()
+        rule
+            .onNodeWithTag(WorkspaceTestTags.TOGGLE_SPLIT)
+            .assertContentDescriptionEquals("Hide split view")
+            .assertIsSelected()
+        assertCompactControlsFit()
+    }
 
     @Test
     fun `split uses two independent owners and hides inactive semantics when collapsed`() {
@@ -231,7 +271,7 @@ class SkeinWorkspaceHostTest {
                     bounds.bottom <= hingeTop * density || bounds.top >= (hingeTop + 8) * density,
                 )
             }
-            assertControlTextFits()
+            assertCompactControlsFit()
         }
     }
 
@@ -242,8 +282,11 @@ class SkeinWorkspaceHostTest {
         size.value = DpSize(852.dp, 883.dp)
         setHost()
         capture(directory, "open-fold-unsplit")
+        assertCompactControlsFit()
         rule.onNodeWithTag(WorkspaceTestTags.TOGGLE_SPLIT).performClick()
         capture(directory, "open-fold-split")
+        theme.value = SkeinThemeMode.DARK
+        capture(directory, "open-fold-split-dark")
         size.value = DpSize(400.dp, 900.dp)
         fontScale.value = 2f
         rule.waitForIdle()
@@ -258,60 +301,48 @@ class SkeinWorkspaceHostTest {
             assertTrue("48dp target $tag", node.boundsInRoot.width / density >= 47.5f)
         }
         capture(directory, "compact-font-two")
-        assertControlTextFits()
+        assertCompactControlsFit()
     }
 
-    private fun assertControlTextFits() {
-        for ((label, tag) in listOf(
-            "Left" to WorkspaceTestTags.ACTIVATE_PRIMARY,
-            "Right" to WorkspaceTestTags.ACTIVATE_SECONDARY,
-        )) {
-            val textNode = rule.onNodeWithText(label, useUnmergedTree = true)
-            val results = mutableListOf<TextLayoutResult>()
-            textNode.performSemanticsAction(SemanticsActions.GetTextLayoutResult) { it(results) }
-            assertTrue("text layout exists for $label", results.isNotEmpty())
-            val origin = textNode.fetchSemanticsNode().positionInWindow
-            val button = rule.onNodeWithTag(tag).fetchSemanticsNode().boundsInWindow
-            for (result in results) {
-                assertEquals(label, result.layoutInput.text.text)
-                assertEquals(1, result.lineCount)
-                assertTrue("complete label $label", result.getLineEnd(0, visibleEnd = true) == label.length)
-                assertTrue("untruncated label $label", !result.didOverflowHeight && !result.isLineEllipsized(0))
-                // Compose 1.12.1 reconstructs semantic MultiParagraph at the parent's maxWidth,
-                // while retaining the intrinsic Text size. Its didOverflowWidth compares those
-                // different widths. Check actual character bounds against Text and button instead.
-                val characters = label.indices.map(result::getBoundingBox)
-                val painted =
-                    Rect(
-                        characters.minOf { it.left },
-                        characters.minOf { it.top },
-                        characters.maxOf { it.right },
-                        characters.maxOf { it.bottom },
-                    )
-                assertPaintFits(
-                    label,
-                    Rect(0f, 0f, result.size.width.toFloat(), result.size.height.toFloat()),
-                    painted,
-                )
-                assertPaintFits(label, button, painted.translate(origin))
-            }
+    private fun assertCompactControlsFit() {
+        val controls =
+            listOf(
+                WorkspaceTestTags.ACTIVATE_PRIMARY,
+                WorkspaceTestTags.ACTIVATE_SECONDARY,
+                WorkspaceTestTags.TOGGLE_SPLIT,
+                WorkspaceTestTags.SWAP_PANES,
+            ).map { tag ->
+                val bounds =
+                    rule
+                        .onNodeWithTag(tag)
+                        .assertIsDisplayed()
+                        .fetchSemanticsNode()
+                        .boundsInRoot
+                assertTrue("48dp width $tag $bounds", bounds.width / density in 47.5f..48.5f)
+                assertTrue("48dp height $tag $bounds", bounds.height / density in 47.5f..48.5f)
+                bounds
+            }.sortedBy { it.left }
+        for ((first, second) in controls.zipWithNext()) {
+            assertTrue("8dp gap between targets", (second.left - first.right) / density >= 7.5f)
+            assertEquals(first.top, second.top, 0.5f)
         }
-    }
-
-    private fun assertPaintFits(
-        label: String,
-        allocated: Rect,
-        painted: Rect,
-    ) {
-        // One physical pixel covers raster rounding; touch targets and hinge bounds remain exact.
-        val tolerance = 1f
         assertTrue(
-            "painted $label $painted fits $allocated",
-            painted.left >= allocated.left - tolerance &&
-                painted.top >= allocated.top - tolerance &&
-                painted.right <= allocated.right + tolerance &&
-                painted.bottom <= allocated.bottom + tolerance,
+            "controls stay together instead of stretching into banners",
+            (controls.last().right - controls.first().left) / density <= 216.5f,
         )
+        val root = rule.onRoot().fetchSemanticsNode().boundsInRoot
+        for (bounds in controls) {
+            assertTrue(
+                "control remains in viewport $bounds $root",
+                bounds.left >= root.left &&
+                    bounds.right <= root.right &&
+                    bounds.top >= root.top &&
+                    bounds.bottom <= root.bottom,
+            )
+        }
+        for (label in listOf("Left", "Right")) {
+            rule.onNodeWithText(label).assertDoesNotExist()
+        }
     }
 
     private fun capture(
@@ -328,7 +359,7 @@ class SkeinWorkspaceHostTest {
 
     private fun setHost(verticalHinge: Boolean? = null) {
         rule.setContent {
-            SkeinTheme {
+            SkeinTheme(mode = theme.value) {
                 DeviceConfigurationOverride(DeviceConfigurationOverride.WindowSize(size.value)) {
                     density = LocalDensity.current.density
                     val hinge =

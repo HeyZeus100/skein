@@ -29,7 +29,12 @@ object SkeinIcons {
 
     @DrawableRes val Sidebar: Int = R.drawable.ic_skein_sidebar
 
+    // Authored two-pane chrome uses the same 24dp size and 2dp outline weight.
     @DrawableRes val Split: Int = R.drawable.ic_skein_split
+
+    @DrawableRes val PaneLeft: Int = R.drawable.ic_skein_pane_left
+
+    @DrawableRes val PaneRight: Int = R.drawable.ic_skein_pane_right
 
     @DrawableRes val Swap: Int = R.drawable.ic_skein_swap
 

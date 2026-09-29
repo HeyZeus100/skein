@@ -1,9 +1,9 @@
 package app.skein.feature.shell.host
 
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.WindowInsetsSides
@@ -11,17 +11,15 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.only
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.safeDrawing
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.sizeIn
 import androidx.compose.foundation.layout.windowInsetsPadding
-import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.IconButtonDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
-import androidx.compose.material3.Text
-import androidx.compose.material3.TextButton
 import androidx.compose.material3.adaptive.HingeInfo
 import androidx.compose.material3.adaptive.Posture
 import androidx.compose.material3.adaptive.WindowAdaptiveInfo
@@ -65,9 +63,11 @@ import androidx.navigationevent.compose.LocalNavigationEventDispatcherOwner
 import androidx.window.core.layout.WindowSizeClass
 import androidx.window.core.layout.computeWindowSizeClass
 import app.skein.core.designsystem.components.LocalSkeinWindowActive
+import app.skein.core.designsystem.components.SkeinTooltip
 import app.skein.core.designsystem.components.SkeinWindowPartitions
 import app.skein.core.designsystem.icons.SkeinIcons
 import app.skein.core.designsystem.theme.SkeinSize
+import app.skein.core.designsystem.theme.SkeinSpacing
 import app.skein.core.navigation.Destination
 import app.skein.core.navigation.NewChatKey
 import app.skein.core.navigation.SkeinId
@@ -139,77 +139,85 @@ fun SkeinWorkspaceHost(
             ) {
                 WorkspaceControlsArea(layout) {
                     Row(
-                        Modifier.fillMaxWidth().heightIn(min = SkeinSize.touchTarget),
+                        Modifier
+                            .fillMaxWidth()
+                            .heightIn(min = SkeinSize.touchTarget)
+                            .padding(horizontal = SkeinSpacing.space8),
+                        horizontalArrangement = Arrangement.spacedBy(SkeinSpacing.space8),
                         verticalAlignment = Alignment.CenterVertically,
                     ) {
                         repeat(2) { position ->
                             val pane = workspace.paneAtPosition(position)
-                            TextButton(
+                            WorkspaceIconButton(
                                 onClick = { workspace.activate(pane) },
-                                contentPadding = PaddingValues(horizontal = 4.dp),
-                                colors =
-                                    ButtonDefaults.textButtonColors(
-                                        containerColor =
-                                            if (workspace.activePane ==
-                                                pane
-                                            ) {
-                                                MaterialTheme.colorScheme.secondaryContainer
-                                            } else {
-                                                Color.Transparent
-                                            },
-                                        contentColor =
-                                            if (workspace.activePane ==
-                                                pane
-                                            ) {
-                                                MaterialTheme.colorScheme.onSecondaryContainer
-                                            } else {
-                                                MaterialTheme.colorScheme.onSurfaceVariant
-                                            },
-                                    ),
+                                icon = if (position == 0) SkeinIcons.PaneLeft else SkeinIcons.PaneRight,
+                                label = if (position == 0) "Left pane" else "Right pane",
+                                isSelected = workspace.activePane == pane,
                                 modifier =
-                                    Modifier
-                                        .weight(
-                                            1f,
-                                        ).sizeIn(minWidth = SkeinSize.touchTarget, minHeight = SkeinSize.touchTarget)
-                                        .testTag(
-                                            if (pane ==
-                                                WorkspacePane.PRIMARY
-                                            ) {
-                                                WorkspaceTestTags.ACTIVATE_PRIMARY
-                                            } else {
-                                                WorkspaceTestTags.ACTIVATE_SECONDARY
-                                            },
-                                        ).semantics {
-                                            selected = workspace.activePane == pane
-                                            contentDescription = if (position == 0) "Left pane" else "Right pane"
+                                    Modifier.testTag(
+                                        if (pane == WorkspacePane.PRIMARY) {
+                                            WorkspaceTestTags.ACTIVATE_PRIMARY
+                                        } else {
+                                            WorkspaceTestTags.ACTIVATE_SECONDARY
                                         },
-                            ) { Text(if (position == 0) "Left" else "Right", maxLines = 1) }
+                                    ),
+                            )
                         }
-                        IconButton(
+                        WorkspaceIconButton(
                             onClick = workspace::toggleSplit,
-                            modifier = Modifier.size(SkeinSize.touchTarget).testTag(WorkspaceTestTags.TOGGLE_SPLIT),
-                        ) {
-                            Icon(
-                                painterResource(SkeinIcons.Split),
-                                contentDescription =
-                                    if (workspace.splitRequested) "Hide split view" else "Show split view",
-                                modifier = Modifier.size(SkeinSize.iconStandard),
-                            )
-                        }
-                        IconButton(
+                            icon = SkeinIcons.Split,
+                            label = if (workspace.splitRequested) "Hide split view" else "Show split view",
+                            isSelected = workspace.splitRequested,
+                            modifier = Modifier.testTag(WorkspaceTestTags.TOGGLE_SPLIT),
+                        )
+                        WorkspaceIconButton(
                             onClick = workspace::swapPanes,
-                            modifier = Modifier.size(SkeinSize.touchTarget).testTag(WorkspaceTestTags.SWAP_PANES),
-                        ) {
-                            Icon(
-                                painterResource(SkeinIcons.Swap),
-                                contentDescription = "Swap panes",
-                                modifier = Modifier.size(SkeinSize.iconStandard),
-                            )
-                        }
+                            icon = SkeinIcons.Swap,
+                            label = "Swap panes",
+                            modifier = Modifier.testTag(WorkspaceTestTags.SWAP_PANES),
+                        )
                     }
                 }
                 WorkspacePanes(workspace, layout, windowAdaptiveInfo, Modifier.weight(1f), paneContent)
             }
+        }
+    }
+}
+
+/** Compact chrome keeps navigation visible without painting across either document. */
+@Composable
+private fun WorkspaceIconButton(
+    onClick: () -> Unit,
+    icon: Int,
+    label: String,
+    modifier: Modifier = Modifier,
+    isSelected: Boolean? = null,
+) {
+    SkeinTooltip(label) {
+        IconButton(
+            onClick = onClick,
+            colors =
+                IconButtonDefaults.iconButtonColors(
+                    containerColor =
+                        if (isSelected == true) MaterialTheme.colorScheme.surfaceContainerHigh else Color.Transparent,
+                    contentColor =
+                        if (isSelected == true) {
+                            MaterialTheme.colorScheme.onSurface
+                        } else {
+                            MaterialTheme.colorScheme.onSurfaceVariant
+                        },
+                ),
+            modifier =
+                modifier.size(SkeinSize.touchTarget).semantics {
+                    contentDescription = label
+                    if (isSelected != null) selected = isSelected
+                },
+        ) {
+            Icon(
+                painterResource(icon),
+                contentDescription = null,
+                modifier = Modifier.size(SkeinSize.iconStandard),
+            )
         }
     }
 }
