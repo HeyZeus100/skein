@@ -41,6 +41,16 @@ idle window. These instructions do not authorize a concurrent owner interruption
 
 ## Prepare public artifacts on the host
 
+For a repeatable identity-only inventory before preparation, run
+`qualify_model_artifact.py --model /absolute/public/model.gguf --expected-sha256 FULL_SHA256`
+with optional `--expected-size BYTES` and artifact-specific `--control-token TEXT`.
+It verifies the full local hash and reports bounded tokenizer/template metadata,
+declared end-token IDs and vocabulary types. It does not load the model or prove
+native EOG, template compatibility or answer quality. See the
+[2026-09-29 readiness audit](../../docs/Handoffs/skein-inference-model-readiness-20260929.md)
+for outstanding Qwen/Gemma evaluation requests and the current ChatML-only parity
+test limitation.
+
 Export inputs with `answer_eval.py export`; gold judgments remain on the host.
 Use `answer_eval.py validate` to obtain `case_set_sha256`. Verify the public model's
 full SHA256, source and licence. A header digest cannot replace the full model hash.
