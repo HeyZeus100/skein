@@ -55,6 +55,7 @@ import app.skein.core.navigation.SkeinId
 import app.skein.core.navigation.SkeinKey
 import app.skein.feature.chat.ChatBottomBar
 import app.skein.feature.chat.ChatKnowledge
+import app.skein.feature.chat.ChatModelIndicator
 import app.skein.feature.chat.DraftLoadNotice
 import app.skein.feature.chat.HingeSafeChatControls
 import app.skein.feature.chat.drafts.rememberDraftComposerState
@@ -133,15 +134,14 @@ internal fun NewChatLanding(
     ) {
         val maxHeight = with(density) { paneHeight.toDp() }
         val composerMaxHeight =
-            maxHeight * 0.6f - SkeinSize.topBar - entryBottomObstruction() -
-                with(density) { knowledgeToggleHeight.toDp() }
+            maxHeight * 0.6f - entryBottomObstruction() -
+                with(density) { (headerHeight + knowledgeToggleHeight).toDp() }
         Column(Modifier.fillMaxSize()) {
             // As the placeholder beside Conversations it follows the Chat root's rule: no navigation icon.
-            shell.EntryTopBar(
-                key ?: ChatHomeKey,
-                "New chat",
-                Modifier.onSizeChanged { headerHeight = it.height },
-            )
+            Column(Modifier.onSizeChanged { headerHeight = it.height }) {
+                shell.EntryTopBar(key ?: ChatHomeKey, "New chat")
+                ChatModelIndicator(deps.modelStatus)
+            }
             Column(
                 modifier =
                     Modifier

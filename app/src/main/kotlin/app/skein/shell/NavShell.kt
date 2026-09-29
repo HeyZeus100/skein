@@ -26,6 +26,7 @@ import app.skein.core.model.PersonaService
 import app.skein.core.navigation.Destination
 import app.skein.core.navigation.SkeinId
 import app.skein.core.navigation.destination
+import app.skein.feature.chat.ChatModelStatus
 import app.skein.feature.chat.entries.ChatDetailPlaceholder
 import app.skein.feature.chat.entries.ChatEntry
 import app.skein.feature.chat.entries.ChatEntryDeps
@@ -134,6 +135,14 @@ internal fun NavShell(
     val hasModel by produceState(false, models, modelVersion, shell.nav.topLevel) {
         value = models?.registry?.default() != null
     }
+    val modelStatusFlow =
+        remember(models, modelVersion) {
+            models?.let { chatModelStatuses(it.engineStatus, it.registry) }
+                ?: flowOf(ChatModelStatus.Unavailable)
+        }
+    val modelStatus by key(models, modelVersion) {
+        modelStatusFlow.collectAsState(ChatModelStatus.Unavailable)
+    }
     val chat =
         ChatEntryDeps(
             repository = session.repository,
@@ -146,6 +155,7 @@ internal fun NavShell(
             turns = models?.turns,
             drafts = models?.drafts,
             defaultSpaceId = defaultSpaceId,
+            modelStatus = modelStatus,
         )
     val graph = remember(session) { GraphEntryDeps(session.repository, session.indexStore) }
     val modelsDeps = rememberModelsEntryDeps(models, shell, modelVersion) { modelRevision.intValue++ }

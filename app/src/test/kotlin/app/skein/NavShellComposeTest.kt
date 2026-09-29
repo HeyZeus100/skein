@@ -22,6 +22,7 @@ import app.skein.core.model.ModelFormat
 import app.skein.core.model.ModelRecord
 import app.skein.core.vault.key.UnlockResult
 import app.skein.core.vault.session.LockReason
+import app.skein.feature.chat.CHAT_MODEL_STATUS_TEST_TAG
 import app.skein.feature.chat.COMPOSER_TEST_TAG
 import app.skein.feature.chat.entries.ChatEntryTestTags
 import app.skein.feature.shell.host.SkeinShellHostTestTags
@@ -79,6 +80,44 @@ class NavShellComposeTest {
                 .onNodeWithTag(ShellTestTags.BIOMETRIC_UNLOCK_RETRY_BUTTON)
                 .performSemanticsAction(SemanticsActions.OnClick)
             awaitTag(SkeinShellHostTestTags.NAV_DISPLAY)
+        }
+    }
+
+    @Test
+    fun `new chat header observes loaded model rather than a different default before first send`() {
+        val loaded =
+            Model(
+                id = "loaded-model",
+                name = "Qwen2.5-1.5B-Instruct.gguf",
+                path = "/private/loaded.gguf",
+                sha256 = "a".repeat(64),
+                format = ModelFormat.GGUF,
+                capabilities = setOf(Capability.TEXT),
+                sizeBytes = 1000L,
+            )
+        val default = loaded.copy(id = "different-default", name = "Different 3B model")
+        runBlocking {
+            app.modelRegistry.upsert(ModelRecord(loaded))
+            app.modelRegistry.upsert(ModelRecord(default))
+            app.modelRegistry.setDefault(default.id)
+        }
+        ActivityScenario.launch(MainActivity::class.java).use {
+            awaitTag(CHAT_MODEL_STATUS_TEST_TAG)
+            composeRule.onNodeWithContentDescription("No model loaded").assertExists()
+            val models = requireNotNull(requireNotNull(app.vault.session.value).models)
+            runBlocking { models.engine.load(loaded).getOrThrow() }
+            composeRule.waitUntil(WAIT_MILLIS) {
+                composeRule.onAllNodesWithTag(CHAT_MODEL_STATUS_TEST_TAG).fetchSemanticsNodes().any { node ->
+                    node.config[SemanticsProperties.ContentDescription] == listOf("${loaded.name}. Loaded")
+                }
+            }
+            composeRule.onNodeWithContentDescription("${loaded.name}. Loaded").assertExists()
+            runBlocking { models.engine.unload() }
+            composeRule.waitUntil(WAIT_MILLIS) {
+                composeRule.onAllNodesWithTag(CHAT_MODEL_STATUS_TEST_TAG).fetchSemanticsNodes().any { node ->
+                    node.config[SemanticsProperties.ContentDescription] == listOf("No model loaded")
+                }
+            }
         }
     }
 
