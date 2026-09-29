@@ -250,6 +250,18 @@ the archived build process; it does not establish a reproducible source-to-APK
 proof. Corpus/gold hashes, exact query IDs/categories, all three ablations,
 repetitions, unchanged thresholds, and integrity/security gates are checked.
 
+Evidence collection makes at most three read-only attempts after the single
+instrumentation invocation. Each attempt retains command arguments, exit status,
+stdout (including partial JSON) and verbatim stderr in its own directory. A
+successful adb exit alone is insufficient: the report must parse completely and
+its SHA-256 must match the device file. The selected attempt and any recovery are
+recorded explicitly; failed attempts are never overwritten. Reconnection checks
+the same selected emulator before another read. No retry reruns instrumentation,
+clears data or installs a package. Installed APK, prebuilt APK and post-run local
+APK digests must all agree; the local post-run digest is recorded even when
+collection fails. Persistent transport failures remain failures with partial
+artifacts, and a real installed digest mismatch is never retried into a pass.
+
 The host gives Gradle 25 minutes. On timeout it terminates the owned Gradle
 process group (using a single-use daemon), stops only the selected emulator's
 test package, and still attempts JSON, installed-digest and logcat collection.

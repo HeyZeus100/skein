@@ -1,4 +1,5 @@
 import copy
+import hashlib
 import json
 import os
 from pathlib import Path
@@ -149,6 +150,9 @@ class RunnerIntegrationTest(unittest.TestCase):
         self.untracked = b""
         self.case_tag = ""
         self.mutate_apk = False
+        self.report_responses = []
+        self.installed_path_failures = 0
+        self.report_hash_mismatch = False
         self.commands = []
         for target, kwargs in [("REPOSITORY", {"new": self.repo}),
                                ("Path.cwd", {"return_value": self.repo}),
@@ -178,10 +182,16 @@ class RunnerIntegrationTest(unittest.TestCase):
             elif args == ["exec-out", "run-as", runner.PACKAGE, "cat", runner.REPORT_PATH]:
                 if self.missing_report:
                     raise subprocess.CalledProcessError(1, argv, stderr=b"no report\n")
-                data = json.dumps(self.report).encode()
+                data = self.report_responses.pop(0) if self.report_responses else json.dumps(self.report).encode()
+                if isinstance(data, Exception):
+                    raise data
+            elif args == ["exec-out", "run-as", runner.PACKAGE, "sha256sum", runner.REPORT_PATH]:
+                digest = "b" * 64 if self.report_hash_mismatch else hashlib.sha256(json.dumps(self.report).encode()).hexdigest()
+                data = (digest + "  " + runner.REPORT_PATH + "\n").encode()
             elif args == ["shell", "pm", "path", runner.PACKAGE]:
-                if self.missing_installed_apk:
-                    raise subprocess.CalledProcessError(1, argv)
+                if self.missing_installed_apk or self.installed_path_failures:
+                    self.installed_path_failures = max(0, self.installed_path_failures - 1)
+                    raise subprocess.CalledProcessError(1, argv, output=b"", stderr=b"error: device offline\n")
                 data = b"package:/data/app/~~fake/app.skein.core.vault.test-abc==/base.apk\n"
             elif args == ["shell", "sha256sum", "/data/app/~~fake/app.skein.core.vault.test-abc==/base.apk"]:
                 data = (self.installed_digest + "  /data/app/base.apk\n").encode()
@@ -189,9 +199,11 @@ class RunnerIntegrationTest(unittest.TestCase):
                 data = b"fake logcat\n"
             elif args == ["shell", "am", "force-stop", runner.PACKAGE]:
                 data = b""
+            elif args == ["wait-for-device"]:
+                data = b""
             else:
                 self.fail(f"unexpected external operation: {argv}")
-        return Mock(stdout=data)
+        return Mock(stdout=data, stderr=b"", returncode=0)
 
     def run_logged(self, argv, log, env):
         self.assertEqual(env["ANDROID_SERIAL"], "emulator-5554")
@@ -221,6 +233,9 @@ class RunnerIntegrationTest(unittest.TestCase):
         self.assertEqual(summary["declared_build_revision"], HEAD)
         self.assertIn("not embedded APK attestation", summary["source_identity"])
         self.assertEqual(summary["installed_test_apk_sha256"], self.apk_digest)
+        self.assertEqual(summary["post_instrumentation_test_apk_sha256"], self.apk_digest)
+        self.assertEqual(summary["selected_collection_attempt"], 1)
+        self.assertEqual(summary["report_sha256"], hashlib.sha256(json.dumps(self.report).encode()).hexdigest())
         argv = self.instrument.call_args.args[0]
         for arg in ["--no-daemon", "--max-workers=2", "-Pskein.retrievalEvaluation=true",
                     "-Pandroid.injected.androidTest.leaveApksInstalledAfterRun=true",
@@ -318,6 +333,7 @@ class RunnerIntegrationTest(unittest.TestCase):
         with self.assertRaisesRegex(ValueError, "installed test APK"):
             self.run_main()
         self.assertFalse(self.summary()["complete"])
+        self.assertEqual(len(self.summary()["collection_attempts"]), 1)
 
     def test_removed_test_package_cannot_pass(self):
         self.missing_installed_apk = True
@@ -329,6 +345,63 @@ class RunnerIntegrationTest(unittest.TestCase):
         self.mutate_apk = True
         with self.assertRaisesRegex(ValueError, "changed during instrumentation"):
             self.run_main()
+        self.assertEqual(self.summary()["post_instrumentation_test_apk_sha256"], runner.sha256(self.apk))
+
+    def test_zero_exit_truncated_json_recovers_without_repeating_instrumentation(self):
+        self.report_responses = [b'{"schema_version":1,']
+        self.run_main()
+        self.instrument.assert_called_once()
+        self.assertEqual(self.summary()["selected_collection_attempt"], 2)
+        first = self.output / "collection-attempts/01"
+        self.assertEqual((first / "report.stdout").read_bytes(), b'{"schema_version":1,')
+        self.assertEqual(json.loads((first / "report.command.json").read_text())["exit_code"], 0)
+        self.assertEqual(self.summary()["collection_attempts"][0]["errors"][0]["type"], "JSONDecodeError")
+        self.assertEqual(json.loads((self.output / "retrieval.json").read_text()), self.report)
+
+    def test_transport_disconnect_retains_partial_stdout_and_verbatim_stderr(self):
+        self.report_responses = [subprocess.CalledProcessError(1, ["adb"], output=b'{"partial":',
+                                                              stderr=b"error: transport closed\n")]
+        self.installed_path_failures = 1
+        self.run_main()
+        self.instrument.assert_called_once()
+        self.assertEqual(self.summary()["selected_collection_attempt"], 2)
+        first = self.output / "collection-attempts/01"
+        self.assertEqual((first / "report.stdout").read_bytes(), b'{"partial":')
+        self.assertEqual((first / "report.stderr").read_bytes(), b"error: transport closed\n")
+        self.assertEqual((first / "installed-path.stderr").read_bytes(), b"error: device offline\n")
+        self.assertEqual(json.loads((first / "report.command.json").read_text())["exit_code"], 1)
+        self.assertTrue((self.output / "collection-attempts/02/reconnect.command.json").exists())
+
+    def test_persistent_truncated_json_fails_after_exactly_three_preserved_attempts(self):
+        self.report_responses = [b'{"incomplete":'] * 3
+        with self.assertRaisesRegex(ValueError, "complete retrieval report"):
+            self.run_main()
+        self.instrument.assert_called_once()
+        self.assertEqual(len(self.summary()["collection_attempts"]), 3)
+        self.assertIsNone(self.summary()["selected_collection_attempt"])
+        self.assertFalse((self.output / "retrieval.json").exists())
+        for number in range(1, 4):
+            self.assertEqual((self.output / f"collection-attempts/{number:02d}/report.stdout").read_bytes(), b'{"incomplete":')
+        self.assertEqual(self.summary()["post_instrumentation_test_apk_sha256"], self.apk_digest)
+
+    def test_complete_json_with_wrong_device_digest_cannot_pass(self):
+        self.report_hash_mismatch = True
+        with self.assertRaisesRegex(ValueError, "complete retrieval report"):
+            self.run_main()
+        self.instrument.assert_called_once()
+        self.assertFalse(self.summary()["report_collected"])
+        self.assertEqual(len(self.summary()["collection_attempts"]), 3)
+
+    def test_persistent_installed_apk_transport_failure_retains_all_errors(self):
+        self.missing_installed_apk = True
+        with self.assertRaisesRegex(ValueError, "installed test APK"):
+            self.run_main()
+        self.instrument.assert_called_once()
+        self.assertTrue(self.summary()["report_collected"])
+        self.assertIsNone(self.summary()["selected_collection_attempt"])
+        for number in range(1, 4):
+            self.assertEqual((self.output / f"collection-attempts/{number:02d}/installed-path.stderr").read_bytes(),
+                             b"error: device offline\n")
 
     def test_skipped_real_xml_cannot_be_overridden_by_gradle_success(self):
         self.case_tag = "<skipped/>"
