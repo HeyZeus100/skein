@@ -62,6 +62,8 @@ targetSdkVersion:'37'
 uses-permission: name='android.permission.POST_NOTIFICATIONS'
 uses-permission: name='android.permission.USE_BIOMETRIC'
 uses-permission: name='android.permission.RECEIVE_BOOT_COMPLETED'
+uses-permission: name='android.permission.FOREGROUND_SERVICE'
+uses-permission: name='android.permission.FOREGROUND_SERVICE_DATA_SYNC'
 uses-permission: name='android.permission.USE_FINGERPRINT'
 uses-permission: name='app.skein.DYNAMIC_RECEIVER_NOT_EXPORTED_PERMISSION'
 application: label='Skein' icon=''
@@ -245,6 +247,8 @@ declared_permissions="$(
 expected_permissions="$(printf '%s\n' \
   "android.permission.POST_NOTIFICATIONS" \
   "android.permission.RECEIVE_BOOT_COMPLETED" \
+  "android.permission.FOREGROUND_SERVICE" \
+  "android.permission.FOREGROUND_SERVICE_DATA_SYNC" \
   "android.permission.USE_BIOMETRIC" \
   "android.permission.USE_FINGERPRINT" \
   "app.skein.DYNAMIC_RECEIVER_NOT_EXPORTED_PERMISSION" \

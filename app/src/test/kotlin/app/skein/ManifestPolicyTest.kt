@@ -49,7 +49,7 @@ class ManifestPolicyTest {
     // --- Permissions -------------------------------------------------------
 
     @Test
-    fun `permission set is exactly the three declared plus known androidx shims`() {
+    fun `permission set is exactly the declared set plus known androidx shims`() {
         val packageInfo = packageManager.getPackageInfo(packageName, PackageManager.GET_PERMISSIONS)
         val requested = packageInfo.requestedPermissions?.toSet().orEmpty()
 
@@ -67,6 +67,8 @@ class ManifestPolicyTest {
                 // WorkManager's own boot receiver (still removed) — see the
                 // AndroidManifest.xml comment.
                 "android.permission.RECEIVE_BOOT_COMPLETED",
+                "android.permission.FOREGROUND_SERVICE",
+                "android.permission.FOREGROUND_SERVICE_DATA_SYNC",
             ),
             requested - ANDROIDX_INJECTED_PERMISSIONS,
         )
@@ -303,6 +305,21 @@ class ManifestPolicyTest {
     }
 
     @Test
+    fun `model import runs in app process as unexported data sync foreground service`() {
+        val packageInfo = packageManager.getPackageInfo(packageName, PackageManager.GET_SERVICES)
+        val service =
+            requireNotNull(
+                packageInfo.services.orEmpty().firstOrNull {
+                    it.name ==
+                        "app.skein.models.ModelImportService"
+                },
+            )
+        assertFalse(service.exported)
+        assertEquals(packageName, service.processName)
+        assertEquals(android.content.pm.ServiceInfo.FOREGROUND_SERVICE_TYPE_DATA_SYNC, service.foregroundServiceType)
+    }
+
+    @Test
     fun `inference and embedder services are isolated and not exported`() {
         val packageInfo = packageManager.getPackageInfo(packageName, PackageManager.GET_SERVICES)
         val services = packageInfo.services.orEmpty().associateBy { it.name }
@@ -522,6 +539,8 @@ class ManifestPolicyTest {
                 "android.permission.POST_NOTIFICATIONS",
                 "android.permission.USE_BIOMETRIC",
                 "android.permission.RECEIVE_BOOT_COMPLETED",
+                "android.permission.FOREGROUND_SERVICE",
+                "android.permission.FOREGROUND_SERVICE_DATA_SYNC",
             ) + ANDROIDX_INJECTED_PERMISSIONS
 
         /** skein-0m1z: `BootReceiver`, the one receiver Skein declares itself (never exported). */

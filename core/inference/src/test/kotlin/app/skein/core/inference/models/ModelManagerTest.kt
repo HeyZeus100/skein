@@ -59,6 +59,7 @@ class ModelManagerTest {
         pickedReader: PickedFileReader = FakePickedFileReader(),
         bundled: ModelBytesSource = sourceOf(defaultFixtureFiles()),
         io: CoroutineDispatcher = Dispatchers.IO,
+        authorized: () -> Boolean = { true },
     ): ModelManager =
         ModelManager(
             registry = registry,
@@ -69,6 +70,7 @@ class ModelManagerTest {
             freeBytes = { free },
             isLoaded = { loaded.contains(it) },
             io = io,
+            canUseRegistry = authorized,
         )
 
     private fun fakeInspector(
@@ -504,5 +506,82 @@ class ModelManagerTest {
             // Never silently deregistered: the row is still there, just
             // reported as missing.
             assertThat(registry.get(manifest.id)).isNotNull()
+        }
+
+    @Test
+    fun `opaque copy closes both provider streams without inspection or registry then adopts after unlock`(): Unit =
+        runTest {
+            val bytes = validGguf(bytesOf(7, 65_536))
+            var closes = 0
+            val reader =
+                PickedFileReader {
+                    PickedFileHandle(
+                        "fixture.gguf",
+                        bytes.size.toLong(),
+                        object : ByteArrayInputStream(bytes) {
+                            override fun close() {
+                                closes++
+                                super.close()
+                            }
+                        },
+                    )
+                }
+            val copied = ModelImportStager(store, reader, { free }).copy(Uri.parse("content://fake/model"))
+            assertThat(copied).isInstanceOf(ModelCopyResult.Copied::class.java)
+            assertThat(closes).isEqualTo(2)
+            assertThat(registry.list()).isEmpty()
+            val id = (copied as ModelCopyResult.Copied).manifest.id
+            assertThat(store.orphanedDirectories(ModelManager.GENERATED_MAIN_FILE_NAME).map { it.name }).contains(id)
+            assertThat(runCatching { manager(authorized = { false }).registerCopied(copied) }.exceptionOrNull())
+                .isInstanceOf(kotlinx.coroutines.CancellationException::class.java)
+            assertThat(registry.list()).isEmpty()
+            // Fresh store reconstructs identity; no URI or process-owned state is required for recovery.
+            store = ImmutableModelStore(root)
+            assertThat(manager().adoptOrphans().single().id).isEqualTo(id)
+            assertThat(registry.get(id)).isNotNull()
+        }
+
+    @Test
+    fun `lock during inspection refuses registry publication and preserves sealed copy for new epoch`(): Unit =
+        runTest {
+            val bytes = validGguf(bytesOf(5, 65_536))
+            val copied =
+                ModelImportStager(store, FakePickedFileReader(bytes = bytes), { free })
+                    .copy(Uri.parse("content://fake/model")) as ModelCopyResult.Copied
+            var authorized = true
+            val inspector =
+                ModelInspector { binding ->
+                    val result = fakeInspector().inspect(binding)
+                    authorized = false
+                    result
+                }
+            val oldManager = manager(inspector = inspector, authorized = { authorized })
+            assertThat(runCatching { oldManager.registerCopied(copied) }.exceptionOrNull())
+                .isInstanceOf(kotlinx.coroutines.CancellationException::class.java)
+            assertThat(registry.list()).isEmpty()
+            assertThat(copied.model.main.path.isFile).isTrue()
+            assertThat(manager().adoptOrphans().single().outcome).isInstanceOf(ImportOutcome.Imported::class.java)
+        }
+
+    @Test
+    fun `adoption racing a completed copy uses one registry identity and does not reinspect`(): Unit =
+        runTest {
+            val bytes = validGguf(bytesOf(9, 65_536))
+            val copied =
+                ModelImportStager(store, FakePickedFileReader(bytes = bytes), { free })
+                    .copy(Uri.parse("content://fake/model")) as ModelCopyResult.Copied
+            var inspections = 0
+            val manager =
+                manager(
+                    inspector =
+                        ModelInspector { binding ->
+                            inspections++
+                            fakeInspector().inspect(binding)
+                        },
+                )
+            manager.adoptOrphans()
+            assertThat(manager.registerCopied(copied)).isInstanceOf(ImportOutcome.Imported::class.java)
+            assertThat(inspections).isEqualTo(1)
+            assertThat(registry.list()).hasSize(1)
         }
 }
