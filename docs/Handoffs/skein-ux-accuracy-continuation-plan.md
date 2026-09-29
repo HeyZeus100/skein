@@ -5,9 +5,9 @@
 
 This is the original continuation design and dispatch sequence, not a second task tracker. Beads owns status and acceptance evidence. The initial planning pass did not change the application or device. The owner subsequently authorized execution; see [the execution evidence](skein-ux-accuracy-execution.md) for implemented changes, observed failures and remaining verification limits.
 
-**Owner pause, 2026-09-28:** implementation is stopped. Future agents should begin
-with the [paused execution handoff](skein-ux-accuracy-resume-handoff.md) and await
-the owner's instruction to resume before executing this plan.
+**Owner resumed on 2026-09-28** after pausing earlier that day. Begin with the
+[execution handoff](skein-ux-accuracy-resume-handoff.md) and current execution
+evidence. The documented Fold verification hold remains in effect.
 
 ## 1. Recommendation and meaning of success
 

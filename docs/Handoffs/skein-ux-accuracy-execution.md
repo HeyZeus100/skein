@@ -1,9 +1,10 @@
 # UX and answer accuracy: execution evidence
 
-**Paused by the owner on 2026-09-28.** The current implementation checkpoint is
-`13b7337`. Read the [resume handoff](skein-ux-accuracy-resume-handoff.md) first for
-the latest successful gates, unmerged work, preserved artifacts and restart
-assignments. No further implementation or device work is authorized until resume.
+**Resumed by the owner on 2026-09-28.** The preceding paused implementation
+checkpoint was `13b7337`. Read the [resume handoff](skein-ux-accuracy-resume-handoff.md)
+for preserved artifacts and restart assignments. The coordinator resumed with
+isolated retrieval and native/accuracy agents and one CI runner. Fold verification
+remains **HOLD**; resumption does not establish physical-device acceptance.
 
 This records execution of the [continuation plan](skein-ux-accuracy-continuation-plan.md)
 authorized by the owner's “run it” instruction. Beads remains the task tracker.

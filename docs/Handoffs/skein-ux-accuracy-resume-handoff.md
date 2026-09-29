@@ -1,12 +1,19 @@
 # Skein UX and accuracy: paused execution handoff
 
+**Resumed by the owner on 2026-09-28.** The pause below is historical. The owner
+authorized resuming these assignments, required checks, and delivery of verified
+commits. **Fold remains HOLD.** Read the current
+[execution evidence](skein-ux-accuracy-execution.md) for resumed results; preserve
+the original checkpoint artifacts and recovery trees described here.
+
 **Owner paused work:** 2026-09-28, approximately 13:06 America/Los_Angeles.
 **Implementation head:** `13b73377f8f6c4fc485d82726b33280fd510cbb4`.
 Documentation/checkpoint commits follow that implementation head. The pause
 checkpoint commit uses `[skip ci]` to avoid starting automatic workflows; resumed
 implementation must run the pending final-head gates. Read the current
-Git head before restarting. **Do not resume implementation, tests, CI dispatch or
-device work until the owner asks to resume.** All three agents were interrupted;
+Git head before restarting. The owner required implementation, tests, CI dispatch
+and device work to stop until their subsequent resume instruction above. All
+three agents were interrupted;
 the coordinator completed only this handoff and repository delivery afterward.
 
 Start with this file, then the [execution evidence](skein-ux-accuracy-execution.md)
@@ -21,7 +28,7 @@ records the checkpoint, evidence and restart procedure rather than replacing it.
 The owner authorized carrying out the continuation plan, recovering three
 interrupted Claude agents, and improving the imported local model's factuality.
 They prefer autonomous, noninteractive execution and no repeated permission
-questions. The new explicit pause overrides that authorization until resumed.
+questions. The explicit pause suspended that authorization until the owner resumed.
 
 The target is better measured answers, evidence and uncertainty handling. Do not
 promise Astra/ChatGPT capability parity or elimination of hallucinations. No
