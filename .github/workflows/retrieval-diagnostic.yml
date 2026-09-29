@@ -1,0 +1,83 @@
+name: Real retrieval diagnostic
+
+# Manual release only. A green job establishes harness integrity, not a hybrid
+# quality pass. Ranking failures stay visible in the measured diagnostic JSON.
+on:
+  workflow_dispatch:
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: false
+
+permissions:
+  contents: read
+
+jobs:
+  retrieval:
+    name: Opt-in real SQLite retrieval diagnostic (API 35)
+    runs-on: ubuntu-latest
+    timeout-minutes: 70
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v4.3.0
+        with:
+          submodules: true
+      - uses: actions/setup-java@de7274f081f381c8f8158605e0321c36c376e2e6 # v4.8.0
+        with:
+          distribution: temurin
+          java-version: "17"
+      - uses: gradle/actions/setup-gradle@748248ddd2a24f49513d8f472f81c3a07d4d50e1 # v4.4.4
+      - name: Configure SDK and KVM
+        run: |
+          cmdline_tools_bin="$(find "$ANDROID_HOME/cmdline-tools" -maxdepth 4 -type f -name sdkmanager -exec dirname {} \; | sort -V | tail -n1)"
+          test -n "$cmdline_tools_bin"
+          echo "$cmdline_tools_bin" >> "$GITHUB_PATH"
+          echo "$ANDROID_HOME/platform-tools" >> "$GITHUB_PATH"
+          echo "$ANDROID_HOME/emulator" >> "$GITHUB_PATH"
+          "$cmdline_tools_bin/sdkmanager" "platform-tools" "build-tools;36.0.0"
+          # The optional repository lookup may omit SDK 37; unchanged Gradle
+          # still requires compileSdk 37, exactly as in synthetic-smoke.yml.
+          "$cmdline_tools_bin/sdkmanager" "platforms;android-37" || true
+          test -x "$ANDROID_HOME/platform-tools/adb"
+          test -x "$ANDROID_HOME/build-tools/36.0.0/aapt2"
+          echo 'KERNEL=="kvm", GROUP="kvm", MODE="0666", OPTIONS+="static_node=kvm"' | sudo tee /etc/udev/rules.d/99-kvm4all.rules
+          sudo udevadm control --reload-rules
+          sudo udevadm trigger --name-match=kvm
+      - name: Verify diagnostic runner and build only the vault test APK
+        run: |
+          mkdir -p build/retrieval-diagnostic
+          python3 - <<'PY'
+          import sys
+          import unittest
+          suite = unittest.defaultTestLoader.discover("tools/eval", pattern="test_run_real_retrieval.py")
+          count = suite.countTestCases()
+          print(f"Discovered {count} retrieval runner tests", flush=True)
+          if count == 0:
+              sys.exit("No retrieval runner tests discovered")
+          sys.exit(not unittest.TextTestRunner(verbosity=2).run(suite).wasSuccessful())
+          PY
+          set -o pipefail
+          ./gradlew --max-workers=2 :core:vault:assembleDevDebugAndroidTest 2>&1 | tee build/retrieval-diagnostic/build.log
+      - name: Measure only the explicitly opted-in retrieval class
+        uses: reactivecircus/android-emulator-runner@a421e43855164a8197daf9d8d40fe71c6996bb0d # v2.34.0
+        with:
+          api-level: 35
+          arch: x86_64
+          target: google_apis
+          disable-animations: true
+          force-avd-creation: true
+          emulator-options: -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -no-snapshot
+          # One command preserves serial selection within the action's script
+          # execution model. The helper sets ANDROID_SERIAL for Gradle too.
+          script: |
+            python3 tools/eval/run_real_retrieval.py --serial "$(adb devices | awk '$1 ~ /^emulator-[0-9]+$/ && $2 == "device" {print $1}')" --expected-head "${{ github.sha }}" --output build/retrieval-diagnostic/run
+      - name: Retain measured diagnostic, actual instrumentation XML, and failures
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        with:
+          name: real-retrieval-DIAGNOSTIC-hybrid-INELIGIBLE-${{ github.sha }}
+          path: |
+            build/retrieval-diagnostic/
+            core/vault/build/reports/androidTests/connected/**
+            core/vault/build/outputs/androidTest-results/connected/**
+          if-no-files-found: warn
+          retention-days: 14

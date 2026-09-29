@@ -206,8 +206,59 @@ instrumentation result and build SHA before another run replaces it. If using
 Gradle connected tests instead of direct instrumentation, collect the report
 before any runner uninstall/cleanup removes the test package.
 
-This delivery is compile- and JVM-test-validated; it contains no claimed device
-scores. `skein-9744` remains open for the first actual baseline, reviewed failures,
-real production embedder/vector ablation, full-hybrid eligibility and enforced
-quality gate, and manual/nightly artifact wiring. A diagnostic run cannot close
-those remaining requirements.
+## Manual diagnostic workflow
+
+`.github/workflows/retrieval-diagnostic.yml` is a manual-only lane. It first
+discovers and runs `test_run_real_retrieval.py`, explicitly failing if discovery
+finds zero tests, and assembles only the vault library test APK. The fresh API 35
+AVD uses no snapshots. Only the designated runner may dispatch this lane or run
+the helper against an emulator; the documented Fold hold remains in force.
+
+From a clean isolated checkout at the reviewed full SHA, with the APK assembled
+and no prior connected-test XML, the same helper is:
+
+```sh
+python3 tools/eval/run_real_retrieval.py \
+  --serial "$ANDROID_SERIAL" \
+  --expected-head "$(git rev-parse HEAD)" \
+  --output build/retrieval-diagnostic/run
+```
+
+The output directory must not exist. The helper refuses physical or ambiguous
+serials, verifies the emulator property, and refuses an existing test package
+including uninstalled packages with retained data. It never clears or uninstalls
+an existing package to make a run possible. The absence check uses `pm list
+packages -u`; `pm path` has a nonzero exit code for an absent package.
+
+The connected task selects only the opt-in class and explicitly requests three
+repetitions. AGP's `android.injected.androidTest.leaveApksInstalledAfterRun=true`
+keeps the test package available for report collection; this property maps to
+`keepInstalledApks` in the pinned AGP 9.4.1 implementation. A passing runner must
+find exactly one executed, passing testcase in actual AGP XML. Empty XML, an
+extra testcase, and a failure/error/skip all fail verification.
+
+`runner-summary.json` records the full source SHA as **host-declared**: the
+instrumentation report's `build_revision` is supplied as a runner argument, not
+independent APK attestation. The helper separately records the prebuilt test
+APK's SHA-256 and verifies that both the retained installed APK and the local APK
+after instrumentation have that digest. This connects the measured package to
+the archived build process; it does not establish a reproducible source-to-APK
+proof. Corpus/gold hashes, exact query IDs/categories, all three ablations,
+repetitions, unchanged thresholds, and integrity/security gates are checked.
+
+The host gives Gradle 25 minutes. On timeout it terminates the owned Gradle
+process group (using a single-use daemon), stops only the selected emulator's
+test package, and still attempts JSON, installed-digest and logcat collection.
+Assertion failures likewise retain the original report. Missing artifacts stay
+missing with an unavailable marker; the helper never fabricates a successful
+report. The workflow uploads the build/runner logs, raw diagnostic and actual
+AGP XML/reports even on failure. Preserve these artifacts before a repeat, and
+use another fresh emulator/output/build directory for that repeat.
+
+A green job proves diagnostic execution, integrity, scope and determinism.
+Ranking gate failures remain `FAIL` in the report and runner summary, and the
+full hybrid gate remains **INELIGIBLE**. This wiring has host-test validation;
+it contains no claimed device scores. `skein-9744` remains open for the first
+actual baseline, reviewed failures, real production embedder/vector ablation,
+full-hybrid eligibility and enforced quality gate, and any future nightly
+wiring. A diagnostic run cannot close those remaining requirements.
