@@ -4,26 +4,40 @@ import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.widthIn
+import androidx.compose.foundation.relocation.BringIntoViewRequester
+import androidx.compose.foundation.relocation.bringIntoViewRequester
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.rememberUpdatedState
-import androidx.compose.ui.Alignment
+import androidx.compose.runtime.setValue
+import androidx.compose.runtime.withFrameNanos
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.key.Key
 import androidx.compose.ui.input.key.KeyEventType
 import androidx.compose.ui.input.key.key
 import androidx.compose.ui.input.key.onPreviewKeyEvent
 import androidx.compose.ui.input.key.type
+import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.testTag
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.IntOffset
+import androidx.compose.ui.unit.IntRect
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Popup
+import app.skein.core.designsystem.components.LocalSkeinWindowPartitions
 
 /**
  * Public test tag on [WikilinkAutocompletePopup]'s surface; per-row tags
@@ -111,13 +125,36 @@ public fun WikilinkAutocompletePopup(
     offset: IntOffset = IntOffset.Zero,
 ) {
     if (!state.isVisible || state.suggestions.isEmpty()) return
+    val density = LocalDensity.current
+    val windowPartitions = LocalSkeinWindowPartitions.current
+    val partitions =
+        remember(windowPartitions, density) {
+            windowPartitions?.anchors.orEmpty().mapNotNull { bounds ->
+                with(density) {
+                    IntRect(
+                        bounds.left.roundToPx(),
+                        bounds.top.roundToPx(),
+                        bounds.right.roundToPx(),
+                        bounds.bottom.roundToPx(),
+                    ).takeIf { it.width > 0 && it.height > 0 }
+                }
+            }
+        }
+    var selectedPartition by remember(partitions) { mutableStateOf<IntRect?>(null) }
+    val maximumWidth = selectedPartition?.width ?: partitions.minOfOrNull { it.width }
+    val maximumHeight = selectedPartition?.height ?: partitions.minOfOrNull { it.height }
+    val position = remember(offset, partitions) { WikilinkPopupPosition(offset, partitions) { selectedPartition = it } }
     Popup(
-        alignment = Alignment.TopStart,
-        offset = offset,
+        popupPositionProvider = position,
         onDismissRequest = { state.dismiss() },
     ) {
         Surface(
-            modifier = modifier.testTag(WIKILINK_AUTOCOMPLETE_TEST_TAG).width(240.dp),
+            modifier =
+                modifier
+                    .testTag(WIKILINK_AUTOCOMPLETE_TEST_TAG)
+                    .widthIn(max = maximumWidth?.let { with(density) { it.toDp() } } ?: Dp.Infinity)
+                    .heightIn(max = maximumHeight?.let { with(density) { it.toDp() } } ?: Dp.Infinity)
+                    .width(240.dp),
             // skein-xtov.23.7 (DS7, DESIGN_SYSTEM.md §5.3): no tonal
             // elevation — was the `pending-DS7` allow-list entry in
             // `NoShadowOrGradientTest`. This popup had no explicit `color`,
@@ -131,8 +168,15 @@ public fun WikilinkAutocompletePopup(
             border = BorderStroke(1.dp, MaterialTheme.colorScheme.outlineVariant),
             tonalElevation = 0.dp,
         ) {
-            Column {
+            Column(Modifier.verticalScroll(rememberScrollState())) {
                 state.suggestions.forEachIndexed { index, suggestion ->
+                    val bringIntoView = remember { BringIntoViewRequester() }
+                    LaunchedEffect(state.selectedIndex) {
+                        if (index == state.selectedIndex) {
+                            withFrameNanos { }
+                            bringIntoView.bringIntoView()
+                        }
+                    }
                     val label = if (suggestion.isCreate) "Create \"${suggestion.title}\"" else suggestion.title
                     val rowBackground =
                         if (index == state.selectedIndex) {
@@ -145,6 +189,7 @@ public fun WikilinkAutocompletePopup(
                         modifier =
                             Modifier
                                 .testTag(wikilinkSuggestionTestTag(index))
+                                .bringIntoViewRequester(bringIntoView)
                                 .background(rowBackground)
                                 .clickable { state.confirm(suggestion) }
                                 .padding(horizontal = 12.dp, vertical = 8.dp),
