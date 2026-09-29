@@ -1,0 +1,51 @@
+{
+  "schema_version": 1,
+  "lane": "ordinary-instrumentation",
+  "modules": {
+    "app": {
+      "files": [
+        "app/build/outputs/androidTest-results/connected/debug/flavors/dev/TEST-test(AVD) - 15.xml"
+      ],
+      "tests": 37,
+      "passed": 37,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "nonpassing_cases": []
+    },
+    "core/vault": {
+      "files": [
+        "core/vault/build/outputs/androidTest-results/connected/debug/flavors/dev/TEST-test(AVD) - 15.xml"
+      ],
+      "tests": 204,
+      "passed": 203,
+      "failures": 1,
+      "errors": 0,
+      "skipped": 0,
+      "nonpassing_cases": [
+        {
+          "classname": "app.skein.core.vault.index.IndexStoreImplAcceptanceTest",
+          "name": "unicodeTextBindingPreservesSupplementaryAndLegacyModifiedUtf8",
+          "tags": [
+            "failure"
+          ]
+        }
+      ]
+    },
+    "inference-service": {
+      "files": [
+        "inference-service/build/outputs/androidTest-results/connected/debug/flavors/dev/TEST-test(AVD) - 15.xml"
+      ],
+      "tests": 36,
+      "passed": 36,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "nonpassing_cases": []
+    }
+  },
+  "errors": [
+    "core/vault: actual XML contains failed, errored or skipped testcases"
+  ],
+  "passed": false
+}

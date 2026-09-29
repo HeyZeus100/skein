@@ -1,0 +1,49 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<testsuites tests="36" failures="0" errors="0" skipped="0" time="0.000" timestamp="2026-09-29T06:02:43" hostname="localhost">
+  <testsuite name="app.skein.inference.service.InferenceServiceInstrumentedTest" tests="15" failures="0" errors="0" skipped="0" time="18.551" timestamp="2026-09-29T06:02:43" hostname="localhost">
+    <properties>
+      <property name="device" value="emulator-5554" />
+    </properties>
+    <testcase name="aGenerationStreamsTokensAndCompletesExactlyOnce" classname="app.skein.inference.service.InferenceServiceInstrumentedTest" time="3.387" />
+    <testcase name="anUnlockedServiceLoadsFromADescriptor" classname="app.skein.inference.service.InferenceServiceInstrumentedTest" time="1.366" />
+    <testcase name="cpuOnlyLoadReportsNoGpuOrIgpuDevice" classname="app.skein.inference.service.InferenceServiceInstrumentedTest" time="1.299" />
+    <testcase name="cpuOnlyLoadReportsExactlyOneCpuDevice" classname="app.skein.inference.service.InferenceServiceInstrumentedTest" time="0.971" />
+    <testcase name="aColdServiceRefusesLoadUntilUnlocked" classname="app.skein.inference.service.InferenceServiceInstrumentedTest" time="0.503" />
+    <testcase name="aLoadedServiceReportsReady" classname="app.skein.inference.service.InferenceServiceInstrumentedTest" time="1.154" />
+    <testcase name="lockingMidGenerationCancelsAndZeroesTheKvCache" classname="app.skein.inference.service.InferenceServiceInstrumentedTest" time="1.848" />
+    <testcase name="anOversizedAnswerReservationIsRefusedBeforeTokenStreaming" classname="app.skein.inference.service.InferenceServiceInstrumentedTest" time="1.080" />
+    <testcase name="aHashMismatchIsRefusedAndLeavesTheServiceUnloaded" classname="app.skein.inference.service.InferenceServiceInstrumentedTest" time="0.416" />
+    <testcase name="cancelMidGenerationCompletesAsCancelledWithinTheBudget" classname="app.skein.inference.service.InferenceServiceInstrumentedTest" time="1.503" />
+    <testcase name="aLockedServiceRefusesTheNextGenerate" classname="app.skein.inference.service.InferenceServiceInstrumentedTest" time="1.001" />
+    <testcase name="unloadIsIdempotent" classname="app.skein.inference.service.InferenceServiceInstrumentedTest" time="0.964" />
+    <testcase name="aSecondConcurrentGenerateIsRefusedWithBusy" classname="app.skein.inference.service.InferenceServiceInstrumentedTest" time="1.795" />
+    <testcase name="aHighGpuLayersLoadReportsAGpuDeviceWhenVulkanIsAvailable" classname="app.skein.inference.service.InferenceServiceInstrumentedTest" time="1.077" />
+    <testcase name="theServiceBindsAndReportsUnloaded" classname="app.skein.inference.service.InferenceServiceInstrumentedTest" time="0.187" />
+  </testsuite>
+  <testsuite name="app.skein.inference.service.LlamaNativeTest" tests="21" failures="0" errors="0" skipped="0" time="19.899" timestamp="2026-09-29T06:02:43" hostname="localhost">
+    <properties>
+      <property name="device" value="emulator-5554" />
+    </properties>
+    <testcase name="tokenizeReturnsAtLeastTwoIds" classname="app.skein.inference.service.LlamaNativeTest" time="0.115" />
+    <testcase name="zeroHandlesThrowIllegalStateException" classname="app.skein.inference.service.LlamaNativeTest" time="0.008" />
+    <testcase name="decodePromptThenEightSamplesYieldsEightIds" classname="app.skein.inference.service.LlamaNativeTest" time="0.755" />
+    <testcase name="scaffoldTokenizerRejectsMalformedUnicodeAndInvalidByteRanges" classname="app.skein.inference.service.LlamaNativeTest" time="0.096" />
+    <testcase name="secureFreeZeroesTheKvCacheBeforeFreeing" classname="app.skein.inference.service.LlamaNativeTest" time="0.104" />
+    <testcase name="sameSeedTwiceProducesTheSameIds" classname="app.skein.inference.service.LlamaNativeTest" time="1.805" />
+    <testcase name="loadingANonGgufFileFailsWithInvalidModelAndLeaksNoHandle" classname="app.skein.inference.service.LlamaNativeTest" time="0.049" />
+    <testcase name="safeTemplateTokensMatchNativeTokensForBenignSyntheticConversation" classname="app.skein.inference.service.LlamaNativeTest" time="0.102" />
+    <testcase name="goldenGreedySequenceIsPinned" classname="app.skein.inference.service.LlamaNativeTest" time="1.404" />
+    <testcase name="cancelFlagAbortsADecodeWithin100Ms" classname="app.skein.inference.service.LlamaNativeTest" time="0.122" />
+    <testcase name="controlsSpanningTemplateAndContentRemainLiteralInBothDirections" classname="app.skein.inference.service.LlamaNativeTest" time="0.107" />
+    <testcase name="contextCapacityRejectsZeroWrongAndFreedHandles" classname="app.skein.inference.service.LlamaNativeTest" time="0.103" />
+    <testcase name="nativeWhitespaceAndUnicodeTokensMatchWholePromptReference" classname="app.skein.inference.service.LlamaNativeTest" time="0.098" />
+    <testcase name="exactNativeCapacityAcceptsLastReservedPositionAndRefusesOneBeyond" classname="app.skein.inference.service.LlamaNativeTest" time="14.490" />
+    <testcase name="embedIsUnitLengthAndModelWidth" classname="app.skein.inference.service.LlamaNativeTest" time="0.179" />
+    <testcase name="backendReportWithNoModelReportsOnlyCompileTimeCpuFeatures" classname="app.skein.inference.service.LlamaNativeTest" time="0.003" />
+    <testcase name="tokenToPieceConcatenatesBackToTheInput" classname="app.skein.inference.service.LlamaNativeTest" time="0.087" />
+    <testcase name="chatTemplatingRenderUsesTheModelsOwnTemplateAndMarkersAroundTheContent" classname="app.skein.inference.service.LlamaNativeTest" time="0.088" />
+    <testcase name="errorMessagesCarryNoPromptText" classname="app.skein.inference.service.LlamaNativeTest" time="0.002" />
+    <testcase name="literalChatMlDelimiterCannotAddAnotherNativeControlToken" classname="app.skein.inference.service.LlamaNativeTest" time="0.090" />
+    <testcase name="applyChatTemplateContainsTheUserMessage" classname="app.skein.inference.service.LlamaNativeTest" time="0.092" />
+  </testsuite>
+</testsuites>

@@ -1,0 +1,322 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<testsuites tests="204" failures="1" errors="0" skipped="0" time="0.000" timestamp="2026-09-29T06:05:59" hostname="localhost">
+  <testsuite name="app.skein.core.vault.db.SkeinSQLiteDriverInstrumentedTest" tests="8" failures="0" errors="0" skipped="0" time="0.551" timestamp="2026-09-29T06:05:59" hostname="localhost">
+    <properties>
+      <property name="device" value="emulator-5554" />
+    </properties>
+    <testcase name="vecVersionMatchesPinned" classname="app.skein.core.vault.db.SkeinSQLiteDriverInstrumentedTest" time="0.002" />
+    <testcase name="cipherVersionMatchesPinnedSqlcipher" classname="app.skein.core.vault.db.SkeinSQLiteDriverInstrumentedTest" time="0.000" />
+    <testcase name="getBlobRoundTrips256ByteInt8Vector" classname="app.skein.core.vault.db.SkeinSQLiteDriverInstrumentedTest" time="0.014" />
+    <testcase name="fts5VirtualTableProbe" classname="app.skein.core.vault.db.SkeinSQLiteDriverInstrumentedTest" time="0.002" />
+    <testcase name="openingWithWrongKeyThrowsNotADatabase" classname="app.skein.core.vault.db.SkeinSQLiteDriverInstrumentedTest" time="0.018" />
+    <testcase name="passphraseRoundTrip" classname="app.skein.core.vault.db.SkeinSQLiteDriverInstrumentedTest" time="0.497" />
+    <testcase name="bindAndGetRoundTripsForAllSupportedTypes" classname="app.skein.core.vault.db.SkeinSQLiteDriverInstrumentedTest" time="0.011" />
+    <testcase name="keyedOpenRunsSection4_9PragmaSequence" classname="app.skein.core.vault.db.SkeinSQLiteDriverInstrumentedTest" time="0.007" />
+  </testsuite>
+  <testsuite name="app.skein.core.vault.db.migrations.MigratorInstrumentedTest" tests="21" failures="0" errors="0" skipped="0" time="1.088" timestamp="2026-09-29T06:05:59" hostname="localhost">
+    <properties>
+      <property name="device" value="emulator-5554" />
+    </properties>
+    <testcase name="freshDatabaseMigratesToLatestVersionWithAllSchemaObjects" classname="app.skein.core.vault.db.migrations.MigratorInstrumentedTest" time="0.063" />
+    <testcase name="deletingChunkRemovesItFromFtsAndVec" classname="app.skein.core.vault.db.migrations.MigratorInstrumentedTest" time="0.056" />
+    <testcase name="insertingNoteDocumentEnqueuesCreatedReason" classname="app.skein.core.vault.db.migrations.MigratorInstrumentedTest" time="0.043" />
+    <testcase name="ledgerSeedsPre005DatabaseAndStillAppliesTheGapFillerWithoutLoweringUserVersion" classname="app.skein.core.vault.db.migrations.MigratorInstrumentedTest" time="0.066" />
+    <testcase name="afterMigration010ReChunkingLeavesNoResidue" classname="app.skein.core.vault.db.migrations.MigratorInstrumentedTest" time="0.048" />
+    <testcase name="brokenMigrationRollsBackAndLeavesUserVersionUnchanged" classname="app.skein.core.vault.db.migrations.MigratorInstrumentedTest" time="0.013" />
+    <testcase name="insertingChunkMakesTextFindableViaFtsMatch" classname="app.skein.core.vault.db.migrations.MigratorInstrumentedTest" time="0.044" />
+    <testcase name="updatingOnlyPersonaIdDoesNotEnqueue" classname="app.skein.core.vault.db.migrations.MigratorInstrumentedTest" time="0.044" />
+    <testcase name="exportStageDefaultsToUnsweptAndCascadesWithItsDocument" classname="app.skein.core.vault.db.migrations.MigratorInstrumentedTest" time="0.053" />
+    <testcase name="migration011UpgradesExistingVaultAndDraftForeignKeyPreventsResurrection" classname="app.skein.core.vault.db.migrations.MigratorInstrumentedTest" time="0.105" />
+    <testcase name="migration010IsIdempotentOnRerun" classname="app.skein.core.vault.db.migrations.MigratorInstrumentedTest" time="0.048" />
+    <testcase name="updatingBodyMdEnqueuesUpdatedReason" classname="app.skein.core.vault.db.migrations.MigratorInstrumentedTest" time="0.064" />
+    <testcase name="chunkByteOffsetColumnsRoundTrip" classname="app.skein.core.vault.db.migrations.MigratorInstrumentedTest" time="0.045" />
+    <testcase name="runningMigrateTwiceIsANoop" classname="app.skein.core.vault.db.migrations.MigratorInstrumentedTest" time="0.046" />
+    <testcase name="afterMigration010ADeletedTokenLeavesNoBytesInChunksFtsData" classname="app.skein.core.vault.db.migrations.MigratorInstrumentedTest" time="0.048" />
+    <testcase name="rowsSeededBeforeMigration007SurviveTheDropAndDocumentsIsUnaffected" classname="app.skein.core.vault.db.migrations.MigratorInstrumentedTest" time="0.054" />
+    <testcase name="documentRevisionsUpsertsByContentAddressAndCascadesWithItsDocument" classname="app.skein.core.vault.db.migrations.MigratorInstrumentedTest" time="0.047" />
+    <testcase name="ingestQueueAttemptsDefaultsToZeroAndResetsOnReQueue" classname="app.skein.core.vault.db.migrations.MigratorInstrumentedTest" time="0.047" />
+    <testcase name="migration010EnablesFts5SecureDelete" classname="app.skein.core.vault.db.migrations.MigratorInstrumentedTest" time="0.040" />
+    <testcase name="freshDatabaseLedgerListsEveryAppliedVersion" classname="app.skein.core.vault.db.migrations.MigratorInstrumentedTest" time="0.049" />
+    <testcase name="migration010OptimizePurgesResidueWrittenBeforeIt" classname="app.skein.core.vault.db.migrations.MigratorInstrumentedTest" time="0.065" />
+  </testsuite>
+  <testsuite name="app.skein.core.vault.export.stage.ExportStageRepositoryContractTest" tests="13" failures="0" errors="0" skipped="0" time="0.412" timestamp="2026-09-29T06:05:59" hostname="localhost">
+    <properties>
+      <property name="device" value="emulator-5554" />
+    </properties>
+    <testcase name="markAllStagesSweptLeavesNothingUnswept" classname="app.skein.core.vault.export.stage.ExportStageRepositoryContractTest" time="0.047" />
+    <testcase name="markingAnAlreadySweptStageReportsFalse" classname="app.skein.core.vault.export.stage.ExportStageRepositoryContractTest" time="0.030" />
+    <testcase name="aFreshlyInsertedStageIsNotSwept" classname="app.skein.core.vault.export.stage.ExportStageRepositoryContractTest" time="0.030" />
+    <testcase name="aStageWithNoDocumentSurvivesUnrelatedDocumentDeletes" classname="app.skein.core.vault.export.stage.ExportStageRepositoryContractTest" time="0.047" />
+    <testcase name="markingAnUnknownStageReportsFalse" classname="app.skein.core.vault.export.stage.ExportStageRepositoryContractTest" time="0.029" />
+    <testcase name="listUnsweptOmitsRowsAlreadyMarkedSwept" classname="app.skein.core.vault.export.stage.ExportStageRepositoryContractTest" time="0.030" />
+    <testcase name="markAllStagesSweptReportsHowManyRowsItChanged" classname="app.skein.core.vault.export.stage.ExportStageRepositoryContractTest" time="0.029" />
+    <testcase name="deletingTheDocumentCascadesItsStageRowAway" classname="app.skein.core.vault.export.stage.ExportStageRepositoryContractTest" time="0.030" />
+    <testcase name="reinsertingTheSameStageIdReplacesTheRowRatherThanThrowing" classname="app.skein.core.vault.export.stage.ExportStageRepositoryContractTest" time="0.026" />
+    <testcase name="listUnsweptReturnsTheMostOverduePlaintextFirst" classname="app.skein.core.vault.export.stage.ExportStageRepositoryContractTest" time="0.036" />
+    <testcase name="markingAStageSweptReportsTrueTheFirstTime" classname="app.skein.core.vault.export.stage.ExportStageRepositoryContractTest" time="0.028" />
+    <testcase name="insertedStageReadsBackWithEveryColumnIntact" classname="app.skein.core.vault.export.stage.ExportStageRepositoryContractTest" time="0.024" />
+    <testcase name="anUnrecordedStageIdReadsBackAsNull" classname="app.skein.core.vault.export.stage.ExportStageRepositoryContractTest" time="0.026" />
+  </testsuite>
+  <testsuite name="app.skein.core.vault.index.GraphRecallAcceptanceTest" tests="1" failures="0" errors="0" skipped="0" time="0.163" timestamp="2026-09-29T06:05:59" hostname="localhost">
+    <properties>
+      <property name="device" value="emulator-5554" />
+    </properties>
+    <testcase name="ordinaryPhraseDiscoversLongerTitlesAndLinkedAnswerWithinEvidenceScope" classname="app.skein.core.vault.index.GraphRecallAcceptanceTest" time="0.163" />
+  </testsuite>
+  <testsuite name="app.skein.core.vault.index.IndexStoreImplAcceptanceTest" tests="16" failures="1" errors="0" skipped="0" time="2.036" timestamp="2026-09-29T06:05:59" hostname="localhost">
+    <properties>
+      <property name="device" value="emulator-5554" />
+    </properties>
+    <testcase name="unicodeQueryTermsMatchTheActualDefaultSqliteTokenizer" classname="app.skein.core.vault.index.IndexStoreImplAcceptanceTest" time="0.048" />
+    <testcase name="unicodeOnlyIngestProbeFindsAMissingMiddleRowBetweenHealthyRows" classname="app.skein.core.vault.index.IndexStoreImplAcceptanceTest" time="0.032" />
+    <testcase name="bm25DoesNotThrowOnTwentyAdversarialQueryStrings" classname="app.skein.core.vault.index.IndexStoreImplAcceptanceTest" time="0.034" />
+    <testcase name="ingestRowProbeWarnsWhenTheActualInsertTriggerIsMissing" classname="app.skein.core.vault.index.IndexStoreImplAcceptanceTest" time="0.030" />
+    <testcase name="knnReturnsExactlyKRowsOverA10000VectorCorpus" classname="app.skein.core.vault.index.IndexStoreImplAcceptanceTest" time="1.532" />
+    <testcase name="actualTokenizerBoundsSkipWholeTokensAndNeverInventPostingFragments" classname="app.skein.core.vault.index.IndexStoreImplAcceptanceTest" time="0.033" />
+    <testcase name="ingestRowProbeVerifiesHealthyPostingBelowTheGlobalTop50" classname="app.skein.core.vault.index.IndexStoreImplAcceptanceTest" time="0.039" />
+    <testcase name="aReplaceChunksWhoseInsertAbortsRollsBackAndPublishesNoIndexChange" classname="app.skein.core.vault.index.IndexStoreImplAcceptanceTest" time="0.031" />
+    <testcase name="unicodeOnlyIngestProbeWarnsWhenTheInsertTriggerIsMissing" classname="app.skein.core.vault.index.IndexStoreImplAcceptanceTest" time="0.028" />
+    <testcase name="ingestRowProbeDetectsAMissingLaterPostingWhenTheFirstRowIsHealthy" classname="app.skein.core.vault.index.IndexStoreImplAcceptanceTest" time="0.028" />
+    <testcase name="unicodeOnlyIngestProbeChecksARealPostingWithoutAsciiFallback" classname="app.skein.core.vault.index.IndexStoreImplAcceptanceTest" time="0.027" />
+    <testcase name="unicodeAdversarialQueriesRemainLiteralAndCannotBroadenToUnrelatedRows" classname="app.skein.core.vault.index.IndexStoreImplAcceptanceTest" time="0.035" />
+    <testcase name="replaceEdgesWithWIKILINKDoesNotTouchENTITYEdgesOfTheSameSource" classname="app.skein.core.vault.index.IndexStoreImplAcceptanceTest" time="0.030" />
+    <testcase name="unicodeTextBindingPreservesSupplementaryAndLegacyModifiedUtf8" classname="app.skein.core.vault.index.IndexStoreImplAcceptanceTest" time="0.050">
+      <failure>expected to be true
+	at app.skein.core.vault.index.IndexStoreImplAcceptanceTest$unicodeTextBindingPreservesSupplementaryAndLegacyModifiedUtf8$1.invokeSuspend(IndexStoreImplAcceptanceTest.kt:327)
+	at app.skein.core.vault.index.IndexStoreImplAcceptanceTest$unicodeTextBindingPreservesSupplementaryAndLegacyModifiedUtf8$1.invoke(Unknown Source:8)
+	at app.skein.core.vault.index.IndexStoreImplAcceptanceTest$unicodeTextBindingPreservesSupplementaryAndLegacyModifiedUtf8$1.invoke(Unknown Source:4)
+	at kotlinx.coroutines.test.TestBuildersKt__TestBuildersKt$runTest$2$1$1.invokeSuspend(TestBuilders.kt:317)
+	at kotlin.coroutines.jvm.internal.BaseContinuationImpl.resumeWith(ContinuationImpl.kt:34)
+	at kotlinx.coroutines.DispatchedTask.run(DispatchedTask.kt:100)
+	at kotlinx.coroutines.test.TestDispatcher.processEvent$kotlinx_coroutines_test(TestDispatcher.kt:24)
+	at kotlinx.coroutines.test.TestCoroutineScheduler.tryRunNextTaskUnless$kotlinx_coroutines_test(TestCoroutineScheduler.kt:98)
+	at kotlinx.coroutines.test.TestBuildersKt__TestBuildersKt$runTest$2$1$workRunner$1.invokeSuspend(TestBuilders.kt:326)
+	at kotlin.coroutines.jvm.internal.BaseContinuationImpl.resumeWith(ContinuationImpl.kt:34)
+	at kotlinx.coroutines.DispatchedTask.run(DispatchedTask.kt:100)
+	at kotlinx.coroutines.EventLoopImplBase.processNextEvent(EventLoop.common.kt:256)
+	at kotlinx.coroutines.BlockingCoroutine.joinBlocking(Builders.kt:54)
+	at kotlinx.coroutines.BuildersKt__BuildersKt.runBlockingImpl(Builders.kt:30)
+	at kotlinx.coroutines.BuildersKt.runBlockingImpl(Unknown Source:1)
+	at kotlinx.coroutines.BuildersKt__Builders_concurrentKt.runBlockingK(Builders.concurrent.kt:172)
+	at kotlinx.coroutines.BuildersKt.runBlockingK(Unknown Source:1)
+	at kotlinx.coroutines.BuildersKt__Builders_concurrentKt.runBlockingK$default(Builders.concurrent.kt:157)
+	at kotlinx.coroutines.BuildersKt.runBlockingK$default(Unknown Source:1)
+	at kotlinx.coroutines.test.TestBuildersJvmKt.createTestResult(TestBuildersJvm.kt:10)
+	at kotlinx.coroutines.test.TestBuildersKt__TestBuildersKt.runTest-8Mi8wO0(TestBuilders.kt:309)
+	at kotlinx.coroutines.test.TestBuildersKt.runTest-8Mi8wO0(TestBuilders.kt:1)
+	at kotlinx.coroutines.test.TestBuildersKt__TestBuildersKt.runTest-8Mi8wO0(TestBuilders.kt:167)
+	at kotlinx.coroutines.test.TestBuildersKt.runTest-8Mi8wO0(TestBuilders.kt:1)
+	at kotlinx.coroutines.test.TestBuildersKt__TestBuildersKt.runTest-8Mi8wO0$default(TestBuilders.kt:159)
+	at kotlinx.coroutines.test.TestBuildersKt.runTest-8Mi8wO0$default(TestBuilders.kt:1)
+	at app.skein.core.vault.index.IndexStoreImplAcceptanceTest.unicodeTextBindingPreservesSupplementaryAndLegacyModifiedUtf8(IndexStoreImplAcceptanceTest.kt:285)
+</failure>
+    </testcase>
+    <testcase name="aCommittedReplaceChunksPublishesExactlyOneChunksReplaced" classname="app.skein.core.vault.index.IndexStoreImplAcceptanceTest" time="0.031" />
+    <testcase name="ingestRowProbeDoesNotTreatAsciiInsideAUnicodeTokenAsAMissingPosting" classname="app.skein.core.vault.index.IndexStoreImplAcceptanceTest" time="0.028" />
+  </testsuite>
+  <testsuite name="app.skein.core.vault.index.IndexStoreImplContractTest" tests="16" failures="0" errors="0" skipped="0" time="0.326" timestamp="2026-09-29T06:05:59" hostname="localhost">
+    <properties>
+      <property name="device" value="emulator-5554" />
+    </properties>
+    <testcase name="edgesTo_returns_backlinks" classname="app.skein.core.vault.index.IndexStoreImplContractTest" time="0.020" />
+    <testcase name="observeChanges_does_not_replay_changes_made_before_subscribing" classname="app.skein.core.vault.index.IndexStoreImplContractTest" time="0.020" />
+    <testcase name="observeChanges_emits_ChunksReplaced_by_the_time_replaceChunks_returns" classname="app.skein.core.vault.index.IndexStoreImplContractTest" time="0.020" />
+    <testcase name="replaceChunks_deletes_old_chunk_ids" classname="app.skein.core.vault.index.IndexStoreImplContractTest" time="0.020" />
+    <testcase name="observeChanges_emits_EmbeddingsUpdated_with_the_written_chunk_ids" classname="app.skein.core.vault.index.IndexStoreImplContractTest" time="0.021" />
+    <testcase name="bm25_finds_an_exact_term" classname="app.skein.core.vault.index.IndexStoreImplContractTest" time="0.020" />
+    <testcase name="replaceChunks_stamps_revisionHash_and_byte_offsets_that_getChunks_reads_back" classname="app.skein.core.vault.index.IndexStoreImplContractTest" time="0.019" />
+    <testcase name="chunksForDocs_also_reads_back_revisionHash_and_byte_offsets" classname="app.skein.core.vault.index.IndexStoreImplContractTest" time="0.020" />
+    <testcase name="observeChanges_delivers_one_event_per_call_in_publication_order" classname="app.skein.core.vault.index.IndexStoreImplContractTest" time="0.019" />
+    <testcase name="observeChanges_is_silent_for_a_no_op_replaceEdges" classname="app.skein.core.vault.index.IndexStoreImplContractTest" time="0.020" />
+    <testcase name="observeChanges_emits_ChunksReplaced_even_when_the_new_chunk_list_is_empty" classname="app.skein.core.vault.index.IndexStoreImplContractTest" time="0.020" />
+    <testcase name="observeChanges_emits_EdgesReplaced_carrying_the_nominated_kinds" classname="app.skein.core.vault.index.IndexStoreImplContractTest" time="0.018" />
+    <testcase name="knn_returns_nearest_first_for_orthogonal_int8_vectors" classname="app.skein.core.vault.index.IndexStoreImplContractTest" time="0.022" />
+    <testcase name="replaceChunks_with_no_revisionHash_or_offsets_reads_back_null_for_all_three" classname="app.skein.core.vault.index.IndexStoreImplContractTest" time="0.024" />
+    <testcase name="lexical_match_is_specific_to_one_row_and_removed_when_replaced" classname="app.skein.core.vault.index.IndexStoreImplContractTest" time="0.021" />
+    <testcase name="neighborhood_hops2_stops_at_maxNodes" classname="app.skein.core.vault.index.IndexStoreImplContractTest" time="0.022" />
+  </testsuite>
+  <testsuite name="app.skein.core.vault.index.LexicalRecallAcceptanceTest" tests="2" failures="0" errors="0" skipped="0" time="0.048" timestamp="2026-09-29T06:05:59" hostname="localhost">
+    <properties>
+      <property name="device" value="emulator-5554" />
+    </properties>
+    <testcase name="recallOfSqliteCipherRanksTheBothTermsChunkFirstWithScoresNormalizedTo01" classname="app.skein.core.vault.index.LexicalRecallAcceptanceTest" time="0.021" />
+    <testcase name="lexicalRecallDoesNotThrowOnTwentyAdversarialQueryStrings" classname="app.skein.core.vault.index.LexicalRecallAcceptanceTest" time="0.027" />
+  </testsuite>
+  <testsuite name="app.skein.core.vault.index.VectorRecallAcceptanceTest" tests="1" failures="0" errors="0" skipped="0" time="0.023" timestamp="2026-09-29T06:05:59" hostname="localhost">
+    <properties>
+      <property name="device" value="emulator-5554" />
+    </properties>
+    <testcase name="recallRanksTheChunkMatchingTheQueryVectorFirstScoresMappedTo01" classname="app.skein.core.vault.index.VectorRecallAcceptanceTest" time="0.023" />
+  </testsuite>
+  <testsuite name="app.skein.core.vault.key.VaultKeyProviderInstrumentedTest" tests="3" failures="0" errors="0" skipped="0" time="0.039" timestamp="2026-09-29T06:05:59" hostname="localhost">
+    <properties>
+      <property name="device" value="emulator-5554" />
+    </properties>
+    <testcase name="createKey_without_strongbox_produces_a_usable_alias" classname="app.skein.core.vault.key.VaultKeyProviderInstrumentedTest" time="0.021" />
+    <testcase name="encryptCipher_on_authRequired_key_requires_user_authentication" classname="app.skein.core.vault.key.VaultKeyProviderInstrumentedTest" time="0.013" />
+    <testcase name="hasStrongBox_probe_runs_without_throwing" classname="app.skein.core.vault.key.VaultKeyProviderInstrumentedTest" time="0.005" />
+  </testsuite>
+  <testsuite name="app.skein.core.vault.key.VaultKeyProvidersInstrumentedTest" tests="5" failures="0" errors="0" skipped="0" time="0.061" timestamp="2026-09-29T06:05:59" hostname="localhost">
+    <properties>
+      <property name="device" value="emulator-5554" />
+    </properties>
+    <testcase name="forDevice_builds_the_real_provider_locked_and_without_touching_disk" classname="app.skein.core.vault.key.VaultKeyProvidersInstrumentedTest" time="0.011" />
+    <testcase name="envelope_round_trips_and_rewraps_on_the_device_filesystem" classname="app.skein.core.vault.key.VaultKeyProvidersInstrumentedTest" time="0.011" />
+    <testcase name="unlock_before_setup_reports_NotInitialised_and_creates_nothing" classname="app.skein.core.vault.key.VaultKeyProvidersInstrumentedTest" time="0.006" />
+    <testcase name="unlock_over_a_real_auth_bound_alias_yields_no_key_without_authentication" classname="app.skein.core.vault.key.VaultKeyProvidersInstrumentedTest" time="0.023" />
+    <testcase name="setup_without_an_enrolled_biometric_leaves_no_envelope_and_no_aliases" classname="app.skein.core.vault.key.VaultKeyProvidersInstrumentedTest" time="0.010" />
+  </testsuite>
+  <testsuite name="app.skein.core.vault.lifecycle.VaultLifecycleInstrumentedTest" tests="7" failures="0" errors="0" skipped="0" time="0.279" timestamp="2026-09-29T06:05:59" hostname="localhost">
+    <properties>
+      <property name="device" value="emulator-5554" />
+    </properties>
+    <testcase name="createThenOpenThenCloseThenOpenThenCloseRoundTrip" classname="app.skein.core.vault.lifecycle.VaultLifecycleInstrumentedTest" time="0.065" />
+    <testcase name="createTwiceFailsWithAlreadyExists" classname="app.skein.core.vault.lifecycle.VaultLifecycleInstrumentedTest" time="0.051" />
+    <testcase name="integrityCheckWhileNotOpenReportsNotOpen" classname="app.skein.core.vault.lifecycle.VaultLifecycleInstrumentedTest" time="0.002" />
+    <testcase name="openNonexistentVaultFailsWithNotFound" classname="app.skein.core.vault.lifecycle.VaultLifecycleInstrumentedTest" time="0.003" />
+    <testcase name="closeLeavesNoWalOrShmResidue" classname="app.skein.core.vault.lifecycle.VaultLifecycleInstrumentedTest" time="0.052" />
+    <testcase name="openWithWrongKeyReturnsTypedWrongKey" classname="app.skein.core.vault.lifecycle.VaultLifecycleInstrumentedTest" time="0.048" />
+    <testcase name="integrityCheckOnAFreshlyCreatedVaultReportsOk" classname="app.skein.core.vault.lifecycle.VaultLifecycleInstrumentedTest" time="0.058" />
+  </testsuite>
+  <testsuite name="app.skein.core.vault.lifecycle.VaultResetInstrumentedTest" tests="3" failures="0" errors="0" skipped="0" time="0.022" timestamp="2026-09-29T06:05:59" hostname="localhost">
+    <properties>
+      <property name="device" value="emulator-5554" />
+    </properties>
+    <testcase name="reset_removes_real_Keystore_aliases" classname="app.skein.core.vault.lifecycle.VaultResetInstrumentedTest" time="0.005" />
+    <testcase name="reset_deletes_real_files_under_filesDir" classname="app.skein.core.vault.lifecycle.VaultResetInstrumentedTest" time="0.009" />
+    <testcase name="reset_refuses_while_unlocked_and_leaves_real_files_alone" classname="app.skein.core.vault.lifecycle.VaultResetInstrumentedTest" time="0.008" />
+  </testsuite>
+  <testsuite name="app.skein.core.vault.models.ModelRegistryImplContractTest" tests="11" failures="0" errors="0" skipped="0" time="0.238" timestamp="2026-09-29T06:05:59" hostname="localhost">
+    <properties>
+      <property name="device" value="emulator-5554" />
+    </properties>
+    <testcase name="setDefault_accepts_an_id_with_no_backing_row" classname="app.skein.core.vault.models.ModelRegistryImplContractTest" time="0.035" />
+    <testcase name="upsert_replaces_an_existing_row_with_the_same_id" classname="app.skein.core.vault.models.ModelRegistryImplContractTest" time="0.024" />
+    <testcase name="default_is_null_for_a_fresh_registry" classname="app.skein.core.vault.models.ModelRegistryImplContractTest" time="0.016" />
+    <testcase name="list_is_empty_for_a_fresh_registry" classname="app.skein.core.vault.models.ModelRegistryImplContractTest" time="0.017" />
+    <testcase name="delete_removes_the_row" classname="app.skein.core.vault.models.ModelRegistryImplContractTest" time="0.020" />
+    <testcase name="get_returns_null_for_an_unknown_id" classname="app.skein.core.vault.models.ModelRegistryImplContractTest" time="0.017" />
+    <testcase name="setDefault_null_clears_the_default" classname="app.skein.core.vault.models.ModelRegistryImplContractTest" time="0.020" />
+    <testcase name="delete_of_an_unknown_id_is_a_no_op" classname="app.skein.core.vault.models.ModelRegistryImplContractTest" time="0.022" />
+    <testcase name="list_reflects_every_upserted_record" classname="app.skein.core.vault.models.ModelRegistryImplContractTest" time="0.021" />
+    <testcase name="setDefault_then_default_round_trips" classname="app.skein.core.vault.models.ModelRegistryImplContractTest" time="0.020" />
+    <testcase name="upsert_then_get_round_trips_every_field" classname="app.skein.core.vault.models.ModelRegistryImplContractTest" time="0.026" />
+  </testsuite>
+  <testsuite name="app.skein.core.vault.persona.PersonaServiceImplContractTest" tests="3" failures="0" errors="0" skipped="0" time="0.053" timestamp="2026-09-29T06:05:59" hostname="localhost">
+    <properties>
+      <property name="device" value="emulator-5554" />
+    </properties>
+    <testcase name="default_creates_default_once_and_returns_same_id_on_second_call" classname="app.skein.core.vault.persona.PersonaServiceImplContractTest" time="0.015" />
+    <testcase name="delete_of_last_persona_throws_illegal_state" classname="app.skein.core.vault.persona.PersonaServiceImplContractTest" time="0.013" />
+    <testcase name="observeAll_emits_after_create" classname="app.skein.core.vault.persona.PersonaServiceImplContractTest" time="0.025" />
+  </testsuite>
+  <testsuite name="app.skein.core.vault.repository.ObjectLifecycleEmulatorLaneTest" tests="6" failures="0" errors="0" skipped="0" time="1.975" timestamp="2026-09-29T06:05:59" hostname="localhost">
+    <properties>
+      <property name="device" value="emulator-5554" />
+    </properties>
+    <testcase name="a_committed_delete_survives_pool_close_and_reopen" classname="app.skein.core.vault.repository.ObjectLifecycleEmulatorLaneTest" time="0.094" />
+    <testcase name="pragma_secure_delete_is_on_for_every_pool_connection" classname="app.skein.core.vault.repository.ObjectLifecycleEmulatorLaneTest" time="0.053" />
+    <testcase name="cascade_leaves_no_chunks_fts_matches_or_vec_rows" classname="app.skein.core.vault.repository.ObjectLifecycleEmulatorLaneTest" time="0.069" />
+    <testcase name="a_note_created_with_a_deleted_notes_title_regains_its_backlinks" classname="app.skein.core.vault.repository.ObjectLifecycleEmulatorLaneTest" time="0.066" />
+    <testcase name="attachment_blob_outlives_a_delete_whose_commit_fails" classname="app.skein.core.vault.repository.ObjectLifecycleEmulatorLaneTest" time="0.081" />
+    <testcase name="fts_delete_cost_with_secure_delete_is_recorded" classname="app.skein.core.vault.repository.ObjectLifecycleEmulatorLaneTest" time="1.612" />
+  </testsuite>
+  <testsuite name="app.skein.core.vault.repository.VaultRepositoryImplContractTest" tests="87" failures="0" errors="0" skipped="0" time="2.284" timestamp="2026-09-29T06:05:59" hostname="localhost">
+    <properties>
+      <property name="device" value="emulator-5554" />
+    </properties>
+    <testcase name="observeTimeline_reemits_within_50ms_of_a_write_on_another_coroutine" classname="app.skein.core.vault.repository.VaultRepositoryImplContractTest" time="0.025" />
+    <testcase name="searchBodies_quantum_returns_bm25_ranked_hit_with_bracket_snippet" classname="app.skein.core.vault.repository.VaultRepositoryImplContractTest" time="0.024" />
+    <testcase name="createDocument_callers_id_wins_over_frontmatter_id_key" classname="app.skein.core.vault.repository.VaultRepositoryImplContractTest" time="0.017" />
+    <testcase name="orphan_edge_sweep_deletes_edges_from_missing_sources_and_stray_vectors" classname="app.skein.core.vault.repository.VaultRepositoryImplContractTest" time="0.020" />
+    <testcase name="createDocument_frontmatter_id_key_is_the_fallback_when_caller_supplies_none" classname="app.skein.core.vault.repository.VaultRepositoryImplContractTest" time="0.016" />
+    <testcase name="altered_excerpt_does_not_unpin_other_citations_or_its_own_revision" classname="app.skein.core.vault.repository.VaultRepositoryImplContractTest" time="0.037" />
+    <testcase name="staged_export_file_of_a_deleted_document_is_purged_after_commit" classname="app.skein.core.vault.repository.VaultRepositoryImplContractTest" time="0.022" />
+    <testcase name="a_frontmatter_only_edit_requeues_ingest" classname="app.skein.core.vault.repository.VaultRepositoryImplContractTest" time="0.024" />
+    <testcase name="deleteDocument_sentinel_matches_EdgeUpserter_for_a_non_ascii_title" classname="app.skein.core.vault.repository.VaultRepositoryImplContractTest" time="0.024" />
+    <testcase name="attachment_round_trip_1MiB_of_random_bytes" classname="app.skein.core.vault.repository.VaultRepositoryImplContractTest" time="0.091" />
+    <testcase name="attachment_blob_is_deleted_only_after_commit" classname="app.skein.core.vault.repository.VaultRepositoryImplContractTest" time="0.021" />
+    <testcase name="renameDocument_requeues_ingest_with_a_fresh_queued_at" classname="app.skein.core.vault.repository.VaultRepositoryImplContractTest" time="0.025" />
+    <testcase name="deleteDocument_id_spelling_equal_to_title_still_has_only_an_id_binding" classname="app.skein.core.vault.repository.VaultRepositoryImplContractTest" time="0.024" />
+    <testcase name="a_chat_documents_snapshots_stay_bounded_and_its_citations_still_resolve" classname="app.skein.core.vault.repository.VaultRepositoryImplContractTest" time="0.080" />
+    <testcase name="renameDocument_does_not_treat_code_literal_id_as_a_link_binding" classname="app.skein.core.vault.repository.VaultRepositoryImplContractTest" time="0.022" />
+    <testcase name="sweep_never_removes_the_current_revision" classname="app.skein.core.vault.repository.VaultRepositoryImplContractTest" time="0.021" />
+    <testcase name="recordIngestFailure_count_resets_when_the_document_is_re_queued" classname="app.skein.core.vault.repository.VaultRepositoryImplContractTest" time="0.021" />
+    <testcase name="deleteDocument_rewrites_wikilink_in_edges_to_the_title_sentinel_at_weight_half" classname="app.skein.core.vault.repository.VaultRepositoryImplContractTest" time="0.022" />
+    <testcase name="replaceBody_never_writes_the_title" classname="app.skein.core.vault.repository.VaultRepositoryImplContractTest" time="0.023" />
+    <testcase name="recordIngestFailure_increments_and_persists_across_dequeue" classname="app.skein.core.vault.repository.VaultRepositoryImplContractTest" time="0.021" />
+    <testcase name="a_message_without_citations_still_round_trips_legacy_chunk_ids" classname="app.skein.core.vault.repository.VaultRepositoryImplContractTest" time="0.021" />
+    <testcase name="deleteDocument_keeps_other_chats_citation_excerpts" classname="app.skein.core.vault.repository.VaultRepositoryImplContractTest" time="0.023" />
+    <testcase name="sweep_is_idempotent" classname="app.skein.core.vault.repository.VaultRepositoryImplContractTest" time="0.023" />
+    <testcase name="commit_acknowledgements_wait_for_outer_commit_and_never_run_on_rollback" classname="app.skein.core.vault.repository.VaultRepositoryImplContractTest" time="0.021" />
+    <testcase name="createDocument_captures_a_revision_addressing_the_content" classname="app.skein.core.vault.repository.VaultRepositoryImplContractTest" time="0.021" />
+    <testcase name="cancellation_immediately_after_commit_cannot_skip_acknowledgement_or_undo_the_send" classname="app.skein.core.vault.repository.VaultRepositoryImplContractTest" time="0.022" />
+    <testcase name="updateBody_bumps_updated_at_and_changes_content_hash" classname="app.skein.core.vault.repository.VaultRepositoryImplContractTest" time="0.023" />
+    <testcase name="appendMessage_rematerializes_bodymd_containing_message_text" classname="app.skein.core.vault.repository.VaultRepositoryImplContractTest" time="0.024" />
+    <testcase name="recordIngestFailure_returns_zero_and_writes_nothing_once_the_entry_is_gone" classname="app.skein.core.vault.repository.VaultRepositoryImplContractTest" time="0.022" />
+    <testcase name="appendMessage_round_trips_a_citation_record" classname="app.skein.core.vault.repository.VaultRepositoryImplContractTest" time="0.024" />
+    <testcase name="updateBody_rejects_attachments_and_chats" classname="app.skein.core.vault.repository.VaultRepositoryImplContractTest" time="0.027" />
+    <testcase name="commit_acknowledgement_registration_requires_this_repositorys_transaction" classname="app.skein.core.vault.repository.VaultRepositoryImplContractTest" time="0.040" />
+    <testcase name="sweep_removes_an_uncited_superseded_revision" classname="app.skein.core.vault.repository.VaultRepositoryImplContractTest" time="0.035" />
+    <testcase name="index_writes_for_a_missing_source_document_are_skipped" classname="app.skein.core.vault.repository.VaultRepositoryImplContractTest" time="0.023" />
+    <testcase name="a_citation_into_a_deleted_document_does_not_match" classname="app.skein.core.vault.repository.VaultRepositoryImplContractTest" time="0.022" />
+    <testcase name="searchTitles_and_searchBodies_never_return_a_deleted_document" classname="app.skein.core.vault.repository.VaultRepositoryImplContractTest" time="0.026" />
+    <testcase name="completeIngest_noop_when_requeued" classname="app.skein.core.vault.repository.VaultRepositoryImplContractTest" time="0.025" />
+    <testcase name="orphan_edge_sweep_is_idempotent" classname="app.skein.core.vault.repository.VaultRepositoryImplContractTest" time="0.028" />
+    <testcase name="observeDocument_emits_null_after_delete" classname="app.skein.core.vault.repository.VaultRepositoryImplContractTest" time="0.027" />
+    <testcase name="countChatsCiting_counts_distinct_chats_by_decoded_citation_records" classname="app.skein.core.vault.repository.VaultRepositoryImplContractTest" time="0.038" />
+    <testcase name="updateBody_changes_the_revision_hash_and_keeps_the_old_revision_readable" classname="app.skein.core.vault.repository.VaultRepositoryImplContractTest" time="0.026" />
+    <testcase name="deleteDocument_removes_cite_in_edges" classname="app.skein.core.vault.repository.VaultRepositoryImplContractTest" time="0.021" />
+    <testcase name="deleteDocument_removes_the_documents_chunks" classname="app.skein.core.vault.repository.VaultRepositoryImplContractTest" time="0.024" />
+    <testcase name="new_draft_same_id_is_separate_in_each_space" classname="app.skein.core.vault.repository.VaultRepositoryImplContractTest" time="0.024" />
+    <testcase name="sweep_keeps_a_superseded_revision_still_cited_by_a_message" classname="app.skein.core.vault.repository.VaultRepositoryImplContractTest" time="0.030" />
+    <testcase name="observeTimeline_orders_newest_first_and_filters_by_persona" classname="app.skein.core.vault.repository.VaultRepositoryImplContractTest" time="0.032" />
+    <testcase name="writes_to_a_deleted_document_throw_NoSuchElementException_and_write_nothing" classname="app.skein.core.vault.repository.VaultRepositoryImplContractTest" time="0.024" />
+    <testcase name="deleteDocument_is_idempotent_for_a_missing_id" classname="app.skein.core.vault.repository.VaultRepositoryImplContractTest" time="0.021" />
+    <testcase name="a_closed_repository_cannot_borrow_another_repositorys_transaction" classname="app.skein.core.vault.repository.VaultRepositoryImplContractTest" time="0.036" />
+    <testcase name="replay_detects_a_source_that_changed_under_a_citation" classname="app.skein.core.vault.repository.VaultRepositoryImplContractTest" time="0.033" />
+    <testcase name="renameDocument_on_an_attachment_keeps_its_byte_hash" classname="app.skein.core.vault.repository.VaultRepositoryImplContractTest" time="0.023" />
+    <testcase name="transaction_nests_writes_without_deadlock" classname="app.skein.core.vault.repository.VaultRepositoryImplContractTest" time="0.025" />
+    <testcase name="deleteDocument_removes_the_row_and_getDocument_returns_null" classname="app.skein.core.vault.repository.VaultRepositoryImplContractTest" time="0.021" />
+    <testcase name="draft_roundtrip_preserves_unicode_selection_and_has_no_document_side_effects" classname="app.skein.core.vault.repository.VaultRepositoryImplContractTest" time="0.023" />
+    <testcase name="orphan_edge_sweep_deletes_edges_to_missing_documents_and_requeues_their_sources" classname="app.skein.core.vault.repository.VaultRepositoryImplContractTest" time="0.024" />
+    <testcase name="deleteDocument_removes_out_edges_of_every_kind" classname="app.skein.core.vault.repository.VaultRepositoryImplContractTest" time="0.024" />
+    <testcase name="observeMessages_emits_empty_after_the_chat_is_deleted" classname="app.skein.core.vault.repository.VaultRepositoryImplContractTest" time="0.023" />
+    <testcase name="quiesce_timeout_rolls_back_and_never_reopens_admission" classname="app.skein.core.vault.repository.VaultRepositoryImplContractTest" time="0.037" />
+    <testcase name="draft_batch_rolls_back_and_quiesce_refuses_late_writes" classname="app.skein.core.vault.repository.VaultRepositoryImplContractTest" time="0.024" />
+    <testcase name="failing_acknowledgement_does_not_undo_commit_or_prevent_the_next_acknowledgement" classname="app.skein.core.vault.repository.VaultRepositoryImplContractTest" time="0.022" />
+    <testcase name="deleteDocument_requeues_the_surviving_document_with_the_same_title" classname="app.skein.core.vault.repository.VaultRepositoryImplContractTest" time="0.029" />
+    <testcase name="a_failed_transaction_rolls_back_every_delete_in_it" classname="app.skein.core.vault.repository.VaultRepositoryImplContractTest" time="0.025" />
+    <testcase name="create_then_get_preserves_frontmatter_id" classname="app.skein.core.vault.repository.VaultRepositoryImplContractTest" time="0.020" />
+    <testcase name="send_and_draft_clear_commit_together_or_both_roll_back" classname="app.skein.core.vault.repository.VaultRepositoryImplContractTest" time="0.024" />
+    <testcase name="an_undone_edit_resolves_back_to_the_original_revision" classname="app.skein.core.vault.repository.VaultRepositoryImplContractTest" time="0.026" />
+    <testcase name="renameDocument_keeps_content_hash_and_captures_no_revision" classname="app.skein.core.vault.repository.VaultRepositoryImplContractTest" time="0.021" />
+    <testcase name="renameDocument_preserves_explicit_id_links_and_detaches_a_mixed_title_link" classname="app.skein.core.vault.repository.VaultRepositoryImplContractTest" time="0.031" />
+    <testcase name="quiesce_drains_nested_transaction_and_refuses_late_writes" classname="app.skein.core.vault.repository.VaultRepositoryImplContractTest" time="0.022" />
+    <testcase name="attachments_have_no_revisions" classname="app.skein.core.vault.repository.VaultRepositoryImplContractTest" time="0.021" />
+    <testcase name="a_real_frontmatter_edit_does_change_the_revision_hash" classname="app.skein.core.vault.repository.VaultRepositoryImplContractTest" time="0.023" />
+    <testcase name="observeTimeline_drops_the_deleted_document" classname="app.skein.core.vault.repository.VaultRepositoryImplContractTest" time="0.025" />
+    <testcase name="a_late_autosave_never_resurrects_a_deleted_note" classname="app.skein.core.vault.repository.VaultRepositoryImplContractTest" time="0.024" />
+    <testcase name="renameDocument_with_ifTitleIs_writes_nothing_when_the_title_changed" classname="app.skein.core.vault.repository.VaultRepositoryImplContractTest" time="0.020" />
+    <testcase name="retitling_alone_does_not_change_the_revision_hash" classname="app.skein.core.vault.repository.VaultRepositoryImplContractTest" time="0.025" />
+    <testcase name="renameDocument_changes_only_the_title" classname="app.skein.core.vault.repository.VaultRepositoryImplContractTest" time="0.025" />
+    <testcase name="renameDocument_detaches_wikilink_in_edges_to_the_old_title_sentinel" classname="app.skein.core.vault.repository.VaultRepositoryImplContractTest" time="0.024" />
+    <testcase name="renameDocument_does_not_change_updated_at" classname="app.skein.core.vault.repository.VaultRepositoryImplContractTest" time="0.028" />
+    <testcase name="deleted_chat_cascades_draft_and_late_write_cannot_resurrect_it" classname="app.skein.core.vault.repository.VaultRepositoryImplContractTest" time="0.024" />
+    <testcase name="renameDocument_keeps_cite_in_edges" classname="app.skein.core.vault.repository.VaultRepositoryImplContractTest" time="0.024" />
+    <testcase name="kindsOf_returns_only_requested_live_kinds_in_a_large_batch" classname="app.skein.core.vault.repository.VaultRepositoryImplContractTest" time="0.035" />
+    <testcase name="kindsOf_reads_its_own_transaction_without_deadlocking" classname="app.skein.core.vault.repository.VaultRepositoryImplContractTest" time="0.021" />
+    <testcase name="deleteDocument_explicit_id_link_is_not_a_title_link_to_a_replacement" classname="app.skein.core.vault.repository.VaultRepositoryImplContractTest" time="0.025" />
+    <testcase name="deleteDocument_removes_messages_revisions_and_the_ingest_queue_entry" classname="app.skein.core.vault.repository.VaultRepositoryImplContractTest" time="0.024" />
+    <testcase name="a_cosmetic_frontmatter_rewrite_does_not_change_the_revision_hash" classname="app.skein.core.vault.repository.VaultRepositoryImplContractTest" time="0.034" />
+    <testcase name="renameDocument_trims_collapses_line_breaks_and_rejects_blank_or_over_200" classname="app.skein.core.vault.repository.VaultRepositoryImplContractTest" time="0.024" />
+    <testcase name="capturing_unchanged_content_is_idempotent" classname="app.skein.core.vault.repository.VaultRepositoryImplContractTest" time="0.027" />
+    <testcase name="deleting_a_document_cascades_its_revisions_ahead_of_any_sweep" classname="app.skein.core.vault.repository.VaultRepositoryImplContractTest" time="0.021" />
+  </testsuite>
+  <testsuite name="app.skein.vault.SchemaLoadInstrumentedTest" tests="1" failures="0" errors="0" skipped="0" time="0.014" timestamp="2026-09-29T06:05:59" hostname="localhost">
+    <properties>
+      <property name="device" value="emulator-5554" />
+    </properties>
+    <testcase name="test001InitialSqlLoadsStatementByStatementOnTheSpikeDriver" classname="app.skein.vault.SchemaLoadInstrumentedTest" time="0.014" />
+  </testsuite>
+</testsuites>

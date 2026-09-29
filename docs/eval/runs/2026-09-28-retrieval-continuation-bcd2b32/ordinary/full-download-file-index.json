@@ -1,0 +1,1406 @@
+{
+  "app/build/outputs/androidTest-results/connected/debug/flavors/dev/TEST-test(AVD) - 15.xml": {
+    "bytes": 8355,
+    "sha256": "c6acac28116e7f08f4e5e53582cb3b180e5cb1f5bb3bd98206d11415ad417092"
+  },
+  "app/build/outputs/androidTest-results/connected/debug/flavors/dev/test(AVD) - 15/device-info.pb": {
+    "bytes": 112,
+    "sha256": "8690a9dcdbe34d879780107bdc5bfb1daddf7ce4a1ff618f735eb6048050ce56"
+  },
+  "app/build/outputs/androidTest-results/connected/debug/flavors/dev/test(AVD) - 15/logcat-app.skein.SampleInstrumentedTest-instrumentationTargetsTheAppUnderTest.txt": {
+    "bytes": 253,
+    "sha256": "083b3e0ab1e6f02ed413069e38a69ac919d783f67ded2ab7c055fbd2af8c6600"
+  },
+  "app/build/outputs/androidTest-results/connected/debug/flavors/dev/test(AVD) - 15/logcat-app.skein.inference.LlamaCppEngineInstrumentedTest-cancel_stops_within_100ms.txt": {
+    "bytes": 1052,
+    "sha256": "9f190d70177572e65ee6d1c2634468f38d6f1480b3be64fc04b290dd1bc521d4"
+  },
+  "app/build/outputs/androidTest-results/connected/debug/flavors/dev/test(AVD) - 15/logcat-app.skein.inference.LlamaCppEngineInstrumentedTest-embed_without_capability_throws_invalid_model.txt": {
+    "bytes": 2308,
+    "sha256": "2e17b78335c86cb12a32675db8f418c314cff62ae82d9bdf74555b4ae5689fc9"
+  },
+  "app/build/outputs/androidTest-results/connected/debug/flavors/dev/test(AVD) - 15/logcat-app.skein.inference.LlamaCppEngineInstrumentedTest-inspectReadsMetadataWithoutLoading.txt": {
+    "bytes": 6061,
+    "sha256": "0289a1d6b01c4465ddf9ae8100c6047dfd76329c204c5ae95758bb8230aa0da0"
+  },
+  "app/build/outputs/androidTest-results/connected/debug/flavors/dev/test(AVD) - 15/logcat-app.skein.inference.LlamaCppEngineInstrumentedTest-load_bad_hash_returns_failure.txt": {
+    "bytes": 444,
+    "sha256": "4c9faf3bcba4dc0b4d47a5591b83ddbab7dc3650a45a4e731093a2478745c420"
+  },
+  "app/build/outputs/androidTest-results/connected/debug/flavors/dev/test(AVD) - 15/logcat-app.skein.inference.LlamaCppEngineInstrumentedTest-second_stream_fails_busy.txt": {
+    "bytes": 1103,
+    "sha256": "3b583f70df6de48d3701e08d902685fe63f54dfa6bc6aef3936704b6555b19af"
+  },
+  "app/build/outputs/androidTest-results/connected/debug/flavors/dev/test(AVD) - 15/logcat-app.skein.inference.LlamaCppEngineInstrumentedTest-serviceDeathFailsTheStreamAndTheNextLoadRebinds.txt": {
+    "bytes": 33442,
+    "sha256": "c3d32e2c412fd34f71c801ab6ffdcfa06d4c35353a64aa19633b6f11afcf9d53"
+  },
+  "app/build/outputs/androidTest-results/connected/debug/flavors/dev/test(AVD) - 15/logcat-app.skein.inference.LlamaCppEngineInstrumentedTest-stream_emits_done_last.txt": {
+    "bytes": 8801,
+    "sha256": "6128fe34421ed9c8b56488fef02921af9e770f562a1a0889768c3dc3c5858098"
+  },
+  "app/build/outputs/androidTest-results/connected/debug/flavors/dev/test(AVD) - 15/logcat-app.skein.inference.LlamaCppEngineInstrumentedTest-unload_then_stream_throws_not_loaded.txt": {
+    "bytes": 2184,
+    "sha256": "6417d6addffe56d119e773bb51a72f744ae5343745fb8e8a2bb6f3794a6b6bcf"
+  },
+  "app/build/outputs/androidTest-results/connected/debug/flavors/dev/test(AVD) - 15/logcat-app.skein.ingest.IngestWorkerInstrumentedTest-lock_cancels_the_unique_work_and_nothing_runs_while_locked.txt": {
+    "bytes": 26753,
+    "sha256": "38057b0b3349b7e5872b3175d4746f15cff7ee2fd4046690babf086ba9daa072"
+  },
+  "app/build/outputs/androidTest-results/connected/debug/flavors/dev/test(AVD) - 15/logcat-app.skein.ingest.IngestWorkerInstrumentedTest-three_queued_notes_are_chunked_searchable_and_linked_after_one_pass.txt": {
+    "bytes": 43312,
+    "sha256": "576e75847389a8b6298a6f9cb64cdfb11a27e6b0a3ea19f9afb55a88393d9f15"
+  },
+  "app/build/outputs/androidTest-results/connected/debug/flavors/dev/test(AVD) - 15/logcat-app.skein.vault.FirstRunInstrumentedTest-a_second_setup_is_refused_and_the_vault_still_opens.txt": {
+    "bytes": 159341,
+    "sha256": "666db1c3a38b1d8c06a04354ae2f57b5985c717b64ed1465b4c49ab3558bc926"
+  },
+  "app/build/outputs/androidTest-results/connected/debug/flavors/dev/test(AVD) - 15/logcat-app.skein.vault.FirstRunInstrumentedTest-fresh_install_routes_to_setup_then_unlock_then_serves_the_root.txt": {
+    "bytes": 103024,
+    "sha256": "554584dcd9654bd434ebebfb885bf754cd7ab04df13a8bd43c947863b458d57f"
+  },
+  "app/build/outputs/androidTest-results/connected/debug/flavors/dev/test(AVD) - 15/logcat-app.skein.vault.FirstRunInstrumentedTest-fresh_install_seeds_the_first_persona.txt": {
+    "bytes": 41437,
+    "sha256": "d9b69ce5c574bf58a9757f44afe70813b3b76eeab4a02258b0f78bc47e9e3933"
+  },
+  "app/build/outputs/androidTest-results/connected/debug/flavors/dev/test(AVD) - 15/logcat-app.skein.vault.FirstRunInstrumentedTest-second_launch_unlocks_without_setup.txt": {
+    "bytes": 164176,
+    "sha256": "50f31be9fe1e8b1532c896087ad987048dc9d6e5c6d8c4e74c7edbe9838bedba"
+  },
+  "app/build/outputs/androidTest-results/connected/debug/flavors/dev/test(AVD) - 15/logcat-app.skein.vault.LockPolicySettingsRecreationInstrumentedTest-changingLockOnScreenOffPersistsAndSurvivesActivityRecreation.txt": {
+    "bytes": 19422,
+    "sha256": "cfe6ab84db55f30b15dc11e4c2c6ba31e784e8019f4441d6ae513afd548df2e0"
+  },
+  "app/build/outputs/androidTest-results/connected/debug/flavors/dev/test(AVD) - 15/logcat-app.skein.vault.VaultBootstrapInstrumentedTest-a_second_unlock_reopens_the_same_vault_file.txt": {
+    "bytes": 81717,
+    "sha256": "35f3751d386808ee19c82406b9829b440886d7f9cd539eefa0fa60a0df24c047"
+  },
+  "app/build/outputs/androidTest-results/connected/debug/flavors/dev/test(AVD) - 15/logcat-app.skein.vault.VaultBootstrapInstrumentedTest-lock_after_bringUp_serves_no_roots.txt": {
+    "bytes": 64963,
+    "sha256": "ac411183f38a1732bce64d7600047544ec4d62753c0a71ffe0d99dd71235cc4a"
+  },
+  "app/build/outputs/androidTest-results/connected/debug/flavors/dev/test(AVD) - 15/logcat-app.skein.vault.VaultBootstrapInstrumentedTest-timed_out_write_rolls_back_before_a_fresh_session_reopens_the_vault.txt": {
+    "bytes": 78586,
+    "sha256": "76a35ec15c2c1cbb54ba5d19bc2e76367112d17e0ba1ef9f73a538095e279da0"
+  },
+  "app/build/outputs/androidTest-results/connected/debug/flavors/dev/test(AVD) - 15/logcat-app.skein.vault.VaultBootstrapInstrumentedTest-unlock_then_bringUp_serves_the_vault_root.txt": {
+    "bytes": 40568,
+    "sha256": "dd7714af7ac22d79920cade8d3f1ba5b4cd9696f297ed2c35fb9a80177553546"
+  },
+  "app/build/outputs/androidTest-results/connected/debug/flavors/dev/test(AVD) - 15/logcat-app.skein.vault.provider.VaultDocumentsProviderGrantInstrumentedTest-openDocument_roundTrips_theSeededNoteBytes_throughTheRealAuthority.txt": {
+    "bytes": 41284,
+    "sha256": "3a3330d00b2f4d51799dec31edde7c695460b40fbad22ee51d4494921ea279b1"
+  },
+  "app/build/outputs/androidTest-results/connected/debug/flavors/dev/test(AVD) - 15/logcat-app.skein.vault.provider.VaultDocumentsProviderGrantInstrumentedTest-read_throwsFileNotFoundException_afterTheVaultLocks.txt": {
+    "bytes": 40107,
+    "sha256": "c49c9714ed132430fe24ea457ebdf1f276fbbb86134c7b8c2354e670a4e9ad99"
+  },
+  "app/build/outputs/androidTest-results/connected/debug/flavors/dev/test(AVD) - 15/logcat-app.skein.vault.provider.VaultDocumentsProviderGrantInstrumentedTest-read_worksAgain_afterLockThenReUnlock_usingTheSameDocumentId.txt": {
+    "bytes": 50841,
+    "sha256": "03894aa09ff243eb9878e2bd7bfc6a2e277f7deee03c3d588031cf9223575672"
+  },
+  "app/build/outputs/androidTest-results/connected/debug/flavors/dev/test(AVD) - 15/logcat-app.skein.vault.provider.VaultDocumentsProviderGrantInstrumentedTest-rootRow_neverAdvertises_flagSupportsIsChild.txt": {
+    "bytes": 40771,
+    "sha256": "ef6378330fde4cdb5c50debbb002148bccabe4e0118c1b5466d986bb27f5206b"
+  },
+  "app/build/outputs/androidTest-results/connected/debug/flavors/dev/test(AVD) - 15/logcat-app.skein.vault.provider.VaultDocumentsProviderGrantInstrumentedTest-takePersistableUriPermission_alwaysThrows_becauseNoPersistableGrantIsEverOffered.txt": {
+    "bytes": 41870,
+    "sha256": "f5d0b696e3cdbd3a54417e56745f676f2019a72da58089213ec9e851094ca0d6"
+  },
+  "app/build/outputs/androidTest-results/connected/debug/flavors/dev/test(AVD) - 15/logcat-app.skein.vault.provider.VaultDocumentsProviderTest-isChildDocument_scopesNotesUnderTheNotesDirectoryOnly.txt": {
+    "bytes": 323,
+    "sha256": "f9caa4868d6cfa4de02a1363b69142d8e804d3757c706eb0aef78cb9fc1dfd11"
+  },
+  "app/build/outputs/androidTest-results/connected/debug/flavors/dev/test(AVD) - 15/logcat-app.skein.vault.provider.VaultDocumentsProviderTest-locked_everyQueryAndOpenThrowsAndNothingIsListed.txt": {
+    "bytes": 313,
+    "sha256": "8f66b7b3a6ff1b0414a7c6782ede060b5ceb19403f14ece72958975b7192a929"
+  },
+  "app/build/outputs/androidTest-results/connected/debug/flavors/dev/test(AVD) - 15/logcat-app.skein.vault.provider.VaultDocumentsProviderTest-openDocument_read_streamsExactlyWhatExportMarkdownProduces.txt": {
+    "bytes": 434,
+    "sha256": "d3a92d9d265d90c46428f96a748bb5835a43f84fcae855e7fffef3aad477ade5"
+  },
+  "app/build/outputs/androidTest-results/connected/debug/flavors/dev/test(AVD) - 15/logcat-app.skein.vault.provider.VaultDocumentsProviderTest-openDocument_read_streamsTheOriginalAttachmentBytes.txt": {
+    "bytes": 420,
+    "sha256": "9240927791e416a624452bc54dd48b5d554ba722e781bf3c6504bbacde2bc703"
+  },
+  "app/build/outputs/androidTest-results/connected/debug/flavors/dev/test(AVD) - 15/logcat-app.skein.vault.provider.VaultDocumentsProviderTest-openDocument_refusesReadWriteMode.txt": {
+    "bytes": 283,
+    "sha256": "277a641817c81d38e07c20ff9229933642ff50918a6dac8ed93bd510871b6561"
+  },
+  "app/build/outputs/androidTest-results/connected/debug/flavors/dev/test(AVD) - 15/logcat-app.skein.vault.provider.VaultDocumentsProviderTest-openDocument_write_updatesTheNoteAndEnqueuesIngest.txt": {
+    "bytes": 495,
+    "sha256": "b8e3fa12153afc3efc8cf341894d454fcb3076453ccaf3a8eb090cd6d55c9562"
+  },
+  "app/build/outputs/androidTest-results/connected/debug/flavors/dev/test(AVD) - 15/logcat-app.skein.vault.provider.VaultDocumentsProviderTest-queryChildDocuments_ofAttachments_listsEveryAttachmentWithItsStoredMimeType.txt": {
+    "bytes": 367,
+    "sha256": "88baeba486bdfc83bc0189d9f03651f403c30a463cf82d0c7dc1e1461030c1e7"
+  },
+  "app/build/outputs/androidTest-results/connected/debug/flavors/dev/test(AVD) - 15/logcat-app.skein.vault.provider.VaultDocumentsProviderTest-queryChildDocuments_ofNotes_listsEveryMarkdownDocumentAsTextMarkdown.txt": {
+    "bytes": 353,
+    "sha256": "51c3efc67e65c8a165e53959ee482c9a8e263b3ea26e52ee15c9feb7eb6e772f"
+  },
+  "app/build/outputs/androidTest-results/connected/debug/flavors/dev/test(AVD) - 15/logcat-app.skein.vault.provider.VaultDocumentsProviderTest-queryChildDocuments_ofRoot_listsNotesAndAttachments.txt": {
+    "bytes": 319,
+    "sha256": "7361cca5f639df674633e198225c9acd4481032ef65966b3b4ed8745aa62af29"
+  },
+  "app/build/outputs/androidTest-results/connected/debug/flavors/dev/test(AVD) - 15/logcat-app.skein.vault.provider.VaultDocumentsProviderTest-queryDocument_honoursARequestedProjection.txt": {
+    "bytes": 299,
+    "sha256": "d543242a76fafb22fe041c2064a24aa81f2531e4254a0ae50e0c1bf20ddee72a"
+  },
+  "app/build/outputs/androidTest-results/connected/debug/flavors/dev/test(AVD) - 15/logcat-app.skein.vault.provider.VaultDocumentsProviderTest-queryRoots_listsOneVaultRoot.txt": {
+    "bytes": 273,
+    "sha256": "8d907597b8100da1a4dbf2334cbd8054ac0beaceb123369537561846679058f4"
+  },
+  "app/build/outputs/androidTest-results/connected/debug/flavors/dev/test(AVD) - 15/logcat-app.skein.vault.security.AtRestEncryptionInstrumentedTest-no_plaintext_or_key_material_on_disk_vault_db_is_not_sqlite_magic_and_lock_zeroes_the_key.txt": {
+    "bytes": 40718,
+    "sha256": "d47d0f6de4538d7179f50043f18d71ead0e4096bb77f564e70e6434abf830a48"
+  },
+  "app/build/outputs/androidTest-results/connected/debug/flavors/dev/test(AVD) - 15/test-result.pb": {
+    "bytes": 13560,
+    "sha256": "be7f8e413c771acccc9dc8f457ecdeaa19bdfe49aebc76b70e6aebf982cd3950"
+  },
+  "app/build/outputs/androidTest-results/connected/debug/flavors/dev/test-result-exit-code.txt": {
+    "bytes": 1,
+    "sha256": "5feceb66ffc86f38d952786c6d696c79c2dbc239dd4e91b46729d73a27fb57e9"
+  },
+  "app/build/outputs/androidTest-results/connected/debug/flavors/dev/test-result.pb": {
+    "bytes": 13562,
+    "sha256": "c66c8b0fa7de4d929b270740c0c19db1eab1142ab79b3bc1b3fd3ce01b7722f3"
+  },
+  "app/build/outputs/androidTest-results/connected/lane-logcat/logcat.txt": {
+    "bytes": 3415792,
+    "sha256": "789b6036ea294d7cbbae381ebf17286518007066080f05eda30663629685db6d"
+  },
+  "app/build/reports/androidTests/connected/debug/flavors/dev/app.skein.SampleInstrumentedTest.html": {
+    "bytes": 1739,
+    "sha256": "9b578e73c9d4217cd76ec50440e746cfd2533a8b77d44d01851f26f22b66b621"
+  },
+  "app/build/reports/androidTests/connected/debug/flavors/dev/app.skein.html": {
+    "bytes": 1806,
+    "sha256": "ef08f53257cb3d5a0fae42c3c742fd77d8ebf3a3f670e6a65e8b2d684154c9c8"
+  },
+  "app/build/reports/androidTests/connected/debug/flavors/dev/app.skein.inference.LlamaCppEngineInstrumentedTest.html": {
+    "bytes": 2466,
+    "sha256": "f7cdc2f7e1557d35fbeafbf46612302fa5a2c385a1e16aff6c74810417fe8a8d"
+  },
+  "app/build/reports/androidTests/connected/debug/flavors/dev/app.skein.inference.html": {
+    "bytes": 1866,
+    "sha256": "8d7c202352f359e4546ddc6b1c2ba7c24515daf7def24433af20c9809d46fa69"
+  },
+  "app/build/reports/androidTests/connected/debug/flavors/dev/app.skein.ingest.IngestWorkerInstrumentedTest.html": {
+    "bytes": 1935,
+    "sha256": "6c766e537ce99c9c405040ada5d9c52a7d24edd0f4ff79dcf965365f0c3339b3"
+  },
+  "app/build/reports/androidTests/connected/debug/flavors/dev/app.skein.ingest.html": {
+    "bytes": 1846,
+    "sha256": "8512e1f4c3b5f17f9d0e32555f2b977fa0e7b5edc0a9b35b8edc194193d731d7"
+  },
+  "app/build/reports/androidTests/connected/debug/flavors/dev/app.skein.vault.FirstRunInstrumentedTest.html": {
+    "bytes": 2103,
+    "sha256": "82b24a2f9fa9a5c7cdd5a450a83f9512ea820bec3a2cf3e26af8af280c556cde"
+  },
+  "app/build/reports/androidTests/connected/debug/flavors/dev/app.skein.vault.LockPolicySettingsRecreationInstrumentedTest.html": {
+    "bytes": 1852,
+    "sha256": "9616bf12f324259debcf740c837104df2e9dd402b1ebd2ff03de8acb1db1bb28"
+  },
+  "app/build/reports/androidTests/connected/debug/flavors/dev/app.skein.vault.VaultBootstrapInstrumentedTest.html": {
+    "bytes": 2121,
+    "sha256": "080a7befeb883002d1e73d8803c2feee2219909c853ca8ba3f4198c03c8fdd5a"
+  },
+  "app/build/reports/androidTests/connected/debug/flavors/dev/app.skein.vault.html": {
+    "bytes": 2290,
+    "sha256": "7c6819b31da4def2819c2b857826e8f9dc3ee975190da86bc94ef401dea080c9"
+  },
+  "app/build/reports/androidTests/connected/debug/flavors/dev/app.skein.vault.provider.VaultDocumentsProviderGrantInstrumentedTest.html": {
+    "bytes": 2373,
+    "sha256": "7ad37f2cc9798128831d63c9244457fa94d01c3d8ce972b98e9ab01ad90b327e"
+  },
+  "app/build/reports/androidTests/connected/debug/flavors/dev/app.skein.vault.provider.VaultDocumentsProviderTest.html": {
+    "bytes": 2951,
+    "sha256": "63d328bdb018568723eec0c078edaeed22d48390cd59f5ffed97708cc81483aa"
+  },
+  "app/build/reports/androidTests/connected/debug/flavors/dev/app.skein.vault.provider.html": {
+    "bytes": 2125,
+    "sha256": "c1abdcc4003da58260d347e190d5368b7384b98b3b1ba1ce0acb48fcee9afc4f"
+  },
+  "app/build/reports/androidTests/connected/debug/flavors/dev/app.skein.vault.security.AtRestEncryptionInstrumentedTest.html": {
+    "bytes": 1881,
+    "sha256": "f37ec64f0cca74ab85acc4fc6caafaa604a9b6960b7f72e18d6248182dcf6461"
+  },
+  "app/build/reports/androidTests/connected/debug/flavors/dev/app.skein.vault.security.html": {
+    "bytes": 1886,
+    "sha256": "82c379c9a26240a13da5dd0d33762efb0379128417287d5e95026474622e12cb"
+  },
+  "app/build/reports/androidTests/connected/debug/flavors/dev/css/base-style.css": {
+    "bytes": 2428,
+    "sha256": "2851d0b2f14f4ff1b75f0d01438887911eb474e235be93e561709227cefb18db"
+  },
+  "app/build/reports/androidTests/connected/debug/flavors/dev/css/style.css": {
+    "bytes": 1798,
+    "sha256": "f1b366319836f8726d0939654d0eeddfc5b20f67d9e5954b9a1632c60f2f31bf"
+  },
+  "app/build/reports/androidTests/connected/debug/flavors/dev/index.html": {
+    "bytes": 4951,
+    "sha256": "1f98fc974a7514b0e2f1766e5e7c5ad60ba11ab25708886a0ca892c851c95dce"
+  },
+  "app/build/reports/androidTests/connected/debug/flavors/dev/js/report.js": {
+    "bytes": 2933,
+    "sha256": "0aa306f94805890682c639b2d5c06108801d64b859a171a3c6eea66c8bab4c6a"
+  },
+  "build/instrumentation-review.json": {
+    "bytes": 1308,
+    "sha256": "96d0b7eeef0fd43a3ffd39168afc135aea9de7751cee241bac64e91cc8f68b9c"
+  },
+  "core/vault/build/outputs/androidTest-results/connected/debug/flavors/dev/TEST-test(AVD) - 15.xml": {
+    "bytes": 41109,
+    "sha256": "2088a9042024f8f36e5fb6c7c152217dc7fda8b1fc6fa1f5900267ad3df7faf0"
+  },
+  "core/vault/build/outputs/androidTest-results/connected/debug/flavors/dev/test(AVD) - 15/device-info.pb": {
+    "bytes": 112,
+    "sha256": "8690a9dcdbe34d879780107bdc5bfb1daddf7ce4a1ff618f735eb6048050ce56"
+  },
+  "core/vault/build/outputs/androidTest-results/connected/debug/flavors/dev/test(AVD) - 15/logcat-app.skein.core.vault.db.SkeinSQLiteDriverInstrumentedTest-bindAndGetRoundTripsForAllSupportedTypes.txt": {
+    "bytes": 309,
+    "sha256": "1a0641e32949d7bdc82d02644e6179e39deb11029354964191da5a65a6e98c79"
+  },
+  "core/vault/build/outputs/androidTest-results/connected/debug/flavors/dev/test(AVD) - 15/logcat-app.skein.core.vault.db.SkeinSQLiteDriverInstrumentedTest-cipherVersionMatchesPinnedSqlcipher.txt": {
+    "bytes": 299,
+    "sha256": "e4ef8e01a41508af6e988681565a086bcbaa1f7ee2b014e4ff38b5b4db91e4ca"
+  },
+  "core/vault/build/outputs/androidTest-results/connected/debug/flavors/dev/test(AVD) - 15/logcat-app.skein.core.vault.db.SkeinSQLiteDriverInstrumentedTest-fts5VirtualTableProbe.txt": {
+    "bytes": 271,
+    "sha256": "941bc11821715bb9a7d02b059ff0905f35379924561f38e861a7297f87f745c2"
+  },
+  "core/vault/build/outputs/androidTest-results/connected/debug/flavors/dev/test(AVD) - 15/logcat-app.skein.core.vault.db.SkeinSQLiteDriverInstrumentedTest-getBlobRoundTrips256ByteInt8Vector.txt": {
+    "bytes": 297,
+    "sha256": "3ba2e613db738a4c7576cc1f220e49efc22a2f86b2e24b2429451292f13bdd4d"
+  },
+  "core/vault/build/outputs/androidTest-results/connected/debug/flavors/dev/test(AVD) - 15/logcat-app.skein.core.vault.db.SkeinSQLiteDriverInstrumentedTest-keyedOpenRunsSection4_9PragmaSequence.txt": {
+    "bytes": 303,
+    "sha256": "61b77c7463e3c4db1174037b065e124d0beb270ce4112c262e4fd9bb23f3a4bf"
+  },
+  "core/vault/build/outputs/androidTest-results/connected/debug/flavors/dev/test(AVD) - 15/logcat-app.skein.core.vault.db.SkeinSQLiteDriverInstrumentedTest-openingWithWrongKeyThrowsNotADatabase.txt": {
+    "bytes": 598,
+    "sha256": "14dbd5883a23ba1d2fdda9a6decd01ee3a5a3006550dc3f2399fb44de28672dc"
+  },
+  "core/vault/build/outputs/androidTest-results/connected/debug/flavors/dev/test(AVD) - 15/logcat-app.skein.core.vault.db.SkeinSQLiteDriverInstrumentedTest-passphraseRoundTrip.txt": {
+    "bytes": 892,
+    "sha256": "94e2a30127b76a74b4ac1f298acd0fb32c9e50e1cf365e4260d5a2297e8747d4"
+  },
+  "core/vault/build/outputs/androidTest-results/connected/debug/flavors/dev/test(AVD) - 15/logcat-app.skein.core.vault.db.SkeinSQLiteDriverInstrumentedTest-vecVersionMatchesPinned.txt": {
+    "bytes": 616,
+    "sha256": "66e6ac195366b6fd49cbe9d9571817d0b136be49bfe2889f20f2ddb68e01e8d0"
+  },
+  "core/vault/build/outputs/androidTest-results/connected/debug/flavors/dev/test(AVD) - 15/logcat-app.skein.core.vault.db.migrations.MigratorInstrumentedTest-afterMigration010ADeletedTokenLeavesNoBytesInChunksFtsData.txt": {
+    "bytes": 349,
+    "sha256": "8cf8b803734349e6322060b0472ff28f75db2e1dc80fa7326c112a2691bb7b35"
+  },
+  "core/vault/build/outputs/androidTest-results/connected/debug/flavors/dev/test(AVD) - 15/logcat-app.skein.core.vault.db.migrations.MigratorInstrumentedTest-afterMigration010ReChunkingLeavesNoResidue.txt": {
+    "bytes": 317,
+    "sha256": "758f82e5405b790d3f55c5cc7c1bb9019531d6ccb63ace66618140a8b16f04f0"
+  },
+  "core/vault/build/outputs/androidTest-results/connected/debug/flavors/dev/test(AVD) - 15/logcat-app.skein.core.vault.db.migrations.MigratorInstrumentedTest-brokenMigrationRollsBackAndLeavesUserVersionUnchanged.txt": {
+    "bytes": 339,
+    "sha256": "49b5dd1c2929798f3393d4b41b40d450a20720b265fdef0f18413972b675b39c"
+  },
+  "core/vault/build/outputs/androidTest-results/connected/debug/flavors/dev/test(AVD) - 15/logcat-app.skein.core.vault.db.migrations.MigratorInstrumentedTest-chunkByteOffsetColumnsRoundTrip.txt": {
+    "bytes": 295,
+    "sha256": "d3e72a1efdd0c6cd67d2d03a214143e30a4b3ffc761ac4b72f749dfe2cc8754b"
+  },
+  "core/vault/build/outputs/androidTest-results/connected/debug/flavors/dev/test(AVD) - 15/logcat-app.skein.core.vault.db.migrations.MigratorInstrumentedTest-deletingChunkRemovesItFromFtsAndVec.txt": {
+    "bytes": 303,
+    "sha256": "a84b32e83aab3ee04aac3a9743639ebff326bbcd096b7e2aba4a225a636e8b26"
+  },
+  "core/vault/build/outputs/androidTest-results/connected/debug/flavors/dev/test(AVD) - 15/logcat-app.skein.core.vault.db.migrations.MigratorInstrumentedTest-documentRevisionsUpsertsByContentAddressAndCascadesWithItsDocument.txt": {
+    "bytes": 365,
+    "sha256": "324c534a51fc834fc18a958cb29cd011069e2d9ce35081da5d1fb47ac45e893c"
+  },
+  "core/vault/build/outputs/androidTest-results/connected/debug/flavors/dev/test(AVD) - 15/logcat-app.skein.core.vault.db.migrations.MigratorInstrumentedTest-exportStageDefaultsToUnsweptAndCascadesWithItsDocument.txt": {
+    "bytes": 341,
+    "sha256": "61afffe7849f25abbdf718a3b85fdee19fef92ad0fe0d9d43a021ef95d61c7b2"
+  },
+  "core/vault/build/outputs/androidTest-results/connected/debug/flavors/dev/test(AVD) - 15/logcat-app.skein.core.vault.db.migrations.MigratorInstrumentedTest-freshDatabaseLedgerListsEveryAppliedVersion.txt": {
+    "bytes": 319,
+    "sha256": "8bc51fab04f6674061dfc1a6ecffc94b4e96ed05c97ea027ecf6f9004b6794f4"
+  },
+  "core/vault/build/outputs/androidTest-results/connected/debug/flavors/dev/test(AVD) - 15/logcat-app.skein.core.vault.db.migrations.MigratorInstrumentedTest-freshDatabaseMigratesToLatestVersionWithAllSchemaObjects.txt": {
+    "bytes": 345,
+    "sha256": "7e70c03729f560e11f6e92d3ae58a00ea8126ada2e06591ad60ff94901ee0f4a"
+  },
+  "core/vault/build/outputs/androidTest-results/connected/debug/flavors/dev/test(AVD) - 15/logcat-app.skein.core.vault.db.migrations.MigratorInstrumentedTest-ingestQueueAttemptsDefaultsToZeroAndResetsOnReQueue.txt": {
+    "bytes": 585,
+    "sha256": "ed03011a04041fc363adf3537a48d5db8188d1530b31a0481ae1c3d3b6b5b3a1"
+  },
+  "core/vault/build/outputs/androidTest-results/connected/debug/flavors/dev/test(AVD) - 15/logcat-app.skein.core.vault.db.migrations.MigratorInstrumentedTest-insertingChunkMakesTextFindableViaFtsMatch.txt": {
+    "bytes": 442,
+    "sha256": "c6596769006487416c82e3575dbc7567387c1e004bd8c51499fb7039d4019062"
+  },
+  "core/vault/build/outputs/androidTest-results/connected/debug/flavors/dev/test(AVD) - 15/logcat-app.skein.core.vault.db.migrations.MigratorInstrumentedTest-insertingNoteDocumentEnqueuesCreatedReason.txt": {
+    "bytes": 317,
+    "sha256": "be810ca2b6dbd6d073820a1085d2b319c80602a0acf2ce921b3571ab0da1d71a"
+  },
+  "core/vault/build/outputs/androidTest-results/connected/debug/flavors/dev/test(AVD) - 15/logcat-app.skein.core.vault.db.migrations.MigratorInstrumentedTest-ledgerSeedsPre005DatabaseAndStillAppliesTheGapFillerWithoutLoweringUserVersion.txt": {
+    "bytes": 389,
+    "sha256": "a07a6f36d3603100e654f73ed088689bfa57d145084d3a8883f33a05b204c7e1"
+  },
+  "core/vault/build/outputs/androidTest-results/connected/debug/flavors/dev/test(AVD) - 15/logcat-app.skein.core.vault.db.migrations.MigratorInstrumentedTest-migration010EnablesFts5SecureDelete.txt": {
+    "bytes": 303,
+    "sha256": "397665e4e8644bc8a70b7d949654aaba75f148c24626a5421266b087251c61e2"
+  },
+  "core/vault/build/outputs/androidTest-results/connected/debug/flavors/dev/test(AVD) - 15/logcat-app.skein.core.vault.db.migrations.MigratorInstrumentedTest-migration010IsIdempotentOnRerun.txt": {
+    "bytes": 295,
+    "sha256": "fbc9925ab4da77cf907d1d654b674c865d141ea0944e77d98e1c89fb976c102d"
+  },
+  "core/vault/build/outputs/androidTest-results/connected/debug/flavors/dev/test(AVD) - 15/logcat-app.skein.core.vault.db.migrations.MigratorInstrumentedTest-migration010OptimizePurgesResidueWrittenBeforeIt.txt": {
+    "bytes": 329,
+    "sha256": "79e9438fa5ded1891925ca1291211096989e8380969ec4f135848752eebe576f"
+  },
+  "core/vault/build/outputs/androidTest-results/connected/debug/flavors/dev/test(AVD) - 15/logcat-app.skein.core.vault.db.migrations.MigratorInstrumentedTest-migration011UpgradesExistingVaultAndDraftForeignKeyPreventsResurrection.txt": {
+    "bytes": 670,
+    "sha256": "e2a069895e5783f9de82db7f4eeed69f2bf4801e3b6c1b1dd26035359ca3141f"
+  },
+  "core/vault/build/outputs/androidTest-results/connected/debug/flavors/dev/test(AVD) - 15/logcat-app.skein.core.vault.db.migrations.MigratorInstrumentedTest-rowsSeededBeforeMigration007SurviveTheDropAndDocumentsIsUnaffected.txt": {
+    "bytes": 365,
+    "sha256": "38e9f0841328a94ed3b85ec1fd37aae611ef42d004e60d20fdcf7c839668b2fd"
+  },
+  "core/vault/build/outputs/androidTest-results/connected/debug/flavors/dev/test(AVD) - 15/logcat-app.skein.core.vault.db.migrations.MigratorInstrumentedTest-runningMigrateTwiceIsANoop.txt": {
+    "bytes": 285,
+    "sha256": "f529f84605e74ad0fc6c309bf5dcb50ebd0dc6a5a03914bc4505ca284cafdc3f"
+  },
+  "core/vault/build/outputs/androidTest-results/connected/debug/flavors/dev/test(AVD) - 15/logcat-app.skein.core.vault.db.migrations.MigratorInstrumentedTest-updatingBodyMdEnqueuesUpdatedReason.txt": {
+    "bytes": 1319,
+    "sha256": "212b90917bda2f14adbb090570d40b3613b22d49076528b76f8369e44b5d79b3"
+  },
+  "core/vault/build/outputs/androidTest-results/connected/debug/flavors/dev/test(AVD) - 15/logcat-app.skein.core.vault.db.migrations.MigratorInstrumentedTest-updatingOnlyPersonaIdDoesNotEnqueue.txt": {
+    "bytes": 303,
+    "sha256": "b573d131d8e971765396f6962ed400a7479cefd8d995547906247b43bffc1aa7"
+  },
+  "core/vault/build/outputs/androidTest-results/connected/debug/flavors/dev/test(AVD) - 15/logcat-app.skein.core.vault.export.stage.ExportStageRepositoryContractTest-aFreshlyInsertedStageIsNotSwept.txt": {
+    "bytes": 311,
+    "sha256": "335bcf212aa108d708b6f21328f1dc9c6b6aa6d1dff7e15dd75282df9244c9a3"
+  },
+  "core/vault/build/outputs/androidTest-results/connected/debug/flavors/dev/test(AVD) - 15/logcat-app.skein.core.vault.export.stage.ExportStageRepositoryContractTest-aStageWithNoDocumentSurvivesUnrelatedDocumentDeletes.txt": {
+    "bytes": 353,
+    "sha256": "78abfa7a448b2904892953d9b895424ab29f3379780ad1b602ff82d0156c0d6d"
+  },
+  "core/vault/build/outputs/androidTest-results/connected/debug/flavors/dev/test(AVD) - 15/logcat-app.skein.core.vault.export.stage.ExportStageRepositoryContractTest-anUnrecordedStageIdReadsBackAsNull.txt": {
+    "bytes": 317,
+    "sha256": "31a5b3de9cb2a36456fa9fdba554fd63e3f3a064c621cc1ec0460fd91f1df2e3"
+  },
+  "core/vault/build/outputs/androidTest-results/connected/debug/flavors/dev/test(AVD) - 15/logcat-app.skein.core.vault.export.stage.ExportStageRepositoryContractTest-deletingTheDocumentCascadesItsStageRowAway.txt": {
+    "bytes": 333,
+    "sha256": "a1d5cf6b73e033921d9f17e37b68257da22939831755ec3ed9ef57104ae357d1"
+  },
+  "core/vault/build/outputs/androidTest-results/connected/debug/flavors/dev/test(AVD) - 15/logcat-app.skein.core.vault.export.stage.ExportStageRepositoryContractTest-insertedStageReadsBackWithEveryColumnIntact.txt": {
+    "bytes": 335,
+    "sha256": "b4fe8769e6ec63a2f355d58e435c002014f8253aeee509eabe302bad0ab981b6"
+  },
+  "core/vault/build/outputs/androidTest-results/connected/debug/flavors/dev/test(AVD) - 15/logcat-app.skein.core.vault.export.stage.ExportStageRepositoryContractTest-listUnsweptOmitsRowsAlreadyMarkedSwept.txt": {
+    "bytes": 325,
+    "sha256": "2f3800b337f79b92c433c820f6706c63a8aa923d24a8c6226bbe5045d78ed94b"
+  },
+  "core/vault/build/outputs/androidTest-results/connected/debug/flavors/dev/test(AVD) - 15/logcat-app.skein.core.vault.export.stage.ExportStageRepositoryContractTest-listUnsweptReturnsTheMostOverduePlaintextFirst.txt": {
+    "bytes": 341,
+    "sha256": "2ad5ad9b9ba148d1459dc2ef48487d0c88c0cb7087d4203f5d17d0c056c077ec"
+  },
+  "core/vault/build/outputs/androidTest-results/connected/debug/flavors/dev/test(AVD) - 15/logcat-app.skein.core.vault.export.stage.ExportStageRepositoryContractTest-markAllStagesSweptLeavesNothingUnswept.txt": {
+    "bytes": 325,
+    "sha256": "7e473d0aa40fb139e7eb82dbaa64b8cddd80787902e5fed035bc902a77d343eb"
+  },
+  "core/vault/build/outputs/androidTest-results/connected/debug/flavors/dev/test(AVD) - 15/logcat-app.skein.core.vault.export.stage.ExportStageRepositoryContractTest-markAllStagesSweptReportsHowManyRowsItChanged.txt": {
+    "bytes": 339,
+    "sha256": "e0a359c97d8648d493b06a9a8b9a5370b05e13de2cd947210222225f05adbffb"
+  },
+  "core/vault/build/outputs/androidTest-results/connected/debug/flavors/dev/test(AVD) - 15/logcat-app.skein.core.vault.export.stage.ExportStageRepositoryContractTest-markingAStageSweptReportsTrueTheFirstTime.txt": {
+    "bytes": 331,
+    "sha256": "6ea7d2ab9c9f86f05891c755bef5b194700d359803a2a3fdfd98e4d1436e15fd"
+  },
+  "core/vault/build/outputs/androidTest-results/connected/debug/flavors/dev/test(AVD) - 15/logcat-app.skein.core.vault.export.stage.ExportStageRepositoryContractTest-markingAnAlreadySweptStageReportsFalse.txt": {
+    "bytes": 325,
+    "sha256": "da7abb8888b176a5ce32aef9d5bc95ff21a2d1badf816a7992f32e930e1edb5a"
+  },
+  "core/vault/build/outputs/androidTest-results/connected/debug/flavors/dev/test(AVD) - 15/logcat-app.skein.core.vault.export.stage.ExportStageRepositoryContractTest-markingAnUnknownStageReportsFalse.txt": {
+    "bytes": 315,
+    "sha256": "c756e4e9667c2815d6a552b2980af6b80338863c8994cbee5a98b7796ddf3c83"
+  },
+  "core/vault/build/outputs/androidTest-results/connected/debug/flavors/dev/test(AVD) - 15/logcat-app.skein.core.vault.export.stage.ExportStageRepositoryContractTest-reinsertingTheSameStageIdReplacesTheRowRatherThanThrowing.txt": {
+    "bytes": 363,
+    "sha256": "1999e0874d9ad75df3775ae967f845e392e9a7e53be457b883d5e45e0cbef106"
+  },
+  "core/vault/build/outputs/androidTest-results/connected/debug/flavors/dev/test(AVD) - 15/logcat-app.skein.core.vault.index.GraphRecallAcceptanceTest-ordinaryPhraseDiscoversLongerTitlesAndLinkedAnswerWithinEvidenceScope.txt": {
+    "bytes": 357,
+    "sha256": "796f97e62b5673525b6cba4dc52607ab1dcc0252c3813ad5d1f6ecd2f90fb172"
+  },
+  "core/vault/build/outputs/androidTest-results/connected/debug/flavors/dev/test(AVD) - 15/logcat-app.skein.core.vault.index.IndexStoreImplAcceptanceTest-aCommittedReplaceChunksPublishesExactlyOneChunksReplaced.txt": {
+    "bytes": 337,
+    "sha256": "90e548aa3e0553aa420889841cd297d169e3cde139f9d7d0ccb09b9b18d0e6ea"
+  },
+  "core/vault/build/outputs/androidTest-results/connected/debug/flavors/dev/test(AVD) - 15/logcat-app.skein.core.vault.index.IndexStoreImplAcceptanceTest-aReplaceChunksWhoseInsertAbortsRollsBackAndPublishesNoIndexChange.txt": {
+    "bytes": 355,
+    "sha256": "2e3550d0aa7d9c3298ef6de521db750ceff1f8e87b4a80db6d53cc0b053e19cb"
+  },
+  "core/vault/build/outputs/androidTest-results/connected/debug/flavors/dev/test(AVD) - 15/logcat-app.skein.core.vault.index.IndexStoreImplAcceptanceTest-actualTokenizerBoundsSkipWholeTokensAndNeverInventPostingFragments.txt": {
+    "bytes": 357,
+    "sha256": "4cc73f688211ac004a61ff091ae471da5584f2a4b419d0a59677d300f5ca0080"
+  },
+  "core/vault/build/outputs/androidTest-results/connected/debug/flavors/dev/test(AVD) - 15/logcat-app.skein.core.vault.index.IndexStoreImplAcceptanceTest-bm25DoesNotThrowOnTwentyAdversarialQueryStrings.txt": {
+    "bytes": 319,
+    "sha256": "51b27fa2088f8b54c36883a0240234bcc3fe9a0a0b08cac16dd00850bbda3928"
+  },
+  "core/vault/build/outputs/androidTest-results/connected/debug/flavors/dev/test(AVD) - 15/logcat-app.skein.core.vault.index.IndexStoreImplAcceptanceTest-ingestRowProbeDetectsAMissingLaterPostingWhenTheFirstRowIsHealthy.txt": {
+    "bytes": 355,
+    "sha256": "c0813abce1541e0e4e33d5f2d7598ee62839fcde94aafce03d50b727fdb3328c"
+  },
+  "core/vault/build/outputs/androidTest-results/connected/debug/flavors/dev/test(AVD) - 15/logcat-app.skein.core.vault.index.IndexStoreImplAcceptanceTest-ingestRowProbeDoesNotTreatAsciiInsideAUnicodeTokenAsAMissingPosting.txt": {
+    "bytes": 359,
+    "sha256": "b156fd1d090b50bb8a6003d95785282af39f07ffe55726136a0f63255a931ca4"
+  },
+  "core/vault/build/outputs/androidTest-results/connected/debug/flavors/dev/test(AVD) - 15/logcat-app.skein.core.vault.index.IndexStoreImplAcceptanceTest-ingestRowProbeVerifiesHealthyPostingBelowTheGlobalTop50.txt": {
+    "bytes": 335,
+    "sha256": "d1549f1776e8e62d35b50d42b960f9d2e9b7f18cda501b28dad168cd1308f9b3"
+  },
+  "core/vault/build/outputs/androidTest-results/connected/debug/flavors/dev/test(AVD) - 15/logcat-app.skein.core.vault.index.IndexStoreImplAcceptanceTest-ingestRowProbeWarnsWhenTheActualInsertTriggerIsMissing.txt": {
+    "bytes": 333,
+    "sha256": "a2fe08de26e579fb3d32914e068f974575f8d5bb8eb510cee0ae83e54673205a"
+  },
+  "core/vault/build/outputs/androidTest-results/connected/debug/flavors/dev/test(AVD) - 15/logcat-app.skein.core.vault.index.IndexStoreImplAcceptanceTest-knnReturnsExactlyKRowsOverA10000VectorCorpus.txt": {
+    "bytes": 509,
+    "sha256": "241f00eb1d3f46e0f5b48d758b6020866ea0b6d918a75ac068c5470dade37d2a"
+  },
+  "core/vault/build/outputs/androidTest-results/connected/debug/flavors/dev/test(AVD) - 15/logcat-app.skein.core.vault.index.IndexStoreImplAcceptanceTest-replaceEdgesWithWIKILINKDoesNotTouchENTITYEdgesOfTheSameSource.txt": {
+    "bytes": 426,
+    "sha256": "b1d09b2b78530e8366e5a3811576c44551a8a18e1aebf74b5ba086a9c8cbbe2c"
+  },
+  "core/vault/build/outputs/androidTest-results/connected/debug/flavors/dev/test(AVD) - 15/logcat-app.skein.core.vault.index.IndexStoreImplAcceptanceTest-unicodeAdversarialQueriesRemainLiteralAndCannotBroadenToUnrelatedRows.txt": {
+    "bytes": 363,
+    "sha256": "ab791301d901284e006092e2ed32b842bd45154dc4d85eab3b3f04eed8fe349f"
+  },
+  "core/vault/build/outputs/androidTest-results/connected/debug/flavors/dev/test(AVD) - 15/logcat-app.skein.core.vault.index.IndexStoreImplAcceptanceTest-unicodeOnlyIngestProbeChecksARealPostingWithoutAsciiFallback.txt": {
+    "bytes": 345,
+    "sha256": "d79c60d3294fdb689433c5bf9cb0bcfbabac28ce77042909d7d5139b4e50b1e9"
+  },
+  "core/vault/build/outputs/androidTest-results/connected/debug/flavors/dev/test(AVD) - 15/logcat-app.skein.core.vault.index.IndexStoreImplAcceptanceTest-unicodeOnlyIngestProbeFindsAMissingMiddleRowBetweenHealthyRows.txt": {
+    "bytes": 349,
+    "sha256": "902aad68a733c8506a7c35f98a9244586cb957c6b048080d9aac3e88a071eaf2"
+  },
+  "core/vault/build/outputs/androidTest-results/connected/debug/flavors/dev/test(AVD) - 15/logcat-app.skein.core.vault.index.IndexStoreImplAcceptanceTest-unicodeOnlyIngestProbeWarnsWhenTheInsertTriggerIsMissing.txt": {
+    "bytes": 337,
+    "sha256": "c82c2fbb1ca8c8b9d319d677581f19ecda029576d3f62822d37ca4331afd7b62"
+  },
+  "core/vault/build/outputs/androidTest-results/connected/debug/flavors/dev/test(AVD) - 15/logcat-app.skein.core.vault.index.IndexStoreImplAcceptanceTest-unicodeQueryTermsMatchTheActualDefaultSqliteTokenizer.txt": {
+    "bytes": 581,
+    "sha256": "ee94ee8e0e0eb716350af5a637357724ad4cb494b96ef54f8915aca9e3b6365b"
+  },
+  "core/vault/build/outputs/androidTest-results/connected/debug/flavors/dev/test(AVD) - 15/logcat-app.skein.core.vault.index.IndexStoreImplAcceptanceTest-unicodeTextBindingPreservesSupplementaryAndLegacyModifiedUtf8.txt": {
+    "bytes": 4607,
+    "sha256": "35a6178cda99a7081b1a0c1708c5963c8f66b28de22086d1ec02ec427d7c08a8"
+  },
+  "core/vault/build/outputs/androidTest-results/connected/debug/flavors/dev/test(AVD) - 15/logcat-app.skein.core.vault.index.IndexStoreImplContractTest-bm25_finds_an_exact_term.txt": {
+    "bytes": 269,
+    "sha256": "c06fdf9f141d6dd089ee1727c066fe4e4825832b07ba4ac93f4123f575e8e2f6"
+  },
+  "core/vault/build/outputs/androidTest-results/connected/debug/flavors/dev/test(AVD) - 15/logcat-app.skein.core.vault.index.IndexStoreImplContractTest-chunksForDocs_also_reads_back_revisionHash_and_byte_offsets.txt": {
+    "bytes": 339,
+    "sha256": "648922b67f01f60b64a2dd1d12b6b49ca748be26e1b3e6b30ae8124cb91ef436"
+  },
+  "core/vault/build/outputs/androidTest-results/connected/debug/flavors/dev/test(AVD) - 15/logcat-app.skein.core.vault.index.IndexStoreImplContractTest-edgesTo_returns_backlinks.txt": {
+    "bytes": 271,
+    "sha256": "b467fe732b1044c3479b5f7da2b46bf36aa582486cb300535e39ef659d670e3a"
+  },
+  "core/vault/build/outputs/androidTest-results/connected/debug/flavors/dev/test(AVD) - 15/logcat-app.skein.core.vault.index.IndexStoreImplContractTest-knn_returns_nearest_first_for_orthogonal_int8_vectors.txt": {
+    "bytes": 327,
+    "sha256": "ee87026e75199c4b937a1c9097e1d724c9ab020774df7ee02b54050a368ec236"
+  },
+  "core/vault/build/outputs/androidTest-results/connected/debug/flavors/dev/test(AVD) - 15/logcat-app.skein.core.vault.index.IndexStoreImplContractTest-lexical_match_is_specific_to_one_row_and_removed_when_replaced.txt": {
+    "bytes": 345,
+    "sha256": "9e361cfa89f019d05a1984bbd284f1b68e122716da9c0cbabf96eef9826af5f1"
+  },
+  "core/vault/build/outputs/androidTest-results/connected/debug/flavors/dev/test(AVD) - 15/logcat-app.skein.core.vault.index.IndexStoreImplContractTest-neighborhood_hops2_stops_at_maxNodes.txt": {
+    "bytes": 293,
+    "sha256": "0c0b807c4d7440e1616897606529fe3f39ab0ba6acc5d7a293892f3bfa577141"
+  },
+  "core/vault/build/outputs/androidTest-results/connected/debug/flavors/dev/test(AVD) - 15/logcat-app.skein.core.vault.index.IndexStoreImplContractTest-observeChanges_delivers_one_event_per_call_in_publication_order.txt": {
+    "bytes": 347,
+    "sha256": "460e370696be42812b2bf82f56b677b54cd8ac60353d267000e952a15a3da70c"
+  },
+  "core/vault/build/outputs/androidTest-results/connected/debug/flavors/dev/test(AVD) - 15/logcat-app.skein.core.vault.index.IndexStoreImplContractTest-observeChanges_does_not_replay_changes_made_before_subscribing.txt": {
+    "bytes": 345,
+    "sha256": "bf6dcc18dac427ef9cfa782498babd6b1da19a1fc0f5c30685ad5b3b6450b4fc"
+  },
+  "core/vault/build/outputs/androidTest-results/connected/debug/flavors/dev/test(AVD) - 15/logcat-app.skein.core.vault.index.IndexStoreImplContractTest-observeChanges_emits_ChunksReplaced_by_the_time_replaceChunks_returns.txt": {
+    "bytes": 359,
+    "sha256": "278e6803b78aab1fc0c8036c4c8aa6cd2b06836ca168c8acb850f971eb5f2521"
+  },
+  "core/vault/build/outputs/androidTest-results/connected/debug/flavors/dev/test(AVD) - 15/logcat-app.skein.core.vault.index.IndexStoreImplContractTest-observeChanges_emits_ChunksReplaced_even_when_the_new_chunk_list_is_empty.txt": {
+    "bytes": 367,
+    "sha256": "9dc564c2f0f6fdae79c41faf8398776a59f796e13ba8cec813baf5c31f80c375"
+  },
+  "core/vault/build/outputs/androidTest-results/connected/debug/flavors/dev/test(AVD) - 15/logcat-app.skein.core.vault.index.IndexStoreImplContractTest-observeChanges_emits_EdgesReplaced_carrying_the_nominated_kinds.txt": {
+    "bytes": 347,
+    "sha256": "2b6f973015cc6d3dbcaa1461ff29ac9cc51978f8e1951a8d5f8a520fcbe8f681"
+  },
+  "core/vault/build/outputs/androidTest-results/connected/debug/flavors/dev/test(AVD) - 15/logcat-app.skein.core.vault.index.IndexStoreImplContractTest-observeChanges_emits_EmbeddingsUpdated_with_the_written_chunk_ids.txt": {
+    "bytes": 351,
+    "sha256": "061859e2c61419bc4ec17da2e60bcb54169f43dcd5822a8285e0bf05d0885b4e"
+  },
+  "core/vault/build/outputs/androidTest-results/connected/debug/flavors/dev/test(AVD) - 15/logcat-app.skein.core.vault.index.IndexStoreImplContractTest-observeChanges_is_silent_for_a_no_op_replaceEdges.txt": {
+    "bytes": 319,
+    "sha256": "6e1c0979d3b4d7d4657c7419c4a79426ed3bd4faedba900e6f31e25cb5e6f72a"
+  },
+  "core/vault/build/outputs/androidTest-results/connected/debug/flavors/dev/test(AVD) - 15/logcat-app.skein.core.vault.index.IndexStoreImplContractTest-replaceChunks_deletes_old_chunk_ids.txt": {
+    "bytes": 291,
+    "sha256": "63bb6dd93310caf8dbb687749cd2e41ae6c1f98dd3bd42010fa1d3191be2f72b"
+  },
+  "core/vault/build/outputs/androidTest-results/connected/debug/flavors/dev/test(AVD) - 15/logcat-app.skein.core.vault.index.IndexStoreImplContractTest-replaceChunks_stamps_revisionHash_and_byte_offsets_that_getChunks_reads_back.txt": {
+    "bytes": 373,
+    "sha256": "14f4a2c9b6d6b670c1cb78ac99ae13a839210b5bf1da9a7be3554c59f29915ba"
+  },
+  "core/vault/build/outputs/androidTest-results/connected/debug/flavors/dev/test(AVD) - 15/logcat-app.skein.core.vault.index.IndexStoreImplContractTest-replaceChunks_with_no_revisionHash_or_offsets_reads_back_null_for_all_three.txt": {
+    "bytes": 371,
+    "sha256": "4e1d1dbe34c68bcfe9e386ad324d31e8c8e3830675067c6f4ee1d59a82261e41"
+  },
+  "core/vault/build/outputs/androidTest-results/connected/debug/flavors/dev/test(AVD) - 15/logcat-app.skein.core.vault.index.LexicalRecallAcceptanceTest-lexicalRecallDoesNotThrowOnTwentyAdversarialQueryStrings.txt": {
+    "bytes": 335,
+    "sha256": "c3850d51ac2bcb3dcf342dbbcee3f5cd533c085444cf84a526668b0ca67645f1"
+  },
+  "core/vault/build/outputs/androidTest-results/connected/debug/flavors/dev/test(AVD) - 15/logcat-app.skein.core.vault.index.LexicalRecallAcceptanceTest-recallOfSqliteCipherRanksTheBothTermsChunkFirstWithScoresNormalizedTo01.txt": {
+    "bytes": 365,
+    "sha256": "832f7963470a1d21c3c85b2f4a841aeab41b125ef5fa085084db1941f879912f"
+  },
+  "core/vault/build/outputs/androidTest-results/connected/debug/flavors/dev/test(AVD) - 15/logcat-app.skein.core.vault.index.VectorRecallAcceptanceTest-recallRanksTheChunkMatchingTheQueryVectorFirstScoresMappedTo01.txt": {
+    "bytes": 679,
+    "sha256": "02ecc17b71ae01fcd75fc326fc73d28e3e32923bbfa9aee083154854b3036596"
+  },
+  "core/vault/build/outputs/androidTest-results/connected/debug/flavors/dev/test(AVD) - 15/logcat-app.skein.core.vault.key.VaultKeyProviderInstrumentedTest-createKey_without_strongbox_produces_a_usable_alias.txt": {
+    "bytes": 331,
+    "sha256": "f357173b5603ab9b9cd2feea22e6d119807c94978c5a4b8b3c14c3e481ed4b98"
+  },
+  "core/vault/build/outputs/androidTest-results/connected/debug/flavors/dev/test(AVD) - 15/logcat-app.skein.core.vault.key.VaultKeyProviderInstrumentedTest-encryptCipher_on_authRequired_key_requires_user_authentication.txt": {
+    "bytes": 472,
+    "sha256": "02ef13f5214f8c3aca21e9ae91bb7c68a7994e13407acd848f997fd5e8b62cfb"
+  },
+  "core/vault/build/outputs/androidTest-results/connected/debug/flavors/dev/test(AVD) - 15/logcat-app.skein.core.vault.key.VaultKeyProviderInstrumentedTest-hasStrongBox_probe_runs_without_throwing.txt": {
+    "bytes": 447,
+    "sha256": "f6add8b20dd0e51cd39330d45eaf5fc86a6004535047831af29cbad5ee8fedb7"
+  },
+  "core/vault/build/outputs/androidTest-results/connected/debug/flavors/dev/test(AVD) - 15/logcat-app.skein.core.vault.key.VaultKeyProvidersInstrumentedTest-envelope_round_trips_and_rewraps_on_the_device_filesystem.txt": {
+    "bytes": 345,
+    "sha256": "edcafd2b49c79546a02c5a77ff4c64fee04affd67d9fe7399c0a5bb332a466c8"
+  },
+  "core/vault/build/outputs/androidTest-results/connected/debug/flavors/dev/test(AVD) - 15/logcat-app.skein.core.vault.key.VaultKeyProvidersInstrumentedTest-forDevice_builds_the_real_provider_locked_and_without_touching_disk.txt": {
+    "bytes": 365,
+    "sha256": "cddee40f2ea57dfc6624b0a0d2065eb5991c19d48dc0d735b403188898a55b96"
+  },
+  "core/vault/build/outputs/androidTest-results/connected/debug/flavors/dev/test(AVD) - 15/logcat-app.skein.core.vault.key.VaultKeyProvidersInstrumentedTest-setup_without_an_enrolled_biometric_leaves_no_envelope_and_no_aliases.txt": {
+    "bytes": 703,
+    "sha256": "71f2cd7580d4abbfeef784e39ae43b4c495169ba146c89e32605d0c320208b72"
+  },
+  "core/vault/build/outputs/androidTest-results/connected/debug/flavors/dev/test(AVD) - 15/logcat-app.skein.core.vault.key.VaultKeyProvidersInstrumentedTest-unlock_before_setup_reports_NotInitialised_and_creates_nothing.txt": {
+    "bytes": 355,
+    "sha256": "a91f5d806eca45b48486a4af82d1dde39ef4a468bc812d63ceb28cdeb1e72953"
+  },
+  "core/vault/build/outputs/androidTest-results/connected/debug/flavors/dev/test(AVD) - 15/logcat-app.skein.core.vault.key.VaultKeyProvidersInstrumentedTest-unlock_over_a_real_auth_bound_alias_yields_no_key_without_authentication.txt": {
+    "bytes": 709,
+    "sha256": "e2df9eab757ae423459409be3adf013bd01e49f5b545172736084438ad2c9fd3"
+  },
+  "core/vault/build/outputs/androidTest-results/connected/debug/flavors/dev/test(AVD) - 15/logcat-app.skein.core.vault.lifecycle.VaultLifecycleInstrumentedTest-closeLeavesNoWalOrShmResidue.txt": {
+    "bytes": 293,
+    "sha256": "acad3ce315f18e084e88cfb084f86f29fe9565b2165dc7d332f25a0885180782"
+  },
+  "core/vault/build/outputs/androidTest-results/connected/debug/flavors/dev/test(AVD) - 15/logcat-app.skein.core.vault.lifecycle.VaultLifecycleInstrumentedTest-createThenOpenThenCloseThenOpenThenCloseRoundTrip.txt": {
+    "bytes": 669,
+    "sha256": "95f15da2ee501c10e45020e363ce8b5e24b7d3d0c2b9f8b5ad38092487db0034"
+  },
+  "core/vault/build/outputs/androidTest-results/connected/debug/flavors/dev/test(AVD) - 15/logcat-app.skein.core.vault.lifecycle.VaultLifecycleInstrumentedTest-createTwiceFailsWithAlreadyExists.txt": {
+    "bytes": 303,
+    "sha256": "3decda7afc5c838efc1bc2a3616ad934090555fb7c9683661f62eb8c89ab4d9a"
+  },
+  "core/vault/build/outputs/androidTest-results/connected/debug/flavors/dev/test(AVD) - 15/logcat-app.skein.core.vault.lifecycle.VaultLifecycleInstrumentedTest-integrityCheckOnAFreshlyCreatedVaultReportsOk.txt": {
+    "bytes": 327,
+    "sha256": "bc0649a5d3fa629c3d212139b7fa80556e6091405d24b320a40fd2094944a91e"
+  },
+  "core/vault/build/outputs/androidTest-results/connected/debug/flavors/dev/test(AVD) - 15/logcat-app.skein.core.vault.lifecycle.VaultLifecycleInstrumentedTest-integrityCheckWhileNotOpenReportsNotOpen.txt": {
+    "bytes": 317,
+    "sha256": "2100c97e1c24f7541ae5945b739d03ddcb39eb7fdbf76c88650714c4e8516e01"
+  },
+  "core/vault/build/outputs/androidTest-results/connected/debug/flavors/dev/test(AVD) - 15/logcat-app.skein.core.vault.lifecycle.VaultLifecycleInstrumentedTest-openNonexistentVaultFailsWithNotFound.txt": {
+    "bytes": 311,
+    "sha256": "07d942a946e9b6772fc27d72bd9fc68d6148d1bb902725d82ef737a8f6498e7b"
+  },
+  "core/vault/build/outputs/androidTest-results/connected/debug/flavors/dev/test(AVD) - 15/logcat-app.skein.core.vault.lifecycle.VaultLifecycleInstrumentedTest-openWithWrongKeyReturnsTypedWrongKey.txt": {
+    "bytes": 604,
+    "sha256": "402a4eb5575a0995761253f332e9bcb753b2da7dfcf3e5600d263959a44f89b8"
+  },
+  "core/vault/build/outputs/androidTest-results/connected/debug/flavors/dev/test(AVD) - 15/logcat-app.skein.core.vault.lifecycle.VaultResetInstrumentedTest-reset_deletes_real_files_under_filesDir.txt": {
+    "bytes": 307,
+    "sha256": "6187390f6d781a18a70d00a6d059fcbd82cb4b3d5588e802c30d491860fb3528"
+  },
+  "core/vault/build/outputs/androidTest-results/connected/debug/flavors/dev/test(AVD) - 15/logcat-app.skein.core.vault.lifecycle.VaultResetInstrumentedTest-reset_refuses_while_unlocked_and_leaves_real_files_alone.txt": {
+    "bytes": 341,
+    "sha256": "abcb36aa57a551f056bb3ef6bfd7d60c699e7cea18b2e681b1388eba9047906b"
+  },
+  "core/vault/build/outputs/androidTest-results/connected/debug/flavors/dev/test(AVD) - 15/logcat-app.skein.core.vault.lifecycle.VaultResetInstrumentedTest-reset_removes_real_Keystore_aliases.txt": {
+    "bytes": 412,
+    "sha256": "e991438a950030d748dc762a11b4709619c0d1d31cde11a5f08f7a686ac1c73c"
+  },
+  "core/vault/build/outputs/androidTest-results/connected/debug/flavors/dev/test(AVD) - 15/logcat-app.skein.core.vault.models.ModelRegistryImplContractTest-default_is_null_for_a_fresh_registry.txt": {
+    "bytes": 301,
+    "sha256": "8eba9b04926af0ed52a3178fc08994577211974c7a496f3cf9fe15d76db1a3e0"
+  },
+  "core/vault/build/outputs/androidTest-results/connected/debug/flavors/dev/test(AVD) - 15/logcat-app.skein.core.vault.models.ModelRegistryImplContractTest-delete_of_an_unknown_id_is_a_no_op.txt": {
+    "bytes": 297,
+    "sha256": "9d511640efabe54f342e82bc6368490ded0b2f3bf32b6174e7b4e874ff6ea168"
+  },
+  "core/vault/build/outputs/androidTest-results/connected/debug/flavors/dev/test(AVD) - 15/logcat-app.skein.core.vault.models.ModelRegistryImplContractTest-delete_removes_the_row.txt": {
+    "bytes": 273,
+    "sha256": "0d20f84936fffe968bcd8fa85f1a9c38efd10a3c90218b8261562facce058dd6"
+  },
+  "core/vault/build/outputs/androidTest-results/connected/debug/flavors/dev/test(AVD) - 15/logcat-app.skein.core.vault.models.ModelRegistryImplContractTest-get_returns_null_for_an_unknown_id.txt": {
+    "bytes": 297,
+    "sha256": "fc3ad68d3454b4b048be18902d66b02697a2f61d22e883127d91227c91987f0c"
+  },
+  "core/vault/build/outputs/androidTest-results/connected/debug/flavors/dev/test(AVD) - 15/logcat-app.skein.core.vault.models.ModelRegistryImplContractTest-list_is_empty_for_a_fresh_registry.txt": {
+    "bytes": 297,
+    "sha256": "90bffa52f6547315a35e9bccb2aea06d110c624a2da733f30f7d153d753ed3d7"
+  },
+  "core/vault/build/outputs/androidTest-results/connected/debug/flavors/dev/test(AVD) - 15/logcat-app.skein.core.vault.models.ModelRegistryImplContractTest-list_reflects_every_upserted_record.txt": {
+    "bytes": 299,
+    "sha256": "965569bc50fe74f9c8365d7085a0c1927e4ff1349bcb1ab4ed9a1b07e759d65c"
+  },
+  "core/vault/build/outputs/androidTest-results/connected/debug/flavors/dev/test(AVD) - 15/logcat-app.skein.core.vault.models.ModelRegistryImplContractTest-setDefault_accepts_an_id_with_no_backing_row.txt": {
+    "bytes": 317,
+    "sha256": "cfcf0d6322e8c011d64c94331909c8000db2ab1d3ab840d569d7a3de41656174"
+  },
+  "core/vault/build/outputs/androidTest-results/connected/debug/flavors/dev/test(AVD) - 15/logcat-app.skein.core.vault.models.ModelRegistryImplContractTest-setDefault_null_clears_the_default.txt": {
+    "bytes": 297,
+    "sha256": "1c92e4afa34bf89ad78aa748eda23e2e1d76403369864e42e6d8b351344d58c3"
+  },
+  "core/vault/build/outputs/androidTest-results/connected/debug/flavors/dev/test(AVD) - 15/logcat-app.skein.core.vault.models.ModelRegistryImplContractTest-setDefault_then_default_round_trips.txt": {
+    "bytes": 299,
+    "sha256": "a48123008d5474a2ddda4a2a63d7d74076775ca2a464282c8de4feb6b7b470df"
+  },
+  "core/vault/build/outputs/androidTest-results/connected/debug/flavors/dev/test(AVD) - 15/logcat-app.skein.core.vault.models.ModelRegistryImplContractTest-upsert_replaces_an_existing_row_with_the_same_id.txt": {
+    "bytes": 325,
+    "sha256": "39f382a7f55a947ff58e6bd0370fefd783896071df51e08984e9681fce9dd246"
+  },
+  "core/vault/build/outputs/androidTest-results/connected/debug/flavors/dev/test(AVD) - 15/logcat-app.skein.core.vault.models.ModelRegistryImplContractTest-upsert_then_get_round_trips_every_field.txt": {
+    "bytes": 307,
+    "sha256": "6e6cd6bfabe94c2b7e0c5852fcf3b2ebaff4490ca01623b8ea87ea8102509c77"
+  },
+  "core/vault/build/outputs/androidTest-results/connected/debug/flavors/dev/test(AVD) - 15/logcat-app.skein.core.vault.persona.PersonaServiceImplContractTest-default_creates_default_once_and_returns_same_id_on_second_call.txt": {
+    "bytes": 359,
+    "sha256": "f755c3580d37bbabefed8afd6388a155ad1a40a990af176f99270fae76effbef"
+  },
+  "core/vault/build/outputs/androidTest-results/connected/debug/flavors/dev/test(AVD) - 15/logcat-app.skein.core.vault.persona.PersonaServiceImplContractTest-delete_of_last_persona_throws_illegal_state.txt": {
+    "bytes": 319,
+    "sha256": "88b43b4184966d399b4508ca7304bbea49b1d4058dda9b3fdf9536f4c74cb0c7"
+  },
+  "core/vault/build/outputs/androidTest-results/connected/debug/flavors/dev/test(AVD) - 15/logcat-app.skein.core.vault.persona.PersonaServiceImplContractTest-observeAll_emits_after_create.txt": {
+    "bytes": 291,
+    "sha256": "f0e8b84384f26b76c2acb656689b6c587bff99e0750826fc51017409edaea7a4"
+  },
+  "core/vault/build/outputs/androidTest-results/connected/debug/flavors/dev/test(AVD) - 15/logcat-app.skein.core.vault.repository.ObjectLifecycleEmulatorLaneTest-a_committed_delete_survives_pool_close_and_reopen.txt": {
+    "bytes": 339,
+    "sha256": "7eb0b335d99d95bd528c71f56740acf3f2054656ff97d69185a7225a8de08f0b"
+  },
+  "core/vault/build/outputs/androidTest-results/connected/debug/flavors/dev/test(AVD) - 15/logcat-app.skein.core.vault.repository.ObjectLifecycleEmulatorLaneTest-a_note_created_with_a_deleted_notes_title_regains_its_backlinks.txt": {
+    "bytes": 367,
+    "sha256": "873e93926a7d1aaf979453d34105467c7d86da3b9c24469dfe08bfe65ef8b87e"
+  },
+  "core/vault/build/outputs/androidTest-results/connected/debug/flavors/dev/test(AVD) - 15/logcat-app.skein.core.vault.repository.ObjectLifecycleEmulatorLaneTest-attachment_blob_outlives_a_delete_whose_commit_fails.txt": {
+    "bytes": 345,
+    "sha256": "700fe3e5ed098cd2347f2ddf03f8a611442f6b561a76e54389cbc473c77953c8"
+  },
+  "core/vault/build/outputs/androidTest-results/connected/debug/flavors/dev/test(AVD) - 15/logcat-app.skein.core.vault.repository.ObjectLifecycleEmulatorLaneTest-cascade_leaves_no_chunks_fts_matches_or_vec_rows.txt": {
+    "bytes": 337,
+    "sha256": "09ee28242a374a4bf570b265568d7d85bfcfa60376c963eaf381004e98650d78"
+  },
+  "core/vault/build/outputs/androidTest-results/connected/debug/flavors/dev/test(AVD) - 15/logcat-app.skein.core.vault.repository.ObjectLifecycleEmulatorLaneTest-fts_delete_cost_with_secure_delete_is_recorded.txt": {
+    "bytes": 910,
+    "sha256": "7733a02e1722c64005a75d514f665092e21d4c9de8250096a00dab34d892819a"
+  },
+  "core/vault/build/outputs/androidTest-results/connected/debug/flavors/dev/test(AVD) - 15/logcat-app.skein.core.vault.repository.ObjectLifecycleEmulatorLaneTest-pragma_secure_delete_is_on_for_every_pool_connection.txt": {
+    "bytes": 345,
+    "sha256": "0577c99a85b1b8cf322a0b7a78d1eb745587792b310f661ae53b19dab8844053"
+  },
+  "core/vault/build/outputs/androidTest-results/connected/debug/flavors/dev/test(AVD) - 15/logcat-app.skein.core.vault.repository.VaultRepositoryImplContractTest-a_chat_documents_snapshots_stay_bounded_and_its_citations_still_resolve.txt": {
+    "bytes": 383,
+    "sha256": "d445542a909519cbcad8d4857913b24861e832beba3ee075e42ca464d0689ea0"
+  },
+  "core/vault/build/outputs/androidTest-results/connected/debug/flavors/dev/test(AVD) - 15/logcat-app.skein.core.vault.repository.VaultRepositoryImplContractTest-a_citation_into_a_deleted_document_does_not_match.txt": {
+    "bytes": 339,
+    "sha256": "c7b18d454a9f53a122695e64c3d789176a7a115df08f513f57e9a7a5ecbfe0ad"
+  },
+  "core/vault/build/outputs/androidTest-results/connected/debug/flavors/dev/test(AVD) - 15/logcat-app.skein.core.vault.repository.VaultRepositoryImplContractTest-a_closed_repository_cannot_borrow_another_repositorys_transaction.txt": {
+    "bytes": 371,
+    "sha256": "8995297df60ae98b582e5994395866ad39e34111964b8f9c8501764cfd4e3daa"
+  },
+  "core/vault/build/outputs/androidTest-results/connected/debug/flavors/dev/test(AVD) - 15/logcat-app.skein.core.vault.repository.VaultRepositoryImplContractTest-a_cosmetic_frontmatter_rewrite_does_not_change_the_revision_hash.txt": {
+    "bytes": 369,
+    "sha256": "f1dfe7d6b0f8b001aec371d16f6d1fa1ba37a5462388a10ad88a71b4d1908e7e"
+  },
+  "core/vault/build/outputs/androidTest-results/connected/debug/flavors/dev/test(AVD) - 15/logcat-app.skein.core.vault.repository.VaultRepositoryImplContractTest-a_failed_transaction_rolls_back_every_delete_in_it.txt": {
+    "bytes": 341,
+    "sha256": "95419e5e9279ef5002c9698568a6fb88a621656f84766780916b73423e4ad9bf"
+  },
+  "core/vault/build/outputs/androidTest-results/connected/debug/flavors/dev/test(AVD) - 15/logcat-app.skein.core.vault.repository.VaultRepositoryImplContractTest-a_frontmatter_only_edit_requeues_ingest.txt": {
+    "bytes": 319,
+    "sha256": "7f2feb78b6f0ad09929cca48283a370e7cea17402472e8960cb754532f38d17f"
+  },
+  "core/vault/build/outputs/androidTest-results/connected/debug/flavors/dev/test(AVD) - 15/logcat-app.skein.core.vault.repository.VaultRepositoryImplContractTest-a_late_autosave_never_resurrects_a_deleted_note.txt": {
+    "bytes": 335,
+    "sha256": "8290db276a39687528770be145999bb5c7e8879fdae556e77753f6bf07089ad7"
+  },
+  "core/vault/build/outputs/androidTest-results/connected/debug/flavors/dev/test(AVD) - 15/logcat-app.skein.core.vault.repository.VaultRepositoryImplContractTest-a_message_without_citations_still_round_trips_legacy_chunk_ids.txt": {
+    "bytes": 365,
+    "sha256": "701dd9d321871c1016ca4a7f02d775165e7d63d9eed8e1fe74004a90f2e59cfb"
+  },
+  "core/vault/build/outputs/androidTest-results/connected/debug/flavors/dev/test(AVD) - 15/logcat-app.skein.core.vault.repository.VaultRepositoryImplContractTest-a_real_frontmatter_edit_does_change_the_revision_hash.txt": {
+    "bytes": 347,
+    "sha256": "6715025ee9637459aff150b26eaa730a31c7fec5b73e33bf9b7b5d35381d0886"
+  },
+  "core/vault/build/outputs/androidTest-results/connected/debug/flavors/dev/test(AVD) - 15/logcat-app.skein.core.vault.repository.VaultRepositoryImplContractTest-altered_excerpt_does_not_unpin_other_citations_or_its_own_revision.txt": {
+    "bytes": 373,
+    "sha256": "9344e6c5f4d3bb3eb65436267d495c6bfad3a6baab530812b19a91152db436df"
+  },
+  "core/vault/build/outputs/androidTest-results/connected/debug/flavors/dev/test(AVD) - 15/logcat-app.skein.core.vault.repository.VaultRepositoryImplContractTest-an_undone_edit_resolves_back_to_the_original_revision.txt": {
+    "bytes": 347,
+    "sha256": "2e7e3a64789bb08d3be0a2d9cf8e9639010e223506f0ef9985cdcf494e2db96a"
+  },
+  "core/vault/build/outputs/androidTest-results/connected/debug/flavors/dev/test(AVD) - 15/logcat-app.skein.core.vault.repository.VaultRepositoryImplContractTest-appendMessage_rematerializes_bodymd_containing_message_text.txt": {
+    "bytes": 359,
+    "sha256": "029151d14499856b7a5fe1c90a4139744c184f8dd5d2e7f1e3a36a1e4e9d9c2c"
+  },
+  "core/vault/build/outputs/androidTest-results/connected/debug/flavors/dev/test(AVD) - 15/logcat-app.skein.core.vault.repository.VaultRepositoryImplContractTest-appendMessage_round_trips_a_citation_record.txt": {
+    "bytes": 327,
+    "sha256": "8dbef8f3680b8d35df18fe7acec569446b2a38a9bc4d24fc49115ff54320bd68"
+  },
+  "core/vault/build/outputs/androidTest-results/connected/debug/flavors/dev/test(AVD) - 15/logcat-app.skein.core.vault.repository.VaultRepositoryImplContractTest-attachment_blob_is_deleted_only_after_commit.txt": {
+    "bytes": 329,
+    "sha256": "4a5562661064bce3ad960b7393b7985148696921e4098d2f5b3eb5447fb3ff92"
+  },
+  "core/vault/build/outputs/androidTest-results/connected/debug/flavors/dev/test(AVD) - 15/logcat-app.skein.core.vault.repository.VaultRepositoryImplContractTest-attachment_round_trip_1MiB_of_random_bytes.txt": {
+    "bytes": 325,
+    "sha256": "5421be8fe9ea9b90d1ad2b8a622de4eebca35fc98b873d5191245e7668571990"
+  },
+  "core/vault/build/outputs/androidTest-results/connected/debug/flavors/dev/test(AVD) - 15/logcat-app.skein.core.vault.repository.VaultRepositoryImplContractTest-attachments_have_no_revisions.txt": {
+    "bytes": 299,
+    "sha256": "080a9e6da71ee9b75a729c427f2b606ac81acd5eb1bc7dbb5bb54150a995da26"
+  },
+  "core/vault/build/outputs/androidTest-results/connected/debug/flavors/dev/test(AVD) - 15/logcat-app.skein.core.vault.repository.VaultRepositoryImplContractTest-cancellation_immediately_after_commit_cannot_skip_acknowledgement_or_undo_the_send.txt": {
+    "bytes": 405,
+    "sha256": "382efd7a61417f7bb5014a0e5833b83f57492b9a85435fd3a0eca58bf67a5330"
+  },
+  "core/vault/build/outputs/androidTest-results/connected/debug/flavors/dev/test(AVD) - 15/logcat-app.skein.core.vault.repository.VaultRepositoryImplContractTest-capturing_unchanged_content_is_idempotent.txt": {
+    "bytes": 323,
+    "sha256": "d4616706540166c460884e1d8f22a68bf93a5058e31c611be63fcf5ad1fa6176"
+  },
+  "core/vault/build/outputs/androidTest-results/connected/debug/flavors/dev/test(AVD) - 15/logcat-app.skein.core.vault.repository.VaultRepositoryImplContractTest-commit_acknowledgement_registration_requires_this_repositorys_transaction.txt": {
+    "bytes": 387,
+    "sha256": "9994e8c33e23611caf3f137904b6002a1f8267389f9dc9f89f3a98b37dd09e4d"
+  },
+  "core/vault/build/outputs/androidTest-results/connected/debug/flavors/dev/test(AVD) - 15/logcat-app.skein.core.vault.repository.VaultRepositoryImplContractTest-commit_acknowledgements_wait_for_outer_commit_and_never_run_on_rollback.txt": {
+    "bytes": 383,
+    "sha256": "361f003eb130a073e9b0c0e976207e651a0e254b0a68bf3c9048dd44fded7953"
+  },
+  "core/vault/build/outputs/androidTest-results/connected/debug/flavors/dev/test(AVD) - 15/logcat-app.skein.core.vault.repository.VaultRepositoryImplContractTest-completeIngest_noop_when_requeued.txt": {
+    "bytes": 307,
+    "sha256": "9967f7818d0632e58cb5a3ee841db002c314a0a39591911961c4f3077ec367d3"
+  },
+  "core/vault/build/outputs/androidTest-results/connected/debug/flavors/dev/test(AVD) - 15/logcat-app.skein.core.vault.repository.VaultRepositoryImplContractTest-countChatsCiting_counts_distinct_chats_by_decoded_citation_records.txt": {
+    "bytes": 373,
+    "sha256": "857b7ef0e973c7750b06839b3827234661f2c276fa10900cdaacd2df9e550f13"
+  },
+  "core/vault/build/outputs/androidTest-results/connected/debug/flavors/dev/test(AVD) - 15/logcat-app.skein.core.vault.repository.VaultRepositoryImplContractTest-createDocument_callers_id_wins_over_frontmatter_id_key.txt": {
+    "bytes": 349,
+    "sha256": "7f82686021132eeb716547e4af477d0aa4113680bb7e2c4d5e7128a9d0307510"
+  },
+  "core/vault/build/outputs/androidTest-results/connected/debug/flavors/dev/test(AVD) - 15/logcat-app.skein.core.vault.repository.VaultRepositoryImplContractTest-createDocument_captures_a_revision_addressing_the_content.txt": {
+    "bytes": 355,
+    "sha256": "456a65da7da187661bb32e5f078434f70597de0980b427a72c3bbd73eeff5c35"
+  },
+  "core/vault/build/outputs/androidTest-results/connected/debug/flavors/dev/test(AVD) - 15/logcat-app.skein.core.vault.repository.VaultRepositoryImplContractTest-createDocument_frontmatter_id_key_is_the_fallback_when_caller_supplies_none.txt": {
+    "bytes": 391,
+    "sha256": "42e84fea49af5ffd3d649420a248e989783a91fcccf2c2a18e921847b0301931"
+  },
+  "core/vault/build/outputs/androidTest-results/connected/debug/flavors/dev/test(AVD) - 15/logcat-app.skein.core.vault.repository.VaultRepositoryImplContractTest-create_then_get_preserves_frontmatter_id.txt": {
+    "bytes": 321,
+    "sha256": "d9b4a76885605037545a3fe569d2fbfcb9b399f3253c71934e24d8769a45eee9"
+  },
+  "core/vault/build/outputs/androidTest-results/connected/debug/flavors/dev/test(AVD) - 15/logcat-app.skein.core.vault.repository.VaultRepositoryImplContractTest-deleteDocument_explicit_id_link_is_not_a_title_link_to_a_replacement.txt": {
+    "bytes": 377,
+    "sha256": "9b17cead2ab320470cf2fae8729da8e3b81e278a8702acdd464757f7d821e1dc"
+  },
+  "core/vault/build/outputs/androidTest-results/connected/debug/flavors/dev/test(AVD) - 15/logcat-app.skein.core.vault.repository.VaultRepositoryImplContractTest-deleteDocument_id_spelling_equal_to_title_still_has_only_an_id_binding.txt": {
+    "bytes": 381,
+    "sha256": "fc3afc633444ba8ab2840c06ab10abb8999d9627b20ec13a4fdd9a21a8e96b61"
+  },
+  "core/vault/build/outputs/androidTest-results/connected/debug/flavors/dev/test(AVD) - 15/logcat-app.skein.core.vault.repository.VaultRepositoryImplContractTest-deleteDocument_is_idempotent_for_a_missing_id.txt": {
+    "bytes": 331,
+    "sha256": "26a0c03eeae36eaf1792b1c4311d34246fa22ee7cd913a44539d4909cfe843d1"
+  },
+  "core/vault/build/outputs/androidTest-results/connected/debug/flavors/dev/test(AVD) - 15/logcat-app.skein.core.vault.repository.VaultRepositoryImplContractTest-deleteDocument_keeps_other_chats_citation_excerpts.txt": {
+    "bytes": 341,
+    "sha256": "96b7453b6c68a680d741c91159c327a1004f867e6347ff7c875a8dfeb0f11086"
+  },
+  "core/vault/build/outputs/androidTest-results/connected/debug/flavors/dev/test(AVD) - 15/logcat-app.skein.core.vault.repository.VaultRepositoryImplContractTest-deleteDocument_removes_cite_in_edges.txt": {
+    "bytes": 313,
+    "sha256": "7b710b2858f4737fa450dc241774a1a5ef8cdb45fdf32fa21a7b4563234204d3"
+  },
+  "core/vault/build/outputs/androidTest-results/connected/debug/flavors/dev/test(AVD) - 15/logcat-app.skein.core.vault.repository.VaultRepositoryImplContractTest-deleteDocument_removes_messages_revisions_and_the_ingest_queue_entry.txt": {
+    "bytes": 377,
+    "sha256": "f64b0c5be4ec30be4236cf9bf677e1b6a3191a6726a6bd6fa1bf042b365a328c"
+  },
+  "core/vault/build/outputs/androidTest-results/connected/debug/flavors/dev/test(AVD) - 15/logcat-app.skein.core.vault.repository.VaultRepositoryImplContractTest-deleteDocument_removes_out_edges_of_every_kind.txt": {
+    "bytes": 333,
+    "sha256": "6ec00866459a051ae17d2d712b70d5c8aa9189a38940fe824914fb7cbf2f8201"
+  },
+  "core/vault/build/outputs/androidTest-results/connected/debug/flavors/dev/test(AVD) - 15/logcat-app.skein.core.vault.repository.VaultRepositoryImplContractTest-deleteDocument_removes_the_documents_chunks.txt": {
+    "bytes": 327,
+    "sha256": "47a473e4c1c8d63d942072c526735ea67fb5e174d6a9c3e6507ff287cb7f3dab"
+  },
+  "core/vault/build/outputs/androidTest-results/connected/debug/flavors/dev/test(AVD) - 15/logcat-app.skein.core.vault.repository.VaultRepositoryImplContractTest-deleteDocument_removes_the_row_and_getDocument_returns_null.txt": {
+    "bytes": 359,
+    "sha256": "7eaae20980c4e9a20fb93a37ce8bed226fa0717e080e374c6423dd19eb5d29a8"
+  },
+  "core/vault/build/outputs/androidTest-results/connected/debug/flavors/dev/test(AVD) - 15/logcat-app.skein.core.vault.repository.VaultRepositoryImplContractTest-deleteDocument_requeues_the_surviving_document_with_the_same_title.txt": {
+    "bytes": 373,
+    "sha256": "acda0761e72a82f4f913700523beb93edafa63339cf79d25aecf055c4f1f1614"
+  },
+  "core/vault/build/outputs/androidTest-results/connected/debug/flavors/dev/test(AVD) - 15/logcat-app.skein.core.vault.repository.VaultRepositoryImplContractTest-deleteDocument_rewrites_wikilink_in_edges_to_the_title_sentinel_at_weight_half.txt": {
+    "bytes": 397,
+    "sha256": "cd752abff450535e24af27b4c146a92eabaf5c69efe2bb863788b28190aad13d"
+  },
+  "core/vault/build/outputs/androidTest-results/connected/debug/flavors/dev/test(AVD) - 15/logcat-app.skein.core.vault.repository.VaultRepositoryImplContractTest-deleteDocument_sentinel_matches_EdgeUpserter_for_a_non_ascii_title.txt": {
+    "bytes": 373,
+    "sha256": "003dc2b2e834aeb90b015650d696ca36d72e9a707e3596d37f489a7f89c61d85"
+  },
+  "core/vault/build/outputs/androidTest-results/connected/debug/flavors/dev/test(AVD) - 15/logcat-app.skein.core.vault.repository.VaultRepositoryImplContractTest-deleted_chat_cascades_draft_and_late_write_cannot_resurrect_it.txt": {
+    "bytes": 365,
+    "sha256": "edf535657d2da8e7f3caeb479bea948c495cdea67821603c362d15cd6a93e4fa"
+  },
+  "core/vault/build/outputs/androidTest-results/connected/debug/flavors/dev/test(AVD) - 15/logcat-app.skein.core.vault.repository.VaultRepositoryImplContractTest-deleting_a_document_cascades_its_revisions_ahead_of_any_sweep.txt": {
+    "bytes": 363,
+    "sha256": "47c1d65b87bcb42f4b97b75d64bb293097641be1e4a284ddd0567151f10f5c95"
+  },
+  "core/vault/build/outputs/androidTest-results/connected/debug/flavors/dev/test(AVD) - 15/logcat-app.skein.core.vault.repository.VaultRepositoryImplContractTest-draft_batch_rolls_back_and_quiesce_refuses_late_writes.txt": {
+    "bytes": 1231,
+    "sha256": "211c627b8619c547a19746b002692793444902a6f93f705252f1ba891fc1dfbe"
+  },
+  "core/vault/build/outputs/androidTest-results/connected/debug/flavors/dev/test(AVD) - 15/logcat-app.skein.core.vault.repository.VaultRepositoryImplContractTest-draft_roundtrip_preserves_unicode_selection_and_has_no_document_side_effects.txt": {
+    "bytes": 393,
+    "sha256": "6a30d785915604e3ba8e9b0d1ec8d045114bdbc1a4b3be6cfe10ccea25224596"
+  },
+  "core/vault/build/outputs/androidTest-results/connected/debug/flavors/dev/test(AVD) - 15/logcat-app.skein.core.vault.repository.VaultRepositoryImplContractTest-failing_acknowledgement_does_not_undo_commit_or_prevent_the_next_acknowledgement.txt": {
+    "bytes": 401,
+    "sha256": "285e9c00136077d14e32f77e7be4f588651cef1dafeb19651ed6c2f6c042a62d"
+  },
+  "core/vault/build/outputs/androidTest-results/connected/debug/flavors/dev/test(AVD) - 15/logcat-app.skein.core.vault.repository.VaultRepositoryImplContractTest-index_writes_for_a_missing_source_document_are_skipped.txt": {
+    "bytes": 349,
+    "sha256": "018dbf23379e7a5010d9455d11827d7c2f36c9c285fc52500f335c4e80e04cd3"
+  },
+  "core/vault/build/outputs/androidTest-results/connected/debug/flavors/dev/test(AVD) - 15/logcat-app.skein.core.vault.repository.VaultRepositoryImplContractTest-kindsOf_reads_its_own_transaction_without_deadlocking.txt": {
+    "bytes": 347,
+    "sha256": "f9ee020f60a63fa89a927133fa5d47ecfddc39bcd702ca6b5f12afc7292a932e"
+  },
+  "core/vault/build/outputs/androidTest-results/connected/debug/flavors/dev/test(AVD) - 15/logcat-app.skein.core.vault.repository.VaultRepositoryImplContractTest-kindsOf_returns_only_requested_live_kinds_in_a_large_batch.txt": {
+    "bytes": 357,
+    "sha256": "4e7140e5ecc5768420f50a4a6822bfa4565b671de473a765c9236e6abe0e12da"
+  },
+  "core/vault/build/outputs/androidTest-results/connected/debug/flavors/dev/test(AVD) - 15/logcat-app.skein.core.vault.repository.VaultRepositoryImplContractTest-new_draft_same_id_is_separate_in_each_space.txt": {
+    "bytes": 327,
+    "sha256": "b2c629da67c6d6ae61cff6184d45cbf3d592e82cd002bda6145d7abeae203411"
+  },
+  "core/vault/build/outputs/androidTest-results/connected/debug/flavors/dev/test(AVD) - 15/logcat-app.skein.core.vault.repository.VaultRepositoryImplContractTest-observeDocument_emits_null_after_delete.txt": {
+    "bytes": 319,
+    "sha256": "e4ec57a828d16a669bbfa7f27b3e4b7f5f89e6af89797d97b4bf2df9a66012b0"
+  },
+  "core/vault/build/outputs/androidTest-results/connected/debug/flavors/dev/test(AVD) - 15/logcat-app.skein.core.vault.repository.VaultRepositoryImplContractTest-observeMessages_emits_empty_after_the_chat_is_deleted.txt": {
+    "bytes": 347,
+    "sha256": "d92a459e90fe1a26c030338c1c5ccd68f8d584db769687393fa5e93b5da6b739"
+  },
+  "core/vault/build/outputs/androidTest-results/connected/debug/flavors/dev/test(AVD) - 15/logcat-app.skein.core.vault.repository.VaultRepositoryImplContractTest-observeTimeline_drops_the_deleted_document.txt": {
+    "bytes": 325,
+    "sha256": "82b3871b7d92d2d03a33bb0ff52f5816714bc29937bef633aa1c7665ebec2b72"
+  },
+  "core/vault/build/outputs/androidTest-results/connected/debug/flavors/dev/test(AVD) - 15/logcat-app.skein.core.vault.repository.VaultRepositoryImplContractTest-observeTimeline_orders_newest_first_and_filters_by_persona.txt": {
+    "bytes": 357,
+    "sha256": "a742e5110a2ef26fc6a2607d127492a5f0d02f9cdb0c2860579161fa256b34a8"
+  },
+  "core/vault/build/outputs/androidTest-results/connected/debug/flavors/dev/test(AVD) - 15/logcat-app.skein.core.vault.repository.VaultRepositoryImplContractTest-observeTimeline_reemits_within_50ms_of_a_write_on_another_coroutine.txt": {
+    "bytes": 375,
+    "sha256": "6a390e55d16ad4f910b5557f5adef5b9f7bea6b69531f5a4d1239114d882f025"
+  },
+  "core/vault/build/outputs/androidTest-results/connected/debug/flavors/dev/test(AVD) - 15/logcat-app.skein.core.vault.repository.VaultRepositoryImplContractTest-orphan_edge_sweep_deletes_edges_from_missing_sources_and_stray_vectors.txt": {
+    "bytes": 381,
+    "sha256": "64e394eefa15cbd5c44f69d5c3cb47435a0f7c29718caf917406e29b825e8a6c"
+  },
+  "core/vault/build/outputs/androidTest-results/connected/debug/flavors/dev/test(AVD) - 15/logcat-app.skein.core.vault.repository.VaultRepositoryImplContractTest-orphan_edge_sweep_deletes_edges_to_missing_documents_and_requeues_their_sources.txt": {
+    "bytes": 476,
+    "sha256": "ee3e45bd7abeeba4f173f96d5a1907e504540d3e12665d86f99bf4f38e68ebe3"
+  },
+  "core/vault/build/outputs/androidTest-results/connected/debug/flavors/dev/test(AVD) - 15/logcat-app.skein.core.vault.repository.VaultRepositoryImplContractTest-orphan_edge_sweep_is_idempotent.txt": {
+    "bytes": 303,
+    "sha256": "bb4e1c46c37a9ae735929e89a88bad573ce8b3271521269b83ca59e3b729b930"
+  },
+  "core/vault/build/outputs/androidTest-results/connected/debug/flavors/dev/test(AVD) - 15/logcat-app.skein.core.vault.repository.VaultRepositoryImplContractTest-quiesce_drains_nested_transaction_and_refuses_late_writes.txt": {
+    "bytes": 355,
+    "sha256": "dd70611d427422e3334914ae7be62f6ceda4cd14775efaf6a8743ece40008ef5"
+  },
+  "core/vault/build/outputs/androidTest-results/connected/debug/flavors/dev/test(AVD) - 15/logcat-app.skein.core.vault.repository.VaultRepositoryImplContractTest-quiesce_timeout_rolls_back_and_never_reopens_admission.txt": {
+    "bytes": 349,
+    "sha256": "e46d569aea6b95e560fa7f0da4cd06bb70552b53049aaae1ff195484dec9f294"
+  },
+  "core/vault/build/outputs/androidTest-results/connected/debug/flavors/dev/test(AVD) - 15/logcat-app.skein.core.vault.repository.VaultRepositoryImplContractTest-recordIngestFailure_count_resets_when_the_document_is_re_queued.txt": {
+    "bytes": 367,
+    "sha256": "fc336536c7cda28c40b6fb21e5db392a1ad037a90d5343168573e00a454f035d"
+  },
+  "core/vault/build/outputs/androidTest-results/connected/debug/flavors/dev/test(AVD) - 15/logcat-app.skein.core.vault.repository.VaultRepositoryImplContractTest-recordIngestFailure_increments_and_persists_across_dequeue.txt": {
+    "bytes": 357,
+    "sha256": "b17bdeb01555d2629872042a4a2d1040402e8249478578e94ff639fe3b615bab"
+  },
+  "core/vault/build/outputs/androidTest-results/connected/debug/flavors/dev/test(AVD) - 15/logcat-app.skein.core.vault.repository.VaultRepositoryImplContractTest-recordIngestFailure_returns_zero_and_writes_nothing_once_the_entry_is_gone.txt": {
+    "bytes": 469,
+    "sha256": "c8a7fd9a528f414b6f0fbcf0ef90994db7657f69703cd6abcb70fa5760cba031"
+  },
+  "core/vault/build/outputs/androidTest-results/connected/debug/flavors/dev/test(AVD) - 15/logcat-app.skein.core.vault.repository.VaultRepositoryImplContractTest-renameDocument_changes_only_the_title.txt": {
+    "bytes": 315,
+    "sha256": "845ae2106a6e69e09495181e77c217fc3cd4513de1b354ca2bf44d356f4c1eb2"
+  },
+  "core/vault/build/outputs/androidTest-results/connected/debug/flavors/dev/test(AVD) - 15/logcat-app.skein.core.vault.repository.VaultRepositoryImplContractTest-renameDocument_detaches_wikilink_in_edges_to_the_old_title_sentinel.txt": {
+    "bytes": 375,
+    "sha256": "22543c0b73cbfa7b526214861e947fd83e62ca2ec7e2556875c84d4ca4c14638"
+  },
+  "core/vault/build/outputs/androidTest-results/connected/debug/flavors/dev/test(AVD) - 15/logcat-app.skein.core.vault.repository.VaultRepositoryImplContractTest-renameDocument_does_not_change_updated_at.txt": {
+    "bytes": 323,
+    "sha256": "6b20efea8ec822cdae699ec86cbf1f0a439521facc855481c382dd74ac2d7ca0"
+  },
+  "core/vault/build/outputs/androidTest-results/connected/debug/flavors/dev/test(AVD) - 15/logcat-app.skein.core.vault.repository.VaultRepositoryImplContractTest-renameDocument_does_not_treat_code_literal_id_as_a_link_binding.txt": {
+    "bytes": 367,
+    "sha256": "f9669dc46b9f66833cbc56cde01ff49594a711e78582111eb0fdc8331b2a2b6b"
+  },
+  "core/vault/build/outputs/androidTest-results/connected/debug/flavors/dev/test(AVD) - 15/logcat-app.skein.core.vault.repository.VaultRepositoryImplContractTest-renameDocument_keeps_cite_in_edges.txt": {
+    "bytes": 309,
+    "sha256": "07cd8c65e5a67fbe71078397ac1d1a136747374428a51848d8c6dbcc0467f842"
+  },
+  "core/vault/build/outputs/androidTest-results/connected/debug/flavors/dev/test(AVD) - 15/logcat-app.skein.core.vault.repository.VaultRepositoryImplContractTest-renameDocument_keeps_content_hash_and_captures_no_revision.txt": {
+    "bytes": 357,
+    "sha256": "8546d045794e18cb222b7876d389c9593323ea8484012a840a6a48460f1ed66e"
+  },
+  "core/vault/build/outputs/androidTest-results/connected/debug/flavors/dev/test(AVD) - 15/logcat-app.skein.core.vault.repository.VaultRepositoryImplContractTest-renameDocument_on_an_attachment_keeps_its_byte_hash.txt": {
+    "bytes": 343,
+    "sha256": "74fbdf051560f88f075d64df21961a4b0403eca6ec51d1b140b14c5a16356e77"
+  },
+  "core/vault/build/outputs/androidTest-results/connected/debug/flavors/dev/test(AVD) - 15/logcat-app.skein.core.vault.repository.VaultRepositoryImplContractTest-renameDocument_preserves_explicit_id_links_and_detaches_a_mixed_title_link.txt": {
+    "bytes": 389,
+    "sha256": "ca7b1522ce1760ae76ce41d1a7e113577f0fac7dbc20693aa741e97a6ceb9948"
+  },
+  "core/vault/build/outputs/androidTest-results/connected/debug/flavors/dev/test(AVD) - 15/logcat-app.skein.core.vault.repository.VaultRepositoryImplContractTest-renameDocument_requeues_ingest_with_a_fresh_queued_at.txt": {
+    "bytes": 347,
+    "sha256": "fc13d016c4e8f0dbec7106c0ecef579add13ede60f0c85eed7f9f5c3c5cf9b0d"
+  },
+  "core/vault/build/outputs/androidTest-results/connected/debug/flavors/dev/test(AVD) - 15/logcat-app.skein.core.vault.repository.VaultRepositoryImplContractTest-renameDocument_trims_collapses_line_breaks_and_rejects_blank_or_over_200.txt": {
+    "bytes": 385,
+    "sha256": "3da4884b1847c49e82273dc115dd76524f7051c7896347720a74a21d99b9a9d7"
+  },
+  "core/vault/build/outputs/androidTest-results/connected/debug/flavors/dev/test(AVD) - 15/logcat-app.skein.core.vault.repository.VaultRepositoryImplContractTest-renameDocument_with_ifTitleIs_writes_nothing_when_the_title_changed.txt": {
+    "bytes": 375,
+    "sha256": "db42a14408e532d2f7785b87ee281d3cd41fa6bfddb62e0f06b9ea27bff9b2a5"
+  },
+  "core/vault/build/outputs/androidTest-results/connected/debug/flavors/dev/test(AVD) - 15/logcat-app.skein.core.vault.repository.VaultRepositoryImplContractTest-replaceBody_never_writes_the_title.txt": {
+    "bytes": 309,
+    "sha256": "8152f94cce3a26aca77770e52b37c4162203149c71d78d960de363f0109c361e"
+  },
+  "core/vault/build/outputs/androidTest-results/connected/debug/flavors/dev/test(AVD) - 15/logcat-app.skein.core.vault.repository.VaultRepositoryImplContractTest-replay_detects_a_source_that_changed_under_a_citation.txt": {
+    "bytes": 347,
+    "sha256": "0f850853897c9e2d59cd4a5633d969f421af3b61e2d3943d09c18a2ab612f31b"
+  },
+  "core/vault/build/outputs/androidTest-results/connected/debug/flavors/dev/test(AVD) - 15/logcat-app.skein.core.vault.repository.VaultRepositoryImplContractTest-retitling_alone_does_not_change_the_revision_hash.txt": {
+    "bytes": 339,
+    "sha256": "489dcb5de73128483891cc0e821354ac75ec081c2cbebbeef0f569e5510fc39f"
+  },
+  "core/vault/build/outputs/androidTest-results/connected/debug/flavors/dev/test(AVD) - 15/logcat-app.skein.core.vault.repository.VaultRepositoryImplContractTest-searchBodies_quantum_returns_bm25_ranked_hit_with_bracket_snippet.txt": {
+    "bytes": 371,
+    "sha256": "9ebfa34a0b39c0811b46bb41d389af86d107a150f04e43638263a6f8dfc347c6"
+  },
+  "core/vault/build/outputs/androidTest-results/connected/debug/flavors/dev/test(AVD) - 15/logcat-app.skein.core.vault.repository.VaultRepositoryImplContractTest-searchTitles_and_searchBodies_never_return_a_deleted_document.txt": {
+    "bytes": 363,
+    "sha256": "372e9da4787b525d7883d32309a45ba219b7ad5ace1cec1eb3fc9ec1903d73e3"
+  },
+  "core/vault/build/outputs/androidTest-results/connected/debug/flavors/dev/test(AVD) - 15/logcat-app.skein.core.vault.repository.VaultRepositoryImplContractTest-send_and_draft_clear_commit_together_or_both_roll_back.txt": {
+    "bytes": 349,
+    "sha256": "922c1ce02395eca92ee97d9cb87d2d0e09f708b9703249970a05999ae31fda80"
+  },
+  "core/vault/build/outputs/androidTest-results/connected/debug/flavors/dev/test(AVD) - 15/logcat-app.skein.core.vault.repository.VaultRepositoryImplContractTest-staged_export_file_of_a_deleted_document_is_purged_after_commit.txt": {
+    "bytes": 367,
+    "sha256": "04b45de2d6d9ab0ff273c8d098832fa30062bf7efb096faea8893c247acff7cc"
+  },
+  "core/vault/build/outputs/androidTest-results/connected/debug/flavors/dev/test(AVD) - 15/logcat-app.skein.core.vault.repository.VaultRepositoryImplContractTest-sweep_is_idempotent.txt": {
+    "bytes": 279,
+    "sha256": "515f82e223311e030127cd4549bf70e2fa9a8a52743ac4edd581204393d4cd81"
+  },
+  "core/vault/build/outputs/androidTest-results/connected/debug/flavors/dev/test(AVD) - 15/logcat-app.skein.core.vault.repository.VaultRepositoryImplContractTest-sweep_keeps_a_superseded_revision_still_cited_by_a_message.txt": {
+    "bytes": 357,
+    "sha256": "196a7367d68bc433093bdc3bbcd3a07daac8b5b57f53aac06404cd00362d2d6d"
+  },
+  "core/vault/build/outputs/androidTest-results/connected/debug/flavors/dev/test(AVD) - 15/logcat-app.skein.core.vault.repository.VaultRepositoryImplContractTest-sweep_never_removes_the_current_revision.txt": {
+    "bytes": 321,
+    "sha256": "aeae2d76ee19eda00a78e655a349a48a3c4be718fc6d4faa97a7dac269be3df8"
+  },
+  "core/vault/build/outputs/androidTest-results/connected/debug/flavors/dev/test(AVD) - 15/logcat-app.skein.core.vault.repository.VaultRepositoryImplContractTest-sweep_removes_an_uncited_superseded_revision.txt": {
+    "bytes": 329,
+    "sha256": "106dbed3510336fbbd9733584da8d773a30fa1611b360f843b215ba46b3670e0"
+  },
+  "core/vault/build/outputs/androidTest-results/connected/debug/flavors/dev/test(AVD) - 15/logcat-app.skein.core.vault.repository.VaultRepositoryImplContractTest-transaction_nests_writes_without_deadlock.txt": {
+    "bytes": 323,
+    "sha256": "4dd6483ff3e6d89248bfc9de05e1eb2e9a91eda888fbb960b3f5b415efd89e43"
+  },
+  "core/vault/build/outputs/androidTest-results/connected/debug/flavors/dev/test(AVD) - 15/logcat-app.skein.core.vault.repository.VaultRepositoryImplContractTest-updateBody_bumps_updated_at_and_changes_content_hash.txt": {
+    "bytes": 345,
+    "sha256": "d07869cd5d6c3128f5124a1f2506d4f1ac05c6db704092c46f6ec116f0633a44"
+  },
+  "core/vault/build/outputs/androidTest-results/connected/debug/flavors/dev/test(AVD) - 15/logcat-app.skein.core.vault.repository.VaultRepositoryImplContractTest-updateBody_changes_the_revision_hash_and_keeps_the_old_revision_readable.txt": {
+    "bytes": 385,
+    "sha256": "34b93a35c35592637846193b67b7dfdea914c83de83222c2fbca6ef622cc3fd2"
+  },
+  "core/vault/build/outputs/androidTest-results/connected/debug/flavors/dev/test(AVD) - 15/logcat-app.skein.core.vault.repository.VaultRepositoryImplContractTest-updateBody_rejects_attachments_and_chats.txt": {
+    "bytes": 321,
+    "sha256": "300aa130791341d3e94997347b87a03231c5198cf90dab975bee5ef64a57c269"
+  },
+  "core/vault/build/outputs/androidTest-results/connected/debug/flavors/dev/test(AVD) - 15/logcat-app.skein.core.vault.repository.VaultRepositoryImplContractTest-writes_to_a_deleted_document_throw_NoSuchElementException_and_write_nothing.txt": {
+    "bytes": 391,
+    "sha256": "14c6a2d31513a7d5a39ca8c907c9004be0d360db17490676ccc39738f6c363b3"
+  },
+  "core/vault/build/outputs/androidTest-results/connected/debug/flavors/dev/test(AVD) - 15/logcat-app.skein.vault.SchemaLoadInstrumentedTest-test001InitialSqlLoadsStatementByStatementOnTheSpikeDriver.txt": {
+    "bytes": 315,
+    "sha256": "2314c79c9b73badfcf5985c8b0aaf78f85470fcfb2cbb81b0f9873f1bf0f4107"
+  },
+  "core/vault/build/outputs/androidTest-results/connected/debug/flavors/dev/test(AVD) - 15/test-result.pb": {
+    "bytes": 86539,
+    "sha256": "a292c0e3c7dff5e47f2b52ab865ae875d7d95949357003e7914a44c1fa2b13cc"
+  },
+  "core/vault/build/outputs/androidTest-results/connected/debug/flavors/dev/test-result-exit-code.txt": {
+    "bytes": 1,
+    "sha256": "6b86b273ff34fce19d6b804eff5a3f5747ada4eaa22f1d49c01e52ddb7875b4b"
+  },
+  "core/vault/build/outputs/androidTest-results/connected/debug/flavors/dev/test-result.pb": {
+    "bytes": 86541,
+    "sha256": "6b90745a8bcfa1fbccf7d05aad70b649b29b72602aea2e1f39d08b4e2f3e7268"
+  },
+  "core/vault/build/reports/androidTests/connected/debug/flavors/dev/app.skein.core.vault.db.SkeinSQLiteDriverInstrumentedTest.html": {
+    "bytes": 2467,
+    "sha256": "0489750c67eb34cc5819da8fd5621e7aa46fb853e570552ea80aab0060d56080"
+  },
+  "core/vault/build/reports/androidTests/connected/debug/flavors/dev/app.skein.core.vault.db.html": {
+    "bytes": 1884,
+    "sha256": "ff8213643d6809ff36dfc805c2ce0acc0508c219aa10a8fc1af5bcbfd71cb442"
+  },
+  "core/vault/build/reports/androidTests/connected/debug/flavors/dev/app.skein.core.vault.db.migrations.MigratorInstrumentedTest.html": {
+    "bytes": 4047,
+    "sha256": "1abe1ea505e3f4d3a2e3f21e59812a74c2b6eb1333ac2583d5983defbd26aefb"
+  },
+  "core/vault/build/reports/androidTests/connected/debug/flavors/dev/app.skein.core.vault.db.migrations.html": {
+    "bytes": 1912,
+    "sha256": "d28fea680b55032db4446c89bd881d411101083e6bab2aaa4d98581286f24932"
+  },
+  "core/vault/build/reports/androidTests/connected/debug/flavors/dev/app.skein.core.vault.export.stage.ExportStageRepositoryContractTest.html": {
+    "bytes": 3114,
+    "sha256": "117eb2955f58d88d3c4a0e3f8b7d7eed07812103e9f56ac4fd8cf2fda132ddfe"
+  },
+  "core/vault/build/reports/androidTests/connected/debug/flavors/dev/app.skein.core.vault.export.stage.html": {
+    "bytes": 1926,
+    "sha256": "c07d7f4ba1713ca52fcb6fc315e56bc57363d2b49ebc8b900cf3c903c5cbfbf7"
+  },
+  "core/vault/build/reports/androidTests/connected/debug/flavors/dev/app.skein.core.vault.index.GraphRecallAcceptanceTest.html": {
+    "bytes": 1848,
+    "sha256": "fd2ce4ca02509e618e7fe9ad1a90b77e3d500e44fbe338897d122c3c8e4b94ed"
+  },
+  "core/vault/build/reports/androidTests/connected/debug/flavors/dev/app.skein.core.vault.index.IndexStoreImplAcceptanceTest.html": {
+    "bytes": 6678,
+    "sha256": "8aa5faf5e95e05c153101d436f1218d674bc8dc3cb59d5dc8b3763cebfb13526"
+  },
+  "core/vault/build/reports/androidTests/connected/debug/flavors/dev/app.skein.core.vault.index.IndexStoreImplContractTest.html": {
+    "bytes": 3602,
+    "sha256": "1918673ed5c190f37e08f69ed52f2ea0d3cb778e2aac880dd152e108605e06c1"
+  },
+  "core/vault/build/reports/androidTests/connected/debug/flavors/dev/app.skein.core.vault.index.LexicalRecallAcceptanceTest.html": {
+    "bytes": 1974,
+    "sha256": "47c5a0411122d0bf0878ec633cccafca246dfc57005af03a40fbd6ece9a7a694"
+  },
+  "core/vault/build/reports/androidTests/connected/debug/flavors/dev/app.skein.core.vault.index.VectorRecallAcceptanceTest.html": {
+    "bytes": 1844,
+    "sha256": "254421329747e5c4effefad67c38674c825fb71434e0e71812c483fe09d9af7d"
+  },
+  "core/vault/build/reports/androidTests/connected/debug/flavors/dev/app.skein.core.vault.index.html": {
+    "bytes": 3331,
+    "sha256": "7ff445651ce6ff60de3e87c17a0b36c45acdd3d0400c124546e0842759fa1028"
+  },
+  "core/vault/build/reports/androidTests/connected/debug/flavors/dev/app.skein.core.vault.key.VaultKeyProviderInstrumentedTest.html": {
+    "bytes": 2069,
+    "sha256": "04687fda871d9b24009756a4270f22d4d224e88ace520b1cc86ae14b44d544f9"
+  },
+  "core/vault/build/reports/androidTests/connected/debug/flavors/dev/app.skein.core.vault.key.VaultKeyProvidersInstrumentedTest.html": {
+    "bytes": 2370,
+    "sha256": "43dbec29460c68fc9d1f3e1c25ae13a9896bc0ab9dbb8c4c4523d1641189b776"
+  },
+  "core/vault/build/reports/androidTests/connected/debug/flavors/dev/app.skein.core.vault.key.html": {
+    "bytes": 2115,
+    "sha256": "42c824fb16315bac8b0a37002ac92dc2467b6c1c74ae3dfe875727882eaa2784"
+  },
+  "core/vault/build/reports/androidTests/connected/debug/flavors/dev/app.skein.core.vault.lifecycle.VaultLifecycleInstrumentedTest.html": {
+    "bytes": 2450,
+    "sha256": "2300204c5f0d9496fa58b6dcf65122870def585840a7dc8745008cf25b07016f"
+  },
+  "core/vault/build/reports/androidTests/connected/debug/flavors/dev/app.skein.core.vault.lifecycle.VaultResetInstrumentedTest.html": {
+    "bytes": 2052,
+    "sha256": "83c6cc12559c3d387fd90d16cd2464e19bf66e35205859e0c5cd29827491e1fc"
+  },
+  "core/vault/build/reports/androidTests/connected/debug/flavors/dev/app.skein.core.vault.lifecycle.html": {
+    "bytes": 2128,
+    "sha256": "850542597409ac14c5f9adf4dc04a871ca6adf6199ac903091ba1ebb201967c0"
+  },
+  "core/vault/build/reports/androidTests/connected/debug/flavors/dev/app.skein.core.vault.models.ModelRegistryImplContractTest.html": {
+    "bytes": 2811,
+    "sha256": "e6a6c8f8ddd56795505757279435b1a3a3e3632238fc5cd9d5db716641679584"
+  },
+  "core/vault/build/reports/androidTests/connected/debug/flavors/dev/app.skein.core.vault.models.html": {
+    "bytes": 1894,
+    "sha256": "009bda6114365e301b79b68fb359d18fe4e440f227cfeac4bffe35b10f0d7def"
+  },
+  "core/vault/build/reports/androidTests/connected/debug/flavors/dev/app.skein.core.vault.persona.PersonaServiceImplContractTest.html": {
+    "bytes": 2061,
+    "sha256": "e0b83db604fa81d28af5d25acb789b7fa792ff6a90c4d4ad2b37d78efd80f4f9"
+  },
+  "core/vault/build/reports/androidTests/connected/debug/flavors/dev/app.skein.core.vault.persona.html": {
+    "bytes": 1898,
+    "sha256": "022cdba4e8194c1ffdd430cbe3410e488c3fcd26b829a0c2db465860f0a5f142"
+  },
+  "core/vault/build/reports/androidTests/connected/debug/flavors/dev/app.skein.core.vault.repository.ObjectLifecycleEmulatorLaneTest.html": {
+    "bytes": 2437,
+    "sha256": "3a4cd4397b6fe5a09fd05ec7724900151f9acbeb6e03194ad77273d033eeeadb"
+  },
+  "core/vault/build/reports/androidTests/connected/debug/flavors/dev/app.skein.core.vault.repository.VaultRepositoryImplContractTest.html": {
+    "bytes": 11996,
+    "sha256": "c0e45928c1f72fc8c90daeec8cf440e568f2ef55e193f7bc08a98050844b2f7c"
+  },
+  "core/vault/build/reports/androidTests/connected/debug/flavors/dev/app.skein.core.vault.repository.html": {
+    "bytes": 2146,
+    "sha256": "92466dc12fbbe6fa7b3ffc7d8317e22678bea48a90f0a3adce84567ef37f75ce"
+  },
+  "core/vault/build/reports/androidTests/connected/debug/flavors/dev/app.skein.vault.SchemaLoadInstrumentedTest.html": {
+    "bytes": 1796,
+    "sha256": "332aa5f78686c9792fcf801d8584477a407cb41ceb09a2f52148d31f867a7dc6"
+  },
+  "core/vault/build/reports/androidTests/connected/debug/flavors/dev/app.skein.vault.html": {
+    "bytes": 1838,
+    "sha256": "e47e245cee463ac816e4bf7dcbfbe43b58df108b5d65eb86dd0629311db94457"
+  },
+  "core/vault/build/reports/androidTests/connected/debug/flavors/dev/css/base-style.css": {
+    "bytes": 2428,
+    "sha256": "2851d0b2f14f4ff1b75f0d01438887911eb474e235be93e561709227cefb18db"
+  },
+  "core/vault/build/reports/androidTests/connected/debug/flavors/dev/css/style.css": {
+    "bytes": 1798,
+    "sha256": "f1b366319836f8726d0939654d0eeddfc5b20f67d9e5954b9a1632c60f2f31bf"
+  },
+  "core/vault/build/reports/androidTests/connected/debug/flavors/dev/index.html": {
+    "bytes": 8511,
+    "sha256": "ff00a5aa733f5ed18a7aced592c5eb9dc603e4b1771a7d11432c6fb4114e87ba"
+  },
+  "core/vault/build/reports/androidTests/connected/debug/flavors/dev/js/report.js": {
+    "bytes": 2933,
+    "sha256": "0aa306f94805890682c639b2d5c06108801d64b859a171a3c6eea66c8bab4c6a"
+  },
+  "inference-service/build/outputs/androidTest-results/connected/debug/flavors/dev/TEST-test(AVD) - 15.xml": {
+    "bytes": 5985,
+    "sha256": "5970f8f9d1dd01d4682385b426c2aca9b8a01b23f62d113ae9d610afb5858adf"
+  },
+  "inference-service/build/outputs/androidTest-results/connected/debug/flavors/dev/test(AVD) - 15/device-info.pb": {
+    "bytes": 112,
+    "sha256": "8690a9dcdbe34d879780107bdc5bfb1daddf7ce4a1ff618f735eb6048050ce56"
+  },
+  "inference-service/build/outputs/androidTest-results/connected/debug/flavors/dev/test(AVD) - 15/logcat-app.skein.inference.service.InferenceServiceInstrumentedTest-aColdServiceRefusesLoadUntilUnlocked.txt": {
+    "bytes": 2980,
+    "sha256": "2921e471a07497df3c818fa32cba33429400ca710a3614c00ff0dcae08aef98e"
+  },
+  "inference-service/build/outputs/androidTest-results/connected/debug/flavors/dev/test(AVD) - 15/logcat-app.skein.inference.service.InferenceServiceInstrumentedTest-aGenerationStreamsTokensAndCompletesExactlyOnce.txt": {
+    "bytes": 3004,
+    "sha256": "32b4006757b87d3d79d6bce254a91bc46c0bb630e1d71c2c50d43c67cd304043"
+  },
+  "inference-service/build/outputs/androidTest-results/connected/debug/flavors/dev/test(AVD) - 15/logcat-app.skein.inference.service.InferenceServiceInstrumentedTest-aHashMismatchIsRefusedAndLeavesTheServiceUnloaded.txt": {
+    "bytes": 3006,
+    "sha256": "a58df7ec7a592ea9b537ee47a894014a50c86be7ff8cc0b52c37ad8146e11614"
+  },
+  "inference-service/build/outputs/androidTest-results/connected/debug/flavors/dev/test(AVD) - 15/logcat-app.skein.inference.service.InferenceServiceInstrumentedTest-aHighGpuLayersLoadReportsAGpuDeviceWhenVulkanIsAvailable.txt": {
+    "bytes": 3492,
+    "sha256": "097d997f760007e4e45de360ac79c9ccb887c8f9437ae13bec717a7a9a867f8e"
+  },
+  "inference-service/build/outputs/androidTest-results/connected/debug/flavors/dev/test(AVD) - 15/logcat-app.skein.inference.service.InferenceServiceInstrumentedTest-aLoadedServiceReportsReady.txt": {
+    "bytes": 3818,
+    "sha256": "14268a31422dba4f28a7b1c1f4a8b7c2eab4f9f5bc4ae229599767b0e45cb8cf"
+  },
+  "inference-service/build/outputs/androidTest-results/connected/debug/flavors/dev/test(AVD) - 15/logcat-app.skein.inference.service.InferenceServiceInstrumentedTest-aLockedServiceRefusesTheNextGenerate.txt": {
+    "bytes": 2980,
+    "sha256": "1e8e8ee62133d7188dd734af11e26d8cbb1123018b41a7c28076eb9d99e510a7"
+  },
+  "inference-service/build/outputs/androidTest-results/connected/debug/flavors/dev/test(AVD) - 15/logcat-app.skein.inference.service.InferenceServiceInstrumentedTest-aSecondConcurrentGenerateIsRefusedWithBusy.txt": {
+    "bytes": 3072,
+    "sha256": "a00c09d707d77d38f0ddc966b88247248169262a97cdcf9c664cc04f3e47fc86"
+  },
+  "inference-service/build/outputs/androidTest-results/connected/debug/flavors/dev/test(AVD) - 15/logcat-app.skein.inference.service.InferenceServiceInstrumentedTest-anOversizedAnswerReservationIsRefusedBeforeTokenStreaming.txt": {
+    "bytes": 3022,
+    "sha256": "a03ebc8c481863e093a52089c2b35b16f53b65637966c2fbab2c352c03e5f97a"
+  },
+  "inference-service/build/outputs/androidTest-results/connected/debug/flavors/dev/test(AVD) - 15/logcat-app.skein.inference.service.InferenceServiceInstrumentedTest-anUnlockedServiceLoadsFromADescriptor.txt": {
+    "bytes": 3089,
+    "sha256": "8553a88c826920f9f54cd1c9bd9f7200d4cd2baa3d942df46c4c00044f5656a8"
+  },
+  "inference-service/build/outputs/androidTest-results/connected/debug/flavors/dev/test(AVD) - 15/logcat-app.skein.inference.service.InferenceServiceInstrumentedTest-cancelMidGenerationCompletesAsCancelledWithinTheBudget.txt": {
+    "bytes": 2939,
+    "sha256": "1bbe4bcec4a2c28bc0548ce495e532e7584973bf0b00aa535a6d692730e7d8e1"
+  },
+  "inference-service/build/outputs/androidTest-results/connected/debug/flavors/dev/test(AVD) - 15/logcat-app.skein.inference.service.InferenceServiceInstrumentedTest-cpuOnlyLoadReportsExactlyOneCpuDevice.txt": {
+    "bytes": 2982,
+    "sha256": "5942804b89fff4cd3dd61e3373f2814e1de379e248e4090d5aade15edb6d2bbc"
+  },
+  "inference-service/build/outputs/androidTest-results/connected/debug/flavors/dev/test(AVD) - 15/logcat-app.skein.inference.service.InferenceServiceInstrumentedTest-cpuOnlyLoadReportsNoGpuOrIgpuDevice.txt": {
+    "bytes": 4167,
+    "sha256": "694cf9c761e131596d7a6e35f4da33d02219e6f1acabb7b7d7d7bbb93c7a7459"
+  },
+  "inference-service/build/outputs/androidTest-results/connected/debug/flavors/dev/test(AVD) - 15/logcat-app.skein.inference.service.InferenceServiceInstrumentedTest-lockingMidGenerationCancelsAndZeroesTheKvCache.txt": {
+    "bytes": 4130,
+    "sha256": "6d86623c2520f5829fd0aefd6ed082565d50662fa281b613259e41db91b10223"
+  },
+  "inference-service/build/outputs/androidTest-results/connected/debug/flavors/dev/test(AVD) - 15/logcat-app.skein.inference.service.InferenceServiceInstrumentedTest-theServiceBindsAndReportsUnloaded.txt": {
+    "bytes": 2974,
+    "sha256": "d752a0af578c0bac856e2d856a667499d2e6eddcee2ce798fbe1bd02e617effe"
+  },
+  "inference-service/build/outputs/androidTest-results/connected/debug/flavors/dev/test(AVD) - 15/logcat-app.skein.inference.service.InferenceServiceInstrumentedTest-unloadIsIdempotent.txt": {
+    "bytes": 2944,
+    "sha256": "946accfc6ab08875a9068542ee904c37e153ca392181577a82d219350e6be987"
+  },
+  "inference-service/build/outputs/androidTest-results/connected/debug/flavors/dev/test(AVD) - 15/logcat-app.skein.inference.service.LlamaNativeTest-applyChatTemplateContainsTheUserMessage.txt": {
+    "bytes": 279,
+    "sha256": "927c50b0be0d42e081287b00852b89b2a2bbb420e2386f15ddbec85ff55b5569"
+  },
+  "inference-service/build/outputs/androidTest-results/connected/debug/flavors/dev/test(AVD) - 15/logcat-app.skein.inference.service.LlamaNativeTest-backendReportWithNoModelReportsOnlyCompileTimeCpuFeatures.txt": {
+    "bytes": 315,
+    "sha256": "9f3c6ba5d28b37a1cc85e345b8dfa15f313a8a227d9419d3ca0e5fbfb3196870"
+  },
+  "inference-service/build/outputs/androidTest-results/connected/debug/flavors/dev/test(AVD) - 15/logcat-app.skein.inference.service.LlamaNativeTest-cancelFlagAbortsADecodeWithin100Ms.txt": {
+    "bytes": 269,
+    "sha256": "4fef7d66ee4cc649ae80be5226146c4749ebf4c7eaf56f250e71dc557c1ddcc9"
+  },
+  "inference-service/build/outputs/androidTest-results/connected/debug/flavors/dev/test(AVD) - 15/logcat-app.skein.inference.service.LlamaNativeTest-chatTemplatingRenderUsesTheModelsOwnTemplateAndMarkersAroundTheContent.txt": {
+    "bytes": 341,
+    "sha256": "c048f0957730c9eb45a2be6759a46e1d351a76d73b8614128e1a7ab19867eb88"
+  },
+  "inference-service/build/outputs/androidTest-results/connected/debug/flavors/dev/test(AVD) - 15/logcat-app.skein.inference.service.LlamaNativeTest-contextCapacityRejectsZeroWrongAndFreedHandles.txt": {
+    "bytes": 293,
+    "sha256": "f23c92e9caafec93a0d789f60f3b2f944af526bd1065cefa25d64b9a591b0c38"
+  },
+  "inference-service/build/outputs/androidTest-results/connected/debug/flavors/dev/test(AVD) - 15/logcat-app.skein.inference.service.LlamaNativeTest-controlsSpanningTemplateAndContentRemainLiteralInBothDirections.txt": {
+    "bytes": 327,
+    "sha256": "06fa8ce5e600ea3b3eda5e21951fbde0b7e2d449df79558dabb89272c3871ce4"
+  },
+  "inference-service/build/outputs/androidTest-results/connected/debug/flavors/dev/test(AVD) - 15/logcat-app.skein.inference.service.LlamaNativeTest-decodePromptThenEightSamplesYieldsEightIds.txt": {
+    "bytes": 285,
+    "sha256": "9ce1a1acb234c25febcb779ec339b514a57daf6332c2cd7e491f39a9d29a7bb9"
+  },
+  "inference-service/build/outputs/androidTest-results/connected/debug/flavors/dev/test(AVD) - 15/logcat-app.skein.inference.service.LlamaNativeTest-embedIsUnitLengthAndModelWidth.txt": {
+    "bytes": 261,
+    "sha256": "defad4b971f23a0d93f446f487ac7ba51c11f1fc92bc2a9191f41531a053755a"
+  },
+  "inference-service/build/outputs/androidTest-results/connected/debug/flavors/dev/test(AVD) - 15/logcat-app.skein.inference.service.LlamaNativeTest-errorMessagesCarryNoPromptText.txt": {
+    "bytes": 261,
+    "sha256": "605b8bbc5b13c168213d91bbe64207825c3c7db0b06065703bd7f65065be670c"
+  },
+  "inference-service/build/outputs/androidTest-results/connected/debug/flavors/dev/test(AVD) - 15/logcat-app.skein.inference.service.LlamaNativeTest-exactNativeCapacityAcceptsLastReservedPositionAndRefusesOneBeyond.txt": {
+    "bytes": 27178,
+    "sha256": "c42d2e221583ff0eaa459a297f2f1e550ab39793ba7bff5dbb6aecdb53e31900"
+  },
+  "inference-service/build/outputs/androidTest-results/connected/debug/flavors/dev/test(AVD) - 15/logcat-app.skein.inference.service.LlamaNativeTest-goldenGreedySequenceIsPinned.txt": {
+    "bytes": 257,
+    "sha256": "2a8daf06409985a144dcf89783ff1ea00c5b25907ffbb41308271458716ddb6c"
+  },
+  "inference-service/build/outputs/androidTest-results/connected/debug/flavors/dev/test(AVD) - 15/logcat-app.skein.inference.service.LlamaNativeTest-literalChatMlDelimiterCannotAddAnotherNativeControlToken.txt": {
+    "bytes": 313,
+    "sha256": "f5df75aa24fb8a7e70bdf8bebe75377bd70e1641117c64b2c5547a9e41e8e139"
+  },
+  "inference-service/build/outputs/androidTest-results/connected/debug/flavors/dev/test(AVD) - 15/logcat-app.skein.inference.service.LlamaNativeTest-loadingANonGgufFileFailsWithInvalidModelAndLeaksNoHandle.txt": {
+    "bytes": 313,
+    "sha256": "b8bb9e73e0063f4134a4a12b6009f59707bf4593e353d5af48ca5032366c43ef"
+  },
+  "inference-service/build/outputs/androidTest-results/connected/debug/flavors/dev/test(AVD) - 15/logcat-app.skein.inference.service.LlamaNativeTest-nativeWhitespaceAndUnicodeTokensMatchWholePromptReference.txt": {
+    "bytes": 315,
+    "sha256": "80f37d8061c253724156a4f1263d2508d3086803bff991e18ac4aeda0f540674"
+  },
+  "inference-service/build/outputs/androidTest-results/connected/debug/flavors/dev/test(AVD) - 15/logcat-app.skein.inference.service.LlamaNativeTest-safeTemplateTokensMatchNativeTokensForBenignSyntheticConversation.txt": {
+    "bytes": 464,
+    "sha256": "325ba2a06e106aabe2f5e581c541e235fcd5f58e97b7cbd27bbb16e374fdc40f"
+  },
+  "inference-service/build/outputs/androidTest-results/connected/debug/flavors/dev/test(AVD) - 15/logcat-app.skein.inference.service.LlamaNativeTest-sameSeedTwiceProducesTheSameIds.txt": {
+    "bytes": 509,
+    "sha256": "418d03a2c167ec858f274635b3cec28507856127130fe7d0b8f18d77f1cf8ec1"
+  },
+  "inference-service/build/outputs/androidTest-results/connected/debug/flavors/dev/test(AVD) - 15/logcat-app.skein.inference.service.LlamaNativeTest-scaffoldTokenizerRejectsMalformedUnicodeAndInvalidByteRanges.txt": {
+    "bytes": 321,
+    "sha256": "070bedbcf0496d75bd91197170c47a7874fa52c45f253abfb84d5e45a4fe455e"
+  },
+  "inference-service/build/outputs/androidTest-results/connected/debug/flavors/dev/test(AVD) - 15/logcat-app.skein.inference.service.LlamaNativeTest-secureFreeZeroesTheKvCacheBeforeFreeing.txt": {
+    "bytes": 279,
+    "sha256": "ac15928929e32d2e23f305310c891500e958689f6482402d489f3d0cf82d1be2"
+  },
+  "inference-service/build/outputs/androidTest-results/connected/debug/flavors/dev/test(AVD) - 15/logcat-app.skein.inference.service.LlamaNativeTest-tokenToPieceConcatenatesBackToTheInput.txt": {
+    "bytes": 277,
+    "sha256": "1bb73e3915c392173e45de53820b8224b9b130a5444a6d4b2cf2ac059c40c9d7"
+  },
+  "inference-service/build/outputs/androidTest-results/connected/debug/flavors/dev/test(AVD) - 15/logcat-app.skein.inference.service.LlamaNativeTest-tokenizeReturnsAtLeastTwoIds.txt": {
+    "bytes": 884,
+    "sha256": "fa83e587122f8331766d31299dcb45c50d34790360758e7b63e32cefb45ebf01"
+  },
+  "inference-service/build/outputs/androidTest-results/connected/debug/flavors/dev/test(AVD) - 15/logcat-app.skein.inference.service.LlamaNativeTest-zeroHandlesThrowIllegalStateException.txt": {
+    "bytes": 275,
+    "sha256": "17860714b9eef702a6a0c4fd53d469f6266032359647a997782d0502a85a86eb"
+  },
+  "inference-service/build/outputs/androidTest-results/connected/debug/flavors/dev/test(AVD) - 15/test-result.pb": {
+    "bytes": 13312,
+    "sha256": "63efa367cb6fc4bfe064b2cf6dc144e49c3a63a6d0661cf75217b4798057bc87"
+  },
+  "inference-service/build/outputs/androidTest-results/connected/debug/flavors/dev/test-result-exit-code.txt": {
+    "bytes": 1,
+    "sha256": "5feceb66ffc86f38d952786c6d696c79c2dbc239dd4e91b46729d73a27fb57e9"
+  },
+  "inference-service/build/outputs/androidTest-results/connected/debug/flavors/dev/test-result.pb": {
+    "bytes": 13314,
+    "sha256": "6feb1bfbf0fc4aac50316b0518a9a0e4069d31686ea90d99252d47e208902a29"
+  },
+  "inference-service/build/reports/androidTests/connected/debug/flavors/dev/app.skein.inference.service.InferenceServiceInstrumentedTest.html": {
+    "bytes": 3283,
+    "sha256": "09baf2920dd76f95d827809c5f967b35fe63a5dda70db5c2f26854d109a3e753"
+  },
+  "inference-service/build/reports/androidTests/connected/debug/flavors/dev/app.skein.inference.service.LlamaNativeTest.html": {
+    "bytes": 3967,
+    "sha256": "d0c1402bc04667be035eeaa88b5f92c20bec26483defaff4872c237a82b67124"
+  },
+  "inference-service/build/reports/androidTests/connected/debug/flavors/dev/app.skein.inference.service.html": {
+    "bytes": 2100,
+    "sha256": "1b87a44ebd0df86c5704dd3db4b265c50e892bec1565da0af13c6361a7cac8cc"
+  },
+  "inference-service/build/reports/androidTests/connected/debug/flavors/dev/css/base-style.css": {
+    "bytes": 2428,
+    "sha256": "2851d0b2f14f4ff1b75f0d01438887911eb474e235be93e561709227cefb18db"
+  },
+  "inference-service/build/reports/androidTests/connected/debug/flavors/dev/css/style.css": {
+    "bytes": 1798,
+    "sha256": "f1b366319836f8726d0939654d0eeddfc5b20f67d9e5954b9a1632c60f2f31bf"
+  },
+  "inference-service/build/reports/androidTests/connected/debug/flavors/dev/index.html": {
+    "bytes": 2477,
+    "sha256": "58f5e57e033a3be1b634ac4e211460638ae97f1934aad954c0ce374f49d2dd70"
+  },
+  "inference-service/build/reports/androidTests/connected/debug/flavors/dev/js/report.js": {
+    "bytes": 2933,
+    "sha256": "0aa306f94805890682c639b2d5c06108801d64b859a171a3c6eea66c8bab4c6a"
+  }
+}

@@ -1,0 +1,84 @@
+{
+  "source_revision": "bcd2b3264805b9559d01622af1d17abe3ae6fc9a",
+  "type": "local JVM XML review, no emulator or physical device",
+  "checks": {
+    "broad_integrated_tasks": 965,
+    "final_corrected_native_vault_app_tasks": 901,
+    "host_evaluation_tests": 84
+  },
+  "modules": {
+    "core/model": {
+      "cases": 76,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "skipped_classes": []
+    },
+    "core/rag": {
+      "cases": 351,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 4,
+      "skipped_classes": [
+        "app.skein.core.rag.embed.EmbedderServiceImplTest"
+      ]
+    },
+    "core/vault": {
+      "cases": 1298,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 2,
+      "skipped_classes": [
+        "app.skein.core.vault.transfer.ImportServiceImplContractTest"
+      ]
+    },
+    "testing": {
+      "cases": 231,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "skipped_classes": []
+    },
+    "testing-fakes": {
+      "cases": 28,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "skipped_classes": []
+    },
+    "embedder-service": {
+      "cases": 9,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "skipped_classes": []
+    },
+    "feature/chat": {
+      "cases": 260,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 12,
+      "skipped_classes": [
+        "app.skein.feature.chat.screenshots.ChatScreenshotTest",
+        "app.skein.feature.chat.screenshots.ChatShellScreenshotTest"
+      ]
+    },
+    "app": {
+      "cases": 446,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "skipped_classes": []
+    }
+  },
+  "log_sha256": {
+    "checks-final.log": "41f303fab7621b42ed751d7a9c99ecf70189924ac2ea119edaf7f11ed91b2da1",
+    "format.log": "ca5b16947e01dbfd0b04bdcfdf2c7f3091715b46a0229ecec854302d76c3435f",
+    "checks2.log": "3e5ec63701aeb0e0ddeb55a97826f0b2dbec369868882c9761096e53416042b6",
+    "opt-in-compile.log": "151cf9af70565040f9cb73577c480221664e19fb77d2b8d0778bf46e6579dbd7",
+    "checks.log": "ba0ab7a5fc6600bab14f12ebadaf7ae52955f4c930340f69b652120e72c2e730",
+    "host.log": "76d3c47c57e7d1805371abef891a0bd5c3085fe46d08f04031e7152d4304adbe",
+    "final-native-integrated.log": "27eeb9b54f075d87415358fede4365b6d6100e6e11c24dcb9550c231afec0e90",
+    "integrated.log": "d143ba1474b9989e1b98795f6e117b25ea6a760916e9c2181b0b002993c596e5"
+  }
+}

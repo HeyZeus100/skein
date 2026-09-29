@@ -1,0 +1,13 @@
+{
+  "run_id": 36527953704,
+  "expected_sha": "bcd2b3264805b9559d01622af1d17abe3ae6fc9a",
+  "conclusion": "failure",
+  "download_exit": 0,
+  "log_exit": 0,
+  "actual_cases": 277,
+  "passing_cases": 276,
+  "failure_count": 1,
+  "error_count": 0,
+  "skip_count": 0,
+  "dedicated_validation_executed": false
+}
