@@ -1,0 +1,14 @@
+{"avd": "skein_foldable_gate", "event": "started", "run_id": "90ac0dbf05b54f96bac6567bea9d72dd", "serial": "emulator-5554"}
+{"action": "fold", "event": "request", "nonce": "0e1b7c2a8b7d49d5a8b16cef99e9464e", "run_id": "90ac0dbf05b54f96bac6567bea9d72dd", "sequence": 1}
+{"action": "fold", "event": "console", "returncode": 0, "run_id": "90ac0dbf05b54f96bac6567bea9d72dd", "sequence": 1, "stderr": "", "stdout": "OK\n"}
+{"action": "fold", "event": "ack", "nonce": "0e1b7c2a8b7d49d5a8b16cef99e9464e", "run_id": "90ac0dbf05b54f96bac6567bea9d72dd", "sequence": 1, "status": "ok"}
+{"action": "unfold", "event": "request", "nonce": "0443d9b49bbd41258bc3892485fe7be5", "run_id": "90ac0dbf05b54f96bac6567bea9d72dd", "sequence": 2}
+{"action": "unfold", "event": "console", "returncode": 0, "run_id": "90ac0dbf05b54f96bac6567bea9d72dd", "sequence": 2, "stderr": "", "stdout": "OK\n"}
+{"action": "unfold", "event": "ack", "nonce": "0443d9b49bbd41258bc3892485fe7be5", "run_id": "90ac0dbf05b54f96bac6567bea9d72dd", "sequence": 2, "status": "ok"}
+{"action": "fold", "event": "request", "nonce": "c5e8391b494c495e89319c151ef5b146", "run_id": "90ac0dbf05b54f96bac6567bea9d72dd", "sequence": 3}
+{"action": "fold", "event": "console", "returncode": 0, "run_id": "90ac0dbf05b54f96bac6567bea9d72dd", "sequence": 3, "stderr": "", "stdout": "OK\n"}
+{"action": "fold", "event": "ack", "nonce": "c5e8391b494c495e89319c151ef5b146", "run_id": "90ac0dbf05b54f96bac6567bea9d72dd", "sequence": 3, "status": "ok"}
+{"action": "unfold", "event": "request", "nonce": "c7bda6c7b5ce4e7eb5ca7c9aa15af2ea", "run_id": "90ac0dbf05b54f96bac6567bea9d72dd", "sequence": 4}
+{"action": "unfold", "event": "console", "returncode": 0, "run_id": "90ac0dbf05b54f96bac6567bea9d72dd", "sequence": 4, "stderr": "", "stdout": "OK\n"}
+{"action": "unfold", "event": "ack", "nonce": "c7bda6c7b5ce4e7eb5ca7c9aa15af2ea", "run_id": "90ac0dbf05b54f96bac6567bea9d72dd", "sequence": 4, "status": "ok"}
+{"event": "stopped", "run_id": "90ac0dbf05b54f96bac6567bea9d72dd"}

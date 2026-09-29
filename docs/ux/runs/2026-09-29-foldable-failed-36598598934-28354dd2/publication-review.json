@@ -1,0 +1,74 @@
+{
+  "run_id": 36598598934,
+  "source_sha": "28354dd25bb4995930ff46a71752f43f8a0d5df3",
+  "counts": {
+    "tests": 2,
+    "passed": 0,
+    "failure": 2,
+    "error": 0,
+    "skipped": 0
+  },
+  "identity_comparison": {
+    "missing": [],
+    "unexpected": [],
+    "duplicates": 0
+  },
+  "manifest_rehash": [
+    {
+      "path": "build/foldable-evidence/avd-config.ini",
+      "bytes": 3995,
+      "sha256": "a1f5dcc0136bbd5faaf6232bdf5267994586947b8e3ee4beeb9a95ba571ee6eb",
+      "size_and_hash_matched": true
+    },
+    {
+      "path": "app/build/outputs/androidTest-results/connected/debug/flavors/dev/TEST-skein_foldable_gate(AVD) - 15.xml",
+      "bytes": 3722,
+      "sha256": "3d05635c4ca6dbddda762113ed36aed3fa60995ca7f638635fc2e9c478ce4979",
+      "size_and_hash_matched": true
+    },
+    {
+      "path": "app/build/outputs/apk/dev/debug/app-dev-debug.apk",
+      "bytes": 171761414,
+      "sha256": "745ffa55c99e99a6c8f064cf28beac3f322143c8b24dfb2edd6b926d7128f267",
+      "size_and_hash_matched": true
+    },
+    {
+      "path": "app/build/outputs/apk/androidTest/dev/debug/app-dev-debug-androidTest.apk",
+      "bytes": 94575945,
+      "sha256": "d9bf3e668a194dec44f834e2c8d4df351ef8ac2013116b3938d1d4720d9c2077",
+      "size_and_hash_matched": true
+    },
+    {
+      "path": "build/foldable-evidence/console-run-id.txt",
+      "bytes": 33,
+      "sha256": "a37da0e7a0ee6c5f8b806b0657105ada9a306a78a7f0655da68d19bf9ea45d41",
+      "size_and_hash_matched": true
+    },
+    {
+      "path": "build/foldable-evidence/console-events.jsonl",
+      "bytes": 2007,
+      "sha256": "a7cea65002834a638c00e42289051176a2443e349206dfe9bdbd5a6dd4504644",
+      "size_and_hash_matched": true
+    }
+  ],
+  "actual_activity_window_observations": "See raw XML and partial-failure-diagnosis.json. Both remain1768x2208px/Configuration674x841dp; zero accepted journey JSONL observations.",
+  "partial_protocol": "Four clean causal fold/unfold exchanges; requiredsix unmet, stopped cleanly.",
+  "APK_build_output_bytes": [
+    {
+      "path": "app/build/outputs/apk/androidTest/dev/debug/app-dev-debug-androidTest.apk",
+      "bytes": 94575945,
+      "sha256": "d9bf3e668a194dec44f834e2c8d4df351ef8ac2013116b3938d1d4720d9c2077",
+      "attribution": "downloaded host build output; not installed bytes",
+      "zip_integrity_ok": true
+    },
+    {
+      "path": "app/build/outputs/apk/dev/debug/app-dev-debug.apk",
+      "bytes": 171761414,
+      "sha256": "745ffa55c99e99a6c8f064cf28beac3f322143c8b24dfb2edd6b926d7128f267",
+      "attribution": "downloaded host build output; not installed bytes",
+      "zip_integrity_ok": true
+    }
+  ],
+  "source_attribution": "GitHub run API plus host-declared checkout; no installed APK attestation",
+  "remaining_scope": "Only two unopened-vault journeys on explicit generic profile; no Pixel9/realIME/hinge-angle/unlockedA-G/physicalFold/candidate-release inference."
+}

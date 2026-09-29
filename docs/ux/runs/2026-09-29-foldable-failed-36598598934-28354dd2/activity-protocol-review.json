@@ -1,0 +1,73 @@
+{
+  "run_id": 36598598934,
+  "source_sha": "28354dd25bb4995930ff46a71752f43f8a0d5df3",
+  "counts": {
+    "tests": 2,
+    "passed": 0,
+    "failure": 2,
+    "error": 0,
+    "skipped": 0
+  },
+  "identity_comparison": {
+    "missing": [],
+    "unexpected": [],
+    "duplicates": 0
+  },
+  "geometry_rows": 0,
+  "derived_Activity_geometry": [],
+  "protocol_event_counts": {
+    "started": 1,
+    "request": 4,
+    "console": 4,
+    "ack": 4,
+    "stopped": 1
+  },
+  "verified_causal_sequences": [
+    {
+      "sequence": 1,
+      "action": "fold",
+      "nonce": "0e1b7c2a8b7d49d5a8b16cef99e9464e",
+      "command_returncode": 0,
+      "matching_ACKs": 1
+    },
+    {
+      "sequence": 2,
+      "action": "unfold",
+      "nonce": "0443d9b49bbd41258bc3892485fe7be5",
+      "command_returncode": 0,
+      "matching_ACKs": 1
+    },
+    {
+      "sequence": 3,
+      "action": "fold",
+      "nonce": "c5e8391b494c495e89319c151ef5b146",
+      "command_returncode": 0,
+      "matching_ACKs": 1
+    },
+    {
+      "sequence": 4,
+      "action": "unfold",
+      "nonce": "c7bda6c7b5ce4e7eb5ca7c9aa15af2ea",
+      "command_returncode": 0,
+      "matching_ACKs": 1
+    }
+  ],
+  "six_causal_sequences_and_flat_cleanup_verified": false,
+  "XML_pass_and_source_assertion_scope": "Passing exact source-bound test methods imply setup gate displayed, NavDisplay absent, FLAG_SECURE and same original Activity including guarded @After flat reset. These assertions are not separately attested by screenshots; failed tests imply no complete journey acceptance.",
+  "source_bound_security_cleanup_passed": false,
+  "source_attestation": "GitHub API plus host-declared checkout and uploaded build-output bytes; installed package bytes not independently measured.",
+  "remaining_gates": [
+    "Pixel 9 Pro Fold profile acceptance",
+    "hinge-angle/sensor assertions",
+    "unlocked A-G",
+    "real IME and focus",
+    "system_server heap privacy",
+    "physical Fold A-G acceptance outside this lane"
+  ],
+  "errors": [
+    "Two exact tests have not both passed",
+    "Five unique expected Activity geometry records absent",
+    "Six causal requests/commands/matchedACKs plus flat cleanup not established: ValueError"
+  ],
+  "passed": false
+}

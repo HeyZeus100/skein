@@ -1,0 +1,26 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<testsuites tests="2" failures="2" errors="0" skipped="0" time="0.000" timestamp="2026-09-29T16:46:42" hostname="localhost">
+  <testsuite name="app.skein.foldable.MainActivityFoldableGateTest" tests="2" failures="2" errors="0" skipped="0" time="39.233" timestamp="2026-09-29T16:46:42" hostname="localhost">
+    <properties>
+      <property name="device" value="emulator-5554" />
+    </properties>
+    <testcase name="gateSurvivesClosedFlatClosedWithoutActivityReplacement" classname="app.skein.foldable.MainActivityFoldableGateTest" time="20.195">
+      <failure>java.lang.IllegalStateException: Timed out waiting for CLOSED Activity window geometry; activityWindow=ActivityWindowGeometry(configuration={1.0 310mcc260mnc [en_US] ldltr sw674dp w674dp h841dp 420dpi lrg port finger qwerty/v/v -nav/h winConfig={ mBounds=Rect(0, 0 - 1768, 2208) mAppBounds=Rect(0, 0 - 1768, 2208) mMaxBounds=Rect(0, 0 - 1768, 2208) mDisplayRotation=ROTATION_0 mWindowingMode=fullscreen mActivityType=standard mAlwaysOnTop=undefined mRotation=ROTATION_0} as.2 s.4 fontWeightAdjustment=0}, bounds=Rect(0, 0 - 1768, 2208), activityIdentity=169782737); nonUiTargetConfiguration={1.0 310mcc260mnc [en_US] ldltr sw674dp w674dp h841dp 420dpi lrg port finger qwerty/v/v -nav/h winConfig={ mBounds=Rect(0, 0 - 1768, 2208) mAppBounds=Rect(0, 0 - 1768, 2208) mMaxBounds=Rect(0, 0 - 1768, 2208) mDisplayRotation=ROTATION_0 mWindowingMode=fullscreen mActivityType=undefined mAlwaysOnTop=undefined mRotation=ROTATION_0} as.2 s.20 fontWeightAdjustment=0}
+	at app.skein.foldable.FoldableDeviceControl.await(FoldableDeviceControl.kt:198)
+	at app.skein.foldable.FoldableDeviceControl.await$default(FoldableDeviceControl.kt:185)
+	at app.skein.foldable.FoldableDeviceControl.requestState(FoldableDeviceControl.kt:97)
+	at app.skein.foldable.FoldableDeviceControl.closed(FoldableDeviceControl.kt:42)
+	at app.skein.foldable.MainActivityFoldableGateTest.gateSurvivesClosedFlatClosedWithoutActivityReplacement(MainActivityFoldableGateTest.kt:70)
+</failure>
+    </testcase>
+    <testcase name="gateSurvivesOuterLandscapeWithoutExposingNavDisplay" classname="app.skein.foldable.MainActivityFoldableGateTest" time="19.038">
+      <failure>java.lang.IllegalStateException: Timed out waiting for CLOSED Activity window geometry; activityWindow=ActivityWindowGeometry(configuration={1.0 310mcc260mnc [en_US] ldltr sw674dp w674dp h841dp 420dpi lrg port finger qwerty/v/v -nav/h winConfig={ mBounds=Rect(0, 0 - 1768, 2208) mAppBounds=Rect(0, 0 - 1768, 2208) mMaxBounds=Rect(0, 0 - 1768, 2208) mDisplayRotation=ROTATION_0 mWindowingMode=fullscreen mActivityType=standard mAlwaysOnTop=undefined mRotation=ROTATION_0} as.2 s.4 fontWeightAdjustment=0}, bounds=Rect(0, 0 - 1768, 2208), activityIdentity=78371802); nonUiTargetConfiguration={1.0 310mcc260mnc [en_US] ldltr sw674dp w674dp h841dp 420dpi lrg port finger qwerty/v/v -nav/h winConfig={ mBounds=Rect(0, 0 - 1768, 2208) mAppBounds=Rect(0, 0 - 1768, 2208) mMaxBounds=Rect(0, 0 - 1768, 2208) mDisplayRotation=ROTATION_0 mWindowingMode=fullscreen mActivityType=undefined mAlwaysOnTop=undefined mRotation=ROTATION_0} as.2 s.20 fontWeightAdjustment=0}
+	at app.skein.foldable.FoldableDeviceControl.await(FoldableDeviceControl.kt:198)
+	at app.skein.foldable.FoldableDeviceControl.await$default(FoldableDeviceControl.kt:185)
+	at app.skein.foldable.FoldableDeviceControl.requestState(FoldableDeviceControl.kt:97)
+	at app.skein.foldable.FoldableDeviceControl.closed(FoldableDeviceControl.kt:42)
+	at app.skein.foldable.MainActivityFoldableGateTest.gateSurvivesOuterLandscapeWithoutExposingNavDisplay(MainActivityFoldableGateTest.kt:102)
+</failure>
+    </testcase>
+  </testsuite>
+</testsuites>

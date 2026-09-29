@@ -1,0 +1,19 @@
+[
+  {
+    "id": 11048452612,
+    "path": "artifact-11048452612-foldable-gate-7.6in Foldable-28354dd25bb4995930ff46a71752f43f8a0d5df3.zip",
+    "bytes": 156552344,
+    "sha256": "d4c8bbd02f2e93296a645f0b2ec823f0bc155983fbac31de631d71299c563eda",
+    "api_digest_matched": true,
+    "api_size_matched": true,
+    "ZIP_integrity_passed": true,
+    "publication": "Original ZIP outside Git, selected members only."
+  },
+  {
+    "path": "run-logs.zip",
+    "bytes": 107499,
+    "sha256": "aec0ba08b2976ec890c94f5eb6df365dc9789c5e084111310582419946ce5a28",
+    "ZIP_integrity_passed": true,
+    "API_digest_available": false
+  }
+]

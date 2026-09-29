@@ -1,0 +1,166 @@
+{
+  "run_id": 36598598934,
+  "source_sha": "28354dd25bb4995930ff46a71752f43f8a0d5df3",
+  "XML_counts": {
+    "tests": 2,
+    "passed": 0,
+    "failure": 2,
+    "error": 0,
+    "skipped": 0
+  },
+  "identities": {
+    "missing": [],
+    "unexpected": [],
+    "duplicates": 0
+  },
+  "partial_causal_exchanges": [
+    {
+      "sequence": 1,
+      "action": "fold",
+      "request_command_ACK_causal": true,
+      "matching_run_nonce_action_sequence": true,
+      "console_RC0_OK": true
+    },
+    {
+      "sequence": 2,
+      "action": "unfold",
+      "request_command_ACK_causal": true,
+      "matching_run_nonce_action_sequence": true,
+      "console_RC0_OK": true
+    },
+    {
+      "sequence": 3,
+      "action": "fold",
+      "request_command_ACK_causal": true,
+      "matching_run_nonce_action_sequence": true,
+      "console_RC0_OK": true
+    },
+    {
+      "sequence": 4,
+      "action": "unfold",
+      "request_command_ACK_causal": true,
+      "matching_run_nonce_action_sequence": true,
+      "console_RC0_OK": true
+    }
+  ],
+  "required_six_exchanges_met": false,
+  "geometry_JSONL_rows": 0,
+  "actual_Activity_failure_observations": [
+    {
+      "test": "gateSurvivesClosedFlatClosedWithoutActivityReplacement",
+      "configuration_dp": [
+        674,
+        841
+      ],
+      "density_dpi": 420,
+      "activity_bounds_px": [
+        0,
+        0,
+        1768,
+        2208
+      ],
+      "derived_window_dp": [
+        673.5238095238095,
+        841.1428571428571
+      ],
+      "activity_identity": 169782737,
+      "source_line": "FoldableDeviceControl.kt:97 after committed-state wait",
+      "condition": "CLOSED requires Configuration width<600 and actual Activity width<600; both remained above600."
+    },
+    {
+      "test": "gateSurvivesOuterLandscapeWithoutExposingNavDisplay",
+      "configuration_dp": [
+        674,
+        841
+      ],
+      "density_dpi": 420,
+      "activity_bounds_px": [
+        0,
+        0,
+        1768,
+        2208
+      ],
+      "derived_window_dp": [
+        673.5238095238095,
+        841.1428571428571
+      ],
+      "activity_identity": 78371802,
+      "source_line": "FoldableDeviceControl.kt:97 after committed-state wait",
+      "condition": "CLOSED requires Configuration width<600 and actual Activity width<600; both remained above600."
+    }
+  ],
+  "configured_profile_geometry": {
+    "hw.device.name": "7.6in Foldable",
+    "hw.device.manufacturer": "Generic",
+    "hw.lcd.width": "1768",
+    "hw.lcd.height": "2208",
+    "hw.lcd.density": "420",
+    "hw.sensor.hinge": "yes",
+    "hw.sensor.hinge.count": "1",
+    "hw.sensor.hinge.fold_to_displayRegion.0.1_at_posture": "1",
+    "hw.displayRegion.0.1.width": "884",
+    "hw.displayRegion.0.1.height": "2208",
+    "hw.displayRegion.0.1.xOffset": "0",
+    "hw.displayRegion.0.1.yOffset": "0",
+    "hw.sensor.hinge_angles_posture_definitions": "0-30, 30-150, 150-180"
+  },
+  "configured_folded_region_dp": [
+    336.76190476190476,
+    841.1428571428571
+  ],
+  "catalog": "Exact CLOSED=1, HALF_OPENED=2, OPENED=3, queried from this runtime.",
+  "display_log_projection": {
+    "source_member": "build/foldable-evidence/logcat.txt",
+    "source_bytes": 10435558,
+    "source_sha256": "e01f3331d03df37084ee98bc04e069f842e52a4ef1654a3c5514bf8cb4917e27",
+    "original_line_numbers": [
+      72876,
+      72877,
+      72980,
+      72981,
+      73299,
+      73300,
+      73475,
+      73476
+    ],
+    "excerpt_sha256": "b08782389ebe50adc9943395f47183ba0b81afcfcd3cacd9720a2343b72425ad",
+    "description": "Eight unmodified emulator LogicalDisplayMapper lines from the test interval; full global log remains outside publication."
+  },
+  "diagnosis": "The selected generic AVD config declares an884x2208px folded display region associated with posture1. Runtime transitions1/3 are recorded but each layout still uses the same single display; observed production Activity bounds remain1768x2208px. Console acceptance and committed state do not establish the compact-cover geometry required by this test.",
+  "causal_limit": "Evidence localizes failure to effective Activity geometry under this profile/image/emulator combination. It does not by itself identify the emulator/image/config policy cause, establish a production app defect, or justify changing thresholds/profile.",
+  "cleanup_scope": "Each test issued a successful cleanup unfold; controller stopped cleanly and XML records one primary geometry failure percase, no separate cleanup failure. Exact source runs secure setup-gate and original-Activity assertions in @After after reset; this is not a complete successful fold journey or independent visual/security attestation.",
+  "APK_bytes": [
+    {
+      "path": "app/build/outputs/apk/androidTest/dev/debug/app-dev-debug-androidTest.apk",
+      "bytes": 94575945,
+      "sha256": "d9bf3e668a194dec44f834e2c8d4df351ef8ac2013116b3938d1d4720d9c2077",
+      "attribution": "downloaded host build output; not installed bytes",
+      "zip_integrity_ok": true
+    },
+    {
+      "path": "app/build/outputs/apk/dev/debug/app-dev-debug.apk",
+      "bytes": 171761414,
+      "sha256": "745ffa55c99e99a6c8f064cf28beac3f322143c8b24dfb2edd6b926d7128f267",
+      "attribution": "downloaded host build output; not installed bytes",
+      "zip_integrity_ok": true
+    }
+  ],
+  "archive": [
+    {
+      "id": 11048452612,
+      "path": "artifact-11048452612-foldable-gate-7.6in Foldable-28354dd25bb4995930ff46a71752f43f8a0d5df3.zip",
+      "bytes": 156552344,
+      "sha256": "d4c8bbd02f2e93296a645f0b2ec823f0bc155983fbac31de631d71299c563eda",
+      "api_digest_matched": true
+    }
+  ],
+  "all_manifest_hashes_checked": 6,
+  "remaining_gates": [
+    "Pixel 9 Pro Fold profile acceptance",
+    "hinge-angle/sensor assertions",
+    "unlocked A-G",
+    "real IME and focus",
+    "system_server heap privacy",
+    "physical Fold A-G acceptance outside this lane"
+  ]
+}

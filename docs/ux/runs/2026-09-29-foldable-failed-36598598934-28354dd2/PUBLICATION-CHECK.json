@@ -1,0 +1,20 @@
+{
+  "provenance_entries_verified": 40,
+  "published_payload_and_decompressed_hashes_match": true,
+  "original_sources_modified": false,
+  "archive_checks": "Artifact API size/digest matched, both ZIP archives passed integrity; both APK build outputs and native entries independently rehashed. See archive-hashes.json and publication-review.json.",
+  "actual_XML": "One raw XML, two expected cases, two failures, no errors/skips/missing/unexpected/duplicates.",
+  "actual_protocol": "Four causal request-command-ACK exchanges; not the required six. Zero geometry rows. No runtime pass.",
+  "host_source_checks": "Exact dispatched workflow/helper/test/manifest source retained. No new checks executed against production source; no complete fold runtime acceptance.",
+  "publication_scope": "Documentation copies, hashes, compression and recorded local-path replacements only. No build/device/CI/Beads operations.",
+  "private_path_matches": [],
+  "credential_value_pattern_matches": [],
+  "broken_local_links": [],
+  "forbidden_binary_files": [],
+  "credential_context_review": "Whole-job extraheader and AUTHORIZATION matches manually reviewed: git configuration/removal commands and two already-masked basic *** headers; no credential values.",
+  "size_before_report_and_manifest": {
+    "files": 45,
+    "bytes": 176357,
+    "maximum_file_bytes": 45754
+  }
+}

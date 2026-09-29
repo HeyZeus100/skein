@@ -1,0 +1,586 @@
+{
+  "format": 1,
+  "policy": "Originals untouched. Selected raw copies/lossless gzip plus explicitly documented eight-line log projection; no APK/SO, broad emulator properties, full-device logcat or private owner-device metadata. Synthetic emulator IDs, protocol nonces and public CI metadata retained.",
+  "files": [
+    {
+      "path": "api-jobs.json",
+      "origin": {
+        "run": 36598598934,
+        "API": "jobs",
+        "snapshot": "20260929T164745.567335Z-jobs.json"
+      },
+      "source_bytes": 4667,
+      "source_sha256": "5d74f5c70e8b7be3792eb967bdad8202da2d04d76e9e9bcb8d14b674cf8cbdf1",
+      "published_bytes": 4667,
+      "published_sha256": "5d74f5c70e8b7be3792eb967bdad8202da2d04d76e9e9bcb8d14b674cf8cbdf1",
+      "decompressed_sha256": "5d74f5c70e8b7be3792eb967bdad8202da2d04d76e9e9bcb8d14b674cf8cbdf1",
+      "transformations": []
+    },
+    {
+      "path": "api-artifacts.json",
+      "origin": {
+        "run": 36598598934,
+        "API": "artifacts",
+        "snapshot": "20260929T164745.567335Z-artifacts.json"
+      },
+      "source_bytes": 789,
+      "source_sha256": "fd2a3dab03cd4173079d32d7c22a5d76aa9603f0a415a3085a34b418e9935195",
+      "published_bytes": 789,
+      "published_sha256": "fd2a3dab03cd4173079d32d7c22a5d76aa9603f0a415a3085a34b418e9935195",
+      "decompressed_sha256": "fd2a3dab03cd4173079d32d7c22a5d76aa9603f0a415a3085a34b418e9935195",
+      "transformations": []
+    },
+    {
+      "path": "logs/workflow-job.log.gz",
+      "origin": {
+        "run": 36598598934,
+        "archive": "run-logs.zip",
+        "member": "0_7.6in Foldable compatibility production gate (API 35).txt"
+      },
+      "source_bytes": 300572,
+      "source_sha256": "9707f79cf1c148c51742ff6beced0911d16c28ca749fc250e3b177e9cad501a5",
+      "published_bytes": 45754,
+      "published_sha256": "f5427f5acf0add3f9fa0d89e4b6f7396ec268c159c0a7388f82114281ac79cad",
+      "decompressed_sha256": "9707f79cf1c148c51742ff6beced0911d16c28ca749fc250e3b177e9cad501a5",
+      "transformations": [
+        "deterministic gzip"
+      ]
+    },
+    {
+      "path": "independent-evidence-review.json.gz",
+      "origin": {
+        "run": 36598598934,
+        "original_file": "independent-evidence-review.json"
+      },
+      "source_bytes": 38711,
+      "source_sha256": "878b0bd02b2048200fe92ce60e02db763a46966a930c32f52d16452ec1098abd",
+      "published_bytes": 7591,
+      "published_sha256": "3a51a447d89de2bcfcdfc5db493e31718a42559d20278f55f7ecd71c1e84102a",
+      "decompressed_sha256": "878b0bd02b2048200fe92ce60e02db763a46966a930c32f52d16452ec1098abd",
+      "transformations": [
+        "deterministic gzip"
+      ]
+    },
+    {
+      "path": "activity-protocol-review.json",
+      "origin": {
+        "run": 36598598934,
+        "original_file": "activity-protocol-review.json"
+      },
+      "source_bytes": 2216,
+      "source_sha256": "074e0680e3093e5e84da08e9de01f948fb9659a71ba6c7087cc0bc3259425039",
+      "published_bytes": 2216,
+      "published_sha256": "074e0680e3093e5e84da08e9de01f948fb9659a71ba6c7087cc0bc3259425039",
+      "decompressed_sha256": "074e0680e3093e5e84da08e9de01f948fb9659a71ba6c7087cc0bc3259425039",
+      "transformations": []
+    },
+    {
+      "path": "partial-failure-diagnosis.json",
+      "origin": {
+        "run": 36598598934,
+        "original_file": "partial-failure-diagnosis.json"
+      },
+      "source_bytes": 5874,
+      "source_sha256": "87a9f266c6ffd06466276c061e8efbc5ac9834b6b4a944c8ab303c52a357cb1f",
+      "published_bytes": 5874,
+      "published_sha256": "87a9f266c6ffd06466276c061e8efbc5ac9834b6b4a944c8ab303c52a357cb1f",
+      "decompressed_sha256": "87a9f266c6ffd06466276c061e8efbc5ac9834b6b4a944c8ab303c52a357cb1f",
+      "transformations": []
+    },
+    {
+      "path": "logs/display-transitions-excerpt.txt.gz",
+      "origin": {
+        "run": 36598598934,
+        "projection_provenance": "partial-failure-diagnosis.json display_log_projection; original source hash and line numbers retained"
+      },
+      "source_bytes": 3032,
+      "source_sha256": "b08782389ebe50adc9943395f47183ba0b81afcfcd3cacd9720a2343b72425ad",
+      "published_bytes": 371,
+      "published_sha256": "2e4345bbeaf491717c2116d46dd21bf3fd49b21534d119f26be55386a5e1b050",
+      "decompressed_sha256": "b08782389ebe50adc9943395f47183ba0b81afcfcd3cacd9720a2343b72425ad",
+      "transformations": [
+        "deterministic gzip"
+      ]
+    },
+    {
+      "path": "artifact/app/build/outputs/androidTest-results/connected/debug/flavors/dev/TEST-skein_foldable_gate(AVD) - 15.xml",
+      "origin": {
+        "run": 36598598934,
+        "artifact_id": 11048452612,
+        "member": "app/build/outputs/androidTest-results/connected/debug/flavors/dev/TEST-skein_foldable_gate(AVD) - 15.xml"
+      },
+      "source_bytes": 3722,
+      "source_sha256": "3d05635c4ca6dbddda762113ed36aed3fa60995ca7f638635fc2e9c478ce4979",
+      "published_bytes": 3722,
+      "published_sha256": "3d05635c4ca6dbddda762113ed36aed3fa60995ca7f638635fc2e9c478ce4979",
+      "decompressed_sha256": "3d05635c4ca6dbddda762113ed36aed3fa60995ca7f638635fc2e9c478ce4979",
+      "transformations": []
+    },
+    {
+      "path": "artifact/build/foldable-evidence/avd-config.ini",
+      "origin": {
+        "run": 36598598934,
+        "artifact_id": 11048452612,
+        "member": "build/foldable-evidence/avd-config.ini"
+      },
+      "source_bytes": 3995,
+      "source_sha256": "a1f5dcc0136bbd5faaf6232bdf5267994586947b8e3ee4beeb9a95ba571ee6eb",
+      "published_bytes": 3995,
+      "published_sha256": "a1f5dcc0136bbd5faaf6232bdf5267994586947b8e3ee4beeb9a95ba571ee6eb",
+      "decompressed_sha256": "a1f5dcc0136bbd5faaf6232bdf5267994586947b8e3ee4beeb9a95ba571ee6eb",
+      "transformations": []
+    },
+    {
+      "path": "artifact/build/foldable-evidence/requested-profile.txt",
+      "origin": {
+        "run": 36598598934,
+        "artifact_id": 11048452612,
+        "member": "build/foldable-evidence/requested-profile.txt"
+      },
+      "source_bytes": 15,
+      "source_sha256": "9d884945fe4b6419e23c23778ea5954659f99fc73b2ed4b2fe94844559195f1f",
+      "published_bytes": 15,
+      "published_sha256": "9d884945fe4b6419e23c23778ea5954659f99fc73b2ed4b2fe94844559195f1f",
+      "decompressed_sha256": "9d884945fe4b6419e23c23778ea5954659f99fc73b2ed4b2fe94844559195f1f",
+      "transformations": []
+    },
+    {
+      "path": "artifact/build/foldable-evidence/source-sha.txt",
+      "origin": {
+        "run": 36598598934,
+        "artifact_id": 11048452612,
+        "member": "build/foldable-evidence/source-sha.txt"
+      },
+      "source_bytes": 41,
+      "source_sha256": "aa05fb5a33ddbe82530b88ebcce244dd736b577c0548b32b4760559b35a1e1e1",
+      "published_bytes": 41,
+      "published_sha256": "aa05fb5a33ddbe82530b88ebcce244dd736b577c0548b32b4760559b35a1e1e1",
+      "decompressed_sha256": "aa05fb5a33ddbe82530b88ebcce244dd736b577c0548b32b4760559b35a1e1e1",
+      "transformations": []
+    },
+    {
+      "path": "artifact/build/foldable-evidence/submodule-shas.txt",
+      "origin": {
+        "run": 36598598934,
+        "artifact_id": 11048452612,
+        "member": "build/foldable-evidence/submodule-shas.txt"
+      },
+      "source_bytes": 231,
+      "source_sha256": "2a90e5c956c86f81a8d96e8e3300f9cedb932e6d798dddf14917b1a1a247582c",
+      "published_bytes": 231,
+      "published_sha256": "2a90e5c956c86f81a8d96e8e3300f9cedb932e6d798dddf14917b1a1a247582c",
+      "decompressed_sha256": "2a90e5c956c86f81a8d96e8e3300f9cedb932e6d798dddf14917b1a1a247582c",
+      "transformations": []
+    },
+    {
+      "path": "artifact/build/foldable-evidence/runtime-device-states.txt.gz",
+      "origin": {
+        "run": 36598598934,
+        "artifact_id": 11048452612,
+        "member": "build/foldable-evidence/runtime-device-states.txt"
+      },
+      "source_bytes": 1372,
+      "source_sha256": "d3a35a5d81dcde6f421d1dc9bb5f743f67f5b842215db08f8cd953ff773f7e91",
+      "published_bytes": 172,
+      "published_sha256": "f42f1acec73a77cd9e47348d9de0a43ab5c634d5f2f8eab7eb8f72a4d4d4a76f",
+      "decompressed_sha256": "d3a35a5d81dcde6f421d1dc9bb5f743f67f5b842215db08f8cd953ff773f7e91",
+      "transformations": [
+        "deterministic gzip"
+      ]
+    },
+    {
+      "path": "artifact/build/foldable-evidence/runtime-device-states-error.txt",
+      "origin": {
+        "run": 36598598934,
+        "artifact_id": 11048452612,
+        "member": "build/foldable-evidence/runtime-device-states-error.txt"
+      },
+      "source_bytes": 0,
+      "source_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "published_bytes": 0,
+      "published_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "decompressed_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "transformations": []
+    },
+    {
+      "path": "artifact/build/foldable-evidence/emulator-version.txt.gz",
+      "origin": {
+        "run": 36598598934,
+        "artifact_id": 11048452612,
+        "member": "build/foldable-evidence/emulator-version.txt"
+      },
+      "source_bytes": 655,
+      "source_sha256": "10bd3d86ba7af09acd91e7a0bc0073038cbb5d3d2479d1667e52129f43058116",
+      "published_bytes": 437,
+      "published_sha256": "2186b096bc249c84aee1e34de40685e1497de17aad507800747840c6bf0caea7",
+      "decompressed_sha256": "10bd3d86ba7af09acd91e7a0bc0073038cbb5d3d2479d1667e52129f43058116",
+      "transformations": [
+        "deterministic gzip"
+      ]
+    },
+    {
+      "path": "artifact/build/foldable-evidence/console-events.jsonl",
+      "origin": {
+        "run": 36598598934,
+        "artifact_id": 11048452612,
+        "member": "build/foldable-evidence/console-events.jsonl"
+      },
+      "source_bytes": 2007,
+      "source_sha256": "a7cea65002834a638c00e42289051176a2443e349206dfe9bdbd5a6dd4504644",
+      "published_bytes": 2007,
+      "published_sha256": "a7cea65002834a638c00e42289051176a2443e349206dfe9bdbd5a6dd4504644",
+      "decompressed_sha256": "a7cea65002834a638c00e42289051176a2443e349206dfe9bdbd5a6dd4504644",
+      "transformations": []
+    },
+    {
+      "path": "artifact/build/foldable-evidence/console-run-id.txt",
+      "origin": {
+        "run": 36598598934,
+        "artifact_id": 11048452612,
+        "member": "build/foldable-evidence/console-run-id.txt"
+      },
+      "source_bytes": 33,
+      "source_sha256": "a37da0e7a0ee6c5f8b806b0657105ada9a306a78a7f0655da68d19bf9ea45d41",
+      "published_bytes": 33,
+      "published_sha256": "a37da0e7a0ee6c5f8b806b0657105ada9a306a78a7f0655da68d19bf9ea45d41",
+      "decompressed_sha256": "a37da0e7a0ee6c5f8b806b0657105ada9a306a78a7f0655da68d19bf9ea45d41",
+      "transformations": []
+    },
+    {
+      "path": "artifact/build/foldable-evidence/console-controller.log",
+      "origin": {
+        "run": 36598598934,
+        "artifact_id": 11048452612,
+        "member": "build/foldable-evidence/console-controller.log"
+      },
+      "source_bytes": 0,
+      "source_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "published_bytes": 0,
+      "published_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "decompressed_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "transformations": []
+    },
+    {
+      "path": "artifact/build/foldable-evidence/console-final-request.json",
+      "origin": {
+        "run": 36598598934,
+        "artifact_id": 11048452612,
+        "member": "build/foldable-evidence/console-final-request.json"
+      },
+      "source_bytes": 119,
+      "source_sha256": "23911b3e76869be4fc163c511300f4b1ee816f5746fbbd7ec6147110d414d9ac",
+      "published_bytes": 119,
+      "published_sha256": "23911b3e76869be4fc163c511300f4b1ee816f5746fbbd7ec6147110d414d9ac",
+      "decompressed_sha256": "23911b3e76869be4fc163c511300f4b1ee816f5746fbbd7ec6147110d414d9ac",
+      "transformations": []
+    },
+    {
+      "path": "artifact/build/foldable-evidence/console-final-request-error.txt",
+      "origin": {
+        "run": 36598598934,
+        "artifact_id": 11048452612,
+        "member": "build/foldable-evidence/console-final-request-error.txt"
+      },
+      "source_bytes": 0,
+      "source_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "published_bytes": 0,
+      "published_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "decompressed_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "transformations": []
+    },
+    {
+      "path": "artifact/build/foldable-evidence/console-final-ack.json",
+      "origin": {
+        "run": 36598598934,
+        "artifact_id": 11048452612,
+        "member": "build/foldable-evidence/console-final-ack.json"
+      },
+      "source_bytes": 142,
+      "source_sha256": "99c93acdbca24159b5e9e82463711da7ec29ff65c8741b9969db8aa2bcc53044",
+      "published_bytes": 142,
+      "published_sha256": "99c93acdbca24159b5e9e82463711da7ec29ff65c8741b9969db8aa2bcc53044",
+      "decompressed_sha256": "99c93acdbca24159b5e9e82463711da7ec29ff65c8741b9969db8aa2bcc53044",
+      "transformations": []
+    },
+    {
+      "path": "artifact/build/foldable-evidence/console-final-ack-error.txt",
+      "origin": {
+        "run": 36598598934,
+        "artifact_id": 11048452612,
+        "member": "build/foldable-evidence/console-final-ack-error.txt"
+      },
+      "source_bytes": 0,
+      "source_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "published_bytes": 0,
+      "published_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "decompressed_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "transformations": []
+    },
+    {
+      "path": "artifact/build/foldable-evidence/window-geometry.jsonl",
+      "origin": {
+        "run": 36598598934,
+        "artifact_id": 11048452612,
+        "member": "build/foldable-evidence/window-geometry.jsonl"
+      },
+      "source_bytes": 66,
+      "source_sha256": "1a195ac05d8e0c5f95036f52d8e6150499557ee554e988c3a6f67ad4200e6589",
+      "published_bytes": 66,
+      "published_sha256": "1a195ac05d8e0c5f95036f52d8e6150499557ee554e988c3a6f67ad4200e6589",
+      "decompressed_sha256": "1a195ac05d8e0c5f95036f52d8e6150499557ee554e988c3a6f67ad4200e6589",
+      "transformations": []
+    },
+    {
+      "path": "artifact/build/foldable-evidence/window-geometry-error.txt",
+      "origin": {
+        "run": 36598598934,
+        "artifact_id": 11048452612,
+        "member": "build/foldable-evidence/window-geometry-error.txt"
+      },
+      "source_bytes": 0,
+      "source_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "published_bytes": 0,
+      "published_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "decompressed_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "transformations": []
+    },
+    {
+      "path": "artifact/build/foldable-evidence/review.json",
+      "origin": {
+        "run": 36598598934,
+        "artifact_id": 11048452612,
+        "member": "build/foldable-evidence/review.json"
+      },
+      "source_bytes": 6483,
+      "source_sha256": "9c60283e4097dbc3f789ce82ba9f8e9d221d8135d273242d411b82e0e7c26b4d",
+      "published_bytes": 6483,
+      "published_sha256": "9c60283e4097dbc3f789ce82ba9f8e9d221d8135d273242d411b82e0e7c26b4d",
+      "decompressed_sha256": "9c60283e4097dbc3f789ce82ba9f8e9d221d8135d273242d411b82e0e7c26b4d",
+      "transformations": []
+    },
+    {
+      "path": "artifact/build/foldable-evidence/gradle.log.gz",
+      "origin": {
+        "run": 36598598934,
+        "artifact_id": 11048452612,
+        "member": "build/foldable-evidence/gradle.log"
+      },
+      "source_bytes": 105999,
+      "source_sha256": "1463fb8ff97e6a42eef66f183803ef53023b6aa08cc262d65f4dce1bf86d8307",
+      "published_bytes": 8114,
+      "published_sha256": "10753ae649909da08258409c29f6acb6a11d347102fad9da9a7201ed3025bbbe",
+      "decompressed_sha256": "1463fb8ff97e6a42eef66f183803ef53023b6aa08cc262d65f4dce1bf86d8307",
+      "transformations": [
+        "deterministic gzip"
+      ]
+    },
+    {
+      "path": "artifact/build/foldable-evidence/initial-window.txt",
+      "origin": {
+        "run": 36598598934,
+        "artifact_id": 11048452612,
+        "member": "build/foldable-evidence/initial-window.txt"
+      },
+      "source_bytes": 47,
+      "source_sha256": "9658253257662caf6232291ba76d3d74ceef4641c76b059406caced525eea002",
+      "published_bytes": 47,
+      "published_sha256": "9658253257662caf6232291ba76d3d74ceef4641c76b059406caced525eea002",
+      "decompressed_sha256": "9658253257662caf6232291ba76d3d74ceef4641c76b059406caced525eea002",
+      "transformations": []
+    },
+    {
+      "path": "artifact/build/foldable-evidence/device-profiles.txt.gz",
+      "origin": {
+        "run": 36598598934,
+        "artifact_id": 11048452612,
+        "member": "build/foldable-evidence/device-profiles.txt"
+      },
+      "source_bytes": 5265,
+      "source_sha256": "982e902d7431b7d6279e89062100ad7fcb9b52d5cbef3d7656378e8d033ba518",
+      "published_bytes": 1037,
+      "published_sha256": "79a5e7727d7472bed1e2f6f7c72dbac6b6ab57def6a1a43e88046d438ee37ff2",
+      "decompressed_sha256": "982e902d7431b7d6279e89062100ad7fcb9b52d5cbef3d7656378e8d033ba518",
+      "transformations": [
+        "deterministic gzip"
+      ]
+    },
+    {
+      "path": "artifact/build/foldable-evidence/sdk-tool-path.txt",
+      "origin": {
+        "run": 36598598934,
+        "artifact_id": 11048452612,
+        "member": "build/foldable-evidence/sdk-tool-path.txt"
+      },
+      "source_bytes": 52,
+      "source_sha256": "64605fced015141d8016eaeed140f23cabbe078e47d9b36e9c8339075c37b1b0",
+      "published_bytes": 52,
+      "published_sha256": "64605fced015141d8016eaeed140f23cabbe078e47d9b36e9c8339075c37b1b0",
+      "decompressed_sha256": "64605fced015141d8016eaeed140f23cabbe078e47d9b36e9c8339075c37b1b0",
+      "transformations": []
+    },
+    {
+      "path": "artifact/build/foldable-evidence/sdk-tool-source.properties",
+      "origin": {
+        "run": 36598598934,
+        "artifact_id": 11048452612,
+        "member": "build/foldable-evidence/sdk-tool-source.properties"
+      },
+      "source_bytes": 86,
+      "source_sha256": "d4eb560d17731d9919dbb91bfecb2d90418cb60c21e07b6c02302a682fbb760e",
+      "published_bytes": 86,
+      "published_sha256": "d4eb560d17731d9919dbb91bfecb2d90418cb60c21e07b6c02302a682fbb760e",
+      "decompressed_sha256": "d4eb560d17731d9919dbb91bfecb2d90418cb60c21e07b6c02302a682fbb760e",
+      "transformations": []
+    },
+    {
+      "path": "artifact/app/build/outputs/androidTest-results/connected/debug/flavors/dev/skein_foldable_gate(AVD) - 15/logcat-app.skein.foldable.MainActivityFoldableGateTest-gateSurvivesClosedFlatClosedWithoutActivityReplacement.txt.gz",
+      "origin": {
+        "run": 36598598934,
+        "artifact_id": 11048452612,
+        "member": "app/build/outputs/androidTest-results/connected/debug/flavors/dev/skein_foldable_gate(AVD) - 15/logcat-app.skein.foldable.MainActivityFoldableGateTest-gateSurvivesClosedFlatClosedWithoutActivityReplacement.txt"
+      },
+      "source_bytes": 66653,
+      "source_sha256": "5dc9cf7f1bccb6a86f7beac96193ec104b9601375be859c516287f4bb5c6da41",
+      "published_bytes": 13736,
+      "published_sha256": "772639692befe2167690eafbf2ed34caed195bf7099badccae17e24c5b641bf9",
+      "decompressed_sha256": "5dc9cf7f1bccb6a86f7beac96193ec104b9601375be859c516287f4bb5c6da41",
+      "transformations": [
+        "deterministic gzip"
+      ]
+    },
+    {
+      "path": "artifact/app/build/outputs/androidTest-results/connected/debug/flavors/dev/skein_foldable_gate(AVD) - 15/logcat-app.skein.foldable.MainActivityFoldableGateTest-gateSurvivesOuterLandscapeWithoutExposingNavDisplay.txt.gz",
+      "origin": {
+        "run": 36598598934,
+        "artifact_id": 11048452612,
+        "member": "app/build/outputs/androidTest-results/connected/debug/flavors/dev/skein_foldable_gate(AVD) - 15/logcat-app.skein.foldable.MainActivityFoldableGateTest-gateSurvivesOuterLandscapeWithoutExposingNavDisplay.txt"
+      },
+      "source_bytes": 62907,
+      "source_sha256": "8bbc301459a81d57023ded6f66d3f0998df70228e5d2dccee1c75885c3e94efb",
+      "published_bytes": 10130,
+      "published_sha256": "6387b1c67a6c4611bbb8a799211df88436c75efd3364e037ac082e466c84d1f0",
+      "decompressed_sha256": "8bbc301459a81d57023ded6f66d3f0998df70228e5d2dccee1c75885c3e94efb",
+      "transformations": [
+        "deterministic gzip"
+      ]
+    },
+    {
+      "path": "source/SOURCE-FILES.json",
+      "origin": {
+        "source_sha": "28354dd25bb4995930ff46a71752f43f8a0d5df3",
+        "original_file": "SOURCE-FILES.json"
+      },
+      "source_bytes": 1334,
+      "source_sha256": "2409a8b8ead48b7d8fa72504b3e24b7059fae603bba7a6ca6882c2219647ede2",
+      "published_bytes": 1334,
+      "published_sha256": "2409a8b8ead48b7d8fa72504b3e24b7059fae603bba7a6ca6882c2219647ede2",
+      "decompressed_sha256": "2409a8b8ead48b7d8fa72504b3e24b7059fae603bba7a6ca6882c2219647ede2",
+      "transformations": []
+    },
+    {
+      "path": "source/.github/workflows/foldable.yml.gz",
+      "origin": {
+        "git_commit": "28354dd25bb4995930ff46a71752f43f8a0d5df3",
+        "path": ".github/workflows/foldable.yml"
+      },
+      "source_bytes": 6133,
+      "source_sha256": "3d1e4c20a4f01f45376b35fa7d1e232331a196fab033260ad111ce877e467696",
+      "published_bytes": 2500,
+      "published_sha256": "39b0a21b3bbfb2f8f51a00d364af4b4a417f2468c63e39c5ab09331691adf38e",
+      "decompressed_sha256": "3d1e4c20a4f01f45376b35fa7d1e232331a196fab033260ad111ce877e467696",
+      "transformations": [
+        "deterministic gzip"
+      ]
+    },
+    {
+      "path": "source/tools/ci/verify-foldable.py.gz",
+      "origin": {
+        "git_commit": "28354dd25bb4995930ff46a71752f43f8a0d5df3",
+        "path": "tools/ci/verify-foldable.py"
+      },
+      "source_bytes": 13263,
+      "source_sha256": "c5be210e62443b7f1a6b6f14e6b6171096e9bdff206bbceea76e893e33027413",
+      "published_bytes": 4052,
+      "published_sha256": "d71736daf5f4227111c7651320e9162c1916816b0c7d8f3f6d3da653aff2a841",
+      "decompressed_sha256": "c5be210e62443b7f1a6b6f14e6b6171096e9bdff206bbceea76e893e33027413",
+      "transformations": [
+        "deterministic gzip"
+      ]
+    },
+    {
+      "path": "source/tools/ci/run-foldable-emulator.sh.gz",
+      "origin": {
+        "git_commit": "28354dd25bb4995930ff46a71752f43f8a0d5df3",
+        "path": "tools/ci/run-foldable-emulator.sh"
+      },
+      "source_bytes": 5068,
+      "source_sha256": "95553cdb729ecd5f5daff7760bc552d615f9946895e202db4e93cefddeb3db22",
+      "published_bytes": 1904,
+      "published_sha256": "4588926a68190f746f99317605e0fd6d2c0cfb45bcfe661d61dc933023639c11",
+      "decompressed_sha256": "95553cdb729ecd5f5daff7760bc552d615f9946895e202db4e93cefddeb3db22",
+      "transformations": [
+        "deterministic gzip"
+      ]
+    },
+    {
+      "path": "source/tools/ci/foldable-console-bridge.py.gz",
+      "origin": {
+        "git_commit": "28354dd25bb4995930ff46a71752f43f8a0d5df3",
+        "path": "tools/ci/foldable-console-bridge.py"
+      },
+      "source_bytes": 9455,
+      "source_sha256": "40a9dbe008b5ecbb3362382e443ece26f3d30be1f4b12a98255ab2f6f9c72aab",
+      "published_bytes": 3024,
+      "published_sha256": "161fe68a0690dfd52f7041c26ab9f7110471290ca6035f04429992ce8830d6c1",
+      "decompressed_sha256": "40a9dbe008b5ecbb3362382e443ece26f3d30be1f4b12a98255ab2f6f9c72aab",
+      "transformations": [
+        "deterministic gzip"
+      ]
+    },
+    {
+      "path": "source/app/src/foldableTest/kotlin/app/skein/foldable/MainActivityFoldableGateTest.kt.gz",
+      "origin": {
+        "git_commit": "28354dd25bb4995930ff46a71752f43f8a0d5df3",
+        "path": "app/src/foldableTest/kotlin/app/skein/foldable/MainActivityFoldableGateTest.kt"
+      },
+      "source_bytes": 6777,
+      "source_sha256": "c1a45b458456edef2ce9c3dd19807fa2bce16b57b36895329862ea7ef19d7076",
+      "published_bytes": 2015,
+      "published_sha256": "a6790a83f6d43fca78ecef2b830035d8b1ff0c34f75134451532176e54f27cb2",
+      "decompressed_sha256": "c1a45b458456edef2ce9c3dd19807fa2bce16b57b36895329862ea7ef19d7076",
+      "transformations": [
+        "deterministic gzip"
+      ]
+    },
+    {
+      "path": "source/app/src/foldableTest/kotlin/app/skein/foldable/FoldableDeviceControl.kt.gz",
+      "origin": {
+        "git_commit": "28354dd25bb4995930ff46a71752f43f8a0d5df3",
+        "path": "app/src/foldableTest/kotlin/app/skein/foldable/FoldableDeviceControl.kt"
+      },
+      "source_bytes": 10194,
+      "source_sha256": "66b952d1b17b696240def8e33367191af029b0e1db4a2feccdb594e81879cb35",
+      "published_bytes": 3192,
+      "published_sha256": "c3de763524282d50d96d0d4fb355737ef572d5d00c7015e0750f103c740b9335",
+      "decompressed_sha256": "66b952d1b17b696240def8e33367191af029b0e1db4a2feccdb594e81879cb35",
+      "transformations": [
+        "deterministic gzip"
+      ]
+    },
+    {
+      "path": "source/app/src/main/AndroidManifest.xml.gz",
+      "origin": {
+        "git_commit": "28354dd25bb4995930ff46a71752f43f8a0d5df3",
+        "path": "app/src/main/AndroidManifest.xml"
+      },
+      "source_bytes": 12989,
+      "source_sha256": "5815b27255f650cf784c04eb5694ef59b7e886bdbeb92c5d79ba5c33d976543b",
+      "published_bytes": 4519,
+      "published_sha256": "a3a74611c39eaa7a2c1a380d431e5762c90644357fe3aa42e9c225319b4d4326",
+      "decompressed_sha256": "5815b27255f650cf784c04eb5694ef59b7e886bdbeb92c5d79ba5c33d976543b",
+      "transformations": [
+        "deterministic gzip"
+      ]
+    }
+  ]
+}

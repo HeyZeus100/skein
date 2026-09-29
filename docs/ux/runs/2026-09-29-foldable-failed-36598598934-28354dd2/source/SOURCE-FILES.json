@@ -1,0 +1,40 @@
+{
+  "source_sha": "28354dd25bb4995930ff46a71752f43f8a0d5df3",
+  "files": [
+    {
+      "path": ".github/workflows/foldable.yml",
+      "bytes": 6133,
+      "sha256": "3d1e4c20a4f01f45376b35fa7d1e232331a196fab033260ad111ce877e467696"
+    },
+    {
+      "path": "tools/ci/verify-foldable.py",
+      "bytes": 13263,
+      "sha256": "c5be210e62443b7f1a6b6f14e6b6171096e9bdff206bbceea76e893e33027413"
+    },
+    {
+      "path": "tools/ci/run-foldable-emulator.sh",
+      "bytes": 5068,
+      "sha256": "95553cdb729ecd5f5daff7760bc552d615f9946895e202db4e93cefddeb3db22"
+    },
+    {
+      "path": "tools/ci/foldable-console-bridge.py",
+      "bytes": 9455,
+      "sha256": "40a9dbe008b5ecbb3362382e443ece26f3d30be1f4b12a98255ab2f6f9c72aab"
+    },
+    {
+      "path": "app/src/foldableTest/kotlin/app/skein/foldable/MainActivityFoldableGateTest.kt",
+      "bytes": 6777,
+      "sha256": "c1a45b458456edef2ce9c3dd19807fa2bce16b57b36895329862ea7ef19d7076"
+    },
+    {
+      "path": "app/src/foldableTest/kotlin/app/skein/foldable/FoldableDeviceControl.kt",
+      "bytes": 10194,
+      "sha256": "66b952d1b17b696240def8e33367191af029b0e1db4a2feccdb594e81879cb35"
+    },
+    {
+      "path": "app/src/main/AndroidManifest.xml",
+      "bytes": 12989,
+      "sha256": "5815b27255f650cf784c04eb5694ef59b7e886bdbeb92c5d79ba5c33d976543b"
+    }
+  ]
+}
