@@ -14,6 +14,17 @@ ROOT = Path(__file__).resolve().parents[2]
 
 
 class FoldableWorkflowContractTest(unittest.TestCase):
+    def test_linux_emulator_library_is_installed_before_the_version_probe(self):
+        workflow = yaml.safe_load((ROOT / ".github/workflows/foldable.yml").read_text())
+        steps = workflow["jobs"]["foldable"]["steps"]
+        names = [step.get("name") for step in steps]
+        install = names.index("Install Linux emulator runtime library")
+        self.assertLess(install, names.index("SDK tools and exact fold profile"))
+        commands = [shlex.split(line) for line in steps[install]["run"].splitlines() if line.strip()]
+        self.assertEqual(["sudo", "apt-get", "update"], commands[0])
+        self.assertEqual(["sudo", "env", "DEBIAN_FRONTEND=noninteractive", "apt-get", "install",
+                          "--yes", "--no-install-recommends", "libpulse0"], commands[1])
+
     def test_exact_and_compatibility_profiles_are_explicit_and_labelled(self):
         workflow = yaml.safe_load((ROOT / ".github/workflows/foldable.yml").read_text())
         # PyYAML's YAML 1.1 resolver treats the GitHub `on` key as a boolean.

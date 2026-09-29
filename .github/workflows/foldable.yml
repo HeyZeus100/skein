@@ -54,6 +54,12 @@ jobs:
         with:
           path: ${{ env.SKEIN_OPENSSL_TARBALL_DIR }}
           key: openssl-tarball-${{ steps.openssl-pin.outputs.sha256 }}
+      # The emulator links libpulse even for -version and with -noaudio at runtime.
+      # The pinned emulator-runner action installs SDK components, not this Linux library.
+      - name: Install Linux emulator runtime library
+        run: |
+          sudo apt-get update
+          sudo env DEBIAN_FRONTEND=noninteractive apt-get install --yes --no-install-recommends libpulse0
       - name: SDK tools and exact fold profile
         shell: bash
         run: |
