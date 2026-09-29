@@ -1,0 +1,93 @@
+{
+  "reviewed_at": "2026-09-29T17:36:49.080263+00:00",
+  "status": "mechanical_pass_quality_gates_open",
+  "source": "28354dd25bb4995930ff46a71752f43f8a0d5df3",
+  "run_id": "physical-28354dd-20260929T172421Z-v5",
+  "sha256": {
+    "answers.jsonl": "3d76119eeb8542e124b2818b060b8917e8a27cf534cbe7a3f1875786879b0a99",
+    "run_manifest.json": "49ea38fc1df453af5783afbc5ef48e65efbcb526937a018a6a736f5f03c6f568",
+    "setup-progress.jsonl": "570ac0d6bb4572ed65192a70a82a406cbbd1a7b3d52ce212c83403589cd7499b",
+    "summary.json": "1ae6ab622a039fcb4283e310ac6593ab4db3e5036cfb2e2f486bc506df6e5c8b",
+    "instrumentation.log": "746a1201ad348f4a55bff9371b2204599fc1c947cc0d9c16432695729c23155a",
+    "active-instrumentation-proof.json": "6493e7e6b0b9fbe53d556de134fcb6eb7bb107216c04c6a272362cec18ee6dd6",
+    "sampling.json": "f5a1bbb35310f5ad55ba357b0d1639b9bfaebbd750cfcac3a02a84d3483730b9"
+  },
+  "valid_rows": 4,
+  "exact_profile_verified": true,
+  "installed_app_and_test_rehashed": true,
+  "fixture_excerpt_sha256_matches_supplied_revision_ids": true,
+  "excerpt_blake3_independently_rehashed": false,
+  "initial_review_correction": "First ad hoc review incorrectly assumed excerpt_hash was SHA256 and asserted; source Revisions.kt proves domain-separated BLAKE3. Original artifacts unchanged; no evidence-failure claim. This review validates excerpt bytes against supplied fixture SHA256 revision identifiers instead and does not claim BLAKE3 rehash.",
+  "actual_junit_passes": 1,
+  "setup_events": 43,
+  "engine_load_complete_elapsed_ms": 7113,
+  "remote_stop_proof_valid": true,
+  "scope": "supplied evidence; no live retrieval/UI/offline/repeated-run proof",
+  "quality": [
+    {
+      "case": "demo-construction-synthesis",
+      "elapsed_ms": 90844,
+      "generation": {
+        "prompt_tokens": 463,
+        "generated_tokens": 113,
+        "ttft_ms": 53171,
+        "tokens_per_second": 1.3149933,
+        "stop_reason": "EOS",
+        "isolated_count_consistency": true
+      },
+      "cited_markers": []
+    },
+    {
+      "case": "demo-construction-absent",
+      "elapsed_ms": 111525,
+      "generation": {
+        "prompt_tokens": 331,
+        "generated_tokens": 256,
+        "ttft_ms": 37823,
+        "tokens_per_second": 2.2976127,
+        "stop_reason": "LENGTH",
+        "isolated_count_consistency": true
+      },
+      "cited_markers": [
+        1
+      ]
+    },
+    {
+      "case": "demo-aviation-direct",
+      "elapsed_ms": 37824,
+      "generation": {
+        "prompt_tokens": 301,
+        "generated_tokens": 12,
+        "ttft_ms": 34455,
+        "tokens_per_second": 0.31891146,
+        "stop_reason": "EOS",
+        "isolated_count_consistency": true
+      },
+      "cited_markers": [
+        1
+      ]
+    },
+    {
+      "case": "demo-mycology-direct",
+      "elapsed_ms": 52491,
+      "generation": {
+        "prompt_tokens": 395,
+        "generated_tokens": 24,
+        "ttft_ms": 45169,
+        "tokens_per_second": 0.4580415,
+        "stop_reason": "EOS",
+        "isolated_count_consistency": true
+      },
+      "cited_markers": []
+    }
+  ],
+  "open_gates": [
+    "construction repetition and muddled identifier wording",
+    "missing citations on synthesis and mycology",
+    "live retrieved answer quality",
+    "first visible UI response and cancellation retention",
+    "repeated demo rehearsal",
+    "formal M0/fold/IME acceptance"
+  ],
+  "prior_failed_attempt_unchanged": true
+}
