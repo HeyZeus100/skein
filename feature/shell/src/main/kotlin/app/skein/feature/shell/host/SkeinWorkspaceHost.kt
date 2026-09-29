@@ -468,7 +468,7 @@ private fun WorkspacePaneSlot(
                         WorkspaceTestTags.SECONDARY_PANE
                     },
                 ).then(if (visible) Modifier else Modifier.clearAndSetSemantics { })
-                .focusProperties { canFocus = active && visible }
+                .then(if (active && visible) Modifier else Modifier.focusProperties { canFocus = false })
                 .pointerInput(workspace, pane) {
                     awaitPointerEventScope {
                         while (true) {

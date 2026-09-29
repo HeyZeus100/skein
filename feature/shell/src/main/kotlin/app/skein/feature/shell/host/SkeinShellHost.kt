@@ -402,7 +402,7 @@ private fun RetainedRootList(
                 Box(
                     Modifier
                         .fillMaxSize()
-                        .focusProperties { canFocus = !collapsed }
+                        .then(if (collapsed) Modifier.focusProperties { canFocus = false } else Modifier)
                         .then(if (collapsed) Modifier.clearAndSetSemantics { } else Modifier),
                 ) { list() }
             }
