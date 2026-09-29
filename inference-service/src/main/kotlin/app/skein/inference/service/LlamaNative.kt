@@ -50,6 +50,12 @@ import java.util.function.BooleanSupplier
 
 private const val LOG_TAG = "llama.cpp"
 
+// An external function's default lambda can be emitted as a native helper.
+// Keep this implementation in an ordinary class with a managed method body.
+private object NeverCancelModelLoad : BooleanSupplier {
+    override fun getAsBoolean(): Boolean = false
+}
+
 /**
  * Thin `external` surface over `libskein_llama.so`.
  *
@@ -120,7 +126,7 @@ object LlamaNative {
         fd: Int,
         nGpuLayers: Int,
         useMmap: Boolean,
-        cancellation: BooleanSupplier = BooleanSupplier { false },
+        cancellation: BooleanSupplier = NeverCancelModelLoad,
     ): Long
 
     /**
@@ -144,7 +150,7 @@ object LlamaNative {
         path: String,
         nGpuLayers: Int,
         useMmap: Boolean,
-        cancellation: BooleanSupplier = BooleanSupplier { false },
+        cancellation: BooleanSupplier = NeverCancelModelLoad,
     ): Long
 
     /**
