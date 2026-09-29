@@ -59,6 +59,9 @@
 // `Segment.Text(" and [9]")`, matching the bead's first AC exactly. [flush]
 // (call on `Token.Done`) emits whatever text remains, including an
 // in-progress, still-unclosed bracket.
+// Callers that need text before the next citation or `Token.Done` can call
+// [drainReadyText] after [push]. This opts out of cross-call text coalescing
+// without resolving an in-progress bracket prematurely.
 //
 // Pure and allocation-light: no I/O, no logging of the streamed text (spec
 // §9 — an assistant reply can itself contain retrieved content the model
@@ -121,6 +124,20 @@ public class CitationParser(
             index += 1
         }
         return out
+    }
+
+    /**
+     * Emits accumulated plain text without ending an in-progress citation.
+     * Call after [push] for live text updates; callers that omit this retain
+     * [push]'s cross-call text coalescing. An unresolved bracket and a trailing
+     * high surrogate stay buffered until more input arrives or [flush] ends the stream.
+     */
+    public fun drainReadyText(): List<Segment> {
+        val end = pending.length - if (pending.lastOrNull()?.isHighSurrogate() == true) 1 else 0
+        if (end == 0) return emptyList()
+        val text = pending.substring(0, end)
+        pending.delete(0, end)
+        return listOf(Segment.Text(text))
     }
 
     /**

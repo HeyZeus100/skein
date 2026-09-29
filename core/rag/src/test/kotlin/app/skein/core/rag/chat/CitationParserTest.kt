@@ -158,4 +158,90 @@ class CitationParserTest {
 
         assertThat(segments).containsExactly(Segment.Text("no markers here")).inOrder()
     }
+
+    @Test
+    fun `ready text drains before stream completion without being emitted twice`() {
+        val parser = CitationParser(emptyMap())
+
+        assertThat(parser.push("plain answer")).isEmpty()
+        assertThat(parser.drainReadyText()).containsExactly(Segment.Text("plain answer"))
+        assertThat(parser.drainReadyText()).isEmpty()
+        assertThat(parser.push(" continues")).isEmpty()
+        assertThat(parser.drainReadyText()).containsExactly(Segment.Text(" continues"))
+        assertThat(parser.flush()).isEmpty()
+    }
+
+    @Test
+    fun `ready text before an unresolved group drains while the citation allow-list stays enforced`() {
+        val source = retrieved(1)
+        val parser = CitationParser(mapOf(1 to source))
+
+        assertThat(parser.push("see [1,")).isEmpty()
+        assertThat(parser.drainReadyText()).containsExactly(Segment.Text("see "))
+        assertThat(parser.push(" 9")).isEmpty()
+        assertThat(parser.drainReadyText()).isEmpty()
+        assertThat(parser.push("] after")).containsExactly(Segment.Citation(1, source))
+        assertThat(parser.drainReadyText()).containsExactly(Segment.Text(" after"))
+        assertThat(parser.flush()).isEmpty()
+    }
+
+    @Test
+    fun `invalid bracket groups drain as literal text`() {
+        for (literal in listOf("[9]", "[i]", "[1,]", "[]")) {
+            val parser = CitationParser(mapOf(1 to retrieved(1)))
+
+            assertThat(parser.push(literal.dropLast(1))).isEmpty()
+            assertThat(parser.drainReadyText()).isEmpty()
+            assertThat(parser.push("]")).isEmpty()
+            assertThat(parser.drainReadyText()).containsExactly(Segment.Text(literal))
+            assertThat(parser.flush()).isEmpty()
+        }
+    }
+
+    @Test
+    fun `draining keeps eight unresolved bracket characters and releases them on the ninth`() {
+        val parser = CitationParser(emptyMap())
+
+        assertThat(parser.push("before [12345678")).isEmpty()
+        assertThat(parser.drainReadyText()).containsExactly(Segment.Text("before "))
+        assertThat(parser.drainReadyText()).isEmpty()
+        assertThat(parser.push("9 after")).isEmpty()
+        assertThat(parser.drainReadyText()).containsExactly(Segment.Text("[123456789 after"))
+        assertThat(parser.flush()).isEmpty()
+    }
+
+    @Test
+    fun `a citation closing after eight characters still resolves after draining`() {
+        val source = retrieved(1)
+        val parser = CitationParser(mapOf(12345678 to source))
+
+        assertThat(parser.push("[12345678")).isEmpty()
+        assertThat(parser.drainReadyText()).isEmpty()
+        assertThat(parser.push("]")).containsExactly(Segment.Citation(12345678, source))
+        assertThat(parser.drainReadyText()).isEmpty()
+        assertThat(parser.flush()).isEmpty()
+    }
+
+    @Test
+    fun `final flush preserves an unresolved bracket after ready text has drained`() {
+        val parser = CitationParser(mapOf(1 to retrieved(1)))
+
+        assertThat(parser.push("trailing [1")).isEmpty()
+        assertThat(parser.drainReadyText()).containsExactly(Segment.Text("trailing "))
+        assertThat(parser.flush()).containsExactly(Segment.Text("[1"))
+        assertThat(parser.drainReadyText()).isEmpty()
+        assertThat(parser.flush()).isEmpty()
+    }
+
+    @Test
+    fun `draining does not split a surrogate pair across text segments`() {
+        val parser = CitationParser(emptyMap())
+        val emoji = "😀"
+
+        assertThat(parser.push("hi ${emoji.substring(0, 1)}")).isEmpty()
+        assertThat(parser.drainReadyText()).containsExactly(Segment.Text("hi "))
+        assertThat(parser.push("${emoji.substring(1)} there")).isEmpty()
+        assertThat(parser.drainReadyText()).containsExactly(Segment.Text("$emoji there"))
+        assertThat(parser.flush()).isEmpty()
+    }
 }

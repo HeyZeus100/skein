@@ -407,7 +407,20 @@ public class SendPipeline(
                             if (pending.isEmpty()) return@withLock null
                             pending.toList().also { pending.clear() }
                         } ?: return
-                    for (segment in batch) send(segment)
+                    val text = StringBuilder()
+                    for (segment in batch) {
+                        when (segment) {
+                            is Segment.Text -> text.append(segment.text)
+                            is Segment.Citation -> {
+                                if (text.isNotEmpty()) {
+                                    send(Segment.Text(text.toString()))
+                                    text.setLength(0)
+                                }
+                                send(segment)
+                            }
+                        }
+                    }
+                    if (text.isNotEmpty()) send(Segment.Text(text.toString()))
                 }
                 val ticker =
                     launch {
@@ -421,7 +434,7 @@ public class SendPipeline(
                         when (token) {
                             is Token.Text -> {
                                 rawText.append(token.text)
-                                val segments = parser.push(token.text)
+                                val segments = parser.push(token.text) + parser.drainReadyText()
                                 if (segments.isNotEmpty()) {
                                     allSegments += segments
                                     pendingLock.withLock { pending += segments }
