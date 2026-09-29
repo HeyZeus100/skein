@@ -1,0 +1,9 @@
+{
+  "source_sha": "65de7aa59cd16f3b8f1cd74faa79a82628a0d05f",
+  "model_sha256": "2c5f9a121ae6695208e300c16acca303669afa4e18812061164dca9c97071b12",
+  "model_bytes": 1590475744,
+  "exit_code": 0,
+  "compiler": "AppleClang 21.0.0.21000101",
+  "cmake": "cmake version 4.4.3",
+  "template_sha256": "cd8e9439f0570856fd70470bf8889ebd8b5d1107207f67a5efb46e342330527f"
+}

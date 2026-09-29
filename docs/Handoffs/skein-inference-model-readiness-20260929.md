@@ -82,8 +82,9 @@ not an APK or upstream model revision.
 | Other previously discussed spelling | 128247, `</s>`, type 1 |
 
 The unrelated type-1 `</s>` entry does not by itself demonstrate a broken EOS:
-the artifact declares `<|im_end|>` as EOS. **Native EOG classification, exact
-template/token-ID parity, generation stopping, and answer quality remain
+the artifact declares `<|im_end|>` as EOS. This identity-only check left native
+classification and parity unmeasured; the later host probe below supplies those
+observations. **Android JNI behavior, generated stopping and answer quality remain
 unmeasured.** This is the shared-storage public copy, **not verification of the
 currently selected app-private model bytes**. Upstream revision and license review
 also remain open. Q4/Gemma acquisition, default-model validation, and formal M0
@@ -124,6 +125,34 @@ needs to observe that each intended control spelling maps to the expected token
 and that intended end tokens satisfy `LlamaNative.isEog`.
 
 ## Requests for the coordinator
+
+### Current Qwen demo evidence and next checks
+
+The host vocabulary probe at native source `65de7aa59cd16f3b8f1cd74faa79a82628a0d05f`
+used the independently verified public Q3 copy. Its [raw JSON and provenance](../eval/runs/2026-09-29-inference-model-identities/native-host/)
+retain the pinned native commit/overlay, exact arrays, full model hash and emitted
+template bytes/hash. All four benign template/tokenization cases passed. Native
+EOS and EOT are both `151645`; `<|im_end|>` (`151645`), `<|endoftext|>` (`151643`),
+and `</s>` (`128247`) each tokenize as one native control/EOG token.
+
+The last observation differs from stored GGUF token type `1` for `</s>` because
+the pinned upstream `llama-vocab.cpp` builds its EOG set by spelling and promotes
+`</s>` to CONTROL (lines 2846–2894). Its later `<|tool_response>` exception does
+not apply to this Qwen artifact. This is an observed upstream normalization, not
+a Skein tokenizer/policy modification. The original metadata report is untouched.
+Generated natural stopping and Android JNI behavior remain unmeasured.
+
+For the Sep 29 demo candidate, keep the existing artifact/settings and route the
+following checks through the UX coordinator to the sole physical runner: establish
+the selected app-private model identity; retain actual Android parity/EOG JSON;
+generate short benign answers with `stop=[]` and record actual terminal reason;
+Stop a stream and successfully send again; lock during load/inspection/stream,
+then unlock and complete a new short answer. Use the demo pack's construction,
+aviation and mycology examples only after that pack's own review. Preserve every
+attempt and failure. No literal stop fallback, backend change, model swap, broad
+comparison or performance experiment enters this candidate from this work.
+
+The comparison requests below are follow-up evaluation, outside the demo candidate.
 
 1. **Artifact qualification (`skein-bxk`, `.28`, `.30`).** Reuse the now verified
    public Q3 control above; the selected app-private artifact remains separately

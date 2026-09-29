@@ -2,7 +2,9 @@
 
 Baseline `9fa9f6f`; implements the remaining `.19` lifetime gap without changing
 IPC, vault/session contracts, inference isolation or immutable-store integrity.
-The coordinator owns integration and all device/CI verification. Fold remains HOLD.
+The coordinator owns integration and all device/CI verification. Formal M0 remains
+HOLD; the later scoped release permits only the demo session's verified,
+data-preserving update and demo checks. This inference session operates no device.
 
 `ModelImportStager` extracts the existing picked-file two-pass hash/copy mechanics;
 the existing immutable store still owns staging, dual hashing, atomic promotion,
@@ -46,7 +48,12 @@ Malformed/stale intents cannot consume a different admission.
 
 ## Exact integration hooks
 
-The root inference agent owns `ModelServices` edits:
+The root inference agent has implemented the `ModelServices` wiring below. This
+is a relationship summary, not another shell patch: the actual attachment and
+lazy rescue admission run under the same per-session lifecycle gate as HIGH,
+lock and close revocation. A parked cache refresh or unlock push cannot resume
+and reattach an old manager or cancel a newer registration capability. Registry
+and cache IO stay outside that gate. Do not add an unguarded duplicate attachment.
 
 ```kotlin
 // Optional constructor argument preserves existing fixture construction.
