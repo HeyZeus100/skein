@@ -1,6 +1,0 @@
-elf-alignment: core/vault/build/intermediates/cxx/Debug/6y733jp4/obj/arm64-v8a/libskein_sqlite_jni.so (arm64-v8a): 2 PT_LOAD segment(s), all p_align >= 16384: PASS
-elf-alignment: core/vault/build/intermediates/library_jni/fossDebug/copyFossDebugJniLibsProjectOnly/jni/arm64-v8a/libskein_sqlite_jni.so (arm64-v8a): 2 PT_LOAD segment(s), all p_align >= 16384: PASS
-elf-alignment: core/vault/build/intermediates/merged_native_libs/fossDebug/mergeFossDebugNativeLibs/out/lib/arm64-v8a/libskein_sqlite_jni.so (arm64-v8a): 2 PT_LOAD segment(s), all p_align >= 16384: PASS
-elf-alignment: inference-service/build/intermediates/cxx/Debug/w4c23683/obj/arm64-v8a/libskein_llama.so (arm64-v8a): 3 PT_LOAD segment(s), all p_align >= 16384: PASS
-elf-alignment: inference-service/build/intermediates/library_jni/fossDebug/copyFossDebugJniLibsProjectOnly/jni/arm64-v8a/libskein_llama.so (arm64-v8a): 3 PT_LOAD segment(s), all p_align >= 16384: PASS
-elf-alignment: inference-service/build/intermediates/merged_native_libs/fossDebug/mergeFossDebugNativeLibs/out/lib/arm64-v8a/libskein_llama.so (arm64-v8a): 3 PT_LOAD segment(s), all p_align >= 16384: PASS

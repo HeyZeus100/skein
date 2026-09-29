@@ -1,5 +1,0 @@
-jni-symbols: no std::cout/printf/__android_log_* in native/llama/jni
-jni-symbols: LlamaNative.kt declares 27 external fun(s)
-jni-symbols: inference-service/build/intermediates/cxx/Debug/w4c23683/obj/arm64-v8a/libskein_llama.so: 27 Java_ symbol(s), exactly the declared externals
-jni-symbols: inference-service/build/intermediates/library_jni/fossDebug/copyFossDebugJniLibsProjectOnly/jni/arm64-v8a/libskein_llama.so: 27 Java_ symbol(s), exactly the declared externals
-jni-symbols: inference-service/build/intermediates/merged_native_libs/fossDebug/mergeFossDebugNativeLibs/out/lib/arm64-v8a/libskein_llama.so: 27 Java_ symbol(s), exactly the declared externals
