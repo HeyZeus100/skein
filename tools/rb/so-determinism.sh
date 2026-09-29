@@ -12,7 +12,8 @@
 # Options:
 #   -n, --builds <N>     how many cold builds to compare (default 2, min 2)
 #       --abi <abi>      which packaged ABI to hash (default arm64-v8a)
-#       --keep <dir>     copy every built .so into <dir> for `cmp`
+#       --keep <dir>     retain libraries, logs, source context and hashes in
+#                        a fresh run.* subdirectory of <dir>
 #       --negative-control
 #                        build with -Pskein.llama.shaderPatches=false, i.e.
 #                        with native/llama/patches/* NOT applied. This puts
@@ -216,13 +217,54 @@ fi
 
 if [ -n "$KEEP_DIR" ]; then
     mkdir -p "$KEEP_DIR" || die "cannot create --keep dir $KEEP_DIR"
+    # Never overwrite an earlier run's evidence when the same --keep path is reused.
+    LOG_DIR="$(mktemp -d "$KEEP_DIR/run.XXXXXXXX")" || die "cannot create a retained run dir"
+else
+    LOG_DIR="$(mktemp -d)" || die "cannot create a temp dir"
 fi
 
-LOG_DIR="$(mktemp -d)" || die "cannot create a temp dir"
+# Capture partial runs too: an unsuccessful Gradle invocation keeps its full
+# log beside every library completed before it. Hash relative filenames so a
+# downloaded directory can be checked with `shasum -a 256 -c SHA256SUMS.txt`.
+finish_evidence() {
+    local rc="$1"
+    trap - EXIT
+    if [ -n "$KEEP_DIR" ]; then
+        printf 'exit_status=%s\n' "$rc" > "$LOG_DIR/result.txt" || {
+            echo "so-determinism: could not record retained run status in $LOG_DIR" >&2
+            [ "$rc" -ne 0 ] || rc=2
+        }
+        if ! (
+            cd "$LOG_DIR" || exit 1
+            for file in context.txt result.txt build-*.log libskein_llama.*.so; do
+                [ -f "$file" ] || continue
+                shasum -a 256 "$file" || exit 1
+            done
+        ) > "$LOG_DIR/SHA256SUMS.txt"; then
+            echo "so-determinism: could not hash retained evidence in $LOG_DIR" >&2
+            [ "$rc" -ne 0 ] || rc=2
+        fi
+    fi
+    exit "$rc"
+}
+trap 'finish_evidence "$?"' EXIT
+
+SOURCE_SHA="$(git rev-parse HEAD)" || die "cannot read source commit"
+{
+    printf 'source_sha=%s\nsource_date_epoch=%s\nabi=%s\nrequested_builds=%s\nnegative_control=%s\nmax_workers=2\n' \
+        "$SOURCE_SHA" "$SOURCE_DATE_EPOCH" "$ABI" "$BUILDS" "$NEGATIVE"
+    printf '\nsource_status:\n'
+    git status --porcelain
+    printf '\nsubmodule_status:\n'
+    git submodule status
+    printf '\nscript_sha256:\n'
+    shasum -a 256 "$SCRIPT_DIR/so-determinism.sh"
+} > "$LOG_DIR/context.txt" || die "cannot record build context"
 
 echo "so-determinism: $BUILDS cold build(s) of :inference-service:assembleFossRelease"
 echo "  repo                 $REPO_ROOT"
 echo "  abi                  $ABI"
+echo "  source commit        $SOURCE_SHA"
 echo "  SOURCE_DATE_EPOCH    $SOURCE_DATE_EPOCH"
 echo "  shader patches       $([ "$NEGATIVE" -eq 1 ] && echo 'OFF (negative control)' || echo ON)"
 echo "  build logs           $LOG_DIR"
@@ -242,7 +284,7 @@ while [ "$i" -le "$BUILDS" ]; do
     # would silently report the tail's status. Redirect, then read $?.
     # `${a[@]+"${a[@]}"}` rather than `"${a[@]}"`: macOS still ships bash 3.2,
     # where expanding an empty array under `set -u` is an error.
-    ./gradlew clean :inference-service:assembleFossRelease --no-build-cache \
+    ./gradlew clean :inference-service:assembleFossRelease --no-build-cache --max-workers=2 \
         ${GRADLE_EXTRA[@]+"${GRADLE_EXTRA[@]}"} > "$LOG_DIR/build-$i.log" 2>&1
     rc=$?
     if [ "$rc" -ne 0 ]; then
@@ -255,7 +297,8 @@ while [ "$i" -le "$BUILDS" ]; do
     h="$(shasum -a 256 "$SO_REL" | cut -d' ' -f1)"
     [ -n "$h" ] || die "could not hash $SO_REL"
     if [ -n "$KEEP_DIR" ]; then
-        cp "$SO_REL" "$KEEP_DIR/libskein_llama.$i.$(echo "$h" | cut -c1-8).so"
+        cp -f "$SO_REL" "$LOG_DIR/libskein_llama.$i.$(echo "$h" | cut -c1-8).so" \
+            || die "cannot retain library from build $i"
     fi
     records="$records$i $h
 "
@@ -296,7 +339,7 @@ random and a third-party rebuilder unable to reproduce a genuine release.
 
 To find it, re-run with --keep <dir> and then:
 
-    cmp -l <dir>/libskein_llama.1.*.so <dir>/libskein_llama.2.*.so
+    cmp -l <dir>/run.<id>/libskein_llama.1.*.so <dir>/run.<id>/libskein_llama.2.*.so
 
 Map the differing offsets to a section with `llvm-readelf -S`. If they land in
 .rodata, search the build's SPIR-V for the surrounding bytes --
