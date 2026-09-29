@@ -75,6 +75,7 @@ class SkeinWorkspaceHostTest {
     private val partitions = mutableMapOf<String, app.skein.core.designsystem.components.SkeinWindowPartitions?>()
     private var density = 1f
     private val fontScale = mutableStateOf(1f)
+    private val tabletopTop = mutableStateOf<Float?>(null)
     private val showPrimaryDialog = mutableStateOf(false)
 
     @Test
@@ -191,6 +192,25 @@ class SkeinWorkspaceHostTest {
     }
 
     @Test
+    fun `near top tabletop hinge cannot clip large text workspace controls`() {
+        size.value = DpSize(850.dp, 950.dp)
+        fontScale.value = 2f
+        tabletopTop.value = 28f
+        setHost(verticalHinge = false)
+        for (hingeTop in listOf(28f, 4f, 60f)) {
+            tabletopTop.value = hingeTop
+            rule.waitForIdle()
+            for (tag in listOf(WorkspaceTestTags.ACTIVATE_PRIMARY, WorkspaceTestTags.ACTIVATE_SECONDARY,
+                WorkspaceTestTags.TOGGLE_SPLIT, WorkspaceTestTags.SWAP_PANES)) {
+                val bounds = rule.onNodeWithTag(tag).assertIsDisplayed().fetchSemanticsNode().boundsInWindow
+                assertTrue("full touch target $tag $bounds", bounds.height / density >= 47.5f)
+                assertTrue("control clears near-top hinge $tag $bounds", bounds.bottom <= hingeTop * density || bounds.top >= (hingeTop + 8) * density)
+            }
+            assertControlTextFits()
+        }
+    }
+
+    @Test
     fun `compact font two controls stay reachable and synthetic captures preserve each attempt`() {
         val parent = File("build/agent-logs/workspace-visuals").apply { mkdirs() }
         val directory = Files.createTempDirectory(parent.toPath(), "attempt-").toFile()
@@ -208,12 +228,16 @@ class SkeinWorkspaceHostTest {
             assertTrue("48dp target $tag", node.boundsInRoot.height / density >= 47.5f)
             assertTrue("48dp target $tag", node.boundsInRoot.width / density >= 47.5f)
         }
+        assertControlTextFits()
+        capture(directory, "compact-font-two")
+    }
+
+    private fun assertControlTextFits() {
         for (label in listOf("Left", "Right")) {
             val results = mutableListOf<TextLayoutResult>()
             rule.onNodeWithText(label, useUnmergedTree = true).performSemanticsAction(SemanticsActions.GetTextLayoutResult) { it(results) }
             assertTrue("text fits $label", results.isNotEmpty() && results.none { it.hasVisualOverflow })
         }
-        capture(directory, "compact-font-two")
     }
 
     private fun capture(directory: File, name: String) {
@@ -229,9 +253,9 @@ class SkeinWorkspaceHostTest {
                     density = LocalDensity.current.density
                     val hinge = verticalHinge?.let { vertical ->
                         val x = size.value.width.value * density / 2
-                        val y = size.value.height.value * density / 2
+                        val y = (tabletopTop.value ?: (size.value.height.value / 2)) * density
                         HingeInfo(
-                            bounds = if (vertical) Rect(x, 0f, x, size.value.height.value * density) else Rect(0f, y, size.value.width.value * density, y),
+                            bounds = if (vertical) Rect(x, 0f, x, size.value.height.value * density) else Rect(0f, y, size.value.width.value * density, y + 8 * density),
                             isFlat = false, isVertical = vertical, isSeparating = true, isOccluding = false,
                         )
                     }

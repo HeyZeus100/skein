@@ -9,12 +9,14 @@ import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.WindowInsetsSides
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.sizeIn
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.only
 import androidx.compose.foundation.layout.safeDrawing
 import androidx.compose.foundation.layout.windowInsetsPadding
+import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -34,9 +36,11 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.runtime.staticCompositionLocalOf
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.focusProperties
 import androidx.compose.ui.geometry.Offset
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.pointer.PointerEventPass
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.layout.Layout
@@ -74,7 +78,6 @@ import app.skein.feature.shell.container.SkeinSpace
 import app.skein.feature.shell.layout.SkeinLayoutDecision
 import app.skein.feature.shell.layout.SkeinPosture
 import app.skein.feature.shell.layout.SecondarySurface
-import app.skein.feature.shell.layout.SkeinHingeSafeArea
 import app.skein.feature.shell.layout.currentSkeinWindowLayout
 import app.skein.feature.shell.layout.skeinWindowLayout
 import app.skein.feature.shell.layout.surfaceBounds
@@ -110,7 +113,6 @@ fun SkeinWorkspaceHost(
 ) {
     val layout = currentSkeinWindowLayout(windowAdaptiveInfo)
     val active = workspace.activeShell
-    val direction = LocalLayoutDirection.current
     val focus = LocalFocusManager.current
     DisposableEffect(workspace, focus) {
         workspace.beforeActivate = { focus.clearFocus(force = true) }
@@ -128,17 +130,17 @@ fun SkeinWorkspaceHost(
             closeRequest = active.drawerCloseRequest,
         ) {
             Column(Modifier.fillMaxSize().windowInsetsPadding(WindowInsets.safeDrawing.only(WindowInsetsSides.Top + WindowInsetsSides.Horizontal))) {
-                SkeinHingeSafeArea(
-                    if (layout.posture == SkeinPosture.Flat) null else layout.surfaceBounds(SecondarySurface.RENAME_DIALOG, direction),
-                    modifier = Modifier.height(SkeinSize.touchTarget),
-                    expand = false,
-                ) {
-                Row(Modifier.fillMaxWidth().height(SkeinSize.touchTarget)) {
+                WorkspaceControlsArea(layout) {
+                Row(Modifier.fillMaxWidth().heightIn(min = SkeinSize.touchTarget), verticalAlignment = Alignment.CenterVertically) {
                     repeat(2) { position ->
                         val pane = workspace.paneAtPosition(position)
                         TextButton(
                             onClick = { workspace.activate(pane) },
                             contentPadding = PaddingValues(horizontal = 4.dp),
+                            colors = ButtonDefaults.textButtonColors(
+                                containerColor = if (workspace.activePane == pane) MaterialTheme.colorScheme.secondaryContainer else Color.Transparent,
+                                contentColor = if (workspace.activePane == pane) MaterialTheme.colorScheme.onSecondaryContainer else MaterialTheme.colorScheme.onSurfaceVariant,
+                            ),
                             modifier =
                                 Modifier.weight(1f).sizeIn(minWidth = SkeinSize.touchTarget, minHeight = SkeinSize.touchTarget)
                                     .testTag(if (pane == WorkspacePane.PRIMARY) WorkspaceTestTags.ACTIVATE_PRIMARY else WorkspaceTestTags.ACTIVATE_SECONDARY)
@@ -167,6 +169,31 @@ fun SkeinWorkspaceHost(
                 WorkspacePanes(workspace, layout, windowAdaptiveInfo, Modifier.weight(1f), paneContent)
             }
         }
+    }
+}
+
+/** Measure the whole control row before choosing a hinge-safe vertical slot. */
+@Composable
+private fun WorkspaceControlsArea(
+    window: SkeinLayoutDecision,
+    content: @Composable () -> Unit,
+) {
+    var origin by remember { mutableStateOf(Offset.Zero) }
+    val direction = LocalLayoutDirection.current
+    val bookBounds = if (window.posture is SkeinPosture.Book) window.surfaceBounds(SecondarySurface.RENAME_DIALOG, direction) else null
+    Layout(
+        modifier = Modifier.fillMaxWidth().onGloballyPositioned { origin = it.positionInWindow() },
+        content = content,
+    ) { measurables, constraints ->
+        val left = bookBounds?.let { (it.left.toPx() - origin.x).toInt().coerceIn(0, constraints.maxWidth) } ?: 0
+        val right = bookBounds?.let { (it.right.toPx() - origin.x).toInt().coerceIn(left, constraints.maxWidth) } ?: constraints.maxWidth
+        val child = measurables.single().measure(constraints.copy(minWidth = right - left, maxWidth = right - left, minHeight = 0))
+        val hinge = (window.posture as? SkeinPosture.Tabletop)?.hinge
+        val rowTop = origin.y
+        val intersects = hinge != null && rowTop < hinge.bottom.toPx() && rowTop + child.height > hinge.top.toPx()
+        val belowHinge = if (intersects) (checkNotNull(hinge).bottom.toPx() - rowTop).toInt().coerceAtLeast(0) else 0
+        val top = belowHinge.coerceAtMost((constraints.maxHeight - child.height).coerceAtLeast(0))
+        layout(constraints.maxWidth, top + child.height) { child.place(left, top) }
     }
 }
 
