@@ -2,6 +2,8 @@
 
 Three fictional domain packs demonstrate asking about saved notes and opening the source. **Construction / General Contractor is the default 2–3 minute demo.** Aviation records and culinary mycology research are optional examples, not extra steps in that time budget. Each pack contains three short Markdown notes with no frontmatter IDs.
 
+The [demo controls guide](controls.md) covers the split view, collapsible note/chat lists and first-send Knowledge switch in the workspace update.
+
 **Rehearsal status: NOT RUN.** Durations are planned targets, not measured performance. The UI route was inspected at integration commit `a4ba4f4`; identify and rehearse the installed candidate separately. This pack supports `skein-830f`. It is not an evaluation corpus, benchmark result or acceptance sign-off. Do not add it to evaluation gold or tune retrieval thresholds against it.
 
 **Physical checkpoint, 29 September at 10:48 UTC:** candidate `5ae91c2` is installed with its APK digest verified. The native public-model replay passed five template/token/control cases and EOG classification; the synthetic answer attempt hit its 900-second watchdog with no valid manifest or answer rows. Normal app launch succeeded, but the device keyguard requires the owner to unlock. **The demo is not ready and post-update UI rehearsal remains NOT RUN.** See the [physical evidence and open gates](runs/2026-09-29-physical/README.md).
