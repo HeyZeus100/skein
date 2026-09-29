@@ -3,6 +3,7 @@ package app.skein.core.rag.recall
 import app.skein.core.model.Chunk
 import app.skein.core.model.ChunkId
 import app.skein.core.model.DocId
+import app.skein.core.model.Document
 import app.skein.core.model.DocumentKind
 import app.skein.core.model.Edge
 import app.skein.core.model.EdgeKind
@@ -254,6 +255,110 @@ class GraphRecallTest {
 
             assertThat(results).hasSize(1)
             assertThat(results.single().score).isWithin(1e-9).of(1.0)
+        }
+
+    @Test
+    fun `ordinary multiword query discovers longer title and linked answer without entities`() =
+        runTest {
+            val repo = InMemoryVaultRepository()
+            val index = InMemoryIndexStore()
+            val source = createDoc(repo, "Project Alder brief")
+            val answer = createDoc(repo, "Launch decision")
+            val sourceChunk = addChunk(index, source, "Project Alder links to the decision.")
+            val answerChunk = addChunk(index, answer, "The reviewer was Mira.")
+            link(index, source, answer)
+
+            val results = GraphRecall(index, repo).recall("Who approved Project Alder?")
+
+            assertThat(results.map { it.chunkId }).containsExactly(sourceChunk, answerChunk).inOrder()
+            assertThat(results.last().score).isWithin(1e-9).of(0.5)
+        }
+
+    @Test
+    fun `prefix requires complete word and single words do not trigger broad discovery`() =
+        runTest {
+            val repo = InMemoryVaultRepository()
+            val index = InMemoryIndexStore()
+            val matched = createDoc(repo, "project alder - brief")
+            val partial = createDoc(repo, "Project Aldershot brief")
+            val broad = createDoc(repo, "Project Birch brief")
+            val matchedChunk = addChunk(index, matched, "right")
+            addChunk(index, partial, "partial word")
+            addChunk(index, broad, "broad prefix")
+
+            val recall = GraphRecall(index, repo)
+            assertThat(recall.recall("What about Project Alder?").map { it.chunkId }).containsExactly(matchedChunk)
+            assertThat(recall.recall("Project")).isEmpty()
+        }
+
+    @Test
+    fun `bounded ambiguous prefix retains every candidate rather than selecting newest title`() =
+        runTest {
+            val repo = InMemoryVaultRepository()
+            val index = InMemoryIndexStore()
+            val brief = createDoc(repo, "Project Alder brief")
+            val minutes = createDoc(repo, "Project Alder minutes")
+            val briefChunk = addChunk(index, brief, "brief")
+            val minutesChunk = addChunk(index, minutes, "minutes")
+
+            val results = GraphRecall(index, repo).recall("Project Alder")
+
+            assertThat(results.map { it.chunkId }).containsExactly(briefChunk, minutesChunk)
+            assertThat(results.map { it.score }).containsExactly(1.0, 1.0)
+        }
+
+    @Test
+    fun `overflowing title prefix is rejected rather than selecting truncated candidates`() =
+        runTest {
+            val repo = InMemoryVaultRepository()
+            val index = CountingIndexStore(InMemoryIndexStore())
+            repeat(GraphRecall.MAX_TITLE_CANDIDATES + 1) {
+                val doc = createDoc(repo, "Project Alder version $it")
+                addChunk(index, doc, "version $it")
+            }
+
+            assertThat(GraphRecall(index, repo).recall("Project Alder")).isEmpty()
+            assertThat(index.neighborhoodCalls).isEqualTo(0)
+        }
+
+    @Test
+    fun `seed cap rejects whole ambiguous pool when it cannot fit`() =
+        runTest {
+            val repo = InMemoryVaultRepository()
+            val index = CountingIndexStore(InMemoryIndexStore())
+            repeat(3) {
+                val doc = createDoc(repo, "Project Alder version $it")
+                addChunk(index, doc, "version $it")
+            }
+
+            assertThat(GraphRecall(index, repo, maxNodes = 2).recall("Project Alder")).isEmpty()
+            assertThat(index.neighborhoodCalls).isEqualTo(0)
+        }
+
+    @Test
+    fun `query phrase lookups are bounded even for long capitalized input`() =
+        runTest {
+            var lookups = 0
+            val repo =
+                object : VaultRepository by InMemoryVaultRepository() {
+                    override suspend fun findByTitle(title: String): Document? {
+                        lookups++
+                        return null
+                    }
+
+                    override suspend fun searchTitles(
+                        prefix: String,
+                        limit: Int,
+                    ): List<Document> {
+                        lookups++
+                        assertThat(limit).isEqualTo(GraphRecall.MAX_TITLE_CANDIDATES + 1)
+                        return emptyList()
+                    }
+                }
+
+            GraphRecall(InMemoryIndexStore(), repo).recall((1..100).joinToString(" ") { "Name$it" })
+
+            assertThat(lookups).isEqualTo(GraphRecall.MAX_SEED_PHRASES)
         }
 
     // ------------------------------------------------------------------

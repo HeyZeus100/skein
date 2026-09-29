@@ -12,8 +12,8 @@
 //   1. seeds = entities whose canonical name appears in the query (exact
 //      match over `entities`, via `IndexStore.findEntitiesByName` on the
 //      query's capitalized n-grams up to 3 — see `QueryNgrams`) plus
-//      documents whose title appears in the query (`VaultRepository.findByTitle`
-//      on the same n-grams).
+//      documents whose title appears in the query, or starts with a multiword
+//      query phrase. Prefix lookup is bounded and requires a word boundary.
 //   2. `IndexStore.neighborhood(seeds, hops = 2, maxNodes = 60)`.
 //   3. Documents in the neighborhood → their chunks
 //      (`IndexStore.chunksForDocs`, capped at 2 per doc) scored
@@ -66,9 +66,9 @@ public class GraphRecall(
         query: String,
         k: Int = DEFAULT_K,
     ): List<ScoredChunk> {
-        if (k <= 0) return emptyList()
+        if (k <= 0 || maxNodes <= 0 || maxChunksPerDoc <= 0) return emptyList()
 
-        val ngrams = QueryNgrams.extract(query)
+        val ngrams = QueryNgrams.extract(query).take(MAX_SEED_PHRASES).toSet()
         if (ngrams.isEmpty()) return emptyList()
 
         val seeds = findSeeds(ngrams)
@@ -93,15 +93,37 @@ public class GraphRecall(
             .take(k)
     }
 
-    /** Step 1: entity + title lookup over the query's n-grams, deduped into one seed-node set. */
+    /**
+     * Step 1: bounded entity + title discovery. A phrase such as "Project Alder"
+     * can discover "Project Alder brief" without an entity extractor. Single
+     * words keep exact-title semantics: broad prefixes like "What" or "Project"
+     * would otherwise turn ordinary questions into unrelated graph seeds.
+     *
+     * Prefix matches are recall candidates, not resolved links: keep every
+     * matching title within the bound rather than pick the newest as the sole
+     * destination. An overflowing pool is too ambiguous and is discarded in
+     * full, so database ordering cannot select an arbitrary truncated subset.
+     * Eligibility and Space filtering still happen in the production ranker.
+     */
     private suspend fun findSeeds(ngrams: Set<String>): Set<String> {
         val seeds = LinkedHashSet<String>()
-        for (entity in index.findEntitiesByName(ngrams)) {
+        for (entity in index.findEntitiesByName(ngrams).take(maxNodes)) {
             seeds += entityNode(entity.id)
         }
         for (ngram in ngrams) {
-            val doc = repo.findByTitle(ngram)
-            if (doc != null) seeds += doc.id
+            if (seeds.size >= maxNodes) break
+            if (' ' !in ngram) {
+                repo.findByTitle(ngram)?.let { seeds += it.id }
+                continue
+            }
+            // searchTitles is a literal, case-insensitive prefix lookup, not
+            // a token search. Fetch one extra row to detect truncation before
+            // accepting either exact or longer multiword title candidates.
+            val candidates = repo.searchTitles(ngram, limit = MAX_TITLE_CANDIDATES + 1)
+            if (candidates.size > MAX_TITLE_CANDIDATES) continue
+            val matching = candidates.filter { titleMatchesPhrase(it.title, ngram) }.sortedBy { it.id }
+            if (matching.count { it.id !in seeds } > maxNodes - seeds.size) continue
+            seeds += matching.map { it.id }
         }
         return seeds
     }
@@ -148,12 +170,22 @@ public class GraphRecall(
         public const val DEFAULT_MAX_NODES: Int = 60
         public const val DEFAULT_MAX_CHUNKS_PER_DOC: Int = 2
 
+        internal const val MAX_SEED_PHRASES: Int = 32
+        internal const val MAX_TITLE_CANDIDATES: Int = 8
+
         private const val ENTITY_PREFIX: String = "entity:"
         private const val TAG_PREFIX: String = "tag:"
         private const val UNRESOLVED_TITLE_PREFIX: String = "title:"
         private const val UNRESOLVED_IMPORT_PREFIX: String = "import:"
 
         private fun entityNode(entityId: Long): String = "$ENTITY_PREFIX$entityId"
+
+        private fun titleMatchesPhrase(
+            title: String,
+            phrase: String,
+        ): Boolean =
+            title.startsWith(phrase, ignoreCase = true) &&
+                (title.length == phrase.length || !title[phrase.length].isLetterOrDigit())
 
         /**
          * `true` for a bare document id, `false` for the `entity:`/`tag:`/
