@@ -562,7 +562,11 @@ private fun WorkspacePaneSlot(
                                 )
                         }
                     } else {
-                        Modifier.focusProperties { canFocus = false }
+                        Modifier.focusProperties {
+                            canFocus = false
+                            // The retained group still has children; block direct requests into them too.
+                            onEnter = { cancelFocusChange() }
+                        }
                     },
                 ).onFocusChanged { if (visible && it.hasFocus) workspace.activateFromFocus(pane) }
                 .focusGroup()
