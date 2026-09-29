@@ -72,9 +72,11 @@ public class ModelImportCoordinator internal constructor(
         }
     }
 
-    public fun dismissResult() {
+    /** A captured UI result may dismiss only that exact result, even when a newer outcome is equal. */
+    public fun dismissResult(expected: ModelImportState.Done? = null) {
         synchronized(monitor) {
-            if (mutableState.value is ModelImportState.Done) {
+            val current = mutableState.value
+            if (current is ModelImportState.Done && (expected == null || current === expected)) {
                 awaitingAdoption = null
                 mutableState.value = ModelImportState.Idle
             }
