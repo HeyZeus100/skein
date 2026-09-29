@@ -1,0 +1,92 @@
+{
+  "release_sha256": "34dfaaa13beafeff8a4234de54decdb7c7bbc20d3e65f450c9656b0659b17e67",
+  "identity_sha256": "e398a4c3457df9103754ef3cbed010cfec9c99a42a77111a9f4a8a4537cb0be6",
+  "source_review_sha256": "0e3821d7241a975b5b9259e533fe09d8149c21cd21b102a67bd57523d5a8fc45",
+  "source_changed_paths": [
+    {
+      "path": "app/src/syntheticBenchmark/kotlin/app/skein/benchmark/SyntheticAnswerBenchmarkTest.kt",
+      "sha256": "6d930f5873ae86d043b0f6d22d96742932c36915f17fd65b0fb9f66e9abba14f",
+      "test_combined_main_bytes_equal": true
+    },
+    {
+      "path": "app/src/syntheticBenchmarkShared/kotlin/app/skein/benchmark/SyntheticSetup.kt",
+      "sha256": "8a67e152a3f5aee5e6bc70ccb8452b5072c590e364425448fe048e0e8af2fd3b",
+      "test_combined_main_bytes_equal": true
+    },
+    {
+      "path": "app/src/syntheticBenchmarkTest/kotlin/app/skein/benchmark/SyntheticSetupTest.kt",
+      "sha256": "6b0bd42b9bd8c803bbcf78c495cf7a2854595ded6aa91e4bf2d67911850e9cab",
+      "test_combined_main_bytes_equal": true
+    }
+  ],
+  "artifacts": [
+    {
+      "kind": "app",
+      "path": "/Users/andrewherrera/skein-worktrees/ux-integration-20260929/build/agent-logs/candidate-5ae91c2-optin/app-foss-debug.apk",
+      "bytes": 125280302,
+      "sha256": "1f83b71c5fe60a6dc26fcac7a4c75b49fbf009b6e8c9d972b2176c18081c1323"
+    },
+    {
+      "kind": "app_test",
+      "path": "/Users/andrewherrera/skein-worktrees/ux-integration-20260929/build/agent-logs/candidate-aee46e4-testonly/app-foss-debug-androidTest.apk",
+      "bytes": 91163348,
+      "sha256": "9575f53a36e6dbd1dcd9f4cdcfe4af6407a74d1566343bf5bb29ca0bc9edef95"
+    },
+    {
+      "kind": "native_test",
+      "path": "/Users/andrewherrera/skein-worktrees/ux-integration-20260929/build/agent-logs/candidate-5ae91c2-optin/inference-service-foss-debug-androidTest.apk",
+      "bytes": 130230126,
+      "sha256": "bb1b2f496f6c831ced00f20d9dd08d6f571d87fcb48040dfba17f4a7c561f342"
+    }
+  ],
+  "test_archive_comparison": {
+    "old_path": "/Users/andrewherrera/skein-worktrees/ux-integration-20260929/build/agent-logs/candidate-5ae91c2-optin/app-foss-debug-androidTest.apk",
+    "old_apk_sha256": "889db458324339f2f24da8b190a8457192a719df4bb088a52c04bf298e992f44",
+    "new_path": "/Users/andrewherrera/skein-worktrees/ux-integration-20260929/build/agent-logs/candidate-aee46e4-testonly/app-foss-debug-androidTest.apk",
+    "new_apk_sha256": "9575f53a36e6dbd1dcd9f4cdcfe4af6407a74d1566343bf5bb29ca0bc9edef95",
+    "entries": 67,
+    "added": [],
+    "removed": [],
+    "changed": [
+      {
+        "entry": "classes7.dex",
+        "old_sha256": "1771da708599a8537f0e580e83c64131c6c1d7ddb73eca1d368434fd4a148f20",
+        "new_sha256": "f925a9ee553172577398387402a788777a9790339288d63fc1f65c3a0f44fb70",
+        "old_bytes": 173652,
+        "new_bytes": 229572
+      }
+    ],
+    "native_libraries": []
+  },
+  "ordinary_xml": [
+    {
+      "module": "app",
+      "sha256": "edf6794f5264c79d21807bfce1f89283d91efe3911f29e24a38936acb9cdf74e",
+      "tests": 38,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "module": "vault",
+      "sha256": "e962e358383812c4c1be47854dbbf39b0fda285cd4caa8b407674fd3deee9558",
+      "tests": 204,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "module": "inference-service",
+      "sha256": "e750db156ea4fe5654cf8c09a65de19c4efcef9400f91b352310bb42fa022adc",
+      "tests": 39,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    }
+  ],
+  "ordinary_cases": 281,
+  "all_seven_required_present_unskipped": true,
+  "fixture_cases": 4,
+  "runner_verified_entries": 12,
+  "public_model_not_rehashed_in_this_review": true
+}

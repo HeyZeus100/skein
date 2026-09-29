@@ -1,0 +1,84 @@
+{
+  "commands": [
+    {
+      "argv": [
+        "/Users/andrewherrera/android-sdk/build-tools/36.0.0/apksigner",
+        "verify",
+        "--verbose",
+        "--print-certs",
+        "/Users/andrewherrera/skein-worktrees/ux-integration-20260929/build/agent-logs/candidate-5ae91c2-optin/app-foss-debug.apk"
+      ],
+      "exit_code": 0,
+      "stdout_sha256": "92d02e2b7713c8ca9e66322ebb0e94a91463fdbf14aceb99eeffcb6bd3134a4b",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "verified": true
+    },
+    {
+      "argv": [
+        "/Users/andrewherrera/android-sdk/build-tools/36.0.0/aapt2",
+        "dump",
+        "badging",
+        "/Users/andrewherrera/skein-worktrees/ux-integration-20260929/build/agent-logs/candidate-5ae91c2-optin/app-foss-debug.apk"
+      ],
+      "exit_code": 0,
+      "stdout_sha256": "06f59665822c269bc96ab31f847a161c3d7c80626ed00a810e37fa43655ca5e6",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "verified": true
+    },
+    {
+      "argv": [
+        "/Users/andrewherrera/android-sdk/build-tools/36.0.0/apksigner",
+        "verify",
+        "--verbose",
+        "--print-certs",
+        "/Users/andrewherrera/skein-worktrees/ux-integration-20260929/build/agent-logs/candidate-aee46e4-testonly/app-foss-debug-androidTest.apk"
+      ],
+      "exit_code": 0,
+      "stdout_sha256": "92d02e2b7713c8ca9e66322ebb0e94a91463fdbf14aceb99eeffcb6bd3134a4b",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "verified": true
+    },
+    {
+      "argv": [
+        "/Users/andrewherrera/android-sdk/build-tools/36.0.0/aapt2",
+        "dump",
+        "xmltree",
+        "/Users/andrewherrera/skein-worktrees/ux-integration-20260929/build/agent-logs/candidate-aee46e4-testonly/app-foss-debug-androidTest.apk",
+        "--file",
+        "AndroidManifest.xml"
+      ],
+      "exit_code": 0,
+      "stdout_sha256": "dcd6868592c248010ac6d1c58b993ac4aafd2ddc2765e373d57e9d9ad61ff403",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "verified": true
+    },
+    {
+      "argv": [
+        "/Users/andrewherrera/android-sdk/build-tools/36.0.0/apksigner",
+        "verify",
+        "--verbose",
+        "--print-certs",
+        "/Users/andrewherrera/skein-worktrees/ux-integration-20260929/build/agent-logs/candidate-5ae91c2-optin/inference-service-foss-debug-androidTest.apk"
+      ],
+      "exit_code": 0,
+      "stdout_sha256": "92d02e2b7713c8ca9e66322ebb0e94a91463fdbf14aceb99eeffcb6bd3134a4b",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "verified": true
+    },
+    {
+      "argv": [
+        "/Users/andrewherrera/android-sdk/build-tools/36.0.0/aapt2",
+        "dump",
+        "badging",
+        "/Users/andrewherrera/skein-worktrees/ux-integration-20260929/build/agent-logs/candidate-5ae91c2-optin/inference-service-foss-debug-androidTest.apk"
+      ],
+      "exit_code": 0,
+      "stdout_sha256": "23c0f93d25daeca7973c6b61d20bc6d98125996dda2192cce6919802a89e152e",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "verified": true
+    }
+  ],
+  "command_count": 6,
+  "device_commands": 0,
+  "runner_main_called": false
+}

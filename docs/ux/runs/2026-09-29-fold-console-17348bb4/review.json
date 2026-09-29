@@ -1,0 +1,23 @@
+{
+  "source_sha": "17348bb45b96d22693c4ce9aeda266905accdb27",
+  "worker_sha": "0fec2c968364c34db9903c4b5beec6a43c3cdde9",
+  "combined_source": "f667a31cb73e9b4d349fc1b90b372b62166d5df4",
+  "format_only_fix": "17348bb45b96d22693c4ce9aeda266905accdb27",
+  "local_command": "app check/ktlintCheck/dev+foss AndroidTest Kotlin compilation with foldableTests+syntheticBenchmark true, max-workers2",
+  "build": "PASS9s803tasks21executed782uptodate",
+  "original_failure": "Sole ktlint multiline && condition at131 preserved original log; no behavioral change",
+  "host_tests": 35,
+  "retained_xml": {
+    "files": 80,
+    "cases": 546,
+    "failure": 0,
+    "error": 0,
+    "skipped": 0
+  },
+  "per_task": {
+    "testDevDebugUnitTest": 273,
+    "testFossDebugUnitTest": 273
+  },
+  "unit_execution": "Both app unit tasks UP-TO-DATE; retained546 actual cases previouslyexecuted/cached, not fresh execution",
+  "runtime": "Pending fresh disposable generic emulator; no device/source-quality inference"
+}

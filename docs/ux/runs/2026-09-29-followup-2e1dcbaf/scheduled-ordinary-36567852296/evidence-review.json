@@ -1,0 +1,432 @@
+{
+  "run_id": 36567852296,
+  "source_sha": "aef738b11fb9869e2e5d4b58df629885b511a359",
+  "run_url": "https://github.com/HeyZeus100/skein/actions/runs/36567852296",
+  "attempt": 1,
+  "run_status": "completed",
+  "run_conclusion": "success",
+  "step_conclusions": [
+    {
+      "job": "Instrumented tests (API 35, x86_64)",
+      "conclusion": "success",
+      "steps": [
+        {
+          "number": 1,
+          "name": "Set up job",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "number": 2,
+          "name": "Checkout",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "number": 3,
+          "name": "Set up JDK 17 (Temurin)",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "number": 4,
+          "name": "Cache the tiny GGUF test model",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "number": 5,
+          "name": "Choose the OpenSSL tarball cache directory",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "number": 6,
+          "name": "Derive pinned OpenSSL sha256 (cache key)",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "number": 7,
+          "name": "Cache the pinned OpenSSL tarball",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "number": 8,
+          "name": "Put Android SDK cmdline-tools / platform-tools / emulator on PATH",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "number": 9,
+          "name": "Install required Android SDK packages",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "number": 10,
+          "name": "Set up Gradle",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "number": 11,
+          "name": "Verify actual XML reviewer",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "number": 12,
+          "name": "Enable KVM",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "number": 13,
+          "name": "Run instrumented tests",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "number": 14,
+          "name": "Require complete passing ordinary instrumentation XML",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "number": 15,
+          "name": "Record instrumentation source and artifact hashes",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "number": 16,
+          "name": "Upload instrumented test reports",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "number": 28,
+          "name": "Post Set up Gradle",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "number": 29,
+          "name": "Post Cache the pinned OpenSSL tarball",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "number": 30,
+          "name": "Post Cache the tiny GGUF test model",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "number": 31,
+          "name": "Post Set up JDK 17 (Temurin)",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "number": 32,
+          "name": "Post Checkout",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "number": 33,
+          "name": "Complete job",
+          "status": "completed",
+          "conclusion": "success"
+        }
+      ]
+    }
+  ],
+  "artifacts": [
+    {
+      "id": 11033760549,
+      "name": "connected-test-reports",
+      "bytes": 1144441,
+      "sha256": "a9d97b45fbbaa2f5f34d3ead2ace4ea43362c5700e20607e5e239c7a6e72f3ce",
+      "matches_api_digest_and_size": true
+    }
+  ],
+  "source_manifest": {
+    "source_sha": "aef738b11fb9869e2e5d4b58df629885b511a359",
+    "recorded_files": 7,
+    "verified_files": 7,
+    "all_actual_xml_recorded": true,
+    "sha256": "c9296737b886252260cba2c35cd35bfcb6e706890283665bc56e0679b8410716",
+    "built_apks_host_declared": [
+      {
+        "path": "app/build/outputs/apk/androidTest/dev/debug/app-dev-debug-androidTest.apk",
+        "sha256": "d0bbb9e10d7da43dcdcb205814cc1177aab8e56ee754f2459dff2a24a512c9ca"
+      },
+      {
+        "path": "app/build/outputs/apk/dev/debug/app-dev-debug.apk",
+        "sha256": "c880de6a2fbb63d99c092d0de3055cfde17a6f9e4ed777b2aeb70f5070d60013"
+      },
+      {
+        "path": "core/vault/build/outputs/apk/androidTest/dev/debug/vault-dev-debug-androidTest.apk",
+        "sha256": "6534d0c14f11a284b1a251ed0ef96ead6d1e0d1819cc6bec4aad947ed7e6c46d"
+      },
+      {
+        "path": "inference-service/build/outputs/apk/androidTest/dev/debug/inference-service-dev-debug-androidTest.apk",
+        "sha256": "db3da5916cafbb6131ec07b9150978fd5b4c920c1a3c7ea323958e88c9263c5b"
+      }
+    ],
+    "limitation": "Built APK digests are host-declared, APK bytes are not retained in this artifact and installed bytes are not independently attested."
+  },
+  "modules": {
+    "app": {
+      "files": [
+        "app/build/outputs/androidTest-results/connected/debug/flavors/dev/TEST-test(AVD) - 15.xml"
+      ],
+      "tests": 38,
+      "passed": 38,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    "core/vault": {
+      "files": [
+        "core/vault/build/outputs/androidTest-results/connected/debug/flavors/dev/TEST-test(AVD) - 15.xml"
+      ],
+      "tests": 204,
+      "passed": 204,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    "inference-service": {
+      "files": [
+        "inference-service/build/outputs/androidTest-results/connected/debug/flavors/dev/TEST-test(AVD) - 15.xml"
+      ],
+      "tests": 39,
+      "passed": 39,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    }
+  },
+  "totals": {
+    "tests": 281,
+    "passed": 281,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0
+  },
+  "duplicate_identities": [],
+  "missing_prior_identities": [],
+  "added_identities": [],
+  "six_critical_cases": [
+    {
+      "module": "inference-service",
+      "classname": "app.skein.inference.service.LlamaNativeTest",
+      "name": "descriptorLoadCancellationFromProgressClosesOwnedStreamAndKeepsCallerFd",
+      "xml": "inference-service/build/outputs/androidTest-results/connected/debug/flavors/dev/TEST-test(AVD) - 15.xml",
+      "time": "0.172",
+      "status": "passed"
+    },
+    {
+      "module": "inference-service",
+      "classname": "app.skein.inference.service.LlamaNativeTest",
+      "name": "pathLoadCancellationFromProgressRetainsNoNativeHandle",
+      "xml": "inference-service/build/outputs/androidTest-results/connected/debug/flavors/dev/TEST-test(AVD) - 15.xml",
+      "time": "0.093",
+      "status": "passed"
+    },
+    {
+      "module": "inference-service",
+      "classname": "app.skein.inference.service.InferenceServiceInstrumentedTest",
+      "name": "lockingMidGenerationCancelsThenLockedTerminatesTheIsolatedProcess",
+      "xml": "inference-service/build/outputs/androidTest-results/connected/debug/flavors/dev/TEST-test(AVD) - 15.xml",
+      "time": "1.968",
+      "status": "passed"
+    },
+    {
+      "module": "inference-service",
+      "classname": "app.skein.inference.service.InferenceServiceInstrumentedTest",
+      "name": "aLockingServiceRefusesTheNextGenerateBeforeProcessTeardown",
+      "xml": "inference-service/build/outputs/androidTest-results/connected/debug/flavors/dev/TEST-test(AVD) - 15.xml",
+      "time": "0.932",
+      "status": "passed"
+    },
+    {
+      "module": "inference-service",
+      "classname": "app.skein.inference.service.InferenceServiceInstrumentedTest",
+      "name": "staleLockedPushDoesNotKillNewlyAuthorizedService",
+      "xml": "inference-service/build/outputs/androidTest-results/connected/debug/flavors/dev/TEST-test(AVD) - 15.xml",
+      "time": "0.960",
+      "status": "passed"
+    },
+    {
+      "module": "app",
+      "classname": "app.skein.inference.LlamaCppEngineInstrumentedTest",
+      "name": "lockAfterInspectionTerminatesTheProcessAndOnlyANewUnlockCanRebind",
+      "xml": "app/build/outputs/androidTest-results/connected/debug/flavors/dev/TEST-test(AVD) - 15.xml",
+      "time": "5.483",
+      "status": "passed"
+    }
+  ],
+  "prior_19_failure_cases": [
+    {
+      "module": "inference-service",
+      "classname": "app.skein.inference.service.LlamaNativeTest",
+      "name": "tokenizeReturnsAtLeastTwoIds",
+      "xml": "inference-service/build/outputs/androidTest-results/connected/debug/flavors/dev/TEST-test(AVD) - 15.xml",
+      "time": "0.106",
+      "status": "passed"
+    },
+    {
+      "module": "inference-service",
+      "classname": "app.skein.inference.service.LlamaNativeTest",
+      "name": "decodePromptThenEightSamplesYieldsEightIds",
+      "xml": "inference-service/build/outputs/androidTest-results/connected/debug/flavors/dev/TEST-test(AVD) - 15.xml",
+      "time": "0.564",
+      "status": "passed"
+    },
+    {
+      "module": "inference-service",
+      "classname": "app.skein.inference.service.LlamaNativeTest",
+      "name": "scaffoldTokenizerRejectsMalformedUnicodeAndInvalidByteRanges",
+      "xml": "inference-service/build/outputs/androidTest-results/connected/debug/flavors/dev/TEST-test(AVD) - 15.xml",
+      "time": "0.092",
+      "status": "passed"
+    },
+    {
+      "module": "inference-service",
+      "classname": "app.skein.inference.service.LlamaNativeTest",
+      "name": "secureFreeZeroesTheKvCacheBeforeFreeing",
+      "xml": "inference-service/build/outputs/androidTest-results/connected/debug/flavors/dev/TEST-test(AVD) - 15.xml",
+      "time": "0.096",
+      "status": "passed"
+    },
+    {
+      "module": "inference-service",
+      "classname": "app.skein.inference.service.LlamaNativeTest",
+      "name": "descriptorLoadCancellationFromProgressClosesOwnedStreamAndKeepsCallerFd",
+      "xml": "inference-service/build/outputs/androidTest-results/connected/debug/flavors/dev/TEST-test(AVD) - 15.xml",
+      "time": "0.172",
+      "status": "passed"
+    },
+    {
+      "module": "inference-service",
+      "classname": "app.skein.inference.service.LlamaNativeTest",
+      "name": "sameSeedTwiceProducesTheSameIds",
+      "xml": "inference-service/build/outputs/androidTest-results/connected/debug/flavors/dev/TEST-test(AVD) - 15.xml",
+      "time": "1.790",
+      "status": "passed"
+    },
+    {
+      "module": "inference-service",
+      "classname": "app.skein.inference.service.LlamaNativeTest",
+      "name": "loadingANonGgufFileFailsWithInvalidModelAndLeaksNoHandle",
+      "xml": "inference-service/build/outputs/androidTest-results/connected/debug/flavors/dev/TEST-test(AVD) - 15.xml",
+      "time": "0.032",
+      "status": "passed"
+    },
+    {
+      "module": "inference-service",
+      "classname": "app.skein.inference.service.LlamaNativeTest",
+      "name": "safeTemplateTokensMatchNativeTokensForBenignSyntheticConversation",
+      "xml": "inference-service/build/outputs/androidTest-results/connected/debug/flavors/dev/TEST-test(AVD) - 15.xml",
+      "time": "0.119",
+      "status": "passed"
+    },
+    {
+      "module": "inference-service",
+      "classname": "app.skein.inference.service.LlamaNativeTest",
+      "name": "goldenGreedySequenceIsPinned",
+      "xml": "inference-service/build/outputs/androidTest-results/connected/debug/flavors/dev/TEST-test(AVD) - 15.xml",
+      "time": "0.935",
+      "status": "passed"
+    },
+    {
+      "module": "inference-service",
+      "classname": "app.skein.inference.service.LlamaNativeTest",
+      "name": "cancelFlagAbortsADecodeWithin100Ms",
+      "xml": "inference-service/build/outputs/androidTest-results/connected/debug/flavors/dev/TEST-test(AVD) - 15.xml",
+      "time": "0.119",
+      "status": "passed"
+    },
+    {
+      "module": "inference-service",
+      "classname": "app.skein.inference.service.LlamaNativeTest",
+      "name": "controlsSpanningTemplateAndContentRemainLiteralInBothDirections",
+      "xml": "inference-service/build/outputs/androidTest-results/connected/debug/flavors/dev/TEST-test(AVD) - 15.xml",
+      "time": "0.092",
+      "status": "passed"
+    },
+    {
+      "module": "inference-service",
+      "classname": "app.skein.inference.service.LlamaNativeTest",
+      "name": "contextCapacityRejectsZeroWrongAndFreedHandles",
+      "xml": "inference-service/build/outputs/androidTest-results/connected/debug/flavors/dev/TEST-test(AVD) - 15.xml",
+      "time": "0.117",
+      "status": "passed"
+    },
+    {
+      "module": "inference-service",
+      "classname": "app.skein.inference.service.LlamaNativeTest",
+      "name": "nativeWhitespaceAndUnicodeTokensMatchWholePromptReference",
+      "xml": "inference-service/build/outputs/androidTest-results/connected/debug/flavors/dev/TEST-test(AVD) - 15.xml",
+      "time": "0.091",
+      "status": "passed"
+    },
+    {
+      "module": "inference-service",
+      "classname": "app.skein.inference.service.LlamaNativeTest",
+      "name": "exactNativeCapacityAcceptsLastReservedPositionAndRefusesOneBeyond",
+      "xml": "inference-service/build/outputs/androidTest-results/connected/debug/flavors/dev/TEST-test(AVD) - 15.xml",
+      "time": "11.408",
+      "status": "passed"
+    },
+    {
+      "module": "inference-service",
+      "classname": "app.skein.inference.service.LlamaNativeTest",
+      "name": "embedIsUnitLengthAndModelWidth",
+      "xml": "inference-service/build/outputs/androidTest-results/connected/debug/flavors/dev/TEST-test(AVD) - 15.xml",
+      "time": "0.185",
+      "status": "passed"
+    },
+    {
+      "module": "inference-service",
+      "classname": "app.skein.inference.service.LlamaNativeTest",
+      "name": "tokenToPieceConcatenatesBackToTheInput",
+      "xml": "inference-service/build/outputs/androidTest-results/connected/debug/flavors/dev/TEST-test(AVD) - 15.xml",
+      "time": "0.092",
+      "status": "passed"
+    },
+    {
+      "module": "inference-service",
+      "classname": "app.skein.inference.service.LlamaNativeTest",
+      "name": "chatTemplatingRenderUsesTheModelsOwnTemplateAndMarkersAroundTheContent",
+      "xml": "inference-service/build/outputs/androidTest-results/connected/debug/flavors/dev/TEST-test(AVD) - 15.xml",
+      "time": "0.088",
+      "status": "passed"
+    },
+    {
+      "module": "inference-service",
+      "classname": "app.skein.inference.service.LlamaNativeTest",
+      "name": "literalChatMlDelimiterCannotAddAnotherNativeControlToken",
+      "xml": "inference-service/build/outputs/androidTest-results/connected/debug/flavors/dev/TEST-test(AVD) - 15.xml",
+      "time": "0.087",
+      "status": "passed"
+    },
+    {
+      "module": "inference-service",
+      "classname": "app.skein.inference.service.LlamaNativeTest",
+      "name": "applyChatTemplateContainsTheUserMessage",
+      "xml": "inference-service/build/outputs/androidTest-results/connected/debug/flavors/dev/TEST-test(AVD) - 15.xml",
+      "time": "0.085",
+      "status": "passed"
+    }
+  ],
+  "integrity_issues": [],
+  "review_issues": [],
+  "acceptance_passed": true
+}

@@ -1,0 +1,23 @@
+{
+  "log_sha256": "e69d2682bfa34835869dbf9bb336cb6f9d19e1ba09000bb11dfce8dd00205ff4",
+  "selected_execution_lines": [
+    "./gradlew --max-workers=2 connectedDevDebugAndroidTest --continue --stacktrace -Pandroid.testInstrumentationRunnerArguments.notAnnotation=org.junit.Ignore; RC=$?; mkdir -p app/build/outputs/androidTest-results/connected/lane-logcat; adb logcat -d -v threadtime > app/build/outputs/androidTest-results/connected/lane-logcat/logcat.txt; exit $RC",
+    "2026-09-29T12:25:34.6656742Z ./gradlew --max-workers=2 connectedDevDebugAndroidTest --continue --stacktrace -Pandroid.testInstrumentationRunnerArguments.notAnnotation=org.junit.Ignore; RC=$?; mkdir -p app/build/outputs/androidTest-results/connected/lane-logcat; adb logcat -d -v threadtime > app/build/outputs/androidTest-results/connected/lane-logcat/logcat.txt; exit $RC",
+    "2026-09-29T12:26:19.8009246Z Starting emulator.",
+    "2026-09-29T12:29:30.4905316Z [command]/usr/bin/sh -c ./gradlew --max-workers=2 connectedDevDebugAndroidTest --continue --stacktrace -Pandroid.testInstrumentationRunnerArguments.notAnnotation=org.junit.Ignore; RC=$?; mkdir -p app/build/outputs/androidTest-results/connected/lane-logcat; adb logcat -d -v threadtime > app/build/outputs/androidTest-results/connected/lane-logcat/logcat.txt; exit $RC",
+    "2026-09-29T12:29:31.3195529Z Starting a Gradle Daemon (subsequent builds will be faster)",
+    "2026-09-29T12:29:34.1225487Z Calculating task graph as no cached configuration is available for tasks: connectedDevDebugAndroidTest",
+    "2026-09-29T12:36:12.1220737Z > Task :inference-service:connectedDevDebugAndroidTest",
+    "2026-09-29T12:36:12.1250517Z Running tests on devices: test(AVD) - 15",
+    "2026-09-29T12:36:55.4220916Z > Task :app:connectedDevDebugAndroidTest",
+    "2026-09-29T12:36:55.4250399Z Running tests on devices: test(AVD) - 15",
+    "2026-09-29T12:37:27.7188659Z > Task :core:vault:connectedDevDebugAndroidTest",
+    "2026-09-29T12:39:50.9189264Z Running tests on devices: test(AVD) - 15",
+    "2026-09-29T12:40:04.3191098Z BUILD SUCCESSFUL in 10m 33s",
+    "2026-09-29T12:40:12.2217288Z Finished uploading artifact content to blob storage!",
+    "2026-09-29T12:40:17.4339300Z Starting process 'Gradle build daemon'. Working directory: /home/runner/.gradle/daemon/9.7.1 Command: /usr/lib/jvm/temurin-17-jdk-amd64/bin/java --add-opens=java.base/java.lang=ALL-UNNAMED --add-opens=java.base/java.lang.invoke=ALL-UNNAMED --add-opens=java.base/java.util=ALL-UNNAMED --add-opens=java.prefs/java.util.prefs=ALL-UNNAMED --add-exports=jdk.compiler/com.sun.tools.javac.api=ALL-UNNAMED --add-exports=jdk.compiler/com.sun.tools.javac.util=ALL-UNNAMED --add-opens=java.base/java.nio.charset=ALL-UNNAMED --add-opens=java.base/java.net=ALL-UNNAMED --add-opens=java.base/java.util.concurrent=ALL-UNNAMED --add-opens=java.base/java.util.concurrent.atomic=ALL-UNNAMED --add-opens=java.xml/javax.xml.namespace=ALL-UNNAMED --add-opens=java.base/java.time=ALL-UNNAMED -XX:MaxMetaspaceSize=384m -XX:+HeapDumpOnOutOfMemoryError -Xms256m -Xmx512m -Dfile.encoding=UTF-8 -Duser.country -Duser.language=en -Duser.variant -cp /usr/share/gradle-9.7.1/lib/gradle-daemon-main-9.7.1.jar -javaagent:/usr/share/gradle-9.7.1/lib/agents/gradle-instrumentation-agent-9.7.1.jar org.gradle.launcher.daemon.bootstrap.GradleDaemon 9.7.1",
+    "2026-09-29T12:40:24.8302116Z Starting Build",
+    "2026-09-29T12:40:25.5316697Z BUILD SUCCESSFUL in 8s"
+  ],
+  "connected_task_cache_lines": []
+}

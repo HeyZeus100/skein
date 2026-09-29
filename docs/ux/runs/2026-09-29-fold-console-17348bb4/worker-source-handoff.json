@@ -1,0 +1,36 @@
+{
+  "baseline": "8ae202a095a0725a0190195e7cf9f470ec39a4ac",
+  "checks": {
+    "host_tests": 25,
+    "failures": 0,
+    "errors": 0,
+    "skips": 0,
+    "log": "build/agent-logs/console-host-check6.log",
+    "shell_syntax": "PASS",
+    "python_compile": "PASS",
+    "diff_whitespace": "PASS"
+  },
+  "unexecuted": [
+    "Gradle compilation",
+    "ktlint",
+    "native builds",
+    "emulator instrumentation",
+    "physical device"
+  ],
+  "file_sha256": {
+    ".github/workflows/foldable.yml": "3d1e4c20a4f01f45376b35fa7d1e232331a196fab033260ad111ce877e467696",
+    "app/src/foldableTest/kotlin/app/skein/foldable/FoldableDeviceControl.kt": "5ff2f8c0d42aa5c8250f0672c59fce4c4fc0498f0bcb7468e0ed23fb66172c5a",
+    "app/src/foldableTest/kotlin/app/skein/foldable/MainActivityFoldableGateTest.kt": "9212c015221d15a8fe9c028c28ce5394eee506b897331f5c8e2a10a235b87a4e",
+    "docs/Handoffs/skein-fold-coverage-20260929.md": "137c746a704bb02bee3ed5963dcb746ea6629561ea15a2864859dc37a5a908e9",
+    "tools/ci/foldable-console-bridge.py": "f238910de819690209cf43f59a8926b1f171f69e9cbd3b4db01fed07698dfcc3",
+    "tools/ci/run-foldable-emulator.sh": "95553cdb729ecd5f5daff7760bc552d615f9946895e202db4e93cefddeb3db22",
+    "tools/ci/test_foldable_console.py": "8d97829764f83f5a1e9480a149fb1c948b7a11c1b6417e157b6fc878b45b0af5",
+    "tools/ci/test_verify_foldable.py": "3d7df16171e0416838cb7fbfa7b25ec2154cc818e99199ea6db3080344813e1b",
+    "tools/ci/verify-foldable.py": "e7966e6c315cc087ae3c7e13418304504393ecb0d69c35fb190b11c6e4ad2771"
+  },
+  "commit": "0fec2c968364c34db9903c4b5beec6a43c3cdde9",
+  "peer_reviews": {
+    "host": "APPROVED source review by hinge_windows",
+    "kotlin": "APPROVED for compilation by overlay_ime"
+  }
+}

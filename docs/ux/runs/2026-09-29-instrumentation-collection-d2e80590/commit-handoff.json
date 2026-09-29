@@ -1,0 +1,44 @@
+{
+  "commit": "d72e1448bb669fd7784c051f0f8514538c00e4b9",
+  "branch": "codex/ux-instrumentation-evidence-scope-20260929",
+  "baseline": "af0c9f94c93e14235096d22d57388431dfdb7027",
+  "source_paths": [
+    ".github/workflows/emulator.yml",
+    "tools/ci/test_verification_manifest.py",
+    "tools/ci/verification-manifest.py"
+  ],
+  "clean": true,
+  "signed_off": true,
+  "logs": [
+    {
+      "path": "all-ci-host-tests.log",
+      "bytes": 3759,
+      "sha256": "c8f89a0c2aa9c9b8aeaa882fc15f303bd973d68b85de6f24eefb52336b431a01"
+    },
+    {
+      "path": "regression-fixed.log",
+      "bytes": 1256,
+      "sha256": "79bbc9618e4ca625035642fd63f15f50903cf723d1284dfc5cdbcf8bb27a6402"
+    },
+    {
+      "path": "regression-red.log",
+      "bytes": 5241,
+      "sha256": "10ab07e4c8a03f5aeb2f22cae34c1a0fcc843e5ed70ec59c53cb14ae77c08ef6"
+    },
+    {
+      "path": "submodule-init.log",
+      "bytes": 663,
+      "sha256": "0fb4eefc2099cc2927366c1333d1a9fe57f6df52d1107541755a72a6b8e2a061"
+    },
+    {
+      "path": "submodule-pins.log",
+      "bytes": 75,
+      "sha256": "9ae84d7173a49a944093bf379b225257fe382f12ceae0dc5b25e1f3dd3ef12b6"
+    },
+    {
+      "path": "verification-summary.json",
+      "bytes": 1145,
+      "sha256": "acfb8b04406828fd1ecadde220b6f45b263cdfed109642d5063fe707075ca09d"
+    }
+  ]
+}

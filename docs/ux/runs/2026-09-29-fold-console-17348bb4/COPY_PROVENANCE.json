@@ -1,0 +1,37 @@
+[
+  {
+    "source": "/Users/andrewherrera/skein-worktrees/ux-integration-20260929/build/agent-logs/fold-console-combined-check.log",
+    "target": "fold-console-combined-check.log.gz",
+    "lossless_gzip_sha256_original": "af7362dcd0d1f962e6b673b9fb92d2338e42448205229bbb61bda1b795a499f8"
+  },
+  {
+    "source": "/Users/andrewherrera/skein-worktrees/ux-integration-20260929/build/agent-logs/fold-console-combined-check2.log",
+    "target": "fold-console-combined-check2.log.gz",
+    "lossless_gzip_sha256_original": "172e5b8b65388e9f03a3dfaf282c7ed9e03b07322131c63aef781bef55b29589"
+  },
+  {
+    "source": "/Users/andrewherrera/skein-worktrees/ux-integration-20260929/build/agent-logs/fold-console-combined-host-tests.log",
+    "target": "fold-console-combined-host-tests.log.gz",
+    "lossless_gzip_sha256_original": "21d498031e2935257633b0ba8d3e4e3e9ab008e65a2a5b8f82afd34fb28cf14c"
+  },
+  {
+    "source": "/Users/andrewherrera/skein-worktrees/ux-fold-console-20260929/build/agent-logs/console-source-handoff.json",
+    "target": "worker-source-handoff.json",
+    "sha256": "145330b2c75d952a15a9462dad6c0a48bd0d3c189bb62a4f29cc25065f010669"
+  },
+  {
+    "source": "/Users/andrewherrera/skein-worktrees/ux-fold-console-20260929/build/agent-logs/console-host-check6.log",
+    "target": "worker-host-check6.log.gz",
+    "lossless_gzip_sha256_original": "0d8af92561a205cbda93803bc2d4f725b070362d390fc0af27726de3c1dab4ea"
+  },
+  {
+    "source": "/Users/andrewherrera/skein-worktrees/ux-hinge-windows-20260929/build/agent-logs/fold-console-review-20260929/host-review-final.json",
+    "target": "host-review-final.json",
+    "sha256": "a99410deca6b9d31634d020d49e88cd43d53d76386616a4226042cdcb6690b3b"
+  },
+  {
+    "source": "/Users/andrewherrera/skein-worktrees/ux-rb-evidence-20260929/build/agent-logs/fold-console-kotlin-review-20260929/REVIEW.md",
+    "target": "kotlin-review.md",
+    "sha256": "71fecfb555251bee8adffd34d750dd937d9a232b0ca36b91edff5eca4489d1da"
+  }
+]

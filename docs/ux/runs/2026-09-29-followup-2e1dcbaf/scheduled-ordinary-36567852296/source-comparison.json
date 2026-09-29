@@ -1,0 +1,67 @@
+{
+  "source_sha": "aef738b11fb9869e2e5d4b58df629885b511a359",
+  "released_candidate_sha": "5ae91c238612bdd9b1511b3716d34b4fa5960dd2",
+  "event": "schedule",
+  "production_and_ordinary_test_objects": {
+    "app/src/main": {
+      "released_source_object": "ccd60c3771d6bbb663654a7e369e2b7682a15793",
+      "reviewed_source_object": "ccd60c3771d6bbb663654a7e369e2b7682a15793",
+      "equal": true
+    },
+    "app/src/androidTest": {
+      "released_source_object": "587af1bf049de2a465eb06b448ce7c7dcc98081e",
+      "reviewed_source_object": "587af1bf049de2a465eb06b448ce7c7dcc98081e",
+      "equal": true
+    },
+    "inference-service": {
+      "released_source_object": "8b68633b9e46604b5251d71bb4069b77ffd1eb5f",
+      "reviewed_source_object": "8b68633b9e46604b5251d71bb4069b77ffd1eb5f",
+      "equal": true
+    },
+    "core": {
+      "released_source_object": "a1109b39e0ed16219de8b785b4b93e08ee5b494e",
+      "reviewed_source_object": "a1109b39e0ed16219de8b785b4b93e08ee5b494e",
+      "equal": true
+    },
+    "feature": {
+      "released_source_object": "7834e05785cf3645925e1fe82325d76f16a002f9",
+      "reviewed_source_object": "7834e05785cf3645925e1fe82325d76f16a002f9",
+      "equal": true
+    },
+    "native": {
+      "released_source_object": "ecefab4de66c322e7ee9a35995c3a830f9292d34",
+      "reviewed_source_object": "ecefab4de66c322e7ee9a35995c3a830f9292d34",
+      "equal": true
+    },
+    "third_party": {
+      "released_source_object": "abbf1fb7e2583c5ce999cc2da5c717f40f5b2073",
+      "reviewed_source_object": "abbf1fb7e2583c5ce999cc2da5c717f40f5b2073",
+      "equal": true
+    },
+    ".github/workflows/emulator.yml": {
+      "released_source_object": "1af3a38c01e2c31fb87f0df9fc11963c64151fdf",
+      "reviewed_source_object": "1af3a38c01e2c31fb87f0df9fc11963c64151fdf",
+      "equal": true
+    },
+    "tools/ci/verify-instrumentation.py": {
+      "released_source_object": "3273d406c44e944b017f6bc3f7c859fc96bbc5f5",
+      "reviewed_source_object": "3273d406c44e944b017f6bc3f7c859fc96bbc5f5",
+      "equal": true
+    },
+    "tools/ci/verification-manifest.py": {
+      "released_source_object": "93a96ba7754e4549c3b2657f98b9f61a60220e84",
+      "reviewed_source_object": "93a96ba7754e4549c3b2657f98b9f61a60220e84",
+      "equal": true
+    }
+  },
+  "non_documentation_changes": [
+    ".github/workflows/foldable.yml",
+    "app/build.gradle.kts",
+    "app/src/foldableTest/kotlin/app/skein/foldable/FoldableDeviceControl.kt",
+    "app/src/foldableTest/kotlin/app/skein/foldable/MainActivityFoldableGateTest.kt",
+    "tools/ci/run-foldable-emulator.sh",
+    "tools/ci/test_foldable_workflow.py",
+    "tools/ci/verify-foldable.py"
+  ],
+  "limits": "Unchanged production and ordinary-test source objects; not a replacement APK release, installed-byte attestation, latest opt-in helper verification, full production behavior proof, or retrieval gate."
+}

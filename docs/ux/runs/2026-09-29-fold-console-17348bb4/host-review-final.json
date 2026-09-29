@@ -1,0 +1,26 @@
+{
+  "reviewed_at": "2026-09-29T14:31:23.520308+00:00",
+  "scope": "Read-only Python host controller, shell lifecycle, workflow archives, evidence reviewer. No real adb/device/CI/build/Beads actions; only mocked timeout probe. Kotlin reviewed by separate owner.",
+  "source_sha256": {
+    "tools/ci/foldable-console-bridge.py": "f238910de819690209cf43f59a8926b1f171f69e9cbd3b4db01fed07698dfcc3",
+    "tools/ci/run-foldable-emulator.sh": "95553cdb729ecd5f5daff7760bc552d615f9946895e202db4e93cefddeb3db22",
+    "tools/ci/verify-foldable.py": "e7966e6c315cc087ae3c7e13418304504393ecb0d69c35fb190b11c6e4ad2771",
+    "tools/ci/test_foldable_console.py": "8d97829764f83f5a1e9480a149fb1c948b7a11c1b6417e157b6fc878b45b0af5",
+    "tools/ci/test_verify_foldable.py": "3d7df16171e0416838cb7fbfa7b25ec2154cc818e99199ea6db3080344813e1b",
+    ".github/workflows/foldable.yml": "3d1e4c20a4f01f45376b35fa7d1e232331a196fab033260ad111ce877e467696"
+  },
+  "findings_resolved": [
+    "Controller stop escalates after 60 seconds, TERM grace 2 seconds, then KILL/reap.",
+    "Reviewer requires exact alternating six actions and request-console-ACK chronology.",
+    "Central adb TimeoutExpired marks transport poisoned/timed_out, cleanup withholds further posture mutation."
+  ],
+  "independent_probe": "request-read-timeout-original.json captures latest fixed source f238910d; despite its filename, this is a fixed-source probe and records fold only after request-read timeout.",
+  "worker_reported_tests": "25 host tests passing; full suite not independently rerun per coordinator scope.",
+  "remaining_gates": [
+    "Coordinator combined compilation/lint",
+    "Fresh emulator runtime XML and all five geometry assertions",
+    "Actual run/source/protocol/artifact hash review",
+    "Full AL16 and physical Fold acceptance remain open"
+  ],
+  "unresolved_material_findings": []
+}

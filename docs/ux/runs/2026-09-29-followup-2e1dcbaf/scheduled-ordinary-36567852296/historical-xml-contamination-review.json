@@ -1,0 +1,80 @@
+{
+  "total_manifest_records": 7,
+  "current_xml_records": 3,
+  "current_review_json_records": 1,
+  "historical_xml_records": 3,
+  "current_xml": [
+    {
+      "path": "app/build/outputs/androidTest-results/connected/debug/flavors/dev/TEST-test(AVD) - 15.xml",
+      "sha256": "acc07c634a577657c56b6cf1ed63e834a32ded9b1af74920de6b5bc7a6e46df6",
+      "bytes": 8521,
+      "suite_attributes": {
+        "tests": "38",
+        "failures": "0",
+        "errors": "0",
+        "skipped": "0",
+        "time": "0.000",
+        "timestamp": "2026-09-29T12:39:48",
+        "hostname": "localhost"
+      },
+      "actual_cases": 38
+    },
+    {
+      "path": "core/vault/build/outputs/androidTest-results/connected/debug/flavors/dev/TEST-test(AVD) - 15.xml",
+      "sha256": "0929355fc2b5ec906f7e9cc55d6ab045610543d0c7da6c60bf5aaaaa2edbd5ed",
+      "bytes": 38385,
+      "suite_attributes": {
+        "tests": "204",
+        "failures": "0",
+        "errors": "0",
+        "skipped": "0",
+        "time": "0.000",
+        "timestamp": "2026-09-29T12:40:03",
+        "hostname": "localhost"
+      },
+      "actual_cases": 204
+    },
+    {
+      "path": "inference-service/build/outputs/androidTest-results/connected/debug/flavors/dev/TEST-test(AVD) - 15.xml",
+      "sha256": "75a3bcd098fd8c27dac54cc86c5767dcde540bcc0888202d9ff8781fb4042ffd",
+      "bytes": 6497,
+      "suite_attributes": {
+        "tests": "39",
+        "failures": "0",
+        "errors": "0",
+        "skipped": "0",
+        "time": "0.000",
+        "timestamp": "2026-09-29T12:36:52",
+        "hostname": "localhost"
+      },
+      "actual_cases": 39
+    }
+  ],
+  "historical_xml": [
+    {
+      "path": "docs/ux/runs/2026-09-29-integration-5ae91c2/remote-ordinary-36551469886/raw/app/build/outputs/androidTest-results/connected/debug/flavors/dev/TEST-test(AVD) - 15.xml",
+      "sha256": "edf6794f5264c79d21807bfce1f89283d91efe3911f29e24a38936acb9cdf74e",
+      "bytes": 8522,
+      "equals_original_5ae_evidence": true
+    },
+    {
+      "path": "docs/ux/runs/2026-09-29-integration-5ae91c2/remote-ordinary-36551469886/raw/core/vault/build/outputs/androidTest-results/connected/debug/flavors/dev/TEST-test(AVD) - 15.xml",
+      "sha256": "e962e358383812c4c1be47854dbbf39b0fda285cd4caa8b407674fd3deee9558",
+      "bytes": 38385,
+      "equals_original_5ae_evidence": true
+    },
+    {
+      "path": "docs/ux/runs/2026-09-29-integration-5ae91c2/remote-ordinary-36551469886/raw/inference-service/build/outputs/androidTest-results/connected/debug/flavors/dev/TEST-test(AVD) - 15.xml",
+      "sha256": "e750db156ea4fe5654cf8c09a65de19c4efcef9400f91b352310bb42fa022adc",
+      "bytes": 6497,
+      "equals_original_5ae_evidence": true
+    }
+  ],
+  "cause_source_references": [
+    ".github/workflows/emulator.yml:251-252",
+    "tools/ci/verification-manifest.py:17-20"
+  ],
+  "counting_boundary": "281 current-module cases only; historical docs XML excluded from all execution counts and identity checks.",
+  "ordinary_reviewer_scope": "tools/ci/verify-instrumentation.py:15-16 already anchors module roots.",
+  "suggested_followup": "Restrict instrumentation upload and manifest selection to expected app/core/vault/inference-service output roots, excluding committed docs evidence. No source change made in this review."
+}

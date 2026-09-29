@@ -1,0 +1,29 @@
+{
+  "strict_test_only_policy": "PASS",
+  "host_identity": "PASS",
+  "scope": "PASS",
+  "prior_app_native_source_pins": "PASS",
+  "actual_synthetic_native_five_case_guard": "PASS",
+  "actual_classification_only_eog_guard": "PASS",
+  "prior_pins": [
+    {
+      "kind": "summary",
+      "sha256": "b86f34c12fd4fff2c1b64f5758860f7af282b8d77eefd849068f2c276066d595",
+      "contents_read": false
+    },
+    {
+      "kind": "report",
+      "sha256": "34e0dd8f53e6a659131b84fbe696aeaec9a8bcbe7208e09e3ab3bf876547f727",
+      "contents_read": true
+    },
+    {
+      "kind": "release",
+      "sha256": "cf110c3857bc7d94ead8fde9438355f14193cf702061b00b60d0c842ef6c8f03",
+      "contents_read": true
+    }
+  ],
+  "subprocess_attempts": [],
+  "runner_main_called": false,
+  "physical_actions": false,
+  "restricted_prior_summary_or_process_dump_read": false
+}

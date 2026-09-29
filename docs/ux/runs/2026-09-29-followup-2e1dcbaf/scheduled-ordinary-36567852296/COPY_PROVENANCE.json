@@ -1,0 +1,182 @@
+[
+  {
+    "original": "/Users/andrewherrera/skein-worktrees/ux-hinge-windows-20260929/build/agent-logs/remote-36567852296/README.md",
+    "original_bytes": 3477,
+    "original_sha256": "02d53176c4b5465018a336d453e30650ee830d67f496d294668ad077e2d473f9",
+    "copy": "README.md",
+    "encoding": "identity",
+    "copy_bytes": 3477,
+    "copy_sha256": "02d53176c4b5465018a336d453e30650ee830d67f496d294668ad077e2d473f9",
+    "decoded_bytes_match": true
+  },
+  {
+    "original": "/Users/andrewherrera/skein-worktrees/ux-hinge-windows-20260929/build/agent-logs/remote-36567852296/status-final.json",
+    "original_bytes": 4224,
+    "original_sha256": "319513fdee89a69e0977220ba539870b57c1dd860bee2acc0d32804a52d4269d",
+    "copy": "status-final.json",
+    "encoding": "identity",
+    "copy_bytes": 4224,
+    "copy_sha256": "319513fdee89a69e0977220ba539870b57c1dd860bee2acc0d32804a52d4269d",
+    "decoded_bytes_match": true
+  },
+  {
+    "original": "/Users/andrewherrera/skein-worktrees/ux-hinge-windows-20260929/build/agent-logs/remote-36567852296/run-api.json",
+    "original_bytes": 12030,
+    "original_sha256": "e4aa1a51e88a63ab6139604dc8eec9bb34694b2e9cdffce7351b5752c347618f",
+    "copy": "run-api.json",
+    "encoding": "identity",
+    "copy_bytes": 12030,
+    "copy_sha256": "e4aa1a51e88a63ab6139604dc8eec9bb34694b2e9cdffce7351b5752c347618f",
+    "decoded_bytes_match": true
+  },
+  {
+    "original": "/Users/andrewherrera/skein-worktrees/ux-hinge-windows-20260929/build/agent-logs/remote-36567852296/jobs-api.json",
+    "original_bytes": 4692,
+    "original_sha256": "d9b4f787bb0bae410d27d5a355ab511f94f8b444a3a072a578d56a5799d36501",
+    "copy": "jobs-api.json",
+    "encoding": "identity",
+    "copy_bytes": 4692,
+    "copy_sha256": "d9b4f787bb0bae410d27d5a355ab511f94f8b444a3a072a578d56a5799d36501",
+    "decoded_bytes_match": true
+  },
+  {
+    "original": "/Users/andrewherrera/skein-worktrees/ux-hinge-windows-20260929/build/agent-logs/remote-36567852296/artifacts-final.json",
+    "original_bytes": 715,
+    "original_sha256": "012a89f184569a595d1723677057a63e4badeaf9a7c7468573b10430b28cf7b4",
+    "copy": "artifacts-final.json",
+    "encoding": "identity",
+    "copy_bytes": 715,
+    "copy_sha256": "012a89f184569a595d1723677057a63e4badeaf9a7c7468573b10430b28cf7b4",
+    "decoded_bytes_match": true
+  },
+  {
+    "original": "/Users/andrewherrera/skein-worktrees/ux-hinge-windows-20260929/build/agent-logs/remote-36567852296/evidence-review.json",
+    "original_bytes": 15452,
+    "original_sha256": "a2515888e4a35f6f953e5edd2a5fba8e0aa1ce07fe073440afc2e4f8ace4c127",
+    "copy": "evidence-review.json",
+    "encoding": "identity",
+    "copy_bytes": 15452,
+    "copy_sha256": "a2515888e4a35f6f953e5edd2a5fba8e0aa1ce07fe073440afc2e4f8ace4c127",
+    "decoded_bytes_match": true
+  },
+  {
+    "original": "/Users/andrewherrera/skein-worktrees/ux-hinge-windows-20260929/build/agent-logs/remote-36567852296/failure-details.json",
+    "original_bytes": 3,
+    "original_sha256": "37517e5f3dc66819f61f5a7bb8ace1921282415f10551d2defa5c3eb0985b570",
+    "copy": "failure-details.json",
+    "encoding": "identity",
+    "copy_bytes": 3,
+    "copy_sha256": "37517e5f3dc66819f61f5a7bb8ace1921282415f10551d2defa5c3eb0985b570",
+    "decoded_bytes_match": true
+  },
+  {
+    "original": "/Users/andrewherrera/skein-worktrees/ux-hinge-windows-20260929/build/agent-logs/remote-36567852296/all-actual-testcases.json",
+    "original_bytes": 94673,
+    "original_sha256": "80e8f2b4e2734ea849231b9d4764f4f3981c67d909b7f7c6abd4ee0eee1cc310",
+    "copy": "all-actual-testcases.json.gz",
+    "encoding": "gzip",
+    "copy_bytes": 8504,
+    "copy_sha256": "f2bac63df3460179f6f2e4ffc28c35a8b180e94361c9a9a503d626fddaef244c",
+    "decoded_bytes_match": true
+  },
+  {
+    "original": "/Users/andrewherrera/skein-worktrees/ux-hinge-windows-20260929/build/agent-logs/remote-36567852296/expected-case-identities.json",
+    "original_bytes": 3993,
+    "original_sha256": "3ff54b6782d50497686fcd8a319b7415ab89d9278b8f2756d34b33b146925eee",
+    "copy": "expected-case-identities.json",
+    "encoding": "identity",
+    "copy_bytes": 3993,
+    "copy_sha256": "3ff54b6782d50497686fcd8a319b7415ab89d9278b8f2756d34b33b146925eee",
+    "decoded_bytes_match": true
+  },
+  {
+    "original": "/Users/andrewherrera/skein-worktrees/ux-hinge-windows-20260929/build/agent-logs/remote-36567852296/identity-comparison.json",
+    "original_bytes": 316,
+    "original_sha256": "d27b17d828466a1938e053e6fb34b9475f742556404d494c1802c2882883e79d",
+    "copy": "identity-comparison.json",
+    "encoding": "identity",
+    "copy_bytes": 316,
+    "copy_sha256": "d27b17d828466a1938e053e6fb34b9475f742556404d494c1802c2882883e79d",
+    "decoded_bytes_match": true
+  },
+  {
+    "original": "/Users/andrewherrera/skein-worktrees/ux-hinge-windows-20260929/build/agent-logs/remote-36567852296/source-comparison.json",
+    "original_bytes": 2870,
+    "original_sha256": "801ebd85dacb4b304676e21a175f0bb521548b441f0293647e1600a62e3af34c",
+    "copy": "source-comparison.json",
+    "encoding": "identity",
+    "copy_bytes": 2870,
+    "copy_sha256": "801ebd85dacb4b304676e21a175f0bb521548b441f0293647e1600a62e3af34c",
+    "decoded_bytes_match": true
+  },
+  {
+    "original": "/Users/andrewherrera/skein-worktrees/ux-hinge-windows-20260929/build/agent-logs/remote-36567852296/execution-log-review.json",
+    "original_bytes": 3485,
+    "original_sha256": "048b2854b291630cc1c1e941be2cb2909cd3a6f7e6ee851542a498dab932e8a2",
+    "copy": "execution-log-review.json",
+    "encoding": "identity",
+    "copy_bytes": 3485,
+    "copy_sha256": "048b2854b291630cc1c1e941be2cb2909cd3a6f7e6ee851542a498dab932e8a2",
+    "decoded_bytes_match": true
+  },
+  {
+    "original": "/Users/andrewherrera/skein-worktrees/ux-hinge-windows-20260929/build/agent-logs/remote-36567852296/historical-xml-contamination-review.json",
+    "original_bytes": 3283,
+    "original_sha256": "55824e1317d0f942c68df6673215450065d4ebb46b6439f0caf0254203cc312a",
+    "copy": "historical-xml-contamination-review.json",
+    "encoding": "identity",
+    "copy_bytes": 3283,
+    "copy_sha256": "55824e1317d0f942c68df6673215450065d4ebb46b6439f0caf0254203cc312a",
+    "decoded_bytes_match": true
+  },
+  {
+    "original": "/Users/andrewherrera/skein-worktrees/ux-hinge-windows-20260929/build/agent-logs/remote-36567852296/connected-test-reports-11033760549/build/instrumentation-verification.json",
+    "original_bytes": 2853,
+    "original_sha256": "c9296737b886252260cba2c35cd35bfcb6e706890283665bc56e0679b8410716",
+    "copy": "metadata/instrumentation-verification.json",
+    "encoding": "identity",
+    "copy_bytes": 2853,
+    "copy_sha256": "c9296737b886252260cba2c35cd35bfcb6e706890283665bc56e0679b8410716",
+    "decoded_bytes_match": true
+  },
+  {
+    "original": "/Users/andrewherrera/skein-worktrees/ux-hinge-windows-20260929/build/agent-logs/remote-36567852296/connected-test-reports-11033760549/build/instrumentation-review.json",
+    "original_bytes": 983,
+    "original_sha256": "2b9474372f90097cfeca357a48ca216945294d66ca20c6c4d533a786844e0afb",
+    "copy": "metadata/instrumentation-review.json",
+    "encoding": "identity",
+    "copy_bytes": 983,
+    "copy_sha256": "2b9474372f90097cfeca357a48ca216945294d66ca20c6c4d533a786844e0afb",
+    "decoded_bytes_match": true
+  },
+  {
+    "original": "/Users/andrewherrera/skein-worktrees/ux-hinge-windows-20260929/build/agent-logs/remote-36567852296/connected-test-reports-11033760549/app/build/outputs/androidTest-results/connected/debug/flavors/dev/TEST-test(AVD) - 15.xml",
+    "original_bytes": 8521,
+    "original_sha256": "acc07c634a577657c56b6cf1ed63e834a32ded9b1af74920de6b5bc7a6e46df6",
+    "copy": "raw/app/build/outputs/androidTest-results/connected/debug/flavors/dev/TEST-test(AVD) - 15.xml",
+    "encoding": "identity",
+    "copy_bytes": 8521,
+    "copy_sha256": "acc07c634a577657c56b6cf1ed63e834a32ded9b1af74920de6b5bc7a6e46df6",
+    "decoded_bytes_match": true
+  },
+  {
+    "original": "/Users/andrewherrera/skein-worktrees/ux-hinge-windows-20260929/build/agent-logs/remote-36567852296/connected-test-reports-11033760549/core/vault/build/outputs/androidTest-results/connected/debug/flavors/dev/TEST-test(AVD) - 15.xml",
+    "original_bytes": 38385,
+    "original_sha256": "0929355fc2b5ec906f7e9cc55d6ab045610543d0c7da6c60bf5aaaaa2edbd5ed",
+    "copy": "raw/core/vault/build/outputs/androidTest-results/connected/debug/flavors/dev/TEST-test(AVD) - 15.xml",
+    "encoding": "identity",
+    "copy_bytes": 38385,
+    "copy_sha256": "0929355fc2b5ec906f7e9cc55d6ab045610543d0c7da6c60bf5aaaaa2edbd5ed",
+    "decoded_bytes_match": true
+  },
+  {
+    "original": "/Users/andrewherrera/skein-worktrees/ux-hinge-windows-20260929/build/agent-logs/remote-36567852296/connected-test-reports-11033760549/inference-service/build/outputs/androidTest-results/connected/debug/flavors/dev/TEST-test(AVD) - 15.xml",
+    "original_bytes": 6497,
+    "original_sha256": "75a3bcd098fd8c27dac54cc86c5767dcde540bcc0888202d9ff8781fb4042ffd",
+    "copy": "raw/inference-service/build/outputs/androidTest-results/connected/debug/flavors/dev/TEST-test(AVD) - 15.xml",
+    "encoding": "identity",
+    "copy_bytes": 6497,
+    "copy_sha256": "75a3bcd098fd8c27dac54cc86c5767dcde540bcc0888202d9ff8781fb4042ffd",
+    "decoded_bytes_match": true
+  }
+]

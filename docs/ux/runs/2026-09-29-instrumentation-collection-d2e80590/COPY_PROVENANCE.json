@@ -1,0 +1,44 @@
+[
+  {
+    "original": "/Users/andrewherrera/skein-worktrees/ux-instrumentation-evidence-scope-20260929/build/agent-logs/instrumentation-evidence-scope/all-ci-host-tests.log",
+    "original_sha256": "c8f89a0c2aa9c9b8aeaa882fc15f303bd973d68b85de6f24eefb52336b431a01",
+    "copy": "all-ci-host-tests.log.gz",
+    "copy_sha256": "45bd005c19fb548fcb64b458152496934c4aad77a061228136eeeb25aab9fa70"
+  },
+  {
+    "original": "/Users/andrewherrera/skein-worktrees/ux-instrumentation-evidence-scope-20260929/build/agent-logs/instrumentation-evidence-scope/commit-handoff.json",
+    "original_sha256": "1574294281f0cdcd9c8980dd7f03bf19fb633222bd4858bf119c3c3bb75ccd1f",
+    "copy": "commit-handoff.json",
+    "copy_sha256": "1574294281f0cdcd9c8980dd7f03bf19fb633222bd4858bf119c3c3bb75ccd1f"
+  },
+  {
+    "original": "/Users/andrewherrera/skein-worktrees/ux-instrumentation-evidence-scope-20260929/build/agent-logs/instrumentation-evidence-scope/regression-fixed.log",
+    "original_sha256": "79bbc9618e4ca625035642fd63f15f50903cf723d1284dfc5cdbcf8bb27a6402",
+    "copy": "regression-fixed.log.gz",
+    "copy_sha256": "1ef3cd07af79a6acae6c7e7d4fa220e07ba68bacdb29f0f4f0c26b0f21685373"
+  },
+  {
+    "original": "/Users/andrewherrera/skein-worktrees/ux-instrumentation-evidence-scope-20260929/build/agent-logs/instrumentation-evidence-scope/regression-red.log",
+    "original_sha256": "10ab07e4c8a03f5aeb2f22cae34c1a0fcc843e5ed70ec59c53cb14ae77c08ef6",
+    "copy": "regression-red.log.gz",
+    "copy_sha256": "bc2b1ab1361082147420583e373181a410d7b52419cff8106f5b390b911d2f4d"
+  },
+  {
+    "original": "/Users/andrewherrera/skein-worktrees/ux-instrumentation-evidence-scope-20260929/build/agent-logs/instrumentation-evidence-scope/submodule-init.log",
+    "original_sha256": "0fb4eefc2099cc2927366c1333d1a9fe57f6df52d1107541755a72a6b8e2a061",
+    "copy": "submodule-init.log.gz",
+    "copy_sha256": "c51846680491ceb6d065e7f3f5b0e9f9849951b5657b03b90c65d9b77b45cf64"
+  },
+  {
+    "original": "/Users/andrewherrera/skein-worktrees/ux-instrumentation-evidence-scope-20260929/build/agent-logs/instrumentation-evidence-scope/submodule-pins.log",
+    "original_sha256": "9ae84d7173a49a944093bf379b225257fe382f12ceae0dc5b25e1f3dd3ef12b6",
+    "copy": "submodule-pins.log.gz",
+    "copy_sha256": "1cdce57b529626fcfc6ce379970ae08d747f3d085abc2ff5ce9230e30ced6f55"
+  },
+  {
+    "original": "/Users/andrewherrera/skein-worktrees/ux-instrumentation-evidence-scope-20260929/build/agent-logs/instrumentation-evidence-scope/verification-summary.json",
+    "original_sha256": "acfb8b04406828fd1ecadde220b6f45b263cdfed109642d5063fe707075ca09d",
+    "copy": "verification-summary.json",
+    "copy_sha256": "acfb8b04406828fd1ecadde220b6f45b263cdfed109642d5063fe707075ca09d"
+  }
+]

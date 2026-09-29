@@ -1,0 +1,61 @@
+{
+  "built_apks": [
+    {
+      "path": "app/build/outputs/apk/androidTest/dev/debug/app-dev-debug-androidTest.apk",
+      "sha256": "d0bbb9e10d7da43dcdcb205814cc1177aab8e56ee754f2459dff2a24a512c9ca"
+    },
+    {
+      "path": "app/build/outputs/apk/dev/debug/app-dev-debug.apk",
+      "sha256": "c880de6a2fbb63d99c092d0de3055cfde17a6f9e4ed777b2aeb70f5070d60013"
+    },
+    {
+      "path": "core/vault/build/outputs/apk/androidTest/dev/debug/vault-dev-debug-androidTest.apk",
+      "sha256": "6534d0c14f11a284b1a251ed0ef96ead6d1e0d1819cc6bec4aad947ed7e6c46d"
+    },
+    {
+      "path": "inference-service/build/outputs/apk/androidTest/dev/debug/inference-service-dev-debug-androidTest.apk",
+      "sha256": "db3da5916cafbb6131ec07b9150978fd5b4c920c1a3c7ea323958e88c9263c5b"
+    }
+  ],
+  "built_apk_attribution": "host build outputs; installed bytes were not independently measured here",
+  "lane": "instrumentation",
+  "source_sha": "aef738b11fb9869e2e5d4b58df629885b511a359",
+  "source_attribution": "host-declared git checkout, not APK attestation",
+  "files": [
+    {
+      "path": "app/build/outputs/androidTest-results/connected/debug/flavors/dev/TEST-test(AVD) - 15.xml",
+      "bytes": 8521,
+      "sha256": "acc07c634a577657c56b6cf1ed63e834a32ded9b1af74920de6b5bc7a6e46df6"
+    },
+    {
+      "path": "build/instrumentation-review.json",
+      "bytes": 983,
+      "sha256": "2b9474372f90097cfeca357a48ca216945294d66ca20c6c4d533a786844e0afb"
+    },
+    {
+      "path": "core/vault/build/outputs/androidTest-results/connected/debug/flavors/dev/TEST-test(AVD) - 15.xml",
+      "bytes": 38385,
+      "sha256": "0929355fc2b5ec906f7e9cc55d6ab045610543d0c7da6c60bf5aaaaa2edbd5ed"
+    },
+    {
+      "path": "docs/ux/runs/2026-09-29-integration-5ae91c2/remote-ordinary-36551469886/raw/app/build/outputs/androidTest-results/connected/debug/flavors/dev/TEST-test(AVD) - 15.xml",
+      "bytes": 8522,
+      "sha256": "edf6794f5264c79d21807bfce1f89283d91efe3911f29e24a38936acb9cdf74e"
+    },
+    {
+      "path": "docs/ux/runs/2026-09-29-integration-5ae91c2/remote-ordinary-36551469886/raw/core/vault/build/outputs/androidTest-results/connected/debug/flavors/dev/TEST-test(AVD) - 15.xml",
+      "bytes": 38385,
+      "sha256": "e962e358383812c4c1be47854dbbf39b0fda285cd4caa8b407674fd3deee9558"
+    },
+    {
+      "path": "docs/ux/runs/2026-09-29-integration-5ae91c2/remote-ordinary-36551469886/raw/inference-service/build/outputs/androidTest-results/connected/debug/flavors/dev/TEST-test(AVD) - 15.xml",
+      "bytes": 6497,
+      "sha256": "e750db156ea4fe5654cf8c09a65de19c4efcef9400f91b352310bb42fa022adc"
+    },
+    {
+      "path": "inference-service/build/outputs/androidTest-results/connected/debug/flavors/dev/TEST-test(AVD) - 15.xml",
+      "bytes": 6497,
+      "sha256": "75a3bcd098fd8c27dac54cc86c5767dcde540bcc0888202d9ff8781fb4042ffd"
+    }
+  ]
+}

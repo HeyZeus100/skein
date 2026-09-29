@@ -1,0 +1,38 @@
+{
+  "baseline": "af0c9f94c93e14235096d22d57388431dfdb7027",
+  "bead": "skein-op8v",
+  "source_paths": [
+    {
+      "path": ".github/workflows/emulator.yml",
+      "sha256": "5599deb96b14dfda856782ccd46d6e11792fe5c2dabc2beb2c647b4d55ee6f3a"
+    },
+    {
+      "path": "tools/ci/verification-manifest.py",
+      "sha256": "8107bbb20ee5c4269544036aa3817ebd58216c35877bb7bc7677e4082c94faa5"
+    },
+    {
+      "path": "tools/ci/test_verification_manifest.py",
+      "sha256": "1c49e1d379ec52b121cdfed0e56a705ab82b78c2d624e1caa5a3eb6f0a74241b"
+    }
+  ],
+  "checks": {
+    "original_regression": {
+      "tests": 6,
+      "failures": 3,
+      "log": "regression-red.log"
+    },
+    "fixed_regression": {
+      "tests": 6,
+      "failures": 0,
+      "log": "regression-fixed.log"
+    },
+    "all_ci_host_tests": {
+      "tests": 20,
+      "failures": 0,
+      "log": "all-ci-host-tests.log"
+    },
+    "workflow_yaml": "Parsed by targeted upload-selection regression",
+    "git_diff_check": "passed"
+  },
+  "limits": "Host collector regression only. No Gradle, CI dispatch, device work, verifier acceptance changes, or original evidence rewrites."
+}

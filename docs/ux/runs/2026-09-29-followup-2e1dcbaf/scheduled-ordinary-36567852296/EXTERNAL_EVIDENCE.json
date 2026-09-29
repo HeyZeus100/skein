@@ -1,0 +1,15 @@
+{
+  "reason": "Capsule is metadata/current-XML only; originals remain immutable outside it.",
+  "files": [
+    {
+      "path": "/Users/andrewherrera/skein-worktrees/ux-hinge-windows-20260929/build/agent-logs/remote-36567852296/connected-test-reports-11033760549.zip",
+      "bytes": 1144441,
+      "sha256": "a9d97b45fbbaa2f5f34d3ead2ace4ea43362c5700e20607e5e239c7a6e72f3ce"
+    },
+    {
+      "path": "/Users/andrewherrera/skein-worktrees/ux-hinge-windows-20260929/build/agent-logs/remote-36567852296/job-109404129069.log",
+      "bytes": 236388,
+      "sha256": "e69d2682bfa34835869dbf9bb336cb6f9d19e1ba09000bb11dfce8dd00205ff4"
+    }
+  ]
+}

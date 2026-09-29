@@ -177,6 +177,18 @@ and cold reproducibility lanes are distinguished. Both release APKs hash to
 The changed source epoch means this is within-source equality, not equality to the
 released 5ae APK. No replacement candidate is implied.
 
+The later scheduled ordinary run [36567852296](https://github.com/HeyZeus100/skein/actions/runs/36567852296)
+at `aef738b11fb9869e2e5d4b58df629885b511a359` independently passes all **281 current
+cases**, zero failures/errors/skips; actual connected tasks execute. The three
+current module XML files have the exact expected identities. Its artifact manifest
+also captures three historical XML files under committed `docs/` evidence; these
+are excluded from the current count. All seven manifest records hash correctly;
+four separate built-APK hashes are declarations. Original ZIP SHA256 is
+`a9d97b45fbbaa2f5f34d3ead2ace4ea43362c5700e20607e5e239c7a6e72f3ce`.
+[Current-only raw XML and review](../ux/runs/2026-09-29-followup-2e1dcbaf/scheduled-ordinary-36567852296/)
+retain that distinction. Claimed `skein-op8v` narrows future collection/upload paths
+without changing runtime acceptance or deleting historical evidence.
+
 ## Retained earlier evidence and repairs
 
 The [first-source bundle](../ux/runs/2026-09-29-integration-4f1b7d3/) records:
@@ -333,9 +345,14 @@ single signer and expected target. Only `classes7.dex` differs inside its archiv
 no native libraries are present. The application and native test APK remain exact
 5ae artifacts. The final host runner passes 31 mocks plus independent checks,
 allows only test-package installation and pins explicit prior parity reuse.
-The sole demo runner must acknowledge current ownership and recheck installed
-identity before the one permitted exact-method attempt. Unchanged 900/180-second
-limits and all four cases apply. Actual retry progress/answer evidence is pending;
+The sole demo runner acknowledged the release at **14:12:38 UTC**, reverified
+host artifact pins and completed host-only validation. The owner has now unlocked
+normally; the demo session reports a usable split-pane shell and a normal picker
+import of staged fictional construction notes into a fresh synthetic setup. The
+current UI workload retains the device slot. Instrumentation waits for safe idle
+and rechecks installed identity before the one permitted exact-method attempt.
+Unchanged 900/180-second limits and all four cases apply. Actual retry progress
+and generated-answer evidence are pending;
 no production crypto or inference implementation changed.
 
 The distributor/base-model license-label discrepancy
@@ -369,3 +386,24 @@ the demo input nor host/native identity evidence changes those gates.
 Beads remains the task tracker; coordinator/inference/demo/hardware JSON files are
 coordination records. Existing stashes, owner files and recovery worktrees remain
 preserved. The recorded missing Dolt remote was honored without retrying push.
+
+The follow-up console transport is integrated at `f667a31cb73e9b4d349fc1b90b372b62166d5df4`,
+with a formatting-only correction at **`17348bb45b96d22693c4ce9aeda266905accdb27`**.
+[Local console evidence](../ux/runs/2026-09-29-fold-console-17348bb4/) preserves the
+initial lint failure and corrected explicit app check/lint/both AndroidTest compile
+pass (803 tasks; 21 executed). All 35 combined host tests pass. The retained 80 XML
+files contain 546 passing cases; these unit tasks were up to date, so this is reuse
+of previous test evidence. Both source reviewers approved the fixed-serial CI-only
+transport, bounded shutdown, timeout poisoning and chronological six-action
+protocol verification. Actual emulator geometry remains pending.
+
+At 14:29–14:32 UTC the demo session relayed additional explicit owner requests.
+Claimed `skein-za8d` covers fresh New chat identity, removal of the enabled teal
+hinge debug guide, collapsible Chat/Knowledge lists and first-send Knowledge off.
+Claimed `skein-pknl` covers a separate independently selectable split workspace
+(e.g. note/chat or two distinct notes). The demo owner holds only the bounded
+landing/first-send controller seam; isolated coordinator workers own navigation
+and shell state/presentation. No draft or turn controller rebuild is planned.
+The sole physical runner is paused. The prior released app/test artifacts remain
+immutable; a new app requires new verification and an explicit release before
+further physical rehearsal. Private owner screenshots are not published.
