@@ -96,10 +96,10 @@ class KindLookupTest {
         override fun nativeBindText(
             stmtHandle: Long,
             index: Int,
-            value: ByteArray,
+            value: String,
         ) {
             assertEquals(1, index)
-            bound = value.toString(Charsets.UTF_8)
+            bound = value
         }
 
         override fun nativeStep(stmtHandle: Long): Boolean = ++row < rows.size

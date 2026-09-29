@@ -105,7 +105,15 @@ public interface SkeinSQLiteNative {
         value: Double,
     )
 
+    /** Historical modified UTF-8, retained for repository key equality. */
     public fun nativeBindText(
+        stmtHandle: Long,
+        index: Int,
+        value: String,
+    )
+
+    /** Exact UTF-8 for derived chunk text and quoted FTS MATCH parameters only. */
+    public fun nativeBindUtf8Text(
         stmtHandle: Long,
         index: Int,
         value: ByteArray,
@@ -226,6 +234,12 @@ internal object SkeinSQLiteNativeImpl : SkeinSQLiteNative {
     )
 
     external override fun nativeBindText(
+        stmtHandle: Long,
+        index: Int,
+        value: String,
+    )
+
+    external override fun nativeBindUtf8Text(
         stmtHandle: Long,
         index: Int,
         value: ByteArray,

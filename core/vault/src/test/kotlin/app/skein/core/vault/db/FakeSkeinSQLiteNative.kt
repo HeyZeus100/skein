@@ -350,6 +350,14 @@ internal class FakeSkeinSQLiteNative : SkeinSQLiteNative {
     override fun nativeBindText(
         stmtHandle: Long,
         index: Int,
+        value: String,
+    ) {
+        boundValues[stmtHandle to index] = value
+    }
+
+    override fun nativeBindUtf8Text(
+        stmtHandle: Long,
+        index: Int,
         value: ByteArray,
     ) {
         boundValues[stmtHandle to index] = value.toString(Charsets.UTF_8)

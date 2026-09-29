@@ -62,6 +62,7 @@ import app.skein.core.model.IndexStore
 import app.skein.core.model.NewChunk
 import app.skein.core.model.RevisionHash
 import app.skein.core.model.ScoredChunk
+import app.skein.core.vault.db.bindLexicalText
 import app.skein.core.vault.db.lexicalTerms
 import kotlinx.coroutines.channels.BufferOverflow
 import kotlinx.coroutines.flow.Flow
@@ -158,7 +159,7 @@ public class IndexStoreImpl(
                             stmt.bindLong(1, id)
                             stmt.bindText(2, docId)
                             stmt.bindLong(3, c.ord.toLong())
-                            stmt.bindText(4, c.text)
+                            stmt.bindLexicalText(4, c.text)
                             stmt.bindLong(5, c.tokenCount.toLong())
                             stmt.bindText(6, embedderId)
                             stmt.bindLong(7, embedderVersion.toLong())
@@ -241,7 +242,7 @@ public class IndexStoreImpl(
             val fts = FtsQuerySanitizer.sanitize(connection.lexicalTerms(query))
             if (fts.isEmpty()) return@withLock emptyList()
             connection.prepare(IndexSql.BM25_QUERY).use { stmt ->
-                stmt.bindText(1, fts)
+                stmt.bindLexicalText(1, fts)
                 stmt.bindLong(2, k.toLong())
                 val out = ArrayList<ScoredChunk>()
                 while (stmt.step()) {
@@ -266,7 +267,7 @@ public class IndexStoreImpl(
             if (fts.isEmpty()) return@withLock false
             connection.prepare(IndexSql.HAS_LEXICAL_MATCH).use { stmt ->
                 stmt.bindLong(1, chunkId)
-                stmt.bindText(2, fts)
+                stmt.bindLexicalText(2, fts)
                 stmt.step()
             }
         }

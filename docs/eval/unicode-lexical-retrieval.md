@@ -30,10 +30,16 @@ behavior. The synchronous evidence gate uses its own text normalization; this
 change does not make that policy equivalent to the SQLite tokenizer or validate
 semantic relevance.
 
-New native text binds pass exact Kotlin UTF-8 bytes to SQLite with an explicit
-byte length, preserving leading U+FEFF, supplementary Unicode and embedded NUL.
+New derived chunk text and quoted FTS MATCH parameters use explicit UTF-8
+binding with exact Kotlin bytes and byte length, preserving leading U+FEFF,
+supplementary Unicode and embedded NUL. Generic repository bindings retain
+their historical modified UTF-8 encoding so existing titles, paths, tags and
+dangling-link keys still compare equal. This is not a global encoding migration.
 The native negative control demonstrates that SQLite's UTF-16 binding strips a
-leading BOM; the chosen UTF-8 path preserves both source bytes and revision hash. Reads accept standard UTF-8
+leading BOM; the explicit UTF-8 path preserves derived bytes. The revision
+control retains generic binding and verifies unchanged logical source/hash.
+An actual old-title equality/prefix control passes with generic binding and
+deliberately fails with UTF-8 rebinding, guarding the compatibility boundary. Reads accept standard UTF-8
 and the old JNI writer's modified UTF-8 (CESU-8 surrogate pairs and encoded NUL).
 The native old-storage control writes those exact bytes into a source revision
 and JSON metadata, then checks decoded values, retained revision metadata and

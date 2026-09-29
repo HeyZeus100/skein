@@ -270,6 +270,11 @@ public class IndexStoreImplAcceptanceTest {
             assertThat(idx.bm25("English", 8)).isEmpty()
             assertThat(idx.bm25("secret", 8)).isEmpty()
             assertThat(idx.getChunks(listOf(id)).getValue(id).text).isEqualTo(body)
+            conn.prepare("SELECT hex(text) FROM chunks WHERE id = ?").use { stmt ->
+                stmt.bindLong(1, id)
+                assertThat(stmt.step()).isTrue()
+                assertThat(stmt.getText(0)).endsWith("F0909080F0909081")
+            }
             // Default remove_diacritics=1 deliberately differs from a general
             // Unicode normalization library for multi-diacritic codepoints.
             assertThat(idx.lexicalTerms("ộ o\u0323\u0302")).containsExactly("ộ", "o").inOrder()
@@ -281,8 +286,8 @@ public class IndexStoreImplAcceptanceTest {
             val (_, conn) = freshIndexWithConnection()
             val text = "\uFEFF研究𐐀資料\u0000終"
             conn.prepare("SELECT ?, hex(?)").use { stmt ->
-                stmt.bindText(1, text)
-                stmt.bindText(2, text)
+                stmt.bindUtf8Text(1, text)
+                stmt.bindUtf8Text(2, text)
                 assertThat(stmt.step()).isTrue()
                 assertThat(stmt.getText(0)).isEqualTo(text)
                 assertThat(stmt.getText(1)).isEqualTo("EFBBBFE7A094E7A9B6F0909080E8B387E6969900E7B582")
@@ -312,6 +317,23 @@ public class IndexStoreImplAcceptanceTest {
             // Reproduce the actual old-storage encoding in a durable revision
             // and its JSON metadata. Reading must preserve text and stored bytes.
             seedDocument(conn, "legacy-unicode")
+            conn
+                .prepare(
+                    "UPDATE documents SET title = CAST(X'EDA081EDB080' AS TEXT) WHERE id = 'legacy-unicode'",
+                ).use { it.step() }
+            for (predicate in listOf("title = ?", "title LIKE ?")) {
+                conn.prepare("SELECT id FROM documents WHERE $predicate").use { stmt ->
+                    stmt.bindText(1, if (predicate.contains("LIKE")) "𐐀%" else "𐐀")
+                    assertThat(stmt.step()).isTrue()
+                    assertThat(stmt.getText(0)).isEqualTo("legacy-unicode")
+                }
+            }
+            // Meaningful negative control: global UTF-8 rebinding would
+            // silently stop resolving the retained CESU-8 title above.
+            conn.prepare("SELECT id FROM documents WHERE title = ?").use { stmt ->
+                stmt.bindUtf8Text(1, "𐐀")
+                assertThat(stmt.step()).isFalse()
+            }
             conn
                 .prepare(
                     "INSERT INTO document_revisions VALUES ('legacy-unicode', 'retained-hash', 1, " +

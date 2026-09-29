@@ -11,7 +11,7 @@ public class SkeinSQLiteTextBindingTest {
             var copied: ByteArray? = null
             val native =
                 object : SkeinSQLiteNative by FakeSkeinSQLiteNative() {
-                    override fun nativeBindText(
+                    override fun nativeBindUtf8Text(
                         stmtHandle: Long,
                         index: Int,
                         value: ByteArray,
@@ -22,7 +22,7 @@ public class SkeinSQLiteTextBindingTest {
                     }
                 }
             val text = "\uFEFF研究𐐀\u0000終"
-            val result = runCatching { SkeinSQLiteStatement(native, 100).bindText(1, text) }
+            val result = runCatching { SkeinSQLiteStatement(native, 100).bindUtf8Text(1, text) }
             assertThat(result.isFailure).isEqualTo(fail)
             assertThat(copied).isEqualTo(text.toByteArray(Charsets.UTF_8))
             assertThat(retained!!.all { it == 0.toByte() }).isTrue()

@@ -449,8 +449,25 @@ Java_app_skein_core_vault_db_SkeinSQLiteNativeImpl_nativeBindDouble(
     }
 }
 
+/* Keep generic repository keys byte-compatible with existing modified UTF-8
+ * rows. Global encoding changes require a separate migration/lookup design. */
 JNIEXPORT void JNICALL
 Java_app_skein_core_vault_db_SkeinSQLiteNativeImpl_nativeBindText(
+        JNIEnv *env, jclass klass, jlong stmtHandle, jint index, jstring value) {
+    (void)klass;
+    sqlite3_stmt *stmt = stmt_ptr(stmtHandle);
+    if (stmt == NULL) return;
+    const char *text = (*env)->GetStringUTFChars(env, value, NULL);
+    if (text == NULL) return;
+    int rc = sqlite3_bind_text(stmt, (int)index, text, -1, SQLITE_TRANSIENT);
+    (*env)->ReleaseStringUTFChars(env, value, text);
+    if (rc != SQLITE_OK) {
+        throw_sqlite_exception(env, sqlite3_db_handle(stmt), rc, "sqlite3_bind_text failed");
+    }
+}
+
+JNIEXPORT void JNICALL
+Java_app_skein_core_vault_db_SkeinSQLiteNativeImpl_nativeBindUtf8Text(
         JNIEnv *env, jclass klass, jlong stmtHandle, jint index, jbyteArray value) {
     (void)klass;
     sqlite3_stmt *stmt = stmt_ptr(stmtHandle);

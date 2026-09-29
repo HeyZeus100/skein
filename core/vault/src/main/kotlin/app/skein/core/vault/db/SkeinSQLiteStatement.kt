@@ -43,9 +43,18 @@ public class SkeinSQLiteStatement internal constructor(
         value: String,
     ) {
         checkOpen()
+        native.nativeBindText(stmtHandle, index, value)
+    }
+
+    /** Explicit opt-in for derived chunk text / FTS query bytes, never repository keys. */
+    internal fun bindUtf8Text(
+        index: Int,
+        value: String,
+    ) {
+        checkOpen()
         val utf8 = value.toByteArray(Charsets.UTF_8)
         try {
-            native.nativeBindText(stmtHandle, index, utf8)
+            native.nativeBindUtf8Text(stmtHandle, index, utf8)
         } finally {
             utf8.fill(0)
         }
