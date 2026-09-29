@@ -10,6 +10,7 @@ package app.skein.feature.shell.container
 
 import androidx.activity.ComponentActivity
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.Text
 import androidx.compose.material3.adaptive.currentWindowAdaptiveInfoV2
@@ -20,6 +21,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.LocalWindowInfo
 import androidx.compose.ui.platform.testTag
@@ -27,6 +29,7 @@ import androidx.compose.ui.test.DeviceConfigurationOverride
 import androidx.compose.ui.test.WindowSize
 import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.assertIsNotDisplayed
+import androidx.compose.ui.test.click
 import androidx.compose.ui.test.hasAnyAncestor
 import androidx.compose.ui.test.hasScrollAction
 import androidx.compose.ui.test.hasTestTag
@@ -36,6 +39,8 @@ import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
 import androidx.compose.ui.test.performScrollToNode
+import androidx.compose.ui.test.performTouchInput
+import androidx.compose.ui.test.swipe
 import androidx.compose.ui.unit.DpSize
 import androidx.compose.ui.unit.dp
 import app.skein.core.designsystem.theme.SkeinTheme
@@ -93,6 +98,74 @@ class SkeinNavigationContainerTest {
                 }
             }
         }
+    }
+
+    @Test
+    fun `real scrim tap dismisses a drawer opened beside a rail without navigating`() {
+        val actions = setRailDismissalContent()
+        composeRule.onNodeWithTag(OPEN_DRAWER_TAG).performClick()
+        composeRule.onNodeWithTag(SkeinNavContainerTestTags.DRAWER_SHEET).assertIsDisplayed()
+        composeRule.onNodeWithTag(SkeinNavContainerTestTags.ROOT).performTouchInput {
+            click(Offset(width - 1f, height / 2f))
+        }
+        assertRailDismissalRetainsContent(actions)
+    }
+
+    @Test
+    fun `real closing swipe dismisses a drawer opened beside a rail without navigating`() {
+        val actions = setRailDismissalContent()
+        composeRule.onNodeWithTag(OPEN_DRAWER_TAG).performClick()
+        composeRule.onNodeWithTag(SkeinNavContainerTestTags.DRAWER_SHEET).assertIsDisplayed()
+        composeRule.onNodeWithTag(SkeinNavContainerTestTags.DRAWER_SHEET).performTouchInput {
+            swipe(Offset(width * 0.9f, height * 0.95f), Offset(1f, height * 0.95f))
+        }
+        assertRailDismissalRetainsContent(actions)
+    }
+
+    @Test
+    fun `closed drawer cannot be opened by an edge swipe beside a rail`() {
+        val actions = setRailDismissalContent()
+        composeRule.onNodeWithTag(SkeinNavContainerTestTags.ROOT).performTouchInput {
+            swipe(Offset(1f, height / 2f), Offset(width * 0.8f, height / 2f))
+        }
+        assertRailDismissalRetainsContent(actions)
+    }
+
+    @Test
+    fun `Back dismisses an open drawer beside a rail without navigating`() {
+        val actions = setRailDismissalContent()
+        composeRule.onNodeWithTag(OPEN_DRAWER_TAG).performClick()
+        composeRule.onNodeWithTag(SkeinNavContainerTestTags.DRAWER_SHEET).assertIsDisplayed()
+        composeRule.runOnIdle { composeRule.activity.onBackPressedDispatcher.onBackPressed() }
+        assertRailDismissalRetainsContent(actions)
+    }
+
+    private fun setRailDismissalContent(): List<String> {
+        val actions = mutableListOf<String>()
+        setContent(
+            mutableStateOf(EXPANDED),
+            onNavigate = { actions += "navigate:$it" },
+            onNewChat = { actions += "new-chat" },
+            onSearch = { actions += "search" },
+        ) {
+            var count by rememberSaveable { mutableStateOf(0) }
+            val opener = LocalSkeinDrawerOpener.current
+            Column {
+                Text("open", Modifier.testTag(OPEN_DRAWER_TAG).clickable(onClick = opener))
+                Text("count:$count", Modifier.testTag(COUNTER_TAG).clickable { count++ })
+            }
+        }
+        composeRule.onNodeWithTag(SkeinNavContainerTestTags.RAIL).assertIsDisplayed()
+        composeRule.onNodeWithTag(COUNTER_TAG).performClick()
+        composeRule.onNodeWithText("count:1").assertIsDisplayed()
+        return actions
+    }
+
+    private fun assertRailDismissalRetainsContent(actions: List<String>) {
+        composeRule.onNodeWithTag(SkeinNavContainerTestTags.DRAWER_SHEET).assertIsNotDisplayed()
+        composeRule.onNodeWithTag(SkeinNavContainerTestTags.RAIL).assertIsDisplayed()
+        composeRule.onNodeWithText("count:1").assertIsDisplayed()
+        assertEquals(emptyList<String>(), actions)
     }
 
     @Test

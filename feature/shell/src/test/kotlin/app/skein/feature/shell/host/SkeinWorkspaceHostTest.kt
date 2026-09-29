@@ -18,6 +18,7 @@ import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
+import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Rect
 import androidx.compose.ui.graphics.asAndroidBitmap
 import androidx.compose.ui.input.InputMode
@@ -100,6 +101,41 @@ class SkeinWorkspaceHostTest {
     private val showPrimaryDialog = mutableStateOf(false)
     private val theme = mutableStateOf(SkeinThemeMode.LIGHT)
     private val focusRequesters = mutableMapOf<String, FocusRequester>()
+
+    @Test
+    fun `real scrim tap dismisses split child drawer without changing either workspace`() {
+        size.value = DpSize(1007.dp, 1043.dp)
+        setHost()
+        rule.runOnIdle {
+            workspace.primary.navigate { goTo(it, ChatKey(CHAT_A)) }
+            workspace.secondary.navigate { goTo(it, NoteKey(NOTE_B)) }
+        }
+        val primaryNav = workspace.primary.nav
+        val secondaryNav = workspace.secondary.nav
+        rule.onNodeWithTag(WorkspaceTestTags.TOGGLE_SPLIT).performClick()
+        rule.onNodeWithTag("counter/primary").performTouchInput { click() }
+        rule.onNodeWithTag(SkeinNavContainerTestTags.RAIL).assertIsDisplayed()
+        rule
+            .onNode(
+                hasContentDescription("Open navigation") and
+                    hasAnyAncestor(hasTestTag(WorkspaceTestTags.PRIMARY_PANE)),
+            ).performTouchInput { click() }
+        rule.onNodeWithTag(SkeinNavContainerTestTags.DRAWER_SHEET).assertIsDisplayed()
+        rule.onNodeWithTag(SkeinNavContainerTestTags.ROOT).performTouchInput {
+            click(Offset(width - 1f, height / 2f))
+        }
+        rule.onNodeWithTag(SkeinNavContainerTestTags.DRAWER_SHEET).assertIsNotDisplayed()
+        rule.onNodeWithTag("counter/primary").assertIsDisplayed()
+        rule.onNodeWithTag("counter/secondary").assertIsDisplayed()
+        rule.runOnIdle {
+            assertEquals(WorkspacePane.PRIMARY, workspace.activePane)
+            assertEquals(primaryNav, workspace.primary.nav)
+            assertEquals(secondaryNav, workspace.secondary.nav)
+            assertTrue(workspace.splitRequested)
+        }
+        assertEquals("Count 1", text("counter/primary"))
+        assertEquals("Count 0", text("counter/secondary"))
+    }
 
     @Test
     fun `split child menu Search closes the rail container drawer and opens only its owner search`() {
