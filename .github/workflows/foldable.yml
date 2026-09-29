@@ -5,13 +5,14 @@ on:
   workflow_dispatch:
     inputs:
       profile:
-        description: Exact AVD profile (Pixel Fold is explicit compatibility coverage only)
+        description: Exact AVD ID (pixel_fold and generic 7.6in Foldable are compatibility coverage only)
         required: true
         default: pixel_9_pro_fold
         type: choice
         options:
           - pixel_9_pro_fold
           - pixel_fold
+          - '7.6in Foldable'
 
 concurrency:
   group: foldable-${{ github.ref }}
@@ -22,11 +23,12 @@ permissions:
 
 jobs:
   foldable:
-    name: ${{ inputs.profile }} production gate (API 35)
+    name: ${{ inputs.profile }} ${{ inputs.profile == 'pixel_9_pro_fold' && 'exact profile' || 'compatibility' }} production gate (API 35)
     runs-on: ubuntu-latest
     timeout-minutes: 90
     env:
       SKEIN_FOLD_PROFILE: ${{ inputs.profile }}
+      SKEIN_FOLD_AVD_NAME: skein_foldable_gate
     steps:
       - name: Checkout dispatched source
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v4.3.0
@@ -56,20 +58,23 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          case "$SKEIN_FOLD_PROFILE" in pixel_9_pro_fold|pixel_fold) ;; *) exit 2 ;; esac
+          case "$SKEIN_FOLD_PROFILE" in pixel_9_pro_fold|pixel_fold|'7.6in Foldable') ;; *) exit 2 ;; esac
           mkdir -p build/foldable-evidence
           printf '%s\n' "$SKEIN_FOLD_PROFILE" > build/foldable-evidence/requested-profile.txt
           git rev-parse HEAD > build/foldable-evidence/source-sha.txt
           git submodule status --recursive > build/foldable-evidence/submodule-shas.txt
-          tool_bin="$(find "$ANDROID_HOME/cmdline-tools" -type f -name sdkmanager -print -quit | xargs dirname)"
+          # The pinned emulator action also uses latest/bin. Do not inspect a different catalog.
+          tool_bin="$ANDROID_HOME/cmdline-tools/latest/bin"
           test -x "$tool_bin/sdkmanager"
+          printf '%s\n' "$tool_bin" > build/foldable-evidence/sdk-tool-path.txt
+          cp -f "$tool_bin/../source.properties" build/foldable-evidence/sdk-tool-source.properties
           echo "$tool_bin" >> "$GITHUB_PATH"
           echo "$ANDROID_HOME/platform-tools" >> "$GITHUB_PATH"
           echo "$ANDROID_HOME/emulator" >> "$GITHUB_PATH"
           yes | "$tool_bin/sdkmanager" --licenses >/dev/null || true
           "$tool_bin/sdkmanager" 'platform-tools' 'platforms;android-37.0' 'build-tools;36.0.0' 'emulator'
           "$tool_bin/avdmanager" list device > build/foldable-evidence/device-profiles.txt
-          grep -q "\"$SKEIN_FOLD_PROFILE\"" build/foldable-evidence/device-profiles.txt
+          grep -Fq -- "\"$SKEIN_FOLD_PROFILE\"" build/foldable-evidence/device-profiles.txt
           "$ANDROID_HOME/emulator/emulator" -version > build/foldable-evidence/emulator-version.txt
       - name: Install workflow parser
         run: python3 -m pip install --disable-pip-version-check "PyYAML==6.0.2"
@@ -91,6 +96,7 @@ jobs:
           arch: x86_64
           target: google_apis
           profile: ${{ inputs.profile }}
+          avd-name: ${{ env.SKEIN_FOLD_AVD_NAME }}
           disable-animations: true
           emulator-options: -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -camera-back none -grpc 8554
           script: bash tools/ci/run-foldable-emulator.sh

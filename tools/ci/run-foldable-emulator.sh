@@ -5,6 +5,10 @@ set -euo pipefail
 # where the workflow creates the sole target; local execution must not discover the held Fold.
 test "${GITHUB_ACTIONS:-}" = true || { echo 'This helper requires the disposable CI emulator host' >&2; exit 2; }
 mkdir -p build/foldable-evidence
+# Keep the actual generated hardware identity/posture configuration, including on test failure.
+# ANDROID_AVD_HOME is exported by the pinned emulator action; never substitute a device ID.
+test "${SKEIN_FOLD_AVD_NAME:-}" = skein_foldable_gate
+cp -f "${ANDROID_AVD_HOME:?}/$SKEIN_FOLD_AVD_NAME.avd/config.ini" build/foldable-evidence/avd-config.ini
 # Fail closed before any device operation if the target is not an emulator.
 serial="${ANDROID_SERIAL:-emulator-5554}"
 case "$serial" in emulator-*) ;; *) echo 'Refusing non-emulator target' >&2; exit 2 ;; esac

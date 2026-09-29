@@ -1,6 +1,9 @@
 """Guard the opt-in lane's dispatch, platform and dependency verification contract."""
 from pathlib import Path
+import os
 import shlex
+import subprocess
+import tempfile
 import tomllib
 import unittest
 import xml.etree.ElementTree as ET
@@ -18,23 +21,45 @@ class FoldableWorkflowContractTest(unittest.TestCase):
         self.assertEqual({"workflow_dispatch"}, set(triggers))
         profile = triggers["workflow_dispatch"]["inputs"]["profile"]
         self.assertEqual("pixel_9_pro_fold", profile["default"])
-        self.assertEqual(["pixel_9_pro_fold", "pixel_fold"], profile["options"])
+        self.assertEqual(["pixel_9_pro_fold", "pixel_fold", "7.6in Foldable"], profile["options"])
         job = workflow["jobs"]["foldable"]
         self.assertIn("inputs.profile", job["name"])
         steps = job["steps"]
         emulator = next(step for step in steps if "android-emulator-runner@" in step.get("uses", ""))
         self.assertEqual("${{ inputs.profile }}", emulator["with"]["profile"])
+        self.assertEqual("${{ env.SKEIN_FOLD_AVD_NAME }}", emulator["with"]["avd-name"])
+        self.assertEqual("skein_foldable_gate", job["env"]["SKEIN_FOLD_AVD_NAME"])
+        self.assertIn("compatibility", job["name"])
         sdk = next(step["run"] for step in steps if step.get("name") == "SDK tools and exact fold profile")
         tokens = shlex.split(sdk)
         self.assertIn("platforms;android-37.0", tokens)
         self.assertNotIn("platforms;android-37", tokens)
-        self.assertIn('case "$SKEIN_FOLD_PROFILE" in pixel_9_pro_fold|pixel_fold)', sdk)
+        self.assertIn('tool_bin="$ANDROID_HOME/cmdline-tools/latest/bin"', sdk)
+        self.assertNotIn("find ", sdk)
         for step in steps:
             if "./gradlew" in step.get("run", ""):
                 self.assertIn("--max-workers=2", step["run"])
         upload = next(step for step in steps if "upload-artifact@" in step.get("uses", ""))
         self.assertEqual("always()", upload["if"])
         self.assertIn("inputs.profile", upload["with"]["name"])
+
+    def test_spaced_catalog_id_is_exact_and_missing_profile_never_falls_back(self):
+        workflow = yaml.safe_load((ROOT / ".github/workflows/foldable.yml").read_text())
+        sdk = next(step["run"] for step in workflow["jobs"]["foldable"]["steps"]
+                   if step.get("name") == "SDK tools and exact fold profile")
+        # Execute only the real allowlist/catalog shell lines against a host fixture: no SDK/device calls.
+        script = "set -euo pipefail\n" + "\n".join(line for line in sdk.splitlines()
+                                                   if line.startswith(("case ", "grep ")))
+        with tempfile.TemporaryDirectory() as directory:
+            catalog = Path(directory) / "build/foldable-evidence/device-profiles.txt"
+            catalog.parent.mkdir(parents=True)
+            catalog.write_text('id: 62 or "7.6in Foldable"\n    OEM : Generic\n')
+            for profile, expected in (("7.6in Foldable", 0), ("62", 2),
+                                      ("7.6in.Foldable", 2), ("pixel_9_pro_fold", 1)):
+                with self.subTest(profile=profile):
+                    result = subprocess.run(["bash", "-c", script], cwd=directory,
+                                            env={**os.environ, "SKEIN_FOLD_PROFILE": profile}, capture_output=True)
+                    self.assertEqual(expected, result.returncode, result.stderr)
 
     def test_espresso_pin_and_test_only_network_manifest_are_verified(self):
         catalog = tomllib.loads((ROOT / "gradle/libs.versions.toml").read_text())
