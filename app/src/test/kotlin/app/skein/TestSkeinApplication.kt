@@ -10,6 +10,7 @@ import app.skein.core.inference.models.ModelManager
 import app.skein.core.inference.models.PickedFileHandle
 import app.skein.core.model.InferenceEngine
 import app.skein.core.model.InferenceException
+import app.skein.core.model.ModelRegistry
 import app.skein.core.model.SamplingParams
 import app.skein.core.rag.ingest.IngestPace
 import app.skein.core.rag.prompt.PromptAssemblerImpl
@@ -32,6 +33,7 @@ import app.skein.ipc.ErrorCode
 import app.skein.ipc.ModelInspection
 import app.skein.models.ManagedInferenceEngine
 import app.skein.models.ManifestCache
+import app.skein.models.ModelImportCoordinator
 import app.skein.models.ModelServices
 import app.skein.models.syncCountTokens
 import app.skein.system.SecurityPrefs
@@ -100,6 +102,10 @@ class TestSkeinApplication : SkeinApplication() {
 
     /** Backs `/models`, `/import model` and the default-model lookup [ManagedInferenceEngine.defaultModel] reads. */
     val modelRegistry = InMemoryModelRegistry()
+
+    /** Optional production import owner and registry decorator for shell lifetime regressions. */
+    var modelImports: ModelImportCoordinator? = null
+    var modelRegistryOverride: ModelRegistry? = null
 
     /**
      * `/import model`'s picker result — a plausible GGUF prefix
@@ -221,14 +227,15 @@ class TestSkeinApplication : SkeinApplication() {
         indexStore: InMemoryIndexStore,
         unlockManager: UnlockManager,
     ): ModelServices {
-        val store = ImmutableModelStore(File(filesDir, "test-models"))
+        val registry = modelRegistryOverride ?: modelRegistry
+        val store = modelImports?.store ?: ImmutableModelStore(File(filesDir, "test-models"))
         val managed =
             ManagedInferenceEngine(fakeInferenceEngine) {
-                modelRegistry.default()?.let { id -> modelRegistry.get(id)?.model }
+                registry.default()?.let { id -> registry.get(id)?.model }
             }
         val manager =
             ModelManager(
-                registry = modelRegistry,
+                registry = registry,
                 store = store,
                 modelInspector =
                     ModelInspector {
@@ -256,7 +263,7 @@ class TestSkeinApplication : SkeinApplication() {
                 freeBytes = { Long.MAX_VALUE },
                 isLoaded = { id -> managed.status.value.modelId == id },
             )
-        val manifestCache = ManifestCache(modelRegistry)
+        val manifestCache = ManifestCache(registry)
         val contextBudget = ContextBudget(tokenCounter = TokenCounter { text -> text.length })
         val retrievalService = RetrievalServiceImpl(index = indexStore, repository = repository, embedder = null)
         val sendPipeline =
@@ -269,8 +276,8 @@ class TestSkeinApplication : SkeinApplication() {
                 personaById = personaService::get,
                 prepareModel = { persona ->
                     val id =
-                        persona?.defaultModel ?: modelRegistry.default() ?: throw InferenceException.ModelNotLoaded()
-                    val selected = modelRegistry.get(id)?.model ?: throw InferenceException.ModelNotLoaded()
+                        persona?.defaultModel ?: registry.default() ?: throw InferenceException.ModelNotLoaded()
+                    val selected = registry.get(id)?.model ?: throw InferenceException.ModelNotLoaded()
                     managed.prepareForTurn(selected)
                     contextBudget.useModel(selected)
                     selected.id
@@ -310,7 +317,7 @@ class TestSkeinApplication : SkeinApplication() {
             }
         return ModelServices(
             store = store,
-            registry = modelRegistry,
+            registry = registry,
             manager = manager,
             engine = managed,
             engineStatus = managed.status,
@@ -322,6 +329,7 @@ class TestSkeinApplication : SkeinApplication() {
             markLockEpoch = lockEpoch::set,
             pushOnSessionLocked = { lockedEpoch -> terminalModelLockEpochs += lockedEpoch },
             clearEngineState = managed::closeSession,
+            imports = modelImports,
         )
     }
 
