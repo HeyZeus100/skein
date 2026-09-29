@@ -130,11 +130,12 @@ public class RealRetrievalEvaluationTest {
                     val upserter = EdgeUpserter(repository, index)
                     val resolver = DanglingResolver(repository, index)
                     val startedIngest = System.nanoTime()
+                    val lexicalProbeAudit = LexicalProbeDiagnostics(index)
                     val outcome =
                         IngestPipeline(
                             repository,
                             chunker,
-                            IngestSteps(index, embedder = null, warn = warnings::add),
+                            IngestSteps(lexicalProbeAudit, embedder = null, warn = warnings::add),
                             links =
                                 LinkStep { doc ->
                                     upserter.upsert(doc)
@@ -366,6 +367,7 @@ public class RealRetrievalEvaluationTest {
                             put("sqlite_version", scalar(pool.writer(), "SELECT sqlite_version()"))
                             put("schema_version_applied", created.migration.toVersion)
                             put("ingest_ms", ingestMillis)
+                            put("lexical_probe_audit", lexicalProbeAudit.report())
                             put("ingest_warnings", JsonArray(warnings.toList().map(::JsonPrimitive)))
                             put("repetitions", repetitions)
                             put("warmups_per_query_mode", 1)
