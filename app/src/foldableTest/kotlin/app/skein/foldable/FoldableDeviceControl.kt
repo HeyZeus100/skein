@@ -54,12 +54,20 @@ internal class FoldableDeviceControl {
         val catalog = shell("cmd device_state print-states")
         File(instrumentation.targetContext.filesDir, "foldable-device-states.txt").appendText(catalog + "\n")
         // Android 15 DeviceState.toString(). Reject drift or partial output; never guess numeric IDs.
-        val lines = catalog.lineSequence().map(String::trim).filter(String::isNotEmpty).toList()
+        val lines =
+            catalog
+                .lineSequence()
+                .map(String::trim)
+                .filter(String::isNotEmpty)
+                .toList()
         check(lines.firstOrNull() == "Supported states: [" && lines.lastOrNull() == "]") {
             "Malformed device-state catalog: $catalog"
         }
         val statePattern = Regex("$stateDescription,")
-        val states = lines.drop(1).dropLast(1).map { statePattern.matchEntire(it) ?: error("Malformed device state: $it") }
+        val states =
+            lines.drop(1).dropLast(1).map {
+                statePattern.matchEntire(it) ?: error("Malformed device state: $it")
+            }
         val identifiers = states.map { it.groupValues[1].toInt() }
         check(identifiers.distinct().size == identifiers.size) { "Device state IDs are not unique: $catalog" }
         val closed = states.filter { it.groupValues[2] == "CLOSED" }
@@ -105,15 +113,18 @@ internal class FoldableDeviceControl {
             if (ready()) return
             SystemClock.sleep(50)
         } while (SystemClock.elapsedRealtime() < deadline)
-        error("Timed out waiting for $description; configuration=${instrumentation.targetContext.resources.configuration}")
+        error(
+            "Timed out waiting for $description; configuration=${instrumentation.targetContext.resources.configuration}",
+        )
     }
 
     private fun shell(command: String): String {
         val descriptor = automation.executeShellCommand(command)
         val executor = Executors.newSingleThreadExecutor()
-        val output = executor.submit<String> {
-            ParcelFileDescriptor.AutoCloseInputStream(descriptor).bufferedReader().use { it.readText() }
-        }
+        val output =
+            executor.submit<String> {
+                ParcelFileDescriptor.AutoCloseInputStream(descriptor).bufferedReader().use { it.readText() }
+            }
         try {
             return output.get(5, TimeUnit.SECONDS)
         } finally {
