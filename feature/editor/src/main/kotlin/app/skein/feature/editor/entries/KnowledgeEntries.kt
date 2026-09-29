@@ -9,6 +9,8 @@ package app.skein.feature.editor.entries
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -312,6 +314,7 @@ private fun ConnectionsEntry(
     shell: SkeinShellState,
     deps: KnowledgeEntryDeps,
 ) {
+    val scroll = rememberScrollState()
     if (LocalSheetMode.current == SheetMode.PEEK) {
         SheetPeekRow("Connections", Modifier.testTag(KnowledgeEntryTestTags.CONNECTIONS_PEEK))
         return
@@ -323,13 +326,14 @@ private fun ConnectionsEntry(
         }
     Column(Modifier.fillMaxSize().testTag(KnowledgeEntryTestTags.CONNECTIONS)) {
         shell.EntryTopBar(key, "Connections")
-        BacklinksDrawer(state = backlinks, initiallyExpanded = true)
-        SkeinListRow(
-            title = "Open in Graph",
-            modifier = Modifier.padding(entryBottomPadding()),
-            leadingIcon = SkeinIcons.Graph,
-            onClick = { shell.navigate { openGraph(it, rawId) } },
-        )
+        Column(Modifier.weight(1f).verticalScroll(scroll).padding(entryBottomPadding())) {
+            BacklinksDrawer(state = backlinks, initiallyExpanded = true)
+            SkeinListRow(
+                title = "Open in Graph",
+                leadingIcon = SkeinIcons.Graph,
+                onClick = { shell.navigate { openGraph(it, rawId) } },
+            )
+        }
     }
 }
 

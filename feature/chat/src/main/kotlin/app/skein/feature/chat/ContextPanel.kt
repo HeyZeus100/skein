@@ -1,6 +1,7 @@
 // The Knowledge inspector lists only sources included in the assembled prompt.
 package app.skein.feature.chat
 
+import androidx.compose.foundation.ScrollState
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -50,6 +51,7 @@ public fun ContextPanel(
     knowledgeChangePending: Boolean = false,
     knowledgeChangeFailed: Boolean = false,
     hasTurn: Boolean = true,
+    scrollState: ScrollState = rememberScrollState(),
 ) {
     val documents = items.groupBy { it.docId }.values.toList()
     Surface(
@@ -59,9 +61,8 @@ public fun ContextPanel(
         Column(
             modifier =
                 Modifier
-                    .verticalScroll(
-                        rememberScrollState(),
-                    ).padding(entryBottomPadding())
+                    .verticalScroll(scrollState)
+                    .padding(entryBottomPadding())
                     .padding(SkeinSpacing.space12),
         ) {
             Text(text = "Knowledge", style = MaterialTheme.typography.titleSmall)

@@ -7,11 +7,13 @@ import androidx.activity.ComponentActivity
 import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material3.Text
+import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.test.junit4.createAndroidComposeRule
@@ -49,6 +51,46 @@ class EntryInsetsTest {
 
     @get:Rule(order = 2)
     val composeRule = createAndroidComposeRule<EntryInsetTestActivity>()
+
+    @Test
+    fun `expanded overlay above the keyboard consumes only the intersecting remainder`() {
+        composeRule.setContent {
+            SkeinTheme {
+                Box(Modifier.fillMaxSize()) {
+                    Box(Modifier.fillMaxWidth().fillMaxHeight(0.5f).testTag("overlay-frame")) {
+                        CompositionLocalProvider(LocalSheetMode provides SheetMode.EXPANDED) {
+                            EntryInsets {
+                                Box(Modifier.fillMaxSize().testTag("overlay-content"))
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        val window = composeRule.activity.window.decorView
+        val frame = composeRule.onNodeWithTag("overlay-frame").fetchSemanticsNode().boundsInRoot
+        for (ime in listOf(window.height / 3, window.height * 2 / 3, 0)) {
+            composeRule.runOnUiThread {
+                ViewCompat.dispatchApplyWindowInsets(
+                    window,
+                    WindowInsetsCompat
+                        .Builder()
+                        .setInsets(WindowInsetsCompat.Type.ime(), Insets.of(0, 0, 0, ime))
+                        .setVisible(WindowInsetsCompat.Type.ime(), ime > 0)
+                        .setInsets(WindowInsetsCompat.Type.navigationBars(), Insets.of(0, 0, 0, 100))
+                        .build(),
+                )
+            }
+            composeRule.waitForIdle()
+            val content = composeRule.onNodeWithTag("overlay-content").fetchSemanticsNode().boundsInRoot
+            assertEquals(
+                "only the overlay's intersection with the IME is removed",
+                minOf(frame.bottom, window.height - maxOf(ime, 100).toFloat()),
+                content.bottom,
+                1f,
+            )
+        }
+    }
 
     @Test
     fun `outer edges are protected once and list bottom padding lets its final row clear navigation`() {

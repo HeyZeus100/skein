@@ -10,6 +10,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
@@ -301,6 +302,7 @@ private fun ChatInspector(
             .orEmpty()
     val sourceCount = items.distinctBy { it.docId }.size
     val knowledgeEnabled = ChatKnowledge.enabled(document.document)
+    val inspectorScroll = rememberScrollState()
     if (LocalSheetMode.current == SheetMode.PEEK) {
         val knowledgeLabel = if (knowledgeEnabled) "Knowledge on" else "Knowledge off"
         val summary = if (outcome == null) knowledgeLabel else "$knowledgeLabel · ${sourcesLabel(sourceCount)}"
@@ -322,6 +324,7 @@ private fun ChatInspector(
             onOpenSource = sources,
             knowledgeEnabled = knowledgeEnabled,
             hasTurn = outcome != null,
+            scrollState = inspectorScroll,
             knowledgeChangePending = saving,
             knowledgeChangeFailed = saveFailed,
             onKnowledgeChange = { enabled ->

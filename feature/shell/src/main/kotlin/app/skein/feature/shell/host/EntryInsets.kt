@@ -41,7 +41,8 @@ fun EntryInsets(
     modifier: Modifier = Modifier,
     content: @Composable () -> Unit,
 ) {
-    val isPeek = LocalSheetMode.current == SheetMode.PEEK
+    val mode = LocalSheetMode.current
+    val isPeek = mode == SheetMode.PEEK
     val window = LocalView.current.rootView
     var edgeDistances by remember { mutableStateOf(PaneEdgeDistances()) }
     val consumed =
@@ -70,14 +71,17 @@ fun EntryInsets(
                 }.consumeWindowInsets(consumed)
         }
     val paddingInsets =
-        if (isPeek) {
-            WindowInsets.ime
-                .union(WindowInsets.navigationBars)
-                .union(WindowInsets.safeDrawing.only(WindowInsetsSides.Horizontal))
-        } else {
-            WindowInsets.safeDrawing.only(WindowInsetsSides.Top + WindowInsetsSides.Horizontal)
+        when (mode) {
+            SheetMode.PEEK ->
+                WindowInsets.ime
+                    .union(WindowInsets.navigationBars)
+                    .union(WindowInsets.safeDrawing.only(WindowInsetsSides.Horizontal))
+            SheetMode.EXPANDED -> WindowInsets.safeDrawing
+            SheetMode.PANE -> WindowInsets.safeDrawing.only(WindowInsetsSides.Top + WindowInsetsSides.Horizontal)
         }
-    val entryConsumed = if (isPeek) paddingInsets else consumed
+    // Overlay controls must clear a retained keyboard even when the field belongs
+    // to the underlying entry. Rebased distances consume only the covered remainder.
+    val entryConsumed = if (mode == SheetMode.PANE) consumed else consumed.union(paddingInsets)
     // Keep the same content call site across presentation changes, while peek stays intrinsic.
     Box(modifier.then(paneModifier)) {
         Box(
