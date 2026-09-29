@@ -4,16 +4,21 @@ import android.app.UiAutomation
 import android.content.res.Configuration
 import android.os.ParcelFileDescriptor
 import android.os.SystemClock
+import android.util.AtomicFile
 import androidx.test.platform.app.InstrumentationRegistry
+import org.json.JSONObject
 import java.io.File
+import java.util.UUID
 import java.util.concurrent.Executors
 import java.util.concurrent.TimeUnit
+import java.util.concurrent.atomic.AtomicInteger
 
-/** API 35 framework state overrides, not emulator hinge-sensor actuation. No target networking. */
+/** Guarded host console posture requests and UiAutomation rotation. No target networking. */
 internal class FoldableDeviceControl {
     private val instrumentation get() = InstrumentationRegistry.getInstrumentation()
     private val automation get() = instrumentation.uiAutomation
     private var changedDevice = false
+    private var consoleHealthy = true
     private val stateDescription =
         "DeviceState\\{identifier=(\\d+), name='([^']+)', app_accessible=(?:true|false), " +
             "cancel_when_requester_not_on_top=(?:true|false)\\}"
@@ -24,6 +29,9 @@ internal class FoldableDeviceControl {
             "Device controls require the guarded disposable CI lane"
         }
         check(shell("getprop ro.kernel.qemu").trim() == "1") { "Refusing non-emulator device controls" }
+        check(shell("getprop ro.boot.qemu.avd_name").trim() == "skein_foldable_gate") {
+            "Refusing unexpected emulator AVD"
+        }
     }
 
     fun closed() = requestState("CLOSED") { it.screenWidthDp < 600 }
@@ -38,8 +46,11 @@ internal class FoldableDeviceControl {
         if (!changedDevice) return
         try {
             requireEmulator()
-            shell("cmd device_state state reset")
-            await("device-state override cleanup") { committedState.matches(shell("cmd device_state state").trim()) }
+            if (consoleHealthy) flat()
+            check(consoleHealthy) { "Console transport failed; host owns bounded cleanup" }
+            check(committedState.matches(shell("cmd device_state state").trim())) {
+                "Unexpected device-state override after console cleanup"
+            }
         } finally {
             requireEmulator()
             check(automation.setRotation(UiAutomation.ROTATION_UNFREEZE)) { "Rotation unfreeze failed" }
@@ -76,9 +87,57 @@ internal class FoldableDeviceControl {
         val selected = if (name == "CLOSED") closed.single() else opened.single()
         val identifier = selected.groupValues[1].toInt()
         beginChange()
-        shell("cmd device_state state $identifier")
+        console(if (name == "CLOSED") "fold" else "unfold")
         await("committed $name state $identifier") { shell("cmd device_state print-state").trim() == "$identifier" }
         await("$name window geometry") { geometry(instrumentation.targetContext.resources.configuration) }
+    }
+
+    private fun console(action: String) {
+        requireEmulator()
+        check(consoleHealthy) { "Failed console requests cannot be retried" }
+        check(action == "fold" || action == "unfold")
+        val runId = InstrumentationRegistry.getArguments().getString("skein.foldable.runId")
+        check(runId != null && Regex("[0-9a-f]{32}").matches(runId)) { "Missing fresh host run ID" }
+        val sequence = requestSequence.incrementAndGet()
+        val nonce = UUID.randomUUID().toString().replace("-", "")
+        val request =
+            JSONObject()
+                .put("run_id", runId)
+                .put("sequence", sequence)
+                .put("nonce", nonce)
+                .put("action", action)
+        val directory = instrumentation.targetContext.filesDir
+        val requestFile = AtomicFile(File(directory, "foldable-console-request.json"))
+        try {
+            val output = requestFile.startWrite()
+            try {
+                output.write(request.toString().toByteArray(Charsets.UTF_8))
+                requestFile.finishWrite(output)
+            } catch (error: Exception) {
+                requestFile.failWrite(output)
+                throw error
+            }
+            val ackFile = File(directory, "foldable-console-ack.json")
+            await("console $action acknowledgment", timeoutMillis = 90_000) {
+                if (!ackFile.exists()) return@await false
+                check(ackFile.length() in 1..1024) { "Invalid console acknowledgment size" }
+                val ack = JSONObject(ackFile.readText())
+                check(ack.keys().asSequence().toSet() == setOf("run_id", "sequence", "nonce", "action", "status")) {
+                    "Invalid console acknowledgment shape"
+                }
+                check(ack.getString("run_id") == runId) { "Stale console acknowledgment run" }
+                if (ack.getInt("sequence") < sequence) return@await false
+                check(
+                    ack.get("sequence") == sequence && ack.getString("nonce") == nonce &&
+                        ack.getString("action") == action,
+                ) { "Mismatched console acknowledgment" }
+                check(ack.getString("status") == "ok") { "Host console request failed: $ack" }
+                true
+            }
+        } catch (error: Exception) {
+            consoleHealthy = false
+            throw error
+        }
     }
 
     private fun rotate(
@@ -105,9 +164,10 @@ internal class FoldableDeviceControl {
 
     private fun await(
         description: String,
+        timeoutMillis: Long = 15_000,
         ready: () -> Boolean,
     ) {
-        val deadline = SystemClock.elapsedRealtime() + 15_000
+        val deadline = SystemClock.elapsedRealtime() + timeoutMillis
         do {
             instrumentation.waitForIdleSync()
             if (ready()) return
@@ -132,5 +192,9 @@ internal class FoldableDeviceControl {
             output.cancel(true)
             executor.shutdownNow()
         }
+    }
+
+    private companion object {
+        val requestSequence = AtomicInteger()
     }
 }

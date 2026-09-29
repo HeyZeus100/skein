@@ -1,6 +1,6 @@
 name: Foldable production gate
 
-# AL-16 framework device-state override only; no hinge-sensor, unlocked A-G or physical Fold claim.
+# AL-16 guarded emulator-console posture only; no unlocked A-G or physical Fold claim.
 on:
   workflow_dispatch:
     inputs:

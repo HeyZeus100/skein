@@ -27,7 +27,7 @@ import java.io.File
 /**
  * AL-16's first production-Activity fold lane. Uses a fresh emulator's unopened vault, never
  * a test replacement for NavShell. It proves the pre-unlock boundary and live config contract;
- * Framework state overrides drive this lane; hinge sensors, unlocked A-G, IME, inference and
+ * Host emulator-console fold/unfold drive this lane; unlocked A-G, IME, inference and
  * system_server privacy remain separate open gates.
  */
 @RunWith(AndroidJUnit4::class)

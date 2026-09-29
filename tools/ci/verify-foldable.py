@@ -3,6 +3,7 @@
 import argparse
 import hashlib
 import json
+import re
 from pathlib import Path
 import subprocess
 import xml.etree.ElementTree as ET
@@ -27,7 +28,7 @@ def sha256(path):
 def review(repository, expected_sha, profile="pixel_9_pro_fold"):
     source_sha = subprocess.check_output(["git", "rev-parse", "HEAD"], cwd=repository, text=True).strip()
     result = {"schema_version": 1, "lane": "foldable-gate", "source_sha": source_sha,
-              "control_transport": "UiAutomation framework device-state override and rotation; not hinge-sensor actuation",
+              "control_transport": "guarded host emulator-console fold/unfold and UiAutomation rotation; no physical sensor claim",
               "source_attestation": "host-declared checkout", "apk_attestation": "build outputs; not installed-package attestation",
               "expected_source_sha": expected_sha, "profile": profile, "cases": [], "artifacts": {}, "errors": []}
     result["profile_scope"] = PROFILES.get(profile, "unsupported profile")
@@ -97,8 +98,69 @@ def review(repository, expected_sha, profile="pixel_9_pro_fold"):
         result["artifacts"][str(geometry_path.relative_to(repository))] = sha256(geometry_path)
     except (OSError, ValueError, KeyError, TypeError):
         result["errors"].append("missing or malformed runtime geometry JSONL")
+    # The private-file bridge must complete; XML alone cannot mask a failed host controller.
+    run_path = repository / "build/foldable-evidence/console-run-id.txt"
+    events_path = run_path.with_name("console-events.jsonl")
+    try:
+        run_id = run_path.read_text().strip()
+        events = [json.loads(line) for line in events_path.read_text().splitlines() if line.strip()]
+        result["artifacts"][str(run_path.relative_to(repository))] = sha256(run_path)
+        result["artifacts"][str(events_path.relative_to(repository))] = sha256(events_path)
+        if not re.fullmatch(r"[0-9a-f]{32}", run_id) or not events:
+            raise ValueError("invalid controller run ID/events")
+        if any(event["run_id"] != run_id for event in events):
+            raise ValueError("controller event run mismatch")
+        if events[0]["event"] != "started" or events[-1]["event"] != "stopped":
+            raise ValueError("controller did not start and stop cleanly")
+        if events[0].get("avd") != "skein_foldable_gate" or not re.fullmatch(r"emulator-[0-9]+", events[0].get("serial", "")):
+            raise ValueError("controller target identity mismatch")
+        if any(event["event"] not in {"started", "request", "console", "ack", "stopped"} for event in events):
+            raise ValueError("controller recorded failure or fallback cleanup")
+        # Accept only chronological request -> one command -> one/more identical ACKs.
+        cursor = 1
+        for sequence in range(1, 7):
+            action = "fold" if sequence % 2 else "unfold"
+            for kind in ("request", "console", "ack"):
+                event = events[cursor]
+                if event["event"] != kind or event["sequence"] != sequence or event["action"] != action:
+                    raise ValueError("out-of-order console transcript or posture actions")
+                cursor += 1
+            while cursor < len(events) and events[cursor]["event"] == "ack":
+                if events[cursor] != events[cursor - 1]:
+                    raise ValueError("changed cached acknowledgment")
+                cursor += 1
+        if cursor != len(events) - 1:
+            raise ValueError("unexpected extra console events")
+        requests = [event for event in events if event["event"] == "request"]
+        # Both journeys and their @After flat cleanup produce six absolute posture requests.
+        if len(requests) != 6 or [request["sequence"] for request in requests] != list(range(1, 7)):
+            raise ValueError("missing, duplicate or out-of-order posture requests")
+        if len({request["nonce"] for request in requests}) != 6:
+            raise ValueError("reused request nonce")
+        for request in requests:
+            if request["action"] not in {"fold", "unfold"} or not re.fullmatch(r"[0-9a-f]{32}", request["nonce"]):
+                raise ValueError("invalid posture request")
+            outputs = [event for event in events if event["event"] == "console" and event["sequence"] == request["sequence"]]
+            acks = [event for event in events if event["event"] == "ack" and event["sequence"] == request["sequence"]]
+            if len(outputs) != 1 or not acks:
+                raise ValueError("missing console output/ack or repeated mutation")
+            output = outputs[0]
+            if output["action"] != request["action"] or output["returncode"] != 0 or output["stdout"].strip() != "OK" or "KO" in output["stderr"]:
+                raise ValueError("console command failed")
+            for ack in acks:
+                if any(ack[key] != request[key] for key in ("run_id", "sequence", "nonce", "action")) or ack["status"] != "ok":
+                    raise ValueError("mismatched or failed acknowledgment")
+        if sum(event["event"] == "console" for event in events) != 6:
+            raise ValueError("unexpected console mutation")
+        if any(event["sequence"] not in range(1, 7) for event in events if event["event"] == "ack"):
+            raise ValueError("unexpected acknowledgment sequence")
+        if requests[-1]["action"] != "unfold":
+            raise ValueError("last posture request was not flat cleanup")
+        result["console_requests"] = requests
+    except (OSError, ValueError, KeyError, TypeError, IndexError) as error:
+        result["errors"].append(f"missing or invalid console protocol evidence: {error}")
     result["passed"] = not result["errors"]
-    result["remaining_gates"] = (["Pixel 9 Pro Fold profile acceptance"] if profile != "pixel_9_pro_fold" else []) + ["emulator hinge-sensor actuation", "unlocked A-G", "real IME and focus", "system_server heap privacy", "physical Fold A-G acceptance outside this lane"]
+    result["remaining_gates"] = (["Pixel 9 Pro Fold profile acceptance"] if profile != "pixel_9_pro_fold" else []) + ["hinge-angle/sensor assertions", "unlocked A-G", "real IME and focus", "system_server heap privacy", "physical Fold A-G acceptance outside this lane"]
     return result
 
 
