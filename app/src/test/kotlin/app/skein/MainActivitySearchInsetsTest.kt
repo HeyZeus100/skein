@@ -61,8 +61,7 @@ class MainActivitySearchInsetsTest {
                 composeRule
                     .onAllNodes(
                         hasText(matches.first().title) and hasAnyAncestor(hasTestTag(SkeinSearchTestTags.RESULTS)),
-                    )
-                    .fetchSemanticsNodes()
+                    ).fetchSemanticsNodes()
                     .isNotEmpty()
             }
 
@@ -104,7 +103,10 @@ class MainActivitySearchInsetsTest {
         }
     }
 
-    private fun dispatchInsets(scenario: ActivityScenario<MainActivity>, ime: Int) {
+    private fun dispatchInsets(
+        scenario: ActivityScenario<MainActivity>,
+        ime: Int,
+    ) {
         scenario.onActivity { activity ->
             ViewCompat.dispatchApplyWindowInsets(
                 activity.window.decorView,

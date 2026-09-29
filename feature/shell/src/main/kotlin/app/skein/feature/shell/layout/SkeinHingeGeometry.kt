@@ -78,16 +78,24 @@ internal fun DpRect.hasFiniteCoordinates(): Boolean = listOf(left, top, right, b
 fun SkeinHingeSafeArea(
     boundsInWindow: DpRect?,
     modifier: Modifier = Modifier,
+    expand: Boolean = true,
     content: @Composable () -> Unit,
 ) {
     var origin by remember { mutableStateOf<Offset?>(null) }
+    val sizing = if (expand) Modifier.fillMaxSize() else Modifier
     Layout(
         modifier =
-            modifier.fillMaxSize().onGloballyPositioned {
+            modifier.then(sizing).onGloballyPositioned {
                 origin = it.positionInWindow()
             },
-        content = { Box(Modifier.fillMaxSize().clipToBounds()) { content() } },
+        content = { Box(sizing.clipToBounds()) { content() } },
     ) { measurables, constraints ->
+        // A collapsed sheet is an intrinsic-height row. Keeping the same child
+        // call site here preserves remembered entry state when it expands again.
+        if (!expand && boundsInWindow == null) {
+            val child = measurables.single().measure(constraints)
+            return@Layout layout(child.width, child.height) { child.place(0, 0) }
+        }
         val width = constraints.maxWidth
         val height = constraints.maxHeight
         val position = origin

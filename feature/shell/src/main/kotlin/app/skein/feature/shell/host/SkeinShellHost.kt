@@ -38,6 +38,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.runtime.staticCompositionLocalOf
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalLayoutDirection
 import androidx.compose.ui.platform.testTag
 import androidx.navigation3.runtime.NavEntry
 import androidx.navigation3.runtime.rememberDecoratedNavEntries
@@ -70,9 +71,13 @@ import app.skein.feature.shell.container.SkeinDestination
 import app.skein.feature.shell.container.SkeinNavigationContainer
 import app.skein.feature.shell.container.SkeinSpace
 import app.skein.feature.shell.layout.SecondarySurface
+import app.skein.feature.shell.layout.SkeinHingeDebugOverlay
+import app.skein.feature.shell.layout.SkeinHingeSafeArea
 import app.skein.feature.shell.layout.SkeinLayoutDecision
 import app.skein.feature.shell.layout.SkeinNavContainer
+import app.skein.feature.shell.layout.SkeinPosture
 import app.skein.feature.shell.layout.currentSkeinWindowLayout
+import app.skein.feature.shell.layout.surfaceBounds
 import app.skein.feature.shell.testing.ShellTestTags
 import java.time.ZoneId
 import kotlin.coroutines.cancellation.CancellationException
@@ -108,6 +113,7 @@ fun SkeinShellHost(
     zone: ZoneId = ZoneId.systemDefault(),
     now: () -> Long = System::currentTimeMillis,
     onNavigationReady: () -> Unit = {},
+    windowAdaptiveInfo: WindowAdaptiveInfo = currentWindowAdaptiveInfoV2(),
     entryContent: @Composable (SkeinKey) -> Unit = { PlaceholderEntry(it) },
 ) {
     val resolver by rememberUpdatedState(resolveKinds)
@@ -131,8 +137,9 @@ fun SkeinShellHost(
     }
     if (!sanitised) return
 
-    val info = currentWindowAdaptiveInfoV2()
+    val info = windowAdaptiveInfo
     val layout = currentSkeinWindowLayout(info)
+    val layoutDirection = LocalLayoutDirection.current
     val mode = layout.navMode()
     val directive = remember(info, layout) { skeinDirective(info, layout) }
     // §2.5, §7.4 item 2: a sheet expanded on one pane becomes a pane on two, and a later shrink shows the peek.
@@ -148,9 +155,9 @@ fun SkeinShellHost(
                     key,
                     key.contentKey,
                     metadataOf(key) { destination ->
-                        EntryInsets { placeholder(destination) }
+                        HingeEntryPane(key) { EntryInsets { placeholder(destination) } }
                     },
-                ) { EntryInsets { content(it) } }
+                ) { HingeEntryPane(it) { EntryInsets { content(it) } } }
             }
         }
     // One decorated list per destination, on every composition (§8.9 item 2): switching destinations is not
@@ -174,7 +181,7 @@ fun SkeinShellHost(
         }
     val strategies =
         listOf<SceneStrategy<SkeinKey>>(
-            SkeinSheetSceneStrategy(layout, shell.sheets.expandedKeys, shell.sheets::expand),
+            SkeinSheetSceneStrategy(layout, shell.sheets.expandedKeys, shell.sheets::expand, layoutDirection),
             // §8.9 item 4: not PopUntilScaffoldValueChange, under which Back from `List | Detail` on Dual
             // (the same scaffold value as `List | placeholder`) is not consumed and leaves the app.
             rememberListDetailSceneStrategy<SkeinKey>(
@@ -216,15 +223,33 @@ fun SkeinShellHost(
                 )
             }
             if (shell.searchOpen && search != null) {
-                SkeinSearchOverlay(
-                    search = search,
-                    onOpen = { document ->
-                        shell.closeSearch()
-                        shell.open(document)
-                    },
-                    onDismiss = shell::closeSearch,
-                )
+                // Search is modal across the window, while its reading/input surface stays
+                // in one hinge partition. The full-window surface also blocks the entries below.
+                Surface(Modifier.fillMaxSize()) {
+                    SkeinHingeSafeArea(
+                        if (layout.posture == SkeinPosture.Flat) {
+                            null
+                        } else {
+                            layout.surfaceBounds(SecondarySurface.COMMAND_PALETTE, layoutDirection)
+                        },
+                        Modifier.fillMaxSize(),
+                    ) {
+                        EntryInsets {
+                            SkeinSearchOverlay(
+                                search = search,
+                                onOpen = { document ->
+                                    shell.closeSearch()
+                                    shell.open(document)
+                                },
+                                onDismiss = shell::closeSearch,
+                            )
+                        }
+                    }
+                }
             }
+            // The release implementation is a no-op. Debug builds expose geometry only,
+            // allowing the eventual physical fold run to check the posture assumption.
+            SkeinHingeDebugOverlay(info, enabled = true, modifier = Modifier.fillMaxSize())
         }
     }
 }
@@ -268,7 +293,7 @@ private fun metadataOf(
 }
 
 /** The §2.5 sheet surfaces. An opened source is a full-screen route on one pane, never a sheet. */
-private fun sheetSurfaceOf(key: SkeinKey): SecondarySurface? =
+internal fun sheetSurfaceOf(key: SkeinKey): SecondarySurface? =
     when {
         key is ChatContextKey -> SecondarySurface.CONTEXT_INSPECTOR
         key is ConnectionsKey || (key is TransientKey && key.kind == TransientKind.CONNECTIONS) ->
