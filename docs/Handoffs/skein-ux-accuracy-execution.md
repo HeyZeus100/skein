@@ -35,6 +35,59 @@ model hash, template identity and isolated-service answer behavior remain open.
 Full import-service contracts run on the host; ordinary device XML covers
 repository/link primitives, not that complete import workflow.
 
+The released runtime source is `56a46f5eedf217685528072bbf53a04f94e85aa5`.
+Its final local opt-in gate passed 871 tasks, including the vault test APK build;
+all 51 host evaluation tests passed. Remote
+[CI 36502550354](https://github.com/HeyZeus100/skein/actions/runs/36502550354)
+passed lint, unit tests and guards (1,388 tasks), then Foss APK assembly.
+[Reproducibility 36502550334](https://github.com/HeyZeus100/skein/actions/runs/36502550334)
+passed both release builds/comparison, native repeatability and toolchain tests;
+its conditional SQLCipher source-verification job was skipped.
+
+[Ordinary emulator 36502596076](https://github.com/HeyZeus100/skein/actions/runs/36502596076)
+reported workflow success, but its actual XML contains **264 passes and one
+failure entry**, with zero skipped entries: app 37 pass, vault 191 pass plus the
+opt-in retrieval assumption, native/service 36 pass. The retrieval class did not
+execute; UTP serialized its `AssumptionViolatedException` as `<failure>`.
+Do not call this 265 passing tests or a clean XML gate. `skein-u66y` tracks explicit
+lane separation/reporting; the dedicated retrieval run supplies its own evidence.
+
+[Synthetic smoke 36504291918](https://github.com/HeyZeus100/skein/actions/runs/36504291918)
+completed all 12 unique seed-17 cases: **12 OK, zero timeouts/OOM/errors**, with
+`finalized_prompt` source metadata on every row. Eleven generated four tokens;
+one used the application-owned missing-evidence response. The four benign native
+sequences exactly match their references (16, 10, 30 and 23 IDs). The hostile
+literal-control case correctly contains two control tokens instead of the unsafe
+reference's three. The corrected Unicode sequence is 30 IDs, preserving the
+ordinary merge while retaining control isolation.
+
+Model, template, overlay and fixture identities match the declared source and
+verified APK links. The app and app-test digests returned by instrumentation
+match the host artifacts; the host independently hashed the installed native
+test APK. This is `tiny-structural-v2` (1024 context, two threads, four output
+tokens, seed 17, 60-second case deadline). It establishes runtime structure,
+not factuality, Qwen EOS or a speed improvement over the older 4096/4/64 run.
+Memory/thermal and answer-quality measurements remain unavailable.
+
+All 31 targeted contract checks passed, including migration011/wrong-key,
+post-COMMIT acknowledgments, all five draft contracts, altered-excerpt revision
+retention, quiesce/kinds, service death/rebind, context capacity and overflow,
+cancel/BUSY/lock, and native whitespace/control isolation. This closes the
+storage-only AL-10a gate and `skein-i1y1`; the remaining AL-10 lifecycle and
+revision-aware citation UI work remain open.
+
+[Screenshot run 36502550337](https://github.com/HeyZeus100/skein/actions/runs/36502550337)
+also reported top-level success despite a failed non-blocking job: 14 drawer
+goldens drifted with the host date/time zone. `7b2786d` forwards optional clock and
+zone parameters with unchanged production defaults, pins the fixtures and adds
+date-label assertions. Only 14 inspected drawer baselines changed; comparison
+tolerance is unchanged. Its merged app/chat/shell checks, explicit ktlint, both
+app AndroidTest compilations and both screenshot suites passed (871 tasks).
+Actual XML: app 223 tests per variant with no failures/skips; chat 258 with 12
+intentional matrix skips; shell 208 with 14 intentional matrix skips. The scoped
+drawer suite also passed under `Pacific/Kiritimati`. Remote verification of this
+later fix remains separate from the runtime source above.
+
 ## Recovered and implemented
 
 The interrupted shell was preserved before integration. The new navigation shell
