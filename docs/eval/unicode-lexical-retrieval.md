@@ -50,8 +50,13 @@ actual hex, and checks ART's expected four-byte bytes, exact/prefix lookup and
 unchanged stored bytes. Assertion messages include measured hex. A separate
 supplementary-plus-NUL key checks the real old/new distinction (`C0 80` versus
 `00`): original binding must resolve its own stored key, while explicit UTF-8
-rebinding must not. The next ordinary run must establish these new assertions;
-local compilation is not runtime evidence.
+rebinding must not. Corrected ordinary run `36530225153` at `8b8884b`
+passed all 277 XML cases, including all seven Unicode contracts, with zero
+failures/errors/skips and the exact same case inventory as the failed run.
+The coordinator and a separate reviewer parsed the original XML and actual
+workflow/job success. The encoding case passed in 0.024 seconds; its assertions
+establish the expected bytes, while the XML does not separately print them.
+This supports scoped closure of `skein-3q32`, not full index integrity.
 
 The native negative control demonstrates that SQLite's UTF-16 binding strips a
 leading BOM; the explicit UTF-8 path preserves derived bytes. The revision
@@ -87,3 +92,17 @@ build/fts-tokenizer/test
 This compiles the exact vendored tokenizer and checks its tokens against real
 FTS postings, bounds and standard/legacy text decoding. It does not establish
 Android JNI loading, encrypted-vault behavior or physical-device acceptance.
+
+## Review limits
+
+Duplicate terms consume the 128-term cap. Row probes retain final-token prefix
+matching: a longer prefix match can mask isolated exact-token damage. The
+missing-posting controls establish detection of the deliberately removed row
+postings, not complete exact-token or all-posting integrity.
+
+The reader replaces malformed UTF-8 with U+FFFD and tolerates unpaired CESU-8
+surrogate units; later Kotlin UTF-8 conversion can replace malformed UTF-16.
+The retained controls establish valid-Unicode, paired-CESU-8 and encoded-NUL
+behavior, not arbitrary corrupt-text fidelity. Reading a column also allocates
+a temporary native UTF-16 buffer of at most twice its byte length plus two bytes.
+Large-column peak memory and physical-device performance remain unmeasured.

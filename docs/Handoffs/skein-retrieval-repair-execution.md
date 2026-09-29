@@ -1,5 +1,22 @@
 # Retrieval repair execution
 
+The continuation from `513d97a` repaired Unicode retrieval and passed all 277
+ordinary instrumentation cases, but **relevance acceptance still fails**. On the
+new independently frozen set, production covers 9/12 supported answers and
+rejects only 6/12 absent-fact queries. The quality-enforced diagnostic correctly
+failed while retaining complete evidence. Production remains v1; the
+requested-value experiment was falsified on development data and stays disabled.
+
+[The latest continuation](#continuation-from-513d97a-implementation-and-frozen-decision)
+records exact source `8b8884b`, all runs, hashes and remaining work. Embedding
+contract preparation and nightly/PR quality enforcement advanced; production
+embeddings, full-hybrid, broader relevance and physical-device gates remain open.
+
+The earlier repair measurements below are preserved historical evidence; their
+source-specific results are not measurements of later code.
+
+## Earlier repair measurements through 513d97a
+
 Graph discovery now covers the twelve development graph cases, and all 508
 reproduced legacy FTS probe misses have healthy row postings. The default
 retriever reaches recall@8 **0.80** and rejects all sixteen development absence
@@ -207,3 +224,263 @@ extend that measurement to different application code. The original baseline,
 failed collection, gold labels, thresholds, owner directories, old stash and
 recovery worktrees are preserved. No broad cleanup was performed. Beads updates
 are local: no Dolt remote is configured, as recorded in the resume handoff.
+
+
+## Continuation from 513d97a: implementation and frozen decision
+
+The owner explicitly resumed the prior pause. Three isolated worktrees handled
+production embedding preparation, Unicode lexical retrieval, and evaluation/sole
+CI execution. The coordinator retained relevance policy, integration and all
+Beads updates. Fold remains **HOLD**; no physical-device access, SSH, installation
+or generation was performed. Owner `Untitled/` and `logos/`, the old stash and
+all recovery worktrees are preserved.
+
+The application/test source for the corrected runtime is
+`8b8884b4b24a93f1ae72461840518ba2ebaaafb3`. Its predecessor
+`bcd2b3264805b9559d01622af1d17abe3ae6fc9a` failed ordinary instrumentation;
+that checkpoint remains separately preserved.
+
+Unicode queries and ingest probes now use the actual linked SQLite `unicode61`
+tokenizer through its FTS5 API. Literal quoting, final-token prefix behavior and
+row-constrained MATCH remain. Native and query bounds are 128 terms, 512 UTF-8
+bytes per term and 65,536 input bytes. Overlong tokens are skipped whole; empty
+or overlong inputs remain unprobed. Duplicate terms consume the term cap. The
+probe keeps the existing final-token prefix behavior, so a longer prefix match
+can mask damage to an individual exact token. The real missing-row controls
+remove postings while retaining the base chunk, including a damaged middle row
+between healthy rows. This does not establish complete index integrity or
+language-specific segmentation. The synchronous relevance gate's
+normalization is separate from SQLite tokenization.
+
+Independent native review found that SQLite UTF-16 binding strips a leading
+BOM. The implementation therefore binds explicit standard UTF-8 bytes only for
+derived chunk text and FTS query parameters, leaving generic repository bindings
+unchanged. The reader accepts standard UTF-8 and CESU-8 without rewriting source
+revision bytes. A host-JNI compatibility concern initially overgeneralized CESU-8
+supplementary encoding to Android. Actual ordinary run 36527953704 exposed that
+faulty test premise: its forced-CESU-8 title did not match an unchanged Android
+JNI parameter. AOSP ART explicitly uses four-byte supplementary UTF-8 while
+retaining modified-NUL behavior. The corrected control measures actual Android
+JNI bytes, verifies exact/prefix lookup, and separately tests artificial CESU-8
+read/byte preservation. It also tests the real generic-versus-explicit NUL
+encoding boundary. This is a test-oracle correction, not a production-policy
+change; the original failed XML is preserved.
+
+The first run does **not** prove historical Android supplementary postings need
+migration. **skein-5uu2** remains open to identify actual affected mixed-encoding
+posting states before proposing bounded derived-row re-ingest. It must preserve
+source revisions and distinguish artificial foreign-encoding fixtures from
+reproduced production history. No automatic migration or global encoding change
+is included.
+
+The embedding lane advanced the existing `skein-lbw` → `skein-079` →
+`skein-hwsa` chain with backend-neutral masked pooling, 256-dimensional
+normalization/int8 preparation, complete document-batch validation, query-vector
+validation and cancellation boundaries before index access. Malformed responses
+retain pending status. Neither an approved `embedder_path` decision nor
+`docs/MEASUREMENTS.md` exists; no ONNX/GGUF decision was invented. The service is
+still a stub, both production factories lack a real embedder, and tokenizer
+sharing, loaded lifecycle, query/document activation and re-indexing are pending.
+The [readiness matrix](../design/EMBEDDING_READINESS.md) records exact interfaces
+and dependencies. These three issues and `skein-5hr` remain open.
+
+**Production relevance remains v1 at 0.5.** A requested-value prototype was
+calibrated only on preserved ungated development data and explicitly authored
+development controls. It preserved default recall/nDCG 0.800000/0.717357 and
+16/16 absence rejection in replay, while allowing three typed-value paraphrases
+in the new development controls at a 0.25 typed cutoff. A separate agent then
+falsified the prototype with six development counterexamples: unrelated prices,
+wrong value types, physical length, heading-separated evidence and alternative
+duration wording. It was not promoted to production or patched to fit those
+cases. The explicit experiment, all counterexamples and the rejected earlier
+budget-unit replay are retained in the
+[development decision bundle](../eval/runs/2026-09-28-retrieval-continuation-calibration/README.md).
+Post-budget checks, cancellation, citations, original scores, provenance and
+Space filtering retain their production behavior.
+
+A new independently authored 12-document/24-query fixture was frozen in agent
+commit `4423d1a` before calibration, with SHA-256
+`4f79b2ddcf42dedd6b7f83c10402855f683fcebc3045d9e4668f6da2951759e8`.
+The coordinator did not read it before the production/experimental decision was
+frozen at `564243494f4ba1de73a4df1457d5a0dde128f6b0`. The run manifest pins
+both policy source files, parameters and fixture hash. The author knew the
+historical evidence but had not received this candidate or its calibration
+result. This is synthetic independent validation, not a secret or statistically
+representative benchmark. Original corpus, gold,
+reserved fixture and 0.75/0.60 ranking thresholds remain byte-identical.
+The three configurations—production, explicit experiment and ungated control—
+are reported separately. Public reserved cases remain regression evidence;
+future reruns of the newly measured fixture are also regressions.
+
+Quality enforcement is separate from ordinary instrumentation and artifact
+integrity. The opt-in lane now supports `--require-quality` and is called nightly
+and on relevant PRs. It rejects unmet production development/rejection gates
+after retaining complete XML/JSON and source-level verification. The
+experimental candidate and control cannot substitute for production acceptance.
+Full-hybrid enforcement remains separately ineligible without real embeddings.
+
+Local verification passed 965 integrated Gradle tasks and, after the native
+compatibility corrections, 901 affected vault/app tasks including explicit
+ktlint, both app/vault instrumentation compilations and the opt-in test APK.
+The host evaluation suite passed 84 tests. Reviewed actual local XML has no
+failures/errors. Four pending real-embedder contracts, one vision-import case
+per vault flavor and twelve chat screenshot cases remain skipped, not passed.
+The final native syntax and exact-tokenizer ASan/UBSan checks passed. Emulator
+and job-specific measurements are recorded separately below; local compilation
+alone does not establish Android execution or retrieval quality.
+
+The corrective test/comment change then passed both vault AndroidTest flavor
+compilations and explicit ktlint in 67 local Gradle tasks. An earlier invocation
+used a nonexistent `Play` flavor and failed task selection; the corrected
+`Dev`/`Foss` invocation completed successfully. No production logic changed in
+that correction. A separate read-only audit confirmed production v1 wiring,
+manifest/source hashes and unchanged post-budget/cancellation/citation/Space
+paths. The actual emulator outcome remains a separate acceptance requirement.
+
+### Preserved failed ordinary checkpoint
+
+[Ordinary 36527953704](https://github.com/HeyZeus100/skein/actions/runs/36527953704)
+at `bcd2b32` executed 277 cases: 276 passed and the one ART-encoding fixture
+failed at `IndexStoreImplAcceptanceTest.kt:327`. App 37/37 and inference-service
+36/36 passed; vault passed 203/204. There were zero errors/skips and no diagnostic
+testcase. No new validation measurement occurred at this checkpoint.
+The [source-specific bundle](../eval/runs/2026-09-28-retrieval-continuation-bcd2b32/README.md)
+retains all three original XML files, actual workflow logs/conclusions, independent
+reviews and a hash index of all 351 downloaded artifact files. Its 17 retained
+file hashes were independently verified. Actual automatic CI, screenshot and
+reproducibility jobs passed at the same source; tag-only SQLCipher verification
+was skipped. Those results do not override the ordinary runtime failure.
+
+### Corrected-source automatic jobs
+
+At exact source `8b8884b`, [CI 36530199120](https://github.com/HeyZeus100/skein/actions/runs/36530199120)
+passed its actual lint/unit/guard and Foss assembly job.
+[Screenshots 36530199083](https://github.com/HeyZeus100/skein/actions/runs/36530199083)
+passed the actual screenshot job and all eight verification tasks.
+[Reproducibility 36530199086](https://github.com/HeyZeus100/skein/actions/runs/36530199086)
+passed toolchain/self-tests, native cold-build equality, both release builds and
+the comparison of all 826 APK entries plus whole-file SHA-256. The tag-only
+SQLCipher source-verification job was skipped, not passed. The coordinator
+independently read the retained job JSON and logs, including exact head SHAs;
+these results do not establish relevance quality or physical-device acceptance.
+
+### Corrected ordinary runtime
+
+[Ordinary 36530225153](https://github.com/HeyZeus100/skein/actions/runs/36530225153)
+at exact `8b8884b` has **277 executed passing XML cases**: app 37, vault 204 and
+inference-service 36, with zero failures, errors or skips. The coordinator
+independently parsed all three original XML files. All seven new Unicode
+contracts and the six preserved graph/FTS regressions executed; the opt-in
+retrieval class is absent. A separate reviewer confirmed that the complete
+277-case inventory matches
+the failed predecessor exactly: no tests were removed. The corrected ART
+byte/lookup/NUL negative controls passed without changing production logic.
+The passing assertions establish their expected bytes; the XML does not
+separately dump those hex values. **skein-3q32 is closed** against this scoped
+acceptance evidence and its documented exclusions. The failed predecessor remains
+separate evidence and is not relabeled.
+
+### Frozen retrieval outcome and enforced failure
+
+The sole [dedicated run 36531672149](https://github.com/HeyZeus100/skein/actions/runs/36531672149)
+measured exact source `8b8884b` once with `require_quality=true`. Its original XML
+contains one executed passing test, 65.080 seconds, zero failures/errors/skips;
+Gradle exited zero. The workflow and actual retrieval job nevertheless **FAILED**
+because the explicit relevance quality gate failed. The summary retains
+`complete=true`, `quality_gate.status=FAIL` and the enforcement exception. This
+is the intended distinction between successful execution/collection and quality.
+No second measurement or calibration followed these outcomes.
+
+The complete 4,685,276-byte JSON has SHA-256
+`b51830389930206f991de92be217cc55bcd0371e9bebf34646bef570ab5d0745`,
+matching the device report. Collection succeeded on its first attempt with no
+errors. Prebuilt, installed and post-instrumentation APK digests all equal
+`aaa895db11c95fb989d2c682fc14db6d38e1818978055201717b3aa906c803fc`.
+The source revision remains host-declared, not independently embedded APK
+attestation. Raw XML/JSON, all workflow conclusions and independent reviews are
+retained in the [corrected source bundle](../eval/runs/2026-09-28-retrieval-continuation-8b8884b/README.md).
+
+| Development mode | Recall@8 | nDCG@8 | Absence rejected | False rejection | Ranking gate | p50 / p95 ms |
+|---|---:|---:|---:|---:|---|---:|
+| Lexical only | 0.600000 | 0.601604 | 16/16 | 12/60 | FAIL | 11.745 / 16.095 |
+| Graph only | 0.200000 | 0.141962 | 16/16 | 48/60 | FAIL | 0.838 / 3.816 |
+| Default lexical + graph | 0.800000 | 0.717357 | 16/16 | 12/60 | PASS | 12.173 / 15.606 |
+
+Development quality is unchanged. The FTS audit still finds healthy row matches
+for all 508 reproduced legacy top-50 misses among 850 probes, with zero new
+ingest warnings. There are zero vectors and 850 pending documents/chunks;
+`ApproximateTokenizer` and `embedder=None` remain explicit. Full hybrid stays
+**INELIGIBLE**. Timings describe this emulator run, not a paired speed experiment
+or physical-device performance.
+
+| Validation set / configuration | Answer spans covered | Absence rejected | False rejection | Recall@8 / nDCG@8 | Strict validation |
+|---|---:|---:|---:|---:|---|
+| Original reserved / production | 5/6 | 5/6 | 1/6 | 0.833333 / 0.833333 | **FAIL** |
+| Original reserved / experiment | 5/6 | 6/6 | 1/6 | 0.833333 / 0.833333 | **FAIL** |
+| Original reserved / ungated | 6/6 | 0/6 | 0/6 | 1.000000 / 1.000000 | **FAIL** |
+| New frozen set / production | 9/12 | 6/12 | 3/12 | 0.750000 / 0.750000 | **FAIL** |
+| New frozen set / experiment | 10/12 | 7/12 | 2/12 | 0.833333 / 0.833333 | **FAIL** |
+| New frozen set / ungated | 12/12 | 0/12 | 0/12 | 1.000000 / 0.969244 | **FAIL** |
+
+Every configuration passes the unchanged ranking thresholds, but none meets
+the strict all-answers/all-absence validation requirement. Experimental/control
+results do not substitute for production acceptance. The experiment remains
+disabled as decided from development evidence before this measurement.
+
+Production rejects new answerable paraphrases `03`, `05` and `08` (film
+protective packaging, wet paper between absorbent layers, and choir sheet
+music), although the ungated control covers their answers. It accepts related
+sources for absent facts `13`, `14`, `16`, `17`, `19` and `20`: a manufacturer,
+calendar date, boat capacity, humidity, inspection outcome and composer.
+The experiment recovers `05` and rejects `16`, while still failing the other
+listed cases. The original reserved paraphrase/cost failures also remain.
+No labels, text, thresholds or policy were changed to fit these results.
+
+The coordinator inspected the original XML, JSON and runner summary,
+independently recounted the query aggregates and reran the retained report and
+source checks. The source review recomputed titles, complete source bytes,
+UTF-8 spans, BLAKE3 revisions, fingerprints and grades for all **1,449** returned
+source occurrences: 414 original reserved and 1,035 newly frozen. Scope,
+provenance, anchor, duplicate and determinism violations are zero. This verifies
+artifact consistency and isolation, not fact-level relevance. The measured
+quality gate correctly reports development ranking/absence PASS and both
+production validation gates FAIL. Nightly/relevant-PR replays now enforce those
+same unmet gates and must be described as regression runs. This manual dispatch
+verified the shared enforced lane; a scheduled or PR event was not separately
+executed in this session.
+
+### Remaining acceptance and handoff
+
+`skein-3q32` is closed for the measured Unicode query/probe repair.
+`skein-5uu2` remains an investigation task: demonstrate actual affected
+mixed-encoding postings before implementing any bounded derived-row repair.
+The first runtime failure does not justify an assumed historical Android
+supplementary-character migration.
+
+`skein-gg11.32` remains in progress. The development-falsified value-shape
+experiment is disabled in production; lexical overlap and nearby quantities do
+not reliably establish the requested attribute. Supported paraphrases,
+contradictory/revised facts, compact evidence selection and provenance-aware
+follow-up resolution still require work. Future calibration must use development
+data and another independently frozen validation set; the measured sets here
+are now regression evidence.
+
+`skein-lbw`, `skein-079`, `skein-hwsa` and `skein-5hr` remain open. No approved
+embedding backend decision, real service, shared tokenizer activation,
+production document/query embeddings or complete reindex path is established.
+`skein-9744` now has separate ordinary/diagnostic execution, explicit quality
+enforcement and nightly/relevant-PR wiring, but production vector ablation and
+full-hybrid acceptance remain open. No model factuality or physical-device
+performance claim follows from these synthetic retrieval results.
+
+The measured application/test source remains `8b8884b`; later commits retain
+raw evidence and documentation without extending runtime measurements to new
+application behavior. Original evidence, gold labels and thresholds are
+preserved. The coordinator independently verified all 105 SHA-256 entries in
+the four earlier bundles, all 17 entries in the failed continuation bundle,
+and all 34 entries in the corrected source bundle. All 29 uncompressed members
+of the complete dedicated artifact archive also match their original byte
+lengths and hashes. Owner directories, the existing stash and recovery worktrees remain intact.
+**Fold HOLD remains unchanged:** no physical-device access, SSH, installation
+or generation occurred. Beads was updated locally; its Dolt remote is still
+unconfigured, so its attempted push could not sync. No remote was invented.
