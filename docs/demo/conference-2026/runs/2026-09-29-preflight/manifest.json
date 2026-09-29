@@ -1,0 +1,22 @@
+{
+  "at": "2026-09-29T08:23:36.748581+00:00",
+  "tool_source_commit": "b63ac7d1cf4271594d186f3daae046143bb10c9e",
+  "tool_sha256": {
+    "qualify_model_artifact.py": "da1abf66cb6ebf5f9be351103da17ddc7bdeee3a35c1ae6f73ccf5ae1da689a2",
+    "prepare_android_benchmark.py": "ba62a5ee4e1ba4bfac11a75def7cc4368828b930f092eade9d8d2c334c7b0b91"
+  },
+  "exit_code": 0,
+  "command": [
+    "python3",
+    "-B",
+    "/Users/andrewherrera/skein-worktrees/conference-demo-20260929/build/agent-logs/fold/20260929T081355Z-preflight-89bcc0/model-qualification/qualify_model_artifact.py",
+    "--model",
+    "/Users/andrewherrera/skein-worktrees/conference-demo-20260929/build/agent-logs/fold/20260929T081355Z-preflight-89bcc0/public-model-cache-qwen-2c5f9a121ae6/Qwen2.5-3B-Instruct-abliterated-Q3_K_M.gguf",
+    "--expected-sha256",
+    "2c5f9a121ae6695208e300c16acca303669afa4e18812061164dca9c97071b12",
+    "--expected-size",
+    "1590475744"
+  ],
+  "report_sha256": "592dfabd8d239473cf181cdc9e9c9b876c5da77e196d3431643787b4f3ade878",
+  "kind": "host identity and metadata only; no native generation"
+}
