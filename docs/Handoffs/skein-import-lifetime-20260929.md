@@ -61,10 +61,9 @@ canUseRegistry = { sessionEpoch() == epoch && !isLocking() && lockEpoch.get() !=
 
 // Return ModelServices(..., imports = imports).
 // In unlocked(), after pushOnSessionUnlocked(epoch), before launching adoption:
-imports?.attach(manager) {
-    // Recheck this session's authorization before reading its registry/cache.
-    manifestCache.refresh()
-}
+imports?.attach(manager = manager, onRegistered = {
+    if (registryAuthorized()) manifestCache.refresh()
+})
 
 // First in HIGH freezeTurns; also onLocking, onLocked, closeSessionState:
 imports?.detach(manager)

@@ -143,7 +143,7 @@ public class ModelServices(
     public suspend fun unlocked(epoch: Long) {
         manifestCache.refresh()
         pushOnSessionUnlocked(epoch)
-        imports?.attach(manager) { if (registryAuthorized()) manifestCache.refresh() }
+        imports?.attach(manager = manager, onRegistered = { if (registryAuthorized()) manifestCache.refresh() })
         // After the epoch push, so `inspect` is authorised. Off this path:
         // a rescue re-hashes the sealed file (seconds for 1.6 GB) and binds
         // the isolated service, neither of which the unlock should wait on.

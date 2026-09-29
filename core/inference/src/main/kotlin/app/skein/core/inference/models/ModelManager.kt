@@ -51,6 +51,7 @@ import app.skein.core.model.SkeinLog
 import app.skein.core.verify.DigestAlgorithm
 import app.skein.core.verify.ModelFileRole
 import app.skein.core.verify.ModelVerification
+import app.skein.core.verify.ModelVerifier
 import app.skein.ipc.ErrorCode
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers

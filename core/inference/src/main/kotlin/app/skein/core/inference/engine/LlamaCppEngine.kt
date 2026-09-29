@@ -688,8 +688,13 @@ public class LlamaCppEngine(
             if (epoch <= revokedEpoch.get() || epoch < authorizedEpoch.get()) return
             authorizedEpoch.set(epoch)
         }
+        val version = modelTransactions.current()
         val service = connection.get() ?: return
-        withContext(io) { runCatching { service.onSessionUnlocked(epoch) } }
+        try {
+            modelTransactions.call(version, close = {}) { runCatching { service.onSessionUnlocked(epoch) } }
+        } catch (_: InferenceException.SessionLocked) {
+            // Revocation has already scheduled the terminal push independently.
+        }
     }
 
     /**
@@ -773,15 +778,18 @@ public class LlamaCppEngine(
             connection.get() ?: run {
                 val version = modelTransactions.current()
                 val id = synchronized(lifecycle) { bindingId.incrementAndGet() }
-                val bindingEpoch = authorizedEpoch.get().takeIf { it != EPOCH_NONE } ?: sessionEpoch()
+                val bindingAuthorization = authorizedEpoch.get()
+                val bindingEpoch = bindingAuthorization.takeIf { it != EPOCH_NONE } ?: sessionEpoch()
                 modelTransactions.call(version, close = {}) {
                     var service: IInferenceService? = null
                     var published = false
                     try {
                         val bound = connector.connect { onServiceDeath(id) }
                         service = bound
-                        val epoch = authorizedEpoch.get()
-                        if (epoch != EPOCH_NONE) runCatching { bound.onSessionUnlocked(epoch) }
+                        currentCoroutineContext().ensureActive()
+                        if (bindingAuthorization != EPOCH_NONE) {
+                            runCatching { bound.onSessionUnlocked(bindingAuthorization) }
+                        }
                         currentCoroutineContext().ensureActive()
                         modelTransactions.publish(version) {
                             checkSessionAdmission()
