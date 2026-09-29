@@ -20,9 +20,6 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import app.skein.BuildConfig
 import app.skein.core.inference.models.DeleteOutcome
-import app.skein.core.inference.models.ImportOutcome
-import app.skein.core.inference.models.ImportProgress
-import app.skein.core.inference.models.ImportSource
 import app.skein.core.model.PersonaService
 import app.skein.core.navigation.Destination
 import app.skein.core.navigation.SkeinId
@@ -52,12 +49,13 @@ import app.skein.feature.shell.host.SkeinShellHost
 import app.skein.feature.shell.host.SkeinShellState
 import app.skein.feature.shell.host.navKindsOf
 import app.skein.feature.shell.host.vaultSearch
+import app.skein.models.ModelImportOutcome
+import app.skein.models.ModelImportState
 import app.skein.models.ModelServices
 import app.skein.vault.VaultSession
-import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.launch
@@ -92,9 +90,11 @@ internal fun NavShell(
     val defaultSpaceId by produceState<String?>(null, personas) { value = personas.default().id }
     val history = rememberChatHistory(session.repository, shell)
     val models = session.models
-    // ponytail: re-read on every destination switch (the Models destination is where a model is added);
-    // a registry change flow would make it live.
-    val hasModel by produceState(false, models, shell.nav.topLevel) { value = models?.registry?.default() != null }
+    var modelVersion by remember(models) { mutableIntStateOf(0) }
+    // App-owned imports and unlock adoption can finish while Chat remains visible.
+    val hasModel by produceState(false, models, modelVersion, shell.nav.topLevel) {
+        value = models?.registry?.default() != null
+    }
     val chat =
         ChatEntryDeps(
             repository = session.repository,
@@ -109,7 +109,7 @@ internal fun NavShell(
             defaultSpaceId = defaultSpaceId,
         )
     val graph = remember(session) { GraphEntryDeps(session.repository, session.indexStore) }
-    val modelsDeps = rememberModelsEntryDeps(models, shell)
+    val modelsDeps = rememberModelsEntryDeps(models, shell, modelVersion) { modelVersion++ }
     val settings =
         remember(settingsViewModel) {
             SettingsEntryDeps(settingsViewModel, "${BuildConfig.VERSION_NAME} (${BuildConfig.VERSION_CODE})")
@@ -153,17 +153,19 @@ internal fun NavShell(
  * `/import model` — the same picker, one import at a time, import then set
  * default then refresh the manifest cache — with its progress and result in
  * the Models list instead of a row over the composer (IA §4). The import runs
- * in this composition's scope, as it did in the old shell's.
+ * in the app-owned foreground import coordinator; this composition only observes it.
  */
 @Composable
 private fun rememberModelsEntryDeps(
     models: ModelServices?,
     shell: SkeinShellState,
+    version: Int,
+    onModelsChanged: () -> Unit,
 ): ModelsEntryDeps {
-    var version by remember { mutableIntStateOf(0) }
-    var actionMessage by remember { mutableStateOf<String?>(null) }
-    var importProgress by remember { mutableStateOf<Float?>(null) }
-    var importJob by remember { mutableStateOf<Job?>(null) }
+    var localActionMessage by remember(models) { mutableStateOf<String?>(null) }
+    val importStates = remember(models) { models?.imports?.state ?: MutableStateFlow<ModelImportState>(ModelImportState.Idle) }
+    val importState by importStates.collectAsState()
+    val importProgress = (importState as? ModelImportState.Running)?.fraction
     val scope = rememberCoroutineScope()
     // skein-gg11.18: a sealed copy whose registration was lost (the vault locked mid-import) is
     // registered again at unlock by ModelServices; refresh the list and say so, since the user never saw it land.
@@ -171,7 +173,7 @@ private fun rememberModelsEntryDeps(
         val services = models ?: return@LaunchedEffect
         services.rescued.collect { ids ->
             if (ids.isNotEmpty()) {
-                version++
+                onModelsChanged()
                 // A friendly name, never the raw model id (DESIGN_SYSTEM.md §11.5).
                 val names =
                     ids.mapNotNull { id ->
@@ -180,64 +182,51 @@ private fun rememberModelsEntryDeps(
                             ?.model
                             ?.name
                     }
-                actionMessage = "Registered ${names.joinToString()} from an earlier import and set as default"
+                if (names.isNotEmpty()) localActionMessage = "Registered ${names.joinToString()} from an earlier import"
             }
         }
     }
     // A success clears itself; a failure or a running import stays until dismissed.
-    LaunchedEffect(actionMessage) {
-        val text = actionMessage ?: return@LaunchedEffect
+    LaunchedEffect(localActionMessage) {
+        val text = localActionMessage ?: return@LaunchedEffect
         if (TRANSIENT_PREFIXES.any(text::startsWith)) {
             delay(STATUS_AUTO_DISMISS_MILLIS)
-            if (actionMessage == text) actionMessage = null
+            if (localActionMessage == text) localActionMessage = null
         }
     }
     val importLauncher =
         rememberLauncherForActivityResult(ActivityResultContracts.OpenDocument()) { uri ->
             val services = models
             if (uri == null || services == null) return@rememberLauncherForActivityResult
-            if (importJob?.isActive == true) {
-                actionMessage = IMPORT_RUNNING
-                return@rememberLauncherForActivityResult
-            }
-            importJob =
-                scope.launch {
-                    actionMessage = "Importing model…"
-                    importProgress = null
-                    services.manager.import(ImportSource.Picked(uri)).collectLatest { progress ->
-                        when (progress) {
-                            is ImportProgress.InProgress ->
-                                if (progress.totalBytes > 0) {
-                                    val fraction =
-                                        (progress.bytesProcessed.toFloat() / progress.totalBytes).coerceIn(
-                                            0f,
-                                            1f,
-                                        )
-                                    importProgress = fraction
-                                    actionMessage = "Importing model… ${(fraction * 100).toInt()}%"
-                                } else {
-                                    importProgress = null
-                                    actionMessage = "Importing model…"
-                                }
-                            is ImportProgress.Done -> {
-                                importProgress = null
-                                actionMessage =
-                                    when (val outcome = progress.outcome) {
-                                        is ImportOutcome.Imported -> {
-                                            services.manager.setDefault(outcome.record.model.id)
-                                            services.manifestCache.refresh()
-                                            "Imported “${outcome.record.model.name}” and set as default"
-                                        }
-                                        // `describe()` is logged by ModelManager already, never shown (§11.5).
-                                        is ImportOutcome.Refused ->
-                                            "Couldn't import the model. Choose a different file and try again."
-                                    }
-                                version++
-                            }
-                        }
+            val imports = services.imports ?: return@rememberLauncherForActivityResult
+            if (!imports.startImport(uri)) {
+                localActionMessage =
+                    if (imports.state.value is ModelImportState.Running) {
+                        IMPORT_RUNNING
+                    } else {
+                        "Couldn't start the import. Try again while the app is open."
                     }
-                }
+            }
         }
+    LaunchedEffect(models, importState) {
+        val result = importState as? ModelImportState.Done ?: return@LaunchedEffect
+        onModelsChanged()
+        if (result.outcome == ModelImportOutcome.IMPORTED) {
+            delay(STATUS_AUTO_DISMISS_MILLIS)
+            models?.imports?.dismissResult(result)
+        }
+    }
+    // Current import state takes precedence over a replayed rescue lookup finishing later.
+    val actionMessage = when (val state = importState) {
+        ModelImportState.Idle -> localActionMessage
+        is ModelImportState.Running -> state.fraction?.let { "Importing model… ${(it * 100).toInt()}%" } ?: "Importing model…"
+        is ModelImportState.Done -> when (state.outcome) {
+            ModelImportOutcome.IMPORTED -> "Imported model and set as default"
+            ModelImportOutcome.SAVED_FOR_UNLOCK -> "Model copied. Unlock to finish registration."
+            ModelImportOutcome.REFUSED -> "Couldn't import the model. Choose a different file and try again."
+            ModelImportOutcome.FAILED -> "The import stopped. Choose the file again to retry."
+        }
+    }
     // Re-read on every destination switch as well: an import can finish while Models is not showing.
     val items by
         produceState(initialValue = emptyList<ModelListItem>(), models, version, shell.nav.topLevel) {
@@ -261,27 +250,30 @@ private fun rememberModelsEntryDeps(
         onSetDefault = { id ->
             scope.launch {
                 models?.manager?.setDefault(id)
-                version++
+                onModelsChanged()
             }
         },
         onDelete = { id ->
             scope.launch {
                 val name = items.firstOrNull { it.id == id }?.displayName ?: id
                 if (models?.manager?.delete(id) is DeleteOutcome.Refused) {
-                    actionMessage = "Couldn't delete “$name”. It's in use right now. Try again in a moment."
+                    localActionMessage = "Couldn't delete “$name”. It's in use right now. Try again in a moment."
                 }
                 models?.manifestCache?.refresh()
-                version++
+                onModelsChanged()
             }
         },
         actionMessage = actionMessage,
-        onDismissActionMessage = { actionMessage = null },
+        onDismissActionMessage = {
+            localActionMessage = null
+            (importState as? ModelImportState.Done)?.let { models?.imports?.dismissResult(it) }
+        },
         onImport =
             models?.let {
                 {
                     // One import at a time: a second pick while one runs would race the same staging directory.
-                    if (importJob?.isActive == true) {
-                        actionMessage = IMPORT_RUNNING
+                    if (models.imports?.state?.value is ModelImportState.Running) {
+                        localActionMessage = IMPORT_RUNNING
                     } else {
                         importLauncher.launch(arrayOf("application/octet-stream", "*/*"))
                     }
