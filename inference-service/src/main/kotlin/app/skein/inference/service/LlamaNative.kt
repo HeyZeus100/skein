@@ -4,7 +4,7 @@
 // third-party JNI dependencies)". Thin means: every function here is one
 // `external fun` over a handful of llama.cpp calls, all arguments and results
 // are primitives / `Long` handles / `IntArray` / `FloatArray` / `ByteArray` /
-// `String`, and no policy (batching, stop strings, UTF-8 stream buffering,
+// `String` plus a platform BooleanSupplier for load cancellation, and no policy (batching, stop strings, UTF-8 stream buffering,
 // sampling defaults, thermal backoff) lives below this line. Policy is
 // `E4.I3`'s (`InferenceService`) and `E4.I6`'s.
 //
@@ -46,6 +46,7 @@
 package app.skein.inference.service
 
 import app.skein.core.model.SkeinLog
+import java.util.function.BooleanSupplier
 
 private const val LOG_TAG = "llama.cpp"
 
@@ -101,6 +102,12 @@ object LlamaNative {
      * closes it on unload. llama.cpp maps the stream through `fileno()`; no path
      * is resolved anywhere.
      *
+     * [cancellation] is polled before/after loading and at each native tensor
+     * progress callback, on this worker thread. It must not block. Cancellation
+     * throws [LlamaErrorCode.CANCELLED] without retaining a model or owned fd.
+     * Metadata parsing has no upstream poll; session lock also kills this
+     * isolated process independently of the worker at its hard deadline.
+     *
      * @param fd a readable descriptor positioned anywhere; the loader seeks.
      * @return a model handle, never `0` on success.
      * @throws LlamaException [LlamaErrorCode.INVALID_MODEL] if the descriptor
@@ -113,6 +120,7 @@ object LlamaNative {
         fd: Int,
         nGpuLayers: Int,
         useMmap: Boolean,
+        cancellation: BooleanSupplier = BooleanSupplier { false },
     ): Long
 
     /**
@@ -136,6 +144,7 @@ object LlamaNative {
         path: String,
         nGpuLayers: Int,
         useMmap: Boolean,
+        cancellation: BooleanSupplier = BooleanSupplier { false },
     ): Long
 
     /**

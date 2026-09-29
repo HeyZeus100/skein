@@ -13,6 +13,8 @@
 
 package app.skein.inference.service
 
+import java.util.function.BooleanSupplier
+
 /** One entry of [NativeBackendReport.devices] — `ggml_backend_dev_type`/name, both allowlisted. */
 data class NativeBackendDevice(
     val type: Int,
@@ -100,6 +102,7 @@ interface LlamaBackend {
         fd: Int,
         nGpuLayers: Int,
         useMmap: Boolean,
+        cancellation: BooleanSupplier = BooleanSupplier { false },
     ): Long
 
     fun freeModel(model: Long)
@@ -219,7 +222,8 @@ object NativeLlamaBackend : LlamaBackend {
         fd: Int,
         nGpuLayers: Int,
         useMmap: Boolean,
-    ): Long = LlamaNative.loadModelFromFd(fd, nGpuLayers, useMmap)
+        cancellation: BooleanSupplier,
+    ): Long = LlamaNative.loadModelFromFd(fd, nGpuLayers, useMmap, cancellation)
 
     override fun freeModel(model: Long) = LlamaNative.freeModel(model)
 

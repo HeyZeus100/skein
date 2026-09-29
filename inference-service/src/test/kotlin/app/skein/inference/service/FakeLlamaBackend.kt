@@ -8,6 +8,8 @@
 
 package app.skein.inference.service
 
+import java.util.function.BooleanSupplier
+
 /** Records handles handed out so a test can assert nothing leaked. */
 open class FakeLlamaBackend : LlamaBackend {
     var backendInitCalls: Int = 0
@@ -55,6 +57,7 @@ open class FakeLlamaBackend : LlamaBackend {
         fd: Int,
         nGpuLayers: Int,
         useMmap: Boolean,
+        cancellation: BooleanSupplier,
     ): Long {
         loadedFds += fd
         return (nextHandle++).also { liveModels += it }

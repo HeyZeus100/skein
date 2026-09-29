@@ -32,6 +32,7 @@ import android.app.Service
 import android.content.Intent
 import android.os.IBinder
 import android.os.ParcelFileDescriptor
+import android.os.Process
 import android.os.RemoteException
 import android.os.SystemClock
 import app.skein.core.model.SkeinLog
@@ -72,6 +73,7 @@ import java.io.IOException
 import java.nio.ByteBuffer
 import java.nio.charset.CodingErrorAction
 import java.util.concurrent.atomic.AtomicBoolean
+import java.util.function.BooleanSupplier
 
 private const val TAG = "InferenceService"
 
@@ -102,7 +104,11 @@ class InferenceService : Service() {
         super.onCreate()
         worker = InferenceWorker()
         callbacks = CallbackDispatcher()
-        engine = InferenceEngineState(backend, worker, callbacks)
+        engine = InferenceEngineState(backend, worker, callbacks) {
+            // This Service is isolatedProcess=true. Never wait for the native
+            // worker at the lock deadline: a wedged loader must die with it.
+            Process.killProcess(Process.myPid())
+        }
         // Process-global llama.cpp state: exactly once, before any worker task.
         worker.submitBlocking {
             backend.backendInit()
@@ -168,12 +174,17 @@ internal class InferenceEngineState(
     private val backend: LlamaBackend,
     private val worker: TaskRunner,
     private val callbacks: CallbackDispatcher,
+    private val verificationProgress: VerifyProgress = VerifyProgress.None,
+    private val terminateProcess: (() -> Unit)? = null,
 ) {
     private val lock = Any()
 
     private val gate =
         IsolatedSessionGate(
-            onCancelRequests = { cancelInFlight() },
+            onCancelRequests = {
+                cancelModelOperation()
+                cancelInFlight()
+            },
             onReleaseState = { releaseOnLock() },
         )
 
@@ -183,8 +194,15 @@ internal class InferenceEngineState(
     private var state: String = EngineState.UNLOADED
     private var lastTokensPerSec: Float = 0f
 
-    /** Raised while an `unload` is waiting for a verification to notice. */
-    private val unloadRequested = AtomicBoolean(false)
+    /** One token owns verification, queued native work and publication. */
+    private var modelOperation: ModelOperation? = null
+
+    private class ModelOperation(
+        val epoch: Long,
+        val inspection: Boolean,
+    ) {
+        val cancelled = AtomicBoolean(false)
+    }
 
     private class LoadedModel(
         val pinned: PinnedModel,
@@ -213,85 +231,85 @@ internal class InferenceEngineState(
     // ---------------------------------------------------------------- load
 
     fun load(req: LoadRequest): Int {
-        if (gate.guard(req.sessionEpoch) is GateResult.Refuse) {
+        val operation = ModelOperation(req.sessionEpoch, inspection = false)
+        admitModelOperation(operation)?.let { code ->
             closeReceived(req.binding)
-            return ErrorCode.SESSION_LOCKED
+            return code
         }
-
-        // Warm swap: a second load while loaded unloads first. Done before
-        // pinning so the old model's descriptors and KV cache are gone before
-        // the new model's allocation is attempted — the device may not have
-        // room for both.
-        unload()
-
-        synchronized(lock) { state = EngineState.VERIFYING }
-        unloadRequested.set(false)
-        // `unload` aborts a verification in progress: a ten-second hash of a
-        // model the user has navigated away from must not pin the worker.
-        val prepared =
-            when (val outcome = pinAndVerify(req.binding, VerifyCancellation { unloadRequested.get() })) {
-                is VerifyOutcome.Refused -> return refuse(outcome.refusal)
-                is VerifyOutcome.Verified -> outcome
-            }
-        val pinnedModel = prepared.pinned
-        val binding = prepared.binding
-
-        synchronized(lock) { state = EngineState.LOADING }
+        var pinned: PinnedModel? = null
+        var transferred = false
         return try {
-            val handles =
-                worker.submitBlocking {
-                    // bd skein-gg11.2 (OL-19): start capturing WARN/ERROR log
-                    // lines immediately before the native load call, so a
-                    // failure below can attach the first few, redacted.
-                    backend.beginLoadLogCapture()
-                    val model =
+            // Warm swap frees old handles on the worker before allocation.
+            // It must not cancel the new operation's token.
+            unload(cancelOperation = false)
+            checkModelOperation(operation)
+            synchronized(lock) { state = EngineState.VERIFYING }
+            val prepared =
+                when (val outcome = pinAndVerify(req.binding, VerifyCancellation { isCancelled(operation) })) {
+                    is VerifyOutcome.Refused -> return refuse(outcome.refusal)
+                    is VerifyOutcome.Verified -> outcome
+                }
+            pinned = prepared.pinned
+            checkModelOperation(operation)
+            synchronized(lock) { state = EngineState.LOADING }
+            worker.submitBlocking {
+                checkModelOperation(operation)
+                backend.beginLoadLogCapture()
+                var model = 0L
+                var context = 0L
+                try {
+                    model =
                         backend.loadModelFromFd(
-                            fd = pinnedModel.main.descriptorNumber,
+                            fd = prepared.pinned.main.descriptorNumber,
                             nGpuLayers = req.gpuLayers,
                             useMmap = true,
+                            cancellation = BooleanSupplier { isCancelled(operation) },
                         )
-                    val context =
-                        try {
-                            backend.newContext(
+                    checkModelOperation(operation)
+                    context =
+                        backend.newContext(
+                            model = model,
+                            nCtx = req.contextLength,
+                            nThreads = req.threads,
+                            nBatch = PROMPT_BATCH_TOKENS,
+                            embeddings = req.embeddingMode,
+                        )
+                    val contextLength = backend.contextLength(context)
+                    synchronized(lock) {
+                        checkModelOperation(operation)
+                        loaded =
+                            LoadedModel(
+                                pinned = prepared.pinned,
                                 model = model,
-                                nCtx = req.contextLength,
-                                nThreads = req.threads,
-                                nBatch = PROMPT_BATCH_TOKENS,
-                                embeddings = req.embeddingMode,
+                                context = context,
+                                contextLength = contextLength,
+                                modelSha256 = prepared.binding.main.expectedSha256,
+                                embeddingMode = req.embeddingMode,
+                                gpuLayers = req.gpuLayers,
                             )
-                        } catch (e: LlamaException) {
-                            backend.freeModel(model)
-                            throw e
-                        }
-                    try {
-                        Triple(model, context, backend.contextLength(context))
-                    } catch (e: Throwable) {
-                        backend.freeContextSecure(context)
-                        backend.freeModel(model)
-                        throw e
+                        transferred = true
+                        state = EngineState.READY
+                    }
+                } finally {
+                    if (!transferred) {
+                        if (context != 0L) runCatching { backend.freeContextSecure(context) }
+                        if (model != 0L) runCatching { backend.freeModel(model) }
                     }
                 }
-            synchronized(lock) {
-                loaded =
-                    LoadedModel(
-                        pinned = pinnedModel,
-                        model = handles.first,
-                        context = handles.second,
-                        contextLength = handles.third,
-                        modelSha256 = binding.main.expectedSha256,
-                        embeddingMode = req.embeddingMode,
-                        gpuLayers = req.gpuLayers,
-                    )
-                state = EngineState.READY
             }
-            SkeinLog.i(TAG, "model loaded files=${req.binding.files.size} ctx=${handles.third}")
+            checkModelOperation(operation)
+            SkeinLog.i(TAG, "model loaded files=${req.binding.files.size}")
             ErrorCode.OK
         } catch (e: LlamaException) {
-            pinnedModel.close()
-            synchronized(lock) { state = EngineState.UNLOADED }
             val detail = ServiceErrorMapping.loadFailureDetail(e, backend.drainLoadLogLines())
             SkeinLog.w(TAG, "load failed: $detail")
             ServiceErrorMapping.toErrorCode(e)
+        } finally {
+            // The receive-side copies also close when cancellation wins before
+            // pinAndVerify. Pins remain with the loaded model only on success.
+            closeReceived(req.binding)
+            if (!transferred) pinned?.close()
+            finishModelOperation(operation)
         }
     }
 
@@ -327,42 +345,35 @@ internal class InferenceEngineState(
      * file, and "it did not verify" is an answer to that question.
      */
     fun inspect(req: InspectRequest): ModelInspection {
-        if (gate.guard(req.sessionEpoch) is GateResult.Refuse) {
+        val operation = ModelOperation(req.sessionEpoch, inspection = true)
+        admitModelOperation(operation)?.let { code ->
             closeReceived(req.binding)
-            return ModelInspection.refused(ErrorCode.SESSION_LOCKED)
+            return ModelInspection.refused(code)
         }
-        if (synchronized(lock) { active != null || measuring }) {
-            closeReceived(req.binding)
-            return ModelInspection.refused(ErrorCode.BUSY)
-        }
-
-        // Not `unloadRequested`: that flag belongs to the load path, where it
-        // stays raised after an `unload` until the next load lowers it, and an
-        // inspection holds no engine state for an `unload` to reclaim.
-        val prepared =
-            when (val outcome = pinAndVerify(req.binding, VerifyCancellation { false })) {
-                is VerifyOutcome.Refused -> {
-                    SkeinLog.w(TAG, "inspect refused: ${ServiceErrorMapping.diagnostic(outcome.refusal)}")
-                    return ModelInspection.refused(ServiceErrorMapping.toErrorCode(outcome.refusal))
-                }
-
-                is VerifyOutcome.Verified -> outcome
-            }
-
+        var pinned: PinnedModel? = null
         return try {
-            worker.submitBlocking { readInspection(prepared.pinned) }
+            val prepared =
+                when (val outcome = pinAndVerify(req.binding, VerifyCancellation { isCancelled(operation) })) {
+                    is VerifyOutcome.Refused -> {
+                        SkeinLog.w(TAG, "inspect refused: ${ServiceErrorMapping.diagnostic(outcome.refusal)}")
+                        return ModelInspection.refused(ServiceErrorMapping.toErrorCode(outcome.refusal))
+                    }
+
+                    is VerifyOutcome.Verified -> outcome
+                }
+            pinned = prepared.pinned
+            worker.submitBlocking {
+                checkModelOperation(operation)
+                readInspection(prepared.pinned, operation).also { checkModelOperation(operation) }
+            }
         } catch (e: LlamaException) {
-            // bd skein-gg11.2 (OL-19): `readInspection` began capturing
-            // before its own `loadModelFromFd`, so the same redacted-detail
-            // treatment applies to an inspection that fails to load.
             val detail = ServiceErrorMapping.loadFailureDetail(e, backend.drainLoadLogLines())
             SkeinLog.w(TAG, "inspect failed: $detail")
             ModelInspection.refused(ServiceErrorMapping.toErrorCode(e))
         } finally {
-            // The inspection's descriptors die with it. Nothing outlives the
-            // call — that is what "leaves the service in whatever state it was
-            // in" means for fds as well as for handles.
-            prepared.pinned.close()
+            closeReceived(req.binding)
+            pinned?.close()
+            finishModelOperation(operation)
         }
     }
 
@@ -374,7 +385,10 @@ internal class InferenceEngineState(
      * calls (`LlamaNative`'s threading notes), and doing the reads there too
      * keeps the model's whole lifetime on one thread.
      */
-    private fun readInspection(pinned: PinnedModel): ModelInspection {
+    private fun readInspection(
+        pinned: PinnedModel,
+        operation: ModelOperation,
+    ): ModelInspection {
         // bd skein-gg11.2 (OL-19): see the identical comment in `load`.
         backend.beginLoadLogCapture()
         val model =
@@ -382,8 +396,10 @@ internal class InferenceEngineState(
                 fd = pinned.main.descriptorNumber,
                 nGpuLayers = 0,
                 useMmap = true,
+                cancellation = BooleanSupplier { isCancelled(operation) },
             )
         return try {
+            checkModelOperation(operation)
             val architecture = backend.modelMeta(model, KEY_ARCHITECTURE)
             ModelInspection(
                 errorCode = ErrorCode.OK,
@@ -731,8 +747,10 @@ internal class InferenceEngineState(
 
     // -------------------------------------------------------------- unload
 
-    fun unload() {
-        unloadRequested.set(true)
+    fun unload() = unload(cancelOperation = true)
+
+    private fun unload(cancelOperation: Boolean) {
+        if (cancelOperation) cancelModelOperation()
         cancelInFlight()
         val model =
             synchronized(lock) {
@@ -757,7 +775,16 @@ internal class InferenceEngineState(
     }
 
     private fun releaseOnLock() {
-        unload()
+        cancelModelOperation()
+        // The hard backstop cannot queue behind a native load/decode. Process
+        // death reclaims every mapping and descriptor, including native state
+        // that has not yet returned a handle. Tests without a process retain
+        // the secure-free path and exercise it separately.
+        if (terminateProcess != null) {
+            terminateProcess.invoke()
+        } else {
+            unload()
+        }
     }
 
     // ---------------------------------------------------------- embed etc.
@@ -885,6 +912,37 @@ internal class InferenceEngineState(
 
     // ------------------------------------------------------------- helpers
 
+    private fun admitModelOperation(operation: ModelOperation): Int? =
+        synchronized(lock) {
+            when {
+                gate.guard(operation.epoch) is GateResult.Refuse -> ErrorCode.SESSION_LOCKED
+                modelOperation != null -> ErrorCode.BUSY
+                operation.inspection && (active != null || measuring) -> ErrorCode.BUSY
+                else -> {
+                    modelOperation = operation
+                    null
+                }
+            }
+        }
+
+    private fun isCancelled(operation: ModelOperation): Boolean =
+        operation.cancelled.get() || gate.guard(operation.epoch) is GateResult.Refuse
+
+    private fun checkModelOperation(operation: ModelOperation) {
+        if (isCancelled(operation)) throw LlamaException(LlamaErrorCode.CANCELLED, "model operation cancelled")
+    }
+
+    private fun cancelModelOperation() {
+        synchronized(lock) { modelOperation?.cancelled?.set(true) }
+    }
+
+    private fun finishModelOperation(operation: ModelOperation) {
+        synchronized(lock) {
+            if (modelOperation === operation) modelOperation = null
+            if (!operation.inspection && loaded == null) state = EngineState.UNLOADED
+        }
+    }
+
     /** What [pinAndVerify] decided. */
     private sealed interface VerifyOutcome {
         /** Every file pinned and verified; [pinned] is open and the caller owns it. */
@@ -961,20 +1019,23 @@ internal class InferenceEngineState(
             }
 
         val pinnedModel = PinnedModel(mainPin, pins - ModelFileRole.MAIN)
-        return when (
-            val verified =
-                ModelVerifier.verifyPinned(
-                    model = pinnedModel,
-                    binding = verifyBinding,
-                    cancellation = cancellation,
-                    progress = VerifyProgress { /* `load` already set state to "verifying"; see status() */ },
-                )
-        ) {
-            // verifyPinned already closed every descriptor on refusal, so
-            // there is nothing left that could reach llama.cpp even if this
-            // code were wrong about the rest.
-            is PinnedLoad.Refused -> VerifyOutcome.Refused(verified.refusal)
-            is PinnedLoad.Ready -> VerifyOutcome.Verified(pinnedModel, verifyBinding)
+        return try {
+            when (
+                val verified =
+                    ModelVerifier.verifyPinned(
+                        model = pinnedModel,
+                        binding = verifyBinding,
+                        cancellation = cancellation,
+                        progress = verificationProgress,
+                    )
+            ) {
+                // verifyPinned closes every descriptor on refusal.
+                is PinnedLoad.Refused -> VerifyOutcome.Refused(verified.refusal)
+                is PinnedLoad.Ready -> VerifyOutcome.Verified(pinnedModel, verifyBinding)
+            }
+        } catch (failure: Throwable) {
+            pinnedModel.close()
+            throw failure
         }
     }
 

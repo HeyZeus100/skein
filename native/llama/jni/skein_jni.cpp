@@ -41,6 +41,7 @@
 #include <cstdio>
 #include <cstring>
 #include <exception>
+#include <memory>
 #include <new>
 #include <string>
 #include <vector>
@@ -449,10 +450,48 @@ Java_app_skein_inference_service_LlamaNative_setLogCallback(JNIEnv *env, jobject
     SKEIN_JNI_CATCH()
 }
 
+/* A local JNI reference is sufficient: upstream invokes progress synchronously
+ * on the loading thread, once per tensor and on completion. BooleanSupplier is
+ * a platform interface, so its method name survives shrinking without keep
+ * rules. Cancellation state belongs to the operation, never to a global flag
+ * that a newer load could reset. Metadata parsing has no upstream progress
+ * hook; session LOCKED therefore also has an independent process backstop. */
+class LoadCancellation {
+  public:
+    LoadCancellation(JNIEnv *env, jobject signal) : env_(env), signal_(signal) {
+        if (signal_ != nullptr) {
+            jclass type = env_->GetObjectClass(signal_);
+            if (type != nullptr) {
+                get_ = env_->GetMethodID(type, "getAsBoolean", "()Z");
+                env_->DeleteLocalRef(type);
+            }
+        }
+    }
+
+    bool Continue() {
+        if (cancelled_ || env_->ExceptionCheck()) return false;
+        if (signal_ != nullptr && env_->CallBooleanMethod(signal_, get_) == JNI_TRUE) cancelled_ = true;
+        return !cancelled_ && !env_->ExceptionCheck();
+    }
+
+    static bool Progress(float /*progress*/, void *opaque) {
+        return static_cast<LoadCancellation *>(opaque)->Continue();
+    }
+
+  private:
+    JNIEnv *env_;
+    jobject signal_;
+    jmethodID get_ = nullptr;
+    bool cancelled_ = false;
+};
+
+using OwnedModel = std::unique_ptr<llama_model, decltype(&llama_model_free)>;
+using OwnedModelFile = std::unique_ptr<std::FILE, decltype(&std::fclose)>;
+
 /* Thread: the inference worker thread. Blocks for seconds on a large model. */
 extern "C" JNIEXPORT jlong JNICALL
 Java_app_skein_inference_service_LlamaNative_loadModel(
-    JNIEnv *env, jobject /*thiz*/, jstring path, jint n_gpu_layers, jboolean use_mmap) {
+    JNIEnv *env, jobject /*thiz*/, jstring path, jint n_gpu_layers, jboolean use_mmap, jobject cancellation) {
     SKEIN_JNI_TRY
     if (path == nullptr) {
         ThrowLlama(env, ErrorCode::kInvalidArgument, "model path is null");
@@ -464,7 +503,14 @@ Java_app_skein_inference_service_LlamaNative_loadModel(
         return 0;
     }
 
+    LoadCancellation signal(env, cancellation);
+    if (!signal.Continue()) {
+        if (!env->ExceptionCheck()) ThrowLlama(env, ErrorCode::kCancelled, "model load cancelled");
+        return 0;
+    }
     llama_model_params params = llama_model_default_params();
+    params.progress_callback = LoadCancellation::Progress;
+    params.progress_callback_user_data = &signal;
     params.n_gpu_layers = n_gpu_layers;
     /* v0.4.1 replaced the `use_mmap` bool with the `load_mode` enum. MMAP is
      * what spec §6 requires ("model file mmap'd read-only"); NONE is the
@@ -486,7 +532,11 @@ Java_app_skein_inference_service_LlamaNative_loadModel(
         params.devices = cpu_only_devices.data();
     }
 
-    llama_model *model = llama_model_load_from_file(native_path.c_str(), params);
+    OwnedModel model(llama_model_load_from_file(native_path.c_str(), params), llama_model_free);
+    if (!signal.Continue()) {
+        if (!env->ExceptionCheck()) ThrowLlama(env, ErrorCode::kCancelled, "model load cancelled");
+        return 0;
+    }
     if (model == nullptr) {
         /* llama.cpp collapses "not a GGUF", "truncated", "unknown arch" and
          * "could not allocate" into one null return. INVALID_MODEL is the
@@ -495,7 +545,9 @@ Java_app_skein_inference_service_LlamaNative_loadModel(
         ThrowLlama(env, ErrorCode::kInvalidModel, "model load failed (not a loadable GGUF)");
         return 0;
     }
-    return static_cast<jlong>(Handles().Add(HandleKind::kModel, model));
+    const auto handle = Handles().Add(HandleKind::kModel, model.get());
+    model.release();
+    return static_cast<jlong>(handle);
     SKEIN_JNI_CATCH(0)
 }
 
@@ -524,7 +576,7 @@ Java_app_skein_inference_service_LlamaNative_loadModel(
  */
 extern "C" JNIEXPORT jlong JNICALL
 Java_app_skein_inference_service_LlamaNative_loadModelFromFd(
-    JNIEnv *env, jobject /*thiz*/, jint fd, jint n_gpu_layers, jboolean use_mmap) {
+    JNIEnv *env, jobject /*thiz*/, jint fd, jint n_gpu_layers, jboolean use_mmap, jobject cancellation) {
     SKEIN_JNI_TRY
     if (fd < 0) {
         ThrowLlama(env, ErrorCode::kInvalidArgument, "model descriptor is negative");
@@ -542,7 +594,15 @@ Java_app_skein_inference_service_LlamaNative_loadModelFromFd(
         return 0;
     }
 
+    OwnedModelFile owned_file(file, std::fclose);
+    LoadCancellation signal(env, cancellation);
+    if (!signal.Continue()) {
+        if (!env->ExceptionCheck()) ThrowLlama(env, ErrorCode::kCancelled, "model load cancelled");
+        return 0;
+    }
     llama_model_params params = llama_model_default_params();
+    params.progress_callback = LoadCancellation::Progress;
+    params.progress_callback_user_data = &signal;
     params.n_gpu_layers = n_gpu_layers;
     params.load_mode = (use_mmap == JNI_TRUE) ? LLAMA_LOAD_MODE_MMAP : LLAMA_LOAD_MODE_NONE;
     /* E-2: CPU-only means CPU-only — see loadModel above and CpuOnlyDevices()
@@ -555,13 +615,19 @@ Java_app_skein_inference_service_LlamaNative_loadModelFromFd(
         params.devices = cpu_only_devices.data();
     }
 
-    llama_model *model = llama_model_load_from_file_ptr(file, params);
+    OwnedModel model(llama_model_load_from_file_ptr(file, params), llama_model_free);
+    if (!signal.Continue()) {
+        if (!env->ExceptionCheck()) ThrowLlama(env, ErrorCode::kCancelled, "model load cancelled");
+        return 0;
+    }
     if (model == nullptr) {
-        std::fclose(file);
         ThrowLlama(env, ErrorCode::kInvalidModel, "model load failed (not a loadable GGUF)");
         return 0;
     }
-    return static_cast<jlong>(Handles().Add(HandleKind::kModel, model, file));
+    const auto handle = Handles().Add(HandleKind::kModel, model.get(), owned_file.get());
+    model.release();
+    owned_file.release();
+    return static_cast<jlong>(handle);
     SKEIN_JNI_CATCH(0)
 }
 
