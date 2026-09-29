@@ -79,7 +79,7 @@ jobs:
       # (docs/ux/UX_TEST_PLAN.md §13.4).
       - name: Verify screenshots
         shell: bash
-        run: ./gradlew --no-build-cache verifyRoborazziDebug --continue --stacktrace
+        run: ./gradlew --max-workers=2 --no-build-cache verifyRoborazziDebug --continue --stacktrace
 
       # A verify run must never write to the committed goldens
       # (docs/ux/UX_TEST_PLAN.md §4.1, UT-2's acceptance criterion).
@@ -141,4 +141,20 @@ jobs:
             **/build/outputs/roborazzi/**
             **/build/reports/roborazzi/**
           if-no-files-found: ignore
+          retention-days: 14
+
+      - name: Record screenshot evidence source and hashes
+        if: always()
+        run: python3 tools/ci/verification-manifest.py screenshots build/screenshot-verification.json
+
+      - name: Upload screenshot verification records
+        if: always()
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: ux-verification-records
+          path: |
+            build/screenshot-verification.json
+            **/build/test-results/**/*.xml
+            **/build/test-results/roborazzi/*.json
+          if-no-files-found: error
           retention-days: 14

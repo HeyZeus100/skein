@@ -109,24 +109,27 @@ jobs:
       # (checkManifestGuards, checkDependencyGuards, checkIsolationGuards,
       # licenseAudit) — see build-logic/guards/src/main/kotlin/app/skein/gradle.
       - name: ktlint, Android lint, unit tests, guards
-        run: ./gradlew ktlintCheck lint check --stacktrace
+        run: ./gradlew --max-workers=2 ktlintCheck lint check --stacktrace
 
-      # skein-lds9: when a unit test fails, keep the JUnit XML (full failure
-      # message, stdout/stderr per test) so an intermittent failure on this
-      # runner can be diagnosed from the run page instead of re-run blind.
-      - name: Upload unit-test reports on failure
-        if: failure()
+      # Keep actual XML on success and failure; workflow status is not test evidence.
+      - name: Record unit evidence source and hashes
+        if: always()
+        run: python3 tools/ci/verification-manifest.py unit build/unit-verification.json
+
+      - name: Upload unit-test reports
+        if: always()
         uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
         with:
           name: unit-test-results
           path: |
+            build/unit-verification.json
             **/build/test-results/**/*.xml
             **/build/reports/tests/**
           if-no-files-found: ignore
           retention-days: 14
 
       - name: Assemble foss debug APK
-        run: ./gradlew assembleFossDebug --stacktrace
+        run: ./gradlew --max-workers=2 assembleFossDebug --stacktrace
 
       # skein-gg11.24: AGP configures debug variants with CMAKE_BUILD_TYPE=Debug,
       # whose NDK flags carry no -O at all, so llama.cpp/ggml compiled at -O0
