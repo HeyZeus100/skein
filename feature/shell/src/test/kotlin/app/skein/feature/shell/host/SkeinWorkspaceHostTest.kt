@@ -15,19 +15,25 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.focus.FocusRequester
+import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.geometry.Rect
 import androidx.compose.ui.graphics.asAndroidBitmap
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.testTag
+import androidx.compose.ui.semantics.SemanticsActions
 import androidx.compose.ui.semantics.SemanticsProperties
 import androidx.compose.ui.test.DeviceConfigurationOverride
 import androidx.compose.ui.test.WindowSize
 import androidx.compose.ui.test.assertContentDescriptionEquals
 import androidx.compose.ui.test.assertCountEquals
 import androidx.compose.ui.test.assertIsDisplayed
+import androidx.compose.ui.test.assertIsFocused
+import androidx.compose.ui.test.assertIsNotEnabled
 import androidx.compose.ui.test.assertIsNotSelected
 import androidx.compose.ui.test.assertIsSelected
 import androidx.compose.ui.test.captureToImage
+import androidx.compose.ui.test.click
 import androidx.compose.ui.test.junit4.createAndroidComposeRule
 import androidx.compose.ui.test.longClick
 import androidx.compose.ui.test.onAllNodesWithTag
@@ -35,6 +41,7 @@ import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.onRoot
 import androidx.compose.ui.test.performClick
+import androidx.compose.ui.test.performSemanticsAction
 import androidx.compose.ui.test.performTouchInput
 import androidx.compose.ui.unit.Density
 import androidx.compose.ui.unit.DpSize
@@ -47,6 +54,7 @@ import app.skein.core.designsystem.components.SkeinDestructiveDialog
 import app.skein.core.designsystem.theme.SkeinTheme
 import app.skein.core.designsystem.theme.SkeinThemeMode
 import app.skein.core.navigation.ChatKey
+import app.skein.core.navigation.Destination
 import app.skein.core.navigation.NoteKey
 import app.skein.core.vault.session.UnlockManager
 import app.skein.feature.shell.container.SkeinNavContainerTestTags
@@ -81,13 +89,14 @@ class SkeinWorkspaceHostTest {
     private val tabletopTop = mutableStateOf<Float?>(null)
     private val showPrimaryDialog = mutableStateOf(false)
     private val theme = mutableStateOf(SkeinThemeMode.LIGHT)
+    private val focusRequesters = mutableMapOf<String, FocusRequester>()
 
     @Test
     fun `flat workspace controls expose labels on long press`() {
         setHost()
-        rule.onNodeWithText("Left pane").assertDoesNotExist()
-        rule.onNodeWithTag(WorkspaceTestTags.ACTIVATE_PRIMARY).performTouchInput { longClick() }
-        rule.onNodeWithText("Left pane").assertIsDisplayed()
+        rule.onNodeWithText("Switch workspace").assertDoesNotExist()
+        rule.onNodeWithTag(WorkspaceTestTags.SWAP_PANES).performTouchInput { longClick() }
+        rule.onNodeWithText("Switch workspace").assertIsDisplayed()
     }
 
     @Test
@@ -114,49 +123,144 @@ class SkeinWorkspaceHostTest {
                         ),
                 )
             rule.waitForIdle()
-            rule.onNodeWithTag(WorkspaceTestTags.ACTIVATE_PRIMARY).performTouchInput { longClick() }
-            rule.onNodeWithText("Left pane").assertDoesNotExist()
-            rule.onNodeWithTag(WorkspaceTestTags.ACTIVATE_PRIMARY).assertContentDescriptionEquals("Left pane")
+            rule.onNodeWithTag(WorkspaceTestTags.SWAP_PANES).performTouchInput { longClick() }
+            rule.onNodeWithText("Switch workspace").assertDoesNotExist()
+            rule.onNodeWithTag(WorkspaceTestTags.SWAP_PANES).assertContentDescriptionEquals("Switch workspace")
             assertCompactControlsFit()
         }
     }
 
     @Test
-    fun `compact controls expose pane position and selection after swap`() {
+    fun `content activation keeps child taps and accessible pane actions after swap`() {
         setHost()
-        rule
-            .onNodeWithTag(WorkspaceTestTags.ACTIVATE_PRIMARY)
-            .assertContentDescriptionEquals("Left pane")
-            .assertIsSelected()
-        rule
-            .onNodeWithTag(WorkspaceTestTags.ACTIVATE_SECONDARY)
-            .assertContentDescriptionEquals("Right pane")
-            .assertIsNotSelected()
-            .performClick()
+        rule.runOnIdle {
+            workspace.primary.navigate { goTo(it, ChatKey(CHAT_A)) }
+            workspace.secondary.navigate { goTo(it, NoteKey(NOTE_B)) }
+        }
+        rule.onNodeWithTag(WorkspaceTestTags.TOGGLE_SPLIT).performClick()
+        rule.onNodeWithTag("counter/secondary").performTouchInput { click() }
         assertEquals(WorkspacePane.SECONDARY, workspace.activePane)
-        rule.onNodeWithTag(WorkspaceTestTags.ACTIVATE_SECONDARY).assertIsSelected()
-        rule.onNodeWithTag(WorkspaceTestTags.ACTIVATE_PRIMARY).assertIsNotSelected()
+        assertEquals("Count 1", text("counter/secondary"))
+        rule.onNodeWithTag(WorkspaceTestTags.SECONDARY_PANE).assertIsSelected()
+        rule.onNodeWithTag(WorkspaceTestTags.PRIMARY_PANE).assertIsNotSelected()
         rule.onNodeWithTag(WorkspaceTestTags.SWAP_PANES).performClick()
-        rule
-            .onNodeWithTag(WorkspaceTestTags.ACTIVATE_SECONDARY)
-            .assertContentDescriptionEquals("Left pane")
-            .assertIsSelected()
-        rule
-            .onNodeWithTag(WorkspaceTestTags.ACTIVATE_PRIMARY)
-            .assertContentDescriptionEquals("Right pane")
-            .assertIsNotSelected()
-            .performClick()
+        rule.onNodeWithTag(WorkspaceTestTags.PRIMARY_PANE)
+            .performSemanticsAction(SemanticsActions.CustomActions) { actions ->
+            assertEquals("Activate right workspace", actions.single().label)
+            assertTrue(actions.single().action())
+        }
         assertEquals(WorkspacePane.PRIMARY, workspace.activePane)
-        rule
-            .onNodeWithTag(WorkspaceTestTags.TOGGLE_SPLIT)
-            .assertContentDescriptionEquals("Show split view")
-            .assertIsNotSelected()
-            .performClick()
+        rule.onNodeWithTag(WorkspaceTestTags.PRIMARY_PANE).assertIsSelected()
         rule
             .onNodeWithTag(WorkspaceTestTags.TOGGLE_SPLIT)
             .assertContentDescriptionEquals("Hide split view")
             .assertIsSelected()
+            .performClick()
+        rule
+            .onNodeWithTag(WorkspaceTestTags.TOGGLE_SPLIT)
+            .assertContentDescriptionEquals("Show split view")
+            .assertIsNotSelected()
         assertCompactControlsFit()
+    }
+
+    @Test
+    fun `one contextual sidebar controls only the active owner and disappears without an adjacent list`() {
+        setHost()
+        rule.runOnIdle {
+            workspace.primary.navigate { goTo(it, ChatKey(CHAT_A)) }
+            workspace.secondary.navigate { goTo(it, NoteKey(NOTE_B)) }
+        }
+        rule.onAllNodesWithTag(EntryChromeTestTags.LIST_TOGGLE).assertCountEquals(0)
+        rule.onNodeWithTag(WorkspaceTestTags.TOGGLE_LIST).assertContentDescriptionEquals("Hide chats").performClick()
+        rule.onNodeWithTag("root-counter/primary").assertDoesNotExist()
+        rule.onNodeWithTag("counter/primary").assertIsDisplayed()
+        rule.onNodeWithTag(WorkspaceTestTags.TOGGLE_LIST).assertContentDescriptionEquals("Show chats")
+        rule.onNodeWithTag(WorkspaceTestTags.SWAP_PANES)
+            .assertContentDescriptionEquals("Switch workspace").performClick()
+        rule.onNodeWithTag(WorkspaceTestTags.TOGGLE_LIST).assertContentDescriptionEquals("Hide notes").performClick()
+        rule.runOnIdle {
+            assertTrue(!workspace.primary.isListExpanded(Destination.CHAT))
+            assertTrue(!workspace.secondary.isListExpanded(Destination.KNOWLEDGE))
+            assertTrue(workspace.secondary.isListExpanded(Destination.CHAT))
+        }
+        rule.onNodeWithTag(WorkspaceTestTags.TOGGLE_SPLIT).performClick()
+        rule.onNodeWithTag(WorkspaceTestTags.TOGGLE_LIST).assertDoesNotExist()
+        rule.onNodeWithTag(WorkspaceTestTags.SWAP_PANES).assertContentDescriptionEquals("Swap panes")
+        rule.onNodeWithTag(WorkspaceTestTags.TOGGLE_SPLIT).performClick()
+        rule.onNodeWithTag(WorkspaceTestTags.TOGGLE_LIST).assertContentDescriptionEquals("Show notes")
+        rule.runOnIdle { workspace.activeShell.navigate { switchTo(it, Destination.GRAPH) } }
+        rule.onNodeWithTag(WorkspaceTestTags.TOGGLE_LIST).assertDoesNotExist()
+        rule.runOnIdle { workspace.activeShell.navigate { switchTo(it, Destination.SETTINGS) } }
+        rule.onNodeWithTag(WorkspaceTestTags.TOGGLE_LIST).assertDoesNotExist()
+    }
+
+    @Test
+    fun `keyboard focus activates visible owner without clearing the new child and hidden owner cannot take focus`() {
+        setHost()
+        rule.runOnIdle {
+            workspace.primary.navigate { goTo(it, ChatKey(CHAT_A)) }
+            workspace.secondary.navigate { goTo(it, NoteKey(NOTE_B)) }
+            workspace.toggleSplit()
+        }
+        rule.runOnIdle { assertTrue(focusRequesters.getValue("counter/secondary").requestFocus()) }
+        rule.onNodeWithTag("counter/secondary").assertIsFocused()
+        assertEquals(WorkspacePane.SECONDARY, workspace.activePane)
+        rule.runOnIdle { workspace.activate(WorkspacePane.PRIMARY) }
+        rule.onNodeWithTag(WorkspaceTestTags.TOGGLE_SPLIT).performClick()
+        rule.onNodeWithTag("counter/secondary").assertDoesNotExist()
+        rule.runOnIdle {
+            assertTrue(!focusRequesters.getValue("counter/secondary").requestFocus())
+            assertEquals(WorkspacePane.PRIMARY, workspace.activePane)
+        }
+    }
+
+    @Test
+    fun `sidebar follows the active measured pane on an asymmetric book window`() {
+        size.value = DpSize(2000.dp, 1000.dp)
+        setHost(verticalHinge = true)
+        rule.runOnIdle {
+            workspace.primary.navigate { goTo(it, ChatKey(CHAT_A)) }
+            workspace.secondary.navigate { goTo(it, NoteKey(NOTE_B)) }
+            workspace.toggleSplit()
+        }
+        // The expanded rail makes the left page narrower; only the right page has an adjacent list.
+        rule.onNodeWithTag(WorkspaceTestTags.TOGGLE_LIST).assertDoesNotExist()
+        rule.onNodeWithTag(WorkspaceTestTags.SECONDARY_PANE)
+            .performSemanticsAction(SemanticsActions.CustomActions) { actions ->
+            assertTrue(actions.single().action())
+        }
+        rule.onNodeWithTag(WorkspaceTestTags.TOGGLE_LIST).assertContentDescriptionEquals("Hide notes").performClick()
+        rule.onNodeWithTag("root-counter/secondary").assertDoesNotExist()
+        rule.onNodeWithTag("counter/secondary").assertIsDisplayed()
+        rule.onNodeWithTag(WorkspaceTestTags.SWAP_PANES).performClick()
+        rule.onNodeWithTag(WorkspaceTestTags.TOGGLE_LIST).assertDoesNotExist()
+        assertTrue(!workspace.secondary.isListExpanded(Destination.KNOWLEDGE))
+    }
+
+    @Test
+    fun `constrained single view switches retained owners even while split preference stays on`() {
+        setHost()
+        rule.runOnIdle {
+            workspace.primary.navigate { goTo(it, ChatKey(CHAT_A)) }
+            workspace.secondary.navigate { goTo(it, NoteKey(NOTE_B)) }
+            workspace.toggleSplit()
+        }
+        for (window in listOf(DpSize(400.dp, 900.dp), DpSize(1200.dp, 500.dp))) {
+            size.value = window
+            rule.waitForIdle()
+            rule.onNodeWithTag(WorkspaceTestTags.TOGGLE_LIST).assertDoesNotExist()
+            rule.onNodeWithTag(WorkspaceTestTags.TOGGLE_SPLIT)
+                .assertContentDescriptionEquals("Split view needs more space").assertIsNotEnabled()
+            val before = workspace.activePane
+            rule.onNodeWithTag(WorkspaceTestTags.SWAP_PANES)
+                .assertContentDescriptionEquals("Switch workspace").performClick()
+            assertNotEquals(before, workspace.activePane)
+            assertTrue(workspace.splitRequested)
+            rule.onAllNodesWithTag(SkeinShellHostTestTags.NAV_DISPLAY).assertCountEquals(1)
+        }
+        size.value = DpSize(1200.dp, 1000.dp)
+        rule.onNodeWithTag(WorkspaceTestTags.SWAP_PANES).assertContentDescriptionEquals("Swap panes")
+        rule.onAllNodesWithTag(SkeinShellHostTestTags.NAV_DISPLAY).assertCountEquals(2)
     }
 
     @Test
@@ -168,7 +272,10 @@ class SkeinWorkspaceHostTest {
         rule.onAllNodesWithTag(SkeinShellHostTestTags.NAV_DISPLAY).assertCountEquals(2)
         rule.onNodeWithTag(WorkspaceTestTags.PRIMARY_PANE).assertIsDisplayed()
         rule.onNodeWithTag(WorkspaceTestTags.SECONDARY_PANE).assertIsDisplayed()
-        rule.onNodeWithTag(WorkspaceTestTags.ACTIVATE_SECONDARY).performClick()
+        rule.onNodeWithTag(WorkspaceTestTags.SECONDARY_PANE)
+            .performSemanticsAction(SemanticsActions.CustomActions) { actions ->
+            assertTrue(actions.single().action())
+        }
         rule.onNodeWithTag(WorkspaceTestTags.TOGGLE_SPLIT).performClick()
         rule.onAllNodesWithTag(SkeinShellHostTestTags.NAV_DISPLAY).assertCountEquals(1)
         assertEquals(WorkspacePane.SECONDARY, workspace.activePane)
@@ -268,6 +375,10 @@ class SkeinWorkspaceHostTest {
         // The first page is narrower than 360 dp after the rail, so fallback is one visible owner.
         rule.onAllNodesWithTag(SkeinShellHostTestTags.NAV_DISPLAY).assertCountEquals(1)
         rule.runOnIdle { assertTrue(observedPostures.getValue("primary") is SkeinPosture.Book) }
+        rule.onNodeWithTag(WorkspaceTestTags.SWAP_PANES)
+            .assertContentDescriptionEquals("Switch workspace").performClick()
+        assertEquals(WorkspacePane.SECONDARY, workspace.activePane)
+        assertTrue(workspace.splitRequested)
     }
 
     @Test
@@ -294,12 +405,7 @@ class SkeinWorkspaceHostTest {
         for (hingeTop in listOf(28f, 4f, 60f, 28.25f)) {
             tabletopTop.value = hingeTop
             rule.waitForIdle()
-            for (tag in listOf(
-                WorkspaceTestTags.ACTIVATE_PRIMARY,
-                WorkspaceTestTags.ACTIVATE_SECONDARY,
-                WorkspaceTestTags.TOGGLE_SPLIT,
-                WorkspaceTestTags.SWAP_PANES,
-            )) {
+            for (tag in visibleControlTags()) {
                 val bounds =
                     rule
                         .onNodeWithTag(tag)
@@ -334,8 +440,6 @@ class SkeinWorkspaceHostTest {
         for (tag in listOf(
             WorkspaceTestTags.TOGGLE_SPLIT,
             WorkspaceTestTags.SWAP_PANES,
-            WorkspaceTestTags.ACTIVATE_PRIMARY,
-            WorkspaceTestTags.ACTIVATE_SECONDARY,
         )) {
             val node = rule.onNodeWithTag(tag).assertIsDisplayed().fetchSemanticsNode()
             assertTrue("48dp target $tag", node.boundsInRoot.height / density >= 47.5f)
@@ -347,12 +451,7 @@ class SkeinWorkspaceHostTest {
 
     private fun assertCompactControlsFit() {
         val controls =
-            listOf(
-                WorkspaceTestTags.ACTIVATE_PRIMARY,
-                WorkspaceTestTags.ACTIVATE_SECONDARY,
-                WorkspaceTestTags.TOGGLE_SPLIT,
-                WorkspaceTestTags.SWAP_PANES,
-            ).map { tag ->
+            visibleControlTags().map { tag ->
                 val bounds =
                     rule
                         .onNodeWithTag(tag)
@@ -369,7 +468,7 @@ class SkeinWorkspaceHostTest {
         }
         assertTrue(
             "controls stay together instead of stretching into banners",
-            (controls.last().right - controls.first().left) / density <= 216.5f,
+            (controls.last().right - controls.first().left) / density <= 160.5f,
         )
         val root = rule.onRoot().fetchSemanticsNode().boundsInRoot
         for (bounds in controls) {
@@ -385,6 +484,15 @@ class SkeinWorkspaceHostTest {
             rule.onNodeWithText(label).assertDoesNotExist()
         }
     }
+
+    private fun visibleControlTags(): List<String> =
+        buildList {
+            if (rule.onAllNodesWithTag(WorkspaceTestTags.TOGGLE_LIST).fetchSemanticsNodes().isNotEmpty()) {
+                add(WorkspaceTestTags.TOGGLE_LIST)
+            }
+            add(WorkspaceTestTags.TOGGLE_SPLIT)
+            add(WorkspaceTestTags.SWAP_PANES)
+        }
 
     private fun capture(
         directory: File,
@@ -463,7 +571,12 @@ class SkeinWorkspaceHostTest {
                                         } else {
                                             "root-counter/${shell.ownerKey}"
                                         }
-                                    Text("Count $counter", Modifier.testTag(counterTag).clickable { counter++ })
+                                    val requester = remember { FocusRequester() }
+                                    focusRequesters[counterTag] = requester
+                                    Text(
+                                        "Count $counter",
+                                        Modifier.testTag(counterTag).focusRequester(requester).clickable { counter++ },
+                                    )
                                 }
                             }
                             if (shell.ownerKey == "primary" && showPrimaryDialog.value) {

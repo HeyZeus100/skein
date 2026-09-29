@@ -98,7 +98,9 @@ class MainActivityWorkspaceModelsTest {
             }
 
             composeRule.onNodeWithTag(WorkspaceTestTags.TOGGLE_SPLIT).performClick()
-            composeRule.onNodeWithTag(WorkspaceTestTags.ACTIVATE_SECONDARY).performClick()
+            composeRule.onNodeWithTag(SECONDARY).performSemanticsAction(SemanticsActions.CustomActions) { actions ->
+                assertTrue(actions.single().action())
+            }
             navigate("Models")
             awaitPaneTag(SECONDARY, ModelsEntryTestTags.IMPORT_ACTION)
             composeRule.waitUntil("imported model in secondary", WAIT_MILLIS) {
@@ -128,7 +130,7 @@ class MainActivityWorkspaceModelsTest {
             )
             assertTrue(
                 composeRule
-                    .onNodeWithTag(WorkspaceTestTags.ACTIVATE_SECONDARY)
+                    .onNodeWithTag(SECONDARY)
                     .fetchSemanticsNode()
                     .config[SemanticsProperties.Selected],
             )
