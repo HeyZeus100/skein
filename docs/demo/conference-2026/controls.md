@@ -1,20 +1,24 @@
 # Demo controls
 
-These instructions describe the compact workspace controls. Confirm the installed candidate and physical observations in the [demo results](README.md#rehearsal-checklist-and-results-template); the earlier `28354dd25` build used text banners for pane selection.
+These instructions describe the contextual workspace controls. Confirm the installed candidate and physical observations in the [demo results](README.md#rehearsal-checklist-and-results-template); earlier builds used text banners or two pane-selector icons.
 
 ## One workspace or two
 
-On the unfolded display, the workspace header has a small group of four icons: **Left pane**, **Right pane**, **Show/Hide split view**, and **Swap panes**. The first two show which half they select; a subtle circular highlight marks the active choice. The split icon shows two outlined panes, and the swap icon has opposing arrows. These controls keep full touch targets without wide text banners.
+The workspace header has **Show/Hide split view** and opposing arrows. A single **Hide/Show chats** or **Hide/Show notes** sidebar icon appears when the active workspace has room for its list beside the content. These compact icons retain full touch targets.
 
-Select a pane icon, or tap inside a visible pane, then open Chat, Knowledge or Graph for that side. New chat and the shared navigation act on the active pane. Use **Show split view** to display both workspaces together.
+Tap inside a visible workspace, then open Chat, Knowledge or Graph for that side. A short mark along its top edge indicates the active workspace; there is no center divider. New chat and shared navigation act on that workspace. Keyboard focus also selects the workspace it enters, and TalkBack exposes **Activate left workspace / Activate right workspace** actions. Use **Show split view** to display both workspaces together.
 
-For a construction demo, open **DEMO: Cedar Cabinet Order** on one side and New chat on the other. Other useful combinations are two different notes, or a note beside Graph. **Swap panes** exchanges the two workspaces, including their selections and drafts. **Hide split view** returns to one visible workspace. A narrow window may show only the active workspace even while the split preference is retained.
+For a construction demo, open **DEMO: Cedar Cabinet Order** on one side and New chat on the other. Other useful combinations are two different notes, or a note beside Graph. When both are visible, the arrows are labelled **Swap panes** and exchange the two workspaces, including their selections and drafts. **Hide split view** returns to one visible workspace. The arrows then become **Switch workspace**, bringing the other retained workspace into view.
+
+A narrow or short window shows only the active workspace and disables the split control with the label **Split view needs more space**. **Switch workspace** still reaches either workspace. An enabled split preference is retained and shows both again when enough space returns.
 
 Opening a note already being edited on the other side activates its existing workspace. Use two different notes to compare them side by side. This avoids two editors writing to the same note.
 
 ## Collapsible lists
 
-The sidebar icon beside a Chat or Knowledge header toggles its list. Its accessible label is **Hide chats / Show chats** or **Hide notes / Show notes**. Collapse the list to give the current conversation or note more room; reopen it to choose another item. This control is separate from **Show split view**.
+The single sidebar icon in the workspace header toggles the active Chat or Knowledge list. Its accessible label is **Hide chats / Show chats** or **Hide notes / Show notes**. Collapse the list to give the current conversation or note more room; reopen it to choose another item. Each workspace retains its own list preference. This control is separate from **Show split view**.
+
+Where a workspace is too narrow for an adjacent list, the sidebar icon is omitted. Use the existing navigation menu for chat history or **Back** from a note to its notes list. Graph and Settings have no notes/chat sidebar, so they show no sidebar toggle. Standalone screens retain their own header control.
 
 ## Questions with or without Knowledge
 

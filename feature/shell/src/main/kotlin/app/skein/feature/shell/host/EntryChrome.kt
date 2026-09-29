@@ -125,7 +125,8 @@ fun SkeinShellState.hasEntryNavigation(key: SkeinKey): Boolean =
 
 @Composable
 private fun SkeinShellState.canToggleList(key: SkeinKey): Boolean =
-    LocalSkeinWindowLayout.current.maxPanes > 1 &&
+    LocalWorkspacePane.current == null &&
+        LocalSkeinWindowLayout.current.maxPanes > 1 &&
         !LocalEntryIsList.current &&
         nav.topLevel in setOf(Destination.CHAT, Destination.KNOWLEDGE) &&
         (key.role == PaneRole.LIST || key.role == PaneRole.DETAIL)

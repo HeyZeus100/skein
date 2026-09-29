@@ -86,6 +86,11 @@ class SkeinWorkspaceState internal constructor(
         activePane = pane
     }
 
+    /** Keyboard focus has already moved to this owner's child; do not clear that new focus. */
+    internal fun activateFromFocus(pane: WorkspacePane) {
+        activePane = pane
+    }
+
     fun toggleSplit() {
         splitRequested = !splitRequested
     }

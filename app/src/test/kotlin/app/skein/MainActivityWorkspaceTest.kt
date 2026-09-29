@@ -10,6 +10,7 @@ import androidx.compose.ui.semantics.SemanticsActions
 import androidx.compose.ui.semantics.SemanticsProperties
 import androidx.compose.ui.test.assertTextEquals
 import androidx.compose.ui.test.captureToImage
+import androidx.compose.ui.test.click
 import androidx.compose.ui.test.hasAnyAncestor
 import androidx.compose.ui.test.hasTestTag
 import androidx.compose.ui.test.hasText
@@ -20,6 +21,7 @@ import androidx.compose.ui.test.onRoot
 import androidx.compose.ui.test.performClick
 import androidx.compose.ui.test.performSemanticsAction
 import androidx.compose.ui.test.performTextInput
+import androidx.compose.ui.test.performTouchInput
 import androidx.compose.ui.text.TextRange
 import androidx.lifecycle.Lifecycle
 import androidx.test.core.app.ActivityScenario
@@ -150,7 +152,7 @@ class MainActivityWorkspaceTest {
             composeRule.onNodeWithTag(WorkspaceTestTags.TOGGLE_SPLIT).performClick()
             awaitComposer(WorkspaceTestTags.SECONDARY_PANE)
             typeDraft(WorkspaceTestTags.SECONDARY_PANE, RIGHT_DRAFT, 9)
-            composeRule.onNodeWithTag(WorkspaceTestTags.ACTIVATE_SECONDARY).performClick()
+            activate(WorkspaceTestTags.SECONDARY_PANE)
             scenario.onActivity {
                 InstrumentationRegistry.getInstrumentation().callActivityOnNewIntent(
                     it,
@@ -168,7 +170,7 @@ class MainActivityWorkspaceTest {
             assertDraft(WorkspaceTestTags.SECONDARY_PANE, RIGHT_DRAFT, 9)
             assertTrue(
                 composeRule
-                    .onNodeWithTag(WorkspaceTestTags.ACTIVATE_PRIMARY)
+                    .onNodeWithTag(WorkspaceTestTags.PRIMARY_PANE)
                     .fetchSemanticsNode()
                     .config[SemanticsProperties.Selected],
             )
@@ -204,13 +206,10 @@ class MainActivityWorkspaceTest {
 
     private fun activate(pane: String) {
         composeRule
-            .onNodeWithTag(
-                if (pane == WorkspaceTestTags.PRIMARY_PANE) {
-                    WorkspaceTestTags.ACTIVATE_PRIMARY
-                } else {
-                    WorkspaceTestTags.ACTIVATE_SECONDARY
-                },
-            ).performClick()
+            .onNodeWithTag(pane)
+            .performSemanticsAction(SemanticsActions.CustomActions) { actions ->
+                assertTrue(actions.single().action())
+            }
     }
 
     private fun navigate(label: String) {
@@ -256,7 +255,8 @@ class MainActivityWorkspaceTest {
         caret: Int,
     ) {
         awaitComposer(pane)
-        activate(pane)
+        // A real pointer selects the workspace without consuming the composer's own focus gesture.
+        composer(pane).performTouchInput { click() }
         composer(pane).performTextInput(text)
         composer(pane).performSemanticsAction(SemanticsActions.SetSelection) { it(caret, caret, false) }
         assertDraft(pane, text, caret)
