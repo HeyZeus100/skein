@@ -1,0 +1,14 @@
+# One contextual sidebar control verified
+
+Source `2c4567ac3b9949b16d630acb862ecca3d76374c3` implements the owner's clarified controls: one notes/chat list toggle where the active pane has room for an adjacent list, plus Split and Swap. Content taps activate that workspace while preserving the child action; accessibility offers the same activation. A short top-edge cue replaces a vertical divider. Single-pane layouts retain Switch workspace so hidden content remains reachable. Per-workspace drafts, independent navigation and sidebar states are preserved.
+
+Local shell/app checks and explicit lint passed with 807 actual passes and 14 skips. Both opt-in Android test variants compiled. Ordinary APK assembly passed; diagnostic classes are absent. The signed app digest and [review pins](status.json) identify this built candidate; it has not been installed. All seven packaged native libraries are byte-equal to installed source920e.
+
+- [CI36620946166](https://github.com/HeyZeus100/skein/actions/runs/36620946166): 5,147 passes, 88 existing skips. Twelve unit tasks reused Gradle cache results; these are not all fresh executions.
+- [Screens36620946177](https://github.com/HeyZeus100/skein/actions/runs/36620946177): 552 unchanged individual records, 1,284 passes and 80 skips. Eight module summaries match; strict execution used no build cache and wrote no goldens.
+- [Ordinary36620946419](https://github.com/HeyZeus100/skein/actions/runs/36620946419): 281 unique passes, zero failures/errors/skips; opt-in diagnostics absent.
+- [Reproducibility36620946104](https://github.com/HeyZeus100/skein/actions/runs/36620946104): downloaded unsigned release APK pair and cold native pair are byte-equal, and the APK embeds that native binary. Tag-only SQLCipher regeneration was skipped; native negative control was not run.
+
+Full artifact digests and sizes, manifest pins, actual XML/JSON and job/step outcomes were inspected independently. Screenshot baseline PNGs, retrieval gold and thresholds are unchanged. Initial local failures remain preserved: invalid custom-action test API and formatting; a keyboard test running in touch mode; then a real hidden-child focus defect. The final production fix cancels focus-group entry for the retained hidden workspace, and the unchanged strict regression passes. Host APK archival also initially assumed the test package had production version metadata and then mismatched a whitespace literal; both scripts are preserved, corrected metadata was read from actual APKs, and no artifact rebuild or byte mutation was needed.
+
+A separate physical finding, `skein-y4xz`, affects imported model detail rendering. Its isolated repair is being added before the next installation. This checkpoint does not claim physical acceptance of the final one-sidebar design or close model quality, retrieval/embedding or formal Fold gates.

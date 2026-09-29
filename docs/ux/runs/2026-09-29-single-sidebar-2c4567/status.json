@@ -1,0 +1,87 @@
+{
+  "source_sha": "2c4567ac3b9949b16d630acb862ecca3d76374c3",
+  "installed": false,
+  "release": "not issued; next combined candidate includes separately tracked model-details repair",
+  "app_sha256": "9f364b9cfa7b131781f330eee1579fab145577a572cdc188c3a9a51078321512",
+  "app_size_bytes": 127100043,
+  "local_checks": {
+    "passed": 807,
+    "skipped": 14,
+    "failed": 0,
+    "errors": 0,
+    "xml_files": 117
+  },
+  "native_entries_equal_installed920e": 7,
+  "reviews": {
+    "ci": {
+      "private_review_sha256": "ffa608203e90762951963582dd94f2f7f4c361b4787aea8a2f9b4180336a5276",
+      "status": "PASS",
+      "source_sha": "2c4567ac3b9949b16d630acb862ecca3d76374c3",
+      "run": 36620946166,
+      "actual_counts": {
+        "passed": 5147,
+        "skipped": 88
+      },
+      "manifest_files_verified": 504,
+      "images": {},
+      "limits": [
+        "Raw CI artifacts and host-declared source bindings; no installed APK, device, live UI, model-answer quality or performance attestation.",
+        "XML case occurrences are counted separately from unique class/test names across build variants.",
+        "Unit CI may legitimately restore Gradle task outputs; cache outcomes are reported rather than called fresh executions."
+      ]
+    },
+    "screenshots": {
+      "private_review_sha256": "5f8701271f480908d9b46fef0ae4e3c095514e623a06233ec00bc8c39dcec89a",
+      "status": "PASS",
+      "source_sha": "2c4567ac3b9949b16d630acb862ecca3d76374c3",
+      "run": 36620946177,
+      "actual_counts": {
+        "passed": 1284,
+        "skipped": 80
+      },
+      "manifest_files_verified": 711,
+      "images": {
+        "unchanged": 552
+      },
+      "limits": [
+        "Raw CI artifacts and host-declared source bindings; no installed APK, device, live UI, model-answer quality or performance attestation.",
+        "XML case occurrences are counted separately from unique class/test names across build variants.",
+        "Unit CI may legitimately restore Gradle task outputs; cache outcomes are reported rather than called fresh executions."
+      ]
+    },
+    "ordinary": {
+      "private_review_sha256": "dacc608b4aee7d847e6f0dabc2e161172022476e1ef4a9852a485ac0afd23402",
+      "status": "PASS",
+      "source_sha": "2c4567ac3b9949b16d630acb862ecca3d76374c3",
+      "run": 36620946419,
+      "actual_counts": {
+        "passed": 281
+      },
+      "manifest_files_verified": 4,
+      "optin_diagnostics_absent": true,
+      "limits": [
+        "Ordinary API35 x86_64 emulator instrumentation only; no physical Fold, live sidebar UI, official-model quality, or performance attestation.",
+        "Manifest APK hashes are host-built declarations. APK binaries are not in this report artifact; installed APK bytes were not independently measured.",
+        "Ignored tests are excluded by the workflow's notAnnotation argument; the 281 actually emitted cases have zero skips/failures/errors."
+      ]
+    },
+    "reproducible": {
+      "private_review_sha256": "4573e1916905011f54192a5e41f0d0d4057fb85596e360f0c6a29b90fee2445b",
+      "status": "PASS",
+      "source_sha": "2c4567ac3b9949b16d630acb862ecca3d76374c3",
+      "run": 36620946104,
+      "apk_pair_byte_equal": true,
+      "apk_sha256": "7c00d78be193b30465966d6cc8c675b089f4e5a7a823df59ceee732e8fd05b5e",
+      "apk_bytes": 100758259,
+      "native_pair_byte_equal": true,
+      "native_sha256": "2aefda01808f10bf5693ab02d0857e0169dc09550b615896939cb176c032daff",
+      "native_bytes": 25314032,
+      "embedded_release_native_equal": true,
+      "limits": [
+        "Unsigned release reproducibility; not local signed debug byte equality.",
+        "Tag-only SQLCipher regeneration skipped. Native negative-control not run.",
+        "Full artifact archives verified against GitHub digest and actual payload."
+      ]
+    }
+  }
+}

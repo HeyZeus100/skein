@@ -1,0 +1,20 @@
+{
+  "at": "2026-09-29T19:47:12.467823+00:00",
+  "case": "demo-construction-synthesis",
+  "answer": "The Cedar cabinet order is blocked by RFI-017, which is awaiting finish-selection approval. Nora Elm coordinates delivery of the Cedar Remodel cabinets with the site team. The delivery target is 19 October 2026; it is not a confirmed booking.",
+  "facts_correct": true,
+  "rendered_citations": 0,
+  "context_unknown_rows": 0,
+  "context_source_count": 8,
+  "first_visible_upper_bound_seconds": 45.745263,
+  "idle_completion_upper_bound_seconds": 71.116463,
+  "visible_while_stop_enabled": true,
+  "normal_stop_requested": false,
+  "safe_final_screenshot_sha256": "eacf1d3293c5d7cf871e6bb79c8b6a81305d7b841b26c0c1cef76990d357d18a",
+  "direct_currently_loaded_label_verified": false,
+  "model_detail_blocker": "Picked slug model ID becomes TransientKey MODEL, but ModelsEntry handles only ModelDetailsKey; blank detail. Postturn list had exact new model Delete disabled, old model enabled. Root source review requested.",
+  "safe_final_screenshot": "construction.png",
+  "source_sha": "920e820eb23d2c5f4b70dfa95515899559cb2098",
+  "installed_apk_sha256": "b3fab0e408d79a5566fdf2334000e6c0095d710fcd50b77774038b35fc6ad46b",
+  "model_choice_evidence": "After completed answer, refreshed Models row showed official1.5B Delete disabled, old3B enabled. Source binds disabled Delete to matching engine modelId with state neither UNLOADED nor ERROR. Direct details label unverified; not a READY-state claim."
+}
