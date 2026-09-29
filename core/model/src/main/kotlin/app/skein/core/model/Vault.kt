@@ -801,6 +801,8 @@ public data class NewChunk(
 public data class ScoredChunk(
     val chunkId: ChunkId,
     val score: Double,
+    /** Source score before recall normalization; BM25, cosine similarity or inverse graph hop. */
+    val rawScore: Double = score,
 )
 
 public data class Entity(

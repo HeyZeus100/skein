@@ -142,6 +142,13 @@ public class RetrievedAssembler(
                     recalledBy = recalledByChunk[scored.chunkId] ?: emptySet(),
                     revisionHash = chunk.revisionHash,
                     locator = locatorFor(chunk, document),
+                    recallScores =
+                        RecallSource.entries
+                            .mapNotNull { source ->
+                                sources[source.citationSourceKind]
+                                    ?.firstOrNull { it.chunkId == chunk.id }
+                                    ?.let { source to it.rawScore }
+                            }.toMap(),
                 )
         }
         return out

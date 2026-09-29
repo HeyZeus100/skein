@@ -105,6 +105,8 @@ public data class Retrieved(
     val revisionHash: RevisionHash? = null,
     /** Byte range of [text] within that revision's `body_md`; null before Migration 003. */
     val locator: Locator? = null,
+    /** Unnormalized per-source signals, never comparable to the fused [score] or across sources. */
+    val recallScores: Map<RecallSource, Double> = emptyMap(),
 )
 
 // -----------------------------------------------------------------------------

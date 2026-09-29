@@ -27,6 +27,21 @@ import org.junit.Test
  */
 class LexicalRecallTest {
     @Test
+    fun `normalization retains the raw magnitude even when every query winner scores one`() =
+        runTest {
+            for (magnitude in listOf(0.0, 0.000001, 12.0)) {
+                val fake =
+                    FixedBm25IndexStore(
+                        delegate = InMemoryIndexStore(),
+                        fixed = listOf(ScoredChunk(chunkId = 1L, score = magnitude)),
+                    )
+                val result = LexicalRecall(fake).recall("ordinary terms").single()
+                assertThat(result.score).isEqualTo(1.0)
+                assertThat(result.rawScore).isEqualTo(magnitude)
+            }
+        }
+
+    @Test
     fun `chunk mentioning both query terms ranks first`() =
         runTest {
             val index = InMemoryIndexStore()

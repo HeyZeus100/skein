@@ -147,10 +147,19 @@ public object RetrievalEvaluationReport {
         buildJsonObject {
             put("chunk_id", item.chunkId)
             put("doc_id", item.docId)
+            // This reporter is restricted to explicit synthetic evaluations, never application logs.
+            put("doc_title", item.docTitle)
+            put("text", item.text)
             put("revision_hash", item.revisionHash?.let(::JsonPrimitive) ?: JsonNull)
             put("byte_start", item.locator?.byteStart?.let(::JsonPrimitive) ?: JsonNull)
             put("byte_end", item.locator?.byteEnd?.let(::JsonPrimitive) ?: JsonNull)
             put("score", item.score)
+            put(
+                "recall_scores",
+                buildJsonObject {
+                    for ((source, value) in item.recallScores.toSortedMap()) put(source.name, value)
+                },
+            )
             put("recalled_by", strings(item.recalledBy.map { it.name }.sorted()))
         }
 
@@ -181,6 +190,10 @@ private fun fingerprint(results: List<Retrieved>): String =
                     item.revisionHash.orEmpty(),
                     item.locator.toString(),
                     item.score.toBits().toString(),
+                    item.recallScores
+                        .toSortedMap()
+                        .entries
+                        .joinToString(",") { "${it.key}:${it.value.toBits()}" },
                     item.recalledBy
                         .map { it.name }
                         .sorted()

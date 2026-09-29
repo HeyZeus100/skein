@@ -76,15 +76,17 @@ class RetrievedAssemblerTest {
             val ranked = listOf(ScoredChunk(chunkId = chunkId, score = 0.5))
             val sources =
                 mapOf(
-                    CitationSourceKind.LEXICAL to listOf(ScoredChunk(chunkId, 1.0)),
-                    CitationSourceKind.VECTOR to listOf(ScoredChunk(chunkId, 1.0)),
-                    CitationSourceKind.GRAPH to listOf(ScoredChunk(chunkId, 1.0)),
+                    CitationSourceKind.LEXICAL to listOf(ScoredChunk(chunkId, 1.0, rawScore = 0.000002)),
+                    CitationSourceKind.VECTOR to listOf(ScoredChunk(chunkId, 0.6, rawScore = 0.2)),
+                    CitationSourceKind.GRAPH to listOf(ScoredChunk(chunkId, 0.5)),
                 )
 
             val retrieved = RetrievedAssembler(index, repo).assemble(ranked, sources)
 
             assertThat(retrieved.single().recalledBy)
                 .containsExactly(RecallSource.LEXICAL, RecallSource.VECTOR, RecallSource.GRAPH)
+            assertThat(retrieved.single().recallScores)
+                .containsExactly(RecallSource.LEXICAL, 0.000002, RecallSource.VECTOR, 0.2, RecallSource.GRAPH, 0.5)
         }
 
     @Test
