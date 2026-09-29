@@ -1,0 +1,34 @@
+{
+  "at": "2026-09-29T20:07:40.462815+00:00",
+  "case_id": "demo-mycology-direct",
+  "question": "What mass was recorded for OYS-014 on 22 September?",
+  "context_row_count": 7,
+  "known_synthetic_titles": [
+    "DEMO: OYS-014 Observation Log",
+    "DEMO: OYS-014 Open Research Question",
+    "DEMO: OYS-014 Sample Provenance",
+    "DEMO: Cedar Delivery Coordination",
+    "DEMO: Cedar Remodel RFI-017",
+    "DEMO-A Records Request",
+    "DEMO-A Planning Meeting"
+  ],
+  "unknown_row_count": 0,
+  "declared_source_counts": [
+    7
+  ],
+  "raw_tree_retained": false,
+  "raw_tree_sha256": "8b4afa398313f2f990abab42492fa971d4d926ab82b30d856475c83d8d8efd6f",
+  "context_rows_match_visible_count": true,
+  "synthetic_assistant_text": "The synthetic recorded mass for OYS-014 on 22 September 2026 was 21.1 g.",
+  "text_citation_markers": [],
+  "final_screenshot_sha256": "dc68847f263f61ed822dd1001aa4a62a62557e299bb8b6b5d7ef3e20f88b1b77",
+  "factual_result": "PASS: correct21.1g on22September2026, explicitly synthetic",
+  "rendered_citations": 0,
+  "citation_navigation_verified": false,
+  "first_visible_seconds": 52.482787,
+  "idle_observed_seconds": 73.04827,
+  "visible_text_before_done": true,
+  "normal_stop_needed": false,
+  "private_screenshot_original_preserved": true,
+  "timing_scope": "observation upper bounds, not exact native TTFT/EOS"
+}

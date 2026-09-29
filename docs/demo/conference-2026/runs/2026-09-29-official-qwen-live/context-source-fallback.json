@@ -1,0 +1,24 @@
+{
+  "at": "2026-09-29T20:09:37.682433+00:00",
+  "scope": "Context-source fallback NOT rendered citation",
+  "supporting_note_body_matches": true,
+  "question_retained": true,
+  "answer_exactly_retained": true,
+  "empty_draft_retained": true,
+  "original_primary_import_draft_untouched": true,
+  "source_editor_closed": true,
+  "raw_tree_retained": false,
+  "raw_tree_sha256": "0ac2bd612e01c390f38b3e09de803fc5e5f83fbd30f8acc9376ab27466491997",
+  "body_review": {
+    "at": "2026-09-29T20:08:52.632148+00:00",
+    "filename": "oys-014-observations.md",
+    "title_matches": true,
+    "body_exact_match_after_markdown_bold_whitespace_normalization": true,
+    "expected_body_contained": true,
+    "body_characters": 464,
+    "body_sha256": "3fce9707aa838746682d337a9dd1e5979602a621169481db20add729addbaeaa",
+    "raw_tree_retained": false,
+    "raw_sha256": "e0b049aac54d236e99f6ca26c0fe9442694dba7c67134dc837e165089625665c",
+    "indexing_status": []
+  }
+}
