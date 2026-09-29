@@ -14,12 +14,16 @@ import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.geometry.Rect
 import androidx.compose.ui.graphics.asAndroidBitmap
+import androidx.compose.ui.input.InputMode
+import androidx.compose.ui.input.InputModeManager
 import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.platform.LocalInputModeManager
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.semantics.SemanticsActions
 import androidx.compose.ui.semantics.SemanticsProperties
@@ -84,6 +88,7 @@ class SkeinWorkspaceHostTest {
     private val observedPostures = mutableMapOf<String, SkeinPosture>()
     private val partitions = mutableMapOf<String, app.skein.core.designsystem.components.SkeinWindowPartitions?>()
     private var density = 1f
+    private lateinit var inputModeManager: InputModeManager
     private val fontScale = mutableStateOf(1f)
     private val tabletopTop = mutableStateOf<Float?>(null)
     private val showPrimaryDialog = mutableStateOf(false)
@@ -191,6 +196,7 @@ class SkeinWorkspaceHostTest {
         rule.onNodeWithTag(WorkspaceTestTags.TOGGLE_LIST).assertDoesNotExist()
     }
 
+    @OptIn(ExperimentalComposeUiApi::class)
     @Test
     fun `keyboard focus activates visible owner without clearing the new child and hidden owner cannot take focus`() {
         setHost()
@@ -199,6 +205,9 @@ class SkeinWorkspaceHostTest {
             workspace.secondary.navigate { goTo(it, NoteKey(NOTE_B)) }
             workspace.toggleSplit()
         }
+        rule.runOnIdle { assertTrue(inputModeManager.requestInputMode(InputMode.Keyboard)) }
+        rule.waitForIdle()
+        assertEquals(InputMode.Keyboard, inputModeManager.inputMode)
         rule.runOnIdle { assertTrue(focusRequesters.getValue("counter/secondary").requestFocus()) }
         rule.onNodeWithTag("counter/secondary").assertIsFocused()
         assertEquals(WorkspacePane.SECONDARY, workspace.activePane)
@@ -523,6 +532,7 @@ class SkeinWorkspaceHostTest {
             SkeinTheme(mode = theme.value) {
                 DeviceConfigurationOverride(DeviceConfigurationOverride.WindowSize(size.value)) {
                     density = LocalDensity.current.density
+                    inputModeManager = LocalInputModeManager.current
                     val hinge =
                         verticalHinge?.let { vertical ->
                             val x = size.value.width.value * density / 2
