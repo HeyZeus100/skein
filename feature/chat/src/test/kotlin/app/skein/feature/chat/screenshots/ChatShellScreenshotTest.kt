@@ -6,6 +6,7 @@
 package app.skein.feature.chat.screenshots
 
 import androidx.compose.ui.test.onNodeWithContentDescription
+import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.onRoot
 import androidx.compose.ui.test.performClick
 import app.skein.core.designsystem.theme.SkeinTheme
@@ -123,6 +124,10 @@ class ChatShellScreenshotTest(
         show()
         composeRule.onNodeWithContentDescription("Open navigation").performClick()
         composeRule.waitForIdle()
+        // The injected fixture clock dates the drawer as well as the pane's rows.
+        composeRule.onNodeWithText("Today").assertExists()
+        composeRule.onNodeWithText("Yesterday").assertExists()
+        composeRule.onNodeWithText("Previous 7 days").assertDoesNotExist()
         composeRule.onRoot().captureUx(spec, "shell-chat-drawer-open")
     }
 

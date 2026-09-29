@@ -16,7 +16,10 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.LocalWindowInfo
 import androidx.compose.ui.platform.testTag
+import androidx.compose.ui.test.assertCountEquals
+import androidx.compose.ui.test.onAllNodesWithText
 import androidx.compose.ui.test.onNodeWithTag
+import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.onRoot
 import androidx.compose.ui.test.performClick
 import app.skein.core.designsystem.theme.SkeinTheme
@@ -39,6 +42,7 @@ import org.junit.runner.RunWith
 import org.robolectric.ParameterizedRobolectricTestRunner
 import org.robolectric.annotation.Config
 import org.robolectric.annotation.GraphicsMode
+import java.time.ZoneOffset
 
 private const val NOW = 1_800_000_000_000L
 private const val OPEN_DRAWER_TAG = "screenshot-open-drawer"
@@ -100,6 +104,7 @@ private fun ContainerFixture() {
             history = fixtureHistory(),
             spaces = fixtureSpaces(),
             now = { NOW },
+            zone = ZoneOffset.UTC,
         ) {
             val opener = LocalSkeinDrawerOpener.current
             Box(
@@ -135,6 +140,9 @@ class SkeinNavigationContainerScreenshotTest(
         composeRule.setContent { ContainerFixture() }
         composeRule.onNodeWithTag(OPEN_DRAWER_TAG).performClick()
         composeRule.waitForIdle()
+        // A 26-hour-old row crosses one midnight in this fixed UTC fixture.
+        composeRule.onAllNodesWithText("Yesterday").assertCountEquals(2) // Header and row metadata.
+        composeRule.onNodeWithText("Previous 7 days").assertDoesNotExist()
         composeRule.onRoot().captureUx(spec, "nav-container-drawer-open")
     }
 

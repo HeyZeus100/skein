@@ -121,6 +121,8 @@ private fun Host(
         shell = shell,
         resolveKinds = navKindsOf(vault),
         history = history,
+        zone = zone,
+        now = clock,
         detailPlaceholder = { destination ->
             when (destination) {
                 Destination.CHAT -> ChatDetailPlaceholder(shell, chat)

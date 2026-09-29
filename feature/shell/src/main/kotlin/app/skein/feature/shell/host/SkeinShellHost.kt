@@ -74,6 +74,7 @@ import app.skein.feature.shell.layout.SkeinLayoutDecision
 import app.skein.feature.shell.layout.SkeinNavContainer
 import app.skein.feature.shell.layout.currentSkeinWindowLayout
 import app.skein.feature.shell.testing.ShellTestTags
+import java.time.ZoneId
 import kotlin.coroutines.cancellation.CancellationException
 
 /** The window decision, for entries (§8.6: "entries read `LocalSkeinWindowLayout` to decide"). */
@@ -92,6 +93,7 @@ object SkeinShellHostTestTags {
  * [entryContent] renders one key; [detailPlaceholder] fills an empty detail
  * pane beside a destination's list. [search], when given, backs the search
  * overlay the drawer's search row and [SkeinShellState.openSearch] open.
+ * [now] and [zone] date the drawer's history groups alongside its supplied rows.
  */
 @OptIn(ExperimentalMaterial3AdaptiveApi::class)
 @Composable
@@ -103,6 +105,8 @@ fun SkeinShellHost(
     spaces: List<SkeinSpace> = emptyList(),
     detailPlaceholder: @Composable (Destination) -> Unit = { PlaceholderEntry(null) },
     search: (suspend (String) -> List<Document>)? = null,
+    zone: ZoneId = ZoneId.systemDefault(),
+    now: () -> Long = System::currentTimeMillis,
     entryContent: @Composable (SkeinKey) -> Unit = { PlaceholderEntry(it) },
 ) {
     val resolver by rememberUpdatedState(resolveKinds)
@@ -180,6 +184,8 @@ fun SkeinShellHost(
                 onSearch = { if (search != null) shell.openSearch() },
                 history = history,
                 spaces = spaces,
+                zone = zone,
+                now = now,
             ) {
                 // §8.3 rule 6b: Back at another destination's root goes to Chat; at the Chat root, to the system.
                 NavigationBackHandler(
