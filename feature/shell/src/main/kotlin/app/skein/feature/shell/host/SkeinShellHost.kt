@@ -36,6 +36,9 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.runtime.setValue
 import androidx.compose.runtime.staticCompositionLocalOf
+import androidx.compose.ui.focus.focusProperties
+import androidx.compose.ui.layout.Layout
+import androidx.compose.ui.semantics.clearAndSetSemantics
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalLayoutDirection
@@ -48,6 +51,7 @@ import androidx.navigation3.ui.NavDisplay
 import androidx.navigationevent.NavigationEventInfo
 import androidx.navigationevent.compose.NavigationBackHandler
 import androidx.navigationevent.compose.rememberNavigationEventState
+import app.skein.core.designsystem.components.LocalSkeinWindowActive
 import app.skein.core.designsystem.components.LocalSkeinWindowPartitions
 import app.skein.core.designsystem.theme.SkeinSize
 import app.skein.core.model.Document
@@ -178,8 +182,14 @@ fun SkeinShellHost(
                 ) {
                     HingeEntryPane(it) {
                         EntryInsets {
-                            CompositionLocalProvider(LocalEntryIsList provides (it.role == PaneRole.LIST && !showRootPlaceholder)) {
-                                if (showRootPlaceholder && it.role == PaneRole.LIST) placeholder(it.destination) else content(it)
+                            if (it.role == PaneRole.LIST) {
+                                RetainedRootList(
+                                    collapsed = showRootPlaceholder,
+                                    list = { content(it) },
+                                    placeholder = { placeholder(it.destination) },
+                                )
+                            } else {
+                                content(it)
                             }
                         }
                     }
@@ -361,4 +371,38 @@ fun PlaceholderEntry(key: SkeinKey?) {
             else -> "${SkeinDestination.valueOf(key.destination.name).label} · ${key.role.name.lowercase()}"
         }
     Box(Modifier.fillMaxSize(), contentAlignment = Alignment.Center) { Text(label) }
+}
+
+
+/** The list remains composed while its root shows the empty detail, retaining local filters and scroll. */
+@Composable
+private fun RetainedRootList(
+    collapsed: Boolean,
+    list: @Composable () -> Unit,
+    placeholder: @Composable () -> Unit,
+) {
+    val ownerActive = LocalSkeinWindowActive.current
+    Layout(
+        modifier = Modifier.fillMaxSize(),
+        content = {
+            CompositionLocalProvider(
+                LocalEntryIsList provides true,
+                LocalSkeinWindowActive provides (ownerActive && !collapsed),
+            ) {
+                Box(
+                    Modifier.fillMaxSize()
+                        .focusProperties { canFocus = !collapsed }
+                        .then(if (collapsed) Modifier.clearAndSetSemantics { } else Modifier),
+                ) { list() }
+            }
+            if (collapsed) {
+                Box(Modifier.fillMaxSize()) { placeholder() }
+            }
+        },
+    ) { measurables, constraints ->
+        val children = measurables.map { it.measure(constraints) }
+        layout(constraints.maxWidth, constraints.maxHeight) {
+            children[if (collapsed) 1 else 0].place(0, 0)
+        }
+    }
 }
