@@ -1,0 +1,35 @@
+{
+  "at": "2026-09-29T20:05:07.308425+00:00",
+  "case_id": "demo-aviation-direct",
+  "question": "Which log is missing from DEMO-A?",
+  "context_row_count": 8,
+  "known_synthetic_titles": [
+    "DEMO-A Records Packet",
+    "DEMO-A Records Request",
+    "DEMO: OYS-014 Observation Log",
+    "DEMO: Cedar Cabinet Order",
+    "DEMO-A Planning Meeting",
+    "DEMO: OYS-014 Sample Provenance",
+    "DEMO: Cedar Delivery Coordination",
+    "DEMO: Cedar Remodel RFI-017"
+  ],
+  "unknown_row_count": 0,
+  "declared_source_counts": [
+    8
+  ],
+  "raw_tree_retained": false,
+  "raw_tree_sha256": "b256d41a73f2f01a30a6e9f4a8bff72e602275ee5cf4e3a353e7ae89bb7187c4",
+  "context_rows_match_visible_count": true,
+  "synthetic_assistant_text": "The propeller log is missing from DEMO-A.",
+  "text_citation_markers": [],
+  "final_screenshot_sha256": "5efef2260c19de23c574fcaf053e976c9a11aca2882ede803316b589f8b2564b",
+  "factual_result": "PASS: missing propeller log correctly identified",
+  "rendered_citations": 0,
+  "citation_navigation_verified": false,
+  "first_visible_seconds": 46.147054,
+  "idle_observed_seconds": 53.161415,
+  "visible_text_before_done": true,
+  "normal_stop_needed": false,
+  "private_screenshot_original_preserved": true,
+  "timing_scope": "observation upper bounds, not exact native TTFT/EOS"
+}

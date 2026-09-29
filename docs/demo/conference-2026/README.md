@@ -107,9 +107,9 @@ That response is application-owned and can skip generation. Describe it as the a
 
 If generation is too slow, fails or supplies unsupported facts, use **Stop answer** if it is still running. Open the relevant note through Knowledge and show the source directly. Explain the failed step. A checked, saved chat may be shown as an **earlier rehearsal**, never as fresh generation. If the source/fold route is unreliable, keep the working pane visible and browse the notes without another fold. Leave the failed runtime gate open.
 
-## Rehearsal checklist and results template
+## Earlier rehearsal checklist: source28354
 
-The device runner records observations here or in linked evidence. Runtime rehearsal results remain **NOT RUN** until observed; the installation identity below is supporting update evidence. Keep technical logs content-free and preserve secure settings; do not require screenshots when protection prevents them.
+This table preserves the earlier source28354 rehearsal. The latest source920e observations are in the [official-model live record](runs/2026-09-29-official-qwen-live/README.md); they do not rewrite the earlier failures. **NOT RUN** below means unobserved at that earlier checkpoint. Keep technical logs content-free and preserve secure settings; do not require screenshots when protection prevents them.
 
 | Check / measurement | Observed result |
 |---|---|
