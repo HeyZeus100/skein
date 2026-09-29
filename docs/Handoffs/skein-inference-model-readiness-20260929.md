@@ -3,7 +3,10 @@
 Audit baseline: `9fa9f6fdda8a6f624d0e9b248e7a17e92f01890f`. The coordinator's
 `20260929/coordinator.json` and `issues-before.json` supply the current issue
 records. No device, emulator, CI, artifact download, model replacement, retrieval
-policy change or embedding activation was performed. **Fold remains HOLD.**
+policy change or embedding activation was performed by this inference audit.
+The baseline audit retained **Fold HOLD**; the coordinator's later, externally
+owned scoped demo authorization is recorded below without extending this
+inference session's authority.
 Newer UX/retrieval execution reports supersede the provisioning handoff's claims
 about the shipped APK; the original artifacts remain unchanged.
 
@@ -39,12 +42,63 @@ do not establish current Qwen behavior, answer quality, PSS or thermal performan
 
 The Qwen Q3 smoke manifest records 1,590,475,744 bytes and SHA-256
 `2c5f9a121ae6695208e300c16acca303669afa4e18812061164dca9c97071b12`.
-That is a historical manifest identity, not a freshly verified local full file or
-the owner's currently selected artifact. No Qwen or Gemma GGUF was found in the
-targeted repository asset/model paths; no claim is made about unsearched storage.
-Qwen Q4 and both Gemma rows still have `TBD` size/hash, and `models/MANIFEST.md`
+At the initial inventory, that was only a historical manifest identity: no local
+full file or currently selected app-private artifact had been verified. No Qwen
+or Gemma GGUF was found in those targeted repository asset/model paths; no claim
+was made about unsearched storage.
+That initial local-inventory result is superseded for the public Qwen Q3 copy by
+the dated host evidence below. Qwen Q4 and both Gemma rows still have `TBD`
+size/hash, and `models/MANIFEST.md`
 does not exist. Source revision and artifact-specific license verification remain
 required; placeholder manifest labels are not independent license evidence.
+
+## Later local Qwen identity evidence: 2026-09-29 08:29 UTC
+
+The coordinator requested consumption of `demo.json`'s `model_qualification`
+record. A separate authorized conference-demo hardware runner copied the public
+shared-storage Qwen Q3 artifact into its ignored workstation cache. This inference
+reviewer accessed **only that local file and the supplied JSON**; no physical
+device, native load, emulator, build or generation was used for this verification.
+
+The original 1,945-byte qualification JSON has verified SHA-256
+`592dfabd8d239473cf181cdc9e9c9b876c5da77e196d3431643787b4f3ade878`.
+This reviewer independently streamed the complete local model through SHA-256,
+checked its size, and reran `qualify_model_artifact.py` at source
+`8a6208998b5c52db99af0ce1306a8ab2a4bc3e3e`. The reproduced report is byte-for-byte
+identical to the original. The runner declares its original qualifier source as
+`b63ac7d1cf4271594d186f3daae046143bb10c9e`; that is provenance for the host tool,
+not an APK or upstream model revision.
+
+| Qwen Q3 public copy identity | Independently verified value |
+|---|---|
+| Complete bytes / SHA-256 | 1,590,475,744 / `2c5f9a121ae6695208e300c16acca303669afa4e18812061164dca9c97071b12` |
+| Architecture / tokenizer / pre-tokenizer | `qwen2` / `gpt2` / `qwen2` |
+| Vocabulary size / GGUF file type | 151,936 / 12 |
+| Raw template bytes / SHA-256 | 2,507 / `cd8e9439f0570856fd70470bf8889ebd8b5d1107207f67a5efb46e342330527f` |
+| Raw tokenizer metadata SHA-256 | `7f463778c3b814b7632f97530888990620a2119bffc1d67a8f5161ed7a4e5fdf` |
+| Declared BOS | 151643, `<|endoftext|>`, type 3; `add_bos_token=false` |
+| Declared EOS / padding | 151645, `<|im_end|>`, type 3 |
+| ChatML start | 151644, `<|im_start|>`, type 3 |
+| Other previously discussed spelling | 128247, `</s>`, type 1 |
+
+The unrelated type-1 `</s>` entry does not by itself demonstrate a broken EOS:
+the artifact declares `<|im_end|>` as EOS. **Native EOG classification, exact
+template/token-ID parity, generation stopping, and answer quality remain
+unmeasured.** This is the shared-storage public copy, **not verification of the
+currently selected app-private model bytes**. Upstream revision and license review
+also remain open. Q4/Gemma acquisition, default-model validation, and formal M0
+acceptance are not satisfied by this Q3 identity result.
+
+The [preserved identity bundle](../eval/runs/2026-09-29-inference-model-identities/README.md)
+contains the unmodified original JSON, a separate host-reverification record,
+and a hash manifest. The complete GGUF remains in the ignored local cache and is
+not committed. Original earlier evidence remains unchanged.
+
+The coordinator's `08:28:52 UTC` record reports a user-authorized release for
+data-preserving update/demo checks by the separate sole hardware runner, pending
+its candidate-release rules. That external authorization does not authorize this
+inference session to operate hardware and does not authorize a formal M0 matrix.
+This report makes no claim that a candidate was installed or a demo passed.
 
 ## Repeatable host qualification
 
@@ -71,10 +125,11 @@ and that intended end tokens satisfy `LlamaNative.isEog`.
 
 ## Requests for the coordinator
 
-1. **Artifact qualification (`skein-bxk`, `.28`, `.30`).** Obtain or identify public
-   workstation copies in this order: current Q3 control, planned abliterated Q4,
-   original unmodified instruction-tuned Qwen baseline, then Gemma E2B/E4B if
-   compatible. Record full SHA-256/BLAKE3, bytes, immutable upstream/conversion
+1. **Artifact qualification (`skein-bxk`, `.28`, `.30`).** Reuse the now verified
+   public Q3 control above; the selected app-private artifact remains separately
+   unidentified. Obtain or identify public workstation copies of the planned
+   abliterated Q4, original unmodified instruction-tuned Qwen baseline, then Gemma
+   E2B/E4B if compatible. Record full SHA-256/BLAKE3, bytes, immutable upstream/conversion
    revision, source/license URLs, lineage, quantization and companion identities.
    Use the host qualifier above and retain its JSON. A Q3/Q4 comparison is only a
    quantization comparison when weights, tokenizer, template and conversion
@@ -114,7 +169,8 @@ and that intended end tokens satisfy `LlamaNative.isEog`.
    report all failures in the denominator. Supplied evidence does not test live
    retrieval. No four-token result substitutes for this request.
 5. **Memory/thermal and formal M0 (`skein-7s1`, `skein-9cg`, `skein-5hr`).** Remain
-   pending while Fold is held. Before release, coordinate the already documented
+   pending: the coordinator's scoped demo release does not authorize formal M0.
+   Before the relevant measurements are authorized, coordinate the already documented
    content-free case timing and PID-specific PSS/thermal sampler. The M0
    orchestrator currently leaves `ttft_ms` and `peak_rss_mb` null; it also sends
    `--context` to `llama-bench -p` as prompt count and records that requested value

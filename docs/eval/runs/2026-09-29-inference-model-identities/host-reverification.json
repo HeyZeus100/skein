@@ -1,0 +1,21 @@
+{
+  "answer_quality_measured": false,
+  "app_private_selected_artifact_verified": false,
+  "device_access_performed_by_this_reviewer": false,
+  "independent_full_model_sha256": "2c5f9a121ae6695208e300c16acca303669afa4e18812061164dca9c97071b12",
+  "model_size_bytes": 1590475744,
+  "native_eog_verified": false,
+  "native_load_run": false,
+  "original_qualifier_source_declared_by_runner": "b63ac7d1cf4271594d186f3daae046143bb10c9e",
+  "original_report_bytes": 1945,
+  "original_report_sha256": "592dfabd8d239473cf181cdc9e9c9b876c5da77e196d3431643787b4f3ade878",
+  "qualifier_script_sha256": "da1abf66cb6ebf5f9be351103da17ddc7bdeee3a35c1ae6f73ccf5ae1da689a2",
+  "reports_byte_identical": true,
+  "reproduced_report_sha256": "592dfabd8d239473cf181cdc9e9c9b876c5da77e196d3431643787b4f3ade878",
+  "reverification_source": "8a6208998b5c52db99af0ce1306a8ab2a4bc3e3e",
+  "schema_version": 1,
+  "scope": "host-only independent reverification of externally copied public shared-storage artifact",
+  "source_record": "20260929/demo.json: model_qualification",
+  "upstream_source_revision_and_license_verified": false,
+  "verified_at_utc": "2026-09-29T08:29:48.418814+00:00"
+}
