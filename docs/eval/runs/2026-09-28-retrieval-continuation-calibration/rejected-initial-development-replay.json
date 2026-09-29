@@ -1,0 +1,581 @@
+{
+  "schema_version": 1,
+  "split": "development",
+  "production_candidate": "lexical-fact-shape-v2",
+  "minimum_query_coverage": 0.5,
+  "source_report_sha256": "23985b1f67125be83eda0ca2fe0be77d1c34d75a2b9033e175848c0199403d0c",
+  "gold_sha256": "4fd5034368e250179425f06bbcb1cc40513f2f3c5ceb998bd6a9eedf298c820f",
+  "controls_sha256": "37a78d44ed09f133071ed22ba5afde2030d5ad6f197594e02bddc9b818a209f4",
+  "selection_rule": "Lowest coarse typed-value cutoff preserving default development recall, rejecting every development absence and passing all declared support controls; no independent validation consulted.",
+  "limitation": "Replay only; not fresh runtime, entailment, general paraphrase or hybrid evidence.",
+  "sweep": [
+    {
+      "minimum_value_coverage": 0.25,
+      "modes": {
+        "lexical_only": {
+          "answerable_queries": 60,
+          "absence_queries": 16,
+          "rejected_absence_queries": 16,
+          "falsely_rejected_answerable_queries": 24,
+          "recall_at_8": 0.4,
+          "ndcg_at_8": 0.42620912607751305,
+          "newly_lost_answer_spans": [
+            "semantic-03",
+            "persona-01",
+            "persona-02",
+            "persona-03",
+            "persona-04",
+            "persona-05",
+            "persona-06",
+            "persona-07",
+            "persona-08",
+            "persona-09",
+            "persona-10",
+            "persona-11",
+            "persona-12"
+          ]
+        },
+        "graph_only": {
+          "answerable_queries": 60,
+          "absence_queries": 16,
+          "rejected_absence_queries": 16,
+          "falsely_rejected_answerable_queries": 48,
+          "recall_at_8": 0.2,
+          "ndcg_at_8": 0.14196194827937306,
+          "newly_lost_answer_spans": []
+        },
+        "lexical_graph_default": {
+          "answerable_queries": 60,
+          "absence_queries": 16,
+          "rejected_absence_queries": 16,
+          "falsely_rejected_answerable_queries": 24,
+          "recall_at_8": 0.6,
+          "ndcg_at_8": 0.5419619482793732,
+          "newly_lost_answer_spans": [
+            "persona-01",
+            "persona-02",
+            "persona-03",
+            "persona-04",
+            "persona-05",
+            "persona-06",
+            "persona-07",
+            "persona-08",
+            "persona-09",
+            "persona-10",
+            "persona-11",
+            "persona-12"
+          ]
+        }
+      },
+      "controls": [
+        {
+          "id": "money-direct",
+          "supported": true,
+          "accepted": true
+        },
+        {
+          "id": "money-paraphrase",
+          "supported": true,
+          "accepted": true
+        },
+        {
+          "id": "money-free",
+          "supported": true,
+          "accepted": true
+        },
+        {
+          "id": "money-missing",
+          "supported": false,
+          "accepted": false
+        },
+        {
+          "id": "money-unrelated-value",
+          "supported": false,
+          "accepted": false
+        },
+        {
+          "id": "money-duration",
+          "supported": false,
+          "accepted": false
+        },
+        {
+          "id": "duration-direct",
+          "supported": true,
+          "accepted": true
+        },
+        {
+          "id": "duration-paraphrase",
+          "supported": true,
+          "accepted": true
+        },
+        {
+          "id": "duration-missing",
+          "supported": false,
+          "accepted": false
+        },
+        {
+          "id": "duration-wrong-kind",
+          "supported": false,
+          "accepted": false
+        },
+        {
+          "id": "duration-unrelated-value",
+          "supported": false,
+          "accepted": false
+        },
+        {
+          "id": "count-direct",
+          "supported": true,
+          "accepted": true
+        },
+        {
+          "id": "count-missing",
+          "supported": false,
+          "accepted": false
+        },
+        {
+          "id": "count-unrelated-value",
+          "supported": false,
+          "accepted": false
+        },
+        {
+          "id": "location-attribute",
+          "supported": true,
+          "accepted": true
+        },
+        {
+          "id": "other-lexical",
+          "supported": true,
+          "accepted": true
+        }
+      ],
+      "controls_correct": 16
+    },
+    {
+      "minimum_value_coverage": 0.5,
+      "modes": {
+        "lexical_only": {
+          "answerable_queries": 60,
+          "absence_queries": 16,
+          "rejected_absence_queries": 16,
+          "falsely_rejected_answerable_queries": 24,
+          "recall_at_8": 0.4,
+          "ndcg_at_8": 0.42620912607751305,
+          "newly_lost_answer_spans": [
+            "semantic-03",
+            "persona-01",
+            "persona-02",
+            "persona-03",
+            "persona-04",
+            "persona-05",
+            "persona-06",
+            "persona-07",
+            "persona-08",
+            "persona-09",
+            "persona-10",
+            "persona-11",
+            "persona-12"
+          ]
+        },
+        "graph_only": {
+          "answerable_queries": 60,
+          "absence_queries": 16,
+          "rejected_absence_queries": 16,
+          "falsely_rejected_answerable_queries": 48,
+          "recall_at_8": 0.2,
+          "ndcg_at_8": 0.14196194827937306,
+          "newly_lost_answer_spans": []
+        },
+        "lexical_graph_default": {
+          "answerable_queries": 60,
+          "absence_queries": 16,
+          "rejected_absence_queries": 16,
+          "falsely_rejected_answerable_queries": 24,
+          "recall_at_8": 0.6,
+          "ndcg_at_8": 0.5419619482793732,
+          "newly_lost_answer_spans": [
+            "persona-01",
+            "persona-02",
+            "persona-03",
+            "persona-04",
+            "persona-05",
+            "persona-06",
+            "persona-07",
+            "persona-08",
+            "persona-09",
+            "persona-10",
+            "persona-11",
+            "persona-12"
+          ]
+        }
+      },
+      "controls": [
+        {
+          "id": "money-direct",
+          "supported": true,
+          "accepted": true
+        },
+        {
+          "id": "money-paraphrase",
+          "supported": true,
+          "accepted": false
+        },
+        {
+          "id": "money-free",
+          "supported": true,
+          "accepted": false
+        },
+        {
+          "id": "money-missing",
+          "supported": false,
+          "accepted": false
+        },
+        {
+          "id": "money-unrelated-value",
+          "supported": false,
+          "accepted": false
+        },
+        {
+          "id": "money-duration",
+          "supported": false,
+          "accepted": false
+        },
+        {
+          "id": "duration-direct",
+          "supported": true,
+          "accepted": true
+        },
+        {
+          "id": "duration-paraphrase",
+          "supported": true,
+          "accepted": false
+        },
+        {
+          "id": "duration-missing",
+          "supported": false,
+          "accepted": false
+        },
+        {
+          "id": "duration-wrong-kind",
+          "supported": false,
+          "accepted": false
+        },
+        {
+          "id": "duration-unrelated-value",
+          "supported": false,
+          "accepted": false
+        },
+        {
+          "id": "count-direct",
+          "supported": true,
+          "accepted": true
+        },
+        {
+          "id": "count-missing",
+          "supported": false,
+          "accepted": false
+        },
+        {
+          "id": "count-unrelated-value",
+          "supported": false,
+          "accepted": false
+        },
+        {
+          "id": "location-attribute",
+          "supported": true,
+          "accepted": true
+        },
+        {
+          "id": "other-lexical",
+          "supported": true,
+          "accepted": true
+        }
+      ],
+      "controls_correct": 13
+    },
+    {
+      "minimum_value_coverage": 0.75,
+      "modes": {
+        "lexical_only": {
+          "answerable_queries": 60,
+          "absence_queries": 16,
+          "rejected_absence_queries": 16,
+          "falsely_rejected_answerable_queries": 24,
+          "recall_at_8": 0.4,
+          "ndcg_at_8": 0.42620912607751305,
+          "newly_lost_answer_spans": [
+            "semantic-03",
+            "persona-01",
+            "persona-02",
+            "persona-03",
+            "persona-04",
+            "persona-05",
+            "persona-06",
+            "persona-07",
+            "persona-08",
+            "persona-09",
+            "persona-10",
+            "persona-11",
+            "persona-12"
+          ]
+        },
+        "graph_only": {
+          "answerable_queries": 60,
+          "absence_queries": 16,
+          "rejected_absence_queries": 16,
+          "falsely_rejected_answerable_queries": 48,
+          "recall_at_8": 0.2,
+          "ndcg_at_8": 0.14196194827937306,
+          "newly_lost_answer_spans": []
+        },
+        "lexical_graph_default": {
+          "answerable_queries": 60,
+          "absence_queries": 16,
+          "rejected_absence_queries": 16,
+          "falsely_rejected_answerable_queries": 24,
+          "recall_at_8": 0.6,
+          "ndcg_at_8": 0.5419619482793732,
+          "newly_lost_answer_spans": [
+            "persona-01",
+            "persona-02",
+            "persona-03",
+            "persona-04",
+            "persona-05",
+            "persona-06",
+            "persona-07",
+            "persona-08",
+            "persona-09",
+            "persona-10",
+            "persona-11",
+            "persona-12"
+          ]
+        }
+      },
+      "controls": [
+        {
+          "id": "money-direct",
+          "supported": true,
+          "accepted": true
+        },
+        {
+          "id": "money-paraphrase",
+          "supported": true,
+          "accepted": false
+        },
+        {
+          "id": "money-free",
+          "supported": true,
+          "accepted": false
+        },
+        {
+          "id": "money-missing",
+          "supported": false,
+          "accepted": false
+        },
+        {
+          "id": "money-unrelated-value",
+          "supported": false,
+          "accepted": false
+        },
+        {
+          "id": "money-duration",
+          "supported": false,
+          "accepted": false
+        },
+        {
+          "id": "duration-direct",
+          "supported": true,
+          "accepted": true
+        },
+        {
+          "id": "duration-paraphrase",
+          "supported": true,
+          "accepted": false
+        },
+        {
+          "id": "duration-missing",
+          "supported": false,
+          "accepted": false
+        },
+        {
+          "id": "duration-wrong-kind",
+          "supported": false,
+          "accepted": false
+        },
+        {
+          "id": "duration-unrelated-value",
+          "supported": false,
+          "accepted": false
+        },
+        {
+          "id": "count-direct",
+          "supported": true,
+          "accepted": true
+        },
+        {
+          "id": "count-missing",
+          "supported": false,
+          "accepted": false
+        },
+        {
+          "id": "count-unrelated-value",
+          "supported": false,
+          "accepted": false
+        },
+        {
+          "id": "location-attribute",
+          "supported": true,
+          "accepted": true
+        },
+        {
+          "id": "other-lexical",
+          "supported": true,
+          "accepted": true
+        }
+      ],
+      "controls_correct": 13
+    },
+    {
+      "minimum_value_coverage": 1.0,
+      "modes": {
+        "lexical_only": {
+          "answerable_queries": 60,
+          "absence_queries": 16,
+          "rejected_absence_queries": 16,
+          "falsely_rejected_answerable_queries": 24,
+          "recall_at_8": 0.4,
+          "ndcg_at_8": 0.42620912607751305,
+          "newly_lost_answer_spans": [
+            "semantic-03",
+            "persona-01",
+            "persona-02",
+            "persona-03",
+            "persona-04",
+            "persona-05",
+            "persona-06",
+            "persona-07",
+            "persona-08",
+            "persona-09",
+            "persona-10",
+            "persona-11",
+            "persona-12"
+          ]
+        },
+        "graph_only": {
+          "answerable_queries": 60,
+          "absence_queries": 16,
+          "rejected_absence_queries": 16,
+          "falsely_rejected_answerable_queries": 48,
+          "recall_at_8": 0.2,
+          "ndcg_at_8": 0.14196194827937306,
+          "newly_lost_answer_spans": []
+        },
+        "lexical_graph_default": {
+          "answerable_queries": 60,
+          "absence_queries": 16,
+          "rejected_absence_queries": 16,
+          "falsely_rejected_answerable_queries": 24,
+          "recall_at_8": 0.6,
+          "ndcg_at_8": 0.5419619482793732,
+          "newly_lost_answer_spans": [
+            "persona-01",
+            "persona-02",
+            "persona-03",
+            "persona-04",
+            "persona-05",
+            "persona-06",
+            "persona-07",
+            "persona-08",
+            "persona-09",
+            "persona-10",
+            "persona-11",
+            "persona-12"
+          ]
+        }
+      },
+      "controls": [
+        {
+          "id": "money-direct",
+          "supported": true,
+          "accepted": true
+        },
+        {
+          "id": "money-paraphrase",
+          "supported": true,
+          "accepted": false
+        },
+        {
+          "id": "money-free",
+          "supported": true,
+          "accepted": false
+        },
+        {
+          "id": "money-missing",
+          "supported": false,
+          "accepted": false
+        },
+        {
+          "id": "money-unrelated-value",
+          "supported": false,
+          "accepted": false
+        },
+        {
+          "id": "money-duration",
+          "supported": false,
+          "accepted": false
+        },
+        {
+          "id": "duration-direct",
+          "supported": true,
+          "accepted": true
+        },
+        {
+          "id": "duration-paraphrase",
+          "supported": true,
+          "accepted": false
+        },
+        {
+          "id": "duration-missing",
+          "supported": false,
+          "accepted": false
+        },
+        {
+          "id": "duration-wrong-kind",
+          "supported": false,
+          "accepted": false
+        },
+        {
+          "id": "duration-unrelated-value",
+          "supported": false,
+          "accepted": false
+        },
+        {
+          "id": "count-direct",
+          "supported": true,
+          "accepted": true
+        },
+        {
+          "id": "count-missing",
+          "supported": false,
+          "accepted": false
+        },
+        {
+          "id": "count-unrelated-value",
+          "supported": false,
+          "accepted": false
+        },
+        {
+          "id": "location-attribute",
+          "supported": true,
+          "accepted": true
+        },
+        {
+          "id": "other-lexical",
+          "supported": true,
+          "accepted": true
+        }
+      ],
+      "controls_correct": 13
+    }
+  ]
+}

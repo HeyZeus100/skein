@@ -1,0 +1,103 @@
+{
+  "schema_version": 1,
+  "split": "development",
+  "purpose": "Coordinator-authored answer-shape controls; never independent validation. Original gold and reserved fixtures unchanged.",
+  "cases": [
+    {
+      "id": "money-direct",
+      "query": "What is the Sundial gallery admission fee?",
+      "text": "Sundial gallery admission is 12 euros.",
+      "supported": true
+    },
+    {
+      "id": "money-paraphrase",
+      "query": "What is the ticket price to visit the Sundial gallery?",
+      "text": "Sundial gallery admission is 12 euros.",
+      "supported": true
+    },
+    {
+      "id": "money-free",
+      "query": "What is the ticket price to visit the Sundial gallery?",
+      "text": "Sundial gallery admission is complimentary.",
+      "supported": true
+    },
+    {
+      "id": "money-missing",
+      "query": "What is the Sundial gallery admission fee?",
+      "text": "Sundial gallery admission requires advance booking.",
+      "supported": false
+    },
+    {
+      "id": "money-unrelated-value",
+      "query": "What is the Sundial gallery admission fee?",
+      "text": "Sundial gallery admission requires advance booking. Postcards cost 3 euros.",
+      "supported": false
+    },
+    {
+      "id": "money-duration",
+      "query": "What is the Sundial gallery admission fee?",
+      "text": "Sundial gallery admission takes 12 minutes.",
+      "supported": false
+    },
+    {
+      "id": "duration-direct",
+      "query": "How long is the Orchard pump recovery?",
+      "text": "Orchard pump recovery takes three hours.",
+      "supported": true
+    },
+    {
+      "id": "duration-paraphrase",
+      "query": "How long does the Orchard pump need before it can be used again?",
+      "text": "Orchard pump resumes after three hours.",
+      "supported": true
+    },
+    {
+      "id": "duration-missing",
+      "query": "How long is the Orchard pump recovery?",
+      "text": "Orchard pump recovery requires the service switch.",
+      "supported": false
+    },
+    {
+      "id": "duration-wrong-kind",
+      "query": "How long is the Orchard pump recovery?",
+      "text": "Orchard pump recovery costs 80 euros.",
+      "supported": false
+    },
+    {
+      "id": "duration-unrelated-value",
+      "query": "How long is the Orchard pump recovery?",
+      "text": "Orchard pump recovery uses the switch. The tour lasts three hours.",
+      "supported": false
+    },
+    {
+      "id": "count-direct",
+      "query": "How many visitors fit in the Valley workshop?",
+      "text": "Valley workshop accommodates fourteen visitors.",
+      "supported": true
+    },
+    {
+      "id": "count-missing",
+      "query": "How many visitors fit in the Valley workshop?",
+      "text": "Valley workshop visitors use the rear entrance.",
+      "supported": false
+    },
+    {
+      "id": "count-unrelated-value",
+      "query": "How many visitors fit in the Valley workshop?",
+      "text": "Valley workshop visitors enter here. The street number is 28.",
+      "supported": false
+    },
+    {
+      "id": "location-attribute",
+      "query": "Where is the Sundial gallery fee schedule?",
+      "text": "The Sundial gallery fee schedule is in the reception binder.",
+      "supported": true
+    },
+    {
+      "id": "other-lexical",
+      "query": "Where is the amber compass stored?",
+      "text": "The amber compass is stored on shelf 3.",
+      "supported": true
+    }
+  ]
+}

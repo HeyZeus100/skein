@@ -1,0 +1,281 @@
+{
+  "schema_version": 1,
+  "split": "development",
+  "production_candidate": "lexical-fact-shape-v2-experimental",
+  "minimum_query_coverage": 0.5,
+  "source_report_sha256": "23985b1f67125be83eda0ca2fe0be77d1c34d75a2b9033e175848c0199403d0c",
+  "gold_sha256": "4fd5034368e250179425f06bbcb1cc40513f2f3c5ceb998bd6a9eedf298c820f",
+  "controls_sha256": "959ae1e5ef994775c36d9040982ada38a8660900af60854873265a0e443a5cc9",
+  "selection_rule": "Lowest coarse typed-value cutoff preserving default development recall, rejecting every development absence and passing all declared support controls; no independent validation consulted.",
+  "limitation": "Replay only; not fresh runtime, entailment, general paraphrase or hybrid evidence. UTF-16/codepoint bounds are not exercised by this ASCII development data.",
+  "sweep": [
+    {
+      "minimum_value_coverage": 0.25,
+      "modes": {
+        "lexical_only": {
+          "answerable_queries": 60,
+          "absence_queries": 16,
+          "rejected_absence_queries": 16,
+          "falsely_rejected_answerable_queries": 12,
+          "recall_at_8": 0.6,
+          "ndcg_at_8": 0.6016044429822769,
+          "newly_lost_answer_spans": [
+            "semantic-03"
+          ]
+        },
+        "graph_only": {
+          "answerable_queries": 60,
+          "absence_queries": 16,
+          "rejected_absence_queries": 16,
+          "falsely_rejected_answerable_queries": 48,
+          "recall_at_8": 0.2,
+          "ndcg_at_8": 0.14196194827937306,
+          "newly_lost_answer_spans": []
+        },
+        "lexical_graph_default": {
+          "answerable_queries": 60,
+          "absence_queries": 16,
+          "rejected_absence_queries": 16,
+          "falsely_rejected_answerable_queries": 12,
+          "recall_at_8": 0.8,
+          "ndcg_at_8": 0.7173572651841369,
+          "newly_lost_answer_spans": []
+        }
+      },
+      "controls": [
+        {
+          "id": "wrong-price-attribute",
+          "supported": false,
+          "accepted": true
+        },
+        {
+          "id": "wrong-value-kind",
+          "supported": false,
+          "accepted": true
+        },
+        {
+          "id": "length-not-duration",
+          "supported": true,
+          "accepted": false
+        },
+        {
+          "id": "heading-context",
+          "supported": true,
+          "accepted": false
+        },
+        {
+          "id": "duration-abbreviation",
+          "supported": true,
+          "accepted": false
+        },
+        {
+          "id": "duration-prose",
+          "supported": true,
+          "accepted": false
+        }
+      ],
+      "controls_correct": 0
+    },
+    {
+      "minimum_value_coverage": 0.5,
+      "modes": {
+        "lexical_only": {
+          "answerable_queries": 60,
+          "absence_queries": 16,
+          "rejected_absence_queries": 16,
+          "falsely_rejected_answerable_queries": 12,
+          "recall_at_8": 0.6,
+          "ndcg_at_8": 0.6016044429822769,
+          "newly_lost_answer_spans": [
+            "semantic-03"
+          ]
+        },
+        "graph_only": {
+          "answerable_queries": 60,
+          "absence_queries": 16,
+          "rejected_absence_queries": 16,
+          "falsely_rejected_answerable_queries": 48,
+          "recall_at_8": 0.2,
+          "ndcg_at_8": 0.14196194827937306,
+          "newly_lost_answer_spans": []
+        },
+        "lexical_graph_default": {
+          "answerable_queries": 60,
+          "absence_queries": 16,
+          "rejected_absence_queries": 16,
+          "falsely_rejected_answerable_queries": 12,
+          "recall_at_8": 0.8,
+          "ndcg_at_8": 0.7173572651841369,
+          "newly_lost_answer_spans": []
+        }
+      },
+      "controls": [
+        {
+          "id": "wrong-price-attribute",
+          "supported": false,
+          "accepted": false
+        },
+        {
+          "id": "wrong-value-kind",
+          "supported": false,
+          "accepted": false
+        },
+        {
+          "id": "length-not-duration",
+          "supported": true,
+          "accepted": false
+        },
+        {
+          "id": "heading-context",
+          "supported": true,
+          "accepted": false
+        },
+        {
+          "id": "duration-abbreviation",
+          "supported": true,
+          "accepted": false
+        },
+        {
+          "id": "duration-prose",
+          "supported": true,
+          "accepted": false
+        }
+      ],
+      "controls_correct": 2
+    },
+    {
+      "minimum_value_coverage": 0.75,
+      "modes": {
+        "lexical_only": {
+          "answerable_queries": 60,
+          "absence_queries": 16,
+          "rejected_absence_queries": 16,
+          "falsely_rejected_answerable_queries": 12,
+          "recall_at_8": 0.6,
+          "ndcg_at_8": 0.6016044429822769,
+          "newly_lost_answer_spans": [
+            "semantic-03"
+          ]
+        },
+        "graph_only": {
+          "answerable_queries": 60,
+          "absence_queries": 16,
+          "rejected_absence_queries": 16,
+          "falsely_rejected_answerable_queries": 48,
+          "recall_at_8": 0.2,
+          "ndcg_at_8": 0.14196194827937306,
+          "newly_lost_answer_spans": []
+        },
+        "lexical_graph_default": {
+          "answerable_queries": 60,
+          "absence_queries": 16,
+          "rejected_absence_queries": 16,
+          "falsely_rejected_answerable_queries": 12,
+          "recall_at_8": 0.8,
+          "ndcg_at_8": 0.7173572651841369,
+          "newly_lost_answer_spans": []
+        }
+      },
+      "controls": [
+        {
+          "id": "wrong-price-attribute",
+          "supported": false,
+          "accepted": false
+        },
+        {
+          "id": "wrong-value-kind",
+          "supported": false,
+          "accepted": false
+        },
+        {
+          "id": "length-not-duration",
+          "supported": true,
+          "accepted": false
+        },
+        {
+          "id": "heading-context",
+          "supported": true,
+          "accepted": false
+        },
+        {
+          "id": "duration-abbreviation",
+          "supported": true,
+          "accepted": false
+        },
+        {
+          "id": "duration-prose",
+          "supported": true,
+          "accepted": false
+        }
+      ],
+      "controls_correct": 2
+    },
+    {
+      "minimum_value_coverage": 1.0,
+      "modes": {
+        "lexical_only": {
+          "answerable_queries": 60,
+          "absence_queries": 16,
+          "rejected_absence_queries": 16,
+          "falsely_rejected_answerable_queries": 12,
+          "recall_at_8": 0.6,
+          "ndcg_at_8": 0.6016044429822769,
+          "newly_lost_answer_spans": [
+            "semantic-03"
+          ]
+        },
+        "graph_only": {
+          "answerable_queries": 60,
+          "absence_queries": 16,
+          "rejected_absence_queries": 16,
+          "falsely_rejected_answerable_queries": 48,
+          "recall_at_8": 0.2,
+          "ndcg_at_8": 0.14196194827937306,
+          "newly_lost_answer_spans": []
+        },
+        "lexical_graph_default": {
+          "answerable_queries": 60,
+          "absence_queries": 16,
+          "rejected_absence_queries": 16,
+          "falsely_rejected_answerable_queries": 12,
+          "recall_at_8": 0.8,
+          "ndcg_at_8": 0.7173572651841369,
+          "newly_lost_answer_spans": []
+        }
+      },
+      "controls": [
+        {
+          "id": "wrong-price-attribute",
+          "supported": false,
+          "accepted": false
+        },
+        {
+          "id": "wrong-value-kind",
+          "supported": false,
+          "accepted": false
+        },
+        {
+          "id": "length-not-duration",
+          "supported": true,
+          "accepted": false
+        },
+        {
+          "id": "heading-context",
+          "supported": true,
+          "accepted": false
+        },
+        {
+          "id": "duration-abbreviation",
+          "supported": true,
+          "accepted": false
+        },
+        {
+          "id": "duration-prose",
+          "supported": true,
+          "accepted": false
+        }
+      ],
+      "controls_correct": 2
+    }
+  ]
+}

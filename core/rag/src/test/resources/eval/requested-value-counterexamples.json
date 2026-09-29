@@ -1,0 +1,43 @@
+{
+  "schema_version": 1,
+  "split": "development",
+  "purpose": "Independently reviewed development counterexamples. No frozen validation consulted. Candidate is rejected for production.",
+  "cases": [
+    {
+      "id": "wrong-price-attribute",
+      "query": "What is the ticket price to visit the Sundial gallery?",
+      "text": "Sundial gallery postcards cost 3 euros.",
+      "supported": false
+    },
+    {
+      "id": "wrong-value-kind",
+      "query": "What is the ticket price to visit the Sundial gallery?",
+      "text": "Sundial gallery is 12 meters wide.",
+      "supported": false
+    },
+    {
+      "id": "length-not-duration",
+      "query": "How long is the copper rod?",
+      "text": "The copper rod is 80 centimeters long.",
+      "supported": true
+    },
+    {
+      "id": "heading-context",
+      "query": "How long is the Orchard pump recovery?",
+      "text": "# Orchard pump\n\nRecovery takes three hours.",
+      "supported": true
+    },
+    {
+      "id": "duration-abbreviation",
+      "query": "How long is the Orchard pump recovery?",
+      "text": "Orchard pump recovery takes 3 hrs.",
+      "supported": true
+    },
+    {
+      "id": "duration-prose",
+      "query": "How long is the Orchard pump recovery?",
+      "text": "Orchard pump recovery takes half an hour.",
+      "supported": true
+    }
+  ]
+}
