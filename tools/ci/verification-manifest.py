@@ -14,7 +14,7 @@ import sys
 def manifest(root, lane, source):
     patterns = ["**/build/test-results/**/*.xml"]
     if lane == "screenshots":
-        patterns += ["**/build/test-results/roborazzi/*.json"]
+        patterns += ["**/build/test-results/roborazzi/**/*.json"]
     paths = sorted({p for pattern in patterns for p in root.glob(pattern) if p.is_file()})
     return {
         "lane": lane,
