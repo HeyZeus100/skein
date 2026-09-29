@@ -60,23 +60,43 @@ import java.util.Collections
 public object RejectionValidationEvaluation {
     public const val FIXTURE_SHA256: String = "bf162254094103310102e28ad90b4c945bf24dd7f8f9a706039b2fe3a826b57c"
 
+    public enum class Fixture(
+        public val resource: String,
+        public val sha256: String,
+        public val split: String,
+        public val documentCount: Int,
+        public val queryCount: Int,
+        public val answerCount: Int,
+    ) {
+        PUBLIC_RESERVED("rejection-validation.json", FIXTURE_SHA256, "public_reserved_validation", 6, 12, 6),
+        FROZEN_20260928(
+            "rejection-validation-20260928.json",
+            "4f79b2ddcf42dedd6b7f83c10402855f683fcebc3045d9e4668f6da2951759e8",
+            "independent_validation_20260928",
+            12,
+            24,
+            12,
+        ),
+    }
+
     /** Quality failures remain measured FAIL rows; only invalid harness/index state throws. */
     public suspend fun evaluate(
         factory: (IndexStore, VaultRepository, PersonaId) -> RetrievalService,
         repetitions: Int = 3,
         configuration: JsonObject = JsonObject(emptyMap()),
         modeName: String = "production_policy",
+        definition: Fixture = Fixture.PUBLIC_RESERVED,
     ): JsonObject {
         require(repetitions in 2..10)
         val fixtureBytes =
-            checkNotNull(javaClass.getResourceAsStream("/eval/rejection-validation.json")) {
+            checkNotNull(javaClass.getResourceAsStream("/eval/${definition.resource}")) {
                 "Missing reserved validation fixture"
             }.use { it.readBytes() }
-        check(RetrievalEvaluationReport.sha256(fixtureBytes) == FIXTURE_SHA256) { "Reserved fixture changed" }
+        check(RetrievalEvaluationReport.sha256(fixtureBytes) == definition.sha256) { "Reserved fixture changed" }
         val fixture = Json.parseToJsonElement(fixtureBytes.toString(Charsets.UTF_8)).jsonObject
         check(fixture.getValue("schema_version").jsonPrimitive.int == 1)
-        check(fixture.getValue("split").jsonPrimitive.content == "public_reserved_validation")
-        val queries = parseQueries(fixture)
+        check(fixture.getValue("split").jsonPrimitive.content == definition.split)
+        val queries = parseQueries(fixture, definition)
         val context = InstrumentationRegistry.getInstrumentation().targetContext
         val dir = Files.createTempDirectory(context.cacheDir.toPath(), "rejection-validation-").toFile()
         val lifecycle =
@@ -98,23 +118,39 @@ public object RejectionValidationEvaluation {
                         readers = readers.subList(0, 2),
                     )
                 val index = IndexStoreImpl(readers[2])
-                val space = PersonaServiceImpl(readers[3]).default().id
+                val personas = PersonaServiceImpl(readers[3])
+                val personaIds = linkedMapOf("default" to personas.default().id)
+                val aliases =
+                    fixture
+                        .getValue("documents")
+                        .jsonArray
+                        .map {
+                            it.jsonObject
+                                .getValue("persona_id")
+                                .jsonPrimitive.content
+                        }.toSet()
+                for (alias in aliases - "default") {
+                    personaIds[alias] = personas.create(alias, null, null).id
+                }
+                val space = personaIds.getValue("default")
                 val documents =
                     fixture.getValue("documents").jsonArray.map { raw ->
                         val source = raw.jsonObject
-                        check(source.getValue("persona_id").jsonPrimitive.content == "default")
                         repository.createDocument(
                             NewDocument(
                                 id = source.getValue("id").jsonPrimitive.content,
                                 kind = DocumentKind.NOTE,
                                 title = source.getValue("title").jsonPrimitive.content,
                                 bodyMd = source.getValue("body_md").jsonPrimitive.content,
-                                personaId = space,
+                                personaId = personaIds.getValue(source.getValue("persona_id").jsonPrimitive.content),
                             ),
                         )
                     }
-                check(documents.size == 6 && documents.map { it.id }.distinct().size == 6)
-                check(count(pool.writer(), "SELECT count(*) FROM documents") == 6L)
+                check(
+                    documents.size == definition.documentCount &&
+                        documents.map { it.id }.distinct().size == documents.size,
+                )
+                check(count(pool.writer(), "SELECT count(*) FROM documents") == documents.size.toLong())
                 val warnings = Collections.synchronizedList(mutableListOf<String>())
                 val chunker = Chunker(ApproximateTokenizer)
                 val upserter = EdgeUpserter(repository, index)
@@ -140,7 +176,6 @@ public object RejectionValidationEvaluation {
                 check(count(pool.writer(), "SELECT count(*) FROM chunks") == chunks.size.toLong())
                 val stored = linkedMapOf<String, EvaluationDocument>()
                 for (doc in documents) {
-                    check(doc.personaId == space) { "Reserved source is outside its requested Space" }
                     val revision = checkNotNull(repository.currentRevision(doc.id))
                     stored[doc.id] =
                         EvaluationDocument(
@@ -190,7 +225,9 @@ public object RejectionValidationEvaluation {
                 val service = factory(index, repository, space)
                 val rows =
                     queries.map { query ->
-                        service.retrieveContext(query.query, k = RetrievalMetrics.K, personaId = space)
+                        val owner = personaIds.getValue(checkNotNull(query.personaAlias))
+                        check(query.relevant.all { stored.getValue(it.docId).personaId == owner })
+                        service.retrieveContext(query.query, k = RetrievalMetrics.K, personaId = owner)
                         val samples =
                             List(repetitions) {
                                 val started = System.nanoTime()
@@ -198,13 +235,13 @@ public object RejectionValidationEvaluation {
                                     service.retrieveContext(
                                         query.query,
                                         k = RetrievalMetrics.K,
-                                        personaId = space,
+                                        personaId = owner,
                                     )
                                 RetrievalSample((System.nanoTime() - started) / 1_000_000.0, results)
                             }
                         EvaluatedQuery(
                             query,
-                            RetrievalMetrics.score(query, space, stored, indexed, samples.first().results),
+                            RetrievalMetrics.score(query, owner, stored, indexed, samples.first().results),
                             samples,
                         )
                     }
@@ -213,10 +250,10 @@ public object RejectionValidationEvaluation {
                 buildJsonObject {
                     put("schema_version", 1)
                     put("status", "MEASURED_DIAGNOSTIC")
-                    put("split", "public_reserved_validation")
+                    put("split", definition.split)
                     put("blind_benchmark", false)
-                    put("fixture_sha256", FIXTURE_SHA256)
-                    put("corpus", "separate encrypted six-document vault; no development background documents")
+                    put("fixture_sha256", definition.sha256)
+                    put("corpus", "separate encrypted validation vault; no development background documents")
                     put("document_count", documents.size)
                     put("chunk_count", chunks.size)
                     put("query_count", queries.size)
@@ -256,7 +293,10 @@ public object RejectionValidationEvaluation {
         }
     }
 
-    private fun parseQueries(fixture: JsonObject): List<RetrievalGoldQuery> {
+    private fun parseQueries(
+        fixture: JsonObject,
+        definition: Fixture,
+    ): List<RetrievalGoldQuery> {
         val queries =
             fixture.getValue("queries").jsonArray.map { raw ->
                 val query = raw.jsonObject
@@ -269,21 +309,23 @@ public object RejectionValidationEvaluation {
                             label.getValue("evidence").jsonPrimitive.content,
                         )
                     }
-                check(query.getValue("persona_id").jsonPrimitive.content == "default")
                 check((query.getValue("answer") != JsonNull) == labels.isNotEmpty())
                 RetrievalGoldQuery(
                     id = query.getValue("id").jsonPrimitive.content,
                     category = query.getValue("category").jsonPrimitive.content,
                     query = query.getValue("query").jsonPrimitive.content,
-                    personaAlias = "default",
+                    personaAlias = query.getValue("persona_id").jsonPrimitive.content,
                     relevant = labels,
-                    forbiddenDocIds = emptySet(),
+                    forbiddenDocIds =
+                        query["forbidden_doc_ids"]
+                            ?.jsonArray
+                            ?.map { it.jsonPrimitive.content }
+                            ?.toSet()
+                            .orEmpty(),
                 )
             }
-        check(queries.size == 12 && queries.map { it.id }.distinct().size == 12)
-        check(queries.count { it.answerable } == 6)
-        check(queries.count { it.category == "related_only" } == 3)
-        check(queries.count { it.category == "no_match" } == 3)
+        check(queries.size == definition.queryCount && queries.map { it.id }.distinct().size == queries.size)
+        check(queries.count { it.answerable } == definition.answerCount)
         return queries
     }
 

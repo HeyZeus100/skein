@@ -1,9 +1,19 @@
 name: Real retrieval diagnostic
 
-# Manual release only. A green job establishes harness integrity, not a hybrid
-# quality pass. Ranking failures stay visible in the measured diagnostic JSON.
+# Manual diagnostics preserve quality failures. The reusable call enables
+# explicit quality enforcement without putting this class in ordinary test APKs.
 on:
   workflow_dispatch:
+    inputs:
+      require_quality:
+        description: Fail the job when measured relevance quality fails
+        type: boolean
+        default: false
+  workflow_call:
+    inputs:
+      require_quality:
+        type: boolean
+        default: false
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
@@ -14,13 +24,14 @@ permissions:
 
 jobs:
   retrieval:
-    name: Opt-in real SQLite retrieval diagnostic (API 35)
+    name: Opt-in real SQLite retrieval (API 35)
     runs-on: ubuntu-latest
     timeout-minutes: 70
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v4.3.0
         with:
           submodules: true
+          fetch-depth: 0 # verify the frozen policy revision is an ancestor
       - uses: actions/setup-java@de7274f081f381c8f8158605e0321c36c376e2e6 # v4.8.0
         with:
           distribution: temurin
@@ -69,12 +80,12 @@ jobs:
           # One command preserves serial selection within the action's script
           # execution model. The helper sets ANDROID_SERIAL for Gradle too.
           script: |
-            python3 tools/eval/run_real_retrieval.py --serial "$(adb devices | awk '$1 ~ /^emulator-[0-9]+$/ && $2 == "device" {print $1}')" --expected-head "${{ github.sha }}" --output build/retrieval-diagnostic/run
+            python3 tools/eval/run_real_retrieval.py --serial "$(adb devices | awk '$1 ~ /^emulator-[0-9]+$/ && $2 == "device" {print $1}')" --expected-head "${{ github.sha }}" --output build/retrieval-diagnostic/run ${{ inputs.require_quality && '--require-quality' || '' }}
       - name: Retain measured diagnostic, actual instrumentation XML, and failures
         if: always()
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
         with:
-          name: real-retrieval-DIAGNOSTIC-hybrid-INELIGIBLE-${{ github.sha }}
+          name: real-retrieval-${{ inputs.require_quality && 'QUALITY-ENFORCED' || 'DIAGNOSTIC' }}-hybrid-INELIGIBLE-${{ github.sha }}
           path: |
             build/retrieval-diagnostic/
             core/vault/build/reports/androidTests/connected/**

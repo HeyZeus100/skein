@@ -11,6 +11,8 @@ import signal
 import subprocess
 import xml.etree.ElementTree as ET
 
+from retrieval_source_review import validate_sources
+
 PACKAGE = "app.skein.core.vault.test"
 TEST_CLASS = "app.skein.core.vault.eval.RealRetrievalEvaluationTest"
 REPORT_PATH = "files/artifacts/eval/retrieval.json"
@@ -19,8 +21,12 @@ RESULT_DIRECTORY = "core/vault/build/outputs/androidTest-results/connected"
 APK_DIRECTORY = "core/vault/build/outputs/apk/androidTest/dev/debug"
 REPOSITORY = Path(__file__).resolve().parents[2]
 VALIDATION_FIXTURE_SHA256 = "bf162254094103310102e28ad90b4c945bf24dd7f8f9a706039b2fe3a826b57c"
-# Frozen on development measurements before the reserved validation is run.
+INDEPENDENT_FIXTURE_SHA256 = "4f79b2ddcf42dedd6b7f83c10402855f683fcebc3045d9e4668f6da2951759e8"
+# Historical policy remains useful to validate immutable old artifacts. Current
+# runs take their exact policy metadata from the coordinator's frozen manifest.
 MINIMUM_QUERY_COVERAGE = .5
+HISTORICAL_POLICY = dict(version="lexical-query-coverage-v1", minimum_query_coverage=.5,
+                         semantic_vector_policy="uncalibrated_bypass")
 
 
 def require(condition, message):
@@ -82,10 +88,12 @@ def validate_metric_summary(summary, rows):
     require(summary.get("ranking_gate_status") == expected, "reserved validation ranking status disagrees with rows")
 
 
-def validate_rejection_report(report, name, policy, fixture):
-    expected = dict(schema_version=1, status="MEASURED_DIAGNOSTIC", split="public_reserved_validation",
-                    blind_benchmark=False, fixture_sha256=VALIDATION_FIXTURE_SHA256,
-                    document_count=6, chunk_count=6, query_count=12, validated_answer_spans=6,
+def validate_rejection_report(report, name, policy, fixture, fixture_hash=VALIDATION_FIXTURE_SHA256):
+    expected = dict(schema_version=1, status="MEASURED_DIAGNOSTIC", split=fixture["split"],
+                    blind_benchmark=False, fixture_sha256=fixture_hash,
+                    document_count=len(fixture["documents"]), chunk_count=len(fixture["documents"]),
+                    query_count=len(fixture["queries"]),
+                    validated_answer_spans=sum(bool(q["relevant"]) for q in fixture["queries"]),
                     embedder=None, entity_extractor=None, vector_count=0, full_hybrid_gate="INELIGIBLE",
                     warmups_per_query=1, repetitions=3)
     for key, value in expected.items():
@@ -97,13 +105,13 @@ def validate_rejection_report(report, name, policy, fixture):
     labels = {query["id"]: query for query in fixture["queries"]}
     documents = {document["id"] for document in fixture["documents"]}
     rows = mode.get("queries", [])
-    require(len(rows) == 12 and {row["id"] for row in rows} == set(labels), "reserved validation queries missing or duplicated")
+    require(len(rows) == len(labels) and {row["id"] for row in rows} == set(labels), "reserved validation queries missing or duplicated")
     kinds = report.get("returned_source_kinds", {})
     require(set(kinds) == set(labels), "reserved validation source-kind query inventory mismatch")
     for row in rows:
         label = labels[row["id"]]
         answerable = bool(label["relevant"])
-        require(row.get("category") == label["category"] and row.get("space_alias") == "default"
+        require(row.get("category") == label["category"] and row.get("space_alias") == label["persona_id"]
                 and row.get("answerable") is answerable, "reserved validation query identity mismatch")
         require(row.get("deterministic") is True and type(row.get("duplicate_results")) is int
                 and row["duplicate_results"] == 0,
@@ -127,6 +135,10 @@ def validate_rejection_report(report, name, policy, fixture):
             for item in results:
                 require(type(item.get("chunk_id")) is int and item["chunk_id"] > 0 and item.get("doc_id") in documents,
                         "reserved validation result identity invalid")
+                source = next(d for d in fixture["documents"] if d["id"] == item["doc_id"])
+                require(source["persona_id"] == label["persona_id"]
+                        and item["doc_id"] not in label.get("forbidden_doc_ids", []),
+                        "reserved validation returned forbidden Space source")
                 require(isinstance(item.get("doc_title"), str) and isinstance(item.get("text"), str)
                         and isinstance(item.get("revision_hash"), str)
                         and re.fullmatch(r"[a-f0-9]{64}", item.get("revision_hash", ""))
@@ -166,7 +178,8 @@ def validate_rejection_report(report, name, policy, fixture):
             "reserved validation status disagrees with measured rows")
 
 
-def validate_report(report, head, corpus_hash, gold_hash, queries, validation_fixture):
+def validate_report(report, head, corpus_hash, gold_hash, queries, validation_fixture,
+                    independent_fixture=None, expected_policy=HISTORICAL_POLICY, policy_freeze=None):
     require(report.get("schema_version") == 1, "unexpected retrieval report schema")
     require(report.get("status") == "MEASURED_DIAGNOSTIC", "retrieval did not produce a measured diagnostic")
     require(report.get("build_revision") == head, "retrieval report source revision mismatch")
@@ -179,14 +192,19 @@ def validate_report(report, head, corpus_hash, gold_hash, queries, validation_fi
     require(report.get("repetitions") == 3 and report.get("warmups_per_query_mode") == 1,
             "unexpected retrieval repetition configuration")
     policy = report.get("evidence_policy", {})
-    require(policy.get("version") == "lexical-query-coverage-v1"
-            and finite_number(policy.get("minimum_query_coverage"))
-            and policy["minimum_query_coverage"] == MINIMUM_QUERY_COVERAGE
-            and policy.get("semantic_vector_policy") == "uncalibrated_bypass", "missing or invalid evidence policy")
+    require(policy == expected_policy, "missing or invalid evidence policy")
     validations = report.get("rejection_validation", {})
     require(set(validations) == {"production_policy", "ungated_control"}, "missing reserved validation or ungated control")
     validate_rejection_report(validations["production_policy"], "production_policy", policy, validation_fixture)
     validate_rejection_report(validations["ungated_control"], "ungated_control", {"version": "disabled_control"}, validation_fixture)
+    if independent_fixture is not None:
+        require(report.get("validation_policy_freeze") == policy_freeze, "validation policy freeze mismatch")
+        fresh = report.get("independent_validation", {})
+        require(set(fresh) == {"production_policy", "ungated_control"}, "missing independent validation or control")
+        validate_rejection_report(fresh["production_policy"], "production_policy", policy,
+                                  independent_fixture, INDEPENDENT_FIXTURE_SHA256)
+        validate_rejection_report(fresh["ungated_control"], "ungated_control", {"version": "disabled_control"},
+                                  independent_fixture, INDEPENDENT_FIXTURE_SHA256)
     modes = report.get("modes", [])
     require(len(modes) == 3 and {mode["name"] for mode in modes} == MODES, "missing retrieval ablation")
     statuses = {}
@@ -206,10 +224,51 @@ def validate_report(report, head, corpus_hash, gold_hash, queries, validation_fi
                 "retrieval quality thresholds changed")
         for key in ("scope_violations", "provenance_violations", "invalid_anchors", "nondeterministic_queries"):
             require(summary.get(key) == 0, "retrieval integrity/security gate failed: " + key)
+        rows = mode["queries"]
+        for row in rows:
+            label = queries[row["id"]]
+            answerable = any(evidence["grade"] == 3 for evidence in label["relevant"])
+            require(row.get("answerable") is answerable
+                    and row.get("space_alias") == (label.get("persona_id") or "default"), "development query identity mismatch")
+            require(type(row.get("rejected")) is bool and type(row.get("labelled_spans")) is int
+                    and row["labelled_spans"] == int(answerable)
+                    and type(row.get("covered_spans")) is int and 0 <= row["covered_spans"] <= int(answerable),
+                    "development evidence counts invalid")
+            for run in row["runs"]:
+                require(finite_number(run.get("elapsed_ms")) and run["elapsed_ms"] >= 0
+                        and isinstance(run.get("results"), list), "development sample invalid")
+            require(row["rejected"] == (not row["runs"][0]["results"]), "development rejection disagrees with results")
+        validate_metric_summary(summary, rows)
+        categories = {query["category"] for query in queries.values()}
+        require(set(mode.get("categories", {})) == categories, "development category inventory mismatch")
+        for category in categories:
+            validate_metric_summary(mode["categories"][category], [row for row in rows if row["category"] == category])
         status = summary.get("ranking_gate_status")
         require(status in {"PASS", "FAIL", "INELIGIBLE"}, "missing diagnostic ranking status")
         statuses[mode["name"]] = status
     return statuses
+
+
+def quality_gates(report):
+    """Quality status is distinct from successful collection and full-hybrid eligibility."""
+    default = next(mode for mode in report["modes"] if mode["name"] == "lexical_graph_default")
+    summary = default["summary"]
+    gates = dict(development_ranking=summary["ranking_gate_status"],
+                 development_absence="PASS" if summary["rejected_absence_queries"] == summary["absence_queries"] else "FAIL",
+                 reserved_regression=report["rejection_validation"]["production_policy"]["validation_status"],
+                 independent_validation=report["independent_validation"]["production_policy"]["validation_status"])
+    return dict(status="PASS" if all(value == "PASS" for value in gates.values()) else "FAIL", gates=gates)
+
+
+def load_policy_freeze(path):
+    frozen = json.loads(path.read_text())
+    require(frozen.get("schema_version") == 1 and re.fullmatch(r"[a-f0-9]{40}", frozen.get("source_revision", "")),
+            "a full frozen policy revision is required")
+    require(frozen.get("validation_fixture_sha256") == INDEPENDENT_FIXTURE_SHA256,
+            "frozen policy identifies a different validation fixture")
+    require(isinstance(frozen.get("evidence_policy"), dict) and frozen["evidence_policy"].get("version"),
+            "frozen policy metadata is required")
+    return frozen
 
 
 def verify_junit(directory):
@@ -357,6 +416,9 @@ def main(argv=None):
     parser.add_argument("--serial", required=True)
     parser.add_argument("--expected-head", required=True)
     parser.add_argument("--output", required=True)
+    parser.add_argument("--policy-freeze", default="tools/eval/retrieval-policy-freeze.json")
+    parser.add_argument("--require-quality", action="store_true", help="fail after collecting genuine quality failures")
+    parser.add_argument("--require-hybrid", action="store_true", help="also require a measured full-hybrid pass")
     args = parser.parse_args(argv)
     repo = REPOSITORY
     require(Path.cwd().resolve() == repo, "run from the repository root")
@@ -375,6 +437,11 @@ def main(argv=None):
                    full_hybrid_gate="INELIGIBLE", complete=False, host_timeout=False)
     device_verified = False
     try:
+        frozen = load_policy_freeze(repo / args.policy_freeze)
+        command(["git", "merge-base", "--is-ancestor", frozen["source_revision"], head])
+        summary["policy_freeze"] = frozen
+        summary["require_quality"] = args.require_quality
+        summary["require_hybrid"] = args.require_hybrid
         require(not any((repo / RESULT_DIRECTORY).rglob("*.xml")),
                 "prior instrumentation XML exists; use a fresh isolated build directory")
         apks = list((repo / APK_DIRECTORY).glob("*.apk"))
@@ -395,7 +462,8 @@ def main(argv=None):
                 "-Pandroid.testInstrumentationRunnerArguments.class=" + TEST_CLASS,
                 "-Pandroid.testInstrumentationRunnerArguments.skein.retrieval.eval=true",
                 "-Pandroid.testInstrumentationRunnerArguments.skein.retrieval.repetitions=3",
-                "-Pandroid.testInstrumentationRunnerArguments.skein.retrieval.revision=" + head]
+                "-Pandroid.testInstrumentationRunnerArguments.skein.retrieval.revision=" + head,
+                "-Pandroid.testInstrumentationRunnerArguments.skein.retrieval.validationFreeze=" + frozen["source_revision"]]
         try:
             summary["gradle_exit_code"] = run_logged(argv, output / "instrumentation-gradle.log", env)
         except subprocess.TimeoutExpired:
@@ -425,19 +493,35 @@ def main(argv=None):
         queries = json.loads((repo / "testing/src/main/resources/eval/gold.json").read_text())["queries"]
         validation_fixture = repo / "testing/src/main/resources/eval/rejection-validation.json"
         require(sha256(validation_fixture) == VALIDATION_FIXTURE_SHA256, "reserved validation fixture changed")
+        independent_fixture = repo / "testing/src/main/resources/eval/rejection-validation-20260928.json"
+        require(sha256(independent_fixture) == INDEPENDENT_FIXTURE_SHA256, "independent validation fixture changed")
         summary["diagnostic_ranking_gates"] = validate_report(
             report, head,
             sha256(repo / "testing/src/main/resources/eval/corpus.json"),
             sha256(repo / "testing/src/main/resources/eval/gold.json"),
-            {query["id"]: query for query in queries}, json.loads(validation_fixture.read_text()))
+            {query["id"]: query for query in queries}, json.loads(validation_fixture.read_text()),
+            json.loads(independent_fixture.read_text()), frozen["evidence_policy"], frozen["source_revision"])
         summary["diagnostic_rejection_validation"] = {
             name: value["validation_status"] for name, value in report["rejection_validation"].items()}
         summary["diagnostic_rejection_ranking_gates"] = {
             name: value["mode"]["summary"]["ranking_gate_status"] for name, value in report["rejection_validation"].items()}
+        summary["diagnostic_independent_validation"] = {
+            name: value["validation_status"] for name, value in report["independent_validation"].items()}
+        summary["validation_source_review"] = {
+            section: {name: validate_sources(value, fixture) for name, value in report[section].items()}
+            for section, fixture in (("rejection_validation", json.loads(validation_fixture.read_text())),
+                                     ("independent_validation", json.loads(independent_fixture.read_text())))
+        }
+        summary["quality_gate"] = quality_gates(report)
         summary["complete"] = True
         print("Measured retrieval diagnostic retained; full hybrid gate INELIGIBLE.")
         print(json.dumps(summary["diagnostic_ranking_gates"], sort_keys=True))
         print(json.dumps(summary["diagnostic_rejection_validation"], sort_keys=True))
+        print(json.dumps(summary["quality_gate"], sort_keys=True))
+        require(not args.require_quality or summary["quality_gate"]["status"] == "PASS",
+                "retrieval quality gate FAIL; complete measured evidence retained")
+        require(not args.require_hybrid or report["full_hybrid_gate"] == "PASS",
+                "full-hybrid gate INELIGIBLE; complete measured evidence retained")
     except Exception as error:
         summary["failure_type"] = type(error).__name__
         raise

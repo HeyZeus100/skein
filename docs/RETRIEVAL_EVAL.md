@@ -195,6 +195,7 @@ adb -s "$ANDROID_SERIAL" shell am instrument -w \
   -e class app.skein.core.vault.eval.RealRetrievalEvaluationTest \
   -e skein.retrieval.eval true \
   -e skein.retrieval.revision "$(git rev-parse HEAD)" \
+  -e skein.retrieval.validationFreeze "$FROZEN_POLICY_SHA" \
   app.skein.core.vault.test/androidx.test.runner.AndroidJUnitRunner
 mkdir -p artifacts/eval
 adb -s "$ANDROID_SERIAL" exec-out run-as app.skein.core.vault.test \
@@ -431,3 +432,53 @@ acceptance remain open.
 
 See the [repair execution report](Handoffs/skein-retrieval-repair-execution.md)
 for source-specific evidence, final measurements and remaining acceptance gates.
+
+## Resumed independent validation and enforceable relevance gate
+
+The independently authored 2026-09-28 fixture has its own
+[freeze protocol](eval/rejection-validation-20260928.md) and immutable SHA-256.
+It is separate from both the unchanged development corpus and the earlier public
+reserved failures. The opt-in harness records those original reserved regressions
+under `rejection_validation`, and the new set under `independent_validation`.
+Both use fresh encrypted vaults, production ingest/retrieval, a gated policy and
+an explicit ungated control. Space aliases resolve to real persona IDs; the new
+fixture includes contradictory Space pairs and forbidden-source checks.
+
+Before first execution, the coordinator records the implementation source SHA,
+exact policy metadata and validation hash in
+`tools/eval/retrieval-policy-freeze.json`. The runner requires that revision to
+be an ancestor of its clean reviewed HEAD and checks measured policy metadata
+against the manifest. The runtime report records `validation_policy_freeze`.
+This is a reviewable freeze record, not embedded source attestation. The first
+post-freeze execution is validation; any subsequent replay is a regression run.
+The policy must not be tuned on either validation set and still called fresh.
+
+`run_real_retrieval.py --require-quality` collects the same complete JSON, hashes
+and actual one-test XML first. A separate host source oracle recomputes each
+validation result's complete text, title, UTF-8 locator, BLAKE3 revision hash,
+fingerprint and gold grade from the frozen short-note sources; aggregate and
+category metrics are independently recomputed too. The runner then exits
+unsuccessfully when any of these quality conditions fail:
+
+- Default development recall/nDCG at the original 0.75/0.60 targets.
+- Rejection of every development absence query.
+- The production policy's original reserved regression gate.
+- The production policy's independently authored validation gate (all labelled
+  answer spans covered and all absence queries rejected).
+
+Ablation ranking failures and the deliberately ungated control remain visible,
+but are not mistaken for production acceptance gates. The summary records
+`complete=true` for valid artifact collection even when `quality_gate.status`
+is `FAIL`; `require_quality=true` then makes the CI job fail. Diagnostic mode
+preserves quality failures without turning them into instrumentation failures.
+`--require-hybrid` separately fails while the full hybrid gate is ineligible.
+These controls do not establish answer generation quality or physical-device
+performance.
+
+`.github/workflows/retrieval-quality.yml` invokes the dedicated opt-in workflow
+for relevant pull requests and nightly at 08:00 UTC, with relevance enforcement
+enabled. Failures upload original reports and remain red; no baseline exception
+or `continue-on-error` hides them. The manual diagnostic defaults to collection
+without quality enforcement. Ordinary `emulator.yml` APKs still exclude this
+class and their actual XML is reviewed separately. Only the designated session
+runner dispatches manual runtime work; the Fold HOLD is unchanged.

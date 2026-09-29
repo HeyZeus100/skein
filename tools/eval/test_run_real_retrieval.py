@@ -18,6 +18,7 @@ HEAD = "a" * 40
 FIXTURES = runner.REPOSITORY / "testing/src/main/resources/eval"
 QUERIES = {row["id"]: row for row in json.loads((FIXTURES / "gold.json").read_text())["queries"]}
 VALIDATION_FIXTURE = json.loads((FIXTURES / "rejection-validation.json").read_text())
+INDEPENDENT_FIXTURE = json.loads((FIXTURES / "rejection-validation-20260928.json").read_text())
 POLICY = dict(version="lexical-query-coverage-v1", minimum_query_coverage=.5, semantic_vector_policy="uncalibrated_bypass")
 
 
@@ -36,21 +37,21 @@ def reserved_summary(rows):
                 ranking_gate_status="FAIL" if positives else "NOT_APPLICABLE")
 
 
-def reserved_report(name, policy):
+def reserved_report(name, policy, fixture=VALIDATION_FIXTURE, fixture_hash=runner.VALIDATION_FIXTURE_SHA256):
     rows = []
-    for query in VALIDATION_FIXTURE["queries"]:
+    for query in fixture["queries"]:
         positive = bool(query["relevant"])
-        rows.append(dict(id=query["id"], category=query["category"], space_alias="default", answerable=positive,
+        rows.append(dict(id=query["id"], category=query["category"], space_alias=query["persona_id"], answerable=positive,
                          deterministic=True, duplicate_results=0, scope_violation_chunk_ids=[],
                          provenance_violation_chunk_ids=[], invalid_anchor_chunk_ids=[], rejected=True,
                          labelled_spans=int(positive), covered_spans=0, grades=[],
                          recall_at_8=0 if positive else None, dcg_at_8=0 if positive else None,
                          ideal_dcg_at_8=7 if positive else None, ndcg_at_8=0 if positive else None,
                          reciprocal_rank=0 if positive else None,
-                         runs=[dict(elapsed_ms=1, fingerprint="a"*64, results=[]) for _ in range(3)]))
-    return dict(schema_version=1, status="MEASURED_DIAGNOSTIC", split="public_reserved_validation", blind_benchmark=False,
-                fixture_sha256=runner.VALIDATION_FIXTURE_SHA256, document_count=6, chunk_count=6, query_count=12,
-                validated_answer_spans=6, embedder=None, entity_extractor=None, vector_count=0,
+                         runs=[dict(elapsed_ms=1, fingerprint=hashlib.sha256(b"").hexdigest(), results=[]) for _ in range(3)]))
+    return dict(schema_version=1, status="MEASURED_DIAGNOSTIC", split=fixture["split"], blind_benchmark=False,
+                fixture_sha256=fixture_hash, document_count=len(fixture["documents"]), chunk_count=len(fixture["documents"]),
+                query_count=len(fixture["queries"]), validated_answer_spans=sum(bool(q["relevant"]) for q in fixture["queries"]), embedder=None, entity_extractor=None, vector_count=0,
                 full_hybrid_gate="INELIGIBLE", warmups_per_query=1, repetitions=3, validation_status="FAIL",
                 mode=dict(name=name, configuration=dict(evidence_policy=copy.deepcopy(policy)), queries=rows,
                           summary=reserved_summary(rows), categories={category:reserved_summary([r for r in rows if r["category"]==category])
@@ -77,30 +78,38 @@ def add_reserved_result(report):
 
 def measured_report():
     """Synthetic runner contract, not a retrieval score or replacement gold."""
-    summary = dict(queries=76, answerable_queries=60, absence_queries=16,
-                   recall_gate=0.75, ndcg_gate=0.60, scope_violations=0,
-                   provenance_violations=0, invalid_anchors=0, nondeterministic_queries=0,
-                   ranking_gate_status="FAIL")
-    rows = [dict(id=key, category=query["category"], deterministic=True,
-                 runs=[{}, {}, {}], scope_violation_chunk_ids=[],
-                 provenance_violation_chunk_ids=[], invalid_anchor_chunk_ids=[])
-            for key, query in QUERIES.items()]
+    rows = []
+    for key, query in QUERIES.items():
+        positive = any(e["grade"] == 3 for e in query["relevant"])
+        rows.append(dict(id=key, category=query["category"], space_alias=query["persona_id"] or "default",
+                         answerable=positive, rejected=True, labelled_spans=int(positive), covered_spans=0,
+                         recall_at_8=0 if positive else None, ndcg_at_8=0 if positive else None,
+                         reciprocal_rank=0 if positive else None, deterministic=True,
+                         runs=[dict(elapsed_ms=1, results=[]) for _ in range(3)], scope_violation_chunk_ids=[],
+                         provenance_violation_chunk_ids=[], invalid_anchor_chunk_ids=[]))
+    summary = reserved_summary(rows)
     return dict(schema_version=1, status="MEASURED_DIAGNOSTIC", build_revision=HEAD,
                 corpus_sha256=runner.sha256(FIXTURES / "corpus.json"),
                 gold_sha256=runner.sha256(FIXTURES / "gold.json"), document_count=1000,
                 overlay_document_count=72, query_count=76, full_hybrid_gate="INELIGIBLE",
                 embedder=None, vector_count=0, repetitions=3, warmups_per_query_mode=1,
-                evidence_policy=copy.deepcopy(POLICY),
+                evidence_policy=copy.deepcopy(POLICY), validation_policy_freeze=HEAD,
+                independent_validation={
+                    "production_policy":reserved_report("production_policy", POLICY, INDEPENDENT_FIXTURE, runner.INDEPENDENT_FIXTURE_SHA256),
+                    "ungated_control":reserved_report("ungated_control", {"version":"disabled_control"}, INDEPENDENT_FIXTURE, runner.INDEPENDENT_FIXTURE_SHA256)},
                 rejection_validation={"production_policy":reserved_report("production_policy", POLICY),
                                       "ungated_control":reserved_report("ungated_control", {"version":"disabled_control"})},
-                modes=[dict(name=name, summary=copy.deepcopy(summary), queries=copy.deepcopy(rows))
+                modes=[dict(name=name, summary=copy.deepcopy(summary), queries=copy.deepcopy(rows),
+                            categories={category: reserved_summary([r for r in rows if r["category"] == category])
+                                        for category in {r["category"] for r in rows}})
                        for name in sorted(runner.MODES)])
 
 
 class ReportContractTest(unittest.TestCase):
     def validate(self, report):
         return runner.validate_report(report, HEAD, runner.sha256(FIXTURES / "corpus.json"),
-                                      runner.sha256(FIXTURES / "gold.json"), QUERIES, VALIDATION_FIXTURE)
+                                      runner.sha256(FIXTURES / "gold.json"), QUERIES, VALIDATION_FIXTURE,
+                                      INDEPENDENT_FIXTURE, POLICY, HEAD)
 
     def test_failed_ranking_remains_valid_diagnostic_and_ineligible_hybrid(self):
         self.assertEqual(self.validate(measured_report()), {name: "FAIL" for name in runner.MODES})
@@ -311,6 +320,77 @@ class JunitEvidenceTest(unittest.TestCase):
             runner.verify_junit(Path(directory))
 
 
+class SourceOracleTest(unittest.TestCase):
+    def retained_report(self):
+        path = runner.REPOSITORY / "docs/eval/runs/2026-09-28-retrieval-repair-7601a20/retrieval/retrieval.json"
+        return json.loads(path.read_text())["rejection_validation"]
+
+    def test_original_raw_evidence_is_validated_without_upgrading_reserved_failure(self):
+        retained = self.retained_report()
+        reviewed = [runner.validate_sources(section, VALIDATION_FIXTURE) for section in retained.values()]
+        self.assertEqual(sum(value["reviewed_source_occurrences"] for value in reviewed), 324)
+        self.assertTrue(all(value["validation_status"] == "FAIL" for value in retained.values()))
+
+    def test_tampered_actual_source_bytes_anchors_revision_or_gold_credit_fail(self):
+        for field, value in (("text", "invented source"), ("byte_end", 2), ("revision_hash", "f" * 64),
+                             ("doc_title", "invented title")):
+            section = self.retained_report()["ungated_control"]
+            row = next(row for row in section["mode"]["queries"] if row["runs"][0]["results"])
+            for run in row["runs"]:
+                run["results"][0][field] = value
+            with self.subTest(field=field), self.assertRaises(ValueError):
+                runner.validate_sources(section, VALIDATION_FIXTURE)
+        section = self.retained_report()["ungated_control"]
+        row = next(row for row in section["mode"]["queries"] if row["covered_spans"] == 1)
+        row["grades"] = [0] * len(row["grades"])
+        with self.assertRaisesRegex(ValueError, "grades differ"):
+            runner.validate_sources(section, VALIDATION_FIXTURE)
+
+
+class IndependentValidationTest(unittest.TestCase):
+    def test_freeze_preserves_source_spans_scope_and_inventory_without_executing_retrieval(self):
+        self.assertEqual(runner.sha256(FIXTURES / "rejection-validation-20260928.json"), runner.INDEPENDENT_FIXTURE_SHA256)
+        docs = {d["id"]: d for d in INDEPENDENT_FIXTURE["documents"]}
+        queries = INDEPENDENT_FIXTURE["queries"]
+        self.assertEqual(len(docs), 12)
+        self.assertEqual(len({q["id"] for q in queries}), 24)
+        self.assertEqual(sum(bool(q["relevant"]) for q in queries), 12)
+        self.assertEqual({d["persona_id"] for d in docs.values()}, {"default", "work", "research"})
+        for query in queries:
+            for label in query["relevant"]:
+                source = docs[label["doc_id"]]
+                self.assertIn(label["evidence"], source["body_md"])
+                self.assertIn(query["answer"], label["evidence"])
+                self.assertEqual(source["persona_id"], query["persona_id"])
+                self.assertNotIn(source["id"], query["forbidden_doc_ids"])
+            self.assertEqual(query["answer"] is not None, bool(query["relevant"]))
+            for forbidden in query["forbidden_doc_ids"]:
+                self.assertNotEqual(docs[forbidden]["persona_id"], query["persona_id"])
+
+    def test_missing_new_validation_or_changed_freeze_cannot_pass(self):
+        for mutation in (lambda report: report.pop("independent_validation"),
+                         lambda report: report.update(validation_policy_freeze="b" * 40),
+                         lambda report: report["independent_validation"]["production_policy"].update(fixture_sha256="wrong")):
+            report = measured_report()
+            mutation(report)
+            with self.assertRaises(ValueError):
+                ReportContractTest().validate(report)
+
+    def test_ablations_and_ungated_control_are_not_quality_acceptance_gates(self):
+        report = measured_report()
+        default = next(mode for mode in report["modes"] if mode["name"] == "lexical_graph_default")
+        default["summary"]["ranking_gate_status"] = "PASS"
+        report["rejection_validation"]["production_policy"]["validation_status"] = "PASS"
+        report["independent_validation"]["production_policy"]["validation_status"] = "PASS"
+        self.assertEqual(runner.quality_gates(report)["status"], "PASS")
+        for field in ("rejection_validation", "independent_validation"):
+            changed = copy.deepcopy(report)
+            changed[field]["production_policy"]["validation_status"] = "FAIL"
+            self.assertEqual(runner.quality_gates(changed)["status"], "FAIL")
+        default["summary"]["rejected_absence_queries"] = 15
+        self.assertEqual(runner.quality_gates(report)["gates"]["development_absence"], "FAIL")
+
+
 class RunnerIntegrationTest(unittest.TestCase):
     """Exercise runner control flow with a fake device boundary; never calls adb."""
     def setUp(self):
@@ -320,8 +400,12 @@ class RunnerIntegrationTest(unittest.TestCase):
         self.output = self.repo / "build/diagnostic/run"
         fixtures = self.repo / "testing/src/main/resources/eval"
         fixtures.mkdir(parents=True)
-        for name in ("corpus.json", "gold.json", "rejection-validation.json"):
+        for name in ("corpus.json", "gold.json", "rejection-validation.json", "rejection-validation-20260928.json"):
             (fixtures / name).write_bytes((FIXTURES / name).read_bytes())
+        frozen = self.repo / "tools/eval/retrieval-policy-freeze.json"
+        frozen.parent.mkdir(parents=True)
+        frozen.write_text(json.dumps(dict(schema_version=1, source_revision=HEAD, evidence_policy=POLICY,
+                                         validation_fixture_sha256=runner.INDEPENDENT_FIXTURE_SHA256)))
         self.apk = self.repo / runner.APK_DIRECTORY / "vault-test.apk"
         self.apk.parent.mkdir(parents=True)
         self.apk.write_bytes(b"fake APK bytes for runner testing")
@@ -357,6 +441,8 @@ class RunnerIntegrationTest(unittest.TestCase):
         self.commands.append(argv)
         if argv == ["git", "rev-parse", "HEAD"]:
             data = self.git_head.encode()
+        elif argv == ["git", "merge-base", "--is-ancestor", HEAD, HEAD]:
+            data = b""
         elif argv == ["git", "diff", "--quiet", "HEAD", "--"]:
             data = b""
         elif argv == ["git", "ls-files", "--others", "--exclude-standard"]:
@@ -408,11 +494,31 @@ class RunnerIntegrationTest(unittest.TestCase):
             raise subprocess.TimeoutExpired(argv, 1500)
         return self.returncode
 
-    def run_main(self, serial="emulator-5554"):
-        runner.main(["--serial", serial, "--expected-head", HEAD, "--output", str(self.output)])
+    def run_main(self, serial="emulator-5554", *flags):
+        runner.main(["--serial", serial, "--expected-head", HEAD, "--output", str(self.output), *flags])
 
     def summary(self):
         return json.loads((self.output / "runner-summary.json").read_text())
+
+    def test_quality_enforcement_fails_after_retaining_complete_measured_evidence(self):
+        with self.assertRaisesRegex(ValueError, "quality gate FAIL"):
+            self.run_main("emulator-5554", "--require-quality")
+        self.assertTrue(self.summary()["complete"])
+        self.assertEqual(self.summary()["quality_gate"]["status"], "FAIL")
+        self.assertTrue((self.output / "retrieval.json").is_file())
+
+    def test_hybrid_enforcement_cannot_upgrade_diagnostic_integrity(self):
+        with self.assertRaisesRegex(ValueError, "full-hybrid gate INELIGIBLE"):
+            self.run_main("emulator-5554", "--require-hybrid")
+        self.assertTrue(self.summary()["complete"])
+        self.assertEqual(self.summary()["full_hybrid_gate"], "INELIGIBLE")
+
+    def test_missing_policy_freeze_fails_before_instrumentation(self):
+        (self.repo / "tools/eval/retrieval-policy-freeze.json").unlink()
+        with self.assertRaises(FileNotFoundError):
+            self.run_main()
+        self.instrument.assert_not_called()
+        self.assertFalse(any(argv[0] == "adb" for argv in self.commands))
 
     def test_failed_quality_is_retained_as_diagnostic_not_upgraded_to_hybrid_pass(self):
         self.run_main()
@@ -669,7 +775,8 @@ class ProcessAndWorkflowTest(unittest.TestCase):
         for line in block.splitlines():
             if not line.startswith("            "):
                 break
-            lines.append(line.strip().replace("${{ github.sha }}", HEAD))
+            lines.append(line.strip().replace("${{ github.sha }}", HEAD)
+                         .replace("${{ inputs.require_quality && '--require-quality' || '' }}", "--require-quality"))
         self.assertEqual(len(lines), 1)
         with tempfile.TemporaryDirectory() as directory:
             root = Path(directory)
@@ -686,6 +793,7 @@ class ProcessAndWorkflowTest(unittest.TestCase):
             self.assertEqual(argv[argv.index("--serial") + 1], "emulator-5554")
             self.assertEqual(argv[argv.index("--expected-head") + 1], HEAD)
             self.assertEqual(argv[argv.index("--output") + 1], "build/retrieval-diagnostic/run")
+            self.assertIn("--require-quality", argv)
 
 
 if __name__ == "__main__":

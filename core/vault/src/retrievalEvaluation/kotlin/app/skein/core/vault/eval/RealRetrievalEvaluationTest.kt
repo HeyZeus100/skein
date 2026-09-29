@@ -321,38 +321,52 @@ public class RealRetrievalEvaluationTest {
                     // Both factories construct the real production service; neither
                     // receives query labels or injects candidates. Quality FAIL is
                     // reported unchanged, never converted into successful validation.
+                    val policyFreeze = checkNotNull(args.getString("skein.retrieval.validationFreeze"))
+                    require(policyFreeze.matches(Regex("[a-f0-9]{40}"))) { "A frozen policy source SHA is required" }
                     phase = "reserved_validation"
-                    val productionValidation =
-                        RejectionValidationEvaluation.evaluate(
-                            factory = { validationIndex, validationRepository, space ->
-                                RetrievalServiceImpl(
-                                    validationIndex,
-                                    validationRepository,
-                                    embedder = null,
-                                    legacyPersonaId = space,
+
+                    suspend fun validation(definition: RejectionValidationEvaluation.Fixture): JsonObject =
+                        buildJsonObject {
+                            for (gated in listOf(true, false)) {
+                                val name = if (gated) "production_policy" else "ungated_control"
+                                put(
+                                    name,
+                                    RejectionValidationEvaluation.evaluate(
+                                        factory = { validationIndex, validationRepository, space ->
+                                            RetrievalServiceImpl(
+                                                validationIndex,
+                                                validationRepository,
+                                                embedder = null,
+                                                legacyPersonaId = space,
+                                                evidenceGate = if (gated) LexicalEvidenceGate() else null,
+                                            )
+                                        },
+                                        repetitions = repetitions,
+                                        configuration =
+                                            buildJsonObject {
+                                                put(
+                                                    "evidence_policy",
+                                                    if (gated) {
+                                                        evidencePolicy
+                                                    } else {
+                                                        buildJsonObject {
+                                                            put(
+                                                                "version",
+                                                                "disabled_control",
+                                                            )
+                                                        }
+                                                    },
+                                                )
+                                            },
+                                        modeName = name,
+                                        definition = definition,
+                                    ),
                                 )
-                            },
-                            repetitions = repetitions,
-                            configuration = buildJsonObject { put("evidence_policy", evidencePolicy) },
-                        )
-                    val ungatedValidation =
-                        RejectionValidationEvaluation.evaluate(
-                            factory = { validationIndex, validationRepository, space ->
-                                RetrievalServiceImpl(
-                                    validationIndex,
-                                    validationRepository,
-                                    embedder = null,
-                                    legacyPersonaId = space,
-                                    evidenceGate = null,
-                                )
-                            },
-                            repetitions = repetitions,
-                            configuration =
-                                buildJsonObject {
-                                    put("evidence_policy", buildJsonObject { put("version", "disabled_control") })
-                                },
-                            modeName = "ungated_control",
-                        )
+                            }
+                        }
+                    val reservedValidation = validation(RejectionValidationEvaluation.Fixture.PUBLIC_RESERVED)
+                    phase = "independent_validation"
+                    val independentValidation = validation(RejectionValidationEvaluation.Fixture.FROZEN_20260928)
                     phase = "report"
                     val report =
                         buildJsonObject {
@@ -368,13 +382,9 @@ public class RealRetrievalEvaluationTest {
                                 "production ranked top 8 with lexical query-coverage gate; no reranking by the harness",
                             )
                             put("evidence_policy", evidencePolicy)
-                            put(
-                                "rejection_validation",
-                                buildJsonObject {
-                                    put("production_policy", productionValidation)
-                                    put("ungated_control", ungatedValidation)
-                                },
-                            )
+                            put("rejection_validation", reservedValidation)
+                            put("independent_validation", independentValidation)
+                            put("validation_policy_freeze", policyFreeze)
                             put(
                                 "scope_mapping",
                                 "null gold persona and unassigned documents resolve to the real default Space",
