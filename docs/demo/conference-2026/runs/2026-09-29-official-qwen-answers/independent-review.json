@@ -1,0 +1,154 @@
+{
+  "status": "VALID_COMPLETED_SUPPLIED_EVIDENCE_RUN_CITATION_GATE_UNMET",
+  "reviewer": "answer_quality_review",
+  "at": "2026-09-29T19:12:52.291383+00:00",
+  "release": {
+    "bytes": 11286,
+    "sha256": "5ab6b2e799022409ec2853072a85bb1a045391297dbff053a3469f37a1cc191b"
+  },
+  "summary": {
+    "bytes": 6117,
+    "sha256": "eacab0e64715856fe985b11adf21c30dced1c3f502b586787be84db8c5bb515d"
+  },
+  "manifest": {
+    "bytes": 2011,
+    "sha256": "195e21334d0d5cb20f23e766fe5d797fd8f4047a03acd7e0797ee5fa738522b7"
+  },
+  "answers": {
+    "bytes": 7875,
+    "sha256": "e1fde980a26a476decab89edd2724d3370bed8e472b5dc1066a185d89b478334"
+  },
+  "setup_progress": {
+    "bytes": 7264,
+    "sha256": "82136acbe68403623e150ecdb0e791f86d69f9a7fabb24509a464eb96634aa27"
+  },
+  "junit": {
+    "bytes": 786,
+    "sha256": "f3d85d1806db4b8400eb25a5ec063bd6a2fd19852face7a305a37e91cac352e0"
+  },
+  "stop_proof": {
+    "bytes": 556,
+    "sha256": "9536c4f76c215728eb458c18579bf4d86872d530eb8a025abb4672948f727c22"
+  },
+  "installed_apks": [
+    {
+      "bytes": 127100043,
+      "sha256": "b3fab0e408d79a5566fdf2334000e6c0095d710fcd50b77774038b35fc6ad46b"
+    },
+    {
+      "bytes": 100067474,
+      "sha256": "c66344a88fc163a23b3137edb963e6960aee6d1bcd0fe53287536479b96bf59f"
+    }
+  ],
+  "frozen_fixture": {
+    "bytes": 3850,
+    "sha256": "ccd9bb4cad984929ec679ecc1f2f79d249d274376fb3c00f4b529911dfaed5d0"
+  },
+  "host_expectations": {
+    "bytes": 6605,
+    "sha256": "8ea60c32cc7d19ee0e52c4ea501408b168b5540979f5c41e18197df27a3d26e0"
+  },
+  "source_identity_verification": {
+    "occurrences": 5,
+    "unique_document_ids": 4,
+    "provided_and_finalized_used_identity_lists_equal_fixture": true,
+    "synthetic_revision_hashes": "SHA256 of exact exported body per host fixture contract",
+    "excerpt_hashes": "BLAKE3-256 of UTF8(skein/excerpt/v1 + NUL + exact excerpt), production Revisions.kt:107,168",
+    "all_excerpt_bodies_locators_and_hashes_verified": true
+  },
+  "mechanical": {
+    "answer_rows": 4,
+    "generated_rows": 4,
+    "EOS_reported_rows": 4,
+    "LENGTH_reported_rows": 0,
+    "raw_junit_tests": 1,
+    "raw_junit_pass": 1,
+    "raw_junit_skip": 0,
+    "setup_progress_rows": 36,
+    "setup_engine_load_complete_ms": 5615,
+    "exit_code": 0,
+    "host_timeout": false,
+    "remote_stop_verified": true,
+    "consecutive_three_process_empty_pid_exit1_checks": 2,
+    "device_to_host_collected_hashes_match": true,
+    "installed_app_and_test_apk_hashes_match": true
+  },
+  "manual_rows": [
+    {
+      "case_id": "demo-construction-synthesis",
+      "answer": "The Cedar cabinet order is blocked by RFI-017, which is awaiting finish-selection approval. The delivery coordination is coordinated by Nora Elm with the site team.",
+      "content_review": "Correct RFI-017 awaiting finish-selection approval and Nora Elm coordinating delivery with site team. Mild redundant wording, no unsupported addition. Missing both source citations.",
+      "source_count": 2,
+      "cited_source_count": 0,
+      "generated_tokens": 34,
+      "stop_reason": "EOS",
+      "ttft_ms": 21708,
+      "elapsed_ms": 33592,
+      "v5_ttft_ms": 53171,
+      "v5_elapsed_ms": 90844
+    },
+    {
+      "case_id": "demo-construction-absent",
+      "answer": "The Cedar cabinet purchase order number is not provided in the given information.",
+      "content_review": "Correctly states PO number not provided; no fabricated number or RFI substitution. No citation marker.",
+      "source_count": 1,
+      "cited_source_count": 0,
+      "generated_tokens": 14,
+      "stop_reason": "EOS",
+      "ttft_ms": 15464,
+      "elapsed_ms": 18573,
+      "v5_ttft_ms": 37823,
+      "v5_elapsed_ms": 111525
+    },
+    {
+      "case_id": "demo-aviation-direct",
+      "answer": "The log that is missing from DEMO-A is the propeller log.",
+      "content_review": "Correctly identifies missing propeller log. No unsupported addition. Missing source citation.",
+      "source_count": 1,
+      "cited_source_count": 0,
+      "generated_tokens": 15,
+      "stop_reason": "EOS",
+      "ttft_ms": 14111,
+      "elapsed_ms": 47866,
+      "v5_ttft_ms": 34455,
+      "v5_elapsed_ms": 37824
+    },
+    {
+      "case_id": "demo-mycology-direct",
+      "answer": "The synthetic recorded mass for OYS-014 on 22 September 2026 was 21.1 grams.",
+      "content_review": "Correct21.1 grams for22 September2026, explicitly called synthetic. No biological inference. Missing source citation.",
+      "source_count": 1,
+      "cited_source_count": 0,
+      "generated_tokens": 29,
+      "stop_reason": "EOS",
+      "ttft_ms": 25038,
+      "elapsed_ms": 74227,
+      "v5_ttft_ms": 45169,
+      "v5_elapsed_ms": 52491
+    }
+  ],
+  "quality_assessment": "All four responses satisfy the requested core factual meaning against the existing host-only demo expectations, including explicit synthetic mycology wording. All four raw answers and citation arrays have zero citations; source citation requirement remains unmet, especially both synthesis sources. No benchmark score or complete answer-quality approval assigned.",
+  "timing_assessment": "All four TTFT values are lower than prior v5. End-to-end completion improves for both construction cases but is slower for direct aviation and mycology. Single sequential runs on different model/APK identities do not establish a general speedup or thermal cause.",
+  "unmet_gates": [
+    "Citation requirement",
+    "Live retrieval/indexing and source navigation",
+    "Owner UI model/default readiness and live answer behavior",
+    "Repeated performance/thermal reliability",
+    "Full Fold/demo acceptance"
+  ],
+  "limitations": [
+    "Supplied-evidence isolated APK test only; no live retrieval, owner vault, UI import/default selection or screenshot evidence.",
+    "EOS is observed as the runtime reported stop reason for these four generations; this does not establish every stop path or generated EOS token spelling.",
+    "Model BLAKE3 is explicitly host-declared bound to device SHA256, not measured as device BLAKE3.",
+    "Minimized stop proof reviewed; raw global process metadata intentionally not retained.",
+    "Original v5, failed v6, fixture, gold and thresholds preserved."
+  ],
+  "source_changes": 0,
+  "review_device_actions": 0,
+  "publication": {
+    "original_review_worktree": "conference-compact-workspace-20260929",
+    "original_review_path": "build/agent-logs/v6b-answers-independent-review-20260929/review.json",
+    "original_review_sha256": "212c6db754754488b166738390d11d1388519426a6fe08974e720114445e35d1",
+    "sanitization": "Absolute retained-evidence paths omitted; review content and evidence byte counts/hashes retained."
+  }
+}

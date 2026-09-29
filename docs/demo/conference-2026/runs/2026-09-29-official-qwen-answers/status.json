@@ -1,0 +1,91 @@
+{
+  "schema_version": 1,
+  "status": "VALID_COMPLETED_SUPPLIED_EVIDENCE_RUN_CITATION_GATE_UNMET",
+  "scope": "supplied evidence; no retrieval/owner-model/UI proof",
+  "run_id": "qwen15b-answers-20260929T190424Z",
+  "source_sha": "920e820eb23d2c5f4b70dfa95515899559cb2098",
+  "test_build_sha": "920e820eb23d2c5f4b70dfa95515899559cb2098",
+  "release_sha256": "5ab6b2e799022409ec2853072a85bb1a045391297dbff053a3469f37a1cc191b",
+  "source_summary_sha256": "eacab0e64715856fe985b11adf21c30dced1c3f502b586787be84db8c5bb515d",
+  "production_app_action": "verify already-installed bytes only",
+  "model": {
+    "sha256": "6a1a2eb6d15622bf3c96857206351ba97e1af16c30d7a74ee38970e434e9407e",
+    "size_bytes": 1117320736,
+    "blake3": "2619da49b802f7bc7e92264edd12e4bf093dd97f42584535ae77dc587ab55362",
+    "blake3_provenance": "host_declared_bound_to_device_sha256",
+    "template_sha256": "d5495a1e5db0611132a97e46a65dbb64a642a499421228b9c8b93229097fa9a4"
+  },
+  "installed_apks": {
+    "app": {
+      "sha256": "b3fab0e408d79a5566fdf2334000e6c0095d710fcd50b77774038b35fc6ad46b",
+      "copied_installed_bytes_rehashed": true
+    },
+    "app_test": {
+      "sha256": "c66344a88fc163a23b3137edb963e6960aee6d1bcd0fe53287536479b96bf59f",
+      "copied_installed_bytes_rehashed": true
+    }
+  },
+  "prior_fresh_native_parity": {
+    "approval_sha256": "3ee138e82d465f183658d70d503c52bb3142671d7a30bd290e5ea58136842cc5",
+    "summary_sha256": "5235538c0f6eef5a4e506fe1ba5ae92177799470e83013d24ba6cb52061bfd87",
+    "report_sha256": "e7ede60d0fab342d2aef3b6cd13bf6298a99241422754c9902c937679fdc9ece",
+    "native_apk_sha256": "c1186bc554ae89d89a35983f883354e436cb34f2cebb790cc06a3a896409fb2d",
+    "model_sha256": "6a1a2eb6d15622bf3c96857206351ba97e1af16c30d7a74ee38970e434e9407e",
+    "template_sha256": "d5495a1e5db0611132a97e46a65dbb64a642a499421228b9c8b93229097fa9a4",
+    "old_model_evidence_reused": false,
+    "scope": "fresh five-case native parity and EOG classification; generated stopping unmeasured"
+  },
+  "results": {
+    "generated_rows": 4,
+    "factual_meaning_supported_rows": 4,
+    "runtime_reported_EOS_rows": 4,
+    "rows_with_citations": 0,
+    "citation_gate": "UNMET",
+    "full_demo_acceptance": false,
+    "manual_review": "independent-review.json"
+  },
+  "instrumentation": {
+    "class": "app.skein.benchmark.SyntheticAnswerBenchmarkTest",
+    "method": "suppliedEvidenceThroughTheIsolatedApk",
+    "junit_tests_passed": 1,
+    "junit_reported_seconds": 176.463,
+    "host_elapsed_seconds": 180.573,
+    "exit_code": 0,
+    "host_timeout": false,
+    "log_sha256": "f3d85d1806db4b8400eb25a5ec063bd6a2fd19852face7a305a37e91cac352e0"
+  },
+  "setup": {
+    "event_count": 36,
+    "engine_load_start_elapsed_ms": 1809,
+    "engine_load_complete_elapsed_ms": 5615,
+    "engine_load_span_ms": 3806,
+    "timing_origin": "Setup start; completion timestamp is not load duration."
+  },
+  "teardown": {
+    "remote_stop_verified": true,
+    "consecutive_absent_pid_checks": 2,
+    "exact_processes_absent": [
+      "app.skein",
+      "app.skein:inference",
+      "app.skein.test"
+    ],
+    "active_instrumentation_absent": true,
+    "proof_sha256": "9536c4f76c215728eb458c18579bf4d86872d530eb8a025abb4672948f727c22"
+  },
+  "independent_review_original_sha256": "212c6db754754488b166738390d11d1388519426a6fe08974e720114445e35d1",
+  "unmet_gates": [
+    "Citation requirement",
+    "Live retrieval/indexing and source navigation",
+    "Owner UI model/default readiness and live answer behavior",
+    "Repeated performance/thermal reliability",
+    "Full Fold/demo acceptance"
+  ],
+  "limitations": [
+    "Supplied-evidence isolated APK test only; no live retrieval, owner vault, UI import/default selection or screenshot evidence.",
+    "EOS is observed as the runtime reported stop reason for these four generations; this does not establish every stop path or generated EOS token spelling.",
+    "Model BLAKE3 is explicitly host-declared bound to device SHA256, not measured as device BLAKE3.",
+    "Minimized stop proof reviewed; raw global process metadata intentionally not retained.",
+    "Original v5, failed v6, fixture, gold and thresholds preserved."
+  ],
+  "sanitization": "answers.jsonl, setup-progress.jsonl and instrumentation.log are byte-identical public synthetic outputs. Published manifest omits device fingerprint/security patch. Review omits absolute paths; this status excludes serials, raw commands and private process metadata."
+}

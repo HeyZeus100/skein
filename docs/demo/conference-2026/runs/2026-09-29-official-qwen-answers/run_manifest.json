@@ -1,0 +1,52 @@
+{
+  "schema_version": 1,
+  "engine_path": "isolated-apk",
+  "mode": "supplied_evidence",
+  "run_id": "qwen15b-answers-20260929T190424Z",
+  "case_set_sha256": "8ea60c32cc7d19ee0e52c4ea501408b168b5540979f5c41e18197df27a3d26e0",
+  "fixture_sha256": "ccd9bb4cad984929ec679ecc1f2f79d249d274376fb3c00f4b529911dfaed5d0",
+  "template_sha256": "d5495a1e5db0611132a97e46a65dbb64a642a499421228b9c8b93229097fa9a4",
+  "build_sha": "920e820eb23d2c5f4b70dfa95515899559cb2098",
+  "llama_sha": "b29c606e28a01b1bc8c1351026a0fa6e616bf6c4",
+  "tokenizer_overlay_sha256": "71aba69a0fba8abc2df0a8f74f537182b79b29d60b13e74b7dc901e52dc36f29",
+  "model_sha256": "6a1a2eb6d15622bf3c96857206351ba97e1af16c30d7a74ee38970e434e9407e",
+  "model_blake3": "2619da49b802f7bc7e92264edd12e4bf093dd97f42584535ae77dc587ab55362",
+  "model_blake3_provenance": "host_declared_bound_to_device_sha256",
+  "host_model_identity_evidence_sha256": "31072d550e0f04e4a17a9e19feae93d9ff67b29e028c6722f707a083f886b66f",
+  "apk_sha256": "b3fab0e408d79a5566fdf2334000e6c0095d710fcd50b77774038b35fc6ad46b",
+  "test_apk_sha256": "c66344a88fc163a23b3137edb963e6960aee6d1bcd0fe53287536479b96bf59f",
+  "test_build_sha": "920e820eb23d2c5f4b70dfa95515899559cb2098",
+  "test_build_sha_provenance": "declared host opt-in test source; installed test APK digest measured",
+  "build_sha_provenance": "declared host build; installed APK digest verified",
+  "llama_sha_provenance": "declared host source pin",
+  "tokenizer_overlay_sha256_provenance": "declared host SHA256 of native/llama/tokenizer-patches/PINS.txt",
+  "template_sha256_provenance": "host GGUF raw tokenizer.chat_template bound by model_sha256",
+  "sampling": {
+    "temperature": 0.0,
+    "top_k": 1,
+    "top_p": 1.0,
+    "min_p": 0.0,
+    "repeat_penalty": 1.0,
+    "max_tokens": 256,
+    "stop": []
+  },
+  "seeds": [
+    17
+  ],
+  "context": {
+    "requested": 4096,
+    "allocated": 4096
+  },
+  "device": {
+    "model": "Pixel 9 Pro Fold",
+    "sdk": 37
+  },
+  "threads": 4,
+  "case_timeout_ms": 180000,
+  "memory": null,
+  "retrieval_validation": "not measured; host supplied current evidence",
+  "publication": {
+    "original_sha256": "195e21334d0d5cb20f23e766fe5d797fd8f4047a03acd7e0797ee5fa738522b7",
+    "sanitization": "Device fingerprint and security patch omitted; all other source manifest fields retained."
+  }
+}
