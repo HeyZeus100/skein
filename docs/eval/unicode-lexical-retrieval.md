@@ -30,15 +30,17 @@ behavior. The synchronous evidence gate uses its own text normalization; this
 change does not make that policy equivalent to the SQLite tokenizer or validate
 semantic relevance.
 
-New native text binds use SQLite's UTF-16 API, preserving supplementary Unicode
-and embedded NUL when SQLite encodes text as UTF-8. Reads accept standard UTF-8
+New native text binds pass exact Kotlin UTF-8 bytes to SQLite with an explicit
+byte length, preserving leading U+FEFF, supplementary Unicode and embedded NUL.
+The native negative control demonstrates that SQLite's UTF-16 binding strips a
+leading BOM; the chosen UTF-8 path preserves both source bytes and revision hash. Reads accept standard UTF-8
 and the old JNI writer's modified UTF-8 (CESU-8 surrogate pairs and encoded NUL).
 The native old-storage control writes those exact bytes into a source revision
 and JSON metadata, then checks decoded values, retained revision metadata and
 unchanged stored bytes. No stored revisions are rewritten. Historical chunks
 whose supplementary postings were built from modified UTF-8 still require normal
 re-ingest through the corrected writer; this implementation performs no automatic
-historical repair.
+historical repair (`skein-5uu2`).
 
 `IndexStoreImplAcceptanceTest` adds seven real-driver contracts: actual tokens
 and queries, supplementary/legacy text roundtrips, literal adversarial queries,

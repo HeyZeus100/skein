@@ -1,6 +1,6 @@
 /* Decode standard UTF-8 and the modified UTF-8 emitted by the old JNI writer.
  * Legacy CESU-8 surrogate pairs and C0 80 NUL must remain readable without
- * rewriting source revisions. New writes use sqlite3_bind_text16 instead. */
+ * rewriting source revisions. New writes bind exact Kotlin UTF-8 bytes. */
 #ifndef SKEIN_UTF16_H
 #define SKEIN_UTF16_H
 #include <stdint.h>

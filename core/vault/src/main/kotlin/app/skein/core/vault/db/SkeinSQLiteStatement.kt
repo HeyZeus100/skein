@@ -43,7 +43,12 @@ public class SkeinSQLiteStatement internal constructor(
         value: String,
     ) {
         checkOpen()
-        native.nativeBindText(stmtHandle, index, value)
+        val utf8 = value.toByteArray(Charsets.UTF_8)
+        try {
+            native.nativeBindText(stmtHandle, index, utf8)
+        } finally {
+            utf8.fill(0)
+        }
     }
 
     override fun bindNull(index: Int) {

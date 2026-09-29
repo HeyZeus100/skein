@@ -108,7 +108,7 @@ public interface SkeinSQLiteNative {
     public fun nativeBindText(
         stmtHandle: Long,
         index: Int,
-        value: String,
+        value: ByteArray,
     )
 
     public fun nativeBindBlob(
@@ -228,7 +228,7 @@ internal object SkeinSQLiteNativeImpl : SkeinSQLiteNative {
     external override fun nativeBindText(
         stmtHandle: Long,
         index: Int,
-        value: String,
+        value: ByteArray,
     )
 
     external override fun nativeBindBlob(

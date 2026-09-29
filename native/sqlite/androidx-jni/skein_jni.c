@@ -451,20 +451,23 @@ Java_app_skein_core_vault_db_SkeinSQLiteNativeImpl_nativeBindDouble(
 
 JNIEXPORT void JNICALL
 Java_app_skein_core_vault_db_SkeinSQLiteNativeImpl_nativeBindText(
-        JNIEnv *env, jclass klass, jlong stmtHandle, jint index, jstring value) {
+        JNIEnv *env, jclass klass, jlong stmtHandle, jint index, jbyteArray value) {
     (void)klass;
     sqlite3_stmt *stmt = stmt_ptr(stmtHandle);
     if (stmt == NULL) {
         return;
     }
-    const jchar *txt = (*env)->GetStringChars(env, value, NULL);
-    if (txt == NULL) {
+    jsize length = (*env)->GetArrayLength(env, value);
+    jbyte *txt = length > 0 ? (*env)->GetByteArrayElements(env, value, NULL) : NULL;
+    if (length > 0 && txt == NULL) {
         return;
     }
-    /* SQLITE_TRANSIENT: sqlite3 copies the buffer immediately. Safe to release. */
-    int rc = sqlite3_bind_text16(stmt, (int)index, txt,
-                               (*env)->GetStringLength(env, value) * 2, SQLITE_TRANSIENT);
-    (*env)->ReleaseStringChars(env, value, txt);
+    /* Exact Kotlin UTF-8 bytes, including leading BOM and embedded NUL.
+     * bind_text16 would interpret/remove an initial BOM. SQLITE_TRANSIENT
+     * copies the bytes before the Kotlin caller wipes its temporary array. */
+    int rc = sqlite3_bind_text(stmt, (int)index, length > 0 ? (const char *)txt : "",
+                              (int)length, SQLITE_TRANSIENT);
+    if (txt != NULL) (*env)->ReleaseByteArrayElements(env, value, txt, JNI_ABORT);
     if (rc != SQLITE_OK) {
         throw_sqlite_exception(env, sqlite3_db_handle(stmt), rc, "sqlite3_bind_text failed");
     }

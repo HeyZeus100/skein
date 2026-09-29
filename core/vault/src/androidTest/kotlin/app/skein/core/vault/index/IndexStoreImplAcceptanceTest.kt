@@ -27,6 +27,7 @@ import app.skein.core.model.IndexChange
 import app.skein.core.model.IndexStore
 import app.skein.core.model.LexicalQueryLimits
 import app.skein.core.model.NewChunk
+import app.skein.core.model.RevisionHashing
 import app.skein.core.rag.chunk.Chunker
 import app.skein.core.rag.ingest.IngestSteps
 import app.skein.core.rag.tokenizers.ApproximateTokenizer
@@ -39,6 +40,7 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.test.UnconfinedTestDispatcher
 import kotlinx.coroutines.test.runCurrent
 import kotlinx.coroutines.test.runTest
+import kotlinx.serialization.json.JsonObject
 import org.junit.After
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -277,14 +279,36 @@ public class IndexStoreImplAcceptanceTest {
     public fun unicodeTextBindingPreservesSupplementaryAndLegacyModifiedUtf8(): Unit =
         runTest {
             val (_, conn) = freshIndexWithConnection()
-            val text = "研究𐐀資料\u0000終"
+            val text = "\uFEFF研究𐐀資料\u0000終"
             conn.prepare("SELECT ?, hex(?)").use { stmt ->
                 stmt.bindText(1, text)
                 stmt.bindText(2, text)
                 assertThat(stmt.step()).isTrue()
                 assertThat(stmt.getText(0)).isEqualTo(text)
-                assertThat(stmt.getText(1)).isEqualTo("E7A094E7A9B6F0909080E8B387E6969900E7B582")
+                assertThat(stmt.getText(1)).isEqualTo("EFBBBFE7A094E7A9B6F0909080E8B387E6969900E7B582")
             }
+            val frontmatter = JsonObject(emptyMap())
+            val hash = RevisionHashing.compute(text, frontmatter)
+            seedDocument(conn, "bom-revision")
+            conn
+                .prepare(
+                    "INSERT INTO document_revisions VALUES ('bom-revision', ?, 1, ?, '{}', 0, 'test')",
+                ).use { stmt ->
+                    stmt.bindText(1, hash)
+                    stmt.bindText(2, text)
+                    stmt.step()
+                }
+            conn
+                .prepare(
+                    "SELECT body_md_snapshot, revision_hash, hex(body_md_snapshot) " +
+                        "FROM document_revisions WHERE document_id = 'bom-revision'",
+                ).use { stmt ->
+                    assertThat(stmt.step()).isTrue()
+                    assertThat(stmt.getText(0)).isEqualTo(text)
+                    assertThat(RevisionHashing.compute(stmt.getText(0), frontmatter)).isEqualTo(hash)
+                    assertThat(stmt.getText(1)).isEqualTo(hash)
+                    assertThat(stmt.getText(2)).startsWith("EFBBBF")
+                }
             // Reproduce the actual old-storage encoding in a durable revision
             // and its JSON metadata. Reading must preserve text and stored bytes.
             seedDocument(conn, "legacy-unicode")

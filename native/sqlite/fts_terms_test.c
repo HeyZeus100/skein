@@ -33,6 +33,20 @@ int main(void) {
 
     sqlite3 *db = NULL;
     assert(sqlite3_open(":memory:", &db) == SQLITE_OK);
+    sqlite3_stmt *binding = NULL;
+    assert(sqlite3_prepare_v2(db, "SELECT hex(?)", -1, &binding, NULL) == SQLITE_OK);
+    const unsigned char bom_utf8[] = {0xef, 0xbb, 0xbf, 0xf0, 0x90, 0x90, 0x80, 0, 'a'};
+    assert(sqlite3_bind_text(binding, 1, (const char *)bom_utf8, sizeof(bom_utf8), SQLITE_STATIC) == SQLITE_OK);
+    assert(sqlite3_step(binding) == SQLITE_ROW);
+    assert(strcmp((const char *)sqlite3_column_text(binding, 0), "EFBBBFF09090800061") == 0);
+    assert(sqlite3_reset(binding) == SQLITE_OK);
+    /* Negative control: SQLite treats a leading UTF-16 BOM as an encoding
+     * marker, so the superseded bind_text16 path would mutate this source. */
+    const uint16_t bom_utf16[] = {0xfeff, 'a'};
+    assert(sqlite3_bind_text16(binding, 1, bom_utf16, sizeof(bom_utf16), SQLITE_STATIC) == SQLITE_OK);
+    assert(sqlite3_step(binding) == SQLITE_ROW);
+    assert(strcmp((const char *)sqlite3_column_text(binding, 0), "61") == 0);
+    assert(sqlite3_finalize(binding) == SQLITE_OK);
     const char *text = "中文English café cafe\xcc\x81 résumé naïve Русский العربية १२३ \xee\x80\x80secret 𐐀𐐁";
     const char *expected[] = {
         "中文english", "cafe", "cafe", "resume", "naive", "русский", "العربية", "१२३", "\xee\x80\x80secret", "𐐨𐐩"
