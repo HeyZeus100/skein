@@ -1,8 +1,11 @@
+import glob
 import hashlib
 import importlib.util
 import pathlib
 import tempfile
 import unittest
+
+import yaml
 
 spec = importlib.util.spec_from_file_location(
     "verification_manifest", pathlib.Path(__file__).with_name("verification-manifest.py")
@@ -12,6 +15,86 @@ spec.loader.exec_module(reviewer)
 
 
 class VerificationManifestTest(unittest.TestCase):
+    def instrumentation_fixture(self):
+        xml = {
+            "app/build/outputs/androidTest-results/connected/debug/flavors/dev/TEST.xml": b'<testsuite><testcase/></testsuite>',
+            "core/vault/build/outputs/androidTest-results/connected/debug/flavors/dev/TEST.xml": b'<testsuite><testcase><failure/></testcase></testsuite>',
+            "inference-service/build/outputs/androidTest-results/connected/debug/flavors/dev/TEST.xml": b'<testsuite><testcase><skipped/></testcase></testsuite>',
+        }
+        apks = {
+            "app/build/outputs/apk/dev/debug/app.apk": b"app fixture",
+            "app/build/outputs/apk/androidTest/dev/debug/app-test.apk": b"app test fixture",
+            "core/vault/build/outputs/apk/androidTest/dev/debug/vault-test.apk": b"vault test fixture",
+            "inference-service/build/outputs/apk/androidTest/dev/debug/service-test.apk": b"service test fixture",
+        }
+        reports = {
+            f"{module}/build/reports/androidTests/connected/debug/flavors/dev/index.html": b"report fixture"
+            for module in ("app", "core/vault", "inference-service")
+        }
+        metadata = {
+            "build/instrumentation-review.json": b'{"passed":false}',
+            "build/instrumentation-verification.json": b'{"source_sha":"fixture"}',
+            "app/build/outputs/androidTest-results/connected/lane-logcat/logcat.txt": b"log fixture",
+        }
+        current = {**xml, **apks, **reports, **metadata}
+        excluded = {
+            "docs/ux/runs/previous/raw/" + name: data for name, data in current.items()
+        }
+        excluded.update({
+            "feature/editor/build/outputs/androidTest-results/connected/TEST.xml": b"unrelated XML",
+            "feature/editor/build/outputs/apk/debug/unrelated.apk": b"unrelated APK",
+            "feature/editor/build/reports/androidTests/connected/index.html": b"unrelated report",
+        })
+        return current, excluded, set(xml), set(apks), set(xml) | set(reports) | set(metadata)
+
+    def write_records(self, root, records):
+        for name, data in records.items():
+            path = root / name
+            path.parent.mkdir(parents=True, exist_ok=True)
+            path.write_bytes(data)
+
+    def test_instrumentation_excludes_historical_and_unrelated_module_outputs(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = pathlib.Path(directory)
+            current, excluded, xml, apks, _ = self.instrumentation_fixture()
+            records = {**current, **excluded}
+            self.write_records(root, records)
+            result = reviewer.manifest(root, "instrumentation", "source")
+            self.assertEqual(xml | {"build/instrumentation-review.json"}, {f["path"] for f in result["files"]})
+            self.assertEqual(apks, {f["path"] for f in result["built_apks"]})
+            for item in result["files"] + result["built_apks"]:
+                self.assertEqual(hashlib.sha256(records[item["path"]]).hexdigest(), item["sha256"])
+            for name, data in records.items():
+                self.assertEqual(data, (root / name).read_bytes())
+
+    def test_historical_evidence_cannot_fill_missing_instrumentation_outputs(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = pathlib.Path(directory)
+            _, excluded, _, _, _ = self.instrumentation_fixture()
+            self.write_records(root, excluded)
+            result = reviewer.manifest(root, "instrumentation", "source")
+            self.assertEqual([], result["files"])
+            self.assertEqual([], result["built_apks"])
+
+    def test_instrumentation_upload_retains_current_reports_and_logcat_only(self):
+        repository = pathlib.Path(__file__).resolve().parents[2]
+        workflow = yaml.safe_load((repository / ".github/workflows/emulator.yml").read_text())
+        upload = next(
+            step for job in workflow["jobs"].values() for step in job["steps"]
+            if step.get("with", {}).get("name") == "connected-test-reports"
+        )
+        with tempfile.TemporaryDirectory() as directory:
+            root = pathlib.Path(directory)
+            current, excluded, _, _, expected = self.instrumentation_fixture()
+            self.write_records(root, {**current, **excluded})
+            selected = {
+                str(pathlib.Path(path).relative_to(root))
+                for pattern in upload["with"]["path"].splitlines()
+                for path in glob.glob(str(root / pattern), recursive=True)
+                if pathlib.Path(path).is_file()
+            }
+            self.assertEqual(expected, selected)
+
     def test_includes_nested_variant_records_without_rewriting_failed_evidence(self):
         with tempfile.TemporaryDirectory() as directory:
             root = pathlib.Path(directory)

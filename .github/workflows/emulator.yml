@@ -248,7 +248,11 @@ jobs:
           path: |
             build/instrumentation-review.json
             build/instrumentation-verification.json
-            **/build/reports/androidTests/connected/**
-            **/build/outputs/androidTest-results/connected/**
+            app/build/reports/androidTests/connected/**
+            app/build/outputs/androidTest-results/connected/**
+            core/vault/build/reports/androidTests/connected/**
+            core/vault/build/outputs/androidTest-results/connected/**
+            inference-service/build/reports/androidTests/connected/**
+            inference-service/build/outputs/androidTest-results/connected/**
           if-no-files-found: ignore
           retention-days: 14

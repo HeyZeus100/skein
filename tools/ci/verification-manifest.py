@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Bind retained raw unit/screenshot records to their host-declared checkout.
+"""Bind retained raw verification records to their host-declared checkout.
 
 This inventories evidence; it never converts failures or skips to passes and does
 not attest installed APK bytes. Consumers must inspect the retained raw records.
@@ -10,15 +10,23 @@ import pathlib
 import subprocess
 import sys
 
+INSTRUMENTATION_MODULES = ("app", "core/vault", "inference-service")
+
 
 def manifest(root, lane, source):
     patterns = ["**/build/test-results/**/*.xml"]
+    apk_patterns = []
     if lane == "instrumentation":
-        patterns = ["**/build/outputs/androidTest-results/connected/**/*.xml", "build/instrumentation-review.json"]
+        # Committed evidence under docs/ can contain earlier build-output paths.
+        patterns = [
+            f"{module}/build/outputs/androidTest-results/connected/**/*.xml"
+            for module in INSTRUMENTATION_MODULES
+        ] + ["build/instrumentation-review.json"]
+        apk_patterns = [f"{module}/build/outputs/apk/**/*.apk" for module in INSTRUMENTATION_MODULES]
     if lane == "screenshots":
         patterns += ["**/build/test-results/roborazzi/**/*.json"]
     paths = sorted({p for pattern in patterns for p in root.glob(pattern) if p.is_file()})
-    built_apks = sorted(root.glob("**/build/outputs/apk/**/*.apk")) if lane == "instrumentation" else []
+    built_apks = sorted({p for pattern in apk_patterns for p in root.glob(pattern) if p.is_file()})
     return {
         "built_apks": [
             {"path": str(p.relative_to(root)), "sha256": hashlib.sha256(p.read_bytes()).hexdigest()}
