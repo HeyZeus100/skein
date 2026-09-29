@@ -32,9 +32,11 @@ Use the citation chip only if it actually appears. If the model omitted a marker
 
 ### Question 1: one source
 
-> When and where does the Juniper workshop start? Answer in one sentence and cite the note.
+> When and where is the Juniper workshop?
 
 Expected facts: **10:00 on 14 October 2026, in Cedar Room**. Required supporting note: [Juniper Schedule](notes/juniper-schedule.md). Citation numbers are assigned at runtime; do not require a particular number. A plausible answer with the wrong room, time or date fails the rehearsal.
+
+Keep the question separate from formatting instructions. Source review of the current lexical evidence gate found that adding “Answer in one sentence and cite the note” adds unmatched retrieval terms and can reject an otherwise supported question. This is a known product limitation under `skein-gg11.32`; shortening the demo prompt does not fix or close it. The question above still requires actual device rehearsal, and citation rendering remains an observed requirement.
 
 ### Question 2: missing evidence
 
