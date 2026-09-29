@@ -8,7 +8,9 @@ The [demo controls guide](controls.md) covers the split view, collapsible note/c
 
 **Physical checkpoint, 29 September at 10:48 UTC:** candidate `5ae91c2` is installed with its APK digest verified. The native public-model replay passed five template/token/control cases and EOG classification; the synthetic answer attempt hit its 900-second watchdog with no valid manifest or answer rows. Normal app launch succeeded, but the device keyguard requires the owner to unlock. **The demo is not ready and post-update UI rehearsal remains NOT RUN.** See the [physical evidence and open gates](runs/2026-09-29-physical/README.md).
 
-**Later UI checkpoint:** the owner unlocked the Fold and the three construction notes were imported once. No live question has been sent. Physical work is paused for the requested New chat, sidebar and split-workspace update; first-send Knowledge handling has passed local checks but is not installed. See the [partial UI checkpoint](runs/2026-09-29-ui-checkpoint/README.md). The earlier physical checkpoint remains historical evidence.
+**Earlier UI checkpoint:** the owner unlocked the Fold and the three construction notes were imported once. No live question was sent. The [partial UI checkpoint](runs/2026-09-29-ui-checkpoint/README.md) preserves that evidence.
+
+**Current update checkpoint, 16:47 UTC:** the workspace update at `28354dd25` is installed, with its copied APK hash, signer and data-preservation metadata verified. Normal Android unlock is required before physical rehearsal. No new UI question or instrumentation has started. See the [workspace installation record](runs/2026-09-29-workspace-update/README.md). The demo remains **not ready** until its live checks pass.
 
 The owner needs the Fold ready by **17:00 on 29 September 2026, America/Los_Angeles (PDT)**. The planned **code freeze is 16:00**, followed by final rehearsal on the same APK and model. The owner released the previous Fold HOLD for a verified update and demo checks with existing app data preserved. One designated runner owns all physical-device access.
 
@@ -20,7 +22,7 @@ The owner needs the Fold ready by **17:00 on 29 September 2026, America/Los_Ange
 4. In **New chat**, tap the paperclip labelled **Import file to Knowledge**. Choose one `.md` file, wait for **Added … to Knowledge**, then repeat for the other files in the chosen pack. This is a single-file picker. The current Knowledge screen has Search and New note, not a folder-import action.
 5. Clear the `[[filename.md]]` text inserted into the composer. Import adds notes to Knowledge; that text does not explicitly attach a source to the next prompt. Avoid importing a pack twice: ordinary imports create notes rather than updating the earlier copies.
 6. Open **Knowledge** and confirm the titles and bodies. Wait for active **Preparing for search** work to finish. **Awaiting search by meaning** means semantic work is still pending. Rehearse the exact questions to establish retrieval on this candidate.
-7. Return to **Chat / New chat**. New chats default to **Knowledge on**. The first Send creates the chat. In an existing chat, its **Knowledge on/off** chip opens Context, where **Search Knowledge** affects the next message. Keep it on for these examples.
+7. Return to **Chat / New chat**. New chats default to **Search Knowledge on**, and the workspace update exposes that switch before the first Send creates the chat. In an existing chat, its **Knowledge on/off** chip opens Context, where **Search Knowledge** affects the next message. Keep it on for these examples.
 
 ## Construction: default presenter script
 
@@ -97,10 +99,10 @@ The device runner records observations here or in linked evidence. Runtime rehea
 
 | Check / measurement | Observed result |
 |---|---|
-| Candidate commit; installed package; APK identity | `app.skein`, source `5ae91c2`, installed APK digest verified; [exact update evidence](runs/2026-09-29-physical/physical-evidence.json). Version alone is not build identity. |
+| Candidate commit; installed package; APK identity | `app.skein`, source `28354dd25`, copied installed APK digest verified; [exact update evidence](runs/2026-09-29-workspace-update/status.json). Version alone is not build identity. |
 | Model name/file identity; runtime settings | NOT RUN |
 | Date, runner, selected Space; network conditions | NOT RUN |
-| Existing vault/app data and secure settings preserved | NOT RUN |
+| Existing vault/app data and secure settings preserved | `install -r`; first-install time, data-directory paths and CE/DE inode metadata unchanged; no data clear or security-setting change. Vault content verification after normal unlock remains pending. |
 | Construction: three notes imported once; titles/bodies checked | Three import confirmations observed; body inspection and answer rehearsal pending. [UI checkpoint](runs/2026-09-29-ui-checkpoint/README.md). |
 | Aviation/mycology: any optional packs imported and checked | Six files staged; not imported. |
 | Indexing status, including pending semantic work | Aggregate UI reported one document awaiting search by meaning; all-demo readiness unproven. |

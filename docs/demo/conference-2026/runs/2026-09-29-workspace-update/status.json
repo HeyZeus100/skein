@@ -1,0 +1,51 @@
+{
+  "status": "INSTALLED_VERIFIED_REHEARSAL_AWAITS_NORMAL_UNLOCK",
+  "observed_at": "2026-09-29T16:47:15.924453+00:00",
+  "source_sha": "28354dd25bb4995930ff46a71752f43f8a0d5df3",
+  "package": "app.skein",
+  "version_code": 1,
+  "version_name": "0.1.0",
+  "installed_apk": {
+    "bytes": 127098252,
+    "sha256": "8053e8e10ee6dbe7b9e650506971bf30b93e64861bbdff1237420680d10b4eb9",
+    "copied_back_and_rehashed": true,
+    "root_independent_rehash": true,
+    "signer_sha256": "75bcae7118a4635dd0fb153438e5bdbfd7aab5d467b3a0c2bb210eefde5becf9"
+  },
+  "previous_apk": {
+    "preserved": true,
+    "bytes": 125280302,
+    "sha256": "1f83b71c5fe60a6dc26fcac7a4c75b49fbf009b6e8c9d972b2176c18081c1323"
+  },
+  "method": "install -r",
+  "data_preservation": {
+    "app_data_cleared": false,
+    "security_settings_changed": false,
+    "first_install_time_unchanged": true,
+    "data_directory_paths_unchanged": true,
+    "ce_de_inode_identifiers_unchanged": true,
+    "uid_check": "not available; not claimed",
+    "vault_content_check": "pending normal unlock"
+  },
+  "execution_records": {
+    "coordinator_release_sha256": "ffee953ccb6470ff45e2ba6d7f725a7412525bc7c9087d944a45d89fb2ea3d40",
+    "release_manifest_sha256": "7ed145637790495702d1d30b124c58b160db97d8a583ec8bde7db3a84df9dc38",
+    "original_parser_failure_sha256": "cea110424c5679f8fc0e74edbd8e6dc7c487cc1d1cf5a9203528cea264824352",
+    "retained_update_review_sha256": "b90b99c492f99e2122b614b2f700b666bf41581bb70309721c1fb23e5dd4995e",
+    "normal_unlock_gate_sha256": "1ff0d5b513a1e91a37780ac77076a36de8ea67e57def69ddb8548bbc3404c6bb"
+  },
+  "normal_system_unlock_required": true,
+  "physical_ui_rehearsal": "NOT_RUN",
+  "post_update_live_questions": 0,
+  "post_update_instrumentation_started": false,
+  "new_screenshot_taken": false,
+  "remaining_gates": [
+    "Physical New chat/sidebar/split/crease checks",
+    "Knowledge-off and Knowledge-on live answers",
+    "Citation and retrieval quality",
+    "Generated stopping and recovery",
+    "Three consecutive demo rehearsals",
+    "Formal Fold acceptance and full hybrid eligibility"
+  ],
+  "evidence_scope": "Sanitized installation observations only; raw owner content and device metadata remain local. Earlier native/answer failures remain unchanged."
+}
