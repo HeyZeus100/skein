@@ -1,0 +1,588 @@
+{
+    "schema_version": 1,
+    "status": "MEASURED_DIAGNOSTIC",
+    "full_hybrid_gate": "INELIGIBLE",
+    "full_hybrid_reason": "Production embedder unavailable; no vector stage or full-hybrid baseline measured",
+    "evidence_selection": "production ranked top 8; no calibrated weak-evidence rejection policy",
+    "scope_mapping": "null gold persona and unassigned documents resolve to the real default Space",
+    "split": "development",
+    "build_revision": "5cdd2f13785b8edf0679228e5fa5c0e6f83c98c8",
+    "device": "Google sdk_gphone64_x86_64",
+    "android_api": 35,
+    "abi": "x86_64",
+    "corpus_sha256": "f86eb3540ef2400c056275aa50ad90f63293c11d7349ecaa664d116b02e7bd7f",
+    "gold_sha256": "4fd5034368e250179425f06bbcb1cc40513f2f3c5ceb998bd6a9eedf298c820f",
+    "seed": 42,
+    "document_count": 1000,
+    "overlay_document_count": 72,
+    "query_count": 76,
+    "chunk_count": 850,
+    "eligible_evidence_chunks": 800,
+    "excluded_generated_chunks": 50,
+    "excluded_document_kinds": {
+        "CHAT": 50,
+        "AIOUT": 0
+    },
+    "edge_count": 2152,
+    "materialized_gold_links": 12,
+    "vector_count": 0,
+    "vectors_pending_documents": 850,
+    "pending_embedding_chunks": 850,
+    "chunker": "Chunker(target=512,overlap=64); same build revision",
+    "tokenizer": "ApproximateTokenizer; same build revision",
+    "embedder": null,
+    "entity_extractor": null,
+    "reranker": null,
+    "sqlite_version": "3.53.3",
+    "schema_version_applied": 11,
+    "ingest_ms": 35821.297216,
+    "lexical_probe_audit": {
+        "audit_active": true,
+        "observation_point": "immediately_after_replaceChunks_before_production_row_probes",
+        "ingest_timing": "includes_legacy_rank_and_row_match_audit_queries",
+        "documents_written": 850,
+        "documents_without_rows": 0,
+        "legacy_unprobeable_documents": 0,
+        "legacy_probes": 850,
+        "legacy_top50_misses": 508,
+        "legacy_misses_with_row_match": 508,
+        "legacy_misses_without_row_match": 0,
+        "legacy_hits_without_row_match": 0,
+        "row_match_queries": 850,
+        "scope": "sampled_legacy_term_postings_not_full_index_integrity"
+    },
+    "ingest_warnings": [],
+    "repetitions": 3,
+    "warmups_per_query_mode": 1,
+    "modes": [
+        {
+            "name": "lexical_only",
+            "configuration": {
+                "lexical": true,
+                "vector_requested": false,
+                "vector_available": false,
+                "graph_recall": false,
+                "ranker": "RankerConfig(recallWeight=1.0, pprWeight=0.0, rrfK=60.0, damping=0.85, maxIterations=20, epsilon=1.0E-6, neighborHops=0, maxNeighborNodes=200, maxCandidates=90, defaultK=8)",
+                "include_chat_history": false,
+                "recall_timeout_ms": 2000,
+                "stage_warnings": []
+            },
+            "summary": {
+                "queries": 76,
+                "answerable_queries": 60,
+                "absence_queries": 16,
+                "covered_evidence_spans": 37,
+                "labelled_evidence_spans": 60,
+                "macro_recall_at_8": 0.6166666666666667,
+                "recall_queries_scored": 60,
+                "macro_ndcg_at_8": 0.6121199388751344,
+                "ndcg_queries_scored": 60,
+                "mrr": 0.575,
+                "rejected_absence_queries": 0,
+                "absence_rejection_rate": 0.0,
+                "falsely_rejected_answerable_queries": 2,
+                "false_rejection_rate": 0.03333333333333333,
+                "scope_violations": 0,
+                "invalid_anchors": 0,
+                "provenance_violations": 0,
+                "duplicate_results": 0,
+                "nondeterministic_queries": 0,
+                "timed_samples": 228,
+                "p50_ms": 11.534534,
+                "p95_ms": 16.260298,
+                "recall_gate": 0.75,
+                "ndcg_gate": 0.6,
+                "ranking_gate_status": "FAIL"
+            },
+            "categories": {
+                "adversarial": {
+                    "queries": 12,
+                    "answerable_queries": 12,
+                    "absence_queries": 0,
+                    "covered_evidence_spans": 12,
+                    "labelled_evidence_spans": 12,
+                    "macro_recall_at_8": 1.0,
+                    "recall_queries_scored": 12,
+                    "macro_ndcg_at_8": 1.0,
+                    "ndcg_queries_scored": 12,
+                    "mrr": 1.0,
+                    "rejected_absence_queries": 0,
+                    "absence_rejection_rate": null,
+                    "falsely_rejected_answerable_queries": 0,
+                    "false_rejection_rate": 0.0,
+                    "scope_violations": 0,
+                    "invalid_anchors": 0,
+                    "provenance_violations": 0,
+                    "duplicate_results": 0,
+                    "nondeterministic_queries": 0,
+                    "timed_samples": 36,
+                    "p50_ms": 12.380402,
+                    "p95_ms": 13.43748,
+                    "recall_gate": 0.75,
+                    "ndcg_gate": 0.6,
+                    "ranking_gate_status": "PASS"
+                },
+                "graph": {
+                    "queries": 12,
+                    "answerable_queries": 12,
+                    "absence_queries": 0,
+                    "covered_evidence_spans": 0,
+                    "labelled_evidence_spans": 12,
+                    "macro_recall_at_8": 0.0,
+                    "recall_queries_scored": 12,
+                    "macro_ndcg_at_8": 0.1310456303875653,
+                    "ndcg_queries_scored": 12,
+                    "mrr": 0.0,
+                    "rejected_absence_queries": 0,
+                    "absence_rejection_rate": null,
+                    "falsely_rejected_answerable_queries": 0,
+                    "false_rejection_rate": 0.0,
+                    "scope_violations": 0,
+                    "invalid_anchors": 0,
+                    "provenance_violations": 0,
+                    "duplicate_results": 0,
+                    "nondeterministic_queries": 0,
+                    "timed_samples": 36,
+                    "p50_ms": 11.713122,
+                    "p95_ms": 16.260298,
+                    "recall_gate": 0.75,
+                    "ndcg_gate": 0.6,
+                    "ranking_gate_status": "FAIL"
+                },
+                "lexical": {
+                    "queries": 12,
+                    "answerable_queries": 12,
+                    "absence_queries": 0,
+                    "covered_evidence_spans": 12,
+                    "labelled_evidence_spans": 12,
+                    "macro_recall_at_8": 1.0,
+                    "recall_queries_scored": 12,
+                    "macro_ndcg_at_8": 1.0,
+                    "ndcg_queries_scored": 12,
+                    "mrr": 1.0,
+                    "rejected_absence_queries": 0,
+                    "absence_rejection_rate": null,
+                    "falsely_rejected_answerable_queries": 0,
+                    "false_rejection_rate": 0.0,
+                    "scope_violations": 0,
+                    "invalid_anchors": 0,
+                    "provenance_violations": 0,
+                    "duplicate_results": 0,
+                    "nondeterministic_queries": 0,
+                    "timed_samples": 36,
+                    "p50_ms": 11.396908,
+                    "p95_ms": 17.596952,
+                    "recall_gate": 0.75,
+                    "ndcg_gate": 0.6,
+                    "ranking_gate_status": "PASS"
+                },
+                "no_match": {
+                    "queries": 8,
+                    "answerable_queries": 0,
+                    "absence_queries": 8,
+                    "covered_evidence_spans": 0,
+                    "labelled_evidence_spans": 0,
+                    "macro_recall_at_8": null,
+                    "recall_queries_scored": 0,
+                    "macro_ndcg_at_8": null,
+                    "ndcg_queries_scored": 0,
+                    "mrr": null,
+                    "rejected_absence_queries": 0,
+                    "absence_rejection_rate": 0.0,
+                    "falsely_rejected_answerable_queries": 0,
+                    "false_rejection_rate": null,
+                    "scope_violations": 0,
+                    "invalid_anchors": 0,
+                    "provenance_violations": 0,
+                    "duplicate_results": 0,
+                    "nondeterministic_queries": 0,
+                    "timed_samples": 24,
+                    "p50_ms": 11.490182,
+                    "p95_ms": 12.521284,
+                    "recall_gate": 0.75,
+                    "ndcg_gate": 0.6,
+                    "ranking_gate_status": "NOT_APPLICABLE"
+                },
+                "persona": {
+                    "queries": 12,
+                    "answerable_queries": 12,
+                    "absence_queries": 0,
+                    "covered_evidence_spans": 12,
+                    "labelled_evidence_spans": 12,
+                    "macro_recall_at_8": 1.0,
+                    "recall_queries_scored": 12,
+                    "macro_ndcg_at_8": 0.8769765845238192,
+                    "ndcg_queries_scored": 12,
+                    "mrr": 0.8333333333333334,
+                    "rejected_absence_queries": 0,
+                    "absence_rejection_rate": null,
+                    "falsely_rejected_answerable_queries": 0,
+                    "false_rejection_rate": 0.0,
+                    "scope_violations": 0,
+                    "invalid_anchors": 0,
+                    "provenance_violations": 0,
+                    "duplicate_results": 0,
+                    "nondeterministic_queries": 0,
+                    "timed_samples": 36,
+                    "p50_ms": 11.109124,
+                    "p95_ms": 13.041399,
+                    "recall_gate": 0.75,
+                    "ndcg_gate": 0.6,
+                    "ranking_gate_status": "PASS"
+                },
+                "semantic": {
+                    "queries": 12,
+                    "answerable_queries": 12,
+                    "absence_queries": 0,
+                    "covered_evidence_spans": 1,
+                    "labelled_evidence_spans": 12,
+                    "macro_recall_at_8": 0.08333333333333333,
+                    "recall_queries_scored": 12,
+                    "macro_ndcg_at_8": 0.05257747946428812,
+                    "ndcg_queries_scored": 12,
+                    "mrr": 0.041666666666666664,
+                    "rejected_absence_queries": 0,
+                    "absence_rejection_rate": null,
+                    "falsely_rejected_answerable_queries": 2,
+                    "false_rejection_rate": 0.16666666666666666,
+                    "scope_violations": 0,
+                    "invalid_anchors": 0,
+                    "provenance_violations": 0,
+                    "duplicate_results": 0,
+                    "nondeterministic_queries": 0,
+                    "timed_samples": 36,
+                    "p50_ms": 9.970233,
+                    "p95_ms": 20.822921,
+                    "recall_gate": 0.75,
+                    "ndcg_gate": 0.6,
+                    "ranking_gate_status": "FAIL"
+                },
+                "weak_only": {
+                    "queries": 8,
+                    "answerable_queries": 0,
+                    "absence_queries": 8,
+                    "covered_evidence_spans": 0,
+                    "labelled_evidence_spans": 0,
+                    "macro_recall_at_8": null,
+                    "recall_queries_scored": 0,
+                    "macro_ndcg_at_8": null,
+                    "ndcg_queries_scored": 0,
+                    "mrr": null,
+                    "rejected_absence_queries": 0,
+                    "absence_rejection_rate": 0.0,
+                    "falsely_rejected_answerable_queries": 0,
+                    "false_rejection_rate": null,
+                    "scope_violations": 0,
+                    "invalid_anchors": 0,
+                    "provenance_violations": 0,
+                    "duplicate_results": 0,
+                    "nondeterministic_queries": 0,
+                    "timed_samples": 24,
+                    "p50_ms": 11.072371,
+                    "p95_ms": 14.699642,
+                    "recall_gate": 0.75,
+                    "ndcg_gate": 0.6,
+                    "ranking_gate_status": "NOT_APPLICABLE"
+                }
+            },
+            "queries": [
+                {
+                    "id": "lexical-01",
+                    "category": "lexical",
+                    "space_alias": "default",
+                    "answerable": true,
+                    "covered_spans": 1,
+                    "labelled_spans": 1,
+                    "recall_at_8": 1.0,
+                    "dcg_at_8": 7.0,
+                    "ideal_dcg_at_8": 7.0,
+                    "ndcg_at_8": 1.0,
+                    "reciprocal_rank": 1.0,
+                    "grades": [
+                        3,
+                        0,
+                        0,
+                        0,
+                        0,
+                        0,
+                        0,
+                        0
+                    ],
+                    "duplicate_results": 0,
+                    "scope_violation_chunk_ids": [],
+                    "invalid_anchor_chunk_ids": [],
+                    "provenance_violation_chunk_ids": [],
+                    "rejected": false,
+                    "deterministic": true,
+                    "runs": [
+                        {
+                            "elapsed_ms": 12.22199,
+                            "fingerprint": "57cf17edbc327b3a4122b6c3f58ce8da0cde4dad4a652786cef5327dc01209e3",
+                            "results": [
+                                {
+                                    "chunk_id": 779,
+                                    "doc_id": "018bcfe5-6800-7000-8000-000000000001",
+                                    "doc_title": "Inventory card 1",
+                                    "text": "The storage location for brindle-azimuth is Bay 21.\nA bay identifies a physical storage area.",
+                                    "revision_hash": "eb7c23afc93b79c83eb760fca82fcf32abfce0d47656bdf996c9ee4eced1b85b",
+                                    "byte_start": 0,
+                                    "byte_end": 93,
+                                    "score": 1.0,
+                                    "recall_scores": {
+                                        "LEXICAL": 24.392321240807696
+                                    },
+                                    "recalled_by": [
+                                        "LEXICAL"
+                                    ]
+                                },
+                                {
+                                    "chunk_id": 791,
+                                    "doc_id": "018bcfe5-6800-7000-8000-00000000000d",
+                                    "doc_title": "Floral care",
+                                    "text": "Fresh stems last longer when their vase water is replaced daily.",
+                                    "revision_hash": "f89c7c753ad647839898596686e1d4e7da0960573178d4a1da9d3aa093831671",
+                                    "byte_start": 0,
+                                    "byte_end": 64,
+                                    "score": 0.9838709677419354,
+                                    "recall_scores": {
+                                        "LEXICAL": 4.856215942372593
+                                    },
+                                    "recalled_by": [
+                                        "LEXICAL"
+                                    ]
+                                },
+                                {
+                                    "chunk_id": 792,
+                                    "doc_id": "018bcfe5-6800-7000-8000-00000000000e",
+                                    "doc_title": "Arrival guide",
+                                    "text": "An enclosed cycle locker beside the west entrance is available until morning.",
+                                    "revision_hash": "044f35f9b3a1a6ae285f16f6d75b3217c799bc926228d4852ac3268278a9beb0",
+                                    "byte_start": 0,
+                                    "byte_end": 77,
+                                    "score": 0.9682539682539681,
+                                    "recall_scores": {
+                                        "LEXICAL": 4.8303140112283005
+                                    },
+                                    "recalled_by": [
+                                        "LEXICAL"
+                                    ]
+                                },
+                                {
+                                    "chunk_id": 780,
+                                    "doc_id": "018bcfe5-6800-7000-8000-000000000002",
+                                    "doc_title": "Inventory card 2",
+                                    "text": "The storage location for cobalt-lantern is Bay 22.\nA bay identifies a physical storage area.",
+                                    "revision_hash": "2cadbaea0ddace9e2070577a5baacdfaf5c29fd7ed6ecc31d99d54f7c8501541",
+                                    "byte_start": 0,
+                                    "byte_end": 92,
+                                    "score": 0.953125,
+                                    "recall_scores": {
+                                        "LEXICAL": 4.729411665237367
+                                    },
+                                    "recalled_by": [
+                                        "LEXICAL"
+                                    ]
+                                },
+                                {
+                                    "chunk_id": 781,
+                                    "doc_id": "018bcfe5-6800-7000-8000-000000000003",
+                                    "doc_title": "Inventory card 3",
+                                    "text": "The storage location for fallow-prism is Bay 23.\nA bay identifies a physical storage area.",
+                                    "revision_hash": "d4936fc0f8791d623ad05960b57ee9b7d63dba4de34d4a8ec037913fb97477f5",
+                                    "byte_start": 0,
+                                    "byte_end": 90,
+                                    "score": 0.9384615384615385,
+                                    "recall_scores": {
+                                        "LEXICAL": 4.729411665237367
+                                    },
+                                    "recalled_by": [
+                                        "LEXICAL"
+                                    ]
+                                },
+                                {
+                                    "chunk_id": 782,
+                                    "doc_id": "018bcfe5-6800-7000-8000-000000000004",
+                                    "doc_title": "Inventory card 4",
+                                    "text": "The storage location for juniper-rivet is Bay 24.\nA bay identifies a physical storage area.",
+                                    "revision_hash": "9d85724c769630dbac30216e55209dcdb50f3fbc49d019fe658cddce069ee027",
+                                    "byte_start": 0,
+                                    "byte_end": 91,
+                                    "score": 0.9242424242424242,
+                                    "recall_scores": {
+                                        "LEXICAL": 4.729411665237367
+                                    },
+                                    "recalled_by": [
+                                        "LEXICAL"
+                                    ]
+                                },
+                                {
+                                    "chunk_id": 783,
+                                    "doc_id": "018bcfe5-6800-7000-8000-000000000005",
+                                    "doc_title": "Inventory card 5",
+                                    "text": "The storage location for kestrel-amber is Bay 25.\nA bay identifies a physical storage area.",
+                                    "revision_hash": "905c2f658a7b72639b9277fcf7557a69574374f957f3ae915f316b80ae70d5c7",
+                                    "byte_start": 0,
+                                    "byte_end": 91,
+                                    "score": 0.9104477611940298,
+                                    "recall_scores": {
+                                        "LEXICAL": 4.729411665237367
+                                    },
+                                    "recalled_by": [
+                                        "LEXICAL"
+                                    ]
+                                },
+                                {
+                                    "chunk_id": 784,
+                                    "doc_id": "018bcfe5-6800-7000-8000-000000000006",
+                                    "doc_title": "Inventory card 6",
+                                    "text": "The storage location for lilac-vertex is Bay 26.\nA bay identifies a physical storage area.",
+                                    "revision_hash": "b9155967b4b1f4afc36e9781d436c8fc135cddbde9620b4bdfebe52499f405f4",
+                                    "byte_start": 0,
+                                    "byte_end": 90,
+                                    "score": 0.8970588235294117,
+                                    "recall_scores": {
+                                        "LEXICAL": 4.729411665237367
+                                    },
+                                    "recalled_by": [
+                                        "LEXICAL"
+                                    ]
+                                }
+                            ]
+                        },
+                        {
+                            "elapsed_ms": 21.779493,
+                            "fingerprint": "57cf17edbc327b3a4122b6c3f58ce8da0cde4dad4a652786cef5327dc01209e3",
+                            "results": [
+                                {
+                                    "chunk_id": 779,
+                                    "doc_id": "018bcfe5-6800-7000-8000-000000000001",
+                                    "doc_title": "Inventory card 1",
+                                    "text": "The storage location for brindle-azimuth is Bay 21.\nA bay identifies a physical storage area.",
+                                    "revision_hash": "eb7c23afc93b79c83eb760fca82fcf32abfce0d47656bdf996c9ee4eced1b85b",
+                                    "byte_start": 0,
+                                    "byte_end": 93,
+                                    "score": 1.0,
+                                    "recall_scores": {
+                                        "LEXICAL": 24.392321240807696
+                                    },
+                                    "recalled_by": [
+                                        "LEXICAL"
+                                    ]
+                                },
+                                {
+                                    "chunk_id": 791,
+                                    "doc_id": "018bcfe5-6800-7000-8000-00000000000d",
+                                    "doc_title": "Floral care",
+                                    "text": "Fresh stems last longer when their vase water is replaced daily.",
+                                    "revision_hash": "f89c7c753ad647839898596686e1d4e7da0960573178d4a1da9d3aa093831671",
+                                    "byte_start": 0,
+                                    "byte_end": 64,
+                                    "score": 0.9838709677419354,
+                                    "recall_scores": {
+                                        "LEXICAL": 4.856215942372593
+                                    },
+                                    "recalled_by": [
+                                        "LEXICAL"
+                                    ]
+                                },
+                                {
+                                    "chunk_id": 792,
+                                    "doc_id": "018bcfe5-6800-7000-8000-00000000000e",
+                                    "doc_title": "Arrival guide",
+                                    "text": "An enclosed cycle locker beside the west entrance is available until morning.",
+                                    "revision_hash": "044f35f9b3a1a6ae285f16f6d75b3217c799bc926228d4852ac3268278a9beb0",
+                                    "byte_start": 0,
+                                    "byte_end": 77,
+                                    "score": 0.9682539682539681,
+                                    "recall_scores": {
+                                        "LEXICAL": 4.8303140112283005
+                                    },
+                                    "recalled_by": [
+                                        "LEXICAL"
+                                    ]
+                                },
+                                {
+                                    "chunk_id": 780,
+                                    "doc_id": "018bcfe5-6800-7000-8000-000000000002",
+                                    "doc_title": "Inventory card 2",
+                                    "text": "The storage location for cobalt-lantern is Bay 22.\nA bay identifies a physical storage area.",
+                                    "revision_hash": "2cadbaea0ddace9e2070577a5baacdfaf5c29fd7ed6ecc31d99d54f7c8501541",
+                                    "byte_start": 0,
+                                    "byte_end": 92,
+                                    "score": 0.953125,
+                                    "recall_scores": {
+                                        "LEXICAL": 4.729411665237367
+                                    },
+                                    "recalled_by": [
+                                        "LEXICAL"
+                                    ]
+                                },
+                                {
+                                    "chunk_id": 781,
+                                    "doc_id": "018bcfe5-6800-7000-8000-000000000003",
+                                    "doc_title": "Inventory card 3",
+                                    "text": "The storage location for fallow-prism is Bay 23.\nA bay identifies a physical storage area.",
+                                    "revision_hash": "d4936fc0f8791d623ad05960b57ee9b7d63dba4de34d4a8ec037913fb97477f5",
+                                    "byte_start": 0,
+                                    "byte_end": 90,
+                                    "score": 0.9384615384615385,
+                                    "recall_scores": {
+                                        "LEXICAL": 4.729411665237367
+                                    },
+                                    "recalled_by": [
+                                        "LEXICAL"
+                                    ]
+                                },
+                                {
+                                    "chunk_id": 782,
+                                    "doc_id": "018bcfe5-6800-7000-8000-000000000004",
+                                    "doc_title": "Inventory card 4",
+                                    "text": "The storage location for juniper-rivet is Bay 24.\nA bay identifies a physical storage area.",
+                                    "revision_hash": "9d85724c769630dbac30216e55209dcdb50f3fbc49d019fe658cddce069ee027",
+                                    "byte_start": 0,
+                                    "byte_end": 91,
+                                    "score": 0.9242424242424242,
+                                    "recall_scores": {
+                                        "LEXICAL": 4.729411665237367
+                                    },
+                                    "recalled_by": [
+                                        "LEXICAL"
+                                    ]
+                                },
+                                {
+                                    "chunk_id": 783,
+                                    "doc_id": "018bcfe5-6800-7000-8000-000000000005",
+                                    "doc_title": "Inventory card 5",
+                                    "text": "The storage location for kestrel-amber is Bay 25.\nA bay identifies a physical storage area.",
+                                    "revision_hash": "905c2f658a7b72639b9277fcf7557a69574374f957f3ae915f316b80ae70d5c7",
+                                    "byte_start": 0,
+                                    "byte_end": 91,
+                                    "score": 0.9104477611940298,
+                                    "recall_scores": {
+                                        "LEXICAL": 4.729411665237367
+                                    },
+                                    "recalled_by": [
+                                        "LEXICAL"
+                                    ]
+                                },
+                                {
+                                    "chunk_id": 784,
+                                    "doc_id": "018bcfe5-6800-7000-8000-000000000006",
+                                    "doc_title": "Inventory card 6",
+                                    "text": "The storage location for lilac-vertex is Bay 26.\nA bay identifies a physical storage area.",
+                                    "revision_hash": "b9155967b4b1f4afc36e9781d436c8fc135cddbde9620b4bdfebe52499f405f4",
+                                    "byte_start": 0,
+                                    "byte_end": 90,
+                                    "score": 0.8970588235294117,
+                                    "recall_scores": {
+                                        "LEXICAL": 4.729411665237367
+                                    },
+                                    "recalled_by": [
+                                        "LEXICAL"
+                                    ]
+                                }
+                            ]
+                        },
+                        {
+                            "elapsed_ms": 12.020578,
+  

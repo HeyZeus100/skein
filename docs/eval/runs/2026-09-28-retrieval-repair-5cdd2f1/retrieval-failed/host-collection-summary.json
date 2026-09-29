@@ -1,0 +1,8 @@
+{
+  "run_id": 36510517798,
+  "expected_sha": "5cdd2f13785b8edf0679228e5fa5c0e6f83c98c8",
+  "watch_exit": 1,
+  "download_exit": 0,
+  "log_exit": 0,
+  "conclusion": "failure"
+}

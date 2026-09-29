@@ -1,0 +1,14 @@
+{
+  "schema_version": 1,
+  "mode": "real-retrieval-diagnostic",
+  "declared_build_revision": "5cdd2f13785b8edf0679228e5fa5c0e6f83c98c8",
+  "source_identity": "host-declared clean checkout; not embedded APK attestation",
+  "full_hybrid_gate": "INELIGIBLE",
+  "complete": false,
+  "host_timeout": false,
+  "built_test_apk_sha256": "886c7eea69d465e19671dc44d8e68b1d975d0d43ae298c0c0ad7115b8c8ad88f",
+  "gradle_exit_code": 0,
+  "report_collected": true,
+  "installed_apk_verification_error": "CalledProcessError",
+  "failure_type": "ValueError"
+}

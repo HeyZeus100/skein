@@ -1,0 +1,25 @@
+{
+  "source_revision": "5cdd2f13785b8edf0679228e5fa5c0e6f83c98c8",
+  "workflow_run_id": 36510517798,
+  "workflow_conclusion": "failure",
+  "actual_xml_cases": 1,
+  "actual_xml_passes": 1,
+  "actual_xml_failures": 0,
+  "actual_xml_errors": 0,
+  "actual_xml_skips": 0,
+  "raw_report_bytes": 30208,
+  "raw_report_sha256": "5209b6abd4a9564a251743deb35a7e95cd3e9686e3575f63711ef16a33a2067b",
+  "raw_report_parse_error": {
+    "type": "JSONDecodeError",
+    "message": "Expecting property name enclosed in double quotes",
+    "line": 588,
+    "column": 3,
+    "offset": 30208
+  },
+  "installed_apk_verification": "unavailable: CalledProcessError; no digest to compare",
+  "observed_transport_event": "logcat adbd host-17 write failed/offline at 02:07:27.784; host-18 reconnect at 02:07:28.388",
+  "ranking_and_relevance_metrics": "UNAVAILABLE: report incomplete; no calibration or acceptance claim",
+  "source_identity": "host-declared, installed APK digest unavailable",
+  "physical_device_access": false,
+  "limits": "Passing testcase proves harness execution but does not repair failed host collection. Invalid original JSON is preserved byte-for-byte, not reconstructed. Original runner discarded installed hash stderr; only error class is available."
+}
