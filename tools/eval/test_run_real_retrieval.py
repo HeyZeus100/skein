@@ -140,6 +140,7 @@ class RunnerIntegrationTest(unittest.TestCase):
         self.report = measured_report()
         self.apk_digest = runner.sha256(self.apk)
         self.installed_digest = self.apk_digest
+        self.installed_digest_responses = []
         self.qemu = b"1\n"
         self.prior_package = b""
         self.missing_report = False
@@ -194,7 +195,8 @@ class RunnerIntegrationTest(unittest.TestCase):
                     raise subprocess.CalledProcessError(1, argv, output=b"", stderr=b"error: device offline\n")
                 data = b"package:/data/app/~~fake/app.skein.core.vault.test-abc==/base.apk\n"
             elif args == ["shell", "sha256sum", "/data/app/~~fake/app.skein.core.vault.test-abc==/base.apk"]:
-                data = (self.installed_digest + "  /data/app/base.apk\n").encode()
+                digest = self.installed_digest_responses.pop(0) if self.installed_digest_responses else self.installed_digest
+                data = (digest + "  /data/app/base.apk\n").encode()
             elif args == ["logcat", "-d", "-v", "threadtime"]:
                 data = b"fake logcat\n"
             elif args == ["shell", "am", "force-stop", runner.PACKAGE]:
@@ -341,6 +343,18 @@ class RunnerIntegrationTest(unittest.TestCase):
             self.run_main()
         self.assertEqual(self.summary()["installed_apk_verification_error"], "CalledProcessError")
 
+    def test_installed_mismatch_is_terminal_even_when_report_is_partial(self):
+        self.report_responses = [b'{"partial":']
+        self.installed_digest_responses = ["b" * 64, self.apk_digest]
+        with self.assertRaisesRegex(ValueError, "installed test APK differs"):
+            self.run_main()
+        self.instrument.assert_called_once()
+        self.assertEqual(len(self.summary()["collection_attempts"]), 1)
+        self.assertTrue(self.summary()["installed_apk_identity_mismatch"])
+        self.assertEqual(self.summary()["installed_test_apk_sha256"], "b" * 64)
+        self.assertEqual(self.installed_digest_responses, [self.apk_digest])
+        self.assertFalse(any("wait-for-device" in argv for argv in self.commands))
+
     def test_apk_rebuilt_during_instrumentation_is_rejected(self):
         self.mutate_apk = True
         with self.assertRaisesRegex(ValueError, "changed during instrumentation"):
@@ -411,6 +425,16 @@ class RunnerIntegrationTest(unittest.TestCase):
 
 
 class ProcessAndWorkflowTest(unittest.TestCase):
+    def test_failed_logcat_collection_retains_partial_bytes_and_stderr(self):
+        for error in (subprocess.CalledProcessError(1, ["adb"], output=b"partial logcat\n", stderr=b"offline\n"),
+                      subprocess.TimeoutExpired(["adb"], 60, output=b"partial logcat\n", stderr=b"offline\n")):
+            with self.subTest(error=type(error).__name__), tempfile.TemporaryDirectory() as directory:
+                destination = Path(directory) / "logcat.txt"
+                with patch.object(runner, "command", side_effect=error):
+                    self.assertFalse(runner.collect(["adb"], ["logcat"], destination))
+                self.assertEqual((Path(directory) / "logcat.txt.partial").read_bytes(), b"partial logcat\n")
+                self.assertEqual((Path(directory) / "logcat.txt.unavailable.log").read_bytes(), b"offline\n")
+
     def test_real_host_timeout_preserves_output(self):
         with tempfile.TemporaryDirectory() as directory:
             log = Path(directory) / "timeout.log"

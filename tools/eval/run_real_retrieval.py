@@ -118,6 +118,9 @@ def collect(adb, arguments, destination):
         destination.write_bytes(command(adb + arguments).stdout)
         return True
     except (subprocess.CalledProcessError, subprocess.TimeoutExpired, OSError) as error:
+        partial = getattr(error, "stdout", None)
+        if partial:
+            destination.with_name(destination.name + ".partial").write_bytes(partial)
         destination.with_name(destination.name + ".unavailable.log").write_bytes(
             getattr(error, "stderr", None) or (type(error).__name__ + "\n").encode())
         return False
@@ -182,14 +185,20 @@ def collect_evidence(adb, output, summary):
             require(digest and re.fullmatch(r"[a-f0-9]{64}", digest[0]), "device report digest unavailable")
             attempt["device_report_sha256"] = digest[0]
             require(digest[0] == attempt["host_report_sha256"], "collected report differs from device bytes")
-            attempt["report_verified"] = True
             (output / "retrieval.json").write_bytes(raw)
+            attempt["report_verified"] = True
             summary.update(report_collected=True, report_collection_attempt=number,
                            report_sha256=digest[0])
         except errors as error:
             attempt["errors"].append(dict(phase="report", type=type(error).__name__, detail=str(error)))
         try:
             attempt["installed_test_apk_sha256"] = installed_apk_hash(adb, directory)
+            if attempt["installed_test_apk_sha256"] != summary["built_test_apk_sha256"]:
+                # An observed identity mismatch is terminal even when the same
+                # attempt's report was incomplete. Never retry it into a pass.
+                summary.update(installed_test_apk_sha256=attempt["installed_test_apk_sha256"],
+                               installed_apk_identity_mismatch=True)
+                return
         except errors as error:
             attempt["errors"].append(dict(phase="installed_apk", type=type(error).__name__, detail=str(error)))
             summary["installed_apk_verification_error"] = type(error).__name__
@@ -265,6 +274,8 @@ def main(argv=None):
                 summary["post_instrumentation_test_apk_error"] = dict(type=type(error).__name__, detail=str(error))
             collect_evidence(adb, output, summary)
         require(summary["gradle_exit_code"] == 0, "instrumentation failed; inspect retained Gradle/XML logs")
+        require(not summary.get("installed_apk_identity_mismatch"),
+                "retained installed test APK differs from the prebuilt APK")
         require(summary["selected_collection_attempt"] is not None,
                 "unable to collect complete retrieval report and installed test APK evidence")
         require(summary.get("installed_test_apk_sha256") == summary["built_test_apk_sha256"],
