@@ -1,0 +1,18 @@
+{
+  "url": "https://huggingface.co/api/models/tensorblock/Qwen2.5-3B-Instruct-abliterated-GGUF?blobs=true",
+  "repository_revision": "574cf57acf9ca2a56ec7e62e3bd974a413881745",
+  "model_id": "tensorblock/Qwen2.5-3B-Instruct-abliterated-GGUF",
+  "card_license": "apache-2.0",
+  "base_model": "huihui-ai/Qwen2.5-3B-Instruct-abliterated",
+  "file": {
+    "rfilename": "Qwen2.5-3B-Instruct-abliterated-Q3_K_M.gguf",
+    "blobId": "bd5186a2759a497bbda259c7ffc2b59a7f0ca521",
+    "size": 1590475744,
+    "lfs": {
+      "sha256": "2c5f9a121ae6695208e300c16acca303669afa4e18812061164dca9c97071b12",
+      "size": 1590475744,
+      "pointerSize": 135
+    }
+  },
+  "api_sha256": "c5d820d40331dd4406bcd83ed00a0888cbfd95b00ca009b89bd11c5b6da2c3a0"
+}
