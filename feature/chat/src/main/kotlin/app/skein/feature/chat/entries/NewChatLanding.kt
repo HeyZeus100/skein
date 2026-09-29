@@ -17,12 +17,15 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.layout.onSizeChanged
+import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.LocalLocale
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.semantics.heading
@@ -50,6 +53,7 @@ import app.skein.feature.editor.entries.newNote
 import app.skein.feature.shell.host.EntryTopBar
 import app.skein.feature.shell.host.LocalSkeinWindowLayout
 import app.skein.feature.shell.host.SkeinShellState
+import app.skein.feature.shell.host.entryBottomObstruction
 import app.skein.feature.shell.host.open
 import app.skein.feature.shell.layout.SkeinNavContainer
 import kotlinx.coroutines.CancellationException
@@ -100,130 +104,137 @@ internal fun NewChatLanding(
     var sending by remember(draftKey) { mutableStateOf(false) }
     var sendFailed by remember(draftKey) { mutableStateOf(false) }
 
-    Column(Modifier.fillMaxSize().testTag(ChatEntryTestTags.LANDING)) {
-        // As the placeholder beside Conversations it follows the Chat root's rule: no navigation icon.
-        shell.EntryTopBar(key ?: ChatHomeKey, "New chat")
-        Column(
-            modifier =
-                Modifier
-                    .weight(1f)
-                    .fillMaxWidth()
-                    .verticalScroll(rememberScrollState())
-                    .padding(horizontal = SkeinSpacing.space16),
-            horizontalAlignment = Alignment.CenterHorizontally,
-        ) {
+    val density = LocalDensity.current
+    var paneHeight by remember { mutableIntStateOf(0) }
+    Column(Modifier.fillMaxSize().testTag(ChatEntryTestTags.LANDING).onSizeChanged { paneHeight = it.height }) {
+        val maxHeight = with(density) { paneHeight.toDp() }
+        val composerMaxHeight = maxHeight * 0.6f - SkeinSize.topBar - entryBottomObstruction()
+        Column(Modifier.fillMaxSize()) {
+            // As the placeholder beside Conversations it follows the Chat root's rule: no navigation icon.
+            shell.EntryTopBar(key ?: ChatHomeKey, "New chat")
             Column(
-                Modifier.widthIn(max = SkeinSize.readingMax).fillMaxWidth(),
-                verticalArrangement = Arrangement.spacedBy(SkeinSpacing.space8),
+                modifier =
+                    Modifier
+                        .weight(1f)
+                        .fillMaxWidth()
+                        .verticalScroll(rememberScrollState())
+                        .padding(horizontal = SkeinSpacing.space16),
+                horizontalAlignment = Alignment.CenterHorizontally,
             ) {
-                Text(
-                    "What are you working on?",
-                    style = MaterialTheme.typography.headlineSmall,
-                    modifier = Modifier.padding(top = SkeinSpacing.space24).semantics { heading() },
-                )
-                Text(
-                    "Ask Skein, search your knowledge, or continue something recent.",
-                    style = MaterialTheme.typography.bodyLarge,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant,
-                )
-                if (!deps.hasModel) NoModelNotice(shell)
-                SkeinListRow(
-                    title = "New note",
-                    leadingIcon = SkeinIcons.NewNote,
-                    onClick = { shell.newNote() },
-                )
-                SkeinListRow(
-                    title = "Search knowledge",
-                    leadingIcon = SkeinIcons.Search,
-                    onClick = { shell.navigate { switchTo(it, Destination.KNOWLEDGE) } },
-                )
-                if (recent.isNotEmpty()) {
-                    SkeinSectionHeader("Recent")
-                    val now = deps.knowledge.clock()
-                    val zone = deps.knowledge.zone
-                    val locale = LocalLocale.current.platformLocale
-                    recent.forEach { document ->
-                        val isChat = document.kind == DocumentKind.CHAT
-                        SkeinListRow(
-                            title = document.title.ifBlank { if (isChat) UNTITLED_CHAT else "Untitled" },
-                            leadingIcon = if (isChat) SkeinIcons.Chat else SkeinIcons.Note,
-                            trailingMeta = chatTimeLabel(document.updatedAt, now, zone, locale),
-                            onClick = { shell.open(document) },
-                        )
+                Column(
+                    Modifier.widthIn(max = SkeinSize.readingMax).fillMaxWidth(),
+                    verticalArrangement = Arrangement.spacedBy(SkeinSpacing.space8),
+                ) {
+                    Text(
+                        "What are you working on?",
+                        style = MaterialTheme.typography.headlineSmall,
+                        modifier = Modifier.padding(top = SkeinSpacing.space24).semantics { heading() },
+                    )
+                    Text(
+                        "Ask Skein, search your knowledge, or continue something recent.",
+                        style = MaterialTheme.typography.bodyLarge,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant,
+                    )
+                    if (!deps.hasModel) NoModelNotice(shell)
+                    SkeinListRow(
+                        title = "New note",
+                        leadingIcon = SkeinIcons.NewNote,
+                        onClick = { shell.newNote() },
+                    )
+                    SkeinListRow(
+                        title = "Search knowledge",
+                        leadingIcon = SkeinIcons.Search,
+                        onClick = { shell.navigate { switchTo(it, Destination.KNOWLEDGE) } },
+                    )
+                    if (recent.isNotEmpty()) {
+                        SkeinSectionHeader("Recent")
+                        val now = deps.knowledge.clock()
+                        val zone = deps.knowledge.zone
+                        val locale = LocalLocale.current.platformLocale
+                        recent.forEach { document ->
+                            val isChat = document.kind == DocumentKind.CHAT
+                            SkeinListRow(
+                                title = document.title.ifBlank { if (isChat) UNTITLED_CHAT else "Untitled" },
+                                leadingIcon = if (isChat) SkeinIcons.Chat else SkeinIcons.Note,
+                                trailingMeta = chatTimeLabel(document.updatedAt, now, zone, locale),
+                                onClick = { shell.open(document) },
+                            )
+                        }
                     }
                 }
             }
-        }
-        val pipeline = deps.sendPipeline
-        if (pipeline != null && deps.hasModel) {
-            DraftLoadNotice(composer)
-            if (sendFailed) Text("Couldn't send this message. Try again.", Modifier.padding(SkeinSpacing.space16))
-            ChatBottomBar(
-                isGenerating = false,
-                composerState = composer,
-                enabled = !sending && (deps.turns == null || composer != null),
-                onSend = { text ->
-                    val origin = shell.nav
-                    val selectedSpace = origin.space?.value
-                    val turns = deps.turns
-                    if (turns != null) {
-                        val snapshot = composer?.snapshot
-                        if (snapshot != null &&
-                            draftKey != null &&
-                            !sending &&
-                            draftKey.spaceId == (selectedSpace ?: deps.defaultSpaceId)
-                        ) {
-                            sending = true
-                            sendFailed = false
-                            val committed =
-                                turns.enqueueNew(
-                                    draftKey,
-                                    snapshot.version,
-                                    snapshot.draft.text,
-                                    provisionalTitle(snapshot.draft.text, deps.knowledge.clock()),
-                                )
-                            scope.launch {
-                                try {
-                                    val chatId = committed.await()
-                                    if (shell.nav ===
-                                        origin
-                                    ) {
-                                        shell.navigate { openDocument(it, chatId, ObjectKind.CHAT) }
+            val pipeline = deps.sendPipeline
+            if (pipeline != null && deps.hasModel) {
+                DraftLoadNotice(composer)
+                if (sendFailed) Text("Couldn't send this message. Try again.", Modifier.padding(SkeinSpacing.space16))
+                ChatBottomBar(
+                    isGenerating = false,
+                    composerState = composer,
+                    maxHeight = composerMaxHeight,
+                    enabled = !sending && (deps.turns == null || composer != null),
+                    onSend = { text ->
+                        val origin = shell.nav
+                        val selectedSpace = origin.space?.value
+                        val turns = deps.turns
+                        if (turns != null) {
+                            val snapshot = composer?.snapshot
+                            if (snapshot != null &&
+                                draftKey != null &&
+                                !sending &&
+                                draftKey.spaceId == (selectedSpace ?: deps.defaultSpaceId)
+                            ) {
+                                sending = true
+                                sendFailed = false
+                                val committed =
+                                    turns.enqueueNew(
+                                        draftKey,
+                                        snapshot.version,
+                                        snapshot.draft.text,
+                                        provisionalTitle(snapshot.draft.text, deps.knowledge.clock()),
+                                    )
+                                scope.launch {
+                                    try {
+                                        val chatId = committed.await()
+                                        if (shell.nav ===
+                                            origin
+                                        ) {
+                                            shell.navigate { openDocument(it, chatId, ObjectKind.CHAT) }
+                                        }
+                                    } catch (cancelled: CancellationException) {
+                                        throw cancelled
+                                    } catch (_: Exception) {
+                                        sendFailed = true
+                                    } finally {
+                                        sending = false
                                     }
-                                } catch (cancelled: CancellationException) {
-                                    throw cancelled
-                                } catch (_: Exception) {
-                                    sendFailed = true
-                                } finally {
-                                    sending = false
                                 }
                             }
+                        } else {
+                            scope.launch {
+                                // §11.4: create on first send; the new chat's screen sends the message.
+                                val chat =
+                                    repository.createDocument(
+                                        NewDocument(
+                                            DocumentKind.CHAT,
+                                            provisionalTitle(text, deps.knowledge.clock()),
+                                            bodyMd = "",
+                                            personaId = selectedSpace,
+                                        ),
+                                    )
+                                deps.handoff.put(chat.id, text)
+                                shell.navigate { openDocument(it, chat.id, ObjectKind.CHAT) }
+                            }
                         }
-                    } else {
-                        scope.launch {
-                            // §11.4: create on first send; the new chat's screen sends the message.
-                            val chat =
-                                repository.createDocument(
-                                    NewDocument(
-                                        DocumentKind.CHAT,
-                                        provisionalTitle(text, deps.knowledge.clock()),
-                                        bodyMd = "",
-                                        personaId = selectedSpace,
-                                    ),
-                                )
-                            deps.handoff.put(chat.id, text)
-                            shell.navigate { openDocument(it, chat.id, ObjectKind.CHAT) }
-                        }
-                    }
-                },
-                onCancel = {},
-                wikilinkSuggest = { query -> repository.searchTitles(query).map { Suggestion(it.title) } },
-                onAttach = { name, mime, input ->
-                    val personaId = shell.nav.space?.value
-                    deps.importService?.let { importAttachment(it, name, mime, input, personaId) }
-                },
-                modifier = Modifier.fillMaxWidth(),
-            )
+                    },
+                    onCancel = {},
+                    wikilinkSuggest = { query -> repository.searchTitles(query).map { Suggestion(it.title) } },
+                    onAttach = { name, mime, input ->
+                        val personaId = shell.nav.space?.value
+                        deps.importService?.let { importAttachment(it, name, mime, input, personaId) }
+                    },
+                    modifier = Modifier.fillMaxWidth(),
+                )
+            }
         }
     }
 }

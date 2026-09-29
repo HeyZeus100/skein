@@ -89,13 +89,14 @@ fun SkeinNavigationContainer(
     modifier: Modifier = Modifier,
     zone: ZoneId = ZoneId.systemDefault(),
     now: () -> Long = System::currentTimeMillis,
+    closeRequest: Int = 0,
     content: @Composable () -> Unit,
 ) {
     val isDrawer = decision.nav == SkeinNavContainer.DRAWER
     // Not `rememberDrawerState`/`rememberSaveable`: see the doc above.
     val drawerState = remember { DrawerState(DrawerValue.Closed) }
     val scope = rememberCoroutineScope()
-    LaunchedEffect(isDrawer) { drawerState.snapTo(DrawerValue.Closed) }
+    LaunchedEffect(isDrawer, closeRequest) { drawerState.snapTo(DrawerValue.Closed) }
 
     fun closeIfDrawer() {
         if (isDrawer) scope.launch { drawerState.close() }
@@ -160,6 +161,7 @@ fun SkeinNavigationContainer(
                         onNewChat = onNewChat,
                         spaces = spaces,
                         expanded = decision.nav == SkeinNavContainer.EXPANDED_RAIL,
+                        posture = decision.posture,
                         modifier = Modifier.testTag(SkeinNavContainerTestTags.RAIL),
                     )
                 }

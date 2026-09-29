@@ -1,0 +1,1145 @@
+{
+  "summary": {
+    "total": 189,
+    "recorded": 0,
+    "added": 0,
+    "changed": 0,
+    "unchanged": 189
+  },
+  "results": [
+    {
+      "golden_file_path": "/Users/andrewherrera/skein-worktrees/ux-wave3-parallel-20260928/core/designsystem/../../ux-baselines/core-designsystem/fold-inner-1007/component-empty-state__dark__fs100.png",
+      "timestamp": 1173445508893666,
+      "context_data": {},
+      "type": "unchanged"
+    },
+    {
+      "golden_file_path": "/Users/andrewherrera/skein-worktrees/ux-wave3-parallel-20260928/core/designsystem/../../ux-baselines/core-designsystem/fold-inner-1007/component-empty-state__dark__fs200.png",
+      "timestamp": 1173446041552791,
+      "context_data": {},
+      "type": "unchanged"
+    },
+    {
+      "golden_file_path": "/Users/andrewherrera/skein-worktrees/ux-wave3-parallel-20260928/core/designsystem/../../ux-baselines/core-designsystem/fold-inner-1007/component-empty-state__light__fs100.png",
+      "timestamp": 1173445235147625,
+      "context_data": {},
+      "type": "unchanged"
+    },
+    {
+      "golden_file_path": "/Users/andrewherrera/skein-worktrees/ux-wave3-parallel-20260928/core/designsystem/../../ux-baselines/core-designsystem/fold-inner-1007/component-empty-state__light__fs200.png",
+      "timestamp": 1173445776866333,
+      "context_data": {},
+      "type": "unchanged"
+    },
+    {
+      "golden_file_path": "/Users/andrewherrera/skein-worktrees/ux-wave3-parallel-20260928/core/designsystem/../../ux-baselines/core-designsystem/fold-inner-1007/component-list-row__dark__fs100.png",
+      "timestamp": 1173445695190416,
+      "context_data": {},
+      "type": "unchanged"
+    },
+    {
+      "golden_file_path": "/Users/andrewherrera/skein-worktrees/ux-wave3-parallel-20260928/core/designsystem/../../ux-baselines/core-designsystem/fold-inner-1007/component-list-row__dark__fs200.png",
+      "timestamp": 1173446242876916,
+      "context_data": {},
+      "type": "unchanged"
+    },
+    {
+      "golden_file_path": "/Users/andrewherrera/skein-worktrees/ux-wave3-parallel-20260928/core/designsystem/../../ux-baselines/core-designsystem/fold-inner-1007/component-list-row__light__fs100.png",
+      "timestamp": 1173445435507791,
+      "context_data": {},
+      "type": "unchanged"
+    },
+    {
+      "golden_file_path": "/Users/andrewherrera/skein-worktrees/ux-wave3-parallel-20260928/core/designsystem/../../ux-baselines/core-designsystem/fold-inner-1007/component-list-row__light__fs200.png",
+      "timestamp": 1173445966521791,
+      "context_data": {},
+      "type": "unchanged"
+    },
+    {
+      "golden_file_path": "/Users/andrewherrera/skein-worktrees/ux-wave3-parallel-20260928/core/designsystem/../../ux-baselines/core-designsystem/fold-inner-1007/component-notice__dark__fs100.png",
+      "timestamp": 1173445546376666,
+      "context_data": {},
+      "type": "unchanged"
+    },
+    {
+      "golden_file_path": "/Users/andrewherrera/skein-worktrees/ux-wave3-parallel-20260928/core/designsystem/../../ux-baselines/core-designsystem/fold-inner-1007/component-notice__dark__fs200.png",
+      "timestamp": 1173446089683291,
+      "context_data": {},
+      "type": "unchanged"
+    },
+    {
+      "golden_file_path": "/Users/andrewherrera/skein-worktrees/ux-wave3-parallel-20260928/core/designsystem/../../ux-baselines/core-designsystem/fold-inner-1007/component-notice__light__fs100.png",
+      "timestamp": 1173445272228583,
+      "context_data": {},
+      "type": "unchanged"
+    },
+    {
+      "golden_file_path": "/Users/andrewherrera/skein-worktrees/ux-wave3-parallel-20260928/core/designsystem/../../ux-baselines/core-designsystem/fold-inner-1007/component-notice__light__fs200.png",
+      "timestamp": 1173445818357208,
+      "context_data": {},
+      "type": "unchanged"
+    },
+    {
+      "golden_file_path": "/Users/andrewherrera/skein-worktrees/ux-wave3-parallel-20260928/core/designsystem/../../ux-baselines/core-designsystem/fold-inner-1007/component-search-field__dark__fs100.png",
+      "timestamp": 1173445660737041,
+      "context_data": {},
+      "type": "unchanged"
+    },
+    {
+      "golden_file_path": "/Users/andrewherrera/skein-worktrees/ux-wave3-parallel-20260928/core/designsystem/../../ux-baselines/core-designsystem/fold-inner-1007/component-search-field__dark__fs200.png",
+      "timestamp": 1173446201820750,
+      "context_data": {},
+      "type": "unchanged"
+    },
+    {
+      "golden_file_path": "/Users/andrewherrera/skein-worktrees/ux-wave3-parallel-20260928/core/designsystem/../../ux-baselines/core-designsystem/fold-inner-1007/component-search-field__light__fs100.png",
+      "timestamp": 1173445397114083,
+      "context_data": {},
+      "type": "unchanged"
+    },
+    {
+      "golden_file_path": "/Users/andrewherrera/skein-worktrees/ux-wave3-parallel-20260928/core/designsystem/../../ux-baselines/core-designsystem/fold-inner-1007/component-search-field__light__fs200.png",
+      "timestamp": 1173445929001541,
+      "context_data": {},
+      "type": "unchanged"
+    },
+    {
+      "golden_file_path": "/Users/andrewherrera/skein-worktrees/ux-wave3-parallel-20260928/core/designsystem/../../ux-baselines/core-designsystem/fold-inner-1007/component-segmented-control__dark__fs100.png",
+      "timestamp": 1173445471281708,
+      "context_data": {},
+      "type": "unchanged"
+    },
+    {
+      "golden_file_path": "/Users/andrewherrera/skein-worktrees/ux-wave3-parallel-20260928/core/designsystem/../../ux-baselines/core-designsystem/fold-inner-1007/component-segmented-control__dark__fs200.png",
+      "timestamp": 1173446002790625,
+      "context_data": {},
+      "type": "unchanged"
+    },
+    {
+      "golden_file_path": "/Users/andrewherrera/skein-worktrees/ux-wave3-parallel-20260928/core/designsystem/../../ux-baselines/core-designsystem/fold-inner-1007/component-segmented-control__light__fs100.png",
+      "timestamp": 1173445197143416,
+      "context_data": {},
+      "type": "unchanged"
+    },
+    {
+      "golden_file_path": "/Users/andrewherrera/skein-worktrees/ux-wave3-parallel-20260928/core/designsystem/../../ux-baselines/core-designsystem/fold-inner-1007/component-segmented-control__light__fs200.png",
+      "timestamp": 1173445738196250,
+      "context_data": {},
+      "type": "unchanged"
+    },
+    {
+      "golden_file_path": "/Users/andrewherrera/skein-worktrees/ux-wave3-parallel-20260928/core/designsystem/../../ux-baselines/core-designsystem/fold-inner-1007/component-status__dark__fs100.png",
+      "timestamp": 1173445577080958,
+      "context_data": {},
+      "type": "unchanged"
+    },
+    {
+      "golden_file_path": "/Users/andrewherrera/skein-worktrees/ux-wave3-parallel-20260928/core/designsystem/../../ux-baselines/core-designsystem/fold-inner-1007/component-status__dark__fs200.png",
+      "timestamp": 1173446126587458,
+      "context_data": {},
+      "type": "unchanged"
+    },
+    {
+      "golden_file_path": "/Users/andrewherrera/skein-worktrees/ux-wave3-parallel-20260928/core/designsystem/../../ux-baselines/core-designsystem/fold-inner-1007/component-status__light__fs100.png",
+      "timestamp": 1173445303855541,
+      "context_data": {},
+      "type": "unchanged"
+    },
+    {
+      "golden_file_path": "/Users/andrewherrera/skein-worktrees/ux-wave3-parallel-20260928/core/designsystem/../../ux-baselines/core-designsystem/fold-inner-1007/component-status__light__fs200.png",
+      "timestamp": 1173445848800375,
+      "context_data": {},
+      "type": "unchanged"
+    },
+    {
+      "golden_file_path": "/Users/andrewherrera/skein-worktrees/ux-wave3-parallel-20260928/core/designsystem/../../ux-baselines/core-designsystem/fold-inner-1007/component-top-app-bar__dark__fs100.png",
+      "timestamp": 1173445622113750,
+      "context_data": {},
+      "type": "unchanged"
+    },
+    {
+      "golden_file_path": "/Users/andrewherrera/skein-worktrees/ux-wave3-parallel-20260928/core/designsystem/../../ux-baselines/core-designsystem/fold-inner-1007/component-top-app-bar__dark__fs200.png",
+      "timestamp": 1173446166695416,
+      "context_data": {},
+      "type": "unchanged"
+    },
+    {
+      "golden_file_path": "/Users/andrewherrera/skein-worktrees/ux-wave3-parallel-20260928/core/designsystem/../../ux-baselines/core-designsystem/fold-inner-1007/component-top-app-bar__light__fs100.png",
+      "timestamp": 1173445362446125,
+      "context_data": {},
+      "type": "unchanged"
+    },
+    {
+      "golden_file_path": "/Users/andrewherrera/skein-worktrees/ux-wave3-parallel-20260928/core/designsystem/../../ux-baselines/core-designsystem/fold-inner-1007/component-top-app-bar__light__fs200.png",
+      "timestamp": 1173445895562000,
+      "context_data": {},
+      "type": "unchanged"
+    },
+    {
+      "golden_file_path": "/Users/andrewherrera/skein-worktrees/ux-wave3-parallel-20260928/core/designsystem/../../ux-baselines/core-designsystem/fold-inner-1007/gallery-tokens-colour-1__dark__fs100.png",
+      "timestamp": 1173451352162125,
+      "context_data": {},
+      "type": "unchanged"
+    },
+    {
+      "golden_file_path": "/Users/andrewherrera/skein-worktrees/ux-wave3-parallel-20260928/core/designsystem/../../ux-baselines/core-designsystem/fold-inner-1007/gallery-tokens-colour-1__dark__fs200.png",
+      "timestamp": 1173451915353875,
+      "context_data": {},
+      "type": "unchanged"
+    },
+    {
+      "golden_file_path": "/Users/andrewherrera/skein-worktrees/ux-wave3-parallel-20260928/core/designsystem/../../ux-baselines/core-designsystem/fold-inner-1007/gallery-tokens-colour-1__light__fs100.png",
+      "timestamp": 1173451085310250,
+      "context_data": {},
+      "type": "unchanged"
+    },
+    {
+      "golden_file_path": "/Users/andrewherrera/skein-worktrees/ux-wave3-parallel-20260928/core/designsystem/../../ux-baselines/core-designsystem/fold-inner-1007/gallery-tokens-colour-1__light__fs200.png",
+      "timestamp": 1173451626441500,
+      "context_data": {},
+      "type": "unchanged"
+    },
+    {
+      "golden_file_path": "/Users/andrewherrera/skein-worktrees/ux-wave3-parallel-20260928/core/designsystem/../../ux-baselines/core-designsystem/fold-inner-1007/gallery-tokens-colour-2__dark__fs100.png",
+      "timestamp": 1173451378098458,
+      "context_data": {},
+      "type": "unchanged"
+    },
+    {
+      "golden_file_path": "/Users/andrewherrera/skein-worktrees/ux-wave3-parallel-20260928/core/designsystem/../../ux-baselines/core-designsystem/fold-inner-1007/gallery-tokens-colour-2__dark__fs200.png",
+      "timestamp": 1173451953126458,
+      "context_data": {},
+      "type": "unchanged"
+    },
+    {
+      "golden_file_path": "/Users/andrewherrera/skein-worktrees/ux-wave3-parallel-20260928/core/designsystem/../../ux-baselines/core-designsystem/fold-inner-1007/gallery-tokens-colour-2__light__fs100.png",
+      "timestamp": 1173451107786000,
+      "context_data": {},
+      "type": "unchanged"
+    },
+    {
+      "golden_file_path": "/Users/andrewherrera/skein-worktrees/ux-wave3-parallel-20260928/core/designsystem/../../ux-baselines/core-designsystem/fold-inner-1007/gallery-tokens-colour-2__light__fs200.png",
+      "timestamp": 1173451652757000,
+      "context_data": {},
+      "type": "unchanged"
+    },
+    {
+      "golden_file_path": "/Users/andrewherrera/skein-worktrees/ux-wave3-parallel-20260928/core/designsystem/../../ux-baselines/core-designsystem/fold-inner-1007/gallery-tokens-icons-1__dark__fs100.png",
+      "timestamp": 1173451185039666,
+      "context_data": {},
+      "type": "unchanged"
+    },
+    {
+      "golden_file_path": "/Users/andrewherrera/skein-worktrees/ux-wave3-parallel-20260928/core/designsystem/../../ux-baselines/core-designsystem/fold-inner-1007/gallery-tokens-icons-1__dark__fs200.png",
+      "timestamp": 1173451746924000,
+      "context_data": {},
+      "type": "unchanged"
+    },
+    {
+      "golden_file_path": "/Users/andrewherrera/skein-worktrees/ux-wave3-parallel-20260928/core/designsystem/../../ux-baselines/core-designsystem/fold-inner-1007/gallery-tokens-icons-1__light__fs100.png",
+      "timestamp": 1173450926307916,
+      "context_data": {},
+      "type": "unchanged"
+    },
+    {
+      "golden_file_path": "/Users/andrewherrera/skein-worktrees/ux-wave3-parallel-20260928/core/designsystem/../../ux-baselines/core-designsystem/fold-inner-1007/gallery-tokens-icons-1__light__fs200.png",
+      "timestamp": 1173451457434791,
+      "context_data": {},
+      "type": "unchanged"
+    },
+    {
+      "golden_file_path": "/Users/andrewherrera/skein-worktrees/ux-wave3-parallel-20260928/core/designsystem/../../ux-baselines/core-designsystem/fold-inner-1007/gallery-tokens-icons-2__dark__fs100.png",
+      "timestamp": 1173451211578250,
+      "context_data": {},
+      "type": "unchanged"
+    },
+    {
+      "golden_file_path": "/Users/andrewherrera/skein-worktrees/ux-wave3-parallel-20260928/core/designsystem/../../ux-baselines/core-designsystem/fold-inner-1007/gallery-tokens-icons-2__dark__fs200.png",
+      "timestamp": 1173451773306916,
+      "context_data": {},
+      "type": "unchanged"
+    },
+    {
+      "golden_file_path": "/Users/andrewherrera/skein-worktrees/ux-wave3-parallel-20260928/core/designsystem/../../ux-baselines/core-designsystem/fold-inner-1007/gallery-tokens-icons-2__light__fs100.png",
+      "timestamp": 1173450951014333,
+      "context_data": {},
+      "type": "unchanged"
+    },
+    {
+      "golden_file_path": "/Users/andrewherrera/skein-worktrees/ux-wave3-parallel-20260928/core/designsystem/../../ux-baselines/core-designsystem/fold-inner-1007/gallery-tokens-icons-2__light__fs200.png",
+      "timestamp": 1173451485085958,
+      "context_data": {},
+      "type": "unchanged"
+    },
+    {
+      "golden_file_path": "/Users/andrewherrera/skein-worktrees/ux-wave3-parallel-20260928/core/designsystem/../../ux-baselines/core-designsystem/fold-inner-1007/gallery-tokens-icons-3__dark__fs100.png",
+      "timestamp": 1173451240176250,
+      "context_data": {},
+      "type": "unchanged"
+    },
+    {
+      "golden_file_path": "/Users/andrewherrera/skein-worktrees/ux-wave3-parallel-20260928/core/designsystem/../../ux-baselines/core-designsystem/fold-inner-1007/gallery-tokens-icons-3__dark__fs200.png",
+      "timestamp": 1173451799746416,
+      "context_data": {},
+      "type": "unchanged"
+    },
+    {
+      "golden_file_path": "/Users/andrewherrera/skein-worktrees/ux-wave3-parallel-20260928/core/designsystem/../../ux-baselines/core-designsystem/fold-inner-1007/gallery-tokens-icons-3__light__fs100.png",
+      "timestamp": 1173450979418541,
+      "context_data": {},
+      "type": "unchanged"
+    },
+    {
+      "golden_file_path": "/Users/andrewherrera/skein-worktrees/ux-wave3-parallel-20260928/core/designsystem/../../ux-baselines/core-designsystem/fold-inner-1007/gallery-tokens-icons-3__light__fs200.png",
+      "timestamp": 1173451513096375,
+      "context_data": {},
+      "type": "unchanged"
+    },
+    {
+      "golden_file_path": "/Users/andrewherrera/skein-worktrees/ux-wave3-parallel-20260928/core/designsystem/../../ux-baselines/core-designsystem/fold-inner-1007/gallery-tokens-radius__dark__fs100.png",
+      "timestamp": 1173451266756375,
+      "context_data": {},
+      "type": "unchanged"
+    },
+    {
+      "golden_file_path": "/Users/andrewherrera/skein-worktrees/ux-wave3-parallel-20260928/core/designsystem/../../ux-baselines/core-designsystem/fold-inner-1007/gallery-tokens-radius__dark__fs200.png",
+      "timestamp": 1173451821977791,
+      "context_data": {},
+      "type": "unchanged"
+    },
+    {
+      "golden_file_path": "/Users/andrewherrera/skein-worktrees/ux-wave3-parallel-20260928/core/designsystem/../../ux-baselines/core-designsystem/fold-inner-1007/gallery-tokens-radius__light__fs100.png",
+      "timestamp": 1173451001485333,
+      "context_data": {},
+      "type": "unchanged"
+    },
+    {
+      "golden_file_path": "/Users/andrewherrera/skein-worktrees/ux-wave3-parallel-20260928/core/designsystem/../../ux-baselines/core-designsystem/fold-inner-1007/gallery-tokens-radius__light__fs200.png",
+      "timestamp": 1173451540954833,
+      "context_data": {},
+      "type": "unchanged"
+    },
+    {
+      "golden_file_path": "/Users/andrewherrera/skein-worktrees/ux-wave3-parallel-20260928/core/designsystem/../../ux-baselines/core-designsystem/fold-inner-1007/gallery-tokens-spacing__dark__fs100.png",
+      "timestamp": 1173451403402416,
+      "context_data": {},
+      "type": "unchanged"
+    },
+    {
+      "golden_file_path": "/Users/andrewherrera/skein-worktrees/ux-wave3-parallel-20260928/core/designsystem/../../ux-baselines/core-designsystem/fold-inner-1007/gallery-tokens-spacing__dark__fs200.png",
+      "timestamp": 1173451986959833,
+      "context_data": {},
+      "type": "unchanged"
+    },
+    {
+      "golden_file_path": "/Users/andrewherrera/skein-worktrees/ux-wave3-parallel-20260928/core/designsystem/../../ux-baselines/core-designsystem/fold-inner-1007/gallery-tokens-spacing__light__fs100.png",
+      "timestamp": 1173451131961125,
+      "context_data": {},
+      "type": "unchanged"
+    },
+    {
+      "golden_file_path": "/Users/andrewherrera/skein-worktrees/ux-wave3-parallel-20260928/core/designsystem/../../ux-baselines/core-designsystem/fold-inner-1007/gallery-tokens-spacing__light__fs200.png",
+      "timestamp": 1173451679959041,
+      "context_data": {},
+      "type": "unchanged"
+    },
+    {
+      "golden_file_path": "/Users/andrewherrera/skein-worktrees/ux-wave3-parallel-20260928/core/designsystem/../../ux-baselines/core-designsystem/fold-inner-1007/gallery-tokens-theme-specimen__dark__fs100.png",
+      "timestamp": 1173451429862583,
+      "context_data": {},
+      "type": "unchanged"
+    },
+    {
+      "golden_file_path": "/Users/andrewherrera/skein-worktrees/ux-wave3-parallel-20260928/core/designsystem/../../ux-baselines/core-designsystem/fold-inner-1007/gallery-tokens-theme-specimen__dark__fs200.png",
+      "timestamp": 1173452022143625,
+      "context_data": {},
+      "type": "unchanged"
+    },
+    {
+      "golden_file_path": "/Users/andrewherrera/skein-worktrees/ux-wave3-parallel-20260928/core/designsystem/../../ux-baselines/core-designsystem/fold-inner-1007/gallery-tokens-theme-specimen__light__fs100.png",
+      "timestamp": 1173451159425708,
+      "context_data": {},
+      "type": "unchanged"
+    },
+    {
+      "golden_file_path": "/Users/andrewherrera/skein-worktrees/ux-wave3-parallel-20260928/core/designsystem/../../ux-baselines/core-designsystem/fold-inner-1007/gallery-tokens-theme-specimen__light__fs200.png",
+      "timestamp": 1173451714562000,
+      "context_data": {},
+      "type": "unchanged"
+    },
+    {
+      "golden_file_path": "/Users/andrewherrera/skein-worktrees/ux-wave3-parallel-20260928/core/designsystem/../../ux-baselines/core-designsystem/fold-inner-1007/gallery-tokens-type-large__dark__fs100.png",
+      "timestamp": 1173451296723625,
+      "context_data": {},
+      "type": "unchanged"
+    },
+    {
+      "golden_file_path": "/Users/andrewherrera/skein-worktrees/ux-wave3-parallel-20260928/core/designsystem/../../ux-baselines/core-designsystem/fold-inner-1007/gallery-tokens-type-large__dark__fs200.png",
+      "timestamp": 1173451854017666,
+      "context_data": {},
+      "type": "unchanged"
+    },
+    {
+      "golden_file_path": "/Users/andrewherrera/skein-worktrees/ux-wave3-parallel-20260928/core/designsystem/../../ux-baselines/core-designsystem/fold-inner-1007/gallery-tokens-type-large__light__fs100.png",
+      "timestamp": 1173451032309458,
+      "context_data": {},
+      "type": "unchanged"
+    },
+    {
+      "golden_file_path": "/Users/andrewherrera/skein-worktrees/ux-wave3-parallel-20260928/core/designsystem/../../ux-baselines/core-designsystem/fold-inner-1007/gallery-tokens-type-large__light__fs200.png",
+      "timestamp": 1173451571650666,
+      "context_data": {},
+      "type": "unchanged"
+    },
+    {
+      "golden_file_path": "/Users/andrewherrera/skein-worktrees/ux-wave3-parallel-20260928/core/designsystem/../../ux-baselines/core-designsystem/fold-inner-1007/gallery-tokens-type-small__dark__fs100.png",
+      "timestamp": 1173451326841291,
+      "context_data": {},
+      "type": "unchanged"
+    },
+    {
+      "golden_file_path": "/Users/andrewherrera/skein-worktrees/ux-wave3-parallel-20260928/core/designsystem/../../ux-baselines/core-designsystem/fold-inner-1007/gallery-tokens-type-small__dark__fs200.png",
+      "timestamp": 1173451884731958,
+      "context_data": {},
+      "type": "unchanged"
+    },
+    {
+      "golden_file_path": "/Users/andrewherrera/skein-worktrees/ux-wave3-parallel-20260928/core/designsystem/../../ux-baselines/core-designsystem/fold-inner-1007/gallery-tokens-type-small__light__fs100.png",
+      "timestamp": 1173451061792875,
+      "context_data": {},
+      "type": "unchanged"
+    },
+    {
+      "golden_file_path": "/Users/andrewherrera/skein-worktrees/ux-wave3-parallel-20260928/core/designsystem/../../ux-baselines/core-designsystem/fold-inner-1007/gallery-tokens-type-small__light__fs200.png",
+      "timestamp": 1173451598734375,
+      "context_data": {},
+      "type": "unchanged"
+    },
+    {
+      "golden_file_path": "/Users/andrewherrera/skein-worktrees/ux-wave3-parallel-20260928/core/designsystem/../../ux-baselines/core-designsystem/fold-outer-443/component-empty-state__dark__fs100.png",
+      "timestamp": 1173444360128166,
+      "context_data": {},
+      "type": "unchanged"
+    },
+    {
+      "golden_file_path": "/Users/andrewherrera/skein-worktrees/ux-wave3-parallel-20260928/core/designsystem/../../ux-baselines/core-designsystem/fold-outer-443/component-empty-state__dark__fs200.png",
+      "timestamp": 1173444957575666,
+      "context_data": {},
+      "type": "unchanged"
+    },
+    {
+      "golden_file_path": "/Users/andrewherrera/skein-worktrees/ux-wave3-parallel-20260928/core/designsystem/../../ux-baselines/core-designsystem/fold-outer-443/component-empty-state__light__fs100.png",
+      "timestamp": 1173443957476333,
+      "context_data": {},
+      "type": "unchanged"
+    },
+    {
+      "golden_file_path": "/Users/andrewherrera/skein-worktrees/ux-wave3-parallel-20260928/core/designsystem/../../ux-baselines/core-designsystem/fold-outer-443/component-empty-state__light__fs200.png",
+      "timestamp": 1173444677077458,
+      "context_data": {},
+      "type": "unchanged"
+    },
+    {
+      "golden_file_path": "/Users/andrewherrera/skein-worktrees/ux-wave3-parallel-20260928/core/designsystem/../../ux-baselines/core-designsystem/fold-outer-443/component-list-row__dark__fs100.png",
+      "timestamp": 1173444590246125,
+      "context_data": {},
+      "type": "unchanged"
+    },
+    {
+      "golden_file_path": "/Users/andrewherrera/skein-worktrees/ux-wave3-parallel-20260928/core/designsystem/../../ux-baselines/core-designsystem/fold-outer-443/component-list-row__dark__fs200.png",
+      "timestamp": 1173445148070750,
+      "context_data": {},
+      "type": "unchanged"
+    },
+    {
+      "golden_file_path": "/Users/andrewherrera/skein-worktrees/ux-wave3-parallel-20260928/core/designsystem/../../ux-baselines/core-designsystem/fold-outer-443/component-list-row__light__fs100.png",
+      "timestamp": 1173444265507500,
+      "context_data": {},
+      "type": "unchanged"
+    },
+    {
+      "golden_file_path": "/Users/andrewherrera/skein-worktrees/ux-wave3-parallel-20260928/core/designsystem/../../ux-baselines/core-designsystem/fold-outer-443/component-list-row__light__fs200.png",
+      "timestamp": 1173444879412916,
+      "context_data": {},
+      "type": "unchanged"
+    },
+    {
+      "golden_file_path": "/Users/andrewherrera/skein-worktrees/ux-wave3-parallel-20260928/core/designsystem/../../ux-baselines/core-designsystem/fold-outer-443/component-notice__dark__fs100.png",
+      "timestamp": 1173444414122875,
+      "context_data": {},
+      "type": "unchanged"
+    },
+    {
+      "golden_file_path": "/Users/andrewherrera/skein-worktrees/ux-wave3-parallel-20260928/core/designsystem/../../ux-baselines/core-designsystem/fold-outer-443/component-notice__dark__fs200.png",
+      "timestamp": 1173444996896541,
+      "context_data": {},
+      "type": "unchanged"
+    },
+    {
+      "golden_file_path": "/Users/andrewherrera/skein-worktrees/ux-wave3-parallel-20260928/core/designsystem/../../ux-baselines/core-designsystem/fold-outer-443/component-notice__light__fs100.png",
+      "timestamp": 1173444011434750,
+      "context_data": {},
+      "type": "unchanged"
+    },
+    {
+      "golden_file_path": "/Users/andrewherrera/skein-worktrees/ux-wave3-parallel-20260928/core/designsystem/../../ux-baselines/core-designsystem/fold-outer-443/component-notice__light__fs200.png",
+      "timestamp": 1173444724046166,
+      "context_data": {},
+      "type": "unchanged"
+    },
+    {
+      "golden_file_path": "/Users/andrewherrera/skein-worktrees/ux-wave3-parallel-20260928/core/designsystem/../../ux-baselines/core-designsystem/fold-outer-443/component-search-field__dark__fs100.png",
+      "timestamp": 1173444547362375,
+      "context_data": {},
+      "type": "unchanged"
+    },
+    {
+      "golden_file_path": "/Users/andrewherrera/skein-worktrees/ux-wave3-parallel-20260928/core/designsystem/../../ux-baselines/core-designsystem/fold-outer-443/component-search-field__dark__fs200.png",
+      "timestamp": 1173445109748708,
+      "context_data": {},
+      "type": "unchanged"
+    },
+    {
+      "golden_file_path": "/Users/andrewherrera/skein-worktrees/ux-wave3-parallel-20260928/core/designsystem/../../ux-baselines/core-designsystem/fold-outer-443/component-search-field__light__fs100.png",
+      "timestamp": 1173444209665458,
+      "context_data": {},
+      "type": "unchanged"
+    },
+    {
+      "golden_file_path": "/Users/andrewherrera/skein-worktrees/ux-wave3-parallel-20260928/core/designsystem/../../ux-baselines/core-designsystem/fold-outer-443/component-search-field__light__fs200.png",
+      "timestamp": 1173444840230666,
+      "context_data": {},
+      "type": "unchanged"
+    },
+    {
+      "golden_file_path": "/Users/andrewherrera/skein-worktrees/ux-wave3-parallel-20260928/core/designsystem/../../ux-baselines/core-designsystem/fold-outer-443/component-segmented-control__dark__fs100.png",
+      "timestamp": 1173444317339291,
+      "context_data": {},
+      "type": "unchanged"
+    },
+    {
+      "golden_file_path": "/Users/andrewherrera/skein-worktrees/ux-wave3-parallel-20260928/core/designsystem/../../ux-baselines/core-designsystem/fold-outer-443/component-segmented-control__dark__fs200.png",
+      "timestamp": 1173444924629250,
+      "context_data": {},
+      "type": "unchanged"
+    },
+    {
+      "golden_file_path": "/Users/andrewherrera/skein-worktrees/ux-wave3-parallel-20260928/core/designsystem/../../ux-baselines/core-designsystem/fold-outer-443/component-segmented-control__light__fs100.png",
+      "timestamp": 1173443819100750,
+      "context_data": {},
+      "type": "unchanged"
+    },
+    {
+      "golden_file_path": "/Users/andrewherrera/skein-worktrees/ux-wave3-parallel-20260928/core/designsystem/../../ux-baselines/core-designsystem/fold-outer-443/component-segmented-control__light__fs200.png",
+      "timestamp": 1173444633453958,
+      "context_data": {},
+      "type": "unchanged"
+    },
+    {
+      "golden_file_path": "/Users/andrewherrera/skein-worktrees/ux-wave3-parallel-20260928/core/designsystem/../../ux-baselines/core-designsystem/fold-outer-443/component-status__dark__fs100.png",
+      "timestamp": 1173444450446166,
+      "context_data": {},
+      "type": "unchanged"
+    },
+    {
+      "golden_file_path": "/Users/andrewherrera/skein-worktrees/ux-wave3-parallel-20260928/core/designsystem/../../ux-baselines/core-designsystem/fold-outer-443/component-status__dark__fs200.png",
+      "timestamp": 1173445026245666,
+      "context_data": {},
+      "type": "unchanged"
+    },
+    {
+      "golden_file_path": "/Users/andrewherrera/skein-worktrees/ux-wave3-parallel-20260928/core/designsystem/../../ux-baselines/core-designsystem/fold-outer-443/component-status__light__fs100.png",
+      "timestamp": 1173444049451958,
+      "context_data": {},
+      "type": "unchanged"
+    },
+    {
+      "golden_file_path": "/Users/andrewherrera/skein-worktrees/ux-wave3-parallel-20260928/core/designsystem/../../ux-baselines/core-designsystem/fold-outer-443/component-status__light__fs200.png",
+      "timestamp": 1173444755374166,
+      "context_data": {},
+      "type": "unchanged"
+    },
+    {
+      "golden_file_path": "/Users/andrewherrera/skein-worktrees/ux-wave3-parallel-20260928/core/designsystem/../../ux-baselines/core-designsystem/fold-outer-443/component-top-app-bar__dark__fs100.png",
+      "timestamp": 1173444507592000,
+      "context_data": {},
+      "type": "unchanged"
+    },
+    {
+      "golden_file_path": "/Users/andrewherrera/skein-worktrees/ux-wave3-parallel-20260928/core/designsystem/../../ux-baselines/core-designsystem/fold-outer-443/component-top-app-bar__dark__fs200.png",
+      "timestamp": 1173445074250333,
+      "context_data": {},
+      "type": "unchanged"
+    },
+    {
+      "golden_file_path": "/Users/andrewherrera/skein-worktrees/ux-wave3-parallel-20260928/core/designsystem/../../ux-baselines/core-designsystem/fold-outer-443/component-top-app-bar__light__fs100.png",
+      "timestamp": 1173444129256416,
+      "context_data": {},
+      "type": "unchanged"
+    },
+    {
+      "golden_file_path": "/Users/andrewherrera/skein-worktrees/ux-wave3-parallel-20260928/core/designsystem/../../ux-baselines/core-designsystem/fold-outer-443/component-top-app-bar__light__fs200.png",
+      "timestamp": 1173444803915791,
+      "context_data": {},
+      "type": "unchanged"
+    },
+    {
+      "golden_file_path": "/Users/andrewherrera/skein-worktrees/ux-wave3-parallel-20260928/core/designsystem/../../ux-baselines/core-designsystem/fold-outer-443/gallery-tokens-colour-1__dark__fs100.png",
+      "timestamp": 1173450265727125,
+      "context_data": {},
+      "type": "unchanged"
+    },
+    {
+      "golden_file_path": "/Users/andrewherrera/skein-worktrees/ux-wave3-parallel-20260928/core/designsystem/../../ux-baselines/core-designsystem/fold-outer-443/gallery-tokens-colour-1__dark__fs200.png",
+      "timestamp": 1173450820070541,
+      "context_data": {},
+      "type": "unchanged"
+    },
+    {
+      "golden_file_path": "/Users/andrewherrera/skein-worktrees/ux-wave3-parallel-20260928/core/designsystem/../../ux-baselines/core-designsystem/fold-outer-443/gallery-tokens-colour-1__light__fs100.png",
+      "timestamp": 1173449969928625,
+      "context_data": {},
+      "type": "unchanged"
+    },
+    {
+      "golden_file_path": "/Users/andrewherrera/skein-worktrees/ux-wave3-parallel-20260928/core/designsystem/../../ux-baselines/core-designsystem/fold-outer-443/gallery-tokens-colour-1__light__fs200.png",
+      "timestamp": 1173450537967375,
+      "context_data": {},
+      "type": "unchanged"
+    },
+    {
+      "golden_file_path": "/Users/andrewherrera/skein-worktrees/ux-wave3-parallel-20260928/core/designsystem/../../ux-baselines/core-designsystem/fold-outer-443/gallery-tokens-colour-2__dark__fs100.png",
+      "timestamp": 1173450288825583,
+      "context_data": {},
+      "type": "unchanged"
+    },
+    {
+      "golden_file_path": "/Users/andrewherrera/skein-worktrees/ux-wave3-parallel-20260928/core/designsystem/../../ux-baselines/core-designsystem/fold-outer-443/gallery-tokens-colour-2__dark__fs200.png",
+      "timestamp": 1173450850028500,
+      "context_data": {},
+      "type": "unchanged"
+    },
+    {
+      "golden_file_path": "/Users/andrewherrera/skein-worktrees/ux-wave3-parallel-20260928/core/designsystem/../../ux-baselines/core-designsystem/fold-outer-443/gallery-tokens-colour-2__light__fs100.png",
+      "timestamp": 1173449993020333,
+      "context_data": {},
+      "type": "unchanged"
+    },
+    {
+      "golden_file_path": "/Users/andrewherrera/skein-worktrees/ux-wave3-parallel-20260928/core/designsystem/../../ux-baselines/core-designsystem/fold-outer-443/gallery-tokens-colour-2__light__fs200.png",
+      "timestamp": 1173450566466333,
+      "context_data": {},
+      "type": "unchanged"
+    },
+    {
+      "golden_file_path": "/Users/andrewherrera/skein-worktrees/ux-wave3-parallel-20260928/core/designsystem/../../ux-baselines/core-designsystem/fold-outer-443/gallery-tokens-icons-1__dark__fs100.png",
+      "timestamp": 1173450070577333,
+      "context_data": {},
+      "type": "unchanged"
+    },
+    {
+      "golden_file_path": "/Users/andrewherrera/skein-worktrees/ux-wave3-parallel-20260928/core/designsystem/../../ux-baselines/core-designsystem/fold-outer-443/gallery-tokens-icons-1__dark__fs200.png",
+      "timestamp": 1173450655441958,
+      "context_data": {},
+      "type": "unchanged"
+    },
+    {
+      "golden_file_path": "/Users/andrewherrera/skein-worktrees/ux-wave3-parallel-20260928/core/designsystem/../../ux-baselines/core-designsystem/fold-outer-443/gallery-tokens-icons-1__light__fs100.png",
+      "timestamp": 1173449811349875,
+      "context_data": {},
+      "type": "unchanged"
+    },
+    {
+      "golden_file_path": "/Users/andrewherrera/skein-worktrees/ux-wave3-parallel-20260928/core/designsystem/../../ux-baselines/core-designsystem/fold-outer-443/gallery-tokens-icons-1__light__fs200.png",
+      "timestamp": 1173450367578291,
+      "context_data": {},
+      "type": "unchanged"
+    },
+    {
+      "golden_file_path": "/Users/andrewherrera/skein-worktrees/ux-wave3-parallel-20260928/core/designsystem/../../ux-baselines/core-designsystem/fold-outer-443/gallery-tokens-icons-2__dark__fs100.png",
+      "timestamp": 1173450104435083,
+      "context_data": {},
+      "type": "unchanged"
+    },
+    {
+      "golden_file_path": "/Users/andrewherrera/skein-worktrees/ux-wave3-parallel-20260928/core/designsystem/../../ux-baselines/core-designsystem/fold-outer-443/gallery-tokens-icons-2__dark__fs200.png",
+      "timestamp": 1173450683760208,
+      "context_data": {},
+      "type": "unchanged"
+    },
+    {
+      "golden_file_path": "/Users/andrewherrera/skein-worktrees/ux-wave3-parallel-20260928/core/designsystem/../../ux-baselines/core-designsystem/fold-outer-443/gallery-tokens-icons-2__light__fs100.png",
+      "timestamp": 1173449846267250,
+      "context_data": {},
+      "type": "unchanged"
+    },
+    {
+      "golden_file_path": "/Users/andrewherrera/skein-worktrees/ux-wave3-parallel-20260928/core/designsystem/../../ux-baselines/core-designsystem/fold-outer-443/gallery-tokens-icons-2__light__fs200.png",
+      "timestamp": 1173450397404958,
+      "context_data": {},
+      "type": "unchanged"
+    },
+    {
+      "golden_file_path": "/Users/andrewherrera/skein-worktrees/ux-wave3-parallel-20260928/core/designsystem/../../ux-baselines/core-designsystem/fold-outer-443/gallery-tokens-icons-3__dark__fs100.png",
+      "timestamp": 1173450142372416,
+      "context_data": {},
+      "type": "unchanged"
+    },
+    {
+      "golden_file_path": "/Users/andrewherrera/skein-worktrees/ux-wave3-parallel-20260928/core/designsystem/../../ux-baselines/core-designsystem/fold-outer-443/gallery-tokens-icons-3__dark__fs200.png",
+      "timestamp": 1173450711444833,
+      "context_data": {},
+      "type": "unchanged"
+    },
+    {
+      "golden_file_path": "/Users/andrewherrera/skein-worktrees/ux-wave3-parallel-20260928/core/designsystem/../../ux-baselines/core-designsystem/fold-outer-443/gallery-tokens-icons-3__light__fs100.png",
+      "timestamp": 1173449875173958,
+      "context_data": {},
+      "type": "unchanged"
+    },
+    {
+      "golden_file_path": "/Users/andrewherrera/skein-worktrees/ux-wave3-parallel-20260928/core/designsystem/../../ux-baselines/core-designsystem/fold-outer-443/gallery-tokens-icons-3__light__fs200.png",
+      "timestamp": 1173450432775125,
+      "context_data": {},
+      "type": "unchanged"
+    },
+    {
+      "golden_file_path": "/Users/andrewherrera/skein-worktrees/ux-wave3-parallel-20260928/core/designsystem/../../ux-baselines/core-designsystem/fold-outer-443/gallery-tokens-radius__dark__fs100.png",
+      "timestamp": 1173450173684416,
+      "context_data": {},
+      "type": "unchanged"
+    },
+    {
+      "golden_file_path": "/Users/andrewherrera/skein-worktrees/ux-wave3-parallel-20260928/core/designsystem/../../ux-baselines/core-designsystem/fold-outer-443/gallery-tokens-radius__dark__fs200.png",
+      "timestamp": 1173450737102083,
+      "context_data": {},
+      "type": "unchanged"
+    },
+    {
+      "golden_file_path": "/Users/andrewherrera/skein-worktrees/ux-wave3-parallel-20260928/core/designsystem/../../ux-baselines/core-designsystem/fold-outer-443/gallery-tokens-radius__light__fs100.png",
+      "timestamp": 1173449896359166,
+      "context_data": {},
+      "type": "unchanged"
+    },
+    {
+      "golden_file_path": "/Users/andrewherrera/skein-worktrees/ux-wave3-parallel-20260928/core/designsystem/../../ux-baselines/core-designsystem/fold-outer-443/gallery-tokens-radius__light__fs200.png",
+      "timestamp": 1173450456119708,
+      "context_data": {},
+      "type": "unchanged"
+    },
+    {
+      "golden_file_path": "/Users/andrewherrera/skein-worktrees/ux-wave3-parallel-20260928/core/designsystem/../../ux-baselines/core-designsystem/fold-outer-443/gallery-tokens-spacing__dark__fs100.png",
+      "timestamp": 1173450311758333,
+      "context_data": {},
+      "type": "unchanged"
+    },
+    {
+      "golden_file_path": "/Users/andrewherrera/skein-worktrees/ux-wave3-parallel-20260928/core/designsystem/../../ux-baselines/core-designsystem/fold-outer-443/gallery-tokens-spacing__dark__fs200.png",
+      "timestamp": 1173450873916375,
+      "context_data": {},
+      "type": "unchanged"
+    },
+    {
+      "golden_file_path": "/Users/andrewherrera/skein-worktrees/ux-wave3-parallel-20260928/core/designsystem/../../ux-baselines/core-designsystem/fold-outer-443/gallery-tokens-spacing__light__fs100.png",
+      "timestamp": 1173450015211958,
+      "context_data": {},
+      "type": "unchanged"
+    },
+    {
+      "golden_file_path": "/Users/andrewherrera/skein-worktrees/ux-wave3-parallel-20260928/core/designsystem/../../ux-baselines/core-designsystem/fold-outer-443/gallery-tokens-spacing__light__fs200.png",
+      "timestamp": 1173450594816291,
+      "context_data": {},
+      "type": "unchanged"
+    },
+    {
+      "golden_file_path": "/Users/andrewherrera/skein-worktrees/ux-wave3-parallel-20260928/core/designsystem/../../ux-baselines/core-designsystem/fold-outer-443/gallery-tokens-theme-specimen__dark__fs100.png",
+      "timestamp": 1173450337302500,
+      "context_data": {},
+      "type": "unchanged"
+    },
+    {
+      "golden_file_path": "/Users/andrewherrera/skein-worktrees/ux-wave3-parallel-20260928/core/designsystem/../../ux-baselines/core-designsystem/fold-outer-443/gallery-tokens-theme-specimen__dark__fs200.png",
+      "timestamp": 1173450901039000,
+      "context_data": {},
+      "type": "unchanged"
+    },
+    {
+      "golden_file_path": "/Users/andrewherrera/skein-worktrees/ux-wave3-parallel-20260928/core/designsystem/../../ux-baselines/core-designsystem/fold-outer-443/gallery-tokens-theme-specimen__light__fs100.png",
+      "timestamp": 1173450040832916,
+      "context_data": {},
+      "type": "unchanged"
+    },
+    {
+      "golden_file_path": "/Users/andrewherrera/skein-worktrees/ux-wave3-parallel-20260928/core/designsystem/../../ux-baselines/core-designsystem/fold-outer-443/gallery-tokens-theme-specimen__light__fs200.png",
+      "timestamp": 1173450625019041,
+      "context_data": {},
+      "type": "unchanged"
+    },
+    {
+      "golden_file_path": "/Users/andrewherrera/skein-worktrees/ux-wave3-parallel-20260928/core/designsystem/../../ux-baselines/core-designsystem/fold-outer-443/gallery-tokens-type-large__dark__fs100.png",
+      "timestamp": 1173450212855875,
+      "context_data": {},
+      "type": "unchanged"
+    },
+    {
+      "golden_file_path": "/Users/andrewherrera/skein-worktrees/ux-wave3-parallel-20260928/core/designsystem/../../ux-baselines/core-designsystem/fold-outer-443/gallery-tokens-type-large__dark__fs200.png",
+      "timestamp": 1173450762741958,
+      "context_data": {},
+      "type": "unchanged"
+    },
+    {
+      "golden_file_path": "/Users/andrewherrera/skein-worktrees/ux-wave3-parallel-20260928/core/designsystem/../../ux-baselines/core-designsystem/fold-outer-443/gallery-tokens-type-large__light__fs100.png",
+      "timestamp": 1173449922400291,
+      "context_data": {},
+      "type": "unchanged"
+    },
+    {
+      "golden_file_path": "/Users/andrewherrera/skein-worktrees/ux-wave3-parallel-20260928/core/designsystem/../../ux-baselines/core-designsystem/fold-outer-443/gallery-tokens-type-large__light__fs200.png",
+      "timestamp": 1173450483763375,
+      "context_data": {},
+      "type": "unchanged"
+    },
+    {
+      "golden_file_path": "/Users/andrewherrera/skein-worktrees/ux-wave3-parallel-20260928/core/designsystem/../../ux-baselines/core-designsystem/fold-outer-443/gallery-tokens-type-small__dark__fs100.png",
+      "timestamp": 1173450241134583,
+      "context_data": {},
+      "type": "unchanged"
+    },
+    {
+      "golden_file_path": "/Users/andrewherrera/skein-worktrees/ux-wave3-parallel-20260928/core/designsystem/../../ux-baselines/core-designsystem/fold-outer-443/gallery-tokens-type-small__dark__fs200.png",
+      "timestamp": 1173450790260708,
+      "context_data": {},
+      "type": "unchanged"
+    },
+    {
+      "golden_file_path": "/Users/andrewherrera/skein-worktrees/ux-wave3-parallel-20260928/core/designsystem/../../ux-baselines/core-designsystem/fold-outer-443/gallery-tokens-type-small__light__fs100.png",
+      "timestamp": 1173449947785208,
+      "context_data": {},
+      "type": "unchanged"
+    },
+    {
+      "golden_file_path": "/Users/andrewherrera/skein-worktrees/ux-wave3-parallel-20260928/core/designsystem/../../ux-baselines/core-designsystem/fold-outer-443/gallery-tokens-type-small__light__fs200.png",
+      "timestamp": 1173450510059250,
+      "context_data": {},
+      "type": "unchanged"
+    },
+    {
+      "golden_file_path": "/Users/andrewherrera/skein-worktrees/ux-wave3-parallel-20260928/core/designsystem/../../ux-baselines/core-designsystem/phone/components-gallery__dark__fs100.png",
+      "timestamp": 1173446628432750,
+      "context_data": {},
+      "type": "unchanged"
+    },
+    {
+      "golden_file_path": "/Users/andrewherrera/skein-worktrees/ux-wave3-parallel-20260928/core/designsystem/../../ux-baselines/core-designsystem/phone/components-gallery__light__fs100.png",
+      "timestamp": 1173446584876916,
+      "context_data": {},
+      "type": "unchanged"
+    },
+    {
+      "golden_file_path": "/Users/andrewherrera/skein-worktrees/ux-wave3-parallel-20260928/core/designsystem/../../ux-baselines/core-designsystem/phone/components-gallery__light__fs200.png",
+      "timestamp": 1173446666830750,
+      "context_data": {},
+      "type": "unchanged"
+    },
+    {
+      "golden_file_path": "/Users/andrewherrera/skein-worktrees/ux-wave3-parallel-20260928/core/designsystem/../../ux-baselines/core-designsystem/phone/destructive-dialog__dark__fs100.png",
+      "timestamp": 1173447414966125,
+      "context_data": {},
+      "type": "unchanged"
+    },
+    {
+      "golden_file_path": "/Users/andrewherrera/skein-worktrees/ux-wave3-parallel-20260928/core/designsystem/../../ux-baselines/core-designsystem/phone/destructive-dialog__light__fs100.png",
+      "timestamp": 1173447330702791,
+      "context_data": {},
+      "type": "unchanged"
+    },
+    {
+      "golden_file_path": "/Users/andrewherrera/skein-worktrees/ux-wave3-parallel-20260928/core/designsystem/../../ux-baselines/core-designsystem/phone/gallery-list-row-rtl__dark__fs100.png",
+      "timestamp": 1173448628795333,
+      "context_data": {},
+      "type": "unchanged"
+    },
+    {
+      "golden_file_path": "/Users/andrewherrera/skein-worktrees/ux-wave3-parallel-20260928/core/designsystem/../../ux-baselines/core-designsystem/phone/gallery-list-row-rtl__light__fs100.png",
+      "timestamp": 1173448575668166,
+      "context_data": {},
+      "type": "unchanged"
+    },
+    {
+      "golden_file_path": "/Users/andrewherrera/skein-worktrees/ux-wave3-parallel-20260928/core/designsystem/../../ux-baselines/core-designsystem/phone/gallery-overlays__dark__fs100.png",
+      "timestamp": 1173448604642333,
+      "context_data": {},
+      "type": "unchanged"
+    },
+    {
+      "golden_file_path": "/Users/andrewherrera/skein-worktrees/ux-wave3-parallel-20260928/core/designsystem/../../ux-baselines/core-designsystem/phone/gallery-overlays__light__fs100.png",
+      "timestamp": 1173448530662625,
+      "context_data": {},
+      "type": "unchanged"
+    },
+    {
+      "golden_file_path": "/Users/andrewherrera/skein-worktrees/ux-wave3-parallel-20260928/core/designsystem/../../ux-baselines/core-designsystem/phone/gallery-tokens-colour-1__dark__fs100.png",
+      "timestamp": 1173449155697500,
+      "context_data": {},
+      "type": "unchanged"
+    },
+    {
+      "golden_file_path": "/Users/andrewherrera/skein-worktrees/ux-wave3-parallel-20260928/core/designsystem/../../ux-baselines/core-designsystem/phone/gallery-tokens-colour-1__dark__fs200.png",
+      "timestamp": 1173449707606041,
+      "context_data": {},
+      "type": "unchanged"
+    },
+    {
+      "golden_file_path": "/Users/andrewherrera/skein-worktrees/ux-wave3-parallel-20260928/core/designsystem/../../ux-baselines/core-designsystem/phone/gallery-tokens-colour-1__light__fs100.png",
+      "timestamp": 1173448882229166,
+      "context_data": {},
+      "type": "unchanged"
+    },
+    {
+      "golden_file_path": "/Users/andrewherrera/skein-worktrees/ux-wave3-parallel-20260928/core/designsystem/../../ux-baselines/core-designsystem/phone/gallery-tokens-colour-1__light__fs200.png",
+      "timestamp": 1173449445247791,
+      "context_data": {},
+      "type": "unchanged"
+    },
+    {
+      "golden_file_path": "/Users/andrewherrera/skein-worktrees/ux-wave3-parallel-20260928/core/designsystem/../../ux-baselines/core-designsystem/phone/gallery-tokens-colour-2__dark__fs100.png",
+      "timestamp": 1173449179400166,
+      "context_data": {},
+      "type": "unchanged"
+    },
+    {
+      "golden_file_path": "/Users/andrewherrera/skein-worktrees/ux-wave3-parallel-20260928/core/designsystem/../../ux-baselines/core-designsystem/phone/gallery-tokens-colour-2__dark__fs200.png",
+      "timestamp": 1173449731795416,
+      "context_data": {},
+      "type": "unchanged"
+    },
+    {
+      "golden_file_path": "/Users/andrewherrera/skein-worktrees/ux-wave3-parallel-20260928/core/designsystem/../../ux-baselines/core-designsystem/phone/gallery-tokens-colour-2__light__fs100.png",
+      "timestamp": 1173448906631416,
+      "context_data": {},
+      "type": "unchanged"
+    },
+    {
+      "golden_file_path": "/Users/andrewherrera/skein-worktrees/ux-wave3-parallel-20260928/core/designsystem/../../ux-baselines/core-designsystem/phone/gallery-tokens-colour-2__light__fs200.png",
+      "timestamp": 1173449471338916,
+      "context_data": {},
+      "type": "unchanged"
+    },
+    {
+      "golden_file_path": "/Users/andrewherrera/skein-worktrees/ux-wave3-parallel-20260928/core/designsystem/../../ux-baselines/core-designsystem/phone/gallery-tokens-icons-1__dark__fs100.png",
+      "timestamp": 1173448997487458,
+      "context_data": {},
+      "type": "unchanged"
+    },
+    {
+      "golden_file_path": "/Users/andrewherrera/skein-worktrees/ux-wave3-parallel-20260928/core/designsystem/../../ux-baselines/core-designsystem/phone/gallery-tokens-icons-1__dark__fs200.png",
+      "timestamp": 1173449557244333,
+      "context_data": {},
+      "type": "unchanged"
+    },
+    {
+      "golden_file_path": "/Users/andrewherrera/skein-worktrees/ux-wave3-parallel-20260928/core/designsystem/../../ux-baselines/core-designsystem/phone/gallery-tokens-icons-1__light__fs100.png",
+      "timestamp": 1173448712949083,
+      "context_data": {},
+      "type": "unchanged"
+    },
+    {
+      "golden_file_path": "/Users/andrewherrera/skein-worktrees/ux-wave3-parallel-20260928/core/designsystem/../../ux-baselines/core-designsystem/phone/gallery-tokens-icons-1__light__fs200.png",
+      "timestamp": 1173449275392291,
+      "context_data": {},
+      "type": "unchanged"
+    },
+    {
+      "golden_file_path": "/Users/andrewherrera/skein-worktrees/ux-wave3-parallel-20260928/core/designsystem/../../ux-baselines/core-designsystem/phone/gallery-tokens-icons-2__dark__fs100.png",
+      "timestamp": 1173449024215791,
+      "context_data": {},
+      "type": "unchanged"
+    },
+    {
+      "golden_file_path": "/Users/andrewherrera/skein-worktrees/ux-wave3-parallel-20260928/core/designsystem/../../ux-baselines/core-designsystem/phone/gallery-tokens-icons-2__dark__fs200.png",
+      "timestamp": 1173449589326833,
+      "context_data": {},
+      "type": "unchanged"
+    },
+    {
+      "golden_file_path": "/Users/andrewherrera/skein-worktrees/ux-wave3-parallel-20260928/core/designsystem/../../ux-baselines/core-designsystem/phone/gallery-tokens-icons-2__light__fs100.png",
+      "timestamp": 1173448740589750,
+      "context_data": {},
+      "type": "unchanged"
+    },
+    {
+      "golden_file_path": "/Users/andrewherrera/skein-worktrees/ux-wave3-parallel-20260928/core/designsystem/../../ux-baselines/core-designsystem/phone/gallery-tokens-icons-2__light__fs200.png",
+      "timestamp": 1173449304875875,
+      "context_data": {},
+      "type": "unchanged"
+    },
+    {
+      "golden_file_path": "/Users/andrewherrera/skein-worktrees/ux-wave3-parallel-20260928/core/designsystem/../../ux-baselines/core-designsystem/phone/gallery-tokens-icons-3__dark__fs100.png",
+      "timestamp": 1173449057451000,
+      "context_data": {},
+      "type": "unchanged"
+    },
+    {
+      "golden_file_path": "/Users/andrewherrera/skein-worktrees/ux-wave3-parallel-20260928/core/designsystem/../../ux-baselines/core-designsystem/phone/gallery-tokens-icons-3__dark__fs200.png",
+      "timestamp": 1173449613990875,
+      "context_data": {},
+      "type": "unchanged"
+    },
+    {
+      "golden_file_path": "/Users/andrewherrera/skein-worktrees/ux-wave3-parallel-20260928/core/designsystem/../../ux-baselines/core-designsystem/phone/gallery-tokens-icons-3__light__fs100.png",
+      "timestamp": 1173448772156833,
+      "context_data": {},
+      "type": "unchanged"
+    },
+    {
+      "golden_file_path": "/Users/andrewherrera/skein-worktrees/ux-wave3-parallel-20260928/core/designsystem/../../ux-baselines/core-designsystem/phone/gallery-tokens-icons-3__light__fs200.png",
+      "timestamp": 1173449339315500,
+      "context_data": {},
+      "type": "unchanged"
+    },
+    {
+      "golden_file_path": "/Users/andrewherrera/skein-worktrees/ux-wave3-parallel-20260928/core/designsystem/../../ux-baselines/core-designsystem/phone/gallery-tokens-radius__dark__fs100.png",
+      "timestamp": 1173449083281250,
+      "context_data": {},
+      "type": "unchanged"
+    },
+    {
+      "golden_file_path": "/Users/andrewherrera/skein-worktrees/ux-wave3-parallel-20260928/core/designsystem/../../ux-baselines/core-designsystem/phone/gallery-tokens-radius__dark__fs200.png",
+      "timestamp": 1173449635688750,
+      "context_data": {},
+      "type": "unchanged"
+    },
+    {
+      "golden_file_path": "/Users/andrewherrera/skein-worktrees/ux-wave3-parallel-20260928/core/designsystem/../../ux-baselines/core-designsystem/phone/gallery-tokens-radius__light__fs100.png",
+      "timestamp": 1173448795735958,
+      "context_data": {},
+      "type": "unchanged"
+    },
+    {
+      "golden_file_path": "/Users/andrewherrera/skein-worktrees/ux-wave3-parallel-20260928/core/designsystem/../../ux-baselines/core-designsystem/phone/gallery-tokens-radius__light__fs200.png",
+      "timestamp": 1173449369659666,
+      "context_data": {},
+      "type": "unchanged"
+    },
+    {
+      "golden_file_path": "/Users/andrewherrera/skein-worktrees/ux-wave3-parallel-20260928/core/designsystem/../../ux-baselines/core-designsystem/phone/gallery-tokens-spacing__dark__fs100.png",
+      "timestamp": 1173449210729541,
+      "context_data": {},
+      "type": "unchanged"
+    },
+    {
+      "golden_file_path": "/Users/andrewherrera/skein-worktrees/ux-wave3-parallel-20260928/core/designsystem/../../ux-baselines/core-designsystem/phone/gallery-tokens-spacing__dark__fs200.png",
+      "timestamp": 1173449756298166,
+      "context_data": {},
+      "type": "unchanged"
+    },
+    {
+      "golden_file_path": "/Users/andrewherrera/skein-worktrees/ux-wave3-parallel-20260928/core/designsystem/../../ux-baselines/core-designsystem/phone/gallery-tokens-spacing__light__fs100.png",
+      "timestamp": 1173448930660541,
+      "context_data": {},
+      "type": "unchanged"
+    },
+    {
+      "golden_file_path": "/Users/andrewherrera/skein-worktrees/ux-wave3-parallel-20260928/core/designsystem/../../ux-baselines/core-designsystem/phone/gallery-tokens-spacing__light__fs200.png",
+      "timestamp": 1173449498455541,
+      "context_data": {},
+      "type": "unchanged"
+    },
+    {
+      "golden_file_path": "/Users/andrewherrera/skein-worktrees/ux-wave3-parallel-20260928/core/designsystem/../../ux-baselines/core-designsystem/phone/gallery-tokens-theme-specimen__dark__fs100.png",
+      "timestamp": 1173449239126208,
+      "context_data": {},
+      "type": "unchanged"
+    },
+    {
+      "golden_file_path": "/Users/andrewherrera/skein-worktrees/ux-wave3-parallel-20260928/core/designsystem/../../ux-baselines/core-designsystem/phone/gallery-tokens-theme-specimen__dark__fs200.png",
+      "timestamp": 1173449782555166,
+      "context_data": {},
+      "type": "unchanged"
+    },
+    {
+      "golden_file_path": "/Users/andrewherrera/skein-worktrees/ux-wave3-parallel-20260928/core/designsystem/../../ux-baselines/core-designsystem/phone/gallery-tokens-theme-specimen__light__fs100.png",
+      "timestamp": 1173448964503791,
+      "context_data": {},
+      "type": "unchanged"
+    },
+    {
+      "golden_file_path": "/Users/andrewherrera/skein-worktrees/ux-wave3-parallel-20260928/core/designsystem/../../ux-baselines/core-designsystem/phone/gallery-tokens-theme-specimen__light__fs200.png",
+      "timestamp": 1173449523957833,
+      "context_data": {},
+      "type": "unchanged"
+    },
+    {
+      "golden_file_path": "/Users/andrewherrera/skein-worktrees/ux-wave3-parallel-20260928/core/designsystem/../../ux-baselines/core-designsystem/phone/gallery-tokens-type-large__dark__fs100.png",
+      "timestamp": 1173449108753875,
+      "context_data": {},
+      "type": "unchanged"
+    },
+    {
+      "golden_file_path": "/Users/andrewherrera/skein-worktrees/ux-wave3-parallel-20260928/core/designsystem/../../ux-baselines/core-designsystem/phone/gallery-tokens-type-large__dark__fs200.png",
+      "timestamp": 1173449658858625,
+      "context_data": {},
+      "type": "unchanged"
+    },
+    {
+      "golden_file_path": "/Users/andrewherrera/skein-worktrees/ux-wave3-parallel-20260928/core/designsystem/../../ux-baselines/core-designsystem/phone/gallery-tokens-type-large__light__fs100.png",
+      "timestamp": 1173448825908500,
+      "context_data": {},
+      "type": "unchanged"
+    },
+    {
+      "golden_file_path": "/Users/andrewherrera/skein-worktrees/ux-wave3-parallel-20260928/core/designsystem/../../ux-baselines/core-designsystem/phone/gallery-tokens-type-large__light__fs200.png",
+      "timestamp": 1173449395032000,
+      "context_data": {},
+      "type": "unchanged"
+    },
+    {
+      "golden_file_path": "/Users/andrewherrera/skein-worktrees/ux-wave3-parallel-20260928/core/designsystem/../../ux-baselines/core-designsystem/phone/gallery-tokens-type-small__dark__fs100.png",
+      "timestamp": 1173449132943083,
+      "context_data": {},
+      "type": "unchanged"
+    },
+    {
+      "golden_file_path": "/Users/andrewherrera/skein-worktrees/ux-wave3-parallel-20260928/core/designsystem/../../ux-baselines/core-designsystem/phone/gallery-tokens-type-small__dark__fs200.png",
+      "timestamp": 1173449682886041,
+      "context_data": {},
+      "type": "unchanged"
+    },
+    {
+      "golden_file_path": "/Users/andrewherrera/skein-worktrees/ux-wave3-parallel-20260928/core/designsystem/../../ux-baselines/core-designsystem/phone/gallery-tokens-type-small__light__fs100.png",
+      "timestamp": 1173448854419333,
+      "context_data": {},
+      "type": "unchanged"
+    },
+    {
+      "golden_file_path": "/Users/andrewherrera/skein-worktrees/ux-wave3-parallel-20260928/core/designsystem/../../ux-baselines/core-designsystem/phone/gallery-tokens-type-small__light__fs200.png",
+      "timestamp": 1173449419220875,
+      "context_data": {},
+      "type": "unchanged"
+    },
+    {
+      "golden_file_path": "/Users/andrewherrera/skein-worktrees/ux-wave3-parallel-20260928/core/designsystem/../../ux-baselines/core-designsystem/phone/snackbar-no-action__dark__fs100.png",
+      "timestamp": 1173447357199583,
+      "context_data": {},
+      "type": "unchanged"
+    },
+    {
+      "golden_file_path": "/Users/andrewherrera/skein-worktrees/ux-wave3-parallel-20260928/core/designsystem/../../ux-baselines/core-designsystem/phone/snackbar-no-action__light__fs100.png",
+      "timestamp": 1173447214621125,
+      "context_data": {},
+      "type": "unchanged"
+    },
+    {
+      "golden_file_path": "/Users/andrewherrera/skein-worktrees/ux-wave3-parallel-20260928/core/designsystem/../../ux-baselines/core-designsystem/phone/snackbar-with-action__dark__fs100.png",
+      "timestamp": 1173447381367708,
+      "context_data": {},
+      "type": "unchanged"
+    },
+    {
+      "golden_file_path": "/Users/andrewherrera/skein-worktrees/ux-wave3-parallel-20260928/core/designsystem/../../ux-baselines/core-designsystem/phone/snackbar-with-action__light__fs100.png",
+      "timestamp": 1173447250993458,
+      "context_data": {},
+      "type": "unchanged"
+    }
+  ]
+}

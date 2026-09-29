@@ -28,12 +28,16 @@ import android.widget.Toast
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.ime
+import androidx.compose.foundation.layout.navigationBars
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.union
+import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
-import androidx.compose.material3.LocalTextStyle
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -51,14 +55,18 @@ import androidx.compose.ui.input.key.key
 import androidx.compose.ui.input.key.onPreviewKeyEvent
 import androidx.compose.ui.input.key.type
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.platform.LocalWindowInfo
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextRange
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.TextFieldValue
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import app.skein.core.designsystem.icons.SkeinIcons
 import app.skein.core.designsystem.theme.LocalSkeinTokens
+import app.skein.core.designsystem.theme.SkeinSpacing
 import app.skein.feature.chat.drafts.DraftComposerState
 import app.skein.feature.editor.autocomplete.AutocompleteHost
 import app.skein.feature.editor.autocomplete.Suggestion
@@ -84,6 +92,10 @@ public const val CANCEL_BUTTON_TEST_TAG: String = "app.skein.feature.chat.Cancel
  *   module (hard boundary — this bead does not touch `:feature:shell`
  *   internals beyond `SecureBasicTextField`/theme tokens). Noted for the
  *   wiring bead (`skein-whg8`).
+ * @param maxHeight space left for the composer body after reserving transcript
+ *   and chrome. One text line and accessible controls remain the minimum: a
+ *   very short window plus IME can make the forty-percent transcript target
+ *   impossible. Test D's real-IME measurement remains the acceptance gate.
  * @param onAttach resolves an imported attachment to the `[[title]]` text
  *   to insert — see `ChatViewModel.attach`.
  */
@@ -99,7 +111,33 @@ public fun ChatBottomBar(
     onSlashCommand: () -> Unit = {},
     composerState: DraftComposerState? = null,
     enabled: Boolean = true,
+    maxHeight: Dp = Dp.Unspecified,
 ) {
+    val window = LocalWindowInfo.current.containerDpSize
+    val density = LocalDensity.current
+    val keyboardShown = WindowInsets.ime.getBottom(density) > 0
+    val nominalLines =
+        when {
+            window.height < 600.dp || (window.width < 600.dp && keyboardShown) -> 3
+            window.width < 600.dp -> 6
+            else -> 8
+        }
+    val textStyle = MaterialTheme.typography.bodyLarge.copy(color = MaterialTheme.colorScheme.onSurface)
+    val lineHeight =
+        with(density) {
+            if (textStyle.lineHeight.isEm) {
+                textStyle.fontSize.toDp() * textStyle.lineHeight.value
+            } else {
+                textStyle.lineHeight
+                    .toDp()
+            }
+        }
+    val maxLines =
+        if (maxHeight == Dp.Unspecified || !lineHeight.value.isFinite() || lineHeight.value <= 0) {
+            nominalLines
+        } else {
+            ((maxHeight - SkeinSpacing.space16) / lineHeight).toInt().coerceIn(1, nominalLines)
+        }
     val composerValue = remember(composerState) { ComposerValue(composerState) }
     val writable = enabled && (composerState?.enabled ?: true)
     val scope = rememberCoroutineScope()
@@ -180,7 +218,11 @@ public fun ChatBottomBar(
 
     Row(
         verticalAlignment = Alignment.CenterVertically,
-        modifier = modifier.fillMaxWidth().padding(8.dp),
+        modifier =
+            modifier
+                .fillMaxWidth()
+                .windowInsetsPadding(WindowInsets.ime.union(WindowInsets.navigationBars))
+                .padding(SkeinSpacing.space8),
     ) {
         Text(
             text = LocalSkeinTokens.current.glyphs.searchPrompt,
@@ -212,7 +254,8 @@ public fun ChatBottomBar(
                     if (wasEmpty && newValue.text == "/") onSlashCommand()
                 }
             },
-            textStyle = LocalTextStyle.current.copy(color = MaterialTheme.colorScheme.onSurface),
+            textStyle = textStyle,
+            maxLines = maxLines,
             imeAction = ImeAction.Send,
             keyboardActions = KeyboardActions(onSend = { sendCurrentText() }),
             modifier =

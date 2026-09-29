@@ -52,12 +52,23 @@ class SkeinShellState internal constructor(
     var searchOpen: Boolean by mutableStateOf(false)
         private set
 
+    /** A content-free, unsaved event for the container's composition-owned drawer. */
+    internal var drawerCloseRequest: Int by mutableIntStateOf(0)
+        private set
+
     fun openSearch() {
         searchOpen = true
     }
 
     fun closeSearch() {
         searchOpen = false
+    }
+
+    /** External navigation must reveal its destination even when a drawer, search or sheet is open. */
+    fun dismissTransientSurfaces() {
+        closeSearch()
+        sheets.collapseAll()
+        drawerCloseRequest++
     }
 
     /** Applies one [Navigator] transition; a null result (Back not consumed) changes nothing. */
@@ -70,6 +81,7 @@ class SkeinShellState internal constructor(
         nav = navigator.dropTransient(nav)
         sheets.collapseAll()
         searchOpen = false
+        drawerCloseRequest = 0
     }
 
     /**
@@ -83,6 +95,7 @@ class SkeinShellState internal constructor(
         nav = SkeinNavigationState.initial()
         sheets.collapseAll()
         searchOpen = false
+        drawerCloseRequest = 0
         stores.clearAll()
         onReset()
     }

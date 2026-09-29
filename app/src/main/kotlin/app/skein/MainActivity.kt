@@ -1,6 +1,7 @@
 package app.skein
 
 import android.app.ActivityManager
+import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Build
 import android.os.Bundle
@@ -13,6 +14,7 @@ import androidx.biometric.BiometricPrompt
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Button
 import androidx.compose.material3.CircularProgressIndicator
@@ -22,6 +24,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.key
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -36,12 +39,16 @@ import androidx.compose.ui.unit.dp
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.compose.LifecycleEventEffect
 import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.viewmodel.initializer
+import androidx.lifecycle.viewmodel.viewModelFactory
 import app.skein.core.designsystem.theme.SkeinTheme
 import app.skein.core.designsystem.theme.SkeinThemeMode
 import app.skein.core.vault.key.PassphraseKeyExport
 import app.skein.core.vault.session.UnlockState
+import app.skein.feature.editor.entries.KnowledgePreparation
 import app.skein.feature.settings.rememberSettingsViewModel
 import app.skein.feature.shell.auth.BiometricUnlockScreen
 import app.skein.feature.shell.auth.VaultResetScreen
@@ -49,6 +56,7 @@ import app.skein.feature.shell.auth.VaultSetupScreen
 import app.skein.feature.shell.host.rememberSkeinShellState
 import app.skein.feature.shell.layout.EdgeToEdgeSurface
 import app.skein.shell.NavShell
+import app.skein.shell.NotificationDeepLinks
 import app.skein.system.AppearancePrefs
 import app.skein.system.SecurityPrefs
 import app.skein.vault.GatePhase
@@ -88,6 +96,7 @@ import android.graphics.Color as AndroidColor
 class MainActivity : FragmentActivity() {
     private lateinit var securityPrefs: SecurityPrefs
     private lateinit var appearancePrefs: AppearancePrefs
+    private lateinit var notificationLinks: NotificationDeepLinks
 
     // Stable field references (unlike e.g. `securityPrefs::setFlagSecureEnabled`
     // evaluated inline, which allocates a new bound-reference instance on
@@ -251,6 +260,16 @@ class MainActivity : FragmentActivity() {
         }
 
         val vault = (application as SkeinApplication).vault
+        notificationLinks =
+            ViewModelProvider(
+                this,
+                viewModelFactory { initializer { NotificationDeepLinks(vault.unlockManager) } },
+            )[NotificationDeepLinks::class.java]
+        notificationLinks.onCreate(intent, restoring = savedInstanceState != null)
+        val knowledgePreparation =
+            vault.ingest.progress.map {
+                KnowledgePreparation(it.running, it.processed, awaitingMeaningSearch = it.vectorsPending)
+            }
         setContent {
             // bd `skein-l9oi`: the single collection point for the whole
             // activity — every `SkeinTheme` call site below (VaultGate's own
@@ -293,7 +312,10 @@ class MainActivity : FragmentActivity() {
                         lifecycleScope.launch { securityPrefs.setStrongBoxUnavailableFallback(!strongBoxBacked) }
                     },
                     // skein-xtov.24.21 (SECURITY_REVIEW_D7.md M4e): no id from the reset vault survives.
-                    onVaultReset = { navShell.resetForNewVault() },
+                    onVaultReset = {
+                        notificationLinks.clear()
+                        navShell.resetForNewVault()
+                    },
                     unlockedContent = { session ->
                         // E6.I18 (skein-fsn): wire IndexingNotifier to observe and post
                         // progress notifications. Use in-memory permission check to skip
@@ -340,12 +362,36 @@ class MainActivity : FragmentActivity() {
                                     themeModeFlow = appearancePrefs.themeMode,
                                     onSetThemeMode = setThemeMode,
                                 )
-                            EdgeToEdgeSurface { m -> NavShell(session, navShell, settingsViewModel, m) }
+                            key(session, navShell) {
+                                var navigationReady by remember { mutableStateOf(false) }
+                                val pending by notificationLinks.pending.collectAsState()
+                                LaunchedEffect(navigationReady, pending) {
+                                    if (navigationReady) notificationLinks.applyPending(navShell)
+                                }
+                                // AL-11: each entry owns its insets; gate-safeDrawing would consume IME here.
+                                NavShell(
+                                    session,
+                                    navShell,
+                                    settingsViewModel,
+                                    Modifier.fillMaxSize(),
+                                    onNavigationReady = {
+                                        notificationLinks.applyPending(navShell)
+                                        navigationReady = true
+                                    },
+                                    knowledgePreparation = knowledgePreparation,
+                                )
+                            }
                         }
                     },
                 )
             }
         }
+    }
+
+    override fun onNewIntent(intent: Intent) {
+        super.onNewIntent(intent)
+        // Do not replace Activity.intent: a consumed notification must not replay on recreation.
+        notificationLinks.onNewIntent(intent)
     }
 
     /**

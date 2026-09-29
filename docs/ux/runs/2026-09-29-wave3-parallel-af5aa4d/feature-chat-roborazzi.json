@@ -1,0 +1,995 @@
+{
+  "summary": {
+    "total": 164,
+    "recorded": 0,
+    "added": 0,
+    "changed": 0,
+    "unchanged": 164
+  },
+  "results": [
+    {
+      "golden_file_path": "/Users/andrewherrera/skein-worktrees/ux-wave3-parallel-20260928/feature/chat/../../ux-baselines/feature-chat/fold-inner-1007-land/chat-empty__dark__fs100.png",
+      "timestamp": 1173452401430166,
+      "context_data": {},
+      "type": "unchanged"
+    },
+    {
+      "golden_file_path": "/Users/andrewherrera/skein-worktrees/ux-wave3-parallel-20260928/feature/chat/../../ux-baselines/feature-chat/fold-inner-1007-land/chat-empty__light__fs100.png",
+      "timestamp": 1173452255032458,
+      "context_data": {},
+      "type": "unchanged"
+    },
+    {
+      "golden_file_path": "/Users/andrewherrera/skein-worktrees/ux-wave3-parallel-20260928/feature/chat/../../ux-baselines/feature-chat/fold-inner-1007-land/chat-error-context-full__dark__fs100.png",
+      "timestamp": 1173450508176000,
+      "context_data": {},
+      "type": "unchanged"
+    },
+    {
+      "golden_file_path": "/Users/andrewherrera/skein-worktrees/ux-wave3-parallel-20260928/feature/chat/../../ux-baselines/feature-chat/fold-inner-1007-land/chat-error-context-full__dark__fs150.png",
+      "timestamp": 1173450757888958,
+      "context_data": {},
+      "type": "unchanged"
+    },
+    {
+      "golden_file_path": "/Users/andrewherrera/skein-worktrees/ux-wave3-parallel-20260928/feature/chat/../../ux-baselines/feature-chat/fold-inner-1007-land/chat-error-context-full__light__fs100.png",
+      "timestamp": 1173449956289916,
+      "context_data": {},
+      "type": "unchanged"
+    },
+    {
+      "golden_file_path": "/Users/andrewherrera/skein-worktrees/ux-wave3-parallel-20260928/feature/chat/../../ux-baselines/feature-chat/fold-inner-1007-land/chat-error-context-full__light__fs150.png",
+      "timestamp": 1173450244344791,
+      "context_data": {},
+      "type": "unchanged"
+    },
+    {
+      "golden_file_path": "/Users/andrewherrera/skein-worktrees/ux-wave3-parallel-20260928/feature/chat/../../ux-baselines/feature-chat/fold-inner-1007-land/chat-error-model-changed__dark__fs100.png",
+      "timestamp": 1173450596846833,
+      "context_data": {},
+      "type": "unchanged"
+    },
+    {
+      "golden_file_path": "/Users/andrewherrera/skein-worktrees/ux-wave3-parallel-20260928/feature/chat/../../ux-baselines/feature-chat/fold-inner-1007-land/chat-error-model-changed__dark__fs150.png",
+      "timestamp": 1173450841968916,
+      "context_data": {},
+      "type": "unchanged"
+    },
+    {
+      "golden_file_path": "/Users/andrewherrera/skein-worktrees/ux-wave3-parallel-20260928/feature/chat/../../ux-baselines/feature-chat/fold-inner-1007-land/chat-error-model-changed__light__fs100.png",
+      "timestamp": 1173450049478583,
+      "context_data": {},
+      "type": "unchanged"
+    },
+    {
+      "golden_file_path": "/Users/andrewherrera/skein-worktrees/ux-wave3-parallel-20260928/feature/chat/../../ux-baselines/feature-chat/fold-inner-1007-land/chat-error-model-changed__light__fs150.png",
+      "timestamp": 1173450329852958,
+      "context_data": {},
+      "type": "unchanged"
+    },
+    {
+      "golden_file_path": "/Users/andrewherrera/skein-worktrees/ux-wave3-parallel-20260928/feature/chat/../../ux-baselines/feature-chat/fold-inner-1007-land/chat-error-request-too-large__dark__fs100.png",
+      "timestamp": 1173450672876250,
+      "context_data": {},
+      "type": "unchanged"
+    },
+    {
+      "golden_file_path": "/Users/andrewherrera/skein-worktrees/ux-wave3-parallel-20260928/feature/chat/../../ux-baselines/feature-chat/fold-inner-1007-land/chat-error-request-too-large__dark__fs150.png",
+      "timestamp": 1173450915568583,
+      "context_data": {},
+      "type": "unchanged"
+    },
+    {
+      "golden_file_path": "/Users/andrewherrera/skein-worktrees/ux-wave3-parallel-20260928/feature/chat/../../ux-baselines/feature-chat/fold-inner-1007-land/chat-error-request-too-large__light__fs100.png",
+      "timestamp": 1173450142950375,
+      "context_data": {},
+      "type": "unchanged"
+    },
+    {
+      "golden_file_path": "/Users/andrewherrera/skein-worktrees/ux-wave3-parallel-20260928/feature/chat/../../ux-baselines/feature-chat/fold-inner-1007-land/chat-error-request-too-large__light__fs150.png",
+      "timestamp": 1173450420793625,
+      "context_data": {},
+      "type": "unchanged"
+    },
+    {
+      "golden_file_path": "/Users/andrewherrera/skein-worktrees/ux-wave3-parallel-20260928/feature/chat/../../ux-baselines/feature-chat/fold-inner-1007-land/chat-knowledge-inspector-off__dark__fs100.png",
+      "timestamp": 1173456826349375,
+      "context_data": {},
+      "type": "unchanged"
+    },
+    {
+      "golden_file_path": "/Users/andrewherrera/skein-worktrees/ux-wave3-parallel-20260928/feature/chat/../../ux-baselines/feature-chat/fold-inner-1007-land/chat-knowledge-inspector-off__light__fs100.png",
+      "timestamp": 1173456641951791,
+      "context_data": {},
+      "type": "unchanged"
+    },
+    {
+      "golden_file_path": "/Users/andrewherrera/skein-worktrees/ux-wave3-parallel-20260928/feature/chat/../../ux-baselines/feature-chat/fold-inner-1007-land/chat-knowledge-inspector-used__dark__fs100.png",
+      "timestamp": 1173456893417958,
+      "context_data": {},
+      "type": "unchanged"
+    },
+    {
+      "golden_file_path": "/Users/andrewherrera/skein-worktrees/ux-wave3-parallel-20260928/feature/chat/../../ux-baselines/feature-chat/fold-inner-1007-land/chat-knowledge-inspector-used__light__fs100.png",
+      "timestamp": 1173456708810083,
+      "context_data": {},
+      "type": "unchanged"
+    },
+    {
+      "golden_file_path": "/Users/andrewherrera/skein-worktrees/ux-wave3-parallel-20260928/feature/chat/../../ux-baselines/feature-chat/fold-inner-1007-land/chat-knowledge-off__dark__fs100.png",
+      "timestamp": 1173456941143500,
+      "context_data": {},
+      "type": "unchanged"
+    },
+    {
+      "golden_file_path": "/Users/andrewherrera/skein-worktrees/ux-wave3-parallel-20260928/feature/chat/../../ux-baselines/feature-chat/fold-inner-1007-land/chat-knowledge-off__light__fs100.png",
+      "timestamp": 1173456762736708,
+      "context_data": {},
+      "type": "unchanged"
+    },
+    {
+      "golden_file_path": "/Users/andrewherrera/skein-worktrees/ux-wave3-parallel-20260928/feature/chat/../../ux-baselines/feature-chat/fold-inner-1007-land/chat-long__dark__fs100.png",
+      "timestamp": 1173452365252083,
+      "context_data": {},
+      "type": "unchanged"
+    },
+    {
+      "golden_file_path": "/Users/andrewherrera/skein-worktrees/ux-wave3-parallel-20260928/feature/chat/../../ux-baselines/feature-chat/fold-inner-1007-land/chat-long__light__fs100.png",
+      "timestamp": 1173452214795791,
+      "context_data": {},
+      "type": "unchanged"
+    },
+    {
+      "golden_file_path": "/Users/andrewherrera/skein-worktrees/ux-wave3-parallel-20260928/feature/chat/../../ux-baselines/feature-chat/fold-inner-1007-land/chat-streaming__dark__fs100.png",
+      "timestamp": 1173452316006750,
+      "context_data": {},
+      "type": "unchanged"
+    },
+    {
+      "golden_file_path": "/Users/andrewherrera/skein-worktrees/ux-wave3-parallel-20260928/feature/chat/../../ux-baselines/feature-chat/fold-inner-1007-land/chat-streaming__light__fs100.png",
+      "timestamp": 1173452171312875,
+      "context_data": {},
+      "type": "unchanged"
+    },
+    {
+      "golden_file_path": "/Users/andrewherrera/skein-worktrees/ux-wave3-parallel-20260928/feature/chat/../../ux-baselines/feature-chat/fold-inner-1007-land/shell-chat-conversation__dark__fs100.png",
+      "timestamp": 1173454548091875,
+      "context_data": {},
+      "type": "unchanged"
+    },
+    {
+      "golden_file_path": "/Users/andrewherrera/skein-worktrees/ux-wave3-parallel-20260928/feature/chat/../../ux-baselines/feature-chat/fold-inner-1007-land/shell-chat-conversation__light__fs100.png",
+      "timestamp": 1173454350102291,
+      "context_data": {},
+      "type": "unchanged"
+    },
+    {
+      "golden_file_path": "/Users/andrewherrera/skein-worktrees/ux-wave3-parallel-20260928/feature/chat/../../ux-baselines/feature-chat/fold-inner-1007-land/shell-chat-inspector__dark__fs100.png",
+      "timestamp": 1173454484249708,
+      "context_data": {},
+      "type": "unchanged"
+    },
+    {
+      "golden_file_path": "/Users/andrewherrera/skein-worktrees/ux-wave3-parallel-20260928/feature/chat/../../ux-baselines/feature-chat/fold-inner-1007-land/shell-chat-inspector__light__fs100.png",
+      "timestamp": 1173454282758416,
+      "context_data": {},
+      "type": "unchanged"
+    },
+    {
+      "golden_file_path": "/Users/andrewherrera/skein-worktrees/ux-wave3-parallel-20260928/feature/chat/../../ux-baselines/feature-chat/fold-inner-1007-land/shell-chat-root__dark__fs100.png",
+      "timestamp": 1173454593370500,
+      "context_data": {},
+      "type": "unchanged"
+    },
+    {
+      "golden_file_path": "/Users/andrewherrera/skein-worktrees/ux-wave3-parallel-20260928/feature/chat/../../ux-baselines/feature-chat/fold-inner-1007-land/shell-chat-root__light__fs100.png",
+      "timestamp": 1173454404347916,
+      "context_data": {},
+      "type": "unchanged"
+    },
+    {
+      "golden_file_path": "/Users/andrewherrera/skein-worktrees/ux-wave3-parallel-20260928/feature/chat/../../ux-baselines/feature-chat/fold-inner-1007/chat-empty__dark__fs100.png",
+      "timestamp": 1173452121054625,
+      "context_data": {},
+      "type": "unchanged"
+    },
+    {
+      "golden_file_path": "/Users/andrewherrera/skein-worktrees/ux-wave3-parallel-20260928/feature/chat/../../ux-baselines/feature-chat/fold-inner-1007/chat-empty__light__fs100.png",
+      "timestamp": 1173451975221875,
+      "context_data": {},
+      "type": "unchanged"
+    },
+    {
+      "golden_file_path": "/Users/andrewherrera/skein-worktrees/ux-wave3-parallel-20260928/feature/chat/../../ux-baselines/feature-chat/fold-inner-1007/chat-knowledge-inspector-off__dark__fs100.png",
+      "timestamp": 1173456444653791,
+      "context_data": {},
+      "type": "unchanged"
+    },
+    {
+      "golden_file_path": "/Users/andrewherrera/skein-worktrees/ux-wave3-parallel-20260928/feature/chat/../../ux-baselines/feature-chat/fold-inner-1007/chat-knowledge-inspector-off__light__fs100.png",
+      "timestamp": 1173456250230375,
+      "context_data": {},
+      "type": "unchanged"
+    },
+    {
+      "golden_file_path": "/Users/andrewherrera/skein-worktrees/ux-wave3-parallel-20260928/feature/chat/../../ux-baselines/feature-chat/fold-inner-1007/chat-knowledge-inspector-used__dark__fs100.png",
+      "timestamp": 1173456513575291,
+      "context_data": {},
+      "type": "unchanged"
+    },
+    {
+      "golden_file_path": "/Users/andrewherrera/skein-worktrees/ux-wave3-parallel-20260928/feature/chat/../../ux-baselines/feature-chat/fold-inner-1007/chat-knowledge-inspector-used__light__fs100.png",
+      "timestamp": 1173456320399375,
+      "context_data": {},
+      "type": "unchanged"
+    },
+    {
+      "golden_file_path": "/Users/andrewherrera/skein-worktrees/ux-wave3-parallel-20260928/feature/chat/../../ux-baselines/feature-chat/fold-inner-1007/chat-knowledge-off__dark__fs100.png",
+      "timestamp": 1173456577076000,
+      "context_data": {},
+      "type": "unchanged"
+    },
+    {
+      "golden_file_path": "/Users/andrewherrera/skein-worktrees/ux-wave3-parallel-20260928/feature/chat/../../ux-baselines/feature-chat/fold-inner-1007/chat-knowledge-off__light__fs100.png",
+      "timestamp": 1173456373692583,
+      "context_data": {},
+      "type": "unchanged"
+    },
+    {
+      "golden_file_path": "/Users/andrewherrera/skein-worktrees/ux-wave3-parallel-20260928/feature/chat/../../ux-baselines/feature-chat/fold-inner-1007/chat-long__dark__fs100.png",
+      "timestamp": 1173452082978458,
+      "context_data": {},
+      "type": "unchanged"
+    },
+    {
+      "golden_file_path": "/Users/andrewherrera/skein-worktrees/ux-wave3-parallel-20260928/feature/chat/../../ux-baselines/feature-chat/fold-inner-1007/chat-long__light__fs100.png",
+      "timestamp": 1173451929896125,
+      "context_data": {},
+      "type": "unchanged"
+    },
+    {
+      "golden_file_path": "/Users/andrewherrera/skein-worktrees/ux-wave3-parallel-20260928/feature/chat/../../ux-baselines/feature-chat/fold-inner-1007/chat-streaming__dark__fs100.png",
+      "timestamp": 1173452040606416,
+      "context_data": {},
+      "type": "unchanged"
+    },
+    {
+      "golden_file_path": "/Users/andrewherrera/skein-worktrees/ux-wave3-parallel-20260928/feature/chat/../../ux-baselines/feature-chat/fold-inner-1007/chat-streaming__light__fs100.png",
+      "timestamp": 1173451875119416,
+      "context_data": {},
+      "type": "unchanged"
+    },
+    {
+      "golden_file_path": "/Users/andrewherrera/skein-worktrees/ux-wave3-parallel-20260928/feature/chat/../../ux-baselines/feature-chat/fold-inner-1007/shell-chat-conversation__dark__fs100.png",
+      "timestamp": 1173454157667625,
+      "context_data": {},
+      "type": "unchanged"
+    },
+    {
+      "golden_file_path": "/Users/andrewherrera/skein-worktrees/ux-wave3-parallel-20260928/feature/chat/../../ux-baselines/feature-chat/fold-inner-1007/shell-chat-conversation__light__fs100.png",
+      "timestamp": 1173453953798833,
+      "context_data": {},
+      "type": "unchanged"
+    },
+    {
+      "golden_file_path": "/Users/andrewherrera/skein-worktrees/ux-wave3-parallel-20260928/feature/chat/../../ux-baselines/feature-chat/fold-inner-1007/shell-chat-inspector__dark__fs100.png",
+      "timestamp": 1173454082800333,
+      "context_data": {},
+      "type": "unchanged"
+    },
+    {
+      "golden_file_path": "/Users/andrewherrera/skein-worktrees/ux-wave3-parallel-20260928/feature/chat/../../ux-baselines/feature-chat/fold-inner-1007/shell-chat-inspector__light__fs100.png",
+      "timestamp": 1173453888213625,
+      "context_data": {},
+      "type": "unchanged"
+    },
+    {
+      "golden_file_path": "/Users/andrewherrera/skein-worktrees/ux-wave3-parallel-20260928/feature/chat/../../ux-baselines/feature-chat/fold-inner-1007/shell-chat-root__dark__fs100.png",
+      "timestamp": 1173454205234875,
+      "context_data": {},
+      "type": "unchanged"
+    },
+    {
+      "golden_file_path": "/Users/andrewherrera/skein-worktrees/ux-wave3-parallel-20260928/feature/chat/../../ux-baselines/feature-chat/fold-inner-1007/shell-chat-root__light__fs100.png",
+      "timestamp": 1173454004520750,
+      "context_data": {},
+      "type": "unchanged"
+    },
+    {
+      "golden_file_path": "/Users/andrewherrera/skein-worktrees/ux-wave3-parallel-20260928/feature/chat/../../ux-baselines/feature-chat/fold-outer-443/chat-empty__dark__fs100.png",
+      "timestamp": 1173451522626958,
+      "context_data": {},
+      "type": "unchanged"
+    },
+    {
+      "golden_file_path": "/Users/andrewherrera/skein-worktrees/ux-wave3-parallel-20260928/feature/chat/../../ux-baselines/feature-chat/fold-outer-443/chat-empty__light__fs100.png",
+      "timestamp": 1173451381155666,
+      "context_data": {},
+      "type": "unchanged"
+    },
+    {
+      "golden_file_path": "/Users/andrewherrera/skein-worktrees/ux-wave3-parallel-20260928/feature/chat/../../ux-baselines/feature-chat/fold-outer-443/chat-error-context-full__dark__fs100.png",
+      "timestamp": 1173448320146708,
+      "context_data": {},
+      "type": "unchanged"
+    },
+    {
+      "golden_file_path": "/Users/andrewherrera/skein-worktrees/ux-wave3-parallel-20260928/feature/chat/../../ux-baselines/feature-chat/fold-outer-443/chat-error-context-full__dark__fs150.png",
+      "timestamp": 1173448623968458,
+      "context_data": {},
+      "type": "unchanged"
+    },
+    {
+      "golden_file_path": "/Users/andrewherrera/skein-worktrees/ux-wave3-parallel-20260928/feature/chat/../../ux-baselines/feature-chat/fold-outer-443/chat-error-context-full__light__fs100.png",
+      "timestamp": 1173447624927416,
+      "context_data": {},
+      "type": "unchanged"
+    },
+    {
+      "golden_file_path": "/Users/andrewherrera/skein-worktrees/ux-wave3-parallel-20260928/feature/chat/../../ux-baselines/feature-chat/fold-outer-443/chat-error-context-full__light__fs150.png",
+      "timestamp": 1173448016118666,
+      "context_data": {},
+      "type": "unchanged"
+    },
+    {
+      "golden_file_path": "/Users/andrewherrera/skein-worktrees/ux-wave3-parallel-20260928/feature/chat/../../ux-baselines/feature-chat/fold-outer-443/chat-error-model-changed__dark__fs100.png",
+      "timestamp": 1173448412866583,
+      "context_data": {},
+      "type": "unchanged"
+    },
+    {
+      "golden_file_path": "/Users/andrewherrera/skein-worktrees/ux-wave3-parallel-20260928/feature/chat/../../ux-baselines/feature-chat/fold-outer-443/chat-error-model-changed__dark__fs150.png",
+      "timestamp": 1173448727939208,
+      "context_data": {},
+      "type": "unchanged"
+    },
+    {
+      "golden_file_path": "/Users/andrewherrera/skein-worktrees/ux-wave3-parallel-20260928/feature/chat/../../ux-baselines/feature-chat/fold-outer-443/chat-error-model-changed__light__fs100.png",
+      "timestamp": 1173447775106500,
+      "context_data": {},
+      "type": "unchanged"
+    },
+    {
+      "golden_file_path": "/Users/andrewherrera/skein-worktrees/ux-wave3-parallel-20260928/feature/chat/../../ux-baselines/feature-chat/fold-outer-443/chat-error-model-changed__light__fs150.png",
+      "timestamp": 1173448119612416,
+      "context_data": {},
+      "type": "unchanged"
+    },
+    {
+      "golden_file_path": "/Users/andrewherrera/skein-worktrees/ux-wave3-parallel-20260928/feature/chat/../../ux-baselines/feature-chat/fold-outer-443/chat-error-request-too-large__dark__fs100.png",
+      "timestamp": 1173448512022416,
+      "context_data": {},
+      "type": "unchanged"
+    },
+    {
+      "golden_file_path": "/Users/andrewherrera/skein-worktrees/ux-wave3-parallel-20260928/feature/chat/../../ux-baselines/feature-chat/fold-outer-443/chat-error-request-too-large__dark__fs150.png",
+      "timestamp": 1173448827209958,
+      "context_data": {},
+      "type": "unchanged"
+    },
+    {
+      "golden_file_path": "/Users/andrewherrera/skein-worktrees/ux-wave3-parallel-20260928/feature/chat/../../ux-baselines/feature-chat/fold-outer-443/chat-error-request-too-large__light__fs100.png",
+      "timestamp": 1173447907842708,
+      "context_data": {},
+      "type": "unchanged"
+    },
+    {
+      "golden_file_path": "/Users/andrewherrera/skein-worktrees/ux-wave3-parallel-20260928/feature/chat/../../ux-baselines/feature-chat/fold-outer-443/chat-error-request-too-large__light__fs150.png",
+      "timestamp": 1173448223835416,
+      "context_data": {},
+      "type": "unchanged"
+    },
+    {
+      "golden_file_path": "/Users/andrewherrera/skein-worktrees/ux-wave3-parallel-20260928/feature/chat/../../ux-baselines/feature-chat/fold-outer-443/chat-knowledge-inspector-off__dark__fs100.png",
+      "timestamp": 1173455806396166,
+      "context_data": {},
+      "type": "unchanged"
+    },
+    {
+      "golden_file_path": "/Users/andrewherrera/skein-worktrees/ux-wave3-parallel-20260928/feature/chat/../../ux-baselines/feature-chat/fold-outer-443/chat-knowledge-inspector-off__dark__fs150.png",
+      "timestamp": 1173457118386500,
+      "context_data": {},
+      "type": "unchanged"
+    },
+    {
+      "golden_file_path": "/Users/andrewherrera/skein-worktrees/ux-wave3-parallel-20260928/feature/chat/../../ux-baselines/feature-chat/fold-outer-443/chat-knowledge-inspector-off__light__fs100.png",
+      "timestamp": 1173455657405916,
+      "context_data": {},
+      "type": "unchanged"
+    },
+    {
+      "golden_file_path": "/Users/andrewherrera/skein-worktrees/ux-wave3-parallel-20260928/feature/chat/../../ux-baselines/feature-chat/fold-outer-443/chat-knowledge-inspector-off__light__fs150.png",
+      "timestamp": 1173456988518041,
+      "context_data": {},
+      "type": "unchanged"
+    },
+    {
+      "golden_file_path": "/Users/andrewherrera/skein-worktrees/ux-wave3-parallel-20260928/feature/chat/../../ux-baselines/feature-chat/fold-outer-443/chat-knowledge-inspector-used__dark__fs100.png",
+      "timestamp": 1173455852978375,
+      "context_data": {},
+      "type": "unchanged"
+    },
+    {
+      "golden_file_path": "/Users/andrewherrera/skein-worktrees/ux-wave3-parallel-20260928/feature/chat/../../ux-baselines/feature-chat/fold-outer-443/chat-knowledge-inspector-used__dark__fs150.png",
+      "timestamp": 1173457164438833,
+      "context_data": {},
+      "type": "unchanged"
+    },
+    {
+      "golden_file_path": "/Users/andrewherrera/skein-worktrees/ux-wave3-parallel-20260928/feature/chat/../../ux-baselines/feature-chat/fold-outer-443/chat-knowledge-inspector-used__light__fs100.png",
+      "timestamp": 1173455710554666,
+      "context_data": {},
+      "type": "unchanged"
+    },
+    {
+      "golden_file_path": "/Users/andrewherrera/skein-worktrees/ux-wave3-parallel-20260928/feature/chat/../../ux-baselines/feature-chat/fold-outer-443/chat-knowledge-inspector-used__light__fs150.png",
+      "timestamp": 1173457033457375,
+      "context_data": {},
+      "type": "unchanged"
+    },
+    {
+      "golden_file_path": "/Users/andrewherrera/skein-worktrees/ux-wave3-parallel-20260928/feature/chat/../../ux-baselines/feature-chat/fold-outer-443/chat-knowledge-off__dark__fs100.png",
+      "timestamp": 1173455893454833,
+      "context_data": {},
+      "type": "unchanged"
+    },
+    {
+      "golden_file_path": "/Users/andrewherrera/skein-worktrees/ux-wave3-parallel-20260928/feature/chat/../../ux-baselines/feature-chat/fold-outer-443/chat-knowledge-off__dark__fs150.png",
+      "timestamp": 1173457207569625,
+      "context_data": {},
+      "type": "unchanged"
+    },
+    {
+      "golden_file_path": "/Users/andrewherrera/skein-worktrees/ux-wave3-parallel-20260928/feature/chat/../../ux-baselines/feature-chat/fold-outer-443/chat-knowledge-off__light__fs100.png",
+      "timestamp": 1173455753780833,
+      "context_data": {},
+      "type": "unchanged"
+    },
+    {
+      "golden_file_path": "/Users/andrewherrera/skein-worktrees/ux-wave3-parallel-20260928/feature/chat/../../ux-baselines/feature-chat/fold-outer-443/chat-knowledge-off__light__fs150.png",
+      "timestamp": 1173457072113458,
+      "context_data": {},
+      "type": "unchanged"
+    },
+    {
+      "golden_file_path": "/Users/andrewherrera/skein-worktrees/ux-wave3-parallel-20260928/feature/chat/../../ux-baselines/feature-chat/fold-outer-443/chat-long__dark__fs100.png",
+      "timestamp": 1173451477909750,
+      "context_data": {},
+      "type": "unchanged"
+    },
+    {
+      "golden_file_path": "/Users/andrewherrera/skein-worktrees/ux-wave3-parallel-20260928/feature/chat/../../ux-baselines/feature-chat/fold-outer-443/chat-long__dark__fs150.png",
+      "timestamp": 1173452518023208,
+      "context_data": {},
+      "type": "unchanged"
+    },
+    {
+      "golden_file_path": "/Users/andrewherrera/skein-worktrees/ux-wave3-parallel-20260928/feature/chat/../../ux-baselines/feature-chat/fold-outer-443/chat-long__light__fs100.png",
+      "timestamp": 1173451347073291,
+      "context_data": {},
+      "type": "unchanged"
+    },
+    {
+      "golden_file_path": "/Users/andrewherrera/skein-worktrees/ux-wave3-parallel-20260928/feature/chat/../../ux-baselines/feature-chat/fold-outer-443/chat-long__light__fs150.png",
+      "timestamp": 1173452459180041,
+      "context_data": {},
+      "type": "unchanged"
+    },
+    {
+      "golden_file_path": "/Users/andrewherrera/skein-worktrees/ux-wave3-parallel-20260928/feature/chat/../../ux-baselines/feature-chat/fold-outer-443/chat-streaming__dark__fs100.png",
+      "timestamp": 1173451433199541,
+      "context_data": {},
+      "type": "unchanged"
+    },
+    {
+      "golden_file_path": "/Users/andrewherrera/skein-worktrees/ux-wave3-parallel-20260928/feature/chat/../../ux-baselines/feature-chat/fold-outer-443/chat-streaming__light__fs100.png",
+      "timestamp": 1173451293867000,
+      "context_data": {},
+      "type": "unchanged"
+    },
+    {
+      "golden_file_path": "/Users/andrewherrera/skein-worktrees/ux-wave3-parallel-20260928/feature/chat/../../ux-baselines/feature-chat/fold-outer-443/shell-chat-conversation__dark__fs100.png",
+      "timestamp": 1173453394991833,
+      "context_data": {},
+      "type": "unchanged"
+    },
+    {
+      "golden_file_path": "/Users/andrewherrera/skein-worktrees/ux-wave3-parallel-20260928/feature/chat/../../ux-baselines/feature-chat/fold-outer-443/shell-chat-conversation__dark__fs150.png",
+      "timestamp": 1173454919431666,
+      "context_data": {},
+      "type": "unchanged"
+    },
+    {
+      "golden_file_path": "/Users/andrewherrera/skein-worktrees/ux-wave3-parallel-20260928/feature/chat/../../ux-baselines/feature-chat/fold-outer-443/shell-chat-conversation__light__fs100.png",
+      "timestamp": 1173453205320041,
+      "context_data": {},
+      "type": "unchanged"
+    },
+    {
+      "golden_file_path": "/Users/andrewherrera/skein-worktrees/ux-wave3-parallel-20260928/feature/chat/../../ux-baselines/feature-chat/fold-outer-443/shell-chat-conversation__light__fs150.png",
+      "timestamp": 1173454736851541,
+      "context_data": {},
+      "type": "unchanged"
+    },
+    {
+      "golden_file_path": "/Users/andrewherrera/skein-worktrees/ux-wave3-parallel-20260928/feature/chat/../../ux-baselines/feature-chat/fold-outer-443/shell-chat-drawer-open__dark__fs100.png",
+      "timestamp": 1173453349415708,
+      "context_data": {},
+      "type": "unchanged"
+    },
+    {
+      "golden_file_path": "/Users/andrewherrera/skein-worktrees/ux-wave3-parallel-20260928/feature/chat/../../ux-baselines/feature-chat/fold-outer-443/shell-chat-drawer-open__dark__fs150.png",
+      "timestamp": 1173454875197875,
+      "context_data": {},
+      "type": "unchanged"
+    },
+    {
+      "golden_file_path": "/Users/andrewherrera/skein-worktrees/ux-wave3-parallel-20260928/feature/chat/../../ux-baselines/feature-chat/fold-outer-443/shell-chat-drawer-open__light__fs100.png",
+      "timestamp": 1173453149677625,
+      "context_data": {},
+      "type": "unchanged"
+    },
+    {
+      "golden_file_path": "/Users/andrewherrera/skein-worktrees/ux-wave3-parallel-20260928/feature/chat/../../ux-baselines/feature-chat/fold-outer-443/shell-chat-drawer-open__light__fs150.png",
+      "timestamp": 1173454691679000,
+      "context_data": {},
+      "type": "unchanged"
+    },
+    {
+      "golden_file_path": "/Users/andrewherrera/skein-worktrees/ux-wave3-parallel-20260928/feature/chat/../../ux-baselines/feature-chat/fold-outer-443/shell-chat-inspector__dark__fs100.png",
+      "timestamp": 1173453304445708,
+      "context_data": {},
+      "type": "unchanged"
+    },
+    {
+      "golden_file_path": "/Users/andrewherrera/skein-worktrees/ux-wave3-parallel-20260928/feature/chat/../../ux-baselines/feature-chat/fold-outer-443/shell-chat-inspector__dark__fs150.png",
+      "timestamp": 1173454829825000,
+      "context_data": {},
+      "type": "unchanged"
+    },
+    {
+      "golden_file_path": "/Users/andrewherrera/skein-worktrees/ux-wave3-parallel-20260928/feature/chat/../../ux-baselines/feature-chat/fold-outer-443/shell-chat-inspector__light__fs100.png",
+      "timestamp": 1173453101207666,
+      "context_data": {},
+      "type": "unchanged"
+    },
+    {
+      "golden_file_path": "/Users/andrewherrera/skein-worktrees/ux-wave3-parallel-20260928/feature/chat/../../ux-baselines/feature-chat/fold-outer-443/shell-chat-inspector__light__fs150.png",
+      "timestamp": 1173454644664125,
+      "context_data": {},
+      "type": "unchanged"
+    },
+    {
+      "golden_file_path": "/Users/andrewherrera/skein-worktrees/ux-wave3-parallel-20260928/feature/chat/../../ux-baselines/feature-chat/fold-outer-443/shell-chat-root__dark__fs100.png",
+      "timestamp": 1173453433555500,
+      "context_data": {},
+      "type": "unchanged"
+    },
+    {
+      "golden_file_path": "/Users/andrewherrera/skein-worktrees/ux-wave3-parallel-20260928/feature/chat/../../ux-baselines/feature-chat/fold-outer-443/shell-chat-root__dark__fs150.png",
+      "timestamp": 1173454958417916,
+      "context_data": {},
+      "type": "unchanged"
+    },
+    {
+      "golden_file_path": "/Users/andrewherrera/skein-worktrees/ux-wave3-parallel-20260928/feature/chat/../../ux-baselines/feature-chat/fold-outer-443/shell-chat-root__light__fs100.png",
+      "timestamp": 1173453253272541,
+      "context_data": {},
+      "type": "unchanged"
+    },
+    {
+      "golden_file_path": "/Users/andrewherrera/skein-worktrees/ux-wave3-parallel-20260928/feature/chat/../../ux-baselines/feature-chat/fold-outer-443/shell-chat-root__light__fs150.png",
+      "timestamp": 1173454780513166,
+      "context_data": {},
+      "type": "unchanged"
+    },
+    {
+      "golden_file_path": "/Users/andrewherrera/skein-worktrees/ux-wave3-parallel-20260928/feature/chat/../../ux-baselines/feature-chat/fold-outer-524/chat-empty__dark__fs100.png",
+      "timestamp": 1173451809057041,
+      "context_data": {},
+      "type": "unchanged"
+    },
+    {
+      "golden_file_path": "/Users/andrewherrera/skein-worktrees/ux-wave3-parallel-20260928/feature/chat/../../ux-baselines/feature-chat/fold-outer-524/chat-empty__light__fs100.png",
+      "timestamp": 1173451674344000,
+      "context_data": {},
+      "type": "unchanged"
+    },
+    {
+      "golden_file_path": "/Users/andrewherrera/skein-worktrees/ux-wave3-parallel-20260928/feature/chat/../../ux-baselines/feature-chat/fold-outer-524/chat-error-context-full__dark__fs100.png",
+      "timestamp": 1173449416161750,
+      "context_data": {},
+      "type": "unchanged"
+    },
+    {
+      "golden_file_path": "/Users/andrewherrera/skein-worktrees/ux-wave3-parallel-20260928/feature/chat/../../ux-baselines/feature-chat/fold-outer-524/chat-error-context-full__dark__fs150.png",
+      "timestamp": 1173449650064000,
+      "context_data": {},
+      "type": "unchanged"
+    },
+    {
+      "golden_file_path": "/Users/andrewherrera/skein-worktrees/ux-wave3-parallel-20260928/feature/chat/../../ux-baselines/feature-chat/fold-outer-524/chat-error-context-full__light__fs100.png",
+      "timestamp": 1173448917445375,
+      "context_data": {},
+      "type": "unchanged"
+    },
+    {
+      "golden_file_path": "/Users/andrewherrera/skein-worktrees/ux-wave3-parallel-20260928/feature/chat/../../ux-baselines/feature-chat/fold-outer-524/chat-error-context-full__light__fs150.png",
+      "timestamp": 1173449174679375,
+      "context_data": {},
+      "type": "unchanged"
+    },
+    {
+      "golden_file_path": "/Users/andrewherrera/skein-worktrees/ux-wave3-parallel-20260928/feature/chat/../../ux-baselines/feature-chat/fold-outer-524/chat-error-model-changed__dark__fs100.png",
+      "timestamp": 1173449486513541,
+      "context_data": {},
+      "type": "unchanged"
+    },
+    {
+      "golden_file_path": "/Users/andrewherrera/skein-worktrees/ux-wave3-parallel-20260928/feature/chat/../../ux-baselines/feature-chat/fold-outer-524/chat-error-model-changed__dark__fs150.png",
+      "timestamp": 1173449726406708,
+      "context_data": {},
+      "type": "unchanged"
+    },
+    {
+      "golden_file_path": "/Users/andrewherrera/skein-worktrees/ux-wave3-parallel-20260928/feature/chat/../../ux-baselines/feature-chat/fold-outer-524/chat-error-model-changed__light__fs100.png",
+      "timestamp": 1173448998104541,
+      "context_data": {},
+      "type": "unchanged"
+    },
+    {
+      "golden_file_path": "/Users/andrewherrera/skein-worktrees/ux-wave3-parallel-20260928/feature/chat/../../ux-baselines/feature-chat/fold-outer-524/chat-error-model-changed__light__fs150.png",
+      "timestamp": 1173449254913041,
+      "context_data": {},
+      "type": "unchanged"
+    },
+    {
+      "golden_file_path": "/Users/andrewherrera/skein-worktrees/ux-wave3-parallel-20260928/feature/chat/../../ux-baselines/feature-chat/fold-outer-524/chat-error-request-too-large__dark__fs100.png",
+      "timestamp": 1173449571895583,
+      "context_data": {},
+      "type": "unchanged"
+    },
+    {
+      "golden_file_path": "/Users/andrewherrera/skein-worktrees/ux-wave3-parallel-20260928/feature/chat/../../ux-baselines/feature-chat/fold-outer-524/chat-error-request-too-large__dark__fs150.png",
+      "timestamp": 1173449802890833,
+      "context_data": {},
+      "type": "unchanged"
+    },
+    {
+      "golden_file_path": "/Users/andrewherrera/skein-worktrees/ux-wave3-parallel-20260928/feature/chat/../../ux-baselines/feature-chat/fold-outer-524/chat-error-request-too-large__light__fs100.png",
+      "timestamp": 1173449082068500,
+      "context_data": {},
+      "type": "unchanged"
+    },
+    {
+      "golden_file_path": "/Users/andrewherrera/skein-worktrees/ux-wave3-parallel-20260928/feature/chat/../../ux-baselines/feature-chat/fold-outer-524/chat-error-request-too-large__light__fs150.png",
+      "timestamp": 1173449339822875,
+      "context_data": {},
+      "type": "unchanged"
+    },
+    {
+      "golden_file_path": "/Users/andrewherrera/skein-worktrees/ux-wave3-parallel-20260928/feature/chat/../../ux-baselines/feature-chat/fold-outer-524/chat-knowledge-inspector-off__dark__fs100.png",
+      "timestamp": 1173456091908583,
+      "context_data": {},
+      "type": "unchanged"
+    },
+    {
+      "golden_file_path": "/Users/andrewherrera/skein-worktrees/ux-wave3-parallel-20260928/feature/chat/../../ux-baselines/feature-chat/fold-outer-524/chat-knowledge-inspector-off__dark__fs150.png",
+      "timestamp": 1173457389800333,
+      "context_data": {},
+      "type": "unchanged"
+    },
+    {
+      "golden_file_path": "/Users/andrewherrera/skein-worktrees/ux-wave3-parallel-20260928/feature/chat/../../ux-baselines/feature-chat/fold-outer-524/chat-knowledge-inspector-off__light__fs100.png",
+      "timestamp": 1173455944408416,
+      "context_data": {},
+      "type": "unchanged"
+    },
+    {
+      "golden_file_path": "/Users/andrewherrera/skein-worktrees/ux-wave3-parallel-20260928/feature/chat/../../ux-baselines/feature-chat/fold-outer-524/chat-knowledge-inspector-off__light__fs150.png",
+      "timestamp": 1173457260974208,
+      "context_data": {},
+      "type": "unchanged"
+    },
+    {
+      "golden_file_path": "/Users/andrewherrera/skein-worktrees/ux-wave3-parallel-20260928/feature/chat/../../ux-baselines/feature-chat/fold-outer-524/chat-knowledge-inspector-used__dark__fs100.png",
+      "timestamp": 1173456144101708,
+      "context_data": {},
+      "type": "unchanged"
+    },
+    {
+      "golden_file_path": "/Users/andrewherrera/skein-worktrees/ux-wave3-parallel-20260928/feature/chat/../../ux-baselines/feature-chat/fold-outer-524/chat-knowledge-inspector-used__dark__fs150.png",
+      "timestamp": 1173457431610583,
+      "context_data": {},
+      "type": "unchanged"
+    },
+    {
+      "golden_file_path": "/Users/andrewherrera/skein-worktrees/ux-wave3-parallel-20260928/feature/chat/../../ux-baselines/feature-chat/fold-outer-524/chat-knowledge-inspector-used__light__fs100.png",
+      "timestamp": 1173455992422166,
+      "context_data": {},
+      "type": "unchanged"
+    },
+    {
+      "golden_file_path": "/Users/andrewherrera/skein-worktrees/ux-wave3-parallel-20260928/feature/chat/../../ux-baselines/feature-chat/fold-outer-524/chat-knowledge-inspector-used__light__fs150.png",
+      "timestamp": 1173457306463083,
+      "context_data": {},
+      "type": "unchanged"
+    },
+    {
+      "golden_file_path": "/Users/andrewherrera/skein-worktrees/ux-wave3-parallel-20260928/feature/chat/../../ux-baselines/feature-chat/fold-outer-524/chat-knowledge-off__dark__fs100.png",
+      "timestamp": 1173456184054625,
+      "context_data": {},
+      "type": "unchanged"
+    },
+    {
+      "golden_file_path": "/Users/andrewherrera/skein-worktrees/ux-wave3-parallel-20260928/feature/chat/../../ux-baselines/feature-chat/fold-outer-524/chat-knowledge-off__dark__fs150.png",
+      "timestamp": 1173457470015083,
+      "context_data": {},
+      "type": "unchanged"
+    },
+    {
+      "golden_file_path": "/Users/andrewherrera/skein-worktrees/ux-wave3-parallel-20260928/feature/chat/../../ux-baselines/feature-chat/fold-outer-524/chat-knowledge-off__light__fs100.png",
+      "timestamp": 1173456041567916,
+      "context_data": {},
+      "type": "unchanged"
+    },
+    {
+      "golden_file_path": "/Users/andrewherrera/skein-worktrees/ux-wave3-parallel-20260928/feature/chat/../../ux-baselines/feature-chat/fold-outer-524/chat-knowledge-off__light__fs150.png",
+      "timestamp": 1173457343888041,
+      "context_data": {},
+      "type": "unchanged"
+    },
+    {
+      "golden_file_path": "/Users/andrewherrera/skein-worktrees/ux-wave3-parallel-20260928/feature/chat/../../ux-baselines/feature-chat/fold-outer-524/chat-long__dark__fs100.png",
+      "timestamp": 1173451774081875,
+      "context_data": {},
+      "type": "unchanged"
+    },
+    {
+      "golden_file_path": "/Users/andrewherrera/skein-worktrees/ux-wave3-parallel-20260928/feature/chat/../../ux-baselines/feature-chat/fold-outer-524/chat-long__dark__fs150.png",
+      "timestamp": 1173452644994625,
+      "context_data": {},
+      "type": "unchanged"
+    },
+    {
+      "golden_file_path": "/Users/andrewherrera/skein-worktrees/ux-wave3-parallel-20260928/feature/chat/../../ux-baselines/feature-chat/fold-outer-524/chat-long__light__fs100.png",
+      "timestamp": 1173451640339166,
+      "context_data": {},
+      "type": "unchanged"
+    },
+    {
+      "golden_file_path": "/Users/andrewherrera/skein-worktrees/ux-wave3-parallel-20260928/feature/chat/../../ux-baselines/feature-chat/fold-outer-524/chat-long__light__fs150.png",
+      "timestamp": 1173452574852458,
+      "context_data": {},
+      "type": "unchanged"
+    },
+    {
+      "golden_file_path": "/Users/andrewherrera/skein-worktrees/ux-wave3-parallel-20260928/feature/chat/../../ux-baselines/feature-chat/fold-outer-524/chat-streaming__dark__fs100.png",
+      "timestamp": 1173451730498291,
+      "context_data": {},
+      "type": "unchanged"
+    },
+    {
+      "golden_file_path": "/Users/andrewherrera/skein-worktrees/ux-wave3-parallel-20260928/feature/chat/../../ux-baselines/feature-chat/fold-outer-524/chat-streaming__light__fs100.png",
+      "timestamp": 1173451587599750,
+      "context_data": {},
+      "type": "unchanged"
+    },
+    {
+      "golden_file_path": "/Users/andrewherrera/skein-worktrees/ux-wave3-parallel-20260928/feature/chat/../../ux-baselines/feature-chat/fold-outer-524/shell-chat-conversation__dark__fs100.png",
+      "timestamp": 1173453759988458,
+      "context_data": {},
+      "type": "unchanged"
+    },
+    {
+      "golden_file_path": "/Users/andrewherrera/skein-worktrees/ux-wave3-parallel-20260928/feature/chat/../../ux-baselines/feature-chat/fold-outer-524/shell-chat-conversation__dark__fs150.png",
+      "timestamp": 1173455290218125,
+      "context_data": {},
+      "type": "unchanged"
+    },
+    {
+      "golden_file_path": "/Users/andrewherrera/skein-worktrees/ux-wave3-parallel-20260928/feature/chat/../../ux-baselines/feature-chat/fold-outer-524/shell-chat-conversation__light__fs100.png",
+      "timestamp": 1173453567905500,
+      "context_data": {},
+      "type": "unchanged"
+    },
+    {
+      "golden_file_path": "/Users/andrewherrera/skein-worktrees/ux-wave3-parallel-20260928/feature/chat/../../ux-baselines/feature-chat/fold-outer-524/shell-chat-conversation__light__fs150.png",
+      "timestamp": 1173455111710250,
+      "context_data": {},
+      "type": "unchanged"
+    },
+    {
+      "golden_file_path": "/Users/andrewherrera/skein-worktrees/ux-wave3-parallel-20260928/feature/chat/../../ux-baselines/feature-chat/fold-outer-524/shell-chat-drawer-open__dark__fs100.png",
+      "timestamp": 1173453710245291,
+      "context_data": {},
+      "type": "unchanged"
+    },
+    {
+      "golden_file_path": "/Users/andrewherrera/skein-worktrees/ux-wave3-parallel-20260928/feature/chat/../../ux-baselines/feature-chat/fold-outer-524/shell-chat-drawer-open__dark__fs150.png",
+      "timestamp": 1173455247342666,
+      "context_data": {},
+      "type": "unchanged"
+    },
+    {
+      "golden_file_path": "/Users/andrewherrera/skein-worktrees/ux-wave3-parallel-20260928/feature/chat/../../ux-baselines/feature-chat/fold-outer-524/shell-chat-drawer-open__light__fs100.png",
+      "timestamp": 1173453525970333,
+      "context_data": {},
+      "type": "unchanged"
+    },
+    {
+      "golden_file_path": "/Users/andrewherrera/skein-worktrees/ux-wave3-parallel-20260928/feature/chat/../../ux-baselines/feature-chat/fold-outer-524/shell-chat-drawer-open__light__fs150.png",
+      "timestamp": 1173455067817791,
+      "context_data": {},
+      "type": "unchanged"
+    },
+    {
+      "golden_file_path": "/Users/andrewherrera/skein-worktrees/ux-wave3-parallel-20260928/feature/chat/../../ux-baselines/feature-chat/fold-outer-524/shell-chat-inspector__dark__fs100.png",
+      "timestamp": 1173453656092083,
+      "context_data": {},
+      "type": "unchanged"
+    },
+    {
+      "golden_file_path": "/Users/andrewherrera/skein-worktrees/ux-wave3-parallel-20260928/feature/chat/../../ux-baselines/feature-chat/fold-outer-524/shell-chat-inspector__dark__fs150.png",
+      "timestamp": 1173455204140291,
+      "context_data": {},
+      "type": "unchanged"
+    },
+    {
+      "golden_file_path": "/Users/andrewherrera/skein-worktrees/ux-wave3-parallel-20260928/feature/chat/../../ux-baselines/feature-chat/fold-outer-524/shell-chat-inspector__light__fs100.png",
+      "timestamp": 1173453482642958,
+      "context_data": {},
+      "type": "unchanged"
+    },
+    {
+      "golden_file_path": "/Users/andrewherrera/skein-worktrees/ux-wave3-parallel-20260928/feature/chat/../../ux-baselines/feature-chat/fold-outer-524/shell-chat-inspector__light__fs150.png",
+      "timestamp": 1173455020824041,
+      "context_data": {},
+      "type": "unchanged"
+    },
+    {
+      "golden_file_path": "/Users/andrewherrera/skein-worktrees/ux-wave3-parallel-20260928/feature/chat/../../ux-baselines/feature-chat/fold-outer-524/shell-chat-root__dark__fs100.png",
+      "timestamp": 1173453799941708,
+      "context_data": {},
+      "type": "unchanged"
+    },
+    {
+      "golden_file_path": "/Users/andrewherrera/skein-worktrees/ux-wave3-parallel-20260928/feature/chat/../../ux-baselines/feature-chat/fold-outer-524/shell-chat-root__dark__fs150.png",
+      "timestamp": 1173455327007708,
+      "context_data": {},
+      "type": "unchanged"
+    },
+    {
+      "golden_file_path": "/Users/andrewherrera/skein-worktrees/ux-wave3-parallel-20260928/feature/chat/../../ux-baselines/feature-chat/fold-outer-524/shell-chat-root__light__fs100.png",
+      "timestamp": 1173453606447375,
+      "context_data": {},
+      "type": "unchanged"
+    },
+    {
+      "golden_file_path": "/Users/andrewherrera/skein-worktrees/ux-wave3-parallel-20260928/feature/chat/../../ux-baselines/feature-chat/fold-outer-524/shell-chat-root__light__fs150.png",
+      "timestamp": 1173455150864708,
+      "context_data": {},
+      "type": "unchanged"
+    },
+    {
+      "golden_file_path": "/Users/andrewherrera/skein-worktrees/ux-wave3-parallel-20260928/feature/chat/../../ux-baselines/feature-chat/phone/chat-empty__dark__fs100.png",
+      "timestamp": 1173451220782791,
+      "context_data": {},
+      "type": "unchanged"
+    },
+    {
+      "golden_file_path": "/Users/andrewherrera/skein-worktrees/ux-wave3-parallel-20260928/feature/chat/../../ux-baselines/feature-chat/phone/chat-empty__light__fs100.png",
+      "timestamp": 1173451104575416,
+      "context_data": {},
+      "type": "unchanged"
+    },
+    {
+      "golden_file_path": "/Users/andrewherrera/skein-worktrees/ux-wave3-parallel-20260928/feature/chat/../../ux-baselines/feature-chat/phone/chat-knowledge-inspector-off__dark__fs100.png",
+      "timestamp": 1173455503781000,
+      "context_data": {},
+      "type": "unchanged"
+    },
+    {
+      "golden_file_path": "/Users/andrewherrera/skein-worktrees/ux-wave3-parallel-20260928/feature/chat/../../ux-baselines/feature-chat/phone/chat-knowledge-inspector-off__light__fs100.png",
+      "timestamp": 1173455384972291,
+      "context_data": {},
+      "type": "unchanged"
+    },
+    {
+      "golden_file_path": "/Users/andrewherrera/skein-worktrees/ux-wave3-parallel-20260928/feature/chat/../../ux-baselines/feature-chat/phone/chat-knowledge-inspector-used__dark__fs100.png",
+      "timestamp": 1173455547363833,
+      "context_data": {},
+      "type": "unchanged"
+    },
+    {
+      "golden_file_path": "/Users/andrewherrera/skein-worktrees/ux-wave3-parallel-20260928/feature/chat/../../ux-baselines/feature-chat/phone/chat-knowledge-inspector-used__light__fs100.png",
+      "timestamp": 1173455428166833,
+      "context_data": {},
+      "type": "unchanged"
+    },
+    {
+      "golden_file_path": "/Users/andrewherrera/skein-worktrees/ux-wave3-parallel-20260928/feature/chat/../../ux-baselines/feature-chat/phone/chat-knowledge-off__dark__fs100.png",
+      "timestamp": 1173455587990375,
+      "context_data": {},
+      "type": "unchanged"
+    },
+    {
+      "golden_file_path": "/Users/andrewherrera/skein-worktrees/ux-wave3-parallel-20260928/feature/chat/../../ux-baselines/feature-chat/phone/chat-knowledge-off__light__fs100.png",
+      "timestamp": 1173455463117375,
+      "context_data": {},
+      "type": "unchanged"
+    },
+    {
+      "golden_file_path": "/Users/andrewherrera/skein-worktrees/ux-wave3-parallel-20260928/feature/chat/../../ux-baselines/feature-chat/phone/chat-long__dark__fs100.png",
+      "timestamp": 1173451191153916,
+      "context_data": {},
+      "type": "unchanged"
+    },
+    {
+      "golden_file_path": "/Users/andrewherrera/skein-worktrees/ux-wave3-parallel-20260928/feature/chat/../../ux-baselines/feature-chat/phone/chat-long__light__fs100.png",
+      "timestamp": 1173451077290375,
+      "context_data": {},
+      "type": "unchanged"
+    },
+    {
+      "golden_file_path": "/Users/andrewherrera/skein-worktrees/ux-wave3-parallel-20260928/feature/chat/../../ux-baselines/feature-chat/phone/chat-streaming__dark__fs100.png",
+      "timestamp": 1173451157559000,
+      "context_data": {},
+      "type": "unchanged"
+    },
+    {
+      "golden_file_path": "/Users/andrewherrera/skein-worktrees/ux-wave3-parallel-20260928/feature/chat/../../ux-baselines/feature-chat/phone/chat-streaming__light__fs100.png",
+      "timestamp": 1173451033167750,
+      "context_data": {},
+      "type": "unchanged"
+    },
+    {
+      "golden_file_path": "/Users/andrewherrera/skein-worktrees/ux-wave3-parallel-20260928/feature/chat/../../ux-baselines/feature-chat/phone/shell-chat-conversation__dark__fs100.png",
+      "timestamp": 1173453011097791,
+      "context_data": {},
+      "type": "unchanged"
+    },
+    {
+      "golden_file_path": "/Users/andrewherrera/skein-worktrees/ux-wave3-parallel-20260928/feature/chat/../../ux-baselines/feature-chat/phone/shell-chat-conversation__light__fs100.png",
+      "timestamp": 1173452848465541,
+      "context_data": {},
+      "type": "unchanged"
+    },
+    {
+      "golden_file_path": "/Users/andrewherrera/skein-worktrees/ux-wave3-parallel-20260928/feature/chat/../../ux-baselines/feature-chat/phone/shell-chat-drawer-open__dark__fs100.png",
+      "timestamp": 1173452966381041,
+      "context_data": {},
+      "type": "unchanged"
+    },
+    {
+      "golden_file_path": "/Users/andrewherrera/skein-worktrees/ux-wave3-parallel-20260928/feature/chat/../../ux-baselines/feature-chat/phone/shell-chat-drawer-open__light__fs100.png",
+      "timestamp": 1173452805147458,
+      "context_data": {},
+      "type": "unchanged"
+    },
+    {
+      "golden_file_path": "/Users/andrewherrera/skein-worktrees/ux-wave3-parallel-20260928/feature/chat/../../ux-baselines/feature-chat/phone/shell-chat-inspector__dark__fs100.png",
+      "timestamp": 1173452925778625,
+      "context_data": {},
+      "type": "unchanged"
+    },
+    {
+      "golden_file_path": "/Users/andrewherrera/skein-worktrees/ux-wave3-parallel-20260928/feature/chat/../../ux-baselines/feature-chat/phone/shell-chat-inspector__light__fs100.png",
+      "timestamp": 1173452740598833,
+      "context_data": {},
+      "type": "unchanged"
+    },
+    {
+      "golden_file_path": "/Users/andrewherrera/skein-worktrees/ux-wave3-parallel-20260928/feature/chat/../../ux-baselines/feature-chat/phone/shell-chat-root__dark__fs100.png",
+      "timestamp": 1173453048331708,
+      "context_data": {},
+      "type": "unchanged"
+    },
+    {
+      "golden_file_path": "/Users/andrewherrera/skein-worktrees/ux-wave3-parallel-20260928/feature/chat/../../ux-baselines/feature-chat/phone/shell-chat-root__light__fs100.png",
+      "timestamp": 1173452880107750,
+      "context_data": {},
+      "type": "unchanged"
+    }
+  ]
+}

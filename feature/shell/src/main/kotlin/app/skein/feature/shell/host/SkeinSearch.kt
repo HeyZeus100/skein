@@ -6,12 +6,18 @@
 package app.skein.feature.shell.host
 
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.WindowInsets
+import androidx.compose.foundation.layout.WindowInsetsSides
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.only
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.safeDrawing
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.widthIn
+import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.text.KeyboardActions
@@ -50,6 +56,7 @@ import kotlinx.coroutines.delay
 object SkeinSearchTestTags {
     const val OVERLAY = "skein_search_overlay"
     const val FIELD = "skein_search_field"
+    const val RESULTS = "skein_search_results"
     const val NO_MATCHES = "skein_search_no_matches"
 }
 
@@ -91,8 +98,13 @@ internal fun SkeinSearchOverlay(
         onBackCompleted = onDismiss,
     )
     Surface(Modifier.fillMaxSize().testTag(SkeinSearchTestTags.OVERLAY)) {
-        Column(Modifier.fillMaxSize(), horizontalAlignment = Alignment.CenterHorizontally) {
-            Column(Modifier.widthIn(max = SkeinSize.paletteMaxWidth).fillMaxWidth()) {
+        Column(
+            Modifier.fillMaxSize().windowInsetsPadding(
+                WindowInsets.safeDrawing.only(WindowInsetsSides.Top + WindowInsetsSides.Horizontal),
+            ),
+            horizontalAlignment = Alignment.CenterHorizontally,
+        ) {
+            Column(Modifier.widthIn(max = SkeinSize.paletteMaxWidth).fillMaxSize()) {
                 Row(
                     Modifier.fillMaxWidth().padding(SkeinSpacing.space8),
                     verticalAlignment = Alignment.CenterVertically,
@@ -127,7 +139,10 @@ internal fun SkeinSearchOverlay(
                         modifier = Modifier.padding(SkeinSpacing.space16).testTag(SkeinSearchTestTags.NO_MATCHES),
                     )
                 }
-                LazyColumn(Modifier.fillMaxWidth()) {
+                LazyColumn(
+                    Modifier.weight(1f).fillMaxWidth().testTag(SkeinSearchTestTags.RESULTS),
+                    contentPadding = PaddingValues(bottom = entryBottomObstruction()),
+                ) {
                     items(found.orEmpty(), key = { it.id }) { document ->
                         SkeinListRow(
                             title = document.title.ifBlank { "Untitled" },

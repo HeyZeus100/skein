@@ -29,6 +29,7 @@ import androidx.compose.ui.unit.dp
 import app.skein.core.designsystem.icons.SkeinIcons
 import app.skein.core.designsystem.theme.SkeinThemeMode
 import app.skein.core.navigation.SettingsCategory
+import app.skein.feature.shell.host.entryBottomPadding
 
 /** Shared sections for the NavDisplay Settings category entries. */
 @Composable
@@ -183,7 +184,8 @@ private fun CategoryColumn(
                         .align(Alignment.TopCenter)
                         .widthIn(max = MAX_CONTENT_WIDTH)
                         .fillMaxWidth()
-                        .verticalScroll(rememberScrollState()),
+                        .verticalScroll(rememberScrollState())
+                        .padding(entryBottomPadding()),
                 content = content,
             )
         }

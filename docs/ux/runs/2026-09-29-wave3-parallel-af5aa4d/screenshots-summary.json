@@ -1,0 +1,78 @@
+{
+  "sourceCommit": "af5aa4dc7e1cababa7d52b544a5a7a92834fb63f",
+  "command": "./gradlew --max-workers=2 --no-build-cache verifyRoborazziDebug --continue",
+  "exit": 0,
+  "totals": {
+    "total": 552,
+    "recorded": 0,
+    "added": 0,
+    "changed": 0,
+    "unchanged": 552
+  },
+  "modules": [
+    {
+      "module": "core/designsystem",
+      "total": 189,
+      "recorded": 0,
+      "added": 0,
+      "changed": 0,
+      "unchanged": 189
+    },
+    {
+      "module": "feature/chat",
+      "total": 164,
+      "recorded": 0,
+      "added": 0,
+      "changed": 0,
+      "unchanged": 164
+    },
+    {
+      "module": "feature/editor",
+      "total": 68,
+      "recorded": 0,
+      "added": 0,
+      "changed": 0,
+      "unchanged": 68
+    },
+    {
+      "module": "feature/graph",
+      "total": 18,
+      "recorded": 0,
+      "added": 0,
+      "changed": 0,
+      "unchanged": 18
+    },
+    {
+      "module": "feature/models",
+      "total": 38,
+      "recorded": 0,
+      "added": 0,
+      "changed": 0,
+      "unchanged": 38
+    },
+    {
+      "module": "feature/settings",
+      "total": 18,
+      "recorded": 0,
+      "added": 0,
+      "changed": 0,
+      "unchanged": 18
+    },
+    {
+      "module": "feature/shell",
+      "total": 37,
+      "recorded": 0,
+      "added": 0,
+      "changed": 0,
+      "unchanged": 37
+    },
+    {
+      "module": "feature/timeline",
+      "total": 20,
+      "recorded": 0,
+      "added": 0,
+      "changed": 0,
+      "unchanged": 20
+    }
+  ]
+}

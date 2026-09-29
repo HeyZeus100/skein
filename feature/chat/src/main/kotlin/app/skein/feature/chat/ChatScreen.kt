@@ -14,10 +14,15 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.layout.onSizeChanged
+import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.unit.dp
 import app.skein.core.designsystem.components.SkeinAction
@@ -30,6 +35,7 @@ import app.skein.core.model.VaultRepository
 import app.skein.feature.chat.drafts.DraftComposerState
 import app.skein.feature.chat.drafts.DraftLoadState
 import app.skein.feature.editor.autocomplete.Suggestion
+import app.skein.feature.shell.host.entryBottomObstruction
 
 public const val CHAT_SCREEN_TEST_TAG: String = "app.skein.feature.chat.ChatScreen"
 public const val ERROR_BANNER_TEST_TAG: String = "app.skein.feature.chat.ErrorBanner"
@@ -94,42 +100,54 @@ public fun ChatScreen(
 
     LaunchedEffect(viewModel) { initialMessage?.let(viewModel::send) }
 
-    Column(modifier = modifier.fillMaxSize().testTag(CHAT_SCREEN_TEST_TAG)) {
-        topBar()
-
-        if (viewModel.banner != ChatBanner.NONE) {
-            ChatErrorBanner(viewModel.banner, viewModel.canRetry, viewModel::retry)
-        }
-
-        MessageList(
-            messages = viewModel.messages,
-            turnState = viewModel.turnState,
-            streamingCitations = viewModel.streamingCitations,
-            isExcerptExpanded = viewModel::isExcerptExpanded,
-            onCitationTap = viewModel::onCitationTap,
-            modifier = Modifier.weight(1f).fillMaxWidth(),
-        )
-
-        contextChip()
-
-        DraftLoadNotice(composerState)
-        ChatBottomBar(
-            isGenerating = viewModel.isGenerating,
-            onSend = { text ->
-                if (composerState == null) {
-                    viewModel.send(text)
-                } else {
-                    composerState.snapshot?.let { viewModel.enqueueControlled(it.draft.text, it.version) }
+    val density = LocalDensity.current
+    var paneHeight by remember { mutableIntStateOf(0) }
+    Column(modifier = modifier.fillMaxSize().testTag(CHAT_SCREEN_TEST_TAG).onSizeChanged { paneHeight = it.height }) {
+        val maxHeight = with(density) { paneHeight.toDp() }
+        var headerHeight by remember { mutableIntStateOf(0) }
+        var contextHeight by remember { mutableIntStateOf(0) }
+        val composerMaxHeight =
+            maxHeight * 0.6f - with(density) { (headerHeight + contextHeight).toDp() } - entryBottomObstruction()
+        Column(Modifier.fillMaxSize()) {
+            Column(Modifier.onSizeChanged { headerHeight = it.height }) {
+                topBar()
+                if (viewModel.banner != ChatBanner.NONE) {
+                    ChatErrorBanner(viewModel.banner, viewModel.canRetry, viewModel::retry)
                 }
-            },
-            composerState = composerState,
-            onCancel = viewModel::cancel,
-            wikilinkSuggest = wikilinkSuggest,
-            onAttach = viewModel::attach,
-            onCreateWikilink = onCreateWikilink,
-            onSlashCommand = onSlashCommand,
-            modifier = Modifier.fillMaxWidth(),
-        )
+            }
+
+            MessageList(
+                messages = viewModel.messages,
+                turnState = viewModel.turnState,
+                streamingCitations = viewModel.streamingCitations,
+                isExcerptExpanded = viewModel::isExcerptExpanded,
+                onCitationTap = viewModel::onCitationTap,
+                modifier = Modifier.weight(1f).fillMaxWidth(),
+            )
+
+            Column(Modifier.onSizeChanged { contextHeight = it.height }) {
+                contextChip()
+                DraftLoadNotice(composerState)
+            }
+            ChatBottomBar(
+                isGenerating = viewModel.isGenerating,
+                onSend = { text ->
+                    if (composerState == null) {
+                        viewModel.send(text)
+                    } else {
+                        composerState.snapshot?.let { viewModel.enqueueControlled(it.draft.text, it.version) }
+                    }
+                },
+                composerState = composerState,
+                maxHeight = composerMaxHeight,
+                onCancel = viewModel::cancel,
+                wikilinkSuggest = wikilinkSuggest,
+                onAttach = viewModel::attach,
+                onCreateWikilink = onCreateWikilink,
+                onSlashCommand = onSlashCommand,
+                modifier = Modifier.fillMaxWidth(),
+            )
+        }
     }
 }
 

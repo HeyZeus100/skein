@@ -35,6 +35,7 @@ import app.skein.feature.settings.SettingsCategoryScreen
 import app.skein.feature.settings.SettingsViewModel
 import app.skein.feature.shell.host.EntryTopBar
 import app.skein.feature.shell.host.SkeinShellState
+import app.skein.feature.shell.host.entryBottomPadding
 
 /** What the Settings entries need: the same view model/app version [app.skein.feature.settings.SettingsRoute] used. */
 class SettingsEntryDeps(
@@ -100,7 +101,10 @@ private fun SettingsListEntry(shell: SkeinShellState) {
     val selected = (shell.nav.stack(Destination.SETTINGS).lastOrNull() as? SettingsCategoryKey)?.category
     Column(Modifier.fillMaxSize()) {
         shell.EntryTopBar(SettingsHomeKey, "Settings")
-        LazyColumn(Modifier.weight(1f).fillMaxSize().testTag(SettingsEntryTestTags.LIST)) {
+        LazyColumn(
+            Modifier.weight(1f).fillMaxSize().testTag(SettingsEntryTestTags.LIST),
+            contentPadding = entryBottomPadding(),
+        ) {
             items(VISIBLE_CATEGORIES) { category ->
                 SettingsCategoryRow(
                     label = category.label(),

@@ -25,6 +25,7 @@ import androidx.compose.ui.unit.dp
 import app.skein.core.designsystem.theme.SkeinSpacing
 import app.skein.core.model.DocId
 import app.skein.core.model.Retrieved
+import app.skein.feature.shell.host.entryBottomPadding
 
 public const val CONTEXT_PANEL_TEST_TAG: String = "app.skein.feature.chat.ContextPanel"
 public const val KNOWLEDGE_SWITCH_TEST_TAG: String = "app.skein.feature.chat.SearchKnowledge"
@@ -55,7 +56,14 @@ public fun ContextPanel(
         modifier = modifier.testTag(CONTEXT_PANEL_TEST_TAG),
         color = MaterialTheme.colorScheme.surfaceVariant,
     ) {
-        Column(modifier = Modifier.verticalScroll(rememberScrollState()).padding(SkeinSpacing.space12)) {
+        Column(
+            modifier =
+                Modifier
+                    .verticalScroll(
+                        rememberScrollState(),
+                    ).padding(entryBottomPadding())
+                    .padding(SkeinSpacing.space12),
+        ) {
             Text(text = "Knowledge", style = MaterialTheme.typography.titleSmall)
             if (knowledgeEnabled != null) {
                 Row(

@@ -57,18 +57,51 @@ public fun MessageList(
                 0
             }
     LaunchedEffect(itemCount) {
-        if (itemCount > 0) listState.animateScrollToItem(itemCount - 1)
+        if (itemCount > 0) listState.animateScrollToItem(0)
     }
 
     val lastUserId = messages.lastOrNull { it.role == Role.USER }?.id
 
     LazyColumn(
         state = listState,
+        reverseLayout = true,
         modifier = modifier.testTag(MESSAGE_LIST_TEST_TAG),
         contentPadding = PaddingValues(12.dp),
         verticalArrangement = Arrangement.spacedBy(8.dp),
     ) {
-        items(messages, key = { it.id }) { message ->
+        // Guarded by `messages.lastOrNull()?.role != Role.ASSISTANT`, not just
+        // `turnState`: `VaultRepository.observeMessages` and `turnState` are
+        // updated by two independent coroutines (see `ChatViewModel.init`
+        // and `send`), so there is no ordering guarantee between "the
+        // persisted assistant row appears" and "`turnState` reaches `Done`".
+        // Without this guard a single composition frame could render both
+        // the trailing live bubble AND the now-persisted `AssistantBubble`
+        // for the same turn — this keeps them mutually exclusive regardless
+        // of which coroutine wins the race.
+        val alreadyPersisted = messages.lastOrNull()?.role == Role.ASSISTANT
+        if (!alreadyPersisted && turnState is ChatTurnState.Streaming) {
+            item(key = "streaming") {
+                Box(modifier = Modifier.fillMaxWidth()) {
+                    Box(modifier = Modifier.align(Alignment.CenterStart)) {
+                        StreamingAssistantBubble(
+                            text = turnState.text,
+                            citations = streamingCitations,
+                            isExcerptExpanded = { marker -> isExcerptExpanded(STREAMING_MESSAGE_ID, marker) },
+                            onCitationTap = { citation -> onCitationTap(STREAMING_MESSAGE_ID, citation) },
+                        )
+                    }
+                }
+            }
+        } else if (!alreadyPersisted && (turnState is ChatTurnState.Thinking || turnState is ChatTurnState.Queued)) {
+            item(key = "thinking") {
+                Box(modifier = Modifier.fillMaxWidth()) {
+                    Box(modifier = Modifier.align(Alignment.CenterStart)) {
+                        ThinkingPlaceholder()
+                    }
+                }
+            }
+        }
+        items(messages.asReversed(), key = { it.id }) { message ->
             Box(modifier = Modifier.fillMaxWidth().testTag(messageRowTestTag(message.id))) {
                 when (message.role) {
                     Role.USER -> {
@@ -99,38 +132,6 @@ public fun MessageList(
                             style = MaterialTheme.typography.bodySmall,
                             color = MaterialTheme.colorScheme.onSurfaceVariant,
                         )
-                    }
-                }
-            }
-        }
-        // Guarded by `messages.lastOrNull()?.role != Role.ASSISTANT`, not just
-        // `turnState`: `VaultRepository.observeMessages` and `turnState` are
-        // updated by two independent coroutines (see `ChatViewModel.init`
-        // and `send`), so there is no ordering guarantee between "the
-        // persisted assistant row appears" and "`turnState` reaches `Done`".
-        // Without this guard a single composition frame could render both
-        // the trailing live bubble AND the now-persisted `AssistantBubble`
-        // for the same turn — this keeps them mutually exclusive regardless
-        // of which coroutine wins the race.
-        val alreadyPersisted = messages.lastOrNull()?.role == Role.ASSISTANT
-        if (!alreadyPersisted && turnState is ChatTurnState.Streaming) {
-            item(key = "streaming") {
-                Box(modifier = Modifier.fillMaxWidth()) {
-                    Box(modifier = Modifier.align(Alignment.CenterStart)) {
-                        StreamingAssistantBubble(
-                            text = turnState.text,
-                            citations = streamingCitations,
-                            isExcerptExpanded = { marker -> isExcerptExpanded(STREAMING_MESSAGE_ID, marker) },
-                            onCitationTap = { citation -> onCitationTap(STREAMING_MESSAGE_ID, citation) },
-                        )
-                    }
-                }
-            }
-        } else if (!alreadyPersisted && (turnState is ChatTurnState.Thinking || turnState is ChatTurnState.Queued)) {
-            item(key = "thinking") {
-                Box(modifier = Modifier.fillMaxWidth()) {
-                    Box(modifier = Modifier.align(Alignment.CenterStart)) {
-                        ThinkingPlaceholder()
                     }
                 }
             }

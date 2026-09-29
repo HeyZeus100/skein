@@ -587,7 +587,37 @@ class MainActivityComposeTest {
         }
     }
 
-    // ---- skein-1vfg: shell root clears a simulated status bar inset ------------
+    /** AL-11: the actual unlocked Activity must not pass gate-safeDrawing into NavShell. */
+    @Test
+    fun `unlocked navigation root keeps its geometry when the IME opens`() {
+        ActivityScenario.launch(MainActivity::class.java).use { scenario ->
+            awaitTag(ShellTestTags.SKEIN_SHELL_ROOT)
+            val before =
+                composeRule
+                    .onNodeWithTag(ShellTestTags.SKEIN_SHELL_ROOT)
+                    .fetchSemanticsNode()
+                    .boundsInRoot
+            scenario.onActivity { activity ->
+                ViewCompat.dispatchApplyWindowInsets(
+                    activity.window.decorView,
+                    WindowInsetsCompat
+                        .Builder()
+                        .setInsets(WindowInsetsCompat.Type.ime(), Insets.of(0, 0, 0, 400))
+                        .setVisible(WindowInsetsCompat.Type.ime(), true)
+                        .build(),
+                )
+            }
+            composeRule.waitForIdle()
+            val after =
+                composeRule
+                    .onNodeWithTag(ShellTestTags.SKEIN_SHELL_ROOT)
+                    .fetchSemanticsNode()
+                    .boundsInRoot
+            assertEquals("IME belongs to the entry, never the navigation root", before, after)
+        }
+    }
+
+    // ---- skein-1vfg / AL-11: entry chrome clears a simulated status bar inset ------------
 
     /**
      * Hardware-verified on the Pixel 9 Pro Fold: with no window-insets
@@ -600,7 +630,9 @@ class MainActivityComposeTest {
      * hamburger button (the one Compose already tags via its
      * `contentDescription`) sits at or below it. Before the old shell root
      * picked up `.windowInsetsPadding(WindowInsets.safeDrawing)`, this
-     * assertion fails at `top == 0`.
+     * assertion fails at `top == 0`. AL-11 moves that ownership to each
+     * entry's top bar; the Activity must continue to satisfy this assertion
+     * without a global safeDrawing wrapper that would also consume the IME.
      */
     @Test
     fun `the hamburger menu button clears a simulated status bar inset`() {

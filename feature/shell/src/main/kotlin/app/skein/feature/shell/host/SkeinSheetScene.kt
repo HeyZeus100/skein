@@ -16,6 +16,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.width
 import androidx.compose.material3.Surface
@@ -28,6 +29,9 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.platform.testTag
+import androidx.compose.ui.unit.DpRect
+import androidx.compose.ui.unit.LayoutDirection
+import androidx.compose.ui.unit.height
 import androidx.navigation3.runtime.NavEntry
 import androidx.navigation3.scene.Scene
 import androidx.navigation3.scene.SceneStrategy
@@ -35,9 +39,12 @@ import androidx.navigation3.scene.SceneStrategyScope
 import app.skein.core.designsystem.components.SkeinSheetDefaults
 import app.skein.core.designsystem.theme.SkeinSize
 import app.skein.feature.shell.layout.SecondarySurface
+import app.skein.feature.shell.layout.SkeinHingeSafeArea
 import app.skein.feature.shell.layout.SkeinLayoutDecision
+import app.skein.feature.shell.layout.SkeinPosture
 import app.skein.feature.shell.layout.SurfacePresentation
 import app.skein.feature.shell.layout.presentationOf
+import app.skein.feature.shell.layout.surfaceBounds
 
 /** Entry metadata key: the entry is a §2.5 sheet surface on one pane. */
 internal const val SHEET_METADATA_KEY = "app.skein.feature.shell.host.sheet"
@@ -81,6 +88,7 @@ internal class SkeinSheetSceneStrategy<T : Any>(
     private val layout: SkeinLayoutDecision,
     private val expanded: Set<Any>,
     private val onExpand: (Any) -> Unit,
+    private val layoutDirection: LayoutDirection = LayoutDirection.Ltr,
 ) : SceneStrategy<T> {
     override fun SceneStrategyScope<T>.calculateScene(entries: List<NavEntry<T>>): Scene<T>? {
         if (layout.maxPanes != 1 || entries.size < 2) return null
@@ -92,15 +100,25 @@ internal class SkeinSheetSceneStrategy<T : Any>(
             previousEntries = entries.dropLast(1),
             expanded = sheet.contentKey in expanded,
             side = layout.presentationOf(surface) == SurfacePresentation.SIDE_SHEET,
+            boundsInWindow =
+                if (layout.posture == SkeinPosture.Flat) {
+                    null
+                } else {
+                    layout.surfaceBounds(surface, layoutDirection)
+                },
+            bottomSheetHeight = layout.size.height * BOTTOM_SHEET_FRACTION,
             onExpand = { onExpand(sheet.contentKey) },
             onDismiss = onBack,
         )
     }
 
     override fun equals(other: Any?): Boolean =
-        other is SkeinSheetSceneStrategy<*> && other.layout == layout && other.expanded == expanded
+        other is SkeinSheetSceneStrategy<*> &&
+            other.layout == layout &&
+            other.expanded == expanded &&
+            other.layoutDirection == layoutDirection
 
-    override fun hashCode(): Int = layout.hashCode() * 31 + expanded.hashCode()
+    override fun hashCode(): Int = (layout.hashCode() * 31 + expanded.hashCode()) * 31 + layoutDirection.hashCode()
 }
 
 private class SheetScene<T : Any>(
@@ -109,6 +127,8 @@ private class SheetScene<T : Any>(
     override val previousEntries: List<NavEntry<T>>,
     val expanded: Boolean,
     val side: Boolean,
+    val boundsInWindow: DpRect?,
+    val bottomSheetHeight: androidx.compose.ui.unit.Dp,
     val onExpand: () -> Unit,
     val onDismiss: () -> Unit,
 ) : Scene<T> {
@@ -142,20 +162,28 @@ private class SheetScene<T : Any>(
                         .testTag(SheetTestTags.SCRIM),
                 )
                 // Tone, not elevation (DESIGN_SYSTEM.md §5.3, §10.10).
-                Surface(
-                    color = SkeinSheetDefaults.containerColor,
-                    shape = if (side) RectangleShape else SkeinSheetDefaults.shape,
-                    modifier =
-                        Modifier
-                            .align(if (side) Alignment.CenterEnd else Alignment.BottomCenter)
-                            .then(
-                                if (side) {
-                                    Modifier.width(SkeinSize.extraPaneLarge).fillMaxHeight()
-                                } else {
-                                    Modifier.fillMaxWidth().fillMaxHeight(BOTTOM_SHEET_FRACTION)
-                                },
-                            ).testTag(SheetTestTags.EXPANDED),
-                ) { CompositionLocalProvider(LocalSheetMode provides SheetMode.EXPANDED) { sheet.Content() } }
+                SkeinHingeSafeArea(boundsInWindow, Modifier.fillMaxSize()) {
+                    Box(Modifier.fillMaxSize()) {
+                        Surface(
+                            color = SkeinSheetDefaults.containerColor,
+                            shape = if (side) RectangleShape else SkeinSheetDefaults.shape,
+                            modifier =
+                                Modifier
+                                    .align(if (side) Alignment.CenterEnd else Alignment.BottomCenter)
+                                    .then(
+                                        if (side) {
+                                            Modifier.width(SkeinSize.extraPaneLarge).fillMaxHeight()
+                                        } else if (boundsInWindow == null) {
+                                            Modifier.fillMaxWidth().fillMaxHeight(BOTTOM_SHEET_FRACTION)
+                                        } else {
+                                            Modifier.fillMaxWidth().height(
+                                                minOf(bottomSheetHeight, boundsInWindow.height),
+                                            )
+                                        },
+                                    ).testTag(SheetTestTags.EXPANDED),
+                        ) { CompositionLocalProvider(LocalSheetMode provides SheetMode.EXPANDED) { sheet.Content() } }
+                    }
+                }
             }
         }
     }
@@ -166,10 +194,19 @@ private class SheetScene<T : Any>(
             other.sheet == sheet &&
             other.previousEntries == previousEntries &&
             other.expanded == expanded &&
-            other.side == side
+            other.side == side &&
+            other.boundsInWindow == boundsInWindow &&
+            other.bottomSheetHeight == bottomSheetHeight
 
-    override fun hashCode(): Int =
-        ((underlying.hashCode() * 31 + sheet.hashCode()) * 31 + expanded.hashCode()) * 31 + side.hashCode()
+    override fun hashCode(): Int {
+        var result = underlying.hashCode()
+        result = result * 31 + sheet.hashCode()
+        result = result * 31 + previousEntries.hashCode()
+        result = result * 31 + expanded.hashCode()
+        result = result * 31 + side.hashCode()
+        result = result * 31 + boundsInWindow.hashCode()
+        return result * 31 + bottomSheetHeight.hashCode()
+    }
 }
 
 private const val BOTTOM_SHEET_FRACTION = 0.5f

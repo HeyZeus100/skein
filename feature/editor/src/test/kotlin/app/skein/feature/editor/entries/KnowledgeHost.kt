@@ -19,6 +19,8 @@ import app.skein.feature.shell.host.SkeinShellState
 import app.skein.feature.shell.host.navKindsOf
 import app.skein.feature.shell.host.rememberSkeinShellState
 import app.skein.testing.InMemoryIndexStore
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flowOf
 import java.lang.reflect.Proxy
 import java.time.ZoneId
 import java.time.ZoneOffset
@@ -46,13 +48,23 @@ internal fun KnowledgeHost(
     onShell: (SkeinShellState) -> Unit,
     clock: () -> Long = System::currentTimeMillis,
     zone: ZoneId = ZoneOffset.UTC,
+    preparation: Flow<KnowledgePreparation> = flowOf(KnowledgePreparation()),
 ) {
     val content =
         @Composable {
             val manager = remember { idleUnlockManager() }
             val shell = rememberSkeinShellState(manager)
             onShell(shell)
-            val deps = remember(vault) { KnowledgeEntryDeps(vault, InMemoryIndexStore(), clock = clock, zone = zone) }
+            val deps =
+                remember(vault, preparation) {
+                    KnowledgeEntryDeps(
+                        vault,
+                        InMemoryIndexStore(),
+                        clock = clock,
+                        zone = zone,
+                        preparation = preparation,
+                    )
+                }
             SkeinShellHost(
                 shell = shell,
                 resolveKinds = navKindsOf(vault),

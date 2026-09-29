@@ -21,6 +21,7 @@ import app.skein.core.designsystem.components.SkeinTooltip
 import app.skein.core.designsystem.components.skeinFocusRing
 import app.skein.core.designsystem.icons.SkeinIcons
 import app.skein.core.designsystem.theme.SkeinSize
+import app.skein.feature.shell.layout.SkeinPosture
 
 /** Spec §3.4: "New chat (primary action, 56 dp, label … for TalkBack and tooltip)". */
 private val NEW_CHAT_BUTTON_SIZE = 56.dp
@@ -43,7 +44,12 @@ fun SkeinRailContent(
     spaces: List<SkeinSpace>,
     modifier: Modifier = Modifier,
     expanded: Boolean = false,
+    posture: SkeinPosture = SkeinPosture.Flat,
 ) {
+    if (posture is SkeinPosture.Tabletop) {
+        SkeinTabletopRail(destination, onNavigate, onNewChat, spaces, posture.hinge, modifier, expanded)
+        return
+    }
     val (top, bottom) = SkeinDestination.entries.partition { it != SkeinDestination.SETTINGS }
     NavigationRail(
         modifier = if (expanded) modifier.width(SkeinSize.railExpanded) else modifier,
@@ -70,7 +76,7 @@ fun SkeinRailContent(
 }
 
 @Composable
-private fun RailItem(
+internal fun RailItem(
     d: SkeinDestination,
     current: SkeinDestination,
     onNavigate: (SkeinDestination) -> Unit,

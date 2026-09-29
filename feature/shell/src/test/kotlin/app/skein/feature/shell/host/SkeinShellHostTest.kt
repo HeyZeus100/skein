@@ -29,6 +29,7 @@ import app.skein.core.navigation.ChatHomeKey
 import app.skein.core.navigation.ChatKey
 import app.skein.core.navigation.Destination
 import app.skein.core.navigation.KnowledgeHomeKey
+import app.skein.core.navigation.ModelsHomeKey
 import app.skein.core.navigation.NewNoteKey
 import app.skein.core.navigation.NoteKey
 import app.skein.core.navigation.ObjectKind
@@ -63,6 +64,45 @@ class SkeinShellHostTest {
     private val manager = UnlockManager(keyProvider = RecordingKeyProvider())
     private val ledger = ProbeLedger()
     private lateinit var shell: SkeinShellState
+
+    @Test
+    fun `notification hook runs after sanitise before rendering and preserves other destination stacks`() {
+        val open = mutableStateOf(false)
+        val lookup = CompletableDeferred<Map<SkeinId, ObjectKind>>()
+        var readyCalls = 0
+        composeRule.setContent {
+            SkeinTheme {
+                shell = rememberSkeinShellState(manager)
+                if (open.value) {
+                    SkeinShellHost(
+                        shell,
+                        { lookup.await() },
+                        onNavigationReady = {
+                            readyCalls++
+                            assertEquals("deleted note dropped first", listOf(KnowledgeHomeKey), shell.nav.currentStack)
+                            assertEquals("no entry rendered yet", 0, ledger.compositions.get())
+                            shell.navigate { goTo(it, ModelsHomeKey) }
+                        },
+                    ) { Probe(it, ledger) }
+                }
+            }
+        }
+        composeRule.runOnIdle {
+            shell.navigate { goTo(it, ChatKey(CHAT_A)) }
+            shell.navigate { goTo(it, NoteKey(NOTE_B)) }
+            open.value = true
+        }
+        composeRule.waitForIdle()
+        assertEquals(0, readyCalls)
+        composeRule.onNodeWithTag(SkeinShellHostTestTags.NAV_DISPLAY).assertDoesNotExist()
+        lookup.complete(mapOf(CHAT_A to ObjectKind.CHAT))
+        composeRule.waitForIdle()
+        assertEquals(1, readyCalls)
+        assertEquals(listOf(ChatHomeKey, ChatKey(CHAT_A)), shell.nav.stack(Destination.CHAT))
+        assertEquals(listOf(ModelsHomeKey), shell.nav.currentStack)
+        composeRule.onNodeWithTag(probeTag(ModelsHomeKey)).assertExists()
+        composeRule.onNodeWithTag(probeTag(NoteKey(NOTE_B))).assertDoesNotExist()
+    }
 
     @Test
     fun `nothing composes before unlock and nothing renders before the sanitise`() {

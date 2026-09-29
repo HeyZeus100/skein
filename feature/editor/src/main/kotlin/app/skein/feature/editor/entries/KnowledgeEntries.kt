@@ -8,7 +8,9 @@ package app.skein.feature.editor.entries
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.produceState
@@ -20,7 +22,10 @@ import androidx.compose.ui.platform.testTag
 import app.skein.core.designsystem.components.SkeinAction
 import app.skein.core.designsystem.components.SkeinEmptyState
 import app.skein.core.designsystem.components.SkeinListRow
+import app.skein.core.designsystem.components.SkeinStatus
+import app.skein.core.designsystem.components.SkeinStatusKind
 import app.skein.core.designsystem.icons.SkeinIcons
+import app.skein.core.designsystem.theme.SkeinSpacing
 import app.skein.core.model.DocumentKind
 import app.skein.core.model.IndexStore
 import app.skein.core.model.Persona
@@ -51,6 +56,7 @@ import app.skein.feature.shell.host.LocalSkeinWindowLayout
 import app.skein.feature.shell.host.SheetMode
 import app.skein.feature.shell.host.SheetPeekRow
 import app.skein.feature.shell.host.SkeinShellState
+import app.skein.feature.shell.host.entryBottomPadding
 import app.skein.feature.shell.host.followById
 import app.skein.feature.shell.host.navIconFor
 import app.skein.feature.shell.host.open
@@ -71,6 +77,14 @@ class KnowledgeEntryDeps(
     val personas: Flow<List<Persona>> = flowOf(emptyList()),
     val clock: () -> Long = System::currentTimeMillis,
     val zone: ZoneId = ZoneId.systemDefault(),
+    val preparation: Flow<KnowledgePreparation> = flowOf(KnowledgePreparation()),
+)
+
+/** Counts from the current ingest pass, supplied by the app; a notification never sets this state. */
+data class KnowledgePreparation(
+    val running: Boolean = false,
+    val processed: Int = 0,
+    val awaitingMeaningSearch: Int = 0,
 )
 
 object KnowledgeEntryTestTags {
@@ -81,6 +95,7 @@ object KnowledgeEntryTestTags {
     const val CONNECTIONS = "knowledge_entry_connections"
     const val CONNECTIONS_PEEK = "knowledge_entry_connections_peek"
     const val CHAT_SOURCE = "knowledge_entry_chat_source"
+    const val PREPARATION_STATUS = "knowledge_entry_preparation_status"
 }
 
 /** The kinds the Knowledge list shows (IA §3.2): every note and file; chats live in Chat. */
@@ -189,15 +204,44 @@ private fun KnowledgeList(
                 shell.newNote()
             }
         }
+        val preparation by deps.preparation.collectAsState(KnowledgePreparation())
+        KnowledgePreparationStatus(preparation)
         TimelineScreen(
             state = state,
             onEntryClick = { shell.open(it) },
             modifier = Modifier.weight(1f),
             zone = deps.zone,
             now = deps.clock,
+            bottomContentPadding = entryBottomPadding().calculateBottomPadding(),
         )
     }
 }
+
+/** An active pass and deferred semantic work are distinct; finishing lexical work never implies both are ready. */
+@Composable
+private fun KnowledgePreparationStatus(preparation: KnowledgePreparation) {
+    val label =
+        when {
+            preparation.running && preparation.processed > 0 ->
+                "Preparing for search… · ${documentCount(preparation.processed)} processed"
+            preparation.running -> "Preparing for search…"
+            preparation.awaitingMeaningSearch > 0 ->
+                "${documentCount(preparation.awaitingMeaningSearch)} awaiting search by meaning"
+            else -> return
+        }
+    SkeinStatus(
+        kind = if (preparation.running) SkeinStatusKind.Loading else SkeinStatusKind.Idle,
+        label = label,
+        // Progress has no known denominator. Announce once per state, not every document.
+        announcement = if (preparation.running) "Preparing for search…" else label,
+        modifier =
+            Modifier
+                .padding(horizontal = SkeinSpacing.space16, vertical = SkeinSpacing.space8)
+                .testTag(KnowledgeEntryTestTags.PREPARATION_STATUS),
+    )
+}
+
+private fun documentCount(count: Int): String = if (count == 1) "1 document" else "$count documents"
 
 /** KNOWLEDGE_UX_SPEC.md §6.1: every "New note" lands in Knowledge on a draft; no row until the first commit. */
 fun SkeinShellState.newNote() = navigate { goTo(it, NewNoteKey(SkeinId.random())) }
@@ -282,6 +326,7 @@ private fun ConnectionsEntry(
         BacklinksDrawer(state = backlinks, initiallyExpanded = true)
         SkeinListRow(
             title = "Open in Graph",
+            modifier = Modifier.padding(entryBottomPadding()),
             leadingIcon = SkeinIcons.Graph,
             onClick = { shell.navigate { openGraph(it, rawId) } },
         )
