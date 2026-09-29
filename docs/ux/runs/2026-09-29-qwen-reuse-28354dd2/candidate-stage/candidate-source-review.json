@@ -1,0 +1,180 @@
+{
+  "schema_version": 1,
+  "source_sha": "28354dd25bb4995930ff46a71752f43f8a0d5df3",
+  "prior_reviewed_source": "5d58f7cba26317c62ee7811472067fc73d0fee82",
+  "measured_native_source": "5ae91c238612bdd9b1511b3716d34b4fa5960dd2",
+  "selected_source_records_checked": 568,
+  "all_selected_objects_identical_to_prior_source_review": true,
+  "native_relevant_trees": [
+    {
+      "path": "native",
+      "old_tree": "ecefab4de66c322e7ee9a35995c3a830f9292d34",
+      "new_tree": "ecefab4de66c322e7ee9a35995c3a830f9292d34",
+      "identical": true,
+      "candidate_tree": "ecefab4de66c322e7ee9a35995c3a830f9292d34"
+    },
+    {
+      "path": "inference-service",
+      "old_tree": "8b68633b9e46604b5251d71bb4069b77ffd1eb5f",
+      "new_tree": "8b68633b9e46604b5251d71bb4069b77ffd1eb5f",
+      "identical": true,
+      "candidate_tree": "8b68633b9e46604b5251d71bb4069b77ffd1eb5f"
+    },
+    {
+      "path": "core/inference",
+      "old_tree": "fb767dff7c0a9d482c70eb47213c1158e57f08d0",
+      "new_tree": "fb767dff7c0a9d482c70eb47213c1158e57f08d0",
+      "identical": true,
+      "candidate_tree": "fb767dff7c0a9d482c70eb47213c1158e57f08d0"
+    },
+    {
+      "path": "core/ipc",
+      "old_tree": "c8660eee7dca79f5fc8f0ccaf8beadc07744de6b",
+      "new_tree": "c8660eee7dca79f5fc8f0ccaf8beadc07744de6b",
+      "identical": true,
+      "candidate_tree": "c8660eee7dca79f5fc8f0ccaf8beadc07744de6b"
+    },
+    {
+      "path": "core/model",
+      "old_tree": "acaaaaca5b98edfc06e655e3df0901a2ccf44131",
+      "new_tree": "acaaaaca5b98edfc06e655e3df0901a2ccf44131",
+      "identical": true,
+      "candidate_tree": "acaaaaca5b98edfc06e655e3df0901a2ccf44131"
+    },
+    {
+      "path": "core/verify",
+      "old_tree": "1ba9b63ea0bfa91e8ab7400d51ad0b6deff57573",
+      "new_tree": "1ba9b63ea0bfa91e8ab7400d51ad0b6deff57573",
+      "identical": true,
+      "candidate_tree": "1ba9b63ea0bfa91e8ab7400d51ad0b6deff57573"
+    },
+    {
+      "path": "core/rag",
+      "old_tree": "57149f7a2a2340285f2779fb1b2b4237bbcec0ab",
+      "new_tree": "57149f7a2a2340285f2779fb1b2b4237bbcec0ab",
+      "identical": true,
+      "candidate_tree": "57149f7a2a2340285f2779fb1b2b4237bbcec0ab"
+    },
+    {
+      "path": "core/vault",
+      "old_tree": "5d7f610dae0ea03202e14e098380cdbd15060979",
+      "new_tree": "5d7f610dae0ea03202e14e098380cdbd15060979",
+      "identical": true,
+      "candidate_tree": "5d7f610dae0ea03202e14e098380cdbd15060979"
+    },
+    {
+      "path": "build-logic",
+      "old_tree": "ef72a3b3b59c30104efe558fb4835075b61cb3d2",
+      "new_tree": "ef72a3b3b59c30104efe558fb4835075b61cb3d2",
+      "identical": true,
+      "candidate_tree": "ef72a3b3b59c30104efe558fb4835075b61cb3d2"
+    },
+    {
+      "path": "gradle",
+      "old_tree": "5ab2a6039b6580c90ae804e8ebe8b72b0bf942ad",
+      "new_tree": "5ab2a6039b6580c90ae804e8ebe8b72b0bf942ad",
+      "identical": true,
+      "candidate_tree": "5ab2a6039b6580c90ae804e8ebe8b72b0bf942ad"
+    },
+    {
+      "path": "third_party",
+      "old_tree": "abbf1fb7e2583c5ce999cc2da5c717f40f5b2073",
+      "new_tree": "abbf1fb7e2583c5ce999cc2da5c717f40f5b2073",
+      "identical": true,
+      "candidate_tree": "abbf1fb7e2583c5ce999cc2da5c717f40f5b2073"
+    },
+    {
+      "path": "app/src/main/kotlin/app/skein/models",
+      "old_tree": "3e73a7c0427777995265d24604b36d74a795227d",
+      "new_tree": "3e73a7c0427777995265d24604b36d74a795227d",
+      "identical": true,
+      "candidate_tree": "3e73a7c0427777995265d24604b36d74a795227d"
+    }
+  ],
+  "submodule_pins": [
+    {
+      "path": "third_party/SPIRV-Headers",
+      "old": {
+        "mode": "160000",
+        "kind": "commit",
+        "git_oid": "ad9184e76a66b1001c29db9b0a3e87f646c64de0"
+      },
+      "new": {
+        "mode": "160000",
+        "kind": "commit",
+        "git_oid": "ad9184e76a66b1001c29db9b0a3e87f646c64de0"
+      },
+      "identical": true
+    },
+    {
+      "path": "third_party/Vulkan-Headers",
+      "old": {
+        "mode": "160000",
+        "kind": "commit",
+        "git_oid": "8864cdc896bbc2a9b6eb36b3218fc9ef57908d77"
+      },
+      "new": {
+        "mode": "160000",
+        "kind": "commit",
+        "git_oid": "8864cdc896bbc2a9b6eb36b3218fc9ef57908d77"
+      },
+      "identical": true
+    },
+    {
+      "path": "third_party/llama.cpp",
+      "old": {
+        "mode": "160000",
+        "kind": "commit",
+        "git_oid": "b29c606e28a01b1bc8c1351026a0fa6e616bf6c4"
+      },
+      "new": {
+        "mode": "160000",
+        "kind": "commit",
+        "git_oid": "b29c606e28a01b1bc8c1351026a0fa6e616bf6c4"
+      },
+      "identical": true
+    }
+  ],
+  "source_evidence_scope": "JNI/template/tokenizer/native runtime and build inputs remain equal; the changed UI/first-send Knowledge state is not a whole-app answer-equivalence claim.",
+  "synthetic_setup_equal_to_prior_aee46": true,
+  "assembly_logs": [
+    {
+      "variant": "ordinary",
+      "original_path": "${HOST_HOME}/skein-worktrees/ux-integration-20260929/build/agent-logs/workspace-assemble-ordinary-1/run.log",
+      "bytes": 30809,
+      "sha256": "66bc0d0ce5d78ff05bd3dfe36ec11c2ca078f6a363b2cd73bbd3909769accd85",
+      "command": [
+        "./gradlew",
+        "--max-workers=2",
+        ":app:assembleFossDebug",
+        ":app:assembleFossDebugAndroidTest",
+        ":inference-service:assembleFossDebugAndroidTest",
+        "--stacktrace"
+      ],
+      "source_attestation": "root host-declared checkout; not embedded",
+      "copied_gzip_sha256": "f8a71c84828cea16800a0f94cb1159dd5177ee6208262d3b5f9b09e008207afc",
+      "inference_test_compile_from_cache": true,
+      "optin_configuration_property_change_detected": false
+    },
+    {
+      "variant": "optin",
+      "original_path": "${HOST_HOME}/skein-worktrees/ux-integration-20260929/build/agent-logs/workspace-assemble-optin-1/run.log",
+      "bytes": 30988,
+      "sha256": "c7b0a5d9c5bdf1d9a3776ab0e8fc3a9fe5285b5cb5dc5ce5ccc4f77657c38c11",
+      "command": [
+        "./gradlew",
+        "--max-workers=2",
+        "-Pskein.syntheticBenchmark=true",
+        ":app:assembleFossDebug",
+        ":app:assembleFossDebugAndroidTest",
+        ":inference-service:assembleFossDebugAndroidTest",
+        "--stacktrace"
+      ],
+      "source_attestation": "root host-declared checkout; not embedded",
+      "copied_gzip_sha256": "a1915a08d19490c5e98d82fead929dab27095add4b779546fe51f910a1193a89",
+      "inference_test_compile_from_cache": true,
+      "optin_configuration_property_change_detected": true
+    }
+  ],
+  "new_since_5d58_scope": "Two shell host files, two foldable test files, two foldable reviewer files and reviewed UX PNG baselines; no selected runtime/model/native/setup changes."
+}

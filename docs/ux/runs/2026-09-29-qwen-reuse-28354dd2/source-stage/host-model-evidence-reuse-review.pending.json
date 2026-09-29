@@ -1,0 +1,37 @@
+{
+  "schema_version": 1,
+  "approved": false,
+  "app_source_sha": "5d58f7cba26317c62ee7811472067fc73d0fee82",
+  "test_build_sha": "5d58f7cba26317c62ee7811472067fc73d0fee82",
+  "app_apk_sha256": null,
+  "test_apk_sha256": null,
+  "pending": "Root must supply exact new candidate APKs/build identity; independent comparison not complete. This file is not release approval.",
+  "identity_evidence_sha256": "625212a9771344d4069f06209fee7cf75b5e4bb375542932d43081b72c4463f2",
+  "original_identity_source_sha": "5ae91c238612bdd9b1511b3716d34b4fa5960dd2",
+  "model_sha256": "2c5f9a121ae6695208e300c16acca303669afa4e18812061164dca9c97071b12",
+  "model_size": 1590475744,
+  "model_blake3": "db158ff62057f42fef73363387db4bfac01da469475840dc0aad5dae70eb0e4a",
+  "full_device_sha256_and_size_still_required": true,
+  "source_evidence": [
+    {
+      "path": "${HOST_HOME}/skein-worktrees/ux-workspace-models-test-20260929/build/agent-logs/native-qwen-reuse-5d58f7c/source-review.json",
+      "size": 4408,
+      "sha256": "04f76416ee47fd6c7edbe3cadcb67bedf3397d57d0454b218394c93ddf816db3"
+    },
+    {
+      "path": "${HOST_HOME}/skein-worktrees/ux-workspace-models-test-20260929/build/agent-logs/native-qwen-reuse-5d58f7c/source-file-manifest.json",
+      "size": 327314,
+      "sha256": "2a12e43105a254ee9eb3c2cd2dfd5dfd158b3a5f12099450d5e1e7820eef82ee"
+    },
+    {
+      "path": "${HOST_HOME}/skein-worktrees/ux-workspace-models-test-20260929/build/agent-logs/native-qwen-reuse-5d58f7c/prior-public-evidence-review.json",
+      "size": 7934,
+      "sha256": "d2ff8d986ed3402ede9bf2fd7cd3147307921a93dd7c7066fc614a095c1ec0d0"
+    },
+    {
+      "path": "${HOST_HOME}/skein-worktrees/ux-workspace-models-test-20260929/build/agent-logs/native-qwen-reuse-5d58f7c/host-blake3-implementation-verification.json",
+      "size": 1912,
+      "sha256": "c8c4fa40d1c72a5d76ecc785e5a786b31e1bbec2134e020d8abfa414ee9584f6"
+    }
+  ]
+}

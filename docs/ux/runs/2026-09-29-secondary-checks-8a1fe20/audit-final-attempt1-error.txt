@@ -1,0 +1,1 @@
+Assertion expected21 unit task lines; actual task list also includes NO-SOURCE tasks. Preserve original audit script and refine to distinguish outcome statuses.

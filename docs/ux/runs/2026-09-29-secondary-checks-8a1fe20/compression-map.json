@@ -1,0 +1,178 @@
+[
+  {
+    "source": "ci-36588129585/case-identity-comparison.json",
+    "source_sha256": "73728954fd24feab43064bf809db5d5af7bdb881a92e91b64edb573c7c70c1ff",
+    "source_bytes": 194425,
+    "portable": "ci-36588129585/case-identity-comparison.json.gz",
+    "portable_sha256": "3749b8941fd3b629d4cbd089449d77d238be7cb1254d166afafa7df1b605f0d0",
+    "lossless_gzip": true
+  },
+  {
+    "source": "ci-36588129585/job-109473821627.log",
+    "source_sha256": "cb466426cf3e22ce542523a2a3a812a3fee77ab310eddd00b199f7fa190c0c3a",
+    "source_bytes": 400596,
+    "portable": "ci-36588129585/job-109473821627.log.gz",
+    "portable_sha256": "80c8efd5f60344806013cba02598e5a812e37aae4b412c83e614e6f8e6086c2a",
+    "lossless_gzip": true
+  },
+  {
+    "source": "ci-36588129585/snapshot-20260929T152633.595685Z.json",
+    "source_sha256": "a548cddd14f8b012cca6e341461eabc45a029cd976a00e98b289dec1f814cdb5",
+    "source_bytes": 24717,
+    "portable": "ci-36588129585/snapshot-20260929T152633.595685Z.json.gz",
+    "portable_sha256": "21880577ef486489fd574154db4f897a171c99bf08e6d31b156371cff615334a",
+    "lossless_gzip": true
+  },
+  {
+    "source": "ci-36588129585/unit-summary.json",
+    "source_sha256": "06dbad76fcd2ce5ab87ee1221d892ff085059a92d22fdc032dbda871ee59775b",
+    "source_bytes": 741306,
+    "portable": "ci-36588129585/unit-summary.json.gz",
+    "portable_sha256": "5eab88f8d8dfed198daf6be6b473512679cf8ac55739e15eefef248edd262d21",
+    "lossless_gzip": true
+  },
+  {
+    "source": "final-run-review.json",
+    "source_sha256": "5a177009be3ed69fa09de3595eb76860d4d9be1547b91ba270dbebbe0632ed27",
+    "source_bytes": 21744,
+    "portable": "final-run-review.json.gz",
+    "portable_sha256": "64a54bc71ecd89b91d6ebf6325dd85dd759af3efa7a4fb1deb2020e3d89dfc87",
+    "lossless_gzip": true
+  },
+  {
+    "source": "golden-tree.tsv",
+    "source_sha256": "676541da7273e43e999bc31ea0c5d3d3bd45e8099bf5461a338990cad4accb90",
+    "source_bytes": 105447,
+    "portable": "golden-tree.tsv.gz",
+    "portable_sha256": "68c93fee8d5deeecc901e5e784748fc667363c8573e5a4b507f0e70e85bc8ada",
+    "lossless_gzip": true
+  },
+  {
+    "source": "rb-36588129373/artifact-11043351344-so-determinism/files/run.EFt2TE8Q/build-1.log",
+    "source_sha256": "37a85ccca5eccb744d4f9f20f122deb944e1d15299998b35ff8aad4f19999468",
+    "source_bytes": 40042,
+    "portable": "rb-36588129373/artifact-11043351344-so-determinism/files/run.EFt2TE8Q/build-1.log.gz",
+    "portable_sha256": "c373006e28c2a20a252d1fe5702f51f026ef94ba926e48b897618903fcf35de8",
+    "lossless_gzip": true
+  },
+  {
+    "source": "rb-36588129373/artifact-11043351344-so-determinism/files/run.EFt2TE8Q/build-2.log",
+    "source_sha256": "4b1b0117fb83f214824f63678f22cfbb215acce4fc7c4a1d28e9a3171d71fd42",
+    "source_bytes": 38595,
+    "portable": "rb-36588129373/artifact-11043351344-so-determinism/files/run.EFt2TE8Q/build-2.log.gz",
+    "portable_sha256": "e0bef6ab648babe072cfb2e35a5e0b92be3e5ef68c2434338ede02a62757bd04",
+    "lossless_gzip": true
+  },
+  {
+    "source": "rb-36588129373/evidence-review.json",
+    "source_sha256": "d174f99e9c54f3db8a12a598e77da58919a3a4a7818137b83910d505c12e48b4",
+    "source_bytes": 8897,
+    "portable": "rb-36588129373/evidence-review.json.gz",
+    "portable_sha256": "c5911cca6195c18cf7511a3b7705cacaaff65b6bded385a3ea6e80d1c196071c",
+    "lossless_gzip": true
+  },
+  {
+    "source": "rb-36588129373/job-109473819921.log",
+    "source_sha256": "51e03bdb061607381b09163015e2c931d2c72358a3574a00a2baf11af4809c74",
+    "source_bytes": 38035,
+    "portable": "rb-36588129373/job-109473819921.log.gz",
+    "portable_sha256": "ff6f4e89a6a8f0ae31d565f3cd51edf6837c37185d33cfae3061ab94f46d7664",
+    "lossless_gzip": true
+  },
+  {
+    "source": "rb-36588129373/job-109473957175.log",
+    "source_sha256": "936a0c8a01d34a4acfdeff5ac1592422cd6409349a3ca197c2c4ba10e3796f3e",
+    "source_bytes": 48908,
+    "portable": "rb-36588129373/job-109473957175.log.gz",
+    "portable_sha256": "4e41c1103e3f877e3bb3a3dc7d8d1b65d60aa0ae838cf1eb7a95b606f258ced6",
+    "lossless_gzip": true
+  },
+  {
+    "source": "rb-36588129373/job-109473957181.log",
+    "source_sha256": "fc7d517f25f0f9a8bd85781ca17dc6e2cca96c27e35510423fb6bc64e0ef103b",
+    "source_bytes": 177084,
+    "portable": "rb-36588129373/job-109473957181.log.gz",
+    "portable_sha256": "1bb057b9155a407d4f9c9e9ec03defb834a33194a442a140cc5388daa8eafb83",
+    "lossless_gzip": true
+  },
+  {
+    "source": "rb-36588129373/job-109473957400.log",
+    "source_sha256": "22dc5203d6ade5e47a33bf032b7aa12760713a164f8424c4e4686b8bef4e869a",
+    "source_bytes": 175044,
+    "portable": "rb-36588129373/job-109473957400.log.gz",
+    "portable_sha256": "b9ba9d16dc1b26ace1d93bd9a3e42e3a370c49c13316a31a5c9bb9944a9c2e28",
+    "lossless_gzip": true
+  },
+  {
+    "source": "rb-36588129373/job-109478918130.log",
+    "source_sha256": "8552cd4ade6f4e5b93dc63203858b30e4d59961d40e4f2f82af105da8f2930b6",
+    "source_bytes": 25202,
+    "portable": "rb-36588129373/job-109478918130.log.gz",
+    "portable_sha256": "f030e86f98212e1cbd42ff336708e0812ed509da5d28646b93794d6f8d2a5a29",
+    "lossless_gzip": true
+  },
+  {
+    "source": "rb-36588129373/release-byte-comparison.json",
+    "source_sha256": "a96372828c8eaca8b5c878621bd53dba1e573fd761ab8668bf54de16cded5688",
+    "source_bytes": 134065,
+    "portable": "rb-36588129373/release-byte-comparison.json.gz",
+    "portable_sha256": "6c6b7f14786d219fe23027c5dd85ba370c93ebdaf024fc0ff04e3adcdef1275e",
+    "lossless_gzip": true
+  },
+  {
+    "source": "rb-36588129373/snapshot-20260929T152634.676816Z.json",
+    "source_sha256": "8ed9081cdd673dba222f5cc1c46a49fe5c74d40822432ec2391108810773d2d4",
+    "source_bytes": 45383,
+    "portable": "rb-36588129373/snapshot-20260929T152634.676816Z.json.gz",
+    "portable_sha256": "850163e25570e7b2c1addc44c63f6bfd3f1bd077e966405e4ce7822c14607c9f",
+    "lossless_gzip": true
+  },
+  {
+    "source": "scheduled-retrieval-failure.log",
+    "source_sha256": "5d304545d3b31ff4257120e983c46884b65f96fa04dd2675e410c47b40e7b8e9",
+    "source_bytes": 216628,
+    "portable": "scheduled-retrieval-failure.log.gz",
+    "portable_sha256": "01e581939ec44ea5f4fe4f5c30aa8f77319728817a0a181ff16e2e2699bf57ef",
+    "lossless_gzip": true
+  },
+  {
+    "source": "screenshots-36588129731/evidence-review.json",
+    "source_sha256": "8b85e297705c75abab51de3b88c68f5aafd307368a3575452941bfabaedc0962",
+    "source_bytes": 624690,
+    "portable": "screenshots-36588129731/evidence-review.json.gz",
+    "portable_sha256": "70adf570bdae0f1b979dc2518ce4c974ea48a78adf77cf3fe7bd6dbac68319dc",
+    "lossless_gzip": true
+  },
+  {
+    "source": "screenshots-36588129731/job-109473822749.log",
+    "source_sha256": "b178cb41333f4da9adb3a7fca86f8c6f3fdf772893e4f700c48ec29a42ee3358",
+    "source_bytes": 150482,
+    "portable": "screenshots-36588129731/job-109473822749.log.gz",
+    "portable_sha256": "0c978c63b0e2dd7512960b8fef248bdff94cb9894e0a9d564d1c64ef234c56e7",
+    "lossless_gzip": true
+  },
+  {
+    "source": "screenshots-36588129731/snapshot-20260929T152633.609015Z.json",
+    "source_sha256": "b0da7e0b8249bebb09129040816e87a6ce84e835a567c5e29d145cb92addc44e",
+    "source_bytes": 20294,
+    "portable": "screenshots-36588129731/snapshot-20260929T152633.609015Z.json.gz",
+    "portable_sha256": "d49c488571455b4dbe51d875ffb581281910fb9d995de2837ad82c67f67dfdb9",
+    "lossless_gzip": true
+  },
+  {
+    "source": "workspace-combined-check-1-original-review.json",
+    "source_sha256": "20978e3ff43d8c76a404a0f2d98ad7a1b2706e0abf6dfbd48acbb6830b63e54b",
+    "source_bytes": 49447,
+    "portable": "workspace-combined-check-1-original-review.json.gz",
+    "portable_sha256": "43814b0f7be0cc4d6050bc5b83346862d75c41dd460ae460667dda85947e2e0a",
+    "lossless_gzip": true
+  },
+  {
+    "source": "workspace-skip-identity-comparison.json",
+    "source_sha256": "156a63d0bd9fb0f96790ed39d16f49cce89edc1905b58599538ac36920ccfa71",
+    "source_bytes": 13379,
+    "portable": "workspace-skip-identity-comparison.json.gz",
+    "portable_sha256": "99dd2a1129e5aaf2447cf87f7982e1227b4a7784aa21acebfb04bc72e25dfdb7",
+    "lossless_gzip": true
+  }
+]

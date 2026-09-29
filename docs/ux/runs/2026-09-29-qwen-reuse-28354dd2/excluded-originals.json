@@ -1,0 +1,76 @@
+{
+  "schema_version": 1,
+  "no_binary_or_private_summary_contents_copied": true,
+  "restricted_prior_summary_hash_only": {
+    "path": "${HOST_HOME}/skein-worktrees/conference-demo-20260929/build/agent-logs/fold/physical-5ae91c2-20260929T102342Z-v2/native/summary.json",
+    "size": 2303,
+    "sha256": "b86f34c12fd4fff2c1b64f5758860f7af282b8d77eefd849068f2c276066d595",
+    "contents_read_for_publication": false
+  },
+  "large_artifact_references": [
+    {
+      "role": "optin-app-inventory.json",
+      "path": "${HOST_HOME}/skein-worktrees/ux-integration-20260929/build/agent-logs/candidate-28354dd-optin/app-foss-debug.apk",
+      "size": 127098252,
+      "sha256": "8053e8e10ee6dbe7b9e650506971bf30b93e64861bbdff1237420680d10b4eb9"
+    },
+    {
+      "role": "optin-app_test-inventory.json",
+      "path": "${HOST_HOME}/skein-worktrees/ux-integration-20260929/build/agent-logs/candidate-28354dd-optin/app-foss-debug-androidTest.apk",
+      "size": 91337045,
+      "sha256": "0891fce37751f92a2e79a1c46424e3d463fbdef0903dce64aa9933f9be472cf2"
+    },
+    {
+      "role": "optin-native_test-inventory.json",
+      "path": "${HOST_HOME}/skein-worktrees/ux-integration-20260929/build/agent-logs/candidate-28354dd-optin/inference-service-foss-debug-androidTest.apk",
+      "size": 130304344,
+      "sha256": "c1186bc554ae89d89a35983f883354e436cb34f2cebb790cc06a3a896409fb2d"
+    },
+    {
+      "role": "ordinary-app_test-inventory.json",
+      "path": "${HOST_HOME}/skein-worktrees/ux-integration-20260929/build/agent-logs/candidate-28354dd-ordinary/app-foss-debug-androidTest.apk",
+      "size": 91107428,
+      "sha256": "da1cd3e0083f6ba43e62174e25f7d4a80c63bf0f6ee8519e10c2f3566dc40ff6"
+    },
+    {
+      "role": "ordinary-native_test-inventory.json",
+      "path": "${HOST_HOME}/skein-worktrees/ux-integration-20260929/build/agent-logs/candidate-28354dd-ordinary/inference-service-foss-debug-androidTest.apk",
+      "size": 130230126,
+      "sha256": "acf4d0df2f5953889ce89c8a0bc504b99d4b193ebf4f8f29995d29244532168a"
+    },
+    {
+      "role": "old-app-apk-inventory.json",
+      "path": "${HOST_HOME}/skein-worktrees/ux-integration-20260929/build/agent-logs/candidate-5ae91c2-optin/app-foss-debug.apk",
+      "size": 125280302,
+      "sha256": "1f83b71c5fe60a6dc26fcac7a4c75b49fbf009b6e8c9d972b2176c18081c1323"
+    },
+    {
+      "role": "old-app_test-apk-inventory.json",
+      "path": "${HOST_HOME}/skein-worktrees/ux-integration-20260929/build/agent-logs/candidate-aee46e4-testonly/app-foss-debug-androidTest.apk",
+      "size": 91163348,
+      "sha256": "9575f53a36e6dbd1dcd9f4cdcfe4af6407a74d1566343bf5bb29ca0bc9edef95"
+    },
+    {
+      "role": "old-native_test-apk-inventory.json",
+      "path": "${HOST_HOME}/skein-worktrees/ux-integration-20260929/build/agent-logs/candidate-5ae91c2-optin/inference-service-foss-debug-androidTest.apk",
+      "size": 130230126,
+      "sha256": "bb1b2f496f6c831ced00f20d9dd08d6f571d87fcb48040dfba17f4a7c561f342"
+    }
+  ],
+  "public_model": {
+    "path": "${HOST_HOME}/skein-worktrees/conference-demo-20260929/build/agent-logs/fold/20260929T081355Z-preflight-89bcc0/public-model-cache-qwen-2c5f9a121ae6/Qwen2.5-3B-Instruct-abliterated-Q3_K_M.gguf",
+    "event": "complete",
+    "bytes": 1590475744,
+    "sha256": "2c5f9a121ae6695208e300c16acca303669afa4e18812061164dca9c97071b12",
+    "blake3": "db158ff62057f42fef73363387db4bfac01da469475840dc0aad5dae70eb0e4a",
+    "elapsed_ms": 7413,
+    "classification": "host public-model identity; not device benchmark"
+  },
+  "compiled_binaries": "Original class/JAR hashes are retained in host implementation provenance; binaries excluded.",
+  "original_release_reference": {
+    "path": "${HOST_HOME}/skein-worktrees/ux-integration-20260929/build/agent-logs/candidate-aee46e4-testonly/release.json",
+    "size": 9814,
+    "sha256": "34dfaaa13beafeff8a4234de54decdb7c7bbc20d3e65f450c9656b0659b17e67"
+  },
+  "originals_preserved": true
+}

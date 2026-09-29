@@ -1,0 +1,16 @@
+so-determinism: 2 cold build(s) of :inference-service:assembleFossRelease
+  repo                 /home/runner/work/skein/skein
+  abi                  arm64-v8a
+  source commit        28354dd25bb4995930ff46a71752f43f8a0d5df3
+  SOURCE_DATE_EPOCH    1790696685
+  shader patches       ON
+  build logs           /home/runner/work/_temp/so/run.gCLREb8A
+
+  build 1  2aefda01808f10bf5693ab02d0857e0169dc09550b615896939cb176c032daff
+  build 2  2aefda01808f10bf5693ab02d0857e0169dc09550b615896939cb176c032daff
+
+  1 2aefda01808f10bf5693ab02d0857e0169dc09550b615896939cb176c032daff
+  2 2aefda01808f10bf5693ab02d0857e0169dc09550b615896939cb176c032daff
+[ok]   libskein_llama.so (arm64-v8a): 2 build(s), 1 distinct sha256
+
+libskein_llama.so is a function of its sources across 2 cold builds.

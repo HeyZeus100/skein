@@ -1,0 +1,31 @@
+{
+  "job_log_sha256": "2682dd5c3a957d90cbc7fc0b5cc98b524ea5026ea8ff0320a73153231cdd304e",
+  "test_task_lines": [
+    "2026-09-29T15:48:29.1609089Z > Task :core:designsystem:testDebugUnitTest",
+    "2026-09-29T15:49:10.9595574Z > Task :feature:chat:testDebugUnitTest",
+    "2026-09-29T15:49:28.2609119Z > Task :feature:editor:testDebugUnitTest",
+    "2026-09-29T15:50:08.8618686Z > Task :feature:graph:testDebugUnitTest",
+    "2026-09-29T15:50:19.4594501Z > Task :feature:models:testDebugUnitTest",
+    "2026-09-29T15:50:35.5606229Z > Task :feature:settings:testDebugUnitTest",
+    "2026-09-29T15:50:49.9594326Z > Task :feature:timeline:testDebugUnitTest",
+    "2026-09-29T15:50:55.4596856Z > Task :feature:shell:testDebugUnitTest"
+  ],
+  "verify_task_lines": [
+    "2026-09-29T15:48:53.4596928Z > Task :core:designsystem:verifyRoborazziDebug",
+    "2026-09-29T15:49:44.3596980Z > Task :feature:editor:verifyRoborazziDebug",
+    "2026-09-29T15:49:49.1628768Z > Task :feature:chat:verifyRoborazziDebug",
+    "2026-09-29T15:50:08.8670348Z > Task :feature:graph:verifyRoborazziDebug",
+    "2026-09-29T15:50:19.4595355Z > Task :feature:models:verifyRoborazziDebug",
+    "2026-09-29T15:50:35.5607478Z > Task :feature:settings:verifyRoborazziDebug",
+    "2026-09-29T15:50:49.9595424Z > Task :feature:timeline:verifyRoborazziDebug",
+    "2026-09-29T15:51:05.0608829Z > Task :feature:shell:verifyRoborazziDebug"
+  ],
+  "populated_test_task_states": {
+    "EXECUTED": 8
+  },
+  "no_build_cache_lines": [
+    "2026-09-29T15:47:00.2044642Z ##[group]Run ./gradlew --max-workers=2 --no-build-cache verifyRoborazziDebug --continue --stacktrace",
+    "2026-09-29T15:47:00.2045103Z \u001b[36;1m./gradlew --max-workers=2 --no-build-cache verifyRoborazziDebug --continue --stacktrace\u001b[0m"
+  ],
+  "failed_build_markers": []
+}

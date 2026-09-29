@@ -1,0 +1,71 @@
+{
+  "job_log": "job-109473821627.log",
+  "test_task_lines": [
+    "2026-09-29T15:12:50.7228141Z > Task :app:testDevDebugUnitTest FROM-CACHE",
+    "2026-09-29T15:12:51.1160842Z > Task :embedder-service:testDebugUnitTest FROM-CACHE",
+    "2026-09-29T15:12:51.1165082Z > Task :app:testFossDebugUnitTest FROM-CACHE",
+    "2026-09-29T15:12:51.2172087Z > Task :inference-service:testDevDebugUnitTest FROM-CACHE",
+    "2026-09-29T15:12:51.2227974Z > Task :inference-service:testFossDebugUnitTest FROM-CACHE",
+    "2026-09-29T15:12:51.5398106Z > Task :testing-ui:testDebugUnitTest FROM-CACHE",
+    "2026-09-29T15:12:51.8148365Z > Task :core:export:testDebugUnitTest FROM-CACHE",
+    "2026-09-29T15:12:51.8227982Z > Task :core:designsystem:testDebugUnitTest FROM-CACHE",
+    "2026-09-29T15:12:51.9124496Z > Task :core:ipc:testDebugUnitTest FROM-CACHE",
+    "2026-09-29T15:12:51.9130554Z > Task :core:inference:testDebugUnitTest FROM-CACHE",
+    "2026-09-29T15:12:52.1283704Z > Task :core:security:testDebugUnitTest FROM-CACHE",
+    "2026-09-29T15:12:52.2185830Z > Task :core:rag:testDebugUnitTest FROM-CACHE",
+    "2026-09-29T15:12:52.6130721Z > Task :core:vault:testDevDebugUnitTest FROM-CACHE",
+    "2026-09-29T15:12:52.8460619Z > Task :core:vault:testFossDebugUnitTest FROM-CACHE",
+    "2026-09-29T15:12:53.2138140Z > Task :feature:chat:testDebugUnitTest FROM-CACHE",
+    "2026-09-29T15:12:53.4492061Z > Task :feature:editor:testDebugUnitTest FROM-CACHE",
+    "2026-09-29T15:12:53.7119021Z > Task :feature:graph:testDebugUnitTest FROM-CACHE",
+    "2026-09-29T15:12:53.9438480Z > Task :feature:onboarding:testDebugUnitTest NO-SOURCE",
+    "2026-09-29T15:12:53.9612686Z > Task :feature:personas:testDebugUnitTest NO-SOURCE",
+    "2026-09-29T15:12:53.9727507Z > Task :feature:models:testDebugUnitTest FROM-CACHE",
+    "2026-09-29T15:12:54.3130006Z > Task :feature:settings:testDebugUnitTest FROM-CACHE",
+    "2026-09-29T15:12:54.6115627Z > Task :feature:shell:testDebugUnitTest FROM-CACHE",
+    "2026-09-29T15:12:54.8118115Z > Task :feature:timeline:testDebugUnitTest FROM-CACHE"
+  ],
+  "test_tasks_not_executed": [
+    "2026-09-29T15:12:50.7228141Z > Task :app:testDevDebugUnitTest FROM-CACHE",
+    "2026-09-29T15:12:51.1160842Z > Task :embedder-service:testDebugUnitTest FROM-CACHE",
+    "2026-09-29T15:12:51.1165082Z > Task :app:testFossDebugUnitTest FROM-CACHE",
+    "2026-09-29T15:12:51.2172087Z > Task :inference-service:testDevDebugUnitTest FROM-CACHE",
+    "2026-09-29T15:12:51.2227974Z > Task :inference-service:testFossDebugUnitTest FROM-CACHE",
+    "2026-09-29T15:12:51.5398106Z > Task :testing-ui:testDebugUnitTest FROM-CACHE",
+    "2026-09-29T15:12:51.8148365Z > Task :core:export:testDebugUnitTest FROM-CACHE",
+    "2026-09-29T15:12:51.8227982Z > Task :core:designsystem:testDebugUnitTest FROM-CACHE",
+    "2026-09-29T15:12:51.9124496Z > Task :core:ipc:testDebugUnitTest FROM-CACHE",
+    "2026-09-29T15:12:51.9130554Z > Task :core:inference:testDebugUnitTest FROM-CACHE",
+    "2026-09-29T15:12:52.1283704Z > Task :core:security:testDebugUnitTest FROM-CACHE",
+    "2026-09-29T15:12:52.2185830Z > Task :core:rag:testDebugUnitTest FROM-CACHE",
+    "2026-09-29T15:12:52.6130721Z > Task :core:vault:testDevDebugUnitTest FROM-CACHE",
+    "2026-09-29T15:12:52.8460619Z > Task :core:vault:testFossDebugUnitTest FROM-CACHE",
+    "2026-09-29T15:12:53.2138140Z > Task :feature:chat:testDebugUnitTest FROM-CACHE",
+    "2026-09-29T15:12:53.4492061Z > Task :feature:editor:testDebugUnitTest FROM-CACHE",
+    "2026-09-29T15:12:53.7119021Z > Task :feature:graph:testDebugUnitTest FROM-CACHE",
+    "2026-09-29T15:12:53.9727507Z > Task :feature:models:testDebugUnitTest FROM-CACHE",
+    "2026-09-29T15:12:54.3130006Z > Task :feature:settings:testDebugUnitTest FROM-CACHE",
+    "2026-09-29T15:12:54.6115627Z > Task :feature:shell:testDebugUnitTest FROM-CACHE",
+    "2026-09-29T15:12:54.8118115Z > Task :feature:timeline:testDebugUnitTest FROM-CACHE"
+  ],
+  "all_task_status_counts": {
+    "SKIPPED": 261,
+    "FROM-CACHE": 760,
+    "NO-SOURCE": 353,
+    "executed": 778,
+    "UP-TO-DATE": 551
+  },
+  "build_cache_flags": [
+    "2026-09-29T15:11:01.7612186Z ##[group]Run ./gradlew --max-workers=2 ktlintCheck lint check --stacktrace",
+    "2026-09-29T15:11:01.7613286Z \u001b[36;1m./gradlew --max-workers=2 ktlintCheck lint check --stacktrace\u001b[0m",
+    "2026-09-29T15:13:02.7282929Z ##[group]Run ./gradlew --max-workers=2 assembleFossDebug --stacktrace",
+    "2026-09-29T15:13:02.7283974Z \u001b[36;1m./gradlew --max-workers=2 assembleFossDebug --stacktrace\u001b[0m"
+  ],
+  "golden_verification_lines": [],
+  "successful_build_markers": [
+    "2026-09-29T15:12:54.9116062Z BUILD SUCCESSFUL in 1m 53s",
+    "2026-09-29T15:16:44.0940379Z BUILD SUCCESSFUL in 3m 41s",
+    "2026-09-29T15:17:03.8777052Z BUILD SUCCESSFUL in 9s"
+  ],
+  "failed_build_markers": []
+}

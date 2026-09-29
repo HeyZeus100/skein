@@ -1,0 +1,149 @@
+{
+  "schema_version": 1,
+  "approved": true,
+  "app_source_sha": "28354dd25bb4995930ff46a71752f43f8a0d5df3",
+  "test_build_sha": "28354dd25bb4995930ff46a71752f43f8a0d5df3",
+  "app_apk_sha256": "8053e8e10ee6dbe7b9e650506971bf30b93e64861bbdff1237420680d10b4eb9",
+  "test_apk_sha256": "0891fce37751f92a2e79a1c46424e3d463fbdef0903dce64aa9933f9be472cf2",
+  "prior_release_sha256": "cf110c3857bc7d94ead8fde9438355f14193cf702061b00b60d0c842ef6c8f03",
+  "prior_app_apk_sha256": "1f83b71c5fe60a6dc26fcac7a4c75b49fbf009b6e8c9d972b2176c18081c1323",
+  "native_test_apk_sha256": "bb1b2f496f6c831ced00f20d9dd08d6f571d87fcb48040dfba17f4a7c561f342",
+  "baseline_inventory_sha256": "24897caab2dffec8e6219823fa3262bfccb762f383cdbc52365d147f52f363a2",
+  "llama_sha": "b29c606e28a01b1bc8c1351026a0fa6e616bf6c4",
+  "tokenizer_overlay_sha256": "71aba69a0fba8abc2df0a8f74f537182b79b29d60b13e74b7dc901e52dc36f29",
+  "template_sha256": "cd8e9439f0570856fd70470bf8889ebd8b5d1107207f67a5efb46e342330527f",
+  "model_sha256": "2c5f9a121ae6695208e300c16acca303669afa4e18812061164dca9c97071b12",
+  "source_objects": {
+    "native": "ecefab4de66c322e7ee9a35995c3a830f9292d34",
+    "third_party/llama.cpp": "b29c606e28a01b1bc8c1351026a0fa6e616bf6c4",
+    "inference-service/src/main": "f125eea490e62ac118104cef771029ef215e3e44",
+    "core/inference/src/main": "179aab9c773885bf29d840f07e68c2020171896b",
+    "gradle/libs.versions.toml": "bd2cf8a39c622efa00ce21ab7f7b5db3fd7eb72b",
+    "inference-service/build.gradle.kts": "3036545a49c742a4c291df00e128e052191b01d6",
+    "core/inference/build.gradle.kts": "a4c5f886482a24f463e1a46bbd51d7a75e4519c0"
+  },
+  "source_objects_verified_against_candidate": true,
+  "jni_tokenizer_template_scope_unchanged": true,
+  "native_libraries": {
+    "app": {
+      "lib/arm64-v8a/libandroidx.graphics.path.so": {
+        "size": 10096,
+        "sha256": "41e9a793c43a0f4fddb19e33f346bace464f30f888ba7b9eaf96294ea115bfb6"
+      },
+      "lib/arm64-v8a/libdatastore_shared_counter.so": {
+        "size": 7784,
+        "sha256": "178f89a2c6c9234ddf980dd4cd1f3616186a46b2b932aafa6707abd04c5fd76a"
+      },
+      "lib/arm64-v8a/libonnxruntime.so": {
+        "size": 27985944,
+        "sha256": "850f897a50d369b3305582244210f5649be9cfeb193c5807fba14146301616c7"
+      },
+      "lib/arm64-v8a/libonnxruntime4j_jni.so": {
+        "size": 83208,
+        "sha256": "f86f2a5f56b907e4a25d67febc422ec13f5a265d36665f50e2808de6e4a515b6"
+      },
+      "lib/arm64-v8a/libskein_llama.so": {
+        "size": 33413256,
+        "sha256": "b1ff614714a8973d9359fba0034482534c9a65ba8e28d1cab995ed428bf89ee3"
+      },
+      "lib/arm64-v8a/libskein_sqlite.so": {
+        "size": 6269000,
+        "sha256": "00a04ba8fda9b13cbe6211a9f04c66fe1f8233724e7cbef5d987a08156df328e"
+      },
+      "lib/arm64-v8a/libskein_sqlite_jni.so": {
+        "size": 19296,
+        "sha256": "54e60807eedc5cd2fed7789033cd3cb625b84abcf0c4df57a71b4f6c4725f262"
+      }
+    },
+    "native_test": {
+      "lib/arm64-v8a/libskein_llama.so": {
+        "size": 33413256,
+        "sha256": "b1ff614714a8973d9359fba0034482534c9a65ba8e28d1cab995ed428bf89ee3"
+      }
+    }
+  },
+  "source_evidence": [
+    {
+      "path": "${HOST_HOME}/skein-worktrees/ux-workspace-models-test-20260929/build/agent-logs/native-qwen-reuse-5d58f7c/source-review.json",
+      "size": 4408,
+      "sha256": "04f76416ee47fd6c7edbe3cadcb67bedf3397d57d0454b218394c93ddf816db3"
+    },
+    {
+      "path": "${HOST_HOME}/skein-worktrees/ux-workspace-models-test-20260929/build/agent-logs/native-qwen-reuse-5d58f7c/source-file-manifest.json",
+      "size": 327314,
+      "sha256": "2a12e43105a254ee9eb3c2cd2dfd5dfd158b3a5f12099450d5e1e7820eef82ee"
+    },
+    {
+      "path": "${HOST_HOME}/skein-worktrees/ux-workspace-models-test-20260929/build/agent-logs/native-qwen-reuse-5d58f7c/prior-public-evidence-review.json",
+      "size": 7934,
+      "sha256": "d2ff8d986ed3402ede9bf2fd7cd3147307921a93dd7c7066fc614a095c1ec0d0"
+    },
+    {
+      "path": "${HOST_HOME}/skein-worktrees/ux-workspace-models-test-20260929/build/agent-logs/native-qwen-reuse-5d58f7c/host-blake3-implementation-verification.json",
+      "size": 1912,
+      "sha256": "c8c4fa40d1c72a5d76ecc785e5a786b31e1bbec2134e020d8abfa414ee9584f6"
+    },
+    {
+      "path": "${HOST_HOME}/skein-worktrees/ux-workspace-models-test-20260929/build/agent-logs/native-qwen-reuse-28354dd/candidate-source-review.json",
+      "size": 6660,
+      "sha256": "c984d92f6773cd2214bf4232cc23d1f2f7cfbfe214cd5db4a77d077a2b2403b2"
+    },
+    {
+      "path": "${HOST_HOME}/skein-worktrees/ux-workspace-models-test-20260929/build/agent-logs/native-qwen-reuse-28354dd/candidate-source-file-manifest.json",
+      "size": 169069,
+      "sha256": "bb8d3d06ad40d24078255fa4de2eb67b5c61dd917d21caa3a8cb13d3f67e16f9"
+    },
+    {
+      "path": "${HOST_HOME}/skein-worktrees/ux-workspace-models-test-20260929/build/agent-logs/native-qwen-reuse-28354dd/artifact-review.json",
+      "size": 4577,
+      "sha256": "9309031c595cec2762d0278215bce791b56fe66e87631be4e7140191e6594291"
+    },
+    {
+      "path": "${HOST_HOME}/skein-worktrees/ux-workspace-models-test-20260929/build/agent-logs/native-qwen-reuse-28354dd/zip-payload-comparisons.json",
+      "size": 14616,
+      "sha256": "460beed3b7c94bb33269562c7a9512b9a952fc71bc0e49a3232d24aed60dac99"
+    },
+    {
+      "path": "${HOST_HOME}/skein-worktrees/ux-workspace-models-test-20260929/build/agent-logs/native-qwen-reuse-28354dd/packaging-comparisons.json",
+      "size": 223864,
+      "sha256": "aad95506325afd3efb81c8aa681d292cdf20ea8d1572ef029de64baa42089045"
+    },
+    {
+      "path": "${HOST_HOME}/skein-worktrees/ux-workspace-models-test-20260929/build/agent-logs/native-qwen-reuse-28354dd/host-commands.json",
+      "size": 4662,
+      "sha256": "c7198f4bbcbc31f3ecb52a44f8648815e9f17c0635bd3b6b55d1a8029fe067fa"
+    },
+    {
+      "path": "${HOST_HOME}/skein-worktrees/ux-workspace-models-test-20260929/build/agent-logs/native-qwen-reuse-28354dd/optin-app-inventory.json",
+      "size": 269194,
+      "sha256": "d5c603c3125f5bf7448b9610f99d1f639361af29eaf109d559cf36b0ea2e3d75"
+    },
+    {
+      "path": "${HOST_HOME}/skein-worktrees/ux-workspace-models-test-20260929/build/agent-logs/native-qwen-reuse-28354dd/optin-app_test-inventory.json",
+      "size": 22765,
+      "sha256": "f2770014fb709ef51763add1538f4134423c4f6466223e0dd76e4ea3f173d843"
+    },
+    {
+      "path": "${HOST_HOME}/skein-worktrees/ux-workspace-models-test-20260929/build/agent-logs/native-qwen-reuse-28354dd/optin-native_test-inventory.json",
+      "size": 27311,
+      "sha256": "6a1700cf02a863b13680417bed7b03accdc2a08c81aff9b8c49b0ac6679d818d"
+    }
+  ],
+  "review_scope": "Explicit bounded reuse review only; coordinator release and all required remote/runtime gates remain separate.",
+  "physical_execution_authorized": false,
+  "release_native_test_artifact": {
+    "path": "${HOST_HOME}/skein-worktrees/ux-integration-20260929/build/agent-logs/candidate-5ae91c2-optin/inference-service-foss-debug-androidTest.apk",
+    "size": 130230126,
+    "sha256": "bb1b2f496f6c831ced00f20d9dd08d6f571d87fcb48040dfba17f4a7c561f342"
+  },
+  "release_native_test_source_sha": "5ae91c238612bdd9b1511b3716d34b4fa5960dd2",
+  "rebuilt_native_test_is_not_substituted": true,
+  "limits": [
+    "Released v5 must point to the exact frozen native-test bb1b2f49\u2026 APK, not newly rebuilt c1186bc\u2026 or ordinary acf4d0\u2026.",
+    "Reused prior public native report remains five native-library parity/token-classification observations on old5ae; no new physical runtime, generated-stop, answer-quality or retrieval gate is inferred.",
+    "Public Qwen full SHA/B3/template identity remains the original frozen host/native observation; new run must still verify full device model SHA256+size and isolated-service verification.",
+    "APK source binding is root host-declared checkout/build context, not embedded source attestation.",
+    "New app UI/first-send Knowledge changes are excluded from any claim of whole-app prompt/answer equivalence.",
+    "No physical/ADB, builds, CI dispatch, model rehash or restricted broad process-summary read performed."
+  ]
+}

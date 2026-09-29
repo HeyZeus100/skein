@@ -1,0 +1,37 @@
+{
+  "source_sha": "28354dd25bb4995930ff46a71752f43f8a0d5df3",
+  "source_date_epoch": "1790696685",
+  "release_apks": [
+    {
+      "path": "artifact-11044399754-rb-build-b/files/app-foss-release-unsigned.apk",
+      "bytes": 100740719,
+      "sha256": "99edfeebf7828749ad7c47c50d5bbcb4e1ba06d42d5c3b93e22a3edbb1f5cfd8"
+    },
+    {
+      "path": "artifact-11044529522-rb-build-a/files/app-foss-release-unsigned.apk",
+      "bytes": 100740719,
+      "sha256": "99edfeebf7828749ad7c47c50d5bbcb4e1ba06d42d5c3b93e22a3edbb1f5cfd8"
+    }
+  ],
+  "contexts": [
+    {
+      "build_id": "b",
+      "abs_path": "/home/runner/work/skein/skein/rb-b/nested/deeper/skein",
+      "commit": "28354dd25bb4995930ff46a71752f43f8a0d5df3",
+      "source_date_epoch": "1790696685",
+      "runner": "Linux/X64"
+    },
+    {
+      "build_id": "a",
+      "abs_path": "/home/runner/work/skein/skein/rb-a/skein",
+      "commit": "28354dd25bb4995930ff46a71752f43f8a0d5df3",
+      "source_date_epoch": "1790696685",
+      "runner": "Linux/X64"
+    }
+  ],
+  "whole_apk_bytes_equal": true,
+  "entry_names_order_metadata_contents_equal": true,
+  "entry_count": 829,
+  "embedded_llama_matches_cold_native_pair": true,
+  "limits": "Within-source/epoch build equality, not installed candidate attestation or cross-source APK equality."
+}

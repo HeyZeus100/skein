@@ -1,0 +1,46 @@
+# native/llama/PINNED_COMMIT - E1.I4 (skein-ca2)
+#
+# The exact commits every `third_party/` submodule that feeds
+# `libskein_llama.so` must be checked out at. This file is the single source
+# of truth; `tools/ci/check-submodules.sh` compares the working tree against
+# it and `native/llama/CMakeLists.txt` re-checks it at configure time.
+#
+# Format: one record per line, whitespace separated:
+#
+#     <submodule path>  <40-hex commit>  <upstream tag>
+#
+# Blank lines and `#` comments are ignored. Keep this file ASCII-only: CMake's
+# `file(STRINGS)` splits records at non-ASCII bytes the way strings(1) does,
+# which silently turns one comment into two unparsable records.
+#
+# Bumping a pin means editing this file, moving the submodule, and updating
+# native/llama/README.md in one reviewed commit.
+#
+# --- llama.cpp ---------------------------------------------------------------
+# v0.4.1 is both the tag the plan (E1.I4) names AND the exact commit the M0
+# Fold binaries were built from - `tools/m0-benchmark/models.yaml`'s
+# `binaries:` records `llama_cpp_commit: b29c606e...` for all four
+# llama-bench/llama-cli artifacts, and `git rev-parse v0.4.1^{}` on
+# ggml-org/llama.cpp resolves to that same object. The app and the device
+# measurements therefore share one llama.cpp revision.
+third_party/llama.cpp       b29c606e28a01b1bc8c1351026a0fa6e616bf6c4  v0.4.1
+
+# --- Vulkan-Headers ----------------------------------------------------------
+# NDK r27c's sysroot ships Vulkan *loader* headers at VK_HEADER_VERSION 275
+# (Vulkan 1.3.275, Jan 2024) and no Vulkan-Hpp at all, while
+# `ggml/src/ggml-vulkan/ggml-vulkan.cpp` includes <vulkan/vulkan.hpp> and uses
+# API added well after 1.3.275. Khronos' header-only repo supplies both and is
+# pinned here; the *loader* stays the NDK's `libvulkan.so` (nothing is
+# downloaded from LunarG, and no Vulkan SDK install is required).
+third_party/Vulkan-Headers  8864cdc896bbc2a9b6eb36b3218fc9ef57908d77  vulkan-sdk-1.4.350.0
+
+# --- SPIRV-Headers -----------------------------------------------------------
+# `ggml/src/ggml-vulkan/CMakeLists.txt` opens with
+# `find_package(SPIRV-Headers CONFIG REQUIRED)`. It never links the resulting
+# target (the shader pipeline shells out to glslc instead), but the
+# find_package is REQUIRED, so the package has to exist. Pinned at the
+# matching SDK tag; `native/llama/cmake/SPIRV-Headers/` supplies the config
+# file so no `install` step is needed. Same lesson the Fold provisioning hit
+# (handoff section 5: "spirv-tools alone was insufficient; CMake also required
+# spirv-headers").
+third_party/SPIRV-Headers   ad9184e76a66b1001c29db9b0a3e87f646c64de0  vulkan-sdk-1.4.350.0

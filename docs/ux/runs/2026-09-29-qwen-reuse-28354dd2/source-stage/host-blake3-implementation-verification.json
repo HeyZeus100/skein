@@ -1,0 +1,36 @@
+{
+  "status": "PINNED_IMPLEMENTATION_REVERIFIED_NO_MODEL_REHASH",
+  "source_sha256": "46dd1dd48f66b3a8560b748b2e96a0ba1e4dab3480cc785607ee6b40a28e7739",
+  "compiled_artifacts": [
+    {
+      "path": "${HOST_HOME}/skein-worktrees/conference-demo-20260929/build/agent-logs/public-qwen-blake3-20260929/classes/app/skein/core/model/Blake3$ChunkState.class",
+      "size": 3640,
+      "sha256": "b7b47aba790a9235c3540e4210b3feb80aa4cf844ce6c20b8196ecc7588abc74"
+    },
+    {
+      "path": "${HOST_HOME}/skein-worktrees/conference-demo-20260929/build/agent-logs/public-qwen-blake3-20260929/classes/app/skein/core/model/Blake3$Hasher.class",
+      "size": 3391,
+      "sha256": "4111b49becaf9a24ae1997efc26c784cfb99c190847c49bdc120c91a3136ede9"
+    },
+    {
+      "path": "${HOST_HOME}/skein-worktrees/conference-demo-20260929/build/agent-logs/public-qwen-blake3-20260929/classes/app/skein/core/model/Blake3$Output.class",
+      "size": 2541,
+      "sha256": "8fcf61758c68f2e8019d3cdea8c8b3cd8106b5f9802464c42745e8e545943f73"
+    },
+    {
+      "path": "${HOST_HOME}/skein-worktrees/conference-demo-20260929/build/agent-logs/public-qwen-blake3-20260929/classes/app/skein/core/model/Blake3.class",
+      "size": 7152,
+      "sha256": "e98cce8ed71fe54f1f8099f84fee7dad2d04a4554be53184f2acc1e5a114d4f6"
+    },
+    {
+      "path": "${HOST_HOME}/.gradle/caches/modules-2/files-2.1/org.jetbrains.kotlin/kotlin-stdlib/2.4.20/94c1451890d164aed65d43b3db0b7ecef7c183e7/kotlin-stdlib-2.4.20.jar",
+      "size": 1853314,
+      "sha256": "2226de463d309d4a5500a481320b3dea515a6981dcae1def531fbc158884e25f"
+    }
+  ],
+  "provenance": {
+    "path": "${HOST_HOME}/skein-worktrees/conference-demo-20260929/build/agent-logs/public-qwen-blake3-20260929/implementation-provenance.json",
+    "size": 2506,
+    "sha256": "503ed5feaf26475ba211689f0a72e9a28691f8f286110be9a12af9986b9a2a3f"
+  }
+}

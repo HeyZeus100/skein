@@ -1,0 +1,14 @@
+[
+  {
+    "url": "https://dl.google.com/dl/android/maven2/androidx/compose/ui/ui-text/1.12.1/ui-text-1.12.1-sources.jar",
+    "path": "/Users/andrewherrera/skein-worktrees/ux-workspace-models-test-20260929/build/agent-logs/workspace-font-source/ui-text-1.12.1-sources.jar",
+    "sha256": "e3c65881878013a782275881d27e604bd066ae03972a43e7e742fb02045668c7",
+    "size": 206002
+  },
+  {
+    "url": "https://dl.google.com/dl/android/maven2/androidx/compose/ui/ui-text-android/1.12.1/ui-text-android-1.12.1-sources.jar",
+    "path": "/Users/andrewherrera/skein-worktrees/ux-workspace-models-test-20260929/build/agent-logs/workspace-font-source/ui-text-android-1.12.1-sources.jar",
+    "sha256": "f40f267cc1bbf7315e37916d6baf818dd7791b42db6dc238303a8b48471aa292",
+    "size": 348725
+  }
+]

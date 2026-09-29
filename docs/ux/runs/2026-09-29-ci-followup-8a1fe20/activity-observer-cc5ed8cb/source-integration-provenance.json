@@ -1,0 +1,50 @@
+{
+  "baseline_sha": "8a1fe20bd451314596e2f5ea75766f3dc41a64ef",
+  "source_sha": "cc5ed8cba08d64ec6b2d6ea7e99c0b7372fd5167",
+  "root_cherry_pick_sha": "0401d15f190ca61f4637965dc9e33245043c8b1a",
+  "all_four_source_files_match_integrated_commit": true,
+  "files": [
+    {
+      "path": "app/src/foldableTest/kotlin/app/skein/foldable/FoldableDeviceControl.kt",
+      "bytes": 10194,
+      "sha256": "66b952d1b17b696240def8e33367191af029b0e1db4a2feccdb594e81879cb35",
+      "root_integrated_bytes_match": true
+    },
+    {
+      "path": "app/src/foldableTest/kotlin/app/skein/foldable/MainActivityFoldableGateTest.kt",
+      "bytes": 6777,
+      "sha256": "c1a45b458456edef2ce9c3dd19807fa2bce16b57b36895329862ea7ef19d7076",
+      "root_integrated_bytes_match": true
+    },
+    {
+      "path": "tools/ci/test_verify_foldable.py",
+      "bytes": 10306,
+      "sha256": "6b78c6b60e2672d7f5bdd2ef91d4b38dab6badb60c1bc17c7da91d5dc38deff1",
+      "root_integrated_bytes_match": true
+    },
+    {
+      "path": "tools/ci/verify-foldable.py",
+      "bytes": 13263,
+      "sha256": "c5be210e62443b7f1a6b6f14e6b6171096e9bdff206bbceea76e893e33027413",
+      "root_integrated_bytes_match": true
+    }
+  ],
+  "peer_raw_bytes": 4135,
+  "peer_raw_sha256": "da58dd1d4a144ce4c97fdf701cb20440dfc1ce4d23aaf35a6e34f4beca4c698d",
+  "peer_scope": "Read-only source and existing logs; did not independently execute checks.",
+  "local_host_tests": {
+    "passed": 38,
+    "skipped": 0,
+    "failed": 0,
+    "red_before_fix": 6,
+    "log_sha256": "ee8a1ba1ebfb447487c6559008aa6e8d7eeb9b58ab831e65fda3f6b8548f9f6d"
+  },
+  "coordinator_reported_checks": "Parent reported 38 host tests rerun passed at integration; combined explicit Gradle checks and opt-in compile were still running when capsule task was assigned. Those results are not claimed or independently verified in this capsule.",
+  "runtime_pass": false,
+  "source_limits": [
+    "Published API35 framework pin establishes source contract, not exact CI binary attestation.",
+    "No Kotlin compile or emulator execution by this source author/reviewer for cc5ed8cb.",
+    "Await loop checks deadline between waitForIdleSync/onActivity calls; outer workflow bounds a hung main thread.",
+    "Generic unopened-vault lane only; no exact Pixel9, unlocked A-G, IME, physical Fold or release acceptance."
+  ]
+}

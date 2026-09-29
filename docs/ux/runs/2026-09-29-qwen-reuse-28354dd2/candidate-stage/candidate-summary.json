@@ -1,0 +1,69 @@
+{
+  "ordinary-app": {
+    "path": "${HOST_HOME}/skein-worktrees/ux-integration-20260929/build/agent-logs/candidate-28354dd-ordinary/app-foss-debug.apk",
+    "size": 127098252,
+    "sha256": "8053e8e10ee6dbe7b9e650506971bf30b93e64861bbdff1237420680d10b4eb9",
+    "entries": 770,
+    "native_count": 7,
+    "synthetic_class_count": 0,
+    "synthetic_class_roots": []
+  },
+  "ordinary-app_test": {
+    "path": "${HOST_HOME}/skein-worktrees/ux-integration-20260929/build/agent-logs/candidate-28354dd-ordinary/app-foss-debug-androidTest.apk",
+    "size": 91107428,
+    "sha256": "da1cd3e0083f6ba43e62174e25f7d4a80c63bf0f6ee8519e10c2f3566dc40ff6",
+    "entries": 67,
+    "native_count": 0,
+    "synthetic_class_count": 0,
+    "synthetic_class_roots": []
+  },
+  "ordinary-native_test": {
+    "path": "${HOST_HOME}/skein-worktrees/ux-integration-20260929/build/agent-logs/candidate-28354dd-ordinary/inference-service-foss-debug-androidTest.apk",
+    "size": 130230126,
+    "sha256": "acf4d0df2f5953889ce89c8a0bc504b99d4b193ebf4f8f29995d29244532168a",
+    "entries": 79,
+    "native_count": 1,
+    "synthetic_class_count": 0,
+    "synthetic_class_roots": []
+  },
+  "optin-app": {
+    "path": "${HOST_HOME}/skein-worktrees/ux-integration-20260929/build/agent-logs/candidate-28354dd-optin/app-foss-debug.apk",
+    "size": 127098252,
+    "sha256": "8053e8e10ee6dbe7b9e650506971bf30b93e64861bbdff1237420680d10b4eb9",
+    "entries": 770,
+    "native_count": 7,
+    "synthetic_class_count": 0,
+    "synthetic_class_roots": []
+  },
+  "optin-app_test": {
+    "path": "${HOST_HOME}/skein-worktrees/ux-integration-20260929/build/agent-logs/candidate-28354dd-optin/app-foss-debug-androidTest.apk",
+    "size": 91337045,
+    "sha256": "0891fce37751f92a2e79a1c46424e3d463fbdef0903dce64aa9933f9be472cf2",
+    "entries": 67,
+    "native_count": 0,
+    "synthetic_class_count": 48,
+    "synthetic_class_roots": [
+      "Lapp/skein/benchmark/HostModelIdentity;",
+      "Lapp/skein/benchmark/SetupPhase;",
+      "Lapp/skein/benchmark/SyntheticAnswerBenchmarkTest;",
+      "Lapp/skein/benchmark/SyntheticCase;",
+      "Lapp/skein/benchmark/SyntheticFileHashes;",
+      "Lapp/skein/benchmark/SyntheticFixtures;",
+      "Lapp/skein/benchmark/SyntheticFixturesKt;",
+      "Lapp/skein/benchmark/SyntheticSetup;",
+      "Lapp/skein/benchmark/SyntheticSetupConfig;",
+      "Lapp/skein/benchmark/SyntheticSetupProgress;"
+    ]
+  },
+  "optin-native_test": {
+    "path": "${HOST_HOME}/skein-worktrees/ux-integration-20260929/build/agent-logs/candidate-28354dd-optin/inference-service-foss-debug-androidTest.apk",
+    "size": 130304344,
+    "sha256": "c1186bc554ae89d89a35983f883354e436cb34f2cebb790cc06a3a896409fb2d",
+    "entries": 79,
+    "native_count": 1,
+    "synthetic_class_count": 2,
+    "synthetic_class_roots": [
+      "Lapp/skein/inference/service/SyntheticTemplateParityTest;"
+    ]
+  }
+}

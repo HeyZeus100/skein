@@ -1,0 +1,9 @@
+{
+  "id": 11044692909,
+  "name": "so-determinism",
+  "bytes": 50711186,
+  "sha256": "ba5e9909a0fd52ff045bce883a423f80acea228bb0c152adfe5ed7fa611f0e6b",
+  "api_digest": "sha256:ba5e9909a0fd52ff045bce883a423f80acea228bb0c152adfe5ed7fa611f0e6b",
+  "size_and_digest_match": true,
+  "source_sha": "28354dd25bb4995930ff46a71752f43f8a0d5df3"
+}

@@ -1,0 +1,11 @@
+# Workspace evidence publication copy
+
+This copy preserves the original portable evidence without modifying it. Bulk raw XML is in `raw-xml.zip`; individual Roborazzi JSON and summaries are in `roborazzi-json.zip`; remaining source records, logs, earlier reviews and indexes are in `supporting-evidence.zip`. ZIP entries have fixed 1980 timestamps, sorted names and fixed file modes. Gzip metadata is deterministic. `archive-entry-inventory.json.gz` hashes every archived entry; `publication-map.json.gz` maps every original portable file to its published file or losslessly decoded archive entry.
+
+Read `capsule-review.json`, `execution-attribution.json.gz`, and `all-image-pair-provenance.json.gz`. Combined-check-3's `xml-review-v2.json.gz` is the final root review; its earlier v1 is preserved as historical supporting evidence. All original failed XML and image hashes remain included. The 53 loose PNGs include representative before/actual/compare images plus all six synthetic production workspace captures. All 110 approved image groups and four rejected Models groups have complete provenance; full pixels remain in the owning worker's adjacent full archive, indexed by `FULL_LOCAL_SHA256SUMS`.
+
+Exact combined source: 0401d15f190ca61f4637965dc9e33245043c8b1a. Golden-only commit: 28354dd25bb4995930ff46a71752f43f8a0d5df3. Successful app capture source: 5d58f7cba26317c62ee7811472067fc73d0fee82. Input-mode focus fix: bc0f2ad81.
+
+Actual checks: 1728 cases, 1684 passes, 44 existing skips; app rerun 562 passes. Initial screenshot run preserved 114 failures. Four Models color changes were repaired against unchanged goldens; only 110 reviewed icon/chat/editor images were recorded. Final verification has 552 individual unchanged results; XML 1354 cases, 1274 passes, 80 conditional skips, zero failures/errors. Seven screenshot module test tasks execute; Models is UP-TO-DATE from the retained 38-unchanged focused proof. Logs preserve check/ktlint/compile reuse statuses too.
+
+This is local source, compilation, unit and synthetic screenshot evidence. No new APK/install, emulator instrumentation runtime, physical-device, retrieval-quality or embedding-quality acceptance is claimed. No private hardware screenshots are included.

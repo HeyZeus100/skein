@@ -1,0 +1,19 @@
+{
+  "counts_tests_fail_error_skip": {
+    "feature/models": [
+      54,
+      0,
+      0,
+      12
+    ],
+    "feature/shell": [
+      252,
+      0,
+      0,
+      14
+    ]
+  },
+  "models_unchanged": 38,
+  "source_after_fix": "bc0f2ad81",
+  "original_goldens_unchanged": true
+}

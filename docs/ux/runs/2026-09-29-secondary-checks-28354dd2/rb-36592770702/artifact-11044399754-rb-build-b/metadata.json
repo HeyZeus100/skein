@@ -1,0 +1,20 @@
+{
+  "id": 11044399754,
+  "node_id": "MDg6QXJ0aWZhY3QxMTA0NDM5OTc1NA==",
+  "name": "rb-build-b",
+  "size_in_bytes": 100741606,
+  "url": "https://api.github.com/repos/HeyZeus100/skein/actions/artifacts/11044399754",
+  "archive_download_url": "https://api.github.com/repos/HeyZeus100/skein/actions/artifacts/11044399754/zip",
+  "expired": false,
+  "digest": "sha256:768fd2e23de8b9f3697e792fb01d625d981b12f9630e7ae77b6cbbc0f7f92c08",
+  "created_at": "2026-09-29T15:57:26Z",
+  "updated_at": "2026-09-29T15:57:26Z",
+  "expires_at": "2026-10-06T15:57:24Z",
+  "workflow_run": {
+    "id": 36592770702,
+    "repository_id": 1377804189,
+    "head_repository_id": 1377804189,
+    "head_branch": "main",
+    "head_sha": "28354dd25bb4995930ff46a71752f43f8a0d5df3"
+  }
+}

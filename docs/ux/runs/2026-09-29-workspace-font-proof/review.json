@@ -1,0 +1,84 @@
+{
+  "schema": 1,
+  "original_v1": {
+    "path": "/Users/andrewherrera/skein-worktrees/ux-workspace-models-test-20260929/build/agent-logs/workspace-font-source/source-proof.json",
+    "bytes": 8829,
+    "sha256": "3c84862ee299103e7ca1dab75f0f97bbd9a5ee57c72fad5a1a5b81543d7824e0"
+  },
+  "original_v2": {
+    "path": "/Users/andrewherrera/skein-worktrees/ux-workspace-models-test-20260929/build/agent-logs/workspace-font-source/source-proof-v2.json",
+    "bytes": 4731,
+    "sha256": "11ffd073144570b3f5c9f6fb19f31b7c624e7a78f383daf5cfedcced3e8123e4"
+  },
+  "original_v2_index": {
+    "path": "/Users/andrewherrera/skein-worktrees/ux-workspace-models-test-20260929/build/agent-logs/workspace-font-source/SHA256SUMS-v2",
+    "bytes": 3160,
+    "sha256": "a84d72a95384dfde8092c738f6c5c35e8d524c5a52ac7b9955963ef1e87d468c"
+  },
+  "all_original_index_entries_verified": 47,
+  "exact_selected_sources_verified_against_published_jars": 4,
+  "published_artifact_urls_and_hashes": "published-source-artifacts.json",
+  "diagnostics": [
+    {
+      "source_xml_sha256": "d5cd47f3e1d713e1e0ff9d83f5e0e0c7dfbd8a22521e417b73776930c6a105c2",
+      "portable": "original/diagnostic-2-TEST-app.skein.feature.shell.host.SkeinWorkspaceHostTest.xml.gz",
+      "counts": {
+        "tests": 2,
+        "failures": 2,
+        "errors": 0,
+        "skipped": 0
+      },
+      "case_names": [
+        "compact font two controls stay reachable and synthetic captures preserve each attempt",
+        "near top tabletop hinge cannot clip large text workspace controls"
+      ],
+      "failure_messages": [
+        "java.lang.AssertionError: text fits Left: [[50 x 38, 144.0, 0.0, 48.53828, 0.0, 38.0, Constraints(minWidth = 0, maxWidth = 144, minHeight = 0, maxHeight = 900)]]",
+        "java.lang.AssertionError: text fits Left: [[50 x 38, 329.0, 0.0, 48.53828, 0.0, 38.0, Constraints(minWidth = 0, maxWidth = 329, minHeight = 0, maxHeight = 950)]]"
+      ]
+    },
+    {
+      "source_xml_sha256": "af7a6f273466407dcaa9d459c571483f76cf3d0a572c3b53be1f339599a714b3",
+      "portable": "original/diagnostic-2-TEST-app.skein.feature.editor.entries.KnowledgeListRetentionTest.xml.gz",
+      "counts": {
+        "tests": 1,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "case_names": [
+        "production knowledge filter survives root and detail sidebar collapse and is scrubbed while stopped"
+      ],
+      "failure_messages": []
+    }
+  ],
+  "test_source": {
+    "path": "feature/shell/src/test/kotlin/app/skein/feature/shell/host/SkeinWorkspaceHostTest.kt",
+    "first_corrected_commit": "5d58f7cba26317c62ee7811472067fc73d0fee82",
+    "parent": "b6340dc77f75c14b4ca319d8a0dba9bb184a6cb5",
+    "current_reviewed_source": "28354dd25bb4995930ff46a71752f43f8a0d5df3",
+    "bytes": 19239,
+    "sha256": "56ad3067a97e8535554e4077ff8754740d4c08e267452df5c8137b4fdc07884f",
+    "identical_at_both_commits_and_original_reviewer_copy": true,
+    "portable": "SkeinWorkspaceHostTest.kt"
+  },
+  "threshold_review": {
+    "control_design_target_dp": 48,
+    "existing_test_target_min_dp": 47.5,
+    "touch_threshold_unchanged": true,
+    "hinge_clearance_expression_unchanged": true,
+    "new_character_layout_tolerance_physical_px": 1,
+    "golden_files_changed_in_assertion_commit": 0,
+    "claim": "The replacement is a new host test assertion correction, not a changed screenshot baseline/pixel threshold. Separate later scoped golden updates are documented in the workspace capsule."
+  },
+  "source_mechanism": {
+    "TextLayoutResult": "317-322: didOverflowWidth compares original IntSize width to reconstructed MultiParagraph.width.",
+    "MultiParagraph": "457: width is constraints.maxWidth, not character/ink width.",
+    "ParagraphLayoutCache": "367-403: semantic MultiParagraph uses previous max constraints, while result retains original layoutSize.",
+    "TextStringSimpleNode": "326-337: semantic callback uses that reconstruction;456-468: actual drawing/clipping uses original paragraph/cache."
+  },
+  "diagnostic_conclusion": "Original Text is 50\u00d738px; semantic paragraph width is 144 or 329px; lineRight is 48.53828px, lineBottom 38px. These literal labels fit while the semantic width comparison reports overflow.",
+  "acceptance": "Exact label, one line, full visible line end, no ellipsis/vertical overflow, and union of every character layout box inside both original Text allocation and translated actual button bounds. Existing touch-target and hinge assertions retained.",
+  "visual_review": "Actual copied compact/font2 synthetic PNG inspected: complete Left/Right labels lie inside controls.",
+  "limits": "Character boxes are logical glyph layout bounds, not universal raster-ink bounds. Original diagnostic failures remain failures. No build was rerun for this capsule; successful later host execution is in the main workspace/28354 remote capsules. No physical Fold, broad-font, TalkBack/keyboard or runtime acceptance follows."
+}

@@ -1,0 +1,9 @@
+commit 0401d15f190ca61f4637965dc9e33245043c8b1a
+Author:     Andrew Herrera <andrew@aherrera.us>
+AuthorDate: Tue Sep 29 08:39:27 2026 -0700
+Commit:     Andrew Herrera <andrew@aherrera.us>
+CommitDate: Tue Sep 29 08:41:53 2026 -0700
+
+    fix(test): observe the live Activity during fold transitions
+    
+    Signed-off-by: Andrew Herrera <andrew@aherrera.us>

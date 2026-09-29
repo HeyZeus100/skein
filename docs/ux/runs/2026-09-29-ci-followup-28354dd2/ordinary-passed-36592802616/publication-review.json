@@ -1,0 +1,240 @@
+{
+  "run_id": 36592802616,
+  "source_sha": "28354dd25bb4995930ff46a71752f43f8a0d5df3",
+  "conclusion": "success",
+  "source_attribution": "GitHub API head_sha plus host-declared checkout; no installed-package byte attestation.",
+  "run_url": "https://github.com/HeyZeus100/skein/actions/runs/36592802616",
+  "artifact": {
+    "id": 11045810586,
+    "name": "connected-test-reports",
+    "bytes": 1089891,
+    "sha256": "b75723b16fc310ae9b9c7b78c01ff2780876905834069cce78ff506f5d3830a3",
+    "api_digest_match": true,
+    "api_size_match": true,
+    "ZIP_integrity_passed": true
+  },
+  "run_logs": {
+    "bytes": 85960,
+    "sha256": "d06fd32bb07497746d1c7ff3fd0c8042bf250ce08bfddcd301f07689c1cb37fc",
+    "ZIP_integrity_passed": true,
+    "API_digest_available": false
+  },
+  "counts": {
+    "tests": 281,
+    "passed": 281,
+    "failure": 0,
+    "error": 0,
+    "skipped": 0
+  },
+  "modules": {
+    "app": {
+      "tests": 38,
+      "passed": 38,
+      "failure": 0,
+      "error": 0,
+      "skipped": 0
+    },
+    "core/vault": {
+      "tests": 204,
+      "passed": 204,
+      "failure": 0,
+      "error": 0,
+      "skipped": 0
+    },
+    "inference-service": {
+      "tests": 39,
+      "passed": 39,
+      "failure": 0,
+      "error": 0,
+      "skipped": 0
+    }
+  },
+  "identity_comparison": {
+    "expected_run": 36551469886,
+    "expected": 281,
+    "missing": [],
+    "unexpected": [],
+    "duplicates": 0
+  },
+  "critical_identity_checks": {
+    "prior_19_failures": {
+      "expected": 19,
+      "passed": 19,
+      "missing_or_nonpassing": [],
+      "identities": [
+        {
+          "classname": "app.skein.inference.service.LlamaNativeTest",
+          "name": "tokenizeReturnsAtLeastTwoIds"
+        },
+        {
+          "classname": "app.skein.inference.service.LlamaNativeTest",
+          "name": "decodePromptThenEightSamplesYieldsEightIds"
+        },
+        {
+          "classname": "app.skein.inference.service.LlamaNativeTest",
+          "name": "scaffoldTokenizerRejectsMalformedUnicodeAndInvalidByteRanges"
+        },
+        {
+          "classname": "app.skein.inference.service.LlamaNativeTest",
+          "name": "secureFreeZeroesTheKvCacheBeforeFreeing"
+        },
+        {
+          "classname": "app.skein.inference.service.LlamaNativeTest",
+          "name": "descriptorLoadCancellationFromProgressClosesOwnedStreamAndKeepsCallerFd"
+        },
+        {
+          "classname": "app.skein.inference.service.LlamaNativeTest",
+          "name": "sameSeedTwiceProducesTheSameIds"
+        },
+        {
+          "classname": "app.skein.inference.service.LlamaNativeTest",
+          "name": "loadingANonGgufFileFailsWithInvalidModelAndLeaksNoHandle"
+        },
+        {
+          "classname": "app.skein.inference.service.LlamaNativeTest",
+          "name": "safeTemplateTokensMatchNativeTokensForBenignSyntheticConversation"
+        },
+        {
+          "classname": "app.skein.inference.service.LlamaNativeTest",
+          "name": "goldenGreedySequenceIsPinned"
+        },
+        {
+          "classname": "app.skein.inference.service.LlamaNativeTest",
+          "name": "cancelFlagAbortsADecodeWithin100Ms"
+        },
+        {
+          "classname": "app.skein.inference.service.LlamaNativeTest",
+          "name": "controlsSpanningTemplateAndContentRemainLiteralInBothDirections"
+        },
+        {
+          "classname": "app.skein.inference.service.LlamaNativeTest",
+          "name": "contextCapacityRejectsZeroWrongAndFreedHandles"
+        },
+        {
+          "classname": "app.skein.inference.service.LlamaNativeTest",
+          "name": "nativeWhitespaceAndUnicodeTokensMatchWholePromptReference"
+        },
+        {
+          "classname": "app.skein.inference.service.LlamaNativeTest",
+          "name": "exactNativeCapacityAcceptsLastReservedPositionAndRefusesOneBeyond"
+        },
+        {
+          "classname": "app.skein.inference.service.LlamaNativeTest",
+          "name": "embedIsUnitLengthAndModelWidth"
+        },
+        {
+          "classname": "app.skein.inference.service.LlamaNativeTest",
+          "name": "tokenToPieceConcatenatesBackToTheInput"
+        },
+        {
+          "classname": "app.skein.inference.service.LlamaNativeTest",
+          "name": "chatTemplatingRenderUsesTheModelsOwnTemplateAndMarkersAroundTheContent"
+        },
+        {
+          "classname": "app.skein.inference.service.LlamaNativeTest",
+          "name": "literalChatMlDelimiterCannotAddAnotherNativeControlToken"
+        },
+        {
+          "classname": "app.skein.inference.service.LlamaNativeTest",
+          "name": "applyChatTemplateContainsTheUserMessage"
+        }
+      ]
+    },
+    "critical_7": {
+      "expected": 7,
+      "passed": 7,
+      "missing_or_nonpassing": [],
+      "identities": [
+        {
+          "classname": "app.skein.inference.service.LlamaNativeTest",
+          "name": "descriptorLoadCancellationFromProgressClosesOwnedStreamAndKeepsCallerFd"
+        },
+        {
+          "classname": "app.skein.inference.service.LlamaNativeTest",
+          "name": "pathLoadCancellationFromProgressRetainsNoNativeHandle"
+        },
+        {
+          "classname": "app.skein.inference.service.InferenceServiceInstrumentedTest",
+          "name": "lockingMidGenerationCancelsThenLockedTerminatesTheIsolatedProcess"
+        },
+        {
+          "classname": "app.skein.inference.service.InferenceServiceInstrumentedTest",
+          "name": "aLockingServiceRefusesTheNextGenerateBeforeProcessTeardown"
+        },
+        {
+          "classname": "app.skein.inference.service.InferenceServiceInstrumentedTest",
+          "name": "staleLockedPushDoesNotKillNewlyAuthorizedService"
+        },
+        {
+          "classname": "app.skein.inference.LlamaCppEngineInstrumentedTest",
+          "name": "lockAfterInspectionTerminatesTheProcessAndOnlyANewUnlockCanRebind"
+        },
+        {
+          "classname": "app.skein.inference.service.LlamaNativeTest",
+          "name": "tokenizeReturnsAtLeastTwoIds"
+        }
+      ]
+    }
+  },
+  "collector_scope": {
+    "entries": 4,
+    "expected_current_entries": 4,
+    "missing": [],
+    "unexpected": [],
+    "historical_docs_paths": []
+  },
+  "rehashed_manifest": [
+    {
+      "path": "app/build/outputs/androidTest-results/connected/debug/flavors/dev/TEST-test(AVD) - 15.xml",
+      "bytes": 8522,
+      "sha256": "5b8d348e49450119618b1a7b48c05330155c2b2ede9b7dd341b9e0eac631d0e1",
+      "size_and_hash_matched": true
+    },
+    {
+      "path": "build/instrumentation-review.json",
+      "bytes": 983,
+      "sha256": "2b9474372f90097cfeca357a48ca216945294d66ca20c6c4d533a786844e0afb",
+      "size_and_hash_matched": true
+    },
+    {
+      "path": "core/vault/build/outputs/androidTest-results/connected/debug/flavors/dev/TEST-test(AVD) - 15.xml",
+      "bytes": 38385,
+      "sha256": "6887853eb66df1d21fbf2a01c0d4fad6d1c0128df751d5b0e605923cc147328c",
+      "size_and_hash_matched": true
+    },
+    {
+      "path": "inference-service/build/outputs/androidTest-results/connected/debug/flavors/dev/TEST-test(AVD) - 15.xml",
+      "bytes": 6497,
+      "sha256": "c7f48bc278df02baee8ff9a211ecb83bf5f9ce558501bc860f4dd3f1777370ea",
+      "size_and_hash_matched": true
+    }
+  ],
+  "built_apk_declarations": [
+    {
+      "path": "app/build/outputs/apk/androidTest/dev/debug/app-dev-debug-androidTest.apk",
+      "sha256": "c238824900ee4e5da42f36db4af784f2c5f0c701f90ff88aee65faa75f6db6b1",
+      "bytes_available": false,
+      "independently_rehashed": null
+    },
+    {
+      "path": "app/build/outputs/apk/dev/debug/app-dev-debug.apk",
+      "sha256": "76d0f6938bc597718f561232c7f40745b2157f62a693978726b3d672d3907197",
+      "bytes_available": false,
+      "independently_rehashed": null
+    },
+    {
+      "path": "core/vault/build/outputs/apk/androidTest/dev/debug/vault-dev-debug-androidTest.apk",
+      "sha256": "27ae586bbb81be99b4fc41b811a1447df9f8236f79f87c3814ba9a42908a8362",
+      "bytes_available": false,
+      "independently_rehashed": null
+    },
+    {
+      "path": "inference-service/build/outputs/apk/androidTest/dev/debug/inference-service-dev-debug-androidTest.apk",
+      "sha256": "792aa79711d904fced350880041add7ac1bbb0cffd74eacd332c91e6569c7d1d",
+      "bytes_available": false,
+      "independently_rehashed": null
+    }
+  ],
+  "APK_scope": "Manifest declarations only when bytes_available=false; no installed-byte attestation.",
+  "remaining_scope": "Ordinary instrumentation only; opt-in retrieval/foldable excluded. No generic fold, exact Pixel9, real IME, unlocked A-G, physical Fold or candidate-release inference."
+}

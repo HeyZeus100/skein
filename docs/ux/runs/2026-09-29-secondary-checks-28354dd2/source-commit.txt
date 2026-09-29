@@ -1,0 +1,9 @@
+commit 28354dd25bb4995930ff46a71752f43f8a0d5df3
+Author:     Andrew Herrera <andrew@aherrera.us>
+AuthorDate: Tue Sep 29 08:44:45 2026 -0700
+Commit:     Andrew Herrera <andrew@aherrera.us>
+CommitDate: Tue Sep 29 08:44:45 2026 -0700
+
+    Record reviewed workspace sidebar and first-send UI baselines
+    
+    Signed-off-by: Andrew Herrera <andrew@aherrera.us>

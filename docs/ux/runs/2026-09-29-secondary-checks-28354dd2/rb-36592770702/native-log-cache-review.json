@@ -1,0 +1,99 @@
+[
+  {
+    "path": "rb-36592770702/job-109489838979.log",
+    "sha256": "38175d6f5554db6c08751657829e1bbef15dec0d2503e8e7fb8143236ad54fa8",
+    "native_tasks": [],
+    "from_cache_tasks": [],
+    "failed_build_markers": [],
+    "source_epoch_lines": []
+  },
+  {
+    "path": "rb-36592770702/job-109489961930.log",
+    "sha256": "d31ee786cefbd9b83629960cee9756c96c0c906480ab34df3483404ed9ac07df",
+    "native_tasks": [
+      "2026-09-29T15:48:39.5971605Z > Task :inference-service:configureCMakeRelWithDebInfo[arm64-v8a]",
+      "2026-09-29T15:48:48.9970116Z > Task :core:vault:configureCMakeRelWithDebInfo[arm64-v8a]",
+      "2026-09-29T15:48:50.8013306Z > Task :inference-service:configureCMakeRelWithDebInfo[arm64-v8a]",
+      "2026-09-29T15:49:19.1115406Z > Task :core:vault:buildCMakeRelWithDebInfo[arm64-v8a][skein_sqlite,skein_sqlite_jni]",
+      "2026-09-29T15:49:21.3076276Z > Task :inference-service:buildCMakeRelWithDebInfo[arm64-v8a][skein_llama]"
+    ],
+    "from_cache_tasks": [],
+    "failed_build_markers": [],
+    "source_epoch_lines": [
+      "2026-09-29T15:47:25.8418372Z \u001b[36;1mecho \"SOURCE_DATE_EPOCH=${epoch}\" >> \"$GITHUB_ENV\"\u001b[0m",
+      "2026-09-29T15:47:25.8419101Z \u001b[36;1mecho \"SOURCE_DATE_EPOCH=${epoch}\"\u001b[0m",
+      "2026-09-29T15:47:25.8675241Z SOURCE_DATE_EPOCH=1790696685",
+      "2026-09-29T15:57:24.6267038Z \u001b[36;1m  echo \"source_date_epoch=$SOURCE_DATE_EPOCH\"\u001b[0m",
+      "2026-09-29T15:57:24.8349154Z source_date_epoch=1790696685"
+    ]
+  },
+  {
+    "path": "rb-36592770702/job-109489962001.log",
+    "sha256": "008c21b497269d34c93e39d799b4480acfe28163ca57cbeb826588bb53da2f0a",
+    "native_tasks": [
+      "2026-09-29T15:48:36.7541434Z > Task :inference-service:configureCMakeRelWithDebInfo[arm64-v8a]",
+      "2026-09-29T15:48:45.9541625Z > Task :core:vault:configureCMakeRelWithDebInfo[arm64-v8a]",
+      "2026-09-29T15:48:47.0540894Z > Task :inference-service:configureCMakeRelWithDebInfo[arm64-v8a]",
+      "2026-09-29T15:49:16.0584438Z > Task :core:vault:buildCMakeRelWithDebInfo[arm64-v8a][skein_sqlite,skein_sqlite_jni]",
+      "2026-09-29T15:49:18.0681698Z > Task :inference-service:buildCMakeRelWithDebInfo[arm64-v8a][skein_llama]"
+    ],
+    "from_cache_tasks": [],
+    "failed_build_markers": [],
+    "source_epoch_lines": [
+      "2026-09-29T15:47:28.4387016Z \u001b[36;1mecho \"SOURCE_DATE_EPOCH=${epoch}\" >> \"$GITHUB_ENV\"\u001b[0m",
+      "2026-09-29T15:47:28.4387410Z \u001b[36;1mecho \"SOURCE_DATE_EPOCH=${epoch}\"\u001b[0m",
+      "2026-09-29T15:47:28.4589958Z SOURCE_DATE_EPOCH=1790696685",
+      "2026-09-29T15:57:24.3819006Z \u001b[36;1m  echo \"source_date_epoch=$SOURCE_DATE_EPOCH\"\u001b[0m",
+      "2026-09-29T15:57:24.5830454Z source_date_epoch=1790696685"
+    ]
+  },
+  {
+    "path": "rb-36592770702/job-109489962153.log",
+    "sha256": "45cf79356872dc847f449566597c17a7e8c809282f3d4dfd736eecd8a8ae7be8",
+    "native_tasks": [],
+    "from_cache_tasks": [],
+    "failed_build_markers": [],
+    "source_epoch_lines": [
+      "2026-09-29T15:47:36.3747321Z \u001b[36;1mecho \"SOURCE_DATE_EPOCH=${epoch}\" >> \"$GITHUB_ENV\"\u001b[0m",
+      "2026-09-29T15:47:36.3747785Z \u001b[36;1mecho \"SOURCE_DATE_EPOCH=${epoch}\"\u001b[0m",
+      "2026-09-29T15:47:36.5288974Z SOURCE_DATE_EPOCH=1790696685"
+    ]
+  },
+  {
+    "path": "rb-36592770702/job-109494564166.log",
+    "sha256": "a1c68b0e5c814fc1b2bd79095682f203cbe4cf7fa6cb7001a8ea0b52071d115f",
+    "native_tasks": [],
+    "from_cache_tasks": [],
+    "failed_build_markers": [],
+    "source_epoch_lines": [
+      "2026-09-29T15:57:45.7165327Z source_date_epoch=1790696685",
+      "2026-09-29T15:57:45.7176583Z source_date_epoch=1790696685"
+    ]
+  },
+  {
+    "path": "rb-36592770702/artifact-11044692909-so-determinism/files/run.gCLREb8A/build-1.log",
+    "sha256": "57562ab6aa5a1f13019fcc721c939da0c3d1b45b0d15f12c2bb8195606f9a2f7",
+    "native_tasks": [
+      "> Task :inference-service:configureCMakeRelWithDebInfo[arm64-v8a]",
+      "> Task :inference-service:configureCMakeRelWithDebInfo[arm64-v8a]",
+      "> Task :inference-service:configureCMakeRelWithDebInfo[arm64-v8a]",
+      "> Task :inference-service:configureCMakeRelWithDebInfo[arm64-v8a]",
+      "> Task :inference-service:configureCMakeRelWithDebInfo[arm64-v8a]",
+      "> Task :inference-service:buildCMakeRelWithDebInfo[arm64-v8a][skein_llama]"
+    ],
+    "from_cache_tasks": [],
+    "failed_build_markers": [],
+    "source_epoch_lines": []
+  },
+  {
+    "path": "rb-36592770702/artifact-11044692909-so-determinism/files/run.gCLREb8A/build-2.log",
+    "sha256": "0cee4911c513e8ae88c6f14a9f8eab483e4fb17bd2b694dd577f315d1e7e991c",
+    "native_tasks": [
+      "> Task :inference-service:configureCMakeRelWithDebInfo[arm64-v8a]",
+      "> Task :inference-service:buildCMakeRelWithDebInfo[arm64-v8a][skein_llama]"
+    ],
+    "from_cache_tasks": [],
+    "failed_build_markers": [],
+    "source_epoch_lines": []
+  }
+]

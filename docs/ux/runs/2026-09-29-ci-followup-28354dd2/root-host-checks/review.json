@@ -1,0 +1,46 @@
+{
+  "scope": "Retained coordinator logs inspected; no test rerun by capsule author.",
+  "logs": [
+    {
+      "file": "fold-observer-root-host.log.gz",
+      "raw_bytes": 107,
+      "raw_sha256": "1e0157ae968a3e882cf130f32a40f0b11c639e6b4cf0c9c6b9ff63df0e9f7f23",
+      "actual_named_OK_lines": 0,
+      "summary_tests": 9,
+      "summary_passed": true,
+      "skips_in_log": 0
+    },
+    {
+      "file": "fold-observer-root-all-host.log.gz",
+      "raw_bytes": 5035,
+      "raw_sha256": "6d8d397cb3055813841dc8e3ddebabca10d444c4363803b49a24c5f2b67026a1",
+      "actual_named_OK_lines": 28,
+      "summary_tests": 28,
+      "summary_passed": true,
+      "skips_in_log": 0
+    },
+    {
+      "file": "fold-observer-root-38-host.log.gz",
+      "raw_bytes": 5695,
+      "raw_sha256": "df8de4704102f61d7dbdfdc83c0a3ace0309728e0bb4827aab4fa84da217e245",
+      "actual_named_OK_lines": 32,
+      "summary_tests": 32,
+      "summary_passed": true,
+      "skips_in_log": 0
+    },
+    {
+      "file": "fold-observer-root-38-complete-host.log.gz",
+      "raw_bytes": 6853,
+      "raw_sha256": "c82916c72723e586ef025380ea0e42bcfa54d4f16c995c5c42af1feb40e9758a",
+      "actual_named_OK_lines": 38,
+      "summary_tests": 38,
+      "summary_passed": true,
+      "skips_in_log": 0
+    }
+  ],
+  "complete_38_log": "fold-observer-root-38-complete-host.log.gz",
+  "verification_manifest_named_passes_in_complete_log": 6,
+  "earlier_logs": "Preserved partial selections: 9 summary-only, 28 named, 32 named. The filename containing 38 without complete actually reports 32 tests.",
+  "source_attribution": "Coordinator supplied these as the integration observer host checks. Logs have no embedded checkout SHA; source identity is coordinator-reported, not independently attested from these log bytes.",
+  "runtime_claim": false
+}

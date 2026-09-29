@@ -1,0 +1,32 @@
+{
+  "schema_version": 1,
+  "claim": "Original host public-model SHA256 and BLAKE3 were fed from the same full input stream; evidence rechecked without model rehash.",
+  "identity_original_sha256": "625212a9771344d4069f06209fee7cf75b5e4bb375542932d43081b72c4463f2",
+  "driver_source_sha256": "4c619d516cdc367a64c2939bb324972b49646dae953f366b5895b54862e96646",
+  "driver_class_sha256": "2e5b59328c0513de3a27c10e22426317df22e1531b32c6c890cdbe2b4b881701",
+  "driver_class_rehashed_for_publication_but_binary_not_copied": true,
+  "source_mechanism": "One Files.newInputStream loop calls blake3.update and sha256.update with identical buffer/offset/count, sums total, checks full1590475744 bytes and pinned SHA256 before emitting final BLAKE3.",
+  "actual_stdout": {
+    "progress_records": 11,
+    "monotonic_bytes_and_time": true,
+    "one_final_complete_row": true,
+    "final_matches_identity": true
+  },
+  "model": {
+    "event": "complete",
+    "bytes": 1590475744,
+    "sha256": "2c5f9a121ae6695208e300c16acca303669afa4e18812061164dca9c97071b12",
+    "blake3": "db158ff62057f42fef73363387db4bfac01da469475840dc0aad5dae70eb0e4a",
+    "elapsed_ms": 7413,
+    "classification": "host public-model identity; not device benchmark"
+  },
+  "timeout_seconds": 120,
+  "timed_out": false,
+  "model_stat_unchanged": true,
+  "model_rehashed_for_publication": false,
+  "limitations": [
+    "Host identity is the old5ae observation, not fresh device evidence.",
+    "Full device model SHA256 and size plus isolated-service verification remain required.",
+    "BLAKE3 implementation provenance is preserved; no new independent algorithm/vector execution is claimed."
+  ]
+}

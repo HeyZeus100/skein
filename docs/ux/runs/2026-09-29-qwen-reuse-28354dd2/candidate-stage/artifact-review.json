@@ -1,0 +1,58 @@
+{
+  "schema_version": 1,
+  "source_sha": "28354dd25bb4995930ff46a71752f43f8a0d5df3",
+  "artifact_comparison": "PASS for bounded native-library/source and frozen synthetic test payload reuse; not release or runtime acceptance",
+  "app": {
+    "path": "${HOST_HOME}/skein-worktrees/ux-integration-20260929/build/agent-logs/candidate-28354dd-optin/app-foss-debug.apk",
+    "size": 127098252,
+    "sha256": "8053e8e10ee6dbe7b9e650506971bf30b93e64861bbdff1237420680d10b4eb9"
+  },
+  "app_test": {
+    "path": "${HOST_HOME}/skein-worktrees/ux-integration-20260929/build/agent-logs/candidate-28354dd-optin/app-foss-debug-androidTest.apk",
+    "size": 91337045,
+    "sha256": "0891fce37751f92a2e79a1c46424e3d463fbdef0903dce64aa9933f9be472cf2"
+  },
+  "release_native_test": {
+    "path": "${HOST_HOME}/skein-worktrees/ux-integration-20260929/build/agent-logs/candidate-5ae91c2-optin/inference-service-foss-debug-androidTest.apk",
+    "size": 130230126,
+    "sha256": "bb1b2f496f6c831ced00f20d9dd08d6f571d87fcb48040dfba17f4a7c561f342"
+  },
+  "excluded_rebuilt_native_test": {
+    "path": "${HOST_HOME}/skein-worktrees/ux-integration-20260929/build/agent-logs/candidate-28354dd-optin/inference-service-foss-debug-androidTest.apk",
+    "size": 130304344,
+    "sha256": "c1186bc554ae89d89a35983f883354e436cb34f2cebb790cc06a3a896409fb2d"
+  },
+  "new_app_native_entries_equal_to_measured_old": 7,
+  "native_elf_abi": "All 7 app and 1 native-test entries are ELF64 little-endian AArch64 (183); path ABI arm64-v8a.",
+  "candidate_app_ordinary_and_optin_byte_equal": true,
+  "synthetic_classes": {
+    "ordinary_app": 0,
+    "ordinary_app_test": 0,
+    "ordinary_native_test": 0,
+    "optin_app": 0,
+    "optin_app_test": 48,
+    "optin_native_test": 2,
+    "actual_class_definitions_not_strings_only": true,
+    "sdk_apkanalyzer_confirmed_benchmark_method_and_progress_stage": true
+  },
+  "payload_equality": {
+    "new_optin_native_test_vs_frozen": "All 79 entries same names, decompressed bytes and compressed bytes; classes7.dex payload exactly 74176B SHA23a76a198e98243e1c8c9b6b6f72764fee31b4e8bc34499bfc54182f41d51544.",
+    "new_optin_app_test_vs_aee46": "All 67 entries same names, decompressed and compressed bytes; classes7.dex exactly229572B SHAf925a9ee553172577398387402a788777a9790339288d63fc1f65c3a0f44fb70.",
+    "new_ordinary_native_test_vs_frozen": "78/79 entries equal; only classes7.dex differs, correctly excluding opt-in parity class."
+  },
+  "container_difference_explanation": {
+    "observation": "Entry order/local placement/alignment padding differ; new native-test classes7.dex was appended at header offset130219178 versus old12064172. It adds exactly74218B (=74176B payload+42B local header/name) to archive size. APK signing blocks are4096B and differ. No decompressed or compressed payload changed.",
+    "inference": "Consistent with incremental ZIP packaging after ordinary\u2192opt-in source-set switch, rather than changed native code or missing/stale synthetic class. No across-build whole-APK reproducibility claim is made.",
+    "cache_evidence": "Opt-in log explicitly recalculates configuration because skein.syntheticBenchmark changed; native-test Kotlin compilation FROM-CACHE in both builds; final ordinary/opt-in classes match intended gate."
+  },
+  "source_equivalence": "568 selected source objects and12 relevant trees equal to previous5d58 review; all prior native7object manifest and3submodule pins match28354. Setup3files equal prior reviewed aee46.",
+  "signer": "Newapp/newapp-test/frozen-native-test independently verify APKv2,1signer,certificate SHA25675bcae7118a4635dd0fb153438e5bdbfd7aab5d467b3a0c2bb210eefde5becf9.",
+  "limits": [
+    "Released v5 must point to the exact frozen native-test bb1b2f49\u2026 APK, not newly rebuilt c1186bc\u2026 or ordinary acf4d0\u2026.",
+    "Reused prior public native report remains five native-library parity/token-classification observations on old5ae; no new physical runtime, generated-stop, answer-quality or retrieval gate is inferred.",
+    "Public Qwen full SHA/B3/template identity remains the original frozen host/native observation; new run must still verify full device model SHA256+size and isolated-service verification.",
+    "APK source binding is root host-declared checkout/build context, not embedded source attestation.",
+    "New app UI/first-send Knowledge changes are excluded from any claim of whole-app prompt/answer equivalence.",
+    "No physical/ADB, builds, CI dispatch, model rehash or restricted broad process-summary read performed."
+  ]
+}

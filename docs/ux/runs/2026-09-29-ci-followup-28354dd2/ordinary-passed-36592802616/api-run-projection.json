@@ -1,0 +1,18 @@
+{
+  "projection": {
+    "id": 36592802616,
+    "run_number": 55,
+    "run_attempt": 1,
+    "event": "workflow_dispatch",
+    "status": "completed",
+    "conclusion": "success",
+    "head_sha": "28354dd25bb4995930ff46a71752f43f8a0d5df3",
+    "head_branch": "codex/ux-integration-20260929",
+    "html_url": "https://github.com/HeyZeus100/skein/actions/runs/36592802616",
+    "created_at": "2026-09-29T15:46:53Z",
+    "updated_at": "2026-09-29T16:03:46Z"
+  },
+  "original_snapshot_sha256": "12bbc2703b018a3859fea8008687de51e1db7e53b2793107e1ad5f250ea010a7",
+  "original_snapshot_bytes": 12053,
+  "omitted_fields": "Public actor/repository profile metadata and unrelated API URLs omitted."
+}

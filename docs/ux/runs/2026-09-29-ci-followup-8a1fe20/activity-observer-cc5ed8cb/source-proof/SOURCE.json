@@ -1,0 +1,38 @@
+{
+  "pin": "cc8bb19595c661f5cf42f330457000e643c67d1b",
+  "repository": "aosp-mirror/platform_frameworks_base",
+  "branch_context": "android15-release",
+  "runtime_attestation": false,
+  "files": [
+    {
+      "path": "core/java/android/app/Instrumentation.java",
+      "url": "https://raw.githubusercontent.com/aosp-mirror/platform_frameworks_base/cc8bb19595c661f5cf42f330457000e643c67d1b/core/java/android/app/Instrumentation.java",
+      "bytes": 109500,
+      "sha256": "38fd2c02a469510935bcc43155c9ace600368ecbabed33dc120b11126ca5e8fd"
+    },
+    {
+      "path": "core/java/android/app/ContextImpl.java",
+      "url": "https://raw.githubusercontent.com/aosp-mirror/platform_frameworks_base/cc8bb19595c661f5cf42f330457000e643c67d1b/core/java/android/app/ContextImpl.java",
+      "bytes": 154194,
+      "sha256": "70448f77a00c45721890a1fece5f15f9e1f74744a6d25ebf766e2d9b5960590f"
+    },
+    {
+      "path": "core/java/android/app/ActivityThread.java",
+      "url": "https://raw.githubusercontent.com/aosp-mirror/platform_frameworks_base/cc8bb19595c661f5cf42f330457000e643c67d1b/core/java/android/app/ActivityThread.java",
+      "bytes": 394503,
+      "sha256": "3a6995ab5f30c7507fbdc25e45c852224f400838538b64422a585c4661286ca2"
+    },
+    {
+      "path": "core/java/android/app/ResourcesManager.java",
+      "url": "https://raw.githubusercontent.com/aosp-mirror/platform_frameworks_base/cc8bb19595c661f5cf42f330457000e643c67d1b/core/java/android/app/ResourcesManager.java",
+      "bytes": 85168,
+      "sha256": "4ed470998221f5ca7c257a9263e5b72ba2f404dc30a72e230d858f518eb336dd"
+    },
+    {
+      "path": "core/java/android/view/WindowManagerImpl.java",
+      "url": "https://raw.githubusercontent.com/aosp-mirror/platform_frameworks_base/cc8bb19595c661f5cf42f330457000e643c67d1b/core/java/android/view/WindowManagerImpl.java",
+      "bytes": 23309,
+      "sha256": "43a9109bff2d2b8a8080538cbdd8a02cbe3b90f144f6b64881ff4e3e74166745"
+    }
+  ]
+}

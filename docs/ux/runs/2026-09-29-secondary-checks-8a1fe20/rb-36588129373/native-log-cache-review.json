@@ -1,0 +1,113 @@
+[
+  {
+    "path": "rb-36588129373/job-109473957175.log",
+    "sha256": "936a0c8a01d34a4acfdeff5ac1592422cd6409349a3ca197c2c4ba10e3796f3e",
+    "native_tasks": [],
+    "from_cache_tasks": [],
+    "failed_build_markers": [],
+    "source_epoch_lines": [
+      "2026-09-29T15:11:02.1707854Z \u001b[36;1mecho \"SOURCE_DATE_EPOCH=${epoch}\" >> \"$GITHUB_ENV\"\u001b[0m",
+      "2026-09-29T15:11:02.1708248Z \u001b[36;1mecho \"SOURCE_DATE_EPOCH=${epoch}\"\u001b[0m",
+      "2026-09-29T15:11:02.1907228Z SOURCE_DATE_EPOCH=1790694605"
+    ],
+    "no_build_cache_lines": []
+  },
+  {
+    "path": "rb-36588129373/job-109473957400.log",
+    "sha256": "22dc5203d6ade5e47a33bf032b7aa12760713a164f8424c4e4686b8bef4e869a",
+    "native_tasks": [
+      "2026-09-29T15:13:00.0063477Z > Task :inference-service:configureCMakeRelWithDebInfo[arm64-v8a]",
+      "2026-09-29T15:13:13.0086001Z > Task :core:vault:configureCMakeRelWithDebInfo[arm64-v8a]",
+      "2026-09-29T15:13:14.2062968Z > Task :inference-service:configureCMakeRelWithDebInfo[arm64-v8a]",
+      "2026-09-29T15:13:43.1150073Z > Task :core:vault:buildCMakeRelWithDebInfo[arm64-v8a][skein_sqlite,skein_sqlite_jni]",
+      "2026-09-29T15:13:46.3229758Z > Task :inference-service:buildCMakeRelWithDebInfo[arm64-v8a][skein_llama]"
+    ],
+    "from_cache_tasks": [],
+    "failed_build_markers": [],
+    "source_epoch_lines": [
+      "2026-09-29T15:11:12.6766769Z \u001b[36;1mecho \"SOURCE_DATE_EPOCH=${epoch}\" >> \"$GITHUB_ENV\"\u001b[0m",
+      "2026-09-29T15:11:12.6767218Z \u001b[36;1mecho \"SOURCE_DATE_EPOCH=${epoch}\"\u001b[0m",
+      "2026-09-29T15:11:12.6971594Z SOURCE_DATE_EPOCH=1790694605",
+      "2026-09-29T15:21:38.4074802Z \u001b[36;1m  echo \"source_date_epoch=$SOURCE_DATE_EPOCH\"\u001b[0m",
+      "2026-09-29T15:21:38.6186694Z source_date_epoch=1790694605"
+    ],
+    "no_build_cache_lines": [
+      "2026-09-29T15:11:12.7011485Z ##[group]Run ./gradlew clean :app:assembleFossRelease --no-build-cache --max-workers=2 --stacktrace",
+      "2026-09-29T15:11:12.7012311Z \u001b[36;1m./gradlew clean :app:assembleFossRelease --no-build-cache --max-workers=2 --stacktrace\u001b[0m"
+    ]
+  },
+  {
+    "path": "rb-36588129373/job-109473957181.log",
+    "sha256": "fc7d517f25f0f9a8bd85781ca17dc6e2cca96c27e35510423fb6bc64e0ef103b",
+    "native_tasks": [
+      "2026-09-29T15:12:56.7492109Z > Task :inference-service:configureCMakeRelWithDebInfo[arm64-v8a]",
+      "2026-09-29T15:13:04.2491493Z > Task :core:vault:configureCMakeRelWithDebInfo[arm64-v8a]",
+      "2026-09-29T15:13:05.9505404Z > Task :inference-service:configureCMakeRelWithDebInfo[arm64-v8a]",
+      "2026-09-29T15:13:34.3085519Z > Task :core:vault:buildCMakeRelWithDebInfo[arm64-v8a][skein_sqlite,skein_sqlite_jni]",
+      "2026-09-29T15:13:35.9915488Z > Task :inference-service:buildCMakeRelWithDebInfo[arm64-v8a][skein_llama]"
+    ],
+    "from_cache_tasks": [],
+    "failed_build_markers": [],
+    "source_epoch_lines": [
+      "2026-09-29T15:11:11.7413808Z \u001b[36;1mecho \"SOURCE_DATE_EPOCH=${epoch}\" >> \"$GITHUB_ENV\"\u001b[0m",
+      "2026-09-29T15:11:11.7414452Z \u001b[36;1mecho \"SOURCE_DATE_EPOCH=${epoch}\"\u001b[0m",
+      "2026-09-29T15:11:11.8737753Z SOURCE_DATE_EPOCH=1790694605",
+      "2026-09-29T15:20:30.5887717Z \u001b[36;1m  echo \"source_date_epoch=$SOURCE_DATE_EPOCH\"\u001b[0m",
+      "2026-09-29T15:20:30.8046591Z source_date_epoch=1790694605"
+    ],
+    "no_build_cache_lines": [
+      "2026-09-29T15:11:11.8788971Z ##[group]Run ./gradlew clean :app:assembleFossRelease --no-build-cache --max-workers=2 --stacktrace",
+      "2026-09-29T15:11:11.8790203Z \u001b[36;1m./gradlew clean :app:assembleFossRelease --no-build-cache --max-workers=2 --stacktrace\u001b[0m"
+    ]
+  },
+  {
+    "path": "rb-36588129373/job-109478918130.log",
+    "sha256": "8552cd4ade6f4e5b93dc63203858b30e4d59961d40e4f2f82af105da8f2930b6",
+    "native_tasks": [],
+    "from_cache_tasks": [],
+    "failed_build_markers": [],
+    "source_epoch_lines": [
+      "2026-09-29T15:21:54.5692000Z source_date_epoch=1790694605",
+      "2026-09-29T15:21:54.5701259Z source_date_epoch=1790694605"
+    ],
+    "no_build_cache_lines": []
+  },
+  {
+    "path": "rb-36588129373/job-109473819921.log",
+    "sha256": "51e03bdb061607381b09163015e2c931d2c72358a3574a00a2baf11af4809c74",
+    "native_tasks": [],
+    "from_cache_tasks": [],
+    "failed_build_markers": [],
+    "source_epoch_lines": [],
+    "no_build_cache_lines": [
+      "2026-09-29T15:10:25.6900621Z [ok]   --no-build-cache is part of the documented gradle args",
+      "2026-09-29T15:10:25.6900824Z [ok]   the CI workflow passes --no-build-cache",
+      "2026-09-29T15:10:26.1789565Z [ok]   --no-build-cache is part of the documented gradle args",
+      "2026-09-29T15:10:26.1789884Z [ok]   the CI workflow passes --no-build-cache"
+    ]
+  },
+  {
+    "path": "rb-36588129373/artifact-11043351344-so-determinism/files/run.EFt2TE8Q/build-2.log",
+    "sha256": "4b1b0117fb83f214824f63678f22cfbb215acce4fc7c4a1d28e9a3171d71fd42",
+    "native_tasks": [
+      "> Task :inference-service:configureCMakeRelWithDebInfo[arm64-v8a]",
+      "> Task :inference-service:buildCMakeRelWithDebInfo[arm64-v8a][skein_llama]"
+    ],
+    "from_cache_tasks": [],
+    "failed_build_markers": [],
+    "source_epoch_lines": [],
+    "no_build_cache_lines": []
+  },
+  {
+    "path": "rb-36588129373/artifact-11043351344-so-determinism/files/run.EFt2TE8Q/build-1.log",
+    "sha256": "37a85ccca5eccb744d4f9f20f122deb944e1d15299998b35ff8aad4f19999468",
+    "native_tasks": [
+      "> Task :inference-service:configureCMakeRelWithDebInfo[arm64-v8a]",
+      "> Task :inference-service:buildCMakeRelWithDebInfo[arm64-v8a][skein_llama]"
+    ],
+    "from_cache_tasks": [],
+    "failed_build_markers": [],
+    "source_epoch_lines": [],
+    "no_build_cache_lines": []
+  }
+]

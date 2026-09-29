@@ -1,0 +1,19 @@
+{
+  "provenance_entries_verified": 19,
+  "published_payload_and_decompressed_hashes_match": true,
+  "original_sources_modified": false,
+  "archive_checks": "Artifact API size/digest matched and both ZIP archives passed integrity. APK bytes absent; all APK hashes are declarations only.",
+  "actual_XML": "Three raw XML files: 281 expected cases passed, zero errors/skips/failures/missing/unexpected/duplicates. Prior19 and critical7 all pass; current four-file manifest hashes/sizes match.",
+  "host_source_checks": "Coordinator complete log has 38 named passes, including six manifest tests. Earlier 9/28/32 logs preserved. No tests rerun by capsule author.",
+  "publication_scope": "Documentation copies, hashes, compression and recorded local-path replacements only. No build/device/CI/Beads operations.",
+  "private_path_matches": [],
+  "credential_value_pattern_matches": [],
+  "broken_local_links": [],
+  "forbidden_binary_files": [],
+  "credential_context_review": "Whole-job extraheader and AUTHORIZATION matches manually reviewed: git configuration/removal commands and two already-masked basic *** headers; no credential values.",
+  "size_before_report_and_manifest": {
+    "files": 24,
+    "bytes": 163214,
+    "maximum_file_bytes": 38385
+  }
+}

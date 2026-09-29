@@ -1,0 +1,70 @@
+{
+  "schema_version": 1,
+  "review_kind": "read-only source and existing host-log inspection; no independent execution",
+  "commit": "cc5ed8cba08d64ec6b2d6ea7e99c0b7372fd5167",
+  "reviewer": "overlay_ime",
+  "disposition": "No blocking source regression found in the bounded Activity-observer change; ready for root compilation and emulator verification, not runtime acceptance.",
+  "files": [
+    {
+      "path": "app/src/foldableTest/kotlin/app/skein/foldable/FoldableDeviceControl.kt",
+      "bytes": 10194,
+      "sha256": "66b952d1b17b696240def8e33367191af029b0e1db4a2feccdb594e81879cb35"
+    },
+    {
+      "path": "app/src/foldableTest/kotlin/app/skein/foldable/MainActivityFoldableGateTest.kt",
+      "bytes": 6777,
+      "sha256": "c1a45b458456edef2ce9c3dd19807fa2bce16b57b36895329862ea7ef19d7076"
+    },
+    {
+      "path": "tools/ci/test_verify_foldable.py",
+      "bytes": 10306,
+      "sha256": "6b78c6b60e2672d7f5bdd2ef91d4b38dab6badb60c1bc17c7da91d5dc38deff1"
+    },
+    {
+      "path": "tools/ci/verify-foldable.py",
+      "bytes": 13263,
+      "sha256": "c5be210e62443b7f1a6b6f14e6b6171096e9bdff206bbceea76e893e33027413"
+    }
+  ],
+  "findings": [
+    {
+      "lines": "MainActivityFoldableGateTest.kt:68-70,101-103,122-135",
+      "finding": "Both journeys launch a real Activity before state/rotation observations. onActivity checks identity before copying Activity Configuration and its WindowManager current bounds. No targetContext geometry can satisfy the observer now."
+    },
+    {
+      "lines": "FoldableDeviceControl.kt:42-44,94-97,155-172,233-237",
+      "finding": "Existing state-commit and config thresholds stay required; actual bounds add width/density and orientation/aspect checks. All copies are made inside onActivity. Bounds threshold and configuration threshold must both pass."
+    },
+    {
+      "lines": "MainActivityFoldableGateTest.kt:51-63,160-170",
+      "finding": "Activity remains open through guarded flat reset, rotation unfreeze, setup gate/security/no-NavDisplay and same-instance cleanup assertion; close runs in finally."
+    },
+    {
+      "lines": "verify-foldable.py:79-118,138-177",
+      "finding": "Exactly five named records remain required, now with Activity observer, integer valid bounds and orientation, matching cover/inner/short-window thresholds and object identity. Strict six alternating causal requests/console/ACKs are unchanged."
+    },
+    {
+      "lines": "MainActivityFoldableGateTest.kt:156-157; run-foldable-emulator.sh:71-84",
+      "finding": "targetContext remains only the deliberate private-file transport destination. Existing leaveApksInstalledAfterRun export is unchanged; does not reintroduce non-UI geometry observation."
+    }
+  ],
+  "concrete_limits": [
+    "No Kotlin compilation, ActivityScenario/emulator execution, five fresh JSONL observations, or production unlocked/IME/inference acceptance was performed by this reviewer.",
+    "ActivityWindowGeometry reads WindowManager current bounds, not drawn-frame pixel content. Identity/config/bounds checks plus Compose setup-gate assertions are this lane scope; physical sensor hinge-angle proof remains excluded.",
+    "The existing 15-second await loop checks its clock between synchronous waitForIdleSync/onActivity calls. This patch does not establish a strict wall-clock bound if the main looper hangs; the outer workflow remains the failure boundary."
+  ],
+  "existing_host_evidence": {
+    "path": "<observer-worktree>/build/agent-logs/observer-all-host-green.log",
+    "bytes": 6853,
+    "sha256": "ee8a1ba1ebfb447487c6559008aa6e8d7eeb9b58ab831e65fda3f6b8548f9f6d",
+    "actual_ok_lines": 38,
+    "rerun": false
+  },
+  "pinned_framework_source": {
+    "index_path": "<observer-worktree>/build/agent-logs/activity-observer-source/SOURCE.json",
+    "index_sha256": "d00fe51351e7b52a8705094b888225a1bf8ea97c462bc0a5dfec487bc58a357c",
+    "all_five_source_bytes_and_hashes_verified": true,
+    "pin": "cc8bb19595c661f5cf42f330457000e643c67d1b",
+    "runtime_attestation": false
+  }
+}

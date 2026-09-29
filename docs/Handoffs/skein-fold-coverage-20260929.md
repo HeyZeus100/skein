@@ -1,6 +1,43 @@
 # AL-10 / AL-15 / AL-16 coverage audit and Fold candidate
 
-Source baseline: `a4ba4f4` (`codex/ux-integration-20260929`, integrated UX + retrieval baseline). Coordinator owns Beads and publishes the final integrated source SHA and evidence. This document does not close AL-10, AL-15, AL-16, retrieval, embedding, or physical-device acceptance.
+Original audit baseline: `a4ba4f4` (`codex/ux-integration-20260929`, integrated UX + retrieval baseline). Coordinator owns Beads and publishes the final integrated source SHA and evidence. This document does not close AL-10, AL-15, AL-16, retrieval, embedding, or physical-device acceptance.
+
+## Current integration and physical scope
+
+The current verified application candidate is `28354dd25bb4995930ff46a71752f43f8a0d5df3`,
+released at 16:42:58 UTC on 29 September. Its signed APK SHA-256 is
+`8053e8e10ee6dbe7b9e650506971bf30b93e64861bbdff1237420680d10b4eb9`,
+with the same single signer and version as the preserved installed app. The sole
+physical runner installed it with `install -r` and rehashed the copied installed
+APK to that exact digest. Both the prior APK and the original update-parser
+failure remain intact. Update metadata retains firstInstallTime, dataDir and
+both data inodes; owner vault contents were not inspected to establish that fact.
+The owner completed normal unlock and the demo session resumed UI rehearsal.
+See the [current integration release/runbook](skein-ux-integration-20260929.md).
+
+This authorization covers a data-preserving update and demo checks only. The
+full physical acceptance matrix below still requires its separately described
+scope. Source `28354` additionally verifies two independently retained workspaces,
+workspace stopped-lock scrubbing and shared model readiness through real Activity
+host tests. These extend AL-15's host evidence; they do not close real IME,
+process-death or recursive D7 acceptance. AL-10 focus and transcript-following
+findings below remain present; the draft store and turn controller were retained.
+
+The repaired observer now launches and retains MainActivity before fold controls
+and samples its Configuration plus currentWindowMetrics. Fresh compatibility run
+`36598598934` still has two actual XML failures and no accepted geometry records:
+CLOSED leaves the actual Activity at 674 × 841 dp / 1768 × 2208 px (420 dpi).
+Four causal fold/unfold exchanges succeeded, including cleanup, but the required
+six-exchange journeys and compact cover threshold did not complete. This is an
+actual window-geometry failure, distinct from the older non-UI context observation
+bug. No threshold was relaxed, no synthetic display resize substituted, and no
+repeat run was dispatched after this result. The generated AVD declares an
+884 × 2208 px folded region, while eight retained LogicalDisplayMapper lines show
+posture transitions applying the same single-display layout. This does not isolate
+an emulator/image policy cause or establish an app defect. The [complete failed
+run capsule](../ux/runs/2026-09-29-foldable-failed-36598598934-28354dd2/README.md)
+preserves both XML failures, exact protocol, configuration, source/API provenance
+and original artifact digest. AL-16 remains open.
 
 ## Production coverage added
 
@@ -54,7 +91,7 @@ This first gate does **not** exercise unlocked A–G, real IME, streaming, app l
 
 ## Candidate and later physical Fold runbook
 
-**Scoped authorization update (2026-09-29):** the user released Fold HOLD only for a verified, data-preserving update/demo; `/root/fts_verification` owns the sole physical runner. This coverage session still has no physical-device access. The candidate is not released until the coordinator completes integrated verification. The earlier blanket HOLD is retained in original evidence; this paragraph records the later authorization without expanding it. Any physical work beyond that update/demo needs further authorization. Do not use software posture overrides on the physical device.
+**Scoped authorization update (2026-09-29):** the user released Fold HOLD only for a verified, data-preserving update/demo; `/root/fts_verification` owns the sole physical runner. This coverage session still has no physical-device access. The current candidate above has completed integrated verification and is released; its installed bytes match the release. The earlier blanket HOLD is retained in original evidence; this paragraph records the later authorization without expanding it. Any physical work beyond that update/demo needs further authorization. Do not use software posture overrides on the physical device.
 
 The candidate is the coordinator's final integrated commit containing this change and the reviewed inference branch. Before releasing the authorized update/demo candidate, the coordinator fills an immutable candidate record under its own worktree's evidence directory with:
 

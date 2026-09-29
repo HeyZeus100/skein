@@ -1,0 +1,97 @@
+[
+  {
+    "command": [
+      "${HOST_HOME}/android-sdk/build-tools/37.0.0/apksigner",
+      "verify",
+      "--verbose",
+      "--print-certs",
+      "${HOST_HOME}/skein-worktrees/ux-integration-20260929/build/agent-logs/candidate-28354dd-optin/app-foss-debug.apk"
+    ],
+    "returncode": 0,
+    "output_path": "${HOST_HOME}/skein-worktrees/ux-workspace-models-test-20260929/build/agent-logs/native-qwen-reuse-28354dd/new-app-apksigner.txt.gz",
+    "output_sha256": "a816b6da04cca26adc29515c1c698695c7e661b30a132ab2ad60e27510a364c9"
+  },
+  {
+    "command": [
+      "${HOST_HOME}/android-sdk/build-tools/37.0.0/aapt2",
+      "dump",
+      "badging",
+      "${HOST_HOME}/skein-worktrees/ux-integration-20260929/build/agent-logs/candidate-28354dd-optin/app-foss-debug.apk"
+    ],
+    "returncode": 0,
+    "output_path": "${HOST_HOME}/skein-worktrees/ux-workspace-models-test-20260929/build/agent-logs/native-qwen-reuse-28354dd/new-app-aapt2.txt.gz",
+    "output_sha256": "b9c17257d0625c7c45124dbd707c7fabfa82f28d6913ed54af84ac3c4006db7c"
+  },
+  {
+    "command": [
+      "${HOST_HOME}/android-sdk/build-tools/37.0.0/apksigner",
+      "verify",
+      "--verbose",
+      "--print-certs",
+      "${HOST_HOME}/skein-worktrees/ux-integration-20260929/build/agent-logs/candidate-28354dd-optin/app-foss-debug-androidTest.apk"
+    ],
+    "returncode": 0,
+    "output_path": "${HOST_HOME}/skein-worktrees/ux-workspace-models-test-20260929/build/agent-logs/native-qwen-reuse-28354dd/new-app-test-apksigner.txt.gz",
+    "output_sha256": "a816b6da04cca26adc29515c1c698695c7e661b30a132ab2ad60e27510a364c9"
+  },
+  {
+    "command": [
+      "${HOST_HOME}/android-sdk/build-tools/37.0.0/aapt2",
+      "dump",
+      "badging",
+      "${HOST_HOME}/skein-worktrees/ux-integration-20260929/build/agent-logs/candidate-28354dd-optin/app-foss-debug-androidTest.apk"
+    ],
+    "returncode": 0,
+    "output_path": "${HOST_HOME}/skein-worktrees/ux-workspace-models-test-20260929/build/agent-logs/native-qwen-reuse-28354dd/new-app-test-aapt2.txt.gz",
+    "output_sha256": "d53220ed1e6319288db24b5a7ae6356e45889eb536502e613d8dc831f2045be3"
+  },
+  {
+    "command": [
+      "${HOST_HOME}/android-sdk/build-tools/37.0.0/apksigner",
+      "verify",
+      "--verbose",
+      "--print-certs",
+      "${HOST_HOME}/skein-worktrees/ux-integration-20260929/build/agent-logs/candidate-5ae91c2-optin/inference-service-foss-debug-androidTest.apk"
+    ],
+    "returncode": 0,
+    "output_path": "${HOST_HOME}/skein-worktrees/ux-workspace-models-test-20260929/build/agent-logs/native-qwen-reuse-28354dd/frozen-native-test-apksigner.txt.gz",
+    "output_sha256": "a816b6da04cca26adc29515c1c698695c7e661b30a132ab2ad60e27510a364c9"
+  },
+  {
+    "command": [
+      "${HOST_HOME}/android-sdk/build-tools/37.0.0/aapt2",
+      "dump",
+      "badging",
+      "${HOST_HOME}/skein-worktrees/ux-integration-20260929/build/agent-logs/candidate-5ae91c2-optin/inference-service-foss-debug-androidTest.apk"
+    ],
+    "returncode": 0,
+    "output_path": "${HOST_HOME}/skein-worktrees/ux-workspace-models-test-20260929/build/agent-logs/native-qwen-reuse-28354dd/frozen-native-test-aapt2.txt.gz",
+    "output_sha256": "d15ffd4201aa3b0d6989a7f36abdba41fdbd982358f1dac6d1c5cd4abe38db24"
+  },
+  {
+    "command": [
+      "${HOST_HOME}/android-sdk/cmdline-tools/latest/bin/apkanalyzer",
+      "dex",
+      "code",
+      "--class",
+      "app.skein.benchmark.SyntheticSetupProgress",
+      "${HOST_HOME}/skein-worktrees/ux-integration-20260929/build/agent-logs/candidate-28354dd-optin/app-foss-debug-androidTest.apk"
+    ],
+    "returncode": 0,
+    "output_path": "${HOST_HOME}/skein-worktrees/ux-workspace-models-test-20260929/build/agent-logs/native-qwen-reuse-28354dd/SyntheticSetupProgress-packaged-smali.txt.gz",
+    "output_sha256": "3928fb2d5834666efadf0be65abf2206090c5da2c270d749ca8e41be8cb5a06b"
+  },
+  {
+    "command": [
+      "${HOST_HOME}/android-sdk/cmdline-tools/latest/bin/apkanalyzer",
+      "dex",
+      "code",
+      "--class",
+      "app.skein.benchmark.SyntheticAnswerBenchmarkTest",
+      "${HOST_HOME}/skein-worktrees/ux-integration-20260929/build/agent-logs/candidate-28354dd-optin/app-foss-debug-androidTest.apk"
+    ],
+    "returncode": 0,
+    "output_path": "${HOST_HOME}/skein-worktrees/ux-workspace-models-test-20260929/build/agent-logs/native-qwen-reuse-28354dd/SyntheticAnswerBenchmarkTest-packaged-smali.txt.gz",
+    "output_sha256": "51638f89ab6877811461e3f8cd35e8591e352383320f3b4c5cdbbf7acbc23cc1"
+  }
+]

@@ -1,0 +1,136 @@
+{
+  "status": "SOURCE_COMPARISON_COMPLETE_ARTIFACT_COMPARISON_PENDING",
+  "old_source": "5ae91c238612bdd9b1511b3716d34b4fa5960dd2",
+  "new_source": "5d58f7cba26317c62ee7811472067fc73d0fee82",
+  "prior_test_only_source": "aee46e4d6c391bddbfb55296117889e1f79afff6",
+  "selected_source_files": 568,
+  "equal_files": 563,
+  "changed_selected_paths": [
+    "app/build.gradle.kts",
+    "app/src/syntheticBenchmark/kotlin/app/skein/benchmark/SyntheticAnswerBenchmarkTest.kt",
+    "app/src/syntheticBenchmarkShared/kotlin/app/skein/benchmark/SyntheticSetup.kt",
+    "app/src/syntheticBenchmarkTest/kotlin/app/skein/benchmark/SyntheticSetupTest.kt",
+    "feature/editor/build.gradle.kts"
+  ],
+  "tree_comparisons": [
+    {
+      "path": "native",
+      "old_tree": "ecefab4de66c322e7ee9a35995c3a830f9292d34",
+      "new_tree": "ecefab4de66c322e7ee9a35995c3a830f9292d34",
+      "identical": true
+    },
+    {
+      "path": "inference-service",
+      "old_tree": "8b68633b9e46604b5251d71bb4069b77ffd1eb5f",
+      "new_tree": "8b68633b9e46604b5251d71bb4069b77ffd1eb5f",
+      "identical": true
+    },
+    {
+      "path": "core/inference",
+      "old_tree": "fb767dff7c0a9d482c70eb47213c1158e57f08d0",
+      "new_tree": "fb767dff7c0a9d482c70eb47213c1158e57f08d0",
+      "identical": true
+    },
+    {
+      "path": "core/ipc",
+      "old_tree": "c8660eee7dca79f5fc8f0ccaf8beadc07744de6b",
+      "new_tree": "c8660eee7dca79f5fc8f0ccaf8beadc07744de6b",
+      "identical": true
+    },
+    {
+      "path": "core/model",
+      "old_tree": "acaaaaca5b98edfc06e655e3df0901a2ccf44131",
+      "new_tree": "acaaaaca5b98edfc06e655e3df0901a2ccf44131",
+      "identical": true
+    },
+    {
+      "path": "core/verify",
+      "old_tree": "1ba9b63ea0bfa91e8ab7400d51ad0b6deff57573",
+      "new_tree": "1ba9b63ea0bfa91e8ab7400d51ad0b6deff57573",
+      "identical": true
+    },
+    {
+      "path": "core/rag",
+      "old_tree": "57149f7a2a2340285f2779fb1b2b4237bbcec0ab",
+      "new_tree": "57149f7a2a2340285f2779fb1b2b4237bbcec0ab",
+      "identical": true
+    },
+    {
+      "path": "core/vault",
+      "old_tree": "5d7f610dae0ea03202e14e098380cdbd15060979",
+      "new_tree": "5d7f610dae0ea03202e14e098380cdbd15060979",
+      "identical": true
+    },
+    {
+      "path": "build-logic",
+      "old_tree": "ef72a3b3b59c30104efe558fb4835075b61cb3d2",
+      "new_tree": "ef72a3b3b59c30104efe558fb4835075b61cb3d2",
+      "identical": true
+    },
+    {
+      "path": "gradle",
+      "old_tree": "5ab2a6039b6580c90ae804e8ebe8b72b0bf942ad",
+      "new_tree": "5ab2a6039b6580c90ae804e8ebe8b72b0bf942ad",
+      "identical": true
+    },
+    {
+      "path": "third_party",
+      "old_tree": "abbf1fb7e2583c5ce999cc2da5c717f40f5b2073",
+      "new_tree": "abbf1fb7e2583c5ce999cc2da5c717f40f5b2073",
+      "identical": true
+    },
+    {
+      "path": "app/src/main/kotlin/app/skein/models",
+      "old_tree": "3e73a7c0427777995265d24604b36d74a795227d",
+      "new_tree": "3e73a7c0427777995265d24604b36d74a795227d",
+      "identical": true
+    }
+  ],
+  "pinned_submodules": [
+    {
+      "path": "third_party/SPIRV-Headers",
+      "old": {
+        "mode": "160000",
+        "kind": "commit",
+        "git_oid": "ad9184e76a66b1001c29db9b0a3e87f646c64de0"
+      },
+      "new": {
+        "mode": "160000",
+        "kind": "commit",
+        "git_oid": "ad9184e76a66b1001c29db9b0a3e87f646c64de0"
+      },
+      "identical": true
+    },
+    {
+      "path": "third_party/Vulkan-Headers",
+      "old": {
+        "mode": "160000",
+        "kind": "commit",
+        "git_oid": "8864cdc896bbc2a9b6eb36b3218fc9ef57908d77"
+      },
+      "new": {
+        "mode": "160000",
+        "kind": "commit",
+        "git_oid": "8864cdc896bbc2a9b6eb36b3218fc9ef57908d77"
+      },
+      "identical": true
+    },
+    {
+      "path": "third_party/llama.cpp",
+      "old": {
+        "mode": "160000",
+        "kind": "commit",
+        "git_oid": "b29c606e28a01b1bc8c1351026a0fa6e616bf6c4"
+      },
+      "new": {
+        "mode": "160000",
+        "kind": "commit",
+        "git_oid": "b29c606e28a01b1bc8c1351026a0fa6e616bf6c4"
+      },
+      "identical": true
+    }
+  ],
+  "synthetic_setup_vs_prior_test_only_source_changed_paths": [],
+  "native_runtime_parity_reuse_approved": false,
+  "pending": "Exact new APK/test APK paths; full archive and per-ABI native-library comparison; class/DEX and build-context/source provenance review. No source-only runtime reuse approval."
+}

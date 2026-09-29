@@ -1,0 +1,17 @@
+[
+  {
+    "path": "SHA256SUMS-b.txt",
+    "bytes": 96,
+    "sha256": "44458cbce974fbf810d0b2ab6421f58d3b03d879743e709213c506e9bead54d7"
+  },
+  {
+    "path": "app-foss-release-unsigned.apk",
+    "bytes": 100740719,
+    "sha256": "99edfeebf7828749ad7c47c50d5bbcb4e1ba06d42d5c3b93e22a3edbb1f5cfd8"
+  },
+  {
+    "path": "context-b.txt",
+    "bytes": 377,
+    "sha256": "f1382bb37b470ceb27c38e2ce04494ee60ae5bc81964fb8829081dc82772b5d7"
+  }
+]

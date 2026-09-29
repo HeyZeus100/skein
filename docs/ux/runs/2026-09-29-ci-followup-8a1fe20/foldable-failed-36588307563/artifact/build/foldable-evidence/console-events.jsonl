@@ -1,0 +1,14 @@
+{"avd": "skein_foldable_gate", "event": "started", "run_id": "72301df4ad2a4a54aea483d24a44b773", "serial": "emulator-5554"}
+{"action": "fold", "event": "request", "nonce": "13a77fbdbcf54a24a3b1e52837dcb6da", "run_id": "72301df4ad2a4a54aea483d24a44b773", "sequence": 1}
+{"action": "fold", "event": "console", "returncode": 0, "run_id": "72301df4ad2a4a54aea483d24a44b773", "sequence": 1, "stderr": "", "stdout": "OK\n"}
+{"action": "fold", "event": "ack", "nonce": "13a77fbdbcf54a24a3b1e52837dcb6da", "run_id": "72301df4ad2a4a54aea483d24a44b773", "sequence": 1, "status": "ok"}
+{"action": "unfold", "event": "request", "nonce": "4d48660a743d4df586009b3460594eed", "run_id": "72301df4ad2a4a54aea483d24a44b773", "sequence": 2}
+{"action": "unfold", "event": "console", "returncode": 0, "run_id": "72301df4ad2a4a54aea483d24a44b773", "sequence": 2, "stderr": "", "stdout": "OK\n"}
+{"action": "unfold", "event": "ack", "nonce": "4d48660a743d4df586009b3460594eed", "run_id": "72301df4ad2a4a54aea483d24a44b773", "sequence": 2, "status": "ok"}
+{"action": "fold", "event": "request", "nonce": "e1e4de6e58b24941bfc6e38b2912690e", "run_id": "72301df4ad2a4a54aea483d24a44b773", "sequence": 3}
+{"action": "fold", "event": "console", "returncode": 0, "run_id": "72301df4ad2a4a54aea483d24a44b773", "sequence": 3, "stderr": "", "stdout": "OK\n"}
+{"action": "fold", "event": "ack", "nonce": "e1e4de6e58b24941bfc6e38b2912690e", "run_id": "72301df4ad2a4a54aea483d24a44b773", "sequence": 3, "status": "ok"}
+{"action": "unfold", "event": "request", "nonce": "f37a1d53745e48f298497fe5e5617089", "run_id": "72301df4ad2a4a54aea483d24a44b773", "sequence": 4}
+{"action": "unfold", "event": "console", "returncode": 0, "run_id": "72301df4ad2a4a54aea483d24a44b773", "sequence": 4, "stderr": "", "stdout": "OK\n"}
+{"action": "unfold", "event": "ack", "nonce": "f37a1d53745e48f298497fe5e5617089", "run_id": "72301df4ad2a4a54aea483d24a44b773", "sequence": 4, "status": "ok"}
+{"event": "stopped", "run_id": "72301df4ad2a4a54aea483d24a44b773"}

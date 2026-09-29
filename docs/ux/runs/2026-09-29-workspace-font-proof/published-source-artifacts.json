@@ -1,0 +1,29 @@
+[
+  {
+    "url": "https://dl.google.com/dl/android/maven2/androidx/compose/ui/ui-text/1.12.1/ui-text-1.12.1-sources.jar",
+    "artifact_bytes": 206002,
+    "artifact_sha256": "e3c65881878013a782275881d27e604bd066ae03972a43e7e742fb02045668c7",
+    "original_artifact_path": "/Users/andrewherrera/skein-worktrees/ux-workspace-models-test-20260929/build/agent-logs/workspace-font-source/ui-text-1.12.1-sources.jar",
+    "whole_archive_included": false
+  },
+  {
+    "url": "https://dl.google.com/dl/android/maven2/androidx/compose/ui/ui-text-android/1.12.1/ui-text-android-1.12.1-sources.jar",
+    "artifact_bytes": 348725,
+    "artifact_sha256": "f40f267cc1bbf7315e37916d6baf818dd7791b42db6dc238303a8b48471aa292",
+    "original_artifact_path": "/Users/andrewherrera/skein-worktrees/ux-workspace-models-test-20260929/build/agent-logs/workspace-font-source/ui-text-android-1.12.1-sources.jar",
+    "whole_archive_included": false
+  },
+  {
+    "url": "https://dl.google.com/dl/android/maven2/androidx/compose/foundation/foundation/1.12.1/foundation-1.12.1-sources.jar",
+    "artifact_bytes": 1100543,
+    "artifact_sha256": "52a6d0cc33f64d1c839f75836e6c20cd8193ab39b6a9ee761a7caaf7da93016a",
+    "original_artifact_path": "/Users/andrewherrera/skein-worktrees/ux-workspace-models-test-20260929/build/agent-logs/workspace-font-source/foundation-1.12.1-sources.jar",
+    "whole_archive_included": false
+  },
+  {
+    "url": "https://dl.google.com/dl/android/maven2/androidx/compose/compose-bom/2026.09.00/compose-bom-2026.09.00.pom",
+    "artifact_bytes": 41126,
+    "artifact_sha256": "74791c31313009659bd0bf09008bd514a163aa04452dd4cb82df2fb971c757c3",
+    "portable": "source/compose-bom-2026.09.00.pom"
+  }
+]

@@ -1,0 +1,30 @@
+/*
+ * GENERATED from native/llama/skein_llama_config.h.in by CMake. Do not edit.
+ *
+ * Build-time facts about this particular libskein_llama.so. Every value is a
+ * literal chosen at configure time, so nothing here varies between two builds
+ * of the same source at the same options (reproducibility, E1.I8 / skein-ddp).
+ */
+#ifndef SKEIN_LLAMA_CONFIG_H
+#define SKEIN_LLAMA_CONFIG_H
+
+/* ABI this .so was built for, e.g. "arm64-v8a". */
+#define SKEIN_LLAMA_ABI "@ANDROID_ABI@"
+
+/* llama.cpp revision compiled in — see native/llama/PINNED_COMMIT. */
+#define SKEIN_LLAMA_UPSTREAM_VERSION "@LLAMA_VERSION_BASE@"
+
+/* 1 when the ggml Vulkan backend is compiled into this .so. */
+#define SKEIN_LLAMA_HAS_VULKAN @SKEIN_LLAMA_VULKAN_01@
+
+/*
+ * The backend the service should ask for unless told otherwise. This is the
+ * *effective* value: the requested SKEIN_LLAMA_DEFAULT_BACKEND intersected
+ * with what this ABI actually built, so it reads "cpu" on x86_64 even when
+ * "vulkan" was requested. The binding decision lives in docs/MEASUREMENTS.md
+ * (`inference_backend`, bd skein-5hr) and flipping it is one word in
+ * inference-service/build.gradle.kts.
+ */
+#define SKEIN_LLAMA_DEFAULT_BACKEND "@SKEIN_LLAMA_EFFECTIVE_BACKEND@"
+
+#endif /* SKEIN_LLAMA_CONFIG_H */

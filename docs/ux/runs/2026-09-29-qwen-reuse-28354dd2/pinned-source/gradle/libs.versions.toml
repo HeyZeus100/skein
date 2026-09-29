@@ -1,0 +1,135 @@
+[versions]
+agp = "9.4.1"
+kotlin = "2.4.20"
+ksp = "2.3.12"
+compose-bom = "2026.09.00"
+material3 = "1.4.0"
+material3-adaptive = "1.3.0"
+androidx-window = "1.5.1"
+androidx-sqlite = "2.7.1"
+androidx-work = "2.11.2"
+androidx-biometric = "1.1.0"
+# skein-gg11.13: biometric 1.1.0 pulls androidx.fragment 1.2.5, whose
+# FragmentActivity still enforces the legacy 16-bit request-code rule and
+# crashes every ActivityResult launcher hosted by MainActivity. 1.3+ dropped
+# the check and delegates to the ActivityResult APIs; pinned explicitly.
+androidx-fragment = "1.9.1"
+androidx-core-ktx = "1.19.0"
+androidx-activity-compose = "1.13.0"
+androidx-lifecycle = "2.11.0"
+# skein-xtov.24.4 (AL-05, the D8 gate): Navigation 3, latest stable
+# (2026-09). Its UI artifact lifts navigationevent-compose 1.0.0 -> 1.1.1
+# transitively; see docs/ux/ADAPTIVE_LAYOUT_SPEC.md §8.9 "Result".
+androidx-navigation3 = "1.2.0"
+# E3.I8: SecurityPrefs persists the FLAG_SECURE toggle via DataStore, not
+# SharedPreferences (spec §9 vault surfaces).
+androidx-datastore = "1.2.1"
+kotlinx-coroutines = "1.11.0"
+kotlinx-serialization = "1.11.0"
+jetbrains-markdown = "0.7.14"
+onnxruntime = "1.27.0"
+sigstore-java = "2.3.0"
+pdfbox-android = "2.0.27.0"
+robolectric = "4.17"
+junit = "4.13.2"
+androidx-test-junit = "1.3.0"
+androidx-test-espresso = "3.7.0"
+androidx-test-espresso-device = "1.1.0"
+androidx-test-runner = "1.7.0"
+androidx-test-rules = "1.7.0"
+androidx-work-testing = "2.11.2"
+turbine = "1.2.1"
+truth = "1.4.5"
+ktlint-gradle = "14.2.0"
+# skein-xtov.9: JVM screenshot tests (Robolectric native graphics) — the only
+# visual evidence the UX overhaul can produce, since FLAG_SECURE blacks out
+# device screenshots. 1.75.0 is the latest release (2026-09-21); AGP 9 support
+# landed in 1.x (#782, Jan 2026). See docs/ux/research/ROBORAZZI_SPIKE.md.
+roborazzi = "1.75.0"
+
+[libraries]
+androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "androidx-core-ktx" }
+androidx-activity-compose = { group = "androidx.activity", name = "activity-compose", version.ref = "androidx-activity-compose" }
+androidx-lifecycle-runtime-ktx = { group = "androidx.lifecycle", name = "lifecycle-runtime-ktx", version.ref = "androidx-lifecycle" }
+androidx-lifecycle-viewmodel-compose = { group = "androidx.lifecycle", name = "lifecycle-viewmodel-compose", version.ref = "androidx-lifecycle" }
+# E3.I14 (skein-up0): ProcessLifecycleOwner for the "lock when app leaves
+# foreground" trigger (LockPolicyObserver, :app only). Already pinned in
+# gradle/verification-metadata.xml; this is the first direct dependency on it.
+androidx-lifecycle-process = { group = "androidx.lifecycle", name = "lifecycle-process", version.ref = "androidx-lifecycle" }
+androidx-window = { group = "androidx.window", name = "window", version.ref = "androidx-window" }
+# E5.I10 (skein-7v3): IngestWorker. `work-runtime` (the `-ktx` artifact is
+# deprecated and empty since 2.9 — CoroutineWorker lives in work-runtime).
+# Apache-2.0; no GMS transitive (only `work-gcm` would, and it is not used).
+androidx-work-runtime = { group = "androidx.work", name = "work-runtime", version.ref = "androidx-work" }
+androidx-biometric = { group = "androidx.biometric", name = "biometric", version.ref = "androidx-biometric" }
+androidx-fragment = { group = "androidx.fragment", name = "fragment", version.ref = "androidx-fragment" }
+androidx-sqlite = { group = "androidx.sqlite", name = "sqlite", version.ref = "androidx-sqlite" }
+androidx-sqlite-bundled = { group = "androidx.sqlite", name = "sqlite-bundled", version.ref = "androidx-sqlite" }
+androidx-sqlite-framework = { group = "androidx.sqlite", name = "sqlite-framework", version.ref = "androidx-sqlite" }
+androidx-datastore-preferences = { group = "androidx.datastore", name = "datastore-preferences", version.ref = "androidx-datastore" }
+
+compose-bom = { group = "androidx.compose", name = "compose-bom", version.ref = "compose-bom" }
+compose-ui = { group = "androidx.compose.ui", name = "ui" }
+compose-ui-graphics = { group = "androidx.compose.ui", name = "ui-graphics" }
+compose-ui-tooling = { group = "androidx.compose.ui", name = "ui-tooling" }
+compose-ui-tooling-preview = { group = "androidx.compose.ui", name = "ui-tooling-preview" }
+compose-ui-test-junit4 = { group = "androidx.compose.ui", name = "ui-test-junit4" }
+compose-ui-test-manifest = { group = "androidx.compose.ui", name = "ui-test-manifest" }
+compose-foundation = { group = "androidx.compose.foundation", name = "foundation" }
+material3 = { group = "androidx.compose.material3", name = "material3", version.ref = "material3" }
+material3-adaptive = { group = "androidx.compose.material3.adaptive", name = "adaptive", version.ref = "material3-adaptive" }
+material3-adaptive-layout = { group = "androidx.compose.material3.adaptive", name = "adaptive-layout", version.ref = "material3-adaptive" }
+# skein-xtov.24.4 (AL-05): the list-detail / supporting-pane scene strategies
+# for Navigation 3, at Skein's material3-adaptive version (also in the BOM).
+material3-adaptive-navigation3 = { group = "androidx.compose.material3.adaptive", name = "adaptive-navigation3", version.ref = "material3-adaptive" }
+androidx-navigation3-runtime = { group = "androidx.navigation3", name = "navigation3-runtime", version.ref = "androidx-navigation3" }
+androidx-navigation3-ui = { group = "androidx.navigation3", name = "navigation3-ui", version.ref = "androidx-navigation3" }
+androidx-lifecycle-viewmodel-navigation3 = { group = "androidx.lifecycle", name = "lifecycle-viewmodel-navigation3", version.ref = "androidx-lifecycle" }
+
+kotlinx-coroutines-core = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-core", version.ref = "kotlinx-coroutines" }
+kotlinx-coroutines-android = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-android", version.ref = "kotlinx-coroutines" }
+kotlinx-coroutines-test = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-test", version.ref = "kotlinx-coroutines" }
+kotlinx-serialization-json = { group = "org.jetbrains.kotlinx", name = "kotlinx-serialization-json", version.ref = "kotlinx-serialization" }
+# skein-xtov.24.4 (AL-05): `@Serializable` navigation keys need only the core
+# runtime (they are encoded into a Bundle, never to JSON).
+kotlinx-serialization-core = { group = "org.jetbrains.kotlinx", name = "kotlinx-serialization-core", version.ref = "kotlinx-serialization" }
+
+jetbrains-markdown = { group = "org.jetbrains", name = "markdown", version.ref = "jetbrains-markdown" }
+onnxruntime-android = { group = "com.microsoft.onnxruntime", name = "onnxruntime-android", version.ref = "onnxruntime" }
+# Desktop/JVM artifact (bundles host-OS native libs) — testImplementation only,
+# so :embedder-service unit tests can run ONNX Runtime inference on the JVM
+# under Robolectric without an Android device/emulator. Production code uses
+# onnxruntime-android above, whose native libs are arm64-v8a-only on device.
+onnxruntime-jvm = { group = "com.microsoft.onnxruntime", name = "onnxruntime", version.ref = "onnxruntime" }
+sigstore-java = { group = "dev.sigstore", name = "sigstore-java", version.ref = "sigstore-java" }
+pdfbox-android = { group = "com.tom-roush", name = "pdfbox-android", version.ref = "pdfbox-android" }
+
+junit = { group = "junit", name = "junit", version.ref = "junit" }
+androidx-test-ext-junit = { group = "androidx.test.ext", name = "junit", version.ref = "androidx-test-junit" }
+androidx-test-espresso-core = { group = "androidx.test.espresso", name = "espresso-core", version.ref = "androidx-test-espresso" }
+androidx-test-espresso-device = { group = "androidx.test.espresso", name = "espresso-device", version.ref = "androidx-test-espresso-device" }
+androidx-test-runner = { group = "androidx.test", name = "runner", version.ref = "androidx-test-runner" }
+androidx-test-rules = { group = "androidx.test", name = "rules", version.ref = "androidx-test-rules" }
+androidx-work-testing = { group = "androidx.work", name = "work-testing", version.ref = "androidx-work-testing" }
+robolectric = { group = "org.robolectric", name = "robolectric", version.ref = "robolectric" }
+turbine = { group = "app.cash.turbine", name = "turbine", version.ref = "turbine" }
+truth = { group = "com.google.truth", name = "truth", version.ref = "truth" }
+roborazzi = { group = "io.github.takahirom.roborazzi", name = "roborazzi", version.ref = "roborazzi" }
+roborazzi-compose = { group = "io.github.takahirom.roborazzi", name = "roborazzi-compose", version.ref = "roborazzi" }
+
+[plugins]
+android-application = { id = "com.android.application", version.ref = "agp" }
+android-library = { id = "com.android.library", version.ref = "agp" }
+# NOTE: no kotlin-android plugin entry — AGP 9's built-in Kotlin support
+# compiles Kotlin sources in Android modules without it (see build.gradle.kts).
+kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }
+kotlin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }
+kotlin-compose = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
+# NOTE: no kotlin-parcelize entry — like kotlin-android above, AGP 9 already
+# puts `org.jetbrains.kotlin.plugin.parcelize` on the build classpath through
+# its built-in Kotlin support, so a versioned catalog alias is rejected
+# ("already on the classpath with an unknown version"). `:core:ipc` (E0.I16)
+# applies it by bare id instead.
+ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
+ktlint = { id = "org.jlleitschuh.gradle.ktlint", version.ref = "ktlint-gradle" }
+roborazzi = { id = "io.github.takahirom.roborazzi", version.ref = "roborazzi" }

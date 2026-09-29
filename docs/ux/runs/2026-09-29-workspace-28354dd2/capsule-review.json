@@ -1,0 +1,134 @@
+{
+  "combined_source": "0401d15f190ca61f4637965dc9e33245043c8b1a",
+  "golden_commit": "28354dd25bb4995930ff46a71752f43f8a0d5df3",
+  "failed_screens_source": "5d58f7cba26317c62ee7811472067fc73d0fee82",
+  "app_capture_source": "5d58f7cba26317c62ee7811472067fc73d0fee82",
+  "combined_check3": {
+    "tests": 1728,
+    "passed": 1684,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 44
+  },
+  "no_new_skips_against_8a_ci": true,
+  "app_check2": {
+    "tests": 562,
+    "passed": 562,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0
+  },
+  "original_screens1": {
+    "core/designsystem": {
+      "unchanged": 153,
+      "changed": 36
+    },
+    "feature/chat": {
+      "unchanged": 108,
+      "changed": 56
+    },
+    "feature/editor": {
+      "changed": 18,
+      "unchanged": 50
+    },
+    "feature/graph": {
+      "unchanged": 18
+    },
+    "feature/models": {
+      "unchanged": 34,
+      "changed": 4
+    },
+    "feature/settings": {
+      "unchanged": 18
+    },
+    "feature/shell": {
+      "unchanged": 37
+    },
+    "feature/timeline": {
+      "unchanged": 20
+    }
+  },
+  "original_retained_files_verified": 1055,
+  "screens2_xml": {
+    "tests": 1354,
+    "passed": 1274,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 80
+  },
+  "screens2_modules": [
+    {
+      "module": "core/designsystem",
+      "actual_result_types": {
+        "unchanged": 189
+      },
+      "individual_count": 189,
+      "summary_sha256": "d72fe73cfd2cd8c41895fd91557b1d5962bb70ecc9d652ce788cc8aad93443ed"
+    },
+    {
+      "module": "feature/chat",
+      "actual_result_types": {
+        "unchanged": 164
+      },
+      "individual_count": 164,
+      "summary_sha256": "8cf743f149ef4c0d597f95d112202759ba298db36e981e1539fa27a6a7e55169"
+    },
+    {
+      "module": "feature/editor",
+      "actual_result_types": {
+        "unchanged": 68
+      },
+      "individual_count": 68,
+      "summary_sha256": "34d6a23725da8fd4e952a8eddd6aad6a2652affe9dd7f749838c33f7a4aff7ac"
+    },
+    {
+      "module": "feature/graph",
+      "actual_result_types": {
+        "unchanged": 18
+      },
+      "individual_count": 18,
+      "summary_sha256": "45ec8188c8967aae8037d9f1432976e60f17166b9b27a084b071e3bbacda6e8e"
+    },
+    {
+      "module": "feature/models",
+      "actual_result_types": {
+        "unchanged": 38
+      },
+      "individual_count": 38,
+      "summary_sha256": "f2d9b81625d7e2a829fb9d703608142eb5543c6d2a746b1189a7b16ca5c171fb"
+    },
+    {
+      "module": "feature/settings",
+      "actual_result_types": {
+        "unchanged": 18
+      },
+      "individual_count": 18,
+      "summary_sha256": "b3ed0e6c85c60592f7b2d4c19c04432df77c058c96dbdc23a67fbd762a1d9bdf"
+    },
+    {
+      "module": "feature/shell",
+      "actual_result_types": {
+        "unchanged": 37
+      },
+      "individual_count": 37,
+      "summary_sha256": "973966ec7cd679b24969e4da42eff4258a52ff2f5b21d458b0700f9d0bd07087"
+    },
+    {
+      "module": "feature/timeline",
+      "actual_result_types": {
+        "unchanged": 20
+      },
+      "individual_count": 20,
+      "summary_sha256": "1f27fcb1bea391f9c92c260d6bee88df6f2ddaa75320ec28f3f875c5ccc09aea"
+    }
+  ],
+  "screens2_execution": "7 module test/verify tasks execute; Models test+verify UP-TO-DATE from focused input-mode-fix check, whose raw proof is retained. --no-build-cache; configuration cache reused.",
+  "focus_fix": "bc0f2ad81 restores all38 Models unchanged; initial4unexpected Models diffs are preserved and excluded from recording.",
+  "approved_goldens": 110,
+  "all110_after_bytes_equal_reviewed_first_attempt_actuals": true,
+  "unapproved_original_golden_bytes_unchanged": true,
+  "image_pairs_retained": 114,
+  "runtime_or_new_apk_acceptance": false,
+  "physical_hardware_images_included": false,
+  "scope": "Local source, compile/unit/lint, synthetic screenshots only. No new APK/install, ordinary/fold instrumentation runtime, physical hardware, retrieval or embedding acceptance."
+}

@@ -1,0 +1,58 @@
+Subject: [PATCH] vulkan-shaders: write `D_TYPE(0.0)`, not `D_TYPE(0)`, in tri/diag
+
+`tri.comp` and `diag.comp` store a literal zero into the destination buffer
+on the "not selected" side of the branch:
+
+    data_d[...] = D_TYPE(0);
+
+`D_TYPE` is `float` for the `_f32` variant and `float16_t` for the `_f16`
+variant.  For the `_f16` variant the integer literal `0` has to be converted
+`int -> float -> float16_t`, and the glslang inside the Android NDK r27c
+`glslc` (`shaderc v2022.3`) mis-folds that conversion: it emits
+
+    %467 = OpFConvert %half %float_<uninitialised>
+
+i.e. an `OpConstant %float` whose 32-bit literal is uninitialised memory.
+Observed values for one unchanged command line include `0`, `-8`,
+`0x1p+128` (+inf) and `-0x1.fffffp+128`.  Two consequences:
+
+  1. the compiled SPIR-V is not a function of its inputs, so every artifact
+     that embeds it is irreproducible (bd skein-ylux); and
+  2. the shader is miscompiled -- the else branch stores +inf/NaN instead of
+     zero whenever the garbage is not 0.
+
+Writing the literal as a floating-point `0.0` removes the integer
+conversion; glslang then folds it correctly and deterministically.  The
+emitted SPIR-V is byte-identical to the correct (majority) output of the
+unpatched source, so this changes nothing for a build that happened to get
+the right answer.  The `_f32` variants are unaffected either way.
+
+Measured with NDK r27c glslc on macOS/arm64: 40 compiles of unpatched
+`tri.comp` (`-DD_TYPE=float16_t -O`) produced 4 distinct `.spv`; 40 compiles
+of the patched source produced 1, equal to the majority unpatched output.
+
+Upstream: this is a workaround in llama.cpp for a glslang defect; the same
+`<f16 type>(<integer literal>)` shape appears elsewhere in
+`ggml/src/ggml-vulkan/vulkan-shaders/`, and only these two sites have been
+observed to miscompile. See bd skein-ylux and native/llama/README.md §4.
+
+--- a/tri.comp
++++ b/tri.comp
+@@ -37,6 +37,6 @@
+         const float val = float(data_a[get_aoffset() + src0_idx(idx)]);
+         data_d[get_doffset() + dst_idx(idx)] = D_TYPE(val);
+     } else {
+-        data_d[get_doffset() + dst_idx(idx)] = D_TYPE(0);
++        data_d[get_doffset() + dst_idx(idx)] = D_TYPE(0.0);
+     }
+ }
+--- a/diag.comp
++++ b/diag.comp
+@@ -23,6 +23,6 @@
+         const float val = float(data_a[get_aoffset() + i13*p.nb03 + i12*p.nb02 + 0*p.nb01 + i10*p.nb00]);
+         data_d[get_doffset() + dst_idx(idx)] = D_TYPE(val);
+     } else {
+-        data_d[get_doffset() + dst_idx(idx)] = D_TYPE(0);
++        data_d[get_doffset() + dst_idx(idx)] = D_TYPE(0.0);
+     }
+ }

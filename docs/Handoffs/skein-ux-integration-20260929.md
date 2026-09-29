@@ -1,5 +1,154 @@
 # UX, inference and demo integration — 29 September 2026
 
+The latest pushed combined UI source is **`28354dd25bb4995930ff46a71752f43f8a0d5df3`** on
+`main` and `codex/ux-integration-20260929`. **Released at 16:42:58 UTC for the
+owner-authorized data-preserving update and demo checks.** The sole demo runner
+may install the exact APK below using `install -r`, verify copied installed bytes,
+complete normal unlock and synthetic UI rehearsal, then perform one bounded
+four-case answer attempt. The runner installed it and independently rehashed the
+copied installed APK to the exact candidate digest. The previous APK, original
+update-parser failure and unchanged installation/data-directory metadata are
+preserved. The owner confirmed normal unlock and unfolding at 16:50 UTC. Initial
+physical observations confirm repeated New chat, Chat and Knowledge sidebar
+collapse, preserved fictional notes and no teal crease. Note+chat and Swap retained the synthetic draft and selected title; two distinct
+fictional notes and note+graph were also observed side by side. Hiding split and
+returning to Chat retained the draft and Knowledge choice. Live answers remain
+pending; this is not full adaptive acceptance. See the historical
+[verified-update checkpoint](../demo/conference-2026/runs/2026-09-29-workspace-update/README.md).
+The earlier `5ae91c238` release and all original failed attempts remain preserved.
+
+The owner-requested UI adds independently selectable workspaces for note/chat,
+two different notes, graph and other destinations; each retains its navigation,
+drafts and entry state. Split/collapse and Swap move stable owners. Selecting a
+note or chat already owned by the other workspace activates that owner, including
+objects retained below an inspector or another destination. Both workspaces share
+the authorized vault session and model/import services, and both reset on vault
+reset. Hidden workspaces stay composed without focus, semantics, navigation-back
+ownership or separate dialog/popup windows. Model changes in one workspace refresh
+Chat readiness in the other. The existing drafts and turn controller remain in
+place; the first-send addition captures a Knowledge boolean before admission.
+
+New chat works across single, dual and triple layouts. Chat and Knowledge have
+collapsible lists and accessible header controls. The first draft exposes Search
+Knowledge before sending; each logical draft retains its own choice. The enabled
+teal hinge debug guide is removed. Split placement retains physical book/tabletop
+partitions and falls back to the active workspace when two readable panes do not
+fit. Root Knowledge filters are content-free state that clears on stopped lock;
+private text stays out of the saved navigation Bundle.
+
+[Local workspace evidence](../ux/runs/2026-09-29-workspace-28354dd2/README.md)
+contains the actual XML, source/provenance records, before/after images and synthetic
+production Activity captures. The combined check at code source `0401d15f190` passed
+**1,684 cases with 44 existing conditional skips**, no failures/errors, explicit
+lint for all six affected modules and both opt-in AndroidTest Kotlin compilations.
+`28354dd25` changes only the 110 reviewed current goldens. All **552** images verify
+unchanged afterward; XML has 1,274 passes and 80 conditional skips. Seven screenshot
+module test tasks executed in that final run; Models reused the separately preserved
+38-unchanged fresh focused verification. No threshold, frozen baseline or gold label
+was changed.
+
+The first comparison's **114 changed images** are preserved. All 74 Chat/Knowledge
+changes were reviewed as the requested header/sidebar/first-send changes, and all
+36 icon-gallery changes as three added pinned icons and corresponding pagination.
+The remaining four Models changes exposed a parent focus-policy regression; the
+fix preserves visible descendants' own input-mode focus policy. Models then matched
+its original goldens, which were not recorded. Every one of the 110 recorded images
+is byte-identical to its reviewed earlier actual image. Original fixture, semantic
+measurement and capture-filename failures remain retained with their corrected
+checks; they are not relabelled as passes. The [font measurement proof](../ux/runs/2026-09-29-workspace-font-proof/README.md)
+retains pinned Compose source and the two original diagnostic failures: semantics
+reconstructs parent-width text layout, so its overflow flag is not a glyph-clipping
+measurement. The corrected test requires the full one-line label and character
+bounds inside Text and the button. Existing touch/hinge thresholds remain intact;
+the one-pixel tolerance applies only to that new character-containment check.
+
+The [fold observer evidence](../ux/runs/2026-09-29-ci-followup-8a1fe20/README.md)
+preserves run `36588307563`: two failures, four successful causal console exchanges,
+zero Activity geometry. The repaired test launches MainActivity before control,
+reads its Configuration and current window bounds, and preserves the same Activity
+through guarded cleanup. It retains the original thresholds, setup/security
+assertions, five geometry records and six-exchange protocol. Host checks and both
+Kotlin compilations pass. The [fresh run `36598598934`](../ux/runs/2026-09-29-foldable-failed-36598598934-28354dd2/README.md)
+failed both actual XML cases with zero skips/errors and zero accepted geometry
+records. The live Activity stayed 1768 × 2208 px / 674 × 841 dp after CLOSED,
+despite the AVD declaring an 884 px folded region. Four causal console exchanges
+succeeded; six required exchanges and the compact-cover assertion did not complete.
+Retained framework lines show state transitions applying the same single-display
+layout. The cause is not isolated to emulator/image policy or app behavior. No
+retry, profile change, synthetic resize or threshold relaxation was made. AL-16
+remains open; this compatibility profile cannot establish exact Pixel 9 Pro Fold
+or unlocked A–G acceptance.
+[Earlier secondary checks](../ux/runs/2026-09-29-secondary-checks-8a1fe20/README.md)
+are explicitly attributed to the source before these workspace changes.
+
+## Current candidate identity and runbook
+
+| Field | Verified value |
+| --- | --- |
+| App and test source | `28354dd25bb4995930ff46a71752f43f8a0d5df3` |
+| Application | `app.skein`, versionCode `1`, versionName `0.1.0` |
+| App APK bytes / SHA-256 | `127098252` / `8053e8e10ee6dbe7b9e650506971bf30b93e64861bbdff1237420680d10b4eb9` |
+| Single signer certificate SHA-256 | `75bcae7118a4635dd0fb153438e5bdbfd7aab5d467b3a0c2bb210eefde5becf9` |
+| Opt-in app-test bytes / SHA-256 | `91337045` / `0891fce37751f92a2e79a1c46424e3d463fbdef0903dce64aa9933f9be472cf2` |
+| Immutable v5 release SHA-256 | `7ed145637790495702d1d30b124c58b160db97d8a583ec8bde7db3a84df9dc38` |
+| Reviewed v5 runner SHA-256 | `b69a00a94032d00edcf84a4f79f028daa625717847aa8d616fa719b6ab5f82e7` |
+
+The signed APKs are in the integration worktree's
+`build/agent-logs/candidate-28354dd-optin/`; the concrete release and host-only
+validation are in `build/agent-logs/candidate-28354dd-release-v5/`. Ordinary and
+opt-in **application** APK bytes match. All six native/manifest guards pass, and
+the signer matches the preserved installed application. The source is attributed
+to a checked clean build checkout, not embedded APK attestation. Host release
+validation rehashed the actual APKs/model/evidence and ran only six local SDK
+metadata commands; it made no device connection.
+
+[Ordinary run 36592802616](https://github.com/HeyZeus100/skein/actions/runs/36592802616)
+has **281 actual XML passes**, no failures/errors/skips, the exact expected case
+set, all 19 prior JNI cases and all seven critical cancellation/lock/tokenization
+cases. Its current four-file manifest is exact; uploaded APK hashes are
+**declarations only**, since that archive contains no APK bytes. See the
+[ordinary capsule](../ux/runs/2026-09-29-ci-followup-28354dd2/README.md).
+
+The [fresh secondary-check capsule](../ux/runs/2026-09-29-secondary-checks-28354dd2/README.md)
+verifies all six artifact ZIP API digests and actual contents. CI `36592770882`
+has **5,130 passes, 88 unchanged skips**, zero failures/errors; 12 populated test
+tasks executed and 16 were cached. Screenshot run `36592770755` executed all eight
+module test/verify tasks with no build cache: **552 unchanged**, 1,274 passes and
+80 unchanged skips, all 711 manifest hashes valid. Reproducibility run
+`36592770702` retains two byte-identical unsigned release APKs: `100740719` bytes,
+SHA-256 `99edfeebf7828749ad7c47c50d5bbcb4e1ba06d42d5c3b93e22a3edbb1f5cfd8`,
+with all 829 ZIP entries equal. Two actually cold-built native libraries also
+match each other and the embedded release library at `2aefda01…`. The tag-only
+SQLCipher job is skipped, and no new native negative-control claim is made.
+
+The [Qwen/native reuse capsule](../ux/runs/2026-09-29-qwen-reuse-28354dd2/README.md)
+retains the complete source, binary-entry and model identity comparison. The Qwen
+file remains `1590475744` bytes, SHA-256 `2c5f9a12…`, BLAKE3 `db158ff6…`,
+and template SHA-256 `cd8e9439…` as detailed below. Its original identity evidence
+is reused explicitly, with full device SHA-256 and size still required. Prior
+five-case native token/EOG classification evidence is bound to the **exact frozen
+native-test APK `bb1b2f49…`**. All seven current app native libraries and that
+native-test library match the measured baseline. Rebuilt native-test and app-test
+payloads also match their frozen counterparts (79 and 67 entries respectively);
+container placement/padding/signing differences do not relabel them byte-identical
+APKs. This establishes bounded reuse, not newly measured generated stopping,
+answers, live retrieval or model/license eligibility.
+
+The demo runner owns the physical lease. Preserve app data and the previous APK;
+no uninstall, clear, reset, downgrade workaround or security weakening. Rehearse
+fresh New chat twice, both sidebar controls, note+chat/two distinct notes/note+graph,
+Split/collapse/Swap retention, absent teal debug crease, and Knowledge off before
+first send with synthetic content. Keep any owner-content screenshot local and
+untranscribed. After the UI session yields the slot, v5 verifies already-installed
+app bytes and may update only the test package for the exact answer method. It
+uses the unchanged four gold-free cases, CPU four threads, context 4096, seed 17,
+greedy 256 tokens, empty stop list, 180 seconds per case and 900 seconds outer
+limit. Preserve partial setup progress, all rows/manifest/JUnit/exit/cleanup facts;
+no automatic retry and no threshold or gold changes. Mechanical completion alone
+is not answer/citation quality acceptance.
+
+## Original installed release — `5ae91c238`
+
 The measured application candidate source is
 **`5ae91c238612bdd9b1511b3716d34b4fa5960dd2`**, pushed to `main` and
 `codex/ux-integration-20260929`. Local checks and the matching-signer APK build pass.

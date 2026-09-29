@@ -1,0 +1,1 @@
+gh api artifact11042922802/zip exceeded the explicit60-second downloader deadline; no complete archive was written. Run log ZIP and API snapshots were retained. Attempt2 uses a bounded180-second file-backed download so partial bytes remain if it fails.

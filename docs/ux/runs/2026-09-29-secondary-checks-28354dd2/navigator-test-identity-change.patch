@@ -1,0 +1,70 @@
+diff --git a/core/navigation/src/test/kotlin/app/skein/core/navigation/NavigatorBackTest.kt b/core/navigation/src/test/kotlin/app/skein/core/navigation/NavigatorBackTest.kt
+index 7a893ef4b..83896ab9c 100644
+--- a/core/navigation/src/test/kotlin/app/skein/core/navigation/NavigatorBackTest.kt
++++ b/core/navigation/src/test/kotlin/app/skein/core/navigation/NavigatorBackTest.kt
+@@ -5,8 +5,8 @@ import com.google.common.truth.Truth.assertWithMessage
+ import org.junit.Test
+ 
+ /**
+- * Spec §3.6 and §8.3 rule 6 as pure transitions: mode-aware Back (the elided
+- * visible stack), switching to Chat from another destination's root, never
++ * Spec §3.6 and §8.3 rule 6 as pure transitions: mode-aware Back,
++ * switching to Chat from another destination's root, never
+  * consuming Back at the Chat root, and Esc, which never switches or leaves.
+  */
+ class NavigatorBackTest {
+@@ -23,13 +23,13 @@ class NavigatorBackTest {
+     private val landing = chat(NewChatKey(Fx.draft1))
+ 
+     @Test
+-    fun `the new-chat landing over the Chat root is elided wherever the root already shows the landing`() {
+-        for (mode in drawerOrMultiPane) {
++    fun `an explicit new chat keeps its rendered draft identity in every mode`() {
++        assertThat(nav.visibleStack(landing.currentStack, NavMode.PHONE)).containsExactly(NewChatKey(Fx.draft1))
++        for (mode in allModes - NavMode.PHONE) {
+             assertThat(
+                 nav.visibleStack(landing.currentStack, mode),
+-            ).containsExactly(ChatHomeKey)
++            ).containsExactly(ChatHomeKey, NewChatKey(Fx.draft1)).inOrder()
+         }
+-        assertThat(nav.visibleStack(landing.currentStack, NavMode.SINGLE)).isEqualTo(landing.currentStack)
+         // Only a trailing draft directly over the root: anything else is shown as saved.
+         val followed = chat(NewChatKey(Fx.draft1), ModelDetailsKey(Fx.model1)).currentStack
+         for (mode in allModes) assertThat(nav.visibleStack(followed, mode)).isEqualTo(followed)
+@@ -37,6 +37,36 @@ class NavigatorBackTest {
+         for (mode in allModes) assertThat(nav.visibleStack(knowledgeDraft, mode)).isEqualTo(knowledgeDraft)
+     }
+ 
++    @Test
++    fun `landing Back predicate is limited to an explicit draft directly over Chat root`() {
++        for (mode in allModes) {
++            assertThat(nav.isChatLandingRoot(landing.currentStack, mode)).isEqualTo(mode != NavMode.SINGLE)
++            for (stack in listOf(
++                listOf(ChatHomeKey),
++                chat(ChatKey(Fx.chat1)).currentStack,
++                chat(NewChatKey(Fx.draft1), ModelDetailsKey(Fx.model1)).currentStack,
++                listOf(KnowledgeHomeKey, NewNoteKey(Fx.draft2)),
++            )) {
++                assertThat(nav.isChatLandingRoot(stack, mode)).isFalse()
++            }
++        }
++    }
++
++    @Test
++    fun `repeated New chat changes rendered identity and resizing keeps that draft`() {
++        var state = nav.goTo(SkeinNavigationState.initial(), NewChatKey(Fx.draft1))
++        for (mode in allModes) {
++            assertThat(
++                nav.visibleStack(state.currentStack, mode).last(),
++            ).isEqualTo(NewChatKey(Fx.draft1))
++        }
++        state = nav.goTo(state, NewChatKey(Fx.draft2))
++        for (mode in allModes + allModes.reversed()) {
++            assertThat(nav.visibleStack(state.currentStack, mode).last()).isEqualTo(NewChatKey(Fx.draft2))
++        }
++        assertThat(state.currentStack).containsExactly(ChatHomeKey, NewChatKey(Fx.draft2)).inOrder()
++    }
++
+     @Test
+     fun `Back on the landing - not consumed on Phone, Dual and Triple, shows the Conversations list on Single`() {
+         for (mode in drawerOrMultiPane) {

@@ -1,0 +1,40 @@
+{
+  "job_log_sha256": "26ecfa322d68ecf7fe4be5f8a705943b2c68730f16d36809aada4703d61dca06",
+  "test_task_lines": [
+    "2026-09-29T15:48:00.5676920Z > Task :build-logic:guards:test FROM-CACHE",
+    "2026-09-29T15:52:06.8554068Z > Task :app:testDevDebugUnitTest",
+    "2026-09-29T15:52:18.0559116Z > Task :app:testFossDebugUnitTest",
+    "2026-09-29T15:52:37.4579031Z > Task :embedder-service:testDebugUnitTest FROM-CACHE",
+    "2026-09-29T15:52:37.6554802Z > Task :inference-service:testDevDebugUnitTest FROM-CACHE",
+    "2026-09-29T15:52:37.7768682Z > Task :inference-service:testFossDebugUnitTest FROM-CACHE",
+    "2026-09-29T15:52:37.9678574Z > Task :testing:test FROM-CACHE",
+    "2026-09-29T15:52:38.0778624Z > Task :testing-fakes:test FROM-CACHE",
+    "2026-09-29T15:52:57.7599402Z > Task :testing-ui:testDebugUnitTest",
+    "2026-09-29T15:52:57.8588684Z > Task :core:export:testDebugUnitTest FROM-CACHE",
+    "2026-09-29T15:52:58.1559086Z > Task :core:inference:testDebugUnitTest FROM-CACHE",
+    "2026-09-29T15:52:58.2644185Z > Task :core:ipc:testDebugUnitTest FROM-CACHE",
+    "2026-09-29T15:52:58.3708468Z > Task :core:markdown:test FROM-CACHE",
+    "2026-09-29T15:52:58.5572635Z > Task :core:model:test FROM-CACHE",
+    "2026-09-29T15:53:05.1609152Z > Task :core:navigation:test",
+    "2026-09-29T15:53:05.4608512Z > Task :core:rag:testDebugUnitTest FROM-CACHE",
+    "2026-09-29T15:53:05.5571957Z > Task :core:security:testDebugUnitTest FROM-CACHE",
+    "2026-09-29T15:53:06.3558970Z > Task :core:vault:testDevDebugUnitTest FROM-CACHE",
+    "2026-09-29T15:53:07.0575353Z > Task :core:vault:testFossDebugUnitTest FROM-CACHE",
+    "2026-09-29T15:53:07.1628442Z > Task :core:verify:test FROM-CACHE",
+    "2026-09-29T15:53:19.7554198Z > Task :core:designsystem:testDebugUnitTest",
+    "2026-09-29T15:53:47.6569157Z > Task :feature:chat:testDebugUnitTest",
+    "2026-09-29T15:54:17.2588977Z > Task :feature:editor:testDebugUnitTest",
+    "2026-09-29T15:55:03.9556482Z > Task :feature:graph:testDebugUnitTest",
+    "2026-09-29T15:55:15.3560786Z > Task :feature:models:testDebugUnitTest",
+    "2026-09-29T15:55:37.7559482Z > Task :feature:settings:testDebugUnitTest",
+    "2026-09-29T15:55:57.0554164Z > Task :feature:timeline:testDebugUnitTest",
+    "2026-09-29T15:55:57.9553764Z > Task :feature:shell:testDebugUnitTest"
+  ],
+  "verify_task_lines": [],
+  "populated_test_task_states": {
+    "FROM-CACHE": 16,
+    "EXECUTED": 12
+  },
+  "no_build_cache_lines": [],
+  "failed_build_markers": []
+}

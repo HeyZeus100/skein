@@ -1,0 +1,11 @@
+{
+  "identity_includes_suite_path_and_variant": true,
+  "tests": 5167,
+  "unique": 5167,
+  "duplicates": [],
+  "new": [],
+  "missing": [],
+  "new_skips": [],
+  "prior_run": 36559029276,
+  "note": "Earlier module-only identity grouping intentionally omitted flavor and produced expected cross-flavor repetitions; use this variant-aware report."
+}

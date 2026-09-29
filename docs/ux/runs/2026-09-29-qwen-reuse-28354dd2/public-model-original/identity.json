@@ -1,0 +1,64 @@
+{
+  "status": "COMPLETE_HOST_PUBLIC_MODEL_IDENTITY",
+  "model": {
+    "event": "complete",
+    "bytes": 1590475744,
+    "sha256": "2c5f9a121ae6695208e300c16acca303669afa4e18812061164dca9c97071b12",
+    "blake3": "db158ff62057f42fef73363387db4bfac01da469475840dc0aad5dae70eb0e4a",
+    "elapsed_ms": 7413,
+    "classification": "host public-model identity; not device benchmark"
+  },
+  "wall_elapsed_seconds": 7.457,
+  "timeout_seconds": 120,
+  "timed_out": false,
+  "progress_records": 11,
+  "model_stat_unchanged": true,
+  "candidate_source_sha": "5ae91c238612bdd9b1511b3716d34b4fa5960dd2",
+  "blake3_source_sha256": "46dd1dd48f66b3a8560b748b2e96a0ba1e4dab3480cc785607ee6b40a28e7739",
+  "blake3_class_hashes": {
+    "Blake3$ChunkState.class": "b7b47aba790a9235c3540e4210b3feb80aa4cf844ce6c20b8196ecc7588abc74",
+    "Blake3$Hasher.class": "4111b49becaf9a24ae1997efc26c784cfb99c190847c49bdc120c91a3136ede9",
+    "Blake3$Output.class": "8fcf61758c68f2e8019d3cdea8c8b3cd8106b5f9802464c42745e8e545943f73",
+    "Blake3.class": "e98cce8ed71fe54f1f8099f84fee7dad2d04a4554be53184f2acc1e5a114d4f6"
+  },
+  "driver_source_sha256": "4c619d516cdc367a64c2939bb324972b49646dae953f366b5895b54862e96646",
+  "driver_class_sha256": "2e5b59328c0513de3a27c10e22426317df22e1531b32c6c890cdbe2b4b881701",
+  "evidence_files": {
+    "identity.stdout.jsonl": {
+      "bytes": 908,
+      "sha256": "a63e996016b7d3643268508c917b21bcd08f752035ed7467c3787cdba5b67da7"
+    },
+    "identity.stderr": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "java-command.json": {
+      "bytes": 1106,
+      "sha256": "298b696ea08358366573cd075cc2b0916eb5a191b7e65fa78d9cdb2f8e26ea6d"
+    },
+    "host-result.json": {
+      "bytes": 1320,
+      "sha256": "ad536814397a675fbf11ff5d8edaf4afd60c9d4790ebe4166105bf549a4c9389"
+    },
+    "implementation-provenance.json": {
+      "bytes": 2506,
+      "sha256": "503ed5feaf26475ba211689f0a72e9a28691f8f286110be9a12af9986b9a2a3f"
+    },
+    "javac-command.json": {
+      "bytes": 705,
+      "sha256": "a09d51512995e1c547ff3a1e6e5fc7ada002658578c95eae23bb26596d22bec0"
+    },
+    "javac.stdout": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "javac.stderr": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "javac-exit.txt": {
+      "bytes": 2,
+      "sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa"
+    }
+  }
+}

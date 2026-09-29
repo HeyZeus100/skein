@@ -1,0 +1,9 @@
+{
+  "id": 11045570601,
+  "name": "skein-foss-debug-apk",
+  "bytes": 49554218,
+  "sha256": "f050395196a8bc92efb95573be1e58ffa133237b86f591446f6a64ddc5d0ef47",
+  "api_digest": "sha256:f050395196a8bc92efb95573be1e58ffa133237b86f591446f6a64ddc5d0ef47",
+  "size_and_digest_match": true,
+  "source_sha": "28354dd25bb4995930ff46a71752f43f8a0d5df3"
+}

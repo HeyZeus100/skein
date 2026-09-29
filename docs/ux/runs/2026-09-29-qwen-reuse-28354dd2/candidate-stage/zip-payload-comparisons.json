@@ -1,0 +1,592 @@
+{
+  "native_old_to_ordinary": {
+    "old_apk_sha256": "bb1b2f496f6c831ced00f20d9dd08d6f571d87fcb48040dfba17f4a7c561f342",
+    "new_apk_sha256": "acf4d0df2f5953889ce89c8a0bc504b99d4b193ebf4f8f29995d29244532168a",
+    "same_native_libraries": true,
+    "changed_payloads": [
+      {
+        "path": "classes7.dex",
+        "old": {
+          "size": 74176,
+          "sha256": "23a76a198e98243e1c8c9b6b6f72764fee31b4e8bc34499bfc54182f41d51544",
+          "crc32": "b0f8bfc9",
+          "compressed_size": 74176,
+          "compression": 0,
+          "zip_time": [
+            1981,
+            1,
+            1,
+            1,
+            1,
+            2
+          ]
+        },
+        "new": {
+          "size": 59100,
+          "sha256": "dcfa5d83b39dc4a0b7df189871d7c5b5542848e6c429e82dcbd446319c4ef0f6",
+          "crc32": "5dc9d163",
+          "compressed_size": 59100,
+          "compression": 0,
+          "zip_time": [
+            1981,
+            1,
+            1,
+            1,
+            1,
+            2
+          ]
+        }
+      }
+    ],
+    "same_payload_count": 78
+  },
+  "native_old_to_optin": {
+    "old_apk_sha256": "bb1b2f496f6c831ced00f20d9dd08d6f571d87fcb48040dfba17f4a7c561f342",
+    "new_apk_sha256": "c1186bc554ae89d89a35983f883354e436cb34f2cebb790cc06a3a896409fb2d",
+    "same_native_libraries": true,
+    "changed_payloads": [],
+    "same_payload_count": 79
+  },
+  "native_ordinary_to_optin": {
+    "old_apk_sha256": "acf4d0df2f5953889ce89c8a0bc504b99d4b193ebf4f8f29995d29244532168a",
+    "new_apk_sha256": "c1186bc554ae89d89a35983f883354e436cb34f2cebb790cc06a3a896409fb2d",
+    "same_native_libraries": true,
+    "changed_payloads": [
+      {
+        "path": "classes7.dex",
+        "old": {
+          "size": 59100,
+          "sha256": "dcfa5d83b39dc4a0b7df189871d7c5b5542848e6c429e82dcbd446319c4ef0f6",
+          "crc32": "5dc9d163",
+          "compressed_size": 59100,
+          "compression": 0,
+          "zip_time": [
+            1981,
+            1,
+            1,
+            1,
+            1,
+            2
+          ]
+        },
+        "new": {
+          "size": 74176,
+          "sha256": "23a76a198e98243e1c8c9b6b6f72764fee31b4e8bc34499bfc54182f41d51544",
+          "crc32": "b0f8bfc9",
+          "compressed_size": 74176,
+          "compression": 0,
+          "zip_time": [
+            1981,
+            1,
+            1,
+            1,
+            1,
+            2
+          ]
+        }
+      }
+    ],
+    "same_payload_count": 78
+  },
+  "app_test_prior_to_optin": {
+    "old_apk_sha256": "9575f53a36e6dbd1dcd9f4cdcfe4af6407a74d1566343bf5bb29ca0bc9edef95",
+    "new_apk_sha256": "0891fce37751f92a2e79a1c46424e3d463fbdef0903dce64aa9933f9be472cf2",
+    "same_native_libraries": true,
+    "changed_payloads": [],
+    "same_payload_count": 67
+  },
+  "app_old_to_new": {
+    "old_apk_sha256": "1f83b71c5fe60a6dc26fcac7a4c75b49fbf009b6e8c9d972b2176c18081c1323",
+    "new_apk_sha256": "8053e8e10ee6dbe7b9e650506971bf30b93e64861bbdff1237420680d10b4eb9",
+    "same_native_libraries": true,
+    "changed_payloads": [
+      {
+        "path": "classes10.dex",
+        "old": {
+          "size": 516080,
+          "sha256": "698948343ab9d6417dcf212232a9287a5b8bdafbb231deb40528799503f3f701",
+          "crc32": "7602501a",
+          "compressed_size": 516080,
+          "compression": 0,
+          "zip_time": [
+            1981,
+            1,
+            1,
+            1,
+            1,
+            2
+          ]
+        },
+        "new": {
+          "size": 516552,
+          "sha256": "3350055c69623749d69f2bb03d01ff431a1c28d17f651c2823d91586c44d3cd2",
+          "crc32": "bd188cff",
+          "compressed_size": 516552,
+          "compression": 0,
+          "zip_time": [
+            1981,
+            1,
+            1,
+            1,
+            1,
+            2
+          ]
+        }
+      },
+      {
+        "path": "classes14.dex",
+        "old": {
+          "size": 189952,
+          "sha256": "d37a18a31bdf30d79bbb327a05e8d27ea0d3ea8db772f6d44da7a0b1ad891e32",
+          "crc32": "524f9f50",
+          "compressed_size": 189952,
+          "compression": 0,
+          "zip_time": [
+            1981,
+            1,
+            1,
+            1,
+            1,
+            2
+          ]
+        },
+        "new": {
+          "size": 200468,
+          "sha256": "781c28586b049ec71682bd112bb87ae83ceb9890bde418ddcdbffe5da5c3feb8",
+          "crc32": "3ee8e18e",
+          "compressed_size": 200468,
+          "compression": 0,
+          "zip_time": [
+            1981,
+            1,
+            1,
+            1,
+            1,
+            2
+          ]
+        }
+      },
+      {
+        "path": "classes16.dex",
+        "old": {
+          "size": 190564,
+          "sha256": "d2e034b5126e22613f7683efcbbf0446201e4eba1a4900a7e547b9eece139287",
+          "crc32": "96a596f4",
+          "compressed_size": 190564,
+          "compression": 0,
+          "zip_time": [
+            1981,
+            1,
+            1,
+            1,
+            1,
+            2
+          ]
+        },
+        "new": {
+          "size": 190668,
+          "sha256": "5a905e1836cde62065ecaef95a4d93872e3a6ec78dacd77658ed30dc9930b9dd",
+          "crc32": "6e2551c7",
+          "compressed_size": 190668,
+          "compression": 0,
+          "zip_time": [
+            1981,
+            1,
+            1,
+            1,
+            1,
+            2
+          ]
+        }
+      },
+      {
+        "path": "classes19.dex",
+        "old": {
+          "size": 242340,
+          "sha256": "0178c3aed378f4350904f1b19cbc22793945e79c6f62656750b6de1f127e4f89",
+          "crc32": "4322f926",
+          "compressed_size": 242340,
+          "compression": 0,
+          "zip_time": [
+            1981,
+            1,
+            1,
+            1,
+            1,
+            2
+          ]
+        },
+        "new": {
+          "size": 243284,
+          "sha256": "7df7b996823f118c58753ea2d335c92dd3866de238a8bf6abbb26f588801849c",
+          "crc32": "4c2a343b",
+          "compressed_size": 243284,
+          "compression": 0,
+          "zip_time": [
+            1981,
+            1,
+            1,
+            1,
+            1,
+            2
+          ]
+        }
+      },
+      {
+        "path": "classes21.dex",
+        "old": {
+          "size": 74492,
+          "sha256": "5dd70e84213255d7415fb94665cd34367e219d45d2189d1f0c5c6b0a694c2e96",
+          "crc32": "fc11745d",
+          "compressed_size": 74492,
+          "compression": 0,
+          "zip_time": [
+            1981,
+            1,
+            1,
+            1,
+            1,
+            2
+          ]
+        },
+        "new": {
+          "size": 81304,
+          "sha256": "1f2fbc614c71dc98d302ee9fe2b716dd43c26d3cf5637b4c61ad067507f0904d",
+          "crc32": "cd974ef7",
+          "compressed_size": 81304,
+          "compression": 0,
+          "zip_time": [
+            1981,
+            1,
+            1,
+            1,
+            1,
+            2
+          ]
+        }
+      },
+      {
+        "path": "classes5.dex",
+        "old": {
+          "size": 689920,
+          "sha256": "ed9ea0744e5cb66094fa1328c426083a8b2d263bef4b87658b30007e1dfed1af",
+          "crc32": "4a4f81a2",
+          "compressed_size": 689920,
+          "compression": 0,
+          "zip_time": [
+            1981,
+            1,
+            1,
+            1,
+            1,
+            2
+          ]
+        },
+        "new": {
+          "size": 809136,
+          "sha256": "78fcffd9699ee15d4d7269defb63f213332e3b6104d56beb6dbf315a1193a621",
+          "crc32": "ddac4597",
+          "compressed_size": 809136,
+          "compression": 0,
+          "zip_time": [
+            1981,
+            1,
+            1,
+            1,
+            1,
+            2
+          ]
+        }
+      },
+      {
+        "path": "classes6.dex",
+        "old": {
+          "size": 965348,
+          "sha256": "de64ae2e1698b21c0e34b79ec5bb73eaf0d35b96100dd363317cfefc20ee1067",
+          "crc32": "72bf0ddd",
+          "compressed_size": 965348,
+          "compression": 0,
+          "zip_time": [
+            1981,
+            1,
+            1,
+            1,
+            1,
+            2
+          ]
+        },
+        "new": {
+          "size": 966032,
+          "sha256": "38b422be9011f908d21c6d3f3911505f75c8be59c23b5f7769e1320fcd37a1b4",
+          "crc32": "fe372cbf",
+          "compressed_size": 966032,
+          "compression": 0,
+          "zip_time": [
+            1981,
+            1,
+            1,
+            1,
+            1,
+            2
+          ]
+        }
+      },
+      {
+        "path": "classes7.dex",
+        "old": {
+          "size": 706780,
+          "sha256": "e961db2b896deef276f4f42f5223418e8a5402adcb6ebb28af6113d3dcbc3946",
+          "crc32": "1fb3fadb",
+          "compressed_size": 706780,
+          "compression": 0,
+          "zip_time": [
+            1981,
+            1,
+            1,
+            1,
+            1,
+            2
+          ]
+        },
+        "new": {
+          "size": 710584,
+          "sha256": "0a78de95f11461cdccbaa6c9c569d7d94ef2c76ce46b21a0f567a9c1ab0586c6",
+          "crc32": "8bf03a32",
+          "compressed_size": 710584,
+          "compression": 0,
+          "zip_time": [
+            1981,
+            1,
+            1,
+            1,
+            1,
+            2
+          ]
+        }
+      },
+      {
+        "path": "classes9.dex",
+        "old": {
+          "size": 390104,
+          "sha256": "fad2331546604a786e2ac34abaad0e928d18aa1dae380841976b6c1257d24cd2",
+          "crc32": "ac4be954",
+          "compressed_size": 390104,
+          "compression": 0,
+          "zip_time": [
+            1981,
+            1,
+            1,
+            1,
+            1,
+            2
+          ]
+        },
+        "new": {
+          "size": 399700,
+          "sha256": "91b47d77c896b2c7901213e465c0bd7be21d9dbfb4a215080a8b628a4687b3f3",
+          "crc32": "ee421dbf",
+          "compressed_size": 399700,
+          "compression": 0,
+          "zip_time": [
+            1981,
+            1,
+            1,
+            1,
+            1,
+            2
+          ]
+        }
+      },
+      {
+        "path": "res/drawable/ic_skein_sidebar.xml",
+        "old": null,
+        "new": {
+          "size": 880,
+          "sha256": "92658f7e5206afa522247df0855d4714fd668a9548afa556f4dcbbc9477c26a2",
+          "crc32": "6d56e151",
+          "compressed_size": 451,
+          "compression": 8,
+          "zip_time": [
+            1981,
+            1,
+            1,
+            1,
+            1,
+            2
+          ]
+        }
+      },
+      {
+        "path": "res/drawable/ic_skein_split.xml",
+        "old": null,
+        "new": {
+          "size": 852,
+          "sha256": "7a4e123117f316a912051bbcee5c4f3418165084493c97b6863884b0df9957b6",
+          "crc32": "3413b589",
+          "compressed_size": 437,
+          "compression": 8,
+          "zip_time": [
+            1981,
+            1,
+            1,
+            1,
+            1,
+            2
+          ]
+        }
+      },
+      {
+        "path": "res/drawable/ic_skein_swap.xml",
+        "old": null,
+        "new": {
+          "size": 792,
+          "sha256": "7d192048f278fc714034015f5dccc3546872758484774ab4c5b87f5e3f8b58e6",
+          "crc32": "dd4c9caf",
+          "compressed_size": 404,
+          "compression": 8,
+          "zip_time": [
+            1981,
+            1,
+            1,
+            1,
+            1,
+            2
+          ]
+        }
+      },
+      {
+        "path": "res/drawable/notification_bg.xml",
+        "old": {
+          "size": 532,
+          "sha256": "350124b84029be4aafee2eac28e167df1a0ba0c9bde205612a6faab8085cac9d",
+          "crc32": "b62054a4",
+          "compressed_size": 252,
+          "compression": 8,
+          "zip_time": [
+            1981,
+            1,
+            1,
+            1,
+            1,
+            2
+          ]
+        },
+        "new": {
+          "size": 532,
+          "sha256": "87d9987eb493169b9a839ff0be6d380ad03dd38dadf189f583f2c976f301c9dc",
+          "crc32": "82d7fb46",
+          "compressed_size": 253,
+          "compression": 8,
+          "zip_time": [
+            1981,
+            1,
+            1,
+            1,
+            1,
+            2
+          ]
+        }
+      },
+      {
+        "path": "res/drawable/notification_bg_low.xml",
+        "old": {
+          "size": 532,
+          "sha256": "c01d8ce327d41473d87b0fe6fde453f19dbbad01fd1da9319f827a23a6b395ea",
+          "crc32": "be360f20",
+          "compressed_size": 252,
+          "compression": 8,
+          "zip_time": [
+            1981,
+            1,
+            1,
+            1,
+            1,
+            2
+          ]
+        },
+        "new": {
+          "size": 532,
+          "sha256": "0f431b14b606853a4dfdc8c514943a2ec9ea88861d89876234698b826b0e7242",
+          "crc32": "39de67f7",
+          "compressed_size": 252,
+          "compression": 8,
+          "zip_time": [
+            1981,
+            1,
+            1,
+            1,
+            1,
+            2
+          ]
+        }
+      },
+      {
+        "path": "res/drawable/notification_tile_bg.xml",
+        "old": {
+          "size": 304,
+          "sha256": "846d09b43cb466da0046690ab7ca2364586cd00d255b44cc11e7ca479cf327ea",
+          "crc32": "36325c6d",
+          "compressed_size": 174,
+          "compression": 8,
+          "zip_time": [
+            1981,
+            1,
+            1,
+            1,
+            1,
+            2
+          ]
+        },
+        "new": {
+          "size": 304,
+          "sha256": "65b903f1506f8b220b5628262f9a5dbd71155545c5ccdd34f439ec3bae121ee6",
+          "crc32": "cae0ea03",
+          "compressed_size": 174,
+          "compression": 8,
+          "zip_time": [
+            1981,
+            1,
+            1,
+            1,
+            1,
+            2
+          ]
+        }
+      },
+      {
+        "path": "resources.arsc",
+        "old": {
+          "size": 851196,
+          "sha256": "b2e7685504a8d25d49998f94f9ee38c875b42f4dd373604c0ea07c86176d4374",
+          "crc32": "98570377",
+          "compressed_size": 851196,
+          "compression": 0,
+          "zip_time": [
+            1981,
+            1,
+            1,
+            1,
+            1,
+            2
+          ]
+        },
+        "new": {
+          "size": 851600,
+          "sha256": "27546cf7a69cf7cff64393afbf268a8d1cb08b4a0e7e68edb0cfa89e1d9a72be",
+          "crc32": "9caabdce",
+          "compressed_size": 851600,
+          "compression": 0,
+          "zip_time": [
+            1981,
+            1,
+            1,
+            1,
+            1,
+            2
+          ]
+        }
+      }
+    ],
+    "same_payload_count": 754
+  }
+}

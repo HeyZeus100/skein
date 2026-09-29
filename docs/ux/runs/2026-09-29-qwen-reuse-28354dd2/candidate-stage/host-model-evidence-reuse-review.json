@@ -1,0 +1,86 @@
+{
+  "schema_version": 1,
+  "approved": true,
+  "app_source_sha": "28354dd25bb4995930ff46a71752f43f8a0d5df3",
+  "test_build_sha": "28354dd25bb4995930ff46a71752f43f8a0d5df3",
+  "app_apk_sha256": "8053e8e10ee6dbe7b9e650506971bf30b93e64861bbdff1237420680d10b4eb9",
+  "test_apk_sha256": "0891fce37751f92a2e79a1c46424e3d463fbdef0903dce64aa9933f9be472cf2",
+  "identity_evidence_sha256": "625212a9771344d4069f06209fee7cf75b5e4bb375542932d43081b72c4463f2",
+  "original_identity_source_sha": "5ae91c238612bdd9b1511b3716d34b4fa5960dd2",
+  "model_sha256": "2c5f9a121ae6695208e300c16acca303669afa4e18812061164dca9c97071b12",
+  "model_size": 1590475744,
+  "model_blake3": "db158ff62057f42fef73363387db4bfac01da469475840dc0aad5dae70eb0e4a",
+  "full_device_sha256_and_size_still_required": true,
+  "source_evidence": [
+    {
+      "path": "${HOST_HOME}/skein-worktrees/ux-workspace-models-test-20260929/build/agent-logs/native-qwen-reuse-5d58f7c/source-review.json",
+      "size": 4408,
+      "sha256": "04f76416ee47fd6c7edbe3cadcb67bedf3397d57d0454b218394c93ddf816db3"
+    },
+    {
+      "path": "${HOST_HOME}/skein-worktrees/ux-workspace-models-test-20260929/build/agent-logs/native-qwen-reuse-5d58f7c/source-file-manifest.json",
+      "size": 327314,
+      "sha256": "2a12e43105a254ee9eb3c2cd2dfd5dfd158b3a5f12099450d5e1e7820eef82ee"
+    },
+    {
+      "path": "${HOST_HOME}/skein-worktrees/ux-workspace-models-test-20260929/build/agent-logs/native-qwen-reuse-5d58f7c/prior-public-evidence-review.json",
+      "size": 7934,
+      "sha256": "d2ff8d986ed3402ede9bf2fd7cd3147307921a93dd7c7066fc614a095c1ec0d0"
+    },
+    {
+      "path": "${HOST_HOME}/skein-worktrees/ux-workspace-models-test-20260929/build/agent-logs/native-qwen-reuse-5d58f7c/host-blake3-implementation-verification.json",
+      "size": 1912,
+      "sha256": "c8c4fa40d1c72a5d76ecc785e5a786b31e1bbec2134e020d8abfa414ee9584f6"
+    },
+    {
+      "path": "${HOST_HOME}/skein-worktrees/ux-workspace-models-test-20260929/build/agent-logs/native-qwen-reuse-28354dd/candidate-source-review.json",
+      "size": 6660,
+      "sha256": "c984d92f6773cd2214bf4232cc23d1f2f7cfbfe214cd5db4a77d077a2b2403b2"
+    },
+    {
+      "path": "${HOST_HOME}/skein-worktrees/ux-workspace-models-test-20260929/build/agent-logs/native-qwen-reuse-28354dd/candidate-source-file-manifest.json",
+      "size": 169069,
+      "sha256": "bb8d3d06ad40d24078255fa4de2eb67b5c61dd917d21caa3a8cb13d3f67e16f9"
+    },
+    {
+      "path": "${HOST_HOME}/skein-worktrees/ux-workspace-models-test-20260929/build/agent-logs/native-qwen-reuse-28354dd/artifact-review.json",
+      "size": 4577,
+      "sha256": "9309031c595cec2762d0278215bce791b56fe66e87631be4e7140191e6594291"
+    },
+    {
+      "path": "${HOST_HOME}/skein-worktrees/ux-workspace-models-test-20260929/build/agent-logs/native-qwen-reuse-28354dd/zip-payload-comparisons.json",
+      "size": 14616,
+      "sha256": "460beed3b7c94bb33269562c7a9512b9a952fc71bc0e49a3232d24aed60dac99"
+    },
+    {
+      "path": "${HOST_HOME}/skein-worktrees/ux-workspace-models-test-20260929/build/agent-logs/native-qwen-reuse-28354dd/packaging-comparisons.json",
+      "size": 223864,
+      "sha256": "aad95506325afd3efb81c8aa681d292cdf20ea8d1572ef029de64baa42089045"
+    },
+    {
+      "path": "${HOST_HOME}/skein-worktrees/ux-workspace-models-test-20260929/build/agent-logs/native-qwen-reuse-28354dd/host-commands.json",
+      "size": 4662,
+      "sha256": "c7198f4bbcbc31f3ecb52a44f8648815e9f17c0635bd3b6b55d1a8029fe067fa"
+    },
+    {
+      "path": "${HOST_HOME}/skein-worktrees/ux-workspace-models-test-20260929/build/agent-logs/native-qwen-reuse-28354dd/optin-app-inventory.json",
+      "size": 269194,
+      "sha256": "d5c603c3125f5bf7448b9610f99d1f639361af29eaf109d559cf36b0ea2e3d75"
+    },
+    {
+      "path": "${HOST_HOME}/skein-worktrees/ux-workspace-models-test-20260929/build/agent-logs/native-qwen-reuse-28354dd/optin-app_test-inventory.json",
+      "size": 22765,
+      "sha256": "f2770014fb709ef51763add1538f4134423c4f6466223e0dd76e4ea3f173d843"
+    },
+    {
+      "path": "${HOST_HOME}/skein-worktrees/ux-workspace-models-test-20260929/build/agent-logs/native-qwen-reuse-28354dd/optin-native_test-inventory.json",
+      "size": 27311,
+      "sha256": "6a1700cf02a863b13680417bed7b03accdc2a08c81aff9b8c49b0ac6679d818d"
+    }
+  ],
+  "review_scope": "Explicit bounded reuse review only; coordinator release and all required remote/runtime gates remain separate.",
+  "physical_execution_authorized": false,
+  "model_rehashed_for_this_review": false,
+  "original_host_evidence_immutable": true,
+  "device_and_isolated_service_verification_still_required": true
+}

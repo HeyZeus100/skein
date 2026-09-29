@@ -1,0 +1,281 @@
+{
+  "format": 1,
+  "policy": "Original files untouched; selected copies and lossless gzip only. No APK/native library/private owner-device metadata or broad emulator properties/full-device logcat. Public CI metadata is retained.",
+  "files": [
+    {
+      "path": "ordinary-passed-36592802616/api-jobs.json",
+      "origin": {
+        "run": 36592802616,
+        "API": "jobs",
+        "snapshot": "20260929T163247.743017Z-jobs.json"
+      },
+      "source_bytes": 4717,
+      "source_sha256": "8774852027a594bda8285704593fe21f8234ee870705f42f990f17708f70bb50",
+      "published_bytes": 4717,
+      "published_sha256": "8774852027a594bda8285704593fe21f8234ee870705f42f990f17708f70bb50",
+      "decompressed_sha256": "8774852027a594bda8285704593fe21f8234ee870705f42f990f17708f70bb50",
+      "transformations": []
+    },
+    {
+      "path": "ordinary-passed-36592802616/api-artifacts.json",
+      "origin": {
+        "run": 36592802616,
+        "API": "artifacts",
+        "snapshot": "20260929T163247.743017Z-artifacts.json"
+      },
+      "source_bytes": 740,
+      "source_sha256": "829876533a26f946a45d83fab87da231800f2030875f85d3ab079a56104a94a5",
+      "published_bytes": 740,
+      "published_sha256": "829876533a26f946a45d83fab87da231800f2030875f85d3ab079a56104a94a5",
+      "decompressed_sha256": "829876533a26f946a45d83fab87da231800f2030875f85d3ab079a56104a94a5",
+      "transformations": []
+    },
+    {
+      "path": "ordinary-passed-36592802616/independent-evidence-review.json.gz",
+      "origin": {
+        "run": 36592802616,
+        "original_file": "independent-evidence-review.json"
+      },
+      "source_bytes": 92801,
+      "source_sha256": "3d95cc97699a74b27c5b54d987a253f7552840631497a4526e300f093f28cdd9",
+      "published_bytes": 11452,
+      "published_sha256": "b323161788361b209ed948626f92dfabc6782f33da3f501456ff79a00f2394aa",
+      "decompressed_sha256": "3d95cc97699a74b27c5b54d987a253f7552840631497a4526e300f093f28cdd9",
+      "transformations": [
+        "deterministic gzip"
+      ]
+    },
+    {
+      "path": "ordinary-passed-36592802616/artifact/app/build/outputs/androidTest-results/connected/debug/flavors/dev/TEST-test(AVD) - 15.xml",
+      "origin": {
+        "run": 36592802616,
+        "artifact_id": 11045810586,
+        "member": "app/build/outputs/androidTest-results/connected/debug/flavors/dev/TEST-test(AVD) - 15.xml"
+      },
+      "source_bytes": 8522,
+      "source_sha256": "5b8d348e49450119618b1a7b48c05330155c2b2ede9b7dd341b9e0eac631d0e1",
+      "published_bytes": 8522,
+      "published_sha256": "5b8d348e49450119618b1a7b48c05330155c2b2ede9b7dd341b9e0eac631d0e1",
+      "decompressed_sha256": "5b8d348e49450119618b1a7b48c05330155c2b2ede9b7dd341b9e0eac631d0e1",
+      "transformations": []
+    },
+    {
+      "path": "ordinary-passed-36592802616/artifact/core/vault/build/outputs/androidTest-results/connected/debug/flavors/dev/TEST-test(AVD) - 15.xml",
+      "origin": {
+        "run": 36592802616,
+        "artifact_id": 11045810586,
+        "member": "core/vault/build/outputs/androidTest-results/connected/debug/flavors/dev/TEST-test(AVD) - 15.xml"
+      },
+      "source_bytes": 38385,
+      "source_sha256": "6887853eb66df1d21fbf2a01c0d4fad6d1c0128df751d5b0e605923cc147328c",
+      "published_bytes": 38385,
+      "published_sha256": "6887853eb66df1d21fbf2a01c0d4fad6d1c0128df751d5b0e605923cc147328c",
+      "decompressed_sha256": "6887853eb66df1d21fbf2a01c0d4fad6d1c0128df751d5b0e605923cc147328c",
+      "transformations": []
+    },
+    {
+      "path": "ordinary-passed-36592802616/artifact/inference-service/build/outputs/androidTest-results/connected/debug/flavors/dev/TEST-test(AVD) - 15.xml",
+      "origin": {
+        "run": 36592802616,
+        "artifact_id": 11045810586,
+        "member": "inference-service/build/outputs/androidTest-results/connected/debug/flavors/dev/TEST-test(AVD) - 15.xml"
+      },
+      "source_bytes": 6497,
+      "source_sha256": "c7f48bc278df02baee8ff9a211ecb83bf5f9ce558501bc860f4dd3f1777370ea",
+      "published_bytes": 6497,
+      "published_sha256": "c7f48bc278df02baee8ff9a211ecb83bf5f9ce558501bc860f4dd3f1777370ea",
+      "decompressed_sha256": "c7f48bc278df02baee8ff9a211ecb83bf5f9ce558501bc860f4dd3f1777370ea",
+      "transformations": []
+    },
+    {
+      "path": "ordinary-passed-36592802616/artifact/build/instrumentation-review.json",
+      "origin": {
+        "run": 36592802616,
+        "artifact_id": 11045810586,
+        "member": "build/instrumentation-review.json"
+      },
+      "source_bytes": 983,
+      "source_sha256": "2b9474372f90097cfeca357a48ca216945294d66ca20c6c4d533a786844e0afb",
+      "published_bytes": 983,
+      "published_sha256": "2b9474372f90097cfeca357a48ca216945294d66ca20c6c4d533a786844e0afb",
+      "decompressed_sha256": "2b9474372f90097cfeca357a48ca216945294d66ca20c6c4d533a786844e0afb",
+      "transformations": []
+    },
+    {
+      "path": "ordinary-passed-36592802616/artifact/build/instrumentation-verification.json",
+      "origin": {
+        "run": 36592802616,
+        "artifact_id": 11045810586,
+        "member": "build/instrumentation-verification.json"
+      },
+      "source_bytes": 1931,
+      "source_sha256": "cd8d658f16b30f82d99b29eba9444c8180889ee98afdbff2c98ad30410c7b0c5",
+      "published_bytes": 1931,
+      "published_sha256": "cd8d658f16b30f82d99b29eba9444c8180889ee98afdbff2c98ad30410c7b0c5",
+      "decompressed_sha256": "cd8d658f16b30f82d99b29eba9444c8180889ee98afdbff2c98ad30410c7b0c5",
+      "transformations": []
+    },
+    {
+      "path": "ordinary-passed-36592802616/logs/workflow-job.log.gz",
+      "origin": {
+        "run": 36592802616,
+        "archive": "run-logs.zip",
+        "member": "0_Instrumented tests (API 35, x86_64).txt"
+      },
+      "source_bytes": 227239,
+      "source_sha256": "235faf80a5a18ce804da78b338d35b570eb740518eb0bb852f8f9215304b5685",
+      "published_bytes": 36318,
+      "published_sha256": "cdfd77782fa7a002dd9fc97ba91f9af5bcdff6addf461e7207b6e12454b4bd44",
+      "decompressed_sha256": "235faf80a5a18ce804da78b338d35b570eb740518eb0bb852f8f9215304b5685",
+      "transformations": [
+        "deterministic gzip"
+      ]
+    },
+    {
+      "path": "ordinary-passed-36592802616/identity-reference/all-actual-testcases.json.gz",
+      "origin": {
+        "reference_run": 36551469886,
+        "file": "all-actual-testcases.json.gz"
+      },
+      "source_bytes": 8527,
+      "source_sha256": "bc303a149d6a7129d68188db213f2c796c2b18965062be06c217de03691e0311",
+      "published_bytes": 8527,
+      "published_sha256": "bc303a149d6a7129d68188db213f2c796c2b18965062be06c217de03691e0311",
+      "decompressed_sha256": "b89832734ed3ffe5877e74efe19074b67392b46418583984eef99a72ddf26bad",
+      "transformations": [
+        "preserved gzip"
+      ]
+    },
+    {
+      "path": "ordinary-passed-36592802616/identity-reference/expected-case-identities.json",
+      "origin": {
+        "reference_run": 36546817687,
+        "file": "expected-case-identities.json"
+      },
+      "source_bytes": 3993,
+      "source_sha256": "3ff54b6782d50497686fcd8a319b7415ab89d9278b8f2756d34b33b146925eee",
+      "published_bytes": 3993,
+      "published_sha256": "3ff54b6782d50497686fcd8a319b7415ab89d9278b8f2756d34b33b146925eee",
+      "decompressed_sha256": "3ff54b6782d50497686fcd8a319b7415ab89d9278b8f2756d34b33b146925eee",
+      "transformations": []
+    },
+    {
+      "path": "ordinary-passed-36592802616/source/SOURCE-FILES.json",
+      "origin": {
+        "source_sha": "28354dd25bb4995930ff46a71752f43f8a0d5df3",
+        "original_file": "SOURCE-FILES-v2.json"
+      },
+      "source_bytes": 671,
+      "source_sha256": "0e4d5c38a038812e8e7579537c7e8763b1fbd729174c5d07a4193f28d9daf0f9",
+      "published_bytes": 671,
+      "published_sha256": "0e4d5c38a038812e8e7579537c7e8763b1fbd729174c5d07a4193f28d9daf0f9",
+      "decompressed_sha256": "0e4d5c38a038812e8e7579537c7e8763b1fbd729174c5d07a4193f28d9daf0f9",
+      "transformations": []
+    },
+    {
+      "path": "ordinary-passed-36592802616/source/.github/workflows/emulator.yml.gz",
+      "origin": {
+        "git_commit": "28354dd25bb4995930ff46a71752f43f8a0d5df3",
+        "path": ".github/workflows/emulator.yml"
+      },
+      "source_bytes": 14907,
+      "source_sha256": "5599deb96b14dfda856782ccd46d6e11792fe5c2dabc2beb2c647b4d55ee6f3a",
+      "published_bytes": 5915,
+      "published_sha256": "ff1e4a344d239b6e4a778a15c6852367530bbc4c3d3e096dca97d4381a8bec3d",
+      "decompressed_sha256": "5599deb96b14dfda856782ccd46d6e11792fe5c2dabc2beb2c647b4d55ee6f3a",
+      "transformations": [
+        "deterministic gzip"
+      ]
+    },
+    {
+      "path": "ordinary-passed-36592802616/source/tools/ci/verify-instrumentation.py.gz",
+      "origin": {
+        "git_commit": "28354dd25bb4995930ff46a71752f43f8a0d5df3",
+        "path": "tools/ci/verify-instrumentation.py"
+      },
+      "source_bytes": 2977,
+      "source_sha256": "5a03d41890aa8538f2f195048e823ee4a181e0cdcdb786fd461c88cc2623e46e",
+      "published_bytes": 1178,
+      "published_sha256": "cca813a584d0017441a570a3b9579d96547d6260fa77657e77c2932a6ffde41e",
+      "decompressed_sha256": "5a03d41890aa8538f2f195048e823ee4a181e0cdcdb786fd461c88cc2623e46e",
+      "transformations": [
+        "deterministic gzip"
+      ]
+    },
+    {
+      "path": "ordinary-passed-36592802616/source/tools/ci/verification-manifest.py.gz",
+      "origin": {
+        "git_commit": "28354dd25bb4995930ff46a71752f43f8a0d5df3",
+        "path": "tools/ci/verification-manifest.py"
+      },
+      "source_bytes": 2528,
+      "source_sha256": "8107bbb20ee5c4269544036aa3817ebd58216c35877bb7bc7677e4082c94faa5",
+      "published_bytes": 1066,
+      "published_sha256": "a431855b451cf628613e3a5d91752fe4792bd618e15ab5f597c477aa9686f360",
+      "decompressed_sha256": "8107bbb20ee5c4269544036aa3817ebd58216c35877bb7bc7677e4082c94faa5",
+      "transformations": [
+        "deterministic gzip"
+      ]
+    },
+    {
+      "path": "root-host-checks/fold-observer-root-host.log.gz",
+      "origin": {
+        "owner": "coordinator",
+        "original_file": "build/agent-logs/fold-observer-root-host.log"
+      },
+      "source_bytes": 107,
+      "source_sha256": "1e0157ae968a3e882cf130f32a40f0b11c639e6b4cf0c9c6b9ff63df0e9f7f23",
+      "published_bytes": 54,
+      "published_sha256": "9a7b6aa100693abb9b992b2a2c3234f72b742586c7bb24060f21dea13c7c6bc1",
+      "decompressed_sha256": "1e0157ae968a3e882cf130f32a40f0b11c639e6b4cf0c9c6b9ff63df0e9f7f23",
+      "transformations": [
+        "deterministic gzip"
+      ]
+    },
+    {
+      "path": "root-host-checks/fold-observer-root-all-host.log.gz",
+      "origin": {
+        "owner": "coordinator",
+        "original_file": "build/agent-logs/fold-observer-root-all-host.log"
+      },
+      "source_bytes": 5035,
+      "source_sha256": "6d8d397cb3055813841dc8e3ddebabca10d444c4363803b49a24c5f2b67026a1",
+      "published_bytes": 1082,
+      "published_sha256": "3de290dace5921b627b78e4cc2e5d3666f844af6e83a6e52d161c9d1afadadfc",
+      "decompressed_sha256": "6d8d397cb3055813841dc8e3ddebabca10d444c4363803b49a24c5f2b67026a1",
+      "transformations": [
+        "deterministic gzip"
+      ]
+    },
+    {
+      "path": "root-host-checks/fold-observer-root-38-host.log.gz",
+      "origin": {
+        "owner": "coordinator",
+        "original_file": "build/agent-logs/fold-observer-root-38-host.log"
+      },
+      "source_bytes": 5695,
+      "source_sha256": "df8de4704102f61d7dbdfdc83c0a3ace0309728e0bb4827aab4fa84da217e245",
+      "published_bytes": 1200,
+      "published_sha256": "d97bfabfbaa11231e93f980dcfceac3dbb883199a7aceb2f7560f50141455815",
+      "decompressed_sha256": "df8de4704102f61d7dbdfdc83c0a3ace0309728e0bb4827aab4fa84da217e245",
+      "transformations": [
+        "deterministic gzip"
+      ]
+    },
+    {
+      "path": "root-host-checks/fold-observer-root-38-complete-host.log.gz",
+      "origin": {
+        "owner": "coordinator",
+        "original_file": "build/agent-logs/fold-observer-root-38-complete-host.log"
+      },
+      "source_bytes": 6853,
+      "source_sha256": "c82916c72723e586ef025380ea0e42bcfa54d4f16c995c5c42af1feb40e9758a",
+      "published_bytes": 1390,
+      "published_sha256": "0faaffe54c01a4b92fea6f0482555d497270c1d35602bd124ed5ad123befbc79",
+      "decompressed_sha256": "c82916c72723e586ef025380ea0e42bcfa54d4f16c995c5c42af1feb40e9758a",
+      "transformations": [
+        "deterministic gzip"
+      ]
+    }
+  ]
+}

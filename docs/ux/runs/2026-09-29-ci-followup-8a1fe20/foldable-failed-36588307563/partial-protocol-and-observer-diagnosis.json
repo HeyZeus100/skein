@@ -1,0 +1,58 @@
+{
+  "source_sha": "8a1fe20bd451314596e2f5ea75766f3dc41a64ef",
+  "run_id": 36588307563,
+  "xml_counts": {
+    "tests": 2,
+    "passed": 0,
+    "failure": 2,
+    "error": 0,
+    "skipped": 0
+  },
+  "identities": {
+    "missing": [],
+    "unexpected": [],
+    "duplicates": 0
+  },
+  "archive": [
+    {
+      "id": 11042922802,
+      "path": "artifact-11042922802-foldable-gate-7.6in Foldable-8a1fe20bd451314596e2f5ea75766f3dc41a64ef.zip",
+      "bytes": 156440590,
+      "sha256": "a899038a42f8bdef77687849e649f187886c50b9c35fb07435b48b95fc4e3d7c",
+      "api_digest_matched": true
+    }
+  ],
+  "observed_partial_protocol": {
+    "events": 14,
+    "requests": 4,
+    "commands": 4,
+    "acks": 4,
+    "alternating": true,
+    "strict_causal_order": true,
+    "matching_nonce_sequence_run_action": true,
+    "console_ok": true,
+    "clean_stop": true,
+    "meets_required_six_journey_requests": false
+  },
+  "geometry_rows": 0,
+  "actual_activity_launched": false,
+  "failure": "Both tests timeout15s on CLOSED non-UI targetContext.resources.configuration674x841 before launch. Committed device-state waits complete. Cleanup fold/unfold protocol succeeds; no actual Activity/window metric was sampled.",
+  "apk_build_output_hashes": [
+    {
+      "path": "app/build/outputs/apk/androidTest/dev/debug/app-dev-debug-androidTest.apk",
+      "bytes": 94568933,
+      "sha256": "302e9c8d59fc4c02d90fa7e8b381218489b3b2e8b184882a06192f1151720620",
+      "attribution": "downloaded host build output; not installed bytes",
+      "zip_integrity_ok": true
+    },
+    {
+      "path": "app/build/outputs/apk/dev/debug/app-dev-debug.apk",
+      "bytes": 171611846,
+      "sha256": "5c01a4dd9a6980ac1183efd7d1aab9cac5b886daf0235c183aa4fff0ec722cc1",
+      "attribution": "downloaded host build output; not installed bytes",
+      "zip_integrity_ok": true
+    }
+  ],
+  "all_manifest_hashes_rechecked": 6,
+  "limits": "No generic window transition accepted; no exact Pixel9/real IME/unlockedA-G/physical/candidate-release claim."
+}

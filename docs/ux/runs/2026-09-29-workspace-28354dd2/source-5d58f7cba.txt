@@ -1,0 +1,9 @@
+commit 5d58f7cba26317c62ee7811472067fc73d0fee82
+Author:     Andrew Herrera <andrew@aherrera.us>
+AuthorDate: Tue Sep 29 08:27:59 2026 -0700
+Commit:     Andrew Herrera <andrew@aherrera.us>
+CommitDate: Tue Sep 29 08:27:59 2026 -0700
+
+    Integrate independent workspaces with shared readiness and retained private state
+    
+    Signed-off-by: Andrew Herrera <andrew@aherrera.us>

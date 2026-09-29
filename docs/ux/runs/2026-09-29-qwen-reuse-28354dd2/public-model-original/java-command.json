@@ -1,0 +1,22 @@
+{
+  "argv": [
+    "/opt/homebrew/Cellar/openjdk@17/17.0.20.1/libexec/openjdk.jdk/Contents/Home/bin/java",
+    "-Xms32m",
+    "-Xmx256m",
+    "-XX:ActiveProcessorCount=1",
+    "-XX:+UseSerialGC",
+    "-cp",
+    "${HOST_HOME}/skein-worktrees/conference-demo-20260929/build/agent-logs/public-qwen-blake3-20260929/classes:${HOST_HOME}/.gradle/caches/modules-2/files-2.1/org.jetbrains.kotlin/kotlin-stdlib/2.4.20/94c1451890d164aed65d43b3db0b7ecef7c183e7/kotlin-stdlib-2.4.20.jar",
+    "PublicModelIdentity",
+    "${HOST_HOME}/skein-worktrees/conference-demo-20260929/build/agent-logs/fold/20260929T081355Z-preflight-89bcc0/public-model-cache-qwen-2c5f9a121ae6/Qwen2.5-3B-Instruct-abliterated-Q3_K_M.gguf"
+  ],
+  "timeout_seconds": 120,
+  "started_utc": "2026-09-29T10:44:10.205028+00:00",
+  "driver_source_sha256": "4c619d516cdc367a64c2939bb324972b49646dae953f366b5895b54862e96646",
+  "driver_class_sha256": "2e5b59328c0513de3a27c10e22426317df22e1531b32c6c890cdbe2b4b881701",
+  "model_before": {
+    "bytes": 1590475744,
+    "mtime_ns": 1790670164417753712,
+    "inode": 115366312
+  }
+}

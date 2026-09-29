@@ -1,0 +1,298 @@
+import java.io.IOException
+import java.net.URI
+import java.security.MessageDigest
+
+plugins {
+    alias(libs.plugins.android.library)
+    // E1.I2: isolation guard — this module may depend only on :core:ipc,
+    // :core:model, and Kotlin stdlib/coroutines (spec §2.6, plan §2.4).
+    id("app.skein.guard.isolation")
+}
+
+// E1.I4 (bd skein-ca2): the backend libskein_llama.so *requests* by default.
+// The M0 Fold smoke proved Vulkan on Mali-G715 (23.47 pp / 5.61 tg on Qwen 2.5
+// 3B Q3_K_M — docs/Handoffs/skein-fold-m0-hardware-handoff.md §9), but the
+// binding choice is a docs/MEASUREMENTS.md decision (`inference_backend`,
+// bd skein-5hr). Flipping it is this one line: it feeds both the native build
+// (`-DSKEIN_LLAMA_DEFAULT_BACKEND`) and Kotlin (`BuildConfig`), so the two
+// cannot drift. x86_64 has no Vulkan backend compiled in and always reports
+// "cpu" from `skein_llama_default_backend()` regardless of this value.
+val skeinLlamaDefaultBackend = "vulkan"
+
+// E1.I8 followup (bd skein-ylux): `native/llama/CMakeLists.txt` §5a patches a
+// build-tree copy of llama.cpp's Vulkan shader sources to work around an NDK
+// glslc miscompile that makes libskein_llama.so nondeterministic. It is ON by
+// default and there is no reason to turn it off for a real build — the switch
+// exists so `tools/rb/so-determinism.sh --negative-control` can reintroduce
+// the defect and prove the determinism check still catches it. Plumbed here
+// because CMake options reach the native build only through AGP's
+// `externalNativeBuild.cmake.arguments`.
+val skeinLlamaShaderPatches =
+    (providers.gradleProperty("skein.llama.shaderPatches").orNull ?: "true").toBoolean()
+
+android {
+    namespace = "app.skein.inference.service"
+    compileSdk = 37
+
+    if (providers.gradleProperty("skein.syntheticBenchmark").orNull == "true") {
+        sourceSets {
+            getByName("androidTest") {
+                kotlin.directories.add("src/syntheticBenchmark/kotlin")
+            }
+        }
+    }
+
+    // Pin the NDK to the same r27c the E0.I7 spike and :core:vault use. The
+    // reproducibility contract in E1.I8 hashes the .so, and the Vulkan shader
+    // set is decided by *this* NDK's bundled glslc (shaderc v2022.3), so a
+    // floating NDK version would change both the bytes and the compiled
+    // shader families.
+    ndkVersion = "27.3.13750724"
+
+    defaultConfig {
+        minSdk = 30
+
+        // E4.I1 (bd skein-3aw): LlamaNativeTest. The run itself is the device
+        // lane's (skein-80p emulator / skein-k3b2 Fold); CI compiles it on
+        // every push, which is what keeps the `external fun` surface and the
+        // `Java_…` symbols in libskein_llama.so from drifting apart.
+        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+
+        externalNativeBuild {
+            cmake {
+                // llama.cpp and ggml are C++; the static libc++ keeps
+                // libskein_llama.so self-contained so the isolated inference
+                // process needs no libc++_shared.so alongside it.
+                // ktlint (multiline-expression-wrapping): a multiline
+                // right-hand side starts on its own line.
+                arguments +=
+                    listOf(
+                        "-DANDROID_STL=c++_static",
+                        "-DSKEIN_LLAMA_DEFAULT_BACKEND=$skeinLlamaDefaultBackend",
+                        "-DSKEIN_LLAMA_SHADER_PATCHES=" +
+                            if (skeinLlamaShaderPatches) "ON" else "OFF",
+                    )
+                targets += "skein_llama"
+            }
+        }
+
+        buildConfigField(
+            "String",
+            "LLAMA_DEFAULT_BACKEND",
+            "\"$skeinLlamaDefaultBackend\"",
+        )
+    }
+
+    // Mirror :app's flavor set so the .so's ABIs line up with the app's
+    // abiFilters. `foss` ships arm64-v8a only (production install, CPU +
+    // Vulkan); `dev` adds x86_64 for the emulator, which is CPU-only —
+    // Android emulators expose at best a software Vulkan ICD and no
+    // measurement backs running inference on one.
+    flavorDimensions += "distribution"
+    productFlavors {
+        create("foss") {
+            dimension = "distribution"
+            ndk {
+                abiFilters += "arm64-v8a"
+            }
+        }
+        create("dev") {
+            dimension = "distribution"
+            ndk {
+                abiFilters += "arm64-v8a"
+                abiFilters += "x86_64"
+            }
+        }
+    }
+
+    externalNativeBuild {
+        cmake {
+            path = file("$rootDir/native/llama/CMakeLists.txt")
+            version = "3.22.1+"
+        }
+    }
+
+    buildTypes {
+        release {
+            isMinifyEnabled = false
+        }
+    }
+
+    buildFeatures {
+        buildConfig = true
+    }
+
+    packaging {
+        jniLibs {
+            useLegacyPackaging = false
+        }
+    }
+
+    compileOptions {
+        sourceCompatibility = JavaVersion.VERSION_17
+        targetCompatibility = JavaVersion.VERSION_17
+    }
+}
+
+dependencies {
+    // No androidx-core-ktx: it isn't used by this module, and this module's
+    // isolation allowlist (E1.I2) only permits :core:ipc, :core:model, and
+    // the Kotlin stdlib/coroutines — androidx.* is out of scope for the
+    // isolated inference process.
+
+    // E4.I1 (bd skein-3aw): LlamaNative.onNativeLog — the llama_log_set sink's
+    // Kotlin half — forwards through LlamaLogRedactor into SkeinLog, which the
+    // NoRawLogging guard (E1.I11) requires instead of android.util.Log.
+    // :core:model is on the isolation allowlist (build-logic/guards).
+    implementation(project(":core:model"))
+
+    // E4.I3 (bd skein-nxk): the AIDL contract this service implements
+    // (`IInferenceService.Stub`, the request/response Parcelables, `ErrorCode`)
+    // and `TransportRules`. On the isolation allowlist since E1.I2.
+    implementation(project(":core:ipc"))
+
+    // E4.I3 (bd skein-nxk, coordinator decision skein-hiwb): the
+    // POST_REVIEW_RESOLUTIONS.md §2 load gate — `ModelVerifier`,
+    // `PinnedModelFile`, `ModelVerification`. Pure Kotlin/JVM and on the
+    // isolation allowlist; this is the module that exists so the isolated
+    // process can run the same verifier the app-side loader does.
+    implementation(project(":core:verify"))
+
+    testImplementation(libs.junit)
+    testImplementation(libs.truth)
+    // The Stub's entry points take Parcelables and the service is a
+    // `android.app.Service`, neither of which has a JVM implementation in AGP's
+    // mockable android.jar — the same reason :core:ipc's round-trip tests run
+    // under Robolectric.
+    testImplementation(libs.robolectric)
+
+    // Instrumented-only; the isolation guard scans implementation/api/
+    // compileOnly/runtimeOnly, not the test configurations, so the androidx.test
+    // runner does not enter the isolated process's production classpath.
+    androidTestImplementation(libs.androidx.test.ext.junit)
+    androidTestImplementation(libs.androidx.test.runner)
+    // E4.I3 (bd skein-nxk): `ServiceTestRule` binds the real service over a
+    // real Binder in InferenceServiceInstrumentedTest.
+    androidTestImplementation(libs.androidx.test.rules)
+    androidTestImplementation(libs.truth)
+}
+
+// skein-hwtn: see core/vault/build.gradle.kts for the full rationale. AGP
+// deliberately leaves `.cxx/` (this module's CMake/ninja state for
+// native/llama/CMakeLists.txt) out of `clean` for build-speed reasons, but
+// that means ninja never re-detects an environment-only change such as
+// `SOURCE_DATE_EPOCH` and a "clean rebuild" ships a stale libskein_llama.so.
+tasks.named("clean", Delete::class) {
+    delete(layout.projectDirectory.dir(".cxx"))
+}
+
+// skein-80p (E4.I2): downloads the tiny GGUF `LlamaNativeTest`'s device-lane
+// acceptance tests load, pinned by URL + sha256 in
+// tools/models/test-model.lock (tools/models/README.md has the full
+// provenance: model, licence, and why it was chosen). Network-gated per
+// spec §9 ("the app never does") — this task is wired ONLY into the
+// androidTest asset-merge tasks below, so :app and every non-test variant
+// never runs it. The destination lives under `src/androidTest/assets/`,
+// which is git-ignored (`.gitignore`'s `*.gguf` rule); verify with
+// `git status` before committing anything in this area.
+abstract class FetchTestModelTask : DefaultTask() {
+    @get:Input
+    abstract val modelUrl: Property<String>
+
+    @get:Input
+    abstract val expectedSha256: Property<String>
+
+    @get:OutputFile
+    abstract val outputFile: RegularFileProperty
+
+    @TaskAction
+    fun fetch() {
+        val dest = outputFile.get().asFile
+        val expected = expectedSha256.get().lowercase()
+
+        if (dest.isFile && sha256Of(dest) == expected) {
+            logger.lifecycle("fetchTestModel: ${dest.name} present and verified, skipping download")
+            return
+        }
+
+        dest.parentFile.mkdirs()
+        val tmp = File(dest.parentFile, "${dest.name}.download")
+        logger.lifecycle("fetchTestModel: downloading ${modelUrl.get()}")
+        try {
+            URI(modelUrl.get()).toURL().openStream().use { input ->
+                tmp.outputStream().use { output -> input.copyTo(output) }
+            }
+        } catch (e: IOException) {
+            tmp.delete()
+            throw GradleException(
+                "fetchTestModel: failed to download ${modelUrl.get()} -- ${e.message}. " +
+                    "This task needs network (CI and a developer's Mac have it; the app never does).",
+                e,
+            )
+        }
+
+        val actual = sha256Of(tmp)
+        if (actual != expected) {
+            tmp.delete()
+            throw GradleException(
+                "fetchTestModel: sha256 mismatch for ${modelUrl.get()}\n" +
+                    "  expected (tools/models/test-model.lock): $expected\n" +
+                    "  actual:                                  $actual\n" +
+                    "Refusing to install an unverified test model.",
+            )
+        }
+
+        if (!tmp.renameTo(dest)) {
+            tmp.copyTo(dest, overwrite = true)
+            tmp.delete()
+        }
+        logger.lifecycle("fetchTestModel: verified sha256 $actual, wrote ${dest.path}")
+    }
+
+    private fun sha256Of(file: File): String {
+        val digest = MessageDigest.getInstance("SHA-256")
+        file.inputStream().use { input ->
+            val buffer = ByteArray(1 shl 16)
+            while (true) {
+                val n = input.read(buffer)
+                if (n < 0) break
+                digest.update(buffer, 0, n)
+            }
+        }
+        return digest.digest().joinToString("") { "%02x".format(it) }
+    }
+}
+
+// tools/models/test-model.lock's parser: `key=value`, blank lines and `#`
+// comments ignored -- deliberately not YAML (no parser dependency needed in
+// a Gradle script for four scalar fields; see tools/m0-benchmark/models.yaml
+// for the richer manifest this is NOT trying to be).
+val testModelLockFile = rootProject.file("tools/models/test-model.lock")
+val testModelLock: Map<String, String> =
+    testModelLockFile
+        .readLines()
+        .map { it.trim() }
+        .filter { it.isNotEmpty() && !it.startsWith("#") }
+        .mapNotNull { line ->
+            val idx = line.indexOf('=')
+            if (idx < 0) null else line.substring(0, idx).trim() to line.substring(idx + 1).trim()
+        }.toMap()
+
+val fetchTestModel =
+    tasks.register<FetchTestModelTask>("fetchTestModel") {
+        group = "verification"
+        description = "Downloads and sha256-verifies the tiny GGUF for LlamaNativeTest (skein-80p)"
+        modelUrl.set(testModelLock.getValue("url"))
+        expectedSha256.set(testModelLock.getValue("sha256"))
+        outputFile.set(layout.projectDirectory.file("src/androidTest/assets/tiny.gguf"))
+    }
+
+// Every merge*AndroidTestAssets task (mergeFossDebugAndroidTestAssets,
+// mergeDevDebugAndroidTestAssets, ...) needs `tiny.gguf` on disk before it
+// runs; matched by name rather than AGP's internal task type so this does
+// not depend on AGP's task-class package across versions. This does NOT
+// touch merge*Assets (no "AndroidTest" in the name) -- the app's own
+// production assets never trigger a download.
+tasks.matching { it.name.contains("AndroidTestAssets") }.configureEach {
+    dependsOn(fetchTestModel)
+}

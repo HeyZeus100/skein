@@ -1,0 +1,98 @@
+{
+  "schema": 2,
+  "prior_source_proof": {
+    "path": "/Users/andrewherrera/skein-worktrees/ux-workspace-models-test-20260929/build/agent-logs/workspace-font-source/source-proof.json",
+    "size_bytes": 8829,
+    "sha256": "3c84862ee299103e7ca1dab75f0f97bbd9a5ee57c72fad5a1a5b81543d7824e0"
+  },
+  "diagnostic_2_evidence": [
+    {
+      "original": {
+        "path": "/Users/andrewherrera/skein-worktrees/ux-integration-20260929/build/agent-logs/workspace-font-diagnostic-2-TEST-app.skein.feature.shell.host.SkeinWorkspaceHostTest.xml",
+        "size_bytes": 13708,
+        "sha256": "d5cd47f3e1d713e1e0ff9d83f5e0e0c7dfbd8a22521e417b73776930c6a105c2"
+      },
+      "lossless_gzip_copy": {
+        "path": "/Users/andrewherrera/skein-worktrees/ux-workspace-models-test-20260929/build/agent-logs/workspace-font-source/diagnostic-2-TEST-app.skein.feature.shell.host.SkeinWorkspaceHostTest.xml.gz",
+        "size_bytes": 1764,
+        "sha256": "e7d2319cc287a5778b362f5079b313b6026b03af0713d366839614227acfc6b0"
+      },
+      "suite": "app.skein.feature.shell.host.SkeinWorkspaceHostTest",
+      "counts": {
+        "tests": 2,
+        "failures": 2,
+        "errors": 0,
+        "skipped": 0
+      },
+      "failure_messages": [
+        "java.lang.AssertionError: text fits Left: [[50 x 38, 144.0, 0.0, 48.53828, 0.0, 38.0, Constraints(minWidth = 0, maxWidth = 144, minHeight = 0, maxHeight = 900)]]",
+        "java.lang.AssertionError: text fits Left: [[50 x 38, 329.0, 0.0, 48.53828, 0.0, 38.0, Constraints(minWidth = 0, maxWidth = 329, minHeight = 0, maxHeight = 950)]]"
+      ]
+    },
+    {
+      "original": {
+        "path": "/Users/andrewherrera/skein-worktrees/ux-integration-20260929/build/agent-logs/workspace-font-diagnostic-2-TEST-app.skein.feature.editor.entries.KnowledgeListRetentionTest.xml",
+        "size_bytes": 566,
+        "sha256": "af7a6f273466407dcaa9d459c571483f76cf3d0a572c3b53be1f339599a714b3"
+      },
+      "lossless_gzip_copy": {
+        "path": "/Users/andrewherrera/skein-worktrees/ux-workspace-models-test-20260929/build/agent-logs/workspace-font-source/diagnostic-2-TEST-app.skein.feature.editor.entries.KnowledgeListRetentionTest.xml.gz",
+        "size_bytes": 350,
+        "sha256": "36bc14e96df93b2e4b93fbc0ca0b9e33cef2f2fbd7015520f219566c398b6efb"
+      },
+      "suite": "app.skein.feature.editor.entries.KnowledgeListRetentionTest",
+      "counts": {
+        "tests": 1,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "failure_messages": []
+    }
+  ],
+  "reviewed_assertion_source": {
+    "original": {
+      "path": "/Users/andrewherrera/skein-worktrees/ux-integration-20260929/feature/shell/src/test/kotlin/app/skein/feature/shell/host/SkeinWorkspaceHostTest.kt",
+      "size_bytes": 19239,
+      "sha256": "56ad3067a97e8535554e4077ff8754740d4c08e267452df5c8137b4fdc07884f"
+    },
+    "lossless_gzip_copy": {
+      "path": "/Users/andrewherrera/skein-worktrees/ux-workspace-models-test-20260929/build/agent-logs/workspace-font-source/SkeinWorkspaceHostTest-reviewed-helper.kt.gz",
+      "size_bytes": 4332,
+      "sha256": "f152a6792a9238efa74b9c4c4ac77bd13037a6652993f89896106bd2a315ead4"
+    }
+  },
+  "disposition": "Source-approved corrected acceptance assertion for the literal Left/Right labels; no tests/builds run by reviewer. Root owns rerun.",
+  "confirmed_mechanism": {
+    "compact": {
+      "text_size_px": [
+        50,
+        38
+      ],
+      "multi_paragraph_width_px": 144,
+      "line_left_px": 0,
+      "line_right_px": 48.53828,
+      "line_top_px": 0,
+      "line_bottom_px": 38
+    },
+    "near_top": {
+      "text_size_px": [
+        50,
+        38
+      ],
+      "multi_paragraph_width_px": 329,
+      "line_left_px": 0,
+      "line_right_px": 48.53828,
+      "line_top_px": 0,
+      "line_bottom_px": 38
+    },
+    "conclusion": "Diagnostic matches exact pinned-source semantics reconstruction. Horizontal container-width flag is not actual glyph clipping for these labels."
+  },
+  "assertion_review": [
+    "Checks exact label, exactly one line, full visible line end, no ellipsis and no vertical overflow.",
+    "Character bounding-box union must fit original Text allocation and actual window-space button bounds with <=1 physical pixel tolerance.",
+    "Uses unmerged SemanticsNode.positionInWindow, so translation is the text origin rather than button origin.",
+    "Existing touch-target and hinge-clearance assertions retained; original flag failures remain failed artifacts."
+  ],
+  "limits": "Character boxes are logical glyph layout bounds, not universal raster-ink bounds for arbitrary fonts. Reviewed PNG visually confirms these literal labels. No general a11y keyboard/TalkBack or physical Fold acceptance implied."
+}

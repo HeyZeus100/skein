@@ -1,0 +1,43 @@
+{
+  "job_log": "job-109473822749.log",
+  "test_task_lines": [
+    "2026-09-29T15:13:04.9149354Z > Task :core:designsystem:testDebugUnitTest",
+    "2026-09-29T15:13:35.8202739Z > Task :core:designsystem:verifyRoborazziDebug",
+    "2026-09-29T15:13:55.0171249Z > Task :feature:chat:testDebugUnitTest",
+    "2026-09-29T15:14:11.9153435Z > Task :feature:editor:testDebugUnitTest",
+    "2026-09-29T15:14:36.4200880Z > Task :feature:editor:verifyRoborazziDebug",
+    "2026-09-29T15:14:45.8228631Z > Task :feature:chat:verifyRoborazziDebug",
+    "2026-09-29T15:15:06.7149409Z > Task :feature:graph:testDebugUnitTest",
+    "2026-09-29T15:15:06.7174440Z > Task :feature:graph:verifyRoborazziDebug",
+    "2026-09-29T15:15:20.3156316Z > Task :feature:models:testDebugUnitTest",
+    "2026-09-29T15:15:21.8169356Z > Task :feature:models:verifyRoborazziDebug",
+    "2026-09-29T15:15:38.3173591Z > Task :feature:settings:testDebugUnitTest",
+    "2026-09-29T15:15:38.3220867Z > Task :feature:settings:verifyRoborazziDebug",
+    "2026-09-29T15:15:55.1148938Z > Task :feature:timeline:testDebugUnitTest",
+    "2026-09-29T15:15:55.1151386Z > Task :feature:timeline:verifyRoborazziDebug",
+    "2026-09-29T15:15:58.1148708Z > Task :feature:shell:testDebugUnitTest",
+    "2026-09-29T15:16:09.5172025Z > Task :feature:shell:verifyRoborazziDebug"
+  ],
+  "test_tasks_not_executed": [],
+  "all_task_status_counts": {
+    "SKIPPED": 6,
+    "executed": 355,
+    "NO-SOURCE": 30,
+    "UP-TO-DATE": 59
+  },
+  "build_cache_flags": [
+    "2026-09-29T15:10:42.7587296Z ##[group]Run ./gradlew --max-workers=2 --no-build-cache verifyRoborazziDebug --continue --stacktrace",
+    "2026-09-29T15:10:42.7587964Z \u001b[36;1m./gradlew --max-workers=2 --no-build-cache verifyRoborazziDebug --continue --stacktrace\u001b[0m"
+  ],
+  "golden_verification_lines": [
+    "2026-09-29T15:16:09.9212225Z ##[group]Run git diff --exit-code -- ux-baselines/",
+    "2026-09-29T15:16:09.9212602Z \u001b[36;1mgit diff --exit-code -- ux-baselines/\u001b[0m",
+    "2026-09-29T15:16:10.0976599Z \u001b[36;1mecho \"ux-baselines: ${kb} KiB\"\u001b[0m",
+    "2026-09-29T15:16:10.1203143Z ux-baselines: 35660 KiB"
+  ],
+  "successful_build_markers": [
+    "2026-09-29T15:16:09.5176093Z BUILD SUCCESSFUL in 5m 26s",
+    "2026-09-29T15:16:33.5869889Z BUILD SUCCESSFUL in 12s"
+  ],
+  "failed_build_markers": []
+}

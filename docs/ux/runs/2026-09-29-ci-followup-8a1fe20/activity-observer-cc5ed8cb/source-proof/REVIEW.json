@@ -1,0 +1,31 @@
+{
+  "baseline_sha": "8a1fe20bd451314596e2f5ea75766f3dc41a64ef",
+  "api35_framework_pin": "cc8bb19595c661f5cf42f330457000e643c67d1b",
+  "source_links": [
+    "https://developer.android.com/reference/kotlin/android/content/Context#createWindowContext(kotlin.Int,android.os.Bundle)",
+    "https://developer.android.com/reference/android/view/WindowMetrics",
+    "https://github.com/aosp-mirror/platform_frameworks_base/blob/cc8bb19595c661f5cf42f330457000e643c67d1b/core/java/android/app/Instrumentation.java#L353",
+    "https://github.com/aosp-mirror/platform_frameworks_base/blob/cc8bb19595c661f5cf42f330457000e643c67d1b/core/java/android/app/ContextImpl.java#L3396"
+  ],
+  "proof": [
+    "Instrumentation353-354 returns mAppContext;2389 assigns appContext.",
+    "ActivityThread7381 creates appContext with ContextImpl.createAppContext;7751 passes it into Instrumentation.init.",
+    "ContextImpl3396-3405 creates a NON_UI context using package resources;3409-3474 creates an ACTIVITY context and activity-token/override resources.",
+    "WindowManagerImpl128 ties WindowMetricsController to its UiContext;327-328 delegates getCurrentWindowMetrics."
+  ],
+  "diagnosis": "Run36588307563 accepted four causal commands and matching ACKs; the committed state wait passed, but both cases timed out on non-UI targetContext configuration before launching MainActivity. No actual Activity geometry was measured. This is an invalid observation point; source proof does not establish that the generic emulator will satisfy window thresholds after launch.",
+  "patch_scope": [
+    "MainActivity scenario launches before posture/rotation and stays alive through @After guarded reset.",
+    "Every observation runs on Activity thread, asserts the original object, copies Activity Configuration and Activity WindowManager currentWindowMetrics bounds.",
+    "Existing configuration thresholds/orientation/security/gate assertions remain; corresponding actual-window thresholds are also required.",
+    "Five geometry records now include observer label, orientation and actual pixel bounds; host review rejects missing/non-Activity/inconsistent values.",
+    "Six exact causal posture requests and all CI/qemu/AVD, timeout and serial guards unchanged."
+  ],
+  "checks": {
+    "host_tests_passed": 38,
+    "red_reviewer_subtests_failed_before_fix": 6,
+    "kotlin_compile": "not run; root owns build",
+    "device_or_emulator": "not run",
+    "submodules": "pinned initialized with reference; no gitlink changes"
+  }
+}
