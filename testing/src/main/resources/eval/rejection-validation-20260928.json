@@ -1,0 +1,382 @@
+{
+  "schema_version": 1,
+  "split": "independent_validation_20260928",
+  "documents": [
+    {
+      "id": "019a0000-0000-7000-8000-000000000001",
+      "title": "Weather mast maintenance",
+      "body_md": "The weather mast records a sensor reading every ninety seconds. The battery enclosure is checked at sunrise.",
+      "persona_id": "default"
+    },
+    {
+      "id": "019a0000-0000-7000-8000-000000000002",
+      "title": "Lantern parade briefing",
+      "body_md": "Lantern parade volunteers assemble beside the north pier gate. Reflective sashes are handed out before the procession.",
+      "persona_id": "default"
+    },
+    {
+      "id": "019a0000-0000-7000-8000-000000000003",
+      "title": "Film archive handling",
+      "body_md": "The film negatives are sealed in acid-free envelopes. A soft brush removes loose dust before each sleeve is closed.",
+      "persona_id": "default"
+    },
+    {
+      "id": "019a0000-0000-7000-8000-000000000004",
+      "title": "Estuary paddling notice",
+      "body_md": "A red flag means the estuary launch is closed to paddlers. The rescue boat remains on its trailer beside the ramp.",
+      "persona_id": "default"
+    },
+    {
+      "id": "019a0000-0000-7000-8000-000000000005",
+      "title": "Paper conservation journal",
+      "body_md": "The damp paper rests between absorbent blotters for eight minutes. The sheet is then transferred to the drying rack.",
+      "persona_id": "default"
+    },
+    {
+      "id": "019a0000-0000-7000-8000-000000000006",
+      "title": "Coffee cupping worksheet",
+      "body_md": "Each coffee cupping bowl receives twelve grams of ground coffee. The grinder dial is set to fourteen.",
+      "persona_id": "default"
+    },
+    {
+      "id": "019a0000-0000-7000-8000-000000000007",
+      "title": "Pollinator enclosure rota",
+      "body_md": "Farah inspects the pollinator enclosure on Tuesdays. The inspection log is kept beside the mesh entrance.",
+      "persona_id": "default"
+    },
+    {
+      "id": "019a0000-0000-7000-8000-000000000008",
+      "title": "Choir rehearsal cupboard",
+      "body_md": "The choir scores are filed in the mahogany cupboard in the east alcove. Used pencils go in the shallow tray.",
+      "persona_id": "default"
+    },
+    {
+      "id": "019a0000-0000-7000-8000-000000000009",
+      "title": "Glasshouse ventilation settings",
+      "body_md": "The glasshouse roof vents open when the air reaches 27 degrees Celsius. The work team checks the opening motor monthly.",
+      "persona_id": "work"
+    },
+    {
+      "id": "019a0000-0000-7000-8000-000000000010",
+      "title": "Glasshouse ventilation settings",
+      "body_md": "The glasshouse roof vents open when the air reaches 21 degrees Celsius. The research team checks the opening motor weekly.",
+      "persona_id": "research"
+    },
+    {
+      "id": "019a0000-0000-7000-8000-000000000011",
+      "title": "Listening room access",
+      "body_md": "The listening room door code is 4826. The work team returns the brass key to the reception desk.",
+      "persona_id": "work"
+    },
+    {
+      "id": "019a0000-0000-7000-8000-000000000012",
+      "title": "Listening room access",
+      "body_md": "The listening room door code is 7319. The research team returns the brass key to the upstairs office.",
+      "persona_id": "research"
+    }
+  ],
+  "queries": [
+    {
+      "id": "fresh-20260928-01",
+      "category": "answerable_lexical",
+      "query": "How often does the weather mast record a sensor reading?",
+      "persona_id": "default",
+      "answer": "every ninety seconds",
+      "relevant": [
+        {
+          "doc_id": "019a0000-0000-7000-8000-000000000001",
+          "grade": 3,
+          "evidence": "The weather mast records a sensor reading every ninety seconds."
+        }
+      ],
+      "forbidden_doc_ids": []
+    },
+    {
+      "id": "fresh-20260928-02",
+      "category": "answerable_paraphrase",
+      "query": "Where should helpers rendezvous for the lantern parade?",
+      "persona_id": "default",
+      "answer": "beside the north pier gate",
+      "relevant": [
+        {
+          "doc_id": "019a0000-0000-7000-8000-000000000002",
+          "grade": 3,
+          "evidence": "Lantern parade volunteers assemble beside the north pier gate."
+        }
+      ],
+      "forbidden_doc_ids": []
+    },
+    {
+      "id": "fresh-20260928-03",
+      "category": "answerable_paraphrase",
+      "query": "What kind of protective packaging holds the film negatives?",
+      "persona_id": "default",
+      "answer": "acid-free envelopes",
+      "relevant": [
+        {
+          "doc_id": "019a0000-0000-7000-8000-000000000003",
+          "grade": 3,
+          "evidence": "The film negatives are sealed in acid-free envelopes."
+        }
+      ],
+      "forbidden_doc_ids": []
+    },
+    {
+      "id": "fresh-20260928-04",
+      "category": "answerable_lexical",
+      "query": "What does a red flag mean for the estuary launch?",
+      "persona_id": "default",
+      "answer": "the estuary launch is closed to paddlers",
+      "relevant": [
+        {
+          "doc_id": "019a0000-0000-7000-8000-000000000004",
+          "grade": 3,
+          "evidence": "A red flag means the estuary launch is closed to paddlers."
+        }
+      ],
+      "forbidden_doc_ids": []
+    },
+    {
+      "id": "fresh-20260928-05",
+      "category": "answerable_paraphrase",
+      "query": "How long is the wet paper sandwiched between absorbent layers?",
+      "persona_id": "default",
+      "answer": "eight minutes",
+      "relevant": [
+        {
+          "doc_id": "019a0000-0000-7000-8000-000000000005",
+          "grade": 3,
+          "evidence": "The damp paper rests between absorbent blotters for eight minutes."
+        }
+      ],
+      "forbidden_doc_ids": []
+    },
+    {
+      "id": "fresh-20260928-06",
+      "category": "answerable_lexical",
+      "query": "How many grams of ground coffee go in each cupping bowl?",
+      "persona_id": "default",
+      "answer": "twelve grams",
+      "relevant": [
+        {
+          "doc_id": "019a0000-0000-7000-8000-000000000006",
+          "grade": 3,
+          "evidence": "Each coffee cupping bowl receives twelve grams of ground coffee."
+        }
+      ],
+      "forbidden_doc_ids": []
+    },
+    {
+      "id": "fresh-20260928-07",
+      "category": "answerable_lexical",
+      "query": "Who inspects the pollinator enclosure?",
+      "persona_id": "default",
+      "answer": "Farah",
+      "relevant": [
+        {
+          "doc_id": "019a0000-0000-7000-8000-000000000007",
+          "grade": 3,
+          "evidence": "Farah inspects the pollinator enclosure on Tuesdays."
+        }
+      ],
+      "forbidden_doc_ids": []
+    },
+    {
+      "id": "fresh-20260928-08",
+      "category": "answerable_paraphrase",
+      "query": "Where can the choir find its sheet music?",
+      "persona_id": "default",
+      "answer": "the mahogany cupboard in the east alcove",
+      "relevant": [
+        {
+          "doc_id": "019a0000-0000-7000-8000-000000000008",
+          "grade": 3,
+          "evidence": "The choir scores are filed in the mahogany cupboard in the east alcove."
+        }
+      ],
+      "forbidden_doc_ids": []
+    },
+    {
+      "id": "fresh-20260928-09",
+      "category": "answerable_scope",
+      "query": "At what air temperature do the glasshouse roof vents open?",
+      "persona_id": "work",
+      "answer": "27 degrees Celsius",
+      "relevant": [
+        {
+          "doc_id": "019a0000-0000-7000-8000-000000000009",
+          "grade": 3,
+          "evidence": "The glasshouse roof vents open when the air reaches 27 degrees Celsius."
+        }
+      ],
+      "forbidden_doc_ids": [
+        "019a0000-0000-7000-8000-000000000010"
+      ]
+    },
+    {
+      "id": "fresh-20260928-10",
+      "category": "answerable_scope",
+      "query": "At what air temperature do the glasshouse roof vents open?",
+      "persona_id": "research",
+      "answer": "21 degrees Celsius",
+      "relevant": [
+        {
+          "doc_id": "019a0000-0000-7000-8000-000000000010",
+          "grade": 3,
+          "evidence": "The glasshouse roof vents open when the air reaches 21 degrees Celsius."
+        }
+      ],
+      "forbidden_doc_ids": [
+        "019a0000-0000-7000-8000-000000000009"
+      ]
+    },
+    {
+      "id": "fresh-20260928-11",
+      "category": "answerable_scope",
+      "query": "What is the listening room door code?",
+      "persona_id": "work",
+      "answer": "4826",
+      "relevant": [
+        {
+          "doc_id": "019a0000-0000-7000-8000-000000000011",
+          "grade": 3,
+          "evidence": "The listening room door code is 4826."
+        }
+      ],
+      "forbidden_doc_ids": [
+        "019a0000-0000-7000-8000-000000000012"
+      ]
+    },
+    {
+      "id": "fresh-20260928-12",
+      "category": "answerable_scope",
+      "query": "Where does the team return the listening room brass key?",
+      "persona_id": "research",
+      "answer": "the upstairs office",
+      "relevant": [
+        {
+          "doc_id": "019a0000-0000-7000-8000-000000000012",
+          "grade": 3,
+          "evidence": "The research team returns the brass key to the upstairs office."
+        }
+      ],
+      "forbidden_doc_ids": [
+        "019a0000-0000-7000-8000-000000000011"
+      ]
+    },
+    {
+      "id": "fresh-20260928-13",
+      "category": "related_only",
+      "query": "Who manufactured the weather mast sensor?",
+      "persona_id": "default",
+      "answer": null,
+      "relevant": [],
+      "forbidden_doc_ids": []
+    },
+    {
+      "id": "fresh-20260928-14",
+      "category": "related_only",
+      "query": "On what calendar date is the lantern parade?",
+      "persona_id": "default",
+      "answer": null,
+      "relevant": [],
+      "forbidden_doc_ids": []
+    },
+    {
+      "id": "fresh-20260928-15",
+      "category": "related_only",
+      "query": "Who approved the film archive handling procedure?",
+      "persona_id": "default",
+      "answer": null,
+      "relevant": [],
+      "forbidden_doc_ids": []
+    },
+    {
+      "id": "fresh-20260928-16",
+      "category": "related_only",
+      "query": "How many paddlers can the estuary rescue boat carry?",
+      "persona_id": "default",
+      "answer": null,
+      "relevant": [],
+      "forbidden_doc_ids": []
+    },
+    {
+      "id": "fresh-20260928-17",
+      "category": "related_only",
+      "query": "What relative humidity is required at the paper drying rack?",
+      "persona_id": "default",
+      "answer": null,
+      "relevant": [],
+      "forbidden_doc_ids": []
+    },
+    {
+      "id": "fresh-20260928-18",
+      "category": "related_only",
+      "query": "What is the price per kilogram of the coffee used for cupping?",
+      "persona_id": "default",
+      "answer": null,
+      "relevant": [],
+      "forbidden_doc_ids": []
+    },
+    {
+      "id": "fresh-20260928-19",
+      "category": "related_only",
+      "query": "Did Farah find any damaged mesh during the pollinator enclosure inspection?",
+      "persona_id": "default",
+      "answer": null,
+      "relevant": [],
+      "forbidden_doc_ids": []
+    },
+    {
+      "id": "fresh-20260928-20",
+      "category": "related_only",
+      "query": "Which composer wrote the choir scores in the mahogany cupboard?",
+      "persona_id": "default",
+      "answer": null,
+      "relevant": [],
+      "forbidden_doc_ids": []
+    },
+    {
+      "id": "fresh-20260928-21",
+      "category": "scope_absence",
+      "query": "What is the listening room door code?",
+      "persona_id": "default",
+      "answer": null,
+      "relevant": [],
+      "forbidden_doc_ids": [
+        "019a0000-0000-7000-8000-000000000011",
+        "019a0000-0000-7000-8000-000000000012"
+      ]
+    },
+    {
+      "id": "fresh-20260928-22",
+      "category": "scope_absence",
+      "query": "At what air temperature do the glasshouse roof vents open?",
+      "persona_id": "default",
+      "answer": null,
+      "relevant": [],
+      "forbidden_doc_ids": [
+        "019a0000-0000-7000-8000-000000000009",
+        "019a0000-0000-7000-8000-000000000010"
+      ]
+    },
+    {
+      "id": "fresh-20260928-23",
+      "category": "no_match",
+      "query": "Which license plate is assigned to the municipal snowplow?",
+      "persona_id": "default",
+      "answer": null,
+      "relevant": [],
+      "forbidden_doc_ids": []
+    },
+    {
+      "id": "fresh-20260928-24",
+      "category": "no_match",
+      "query": "What is the registration deadline for the pottery auction?",
+      "persona_id": "default",
+      "answer": null,
+      "relevant": [],
+      "forbidden_doc_ids": []
+    }
+  ]
+}
