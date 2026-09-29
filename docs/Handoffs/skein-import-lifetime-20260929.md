@@ -93,7 +93,13 @@ It applies to baseline `9fa9f6f` and changes only NavShell observation/admission
 coordinator applies/adapts it to its newer shell and runs formatting/UI tests. It
 removes the UI-owned import coroutine and UI-owned default/cache writes. `Done`
 outcomes are `IMPORTED`, `SAVED_FOR_UNLOCK`, `REFUSED`, `FAILED`; dismissal clears the
-application result. The existing rescued-model observer remains in place. A successful
+application result. `dismissResult(expected: ModelImportState.Done? = null)` retains
+the no-argument API. Delayed UI timers/dismiss callbacks must pass their captured
+`Done` object: the coordinator checks reference identity under its monitor, so an
+old timer cannot clear a newer equal-outcome result. This bounded API addition was
+requested and approved in `ui-dismiss-result-identity-contract`; the coordinator
+owns adapting the shell observation/timers. The existing rescued-model observer
+remains in place. A successful
 matching adoption clears `SAVED_FOR_UNLOCK` before that observer receives rescued
 IDs. The captured admission checkpoint prevents an old scan clearing newer work;
 only private model-ID digests are retained until this acknowledgment or dismissal.

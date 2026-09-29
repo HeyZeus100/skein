@@ -3,7 +3,8 @@
 ## Integration source and ownership
 
 Baseline: `9fa9f6fdda8a6f624d0e9b248e7a17e92f01890f`.
-Verified code SHA: `64bdb15cc7d1f67fa017884853ad8b37dc3881fa`.
+Verified code SHA: `6a6fd5d8493aa4835f97c762af14345eb4ac1250`.
+Full four-module gate source: `64bdb15cc7d1f67fa017884853ad8b37dc3881fa`.
 Topic: `codex/inference-lifecycle-20260929`.
 Worktree: `/Users/andrewherrera/skein-worktrees/inference-lifecycle-20260929`.
 The coordination record contains approved module/foreground-manifest/import API ownership,
@@ -29,7 +30,7 @@ without a two-way unload on the lock deadline. Late callbacks/bindings cannot pu
 or damage a newer binding; same-epoch cancellation does not send a destructive terminal lock.
 Interrupted worker waiters retain ownership until completion and restore the interrupted flag.
 Cleanup invoked from the native worker executes directly on its owning thread, avoiding the
-OOM unload self-deadlock; a real HandlerThread regression proves secure cleanup and reload.
+OOM unload self-deadlock (`skein-gg11.35`); a real HandlerThread regression proves secure cleanup and reload.
 
 Import copy belongs to an application singleton and a generic foreground dataSync service.
 Tokenized admission protects replacement service starts from old completion/destruction;
@@ -78,7 +79,7 @@ identity/classification progress only. `skein-bxk`, `skein-7s1`, `skein-9cg`, `s
 later authorized data-preserving demo update/checks are released to the designated demo session.
 No retrieval policy, embeddings, gold labels, thresholds, owner files or recovery worktrees changed.
 
-## Validation at the verified code SHA
+## Validation at the full-gate source
 
 The final `final-full-gates.log` is BUILD SUCCESSFUL (881 tasks):
 `:core:verify:check :core:verify:ktlintCheck :core:inference:check :core:inference:ktlintCheck
@@ -119,3 +120,20 @@ without changes to the test. Do not interpret that first wrapper exit as a Qwen 
 
 The final documentation commit follows this verified source and is the branch handoff
 head. `inference.json` records its exact full SHA, push result and coordinator requests.
+
+## Requested UI-result identity follow-up
+
+The coordinator subsequently approved `dismissResult(expected: ModelImportState.Done? = null)`
+to protect delayed UI timers from dismissing a newer result. Code commit
+`6a6fd5d8493aa4835f97c762af14345eb4ac1250` changes only that helper and its focused
+regression. The synchronized check uses reference identity, including when the newer
+outcome equals the old outcome; the no-argument call remains compatible. The coordinator
+must pass its captured `Done` object from delayed callbacks and owns the shell changes.
+
+`dismissal-app-final.log` passes full `:app:check`, explicit `:app:ktlintCheck` and both
+opt-in app AndroidTest Kotlin compilations (807 tasks, max-workers=2, owned atomic lease).
+Actual XML in `build/agent-logs/dismissal-xml/` contains 244 tests per flavor, zero
+failures/errors/skips, including the new stale identity case in both. Core/service/native
+source is unchanged from the verified full gate; it was not needlessly rebuilt. The
+current combined test inventory is 1,373 cases across these gates. Runtime acceptance
+remains unchanged and pending.
