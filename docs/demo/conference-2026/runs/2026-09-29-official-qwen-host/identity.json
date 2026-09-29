@@ -1,0 +1,147 @@
+{
+  "schema_version": 1,
+  "status": "HOST_IDENTITY_VERIFIED_CANDIDATE_ONLY",
+  "observed_utc": "2026-09-29T17:59:45.406838+00:00",
+  "model": {
+    "repository": "Qwen/Qwen2.5-1.5B-Instruct-GGUF",
+    "revision": "91cad51170dc346986eccefdc2dd33a9da36ead9",
+    "file": "qwen2.5-1.5b-instruct-q4_k_m.gguf",
+    "url": "https://huggingface.co/Qwen/Qwen2.5-1.5B-Instruct-GGUF/resolve/91cad51170dc346986eccefdc2dd33a9da36ead9/qwen2.5-1.5b-instruct-q4_k_m.gguf",
+    "size_bytes": 1117320736,
+    "sha256": "6a1a2eb6d15622bf3c96857206351ba97e1af16c30d7a74ee38970e434e9407e",
+    "sha256_matches_official_lfs": true,
+    "blake3": "2619da49b802f7bc7e92264edd12e4bf093dd97f42584535ae77dc587ab55362"
+  },
+  "upstream_sources": [
+    {
+      "repository": "Qwen/Qwen2.5-1.5B-Instruct-GGUF",
+      "revision": "91cad51170dc346986eccefdc2dd33a9da36ead9",
+      "declared_license": "apache-2.0",
+      "license_url": "https://huggingface.co/Qwen/Qwen2.5-1.5B-Instruct-GGUF/blob/91cad51170dc346986eccefdc2dd33a9da36ead9/LICENSE"
+    },
+    {
+      "repository": "Qwen/Qwen2.5-1.5B-Instruct",
+      "revision": "989aa7980e4cf806f80c7fef2b1adb7bc71aa306",
+      "declared_license": "apache-2.0",
+      "license_url": "https://huggingface.co/Qwen/Qwen2.5-1.5B-Instruct/blob/989aa7980e4cf806f80c7fef2b1adb7bc71aa306/LICENSE"
+    },
+    {
+      "repository": "Qwen/Qwen2.5-1.5B",
+      "revision": "8faed761d45a263340a0528343f099c05c9a4323",
+      "declared_license": "apache-2.0",
+      "license_url": "https://huggingface.co/Qwen/Qwen2.5-1.5B/blob/8faed761d45a263340a0528343f099c05c9a4323/LICENSE"
+    }
+  ],
+  "license_files": {
+    "all_three_identical": true,
+    "size_bytes": 11343,
+    "git_blob_id": "6634c8cc3133b3848ec74b9f275acaaa1ea618ab",
+    "sha256": "832dd9e00a68dd83b3c3fb9f5588dad7dcf337a0db50f7d9483f310cd292e92e"
+  },
+  "gguf": {
+    "control_entries": [
+      {
+        "id": 128247,
+        "text": "</s>",
+        "type": 1
+      },
+      {
+        "id": 151643,
+        "text": "<|endoftext|>",
+        "type": 3
+      },
+      {
+        "id": 151644,
+        "text": "<|im_start|>",
+        "type": 3
+      },
+      {
+        "id": 151645,
+        "text": "<|im_end|>",
+        "type": 3
+      }
+    ],
+    "declared_token_ids": {
+      "tokenizer.ggml.bos_token_id": {
+        "id": 151643,
+        "text": "<|endoftext|>",
+        "type": 3
+      },
+      "tokenizer.ggml.eos_token_id": {
+        "id": 151645,
+        "text": "<|im_end|>",
+        "type": 3
+      },
+      "tokenizer.ggml.padding_token_id": {
+        "id": 151643,
+        "text": "<|endoftext|>",
+        "type": 3
+      }
+    },
+    "identity": {
+      "general.architecture": "qwen2",
+      "general.file_type": 15,
+      "general.name": "qwen2.5-1.5b-instruct",
+      "tokenizer.ggml.add_bos_token": false,
+      "tokenizer.ggml.model": "gpt2",
+      "tokenizer.ggml.pre": "qwen2"
+    },
+    "metadata": {
+      "general.architecture": "qwen2",
+      "general.file_type": 15,
+      "general.finetune": "qwen2.5-1.5b-instruct",
+      "general.name": "qwen2.5-1.5b-instruct",
+      "general.quantization_version": 2,
+      "general.size_label": "1.8B",
+      "general.type": "model",
+      "general.version": "v0.1",
+      "qwen2.attention.head_count": 12,
+      "qwen2.attention.head_count_kv": 2,
+      "qwen2.attention.layer_norm_rms_epsilon": 9.999999974752427e-07,
+      "qwen2.block_count": 28,
+      "qwen2.context_length": 32768,
+      "qwen2.embedding_length": 1536,
+      "qwen2.feed_forward_length": 8960,
+      "qwen2.rope.freq_base": 1000000.0
+    },
+    "metadata_count": 26,
+    "metadata_end_offset": 5931189,
+    "requested_controls_absent": [
+      "<end_of_turn>",
+      "<eos>",
+      "<start_of_turn>"
+    ],
+    "stored_tensor_elements": 1777088000,
+    "template_bytes": 2509,
+    "template_sha256": "d5495a1e5db0611132a97e46a65dbb64a642a499421228b9c8b93229097fa9a4",
+    "tensor_count": 339,
+    "tensor_type_counts": {
+      "0": 141,
+      "12": 169,
+      "14": 29
+    },
+    "tokenizer_metadata_hash_definition": "Concatenated raw GGUF key/type/value entry bytes for tokenizer.* keys in file order, including template; no tensor/header data.",
+    "tokenizer_metadata_sha256": "bb06817354cb1061f0786473fbf2a14089d63cfc0864a30e19c1ef3305404b12",
+    "version": 3,
+    "vocabulary_size": 151936
+  },
+  "blake3_tool": {
+    "package": "blake3",
+    "version": "1.0.8",
+    "isolated_host_environment": true,
+    "known_vectors": [
+      {
+        "actual": "af1349b9f5f9a1a6a0404dea36dcc9499bcb25c9adc112b7cc9a93cae41f3262",
+        "expected": "af1349b9f5f9a1a6a0404dea36dcc9499bcb25c9adc112b7cc9a93cae41f3262",
+        "input_utf8": ""
+      },
+      {
+        "actual": "6437b3ac38465133ffb63b75273a8db548c558465d79db03fd359c6cd5bd9d85",
+        "expected": "6437b3ac38465133ffb63b75273a8db548c558465d79db03fd359c6cd5bd9d85",
+        "input_utf8": "abc"
+      }
+    ]
+  },
+  "source_identity_sha256": "31072d550e0f04e4a17a9e19feae93d9ff67b29e028c6722f707a083f886b66f",
+  "sanitization": "Selected exact public identity fields; local paths, Python runtime text and implementation-file inventory omitted. Native observations are in native-reference.json."
+}
