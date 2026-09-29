@@ -11,6 +11,30 @@ authorized by the owner's “run it” instruction. Beads remains the task track
 The original handoffs describe historical states; they are not proof that the
 current build or the physical Fold has passed acceptance.
 
+## Resumed verification
+
+The preserved overlay-provenance commit was integrated once as `07d8ec8`.
+The app check, explicit ktlint and both app AndroidTest compilations passed
+(807 Gradle tasks). The opt-in benchmark app check, app/service ktlint, both app
+AndroidTest compilations and the service Dev AndroidTest compilation also passed
+(825 tasks); its app XML contains 226 tests per variant, zero failures or skips.
+These checks complete the previously pending app/benchmark integration work.
+
+The reviewed manual retrieval workflow and helper landed as `d696a09`. They
+require fresh emulator/test state, real passing instrumentation XML, unchanged
+gold and thresholds, and matching prebuilt/installed test APK hashes. Host
+timeouts and failures retain their available artifacts. The combined host suite
+passed 45 tests at that commit; 27 exercise the retrieval runner. These are host
+runner tests, not measured retrieval scores. Source SHA metadata remains
+explicitly host-declared, and full-hybrid retrieval remains **INELIGIBLE**.
+
+Independent native review found no reason to change the proven tokenizer design.
+The ordinary device inventory contains 36 native/service methods. Fake EOS tests
+and the four-token tiny smoke cannot verify real Qwen EOS behavior; its complete
+model hash, template identity and isolated-service answer behavior remain open.
+Full import-service contracts run on the host; ordinary device XML covers
+repository/link primitives, not that complete import workflow.
+
 ## Recovered and implemented
 
 The interrupted shell was preserved before integration. The new navigation shell
