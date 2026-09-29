@@ -801,9 +801,24 @@ public class LlamaCppEngine(
                         if (!published) {
                             val bound = service
                             if (bound != null) {
-                                // Also disposes a cold service whose connection
-                                // arrived only after lock or caller cancellation.
-                                lockControl.launch { runCatching { bound.onSessionLocked(bindingEpoch) } }
+                                val terminalEpoch =
+                                    synchronized(lifecycle) {
+                                        val revoked = revokedEpoch.get()
+                                        if (revoked != EPOCH_NONE && revoked >= bindingEpoch) {
+                                            bindingEpoch.takeIf { it != EPOCH_NONE } ?: revoked
+                                        } else {
+                                            // Caller cancellation is not session revocation.
+                                            // A newer attempt in the same epoch may already
+                                            // use this process; an old locked push would kill it.
+                                            if (bindingId.get() == id) connector.disconnect()
+                                            null
+                                        }
+                                    }
+                                if (terminalEpoch != null) {
+                                    // Only a genuinely revoked epoch may terminate a late
+                                    // connection. The service ignores this after a newer unlock.
+                                    lockControl.launch { runCatching { bound.onSessionLocked(terminalEpoch) } }
+                                }
                             } else {
                                 synchronized(lifecycle) {
                                     if (bindingId.get() == id) connector.disconnect()

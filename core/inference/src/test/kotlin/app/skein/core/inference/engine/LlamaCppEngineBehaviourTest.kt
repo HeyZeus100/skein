@@ -25,6 +25,7 @@ import app.skein.ipc.TransportRules
 import app.skein.testing.SkeinLogCaptureRule
 import com.google.common.truth.Truth.assertThat
 import kotlinx.coroutines.CompletableDeferred
+import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.NonCancellable
 import kotlinx.coroutines.async
@@ -43,7 +44,11 @@ import org.junit.rules.TemporaryFolder
 import org.junit.runner.RunWith
 import org.robolectric.RobolectricTestRunner
 import java.util.concurrent.CountDownLatch
+import java.util.concurrent.Executors
 import java.util.concurrent.TimeUnit
+import java.util.concurrent.atomic.AtomicBoolean
+import java.util.concurrent.atomic.AtomicReference
+import kotlin.coroutines.CoroutineContext
 
 @RunWith(RobolectricTestRunner::class)
 class LlamaCppEngineBehaviourTest {
@@ -596,6 +601,70 @@ class LlamaCppEngineBehaviourTest {
                 assertThat(service.inspects).isEmpty()
             } finally {
                 release.countDown()
+            }
+        }
+
+    @Test
+    fun cancelledHandshakeCannotLockASameEpochReplacementConnection(): Unit =
+        runTest {
+            val executor = Executors.newFixedThreadPool(2)
+            val oldWorkerThread = AtomicReference<Thread?>(null)
+            val oldWorkerFinished = CountDownLatch(1)
+            val dispatcher =
+                object : CoroutineDispatcher() {
+                    override fun dispatch(
+                        context: CoroutineContext,
+                        block: Runnable,
+                    ) {
+                        executor.execute {
+                            try {
+                                block.run()
+                            } finally {
+                                if (Thread.currentThread() === oldWorkerThread.get()) oldWorkerFinished.countDown()
+                            }
+                        }
+                    }
+                }
+            val retryEngine =
+                LlamaCppEngine(connector, fixture.pins, temporaryFolder.newFolder(), { epoch }, io = dispatcher)
+            val entered = CountDownLatch(1)
+            val release = CountDownLatch(1)
+            val firstHandshake = AtomicBoolean(true)
+            service.enforceSessionGate = true
+            service.beforeUnlockApplies = {
+                if (firstHandshake.compareAndSet(true, false)) {
+                    oldWorkerThread.set(Thread.currentThread())
+                    entered.countDown()
+                    check(release.await(5, TimeUnit.SECONDS))
+                }
+            }
+            try {
+                retryEngine.onSessionUnlocked(epoch)
+                val inspection = async(Dispatchers.IO) { retryEngine.inspect(fixture.binding()) }
+                assertThat(entered.await(5, TimeUnit.SECONDS)).isTrue()
+                withContext(Dispatchers.Default) {
+                    withTimeout(500L) {
+                        inspection.cancel()
+                        inspection.join()
+                        // The connector returns the same surviving Binder/process.
+                        retryEngine.load(fixture.model()).getOrThrow()
+                    }
+                }
+                assertThat(connector.connects).isEqualTo(2)
+                assertThat(retryEngine.status.value.state).isEqualTo(EngineState.READY)
+                release.countDown()
+                assertThat(oldWorkerFinished.await(5, TimeUnit.SECONDS)).isTrue()
+                // Drain cleanup queued by the retired worker before asserting absence
+                // of a destructive push; a timing sleep could miss that push.
+                executor.shutdown()
+                assertThat(executor.awaitTermination(5, TimeUnit.SECONDS)).isTrue()
+                assertThat(service.lockedPushes).isEmpty()
+                assertThat(connector.disconnects).isEqualTo(0)
+                assertThat(retryEngine.status.value.state).isEqualTo(EngineState.READY)
+            } finally {
+                release.countDown()
+                executor.shutdown()
+                executor.awaitTermination(5, TimeUnit.SECONDS)
             }
         }
 
