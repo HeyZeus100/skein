@@ -1,0 +1,235 @@
+{
+  "source_sha": "5ae91c238612bdd9b1511b3716d34b4fa5960dd2",
+  "artifacts": [
+    {
+      "id": 11024698367,
+      "name": "rb-build-b",
+      "archive_sha256": "fff84b5eb068ba1f8d46ac4df207127099b0ff20f66457ba785ecb307e35808a",
+      "files": [
+        {
+          "path": "app-foss-release-unsigned.apk",
+          "sha256": "d397160b48a73e9265b65d2ce4ea10ba1315bdd0bbd7f149d74dbaa97027f78f",
+          "bytes": 100673247
+        }
+      ],
+      "contexts": [
+        {
+          "build_id": "b",
+          "abs_path": "/home/runner/work/skein/skein/rb-b/nested/deeper/skein",
+          "commit": "5ae91c238612bdd9b1511b3716d34b4fa5960dd2",
+          "source_date_epoch": "1790675163",
+          "runner": "Linux/X64"
+        }
+      ],
+      "manifests": {
+        "SHA256SUMS-b.txt": [
+          {
+            "path": "app-foss-release-unsigned.apk",
+            "sha256": "d397160b48a73e9265b65d2ce4ea10ba1315bdd0bbd7f149d74dbaa97027f78f",
+            "bytes": 100673247
+          }
+        ]
+      }
+    },
+    {
+      "id": 11025013318,
+      "name": "rb-build-a",
+      "archive_sha256": "37024c94df63add75b0eeb4e94e4758b7318b956e57934323144e840b8d42a16",
+      "files": [
+        {
+          "path": "app-foss-release-unsigned.apk",
+          "sha256": "d397160b48a73e9265b65d2ce4ea10ba1315bdd0bbd7f149d74dbaa97027f78f",
+          "bytes": 100673247
+        }
+      ],
+      "contexts": [
+        {
+          "build_id": "a",
+          "abs_path": "/home/runner/work/skein/skein/rb-a/skein",
+          "commit": "5ae91c238612bdd9b1511b3716d34b4fa5960dd2",
+          "source_date_epoch": "1790675163",
+          "runner": "Linux/X64"
+        }
+      ],
+      "manifests": {
+        "SHA256SUMS-a.txt": [
+          {
+            "path": "app-foss-release-unsigned.apk",
+            "sha256": "d397160b48a73e9265b65d2ce4ea10ba1315bdd0bbd7f149d74dbaa97027f78f",
+            "bytes": 100673247
+          }
+        ]
+      }
+    },
+    {
+      "id": 11025312519,
+      "name": "so-determinism",
+      "archive_sha256": "8be802c81ef3cb9e06b66b768f98fbf6cef296725e4d8c001e444d87da0013fa",
+      "files": [],
+      "manifests": {
+        "SHA256SUMS.txt": [
+          {
+            "path": "run.OmoQYIyh/SHA256SUMS.txt",
+            "sha256": "182b8e4d93ec2fd05485c2972a06932cfa6edf71fa6d24e2e8d7f637dc27b189",
+            "bytes": 501
+          },
+          {
+            "path": "run.OmoQYIyh/build-1.log",
+            "sha256": "3d435cb9942169c8250cb6e4360905656369da78ddf3d247cc75a05ea9d75b91",
+            "bytes": 40177
+          },
+          {
+            "path": "run.OmoQYIyh/build-2.log",
+            "sha256": "a11da691d43eeb1975cfaf0ceff1a0a8b30a3b3b9e242817313d3fee2de6e9c1",
+            "bytes": 38595
+          },
+          {
+            "path": "run.OmoQYIyh/context.txt",
+            "sha256": "d7dd75dce14b8b5a6a10077491a5e28804d458999a4c2a84cd8a1c221d3c1a91",
+            "bytes": 552
+          },
+          {
+            "path": "run.OmoQYIyh/libskein_llama.1.2aefda01.so",
+            "sha256": "2aefda01808f10bf5693ab02d0857e0169dc09550b615896939cb176c032daff",
+            "bytes": 25314032
+          },
+          {
+            "path": "run.OmoQYIyh/libskein_llama.2.2aefda01.so",
+            "sha256": "2aefda01808f10bf5693ab02d0857e0169dc09550b615896939cb176c032daff",
+            "bytes": 25314032
+          },
+          {
+            "path": "run.OmoQYIyh/result.txt",
+            "sha256": "ed163d69a09ddc0ffcbdf126a42d5745a93449fa7a39354788e948b7ac795c04",
+            "bytes": 14
+          },
+          {
+            "path": "run.log",
+            "sha256": "db8de134f1fac62065154d56d01205d1d2642b3585eba04b5b800b03588e5caa",
+            "bytes": 777
+          },
+          {
+            "path": "workflow-context.txt",
+            "sha256": "564562729d6189739ade583411590d11f018fa50e8c08f864e5e1e64b2476076",
+            "bytes": 85
+          }
+        ],
+        "run.OmoQYIyh/SHA256SUMS.txt": [
+          {
+            "path": "context.txt",
+            "sha256": "d7dd75dce14b8b5a6a10077491a5e28804d458999a4c2a84cd8a1c221d3c1a91",
+            "bytes": 552
+          },
+          {
+            "path": "result.txt",
+            "sha256": "ed163d69a09ddc0ffcbdf126a42d5745a93449fa7a39354788e948b7ac795c04",
+            "bytes": 14
+          },
+          {
+            "path": "build-1.log",
+            "sha256": "3d435cb9942169c8250cb6e4360905656369da78ddf3d247cc75a05ea9d75b91",
+            "bytes": 40177
+          },
+          {
+            "path": "build-2.log",
+            "sha256": "a11da691d43eeb1975cfaf0ceff1a0a8b30a3b3b9e242817313d3fee2de6e9c1",
+            "bytes": 38595
+          },
+          {
+            "path": "libskein_llama.1.2aefda01.so",
+            "sha256": "2aefda01808f10bf5693ab02d0857e0169dc09550b615896939cb176c032daff",
+            "bytes": 25314032
+          },
+          {
+            "path": "libskein_llama.2.2aefda01.so",
+            "sha256": "2aefda01808f10bf5693ab02d0857e0169dc09550b615896939cb176c032daff",
+            "bytes": 25314032
+          }
+        ]
+      },
+      "workflow_context": {
+        "source_sha": "5ae91c238612bdd9b1511b3716d34b4fa5960dd2",
+        "run_id": "36551451072",
+        "run_attempt": "1"
+      },
+      "runs": [
+        {
+          "directory": "run.OmoQYIyh",
+          "context": {
+            "source_sha": "5ae91c238612bdd9b1511b3716d34b4fa5960dd2",
+            "source_date_epoch": "1790675163",
+            "abi": "arm64-v8a",
+            "requested_builds": "2",
+            "negative_control": "0",
+            "max_workers": "2"
+          },
+          "context_sha256": "d7dd75dce14b8b5a6a10077491a5e28804d458999a4c2a84cd8a1c221d3c1a91",
+          "result": {
+            "exit_status": "0"
+          },
+          "libraries": [
+            {
+              "path": "run.OmoQYIyh/libskein_llama.1.2aefda01.so",
+              "sha256": "2aefda01808f10bf5693ab02d0857e0169dc09550b615896939cb176c032daff",
+              "bytes": 25314032,
+              "format": "ELF64 little-endian AArch64"
+            },
+            {
+              "path": "run.OmoQYIyh/libskein_llama.2.2aefda01.so",
+              "sha256": "2aefda01808f10bf5693ab02d0857e0169dc09550b615896939cb176c032daff",
+              "bytes": 25314032,
+              "format": "ELF64 little-endian AArch64"
+            }
+          ],
+          "equal_libraries": true,
+          "logs": [
+            {
+              "path": "run.OmoQYIyh/build-1.log",
+              "sha256": "3d435cb9942169c8250cb6e4360905656369da78ddf3d247cc75a05ea9d75b91",
+              "bytes": 40177,
+              "build_successful": true,
+              "build_failed": false,
+              "lines": 499,
+              "native_task_lines": [
+                "> Task :inference-service:externalNativeBuildCleanDevRelease",
+                "> Task :inference-service:externalNativeBuildCleanDevDebug",
+                "> Task :inference-service:externalNativeBuildCleanFossRelease",
+                "> Task :inference-service:externalNativeBuildCleanFossDebug",
+                "> Task :core:vault:externalNativeBuildCleanDevDebug",
+                "> Task :core:vault:externalNativeBuildCleanFossDebug",
+                "> Task :core:vault:externalNativeBuildCleanDevRelease",
+                "> Task :core:vault:externalNativeBuildCleanFossRelease",
+                "> Task :inference-service:configureCMakeRelWithDebInfo[arm64-v8a]",
+                "> Task :inference-service:configureCMakeRelWithDebInfo[arm64-v8a]",
+                "> Task :inference-service:configureCMakeRelWithDebInfo[arm64-v8a]",
+                "> Task :inference-service:buildCMakeRelWithDebInfo[arm64-v8a][skein_llama]"
+              ]
+            },
+            {
+              "path": "run.OmoQYIyh/build-2.log",
+              "sha256": "a11da691d43eeb1975cfaf0ceff1a0a8b30a3b3b9e242817313d3fee2de6e9c1",
+              "bytes": 38595,
+              "build_successful": true,
+              "build_failed": false,
+              "lines": 477,
+              "native_task_lines": [
+                "> Task :inference-service:externalNativeBuildCleanDevRelease",
+                "> Task :inference-service:externalNativeBuildCleanFossRelease",
+                "> Task :inference-service:externalNativeBuildCleanDevDebug",
+                "> Task :inference-service:externalNativeBuildCleanFossDebug",
+                "> Task :core:vault:externalNativeBuildCleanDevDebug",
+                "> Task :core:vault:externalNativeBuildCleanDevRelease",
+                "> Task :core:vault:externalNativeBuildCleanFossDebug",
+                "> Task :core:vault:externalNativeBuildCleanFossRelease",
+                "> Task :inference-service:configureCMakeRelWithDebInfo[arm64-v8a]",
+                "> Task :inference-service:buildCMakeRelWithDebInfo[arm64-v8a][skein_llama]"
+              ]
+            }
+          ]
+        }
+      ],
+      "worker_flag_evidence": "Retained exact script SHA matches source; its only per-build Gradle call includes --max-workers=2. Default Gradle logs do not echo argv."
+    }
+  ],
+  "release_apks_equal": true
+}

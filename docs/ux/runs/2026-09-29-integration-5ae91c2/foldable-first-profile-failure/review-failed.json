@@ -1,0 +1,96 @@
+{
+  "run_id": 36549916881,
+  "source_sha": "4f1b7d334173544feb47190b3e2e7efc4a5e1688",
+  "run_conclusion": "failure",
+  "profile": "pixel_fold",
+  "failed_phase": "SDK catalog exact-profile check before emulator launch",
+  "evidence_scope": "No emulator runtime coverage or candidate release approval.",
+  "workflow_failure_steps": [
+    "SDK tools and exact fold profile",
+    "Review actual XML and artifact hashes"
+  ],
+  "test_execution": "not executed; emulator step skipped",
+  "actual_xml_files": 0,
+  "actual_cases": 0,
+  "expected_cases_missing": 2,
+  "geometry_steps_present": 0,
+  "geometry_steps_required": 5,
+  "apks_present": 0,
+  "runtime_hash_manifest_entries": 0,
+  "catalog": {
+    "pixel_fold_present": false,
+    "pixel_9_pro_fold_present": false,
+    "explicit_generic_alternative_id": "7.6in Foldable",
+    "explicit_generic_alternative_name": "7.6\" Fold-in with outer display",
+    "selected_no_fallback": true
+  },
+  "review": {
+    "schema_version": 1,
+    "lane": "foldable-gate",
+    "source_sha": "4f1b7d334173544feb47190b3e2e7efc4a5e1688",
+    "source_attestation": "host-declared checkout",
+    "apk_attestation": "build outputs; not installed-package attestation",
+    "expected_source_sha": "4f1b7d334173544feb47190b3e2e7efc4a5e1688",
+    "profile": "pixel_fold",
+    "cases": [],
+    "artifacts": {},
+    "errors": [
+      "required testcase absent: ('app.skein.foldable.MainActivityFoldableGateTest', 'gateSurvivesClosedFlatClosedWithoutActivityReplacement')",
+      "required testcase absent: ('app.skein.foldable.MainActivityFoldableGateTest', 'gateSurvivesOuterLandscapeWithoutExposingNavDisplay')",
+      "expected exactly one APK under app/build/outputs/apk/dev/debug, found 0",
+      "expected exactly one APK under app/build/outputs/apk/androidTest/dev/debug, found 0",
+      "missing or malformed runtime geometry JSONL"
+    ],
+    "passed": false,
+    "remaining_gates": [
+      "Pixel 9 Pro Fold profile acceptance",
+      "unlocked A-G",
+      "real IME and focus",
+      "system_server heap privacy",
+      "physical Fold A-G acceptance outside this lane"
+    ]
+  },
+  "artifact": {
+    "path": "/Users/andrewherrera/skein-worktrees/ux-fold-coverage-20260929/build/agent-logs/remote-foldable36549916881/36549916881/artifact-11023798991-foldable-gate-pixel_fold-4f1b7d334173544feb47190b3e2e7efc4a5e1688.zip",
+    "bytes": 2669,
+    "sha256": "3dfe89dd802257b2e2cca62073a32432c5682e9421515362b79f664c18ff7830",
+    "github_digest_match": true,
+    "files": [
+      {
+        "path": "build/foldable-evidence/device-profiles.txt",
+        "bytes": 5265,
+        "sha256": "982e902d7431b7d6279e89062100ad7fcb9b52d5cbef3d7656378e8d033ba518"
+      },
+      {
+        "path": "build/foldable-evidence/requested-profile.txt",
+        "bytes": 11,
+        "sha256": "4a3a126da4b338d7ea8ad5d6a8b0112940d18b6f28433cb166c1b58cc8cf40ec"
+      },
+      {
+        "path": "build/foldable-evidence/review.json",
+        "bytes": 1111,
+        "sha256": "5e11ada785d9f4f1b5cc1191ba2cbddd2838e6aaf12a8aac60b9ff09407de3fe"
+      },
+      {
+        "path": "build/foldable-evidence/source-sha.txt",
+        "bytes": 41,
+        "sha256": "e6d298c67ec10e31968c839b049a6476b94a09823adaddb6df704fef7f419848"
+      },
+      {
+        "path": "build/foldable-evidence/submodule-shas.txt",
+        "bytes": 231,
+        "sha256": "2a90e5c956c86f81a8d96e8e3300f9cedb932e6d798dddf14917b1a1a247582c"
+      }
+    ]
+  },
+  "raw_logs": {
+    "path": "/Users/andrewherrera/skein-worktrees/ux-fold-coverage-20260929/build/agent-logs/remote-foldable36549916881/36549916881/run-logs.zip",
+    "sha256": "451ce1c9de3463f1e894ee12a45338ff8aa753627171c5bc7843eec0f468fef6"
+  },
+  "failure_step_log": {
+    "path": "/Users/andrewherrera/skein-worktrees/ux-fold-coverage-20260929/build/agent-logs/remote-foldable36549916881/36549916881/sdk-profile-failure.log",
+    "sha256": "8c78d6e28601e5bb22b9dcf6b4e5399e6306243e399e90546eb63ebaa69d125a"
+  },
+  "source_selection_note": "Workflow uses find -print -quit for sdkmanager; concrete selected cmdline-tools version was not emitted. Do not infer this catalog describes every installed or current SDK tool version.",
+  "followup": "Coordinator requested explicit generic profile compatibility choice, preserving Pixel9 default and no automatic fallback."
+}

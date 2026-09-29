@@ -1,0 +1,2052 @@
+{
+  "run_id": 36551451241,
+  "run_url": "https://github.com/HeyZeus100/skein/actions/runs/36551451241",
+  "source_sha": "5ae91c238612bdd9b1511b3716d34b4fa5960dd2",
+  "run_conclusion": "success",
+  "required_step_results": {
+    "Verify screenshots": "success",
+    "Goldens untouched by verify": "success",
+    "Baseline size budget": "success"
+  },
+  "source_manifest": {
+    "path": "build/screenshot-verification.json",
+    "sha256": "7b87e5726d651d6956ff1615bea25d1191cd9482d893e091f5d05c81d35a4191",
+    "source_sha": "5ae91c238612bdd9b1511b3716d34b4fa5960dd2",
+    "source_attribution": "host-declared git checkout, not APK attestation",
+    "recorded_files": 705,
+    "verified_files": 705,
+    "inventory_exact": true
+  },
+  "artifacts": [
+    {
+      "path": "/Users/andrewherrera/skein-worktrees/ux-fold-generic-20260929/build/agent-logs/remote-screenshots36551451241/36551451241/artifact-11025207430-ux-verification-records.zip",
+      "bytes": 441985,
+      "sha256": "150e10a582bc1e252f52c695387db4220e1a68576caa64405e9998d74c4f2904",
+      "api_digest": "sha256:150e10a582bc1e252f52c695387db4220e1a68576caa64405e9998d74c4f2904",
+      "api_size": 441985
+    }
+  ],
+  "xml": {
+    "files": 145,
+    "actual": {
+      "tests": 1321,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 80,
+      "passed": 1241
+    },
+    "skips_by_class": {
+      "app.skein.feature.chat.screenshots.ChatScreenshotTest": 8,
+      "app.skein.feature.chat.screenshots.ChatShellScreenshotTest": 4,
+      "app.skein.feature.editor.screenshots.KnowledgeShellScreenshotTest": 18,
+      "app.skein.feature.graph.screenshots.GraphShellScreenshotTest": 12,
+      "app.skein.feature.models.screenshots.ModelsShellScreenshotTest": 12,
+      "app.skein.feature.settings.screenshots.SettingsShellScreenshotTest": 12,
+      "app.skein.feature.shell.screenshots.SkeinNavigationContainerScreenshotTest": 14
+    },
+    "skips": [
+      {
+        "xml": "feature/chat/build/test-results/testDebugUnitTest/TEST-app.skein.feature.chat.screenshots.ChatScreenshotTest.xml",
+        "class": "app.skein.feature.chat.screenshots.ChatScreenshotTest",
+        "name": "chatStreaming[fold-outer-443__light__fs150]",
+        "type": "skipped",
+        "message": "org.junit.AssumptionViolatedException: got: <false>, expected: is <true>"
+      },
+      {
+        "xml": "feature/chat/build/test-results/testDebugUnitTest/TEST-app.skein.feature.chat.screenshots.ChatScreenshotTest.xml",
+        "class": "app.skein.feature.chat.screenshots.ChatScreenshotTest",
+        "name": "chatEmpty[fold-outer-443__light__fs150]",
+        "type": "skipped",
+        "message": "org.junit.AssumptionViolatedException: got: <false>, expected: is <true>"
+      },
+      {
+        "xml": "feature/chat/build/test-results/testDebugUnitTest/TEST-app.skein.feature.chat.screenshots.ChatScreenshotTest.xml",
+        "class": "app.skein.feature.chat.screenshots.ChatScreenshotTest",
+        "name": "chatStreaming[fold-outer-443__dark__fs150]",
+        "type": "skipped",
+        "message": "org.junit.AssumptionViolatedException: got: <false>, expected: is <true>"
+      },
+      {
+        "xml": "feature/chat/build/test-results/testDebugUnitTest/TEST-app.skein.feature.chat.screenshots.ChatScreenshotTest.xml",
+        "class": "app.skein.feature.chat.screenshots.ChatScreenshotTest",
+        "name": "chatEmpty[fold-outer-443__dark__fs150]",
+        "type": "skipped",
+        "message": "org.junit.AssumptionViolatedException: got: <false>, expected: is <true>"
+      },
+      {
+        "xml": "feature/chat/build/test-results/testDebugUnitTest/TEST-app.skein.feature.chat.screenshots.ChatScreenshotTest.xml",
+        "class": "app.skein.feature.chat.screenshots.ChatScreenshotTest",
+        "name": "chatStreaming[fold-outer-524__light__fs150]",
+        "type": "skipped",
+        "message": "org.junit.AssumptionViolatedException: got: <false>, expected: is <true>"
+      },
+      {
+        "xml": "feature/chat/build/test-results/testDebugUnitTest/TEST-app.skein.feature.chat.screenshots.ChatScreenshotTest.xml",
+        "class": "app.skein.feature.chat.screenshots.ChatScreenshotTest",
+        "name": "chatEmpty[fold-outer-524__light__fs150]",
+        "type": "skipped",
+        "message": "org.junit.AssumptionViolatedException: got: <false>, expected: is <true>"
+      },
+      {
+        "xml": "feature/chat/build/test-results/testDebugUnitTest/TEST-app.skein.feature.chat.screenshots.ChatScreenshotTest.xml",
+        "class": "app.skein.feature.chat.screenshots.ChatScreenshotTest",
+        "name": "chatStreaming[fold-outer-524__dark__fs150]",
+        "type": "skipped",
+        "message": "org.junit.AssumptionViolatedException: got: <false>, expected: is <true>"
+      },
+      {
+        "xml": "feature/chat/build/test-results/testDebugUnitTest/TEST-app.skein.feature.chat.screenshots.ChatScreenshotTest.xml",
+        "class": "app.skein.feature.chat.screenshots.ChatScreenshotTest",
+        "name": "chatEmpty[fold-outer-524__dark__fs150]",
+        "type": "skipped",
+        "message": "org.junit.AssumptionViolatedException: got: <false>, expected: is <true>"
+      },
+      {
+        "xml": "feature/chat/build/test-results/testDebugUnitTest/TEST-app.skein.feature.chat.screenshots.ChatShellScreenshotTest.xml",
+        "class": "app.skein.feature.chat.screenshots.ChatShellScreenshotTest",
+        "name": "drawerOpen[fold-inner-1007__light__fs100]",
+        "type": "skipped",
+        "message": "org.junit.AssumptionViolatedException: got: <false>, expected: is <true>"
+      },
+      {
+        "xml": "feature/chat/build/test-results/testDebugUnitTest/TEST-app.skein.feature.chat.screenshots.ChatShellScreenshotTest.xml",
+        "class": "app.skein.feature.chat.screenshots.ChatShellScreenshotTest",
+        "name": "drawerOpen[fold-inner-1007__dark__fs100]",
+        "type": "skipped",
+        "message": "org.junit.AssumptionViolatedException: got: <false>, expected: is <true>"
+      },
+      {
+        "xml": "feature/chat/build/test-results/testDebugUnitTest/TEST-app.skein.feature.chat.screenshots.ChatShellScreenshotTest.xml",
+        "class": "app.skein.feature.chat.screenshots.ChatShellScreenshotTest",
+        "name": "drawerOpen[fold-inner-1007-land__light__fs100]",
+        "type": "skipped",
+        "message": "org.junit.AssumptionViolatedException: got: <false>, expected: is <true>"
+      },
+      {
+        "xml": "feature/chat/build/test-results/testDebugUnitTest/TEST-app.skein.feature.chat.screenshots.ChatShellScreenshotTest.xml",
+        "class": "app.skein.feature.chat.screenshots.ChatShellScreenshotTest",
+        "name": "drawerOpen[fold-inner-1007-land__dark__fs100]",
+        "type": "skipped",
+        "message": "org.junit.AssumptionViolatedException: got: <false>, expected: is <true>"
+      },
+      {
+        "xml": "feature/editor/build/test-results/testDebugUnitTest/TEST-app.skein.feature.editor.screenshots.KnowledgeShellScreenshotTest.xml",
+        "class": "app.skein.feature.editor.screenshots.KnowledgeShellScreenshotTest",
+        "name": "file[phone__light__fs100]",
+        "type": "skipped",
+        "message": "org.junit.AssumptionViolatedException: got: <false>, expected: is <true>"
+      },
+      {
+        "xml": "feature/editor/build/test-results/testDebugUnitTest/TEST-app.skein.feature.editor.screenshots.KnowledgeShellScreenshotTest.xml",
+        "class": "app.skein.feature.editor.screenshots.KnowledgeShellScreenshotTest",
+        "name": "list[phone__light__fs100]",
+        "type": "skipped",
+        "message": "org.junit.AssumptionViolatedException: got: <false>, expected: is <true>"
+      },
+      {
+        "xml": "feature/editor/build/test-results/testDebugUnitTest/TEST-app.skein.feature.editor.screenshots.KnowledgeShellScreenshotTest.xml",
+        "class": "app.skein.feature.editor.screenshots.KnowledgeShellScreenshotTest",
+        "name": "note[phone__light__fs100]",
+        "type": "skipped",
+        "message": "org.junit.AssumptionViolatedException: got: <false>, expected: is <true>"
+      },
+      {
+        "xml": "feature/editor/build/test-results/testDebugUnitTest/TEST-app.skein.feature.editor.screenshots.KnowledgeShellScreenshotTest.xml",
+        "class": "app.skein.feature.editor.screenshots.KnowledgeShellScreenshotTest",
+        "name": "file[phone__dark__fs100]",
+        "type": "skipped",
+        "message": "org.junit.AssumptionViolatedException: got: <false>, expected: is <true>"
+      },
+      {
+        "xml": "feature/editor/build/test-results/testDebugUnitTest/TEST-app.skein.feature.editor.screenshots.KnowledgeShellScreenshotTest.xml",
+        "class": "app.skein.feature.editor.screenshots.KnowledgeShellScreenshotTest",
+        "name": "list[phone__dark__fs100]",
+        "type": "skipped",
+        "message": "org.junit.AssumptionViolatedException: got: <false>, expected: is <true>"
+      },
+      {
+        "xml": "feature/editor/build/test-results/testDebugUnitTest/TEST-app.skein.feature.editor.screenshots.KnowledgeShellScreenshotTest.xml",
+        "class": "app.skein.feature.editor.screenshots.KnowledgeShellScreenshotTest",
+        "name": "note[phone__dark__fs100]",
+        "type": "skipped",
+        "message": "org.junit.AssumptionViolatedException: got: <false>, expected: is <true>"
+      },
+      {
+        "xml": "feature/editor/build/test-results/testDebugUnitTest/TEST-app.skein.feature.editor.screenshots.KnowledgeShellScreenshotTest.xml",
+        "class": "app.skein.feature.editor.screenshots.KnowledgeShellScreenshotTest",
+        "name": "file[fold-outer-443__light__fs100]",
+        "type": "skipped",
+        "message": "org.junit.AssumptionViolatedException: got: <false>, expected: is <true>"
+      },
+      {
+        "xml": "feature/editor/build/test-results/testDebugUnitTest/TEST-app.skein.feature.editor.screenshots.KnowledgeShellScreenshotTest.xml",
+        "class": "app.skein.feature.editor.screenshots.KnowledgeShellScreenshotTest",
+        "name": "list[fold-outer-443__light__fs100]",
+        "type": "skipped",
+        "message": "org.junit.AssumptionViolatedException: got: <false>, expected: is <true>"
+      },
+      {
+        "xml": "feature/editor/build/test-results/testDebugUnitTest/TEST-app.skein.feature.editor.screenshots.KnowledgeShellScreenshotTest.xml",
+        "class": "app.skein.feature.editor.screenshots.KnowledgeShellScreenshotTest",
+        "name": "note[fold-outer-443__light__fs100]",
+        "type": "skipped",
+        "message": "org.junit.AssumptionViolatedException: got: <false>, expected: is <true>"
+      },
+      {
+        "xml": "feature/editor/build/test-results/testDebugUnitTest/TEST-app.skein.feature.editor.screenshots.KnowledgeShellScreenshotTest.xml",
+        "class": "app.skein.feature.editor.screenshots.KnowledgeShellScreenshotTest",
+        "name": "file[fold-outer-443__dark__fs100]",
+        "type": "skipped",
+        "message": "org.junit.AssumptionViolatedException: got: <false>, expected: is <true>"
+      },
+      {
+        "xml": "feature/editor/build/test-results/testDebugUnitTest/TEST-app.skein.feature.editor.screenshots.KnowledgeShellScreenshotTest.xml",
+        "class": "app.skein.feature.editor.screenshots.KnowledgeShellScreenshotTest",
+        "name": "list[fold-outer-443__dark__fs100]",
+        "type": "skipped",
+        "message": "org.junit.AssumptionViolatedException: got: <false>, expected: is <true>"
+      },
+      {
+        "xml": "feature/editor/build/test-results/testDebugUnitTest/TEST-app.skein.feature.editor.screenshots.KnowledgeShellScreenshotTest.xml",
+        "class": "app.skein.feature.editor.screenshots.KnowledgeShellScreenshotTest",
+        "name": "note[fold-outer-443__dark__fs100]",
+        "type": "skipped",
+        "message": "org.junit.AssumptionViolatedException: got: <false>, expected: is <true>"
+      },
+      {
+        "xml": "feature/editor/build/test-results/testDebugUnitTest/TEST-app.skein.feature.editor.screenshots.KnowledgeShellScreenshotTest.xml",
+        "class": "app.skein.feature.editor.screenshots.KnowledgeShellScreenshotTest",
+        "name": "file[fold-inner-1007-land__light__fs100]",
+        "type": "skipped",
+        "message": "org.junit.AssumptionViolatedException: got: <false>, expected: is <true>"
+      },
+      {
+        "xml": "feature/editor/build/test-results/testDebugUnitTest/TEST-app.skein.feature.editor.screenshots.KnowledgeShellScreenshotTest.xml",
+        "class": "app.skein.feature.editor.screenshots.KnowledgeShellScreenshotTest",
+        "name": "list[fold-inner-1007-land__light__fs100]",
+        "type": "skipped",
+        "message": "org.junit.AssumptionViolatedException: got: <false>, expected: is <true>"
+      },
+      {
+        "xml": "feature/editor/build/test-results/testDebugUnitTest/TEST-app.skein.feature.editor.screenshots.KnowledgeShellScreenshotTest.xml",
+        "class": "app.skein.feature.editor.screenshots.KnowledgeShellScreenshotTest",
+        "name": "note[fold-inner-1007-land__light__fs100]",
+        "type": "skipped",
+        "message": "org.junit.AssumptionViolatedException: got: <false>, expected: is <true>"
+      },
+      {
+        "xml": "feature/editor/build/test-results/testDebugUnitTest/TEST-app.skein.feature.editor.screenshots.KnowledgeShellScreenshotTest.xml",
+        "class": "app.skein.feature.editor.screenshots.KnowledgeShellScreenshotTest",
+        "name": "file[fold-inner-1007-land__dark__fs100]",
+        "type": "skipped",
+        "message": "org.junit.AssumptionViolatedException: got: <false>, expected: is <true>"
+      },
+      {
+        "xml": "feature/editor/build/test-results/testDebugUnitTest/TEST-app.skein.feature.editor.screenshots.KnowledgeShellScreenshotTest.xml",
+        "class": "app.skein.feature.editor.screenshots.KnowledgeShellScreenshotTest",
+        "name": "list[fold-inner-1007-land__dark__fs100]",
+        "type": "skipped",
+        "message": "org.junit.AssumptionViolatedException: got: <false>, expected: is <true>"
+      },
+      {
+        "xml": "feature/editor/build/test-results/testDebugUnitTest/TEST-app.skein.feature.editor.screenshots.KnowledgeShellScreenshotTest.xml",
+        "class": "app.skein.feature.editor.screenshots.KnowledgeShellScreenshotTest",
+        "name": "note[fold-inner-1007-land__dark__fs100]",
+        "type": "skipped",
+        "message": "org.junit.AssumptionViolatedException: got: <false>, expected: is <true>"
+      },
+      {
+        "xml": "feature/graph/build/test-results/testDebugUnitTest/TEST-app.skein.feature.graph.screenshots.GraphShellScreenshotTest.xml",
+        "class": "app.skein.feature.graph.screenshots.GraphShellScreenshotTest",
+        "name": "empty[phone__light__fs100]",
+        "type": "skipped",
+        "message": "org.junit.AssumptionViolatedException: got: <false>, expected: is <true>"
+      },
+      {
+        "xml": "feature/graph/build/test-results/testDebugUnitTest/TEST-app.skein.feature.graph.screenshots.GraphShellScreenshotTest.xml",
+        "class": "app.skein.feature.graph.screenshots.GraphShellScreenshotTest",
+        "name": "centred[phone__light__fs100]",
+        "type": "skipped",
+        "message": "org.junit.AssumptionViolatedException: got: <false>, expected: is <true>"
+      },
+      {
+        "xml": "feature/graph/build/test-results/testDebugUnitTest/TEST-app.skein.feature.graph.screenshots.GraphShellScreenshotTest.xml",
+        "class": "app.skein.feature.graph.screenshots.GraphShellScreenshotTest",
+        "name": "empty[phone__dark__fs100]",
+        "type": "skipped",
+        "message": "org.junit.AssumptionViolatedException: got: <false>, expected: is <true>"
+      },
+      {
+        "xml": "feature/graph/build/test-results/testDebugUnitTest/TEST-app.skein.feature.graph.screenshots.GraphShellScreenshotTest.xml",
+        "class": "app.skein.feature.graph.screenshots.GraphShellScreenshotTest",
+        "name": "centred[phone__dark__fs100]",
+        "type": "skipped",
+        "message": "org.junit.AssumptionViolatedException: got: <false>, expected: is <true>"
+      },
+      {
+        "xml": "feature/graph/build/test-results/testDebugUnitTest/TEST-app.skein.feature.graph.screenshots.GraphShellScreenshotTest.xml",
+        "class": "app.skein.feature.graph.screenshots.GraphShellScreenshotTest",
+        "name": "empty[fold-outer-443__light__fs100]",
+        "type": "skipped",
+        "message": "org.junit.AssumptionViolatedException: got: <false>, expected: is <true>"
+      },
+      {
+        "xml": "feature/graph/build/test-results/testDebugUnitTest/TEST-app.skein.feature.graph.screenshots.GraphShellScreenshotTest.xml",
+        "class": "app.skein.feature.graph.screenshots.GraphShellScreenshotTest",
+        "name": "centred[fold-outer-443__light__fs100]",
+        "type": "skipped",
+        "message": "org.junit.AssumptionViolatedException: got: <false>, expected: is <true>"
+      },
+      {
+        "xml": "feature/graph/build/test-results/testDebugUnitTest/TEST-app.skein.feature.graph.screenshots.GraphShellScreenshotTest.xml",
+        "class": "app.skein.feature.graph.screenshots.GraphShellScreenshotTest",
+        "name": "empty[fold-outer-443__dark__fs100]",
+        "type": "skipped",
+        "message": "org.junit.AssumptionViolatedException: got: <false>, expected: is <true>"
+      },
+      {
+        "xml": "feature/graph/build/test-results/testDebugUnitTest/TEST-app.skein.feature.graph.screenshots.GraphShellScreenshotTest.xml",
+        "class": "app.skein.feature.graph.screenshots.GraphShellScreenshotTest",
+        "name": "centred[fold-outer-443__dark__fs100]",
+        "type": "skipped",
+        "message": "org.junit.AssumptionViolatedException: got: <false>, expected: is <true>"
+      },
+      {
+        "xml": "feature/graph/build/test-results/testDebugUnitTest/TEST-app.skein.feature.graph.screenshots.GraphShellScreenshotTest.xml",
+        "class": "app.skein.feature.graph.screenshots.GraphShellScreenshotTest",
+        "name": "empty[fold-inner-1007-land__light__fs100]",
+        "type": "skipped",
+        "message": "org.junit.AssumptionViolatedException: got: <false>, expected: is <true>"
+      },
+      {
+        "xml": "feature/graph/build/test-results/testDebugUnitTest/TEST-app.skein.feature.graph.screenshots.GraphShellScreenshotTest.xml",
+        "class": "app.skein.feature.graph.screenshots.GraphShellScreenshotTest",
+        "name": "centred[fold-inner-1007-land__light__fs100]",
+        "type": "skipped",
+        "message": "org.junit.AssumptionViolatedException: got: <false>, expected: is <true>"
+      },
+      {
+        "xml": "feature/graph/build/test-results/testDebugUnitTest/TEST-app.skein.feature.graph.screenshots.GraphShellScreenshotTest.xml",
+        "class": "app.skein.feature.graph.screenshots.GraphShellScreenshotTest",
+        "name": "empty[fold-inner-1007-land__dark__fs100]",
+        "type": "skipped",
+        "message": "org.junit.AssumptionViolatedException: got: <false>, expected: is <true>"
+      },
+      {
+        "xml": "feature/graph/build/test-results/testDebugUnitTest/TEST-app.skein.feature.graph.screenshots.GraphShellScreenshotTest.xml",
+        "class": "app.skein.feature.graph.screenshots.GraphShellScreenshotTest",
+        "name": "centred[fold-inner-1007-land__dark__fs100]",
+        "type": "skipped",
+        "message": "org.junit.AssumptionViolatedException: got: <false>, expected: is <true>"
+      },
+      {
+        "xml": "feature/models/build/test-results/testDebugUnitTest/TEST-app.skein.feature.models.screenshots.ModelsShellScreenshotTest.xml",
+        "class": "app.skein.feature.models.screenshots.ModelsShellScreenshotTest",
+        "name": "list[phone__light__fs100]",
+        "type": "skipped",
+        "message": "org.junit.AssumptionViolatedException: got: <false>, expected: is <true>"
+      },
+      {
+        "xml": "feature/models/build/test-results/testDebugUnitTest/TEST-app.skein.feature.models.screenshots.ModelsShellScreenshotTest.xml",
+        "class": "app.skein.feature.models.screenshots.ModelsShellScreenshotTest",
+        "name": "details[phone__light__fs100]",
+        "type": "skipped",
+        "message": "org.junit.AssumptionViolatedException: got: <false>, expected: is <true>"
+      },
+      {
+        "xml": "feature/models/build/test-results/testDebugUnitTest/TEST-app.skein.feature.models.screenshots.ModelsShellScreenshotTest.xml",
+        "class": "app.skein.feature.models.screenshots.ModelsShellScreenshotTest",
+        "name": "list[phone__dark__fs100]",
+        "type": "skipped",
+        "message": "org.junit.AssumptionViolatedException: got: <false>, expected: is <true>"
+      },
+      {
+        "xml": "feature/models/build/test-results/testDebugUnitTest/TEST-app.skein.feature.models.screenshots.ModelsShellScreenshotTest.xml",
+        "class": "app.skein.feature.models.screenshots.ModelsShellScreenshotTest",
+        "name": "details[phone__dark__fs100]",
+        "type": "skipped",
+        "message": "org.junit.AssumptionViolatedException: got: <false>, expected: is <true>"
+      },
+      {
+        "xml": "feature/models/build/test-results/testDebugUnitTest/TEST-app.skein.feature.models.screenshots.ModelsShellScreenshotTest.xml",
+        "class": "app.skein.feature.models.screenshots.ModelsShellScreenshotTest",
+        "name": "list[fold-outer-443__light__fs100]",
+        "type": "skipped",
+        "message": "org.junit.AssumptionViolatedException: got: <false>, expected: is <true>"
+      },
+      {
+        "xml": "feature/models/build/test-results/testDebugUnitTest/TEST-app.skein.feature.models.screenshots.ModelsShellScreenshotTest.xml",
+        "class": "app.skein.feature.models.screenshots.ModelsShellScreenshotTest",
+        "name": "details[fold-outer-443__light__fs100]",
+        "type": "skipped",
+        "message": "org.junit.AssumptionViolatedException: got: <false>, expected: is <true>"
+      },
+      {
+        "xml": "feature/models/build/test-results/testDebugUnitTest/TEST-app.skein.feature.models.screenshots.ModelsShellScreenshotTest.xml",
+        "class": "app.skein.feature.models.screenshots.ModelsShellScreenshotTest",
+        "name": "list[fold-outer-443__dark__fs100]",
+        "type": "skipped",
+        "message": "org.junit.AssumptionViolatedException: got: <false>, expected: is <true>"
+      },
+      {
+        "xml": "feature/models/build/test-results/testDebugUnitTest/TEST-app.skein.feature.models.screenshots.ModelsShellScreenshotTest.xml",
+        "class": "app.skein.feature.models.screenshots.ModelsShellScreenshotTest",
+        "name": "details[fold-outer-443__dark__fs100]",
+        "type": "skipped",
+        "message": "org.junit.AssumptionViolatedException: got: <false>, expected: is <true>"
+      },
+      {
+        "xml": "feature/models/build/test-results/testDebugUnitTest/TEST-app.skein.feature.models.screenshots.ModelsShellScreenshotTest.xml",
+        "class": "app.skein.feature.models.screenshots.ModelsShellScreenshotTest",
+        "name": "list[fold-inner-1007-land__light__fs100]",
+        "type": "skipped",
+        "message": "org.junit.AssumptionViolatedException: got: <false>, expected: is <true>"
+      },
+      {
+        "xml": "feature/models/build/test-results/testDebugUnitTest/TEST-app.skein.feature.models.screenshots.ModelsShellScreenshotTest.xml",
+        "class": "app.skein.feature.models.screenshots.ModelsShellScreenshotTest",
+        "name": "details[fold-inner-1007-land__light__fs100]",
+        "type": "skipped",
+        "message": "org.junit.AssumptionViolatedException: got: <false>, expected: is <true>"
+      },
+      {
+        "xml": "feature/models/build/test-results/testDebugUnitTest/TEST-app.skein.feature.models.screenshots.ModelsShellScreenshotTest.xml",
+        "class": "app.skein.feature.models.screenshots.ModelsShellScreenshotTest",
+        "name": "list[fold-inner-1007-land__dark__fs100]",
+        "type": "skipped",
+        "message": "org.junit.AssumptionViolatedException: got: <false>, expected: is <true>"
+      },
+      {
+        "xml": "feature/models/build/test-results/testDebugUnitTest/TEST-app.skein.feature.models.screenshots.ModelsShellScreenshotTest.xml",
+        "class": "app.skein.feature.models.screenshots.ModelsShellScreenshotTest",
+        "name": "details[fold-inner-1007-land__dark__fs100]",
+        "type": "skipped",
+        "message": "org.junit.AssumptionViolatedException: got: <false>, expected: is <true>"
+      },
+      {
+        "xml": "feature/settings/build/test-results/testDebugUnitTest/TEST-app.skein.feature.settings.screenshots.SettingsShellScreenshotTest.xml",
+        "class": "app.skein.feature.settings.screenshots.SettingsShellScreenshotTest",
+        "name": "category[phone__light__fs100]",
+        "type": "skipped",
+        "message": "org.junit.AssumptionViolatedException: got: <false>, expected: is <true>"
+      },
+      {
+        "xml": "feature/settings/build/test-results/testDebugUnitTest/TEST-app.skein.feature.settings.screenshots.SettingsShellScreenshotTest.xml",
+        "class": "app.skein.feature.settings.screenshots.SettingsShellScreenshotTest",
+        "name": "categories[phone__light__fs100]",
+        "type": "skipped",
+        "message": "org.junit.AssumptionViolatedException: got: <false>, expected: is <true>"
+      },
+      {
+        "xml": "feature/settings/build/test-results/testDebugUnitTest/TEST-app.skein.feature.settings.screenshots.SettingsShellScreenshotTest.xml",
+        "class": "app.skein.feature.settings.screenshots.SettingsShellScreenshotTest",
+        "name": "category[phone__dark__fs100]",
+        "type": "skipped",
+        "message": "org.junit.AssumptionViolatedException: got: <false>, expected: is <true>"
+      },
+      {
+        "xml": "feature/settings/build/test-results/testDebugUnitTest/TEST-app.skein.feature.settings.screenshots.SettingsShellScreenshotTest.xml",
+        "class": "app.skein.feature.settings.screenshots.SettingsShellScreenshotTest",
+        "name": "categories[phone__dark__fs100]",
+        "type": "skipped",
+        "message": "org.junit.AssumptionViolatedException: got: <false>, expected: is <true>"
+      },
+      {
+        "xml": "feature/settings/build/test-results/testDebugUnitTest/TEST-app.skein.feature.settings.screenshots.SettingsShellScreenshotTest.xml",
+        "class": "app.skein.feature.settings.screenshots.SettingsShellScreenshotTest",
+        "name": "category[fold-outer-443__light__fs100]",
+        "type": "skipped",
+        "message": "org.junit.AssumptionViolatedException: got: <false>, expected: is <true>"
+      },
+      {
+        "xml": "feature/settings/build/test-results/testDebugUnitTest/TEST-app.skein.feature.settings.screenshots.SettingsShellScreenshotTest.xml",
+        "class": "app.skein.feature.settings.screenshots.SettingsShellScreenshotTest",
+        "name": "categories[fold-outer-443__light__fs100]",
+        "type": "skipped",
+        "message": "org.junit.AssumptionViolatedException: got: <false>, expected: is <true>"
+      },
+      {
+        "xml": "feature/settings/build/test-results/testDebugUnitTest/TEST-app.skein.feature.settings.screenshots.SettingsShellScreenshotTest.xml",
+        "class": "app.skein.feature.settings.screenshots.SettingsShellScreenshotTest",
+        "name": "category[fold-outer-443__dark__fs100]",
+        "type": "skipped",
+        "message": "org.junit.AssumptionViolatedException: got: <false>, expected: is <true>"
+      },
+      {
+        "xml": "feature/settings/build/test-results/testDebugUnitTest/TEST-app.skein.feature.settings.screenshots.SettingsShellScreenshotTest.xml",
+        "class": "app.skein.feature.settings.screenshots.SettingsShellScreenshotTest",
+        "name": "categories[fold-outer-443__dark__fs100]",
+        "type": "skipped",
+        "message": "org.junit.AssumptionViolatedException: got: <false>, expected: is <true>"
+      },
+      {
+        "xml": "feature/settings/build/test-results/testDebugUnitTest/TEST-app.skein.feature.settings.screenshots.SettingsShellScreenshotTest.xml",
+        "class": "app.skein.feature.settings.screenshots.SettingsShellScreenshotTest",
+        "name": "category[fold-inner-1007-land__light__fs100]",
+        "type": "skipped",
+        "message": "org.junit.AssumptionViolatedException: got: <false>, expected: is <true>"
+      },
+      {
+        "xml": "feature/settings/build/test-results/testDebugUnitTest/TEST-app.skein.feature.settings.screenshots.SettingsShellScreenshotTest.xml",
+        "class": "app.skein.feature.settings.screenshots.SettingsShellScreenshotTest",
+        "name": "categories[fold-inner-1007-land__light__fs100]",
+        "type": "skipped",
+        "message": "org.junit.AssumptionViolatedException: got: <false>, expected: is <true>"
+      },
+      {
+        "xml": "feature/settings/build/test-results/testDebugUnitTest/TEST-app.skein.feature.settings.screenshots.SettingsShellScreenshotTest.xml",
+        "class": "app.skein.feature.settings.screenshots.SettingsShellScreenshotTest",
+        "name": "category[fold-inner-1007-land__dark__fs100]",
+        "type": "skipped",
+        "message": "org.junit.AssumptionViolatedException: got: <false>, expected: is <true>"
+      },
+      {
+        "xml": "feature/settings/build/test-results/testDebugUnitTest/TEST-app.skein.feature.settings.screenshots.SettingsShellScreenshotTest.xml",
+        "class": "app.skein.feature.settings.screenshots.SettingsShellScreenshotTest",
+        "name": "categories[fold-inner-1007-land__dark__fs100]",
+        "type": "skipped",
+        "message": "org.junit.AssumptionViolatedException: got: <false>, expected: is <true>"
+      },
+      {
+        "xml": "feature/shell/build/test-results/testDebugUnitTest/TEST-app.skein.feature.shell.screenshots.SkeinNavigationContainerScreenshotTest.xml",
+        "class": "app.skein.feature.shell.screenshots.SkeinNavigationContainerScreenshotTest",
+        "name": "rail[phone__light__fs100]",
+        "type": "skipped",
+        "message": "org.junit.AssumptionViolatedException: got: <false>, expected: is <true>"
+      },
+      {
+        "xml": "feature/shell/build/test-results/testDebugUnitTest/TEST-app.skein.feature.shell.screenshots.SkeinNavigationContainerScreenshotTest.xml",
+        "class": "app.skein.feature.shell.screenshots.SkeinNavigationContainerScreenshotTest",
+        "name": "drawerOpen[phone__light__fs100]",
+        "type": "skipped",
+        "message": "org.junit.AssumptionViolatedException: got: <false>, expected: is <true>"
+      },
+      {
+        "xml": "feature/shell/build/test-results/testDebugUnitTest/TEST-app.skein.feature.shell.screenshots.SkeinNavigationContainerScreenshotTest.xml",
+        "class": "app.skein.feature.shell.screenshots.SkeinNavigationContainerScreenshotTest",
+        "name": "rail[phone__dark__fs100]",
+        "type": "skipped",
+        "message": "org.junit.AssumptionViolatedException: got: <false>, expected: is <true>"
+      },
+      {
+        "xml": "feature/shell/build/test-results/testDebugUnitTest/TEST-app.skein.feature.shell.screenshots.SkeinNavigationContainerScreenshotTest.xml",
+        "class": "app.skein.feature.shell.screenshots.SkeinNavigationContainerScreenshotTest",
+        "name": "drawerOpen[phone__dark__fs100]",
+        "type": "skipped",
+        "message": "org.junit.AssumptionViolatedException: got: <false>, expected: is <true>"
+      },
+      {
+        "xml": "feature/shell/build/test-results/testDebugUnitTest/TEST-app.skein.feature.shell.screenshots.SkeinNavigationContainerScreenshotTest.xml",
+        "class": "app.skein.feature.shell.screenshots.SkeinNavigationContainerScreenshotTest",
+        "name": "rail[fold-outer-443__light__fs100]",
+        "type": "skipped",
+        "message": "org.junit.AssumptionViolatedException: got: <false>, expected: is <true>"
+      },
+      {
+        "xml": "feature/shell/build/test-results/testDebugUnitTest/TEST-app.skein.feature.shell.screenshots.SkeinNavigationContainerScreenshotTest.xml",
+        "class": "app.skein.feature.shell.screenshots.SkeinNavigationContainerScreenshotTest",
+        "name": "rail[fold-outer-443__dark__fs100]",
+        "type": "skipped",
+        "message": "org.junit.AssumptionViolatedException: got: <false>, expected: is <true>"
+      },
+      {
+        "xml": "feature/shell/build/test-results/testDebugUnitTest/TEST-app.skein.feature.shell.screenshots.SkeinNavigationContainerScreenshotTest.xml",
+        "class": "app.skein.feature.shell.screenshots.SkeinNavigationContainerScreenshotTest",
+        "name": "rail[fold-outer-524__light__fs100]",
+        "type": "skipped",
+        "message": "org.junit.AssumptionViolatedException: got: <false>, expected: is <true>"
+      },
+      {
+        "xml": "feature/shell/build/test-results/testDebugUnitTest/TEST-app.skein.feature.shell.screenshots.SkeinNavigationContainerScreenshotTest.xml",
+        "class": "app.skein.feature.shell.screenshots.SkeinNavigationContainerScreenshotTest",
+        "name": "rail[fold-outer-524__dark__fs100]",
+        "type": "skipped",
+        "message": "org.junit.AssumptionViolatedException: got: <false>, expected: is <true>"
+      },
+      {
+        "xml": "feature/shell/build/test-results/testDebugUnitTest/TEST-app.skein.feature.shell.screenshots.SkeinNavigationContainerScreenshotTest.xml",
+        "class": "app.skein.feature.shell.screenshots.SkeinNavigationContainerScreenshotTest",
+        "name": "drawerOpen[fold-inner-1007__light__fs100]",
+        "type": "skipped",
+        "message": "org.junit.AssumptionViolatedException: got: <false>, expected: is <true>"
+      },
+      {
+        "xml": "feature/shell/build/test-results/testDebugUnitTest/TEST-app.skein.feature.shell.screenshots.SkeinNavigationContainerScreenshotTest.xml",
+        "class": "app.skein.feature.shell.screenshots.SkeinNavigationContainerScreenshotTest",
+        "name": "drawerOpen[fold-inner-1007__dark__fs100]",
+        "type": "skipped",
+        "message": "org.junit.AssumptionViolatedException: got: <false>, expected: is <true>"
+      },
+      {
+        "xml": "feature/shell/build/test-results/testDebugUnitTest/TEST-app.skein.feature.shell.screenshots.SkeinNavigationContainerScreenshotTest.xml",
+        "class": "app.skein.feature.shell.screenshots.SkeinNavigationContainerScreenshotTest",
+        "name": "rail[fold-inner-1007-land__light__fs100]",
+        "type": "skipped",
+        "message": "org.junit.AssumptionViolatedException: got: <false>, expected: is <true>"
+      },
+      {
+        "xml": "feature/shell/build/test-results/testDebugUnitTest/TEST-app.skein.feature.shell.screenshots.SkeinNavigationContainerScreenshotTest.xml",
+        "class": "app.skein.feature.shell.screenshots.SkeinNavigationContainerScreenshotTest",
+        "name": "drawerOpen[fold-inner-1007-land__light__fs100]",
+        "type": "skipped",
+        "message": "org.junit.AssumptionViolatedException: got: <false>, expected: is <true>"
+      },
+      {
+        "xml": "feature/shell/build/test-results/testDebugUnitTest/TEST-app.skein.feature.shell.screenshots.SkeinNavigationContainerScreenshotTest.xml",
+        "class": "app.skein.feature.shell.screenshots.SkeinNavigationContainerScreenshotTest",
+        "name": "rail[fold-inner-1007-land__dark__fs100]",
+        "type": "skipped",
+        "message": "org.junit.AssumptionViolatedException: got: <false>, expected: is <true>"
+      },
+      {
+        "xml": "feature/shell/build/test-results/testDebugUnitTest/TEST-app.skein.feature.shell.screenshots.SkeinNavigationContainerScreenshotTest.xml",
+        "class": "app.skein.feature.shell.screenshots.SkeinNavigationContainerScreenshotTest",
+        "name": "drawerOpen[fold-inner-1007-land__dark__fs100]",
+        "type": "skipped",
+        "message": "org.junit.AssumptionViolatedException: got: <false>, expected: is <true>"
+      }
+    ],
+    "failures_and_errors": [],
+    "suites": [
+      {
+        "path": "core/designsystem/build/test-results/testDebugUnitTest/TEST-app.skein.core.designsystem.components.SkeinChipsTest.xml",
+        "counts": {
+          "tests": 5,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0
+        }
+      },
+      {
+        "path": "core/designsystem/build/test-results/testDebugUnitTest/TEST-app.skein.core.designsystem.components.SkeinComponentsBehaviourTest.xml",
+        "counts": {
+          "tests": 17,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0
+        }
+      },
+      {
+        "path": "core/designsystem/build/test-results/testDebugUnitTest/TEST-app.skein.core.designsystem.components.SkeinComponentsScreenshotTest.xml",
+        "counts": {
+          "tests": 56,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0
+        }
+      },
+      {
+        "path": "core/designsystem/build/test-results/testDebugUnitTest/TEST-app.skein.core.designsystem.components.SkeinDestructiveDialogTest.xml",
+        "counts": {
+          "tests": 5,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0
+        }
+      },
+      {
+        "path": "core/designsystem/build/test-results/testDebugUnitTest/TEST-app.skein.core.designsystem.components.SkeinFocusRingTest.xml",
+        "counts": {
+          "tests": 4,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0
+        }
+      },
+      {
+        "path": "core/designsystem/build/test-results/testDebugUnitTest/TEST-app.skein.core.designsystem.components.SkeinInteractionPrimitivesScreenshotTest.xml",
+        "counts": {
+          "tests": 3,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0
+        }
+      },
+      {
+        "path": "core/designsystem/build/test-results/testDebugUnitTest/TEST-app.skein.core.designsystem.components.SkeinKeycapsTest.xml",
+        "counts": {
+          "tests": 3,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0
+        }
+      },
+      {
+        "path": "core/designsystem/build/test-results/testDebugUnitTest/TEST-app.skein.core.designsystem.components.SkeinListRowHingeMenuTest.xml",
+        "counts": {
+          "tests": 1,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0
+        }
+      },
+      {
+        "path": "core/designsystem/build/test-results/testDebugUnitTest/TEST-app.skein.core.designsystem.components.SkeinPartitionedDialogTest.xml",
+        "counts": {
+          "tests": 3,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0
+        }
+      },
+      {
+        "path": "core/designsystem/build/test-results/testDebugUnitTest/TEST-app.skein.core.designsystem.components.SkeinPartitionedMenuTest.xml",
+        "counts": {
+          "tests": 1,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0
+        }
+      },
+      {
+        "path": "core/designsystem/build/test-results/testDebugUnitTest/TEST-app.skein.core.designsystem.components.SkeinRenameDialogTest.xml",
+        "counts": {
+          "tests": 6,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0
+        }
+      },
+      {
+        "path": "core/designsystem/build/test-results/testDebugUnitTest/TEST-app.skein.core.designsystem.components.SkeinSnackbarTest.xml",
+        "counts": {
+          "tests": 2,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0
+        }
+      },
+      {
+        "path": "core/designsystem/build/test-results/testDebugUnitTest/TEST-app.skein.core.designsystem.components.SkeinTooltipTest.xml",
+        "counts": {
+          "tests": 1,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0
+        }
+      },
+      {
+        "path": "core/designsystem/build/test-results/testDebugUnitTest/TEST-app.skein.core.designsystem.components.SkeinWindowPartitionTest.xml",
+        "counts": {
+          "tests": 4,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0
+        }
+      },
+      {
+        "path": "core/designsystem/build/test-results/testDebugUnitTest/TEST-app.skein.core.designsystem.components.screenshots.SkeinOverlaysScreenshotTest.xml",
+        "counts": {
+          "tests": 6,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0
+        }
+      },
+      {
+        "path": "core/designsystem/build/test-results/testDebugUnitTest/TEST-app.skein.core.designsystem.icons.SkeinIconsTest.xml",
+        "counts": {
+          "tests": 1,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0
+        }
+      },
+      {
+        "path": "core/designsystem/build/test-results/testDebugUnitTest/TEST-app.skein.core.designsystem.theme.NoAmbientAnimationTest.xml",
+        "counts": {
+          "tests": 2,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0
+        }
+      },
+      {
+        "path": "core/designsystem/build/test-results/testDebugUnitTest/TEST-app.skein.core.designsystem.theme.NoHardCodedColorTest.xml",
+        "counts": {
+          "tests": 2,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0
+        }
+      },
+      {
+        "path": "core/designsystem/build/test-results/testDebugUnitTest/TEST-app.skein.core.designsystem.theme.NoImplementationStringTest.xml",
+        "counts": {
+          "tests": 2,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0
+        }
+      },
+      {
+        "path": "core/designsystem/build/test-results/testDebugUnitTest/TEST-app.skein.core.designsystem.theme.NoLegacyGlyphIconTest.xml",
+        "counts": {
+          "tests": 2,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0
+        }
+      },
+      {
+        "path": "core/designsystem/build/test-results/testDebugUnitTest/TEST-app.skein.core.designsystem.theme.NoShadowOrGradientTest.xml",
+        "counts": {
+          "tests": 2,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0
+        }
+      },
+      {
+        "path": "core/designsystem/build/test-results/testDebugUnitTest/TEST-app.skein.core.designsystem.theme.SkeinColorContrastTest.xml",
+        "counts": {
+          "tests": 6,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0
+        }
+      },
+      {
+        "path": "core/designsystem/build/test-results/testDebugUnitTest/TEST-app.skein.core.designsystem.theme.SkeinGalleryExtrasScreenshotTest.xml",
+        "counts": {
+          "tests": 4,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0
+        }
+      },
+      {
+        "path": "core/designsystem/build/test-results/testDebugUnitTest/TEST-app.skein.core.designsystem.theme.SkeinMarkdownStyleTest.xml",
+        "counts": {
+          "tests": 9,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0
+        }
+      },
+      {
+        "path": "core/designsystem/build/test-results/testDebugUnitTest/TEST-app.skein.core.designsystem.theme.SkeinMotionTest.xml",
+        "counts": {
+          "tests": 2,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0
+        }
+      },
+      {
+        "path": "core/designsystem/build/test-results/testDebugUnitTest/TEST-app.skein.core.designsystem.theme.SkeinReducedMotionTest.xml",
+        "counts": {
+          "tests": 3,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0
+        }
+      },
+      {
+        "path": "core/designsystem/build/test-results/testDebugUnitTest/TEST-app.skein.core.designsystem.theme.SkeinShapesTest.xml",
+        "counts": {
+          "tests": 4,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0
+        }
+      },
+      {
+        "path": "core/designsystem/build/test-results/testDebugUnitTest/TEST-app.skein.core.designsystem.theme.SkeinSpaceSizeLayoutTest.xml",
+        "counts": {
+          "tests": 4,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0
+        }
+      },
+      {
+        "path": "core/designsystem/build/test-results/testDebugUnitTest/TEST-app.skein.core.designsystem.theme.SkeinTokensGalleryScreenshotTest.xml",
+        "counts": {
+          "tests": 120,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0
+        }
+      },
+      {
+        "path": "core/designsystem/build/test-results/testDebugUnitTest/TEST-app.skein.core.designsystem.theme.SkeinTypographyTest.xml",
+        "counts": {
+          "tests": 5,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0
+        }
+      },
+      {
+        "path": "feature/chat/build/test-results/testDebugUnitTest/TEST-app.skein.feature.chat.AccessibilitySweepSmokeTest.xml",
+        "counts": {
+          "tests": 1,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0
+        }
+      },
+      {
+        "path": "feature/chat/build/test-results/testDebugUnitTest/TEST-app.skein.feature.chat.ChatComposerImeInsetTest.xml",
+        "counts": {
+          "tests": 6,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0
+        }
+      },
+      {
+        "path": "feature/chat/build/test-results/testDebugUnitTest/TEST-app.skein.feature.chat.ChatImportSpaceTest.xml",
+        "counts": {
+          "tests": 2,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0
+        }
+      },
+      {
+        "path": "feature/chat/build/test-results/testDebugUnitTest/TEST-app.skein.feature.chat.ChatInferenceErrorTest.xml",
+        "counts": {
+          "tests": 4,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0
+        }
+      },
+      {
+        "path": "feature/chat/build/test-results/testDebugUnitTest/TEST-app.skein.feature.chat.ChatScreenTest.xml",
+        "counts": {
+          "tests": 5,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0
+        }
+      },
+      {
+        "path": "feature/chat/build/test-results/testDebugUnitTest/TEST-app.skein.feature.chat.ChatTurnControllerTest.xml",
+        "counts": {
+          "tests": 11,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0
+        }
+      },
+      {
+        "path": "feature/chat/build/test-results/testDebugUnitTest/TEST-app.skein.feature.chat.ChatTurnStateTest.xml",
+        "counts": {
+          "tests": 1,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0
+        }
+      },
+      {
+        "path": "feature/chat/build/test-results/testDebugUnitTest/TEST-app.skein.feature.chat.ComposerWikilinkCreateRowTest.xml",
+        "counts": {
+          "tests": 1,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0
+        }
+      },
+      {
+        "path": "feature/chat/build/test-results/testDebugUnitTest/TEST-app.skein.feature.chat.ImportFailureIsReportedTest.xml",
+        "counts": {
+          "tests": 2,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0
+        }
+      },
+      {
+        "path": "feature/chat/build/test-results/testDebugUnitTest/TEST-app.skein.feature.chat.KnowledgeScopeTest.xml",
+        "counts": {
+          "tests": 5,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0
+        }
+      },
+      {
+        "path": "feature/chat/build/test-results/testDebugUnitTest/TEST-app.skein.feature.chat.MessageListAnchoringTest.xml",
+        "counts": {
+          "tests": 1,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0
+        }
+      },
+      {
+        "path": "feature/chat/build/test-results/testDebugUnitTest/TEST-app.skein.feature.chat.OverlayImeInsetTest.xml",
+        "counts": {
+          "tests": 4,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0
+        }
+      },
+      {
+        "path": "feature/chat/build/test-results/testDebugUnitTest/TEST-app.skein.feature.chat.SendPipelineExactBudgetTest.xml",
+        "counts": {
+          "tests": 3,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0
+        }
+      },
+      {
+        "path": "feature/chat/build/test-results/testDebugUnitTest/TEST-app.skein.feature.chat.SendPipelineTest.xml",
+        "counts": {
+          "tests": 7,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0
+        }
+      },
+      {
+        "path": "feature/chat/build/test-results/testDebugUnitTest/TEST-app.skein.feature.chat.TabletopChatControlsTest.xml",
+        "counts": {
+          "tests": 3,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0
+        }
+      },
+      {
+        "path": "feature/chat/build/test-results/testDebugUnitTest/TEST-app.skein.feature.chat.TurnFinalizerTest.xml",
+        "counts": {
+          "tests": 2,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0
+        }
+      },
+      {
+        "path": "feature/chat/build/test-results/testDebugUnitTest/TEST-app.skein.feature.chat.TurnSpaceBindingTest.xml",
+        "counts": {
+          "tests": 3,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0
+        }
+      },
+      {
+        "path": "feature/chat/build/test-results/testDebugUnitTest/TEST-app.skein.feature.chat.drafts.DraftComposerStateTest.xml",
+        "counts": {
+          "tests": 3,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0
+        }
+      },
+      {
+        "path": "feature/chat/build/test-results/testDebugUnitTest/TEST-app.skein.feature.chat.drafts.SessionDraftStoreTest.xml",
+        "counts": {
+          "tests": 16,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0
+        }
+      },
+      {
+        "path": "feature/chat/build/test-results/testDebugUnitTest/TEST-app.skein.feature.chat.entries.ChatEntriesTest.xml",
+        "counts": {
+          "tests": 10,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0
+        }
+      },
+      {
+        "path": "feature/chat/build/test-results/testDebugUnitTest/TEST-app.skein.feature.chat.entries.KnowledgeInspectorTest.xml",
+        "counts": {
+          "tests": 3,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0
+        }
+      },
+      {
+        "path": "feature/chat/build/test-results/testDebugUnitTest/TEST-app.skein.feature.chat.entries.ProvisionalTitleTest.xml",
+        "counts": {
+          "tests": 4,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0
+        }
+      },
+      {
+        "path": "feature/chat/build/test-results/testDebugUnitTest/TEST-app.skein.feature.chat.screenshots.ChatInferenceErrorScreenshotTest.xml",
+        "counts": {
+          "tests": 36,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0
+        }
+      },
+      {
+        "path": "feature/chat/build/test-results/testDebugUnitTest/TEST-app.skein.feature.chat.screenshots.ChatScreenshotTest.xml",
+        "counts": {
+          "tests": 42,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 8
+        }
+      },
+      {
+        "path": "feature/chat/build/test-results/testDebugUnitTest/TEST-app.skein.feature.chat.screenshots.ChatShellScreenshotTest.xml",
+        "counts": {
+          "tests": 56,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 4
+        }
+      },
+      {
+        "path": "feature/chat/build/test-results/testDebugUnitTest/TEST-app.skein.feature.chat.screenshots.KnowledgeInspectorScreenshotTest.xml",
+        "counts": {
+          "tests": 42,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0
+        }
+      },
+      {
+        "path": "feature/editor/build/test-results/testDebugUnitTest/TEST-app.skein.feature.editor.EditorAutosaveTest.xml",
+        "counts": {
+          "tests": 6,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0
+        }
+      },
+      {
+        "path": "feature/editor/build/test-results/testDebugUnitTest/TEST-app.skein.feature.editor.EditorStateFrontmatterTest.xml",
+        "counts": {
+          "tests": 14,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0
+        }
+      },
+      {
+        "path": "feature/editor/build/test-results/testDebugUnitTest/TEST-app.skein.feature.editor.LineModelTest.xml",
+        "counts": {
+          "tests": 4,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0
+        }
+      },
+      {
+        "path": "feature/editor/build/test-results/testDebugUnitTest/TEST-app.skein.feature.editor.LivePreviewTransformerTest.xml",
+        "counts": {
+          "tests": 23,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0
+        }
+      },
+      {
+        "path": "feature/editor/build/test-results/testDebugUnitTest/TEST-app.skein.feature.editor.OffsetMappingTest.xml",
+        "counts": {
+          "tests": 8,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0
+        }
+      },
+      {
+        "path": "feature/editor/build/test-results/testDebugUnitTest/TEST-app.skein.feature.editor.SkeinEditorInteractionTest.xml",
+        "counts": {
+          "tests": 16,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0
+        }
+      },
+      {
+        "path": "feature/editor/build/test-results/testDebugUnitTest/TEST-app.skein.feature.editor.autocomplete.TitleMatcherTest.xml",
+        "counts": {
+          "tests": 7,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0
+        }
+      },
+      {
+        "path": "feature/editor/build/test-results/testDebugUnitTest/TEST-app.skein.feature.editor.autocomplete.WikilinkAutocompleteStateTest.xml",
+        "counts": {
+          "tests": 13,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0
+        }
+      },
+      {
+        "path": "feature/editor/build/test-results/testDebugUnitTest/TEST-app.skein.feature.editor.autocomplete.WikilinkPopupHingeTest.xml",
+        "counts": {
+          "tests": 2,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0
+        }
+      },
+      {
+        "path": "feature/editor/build/test-results/testDebugUnitTest/TEST-app.skein.feature.editor.autocomplete.WikilinkTriggerTest.xml",
+        "counts": {
+          "tests": 12,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0
+        }
+      },
+      {
+        "path": "feature/editor/build/test-results/testDebugUnitTest/TEST-app.skein.feature.editor.backlinks.BacklinksStateTest.xml",
+        "counts": {
+          "tests": 8,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0
+        }
+      },
+      {
+        "path": "feature/editor/build/test-results/testDebugUnitTest/TEST-app.skein.feature.editor.entries.KnowledgeEntriesTest.xml",
+        "counts": {
+          "tests": 4,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0
+        }
+      },
+      {
+        "path": "feature/editor/build/test-results/testDebugUnitTest/TEST-app.skein.feature.editor.entries.KnowledgePreparationTest.xml",
+        "counts": {
+          "tests": 1,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0
+        }
+      },
+      {
+        "path": "feature/editor/build/test-results/testDebugUnitTest/TEST-app.skein.feature.editor.frontmatter.FrontmatterBlockTest.xml",
+        "counts": {
+          "tests": 5,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0
+        }
+      },
+      {
+        "path": "feature/editor/build/test-results/testDebugUnitTest/TEST-app.skein.feature.editor.frontmatter.FrontmatterChipLabelTest.xml",
+        "counts": {
+          "tests": 4,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0
+        }
+      },
+      {
+        "path": "feature/editor/build/test-results/testDebugUnitTest/TEST-app.skein.feature.editor.frontmatter.ProtectedIdGuardTest.xml",
+        "counts": {
+          "tests": 7,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0
+        }
+      },
+      {
+        "path": "feature/editor/build/test-results/testDebugUnitTest/TEST-app.skein.feature.editor.notetab.EditorFlushTest.xml",
+        "counts": {
+          "tests": 3,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0
+        }
+      },
+      {
+        "path": "feature/editor/build/test-results/testDebugUnitTest/TEST-app.skein.feature.editor.notetab.NoteTabEditorContrastTest.xml",
+        "counts": {
+          "tests": 2,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0
+        }
+      },
+      {
+        "path": "feature/editor/build/test-results/testDebugUnitTest/TEST-app.skein.feature.editor.notetab.NoteTabHingeMenuTest.xml",
+        "counts": {
+          "tests": 1,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0
+        }
+      },
+      {
+        "path": "feature/editor/build/test-results/testDebugUnitTest/TEST-app.skein.feature.editor.notetab.NoteTabShareTest.xml",
+        "counts": {
+          "tests": 6,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0
+        }
+      },
+      {
+        "path": "feature/editor/build/test-results/testDebugUnitTest/TEST-app.skein.feature.editor.notetab.NoteTabStateTest.xml",
+        "counts": {
+          "tests": 15,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0
+        }
+      },
+      {
+        "path": "feature/editor/build/test-results/testDebugUnitTest/TEST-app.skein.feature.editor.notetab.NoteTabWikilinkTest.xml",
+        "counts": {
+          "tests": 5,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0
+        }
+      },
+      {
+        "path": "feature/editor/build/test-results/testDebugUnitTest/TEST-app.skein.feature.editor.notetab.NoteTypingTest.xml",
+        "counts": {
+          "tests": 2,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0
+        }
+      },
+      {
+        "path": "feature/editor/build/test-results/testDebugUnitTest/TEST-app.skein.feature.editor.notetab.SaveAsIoErrorIsReportedTest.xml",
+        "counts": {
+          "tests": 2,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0
+        }
+      },
+      {
+        "path": "feature/editor/build/test-results/testDebugUnitTest/TEST-app.skein.feature.editor.notetab.ShareMenuTest.xml",
+        "counts": {
+          "tests": 4,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0
+        }
+      },
+      {
+        "path": "feature/editor/build/test-results/testDebugUnitTest/TEST-app.skein.feature.editor.screenshots.KnowledgeShellScreenshotTest.xml",
+        "counts": {
+          "tests": 30,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 18
+        }
+      },
+      {
+        "path": "feature/editor/build/test-results/testDebugUnitTest/TEST-app.skein.feature.editor.screenshots.NoteTabScreenshotTest.xml",
+        "counts": {
+          "tests": 20,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0
+        }
+      },
+      {
+        "path": "feature/editor/build/test-results/testDebugUnitTest/TEST-app.skein.feature.editor.screenshots.UnresolvedLinkScreenshotTest.xml",
+        "counts": {
+          "tests": 36,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0
+        }
+      },
+      {
+        "path": "feature/editor/build/test-results/testDebugUnitTest/TEST-app.skein.feature.editor.share.SaveAsIntentsTest.xml",
+        "counts": {
+          "tests": 4,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0
+        }
+      },
+      {
+        "path": "feature/editor/build/test-results/testDebugUnitTest/TEST-app.skein.feature.editor.share.ShareIntentsTest.xml",
+        "counts": {
+          "tests": 5,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0
+        }
+      },
+      {
+        "path": "feature/graph/build/test-results/testDebugUnitTest/TEST-app.skein.feature.graph.ForceLayoutTest.xml",
+        "counts": {
+          "tests": 10,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0
+        }
+      },
+      {
+        "path": "feature/graph/build/test-results/testDebugUnitTest/TEST-app.skein.feature.graph.GraphHitTestTest.xml",
+        "counts": {
+          "tests": 7,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0
+        }
+      },
+      {
+        "path": "feature/graph/build/test-results/testDebugUnitTest/TEST-app.skein.feature.graph.GraphSimulationTest.xml",
+        "counts": {
+          "tests": 4,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0
+        }
+      },
+      {
+        "path": "feature/graph/build/test-results/testDebugUnitTest/TEST-app.skein.feature.graph.GraphStateTest.xml",
+        "counts": {
+          "tests": 9,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0
+        }
+      },
+      {
+        "path": "feature/graph/build/test-results/testDebugUnitTest/TEST-app.skein.feature.graph.GraphTransformTest.xml",
+        "counts": {
+          "tests": 8,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0
+        }
+      },
+      {
+        "path": "feature/graph/build/test-results/testDebugUnitTest/TEST-app.skein.feature.graph.GraphViewDragTest.xml",
+        "counts": {
+          "tests": 2,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0
+        }
+      },
+      {
+        "path": "feature/graph/build/test-results/testDebugUnitTest/TEST-app.skein.feature.graph.ImportedLinkNodeTest.xml",
+        "counts": {
+          "tests": 2,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0
+        }
+      },
+      {
+        "path": "feature/graph/build/test-results/testDebugUnitTest/TEST-app.skein.feature.graph.entries.GraphEntriesTest.xml",
+        "counts": {
+          "tests": 2,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0
+        }
+      },
+      {
+        "path": "feature/graph/build/test-results/testDebugUnitTest/TEST-app.skein.feature.graph.screenshots.GraphScreenshotTest.xml",
+        "counts": {
+          "tests": 10,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0
+        }
+      },
+      {
+        "path": "feature/graph/build/test-results/testDebugUnitTest/TEST-app.skein.feature.graph.screenshots.GraphShellScreenshotTest.xml",
+        "counts": {
+          "tests": 20,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 12
+        }
+      },
+      {
+        "path": "feature/models/build/test-results/testDebugUnitTest/TEST-app.skein.feature.models.ModelDeleteConfirmationTest.xml",
+        "counts": {
+          "tests": 2,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0
+        }
+      },
+      {
+        "path": "feature/models/build/test-results/testDebugUnitTest/TEST-app.skein.feature.models.entries.ModelsEntriesTest.xml",
+        "counts": {
+          "tests": 2,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0
+        }
+      },
+      {
+        "path": "feature/models/build/test-results/testDebugUnitTest/TEST-app.skein.feature.models.screenshots.ModelsScreenshotTest.xml",
+        "counts": {
+          "tests": 30,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0
+        }
+      },
+      {
+        "path": "feature/models/build/test-results/testDebugUnitTest/TEST-app.skein.feature.models.screenshots.ModelsShellScreenshotTest.xml",
+        "counts": {
+          "tests": 20,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 12
+        }
+      },
+      {
+        "path": "feature/settings/build/test-results/testDebugUnitTest/TEST-app.skein.feature.settings.AccessibilitySweepSmokeTest.xml",
+        "counts": {
+          "tests": 1,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0
+        }
+      },
+      {
+        "path": "feature/settings/build/test-results/testDebugUnitTest/TEST-app.skein.feature.settings.LicenseGroupingTest.xml",
+        "counts": {
+          "tests": 7,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0
+        }
+      },
+      {
+        "path": "feature/settings/build/test-results/testDebugUnitTest/TEST-app.skein.feature.settings.LicensesRepositoryTest.xml",
+        "counts": {
+          "tests": 6,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0
+        }
+      },
+      {
+        "path": "feature/settings/build/test-results/testDebugUnitTest/TEST-app.skein.feature.settings.RecoveryExportStateTest.xml",
+        "counts": {
+          "tests": 21,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0
+        }
+      },
+      {
+        "path": "feature/settings/build/test-results/testDebugUnitTest/TEST-app.skein.feature.settings.SettingsHingeMenuTest.xml",
+        "counts": {
+          "tests": 1,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0
+        }
+      },
+      {
+        "path": "feature/settings/build/test-results/testDebugUnitTest/TEST-app.skein.feature.settings.SettingsNoDeadControlsTest.xml",
+        "counts": {
+          "tests": 2,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0
+        }
+      },
+      {
+        "path": "feature/settings/build/test-results/testDebugUnitTest/TEST-app.skein.feature.settings.SettingsScreenTest.xml",
+        "counts": {
+          "tests": 2,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0
+        }
+      },
+      {
+        "path": "feature/settings/build/test-results/testDebugUnitTest/TEST-app.skein.feature.settings.SettingsViewModelTest.xml",
+        "counts": {
+          "tests": 16,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0
+        }
+      },
+      {
+        "path": "feature/settings/build/test-results/testDebugUnitTest/TEST-app.skein.feature.settings.ThemeModeRowTest.xml",
+        "counts": {
+          "tests": 1,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0
+        }
+      },
+      {
+        "path": "feature/settings/build/test-results/testDebugUnitTest/TEST-app.skein.feature.settings.entries.SettingsEntriesTest.xml",
+        "counts": {
+          "tests": 2,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0
+        }
+      },
+      {
+        "path": "feature/settings/build/test-results/testDebugUnitTest/TEST-app.skein.feature.settings.screenshots.SettingsScreenshotTest.xml",
+        "counts": {
+          "tests": 10,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0
+        }
+      },
+      {
+        "path": "feature/settings/build/test-results/testDebugUnitTest/TEST-app.skein.feature.settings.screenshots.SettingsShellScreenshotTest.xml",
+        "counts": {
+          "tests": 20,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 12
+        }
+      },
+      {
+        "path": "feature/shell/build/test-results/testDebugUnitTest/TEST-app.skein.feature.shell.SkeinThemeColorsTest.xml",
+        "counts": {
+          "tests": 1,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0
+        }
+      },
+      {
+        "path": "feature/shell/build/test-results/testDebugUnitTest/TEST-app.skein.feature.shell.auth.BiometricUnlockDeviceLockGateTest.xml",
+        "counts": {
+          "tests": 3,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0
+        }
+      },
+      {
+        "path": "feature/shell/build/test-results/testDebugUnitTest/TEST-app.skein.feature.shell.auth.BiometricUnlockOutcomeTest.xml",
+        "counts": {
+          "tests": 17,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0
+        }
+      },
+      {
+        "path": "feature/shell/build/test-results/testDebugUnitTest/TEST-app.skein.feature.shell.auth.BiometricUnlockResetAffordanceTest.xml",
+        "counts": {
+          "tests": 6,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0
+        }
+      },
+      {
+        "path": "feature/shell/build/test-results/testDebugUnitTest/TEST-app.skein.feature.shell.auth.VaultResetConfirmStateTest.xml",
+        "counts": {
+          "tests": 17,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0
+        }
+      },
+      {
+        "path": "feature/shell/build/test-results/testDebugUnitTest/TEST-app.skein.feature.shell.auth.VaultRestoreStateTest.xml",
+        "counts": {
+          "tests": 24,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0
+        }
+      },
+      {
+        "path": "feature/shell/build/test-results/testDebugUnitTest/TEST-app.skein.feature.shell.auth.VaultSetupStateTest.xml",
+        "counts": {
+          "tests": 15,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0
+        }
+      },
+      {
+        "path": "feature/shell/build/test-results/testDebugUnitTest/TEST-app.skein.feature.shell.container.ChatHistoryGroupingTest.xml",
+        "counts": {
+          "tests": 4,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0
+        }
+      },
+      {
+        "path": "feature/shell/build/test-results/testDebugUnitTest/TEST-app.skein.feature.shell.container.SkeinDrawerContentTest.xml",
+        "counts": {
+          "tests": 5,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0
+        }
+      },
+      {
+        "path": "feature/shell/build/test-results/testDebugUnitTest/TEST-app.skein.feature.shell.container.SkeinNavigationContainerAccessibilityTest.xml",
+        "counts": {
+          "tests": 2,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0
+        }
+      },
+      {
+        "path": "feature/shell/build/test-results/testDebugUnitTest/TEST-app.skein.feature.shell.container.SkeinNavigationContainerTest.xml",
+        "counts": {
+          "tests": 3,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0
+        }
+      },
+      {
+        "path": "feature/shell/build/test-results/testDebugUnitTest/TEST-app.skein.feature.shell.container.SkeinTabletopRailTest.xml",
+        "counts": {
+          "tests": 2,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0
+        }
+      },
+      {
+        "path": "feature/shell/build/test-results/testDebugUnitTest/TEST-app.skein.feature.shell.host.EntryInsetsTest.xml",
+        "counts": {
+          "tests": 2,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0
+        }
+      },
+      {
+        "path": "feature/shell/build/test-results/testDebugUnitTest/TEST-app.skein.feature.shell.host.HingeSurfaceIntegrationTest.xml",
+        "counts": {
+          "tests": 6,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0
+        }
+      },
+      {
+        "path": "feature/shell/build/test-results/testDebugUnitTest/TEST-app.skein.feature.shell.host.NavKindsOfTest.xml",
+        "counts": {
+          "tests": 1,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0
+        }
+      },
+      {
+        "path": "feature/shell/build/test-results/testDebugUnitTest/TEST-app.skein.feature.shell.host.ShellLockSequenceTest.xml",
+        "counts": {
+          "tests": 4,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0
+        }
+      },
+      {
+        "path": "feature/shell/build/test-results/testDebugUnitTest/TEST-app.skein.feature.shell.host.SkeinSearchTest.xml",
+        "counts": {
+          "tests": 3,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0
+        }
+      },
+      {
+        "path": "feature/shell/build/test-results/testDebugUnitTest/TEST-app.skein.feature.shell.host.SkeinShellHostTest.xml",
+        "counts": {
+          "tests": 6,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0
+        }
+      },
+      {
+        "path": "feature/shell/build/test-results/testDebugUnitTest/TEST-app.skein.feature.shell.host.VaultResetClearsNavStateTest.xml",
+        "counts": {
+          "tests": 1,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0
+        }
+      },
+      {
+        "path": "feature/shell/build/test-results/testDebugUnitTest/TEST-app.skein.feature.shell.input.SecureTextFieldTest.xml",
+        "counts": {
+          "tests": 2,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0
+        }
+      },
+      {
+        "path": "feature/shell/build/test-results/testDebugUnitTest/TEST-app.skein.feature.shell.layout.SkeinHingeDebugOverlayTest.xml",
+        "counts": {
+          "tests": 1,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0
+        }
+      },
+      {
+        "path": "feature/shell/build/test-results/testDebugUnitTest/TEST-app.skein.feature.shell.layout.SkeinHingeGeometryTest.xml",
+        "counts": {
+          "tests": 4,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0
+        }
+      },
+      {
+        "path": "feature/shell/build/test-results/testDebugUnitTest/TEST-app.skein.feature.shell.layout.SkeinHingeSafeAreaTest.xml",
+        "counts": {
+          "tests": 2,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0
+        }
+      },
+      {
+        "path": "feature/shell/build/test-results/testDebugUnitTest/TEST-app.skein.feature.shell.layout.SkeinLayoutDecisionSurfacesTest.xml",
+        "counts": {
+          "tests": 4,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0
+        }
+      },
+      {
+        "path": "feature/shell/build/test-results/testDebugUnitTest/TEST-app.skein.feature.shell.layout.SkeinLayoutDecisionTest.xml",
+        "counts": {
+          "tests": 38,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0
+        }
+      },
+      {
+        "path": "feature/shell/build/test-results/testDebugUnitTest/TEST-app.skein.feature.shell.screenshots.AuthScreenshotTest.xml",
+        "counts": {
+          "tests": 30,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0
+        }
+      },
+      {
+        "path": "feature/shell/build/test-results/testDebugUnitTest/TEST-app.skein.feature.shell.screenshots.SkeinNavigationContainerScreenshotTest.xml",
+        "counts": {
+          "tests": 20,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 14
+        }
+      },
+      {
+        "path": "feature/shell/build/test-results/testDebugUnitTest/TEST-app.skein.feature.shell.screenshots.SkeinTypeRenderingTest.xml",
+        "counts": {
+          "tests": 3,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0
+        }
+      },
+      {
+        "path": "feature/timeline/build/test-results/testDebugUnitTest/TEST-app.skein.feature.timeline.TimelineFormattingTest.xml",
+        "counts": {
+          "tests": 14,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0
+        }
+      },
+      {
+        "path": "feature/timeline/build/test-results/testDebugUnitTest/TEST-app.skein.feature.timeline.TimelineHingeFilterTest.xml",
+        "counts": {
+          "tests": 1,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0
+        }
+      },
+      {
+        "path": "feature/timeline/build/test-results/testDebugUnitTest/TEST-app.skein.feature.timeline.TimelineHingeMenuTest.xml",
+        "counts": {
+          "tests": 1,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0
+        }
+      },
+      {
+        "path": "feature/timeline/build/test-results/testDebugUnitTest/TEST-app.skein.feature.timeline.TimelineStateTest.xml",
+        "counts": {
+          "tests": 15,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0
+        }
+      },
+      {
+        "path": "feature/timeline/build/test-results/testDebugUnitTest/TEST-app.skein.feature.timeline.screenshots.TimelineScreenshotTest.xml",
+        "counts": {
+          "tests": 20,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0
+        }
+      }
+    ]
+  },
+  "roborazzi": {
+    "actual_types": {
+      "unchanged": 552
+    },
+    "modules": [
+      {
+        "summary": "core/designsystem/build/test-results/roborazzi/debug/results-summary.json",
+        "individual_results": 189,
+        "actual_types": {
+          "unchanged": 189
+        },
+        "exact_summary_matches_individual": true,
+        "declared": {
+          "total": 189,
+          "recorded": 0,
+          "added": 0,
+          "changed": 0,
+          "unchanged": 189
+        }
+      },
+      {
+        "summary": "feature/chat/build/test-results/roborazzi/debug/results-summary.json",
+        "individual_results": 164,
+        "actual_types": {
+          "unchanged": 164
+        },
+        "exact_summary_matches_individual": true,
+        "declared": {
+          "total": 164,
+          "recorded": 0,
+          "added": 0,
+          "changed": 0,
+          "unchanged": 164
+        }
+      },
+      {
+        "summary": "feature/editor/build/test-results/roborazzi/debug/results-summary.json",
+        "individual_results": 68,
+        "actual_types": {
+          "unchanged": 68
+        },
+        "exact_summary_matches_individual": true,
+        "declared": {
+          "total": 68,
+          "recorded": 0,
+          "added": 0,
+          "changed": 0,
+          "unchanged": 68
+        }
+      },
+      {
+        "summary": "feature/graph/build/test-results/roborazzi/debug/results-summary.json",
+        "individual_results": 18,
+        "actual_types": {
+          "unchanged": 18
+        },
+        "exact_summary_matches_individual": true,
+        "declared": {
+          "total": 18,
+          "recorded": 0,
+          "added": 0,
+          "changed": 0,
+          "unchanged": 18
+        }
+      },
+      {
+        "summary": "feature/models/build/test-results/roborazzi/debug/results-summary.json",
+        "individual_results": 38,
+        "actual_types": {
+          "unchanged": 38
+        },
+        "exact_summary_matches_individual": true,
+        "declared": {
+          "total": 38,
+          "recorded": 0,
+          "added": 0,
+          "changed": 0,
+          "unchanged": 38
+        }
+      },
+      {
+        "summary": "feature/settings/build/test-results/roborazzi/debug/results-summary.json",
+        "individual_results": 18,
+        "actual_types": {
+          "unchanged": 18
+        },
+        "exact_summary_matches_individual": true,
+        "declared": {
+          "total": 18,
+          "recorded": 0,
+          "added": 0,
+          "changed": 0,
+          "unchanged": 18
+        }
+      },
+      {
+        "summary": "feature/shell/build/test-results/roborazzi/debug/results-summary.json",
+        "individual_results": 37,
+        "actual_types": {
+          "unchanged": 37
+        },
+        "exact_summary_matches_individual": true,
+        "declared": {
+          "total": 37,
+          "recorded": 0,
+          "added": 0,
+          "changed": 0,
+          "unchanged": 37
+        }
+      },
+      {
+        "summary": "feature/timeline/build/test-results/roborazzi/debug/results-summary.json",
+        "individual_results": 20,
+        "actual_types": {
+          "unchanged": 20
+        },
+        "exact_summary_matches_individual": true,
+        "declared": {
+          "total": 20,
+          "recorded": 0,
+          "added": 0,
+          "changed": 0,
+          "unchanged": 20
+        }
+      }
+    ]
+  },
+  "issues": [],
+  "scope": [
+    "Original552imagegoldens were compared, not rerecorded; actual untouched-gold and budget steps inspected.",
+    "80explicitXMLskips remain unexecuted.",
+    "Host-declared source; no installedAPK or physical/foldable runtime attestation.",
+    "This screenshot result alone does not release a candidate."
+  ]
+}

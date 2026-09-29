@@ -1,0 +1,254 @@
+name: Emulator instrumented tests
+
+# E1.I3: on-demand + nightly instrumented lane. Deliberately NOT run on every
+# push/PR — booting an emulator is slow and this proves device-level behavior
+# (native library loading, SQLite stack) rather than gating every commit.
+#
+# Uses the `dev` flavor, not `foss`: app/build.gradle.kts only builds
+# arm64-v8a native libs for the `foss` flavor (see productFlavors), so a
+# foss build has no x86_64 .so to load on this emulator. `dev` ships both
+# arm64-v8a and x86_64 abiFilters.
+on:
+  workflow_dispatch:
+  schedule:
+    # 06:00 UTC nightly.
+    - cron: "0 6 * * *"
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  emulator:
+    name: Instrumented tests (API 35, x86_64)
+    runs-on: ubuntu-latest
+    # E1.I4 (skein-ca2) raised this from 45: connectedDevDebugAndroidTest
+    # assembles the `dev` flavor, which builds libskein_llama.so for both
+    # arm64-v8a (CPU + Vulkan) and x86_64 (CPU).
+    timeout-minutes: 90
+    steps:
+      - name: Checkout
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v4.3.0
+        with:
+          # E1.I4: libskein_llama.so is built from third_party/ submodules.
+          submodules: true
+
+      - name: Set up JDK 17 (Temurin)
+        uses: actions/setup-java@de7274f081f381c8f8158605e0321c36c376e2e6 # v4.8.0
+        with:
+          distribution: temurin
+          java-version: "17"
+
+      # skein-80p: the tiny GGUF `fetchTestModel` downloads (84 MiB,
+      # tools/models/test-model.lock) doesn't change often -- cache it
+      # keyed on the lock file's own contents, so a bump to the pin busts
+      # the cache automatically and a run that doesn't touch it never
+      # re-downloads. `fetchTestModel` itself still sha256-verifies whatever
+      # this restores before trusting it, so a corrupted or stale cache
+      # entry fails loudly rather than loading silently.
+      - name: Cache the tiny GGUF test model
+        uses: actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0
+        with:
+          path: inference-service/src/androidTest/assets/tiny.gguf
+          key: tiny-gguf-${{ hashFiles('tools/models/test-model.lock') }}
+
+      # skein-qj5l: run 35849974011 failed core/vault's CMake configure on
+      # this lane when a single `file(DOWNLOAD)` of the pinned OpenSSL
+      # tarball came back corrupt (a transient bad download -- the upstream
+      # file itself was unchanged). Cache the tarball outside the checkout,
+      # keyed on the pin's own sha256 (read straight out of
+      # native/sqlite/CMakeLists.txt so the key can never drift from the
+      # pin it names), so a run only re-downloads when the pin changes.
+      # CMake still SHA256-verifies whatever this restores before using it
+      # (native/sqlite/CMakeLists.txt §3) and retries once on a mismatch --
+      # a stale or corrupt cache entry is refetched, never trusted blind.
+      # The `runner` context is not available in job-level `env` (GitHub
+      # rejects the workflow file), so the directory is exported from a step.
+      - name: Choose the OpenSSL tarball cache directory
+        run: echo "SKEIN_OPENSSL_TARBALL_DIR=$RUNNER_TEMP/skein-openssl" >> "$GITHUB_ENV"
+
+      - name: Derive pinned OpenSSL sha256 (cache key)
+        id: openssl-pin
+        run: |
+          sha="$(grep -m1 '^set(OPENSSL_SHA256' native/sqlite/CMakeLists.txt | sed -E 's/.*"([0-9a-f]+)".*/\1/')"
+          if [ -z "$sha" ]; then
+            echo "::error::could not read OPENSSL_SHA256 from native/sqlite/CMakeLists.txt" >&2
+            exit 1
+          fi
+          echo "sha256=$sha" >> "$GITHUB_OUTPUT"
+
+      - name: Cache the pinned OpenSSL tarball
+        uses: actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0
+        with:
+          path: ${{ env.SKEIN_OPENSSL_TARBALL_DIR }}
+          key: openssl-tarball-${{ steps.openssl-pin.outputs.sha256 }}
+
+      # skein-f0sy: ubuntu-latest runners ship a pre-licensed Android SDK
+      # under $ANDROID_HOME (see ci.yml for why android-actions/setup-android
+      # is not used here instead), but its cmdline-tools/platform-tools/
+      # emulator directories are NOT on PATH by default for a plain
+      # (non-login) Actions step shell -- only ANDROID_HOME itself is. Every
+      # `sdkmanager`/`adb`/`avdmanager` call below and inside
+      # reactivecircus/android-emulator-runner (which shells out to all
+      # three) needs them found explicitly. This is the actual root cause CI
+      # run 35720858338 hit: "sdkmanager: command not found" -> the emulator
+      # step then reports "Unable to connect to adb daemon on port 5037"
+      # because adb was never on PATH either, not because the SDK is
+      # missing.
+      - name: Put Android SDK cmdline-tools / platform-tools / emulator on PATH
+        run: |
+          # The runner image keeps it at cmdline-tools/<version>/bin/sdkmanager,
+          # three levels below cmdline-tools (run 35844061827 failed here with
+          # -maxdepth 2); search deeper and show the tree on failure.
+          cmdline_tools_bin="$(find "$ANDROID_HOME/cmdline-tools" -maxdepth 4 -type f -name sdkmanager -exec dirname {} \; | sort -V | tail -n1)"
+          if [ -z "$cmdline_tools_bin" ]; then
+            echo "::error::no sdkmanager found under \$ANDROID_HOME/cmdline-tools ($ANDROID_HOME)" >&2
+            find "$ANDROID_HOME" -maxdepth 4 -name 'sdkmanager*' 2>/dev/null >&2 || true
+            ls -la "$ANDROID_HOME" "$ANDROID_HOME/cmdline-tools" 2>/dev/null >&2 || true
+            exit 1
+          fi
+          echo "sdkmanager at $cmdline_tools_bin"
+          echo "$cmdline_tools_bin" >> "$GITHUB_PATH"
+          echo "$ANDROID_HOME/platform-tools" >> "$GITHUB_PATH"
+          echo "$ANDROID_HOME/emulator" >> "$GITHUB_PATH"
+
+      # Now that sdkmanager is reachable (previous step), install what
+      # android-emulator-runner and connectedDevDebugAndroidTest need:
+      # platform-tools for `adb`, the compile platform AGP resolves against,
+      # and matching build-tools. `--licenses` accepts anything the
+      # pre-licensed image had not already accepted for these specific
+      # packages; `|| true` on the install matches ci.yml's existing
+      # tolerance for a package that turns out to already be present.
+      - name: Install required Android SDK packages
+        run: |
+          yes | sdkmanager --licenses >/dev/null || true
+          sdkmanager "platform-tools" "platforms;android-37" "build-tools;36.0.0" || true
+          command -v adb
+          adb --version
+
+      - name: Set up Gradle
+        uses: gradle/actions/setup-gradle@748248ddd2a24f49513d8f472f81c3a07d4d50e1 # v4.4.4
+
+      - name: Verify actual XML reviewer
+        run: python3 -m unittest discover -s tools/ci -p test_verify_instrumentation.py -v
+
+      # Required for hardware-accelerated emulation on GitHub-hosted Linux
+      # runners.
+      - name: Enable KVM
+        run: |
+          echo 'KERNEL=="kvm", GROUP="kvm", MODE="0666", OPTIONS+="static_node=kvm"' | sudo tee /etc/udev/rules.d/99-kvm4all.rules
+          sudo udevadm control --reload-rules
+          sudo udevadm trigger --name-match=kvm
+
+      # skein-80p: `connectedDevDebugAndroidTest` fans out to every module's
+      # `connected<Variant>AndroidTest` task, which is how
+      # `:inference-service:connectedDevDebugAndroidTest` (LlamaNativeTest --
+      # the tokenize/decode/sample/embed/cancel/handle-leak acceptance
+      # criteria, the golden greedy sequence, and the determinism check) and
+      # `:core:vault:connectedDevDebugAndroidTest` both run here without a
+      # module-qualified task name. `fetchTestModel`
+      # (inference-service/build.gradle.kts) runs automatically first --
+      # it's a dependency of `mergeDevDebugAndroidTestAssets`, which
+      # `assembleDevDebugAndroidTest` (this task's own prerequisite) already
+      # depends on -- downloading and sha256-verifying the tiny GGUF from
+      # tools/models/test-model.lock before the APK that needs it is built.
+      - name: Run instrumented tests
+        uses: reactivecircus/android-emulator-runner@a421e43855164a8197daf9d8d40fe71c6996bb0d # v2.34.0
+        with:
+          api-level: 35
+          arch: x86_64
+          target: google_apis
+          disable-animations: true
+          # skein-f0sy: the keystore tests create auth-bound keys, which the
+          # platform refuses without a secure lock screen ("Secure lock screen
+          # must be enabled to create keys requiring user authentication",
+          # run 35845304360). Set a PIN, keep the screen on and the keyguard
+          # dismissed, then run. Biometric enrolment is not scriptable on the
+          # emulator; tests that need an enrolled biometric must assume-skip.
+          script: |
+            # skein-gg11.14: ORDER MATTERS. The image boots into the swipe
+            # lockscreen (KeyguardTransitionRepository GONE -> LOCKSCREEN at
+            # boot). `wm dismiss-keyguard` can dismiss that, but not a PIN
+            # keyguard - so setting the PIN first left every test of runs
+            # 35923736113 / 35927969853 executing behind the lock screen:
+            # each launched Activity was RESUMED for 3-20 ms and STOPPED,
+            # and only the one test that waits for RESUMED a second time
+            # (LockPolicySettingsRecreationInstrumentedTest) failed.
+            # Dismiss first, then set the PIN (the credential does not
+            # re-lock a dismissed keyguard; stayon keeps it from re-arming),
+            # then verify and, if the keyguard is somehow up, type the PIN.
+            # Run 35930315535 showed the runner hands control over BEFORE the
+            # boot actually completes: the setup lines ran at 22:49:12, the
+            # BOOT_COMPLETED broadcast posted at 22:50:42 and SystemUI raised
+            # the lockscreen at 22:50:37 - after the PIN existed, so it came
+            # up as a PIN keyguard nothing had dismissed. Wait for the real
+            # boot-complete signals first, give SystemUI a moment, THEN
+            # dismiss, THEN set the PIN, then poll: if the keyguard is (still
+            # or again) up, wake, dismiss and type the PIN.
+            for i in $(seq 1 60); do if [ "$(adb shell getprop sys.boot_completed | tr -d '\r')" = "1" ] && [ "$(adb shell getprop dev.bootcomplete | tr -d '\r')" = "1" ] && [ "$(adb shell getprop init.svc.bootanim | tr -d '\r')" = "stopped" ]; then break; fi; sleep 5; done
+            sleep 20
+            adb shell input keyevent KEYCODE_WAKEUP
+            adb shell wm dismiss-keyguard || true
+            adb shell locksettings set-pin 1234
+            adb shell svc power stayon true
+            adb shell settings put system screen_off_timeout 2147483647
+            for i in $(seq 1 24); do if adb shell dumpsys activity activities | grep -q 'mKeyguardShowing=true'; then adb shell input keyevent KEYCODE_WAKEUP; adb shell wm dismiss-keyguard || true; sleep 1; adb shell input text 1234; adb shell input keyevent KEYCODE_ENTER; sleep 2; fi; sleep 5; done
+            adb shell dumpsys activity activities | grep -E 'mKeyguardShowing|mAodShowing' | head -2
+            # skein-gg11.14: the lane uploaded no logcat, so a test that
+            # fails because a foreign activity covers MainActivity (the
+            # STOPPED-after-recreate class of failure) could not be
+            # diagnosed from the artefact. Widen the ring so the whole run
+            # fits, clear it, and dump it next to the reports afterwards
+            # (same line as Gradle below, so the dump runs while the
+            # emulator is still alive and the step still fails on Gradle's
+            # own exit code).
+            adb logcat -G 64M
+            adb logcat -c
+            # --continue: report every module's instrumented results, not
+            # just the first module that fails (run 35846736749 stopped
+            # before :inference-service ran).
+            #
+            # skein-i1dz: AGP 9.4.1's UTP-backed connected-test result
+            # listener only knows PASSED/FAILED/ABORTED, so an `@Ignore`d
+            # on-device test (e.g.
+            # VaultDocumentsProviderGrantInstrumentedTest.grantUriPermission_refusesAUriOutsideTheDeclaredPathPrefixes)
+            # is written to the JUnit XML as an empty, textless `<failure/>`
+            # instead of `<skipped/>` -- a known, long-standing AGP/UTP
+            # defect (see https://issuetracker.google.com/issues/195108337
+            # and https://issuetracker.google.com/issues/238566475), not a
+            # local misconfiguration; there is no orchestrator/runner-arg
+            # config here to begin with. `notAnnotation` is AGP's own
+            # documented command-line override for
+            # testInstrumentationRunnerArguments (no build-file change) and
+            # excludes `@Ignore`d tests from the run entirely, so the lane's
+            # failure count stops being inflated by tests that never ran.
+            # One line on purpose: android-emulator-runner executes each
+            # script line as its own command, so a backslash continuation
+            # reached Gradle as a task named '\' (run 35877745743).
+            ./gradlew --max-workers=2 connectedDevDebugAndroidTest --continue --stacktrace -Pandroid.testInstrumentationRunnerArguments.notAnnotation=org.junit.Ignore; RC=$?; mkdir -p app/build/outputs/androidTest-results/connected/lane-logcat; adb logcat -d -v threadtime > app/build/outputs/androidTest-results/connected/lane-logcat/logcat.txt; exit $RC
+
+      # UTP can exit successfully while serializing an assumption as failure.
+      # Inspect every real testcase even when Gradle or emulator startup fails.
+      - name: Require complete passing ordinary instrumentation XML
+        if: always()
+        run: python3 tools/ci/verify-instrumentation.py --output build/instrumentation-review.json
+
+      - name: Record instrumentation source and artifact hashes
+        if: always()
+        run: python3 tools/ci/verification-manifest.py instrumentation build/instrumentation-verification.json
+
+      - name: Upload instrumented test reports
+        if: always()
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: connected-test-reports
+          path: |
+            build/instrumentation-review.json
+            build/instrumentation-verification.json
+            **/build/reports/androidTests/connected/**
+            **/build/outputs/androidTest-results/connected/**
+          if-no-files-found: ignore
+          retention-days: 14

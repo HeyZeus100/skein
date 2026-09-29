@@ -1,0 +1,159 @@
+{
+  "source_directory": "/Users/andrewherrera/skein-worktrees/ux-hinge-windows-20260929/build/agent-logs/remote-36551469886",
+  "originals_preserved": true,
+  "all_copied_or_decompressed_bytes_match_originals": true,
+  "files": [
+    {
+      "source_path": "connected-test-reports-11025557649.zip",
+      "portable_path": "connected-test-reports-11025557649.zip",
+      "gzip": false,
+      "original_bytes": 1200508,
+      "original_sha256": "edb5dde75920e189897f2fb75c9c92cb0841d6cf3d7bd8281212acce3863b4ef",
+      "portable_sha256": "edb5dde75920e189897f2fb75c9c92cb0841d6cf3d7bd8281212acce3863b4ef"
+    },
+    {
+      "source_path": "evidence-review.json",
+      "portable_path": "evidence-review.json",
+      "gzip": false,
+      "original_bytes": 15452,
+      "original_sha256": "7c199116aff5783d74dd9e91b6d6e404b0a116037df4ee8c3ab1c09a17ad94c1",
+      "portable_sha256": "7c199116aff5783d74dd9e91b6d6e404b0a116037df4ee8c3ab1c09a17ad94c1"
+    },
+    {
+      "source_path": "expected-case-identities.json",
+      "portable_path": "expected-case-identities.json",
+      "gzip": false,
+      "original_bytes": 3993,
+      "original_sha256": "3ff54b6782d50497686fcd8a319b7415ab89d9278b8f2756d34b33b146925eee",
+      "portable_sha256": "3ff54b6782d50497686fcd8a319b7415ab89d9278b8f2756d34b33b146925eee"
+    },
+    {
+      "source_path": "failure-details.json",
+      "portable_path": "failure-details.json",
+      "gzip": false,
+      "original_bytes": 3,
+      "original_sha256": "37517e5f3dc66819f61f5a7bb8ace1921282415f10551d2defa5c3eb0985b570",
+      "portable_sha256": "37517e5f3dc66819f61f5a7bb8ace1921282415f10551d2defa5c3eb0985b570"
+    },
+    {
+      "source_path": "status-final.json",
+      "portable_path": "status-final.json",
+      "gzip": false,
+      "original_bytes": 4215,
+      "original_sha256": "cad80bb80a9b72aab17b8646fee051c1fca87b11a6aa50283b3935f2404f9406",
+      "portable_sha256": "cad80bb80a9b72aab17b8646fee051c1fca87b11a6aa50283b3935f2404f9406"
+    },
+    {
+      "source_path": "artifacts-final.json",
+      "portable_path": "artifacts-final.json",
+      "gzip": false,
+      "original_bytes": 715,
+      "original_sha256": "2b64b0f36af0b90b9cfbb59aee04728d4094b59249a20aa0d2720c7f4bb46897",
+      "portable_sha256": "2b64b0f36af0b90b9cfbb59aee04728d4094b59249a20aa0d2720c7f4bb46897"
+    },
+    {
+      "source_path": "native-repair-at-source.diff",
+      "portable_path": "native-repair-at-source.diff",
+      "gzip": false,
+      "original_bytes": 1344,
+      "original_sha256": "195a3923d536cd81a6957007c4f9815dc980330d6a0bcaf47510a2ab542c54df",
+      "portable_sha256": "195a3923d536cd81a6957007c4f9815dc980330d6a0bcaf47510a2ab542c54df"
+    },
+    {
+      "source_path": "all-actual-testcases.json",
+      "portable_path": "all-actual-testcases.json.gz",
+      "gzip": true,
+      "original_bytes": 94674,
+      "original_sha256": "b89832734ed3ffe5877e74efe19074b67392b46418583984eef99a72ddf26bad",
+      "portable_sha256": "bc303a149d6a7129d68188db213f2c796c2b18965062be06c217de03691e0311"
+    },
+    {
+      "source_path": "target-test-source.json",
+      "portable_path": "target-test-source.json.gz",
+      "gzip": true,
+      "original_bytes": 69445,
+      "original_sha256": "a1dbf8595c90e566f9e94a163e1f344e30f72d05238e20035d8c29a07d945466",
+      "portable_sha256": "01742e3e942954bb2d27f33026db2d9901e7e08e82fa607956a45dfbbb081de8"
+    },
+    {
+      "source_path": "retained-file-hashes.json",
+      "portable_path": "original-retained-file-hashes.json.gz",
+      "gzip": true,
+      "original_bytes": 131867,
+      "original_sha256": "6f02982fcf2f2fa3382327094d7b03366373ad0ee323acddb40c92f8c0b64e04",
+      "portable_sha256": "4c624790f7c4a8ecbf8526f5218ad8438280c05ca72ba51fedd170473b3ac2f5"
+    },
+    {
+      "source_path": "run-36551469886-attempt-1.log",
+      "portable_path": "run-36551469886-attempt-1.log.gz",
+      "gzip": true,
+      "original_bytes": 380582,
+      "original_sha256": "80cc588f076a8b1d7cfcdb076e811920177e2881bf0e9944c6cdec52687bea70",
+      "portable_sha256": "0d17cadcafcd9fa0fde4828a6da2438e9092fb2f672695fdc00da45be41ce4be"
+    },
+    {
+      "source_path": "workflow-at-source.yml",
+      "portable_path": "source/workflow-at-source.yml",
+      "gzip": false,
+      "original_bytes": 14625,
+      "original_sha256": "e2532bf46a4eac80102a4141436b584f7cf786dd47285c91ed82f4a75dc6e5e3",
+      "portable_sha256": "e2532bf46a4eac80102a4141436b584f7cf786dd47285c91ed82f4a75dc6e5e3"
+    },
+    {
+      "source_path": "verification-manifest-at-source.py",
+      "portable_path": "source/verification-manifest-at-source.py",
+      "gzip": false,
+      "original_bytes": 2179,
+      "original_sha256": "4f82a9a6fbbc8ae5e5cb445e614ef8e3becc8f65ca9c71ce3523ac8faab8d9b0",
+      "portable_sha256": "4f82a9a6fbbc8ae5e5cb445e614ef8e3becc8f65ca9c71ce3523ac8faab8d9b0"
+    },
+    {
+      "source_path": "verify-instrumentation-at-source.py",
+      "portable_path": "source/verify-instrumentation-at-source.py",
+      "gzip": false,
+      "original_bytes": 2977,
+      "original_sha256": "5a03d41890aa8538f2f195048e823ee4a181e0cdcdb786fd461c88cc2623e46e",
+      "portable_sha256": "5a03d41890aa8538f2f195048e823ee4a181e0cdcdb786fd461c88cc2623e46e"
+    },
+    {
+      "source_path": "connected-test-reports-11025557649/build/instrumentation-verification.json",
+      "portable_path": "raw/build/instrumentation-verification.json",
+      "gzip": false,
+      "original_bytes": 1931,
+      "original_sha256": "c505c7ca99cdbfbb09ac3ee5ebfd35e8fad07f0f076e781a0f03e14278244d23",
+      "portable_sha256": "c505c7ca99cdbfbb09ac3ee5ebfd35e8fad07f0f076e781a0f03e14278244d23"
+    },
+    {
+      "source_path": "connected-test-reports-11025557649/app/build/outputs/androidTest-results/connected/debug/flavors/dev/TEST-test(AVD) - 15.xml",
+      "portable_path": "raw/app/build/outputs/androidTest-results/connected/debug/flavors/dev/TEST-test(AVD) - 15.xml",
+      "gzip": false,
+      "original_bytes": 8522,
+      "original_sha256": "edf6794f5264c79d21807bfce1f89283d91efe3911f29e24a38936acb9cdf74e",
+      "portable_sha256": "edf6794f5264c79d21807bfce1f89283d91efe3911f29e24a38936acb9cdf74e"
+    },
+    {
+      "source_path": "connected-test-reports-11025557649/build/instrumentation-review.json",
+      "portable_path": "raw/build/instrumentation-review.json",
+      "gzip": false,
+      "original_bytes": 983,
+      "original_sha256": "2b9474372f90097cfeca357a48ca216945294d66ca20c6c4d533a786844e0afb",
+      "portable_sha256": "2b9474372f90097cfeca357a48ca216945294d66ca20c6c4d533a786844e0afb"
+    },
+    {
+      "source_path": "connected-test-reports-11025557649/core/vault/build/outputs/androidTest-results/connected/debug/flavors/dev/TEST-test(AVD) - 15.xml",
+      "portable_path": "raw/core/vault/build/outputs/androidTest-results/connected/debug/flavors/dev/TEST-test(AVD) - 15.xml",
+      "gzip": false,
+      "original_bytes": 38385,
+      "original_sha256": "e962e358383812c4c1be47854dbbf39b0fda285cd4caa8b407674fd3deee9558",
+      "portable_sha256": "e962e358383812c4c1be47854dbbf39b0fda285cd4caa8b407674fd3deee9558"
+    },
+    {
+      "source_path": "connected-test-reports-11025557649/inference-service/build/outputs/androidTest-results/connected/debug/flavors/dev/TEST-test(AVD) - 15.xml",
+      "portable_path": "raw/inference-service/build/outputs/androidTest-results/connected/debug/flavors/dev/TEST-test(AVD) - 15.xml",
+      "gzip": false,
+      "original_bytes": 6497,
+      "original_sha256": "e750db156ea4fe5654cf8c09a65de19c4efcef9400f91b352310bb42fa022adc",
+      "portable_sha256": "e750db156ea4fe5654cf8c09a65de19c4efcef9400f91b352310bb42fa022adc"
+    }
+  ]
+}

@@ -1,0 +1,80 @@
+[
+  {
+    "run_id": 36551451065,
+    "head_sha": "5ae91c238612bdd9b1511b3716d34b4fa5960dd2",
+    "conclusion": "success",
+    "snapshot": "ci-36551451065/snapshot-20260929T095659.925008Z.json",
+    "jobs": [
+      {
+        "id": 109350340943,
+        "name": "Unit tests, lint, assemble (foss debug)",
+        "conclusion": "success"
+      }
+    ],
+    "skips": []
+  },
+  {
+    "run_id": 36551451072,
+    "head_sha": "5ae91c238612bdd9b1511b3716d34b4fa5960dd2",
+    "conclusion": "success",
+    "snapshot": "rb-36551451072/snapshot-20260929T100210.873132Z.json",
+    "jobs": [
+      {
+        "id": 109350340522,
+        "name": "Toolchain manifest and tool self-tests",
+        "conclusion": "success"
+      },
+      {
+        "id": 109350342504,
+        "name": "Verify SQLCipher amalgamation matches pinned source",
+        "conclusion": "skipped"
+      },
+      {
+        "id": 109350414240,
+        "name": "libskein_llama.so is a function of its sources",
+        "conclusion": "success"
+      },
+      {
+        "id": 109350414247,
+        "name": "Build b (unsigned foss release)",
+        "conclusion": "success"
+      },
+      {
+        "id": 109350414365,
+        "name": "Build a (unsigned foss release)",
+        "conclusion": "success"
+      },
+      {
+        "id": 109354444774,
+        "name": "Compare the two builds",
+        "conclusion": "success"
+      }
+    ],
+    "skips": [
+      {
+        "job": "Verify SQLCipher amalgamation matches pinned source",
+        "kind": "job"
+      },
+      {
+        "job": "Compare the two builds",
+        "step": "Classify the difference",
+        "kind": "step"
+      },
+      {
+        "job": "Compare the two builds",
+        "step": "Install diffoscope",
+        "kind": "step"
+      },
+      {
+        "job": "Compare the two builds",
+        "step": "Produce the diffoscope report",
+        "kind": "step"
+      },
+      {
+        "job": "Compare the two builds",
+        "step": "Upload apk-diff",
+        "kind": "step"
+      }
+    ]
+  }
+]

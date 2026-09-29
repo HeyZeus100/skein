@@ -1,0 +1,38 @@
+{
+  "at": "2026-09-29T10:16:13.864352+00:00",
+  "source_sha": "5ae91c238612bdd9b1511b3716d34b4fa5960dd2",
+  "portable_subtree_hashes": [
+    {
+      "directory": "remote-ordinary-36551469886",
+      "files_verified": 22,
+      "sha256sums_sha256": "a6fd91acc439abec0a958068be4b64d87276d487af0c15ef28504d13501ce87d",
+      "scope": "Initial portable copy verified before lossless raw-patch gzip transformation; original index preserved as ORIGINAL-SHA256SUMS."
+    },
+    {
+      "directory": "remote-ci-repro-5ae91c2",
+      "files_verified": 76,
+      "sha256sums_sha256": "bf12ef461d989fa2b9520715c124e0d4931f84a71b563b04f041280d11a03dc8"
+    }
+  ],
+  "external_large_files_independently_rehashed": 9,
+  "ordinary_raw_xml": {
+    "testcases": 281,
+    "passed": 281,
+    "skipped": 0,
+    "failures": 0,
+    "errors": 0,
+    "source_manifest_entries_rehashed": 4,
+    "critical_passed": 6,
+    "prior_failures_now_passed": 19
+  },
+  "ci_raw_xml": {
+    "testcases": 5167,
+    "passed": 5079,
+    "skipped": 88,
+    "failures": 0,
+    "errors": 0,
+    "new_surface_guard_cases_passed": 2
+  },
+  "scope": "Root independent actual-byte review; installed Fold bytes and answer quality belong to separate demo handback.",
+  "publication_compression": "Two copied raw log/patch files compressed losslessly after diff whitespace checks; original owning-worktree bytes unchanged. See publication-lossless-copies.json."
+}

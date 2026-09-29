@@ -1,0 +1,41 @@
+{
+  "source": "5ae91c238612bdd9b1511b3716d34b4fa5960dd2",
+  "results": [
+    {
+      "guard": "native-opt-level.sh",
+      "exit": 0,
+      "log": "/Users/andrewherrera/skein-worktrees/ux-integration-20260929/build/agent-logs/candidate-5ae91c2-native-opt-level.sh.log",
+      "sha256": "cf6b54e626a020255264d7c501627ac5cd4aa7fadacf47c002b4ebd319a06ad1"
+    },
+    {
+      "guard": "elf-alignment.sh",
+      "exit": 0,
+      "log": "/Users/andrewherrera/skein-worktrees/ux-integration-20260929/build/agent-logs/candidate-5ae91c2-elf-alignment.sh.log",
+      "sha256": "0978571f394fa72381850954c4d4a05586efa40a124c3ebe31edf5488683ed58"
+    },
+    {
+      "guard": "jni-symbols.sh",
+      "exit": 0,
+      "log": "/Users/andrewherrera/skein-worktrees/ux-integration-20260929/build/agent-logs/candidate-5ae91c2-jni-symbols.sh.log",
+      "sha256": "682157c7146c05807b5f9d9fb42fbb5eb9533f65355ce91943fb5e0e88602c81"
+    },
+    {
+      "guard": "sqlite-jni-symbols.sh",
+      "exit": 0,
+      "log": "/Users/andrewherrera/skein-worktrees/ux-integration-20260929/build/agent-logs/candidate-5ae91c2-sqlite-jni-symbols.sh.log",
+      "sha256": "e68dba3958a041de508a6b6ec72288db5ec7acd0bf0dbe409fd6c119efb3fb0f"
+    },
+    {
+      "guard": "no-content-logging.sh",
+      "exit": 0,
+      "log": "/Users/andrewherrera/skein-worktrees/ux-integration-20260929/build/agent-logs/candidate-5ae91c2-no-content-logging.sh.log",
+      "sha256": "a884490962fe26606c45aeba593ebf88e329ccd9826fab3967004a5a95706307"
+    },
+    {
+      "guard": "manifest-audit.sh",
+      "exit": 1,
+      "log": "/Users/andrewherrera/skein-worktrees/ux-integration-20260929/build/agent-logs/candidate-5ae91c2-manifest-audit.sh.log",
+      "sha256": "224cd4a0659269753be16198fff1afa436edb32c47cb93ade43d6709bc48ef4d"
+    }
+  ]
+}

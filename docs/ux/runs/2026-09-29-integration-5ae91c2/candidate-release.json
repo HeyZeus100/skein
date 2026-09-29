@@ -1,0 +1,175 @@
+{
+  "id": "candidate-5ae91c2-release-20260929",
+  "status": "RELEASED",
+  "released_at": "2026-09-29T10:10:33.228798+00:00",
+  "source_sha": "5ae91c238612bdd9b1511b3716d34b4fa5960dd2",
+  "source_attribution": "Host-declared clean build checkout; not embedded APK attestation. Measured runtime CI APKs are same source but different build/signing artifacts.",
+  "physical_runner": "conference-demo session /root/fts_verification only",
+  "authorization": "Owner released HOLD for data-preserving update and demo checks; deadline 2026-09-29T17:00:00-07:00. No formal M0 matrix.",
+  "ordinary": {
+    "source_sha": "5ae91c238612bdd9b1511b3716d34b4fa5960dd2",
+    "source_provenance": "host-declared clean checkout; not embedded APK attestation",
+    "status": "RELEASED_FOR_DATA_PRESERVING_UPDATE_AND_SCOPED_DEMO_CHECKS",
+    "artifacts": [
+      {
+        "path": "/Users/andrewherrera/skein-worktrees/ux-integration-20260929/build/agent-logs/candidate-5ae91c2-ordinary/app-foss-debug.apk",
+        "bytes": 125280302,
+        "sha256": "1f83b71c5fe60a6dc26fcac7a4c75b49fbf009b6e8c9d972b2176c18081c1323",
+        "package": "app.skein",
+        "version_code": 1,
+        "version_name": "0.1.0",
+        "certificate_sha256": "75bcae7118a4635dd0fb153438e5bdbfd7aab5d467b3a0c2bb210eefde5becf9",
+        "signer_count": 1,
+        "libraries": {
+          "lib/arm64-v8a/libandroidx.graphics.path.so": "41e9a793c43a0f4fddb19e33f346bace464f30f888ba7b9eaf96294ea115bfb6",
+          "lib/arm64-v8a/libdatastore_shared_counter.so": "178f89a2c6c9234ddf980dd4cd1f3616186a46b2b932aafa6707abd04c5fd76a",
+          "lib/arm64-v8a/libonnxruntime.so": "850f897a50d369b3305582244210f5649be9cfeb193c5807fba14146301616c7",
+          "lib/arm64-v8a/libonnxruntime4j_jni.so": "f86f2a5f56b907e4a25d67febc422ec13f5a265d36665f50e2808de6e4a515b6",
+          "lib/arm64-v8a/libskein_llama.so": "b1ff614714a8973d9359fba0034482534c9a65ba8e28d1cab995ed428bf89ee3",
+          "lib/arm64-v8a/libskein_sqlite.so": "00a04ba8fda9b13cbe6211a9f04c66fe1f8233724e7cbef5d987a08156df328e",
+          "lib/arm64-v8a/libskein_sqlite_jni.so": "54e60807eedc5cd2fed7789033cd3cb625b84abcf0c4df57a71b4f6c4725f262"
+        }
+      }
+    ]
+  },
+  "optin": {
+    "source_sha": "5ae91c238612bdd9b1511b3716d34b4fa5960dd2",
+    "source_provenance": "host-declared clean checkout; not embedded APK attestation",
+    "status": "RELEASED_FOR_DATA_PRESERVING_UPDATE_AND_SCOPED_DEMO_CHECKS",
+    "artifacts": [
+      {
+        "path": "/Users/andrewherrera/skein-worktrees/ux-integration-20260929/build/agent-logs/candidate-5ae91c2-optin/app-foss-debug.apk",
+        "bytes": 125280302,
+        "sha256": "1f83b71c5fe60a6dc26fcac7a4c75b49fbf009b6e8c9d972b2176c18081c1323",
+        "package": "app.skein",
+        "version_code": 1,
+        "version_name": "0.1.0",
+        "certificate_sha256": "75bcae7118a4635dd0fb153438e5bdbfd7aab5d467b3a0c2bb210eefde5becf9",
+        "signer_count": 1,
+        "libraries": {
+          "lib/arm64-v8a/libandroidx.graphics.path.so": "41e9a793c43a0f4fddb19e33f346bace464f30f888ba7b9eaf96294ea115bfb6",
+          "lib/arm64-v8a/libdatastore_shared_counter.so": "178f89a2c6c9234ddf980dd4cd1f3616186a46b2b932aafa6707abd04c5fd76a",
+          "lib/arm64-v8a/libonnxruntime.so": "850f897a50d369b3305582244210f5649be9cfeb193c5807fba14146301616c7",
+          "lib/arm64-v8a/libonnxruntime4j_jni.so": "f86f2a5f56b907e4a25d67febc422ec13f5a265d36665f50e2808de6e4a515b6",
+          "lib/arm64-v8a/libskein_llama.so": "b1ff614714a8973d9359fba0034482534c9a65ba8e28d1cab995ed428bf89ee3",
+          "lib/arm64-v8a/libskein_sqlite.so": "00a04ba8fda9b13cbe6211a9f04c66fe1f8233724e7cbef5d987a08156df328e",
+          "lib/arm64-v8a/libskein_sqlite_jni.so": "54e60807eedc5cd2fed7789033cd3cb625b84abcf0c4df57a71b4f6c4725f262"
+        }
+      },
+      {
+        "path": "/Users/andrewherrera/skein-worktrees/ux-integration-20260929/build/agent-logs/candidate-5ae91c2-optin/app-foss-debug-androidTest.apk",
+        "bytes": 91107428,
+        "sha256": "889db458324339f2f24da8b190a8457192a719df4bb088a52c04bf298e992f44",
+        "package": "app.skein.test",
+        "version_code": null,
+        "version_name": "",
+        "certificate_sha256": "75bcae7118a4635dd0fb153438e5bdbfd7aab5d467b3a0c2bb210eefde5becf9",
+        "signer_count": 1,
+        "libraries": {}
+      },
+      {
+        "path": "/Users/andrewherrera/skein-worktrees/ux-integration-20260929/build/agent-logs/candidate-5ae91c2-optin/inference-service-foss-debug-androidTest.apk",
+        "bytes": 130230126,
+        "sha256": "bb1b2f496f6c831ced00f20d9dd08d6f571d87fcb48040dfba17f4a7c561f342",
+        "package": "app.skein.inference.service.test",
+        "version_code": null,
+        "version_name": "",
+        "certificate_sha256": "75bcae7118a4635dd0fb153438e5bdbfd7aab5d467b3a0c2bb210eefde5becf9",
+        "signer_count": 1,
+        "libraries": {
+          "lib/arm64-v8a/libskein_llama.so": "b1ff614714a8973d9359fba0034482534c9a65ba8e28d1cab995ed428bf89ee3"
+        }
+      }
+    ],
+    "app_matches_ordinary_byte_for_byte": true
+  },
+  "ordinary_runtime_evidence": {
+    "status": "PASS_ACTUAL_XML",
+    "run": 36551469886,
+    "source": "5ae91c238612bdd9b1511b3716d34b4fa5960dd2",
+    "passed": 281,
+    "failed": 0,
+    "errors": 0,
+    "skipped": 0,
+    "xml_files": 3,
+    "verified_manifest_entries": 4,
+    "six_critical_cases": "all pass",
+    "prior_19_failures": "all pass",
+    "review_path": "/Users/andrewherrera/skein-worktrees/ux-hinge-windows-20260929/build/agent-logs/remote-36551469886/evidence-review.json",
+    "review_sha256": "7c199116aff5783d74dd9e91b6d6e404b0a116037df4ee8c3ab1c09a17ad94c1",
+    "artifact_zip_sha256": "edb5dde75920e189897f2fb75c9c92cb0841d6cf3d7bd8281212acce3863b4ef",
+    "root_independent_reparse_at": "2026-09-29T10:10:33.228798+00:00"
+  },
+  "other_gates": {
+    "ci_review": {
+      "status": "PASS_ACTUAL_ARTIFACTS",
+      "passed": 5079,
+      "skipped": 88,
+      "failed": 0,
+      "errors": 0,
+      "verified_xml_entries": 494,
+      "run": 36551451065,
+      "source": "5ae91c238612bdd9b1511b3716d34b4fa5960dd2"
+    },
+    "screenshots_review": {
+      "status": "PASS_ACTUAL_XML_JSON_HASHES",
+      "xml_passed": 1241,
+      "xml_skipped": 80,
+      "failures": 0,
+      "errors": 0,
+      "unchanged": 552,
+      "changed_added_recorded": 0,
+      "hash_entries_verified": 705,
+      "artifact": 11025207430,
+      "artifact_sha256": "150e10a582bc1e252f52c695387db4220e1a68576caa64405e9998d74c4f2904",
+      "scope": "hostscreenshots; no physical keyboard/posture acceptance"
+    },
+    "reproducible_review": {
+      "status": "PASS_ACTUAL_NATIVE_AND_APK_BYTES",
+      "run": 36551451072,
+      "source": "5ae91c238612bdd9b1511b3716d34b4fa5960dd2",
+      "apk_sha256": "d397160b48a73e9265b65d2ce4ea10ba1315bdd0bbd7f149d74dbaa97027f78f",
+      "apk_bytes_each": 100673247,
+      "entries_each": 826,
+      "native_sha256": "2aefda01808f10bf5693ab02d0857e0169dc09550b615896939cb176c032daff",
+      "native_bytes_each": 25314032,
+      "limit": "Tag-only SQLCipher source job skipped; not three consecutive main runs."
+    }
+  },
+  "local_gates": {
+    "tests": 5167,
+    "passed": 5081,
+    "skipped": 86,
+    "failed": 0,
+    "errors": 0,
+    "source": "5ae91c238612bdd9b1511b3716d34b4fa5960dd2",
+    "tasks": 1523,
+    "affected": "rootexplicitktlint/lint/check,bothapp/serviceAndroidTestKotlincompilation,shellreleasecompile,FossDebugassembly",
+    "artifact": "build/agent-logs/combined-check4-xml"
+  },
+  "native_guards": "All six passed. Original missing-aapt2 invocation preserved; corrected PATH retry passed same immutable APK.",
+  "permitted_checks": [
+    "Data-preserving install -r after installed signer/version comparison; verify installed APK bytes equal released hash.",
+    "app.skein.inference.service.SyntheticTemplateParityTest#publicModelNativeTokenParity",
+    "app.skein.benchmark.SyntheticAnswerBenchmarkTest#suppliedEvidenceThroughTheIsolatedApk",
+    "Authorized synthetic demo rehearsal; normal owner unlock if needed."
+  ],
+  "physical_scope": "Exact method filters only; idle window before rehearsal. Public Qwen and gold-free fixtures in fresh package-local synthetic-benchmark directories. No whole APK suite, owner vault/registry inspection, uninstall, clear, reset, downgrade or security weakening. Preserve all original and partial evidence.",
+  "runtime_limits": {
+    "gpuLayers": 0,
+    "context": 4096,
+    "threads": 4,
+    "seed": 17,
+    "sampling": "greedy",
+    "maxTokens": 256,
+    "stop": [],
+    "per_case_ms": 180000,
+    "host_watchdog_seconds": 900
+  },
+  "qwen_sha256": "2c5f9a121ae6695208e300c16acca303669afa4e18812061164dca9c97071b12",
+  "qwen_bytes": 1590475744,
+  "fixture_sha256": "ccd9bb4cad984929ec679ecc1f2f79d249d274376fb3c00f4b529911dfaed5d0",
+  "case_set_sha256": "8ea60c32cc7d19ee0e52c4ea501408b168b5540979f5c41e18197df27a3d26e0",
+  "handback_required": "Report installed APK hash, preserved data/update result, actual native parity JSON, all four answer rows with stop/error/facts/citations, positive skips, and demo readiness. JUnit success alone does not qualify model quality.",
+  "remaining_gates": "Generic fold emulator run in progress; full AL10/15/16, exact Pixel9/IME matrix, long-load/FGS/process-death inference, 80-case retrieval quality and embedding gates remain open."
+}

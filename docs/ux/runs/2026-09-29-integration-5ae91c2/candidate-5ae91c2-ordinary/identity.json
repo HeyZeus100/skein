@@ -1,0 +1,26 @@
+{
+  "source_sha": "5ae91c238612bdd9b1511b3716d34b4fa5960dd2",
+  "source_provenance": "host-declared clean checkout; not embedded APK attestation",
+  "status": "CAPTURED_NOT_RELEASED",
+  "artifacts": [
+    {
+      "path": "/Users/andrewherrera/skein-worktrees/ux-integration-20260929/build/agent-logs/candidate-5ae91c2-ordinary/app-foss-debug.apk",
+      "bytes": 125280302,
+      "sha256": "1f83b71c5fe60a6dc26fcac7a4c75b49fbf009b6e8c9d972b2176c18081c1323",
+      "package": "app.skein",
+      "version_code": 1,
+      "version_name": "0.1.0",
+      "certificate_sha256": "75bcae7118a4635dd0fb153438e5bdbfd7aab5d467b3a0c2bb210eefde5becf9",
+      "signer_count": 1,
+      "libraries": {
+        "lib/arm64-v8a/libandroidx.graphics.path.so": "41e9a793c43a0f4fddb19e33f346bace464f30f888ba7b9eaf96294ea115bfb6",
+        "lib/arm64-v8a/libdatastore_shared_counter.so": "178f89a2c6c9234ddf980dd4cd1f3616186a46b2b932aafa6707abd04c5fd76a",
+        "lib/arm64-v8a/libonnxruntime.so": "850f897a50d369b3305582244210f5649be9cfeb193c5807fba14146301616c7",
+        "lib/arm64-v8a/libonnxruntime4j_jni.so": "f86f2a5f56b907e4a25d67febc422ec13f5a265d36665f50e2808de6e4a515b6",
+        "lib/arm64-v8a/libskein_llama.so": "b1ff614714a8973d9359fba0034482534c9a65ba8e28d1cab995ed428bf89ee3",
+        "lib/arm64-v8a/libskein_sqlite.so": "00a04ba8fda9b13cbe6211a9f04c66fe1f8233724e7cbef5d987a08156df328e",
+        "lib/arm64-v8a/libskein_sqlite_jni.so": "54e60807eedc5cd2fed7789033cd3cb625b84abcf0c4df57a71b4f6c4725f262"
+      }
+    }
+  ]
+}

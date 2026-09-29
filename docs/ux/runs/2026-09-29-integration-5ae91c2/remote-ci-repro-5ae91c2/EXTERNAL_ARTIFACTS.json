@@ -1,0 +1,123 @@
+{
+  "original_evidence_root": "/Users/andrewherrera/skein-worktrees/ux-rb-evidence-20260929/build/agent-logs/final-source-5ae91c238",
+  "source_sha": "5ae91c238612bdd9b1511b3716d34b4fa5960dd2",
+  "external_files": [
+    {
+      "original_absolute_path": "/Users/andrewherrera/skein-worktrees/ux-rb-evidence-20260929/build/agent-logs/final-source-5ae91c238/ci-36551451065/artifact-11024887299-skein-foss-debug-apk/archive.zip",
+      "original_relative_path": "ci-36551451065/artifact-11024887299-skein-foss-debug-apk/archive.zip",
+      "bytes": 49498564,
+      "sha256": "ebbbd4a19e164c1f48a97bf89f240c89db121bfacfbbd5ef31fd0ff7957fd4c4",
+      "artifact_id": 11024887299,
+      "artifact_name": "skein-foss-debug-apk",
+      "artifact_api_digest": "sha256:ebbbd4a19e164c1f48a97bf89f240c89db121bfacfbbd5ef31fd0ff7957fd4c4",
+      "source_sha": "5ae91c238612bdd9b1511b3716d34b4fa5960dd2",
+      "archive_download_url": "https://api.github.com/repos/HeyZeus100/skein/actions/artifacts/11024887299/zip",
+      "workflow_run_id": 36551451065,
+      "reason": "Retained original binary outside Git; complete artifact metadata is copied unchanged"
+    },
+    {
+      "original_absolute_path": "/Users/andrewherrera/skein-worktrees/ux-rb-evidence-20260929/build/agent-logs/final-source-5ae91c238/ci-36551451065/artifact-11024887299-skein-foss-debug-apk/files/app-foss-debug.apk",
+      "original_relative_path": "ci-36551451065/artifact-11024887299-skein-foss-debug-apk/files/app-foss-debug.apk",
+      "bytes": 125280302,
+      "sha256": "28ffb1599581954686e00089be94e5f71f747eb4bdb518195e6b3dd73e669caf",
+      "artifact_id": 11024887299,
+      "artifact_name": "skein-foss-debug-apk",
+      "artifact_api_digest": "sha256:ebbbd4a19e164c1f48a97bf89f240c89db121bfacfbbd5ef31fd0ff7957fd4c4",
+      "source_sha": "5ae91c238612bdd9b1511b3716d34b4fa5960dd2",
+      "archive_download_url": "https://api.github.com/repos/HeyZeus100/skein/actions/artifacts/11024887299/zip",
+      "workflow_run_id": 36551451065,
+      "reason": "Retained original binary outside Git; complete artifact metadata is copied unchanged"
+    },
+    {
+      "original_absolute_path": "/Users/andrewherrera/skein-worktrees/ux-rb-evidence-20260929/build/agent-logs/final-source-5ae91c238/rb-36551451072/artifact-11024698367-rb-build-b/archive.zip",
+      "original_relative_path": "rb-36551451072/artifact-11024698367-rb-build-b/archive.zip",
+      "bytes": 100674134,
+      "sha256": "fff84b5eb068ba1f8d46ac4df207127099b0ff20f66457ba785ecb307e35808a",
+      "artifact_id": 11024698367,
+      "artifact_name": "rb-build-b",
+      "artifact_api_digest": "sha256:fff84b5eb068ba1f8d46ac4df207127099b0ff20f66457ba785ecb307e35808a",
+      "source_sha": "5ae91c238612bdd9b1511b3716d34b4fa5960dd2",
+      "archive_download_url": "https://api.github.com/repos/HeyZeus100/skein/actions/artifacts/11024698367/zip",
+      "workflow_run_id": 36551451072,
+      "reason": "Retained original binary outside Git; complete artifact metadata is copied unchanged"
+    },
+    {
+      "original_absolute_path": "/Users/andrewherrera/skein-worktrees/ux-rb-evidence-20260929/build/agent-logs/final-source-5ae91c238/rb-36551451072/artifact-11024698367-rb-build-b/files/app-foss-release-unsigned.apk",
+      "original_relative_path": "rb-36551451072/artifact-11024698367-rb-build-b/files/app-foss-release-unsigned.apk",
+      "bytes": 100673247,
+      "sha256": "d397160b48a73e9265b65d2ce4ea10ba1315bdd0bbd7f149d74dbaa97027f78f",
+      "artifact_id": 11024698367,
+      "artifact_name": "rb-build-b",
+      "artifact_api_digest": "sha256:fff84b5eb068ba1f8d46ac4df207127099b0ff20f66457ba785ecb307e35808a",
+      "source_sha": "5ae91c238612bdd9b1511b3716d34b4fa5960dd2",
+      "archive_download_url": "https://api.github.com/repos/HeyZeus100/skein/actions/artifacts/11024698367/zip",
+      "workflow_run_id": 36551451072,
+      "reason": "Retained original binary outside Git; complete artifact metadata is copied unchanged"
+    },
+    {
+      "original_absolute_path": "/Users/andrewherrera/skein-worktrees/ux-rb-evidence-20260929/build/agent-logs/final-source-5ae91c238/rb-36551451072/artifact-11025013318-rb-build-a/archive.zip",
+      "original_relative_path": "rb-36551451072/artifact-11025013318-rb-build-a/archive.zip",
+      "bytes": 100674120,
+      "sha256": "37024c94df63add75b0eeb4e94e4758b7318b956e57934323144e840b8d42a16",
+      "artifact_id": 11025013318,
+      "artifact_name": "rb-build-a",
+      "artifact_api_digest": "sha256:37024c94df63add75b0eeb4e94e4758b7318b956e57934323144e840b8d42a16",
+      "source_sha": "5ae91c238612bdd9b1511b3716d34b4fa5960dd2",
+      "archive_download_url": "https://api.github.com/repos/HeyZeus100/skein/actions/artifacts/11025013318/zip",
+      "workflow_run_id": 36551451072,
+      "reason": "Retained original binary outside Git; complete artifact metadata is copied unchanged"
+    },
+    {
+      "original_absolute_path": "/Users/andrewherrera/skein-worktrees/ux-rb-evidence-20260929/build/agent-logs/final-source-5ae91c238/rb-36551451072/artifact-11025013318-rb-build-a/files/app-foss-release-unsigned.apk",
+      "original_relative_path": "rb-36551451072/artifact-11025013318-rb-build-a/files/app-foss-release-unsigned.apk",
+      "bytes": 100673247,
+      "sha256": "d397160b48a73e9265b65d2ce4ea10ba1315bdd0bbd7f149d74dbaa97027f78f",
+      "artifact_id": 11025013318,
+      "artifact_name": "rb-build-a",
+      "artifact_api_digest": "sha256:37024c94df63add75b0eeb4e94e4758b7318b956e57934323144e840b8d42a16",
+      "source_sha": "5ae91c238612bdd9b1511b3716d34b4fa5960dd2",
+      "archive_download_url": "https://api.github.com/repos/HeyZeus100/skein/actions/artifacts/11025013318/zip",
+      "workflow_run_id": 36551451072,
+      "reason": "Retained original binary outside Git; complete artifact metadata is copied unchanged"
+    },
+    {
+      "original_absolute_path": "/Users/andrewherrera/skein-worktrees/ux-rb-evidence-20260929/build/agent-logs/final-source-5ae91c238/rb-36551451072/artifact-11025312519-so-determinism/archive.zip",
+      "original_relative_path": "rb-36551451072/artifact-11025312519-so-determinism/archive.zip",
+      "bytes": 50711049,
+      "sha256": "8be802c81ef3cb9e06b66b768f98fbf6cef296725e4d8c001e444d87da0013fa",
+      "artifact_id": 11025312519,
+      "artifact_name": "so-determinism",
+      "artifact_api_digest": "sha256:8be802c81ef3cb9e06b66b768f98fbf6cef296725e4d8c001e444d87da0013fa",
+      "source_sha": "5ae91c238612bdd9b1511b3716d34b4fa5960dd2",
+      "archive_download_url": "https://api.github.com/repos/HeyZeus100/skein/actions/artifacts/11025312519/zip",
+      "workflow_run_id": 36551451072,
+      "reason": "Retained original binary outside Git; complete artifact metadata is copied unchanged"
+    },
+    {
+      "original_absolute_path": "/Users/andrewherrera/skein-worktrees/ux-rb-evidence-20260929/build/agent-logs/final-source-5ae91c238/rb-36551451072/artifact-11025312519-so-determinism/files/run.OmoQYIyh/libskein_llama.1.2aefda01.so",
+      "original_relative_path": "rb-36551451072/artifact-11025312519-so-determinism/files/run.OmoQYIyh/libskein_llama.1.2aefda01.so",
+      "bytes": 25314032,
+      "sha256": "2aefda01808f10bf5693ab02d0857e0169dc09550b615896939cb176c032daff",
+      "artifact_id": 11025312519,
+      "artifact_name": "so-determinism",
+      "artifact_api_digest": "sha256:8be802c81ef3cb9e06b66b768f98fbf6cef296725e4d8c001e444d87da0013fa",
+      "source_sha": "5ae91c238612bdd9b1511b3716d34b4fa5960dd2",
+      "archive_download_url": "https://api.github.com/repos/HeyZeus100/skein/actions/artifacts/11025312519/zip",
+      "workflow_run_id": 36551451072,
+      "reason": "Retained original binary outside Git; complete artifact metadata is copied unchanged"
+    },
+    {
+      "original_absolute_path": "/Users/andrewherrera/skein-worktrees/ux-rb-evidence-20260929/build/agent-logs/final-source-5ae91c238/rb-36551451072/artifact-11025312519-so-determinism/files/run.OmoQYIyh/libskein_llama.2.2aefda01.so",
+      "original_relative_path": "rb-36551451072/artifact-11025312519-so-determinism/files/run.OmoQYIyh/libskein_llama.2.2aefda01.so",
+      "bytes": 25314032,
+      "sha256": "2aefda01808f10bf5693ab02d0857e0169dc09550b615896939cb176c032daff",
+      "artifact_id": 11025312519,
+      "artifact_name": "so-determinism",
+      "artifact_api_digest": "sha256:8be802c81ef3cb9e06b66b768f98fbf6cef296725e4d8c001e444d87da0013fa",
+      "source_sha": "5ae91c238612bdd9b1511b3716d34b4fa5960dd2",
+      "archive_download_url": "https://api.github.com/repos/HeyZeus100/skein/actions/artifacts/11025312519/zip",
+      "workflow_run_id": 36551451072,
+      "reason": "Retained original binary outside Git; complete artifact metadata is copied unchanged"
+    }
+  ]
+}

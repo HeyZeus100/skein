@@ -1,0 +1,14 @@
+[
+  {
+    "original_portable_path": "remote-ordinary-36551469886/native-repair-at-source.diff",
+    "compressed_path": "remote-ordinary-36551469886/native-repair-at-source.diff.gz",
+    "uncompressed_sha256": "195a3923d536cd81a6957007c4f9815dc980330d6a0bcaf47510a2ab542c54df",
+    "reason": "Preserve exact original trailing whitespace losslessly without treating a raw log/patch as source whitespace errors."
+  },
+  {
+    "original_portable_path": "remote-screenshots-36551451241/step-6_Verify screenshots.txt",
+    "compressed_path": "remote-screenshots-36551451241/step-6_Verify screenshots.txt.gz",
+    "uncompressed_sha256": "662c14a46cc82fb91642499a820423a8e18523a73661d8da72b0d6ecd61905b3",
+    "reason": "Preserve exact original trailing whitespace losslessly without treating a raw log/patch as source whitespace errors."
+  }
+]

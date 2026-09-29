@@ -1,0 +1,664 @@
+{
+  "original_evidence_root": "/Users/andrewherrera/skein-worktrees/ux-rb-evidence-20260929/build/agent-logs/final-source-5ae91c238",
+  "copied_files": [
+    {
+      "original_absolute_path": "/Users/andrewherrera/skein-worktrees/ux-rb-evidence-20260929/build/agent-logs/final-source-5ae91c238/REVIEW-SHA256SUMS.txt",
+      "original_bytes": 2944,
+      "original_sha256": "bedf430a9a50fa411e948efd0d1a75ae7bef45bec4c162c3c87456d14332f458",
+      "bundle_path": "REVIEW-SHA256SUMS.txt",
+      "encoding": "identity",
+      "bundle_bytes": 2944,
+      "bundle_sha256": "bedf430a9a50fa411e948efd0d1a75ae7bef45bec4c162c3c87456d14332f458"
+    },
+    {
+      "original_absolute_path": "/Users/andrewherrera/skein-worktrees/ux-rb-evidence-20260929/build/agent-logs/final-source-5ae91c238/REVIEW.md",
+      "original_bytes": 4223,
+      "original_sha256": "a1c76b5b04b73ecfaeb00fd47300b16040b17d91d6d4c1afeaafe0b9107c37b2",
+      "bundle_path": "REVIEW.md",
+      "encoding": "identity",
+      "bundle_bytes": 4223,
+      "bundle_sha256": "a1c76b5b04b73ecfaeb00fd47300b16040b17d91d6d4c1afeaafe0b9107c37b2"
+    },
+    {
+      "original_absolute_path": "/Users/andrewherrera/skein-worktrees/ux-rb-evidence-20260929/build/agent-logs/final-source-5ae91c238/build-log-review.json",
+      "original_bytes": 3544,
+      "original_sha256": "59d409d847089099426ac8c28ff696036efa72789d68288ba61f4bf65f451dae",
+      "bundle_path": "build-log-review.json",
+      "encoding": "identity",
+      "bundle_bytes": 3544,
+      "bundle_sha256": "59d409d847089099426ac8c28ff696036efa72789d68288ba61f4bf65f451dae"
+    },
+    {
+      "original_absolute_path": "/Users/andrewherrera/skein-worktrees/ux-rb-evidence-20260929/build/agent-logs/final-source-5ae91c238/ci-36551451065/artifact-11024887299-skein-foss-debug-apk/archive-verification.json",
+      "original_bytes": 204,
+      "original_sha256": "3a7e881bf69672b82fc428dc2a7fc9b3d80a7c0256b3e6eb8624d831e4be97d2",
+      "bundle_path": "ci-36551451065/artifact-11024887299-skein-foss-debug-apk/archive-verification.json",
+      "encoding": "identity",
+      "bundle_bytes": 204,
+      "bundle_sha256": "3a7e881bf69672b82fc428dc2a7fc9b3d80a7c0256b3e6eb8624d831e4be97d2"
+    },
+    {
+      "original_absolute_path": "/Users/andrewherrera/skein-worktrees/ux-rb-evidence-20260929/build/agent-logs/final-source-5ae91c238/ci-36551451065/artifact-11024887299-skein-foss-debug-apk/metadata.json",
+      "original_bytes": 765,
+      "original_sha256": "2e8ef2501918e751413736c74578ecc26b0df68ac82fc659011eeb5f79685d34",
+      "bundle_path": "ci-36551451065/artifact-11024887299-skein-foss-debug-apk/metadata.json",
+      "encoding": "identity",
+      "bundle_bytes": 765,
+      "bundle_sha256": "2e8ef2501918e751413736c74578ecc26b0df68ac82fc659011eeb5f79685d34"
+    },
+    {
+      "original_absolute_path": "/Users/andrewherrera/skein-worktrees/ux-rb-evidence-20260929/build/agent-logs/final-source-5ae91c238/ci-36551451065/artifact-11025421464-unit-test-results/archive-verification.json",
+      "original_bytes": 204,
+      "original_sha256": "1443e344fe54db98fa588f90ac3217b97271c5d3fe9e67793eeb3860242a7f36",
+      "bundle_path": "ci-36551451065/artifact-11025421464-unit-test-results/archive-verification.json",
+      "encoding": "identity",
+      "bundle_bytes": 204,
+      "bundle_sha256": "1443e344fe54db98fa588f90ac3217b97271c5d3fe9e67793eeb3860242a7f36"
+    },
+    {
+      "original_absolute_path": "/Users/andrewherrera/skein-worktrees/ux-rb-evidence-20260929/build/agent-logs/final-source-5ae91c238/ci-36551451065/artifact-11025421464-unit-test-results/archive.zip",
+      "original_bytes": 2519442,
+      "original_sha256": "f467d262e59ba75bb12708846a0b9575dbd58f7cd40ae4484da9907b385abff0",
+      "bundle_path": "ci-36551451065/artifact-11025421464-unit-test-results/archive.zip",
+      "encoding": "identity",
+      "bundle_bytes": 2519442,
+      "bundle_sha256": "f467d262e59ba75bb12708846a0b9575dbd58f7cd40ae4484da9907b385abff0"
+    },
+    {
+      "original_absolute_path": "/Users/andrewherrera/skein-worktrees/ux-rb-evidence-20260929/build/agent-logs/final-source-5ae91c238/ci-36551451065/artifact-11025421464-unit-test-results/files/build/unit-verification.json",
+      "original_bytes": 118850,
+      "original_sha256": "e732d5d3a2cca470f38b0a9139703481cea9dfb65f14518bb837d3c86dbc8b7f",
+      "bundle_path": "ci-36551451065/artifact-11025421464-unit-test-results/files/build/unit-verification.json.gz",
+      "encoding": "gzip",
+      "bundle_bytes": 27648,
+      "bundle_sha256": "4e3ec1ea65c62f41e599067526d7caf5abcd9f755928c3a607962abeafd4f463"
+    },
+    {
+      "original_absolute_path": "/Users/andrewherrera/skein-worktrees/ux-rb-evidence-20260929/build/agent-logs/final-source-5ae91c238/ci-36551451065/artifact-11025421464-unit-test-results/metadata.json",
+      "original_bytes": 761,
+      "original_sha256": "189a5c8352d78224bed4df43e5901ccba27a0b88cc5d21cbb8eecd04ef2a13a6",
+      "bundle_path": "ci-36551451065/artifact-11025421464-unit-test-results/metadata.json",
+      "encoding": "identity",
+      "bundle_bytes": 761,
+      "bundle_sha256": "189a5c8352d78224bed4df43e5901ccba27a0b88cc5d21cbb8eecd04ef2a13a6"
+    },
+    {
+      "original_absolute_path": "/Users/andrewherrera/skein-worktrees/ux-rb-evidence-20260929/build/agent-logs/final-source-5ae91c238/ci-36551451065/audit-unit.py",
+      "original_bytes": 2841,
+      "original_sha256": "805dc4827e7628a71af6830ad28bd78db36b4ed08fe5d578162a63044a924721",
+      "bundle_path": "ci-36551451065/audit-unit.py",
+      "encoding": "identity",
+      "bundle_bytes": 2841,
+      "bundle_sha256": "805dc4827e7628a71af6830ad28bd78db36b4ed08fe5d578162a63044a924721"
+    },
+    {
+      "original_absolute_path": "/Users/andrewherrera/skein-worktrees/ux-rb-evidence-20260929/build/agent-logs/final-source-5ae91c238/ci-36551451065/debug-apk-hash.json",
+      "original_bytes": 288,
+      "original_sha256": "054988ed535f2f8c77af4577da0b0730a186e220bb9fde0065c79b8dbdc74f1c",
+      "bundle_path": "ci-36551451065/debug-apk-hash.json",
+      "encoding": "identity",
+      "bundle_bytes": 288,
+      "bundle_sha256": "054988ed535f2f8c77af4577da0b0730a186e220bb9fde0065c79b8dbdc74f1c"
+    },
+    {
+      "original_absolute_path": "/Users/andrewherrera/skein-worktrees/ux-rb-evidence-20260929/build/agent-logs/final-source-5ae91c238/ci-36551451065/job-109350340943.log",
+      "original_bytes": 411915,
+      "original_sha256": "0b4b27e2c3cbfe2cfee78a7f5c90dfbb840e74fb0724fad86c5fced339c63083",
+      "bundle_path": "ci-36551451065/job-109350340943.log.gz",
+      "encoding": "gzip",
+      "bundle_bytes": 56856,
+      "bundle_sha256": "fc6377b0ea10d7344ad55c0551d92a4cc63a57763d964c8de5cf7d3d416e8b24"
+    },
+    {
+      "original_absolute_path": "/Users/andrewherrera/skein-worktrees/ux-rb-evidence-20260929/build/agent-logs/final-source-5ae91c238/ci-36551451065/monitor.py",
+      "original_bytes": 3608,
+      "original_sha256": "35e9587052bb4ddfb9d636cc4846175ceada7704fdea5ceda4a9fa2679fb8206",
+      "bundle_path": "ci-36551451065/monitor.py",
+      "encoding": "identity",
+      "bundle_bytes": 3608,
+      "bundle_sha256": "35e9587052bb4ddfb9d636cc4846175ceada7704fdea5ceda4a9fa2679fb8206"
+    },
+    {
+      "original_absolute_path": "/Users/andrewherrera/skein-worktrees/ux-rb-evidence-20260929/build/agent-logs/final-source-5ae91c238/ci-36551451065/native-guard-excerpts.log",
+      "original_bytes": 5847,
+      "original_sha256": "69ce35484edd8a08ced0475cc5cda614a12289b5389ac81e516c124f89fdb243",
+      "bundle_path": "ci-36551451065/native-guard-excerpts.log.gz",
+      "encoding": "gzip",
+      "bundle_bytes": 1099,
+      "bundle_sha256": "f506dbdf8005eab0135a9ffd7306149ed81f093653358b1800afc6f88f045a2d"
+    },
+    {
+      "original_absolute_path": "/Users/andrewherrera/skein-worktrees/ux-rb-evidence-20260929/build/agent-logs/final-source-5ae91c238/ci-36551451065/snapshot-20260929T094931.661837Z.json",
+      "original_bytes": 22061,
+      "original_sha256": "9cccd7d43712b553593a739ae32a3a60dd018ae6a6a29a3cada060a4f0938838",
+      "bundle_path": "ci-36551451065/snapshot-20260929T094931.661837Z.json.gz",
+      "encoding": "gzip",
+      "bundle_bytes": 2751,
+      "bundle_sha256": "297dff16b67a498783d521789ef824a206764232edf72cb1951e1bb4a0ef5a7d"
+    },
+    {
+      "original_absolute_path": "/Users/andrewherrera/skein-worktrees/ux-rb-evidence-20260929/build/agent-logs/final-source-5ae91c238/ci-36551451065/snapshot-20260929T095017.774672Z.json",
+      "original_bytes": 22061,
+      "original_sha256": "9cccd7d43712b553593a739ae32a3a60dd018ae6a6a29a3cada060a4f0938838",
+      "bundle_path": "ci-36551451065/snapshot-20260929T095017.774672Z.json.gz",
+      "encoding": "gzip",
+      "bundle_bytes": 2751,
+      "bundle_sha256": "297dff16b67a498783d521789ef824a206764232edf72cb1951e1bb4a0ef5a7d"
+    },
+    {
+      "original_absolute_path": "/Users/andrewherrera/skein-worktrees/ux-rb-evidence-20260929/build/agent-logs/final-source-5ae91c238/ci-36551451065/snapshot-20260929T095103.780960Z.json",
+      "original_bytes": 22061,
+      "original_sha256": "9cccd7d43712b553593a739ae32a3a60dd018ae6a6a29a3cada060a4f0938838",
+      "bundle_path": "ci-36551451065/snapshot-20260929T095103.780960Z.json.gz",
+      "encoding": "gzip",
+      "bundle_bytes": 2751,
+      "bundle_sha256": "297dff16b67a498783d521789ef824a206764232edf72cb1951e1bb4a0ef5a7d"
+    },
+    {
+      "original_absolute_path": "/Users/andrewherrera/skein-worktrees/ux-rb-evidence-20260929/build/agent-logs/final-source-5ae91c238/ci-36551451065/snapshot-20260929T095150.029739Z.json",
+      "original_bytes": 22061,
+      "original_sha256": "9cccd7d43712b553593a739ae32a3a60dd018ae6a6a29a3cada060a4f0938838",
+      "bundle_path": "ci-36551451065/snapshot-20260929T095150.029739Z.json.gz",
+      "encoding": "gzip",
+      "bundle_bytes": 2751,
+      "bundle_sha256": "297dff16b67a498783d521789ef824a206764232edf72cb1951e1bb4a0ef5a7d"
+    },
+    {
+      "original_absolute_path": "/Users/andrewherrera/skein-worktrees/ux-rb-evidence-20260929/build/agent-logs/final-source-5ae91c238/ci-36551451065/snapshot-20260929T095236.085261Z.json",
+      "original_bytes": 23076,
+      "original_sha256": "1cd881b9fbb260d54ca2d7fd2d6901ffbc70e670826ef659a006a4917f6d00d3",
+      "bundle_path": "ci-36551451065/snapshot-20260929T095236.085261Z.json.gz",
+      "encoding": "gzip",
+      "bundle_bytes": 3007,
+      "bundle_sha256": "0173d7e4742e39639ab8d04b1ff96c4e96f5ead568be292dc65d6e689bd8d09b"
+    },
+    {
+      "original_absolute_path": "/Users/andrewherrera/skein-worktrees/ux-rb-evidence-20260929/build/agent-logs/final-source-5ae91c238/ci-36551451065/snapshot-20260929T095324.895033Z.json",
+      "original_bytes": 23076,
+      "original_sha256": "1cd881b9fbb260d54ca2d7fd2d6901ffbc70e670826ef659a006a4917f6d00d3",
+      "bundle_path": "ci-36551451065/snapshot-20260929T095324.895033Z.json.gz",
+      "encoding": "gzip",
+      "bundle_bytes": 3007,
+      "bundle_sha256": "0173d7e4742e39639ab8d04b1ff96c4e96f5ead568be292dc65d6e689bd8d09b"
+    },
+    {
+      "original_absolute_path": "/Users/andrewherrera/skein-worktrees/ux-rb-evidence-20260929/build/agent-logs/final-source-5ae91c238/ci-36551451065/snapshot-20260929T095410.974358Z.json",
+      "original_bytes": 23076,
+      "original_sha256": "1cd881b9fbb260d54ca2d7fd2d6901ffbc70e670826ef659a006a4917f6d00d3",
+      "bundle_path": "ci-36551451065/snapshot-20260929T095410.974358Z.json.gz",
+      "encoding": "gzip",
+      "bundle_bytes": 3007,
+      "bundle_sha256": "0173d7e4742e39639ab8d04b1ff96c4e96f5ead568be292dc65d6e689bd8d09b"
+    },
+    {
+      "original_absolute_path": "/Users/andrewherrera/skein-worktrees/ux-rb-evidence-20260929/build/agent-logs/final-source-5ae91c238/ci-36551451065/snapshot-20260929T095457.141605Z.json",
+      "original_bytes": 23076,
+      "original_sha256": "1cd881b9fbb260d54ca2d7fd2d6901ffbc70e670826ef659a006a4917f6d00d3",
+      "bundle_path": "ci-36551451065/snapshot-20260929T095457.141605Z.json.gz",
+      "encoding": "gzip",
+      "bundle_bytes": 3007,
+      "bundle_sha256": "0173d7e4742e39639ab8d04b1ff96c4e96f5ead568be292dc65d6e689bd8d09b"
+    },
+    {
+      "original_absolute_path": "/Users/andrewherrera/skein-worktrees/ux-rb-evidence-20260929/build/agent-logs/final-source-5ae91c238/ci-36551451065/snapshot-20260929T095543.415677Z.json",
+      "original_bytes": 24349,
+      "original_sha256": "3b588c429c3239a05acb5cf775bc310f074aa6f5368f7600ab6ecb8a5bbd7943",
+      "bundle_path": "ci-36551451065/snapshot-20260929T095543.415677Z.json.gz",
+      "encoding": "gzip",
+      "bundle_bytes": 3162,
+      "bundle_sha256": "bec82e3d91ae8dffe5b1ea883bfb7f20f3fb175f64462d68a14315f692e99b4d"
+    },
+    {
+      "original_absolute_path": "/Users/andrewherrera/skein-worktrees/ux-rb-evidence-20260929/build/agent-logs/final-source-5ae91c238/ci-36551451065/snapshot-20260929T095659.925008Z.json",
+      "original_bytes": 24783,
+      "original_sha256": "ae7c1bdfc6e827fc780b0765257eafd858bf69e5d0f10e9a0c9aa1b4cba5003f",
+      "bundle_path": "ci-36551451065/snapshot-20260929T095659.925008Z.json.gz",
+      "encoding": "gzip",
+      "bundle_bytes": 3151,
+      "bundle_sha256": "efd0c2bb70de436efc06d62314b151e6b32ec10088cb7ec9953f12fc027c690f"
+    },
+    {
+      "original_absolute_path": "/Users/andrewherrera/skein-worktrees/ux-rb-evidence-20260929/build/agent-logs/final-source-5ae91c238/ci-36551451065/source-LlamaNativeSurfaceTest.kt",
+      "original_bytes": 716,
+      "original_sha256": "7f6c5868975c5e53497ffcbcce728dd5369ea1cc15266d7a31e1fa240cfc62f5",
+      "bundle_path": "ci-36551451065/source-LlamaNativeSurfaceTest.kt",
+      "encoding": "identity",
+      "bundle_bytes": 716,
+      "bundle_sha256": "7f6c5868975c5e53497ffcbcce728dd5369ea1cc15266d7a31e1fa240cfc62f5"
+    },
+    {
+      "original_absolute_path": "/Users/andrewherrera/skein-worktrees/ux-rb-evidence-20260929/build/agent-logs/final-source-5ae91c238/ci-36551451065/source-verification-manifest.py",
+      "original_bytes": 2179,
+      "original_sha256": "4f82a9a6fbbc8ae5e5cb445e614ef8e3becc8f65ca9c71ce3523ac8faab8d9b0",
+      "bundle_path": "ci-36551451065/source-verification-manifest.py",
+      "encoding": "identity",
+      "bundle_bytes": 2179,
+      "bundle_sha256": "4f82a9a6fbbc8ae5e5cb445e614ef8e3becc8f65ca9c71ce3523ac8faab8d9b0"
+    },
+    {
+      "original_absolute_path": "/Users/andrewherrera/skein-worktrees/ux-rb-evidence-20260929/build/agent-logs/final-source-5ae91c238/ci-36551451065/unit-audit.json",
+      "original_bytes": 741306,
+      "original_sha256": "96966938dd2d670f8a1a42c7f265e78df72b5842dd0206415c1be21e253d1690",
+      "bundle_path": "ci-36551451065/unit-audit.json.gz",
+      "encoding": "gzip",
+      "bundle_bytes": 37731,
+      "bundle_sha256": "d0b5ae0f9e64c7515e8827b45871e3516b8deed06e9c8bdf5e0e4f8e6226a6c4"
+    },
+    {
+      "original_absolute_path": "/Users/andrewherrera/skein-worktrees/ux-rb-evidence-20260929/build/agent-logs/final-source-5ae91c238/ci-36551451065/unit-summary.json",
+      "original_bytes": 26531,
+      "original_sha256": "b401807475cf4585f95ed1fe92d0f3fa64ea464101c2148d6d030afc144c9af0",
+      "bundle_path": "ci-36551451065/unit-summary.json.gz",
+      "encoding": "gzip",
+      "bundle_bytes": 1402,
+      "bundle_sha256": "330da5d74c6fa90a907a29bfdaab2dee2eab2e0ccfe73a46db8d5b1c610a27e7"
+    },
+    {
+      "original_absolute_path": "/Users/andrewherrera/skein-worktrees/ux-rb-evidence-20260929/build/agent-logs/final-source-5ae91c238/final-run-review.json",
+      "original_bytes": 2008,
+      "original_sha256": "7edba7f2dca2ca74602a8280ef6ab6eb7cced6e60cb8944a949a34bb9226bf79",
+      "bundle_path": "final-run-review.json",
+      "encoding": "identity",
+      "bundle_bytes": 2008,
+      "bundle_sha256": "7edba7f2dca2ca74602a8280ef6ab6eb7cced6e60cb8944a949a34bb9226bf79"
+    },
+    {
+      "original_absolute_path": "/Users/andrewherrera/skein-worktrees/ux-rb-evidence-20260929/build/agent-logs/final-source-5ae91c238/rb-36551451072/artifact-11024698367-rb-build-b/archive-verification.json",
+      "original_bytes": 204,
+      "original_sha256": "be1a1aabd5e9b5272ef39533b2bfa7dbdf18a8599d554cd171b28155c46844f4",
+      "bundle_path": "rb-36551451072/artifact-11024698367-rb-build-b/archive-verification.json",
+      "encoding": "identity",
+      "bundle_bytes": 204,
+      "bundle_sha256": "be1a1aabd5e9b5272ef39533b2bfa7dbdf18a8599d554cd171b28155c46844f4"
+    },
+    {
+      "original_absolute_path": "/Users/andrewherrera/skein-worktrees/ux-rb-evidence-20260929/build/agent-logs/final-source-5ae91c238/rb-36551451072/artifact-11024698367-rb-build-b/files/SHA256SUMS-b.txt",
+      "original_bytes": 96,
+      "original_sha256": "ae7e99dca9d77708fe64ddd75e812f4283c6a01468ed01afe1aac0a8a1ce491e",
+      "bundle_path": "rb-36551451072/artifact-11024698367-rb-build-b/files/SHA256SUMS-b.txt",
+      "encoding": "identity",
+      "bundle_bytes": 96,
+      "bundle_sha256": "ae7e99dca9d77708fe64ddd75e812f4283c6a01468ed01afe1aac0a8a1ce491e"
+    },
+    {
+      "original_absolute_path": "/Users/andrewherrera/skein-worktrees/ux-rb-evidence-20260929/build/agent-logs/final-source-5ae91c238/rb-36551451072/artifact-11024698367-rb-build-b/files/context-b.txt",
+      "original_bytes": 377,
+      "original_sha256": "5283a3a944b0421feb38698a01be212fed68754053e6ddb8c1ebcc3572be6e36",
+      "bundle_path": "rb-36551451072/artifact-11024698367-rb-build-b/files/context-b.txt",
+      "encoding": "identity",
+      "bundle_bytes": 377,
+      "bundle_sha256": "5283a3a944b0421feb38698a01be212fed68754053e6ddb8c1ebcc3572be6e36"
+    },
+    {
+      "original_absolute_path": "/Users/andrewherrera/skein-worktrees/ux-rb-evidence-20260929/build/agent-logs/final-source-5ae91c238/rb-36551451072/artifact-11024698367-rb-build-b/metadata.json",
+      "original_bytes": 756,
+      "original_sha256": "1190a10e0f21e9c27de8c8d9143c77aba900d0f740d815c567288b2535aa5748",
+      "bundle_path": "rb-36551451072/artifact-11024698367-rb-build-b/metadata.json",
+      "encoding": "identity",
+      "bundle_bytes": 756,
+      "bundle_sha256": "1190a10e0f21e9c27de8c8d9143c77aba900d0f740d815c567288b2535aa5748"
+    },
+    {
+      "original_absolute_path": "/Users/andrewherrera/skein-worktrees/ux-rb-evidence-20260929/build/agent-logs/final-source-5ae91c238/rb-36551451072/artifact-11025013318-rb-build-a/archive-verification.json",
+      "original_bytes": 204,
+      "original_sha256": "9dabd209e0bb10eb5bb9598023296dac85dea167a3d4218670a947e37e3a2697",
+      "bundle_path": "rb-36551451072/artifact-11025013318-rb-build-a/archive-verification.json",
+      "encoding": "identity",
+      "bundle_bytes": 204,
+      "bundle_sha256": "9dabd209e0bb10eb5bb9598023296dac85dea167a3d4218670a947e37e3a2697"
+    },
+    {
+      "original_absolute_path": "/Users/andrewherrera/skein-worktrees/ux-rb-evidence-20260929/build/agent-logs/final-source-5ae91c238/rb-36551451072/artifact-11025013318-rb-build-a/files/SHA256SUMS-a.txt",
+      "original_bytes": 96,
+      "original_sha256": "ae7e99dca9d77708fe64ddd75e812f4283c6a01468ed01afe1aac0a8a1ce491e",
+      "bundle_path": "rb-36551451072/artifact-11025013318-rb-build-a/files/SHA256SUMS-a.txt",
+      "encoding": "identity",
+      "bundle_bytes": 96,
+      "bundle_sha256": "ae7e99dca9d77708fe64ddd75e812f4283c6a01468ed01afe1aac0a8a1ce491e"
+    },
+    {
+      "original_absolute_path": "/Users/andrewherrera/skein-worktrees/ux-rb-evidence-20260929/build/agent-logs/final-source-5ae91c238/rb-36551451072/artifact-11025013318-rb-build-a/files/context-a.txt",
+      "original_bytes": 363,
+      "original_sha256": "9eb12c5e48355a779caf68c8738b3db2327295d6883902c89c56be03341dd93f",
+      "bundle_path": "rb-36551451072/artifact-11025013318-rb-build-a/files/context-a.txt",
+      "encoding": "identity",
+      "bundle_bytes": 363,
+      "bundle_sha256": "9eb12c5e48355a779caf68c8738b3db2327295d6883902c89c56be03341dd93f"
+    },
+    {
+      "original_absolute_path": "/Users/andrewherrera/skein-worktrees/ux-rb-evidence-20260929/build/agent-logs/final-source-5ae91c238/rb-36551451072/artifact-11025013318-rb-build-a/metadata.json",
+      "original_bytes": 756,
+      "original_sha256": "c1e0d788b8121af875415d0c086a2cdc69b01d7dc82f6e18de70959ebb4087e7",
+      "bundle_path": "rb-36551451072/artifact-11025013318-rb-build-a/metadata.json",
+      "encoding": "identity",
+      "bundle_bytes": 756,
+      "bundle_sha256": "c1e0d788b8121af875415d0c086a2cdc69b01d7dc82f6e18de70959ebb4087e7"
+    },
+    {
+      "original_absolute_path": "/Users/andrewherrera/skein-worktrees/ux-rb-evidence-20260929/build/agent-logs/final-source-5ae91c238/rb-36551451072/artifact-11025312519-so-determinism/archive-verification.json",
+      "original_bytes": 204,
+      "original_sha256": "0124b84c50f302f7e7e4a58bd6c8304a7363f686e21e3e05caa42ee0bef14ee8",
+      "bundle_path": "rb-36551451072/artifact-11025312519-so-determinism/archive-verification.json",
+      "encoding": "identity",
+      "bundle_bytes": 204,
+      "bundle_sha256": "0124b84c50f302f7e7e4a58bd6c8304a7363f686e21e3e05caa42ee0bef14ee8"
+    },
+    {
+      "original_absolute_path": "/Users/andrewherrera/skein-worktrees/ux-rb-evidence-20260929/build/agent-logs/final-source-5ae91c238/rb-36551451072/artifact-11025312519-so-determinism/files/SHA256SUMS.txt",
+      "original_bytes": 852,
+      "original_sha256": "7396887a3f5b73ea1483075b485a64af5e9ec1233972c24830af218507851edf",
+      "bundle_path": "rb-36551451072/artifact-11025312519-so-determinism/files/SHA256SUMS.txt",
+      "encoding": "identity",
+      "bundle_bytes": 852,
+      "bundle_sha256": "7396887a3f5b73ea1483075b485a64af5e9ec1233972c24830af218507851edf"
+    },
+    {
+      "original_absolute_path": "/Users/andrewherrera/skein-worktrees/ux-rb-evidence-20260929/build/agent-logs/final-source-5ae91c238/rb-36551451072/artifact-11025312519-so-determinism/files/run.OmoQYIyh/SHA256SUMS.txt",
+      "original_bytes": 501,
+      "original_sha256": "182b8e4d93ec2fd05485c2972a06932cfa6edf71fa6d24e2e8d7f637dc27b189",
+      "bundle_path": "rb-36551451072/artifact-11025312519-so-determinism/files/run.OmoQYIyh/SHA256SUMS.txt",
+      "encoding": "identity",
+      "bundle_bytes": 501,
+      "bundle_sha256": "182b8e4d93ec2fd05485c2972a06932cfa6edf71fa6d24e2e8d7f637dc27b189"
+    },
+    {
+      "original_absolute_path": "/Users/andrewherrera/skein-worktrees/ux-rb-evidence-20260929/build/agent-logs/final-source-5ae91c238/rb-36551451072/artifact-11025312519-so-determinism/files/run.OmoQYIyh/build-1.log",
+      "original_bytes": 40177,
+      "original_sha256": "3d435cb9942169c8250cb6e4360905656369da78ddf3d247cc75a05ea9d75b91",
+      "bundle_path": "rb-36551451072/artifact-11025312519-so-determinism/files/run.OmoQYIyh/build-1.log.gz",
+      "encoding": "gzip",
+      "bundle_bytes": 2423,
+      "bundle_sha256": "ee5a064d24bdcc51a93f4e6321ddbeea41ece0311c2d9ed5a2103019ce254eeb"
+    },
+    {
+      "original_absolute_path": "/Users/andrewherrera/skein-worktrees/ux-rb-evidence-20260929/build/agent-logs/final-source-5ae91c238/rb-36551451072/artifact-11025312519-so-determinism/files/run.OmoQYIyh/build-2.log",
+      "original_bytes": 38595,
+      "original_sha256": "a11da691d43eeb1975cfaf0ceff1a0a8b30a3b3b9e242817313d3fee2de6e9c1",
+      "bundle_path": "rb-36551451072/artifact-11025312519-so-determinism/files/run.OmoQYIyh/build-2.log.gz",
+      "encoding": "gzip",
+      "bundle_bytes": 2043,
+      "bundle_sha256": "f4454a827f4203888f8523760c0ee3aebafa08e555dfe28ee7d7b91c0cb8f106"
+    },
+    {
+      "original_absolute_path": "/Users/andrewherrera/skein-worktrees/ux-rb-evidence-20260929/build/agent-logs/final-source-5ae91c238/rb-36551451072/artifact-11025312519-so-determinism/files/run.OmoQYIyh/context.txt",
+      "original_bytes": 552,
+      "original_sha256": "d7dd75dce14b8b5a6a10077491a5e28804d458999a4c2a84cd8a1c221d3c1a91",
+      "bundle_path": "rb-36551451072/artifact-11025312519-so-determinism/files/run.OmoQYIyh/context.txt",
+      "encoding": "identity",
+      "bundle_bytes": 552,
+      "bundle_sha256": "d7dd75dce14b8b5a6a10077491a5e28804d458999a4c2a84cd8a1c221d3c1a91"
+    },
+    {
+      "original_absolute_path": "/Users/andrewherrera/skein-worktrees/ux-rb-evidence-20260929/build/agent-logs/final-source-5ae91c238/rb-36551451072/artifact-11025312519-so-determinism/files/run.OmoQYIyh/result.txt",
+      "original_bytes": 14,
+      "original_sha256": "ed163d69a09ddc0ffcbdf126a42d5745a93449fa7a39354788e948b7ac795c04",
+      "bundle_path": "rb-36551451072/artifact-11025312519-so-determinism/files/run.OmoQYIyh/result.txt",
+      "encoding": "identity",
+      "bundle_bytes": 14,
+      "bundle_sha256": "ed163d69a09ddc0ffcbdf126a42d5745a93449fa7a39354788e948b7ac795c04"
+    },
+    {
+      "original_absolute_path": "/Users/andrewherrera/skein-worktrees/ux-rb-evidence-20260929/build/agent-logs/final-source-5ae91c238/rb-36551451072/artifact-11025312519-so-determinism/files/run.log",
+      "original_bytes": 777,
+      "original_sha256": "db8de134f1fac62065154d56d01205d1d2642b3585eba04b5b800b03588e5caa",
+      "bundle_path": "rb-36551451072/artifact-11025312519-so-determinism/files/run.log.gz",
+      "encoding": "gzip",
+      "bundle_bytes": 388,
+      "bundle_sha256": "d8e71f6083a8e70a42b0facd83a2129717f4498e1fe82722b2c02186e5d9bba8"
+    },
+    {
+      "original_absolute_path": "/Users/andrewherrera/skein-worktrees/ux-rb-evidence-20260929/build/agent-logs/final-source-5ae91c238/rb-36551451072/artifact-11025312519-so-determinism/files/workflow-context.txt",
+      "original_bytes": 85,
+      "original_sha256": "564562729d6189739ade583411590d11f018fa50e8c08f864e5e1e64b2476076",
+      "bundle_path": "rb-36551451072/artifact-11025312519-so-determinism/files/workflow-context.txt",
+      "encoding": "identity",
+      "bundle_bytes": 85,
+      "bundle_sha256": "564562729d6189739ade583411590d11f018fa50e8c08f864e5e1e64b2476076"
+    },
+    {
+      "original_absolute_path": "/Users/andrewherrera/skein-worktrees/ux-rb-evidence-20260929/build/agent-logs/final-source-5ae91c238/rb-36551451072/artifact-11025312519-so-determinism/metadata.json",
+      "original_bytes": 759,
+      "original_sha256": "ddf5572ccf6ef1e65fb5608c03fb12ce18e699d7b50d9691d9cb6c42183b18ad",
+      "bundle_path": "rb-36551451072/artifact-11025312519-so-determinism/metadata.json",
+      "encoding": "identity",
+      "bundle_bytes": 759,
+      "bundle_sha256": "ddf5572ccf6ef1e65fb5608c03fb12ce18e699d7b50d9691d9cb6c42183b18ad"
+    },
+    {
+      "original_absolute_path": "/Users/andrewherrera/skein-worktrees/ux-rb-evidence-20260929/build/agent-logs/final-source-5ae91c238/rb-36551451072/audit.py",
+      "original_bytes": 5211,
+      "original_sha256": "e6cc5f1b6b2741c8249d1dc239a6ec5529478eeb7e431f2542865e853abb3deb",
+      "bundle_path": "rb-36551451072/audit.py",
+      "encoding": "identity",
+      "bundle_bytes": 5211,
+      "bundle_sha256": "e6cc5f1b6b2741c8249d1dc239a6ec5529478eeb7e431f2542865e853abb3deb"
+    },
+    {
+      "original_absolute_path": "/Users/andrewherrera/skein-worktrees/ux-rb-evidence-20260929/build/agent-logs/final-source-5ae91c238/rb-36551451072/combined-audit.json",
+      "original_bytes": 9067,
+      "original_sha256": "5c2bb6a773ccc0646b7fd18f7d03486b80f99297f8839082309b9968c67d89c9",
+      "bundle_path": "rb-36551451072/combined-audit.json",
+      "encoding": "identity",
+      "bundle_bytes": 9067,
+      "bundle_sha256": "5c2bb6a773ccc0646b7fd18f7d03486b80f99297f8839082309b9968c67d89c9"
+    },
+    {
+      "original_absolute_path": "/Users/andrewherrera/skein-worktrees/ux-rb-evidence-20260929/build/agent-logs/final-source-5ae91c238/rb-36551451072/embedded-native.json",
+      "original_bytes": 341,
+      "original_sha256": "e7f0da2adfae0e1e43c6b4226e56eb986b9d085f24c5dd10c31ba9fc62c989d9",
+      "bundle_path": "rb-36551451072/embedded-native.json",
+      "encoding": "identity",
+      "bundle_bytes": 341,
+      "bundle_sha256": "e7f0da2adfae0e1e43c6b4226e56eb986b9d085f24c5dd10c31ba9fc62c989d9"
+    },
+    {
+      "original_absolute_path": "/Users/andrewherrera/skein-worktrees/ux-rb-evidence-20260929/build/agent-logs/final-source-5ae91c238/rb-36551451072/independent-apk-entries.log",
+      "original_bytes": 716,
+      "original_sha256": "ad54e6ce80646433b4b4fb62b3e6ec58dbf6bc6e7808f1af2517939d5dc599a1",
+      "bundle_path": "rb-36551451072/independent-apk-entries.log.gz",
+      "encoding": "gzip",
+      "bundle_bytes": 376,
+      "bundle_sha256": "1c7ead98c339c3b0a9f3438b01311a2ccac656af91989a955b7506210ebf85b3"
+    },
+    {
+      "original_absolute_path": "/Users/andrewherrera/skein-worktrees/ux-rb-evidence-20260929/build/agent-logs/final-source-5ae91c238/rb-36551451072/job-109350340522.log",
+      "original_bytes": 38037,
+      "original_sha256": "2130f88f9b2a9d2a84caa79d9cab12839cf85613d36d1fcd21aad7504d19a6b1",
+      "bundle_path": "rb-36551451072/job-109350340522.log.gz",
+      "encoding": "gzip",
+      "bundle_bytes": 7907,
+      "bundle_sha256": "7d7988cdaeb79a34473474e93fba8c3c7cc6dd1d4d6159ee63d0af9c4713772d"
+    },
+    {
+      "original_absolute_path": "/Users/andrewherrera/skein-worktrees/ux-rb-evidence-20260929/build/agent-logs/final-source-5ae91c238/rb-36551451072/job-109350414240.log",
+      "original_bytes": 48051,
+      "original_sha256": "903db85056e5915a204fb24bd80b6ad3f91ff9384b36d5a24401d082d120934f",
+      "bundle_path": "rb-36551451072/job-109350414240.log.gz",
+      "encoding": "gzip",
+      "bundle_bytes": 10025,
+      "bundle_sha256": "9d2ba173bdf0f0b4a1729287fccd7c762839481cce3c1fc08cdfa0a7abe0fbd4"
+    },
+    {
+      "original_absolute_path": "/Users/andrewherrera/skein-worktrees/ux-rb-evidence-20260929/build/agent-logs/final-source-5ae91c238/rb-36551451072/job-109350414247.log",
+      "original_bytes": 175786,
+      "original_sha256": "d293b6af78f5a79d4c421667046f24f10193c73060340057e3545b386174ecb7",
+      "bundle_path": "rb-36551451072/job-109350414247.log.gz",
+      "encoding": "gzip",
+      "bundle_bytes": 25928,
+      "bundle_sha256": "b9a7d6d31cd754b7fc18ac611e6420168fd3182cb95679ec7eae49a8b763a528"
+    },
+    {
+      "original_absolute_path": "/Users/andrewherrera/skein-worktrees/ux-rb-evidence-20260929/build/agent-logs/final-source-5ae91c238/rb-36551451072/job-109350414365.log",
+      "original_bytes": 173571,
+      "original_sha256": "14beb5ca920f004afac461c33357c269ed4a6a8931669dc9d169a51dde7c2638",
+      "bundle_path": "rb-36551451072/job-109350414365.log.gz",
+      "encoding": "gzip",
+      "bundle_bytes": 25749,
+      "bundle_sha256": "2e279e36d57b03caa3c79ab18a11bd82abf75205b2e00f28e4ae7a3a6f8f206f"
+    },
+    {
+      "original_absolute_path": "/Users/andrewherrera/skein-worktrees/ux-rb-evidence-20260929/build/agent-logs/final-source-5ae91c238/rb-36551451072/job-109354444774.log",
+      "original_bytes": 25202,
+      "original_sha256": "57b2bc3490dd7398b74ce25910446e7c0516dd268b934a798ae0797e4fcaed2f",
+      "bundle_path": "rb-36551451072/job-109354444774.log.gz",
+      "encoding": "gzip",
+      "bundle_bytes": 6362,
+      "bundle_sha256": "c893f4f2aa2e78cc620b01918f05188997fbb259325e09626e2494ea1d3a786e"
+    },
+    {
+      "original_absolute_path": "/Users/andrewherrera/skein-worktrees/ux-rb-evidence-20260929/build/agent-logs/final-source-5ae91c238/rb-36551451072/monitor.py",
+      "original_bytes": 3608,
+      "original_sha256": "e47484096f65d792a8bf04ea514a57123002b11b5968ae890af6fe3a3ae6f255",
+      "bundle_path": "rb-36551451072/monitor.py",
+      "encoding": "identity",
+      "bundle_bytes": 3608,
+      "bundle_sha256": "e47484096f65d792a8bf04ea514a57123002b11b5968ae890af6fe3a3ae6f255"
+    },
+    {
+      "original_absolute_path": "/Users/andrewherrera/skein-worktrees/ux-rb-evidence-20260929/build/agent-logs/final-source-5ae91c238/rb-36551451072/native-audit.json",
+      "original_bytes": 7179,
+      "original_sha256": "df32f5e5d496371aa3d348cf88492c3501259f79d83780e753d6003366585b9c",
+      "bundle_path": "rb-36551451072/native-audit.json",
+      "encoding": "identity",
+      "bundle_bytes": 7179,
+      "bundle_sha256": "df32f5e5d496371aa3d348cf88492c3501259f79d83780e753d6003366585b9c"
+    },
+    {
+      "original_absolute_path": "/Users/andrewherrera/skein-worktrees/ux-rb-evidence-20260929/build/agent-logs/final-source-5ae91c238/rb-36551451072/snapshot-20260929T094931.766243Z.json",
+      "original_bytes": 35997,
+      "original_sha256": "86f380257b82af94360cc0dccdbf8e5a30273985c07bb2a1f01fd934b4e2733e",
+      "bundle_path": "rb-36551451072/snapshot-20260929T094931.766243Z.json.gz",
+      "encoding": "gzip",
+      "bundle_bytes": 3254,
+      "bundle_sha256": "b0d53075df8fde0845af869e41e713f73e9a5c4a8878af02e2446fda91d577fb"
+    },
+    {
+      "original_absolute_path": "/Users/andrewherrera/skein-worktrees/ux-rb-evidence-20260929/build/agent-logs/final-source-5ae91c238/rb-36551451072/snapshot-20260929T095019.058197Z.json",
+      "original_bytes": 35997,
+      "original_sha256": "86f380257b82af94360cc0dccdbf8e5a30273985c07bb2a1f01fd934b4e2733e",
+      "bundle_path": "rb-36551451072/snapshot-20260929T095019.058197Z.json.gz",
+      "encoding": "gzip",
+      "bundle_bytes": 3254,
+      "bundle_sha256": "b0d53075df8fde0845af869e41e713f73e9a5c4a8878af02e2446fda91d577fb"
+    },
+    {
+      "original_absolute_path": "/Users/andrewherrera/skein-worktrees/ux-rb-evidence-20260929/build/agent-logs/final-source-5ae91c238/rb-36551451072/snapshot-20260929T095105.301968Z.json",
+      "original_bytes": 35997,
+      "original_sha256": "86f380257b82af94360cc0dccdbf8e5a30273985c07bb2a1f01fd934b4e2733e",
+      "bundle_path": "rb-36551451072/snapshot-20260929T095105.301968Z.json.gz",
+      "encoding": "gzip",
+      "bundle_bytes": 3254,
+      "bundle_sha256": "b0d53075df8fde0845af869e41e713f73e9a5c4a8878af02e2446fda91d577fb"
+    },
+    {
+      "original_absolute_path": "/Users/andrewherrera/skein-worktrees/ux-rb-evidence-20260929/build/agent-logs/final-source-5ae91c238/rb-36551451072/snapshot-20260929T095151.587358Z.json",
+      "original_bytes": 35997,
+      "original_sha256": "86f380257b82af94360cc0dccdbf8e5a30273985c07bb2a1f01fd934b4e2733e",
+      "bundle_path": "rb-36551451072/snapshot-20260929T095151.587358Z.json.gz",
+      "encoding": "gzip",
+      "bundle_bytes": 3254,
+      "bundle_sha256": "b0d53075df8fde0845af869e41e713f73e9a5c4a8878af02e2446fda91d577fb"
+    },
+    {
+      "original_absolute_path": "/Users/andrewherrera/skein-worktrees/ux-rb-evidence-20260929/build/agent-logs/final-source-5ae91c238/rb-36551451072/snapshot-20260929T095238.005095Z.json",
+      "original_bytes": 35997,
+      "original_sha256": "86f380257b82af94360cc0dccdbf8e5a30273985c07bb2a1f01fd934b4e2733e",
+      "bundle_path": "rb-36551451072/snapshot-20260929T095238.005095Z.json.gz",
+      "encoding": "gzip",
+      "bundle_bytes": 3254,
+      "bundle_sha256": "b0d53075df8fde0845af869e41e713f73e9a5c4a8878af02e2446fda91d577fb"
+    },
+    {
+      "original_absolute_path": "/Users/andrewherrera/skein-worktrees/ux-rb-evidence-20260929/build/agent-logs/final-source-5ae91c238/rb-36551451072/snapshot-20260929T095324.474112Z.json",
+      "original_bytes": 35997,
+      "original_sha256": "86f380257b82af94360cc0dccdbf8e5a30273985c07bb2a1f01fd934b4e2733e",
+      "bundle_path": "rb-36551451072/snapshot-20260929T095324.474112Z.json.gz",
+      "encoding": "gzip",
+      "bundle_bytes": 3254,
+      "bundle_sha256": "b0d53075df8fde0845af869e41e713f73e9a5c4a8878af02e2446fda91d577fb"
+    },
+    {
+      "original_absolute_path": "/Users/andrewherrera/skein-worktrees/ux-rb-evidence-20260929/build/agent-logs/final-source-5ae91c238/rb-36551451072/snapshot-20260929T095410.731733Z.json",
+      "original_bytes": 37398,
+      "original_sha256": "c4f05c452183ac6873f1d215f2ea9be45f1eb0b304be55df573a33f1bb508b99",
+      "bundle_path": "rb-36551451072/snapshot-20260929T095410.731733Z.json.gz",
+      "encoding": "gzip",
+      "bundle_bytes": 3518,
+      "bundle_sha256": "ac16b956836868c46788ebd7564f146dba6d39de02274a25a63d719cbc9243f5"
+    },
+    {
+      "original_absolute_path": "/Users/andrewherrera/skein-worktrees/ux-rb-evidence-20260929/build/agent-logs/final-source-5ae91c238/rb-36551451072/snapshot-20260929T095528.969853Z.json",
+      "original_bytes": 37398,
+      "original_sha256": "c4f05c452183ac6873f1d215f2ea9be45f1eb0b304be55df573a33f1bb508b99",
+      "bundle_path": "rb-36551451072/snapshot-20260929T095528.969853Z.json.gz",
+      "encoding": "gzip",
+      "bundle_bytes": 3518,
+      "bundle_sha256": "ac16b956836868c46788ebd7564f146dba6d39de02274a25a63d719cbc9243f5"
+    },
+    {
+      "original_absolute_path": "/Users/andrewherrera/skein-worktrees/ux-rb-evidence-20260929/build/agent-logs/final-source-5ae91c238/rb-36551451072/snapshot-20260929T095615.236577Z.json",
+      "original_bytes": 37398,
+      "original_sha256": "c4f05c452183ac6873f1d215f2ea9be45f1eb0b304be55df573a33f1bb508b99",
+      "bundle_path": "rb-36551451072/snapshot-20260929T095615.236577Z.json.gz",
+      "encoding": "gzip",
+      "bundle_bytes": 3518,
+      "bundle_sha256": "ac16b956836868c46788ebd7564f146dba6d39de02274a25a63d719cbc9243f5"
+    },
+    {
+      "original_absolute_path": "/Users/andrewherrera/skein-worktrees/ux-rb-evidence-20260929/build/agent-logs/final-source-5ae91c238/rb-36551451072/snapshot-20260929T095701.456990Z.json",
+      "original_bytes": 37398,
+      "original_sha256": "c4f05c452183ac6873f1d215f2ea9be45f1eb0b304be55df573a33f1bb508b99",
+      "bundle_path": "rb-36551451072/snapshot-20260929T095701.456990Z.json.gz",
+      "encoding": "gzip",
+      "bundle_bytes": 3518,
+      "bundle_sha256": "ac16b956836868c46788ebd7564f146dba6d39de02274a25a63d719cbc9243f5"
+    },
+    {
+      "original_absolute_path": "/Users/andrewherrera/skein-worktrees/ux-rb-evidence-20260929/build/agent-logs/final-source-5ae91c238/rb-36551451072/snapshot-20260929T095747.779321Z.json",
+      "original_bytes": 38835,
+      "original_sha256": "c2ca2a37ea6b243e041a23649e8d1a30bfee86d352d02d448013fec8a46a1abb",
+      "bundle_path": "rb-36551451072/snapshot-20260929T095747.779321Z.json.gz",
+      "encoding": "gzip",
+      "bundle_bytes": 3706,
+      "bundle_sha256": "bffb0a588956b125047e1333bb43743c27257f0b384b567e05001b523c6e4023"
+    },
+    {
+      "original_absolute_path": "/Users/andrewherrera/skein-worktrees/ux-rb-evidence-20260929/build/agent-logs/final-source-5ae91c238/rb-36551451072/snapshot-20260929T095935.243448Z.json",
+      "original_bytes": 44671,
+      "original_sha256": "63d1788dd578cfa0c405441883fa73f8a3f7b85ce1cf068aa9fb5a2cf7fa2f66",
+      "bundle_path": "rb-36551451072/snapshot-20260929T095935.243448Z.json.gz",
+      "encoding": "gzip",
+      "bundle_bytes": 4108,
+      "bundle_sha256": "15ede7e8e9bc5f39aedc1c66f739ae085bcd8de6e0b680aea414f6353165b929"
+    },
+    {
+      "original_absolute_path": "/Users/andrewherrera/skein-worktrees/ux-rb-evidence-20260929/build/agent-logs/final-source-5ae91c238/rb-36551451072/snapshot-20260929T100210.873132Z.json",
+      "original_bytes": 45449,
+      "original_sha256": "88fc7cddd5164b6213f55678ac7cff06591d6f3f94eb35262bb245f66c88ff9a",
+      "bundle_path": "rb-36551451072/snapshot-20260929T100210.873132Z.json.gz",
+      "encoding": "gzip",
+      "bundle_bytes": 4079,
+      "bundle_sha256": "226027a0d2fdf1de07f76401276ba585757a10db23e35aa5dede58e00063576e"
+    },
+    {
+      "original_absolute_path": "/Users/andrewherrera/skein-worktrees/ux-rb-evidence-20260929/build/agent-logs/final-source-5ae91c238/rb-36551451072/source-so-determinism.sh",
+      "original_bytes": 13727,
+      "original_sha256": "3f3421ec9562cceefd6341921c65841108e5419bc80b083c67345117c3729098",
+      "bundle_path": "rb-36551451072/source-so-determinism.sh",
+      "encoding": "identity",
+      "bundle_bytes": 13727,
+      "bundle_sha256": "3f3421ec9562cceefd6341921c65841108e5419bc80b083c67345117c3729098"
+    },
+    {
+      "original_absolute_path": "/Users/andrewherrera/skein-worktrees/ux-rb-evidence-20260929/build/agent-logs/final-source-5ae91c238/rb-36551451072/source-workflow.yml",
+      "original_bytes": 23765,
+      "original_sha256": "60e1b16ce69607d85c05938d8c87229bb19aaa4d7333917dd9f5e9922bcb96f6",
+      "bundle_path": "rb-36551451072/source-workflow.yml",
+      "encoding": "identity",
+      "bundle_bytes": 23765,
+      "bundle_sha256": "60e1b16ce69607d85c05938d8c87229bb19aaa4d7333917dd9f5e9922bcb96f6"
+    }
+  ],
+  "originals_modified": false,
+  "gzip_metadata": "lossless gzip, mtime=0; decompressed bytes verified equal to original"
+}

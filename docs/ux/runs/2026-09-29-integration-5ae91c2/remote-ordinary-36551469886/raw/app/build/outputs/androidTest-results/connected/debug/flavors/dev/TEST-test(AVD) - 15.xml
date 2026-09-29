@@ -1,0 +1,86 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<testsuites tests="38" failures="0" errors="0" skipped="0" time="0.000" timestamp="2026-09-29T10:02:27" hostname="localhost">
+  <testsuite name="app.skein.SampleInstrumentedTest" tests="1" failures="0" errors="0" skipped="0" time="0.004" timestamp="2026-09-29T10:02:27" hostname="localhost">
+    <properties>
+      <property name="device" value="emulator-5554" />
+    </properties>
+    <testcase name="instrumentationTargetsTheAppUnderTest" classname="app.skein.SampleInstrumentedTest" time="0.004" />
+  </testsuite>
+  <testsuite name="app.skein.inference.LlamaCppEngineInstrumentedTest" tests="9" failures="0" errors="0" skipped="0" time="154.439" timestamp="2026-09-29T10:02:27" hostname="localhost">
+    <properties>
+      <property name="device" value="emulator-5554" />
+    </properties>
+    <testcase name="lockAfterInspectionTerminatesTheProcessAndOnlyANewUnlockCanRebind" classname="app.skein.inference.LlamaCppEngineInstrumentedTest" time="5.565" />
+    <testcase name="serviceDeathFailsTheStreamAndTheNextLoadRebinds" classname="app.skein.inference.LlamaCppEngineInstrumentedTest" time="5.071" />
+    <testcase name="inspectReadsMetadataWithoutLoading" classname="app.skein.inference.LlamaCppEngineInstrumentedTest" time="3.712" />
+    <testcase name="embed_without_capability_throws_invalid_model" classname="app.skein.inference.LlamaCppEngineInstrumentedTest" time="3.667" />
+    <testcase name="stream_emits_done_last" classname="app.skein.inference.LlamaCppEngineInstrumentedTest" time="115.760" />
+    <testcase name="load_bad_hash_returns_failure" classname="app.skein.inference.LlamaCppEngineInstrumentedTest" time="2.977" />
+    <testcase name="cancel_stops_within_100ms" classname="app.skein.inference.LlamaCppEngineInstrumentedTest" time="3.547" />
+    <testcase name="unload_then_stream_throws_not_loaded" classname="app.skein.inference.LlamaCppEngineInstrumentedTest" time="3.571" />
+    <testcase name="second_stream_fails_busy" classname="app.skein.inference.LlamaCppEngineInstrumentedTest" time="10.569" />
+  </testsuite>
+  <testsuite name="app.skein.ingest.IngestWorkerInstrumentedTest" tests="2" failures="0" errors="0" skipped="0" time="4.517" timestamp="2026-09-29T10:02:27" hostname="localhost">
+    <properties>
+      <property name="device" value="emulator-5554" />
+    </properties>
+    <testcase name="three_queued_notes_are_chunked_searchable_and_linked_after_one_pass" classname="app.skein.ingest.IngestWorkerInstrumentedTest" time="3.381" />
+    <testcase name="lock_cancels_the_unique_work_and_nothing_runs_while_locked" classname="app.skein.ingest.IngestWorkerInstrumentedTest" time="1.136" />
+  </testsuite>
+  <testsuite name="app.skein.vault.FirstRunInstrumentedTest" tests="4" failures="0" errors="0" skipped="0" time="6.080" timestamp="2026-09-29T10:02:27" hostname="localhost">
+    <properties>
+      <property name="device" value="emulator-5554" />
+    </properties>
+    <testcase name="fresh_install_seeds_the_first_persona" classname="app.skein.vault.FirstRunInstrumentedTest" time="1.582" />
+    <testcase name="second_launch_unlocks_without_setup" classname="app.skein.vault.FirstRunInstrumentedTest" time="1.784" />
+    <testcase name="fresh_install_routes_to_setup_then_unlock_then_serves_the_root" classname="app.skein.vault.FirstRunInstrumentedTest" time="0.962" />
+    <testcase name="a_second_setup_is_refused_and_the_vault_still_opens" classname="app.skein.vault.FirstRunInstrumentedTest" time="1.752" />
+  </testsuite>
+  <testsuite name="app.skein.vault.LockPolicySettingsRecreationInstrumentedTest" tests="1" failures="0" errors="0" skipped="0" time="0.511" timestamp="2026-09-29T10:02:27" hostname="localhost">
+    <properties>
+      <property name="device" value="emulator-5554" />
+    </properties>
+    <testcase name="changingLockOnScreenOffPersistsAndSurvivesActivityRecreation" classname="app.skein.vault.LockPolicySettingsRecreationInstrumentedTest" time="0.511" />
+  </testsuite>
+  <testsuite name="app.skein.vault.VaultBootstrapInstrumentedTest" tests="4" failures="0" errors="0" skipped="0" time="4.372" timestamp="2026-09-29T10:02:27" hostname="localhost">
+    <properties>
+      <property name="device" value="emulator-5554" />
+    </properties>
+    <testcase name="lock_after_bringUp_serves_no_roots" classname="app.skein.vault.VaultBootstrapInstrumentedTest" time="0.816" />
+    <testcase name="a_second_unlock_reopens_the_same_vault_file" classname="app.skein.vault.VaultBootstrapInstrumentedTest" time="1.059" />
+    <testcase name="unlock_then_bringUp_serves_the_vault_root" classname="app.skein.vault.VaultBootstrapInstrumentedTest" time="0.724" />
+    <testcase name="timed_out_write_rolls_back_before_a_fresh_session_reopens_the_vault" classname="app.skein.vault.VaultBootstrapInstrumentedTest" time="1.773" />
+  </testsuite>
+  <testsuite name="app.skein.vault.provider.VaultDocumentsProviderGrantInstrumentedTest" tests="5" failures="0" errors="0" skipped="0" time="4.128" timestamp="2026-09-29T10:02:27" hostname="localhost">
+    <properties>
+      <property name="device" value="emulator-5554" />
+    </properties>
+    <testcase name="read_worksAgain_afterLockThenReUnlock_usingTheSameDocumentId" classname="app.skein.vault.provider.VaultDocumentsProviderGrantInstrumentedTest" time="1.443" />
+    <testcase name="read_throwsFileNotFoundException_afterTheVaultLocks" classname="app.skein.vault.provider.VaultDocumentsProviderGrantInstrumentedTest" time="0.745" />
+    <testcase name="openDocument_roundTrips_theSeededNoteBytes_throughTheRealAuthority" classname="app.skein.vault.provider.VaultDocumentsProviderGrantInstrumentedTest" time="0.638" />
+    <testcase name="rootRow_neverAdvertises_flagSupportsIsChild" classname="app.skein.vault.provider.VaultDocumentsProviderGrantInstrumentedTest" time="0.615" />
+    <testcase name="takePersistableUriPermission_alwaysThrows_becauseNoPersistableGrantIsEverOffered" classname="app.skein.vault.provider.VaultDocumentsProviderGrantInstrumentedTest" time="0.687" />
+  </testsuite>
+  <testsuite name="app.skein.vault.provider.VaultDocumentsProviderTest" tests="11" failures="0" errors="0" skipped="0" time="0.697" timestamp="2026-09-29T10:02:27" hostname="localhost">
+    <properties>
+      <property name="device" value="emulator-5554" />
+    </properties>
+    <testcase name="openDocument_write_updatesTheNoteAndEnqueuesIngest" classname="app.skein.vault.provider.VaultDocumentsProviderTest" time="0.145" />
+    <testcase name="openDocument_read_streamsExactlyWhatExportMarkdownProduces" classname="app.skein.vault.provider.VaultDocumentsProviderTest" time="0.119" />
+    <testcase name="queryDocument_honoursARequestedProjection" classname="app.skein.vault.provider.VaultDocumentsProviderTest" time="0.059" />
+    <testcase name="openDocument_read_streamsTheOriginalAttachmentBytes" classname="app.skein.vault.provider.VaultDocumentsProviderTest" time="0.040" />
+    <testcase name="isChildDocument_scopesNotesUnderTheNotesDirectoryOnly" classname="app.skein.vault.provider.VaultDocumentsProviderTest" time="0.053" />
+    <testcase name="queryChildDocuments_ofAttachments_listsEveryAttachmentWithItsStoredMimeType" classname="app.skein.vault.provider.VaultDocumentsProviderTest" time="0.072" />
+    <testcase name="queryChildDocuments_ofNotes_listsEveryMarkdownDocumentAsTextMarkdown" classname="app.skein.vault.provider.VaultDocumentsProviderTest" time="0.058" />
+    <testcase name="queryRoots_listsOneVaultRoot" classname="app.skein.vault.provider.VaultDocumentsProviderTest" time="0.035" />
+    <testcase name="queryChildDocuments_ofRoot_listsNotesAndAttachments" classname="app.skein.vault.provider.VaultDocumentsProviderTest" time="0.035" />
+    <testcase name="openDocument_refusesReadWriteMode" classname="app.skein.vault.provider.VaultDocumentsProviderTest" time="0.049" />
+    <testcase name="locked_everyQueryAndOpenThrowsAndNothingIsListed" classname="app.skein.vault.provider.VaultDocumentsProviderTest" time="0.032" />
+  </testsuite>
+  <testsuite name="app.skein.vault.security.AtRestEncryptionInstrumentedTest" tests="1" failures="0" errors="0" skipped="0" time="0.784" timestamp="2026-09-29T10:02:27" hostname="localhost">
+    <properties>
+      <property name="device" value="emulator-5554" />
+    </properties>
+    <testcase name="no_plaintext_or_key_material_on_disk_vault_db_is_not_sqlite_magic_and_lock_zeroes_the_key" classname="app.skein.vault.security.AtRestEncryptionInstrumentedTest" time="0.784" />
+  </testsuite>
+</testsuites>

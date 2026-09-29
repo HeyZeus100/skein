@@ -1,0 +1,1702 @@
+{
+  "prior_run_id": 36546817687,
+  "prior_source_sha": "4f1b7d334173544feb47190b3e2e7efc4a5e1688",
+  "current_run_id": 36551469886,
+  "current_source_sha": "5ae91c238612bdd9b1511b3716d34b4fa5960dd2",
+  "prior_actual_cases": 281,
+  "current_actual_cases": 281,
+  "exact_identity_multiset_matches": true,
+  "missing_identities": [],
+  "added_identities": [],
+  "duplicate_identities": [],
+  "all_prior_19_failures_passed": true,
+  "all_six_critical_cases_passed": true,
+  "prior_identities": [
+    {
+      "module": "app",
+      "classname": "app.skein.SampleInstrumentedTest",
+      "name": "instrumentationTargetsTheAppUnderTest",
+      "count": 1
+    },
+    {
+      "module": "app",
+      "classname": "app.skein.inference.LlamaCppEngineInstrumentedTest",
+      "name": "cancel_stops_within_100ms",
+      "count": 1
+    },
+    {
+      "module": "app",
+      "classname": "app.skein.inference.LlamaCppEngineInstrumentedTest",
+      "name": "embed_without_capability_throws_invalid_model",
+      "count": 1
+    },
+    {
+      "module": "app",
+      "classname": "app.skein.inference.LlamaCppEngineInstrumentedTest",
+      "name": "inspectReadsMetadataWithoutLoading",
+      "count": 1
+    },
+    {
+      "module": "app",
+      "classname": "app.skein.inference.LlamaCppEngineInstrumentedTest",
+      "name": "load_bad_hash_returns_failure",
+      "count": 1
+    },
+    {
+      "module": "app",
+      "classname": "app.skein.inference.LlamaCppEngineInstrumentedTest",
+      "name": "lockAfterInspectionTerminatesTheProcessAndOnlyANewUnlockCanRebind",
+      "count": 1
+    },
+    {
+      "module": "app",
+      "classname": "app.skein.inference.LlamaCppEngineInstrumentedTest",
+      "name": "second_stream_fails_busy",
+      "count": 1
+    },
+    {
+      "module": "app",
+      "classname": "app.skein.inference.LlamaCppEngineInstrumentedTest",
+      "name": "serviceDeathFailsTheStreamAndTheNextLoadRebinds",
+      "count": 1
+    },
+    {
+      "module": "app",
+      "classname": "app.skein.inference.LlamaCppEngineInstrumentedTest",
+      "name": "stream_emits_done_last",
+      "count": 1
+    },
+    {
+      "module": "app",
+      "classname": "app.skein.inference.LlamaCppEngineInstrumentedTest",
+      "name": "unload_then_stream_throws_not_loaded",
+      "count": 1
+    },
+    {
+      "module": "app",
+      "classname": "app.skein.ingest.IngestWorkerInstrumentedTest",
+      "name": "lock_cancels_the_unique_work_and_nothing_runs_while_locked",
+      "count": 1
+    },
+    {
+      "module": "app",
+      "classname": "app.skein.ingest.IngestWorkerInstrumentedTest",
+      "name": "three_queued_notes_are_chunked_searchable_and_linked_after_one_pass",
+      "count": 1
+    },
+    {
+      "module": "app",
+      "classname": "app.skein.vault.FirstRunInstrumentedTest",
+      "name": "a_second_setup_is_refused_and_the_vault_still_opens",
+      "count": 1
+    },
+    {
+      "module": "app",
+      "classname": "app.skein.vault.FirstRunInstrumentedTest",
+      "name": "fresh_install_routes_to_setup_then_unlock_then_serves_the_root",
+      "count": 1
+    },
+    {
+      "module": "app",
+      "classname": "app.skein.vault.FirstRunInstrumentedTest",
+      "name": "fresh_install_seeds_the_first_persona",
+      "count": 1
+    },
+    {
+      "module": "app",
+      "classname": "app.skein.vault.FirstRunInstrumentedTest",
+      "name": "second_launch_unlocks_without_setup",
+      "count": 1
+    },
+    {
+      "module": "app",
+      "classname": "app.skein.vault.LockPolicySettingsRecreationInstrumentedTest",
+      "name": "changingLockOnScreenOffPersistsAndSurvivesActivityRecreation",
+      "count": 1
+    },
+    {
+      "module": "app",
+      "classname": "app.skein.vault.VaultBootstrapInstrumentedTest",
+      "name": "a_second_unlock_reopens_the_same_vault_file",
+      "count": 1
+    },
+    {
+      "module": "app",
+      "classname": "app.skein.vault.VaultBootstrapInstrumentedTest",
+      "name": "lock_after_bringUp_serves_no_roots",
+      "count": 1
+    },
+    {
+      "module": "app",
+      "classname": "app.skein.vault.VaultBootstrapInstrumentedTest",
+      "name": "timed_out_write_rolls_back_before_a_fresh_session_reopens_the_vault",
+      "count": 1
+    },
+    {
+      "module": "app",
+      "classname": "app.skein.vault.VaultBootstrapInstrumentedTest",
+      "name": "unlock_then_bringUp_serves_the_vault_root",
+      "count": 1
+    },
+    {
+      "module": "app",
+      "classname": "app.skein.vault.provider.VaultDocumentsProviderGrantInstrumentedTest",
+      "name": "openDocument_roundTrips_theSeededNoteBytes_throughTheRealAuthority",
+      "count": 1
+    },
+    {
+      "module": "app",
+      "classname": "app.skein.vault.provider.VaultDocumentsProviderGrantInstrumentedTest",
+      "name": "read_throwsFileNotFoundException_afterTheVaultLocks",
+      "count": 1
+    },
+    {
+      "module": "app",
+      "classname": "app.skein.vault.provider.VaultDocumentsProviderGrantInstrumentedTest",
+      "name": "read_worksAgain_afterLockThenReUnlock_usingTheSameDocumentId",
+      "count": 1
+    },
+    {
+      "module": "app",
+      "classname": "app.skein.vault.provider.VaultDocumentsProviderGrantInstrumentedTest",
+      "name": "rootRow_neverAdvertises_flagSupportsIsChild",
+      "count": 1
+    },
+    {
+      "module": "app",
+      "classname": "app.skein.vault.provider.VaultDocumentsProviderGrantInstrumentedTest",
+      "name": "takePersistableUriPermission_alwaysThrows_becauseNoPersistableGrantIsEverOffered",
+      "count": 1
+    },
+    {
+      "module": "app",
+      "classname": "app.skein.vault.provider.VaultDocumentsProviderTest",
+      "name": "isChildDocument_scopesNotesUnderTheNotesDirectoryOnly",
+      "count": 1
+    },
+    {
+      "module": "app",
+      "classname": "app.skein.vault.provider.VaultDocumentsProviderTest",
+      "name": "locked_everyQueryAndOpenThrowsAndNothingIsListed",
+      "count": 1
+    },
+    {
+      "module": "app",
+      "classname": "app.skein.vault.provider.VaultDocumentsProviderTest",
+      "name": "openDocument_read_streamsExactlyWhatExportMarkdownProduces",
+      "count": 1
+    },
+    {
+      "module": "app",
+      "classname": "app.skein.vault.provider.VaultDocumentsProviderTest",
+      "name": "openDocument_read_streamsTheOriginalAttachmentBytes",
+      "count": 1
+    },
+    {
+      "module": "app",
+      "classname": "app.skein.vault.provider.VaultDocumentsProviderTest",
+      "name": "openDocument_refusesReadWriteMode",
+      "count": 1
+    },
+    {
+      "module": "app",
+      "classname": "app.skein.vault.provider.VaultDocumentsProviderTest",
+      "name": "openDocument_write_updatesTheNoteAndEnqueuesIngest",
+      "count": 1
+    },
+    {
+      "module": "app",
+      "classname": "app.skein.vault.provider.VaultDocumentsProviderTest",
+      "name": "queryChildDocuments_ofAttachments_listsEveryAttachmentWithItsStoredMimeType",
+      "count": 1
+    },
+    {
+      "module": "app",
+      "classname": "app.skein.vault.provider.VaultDocumentsProviderTest",
+      "name": "queryChildDocuments_ofNotes_listsEveryMarkdownDocumentAsTextMarkdown",
+      "count": 1
+    },
+    {
+      "module": "app",
+      "classname": "app.skein.vault.provider.VaultDocumentsProviderTest",
+      "name": "queryChildDocuments_ofRoot_listsNotesAndAttachments",
+      "count": 1
+    },
+    {
+      "module": "app",
+      "classname": "app.skein.vault.provider.VaultDocumentsProviderTest",
+      "name": "queryDocument_honoursARequestedProjection",
+      "count": 1
+    },
+    {
+      "module": "app",
+      "classname": "app.skein.vault.provider.VaultDocumentsProviderTest",
+      "name": "queryRoots_listsOneVaultRoot",
+      "count": 1
+    },
+    {
+      "module": "app",
+      "classname": "app.skein.vault.security.AtRestEncryptionInstrumentedTest",
+      "name": "no_plaintext_or_key_material_on_disk_vault_db_is_not_sqlite_magic_and_lock_zeroes_the_key",
+      "count": 1
+    },
+    {
+      "module": "core/vault",
+      "classname": "app.skein.core.vault.db.SkeinSQLiteDriverInstrumentedTest",
+      "name": "bindAndGetRoundTripsForAllSupportedTypes",
+      "count": 1
+    },
+    {
+      "module": "core/vault",
+      "classname": "app.skein.core.vault.db.SkeinSQLiteDriverInstrumentedTest",
+      "name": "cipherVersionMatchesPinnedSqlcipher",
+      "count": 1
+    },
+    {
+      "module": "core/vault",
+      "classname": "app.skein.core.vault.db.SkeinSQLiteDriverInstrumentedTest",
+      "name": "fts5VirtualTableProbe",
+      "count": 1
+    },
+    {
+      "module": "core/vault",
+      "classname": "app.skein.core.vault.db.SkeinSQLiteDriverInstrumentedTest",
+      "name": "getBlobRoundTrips256ByteInt8Vector",
+      "count": 1
+    },
+    {
+      "module": "core/vault",
+      "classname": "app.skein.core.vault.db.SkeinSQLiteDriverInstrumentedTest",
+      "name": "keyedOpenRunsSection4_9PragmaSequence",
+      "count": 1
+    },
+    {
+      "module": "core/vault",
+      "classname": "app.skein.core.vault.db.SkeinSQLiteDriverInstrumentedTest",
+      "name": "openingWithWrongKeyThrowsNotADatabase",
+      "count": 1
+    },
+    {
+      "module": "core/vault",
+      "classname": "app.skein.core.vault.db.SkeinSQLiteDriverInstrumentedTest",
+      "name": "passphraseRoundTrip",
+      "count": 1
+    },
+    {
+      "module": "core/vault",
+      "classname": "app.skein.core.vault.db.SkeinSQLiteDriverInstrumentedTest",
+      "name": "vecVersionMatchesPinned",
+      "count": 1
+    },
+    {
+      "module": "core/vault",
+      "classname": "app.skein.core.vault.db.migrations.MigratorInstrumentedTest",
+      "name": "afterMigration010ADeletedTokenLeavesNoBytesInChunksFtsData",
+      "count": 1
+    },
+    {
+      "module": "core/vault",
+      "classname": "app.skein.core.vault.db.migrations.MigratorInstrumentedTest",
+      "name": "afterMigration010ReChunkingLeavesNoResidue",
+      "count": 1
+    },
+    {
+      "module": "core/vault",
+      "classname": "app.skein.core.vault.db.migrations.MigratorInstrumentedTest",
+      "name": "brokenMigrationRollsBackAndLeavesUserVersionUnchanged",
+      "count": 1
+    },
+    {
+      "module": "core/vault",
+      "classname": "app.skein.core.vault.db.migrations.MigratorInstrumentedTest",
+      "name": "chunkByteOffsetColumnsRoundTrip",
+      "count": 1
+    },
+    {
+      "module": "core/vault",
+      "classname": "app.skein.core.vault.db.migrations.MigratorInstrumentedTest",
+      "name": "deletingChunkRemovesItFromFtsAndVec",
+      "count": 1
+    },
+    {
+      "module": "core/vault",
+      "classname": "app.skein.core.vault.db.migrations.MigratorInstrumentedTest",
+      "name": "documentRevisionsUpsertsByContentAddressAndCascadesWithItsDocument",
+      "count": 1
+    },
+    {
+      "module": "core/vault",
+      "classname": "app.skein.core.vault.db.migrations.MigratorInstrumentedTest",
+      "name": "exportStageDefaultsToUnsweptAndCascadesWithItsDocument",
+      "count": 1
+    },
+    {
+      "module": "core/vault",
+      "classname": "app.skein.core.vault.db.migrations.MigratorInstrumentedTest",
+      "name": "freshDatabaseLedgerListsEveryAppliedVersion",
+      "count": 1
+    },
+    {
+      "module": "core/vault",
+      "classname": "app.skein.core.vault.db.migrations.MigratorInstrumentedTest",
+      "name": "freshDatabaseMigratesToLatestVersionWithAllSchemaObjects",
+      "count": 1
+    },
+    {
+      "module": "core/vault",
+      "classname": "app.skein.core.vault.db.migrations.MigratorInstrumentedTest",
+      "name": "ingestQueueAttemptsDefaultsToZeroAndResetsOnReQueue",
+      "count": 1
+    },
+    {
+      "module": "core/vault",
+      "classname": "app.skein.core.vault.db.migrations.MigratorInstrumentedTest",
+      "name": "insertingChunkMakesTextFindableViaFtsMatch",
+      "count": 1
+    },
+    {
+      "module": "core/vault",
+      "classname": "app.skein.core.vault.db.migrations.MigratorInstrumentedTest",
+      "name": "insertingNoteDocumentEnqueuesCreatedReason",
+      "count": 1
+    },
+    {
+      "module": "core/vault",
+      "classname": "app.skein.core.vault.db.migrations.MigratorInstrumentedTest",
+      "name": "ledgerSeedsPre005DatabaseAndStillAppliesTheGapFillerWithoutLoweringUserVersion",
+      "count": 1
+    },
+    {
+      "module": "core/vault",
+      "classname": "app.skein.core.vault.db.migrations.MigratorInstrumentedTest",
+      "name": "migration010EnablesFts5SecureDelete",
+      "count": 1
+    },
+    {
+      "module": "core/vault",
+      "classname": "app.skein.core.vault.db.migrations.MigratorInstrumentedTest",
+      "name": "migration010IsIdempotentOnRerun",
+      "count": 1
+    },
+    {
+      "module": "core/vault",
+      "classname": "app.skein.core.vault.db.migrations.MigratorInstrumentedTest",
+      "name": "migration010OptimizePurgesResidueWrittenBeforeIt",
+      "count": 1
+    },
+    {
+      "module": "core/vault",
+      "classname": "app.skein.core.vault.db.migrations.MigratorInstrumentedTest",
+      "name": "migration011UpgradesExistingVaultAndDraftForeignKeyPreventsResurrection",
+      "count": 1
+    },
+    {
+      "module": "core/vault",
+      "classname": "app.skein.core.vault.db.migrations.MigratorInstrumentedTest",
+      "name": "rowsSeededBeforeMigration007SurviveTheDropAndDocumentsIsUnaffected",
+      "count": 1
+    },
+    {
+      "module": "core/vault",
+      "classname": "app.skein.core.vault.db.migrations.MigratorInstrumentedTest",
+      "name": "runningMigrateTwiceIsANoop",
+      "count": 1
+    },
+    {
+      "module": "core/vault",
+      "classname": "app.skein.core.vault.db.migrations.MigratorInstrumentedTest",
+      "name": "updatingBodyMdEnqueuesUpdatedReason",
+      "count": 1
+    },
+    {
+      "module": "core/vault",
+      "classname": "app.skein.core.vault.db.migrations.MigratorInstrumentedTest",
+      "name": "updatingOnlyPersonaIdDoesNotEnqueue",
+      "count": 1
+    },
+    {
+      "module": "core/vault",
+      "classname": "app.skein.core.vault.export.stage.ExportStageRepositoryContractTest",
+      "name": "aFreshlyInsertedStageIsNotSwept",
+      "count": 1
+    },
+    {
+      "module": "core/vault",
+      "classname": "app.skein.core.vault.export.stage.ExportStageRepositoryContractTest",
+      "name": "aStageWithNoDocumentSurvivesUnrelatedDocumentDeletes",
+      "count": 1
+    },
+    {
+      "module": "core/vault",
+      "classname": "app.skein.core.vault.export.stage.ExportStageRepositoryContractTest",
+      "name": "anUnrecordedStageIdReadsBackAsNull",
+      "count": 1
+    },
+    {
+      "module": "core/vault",
+      "classname": "app.skein.core.vault.export.stage.ExportStageRepositoryContractTest",
+      "name": "deletingTheDocumentCascadesItsStageRowAway",
+      "count": 1
+    },
+    {
+      "module": "core/vault",
+      "classname": "app.skein.core.vault.export.stage.ExportStageRepositoryContractTest",
+      "name": "insertedStageReadsBackWithEveryColumnIntact",
+      "count": 1
+    },
+    {
+      "module": "core/vault",
+      "classname": "app.skein.core.vault.export.stage.ExportStageRepositoryContractTest",
+      "name": "listUnsweptOmitsRowsAlreadyMarkedSwept",
+      "count": 1
+    },
+    {
+      "module": "core/vault",
+      "classname": "app.skein.core.vault.export.stage.ExportStageRepositoryContractTest",
+      "name": "listUnsweptReturnsTheMostOverduePlaintextFirst",
+      "count": 1
+    },
+    {
+      "module": "core/vault",
+      "classname": "app.skein.core.vault.export.stage.ExportStageRepositoryContractTest",
+      "name": "markAllStagesSweptLeavesNothingUnswept",
+      "count": 1
+    },
+    {
+      "module": "core/vault",
+      "classname": "app.skein.core.vault.export.stage.ExportStageRepositoryContractTest",
+      "name": "markAllStagesSweptReportsHowManyRowsItChanged",
+      "count": 1
+    },
+    {
+      "module": "core/vault",
+      "classname": "app.skein.core.vault.export.stage.ExportStageRepositoryContractTest",
+      "name": "markingAStageSweptReportsTrueTheFirstTime",
+      "count": 1
+    },
+    {
+      "module": "core/vault",
+      "classname": "app.skein.core.vault.export.stage.ExportStageRepositoryContractTest",
+      "name": "markingAnAlreadySweptStageReportsFalse",
+      "count": 1
+    },
+    {
+      "module": "core/vault",
+      "classname": "app.skein.core.vault.export.stage.ExportStageRepositoryContractTest",
+      "name": "markingAnUnknownStageReportsFalse",
+      "count": 1
+    },
+    {
+      "module": "core/vault",
+      "classname": "app.skein.core.vault.export.stage.ExportStageRepositoryContractTest",
+      "name": "reinsertingTheSameStageIdReplacesTheRowRatherThanThrowing",
+      "count": 1
+    },
+    {
+      "module": "core/vault",
+      "classname": "app.skein.core.vault.index.GraphRecallAcceptanceTest",
+      "name": "ordinaryPhraseDiscoversLongerTitlesAndLinkedAnswerWithinEvidenceScope",
+      "count": 1
+    },
+    {
+      "module": "core/vault",
+      "classname": "app.skein.core.vault.index.IndexStoreImplAcceptanceTest",
+      "name": "aCommittedReplaceChunksPublishesExactlyOneChunksReplaced",
+      "count": 1
+    },
+    {
+      "module": "core/vault",
+      "classname": "app.skein.core.vault.index.IndexStoreImplAcceptanceTest",
+      "name": "aReplaceChunksWhoseInsertAbortsRollsBackAndPublishesNoIndexChange",
+      "count": 1
+    },
+    {
+      "module": "core/vault",
+      "classname": "app.skein.core.vault.index.IndexStoreImplAcceptanceTest",
+      "name": "actualTokenizerBoundsSkipWholeTokensAndNeverInventPostingFragments",
+      "count": 1
+    },
+    {
+      "module": "core/vault",
+      "classname": "app.skein.core.vault.index.IndexStoreImplAcceptanceTest",
+      "name": "bm25DoesNotThrowOnTwentyAdversarialQueryStrings",
+      "count": 1
+    },
+    {
+      "module": "core/vault",
+      "classname": "app.skein.core.vault.index.IndexStoreImplAcceptanceTest",
+      "name": "ingestRowProbeDetectsAMissingLaterPostingWhenTheFirstRowIsHealthy",
+      "count": 1
+    },
+    {
+      "module": "core/vault",
+      "classname": "app.skein.core.vault.index.IndexStoreImplAcceptanceTest",
+      "name": "ingestRowProbeDoesNotTreatAsciiInsideAUnicodeTokenAsAMissingPosting",
+      "count": 1
+    },
+    {
+      "module": "core/vault",
+      "classname": "app.skein.core.vault.index.IndexStoreImplAcceptanceTest",
+      "name": "ingestRowProbeVerifiesHealthyPostingBelowTheGlobalTop50",
+      "count": 1
+    },
+    {
+      "module": "core/vault",
+      "classname": "app.skein.core.vault.index.IndexStoreImplAcceptanceTest",
+      "name": "ingestRowProbeWarnsWhenTheActualInsertTriggerIsMissing",
+      "count": 1
+    },
+    {
+      "module": "core/vault",
+      "classname": "app.skein.core.vault.index.IndexStoreImplAcceptanceTest",
+      "name": "knnReturnsExactlyKRowsOverA10000VectorCorpus",
+      "count": 1
+    },
+    {
+      "module": "core/vault",
+      "classname": "app.skein.core.vault.index.IndexStoreImplAcceptanceTest",
+      "name": "replaceEdgesWithWIKILINKDoesNotTouchENTITYEdgesOfTheSameSource",
+      "count": 1
+    },
+    {
+      "module": "core/vault",
+      "classname": "app.skein.core.vault.index.IndexStoreImplAcceptanceTest",
+      "name": "unicodeAdversarialQueriesRemainLiteralAndCannotBroadenToUnrelatedRows",
+      "count": 1
+    },
+    {
+      "module": "core/vault",
+      "classname": "app.skein.core.vault.index.IndexStoreImplAcceptanceTest",
+      "name": "unicodeOnlyIngestProbeChecksARealPostingWithoutAsciiFallback",
+      "count": 1
+    },
+    {
+      "module": "core/vault",
+      "classname": "app.skein.core.vault.index.IndexStoreImplAcceptanceTest",
+      "name": "unicodeOnlyIngestProbeFindsAMissingMiddleRowBetweenHealthyRows",
+      "count": 1
+    },
+    {
+      "module": "core/vault",
+      "classname": "app.skein.core.vault.index.IndexStoreImplAcceptanceTest",
+      "name": "unicodeOnlyIngestProbeWarnsWhenTheInsertTriggerIsMissing",
+      "count": 1
+    },
+    {
+      "module": "core/vault",
+      "classname": "app.skein.core.vault.index.IndexStoreImplAcceptanceTest",
+      "name": "unicodeQueryTermsMatchTheActualDefaultSqliteTokenizer",
+      "count": 1
+    },
+    {
+      "module": "core/vault",
+      "classname": "app.skein.core.vault.index.IndexStoreImplAcceptanceTest",
+      "name": "unicodeTextBindingPreservesSupplementaryAndLegacyModifiedUtf8",
+      "count": 1
+    },
+    {
+      "module": "core/vault",
+      "classname": "app.skein.core.vault.index.IndexStoreImplContractTest",
+      "name": "bm25_finds_an_exact_term",
+      "count": 1
+    },
+    {
+      "module": "core/vault",
+      "classname": "app.skein.core.vault.index.IndexStoreImplContractTest",
+      "name": "chunksForDocs_also_reads_back_revisionHash_and_byte_offsets",
+      "count": 1
+    },
+    {
+      "module": "core/vault",
+      "classname": "app.skein.core.vault.index.IndexStoreImplContractTest",
+      "name": "edgesTo_returns_backlinks",
+      "count": 1
+    },
+    {
+      "module": "core/vault",
+      "classname": "app.skein.core.vault.index.IndexStoreImplContractTest",
+      "name": "knn_returns_nearest_first_for_orthogonal_int8_vectors",
+      "count": 1
+    },
+    {
+      "module": "core/vault",
+      "classname": "app.skein.core.vault.index.IndexStoreImplContractTest",
+      "name": "lexical_match_is_specific_to_one_row_and_removed_when_replaced",
+      "count": 1
+    },
+    {
+      "module": "core/vault",
+      "classname": "app.skein.core.vault.index.IndexStoreImplContractTest",
+      "name": "neighborhood_hops2_stops_at_maxNodes",
+      "count": 1
+    },
+    {
+      "module": "core/vault",
+      "classname": "app.skein.core.vault.index.IndexStoreImplContractTest",
+      "name": "observeChanges_delivers_one_event_per_call_in_publication_order",
+      "count": 1
+    },
+    {
+      "module": "core/vault",
+      "classname": "app.skein.core.vault.index.IndexStoreImplContractTest",
+      "name": "observeChanges_does_not_replay_changes_made_before_subscribing",
+      "count": 1
+    },
+    {
+      "module": "core/vault",
+      "classname": "app.skein.core.vault.index.IndexStoreImplContractTest",
+      "name": "observeChanges_emits_ChunksReplaced_by_the_time_replaceChunks_returns",
+      "count": 1
+    },
+    {
+      "module": "core/vault",
+      "classname": "app.skein.core.vault.index.IndexStoreImplContractTest",
+      "name": "observeChanges_emits_ChunksReplaced_even_when_the_new_chunk_list_is_empty",
+      "count": 1
+    },
+    {
+      "module": "core/vault",
+      "classname": "app.skein.core.vault.index.IndexStoreImplContractTest",
+      "name": "observeChanges_emits_EdgesReplaced_carrying_the_nominated_kinds",
+      "count": 1
+    },
+    {
+      "module": "core/vault",
+      "classname": "app.skein.core.vault.index.IndexStoreImplContractTest",
+      "name": "observeChanges_emits_EmbeddingsUpdated_with_the_written_chunk_ids",
+      "count": 1
+    },
+    {
+      "module": "core/vault",
+      "classname": "app.skein.core.vault.index.IndexStoreImplContractTest",
+      "name": "observeChanges_is_silent_for_a_no_op_replaceEdges",
+      "count": 1
+    },
+    {
+      "module": "core/vault",
+      "classname": "app.skein.core.vault.index.IndexStoreImplContractTest",
+      "name": "replaceChunks_deletes_old_chunk_ids",
+      "count": 1
+    },
+    {
+      "module": "core/vault",
+      "classname": "app.skein.core.vault.index.IndexStoreImplContractTest",
+      "name": "replaceChunks_stamps_revisionHash_and_byte_offsets_that_getChunks_reads_back",
+      "count": 1
+    },
+    {
+      "module": "core/vault",
+      "classname": "app.skein.core.vault.index.IndexStoreImplContractTest",
+      "name": "replaceChunks_with_no_revisionHash_or_offsets_reads_back_null_for_all_three",
+      "count": 1
+    },
+    {
+      "module": "core/vault",
+      "classname": "app.skein.core.vault.index.LexicalRecallAcceptanceTest",
+      "name": "lexicalRecallDoesNotThrowOnTwentyAdversarialQueryStrings",
+      "count": 1
+    },
+    {
+      "module": "core/vault",
+      "classname": "app.skein.core.vault.index.LexicalRecallAcceptanceTest",
+      "name": "recallOfSqliteCipherRanksTheBothTermsChunkFirstWithScoresNormalizedTo01",
+      "count": 1
+    },
+    {
+      "module": "core/vault",
+      "classname": "app.skein.core.vault.index.VectorRecallAcceptanceTest",
+      "name": "recallRanksTheChunkMatchingTheQueryVectorFirstScoresMappedTo01",
+      "count": 1
+    },
+    {
+      "module": "core/vault",
+      "classname": "app.skein.core.vault.key.VaultKeyProviderInstrumentedTest",
+      "name": "createKey_without_strongbox_produces_a_usable_alias",
+      "count": 1
+    },
+    {
+      "module": "core/vault",
+      "classname": "app.skein.core.vault.key.VaultKeyProviderInstrumentedTest",
+      "name": "encryptCipher_on_authRequired_key_requires_user_authentication",
+      "count": 1
+    },
+    {
+      "module": "core/vault",
+      "classname": "app.skein.core.vault.key.VaultKeyProviderInstrumentedTest",
+      "name": "hasStrongBox_probe_runs_without_throwing",
+      "count": 1
+    },
+    {
+      "module": "core/vault",
+      "classname": "app.skein.core.vault.key.VaultKeyProvidersInstrumentedTest",
+      "name": "envelope_round_trips_and_rewraps_on_the_device_filesystem",
+      "count": 1
+    },
+    {
+      "module": "core/vault",
+      "classname": "app.skein.core.vault.key.VaultKeyProvidersInstrumentedTest",
+      "name": "forDevice_builds_the_real_provider_locked_and_without_touching_disk",
+      "count": 1
+    },
+    {
+      "module": "core/vault",
+      "classname": "app.skein.core.vault.key.VaultKeyProvidersInstrumentedTest",
+      "name": "setup_without_an_enrolled_biometric_leaves_no_envelope_and_no_aliases",
+      "count": 1
+    },
+    {
+      "module": "core/vault",
+      "classname": "app.skein.core.vault.key.VaultKeyProvidersInstrumentedTest",
+      "name": "unlock_before_setup_reports_NotInitialised_and_creates_nothing",
+      "count": 1
+    },
+    {
+      "module": "core/vault",
+      "classname": "app.skein.core.vault.key.VaultKeyProvidersInstrumentedTest",
+      "name": "unlock_over_a_real_auth_bound_alias_yields_no_key_without_authentication",
+      "count": 1
+    },
+    {
+      "module": "core/vault",
+      "classname": "app.skein.core.vault.lifecycle.VaultLifecycleInstrumentedTest",
+      "name": "closeLeavesNoWalOrShmResidue",
+      "count": 1
+    },
+    {
+      "module": "core/vault",
+      "classname": "app.skein.core.vault.lifecycle.VaultLifecycleInstrumentedTest",
+      "name": "createThenOpenThenCloseThenOpenThenCloseRoundTrip",
+      "count": 1
+    },
+    {
+      "module": "core/vault",
+      "classname": "app.skein.core.vault.lifecycle.VaultLifecycleInstrumentedTest",
+      "name": "createTwiceFailsWithAlreadyExists",
+      "count": 1
+    },
+    {
+      "module": "core/vault",
+      "classname": "app.skein.core.vault.lifecycle.VaultLifecycleInstrumentedTest",
+      "name": "integrityCheckOnAFreshlyCreatedVaultReportsOk",
+      "count": 1
+    },
+    {
+      "module": "core/vault",
+      "classname": "app.skein.core.vault.lifecycle.VaultLifecycleInstrumentedTest",
+      "name": "integrityCheckWhileNotOpenReportsNotOpen",
+      "count": 1
+    },
+    {
+      "module": "core/vault",
+      "classname": "app.skein.core.vault.lifecycle.VaultLifecycleInstrumentedTest",
+      "name": "openNonexistentVaultFailsWithNotFound",
+      "count": 1
+    },
+    {
+      "module": "core/vault",
+      "classname": "app.skein.core.vault.lifecycle.VaultLifecycleInstrumentedTest",
+      "name": "openWithWrongKeyReturnsTypedWrongKey",
+      "count": 1
+    },
+    {
+      "module": "core/vault",
+      "classname": "app.skein.core.vault.lifecycle.VaultResetInstrumentedTest",
+      "name": "reset_deletes_real_files_under_filesDir",
+      "count": 1
+    },
+    {
+      "module": "core/vault",
+      "classname": "app.skein.core.vault.lifecycle.VaultResetInstrumentedTest",
+      "name": "reset_refuses_while_unlocked_and_leaves_real_files_alone",
+      "count": 1
+    },
+    {
+      "module": "core/vault",
+      "classname": "app.skein.core.vault.lifecycle.VaultResetInstrumentedTest",
+      "name": "reset_removes_real_Keystore_aliases",
+      "count": 1
+    },
+    {
+      "module": "core/vault",
+      "classname": "app.skein.core.vault.models.ModelRegistryImplContractTest",
+      "name": "default_is_null_for_a_fresh_registry",
+      "count": 1
+    },
+    {
+      "module": "core/vault",
+      "classname": "app.skein.core.vault.models.ModelRegistryImplContractTest",
+      "name": "delete_of_an_unknown_id_is_a_no_op",
+      "count": 1
+    },
+    {
+      "module": "core/vault",
+      "classname": "app.skein.core.vault.models.ModelRegistryImplContractTest",
+      "name": "delete_removes_the_row",
+      "count": 1
+    },
+    {
+      "module": "core/vault",
+      "classname": "app.skein.core.vault.models.ModelRegistryImplContractTest",
+      "name": "get_returns_null_for_an_unknown_id",
+      "count": 1
+    },
+    {
+      "module": "core/vault",
+      "classname": "app.skein.core.vault.models.ModelRegistryImplContractTest",
+      "name": "list_is_empty_for_a_fresh_registry",
+      "count": 1
+    },
+    {
+      "module": "core/vault",
+      "classname": "app.skein.core.vault.models.ModelRegistryImplContractTest",
+      "name": "list_reflects_every_upserted_record",
+      "count": 1
+    },
+    {
+      "module": "core/vault",
+      "classname": "app.skein.core.vault.models.ModelRegistryImplContractTest",
+      "name": "setDefault_accepts_an_id_with_no_backing_row",
+      "count": 1
+    },
+    {
+      "module": "core/vault",
+      "classname": "app.skein.core.vault.models.ModelRegistryImplContractTest",
+      "name": "setDefault_null_clears_the_default",
+      "count": 1
+    },
+    {
+      "module": "core/vault",
+      "classname": "app.skein.core.vault.models.ModelRegistryImplContractTest",
+      "name": "setDefault_then_default_round_trips",
+      "count": 1
+    },
+    {
+      "module": "core/vault",
+      "classname": "app.skein.core.vault.models.ModelRegistryImplContractTest",
+      "name": "upsert_replaces_an_existing_row_with_the_same_id",
+      "count": 1
+    },
+    {
+      "module": "core/vault",
+      "classname": "app.skein.core.vault.models.ModelRegistryImplContractTest",
+      "name": "upsert_then_get_round_trips_every_field",
+      "count": 1
+    },
+    {
+      "module": "core/vault",
+      "classname": "app.skein.core.vault.persona.PersonaServiceImplContractTest",
+      "name": "default_creates_default_once_and_returns_same_id_on_second_call",
+      "count": 1
+    },
+    {
+      "module": "core/vault",
+      "classname": "app.skein.core.vault.persona.PersonaServiceImplContractTest",
+      "name": "delete_of_last_persona_throws_illegal_state",
+      "count": 1
+    },
+    {
+      "module": "core/vault",
+      "classname": "app.skein.core.vault.persona.PersonaServiceImplContractTest",
+      "name": "observeAll_emits_after_create",
+      "count": 1
+    },
+    {
+      "module": "core/vault",
+      "classname": "app.skein.core.vault.repository.ObjectLifecycleEmulatorLaneTest",
+      "name": "a_committed_delete_survives_pool_close_and_reopen",
+      "count": 1
+    },
+    {
+      "module": "core/vault",
+      "classname": "app.skein.core.vault.repository.ObjectLifecycleEmulatorLaneTest",
+      "name": "a_note_created_with_a_deleted_notes_title_regains_its_backlinks",
+      "count": 1
+    },
+    {
+      "module": "core/vault",
+      "classname": "app.skein.core.vault.repository.ObjectLifecycleEmulatorLaneTest",
+      "name": "attachment_blob_outlives_a_delete_whose_commit_fails",
+      "count": 1
+    },
+    {
+      "module": "core/vault",
+      "classname": "app.skein.core.vault.repository.ObjectLifecycleEmulatorLaneTest",
+      "name": "cascade_leaves_no_chunks_fts_matches_or_vec_rows",
+      "count": 1
+    },
+    {
+      "module": "core/vault",
+      "classname": "app.skein.core.vault.repository.ObjectLifecycleEmulatorLaneTest",
+      "name": "fts_delete_cost_with_secure_delete_is_recorded",
+      "count": 1
+    },
+    {
+      "module": "core/vault",
+      "classname": "app.skein.core.vault.repository.ObjectLifecycleEmulatorLaneTest",
+      "name": "pragma_secure_delete_is_on_for_every_pool_connection",
+      "count": 1
+    },
+    {
+      "module": "core/vault",
+      "classname": "app.skein.core.vault.repository.VaultRepositoryImplContractTest",
+      "name": "a_chat_documents_snapshots_stay_bounded_and_its_citations_still_resolve",
+      "count": 1
+    },
+    {
+      "module": "core/vault",
+      "classname": "app.skein.core.vault.repository.VaultRepositoryImplContractTest",
+      "name": "a_citation_into_a_deleted_document_does_not_match",
+      "count": 1
+    },
+    {
+      "module": "core/vault",
+      "classname": "app.skein.core.vault.repository.VaultRepositoryImplContractTest",
+      "name": "a_closed_repository_cannot_borrow_another_repositorys_transaction",
+      "count": 1
+    },
+    {
+      "module": "core/vault",
+      "classname": "app.skein.core.vault.repository.VaultRepositoryImplContractTest",
+      "name": "a_cosmetic_frontmatter_rewrite_does_not_change_the_revision_hash",
+      "count": 1
+    },
+    {
+      "module": "core/vault",
+      "classname": "app.skein.core.vault.repository.VaultRepositoryImplContractTest",
+      "name": "a_failed_transaction_rolls_back_every_delete_in_it",
+      "count": 1
+    },
+    {
+      "module": "core/vault",
+      "classname": "app.skein.core.vault.repository.VaultRepositoryImplContractTest",
+      "name": "a_frontmatter_only_edit_requeues_ingest",
+      "count": 1
+    },
+    {
+      "module": "core/vault",
+      "classname": "app.skein.core.vault.repository.VaultRepositoryImplContractTest",
+      "name": "a_late_autosave_never_resurrects_a_deleted_note",
+      "count": 1
+    },
+    {
+      "module": "core/vault",
+      "classname": "app.skein.core.vault.repository.VaultRepositoryImplContractTest",
+      "name": "a_message_without_citations_still_round_trips_legacy_chunk_ids",
+      "count": 1
+    },
+    {
+      "module": "core/vault",
+      "classname": "app.skein.core.vault.repository.VaultRepositoryImplContractTest",
+      "name": "a_real_frontmatter_edit_does_change_the_revision_hash",
+      "count": 1
+    },
+    {
+      "module": "core/vault",
+      "classname": "app.skein.core.vault.repository.VaultRepositoryImplContractTest",
+      "name": "altered_excerpt_does_not_unpin_other_citations_or_its_own_revision",
+      "count": 1
+    },
+    {
+      "module": "core/vault",
+      "classname": "app.skein.core.vault.repository.VaultRepositoryImplContractTest",
+      "name": "an_undone_edit_resolves_back_to_the_original_revision",
+      "count": 1
+    },
+    {
+      "module": "core/vault",
+      "classname": "app.skein.core.vault.repository.VaultRepositoryImplContractTest",
+      "name": "appendMessage_rematerializes_bodymd_containing_message_text",
+      "count": 1
+    },
+    {
+      "module": "core/vault",
+      "classname": "app.skein.core.vault.repository.VaultRepositoryImplContractTest",
+      "name": "appendMessage_round_trips_a_citation_record",
+      "count": 1
+    },
+    {
+      "module": "core/vault",
+      "classname": "app.skein.core.vault.repository.VaultRepositoryImplContractTest",
+      "name": "attachment_blob_is_deleted_only_after_commit",
+      "count": 1
+    },
+    {
+      "module": "core/vault",
+      "classname": "app.skein.core.vault.repository.VaultRepositoryImplContractTest",
+      "name": "attachment_round_trip_1MiB_of_random_bytes",
+      "count": 1
+    },
+    {
+      "module": "core/vault",
+      "classname": "app.skein.core.vault.repository.VaultRepositoryImplContractTest",
+      "name": "attachments_have_no_revisions",
+      "count": 1
+    },
+    {
+      "module": "core/vault",
+      "classname": "app.skein.core.vault.repository.VaultRepositoryImplContractTest",
+      "name": "cancellation_immediately_after_commit_cannot_skip_acknowledgement_or_undo_the_send",
+      "count": 1
+    },
+    {
+      "module": "core/vault",
+      "classname": "app.skein.core.vault.repository.VaultRepositoryImplContractTest",
+      "name": "capturing_unchanged_content_is_idempotent",
+      "count": 1
+    },
+    {
+      "module": "core/vault",
+      "classname": "app.skein.core.vault.repository.VaultRepositoryImplContractTest",
+      "name": "commit_acknowledgement_registration_requires_this_repositorys_transaction",
+      "count": 1
+    },
+    {
+      "module": "core/vault",
+      "classname": "app.skein.core.vault.repository.VaultRepositoryImplContractTest",
+      "name": "commit_acknowledgements_wait_for_outer_commit_and_never_run_on_rollback",
+      "count": 1
+    },
+    {
+      "module": "core/vault",
+      "classname": "app.skein.core.vault.repository.VaultRepositoryImplContractTest",
+      "name": "completeIngest_noop_when_requeued",
+      "count": 1
+    },
+    {
+      "module": "core/vault",
+      "classname": "app.skein.core.vault.repository.VaultRepositoryImplContractTest",
+      "name": "countChatsCiting_counts_distinct_chats_by_decoded_citation_records",
+      "count": 1
+    },
+    {
+      "module": "core/vault",
+      "classname": "app.skein.core.vault.repository.VaultRepositoryImplContractTest",
+      "name": "createDocument_callers_id_wins_over_frontmatter_id_key",
+      "count": 1
+    },
+    {
+      "module": "core/vault",
+      "classname": "app.skein.core.vault.repository.VaultRepositoryImplContractTest",
+      "name": "createDocument_captures_a_revision_addressing_the_content",
+      "count": 1
+    },
+    {
+      "module": "core/vault",
+      "classname": "app.skein.core.vault.repository.VaultRepositoryImplContractTest",
+      "name": "createDocument_frontmatter_id_key_is_the_fallback_when_caller_supplies_none",
+      "count": 1
+    },
+    {
+      "module": "core/vault",
+      "classname": "app.skein.core.vault.repository.VaultRepositoryImplContractTest",
+      "name": "create_then_get_preserves_frontmatter_id",
+      "count": 1
+    },
+    {
+      "module": "core/vault",
+      "classname": "app.skein.core.vault.repository.VaultRepositoryImplContractTest",
+      "name": "deleteDocument_explicit_id_link_is_not_a_title_link_to_a_replacement",
+      "count": 1
+    },
+    {
+      "module": "core/vault",
+      "classname": "app.skein.core.vault.repository.VaultRepositoryImplContractTest",
+      "name": "deleteDocument_id_spelling_equal_to_title_still_has_only_an_id_binding",
+      "count": 1
+    },
+    {
+      "module": "core/vault",
+      "classname": "app.skein.core.vault.repository.VaultRepositoryImplContractTest",
+      "name": "deleteDocument_is_idempotent_for_a_missing_id",
+      "count": 1
+    },
+    {
+      "module": "core/vault",
+      "classname": "app.skein.core.vault.repository.VaultRepositoryImplContractTest",
+      "name": "deleteDocument_keeps_other_chats_citation_excerpts",
+      "count": 1
+    },
+    {
+      "module": "core/vault",
+      "classname": "app.skein.core.vault.repository.VaultRepositoryImplContractTest",
+      "name": "deleteDocument_removes_cite_in_edges",
+      "count": 1
+    },
+    {
+      "module": "core/vault",
+      "classname": "app.skein.core.vault.repository.VaultRepositoryImplContractTest",
+      "name": "deleteDocument_removes_messages_revisions_and_the_ingest_queue_entry",
+      "count": 1
+    },
+    {
+      "module": "core/vault",
+      "classname": "app.skein.core.vault.repository.VaultRepositoryImplContractTest",
+      "name": "deleteDocument_removes_out_edges_of_every_kind",
+      "count": 1
+    },
+    {
+      "module": "core/vault",
+      "classname": "app.skein.core.vault.repository.VaultRepositoryImplContractTest",
+      "name": "deleteDocument_removes_the_documents_chunks",
+      "count": 1
+    },
+    {
+      "module": "core/vault",
+      "classname": "app.skein.core.vault.repository.VaultRepositoryImplContractTest",
+      "name": "deleteDocument_removes_the_row_and_getDocument_returns_null",
+      "count": 1
+    },
+    {
+      "module": "core/vault",
+      "classname": "app.skein.core.vault.repository.VaultRepositoryImplContractTest",
+      "name": "deleteDocument_requeues_the_surviving_document_with_the_same_title",
+      "count": 1
+    },
+    {
+      "module": "core/vault",
+      "classname": "app.skein.core.vault.repository.VaultRepositoryImplContractTest",
+      "name": "deleteDocument_rewrites_wikilink_in_edges_to_the_title_sentinel_at_weight_half",
+      "count": 1
+    },
+    {
+      "module": "core/vault",
+      "classname": "app.skein.core.vault.repository.VaultRepositoryImplContractTest",
+      "name": "deleteDocument_sentinel_matches_EdgeUpserter_for_a_non_ascii_title",
+      "count": 1
+    },
+    {
+      "module": "core/vault",
+      "classname": "app.skein.core.vault.repository.VaultRepositoryImplContractTest",
+      "name": "deleted_chat_cascades_draft_and_late_write_cannot_resurrect_it",
+      "count": 1
+    },
+    {
+      "module": "core/vault",
+      "classname": "app.skein.core.vault.repository.VaultRepositoryImplContractTest",
+      "name": "deleting_a_document_cascades_its_revisions_ahead_of_any_sweep",
+      "count": 1
+    },
+    {
+      "module": "core/vault",
+      "classname": "app.skein.core.vault.repository.VaultRepositoryImplContractTest",
+      "name": "draft_batch_rolls_back_and_quiesce_refuses_late_writes",
+      "count": 1
+    },
+    {
+      "module": "core/vault",
+      "classname": "app.skein.core.vault.repository.VaultRepositoryImplContractTest",
+      "name": "draft_roundtrip_preserves_unicode_selection_and_has_no_document_side_effects",
+      "count": 1
+    },
+    {
+      "module": "core/vault",
+      "classname": "app.skein.core.vault.repository.VaultRepositoryImplContractTest",
+      "name": "failing_acknowledgement_does_not_undo_commit_or_prevent_the_next_acknowledgement",
+      "count": 1
+    },
+    {
+      "module": "core/vault",
+      "classname": "app.skein.core.vault.repository.VaultRepositoryImplContractTest",
+      "name": "index_writes_for_a_missing_source_document_are_skipped",
+      "count": 1
+    },
+    {
+      "module": "core/vault",
+      "classname": "app.skein.core.vault.repository.VaultRepositoryImplContractTest",
+      "name": "kindsOf_reads_its_own_transaction_without_deadlocking",
+      "count": 1
+    },
+    {
+      "module": "core/vault",
+      "classname": "app.skein.core.vault.repository.VaultRepositoryImplContractTest",
+      "name": "kindsOf_returns_only_requested_live_kinds_in_a_large_batch",
+      "count": 1
+    },
+    {
+      "module": "core/vault",
+      "classname": "app.skein.core.vault.repository.VaultRepositoryImplContractTest",
+      "name": "new_draft_same_id_is_separate_in_each_space",
+      "count": 1
+    },
+    {
+      "module": "core/vault",
+      "classname": "app.skein.core.vault.repository.VaultRepositoryImplContractTest",
+      "name": "observeDocument_emits_null_after_delete",
+      "count": 1
+    },
+    {
+      "module": "core/vault",
+      "classname": "app.skein.core.vault.repository.VaultRepositoryImplContractTest",
+      "name": "observeMessages_emits_empty_after_the_chat_is_deleted",
+      "count": 1
+    },
+    {
+      "module": "core/vault",
+      "classname": "app.skein.core.vault.repository.VaultRepositoryImplContractTest",
+      "name": "observeTimeline_drops_the_deleted_document",
+      "count": 1
+    },
+    {
+      "module": "core/vault",
+      "classname": "app.skein.core.vault.repository.VaultRepositoryImplContractTest",
+      "name": "observeTimeline_orders_newest_first_and_filters_by_persona",
+      "count": 1
+    },
+    {
+      "module": "core/vault",
+      "classname": "app.skein.core.vault.repository.VaultRepositoryImplContractTest",
+      "name": "observeTimeline_reemits_within_50ms_of_a_write_on_another_coroutine",
+      "count": 1
+    },
+    {
+      "module": "core/vault",
+      "classname": "app.skein.core.vault.repository.VaultRepositoryImplContractTest",
+      "name": "orphan_edge_sweep_deletes_edges_from_missing_sources_and_stray_vectors",
+      "count": 1
+    },
+    {
+      "module": "core/vault",
+      "classname": "app.skein.core.vault.repository.VaultRepositoryImplContractTest",
+      "name": "orphan_edge_sweep_deletes_edges_to_missing_documents_and_requeues_their_sources",
+      "count": 1
+    },
+    {
+      "module": "core/vault",
+      "classname": "app.skein.core.vault.repository.VaultRepositoryImplContractTest",
+      "name": "orphan_edge_sweep_is_idempotent",
+      "count": 1
+    },
+    {
+      "module": "core/vault",
+      "classname": "app.skein.core.vault.repository.VaultRepositoryImplContractTest",
+      "name": "quiesce_drains_nested_transaction_and_refuses_late_writes",
+      "count": 1
+    },
+    {
+      "module": "core/vault",
+      "classname": "app.skein.core.vault.repository.VaultRepositoryImplContractTest",
+      "name": "quiesce_timeout_rolls_back_and_never_reopens_admission",
+      "count": 1
+    },
+    {
+      "module": "core/vault",
+      "classname": "app.skein.core.vault.repository.VaultRepositoryImplContractTest",
+      "name": "recordIngestFailure_count_resets_when_the_document_is_re_queued",
+      "count": 1
+    },
+    {
+      "module": "core/vault",
+      "classname": "app.skein.core.vault.repository.VaultRepositoryImplContractTest",
+      "name": "recordIngestFailure_increments_and_persists_across_dequeue",
+      "count": 1
+    },
+    {
+      "module": "core/vault",
+      "classname": "app.skein.core.vault.repository.VaultRepositoryImplContractTest",
+      "name": "recordIngestFailure_returns_zero_and_writes_nothing_once_the_entry_is_gone",
+      "count": 1
+    },
+    {
+      "module": "core/vault",
+      "classname": "app.skein.core.vault.repository.VaultRepositoryImplContractTest",
+      "name": "renameDocument_changes_only_the_title",
+      "count": 1
+    },
+    {
+      "module": "core/vault",
+      "classname": "app.skein.core.vault.repository.VaultRepositoryImplContractTest",
+      "name": "renameDocument_detaches_wikilink_in_edges_to_the_old_title_sentinel",
+      "count": 1
+    },
+    {
+      "module": "core/vault",
+      "classname": "app.skein.core.vault.repository.VaultRepositoryImplContractTest",
+      "name": "renameDocument_does_not_change_updated_at",
+      "count": 1
+    },
+    {
+      "module": "core/vault",
+      "classname": "app.skein.core.vault.repository.VaultRepositoryImplContractTest",
+      "name": "renameDocument_does_not_treat_code_literal_id_as_a_link_binding",
+      "count": 1
+    },
+    {
+      "module": "core/vault",
+      "classname": "app.skein.core.vault.repository.VaultRepositoryImplContractTest",
+      "name": "renameDocument_keeps_cite_in_edges",
+      "count": 1
+    },
+    {
+      "module": "core/vault",
+      "classname": "app.skein.core.vault.repository.VaultRepositoryImplContractTest",
+      "name": "renameDocument_keeps_content_hash_and_captures_no_revision",
+      "count": 1
+    },
+    {
+      "module": "core/vault",
+      "classname": "app.skein.core.vault.repository.VaultRepositoryImplContractTest",
+      "name": "renameDocument_on_an_attachment_keeps_its_byte_hash",
+      "count": 1
+    },
+    {
+      "module": "core/vault",
+      "classname": "app.skein.core.vault.repository.VaultRepositoryImplContractTest",
+      "name": "renameDocument_preserves_explicit_id_links_and_detaches_a_mixed_title_link",
+      "count": 1
+    },
+    {
+      "module": "core/vault",
+      "classname": "app.skein.core.vault.repository.VaultRepositoryImplContractTest",
+      "name": "renameDocument_requeues_ingest_with_a_fresh_queued_at",
+      "count": 1
+    },
+    {
+      "module": "core/vault",
+      "classname": "app.skein.core.vault.repository.VaultRepositoryImplContractTest",
+      "name": "renameDocument_trims_collapses_line_breaks_and_rejects_blank_or_over_200",
+      "count": 1
+    },
+    {
+      "module": "core/vault",
+      "classname": "app.skein.core.vault.repository.VaultRepositoryImplContractTest",
+      "name": "renameDocument_with_ifTitleIs_writes_nothing_when_the_title_changed",
+      "count": 1
+    },
+    {
+      "module": "core/vault",
+      "classname": "app.skein.core.vault.repository.VaultRepositoryImplContractTest",
+      "name": "replaceBody_never_writes_the_title",
+      "count": 1
+    },
+    {
+      "module": "core/vault",
+      "classname": "app.skein.core.vault.repository.VaultRepositoryImplContractTest",
+      "name": "replay_detects_a_source_that_changed_under_a_citation",
+      "count": 1
+    },
+    {
+      "module": "core/vault",
+      "classname": "app.skein.core.vault.repository.VaultRepositoryImplContractTest",
+      "name": "retitling_alone_does_not_change_the_revision_hash",
+      "count": 1
+    },
+    {
+      "module": "core/vault",
+      "classname": "app.skein.core.vault.repository.VaultRepositoryImplContractTest",
+      "name": "searchBodies_quantum_returns_bm25_ranked_hit_with_bracket_snippet",
+      "count": 1
+    },
+    {
+      "module": "core/vault",
+      "classname": "app.skein.core.vault.repository.VaultRepositoryImplContractTest",
+      "name": "searchTitles_and_searchBodies_never_return_a_deleted_document",
+      "count": 1
+    },
+    {
+      "module": "core/vault",
+      "classname": "app.skein.core.vault.repository.VaultRepositoryImplContractTest",
+      "name": "send_and_draft_clear_commit_together_or_both_roll_back",
+      "count": 1
+    },
+    {
+      "module": "core/vault",
+      "classname": "app.skein.core.vault.repository.VaultRepositoryImplContractTest",
+      "name": "staged_export_file_of_a_deleted_document_is_purged_after_commit",
+      "count": 1
+    },
+    {
+      "module": "core/vault",
+      "classname": "app.skein.core.vault.repository.VaultRepositoryImplContractTest",
+      "name": "sweep_is_idempotent",
+      "count": 1
+    },
+    {
+      "module": "core/vault",
+      "classname": "app.skein.core.vault.repository.VaultRepositoryImplContractTest",
+      "name": "sweep_keeps_a_superseded_revision_still_cited_by_a_message",
+      "count": 1
+    },
+    {
+      "module": "core/vault",
+      "classname": "app.skein.core.vault.repository.VaultRepositoryImplContractTest",
+      "name": "sweep_never_removes_the_current_revision",
+      "count": 1
+    },
+    {
+      "module": "core/vault",
+      "classname": "app.skein.core.vault.repository.VaultRepositoryImplContractTest",
+      "name": "sweep_removes_an_uncited_superseded_revision",
+      "count": 1
+    },
+    {
+      "module": "core/vault",
+      "classname": "app.skein.core.vault.repository.VaultRepositoryImplContractTest",
+      "name": "transaction_nests_writes_without_deadlock",
+      "count": 1
+    },
+    {
+      "module": "core/vault",
+      "classname": "app.skein.core.vault.repository.VaultRepositoryImplContractTest",
+      "name": "updateBody_bumps_updated_at_and_changes_content_hash",
+      "count": 1
+    },
+    {
+      "module": "core/vault",
+      "classname": "app.skein.core.vault.repository.VaultRepositoryImplContractTest",
+      "name": "updateBody_changes_the_revision_hash_and_keeps_the_old_revision_readable",
+      "count": 1
+    },
+    {
+      "module": "core/vault",
+      "classname": "app.skein.core.vault.repository.VaultRepositoryImplContractTest",
+      "name": "updateBody_rejects_attachments_and_chats",
+      "count": 1
+    },
+    {
+      "module": "core/vault",
+      "classname": "app.skein.core.vault.repository.VaultRepositoryImplContractTest",
+      "name": "writes_to_a_deleted_document_throw_NoSuchElementException_and_write_nothing",
+      "count": 1
+    },
+    {
+      "module": "core/vault",
+      "classname": "app.skein.vault.SchemaLoadInstrumentedTest",
+      "name": "test001InitialSqlLoadsStatementByStatementOnTheSpikeDriver",
+      "count": 1
+    },
+    {
+      "module": "inference-service",
+      "classname": "app.skein.inference.service.InferenceServiceInstrumentedTest",
+      "name": "aColdServiceRefusesLoadUntilUnlocked",
+      "count": 1
+    },
+    {
+      "module": "inference-service",
+      "classname": "app.skein.inference.service.InferenceServiceInstrumentedTest",
+      "name": "aGenerationStreamsTokensAndCompletesExactlyOnce",
+      "count": 1
+    },
+    {
+      "module": "inference-service",
+      "classname": "app.skein.inference.service.InferenceServiceInstrumentedTest",
+      "name": "aHashMismatchIsRefusedAndLeavesTheServiceUnloaded",
+      "count": 1
+    },
+    {
+      "module": "inference-service",
+      "classname": "app.skein.inference.service.InferenceServiceInstrumentedTest",
+      "name": "aHighGpuLayersLoadReportsAGpuDeviceWhenVulkanIsAvailable",
+      "count": 1
+    },
+    {
+      "module": "inference-service",
+      "classname": "app.skein.inference.service.InferenceServiceInstrumentedTest",
+      "name": "aLoadedServiceReportsReady",
+      "count": 1
+    },
+    {
+      "module": "inference-service",
+      "classname": "app.skein.inference.service.InferenceServiceInstrumentedTest",
+      "name": "aLockingServiceRefusesTheNextGenerateBeforeProcessTeardown",
+      "count": 1
+    },
+    {
+      "module": "inference-service",
+      "classname": "app.skein.inference.service.InferenceServiceInstrumentedTest",
+      "name": "aSecondConcurrentGenerateIsRefusedWithBusy",
+      "count": 1
+    },
+    {
+      "module": "inference-service",
+      "classname": "app.skein.inference.service.InferenceServiceInstrumentedTest",
+      "name": "anOversizedAnswerReservationIsRefusedBeforeTokenStreaming",
+      "count": 1
+    },
+    {
+      "module": "inference-service",
+      "classname": "app.skein.inference.service.InferenceServiceInstrumentedTest",
+      "name": "anUnlockedServiceLoadsFromADescriptor",
+      "count": 1
+    },
+    {
+      "module": "inference-service",
+      "classname": "app.skein.inference.service.InferenceServiceInstrumentedTest",
+      "name": "cancelMidGenerationCompletesAsCancelledWithinTheBudget",
+      "count": 1
+    },
+    {
+      "module": "inference-service",
+      "classname": "app.skein.inference.service.InferenceServiceInstrumentedTest",
+      "name": "cpuOnlyLoadReportsExactlyOneCpuDevice",
+      "count": 1
+    },
+    {
+      "module": "inference-service",
+      "classname": "app.skein.inference.service.InferenceServiceInstrumentedTest",
+      "name": "cpuOnlyLoadReportsNoGpuOrIgpuDevice",
+      "count": 1
+    },
+    {
+      "module": "inference-service",
+      "classname": "app.skein.inference.service.InferenceServiceInstrumentedTest",
+      "name": "lockingMidGenerationCancelsThenLockedTerminatesTheIsolatedProcess",
+      "count": 1
+    },
+    {
+      "module": "inference-service",
+      "classname": "app.skein.inference.service.InferenceServiceInstrumentedTest",
+      "name": "staleLockedPushDoesNotKillNewlyAuthorizedService",
+      "count": 1
+    },
+    {
+      "module": "inference-service",
+      "classname": "app.skein.inference.service.InferenceServiceInstrumentedTest",
+      "name": "theServiceBindsAndReportsUnloaded",
+      "count": 1
+    },
+    {
+      "module": "inference-service",
+      "classname": "app.skein.inference.service.InferenceServiceInstrumentedTest",
+      "name": "unloadIsIdempotent",
+      "count": 1
+    },
+    {
+      "module": "inference-service",
+      "classname": "app.skein.inference.service.LlamaNativeTest",
+      "name": "applyChatTemplateContainsTheUserMessage",
+      "count": 1
+    },
+    {
+      "module": "inference-service",
+      "classname": "app.skein.inference.service.LlamaNativeTest",
+      "name": "backendReportWithNoModelReportsOnlyCompileTimeCpuFeatures",
+      "count": 1
+    },
+    {
+      "module": "inference-service",
+      "classname": "app.skein.inference.service.LlamaNativeTest",
+      "name": "cancelFlagAbortsADecodeWithin100Ms",
+      "count": 1
+    },
+    {
+      "module": "inference-service",
+      "classname": "app.skein.inference.service.LlamaNativeTest",
+      "name": "chatTemplatingRenderUsesTheModelsOwnTemplateAndMarkersAroundTheContent",
+      "count": 1
+    },
+    {
+      "module": "inference-service",
+      "classname": "app.skein.inference.service.LlamaNativeTest",
+      "name": "contextCapacityRejectsZeroWrongAndFreedHandles",
+      "count": 1
+    },
+    {
+      "module": "inference-service",
+      "classname": "app.skein.inference.service.LlamaNativeTest",
+      "name": "controlsSpanningTemplateAndContentRemainLiteralInBothDirections",
+      "count": 1
+    },
+    {
+      "module": "inference-service",
+      "classname": "app.skein.inference.service.LlamaNativeTest",
+      "name": "decodePromptThenEightSamplesYieldsEightIds",
+      "count": 1
+    },
+    {
+      "module": "inference-service",
+      "classname": "app.skein.inference.service.LlamaNativeTest",
+      "name": "descriptorLoadCancellationFromProgressClosesOwnedStreamAndKeepsCallerFd",
+      "count": 1
+    },
+    {
+      "module": "inference-service",
+      "classname": "app.skein.inference.service.LlamaNativeTest",
+      "name": "embedIsUnitLengthAndModelWidth",
+      "count": 1
+    },
+    {
+      "module": "inference-service",
+      "classname": "app.skein.inference.service.LlamaNativeTest",
+      "name": "errorMessagesCarryNoPromptText",
+      "count": 1
+    },
+    {
+      "module": "inference-service",
+      "classname": "app.skein.inference.service.LlamaNativeTest",
+      "name": "exactNativeCapacityAcceptsLastReservedPositionAndRefusesOneBeyond",
+      "count": 1
+    },
+    {
+      "module": "inference-service",
+      "classname": "app.skein.inference.service.LlamaNativeTest",
+      "name": "goldenGreedySequenceIsPinned",
+      "count": 1
+    },
+    {
+      "module": "inference-service",
+      "classname": "app.skein.inference.service.LlamaNativeTest",
+      "name": "literalChatMlDelimiterCannotAddAnotherNativeControlToken",
+      "count": 1
+    },
+    {
+      "module": "inference-service",
+      "classname": "app.skein.inference.service.LlamaNativeTest",
+      "name": "loadingANonGgufFileFailsWithInvalidModelAndLeaksNoHandle",
+      "count": 1
+    },
+    {
+      "module": "inference-service",
+      "classname": "app.skein.inference.service.LlamaNativeTest",
+      "name": "nativeWhitespaceAndUnicodeTokensMatchWholePromptReference",
+      "count": 1
+    },
+    {
+      "module": "inference-service",
+      "classname": "app.skein.inference.service.LlamaNativeTest",
+      "name": "pathLoadCancellationFromProgressRetainsNoNativeHandle",
+      "count": 1
+    },
+    {
+      "module": "inference-service",
+      "classname": "app.skein.inference.service.LlamaNativeTest",
+      "name": "safeTemplateTokensMatchNativeTokensForBenignSyntheticConversation",
+      "count": 1
+    },
+    {
+      "module": "inference-service",
+      "classname": "app.skein.inference.service.LlamaNativeTest",
+      "name": "sameSeedTwiceProducesTheSameIds",
+      "count": 1
+    },
+    {
+      "module": "inference-service",
+      "classname": "app.skein.inference.service.LlamaNativeTest",
+      "name": "scaffoldTokenizerRejectsMalformedUnicodeAndInvalidByteRanges",
+      "count": 1
+    },
+    {
+      "module": "inference-service",
+      "classname": "app.skein.inference.service.LlamaNativeTest",
+      "name": "secureFreeZeroesTheKvCacheBeforeFreeing",
+      "count": 1
+    },
+    {
+      "module": "inference-service",
+      "classname": "app.skein.inference.service.LlamaNativeTest",
+      "name": "tokenToPieceConcatenatesBackToTheInput",
+      "count": 1
+    },
+    {
+      "module": "inference-service",
+      "classname": "app.skein.inference.service.LlamaNativeTest",
+      "name": "tokenizeReturnsAtLeastTwoIds",
+      "count": 1
+    },
+    {
+      "module": "inference-service",
+      "classname": "app.skein.inference.service.LlamaNativeTest",
+      "name": "zeroHandlesThrowIllegalStateException",
+      "count": 1
+    }
+  ]
+}

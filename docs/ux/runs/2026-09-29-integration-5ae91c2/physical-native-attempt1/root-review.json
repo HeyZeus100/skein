@@ -1,0 +1,20 @@
+{
+  "source_sha": "5ae91c238612bdd9b1511b3716d34b4fa5960dd2",
+  "native_report_sha256": "cb7e85882891202119fe4deedfdec4149beee329b3f5592c054a644edc1882c4",
+  "actual_cases": 5,
+  "parity_status": "PASS_ROWS_ONLY",
+  "overall_runner_complete": false,
+  "app_candidate_installed": false,
+  "generation_stop_behavior": "unmeasured",
+  "host_halt": "Formatted JUnit output did not satisfy raw-marker parser; Android17 does not support dumpsys activity instrumentation. Demo owner correcting host verification only, preserving original incomplete attempt.",
+  "safe_controls": 2,
+  "unsafe_controls": 3,
+  "reference_lengths": [
+    15,
+    9,
+    25,
+    21
+  ],
+  "privacy": "This copy contains public synthetic tokenization only. Broader diagnostic output and physical screenshots excluded.",
+  "original_path": "/Users/andrewherrera/skein-worktrees/conference-demo-20260929/build/agent-logs/fold/physical-5ae91c2-20260929T101214Z/native/native-parity.json"
+}

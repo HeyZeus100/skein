@@ -1,0 +1,19 @@
+﻿2026-09-29T09:53:40.1690838Z ##[group]Run kb=$(du -sk --exclude=before --exclude=device-before --exclude=device ux-baselines | cut -f1)
+2026-09-29T09:53:40.1691670Z [36;1mkb=$(du -sk --exclude=before --exclude=device-before --exclude=device ux-baselines | cut -f1)[0m
+2026-09-29T09:53:40.1692225Z [36;1mecho "ux-baselines: ${kb} KiB"[0m
+2026-09-29T09:53:40.1692687Z [36;1m[ "$kb" -le 51200 ] || { echo "::error::ux-baselines over 50 MiB"; exit 1; }[0m
+2026-09-29T09:53:40.1693249Z [36;1m[ "$kb" -le 40960 ] || echo "::warning::ux-baselines over 40 MiB"[0m
+2026-09-29T09:53:40.1762277Z shell: /usr/bin/bash --noprofile --norc -e -o pipefail {0}
+2026-09-29T09:53:40.1762703Z env:
+2026-09-29T09:53:40.1763088Z   JAVA_HOME: /opt/hostedtoolcache/Java_Temurin-Hotspot_jdk/17.0.20-1/x64
+2026-09-29T09:53:40.1763877Z   JAVA_HOME_17_X64: /opt/hostedtoolcache/Java_Temurin-Hotspot_jdk/17.0.20-1/x64
+2026-09-29T09:53:40.1764570Z   MAVEN_ARGS: -ntp
+2026-09-29T09:53:40.1764895Z   GRADLE_ACTION_ID: gradle/actions/setup-gradle
+2026-09-29T09:53:40.1765276Z   GRADLE_USER_HOME: /home/runner/.gradle
+2026-09-29T09:53:40.1765668Z   GRADLE_BUILD_ACTION_SETUP_COMPLETED: true
+2026-09-29T09:53:40.1766048Z   GRADLE_BUILD_ACTION_CACHE_RESTORED: true
+2026-09-29T09:53:40.1766569Z   DEVELOCITY_INJECTION_INIT_SCRIPT_NAME: gradle-actions.inject-develocity.init.gradle
+2026-09-29T09:53:40.1767113Z   DEVELOCITY_INJECTION_CUSTOM_VALUE: gradle-actions
+2026-09-29T09:53:40.1767499Z   GITHUB_DEPENDENCY_GRAPH_ENABLED: false
+2026-09-29T09:53:40.1767828Z ##[endgroup]
+2026-09-29T09:53:40.1913459Z ux-baselines: 35660 KiB

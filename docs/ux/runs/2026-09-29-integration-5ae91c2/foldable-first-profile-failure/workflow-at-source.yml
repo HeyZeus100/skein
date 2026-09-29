@@ -1,0 +1,112 @@
+name: Foldable production gate
+
+# AL-16 progress only: this lane cannot close unlocked A-G or the physical Fold gate.
+on:
+  workflow_dispatch:
+    inputs:
+      profile:
+        description: Exact AVD profile (Pixel Fold is explicit compatibility coverage only)
+        required: true
+        default: pixel_9_pro_fold
+        type: choice
+        options:
+          - pixel_9_pro_fold
+          - pixel_fold
+
+concurrency:
+  group: foldable-${{ github.ref }}
+  cancel-in-progress: false
+
+permissions:
+  contents: read
+
+jobs:
+  foldable:
+    name: ${{ inputs.profile }} production gate (API 35)
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+    env:
+      SKEIN_FOLD_PROFILE: ${{ inputs.profile }}
+    steps:
+      - name: Checkout dispatched source
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v4.3.0
+        with:
+          submodules: recursive
+      - name: Set up JDK 17
+        uses: actions/setup-java@de7274f081f381c8f8158605e0321c36c376e2e6 # v4.8.0
+        with:
+          distribution: temurin
+          java-version: "17"
+      - name: Set up Gradle
+        uses: gradle/actions/setup-gradle@748248ddd2a24f49513d8f472f81c3a07d4d50e1 # v4.4.4
+      - name: Choose pinned OpenSSL cache
+        run: echo "SKEIN_OPENSSL_TARBALL_DIR=$RUNNER_TEMP/skein-openssl" >> "$GITHUB_ENV"
+      - name: Derive OpenSSL cache pin
+        id: openssl-pin
+        run: |
+          sha="$(sed -nE 's/^set\(OPENSSL_SHA256[[:space:]]+"([0-9a-f]+)"\).*/\1/p' native/sqlite/CMakeLists.txt)"
+          test -n "$sha"
+          echo "sha256=$sha" >> "$GITHUB_OUTPUT"
+      - name: Cache pinned OpenSSL tarball
+        uses: actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0
+        with:
+          path: ${{ env.SKEIN_OPENSSL_TARBALL_DIR }}
+          key: openssl-tarball-${{ steps.openssl-pin.outputs.sha256 }}
+      - name: SDK tools and exact fold profile
+        shell: bash
+        run: |
+          set -euo pipefail
+          case "$SKEIN_FOLD_PROFILE" in pixel_9_pro_fold|pixel_fold) ;; *) exit 2 ;; esac
+          mkdir -p build/foldable-evidence
+          printf '%s\n' "$SKEIN_FOLD_PROFILE" > build/foldable-evidence/requested-profile.txt
+          git rev-parse HEAD > build/foldable-evidence/source-sha.txt
+          git submodule status --recursive > build/foldable-evidence/submodule-shas.txt
+          tool_bin="$(find "$ANDROID_HOME/cmdline-tools" -type f -name sdkmanager -print -quit | xargs dirname)"
+          test -x "$tool_bin/sdkmanager"
+          echo "$tool_bin" >> "$GITHUB_PATH"
+          echo "$ANDROID_HOME/platform-tools" >> "$GITHUB_PATH"
+          echo "$ANDROID_HOME/emulator" >> "$GITHUB_PATH"
+          yes | "$tool_bin/sdkmanager" --licenses >/dev/null || true
+          "$tool_bin/sdkmanager" 'platform-tools' 'platforms;android-37.0' 'build-tools;36.0.0' 'emulator'
+          "$tool_bin/avdmanager" list device > build/foldable-evidence/device-profiles.txt
+          grep -q "\"$SKEIN_FOLD_PROFILE\"" build/foldable-evidence/device-profiles.txt
+          "$ANDROID_HOME/emulator/emulator" -version > build/foldable-evidence/emulator-version.txt
+      - name: Install workflow parser
+        run: python3 -m pip install --disable-pip-version-check "PyYAML==6.0.2"
+      - name: Verify workflow and evidence reviewer
+        run: python3 -m unittest discover -s tools/ci -p '*foldable*.py' -v
+      - name: Resolve host and test runtime with pinned verification
+        run: ./gradlew --max-workers=2 --no-configuration-cache -I tools/ci/resolve-foldable-dependencies.gradle :app:resolveFoldableRuntime -Pskein.foldableTests=true -Pandroid.experimental.androidTest.enableEmulatorControl=true
+      - name: Explicit Kotlin lint
+        run: ./gradlew --max-workers=2 :app:ktlintCheck -Pskein.foldableTests=true
+      - name: Enable KVM
+        run: |
+          echo 'KERNEL=="kvm", GROUP="kvm", MODE="0666", OPTIONS+="static_node=kvm"' | sudo tee /etc/udev/rules.d/99-kvm4all.rules
+          sudo udevadm control --reload-rules
+          sudo udevadm trigger --name-match=kvm
+      - name: Run production gate on foldable emulator
+        uses: reactivecircus/android-emulator-runner@a421e43855164a8197daf9d8d40fe71c6996bb0d # v2.34.0
+        with:
+          api-level: 35
+          arch: x86_64
+          target: google_apis
+          profile: ${{ inputs.profile }}
+          disable-animations: true
+          emulator-options: -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -camera-back none -grpc 8554
+          script: bash tools/ci/run-foldable-emulator.sh
+      - name: Review actual XML and artifact hashes
+        if: always()
+        run: python3 tools/ci/verify-foldable.py --expected-sha "$GITHUB_SHA" --profile "$SKEIN_FOLD_PROFILE" --output build/foldable-evidence/review.json
+      - name: Preserve foldable evidence
+        if: always()
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: foldable-gate-${{ inputs.profile }}-${{ github.sha }}
+          path: |
+            build/foldable-evidence/**
+            app/build/outputs/androidTest-results/connected/**
+            app/build/reports/androidTests/connected/**
+            app/build/outputs/apk/dev/debug/*.apk
+            app/build/outputs/apk/androidTest/dev/debug/*.apk
+          if-no-files-found: error
+          retention-days: 14

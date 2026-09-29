@@ -1,0 +1,20 @@
+{
+  "id": 11025421464,
+  "node_id": "MDg6QXJ0aWZhY3QxMTAyNTQyMTQ2NA==",
+  "name": "unit-test-results",
+  "size_in_bytes": 2519442,
+  "url": "https://api.github.com/repos/HeyZeus100/skein/actions/artifacts/11025421464",
+  "archive_download_url": "https://api.github.com/repos/HeyZeus100/skein/actions/artifacts/11025421464/zip",
+  "expired": false,
+  "digest": "sha256:f467d262e59ba75bb12708846a0b9575dbd58f7cd40ae4484da9907b385abff0",
+  "created_at": "2026-09-29T09:51:54Z",
+  "updated_at": "2026-09-29T09:51:54Z",
+  "expires_at": "2026-10-13T09:51:52Z",
+  "workflow_run": {
+    "id": 36551451065,
+    "repository_id": 1377804189,
+    "head_repository_id": 1377804189,
+    "head_branch": "main",
+    "head_sha": "5ae91c238612bdd9b1511b3716d34b4fa5960dd2"
+  }
+}

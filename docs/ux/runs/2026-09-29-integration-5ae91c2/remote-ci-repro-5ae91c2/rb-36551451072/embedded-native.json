@@ -1,0 +1,14 @@
+[
+  {
+    "artifact_id": 11024698367,
+    "sha256": "2aefda01808f10bf5693ab02d0857e0169dc09550b615896939cb176c032daff",
+    "bytes": 25314032,
+    "apk_entries": 826
+  },
+  {
+    "artifact_id": 11025013318,
+    "sha256": "2aefda01808f10bf5693ab02d0857e0169dc09550b615896939cb176c032daff",
+    "bytes": 25314032,
+    "apk_entries": 826
+  }
+]

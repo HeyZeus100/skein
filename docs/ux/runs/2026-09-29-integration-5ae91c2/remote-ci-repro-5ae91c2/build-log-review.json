@@ -1,0 +1,84 @@
+{
+  "rb-36551451072/job-109350414365.log": {
+    "skipped": [
+      "2026-09-29T09:48:37.8569628Z > Task :build-logic:guards:checkKotlinGradlePluginConfigurationErrors SKIPPED",
+      "2026-09-29T09:50:10.4685219Z > Task :core:model:checkKotlinGradlePluginConfigurationErrors SKIPPED",
+      "2026-09-29T09:50:10.4686778Z > Task :core:verify:checkKotlinGradlePluginConfigurationErrors SKIPPED",
+      "2026-09-29T09:50:10.4688306Z > Task :core:markdown:checkKotlinGradlePluginConfigurationErrors SKIPPED",
+      "2026-09-29T09:50:21.2776078Z > Task :core:navigation:checkKotlinGradlePluginConfigurationErrors SKIPPED"
+    ],
+    "cache_restore": [],
+    "build_failures": [],
+    "success": [
+      "2026-09-29T09:57:24.1568603Z BUILD SUCCESSFUL in 8m 59s"
+    ],
+    "worker_flags": [
+      "2026-09-29T09:48:24.2433628Z ##[group]Run ./gradlew clean :app:assembleFossRelease --no-build-cache --max-workers=2 --stacktrace",
+      "2026-09-29T09:48:24.2435534Z \u001b[36;1m./gradlew clean :app:assembleFossRelease --no-build-cache --max-workers=2 --stacktrace\u001b[0m"
+    ]
+  },
+  "rb-36551451072/job-109354444774.log": {
+    "skipped": [],
+    "cache_restore": [],
+    "build_failures": [],
+    "success": [],
+    "worker_flags": []
+  },
+  "rb-36551451072/job-109350340522.log": {
+    "skipped": [],
+    "cache_restore": [],
+    "build_failures": [],
+    "success": [],
+    "worker_flags": []
+  },
+  "rb-36551451072/job-109350414247.log": {
+    "skipped": [
+      "2026-09-29T09:48:40.1793062Z > Task :build-logic:guards:checkKotlinGradlePluginConfigurationErrors SKIPPED",
+      "2026-09-29T09:50:14.9938950Z > Task :core:model:checkKotlinGradlePluginConfigurationErrors SKIPPED",
+      "2026-09-29T09:50:14.9941212Z > Task :core:verify:checkKotlinGradlePluginConfigurationErrors SKIPPED",
+      "2026-09-29T09:50:14.9943364Z > Task :core:markdown:checkKotlinGradlePluginConfigurationErrors SKIPPED",
+      "2026-09-29T09:50:28.4777834Z > Task :core:navigation:checkKotlinGradlePluginConfigurationErrors SKIPPED"
+    ],
+    "cache_restore": [],
+    "build_failures": [],
+    "success": [
+      "2026-09-29T09:59:15.1785364Z BUILD SUCCESSFUL in 10m 48s"
+    ],
+    "worker_flags": [
+      "2026-09-29T09:48:26.2629816Z ##[group]Run ./gradlew clean :app:assembleFossRelease --no-build-cache --max-workers=2 --stacktrace",
+      "2026-09-29T09:48:26.2630638Z \u001b[36;1m./gradlew clean :app:assembleFossRelease --no-build-cache --max-workers=2 --stacktrace\u001b[0m"
+    ]
+  },
+  "rb-36551451072/job-109350414240.log": {
+    "skipped": [],
+    "cache_restore": [],
+    "build_failures": [],
+    "success": [],
+    "worker_flags": []
+  },
+  "rb-36551451072/artifact-11025312519-so-determinism/files/run.OmoQYIyh/build-2.log": {
+    "skipped": [
+      "> Task :core:model:checkKotlinGradlePluginConfigurationErrors SKIPPED",
+      "> Task :core:verify:checkKotlinGradlePluginConfigurationErrors SKIPPED"
+    ],
+    "cache_restore": [],
+    "build_failures": [],
+    "success": [
+      "BUILD SUCCESSFUL in 1m 53s"
+    ],
+    "worker_flags": []
+  },
+  "rb-36551451072/artifact-11025312519-so-determinism/files/run.OmoQYIyh/build-1.log": {
+    "skipped": [
+      "> Task :build-logic:guards:checkKotlinGradlePluginConfigurationErrors SKIPPED",
+      "> Task :core:model:checkKotlinGradlePluginConfigurationErrors SKIPPED",
+      "> Task :core:verify:checkKotlinGradlePluginConfigurationErrors SKIPPED"
+    ],
+    "cache_restore": [],
+    "build_failures": [],
+    "success": [
+      "BUILD SUCCESSFUL in 3m 2s"
+    ],
+    "worker_flags": []
+  }
+}
