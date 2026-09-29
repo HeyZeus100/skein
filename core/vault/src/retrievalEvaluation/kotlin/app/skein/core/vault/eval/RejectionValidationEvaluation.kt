@@ -65,6 +65,7 @@ public object RejectionValidationEvaluation {
         factory: (IndexStore, VaultRepository, PersonaId) -> RetrievalService,
         repetitions: Int = 3,
         configuration: JsonObject = JsonObject(emptyMap()),
+        modeName: String = "production_policy",
     ): JsonObject {
         require(repetitions in 2..10)
         val fixtureBytes =
@@ -139,9 +140,16 @@ public object RejectionValidationEvaluation {
                 check(count(pool.writer(), "SELECT count(*) FROM chunks") == chunks.size.toLong())
                 val stored = linkedMapOf<String, EvaluationDocument>()
                 for (doc in documents) {
+                    check(doc.personaId == space) { "Reserved source is outside its requested Space" }
                     val revision = checkNotNull(repository.currentRevision(doc.id))
                     stored[doc.id] =
-                        EvaluationDocument(doc.id, space, revision.revisionHash, revision.bodyMdSnapshot, doc.kind)
+                        EvaluationDocument(
+                            doc.id,
+                            checkNotNull(doc.personaId),
+                            revision.revisionHash,
+                            revision.bodyMdSnapshot,
+                            doc.kind,
+                        )
                     val expected = chunker.chunk(checkNotNull(doc.bodyMd))
                     val actual = chunks.filter { it.docId == doc.id }.sortedBy { it.ord }
                     check(actual.size == expected.size)
@@ -200,6 +208,8 @@ public object RejectionValidationEvaluation {
                             samples,
                         )
                     }
+                val vectorCount = count(pool.writer(), "SELECT count(*) FROM chunks_vec")
+                check(vectorCount == 0L) { "Reserved validation unexpectedly wrote vectors during retrieval" }
                 buildJsonObject {
                     put("schema_version", 1)
                     put("status", "MEASURED_DIAGNOSTIC")
@@ -213,14 +223,14 @@ public object RejectionValidationEvaluation {
                     put("validated_answer_spans", queries.count { it.answerable })
                     put("embedder", JsonNull)
                     put("entity_extractor", JsonNull)
-                    put("vector_count", 0)
+                    put("vector_count", vectorCount)
                     put("full_hybrid_gate", "INELIGIBLE")
                     put("warmups_per_query", 1)
                     put("repetitions", repetitions)
                     put("ingest_ms", ingestMillis)
                     put("ingest_warnings", JsonArray(warnings.toList().map(::JsonPrimitive)))
                     put("validation_status", if (rows.all(::passed)) "PASS" else "FAIL")
-                    put("mode", RetrievalEvaluationReport.mode("production_policy", configuration, rows))
+                    put("mode", RetrievalEvaluationReport.mode(modeName, configuration, rows))
                     // Includes actual returned source kinds as well as the common
                     // report's text, anchors, raw source signals and fingerprints.
                     put(
