@@ -98,16 +98,17 @@ fun SkeinNavigationContainer(
     val scope = rememberCoroutineScope()
     LaunchedEffect(isDrawer, closeRequest) { drawerState.snapTo(DrawerValue.Closed) }
 
-    fun closeIfDrawer() {
-        if (isDrawer) scope.launch { drawerState.close() }
+    fun closeDrawer() {
+        // A narrow workspace can open this drawer while the window still shows a rail.
+        scope.launch { drawerState.close() }
     }
 
     val wrappedHistory =
-        remember(history, isDrawer) {
+        remember(history) {
             history.map { row ->
                 row.copy(onOpen = {
                     row.onOpen()
-                    closeIfDrawer()
+                    closeDrawer()
                 })
             }
         }
@@ -134,15 +135,15 @@ fun SkeinNavigationContainer(
                     destination = destination,
                     onNavigate = {
                         onNavigate(it)
-                        closeIfDrawer()
+                        closeDrawer()
                     },
                     onNewChat = {
                         onNewChat()
-                        closeIfDrawer()
+                        closeDrawer()
                     },
                     onSearch = {
                         onSearch()
-                        closeIfDrawer()
+                        closeDrawer()
                     },
                     history = wrappedHistory,
                     spaces = spaces,
