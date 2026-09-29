@@ -82,15 +82,17 @@ public fun TimelineScreen(
 
     Box(modifier = modifier.fillMaxSize().testTag(TimelineTestTags.ROOT)) {
         Column(modifier = Modifier.fillMaxSize()) {
-            FilterBar(
-                kinds = state.kinds,
-                filter = window.filter,
-                personas = personas,
-                tags = tags,
-                onPersona = state::setPersona,
-                onKind = state::toggleKind,
-                onTag = state::toggleTag,
-            )
+            HingeSafeFilters {
+                FilterBar(
+                    kinds = state.kinds,
+                    filter = window.filter,
+                    personas = personas,
+                    tags = tags,
+                    onPersona = state::setPersona,
+                    onKind = state::toggleKind,
+                    onTag = state::toggleTag,
+                )
+            }
             if (entries.isEmpty()) {
                 EmptyState(
                     filtered = window.filter != state.unfiltered,
