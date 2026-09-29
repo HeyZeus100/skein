@@ -13,6 +13,7 @@ import app.skein.core.model.EdgeKind
 import app.skein.core.model.Entity
 import app.skein.core.model.IndexChange
 import app.skein.core.model.IndexStore
+import app.skein.core.model.LexicalQueryLimits
 import app.skein.core.model.NewChunk
 import app.skein.core.model.RevisionHash
 import app.skein.core.model.ScoredChunk
@@ -282,6 +283,17 @@ public class InMemoryIndexStore : IndexStore {
         return scored.sortedByDescending { it.score }.take(k)
     }
 
+    // Explicit JVM approximation for fake tests, not unicode61 parity evidence.
+    override suspend fun lexicalTerms(text: String): List<String> {
+        if (text.toByteArray(Charsets.UTF_8).size > LexicalQueryLimits.MAX_TEXT_UTF8_BYTES) return emptyList()
+        return Regex("[\\p{L}\\p{N}\\p{M}\\p{Co}]+")
+            .findAll(text)
+            .map { it.value }
+            .filter { it.toByteArray(Charsets.UTF_8).size <= LexicalQueryLimits.MAX_TERM_UTF8_BYTES }
+            .take(LexicalQueryLimits.MAX_TERMS)
+            .toList()
+    }
+
     override suspend fun bm25(
         query: String,
         k: Int,
@@ -315,7 +327,7 @@ public class InMemoryIndexStore : IndexStore {
         // Same substring approximation as this fake's bm25; real posting
         // consistency is covered by the SQLite instrumentation tests.
         val text = chunks[chunkId]?.text?.lowercase() ?: return false
-        return query.lowercase().split(WORD_SPLIT).any { it.isNotBlank() && it in text }
+        return lexicalTerms(query).any { it.lowercase() in text }
     }
 
     override suspend fun getChunks(ids: Collection<ChunkId>): Map<ChunkId, Chunk> {

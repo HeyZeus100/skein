@@ -21,8 +21,8 @@
 // confused a healthy low-ranked posting with an absent posting. A row's
 // rank now has no bearing on verification. Missing matches warn via the
 // injected [warn], never with content. This is a sampled posting check,
-// not a full index integrity check; rows without a standalone ASCII token
-// are unprobed because the current query sanitizer handles ASCII only.
+// not a full index integrity check. The store supplies bounded terms from
+// its actual tokenizer; rows with no usable term remain unprobed.
 //
 // The warning surface is an injectable `(String) -> Unit` so tests can
 // capture it directly; its default is `SkeinLog.w` (skein-4je, `:core:model`)
@@ -142,9 +142,8 @@ public class IngestSteps(
         // was unordered. Keep each probe attached to its own returned row.
         for ((chunk, id) in chunks.sortedBy { it.ord }.zip(ids)) {
             val probe =
-                PROBE_WORD
-                    .findAll(chunk.embeddingText)
-                    .map { it.value }
+                index
+                    .lexicalTerms(chunk.embeddingText)
                     .maxByOrNull { it.length }
                     ?: continue
             probed++
@@ -215,13 +214,6 @@ public class IngestSteps(
 
         /** `chunks.embedder_version` while no embedder exists — below any real embedder's version (>= 1). */
         public const val PENDING_EMBEDDER_VERSION: Int = 0
-
-        // Only standalone ASCII tokens: extracting "caf" from "café" or
-        // "English" from "中文English" need not name a unicode61 posting.
-        // Include combining marks in the boundaries so decomposed accents
-        // are not misclassified either. One-character ASCII tokens are valid.
-        private val PROBE_WORD: Regex =
-            Regex("""(?<![\p{L}\p{N}\p{M}\p{Co}])[A-Za-z0-9]+(?![\p{L}\p{N}\p{M}\p{Co}])""")
 
         /**
          * `[charStart, charEnd)` UTF-16 char offsets into [body] → the

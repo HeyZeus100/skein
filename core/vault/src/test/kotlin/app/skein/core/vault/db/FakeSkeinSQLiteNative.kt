@@ -9,6 +9,16 @@ import app.skein.core.vault.index.IndexSql
  * open/close balance.
  */
 internal class FakeSkeinSQLiteNative : SkeinSQLiteNative {
+    // These unit tests exercise connection ownership, not real FTS tokenization.
+    override fun nativeLexicalTerms(
+        dbHandle: Long,
+        textUtf8: ByteArray,
+    ): ByteArray =
+        Regex("[A-Za-z0-9]+")
+            .findAll(textUtf8.toString(Charsets.UTF_8))
+            .joinToString("\u0000", postfix = "\u0000") { it.value.lowercase() }
+            .toByteArray(Charsets.UTF_8)
+
     val prepareCalls = mutableListOf<String>()
     val execCalls = mutableListOf<String>()
     val closedHandles = mutableListOf<Long>()

@@ -62,6 +62,7 @@ import app.skein.core.model.IndexStore
 import app.skein.core.model.NewChunk
 import app.skein.core.model.RevisionHash
 import app.skein.core.model.ScoredChunk
+import app.skein.core.vault.db.lexicalTerms
 import kotlinx.coroutines.channels.BufferOverflow
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableSharedFlow
@@ -229,14 +230,16 @@ public class IndexStoreImpl(
         }
     }
 
+    override suspend fun lexicalTerms(text: String): List<String> = mutex.withLock { connection.lexicalTerms(text) }
+
     override suspend fun bm25(
         query: String,
         k: Int,
     ): List<ScoredChunk> {
         if (k <= 0) return emptyList()
-        val fts = FtsQuerySanitizer.sanitize(query)
-        if (fts.isEmpty()) return emptyList()
         return mutex.withLock {
+            val fts = FtsQuerySanitizer.sanitize(connection.lexicalTerms(query))
+            if (fts.isEmpty()) return@withLock emptyList()
             connection.prepare(IndexSql.BM25_QUERY).use { stmt ->
                 stmt.bindText(1, fts)
                 stmt.bindLong(2, k.toLong())
@@ -258,9 +261,9 @@ public class IndexStoreImpl(
         chunkId: ChunkId,
         query: String,
     ): Boolean {
-        val fts = FtsQuerySanitizer.sanitize(query)
-        if (fts.isEmpty()) return false
         return mutex.withLock {
+            val fts = FtsQuerySanitizer.sanitize(connection.lexicalTerms(query))
+            if (fts.isEmpty()) return@withLock false
             connection.prepare(IndexSql.HAS_LEXICAL_MATCH).use { stmt ->
                 stmt.bindLong(1, chunkId)
                 stmt.bindText(2, fts)

@@ -960,6 +960,17 @@ public interface IndexStore {
         k: Int,
     ): List<ScoredChunk>
 
+    /**
+     * Ordered terms from the lexical index's actual tokenizer, including its
+     * case/diacritic handling. The production implementation uses SQLite's
+     * default unicode61 tokenizer, not a JVM approximation. Bounds are
+     * [LexicalQueryLimits]: overlong input yields no terms, overlong whole
+     * tokens are skipped, and at most the first MAX_TERMS usable tokens are
+     * returned. Tokens are never truncated into invented posting names.
+     * Fakes may approximate tokenization, but cannot establish SQLite parity.
+     */
+    public suspend fun lexicalTerms(text: String): List<String>
+
     /** Score is `-bm25()` (higher is better). */
     public suspend fun bm25(
         query: String,

@@ -25,6 +25,7 @@ import app.skein.core.model.Edge
 import app.skein.core.model.EdgeKind
 import app.skein.core.model.IndexChange
 import app.skein.core.model.IndexStore
+import app.skein.core.model.LexicalQueryLimits
 import app.skein.core.model.NewChunk
 import app.skein.core.rag.chunk.Chunker
 import app.skein.core.rag.ingest.IngestSteps
@@ -224,6 +225,200 @@ public class IndexStoreImplAcceptanceTest {
             assertThat(idx.hasLexicalMatch(id, "English")).isFalse()
             assertThat(idx.hasLexicalMatch(id, "A")).isTrue()
             assertThat(warnings).isEmpty()
+        }
+
+    @Test
+    public fun unicodeQueryTermsMatchTheActualDefaultSqliteTokenizer(): Unit =
+        runTest {
+            val (idx, conn) = freshIndexWithConnection()
+            seedDocument(conn, "unicode-only")
+            val body = "中文English café cafe\u0301 résumé naïve Русский العربية १२३ \uE000secret 𐐀𐐁"
+            val id = idx.replaceChunks("unicode-only", listOf(NewChunk(0, body, 12)), "fake", 1).single()
+
+            assertThat(idx.lexicalTerms(body))
+                .containsExactly(
+                    "中文english",
+                    "cafe",
+                    "cafe",
+                    "resume",
+                    "naive",
+                    "русский",
+                    "العربية",
+                    "१२३",
+                    "\uE000secret",
+                    "𐐨𐐩",
+                ).inOrder()
+            for (query in listOf(
+                "中文English",
+                "CAFÉ",
+                "cafe\u0301",
+                "résumé",
+                "naive",
+                "РУССКИЙ",
+                "العربية",
+                "१२३",
+                "\uE000secret",
+                "𐐀𐐁",
+            )) {
+                assertThat(idx.bm25(query, 8).map { it.chunkId }).containsExactly(id)
+                assertThat(idx.hasLexicalMatch(id, query)).isTrue()
+            }
+            // unicode61 keeps mixed-script/private-use runs together. An
+            // ASCII suffix is not a separate posting and must not match.
+            assertThat(idx.bm25("English", 8)).isEmpty()
+            assertThat(idx.bm25("secret", 8)).isEmpty()
+            assertThat(idx.getChunks(listOf(id)).getValue(id).text).isEqualTo(body)
+            // Default remove_diacritics=1 deliberately differs from a general
+            // Unicode normalization library for multi-diacritic codepoints.
+            assertThat(idx.lexicalTerms("ộ o\u0323\u0302")).containsExactly("ộ", "o").inOrder()
+        }
+
+    @Test
+    public fun unicodeTextBindingPreservesSupplementaryAndLegacyModifiedUtf8(): Unit =
+        runTest {
+            val (_, conn) = freshIndexWithConnection()
+            val text = "研究𐐀資料\u0000終"
+            conn.prepare("SELECT ?, hex(?)").use { stmt ->
+                stmt.bindText(1, text)
+                stmt.bindText(2, text)
+                assertThat(stmt.step()).isTrue()
+                assertThat(stmt.getText(0)).isEqualTo(text)
+                assertThat(stmt.getText(1)).isEqualTo("E7A094E7A9B6F0909080E8B387E6969900E7B582")
+            }
+            // Reproduce the actual old-storage encoding in a durable revision
+            // and its JSON metadata. Reading must preserve text and stored bytes.
+            seedDocument(conn, "legacy-unicode")
+            conn
+                .prepare(
+                    "INSERT INTO document_revisions VALUES ('legacy-unicode', 'retained-hash', 1, " +
+                        "CAST(X'EDA081EDB080C08061' AS TEXT), " +
+                        "CAST(X'7B226C6162656C223A22EDA081EDB080227D' AS TEXT), 0, 'test')",
+                ).use { it.step() }
+            conn
+                .prepare(
+                    "SELECT body_md_snapshot, frontmatter_snapshot, revision_hash, hex(body_md_snapshot) " +
+                        "FROM document_revisions WHERE document_id = 'legacy-unicode'",
+                ).use { stmt ->
+                    assertThat(stmt.step()).isTrue()
+                    assertThat(stmt.getText(0)).isEqualTo("𐐀\u0000a")
+                    assertThat(stmt.getText(1)).isEqualTo("{\"label\":\"𐐀\"}")
+                    assertThat(stmt.getText(2)).isEqualTo("retained-hash")
+                    assertThat(stmt.getText(3)).isEqualTo("EDA081EDB080C08061")
+                }
+        }
+
+    @Test
+    public fun unicodeAdversarialQueriesRemainLiteralAndCannotBroadenToUnrelatedRows(): Unit =
+        runTest {
+            val (idx, conn) = freshIndexWithConnection()
+            seedDocument(conn, "literal-unicode")
+            val ids =
+                idx.replaceChunks(
+                    "literal-unicode",
+                    listOf(NewChunk(0, "研究資料", 1), NewChunk(1, "秘密内容", 1)),
+                    "fake",
+                    1,
+                )
+            for (query in listOf(
+                "研究資料 OR text:秘密* boundary",
+                "研究資料 NEAR(秘密) boundary",
+                "研究資料\" OR \"秘密 boundary",
+                "研究資料\u0000NOT 秘密 boundary",
+            )) {
+                // FTS keywords and punctuation become literal terms; none of
+                // these asks for the full unrelated token 秘密内容.
+                assertThat(idx.bm25(query, 8).map { it.chunkId }).containsExactly(ids[0])
+            }
+            assertThat(idx.bm25("研究資", 8).map { it.chunkId }).containsExactly(ids[0])
+        }
+
+    @Test
+    public fun unicodeOnlyIngestProbeChecksARealPostingWithoutAsciiFallback(): Unit =
+        runTest {
+            val (idx, conn) = freshIndexWithConnection()
+            seedDocument(conn, "healthy-unicode")
+            val warnings = mutableListOf<String>()
+            val body = "研究資料 保管場所"
+            val id =
+                IngestSteps(idx, warn = { warnings += it })
+                    .indexLexical("healthy-unicode", Chunker(ApproximateTokenizer).chunk(body), body = body)
+                    .single()
+            assertThat(idx.hasLexicalMatch(id, "研究資料")).isTrue()
+            assertThat(warnings).isEmpty()
+        }
+
+    @Test
+    public fun unicodeOnlyIngestProbeWarnsWhenTheInsertTriggerIsMissing(): Unit =
+        runTest {
+            val (idx, conn) = freshIndexWithConnection()
+            seedDocument(conn, "missing-unicode")
+            conn.prepare("DROP TRIGGER chunks_ai").use { it.step() }
+            val warnings = mutableListOf<String>()
+            val body = "研究資料 保管場所"
+            val id =
+                IngestSteps(idx, warn = { warnings += it })
+                    .indexLexical("missing-unicode", Chunker(ApproximateTokenizer).chunk(body), body = body)
+                    .single()
+            assertThat(idx.getChunks(listOf(id)).getValue(id).text).isEqualTo(body)
+            assertThat(idx.hasLexicalMatch(id, "研究資料")).isFalse()
+            assertThat(warnings).hasSize(1)
+            assertThat(warnings.single()).contains("missing for 1 of 1 probed")
+            assertThat(warnings.single()).doesNotContain("研究資料")
+            assertThat(warnings.single()).doesNotContain("missing-unicode")
+        }
+
+    @Test
+    public fun unicodeOnlyIngestProbeFindsAMissingMiddleRowBetweenHealthyRows(): Unit =
+        runTest {
+            val (idx, conn) = freshIndexWithConnection()
+            seedDocument(conn, "partial-unicode")
+            val body = "研究資料\n\n保管場所\n\n運搬記録"
+            val chunks = Chunker(ApproximateTokenizer, targetTokens = 1, overlapTokens = 0).chunk(body)
+            assertThat(chunks).hasSize(3)
+            val warnings = mutableListOf<String>()
+            val damaged =
+                object : IndexStore by idx {
+                    override suspend fun hasLexicalMatch(
+                        chunkId: Long,
+                        query: String,
+                    ): Boolean {
+                        val chunk = idx.getChunks(listOf(chunkId)).getValue(chunkId)
+                        if (chunk.ord == 1) {
+                            conn
+                                .prepare("INSERT INTO chunks_fts(chunks_fts, rowid, text) VALUES('delete', ?, ?)")
+                                .use { stmt ->
+                                    stmt.bindLong(1, chunkId)
+                                    stmt.bindText(2, chunk.text)
+                                    stmt.step()
+                                }
+                        }
+                        return idx.hasLexicalMatch(chunkId, query)
+                    }
+                }
+            val ids =
+                IngestSteps(
+                    damaged,
+                    warn = { warnings += it },
+                ).indexLexical("partial-unicode", chunks, body = body)
+            assertThat(idx.hasLexicalMatch(ids[0], "研究資料")).isTrue()
+            assertThat(idx.hasLexicalMatch(ids[1], "保管場所")).isFalse()
+            assertThat(idx.hasLexicalMatch(ids[2], "運搬記録")).isTrue()
+            assertThat(idx.getChunks(ids)).hasSize(3)
+            assertThat(warnings).hasSize(1)
+            assertThat(warnings.single()).contains("missing for 1 of 3 probed")
+            assertThat(warnings.single()).doesNotContain("保管場所")
+        }
+
+    @Test
+    public fun actualTokenizerBoundsSkipWholeTokensAndNeverInventPostingFragments(): Unit =
+        runTest {
+            val (idx, _) = freshIndexWithConnection()
+            val max = LexicalQueryLimits.MAX_TERM_UTF8_BYTES
+            assertThat(idx.lexicalTerms("界".repeat(max) + " 研究資料")).containsExactly("研究資料")
+            assertThat(idx.lexicalTerms("x".repeat(max))).containsExactly("x".repeat(max))
+            assertThat(idx.lexicalTerms("x ".repeat(200))).hasSize(LexicalQueryLimits.MAX_TERMS)
+            assertThat(idx.lexicalTerms("x".repeat(LexicalQueryLimits.MAX_TEXT_UTF8_BYTES + 1))).isEmpty()
+            assertThat(idx.lexicalTerms("🚀 \u0301 !!!")).isEmpty()
         }
 
     @Test

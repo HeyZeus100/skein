@@ -252,7 +252,7 @@ class IngestStepsTest {
         }
 
     @Test
-    fun `indexLexical skips non-ASCII fragments but probes standalone one-character tokens`() =
+    fun `indexLexical uses store tokenizer terms for unicode and one-character row probes`() =
         runTest {
             val probes = mutableListOf<String>()
             val index =
@@ -271,7 +271,7 @@ class IngestStepsTest {
                 listOf(chunk(0, "中文English café cafe\u0301 \uE000secret !!!"), chunk(1, "A 7")),
             )
 
-            assertThat(probes).containsExactly("A")
+            assertThat(probes).containsExactly("中文English", "A").inOrder()
         }
 
     @Test

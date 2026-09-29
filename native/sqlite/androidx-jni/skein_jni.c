@@ -38,6 +38,8 @@
 #define SQLITE_HAS_CODEC 1
 
 #include "sqlite3.h"
+#include "skein_fts_terms.h"
+#include "skein_utf16.h"
 
 /* ------------------------------------------------------------------ */
 /* Helpers                                                            */
@@ -73,6 +75,43 @@ static sqlite3 *db_ptr(jlong handle) {
 
 static sqlite3_stmt *stmt_ptr(jlong handle) {
     return (sqlite3_stmt *)(intptr_t)handle;
+}
+
+JNIEXPORT jbyteArray JNICALL
+Java_app_skein_core_vault_db_SkeinSQLiteNativeImpl_nativeLexicalTerms(
+        JNIEnv *env, jclass klass, jlong handle, jbyteArray textUtf8) {
+    (void)klass;
+    sqlite3 *db = db_ptr(handle);
+    if (db == NULL) {
+        throw_sqlite_exception(env, NULL, SQLITE_MISUSE, "nativeLexicalTerms: null db handle");
+        return NULL;
+    }
+    jsize length = (*env)->GetArrayLength(env, textUtf8);
+    if (length == 0 || length > SKEIN_FTS_MAX_TEXT_BYTES) return (*env)->NewByteArray(env, 0);
+    jbyte *text = (*env)->GetByteArrayElements(env, textUtf8, NULL);
+    if (text == NULL) return NULL;
+    char *output = sqlite3_malloc(SKEIN_FTS_OUTPUT_BYTES);
+    if (output == NULL) {
+        (*env)->ReleaseByteArrayElements(env, textUtf8, text, JNI_ABORT);
+        throw_sqlite_exception(env, NULL, SQLITE_NOMEM, "nativeLexicalTerms: allocation failed");
+        return NULL;
+    }
+    SkeinFtsTerms terms = {output, 0, 0};
+    int rc = skein_fts_terms(db, (const char *)text, (int)length, &terms);
+    (*env)->ReleaseByteArrayElements(env, textUtf8, text, JNI_ABORT);
+    jbyteArray result = NULL;
+    if (rc == SQLITE_OK) {
+        result = (*env)->NewByteArray(env, terms.size);
+        if (result != NULL && terms.size > 0) {
+            (*env)->SetByteArrayRegion(env, result, 0, terms.size, (const jbyte *)output);
+        }
+    } else {
+        /* Fixed message: query/source contents must not enter diagnostics. */
+        throw_sqlite_exception(env, NULL, rc, "nativeLexicalTerms: tokenizer failed");
+    }
+    memset(output, 0, (size_t)terms.size);
+    sqlite3_free(output);
+    return result;
 }
 
 /* ------------------------------------------------------------------ */
@@ -311,7 +350,18 @@ Java_app_skein_core_vault_db_SkeinSQLiteNativeImpl_nativeColumnText(
         return NULL;
     }
     const unsigned char *txt = sqlite3_column_text(stmt, (int)index);
-    return (txt != NULL) ? (*env)->NewStringUTF(env, (const char *)txt) : NULL;
+    if (txt == NULL) return NULL;
+    int bytes = sqlite3_column_bytes(stmt, (int)index);
+    uint16_t *utf16 = sqlite3_malloc64(((sqlite3_uint64)bytes + 1) * sizeof(uint16_t));
+    if (utf16 == NULL) {
+        throw_sqlite_exception(env, NULL, SQLITE_NOMEM, "nativeColumnText: allocation failed");
+        return NULL;
+    }
+    int length = skein_utf16(txt, bytes, utf16);
+    jstring result = (*env)->NewString(env, (const jchar *)utf16, length);
+    memset(utf16, 0, (size_t)length * sizeof(uint16_t));
+    sqlite3_free(utf16);
+    return result;
 }
 
 JNIEXPORT jlong JNICALL
@@ -407,13 +457,14 @@ Java_app_skein_core_vault_db_SkeinSQLiteNativeImpl_nativeBindText(
     if (stmt == NULL) {
         return;
     }
-    const char *txt = (*env)->GetStringUTFChars(env, value, NULL);
+    const jchar *txt = (*env)->GetStringChars(env, value, NULL);
     if (txt == NULL) {
         return;
     }
     /* SQLITE_TRANSIENT: sqlite3 copies the buffer immediately. Safe to release. */
-    int rc = sqlite3_bind_text(stmt, (int)index, txt, -1, SQLITE_TRANSIENT);
-    (*env)->ReleaseStringUTFChars(env, value, txt);
+    int rc = sqlite3_bind_text16(stmt, (int)index, txt,
+                               (*env)->GetStringLength(env, value) * 2, SQLITE_TRANSIENT);
+    (*env)->ReleaseStringChars(env, value, txt);
     if (rc != SQLITE_OK) {
         throw_sqlite_exception(env, sqlite3_db_handle(stmt), rc, "sqlite3_bind_text failed");
     }

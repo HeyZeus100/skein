@@ -93,6 +93,7 @@ import app.skein.core.model.VaultQuiesceTimeoutException
 import app.skein.core.model.VaultQuiescedException
 import app.skein.core.model.VaultRepository
 import app.skein.core.vault.blob.AttachmentStore
+import app.skein.core.vault.db.lexicalTerms
 import app.skein.core.vault.export.stage.ExportStageRepository
 import app.skein.core.vault.export.stage.ExportStageRow
 import app.skein.core.vault.export.stage.StagedPlaintextSweep
@@ -506,9 +507,10 @@ public class VaultRepositoryImpl(
         query: String,
         limit: Int,
     ): List<DocumentHit> {
-        val fts = FtsQuerySanitizer.sanitize(query)
-        if (fts.isEmpty() || limit <= 0) return emptyList()
+        if (limit <= 0) return emptyList()
         return withReader { conn ->
+            val fts = FtsQuerySanitizer.sanitize(conn.lexicalTerms(query))
+            if (fts.isEmpty()) return@withReader emptyList()
             conn.prepare(VaultSql.SEARCH_BODIES_BM25).use { stmt ->
                 stmt.bindText(1, fts)
                 stmt.bindLong(2, limit.toLong())

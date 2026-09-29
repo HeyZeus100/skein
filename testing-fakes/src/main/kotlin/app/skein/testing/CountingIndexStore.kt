@@ -88,6 +88,11 @@ public class CountingIndexStore(
         return delegate.knn(queryInt8, k)
     }
 
+    override suspend fun lexicalTerms(text: String): List<String> {
+        record("lexicalTerms")
+        return delegate.lexicalTerms(text)
+    }
+
     override suspend fun bm25(
         query: String,
         k: Int,

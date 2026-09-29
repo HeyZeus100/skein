@@ -1,6 +1,7 @@
 package app.skein.core.vault.db
 
 import androidx.sqlite.SQLiteConnection
+import app.skein.core.model.LexicalQueryLimits
 
 /**
  * `SQLiteConnection` backed by a `sqlite3*` handle. Prepared statements
@@ -52,6 +53,24 @@ public class SkeinSQLiteConnection internal constructor(
     public fun lastInsertRowId(): Long {
         checkOpen()
         return native.nativeLastInsertRowId(dbHandle)
+    }
+
+    /** Must be called under the same connection ownership as prepared statements. */
+    internal fun lexicalTerms(text: String): List<String> {
+        checkOpen()
+        if (text.length > LexicalQueryLimits.MAX_TEXT_UTF8_BYTES) return emptyList()
+        val utf8 = text.toByteArray(Charsets.UTF_8)
+        try {
+            if (utf8.size > LexicalQueryLimits.MAX_TEXT_UTF8_BYTES) return emptyList()
+            val packed = native.nativeLexicalTerms(dbHandle, utf8)
+            return try {
+                packed.toString(Charsets.UTF_8).split('\u0000').filter { it.isNotEmpty() }
+            } finally {
+                packed.fill(0)
+            }
+        } finally {
+            utf8.fill(0)
+        }
     }
 
     private fun checkOpen() {

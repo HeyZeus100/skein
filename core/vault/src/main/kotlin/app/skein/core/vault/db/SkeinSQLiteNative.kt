@@ -37,6 +37,12 @@ public interface SkeinSQLiteNative {
 
     public fun nativeLastInsertRowId(dbHandle: Long): Long
 
+    /** Bounded, NUL-separated UTF-8 terms from SQLite's default unicode61 tokenizer. */
+    public fun nativeLexicalTerms(
+        dbHandle: Long,
+        textUtf8: ByteArray,
+    ): ByteArray
+
     public fun nativePrepare(
         dbHandle: Long,
         sql: String,
@@ -151,6 +157,11 @@ internal object SkeinSQLiteNativeImpl : SkeinSQLiteNative {
     external override fun nativeChanges(dbHandle: Long): Long
 
     external override fun nativeLastInsertRowId(dbHandle: Long): Long
+
+    external override fun nativeLexicalTerms(
+        dbHandle: Long,
+        textUtf8: ByteArray,
+    ): ByteArray
 
     external override fun nativePrepare(
         dbHandle: Long,
