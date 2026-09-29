@@ -1,0 +1,38 @@
+{
+  "at": "2026-09-29T20:02:41.848050+00:00",
+  "case_id": "demo-construction-absent",
+  "question": "What is the Cedar cabinet purchase order number?",
+  "context_row_count": 8,
+  "known_synthetic_titles": [
+    "DEMO: Cedar Cabinet Order",
+    "DEMO-A Records Request",
+    "DEMO: Cedar Remodel RFI-017",
+    "DEMO: Cedar Delivery Coordination",
+    "DEMO-A Records Packet",
+    "DEMO: OYS-014 Open Research Question",
+    "DEMO-A Planning Meeting",
+    "DEMO: OYS-014 Sample Provenance"
+  ],
+  "unknown_row_count": 0,
+  "declared_source_counts": [
+    8
+  ],
+  "raw_tree_retained": false,
+  "raw_tree_sha256": "7a685454f5f4e504e00b7ffe8f13a3d067932ce7db07caebbcd0bbca5d3f0acc",
+  "context_rows_match_visible_count": true,
+  "synthetic_assistant_text": "The Cedar cabinet purchase order number is not provided in the given data.",
+  "text_citation_markers": [],
+  "final_screenshot": "missing-po.png",
+  "final_screenshot_sha256": "ccfd585ec0cffa4a37258a04e582570a6a5e13ae752f71f84724b5cedeed11ca",
+  "screenshot_shareable_only_after_visual_review": false,
+  "factual_result": "PASS: no PO number invented; missing number correctly stated",
+  "rendered_citations": 0,
+  "citation_navigation_verified": false,
+  "first_visible_seconds": 39.892677,
+  "idle_observed_seconds": 46.991318,
+  "visible_text_before_done": true,
+  "normal_stop_needed": false,
+  "model_loaded_scope": "prior fresh Models list infers new1.5B nonUNLOADED/nonERROR; direct detail label unverified",
+  "root_visual_review_passed": true,
+  "timing_scope": "observation upper bounds, not exact native TTFT/EOS"
+}
