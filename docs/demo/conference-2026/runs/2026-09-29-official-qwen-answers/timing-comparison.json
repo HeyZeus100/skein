@@ -1,0 +1,104 @@
+{
+  "schema_version": 1,
+  "scope": "Descriptive timing comparison of one sequential run per different model/APK identity; no controlled speedup or thermal-cause claim.",
+  "v5": {
+    "run_id": "physical-28354dd-20260929T172421Z-v5",
+    "build_sha": "28354dd25bb4995930ff46a71752f43f8a0d5df3",
+    "test_build_sha": "28354dd25bb4995930ff46a71752f43f8a0d5df3",
+    "model_sha256": "2c5f9a121ae6695208e300c16acca303669afa4e18812061164dca9c97071b12",
+    "apk_sha256": "8053e8e10ee6dbe7b9e650506971bf30b93e64861bbdff1237420680d10b4eb9",
+    "test_apk_sha256": "0891fce37751f92a2e79a1c46424e3d463fbdef0903dce64aa9933f9be472cf2",
+    "fixture_sha256": "ccd9bb4cad984929ec679ecc1f2f79d249d274376fb3c00f4b529911dfaed5d0",
+    "case_set_sha256": "8ea60c32cc7d19ee0e52c4ea501408b168b5540979f5c41e18197df27a3d26e0",
+    "seeds": [
+      17
+    ],
+    "sampling": {
+      "temperature": 0.0,
+      "top_k": 1,
+      "top_p": 1.0,
+      "min_p": 0.0,
+      "repeat_penalty": 1.0,
+      "max_tokens": 256,
+      "stop": []
+    },
+    "context": {
+      "requested": 4096,
+      "allocated": 4096
+    },
+    "threads": 4
+  },
+  "v5_retained_evidence": {
+    "worktree": "conference-demo-20260929",
+    "path": "build/agent-logs/fold/physical-28354dd-20260929T172421Z-v5/answers",
+    "answers_sha256": "3d76119eeb8542e124b2818b060b8917e8a27cf534cbe7a3f1875786879b0a99",
+    "original_run_manifest_sha256": "49ea38fc1df453af5783afbc5ef48e65efbcb526937a018a6a736f5f03c6f568"
+  },
+  "v6b": {
+    "run_id": "qwen15b-answers-20260929T190424Z",
+    "build_sha": "920e820eb23d2c5f4b70dfa95515899559cb2098",
+    "test_build_sha": "920e820eb23d2c5f4b70dfa95515899559cb2098",
+    "model_sha256": "6a1a2eb6d15622bf3c96857206351ba97e1af16c30d7a74ee38970e434e9407e",
+    "apk_sha256": "b3fab0e408d79a5566fdf2334000e6c0095d710fcd50b77774038b35fc6ad46b",
+    "test_apk_sha256": "c66344a88fc163a23b3137edb963e6960aee6d1bcd0fe53287536479b96bf59f",
+    "fixture_sha256": "ccd9bb4cad984929ec679ecc1f2f79d249d274376fb3c00f4b529911dfaed5d0",
+    "case_set_sha256": "8ea60c32cc7d19ee0e52c4ea501408b168b5540979f5c41e18197df27a3d26e0",
+    "seeds": [
+      17
+    ],
+    "sampling": {
+      "temperature": 0.0,
+      "top_k": 1,
+      "top_p": 1.0,
+      "min_p": 0.0,
+      "repeat_penalty": 1.0,
+      "max_tokens": 256,
+      "stop": []
+    },
+    "context": {
+      "requested": 4096,
+      "allocated": 4096
+    },
+    "threads": 4
+  },
+  "same_fixture_and_provided_source_identities": true,
+  "same_sampling_seed_context_threads": true,
+  "cases": [
+    {
+      "case_id": "demo-construction-synthesis",
+      "v5_ttft_ms": 53171,
+      "v6b_ttft_ms": 21708,
+      "v5_elapsed_ms": 90844,
+      "v6b_elapsed_ms": 33592,
+      "v5_generated_tokens": 113,
+      "v6b_generated_tokens": 34
+    },
+    {
+      "case_id": "demo-construction-absent",
+      "v5_ttft_ms": 37823,
+      "v6b_ttft_ms": 15464,
+      "v5_elapsed_ms": 111525,
+      "v6b_elapsed_ms": 18573,
+      "v5_generated_tokens": 256,
+      "v6b_generated_tokens": 14
+    },
+    {
+      "case_id": "demo-aviation-direct",
+      "v5_ttft_ms": 34455,
+      "v6b_ttft_ms": 14111,
+      "v5_elapsed_ms": 37824,
+      "v6b_elapsed_ms": 47866,
+      "v5_generated_tokens": 12,
+      "v6b_generated_tokens": 15
+    },
+    {
+      "case_id": "demo-mycology-direct",
+      "v5_ttft_ms": 45169,
+      "v6b_ttft_ms": 25038,
+      "v5_elapsed_ms": 52491,
+      "v6b_elapsed_ms": 74227,
+      "v5_generated_tokens": 24,
+      "v6b_generated_tokens": 29
+    }
+  ]
+}
