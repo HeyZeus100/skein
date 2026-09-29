@@ -6,13 +6,17 @@ package app.skein.feature.chat.entries
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.selection.toggleable
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
@@ -31,6 +35,7 @@ import androidx.compose.ui.layout.onSizeChanged
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.LocalLocale
 import androidx.compose.ui.platform.testTag
+import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.semantics.heading
 import androidx.compose.ui.semantics.semantics
 import app.skein.core.designsystem.components.SkeinListRow
@@ -46,8 +51,10 @@ import app.skein.core.navigation.ChatHomeKey
 import app.skein.core.navigation.Destination
 import app.skein.core.navigation.NewChatKey
 import app.skein.core.navigation.ObjectKind
+import app.skein.core.navigation.SkeinId
 import app.skein.core.navigation.SkeinKey
 import app.skein.feature.chat.ChatBottomBar
+import app.skein.feature.chat.ChatKnowledge
 import app.skein.feature.chat.DraftLoadNotice
 import app.skein.feature.chat.HingeSafeChatControls
 import app.skein.feature.chat.drafts.rememberDraftComposerState
@@ -63,6 +70,8 @@ import app.skein.feature.shell.layout.SkeinNavContainer
 import app.skein.feature.shell.layout.SkeinPosture
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.launch
+import kotlinx.serialization.json.JsonObject
+import kotlinx.serialization.json.JsonPrimitive
 import java.time.Instant
 import java.time.ZoneId
 import java.time.format.DateTimeFormatter
@@ -95,9 +104,9 @@ internal fun NewChatLanding(
         repository.observeTimeline(TimelineFilter(kinds = RECENT_KINDS), limit = recentCount)
     }.collectAsState(emptyList())
     val scope = rememberCoroutineScope()
-    val spaceId = shell.nav.space?.value ?: deps.defaultSpaceId
+    val spaceId = (shell.nav.space?.value ?: deps.defaultSpaceId)?.takeIf { SkeinId.parse(it) != null }
     // The root has one stable, encrypted draft per Space, including process restoration.
-    val draftKey = spaceId?.let { ChatDraftKey.New(it, (key as? NewChatKey)?.draftId?.value ?: ROOT_DRAFT_ID) }
+    val draftKey = spaceId?.let { ChatDraftKey.New(it, (key as? NewChatKey)?.draftId?.value ?: shell.rootDraftId) }
     val composer =
         if (deps.drafts != null &&
             draftKey != null
@@ -108,10 +117,12 @@ internal fun NewChatLanding(
         }
     var sending by remember(draftKey) { mutableStateOf(false) }
     var sendFailed by remember(draftKey) { mutableStateOf(false) }
+    val knowledgeEnabled = draftKey?.let { shell.newChatKnowledgeEnabled(it.spaceId, it.draftId) } ?: true
 
     val density = LocalDensity.current
     var paneHeight by remember { mutableIntStateOf(0) }
     var headerHeight by remember { mutableIntStateOf(0) }
+    var knowledgeToggleHeight by remember { mutableIntStateOf(0) }
     var paneBounds by remember { mutableStateOf(Rect.Zero) }
     Column(
         Modifier
@@ -121,7 +132,9 @@ internal fun NewChatLanding(
             .onGloballyPositioned { paneBounds = it.boundsInWindow() },
     ) {
         val maxHeight = with(density) { paneHeight.toDp() }
-        val composerMaxHeight = maxHeight * 0.6f - SkeinSize.topBar - entryBottomObstruction()
+        val composerMaxHeight =
+            maxHeight * 0.6f - SkeinSize.topBar - entryBottomObstruction() -
+                with(density) { knowledgeToggleHeight.toDp() }
         Column(Modifier.fillMaxSize()) {
             // As the placeholder beside Conversations it follows the Chat root's rule: no navigation icon.
             shell.EntryTopBar(
@@ -188,6 +201,14 @@ internal fun NewChatLanding(
                     hinge = (layout.posture as? SkeinPosture.Tabletop)?.hinge,
                 ) {
                     DraftLoadNotice(composer)
+                    NewChatKnowledgeToggle(
+                        checked = knowledgeEnabled,
+                        enabled = !sending && draftKey != null,
+                        onCheckedChange = { enabled ->
+                            draftKey?.let { shell.setNewChatKnowledgeEnabled(it.spaceId, it.draftId, enabled) }
+                        },
+                        modifier = Modifier.onSizeChanged { knowledgeToggleHeight = it.height },
+                    )
                     if (sendFailed) {
                         Text("Couldn't send this message. Try again.", Modifier.padding(SkeinSpacing.space16))
                     }
@@ -195,10 +216,11 @@ internal fun NewChatLanding(
                         isGenerating = false,
                         composerState = composer,
                         maxHeight = composerMaxHeight,
-                        enabled = !sending && (deps.turns == null || composer != null),
+                        enabled = !sending && draftKey != null && (deps.turns == null || composer != null),
                         onSend = { text ->
                             val origin = shell.nav
                             val selectedSpace = origin.space?.value
+                            val useKnowledge = knowledgeEnabled
                             val turns = deps.turns
                             if (turns != null) {
                                 val snapshot = composer?.snapshot
@@ -215,6 +237,7 @@ internal fun NewChatLanding(
                                             snapshot.version,
                                             snapshot.draft.text,
                                             provisionalTitle(snapshot.draft.text, deps.knowledge.clock()),
+                                            knowledgeEnabled = useKnowledge,
                                         )
                                     scope.launch {
                                         try {
@@ -243,6 +266,8 @@ internal fun NewChatLanding(
                                                 provisionalTitle(text, deps.knowledge.clock()),
                                                 bodyMd = "",
                                                 personaId = selectedSpace,
+                                                frontmatter =
+                                                    JsonObject(mapOf(ChatKnowledge.KEY to JsonPrimitive(useKnowledge))),
                                             ),
                                         )
                                     deps.handoff.put(chat.id, text)
@@ -261,6 +286,38 @@ internal fun NewChatLanding(
                 }
             }
         }
+    }
+}
+
+internal const val NEW_CHAT_KNOWLEDGE_TEST_TAG = "new_chat_knowledge_toggle"
+
+@Composable
+private fun NewChatKnowledgeToggle(
+    checked: Boolean,
+    enabled: Boolean,
+    onCheckedChange: (Boolean) -> Unit,
+    modifier: Modifier = Modifier,
+) {
+    Row(
+        modifier =
+            modifier
+                .fillMaxWidth()
+                .heightIn(min = SkeinSize.touchTarget)
+                .testTag(NEW_CHAT_KNOWLEDGE_TEST_TAG)
+                .toggleable(value = checked, enabled = enabled, role = Role.Switch, onValueChange = onCheckedChange)
+                .padding(horizontal = SkeinSpacing.space16, vertical = SkeinSpacing.space4),
+        verticalAlignment = Alignment.CenterVertically,
+        horizontalArrangement = Arrangement.spacedBy(SkeinSpacing.space8),
+    ) {
+        Column(Modifier.weight(1f)) {
+            Text("Search Knowledge", style = MaterialTheme.typography.labelLarge)
+            Text(
+                if (checked) "Search your notes and files" else "Use the model's general knowledge",
+                style = MaterialTheme.typography.bodySmall,
+                color = MaterialTheme.colorScheme.onSurfaceVariant,
+            )
+        }
+        Switch(checked = checked, onCheckedChange = null, enabled = enabled)
     }
 }
 
@@ -312,5 +369,3 @@ private val SENTENCE_END = Regex("""(?<=[.?!])\s+|\n+""")
 private val WHITESPACE = Regex("""\s+""")
 private const val MIN_WORDS = 3
 private const val TITLE_MAX = 48
-
-private const val ROOT_DRAFT_ID = "00000000-0000-0000-0000-000000000001"
