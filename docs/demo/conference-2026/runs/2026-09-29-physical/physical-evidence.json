@@ -1,0 +1,249 @@
+{
+  "schema_version": 1,
+  "status": "CANDIDATE_INSTALLED_DEMO_NOT_READY",
+  "source_sha": "5ae91c238612bdd9b1511b3716d34b4fa5960dd2",
+  "source_binding": "Reviewed host build provenance plus installed APK digest; source commit is not embedded APK attestation.",
+  "installed": {
+    "package": "app.skein",
+    "variant": "fossDebug",
+    "apk_bytes": 125280302,
+    "apk_sha256": "1f83b71c5fe60a6dc26fcac7a4c75b49fbf009b6e8c9d972b2176c18081c1323",
+    "app_test_apk_sha256": "889db458324339f2f24da8b190a8457192a719df4bb088a52c04bf298e992f44",
+    "native_test_apk_sha256": "bb1b2f496f6c831ced00f20d9dd08d6f571d87fcb48040dfba17f4a7c561f342",
+    "signing_certificate_sha256": "75bcae7118a4635dd0fb153438e5bdbfd7aab5d467b3a0c2bb210eefde5becf9",
+    "signing_certificate_matches_prior_installation": true,
+    "ordinary_and_opt_in_app_bytes_equal": true,
+    "update_mode": "install -r",
+    "update_exit_code": 0,
+    "installed_digest_evidence": "answer_minimal_review",
+    "limit": "Replace-install succeeded; this is not a vault-content comparison or post-update UI rehearsal."
+  },
+  "public_model": {
+    "bytes": 1590475744,
+    "sha256": "2c5f9a121ae6695208e300c16acca303669afa4e18812061164dca9c97071b12",
+    "host_blake3": "db158ff62057f42fef73363387db4bfac01da469475840dc0aad5dae70eb0e4a",
+    "template_sha256": "cd8e9439f0570856fd70470bf8889ebd8b5d1107207f67a5efb46e342330527f",
+    "template_provenance": "native modelMeta of the verified public model",
+    "owner_selected_model_identity_verified": false,
+    "limit": "Dedicated public test artifact; host hashing is not device latency evidence. Licensing discrepancy remains in the preflight record."
+  },
+  "native_probe": {
+    "selector": "app.skein.inference.service.SyntheticTemplateParityTest#publicModelNativeTokenParity",
+    "engine_path": "native-library-test-app",
+    "junit_test_count_per_attempt": 1,
+    "native_case_count_per_attempt": 5,
+    "cases": [
+      {
+        "case_id": "empty-system",
+        "status": "ok",
+        "native_render_equal": true,
+        "token_ids_equal": true,
+        "token_count": 15
+      },
+      {
+        "case_id": "role-word",
+        "status": "ok",
+        "native_render_equal": true,
+        "token_ids_equal": true,
+        "token_count": 9
+      },
+      {
+        "case_id": "unicode-whitespace",
+        "status": "ok",
+        "native_render_equal": true,
+        "token_ids_equal": true,
+        "token_count": 25
+      },
+      {
+        "case_id": "repeated-turns",
+        "status": "ok",
+        "native_render_equal": true,
+        "token_ids_equal": true,
+        "token_count": 21
+      },
+      {
+        "case_id": "literal-control-isolation",
+        "status": "ok",
+        "safe_token_count": 14,
+        "unsafe_token_count": 9,
+        "control_token_id": 151644,
+        "safe_control_count": 2,
+        "unsafe_control_count": 3
+      }
+    ],
+    "eog": {
+      "scope": "classification-only",
+      "declared_eos": {
+        "token_id": 151645,
+        "is_eog": true
+      },
+      "controls": [
+        {
+          "spelling": "<|im_end|>",
+          "token_ids": [
+            151645
+          ],
+          "singleton": true,
+          "classifications": [
+            {
+              "token_id": 151645,
+              "is_eog": true
+            }
+          ]
+        },
+        {
+          "spelling": "<|endoftext|>",
+          "token_ids": [
+            151643
+          ],
+          "singleton": true,
+          "classifications": [
+            {
+              "token_id": 151643,
+              "is_eog": true
+            }
+          ]
+        },
+        {
+          "spelling": "</s>",
+          "token_ids": [
+            128247
+          ],
+          "singleton": true,
+          "classifications": [
+            {
+              "token_id": 128247,
+              "is_eog": true
+            }
+          ]
+        }
+      ],
+      "generated_stop_behavior": "unmeasured"
+    },
+    "first_attempt": {
+      "run_id": "fold5ae-native-20260929T101214Z",
+      "complete": false,
+      "instrumentation_exit_code": 0,
+      "formatted_junit_output": "OK (1 test)",
+      "runner_junit_passed": false,
+      "runner_remote_stop_verified": false,
+      "native_json_cases_passed": 5,
+      "runner_failures": [
+        "Missing -r produced formatted output rejected by the raw-status parser.",
+        "Unsupported dumpsys activity instrumentation command prevented runner stop proof."
+      ],
+      "original_failure_preserved": true
+    },
+    "second_attempt": {
+      "run_id": "fold5ae-native-20260929T102342Z-v2",
+      "complete": true,
+      "instrumentation_exit_code": 0,
+      "runner_junit_passed": true,
+      "runner_remote_stop_verified": true,
+      "native_json_cases_passed": 5
+    },
+    "limit": "Native template/token/control tests and EOG classification only; no generated answer or generated stop behavior."
+  },
+  "answer_attempt": {
+    "run_id": "fold5ae-answers-20260929T102622Z-v2",
+    "selector": "app.skein.benchmark.SyntheticAnswerBenchmarkTest#suppliedEvidenceThroughTheIsolatedApk",
+    "runner_sha256": "453ec3449ac235b5ac81067dc5a74eacac57c6e3489aa9b56e8661bd29c377b0",
+    "complete": false,
+    "deadline_seconds": 900,
+    "host_timeout": true,
+    "elapsed_seconds": 901.58,
+    "instrumentation_exit_code": 124,
+    "driver_exit_code": 1,
+    "junit_passed": false,
+    "remote_stop_verified": true,
+    "valid_manifest": false,
+    "valid_answer_rows": 0,
+    "remote_manifest_and_answers_absent": true,
+    "collector_files_are_valid_evidence_outputs": false,
+    "quality_assessed": false,
+    "automatic_retry": false,
+    "crash_conclusion": "The final Process crashed. message followed timeout force-stop; spontaneous crash is not established.",
+    "delay_cause": "Unestablished. No generation-latency conclusion follows from absent pre-manifest output.",
+    "original_attempt_and_partial_snapshot_preserved": true
+  },
+  "not_established": [
+    "Four successful synthetic answers, facts, citations, missing-evidence behavior, or generated stop reasons.",
+    "Owner vault unlock, selected model identity, demo-note import, indexing, retrieval, or post-update UI usability.",
+    "Physical fold/IME behavior, owner lock/unlock recovery, generation memory/thermal results, or presentation timing.",
+    "Three full rehearsals on the installed APK and owner-selected model.",
+    "Closure of skein-830f, real-Qwen acceptance, UX, inference lifecycle, or retrieval gates."
+  ],
+  "privacy": {
+    "owner_ui_accessed_during_answer_attempt": false,
+    "vault_imported_during_answer_attempt": false,
+    "owner_registry_inspected_during_answer_attempt": false,
+    "published_scope": "Selected public artifact identities and minimized outcomes; no device identifier, private path, screenshot, raw process dump, or owner content."
+  },
+  "evidence_reference_base": "Local ignored build/agent-logs; identifiers locate retained sources, not public downloadable artifacts.",
+  "evidence_sources": {
+    "host_apk_identity": {
+      "relative_id": "apk-review-5ae91c2-optin-20260929T095321Z/independent-review.json",
+      "sha256": "e5b13f7391633ea2238dca3f69400fe16e9912a238e6f7a3cbc48e4cc460865b"
+    },
+    "host_public_model_identity": {
+      "relative_id": "public-qwen-blake3-20260929/identity.json",
+      "sha256": "625212a9771344d4069f06209fee7cf75b5e4bb375542932d43081b72c4463f2"
+    },
+    "native_first_summary": {
+      "relative_id": "fold/physical-5ae91c2-20260929T101214Z/native/summary.json",
+      "sha256": "3b9b954cc80bd08680e7506e6485b5f49b513f60018e2f88a52ceca9ecfc9bac"
+    },
+    "native_first_json": {
+      "relative_id": "fold/physical-5ae91c2-20260929T101214Z/native/native-parity.json",
+      "sha256": "cb7e85882891202119fe4deedfdec4149beee329b3f5592c054a644edc1882c4"
+    },
+    "native_first_instrumentation": {
+      "relative_id": "fold/physical-5ae91c2-20260929T101214Z/native/instrumentation.log",
+      "sha256": "537f938fc8174918c196273bdc6a6c612da9fc917de835f09c271df7d10602dd"
+    },
+    "native_second_summary": {
+      "relative_id": "fold/physical-5ae91c2-20260929T102342Z-v2/native/summary.json",
+      "sha256": "b86f34c12fd4fff2c1b64f5758860f7af282b8d77eefd849068f2c276066d595"
+    },
+    "native_second_json": {
+      "relative_id": "fold/physical-5ae91c2-20260929T102342Z-v2/native/native-parity.json",
+      "sha256": "34e0dd8f53e6a659131b84fbe696aeaec9a8bcbe7208e09e3ab3bf876547f727"
+    },
+    "native_second_instrumentation": {
+      "relative_id": "fold/physical-5ae91c2-20260929T102342Z-v2/native/instrumentation.log",
+      "sha256": "b4de1972bed5b4a5930d12d880049b221169f30748b715246d9397cb1d2eb7c6"
+    },
+    "answer_minimal_review": {
+      "relative_id": "fold/physical-5ae91c2-20260929T102342Z-v2/independent-answer-review-minimal.json",
+      "sha256": "65b1dfc7836a51445401ecc9fa16cea8c8e05561690a3f4c4a69fb2fa9f93784"
+    },
+    "app_update_command": {
+      "relative_id": "fold/physical-5ae91c2-20260929T102342Z-v2/answers/011-install-app.command.json",
+      "sha256": "0edb6253a923fa2e1d6ea4bbfaea8eeeb267853a5356af2ab91153be8a8b0b78"
+    },
+    "app_update_result": {
+      "relative_id": "fold/physical-5ae91c2-20260929T102342Z-v2/answers/011-install-app.stdout",
+      "sha256": "781a31c82430c97897af612ece5e0ca2205e301cb5ff121ce2660541ea5182c7"
+    },
+    "normal_launch_readiness": {
+      "relative_id": "fold/ui-readiness-5ae91c2-20260929T104701Z/readiness-summary.json",
+      "sha256": "8a262ce5ac7fc31298606c911acc1ef044066c8b69cff0e283cbc3c4d75b1945"
+    }
+  },
+  "answer_review_utc": "2026-09-29T10:43:59.871471+00:00",
+  "normal_launch_observation": {
+    "observed_at": "2026-09-29T10:48:12.239878+00:00",
+    "launch_status": "ok",
+    "launch_state": "COLD",
+    "total_ms": 2480,
+    "device_keyguard_showing": true,
+    "input_restricted": true,
+    "app_vault_unlock_state": "unobserved",
+    "new_shell_visible": "unobserved",
+    "model_availability": "unobserved",
+    "screenshot_taken": false,
+    "keyevents_sent": false,
+    "security_changes": false,
+    "status": "Owner normal unlock required before UI rehearsal."
+  }
+}
