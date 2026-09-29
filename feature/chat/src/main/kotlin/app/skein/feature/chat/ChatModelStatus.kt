@@ -44,8 +44,8 @@ internal fun ChatModelStatus.Observed.activity(turn: ChatTurnState?): String =
 @Composable
 internal fun ChatModelIndicator(
     status: ChatModelStatus,
-    ownedTurn: ChatTurnState? = null,
     modifier: Modifier = Modifier,
+    ownedTurn: ChatTurnState? = null,
 ) {
     val observed = status as? ChatModelStatus.Observed ?: return
     val activity = observed.activity(ownedTurn)

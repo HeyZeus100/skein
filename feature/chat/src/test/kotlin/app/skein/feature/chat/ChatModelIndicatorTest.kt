@@ -67,7 +67,7 @@ class ChatModelIndicatorTest {
     fun `observed loading loaded generating error and unloaded render distinct accessible states`() {
         val status = mutableStateOf<ChatModelStatus>(ChatModelStatus.Unavailable)
         val turn = mutableStateOf<ChatTurnState?>(null)
-        composeRule.setContent { SkeinTheme { ChatModelIndicator(status.value, turn.value) } }
+        composeRule.setContent { SkeinTheme { ChatModelIndicator(status.value, ownedTurn = turn.value) } }
         composeRule.onNodeWithTag(CHAT_MODEL_STATUS_TEST_TAG).assertDoesNotExist()
         val states =
             listOf(

@@ -132,7 +132,7 @@ public fun ChatScreen(
         Column(Modifier.fillMaxSize()) {
             Column(Modifier.onSizeChanged { headerHeight = it.height }) {
                 topBar()
-                ChatModelIndicator(modelStatus, modelTurn)
+                ChatModelIndicator(modelStatus, ownedTurn = modelTurn)
                 if (viewModel.banner != ChatBanner.NONE) {
                     ChatErrorBanner(viewModel.banner, viewModel.canRetry, viewModel::retry)
                 }
