@@ -1,0 +1,16 @@
+{
+  "baseline_sha": "321a51fdb0d7f6624e0fb957b819b968965d5e3f",
+  "repair_sha": "13ceb88ae81d21b829c5ec3e8104b021f33ab848",
+  "source_files_changed": 2,
+  "red_regression": "Original implementation: 15 console tests, two subtest errors reproducing rc0 stdout diagnostics from exec-out.",
+  "green_regression": "37 CI host tests passed after repair; includes 15 console tests and error/malformed-data cases.",
+  "checks": [
+    "37 host unittest cases passed",
+    "Python py_compile passed",
+    "git diff --check passed",
+    "pinned submodules initialized without gitlink drift"
+  ],
+  "no_runtime_claim": "No build, emulator, device, CI dispatch or production code changes in the repair task.",
+  "behavior": "Fixed argv adb shell -T preserves remote exit/stderr; only rc1+empty stdout+exact uninstalled-package or fixed missing-request-file diagnostic waits. All other read errors and malformed data fail closed.",
+  "remaining": "Fresh root-dispatched combined-source runtime must prove protocol and geometry; this documentation records only the failed original run and host proof."
+}

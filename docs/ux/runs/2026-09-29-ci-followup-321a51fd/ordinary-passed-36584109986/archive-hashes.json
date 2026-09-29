@@ -1,0 +1,21 @@
+[
+  {
+    "name": "artifact-11041491749-connected-test-reports.zip",
+    "api_artifact_id": 11041491749,
+    "api_url": "https://api.github.com/repos/HeyZeus100/skein/actions/artifacts/11041491749",
+    "bytes": 973048,
+    "sha256": "14bf246b978617f81dea8e7735a09ca23dfbb0b889f6bc8fbc52db09aa2c0f50",
+    "api_digest_matched": true,
+    "api_size_matched": true,
+    "zip_integrity_passed": true,
+    "publication": "Original archive retained outside Git; selected reports below retain original member identities."
+  },
+  {
+    "name": "run-logs.zip",
+    "bytes": 89632,
+    "sha256": "bd790fdefd7eeadd6ce14d69faf8f512907882191ff336ebbb758edb33141868",
+    "zip_integrity_passed": true,
+    "api_digest_available": false,
+    "publication": "Whole job member copied as deterministic gzip; other per-step ZIP members retained only in original archive."
+  }
+]

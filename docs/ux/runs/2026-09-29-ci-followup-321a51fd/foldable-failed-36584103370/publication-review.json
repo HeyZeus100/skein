@@ -1,0 +1,160 @@
+{
+  "run_id": 36584103370,
+  "source_sha": "321a51fdb0d7f6624e0fb957b819b968965d5e3f",
+  "counts_from_actual_testcase_elements": {
+    "tests": 2,
+    "passed": 0,
+    "failure": 2,
+    "error": 0,
+    "skipped": 0
+  },
+  "identity_comparison": {
+    "missing": [],
+    "unexpected": [],
+    "duplicates": 0
+  },
+  "manifest_rehash": [
+    {
+      "path": "build/foldable-evidence/avd-config.ini",
+      "bytes": 3995,
+      "sha256": "a1f5dcc0136bbd5faaf6232bdf5267994586947b8e3ee4beeb9a95ba571ee6eb",
+      "byte_hash_matched": true
+    },
+    {
+      "path": "app/build/outputs/androidTest-results/connected/debug/flavors/dev/TEST-skein_foldable_gate(AVD) - 15.xml",
+      "bytes": 1398,
+      "sha256": "2ebc995d03ae8b442bdee76131032cce3397a495b09e27e20fbcafbbad559a36",
+      "byte_hash_matched": true
+    },
+    {
+      "path": "app/build/outputs/apk/dev/debug/app-dev-debug.apk",
+      "bytes": 171611846,
+      "sha256": "b5574e3a4dd63cc14fc1ee006a0e6c33d12344c9f4d639508a903c193801abc3",
+      "byte_hash_matched": true
+    },
+    {
+      "path": "app/build/outputs/apk/androidTest/dev/debug/app-dev-debug-androidTest.apk",
+      "bytes": 94568933,
+      "sha256": "aa9173f782d8e3041246dba01b45a8a9f3c17fa7b5d9f717e97cbd3bb80219e4",
+      "byte_hash_matched": true
+    },
+    {
+      "path": "build/foldable-evidence/console-run-id.txt",
+      "bytes": 33,
+      "sha256": "433e4fb8fa2c96d3373dfb0bf97b64d530ee5652b23b70e350dd38d28e290019",
+      "byte_hash_matched": true
+    },
+    {
+      "path": "build/foldable-evidence/console-events.jsonl",
+      "bytes": 225,
+      "sha256": "6bd8931404fc1d893d167f55d33e519901973dbaa38b8eed20857080449d1b6e",
+      "byte_hash_matched": true
+    }
+  ],
+  "source_attribution": "GitHub API head_sha plus host-declared checkout; no installed-package byte attestation",
+  "control_events": {
+    "started": 1,
+    "fatal": 1
+  },
+  "geometry_observations": 0,
+  "literal_first_malformed_payload": "Not captured; unavailable-package/file mechanism is supported by published source and a red regression, not a captured diagnostic.",
+  "primary_logcat_cause": "Both tests timed out awaiting console fold acknowledgments before Activity launch; XML records subsequent reset exception.",
+  "apk_scope": "Two uploaded build APKs independently rehashed and ZIP-checked; bytes remain outside Git; no installed-byte attestation.",
+  "apk_bytes": [
+    {
+      "path": "app/build/outputs/apk/androidTest/dev/debug/app-dev-debug-androidTest.apk",
+      "bytes": 94568933,
+      "sha256": "aa9173f782d8e3041246dba01b45a8a9f3c17fa7b5d9f717e97cbd3bb80219e4",
+      "attribution": "downloaded host build output; not installed bytes",
+      "zip_integrity_ok": true,
+      "native_libraries": []
+    },
+    {
+      "path": "app/build/outputs/apk/dev/debug/app-dev-debug.apk",
+      "bytes": 171611846,
+      "sha256": "b5574e3a4dd63cc14fc1ee006a0e6c33d12344c9f4d639508a903c193801abc3",
+      "attribution": "downloaded host build output; not installed bytes",
+      "zip_integrity_ok": true,
+      "native_libraries": [
+        {
+          "path": "lib/arm64-v8a/libandroidx.graphics.path.so",
+          "bytes": 10096,
+          "sha256": "41e9a793c43a0f4fddb19e33f346bace464f30f888ba7b9eaf96294ea115bfb6"
+        },
+        {
+          "path": "lib/arm64-v8a/libdatastore_shared_counter.so",
+          "bytes": 7784,
+          "sha256": "178f89a2c6c9234ddf980dd4cd1f3616186a46b2b932aafa6707abd04c5fd76a"
+        },
+        {
+          "path": "lib/arm64-v8a/libonnxruntime.so",
+          "bytes": 27985944,
+          "sha256": "850f897a50d369b3305582244210f5649be9cfeb193c5807fba14146301616c7"
+        },
+        {
+          "path": "lib/arm64-v8a/libonnxruntime4j_jni.so",
+          "bytes": 83208,
+          "sha256": "f86f2a5f56b907e4a25d67febc422ec13f5a265d36665f50e2808de6e4a515b6"
+        },
+        {
+          "path": "lib/arm64-v8a/libskein_llama.so",
+          "bytes": 33413072,
+          "sha256": "b3fe7bf00e66a9d476479ea5c1e65497586552d8d9c03efb470c856439101a88"
+        },
+        {
+          "path": "lib/arm64-v8a/libskein_sqlite.so",
+          "bytes": 6268816,
+          "sha256": "ef84dfbbbf1806ef24ddf2e94c270a450b643f4b64e798bacb156a437d7643d6"
+        },
+        {
+          "path": "lib/arm64-v8a/libskein_sqlite_jni.so",
+          "bytes": 19296,
+          "sha256": "2d6454ff03023ef85f0d19fd7c3cce88169b5b212a9de86b7fe649b98ff5d229"
+        },
+        {
+          "path": "lib/x86_64/libandroidx.graphics.path.so",
+          "bytes": 10760,
+          "sha256": "4e56c996f13670e70082658de7880c4020eabf4f25e43387f88ed78a713fc9f0"
+        },
+        {
+          "path": "lib/x86_64/libdatastore_shared_counter.so",
+          "bytes": 7336,
+          "sha256": "ccd1862ef8f854d2322f3ee07adebd107890ded3b7c96b8f3528ac99aab4a4f6"
+        },
+        {
+          "path": "lib/x86_64/libonnxruntime.so",
+          "bytes": 33975544,
+          "sha256": "12aee04e178cde314725526b1a8e0b06ca20bd717ea252dd65d0b752f0088bd1"
+        },
+        {
+          "path": "lib/x86_64/libonnxruntime4j_jni.so",
+          "bytes": 80272,
+          "sha256": "9283970dbce849057eaf29fe3dfa3db1f7324d1dfcecc952e56eed61f6482c2d"
+        },
+        {
+          "path": "lib/x86_64/libskein_llama.so",
+          "bytes": 5489440,
+          "sha256": "6584e6771bfd6de9ae410143dc026275e022429756a74e538b14320a76ee5a7f"
+        },
+        {
+          "path": "lib/x86_64/libskein_sqlite.so",
+          "bytes": 6700000,
+          "sha256": "8e1701869e6e68d5733206bf268bfbb1cdb076c2f2bfcf67084efd2e0030f527"
+        },
+        {
+          "path": "lib/x86_64/libskein_sqlite_jni.so",
+          "bytes": 18544,
+          "sha256": "22345baf1d62b7dd28df2c46f945fc3fec2237ce3cef7d085b5964e2fef176c2"
+        }
+      ]
+    }
+  ],
+  "remaining_gates": [
+    "Pixel 9 Pro Fold profile acceptance",
+    "hinge-angle/sensor assertions",
+    "unlocked A-G",
+    "real IME and focus",
+    "system_server heap privacy",
+    "physical Fold A-G acceptance outside this lane"
+  ]
+}

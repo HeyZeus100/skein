@@ -1,0 +1,114 @@
+{
+  "run_id": 36584109986,
+  "source_sha": "321a51fdb0d7f6624e0fb957b819b968965d5e3f",
+  "counts_from_actual_testcase_elements": {
+    "tests": 281,
+    "passed": 281,
+    "failure": 0,
+    "error": 0,
+    "skipped": 0
+  },
+  "identity_comparison": {
+    "reference_run": 36551469886,
+    "expected": 281,
+    "missing": [],
+    "unexpected": [],
+    "duplicates": 0
+  },
+  "manifest_rehash": [
+    {
+      "path": "app/build/outputs/androidTest-results/connected/debug/flavors/dev/TEST-test(AVD) - 15.xml",
+      "bytes": 8522,
+      "sha256": "7583724fef8433ec9e70d1a46eaa8244ee4297043a1f0c0bd3a0ade27b0ee483",
+      "byte_hash_matched": true
+    },
+    {
+      "path": "build/instrumentation-review.json",
+      "bytes": 983,
+      "sha256": "2b9474372f90097cfeca357a48ca216945294d66ca20c6c4d533a786844e0afb",
+      "byte_hash_matched": true
+    },
+    {
+      "path": "core/vault/build/outputs/androidTest-results/connected/debug/flavors/dev/TEST-test(AVD) - 15.xml",
+      "bytes": 38385,
+      "sha256": "d85b98f33aedc278a9e7c0366072081074447a36f563d3e3bdb4e90081517c3f",
+      "byte_hash_matched": true
+    },
+    {
+      "path": "inference-service/build/outputs/androidTest-results/connected/debug/flavors/dev/TEST-test(AVD) - 15.xml",
+      "bytes": 6497,
+      "sha256": "c918b5390154c8d5e57ff0a4690a47d7f3371f80c50246fe59933626f13d7cfd",
+      "byte_hash_matched": true
+    }
+  ],
+  "source_attribution": "GitHub API head_sha plus host-declared checkout; no installed-package byte attestation",
+  "module_counts": {
+    "app": {
+      "tests": 38,
+      "passed": 38,
+      "failure": 0,
+      "error": 0,
+      "skipped": 0
+    },
+    "core/vault": {
+      "tests": 204,
+      "passed": 204,
+      "failure": 0,
+      "error": 0,
+      "skipped": 0
+    },
+    "inference-service": {
+      "tests": 39,
+      "passed": 39,
+      "failure": 0,
+      "error": 0,
+      "skipped": 0
+    }
+  },
+  "critical_identity_checks": {
+    "prior_19_failures": {
+      "expected": 19,
+      "passed": 19,
+      "missing_or_nonpassing": []
+    },
+    "critical_cases": {
+      "expected": 6,
+      "passed": 6,
+      "missing_or_nonpassing": []
+    }
+  },
+  "collector_scope": {
+    "entries": 4,
+    "expected_current_entries": 4,
+    "historical_docs_paths": [],
+    "missing": [],
+    "unexpected": []
+  },
+  "apk_scope": "Four manifest declarations only; the uploaded archive contains no APK bytes. No independent APK rehash or installed-byte attestation.",
+  "built_apk_declarations": [
+    {
+      "path": "app/build/outputs/apk/androidTest/dev/debug/app-dev-debug-androidTest.apk",
+      "sha256": "0e30cdafee32e19edeb7e38ab6b4709cc59e494a7325af09430d58acda1758a4",
+      "bytes_available": false,
+      "independently_rehashed": null
+    },
+    {
+      "path": "app/build/outputs/apk/dev/debug/app-dev-debug.apk",
+      "sha256": "8ddb7948828b7c9d244161b61a133e28bf74de79f7337a919130f02767118164",
+      "bytes_available": false,
+      "independently_rehashed": null
+    },
+    {
+      "path": "core/vault/build/outputs/apk/androidTest/dev/debug/vault-dev-debug-androidTest.apk",
+      "sha256": "ed11a5090f8fd2ae2ce0f0a0c7bdd6f9195a121b8bf6bf0d1bd558a3a3702a32",
+      "bytes_available": false,
+      "independently_rehashed": null
+    },
+    {
+      "path": "inference-service/build/outputs/apk/androidTest/dev/debug/inference-service-dev-debug-androidTest.apk",
+      "sha256": "45f067ddf26868c851527990f737b1c298c6753225309bcd363d3ef8ba1586a0",
+      "bytes_available": false,
+      "independently_rehashed": null
+    }
+  ]
+}

@@ -1,0 +1,83 @@
+{
+  "baseline_sha": "321a51fdb0d7f6624e0fb957b819b968965d5e3f",
+  "source_scope": "Only two host Python files changed; no Kotlin, production manifest, geometry assertions, workflow, or pin edits.",
+  "runtime_failure": {
+    "run": 36584103370,
+    "source": "321a51fdb0d7f6624e0fb957b819b968965d5e3f",
+    "xml": {
+      "tests": 2,
+      "failures": 2,
+      "skips": 0
+    },
+    "accepted_requests": 0,
+    "console_commands": 0,
+    "acks": 0,
+    "geometry": 0,
+    "literal_bad_input": "Not captured. Inferred mechanism is supported by published source and red regression; do not claim exact runtime diagnostic.",
+    "primary_timeout_logcat_utc": [
+      "2026-09-29T14:50:48.539Z",
+      "2026-09-29T14:52:18.693Z"
+    ]
+  },
+  "source_evidence": [
+    {
+      "repository": "https://android.googlesource.com/platform/packages/modules/adb",
+      "commit": "1cf2f017d312f73b3dc53bda85ef2610e35a80e9",
+      "file": "client/commandline.cpp",
+      "captured_file": "commandline.cpp",
+      "sha256": "b3d72ecd57b00fc65827136fc2bc37cb260d4df15be6cd786f08db1e8da973ff",
+      "findings": {
+        "exec_out": "1818-1843: exec stream copied to stdout; remote completion returns 0",
+        "shell_T": "702-793: -T requests raw shell-v2; old protocol is rejected; RemoteShell returns remote exit",
+        "shell_protocol_exit": "297-320: kIdExit byte consumed separately"
+      }
+    },
+    {
+      "repository": "https://android.googlesource.com/platform/system/core",
+      "commit": "32bd7a7dd5190626302b661d818f1d23d9be7b0b",
+      "file": "run-as/run-as.cpp",
+      "captured_file": "run-as.cpp",
+      "sha256": "2275bf0faddaaba09535bc293e8f0d827cde95ee5fbdc55d93c81d3a024f3c8e",
+      "findings": {
+        "unknown_package": "200: error(1, 0, \"unknown package: %s\", pkgname)",
+        "not_debuggable": "218: distinct package-not-debuggable hard failure"
+      }
+    },
+    {
+      "repository": "https://android.googlesource.com/platform/packages/modules/adb",
+      "commit": "1cf2f017d312f73b3dc53bda85ef2610e35a80e9",
+      "file": "daemon/services.cpp",
+      "captured_file": "services.cpp",
+      "sha256": "8b234e4e1fb6b576724f18f5ea686769e4413f1659b6e301b3e805dbbe98f361",
+      "finding": "356-358: exec: starts raw subprocess with protocol kNone"
+    },
+    {
+      "repository": "https://android.googlesource.com/platform/packages/modules/adb",
+      "commit": "1cf2f017d312f73b3dc53bda85ef2610e35a80e9",
+      "file": "daemon/shell_service.cpp",
+      "captured_file": "shell_service.cpp",
+      "sha256": "129e051bac4a4448807965752470bb8a10a8228801067bd5e341d0951ef6a296",
+      "finding": "313-348: separate stderr only under shell protocol; absent separate fd stderr duplicates stdin/out socket"
+    }
+  ],
+  "limit": "Published source contract, not attestation that the downloaded CI adb binary was built from these commits. No device/emulator or build was executed for this repair.",
+  "checks": [
+    {
+      "path": "build/agent-logs/remote-read-before.log",
+      "bytes": 7529,
+      "sha256": "c8c19debd2da7b393705395987220dbc88fe01fc4cb837f762c9c1a630d9b0e5"
+    },
+    {
+      "path": "build/agent-logs/remote-read-after-all-host-final.log",
+      "bytes": 6654,
+      "sha256": "d088161e25a16bef25f9e6dd3e023d1aa55cd5d70c6efc9d2c94debf2367ec27"
+    },
+    {
+      "path": "build/agent-logs/submodule-init.log",
+      "bytes": 615,
+      "sha256": "37cfebeae54c9a3678b2a71750a8f003bbcd18fc2925173f0ff5e7e457334397"
+    }
+  ],
+  "extends_review_sha256": "b80173cfac25b81e365219ef611ee2063f0c389c92c08c02e28db9df8140fa5f",
+  "repair_commit": "13ceb88ae81d21b829c5ec3e8104b021f33ab848"
+}

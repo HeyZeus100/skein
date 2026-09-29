@@ -1,0 +1,18 @@
+{
+  "provenance_entries_verified": 47,
+  "published_payload_and_decompressed_hashes_match": true,
+  "original_sources_modified": false,
+  "original_archive_checks": "See each lane archive-hashes.json; API artifact sizes/digests and ZIP integrity were independently verified.",
+  "actual_xml_checks": "2 fold failures;281 ordinary passes;0 errors/skips; expected identities; ordinary four-file manifest exactly rehashed",
+  "publication_scope": "Selected copy, gzip and local-path replacement only; no build/device/CI/Beads operations.",
+  "private_path_matches": [],
+  "credential_value_pattern_matches": [],
+  "broken_local_links": [],
+  "forbidden_binary_files": [],
+  "credential_context_review": "22 matching whole-job lines manually inspected: GitHub permission/secret-source labels, key-removal commands and already-masked *** token/auth headers only. Other matches are test names or source-code identifiers.",
+  "size_before_this_report_and_manifest": {
+    "files": 56,
+    "bytes": 415223,
+    "maximum_file_bytes": 86690
+  }
+}
