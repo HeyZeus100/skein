@@ -29,12 +29,15 @@ import app.skein.testing.SkeinLogCaptureRule
 import app.skein.testing.fakeVault
 import app.skein.testing.scriptedEngine
 import com.google.common.truth.Truth.assertThat
+import kotlinx.coroutines.CompletableDeferred
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.toList
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.test.advanceTimeBy
+import kotlinx.coroutines.test.runCurrent
 import kotlinx.coroutines.test.runTest
 import kotlinx.coroutines.withTimeout
 import org.junit.Rule
@@ -319,6 +322,64 @@ class SendPipelineTest {
             // cancel) — the typed enum drives this, nothing inspects a message
             // string anywhere in this class.
             assertThat(vault.listMessages(chatId)).hasSize(2)
+        }
+
+    @Test
+    fun `plain text reaches the collector before Done and is persisted once on completion`() =
+        runTest {
+            val (vault, chatId) = newChat()
+            val finish = CompletableDeferred<Unit>()
+            val engine =
+                object : InferenceEngine by scriptedEngine() {
+                    override fun stream(
+                        prompt: Prompt,
+                        params: SamplingParams,
+                    ): Flow<Token> =
+                        flow {
+                            emit(Token.Text("plain ", 1))
+                            emit(Token.Text("partial ", 2))
+                            emit(Token.Text("answer", 3))
+                            finish.await()
+                            emit(Token.Done(StopReason.EOS, 10, 3, 0L, 0f))
+                        }
+                }
+            val sendPipeline = pipeline(vault, engine)
+            val segments = mutableListOf<Segment>()
+            val collector = launch { sendPipeline.send(chatId, "q").toList(segments) }
+
+            runCurrent()
+            advanceTimeBy(31)
+            runCurrent()
+
+            assertThat(segments).containsExactly(Segment.Text("plain partial answer"))
+            assertThat(collector.isActive).isTrue()
+            assertThat(vault.listMessages(chatId).map { it.role }).containsExactly(Role.USER)
+
+            finish.complete(Unit)
+            collector.join()
+
+            assertThat(segments).containsExactly(Segment.Text("plain partial answer"))
+            val messages = vault.listMessages(chatId)
+            assertThat(messages.map { it.role }).containsExactly(Role.USER, Role.ASSISTANT).inOrder()
+            assertThat(messages.last().contentMd).isEqualTo("plain partial answer")
+        }
+
+    @Test
+    fun `coalescing joins adjacent text pieces without crossing citation boundaries`() =
+        runTest {
+            val (vault, chatId) = newChat()
+            val source = retrievedItem()
+            val engine = scriptedEngine("q" to listOf("first ", "part ", "[", "1", "]", " then ", "next"))
+            engine.load(textModel()).getOrThrow()
+
+            val segments = pipeline(vault, engine, FakeRetrievalService(listOf(source))).send(chatId, "q").toList()
+
+            assertThat(segments)
+                .containsExactly(
+                    Segment.Text("first part "),
+                    Segment.Citation(1, source),
+                    Segment.Text(" then next"),
+                ).inOrder()
         }
 
     @Test

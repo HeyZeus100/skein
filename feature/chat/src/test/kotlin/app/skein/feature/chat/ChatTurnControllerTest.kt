@@ -85,6 +85,38 @@ class ChatTurnControllerTest {
             f.close()
         }
 
+    @Test fun `Stop saves visible plain text before Done even while engine cancellation is delayed`() =
+        runTest {
+            val f = Fixture(this)
+            val chat = f.chat()
+            f.controller.enqueue(chat, "question").await()
+            runCurrent()
+            f.visible("visible partial answer")
+            val view = f.controller.state(chat)
+            assertEquals("visible partial answer", (view.value.turn as ChatTurnState.Streaming).text)
+            assertEquals(listOf(Role.USER), f.repo.listMessages(chat).map { it.role })
+
+            f.engine.cancelGate = CompletableDeferred()
+            f.engine.collectorExit = CompletableDeferred()
+            f.controller.stop(chat)
+            runCurrent()
+
+            val messages = f.repo.listMessages(chat)
+            assertEquals(listOf(Role.USER, Role.ASSISTANT), messages.map { it.role })
+            assertEquals("visible partial answer" + INTERRUPTED_MARKER, messages.last().contentMd)
+            assertEquals("visible partial answer", (view.value.turn as ChatTurnState.Interrupted).partial)
+            assertEquals(StopReason.CANCELLED, view.value.outcome?.stopReason)
+
+            f.engine.channels[0].trySend(Token.Text(" late output", 2))
+            f.controller.stop(chat)
+            f.engine.cancelGate.complete(Unit)
+            f.engine.collectorExit.complete(Unit)
+            runCurrent()
+
+            assertEquals(messages, f.repo.listMessages(chat))
+            f.close()
+        }
+
     @Test fun `Stop and lock share one frozen visible answer while engine exceeds 150 ms`() =
         runTest {
             val f = Fixture(this)
