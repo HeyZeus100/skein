@@ -37,6 +37,7 @@ import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.IntRect
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Popup
+import app.skein.core.designsystem.components.LocalSkeinWindowActive
 import app.skein.core.designsystem.components.LocalSkeinWindowPartitions
 
 /**
@@ -124,7 +125,7 @@ public fun WikilinkAutocompletePopup(
     modifier: Modifier = Modifier,
     offset: IntOffset = IntOffset.Zero,
 ) {
-    if (!state.isVisible || state.suggestions.isEmpty()) return
+    if (!LocalSkeinWindowActive.current || !state.isVisible || state.suggestions.isEmpty()) return
     val density = LocalDensity.current
     val windowPartitions = LocalSkeinWindowPartitions.current
     val partitions =

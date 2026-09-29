@@ -44,6 +44,31 @@ class SkeinPartitionedMenuTest {
     val composeRule = skeinComposeRule()
 
     @Test
+    fun `inactive owner suppresses popup without closing its expanded state`() {
+        val active = mutableStateOf(true)
+        val expanded = mutableStateOf(true)
+        composeRule.setContent {
+            SkeinTheme {
+                CompositionLocalProvider(LocalSkeinWindowActive provides active.value) {
+                    Box(Modifier.size(48.dp)) {
+                        SkeinDropdownMenu(expanded.value, { expanded.value = false }, null) {
+                            DropdownMenuItem(text = { Text("Retained choice") }, onClick = {})
+                        }
+                    }
+                }
+            }
+        }
+        composeRule.onNodeWithText("Retained choice").assertExists()
+        active.value = false
+        composeRule.waitForIdle()
+        composeRule.onNodeWithText("Retained choice").assertDoesNotExist()
+        assertTrue(expanded.value)
+        active.value = true
+        composeRule.waitForIdle()
+        composeRule.onNodeWithText("Retained choice").assertExists()
+    }
+
+    @Test
     fun `actual popup stays above tabletop hinge at large text and keeps selection`() {
         val expanded = mutableStateOf(true)
         val partitions =

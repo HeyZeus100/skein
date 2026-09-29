@@ -125,6 +125,35 @@ class SkeinPartitionedDialogTest {
     }
 
     @Test
+    fun `inactive owner removes platform dialog without dismissing caller state`() {
+        val active = mutableStateOf(true)
+        var dismissals = 0
+        composeRule.setContent {
+            SkeinTheme {
+                CompositionLocalProvider(LocalSkeinWindowActive provides active.value) {
+                    SkeinAlertDialog(
+                        onDismissRequest = { dismissals++ },
+                        confirmButton = { Text("Confirm retained dialog") },
+                    )
+                }
+            }
+        }
+        composeRule.waitForIdle()
+        val original = ShadowDialog.getLatestDialog()
+        assertTrue(original.isShowing)
+        active.value = false
+        composeRule.waitForIdle()
+        assertTrue(!original.isShowing)
+        composeRule.onNodeWithText("Confirm retained dialog").assertDoesNotExist()
+        assertEquals(0, dismissals)
+        active.value = true
+        composeRule.waitForIdle()
+        composeRule.onNodeWithText("Confirm retained dialog").assertIsDisplayed()
+        assertTrue(ShadowDialog.getLatestDialog().isShowing)
+        assertEquals(0, dismissals)
+    }
+
+    @Test
     fun `large text reading dialog keeps final actions visible in top partition`() {
         var window: Window? = null
         var actualFontScale = 0f

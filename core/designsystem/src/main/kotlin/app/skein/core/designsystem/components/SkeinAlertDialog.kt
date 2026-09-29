@@ -49,6 +49,7 @@ fun SkeinAlertDialog(
     partition: SkeinDialogPartition = SkeinDialogPartition.CONFIRMATION,
     properties: DialogProperties = DialogProperties(),
 ) {
+    if (!LocalSkeinWindowActive.current) return
     val partitions = LocalSkeinWindowPartitions.current
     val density = LocalDensity.current
     val direction = LocalLayoutDirection.current

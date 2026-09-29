@@ -39,6 +39,7 @@ import androidx.compose.ui.unit.dp
 import androidx.fragment.app.FragmentActivity
 import androidx.window.core.layout.WindowSizeClass
 import androidx.window.core.layout.computeWindowSizeClass
+import app.skein.core.designsystem.components.SkeinAlertDialog
 import app.skein.core.designsystem.components.LocalSkeinWindowPartitions
 import app.skein.core.designsystem.theme.SkeinTheme
 import app.skein.core.navigation.ChatKey
@@ -55,6 +56,7 @@ import org.junit.runner.RunWith
 import org.robolectric.RobolectricTestRunner
 import org.robolectric.annotation.Config
 import org.robolectric.annotation.GraphicsMode
+import org.robolectric.shadows.ShadowDialog
 import androidx.compose.ui.text.TextLayoutResult
 import java.io.File
 import java.nio.file.Files
@@ -73,6 +75,7 @@ class SkeinWorkspaceHostTest {
     private val partitions = mutableMapOf<String, app.skein.core.designsystem.components.SkeinWindowPartitions?>()
     private var density = 1f
     private val fontScale = mutableStateOf(1f)
+    private val showPrimaryDialog = mutableStateOf(false)
 
     @Test
     fun `split uses two independent owners and hides inactive semantics when collapsed`() {
@@ -128,6 +131,31 @@ class SkeinWorkspaceHostTest {
         rule.runOnIdle { rule.activity.onBackPressedDispatcher.onBackPressed() }
         rule.waitForIdle()
         assertEquals(1, workspace.secondary.nav.currentStack.size)
+    }
+
+    @Test
+    fun `active owner gates its retained dialog through split and compact fallback`() {
+        setHost()
+        rule.runOnIdle {
+            workspace.secondary.navigate { goTo(it, NoteKey(NOTE_B)) }
+            workspace.toggleSplit()
+            showPrimaryDialog.value = true
+        }
+        rule.onNodeWithText("Primary dialog").assertIsDisplayed()
+        val original = ShadowDialog.getLatestDialog()
+        rule.runOnIdle { workspace.activate(WorkspacePane.SECONDARY) }
+        rule.waitForIdle()
+        rule.onNodeWithText("Primary dialog").assertDoesNotExist()
+        assertTrue(!original.isShowing)
+        rule.runOnIdle { rule.activity.onBackPressedDispatcher.onBackPressed() }
+        rule.waitForIdle()
+        assertEquals(1, workspace.secondary.nav.currentStack.size)
+        size.value = DpSize(400.dp, 900.dp)
+        rule.waitForIdle()
+        rule.onNodeWithText("Primary dialog").assertDoesNotExist()
+        rule.runOnIdle { workspace.activate(WorkspacePane.PRIMARY) }
+        rule.onNodeWithText("Primary dialog").assertIsDisplayed()
+        assertTrue(showPrimaryDialog.value)
     }
 
     @Test
@@ -223,6 +251,13 @@ class SkeinWorkspaceHostTest {
                                 val counterTag = if (entry is ChatKey || entry is NoteKey) "counter/${shell.ownerKey}" else "root-counter/${shell.ownerKey}"
                                 Text("Count $counter", Modifier.testTag(counterTag).clickable { counter++ })
                             }
+                        }
+                        if (shell.ownerKey == "primary" && showPrimaryDialog.value) {
+                            SkeinAlertDialog(
+                                onDismissRequest = { showPrimaryDialog.value = false },
+                                title = { Text("Primary dialog") },
+                                confirmButton = { Text("Confirm") },
+                            )
                         }
                     }
                     }

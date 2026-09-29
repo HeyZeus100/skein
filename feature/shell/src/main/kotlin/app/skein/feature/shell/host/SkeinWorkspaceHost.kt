@@ -60,6 +60,7 @@ import androidx.navigationevent.NavigationEventDispatcherOwner
 import androidx.navigationevent.compose.LocalNavigationEventDispatcherOwner
 import androidx.window.core.layout.WindowSizeClass
 import androidx.window.core.layout.computeWindowSizeClass
+import app.skein.core.designsystem.components.LocalSkeinWindowActive
 import app.skein.core.designsystem.components.SkeinWindowPartitions
 import app.skein.core.designsystem.theme.SkeinSize
 import app.skein.core.designsystem.icons.SkeinIcons
@@ -283,7 +284,11 @@ private fun WorkspacePaneSlot(
     } }
     SideEffect { dispatcher.isEnabled = active && visible }
     DisposableEffect(dispatcher) { onDispose { dispatcher.dispose() } }
-    CompositionLocalProvider(LocalWorkspacePane provides environment, LocalNavigationEventDispatcherOwner provides owner) {
+    CompositionLocalProvider(
+        LocalWorkspacePane provides environment,
+        LocalNavigationEventDispatcherOwner provides owner,
+        LocalSkeinWindowActive provides (active && visible),
+    ) {
         Box(
             Modifier.fillMaxSize()
                 .testTag(if (pane == WorkspacePane.PRIMARY) WorkspaceTestTags.PRIMARY_PANE else WorkspaceTestTags.SECONDARY_PANE)

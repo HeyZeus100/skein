@@ -14,4 +14,7 @@ data class SkeinWindowPartitions(
 /** Null keeps Material's ordinary placement, including previews and a flat, open Fold. */
 val LocalSkeinWindowPartitions = staticCompositionLocalOf<SkeinWindowPartitions?> { null }
 
+/** False suppresses separate windows for a retained, inactive workspace owner. */
+val LocalSkeinWindowActive = staticCompositionLocalOf { true }
+
 enum class SkeinDialogPartition { READING, CONFIRMATION }

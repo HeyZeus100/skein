@@ -21,6 +21,7 @@ import androidx.compose.ui.unit.IntRect
 import androidx.compose.ui.unit.IntSize
 import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
+import app.skein.core.designsystem.components.LocalSkeinWindowActive
 import app.skein.core.designsystem.components.LocalSkeinWindowPartitions
 import app.skein.core.designsystem.components.SkeinWindowPartitions
 import app.skein.core.designsystem.theme.SkeinTheme
@@ -49,6 +50,7 @@ class WikilinkPopupHingeTest {
             mutableStateOf<SkeinWindowPartitions?>(
                 SkeinWindowPartitions(DpRect(0.dp, 0.dp, 1000.dp, 1000.dp), top, bottom, listOf(top, bottom)),
             )
+        val active = mutableStateOf(true)
         var popupBounds = Rect.Zero
         var replacement = ""
         val host =
@@ -66,7 +68,10 @@ class WikilinkPopupHingeTest {
         lateinit var state: WikilinkAutocompleteState
         composeRule.setContent {
             SkeinTheme {
-                CompositionLocalProvider(LocalSkeinWindowPartitions provides partitions.value) {
+                CompositionLocalProvider(
+                    LocalSkeinWindowPartitions provides partitions.value,
+                    LocalSkeinWindowActive provides active.value,
+                ) {
                     state = rememberWikilinkAutocompleteState(host, suggest = { (1..8).map { Suggestion("Note $it") } })
                     LaunchedEffect(Unit) { state.onTextChanged() }
                     Box(Modifier.fillMaxSize()) {
@@ -92,6 +97,15 @@ class WikilinkPopupHingeTest {
         assertTrue("nonempty popup viewport", popupBounds.height >= 48f)
         composeRule.runOnIdle { repeat(state.suggestions.lastIndex) { state.moveDown() } }
         composeRule.onNodeWithTag(wikilinkSuggestionTestTag(state.suggestions.lastIndex)).assertIsDisplayed()
+        val selected = state.selectedIndex
+        active.value = false
+        composeRule.waitForIdle()
+        composeRule.onNodeWithTag(WIKILINK_AUTOCOMPLETE_TEST_TAG).assertDoesNotExist()
+        assertTrue(state.isVisible)
+        assertEquals(selected, state.selectedIndex)
+        active.value = true
+        composeRule.waitForIdle()
+        composeRule.onNodeWithTag(wikilinkSuggestionTestTag(selected)).assertIsDisplayed()
         partitions.value = null
         composeRule.waitForIdle()
         assertTrue("flat restores unconstrained popup height", popupBounds.height > 100f)

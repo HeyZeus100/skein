@@ -33,6 +33,7 @@ fun SkeinDropdownMenu(
     modifier: Modifier = Modifier,
     content: @Composable ColumnScope.() -> Unit,
 ) {
+    if (!LocalSkeinWindowActive.current) return
     val partitions = LocalSkeinWindowPartitions.current
     val density = LocalDensity.current
     val direction = LocalLayoutDirection.current
