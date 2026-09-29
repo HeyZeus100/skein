@@ -41,43 +41,51 @@ fun EntryInsets(
     modifier: Modifier = Modifier,
     content: @Composable () -> Unit,
 ) {
-    if (LocalSheetMode.current == SheetMode.PEEK) {
-        Box(
-            modifier.windowInsetsPadding(
-                WindowInsets.ime
-                    .union(WindowInsets.navigationBars)
-                    .union(WindowInsets.safeDrawing.only(WindowInsetsSides.Horizontal)),
-            ),
-        ) { content() }
-        return
-    }
+    val isPeek = LocalSheetMode.current == SheetMode.PEEK
     val window = LocalView.current.rootView
     var edgeDistances by remember { mutableStateOf(PaneEdgeDistances()) }
-    val consumed = WindowInsets(edgeDistances.left, edgeDistances.top, edgeDistances.right, edgeDistances.bottom)
+    val consumed =
+        if (isPeek) {
+            WindowInsets(0, 0, 0, 0)
+        } else {
+            WindowInsets(edgeDistances.left, edgeDistances.top, edgeDistances.right, edgeDistances.bottom)
+        }
     // Record numeric, physically positioned edge distances after placement;
     // equal geometry never invalidates composition again.
-    Box(
-        modifier
-            .fillMaxSize()
-            .onGloballyPositioned { coordinates ->
-                val position = coordinates.positionInWindow()
-                edgeDistances =
-                    PaneEdgeDistances(
-                        position.x.roundToInt().coerceAtLeast(0),
-                        position.y.roundToInt().coerceAtLeast(0),
-                        (window.width - position.x - coordinates.size.width).roundToInt().coerceAtLeast(0),
-                        (window.height - position.y - coordinates.size.height).roundToInt().coerceAtLeast(0),
-                    )
-            }.consumeWindowInsets(consumed),
-    ) {
+    val paneModifier =
+        if (isPeek) {
+            Modifier
+        } else {
+            Modifier
+                .fillMaxSize()
+                .onGloballyPositioned { coordinates ->
+                    val position = coordinates.positionInWindow()
+                    edgeDistances =
+                        PaneEdgeDistances(
+                            position.x.roundToInt().coerceAtLeast(0),
+                            position.y.roundToInt().coerceAtLeast(0),
+                            (window.width - position.x - coordinates.size.width).roundToInt().coerceAtLeast(0),
+                            (window.height - position.y - coordinates.size.height).roundToInt().coerceAtLeast(0),
+                        )
+                }.consumeWindowInsets(consumed)
+        }
+    val paddingInsets =
+        if (isPeek) {
+            WindowInsets.ime
+                .union(WindowInsets.navigationBars)
+                .union(WindowInsets.safeDrawing.only(WindowInsetsSides.Horizontal))
+        } else {
+            WindowInsets.safeDrawing.only(WindowInsetsSides.Top + WindowInsetsSides.Horizontal)
+        }
+    val entryConsumed = if (isPeek) paddingInsets else consumed
+    // Keep the same content call site across presentation changes, while peek stays intrinsic.
+    Box(modifier.then(paneModifier)) {
         Box(
-            Modifier.fillMaxSize().windowInsetsPadding(
-                WindowInsets.safeDrawing.only(WindowInsetsSides.Top + WindowInsetsSides.Horizontal),
-            ),
+            (if (isPeek) Modifier else Modifier.fillMaxSize()).windowInsetsPadding(paddingInsets),
         ) {
             CompositionLocalProvider(
-                LocalEntryBottomInsets provides WindowInsets.navigationBars.exclude(consumed),
-                LocalEntryConsumedInsets provides consumed,
+                LocalEntryBottomInsets provides WindowInsets.navigationBars.exclude(entryConsumed),
+                LocalEntryConsumedInsets provides entryConsumed,
             ) {
                 content()
             }
