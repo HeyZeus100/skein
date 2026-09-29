@@ -38,6 +38,9 @@ VIEWPORT = 960
 # (drawable name, Material Symbol name, fill1 variant?)
 ICONS: list[tuple[str, str, bool]] = [
     ("ic_skein_menu", "menu", False),
+    ("ic_skein_sidebar", "view_sidebar", False),
+    ("ic_skein_split", "view_column", False),
+    ("ic_skein_swap", "swap_horiz", False),
     ("ic_skein_back", "arrow_back", False),
     ("ic_skein_close", "close", False),
     ("ic_skein_new_chat", "edit_square", False),

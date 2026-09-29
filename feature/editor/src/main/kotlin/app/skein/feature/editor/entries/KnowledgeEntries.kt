@@ -50,8 +50,8 @@ import app.skein.feature.editor.notetab.NoteTab
 import app.skein.feature.shell.host.EntryAction
 import app.skein.feature.shell.host.EntryDocument
 import app.skein.feature.shell.host.EntryNavButton
-import app.skein.feature.shell.host.EntryNavIcon
 import app.skein.feature.shell.host.EntryTopBar
+import app.skein.feature.shell.host.hasEntryNavigation
 import app.skein.feature.shell.host.GoneEntry
 import app.skein.feature.shell.host.LocalSheetMode
 import app.skein.feature.shell.host.LocalSkeinWindowLayout
@@ -60,7 +60,6 @@ import app.skein.feature.shell.host.SheetPeekRow
 import app.skein.feature.shell.host.SkeinShellState
 import app.skein.feature.shell.host.entryBottomPadding
 import app.skein.feature.shell.host.followById
-import app.skein.feature.shell.host.navIconFor
 import app.skein.feature.shell.host.open
 import app.skein.feature.shell.host.rememberEntryDocument
 import app.skein.feature.timeline.TimelineScreen
@@ -132,11 +131,14 @@ fun KnowledgeEntry(
 /** KNOWLEDGE_UX_SPEC.md §3.8 "Expanded, nothing selected": never a bare placeholder, never auto-open. */
 @Composable
 fun KnowledgeDetailPlaceholder(shell: SkeinShellState) {
-    SkeinEmptyState(
-        headline = "Pick a note or file, or start something new.",
-        primaryAction = SkeinAction("New note", SkeinIcons.NewNote) { shell.newNote() },
-        modifier = Modifier.fillMaxSize().testTag(KnowledgeEntryTestTags.EMPTY_DETAIL),
-    )
+    Column(Modifier.fillMaxSize()) {
+        shell.EntryTopBar(KnowledgeHomeKey, "Knowledge")
+        SkeinEmptyState(
+            headline = "Pick a note or file, or start something new.",
+            primaryAction = SkeinAction("New note", SkeinIcons.NewNote) { shell.newNote() },
+            modifier = Modifier.weight(1f).fillMaxWidth().testTag(KnowledgeEntryTestTags.EMPTY_DETAIL),
+        )
+    }
 }
 
 /**
@@ -276,7 +278,7 @@ private fun NoteRoute(
     val scope = rememberCoroutineScope()
     var writer by remember { mutableStateOf<DisposableHandle?>(null) }
     val onePane = LocalSkeinWindowLayout.current.maxPanes == 1
-    val hasNav = shell.navIconFor(key) != EntryNavIcon.NONE
+    val hasNav = shell.hasEntryNavigation(key)
     NoteTab(
         docId = rawId,
         vaultRepository = repository,

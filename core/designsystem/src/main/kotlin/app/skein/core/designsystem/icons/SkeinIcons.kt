@@ -27,6 +27,12 @@ object SkeinIcons {
     // Navigation / chrome
     @DrawableRes val Menu: Int = R.drawable.ic_skein_menu
 
+    @DrawableRes val Sidebar: Int = R.drawable.ic_skein_sidebar
+
+    @DrawableRes val Split: Int = R.drawable.ic_skein_split
+
+    @DrawableRes val Swap: Int = R.drawable.ic_skein_swap
+
     @DrawableRes val Back: Int = R.drawable.ic_skein_back
 
     @DrawableRes val Close: Int = R.drawable.ic_skein_close

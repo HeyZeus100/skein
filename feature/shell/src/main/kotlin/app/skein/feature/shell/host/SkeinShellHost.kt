@@ -72,7 +72,6 @@ import app.skein.feature.shell.container.SkeinDestination
 import app.skein.feature.shell.container.SkeinNavigationContainer
 import app.skein.feature.shell.container.SkeinSpace
 import app.skein.feature.shell.layout.SecondarySurface
-import app.skein.feature.shell.layout.SkeinHingeDebugOverlay
 import app.skein.feature.shell.layout.SkeinHingeSafeArea
 import app.skein.feature.shell.layout.SkeinLayoutDecision
 import app.skein.feature.shell.layout.SkeinNavContainer
@@ -139,16 +138,33 @@ fun SkeinShellHost(
     }
     if (!sanitised) return
 
-    val info = windowAdaptiveInfo
-    val layout = currentSkeinWindowLayout(info)
+    val workspacePane = LocalWorkspacePane.current
+    val info = workspacePane?.info ?: windowAdaptiveInfo
+    val layout = workspacePane?.layout ?: currentSkeinWindowLayout(info)
     val layoutDirection = LocalLayoutDirection.current
     val mode = layout.navMode()
-    val directive = remember(info, layout) { skeinDirective(info, layout) }
+    val top = shell.nav.topLevel
+    val supportsList = top == Destination.CHAT || top == Destination.KNOWLEDGE
+    val listCollapsed = supportsList && layout.maxPanes > 1 && !shell.isListExpanded(top)
+    val extraVisible = shell.nav.currentStack.lastOrNull()?.role == PaneRole.EXTRA
+    val directive = remember(info, layout, supportsList, listCollapsed, extraVisible) {
+        skeinDirective(info, layout).let {
+            it.copy(
+                maxHorizontalPartitions = if (listCollapsed) { if (extraVisible) 2 else 1 } else it.maxHorizontalPartitions,
+                defaultPanePreferredWidth = if (supportsList && !extraVisible && layout.posture == SkeinPosture.Flat) {
+                    SkeinSize.sidePaneMin
+                } else {
+                    it.defaultPanePreferredWidth
+                },
+            )
+        }
+    }
     // §2.5, §7.4 item 2: a sheet expanded on one pane becomes a pane on two, and a later shrink shows the peek.
     LaunchedEffect(layout.maxPanes) { if (layout.maxPanes > 1) shell.sheets.collapseAll() }
 
     val content by rememberUpdatedState(entryContent)
     val placeholder by rememberUpdatedState(detailPlaceholder)
+    val showRootPlaceholder by rememberUpdatedState(listCollapsed)
     val provider =
         remember {
             // No `entryProvider {}` DSL: its fallback throws "Unknown screen $key", a key in an exception (M13).
@@ -159,7 +175,15 @@ fun SkeinShellHost(
                     metadataOf(key) { destination ->
                         HingeEntryPane(key) { EntryInsets { placeholder(destination) } }
                     },
-                ) { HingeEntryPane(it) { EntryInsets { content(it) } } }
+                ) {
+                    HingeEntryPane(it) {
+                        EntryInsets {
+                            CompositionLocalProvider(LocalEntryIsList provides (it.role == PaneRole.LIST && !showRootPlaceholder)) {
+                                if (showRootPlaceholder && it.role == PaneRole.LIST) placeholder(it.destination) else content(it)
+                            }
+                        }
+                    }
+                }
             }
         }
     // One decorated list per destination, on every composition (§8.9 item 2): switching destinations is not
@@ -189,6 +213,7 @@ fun SkeinShellHost(
             // A bare draft replaces the landing placeholder, so Back must leave it to the system.
             // Other details still pop even when `List | Detail` and `List | placeholder` share geometry.
             rememberListDetailSceneStrategy<SkeinKey>(
+                shouldHandleSinglePaneLayout = listCollapsed,
                 backNavigationBehavior =
                     if (shell.navigator.isChatLandingRoot(shell.nav.currentStack, mode)) {
                         BackNavigationBehavior.PopUntilScaffoldValueChange
@@ -200,25 +225,12 @@ fun SkeinShellHost(
             rememberSupportingPaneSceneStrategy<SkeinKey>(directive = directive),
         )
 
-    val top = shell.nav.topLevel
     CompositionLocalProvider(
         LocalSkeinWindowLayout provides layout,
-        LocalSkeinWindowPartitions provides layout.windowPartitions(layoutDirection),
+        LocalSkeinWindowPartitions provides (if (workspacePane != null) workspacePane.partitions else layout.windowPartitions(layoutDirection)),
     ) {
         Surface(modifier.fillMaxSize().testTag(ShellTestTags.SKEIN_SHELL_ROOT)) {
-            SkeinNavigationContainer(
-                decision = layout,
-                destination = SkeinDestination.valueOf(top.name),
-                onNavigate = { d -> shell.navigate { switchTo(it, Destination.valueOf(d.name)) } },
-                onNewChat = { shell.navigate { goTo(it, NewChatKey(SkeinId.random())) } },
-                // ponytail: search only; the palette's commands come in Wave 10 (IA §3.6).
-                onSearch = { if (search != null) shell.openSearch() },
-                history = history,
-                spaces = spaces,
-                zone = zone,
-                now = now,
-                closeRequest = shell.drawerCloseRequest,
-            ) {
+            val display: @Composable () -> Unit = {
                 // §8.3 rule 6b: Back at another destination's root goes to Chat; at the Chat root, to the system.
                 NavigationBackHandler(
                     state = rememberNavigationEventState(NavigationEventInfo.None),
@@ -232,6 +244,23 @@ fun SkeinShellHost(
                     transitionSpec = { crossFade() },
                     popTransitionSpec = { crossFade() },
                     onBack = { shell.navigate { back(it, mode) } },
+                )
+            }
+            if (workspacePane != null) {
+                display()
+            } else {
+                SkeinNavigationContainer(
+                    decision = layout,
+                    destination = SkeinDestination.valueOf(top.name),
+                    onNavigate = { d -> shell.navigate { switchTo(it, Destination.valueOf(d.name)) } },
+                    onNewChat = { shell.navigate { goTo(it, NewChatKey(SkeinId.random())) } },
+                    onSearch = { if (search != null) shell.openSearch() },
+                    history = history,
+                    spaces = spaces,
+                    zone = zone,
+                    now = now,
+                    closeRequest = shell.drawerCloseRequest,
+                    content = display,
                 )
             }
             if (shell.searchOpen && search != null) {
@@ -259,9 +288,6 @@ fun SkeinShellHost(
                     }
                 }
             }
-            // The release implementation is a no-op. Debug builds expose geometry only,
-            // allowing the eventual physical fold run to check the posture assumption.
-            SkeinHingeDebugOverlay(info, enabled = true, modifier = Modifier.fillMaxSize())
         }
     }
 }

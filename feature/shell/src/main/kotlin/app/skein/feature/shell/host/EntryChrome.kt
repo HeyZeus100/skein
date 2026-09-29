@@ -18,6 +18,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.produceState
+import androidx.compose.runtime.staticCompositionLocalOf
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.testTag
@@ -48,9 +49,12 @@ import app.skein.feature.shell.container.LocalSkeinDrawerOpener
 /** The navigation icon at the start of an entry's top bar (§3.5). */
 enum class EntryNavIcon { MENU, BACK, CLOSE, NONE }
 
+internal val LocalEntryIsList = staticCompositionLocalOf { false }
+
 object EntryChromeTestTags {
     const val NAV_ICON = "skein_entry_nav_icon"
     const val GONE = "skein_entry_gone"
+    const val LIST_TOGGLE = "skein_entry_list_toggle"
 }
 
 /**
@@ -80,6 +84,19 @@ fun SkeinShellState.navIconFor(key: SkeinKey): EntryNavIcon {
 /** [navIconFor]'s button: ☰ opens the drawer; ← and ✕ are Back (§3.6). */
 @Composable
 fun SkeinShellState.EntryNavButton(key: SkeinKey) {
+    if (canToggleList(key)) {
+        val destination = nav.topLevel
+        val label =
+            (if (isListExpanded(destination)) "Hide " else "Show ") +
+                (if (destination == Destination.CHAT) "chats" else "notes")
+        IconButton(
+            onClick = { toggleList(destination) },
+            modifier = Modifier.size(SkeinSize.touchTarget).testTag(EntryChromeTestTags.LIST_TOGGLE),
+        ) {
+            Icon(painterResource(SkeinIcons.Sidebar), contentDescription = label, modifier = Modifier.size(SkeinSize.iconStandard))
+        }
+        return
+    }
     val icon = navIconFor(key)
     val mode = LocalSkeinWindowLayout.current.navMode()
     val openDrawer = LocalSkeinDrawerOpener.current
@@ -98,6 +115,17 @@ fun SkeinShellState.EntryNavButton(key: SkeinKey) {
     }
 }
 
+@Composable
+fun SkeinShellState.hasEntryNavigation(key: SkeinKey): Boolean =
+    navIconFor(key) != EntryNavIcon.NONE || canToggleList(key)
+
+@Composable
+private fun SkeinShellState.canToggleList(key: SkeinKey): Boolean =
+    LocalSkeinWindowLayout.current.maxPanes > 1 &&
+        !LocalEntryIsList.current &&
+        nav.topLevel in setOf(Destination.CHAT, Destination.KNOWLEDGE) &&
+        (key.role == PaneRole.LIST || key.role == PaneRole.DETAIL)
+
 /** An entry's top bar (§3.5): [SkeinTopAppBar] with [navIconFor]'s button. */
 @Composable
 fun SkeinShellState.EntryTopBar(
@@ -106,7 +134,7 @@ fun SkeinShellState.EntryTopBar(
     modifier: Modifier = Modifier,
     actions: @Composable RowScope.() -> Unit = {},
 ) {
-    val hasNav = navIconFor(key) != EntryNavIcon.NONE
+    val hasNav = hasEntryNavigation(key)
     SkeinTopAppBar(
         title = title,
         modifier = modifier,
