@@ -111,10 +111,10 @@ class ChatScreenshotTest(
         spec.assumeStandard()
         showChat(longChat(), StallingEngine(listOf("The cover screen keeps ", "a single pane [1]", " and moves the ")))
         send("And on the cover screen?")
-        // CitationParser only releases text when a `[n]` closes (or at the end), so the
-        // text up to the citation is all that shows while the engine stalls: wait for it.
+        // Text after the citation must also be visible before Done. Wait for the
+        // complete emitted prefix so the capture cannot race the streaming update.
         composeRule.waitUntil(timeoutMillis = 10_000) {
-            composeRule.onAllNodesWithText("single pane", substring = true).fetchSemanticsNodes().isNotEmpty()
+            composeRule.onAllNodesWithText("and moves the", substring = true).fetchSemanticsNodes().isNotEmpty()
         }
         composeRule.onNodeWithTag(CANCEL_BUTTON_TEST_TAG).assertExists()
         composeRule.onRoot().captureUx(spec, "chat-streaming")
