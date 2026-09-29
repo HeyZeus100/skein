@@ -25,6 +25,8 @@ import app.skein.core.navigation.Destination
 import app.skein.core.navigation.ModelDetailsKey
 import app.skein.core.navigation.ModelsHomeKey
 import app.skein.core.navigation.SkeinKey
+import app.skein.core.navigation.TransientKey
+import app.skein.core.navigation.TransientKind
 import app.skein.feature.models.ModelDetailsPane
 import app.skein.feature.models.ModelListItem
 import app.skein.feature.models.ModelsEmptyDetail
@@ -67,6 +69,7 @@ fun ModelsEntry(
     when (key) {
         ModelsHomeKey -> ModelsListEntry(shell, deps)
         is ModelDetailsKey -> ModelDetailsEntry(key, shell, deps)
+        is TransientKey -> if (key.kind == TransientKind.MODEL) ModelDetailsEntry(key, shell, deps)
         else -> Unit
     }
 }
@@ -82,7 +85,7 @@ private fun ModelsListEntry(
     shell: SkeinShellState,
     deps: ModelsEntryDeps,
 ) {
-    val selectedId = (shell.nav.stack(Destination.MODELS).lastOrNull() as? ModelDetailsKey)?.modelId?.value
+    val selectedId = shell.modelIdOf(shell.nav.stack(Destination.MODELS).lastOrNull())
     Column(Modifier.fillMaxSize()) {
         shell.EntryTopBar(ModelsHomeKey, "Models") {
             deps.onImport?.let { onImport ->
@@ -112,11 +115,12 @@ private fun ModelsListEntry(
 
 @Composable
 private fun ModelDetailsEntry(
-    key: ModelDetailsKey,
+    key: SkeinKey,
     shell: SkeinShellState,
     deps: ModelsEntryDeps,
 ) {
-    val model = deps.models.firstOrNull { it.id == key.modelId.value }
+    val modelId = shell.modelIdOf(key)
+    val model = deps.models.firstOrNull { it.id == modelId }
     Column(Modifier.fillMaxSize()) {
         shell.EntryTopBar(key, model?.displayName ?: "Model")
         ModelDetailsPane(
@@ -127,6 +131,14 @@ private fun ModelDetailsEntry(
         )
     }
 }
+
+/** Imported model slugs stay in the session's transient table, never in a saved navigation key. */
+private fun SkeinShellState.modelIdOf(key: SkeinKey?): String? =
+    when (key) {
+        is ModelDetailsKey -> key.modelId.value
+        is TransientKey -> if (key.kind == TransientKind.MODEL) nav.rawIdOf(key) else null
+        else -> null
+    }
 
 /** An import's progress or result, or a delete refusal; [progress] draws the bar under a running import. */
 @Composable
