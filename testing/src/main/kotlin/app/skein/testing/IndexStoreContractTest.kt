@@ -253,6 +253,29 @@ public abstract class IndexStoreContractTest {
             )
         }
 
+    @Test
+    public fun lexical_match_is_specific_to_one_row_and_removed_when_replaced(): Unit =
+        runTest {
+            val idx = index()
+            val docId = "01924a4b-4d29-7000-8000-00000000C1C2"
+            seedDocument(docId)
+            val ids =
+                idx.replaceChunks(
+                    docId,
+                    listOf(NewChunk(0, "brown fox", 2), NewChunk(1, "silver owl", 2)),
+                    "fake",
+                    1,
+                )
+
+            assertTrue(idx.hasLexicalMatch(ids[0], "brown"))
+            assertFalse(idx.hasLexicalMatch(ids[1], "brown"))
+            assertFalse(idx.hasLexicalMatch(ids[0], "!!!"))
+            assertFalse(idx.hasLexicalMatch(Long.MAX_VALUE, "brown"))
+
+            idx.replaceChunks(docId, emptyList(), "fake", 1)
+            assertFalse(idx.hasLexicalMatch(ids[0], "brown"))
+        }
+
     // ------------------------------------------------------------------
     // AC: edgesTo returns backlinks
     // ------------------------------------------------------------------

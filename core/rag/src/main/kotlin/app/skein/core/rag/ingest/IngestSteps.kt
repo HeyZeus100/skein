@@ -16,12 +16,13 @@
 // `replaceChunks` is the whole lexical step: the FTS5 shadow rows are
 // maintained by DB triggers, so there is nothing to write here beyond the
 // chunk rows themselves. What this method adds is the check skein-01ku
-// asked for — after the write it runs one `bm25` probe for a term taken
-// from the first chunk and warns (via the injected [warn], never with
-// content) when none of the freshly returned chunk ids comes back, which
-// is the signature of a broken/missing `chunks_ai` trigger. The probe is
-// deliberately loose (largest alphanumeric word, generous `k`) so it stays
-// silent on a healthy index and only speaks up when the trigger is gone.
+// asked for — after the write it probes one term per newly written row
+// through row-constrained FTS MATCH. The old global top-50 BM25 probe
+// confused a healthy low-ranked posting with an absent posting. A row's
+// rank now has no bearing on verification. Missing matches warn via the
+// injected [warn], never with content. This is a sampled posting check,
+// not a full index integrity check; rows without a standalone ASCII token
+// are unprobed because the current query sanitizer handles ASCII only.
 //
 // The warning surface is an injectable `(String) -> Unit` so tests can
 // capture it directly; its default is `SkeinLog.w` (skein-4je, `:core:model`)
@@ -65,7 +66,7 @@ import app.skein.core.rag.chunk.Chunk
  * file header for the embedder-less mode and the lexical probe.
  *
  * @param index backs the `replaceChunks`/`putEmbeddings` writes and the
- *   post-write `bm25` probe.
+ *   post-write row-specific FTS probes.
  * @param embedder backs the `embedDocuments` batch calls, or `null` while
  *   no embedder is available (vectors are then "pending").
  * @param warn content-free diagnostics sink; `SkeinLog.w` under [TAG] by default.
@@ -101,8 +102,9 @@ public class IngestSteps(
      * body). Both parameters are optional and default to `null` — an empty
      * [chunks] still deletes the document's old rows either way.
      *
-     * After the write, one `bm25` probe verifies the FTS5 shadow rows exist
-     * (file header) and calls [warn] — without content — if they do not.
+     * After the write, a row-constrained FTS probe checks one indexable term
+     * per row (file header) and calls [warn] — without content — for missing
+     * matches. Query count is bounded by the number of rows just written.
      */
     public suspend fun indexLexical(
         docId: DocId,
@@ -131,16 +133,23 @@ public class IngestSteps(
         ids: List<ChunkId>,
     ) {
         if (ids.isEmpty()) return
-        val probe =
-            PROBE_WORD
-                .findAll(chunks.first().embeddingText)
-                .map { it.value }
-                .maxByOrNull { it.length }
-                ?: return
-        val hits = index.bm25(probe, PROBE_K).map { it.chunkId }
-        if (hits.none { it in ids }) {
+        var probed = 0
+        var missing = 0
+        // replaceChunks returns ids in ord order, even if the caller's input
+        // was unordered. Keep each probe attached to its own returned row.
+        for ((chunk, id) in chunks.sortedBy { it.ord }.zip(ids)) {
+            val probe =
+                PROBE_WORD
+                    .findAll(chunk.embeddingText)
+                    .map { it.value }
+                    .maxByOrNull { it.length }
+                    ?: continue
+            probed++
+            if (!index.hasLexicalMatch(id, probe)) missing++
+        }
+        if (missing > 0) {
             warn(
-                "indexLexical: bm25 probe returned none of the ${ids.size} chunk row(s) just written; " +
+                "indexLexical: row-specific FTS probe missing for $missing of $probed probed chunk row(s); " +
                     "the chunks_fts triggers may be broken",
             )
         }
@@ -198,11 +207,12 @@ public class IngestSteps(
         /** `chunks.embedder_version` while no embedder exists — below any real embedder's version (>= 1). */
         public const val PENDING_EMBEDDER_VERSION: Int = 0
 
-        /** Alphanumeric words of three or more characters — what the FTS5 `unicode61` tokenizer indexes whole. */
-        private val PROBE_WORD: Regex = Regex("[A-Za-z0-9]{3,}")
-
-        /** Generous: the fresh chunk only has to appear somewhere in the top-k, not first. */
-        private const val PROBE_K: Int = 50
+        // Only standalone ASCII tokens: extracting "caf" from "café" or
+        // "English" from "中文English" need not name a unicode61 posting.
+        // Include combining marks in the boundaries so decomposed accents
+        // are not misclassified either. One-character ASCII tokens are valid.
+        private val PROBE_WORD: Regex =
+            Regex("""(?<![\p{L}\p{N}\p{M}\p{Co}])[A-Za-z0-9]+(?![\p{L}\p{N}\p{M}\p{Co}])""")
 
         /**
          * `[charStart, charEnd)` UTF-16 char offsets into [body] → the

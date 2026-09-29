@@ -96,6 +96,14 @@ public class CountingIndexStore(
         return delegate.bm25(query, k)
     }
 
+    override suspend fun hasLexicalMatch(
+        chunkId: ChunkId,
+        query: String,
+    ): Boolean {
+        record("hasLexicalMatch")
+        return delegate.hasLexicalMatch(chunkId, query)
+    }
+
     override suspend fun getChunks(ids: Collection<ChunkId>): Map<ChunkId, Chunk> {
         record("getChunks")
         return delegate.getChunks(ids)

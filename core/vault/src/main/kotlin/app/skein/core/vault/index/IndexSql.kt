@@ -109,6 +109,11 @@ internal object IndexSql {
             "WHERE chunks_fts MATCH ? " +
             "ORDER BY bm25(chunks_fts) LIMIT ?"
 
+    // MATCH must remain present: chunks_fts is an external-content table,
+    // so a rowid-only read can return the base row even if its posting is absent.
+    const val HAS_LEXICAL_MATCH: String =
+        "SELECT 1 FROM chunks_fts WHERE rowid = ? AND chunks_fts MATCH ? LIMIT 1"
+
     // ------------------------------------------------------------------
     // Edges
     // ------------------------------------------------------------------

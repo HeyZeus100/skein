@@ -308,6 +308,16 @@ public class InMemoryIndexStore : IndexStore {
         return results.sortedByDescending { it.score }.take(k)
     }
 
+    override suspend fun hasLexicalMatch(
+        chunkId: ChunkId,
+        query: String,
+    ): Boolean {
+        // Same substring approximation as this fake's bm25; real posting
+        // consistency is covered by the SQLite instrumentation tests.
+        val text = chunks[chunkId]?.text?.lowercase() ?: return false
+        return query.lowercase().split(WORD_SPLIT).any { it.isNotBlank() && it in text }
+    }
+
     override suspend fun getChunks(ids: Collection<ChunkId>): Map<ChunkId, Chunk> {
         val out = LinkedHashMap<ChunkId, Chunk>(ids.size)
         for (id in ids) {

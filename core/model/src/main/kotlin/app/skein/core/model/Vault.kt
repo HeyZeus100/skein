@@ -966,6 +966,19 @@ public interface IndexStore {
         k: Int,
     ): List<ScoredChunk>
 
+    /**
+     * Whether this single row has an indexed match for [query], with the same
+     * literal-term/prefix query semantics as [bm25]. Empty queries and missing
+     * rows return false. The real store must use FTS MATCH constrained to
+     * [chunkId], independent of corpus rank or a global result cap; reading
+     * the external-content row alone does not establish a posting exists.
+     * This checks the supplied query's posting, not every term in the row.
+     */
+    public suspend fun hasLexicalMatch(
+        chunkId: ChunkId,
+        query: String,
+    ): Boolean
+
     public suspend fun getChunks(ids: Collection<ChunkId>): Map<ChunkId, Chunk>
 
     public suspend fun chunksForDocs(

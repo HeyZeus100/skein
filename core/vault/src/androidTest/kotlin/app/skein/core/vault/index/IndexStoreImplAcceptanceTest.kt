@@ -24,7 +24,11 @@ import androidx.test.ext.junit.runners.AndroidJUnit4
 import app.skein.core.model.Edge
 import app.skein.core.model.EdgeKind
 import app.skein.core.model.IndexChange
+import app.skein.core.model.IndexStore
 import app.skein.core.model.NewChunk
+import app.skein.core.rag.chunk.Chunker
+import app.skein.core.rag.ingest.IngestSteps
+import app.skein.core.rag.tokenizers.ApproximateTokenizer
 import app.skein.core.vault.db.SkeinSQLiteConnection
 import app.skein.core.vault.db.SkeinSQLiteDriver
 import app.skein.core.vault.testutil.splitMigrationStatements
@@ -104,6 +108,122 @@ public class IndexStoreImplAcceptanceTest {
                 // the returned hits list beyond "the call returned".
                 idx.bm25(query = query, k = 5)
             }
+        }
+
+    @Test
+    public fun ingestRowProbeVerifiesHealthyPostingBelowTheGlobalTop50(): Unit =
+        runTest {
+            val (idx, conn) = freshIndexWithConnection()
+            seedDocument(conn, "crowded")
+            idx.replaceChunks(
+                "crowded",
+                List(60) { NewChunk(it, "crowding crowding crowding", 3) },
+                "fake",
+                1,
+            )
+            seedDocument(conn, "target")
+            val warnings = mutableListOf<String>()
+            val body = "crowding " + "a ".repeat(128)
+            val ids =
+                IngestSteps(idx, warn = { warnings += it }).indexLexical(
+                    "target",
+                    Chunker(ApproximateTokenizer).chunk(body),
+                    body = body,
+                )
+            val target = ids.single()
+
+            // Establish the exact false-warning precondition, against real
+            // BM25: the posting exists but sixty stronger rows outrank it.
+            assertThat(idx.bm25("crowding", 61).map { it.chunkId }).hasSize(61)
+            assertThat(idx.bm25("crowding", 50).map { it.chunkId }).doesNotContain(target)
+            assertThat(idx.hasLexicalMatch(target, "crowding")).isTrue()
+            assertThat(warnings).isEmpty()
+            conn.prepare("INSERT INTO chunks_fts(chunks_fts, rank) VALUES('integrity-check', 1)").use { it.step() }
+        }
+
+    @Test
+    public fun ingestRowProbeWarnsWhenTheActualInsertTriggerIsMissing(): Unit =
+        runTest {
+            val (idx, conn) = freshIndexWithConnection()
+            seedDocument(conn, "missing-trigger")
+            conn.prepare("DROP TRIGGER chunks_ai").use { it.step() }
+            val warnings = mutableListOf<String>()
+            val body = "Confidentiality must never appear in diagnostics."
+            val id =
+                IngestSteps(idx, warn = { warnings += it })
+                    .indexLexical("missing-trigger", Chunker(ApproximateTokenizer).chunk(body), body = body)
+                    .single()
+
+            // Both base-table and external-content reads still see the row.
+            // Only MATCH tests the missing posting created by this control.
+            assertThat(idx.getChunks(listOf(id)).keys).containsExactly(id)
+            conn.prepare("SELECT rowid FROM chunks_fts WHERE rowid = ?").use { stmt ->
+                stmt.bindLong(1, id)
+                assertThat(stmt.step()).isTrue()
+            }
+            assertThat(idx.hasLexicalMatch(id, "Confidentiality")).isFalse()
+            assertThat(warnings).hasSize(1)
+            assertThat(warnings.single()).contains("missing for 1 of 1 probed")
+            assertThat(warnings.single()).contains("chunks_fts")
+            assertThat(warnings.single()).doesNotContain("Confidentiality")
+            assertThat(warnings.single()).doesNotContain("missing-trigger")
+        }
+
+    @Test
+    public fun ingestRowProbeDetectsAMissingLaterPostingWhenTheFirstRowIsHealthy(): Unit =
+        runTest {
+            val (idx, conn) = freshIndexWithConnection()
+            seedDocument(conn, "partial")
+            val body = "Searchable first paragraph.\n\nConfidentiality second paragraph."
+            val chunks = Chunker(ApproximateTokenizer, targetTokens = 10, overlapTokens = 0).chunk(body)
+            assertThat(chunks).hasSize(2)
+            val warnings = mutableListOf<String>()
+            val damaged =
+                object : IndexStore by idx {
+                    override suspend fun hasLexicalMatch(
+                        chunkId: Long,
+                        query: String,
+                    ): Boolean {
+                        val chunk = idx.getChunks(listOf(chunkId)).getValue(chunkId)
+                        if (chunk.ord == 1) {
+                            conn
+                                .prepare("INSERT INTO chunks_fts(chunks_fts, rowid, text) VALUES('delete', ?, ?)")
+                                .use { stmt ->
+                                    stmt.bindLong(1, chunkId)
+                                    stmt.bindText(2, chunk.text)
+                                    stmt.step()
+                                }
+                        }
+                        return idx.hasLexicalMatch(chunkId, query)
+                    }
+                }
+
+            val ids = IngestSteps(damaged, warn = { warnings += it }).indexLexical("partial", chunks, body = body)
+
+            assertThat(idx.hasLexicalMatch(ids[0], "Searchable")).isTrue()
+            assertThat(idx.hasLexicalMatch(ids[1], "Confidentiality")).isFalse()
+            assertThat(idx.getChunks(ids)).hasSize(2)
+            assertThat(warnings).hasSize(1)
+            assertThat(warnings.single()).contains("missing for 1 of 2 probed")
+            assertThat(warnings.single()).doesNotContain("Confidentiality")
+        }
+
+    @Test
+    public fun ingestRowProbeDoesNotTreatAsciiInsideAUnicodeTokenAsAMissingPosting(): Unit =
+        runTest {
+            val (idx, conn) = freshIndexWithConnection()
+            seedDocument(conn, "unicode")
+            val warnings = mutableListOf<String>()
+            val body = "中文English café cafe\u0301 \uE000secret A"
+
+            val id =
+                IngestSteps(idx, warn = { warnings += it })
+                    .indexLexical("unicode", Chunker(ApproximateTokenizer).chunk(body), body = body)
+                    .single()
+
+            assertThat(idx.hasLexicalMatch(id, "English")).isFalse()
+            assertThat(idx.hasLexicalMatch(id, "A")).isTrue()
+            assertThat(warnings).isEmpty()
         }
 
     @Test
@@ -286,10 +406,16 @@ public class IndexStoreImplAcceptanceTest {
     private fun freshIndexWithConnection(): Pair<IndexStoreImpl, SkeinSQLiteConnection> {
         val driver = SkeinSQLiteDriver()
         val conn = driver.openWithKey(":memory:", passphrase = null) as SkeinSQLiteConnection
-        // skein-zx15: chunks.revision_hash (003) and chunks.byte_start/
-        // byte_end (008) are written by every replaceChunks call, so the
-        // schema here must include those migrations too, not just 001.
-        for (fileName in SCHEMA_MIGRATION_FILES) {
+        // Apply the production manifest, including FTS secure-delete (010),
+        // so posting checks exercise the current index configuration.
+        val migrationFiles =
+            requireNotNull(javaClass.classLoader?.getResourceAsStream("migrations/INDEX.txt"))
+                .bufferedReader()
+                .use { reader -> reader.readLines() }
+                .map { it.trim() }
+                .filter { it.isNotEmpty() && !it.startsWith("#") }
+                .sorted()
+        for (fileName in migrationFiles) {
             val sql =
                 requireNotNull(
                     javaClass.classLoader?.getResourceAsStream("migrations/$fileName"),
@@ -302,19 +428,5 @@ public class IndexStoreImplAcceptanceTest {
         val impl = IndexStoreImpl(conn)
         opened += impl
         return impl to conn
-    }
-
-    private companion object {
-        // skein-zx15: schema for a fresh :memory: chunks/ingest_queue
-        // table that has chunks.revision_hash (003) and
-        // chunks.byte_start/byte_end (008) — every replaceChunks call
-        // in this suite writes those columns.
-        val SCHEMA_MIGRATION_FILES: List<String> =
-            listOf(
-                "001_initial.sql",
-                "003_document_revisions.sql",
-                "007_drop_attachment_master_key.sql",
-                "008_ingest_attempts.sql",
-            )
     }
 }

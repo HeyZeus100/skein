@@ -254,6 +254,21 @@ public class IndexStoreImpl(
         }
     }
 
+    override suspend fun hasLexicalMatch(
+        chunkId: ChunkId,
+        query: String,
+    ): Boolean {
+        val fts = FtsQuerySanitizer.sanitize(query)
+        if (fts.isEmpty()) return false
+        return mutex.withLock {
+            connection.prepare(IndexSql.HAS_LEXICAL_MATCH).use { stmt ->
+                stmt.bindLong(1, chunkId)
+                stmt.bindText(2, fts)
+                stmt.step()
+            }
+        }
+    }
+
     override suspend fun getChunks(ids: Collection<ChunkId>): Map<ChunkId, Chunk> {
         if (ids.isEmpty()) return emptyMap()
         return mutex.withLock {

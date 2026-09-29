@@ -13,6 +13,7 @@ import app.skein.core.model.Model
 import app.skein.core.model.ModelFormat
 import app.skein.core.model.NewChunk
 import app.skein.core.rag.chunk.Chunk
+import app.skein.testing.CountingIndexStore
 import app.skein.testing.FakeEmbedderService
 import app.skein.testing.InMemoryIndexStore
 import app.skein.testing.SkeinLogCaptureRule
@@ -184,10 +185,10 @@ class IngestStepsTest {
             val warnings = mutableListOf<String>()
             val broken =
                 object : IndexStore by InMemoryIndexStore() {
-                    override suspend fun bm25(
+                    override suspend fun hasLexicalMatch(
+                        chunkId: ChunkId,
                         query: String,
-                        k: Int,
-                    ) = emptyList<app.skein.core.model.ScoredChunk>()
+                    ) = false
                 }
             val steps = IngestSteps(broken, warn = { warnings += it })
 
@@ -203,10 +204,10 @@ class IngestStepsTest {
         runTest {
             val broken =
                 object : IndexStore by InMemoryIndexStore() {
-                    override suspend fun bm25(
+                    override suspend fun hasLexicalMatch(
+                        chunkId: ChunkId,
                         query: String,
-                        k: Int,
-                    ) = emptyList<app.skein.core.model.ScoredChunk>()
+                    ) = false
                 }
 
             IngestSteps(broken).indexLexical("doc-a", listOf(chunk(0, "Confidential words in this chunk.")))
@@ -218,18 +219,76 @@ class IngestStepsTest {
         }
 
     @Test
+    fun `indexLexical probes each row in ord order without ranked search and detects a later missing posting`() =
+        runTest {
+            val warnings = mutableListOf<String>()
+            val probes = mutableListOf<Pair<ChunkId, String>>()
+            val delegate = InMemoryIndexStore()
+            val index =
+                CountingIndexStore(
+                    object : IndexStore by delegate {
+                        override suspend fun hasLexicalMatch(
+                            chunkId: ChunkId,
+                            query: String,
+                        ): Boolean {
+                            probes += chunkId to query
+                            return probes.size == 1 && delegate.hasLexicalMatch(chunkId, query)
+                        }
+                    },
+                )
+
+            val ids =
+                IngestSteps(index, warn = { warnings += it }).indexLexical(
+                    "doc-a",
+                    listOf(chunk(1, "Confidentiality."), chunk(0, "Searchable.")),
+                )
+
+            assertThat(probes).containsExactly(ids[0] to "Searchable", ids[1] to "Confidentiality").inOrder()
+            assertThat(index.countOf("hasLexicalMatch")).isEqualTo(2)
+            assertThat(index.countOf("bm25")).isEqualTo(0)
+            assertThat(warnings).hasSize(1)
+            assertThat(warnings.single()).contains("missing for 1 of 2 probed")
+            assertThat(warnings.single()).doesNotContain("Confidentiality")
+        }
+
+    @Test
+    fun `indexLexical skips non-ASCII fragments but probes standalone one-character tokens`() =
+        runTest {
+            val probes = mutableListOf<String>()
+            val index =
+                object : IndexStore by InMemoryIndexStore() {
+                    override suspend fun hasLexicalMatch(
+                        chunkId: ChunkId,
+                        query: String,
+                    ): Boolean {
+                        probes += query
+                        return true
+                    }
+                }
+
+            IngestSteps(index).indexLexical(
+                "doc-a",
+                listOf(chunk(0, "中文English café cafe\u0301 \uE000secret !!!"), chunk(1, "A 7")),
+            )
+
+            assertThat(probes).containsExactly("A")
+        }
+
+    @Test
     fun `indexLexical with no chunks deletes and does not probe`() =
         runTest {
             val warnings = mutableListOf<String>()
-            val index = InMemoryIndexStore()
+            val index = CountingIndexStore(InMemoryIndexStore())
             val steps = IngestSteps(index, warn = { warnings += it })
             steps.indexLexical("doc-a", listOf(chunk(0, "Old body.")))
+            index.reset()
 
             val ids = steps.indexLexical("doc-a", emptyList())
 
             assertThat(ids).isEmpty()
             assertThat(index.chunksForDocs(setOf("doc-a"), limitPerDoc = 10)).isEmpty()
             assertThat(warnings).isEmpty()
+            assertThat(index.countOf("hasLexicalMatch")).isEqualTo(0)
         }
 
     @Test

@@ -52,9 +52,12 @@ public class CountingIndexStoreTest {
                     embedderVersion = 1,
                 )
             val hits = counting.bm25(query = "hello", k = 5)
+            val matched = counting.hasLexicalMatch(ids.single(), "hello")
 
             assertEquals(1, ids.size)
             assertEquals(ids, hits.map { it.chunkId })
+            assertEquals(true, matched)
+            assertEquals(1, counting.countOf("hasLexicalMatch"))
         }
 
     @Test
