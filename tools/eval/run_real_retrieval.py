@@ -25,6 +25,8 @@ INDEPENDENT_FIXTURE_SHA256 = "4f79b2ddcf42dedd6b7f83c10402855f683fcebc3045d9e466
 # Historical policy remains useful to validate immutable old artifacts. Current
 # runs take their exact policy metadata from the coordinator's frozen manifest.
 MINIMUM_QUERY_COVERAGE = .5
+POLICY_SOURCES = {"core/rag/src/main/kotlin/app/skein/core/rag/retrieval/LexicalEvidenceGate.kt",
+                  "core/rag/src/main/kotlin/app/skein/core/rag/retrieval/RequestedValue.kt"}
 HISTORICAL_POLICY = dict(version="lexical-query-coverage-v1", minimum_query_coverage=.5,
                          semantic_vector_policy="uncalibrated_bypass")
 
@@ -179,7 +181,8 @@ def validate_rejection_report(report, name, policy, fixture, fixture_hash=VALIDA
 
 
 def validate_report(report, head, corpus_hash, gold_hash, queries, validation_fixture,
-                    independent_fixture=None, expected_policy=HISTORICAL_POLICY, policy_freeze=None):
+                    independent_fixture=None, expected_policy=HISTORICAL_POLICY, policy_freeze=None,
+                    experimental_policy=None):
     require(report.get("schema_version") == 1, "unexpected retrieval report schema")
     require(report.get("status") == "MEASURED_DIAGNOSTIC", "retrieval did not produce a measured diagnostic")
     require(report.get("build_revision") == head, "retrieval report source revision mismatch")
@@ -193,18 +196,28 @@ def validate_report(report, head, corpus_hash, gold_hash, queries, validation_fi
             "unexpected retrieval repetition configuration")
     policy = report.get("evidence_policy", {})
     require(policy == expected_policy, "missing or invalid evidence policy")
+    names = {"production_policy", "ungated_control"}
+    if experimental_policy is not None:
+        names.add("experimental_candidate")
+        require(report.get("experimental_policy") == experimental_policy, "experimental policy metadata mismatch")
     validations = report.get("rejection_validation", {})
-    require(set(validations) == {"production_policy", "ungated_control"}, "missing reserved validation or ungated control")
+    require(set(validations) == names, "missing reserved validation configuration")
     validate_rejection_report(validations["production_policy"], "production_policy", policy, validation_fixture)
     validate_rejection_report(validations["ungated_control"], "ungated_control", {"version": "disabled_control"}, validation_fixture)
+    if experimental_policy is not None:
+        validate_rejection_report(validations["experimental_candidate"], "experimental_candidate", experimental_policy,
+                                  validation_fixture)
     if independent_fixture is not None:
         require(report.get("validation_policy_freeze") == policy_freeze, "validation policy freeze mismatch")
         fresh = report.get("independent_validation", {})
-        require(set(fresh) == {"production_policy", "ungated_control"}, "missing independent validation or control")
+        require(set(fresh) == names, "missing independent validation configuration")
         validate_rejection_report(fresh["production_policy"], "production_policy", policy,
                                   independent_fixture, INDEPENDENT_FIXTURE_SHA256)
         validate_rejection_report(fresh["ungated_control"], "ungated_control", {"version": "disabled_control"},
                                   independent_fixture, INDEPENDENT_FIXTURE_SHA256)
+        if experimental_policy is not None:
+            validate_rejection_report(fresh["experimental_candidate"], "experimental_candidate", experimental_policy,
+                                      independent_fixture, INDEPENDENT_FIXTURE_SHA256)
     modes = report.get("modes", [])
     require(len(modes) == 3 and {mode["name"] for mode in modes} == MODES, "missing retrieval ablation")
     statuses = {}
@@ -234,9 +247,18 @@ def validate_report(report, head, corpus_hash, gold_hash, queries, validation_fi
                     and row["labelled_spans"] == int(answerable)
                     and type(row.get("covered_spans")) is int and 0 <= row["covered_spans"] <= int(answerable),
                     "development evidence counts invalid")
+            require(type(row.get("duplicate_results")) is int and row["duplicate_results"] == 0,
+                    "development duplicate result")
             for run in row["runs"]:
                 require(finite_number(run.get("elapsed_ms")) and run["elapsed_ms"] >= 0
                         and isinstance(run.get("results"), list), "development sample invalid")
+                require(run["results"] == row["runs"][0]["results"]
+                        and run.get("fingerprint") == row["runs"][0].get("fingerprint")
+                        and isinstance(run.get("fingerprint"), str)
+                        and re.fullmatch(r"[a-f0-9]{64}", run["fingerprint"]),
+                        "development raw arrays are nondeterministic")
+                ids = [item["chunk_id"] for item in run["results"]]
+                require(len(ids) <= 8 and len(ids) == len(set(ids)), "development duplicate/excess result")
             require(row["rejected"] == (not row["runs"][0]["results"]), "development rejection disagrees with results")
         validate_metric_summary(summary, rows)
         categories = {query["category"] for query in queries.values()}
@@ -268,6 +290,11 @@ def load_policy_freeze(path):
             "frozen policy identifies a different validation fixture")
     require(isinstance(frozen.get("evidence_policy"), dict) and frozen["evidence_policy"].get("version"),
             "frozen policy metadata is required")
+    require(isinstance(frozen.get("experimental_policy"), dict) and frozen["experimental_policy"].get("version"),
+            "frozen experimental policy metadata is required")
+    require(set(frozen.get("policy_sources", {})) == POLICY_SOURCES
+            and all(re.fullmatch(r"[a-f0-9]{64}", value) for value in frozen["policy_sources"].values()),
+            "frozen policy source hashes are required")
     return frozen
 
 
@@ -439,6 +466,8 @@ def main(argv=None):
     try:
         frozen = load_policy_freeze(repo / args.policy_freeze)
         command(["git", "merge-base", "--is-ancestor", frozen["source_revision"], head])
+        for relative, digest in frozen["policy_sources"].items():
+            require(sha256(repo / relative) == digest, "policy source changed since freeze: " + relative)
         summary["policy_freeze"] = frozen
         summary["require_quality"] = args.require_quality
         summary["require_hybrid"] = args.require_hybrid
@@ -500,7 +529,8 @@ def main(argv=None):
             sha256(repo / "testing/src/main/resources/eval/corpus.json"),
             sha256(repo / "testing/src/main/resources/eval/gold.json"),
             {query["id"]: query for query in queries}, json.loads(validation_fixture.read_text()),
-            json.loads(independent_fixture.read_text()), frozen["evidence_policy"], frozen["source_revision"])
+            json.loads(independent_fixture.read_text()), frozen["evidence_policy"], frozen["source_revision"],
+            frozen["experimental_policy"])
         summary["diagnostic_rejection_validation"] = {
             name: value["validation_status"] for name, value in report["rejection_validation"].items()}
         summary["diagnostic_rejection_ranking_gates"] = {

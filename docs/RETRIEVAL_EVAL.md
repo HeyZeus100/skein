@@ -213,7 +213,8 @@ before any runner uninstall/cleanup removes the test package.
 
 ## Manual diagnostic workflow
 
-`.github/workflows/retrieval-diagnostic.yml` is a manual-only lane. It first
+`.github/workflows/retrieval-diagnostic.yml` is a manual diagnostic and reusable
+opt-in lane (the enforced caller is described below). It first
 discovers and runs `test_run_real_retrieval.py`, explicitly failing if discovery
 finds zero tests, and assembles only the vault library test APK. The fresh API 35
 AVD uses no snapshots. Only the designated runner may dispatch this lane or run
@@ -440,15 +441,17 @@ The independently authored 2026-09-28 fixture has its own
 It is separate from both the unchanged development corpus and the earlier public
 reserved failures. The opt-in harness records those original reserved regressions
 under `rejection_validation`, and the new set under `independent_validation`.
-Both use fresh encrypted vaults, production ingest/retrieval, a gated policy and
-an explicit ungated control. Space aliases resolve to real persona IDs; the new
+Both use fresh encrypted vaults, production ingest/retrieval, the actual
+`production_policy`, an `ungated_control`, and a separate `experimental_candidate`.
+The latter is a development-falsified candidate, explicitly enabled only for
+evaluation; its results cannot override production's acceptance status. Space aliases resolve to real persona IDs; the new
 fixture includes contradictory Space pairs and forbidden-source checks.
 
 Before first execution, the coordinator records the implementation source SHA,
-exact policy metadata and validation hash in
+exact production and experimental policy metadata and validation hash in
 `tools/eval/retrieval-policy-freeze.json`. The runner requires that revision to
-be an ancestor of its clean reviewed HEAD and checks measured policy metadata
-against the manifest. The runtime report records `validation_policy_freeze`.
+be an ancestor of its clean reviewed HEAD, verifies both policy source files'
+SHA-256 hashes, and checks measured policy metadata against the manifest. The runtime report records `validation_policy_freeze`.
 This is a reviewable freeze record, not embedded source attestation. The first
 post-freeze execution is validation; any subsequent replay is a regression run.
 The policy must not be tuned on either validation set and still called fresh.
@@ -466,8 +469,8 @@ unsuccessfully when any of these quality conditions fail:
 - The production policy's independently authored validation gate (all labelled
   answer spans covered and all absence queries rejected).
 
-Ablation ranking failures and the deliberately ungated control remain visible,
-but are not mistaken for production acceptance gates. The summary records
+Ablation ranking failures, the deliberately ungated control, and the explicit
+experimental candidate remain visible, but are not production acceptance gates. The summary records
 `complete=true` for valid artifact collection even when `quality_gate.status`
 is `FAIL`; `require_quality=true` then makes the CI job fail. Diagnostic mode
 preserves quality failures without turning them into instrumentation failures.

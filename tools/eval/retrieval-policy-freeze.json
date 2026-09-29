@@ -1,0 +1,21 @@
+{
+  "schema_version": 1,
+  "source_revision": "564243494f4ba1de73a4df1457d5a0dde128f6b0",
+  "policy_sources": {
+    "core/rag/src/main/kotlin/app/skein/core/rag/retrieval/LexicalEvidenceGate.kt": "33f6c132c932c9482c9850217c6dc5aedb379fbd383cbaed87971b48d042b445",
+    "core/rag/src/main/kotlin/app/skein/core/rag/retrieval/RequestedValue.kt": "c18b49c6d1576fc60bee65c9dce02f16a15c2521eb0dd64a130d8894e52191b7"
+  },
+  "evidence_policy": {
+    "version": "lexical-query-coverage-v1",
+    "minimum_query_coverage": 0.5,
+    "semantic_vector_policy": "uncalibrated_bypass"
+  },
+  "experimental_policy": {
+    "version": "lexical-fact-shape-v2-experimental",
+    "minimum_query_coverage": 0.5,
+    "minimum_value_coverage": 0.25,
+    "semantic_vector_policy": "uncalibrated_bypass"
+  },
+  "validation_fixture_sha256": "4f79b2ddcf42dedd6b7f83c10402855f683fcebc3045d9e4668f6da2951759e8",
+  "decision": "Production stays v1; requested-value v2 is explicitly experimental after development counterexamples falsified support quality. No calibration uses either validation fixture."
+}

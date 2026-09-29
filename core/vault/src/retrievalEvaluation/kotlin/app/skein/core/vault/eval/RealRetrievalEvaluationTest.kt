@@ -260,6 +260,13 @@ public class RealRetrievalEvaluationTest {
                             put("minimum_query_coverage", LexicalEvidenceGate.DEFAULT_MINIMUM_COVERAGE)
                             put("semantic_vector_policy", "uncalibrated_bypass")
                         }
+                    val experimentalPolicy =
+                        buildJsonObject {
+                            put("version", LexicalEvidenceGate.CANDIDATE_VERSION)
+                            put("minimum_query_coverage", LexicalEvidenceGate.DEFAULT_MINIMUM_COVERAGE)
+                            put("minimum_value_coverage", LexicalEvidenceGate.DEFAULT_MINIMUM_VALUE_COVERAGE)
+                            put("semantic_vector_policy", "uncalibrated_bypass")
+                        }
                     val modes =
                         listOf(
                             Mode(
@@ -327,8 +334,13 @@ public class RealRetrievalEvaluationTest {
 
                     suspend fun validation(definition: RejectionValidationEvaluation.Fixture): JsonObject =
                         buildJsonObject {
-                            for (gated in listOf(true, false)) {
-                                val name = if (gated) "production_policy" else "ungated_control"
+                            for (name in listOf("production_policy", "ungated_control", "experimental_candidate")) {
+                                val policy =
+                                    when (name) {
+                                        "production_policy" -> evidencePolicy
+                                        "experimental_candidate" -> experimentalPolicy
+                                        else -> buildJsonObject { put("version", "disabled_control") }
+                                    }
                                 put(
                                     name,
                                     RejectionValidationEvaluation.evaluate(
@@ -338,26 +350,19 @@ public class RealRetrievalEvaluationTest {
                                                 validationRepository,
                                                 embedder = null,
                                                 legacyPersonaId = space,
-                                                evidenceGate = if (gated) LexicalEvidenceGate() else null,
+                                                evidenceGate =
+                                                    when (name) {
+                                                        "production_policy" -> LexicalEvidenceGate()
+                                                        "experimental_candidate" ->
+                                                            LexicalEvidenceGate(
+                                                                requestedValueChecks = true,
+                                                            )
+                                                        else -> null
+                                                    },
                                             )
                                         },
                                         repetitions = repetitions,
-                                        configuration =
-                                            buildJsonObject {
-                                                put(
-                                                    "evidence_policy",
-                                                    if (gated) {
-                                                        evidencePolicy
-                                                    } else {
-                                                        buildJsonObject {
-                                                            put(
-                                                                "version",
-                                                                "disabled_control",
-                                                            )
-                                                        }
-                                                    },
-                                                )
-                                            },
+                                        configuration = buildJsonObject { put("evidence_policy", policy) },
                                         modeName = name,
                                         definition = definition,
                                     ),
@@ -382,6 +387,7 @@ public class RealRetrievalEvaluationTest {
                                 "production ranked top 8 with lexical query-coverage gate; no reranking by the harness",
                             )
                             put("evidence_policy", evidencePolicy)
+                            put("experimental_policy", experimentalPolicy)
                             put("rejection_validation", reservedValidation)
                             put("independent_validation", independentValidation)
                             put("validation_policy_freeze", policyFreeze)
