@@ -1,0 +1,18 @@
+{
+  "schema_version": 1,
+  "mode": "real-retrieval-diagnostic",
+  "declared_build_revision": "56a46f5eedf217685528072bbf53a04f94e85aa5",
+  "source_identity": "host-declared clean checkout; not embedded APK attestation",
+  "full_hybrid_gate": "INELIGIBLE",
+  "complete": true,
+  "host_timeout": false,
+  "built_test_apk_sha256": "0f7180e56c49799297d98f983724da1896a640a2c3a871328fc2efd05e795b6a",
+  "gradle_exit_code": 0,
+  "report_collected": true,
+  "installed_test_apk_sha256": "0f7180e56c49799297d98f983724da1896a640a2c3a871328fc2efd05e795b6a",
+  "diagnostic_ranking_gates": {
+    "lexical_only": "FAIL",
+    "graph_only": "FAIL",
+    "lexical_graph_default": "FAIL"
+  }
+}

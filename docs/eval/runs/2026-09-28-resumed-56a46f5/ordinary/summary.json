@@ -1,0 +1,70 @@
+{
+  "schema_version": 1,
+  "source_revision": "56a46f5eedf217685528072bbf53a04f94e85aa5",
+  "workflow_run_id": 36502596076,
+  "workflow_url": "https://github.com/HeyZeus100/skein/actions/runs/36502596076",
+  "workflow_conclusion": "success",
+  "artifact_name": "connected-test-reports",
+  "case_count": 265,
+  "unique_case_count": 265,
+  "actual_xml_statuses": {
+    "pass": 264,
+    "failure": 1,
+    "error": 0,
+    "skipped": 0
+  },
+  "modules": [
+    {
+      "module": "app",
+      "raw_xml": "app.xml",
+      "raw_xml_sha256": "eb9d2f84f305ed35221d228125e36b77d6c62ec1938a7baef4be3b27aa9d78f1",
+      "case_count": 37,
+      "statuses": {
+        "pass": 37,
+        "failure": 0,
+        "error": 0,
+        "skipped": 0
+      },
+      "nonpassing_cases": []
+    },
+    {
+      "module": "core:vault",
+      "raw_xml": "vault.xml",
+      "raw_xml_sha256": "3b2ecf51ffc0f22a1c78a59465ac36ca8e480fc9d0f6b4bada5b60c70482965b",
+      "case_count": 192,
+      "statuses": {
+        "pass": 191,
+        "failure": 1,
+        "error": 0,
+        "skipped": 0
+      },
+      "nonpassing_cases": [
+        {
+          "class": "app.skein.core.vault.eval.RealRetrievalEvaluationTest",
+          "name": "evaluate_real_ingest_and_retrieval",
+          "result": "failure",
+          "time": "0.015",
+          "duplicate": false,
+          "detail": "org.junit.AssumptionViolatedException: opt-in retrieval evaluation\n\tat org.junit.Assume.assumeTrue(Assume.java:68)\n\tat app.skein.core.vault.eval.RealRetrievalEvaluationTest$evaluate_real_ingest_and_retrieval$1.invokeSuspend(RealRetrievalEvaluationTest.kt:75)\n\tat kotlin.coroutines.jvm.internal.BaseContinuationImpl.resumeWith(ContinuationImpl.kt:34)\n\tat kotlinx.coroutines.DispatchedTask.run(DispatchedTask.kt:100)\n\tat kotlinx.coroutines.EventLoopImplBase.processNextEvent(EventLoop.common.kt:256)\n\tat kotlinx.coroutines.BlockingCoroutine.joinBlocking(Builders.kt:54)\n\tat kotlinx.coroutines.BuildersKt__BuildersKt.runBlockingImpl(Builders.kt:30)\n\tat kotlinx.coroutines.BuildersKt.runBlockingImpl(Unknown Source:1)\n\tat kotlinx.coroutines.BuildersKt__Builders_concurrentKt.runBlockingK(Builders.concurrent.kt:172)\n\tat kotlinx.coroutines.BuildersKt.runBlockingK(Unknown Source:1)\n\tat kotlinx.coroutines.BuildersKt__Builders_concurrentKt.runBlockingK$default(Builders.concurrent.kt:157)\n\tat kotlinx.coroutines.BuildersKt.runBlockingK$default(Unknown Source:1)\n\tat app.skein.core.vault.eval.RealRetrievalEvaluationTest.evaluate_real_ingest_and_retrieval(RealRetrievalEvaluationTest.kt:73)\n"
+        }
+      ]
+    },
+    {
+      "module": "inference-service",
+      "raw_xml": "inference-service.xml",
+      "raw_xml_sha256": "7ae4c17ed8d80e2eb9135494310d962068db8d8545e3393f4298a6f81713279e",
+      "case_count": 36,
+      "statuses": {
+        "pass": 36,
+        "failure": 0,
+        "error": 0,
+        "skipped": 0
+      },
+      "nonpassing_cases": []
+    }
+  ],
+  "opt_in_retrieval_executed": false,
+  "interpretation": "264 passing cases and one opt-in assumption represented as an actual XML failure, despite workflow success. Zero XML skipped elements. The retrieval diagnostic did not execute in this ordinary run.",
+  "fold_touched": false,
+  "import_scope": "The full ImportService contract is host-only; this ordinary device run does not establish the full import journey."
+}

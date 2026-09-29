@@ -1,0 +1,37 @@
+{
+  "schema_version": 1,
+  "mode": "tiny-model-smoke",
+  "quality_assessed": false,
+  "build_sha": "56a46f5eedf217685528072bbf53a04f94e85aa5",
+  "complete": true,
+  "profile": {
+    "name": "tiny-structural-v2",
+    "context_length": 1024,
+    "threads": 2,
+    "max_tokens": 4,
+    "case_timeout_ms": 60000,
+    "seeds": [
+      17
+    ]
+  },
+  "apk_sha256": {
+    "app": "608677358feb6ff41aa1fb581343cebb415e53c60ff21360f4f8429b8a9bf35d",
+    "app_test": "788ff5559675d3fe5da3874c73fcdf5fff1eafb0207caa75dd6f17412e3f523c",
+    "native_test": "6e958117816073e300a5cd3a044884b173cdedf68b7d2d79daafd3cbc79776dd"
+  },
+  "model_sha256": "741ad12b64088fedc17c33aacb22e48be1972ef36a39f03666dd68bd15614fb9",
+  "llama_sha": "b29c606e28a01b1bc8c1351026a0fa6e616bf6c4",
+  "tokenizer_overlay_sha256": "71aba69a0fba8abc2df0a8f74f537182b79b29d60b13e74b7dc901e52dc36f29",
+  "answer_instrumentation_passed": true,
+  "installed_apk_sha256": {
+    "native_test": "6e958117816073e300a5cd3a044884b173cdedf68b7d2d79daafd3cbc79776dd"
+  },
+  "parity_instrumentation_passed": true,
+  "answer_statuses": {
+    "ok": 12,
+    "timeout": 0,
+    "oom": 0,
+    "error": 0
+  },
+  "missing_case_seeds": []
+}

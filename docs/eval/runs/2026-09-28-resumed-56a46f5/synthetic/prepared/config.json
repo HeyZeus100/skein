@@ -1,0 +1,33 @@
+{
+  "schema_version": 1,
+  "run_id": "tiny-smoke-56a46f5eedf2",
+  "engine_path": "isolated-apk",
+  "mode": "supplied_evidence",
+  "fixture_file": "/data/user/0/app.skein/files/synthetic-benchmark/input/tiny-smoke-56a46f5eedf2.jsonl",
+  "fixture_sha256": "c954a7ee830b1e35ce7675b88e70fae3d1de4a1155f17c47bd66edb76242613b",
+  "case_set_sha256": "ae9b6ea542f7d632d2349b467a948a76477d620becd6c812e9d7a6d54087d1ea",
+  "model_file": "/data/user/0/app.skein/files/synthetic-benchmark/models/741ad12b64088fedc17c33aacb22e48be1972ef36a39f03666dd68bd15614fb9/model.gguf",
+  "model_sha256": "741ad12b64088fedc17c33aacb22e48be1972ef36a39f03666dd68bd15614fb9",
+  "model_size": 88202080,
+  "model_license": "apache-2.0",
+  "template_sha256": "872be49dbb638044ad01b60388f48d469ff2980e5f0dccdc22ec907db54d0788",
+  "build_sha": "56a46f5eedf217685528072bbf53a04f94e85aa5",
+  "llama_sha": "b29c606e28a01b1bc8c1351026a0fa6e616bf6c4",
+  "tokenizer_overlay_sha256": "71aba69a0fba8abc2df0a8f74f537182b79b29d60b13e74b7dc901e52dc36f29",
+  "expected_apk_sha256": "608677358feb6ff41aa1fb581343cebb415e53c60ff21360f4f8429b8a9bf35d",
+  "seeds": [
+    17
+  ],
+  "sampling": {
+    "temperature": 0.0,
+    "top_k": 1,
+    "top_p": 1.0,
+    "min_p": 0.0,
+    "repeat_penalty": 1.0,
+    "max_tokens": 4,
+    "stop": []
+  },
+  "context_length": 1024,
+  "threads": 2,
+  "case_timeout_ms": 60000
+}

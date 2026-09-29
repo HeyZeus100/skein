@@ -1,0 +1,173 @@
+{
+  "migration_and_keys": [
+    {
+      "name": "migration011UpgradesExistingVaultAndDraftForeignKeyPreventsResurrection",
+      "matches": 1,
+      "result": "pass"
+    },
+    {
+      "name": "openingWithWrongKeyThrowsNotADatabase",
+      "matches": 1,
+      "result": "pass"
+    },
+    {
+      "name": "openWithWrongKeyReturnsTypedWrongKey",
+      "matches": 1,
+      "result": "pass"
+    }
+  ],
+  "capacity_and_control": [
+    {
+      "name": "anOversizedAnswerReservationIsRefusedBeforeTokenStreaming",
+      "matches": 1,
+      "result": "pass"
+    },
+    {
+      "name": "exactNativeCapacityAcceptsLastReservedPositionAndRefusesOneBeyond",
+      "matches": 1,
+      "result": "pass"
+    },
+    {
+      "name": "cancelMidGenerationCompletesAsCancelledWithinTheBudget",
+      "matches": 1,
+      "result": "pass"
+    },
+    {
+      "name": "aSecondConcurrentGenerateIsRefusedWithBusy",
+      "matches": 1,
+      "result": "pass"
+    },
+    {
+      "name": "lockingMidGenerationCancelsAndZeroesTheKvCache",
+      "matches": 1,
+      "result": "pass"
+    }
+  ],
+  "post_commit": [
+    {
+      "name": "commit_acknowledgements_wait_for_outer_commit_and_never_run_on_rollback",
+      "matches": 1,
+      "result": "pass"
+    },
+    {
+      "name": "commit_acknowledgement_registration_requires_this_repositorys_transaction",
+      "matches": 1,
+      "result": "pass"
+    },
+    {
+      "name": "failing_acknowledgement_does_not_undo_commit_or_prevent_the_next_acknowledgement",
+      "matches": 1,
+      "result": "pass"
+    },
+    {
+      "name": "cancellation_immediately_after_commit_cannot_skip_acknowledgement_or_undo_the_send",
+      "matches": 1,
+      "result": "pass"
+    }
+  ],
+  "drafts": [
+    {
+      "name": "draft_roundtrip_preserves_unicode_selection_and_has_no_document_side_effects",
+      "matches": 1,
+      "result": "pass"
+    },
+    {
+      "name": "new_draft_same_id_is_separate_in_each_space",
+      "matches": 1,
+      "result": "pass"
+    },
+    {
+      "name": "deleted_chat_cascades_draft_and_late_write_cannot_resurrect_it",
+      "matches": 1,
+      "result": "pass"
+    },
+    {
+      "name": "send_and_draft_clear_commit_together_or_both_roll_back",
+      "matches": 1,
+      "result": "pass"
+    },
+    {
+      "name": "draft_batch_rolls_back_and_quiesce_refuses_late_writes",
+      "matches": 1,
+      "result": "pass"
+    }
+  ],
+  "citation_retention": [
+    {
+      "name": "altered_excerpt_does_not_unpin_other_citations_or_its_own_revision",
+      "matches": 1,
+      "result": "pass"
+    },
+    {
+      "name": "sweep_keeps_a_superseded_revision_still_cited_by_a_message",
+      "matches": 1,
+      "result": "pass"
+    },
+    {
+      "name": "sweep_removes_an_uncited_superseded_revision",
+      "matches": 1,
+      "result": "pass"
+    },
+    {
+      "name": "a_chat_documents_snapshots_stay_bounded_and_its_citations_still_resolve",
+      "matches": 1,
+      "result": "pass"
+    }
+  ],
+  "quiesce_and_kinds": [
+    {
+      "name": "quiesce_drains_nested_transaction_and_refuses_late_writes",
+      "matches": 1,
+      "result": "pass"
+    },
+    {
+      "name": "quiesce_timeout_rolls_back_and_never_reopens_admission",
+      "matches": 1,
+      "result": "pass"
+    },
+    {
+      "name": "kindsOf_returns_only_requested_live_kinds_in_a_large_batch",
+      "matches": 1,
+      "result": "pass"
+    },
+    {
+      "name": "kindsOf_reads_its_own_transaction_without_deadlocking",
+      "matches": 1,
+      "result": "pass"
+    }
+  ],
+  "process_death": [
+    {
+      "name": "serviceDeathFailsTheStreamAndTheNextLoadRebinds",
+      "matches": 1,
+      "result": "pass"
+    }
+  ],
+  "native_tokenizer": [
+    {
+      "name": "nativeWhitespaceAndUnicodeTokensMatchWholePromptReference",
+      "matches": 1,
+      "result": "pass"
+    },
+    {
+      "name": "controlsSpanningTemplateAndContentRemainLiteralInBothDirections",
+      "matches": 1,
+      "result": "pass"
+    },
+    {
+      "name": "scaffoldTokenizerRejectsMalformedUnicodeAndInvalidByteRanges",
+      "matches": 1,
+      "result": "pass"
+    },
+    {
+      "name": "literalChatMlDelimiterCannotAddAnotherNativeControlToken",
+      "matches": 1,
+      "result": "pass"
+    },
+    {
+      "name": "goldenGreedySequenceIsPinned",
+      "matches": 1,
+      "result": "pass"
+    }
+  ]
+}

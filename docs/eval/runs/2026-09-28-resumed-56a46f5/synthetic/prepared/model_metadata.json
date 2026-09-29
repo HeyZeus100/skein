@@ -1,0 +1,6 @@
+{
+  "template_sha256": "872be49dbb638044ad01b60388f48d469ff2980e5f0dccdc22ec907db54d0788",
+  "template_bytes": 368,
+  "metadata_end_offset": 1769787,
+  "template_sha256_provenance": "host GGUF raw tokenizer.chat_template bound by model_sha256"
+}

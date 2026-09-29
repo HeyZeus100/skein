@@ -1,0 +1,66 @@
+{
+  "source_revision": "56a46f5eedf217685528072bbf53a04f94e85aa5",
+  "workflow_run_id": 36504291918,
+  "unique_case_seed_rows": 12,
+  "missing_or_duplicate_rows": 0,
+  "statuses": {
+    "ok": 12,
+    "timeout": 0,
+    "oom": 0,
+    "error": 0
+  },
+  "finalized_prompt_rows": 12,
+  "generation_rows": 11,
+  "application_abstention_rows": 1,
+  "parity_checks": [
+    {
+      "case_id": "empty-system",
+      "check": "exact actual/reference token array equality",
+      "token_count": 16,
+      "pass": true
+    },
+    {
+      "case_id": "role-word",
+      "check": "exact actual/reference token array equality",
+      "token_count": 10,
+      "pass": true
+    },
+    {
+      "case_id": "unicode-whitespace",
+      "check": "exact actual/reference token array equality",
+      "token_count": 30,
+      "pass": true
+    },
+    {
+      "case_id": "repeated-turns",
+      "check": "exact actual/reference token array equality",
+      "token_count": 23,
+      "pass": true
+    },
+    {
+      "case_id": "literal-control-isolation",
+      "check": "literal user marker creates no native control token; unsafe full-tokenization reference has one additional control",
+      "actual_control_count": 2,
+      "unsafe_control_count": 3,
+      "pass": true
+    }
+  ],
+  "installed_apk_digest_links": {
+    "app_manifest": true,
+    "app_test_manifest": true,
+    "native_test_host_readback": true
+  },
+  "quality_assessed": false,
+  "memory_measured": false,
+  "profile": {
+    "name": "tiny-structural-v2",
+    "context_length": 1024,
+    "threads": 2,
+    "max_tokens": 4,
+    "case_timeout_ms": 60000,
+    "seeds": [
+      17
+    ]
+  },
+  "comparison_limit": "Profile differs from the earlier 4096-context/4-thread/64-token run; no equivalent-workload speed or factuality comparison."
+}
