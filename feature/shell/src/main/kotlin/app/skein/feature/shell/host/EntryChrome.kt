@@ -93,7 +93,11 @@ fun SkeinShellState.EntryNavButton(key: SkeinKey) {
             onClick = { toggleList(destination) },
             modifier = Modifier.size(SkeinSize.touchTarget).testTag(EntryChromeTestTags.LIST_TOGGLE),
         ) {
-            Icon(painterResource(SkeinIcons.Sidebar), contentDescription = label, modifier = Modifier.size(SkeinSize.iconStandard))
+            Icon(
+                painterResource(SkeinIcons.Sidebar),
+                contentDescription = label,
+                modifier = Modifier.size(SkeinSize.iconStandard),
+            )
         }
         return
     }

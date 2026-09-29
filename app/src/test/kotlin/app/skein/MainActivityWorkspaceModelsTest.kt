@@ -85,7 +85,11 @@ class MainActivityWorkspaceModelsTest {
                 }
             navigate("Chat")
             awaitPaneTag(PRIMARY, ChatEntryTestTags.CONVERSATIONS)
-            composeRule.onNode(hasText(CHAT_TITLE) and inPane(PRIMARY)).performClick()
+            composeRule
+                .onNode(
+                    hasText(CHAT_TITLE) and inPane(PRIMARY) and
+                        hasAnyAncestor(hasTestTag(ChatEntryTestTags.CONVERSATIONS)),
+                ).performClick()
             awaitPaneTag(PRIMARY, COMPOSER_TEST_TAG)
             composeRule.onNode(hasText(NO_MODEL) and inPane(PRIMARY)).assertDoesNotExist()
             composer().performTextInput(DRAFT)
@@ -100,7 +104,8 @@ class MainActivityWorkspaceModelsTest {
             composeRule.waitUntil("imported model in secondary", WAIT_MILLIS) {
                 composeRule
                     .onAllNodes(hasText(imported.record.model.name) and inPane(SECONDARY))
-                    .fetchSemanticsNodes().isNotEmpty()
+                    .fetchSemanticsNodes()
+                    .isNotEmpty()
             }
             composeRule.onNode(hasText("Delete") and inPane(SECONDARY)).performClick()
             awaitTag(SKEIN_DESTRUCTIVE_DIALOG_CONFIRM_TEST_TAG)
@@ -124,7 +129,8 @@ class MainActivityWorkspaceModelsTest {
             assertTrue(
                 composeRule
                     .onNodeWithTag(WorkspaceTestTags.ACTIVATE_SECONDARY)
-                    .fetchSemanticsNode().config[SemanticsProperties.Selected],
+                    .fetchSemanticsNode()
+                    .config[SemanticsProperties.Selected],
             )
             runBlocking {
                 assertTrue(app.modelRegistry.list().isEmpty())
@@ -153,7 +159,10 @@ class MainActivityWorkspaceModelsTest {
         }
     }
 
-    private fun awaitPaneTag(pane: String, tag: String) {
+    private fun awaitPaneTag(
+        pane: String,
+        tag: String,
+    ) {
         composeRule.waitUntil("$tag in $pane", WAIT_MILLIS) {
             composeRule.onAllNodes(hasTestTag(tag) and inPane(pane)).fetchSemanticsNodes().isNotEmpty()
         }

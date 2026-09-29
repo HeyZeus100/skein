@@ -56,21 +56,34 @@ class SkeinShellState internal constructor(
     internal var collapsedLists by mutableStateOf(setOf<Destination>())
     internal var newChatKnowledgeChoices by mutableStateOf(mapOf<Pair<String, String>, Boolean>())
 
-    fun newChatKnowledgeEnabled(spaceId: String, draftId: String): Boolean =
-        newChatKnowledgeChoices[spaceId to draftId] ?: true
+    fun newChatKnowledgeEnabled(
+        spaceId: String,
+        draftId: String,
+    ): Boolean = newChatKnowledgeChoices[spaceId to draftId] ?: true
 
-    fun setNewChatKnowledgeEnabled(spaceId: String, draftId: String, enabled: Boolean) {
-        require(SkeinId.parse(spaceId) != null && validDraftPreferenceId(draftId)) { "Invalid draft preference identity" }
+    fun setNewChatKnowledgeEnabled(
+        spaceId: String,
+        draftId: String,
+        enabled: Boolean,
+    ) {
+        require(
+            SkeinId.parse(spaceId) != null && validDraftPreferenceId(draftId),
+        ) { "Invalid draft preference identity" }
         val identity = spaceId to draftId
-        newChatKnowledgeChoices = (newChatKnowledgeChoices - identity + (identity to enabled)).entries.toList()
-            .takeLast(MAX_DRAFT_CHOICES).associate { it.toPair() }
+        newChatKnowledgeChoices =
+            (newChatKnowledgeChoices - identity + (identity to enabled))
+                .entries
+                .toList()
+                .takeLast(MAX_DRAFT_CHOICES)
+                .associate { it.toPair() }
     }
 
     fun isListExpanded(destination: Destination): Boolean = destination !in collapsedLists
 
     fun toggleList(destination: Destination) {
         if (destination != Destination.CHAT && destination != Destination.KNOWLEDGE) return
-        collapsedLists = if (destination in collapsedLists) collapsedLists - destination else collapsedLists + destination
+        collapsedLists =
+            if (destination in collapsedLists) collapsedLists - destination else collapsedLists + destination
     }
 
     internal var navigationGuard: ((SkeinNavigationState) -> Boolean)? = null
@@ -82,18 +95,28 @@ class SkeinShellState internal constructor(
     @Suppress("DEPRECATION") // Inspect optional UI fields by type; malformed saved input must remain total.
     internal fun restorePreferences(saved: Bundle) {
         val bits = runCatching { saved.get(LIST_VISIBILITY) as? Int }.getOrNull() ?: 0
-        collapsedLists = setOf(Destination.CHAT, Destination.KNOWLEDGE).filterTo(mutableSetOf()) {
-            bits and (1 shl it.ordinal) != 0
-        }
-        val choices = runCatching { saved.get(DRAFT_CHOICES) as? List<*> }.getOrNull().orEmpty().takeLast(MAX_DRAFT_CHOICES)
+        collapsedLists =
+            setOf(Destination.CHAT, Destination.KNOWLEDGE).filterTo(mutableSetOf()) {
+                bits and (1 shl it.ordinal) != 0
+            }
+        val choices =
+            runCatching {
+                saved.get(
+                    DRAFT_CHOICES,
+                ) as? List<*>
+            }.getOrNull().orEmpty().takeLast(MAX_DRAFT_CHOICES)
         choices.forEach { raw ->
             val choice = raw as? Bundle ?: return@forEach
             runCatching {
                 val space = choice.get("space") as? String
                 val draft = choice.get("draft") as? String
                 val enabled = choice.get("enabled") as? Int
-                if (space != null && draft != null && SkeinId.parse(space) != null &&
-                    validDraftPreferenceId(draft) && enabled != null && enabled in 0..1
+                if (space != null &&
+                    draft != null &&
+                    SkeinId.parse(space) != null &&
+                    validDraftPreferenceId(draft) &&
+                    enabled != null &&
+                    enabled in 0..1
                 ) {
                     setNewChatKnowledgeEnabled(space, draft, enabled == 1)
                 }
@@ -200,23 +223,38 @@ private fun shellSaver(
     Saver(
         save = {
             bundleOf(SkeinNavCodec.encode(it.nav)).apply {
-                putInt(LIST_VISIBILITY, it.collapsedLists.fold(0) { bits, destination -> bits or (1 shl destination.ordinal) })
-                putParcelableArrayList(DRAFT_CHOICES, it.newChatKnowledgeChoices.mapTo(ArrayList()) { (identity, enabled) ->
-                    Bundle().apply {
-                        putString("space", identity.first)
-                        putString("draft", identity.second)
-                        putInt("enabled", if (enabled) 1 else 0)
-                    }
-                })
+                putInt(
+                    LIST_VISIBILITY,
+                    it.collapsedLists.fold(0) { bits, destination ->
+                        bits or
+                            (1 shl destination.ordinal)
+                    },
+                )
+                putParcelableArrayList(
+                    DRAFT_CHOICES,
+                    it.newChatKnowledgeChoices.mapTo(ArrayList()) { (identity, enabled) ->
+                        Bundle().apply {
+                            putString("space", identity.first)
+                            putString("draft", identity.second)
+                            putInt("enabled", if (enabled) 1 else 0)
+                        }
+                    },
+                )
             }
         },
         // Total (M4c): an unreadable Bundle restores the root stacks.
         restore = { saved ->
-            val navigation = Bundle(saved).apply {
-                remove(LIST_VISIBILITY)
-                remove(DRAFT_CHOICES)
-            }
-            val nav = runCatching { SkeinNavCodec.decode(treeOf(navigation)) }.getOrElse { SkeinNavigationState.initial() }
+            val navigation =
+                Bundle(saved).apply {
+                    remove(LIST_VISIBILITY)
+                    remove(DRAFT_CHOICES)
+                }
+            val nav =
+                runCatching {
+                    SkeinNavCodec.decode(
+                        treeOf(navigation),
+                    )
+                }.getOrElse { SkeinNavigationState.initial() }
             SkeinShellState(nav, entryState, stores, onReset, ownerKey).apply {
                 restorePreferences(saved)
             }
@@ -229,7 +267,8 @@ private const val MAX_DRAFT_CHOICES = 16
 
 private fun validDraftPreferenceId(value: String): Boolean =
     value == "00000000-0000-0000-0000-000000000001" ||
-        value == "00000000-0000-0000-0000-000000000002" || SkeinId.parse(value) != null
+        value == "00000000-0000-0000-0000-000000000002" ||
+        SkeinId.parse(value) != null
 
 /** The codec's saved form, 1:1: a map is a Bundle, a list an `ArrayList<Bundle>`, leaves `String`/`Int`. */
 private fun bundleOf(tree: Map<*, *>): Bundle =

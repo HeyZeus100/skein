@@ -9,12 +9,12 @@ import androidx.compose.runtime.saveable.Saver
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import app.skein.core.navigation.ChatKey
-import app.skein.core.navigation.Destination
 import app.skein.core.navigation.ChatSourceKey
+import app.skein.core.navigation.Destination
 import app.skein.core.navigation.FileKey
-import app.skein.core.navigation.NoteKey
 import app.skein.core.navigation.NewChatKey
 import app.skein.core.navigation.NewNoteKey
+import app.skein.core.navigation.NoteKey
 import app.skein.core.navigation.SkeinId
 import app.skein.core.navigation.SkeinKey
 import app.skein.core.navigation.SkeinNavigationState
@@ -47,10 +47,18 @@ class SkeinWorkspaceState internal constructor(
 
     init {
         // Saved state is untrusted input. Resolve duplicate mutable owners before either host composes.
-        val owned = primary.nav.stacks.values.flatten().mapNotNull { mutableDocument(it, primary.nav) }.toSet()
+        val owned =
+            primary.nav.stacks.values
+                .flatten()
+                .mapNotNull { mutableDocument(it, primary.nav) }
+                .toSet()
         var restored = secondary.nav
         owned.forEach { id -> restored = secondary.navigator.prune(restored, id) }
-        val primaryDrafts = primary.nav.stacks.values.flatten().filterIsInstance<NewChatKey>().toSet()
+        val primaryDrafts =
+            primary.nav.stacks.values
+                .flatten()
+                .filterIsInstance<NewChatKey>()
+                .toSet()
         val previousDestination = restored.topLevel
         for (destination in Destination.entries) {
             val stack = restored.stack(destination)
@@ -83,7 +91,9 @@ class SkeinWorkspaceState internal constructor(
     }
 
     /** Move whole owners visually; their entry composition, writers and drafts never transfer. */
-    fun swapPanes() { panesSwapped = !panesSwapped }
+    fun swapPanes() {
+        panesSwapped = !panesSwapped
+    }
 
     fun paneAtPosition(position: Int): WorkspacePane =
         WorkspacePane.entries[if (panesSwapped) 1 - position else position]
@@ -108,10 +118,15 @@ class SkeinWorkspaceState internal constructor(
         val selectedDrafts = next.currentStack.filterIsInstance<NewChatKey>().toSet()
         // A destination switch can still be disposing/flushing the old editor. Reserve
         // every retained stack until its entry is actually popped, never transfer writers.
-        val destinations = listOf(otherShell.nav.topLevel) + Destination.entries.filter { it != otherShell.nav.topLevel }
-        val owningDestination = destinations.firstOrNull { destination ->
-            otherShell.nav.stack(destination).any { mutableDocument(it, otherShell.nav) in selected || it in selectedDrafts }
-        }
+        val destinations =
+            listOf(otherShell.nav.topLevel) + Destination.entries.filter { it != otherShell.nav.topLevel }
+        val owningDestination =
+            destinations.firstOrNull { destination ->
+                otherShell.nav.stack(destination).any {
+                    mutableDocument(it, otherShell.nav) in selected ||
+                        it in selectedDrafts
+                }
+            }
         if (owningDestination != null) {
             if (owningDestination != otherShell.nav.topLevel) {
                 otherShell.replaceNavigation(otherShell.navigator.switchTo(otherShell.nav, owningDestination))
@@ -135,7 +150,13 @@ fun rememberSkeinWorkspaceState(unlockManager: UnlockManager): SkeinWorkspaceSta
         secondary,
         saver =
             Saver<SkeinWorkspaceState, IntArray>(
-                save = { intArrayOf(it.activePane.ordinal, if (it.splitRequested) 1 else 0, if (it.panesSwapped) 1 else 0) },
+                save = {
+                    intArrayOf(
+                        it.activePane.ordinal,
+                        if (it.splitRequested) 1 else 0,
+                        if (it.panesSwapped) 1 else 0,
+                    )
+                },
                 restore = {
                     SkeinWorkspaceState(
                         primary,

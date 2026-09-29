@@ -36,13 +36,13 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.runtime.setValue
 import androidx.compose.runtime.staticCompositionLocalOf
-import androidx.compose.ui.focus.focusProperties
-import androidx.compose.ui.layout.Layout
-import androidx.compose.ui.semantics.clearAndSetSemantics
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.focus.focusProperties
+import androidx.compose.ui.layout.Layout
 import androidx.compose.ui.platform.LocalLayoutDirection
 import androidx.compose.ui.platform.testTag
+import androidx.compose.ui.semantics.clearAndSetSemantics
 import androidx.navigation3.runtime.NavEntry
 import androidx.navigation3.runtime.rememberDecoratedNavEntries
 import androidx.navigation3.runtime.rememberSaveableStateHolderNavEntryDecorator
@@ -150,19 +150,29 @@ fun SkeinShellHost(
     val top = shell.nav.topLevel
     val supportsList = top == Destination.CHAT || top == Destination.KNOWLEDGE
     val listCollapsed = supportsList && layout.maxPanes > 1 && !shell.isListExpanded(top)
-    val extraVisible = shell.nav.currentStack.lastOrNull()?.role == PaneRole.EXTRA
-    val directive = remember(info, layout, supportsList, listCollapsed, extraVisible) {
-        skeinDirective(info, layout).let {
-            it.copy(
-                maxHorizontalPartitions = if (listCollapsed) { if (extraVisible) 2 else 1 } else it.maxHorizontalPartitions,
-                defaultPanePreferredWidth = if (supportsList && !extraVisible && layout.posture == SkeinPosture.Flat) {
-                    SkeinSize.sidePaneMin
-                } else {
-                    it.defaultPanePreferredWidth
-                },
-            )
+    val extraVisible =
+        shell.nav.currentStack
+            .lastOrNull()
+            ?.role == PaneRole.EXTRA
+    val directive =
+        remember(info, layout, supportsList, listCollapsed, extraVisible) {
+            skeinDirective(info, layout).let {
+                it.copy(
+                    maxHorizontalPartitions =
+                        if (listCollapsed) {
+                            if (extraVisible) 2 else 1
+                        } else {
+                            it.maxHorizontalPartitions
+                        },
+                    defaultPanePreferredWidth =
+                        if (supportsList && !extraVisible && layout.posture == SkeinPosture.Flat) {
+                            SkeinSize.sidePaneMin
+                        } else {
+                            it.defaultPanePreferredWidth
+                        },
+                )
+            }
         }
-    }
     // §2.5, §7.4 item 2: a sheet expanded on one pane becomes a pane on two, and a later shrink shows the peek.
     LaunchedEffect(layout.maxPanes) { if (layout.maxPanes > 1) shell.sheets.collapseAll() }
 
@@ -237,7 +247,8 @@ fun SkeinShellHost(
 
     CompositionLocalProvider(
         LocalSkeinWindowLayout provides layout,
-        LocalSkeinWindowPartitions provides (if (workspacePane != null) workspacePane.partitions else layout.windowPartitions(layoutDirection)),
+        LocalSkeinWindowPartitions provides
+            (if (workspacePane != null) workspacePane.partitions else layout.windowPartitions(layoutDirection)),
     ) {
         Surface(modifier.fillMaxSize().testTag(ShellTestTags.SKEIN_SHELL_ROOT)) {
             val display: @Composable () -> Unit = {
@@ -373,7 +384,6 @@ fun PlaceholderEntry(key: SkeinKey?) {
     Box(Modifier.fillMaxSize(), contentAlignment = Alignment.Center) { Text(label) }
 }
 
-
 /** The list remains composed while its root shows the empty detail, retaining local filters and scroll. */
 @Composable
 private fun RetainedRootList(
@@ -390,7 +400,8 @@ private fun RetainedRootList(
                 LocalSkeinWindowActive provides (ownerActive && !collapsed),
             ) {
                 Box(
-                    Modifier.fillMaxSize()
+                    Modifier
+                        .fillMaxSize()
                         .focusProperties { canFocus = !collapsed }
                         .then(if (collapsed) Modifier.clearAndSetSemantics { } else Modifier),
                 ) { list() }

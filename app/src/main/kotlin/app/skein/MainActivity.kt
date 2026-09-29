@@ -53,7 +53,8 @@ import app.skein.feature.settings.rememberSettingsViewModel
 import app.skein.feature.shell.auth.BiometricUnlockScreen
 import app.skein.feature.shell.auth.VaultResetScreen
 import app.skein.feature.shell.auth.VaultSetupScreen
-import app.skein.feature.shell.host.rememberSkeinShellState
+import app.skein.feature.shell.host.WorkspacePane
+import app.skein.feature.shell.host.rememberSkeinWorkspaceState
 import app.skein.feature.shell.layout.EdgeToEdgeSurface
 import app.skein.shell.NavShell
 import app.skein.shell.NotificationDeepLinks
@@ -292,7 +293,8 @@ class MainActivity : FragmentActivity() {
             LifecycleEventEffect(Lifecycle.Event.ON_RESUME) { applyEdgeToEdgeStyle(themeMode) }
             // skein-xtov.24.7 (AL-08) / .24.23 (AL-09c): the NavDisplay shell. Its state sits above the gate
             // (spec §8.8), so a lock keeps the user's place; a vault reset clears it (M4e).
-            val navShell = rememberSkeinShellState(vault.unlockManager)
+            val workspace = rememberSkeinWorkspaceState(vault.unlockManager)
+            val navShell = workspace.primary
             // skein-xtov.24.20 (UT-14, `UX_TEST_PLAN.md` §2.6): the Compose
             // root, so `tools/ux/fold-watch.sh`'s `uiautomator dump` can find
             // every tagged node below it by `resource-id` — debug builds
@@ -314,7 +316,7 @@ class MainActivity : FragmentActivity() {
                     // skein-xtov.24.21 (SECURITY_REVIEW_D7.md M4e): no id from the reset vault survives.
                     onVaultReset = {
                         notificationLinks.clear()
-                        navShell.resetForNewVault()
+                        workspace.resetForNewVault()
                     },
                     unlockedContent = { session ->
                         // E6.I18 (skein-fsn): wire IndexingNotifier to observe and post
@@ -362,20 +364,26 @@ class MainActivity : FragmentActivity() {
                                     themeModeFlow = appearancePrefs.themeMode,
                                     onSetThemeMode = setThemeMode,
                                 )
-                            key(session, navShell) {
+                            key(session, workspace) {
                                 var navigationReady by remember { mutableStateOf(false) }
                                 val pending by notificationLinks.pending.collectAsState()
                                 LaunchedEffect(navigationReady, pending) {
-                                    if (navigationReady) notificationLinks.applyPending(navShell)
+                                    if (navigationReady && pending != null) {
+                                        workspace.activate(WorkspacePane.PRIMARY)
+                                        notificationLinks.applyPending(navShell)
+                                    }
                                 }
                                 // AL-11: each entry owns its insets; gate-safeDrawing would consume IME here.
                                 NavShell(
                                     session,
-                                    navShell,
+                                    workspace,
                                     settingsViewModel,
                                     Modifier.fillMaxSize(),
                                     onNavigationReady = {
-                                        notificationLinks.applyPending(navShell)
+                                        if (notificationLinks.pending.value != null) {
+                                            workspace.activate(WorkspacePane.PRIMARY)
+                                            notificationLinks.applyPending(navShell)
+                                        }
                                         navigationReady = true
                                     },
                                     knowledgePreparation = knowledgePreparation,

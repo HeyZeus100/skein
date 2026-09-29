@@ -8,12 +8,13 @@ package app.skein.feature.editor.entries
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -21,9 +22,9 @@ import androidx.compose.runtime.produceState
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
-import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.testTag
+import androidx.lifecycle.viewmodel.compose.viewModel
 import app.skein.core.designsystem.components.SkeinAction
 import app.skein.core.designsystem.components.SkeinEmptyState
 import app.skein.core.designsystem.components.SkeinListRow
@@ -53,7 +54,6 @@ import app.skein.feature.shell.host.EntryAction
 import app.skein.feature.shell.host.EntryDocument
 import app.skein.feature.shell.host.EntryNavButton
 import app.skein.feature.shell.host.EntryTopBar
-import app.skein.feature.shell.host.hasEntryNavigation
 import app.skein.feature.shell.host.GoneEntry
 import app.skein.feature.shell.host.LocalSheetMode
 import app.skein.feature.shell.host.LocalSkeinWindowLayout
@@ -62,6 +62,7 @@ import app.skein.feature.shell.host.SheetPeekRow
 import app.skein.feature.shell.host.SkeinShellState
 import app.skein.feature.shell.host.entryBottomPadding
 import app.skein.feature.shell.host.followById
+import app.skein.feature.shell.host.hasEntryNavigation
 import app.skein.feature.shell.host.open
 import app.skein.feature.shell.host.rememberEntryDocument
 import app.skein.feature.timeline.TimelineScreen

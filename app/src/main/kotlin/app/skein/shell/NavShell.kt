@@ -9,8 +9,10 @@ import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.MutableIntState
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.key
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.produceState
@@ -47,6 +49,8 @@ import app.skein.feature.shell.container.SkeinSpace
 import app.skein.feature.shell.host.PlaceholderEntry
 import app.skein.feature.shell.host.SkeinShellHost
 import app.skein.feature.shell.host.SkeinShellState
+import app.skein.feature.shell.host.SkeinWorkspaceHost
+import app.skein.feature.shell.host.SkeinWorkspaceState
 import app.skein.feature.shell.host.navKindsOf
 import app.skein.feature.shell.host.vaultSearch
 import app.skein.models.ModelImportOutcome
@@ -59,6 +63,40 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.launch
+
+/** Shared vault services with independently scoped navigation and entry state in each work area. */
+@Composable
+internal fun NavShell(
+    session: VaultSession,
+    workspace: SkeinWorkspaceState,
+    settingsViewModel: SettingsViewModel,
+    modifier: Modifier = Modifier,
+    onNavigationReady: () -> Unit = {},
+    knowledgePreparation: Flow<KnowledgePreparation> = flowOf(KnowledgePreparation()),
+) {
+    val active = workspace.activeShell
+    val modelRevision = remember(session.models) { mutableIntStateOf(0) }
+    // History items capture their shell in onOpen, even when both panes have the same selection.
+    val history = key(active) { rememberChatHistory(session.repository, active) }
+    SkeinWorkspaceHost(
+        workspace = workspace,
+        history = history,
+        spaces = rememberSpaces(session.personaService, active),
+        searchEnabled = true,
+        modifier = modifier,
+    ) { paneShell ->
+        NavShell(
+            session = session,
+            shell = paneShell,
+            modelRevision = modelRevision,
+            settingsViewModel = settingsViewModel,
+            onNavigationReady = {
+                if (paneShell === workspace.primary) onNavigationReady()
+            },
+            knowledgePreparation = knowledgePreparation,
+        )
+    }
+}
 
 /**
  * The NavDisplay shell over [session]; [shell] is hoisted above the vault
@@ -75,6 +113,7 @@ internal fun NavShell(
     modifier: Modifier = Modifier,
     onNavigationReady: () -> Unit = {},
     knowledgePreparation: Flow<KnowledgePreparation> = flowOf(KnowledgePreparation()),
+    modelRevision: MutableIntState = remember(session.models) { mutableIntStateOf(0) },
 ) {
     val personas = session.personaService
     val knowledge =
@@ -86,11 +125,11 @@ internal fun NavShell(
                 preparation = knowledgePreparation,
             )
         }
-    val handoff = remember(session) { ChatHandoff() }
+    val handoff = remember(session, shell) { ChatHandoff() }
     val defaultSpaceId by produceState<String?>(null, personas) { value = personas.default().id }
     val history = rememberChatHistory(session.repository, shell)
     val models = session.models
-    var modelVersion by remember(models) { mutableIntStateOf(0) }
+    val modelVersion = modelRevision.intValue
     // App-owned imports and unlock adoption can finish while Chat remains visible.
     val hasModel by produceState(false, models, modelVersion, shell.nav.topLevel) {
         value = models?.registry?.default() != null
@@ -109,7 +148,7 @@ internal fun NavShell(
             defaultSpaceId = defaultSpaceId,
         )
     val graph = remember(session) { GraphEntryDeps(session.repository, session.indexStore) }
-    val modelsDeps = rememberModelsEntryDeps(models, shell, modelVersion) { modelVersion++ }
+    val modelsDeps = rememberModelsEntryDeps(models, shell, modelVersion) { modelRevision.intValue++ }
     val settings =
         remember(settingsViewModel) {
             SettingsEntryDeps(settingsViewModel, "${BuildConfig.VERSION_NAME} (${BuildConfig.VERSION_CODE})")

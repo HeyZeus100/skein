@@ -38,7 +38,10 @@ class SkeinShellPreferencesTest {
         }
         composeRule.runOnIdle {
             assertNotSame(primary.stores, secondary.stores)
-            assertNotSame(primary.entryState.getValue(Destination.CHAT), secondary.entryState.getValue(Destination.CHAT))
+            assertNotSame(
+                primary.entryState.getValue(Destination.CHAT),
+                secondary.entryState.getValue(Destination.CHAT),
+            )
             assertEquals("00000000-0000-0000-0000-000000000001", primary.rootDraftId)
             assertNotEquals(primary.rootDraftId, secondary.rootDraftId)
             primary.setNewChatKnowledgeEnabled(CHAT_A.value, primary.rootDraftId, false)
@@ -66,7 +69,11 @@ class SkeinShellPreferencesTest {
                 primary.setNewChatKnowledgeEnabled(CHAT_A.value, "PRIVATE DRAFT TEXT", false)
             }
             repeat(20) { index ->
-                primary.setNewChatKnowledgeEnabled(CHAT_A.value, "0190a3c4-5b6d-7e8f-9a0b-${index.toString().padStart(12, '0')}", false)
+                primary.setNewChatKnowledgeEnabled(
+                    CHAT_A.value,
+                    "0190a3c4-5b6d-7e8f-9a0b-${index.toString().padStart(12, '0')}",
+                    false,
+                )
             }
             assertEquals(16, primary.newChatKnowledgeChoices.size)
             assertTrue(primary.newChatKnowledgeEnabled(CHAT_A.value, "0190a3c4-5b6d-7e8f-9a0b-000000000000"))
@@ -97,23 +104,28 @@ class SkeinShellPreferencesTest {
     fun `malformed optional preference fields are ignored without accepting arbitrary text`() {
         composeRule.setContent { primary = rememberSkeinShellState(manager) }
         composeRule.runOnIdle {
-            val wrongTypes = Bundle().apply {
-                putString("skein_list_visibility", "private sentinel")
-                putStringArrayList("skein_draft_choices", arrayListOf("private sentinel"))
-            }
+            val wrongTypes =
+                Bundle().apply {
+                    putString("skein_list_visibility", "private sentinel")
+                    putStringArrayList("skein_draft_choices", arrayListOf("private sentinel"))
+                }
             primary.restorePreferences(wrongTypes)
             assertTrue(primary.isListExpanded(Destination.CHAT))
             assertTrue(primary.newChatKnowledgeChoices.isEmpty())
-            val entries = Bundle().apply {
-                putParcelableArrayList("skein_draft_choices", arrayListOf(
-                    Bundle().apply { putString("space", "private sentinel") },
-                    Bundle().apply {
-                        putString("space", CHAT_A.value)
-                        putString("draft", primary.rootDraftId)
-                        putInt("enabled", 0)
-                    },
-                ))
-            }
+            val entries =
+                Bundle().apply {
+                    putParcelableArrayList(
+                        "skein_draft_choices",
+                        arrayListOf(
+                            Bundle().apply { putString("space", "private sentinel") },
+                            Bundle().apply {
+                                putString("space", CHAT_A.value)
+                                putString("draft", primary.rootDraftId)
+                                putInt("enabled", 0)
+                            },
+                        ),
+                    )
+                }
             primary.restorePreferences(entries)
             assertEquals(1, primary.newChatKnowledgeChoices.size)
             assertFalse(primary.newChatKnowledgeEnabled(CHAT_A.value, primary.rootDraftId))

@@ -52,9 +52,16 @@ class KnowledgeListRetentionTest {
                     shell = rememberSkeinShellState(manager)
                     val deps = remember { KnowledgeEntryDeps(vault, InMemoryIndexStore()) }
                     SkeinShellHost(
-                        shell, navKindsOf(vault),
+                        shell,
+                        navKindsOf(vault),
                         detailPlaceholder = { destination ->
-                            if (destination == Destination.KNOWLEDGE) KnowledgeDetailPlaceholder(shell) else PlaceholderEntry(null)
+                            if (destination ==
+                                Destination.KNOWLEDGE
+                            ) {
+                                KnowledgeDetailPlaceholder(shell)
+                            } else {
+                                PlaceholderEntry(null)
+                            }
                         },
                     ) { entry ->
                         if (entry == KnowledgeHomeKey) filters = viewModel { KnowledgeListFilterState() }

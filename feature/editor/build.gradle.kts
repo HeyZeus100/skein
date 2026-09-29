@@ -104,6 +104,7 @@ dependencies {
     // composable (not just a debug preview), so this is a real
     // `implementation` dependency now, not the debug-only one below.
     implementation(libs.androidx.activity.compose)
+    implementation(libs.androidx.lifecycle.viewmodel.compose)
 
     debugImplementation(libs.compose.ui.tooling)
 

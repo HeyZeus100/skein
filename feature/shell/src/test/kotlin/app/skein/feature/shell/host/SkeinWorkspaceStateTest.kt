@@ -1,8 +1,8 @@
 package app.skein.feature.shell.host
 
 import app.skein.core.navigation.ChatKey
-import app.skein.core.navigation.Destination
 import app.skein.core.navigation.ConnectionsKey
+import app.skein.core.navigation.Destination
 import app.skein.core.navigation.GraphKey
 import app.skein.core.navigation.KnowledgeHomeKey
 import app.skein.core.navigation.NewChatKey
@@ -23,8 +23,10 @@ import org.robolectric.annotation.Config
 class SkeinWorkspaceStateTest {
     private val manager = UnlockManager(keyProvider = RecordingKeyProvider())
 
-    private fun shell(owner: String, state: SkeinNavigationState = SkeinNavigationState.initial()) =
-        SkeinShellState(state, emptyMap(), SessionEntryStores(manager), ownerKey = owner)
+    private fun shell(
+        owner: String,
+        state: SkeinNavigationState = SkeinNavigationState.initial(),
+    ) = SkeinShellState(state, emptyMap(), SessionEntryStores(manager), ownerKey = owner)
 
     @Test
     fun `duplicate selection activates existing owner without a second writer route`() {
@@ -35,15 +37,33 @@ class SkeinWorkspaceStateTest {
         assertEquals(WorkspacePane.PRIMARY, workspace.activePane)
         assertEquals(listOf(KnowledgeHomeKey), workspace.secondary.nav.stack(Destination.KNOWLEDGE))
         workspace.secondary.navigate { goTo(it, ChatKey(CHAT_A)) }
-        assertEquals(ChatKey(CHAT_A), workspace.secondary.nav.currentStack.last())
-        assertEquals(NoteKey(NOTE_B), workspace.primary.nav.currentStack.last())
+        assertEquals(
+            ChatKey(CHAT_A),
+            workspace.secondary.nav.currentStack
+                .last(),
+        )
+        assertEquals(
+            NoteKey(NOTE_B),
+            workspace.primary.nav.currentStack
+                .last(),
+        )
     }
 
     @Test
     fun `restored duplicates are removed before any pane content can render`() {
-        val duplicate = SkeinNavigationState.of(Destination.KNOWLEDGE, mapOf(Destination.KNOWLEDGE to listOf(KnowledgeHomeKey, NoteKey(NOTE_B))))
+        val duplicate =
+            SkeinNavigationState.of(
+                Destination.KNOWLEDGE,
+                mapOf(
+                    Destination.KNOWLEDGE to listOf(KnowledgeHomeKey, NoteKey(NOTE_B)),
+                ),
+            )
         val workspace = SkeinWorkspaceState(shell("primary", duplicate), shell("secondary", duplicate))
-        assertEquals(NoteKey(NOTE_B), workspace.primary.nav.currentStack.last())
+        assertEquals(
+            NoteKey(NOTE_B),
+            workspace.primary.nav.currentStack
+                .last(),
+        )
         assertEquals(listOf(KnowledgeHomeKey), workspace.secondary.nav.currentStack)
     }
 
@@ -56,7 +76,11 @@ class SkeinWorkspaceStateTest {
         workspace.secondary.navigate { goTo(it, NoteKey(NOTE_B)) }
         assertEquals(WorkspacePane.PRIMARY, workspace.activePane)
         assertEquals(Destination.KNOWLEDGE, workspace.primary.nav.topLevel)
-        assertEquals(ConnectionsKey(NOTE_B), workspace.primary.nav.currentStack.last())
+        assertEquals(
+            ConnectionsKey(NOTE_B),
+            workspace.primary.nav.currentStack
+                .last(),
+        )
         assertEquals(listOf(KnowledgeHomeKey), workspace.secondary.nav.stack(Destination.KNOWLEDGE))
     }
 
@@ -71,7 +95,12 @@ class SkeinWorkspaceStateTest {
         assertEquals(Destination.GRAPH, workspace.primary.nav.topLevel)
         assertEquals(Destination.CHAT, workspace.secondary.nav.topLevel)
         assertEquals(listOf(KnowledgeHomeKey), workspace.secondary.nav.stack(Destination.KNOWLEDGE))
-        assertEquals(NoteKey(NOTE_B), workspace.primary.nav.stack(Destination.KNOWLEDGE).last())
+        assertEquals(
+            NoteKey(NOTE_B),
+            workspace.primary.nav
+                .stack(Destination.KNOWLEDGE)
+                .last(),
+        )
     }
 
     @Test
@@ -82,8 +111,16 @@ class SkeinWorkspaceStateTest {
         workspace.activate(WorkspacePane.SECONDARY)
         workspace.secondary.navigate { goTo(it, NewChatKey(DRAFT_D)) }
         assertEquals(WorkspacePane.PRIMARY, workspace.activePane)
-        assertEquals(NewChatKey(DRAFT_D), workspace.primary.nav.currentStack.last())
-        assertFalse(workspace.secondary.nav.stacks.values.flatten().contains(NewChatKey(DRAFT_D)))
+        assertEquals(
+            NewChatKey(DRAFT_D),
+            workspace.primary.nav.currentStack
+                .last(),
+        )
+        assertFalse(
+            workspace.secondary.nav.stacks.values
+                .flatten()
+                .contains(NewChatKey(DRAFT_D)),
+        )
     }
 
     @Test
@@ -91,7 +128,12 @@ class SkeinWorkspaceStateTest {
         val source = shell("primary")
         source.navigate { goTo(it, NewChatKey(DRAFT_D)) }
         val workspace = SkeinWorkspaceState(source, shell("secondary", source.nav))
-        assertNotEquals(workspace.primary.nav.currentStack.last(), workspace.secondary.nav.currentStack.last())
+        assertNotEquals(
+            workspace.primary.nav.currentStack
+                .last(),
+            workspace.secondary.nav.currentStack
+                .last(),
+        )
     }
 
     @Test
@@ -102,11 +144,22 @@ class SkeinWorkspaceStateTest {
         primary.navigate { goTo(it, GraphKey()) }
         val workspace = SkeinWorkspaceState(primary, secondary)
         workspace.primary.navigate { switchTo(it, Destination.CHAT) }
-        assertNotEquals(workspace.primary.nav.currentStack.last(), workspace.secondary.nav.currentStack.last())
-        val secondaryDraft = workspace.secondary.nav.currentStack.last() as NewChatKey
+        assertNotEquals(
+            workspace.primary.nav.currentStack
+                .last(),
+            workspace.secondary.nav.currentStack
+                .last(),
+        )
+        val secondaryDraft =
+            workspace.secondary.nav.currentStack
+                .last() as NewChatKey
         workspace.primary.navigate { goTo(it, secondaryDraft) }
         assertEquals(WorkspacePane.SECONDARY, workspace.activePane)
-        assertEquals(NewChatKey(DRAFT_D), workspace.primary.nav.currentStack.last())
+        assertEquals(
+            NewChatKey(DRAFT_D),
+            workspace.primary.nav.currentStack
+                .last(),
+        )
     }
 
     @Test
