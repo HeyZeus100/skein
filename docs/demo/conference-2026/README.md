@@ -6,6 +6,8 @@ Three fictional domain packs demonstrate asking about saved notes and opening th
 
 **Physical checkpoint, 29 September at 10:48 UTC:** candidate `5ae91c2` is installed with its APK digest verified. The native public-model replay passed five template/token/control cases and EOG classification; the synthetic answer attempt hit its 900-second watchdog with no valid manifest or answer rows. Normal app launch succeeded, but the device keyguard requires the owner to unlock. **The demo is not ready and post-update UI rehearsal remains NOT RUN.** See the [physical evidence and open gates](runs/2026-09-29-physical/README.md).
 
+**Later UI checkpoint:** the owner unlocked the Fold and the three construction notes were imported once. No live question has been sent. Physical work is paused for the requested New chat, sidebar and split-workspace update; first-send Knowledge handling has passed local checks but is not installed. See the [partial UI checkpoint](runs/2026-09-29-ui-checkpoint/README.md). The earlier physical checkpoint remains historical evidence.
+
 The owner needs the Fold ready by **17:00 on 29 September 2026, America/Los_Angeles (PDT)**. The planned **code freeze is 16:00**, followed by final rehearsal on the same APK and model. The owner released the previous Fold HOLD for a verified update and demo checks with existing app data preserved. One designated runner owns all physical-device access.
 
 ## Preload before presenting
@@ -97,9 +99,9 @@ The device runner records observations here or in linked evidence. Runtime rehea
 | Model name/file identity; runtime settings | NOT RUN |
 | Date, runner, selected Space; network conditions | NOT RUN |
 | Existing vault/app data and secure settings preserved | NOT RUN |
-| Construction: three notes imported once; titles/bodies checked | NOT RUN |
-| Aviation/mycology: any optional packs imported and checked | NOT RUN |
-| Indexing status, including pending semantic work | NOT RUN |
+| Construction: three notes imported once; titles/bodies checked | Three import confirmations observed; body inspection and answer rehearsal pending. [UI checkpoint](runs/2026-09-29-ui-checkpoint/README.md). |
+| Aviation/mycology: any optional packs imported and checked | Six files staged; not imported. |
+| Indexing status, including pending semantic work | Aggregate UI reported one document awaiting search by meaning; all-demo readiness unproven. |
 | New-chat Knowledge state and same-Space retrieval | NOT RUN |
 | Construction cross-note question: facts and both supporting sources | NOT RUN |
 | Construction single-source fallback, if needed; original failure retained | NOT RUN |

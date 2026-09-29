@@ -1,0 +1,91 @@
+{
+  "schema_version": 1,
+  "recorded_at": "2026-09-29T15:06:59.069412+00:00",
+  "status": "PARTIAL_PREFLIGHT_NEW_UI_NOT_INSTALLED",
+  "issues": [
+    "skein-830f",
+    "skein-za8d",
+    "skein-pknl"
+  ],
+  "installed_app": {
+    "source": "5ae91c238612bdd9b1511b3716d34b4fa5960dd2",
+    "apk_sha256": "1f83b71c5fe60a6dc26fcac7a4c75b49fbf009b6e8c9d972b2176c18081c1323",
+    "update_preserves_app_data": true
+  },
+  "normal_ui": {
+    "owner_reported_unlocked": true,
+    "construction_imported_once": [
+      "cedar-cabinet-order.md",
+      "cedar-delivery.md",
+      "cedar-rfi.md"
+    ],
+    "import_confirmation_toasts": 3,
+    "aviation_mycology_imported": false,
+    "generation_started": false,
+    "index_observation": "1 document awaiting search by meaning; aggregate status, not all documents ready",
+    "new_chat_navigation_issue": "reported by owner; reproduced source identity elision, physical input route cause not fully established",
+    "center_line": "debug hinge overlay source identified; current app still draws it",
+    "physical_runner": "paused for combined UI release"
+  },
+  "private_screenshot": {
+    "requested_by_owner": true,
+    "retained_local_ignored_only": true,
+    "published": false,
+    "dimensions_px": [
+      2076,
+      2152
+    ],
+    "sha256": "b83fa43511481e9d6833d28003b0e0f5312dae354412011e82808b07f4615667"
+  },
+  "first_send_knowledge_change": {
+    "source_commit": "352aab3dbfbf66b4c2a42930c16efb0f1f3ed6c0",
+    "pushed_topic": true,
+    "installed": false,
+    "scope": "Knowledge switch before first send; persisted before turn admission; per-pane draft identity and resize retention",
+    "actual_checks": {
+      "focus": {
+        "xml_files": 2,
+        "tests": 25,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0,
+        "passed": 25
+      },
+      "shell_preferences": {
+        "xml_files": 1,
+        "tests": 4,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0,
+        "passed": 4
+      },
+      "full_chat": {
+        "xml_files": 26,
+        "tests": 277,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 12,
+        "passed": 265
+      }
+    },
+    "explicit_chat_ktlint": "PASS",
+    "app_kotlin_compile": [
+      "fossDebug PASS",
+      "devDebug PASS"
+    ],
+    "dependency_shell_ktlint": "FAILED formatting in supplied shell checkpoint; assigned to shell owner; not part of chat source handback",
+    "independent_source_review": "clean",
+    "gold_labels_thresholds_changed": false
+  },
+  "open_runtime_gates": [
+    "new combined APK identity and data-preserving update",
+    "New chat twice, sidebar collapse, no center debug line",
+    "two independently selected workspaces with notes/chat/graph and draft preservation",
+    "large text and actual IME geometry",
+    "four frozen questions with facts and rendered citation/source checks",
+    "general question with Knowledge off",
+    "Stop then successful reask; lock/unlock then successful reask",
+    "three consecutive rehearsals on one APK/model",
+    "formal Fold and inference/retrieval acceptance remain open"
+  ]
+}
