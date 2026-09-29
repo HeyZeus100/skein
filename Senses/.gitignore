@@ -1,0 +1,20 @@
+# Senses lab: never commit binaries, models, venvs, or captured media
+.venv/
+build/
+models/
+*.gguf
+*.bin
+*.npz
+__pycache__/
+.ipynb_checkpoints/
+results/raw/
+demo/workshop/last_seen.jpg
+demo/workshop/check_camera.jpg
+demo/workshop/notes.txt
+demo/workshop/*.jpg
+demo/original/offline-agents-main/
+
+# Kavya's offline-agents has NO LICENSE and this repo is public:
+# keep her code local-only. Re-fetch + verify with demo/PROVENANCE.md.
+demo/original/
+demo/workshop/

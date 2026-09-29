@@ -1,0 +1,174 @@
+{
+  "label": "LOCAL SUBSTITUTE qwen3.8:27b (Ollama blob, Q4_K_M) on llama.cpp b10964 Metal",
+  "server_model": "/Users/andrewherrera/.ollama/models/blobs/sha256-f5f1dd8920d417aac2718b0bda3403da274301efdd6760b4f0f4b864ff2ad57d",
+  "host": "macOS-26.6.2-arm64-arm-64bit",
+  "started": "2026-09-29T16:51:22-0700",
+  "runs": [
+    {
+      "test": "nb1 text",
+      "seconds": 1.34,
+      "first_token_s": 0.858,
+      "prompt_tokens": 48,
+      "tok_per_s": 22.8,
+      "prompt_ms": 850.842,
+      "answer": "I am an AI assistant running entirely on a laptop."
+    },
+    {
+      "test": "nb2 cold first image",
+      "seconds": 3.472,
+      "first_token_s": null,
+      "prompt_tokens": 165,
+      "tok_per_s": 23.8,
+      "prompt_ms": 1311.453,
+      "answer": "The image displays a minimalist logo featuring a red square on the left, a blue circle in the center, and the text \"PIER 48\" in black capital letters to the right of the circle, all set against a light gray background."
+    },
+    {
+      "test": "nb1 shapes",
+      "seconds": 3.093,
+      "first_token_s": null,
+      "prompt_tokens": 145,
+      "tok_per_s": 23.8,
+      "prompt_ms": 1086.299,
+      "answer": "In the image, there are two shapes:\n\n- A **red square** on the left.\n- A **blue circle** on the right.\n\nBoth shapes are solid-colored and placed side by side on a white background."
+    },
+    {
+      "test": "nb2 sweep 128px",
+      "seconds": 0.979,
+      "first_token_s": null,
+      "prompt_tokens": 35,
+      "tok_per_s": 24.1,
+      "prompt_ms": 728.252,
+      "answer": "red square and blue circle"
+    },
+    {
+      "test": "nb2 sweep 224px",
+      "seconds": 1.024,
+      "first_token_s": null,
+      "prompt_tokens": 55,
+      "tok_per_s": 22.5,
+      "prompt_ms": 665.98,
+      "answer": "Pier 48 logo."
+    },
+    {
+      "test": "nb2 sweep 384px",
+      "seconds": 1.397,
+      "first_token_s": null,
+      "prompt_tokens": 111,
+      "tok_per_s": 23.7,
+      "prompt_ms": 948.632,
+      "answer": "Pier 48 logo."
+    },
+    {
+      "test": "nb2 sweep 512px",
+      "seconds": 1.627,
+      "first_token_s": null,
+      "prompt_tokens": 171,
+      "tok_per_s": 24.0,
+      "prompt_ms": 1225.98,
+      "answer": "Red square, blue circle, text."
+    },
+    {
+      "test": "nb2 sweep 768px",
+      "seconds": 2.462,
+      "first_token_s": null,
+      "prompt_tokens": 363,
+      "tok_per_s": 24.3,
+      "prompt_ms": 2147.857,
+      "answer": "Pier 48 logo."
+    },
+    {
+      "test": "nb2 sweep 1024px",
+      "seconds": 3.523,
+      "first_token_s": null,
+      "prompt_tokens": 603,
+      "tok_per_s": 24.4,
+      "prompt_ms": 3164.274,
+      "answer": "Pier 48 logo."
+    },
+    {
+      "test": "read text 512px",
+      "seconds": 1.44,
+      "first_token_s": null,
+      "prompt_tokens": 171,
+      "tok_per_s": 24.3,
+      "prompt_ms": 1199.565,
+      "answer": "PIER 48"
+    },
+    {
+      "test": "read text 224px",
+      "seconds": 0.892,
+      "first_token_s": null,
+      "prompt_tokens": 55,
+      "tok_per_s": 24.2,
+      "prompt_ms": 661.327,
+      "answer": "PIER 48"
+    },
+    {
+      "test": "nb4 honesty",
+      "seconds": 2.088,
+      "first_token_s": null,
+      "prompt_tokens": 204,
+      "tok_per_s": 24.6,
+      "prompt_ms": 1508.354,
+      "answer": "The text visible in the image is **PIER 48**."
+    },
+    {
+      "test": "nb4 before/after",
+      "seconds": 5.012,
+      "first_token_s": null,
+      "prompt_tokens": 427,
+      "tok_per_s": 24.5,
+      "prompt_ms": 2536.944,
+      "answer": "To find out what changed, let's compare the two images:\n- In the first image, there is a red square and the word \"RED\" written below it.\n- In the second image, the square is blue and the word below it is \"BLUE\".\n\n---\nThe changes"
+    },
+    {
+      "test": "nb4 caption",
+      "seconds": 2.605,
+      "first_token_s": null,
+      "prompt_tokens": 174,
+      "tok_per_s": 24.4,
+      "prompt_ms": 1268.33,
+      "answer": "A red square on the left, a blue circle in the center, and the text \"PIER 48\" to the right of the circle."
+    },
+    {
+      "test": "nb6 colour red",
+      "expected": "red",
+      "pixels": "red",
+      "pixels_s": 0.0032,
+      "llm": "red",
+      "seconds": 1.89,
+      "prompt_tokens": 246,
+      "answer": "{\"color\": \"red\"}"
+    },
+    {
+      "test": "nb6 colour green",
+      "expected": "green",
+      "pixels": "green",
+      "pixels_s": 0.0007,
+      "llm": "green",
+      "seconds": 1.911,
+      "prompt_tokens": 246,
+      "answer": "{\"color\": \"green\"}"
+    },
+    {
+      "test": "nb6 colour blue",
+      "expected": "blue",
+      "pixels": "blue",
+      "pixels_s": 0.0008,
+      "llm": "blue",
+      "seconds": 1.981,
+      "prompt_tokens": 246,
+      "answer": "{\"color\": \"blue\"}"
+    },
+    {
+      "test": "nb6 sequence",
+      "seconds": 1.55,
+      "first_token_s": null,
+      "prompt_tokens": 31,
+      "tok_per_s": 24.0,
+      "prompt_ms": 344.734,
+      "answer": "{\n  \"sequence\": [\n    \"red\",\n    \"blue\",\n    \"red\"\n  ]\n}",
+      "valid": true
+    }
+  ]
+}
