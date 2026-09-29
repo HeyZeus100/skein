@@ -31,7 +31,9 @@ class FoldableEvidenceReviewTest(unittest.TestCase):
         self.config = geometry.with_name("avd-config.ini")
         self.write_config("pixel_9_pro_fold")
         geometry.write_text("\n".join(json.dumps({"step": step, "width_dp": width, "height_dp": height,
-                                                "density_dpi": 420, "activity_identity": 1})
+                                                "density_dpi": 420, "activity_identity": 1,
+                                                "geometry_observer": "activity", "orientation": 2 if step == "outer_landscape" else 1,
+                                                "window_bounds_px": [0, 0, round(width * 420 / 160), round(height * 420 / 160)]})
                                      for step, width, height in (
                                          ("closed_before", 411, 797), ("flat", 841, 701),
                                          ("closed_after", 411, 797), ("outer_portrait", 411, 797),
@@ -126,6 +128,22 @@ class FoldableEvidenceReviewTest(unittest.TestCase):
         self.assertFalse(reviewer.review(self.repo, self.sha)["passed"])
         self.events_path.unlink()
         self.assertFalse(reviewer.review(self.repo, self.sha)["passed"])
+
+    def test_non_activity_missing_or_contradictory_window_geometry_cannot_pass(self):
+        self.write_cases(self.cases)
+        path = self.repo / "build/foldable-evidence/window-geometry.jsonl"
+        original = [json.loads(line) for line in path.read_text().splitlines()]
+        for step, key, value in (("closed_before", "geometry_observer", "targetContext"),
+                                 ("closed_before", "window_bounds_px", None),
+                                 ("closed_before", "window_bounds_px", [0, 0, 2208, 2208]),
+                                 ("flat", "window_bounds_px", [0, 0, 1000, 2000]),
+                                 ("outer_landscape", "window_bounds_px", [0, 0, 2000, 2000]),
+                                 ("outer_landscape", "orientation", 1)):
+            with self.subTest(step=step, key=key):
+                rows = [dict(row) for row in original]
+                next(row for row in rows if row["step"] == step)[key] = value
+                path.write_text("\n".join(json.dumps(row) for row in rows))
+                self.assertFalse(reviewer.review(self.repo, self.sha)["passed"])
 
     def test_ack_before_console_or_non_alternating_posture_cannot_pass(self):
         self.write_cases(self.cases)

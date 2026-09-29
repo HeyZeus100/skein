@@ -1,7 +1,9 @@
 package app.skein.foldable
 
+import android.app.Activity
 import android.app.UiAutomation
 import android.content.res.Configuration
+import android.graphics.Rect
 import android.os.ParcelFileDescriptor
 import android.os.SystemClock
 import android.util.AtomicFile
@@ -14,11 +16,14 @@ import java.util.concurrent.TimeUnit
 import java.util.concurrent.atomic.AtomicInteger
 
 /** Guarded host console posture requests and UiAutomation rotation. No target networking. */
-internal class FoldableDeviceControl {
+internal class FoldableDeviceControl(
+    private val observeWindow: () -> ActivityWindowGeometry,
+) {
     private val instrumentation get() = InstrumentationRegistry.getInstrumentation()
     private val automation get() = instrumentation.uiAutomation
     private var changedDevice = false
     private var consoleHealthy = true
+    private var lastWindow: ActivityWindowGeometry? = null
     private val stateDescription =
         "DeviceState\\{identifier=(\\d+), name='([^']+)', app_accessible=(?:true|false), " +
             "cancel_when_requester_not_on_top=(?:true|false)\\}"
@@ -34,9 +39,9 @@ internal class FoldableDeviceControl {
         }
     }
 
-    fun closed() = requestState("CLOSED") { it.screenWidthDp < 600 }
+    fun closed() = requestState("CLOSED") { it.configuration.screenWidthDp < 600 && it.widthDp < 600 }
 
-    fun flat() = requestState("OPENED") { it.screenWidthDp >= 600 }
+    fun flat() = requestState("OPENED") { it.configuration.screenWidthDp >= 600 && it.widthDp >= 600 }
 
     fun portrait() = rotate(UiAutomation.ROTATION_FREEZE_0, Configuration.ORIENTATION_PORTRAIT)
 
@@ -59,7 +64,7 @@ internal class FoldableDeviceControl {
 
     private fun requestState(
         name: String,
-        geometry: (Configuration) -> Boolean,
+        geometry: (ActivityWindowGeometry) -> Boolean,
     ) {
         requireEmulator()
         val catalog = shell("cmd device_state print-states")
@@ -89,7 +94,7 @@ internal class FoldableDeviceControl {
         beginChange()
         console(if (name == "CLOSED") "fold" else "unfold")
         await("committed $name state $identifier") { shell("cmd device_state print-state").trim() == "$identifier" }
-        await("$name window geometry") { geometry(instrumentation.targetContext.resources.configuration) }
+        await("$name Activity window geometry") { geometry(currentWindow()) }
     }
 
     private fun console(action: String) {
@@ -148,9 +153,23 @@ internal class FoldableDeviceControl {
         beginChange()
         check(automation.setRotation(rotation)) { "Rotation request failed: $rotation" }
         await("orientation $orientation") {
-            instrumentation.targetContext.resources.configuration.orientation == orientation
+            val window = currentWindow()
+            window.configuration.orientation == orientation &&
+                if (orientation == Configuration.ORIENTATION_PORTRAIT) {
+                    window.bounds.height() > window.bounds.width()
+                } else {
+                    window.bounds.width() > window.bounds.height()
+                }
         }
     }
+
+    private fun currentWindow(): ActivityWindowGeometry =
+        observeWindow().also {
+            check(it.configuration.densityDpi > 0 && it.bounds.width() > 0 && it.bounds.height() > 0) {
+                "Invalid Activity window geometry: $it"
+            }
+            lastWindow = it
+        }
 
     private fun beginChange() {
         requireEmulator()
@@ -175,7 +194,8 @@ internal class FoldableDeviceControl {
             SystemClock.sleep(50)
         } while (SystemClock.elapsedRealtime() < deadline)
         error(
-            "Timed out waiting for $description; configuration=${instrumentation.targetContext.resources.configuration}",
+            "Timed out waiting for $description; activityWindow=$lastWindow; " +
+                "nonUiTargetConfiguration=${instrumentation.targetContext.resources.configuration}",
         )
     }
 
@@ -197,5 +217,24 @@ internal class FoldableDeviceControl {
 
     private companion object {
         val requestSequence = AtomicInteger()
+    }
+}
+
+/** Read only on the Activity thread; non-UI targetContext resources are diagnostic, never the gate. */
+internal data class ActivityWindowGeometry(
+    val configuration: Configuration,
+    val bounds: Rect,
+    val activityIdentity: Int,
+) {
+    val widthDp: Float get() = bounds.width() * 160f / configuration.densityDpi
+    val heightDp: Float get() = bounds.height() * 160f / configuration.densityDpi
+
+    companion object {
+        fun capture(activity: Activity): ActivityWindowGeometry =
+            ActivityWindowGeometry(
+                Configuration(activity.resources.configuration),
+                Rect(activity.windowManager.currentWindowMetrics.bounds),
+                System.identityHashCode(activity),
+            )
     }
 }

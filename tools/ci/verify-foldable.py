@@ -85,6 +85,14 @@ def review(repository, expected_sha, profile="pixel_9_pro_fold"):
                            for row in rows for key in ("width_dp", "height_dp", "density_dpi", "activity_identity"))
         if not valid_values:
             result["errors"].append("invalid runtime geometry values")
+        valid_windows = all(
+            row.get("geometry_observer") == "activity" and type(row.get("orientation")) is int and
+            row["orientation"] in (1, 2) and isinstance(row.get("window_bounds_px"), list) and
+            len(row["window_bounds_px"]) == 4 and all(type(value) is int for value in row["window_bounds_px"]) and
+            row["window_bounds_px"][2] > row["window_bounds_px"][0] and
+            row["window_bounds_px"][3] > row["window_bounds_px"][1] for row in rows)
+        if not valid_windows:
+            result["errors"].append("missing or invalid Activity window metrics/observer")
         if set(steps) == expected_steps and valid_values:
             if (steps["closed_before"]["width_dp"] >= 600 or steps["closed_after"]["width_dp"] >= 600 or
                     steps["flat"]["width_dp"] < 600 or
@@ -94,6 +102,17 @@ def review(repository, expected_sha, profile="pixel_9_pro_fold"):
             for journey in (("closed_before", "flat", "closed_after"), ("outer_portrait", "outer_landscape")):
                 if len({steps[step]["activity_identity"] for step in journey}) != 1:
                     result["errors"].append("runtime geometry records Activity replacement within a journey")
+            if valid_windows:
+                widths = {name: (row["window_bounds_px"][2] - row["window_bounds_px"][0]) * 160 / row["density_dpi"]
+                          for name, row in steps.items()}
+                heights = {name: (row["window_bounds_px"][3] - row["window_bounds_px"][1]) * 160 / row["density_dpi"]
+                           for name, row in steps.items()}
+                if (widths["closed_before"] >= 600 or widths["closed_after"] >= 600 or widths["flat"] < 600 or
+                        widths["flat"] <= widths["closed_before"] or heights["outer_landscape"] >= 600):
+                    result["errors"].append("Activity window metrics do not meet cover/inner/short-window thresholds")
+                if (steps["outer_portrait"]["orientation"] != 1 or widths["outer_portrait"] >= heights["outer_portrait"] or
+                        steps["outer_landscape"]["orientation"] != 2 or widths["outer_landscape"] <= heights["outer_landscape"]):
+                    result["errors"].append("Activity window metrics disagree with requested rotation")
         result["geometry"] = rows
         result["artifacts"][str(geometry_path.relative_to(repository))] = sha256(geometry_path)
     except (OSError, ValueError, KeyError, TypeError):
