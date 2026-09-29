@@ -7,9 +7,14 @@ package app.skein.feature.chat.entries
 import androidx.activity.ComponentActivity
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.ui.test.DeviceConfigurationOverride
+import androidx.compose.ui.test.FontScale
 import androidx.compose.ui.test.assert
+import androidx.compose.ui.test.assertHeightIsAtLeast
 import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.assertIsFocused
+import androidx.compose.ui.test.assertIsOff
+import androidx.compose.ui.test.assertIsOn
 import androidx.compose.ui.test.hasAnyAncestor
 import androidx.compose.ui.test.hasTestTag
 import androidx.compose.ui.test.hasText
@@ -19,6 +24,7 @@ import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
 import androidx.compose.ui.test.performTextInput
+import androidx.compose.ui.test.performTextReplacement
 import androidx.compose.ui.unit.DpSize
 import androidx.compose.ui.unit.dp
 import app.skein.core.designsystem.theme.SkeinTheme
@@ -31,6 +37,7 @@ import app.skein.core.navigation.ChatKey
 import app.skein.core.navigation.Destination
 import app.skein.core.navigation.SkeinId
 import app.skein.feature.chat.COMPOSER_TEST_TAG
+import app.skein.feature.chat.ChatKnowledge
 import app.skein.feature.chat.SEND_BUTTON_TEST_TAG
 import app.skein.feature.editor.entries.FileRouteTestTags
 import app.skein.feature.editor.notetab.NoteTabTestTags
@@ -46,6 +53,7 @@ import kotlinx.coroutines.runBlocking
 import kotlinx.serialization.json.JsonObject
 import kotlinx.serialization.json.JsonPrimitive
 import org.junit.Assert.assertEquals
+import org.junit.Assert.assertFalse
 import org.junit.Assert.assertNotNull
 import org.junit.Assert.assertTrue
 import org.junit.Rule
@@ -86,10 +94,17 @@ class ChatEntriesTest {
     private val size = mutableStateOf(COMPACT)
     private lateinit var shell: SkeinShellState
 
-    private fun setHost() {
+    private fun setHost(
+        sessionChat: Boolean = false,
+        fontScale: Float? = null,
+    ) {
         runBlocking { engine.load(TEXT_MODEL).getOrThrow() }
         val pipeline = pipelineOver(vault, engine)
-        composeRule.setContent { SkeinTheme { EntriesHost(vault, pipeline, size.value, { shell = it }) } }
+        composeRule.setContent {
+            DeviceConfigurationOverride(DeviceConfigurationOverride.FontScale(fontScale ?: 1f)) {
+                SkeinTheme { EntriesHost(vault, pipeline, size.value, { shell = it }, sessionChat = sessionChat) }
+            }
+        }
         composeRule.waitForIdle()
     }
 
@@ -255,6 +270,84 @@ class ChatEntriesTest {
         assertEquals("What blocks the release?", created.title)
         composeRule.waitUntil(WAIT_MILLIS) { runBlocking { vault.listMessages(created.id) }.size == 2 }
         assertEquals("What blocks the release?", runBlocking { vault.listMessages(created.id) }.first().contentMd)
+    }
+
+    @Test
+    fun `Knowledge choice is available before first send and survives a live resize with the draft`() {
+        setHost(sessionChat = true)
+        composeRule.onNodeWithTag(NEW_CHAT_KNOWLEDGE_TEST_TAG).assertIsOn().assertHeightIsAtLeast(48.dp)
+        composeRule.onNodeWithTag(NEW_CHAT_KNOWLEDGE_TEST_TAG).performClick()
+        composeRule.onNodeWithTag(COMPOSER_TEST_TAG).performTextInput("What blocks the release?")
+        size.value = EXPANDED
+        composeRule.waitForIdle()
+        composeRule.onNodeWithTag(NEW_CHAT_KNOWLEDGE_TEST_TAG).assertIsOff()
+        composeRule.onNodeWithTag(COMPOSER_TEST_TAG).assert(hasText("What blocks the release?"))
+        composeRule.onNodeWithTag(SEND_BUTTON_TEST_TAG).performClick()
+
+        composeRule.waitUntil(WAIT_MILLIS) { shell.nav.stack(Destination.CHAT).last() is ChatKey }
+        val created = shell.nav.stack(Destination.CHAT).last() as ChatKey
+        assertFalse(runBlocking { ChatKnowledge.enabled(vault.getDocument(created.chatId.value)!!) })
+        composeRule.waitUntil(WAIT_MILLIS) { runBlocking { vault.listMessages(created.chatId.value) }.size == 2 }
+        assertEquals(
+            "What blocks the release?",
+            runBlocking { vault.listMessages(created.chatId.value) }.first().contentMd,
+        )
+    }
+
+    @Test
+    fun `large-text new-chat controls stay usable when only one composer line fits`() {
+        size.value = DpSize(994.dp, 443.dp)
+        setHost(sessionChat = true, fontScale = 2f)
+        composeRule.onNodeWithTag(COMPOSER_TEST_TAG).performTextInput("Draft line 1")
+        composeRule.waitForIdle()
+        val oneLineHeight =
+            composeRule
+                .onNodeWithTag(COMPOSER_TEST_TAG)
+                .fetchSemanticsNode()
+                .boundsInRoot.height
+        val draft = (1..24).joinToString("\n") { "Draft line $it" }
+        composeRule.onNodeWithTag(COMPOSER_TEST_TAG).performTextReplacement(draft)
+        composeRule.waitForIdle()
+        val pane = composeRule.onNodeWithTag(ChatEntryTestTags.LANDING).fetchSemanticsNode().boundsInRoot
+        val toggle = composeRule.onNodeWithTag(NEW_CHAT_KNOWLEDGE_TEST_TAG).fetchSemanticsNode().boundsInRoot
+        val composer = composeRule.onNodeWithTag(COMPOSER_TEST_TAG).fetchSemanticsNode().boundsInRoot
+        val send = composeRule.onNodeWithTag(SEND_BUTTON_TEST_TAG).fetchSemanticsNode().boundsInRoot
+        val heading = composeRule.onNodeWithText("New chat").fetchSemanticsNode().boundsInRoot
+        // Accessible controls and the one-line minimum take precedence when 40% cannot fit.
+        for (bounds in listOf(toggle, composer, send)) {
+            assertTrue(
+                "control fits the visible pane: $bounds in $pane",
+                bounds.top >= pane.top && bounds.bottom <= pane.bottom,
+            )
+            assertTrue("control fits the pane width", bounds.left >= pane.left && bounds.right <= pane.right)
+        }
+        assertTrue("toggle stays below the heading", toggle.top >= heading.bottom)
+        assertTrue("toggle stays above the composer", toggle.bottom <= composer.top + 1f)
+        assertTrue(
+            "long draft scrolls within the one-line budget: $composer, one line=$oneLineHeight",
+            composer.height <= oneLineHeight + 1f,
+        )
+        composeRule.onNodeWithTag(SEND_BUTTON_TEST_TAG).assertIsDisplayed()
+        composeRule.onNodeWithTag(COMPOSER_TEST_TAG).assert(hasText(draft)).assertIsFocused()
+        composeRule.onNodeWithTag(NEW_CHAT_KNOWLEDGE_TEST_TAG).assertIsDisplayed().performClick()
+        composeRule.onNodeWithTag(NEW_CHAT_KNOWLEDGE_TEST_TAG).assertIsOff()
+    }
+
+    @Test
+    fun `new-chat controls reserve reading space when minimum controls fit`() {
+        size.value = EXPANDED
+        setHost(sessionChat = true)
+        composeRule.onNodeWithTag(COMPOSER_TEST_TAG).performTextInput((1..24).joinToString("\n") { "Draft line $it" })
+        composeRule.waitForIdle()
+        val pane = composeRule.onNodeWithTag(ChatEntryTestTags.LANDING).fetchSemanticsNode().boundsInRoot
+        val toggle = composeRule.onNodeWithTag(NEW_CHAT_KNOWLEDGE_TEST_TAG).fetchSemanticsNode().boundsInRoot
+        val composer = composeRule.onNodeWithTag(COMPOSER_TEST_TAG).fetchSemanticsNode().boundsInRoot
+        assertTrue(
+            "reading area keeps forty percent of the pane: pane=$pane toggle=$toggle composer=$composer",
+            toggle.top >= pane.top + pane.height * 0.4f,
+        )
+        assertTrue("toggle stays above the composer", toggle.bottom <= composer.top + 1f)
+        composeRule.onNodeWithTag(SEND_BUTTON_TEST_TAG).assertIsDisplayed()
     }
 
     @Test

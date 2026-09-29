@@ -6,7 +6,9 @@ package app.skein.feature.chat.entries
 import androidx.compose.material3.adaptive.WindowAdaptiveInfo
 import androidx.compose.material3.adaptive.currentWindowAdaptiveInfoV2
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.test.DeviceConfigurationOverride
 import androidx.compose.ui.test.WindowSize
 import androidx.compose.ui.unit.DpSize
@@ -21,8 +23,10 @@ import app.skein.core.navigation.Destination
 import app.skein.core.navigation.destination
 import app.skein.core.vault.key.VaultKeyProvider
 import app.skein.core.vault.session.UnlockManager
+import app.skein.feature.chat.ChatTurnController
 import app.skein.feature.chat.SendPipeline
 import app.skein.feature.chat.SimplePromptAssembler
+import app.skein.feature.chat.drafts.SessionDraftStore
 import app.skein.feature.editor.entries.KnowledgeDetailPlaceholder
 import app.skein.feature.editor.entries.KnowledgeEntry
 import app.skein.feature.editor.entries.KnowledgeEntryDeps
@@ -94,12 +98,13 @@ internal fun EntriesHost(
     clock: () -> Long = System::currentTimeMillis,
     zone: ZoneId = ZoneOffset.UTC,
     windowAdaptiveInfo: WindowAdaptiveInfo? = null,
+    sessionChat: Boolean = false,
 ) {
     if (size == null) {
-        Host(vault, pipeline, onShell, clock, zone, windowAdaptiveInfo)
+        Host(vault, pipeline, onShell, clock, zone, windowAdaptiveInfo, sessionChat)
     } else {
         DeviceConfigurationOverride(DeviceConfigurationOverride.WindowSize(size)) {
-            Host(vault, pipeline, onShell, clock, zone, windowAdaptiveInfo)
+            Host(vault, pipeline, onShell, clock, zone, windowAdaptiveInfo, sessionChat)
         }
     }
 }
@@ -112,15 +117,53 @@ private fun Host(
     clock: () -> Long,
     zone: ZoneId,
     windowAdaptiveInfo: WindowAdaptiveInfo?,
+    sessionChat: Boolean,
 ) {
     val manager = remember { idleUnlockManager() }
     val shell = rememberSkeinShellState(manager)
     onShell(shell)
     val knowledge = remember(vault) { KnowledgeEntryDeps(vault, InMemoryIndexStore(), clock = clock, zone = zone) }
     val handoff = remember { ChatHandoff() }
+    val scope = rememberCoroutineScope()
+    val drafts =
+        remember(vault, sessionChat) {
+            if (sessionChat) SessionDraftStore(vault, 7L, { 7L }, { null }, scope) else null
+        }
+    val turns =
+        remember(vault, pipeline, drafts) {
+            if (drafts != null && pipeline != null) {
+                ChatTurnController(
+                    vault,
+                    pipeline,
+                    7L,
+                    { 7L },
+                    { null },
+                    scope,
+                    commitDraft = { key, version, append -> drafts.commitSend(key, version, append) },
+                )
+            } else {
+                null
+            }
+        }
+    DisposableEffect(turns, drafts) {
+        onDispose {
+            turns?.close()
+            drafts?.close()
+        }
+    }
     val history = rememberChatHistory(vault, shell, zone = zone, now = clock)
     val chat =
-        ChatEntryDeps(vault, knowledge, pipeline, hasModel = pipeline != null, handoff = handoff, history = history)
+        ChatEntryDeps(
+            vault,
+            knowledge,
+            pipeline,
+            hasModel = pipeline != null,
+            handoff = handoff,
+            history = history,
+            turns = turns,
+            drafts = drafts,
+            defaultSpaceId = "10000000-0000-4000-8000-000000000001",
+        )
     SkeinShellHost(
         shell = shell,
         resolveKinds = navKindsOf(vault),

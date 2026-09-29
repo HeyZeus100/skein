@@ -27,6 +27,8 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
 import kotlinx.coroutines.withTimeoutOrNull
+import kotlinx.serialization.json.JsonObject
+import kotlinx.serialization.json.JsonPrimitive
 import kotlin.math.min
 
 /** One chat's session state; this holder and every previously returned flow are cleared at lock. */
@@ -180,16 +182,26 @@ public class ChatTurnController(
             }
         }
 
-    /** First send creates the chat, USER and consumed draft boundary in the same transaction. */
+    /** First send creates the chat and its Knowledge choice before admitting USER, in the draft transaction. */
     public fun enqueueNew(
         key: ChatDraftKey.New,
         version: Long,
         text: String,
         title: String,
+        knowledgeEnabled: Boolean = true,
     ): Deferred<DocId> =
         ownedScope.async {
             admitToQueue(null, key, version) {
-                val chat = repository.createDocument(NewDocument(DocumentKind.CHAT, title, "", personaId = key.spaceId))
+                val chat =
+                    repository.createDocument(
+                        NewDocument(
+                            DocumentKind.CHAT,
+                            title,
+                            "",
+                            personaId = key.spaceId,
+                            frontmatter = JsonObject(mapOf(ChatKnowledge.KEY to JsonPrimitive(knowledgeEnabled))),
+                        ),
+                    )
                 pipeline.admit(chat.id, text)
             }
         }

@@ -1,5 +1,6 @@
 package app.skein.feature.chat
 
+import app.skein.core.model.AnswerScope
 import app.skein.core.model.ChatDraft
 import app.skein.core.model.ChatDraftKey
 import app.skein.core.model.DocumentKind
@@ -256,6 +257,7 @@ class ChatTurnControllerTest {
             val id = send.await()
             runCurrent()
             assertEquals("space", f.repo.getDocument(id)!!.personaId)
+            assertTrue(ChatKnowledge.enabled(f.repo.getDocument(id)!!))
             assertEquals(
                 "durable first",
                 f.repo
@@ -267,6 +269,56 @@ class ChatTurnControllerTest {
             assertEquals("", (state.value as DraftLoadState.Ready).snapshot.draft.text)
             f.engine.finish(0)
             runCurrent()
+            f.close()
+        }
+
+    @Test fun `first send with Knowledge off persists general scope before admission and never retrieves`() =
+        runTest {
+            val f = Fixture(this)
+            val key = ChatDraftKey.New("space", "general-draft")
+            val state = f.drafts.state(key)
+            runCurrent()
+            val captured = f.drafts.update(key, ChatDraft("Explain a rainbow"))!!
+            val id =
+                f.controller
+                    .enqueueNew(
+                        key,
+                        captured.version,
+                        captured.draft.text,
+                        "A general question",
+                        knowledgeEnabled = false,
+                    ).await()
+            runCurrent()
+
+            assertFalse(ChatKnowledge.enabled(f.repo.getDocument(id)!!))
+            assertEquals("space", f.repo.getDocument(id)!!.personaId)
+            assertEquals(listOf(Role.USER), f.repo.listMessages(id).map { it.role })
+            assertEquals(0, f.retrieval.callCount)
+            assertEquals(1, f.engine.prompts.size)
+            val prompt = f.engine.prompts.single()
+            assertTrue(
+                prompt.messages
+                    .first()
+                    .content
+                    .contains("Knowledge is off"),
+            )
+            assertNull(f.repo.readDraft(key))
+            assertEquals("", (state.value as DraftLoadState.Ready).snapshot.draft.text)
+
+            f.visible("A rainbow comes from light interacting with water droplets.")
+            f.engine.finish(0)
+            runCurrent()
+            assertEquals(
+                AnswerScope.GENERAL,
+                f.pipeline.lastOutcome.value!!
+                    .answerScope,
+            )
+            assertTrue(
+                f.pipeline.lastOutcome.value!!
+                    .assembled.citations
+                    .isEmpty(),
+            )
+            assertEquals(listOf(Role.USER, Role.ASSISTANT), f.repo.listMessages(id).map { it.role })
             f.close()
         }
 
@@ -426,11 +478,12 @@ class ChatTurnControllerTest {
         var idleCheck: suspend () -> Unit = { idle.await() }
         var persona = Persona("space", "Space", "Original instructions", "original-model", 0)
         val engine = ControlledEngine()
+        val retrieval = FakeRetrievalService(listOf(SOURCE))
         val preparedModels = mutableListOf<String?>()
         val pipeline =
             SendPipeline(
                 vaultRepository = repo,
-                retrievalService = FakeRetrievalService(listOf(SOURCE)),
+                retrievalService = retrieval,
                 promptAssembler = PromptAssemblerImpl(),
                 engine = engine,
                 personaProvider = { persona },
