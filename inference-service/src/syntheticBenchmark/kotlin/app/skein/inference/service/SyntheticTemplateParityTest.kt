@@ -110,12 +110,42 @@ class SyntheticTemplateParityTest {
                         "template_sha256",
                         hex(MessageDigest.getInstance("SHA-256").digest(template.toByteArray(Charsets.UTF_8))),
                     ).put("template_sha256_provenance", "native modelMeta of the verified public model")
+                    .put("native_eog", nativeEog(model))
                     .put("cases", results)
             File(output, "native-parity.json").writeText(report.toString(2) + "\n")
         } finally {
             LlamaNative.freeModel(model)
         }
         assertTrue("native parity mismatch; inspect synthetic report", allPassed)
+    }
+
+    /** Classification of real vocabulary IDs; this does not observe a generated EOS. */
+    private fun nativeEog(model: Long): JSONObject {
+        val controls = JSONArray()
+        for (spelling in listOf("<|im_end|>", "<|endoftext|>", "</s>")) {
+            val ids = LlamaNative.tokenize(model, spelling, addBos = false, parseSpecial = true)
+            val classifications = JSONArray()
+            ids.forEach { id ->
+                classifications.put(JSONObject().put("token_id", id).put("is_eog", LlamaNative.isEog(model, id)))
+            }
+            controls.put(
+                JSONObject()
+                    .put("spelling", spelling)
+                    .put("token_ids", JSONArray(ids.toList()))
+                    .put("singleton", ids.size == 1)
+                    .put("classifications", classifications),
+            )
+        }
+        val declaredEos = LlamaNative.modelMeta(model, "tokenizer.ggml.eos_token_id")?.trim()?.toIntOrNull()
+        val eos =
+            declaredEos?.let { id ->
+                JSONObject().put("token_id", id).put("is_eog", LlamaNative.isEog(model, id))
+            }
+        return JSONObject()
+            .put("scope", "classification-only")
+            .put("declared_eos", eos ?: JSONObject.NULL)
+            .put("controls", controls)
+            .put("generated_stop_behavior", "unmeasured")
     }
 
     private fun hex(bytes: ByteArray): String = bytes.joinToString("") { "%02x".format(it) }
