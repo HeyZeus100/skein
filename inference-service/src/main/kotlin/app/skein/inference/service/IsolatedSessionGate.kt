@@ -99,6 +99,22 @@ class IsolatedSessionGate(
         }
 
     /**
+     * Publishes short-lived engine state only while this epoch is authorized.
+     * Lock revocation and this action have one linearization point. Callers
+     * may take the engine monitor inside [action], never in the reverse order;
+     * native work and blocking cleanup must remain outside this action.
+     */
+    @Synchronized
+    fun withAuthorization(
+        requestEpoch: Long,
+        action: () -> Unit,
+    ): Boolean {
+        if (guard(requestEpoch) is GateResult.Refuse) return false
+        action()
+        return true
+    }
+
+    /**
      * `:app` authorized [epoch]; sent on unlock and again on every fresh bind.
      *
      * Reached from a TWO-WAY binder transaction (skein-gg11.8), so it must stay

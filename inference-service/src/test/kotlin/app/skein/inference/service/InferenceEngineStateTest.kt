@@ -1834,6 +1834,30 @@ class InferenceEngineStateTest {
         assertThat(service.load(loadRequest(epoch = epoch + 1))).isEqualTo(ErrorCode.OK)
     }
 
+    @Test
+    fun `unexpected context failure releases model pins and operation admission`() {
+        val broken =
+            object : FakeLlamaBackend() {
+                override fun newContext(
+                    model: Long,
+                    nCtx: Int,
+                    nThreads: Int,
+                    nBatch: Int,
+                    embeddings: Boolean,
+                ): Long = throw IllegalStateException("context failed")
+            }
+        val service = InferenceEngineState(broken, InlineTaskRunner(), callbacks)
+        service.onSessionUnlocked(epoch)
+        val request = loadRequest()
+
+        assertThat(runCatching { service.load(request) }.exceptionOrNull()).isInstanceOf(IllegalStateException::class.java)
+        assertThat(request.binding.files.all { isClosed(it.fd) }).isTrue()
+        assertThat(broken.liveModels).isEmpty()
+        assertThat(service.status().state).isEqualTo("unloaded")
+        assertThat(service.inspect(inspectRequest()).errorCode).isEqualTo(ErrorCode.OK)
+        assertThat(broken.liveModels).isEmpty()
+    }
+
     // ------------------------------------------------------------ fixtures
 
     private fun loadRequest(

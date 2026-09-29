@@ -276,21 +276,25 @@ internal class InferenceEngineState(
                             embeddings = req.embeddingMode,
                         )
                     val contextLength = backend.contextLength(context)
-                    synchronized(lock) {
-                        checkModelOperation(operation)
-                        loaded =
-                            LoadedModel(
-                                pinned = prepared.pinned,
-                                model = model,
-                                context = context,
-                                contextLength = contextLength,
-                                modelSha256 = prepared.binding.main.expectedSha256,
-                                embeddingMode = req.embeddingMode,
-                                gpuLayers = req.gpuLayers,
-                            )
-                        transferred = true
-                        state = EngineState.READY
-                    }
+                    val published =
+                        gate.withAuthorization(operation.epoch) {
+                            synchronized(lock) {
+                                checkModelOperation(operation)
+                                loaded =
+                                    LoadedModel(
+                                        pinned = prepared.pinned,
+                                        model = model,
+                                        context = context,
+                                        contextLength = contextLength,
+                                        modelSha256 = prepared.binding.main.expectedSha256,
+                                        embeddingMode = req.embeddingMode,
+                                        gpuLayers = req.gpuLayers,
+                                    )
+                                transferred = true
+                                state = EngineState.READY
+                            }
+                        }
+                    if (!published) throw LlamaException(LlamaErrorCode.CANCELLED, "model operation cancelled")
                 } finally {
                     if (!transferred) {
                         if (context != 0L) runCatching { backend.freeContextSecure(context) }
@@ -764,14 +768,17 @@ internal class InferenceEngineState(
             synchronized(lock) { if (loaded == null) state = EngineState.UNLOADED }
             return
         }
-        worker.submitBlocking {
-            // freeContextSecure, never freeContext: llama_free returns the KV
-            // pages to the allocator with this session's plaintext token state
-            // still in them (LOCK_POLICY_INDEXING.md §4.5).
-            runCatching { backend.freeContextSecure(model.context) }
-            runCatching { backend.freeModel(model.model) }
+        try {
+            worker.submitBlocking {
+                // freeContextSecure, never freeContext: llama_free returns the KV
+                // pages to the allocator with this session's plaintext token state
+                // still in them (LOCK_POLICY_INDEXING.md §4.5).
+                runCatching { backend.freeContextSecure(model.context) }
+                runCatching { backend.freeModel(model.model) }
+            }
+        } finally {
+            model.pinned.close()
         }
-        model.pinned.close()
         SkeinLog.i(TAG, "model unloaded")
     }
 
@@ -987,6 +994,10 @@ internal class InferenceEngineState(
             val role = ModelFileRole.fromWire(ref.role)
             if (role == null) {
                 refusal = ModelVerification.CompanionMissing(null, ref.role)
+                break
+            }
+            if (pins.containsKey(role)) {
+                refusal = ModelVerification.MalformedManifest("binding repeats a model file role")
                 break
             }
             when (val pin = pinDescriptor(ref.fd)) {
