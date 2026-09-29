@@ -1,12 +1,12 @@
 package app.skein.core.verify
 
 import com.google.common.truth.Truth.assertThat
-import java.io.FileInputStream
-import java.nio.MappedByteBuffer
-import java.security.MessageDigest
 import org.junit.Rule
 import org.junit.Test
 import org.junit.rules.TemporaryFolder
+import java.io.FileInputStream
+import java.nio.MappedByteBuffer
+import java.security.MessageDigest
 
 class ModelVerifierPhaseCancellationTest {
     @get:Rule
@@ -48,10 +48,11 @@ class ModelVerifierPhaseCancellationTest {
                     it.channel,
                     binding(),
                     cancellation = VerifyCancellation { cancelled },
-                    progress = VerifyProgress {
-                        passes++
-                        if (passes == 2) cancelled = true
-                    },
+                    progress =
+                        VerifyProgress {
+                            passes++
+                            if (passes == 2) cancelled = true
+                        },
                 )
             }
 
@@ -64,7 +65,12 @@ class ModelVerifierPhaseCancellationTest {
             listOf(
                 VerifyFile(
                     role = ModelFileRole.MAIN,
-                    expectedSha256 = MessageDigest.getInstance("SHA-256").digest(BYTES).joinToString("") { "%02x".format(it) },
+                    expectedSha256 =
+                        MessageDigest
+                            .getInstance(
+                                "SHA-256",
+                            ).digest(BYTES)
+                            .joinToString("") { "%02x".format(it) },
                     expectedSizeBytes = BYTES.size.toLong(),
                 ),
             ),

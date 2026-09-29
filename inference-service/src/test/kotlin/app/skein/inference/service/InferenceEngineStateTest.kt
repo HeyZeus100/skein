@@ -34,18 +34,18 @@ import app.skein.ipc.SamplingParcel
 import app.skein.ipc.SharedMemRef
 import app.skein.ipc.TransportRules
 import com.google.common.truth.Truth.assertThat
-import java.io.File
-import java.security.MessageDigest
-import java.util.concurrent.CountDownLatch
-import java.util.concurrent.TimeUnit
-import java.util.concurrent.atomic.AtomicReference
-import java.util.function.BooleanSupplier
 import org.junit.Rule
 import org.junit.Test
 import org.junit.rules.TemporaryFolder
 import org.junit.runner.RunWith
 import org.robolectric.RobolectricTestRunner
 import org.robolectric.annotation.Config
+import java.io.File
+import java.security.MessageDigest
+import java.util.concurrent.CountDownLatch
+import java.util.concurrent.TimeUnit
+import java.util.concurrent.atomic.AtomicReference
+import java.util.function.BooleanSupplier
 
 @RunWith(RobolectricTestRunner::class)
 @Config(sdk = [34])
@@ -1623,10 +1623,11 @@ class InferenceEngineStateTest {
                 backend,
                 InlineTaskRunner(),
                 callbacks,
-                verificationProgress = VerifyProgress {
-                    ticks++
-                    service.onSessionLocking(epoch, LOCK_BUDGET_MILLIS)
-                },
+                verificationProgress =
+                    VerifyProgress {
+                        ticks++
+                        service.onSessionLocking(epoch, LOCK_BUDGET_MILLIS)
+                    },
             )
         service.onSessionUnlocked(epoch)
         val request = inspectRequest()
@@ -1787,7 +1788,12 @@ class InferenceEngineStateTest {
                 }
             }
         val service =
-            InferenceEngineState(duringLoad, InlineTaskRunner(), callbacks, terminateProcess = { terminated.countDown() })
+            InferenceEngineState(
+                duringLoad,
+                InlineTaskRunner(),
+                callbacks,
+                terminateProcess = { terminated.countDown() },
+            )
         service.onSessionUnlocked(epoch)
         val request = inspectRequest()
         val loader =

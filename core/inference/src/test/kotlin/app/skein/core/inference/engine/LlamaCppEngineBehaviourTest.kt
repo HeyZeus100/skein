@@ -24,11 +24,18 @@ import app.skein.ipc.PromptMeasurementParcel
 import app.skein.ipc.TransportRules
 import app.skein.testing.SkeinLogCaptureRule
 import com.google.common.truth.Truth.assertThat
+import kotlinx.coroutines.CompletableDeferred
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.NonCancellable
+import kotlinx.coroutines.async
+import kotlinx.coroutines.awaitCancellation
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.toList
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.test.runTest
+import kotlinx.coroutines.withContext
+import kotlinx.coroutines.withTimeout
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
@@ -440,7 +447,237 @@ class LlamaCppEngineBehaviourTest {
 
             engine.onSessionLocking(21L, 250L)
 
+            withTimeout(500L) { while (service.lockingPushes.isEmpty()) delay(1L) }
             assertThat(service.lockingPushes).containsExactly(21L)
+        }
+
+    @Test
+    fun lockStopsWaitingForBlockedInspectionAndRejectsLateSuccess(): Unit =
+        runTest {
+            engine.onSessionUnlocked(epoch)
+            val entered = CountDownLatch(1)
+            val release = CountDownLatch(1)
+            service.beforeInspectReturns = {
+                entered.countDown()
+                check(release.await(5, TimeUnit.SECONDS))
+            }
+            try {
+                val inspection = async(Dispatchers.IO) { engine.inspect(fixture.binding()) }
+                assertThat(entered.await(5, TimeUnit.SECONDS)).isTrue()
+                withTimeout(500L) {
+                    engine.onSessionLocking(epoch, 150L)
+                    engine.onSessionLocked(epoch)
+                    assertThat(inspection.await().errorCode).isEqualTo(ErrorCode.SESSION_LOCKED)
+                }
+                withTimeout(500L) { while (service.lockedPushes.isEmpty()) delay(1L) }
+                assertThat(service.lockedPushes).containsExactly(epoch)
+                assertThat(connector.disconnects).isEqualTo(0)
+                assertThat(engine.inspect(fixture.binding()).errorCode).isEqualTo(ErrorCode.SESSION_LOCKED)
+                assertThat(service.inspects).hasSize(1)
+            } finally {
+                release.countDown()
+            }
+        }
+
+    @Test
+    fun lockDoesNotWaitForLoadingGateAndNeverPublishesLateReady(): Unit =
+        runTest {
+            engine.onSessionUnlocked(epoch)
+            val entered = CountDownLatch(1)
+            val release = CountDownLatch(1)
+            val returned = CountDownLatch(1)
+            service.beforeLoadReturns = {
+                entered.countDown()
+                check(release.await(5, TimeUnit.SECONDS))
+                returned.countDown()
+            }
+            try {
+                val loading = async(Dispatchers.IO) { engine.load(fixture.model()) }
+                assertThat(entered.await(5, TimeUnit.SECONDS)).isTrue()
+                withTimeout(500L) {
+                    engine.onSessionLocking(epoch, 150L)
+                    engine.onSessionLocked(epoch)
+                    assertThat(
+                        loading.await().exceptionOrNull(),
+                    ).isInstanceOf(InferenceException.SessionLocked::class.java)
+                }
+                assertThat(fixture.store.isOpen(fixture.model().id)).isFalse()
+                release.countDown()
+                assertThat(returned.await(5, TimeUnit.SECONDS)).isTrue()
+                assertThat(engine.status.value.state).isEqualTo(EngineState.UNLOADED)
+            } finally {
+                release.countDown()
+            }
+        }
+
+    @Test
+    fun aBindingThatArrivesAfterLockIsRevokedWithoutDispatchingInspection(): Unit =
+        runTest {
+            val connecting = CompletableDeferred<Unit>()
+            val deliver = CompletableDeferred<Unit>()
+            val lateConnector =
+                object : ServiceConnector {
+                    override suspend fun connect(onDeath: () -> Unit): app.skein.ipc.IInferenceService {
+                        connecting.complete(Unit)
+                        withContext(NonCancellable) { deliver.await() }
+                        return service
+                    }
+
+                    override fun disconnect() = Unit
+                }
+            val lateEngine = LlamaCppEngine(lateConnector, fixture.pins, temporaryFolder.newFolder(), { epoch })
+            lateEngine.onSessionUnlocked(epoch)
+            val inspection = async { lateEngine.inspect(fixture.binding()) }
+            connecting.await()
+            lateEngine.onSessionLocking(epoch, 150L)
+            lateEngine.onSessionLocked(epoch)
+            deliver.complete(Unit)
+            assertThat(inspection.await().errorCode).isEqualTo(ErrorCode.SESSION_LOCKED)
+            assertThat(service.inspects).isEmpty()
+            assertThat(service.unlockedPushes).isEmpty()
+            withTimeout(500L) { while (service.lockedPushes.isEmpty()) delay(1L) }
+            assertThat(service.lockedPushes).containsExactly(epoch)
+        }
+
+    @Test
+    fun lockStopsWaitingForANeverDeliveredBinding(): Unit =
+        runTest {
+            val entered = CompletableDeferred<Unit>()
+            val disconnected = CompletableDeferred<Unit>()
+            val neverConnector =
+                object : ServiceConnector {
+                    override suspend fun connect(onDeath: () -> Unit): app.skein.ipc.IInferenceService {
+                        entered.complete(Unit)
+                        awaitCancellation()
+                    }
+
+                    override fun disconnect() {
+                        disconnected.complete(Unit)
+                    }
+                }
+            val waitingEngine = LlamaCppEngine(neverConnector, fixture.pins, temporaryFolder.newFolder(), { epoch })
+            waitingEngine.onSessionUnlocked(epoch)
+            val inspection = async { waitingEngine.inspect(fixture.binding()) }
+            entered.await()
+            withContext(Dispatchers.Default) {
+                withTimeout(500L) {
+                    waitingEngine.onSessionLocking(epoch, 150L)
+                    waitingEngine.onSessionLocked(epoch)
+                    assertThat(inspection.await().errorCode).isEqualTo(ErrorCode.SESSION_LOCKED)
+                    disconnected.await()
+                }
+            }
+        }
+
+    @Test
+    fun lockStopsWaitingForABlockedUnlockHandshake(): Unit =
+        runTest {
+            engine.onSessionUnlocked(epoch)
+            val entered = CountDownLatch(1)
+            val release = CountDownLatch(1)
+            service.beforeUnlockApplies = {
+                entered.countDown()
+                check(release.await(5, TimeUnit.SECONDS))
+            }
+            try {
+                val inspection = async(Dispatchers.IO) { engine.inspect(fixture.binding()) }
+                assertThat(entered.await(5, TimeUnit.SECONDS)).isTrue()
+                withContext(Dispatchers.Default) {
+                    withTimeout(500L) {
+                        engine.onSessionLocking(epoch, 150L)
+                        engine.onSessionLocked(epoch)
+                        assertThat(inspection.await().errorCode).isEqualTo(ErrorCode.SESSION_LOCKED)
+                    }
+                }
+                release.countDown()
+                withContext(Dispatchers.Default) {
+                    withTimeout(500L) { while (service.lockedPushes.isEmpty()) delay(1L) }
+                }
+                assertThat(service.inspects).isEmpty()
+            } finally {
+                release.countDown()
+            }
+        }
+
+    @Test
+    fun blockedLockingPushCannotDelayLockedPushOrLocalRevocation(): Unit =
+        runTest {
+            engine.onSessionUnlocked(epoch)
+            engine.load(fixture.model()).getOrThrow()
+            val entered = CountDownLatch(1)
+            val release = CountDownLatch(1)
+            service.beforeLockingReturns = {
+                entered.countDown()
+                check(release.await(5, TimeUnit.SECONDS))
+            }
+            try {
+                engine.onSessionLocking(epoch, 150L)
+                assertThat(entered.await(5, TimeUnit.SECONDS)).isTrue()
+                withContext(Dispatchers.Default) {
+                    withTimeout(500L) {
+                        engine.onSessionLocked(epoch)
+                        while (service.lockedPushes.isEmpty()) delay(1L)
+                    }
+                }
+                assertThat(engine.status.value.state).isEqualTo(EngineState.UNLOADED)
+            } finally {
+                release.countDown()
+            }
+        }
+
+    @Test
+    fun lateGenerationCompletionCannotRepublishReadyAfterLockOrOverwriteANewLoad(): Unit =
+        runTest {
+            engine.onSessionUnlocked(epoch)
+            engine.load(fixture.model()).getOrThrow()
+            val entered = CountDownLatch(1)
+            val release = CountDownLatch(1)
+            service.completionDelayMillis = 0L
+            service.beforeDone = {
+                entered.countDown()
+                check(release.await(5, TimeUnit.SECONDS))
+            }
+            try {
+                val stream = async(Dispatchers.IO) { runCatching { engine.stream(prompt(), params()).toList() } }
+                assertThat(entered.await(5, TimeUnit.SECONDS)).isTrue()
+                engine.onSessionLocking(epoch, 150L)
+                engine.onSessionLocked(epoch)
+                stream.await()
+                assertThat(engine.status.value.state).isEqualTo(EngineState.UNLOADED)
+                epoch++
+                engine.onSessionUnlocked(epoch)
+                engine.load(fixture.model()).getOrThrow()
+                val reloaded = engine.status.value
+                release.countDown()
+                service.awaitIdle()
+                assertThat(engine.status.value).isEqualTo(reloaded)
+            } finally {
+                release.countDown()
+            }
+        }
+
+    @Test
+    fun aRevokedEpochCannotBeReauthorizedByALateUnlockPush(): Unit =
+        runTest {
+            engine.onSessionUnlocked(epoch)
+            engine.load(fixture.model()).getOrThrow()
+            engine.onSessionLocked(epoch)
+            engine.onSessionUnlocked(epoch)
+            assertThat(engine.inspect(fixture.binding()).errorCode).isEqualTo(ErrorCode.SESSION_LOCKED)
+            assertThat(service.unlockedPushes).containsExactly(epoch)
+        }
+
+    @Test
+    fun staleLockCannotRevokeNewSession(): Unit =
+        runTest {
+            engine.onSessionUnlocked(epoch)
+            engine.load(fixture.model()).getOrThrow()
+            engine.onSessionUnlocked(epoch + 1L)
+            engine.onSessionLocking(epoch, 150L)
+            engine.onSessionLocked(epoch)
+            assertThat(service.lockingPushes).isEmpty()
+            assertThat(service.lockedPushes).isEmpty()
+            assertThat(engine.status.value.state).isEqualTo(EngineState.READY)
         }
 
     // ------------------------------ admission after an unlock (bd skein-gg11.8)

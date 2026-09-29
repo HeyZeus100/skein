@@ -15,6 +15,8 @@ import app.skein.core.model.SamplingParams
 import app.skein.core.model.Token
 import app.skein.testing.FakeInferenceEngine
 import com.google.common.truth.Truth.assertThat
+import kotlinx.coroutines.CompletableDeferred
+import kotlinx.coroutines.async
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.toList
@@ -80,6 +82,40 @@ class ManagedInferenceEngineTest {
             managed.prepareForTurn(model)
             assertThat(loads).isEqualTo(2)
             assertThat(managed.status.value.state).isEqualTo(EngineState.READY)
+        }
+
+    @Test
+    fun `closing during load clears state immediately and rejects a late successful load`() =
+        runTest {
+            val entered = CompletableDeferred<Unit>()
+            val release = CompletableDeferred<Unit>()
+            val delegate =
+                object : InferenceEngine by FakeInferenceEngine() {
+                    override suspend fun load(model: Model): Result<Unit> {
+                        entered.complete(Unit)
+                        release.await()
+                        return Result.success(Unit)
+                    }
+                }
+            var defaultReads = 0
+            val managed =
+                ManagedInferenceEngine(delegate) {
+                    defaultReads++
+                    model
+                }
+            val loading = async { managed.load(model) }
+            entered.await()
+            managed.closeSession()
+            assertThat(managed.status.value.state).isEqualTo(EngineState.UNLOADED)
+            release.complete(Unit)
+            assertThat(loading.await().exceptionOrNull()).isInstanceOf(InferenceException.SessionLocked::class.java)
+            assertThat(managed.status.value.state).isEqualTo(EngineState.UNLOADED)
+            assertThat(
+                runCatching {
+                    managed.warmUp()
+                }.exceptionOrNull(),
+            ).isInstanceOf(InferenceException.SessionLocked::class.java)
+            assertThat(defaultReads).isEqualTo(0)
         }
 
     @Test

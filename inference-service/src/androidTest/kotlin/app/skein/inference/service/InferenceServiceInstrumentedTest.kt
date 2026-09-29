@@ -46,6 +46,11 @@ import app.skein.ipc.ManifestBinding
 import app.skein.ipc.ManifestFileRef
 import app.skein.ipc.SamplingParcel
 import com.google.common.truth.Truth.assertThat
+import org.junit.Assume.assumeTrue
+import org.junit.Before
+import org.junit.Rule
+import org.junit.Test
+import org.junit.runner.RunWith
 import java.io.File
 import java.security.MessageDigest
 import java.util.concurrent.CountDownLatch
@@ -53,11 +58,6 @@ import java.util.concurrent.TimeUnit
 import java.util.concurrent.atomic.AtomicInteger
 import java.util.concurrent.atomic.AtomicLong
 import java.util.concurrent.atomic.AtomicReference
-import org.junit.Assume.assumeTrue
-import org.junit.Before
-import org.junit.Rule
-import org.junit.Test
-import org.junit.runner.RunWith
 
 private const val TINY_GGUF_ASSET = "tiny.gguf"
 private const val CANCEL_BUDGET_MILLIS = 200L

@@ -250,7 +250,6 @@ class IsolatedSessionGateTest {
         assertEquals(1, released)
     }
 
-
     @Test
     fun `a late older unlock cannot replace a newer authorized epoch`() {
         val gate = IsolatedSessionGate()
@@ -261,5 +260,4 @@ class IsolatedSessionGateTest {
         assertEquals(GateResult.Admit, gate.guard(8L))
         assertTrue(gate.guard(7L) is GateResult.Refuse)
     }
-
 }

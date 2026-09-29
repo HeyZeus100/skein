@@ -162,7 +162,15 @@ public class AndroidServiceConnector(
             throw InferenceException.ServiceDied()
         }
         synchronized(lock) { connection = serviceConnection }
-        return connected.await()
+        return try {
+            connected.await()
+        } catch (failure: Throwable) {
+            synchronized(lock) {
+                if (connection === serviceConnection) connection = null
+            }
+            runCatching { appContext.unbindService(serviceConnection) }
+            throw failure
+        }
     }
 
     override fun disconnect() {

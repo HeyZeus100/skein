@@ -103,9 +103,13 @@ import app.skein.ipc.LoadRequest
 import app.skein.ipc.ModelInspection
 import app.skein.ipc.SamplingParcel
 import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.channels.awaitClose
+import kotlinx.coroutines.currentCoroutineContext
+import kotlinx.coroutines.ensureActive
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -113,6 +117,7 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.buffer
 import kotlinx.coroutines.flow.callbackFlow
 import kotlinx.coroutines.flow.update
+import kotlinx.coroutines.launch
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
 import kotlinx.coroutines.withContext
@@ -160,6 +165,11 @@ public class LlamaCppEngine(
 ) : InferenceEngine,
     TokenCounter {
     private val spiller = PromptSpiller(spillDir)
+    private val modelTransactions = ModelTransactions(io)
+    private val lockControl = CoroutineScope(SupervisorJob() + io)
+    private val lifecycle = Any()
+    private val revokedEpoch = AtomicLong(EPOCH_NONE)
+    private val bindingId = AtomicLong(0L)
 
     /** Serialises `load` / `unload` / `embed` against each other. */
     private val gate = Mutex()
@@ -223,11 +233,15 @@ public class LlamaCppEngine(
      */
     override suspend fun load(model: Model): Result<Unit> =
         gate.withLock {
+            val version = modelTransactions.current()
             releaseLoaded()
             _status.value = ModelStatus(modelId = model.id, state = EngineState.LOADING)
             try {
-                loadLocked(model)
-                _status.value = ModelStatus(modelId = model.id, state = EngineState.READY)
+                loadLocked(model, version)
+                modelTransactions.publish(version) {
+                    loadedModel.set(model)
+                    _status.value = ModelStatus(modelId = model.id, state = EngineState.READY)
+                }
                 SkeinLog.i(TAG, "model loaded")
                 Result.success(Unit)
             } catch (cancellation: CancellationException) {
@@ -239,7 +253,16 @@ public class LlamaCppEngine(
                 throw cancellation
             } catch (failure: Throwable) {
                 releaseLoaded()
-                _status.value = ModelStatus(modelId = null, state = EngineState.ERROR)
+                _status.value =
+                    ModelStatus(
+                        modelId = null,
+                        state =
+                            if (failure is InferenceException.SessionLocked) {
+                                EngineState.UNLOADED
+                            } else {
+                                EngineState.ERROR
+                            },
+                    )
                 // The class name, never the message: a service diagnostic is
                 // untrusted text and belongs in the exception, not in logcat.
                 SkeinLog.w(TAG, "load refused: ${failure.javaClass.simpleName}")
@@ -247,7 +270,10 @@ public class LlamaCppEngine(
             }
         }
 
-    private suspend fun loadLocked(model: Model) {
+    private suspend fun loadLocked(
+        model: Model,
+        version: Long,
+    ) {
         val pin = pins.pin(model).getOrThrow()
         pinned.set(pin)
 
@@ -269,17 +295,12 @@ public class LlamaCppEngine(
                 sessionEpoch = sessionEpoch(),
             )
         val code =
-            withContext(io) {
-                try {
-                    runRemote { service.load(request) }
-                } finally {
-                    closeLocalCopies(request)
-                }
+            modelTransactions.call(version, close = { closeLocalCopies(request) }) {
+                runRemote { service.load(request) }
             }
         if (code != ErrorCode.OK) {
             throw loadException(code, expected)
         }
-        loadedModel.set(model)
     }
 
     /**
@@ -329,8 +350,14 @@ public class LlamaCppEngine(
 
             val requestId = nextRequestId.getAndIncrement()
             val holder = ActiveStream(requestId) { cause -> close(cause) }
-            if (!activeStream.compareAndSet(null, holder)) {
-                throw InferenceException.Busy()
+            synchronized(lifecycle) {
+                checkSessionAdmission()
+                if (connection.get() !== service ||
+                    loadedModel.get() !== model
+                ) {
+                    throw InferenceException.SessionLocked()
+                }
+                if (!activeStream.compareAndSet(null, holder)) throw InferenceException.Busy()
             }
 
             try {
@@ -351,60 +378,66 @@ public class LlamaCppEngine(
                             pieces: Array<out String>?,
                             ids: IntArray?,
                             dropped: Int,
-                        ) {
-                            if (id != requestId) return
-                            if (dropped > 0) {
-                                // A count, not content. `skein-6as` renders the
-                                // "output truncated for speed" state from the
-                                // partial turn it already has; the locked
-                                // `Token` hierarchy has no variant to carry it.
-                                SkeinLog.w(TAG, "service shed $dropped token batches under backpressure")
+                        ): Unit =
+                            synchronized(lifecycle) {
+                                if (id != requestId || activeStream.get() !== holder) return@synchronized
+                                if (dropped > 0) {
+                                    // A count, not content. `skein-6as` renders the
+                                    // "output truncated for speed" state from the
+                                    // partial turn it already has; the locked
+                                    // `Token` hierarchy has no variant to carry it.
+                                    SkeinLog.w(TAG, "service shed $dropped token batches under backpressure")
+                                }
+                                val texts = pieces ?: return@synchronized
+                                val tokenIds = ids
+                                texts.forEachIndexed { index, piece ->
+                                    trySend(Token.Text(text = piece, id = tokenIds?.getOrNull(index) ?: 0))
+                                }
                             }
-                            val texts = pieces ?: return
-                            val tokenIds = ids
-                            texts.forEachIndexed { index, piece ->
-                                trySend(Token.Text(text = piece, id = tokenIds?.getOrNull(index) ?: 0))
-                            }
-                        }
 
                         override fun onDone(
                             id: Int,
                             stats: GenStats?,
-                        ) {
-                            if (id != requestId) return
-                            stats?.let {
-                                // Numbers only (spec §9) — the smoke's TTFT and tok/s record.
-                                SkeinLog.i(
-                                    TAG,
-                                    "generation done: reason=${it.stopReason} n_in=${it.promptTokens} " +
-                                        "n_out=${it.generatedTokens} ttft=${it.ttftMs}ms rate=${"%.2f".format(
-                                            it.tokensPerSec,
-                                        )}/s",
-                                )
-                                trySend(it.toToken())
-                                _status.update { current ->
-                                    current.copy(state = EngineState.READY, tokensPerSec = it.tokensPerSec)
+                        ): Unit =
+                            synchronized(lifecycle) {
+                                if (id != requestId || activeStream.get() !== holder) return@synchronized
+                                stats?.let {
+                                    // Numbers only (spec §9) — the smoke's TTFT and tok/s record.
+                                    SkeinLog.i(
+                                        TAG,
+                                        "generation done: reason=${it.stopReason} n_in=${it.promptTokens} " +
+                                            "n_out=${it.generatedTokens} ttft=${it.ttftMs}ms rate=${"%.2f".format(
+                                                it.tokensPerSec,
+                                            )}/s",
+                                    )
+                                    trySend(it.toToken())
+                                    _status.update { current ->
+                                        current.copy(state = EngineState.READY, tokensPerSec = it.tokensPerSec)
+                                    }
                                 }
+                                close()
                             }
-                            close()
-                        }
 
                         override fun onError(
                             id: Int,
                             code: Int,
                             message: String?,
-                        ) {
-                            if (id != requestId) return
-                            // `toException` sanitizes the service's untrusted
-                            // diagnostic; a null return is OK/CANCELLED, which
-                            // is a normal end of stream, not a failure.
-                            close(ErrorCodes.toException(code, message.orEmpty()))
-                        }
+                        ): Unit =
+                            synchronized(lifecycle) {
+                                if (id != requestId || activeStream.get() !== holder) return@synchronized
+                                // `toException` sanitizes the service's untrusted
+                                // diagnostic; a null return is OK/CANCELLED, which
+                                // is a normal end of stream, not a failure.
+                                close(ErrorCodes.toException(code, message.orEmpty()))
+                            }
                     }
 
-                _status.update { it.copy(modelId = model.id, state = EngineState.GENERATING) }
                 withContext(io) {
                     try {
+                        synchronized(lifecycle) {
+                            if (activeStream.get() !== holder) throw InferenceException.SessionLocked()
+                            _status.update { it.copy(modelId = model.id, state = EngineState.GENERATING) }
+                        }
                         runRemote { service.generate(request, callback) }
                     } finally {
                         closeLocalCopies(request)
@@ -412,26 +445,40 @@ public class LlamaCppEngine(
                 }
 
                 awaitClose {
-                    activeStream.compareAndSet(holder, null)
+                    synchronized(lifecycle) {
+                        activeStream.compareAndSet(holder, null).also { removed ->
+                            if (removed) {
+                                _status.update { current ->
+                                    if (current.state ==
+                                        EngineState.GENERATING
+                                    ) {
+                                        current.copy(state = EngineState.READY)
+                                    } else {
+                                        current
+                                    }
+                                }
+                            }
+                        }
+                    }
                     // Unconditional, per plan E4.I4. A `cancel` for a request
                     // the service already finished is a no-op there, and the
                     // alternative — deciding locally whether to send it — is
                     // a race whose losing side leaks a running generation.
                     runCatching { service.cancel(requestId) }
-                    _status.update { current ->
-                        if (current.state ==
-                            EngineState.GENERATING
-                        ) {
-                            current.copy(state = EngineState.READY)
-                        } else {
-                            current
-                        }
-                    }
                 }
             } catch (failure: Throwable) {
-                activeStream.compareAndSet(holder, null)
-                _status.update { current ->
-                    if (current.state == EngineState.GENERATING) current.copy(state = EngineState.READY) else current
+                synchronized(lifecycle) {
+                    if (activeStream.compareAndSet(holder, null)) {
+                        _status.update { current ->
+                            if (current.state ==
+                                EngineState.GENERATING
+                            ) {
+                                current.copy(state = EngineState.READY)
+                            } else {
+                                current
+                            }
+                        }
+                    }
                 }
                 throw failure
             }
@@ -582,18 +629,26 @@ public class LlamaCppEngine(
      *   descriptors here; the service owns and closes every one of them.
      */
     public suspend fun inspect(binding: ManifestBinding): ModelInspection {
-        val service = connect()
+        val version = modelTransactions.current()
+        val service =
+            try {
+                connect()
+            } catch (_: InferenceException.SessionLocked) {
+                return ModelInspection.refused(ErrorCode.SESSION_LOCKED)
+            }
         val request =
             InspectRequest(
                 binding = WireBindings.toWire(binding),
                 sessionEpoch = sessionEpoch(),
             )
-        return withContext(io) {
-            try {
-                runRemote { service.inspect(request) }
-            } finally {
-                closeLocalCopies(request.binding)
-            }
+        return try {
+            val result =
+                modelTransactions.call(version, close = { closeLocalCopies(request.binding) }) {
+                    runRemote { service.inspect(request) }
+                }
+            modelTransactions.publish(version) { result }
+        } catch (_: InferenceException.SessionLocked) {
+            ModelInspection.refused(ErrorCode.SESSION_LOCKED)
         }
     }
 
@@ -629,7 +684,10 @@ public class LlamaCppEngine(
      * class.
      */
     public suspend fun onSessionUnlocked(epoch: Long) {
-        authorizedEpoch.set(epoch)
+        synchronized(lifecycle) {
+            if (epoch <= revokedEpoch.get() || epoch < authorizedEpoch.get()) return
+            authorizedEpoch.set(epoch)
+        }
         val service = connection.get() ?: return
         withContext(io) { runCatching { service.onSessionUnlocked(epoch) } }
     }
@@ -648,8 +706,12 @@ public class LlamaCppEngine(
         epoch: Long,
         budgetMillis: Long,
     ) {
-        val service = connection.get() ?: return
-        withContext(io) { runCatching { service.onSessionLocking(epoch, budgetMillis) } }
+        val service =
+            synchronized(lifecycle) {
+                if (!revokeSession(epoch)) return
+                connection.get()
+            } ?: return
+        lockControl.launch { runCatching { service.onSessionLocking(epoch, budgetMillis) } }
     }
 
     /**
@@ -662,10 +724,29 @@ public class LlamaCppEngine(
      * happens BEFORE the push, so it holds even if the push never lands.
      */
     public suspend fun onSessionLocked(epoch: Long) {
-        authorizedEpoch.compareAndSet(epoch, EPOCH_NONE)
-        val service = connection.get() ?: return
-        withContext(io) { runCatching { service.onSessionLocked(epoch) } }
+        val service =
+            synchronized(lifecycle) {
+                if (!revokeSession(epoch)) return
+                connection.getAndSet(null)
+            } ?: return
+        // Keep the important binding until the death callback. Unbinding before
+        // this oneway message executes can freeze an outstanding native call.
+        lockControl.launch { runCatching { service.onSessionLocked(epoch) } }
     }
+
+    private fun revokeSession(epoch: Long): Boolean =
+        synchronized(lifecycle) {
+            val authorized = authorizedEpoch.get()
+            if (authorized != EPOCH_NONE && authorized != epoch) return@synchronized false
+            if (epoch < revokedEpoch.get()) return@synchronized false
+            authorizedEpoch.compareAndSet(epoch, EPOCH_NONE)
+            revokedEpoch.set(epoch)
+            modelTransactions.revoke()
+            releaseLoaded()
+            _status.value = ModelStatus(modelId = null, state = EngineState.UNLOADED)
+            activeStream.getAndSet(null)?.fail(InferenceException.SessionLocked())
+            true
+        }
 
     // -------------------------------------------------------- engine status
 
@@ -685,30 +766,51 @@ public class LlamaCppEngine(
 
     /** The live service, binding first if necessary. The "next `load` rebinds" path. */
     private suspend fun connect(): IInferenceService {
+        checkSessionAdmission()
         connection.get()?.let { return it }
-        // Its own lock, not [gate]: `inspect` binds too, and it must not queue
-        // behind a ten-second `load` it has nothing to do with.
         return bindGate.withLock {
-            connection.get() ?: connector.connect(::onServiceDeath).also { service ->
-                // §5.3: ":app re-sends onUnlocked on every fresh bind". A
-                // service that has not been told an epoch refuses everything,
-                // so without this the first call after a death would fail with
-                // SESSION_LOCKED on a vault that is perfectly unlocked.
-                //
-                // PUSHED BEFORE THE BINDING IS PUBLISHED (bd skein-gg11.8).
-                // `connection.set` is what every other caller's fast path at
-                // the top of this function reads; publishing first would let a
-                // concurrent `load` pick the binding up and be dispatched
-                // while this re-send was still in flight — the very race the
-                // two-way push closes, reintroduced one line higher up. The
-                // push is two-way, so by the time the binding is visible the
-                // service's gate already holds the epoch.
-                val epoch = authorizedEpoch.get()
-                if (epoch != EPOCH_NONE) {
-                    withContext(io) { runCatching { service.onSessionUnlocked(epoch) } }
+            checkSessionAdmission()
+            connection.get() ?: run {
+                val version = modelTransactions.current()
+                val id = synchronized(lifecycle) { bindingId.incrementAndGet() }
+                val bindingEpoch = authorizedEpoch.get().takeIf { it != EPOCH_NONE } ?: sessionEpoch()
+                modelTransactions.call(version, close = {}) {
+                    var service: IInferenceService? = null
+                    var published = false
+                    try {
+                        val bound = connector.connect { onServiceDeath(id) }
+                        service = bound
+                        val epoch = authorizedEpoch.get()
+                        if (epoch != EPOCH_NONE) runCatching { bound.onSessionUnlocked(epoch) }
+                        currentCoroutineContext().ensureActive()
+                        modelTransactions.publish(version) {
+                            checkSessionAdmission()
+                            connection.set(bound)
+                            published = true
+                        }
+                        bound
+                    } finally {
+                        if (!published) {
+                            val bound = service
+                            if (bound != null) {
+                                // Also disposes a cold service whose connection
+                                // arrived only after lock or caller cancellation.
+                                lockControl.launch { runCatching { bound.onSessionLocked(bindingEpoch) } }
+                            } else {
+                                synchronized(lifecycle) {
+                                    if (bindingId.get() == id) connector.disconnect()
+                                }
+                            }
+                        }
+                    }
                 }
-                connection.set(service)
             }
+        }
+    }
+
+    private fun checkSessionAdmission() {
+        if (revokedEpoch.get() != EPOCH_NONE && authorizedEpoch.get() == EPOCH_NONE) {
+            throw InferenceException.SessionLocked()
         }
     }
 
@@ -720,14 +822,18 @@ public class LlamaCppEngine(
      * reacts to `ServiceDied` by calling `load` again finds a clean engine
      * rather than one still holding a dead binder.
      */
-    private fun onServiceDeath() {
-        SkeinLog.w(TAG, "inference process died")
-        connection.set(null)
-        loadedModel.set(null)
-        pinned.getAndSet(null)?.close()
-        _status.value = ModelStatus(modelId = null, state = EngineState.UNLOADED)
-        activeStream.getAndSet(null)?.fail(InferenceException.ServiceDied())
-    }
+    private fun onServiceDeath(id: Long): Unit =
+        synchronized(lifecycle) {
+            if (!bindingId.compareAndSet(id, id + 1)) return@synchronized
+            connector.disconnect()
+            modelTransactions.revoke(InferenceException.ServiceDied())
+            SkeinLog.w(TAG, "inference process died")
+            connection.set(null)
+            loadedModel.set(null)
+            pinned.getAndSet(null)?.close()
+            _status.value = ModelStatus(modelId = null, state = EngineState.UNLOADED)
+            activeStream.getAndSet(null)?.fail(InferenceException.ServiceDied())
+        }
 
     /** Drops the model handle and the store's shared read lock. */
     private fun releaseLoaded() {

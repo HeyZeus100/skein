@@ -22,6 +22,11 @@ import androidx.test.core.app.ApplicationProvider
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.platform.app.InstrumentationRegistry
 import com.google.common.truth.Truth.assertThat
+import org.junit.After
+import org.junit.Assume.assumeTrue
+import org.junit.Before
+import org.junit.Test
+import org.junit.runner.RunWith
 import java.io.File
 import java.util.concurrent.CountDownLatch
 import java.util.concurrent.TimeUnit
@@ -30,11 +35,6 @@ import java.util.function.BooleanSupplier
 import kotlin.concurrent.thread
 import kotlin.math.abs
 import kotlin.math.sqrt
-import org.junit.After
-import org.junit.Assume.assumeTrue
-import org.junit.Before
-import org.junit.Test
-import org.junit.runner.RunWith
 
 private const val TINY_GGUF_ASSET = "tiny.gguf"
 

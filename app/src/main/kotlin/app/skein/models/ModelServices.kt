@@ -66,6 +66,7 @@ import app.skein.feature.chat.drafts.SessionDraftStore
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
+import kotlinx.coroutines.NonCancellable
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.async
 import kotlinx.coroutines.cancel
@@ -76,6 +77,7 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.withContext
 import kotlinx.coroutines.withTimeoutOrNull
 import java.io.File
 import java.io.IOException
@@ -112,6 +114,9 @@ public class ModelServices(
     public val turns: ChatTurnController? = null,
     public val drafts: SessionDraftStore? = null,
     private val markLockEpoch: (Long) -> Unit = {},
+    private val clearEngineState: () -> Unit = {},
+    public val imports: ModelImportCoordinator? = null,
+    private val registryAuthorized: () -> Boolean = { true },
 ) {
     private val rescuedState = MutableStateFlow<List<ModelId>>(emptyList())
     private var rescueJob: Job? = null
@@ -138,6 +143,7 @@ public class ModelServices(
     public suspend fun unlocked(epoch: Long) {
         manifestCache.refresh()
         pushOnSessionUnlocked(epoch)
+        imports?.attach(manager) { if (registryAuthorized()) manifestCache.refresh() }
         // After the epoch push, so `inspect` is authorised. Off this path:
         // a rescue re-hashes the sealed file (seconds for 1.6 GB) and binds
         // the isolated service, neither of which the unlock should wait on.
@@ -153,27 +159,22 @@ public class ModelServices(
     }
 
     /**
-     * The lock-path hook `VaultBootstrap.LockHandler.onLocking` calls, while
-     * the master key is still live, BEFORE the session's connections close
-     * (DoD item 5). Order: push the locking notice first (the cancel budget
-     * starts, LOCK_POLICY_INDEXING.md §5.2), then unload — guarded by
-     * [ManagedInferenceEngine.unload] itself, so a session that opened a
-     * chat tab but never sent a message never asks the delegate to unload
-     * anything — then push the epoch-forget immediately rather than
-     * deferring to [onLocked]'s backstop, which in the common case never
-     * fires at all (see `VaultBootstrap`'s edit for why). Forgetting the
-     * epoch touches no key-derived state, so running it here rather than
-     * strictly after `keyProvider.lock()` does not weaken the lock
-     * contract's "no key material after onLocked" rule.
+     * Revoke admission, then ask the isolated process to terminate. No two-way
+     * unload and no wait for the model/load gate belong on the bounded lock path.
+     * The final oneway push also runs when the shared observer budget expires.
      */
     public suspend fun onLocking(
         epoch: Long,
         budgetMillis: Long,
     ) {
+        imports?.detach(manager)
         rescueJob?.cancel()
-        pushOnSessionLocking(epoch, budgetMillis)
-        engine.unload()
-        pushOnSessionLocked(epoch)
+        clearEngineState()
+        try {
+            pushOnSessionLocking(epoch, budgetMillis)
+        } finally {
+            withContext(NonCancellable) { pushOnSessionLocked(epoch) }
+        }
     }
 
     /**
@@ -183,6 +184,8 @@ public class ModelServices(
      * repeat call (`LlamaCppEngine.onSessionLocked`'s `compareAndSet`).
      */
     public suspend fun onLocked(epoch: Long) {
+        imports?.detach(manager)
+        clearEngineState()
         pushOnSessionLocked(epoch)
     }
 
@@ -192,6 +195,8 @@ public class ModelServices(
         budgetMillis: Long,
     ) {
         markLockEpoch(epoch)
+        imports?.detach(manager)
+        clearEngineState()
         turns?.onLockingHigh(epoch, budgetMillis)
     }
 
@@ -209,6 +214,8 @@ public class ModelServices(
 
     /** Pure memory teardown even if the Activity is stopped or normal observer dispatch timed out. */
     public fun closeSessionState() {
+        imports?.detach(manager)
+        clearEngineState()
         turns?.close()
         drafts?.close()
         sendPipeline.clearSessionState()
@@ -250,7 +257,9 @@ public class ModelServices(
             val lockEpoch = AtomicLong(0L)
             val unlockedEpoch = { sessionEpoch().takeIf { it != 0L } }
             val lockingEpoch = { lockEpoch.get().takeIf { it == epoch && isLocking() } }
-            val store = ImmutableModelStore(File(context.filesDir, MODELS_DIR_NAME))
+            val registryAuthorized = { sessionEpoch() == epoch && !isLocking() && lockEpoch.get() != epoch }
+            val imports = ModelImportCoordinator.forApplication(context)
+            val store = imports.store
             val registry = ModelRegistryImpl(connection = connection, prefs = prefs)
             rehydrate(store, registry)
 
@@ -299,6 +308,7 @@ public class ModelServices(
                             status.state != EngineState.ERROR
                     },
                     config = config,
+                    canUseRegistry = registryAuthorized,
                 )
 
             val contextBudget = ContextBudget(tokenCounter = llamaCppEngine, config = config)
@@ -374,6 +384,9 @@ public class ModelServices(
                 turns = turns,
                 drafts = drafts,
                 markLockEpoch = lockEpoch::set,
+                clearEngineState = managed::closeSession,
+                imports = imports,
+                registryAuthorized = registryAuthorized,
             )
         }
 

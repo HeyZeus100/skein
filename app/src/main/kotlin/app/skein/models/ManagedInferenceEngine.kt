@@ -78,19 +78,42 @@ public class ManagedInferenceEngine(
     /** Serialises [load] against itself so two racing first-sends load at most once. */
     private val loadGate = Mutex()
     private var preparedModel: Model? = null
+    private val lifecycle = Any()
+    private var closed = false
+
+    /** Synchronous session teardown; never waits for a load or a Binder transaction. */
+    public fun closeSession() {
+        synchronized(lifecycle) {
+            closed = true
+            preparedModel = null
+            _status.value = ModelStatus(modelId = null, state = EngineState.UNLOADED)
+        }
+    }
+
+    private fun requireOpen() {
+        synchronized(lifecycle) {
+            if (closed) throw InferenceException.SessionLocked()
+        }
+    }
 
     override suspend fun load(model: Model): Result<Unit> = loadGate.withLock { loadLocked(model) }
 
     private suspend fun loadLocked(model: Model): Result<Unit> {
-        _status.value = ModelStatus(modelId = model.id, state = EngineState.LOADING)
+        synchronized(lifecycle) {
+            if (closed) return Result.failure(InferenceException.SessionLocked())
+            _status.value = ModelStatus(modelId = model.id, state = EngineState.LOADING)
+        }
         val result = delegate.load(model)
-        _status.value =
-            result.fold(
-                onSuccess = { ModelStatus(modelId = model.id, state = EngineState.READY) },
-                onFailure = { ModelStatus(modelId = null, state = EngineState.ERROR) },
-            )
-        preparedModel = model.takeIf { result.isSuccess }
-        return result
+        return synchronized(lifecycle) {
+            if (closed) return@synchronized Result.failure(InferenceException.SessionLocked())
+            _status.value =
+                result.fold(
+                    onSuccess = { ModelStatus(modelId = model.id, state = EngineState.READY) },
+                    onFailure = { ModelStatus(modelId = null, state = EngineState.ERROR) },
+                )
+            preparedModel = model.takeIf { result.isSuccess }
+            result
+        }
     }
 
     override fun stream(
@@ -99,7 +122,10 @@ public class ManagedInferenceEngine(
     ): Flow<Token> =
         flow {
             ensureLoaded()
-            _status.update { it.copy(state = EngineState.GENERATING) }
+            synchronized(lifecycle) {
+                requireOpen()
+                _status.update { it.copy(state = EngineState.GENERATING) }
+            }
             emitAll(
                 delegate.stream(prompt, params).onCompletion { failure ->
                     _status.update { current ->
@@ -127,6 +153,7 @@ public class ManagedInferenceEngine(
     /** Prepare exactly the model captured for this turn, before counting its prompt. */
     public suspend fun prepareForTurn(model: Model) {
         loadGate.withLock {
+            requireOpen()
             if (_status.value.state == EngineState.GENERATING) throw InferenceException.Busy()
             if (_status.value.state == EngineState.READY && preparedModel == model) return@withLock
             loadLocked(model).getOrThrow()
@@ -134,6 +161,7 @@ public class ManagedInferenceEngine(
     }
 
     private suspend fun ensureLoaded() {
+        requireOpen()
         val current = _status.value.state
         if (current == EngineState.READY || current == EngineState.GENERATING) return
         val model = defaultModel() ?: throw InferenceException.ModelNotLoaded()

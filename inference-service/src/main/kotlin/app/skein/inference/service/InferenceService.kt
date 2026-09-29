@@ -104,11 +104,12 @@ class InferenceService : Service() {
         super.onCreate()
         worker = InferenceWorker()
         callbacks = CallbackDispatcher()
-        engine = InferenceEngineState(backend, worker, callbacks) {
-            // This Service is isolatedProcess=true. Never wait for the native
-            // worker at the lock deadline: a wedged loader must die with it.
-            Process.killProcess(Process.myPid())
-        }
+        engine =
+            InferenceEngineState(backend, worker, callbacks) {
+                // This Service is isolatedProcess=true. Never wait for the native
+                // worker at the lock deadline: a wedged loader must die with it.
+                Process.killProcess(Process.myPid())
+            }
         // Process-global llama.cpp state: exactly once, before any worker task.
         worker.submitBlocking {
             backend.backendInit()
