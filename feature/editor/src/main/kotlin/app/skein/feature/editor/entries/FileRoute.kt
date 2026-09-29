@@ -35,6 +35,7 @@ import app.skein.feature.shell.host.EntryTopBar
 import app.skein.feature.shell.host.GoneEntry
 import app.skein.feature.shell.host.LocalSkeinWindowLayout
 import app.skein.feature.shell.host.SkeinShellState
+import app.skein.feature.shell.host.entryBottomPadding
 import app.skein.feature.shell.host.rememberEntryDocument
 import kotlinx.coroutines.flow.first
 import kotlinx.serialization.json.JsonPrimitive
@@ -78,6 +79,7 @@ internal fun FileRoute(
                 .weight(1f)
                 .fillMaxWidth()
                 .verticalScroll(rememberScrollState())
+                .padding(entryBottomPadding())
                 .padding(SkeinSpacing.space16)
                 .widthIn(max = SkeinSize.readingMax),
         ) {

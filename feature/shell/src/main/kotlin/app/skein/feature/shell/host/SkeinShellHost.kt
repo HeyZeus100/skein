@@ -139,7 +139,15 @@ fun SkeinShellHost(
     val provider =
         remember {
             // No `entryProvider {}` DSL: its fallback throws "Unknown screen $key", a key in an exception (M13).
-            { key: SkeinKey -> NavEntry(key, key.contentKey, metadataOf(key) { placeholder(it) }) { content(it) } }
+            { key: SkeinKey ->
+                NavEntry(
+                    key,
+                    key.contentKey,
+                    metadataOf(key) { destination ->
+                        EntryInsets { placeholder(destination) }
+                    },
+                ) { EntryInsets { content(it) } }
+            }
         }
     // One decorated list per destination, on every composition (§8.9 item 2): switching destinations is not
     // a pop, so the other stacks keep their T2 and T3. Each destination has its own T2 holder and T3 scope,

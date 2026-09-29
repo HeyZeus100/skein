@@ -21,6 +21,7 @@ import app.skein.feature.shell.container.ChatHistoryRow
 import app.skein.feature.shell.container.groupChatHistory
 import app.skein.feature.shell.host.EntryTopBar
 import app.skein.feature.shell.host.SkeinShellState
+import app.skein.feature.shell.host.entryBottomPadding
 import java.time.ZoneId
 
 /** ponytail: no "⌕ Search chats" field until chat search exists (§12.4, ask B7); the palette is AL-12's. */
@@ -43,7 +44,10 @@ internal fun ConversationsPane(
             return@Column
         }
         val groups = groupChatHistory(history, nowMillis, zone)
-        LazyColumn(Modifier.weight(1f).fillMaxWidth()) {
+        LazyColumn(
+            Modifier.weight(1f).fillMaxWidth(),
+            contentPadding = entryBottomPadding(),
+        ) {
             groups.forEach { group ->
                 item(key = "group-${group.label}") { SkeinSectionHeader(group.label) }
                 items(group.items, key = { it.id }) { row ->

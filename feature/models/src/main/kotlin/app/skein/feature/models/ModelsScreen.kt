@@ -14,6 +14,8 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Button
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
@@ -35,6 +37,7 @@ import app.skein.core.designsystem.components.SkeinAction
 import app.skein.core.designsystem.components.SkeinDestructiveDialog
 import app.skein.core.designsystem.components.SkeinEmptyState
 import app.skein.core.designsystem.icons.SkeinIcons
+import app.skein.feature.shell.host.entryBottomPadding
 
 public const val MODELS_EMPTY_TEST_TAG: String = "app.skein.feature.models.ModelsEmpty"
 public const val MODELS_DEFAULT_MARKER: String = "default"
@@ -183,7 +186,10 @@ public fun ModelsListPane(
             modifier = modifier.fillMaxSize().testTag(MODELS_EMPTY_TEST_TAG),
         )
     } else {
-        LazyColumn(modifier = modifier.fillMaxSize().testTag(MODELS_LIST_PANE_TEST_TAG)) {
+        LazyColumn(
+            modifier = modifier.fillMaxSize().testTag(MODELS_LIST_PANE_TEST_TAG),
+            contentPadding = entryBottomPadding(),
+        ) {
             items(models, key = { it.id }) { model ->
                 ModelRow(
                     model = model,
@@ -227,7 +233,15 @@ public fun ModelDetailsPane(
             onDismiss = { pendingDelete = false },
         )
     }
-    Column(modifier = modifier.fillMaxSize().padding(16.dp)) {
+    Column(
+        modifier =
+            modifier
+                .fillMaxSize()
+                .verticalScroll(
+                    rememberScrollState(),
+                ).padding(entryBottomPadding())
+                .padding(16.dp),
+    ) {
         Icon(
             painter = painterResource(SkeinIcons.Model),
             contentDescription = null,

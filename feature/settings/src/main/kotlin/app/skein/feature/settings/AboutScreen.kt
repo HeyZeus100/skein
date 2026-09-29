@@ -32,6 +32,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.unit.dp
 import app.skein.core.designsystem.icons.SkeinIcons
+import app.skein.feature.shell.host.entryBottomPadding
 import app.skein.feature.shell.input.SecureTextField
 
 /**
@@ -207,7 +208,7 @@ private fun LicenseList(
     onViewClick: (LicenseEntry) -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    LazyColumn(modifier = modifier.fillMaxSize()) {
+    LazyColumn(modifier = modifier.fillMaxSize(), contentPadding = entryBottomPadding()) {
         groups.forEach { group ->
             item(key = "header:${group.spdxId}") {
                 Text(

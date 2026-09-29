@@ -37,6 +37,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalLocale
 import androidx.compose.ui.platform.testTag
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import app.skein.core.model.Document
 import app.skein.core.model.DocumentKind
@@ -70,6 +71,7 @@ public fun TimelineScreen(
     modifier: Modifier = Modifier,
     zone: ZoneId = ZoneId.systemDefault(),
     now: () -> Long = System::currentTimeMillis,
+    bottomContentPadding: Dp = 0.dp,
 ) {
     val entries by state.entries.collectAsState()
     val window by state.window.collectAsState()
@@ -93,7 +95,7 @@ public fun TimelineScreen(
                 EmptyState(
                     filtered = window.filter != state.unfiltered,
                     onClearFilters = state::clearFilters,
-                    modifier = Modifier.weight(1f),
+                    modifier = Modifier.weight(1f).padding(bottom = bottomContentPadding),
                 )
             } else {
                 EntryList(
@@ -104,6 +106,7 @@ public fun TimelineScreen(
                     personaNames = personaNames,
                     zone = zone,
                     nowMillis = now(),
+                    bottomContentPadding = bottomContentPadding,
                     modifier = Modifier.weight(1f),
                 )
             }
@@ -143,6 +146,7 @@ private fun EntryList(
     personaNames: Map<String, String>,
     zone: ZoneId,
     nowMillis: Long,
+    bottomContentPadding: Dp,
     modifier: Modifier = Modifier,
 ) {
     val listState = rememberLazyListState()
@@ -169,7 +173,7 @@ private fun EntryList(
     LazyColumn(
         state = listState,
         modifier = modifier.fillMaxWidth().testTag(TimelineTestTags.LIST),
-        contentPadding = PaddingValues(top = 4.dp, bottom = 16.dp),
+        contentPadding = PaddingValues(top = 4.dp, bottom = 16.dp + bottomContentPadding),
     ) {
         sections.forEach { section ->
             stickyHeader(key = "day:${section.day}", contentType = "day") { _ ->

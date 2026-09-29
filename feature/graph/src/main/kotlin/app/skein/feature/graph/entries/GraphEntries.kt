@@ -9,9 +9,14 @@ package app.skein.feature.graph.entries
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.WindowInsets
+import androidx.compose.foundation.layout.WindowInsetsSides
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.navigationBars
+import androidx.compose.foundation.layout.only
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.material3.Button
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -103,7 +108,13 @@ private fun GraphRoot(
                         openPreview = { rawNodeId -> shell.navigate { selectGraphNode(it, rawNodeId) } },
                         openPinned = { rawNodeId -> shell.navigate { selectGraphNode(it, rawNodeId) } },
                     )
-                    GraphLegend(modifier = Modifier.align(Alignment.BottomStart).padding(12.dp))
+                    GraphLegend(
+                        modifier =
+                            Modifier
+                                .align(Alignment.BottomStart)
+                                .windowInsetsPadding(WindowInsets.navigationBars.only(WindowInsetsSides.Bottom))
+                                .padding(12.dp),
+                    )
                 }
             }
         }

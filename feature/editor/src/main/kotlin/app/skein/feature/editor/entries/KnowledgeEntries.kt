@@ -8,6 +8,7 @@ package app.skein.feature.editor.entries
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -51,6 +52,7 @@ import app.skein.feature.shell.host.LocalSkeinWindowLayout
 import app.skein.feature.shell.host.SheetMode
 import app.skein.feature.shell.host.SheetPeekRow
 import app.skein.feature.shell.host.SkeinShellState
+import app.skein.feature.shell.host.entryBottomPadding
 import app.skein.feature.shell.host.followById
 import app.skein.feature.shell.host.navIconFor
 import app.skein.feature.shell.host.open
@@ -195,6 +197,7 @@ private fun KnowledgeList(
             modifier = Modifier.weight(1f),
             zone = deps.zone,
             now = deps.clock,
+            bottomContentPadding = entryBottomPadding().calculateBottomPadding(),
         )
     }
 }
@@ -282,6 +285,7 @@ private fun ConnectionsEntry(
         BacklinksDrawer(state = backlinks, initiallyExpanded = true)
         SkeinListRow(
             title = "Open in Graph",
+            modifier = Modifier.padding(entryBottomPadding()),
             leadingIcon = SkeinIcons.Graph,
             onClick = { shell.navigate { openGraph(it, rawId) } },
         )

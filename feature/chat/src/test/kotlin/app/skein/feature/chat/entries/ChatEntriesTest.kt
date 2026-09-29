@@ -9,6 +9,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.test.assert
 import androidx.compose.ui.test.assertIsDisplayed
+import androidx.compose.ui.test.assertIsFocused
 import androidx.compose.ui.test.hasAnyAncestor
 import androidx.compose.ui.test.hasTestTag
 import androidx.compose.ui.test.hasText
@@ -18,6 +19,8 @@ import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
 import androidx.compose.ui.test.performTextInput
+import androidx.compose.ui.unit.DpSize
+import androidx.compose.ui.unit.dp
 import app.skein.core.designsystem.theme.SkeinTheme
 import app.skein.core.model.Document
 import app.skein.core.model.DocumentKind
@@ -44,6 +47,7 @@ import kotlinx.serialization.json.JsonObject
 import kotlinx.serialization.json.JsonPrimitive
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertNotNull
+import org.junit.Assert.assertTrue
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -106,6 +110,38 @@ class ChatEntriesTest {
         composeRule.waitForIdle()
         composeRule.onNodeWithTag(ChatEntryTestTags.CONVERSATIONS).assertDoesNotExist()
         composeRule.onNodeWithTag(COMPOSER_TEST_TAG).assert(hasText("half a thought"))
+    }
+
+    @Test
+    fun `composer line budget follows a live short-window resize without replacing its draft`() {
+        setHost()
+        composeRule.runOnIdle { shell.navigate { goTo(it, ChatKey(id(fold))) } }
+        val draft = (1..24).joinToString("\n") { "Draft line $it" }
+        composeRule.onNodeWithTag(COMPOSER_TEST_TAG).performTextInput(draft)
+        val tallHeight =
+            composeRule
+                .onNodeWithTag(COMPOSER_TEST_TAG)
+                .fetchSemanticsNode()
+                .boundsInRoot.height
+        size.value = DpSize(994.dp, 443.dp)
+        composeRule.waitForIdle()
+        composeRule.onNodeWithTag(COMPOSER_TEST_TAG).assert(hasText(draft)).assertIsFocused()
+        val shortHeight =
+            composeRule
+                .onNodeWithTag(COMPOSER_TEST_TAG)
+                .fetchSemanticsNode()
+                .boundsInRoot.height
+        assertTrue("short window halves the six-line compact budget", shortHeight <= tallHeight / 2f + 4f)
+        size.value = COMPACT
+        composeRule.waitForIdle()
+        assertEquals(
+            tallHeight,
+            composeRule
+                .onNodeWithTag(COMPOSER_TEST_TAG)
+                .fetchSemanticsNode()
+                .boundsInRoot.height,
+            4f,
+        )
     }
 
     @Test
