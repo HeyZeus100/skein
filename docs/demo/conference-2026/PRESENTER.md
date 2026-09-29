@@ -1,6 +1,6 @@
 # Skein: a short conference demo
 
-Use the fictional notes with **Knowledge on**. The latest completed rehearsal answered all four questions below correctly; first visible text took about 40–53 seconds. The general Knowledge-off test contained a factual error, so use the note-grounded examples for the presentation. This guide describes the verified source920e rehearsal; the final combined UI update is still awaiting installation and physical checks.
+Use the fictional notes with **Knowledge on**. The latest completed rehearsal answered all four questions below correctly; first visible text took about 40–53 seconds. The general Knowledge-off test contained a factual error, so use the note-grounded examples for the presentation. The updated source7868 app is installed on the Fold with its copied-back APK verified. Its final split-view rehearsal encountered a navigation overlay bug; use a single workspace until that repair is verified. The answer results and timings below come from the earlier source920e four-question rehearsal.
 
 Start with Construction. Open **DEMO: Cedar Cabinet Order**, then Chat → New chat. Ask:
 

@@ -1,0 +1,121 @@
+{
+  "source_sha": "7868cff8e2848e0a84b2def3c14ae21c2569969b",
+  "status": "INSTALLED_VERIFIED_PHYSICAL_SPLIT_BUG_UNDER_INVESTIGATION",
+  "app": {
+    "sha256": "b4f470485d2fb9afb500de4298122343b594533bca4ff75bb982af9b393fd22a",
+    "size_bytes": 128079415
+  },
+  "signer_sha256": "75bcae7118a4635dd0fb153438e5bdbfd7aab5d467b3a0c2bb210eefde5becf9",
+  "local_checks": {
+    "passed": 889,
+    "skipped": 24
+  },
+  "local_screens": {
+    "unchanged": 552
+  },
+  "run_ids": {
+    "ci": 36631973782,
+    "screenshots": 36631973785,
+    "ordinary": 36632037515,
+    "reproducible": 36631973840
+  },
+  "evidence_pins": {
+    "inventory.json-candidate-7868cff8e-ordinary": "7045e1502f63fc21094872055c0a165bc18da8217516436a7d77c45467985528",
+    "review.json-actual": "ec76f16d07772f08e9cbb158ba5402dd066799360d30933441238c9cea2cd119"
+  },
+  "production_scope": [
+    "single contextual Sidebar, Split and Swap",
+    "imported model detail route repair",
+    "actual engine model name and per-chat activity"
+  ],
+  "preserved": [
+    "owner data and prior models",
+    "original failed evidence",
+    "retrieval gold and thresholds",
+    "all screenshot baselines",
+    "owner files and recovery worktrees"
+  ],
+  "limits": [
+    "Physical compact controls and model indicator still pending on newAPK",
+    "Prior920e four frozen fact answers pass; zero rendered citations",
+    "Knowledge-off general answer issuer error preserved",
+    "Retrieval/embedding and formal Fold gates remain open"
+  ],
+  "remote_ci": {
+    "passed": 5164,
+    "skipped": 88,
+    "bad": 0,
+    "xml_files": 507,
+    "cached_unit_tasks": 18
+  },
+  "remote_screenshots": {
+    "passed": 1291,
+    "skipped": 80,
+    "bad": 0,
+    "unchanged": 552,
+    "module_summaries": 8,
+    "fresh_no_build_cache": true
+  },
+  "remote_reproducibility": {
+    "status": "PASS",
+    "apk_pair_byte_equal": true,
+    "apk_sha256": "ba191083759712e3508a1773f97dd2ae90ac08ed441f19169a58abd93b3cf0a4",
+    "apk_bytes": 100758279,
+    "native_pair_byte_equal": true,
+    "native_sha256": "2aefda01808f10bf5693ab02d0857e0169dc09550b615896939cb176c032daff",
+    "native_bytes": 25314032,
+    "embedded_release_native_equal": true,
+    "limits": [
+      "Unsigned release reproducibility; not local signed debug byte equality.",
+      "Tag-only SQLCipher regeneration skipped. Native negative-control not run.",
+      "Full artifact archives verified against GitHub digest and actual payload."
+    ]
+  },
+  "ordinary": {
+    "passed": 281,
+    "skipped": 0,
+    "failures": 0,
+    "errors": 0,
+    "xml_files": 3,
+    "scope": "API35x86_64 ordinaryemulator; physicalseparate"
+  },
+  "release_sha256": "42b7c342b4dd2b49fa79be614eda7a6f353a2d0d9ec83c97eb8aae592f23bd82",
+  "root_review_pins": {
+    "reproducible-root-review.json": "281e44633c985a197f751f38e04f63bf139e0372036b504cb9eebd592d817c33",
+    "native-equivalence-review.json": "281f17d5b7bccffdbc97e4855d505b39979e18bd590d4c48469310c287e6df62",
+    "actual-checks-review.json": "59898ef8582be95ece8d5384a0d16b7c305be89bb70b652f3c3b4f634e31bbef",
+    "build-source-review.json": "ced921fec98f14f27c7431fd47bc7e8fd4151a10a49dd6be5fa2b67ce893f0bf",
+    "screenshots-root-review.json": "533485f61a4f240090ea875d1de6adcf3207795c18bc18a46dace56696e1dedb",
+    "ci-root-review.json": "06201c47ced1eff296c08f765eaa604c77e4442716656a8a739de05d63ba81d9",
+    "ordinary-root-review.json": "d88910f043ac0c79a259d24476a8b92a787de7ffa86fbd377ec81c672ce9d21d"
+  },
+  "installation": {
+    "at": "2026-09-29T21:46:23.069162+00:00",
+    "summary_sha256": "ee6f282334dd73765816ee56af5ee5d47e1c9bccfd06d58f3d5682a47d475e63",
+    "install_attempts": 1,
+    "copied_back_sha256": "b4f470485d2fb9afb500de4298122343b594533bca4ff75bb982af9b393fd22a",
+    "copied_back_bytes": 128079415,
+    "data_preservation": {
+      "firstInstallTime": true,
+      "dataDir": true,
+      "ceDataInode": true,
+      "deDataInode": true,
+      "version_code": true,
+      "version_name": true
+    },
+    "uid_continuity": "unavailable_not_claimed",
+    "old_apk_preserved": true,
+    "model_imports": 0
+  },
+  "physical_ui": {
+    "model_header": "No model loaded observed; loaded/answering notyetverified",
+    "single_sidebar": "semantics toggled but visual acceptance not established",
+    "split": "Ownerreported bug; drawer/search overlays observed. Earlier split frame visually emptycomposer requiresretentiondiagnosis; no datalossclaim",
+    "live_question_sent": false,
+    "beads_open": [
+      "skein-hc3y",
+      "skein-y4xz",
+      "skein-fgt1"
+    ]
+  }
+}
