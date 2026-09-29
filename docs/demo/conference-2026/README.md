@@ -4,6 +4,8 @@ Three fictional domain packs demonstrate asking about saved notes and opening th
 
 **Rehearsal status: NOT RUN.** Durations are planned targets, not measured performance. The UI route was inspected at integration commit `a4ba4f4`; identify and rehearse the installed candidate separately. This pack supports `skein-830f`. It is not an evaluation corpus, benchmark result or acceptance sign-off. Do not add it to evaluation gold or tune retrieval thresholds against it.
 
+**Physical checkpoint, 29 September at 10:48 UTC:** candidate `5ae91c2` is installed with its APK digest verified. The native public-model replay passed five template/token/control cases and EOG classification; the synthetic answer attempt hit its 900-second watchdog with no valid manifest or answer rows. Normal app launch succeeded, but the device keyguard requires the owner to unlock. **The demo is not ready and post-update UI rehearsal remains NOT RUN.** See the [physical evidence and open gates](runs/2026-09-29-physical/README.md).
+
 The owner needs the Fold ready by **17:00 on 29 September 2026, America/Los_Angeles (PDT)**. The planned **code freeze is 16:00**, followed by final rehearsal on the same APK and model. The owner released the previous Fold HOLD for a verified update and demo checks with existing app data preserved. One designated runner owns all physical-device access.
 
 ## Preload before presenting
@@ -87,11 +89,11 @@ If generation is too slow, fails or supplies unsupported facts, use **Stop answe
 
 ## Rehearsal checklist and results template
 
-The device runner records observations here or in linked evidence. Every result remains **NOT RUN** until observed. Keep technical logs content-free and preserve secure settings; do not require screenshots when protection prevents them.
+The device runner records observations here or in linked evidence. Runtime rehearsal results remain **NOT RUN** until observed; the installation identity below is supporting update evidence. Keep technical logs content-free and preserve secure settings; do not require screenshots when protection prevents them.
 
 | Check / measurement | Observed result |
 |---|---|
-| Candidate commit; installed package/version; APK identity | NOT RUN |
+| Candidate commit; installed package; APK identity | `app.skein`, source `5ae91c2`, installed APK digest verified; [exact update evidence](runs/2026-09-29-physical/physical-evidence.json). Version alone is not build identity. |
 | Model name/file identity; runtime settings | NOT RUN |
 | Date, runner, selected Space; network conditions | NOT RUN |
 | Existing vault/app data and secure settings preserved | NOT RUN |
