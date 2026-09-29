@@ -19,7 +19,6 @@ import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
-import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
@@ -193,8 +192,14 @@ fun SkeinListRow(
         if (hasMenu) {
             // A zero-size anchor at the row's bottom end: the menu opens under the ⋮, whichever way it was opened.
             Box(Modifier.matchParentSize(), contentAlignment = Alignment.BottomEnd) {
-                Box {
-                    RowMenu(expanded = menuOpen, onDismiss = { menuOpen = false }, actions = menuActions)
+                val menuAnchor = rememberSkeinMenuAnchor()
+                Box(Modifier.skeinMenuAnchor(menuAnchor)) {
+                    RowMenu(
+                        expanded = menuOpen,
+                        onDismiss = { menuOpen = false },
+                        actions = menuActions,
+                        anchor = menuAnchor,
+                    )
                 }
             }
         }
@@ -214,9 +219,10 @@ private fun RowMenu(
     expanded: Boolean,
     onDismiss: () -> Unit,
     actions: List<SkeinAction>,
+    anchor: SkeinMenuAnchor,
 ) {
     val (destructive, regular) = actions.partition { it.destructive }
-    DropdownMenu(expanded = expanded, onDismissRequest = onDismiss) {
+    SkeinDropdownMenu(expanded = expanded, onDismissRequest = onDismiss, anchorBounds = anchor.boundsInWindow) {
         regular.forEach { MenuItem(it, onDismiss) }
         if (destructive.isNotEmpty() && regular.isNotEmpty()) {
             HorizontalDivider(

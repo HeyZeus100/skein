@@ -7,7 +7,6 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
-import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.FilterChip
 import androidx.compose.material3.Text
@@ -20,6 +19,9 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.unit.dp
+import app.skein.core.designsystem.components.SkeinDropdownMenu
+import app.skein.core.designsystem.components.rememberSkeinMenuAnchor
+import app.skein.core.designsystem.components.skeinMenuAnchor
 import app.skein.core.model.DocumentKind
 import app.skein.core.model.Persona
 import app.skein.core.model.PersonaId
@@ -91,8 +93,9 @@ private fun PersonaDropdownChip(
     onPersona: (PersonaId?) -> Unit,
 ) {
     var open by remember { mutableStateOf(false) }
+    val menuAnchor = rememberSkeinMenuAnchor()
     val label = personas.firstOrNull { it.id == selectedId }?.name ?: selectedId ?: "Space"
-    Box {
+    Box(Modifier.skeinMenuAnchor(menuAnchor)) {
         FilterChip(
             selected = selectedId != null,
             onClick = { open = true },
@@ -100,7 +103,11 @@ private fun PersonaDropdownChip(
             trailingIcon = { Text("▾") },
             modifier = Modifier.testTag(TimelineTestTags.PERSONA_CHIP),
         )
-        DropdownMenu(expanded = open, onDismissRequest = { open = false }) {
+        SkeinDropdownMenu(
+            expanded = open,
+            onDismissRequest = { open = false },
+            anchorBounds = menuAnchor.boundsInWindow,
+        ) {
             DropdownMenuItem(
                 text = { Text("All Spaces") },
                 onClick = {

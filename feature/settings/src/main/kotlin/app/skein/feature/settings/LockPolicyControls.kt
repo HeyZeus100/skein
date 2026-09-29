@@ -5,7 +5,6 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Switch
@@ -17,6 +16,9 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import app.skein.core.designsystem.components.SkeinDropdownMenu
+import app.skein.core.designsystem.components.rememberSkeinMenuAnchor
+import app.skein.core.designsystem.components.skeinMenuAnchor
 
 // Settings › Security rows for plan `E3.I14` / bead `skein-up0`: idle
 // timeout, "lock when screen turns off", "lock when app leaves foreground",
@@ -40,10 +42,12 @@ fun IdleTimeoutRow(
     allowedMinutes: List<Int> = DEFAULT_ALLOWED_IDLE_TIMEOUT_MINUTES,
 ) {
     var expanded by remember { mutableStateOf(false) }
+    val menuAnchor = rememberSkeinMenuAnchor()
     Row(
         modifier =
             modifier
                 .fillMaxWidth()
+                .skeinMenuAnchor(menuAnchor)
                 .clickable { expanded = true }
                 .padding(horizontal = 16.dp, vertical = 12.dp),
     ) {
@@ -55,7 +59,9 @@ fun IdleTimeoutRow(
                 color = MaterialTheme.colorScheme.onSurfaceVariant,
             )
         }
-        DropdownMenu(expanded = expanded, onDismissRequest = { expanded = false }) {
+        SkeinDropdownMenu(expanded = expanded, onDismissRequest = {
+            expanded = false
+        }, anchorBounds = menuAnchor.boundsInWindow) {
             allowedMinutes.forEach { option ->
                 DropdownMenuItem(
                     text = { Text(formatMinutes(option)) },

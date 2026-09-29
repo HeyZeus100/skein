@@ -1,6 +1,7 @@
 package app.skein.core.designsystem.components
 
 import android.view.Gravity
+import android.view.WindowManager.LayoutParams
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.ime
@@ -22,18 +23,15 @@ import androidx.compose.ui.composed
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.graphics.graphicsLayer
-import androidx.compose.ui.layout.onSizeChanged
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.LocalLayoutDirection
 import androidx.compose.ui.platform.LocalView
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.DpRect
-import androidx.compose.ui.unit.IntSize
 import androidx.compose.ui.unit.height
 import androidx.compose.ui.unit.width
 import androidx.compose.ui.window.DialogProperties
 import androidx.compose.ui.window.DialogWindowProvider
-import kotlin.math.roundToInt
 
 /** Material dialog semantics, dismissal and styling, placed wholly in one separating-hinge partition. */
 @Composable
@@ -75,7 +73,16 @@ fun SkeinAlertDialog(
     AlertDialog(
         onDismissRequest = onDismissRequest,
         confirmButton = confirmButton,
-        modifier = modifier.then(if (bounds == null) Modifier else Modifier.inDialogPartition(bounds)),
+        modifier =
+            modifier.then(
+                if (bounds ==
+                    null
+                ) {
+                    Modifier
+                } else {
+                    Modifier.inDialogPartition(bounds, properties.usePlatformDefaultWidth)
+                },
+            ),
         dismissButton = dismissButton,
         icon = icon,
         title = title,
@@ -123,26 +130,34 @@ internal fun intersectWindowPartition(
 }
 
 /** Composed inside Material's Dialog, where LocalView refers to the dialog's own window. */
-private fun Modifier.inDialogPartition(bounds: DpRect): Modifier =
+private fun Modifier.inDialogPartition(
+    bounds: DpRect,
+    platformDefaultWidth: Boolean,
+): Modifier =
     composed {
         val window = (LocalView.current.parent as? DialogWindowProvider)?.window
         val density = LocalDensity.current
-        var size by remember { mutableStateOf(IntSize.Zero) }
-        DisposableEffect(window, bounds, size, density) {
+        var positioned by remember(bounds) { mutableStateOf(false) }
+        DisposableEffect(window, bounds, density, platformDefaultWidth) {
             val previous =
                 window?.attributes?.let {
                     android.view.WindowManager
                         .LayoutParams()
                         .apply { copyFrom(it) }
                 }
-            if (window != null && size != IntSize.Zero) {
+            if (window != null) {
                 val attributes = window.attributes
+                // The platform window occupies the partition. DialogLayout already centres the
+                // measured Material card inside it; positioning the card again double-offsets it.
                 attributes.gravity = Gravity.TOP or Gravity.LEFT
                 with(density) {
-                    attributes.x = (bounds.left.toPx() + (bounds.width.toPx() - size.width) / 2f).roundToInt()
-                    attributes.y = (bounds.top.toPx() + (bounds.height.toPx() - size.height) / 2f).roundToInt()
+                    attributes.x = bounds.left.roundToPx()
+                    attributes.y = bounds.top.roundToPx()
+                    attributes.width = bounds.width.roundToPx()
+                    attributes.height = bounds.height.roundToPx()
                 }
                 window.attributes = attributes
+                positioned = true
             }
             onDispose {
                 if (window != null && previous != null) {
@@ -150,13 +165,15 @@ private fun Modifier.inDialogPartition(bounds: DpRect): Modifier =
                     attributes.gravity = previous.gravity
                     attributes.x = previous.x
                     attributes.y = previous.y
+                    // Restore Material's sizing policy when the separating hinge disappears.
+                    attributes.width =
+                        if (platformDefaultWidth) LayoutParams.WRAP_CONTENT else LayoutParams.MATCH_PARENT
+                    attributes.height = LayoutParams.WRAP_CONTENT
                     window.attributes = attributes
                 }
             }
         }
-        val positioned = size != IntSize.Zero
-        this.sizeIn(maxWidth = bounds.width, maxHeight = bounds.height).onSizeChanged { size = it }.graphicsLayer {
-            alpha =
-                if (positioned) 1f else 0f
+        this.sizeIn(maxWidth = bounds.width, maxHeight = bounds.height).graphicsLayer {
+            alpha = if (positioned) 1f else 0f
         }
     }

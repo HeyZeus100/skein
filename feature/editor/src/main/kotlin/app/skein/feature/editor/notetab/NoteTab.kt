@@ -33,7 +33,6 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.union
 import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.material3.CircularProgressIndicator
-import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.IconButton
@@ -55,7 +54,10 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.compose.LifecycleEventEffect
 import app.skein.core.designsystem.components.SkeinAction
+import app.skein.core.designsystem.components.SkeinDropdownMenu
 import app.skein.core.designsystem.components.SkeinNotice
+import app.skein.core.designsystem.components.rememberSkeinMenuAnchor
+import app.skein.core.designsystem.components.skeinMenuAnchor
 import app.skein.core.designsystem.theme.LocalSkeinEditorColors
 import app.skein.core.designsystem.theme.LocalSkeinTokens
 import app.skein.core.designsystem.theme.rememberSkeinMarkdownStyle
@@ -341,7 +343,8 @@ private fun ShareMenuButton(
     onExportPdf: () -> Unit,
 ) {
     var expanded by remember { mutableStateOf(false) }
-    Box {
+    val menuAnchor = rememberSkeinMenuAnchor()
+    Box(Modifier.skeinMenuAnchor(menuAnchor)) {
         IconButton(
             onClick = { expanded = true },
             enabled = enabled,
@@ -354,7 +357,9 @@ private fun ShareMenuButton(
             // matching the restrained-glyph convention above.
             Text(text = "↗", style = MaterialTheme.typography.titleMedium)
         }
-        DropdownMenu(expanded = expanded, onDismissRequest = { expanded = false }) {
+        SkeinDropdownMenu(expanded = expanded, onDismissRequest = {
+            expanded = false
+        }, anchorBounds = menuAnchor.boundsInWindow) {
             DropdownMenuItem(
                 text = { Text("Share as text") },
                 onClick = {

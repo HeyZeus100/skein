@@ -192,9 +192,13 @@ class SkeinPartitionedDialogTest {
         window: Window,
         bounds: DpRect,
     ) {
-        val size = composeRule.onNodeWithTag("dialog").fetchSemanticsNode().size
+        val node = composeRule.onNodeWithTag("dialog").fetchSemanticsNode()
+        val size = node.size
+        val screen = node.positionOnScreen
         val params = window.attributes
         assertEquals(Gravity.TOP or Gravity.LEFT, params.gravity)
+        assertEquals("platform window width", (bounds.right.value - bounds.left.value).toInt(), params.width)
+        assertEquals("platform window height", (bounds.bottom.value - bounds.top.value).toInt(), params.height)
         assertTrue("x=${params.x}, bounds=$bounds", params.x >= bounds.left.value)
         assertTrue("y=${params.y}, bounds=$bounds", params.y >= bounds.top.value)
         assertTrue("right=${params.x + size.width}, bounds=$bounds", params.x + size.width <= bounds.right.value + 1)
@@ -203,6 +207,16 @@ class SkeinPartitionedDialogTest {
             params.y + size.height <= bounds.bottom.value + 1,
         )
         assertTrue(size.width > 100 && size.height > 100)
+        assertTrue("screen left=$screen, bounds=$bounds", screen.x >= bounds.left.value - 1)
+        assertTrue("screen top=$screen, bounds=$bounds", screen.y >= bounds.top.value - 1)
+        assertTrue(
+            "screen right=${screen.x + size.width}, bounds=$bounds",
+            screen.x + size.width <= bounds.right.value + 1,
+        )
+        assertTrue(
+            "screen bottom=${screen.y + size.height}, bounds=$bounds",
+            screen.y + size.height <= bounds.bottom.value + 1,
+        )
     }
 }
 
