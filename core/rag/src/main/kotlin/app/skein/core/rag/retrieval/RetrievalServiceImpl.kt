@@ -117,6 +117,8 @@ public class RetrievalServiceImpl(
     /** Explicit conversation-history retrieval only; automatic Knowledge evidence excludes CHAT. */
     includeChatHistory: Boolean = false,
     private val stages: RecallStages = RecallStages(),
+    /** Null is an explicit ungated evaluation/control path; production uses the lexical coverage gate. */
+    private val evidenceGate: LexicalEvidenceGate? = LexicalEvidenceGate(),
 ) : RetrievalService {
     private val lexicalRecall = LexicalRecall(index)
     private val graphRecall = GraphRecall(index, repository)
@@ -125,6 +127,11 @@ public class RetrievalServiceImpl(
 
     /** Guards the "no embedder" degradation warning so it fires once per instance, not once per call. */
     private val loggedNoEmbedder = AtomicBoolean(false)
+
+    override fun acceptsEvidence(
+        query: String,
+        candidates: List<Retrieved>,
+    ): Boolean = (evidenceGate?.select(query, candidates) ?: candidates).isNotEmpty()
 
     override suspend fun retrieveContext(
         query: String,
@@ -135,7 +142,8 @@ public class RetrievalServiceImpl(
 
         val sources = recallAll(query)
         val ranked = ranker.rank(sources, personaId, k)
-        return assembler.assemble(ranked, sources).take(k)
+        val candidates = assembler.assemble(ranked, sources).take(k)
+        return evidenceGate?.select(query, candidates) ?: candidates
     }
 
     /** Spec §7.2 recall step: the three sources, fanned out concurrently on [io]. See file header. */

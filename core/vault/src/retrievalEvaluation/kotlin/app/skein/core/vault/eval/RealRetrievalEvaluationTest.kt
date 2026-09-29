@@ -16,6 +16,7 @@ import app.skein.core.rag.ingest.IngestSteps
 import app.skein.core.rag.ingest.LinkStep
 import app.skein.core.rag.rank.RankerConfig
 import app.skein.core.rag.rank.RetrievedAssembler
+import app.skein.core.rag.retrieval.LexicalEvidenceGate
 import app.skein.core.rag.retrieval.RecallStages
 import app.skein.core.rag.retrieval.RetrievalServiceImpl
 import app.skein.core.rag.tokenizers.ApproximateTokenizer
@@ -253,6 +254,12 @@ public class RealRetrievalEvaluationTest {
                     val repetitions = args.getString("skein.retrieval.repetitions")?.toInt() ?: 3
                     require(repetitions in 2..10) { "Evaluation repetitions must be between 2 and 10" }
                     val allRows = mutableListOf<EvaluatedQuery>()
+                    val evidencePolicy =
+                        buildJsonObject {
+                            put("version", LexicalEvidenceGate.VERSION)
+                            put("minimum_query_coverage", LexicalEvidenceGate.DEFAULT_MINIMUM_COVERAGE)
+                            put("semantic_vector_policy", "uncalibrated_bypass")
+                        }
                     val modes =
                         listOf(
                             Mode(
@@ -305,10 +312,47 @@ public class RealRetrievalEvaluationTest {
                                     put("include_chat_history", false)
                                     put("recall_timeout_ms", RetrievalServiceImpl.DEFAULT_RECALL_TIMEOUT_MILLIS)
                                     put("stage_warnings", JsonArray(stageWarnings.toList().map(::JsonPrimitive)))
+                                    put("evidence_policy", evidencePolicy)
                                 },
                                 rows,
                             )
                         }
+                    // The separate fixture is frozen before development calibration.
+                    // Both factories construct the real production service; neither
+                    // receives query labels or injects candidates. Quality FAIL is
+                    // reported unchanged, never converted into successful validation.
+                    phase = "reserved_validation"
+                    val productionValidation =
+                        RejectionValidationEvaluation.evaluate(
+                            factory = { validationIndex, validationRepository, space ->
+                                RetrievalServiceImpl(
+                                    validationIndex,
+                                    validationRepository,
+                                    embedder = null,
+                                    legacyPersonaId = space,
+                                )
+                            },
+                            repetitions = repetitions,
+                            configuration = buildJsonObject { put("evidence_policy", evidencePolicy) },
+                        )
+                    val ungatedValidation =
+                        RejectionValidationEvaluation.evaluate(
+                            factory = { validationIndex, validationRepository, space ->
+                                RetrievalServiceImpl(
+                                    validationIndex,
+                                    validationRepository,
+                                    embedder = null,
+                                    legacyPersonaId = space,
+                                    evidenceGate = null,
+                                )
+                            },
+                            repetitions = repetitions,
+                            configuration =
+                                buildJsonObject {
+                                    put("evidence_policy", buildJsonObject { put("version", "disabled_control") })
+                                },
+                            modeName = "ungated_control",
+                        )
                     phase = "report"
                     val report =
                         buildJsonObject {
@@ -321,7 +365,15 @@ public class RealRetrievalEvaluationTest {
                             )
                             put(
                                 "evidence_selection",
-                                "production ranked top 8; no calibrated weak-evidence rejection policy",
+                                "production ranked top 8 with lexical query-coverage gate; no reranking by the harness",
+                            )
+                            put("evidence_policy", evidencePolicy)
+                            put(
+                                "rejection_validation",
+                                buildJsonObject {
+                                    put("production_policy", productionValidation)
+                                    put("ungated_control", ungatedValidation)
+                                },
                             )
                             put(
                                 "scope_mapping",

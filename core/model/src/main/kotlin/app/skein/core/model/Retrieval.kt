@@ -121,6 +121,16 @@ public data class Retrieved(
  * `app.skein.testing.RetrievalServiceContractTest`.
  */
 public interface RetrievalService {
+    /**
+     * Recheck the evidence policy after prompt budgeting removes candidates.
+     * Pure and content-private; this admits sources, it does not verify facts.
+     * Implementations without a relevance policy retain the nonempty contract.
+     */
+    public fun acceptsEvidence(
+        query: String,
+        candidates: List<Retrieved>,
+    ): Boolean = candidates.isNotEmpty()
+
     /** Spec §7.2. Returns at most k results ordered by descending score. Empty vault → empty list, never throws. */
     public suspend fun retrieveContext(
         query: String,

@@ -9,6 +9,7 @@ import hashlib
 import json
 from pathlib import Path
 import re
+import unicodedata
 
 # Grammatical function words only; no corpus topics, identifiers or answer terms.
 STOP_WORDS = frozenset("""a an the of for to in on at by with from is are was were
@@ -18,7 +19,7 @@ when who why how which and or but if as than then there here not no""".split())
 
 
 def terms(text):
-    return set(re.findall(r"[^\W_]+", text.lower())) - STOP_WORDS
+    return set(re.findall(r"[^\W_]+", unicodedata.normalize("NFC", text).lower())) - STOP_WORDS
 
 
 def coverage(query, result):

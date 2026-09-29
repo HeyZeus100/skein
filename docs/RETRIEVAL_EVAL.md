@@ -164,8 +164,9 @@ ordered IDs, source kind, revision, locator, text, exact scores, and recall
 provenance. The report contains per-query and per-category recall/nDCG/MRR,
 numerators/denominators, raw rankings, scope/provenance/anchor violations, absence
 rejection and false rejection, and nearest-rank p50/p95. Absence rejection is the
-current production result-list behavior; no gold-aware or calibrated weak-source
-rejector is introduced by the harness.
+production result-list behavior. The harness neither relabels candidates nor
+injects a gold-aware rejector; the production coverage policy below applies to
+all three ablations.
 
 The report always identifies this implementation as `full_hybrid_gate=INELIGIBLE`
 because production vectors are unavailable. Ranking targets are still evaluated
@@ -327,7 +328,7 @@ labels, thresholds, failed gates and raw results remain unchanged. The measured
 latencies describe this synthetic emulator workload, not Fold latency or model
 answer accuracy.
 
-The current ingest probe checks whether a new row appears in a **global top-50**
+At that baseline, the ingest probe checked whether a new row appeared in a **global top-50**
 prefix-word BM25 query. A healthy posting below that rank can produce the same
 warning; the repeated filler lexicon makes crowding plausible. The report does
 not retain probe ranks, so that is a hypothesis, not a diagnosis of all 508
@@ -339,3 +340,77 @@ postings.
 The [raw baseline bundle](eval/runs/2026-09-28-resumed-56a46f5/README.md)
 retains the complete report and actual XML with SHA-256 checksums, independently
 of the workflow artifact's retention period.
+
+## Repair measurements and lexical evidence policy
+
+The repaired, ungated development run `36512873399` used exact source
+`890ad71298fcf53488ed6b4860ecdf3a81df5eb1`. Actual XML has one pass and no
+failure/error/skip. The complete report SHA-256 is
+`23985b1f67125be83eda0ca2fe0be77d1c34d75a2b9033e175848c0199403d0c`, matching
+the device file. Prebuilt, installed and post-run APK digests agree. Default
+recall/nDCG rose to **0.800000/0.717357**; graph recall reached all 12 graph
+cases (overall 0.20), while lexical recall remained 37/60. Default ranking now
+passes the unchanged development targets; full hybrid is still ineligible.
+
+The diagnostic replayed the old probe immediately after each real write. All
+**508** old top-50 misses had matching row-specific FTS postings, out of 850
+probes; none lacked a matching posting. Production ingest emitted no warnings.
+This establishes rank-cap false warnings for the sampled terms in this rerun,
+not complete FTS integrity or retrospective proof about every old index state.
+Its ingest duration includes extra audit queries and is not production latency.
+
+`LexicalEvidenceGate` uses **0.5** minimum coverage of distinct query content
+terms in at least one returned chunk. Terms are NFC-normalized, lowercased and
+split on Unicode letter/number boundaries, excluding a fixed list of grammatical
+English words. The rule contains no fixture topics, IDs, titles or answer terms.
+If supported, it retains the original ranking and complete chunks; otherwise
+it returns an empty list. Any vector result bypasses this lexical rule until a
+real embedder can be calibrated. That bypass is an explicitly unmet semantic
+acceptance boundary, not validated hybrid rejection.
+
+Threshold selection was frozen before the coordinator viewed or executed the
+separately authored reserved fixture. `tools/eval/analyze_retrieval_signals.py`
+replays the original measured result lists without reranking and checks the
+original development gold hash. The lowest tested coverage cutoff that rejected
+all absence cases without reducing default recalled evidence was 0.5:
+
+| Coverage cutoff | Default absence rejected | Default false rejection | Default recall / nDCG |
+|---|---:|---:|---:|
+| Disabled | 0/16 | 2/60 | 0.800000 / 0.717357 |
+| 0.25 | 8/16 | 12/60 | 0.800000 / 0.717357 |
+| **0.50** | **16/16** | **12/60** | **0.800000 / 0.717357** |
+| 0.75 or 1.00 | 16/16 | 24/60 | 0.600000 / 0.517357 |
+
+These are development replay estimates, distinct from final instrumented
+measurements. All 12 rejected answerable queries are semantic cases that the
+default already failed to cover. The lexical-only ablation loses its one
+incidentally retrieved semantic answer, declining from 37/60 to 36/60. This
+regression is retained explicitly. A raw BM25 cutoff of 20 also rejected all
+absence cases but reduced default recall to 47/60; source scores remain in the
+report without being mistaken for calibrated probabilities.
+
+After both approximate and exact prompt budgeting, Knowledge rechecks the actual
+surviving sources against the same policy. If the only supporting chunk was
+dropped, the app returns its owned missing-evidence answer without generation
+and persists no source citations. Cancellation is checked again before publishing
+that result. Knowledge-off behavior is unchanged.
+
+Coverage does not verify the requested fact, negation, a number or an attribute.
+Related facts can pass and paraphrases or short follow-up references can be
+rejected. Compact selection, conversational reference resolution, contradictions
+and production semantic retrieval remain open in `skein-gg11.32` and the existing
+embedding work. No claim that retrieval eliminates hallucinations follows.
+
+The final dedicated harness invokes `RejectionValidationEvaluation` in separate
+encrypted vaults for production policy and an explicit ungated control. The
+[reserved fixture protocol](eval/rejection-validation.md) pins its independent
+six-document, twelve-query data before calibration. Both factories use the real
+retriever with default ranking, Space filtering and generated-source exclusion;
+only the evidence gate differs. Validation `FAIL` remains a recorded quality
+failure, while malformed reports or integrity violations fail collection. The
+threshold is not retuned after seeing those results. This public reserved set is
+not a blind benchmark and its small NOTE-only vault cannot establish general
+semantic, adversarial scope or generated-source behavior.
+
+See the [repair execution report](Handoffs/skein-retrieval-repair-execution.md)
+for source-specific evidence, final measurements and remaining acceptance gates.

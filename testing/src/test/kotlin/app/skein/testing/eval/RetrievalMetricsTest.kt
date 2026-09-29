@@ -189,6 +189,7 @@ public class RetrievalMetricsTest {
                 listOf(RetrievalSample(1.0, listOf(hit)), RetrievalSample(2.0, listOf(second))),
             )
         assertTrue(evaluation(hit).deterministic)
+        assertFalse(evaluation(hit.copy(docTitle = "Changed title")).deterministic)
         assertFalse(evaluation(hit.copy(score = 0.5)).deterministic)
         assertFalse(evaluation(hit.copy(recallScores = mapOf(RecallSource.LEXICAL to 0.000001))).deterministic)
         assertFalse(evaluation(hit.copy(recalledBy = setOf(RecallSource.GRAPH))).deterministic)

@@ -186,6 +186,7 @@ private fun fingerprint(results: List<Retrieved>): String =
                 listOf(
                     item.chunkId.toString(),
                     item.docId,
+                    item.docTitle,
                     item.sourceKind.name,
                     item.revisionHash.orEmpty(),
                     item.locator.toString(),

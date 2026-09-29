@@ -28,6 +28,31 @@ import org.junit.Test
 
 class RetrievalServiceImplTest {
     @Test
+    fun `production service rejects a weak normalized winner and rechecks final candidates`() =
+        runTest {
+            val repo = InMemoryVaultRepository()
+            val backing = InMemoryIndexStore()
+            val weak = seedNote(repo, backing, title = "Reception", body = "The room is on the left.")
+            val index =
+                object : IndexStore by backing {
+                    override suspend fun bm25(
+                        query: String,
+                        k: Int,
+                    ): List<ScoredChunk> = listOf(ScoredChunk(weak.chunkId, 0.000001))
+                }
+            val service = RetrievalServiceImpl(index, repo, null, warn = {})
+            val query = "What is the satellite frequency?"
+            assertThat(service.retrieveContext(query)).isEmpty()
+            val ungated = RetrievalServiceImpl(index, repo, null, warn = {}, evidenceGate = null).retrieveContext(query)
+            assertThat(ungated).hasSize(1)
+            assertThat(ungated.single().score).isEqualTo(1.0)
+            assertThat(ungated.single().recallScores).containsEntry(RecallSource.LEXICAL, 0.000001)
+            assertThat(service.acceptsEvidence(query, ungated)).isFalse()
+            val supporting = ungated.single().copy(text = "Satellite frequency: 145 MHz")
+            assertThat(service.acceptsEvidence(query, listOf(supporting))).isTrue()
+        }
+
+    @Test
     fun `disabled recall stages perform no lookup and emit no missing embedder warning`() =
         runTest {
             val repo = InMemoryVaultRepository()

@@ -355,8 +355,31 @@ public class SendPipeline(
                         )
                     }
                 if (preparationCancelled) throw CancellationException("prompt preparation cancelled")
-                val noEvidence = answerScope == AnswerScope.KNOWLEDGE && assembled.citations.isEmpty()
-                val context = TurnPromptContext(turn, retrieved, assembled, modelId, noEvidence)
+                val noEvidence =
+                    answerScope == AnswerScope.KNOWLEDGE &&
+                        !retrievalService.acceptsEvidence(text, assembled.citations.values.toList())
+                // A supporting tail chunk can be removed by either budget pass.
+                // An application-owned abstention uses no sources or model prompt.
+                val finalAssembly =
+                    if (noEvidence) {
+                        promptAssembler
+                            .assemble(
+                                persona,
+                                priorHistory,
+                                emptyList(),
+                                text,
+                                budget,
+                                countTokens,
+                                answerScope,
+                            ).copy(
+                                droppedRetrievedItems = retrieved.size,
+                                formattedTokens = null,
+                            )
+                    } else {
+                        assembled
+                    }
+                if (preparationCancelled) throw CancellationException("prompt preparation cancelled")
+                val context = TurnPromptContext(turn, retrieved, finalAssembly, modelId, noEvidence)
                 onContext(context)
                 if (noEvidence) {
                     val segments = listOf(Segment.Text(NO_KNOWLEDGE_EVIDENCE))
