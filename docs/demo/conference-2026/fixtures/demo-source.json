@@ -1,0 +1,133 @@
+{
+  "schema_version": 1,
+  "cases": [
+    {
+      "id": "demo-construction-synthesis",
+      "split": "demo",
+      "category": "synthesis",
+      "question": "What blocks the Cedar cabinet order, and who coordinates delivery?",
+      "knowledge": true,
+      "space": "demo",
+      "documents": [
+        {
+          "id": "ade408a6-7582-588f-9dc4-e479dd5e9b67",
+          "title": "DEMO: Cedar Cabinet Order",
+          "body_md": "# DEMO: Cedar Cabinet Order\n\n**Fictional demo data. This project, its people and its records are invented.**\n\nThe Cedar cabinet order is blocked by RFI-017, which is awaiting finish-selection approval. The order has not been released to the supplier.\n\nThe supplier contact is Ellis Pine at the invented company Cedar Cabinetry. This record does not include a purchase order number.\n",
+          "space": "demo",
+          "state": "current",
+          "revision_id": "demo-2ed08b645",
+          "revision_sha256": "fb7831f7c1b9847912a9dc67d053690c96440b4c0c2fce620d2fded8e2605d83"
+        },
+        {
+          "id": "3d3214cb-e48c-5230-8e2b-3c2d2c542a74",
+          "title": "DEMO: Cedar Delivery Coordination",
+          "body_md": "# DEMO: Cedar Delivery Coordination\n\n**Fictional demo data. This project, its people and its records are invented.**\n\nNora Elm coordinates delivery of the Cedar Remodel cabinets with the site team. The delivery target is 19 October 2026; it is not a confirmed booking.\n\nNora's coordination call with the site team is scheduled for 2 October 2026 at 14:00. Delivery confirmation depends on the cabinet order being released.\n",
+          "space": "demo",
+          "state": "current",
+          "revision_id": "demo-2ed08b645",
+          "revision_sha256": "a286400c58f9a90c7d2da91d158a8a87d019b8015f7134a996f43b6d447a1067"
+        }
+      ],
+      "history": [],
+      "lifecycle": [],
+      "gold": {
+        "behavior": "answer",
+        "answer": "RFI-017 is awaiting finish-selection approval; Nora Elm coordinates delivery.",
+        "required_doc_ids": [
+          "ade408a6-7582-588f-9dc4-e479dd5e9b67",
+          "3d3214cb-e48c-5230-8e2b-3c2d2c542a74"
+        ],
+        "forbidden_doc_ids": [],
+        "rubric": "Host-only demo expectation, not benchmark gold. Manually check meaning, source support and unsupported additions. Runtime status: NOT RUN."
+      }
+    },
+    {
+      "id": "demo-construction-absent",
+      "split": "demo",
+      "category": "weak_only",
+      "question": "What is the Cedar cabinet purchase order number?",
+      "knowledge": true,
+      "space": "demo",
+      "documents": [
+        {
+          "id": "ade408a6-7582-588f-9dc4-e479dd5e9b67",
+          "title": "DEMO: Cedar Cabinet Order",
+          "body_md": "# DEMO: Cedar Cabinet Order\n\n**Fictional demo data. This project, its people and its records are invented.**\n\nThe Cedar cabinet order is blocked by RFI-017, which is awaiting finish-selection approval. The order has not been released to the supplier.\n\nThe supplier contact is Ellis Pine at the invented company Cedar Cabinetry. This record does not include a purchase order number.\n",
+          "space": "demo",
+          "state": "current",
+          "revision_id": "demo-2ed08b645",
+          "revision_sha256": "fb7831f7c1b9847912a9dc67d053690c96440b4c0c2fce620d2fded8e2605d83"
+        }
+      ],
+      "history": [],
+      "lifecycle": [],
+      "gold": {
+        "behavior": "abstain",
+        "answer": "The purchase order number is not recorded. Do not substitute RFI-017.",
+        "required_doc_ids": [],
+        "forbidden_doc_ids": [],
+        "rubric": "Host-only demo expectation, not benchmark gold. Manually check meaning, source support and unsupported additions. Runtime status: NOT RUN."
+      }
+    },
+    {
+      "id": "demo-aviation-direct",
+      "split": "demo",
+      "category": "direct",
+      "question": "Which log is missing from DEMO-A?",
+      "knowledge": true,
+      "space": "demo",
+      "documents": [
+        {
+          "id": "647be571-e2b9-558a-8033-1a1792a86da1",
+          "title": "DEMO-A Records Packet",
+          "body_md": "# DEMO-A Records Packet\n\n**Fictional demo data. DEMO-A is an invented aircraft label. Document planning only.**\n\nThe DEMO-A records packet contains the airframe log and engine log. The propeller log is missing from the packet.\n",
+          "space": "demo",
+          "state": "current",
+          "revision_id": "demo-2ed08b645",
+          "revision_sha256": "1024b9aed98ede228a3a3f20558fcd369ed8aa0b6fe1a6bee992fca7222d8ecd"
+        }
+      ],
+      "history": [],
+      "lifecycle": [],
+      "gold": {
+        "behavior": "answer",
+        "answer": "The propeller log is missing; the airframe and engine logs are present.",
+        "required_doc_ids": [
+          "647be571-e2b9-558a-8033-1a1792a86da1"
+        ],
+        "forbidden_doc_ids": [],
+        "rubric": "Host-only demo expectation, not benchmark gold. Manually check meaning, source support and unsupported additions. Runtime status: NOT RUN."
+      }
+    },
+    {
+      "id": "demo-mycology-direct",
+      "split": "demo",
+      "category": "direct",
+      "question": "What mass was recorded for OYS-014 on 22 September?",
+      "knowledge": true,
+      "space": "demo",
+      "documents": [
+        {
+          "id": "bd6a0e4c-dd6d-5556-a4be-34b167f28e79",
+          "title": "DEMO: OYS-014 Observation Log",
+          "body_md": "# DEMO: OYS-014 Observation Log\n\n**Fictional demo data. Every measurement below is synthetic and was not observed in an experiment.**\n\n| Synthetic observation date | Synthetic recorded mass | Synthetic cap diameter |\n|---|---|---|\n| 20 September 2026 | 18.4 g | 42 mm |\n| 22 September 2026 | 21.1 g | 47 mm |\n\nBoth rows refer to fictional culinary oyster-mushroom sample OYS-014. These invented readings do not establish a biological effect or a recommended practice.\n",
+          "space": "demo",
+          "state": "current",
+          "revision_id": "demo-2ed08b645",
+          "revision_sha256": "5fde5a896ad9802a9147dded83c134fd17f972792f2628b812af86144c60ce8d"
+        }
+      ],
+      "history": [],
+      "lifecycle": [],
+      "gold": {
+        "behavior": "answer",
+        "answer": "21.1 g, explicitly an invented synthetic reading, not an experimental result.",
+        "required_doc_ids": [
+          "bd6a0e4c-dd6d-5556-a4be-34b167f28e79"
+        ],
+        "forbidden_doc_ids": [],
+        "rubric": "Host-only demo expectation, not benchmark gold. Manually check meaning, source support and unsupported additions. Runtime status: NOT RUN."
+      }
+    }
+  ]
+}

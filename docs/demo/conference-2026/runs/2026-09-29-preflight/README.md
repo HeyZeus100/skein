@@ -34,3 +34,11 @@ Raw device preflight, the preserved installed APK and the public model cache rem
 The first remote `stat` command used a spaced format that the ADB shell split; its exit-1 output is retained beside the corrected successful size read. The attempted `is-user-unlocked` query was unsupported and is retained as such. Two bounded accessibility probes returned no parseable hierarchy; they are not evidence that the vault was unlocked. No failed observation has been converted into a pass or silently removed.
 
 The coordinator still owns Beads, main integration and CI/emulator dispatch. This preflight does not close `skein-830f`, real-Qwen `.28/.30`, model qualification, UX or retrieval acceptance gates.
+
+## Follow-up: foreground observation and public source identity
+
+At 08:27 UTC, the designated runner confirmed the existing app was foreground and captured one authorized screen without changing screenshot protection. The old shell was unlocked, with a Space chooser, new-note/new-chat controls and a truncated Qwen model chip visible. This supersedes the earlier unknown unlock observation only; it does not establish full selected-file identity or working inference. The screenshot contains personal note previews and remains local and ignored. No notes were imported and no generation or installation occurred.
+
+The [distributor file](https://huggingface.co/tensorblock/Qwen2.5-3B-Instruct-abliterated-GGUF/blob/574cf57acf9ca2a56ec7e62e3bd974a413881745/Qwen2.5-3B-Instruct-abliterated-Q3_K_M.gguf) at immutable repository revision `574cf57acf9ca2a56ec7e62e3bd974a413881745` has exactly the observed LFS SHA-256 and size. The selected API fields are retained in [upstream-identity.json](upstream-identity.json), with a digest of the full response retained locally. This establishes a matching published artifact; it does not prove how the device copy was obtained.
+
+The distributor card labels its derivative `apache-2.0`; the [base Qwen2.5-3B-Instruct licence](https://huggingface.co/Qwen/Qwen2.5-3B-Instruct/blob/main/LICENSE) is the Qwen Research License. Record both observations. No blanket Apache licence or complete licence qualification is asserted. The upstream identity match does not establish any of the still-unmeasured native/runtime gates above.

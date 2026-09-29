@@ -1,0 +1,17 @@
+{
+  "schema_version": 1,
+  "synthetic": true,
+  "purpose": "Conference demo supplied evidence only; NOT RUN; not live retrieval proof or benchmark replacement",
+  "splits": {
+    "demo": {
+      "file": "demo-source.json",
+      "sha256": "8ea60c32cc7d19ee0e52c4ea501408b168b5540979f5c41e18197df27a3d26e0",
+      "cases": 4,
+      "categories": {
+        "synthesis": 1,
+        "weak_only": 1,
+        "direct": 2
+      }
+    }
+  }
+}
