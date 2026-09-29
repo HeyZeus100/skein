@@ -279,6 +279,15 @@ class ReportContractTest(unittest.TestCase):
             with self.assertRaises(ValueError):
                 self.validate(report)
 
+    def test_reserved_ideal_dcg_cannot_drift_when_all_retrieved_gains_are_zero(self):
+        report = measured_report()
+        for value in report["rejection_validation"].values():
+            for row in value["mode"]["queries"]:
+                if row["answerable"]:
+                    row["ideal_dcg_at_8"] = 1
+        with self.assertRaisesRegex(ValueError, "reserved ideal DCG"):
+            self.validate(report)
+
 class JunitEvidenceTest(unittest.TestCase):
     def test_only_one_executed_retrieval_case_is_accepted(self):
         case = f'<testcase classname="{runner.TEST_CLASS}" name="measured"/>'

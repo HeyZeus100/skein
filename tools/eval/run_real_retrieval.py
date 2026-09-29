@@ -149,6 +149,9 @@ def validate_rejection_report(report, name, policy, fixture):
         equal_metric(row.get("dcg_at_8"), dcg, "query DCG")
         ideal = row.get("ideal_dcg_at_8")
         require((finite_number(ideal) and ideal > 0) if answerable else ideal is None, "reserved validation ideal DCG invalid")
+        # Six one-chunk source documents and one grade-3 answer per positive
+        # query pin the reserved ideal gain independently of returned results.
+        equal_metric(ideal, 7 if answerable else None, "reserved ideal DCG")
         equal_metric(row.get("ndcg_at_8"), dcg / ideal if answerable else None, "query nDCG")
         equal_metric(row.get("reciprocal_rank"),
                      next((1 / (i + 1) for i, grade in enumerate(grades) if grade == 3), 0) if answerable else None,
