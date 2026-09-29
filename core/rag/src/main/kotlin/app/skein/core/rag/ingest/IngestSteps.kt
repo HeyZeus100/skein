@@ -59,6 +59,9 @@ import app.skein.core.model.NewChunk
 import app.skein.core.model.RevisionHash
 import app.skein.core.model.SkeinLog
 import app.skein.core.rag.chunk.Chunk
+import app.skein.core.rag.embed.EmbeddingVectors
+import kotlinx.coroutines.currentCoroutineContext
+import kotlinx.coroutines.ensureActive
 
 /**
  * Ingest-time indexing steps (spec §7.1 steps 2-3 as writes): [indexLexical]
@@ -183,11 +186,17 @@ public class IngestSteps(
 
         var start = 0
         while (start < chunkIds.size) {
+            currentCoroutineContext().ensureActive()
             val end = minOf(start + BATCH_SIZE, chunkIds.size)
             val idBatch = chunkIds.subList(start, end)
             val textBatch = texts.subList(start, end)
 
             val vectors = embedder.embedDocuments(textBatch)
+            currentCoroutineContext().ensureActive()
+            // zip silently truncates unequal lists. Never report a short or
+            // malformed response as a completed document vector batch.
+            check(vectors.size == idBatch.size) { "Embedding response count differs from the requested batch" }
+            vectors.forEach(EmbeddingVectors::validate)
             index.putEmbeddings(idBatch.zip(vectors))
 
             start = end

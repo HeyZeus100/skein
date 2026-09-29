@@ -31,6 +31,8 @@ android {
 }
 
 dependencies {
+    // Backend-neutral Matryoshka output uses the shared, fixed int8 rule.
+    implementation(project(":core:model"))
     // No androidx-core-ktx: it isn't used by this stub, and this module's
     // isolation allowlist (E1.I2) only permits :core:ipc, :core:model,
     // Kotlin stdlib/coroutines, and onnxruntime-android — androidx.* is out

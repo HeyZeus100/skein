@@ -44,6 +44,9 @@ package app.skein.core.rag.recall
 import app.skein.core.model.EmbedderService
 import app.skein.core.model.IndexStore
 import app.skein.core.model.ScoredChunk
+import app.skein.core.rag.embed.EmbeddingVectors
+import kotlinx.coroutines.currentCoroutineContext
+import kotlinx.coroutines.ensureActive
 
 /**
  * Vector (sqlite-vec / cosine KNN) recall (spec §7.2 recall step 1). See
@@ -78,8 +81,12 @@ public class VectorRecall(
     ): List<ScoredChunk> {
         if (k <= 0) return emptyList()
 
+        currentCoroutineContext().ensureActive()
         val queryVector = embedder.embedQuery(query)
+        currentCoroutineContext().ensureActive()
+        EmbeddingVectors.validate(queryVector)
         val raw = index.knn(queryVector, k)
+        currentCoroutineContext().ensureActive()
         if (raw.isEmpty()) return emptyList()
 
         val mapped = raw.map { it.copy(score = (it.score + 1.0) / 2.0) }

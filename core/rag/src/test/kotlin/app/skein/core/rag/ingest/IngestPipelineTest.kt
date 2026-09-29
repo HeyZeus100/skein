@@ -175,6 +175,28 @@ class IngestPipelineTest {
             assertThat(hits.map { it.chunkId }).containsExactly(chunk.id)
         }
 
+    @Test
+    fun `short embedding response leaves document vectors pending instead of falsely complete`() =
+        runTest {
+            val h = Harness()
+            val doc = h.note("Vector response", "Body text remains available for lexical search.")
+            val delegate = loadedEmbedder()
+            val embedder =
+                object : EmbedderService by delegate {
+                    override suspend fun embedDocuments(texts: List<String>): List<ByteArray> = emptyList()
+                }
+            val warnings = mutableListOf<String>()
+
+            val outcome = h.pipeline(embedder = embedder, warn = { warnings += it }).run()
+
+            assertThat(outcome).isEqualTo(IngestOutcome.Drained(1, 1))
+            assertThat(h.index.chunksForDocs(setOf(doc.id), limitPerDoc = 10)).isNotEmpty()
+            assertThat(h.index.knn(embedder.embedQuery("body text"), k = 10)).isEmpty()
+            assertThat(warnings).containsExactly(
+                "ingest: vector step failed with IllegalStateException; vectors left pending",
+            )
+        }
+
     // ---- cancellation checkpoints ------------------------------------------------
 
     @Test
