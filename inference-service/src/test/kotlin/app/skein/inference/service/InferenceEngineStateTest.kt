@@ -1850,7 +1850,9 @@ class InferenceEngineStateTest {
         service.onSessionUnlocked(epoch)
         val request = loadRequest()
 
-        assertThat(runCatching { service.load(request) }.exceptionOrNull()).isInstanceOf(IllegalStateException::class.java)
+        assertThat(
+            runCatching { service.load(request) }.exceptionOrNull(),
+        ).isInstanceOf(IllegalStateException::class.java)
         assertThat(request.binding.files.all { isClosed(it.fd) }).isTrue()
         assertThat(broken.liveModels).isEmpty()
         assertThat(service.status().state).isEqualTo("unloaded")

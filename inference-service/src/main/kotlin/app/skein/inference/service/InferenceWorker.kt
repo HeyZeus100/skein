@@ -62,6 +62,11 @@ class InferenceWorker(
      * the `LlamaException` it expects.
      */
     override fun <T> submitBlocking(block: () -> T): T {
+        // Recovery can call unload from runGeneration on this same thread.
+        // Posting and waiting there would prevent the queued cleanup from
+        // ever running. Inline execution preserves the native owner's thread
+        // and propagates the original result/exception without a Future.
+        if (Thread.currentThread() === thread) return block()
         val task = FutureTask(Callable { block() })
         if (!handler.post(task)) throw IllegalStateException("inference worker is not running")
         return awaitWorkerResult(task)

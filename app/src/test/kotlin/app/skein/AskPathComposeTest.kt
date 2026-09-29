@@ -23,6 +23,7 @@ import app.skein.core.inference.models.ImportProgress
 import app.skein.core.inference.models.ImportSource
 import app.skein.core.model.Capability
 import app.skein.core.model.DocumentKind
+import app.skein.core.model.EngineState
 import app.skein.core.model.InferenceEngine
 import app.skein.core.model.Model
 import app.skein.core.model.ModelFormat
@@ -323,12 +324,11 @@ class AskPathComposeTest {
     }
 
     /**
-     * DoD item 2 / acceptance criterion 2: "lock during READY calls unload
-     * exactly once" — and the companion half of skein-whg8's own JVM-test
-     * requirement, "never after a lock with no model loaded".
+     * Lock immediately clears managed state and sends one terminal epoch notification.
+     * It must never synchronously unload through Binder while the shared lock deadline runs.
      */
     @Test
-    fun `locking the vault while a model is loaded unloads it exactly once`() {
+    fun `locking a loaded model clears state and requests terminal teardown without synchronous unload`() {
         val counting =
             CountingUnloadEngine(FakeInferenceEngine(script = mapOf("User: hello" to listOf(STREAMED_REPLY))))
         app.fakeInferenceEngine = counting
@@ -342,10 +342,20 @@ class AskPathComposeTest {
             awaitText(STREAMED_REPLY, substring = false)
             assertEquals(1, counting.loadCalls)
             assertEquals(1, counting.streamCalls)
+            val services =
+                app.vault.session.value!!
+                    .models!!
+            val epoch =
+                app.vault.unlockManager.authorizationToken.value!!
+                    .epoch
+            assertEquals(EngineState.READY, services.engineStatus.value.state)
 
             lockAndAwait()
 
-            assertEquals(1, counting.unloadCalls)
+            assertEquals(EngineState.UNLOADED, services.engineStatus.value.state)
+            assertNull(services.engineStatus.value.modelId)
+            assertEquals(listOf(epoch), app.terminalModelLockEpochs.toList())
+            assertEquals(0, counting.unloadCalls)
         }
     }
 

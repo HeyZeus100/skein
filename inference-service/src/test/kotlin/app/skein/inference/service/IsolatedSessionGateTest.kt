@@ -265,7 +265,6 @@ class IsolatedSessionGateTest {
         assertTrue(gate.guard(7L) is GateResult.Refuse)
     }
 
-
     @Test
     fun `publication and lock revocation have one ordered boundary`() {
         val publishing = CountDownLatch(1)
@@ -313,5 +312,4 @@ class IsolatedSessionGateTest {
         assertTrue(gate.guard(7L) is GateResult.Refuse)
         assertTrue(!gate.withAuthorization(7L) { throw AssertionError("revoked publication ran") })
     }
-
 }

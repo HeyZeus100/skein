@@ -64,6 +64,7 @@ import app.skein.feature.chat.SendPipeline
 import app.skein.feature.chat.TurnModelSelection
 import app.skein.feature.chat.drafts.SessionDraftStore
 import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.CoroutineStart
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.NonCancellable
@@ -120,6 +121,8 @@ public class ModelServices(
 ) {
     private val rescuedState = MutableStateFlow<List<ModelId>>(emptyList())
     private var rescueJob: Job? = null
+    private val importLifecycle = Any()
+    private var importsRevoked = false
 
     /**
      * Ids of sealed store directories that [unlocked] registered this session
@@ -141,21 +144,55 @@ public class ModelServices(
      * refuses everything until this runs.
      */
     public suspend fun unlocked(epoch: Long) {
+        if (!canFinishUnlock()) return
         manifestCache.refresh()
+        if (!canFinishUnlock()) return
         pushOnSessionUnlocked(epoch)
-        imports?.attach(manager = manager, onRegistered = { if (registryAuthorized()) manifestCache.refresh() })
-        // After the epoch push, so `inspect` is authorised. Off this path:
-        // a rescue re-hashes the sealed file (seconds for 1.6 GB) and binds
-        // the isolated service, neither of which the unlock should wait on.
-        rescueJob?.cancel()
-        rescueJob =
-            scope.launch {
-                val adopted = manager.adoptOrphans().filter { it.outcome is ImportOutcome.Imported }.map { it.id }
-                if (adopted.isNotEmpty()) {
-                    manifestCache.refresh()
-                    rescuedState.value = rescuedState.value + adopted
-                }
+        val rescue =
+            synchronized(importLifecycle) {
+                // The push/cache refresh can resume after HIGH, timeout teardown or a newer session.
+                // Check and attach under the SAME gate as revocation; a pre-check alone still races.
+                if (importsRevoked || !registryAuthorized()) return
+                imports?.attach(
+                    manager = manager,
+                    onRegistered = { if (canFinishUnlock()) manifestCache.refresh() },
+                )
+                // Authorisation precedes inspection. Keep the expensive orphan scan off the unlock path.
+                rescueJob?.cancel()
+                scope
+                    .launch(start = CoroutineStart.LAZY) {
+                        val checkpoint = imports?.adoptionCheckpoint()
+                        val adopted =
+                            manager
+                                .adoptOrphans()
+                                .filter {
+                                    it.outcome is ImportOutcome.Imported
+                                }.map { it.id }
+                        if (adopted.isNotEmpty() && canFinishUnlock()) {
+                            manifestCache.refresh()
+                            if (checkpoint != null) imports?.acknowledgeAdoption(adopted, checkpoint)
+                            synchronized(importLifecycle) {
+                                if (!importsRevoked && registryAuthorized()) {
+                                    rescuedState.value = rescuedState.value + adopted
+                                }
+                            }
+                        }
+                    }.also { rescueJob = it }
             }
+        // A lock between publication and start cancels this lazy job before it can touch the vault.
+        rescue.start()
+    }
+
+    private fun canFinishUnlock(): Boolean = synchronized(importLifecycle) { !importsRevoked && registryAuthorized() }
+
+    private fun revokeImports() {
+        val rescue =
+            synchronized(importLifecycle) {
+                importsRevoked = true
+                imports?.detach(manager)
+                rescueJob.also { rescueJob = null }
+            }
+        rescue?.cancel()
     }
 
     /**
@@ -167,8 +204,7 @@ public class ModelServices(
         epoch: Long,
         budgetMillis: Long,
     ) {
-        imports?.detach(manager)
-        rescueJob?.cancel()
+        revokeImports()
         clearEngineState()
         try {
             pushOnSessionLocking(epoch, budgetMillis)
@@ -184,7 +220,7 @@ public class ModelServices(
      * repeat call (`LlamaCppEngine.onSessionLocked`'s `compareAndSet`).
      */
     public suspend fun onLocked(epoch: Long) {
-        imports?.detach(manager)
+        revokeImports()
         clearEngineState()
         pushOnSessionLocked(epoch)
     }
@@ -195,7 +231,7 @@ public class ModelServices(
         budgetMillis: Long,
     ) {
         markLockEpoch(epoch)
-        imports?.detach(manager)
+        revokeImports()
         clearEngineState()
         turns?.onLockingHigh(epoch, budgetMillis)
     }
@@ -214,7 +250,7 @@ public class ModelServices(
 
     /** Pure memory teardown even if the Activity is stopped or normal observer dispatch timed out. */
     public fun closeSessionState() {
-        imports?.detach(manager)
+        revokeImports()
         clearEngineState()
         turns?.close()
         drafts?.close()
