@@ -1,10 +1,12 @@
 # Demo controls
 
-These instructions describe the workspace update at source `28354dd25`. Source and screenshot checks have passed; confirm the installed build and physical observations in the [demo results](README.md#rehearsal-checklist-and-results-template).
+These instructions describe the compact workspace controls. Confirm the installed candidate and physical observations in the [demo results](README.md#rehearsal-checklist-and-results-template); the earlier `28354dd25` build used text banners for pane selection.
 
 ## One workspace or two
 
-On the unfolded display, use **Show split view** in the workspace header. Select **Left** or **Right**, then open Chat, Knowledge or Graph for that side. The selected side has a filled header button. New chat and the shared navigation act on that selected side.
+On the unfolded display, the workspace header has a small group of four icons: **Left pane**, **Right pane**, **Show/Hide split view**, and **Swap panes**. The first two show which half they select; a subtle circular highlight marks the active choice. The split icon shows two outlined panes, and the swap icon has opposing arrows. These controls keep full touch targets without wide text banners.
+
+Select a pane icon, or tap inside a visible pane, then open Chat, Knowledge or Graph for that side. New chat and the shared navigation act on the active pane. Use **Show split view** to display both workspaces together.
 
 For a construction demo, open **DEMO: Cedar Cabinet Order** on one side and New chat on the other. Other useful combinations are two different notes, or a note beside Graph. **Swap panes** exchanges the two workspaces, including their selections and drafts. **Hide split view** returns to one visible workspace. A narrow window may show only the active workspace even while the split preference is retained.
 
