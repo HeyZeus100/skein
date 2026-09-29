@@ -163,7 +163,11 @@ private fun rememberModelsEntryDeps(
     onModelsChanged: () -> Unit,
 ): ModelsEntryDeps {
     var localActionMessage by remember(models) { mutableStateOf<String?>(null) }
-    val importStates = remember(models) { models?.imports?.state ?: MutableStateFlow<ModelImportState>(ModelImportState.Idle) }
+    val importStates =
+        remember(models) {
+            models?.imports?.state
+                ?: MutableStateFlow<ModelImportState>(ModelImportState.Idle)
+        }
     val importState by importStates.collectAsState()
     val importProgress = (importState as? ModelImportState.Running)?.fraction
     val scope = rememberCoroutineScope()
@@ -217,16 +221,20 @@ private fun rememberModelsEntryDeps(
         }
     }
     // Current import state takes precedence over a replayed rescue lookup finishing later.
-    val actionMessage = when (val state = importState) {
-        ModelImportState.Idle -> localActionMessage
-        is ModelImportState.Running -> state.fraction?.let { "Importing model… ${(it * 100).toInt()}%" } ?: "Importing model…"
-        is ModelImportState.Done -> when (state.outcome) {
-            ModelImportOutcome.IMPORTED -> "Imported model and set as default"
-            ModelImportOutcome.SAVED_FOR_UNLOCK -> "Model copied. Unlock to finish registration."
-            ModelImportOutcome.REFUSED -> "Couldn't import the model. Choose a different file and try again."
-            ModelImportOutcome.FAILED -> "The import stopped. Choose the file again to retry."
+    val actionMessage =
+        when (val state = importState) {
+            ModelImportState.Idle -> localActionMessage
+            is ModelImportState.Running ->
+                state.fraction?.let { "Importing model… ${(it * 100).toInt()}%" }
+                    ?: "Importing model…"
+            is ModelImportState.Done ->
+                when (state.outcome) {
+                    ModelImportOutcome.IMPORTED -> "Imported model and set as default"
+                    ModelImportOutcome.SAVED_FOR_UNLOCK -> "Model copied. Unlock to finish registration."
+                    ModelImportOutcome.REFUSED -> "Couldn't import the model. Choose a different file and try again."
+                    ModelImportOutcome.FAILED -> "The import stopped. Choose the file again to retry."
+                }
         }
-    }
     // Re-read on every destination switch as well: an import can finish while Models is not showing.
     val items by
         produceState(initialValue = emptyList<ModelListItem>(), models, version, shell.nav.topLevel) {
