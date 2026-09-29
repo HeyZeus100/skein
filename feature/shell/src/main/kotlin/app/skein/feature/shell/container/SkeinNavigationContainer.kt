@@ -119,10 +119,10 @@ fun SkeinNavigationContainer(
     ModalNavigationDrawer(
         modifier = modifier.testTag(SkeinNavContainerTestTags.ROOT),
         drawerState = drawerState,
-        // §3.2's own recipe: gestures (both open and close) only once the
-        // drawer is already open, so an edge swipe on a Drawer window can
-        // never *open* it — that would collide with the system Back gesture.
-        gesturesEnabled = isDrawer && drawerState.isOpen,
+        // Enable scrim/swipe dismissal for any open drawer, including one opened
+        // by a narrow workspace inside a rail window. Keep edge-swipe opening
+        // disabled while closed so it cannot compete with system Back (§3.2).
+        gesturesEnabled = drawerState.isOpen,
         drawerContent = {
             ModalDrawerSheet(
                 drawerState = drawerState,
