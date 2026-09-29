@@ -82,6 +82,7 @@ import app.skein.feature.shell.layout.currentSkeinWindowLayout
 import app.skein.feature.shell.layout.skeinWindowLayout
 import app.skein.feature.shell.layout.surfaceBounds
 import app.skein.feature.shell.layout.windowPartitions
+import kotlin.math.ceil
 
 object WorkspaceTestTags {
     const val PRIMARY_PANE = "skein_workspace_primary"
@@ -185,13 +186,13 @@ private fun WorkspaceControlsArea(
         modifier = Modifier.fillMaxWidth().onGloballyPositioned { origin = it.positionInWindow() },
         content = content,
     ) { measurables, constraints ->
-        val left = bookBounds?.let { (it.left.toPx() - origin.x).toInt().coerceIn(0, constraints.maxWidth) } ?: 0
+        val left = bookBounds?.let { ceil(it.left.toPx() - origin.x).toInt().coerceIn(0, constraints.maxWidth) } ?: 0
         val right = bookBounds?.let { (it.right.toPx() - origin.x).toInt().coerceIn(left, constraints.maxWidth) } ?: constraints.maxWidth
         val child = measurables.single().measure(constraints.copy(minWidth = right - left, maxWidth = right - left, minHeight = 0))
         val hinge = (window.posture as? SkeinPosture.Tabletop)?.hinge
         val rowTop = origin.y
         val intersects = hinge != null && rowTop < hinge.bottom.toPx() && rowTop + child.height > hinge.top.toPx()
-        val belowHinge = if (intersects) (checkNotNull(hinge).bottom.toPx() - rowTop).toInt().coerceAtLeast(0) else 0
+        val belowHinge = if (intersects) ceil(checkNotNull(hinge).bottom.toPx() - rowTop).toInt().coerceAtLeast(0) else 0
         val top = belowHinge.coerceAtMost((constraints.maxHeight - child.height).coerceAtLeast(0))
         layout(constraints.maxWidth, top + child.height) { child.place(left, top) }
     }

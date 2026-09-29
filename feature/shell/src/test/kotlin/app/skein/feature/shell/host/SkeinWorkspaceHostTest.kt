@@ -197,7 +197,7 @@ class SkeinWorkspaceHostTest {
         fontScale.value = 2f
         tabletopTop.value = 28f
         setHost(verticalHinge = false)
-        for (hingeTop in listOf(28f, 4f, 60f)) {
+        for (hingeTop in listOf(28f, 4f, 60f, 28.25f)) {
             tabletopTop.value = hingeTop
             rule.waitForIdle()
             for (tag in listOf(WorkspaceTestTags.ACTIVATE_PRIMARY, WorkspaceTestTags.ACTIVATE_SECONDARY,
