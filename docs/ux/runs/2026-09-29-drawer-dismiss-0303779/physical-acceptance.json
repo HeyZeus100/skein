@@ -1,0 +1,141 @@
+{
+  "schema_version": 1,
+  "at": "2026-09-29T23:56:05.140743+00:00",
+  "source": "0303779fcb14a3ed37b9355d07ad98934e2d12a5",
+  "installed_apk_sha256": "c9b2ffd8ca4306c63c9e7bb3975de4b5e2b6a57a04385c39d4c49eb33f87c14e",
+  "status": "BOUNDED_FINAL_UI_ACCEPTANCE_COMPLETE_WITH_CITATION_GATE_OPEN",
+  "device_idle": true,
+  "scrim_dismissal": "PASS_one_actual_empty_scrim_tap_under_split_rail",
+  "contextual_sidebar": "PASS_hide_show_actual_geometry",
+  "split_cycle": "PASS_content_activation_swap_hide_empty_composers_retained",
+  "nonempty_draft_retention": "not_reexercised_final030; earlier7868 exact synthetic cycle preserved; original root never edited",
+  "original_root": "earlier byte-exact recovered, no writes or deletion in final run; not re-opened to claim fresh hash",
+  "construction": {
+    "single_send": true,
+    "frozen_question": "What blocks the Cedar cabinet order, and who coordinates delivery?",
+    "knowledge_checked_before_send": true,
+    "actual_answer": "The Cedar cabinet order is blocked by RFI-017, which is awaiting finish-selection approval. Nora Elm coordinates delivery of the Cedar Remodel cabinets with the site team. The delivery target is 19 October 2026; it is not a confirmed booking.",
+    "facts": "PASS_all_three",
+    "rendered_citations": 0,
+    "context_known_count": 8,
+    "context_unknown_count": 0,
+    "first_visible_lower_exclusive_seconds": 45.726439,
+    "first_visible_upper_seconds": 51.805038,
+    "completion_lower_exclusive_seconds": 77.585369,
+    "completion_upper_seconds": 84.02483,
+    "normal_stop_required": false,
+    "retry_count": 0,
+    "native_stop_reason": "not_measured_UI_only",
+    "headers_observed": [
+      "Loading",
+      "Answering",
+      "Loaded"
+    ],
+    "actual_model": "qwen2.5-1.5b-instruct-q4_k_m"
+  },
+  "model_detail": {
+    "one_retained_row_tap": true,
+    "populated_filename": true,
+    "default_visible": true,
+    "currently_loaded_visible": true,
+    "normal_back": true,
+    "old3b_preserved": true
+  },
+  "context_fallback": {
+    "supporting_delivery_note_opened_by_actual_context_row": true,
+    "body_exact_after_format_normalization": true,
+    "not_a_rendered_citation": true,
+    "normal_back_restored_answer": true
+  },
+  "final_state": {
+    "left": "same completed construction answer, expected1.5B Loaded, Knowledge on",
+    "right": "known fictional Cedar Remodel RFI017 exact body",
+    "lists_hidden": true,
+    "no_center_debug_divider": true,
+    "ime_hidden": true,
+    "safe_actual_screenshot": {
+      "path": "final-split.png",
+      "sha256": "a2a698237b61241bbceb4a1b0c9aa4444c560933d58cb8427d071467693ca35a",
+      "bytes": 213007
+    }
+  },
+  "unmet": [
+    "Rendered citation gate remains open:0 in final answer",
+    "Physical swipe unobserved; no owner-row-crossing gesture",
+    "Broader retrieval, embedding, model-quality gates remain open",
+    "Historical original root route/capture cause remains unassigned"
+  ],
+  "evidence": [
+    {
+      "path": "final030-controls-review.json",
+      "sha256": "8700125f0036ac2bbac5061d3e7bea4ab1536018adeec1a21f29cb8019128fb6",
+      "bytes": 3203
+    },
+    {
+      "path": "controlled-construction-final-probe.json",
+      "sha256": "089972439c7598dd8453df3249093e40d4ee8e5c9c2d4011379f861203c14e6f",
+      "bytes": 651
+    },
+    {
+      "path": "construction-final-answer-observations.json",
+      "sha256": "3d1e0babfcbbd42fdfce0a4a9029536189d4f70939254cc0ba0c5f59a032fc99",
+      "bytes": 11209
+    },
+    {
+      "path": "construction-final-source-privacy-review.json",
+      "sha256": "b9e7503fb63d4842e18b8d8aef46366fe0ff6cacc05b747c5569e34ad6cf85fe",
+      "bytes": 1376
+    },
+    {
+      "path": "final030-model-detail-review.json",
+      "sha256": "6125f96952c4216e664ab9865bfa4acf1ae96e7a27dbbd704edb659538f39d79",
+      "bytes": 2575
+    },
+    {
+      "path": "final-context-source-tap.json",
+      "sha256": "91f9a5615244d974bbe493252ac1beeb177c2696da5a6f8b19ff09b901fe31ed",
+      "bytes": 331
+    },
+    {
+      "path": "final-context-fallback-body-review.json",
+      "sha256": "a059e16e2e2e1119e927ca448a3a9770c66d55a26a175784d932e1f056bdd57b",
+      "bytes": 467
+    },
+    {
+      "path": "final-note-cedar-rfi.md.json",
+      "sha256": "5f99bf5a190e551bf86d704daf03052e5d6d245d66550d438606577ba0317db4",
+      "bytes": 460
+    }
+  ],
+  "safe_visual_reviewed_images": [
+    {
+      "path": "076-private-screen.png",
+      "sha256": "1240f1aa248ef4c2607e29241d9133207c151e0a28d78bb59eb3eda84b0cd514",
+      "bytes": 107405
+    },
+    {
+      "path": "083-private-screen.png",
+      "sha256": "ed26094679956eaa76999cf056b90ffe3b47bb9f54b26793cc87ce44450db6c1",
+      "bytes": 127150
+    },
+    {
+      "path": "098-private-screen.png",
+      "sha256": "e580b9076537b83648ce7594787bba71a772f2d860a9cc171d92311612dd85cf",
+      "bytes": 144129
+    },
+    {
+      "path": "124-private-screen.png",
+      "sha256": "fee7f4c6d1997c15ce196787cfdc77a9cee0f2aea77fb165d0a3b6054886d930",
+      "bytes": 213670
+    },
+    {
+      "path": "139-private-screen.png",
+      "sha256": "a2a698237b61241bbceb4a1b0c9aa4444c560933d58cb8427d071467693ca35a",
+      "bytes": 213007
+    }
+  ],
+  "all_other_images": "PRIVATE unless separately explicitly reviewed",
+  "original_review_sha256": "39ca849365574f08764e6cc5b47c64d24af34f182981cd8a441e940cc4edee3e",
+  "evidence_scope": "Original supporting artifacts retained in the sole runner final030 local run; only explicitly reviewed public synthetic/model screenshots are published.",
+  "root_final_visual_review": "PASS: exact completed construction answer left, known RFI note right, 1.5B Loaded, hidden history and IME, no center divider"
+}

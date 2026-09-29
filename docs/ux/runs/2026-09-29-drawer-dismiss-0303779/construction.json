@@ -1,0 +1,160 @@
+{
+  "source_sha": "0303779fcb14a3ed37b9355d07ad98934e2d12a5",
+  "installed_apk_sha256": "c9b2ffd8ca4306c63c9e7bb3975de4b5e2b6a57a04385c39d4c49eb33f87c14e",
+  "question": "What blocks the Cedar cabinet order, and who coordinates delivery?",
+  "answer": "The Cedar cabinet order is blocked by RFI-017, which is awaiting finish-selection approval. Nora Elm coordinates delivery of the Cedar Remodel cabinets with the site team. The delivery target is 19 October 2026; it is not a confirmed booking.",
+  "facts_correct": true,
+  "knowledge_on": true,
+  "send_count": 1,
+  "automatic_retry": false,
+  "normal_stop_used": false,
+  "answer_sha256": "998ca5b6897aaba13429f9b2038d5a2b123add6c684f6a71d1c1db59abdc5ff4",
+  "rendered_citations": 0,
+  "context_known_sources": [
+    "DEMO: Cedar Delivery Coordination",
+    "DEMO: Cedar Cabinet Order",
+    "DEMO: Cedar Remodel RFI-017",
+    "DEMO-A Records Request",
+    "DEMO-A Records Packet",
+    "DEMO: OYS-014 Open Research Question",
+    "DEMO-A Planning Meeting",
+    "DEMO: OYS-014 Sample Provenance"
+  ],
+  "context_unknown_count": 0,
+  "first_visible_lower_bound_exclusive_seconds": 45.726439,
+  "first_visible_upper_bound_seconds": 51.805038,
+  "idle_completion_upper_bound_seconds": 84.02483,
+  "timing_scope": "UI observation bounds, not exact TTFT/native stop reason or a general performance guarantee",
+  "model_header": "qwen2.5-1.5b-instruct-q4_k_m",
+  "observed_states": [
+    "Loading",
+    "Answering",
+    "Loaded"
+  ],
+  "events": [
+    {
+      "at": "2026-09-29T23:48:46.477591+00:00",
+      "elapsed_seconds": 3.447782,
+      "assistant_characters": 0,
+      "activity": "Loading",
+      "stop_visible": true,
+      "send_visible": false
+    },
+    {
+      "at": "2026-09-29T23:48:52.472715+00:00",
+      "elapsed_seconds": 9.442906,
+      "assistant_characters": 0,
+      "activity": "Answering",
+      "stop_visible": true,
+      "send_visible": false
+    },
+    {
+      "at": "2026-09-29T23:48:58.352677+00:00",
+      "elapsed_seconds": 15.322868,
+      "assistant_characters": 0,
+      "activity": "Answering",
+      "stop_visible": true,
+      "send_visible": false
+    },
+    {
+      "at": "2026-09-29T23:49:04.285651+00:00",
+      "elapsed_seconds": 21.255842,
+      "assistant_characters": 0,
+      "activity": "Answering",
+      "stop_visible": true,
+      "send_visible": false
+    },
+    {
+      "at": "2026-09-29T23:49:10.359431+00:00",
+      "elapsed_seconds": 27.329622,
+      "assistant_characters": 0,
+      "activity": "Answering",
+      "stop_visible": true,
+      "send_visible": false
+    },
+    {
+      "at": "2026-09-29T23:49:16.306734+00:00",
+      "elapsed_seconds": 33.276925,
+      "assistant_characters": 0,
+      "activity": "Answering",
+      "stop_visible": true,
+      "send_visible": false
+    },
+    {
+      "at": "2026-09-29T23:49:22.467978+00:00",
+      "elapsed_seconds": 39.438169,
+      "assistant_characters": 0,
+      "activity": "Answering",
+      "stop_visible": true,
+      "send_visible": false
+    },
+    {
+      "at": "2026-09-29T23:49:28.756248+00:00",
+      "elapsed_seconds": 45.726439,
+      "assistant_characters": 0,
+      "activity": "Answering",
+      "stop_visible": true,
+      "send_visible": false
+    },
+    {
+      "at": "2026-09-29T23:49:34.834847+00:00",
+      "elapsed_seconds": 51.805038,
+      "assistant_characters": 42,
+      "activity": "Answering",
+      "stop_visible": true,
+      "send_visible": false
+    },
+    {
+      "at": "2026-09-29T23:49:42.028450+00:00",
+      "elapsed_seconds": 58.998641,
+      "assistant_characters": 142,
+      "activity": "Answering",
+      "stop_visible": true,
+      "send_visible": false
+    },
+    {
+      "at": "2026-09-29T23:49:48.176776+00:00",
+      "elapsed_seconds": 65.146967,
+      "assistant_characters": 156,
+      "activity": "Answering",
+      "stop_visible": true,
+      "send_visible": false
+    },
+    {
+      "at": "2026-09-29T23:49:54.355682+00:00",
+      "elapsed_seconds": 71.325873,
+      "assistant_characters": 194,
+      "activity": "Answering",
+      "stop_visible": true,
+      "send_visible": false
+    },
+    {
+      "at": "2026-09-29T23:50:00.615178+00:00",
+      "elapsed_seconds": 77.585369,
+      "assistant_characters": 211,
+      "activity": "Answering",
+      "stop_visible": true,
+      "send_visible": false
+    },
+    {
+      "at": "2026-09-29T23:50:07.054639+00:00",
+      "elapsed_seconds": 84.02483,
+      "assistant_characters": 242,
+      "activity": "Loaded",
+      "stop_visible": false,
+      "send_visible": true
+    }
+  ],
+  "safe_screenshot": "construction.png",
+  "safe_screenshot_sha256": "ed26094679956eaa76999cf056b90ffe3b47bb9f54b26793cc87ce44450db6c1",
+  "root_and_peer_visual_review": "PASS_SYNTHETIC_ONLY",
+  "original_reviews_sha256": {
+    "construction-final-answer-observations.json": "3d1e0babfcbbd42fdfce0a4a9029536189d4f70939254cc0ba0c5f59a032fc99",
+    "construction-final-source-privacy-review.json": "b9e7503fb63d4842e18b8d8aef46366fe0ff6cacc05b747c5569e34ad6cf85fe",
+    "controlled-construction-final-probe.json": "089972439c7598dd8453df3249093e40d4ee8e5c9c2d4011379f861203c14e6f"
+  },
+  "limits": [
+    "Single unchanged construction question on final030; prior four-question rehearsal remains source920e evidence",
+    "Zero rendered citations; no broad accuracy, retrieval or Fold qualification"
+  ]
+}

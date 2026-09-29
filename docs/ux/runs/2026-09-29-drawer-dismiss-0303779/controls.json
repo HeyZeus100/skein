@@ -1,0 +1,51 @@
+{
+  "reviewed_at": "2026-09-29T23:48:59.921434+00:00",
+  "source": "0303779fcb14a3ed37b9355d07ad98934e2d12a5",
+  "scrim_dismissal": "PASS_one_empty_scrim_tap_drawer_absent_after",
+  "sidebar_hide_show": "PASS_actual_list_geometry_changes",
+  "split_content_activation_swap_hide": "PASS_secondary_activation_visible_underline_moves_with_tag_then_retained_single",
+  "composer_scope": "two_empty_composers_preserved; nonempty_draft_retention_not_reexercised_final030; original_root_not_edited",
+  "center_divider": "no_teal_center_divider_observed",
+  "swipe": "UNOBSERVED",
+  "screenshots": "PRIVATE_owner_recent_previews_do_not_publish",
+  "evidence": [
+    {
+      "path": "after-action-Hide-chats-20260929T234035405587Z.json",
+      "sha256": "075c2cafd865ad255526acd4fbbfef3c623be5d3dbca432d48302b31b417187b"
+    },
+    {
+      "path": "after-action-Show-chats-20260929T234044602581Z.json",
+      "sha256": "b68e494732d2ac1b0419f45fa3de718de36ee374fa35b94b848362d4a8e69557"
+    },
+    {
+      "path": "after-action-Show-split-view-20260929T234115729741Z.json",
+      "sha256": "7a6c149b71e9dc908d348373ef970197f42470da2ba817bc87a58dd7734c081c"
+    },
+    {
+      "path": "after-action-Open-navigation-20260929T234148652087Z.json",
+      "sha256": "f36c1f70ce6dd279d8be7a19289d291eb13f7a5cec21080c9330b501d177cbe5"
+    },
+    {
+      "path": "final-scrim-tap.json",
+      "sha256": "4162d728c5350a3416d727e11c5ba1bde2fb80718df87357e56a7ed3dedeaeb1"
+    },
+    {
+      "path": "final-scrim-after-20260929T234219923070Z.json",
+      "sha256": "54a834251d6d45bcebf2d5af1188161e9542784e7371ea182d59c6b5b380b127"
+    },
+    {
+      "path": "content-activation-after-20260929T234302074904Z.json",
+      "sha256": "2f66958e79aa8b55c4c70b86da2fd740e86a8bb2603307d8a47772f871236526"
+    },
+    {
+      "path": "after-action-Swap-panes-20260929T234311299570Z.json",
+      "sha256": "e4e9b357cc948c957cbdaed68aa83dbd500fe3abbc828e8d4e96f5ac3a22bb3c"
+    },
+    {
+      "path": "after-action-Hide-split-view-20260929T234741890490Z.json",
+      "sha256": "1bf2599be171dda78bb98ccf4c4e03e4e3edf9f7f1f25c9a50c8055597cf0065"
+    }
+  ],
+  "original_review_sha256": "8700125f0036ac2bbac5061d3e7bea4ab1536018adeec1a21f29cb8019128fb6",
+  "retained_evidence_scope": "Original minimized evidence and private frames remain under the sole runner final030 local run; frames containing owner previews are not published."
+}

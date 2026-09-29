@@ -1,0 +1,94 @@
+{
+  "at": "2026-09-29T23:51:05.069215+00:00",
+  "one_exact_model_row_tap": true,
+  "before": {
+    "at": "2026-09-29T23:50:59.474914+00:00",
+    "raw_retained": false,
+    "raw_sha256": "ed4beb2e4aff2248d554796dea327308e8795a8d1e6e8fe882ca2d19c0f0d225",
+    "public_model_nodes": [
+      {
+        "text": "qwen2.5-3b-instruct-abliterated-q3-k-m-2c5f9a121ae6",
+        "bounds": "[273,392][792,476]"
+      },
+      {
+        "text": "1.5 GB \u00b7 UNKNOWN",
+        "bounds": "[273,476][506,514]"
+      },
+      {
+        "text": "Set default",
+        "bounds": "[434,543][580,585]"
+      },
+      {
+        "text": "qwen2.5-1.5b-instruct-q4_k_m.gguf",
+        "bounds": "[273,665][757,707]"
+      },
+      {
+        "text": "default",
+        "bounds": "[273,707][360,745]"
+      },
+      {
+        "text": "1.0 GB \u00b7 UNKNOWN",
+        "bounds": "[273,745][506,783]"
+      }
+    ]
+  },
+  "after": {
+    "at": "2026-09-29T23:51:03.886904+00:00",
+    "raw_retained": false,
+    "raw_sha256": "21f5c72772afb41440e9074bdf3074b380be74c4e66de6473e44681de5c01746",
+    "public_model_nodes": [
+      {
+        "text": "qwen2.5-3b-instruct-abliterated-q3-k-m-2c5f9a121ae6",
+        "bounds": "[273,392][792,476]"
+      },
+      {
+        "text": "1.5 GB \u00b7 UNKNOWN",
+        "bounds": "[273,476][506,514]"
+      },
+      {
+        "text": "Set default",
+        "bounds": "[434,543][580,585]"
+      },
+      {
+        "text": "qwen2.5-1.5b-instruct-q4_k_m.gguf",
+        "bounds": "[273,665][757,707]"
+      },
+      {
+        "text": "default",
+        "bounds": "[273,707][360,745]"
+      },
+      {
+        "text": "1.0 GB \u00b7 UNKNOWN",
+        "bounds": "[273,745][506,783]"
+      },
+      {
+        "text": "qwen2.5-1.5b-instruct-q4_k_m.gguf",
+        "bounds": "[908,273][1607,331]"
+      },
+      {
+        "text": "qwen2.5-1.5b-instruct-q4_k_m.gguf",
+        "bounds": "[908,467][1607,525]"
+      },
+      {
+        "text": "Default",
+        "bounds": "[908,525][998,563]"
+      },
+      {
+        "text": "1.0 GB \u00b7 UNKNOWN",
+        "bounds": "[908,580][1163,622]"
+      },
+      {
+        "text": "Currently loaded",
+        "bounds": "[908,622][1107,660]"
+      }
+    ]
+  },
+  "public_model_screenshot": "model-details.png",
+  "screenshot_sha256": "e580b9076537b83648ce7594787bba71a772f2d860a9cc171d92311612dd85cf",
+  "populated_model_name_observed": true,
+  "currently_loaded_observed": true,
+  "requires_visual_review": false,
+  "source_sha": "0303779fcb14a3ed37b9355d07ad98934e2d12a5",
+  "original_review_sha256": "6125f96952c4216e664ab9865bfa4acf1ae96e7a27dbbd704edb659538f39d79",
+  "root_and_peer_visual_review": "PASS_EXPECTED_MODEL_POPULATED_CURRENTLY_LOADED"
+}

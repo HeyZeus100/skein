@@ -1,6 +1,8 @@
 # Skein: a short conference demo
 
-Use the fictional notes with **Knowledge on**. The latest completed rehearsal answered all four questions below correctly; first visible text took about 40–53 seconds. The general Knowledge-off test contained a factual error, so use the note-grounded examples for the presentation. The source030 drawer repair is installed on the Fold with its copied-back APK verified. Its physical rehearsal is waiting for the normal vault unlock; use a single workspace until that rehearsal passes. The answer results and timings below come from the earlier source920e four-question rehearsal.
+Use the fictional notes with **Knowledge on**. The repaired source030 app is installed on the Fold, and its sidebar dismissal, list collapse, Split and Swap controls passed physical checks. The final construction rehearsal answered correctly: first text appeared by about 52 seconds and the answer was complete by about 84 seconds. The chat correctly showed Qwen1.5B Loading, Answering and Loaded.
+
+The earlier source920e rehearsal answered all four frozen questions below correctly; its first visible text took about 40–53 seconds. The general Knowledge-off test contained a factual error, so use the note-grounded examples for the presentation.
 
 Start with Construction. Open **DEMO: Cedar Cabinet Order**, then Chat → New chat. Ask:
 
@@ -8,7 +10,7 @@ Start with Construction. Open **DEMO: Cedar Cabinet Order**, then Chat → New c
 
 The checked answer identifies **RFI-017 awaiting finish-selection approval** and **Nora Elm** coordinating delivery. The 19 October target is unconfirmed. While it works, explain that these are fictional project coordination notes stored in Skein.
 
-The model currently omits inline citations. Open **Knowledge on → Context → Used in this answer** to inspect the supplied notes. Call this the context list, not an answer citation. The source-opening path was verified with the mycology Observation Log. After the split-view acceptance check passes, keep the note beside the chat using Split; tap the workspace you want to control, and use Swap to exchange their positions.
+The model currently omits inline citations. Open **Knowledge on → Context → Used in this answer** to inspect the supplied notes. Call this the context list, not an answer citation. The source-opening path was verified with the Cedar Delivery Coordination note on the final build and the mycology Observation Log in the earlier rehearsal. Keep the note beside the chat using Split; tap the workspace you want to control, and use Swap to exchange their positions.
 
 Ask the missing-fact question:
 
@@ -26,3 +28,5 @@ Allow about three minutes for the construction example including navigation. Use
 The smaller official model is **Qwen2.5-1.5B-Instruct Q4_K_M**; the old 3B model remains installed. Do not import models during the presentation. Knowledge off bypasses note retrieval and asks from the model's training, but broad answer accuracy is not qualified. Do not describe this as an offline run unless that network condition is separately observed.
 
 [Full runbook](README.md) · [Actual live evidence](runs/2026-09-29-official-qwen-live/README.md)
+
+The Fold was left ready at 4:55pm with the completed construction answer beside the RFI-017 note. [Final screen and evidence](../../ux/runs/2026-09-29-drawer-dismiss-0303779/README.md).

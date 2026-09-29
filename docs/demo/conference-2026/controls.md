@@ -20,6 +20,8 @@ The single sidebar icon in the workspace header toggles the active Chat or Knowl
 
 Where a workspace is too narrow for an adjacent list, the sidebar icon is omitted. Use the existing navigation menu for chat history or **Back** from a note to its notes list. Graph and Settings have no notes/chat sidebar, so they show no sidebar toggle. Standalone screens retain their own header control.
 
+When the navigation menu floats over Split view, tap the dimmed area outside it to close it. This leaves both workspaces and their drafts in place.
+
 ## Questions with or without Knowledge
 
 In New chat, **Search Knowledge** is available before the first Send. Leave it on for questions about the fictional demo notes. Turn it off for a general question based on the selected model's training, such as:

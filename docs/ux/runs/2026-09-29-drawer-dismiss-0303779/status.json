@@ -1,6 +1,6 @@
 {
   "source_sha": "0303779fcb14a3ed37b9355d07ad98934e2d12a5",
-  "status": "INSTALLED_VERIFIED_AWAITING_NORMAL_VAULT_UNLOCK",
+  "status": "INSTALLED_VERIFIED_BOUNDED_DEMO_REHEARSAL_COMPLETE",
   "app": {
     "sha256": "c9b2ffd8ca4306c63c9e7bb3975de4b5e2b6a57a04385c39d4c49eb33f87c14e",
     "size_bytes": 128079415
@@ -65,7 +65,7 @@
     "device_execution": true,
     "peer_review_sha256": "ac63bf77d4eabb536523ca2e5822b5435e891c0ef97f5bf8b7f47eb6cded2bbe"
   },
-  "physical_acceptance": "PENDING_NORMAL_VAULT_UNLOCK_AND_REHEARSAL",
+  "physical_acceptance": "PASS_BOUNDED_CONTROLS_MODEL_AND_CONSTRUCTION_CITATIONS_OPEN",
   "limits": [
     "Original private screenshots and failing evidence retained locally",
     "Native bytes/model/default/drafts/retrieval thresholds and all goldens unchanged",
@@ -186,5 +186,53 @@
     "updated_at": "2026-09-29T23:28:18.200519+00:00",
     "scope": "Exact copied-back application bytes and package metadata; physical interaction acceptance separate.",
     "summary_path_scope": "Retained sibling worktree relative to local worktrees root"
-  }
+  },
+  "physical_controls": {
+    "review": "controls.json",
+    "original_review_sha256": "8700125f0036ac2bbac5061d3e7bea4ab1536018adeec1a21f29cb8019128fb6",
+    "scrim": "PASS",
+    "sidebar_hide_show": "PASS",
+    "split_content_activation_swap_hide": "PASS",
+    "center_debug_divider": "ABSENT",
+    "obsolete_selector_count": 0,
+    "draft_scope": "Two empty composers preserved; prior nonempty retention evidence remains separately attributed; original root not edited",
+    "physical_swipe": "UNOBSERVED"
+  },
+  "physical_model_header": {
+    "status": "PASS",
+    "observed_states": [
+      "Loading",
+      "Answering",
+      "Loaded"
+    ],
+    "model_name": "qwen2.5-1.5b-instruct-q4_k_m"
+  },
+  "physical_model_details": {
+    "status": "PASS",
+    "currently_loaded": true,
+    "old_3b_retained": true,
+    "model_or_default_changed": false
+  },
+  "construction": {
+    "status": "FACT_PASS_CITATIONS_OPEN",
+    "evidence": "construction.json",
+    "first_visible_upper_bound_seconds": 51.805038,
+    "idle_completion_upper_bound_seconds": 84.02483
+  },
+  "final_state": {
+    "at": "2026-09-29T23:55:10Z",
+    "left": "Completed construction answer",
+    "right": "Fictional Cedar RFI-017 note",
+    "model": "Official Qwen2.5-1.5B Loaded",
+    "idle": true,
+    "screenshot": "final-split.png",
+    "sha256": "a2a698237b61241bbceb4a1b0c9aa4444c560933d58cb8427d071467693ca35a"
+  },
+  "context_source_navigation": "PASS_EXACT_DELIVERY_NOTE_BODY_NOT_A_CITATION",
+  "closed_beads": [
+    "skein-hc3y",
+    "skein-fgt1",
+    "skein-y4xz",
+    "skein-5esa"
+  ]
 }
