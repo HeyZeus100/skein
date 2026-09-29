@@ -2,6 +2,8 @@ package app.skein.feature.shell.host
 
 import app.skein.core.navigation.ChatKey
 import app.skein.core.navigation.Destination
+import app.skein.core.navigation.ConnectionsKey
+import app.skein.core.navigation.GraphKey
 import app.skein.core.navigation.KnowledgeHomeKey
 import app.skein.core.navigation.NewChatKey
 import app.skein.core.navigation.NoteKey
@@ -43,6 +45,20 @@ class SkeinWorkspaceStateTest {
         val workspace = SkeinWorkspaceState(shell("primary", duplicate), shell("secondary", duplicate))
         assertEquals(NoteKey(NOTE_B), workspace.primary.nav.currentStack.last())
         assertEquals(listOf(KnowledgeHomeKey), workspace.secondary.nav.currentStack)
+    }
+
+    @Test
+    fun `returning to an inspector cannot reactivate an editor already open in the other owner`() {
+        val workspace = SkeinWorkspaceState(shell("primary"), shell("secondary"))
+        workspace.primary.navigate { goTo(it, NoteKey(NOTE_B)) }
+        workspace.primary.navigate { follow(it, ConnectionsKey(NOTE_B)) }
+        workspace.primary.navigate { goTo(it, GraphKey()) }
+        workspace.secondary.navigate { goTo(it, NoteKey(NOTE_B)) }
+        workspace.activate(WorkspacePane.PRIMARY)
+        workspace.primary.navigate { switchTo(it, Destination.KNOWLEDGE) }
+        assertEquals(WorkspacePane.SECONDARY, workspace.activePane)
+        assertEquals(Destination.GRAPH, workspace.primary.nav.topLevel)
+        assertEquals(NoteKey(NOTE_B), workspace.secondary.nav.currentStack.last())
     }
 
     @Test

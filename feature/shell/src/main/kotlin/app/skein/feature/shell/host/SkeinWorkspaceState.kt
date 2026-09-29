@@ -94,9 +94,9 @@ class SkeinWorkspaceState internal constructor(
     ): Boolean {
         val other = other(pane)
         val otherShell = shell(other)
-        val selected = next.currentStack.lastOrNull()?.let { mutableDocument(it, next) }
+        val selected = next.currentStack.mapNotNull { mutableDocument(it, next) }.toSet()
         // Retained, unplaced editors still have pending writers. Never give one document two owners.
-        if (selected != null && otherShell.nav.currentStack.any { mutableDocument(it, otherShell.nav) == selected }) {
+        if (selected.isNotEmpty() && otherShell.nav.currentStack.any { mutableDocument(it, otherShell.nav) in selected }) {
             activate(other)
             return false
         }
