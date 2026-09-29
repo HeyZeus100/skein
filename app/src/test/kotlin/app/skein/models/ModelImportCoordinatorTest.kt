@@ -14,8 +14,11 @@ import app.skein.core.model.ModelFormat
 import app.skein.core.verify.ModelFileRole
 import com.google.common.truth.Truth.assertThat
 import kotlinx.coroutines.CompletableDeferred
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.awaitCancellation
+import kotlinx.coroutines.cancel
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.test.runCurrent
@@ -26,6 +29,9 @@ import org.junit.rules.TemporaryFolder
 import org.junit.runner.RunWith
 import org.robolectric.RobolectricTestRunner
 import org.robolectric.annotation.Config
+import java.util.concurrent.CountDownLatch
+import java.util.concurrent.Executors
+import java.util.concurrent.TimeUnit
 
 @RunWith(RobolectricTestRunner::class)
 @Config(sdk = [34], application = android.app.Application::class)
@@ -156,6 +162,70 @@ class ModelImportCoordinatorTest {
                 )
             assertThat(imports.executePending(1) {}).isFalse()
             assertThat(imports.state.value).isEqualTo(ModelImportState.Idle)
+        }
+
+    @Test
+    fun `blocked Android service start cannot delay synchronous lock detach`() {
+        val entered = CountDownLatch(1)
+        val release = CountDownLatch(1)
+        val threads = Executors.newFixedThreadPool(2)
+        val scope = CoroutineScope(SupervisorJob())
+        val imports =
+            ModelImportCoordinator(
+                ImmutableModelStore(temp.root),
+                copy = { _, _ -> error("No foreground execution yet") },
+                startExecution = { _, _ ->
+                    entered.countDown()
+                    check(release.await(5, TimeUnit.SECONDS))
+                },
+                scope = scope,
+            )
+        val owner = Any()
+        imports.attach(owner) { error("No registration") }
+        try {
+            val starting = threads.submit<Boolean> { imports.startImport(uri) }
+            check(entered.await(2, TimeUnit.SECONDS))
+            val detached = threads.submit { imports.detachOwner(owner) }
+            detached.get(1, TimeUnit.SECONDS) // Independently bounded while the Android call is still blocked.
+            assertThat(release.count).isEqualTo(1)
+            release.countDown()
+            assertThat(starting.get(2, TimeUnit.SECONDS)).isTrue()
+            imports.executionStopped(1)
+        } finally {
+            release.countDown()
+            imports.detachOwner(owner)
+            scope.cancel()
+            threads.shutdownNow()
+        }
+    }
+
+    @Test
+    fun `service stop before coroutine entry releases admission and publishes completion`() =
+        runTest {
+            var copies = 0
+            var completions = 0
+            val imports =
+                ModelImportCoordinator(
+                    ImmutableModelStore(temp.root),
+                    copy = { _, _ ->
+                        copies++
+                        copied()
+                    },
+                    startExecution = { _, _ -> },
+                    scope = backgroundScope,
+                )
+            val owner = Any()
+            imports.attach(owner) { error("Copy never entered") }
+            imports.startImport(uri)
+            imports.executePending(1) { completions++ }
+            imports.executionStopped(1)
+            runCurrent()
+            assertThat(copies).isEqualTo(0)
+            assertThat(completions).isEqualTo(1)
+            assertThat(imports.state.value).isEqualTo(ModelImportState.Done(ModelImportOutcome.FAILED))
+            assertThat(imports.startImport(uri)).isTrue()
+            imports.executionStopped(2)
+            imports.detachOwner(owner)
         }
 
     private fun copied(): ModelCopyResult.Copied =

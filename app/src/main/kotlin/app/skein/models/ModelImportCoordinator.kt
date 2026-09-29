@@ -47,21 +47,24 @@ public class ModelImportCoordinator internal constructor(
     private var session: RegistrationSession? = null
 
     /** False means an import already owns admission, there is no unlocked session, or FGS refused. */
-    public fun startImport(uri: Uri): Boolean =
-        synchronized(monitor) {
-            if (mutableState.value is ModelImportState.Running || session == null) return false
-            val token = ++nextToken
-            pending = Request(token, uri)
-            mutableState.value = ModelImportState.Running(null)
-            try {
-                startExecution(uri, token)
-                true
-            } catch (_: RuntimeException) {
-                pending = null
-                mutableState.value = ModelImportState.Done(ModelImportOutcome.FAILED)
-                false
+    public fun startImport(uri: Uri): Boolean {
+        val token =
+            synchronized(monitor) {
+                if (mutableState.value is ModelImportState.Running || session == null) return false
+                val admitted = ++nextToken
+                pending = Request(admitted, uri)
+                mutableState.value = ModelImportState.Running(null)
+                admitted
             }
+        // Starting an Android service can block in Binder. HIGH detach never waits for that call.
+        return try {
+            startExecution(uri, token)
+            true
+        } catch (_: RuntimeException) {
+            executionStopped(token)
+            false
         }
+    }
 
     public fun dismissResult() {
         synchronized(monitor) {
@@ -109,14 +112,14 @@ public class ModelImportCoordinator internal constructor(
     internal fun executePending(
         token: Long,
         onFinished: () -> Unit,
-    ): Boolean =
-        synchronized(monitor) {
-            val request = pending?.takeIf { it.token == token } ?: return false
-            pending = null
-            val job =
+    ): Boolean {
+        var result = ModelImportOutcome.FAILED
+        val job =
+            synchronized(monitor) {
+                val request = pending?.takeIf { it.token == token } ?: return false
+                pending = null
                 scope
                     .launch(start = CoroutineStart.LAZY) {
-                        var result = ModelImportOutcome.FAILED
                         try {
                             result =
                                 when (val copied = copy(request.uri, ::publishProgress)) {
@@ -126,28 +129,28 @@ public class ModelImportCoordinator internal constructor(
                         } catch (_: CancellationException) {
                             // Any sealed file remains recoverable; incomplete .tmp bytes are never loadable.
                         } catch (_: Exception) {
-                            // Deliberately do not retain provider messages, paths or closed-session failures.
-                        } finally {
-                            synchronized(monitor) {
-                                if (operation?.token == token) {
-                                    operation = null
-                                    mutableState.value = ModelImportState.Done(result)
-                                }
-                            }
-                            onFinished()
+                            // Do not retain provider messages, paths or closed-session failures.
                         }
-                    }
-            operation = Execution(token, job)
-            job.start()
-            true
+                    }.also { operation = Execution(token, it) }
+            }
+        // Completion is registered even if Android stops us before the coroutine first executes.
+        // A finally inside the coroutine body would never run in that cancellation window.
+        job.invokeOnCompletion {
+            synchronized(monitor) {
+                if (operation?.token == token) {
+                    operation = null
+                    mutableState.value = ModelImportState.Done(result)
+                }
+            }
+            onFinished()
         }
+        job.start()
+        return true
+    }
 
     private suspend fun registerIfUnlocked(copied: ModelCopyResult.Copied): ModelImportOutcome {
-        val registration =
-            synchronized(monitor) {
-                val current = session ?: return ModelImportOutcome.SAVED_FOR_UNLOCK
-                current.scope.async { current.register(copied) }
-            }
+        val current = synchronized(monitor) { session ?: return ModelImportOutcome.SAVED_FOR_UNLOCK }
+        val registration = current.scope.async { current.register(copied) }
         return try {
             when (registration.await()) {
                 is ImportOutcome.Imported -> ModelImportOutcome.IMPORTED
