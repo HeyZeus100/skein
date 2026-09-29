@@ -124,8 +124,9 @@ same components as `app/IngestPipelines.forSession` perform ingestion:
 `Chunker(ApproximateTokenizer)`, `IngestSteps`, `EdgeUpserter`, and
 `DanglingResolver`. `RetrievalServiceImpl` performs every measured query.
 
-The current app has no production embedder or entity extractor. The harness
-therefore inserts no vectors or artificial entity/gold edges. It evaluates:
+The measured app has no configured production embedding runtime or entity
+extractor. The harness therefore inserts no vectors or artificial entity/gold
+edges. It evaluates:
 
 - `lexical_only`: lexical recall, no vector/graph recall; existing ranker settings
   `recallWeight=1`, `pprWeight=0`, `neighborHops=0` remove graph influence.
@@ -274,12 +275,13 @@ report. The workflow uploads the build/runner logs, raw diagnostic and actual
 AGP XML/reports even on failure. Preserve these artifacts before a repeat, and
 use another fresh emulator/output/build directory for that repeat.
 
-A green job proves diagnostic execution, integrity, scope and determinism.
-Ranking gate failures remain `FAIL` in the report and runner summary, and the
-full hybrid gate remains **INELIGIBLE**. `skein-9744` remains open for reviewed
-baseline failures, real production embedder/vector ablation,
-full-hybrid eligibility and enforced quality gate, and any future nightly
-wiring. A diagnostic run cannot close those remaining requirements.
+Successful diagnostic execution proves only the measured integrity, scope and
+determinism checks. Ranking and rejection failures remain `FAIL` in the report
+and runner summary, and the full hybrid gate remains **INELIGIBLE**. The enforced
+lane below deliberately fails its job after retaining complete evidence when
+production quality fails. Nightly/PR wiring and that enforcement are implemented;
+`skein-9744` remains open for unmet quality, the real production embedder/vector
+ablation and full-hybrid eligibility. Instrumentation success cannot close them.
 
 ## Ordinary instrumentation separation
 
@@ -485,3 +487,72 @@ or `continue-on-error` hides them. The manual diagnostic defaults to collection
 without quality enforcement. Ordinary `emulator.yml` APKs still exclude this
 class and their actual XML is reviewed separately. Only the designated session
 runner dispatches manual runtime work; the Fold HOLD is unchanged.
+
+## First frozen validation measurement after resumption
+
+The single first evaluation of the new frozen set is
+[run 36531672149](https://github.com/HeyZeus100/skein/actions/runs/36531672149),
+at exact source `8b8884b4b24a93f1ae72461840518ba2ebaaafb3`. Policy source and
+parameters remain frozen at `564243494f4ba1de73a4df1457d5a0dde128f6b0`;
+production is still coverage-v1 at 0.5. The development-falsified fact-shape-v2
+candidate is explicitly experimental, with value coverage 0.25, and has not been
+promoted. Neither validation fixture, original gold nor acceptance thresholds
+changed. This new set is now consumed; subsequent runs are regression evidence.
+
+**The actual workflow and measurement job failed quality enforcement.** Its
+original XML contains one executed pass (65.080 seconds), Gradle exited zero,
+and complete collection succeeded on attempt 1 without recovery. The runner
+then raised `ValueError: retrieval quality gate FAIL; complete measured evidence retained`.
+Artifact upload succeeded. The report SHA-256 is
+`b51830389930206f991de92be217cc55bcd0371e9bebf34646bef570ab5d0745`;
+built, installed and post-run APK SHA-256 are all
+`aaa895db11c95fb989d2c682fc14db6d38e1818978055201717b3aa906c803fc`.
+The source identity remains host-declared, not embedded APK attestation.
+
+| Set / configuration | Answer spans covered | Absences rejected | False rejections | Strict gate |
+|---|---:|---:|---:|---|
+| Original reserved / production | 5/6 | 5/6 | 1/6 | FAIL |
+| Original reserved / ungated | 6/6 | 0/6 | 0/6 | FAIL |
+| Original reserved / experimental | 5/6 | 6/6 | 1/6 | FAIL |
+| New frozen / production | 9/12 | 6/12 | 3/12 | FAIL |
+| New frozen / ungated | 12/12 | 0/12 | 0/12 | FAIL |
+| New frozen / experimental | 10/12 | 7/12 | 2/12 | FAIL |
+
+All six configurations pass the coarse ranking thresholds; none passes the
+strict relevance gate. New production recall/nDCG are both 0.75; experimental
+recall/nDCG are both 0.833333. Production loses supported answers about protective
+film packaging, paper treatment duration and the choir's music location. It
+accepts sources lacking the requested sensor manufacturer, parade date, rescue
+boat capacity, drying humidity, inspection finding or composer. The experimental
+candidate still loses two supported answers and accepts five absent facts. The
+original telescope-paraphrase and kiln-cost production failures persist. These
+observations are retained failures, not inputs for further calibration here.
+
+Default development recall/nDCG remain **0.800000/0.717357**, with **16/16**
+absence rejection and **12/60** false rejection; p50/p95 are 12.173/15.606 ms.
+Lexical-only remains 0.600000/0.601604 and graph-only 0.200000/0.141962, both
+ranking FAIL. Across the measured reports, scope, provenance, anchors,
+duplicates and nondeterminism violations are zero. Independent offline review
+recomputed aggregate/category metrics and checked all **1,449** validation source
+occurrences against frozen source bytes, titles, locators, revision hashes,
+fingerprints and gold grades. The probe audit again finds all 508 legacy
+top-50 misses have row-specific matches among 850 probes; ingest warnings are
+empty. There are zero vectors, 850 pending documents and 850 pending chunks:
+full hybrid is **INELIGIBLE**.
+
+The same source's ordinary
+[run 36530225153](https://github.com/HeyZeus100/skein/actions/runs/36530225153)
+passes all 277 actual cases (app 37, vault 204, inference-service 36), with no
+failures, errors, skips or retrieval diagnostic case. All seven new Unicode
+controls and the preserved targets pass. The earlier ordinary failure at
+`bcd2b32` is [retained separately](eval/runs/2026-09-28-retrieval-continuation-bcd2b32/README.md);
+the correction changed the test's ART encoding assumption, with identical test
+inventory. Same-source automatic CI, screenshots and reproducibility jobs pass;
+the tag-only SQLCipher source-verification job is explicitly skipped.
+
+The [complete retained evidence bundle](eval/runs/2026-09-28-retrieval-continuation-8b8884b/README.md)
+contains original XML/JSON, complete diagnostic artifact archive, job conclusions,
+logs, hashes and independent reviews. Relevant PR/nightly triggers are wired;
+this dispatch verified the shared enforced lane, not a separate scheduled or PR
+event. Retrieval quality, real embedding/vector ablation, full hybrid, generation
+quality and physical-device gates remain open. The Fold HOLD remains unchanged.

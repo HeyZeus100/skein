@@ -1,0 +1,67 @@
+[
+  {
+    "classname": "app.skein.core.vault.index.IndexStoreImplAcceptanceTest",
+    "name": "ingestRowProbeVerifiesHealthyPostingBelowTheGlobalTop50",
+    "status": "PASS"
+  },
+  {
+    "classname": "app.skein.core.vault.index.IndexStoreImplAcceptanceTest",
+    "name": "ingestRowProbeWarnsWhenTheActualInsertTriggerIsMissing",
+    "status": "PASS"
+  },
+  {
+    "classname": "app.skein.core.vault.index.IndexStoreImplAcceptanceTest",
+    "name": "ingestRowProbeDetectsAMissingLaterPostingWhenTheFirstRowIsHealthy",
+    "status": "PASS"
+  },
+  {
+    "classname": "app.skein.core.vault.index.IndexStoreImplAcceptanceTest",
+    "name": "ingestRowProbeDoesNotTreatAsciiInsideAUnicodeTokenAsAMissingPosting",
+    "status": "PASS"
+  },
+  {
+    "classname": "app.skein.core.vault.index.IndexStoreImplContractTest",
+    "name": "lexical_match_is_specific_to_one_row_and_removed_when_replaced",
+    "status": "PASS"
+  },
+  {
+    "classname": "app.skein.core.vault.index.GraphRecallAcceptanceTest",
+    "name": "ordinaryPhraseDiscoversLongerTitlesAndLinkedAnswerWithinEvidenceScope",
+    "status": "PASS"
+  },
+  {
+    "classname": "app.skein.core.vault.index.IndexStoreImplAcceptanceTest",
+    "name": "actualTokenizerBoundsSkipWholeTokensAndNeverInventPostingFragments",
+    "status": "PASS"
+  },
+  {
+    "classname": "app.skein.core.vault.index.IndexStoreImplAcceptanceTest",
+    "name": "unicodeAdversarialQueriesRemainLiteralAndCannotBroadenToUnrelatedRows",
+    "status": "PASS"
+  },
+  {
+    "classname": "app.skein.core.vault.index.IndexStoreImplAcceptanceTest",
+    "name": "unicodeOnlyIngestProbeChecksARealPostingWithoutAsciiFallback",
+    "status": "PASS"
+  },
+  {
+    "classname": "app.skein.core.vault.index.IndexStoreImplAcceptanceTest",
+    "name": "unicodeOnlyIngestProbeFindsAMissingMiddleRowBetweenHealthyRows",
+    "status": "PASS"
+  },
+  {
+    "classname": "app.skein.core.vault.index.IndexStoreImplAcceptanceTest",
+    "name": "unicodeOnlyIngestProbeWarnsWhenTheInsertTriggerIsMissing",
+    "status": "PASS"
+  },
+  {
+    "classname": "app.skein.core.vault.index.IndexStoreImplAcceptanceTest",
+    "name": "unicodeQueryTermsMatchTheActualDefaultSqliteTokenizer",
+    "status": "PASS"
+  },
+  {
+    "classname": "app.skein.core.vault.index.IndexStoreImplAcceptanceTest",
+    "name": "unicodeTextBindingPreservesSupplementaryAndLegacyModifiedUtf8",
+    "status": "PASS"
+  }
+]

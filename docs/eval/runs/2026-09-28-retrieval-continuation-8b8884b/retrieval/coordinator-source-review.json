@@ -1,0 +1,36 @@
+{
+  "rejection_validation": {
+    "production_policy": {
+      "reviewed_queries": 12,
+      "reviewed_source_occurrences": 108,
+      "source_bytes_anchors_revisions_fingerprints_and_grades": "PASS"
+    },
+    "ungated_control": {
+      "reviewed_queries": 12,
+      "reviewed_source_occurrences": 216,
+      "source_bytes_anchors_revisions_fingerprints_and_grades": "PASS"
+    },
+    "experimental_candidate": {
+      "reviewed_queries": 12,
+      "reviewed_source_occurrences": 90,
+      "source_bytes_anchors_revisions_fingerprints_and_grades": "PASS"
+    }
+  },
+  "independent_validation": {
+    "production_policy": {
+      "reviewed_queries": 24,
+      "reviewed_source_occurrences": 273,
+      "source_bytes_anchors_revisions_fingerprints_and_grades": "PASS"
+    },
+    "ungated_control": {
+      "reviewed_queries": 24,
+      "reviewed_source_occurrences": 489,
+      "source_bytes_anchors_revisions_fingerprints_and_grades": "PASS"
+    },
+    "experimental_candidate": {
+      "reviewed_queries": 24,
+      "reviewed_source_occurrences": 273,
+      "source_bytes_anchors_revisions_fingerprints_and_grades": "PASS"
+    }
+  }
+}

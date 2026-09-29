@@ -1,0 +1,11 @@
+{
+  "workflow_run": 36531672149,
+  "source_revision": "8b8884b4b24a93f1ae72461840518ba2ebaaafb3",
+  "collection": "gh run download --name real-retrieval-diagnostic; original file contents retained",
+  "artifact_files": 29,
+  "complete_original_archive": "complete-original-artifact.tar.gz",
+  "archive_validation": "Every member byte length/SHA-256 verified against full-download-file-index.json",
+  "retrieval_report_sha256": "b51830389930206f991de92be217cc55bcd0371e9bebf34646bef570ab5d0745",
+  "local_original_path": "/Users/andrewherrera/skein-worktrees/retrieval-eval-20260928/.agent-logs/runtime-36531672149/artifact",
+  "post_collection": "offline validation only; no instrumentation rerun"
+}

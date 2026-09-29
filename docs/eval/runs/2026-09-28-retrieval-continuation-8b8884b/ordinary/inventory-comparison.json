@@ -1,0 +1,23 @@
+{
+  "previous_run": 36527953704,
+  "current_run": 36530225153,
+  "previous_source": "bcd2b3264805b9559d01622af1d17abe3ae6fc9a",
+  "current_source": "8b8884b4b24a93f1ae72461840518ba2ebaaafb3",
+  "same_unique_testcase_inventory": true,
+  "testcases": 277,
+  "added": [],
+  "removed": [],
+  "status_changes": [
+    {
+      "classname": "app.skein.core.vault.index.IndexStoreImplAcceptanceTest",
+      "name": "unicodeTextBindingPreservesSupplementaryAndLegacyModifiedUtf8",
+      "before": "FAIL",
+      "after": "PASS"
+    }
+  ],
+  "xml_sha256": {
+    "app.xml": "e6450e5d69dc32f95dd334cb4df304278f0aad83cdf2207a7cbe57bbb9729d2a",
+    "vault.xml": "18ca85784de37902f73ee90a139b5f249546726d040cf6c78b035542a162abf5",
+    "inference-service.xml": "ad0d11f209fd18aa1f2b50945b26995ef62804a54afacb4e80a451b16d3d7731"
+  }
+}

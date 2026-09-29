@@ -1,0 +1,16 @@
+{
+  "run_id": 36530225153,
+  "expected_sha": "8b8884b4b24a93f1ae72461840518ba2ebaaafb3",
+  "conclusion": "success",
+  "watch_exit": 0,
+  "download_exit": 0,
+  "log_exit": 0,
+  "actual_cases": 277,
+  "passing_cases": 277,
+  "failure_count": 0,
+  "error_count": 0,
+  "skip_count": 0,
+  "diagnostic_present": false,
+  "new_unicode_cases": 7,
+  "preserved_target_cases": 6
+}

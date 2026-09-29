@@ -1,0 +1,1156 @@
+{
+  "rejection_validation": {
+    "production_policy": [
+      {
+        "id": "reserved-answerable-05",
+        "category": "answerable_paraphrase",
+        "query": "Where are the telescope's eyepieces kept for transport?",
+        "failure": "supported_span_missing",
+        "expected_answer": "inside the padded red case",
+        "source_ids": [],
+        "source_titles": [],
+        "source_texts": []
+      },
+      {
+        "id": "reserved-related-only-01",
+        "category": "related_only",
+        "query": "What is the ceramic kiln's electricity cost per glaze firing?",
+        "failure": "unsupported_sources_accepted",
+        "expected_answer": null,
+        "source_ids": [
+          "01990000-0000-7000-8000-000000000001",
+          "01990000-0000-7000-8000-000000000005",
+          "01990000-0000-7000-8000-000000000006",
+          "01990000-0000-7000-8000-000000000003",
+          "01990000-0000-7000-8000-000000000002",
+          "01990000-0000-7000-8000-000000000004"
+        ],
+        "source_titles": [
+          "Ceramic kiln log",
+          "Telescope packing note",
+          "Bread fermentation record",
+          "Seed library ledger",
+          "Bicycle repair record",
+          "Upright piano maintenance card"
+        ],
+        "source_texts": [
+          "The ceramic kiln reached a peak temperature of 1215 degrees Celsius during the glaze firing. The cooling vent stayed closed overnight.",
+          "The telescope eyepieces travel inside the padded red case. The tripod is carried separately.",
+          "After mixing, the bread dough rests in the refrigerator for eighteen hours. Shape the loaves before the final proof.",
+          "Nessa handles the return of borrowed seed packets at the seed library. Returned packets go in the blue tin beside the catalogue.",
+          "The frayed rear brake cable was replaced with a stainless inner cable. Reusing the old housing reduced the bicycle repair parts bill.",
+          "The upright piano needs a tuning every six months. Its last inspection found no loose hammers."
+        ]
+      }
+    ],
+    "ungated_control": [
+      {
+        "id": "reserved-related-only-01",
+        "category": "related_only",
+        "query": "What is the ceramic kiln's electricity cost per glaze firing?",
+        "failure": "unsupported_sources_accepted",
+        "expected_answer": null,
+        "source_ids": [
+          "01990000-0000-7000-8000-000000000001",
+          "01990000-0000-7000-8000-000000000005",
+          "01990000-0000-7000-8000-000000000006",
+          "01990000-0000-7000-8000-000000000003",
+          "01990000-0000-7000-8000-000000000002",
+          "01990000-0000-7000-8000-000000000004"
+        ],
+        "source_titles": [
+          "Ceramic kiln log",
+          "Telescope packing note",
+          "Bread fermentation record",
+          "Seed library ledger",
+          "Bicycle repair record",
+          "Upright piano maintenance card"
+        ],
+        "source_texts": [
+          "The ceramic kiln reached a peak temperature of 1215 degrees Celsius during the glaze firing. The cooling vent stayed closed overnight.",
+          "The telescope eyepieces travel inside the padded red case. The tripod is carried separately.",
+          "After mixing, the bread dough rests in the refrigerator for eighteen hours. Shape the loaves before the final proof.",
+          "Nessa handles the return of borrowed seed packets at the seed library. Returned packets go in the blue tin beside the catalogue.",
+          "The frayed rear brake cable was replaced with a stainless inner cable. Reusing the old housing reduced the bicycle repair parts bill.",
+          "The upright piano needs a tuning every six months. Its last inspection found no loose hammers."
+        ]
+      },
+      {
+        "id": "reserved-related-only-02",
+        "category": "related_only",
+        "query": "What torque in newton metres was used on the bicycle stem bolts?",
+        "failure": "unsupported_sources_accepted",
+        "expected_answer": null,
+        "source_ids": [
+          "01990000-0000-7000-8000-000000000002",
+          "01990000-0000-7000-8000-000000000006",
+          "01990000-0000-7000-8000-000000000003",
+          "01990000-0000-7000-8000-000000000005",
+          "01990000-0000-7000-8000-000000000001",
+          "01990000-0000-7000-8000-000000000004"
+        ],
+        "source_titles": [
+          "Bicycle repair record",
+          "Bread fermentation record",
+          "Seed library ledger",
+          "Telescope packing note",
+          "Ceramic kiln log",
+          "Upright piano maintenance card"
+        ],
+        "source_texts": [
+          "The frayed rear brake cable was replaced with a stainless inner cable. Reusing the old housing reduced the bicycle repair parts bill.",
+          "After mixing, the bread dough rests in the refrigerator for eighteen hours. Shape the loaves before the final proof.",
+          "Nessa handles the return of borrowed seed packets at the seed library. Returned packets go in the blue tin beside the catalogue.",
+          "The telescope eyepieces travel inside the padded red case. The tripod is carried separately.",
+          "The ceramic kiln reached a peak temperature of 1215 degrees Celsius during the glaze firing. The cooling vent stayed closed overnight.",
+          "The upright piano needs a tuning every six months. Its last inspection found no loose hammers."
+        ]
+      },
+      {
+        "id": "reserved-related-only-03",
+        "category": "related_only",
+        "query": "What is the annual membership fee for the seed library?",
+        "failure": "unsupported_sources_accepted",
+        "expected_answer": null,
+        "source_ids": [
+          "01990000-0000-7000-8000-000000000003",
+          "01990000-0000-7000-8000-000000000005",
+          "01990000-0000-7000-8000-000000000006",
+          "01990000-0000-7000-8000-000000000001",
+          "01990000-0000-7000-8000-000000000002",
+          "01990000-0000-7000-8000-000000000004"
+        ],
+        "source_titles": [
+          "Seed library ledger",
+          "Telescope packing note",
+          "Bread fermentation record",
+          "Ceramic kiln log",
+          "Bicycle repair record",
+          "Upright piano maintenance card"
+        ],
+        "source_texts": [
+          "Nessa handles the return of borrowed seed packets at the seed library. Returned packets go in the blue tin beside the catalogue.",
+          "The telescope eyepieces travel inside the padded red case. The tripod is carried separately.",
+          "After mixing, the bread dough rests in the refrigerator for eighteen hours. Shape the loaves before the final proof.",
+          "The ceramic kiln reached a peak temperature of 1215 degrees Celsius during the glaze firing. The cooling vent stayed closed overnight.",
+          "The frayed rear brake cable was replaced with a stainless inner cable. Reusing the old housing reduced the bicycle repair parts bill.",
+          "The upright piano needs a tuning every six months. Its last inspection found no loose hammers."
+        ]
+      },
+      {
+        "id": "reserved-no-match-01",
+        "category": "no_match",
+        "query": "What is the replacement filter number for the aquarium pump?",
+        "failure": "unsupported_sources_accepted",
+        "expected_answer": null,
+        "source_ids": [
+          "01990000-0000-7000-8000-000000000005",
+          "01990000-0000-7000-8000-000000000006",
+          "01990000-0000-7000-8000-000000000003",
+          "01990000-0000-7000-8000-000000000001",
+          "01990000-0000-7000-8000-000000000002",
+          "01990000-0000-7000-8000-000000000004"
+        ],
+        "source_titles": [
+          "Telescope packing note",
+          "Bread fermentation record",
+          "Seed library ledger",
+          "Ceramic kiln log",
+          "Bicycle repair record",
+          "Upright piano maintenance card"
+        ],
+        "source_texts": [
+          "The telescope eyepieces travel inside the padded red case. The tripod is carried separately.",
+          "After mixing, the bread dough rests in the refrigerator for eighteen hours. Shape the loaves before the final proof.",
+          "Nessa handles the return of borrowed seed packets at the seed library. Returned packets go in the blue tin beside the catalogue.",
+          "The ceramic kiln reached a peak temperature of 1215 degrees Celsius during the glaze firing. The cooling vent stayed closed overnight.",
+          "The frayed rear brake cable was replaced with a stainless inner cable. Reusing the old housing reduced the bicycle repair parts bill.",
+          "The upright piano needs a tuning every six months. Its last inspection found no loose hammers."
+        ]
+      },
+      {
+        "id": "reserved-no-match-02",
+        "category": "no_match",
+        "query": "Which platform does the morning tram to Silvermead leave from?",
+        "failure": "unsupported_sources_accepted",
+        "expected_answer": null,
+        "source_ids": [
+          "01990000-0000-7000-8000-000000000006",
+          "01990000-0000-7000-8000-000000000005",
+          "01990000-0000-7000-8000-000000000003",
+          "01990000-0000-7000-8000-000000000001",
+          "01990000-0000-7000-8000-000000000002",
+          "01990000-0000-7000-8000-000000000004"
+        ],
+        "source_titles": [
+          "Bread fermentation record",
+          "Telescope packing note",
+          "Seed library ledger",
+          "Ceramic kiln log",
+          "Bicycle repair record",
+          "Upright piano maintenance card"
+        ],
+        "source_texts": [
+          "After mixing, the bread dough rests in the refrigerator for eighteen hours. Shape the loaves before the final proof.",
+          "The telescope eyepieces travel inside the padded red case. The tripod is carried separately.",
+          "Nessa handles the return of borrowed seed packets at the seed library. Returned packets go in the blue tin beside the catalogue.",
+          "The ceramic kiln reached a peak temperature of 1215 degrees Celsius during the glaze firing. The cooling vent stayed closed overnight.",
+          "The frayed rear brake cable was replaced with a stainless inner cable. Reusing the old housing reduced the bicycle repair parts bill.",
+          "The upright piano needs a tuning every six months. Its last inspection found no loose hammers."
+        ]
+      },
+      {
+        "id": "reserved-no-match-03",
+        "category": "no_match",
+        "query": "What is the visitor wifi password at the veterinary clinic?",
+        "failure": "unsupported_sources_accepted",
+        "expected_answer": null,
+        "source_ids": [
+          "01990000-0000-7000-8000-000000000005",
+          "01990000-0000-7000-8000-000000000003",
+          "01990000-0000-7000-8000-000000000006",
+          "01990000-0000-7000-8000-000000000001",
+          "01990000-0000-7000-8000-000000000002",
+          "01990000-0000-7000-8000-000000000004"
+        ],
+        "source_titles": [
+          "Telescope packing note",
+          "Seed library ledger",
+          "Bread fermentation record",
+          "Ceramic kiln log",
+          "Bicycle repair record",
+          "Upright piano maintenance card"
+        ],
+        "source_texts": [
+          "The telescope eyepieces travel inside the padded red case. The tripod is carried separately.",
+          "Nessa handles the return of borrowed seed packets at the seed library. Returned packets go in the blue tin beside the catalogue.",
+          "After mixing, the bread dough rests in the refrigerator for eighteen hours. Shape the loaves before the final proof.",
+          "The ceramic kiln reached a peak temperature of 1215 degrees Celsius during the glaze firing. The cooling vent stayed closed overnight.",
+          "The frayed rear brake cable was replaced with a stainless inner cable. Reusing the old housing reduced the bicycle repair parts bill.",
+          "The upright piano needs a tuning every six months. Its last inspection found no loose hammers."
+        ]
+      }
+    ],
+    "experimental_candidate": [
+      {
+        "id": "reserved-answerable-05",
+        "category": "answerable_paraphrase",
+        "query": "Where are the telescope's eyepieces kept for transport?",
+        "failure": "supported_span_missing",
+        "expected_answer": "inside the padded red case",
+        "source_ids": [],
+        "source_titles": [],
+        "source_texts": []
+      }
+    ]
+  },
+  "independent_validation": {
+    "production_policy": [
+      {
+        "id": "fresh-20260928-03",
+        "category": "answerable_paraphrase",
+        "query": "What kind of protective packaging holds the film negatives?",
+        "failure": "supported_span_missing",
+        "expected_answer": "acid-free envelopes",
+        "source_ids": [],
+        "source_titles": [],
+        "source_texts": []
+      },
+      {
+        "id": "fresh-20260928-05",
+        "category": "answerable_paraphrase",
+        "query": "How long is the wet paper sandwiched between absorbent layers?",
+        "failure": "supported_span_missing",
+        "expected_answer": "eight minutes",
+        "source_ids": [],
+        "source_titles": [],
+        "source_texts": []
+      },
+      {
+        "id": "fresh-20260928-08",
+        "category": "answerable_paraphrase",
+        "query": "Where can the choir find its sheet music?",
+        "failure": "supported_span_missing",
+        "expected_answer": "the mahogany cupboard in the east alcove",
+        "source_ids": [],
+        "source_titles": [],
+        "source_texts": []
+      },
+      {
+        "id": "fresh-20260928-13",
+        "category": "related_only",
+        "query": "Who manufactured the weather mast sensor?",
+        "failure": "unsupported_sources_accepted",
+        "expected_answer": null,
+        "source_ids": [
+          "019a0000-0000-7000-8000-000000000001",
+          "019a0000-0000-7000-8000-000000000008",
+          "019a0000-0000-7000-8000-000000000007",
+          "019a0000-0000-7000-8000-000000000005",
+          "019a0000-0000-7000-8000-000000000004",
+          "019a0000-0000-7000-8000-000000000002",
+          "019a0000-0000-7000-8000-000000000006",
+          "019a0000-0000-7000-8000-000000000003"
+        ],
+        "source_titles": [
+          "Weather mast maintenance",
+          "Choir rehearsal cupboard",
+          "Pollinator enclosure rota",
+          "Paper conservation journal",
+          "Estuary paddling notice",
+          "Lantern parade briefing",
+          "Coffee cupping worksheet",
+          "Film archive handling"
+        ],
+        "source_texts": [
+          "The weather mast records a sensor reading every ninety seconds. The battery enclosure is checked at sunrise.",
+          "The choir scores are filed in the mahogany cupboard in the east alcove. Used pencils go in the shallow tray.",
+          "Farah inspects the pollinator enclosure on Tuesdays. The inspection log is kept beside the mesh entrance.",
+          "The damp paper rests between absorbent blotters for eight minutes. The sheet is then transferred to the drying rack.",
+          "A red flag means the estuary launch is closed to paddlers. The rescue boat remains on its trailer beside the ramp.",
+          "Lantern parade volunteers assemble beside the north pier gate. Reflective sashes are handed out before the procession.",
+          "Each coffee cupping bowl receives twelve grams of ground coffee. The grinder dial is set to fourteen.",
+          "The film negatives are sealed in acid-free envelopes. A soft brush removes loose dust before each sleeve is closed."
+        ]
+      },
+      {
+        "id": "fresh-20260928-14",
+        "category": "related_only",
+        "query": "On what calendar date is the lantern parade?",
+        "failure": "unsupported_sources_accepted",
+        "expected_answer": null,
+        "source_ids": [
+          "019a0000-0000-7000-8000-000000000002",
+          "019a0000-0000-7000-8000-000000000007",
+          "019a0000-0000-7000-8000-000000000004",
+          "019a0000-0000-7000-8000-000000000005",
+          "019a0000-0000-7000-8000-000000000001",
+          "019a0000-0000-7000-8000-000000000006",
+          "019a0000-0000-7000-8000-000000000003",
+          "019a0000-0000-7000-8000-000000000008"
+        ],
+        "source_titles": [
+          "Lantern parade briefing",
+          "Pollinator enclosure rota",
+          "Estuary paddling notice",
+          "Paper conservation journal",
+          "Weather mast maintenance",
+          "Coffee cupping worksheet",
+          "Film archive handling",
+          "Choir rehearsal cupboard"
+        ],
+        "source_texts": [
+          "Lantern parade volunteers assemble beside the north pier gate. Reflective sashes are handed out before the procession.",
+          "Farah inspects the pollinator enclosure on Tuesdays. The inspection log is kept beside the mesh entrance.",
+          "A red flag means the estuary launch is closed to paddlers. The rescue boat remains on its trailer beside the ramp.",
+          "The damp paper rests between absorbent blotters for eight minutes. The sheet is then transferred to the drying rack.",
+          "The weather mast records a sensor reading every ninety seconds. The battery enclosure is checked at sunrise.",
+          "Each coffee cupping bowl receives twelve grams of ground coffee. The grinder dial is set to fourteen.",
+          "The film negatives are sealed in acid-free envelopes. A soft brush removes loose dust before each sleeve is closed.",
+          "The choir scores are filed in the mahogany cupboard in the east alcove. Used pencils go in the shallow tray."
+        ]
+      },
+      {
+        "id": "fresh-20260928-16",
+        "category": "related_only",
+        "query": "How many paddlers can the estuary rescue boat carry?",
+        "failure": "unsupported_sources_accepted",
+        "expected_answer": null,
+        "source_ids": [
+          "019a0000-0000-7000-8000-000000000004",
+          "019a0000-0000-7000-8000-000000000008",
+          "019a0000-0000-7000-8000-000000000007",
+          "019a0000-0000-7000-8000-000000000005",
+          "019a0000-0000-7000-8000-000000000001",
+          "019a0000-0000-7000-8000-000000000002",
+          "019a0000-0000-7000-8000-000000000006",
+          "019a0000-0000-7000-8000-000000000003"
+        ],
+        "source_titles": [
+          "Estuary paddling notice",
+          "Choir rehearsal cupboard",
+          "Pollinator enclosure rota",
+          "Paper conservation journal",
+          "Weather mast maintenance",
+          "Lantern parade briefing",
+          "Coffee cupping worksheet",
+          "Film archive handling"
+        ],
+        "source_texts": [
+          "A red flag means the estuary launch is closed to paddlers. The rescue boat remains on its trailer beside the ramp.",
+          "The choir scores are filed in the mahogany cupboard in the east alcove. Used pencils go in the shallow tray.",
+          "Farah inspects the pollinator enclosure on Tuesdays. The inspection log is kept beside the mesh entrance.",
+          "The damp paper rests between absorbent blotters for eight minutes. The sheet is then transferred to the drying rack.",
+          "The weather mast records a sensor reading every ninety seconds. The battery enclosure is checked at sunrise.",
+          "Lantern parade volunteers assemble beside the north pier gate. Reflective sashes are handed out before the procession.",
+          "Each coffee cupping bowl receives twelve grams of ground coffee. The grinder dial is set to fourteen.",
+          "The film negatives are sealed in acid-free envelopes. A soft brush removes loose dust before each sleeve is closed."
+        ]
+      },
+      {
+        "id": "fresh-20260928-17",
+        "category": "related_only",
+        "query": "What relative humidity is required at the paper drying rack?",
+        "failure": "unsupported_sources_accepted",
+        "expected_answer": null,
+        "source_ids": [
+          "019a0000-0000-7000-8000-000000000005",
+          "019a0000-0000-7000-8000-000000000001",
+          "019a0000-0000-7000-8000-000000000007",
+          "019a0000-0000-7000-8000-000000000004",
+          "019a0000-0000-7000-8000-000000000006",
+          "019a0000-0000-7000-8000-000000000003",
+          "019a0000-0000-7000-8000-000000000008",
+          "019a0000-0000-7000-8000-000000000002"
+        ],
+        "source_titles": [
+          "Paper conservation journal",
+          "Weather mast maintenance",
+          "Pollinator enclosure rota",
+          "Estuary paddling notice",
+          "Coffee cupping worksheet",
+          "Film archive handling",
+          "Choir rehearsal cupboard",
+          "Lantern parade briefing"
+        ],
+        "source_texts": [
+          "The damp paper rests between absorbent blotters for eight minutes. The sheet is then transferred to the drying rack.",
+          "The weather mast records a sensor reading every ninety seconds. The battery enclosure is checked at sunrise.",
+          "Farah inspects the pollinator enclosure on Tuesdays. The inspection log is kept beside the mesh entrance.",
+          "A red flag means the estuary launch is closed to paddlers. The rescue boat remains on its trailer beside the ramp.",
+          "Each coffee cupping bowl receives twelve grams of ground coffee. The grinder dial is set to fourteen.",
+          "The film negatives are sealed in acid-free envelopes. A soft brush removes loose dust before each sleeve is closed.",
+          "The choir scores are filed in the mahogany cupboard in the east alcove. Used pencils go in the shallow tray.",
+          "Lantern parade volunteers assemble beside the north pier gate. Reflective sashes are handed out before the procession."
+        ]
+      },
+      {
+        "id": "fresh-20260928-19",
+        "category": "related_only",
+        "query": "Did Farah find any damaged mesh during the pollinator enclosure inspection?",
+        "failure": "unsupported_sources_accepted",
+        "expected_answer": null,
+        "source_ids": [
+          "019a0000-0000-7000-8000-000000000007",
+          "019a0000-0000-7000-8000-000000000001",
+          "019a0000-0000-7000-8000-000000000008",
+          "019a0000-0000-7000-8000-000000000005",
+          "019a0000-0000-7000-8000-000000000004",
+          "019a0000-0000-7000-8000-000000000002",
+          "019a0000-0000-7000-8000-000000000006",
+          "019a0000-0000-7000-8000-000000000003"
+        ],
+        "source_titles": [
+          "Pollinator enclosure rota",
+          "Weather mast maintenance",
+          "Choir rehearsal cupboard",
+          "Paper conservation journal",
+          "Estuary paddling notice",
+          "Lantern parade briefing",
+          "Coffee cupping worksheet",
+          "Film archive handling"
+        ],
+        "source_texts": [
+          "Farah inspects the pollinator enclosure on Tuesdays. The inspection log is kept beside the mesh entrance.",
+          "The weather mast records a sensor reading every ninety seconds. The battery enclosure is checked at sunrise.",
+          "The choir scores are filed in the mahogany cupboard in the east alcove. Used pencils go in the shallow tray.",
+          "The damp paper rests between absorbent blotters for eight minutes. The sheet is then transferred to the drying rack.",
+          "A red flag means the estuary launch is closed to paddlers. The rescue boat remains on its trailer beside the ramp.",
+          "Lantern parade volunteers assemble beside the north pier gate. Reflective sashes are handed out before the procession.",
+          "Each coffee cupping bowl receives twelve grams of ground coffee. The grinder dial is set to fourteen.",
+          "The film negatives are sealed in acid-free envelopes. A soft brush removes loose dust before each sleeve is closed."
+        ]
+      },
+      {
+        "id": "fresh-20260928-20",
+        "category": "related_only",
+        "query": "Which composer wrote the choir scores in the mahogany cupboard?",
+        "failure": "unsupported_sources_accepted",
+        "expected_answer": null,
+        "source_ids": [
+          "019a0000-0000-7000-8000-000000000008",
+          "019a0000-0000-7000-8000-000000000003",
+          "019a0000-0000-7000-8000-000000000007",
+          "019a0000-0000-7000-8000-000000000005",
+          "019a0000-0000-7000-8000-000000000004",
+          "019a0000-0000-7000-8000-000000000001",
+          "019a0000-0000-7000-8000-000000000002",
+          "019a0000-0000-7000-8000-000000000006"
+        ],
+        "source_titles": [
+          "Choir rehearsal cupboard",
+          "Film archive handling",
+          "Pollinator enclosure rota",
+          "Paper conservation journal",
+          "Estuary paddling notice",
+          "Weather mast maintenance",
+          "Lantern parade briefing",
+          "Coffee cupping worksheet"
+        ],
+        "source_texts": [
+          "The choir scores are filed in the mahogany cupboard in the east alcove. Used pencils go in the shallow tray.",
+          "The film negatives are sealed in acid-free envelopes. A soft brush removes loose dust before each sleeve is closed.",
+          "Farah inspects the pollinator enclosure on Tuesdays. The inspection log is kept beside the mesh entrance.",
+          "The damp paper rests between absorbent blotters for eight minutes. The sheet is then transferred to the drying rack.",
+          "A red flag means the estuary launch is closed to paddlers. The rescue boat remains on its trailer beside the ramp.",
+          "The weather mast records a sensor reading every ninety seconds. The battery enclosure is checked at sunrise.",
+          "Lantern parade volunteers assemble beside the north pier gate. Reflective sashes are handed out before the procession.",
+          "Each coffee cupping bowl receives twelve grams of ground coffee. The grinder dial is set to fourteen."
+        ]
+      }
+    ],
+    "ungated_control": [
+      {
+        "id": "fresh-20260928-13",
+        "category": "related_only",
+        "query": "Who manufactured the weather mast sensor?",
+        "failure": "unsupported_sources_accepted",
+        "expected_answer": null,
+        "source_ids": [
+          "019a0000-0000-7000-8000-000000000001",
+          "019a0000-0000-7000-8000-000000000008",
+          "019a0000-0000-7000-8000-000000000007",
+          "019a0000-0000-7000-8000-000000000005",
+          "019a0000-0000-7000-8000-000000000004",
+          "019a0000-0000-7000-8000-000000000002",
+          "019a0000-0000-7000-8000-000000000006",
+          "019a0000-0000-7000-8000-000000000003"
+        ],
+        "source_titles": [
+          "Weather mast maintenance",
+          "Choir rehearsal cupboard",
+          "Pollinator enclosure rota",
+          "Paper conservation journal",
+          "Estuary paddling notice",
+          "Lantern parade briefing",
+          "Coffee cupping worksheet",
+          "Film archive handling"
+        ],
+        "source_texts": [
+          "The weather mast records a sensor reading every ninety seconds. The battery enclosure is checked at sunrise.",
+          "The choir scores are filed in the mahogany cupboard in the east alcove. Used pencils go in the shallow tray.",
+          "Farah inspects the pollinator enclosure on Tuesdays. The inspection log is kept beside the mesh entrance.",
+          "The damp paper rests between absorbent blotters for eight minutes. The sheet is then transferred to the drying rack.",
+          "A red flag means the estuary launch is closed to paddlers. The rescue boat remains on its trailer beside the ramp.",
+          "Lantern parade volunteers assemble beside the north pier gate. Reflective sashes are handed out before the procession.",
+          "Each coffee cupping bowl receives twelve grams of ground coffee. The grinder dial is set to fourteen.",
+          "The film negatives are sealed in acid-free envelopes. A soft brush removes loose dust before each sleeve is closed."
+        ]
+      },
+      {
+        "id": "fresh-20260928-14",
+        "category": "related_only",
+        "query": "On what calendar date is the lantern parade?",
+        "failure": "unsupported_sources_accepted",
+        "expected_answer": null,
+        "source_ids": [
+          "019a0000-0000-7000-8000-000000000002",
+          "019a0000-0000-7000-8000-000000000007",
+          "019a0000-0000-7000-8000-000000000004",
+          "019a0000-0000-7000-8000-000000000005",
+          "019a0000-0000-7000-8000-000000000001",
+          "019a0000-0000-7000-8000-000000000006",
+          "019a0000-0000-7000-8000-000000000003",
+          "019a0000-0000-7000-8000-000000000008"
+        ],
+        "source_titles": [
+          "Lantern parade briefing",
+          "Pollinator enclosure rota",
+          "Estuary paddling notice",
+          "Paper conservation journal",
+          "Weather mast maintenance",
+          "Coffee cupping worksheet",
+          "Film archive handling",
+          "Choir rehearsal cupboard"
+        ],
+        "source_texts": [
+          "Lantern parade volunteers assemble beside the north pier gate. Reflective sashes are handed out before the procession.",
+          "Farah inspects the pollinator enclosure on Tuesdays. The inspection log is kept beside the mesh entrance.",
+          "A red flag means the estuary launch is closed to paddlers. The rescue boat remains on its trailer beside the ramp.",
+          "The damp paper rests between absorbent blotters for eight minutes. The sheet is then transferred to the drying rack.",
+          "The weather mast records a sensor reading every ninety seconds. The battery enclosure is checked at sunrise.",
+          "Each coffee cupping bowl receives twelve grams of ground coffee. The grinder dial is set to fourteen.",
+          "The film negatives are sealed in acid-free envelopes. A soft brush removes loose dust before each sleeve is closed.",
+          "The choir scores are filed in the mahogany cupboard in the east alcove. Used pencils go in the shallow tray."
+        ]
+      },
+      {
+        "id": "fresh-20260928-15",
+        "category": "related_only",
+        "query": "Who approved the film archive handling procedure?",
+        "failure": "unsupported_sources_accepted",
+        "expected_answer": null,
+        "source_ids": [
+          "019a0000-0000-7000-8000-000000000003",
+          "019a0000-0000-7000-8000-000000000008",
+          "019a0000-0000-7000-8000-000000000007",
+          "019a0000-0000-7000-8000-000000000005",
+          "019a0000-0000-7000-8000-000000000004",
+          "019a0000-0000-7000-8000-000000000001",
+          "019a0000-0000-7000-8000-000000000002",
+          "019a0000-0000-7000-8000-000000000006"
+        ],
+        "source_titles": [
+          "Film archive handling",
+          "Choir rehearsal cupboard",
+          "Pollinator enclosure rota",
+          "Paper conservation journal",
+          "Estuary paddling notice",
+          "Weather mast maintenance",
+          "Lantern parade briefing",
+          "Coffee cupping worksheet"
+        ],
+        "source_texts": [
+          "The film negatives are sealed in acid-free envelopes. A soft brush removes loose dust before each sleeve is closed.",
+          "The choir scores are filed in the mahogany cupboard in the east alcove. Used pencils go in the shallow tray.",
+          "Farah inspects the pollinator enclosure on Tuesdays. The inspection log is kept beside the mesh entrance.",
+          "The damp paper rests between absorbent blotters for eight minutes. The sheet is then transferred to the drying rack.",
+          "A red flag means the estuary launch is closed to paddlers. The rescue boat remains on its trailer beside the ramp.",
+          "The weather mast records a sensor reading every ninety seconds. The battery enclosure is checked at sunrise.",
+          "Lantern parade volunteers assemble beside the north pier gate. Reflective sashes are handed out before the procession.",
+          "Each coffee cupping bowl receives twelve grams of ground coffee. The grinder dial is set to fourteen."
+        ]
+      },
+      {
+        "id": "fresh-20260928-16",
+        "category": "related_only",
+        "query": "How many paddlers can the estuary rescue boat carry?",
+        "failure": "unsupported_sources_accepted",
+        "expected_answer": null,
+        "source_ids": [
+          "019a0000-0000-7000-8000-000000000004",
+          "019a0000-0000-7000-8000-000000000008",
+          "019a0000-0000-7000-8000-000000000007",
+          "019a0000-0000-7000-8000-000000000005",
+          "019a0000-0000-7000-8000-000000000001",
+          "019a0000-0000-7000-8000-000000000002",
+          "019a0000-0000-7000-8000-000000000006",
+          "019a0000-0000-7000-8000-000000000003"
+        ],
+        "source_titles": [
+          "Estuary paddling notice",
+          "Choir rehearsal cupboard",
+          "Pollinator enclosure rota",
+          "Paper conservation journal",
+          "Weather mast maintenance",
+          "Lantern parade briefing",
+          "Coffee cupping worksheet",
+          "Film archive handling"
+        ],
+        "source_texts": [
+          "A red flag means the estuary launch is closed to paddlers. The rescue boat remains on its trailer beside the ramp.",
+          "The choir scores are filed in the mahogany cupboard in the east alcove. Used pencils go in the shallow tray.",
+          "Farah inspects the pollinator enclosure on Tuesdays. The inspection log is kept beside the mesh entrance.",
+          "The damp paper rests between absorbent blotters for eight minutes. The sheet is then transferred to the drying rack.",
+          "The weather mast records a sensor reading every ninety seconds. The battery enclosure is checked at sunrise.",
+          "Lantern parade volunteers assemble beside the north pier gate. Reflective sashes are handed out before the procession.",
+          "Each coffee cupping bowl receives twelve grams of ground coffee. The grinder dial is set to fourteen.",
+          "The film negatives are sealed in acid-free envelopes. A soft brush removes loose dust before each sleeve is closed."
+        ]
+      },
+      {
+        "id": "fresh-20260928-17",
+        "category": "related_only",
+        "query": "What relative humidity is required at the paper drying rack?",
+        "failure": "unsupported_sources_accepted",
+        "expected_answer": null,
+        "source_ids": [
+          "019a0000-0000-7000-8000-000000000005",
+          "019a0000-0000-7000-8000-000000000001",
+          "019a0000-0000-7000-8000-000000000007",
+          "019a0000-0000-7000-8000-000000000004",
+          "019a0000-0000-7000-8000-000000000006",
+          "019a0000-0000-7000-8000-000000000003",
+          "019a0000-0000-7000-8000-000000000008",
+          "019a0000-0000-7000-8000-000000000002"
+        ],
+        "source_titles": [
+          "Paper conservation journal",
+          "Weather mast maintenance",
+          "Pollinator enclosure rota",
+          "Estuary paddling notice",
+          "Coffee cupping worksheet",
+          "Film archive handling",
+          "Choir rehearsal cupboard",
+          "Lantern parade briefing"
+        ],
+        "source_texts": [
+          "The damp paper rests between absorbent blotters for eight minutes. The sheet is then transferred to the drying rack.",
+          "The weather mast records a sensor reading every ninety seconds. The battery enclosure is checked at sunrise.",
+          "Farah inspects the pollinator enclosure on Tuesdays. The inspection log is kept beside the mesh entrance.",
+          "A red flag means the estuary launch is closed to paddlers. The rescue boat remains on its trailer beside the ramp.",
+          "Each coffee cupping bowl receives twelve grams of ground coffee. The grinder dial is set to fourteen.",
+          "The film negatives are sealed in acid-free envelopes. A soft brush removes loose dust before each sleeve is closed.",
+          "The choir scores are filed in the mahogany cupboard in the east alcove. Used pencils go in the shallow tray.",
+          "Lantern parade volunteers assemble beside the north pier gate. Reflective sashes are handed out before the procession."
+        ]
+      },
+      {
+        "id": "fresh-20260928-18",
+        "category": "related_only",
+        "query": "What is the price per kilogram of the coffee used for cupping?",
+        "failure": "unsupported_sources_accepted",
+        "expected_answer": null,
+        "source_ids": [
+          "019a0000-0000-7000-8000-000000000006",
+          "019a0000-0000-7000-8000-000000000005",
+          "019a0000-0000-7000-8000-000000000008",
+          "019a0000-0000-7000-8000-000000000007",
+          "019a0000-0000-7000-8000-000000000004",
+          "019a0000-0000-7000-8000-000000000001",
+          "019a0000-0000-7000-8000-000000000003",
+          "019a0000-0000-7000-8000-000000000002"
+        ],
+        "source_titles": [
+          "Coffee cupping worksheet",
+          "Paper conservation journal",
+          "Choir rehearsal cupboard",
+          "Pollinator enclosure rota",
+          "Estuary paddling notice",
+          "Weather mast maintenance",
+          "Film archive handling",
+          "Lantern parade briefing"
+        ],
+        "source_texts": [
+          "Each coffee cupping bowl receives twelve grams of ground coffee. The grinder dial is set to fourteen.",
+          "The damp paper rests between absorbent blotters for eight minutes. The sheet is then transferred to the drying rack.",
+          "The choir scores are filed in the mahogany cupboard in the east alcove. Used pencils go in the shallow tray.",
+          "Farah inspects the pollinator enclosure on Tuesdays. The inspection log is kept beside the mesh entrance.",
+          "A red flag means the estuary launch is closed to paddlers. The rescue boat remains on its trailer beside the ramp.",
+          "The weather mast records a sensor reading every ninety seconds. The battery enclosure is checked at sunrise.",
+          "The film negatives are sealed in acid-free envelopes. A soft brush removes loose dust before each sleeve is closed.",
+          "Lantern parade volunteers assemble beside the north pier gate. Reflective sashes are handed out before the procession."
+        ]
+      },
+      {
+        "id": "fresh-20260928-19",
+        "category": "related_only",
+        "query": "Did Farah find any damaged mesh during the pollinator enclosure inspection?",
+        "failure": "unsupported_sources_accepted",
+        "expected_answer": null,
+        "source_ids": [
+          "019a0000-0000-7000-8000-000000000007",
+          "019a0000-0000-7000-8000-000000000001",
+          "019a0000-0000-7000-8000-000000000008",
+          "019a0000-0000-7000-8000-000000000005",
+          "019a0000-0000-7000-8000-000000000004",
+          "019a0000-0000-7000-8000-000000000002",
+          "019a0000-0000-7000-8000-000000000006",
+          "019a0000-0000-7000-8000-000000000003"
+        ],
+        "source_titles": [
+          "Pollinator enclosure rota",
+          "Weather mast maintenance",
+          "Choir rehearsal cupboard",
+          "Paper conservation journal",
+          "Estuary paddling notice",
+          "Lantern parade briefing",
+          "Coffee cupping worksheet",
+          "Film archive handling"
+        ],
+        "source_texts": [
+          "Farah inspects the pollinator enclosure on Tuesdays. The inspection log is kept beside the mesh entrance.",
+          "The weather mast records a sensor reading every ninety seconds. The battery enclosure is checked at sunrise.",
+          "The choir scores are filed in the mahogany cupboard in the east alcove. Used pencils go in the shallow tray.",
+          "The damp paper rests between absorbent blotters for eight minutes. The sheet is then transferred to the drying rack.",
+          "A red flag means the estuary launch is closed to paddlers. The rescue boat remains on its trailer beside the ramp.",
+          "Lantern parade volunteers assemble beside the north pier gate. Reflective sashes are handed out before the procession.",
+          "Each coffee cupping bowl receives twelve grams of ground coffee. The grinder dial is set to fourteen.",
+          "The film negatives are sealed in acid-free envelopes. A soft brush removes loose dust before each sleeve is closed."
+        ]
+      },
+      {
+        "id": "fresh-20260928-20",
+        "category": "related_only",
+        "query": "Which composer wrote the choir scores in the mahogany cupboard?",
+        "failure": "unsupported_sources_accepted",
+        "expected_answer": null,
+        "source_ids": [
+          "019a0000-0000-7000-8000-000000000008",
+          "019a0000-0000-7000-8000-000000000003",
+          "019a0000-0000-7000-8000-000000000007",
+          "019a0000-0000-7000-8000-000000000005",
+          "019a0000-0000-7000-8000-000000000004",
+          "019a0000-0000-7000-8000-000000000001",
+          "019a0000-0000-7000-8000-000000000002",
+          "019a0000-0000-7000-8000-000000000006"
+        ],
+        "source_titles": [
+          "Choir rehearsal cupboard",
+          "Film archive handling",
+          "Pollinator enclosure rota",
+          "Paper conservation journal",
+          "Estuary paddling notice",
+          "Weather mast maintenance",
+          "Lantern parade briefing",
+          "Coffee cupping worksheet"
+        ],
+        "source_texts": [
+          "The choir scores are filed in the mahogany cupboard in the east alcove. Used pencils go in the shallow tray.",
+          "The film negatives are sealed in acid-free envelopes. A soft brush removes loose dust before each sleeve is closed.",
+          "Farah inspects the pollinator enclosure on Tuesdays. The inspection log is kept beside the mesh entrance.",
+          "The damp paper rests between absorbent blotters for eight minutes. The sheet is then transferred to the drying rack.",
+          "A red flag means the estuary launch is closed to paddlers. The rescue boat remains on its trailer beside the ramp.",
+          "The weather mast records a sensor reading every ninety seconds. The battery enclosure is checked at sunrise.",
+          "Lantern parade volunteers assemble beside the north pier gate. Reflective sashes are handed out before the procession.",
+          "Each coffee cupping bowl receives twelve grams of ground coffee. The grinder dial is set to fourteen."
+        ]
+      },
+      {
+        "id": "fresh-20260928-21",
+        "category": "scope_absence",
+        "query": "What is the listening room door code?",
+        "failure": "unsupported_sources_accepted",
+        "expected_answer": null,
+        "source_ids": [
+          "019a0000-0000-7000-8000-000000000007",
+          "019a0000-0000-7000-8000-000000000005",
+          "019a0000-0000-7000-8000-000000000004",
+          "019a0000-0000-7000-8000-000000000001",
+          "019a0000-0000-7000-8000-000000000006",
+          "019a0000-0000-7000-8000-000000000003",
+          "019a0000-0000-7000-8000-000000000008",
+          "019a0000-0000-7000-8000-000000000002"
+        ],
+        "source_titles": [
+          "Pollinator enclosure rota",
+          "Paper conservation journal",
+          "Estuary paddling notice",
+          "Weather mast maintenance",
+          "Coffee cupping worksheet",
+          "Film archive handling",
+          "Choir rehearsal cupboard",
+          "Lantern parade briefing"
+        ],
+        "source_texts": [
+          "Farah inspects the pollinator enclosure on Tuesdays. The inspection log is kept beside the mesh entrance.",
+          "The damp paper rests between absorbent blotters for eight minutes. The sheet is then transferred to the drying rack.",
+          "A red flag means the estuary launch is closed to paddlers. The rescue boat remains on its trailer beside the ramp.",
+          "The weather mast records a sensor reading every ninety seconds. The battery enclosure is checked at sunrise.",
+          "Each coffee cupping bowl receives twelve grams of ground coffee. The grinder dial is set to fourteen.",
+          "The film negatives are sealed in acid-free envelopes. A soft brush removes loose dust before each sleeve is closed.",
+          "The choir scores are filed in the mahogany cupboard in the east alcove. Used pencils go in the shallow tray.",
+          "Lantern parade volunteers assemble beside the north pier gate. Reflective sashes are handed out before the procession."
+        ]
+      },
+      {
+        "id": "fresh-20260928-22",
+        "category": "scope_absence",
+        "query": "At what air temperature do the glasshouse roof vents open?",
+        "failure": "unsupported_sources_accepted",
+        "expected_answer": null,
+        "source_ids": [
+          "019a0000-0000-7000-8000-000000000001",
+          "019a0000-0000-7000-8000-000000000008",
+          "019a0000-0000-7000-8000-000000000007",
+          "019a0000-0000-7000-8000-000000000005",
+          "019a0000-0000-7000-8000-000000000004",
+          "019a0000-0000-7000-8000-000000000002",
+          "019a0000-0000-7000-8000-000000000006",
+          "019a0000-0000-7000-8000-000000000003"
+        ],
+        "source_titles": [
+          "Weather mast maintenance",
+          "Choir rehearsal cupboard",
+          "Pollinator enclosure rota",
+          "Paper conservation journal",
+          "Estuary paddling notice",
+          "Lantern parade briefing",
+          "Coffee cupping worksheet",
+          "Film archive handling"
+        ],
+        "source_texts": [
+          "The weather mast records a sensor reading every ninety seconds. The battery enclosure is checked at sunrise.",
+          "The choir scores are filed in the mahogany cupboard in the east alcove. Used pencils go in the shallow tray.",
+          "Farah inspects the pollinator enclosure on Tuesdays. The inspection log is kept beside the mesh entrance.",
+          "The damp paper rests between absorbent blotters for eight minutes. The sheet is then transferred to the drying rack.",
+          "A red flag means the estuary launch is closed to paddlers. The rescue boat remains on its trailer beside the ramp.",
+          "Lantern parade volunteers assemble beside the north pier gate. Reflective sashes are handed out before the procession.",
+          "Each coffee cupping bowl receives twelve grams of ground coffee. The grinder dial is set to fourteen.",
+          "The film negatives are sealed in acid-free envelopes. A soft brush removes loose dust before each sleeve is closed."
+        ]
+      },
+      {
+        "id": "fresh-20260928-23",
+        "category": "no_match",
+        "query": "Which license plate is assigned to the municipal snowplow?",
+        "failure": "unsupported_sources_accepted",
+        "expected_answer": null,
+        "source_ids": [
+          "019a0000-0000-7000-8000-000000000006",
+          "019a0000-0000-7000-8000-000000000005",
+          "019a0000-0000-7000-8000-000000000004",
+          "019a0000-0000-7000-8000-000000000007",
+          "019a0000-0000-7000-8000-000000000001",
+          "019a0000-0000-7000-8000-000000000003",
+          "019a0000-0000-7000-8000-000000000008",
+          "019a0000-0000-7000-8000-000000000002"
+        ],
+        "source_titles": [
+          "Coffee cupping worksheet",
+          "Paper conservation journal",
+          "Estuary paddling notice",
+          "Pollinator enclosure rota",
+          "Weather mast maintenance",
+          "Film archive handling",
+          "Choir rehearsal cupboard",
+          "Lantern parade briefing"
+        ],
+        "source_texts": [
+          "Each coffee cupping bowl receives twelve grams of ground coffee. The grinder dial is set to fourteen.",
+          "The damp paper rests between absorbent blotters for eight minutes. The sheet is then transferred to the drying rack.",
+          "A red flag means the estuary launch is closed to paddlers. The rescue boat remains on its trailer beside the ramp.",
+          "Farah inspects the pollinator enclosure on Tuesdays. The inspection log is kept beside the mesh entrance.",
+          "The weather mast records a sensor reading every ninety seconds. The battery enclosure is checked at sunrise.",
+          "The film negatives are sealed in acid-free envelopes. A soft brush removes loose dust before each sleeve is closed.",
+          "The choir scores are filed in the mahogany cupboard in the east alcove. Used pencils go in the shallow tray.",
+          "Lantern parade volunteers assemble beside the north pier gate. Reflective sashes are handed out before the procession."
+        ]
+      },
+      {
+        "id": "fresh-20260928-24",
+        "category": "no_match",
+        "query": "What is the registration deadline for the pottery auction?",
+        "failure": "unsupported_sources_accepted",
+        "expected_answer": null,
+        "source_ids": [
+          "019a0000-0000-7000-8000-000000000005",
+          "019a0000-0000-7000-8000-000000000007",
+          "019a0000-0000-7000-8000-000000000004",
+          "019a0000-0000-7000-8000-000000000001",
+          "019a0000-0000-7000-8000-000000000008",
+          "019a0000-0000-7000-8000-000000000006",
+          "019a0000-0000-7000-8000-000000000003",
+          "019a0000-0000-7000-8000-000000000002"
+        ],
+        "source_titles": [
+          "Paper conservation journal",
+          "Pollinator enclosure rota",
+          "Estuary paddling notice",
+          "Weather mast maintenance",
+          "Choir rehearsal cupboard",
+          "Coffee cupping worksheet",
+          "Film archive handling",
+          "Lantern parade briefing"
+        ],
+        "source_texts": [
+          "The damp paper rests between absorbent blotters for eight minutes. The sheet is then transferred to the drying rack.",
+          "Farah inspects the pollinator enclosure on Tuesdays. The inspection log is kept beside the mesh entrance.",
+          "A red flag means the estuary launch is closed to paddlers. The rescue boat remains on its trailer beside the ramp.",
+          "The weather mast records a sensor reading every ninety seconds. The battery enclosure is checked at sunrise.",
+          "The choir scores are filed in the mahogany cupboard in the east alcove. Used pencils go in the shallow tray.",
+          "Each coffee cupping bowl receives twelve grams of ground coffee. The grinder dial is set to fourteen.",
+          "The film negatives are sealed in acid-free envelopes. A soft brush removes loose dust before each sleeve is closed.",
+          "Lantern parade volunteers assemble beside the north pier gate. Reflective sashes are handed out before the procession."
+        ]
+      }
+    ],
+    "experimental_candidate": [
+      {
+        "id": "fresh-20260928-03",
+        "category": "answerable_paraphrase",
+        "query": "What kind of protective packaging holds the film negatives?",
+        "failure": "supported_span_missing",
+        "expected_answer": "acid-free envelopes",
+        "source_ids": [],
+        "source_titles": [],
+        "source_texts": []
+      },
+      {
+        "id": "fresh-20260928-08",
+        "category": "answerable_paraphrase",
+        "query": "Where can the choir find its sheet music?",
+        "failure": "supported_span_missing",
+        "expected_answer": "the mahogany cupboard in the east alcove",
+        "source_ids": [],
+        "source_titles": [],
+        "source_texts": []
+      },
+      {
+        "id": "fresh-20260928-13",
+        "category": "related_only",
+        "query": "Who manufactured the weather mast sensor?",
+        "failure": "unsupported_sources_accepted",
+        "expected_answer": null,
+        "source_ids": [
+          "019a0000-0000-7000-8000-000000000001",
+          "019a0000-0000-7000-8000-000000000008",
+          "019a0000-0000-7000-8000-000000000007",
+          "019a0000-0000-7000-8000-000000000005",
+          "019a0000-0000-7000-8000-000000000004",
+          "019a0000-0000-7000-8000-000000000002",
+          "019a0000-0000-7000-8000-000000000006",
+          "019a0000-0000-7000-8000-000000000003"
+        ],
+        "source_titles": [
+          "Weather mast maintenance",
+          "Choir rehearsal cupboard",
+          "Pollinator enclosure rota",
+          "Paper conservation journal",
+          "Estuary paddling notice",
+          "Lantern parade briefing",
+          "Coffee cupping worksheet",
+          "Film archive handling"
+        ],
+        "source_texts": [
+          "The weather mast records a sensor reading every ninety seconds. The battery enclosure is checked at sunrise.",
+          "The choir scores are filed in the mahogany cupboard in the east alcove. Used pencils go in the shallow tray.",
+          "Farah inspects the pollinator enclosure on Tuesdays. The inspection log is kept beside the mesh entrance.",
+          "The damp paper rests between absorbent blotters for eight minutes. The sheet is then transferred to the drying rack.",
+          "A red flag means the estuary launch is closed to paddlers. The rescue boat remains on its trailer beside the ramp.",
+          "Lantern parade volunteers assemble beside the north pier gate. Reflective sashes are handed out before the procession.",
+          "Each coffee cupping bowl receives twelve grams of ground coffee. The grinder dial is set to fourteen.",
+          "The film negatives are sealed in acid-free envelopes. A soft brush removes loose dust before each sleeve is closed."
+        ]
+      },
+      {
+        "id": "fresh-20260928-14",
+        "category": "related_only",
+        "query": "On what calendar date is the lantern parade?",
+        "failure": "unsupported_sources_accepted",
+        "expected_answer": null,
+        "source_ids": [
+          "019a0000-0000-7000-8000-000000000002",
+          "019a0000-0000-7000-8000-000000000007",
+          "019a0000-0000-7000-8000-000000000004",
+          "019a0000-0000-7000-8000-000000000005",
+          "019a0000-0000-7000-8000-000000000001",
+          "019a0000-0000-7000-8000-000000000006",
+          "019a0000-0000-7000-8000-000000000003",
+          "019a0000-0000-7000-8000-000000000008"
+        ],
+        "source_titles": [
+          "Lantern parade briefing",
+          "Pollinator enclosure rota",
+          "Estuary paddling notice",
+          "Paper conservation journal",
+          "Weather mast maintenance",
+          "Coffee cupping worksheet",
+          "Film archive handling",
+          "Choir rehearsal cupboard"
+        ],
+        "source_texts": [
+          "Lantern parade volunteers assemble beside the north pier gate. Reflective sashes are handed out before the procession.",
+          "Farah inspects the pollinator enclosure on Tuesdays. The inspection log is kept beside the mesh entrance.",
+          "A red flag means the estuary launch is closed to paddlers. The rescue boat remains on its trailer beside the ramp.",
+          "The damp paper rests between absorbent blotters for eight minutes. The sheet is then transferred to the drying rack.",
+          "The weather mast records a sensor reading every ninety seconds. The battery enclosure is checked at sunrise.",
+          "Each coffee cupping bowl receives twelve grams of ground coffee. The grinder dial is set to fourteen.",
+          "The film negatives are sealed in acid-free envelopes. A soft brush removes loose dust before each sleeve is closed.",
+          "The choir scores are filed in the mahogany cupboard in the east alcove. Used pencils go in the shallow tray."
+        ]
+      },
+      {
+        "id": "fresh-20260928-17",
+        "category": "related_only",
+        "query": "What relative humidity is required at the paper drying rack?",
+        "failure": "unsupported_sources_accepted",
+        "expected_answer": null,
+        "source_ids": [
+          "019a0000-0000-7000-8000-000000000005",
+          "019a0000-0000-7000-8000-000000000001",
+          "019a0000-0000-7000-8000-000000000007",
+          "019a0000-0000-7000-8000-000000000004",
+          "019a0000-0000-7000-8000-000000000006",
+          "019a0000-0000-7000-8000-000000000003",
+          "019a0000-0000-7000-8000-000000000008",
+          "019a0000-0000-7000-8000-000000000002"
+        ],
+        "source_titles": [
+          "Paper conservation journal",
+          "Weather mast maintenance",
+          "Pollinator enclosure rota",
+          "Estuary paddling notice",
+          "Coffee cupping worksheet",
+          "Film archive handling",
+          "Choir rehearsal cupboard",
+          "Lantern parade briefing"
+        ],
+        "source_texts": [
+          "The damp paper rests between absorbent blotters for eight minutes. The sheet is then transferred to the drying rack.",
+          "The weather mast records a sensor reading every ninety seconds. The battery enclosure is checked at sunrise.",
+          "Farah inspects the pollinator enclosure on Tuesdays. The inspection log is kept beside the mesh entrance.",
+          "A red flag means the estuary launch is closed to paddlers. The rescue boat remains on its trailer beside the ramp.",
+          "Each coffee cupping bowl receives twelve grams of ground coffee. The grinder dial is set to fourteen.",
+          "The film negatives are sealed in acid-free envelopes. A soft brush removes loose dust before each sleeve is closed.",
+          "The choir scores are filed in the mahogany cupboard in the east alcove. Used pencils go in the shallow tray.",
+          "Lantern parade volunteers assemble beside the north pier gate. Reflective sashes are handed out before the procession."
+        ]
+      },
+      {
+        "id": "fresh-20260928-19",
+        "category": "related_only",
+        "query": "Did Farah find any damaged mesh during the pollinator enclosure inspection?",
+        "failure": "unsupported_sources_accepted",
+        "expected_answer": null,
+        "source_ids": [
+          "019a0000-0000-7000-8000-000000000007",
+          "019a0000-0000-7000-8000-000000000001",
+          "019a0000-0000-7000-8000-000000000008",
+          "019a0000-0000-7000-8000-000000000005",
+          "019a0000-0000-7000-8000-000000000004",
+          "019a0000-0000-7000-8000-000000000002",
+          "019a0000-0000-7000-8000-000000000006",
+          "019a0000-0000-7000-8000-000000000003"
+        ],
+        "source_titles": [
+          "Pollinator enclosure rota",
+          "Weather mast maintenance",
+          "Choir rehearsal cupboard",
+          "Paper conservation journal",
+          "Estuary paddling notice",
+          "Lantern parade briefing",
+          "Coffee cupping worksheet",
+          "Film archive handling"
+        ],
+        "source_texts": [
+          "Farah inspects the pollinator enclosure on Tuesdays. The inspection log is kept beside the mesh entrance.",
+          "The weather mast records a sensor reading every ninety seconds. The battery enclosure is checked at sunrise.",
+          "The choir scores are filed in the mahogany cupboard in the east alcove. Used pencils go in the shallow tray.",
+          "The damp paper rests between absorbent blotters for eight minutes. The sheet is then transferred to the drying rack.",
+          "A red flag means the estuary launch is closed to paddlers. The rescue boat remains on its trailer beside the ramp.",
+          "Lantern parade volunteers assemble beside the north pier gate. Reflective sashes are handed out before the procession.",
+          "Each coffee cupping bowl receives twelve grams of ground coffee. The grinder dial is set to fourteen.",
+          "The film negatives are sealed in acid-free envelopes. A soft brush removes loose dust before each sleeve is closed."
+        ]
+      },
+      {
+        "id": "fresh-20260928-20",
+        "category": "related_only",
+        "query": "Which composer wrote the choir scores in the mahogany cupboard?",
+        "failure": "unsupported_sources_accepted",
+        "expected_answer": null,
+        "source_ids": [
+          "019a0000-0000-7000-8000-000000000008",
+          "019a0000-0000-7000-8000-000000000003",
+          "019a0000-0000-7000-8000-000000000007",
+          "019a0000-0000-7000-8000-000000000005",
+          "019a0000-0000-7000-8000-000000000004",
+          "019a0000-0000-7000-8000-000000000001",
+          "019a0000-0000-7000-8000-000000000002",
+          "019a0000-0000-7000-8000-000000000006"
+        ],
+        "source_titles": [
+          "Choir rehearsal cupboard",
+          "Film archive handling",
+          "Pollinator enclosure rota",
+          "Paper conservation journal",
+          "Estuary paddling notice",
+          "Weather mast maintenance",
+          "Lantern parade briefing",
+          "Coffee cupping worksheet"
+        ],
+        "source_texts": [
+          "The choir scores are filed in the mahogany cupboard in the east alcove. Used pencils go in the shallow tray.",
+          "The film negatives are sealed in acid-free envelopes. A soft brush removes loose dust before each sleeve is closed.",
+          "Farah inspects the pollinator enclosure on Tuesdays. The inspection log is kept beside the mesh entrance.",
+          "The damp paper rests between absorbent blotters for eight minutes. The sheet is then transferred to the drying rack.",
+          "A red flag means the estuary launch is closed to paddlers. The rescue boat remains on its trailer beside the ramp.",
+          "The weather mast records a sensor reading every ninety seconds. The battery enclosure is checked at sunrise.",
+          "Lantern parade volunteers assemble beside the north pier gate. Reflective sashes are handed out before the procession.",
+          "Each coffee cupping bowl receives twelve grams of ground coffee. The grinder dial is set to fourteen."
+        ]
+      }
+    ]
+  }
+}

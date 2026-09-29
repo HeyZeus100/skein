@@ -1,0 +1,118 @@
+{
+  "schema_version": 1,
+  "mode": "real-retrieval-diagnostic",
+  "declared_build_revision": "8b8884b4b24a93f1ae72461840518ba2ebaaafb3",
+  "source_identity": "host-declared clean checkout; not embedded APK attestation",
+  "full_hybrid_gate": "INELIGIBLE",
+  "complete": true,
+  "host_timeout": false,
+  "policy_freeze": {
+    "schema_version": 1,
+    "source_revision": "564243494f4ba1de73a4df1457d5a0dde128f6b0",
+    "policy_sources": {
+      "core/rag/src/main/kotlin/app/skein/core/rag/retrieval/LexicalEvidenceGate.kt": "33f6c132c932c9482c9850217c6dc5aedb379fbd383cbaed87971b48d042b445",
+      "core/rag/src/main/kotlin/app/skein/core/rag/retrieval/RequestedValue.kt": "c18b49c6d1576fc60bee65c9dce02f16a15c2521eb0dd64a130d8894e52191b7"
+    },
+    "evidence_policy": {
+      "version": "lexical-query-coverage-v1",
+      "minimum_query_coverage": 0.5,
+      "semantic_vector_policy": "uncalibrated_bypass"
+    },
+    "experimental_policy": {
+      "version": "lexical-fact-shape-v2-experimental",
+      "minimum_query_coverage": 0.5,
+      "minimum_value_coverage": 0.25,
+      "semantic_vector_policy": "uncalibrated_bypass"
+    },
+    "validation_fixture_sha256": "4f79b2ddcf42dedd6b7f83c10402855f683fcebc3045d9e4668f6da2951759e8",
+    "decision": "Production stays v1; requested-value v2 is explicitly experimental after development counterexamples falsified support quality. No calibration uses either validation fixture."
+  },
+  "require_quality": true,
+  "require_hybrid": false,
+  "built_test_apk_sha256": "aaa895db11c95fb989d2c682fc14db6d38e1818978055201717b3aa906c803fc",
+  "gradle_exit_code": 0,
+  "post_instrumentation_test_apk_sha256": "aaa895db11c95fb989d2c682fc14db6d38e1818978055201717b3aa906c803fc",
+  "report_collected": true,
+  "selected_collection_attempt": 1,
+  "collection_attempts": [
+    {
+      "number": 1,
+      "directory": "collection-attempts/01",
+      "errors": [],
+      "host_report_sha256": "b51830389930206f991de92be217cc55bcd0371e9bebf34646bef570ab5d0745",
+      "device_report_sha256": "b51830389930206f991de92be217cc55bcd0371e9bebf34646bef570ab5d0745",
+      "report_verified": true,
+      "installed_test_apk_sha256": "aaa895db11c95fb989d2c682fc14db6d38e1818978055201717b3aa906c803fc"
+    }
+  ],
+  "report_collection_attempt": 1,
+  "report_sha256": "b51830389930206f991de92be217cc55bcd0371e9bebf34646bef570ab5d0745",
+  "collection_recovered": false,
+  "installed_test_apk_sha256": "aaa895db11c95fb989d2c682fc14db6d38e1818978055201717b3aa906c803fc",
+  "diagnostic_ranking_gates": {
+    "lexical_only": "FAIL",
+    "graph_only": "FAIL",
+    "lexical_graph_default": "PASS"
+  },
+  "diagnostic_rejection_validation": {
+    "production_policy": "FAIL",
+    "ungated_control": "FAIL",
+    "experimental_candidate": "FAIL"
+  },
+  "diagnostic_rejection_ranking_gates": {
+    "production_policy": "PASS",
+    "ungated_control": "PASS",
+    "experimental_candidate": "PASS"
+  },
+  "diagnostic_independent_validation": {
+    "production_policy": "FAIL",
+    "ungated_control": "FAIL",
+    "experimental_candidate": "FAIL"
+  },
+  "validation_source_review": {
+    "rejection_validation": {
+      "production_policy": {
+        "reviewed_queries": 12,
+        "reviewed_source_occurrences": 108,
+        "source_bytes_anchors_revisions_fingerprints_and_grades": "PASS"
+      },
+      "ungated_control": {
+        "reviewed_queries": 12,
+        "reviewed_source_occurrences": 216,
+        "source_bytes_anchors_revisions_fingerprints_and_grades": "PASS"
+      },
+      "experimental_candidate": {
+        "reviewed_queries": 12,
+        "reviewed_source_occurrences": 90,
+        "source_bytes_anchors_revisions_fingerprints_and_grades": "PASS"
+      }
+    },
+    "independent_validation": {
+      "production_policy": {
+        "reviewed_queries": 24,
+        "reviewed_source_occurrences": 273,
+        "source_bytes_anchors_revisions_fingerprints_and_grades": "PASS"
+      },
+      "ungated_control": {
+        "reviewed_queries": 24,
+        "reviewed_source_occurrences": 489,
+        "source_bytes_anchors_revisions_fingerprints_and_grades": "PASS"
+      },
+      "experimental_candidate": {
+        "reviewed_queries": 24,
+        "reviewed_source_occurrences": 273,
+        "source_bytes_anchors_revisions_fingerprints_and_grades": "PASS"
+      }
+    }
+  },
+  "quality_gate": {
+    "status": "FAIL",
+    "gates": {
+      "development_ranking": "PASS",
+      "development_absence": "PASS",
+      "reserved_regression": "FAIL",
+      "independent_validation": "FAIL"
+    }
+  },
+  "failure_type": "ValueError"
+}

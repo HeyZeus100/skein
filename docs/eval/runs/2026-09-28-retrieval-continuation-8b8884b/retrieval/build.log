@@ -1,0 +1,312 @@
+Starting a Gradle Daemon (subsequent builds will be faster)
+Calculating task graph as no cached configuration is available for tasks: :core:vault:assembleDevDebugAndroidTest
+> Task :build-logic:guards:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :build-logic:guards:compileKotlin FROM-CACHE
+> Task :build-logic:guards:compileJava NO-SOURCE
+> Task :build-logic:guards:pluginDescriptors
+> Task :build-logic:guards:processResources
+> Task :build-logic:guards:classes
+> Task :build-logic:guards:jar
+> Task :testing:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :testing-fakes:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :core:model:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :core:model:processResources
+> Task :testing-fakes:processResources NO-SOURCE
+> Task :testing:processResources
+> Task :core:markdown:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :core:markdown:compileKotlin FROM-CACHE
+> Task :core:markdown:compileJava NO-SOURCE
+> Task :core:markdown:processResources NO-SOURCE
+> Task :core:markdown:classes UP-TO-DATE
+> Task :core:markdown:jar
+> Task :core:rag:preBuild UP-TO-DATE
+> Task :core:rag:preDebugBuild UP-TO-DATE
+> Task :core:rag:generateDebugResources FROM-CACHE
+> Task :core:rag:packageDebugResources FROM-CACHE
+> Task :core:rag:processDebugNavigationResources FROM-CACHE
+> Task :core:rag:parseDebugLocalResources FROM-CACHE
+> Task :core:rag:generateDebugRFile FROM-CACHE
+> Task :core:security:preBuild UP-TO-DATE
+> Task :core:security:preDebugBuild UP-TO-DATE
+> Task :core:security:generateDebugResources FROM-CACHE
+> Task :core:security:packageDebugResources FROM-CACHE
+> Task :core:security:processDebugNavigationResources FROM-CACHE
+> Task :core:security:parseDebugLocalResources FROM-CACHE
+> Task :core:security:generateDebugRFile FROM-CACHE
+> Task :core:security:javaPreCompileDebug FROM-CACHE
+> Task :core:rag:javaPreCompileDebug FROM-CACHE
+> Task :core:vault:preBuild UP-TO-DATE
+> Task :core:vault:preDevDebugBuild UP-TO-DATE
+> Task :core:vault:generateDevDebugResources FROM-CACHE
+> Task :core:vault:packageDevDebugResources FROM-CACHE
+> Task :core:vault:processDevDebugNavigationResources FROM-CACHE
+> Task :core:vault:parseDevDebugLocalResources FROM-CACHE
+> Task :core:vault:generateDevDebugRFile FROM-CACHE
+> Task :core:vault:javaPreCompileDevDebug FROM-CACHE
+> Task :core:vault:preDevDebugAndroidTestBuild UP-TO-DATE
+> Task :core:vault:generateDevDebugAndroidTestResources FROM-CACHE
+> Task :core:vault:packageDevDebugAndroidTestResources FROM-CACHE
+> Task :core:vault:processDevDebugAndroidTestNavigationResources FROM-CACHE
+> Task :core:vault:parseDevDebugAndroidTestLocalResources FROM-CACHE
+> Task :core:vault:generateDevDebugAndroidTestRFile FROM-CACHE
+> Task :core:vault:javaPreCompileDevDebugAndroidTest FROM-CACHE
+> Task :core:rag:generateDebugAssets UP-TO-DATE
+> Task :core:rag:mergeDebugAssets
+> Task :core:security:generateDebugAssets UP-TO-DATE
+> Task :core:security:mergeDebugAssets
+> Task :core:vault:generateDevDebugAndroidTestAssets UP-TO-DATE
+> Task :core:vault:generateDevDebugAssets UP-TO-DATE
+> Task :core:vault:mergeDevDebugAssets
+> Task :core:vault:mergeDevDebugAndroidTestAssets
+> Task :core:vault:compressDevDebugAndroidTestAssets FROM-CACHE
+> Task :core:vault:generateDevDebugAndroidTestGlobalSynthetics FROM-CACHE
+> Task :core:vault:checkDevDebugAndroidTestDuplicateClasses
+> Task :core:vault:desugarDevDebugAndroidTestFileDependencies FROM-CACHE
+> Task :core:vault:mergeExtDexDevDebugAndroidTest FROM-CACHE
+> Task :core:rag:mapDebugSourceSetPaths
+> Task :core:rag:compileDebugLibraryResources FROM-CACHE
+> Task :core:security:mapDebugSourceSetPaths
+> Task :core:security:compileDebugLibraryResources FROM-CACHE
+> Task :core:rag:writeDebugAarMetadata
+> Task :core:security:writeDebugAarMetadata
+> Task :core:vault:writeDevDebugAarMetadata
+> Task :core:vault:checkDevDebugAndroidTestAarMetadata
+> Task :core:vault:mapDevDebugAndroidTestSourceSetPaths
+> Task :core:vault:compileDevDebugAndroidTestNavigationResources FROM-CACHE
+> Task :core:vault:mapDevDebugSourceSetPaths
+> Task :core:vault:compileDevDebugLibraryResources FROM-CACHE
+> Task :core:vault:mergeDevDebugAndroidTestResources FROM-CACHE
+> Task :core:rag:extractDeepLinksDebug FROM-CACHE
+> Task :core:rag:processDebugManifest FROM-CACHE
+> Task :core:security:extractDeepLinksDebug FROM-CACHE
+> Task :core:security:processDebugManifest FROM-CACHE
+> Task :core:vault:extractDeepLinksDevDebug FROM-CACHE
+> Task :core:vault:processDevDebugManifest FROM-CACHE
+> Task :core:vault:mergeDevDebugAndroidTestManifest
+> Task :core:vault:processDevDebugAndroidTestManifest
+> Task :core:vault:processDevDebugAndroidTestResources FROM-CACHE
+> Task :core:rag:mergeDebugJniLibFolders
+> Task :core:rag:mergeDebugNativeLibs NO-SOURCE
+> Task :core:rag:copyDebugJniLibsProjectOnly
+> Task :core:security:mergeDebugJniLibFolders
+> Task :core:security:mergeDebugNativeLibs NO-SOURCE
+> Task :core:security:copyDebugJniLibsProjectOnly
+
+> Task :core:vault:configureCMakeDebug[arm64-v8a]
+C/C++: CMake Deprecation Warning at /usr/local/lib/android/sdk/ndk/27.3.13750724/build/cmake/android.toolchain.cmake:35 (cmake_minimum_required):
+C/C++:   Compatibility with CMake < 3.10 will be removed from a future version of
+C/C++:   CMake.
+C/C++:   Update the VERSION argument <min> value.  Or, use the <min>...<max> syntax
+C/C++:   to tell CMake that the project requires at least <min> but has been updated
+C/C++:   to work with policies introduced by <max> or earlier.
+C/C++: Call Stack (most recent call first):
+C/C++:   /usr/local/lib/android/sdk/cmake/3.31.5/share/cmake-3.31/Modules/CMakeDetermineSystem.cmake:146 (include)
+C/C++:   CMakeLists.txt:2 (project)
+C/C++: CMake Deprecation Warning at /usr/local/lib/android/sdk/ndk/27.3.13750724/build/cmake/android-legacy.toolchain.cmake:35 (cmake_minimum_required):
+C/C++:   Compatibility with CMake < 3.10 will be removed from a future version of
+C/C++:   CMake.
+C/C++:   Update the VERSION argument <min> value.  Or, use the <min>...<max> syntax
+C/C++:   to tell CMake that the project requires at least <min> but has been updated
+C/C++:   to work with policies introduced by <max> or earlier.
+C/C++: Call Stack (most recent call first):
+C/C++:   /usr/local/lib/android/sdk/ndk/27.3.13750724/build/cmake/android.toolchain.cmake:55 (include)
+C/C++:   /usr/local/lib/android/sdk/cmake/3.31.5/share/cmake-3.31/Modules/CMakeDetermineSystem.cmake:146 (include)
+C/C++:   CMakeLists.txt:2 (project)
+C/C++: CMake Deprecation Warning at /usr/local/lib/android/sdk/ndk/27.3.13750724/build/cmake/android.toolchain.cmake:35 (cmake_minimum_required):
+C/C++:   Compatibility with CMake < 3.10 will be removed from a future version of
+C/C++:   CMake.
+C/C++:   Update the VERSION argument <min> value.  Or, use the <min>...<max> syntax
+C/C++:   to tell CMake that the project requires at least <min> but has been updated
+C/C++:   to work with policies introduced by <max> or earlier.
+C/C++: Call Stack (most recent call first):
+C/C++:   /home/runner/work/skein/skein/core/vault/.cxx/Debug/6y733jp4/arm64-v8a/CMakeFiles/3.31.5/CMakeSystem.cmake:6 (include)
+C/C++:   CMakeLists.txt:2 (project)
+C/C++: CMake Deprecation Warning at /usr/local/lib/android/sdk/ndk/27.3.13750724/build/cmake/flags.cmake:18 (cmake_minimum_required):
+C/C++:   Compatibility with CMake < 3.10 will be removed from a future version of
+C/C++:   CMake.
+C/C++:   Update the VERSION argument <min> value.  Or, use the <min>...<max> syntax
+C/C++:   to tell CMake that the project requires at least <min> but has been updated
+C/C++:   to work with policies introduced by <max> or earlier.
+C/C++: Call Stack (most recent call first):
+C/C++:   /usr/local/lib/android/sdk/cmake/3.31.5/share/cmake-3.31/Modules/Platform/Android-Clang.cmake:23 (include)
+C/C++:   /usr/local/lib/android/sdk/cmake/3.31.5/share/cmake-3.31/Modules/Platform/Android-Clang-C.cmake:1 (include)
+C/C++:   /usr/local/lib/android/sdk/cmake/3.31.5/share/cmake-3.31/Modules/CMakeCInformation.cmake:48 (include)
+C/C++:   CMakeLists.txt:2 (project)
+C/C++: CMake Deprecation Warning at /usr/local/lib/android/sdk/ndk/27.3.13750724/build/cmake/android.toolchain.cmake:35 (cmake_minimum_required):
+C/C++:   Compatibility with CMake < 3.10 will be removed from a future version of
+C/C++:   CMake.
+C/C++:   Update the VERSION argument <min> value.  Or, use the <min>...<max> syntax
+C/C++:   to tell CMake that the project requires at least <min> but has been updated
+C/C++:   to work with policies introduced by <max> or earlier.
+C/C++: Call Stack (most recent call first):
+C/C++:   /home/runner/work/skein/skein/core/vault/.cxx/Debug/6y733jp4/arm64-v8a/CMakeFiles/3.31.5/CMakeSystem.cmake:6 (include)
+C/C++:   /home/runner/work/skein/skein/core/vault/.cxx/Debug/6y733jp4/arm64-v8a/CMakeFiles/CMakeScratch/TryCompile-xlhvRG/CMakeLists.txt:2 (project)
+C/C++: CMake Deprecation Warning at /usr/local/lib/android/sdk/ndk/27.3.13750724/build/cmake/android-legacy.toolchain.cmake:35 (cmake_minimum_required):
+C/C++:   Compatibility with CMake < 3.10 will be removed from a future version of
+C/C++:   CMake.
+C/C++:   Update the VERSION argument <min> value.  Or, use the <min>...<max> syntax
+C/C++:   to tell CMake that the project requires at least <min> but has been updated
+C/C++:   to work with policies introduced by <max> or earlier.
+C/C++: Call Stack (most recent call first):
+C/C++:   /usr/local/lib/android/sdk/ndk/27.3.13750724/build/cmake/android.toolchain.cmake:55 (include)
+C/C++:   /home/runner/work/skein/skein/core/vault/.cxx/Debug/6y733jp4/arm64-v8a/CMakeFiles/3.31.5/CMakeSystem.cmake:6 (include)
+C/C++:   /home/runner/work/skein/skein/core/vault/.cxx/Debug/6y733jp4/arm64-v8a/CMakeFiles/CMakeScratch/TryCompile-xlhvRG/CMakeLists.txt:2 (project)
+C/C++: CMake Deprecation Warning at /usr/local/lib/android/sdk/ndk/27.3.13750724/build/cmake/flags.cmake:18 (cmake_minimum_required):
+C/C++:   Compatibility with CMake < 3.10 will be removed from a future version of
+C/C++:   CMake.
+C/C++:   Update the VERSION argument <min> value.  Or, use the <min>...<max> syntax
+C/C++:   to tell CMake that the project requires at least <min> but has been updated
+C/C++:   to work with policies introduced by <max> or earlier.
+C/C++: Call Stack (most recent call first):
+C/C++:   /usr/local/lib/android/sdk/cmake/3.31.5/share/cmake-3.31/Modules/Platform/Android-Clang.cmake:23 (include)
+C/C++:   /usr/local/lib/android/sdk/cmake/3.31.5/share/cmake-3.31/Modules/Platform/Android-Clang-C.cmake:1 (include)
+C/C++:   /usr/local/lib/android/sdk/cmake/3.31.5/share/cmake-3.31/Modules/CMakeCInformation.cmake:48 (include)
+C/C++:   /home/runner/work/skein/skein/core/vault/.cxx/Debug/6y733jp4/arm64-v8a/CMakeFiles/CMakeScratch/TryCompile-xlhvRG/CMakeLists.txt:2 (project)
+
+> Task :core:model:compileKotlin
+> Task :core:model:compileJava NO-SOURCE
+> Task :core:model:classes
+> Task :core:model:jar
+> Task :core:security:compileDebugKotlin
+> Task :core:security:compileDebugJavaWithJavac NO-SOURCE
+> Task :core:security:bundleLibCompileToJarDebug
+> Task :testing-fakes:compileKotlin
+> Task :testing-fakes:compileJava NO-SOURCE
+> Task :testing-fakes:classes UP-TO-DATE
+> Task :testing-fakes:jar
+> Task :core:rag:compileDebugKotlin
+> Task :core:rag:compileDebugJavaWithJavac NO-SOURCE
+> Task :core:rag:bundleLibCompileToJarDebug
+> Task :testing:compileKotlin
+> Task :testing:compileJava NO-SOURCE
+> Task :testing:classes
+> Task :testing:jar
+> Task :core:rag:processDebugJavaRes
+> Task :core:security:processDebugJavaRes
+> Task :core:rag:bundleLibRuntimeToDirDebug
+> Task :core:security:bundleLibRuntimeToDirDebug
+
+> Task :core:vault:compileDevDebugKotlin
+w: file:///home/runner/work/skein/skein/core/vault/src/main/kotlin/app/skein/core/vault/key/AndroidBiometricAuthenticator.kt:137:46 Unnecessary safe call on a non-null receiver of type 'CharSequence'.
+w: file:///home/runner/work/skein/skein/core/vault/src/main/kotlin/app/skein/core/vault/transfer/VaultZipImporter.kt:315:55 Expression is unused.
+
+> Task :core:vault:compileDevDebugJavaWithJavac NO-SOURCE
+> Task :core:vault:bundleLibCompileToJarDevDebug
+
+> Task :core:vault:compileDevDebugAndroidTestKotlin
+w: file:///home/runner/work/skein/skein/core/vault/src/androidTest/kotlin/app/skein/core/vault/db/SkeinSQLiteDriverInstrumentedTest.kt:40:16 'fun openWithKey(fileName: String, passphrase: ByteArray?): SQLiteConnection' is deprecated. Use the primary SkeinSQLiteDriver(key: ByteArray) constructor and open(fileName) instead; openWithKey predates the §4.9 PRAGMA-based key setup and is kept only for callers that have not migrated yet.
+w: file:///home/runner/work/skein/skein/core/vault/src/androidTest/kotlin/app/skein/core/vault/db/SkeinSQLiteDriverInstrumentedTest.kt:52:16 'fun openWithKey(fileName: String, passphrase: ByteArray?): SQLiteConnection' is deprecated. Use the primary SkeinSQLiteDriver(key: ByteArray) constructor and open(fileName) instead; openWithKey predates the §4.9 PRAGMA-based key setup and is kept only for callers that have not migrated yet.
+w: file:///home/runner/work/skein/skein/core/vault/src/androidTest/kotlin/app/skein/core/vault/db/SkeinSQLiteDriverInstrumentedTest.kt:65:29 'fun openWithKey(fileName: String, passphrase: ByteArray?): SQLiteConnection' is deprecated. Use the primary SkeinSQLiteDriver(key: ByteArray) constructor and open(fileName) instead; openWithKey predates the §4.9 PRAGMA-based key setup and is kept only for callers that have not migrated yet.
+w: file:///home/runner/work/skein/skein/core/vault/src/androidTest/kotlin/app/skein/core/vault/db/SkeinSQLiteDriverInstrumentedTest.kt:74:29 'fun openWithKey(fileName: String, passphrase: ByteArray?): SQLiteConnection' is deprecated. Use the primary SkeinSQLiteDriver(key: ByteArray) constructor and open(fileName) instead; openWithKey predates the §4.9 PRAGMA-based key setup and is kept only for callers that have not migrated yet.
+w: file:///home/runner/work/skein/skein/core/vault/src/androidTest/kotlin/app/skein/core/vault/db/SkeinSQLiteDriverInstrumentedTest.kt:87:33 'fun openWithKey(fileName: String, passphrase: ByteArray?): SQLiteConnection' is deprecated. Use the primary SkeinSQLiteDriver(key: ByteArray) constructor and open(fileName) instead; openWithKey predates the §4.9 PRAGMA-based key setup and is kept only for callers that have not migrated yet.
+w: file:///home/runner/work/skein/skein/core/vault/src/androidTest/kotlin/app/skein/core/vault/db/SkeinSQLiteDriverInstrumentedTest.kt:95:29 'fun openWithKey(fileName: String, passphrase: ByteArray?): SQLiteConnection' is deprecated. Use the primary SkeinSQLiteDriver(key: ByteArray) constructor and open(fileName) instead; openWithKey predates the §4.9 PRAGMA-based key setup and is kept only for callers that have not migrated yet.
+w: file:///home/runner/work/skein/skein/core/vault/src/androidTest/kotlin/app/skein/core/vault/export/stage/ExportStageRepositoryContractTest.kt:55:27 'fun openWithKey(fileName: String, passphrase: ByteArray?): SQLiteConnection' is deprecated. Use the primary SkeinSQLiteDriver(key: ByteArray) constructor and open(fileName) instead; openWithKey predates the §4.9 PRAGMA-based key setup and is kept only for callers that have not migrated yet.
+w: file:///home/runner/work/skein/skein/core/vault/src/androidTest/kotlin/app/skein/core/vault/index/IndexStoreImplAcceptanceTest.kt:693:27 'fun openWithKey(fileName: String, passphrase: ByteArray?): SQLiteConnection' is deprecated. Use the primary SkeinSQLiteDriver(key: ByteArray) constructor and open(fileName) instead; openWithKey predates the §4.9 PRAGMA-based key setup and is kept only for callers that have not migrated yet.
+w: file:///home/runner/work/skein/skein/core/vault/src/androidTest/kotlin/app/skein/core/vault/index/IndexStoreImplContractTest.kt:79:27 'fun openWithKey(fileName: String, passphrase: ByteArray?): SQLiteConnection' is deprecated. Use the primary SkeinSQLiteDriver(key: ByteArray) constructor and open(fileName) instead; openWithKey predates the §4.9 PRAGMA-based key setup and is kept only for callers that have not migrated yet.
+w: file:///home/runner/work/skein/skein/core/vault/src/androidTest/kotlin/app/skein/core/vault/index/LexicalRecallAcceptanceTest.kt:175:27 'fun openWithKey(fileName: String, passphrase: ByteArray?): SQLiteConnection' is deprecated. Use the primary SkeinSQLiteDriver(key: ByteArray) constructor and open(fileName) instead; openWithKey predates the §4.9 PRAGMA-based key setup and is kept only for callers that have not migrated yet.
+w: file:///home/runner/work/skein/skein/core/vault/src/androidTest/kotlin/app/skein/core/vault/index/VectorRecallAcceptanceTest.kt:155:27 'fun openWithKey(fileName: String, passphrase: ByteArray?): SQLiteConnection' is deprecated. Use the primary SkeinSQLiteDriver(key: ByteArray) constructor and open(fileName) instead; openWithKey predates the §4.9 PRAGMA-based key setup and is kept only for callers that have not migrated yet.
+w: file:///home/runner/work/skein/skein/core/vault/src/androidTest/kotlin/app/skein/core/vault/models/ModelRegistryImplContractTest.kt:62:27 'fun openWithKey(fileName: String, passphrase: ByteArray?): SQLiteConnection' is deprecated. Use the primary SkeinSQLiteDriver(key: ByteArray) constructor and open(fileName) instead; openWithKey predates the §4.9 PRAGMA-based key setup and is kept only for callers that have not migrated yet.
+w: file:///home/runner/work/skein/skein/core/vault/src/androidTest/kotlin/app/skein/core/vault/persona/PersonaServiceImplContractTest.kt:53:27 'fun openWithKey(fileName: String, passphrase: ByteArray?): SQLiteConnection' is deprecated. Use the primary SkeinSQLiteDriver(key: ByteArray) constructor and open(fileName) instead; openWithKey predates the §4.9 PRAGMA-based key setup and is kept only for callers that have not migrated yet.
+w: file:///home/runner/work/skein/skein/core/vault/src/androidTest/kotlin/app/skein/core/vault/repository/VaultRepositoryImplContractTest.kt:90:27 'fun openWithKey(fileName: String, passphrase: ByteArray?): SQLiteConnection' is deprecated. Use the primary SkeinSQLiteDriver(key: ByteArray) constructor and open(fileName) instead; openWithKey predates the §4.9 PRAGMA-based key setup and is kept only for callers that have not migrated yet.
+w: file:///home/runner/work/skein/skein/core/vault/src/androidTest/kotlin/app/skein/vault/SchemaLoadInstrumentedTest.kt:36:29 'fun openWithKey(fileName: String, passphrase: ByteArray?): SQLiteConnection' is deprecated. Use the primary SkeinSQLiteDriver(key: ByteArray) constructor and open(fileName) instead; openWithKey predates the §4.9 PRAGMA-based key setup and is kept only for callers that have not migrated yet.
+
+> Task :core:vault:compileDevDebugAndroidTestJavaWithJavac NO-SOURCE
+> Task :core:vault:processDevDebugAndroidTestJavaRes
+> Task :core:vault:processDevDebugJavaRes
+> Task :core:vault:mergeDevDebugAndroidTestJavaResource
+> Task :core:vault:bundleLibRuntimeToDirDevDebug
+> Task :core:vault:mergeLibDexDevDebugAndroidTest
+> Task :core:vault:buildCMakeDebug[arm64-v8a][skein_sqlite,skein_sqlite_jni]
+> Task :core:vault:dexBuilderDevDebugAndroidTest
+> Task :core:vault:mergeProjectDexDevDebugAndroidTest
+
+> Task :core:vault:configureCMakeDebug[x86_64]
+C/C++: CMake Deprecation Warning at /usr/local/lib/android/sdk/ndk/27.3.13750724/build/cmake/android.toolchain.cmake:35 (cmake_minimum_required):
+C/C++:   Compatibility with CMake < 3.10 will be removed from a future version of
+C/C++:   CMake.
+C/C++:   Update the VERSION argument <min> value.  Or, use the <min>...<max> syntax
+C/C++:   to tell CMake that the project requires at least <min> but has been updated
+C/C++:   to work with policies introduced by <max> or earlier.
+C/C++: Call Stack (most recent call first):
+C/C++:   /usr/local/lib/android/sdk/cmake/3.31.5/share/cmake-3.31/Modules/CMakeDetermineSystem.cmake:146 (include)
+C/C++:   CMakeLists.txt:2 (project)
+C/C++: CMake Deprecation Warning at /usr/local/lib/android/sdk/ndk/27.3.13750724/build/cmake/android-legacy.toolchain.cmake:35 (cmake_minimum_required):
+C/C++:   Compatibility with CMake < 3.10 will be removed from a future version of
+C/C++:   CMake.
+C/C++:   Update the VERSION argument <min> value.  Or, use the <min>...<max> syntax
+C/C++:   to tell CMake that the project requires at least <min> but has been updated
+C/C++:   to work with policies introduced by <max> or earlier.
+C/C++: Call Stack (most recent call first):
+C/C++:   /usr/local/lib/android/sdk/ndk/27.3.13750724/build/cmake/android.toolchain.cmake:55 (include)
+C/C++:   /usr/local/lib/android/sdk/cmake/3.31.5/share/cmake-3.31/Modules/CMakeDetermineSystem.cmake:146 (include)
+C/C++:   CMakeLists.txt:2 (project)
+C/C++: CMake Deprecation Warning at /usr/local/lib/android/sdk/ndk/27.3.13750724/build/cmake/android.toolchain.cmake:35 (cmake_minimum_required):
+C/C++:   Compatibility with CMake < 3.10 will be removed from a future version of
+C/C++:   CMake.
+C/C++:   Update the VERSION argument <min> value.  Or, use the <min>...<max> syntax
+C/C++:   to tell CMake that the project requires at least <min> but has been updated
+C/C++:   to work with policies introduced by <max> or earlier.
+C/C++: Call Stack (most recent call first):
+C/C++:   /home/runner/work/skein/skein/core/vault/.cxx/Debug/6y733jp4/x86_64/CMakeFiles/3.31.5/CMakeSystem.cmake:6 (include)
+C/C++:   CMakeLists.txt:2 (project)
+C/C++: CMake Deprecation Warning at /usr/local/lib/android/sdk/ndk/27.3.13750724/build/cmake/flags.cmake:18 (cmake_minimum_required):
+C/C++:   Compatibility with CMake < 3.10 will be removed from a future version of
+C/C++:   CMake.
+C/C++:   Update the VERSION argument <min> value.  Or, use the <min>...<max> syntax
+C/C++:   to tell CMake that the project requires at least <min> but has been updated
+C/C++:   to work with policies introduced by <max> or earlier.
+C/C++: Call Stack (most recent call first):
+C/C++:   /usr/local/lib/android/sdk/cmake/3.31.5/share/cmake-3.31/Modules/Platform/Android-Clang.cmake:23 (include)
+C/C++:   /usr/local/lib/android/sdk/cmake/3.31.5/share/cmake-3.31/Modules/Platform/Android-Clang-C.cmake:1 (include)
+C/C++:   /usr/local/lib/android/sdk/cmake/3.31.5/share/cmake-3.31/Modules/CMakeCInformation.cmake:48 (include)
+C/C++:   CMakeLists.txt:2 (project)
+C/C++: CMake Deprecation Warning at /usr/local/lib/android/sdk/ndk/27.3.13750724/build/cmake/android.toolchain.cmake:35 (cmake_minimum_required):
+C/C++:   Compatibility with CMake < 3.10 will be removed from a future version of
+C/C++:   CMake.
+C/C++:   Update the VERSION argument <min> value.  Or, use the <min>...<max> syntax
+C/C++:   to tell CMake that the project requires at least <min> but has been updated
+C/C++:   to work with policies introduced by <max> or earlier.
+C/C++: Call Stack (most recent call first):
+C/C++:   /home/runner/work/skein/skein/core/vault/.cxx/Debug/6y733jp4/x86_64/CMakeFiles/3.31.5/CMakeSystem.cmake:6 (include)
+C/C++:   /home/runner/work/skein/skein/core/vault/.cxx/Debug/6y733jp4/x86_64/CMakeFiles/CMakeScratch/TryCompile-qVVkxW/CMakeLists.txt:2 (project)
+C/C++: CMake Deprecation Warning at /usr/local/lib/android/sdk/ndk/27.3.13750724/build/cmake/android-legacy.toolchain.cmake:35 (cmake_minimum_required):
+C/C++:   Compatibility with CMake < 3.10 will be removed from a future version of
+C/C++:   CMake.
+C/C++:   Update the VERSION argument <min> value.  Or, use the <min>...<max> syntax
+C/C++:   to tell CMake that the project requires at least <min> but has been updated
+C/C++:   to work with policies introduced by <max> or earlier.
+C/C++: Call Stack (most recent call first):
+C/C++:   /usr/local/lib/android/sdk/ndk/27.3.13750724/build/cmake/android.toolchain.cmake:55 (include)
+C/C++:   /home/runner/work/skein/skein/core/vault/.cxx/Debug/6y733jp4/x86_64/CMakeFiles/3.31.5/CMakeSystem.cmake:6 (include)
+C/C++:   /home/runner/work/skein/skein/core/vault/.cxx/Debug/6y733jp4/x86_64/CMakeFiles/CMakeScratch/TryCompile-qVVkxW/CMakeLists.txt:2 (project)
+C/C++: CMake Deprecation Warning at /usr/local/lib/android/sdk/ndk/27.3.13750724/build/cmake/flags.cmake:18 (cmake_minimum_required):
+C/C++:   Compatibility with CMake < 3.10 will be removed from a future version of
+C/C++:   CMake.
+C/C++:   Update the VERSION argument <min> value.  Or, use the <min>...<max> syntax
+C/C++:   to tell CMake that the project requires at least <min> but has been updated
+C/C++:   to work with policies introduced by <max> or earlier.
+C/C++: Call Stack (most recent call first):
+C/C++:   /usr/local/lib/android/sdk/cmake/3.31.5/share/cmake-3.31/Modules/Platform/Android-Clang.cmake:23 (include)
+C/C++:   /usr/local/lib/android/sdk/cmake/3.31.5/share/cmake-3.31/Modules/Platform/Android-Clang-C.cmake:1 (include)
+C/C++:   /usr/local/lib/android/sdk/cmake/3.31.5/share/cmake-3.31/Modules/CMakeCInformation.cmake:48 (include)
+C/C++:   /home/runner/work/skein/skein/core/vault/.cxx/Debug/6y733jp4/x86_64/CMakeFiles/CMakeScratch/TryCompile-qVVkxW/CMakeLists.txt:2 (project)
+
+> Task :core:vault:buildCMakeDebug[x86_64][skein_sqlite,skein_sqlite_jni]
+> Task :core:vault:mergeDevDebugJniLibFolders
+> Task :core:vault:mergeDevDebugAndroidTestJniLibFolders
+> Task :core:vault:validateSigningDevDebugAndroidTest
+> Task :core:vault:writeDevDebugAndroidTestSigningConfigVersions
+> Task :core:vault:mergeDevDebugNativeLibs
+> Task :core:vault:copyDevDebugJniLibsProjectOnly
+> Task :core:vault:mergeDevDebugAndroidTestNativeLibs
+> Task :core:vault:stripDevDebugAndroidTestDebugSymbols
+> Task :core:vault:packageDevDebugAndroidTest
+> Task :core:vault:assembleDevDebugAndroidTest
+> Task :core:vault:createDevDebugAndroidTestApkListingFileRedirect
+gradle/actions: Writing build results to /home/runner/work/_temp/.gradle-actions/build-results/__run_2-1790663666026.json
+
+[Incubating] Problems report is available at: file:///home/runner/work/skein/skein/build/reports/problems/problems-report.html
+
+BUILD SUCCESSFUL in 4m 8s
+105 actionable tasks: 63 executed, 42 from cache
+Configuration cache entry stored.
