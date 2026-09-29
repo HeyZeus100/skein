@@ -39,7 +39,7 @@ import androidx.compose.ui.unit.dp
 import androidx.fragment.app.FragmentActivity
 import androidx.window.core.layout.WindowSizeClass
 import androidx.window.core.layout.computeWindowSizeClass
-import app.skein.core.designsystem.components.SkeinAlertDialog
+import app.skein.core.designsystem.components.SkeinDestructiveDialog
 import app.skein.core.designsystem.components.LocalSkeinWindowPartitions
 import app.skein.core.designsystem.theme.SkeinTheme
 import app.skein.core.navigation.ChatKey
@@ -253,10 +253,11 @@ class SkeinWorkspaceHostTest {
                             }
                         }
                         if (shell.ownerKey == "primary" && showPrimaryDialog.value) {
-                            SkeinAlertDialog(
-                                onDismissRequest = { showPrimaryDialog.value = false },
-                                title = { Text("Primary dialog") },
-                                confirmButton = { Text("Confirm") },
+                            SkeinDestructiveDialog(
+                                title = "Primary dialog",
+                                consequence = "This is a retained confirmation.",
+                                onDismiss = { showPrimaryDialog.value = false },
+                                onConfirm = {},
                             )
                         }
                     }

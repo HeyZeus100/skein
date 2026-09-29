@@ -51,6 +51,7 @@ fun SkeinDestructiveDialog(
     confirmLabel: String = "Delete",
     cancelLabel: String = "Cancel",
 ) {
+    if (!LocalSkeinWindowActive.current) return
     val cancelFocusRequester = remember { FocusRequester() }
     val partitioned = LocalSkeinWindowPartitions.current != null
     LaunchedEffect(partitioned) { if (!partitioned) cancelFocusRequester.requestFocus() }
