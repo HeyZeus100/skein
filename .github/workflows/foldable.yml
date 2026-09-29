@@ -1,6 +1,6 @@
 name: Foldable production gate
 
-# AL-16 progress only: this lane cannot close unlocked A-G or the physical Fold gate.
+# AL-16 framework device-state override only; no hinge-sensor, unlocked A-G or physical Fold claim.
 on:
   workflow_dispatch:
     inputs:
@@ -87,7 +87,7 @@ jobs:
       - name: Verify workflow and evidence reviewer
         run: python3 -m unittest discover -s tools/ci -p '*foldable*.py' -v
       - name: Resolve host and test runtime with pinned verification
-        run: ./gradlew --max-workers=2 --no-configuration-cache -I tools/ci/resolve-foldable-dependencies.gradle :app:resolveFoldableRuntime -Pskein.foldableTests=true -Pandroid.experimental.androidTest.enableEmulatorControl=true
+        run: ./gradlew --max-workers=2 --no-configuration-cache -I tools/ci/resolve-foldable-dependencies.gradle :app:resolveFoldableRuntime -Pskein.foldableTests=true
       - name: Explicit Kotlin lint
         run: ./gradlew --max-workers=2 :app:ktlintCheck -Pskein.foldableTests=true
       - name: Enable KVM
@@ -104,7 +104,7 @@ jobs:
           profile: ${{ inputs.profile }}
           avd-name: ${{ env.SKEIN_FOLD_AVD_NAME }}
           disable-animations: true
-          emulator-options: -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -camera-back none -grpc 8554
+          emulator-options: -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -camera-back none
           script: bash tools/ci/run-foldable-emulator.sh
       - name: Review actual XML and artifact hashes
         if: always()

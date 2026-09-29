@@ -126,7 +126,6 @@ android {
     }
 
     testOptions {
-        emulatorControl.enable = foldableTests
         unitTests {
             // E3.I1: ManifestPolicyTest reads the manifest's resource
             // references (dataExtractionRules) via Robolectric's shadowed

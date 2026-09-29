@@ -7,11 +7,6 @@ import androidx.compose.ui.test.onAllNodesWithTag
 import androidx.compose.ui.test.onNodeWithTag
 import androidx.test.core.app.ActivityScenario
 import androidx.test.core.app.ApplicationProvider
-import androidx.test.espresso.device.EspressoDevice.Companion.onDevice
-import androidx.test.espresso.device.action.ScreenOrientation
-import androidx.test.espresso.device.action.setClosedMode
-import androidx.test.espresso.device.action.setFlatMode
-import androidx.test.espresso.device.action.setScreenOrientation
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.platform.app.InstrumentationRegistry
 import app.skein.MainActivity
@@ -20,6 +15,7 @@ import app.skein.feature.shell.testing.ShellTestTags
 import app.skein.system.SecurityPrefs
 import kotlinx.coroutines.runBlocking
 import org.json.JSONObject
+import org.junit.After
 import org.junit.Assert.assertSame
 import org.junit.Assert.assertTrue
 import org.junit.Before
@@ -31,24 +27,33 @@ import java.io.File
 /**
  * AL-16's first production-Activity fold lane. Uses a fresh emulator's unopened vault, never
  * a test replacement for NavShell. It proves the pre-unlock boundary and live config contract;
- * unlocked A-G, IME, inference and system_server privacy remain separate open gates.
+ * Framework state overrides drive this lane; hinge sensors, unlocked A-G, IME, inference and
+ * system_server privacy remain separate open gates.
  */
 @RunWith(AndroidJUnit4::class)
 class MainActivityFoldableGateTest {
+    private val device = FoldableDeviceControl()
+
     @get:Rule
     val composeRule = createEmptyComposeRule()
 
     @Before
     fun suppressPermissionPrompt() {
+        device.requireEmulator()
         runBlocking {
             SecurityPrefs(ApplicationProvider.getApplicationContext()).setPostNotificationsAsked(true)
         }
     }
 
+    @After
+    fun resetDeviceOverrides() {
+        device.reset()
+    }
+
     @Test
     fun gateSurvivesClosedFlatClosedWithoutActivityReplacement() {
-        onDevice().perform(setScreenOrientation(ScreenOrientation.PORTRAIT))
-        onDevice().perform(setClosedMode())
+        device.portrait()
+        device.closed()
         ActivityScenario.launch(MainActivity::class.java).use { scenario ->
             assertGate(scenario)
             var original: MainActivity? = null
@@ -59,7 +64,7 @@ class MainActivityFoldableGateTest {
                 recordGeometry(it, "closed_before")
             }
             assertTrue("profile must expose a compact cover display", closedWidth < 600)
-            onDevice().perform(setFlatMode())
+            device.flat()
             assertGate(scenario)
             scenario.onActivity {
                 assertSame("unfold recreated MainActivity", original, it)
@@ -70,7 +75,7 @@ class MainActivityFoldableGateTest {
                         it.resources.configuration.screenWidthDp > closedWidth,
                 )
             }
-            onDevice().perform(setClosedMode())
+            device.closed()
             assertGate(scenario)
             scenario.onActivity {
                 assertSame("refold recreated MainActivity", original, it)
@@ -82,8 +87,8 @@ class MainActivityFoldableGateTest {
 
     @Test
     fun gateSurvivesOuterLandscapeWithoutExposingNavDisplay() {
-        onDevice().perform(setClosedMode())
-        onDevice().perform(setScreenOrientation(ScreenOrientation.PORTRAIT))
+        device.closed()
+        device.portrait()
         ActivityScenario.launch(MainActivity::class.java).use { scenario ->
             assertGate(scenario)
             var original: MainActivity? = null
@@ -91,14 +96,14 @@ class MainActivityFoldableGateTest {
                 original = it
                 recordGeometry(it, "outer_portrait")
             }
-            onDevice().perform(setScreenOrientation(ScreenOrientation.LANDSCAPE))
+            device.landscape()
             assertGate(scenario)
             scenario.onActivity {
                 assertSame("rotation recreated MainActivity", original, it)
                 recordGeometry(it, "outer_landscape")
                 assertTrue("outer landscape must be a short window", it.resources.configuration.screenHeightDp < 600)
             }
-            onDevice().perform(setScreenOrientation(ScreenOrientation.PORTRAIT))
+            device.portrait()
         }
     }
 

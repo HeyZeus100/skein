@@ -26,10 +26,17 @@ adb -s "$serial" shell getprop > build/foldable-evidence/emulator-properties.txt
 adb -s "$serial" shell wm size > build/foldable-evidence/initial-window.txt
 adb -s "$serial" shell wm density >> build/foldable-evidence/initial-window.txt
 set +e
-./gradlew --max-workers=2 :app:connectedDevDebugAndroidTest --stacktrace -Pskein.foldableTests=true -Pandroid.experimental.androidTest.enableEmulatorControl=true -Pandroid.testInstrumentationRunnerArguments.class=app.skein.foldable.MainActivityFoldableGateTest > build/foldable-evidence/gradle.log 2>&1
+# Keep private geometry output available after AGP's task, until this disposable AVD is torn down.
+./gradlew --max-workers=2 :app:connectedDevDebugAndroidTest --stacktrace \
+  -Pskein.foldableTests=true \
+  -Pandroid.injected.androidTest.leaveApksInstalledAfterRun=true \
+  -Pandroid.testInstrumentationRunnerArguments.skein.foldable.ci=true \
+  -Pandroid.testInstrumentationRunnerArguments.class=app.skein.foldable.MainActivityFoldableGateTest \
+  > build/foldable-evidence/gradle.log 2>&1
 result=$?
 # Preserve failures too. Never clear logcat or replace a prior review with a synthetic success.
 adb -s "$serial" logcat -d -v threadtime > build/foldable-evidence/logcat.txt
 adb -s "$serial" exec-out run-as app.skein cat files/foldable-gate-metrics.jsonl > build/foldable-evidence/window-geometry.jsonl 2> build/foldable-evidence/window-geometry-error.txt
+adb -s "$serial" exec-out run-as app.skein cat files/foldable-device-states.txt > build/foldable-evidence/runtime-device-states.txt 2> build/foldable-evidence/runtime-device-states-error.txt
 cat build/foldable-evidence/gradle.log
 exit "$result"

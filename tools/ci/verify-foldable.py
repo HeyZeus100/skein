@@ -27,6 +27,7 @@ def sha256(path):
 def review(repository, expected_sha, profile="pixel_9_pro_fold"):
     source_sha = subprocess.check_output(["git", "rev-parse", "HEAD"], cwd=repository, text=True).strip()
     result = {"schema_version": 1, "lane": "foldable-gate", "source_sha": source_sha,
+              "control_transport": "UiAutomation framework device-state override and rotation; not hinge-sensor actuation",
               "source_attestation": "host-declared checkout", "apk_attestation": "build outputs; not installed-package attestation",
               "expected_source_sha": expected_sha, "profile": profile, "cases": [], "artifacts": {}, "errors": []}
     result["profile_scope"] = PROFILES.get(profile, "unsupported profile")
@@ -97,7 +98,7 @@ def review(repository, expected_sha, profile="pixel_9_pro_fold"):
     except (OSError, ValueError, KeyError, TypeError):
         result["errors"].append("missing or malformed runtime geometry JSONL")
     result["passed"] = not result["errors"]
-    result["remaining_gates"] = (["Pixel 9 Pro Fold profile acceptance"] if profile != "pixel_9_pro_fold" else []) + ["unlocked A-G", "real IME and focus", "system_server heap privacy", "physical Fold A-G acceptance outside this lane"]
+    result["remaining_gates"] = (["Pixel 9 Pro Fold profile acceptance"] if profile != "pixel_9_pro_fold" else []) + ["emulator hinge-sensor actuation", "unlocked A-G", "real IME and focus", "system_server heap privacy", "physical Fold A-G acceptance outside this lane"]
     return result
 
 
