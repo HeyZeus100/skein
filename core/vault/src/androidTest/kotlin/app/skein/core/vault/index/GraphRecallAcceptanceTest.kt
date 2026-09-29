@@ -2,10 +2,10 @@ package app.skein.core.vault.index
 
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.platform.app.InstrumentationRegistry
-import app.skein.core.model.CitationSourceKind
 import app.skein.core.model.DocumentKind
 import app.skein.core.model.EdgeKind
 import app.skein.core.model.NewDocument
+import app.skein.core.model.RecallSource
 import app.skein.core.rag.chunk.Chunker
 import app.skein.core.rag.ingest.IngestOutcome
 import app.skein.core.rag.ingest.IngestPipeline
@@ -155,7 +155,7 @@ public class GraphRecallAcceptanceTest {
                 val result = service.retrieveContext(query, k = 8, personaId = defaultSpace)
                 assertThat(result.map { it.docId }).containsExactly(seed.id, secondSeed.id, answer.id)
                 assertThat(result.single { it.docId == answer.id }.text).contains("Mira approved")
-                assertThat(result.all { it.recalledBy == setOf(CitationSourceKind.GRAPH) }).isTrue()
+                assertThat(result.all { it.recalledBy == setOf(RecallSource.GRAPH) }).isTrue()
                 assertThat(service.retrieveContext(query, k = 8, personaId = defaultSpace)).isEqualTo(result)
             } finally {
                 lifecycle.close()
