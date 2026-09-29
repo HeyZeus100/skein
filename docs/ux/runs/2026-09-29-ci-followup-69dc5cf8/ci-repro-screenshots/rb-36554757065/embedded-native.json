@@ -1,0 +1,16 @@
+[
+  {
+    "apk": "/Users/andrewherrera/skein-worktrees/ux-rb-evidence-20260929/build/agent-logs/secondary-followup-69dc5cf8/rb-36554757065/artifact-11027606971-rb-build-b/files/app-foss-release-unsigned.apk",
+    "entry": "lib/arm64-v8a/libskein_llama.so",
+    "bytes": 25314032,
+    "sha256": "2aefda01808f10bf5693ab02d0857e0169dc09550b615896939cb176c032daff",
+    "matches_cold_pair": true
+  },
+  {
+    "apk": "/Users/andrewherrera/skein-worktrees/ux-rb-evidence-20260929/build/agent-logs/secondary-followup-69dc5cf8/rb-36554757065/artifact-11027951807-rb-build-a/files/app-foss-release-unsigned.apk",
+    "entry": "lib/arm64-v8a/libskein_llama.so",
+    "bytes": 25314032,
+    "sha256": "2aefda01808f10bf5693ab02d0857e0169dc09550b615896939cb176c032daff",
+    "matches_cold_pair": true
+  }
+]

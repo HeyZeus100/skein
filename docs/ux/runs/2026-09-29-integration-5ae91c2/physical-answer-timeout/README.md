@@ -1,0 +1,3 @@
+Original physical answer attempt timed out at 901.58 seconds (900-second watchdog), with zero valid answer rows and no valid run manifest. Collected .json/.jsonl files are original error text from absent remote files, deliberately preserved as failures. JUnit did not pass. Process crashed appears after timeout cleanup, not as proof of a spontaneous native crash. Remote stop was verified by the sole runner.
+
+Only the synthetic instrumentation log, original missing-output evidence and minimal derived stop review are copied. Full process dumps, raw summaries/reviews embedding global metadata, and owner screenshots are excluded. Installed app identity and native parity passed separately. Tracked under skein-gg11.37; no automatic retry or weakened limits.

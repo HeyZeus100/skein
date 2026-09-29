@@ -1,0 +1,817 @@
+{
+  "original_evidence_root": "/Users/andrewherrera/skein-worktrees/ux-fold-hostdeps-20260929/build/agent-logs/remote-foldable36554797839/36554797839",
+  "copied_files": [
+    {
+      "original_absolute_path": "/Users/andrewherrera/skein-worktrees/ux-fold-hostdeps-20260929/build/agent-logs/remote-foldable36554797839/36554797839/20260929T101952.713080Z-artifacts.json",
+      "original_bytes": 32,
+      "original_sha256": "244563f989470892c537c9a4622920af0d228ee4528f7d00c64a06d6cd95856c",
+      "bundle_path": "20260929T101952.713080Z-artifacts.json",
+      "encoding": "identity",
+      "bundle_bytes": 32,
+      "bundle_sha256": "244563f989470892c537c9a4622920af0d228ee4528f7d00c64a06d6cd95856c"
+    },
+    {
+      "original_absolute_path": "/Users/andrewherrera/skein-worktrees/ux-fold-hostdeps-20260929/build/agent-logs/remote-foldable36554797839/36554797839/20260929T101952.713080Z-jobs.json",
+      "original_bytes": 3887,
+      "original_sha256": "373f98ec47b6f73c78e105c966dcfb82bae45a244618ef0c1cfd371301d05f87",
+      "bundle_path": "20260929T101952.713080Z-jobs.json",
+      "encoding": "identity",
+      "bundle_bytes": 3887,
+      "bundle_sha256": "373f98ec47b6f73c78e105c966dcfb82bae45a244618ef0c1cfd371301d05f87"
+    },
+    {
+      "original_absolute_path": "/Users/andrewherrera/skein-worktrees/ux-fold-hostdeps-20260929/build/agent-logs/remote-foldable36554797839/36554797839/20260929T101952.713080Z-run.json",
+      "original_bytes": 12017,
+      "original_sha256": "b08cf52549eb7345b9227490739179ad6581962fd865b75d5fe15bc52d29db20",
+      "bundle_path": "20260929T101952.713080Z-run.json",
+      "encoding": "identity",
+      "bundle_bytes": 12017,
+      "bundle_sha256": "b08cf52549eb7345b9227490739179ad6581962fd865b75d5fe15bc52d29db20"
+    },
+    {
+      "original_absolute_path": "/Users/andrewherrera/skein-worktrees/ux-fold-hostdeps-20260929/build/agent-logs/remote-foldable36554797839/36554797839/20260929T102102.741222Z-artifacts.json",
+      "original_bytes": 32,
+      "original_sha256": "244563f989470892c537c9a4622920af0d228ee4528f7d00c64a06d6cd95856c",
+      "bundle_path": "20260929T102102.741222Z-artifacts.json",
+      "encoding": "identity",
+      "bundle_bytes": 32,
+      "bundle_sha256": "244563f989470892c537c9a4622920af0d228ee4528f7d00c64a06d6cd95856c"
+    },
+    {
+      "original_absolute_path": "/Users/andrewherrera/skein-worktrees/ux-fold-hostdeps-20260929/build/agent-logs/remote-foldable36554797839/36554797839/20260929T102102.741222Z-jobs.json",
+      "original_bytes": 4059,
+      "original_sha256": "fababe5bf11447b481e406f069e57d32353dca8758488d009a6f339b8b249bda",
+      "bundle_path": "20260929T102102.741222Z-jobs.json",
+      "encoding": "identity",
+      "bundle_bytes": 4059,
+      "bundle_sha256": "fababe5bf11447b481e406f069e57d32353dca8758488d009a6f339b8b249bda"
+    },
+    {
+      "original_absolute_path": "/Users/andrewherrera/skein-worktrees/ux-fold-hostdeps-20260929/build/agent-logs/remote-foldable36554797839/36554797839/20260929T102102.741222Z-run.json",
+      "original_bytes": 12017,
+      "original_sha256": "b08cf52549eb7345b9227490739179ad6581962fd865b75d5fe15bc52d29db20",
+      "bundle_path": "20260929T102102.741222Z-run.json",
+      "encoding": "identity",
+      "bundle_bytes": 12017,
+      "bundle_sha256": "b08cf52549eb7345b9227490739179ad6581962fd865b75d5fe15bc52d29db20"
+    },
+    {
+      "original_absolute_path": "/Users/andrewherrera/skein-worktrees/ux-fold-hostdeps-20260929/build/agent-logs/remote-foldable36554797839/36554797839/20260929T102323.528137Z-artifacts.json",
+      "original_bytes": 32,
+      "original_sha256": "244563f989470892c537c9a4622920af0d228ee4528f7d00c64a06d6cd95856c",
+      "bundle_path": "20260929T102323.528137Z-artifacts.json",
+      "encoding": "identity",
+      "bundle_bytes": 32,
+      "bundle_sha256": "244563f989470892c537c9a4622920af0d228ee4528f7d00c64a06d6cd95856c"
+    },
+    {
+      "original_absolute_path": "/Users/andrewherrera/skein-worktrees/ux-fold-hostdeps-20260929/build/agent-logs/remote-foldable36554797839/36554797839/20260929T102323.528137Z-jobs.json",
+      "original_bytes": 4188,
+      "original_sha256": "25c0f167b686b913591603527b4a4e5f14f515edd46e519b9ab3238da7801cab",
+      "bundle_path": "20260929T102323.528137Z-jobs.json",
+      "encoding": "identity",
+      "bundle_bytes": 4188,
+      "bundle_sha256": "25c0f167b686b913591603527b4a4e5f14f515edd46e519b9ab3238da7801cab"
+    },
+    {
+      "original_absolute_path": "/Users/andrewherrera/skein-worktrees/ux-fold-hostdeps-20260929/build/agent-logs/remote-foldable36554797839/36554797839/20260929T102323.528137Z-run.json",
+      "original_bytes": 12017,
+      "original_sha256": "b08cf52549eb7345b9227490739179ad6581962fd865b75d5fe15bc52d29db20",
+      "bundle_path": "20260929T102323.528137Z-run.json",
+      "encoding": "identity",
+      "bundle_bytes": 12017,
+      "bundle_sha256": "b08cf52549eb7345b9227490739179ad6581962fd865b75d5fe15bc52d29db20"
+    },
+    {
+      "original_absolute_path": "/Users/andrewherrera/skein-worktrees/ux-fold-hostdeps-20260929/build/agent-logs/remote-foldable36554797839/36554797839/20260929T102608.435661Z-artifacts.json",
+      "original_bytes": 32,
+      "original_sha256": "244563f989470892c537c9a4622920af0d228ee4528f7d00c64a06d6cd95856c",
+      "bundle_path": "20260929T102608.435661Z-artifacts.json",
+      "encoding": "identity",
+      "bundle_bytes": 32,
+      "bundle_sha256": "244563f989470892c537c9a4622920af0d228ee4528f7d00c64a06d6cd95856c"
+    },
+    {
+      "original_absolute_path": "/Users/andrewherrera/skein-worktrees/ux-fold-hostdeps-20260929/build/agent-logs/remote-foldable36554797839/36554797839/20260929T102608.435661Z-jobs.json",
+      "original_bytes": 4188,
+      "original_sha256": "25c0f167b686b913591603527b4a4e5f14f515edd46e519b9ab3238da7801cab",
+      "bundle_path": "20260929T102608.435661Z-jobs.json",
+      "encoding": "identity",
+      "bundle_bytes": 4188,
+      "bundle_sha256": "25c0f167b686b913591603527b4a4e5f14f515edd46e519b9ab3238da7801cab"
+    },
+    {
+      "original_absolute_path": "/Users/andrewherrera/skein-worktrees/ux-fold-hostdeps-20260929/build/agent-logs/remote-foldable36554797839/36554797839/20260929T102608.435661Z-run.json",
+      "original_bytes": 12017,
+      "original_sha256": "b08cf52549eb7345b9227490739179ad6581962fd865b75d5fe15bc52d29db20",
+      "bundle_path": "20260929T102608.435661Z-run.json",
+      "encoding": "identity",
+      "bundle_bytes": 12017,
+      "bundle_sha256": "b08cf52549eb7345b9227490739179ad6581962fd865b75d5fe15bc52d29db20"
+    },
+    {
+      "original_absolute_path": "/Users/andrewherrera/skein-worktrees/ux-fold-hostdeps-20260929/build/agent-logs/remote-foldable36554797839/36554797839/20260929T102716.459942Z-artifacts.json",
+      "original_bytes": 32,
+      "original_sha256": "244563f989470892c537c9a4622920af0d228ee4528f7d00c64a06d6cd95856c",
+      "bundle_path": "20260929T102716.459942Z-artifacts.json",
+      "encoding": "identity",
+      "bundle_bytes": 32,
+      "bundle_sha256": "244563f989470892c537c9a4622920af0d228ee4528f7d00c64a06d6cd95856c"
+    },
+    {
+      "original_absolute_path": "/Users/andrewherrera/skein-worktrees/ux-fold-hostdeps-20260929/build/agent-logs/remote-foldable36554797839/36554797839/20260929T102716.459942Z-jobs.json",
+      "original_bytes": 4188,
+      "original_sha256": "25c0f167b686b913591603527b4a4e5f14f515edd46e519b9ab3238da7801cab",
+      "bundle_path": "20260929T102716.459942Z-jobs.json",
+      "encoding": "identity",
+      "bundle_bytes": 4188,
+      "bundle_sha256": "25c0f167b686b913591603527b4a4e5f14f515edd46e519b9ab3238da7801cab"
+    },
+    {
+      "original_absolute_path": "/Users/andrewherrera/skein-worktrees/ux-fold-hostdeps-20260929/build/agent-logs/remote-foldable36554797839/36554797839/20260929T102716.459942Z-run.json",
+      "original_bytes": 12017,
+      "original_sha256": "b08cf52549eb7345b9227490739179ad6581962fd865b75d5fe15bc52d29db20",
+      "bundle_path": "20260929T102716.459942Z-run.json",
+      "encoding": "identity",
+      "bundle_bytes": 12017,
+      "bundle_sha256": "b08cf52549eb7345b9227490739179ad6581962fd865b75d5fe15bc52d29db20"
+    },
+    {
+      "original_absolute_path": "/Users/andrewherrera/skein-worktrees/ux-fold-hostdeps-20260929/build/agent-logs/remote-foldable36554797839/36554797839/20260929T102823.857224Z-artifacts.json",
+      "original_bytes": 32,
+      "original_sha256": "244563f989470892c537c9a4622920af0d228ee4528f7d00c64a06d6cd95856c",
+      "bundle_path": "20260929T102823.857224Z-artifacts.json",
+      "encoding": "identity",
+      "bundle_bytes": 32,
+      "bundle_sha256": "244563f989470892c537c9a4622920af0d228ee4528f7d00c64a06d6cd95856c"
+    },
+    {
+      "original_absolute_path": "/Users/andrewherrera/skein-worktrees/ux-fold-hostdeps-20260929/build/agent-logs/remote-foldable36554797839/36554797839/20260929T102823.857224Z-jobs.json",
+      "original_bytes": 4188,
+      "original_sha256": "25c0f167b686b913591603527b4a4e5f14f515edd46e519b9ab3238da7801cab",
+      "bundle_path": "20260929T102823.857224Z-jobs.json",
+      "encoding": "identity",
+      "bundle_bytes": 4188,
+      "bundle_sha256": "25c0f167b686b913591603527b4a4e5f14f515edd46e519b9ab3238da7801cab"
+    },
+    {
+      "original_absolute_path": "/Users/andrewherrera/skein-worktrees/ux-fold-hostdeps-20260929/build/agent-logs/remote-foldable36554797839/36554797839/20260929T102823.857224Z-run.json",
+      "original_bytes": 12017,
+      "original_sha256": "b08cf52549eb7345b9227490739179ad6581962fd865b75d5fe15bc52d29db20",
+      "bundle_path": "20260929T102823.857224Z-run.json",
+      "encoding": "identity",
+      "bundle_bytes": 12017,
+      "bundle_sha256": "b08cf52549eb7345b9227490739179ad6581962fd865b75d5fe15bc52d29db20"
+    },
+    {
+      "original_absolute_path": "/Users/andrewherrera/skein-worktrees/ux-fold-hostdeps-20260929/build/agent-logs/remote-foldable36554797839/36554797839/20260929T102840.484547Z-partial-job-log-unavailable.txt",
+      "original_bytes": 13,
+      "original_sha256": "6c5ec582d3b25e97273d17fd4088d0e13837c8384ee94aba555afc35856ec3ae",
+      "bundle_path": "20260929T102840.484547Z-partial-job-log-unavailable.txt.gz",
+      "encoding": "gzip",
+      "bundle_bytes": 33,
+      "bundle_sha256": "de02d943398529bb1ee08a881176a4379ac9dd294c2833c4391587219fe33128"
+    },
+    {
+      "original_absolute_path": "/Users/andrewherrera/skein-worktrees/ux-fold-hostdeps-20260929/build/agent-logs/remote-foldable36554797839/36554797839/20260929T102946.435816Z-artifacts.json",
+      "original_bytes": 32,
+      "original_sha256": "244563f989470892c537c9a4622920af0d228ee4528f7d00c64a06d6cd95856c",
+      "bundle_path": "20260929T102946.435816Z-artifacts.json",
+      "encoding": "identity",
+      "bundle_bytes": 32,
+      "bundle_sha256": "244563f989470892c537c9a4622920af0d228ee4528f7d00c64a06d6cd95856c"
+    },
+    {
+      "original_absolute_path": "/Users/andrewherrera/skein-worktrees/ux-fold-hostdeps-20260929/build/agent-logs/remote-foldable36554797839/36554797839/20260929T102946.435816Z-jobs.json",
+      "original_bytes": 4188,
+      "original_sha256": "25c0f167b686b913591603527b4a4e5f14f515edd46e519b9ab3238da7801cab",
+      "bundle_path": "20260929T102946.435816Z-jobs.json",
+      "encoding": "identity",
+      "bundle_bytes": 4188,
+      "bundle_sha256": "25c0f167b686b913591603527b4a4e5f14f515edd46e519b9ab3238da7801cab"
+    },
+    {
+      "original_absolute_path": "/Users/andrewherrera/skein-worktrees/ux-fold-hostdeps-20260929/build/agent-logs/remote-foldable36554797839/36554797839/20260929T102946.435816Z-run.json",
+      "original_bytes": 12017,
+      "original_sha256": "b08cf52549eb7345b9227490739179ad6581962fd865b75d5fe15bc52d29db20",
+      "bundle_path": "20260929T102946.435816Z-run.json",
+      "encoding": "identity",
+      "bundle_bytes": 12017,
+      "bundle_sha256": "b08cf52549eb7345b9227490739179ad6581962fd865b75d5fe15bc52d29db20"
+    },
+    {
+      "original_absolute_path": "/Users/andrewherrera/skein-worktrees/ux-fold-hostdeps-20260929/build/agent-logs/remote-foldable36554797839/36554797839/20260929T103056.704657Z-artifacts.json",
+      "original_bytes": 32,
+      "original_sha256": "244563f989470892c537c9a4622920af0d228ee4528f7d00c64a06d6cd95856c",
+      "bundle_path": "20260929T103056.704657Z-artifacts.json",
+      "encoding": "identity",
+      "bundle_bytes": 32,
+      "bundle_sha256": "244563f989470892c537c9a4622920af0d228ee4528f7d00c64a06d6cd95856c"
+    },
+    {
+      "original_absolute_path": "/Users/andrewherrera/skein-worktrees/ux-fold-hostdeps-20260929/build/agent-logs/remote-foldable36554797839/36554797839/20260929T103056.704657Z-jobs.json",
+      "original_bytes": 4188,
+      "original_sha256": "25c0f167b686b913591603527b4a4e5f14f515edd46e519b9ab3238da7801cab",
+      "bundle_path": "20260929T103056.704657Z-jobs.json",
+      "encoding": "identity",
+      "bundle_bytes": 4188,
+      "bundle_sha256": "25c0f167b686b913591603527b4a4e5f14f515edd46e519b9ab3238da7801cab"
+    },
+    {
+      "original_absolute_path": "/Users/andrewherrera/skein-worktrees/ux-fold-hostdeps-20260929/build/agent-logs/remote-foldable36554797839/36554797839/20260929T103056.704657Z-run.json",
+      "original_bytes": 12017,
+      "original_sha256": "b08cf52549eb7345b9227490739179ad6581962fd865b75d5fe15bc52d29db20",
+      "bundle_path": "20260929T103056.704657Z-run.json",
+      "encoding": "identity",
+      "bundle_bytes": 12017,
+      "bundle_sha256": "b08cf52549eb7345b9227490739179ad6581962fd865b75d5fe15bc52d29db20"
+    },
+    {
+      "original_absolute_path": "/Users/andrewherrera/skein-worktrees/ux-fold-hostdeps-20260929/build/agent-logs/remote-foldable36554797839/36554797839/20260929T103159.921714Z-artifacts.json",
+      "original_bytes": 32,
+      "original_sha256": "244563f989470892c537c9a4622920af0d228ee4528f7d00c64a06d6cd95856c",
+      "bundle_path": "20260929T103159.921714Z-artifacts.json",
+      "encoding": "identity",
+      "bundle_bytes": 32,
+      "bundle_sha256": "244563f989470892c537c9a4622920af0d228ee4528f7d00c64a06d6cd95856c"
+    },
+    {
+      "original_absolute_path": "/Users/andrewherrera/skein-worktrees/ux-fold-hostdeps-20260929/build/agent-logs/remote-foldable36554797839/36554797839/20260929T103159.921714Z-jobs.json",
+      "original_bytes": 4188,
+      "original_sha256": "25c0f167b686b913591603527b4a4e5f14f515edd46e519b9ab3238da7801cab",
+      "bundle_path": "20260929T103159.921714Z-jobs.json",
+      "encoding": "identity",
+      "bundle_bytes": 4188,
+      "bundle_sha256": "25c0f167b686b913591603527b4a4e5f14f515edd46e519b9ab3238da7801cab"
+    },
+    {
+      "original_absolute_path": "/Users/andrewherrera/skein-worktrees/ux-fold-hostdeps-20260929/build/agent-logs/remote-foldable36554797839/36554797839/20260929T103159.921714Z-run.json",
+      "original_bytes": 12017,
+      "original_sha256": "b08cf52549eb7345b9227490739179ad6581962fd865b75d5fe15bc52d29db20",
+      "bundle_path": "20260929T103159.921714Z-run.json",
+      "encoding": "identity",
+      "bundle_bytes": 12017,
+      "bundle_sha256": "b08cf52549eb7345b9227490739179ad6581962fd865b75d5fe15bc52d29db20"
+    },
+    {
+      "original_absolute_path": "/Users/andrewherrera/skein-worktrees/ux-fold-hostdeps-20260929/build/agent-logs/remote-foldable36554797839/36554797839/20260929T103314.444204Z-artifacts.json",
+      "original_bytes": 32,
+      "original_sha256": "244563f989470892c537c9a4622920af0d228ee4528f7d00c64a06d6cd95856c",
+      "bundle_path": "20260929T103314.444204Z-artifacts.json",
+      "encoding": "identity",
+      "bundle_bytes": 32,
+      "bundle_sha256": "244563f989470892c537c9a4622920af0d228ee4528f7d00c64a06d6cd95856c"
+    },
+    {
+      "original_absolute_path": "/Users/andrewherrera/skein-worktrees/ux-fold-hostdeps-20260929/build/agent-logs/remote-foldable36554797839/36554797839/20260929T103314.444204Z-jobs.json",
+      "original_bytes": 4188,
+      "original_sha256": "25c0f167b686b913591603527b4a4e5f14f515edd46e519b9ab3238da7801cab",
+      "bundle_path": "20260929T103314.444204Z-jobs.json",
+      "encoding": "identity",
+      "bundle_bytes": 4188,
+      "bundle_sha256": "25c0f167b686b913591603527b4a4e5f14f515edd46e519b9ab3238da7801cab"
+    },
+    {
+      "original_absolute_path": "/Users/andrewherrera/skein-worktrees/ux-fold-hostdeps-20260929/build/agent-logs/remote-foldable36554797839/36554797839/20260929T103314.444204Z-run.json",
+      "original_bytes": 12017,
+      "original_sha256": "b08cf52549eb7345b9227490739179ad6581962fd865b75d5fe15bc52d29db20",
+      "bundle_path": "20260929T103314.444204Z-run.json",
+      "encoding": "identity",
+      "bundle_bytes": 12017,
+      "bundle_sha256": "b08cf52549eb7345b9227490739179ad6581962fd865b75d5fe15bc52d29db20"
+    },
+    {
+      "original_absolute_path": "/Users/andrewherrera/skein-worktrees/ux-fold-hostdeps-20260929/build/agent-logs/remote-foldable36554797839/36554797839/20260929T103419.804553Z-artifacts.json",
+      "original_bytes": 764,
+      "original_sha256": "4b0eb2ef1e00ae9bc471eca3f4d1ed5b59a9363abea8868b9561de07298ed88a",
+      "bundle_path": "20260929T103419.804553Z-artifacts.json",
+      "encoding": "identity",
+      "bundle_bytes": 764,
+      "bundle_sha256": "4b0eb2ef1e00ae9bc471eca3f4d1ed5b59a9363abea8868b9561de07298ed88a"
+    },
+    {
+      "original_absolute_path": "/Users/andrewherrera/skein-worktrees/ux-fold-hostdeps-20260929/build/agent-logs/remote-foldable36554797839/36554797839/20260929T103419.804553Z-jobs.json",
+      "original_bytes": 4403,
+      "original_sha256": "44db1e65cd189def847d7794d2be050901b03c9978d0f9d898a040264082b6e9",
+      "bundle_path": "20260929T103419.804553Z-jobs.json",
+      "encoding": "identity",
+      "bundle_bytes": 4403,
+      "bundle_sha256": "44db1e65cd189def847d7794d2be050901b03c9978d0f9d898a040264082b6e9"
+    },
+    {
+      "original_absolute_path": "/Users/andrewherrera/skein-worktrees/ux-fold-hostdeps-20260929/build/agent-logs/remote-foldable36554797839/36554797839/20260929T103419.804553Z-run.json",
+      "original_bytes": 12017,
+      "original_sha256": "b08cf52549eb7345b9227490739179ad6581962fd865b75d5fe15bc52d29db20",
+      "bundle_path": "20260929T103419.804553Z-run.json",
+      "encoding": "identity",
+      "bundle_bytes": 12017,
+      "bundle_sha256": "b08cf52549eb7345b9227490739179ad6581962fd865b75d5fe15bc52d29db20"
+    },
+    {
+      "original_absolute_path": "/Users/andrewherrera/skein-worktrees/ux-fold-hostdeps-20260929/build/agent-logs/remote-foldable36554797839/36554797839/20260929T103912.767899Z-artifacts.json",
+      "original_bytes": 764,
+      "original_sha256": "4b0eb2ef1e00ae9bc471eca3f4d1ed5b59a9363abea8868b9561de07298ed88a",
+      "bundle_path": "20260929T103912.767899Z-artifacts.json",
+      "encoding": "identity",
+      "bundle_bytes": 764,
+      "bundle_sha256": "4b0eb2ef1e00ae9bc471eca3f4d1ed5b59a9363abea8868b9561de07298ed88a"
+    },
+    {
+      "original_absolute_path": "/Users/andrewherrera/skein-worktrees/ux-fold-hostdeps-20260929/build/agent-logs/remote-foldable36554797839/36554797839/20260929T103912.767899Z-jobs.json",
+      "original_bytes": 4642,
+      "original_sha256": "2497bfc04c46d3a6b5e5856a18d3f4ff67eb27dc432b705a8905ae3a43ae3350",
+      "bundle_path": "20260929T103912.767899Z-jobs.json",
+      "encoding": "identity",
+      "bundle_bytes": 4642,
+      "bundle_sha256": "2497bfc04c46d3a6b5e5856a18d3f4ff67eb27dc432b705a8905ae3a43ae3350"
+    },
+    {
+      "original_absolute_path": "/Users/andrewherrera/skein-worktrees/ux-fold-hostdeps-20260929/build/agent-logs/remote-foldable36554797839/36554797839/20260929T103912.767899Z-run.json",
+      "original_bytes": 12020,
+      "original_sha256": "0fede349577c1c10153f6faef72ccb900e60cd4c8b0a28f4cc3c06412541bc5e",
+      "bundle_path": "20260929T103912.767899Z-run.json",
+      "encoding": "identity",
+      "bundle_bytes": 12020,
+      "bundle_sha256": "0fede349577c1c10153f6faef72ccb900e60cd4c8b0a28f4cc3c06412541bc5e"
+    },
+    {
+      "original_absolute_path": "/Users/andrewherrera/skein-worktrees/ux-fold-hostdeps-20260929/build/agent-logs/remote-foldable36554797839/36554797839/AdditionalTestOutputUtilsKt-javap.txt",
+      "original_bytes": 8981,
+      "original_sha256": "99db3e26130e3aadc384d2146a2f5681bb065b7463f77ca9cf751a8e2279f57f",
+      "bundle_path": "AdditionalTestOutputUtilsKt-javap.txt.gz",
+      "encoding": "gzip",
+      "bundle_bytes": 1610,
+      "bundle_sha256": "00fdd1e6e4ccf4597de1088d126699d434ea303154e92fe3a8802c2c7fa6d7eb"
+    },
+    {
+      "original_absolute_path": "/Users/andrewherrera/skein-worktrees/ux-fold-hostdeps-20260929/build/agent-logs/remote-foldable36554797839/36554797839/DeviceControllerModule-javap.txt",
+      "original_bytes": 13364,
+      "original_sha256": "db909e19bcd141ae2d929993d9b6c6d9320d75865a6184ce85650287d0b9eaca",
+      "bundle_path": "DeviceControllerModule-javap.txt.gz",
+      "encoding": "gzip",
+      "bundle_bytes": 2269,
+      "bundle_sha256": "d9a2f96e34d08749283350076ce88ed70c4ac76743fd325496b5c24e767ad690"
+    },
+    {
+      "original_absolute_path": "/Users/andrewherrera/skein-worktrees/ux-fold-hostdeps-20260929/build/agent-logs/remote-foldable36554797839/36554797839/EmulatorControlConfigKt-javap.txt",
+      "original_bytes": 2291,
+      "original_sha256": "1498c47b9d6b21fea278561266a8920bf5a9f3deb909a22f2fca6f4e1b4d3d67",
+      "bundle_path": "EmulatorControlConfigKt-javap.txt.gz",
+      "encoding": "gzip",
+      "bundle_bytes": 696,
+      "bundle_sha256": "e8a6b243aae2d41dcfa621262248d4d56dd0facec1751c0b805ec9bf1c06e295"
+    },
+    {
+      "original_absolute_path": "/Users/andrewherrera/skein-worktrees/ux-fold-hostdeps-20260929/build/agent-logs/remote-foldable36554797839/36554797839/EmulatorGrpcConn$Companion-javap.txt",
+      "original_bytes": 3586,
+      "original_sha256": "f5b67112ed0dc41b6f0cd474a9f241efc40c0109b7599141c8b961184cc628f1",
+      "bundle_path": "EmulatorGrpcConn$Companion-javap.txt.gz",
+      "encoding": "gzip",
+      "bundle_bytes": 641,
+      "bundle_sha256": "1da52cde9011ebb61295f5df752511c8fcc668f24945753be0ef1e04c18cc208"
+    },
+    {
+      "original_absolute_path": "/Users/andrewherrera/skein-worktrees/ux-fold-hostdeps-20260929/build/agent-logs/remote-foldable36554797839/36554797839/EmulatorGrpcConn-javap.txt",
+      "original_bytes": 1222,
+      "original_sha256": "cbd9f33262598c13657419278b612fc4955d2f8494114238d784c335dcc092b5",
+      "bundle_path": "EmulatorGrpcConn-javap.txt.gz",
+      "encoding": "gzip",
+      "bundle_bytes": 402,
+      "bundle_sha256": "a9962cc8191e53e05b5fcbcfbd3e80cb336a36f9aef7dbc9d7013fd52d28a4d9"
+    },
+    {
+      "original_absolute_path": "/Users/andrewherrera/skein-worktrees/ux-fold-hostdeps-20260929/build/agent-logs/remote-foldable36554797839/36554797839/MainActivityFoldableGateTest-at-source.kt",
+      "original_bytes": 5752,
+      "original_sha256": "86f407e3642872831d8197a1aa325b16f920af56b5de5d2a7f5371050d4d04d0",
+      "bundle_path": "MainActivityFoldableGateTest-at-source.kt.gz",
+      "encoding": "gzip",
+      "bundle_bytes": 1681,
+      "bundle_sha256": "eb1ee6c231ced3d59f9ce39ac900e2ec704bfd6609dfeb6ff92a2319f3db4569"
+    },
+    {
+      "original_absolute_path": "/Users/andrewherrera/skein-worktrees/ux-fold-hostdeps-20260929/build/agent-logs/remote-foldable36554797839/36554797839/SHA256SUMS",
+      "original_bytes": 10120,
+      "original_sha256": "d5800c6492801764c4cfe83085195a244567bcc4ef812604294a330ff293d34e",
+      "bundle_path": "SHA256SUMS.gz",
+      "encoding": "gzip",
+      "bundle_bytes": 3347,
+      "bundle_sha256": "9a378fbc0948aeaae56c32e79d831efaeedf33d0e2b55536842ffa9c76f082db"
+    },
+    {
+      "original_absolute_path": "/Users/andrewherrera/skein-worktrees/ux-fold-hostdeps-20260929/build/agent-logs/remote-foldable36554797839/36554797839/SHA256SUMS.first-review",
+      "original_bytes": 9940,
+      "original_sha256": "2cdcbcdcc78e6d1a3b207323c52cabe5007111844639ed663a846299f894b671",
+      "bundle_path": "SHA256SUMS.first-review.gz",
+      "encoding": "gzip",
+      "bundle_bytes": 3232,
+      "bundle_sha256": "7810b220d984d7dcc4ac74227c66d3b1b5a27d670e9327e7bb596f06b08e0bdc"
+    },
+    {
+      "original_absolute_path": "/Users/andrewherrera/skein-worktrees/ux-fold-hostdeps-20260929/build/agent-logs/remote-foldable36554797839/36554797839/artifact-11028107427/app/build/outputs/androidTest-results/connected/debug/flavors/dev/TEST-skein_foldable_gate(AVD) - 15.xml",
+      "original_bytes": 4289,
+      "original_sha256": "1010afd724f1f6c00519fad0b7bb75ecf8174af81b8f005568d17404dbfc0056",
+      "bundle_path": "artifact-11028107427/app/build/outputs/androidTest-results/connected/debug/flavors/dev/TEST-skein_foldable_gate(AVD) - 15.xml.gz",
+      "encoding": "gzip",
+      "bundle_bytes": 806,
+      "bundle_sha256": "61ea259556e2cce56b881e786b7898fb0f6d9a81013f3f2d9e3f2d5284f28829"
+    },
+    {
+      "original_absolute_path": "/Users/andrewherrera/skein-worktrees/ux-fold-hostdeps-20260929/build/agent-logs/remote-foldable36554797839/36554797839/artifact-11028107427/app/build/outputs/androidTest-results/connected/debug/flavors/dev/skein_foldable_gate(AVD) - 15/device-info.pb",
+      "original_bytes": 142,
+      "original_sha256": "4be8e169b69b9683876db4ebf2c3c55bc6c92469c4ae509cc2786cd8a34cacb0",
+      "bundle_path": "artifact-11028107427/app/build/outputs/androidTest-results/connected/debug/flavors/dev/skein_foldable_gate(AVD) - 15/device-info.pb",
+      "encoding": "identity",
+      "bundle_bytes": 142,
+      "bundle_sha256": "4be8e169b69b9683876db4ebf2c3c55bc6c92469c4ae509cc2786cd8a34cacb0"
+    },
+    {
+      "original_absolute_path": "/Users/andrewherrera/skein-worktrees/ux-fold-hostdeps-20260929/build/agent-logs/remote-foldable36554797839/36554797839/artifact-11028107427/app/build/outputs/androidTest-results/connected/debug/flavors/dev/skein_foldable_gate(AVD) - 15/logcat-app.skein.foldable.MainActivityFoldableGateTest-gateSurvivesClosedFlatClosedWithoutActivityReplacement.txt",
+      "original_bytes": 12417,
+      "original_sha256": "1ddd894758bebfeffcab78c2187f100c4c8c45c36775c68e278843373979f609",
+      "bundle_path": "artifact-11028107427/app/build/outputs/androidTest-results/connected/debug/flavors/dev/skein_foldable_gate(AVD) - 15/logcat-app.skein.foldable.MainActivityFoldableGateTest-gateSurvivesClosedFlatClosedWithoutActivityReplacement.txt.gz",
+      "encoding": "gzip",
+      "bundle_bytes": 1857,
+      "bundle_sha256": "965108947f76c1ed0bfb7f8d723825550658eef5b9411fd269bfa29a84fffdda"
+    },
+    {
+      "original_absolute_path": "/Users/andrewherrera/skein-worktrees/ux-fold-hostdeps-20260929/build/agent-logs/remote-foldable36554797839/36554797839/artifact-11028107427/app/build/outputs/androidTest-results/connected/debug/flavors/dev/skein_foldable_gate(AVD) - 15/logcat-app.skein.foldable.MainActivityFoldableGateTest-gateSurvivesOuterLandscapeWithoutExposingNavDisplay.txt",
+      "original_bytes": 11834,
+      "original_sha256": "1adf1d74be4c835c1868bc86fa7ec4a849a83a02c2f7599588c951055ef453fc",
+      "bundle_path": "artifact-11028107427/app/build/outputs/androidTest-results/connected/debug/flavors/dev/skein_foldable_gate(AVD) - 15/logcat-app.skein.foldable.MainActivityFoldableGateTest-gateSurvivesOuterLandscapeWithoutExposingNavDisplay.txt.gz",
+      "encoding": "gzip",
+      "bundle_bytes": 1689,
+      "bundle_sha256": "4ceb1e84a9fa9d4822e3efe9d46652deabe15f4c131395083a9a82879752d4b5"
+    },
+    {
+      "original_absolute_path": "/Users/andrewherrera/skein-worktrees/ux-fold-hostdeps-20260929/build/agent-logs/remote-foldable36554797839/36554797839/artifact-11028107427/app/build/outputs/androidTest-results/connected/debug/flavors/dev/skein_foldable_gate(AVD) - 15/test-result.pb",
+      "original_bytes": 9309,
+      "original_sha256": "a05e90d30c52e0514185c3e8621f10283d8e7eb98c9ce1e7ecad6ba4c87d034b",
+      "bundle_path": "artifact-11028107427/app/build/outputs/androidTest-results/connected/debug/flavors/dev/skein_foldable_gate(AVD) - 15/test-result.pb",
+      "encoding": "identity",
+      "bundle_bytes": 9309,
+      "bundle_sha256": "a05e90d30c52e0514185c3e8621f10283d8e7eb98c9ce1e7ecad6ba4c87d034b"
+    },
+    {
+      "original_absolute_path": "/Users/andrewherrera/skein-worktrees/ux-fold-hostdeps-20260929/build/agent-logs/remote-foldable36554797839/36554797839/artifact-11028107427/app/build/outputs/androidTest-results/connected/debug/flavors/dev/test-result-exit-code.txt",
+      "original_bytes": 1,
+      "original_sha256": "6b86b273ff34fce19d6b804eff5a3f5747ada4eaa22f1d49c01e52ddb7875b4b",
+      "bundle_path": "artifact-11028107427/app/build/outputs/androidTest-results/connected/debug/flavors/dev/test-result-exit-code.txt.gz",
+      "encoding": "gzip",
+      "bundle_bytes": 21,
+      "bundle_sha256": "efbe30fab335f4aef6f7e9665fbba9424fac8e4cf0f9201ba5a530520031c3c8"
+    },
+    {
+      "original_absolute_path": "/Users/andrewherrera/skein-worktrees/ux-fold-hostdeps-20260929/build/agent-logs/remote-foldable36554797839/36554797839/artifact-11028107427/app/build/outputs/androidTest-results/connected/debug/flavors/dev/test-result.pb",
+      "original_bytes": 9311,
+      "original_sha256": "4b05298c2d9a083ef88dfa03f880eb7cb342fb44033ddee2830e64ede3bdafc7",
+      "bundle_path": "artifact-11028107427/app/build/outputs/androidTest-results/connected/debug/flavors/dev/test-result.pb",
+      "encoding": "identity",
+      "bundle_bytes": 9311,
+      "bundle_sha256": "4b05298c2d9a083ef88dfa03f880eb7cb342fb44033ddee2830e64ede3bdafc7"
+    },
+    {
+      "original_absolute_path": "/Users/andrewherrera/skein-worktrees/ux-fold-hostdeps-20260929/build/agent-logs/remote-foldable36554797839/36554797839/artifact-11028107427/app/build/reports/androidTests/connected/debug/flavors/dev/app.skein.foldable.MainActivityFoldableGateTest.html",
+      "original_bytes": 5897,
+      "original_sha256": "a7c5808a6e526e731f481332de7269095b3ec6aff5c6f21cda103399f81612c4",
+      "bundle_path": "artifact-11028107427/app/build/reports/androidTests/connected/debug/flavors/dev/app.skein.foldable.MainActivityFoldableGateTest.html.gz",
+      "encoding": "gzip",
+      "bundle_bytes": 1310,
+      "bundle_sha256": "fbe3d2ad10dab009888a460bd65632ad88d2d39b0afde8e7746d13476e8316a2"
+    },
+    {
+      "original_absolute_path": "/Users/andrewherrera/skein-worktrees/ux-fold-hostdeps-20260929/build/agent-logs/remote-foldable36554797839/36554797839/artifact-11028107427/app/build/reports/androidTests/connected/debug/flavors/dev/app.skein.foldable.html",
+      "original_bytes": 2731,
+      "original_sha256": "816d42f7239e706e1d05f6f8c933b661e8aa6d6c8d3622dbdd602e99bbd9f6c5",
+      "bundle_path": "artifact-11028107427/app/build/reports/androidTests/connected/debug/flavors/dev/app.skein.foldable.html.gz",
+      "encoding": "gzip",
+      "bundle_bytes": 848,
+      "bundle_sha256": "2dd22d9a8974f724b9303897bfc74ae8c9a011f4ff6c818dd50bef178528425f"
+    },
+    {
+      "original_absolute_path": "/Users/andrewherrera/skein-worktrees/ux-fold-hostdeps-20260929/build/agent-logs/remote-foldable36554797839/36554797839/artifact-11028107427/app/build/reports/androidTests/connected/debug/flavors/dev/css/base-style.css",
+      "original_bytes": 2428,
+      "original_sha256": "2851d0b2f14f4ff1b75f0d01438887911eb474e235be93e561709227cefb18db",
+      "bundle_path": "artifact-11028107427/app/build/reports/androidTests/connected/debug/flavors/dev/css/base-style.css.gz",
+      "encoding": "gzip",
+      "bundle_bytes": 694,
+      "bundle_sha256": "7f61e0e4bd3473a9e67efadcbb2e2d84a84725ad778e0910dba88831e6bc742d"
+    },
+    {
+      "original_absolute_path": "/Users/andrewherrera/skein-worktrees/ux-fold-hostdeps-20260929/build/agent-logs/remote-foldable36554797839/36554797839/artifact-11028107427/app/build/reports/androidTests/connected/debug/flavors/dev/css/style.css",
+      "original_bytes": 1798,
+      "original_sha256": "f1b366319836f8726d0939654d0eeddfc5b20f67d9e5954b9a1632c60f2f31bf",
+      "bundle_path": "artifact-11028107427/app/build/reports/androidTests/connected/debug/flavors/dev/css/style.css.gz",
+      "encoding": "gzip",
+      "bundle_bytes": 576,
+      "bundle_sha256": "9c1cc3cdc14d25d199e8de4338c449b084622d80407208b439c4314c31eeedfb"
+    },
+    {
+      "original_absolute_path": "/Users/andrewherrera/skein-worktrees/ux-fold-hostdeps-20260929/build/agent-logs/remote-foldable36554797839/36554797839/artifact-11028107427/app/build/reports/androidTests/connected/debug/flavors/dev/index.html",
+      "original_bytes": 3083,
+      "original_sha256": "e63c714fc3b81ae5db83dd3cb8bbea3dc0e7cfa9a7e5b320d0d052d00bd3a48e",
+      "bundle_path": "artifact-11028107427/app/build/reports/androidTests/connected/debug/flavors/dev/index.html.gz",
+      "encoding": "gzip",
+      "bundle_bytes": 861,
+      "bundle_sha256": "db639468202ca30b83263d19dc14f6c1eba34e36a9ae0cb64b93dd7dfe503a3b"
+    },
+    {
+      "original_absolute_path": "/Users/andrewherrera/skein-worktrees/ux-fold-hostdeps-20260929/build/agent-logs/remote-foldable36554797839/36554797839/artifact-11028107427/app/build/reports/androidTests/connected/debug/flavors/dev/js/report.js",
+      "original_bytes": 2933,
+      "original_sha256": "0aa306f94805890682c639b2d5c06108801d64b859a171a3c6eea66c8bab4c6a",
+      "bundle_path": "artifact-11028107427/app/build/reports/androidTests/connected/debug/flavors/dev/js/report.js.gz",
+      "encoding": "gzip",
+      "bundle_bytes": 862,
+      "bundle_sha256": "ceb0c3bf9a63a0c542dbc001da58e761f7a4ecffe63b0d67c98ff820ecc59e7e"
+    },
+    {
+      "original_absolute_path": "/Users/andrewherrera/skein-worktrees/ux-fold-hostdeps-20260929/build/agent-logs/remote-foldable36554797839/36554797839/artifact-11028107427/build/foldable-evidence/avd-config.ini",
+      "original_bytes": 3995,
+      "original_sha256": "a1f5dcc0136bbd5faaf6232bdf5267994586947b8e3ee4beeb9a95ba571ee6eb",
+      "bundle_path": "artifact-11028107427/build/foldable-evidence/avd-config.ini.gz",
+      "encoding": "gzip",
+      "bundle_bytes": 1346,
+      "bundle_sha256": "5b00162e142dcfb4caa91649aa8b25d50d224187f7041294f81d76ba0a5d1e49"
+    },
+    {
+      "original_absolute_path": "/Users/andrewherrera/skein-worktrees/ux-fold-hostdeps-20260929/build/agent-logs/remote-foldable36554797839/36554797839/artifact-11028107427/build/foldable-evidence/device-profiles.txt",
+      "original_bytes": 5265,
+      "original_sha256": "982e902d7431b7d6279e89062100ad7fcb9b52d5cbef3d7656378e8d033ba518",
+      "bundle_path": "artifact-11028107427/build/foldable-evidence/device-profiles.txt.gz",
+      "encoding": "gzip",
+      "bundle_bytes": 1037,
+      "bundle_sha256": "79a5e7727d7472bed1e2f6f7c72dbac6b6ab57def6a1a43e88046d438ee37ff2"
+    },
+    {
+      "original_absolute_path": "/Users/andrewherrera/skein-worktrees/ux-fold-hostdeps-20260929/build/agent-logs/remote-foldable36554797839/36554797839/artifact-11028107427/build/foldable-evidence/emulator-properties.txt",
+      "original_bytes": 25196,
+      "original_sha256": "3822ce03f156416fe9099e83fd32fd1a2a20ca0bff07329e744fcbdb1c40824e",
+      "bundle_path": "artifact-11028107427/build/foldable-evidence/emulator-properties.txt.gz",
+      "encoding": "gzip",
+      "bundle_bytes": 6438,
+      "bundle_sha256": "3ad6f6cc1562044ffd34cc9c7533390ae7b86f3c2cdd695c1911b3a7a0638e45"
+    },
+    {
+      "original_absolute_path": "/Users/andrewherrera/skein-worktrees/ux-fold-hostdeps-20260929/build/agent-logs/remote-foldable36554797839/36554797839/artifact-11028107427/build/foldable-evidence/emulator-version.txt",
+      "original_bytes": 655,
+      "original_sha256": "10bd3d86ba7af09acd91e7a0bc0073038cbb5d3d2479d1667e52129f43058116",
+      "bundle_path": "artifact-11028107427/build/foldable-evidence/emulator-version.txt.gz",
+      "encoding": "gzip",
+      "bundle_bytes": 437,
+      "bundle_sha256": "2186b096bc249c84aee1e34de40685e1497de17aad507800747840c6bf0caea7"
+    },
+    {
+      "original_absolute_path": "/Users/andrewherrera/skein-worktrees/ux-fold-hostdeps-20260929/build/agent-logs/remote-foldable36554797839/36554797839/artifact-11028107427/build/foldable-evidence/gradle.log",
+      "original_bytes": 105523,
+      "original_sha256": "5f4de1afc37f84c85ac2ddf2461b3920d993617037a07393fa3b0cf52c9079d2",
+      "bundle_path": "artifact-11028107427/build/foldable-evidence/gradle.log.gz",
+      "encoding": "gzip",
+      "bundle_bytes": 8244,
+      "bundle_sha256": "ad5dc714bc890b31415a153474e220c18b29cec94a4a7eae20a7defb9854cc85"
+    },
+    {
+      "original_absolute_path": "/Users/andrewherrera/skein-worktrees/ux-fold-hostdeps-20260929/build/agent-logs/remote-foldable36554797839/36554797839/artifact-11028107427/build/foldable-evidence/initial-window.txt",
+      "original_bytes": 47,
+      "original_sha256": "9658253257662caf6232291ba76d3d74ceef4641c76b059406caced525eea002",
+      "bundle_path": "artifact-11028107427/build/foldable-evidence/initial-window.txt.gz",
+      "encoding": "gzip",
+      "bundle_bytes": 61,
+      "bundle_sha256": "58b557861488fc0916b978006e2f0a4e25374406549940d1d5903d47737b8007"
+    },
+    {
+      "original_absolute_path": "/Users/andrewherrera/skein-worktrees/ux-fold-hostdeps-20260929/build/agent-logs/remote-foldable36554797839/36554797839/artifact-11028107427/build/foldable-evidence/logcat.txt",
+      "original_bytes": 10837530,
+      "original_sha256": "59190dcdcb2b9f3b884f7fb9048791080c35ac4a8d933e72c06886b7ebea2d39",
+      "bundle_path": "artifact-11028107427/build/foldable-evidence/logcat.txt.gz",
+      "encoding": "gzip",
+      "bundle_bytes": 1358417,
+      "bundle_sha256": "4596ed29359286e582d1ce07f5a9105047b94480d618090e119e240aaaaa2526"
+    },
+    {
+      "original_absolute_path": "/Users/andrewherrera/skein-worktrees/ux-fold-hostdeps-20260929/build/agent-logs/remote-foldable36554797839/36554797839/artifact-11028107427/build/foldable-evidence/requested-profile.txt",
+      "original_bytes": 15,
+      "original_sha256": "9d884945fe4b6419e23c23778ea5954659f99fc73b2ed4b2fe94844559195f1f",
+      "bundle_path": "artifact-11028107427/build/foldable-evidence/requested-profile.txt.gz",
+      "encoding": "gzip",
+      "bundle_bytes": 35,
+      "bundle_sha256": "8c0713e4ab210d57196658e9b09acd7e2f21feb9aa7d9c19eebff5553578469e"
+    },
+    {
+      "original_absolute_path": "/Users/andrewherrera/skein-worktrees/ux-fold-hostdeps-20260929/build/agent-logs/remote-foldable36554797839/36554797839/artifact-11028107427/build/foldable-evidence/review.json",
+      "original_bytes": 5984,
+      "original_sha256": "330d853b4b7ef4d5147d90595ff9d9537243f87171bded98e3e4f694a364280a",
+      "bundle_path": "artifact-11028107427/build/foldable-evidence/review.json",
+      "encoding": "identity",
+      "bundle_bytes": 5984,
+      "bundle_sha256": "330d853b4b7ef4d5147d90595ff9d9537243f87171bded98e3e4f694a364280a"
+    },
+    {
+      "original_absolute_path": "/Users/andrewherrera/skein-worktrees/ux-fold-hostdeps-20260929/build/agent-logs/remote-foldable36554797839/36554797839/artifact-11028107427/build/foldable-evidence/sdk-tool-path.txt",
+      "original_bytes": 52,
+      "original_sha256": "64605fced015141d8016eaeed140f23cabbe078e47d9b36e9c8339075c37b1b0",
+      "bundle_path": "artifact-11028107427/build/foldable-evidence/sdk-tool-path.txt.gz",
+      "encoding": "gzip",
+      "bundle_bytes": 67,
+      "bundle_sha256": "eba315666f3d3be4e212c135da0c8ab6804af922ccac223d5e435f882d17ebbd"
+    },
+    {
+      "original_absolute_path": "/Users/andrewherrera/skein-worktrees/ux-fold-hostdeps-20260929/build/agent-logs/remote-foldable36554797839/36554797839/artifact-11028107427/build/foldable-evidence/sdk-tool-source.properties",
+      "original_bytes": 86,
+      "original_sha256": "d4eb560d17731d9919dbb91bfecb2d90418cb60c21e07b6c02302a682fbb760e",
+      "bundle_path": "artifact-11028107427/build/foldable-evidence/sdk-tool-source.properties.gz",
+      "encoding": "gzip",
+      "bundle_bytes": 93,
+      "bundle_sha256": "14149f89e1934fcb5a7b31df1cb88284145d54b73c03982a8f2cc60dc5700cd9"
+    },
+    {
+      "original_absolute_path": "/Users/andrewherrera/skein-worktrees/ux-fold-hostdeps-20260929/build/agent-logs/remote-foldable36554797839/36554797839/artifact-11028107427/build/foldable-evidence/source-sha.txt",
+      "original_bytes": 41,
+      "original_sha256": "b02164f86cd50970ecd0dba437718375fa884fd1d1acca6f01e75c05c40b343d",
+      "bundle_path": "artifact-11028107427/build/foldable-evidence/source-sha.txt.gz",
+      "encoding": "gzip",
+      "bundle_bytes": 60,
+      "bundle_sha256": "4d140cff5734a93c79d9d5d1b1b59288820aa31ede29108c45646fc7599f76d8"
+    },
+    {
+      "original_absolute_path": "/Users/andrewherrera/skein-worktrees/ux-fold-hostdeps-20260929/build/agent-logs/remote-foldable36554797839/36554797839/artifact-11028107427/build/foldable-evidence/submodule-shas.txt",
+      "original_bytes": 231,
+      "original_sha256": "2a90e5c956c86f81a8d96e8e3300f9cedb932e6d798dddf14917b1a1a247582c",
+      "bundle_path": "artifact-11028107427/build/foldable-evidence/submodule-shas.txt.gz",
+      "encoding": "gzip",
+      "bundle_bytes": 177,
+      "bundle_sha256": "b4060b0a50f254d649b2bf5bd06063257a6d18b88a4ef65fc4bd3c36eb8e0004"
+    },
+    {
+      "original_absolute_path": "/Users/andrewherrera/skein-worktrees/ux-fold-hostdeps-20260929/build/agent-logs/remote-foldable36554797839/36554797839/artifact-11028107427/build/foldable-evidence/window-geometry-error.txt",
+      "original_bytes": 0,
+      "original_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bundle_path": "artifact-11028107427/build/foldable-evidence/window-geometry-error.txt.gz",
+      "encoding": "gzip",
+      "bundle_bytes": 20,
+      "bundle_sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64"
+    },
+    {
+      "original_absolute_path": "/Users/andrewherrera/skein-worktrees/ux-fold-hostdeps-20260929/build/agent-logs/remote-foldable36554797839/36554797839/artifact-11028107427/build/foldable-evidence/window-geometry.jsonl",
+      "original_bytes": 35,
+      "original_sha256": "2d438fa72960eedce1079225141fcf529fc655ad75f88bee89250db9a71ebffb",
+      "bundle_path": "artifact-11028107427/build/foldable-evidence/window-geometry.jsonl.gz",
+      "encoding": "gzip",
+      "bundle_bytes": 55,
+      "bundle_sha256": "736ee51eb8888c1502a0a6216f987dd7dfd8b597afffaa39a209cfa94b6777f6"
+    },
+    {
+      "original_absolute_path": "/Users/andrewherrera/skein-worktrees/ux-fold-hostdeps-20260929/build/agent-logs/remote-foldable36554797839/36554797839/emulator-step-failure.log",
+      "original_bytes": 170842,
+      "original_sha256": "6f4a7fa3b719e23d1824e602cd28cd3ce85849e2a8eb98ec601abccc7efa2d88",
+      "bundle_path": "emulator-step-failure.log.gz",
+      "encoding": "gzip",
+      "bundle_bytes": 21857,
+      "bundle_sha256": "c9d743d1470a24a2fd157b13db46b3a6ad65414ce6a2079fd6c474d747866bb3"
+    },
+    {
+      "original_absolute_path": "/Users/andrewherrera/skein-worktrees/ux-fold-hostdeps-20260929/build/agent-logs/remote-foldable36554797839/36554797839/evidence-review-v2.json",
+      "original_bytes": 7840,
+      "original_sha256": "6bf0f12e1bec14660d6d3a2dcbf6ecc8e89e6e2d58c31da3a52dd062c3974bf5",
+      "bundle_path": "evidence-review-v2.json",
+      "encoding": "identity",
+      "bundle_bytes": 7840,
+      "bundle_sha256": "6bf0f12e1bec14660d6d3a2dcbf6ecc8e89e6e2d58c31da3a52dd062c3974bf5"
+    },
+    {
+      "original_absolute_path": "/Users/andrewherrera/skein-worktrees/ux-fold-hostdeps-20260929/build/agent-logs/remote-foldable36554797839/36554797839/evidence-review.json",
+      "original_bytes": 7627,
+      "original_sha256": "9ee8e6a60d95480179cb89a4d36ac64f3e520db8d825d1058ebb54063dce93c4",
+      "bundle_path": "evidence-review.json",
+      "encoding": "identity",
+      "bundle_bytes": 7627,
+      "bundle_sha256": "9ee8e6a60d95480179cb89a4d36ac64f3e520db8d825d1058ebb54063dce93c4"
+    },
+    {
+      "original_absolute_path": "/Users/andrewherrera/skein-worktrees/ux-fold-hostdeps-20260929/build/agent-logs/remote-foldable36554797839/36554797839/helper-at-source.sh",
+      "original_bytes": 2432,
+      "original_sha256": "17995309cc9f53f76347a409d59295d8e770b1f855a93c4776b3f0987302ebbc",
+      "bundle_path": "helper-at-source.sh.gz",
+      "encoding": "gzip",
+      "bundle_bytes": 1153,
+      "bundle_sha256": "bcd13880c6bd3bd184fd2bcc471f3087803b0ae0adcea799df61d407778b288f"
+    },
+    {
+      "original_absolute_path": "/Users/andrewherrera/skein-worktrees/ux-fold-hostdeps-20260929/build/agent-logs/remote-foldable36554797839/36554797839/reviewer-at-source.py",
+      "original_bytes": 7026,
+      "original_sha256": "71a47ad64c5712b4a22747d4c48017745e138d19852934abefebc88a4b24b889",
+      "bundle_path": "reviewer-at-source.py.gz",
+      "encoding": "gzip",
+      "bundle_bytes": 2512,
+      "bundle_sha256": "63a5a165b3f6cbb73f260d3753157b26f57a71a2d3f0a9a1ecb963a5f9dcfd7b"
+    },
+    {
+      "original_absolute_path": "/Users/andrewherrera/skein-worktrees/ux-fold-hostdeps-20260929/build/agent-logs/remote-foldable36554797839/36554797839/run-logs.zip",
+      "original_bytes": 107863,
+      "original_sha256": "123a281a31e675632876d0ce35feb7a6aef375548a10492208a0bab5e5100bcc",
+      "bundle_path": "run-logs.zip",
+      "encoding": "identity",
+      "bundle_bytes": 107863,
+      "bundle_sha256": "123a281a31e675632876d0ce35feb7a6aef375548a10492208a0bab5e5100bcc"
+    },
+    {
+      "original_absolute_path": "/Users/andrewherrera/skein-worktrees/ux-fold-hostdeps-20260929/build/agent-logs/remote-foldable36554797839/36554797839/workflow-at-source.yml",
+      "original_bytes": 6205,
+      "original_sha256": "b89073c1705fe8c5ab68d7f32641c728c2a44381799d9bfbad7e4b99c697cf3e",
+      "bundle_path": "workflow-at-source.yml.gz",
+      "encoding": "gzip",
+      "bundle_bytes": 2532,
+      "bundle_sha256": "9219641f028b2d4e536340302ae0c5e860b1ac42b7d538800e802ea2158020c5"
+    },
+    {
+      "original_absolute_path": "/Users/andrewherrera/skein-worktrees/ux-rb-evidence-20260929/build/agent-logs/foldable-geometry-transport-20260929/REVIEW.md",
+      "original_bytes": 3552,
+      "original_sha256": "95c69feb418a8394a3943e1bbe5f4657b6aad12fd47be13dc7f51532a50975c7",
+      "bundle_path": "geometry-transport-source-review/REVIEW.md",
+      "encoding": "identity",
+      "bundle_bytes": 3552,
+      "bundle_sha256": "95c69feb418a8394a3943e1bbe5f4657b6aad12fd47be13dc7f51532a50975c7"
+    },
+    {
+      "original_absolute_path": "/Users/andrewherrera/skein-worktrees/ux-rb-evidence-20260929/build/agent-logs/foldable-geometry-transport-20260929/source-download.json",
+      "original_bytes": 217,
+      "original_sha256": "196c8be6d6a69862f80718ad66e4b7c2573631c3fa28eff5f7ea85b1c443f593",
+      "bundle_path": "geometry-transport-source-review/source-download.json",
+      "encoding": "identity",
+      "bundle_bytes": 217,
+      "bundle_sha256": "196c8be6d6a69862f80718ad66e4b7c2573631c3fa28eff5f7ea85b1c443f593"
+    },
+    {
+      "original_absolute_path": "/Users/andrewherrera/skein-worktrees/ux-rb-evidence-20260929/build/agent-logs/foldable-geometry-transport-20260929/engine-source-download.json",
+      "original_bytes": 247,
+      "original_sha256": "bebdcaa2f86a23d7e97a4007ca11e5c59dc2c45f3a0d3a533a996dcf4c43025a",
+      "bundle_path": "geometry-transport-source-review/engine-source-download.json",
+      "encoding": "identity",
+      "bundle_bytes": 247,
+      "bundle_sha256": "bebdcaa2f86a23d7e97a4007ca11e5c59dc2c45f3a0d3a533a996dcf4c43025a"
+    },
+    {
+      "original_absolute_path": "/Users/andrewherrera/skein-worktrees/ux-rb-evidence-20260929/build/agent-logs/foldable-geometry-transport-20260929/agp-sources/com/android/build/gradle/options/BooleanOption.kt",
+      "original_bytes": 48926,
+      "original_sha256": "83f71f7116284cb7bb4727821827887681d5c9eb5423947c058940dd874de29e",
+      "bundle_path": "geometry-transport-source-review/agp-sources/com/android/build/gradle/options/BooleanOption.kt.gz",
+      "encoding": "gzip",
+      "bundle_bytes": 12535,
+      "bundle_sha256": "c37704f24ab7eac579974f08c75c776de3549c09bf8279106bedac4724219587"
+    },
+    {
+      "original_absolute_path": "/Users/andrewherrera/skein-worktrees/ux-rb-evidence-20260929/build/agent-logs/foldable-geometry-transport-20260929/agp-sources/com/android/build/gradle/internal/testing/AndroidTestEngineConfigurer.kt",
+      "original_bytes": 7402,
+      "original_sha256": "81ec0a58e0816cde3d8c68739588547a6e7696ac40d67dc7ca075782ed6839f7",
+      "bundle_path": "geometry-transport-source-review/agp-sources/com/android/build/gradle/internal/testing/AndroidTestEngineConfigurer.kt.gz",
+      "encoding": "gzip",
+      "bundle_bytes": 2148,
+      "bundle_sha256": "1d666fabae8b198bb8dbe208374cf5fdd78a7d4f43a2776f78cb7f937cdbffe4"
+    },
+    {
+      "original_absolute_path": "/Users/andrewherrera/skein-worktrees/ux-rb-evidence-20260929/build/agent-logs/foldable-geometry-transport-20260929/engine-sources/com/android/tools/androidtest/testengine/config/AndroidTestConfiguration.kt",
+      "original_bytes": 9290,
+      "original_sha256": "caf336986d04a6011d6094e28f303cb15f952255fa2f2d51f65ab878213689d4",
+      "bundle_path": "geometry-transport-source-review/engine-sources/com/android/tools/androidtest/testengine/config/AndroidTestConfiguration.kt.gz",
+      "encoding": "gzip",
+      "bundle_bytes": 2482,
+      "bundle_sha256": "d47de709c61781bf45e19cef94d7757829b95ed1b75c515d4f41baaa7481c0af"
+    },
+    {
+      "original_absolute_path": "/Users/andrewherrera/skein-worktrees/ux-rb-evidence-20260929/build/agent-logs/foldable-geometry-transport-20260929/engine-sources/com/android/tools/androidtest/testengine/config/AndroidTestConfigurationKeys.kt",
+      "original_bytes": 4679,
+      "original_sha256": "1a5e57b75956c0617b1d0b31dd7ffe7101a222beafeb134097fed045485685a3",
+      "bundle_path": "geometry-transport-source-review/engine-sources/com/android/tools/androidtest/testengine/config/AndroidTestConfigurationKeys.kt.gz",
+      "encoding": "gzip",
+      "bundle_bytes": 1585,
+      "bundle_sha256": "76e7d26cc76a806349e6ccc1c1cd3cf9d999f5c0b2b000eb9255763863f4bb9e"
+    },
+    {
+      "original_absolute_path": "/Users/andrewherrera/skein-worktrees/ux-rb-evidence-20260929/build/agent-logs/foldable-geometry-transport-20260929/engine-sources/com/android/tools/androidtest/testengine/descriptor/AndroidDeviceDescriptor.kt",
+      "original_bytes": 22586,
+      "original_sha256": "5841c867f159c0af8b810137fcadbdac570baeb7d94711c494dd5ed031073348",
+      "bundle_path": "geometry-transport-source-review/engine-sources/com/android/tools/androidtest/testengine/descriptor/AndroidDeviceDescriptor.kt.gz",
+      "encoding": "gzip",
+      "bundle_bytes": 5367,
+      "bundle_sha256": "28c5517a873da4fb30b2ad284c72d727bf94b66f11450a2ba71174e69a88b245"
+    },
+    {
+      "original_absolute_path": "/Users/andrewherrera/skein-worktrees/ux-rb-evidence-20260929/build/agent-logs/foldable-geometry-transport-20260929/engine-sources/com/android/tools/androidtest/testengine/adb/AndroidTestRunner.kt",
+      "original_bytes": 5135,
+      "original_sha256": "36302aeb42ca19ce7546f26d14c3a105e6466aca83a175880649c0515697f452",
+      "bundle_path": "geometry-transport-source-review/engine-sources/com/android/tools/androidtest/testengine/adb/AndroidTestRunner.kt.gz",
+      "encoding": "gzip",
+      "bundle_bytes": 1656,
+      "bundle_sha256": "a97ba1eccc6ca7d090fc8944cff417f3865350356e6f05fb1b706da1cdda9b2a"
+    },
+    {
+      "original_absolute_path": "/Users/andrewherrera/skein-worktrees/ux-rb-evidence-20260929/build/agent-logs/foldable-geometry-transport-20260929/engine-sources/com/android/tools/androidtest/testengine/adb/AdbApkInstaller.kt",
+      "original_bytes": 13263,
+      "original_sha256": "88098a5efcdad72b41b05de42e4b7e368d3dbcaec9dd6ca45d0c0840d012344c",
+      "bundle_path": "geometry-transport-source-review/engine-sources/com/android/tools/androidtest/testengine/adb/AdbApkInstaller.kt.gz",
+      "encoding": "gzip",
+      "bundle_bytes": 4098,
+      "bundle_sha256": "a183c4d1c427859cdb2edc895b34581ea4511e819f872b324ab678c31c8b3d9c"
+    }
+  ],
+  "originals_modified": false,
+  "gzip_metadata": "Lossless gzip, mtime=0; decompressed originals independently verified"
+}

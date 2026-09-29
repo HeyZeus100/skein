@@ -1,0 +1,24 @@
+{
+  "source_sha": "5ae91c238612bdd9b1511b3716d34b4fa5960dd2",
+  "at": "2026-09-29T10:31:08.363845+00:00",
+  "status": "INSTALLED_APK_BYTES_VERIFIED",
+  "verification": "Root independently rehashed physical runner copied before/after APKs; after app/test digests exactly equal released artifacts. Actual install command uses only install -r, exit0, final stdout line Success after Performing Streamed Install. Device actions performed only by demo runner.",
+  "files": [
+    {
+      "path": "/Users/andrewherrera/skein-worktrees/conference-demo-20260929/build/agent-logs/fold/physical-5ae91c2-20260929T102342Z-v2/answers/before-app-installed.apk",
+      "bytes": 123290168,
+      "sha256": "b610ca509e069d5716ff02c5019e6b8448b76886c06a18d20725038bd54d70aa"
+    },
+    {
+      "path": "/Users/andrewherrera/skein-worktrees/conference-demo-20260929/build/agent-logs/fold/physical-5ae91c2-20260929T102342Z-v2/answers/after-app-installed.apk",
+      "bytes": 125280302,
+      "sha256": "1f83b71c5fe60a6dc26fcac7a4c75b49fbf009b6e8c9d972b2176c18081c1323"
+    },
+    {
+      "path": "/Users/andrewherrera/skein-worktrees/conference-demo-20260929/build/agent-logs/fold/physical-5ae91c2-20260929T102342Z-v2/answers/after-app_test-installed.apk",
+      "bytes": 91107428,
+      "sha256": "889db458324339f2f24da8b190a8457192a719df4bb088a52c04bf298e992f44"
+    }
+  ],
+  "limits": "APK byte identity verifies the update, not owner-vault content, active model selection, generation or demo readiness."
+}

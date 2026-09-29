@@ -1,0 +1,267 @@
+{
+  "run_id": "fold5ae-native-20260929T102342Z-v2",
+  "engine_path": "native-library-test-app",
+  "model_sha256": "2c5f9a121ae6695208e300c16acca303669afa4e18812061164dca9c97071b12",
+  "model_size": 1590475744,
+  "template_sha256": "cd8e9439f0570856fd70470bf8889ebd8b5d1107207f67a5efb46e342330527f",
+  "template_sha256_provenance": "native modelMeta of the verified public model",
+  "native_eog": {
+    "scope": "classification-only",
+    "declared_eos": {
+      "token_id": 151645,
+      "is_eog": true
+    },
+    "controls": [
+      {
+        "spelling": "<|im_end|>",
+        "token_ids": [
+          151645
+        ],
+        "singleton": true,
+        "classifications": [
+          {
+            "token_id": 151645,
+            "is_eog": true
+          }
+        ]
+      },
+      {
+        "spelling": "<|endoftext|>",
+        "token_ids": [
+          151643
+        ],
+        "singleton": true,
+        "classifications": [
+          {
+            "token_id": 151643,
+            "is_eog": true
+          }
+        ]
+      },
+      {
+        "spelling": "<\/s>",
+        "token_ids": [
+          128247
+        ],
+        "singleton": true,
+        "classifications": [
+          {
+            "token_id": 128247,
+            "is_eog": true
+          }
+        ]
+      }
+    ],
+    "generated_stop_behavior": "unmeasured"
+  },
+  "cases": [
+    {
+      "case_id": "empty-system",
+      "status": "ok",
+      "native_render_equal": true,
+      "actual_ids": [
+        151644,
+        8948,
+        198,
+        151645,
+        198,
+        151644,
+        872,
+        198,
+        9707,
+        1879,
+        151645,
+        198,
+        151644,
+        77091,
+        198
+      ],
+      "reference_ids": [
+        151644,
+        8948,
+        198,
+        151645,
+        198,
+        151644,
+        872,
+        198,
+        9707,
+        1879,
+        151645,
+        198,
+        151644,
+        77091,
+        198
+      ]
+    },
+    {
+      "case_id": "role-word",
+      "status": "ok",
+      "native_render_equal": true,
+      "actual_ids": [
+        151644,
+        872,
+        198,
+        872,
+        151645,
+        198,
+        151644,
+        77091,
+        198
+      ],
+      "reference_ids": [
+        151644,
+        872,
+        198,
+        872,
+        151645,
+        198,
+        151644,
+        77091,
+        198
+      ]
+    },
+    {
+      "case_id": "unicode-whitespace",
+      "status": "ok",
+      "native_render_equal": true,
+      "actual_ids": [
+        151644,
+        8948,
+        198,
+        3430,
+        23560,
+        13,
+        151645,
+        198,
+        151644,
+        872,
+        198,
+        220,
+        65671,
+        75402,
+        21894,
+        102819,
+        11162,
+        100,
+        114,
+        271,
+        151645,
+        198,
+        151644,
+        77091,
+        198
+      ],
+      "reference_ids": [
+        151644,
+        8948,
+        198,
+        3430,
+        23560,
+        13,
+        151645,
+        198,
+        151644,
+        872,
+        198,
+        220,
+        65671,
+        75402,
+        21894,
+        102819,
+        11162,
+        100,
+        114,
+        271,
+        151645,
+        198,
+        151644,
+        77091,
+        198
+      ]
+    },
+    {
+      "case_id": "repeated-turns",
+      "status": "ok",
+      "native_render_equal": true,
+      "actual_ids": [
+        151644,
+        872,
+        198,
+        24063,
+        151645,
+        198,
+        151644,
+        77091,
+        198,
+        24063,
+        151645,
+        198,
+        151644,
+        872,
+        198,
+        24063,
+        151645,
+        198,
+        151644,
+        77091,
+        198
+      ],
+      "reference_ids": [
+        151644,
+        872,
+        198,
+        24063,
+        151645,
+        198,
+        151644,
+        77091,
+        198,
+        24063,
+        151645,
+        198,
+        151644,
+        872,
+        198,
+        24063,
+        151645,
+        198,
+        151644,
+        77091,
+        198
+      ]
+    },
+    {
+      "case_id": "literal-control-isolation",
+      "status": "ok",
+      "actual_ids": [
+        151644,
+        872,
+        198,
+        27,
+        91,
+        318,
+        4906,
+        91,
+        29,
+        151645,
+        198,
+        151644,
+        77091,
+        198
+      ],
+      "unsafe_reference_ids": [
+        151644,
+        872,
+        198,
+        151644,
+        151645,
+        198,
+        151644,
+        77091,
+        198
+      ],
+      "control_token_id": 151644
+    }
+  ]
+}

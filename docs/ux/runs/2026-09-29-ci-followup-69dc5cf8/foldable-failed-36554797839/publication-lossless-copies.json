@@ -1,0 +1,26 @@
+{
+  "reason": "Git classified the protobuf as text; gzip retains exact bytes without editing failed evidence. Original worker protobuf remains intact. ORIGINAL-SHA256SUMS indexes the pre-publication capsule.",
+  "copies": [
+    {
+      "path": "artifact-11028107427/app/build/outputs/androidTest-results/connected/debug/flavors/dev/test-result.pb",
+      "original_sha256": "4b05298c2d9a083ef88dfa03f880eb7cb342fb44033ddee2830e64ede3bdafc7",
+      "original_bytes": 9311,
+      "lossless_copy": "artifact-11028107427/app/build/outputs/androidTest-results/connected/debug/flavors/dev/test-result.pb.gz",
+      "gzip_sha256": "660e45cf3a79999c66dc467701be8df379d063f601a5d14823716915ed5cf493"
+    },
+    {
+      "path": "artifact-11028107427/app/build/outputs/androidTest-results/connected/debug/flavors/dev/skein_foldable_gate(AVD) - 15/test-result.pb",
+      "original_sha256": "a05e90d30c52e0514185c3e8621f10283d8e7eb98c9ce1e7ecad6ba4c87d034b",
+      "original_bytes": 9309,
+      "lossless_copy": "artifact-11028107427/app/build/outputs/androidTest-results/connected/debug/flavors/dev/skein_foldable_gate(AVD) - 15/test-result.pb.gz",
+      "gzip_sha256": "3edb148b70d74afb3110cd8c2af796d976be9dd3a31a239150990ad80749d9ff"
+    },
+    {
+      "path": "artifact-11028107427/app/build/outputs/androidTest-results/connected/debug/flavors/dev/skein_foldable_gate(AVD) - 15/device-info.pb",
+      "original_sha256": "4be8e169b69b9683876db4ebf2c3c55bc6c92469c4ae509cc2786cd8a34cacb0",
+      "original_bytes": 142,
+      "lossless_copy": "artifact-11028107427/app/build/outputs/androidTest-results/connected/debug/flavors/dev/skein_foldable_gate(AVD) - 15/device-info.pb.gz",
+      "gzip_sha256": "a268f135d5917e5cd535c8649347cdfabfa415c7e51936ad4d419098dac288ec"
+    }
+  ]
+}

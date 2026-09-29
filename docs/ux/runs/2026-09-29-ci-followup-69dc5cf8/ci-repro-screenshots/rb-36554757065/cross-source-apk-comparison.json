@@ -1,0 +1,38 @@
+{
+  "prior_source_sha": "5ae91c238612bdd9b1511b3716d34b4fa5960dd2",
+  "new_source_sha": "69dc5cf8d6ca87414cce1808e6d71bf0c43e3567",
+  "prior_apk": {
+    "path": "/Users/andrewherrera/skein-worktrees/ux-rb-evidence-20260929/build/agent-logs/final-source-5ae91c238/rb-36551451072/artifact-11025013318-rb-build-a/files/app-foss-release-unsigned.apk",
+    "bytes": 100673247,
+    "sha256": "d397160b48a73e9265b65d2ce4ea10ba1315bdd0bbd7f149d74dbaa97027f78f"
+  },
+  "new_apk": {
+    "path": "/Users/andrewherrera/skein-worktrees/ux-rb-evidence-20260929/build/agent-logs/secondary-followup-69dc5cf8/rb-36554757065/artifact-11027951807-rb-build-a/files/app-foss-release-unsigned.apk",
+    "bytes": 100673247,
+    "sha256": "14d0184d7bf029b219261440eed47eb954d0a5d0c907e67ddbbfe305e12cf2cd"
+  },
+  "entry_counts": [
+    826,
+    826
+  ],
+  "entry_names_and_order_equal": true,
+  "only_prior_names": [],
+  "only_new_names": [],
+  "content_changes": [
+    {
+      "path": "lib/arm64-v8a/libskein_sqlite.so",
+      "prior_sha256": "9d0bad51b00f1600bb8817e10a08f0a08199d0bde86f408001ef149fed224a3d",
+      "new_sha256": "c66dd65963887e491b357ba2e597cd77db7596e380d635a8203c020dd567bbac"
+    }
+  ],
+  "metadata_changes": [
+    {
+      "path": "lib/arm64-v8a/libskein_sqlite.so",
+      "fields": [
+        "CRC"
+      ]
+    }
+  ],
+  "all_uncompressed_payloads_equal": false,
+  "whole_apks_equal": false
+}

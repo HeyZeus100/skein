@@ -1,0 +1,160 @@
+name: UX screenshots
+
+# skein-xtov.23.17 (UT-3, UX Wave 2): verifies the committed Roborazzi
+# goldens under ux-baselines/ (bead UT-2) for the seven Roborazzi-wired
+# feature modules (chat, editor, graph, models, settings, shell, timeline —
+# :feature:onboarding and :feature:personas have no screenshot tests yet;
+# :app has not applied the Roborazzi plugin yet either, so
+# verifyRoborazziDevDebug is left out until UT-7 lands it).
+#
+# Non-blocking (continue-on-error: true) from day one per
+# docs/ux/UX_TEST_PLAN.md §4.3 and §13.1: Roborazzi's native graphics come
+# from org.robolectric:nativeruntime-dist-compat, one artifact bundling
+# mac-aarch64/mac-x86_64/linux-x86_64/windows natives, and the spike only
+# ever recorded on macOS arm64 — this job's first runs on `main` ARE the
+# Mac<->Linux parity measurement §4.3 calls for. Runner and comparison
+# tolerance are picked from that data, not guessed up front: §4.3
+# prescribes no tolerance in advance, so this stays an exact comparison on
+# ubuntu-latest until a real run says otherwise (see ux-baselines/README.md
+# "CI" for the flip criteria). ux-baselines/verification-metadata note: none
+# of Roborazzi's/Robolectric's resolved artifacts here are OS-classified
+# (unlike e.g. aapt2, docs/Handoffs — bd memory
+# verification-metadata-linux-classifier), so the Mac-written
+# gradle/verification-metadata.xml already covers what this job resolves on
+# Linux.
+on:
+  pull_request:
+    paths:
+      - "feature/**"
+      - "core/designsystem/**"
+      - "app/src/**"
+      - "testing-ui/**"
+      - "testing-fakes/**"
+      - "ux-baselines/**"
+      - "gradle/libs.versions.toml"
+  push:
+    branches: [main]
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  ux-screenshots:
+    name: Verify Roborazzi goldens
+    runs-on: ubuntu-latest # or macos-latest, per the §4.3 measurement once main has data
+    timeout-minutes: 20
+    continue-on-error: true # remove when the §4.3 flip criteria hold (ux-baselines/README.md "CI")
+    steps:
+      - name: Checkout
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v4.3.0
+
+      - name: Set up JDK 17 (Temurin)
+        uses: actions/setup-java@de7274f081f381c8f8158605e0321c36c376e2e6 # v4.8.0
+        with:
+          distribution: temurin
+          java-version: "17"
+
+      # Same rationale as ci.yml: the pre-licensed SDK on ubuntu-latest
+      # covers most platforms already; this is belt-and-braces for
+      # compileSdk 37 (feature/*/build.gradle.kts) so AGP's configuration
+      # phase never fails on a missing platform.
+      - name: Install required Android SDK platform
+        run: |
+          sdkmanager "platforms;android-37" "build-tools;36.0.0" || true
+
+      - name: Set up Gradle
+        uses: gradle/actions/setup-gradle@748248ddd2a24f49513d8f472f81c3a07d4d50e1 # v4.4.4
+        with:
+          cache-read-only: ${{ github.ref != 'refs/heads/main' }}
+
+      # verifyRoborazziDebug is a root aggregate task spanning all seven
+      # Roborazzi-wired feature modules (ux-baselines/README.md); --continue
+      # so every module's mismatches are collected in one run instead of
+      # stopping at the first. --no-build-cache: a cached run can restore an
+      # earlier run's *_compare.png and hide a real diff
+      # (docs/ux/UX_TEST_PLAN.md §13.4).
+      - name: Verify screenshots
+        shell: bash
+        run: ./gradlew --max-workers=2 --no-build-cache verifyRoborazziDebug --continue --stacktrace
+
+      # A verify run must never write to the committed goldens
+      # (docs/ux/UX_TEST_PLAN.md §4.1, UT-2's acceptance criterion).
+      - name: Goldens untouched by verify
+        shell: bash
+        run: git diff --exit-code -- ux-baselines/
+
+      # docs/ux/UX_TEST_PLAN.md §4.4: warn at 40 MiB, fail at 50 MiB,
+      # excluding the frozen historical sets.
+      - name: Baseline size budget
+        shell: bash
+        run: |
+          kb=$(du -sk --exclude=before --exclude=device-before --exclude=device ux-baselines | cut -f1)
+          echo "ux-baselines: ${kb} KiB"
+          [ "$kb" -le 51200 ] || { echo "::error::ux-baselines over 50 MiB"; exit 1; }
+          [ "$kb" -le 40960 ] || echo "::warning::ux-baselines over 40 MiB"
+
+      # Short summary so a red (non-blocking) run is readable from the
+      # Actions tab without downloading the artifact: how many images
+      # mismatched and in which modules, sorted worst-first. Counts
+      # *_compare.png (Roborazzi's side-by-side diff, written per mismatch)
+      # under each module's git-ignored build/outputs/roborazzi/.
+      - name: Job summary
+        if: failure()
+        shell: bash
+        run: |
+          {
+            echo "## UX screenshot mismatches"
+            echo
+            rows=""
+            total=0
+            for dir in feature/*/build/outputs/roborazzi core/designsystem/build/outputs/roborazzi; do
+              [ -d "$dir" ] || continue
+              module="$(echo "$dir" | sed -E 's#^(feature|core)/([^/]+)/build.*#\1:\2#')"
+              count="$(find "$dir" -name '*_compare.png' | wc -l | tr -d ' ')"
+              [ "$count" -gt 0 ] || continue
+              rows="${rows}${count}\t:${module}\n"
+              total=$((total + count))
+            done
+            if [ "$total" -eq 0 ]; then
+              echo "No \`*_compare.png\` diffs found — check the raw Gradle log for the actual failure (goldens-untouched or size-budget step, most likely)."
+            else
+              echo "**${total} image(s) mismatched.**"
+              echo
+              echo "| Module | Mismatches |"
+              echo "|---|---|"
+              printf '%b' "$rows" | sort -rn | awk -F'\t' '{ print "| " $2 " | " $1 " |" }'
+            fi
+            echo
+            echo "Diff images + HTML report: \`ux-screenshot-diffs\` artifact on this run (\`gh run download <run-id> -n ux-screenshot-diffs\`, see ux-baselines/README.md \"CI\")."
+          } >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Upload screenshot diffs
+        if: failure()
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: ux-screenshot-diffs
+          path: |
+            **/build/outputs/roborazzi/**
+            **/build/reports/roborazzi/**
+          if-no-files-found: ignore
+          retention-days: 14
+
+      - name: Record screenshot evidence source and hashes
+        if: always()
+        run: python3 tools/ci/verification-manifest.py screenshots build/screenshot-verification.json
+
+      - name: Upload screenshot verification records
+        if: always()
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: ux-verification-records
+          path: |
+            build/screenshot-verification.json
+            **/build/test-results/**/*.xml
+            **/build/test-results/roborazzi/**/*.json
+          if-no-files-found: error
+          retention-days: 14

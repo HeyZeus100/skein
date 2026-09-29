@@ -1,0 +1,87 @@
+{
+  "run_id": 36554797839,
+  "source_sha": "69dc5cf8d6ca87414cce1808e6d71bf0c43e3567",
+  "conclusion": "failure",
+  "source_attestation": "host-declared checkout and GitHub run API; APKs are hashed build outputs, not installed-byte attestation",
+  "artifact_id": 11028107427,
+  "artifact_zip_sha256": "a46232cae68190f6a839e47d8ef7a521440836d605d6f9ac6a3a250bcad701c0",
+  "artifact_zip_bytes": 156483165,
+  "github_digest_matches": true,
+  "run_logs_sha256": "123a281a31e675632876d0ce35feb7a6aef375548a10492208a0bab5e5100bcc",
+  "actual_counts": {
+    "tests": 2,
+    "passed": 0,
+    "failed": 2,
+    "errors": 0,
+    "skipped": 0
+  },
+  "cases": [
+    {
+      "class": "app.skein.foldable.MainActivityFoldableGateTest",
+      "name": "gateSurvivesClosedFlatClosedWithoutActivityReplacement",
+      "nonpassing": [
+        "failure"
+      ],
+      "failure_text": "androidx.test.espresso.device.controller.DeviceControllerOperationException: Unable to connect to Emulator gRPC port. Please make sure the Android Emulator version is updated to 33.1.11+ and the controller gRPC service is enabled on the emulator. See https://developer.android.com/studio/test/espresso-api#set_up_your_project_for_the_espresso_device_api for setup instructions.\n\tat androidx.test.espresso.device.dagger.DeviceControllerModule.getEmulatorGRPCPortFromSystem(DeviceControllerModule.kt:106)\n\tat androidx.test.espresso.device.dagger.DeviceControllerModule.getEmulatorConnection(DeviceControllerModule.kt:71)\n\tat androidx.test.espresso.device.dagger.DeviceControllerModule.provideDeviceController(DeviceControllerModule.kt:53)\n\tat androidx.test.espresso.device.dagger.DeviceControllerModule_ProvideDeviceControllerFactory.provideDeviceController(DeviceControllerModule_ProvideDeviceControllerFactory.java:42)\n\tat androidx.test.espresso.device.dagger.DeviceControllerModule_ProvideDeviceControllerFactory.get(DeviceControllerModule_ProvideDeviceControllerFactory.java:33)\n\tat androidx.test.espresso.device.dagger.DeviceControllerModule_ProvideDeviceControllerFactory.get(DeviceControllerModule_ProvideDeviceControllerFactory.java:11)\n\tat androidx.test.espresso.device.internal.deps.dagger.internal.DoubleCheck.get(DoubleCheck.java:47)\n\tat androidx.test.espresso.device.dagger.DaggerDeviceLayerComponent$DeviceLayerComponentImpl.deviceController(DaggerDeviceLayerComponent.java:70)\n\tat androidx.test.espresso.device.EspressoDevice$Companion.onDevice(EspressoDevice.kt:36)\n\tat app.skein.foldable.MainActivityFoldableGateTest.gateSurvivesClosedFlatClosedWithoutActivityReplacement(MainActivityFoldableGateTest.kt:50)\n",
+      "source_xml": "app/build/outputs/androidTest-results/connected/debug/flavors/dev/TEST-skein_foldable_gate(AVD) - 15.xml"
+    },
+    {
+      "class": "app.skein.foldable.MainActivityFoldableGateTest",
+      "name": "gateSurvivesOuterLandscapeWithoutExposingNavDisplay",
+      "nonpassing": [
+        "failure"
+      ],
+      "failure_text": "androidx.test.espresso.device.controller.DeviceControllerOperationException: Unable to connect to Emulator gRPC port. Please make sure the Android Emulator version is updated to 33.1.11+ and the controller gRPC service is enabled on the emulator. See https://developer.android.com/studio/test/espresso-api#set_up_your_project_for_the_espresso_device_api for setup instructions.\n\tat androidx.test.espresso.device.dagger.DeviceControllerModule.getEmulatorGRPCPortFromSystem(DeviceControllerModule.kt:106)\n\tat androidx.test.espresso.device.dagger.DeviceControllerModule.getEmulatorConnection(DeviceControllerModule.kt:71)\n\tat androidx.test.espresso.device.dagger.DeviceControllerModule.provideDeviceController(DeviceControllerModule.kt:53)\n\tat androidx.test.espresso.device.dagger.DeviceControllerModule_ProvideDeviceControllerFactory.provideDeviceController(DeviceControllerModule_ProvideDeviceControllerFactory.java:42)\n\tat androidx.test.espresso.device.dagger.DeviceControllerModule_ProvideDeviceControllerFactory.get(DeviceControllerModule_ProvideDeviceControllerFactory.java:33)\n\tat androidx.test.espresso.device.dagger.DeviceControllerModule_ProvideDeviceControllerFactory.get(DeviceControllerModule_ProvideDeviceControllerFactory.java:11)\n\tat androidx.test.espresso.device.internal.deps.dagger.internal.DoubleCheck.get(DoubleCheck.java:47)\n\tat androidx.test.espresso.device.dagger.DaggerDeviceLayerComponent$DeviceLayerComponentImpl.deviceController(DaggerDeviceLayerComponent.java:70)\n\tat androidx.test.espresso.device.EspressoDevice$Companion.onDevice(EspressoDevice.kt:36)\n\tat app.skein.foldable.MainActivityFoldableGateTest.gateSurvivesOuterLandscapeWithoutExposingNavDisplay(MainActivityFoldableGateTest.kt:85)\n",
+      "source_xml": "app/build/outputs/androidTest-results/connected/debug/flavors/dev/TEST-skein_foldable_gate(AVD) - 15.xml"
+    }
+  ],
+  "duplicate_case_identities": false,
+  "geometry_observations": 0,
+  "geometry_raw": "run-as: unknown package: app.skein\n",
+  "manifest_artifacts_rehashed": [
+    {
+      "path": "build/foldable-evidence/avd-config.ini",
+      "bytes": 3995,
+      "sha256": "a1f5dcc0136bbd5faaf6232bdf5267994586947b8e3ee4beeb9a95ba571ee6eb"
+    },
+    {
+      "path": "app/build/outputs/androidTest-results/connected/debug/flavors/dev/TEST-skein_foldable_gate(AVD) - 15.xml",
+      "bytes": 4289,
+      "sha256": "1010afd724f1f6c00519fad0b7bb75ecf8174af81b8f005568d17404dbfc0056"
+    },
+    {
+      "path": "app/build/outputs/apk/dev/debug/app-dev-debug.apk",
+      "bytes": 171611846,
+      "sha256": "960fd992b5a86561612bd86eafb1615721c31ce8a4db923bd4b6ece181a7986f"
+    },
+    {
+      "path": "app/build/outputs/apk/androidTest/dev/debug/app-dev-debug-androidTest.apk",
+      "bytes": 94547761,
+      "sha256": "95b0819a48ac33306119019aa593f37ce9817cbc72585e31a01a0f81d5db3c2c"
+    }
+  ],
+  "avd_config": {
+    "hw.device.name": null,
+    "hw.device.manufacturer": null,
+    "hw.cpu.arch": null,
+    "hw.sensor.hinge": null,
+    "hw.sensor.hinge.count": null,
+    "hw.sensor.hinge.ranges": null,
+    "hw.sensor.hinge_angles_posture_definitions": null,
+    "hw.sensor.posture_list": null,
+    "hw.lcd.width": null,
+    "hw.lcd.height": null,
+    "hw.lcd.density": null,
+    "image.sysdir.1": null
+  },
+  "emulator_version": "Android emulator version 37.1.11.0 (build_id 15917651) (CL:N/A)\nCopyright (C) 2006-2024 The Android Open Source Project and many others.\nThis program is a derivative of the QEMU CPU emulator (www.qemu.org).\n\n  This software is licensed under the terms of the GNU General Public\n  License version 2, as published by the Free Software Foundation, and\n  may be copied, distributed, and modified under those terms.\n\n  This program is distributed in the hope that it will be useful,\n  but WITHOUT ANY WARRANTY; without even the implied warranty of\n  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the\n  GNU General Public License for more details.\n\n",
+  "submodule_shas": " ad9184e76a66b1001c29db9b0a3e87f646c64de0 third_party/SPIRV-Headers (ad9184e)\n 8864cdc896bbc2a9b6eb36b3218fc9ef57908d77 third_party/Vulkan-Headers (8864cdc)\n b29c606e28a01b1bc8c1351026a0fa6e616bf6c4 third_party/llama.cpp (b29c606)\n",
+  "diagnosis": "Both tests fail at first Espresso onDevice() before MainActivity launch: missing emulator gRPC discovery/arguments. Emulator boot and APK compilation/packaging passed. No layout acceptance or geometry observation passed.",
+  "remaining_gates": [
+    "Pixel 9 Pro Fold profile acceptance",
+    "unlocked A-G",
+    "real IME and focus",
+    "system_server heap privacy",
+    "physical Fold A-G acceptance outside this lane"
+  ]
+}

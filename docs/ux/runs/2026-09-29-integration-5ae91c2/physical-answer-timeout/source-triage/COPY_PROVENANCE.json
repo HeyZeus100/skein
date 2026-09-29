@@ -1,0 +1,8 @@
+{
+  "original_directory": "/Users/andrewherrera/skein-worktrees/ux-rb-evidence-20260929/build/agent-logs/synthetic-answer-timeout-5ae91c2-20260929",
+  "copied_files": [
+    "REVIEW.md",
+    "SHA256SUMS"
+  ],
+  "note": "Original SHA256SUMS covers all 15 source-review records in the owning worktree; other source copies remain external. This review opened only public/synthetic evidence and inspected exact source; no device actions."
+}

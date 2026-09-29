@@ -4,7 +4,12 @@ The measured application candidate source is
 **`5ae91c238612bdd9b1511b3716d34b4fa5960dd2`**, pushed to `main` and
 `codex/ux-integration-20260929`. Local checks and the matching-signer APK build pass.
 **Candidate released at 10:10:33 UTC for the authorized data-preserving demo update.**
-Fresh ordinary Android evidence passes all 281 cases with no failures or skips. The original
+Fresh ordinary Android evidence passes all 281 cases with no failures or skips.
+The sole demo runner has installed the candidate using `install -r`; the
+coordinator independently rehashed the copied installed app/test APKs and verified
+exact release identity. The original app APK backup is intact. The physical answer
+check timed out after 901.58 seconds with no valid rows or manifest; model/demo
+readiness remains unproven under `skein-gg11.37`. The original
 `4f1b7d334` candidate was rejected after 19 JNI failures; all original evidence is
 preserved and its APKs must not be installed.
 
@@ -139,9 +144,31 @@ SHA256 is `587745d2b5f19d12cf47c254444b4885dfb05773bd409cd9328628067375af0a`.
 CI-only repair `69dc5cf8d` installs only `libpulse0` before preflight; ten host
 contracts and workflow shell syntax pass. Followup
 [run 36554797839](https://github.com/HeyZeus100/skein/actions/runs/36554797839)
-has passed library/profile/version preflight; runtime evidence is pending.
+passed preflight, booted the AVD and reached both expected tests. Actual XML
+contains two failures, zero errors/skips: Espresso Device could not obtain a gRPC
+port, before Activity launch. The AVD identity/hinge configuration passed; no valid
+geometry was recorded. Original ZIP SHA256 is
+`a46232cae68190f6a839e47d8ef7a521440836d605d6f9ac6a3a250bcad701c0`.
+A bounded test-control repair is integrated at `2e1dcbafd645d4bb9348340905949bc5cae90acf`: the app retains its no-network
+permission invariant, so target-process TCP gRPC is unsuitable. The selected
+alternative uses emulator-only framework state overrides and rotation with
+unchanged Activity/geometry assertions, while retaining APKs through evidence
+collection. This measures framework state changes, not hinge-sensor actuation. Explicit app
+ktlint and both affected AndroidTest compilations pass, alongside all ten host
+contracts. The original lint failure and corrected check are retained in the
+[transport bundle](../ux/runs/2026-09-29-fold-transport-2e1dcbaf/). Fresh generic
+[run 36559029738](https://github.com/HeyZeus100/skein/actions/runs/36559029738)
+is pending at this checkpoint; no runtime pass is yet claimed.
 Application code/APKs remain at the released `5ae91c238` source. The exact Pixel 9 Pro Fold
 profile remains the default and a separate open acceptance gate.
+
+The separate [69dc CI follow-up bundle](../ux/runs/2026-09-29-ci-followup-69dc5cf8/)
+verifies 5,079 unit passes / 88 skips, 552 unchanged screenshots and actual matching
+native/release pairs. Unit results include 28 FROM-CACHE task lines; fresh screenshot
+and cold reproducibility lanes are distinguished. Both release APKs hash to
+`14d0184d7bf029b219261440eed47eb954d0a5d0c907e67ddbbfe305e12cf2cd`.
+The changed source epoch means this is within-source equality, not equality to the
+released 5ae APK. No replacement candidate is implied.
 
 ## Retained earlier evidence and repairs
 
@@ -244,7 +271,55 @@ The overall host runner remains **incomplete** because formatted JUnit output an
 an unsupported Android instrumentation query failed its verification. Original
 evidence is preserved while the demo owner repairs that helper. No application
 update, generated natural stopping or answer-quality result follows from this
-partial run; the selected app-private model also remains a separate gate. The distributor/base-model license-label discrepancy
+partial run; the selected app-private model also remains a separate gate.
+
+The fresh second native attempt reports host completion and five passing parity
+cases; its raw JSON SHA256 is
+`34e0dd8f53e6a659131b84fbe696aeaec9a8bcbe7208e09e3ab3bf876547f727`.
+The coordinator independently rechecked those rows. A separate host-helper review
+found that the package-filtered process dump still emits some global metadata.
+The demo owner acknowledged the finding after the answer phase had started with
+the frozen v2 driver. Existing broad captures and reviews embedding them remain
+local, ignored, unreviewed and unshared; no extra queries are authorized. A separate
+host-only v3 helper will retain structured guard results, categories and hashes
+without raw global metadata. Required in-flight cleanup is not interrupted. The candidate
+release already permits the subsequent data-preserving update and exact answer
+check, with unchanged limits. The app update succeeded with `install -r`, exit 0.
+The copied installed app is 125,280,302 bytes with the released `1f83b71c…` digest;
+the installed test APK matches `889db458…`. The pre-update 123,290,168-byte backup
+remains at `b610ca50…`. All three complete digests were independently rehashed by
+the coordinator and recorded in `physical-installed-apks.json`. No root device
+commands were run.
+
+The subsequent normal MainActivity launch completed in 2,480 ms, but the sole
+runner observed the system keyguard still showing. The demo session has requested
+normal owner authentication. Vault unlock, the new shell, model availability and
+UI rehearsal remain unobserved; no keyevents, security changes or screenshots were
+used to bypass that dependency. See the [physical checkpoint](../demo/conference-2026/runs/2026-09-29-physical/).
+
+The answer phase hit the unchanged 900-second host watchdog at 901.58 seconds:
+exit 124, JUnit not passed, zero valid answer rows and no remote run manifest.
+The sole runner verified remote shutdown with consecutive absent-PID checks and
+no active instrumentation. The later `Process crashed` marker followed cleanup;
+it does not prove a spontaneous native crash. The original invalid collector
+outputs, synthetic instrumentation log and minimal review are preserved under
+`physical-answer-timeout/`; no automatic retry occurred.
+
+Source triage under claimed `skein-gg11.37` observes that the run manifest is
+written before engine session/load/case operations. Earlier full-file SHA256 and
+pure Kotlin BLAKE3 hashing are outside all per-case timeouts and emit no progress.
+Absent output therefore points toward pre-manifest setup, subject to excluding
+output-path/write failure; a slow hash is a hypothesis, not a measured cause.
+Native parity exercises SHA256 and native loading without this app-harness BLAKE3
+pass or Binder path. Privacy-safe phase/byte progress is needed before a retry;
+no hashes, limits, frozen fixtures or quality thresholds may be weakened. The demo
+owner is preparing an isolated opt-in-only helper with early phase progress and
+optional explicitly bound host BLAKE3 identity, retaining a full on-device SHA256
+and byte-count check and the original BLAKE3 path when omitted. This requires a
+separate test APK/source review and release; no retry is authorized by the original
+artifact release. No production crypto or inference change is implied.
+
+The distributor/base-model license-label discrepancy
 remains recorded; this is not blanket artifact-license qualification.
 
 AL-10's audit confirms landed session drafts/selection and turn ownership. Focus
@@ -264,7 +339,8 @@ not the full unlocked A–G, recursive privacy or real IME matrix. The broader
 [Fold acceptance runbook](skein-fold-coverage-20260929.md) requires separate scope
 beyond the authorized demo.
 
-Inference `.19`/`.20` retain unmeasured Android lifecycle/FGS/process-death cases;
+Inference `.19`/`.20` retain remaining long-load, foreground-service and process-death
+acceptance beyond the selected Android cases proven above;
 model readiness `.28`/`.30`, CPU/Vulkan decisions `.26`/`.27`, formal M0 and the
 Q4/Gemma matrix remain open. Retrieval quality remains failed/open under
 `skein-gg11.32`; full hybrid is **INELIGIBLE**, with the existing embedding chain

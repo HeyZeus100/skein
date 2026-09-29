@@ -1,0 +1,76 @@
+{
+  "original_evidence_root": "/Users/andrewherrera/skein-worktrees/ux-fold-hostdeps-20260929/build/agent-logs/remote-foldable36554797839/36554797839",
+  "artifact_metadata": {
+    "id": 11028107427,
+    "node_id": "MDg6QXJ0aWZhY3QxMTAyODEwNzQyNw==",
+    "name": "foldable-gate-7.6in Foldable-69dc5cf8d6ca87414cce1808e6d71bf0c43e3567",
+    "size_in_bytes": 156483165,
+    "url": "https://api.github.com/repos/HeyZeus100/skein/actions/artifacts/11028107427",
+    "archive_download_url": "https://api.github.com/repos/HeyZeus100/skein/actions/artifacts/11028107427/zip",
+    "expired": false,
+    "digest": "sha256:a46232cae68190f6a839e47d8ef7a521440836d605d6f9ac6a3a250bcad701c0",
+    "created_at": "2026-09-29T10:33:48Z",
+    "updated_at": "2026-09-29T10:33:48Z",
+    "expires_at": "2026-10-13T10:33:38Z",
+    "workflow_run": {
+      "id": 36554797839,
+      "repository_id": 1377804189,
+      "head_repository_id": 1377804189,
+      "head_branch": "main",
+      "head_sha": "69dc5cf8d6ca87414cce1808e6d71bf0c43e3567"
+    }
+  },
+  "external_files": [
+    {
+      "original_absolute_path": "/Users/andrewherrera/skein-worktrees/ux-fold-hostdeps-20260929/build/agent-logs/remote-foldable36554797839/36554797839/artifact-11028107427/app/build/outputs/apk/androidTest/dev/debug/app-dev-debug-androidTest.apk",
+      "bytes": 94547761,
+      "sha256": "95b0819a48ac33306119019aa593f37ce9817cbc72585e31a01a0f81d5db3c2c",
+      "artifact_id": 11028107427,
+      "artifact_name": "foldable-gate-7.6in Foldable-69dc5cf8d6ca87414cce1808e6d71bf0c43e3567",
+      "artifact_api_digest": "sha256:a46232cae68190f6a839e47d8ef7a521440836d605d6f9ac6a3a250bcad701c0",
+      "artifact_download_url": "https://api.github.com/repos/HeyZeus100/skein/actions/artifacts/11028107427/zip",
+      "source_sha": "69dc5cf8d6ca87414cce1808e6d71bf0c43e3567",
+      "run_id": 36554797839
+    },
+    {
+      "original_absolute_path": "/Users/andrewherrera/skein-worktrees/ux-fold-hostdeps-20260929/build/agent-logs/remote-foldable36554797839/36554797839/artifact-11028107427/app/build/outputs/apk/dev/debug/app-dev-debug.apk",
+      "bytes": 171611846,
+      "sha256": "960fd992b5a86561612bd86eafb1615721c31ce8a4db923bd4b6ece181a7986f",
+      "artifact_id": 11028107427,
+      "artifact_name": "foldable-gate-7.6in Foldable-69dc5cf8d6ca87414cce1808e6d71bf0c43e3567",
+      "artifact_api_digest": "sha256:a46232cae68190f6a839e47d8ef7a521440836d605d6f9ac6a3a250bcad701c0",
+      "artifact_download_url": "https://api.github.com/repos/HeyZeus100/skein/actions/artifacts/11028107427/zip",
+      "source_sha": "69dc5cf8d6ca87414cce1808e6d71bf0c43e3567",
+      "run_id": 36554797839
+    },
+    {
+      "original_absolute_path": "/Users/andrewherrera/skein-worktrees/ux-fold-hostdeps-20260929/build/agent-logs/remote-foldable36554797839/36554797839/artifact-11028107427-foldable-gate-7.6in Foldable-69dc5cf8d6ca87414cce1808e6d71bf0c43e3567.zip",
+      "bytes": 156483165,
+      "sha256": "a46232cae68190f6a839e47d8ef7a521440836d605d6f9ac6a3a250bcad701c0",
+      "artifact_id": 11028107427,
+      "artifact_name": "foldable-gate-7.6in Foldable-69dc5cf8d6ca87414cce1808e6d71bf0c43e3567",
+      "artifact_api_digest": "sha256:a46232cae68190f6a839e47d8ef7a521440836d605d6f9ac6a3a250bcad701c0",
+      "artifact_download_url": "https://api.github.com/repos/HeyZeus100/skein/actions/artifacts/11028107427/zip",
+      "source_sha": "69dc5cf8d6ca87414cce1808e6d71bf0c43e3567",
+      "run_id": 36554797839
+    },
+    {
+      "original_absolute_path": "/Users/andrewherrera/skein-worktrees/ux-fold-hostdeps-20260929/build/agent-logs/remote-foldable36554797839/36554797839/espresso-device-1.1.0-classes.jar",
+      "bytes": 2106025,
+      "sha256": "4a012a32dd1d956d1d025a4cad52cb93f4b98b7dc8128ff46883d2279c4d5166",
+      "role": "Auxiliary pinned Espresso classes JAR retained only outside capsule"
+    }
+  ],
+  "pinned_source_archives": [
+    {
+      "original_absolute_path": "/Users/andrewherrera/skein-worktrees/ux-rb-evidence-20260929/build/agent-logs/foldable-geometry-transport-20260929/android-test-engine-1.0.1-sources.jar",
+      "bytes": 75808,
+      "sha256": "0904c5f9050be0f58bcfabc4001f26ee296ce365ca7bb84dc7d93aeaf23a218f"
+    },
+    {
+      "original_absolute_path": "/Users/andrewherrera/skein-worktrees/ux-rb-evidence-20260929/build/agent-logs/foldable-geometry-transport-20260929/gradle-9.4.1-sources.jar",
+      "bytes": 4032753,
+      "sha256": "08a69084ca47b2681671a611113ed919b986facb79dc24404fb7348d2c62a386"
+    }
+  ]
+}

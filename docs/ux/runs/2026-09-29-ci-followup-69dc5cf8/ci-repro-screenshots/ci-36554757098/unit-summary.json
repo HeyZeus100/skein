@@ -1,0 +1,40 @@
+{
+  "run_id": 36554757098,
+  "source_sha": "69dc5cf8d6ca87414cce1808e6d71bf0c43e3567",
+  "artifact_id": 11027131539,
+  "archive_sha256": "c9aa4070b92dc5ea34589a1a1e38071e2b0700861d44dca79936679d0f5da65d",
+  "xml_files": 494,
+  "counts": {
+    "tests": 5167,
+    "passed": 5079,
+    "skipped": 88,
+    "failures": 0,
+    "errors": 0
+  },
+  "guard_cases": [
+    {
+      "path": "inference-service/build/test-results/testDevDebugUnitTest/TEST-app.skein.inference.service.LlamaNativeSurfaceTest.xml",
+      "class": "app.skein.inference.service.LlamaNativeSurfaceTest",
+      "name": "generatedHelpersAreNotNative",
+      "outcome": "pass"
+    },
+    {
+      "path": "inference-service/build/test-results/testFossDebugUnitTest/TEST-app.skein.inference.service.LlamaNativeSurfaceTest.xml",
+      "class": "app.skein.inference.service.LlamaNativeSurfaceTest",
+      "name": "generatedHelpersAreNotNative",
+      "outcome": "pass"
+    }
+  ],
+  "skip_classes": {
+    "app.skein.MainActivityComposeTest": 2,
+    "app.skein.core.rag.embed.EmbedderServiceImplTest": 4,
+    "app.skein.core.vault.transfer.ImportServiceImplContractTest": 2,
+    "app.skein.feature.chat.screenshots.ChatScreenshotTest": 8,
+    "app.skein.feature.chat.screenshots.ChatShellScreenshotTest": 4,
+    "app.skein.feature.editor.screenshots.KnowledgeShellScreenshotTest": 18,
+    "app.skein.feature.graph.screenshots.GraphShellScreenshotTest": 12,
+    "app.skein.feature.models.screenshots.ModelsShellScreenshotTest": 12,
+    "app.skein.feature.settings.screenshots.SettingsShellScreenshotTest": 12,
+    "app.skein.feature.shell.screenshots.SkeinNavigationContainerScreenshotTest": 14
+  }
+}

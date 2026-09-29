@@ -1,0 +1,16 @@
+source_sha=69dc5cf8d6ca87414cce1808e6d71bf0c43e3567
+source_date_epoch=1790677097
+abi=arm64-v8a
+requested_builds=2
+negative_control=0
+max_workers=2
+
+source_status:
+
+submodule_status:
+ ad9184e76a66b1001c29db9b0a3e87f646c64de0 third_party/SPIRV-Headers (ad9184e)
+ 8864cdc896bbc2a9b6eb36b3218fc9ef57908d77 third_party/Vulkan-Headers (8864cdc)
+ b29c606e28a01b1bc8c1351026a0fa6e616bf6c4 third_party/llama.cpp (b29c606)
+
+script_sha256:
+3f3421ec9562cceefd6341921c65841108e5419bc80b083c67345117c3729098  /home/runner/work/skein/skein/tools/rb/so-determinism.sh

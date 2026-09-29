@@ -1,0 +1,74 @@
+[
+  {
+    "id": 11026877123,
+    "name": "skein-foss-debug-apk",
+    "run_id": 36554757098,
+    "source_sha": "69dc5cf8d6ca87414cce1808e6d71bf0c43e3567",
+    "absolute_path": "/Users/andrewherrera/skein-worktrees/ux-rb-evidence-20260929/build/agent-logs/secondary-followup-69dc5cf8/ci-36554757098/artifact-11026877123-skein-foss-debug-apk/archive.zip",
+    "bytes": 49498561,
+    "sha256": "1abc21867dca6677ab60fb4829282eb6850b54c48f5f69fbcd35e9404d370375",
+    "api_digest": "sha256:1abc21867dca6677ab60fb4829282eb6850b54c48f5f69fbcd35e9404d370375",
+    "api_bytes": 49498561,
+    "api_matches": true
+  },
+  {
+    "id": 11027131539,
+    "name": "unit-test-results",
+    "run_id": 36554757098,
+    "source_sha": "69dc5cf8d6ca87414cce1808e6d71bf0c43e3567",
+    "absolute_path": "/Users/andrewherrera/skein-worktrees/ux-rb-evidence-20260929/build/agent-logs/secondary-followup-69dc5cf8/ci-36554757098/artifact-11027131539-unit-test-results/archive.zip",
+    "bytes": 2519442,
+    "sha256": "c9aa4070b92dc5ea34589a1a1e38071e2b0700861d44dca79936679d0f5da65d",
+    "api_digest": "sha256:c9aa4070b92dc5ea34589a1a1e38071e2b0700861d44dca79936679d0f5da65d",
+    "api_bytes": 2519442,
+    "api_matches": true
+  },
+  {
+    "id": 11027606971,
+    "name": "rb-build-b",
+    "run_id": 36554757065,
+    "source_sha": "69dc5cf8d6ca87414cce1808e6d71bf0c43e3567",
+    "absolute_path": "/Users/andrewherrera/skein-worktrees/ux-rb-evidence-20260929/build/agent-logs/secondary-followup-69dc5cf8/rb-36554757065/artifact-11027606971-rb-build-b/archive.zip",
+    "bytes": 100674134,
+    "sha256": "f94cdab374052e30c49afdc94d7d5b2ceaab7a065ea2013e9803f60891b48bc9",
+    "api_digest": "sha256:f94cdab374052e30c49afdc94d7d5b2ceaab7a065ea2013e9803f60891b48bc9",
+    "api_bytes": 100674134,
+    "api_matches": true
+  },
+  {
+    "id": 11027951807,
+    "name": "rb-build-a",
+    "run_id": 36554757065,
+    "source_sha": "69dc5cf8d6ca87414cce1808e6d71bf0c43e3567",
+    "absolute_path": "/Users/andrewherrera/skein-worktrees/ux-rb-evidence-20260929/build/agent-logs/secondary-followup-69dc5cf8/rb-36554757065/artifact-11027951807-rb-build-a/archive.zip",
+    "bytes": 100674120,
+    "sha256": "94324faf935caeea006b68aed54b552af65420abf9a78079dfb4d6d54696951e",
+    "api_digest": "sha256:94324faf935caeea006b68aed54b552af65420abf9a78079dfb4d6d54696951e",
+    "api_bytes": 100674120,
+    "api_matches": true
+  },
+  {
+    "id": 11028060898,
+    "name": "so-determinism",
+    "run_id": 36554757065,
+    "source_sha": "69dc5cf8d6ca87414cce1808e6d71bf0c43e3567",
+    "absolute_path": "/Users/andrewherrera/skein-worktrees/ux-rb-evidence-20260929/build/agent-logs/secondary-followup-69dc5cf8/rb-36554757065/artifact-11028060898-so-determinism/archive.zip",
+    "bytes": 50711046,
+    "sha256": "72e0cc8bf28ba14a3b09e228c288af0a1875e2b2e19657bd1f8abb3edec27690",
+    "api_digest": "sha256:72e0cc8bf28ba14a3b09e228c288af0a1875e2b2e19657bd1f8abb3edec27690",
+    "api_bytes": 50711046,
+    "api_matches": true
+  },
+  {
+    "id": 11027206951,
+    "name": "ux-verification-records",
+    "run_id": 36554757109,
+    "source_sha": "69dc5cf8d6ca87414cce1808e6d71bf0c43e3567",
+    "absolute_path": "/Users/andrewherrera/skein-worktrees/ux-rb-evidence-20260929/build/agent-logs/secondary-followup-69dc5cf8/screenshots-36554757109/artifact-11027206951-ux-verification-records/archive.zip",
+    "bytes": 441800,
+    "sha256": "9ba338ef21ee0e8c27a333328f0a75267182c0ec56709d6addc29329ca3a9a90",
+    "api_digest": "sha256:9ba338ef21ee0e8c27a333328f0a75267182c0ec56709d6addc29329ca3a9a90",
+    "api_bytes": 441800,
+    "api_matches": true
+  }
+]

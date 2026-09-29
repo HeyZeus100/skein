@@ -1,0 +1,11 @@
+{
+  "source_sha": "69dc5cf8d6ca87414cce1808e6d71bf0c43e3567",
+  "artifact_id": 11026877123,
+  "artifact_archive_sha256": "1abc21867dca6677ab60fb4829282eb6850b54c48f5f69fbcd35e9404d370375",
+  "path": "/Users/andrewherrera/skein-worktrees/ux-rb-evidence-20260929/build/agent-logs/secondary-followup-69dc5cf8/ci-36554757098/artifact-11026877123-skein-foss-debug-apk/files/app-foss-debug.apk",
+  "bytes": 125280302,
+  "sha256": "3317d776207db71f3fcd924415f172461cb0e0a8c62ff24ba39271ff187d14ff",
+  "zip_members": 767,
+  "released_5ae_debug_apk_sha256": "28ffb1599581954686e00089be94e5f71f747eb4bdb518195e6b3dd73e669caf",
+  "same_as_5ae_debug_apk": false
+}

@@ -1,0 +1,74 @@
+{
+  "observed_at": "2026-09-29T10:43:59.871471+00:00",
+  "source_sha": "5ae91c238612bdd9b1511b3716d34b4fa5960dd2",
+  "release_sha256": "cf110c3857bc7d94ead8fde9438355f14193cf702061b00b60d0c842ef6c8f03",
+  "driver_sha256": "453ec3449ac235b5ac81067dc5a74eacac57c6e3489aa9b56e8661bd29c377b0",
+  "run_id": "fold5ae-answers-20260929T102622Z-v2",
+  "driver_exit_code": 1,
+  "complete": false,
+  "host_timeout": true,
+  "instrumentation_exit_code": 124,
+  "elapsed_seconds": 901.58,
+  "junit_passed": false,
+  "remote_stop_verified": true,
+  "target_stop_command": {
+    "command_record": "047-stop-exact-test-target.command.json",
+    "exit_code": 0
+  },
+  "consecutive_pid_checks": [
+    {
+      "command_record": "048-target-pids-0.command.json",
+      "exit_code": 1,
+      "stdout_empty": true
+    },
+    {
+      "command_record": "049-target-pids-1.command.json",
+      "exit_code": 1,
+      "stdout_empty": true
+    }
+  ],
+  "minimal_process_dump_guard": {
+    "command_record": "050-active-instrumentation.command.json",
+    "exit_code": 0,
+    "expected_header": true,
+    "expected_footer": true,
+    "active_instrumentation_absent": true,
+    "no_error_or_timeout_marker": true,
+    "raw_scope": "local ignored/unshared; do not distribute full process dump"
+  },
+  "installed_apks": {
+    "app": "1f83b71c5fe60a6dc26fcac7a4c75b49fbf009b6e8c9d972b2176c18081c1323",
+    "app_test": "889db458324339f2f24da8b190a8457192a719df4bb088a52c04bf298e992f44"
+  },
+  "outputs": [
+    {
+      "name": "run_manifest.json",
+      "exists_as_host_collector_output": true,
+      "collection_error": {
+        "error": "output-sha256 failed with 1; retained /Users/andrewherrera/skein-worktrees/conference-demo-20260929/build/agent-logs/fold/physical-5ae91c2-20260929T102342Z-v2/answers/052-output-sha256"
+      },
+      "host_output_sha256": "c6131488adab69bd679f12ffd044a8d4b93ce5f6a9d24f5578d6cd83289073d3",
+      "valid_json": false,
+      "remote_file_absent": true
+    },
+    {
+      "name": "answers.jsonl",
+      "exists_as_host_collector_output": true,
+      "collection_error": {
+        "error": "output-sha256 failed with 1; retained /Users/andrewherrera/skein-worktrees/conference-demo-20260929/build/agent-logs/fold/physical-5ae91c2-20260929T102342Z-v2/answers/054-output-sha256"
+      },
+      "host_output_sha256": "72be1c0cbf5e582f757a3651cdf94da58bac4c66ee351921c1227afd353daab8",
+      "valid_json": false,
+      "remote_file_absent": true
+    }
+  ],
+  "valid_answer_rows": 0,
+  "answer_text_citations_skipping_stop_reasons": "unmeasured: no valid output rows",
+  "quality_assessed": false,
+  "final_instrumentation_short_message": "Process crashed. after timeout cleanup; not proof of spontaneous native crash",
+  "owner_ui_accessed": false,
+  "vault_imported": false,
+  "owner_model_registry_inspected": false,
+  "automatic_retry": false,
+  "original_attempt_and_partial_snapshot_preserved": true
+}

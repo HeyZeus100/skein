@@ -1,0 +1,110 @@
+{
+  "released_app_source_sha": "5ae91c238612bdd9b1511b3716d34b4fa5960dd2",
+  "reviewed_ci_only_source_sha": "69dc5cf8d6ca87414cce1808e6d71bf0c43e3567",
+  "diff_name_status": [
+    "M\t.github/workflows/foldable.yml",
+    "M\ttools/ci/test_foldable_workflow.py"
+  ],
+  "identity": {
+    "app": {
+      "object_ids": {
+        "5ae91c238612bdd9b1511b3716d34b4fa5960dd2": "b8f12f6f01449d0f6ba5f0ab8fc7ae5e2d3facaa",
+        "69dc5cf8d6ca87414cce1808e6d71bf0c43e3567": "b8f12f6f01449d0f6ba5f0ab8fc7ae5e2d3facaa"
+      },
+      "equal": true
+    },
+    "core": {
+      "object_ids": {
+        "5ae91c238612bdd9b1511b3716d34b4fa5960dd2": "a1109b39e0ed16219de8b785b4b93e08ee5b494e",
+        "69dc5cf8d6ca87414cce1808e6d71bf0c43e3567": "a1109b39e0ed16219de8b785b4b93e08ee5b494e"
+      },
+      "equal": true
+    },
+    "feature": {
+      "object_ids": {
+        "5ae91c238612bdd9b1511b3716d34b4fa5960dd2": "7834e05785cf3645925e1fe82325d76f16a002f9",
+        "69dc5cf8d6ca87414cce1808e6d71bf0c43e3567": "7834e05785cf3645925e1fe82325d76f16a002f9"
+      },
+      "equal": true
+    },
+    "inference-service": {
+      "object_ids": {
+        "5ae91c238612bdd9b1511b3716d34b4fa5960dd2": "8b68633b9e46604b5251d71bb4069b77ffd1eb5f",
+        "69dc5cf8d6ca87414cce1808e6d71bf0c43e3567": "8b68633b9e46604b5251d71bb4069b77ffd1eb5f"
+      },
+      "equal": true
+    },
+    "native": {
+      "object_ids": {
+        "5ae91c238612bdd9b1511b3716d34b4fa5960dd2": "ecefab4de66c322e7ee9a35995c3a830f9292d34",
+        "69dc5cf8d6ca87414cce1808e6d71bf0c43e3567": "ecefab4de66c322e7ee9a35995c3a830f9292d34"
+      },
+      "equal": true
+    },
+    "gradle": {
+      "object_ids": {
+        "5ae91c238612bdd9b1511b3716d34b4fa5960dd2": "5ab2a6039b6580c90ae804e8ebe8b72b0bf942ad",
+        "69dc5cf8d6ca87414cce1808e6d71bf0c43e3567": "5ab2a6039b6580c90ae804e8ebe8b72b0bf942ad"
+      },
+      "equal": true
+    },
+    "third_party": {
+      "object_ids": {
+        "5ae91c238612bdd9b1511b3716d34b4fa5960dd2": "abbf1fb7e2583c5ce999cc2da5c717f40f5b2073",
+        "69dc5cf8d6ca87414cce1808e6d71bf0c43e3567": "abbf1fb7e2583c5ce999cc2da5c717f40f5b2073"
+      },
+      "equal": true
+    },
+    "build.gradle.kts": {
+      "object_ids": {
+        "5ae91c238612bdd9b1511b3716d34b4fa5960dd2": "1386f2803e38f069c83991a25cf160c59603c6d8",
+        "69dc5cf8d6ca87414cce1808e6d71bf0c43e3567": "1386f2803e38f069c83991a25cf160c59603c6d8"
+      },
+      "equal": true
+    },
+    "settings.gradle.kts": {
+      "object_ids": {
+        "5ae91c238612bdd9b1511b3716d34b4fa5960dd2": "9fabb85a0522b1fe057f8d14640d5f069d13ed71",
+        "69dc5cf8d6ca87414cce1808e6d71bf0c43e3567": "9fabb85a0522b1fe057f8d14640d5f069d13ed71"
+      },
+      "equal": true
+    },
+    "gradle.properties": {
+      "object_ids": {
+        "5ae91c238612bdd9b1511b3716d34b4fa5960dd2": "22998e76c25a08948e3190eecfde45286c3b87ae",
+        "69dc5cf8d6ca87414cce1808e6d71bf0c43e3567": "22998e76c25a08948e3190eecfde45286c3b87ae"
+      },
+      "equal": true
+    },
+    ".github/workflows/ci.yml": {
+      "object_ids": {
+        "5ae91c238612bdd9b1511b3716d34b4fa5960dd2": "4a0fe018bb31d729157e28d4d4cf9b0bf95352ae",
+        "69dc5cf8d6ca87414cce1808e6d71bf0c43e3567": "4a0fe018bb31d729157e28d4d4cf9b0bf95352ae"
+      },
+      "equal": true
+    },
+    ".github/workflows/ux-screenshots.yml": {
+      "object_ids": {
+        "5ae91c238612bdd9b1511b3716d34b4fa5960dd2": "4928da2bcf6f7bec5977a08932910b72abbe3c15",
+        "69dc5cf8d6ca87414cce1808e6d71bf0c43e3567": "4928da2bcf6f7bec5977a08932910b72abbe3c15"
+      },
+      "equal": true
+    },
+    ".github/workflows/reproducible-build.yml": {
+      "object_ids": {
+        "5ae91c238612bdd9b1511b3716d34b4fa5960dd2": "759ec829cd359ae73521ffec4bbe764c8e783445",
+        "69dc5cf8d6ca87414cce1808e6d71bf0c43e3567": "759ec829cd359ae73521ffec4bbe764c8e783445"
+      },
+      "equal": true
+    },
+    "tools/rb/so-determinism.sh": {
+      "object_ids": {
+        "5ae91c238612bdd9b1511b3716d34b4fa5960dd2": "897b59fb5304e352bb534a3727a24937c2fb1886",
+        "69dc5cf8d6ca87414cce1808e6d71bf0c43e3567": "897b59fb5304e352bb534a3727a24937c2fb1886"
+      },
+      "equal": true
+    }
+  },
+  "all_listed_objects_equal": true,
+  "limit": "Tree object identity establishes unchanged listed source/configuration; it does not establish equality of resulting APK bytes across different SOURCE_DATE_EPOCH values."
+}

@@ -1,0 +1,6 @@
+{
+  "source_sha": "5ae91c238612bdd9b1511b3716d34b4fa5960dd2",
+  "native_report_sha256": "34e0dd8f53e6a659131b84fbe696aeaec9a8bcbe7208e09e3ab3bf876547f727",
+  "actual_parity_cases_passed": 5,
+  "scope": "Native token/render parity and EOG classification; generation behavior unmeasured. Demo hardware record says host complete=true and remote stop verified. Global diagnostic retention concern is a separate pending host-helper correction. No raw process dump read/copied."
+}
