@@ -10,7 +10,9 @@ The [demo controls guide](controls.md) covers the split view, collapsible note/c
 
 **Earlier UI checkpoint:** the owner unlocked the Fold and the three construction notes were imported once. No live question was sent. The [partial UI checkpoint](runs/2026-09-29-ui-checkpoint/README.md) preserves that evidence.
 
-**Current update checkpoint, 16:47 UTC:** the workspace update at `28354dd25` is installed, with its copied APK hash, signer and data-preservation metadata verified. Normal Android unlock is required before physical rehearsal. No new UI question or instrumentation has started. See the [workspace installation record](runs/2026-09-29-workspace-update/README.md). The demo remains **not ready** until its live checks pass.
+**Installation checkpoint, 16:47 UTC:** the workspace update at `28354dd25` was installed, with its copied APK hash, signer and data-preservation metadata verified. At that checkpoint, normal Android unlock was required and no new UI question or instrumentation had started. See the [workspace installation record](runs/2026-09-29-workspace-update/README.md). The demo remains **not ready** until its live checks pass.
+
+**Later live checkpoint:** the owner unlocked the Fold. New chat, collapsible lists, note/chat, two-note and note/graph layouts, Swap and draft retention were observed on the device, with no teal crease line. One controlled general question completed with Knowledge off; the exact two-sentence format was missed. [Physical UI and general-answer observations](runs/2026-09-29-workspace-update/ui-rehearsal.md) preserve the timing limit and earlier ambiguous interaction. Knowledge-on answers and full demo rehearsal remain pending.
 
 The owner needs the Fold ready by **17:00 on 29 September 2026, America/Los_Angeles (PDT)**. The planned **code freeze is 16:00**, followed by final rehearsal on the same APK and model. The owner released the previous Fold HOLD for a verified update and demo checks with existing app data preserved. One designated runner owns all physical-device access.
 
