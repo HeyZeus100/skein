@@ -1,5 +1,12 @@
 # Skein UX and accuracy: paused execution handoff
 
+**Latest state: paused again at the owner's request for a fresh session.** Start
+with the [retrieval repair handoff](skein-retrieval-repair-resume-handoff.md).
+The preceding resumed batch is pushed through `21b7141`; the newly authorized
+repair batch had only been claimed and inspected when paused. No repair code or
+runtime work started. **Fold remains HOLD.** The resumption paragraph below
+describes the preceding completed batch, not permission to ignore this pause.
+
 **Resumed by the owner on 2026-09-28.** The pause below is historical. The owner
 authorized resuming these assignments, required checks, and delivery of verified
 commits. **Fold remains HOLD.** Read the current
