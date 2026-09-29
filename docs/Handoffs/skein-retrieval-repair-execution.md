@@ -18,7 +18,8 @@ performed. Owner files, old stashes and recovery worktrees were preserved.
   of its global BM25 rank. Real SQLite controls cover a healthy posting below the
   top 50, an actually missing insert trigger, a missing later posting and Unicode
   token boundaries. Unicode-only text has no usable ASCII probe and remains
-  unverified by this check; it does not validate every tokenizer or the entire index.
+  unverified by this check; it does not validate every tokenizer or the entire
+  index. `skein-3q32` tracks Unicode query/probe alignment with the real tokenizer.
 - Ordinary APKs exclude the retrieval diagnostic at build time. The dedicated
   source set requires explicit build and runtime opt-in. Ordinary XML review
   rejects failures, errors, skips, duplicate cases, missing modules and an
