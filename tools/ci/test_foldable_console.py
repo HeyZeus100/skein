@@ -23,6 +23,8 @@ class FakeAdb:
         self.read_timeout = False
         self.console_output = "OK\n"
         self.raw_request = ""
+        self.read_exit = 0
+        self.read_stderr = ""
         self.ack = None
 
     def __call__(self, argv, **kwargs):
@@ -42,10 +44,14 @@ class FakeAdb:
             assert args[3:] == ["sh", "-c", "'cat > files/foldable-console-ack.json.tmp && mv -f files/foldable-console-ack.json.tmp files/foldable-console-ack.json'"]
             self.ack = json.loads(kwargs["input"])
             output = ""
-        elif args == ["exec-out", "run-as", "app.skein", "head", "-c", "1025", bridge.REQUEST]:
+        elif args in (["exec-out", "run-as", "app.skein", "head", "-c", "1025", bridge.REQUEST],
+                       ["shell", "-T", "run-as", "app.skein", "head", "-c", "1025", bridge.REQUEST]):
             if self.read_timeout:
                 raise subprocess.TimeoutExpired(argv, 10)
-            output = self.raw_request
+            if args[0] == "exec-out":
+                # ADB's legacy exec stream drops the remote status and merges stderr into stdout.
+                return subprocess.CompletedProcess(argv, 0, self.raw_request + self.read_stderr, "")
+            return subprocess.CompletedProcess(argv, self.read_exit, self.raw_request, self.read_stderr)
         else:
             raise AssertionError(args)
         return subprocess.CompletedProcess(argv, 0, output, "")
@@ -198,6 +204,35 @@ test -f "$stop_file" || exit 13
                                    env={**os.environ, "PYTHON": sys.executable}, capture_output=True, timeout=5)
         self.assertEqual(0, completed.returncode, completed.stderr)
         self.assertIn("stop deadline exceeded", (evidence / "console-controller.log").read_text())
+
+    def test_uninstalled_package_and_missing_private_file_wait_without_parsing_diagnostics(self):
+        for diagnostic in ("run-as: unknown package: app.skein\n",
+                           "head: files/foldable-console-request.json: No such file or directory\n"):
+            with self.subTest(diagnostic=diagnostic):
+                self.adb.read_exit = 1
+                self.adb.read_stderr = diagnostic
+                legacy = self.adb(["adb", "-s", "emulator-5554", "exec-out", "run-as", "app.skein",
+                                   "head", "-c", "1025", bridge.REQUEST], timeout=10, check=False)
+                self.assertEqual(0, legacy.returncode)
+                self.assertEqual(diagnostic, legacy.stdout)
+                self.assertEqual("", legacy.stderr)
+                self.assertIsNone(self.host.read_request())
+        self.assertEqual([], self.adb.mutations())
+
+    def test_exit_aware_read_keeps_real_errors_and_malformed_data_fatal(self):
+        for code, stdout, stderr in ((1, "", "run-as: package not debuggable: app.skein\n"),
+                                    (1, "", "head: files/another.json: No such file or directory\n"),
+                                    (1, "", "error: device offline\n"),
+                                    (2, "", "run-as: unknown package: app.skein\n"),
+                                    (1, "", "run-as: unknown package: app.skein\nadditional error\n"),
+                                    (1, '{"partial":', "head: files/foldable-console-request.json: No such file or directory\n"),
+                                    (0, json.dumps(self.request()), "unexpected diagnostic\n"),
+                                    (0, "not-json", ""), (0, "", "")):
+            with self.subTest(code=code, stdout=stdout, stderr=stderr):
+                self.adb.read_exit, self.adb.raw_request, self.adb.read_stderr = code, stdout, stderr
+                with self.assertRaises(bridge.ProtocolError):
+                    self.host.read_request()
+        self.assertEqual([], self.adb.mutations())
 
     def test_private_request_read_has_fixed_path_and_byte_limit(self):
         self.adb.raw_request = json.dumps(self.request())

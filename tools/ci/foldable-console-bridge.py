@@ -96,13 +96,20 @@ class Bridge:
             raise ProtocolError(f"AVD identity mismatch: {identity!r}")
 
     def read_request(self):
-        result = self.adb("exec-out", "run-as", PACKAGE, "head", "-c", str(LIMIT + 1), REQUEST)
+        # Raw shell-v2 preserves the remote status and separates stderr. exec-out does neither.
+        # Explicit -T also fails closed when the device does not support the shell protocol.
+        result = self.adb("shell", "-T", "run-as", PACKAGE, "head", "-c", str(LIMIT + 1), REQUEST)
         if result.returncode:
-            message = result.stdout + result.stderr
             # The task builds/installs APKs before instrumentation creates the fixed private file.
-            if "is unknown" in message or "unknown package" in message or "No such file or directory" in message:
+            unavailable = {
+                f"run-as: unknown package: {PACKAGE}",
+                f"head: {REQUEST}: No such file or directory",
+            }
+            if result.returncode == 1 and not result.stdout and result.stderr.strip() in unavailable:
                 return None
-            raise ProtocolError(f"request read failed: {message.strip()}")
+            raise ProtocolError(f"request read failed ({result.returncode}): {(result.stdout + result.stderr).strip()}")
+        if result.stderr:
+            raise ProtocolError(f"request read produced unexpected stderr: {result.stderr.strip()}")
         return decode_request(result.stdout, self.run_id)
 
     def write_ack(self, ack):
