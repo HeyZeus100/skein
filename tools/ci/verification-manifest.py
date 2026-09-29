@@ -13,10 +13,18 @@ import sys
 
 def manifest(root, lane, source):
     patterns = ["**/build/test-results/**/*.xml"]
+    if lane == "instrumentation":
+        patterns = ["**/build/outputs/androidTest-results/connected/**/*.xml", "build/instrumentation-review.json"]
     if lane == "screenshots":
         patterns += ["**/build/test-results/roborazzi/**/*.json"]
     paths = sorted({p for pattern in patterns for p in root.glob(pattern) if p.is_file()})
+    built_apks = sorted(root.glob("**/build/outputs/apk/**/*.apk")) if lane == "instrumentation" else []
     return {
+        "built_apks": [
+            {"path": str(p.relative_to(root)), "sha256": hashlib.sha256(p.read_bytes()).hexdigest()}
+            for p in built_apks if p.is_file()
+        ],
+        "built_apk_attribution": "host build outputs; installed bytes were not independently measured here",
         "lane": lane,
         "source_sha": source,
         "source_attribution": "host-declared git checkout, not APK attestation",
@@ -33,8 +41,8 @@ def manifest(root, lane, source):
 
 def main():
     lane, output = sys.argv[1:]
-    if lane not in ("unit", "screenshots"):
-        raise SystemExit("expected unit or screenshots lane")
+    if lane not in ("unit", "screenshots", "instrumentation"):
+        raise SystemExit("expected unit, screenshots or instrumentation lane")
     root = pathlib.Path.cwd()
     source = subprocess.check_output(["git", "rev-parse", "HEAD"], text=True).strip()
     result = manifest(root, lane, source)

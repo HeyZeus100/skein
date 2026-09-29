@@ -33,6 +33,19 @@ class VerificationManifestTest(unittest.TestCase):
             self.assertEqual(1, len(unit["files"]))
             self.assertEqual("source", unit["source_sha"])
 
+    def test_instrumentation_retains_report_and_built_apk_hash_separately(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = pathlib.Path(directory)
+            xml = root / "app/build/outputs/androidTest-results/connected/dev/TEST.xml"
+            apk = root / "app/build/outputs/apk/dev/debug/app.apk"
+            for path in (xml, apk):
+                path.parent.mkdir(parents=True, exist_ok=True)
+                path.write_bytes(b"fixture")
+            result = reviewer.manifest(root, "instrumentation", "source")
+            self.assertEqual(str(xml.relative_to(root)), result["files"][0]["path"])
+            self.assertEqual(hashlib.sha256(b"fixture").hexdigest(), result["built_apks"][0]["sha256"])
+            self.assertIn("not independently measured", result["built_apk_attribution"])
+
     def test_missing_records_are_visible_as_empty_inventory(self):
         with tempfile.TemporaryDirectory() as directory:
             self.assertEqual([], reviewer.manifest(pathlib.Path(directory), "unit", "source")["files"])
