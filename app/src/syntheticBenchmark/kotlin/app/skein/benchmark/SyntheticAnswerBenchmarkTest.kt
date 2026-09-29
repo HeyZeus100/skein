@@ -15,7 +15,6 @@ import app.skein.core.inference.models.ModelManifest
 import app.skein.core.inference.models.PermissionEnforcement
 import app.skein.core.inference.models.StoredFile
 import app.skein.core.inference.models.StoredModel
-import app.skein.core.model.Blake3
 import app.skein.core.model.Capability
 import app.skein.core.model.ChatMessage
 import app.skein.core.model.CitationRecordJson
@@ -41,6 +40,7 @@ import app.skein.testing.InMemoryVaultRepository
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.TimeoutCancellationException
+import kotlinx.coroutines.ensureActive
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.runBlocking
@@ -56,11 +56,9 @@ import kotlinx.serialization.json.int
 import kotlinx.serialization.json.jsonArray
 import kotlinx.serialization.json.jsonObject
 import kotlinx.serialization.json.jsonPrimitive
-import kotlinx.serialization.json.long
 import org.junit.Test
 import org.junit.runner.RunWith
 import java.io.File
-import java.security.MessageDigest
 
 /** Opt-in synthetic-only benchmark. No vault, model registry, Activity, or owner conversation is opened. */
 @RunWith(AndroidJUnit4::class)
@@ -93,41 +91,63 @@ class SyntheticAnswerBenchmarkTest {
             }
             val runId = config.string("run_id")
             require(runId.matches(SyntheticFixtures.SAFE_ID)) { "unsafe run id" }
-            val fixture = confinedFile(File(root, "input"), config.string("fixture_file"))
-            check(fixture.length() <= 8 * 1024 * 1024) { "fixture exceeds bound" }
-            val fixtureBytes = fixture.readBytes()
-            check(sha256(fixtureBytes) == config.string("fixture_sha256")) { "fixture hash mismatch" }
-            val cases = SyntheticFixtures.parse(fixtureBytes.toString(Charsets.UTF_8))
-            val seeds = config.getValue("seeds").jsonArray.map { it.jsonPrimitive.long }
-            require(seeds.size in 1..10 && seeds.distinct().size == seeds.size && seeds.all { it >= 0 }) {
-                "invalid fixed seeds"
-            }
-            val apkHash = hashFile(File(context.applicationInfo.sourceDir)).first
-            check(apkHash == config.string("expected_apk_sha256")) { "installed APK hash mismatch" }
-            val modelFile = confinedFile(File(root, "models"), config.string("model_file"))
-            require(
-                modelFile.name == "model.gguf" &&
-                    modelFile.parentFile?.name == config.string("model_sha256") &&
-                    modelFile.parentFile?.parentFile == File(root, "models").canonicalFile,
-            ) {
-                "model must use dedicated hash-named benchmark directory"
-            }
-            check(modelFile.length() == config.getValue("model_size").jsonPrimitive.long) { "model size mismatch" }
-            val (modelHash, blake3) = hashFile(modelFile, includeBlake3 = true)
-            check(modelHash == config.string("model_sha256")) { "full model hash mismatch" }
-            val contextLength = config.getValue("context_length").jsonPrimitive.int
-            require(contextLength in 128..16_384) { "context outside supported bound" }
-            val threads = config.getValue("threads").jsonPrimitive.int
-            require(threads in 1..16) { "thread count outside bound" }
-            val timeout = config.getValue("case_timeout_ms").jsonPrimitive.long
-            require(timeout in 1_000..600_000) { "case timeout outside bound" }
-            val sampling = config.getValue("sampling").jsonObject
-            val params = samplingParams(sampling, seeds.first())
-            require(params.maxTokens in 1..contextLength) { "answer budget outside context" }
-            val outputRoot = File(root, "output")
-            require(outputRoot == outputRoot.canonicalFile) { "output root cannot contain a symlink" }
-            val output = File(outputRoot, runId)
-            check(!output.exists() && output.mkdirs()) { "output run already exists or cannot be created" }
+            val progress = SyntheticSetupProgress.create(root, runId)
+            val output = progress.output
+            val checkSetupCancelled = { coroutineContext.ensureActive() }
+            val (settings, params) =
+                progress.stage(SetupPhase.CONFIG) {
+                    val settings = SyntheticSetup.configuration(config)
+                    settings to samplingParams(settings.sampling, settings.seeds.first())
+                }
+            val seeds = settings.seeds
+            val contextLength = settings.contextLength
+            val threads = settings.threads
+            val timeout = settings.caseTimeoutMs
+            val sampling = settings.sampling
+            val modelSize = settings.modelSize
+            val hostIdentity = settings.hostIdentity
+            val testBuildSha = settings.testBuildSha
+            val cases =
+                progress.stage(SetupPhase.FIXTURE) {
+                    checkSetupCancelled()
+                    val fixture = confinedFile(File(root, "input"), config.string("fixture_file"))
+                    check(fixture.length() <= 8 * 1024 * 1024) { "fixture exceeds bound" }
+                    val fixtureBytes = fixture.readBytes()
+                    check(sha256(fixtureBytes) == config.string("fixture_sha256")) { "fixture hash mismatch" }
+                    SyntheticFixtures.parse(fixtureBytes.toString(Charsets.UTF_8))
+                }
+            val appApk = File(context.applicationInfo.sourceDir)
+            val apkHash =
+                progress.stage(SetupPhase.APP_APK_HASH, appApk.length()) { report ->
+                    SyntheticSetup
+                        .hashFile(
+                            appApk,
+                            progress = report,
+                            checkCancelled = checkSetupCancelled,
+                        ).sha256
+                        .also {
+                            check(it == config.string("expected_apk_sha256")) { "installed APK hash mismatch" }
+                        }
+                }
+            val (modelFile, modelDigests) =
+                progress.stage(SetupPhase.MODEL_HASH, modelSize) { report ->
+                    val file = confinedFile(File(root, "models"), config.string("model_file"))
+                    require(
+                        file.name == "model.gguf" &&
+                            file.parentFile?.name == config.string("model_sha256") &&
+                            file.parentFile?.parentFile == File(root, "models").canonicalFile,
+                    ) { "model must use dedicated hash-named benchmark directory" }
+                    file to
+                        SyntheticSetup.verifiedModel(
+                            file,
+                            config.string("model_sha256"),
+                            modelSize,
+                            hostIdentity,
+                            report,
+                            checkSetupCancelled,
+                        )
+                }
+            val (modelHash, blake3) = modelDigests
             val model =
                 Model(
                     id = "synthetic-${modelHash.take(16)}",
@@ -140,20 +160,22 @@ class SyntheticAnswerBenchmarkTest {
                     contextLength = contextLength,
                 )
             val store = ImmutableModelStore(File(root, "models"))
-            // Only dedicated staged public model bytes are sealed. Owner models are never touched.
-            Os.chmod(modelFile.path, 0x100) // 0400
-            Os.chmod(checkNotNull(modelFile.parentFile).path, 0x140) // 0500
-            store.register(
-                StoredModel(
-                    model.id,
-                    checkNotNull(modelFile.parentFile),
-                    mapOf(
-                        ModelFileRole.MAIN to
-                            StoredFile(ModelFileRole.MAIN, modelFile, modelHash, blake3, model.sizeBytes),
+            progress.stage(SetupPhase.STORE) {
+                // Only dedicated staged public model bytes are sealed. Owner models are never touched.
+                Os.chmod(modelFile.path, 0x100) // 0400
+                Os.chmod(checkNotNull(modelFile.parentFile).path, 0x140) // 0500
+                store.register(
+                    StoredModel(
+                        model.id,
+                        checkNotNull(modelFile.parentFile),
+                        mapOf(
+                            ModelFileRole.MAIN to
+                                StoredFile(ModelFileRole.MAIN, modelFile, modelHash, blake3, model.sizeBytes),
+                        ),
+                        PermissionEnforcement.POSIX,
                     ),
-                    PermissionEnforcement.POSIX,
-                ),
-            )
+                )
+            }
             val manifest = modelManifest(model, config.string("model_license"))
             val engine =
                 LlamaCppEngine(
@@ -163,6 +185,11 @@ class SyntheticAnswerBenchmarkTest {
                     sessionEpoch = { EPOCH },
                     config = InferenceConfig(contextLengthCap = contextLength, threads = threads, gpuLayers = 0),
                 )
+            val testApk = File(instrumentation.context.applicationInfo.sourceDir)
+            val testApkHash =
+                progress.stage(SetupPhase.TEST_APK_HASH, testApk.length()) { report ->
+                    SyntheticSetup.hashFile(testApk, progress = report, checkCancelled = checkSetupCancelled).sha256
+                }
             val provenance =
                 buildJsonObject {
                     put("schema_version", JsonPrimitive(1))
@@ -174,10 +201,24 @@ class SyntheticAnswerBenchmarkTest {
                     }
                     put("tokenizer_overlay_sha256", config.getValue("tokenizer_overlay_sha256"))
                     put("model_sha256", JsonPrimitive(modelHash))
-                    put("apk_sha256", JsonPrimitive(apkHash))
+                    put("model_blake3", JsonPrimitive(blake3))
+                    put("model_blake3_provenance", JsonPrimitive(SyntheticSetup.provenance(hostIdentity)))
                     put(
-                        "test_apk_sha256",
-                        JsonPrimitive(hashFile(File(instrumentation.context.applicationInfo.sourceDir)).first),
+                        "host_model_identity_evidence_sha256",
+                        hostIdentity?.evidenceSha256?.let(::JsonPrimitive) ?: JsonNull,
+                    )
+                    put("apk_sha256", JsonPrimitive(apkHash))
+                    put("test_apk_sha256", JsonPrimitive(testApkHash))
+                    put("test_build_sha", testBuildSha?.let(::JsonPrimitive) ?: JsonNull)
+                    put(
+                        "test_build_sha_provenance",
+                        JsonPrimitive(
+                            if (testBuildSha == null) {
+                                "not supplied; installed test APK digest measured"
+                            } else {
+                                "declared host opt-in test source; installed test APK digest measured"
+                            },
+                        ),
                     )
                     put("build_sha_provenance", JsonPrimitive("declared host build; installed APK digest verified"))
                     put("llama_sha_provenance", JsonPrimitive("declared host source pin"))
@@ -207,9 +248,10 @@ class SyntheticAnswerBenchmarkTest {
                     put("retrieval_validation", JsonPrimitive("not measured; host supplied current evidence"))
                 }
             val manifestFile = File(output, "run_manifest.json")
-            manifestFile.writeText(provenance.toString() + "\n")
-            engine.onSessionUnlocked(EPOCH)
+            progress.stage(SetupPhase.MANIFEST) { manifestFile.writeText(provenance.toString() + "\n") }
+            progress.stage(SetupPhase.SESSION_UNLOCK) { engine.onSessionUnlocked(EPOCH) }
             var reload = true
+            var loadProgressRecorded = false
             try {
                 for (case in cases) {
                     for (seed in seeds) {
@@ -221,7 +263,12 @@ class SyntheticAnswerBenchmarkTest {
                         try {
                             withTimeout(timeout) {
                                 if (reload) {
-                                    engine.load(model).getOrThrow()
+                                    if (!loadProgressRecorded) {
+                                        loadProgressRecorded = true
+                                        progress.stage(SetupPhase.ENGINE_LOAD) { engine.load(model).getOrThrow() }
+                                    } else {
+                                        engine.load(model).getOrThrow()
+                                    }
                                     reload = false
                                     val measured =
                                         engine.measurePrompt(
@@ -446,24 +493,6 @@ class SyntheticAnswerBenchmarkTest {
             put("doc_id", JsonPrimitive(id))
             put("revision_hash", JsonPrimitive(revision))
         }
-
-    private fun hashFile(
-        file: File,
-        includeBlake3: Boolean = false,
-    ): Pair<String, String> {
-        val sha = MessageDigest.getInstance("SHA-256")
-        val blake = if (includeBlake3) Blake3.Hasher() else null
-        file.inputStream().buffered().use { input ->
-            val buffer = ByteArray(1024 * 1024)
-            while (true) {
-                val n = input.read(buffer)
-                if (n < 0) break
-                sha.update(buffer, 0, n)
-                blake?.update(buffer, 0, n)
-            }
-        }
-        return sha.digest().joinToString("") { "%02x".format(it) } to (blake?.digest()?.let(Blake3::toHex) ?: "")
-    }
 
     private companion object {
         const val EPOCH = 1L
