@@ -47,6 +47,19 @@ int main(void) {
     assert(sqlite3_step(binding) == SQLITE_ROW);
     assert(strcmp((const char *)sqlite3_column_text(binding, 0), "61") == 0);
     assert(sqlite3_finalize(binding) == SQLITE_OK);
+    /* ART's modified NUL still distinguishes legacy key bytes from standard
+     * UTF-8 even when supplementary characters use four bytes in both. */
+    assert(sqlite3_prepare_v2(db,
+        "SELECT CAST(X'F0909080C0806B6579' AS TEXT) = ?, CAST(X'F0909080C0806B6579' AS TEXT) = ?",
+        -1, &binding, NULL) == SQLITE_OK);
+    const char nul_key[] = "\xf0\x90\x90\x80\0key";
+    const char art_key[] = "\xf0\x90\x90\x80\xc0\x80key";
+    assert(sqlite3_bind_text(binding, 1, nul_key, sizeof(nul_key) - 1, SQLITE_STATIC) == SQLITE_OK);
+    assert(sqlite3_bind_text(binding, 2, art_key, sizeof(art_key) - 1, SQLITE_STATIC) == SQLITE_OK);
+    assert(sqlite3_step(binding) == SQLITE_ROW);
+    assert(sqlite3_column_int(binding, 0) == 0);
+    assert(sqlite3_column_int(binding, 1) == 1);
+    assert(sqlite3_finalize(binding) == SQLITE_OK);
     const char *text = "中文English café cafe\xcc\x81 résumé naïve Русский العربية १२३ \xee\x80\x80secret 𐐀𐐁";
     const char *expected[] = {
         "中文english", "cafe", "cafe", "resume", "naive", "русский", "العربية", "१२३", "\xee\x80\x80secret", "𐐨𐐩"

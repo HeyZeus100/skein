@@ -105,7 +105,7 @@ public interface SkeinSQLiteNative {
         value: Double,
     )
 
-    /** Historical modified UTF-8, retained for repository key equality. */
+    /** Original runtime JNI encoding, retained for repository key equality (including encoded NUL). */
     public fun nativeBindText(
         stmtHandle: Long,
         index: Int,

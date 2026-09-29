@@ -1,5 +1,5 @@
-/* Decode standard UTF-8 and the modified UTF-8 emitted by the old JNI writer.
- * Legacy CESU-8 surrogate pairs and C0 80 NUL must remain readable without
+/* Decode standard UTF-8, ART encoded NUL, and compatible CESU-8 sequences.
+ * CESU-8 surrogate pairs and C0 80 NUL must remain readable without
  * rewriting source revisions. Derived lexical writes bind exact Kotlin UTF-8 bytes. */
 #ifndef SKEIN_UTF16_H
 #define SKEIN_UTF16_H

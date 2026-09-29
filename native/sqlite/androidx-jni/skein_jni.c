@@ -449,8 +449,9 @@ Java_app_skein_core_vault_db_SkeinSQLiteNativeImpl_nativeBindDouble(
     }
 }
 
-/* Keep generic repository keys byte-compatible with existing modified UTF-8
- * rows. Global encoding changes require a separate migration/lookup design. */
+/* Keep generic repository keys byte-compatible with the original runtime JNI
+ * encoding. ART uses four-byte supplementary characters and encoded NUL.
+ * Global encoding changes require a separate migration/lookup design. */
 JNIEXPORT void JNICALL
 Java_app_skein_core_vault_db_SkeinSQLiteNativeImpl_nativeBindText(
         JNIEnv *env, jclass klass, jlong stmtHandle, jint index, jstring value) {

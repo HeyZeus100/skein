@@ -33,20 +33,37 @@ semantic relevance.
 New derived chunk text and quoted FTS MATCH parameters use explicit UTF-8
 binding with exact Kotlin bytes and byte length, preserving leading U+FEFF,
 supplementary Unicode and embedded NUL. Generic repository bindings retain
-their historical modified UTF-8 encoding so existing titles, paths, tags and
-dangling-link keys still compare equal. This is not a global encoding migration.
+the original `GetStringUTFChars` path; this is not a global encoding migration.
+[AOSP's ART JNI implementation](https://android.googlesource.com/platform/art/+/ef21fb5f2520c604a6d5659452488a93433ee85a/runtime/jni/jni_internal.cc)
+emits four-byte supplementary characters while retaining encoded NUL (`C0 80`).
+This differs from desktop JNI's six-byte CESU-8 supplementary encoding, as the
+[AOSP encoding table](https://android.googlesource.com/platform/libnativehelper/+/refs/tags/android-17.0.0_r1/header_only_include/nativehelper/scoped_utf_chars.h)
+explicitly distinguishes. Preserving that original binding protects existing
+repository key comparisons without guessing that all Android rows use CESU-8.
+
+Ordinary run `36527953704` at `bcd2b32` retained 276 passing cases and one failed
+case: the initial compatibility test forced a CESU-8 title and incorrectly
+expected ART's generic query binding to match it. That failure established the
+bad test assumption; the XML did not retain the bound bytes. The corrected
+control writes a title through the unchanged original JNI path, captures its
+actual hex, and checks ART's expected four-byte bytes, exact/prefix lookup and
+unchanged stored bytes. Assertion messages include measured hex. A separate
+supplementary-plus-NUL key checks the real old/new distinction (`C0 80` versus
+`00`): original binding must resolve its own stored key, while explicit UTF-8
+rebinding must not. The next ordinary run must establish these new assertions;
+local compilation is not runtime evidence.
+
 The native negative control demonstrates that SQLite's UTF-16 binding strips a
 leading BOM; the explicit UTF-8 path preserves derived bytes. The revision
 control retains generic binding and verifies unchanged logical source/hash.
-An actual old-title equality/prefix control passes with generic binding and
-deliberately fails with UTF-8 rebinding, guarding the compatibility boundary. Reads accept standard UTF-8
-and the old JNI writer's modified UTF-8 (CESU-8 surrogate pairs and encoded NUL).
-The native old-storage control writes those exact bytes into a source revision
-and JSON metadata, then checks decoded values, retained revision metadata and
-unchanged stored bytes. No stored revisions are rewritten. Historical chunks
-whose supplementary postings were built from modified UTF-8 still require normal
-re-ingest through the corrected writer; this implementation performs no automatic
-historical repair (`skein-5uu2`).
+Reads accept standard UTF-8, ART's encoded NUL, and CESU-8 compatibility inputs.
+The separate forced-CESU-8 source revision/JSON control checks decoded values,
+retained revision metadata and unchanged stored bytes; it makes no claim that
+those bytes came from the Android writer. No stored revisions are rewritten.
+Historical posting investigation remains open (`skein-5uu2`), conditional on
+actual stored encoding and posting evidence. No evidence currently establishes
+that existing Android supplementary postings universally contain CESU-8, and
+this implementation performs no automatic historical repair.
 
 `IndexStoreImplAcceptanceTest` adds seven real-driver contracts: actual tokens
 and queries, supplementary/legacy text roundtrips, literal adversarial queries,

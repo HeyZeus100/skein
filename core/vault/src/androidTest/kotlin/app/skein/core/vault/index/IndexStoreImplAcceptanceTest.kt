@@ -35,6 +35,7 @@ import app.skein.core.vault.db.SkeinSQLiteConnection
 import app.skein.core.vault.db.SkeinSQLiteDriver
 import app.skein.core.vault.testutil.splitMigrationStatements
 import com.google.common.truth.Truth.assertThat
+import com.google.common.truth.Truth.assertWithMessage
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.test.UnconfinedTestDispatcher
@@ -314,26 +315,67 @@ public class IndexStoreImplAcceptanceTest {
                     assertThat(stmt.getText(1)).isEqualTo(hash)
                     assertThat(stmt.getText(2)).startsWith("EFBBBF")
                 }
-            // Reproduce the actual old-storage encoding in a durable revision
-            // and its JSON metadata. Reading must preserve text and stored bytes.
-            seedDocument(conn, "legacy-unicode")
-            conn
-                .prepare(
-                    "UPDATE documents SET title = CAST(X'EDA081EDB080' AS TEXT) WHERE id = 'legacy-unicode'",
-                ).use { it.step() }
-            for (predicate in listOf("title = ?", "title LIKE ?")) {
-                conn.prepare("SELECT id FROM documents WHERE $predicate").use { stmt ->
-                    stmt.bindText(1, if (predicate.contains("LIKE")) "𐐀%" else "𐐀")
+            // Use the preserved original JNI writer for a compatibility
+            // binding control. ART emits four-byte supplementary characters,
+            // unlike desktop JNI's six-byte CESU-8 encoding for the same text.
+            val title = "𐐀"
+            val titleHex =
+                conn.prepare("SELECT hex(?)").use { stmt ->
+                    stmt.bindText(1, title)
                     assertThat(stmt.step()).isTrue()
+                    stmt.getText(0)
+                }
+            assertWithMessage("ART GetStringUTFChars title hex: %s", titleHex)
+                .that(titleHex)
+                .isEqualTo("F0909080")
+            seedDocument(conn, "legacy-unicode")
+            conn.prepare("UPDATE documents SET title = ? WHERE id = 'legacy-unicode'").use { stmt ->
+                stmt.bindText(1, title)
+                stmt.step()
+            }
+            for (predicate in listOf("title = ?", "title LIKE ?")) {
+                conn.prepare("SELECT id, hex(title) FROM documents WHERE $predicate").use { stmt ->
+                    stmt.bindText(1, if (predicate.contains("LIKE")) "$title%" else title)
+                    assertWithMessage("legacy lookup %s; original title hex: %s", predicate, titleHex)
+                        .that(stmt.step())
+                        .isTrue()
                     assertThat(stmt.getText(0)).isEqualTo("legacy-unicode")
+                    assertThat(stmt.getText(1)).isEqualTo(titleHex)
                 }
             }
-            // Meaningful negative control: global UTF-8 rebinding would
-            // silently stop resolving the retained CESU-8 title above.
-            conn.prepare("SELECT id FROM documents WHERE title = ?").use { stmt ->
-                stmt.bindUtf8Text(1, "𐐀")
-                assertThat(stmt.step()).isFalse()
+            // ART still encodes NUL as C0 80. This real legacy/new difference
+            // makes global rebinding unsafe even though supplementary-only
+            // values have identical UTF-8 bytes on this runtime.
+            val nulTitle = "$title\u0000key"
+            val nulHex =
+                conn.prepare("SELECT hex(?), hex(?)").use { stmt ->
+                    stmt.bindText(1, nulTitle)
+                    stmt.bindUtf8Text(2, nulTitle)
+                    assertThat(stmt.step()).isTrue()
+                    stmt.getText(0) to stmt.getText(1)
+                }
+            assertWithMessage("ART legacy/explicit NUL-key hex: %s / %s", nulHex.first, nulHex.second)
+                .that(nulHex)
+                .isEqualTo("F0909080C0806B6579" to "F0909080006B6579")
+            seedDocument(conn, "legacy-nul-key")
+            conn.prepare("UPDATE documents SET title = ? WHERE id = 'legacy-nul-key'").use { stmt ->
+                stmt.bindText(1, nulTitle)
+                stmt.step()
             }
+            conn.prepare("SELECT id, hex(title) FROM documents WHERE title = ?").use { stmt ->
+                stmt.bindText(1, nulTitle)
+                assertWithMessage("legacy NUL-key hex: %s", nulHex.first).that(stmt.step()).isTrue()
+                assertThat(stmt.getText(0)).isEqualTo("legacy-nul-key")
+                assertThat(stmt.getText(1)).isEqualTo(nulHex.first)
+            }
+            conn.prepare("SELECT id FROM documents WHERE title = ?").use { stmt ->
+                stmt.bindUtf8Text(1, nulTitle)
+                assertWithMessage("legacy/explicit NUL-key hex: %s / %s", nulHex.first, nulHex.second)
+                    .that(stmt.step())
+                    .isFalse()
+            }
+            // Separately force CESU-8 source/JSON bytes to check tolerant
+            // reads and unchanged storage. This is not ART writer evidence.
             conn
                 .prepare(
                     "INSERT INTO document_revisions VALUES ('legacy-unicode', 'retained-hash', 1, " +
@@ -342,7 +384,8 @@ public class IndexStoreImplAcceptanceTest {
                 ).use { it.step() }
             conn
                 .prepare(
-                    "SELECT body_md_snapshot, frontmatter_snapshot, revision_hash, hex(body_md_snapshot) " +
+                    "SELECT body_md_snapshot, frontmatter_snapshot, revision_hash, " +
+                        "hex(body_md_snapshot), hex(frontmatter_snapshot) " +
                         "FROM document_revisions WHERE document_id = 'legacy-unicode'",
                 ).use { stmt ->
                     assertThat(stmt.step()).isTrue()
@@ -350,6 +393,7 @@ public class IndexStoreImplAcceptanceTest {
                     assertThat(stmt.getText(1)).isEqualTo("{\"label\":\"𐐀\"}")
                     assertThat(stmt.getText(2)).isEqualTo("retained-hash")
                     assertThat(stmt.getText(3)).isEqualTo("EDA081EDB080C08061")
+                    assertThat(stmt.getText(4)).isEqualTo("7B226C6162656C223A22EDA081EDB080227D")
                 }
         }
 
