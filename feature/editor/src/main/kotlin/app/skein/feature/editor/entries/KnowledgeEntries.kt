@@ -11,6 +11,8 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.runtime.DisposableEffect
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -19,6 +21,7 @@ import androidx.compose.runtime.produceState
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.testTag
 import app.skein.core.designsystem.components.SkeinAction
@@ -31,7 +34,6 @@ import app.skein.core.designsystem.theme.SkeinSpacing
 import app.skein.core.model.DocumentKind
 import app.skein.core.model.IndexStore
 import app.skein.core.model.Persona
-import app.skein.core.model.TimelineFilter
 import app.skein.core.model.VaultRepository
 import app.skein.core.navigation.ConnectionsKey
 import app.skein.core.navigation.Destination
@@ -185,20 +187,26 @@ fun SourceEntry(
  * outputs. A row opens its item by kind, replacing the detail (§8.3 rule 3).
  * ⌕ opens the shell's search overlay (the retired command bar's search).
  * ponytail: no inline search field, row menu or selected row yet (KNOWLEDGE_UX_SPEC.md
- * §3–§4, Wave 6), and the filter chips are composition state, not T2 (§7.3 row 19).
+ * §3–§4, Wave 6). Filter selection lives only in the entry's lock-cleared T3 owner, never a Bundle.
  */
 @Composable
 private fun KnowledgeList(
     shell: SkeinShellState,
     deps: KnowledgeEntryDeps,
 ) {
+    val filters = viewModel { KnowledgeListFilterState() }
     val state =
         rememberTimelineState(
             repo = deps.repository,
             personaSource = deps.personas,
-            initial = TimelineFilter(kinds = KNOWLEDGE_KINDS),
+            initial = filters.filter,
             kinds = KNOWLEDGE_KINDS,
         )
+    LaunchedEffect(filters, state) { state.window.collect { filters.record(it.filter) } }
+    DisposableEffect(filters, state) {
+        // Preserve a final synchronous chip action even if composition leaves before collection.
+        onDispose { filters.record(state.filter) }
+    }
     Column(Modifier.fillMaxSize().testTag(KnowledgeEntryTestTags.LIST)) {
         shell.EntryTopBar(KnowledgeHomeKey, "Knowledge") {
             EntryAction(SkeinIcons.Search, "Search", Modifier.testTag(KnowledgeEntryTestTags.SEARCH_ACTION)) {
