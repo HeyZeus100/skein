@@ -29,11 +29,13 @@ import androidx.compose.ui.test.assertIsNotSelected
 import androidx.compose.ui.test.assertIsSelected
 import androidx.compose.ui.test.captureToImage
 import androidx.compose.ui.test.junit4.createAndroidComposeRule
+import androidx.compose.ui.test.longClick
 import androidx.compose.ui.test.onAllNodesWithTag
 import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.onRoot
 import androidx.compose.ui.test.performClick
+import androidx.compose.ui.test.performTouchInput
 import androidx.compose.ui.unit.Density
 import androidx.compose.ui.unit.DpSize
 import androidx.compose.ui.unit.dp
@@ -79,6 +81,45 @@ class SkeinWorkspaceHostTest {
     private val tabletopTop = mutableStateOf<Float?>(null)
     private val showPrimaryDialog = mutableStateOf(false)
     private val theme = mutableStateOf(SkeinThemeMode.LIGHT)
+
+    @Test
+    fun `flat workspace controls expose labels on long press`() {
+        setHost()
+        rule.onNodeWithText("Left pane").assertDoesNotExist()
+        rule.onNodeWithTag(WorkspaceTestTags.ACTIVATE_PRIMARY).performTouchInput { longClick() }
+        rule.onNodeWithText("Left pane").assertIsDisplayed()
+    }
+
+    @Test
+    fun `separating book and near top tabletop folds suppress workspace tooltips`() {
+        setHost()
+        for (vertical in listOf(true, false)) {
+            posture.value =
+                Posture(
+                    isTabletop = !vertical,
+                    hingeList =
+                        listOf(
+                            HingeInfo(
+                                bounds =
+                                    if (vertical) {
+                                        Rect(600 * density, 0f, 600 * density, 1000 * density)
+                                    } else {
+                                        Rect(0f, 60 * density, 1200 * density, 68 * density)
+                                    },
+                                isFlat = false,
+                                isVertical = vertical,
+                                isSeparating = true,
+                                isOccluding = false,
+                            ),
+                        ),
+                )
+            rule.waitForIdle()
+            rule.onNodeWithTag(WorkspaceTestTags.ACTIVATE_PRIMARY).performTouchInput { longClick() }
+            rule.onNodeWithText("Left pane").assertDoesNotExist()
+            rule.onNodeWithTag(WorkspaceTestTags.ACTIVATE_PRIMARY).assertContentDescriptionEquals("Left pane")
+            assertCompactControlsFit()
+        }
+    }
 
     @Test
     fun `compact controls expose pane position and selection after swap`() {

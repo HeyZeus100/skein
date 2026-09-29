@@ -152,6 +152,7 @@ fun SkeinWorkspaceHost(
                                 onClick = { workspace.activate(pane) },
                                 icon = if (position == 0) SkeinIcons.PaneLeft else SkeinIcons.PaneRight,
                                 label = if (position == 0) "Left pane" else "Right pane",
+                                showTooltip = layout.posture == SkeinPosture.Flat,
                                 isSelected = workspace.activePane == pane,
                                 modifier =
                                     Modifier.testTag(
@@ -167,6 +168,7 @@ fun SkeinWorkspaceHost(
                             onClick = workspace::toggleSplit,
                             icon = SkeinIcons.Split,
                             label = if (workspace.splitRequested) "Hide split view" else "Show split view",
+                            showTooltip = layout.posture == SkeinPosture.Flat,
                             isSelected = workspace.splitRequested,
                             modifier = Modifier.testTag(WorkspaceTestTags.TOGGLE_SPLIT),
                         )
@@ -174,6 +176,7 @@ fun SkeinWorkspaceHost(
                             onClick = workspace::swapPanes,
                             icon = SkeinIcons.Swap,
                             label = "Swap panes",
+                            showTooltip = layout.posture == SkeinPosture.Flat,
                             modifier = Modifier.testTag(WorkspaceTestTags.SWAP_PANES),
                         )
                     }
@@ -190,10 +193,11 @@ private fun WorkspaceIconButton(
     onClick: () -> Unit,
     icon: Int,
     label: String,
+    showTooltip: Boolean,
     modifier: Modifier = Modifier,
     isSelected: Boolean? = null,
 ) {
-    SkeinTooltip(label) {
+    val button: @Composable () -> Unit = {
         IconButton(
             onClick = onClick,
             colors =
@@ -220,6 +224,9 @@ private fun WorkspaceIconButton(
             )
         }
     }
+    // The shared tooltip has a free-standing popup, not a hinge-partitioned surface.
+    // Keep these optional hints off separating folds; the button still has its full accessible label.
+    if (showTooltip) SkeinTooltip(label, content = button) else button()
 }
 
 /** Measure the whole control row before choosing a hinge-safe vertical slot. */
