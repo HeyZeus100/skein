@@ -228,6 +228,74 @@ class ModelImportCoordinatorTest {
             imports.detachOwner(owner)
         }
 
+    @Test
+    fun `matching adoption clears saved result while failed nonmatching and older adoption cannot clear newer work`() =
+        runTest {
+            var nextCopy: ModelCopyResult = copied()
+            val imports =
+                ModelImportCoordinator(
+                    ImmutableModelStore(temp.root),
+                    copy = { _, _ -> nextCopy },
+                    startExecution = { _, _ -> },
+                    scope = backgroundScope,
+                )
+            val owner = Any()
+            imports.attach(owner) { error("Detached before registration") }
+            imports.startImport(uri)
+            imports.detachOwner(owner)
+            imports.executePending(1) {}
+            runCurrent()
+            val checkpoint = imports.adoptionCheckpoint()
+            val saved = ModelImportState.Done(ModelImportOutcome.SAVED_FOR_UNLOCK)
+            assertThat(imports.state.value).isEqualTo(saved)
+            imports.acknowledgeAdoption(emptyList(), checkpoint)
+            imports.acknowledgeAdoption(listOf("different-model"), checkpoint)
+            assertThat(imports.state.value).isEqualTo(saved)
+            imports.acknowledgeAdoption(listOf("fixture-model"), checkpoint)
+            assertThat(imports.state.value).isEqualTo(ModelImportState.Idle)
+
+            imports.attach(owner) { error("Detached before registration") }
+            imports.startImport(uri)
+            imports.detachOwner(owner)
+            imports.executePending(2) {}
+            runCurrent()
+            imports.acknowledgeAdoption(listOf("fixture-model"), checkpoint)
+            assertThat(imports.state.value).isEqualTo(saved) // Same id, but an older scan must not dismiss new work.
+
+            imports.attach(owner) { error("Copy refused") }
+            nextCopy = ModelCopyResult.Refused(ImportRefusal.Unsupported)
+            imports.startImport(uri)
+            imports.executePending(3) {}
+            runCurrent()
+            imports.acknowledgeAdoption(listOf("fixture-model"), imports.adoptionCheckpoint())
+            assertThat(imports.state.value).isEqualTo(ModelImportState.Done(ModelImportOutcome.REFUSED))
+            imports.detachOwner(owner)
+        }
+
+    @Test
+    fun `adoption before delayed copy finalization prevents stale unlock result`() =
+        runTest {
+            val gate = CompletableDeferred<ModelCopyResult>()
+            val imports =
+                ModelImportCoordinator(
+                    ImmutableModelStore(temp.root),
+                    copy = { _, _ -> gate.await() },
+                    startExecution = { _, _ -> },
+                    scope = backgroundScope,
+                )
+            val owner = Any()
+            imports.attach(owner) { error("Detached before registration") }
+            imports.startImport(uri)
+            imports.executePending(1) {}
+            runCurrent()
+            imports.detachOwner(owner)
+            imports.acknowledgeAdoption(listOf("fixture-model"), imports.adoptionCheckpoint())
+            assertThat(imports.state.value).isInstanceOf(ModelImportState.Running::class.java)
+            gate.complete(copied())
+            runCurrent()
+            assertThat(imports.state.value).isEqualTo(ModelImportState.Idle)
+        }
+
     private fun copied(): ModelCopyResult.Copied =
         ModelCopyResult.Copied(
             ModelManifest(

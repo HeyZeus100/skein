@@ -10,6 +10,7 @@ import app.skein.core.inference.models.ImportOutcome
 import app.skein.core.inference.models.ModelCopyResult
 import app.skein.core.inference.models.ModelImportStager
 import app.skein.core.inference.models.ModelManager
+import app.skein.core.model.ModelId
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.CoroutineStart
@@ -25,6 +26,7 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import java.io.File
+import java.security.MessageDigest
 
 /**
  * One import per app process. UI only admits and observes; its coroutine/lifecycle never owns copy.
@@ -45,6 +47,8 @@ public class ModelImportCoordinator internal constructor(
     private var pending: Request? = null
     private var operation: Execution? = null
     private var session: RegistrationSession? = null
+    private var awaitingAdoption: String? = null
+    private val adoptedDuringExecution = mutableSetOf<String>()
 
     /** False means an import already owns admission, there is no unlocked session, or FGS refused. */
     public fun startImport(uri: Uri): Boolean {
@@ -53,6 +57,8 @@ public class ModelImportCoordinator internal constructor(
                 if (mutableState.value is ModelImportState.Running || session == null) return false
                 val admitted = ++nextToken
                 pending = Request(admitted, uri)
+                awaitingAdoption = null
+                adoptedDuringExecution.clear()
                 mutableState.value = ModelImportState.Running(null)
                 admitted
             }
@@ -68,7 +74,10 @@ public class ModelImportCoordinator internal constructor(
 
     public fun dismissResult() {
         synchronized(monitor) {
-            if (mutableState.value is ModelImportState.Done) mutableState.value = ModelImportState.Idle
+            if (mutableState.value is ModelImportState.Done) {
+                awaitingAdoption = null
+                mutableState.value = ModelImportState.Idle
+            }
         }
     }
 
@@ -114,6 +123,7 @@ public class ModelImportCoordinator internal constructor(
         onFinished: () -> Unit,
     ): Boolean {
         var result = ModelImportOutcome.FAILED
+        var copiedFingerprint: String? = null
         val job =
             synchronized(monitor) {
                 val request = pending?.takeIf { it.token == token } ?: return false
@@ -124,7 +134,10 @@ public class ModelImportCoordinator internal constructor(
                             result =
                                 when (val copied = copy(request.uri, ::publishProgress)) {
                                     is ModelCopyResult.Refused -> ModelImportOutcome.REFUSED
-                                    is ModelCopyResult.Copied -> registerIfUnlocked(copied)
+                                    is ModelCopyResult.Copied -> {
+                                        copiedFingerprint = fingerprint(copied.manifest.id)
+                                        registerIfUnlocked(copied)
+                                    }
                                 }
                         } catch (_: CancellationException) {
                             // Any sealed file remains recoverable; incomplete .tmp bytes are never loadable.
@@ -139,7 +152,12 @@ public class ModelImportCoordinator internal constructor(
             synchronized(monitor) {
                 if (operation?.token == token) {
                     operation = null
-                    mutableState.value = ModelImportState.Done(result)
+                    val rescued =
+                        result == ModelImportOutcome.SAVED_FOR_UNLOCK && copiedFingerprint in adoptedDuringExecution
+                    awaitingAdoption =
+                        copiedFingerprint.takeIf { result == ModelImportOutcome.SAVED_FOR_UNLOCK && !rescued }
+                    adoptedDuringExecution.clear()
+                    mutableState.value = if (rescued) ModelImportState.Idle else ModelImportState.Done(result)
                 }
             }
             onFinished()
@@ -173,6 +191,33 @@ public class ModelImportCoordinator internal constructor(
         }
     }
 
+    /** Capture before starting the session's adoption scan, so its result cannot dismiss newer work. */
+    internal fun adoptionCheckpoint(): Long = synchronized(monitor) { nextToken }
+
+    internal fun acknowledgeAdoption(
+        adoptedIds: Collection<ModelId>,
+        checkpoint: Long,
+    ) {
+        val fingerprints = adoptedIds.map(::fingerprint)
+        synchronized(monitor) {
+            if (checkpoint != nextToken) return
+            if (mutableState.value == ModelImportState.Done(ModelImportOutcome.SAVED_FOR_UNLOCK) &&
+                awaitingAdoption in fingerprints
+            ) {
+                awaitingAdoption = null
+                mutableState.value = ModelImportState.Idle
+            } else if (operation?.token == checkpoint || pending?.token == checkpoint) {
+                // A copy/old inspection can finish after the new session has already rescued it.
+                // Store only digests, scoped to this execution and erased as soon as it completes.
+                adoptedDuringExecution += fingerprints
+            }
+        }
+    }
+
+    private fun fingerprint(id: ModelId): String =
+        app.skein.core.model.Hex
+            .encode(MessageDigest.getInstance("SHA-256").digest(id.toByteArray(Charsets.UTF_8)))
+
     internal fun isRunning(token: Long): Boolean =
         synchronized(monitor) { pending?.token == token || operation?.token == token }
 
@@ -181,6 +226,8 @@ public class ModelImportCoordinator internal constructor(
         synchronized(monitor) {
             if (pending?.token == token) {
                 pending = null
+                awaitingAdoption = null
+                adoptedDuringExecution.clear()
                 mutableState.value = ModelImportState.Done(ModelImportOutcome.FAILED)
             }
             if (operation?.token == token) operation?.job?.cancel()

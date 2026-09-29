@@ -65,6 +65,12 @@ imports?.attach(manager = manager, onRegistered = {
     if (registryAuthorized()) manifestCache.refresh()
 })
 
+// In rescueJob, around the existing adoption scan; acknowledge before rescuedState:
+val checkpoint = imports?.adoptionCheckpoint()
+val adopted = manager.adoptOrphans().filter { it.outcome is ImportOutcome.Imported }.map { it.id }
+if (checkpoint != null) imports?.acknowledgeAdoption(adopted, checkpoint)
+// Continue existing manifest refresh and rescuedState publication.
+
 // First in HIGH freezeTurns; also onLocking, onLocked, closeSessionState:
 imports?.detach(manager)
 ```
@@ -80,7 +86,10 @@ It applies to baseline `9fa9f6f` and changes only NavShell observation/admission
 coordinator applies/adapts it to its newer shell and runs formatting/UI tests. It
 removes the UI-owned import coroutine and UI-owned default/cache writes. `Done`
 outcomes are `IMPORTED`, `SAVED_FOR_UNLOCK`, `REFUSED`, `FAILED`; dismissal clears the
-application result. The existing rescued-model observer remains in place.
+application result. The existing rescued-model observer remains in place. A successful
+matching adoption clears `SAVED_FOR_UNLOCK` before that observer receives rescued
+IDs. The captured admission checkpoint prevents an old scan clearing newer work;
+only private model-ID digests are retained until this acknowledgment or dismissal.
 
 ## Validation and remaining acceptance
 
