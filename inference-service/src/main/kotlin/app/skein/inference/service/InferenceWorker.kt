@@ -17,6 +17,7 @@ import android.os.Handler
 import android.os.HandlerThread
 import java.util.concurrent.Callable
 import java.util.concurrent.CountDownLatch
+import java.util.concurrent.ExecutionException
 import java.util.concurrent.FutureTask
 import java.util.concurrent.atomic.AtomicBoolean
 
@@ -63,11 +64,7 @@ class InferenceWorker(
     override fun <T> submitBlocking(block: () -> T): T {
         val task = FutureTask(Callable { block() })
         if (!handler.post(task)) throw IllegalStateException("inference worker is not running")
-        return try {
-            task.get()
-        } catch (e: java.util.concurrent.ExecutionException) {
-            throw e.cause ?: e
-        }
+        return awaitWorkerResult(task)
     }
 
     /** Posts [block] without waiting — `generate`, which streams back on the callback. */
@@ -101,5 +98,29 @@ class InferenceWorker(
             drained.await()
         }
         thread.quitSafely()
+    }
+}
+
+/**
+ * An interrupt cannot transfer native-resource ownership back to the caller:
+ * the queued/running task still owns the handles and may be duplicating its fd.
+ * Observe completion before callers run their cleanup, then restore the flag.
+ * Session lock never waits here; its hard stop terminates the isolated process
+ * directly. A failed task preserves the original cause, including Errors.
+ */
+internal fun <T> awaitWorkerResult(task: FutureTask<T>): T {
+    var interrupted = false
+    try {
+        while (true) {
+            try {
+                return task.get()
+            } catch (_: InterruptedException) {
+                interrupted = true
+            } catch (failure: ExecutionException) {
+                throw failure.cause ?: failure
+            }
+        }
+    } finally {
+        if (interrupted) Thread.currentThread().interrupt()
     }
 }
