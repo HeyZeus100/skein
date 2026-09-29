@@ -46,6 +46,7 @@ import app.skein.core.navigation.TransientKey
 import app.skein.core.navigation.TransientKind
 import app.skein.core.navigation.contentKey
 import app.skein.feature.chat.ChatKnowledge
+import app.skein.feature.chat.ChatModelStatus
 import app.skein.feature.chat.ChatScreen
 import app.skein.feature.chat.ChatTurnController
 import app.skein.feature.chat.ContextPanel
@@ -98,6 +99,7 @@ class ChatEntryDeps(
     val turns: ChatTurnController? = null,
     val drafts: SessionDraftStore? = null,
     val defaultSpaceId: String? = null,
+    val modelStatus: ChatModelStatus = ChatModelStatus.Unavailable,
 )
 
 /**
@@ -215,6 +217,7 @@ private fun ChatRoute(
         initialMessage = first,
         turnController = deps.turns,
         composerState = composer,
+        modelStatus = deps.modelStatus,
         tabletopHinge = (LocalSkeinWindowLayout.current.posture as? SkeinPosture.Tabletop)?.hinge,
         contextChip = {
             if (chatId != null) {

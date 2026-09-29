@@ -87,6 +87,7 @@ public fun ChatScreen(
     turnController: ChatTurnController? = null,
     composerState: DraftComposerState? = null,
     tabletopHinge: DpRect? = null,
+    modelStatus: ChatModelStatus = ChatModelStatus.Unavailable,
 ) {
     val scope = rememberCoroutineScope()
     val viewModel =
@@ -106,6 +107,7 @@ public fun ChatScreen(
 
     LaunchedEffect(viewModel) { initialMessage?.let(viewModel::send) }
 
+    val ownedTurn = remember(turnController, docId) { turnController?.state(docId) }
     val density = LocalDensity.current
     var paneHeight by remember { mutableIntStateOf(0) }
     var paneBounds by remember { mutableStateOf(Rect.Zero) }
@@ -125,6 +127,9 @@ public fun ChatScreen(
         Column(Modifier.fillMaxSize()) {
             Column(Modifier.onSizeChanged { headerHeight = it.height }) {
                 topBar()
+                // Read current ownership when global engine status recomposes; the view model's
+                // observer still drives turn updates, but can trail a fast FIFO handoff.
+                ChatModelIndicator(modelStatus, ownedTurn?.value?.turn)
                 if (viewModel.banner != ChatBanner.NONE) {
                     ChatErrorBanner(viewModel.banner, viewModel.canRetry, viewModel::retry)
                 }
