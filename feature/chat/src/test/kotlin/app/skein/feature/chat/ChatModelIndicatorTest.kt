@@ -139,7 +139,7 @@ class ChatModelIndicatorTest {
 
     @Test
     @Config(qualifiers = "w1006dp-h1043dp-port-330dpi")
-    fun `two real chat screens attribute only the controller active chat and stop clears answering`() {
+    fun `two real chat screens follow controller ownership through FIFO handoff and Stop`() {
         val scope = CoroutineScope(SupervisorJob() + Dispatchers.Default)
         val vault = InMemoryVaultRepository()
         val first = runBlocking { vault.createDocument(chat("First")) }
@@ -200,9 +200,16 @@ class ChatModelIndicatorTest {
                 .onNode(
                     hasContentDescription("$NAME. Busy") and hasAnyAncestor(hasTestTag(second.id)),
                 ).assertIsDisplayed()
-            // Remove queued work first so stopping the first cannot begin a second answer.
-            controller.stop(second.id)
+            // Global GENERATING stays unchanged: only the controller ownership moves.
             controller.stop(first.id)
+            val secondAnswering = hasContentDescription("$NAME. Answering") and hasAnyAncestor(hasTestTag(second.id))
+            composeRule.waitUntil(5000) { composeRule.onAllNodes(secondAnswering).fetchSemanticsNodes().size == 1 }
+            composeRule.onNode(secondAnswering).assertIsDisplayed()
+            composeRule
+                .onNode(
+                    hasContentDescription("$NAME. Busy") and hasAnyAncestor(hasTestTag(first.id)),
+                ).assertIsDisplayed()
+            controller.stop(second.id)
             composeRule.waitUntil(5000) {
                 composeRule.onAllNodesWithContentDescription("$NAME. Answering").fetchSemanticsNodes().isEmpty()
             }
