@@ -1,0 +1,74 @@
+{
+  "control_entries": [
+    {
+      "id": 128247,
+      "text": "</s>",
+      "type": 1
+    },
+    {
+      "id": 151643,
+      "text": "<|endoftext|>",
+      "type": 3
+    },
+    {
+      "id": 151644,
+      "text": "<|im_start|>",
+      "type": 3
+    },
+    {
+      "id": 151645,
+      "text": "<|im_end|>",
+      "type": 3
+    }
+  ],
+  "declared_token_ids": {
+    "tokenizer.ggml.bos_token_id": {
+      "id": 151643,
+      "text": "<|endoftext|>",
+      "type": 3
+    },
+    "tokenizer.ggml.eos_token_id": {
+      "id": 151645,
+      "text": "<|im_end|>",
+      "type": 3
+    },
+    "tokenizer.ggml.padding_token_id": {
+      "id": 151645,
+      "text": "<|im_end|>",
+      "type": 3
+    }
+  },
+  "identity": {
+    "general.architecture": "qwen2",
+    "general.file_type": 12,
+    "general.name": "Huihui Ai Qwen2.5 3B Instruct Abliterated",
+    "tokenizer.ggml.add_bos_token": false,
+    "tokenizer.ggml.model": "gpt2",
+    "tokenizer.ggml.pre": "qwen2"
+  },
+  "metadata_end_offset": 5931801,
+  "model_sha256": "2c5f9a121ae6695208e300c16acca303669afa4e18812061164dca9c97071b12",
+  "model_size_bytes": 1590475744,
+  "qualification": "identity-only",
+  "requested_controls_absent": [
+    "<end_of_turn>",
+    "<eos>",
+    "<start_of_turn>"
+  ],
+  "schema_version": 1,
+  "template_bytes": 2507,
+  "template_sha256": "cd8e9439f0570856fd70470bf8889ebd8b5d1107207f67a5efb46e342330527f",
+  "tokenizer_metadata_hash_definition": "Concatenated raw GGUF key/type/value entry bytes for tokenizer.* keys in file order, including template; no tensor/header data.",
+  "tokenizer_metadata_sha256": "7f463778c3b814b7632f97530888990620a2119bffc1d67a8f5161ed7a4e5fdf",
+  "unmeasured": [
+    "native_load",
+    "native_template_parity",
+    "native_eog",
+    "generation_stop_behavior",
+    "answer_quality",
+    "memory",
+    "thermals"
+  ],
+  "upstream_source_revision_and_license": "requires separate artifact-specific review",
+  "vocabulary_size": 151936
+}
