@@ -41,7 +41,6 @@ import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.onRoot
 import androidx.compose.ui.test.performClick
-import androidx.compose.ui.test.performSemanticsAction
 import androidx.compose.ui.test.performTouchInput
 import androidx.compose.ui.unit.Density
 import androidx.compose.ui.unit.DpSize
@@ -144,11 +143,7 @@ class SkeinWorkspaceHostTest {
         rule.onNodeWithTag(WorkspaceTestTags.SECONDARY_PANE).assertIsSelected()
         rule.onNodeWithTag(WorkspaceTestTags.PRIMARY_PANE).assertIsNotSelected()
         rule.onNodeWithTag(WorkspaceTestTags.SWAP_PANES).performClick()
-        rule.onNodeWithTag(WorkspaceTestTags.PRIMARY_PANE)
-            .performSemanticsAction(SemanticsActions.CustomActions) { actions ->
-            assertEquals("Activate right workspace", actions.single().label)
-            assertTrue(actions.single().action())
-        }
+        activatePane(WorkspaceTestTags.PRIMARY_PANE, "Activate right workspace")
         assertEquals(WorkspacePane.PRIMARY, workspace.activePane)
         rule.onNodeWithTag(WorkspaceTestTags.PRIMARY_PANE).assertIsSelected()
         rule
@@ -175,8 +170,10 @@ class SkeinWorkspaceHostTest {
         rule.onNodeWithTag("root-counter/primary").assertDoesNotExist()
         rule.onNodeWithTag("counter/primary").assertIsDisplayed()
         rule.onNodeWithTag(WorkspaceTestTags.TOGGLE_LIST).assertContentDescriptionEquals("Show chats")
-        rule.onNodeWithTag(WorkspaceTestTags.SWAP_PANES)
-            .assertContentDescriptionEquals("Switch workspace").performClick()
+        rule
+            .onNodeWithTag(WorkspaceTestTags.SWAP_PANES)
+            .assertContentDescriptionEquals("Switch workspace")
+            .performClick()
         rule.onNodeWithTag(WorkspaceTestTags.TOGGLE_LIST).assertContentDescriptionEquals("Hide notes").performClick()
         rule.runOnIdle {
             assertTrue(!workspace.primary.isListExpanded(Destination.CHAT))
@@ -225,10 +222,7 @@ class SkeinWorkspaceHostTest {
         }
         // The expanded rail makes the left page narrower; only the right page has an adjacent list.
         rule.onNodeWithTag(WorkspaceTestTags.TOGGLE_LIST).assertDoesNotExist()
-        rule.onNodeWithTag(WorkspaceTestTags.SECONDARY_PANE)
-            .performSemanticsAction(SemanticsActions.CustomActions) { actions ->
-            assertTrue(actions.single().action())
-        }
+        activatePane(WorkspaceTestTags.SECONDARY_PANE)
         rule.onNodeWithTag(WorkspaceTestTags.TOGGLE_LIST).assertContentDescriptionEquals("Hide notes").performClick()
         rule.onNodeWithTag("root-counter/secondary").assertDoesNotExist()
         rule.onNodeWithTag("counter/secondary").assertIsDisplayed()
@@ -249,11 +243,15 @@ class SkeinWorkspaceHostTest {
             size.value = window
             rule.waitForIdle()
             rule.onNodeWithTag(WorkspaceTestTags.TOGGLE_LIST).assertDoesNotExist()
-            rule.onNodeWithTag(WorkspaceTestTags.TOGGLE_SPLIT)
-                .assertContentDescriptionEquals("Split view needs more space").assertIsNotEnabled()
+            rule
+                .onNodeWithTag(WorkspaceTestTags.TOGGLE_SPLIT)
+                .assertContentDescriptionEquals("Split view needs more space")
+                .assertIsNotEnabled()
             val before = workspace.activePane
-            rule.onNodeWithTag(WorkspaceTestTags.SWAP_PANES)
-                .assertContentDescriptionEquals("Switch workspace").performClick()
+            rule
+                .onNodeWithTag(WorkspaceTestTags.SWAP_PANES)
+                .assertContentDescriptionEquals("Switch workspace")
+                .performClick()
             assertNotEquals(before, workspace.activePane)
             assertTrue(workspace.splitRequested)
             rule.onAllNodesWithTag(SkeinShellHostTestTags.NAV_DISPLAY).assertCountEquals(1)
@@ -272,10 +270,7 @@ class SkeinWorkspaceHostTest {
         rule.onAllNodesWithTag(SkeinShellHostTestTags.NAV_DISPLAY).assertCountEquals(2)
         rule.onNodeWithTag(WorkspaceTestTags.PRIMARY_PANE).assertIsDisplayed()
         rule.onNodeWithTag(WorkspaceTestTags.SECONDARY_PANE).assertIsDisplayed()
-        rule.onNodeWithTag(WorkspaceTestTags.SECONDARY_PANE)
-            .performSemanticsAction(SemanticsActions.CustomActions) { actions ->
-            assertTrue(actions.single().action())
-        }
+        activatePane(WorkspaceTestTags.SECONDARY_PANE)
         rule.onNodeWithTag(WorkspaceTestTags.TOGGLE_SPLIT).performClick()
         rule.onAllNodesWithTag(SkeinShellHostTestTags.NAV_DISPLAY).assertCountEquals(1)
         assertEquals(WorkspacePane.SECONDARY, workspace.activePane)
@@ -375,8 +370,10 @@ class SkeinWorkspaceHostTest {
         // The first page is narrower than 360 dp after the rail, so fallback is one visible owner.
         rule.onAllNodesWithTag(SkeinShellHostTestTags.NAV_DISPLAY).assertCountEquals(1)
         rule.runOnIdle { assertTrue(observedPostures.getValue("primary") is SkeinPosture.Book) }
-        rule.onNodeWithTag(WorkspaceTestTags.SWAP_PANES)
-            .assertContentDescriptionEquals("Switch workspace").performClick()
+        rule
+            .onNodeWithTag(WorkspaceTestTags.SWAP_PANES)
+            .assertContentDescriptionEquals("Switch workspace")
+            .performClick()
         assertEquals(WorkspacePane.SECONDARY, workspace.activePane)
         assertTrue(workspace.splitRequested)
     }
@@ -451,17 +448,18 @@ class SkeinWorkspaceHostTest {
 
     private fun assertCompactControlsFit() {
         val controls =
-            visibleControlTags().map { tag ->
-                val bounds =
-                    rule
-                        .onNodeWithTag(tag)
-                        .assertIsDisplayed()
-                        .fetchSemanticsNode()
-                        .boundsInRoot
-                assertTrue("48dp width $tag $bounds", bounds.width / density in 47.5f..48.5f)
-                assertTrue("48dp height $tag $bounds", bounds.height / density in 47.5f..48.5f)
-                bounds
-            }.sortedBy { it.left }
+            visibleControlTags()
+                .map { tag ->
+                    val bounds =
+                        rule
+                            .onNodeWithTag(tag)
+                            .assertIsDisplayed()
+                            .fetchSemanticsNode()
+                            .boundsInRoot
+                    assertTrue("48dp width $tag $bounds", bounds.width / density in 47.5f..48.5f)
+                    assertTrue("48dp height $tag $bounds", bounds.height / density in 47.5f..48.5f)
+                    bounds
+                }.sortedBy { it.left }
         for ((first, second) in controls.zipWithNext()) {
             assertTrue("8dp gap between targets", (second.left - first.right) / density >= 7.5f)
             assertEquals(first.top, second.top, 0.5f)
@@ -483,6 +481,20 @@ class SkeinWorkspaceHostTest {
         for (label in listOf("Left", "Right")) {
             rule.onNodeWithText(label).assertDoesNotExist()
         }
+    }
+
+    private fun activatePane(
+        pane: String,
+        expectedLabel: String? = null,
+    ) {
+        val action =
+            rule
+                .onNodeWithTag(pane)
+                .fetchSemanticsNode()
+                .config[SemanticsActions.CustomActions]
+                .single()
+        if (expectedLabel != null) assertEquals(expectedLabel, action.label)
+        rule.runOnIdle { assertTrue(action.action()) }
     }
 
     private fun visibleControlTags(): List<String> =

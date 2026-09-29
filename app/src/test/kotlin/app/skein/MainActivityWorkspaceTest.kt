@@ -8,6 +8,8 @@ import android.os.Parcel
 import androidx.compose.ui.graphics.asAndroidBitmap
 import androidx.compose.ui.semantics.SemanticsActions
 import androidx.compose.ui.semantics.SemanticsProperties
+import androidx.compose.ui.test.assertIsFocused
+import androidx.compose.ui.test.assertIsSelected
 import androidx.compose.ui.test.assertTextEquals
 import androidx.compose.ui.test.captureToImage
 import androidx.compose.ui.test.click
@@ -205,11 +207,14 @@ class MainActivityWorkspaceTest {
     }
 
     private fun activate(pane: String) {
-        composeRule
-            .onNodeWithTag(pane)
-            .performSemanticsAction(SemanticsActions.CustomActions) { actions ->
-                assertTrue(actions.single().action())
-            }
+        val action =
+            composeRule
+                .onNodeWithTag(
+                    pane,
+                ).fetchSemanticsNode()
+                .config[SemanticsActions.CustomActions]
+                .single()
+        composeRule.runOnIdle { assertTrue(action.action()) }
     }
 
     private fun navigate(label: String) {
@@ -257,6 +262,8 @@ class MainActivityWorkspaceTest {
         awaitComposer(pane)
         // A real pointer selects the workspace without consuming the composer's own focus gesture.
         composer(pane).performTouchInput { click() }
+        composer(pane).assertIsFocused()
+        composeRule.onNodeWithTag(pane).assertIsSelected()
         composer(pane).performTextInput(text)
         composer(pane).performSemanticsAction(SemanticsActions.SetSelection) { it(caret, caret, false) }
         assertDraft(pane, text, caret)

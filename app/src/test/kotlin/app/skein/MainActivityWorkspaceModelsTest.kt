@@ -98,9 +98,14 @@ class MainActivityWorkspaceModelsTest {
             }
 
             composeRule.onNodeWithTag(WorkspaceTestTags.TOGGLE_SPLIT).performClick()
-            composeRule.onNodeWithTag(SECONDARY).performSemanticsAction(SemanticsActions.CustomActions) { actions ->
-                assertTrue(actions.single().action())
-            }
+            val activate =
+                composeRule
+                    .onNodeWithTag(
+                        SECONDARY,
+                    ).fetchSemanticsNode()
+                    .config[SemanticsActions.CustomActions]
+                    .single()
+            composeRule.runOnIdle { assertTrue(activate.action()) }
             navigate("Models")
             awaitPaneTag(SECONDARY, ModelsEntryTestTags.IMPORT_ACTION)
             composeRule.waitUntil("imported model in secondary", WAIT_MILLIS) {

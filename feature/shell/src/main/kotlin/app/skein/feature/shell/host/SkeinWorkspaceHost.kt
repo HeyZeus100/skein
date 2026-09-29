@@ -134,8 +134,10 @@ fun SkeinWorkspaceHost(
     var measuredPresentation by remember { mutableStateOf<WorkspacePresentation?>(null) }
     val presentation =
         measuredPresentation?.takeIf {
-            it.pane == workspace.activePane && it.window == layout &&
-                it.splitRequested == workspace.splitRequested && it.panesSwapped == workspace.panesSwapped
+            it.pane == workspace.activePane &&
+                it.window == layout &&
+                it.splitRequested == workspace.splitRequested &&
+                it.panesSwapped == workspace.panesSwapped
         }
     val focus = LocalFocusManager.current
     DisposableEffect(workspace, focus) {
@@ -575,8 +577,7 @@ private fun WorkspacePaneSlot(
                             cap = StrokeCap.Round,
                         )
                     }
-                }
-                .pointerInput(workspace, pane) {
+                }.pointerInput(workspace, pane) {
                     awaitPointerEventScope {
                         while (true) {
                             val event = awaitPointerEvent(PointerEventPass.Initial)
