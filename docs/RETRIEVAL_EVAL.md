@@ -315,7 +315,7 @@ results do not turn the failed ranking gates into a quality pass. Full hybrid
 remains **INELIGIBLE** without production embeddings.
 
 Graph-only retrieval returned no results for any query or repetition, despite
-the materialized links (`skein-rw52`). Current graph seeding uses exact titles and
+the materialized links (`skein-rw52`). At that baseline, graph seeding used exact titles and
 capitalized query n-grams; edge existence does not prove the query reaches a
 seed. Lexical and default modes rejected **0/16** absence queries and falsely
 rejected **2/60** answerable queries. Graph-only rejected all queries, so its
@@ -411,6 +411,23 @@ failure, while malformed reports or integrity violations fail collection. The
 threshold is not retuned after seeing those results. This public reserved set is
 not a blind benchmark and its small NOTE-only vault cannot establish general
 semantic, adversarial scope or generated-source behavior.
+
+The final instrumented run `36514924095` at `7601a20` confirms the frozen
+development projection: default recall/nDCG **0.800000/0.717357**, absence
+rejection **16/16**, false rejection **12/60**. Lexical-only is
+0.600000/0.601604 and graph-only is 0.200000/0.141962; their overall ranking
+gates fail. All integrity, scope, provenance and determinism checks pass.
+
+**Independent reserved rejection validation fails.** Production covers 5/6
+answer spans and rejects 5/6 absence queries; the ungated control covers 6/6
+and rejects 0/6. The policy rejects the supported telescope transport paraphrase
+(`reserved-answerable-05`, coverage 0.4) and accepts the unsupported kiln-cost
+question (`reserved-related-only-01`, coverage 0.5). Both configurations pass the
+coarse ranking targets but fail the stricter requirement to cover every answer
+and reject every absence. Actual XML is one pass with no failures or skips;
+instrumentation success does not override these reported quality failures.
+The threshold and fixture remain frozen. `skein-gg11.32` and full-hybrid
+acceptance remain open.
 
 See the [repair execution report](Handoffs/skein-retrieval-repair-execution.md)
 for source-specific evidence, final measurements and remaining acceptance gates.

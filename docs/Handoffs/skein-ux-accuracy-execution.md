@@ -11,6 +11,13 @@ authorized by the owner's “run it” instruction. Beads remains the task track
 The original handoffs describe historical states; they are not proof that the
 current build or the physical Fold has passed acceptance.
 
+The owner subsequently resumed the retrieval-repair pause at `f8d7c81`.
+The [retrieval repair execution report](skein-retrieval-repair-execution.md)
+records the newer graph discovery, row-specific FTS verification, explicit
+instrumentation separation and weak-evidence policy measurements. The
+source-specific failures below remain historical evidence and are not rewritten
+by those repairs. Fold remains HOLD.
+
 ## Resumed verification
 
 The preserved overlay-provenance commit was integrated once as `07d8ec8`.
