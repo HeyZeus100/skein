@@ -161,6 +161,7 @@ fun SkeinNavigationContainer(
                         onNewChat = onNewChat,
                         spaces = spaces,
                         expanded = decision.nav == SkeinNavContainer.EXPANDED_RAIL,
+                        posture = decision.posture,
                         modifier = Modifier.testTag(SkeinNavContainerTestTags.RAIL),
                     )
                 }
