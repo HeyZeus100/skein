@@ -16,6 +16,8 @@ The [demo controls guide](controls.md) covers the split view, collapsible note/c
 
 **Knowledge-on checkpoint, 17:23 UTC:** the construction synthesis turn stayed blank and was stopped; the missing-PO answer acknowledged that no number was provided, but added an unsupported hedge and rendered no citation. The [controlled construction record](runs/2026-09-29-workspace-update/construction-probes.md) preserves the original timings and failures. The complete demo and citation gates remain open.
 
+**Supplied-evidence checkpoint, 17:30 UTC:** the released four-case diagnostic completed with actual answer rows and one raw JUnit pass. Aviation answered correctly with a citation; the other cases retain quality/citation problems. The [v5 evidence](runs/2026-09-29-synthetic-v5/README.md) is separate from live retrieval rehearsal and preserves the previous timeout.
+
 The owner needs the Fold ready by **17:00 on 29 September 2026, America/Los_Angeles (PDT)**. The planned **code freeze is 16:00**, followed by final rehearsal on the same APK and model. The owner released the previous Fold HOLD for a verified update and demo checks with existing app data preserved. One designated runner owns all physical-device access.
 
 ## Preload before presenting
