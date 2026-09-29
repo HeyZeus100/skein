@@ -33,7 +33,12 @@ interrupted by coroutine cancellation. No hard native/provider preemption is cla
 The service is `START_NOT_STICKY`, never starts from boot, and never replays a URI
 following process death. A promoted sealed copy survives for adoption; interrupted
 `.tmp` bytes remain unloadable and the existing store handles them on a later retry.
-No progress/result persistence across process death is claimed.
+No progress/result persistence across process death is claimed. Every admission also
+has a monotonically increasing process-local token forwarded in the service intent.
+Only that token may consume or cancel its pending/running copy. Service completion
+uses the newest delivered Android start ID, preventing duplicate-intent foreground
+leaks; an old service destruction cannot clear a newer pending or running import.
+Malformed/stale intents cannot consume a different admission.
 
 ## Exact integration hooks
 
@@ -78,7 +83,8 @@ application result. The existing rescued-model observer remains in place.
 
 New host regressions cover observer disposal, lock during copy/inspection, single
 admission, stale-session detach, service-start refusal, no URI replay after process
-death, generic foreground notification with permission denied, both provider streams
+death, generic foreground notification with permission denied, duplicate/stale service starts,
+new admission racing old service destruction, timeout cancellation, both provider streams
 closing, no locked registry publication, and sealed-file adoption by a fresh store.
 Existing FD/store/registry/adoption regressions remain unchanged.
 

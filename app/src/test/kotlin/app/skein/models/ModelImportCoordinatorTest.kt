@@ -49,7 +49,7 @@ class ModelImportCoordinatorTest {
                         progress = report
                         copied.await()
                     },
-                    startExecution = { started++ },
+                    startExecution = { _, _ -> started++ },
                     scope = backgroundScope,
                 )
             val owner = Any()
@@ -62,7 +62,7 @@ class ModelImportCoordinatorTest {
             assertThat(imports.startImport(uri)).isFalse()
             assertThat(started).isEqualTo(1)
             assertThat(progress).isNull() // Merely asking Android to start is not foreground execution.
-            assertThat(imports.executePending { finished++ }).isTrue()
+            assertThat(imports.executePending(1) { finished++ }).isTrue()
             runCurrent()
             progress!!(1, 4)
             oldObserver.cancel()
@@ -87,7 +87,7 @@ class ModelImportCoordinatorTest {
                 ModelImportCoordinator(
                     ImmutableModelStore(temp.root),
                     copy = { _, _ -> copied() },
-                    startExecution = {},
+                    startExecution = { _, _ -> },
                     scope = backgroundScope,
                 )
             val oldOwner = Any()
@@ -100,7 +100,7 @@ class ModelImportCoordinatorTest {
                 }
             }
             imports.startImport(uri)
-            imports.executePending {}
+            imports.executePending(1) {}
             runCurrent()
             assertThat(entered).isTrue()
             imports.detachOwner(oldOwner)
@@ -115,7 +115,7 @@ class ModelImportCoordinatorTest {
             }
             imports.detachOwner(oldOwner)
             assertThat(imports.startImport(uri)).isTrue()
-            imports.executePending {}
+            imports.executePending(2) {}
             runCurrent()
             assertThat(newCalls).isEqualTo(1)
             imports.detachOwner(newOwner)
@@ -132,13 +132,13 @@ class ModelImportCoordinatorTest {
                         copies++
                         copied()
                     },
-                    startExecution = { throw IllegalStateException("Background start refused") },
+                    startExecution = { _, _ -> throw IllegalStateException("Background start refused") },
                     scope = backgroundScope,
                 )
             val owner = Any()
             imports.attach(owner) { error("No copy") }
             assertThat(imports.startImport(uri)).isFalse()
-            assertThat(imports.executePending {}).isFalse()
+            assertThat(imports.executePending(1) {}).isFalse()
             assertThat(copies).isEqualTo(0)
             assertThat(imports.state.value).isEqualTo(ModelImportState.Done(ModelImportOutcome.FAILED))
             imports.detachOwner(owner)
@@ -151,10 +151,10 @@ class ModelImportCoordinatorTest {
                 ModelImportCoordinator(
                     ImmutableModelStore(temp.root),
                     copy = { _, _ -> error("No URI replay after process death") },
-                    startExecution = {},
+                    startExecution = { _, _ -> },
                     scope = backgroundScope,
                 )
-            assertThat(imports.executePending {}).isFalse()
+            assertThat(imports.executePending(1) {}).isFalse()
             assertThat(imports.state.value).isEqualTo(ModelImportState.Idle)
         }
 

@@ -23,6 +23,8 @@ import kotlinx.coroutines.launch
 public class ModelImportService : Service() {
     private val scope = CoroutineScope(SupervisorJob() + Dispatchers.Main.immediate)
     private val imports by lazy { ModelImportCoordinator.forApplication(this) }
+    private val lifetime by lazy { ModelImportServiceLifetime(imports, ::stopSelf) }
+    private var foregroundReady = false
 
     @SuppressLint("MissingPermission") // Ordinary updates are guarded by canNotify; FGS notification is mandatory.
     override fun onCreate() {
@@ -32,8 +34,8 @@ public class ModelImportService : Service() {
             // POST_NOTIFICATIONS denial does not forbid an FGS. Android requires this notification
             // regardless, and suppresses the drawer entry itself when permission is denied.
             startForeground(NOTIFICATION_ID, notification(null), ServiceInfo.FOREGROUND_SERVICE_TYPE_DATA_SYNC)
+            foregroundReady = true
         } catch (_: RuntimeException) {
-            imports.executionStopped()
             stopSelf()
             return
         }
@@ -54,9 +56,11 @@ public class ModelImportService : Service() {
         flags: Int,
         startId: Int,
     ): Int {
-        if (!imports.executePending { scope.launch { stopSelf(startId) } } &&
-            imports.state.value !is ModelImportState.Running
-        ) {
+        val token = intent?.getLongExtra(EXTRA_REQUEST_TOKEN, 0L) ?: 0L
+        if (foregroundReady) {
+            lifetime.started(token, startId) { finished -> scope.launch { finished() } }
+        } else {
+            imports.executionStopped(token)
             stopSelf(startId)
         }
         return START_NOT_STICKY
@@ -68,13 +72,13 @@ public class ModelImportService : Service() {
         startId: Int,
         fgsType: Int,
     ) {
-        imports.executionStopped()
+        lifetime.stopped()
         stopForeground(STOP_FOREGROUND_REMOVE)
         stopSelf()
     }
 
     override fun onDestroy() {
-        imports.executionStopped()
+        lifetime.stopped()
         scope.cancel()
         stopForeground(STOP_FOREGROUND_REMOVE)
         super.onDestroy()
@@ -97,7 +101,9 @@ public class ModelImportService : Service() {
             ContextCompat.checkSelfPermission(this, Manifest.permission.POST_NOTIFICATIONS) ==
             PackageManager.PERMISSION_GRANTED
 
-    private companion object {
+    internal companion object {
+        const val EXTRA_REQUEST_TOKEN = "app.skein.models.IMPORT_REQUEST_TOKEN"
+
         // Distinct from the tagged load-progress notification.
         const val NOTIFICATION_ID = 3
     }

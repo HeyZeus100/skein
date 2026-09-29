@@ -35,24 +35,26 @@ import java.io.File
 public class ModelImportCoordinator internal constructor(
     public val store: ImmutableModelStore,
     private val copy: suspend (Uri, (Long, Long) -> Unit) -> ModelCopyResult,
-    private val startExecution: (Uri) -> Unit,
+    private val startExecution: (Uri, Long) -> Unit,
     private val scope: CoroutineScope = CoroutineScope(SupervisorJob() + Dispatchers.IO),
 ) {
     private val monitor = Any()
     private val mutableState = MutableStateFlow<ModelImportState>(ModelImportState.Idle)
     public val state: StateFlow<ModelImportState> = mutableState.asStateFlow()
-    private var pending: Uri? = null
-    private var operation: Job? = null
+    private var nextToken = 0L
+    private var pending: Request? = null
+    private var operation: Execution? = null
     private var session: RegistrationSession? = null
 
     /** False means an import already owns admission, there is no unlocked session, or FGS refused. */
     public fun startImport(uri: Uri): Boolean =
         synchronized(monitor) {
             if (mutableState.value is ModelImportState.Running || session == null) return false
-            pending = uri
+            val token = ++nextToken
+            pending = Request(token, uri)
             mutableState.value = ModelImportState.Running(null)
             try {
-                startExecution(uri)
+                startExecution(uri, token)
                 true
             } catch (_: RuntimeException) {
                 pending = null
@@ -104,17 +106,20 @@ public class ModelImportCoordinator internal constructor(
     }
 
     /** Called only after the Android service successfully entered foreground. Duplicate starts no-op. */
-    internal fun executePending(onFinished: () -> Unit): Boolean =
+    internal fun executePending(
+        token: Long,
+        onFinished: () -> Unit,
+    ): Boolean =
         synchronized(monitor) {
-            val uri = pending ?: return false
+            val request = pending?.takeIf { it.token == token } ?: return false
             pending = null
-            operation =
+            val job =
                 scope
                     .launch(start = CoroutineStart.LAZY) {
                         var result = ModelImportOutcome.FAILED
                         try {
                             result =
-                                when (val copied = copy(uri, ::publishProgress)) {
+                                when (val copied = copy(request.uri, ::publishProgress)) {
                                     is ModelCopyResult.Refused -> ModelImportOutcome.REFUSED
                                     is ModelCopyResult.Copied -> registerIfUnlocked(copied)
                                 }
@@ -124,12 +129,16 @@ public class ModelImportCoordinator internal constructor(
                             // Deliberately do not retain provider messages, paths or closed-session failures.
                         } finally {
                             synchronized(monitor) {
-                                operation = null
-                                mutableState.value = ModelImportState.Done(result)
+                                if (operation?.token == token) {
+                                    operation = null
+                                    mutableState.value = ModelImportState.Done(result)
+                                }
                             }
                             onFinished()
                         }
-                    }.also { it.start() }
+                    }
+            operation = Execution(token, job)
+            job.start()
             true
         }
 
@@ -161,17 +170,29 @@ public class ModelImportCoordinator internal constructor(
         }
     }
 
-    /** Android timeout/destruction revokes copy; admission stays occupied until its actual finally. */
-    internal fun executionStopped() {
+    internal fun isRunning(token: Long): Boolean =
+        synchronized(monitor) { pending?.token == token || operation?.token == token }
+
+    /** A stale service instance must never revoke a later admission, even before its intent arrives. */
+    internal fun executionStopped(token: Long) {
         synchronized(monitor) {
-            pending = null
-            if (operation != null) {
-                operation?.cancel()
-            } else if (mutableState.value is ModelImportState.Running) {
+            if (pending?.token == token) {
+                pending = null
                 mutableState.value = ModelImportState.Done(ModelImportOutcome.FAILED)
             }
+            if (operation?.token == token) operation?.job?.cancel()
         }
     }
+
+    private data class Request(
+        val token: Long,
+        val uri: Uri,
+    )
+
+    private data class Execution(
+        val token: Long,
+        val job: Job,
+    )
 
     private class RegistrationSession(
         val owner: Any,
@@ -199,11 +220,12 @@ public class ModelImportCoordinator internal constructor(
             return ModelImportCoordinator(
                 store = store,
                 copy = stager::copy,
-                startExecution = { uri ->
+                startExecution = { uri, token ->
                     ContextCompat.startForegroundService(
                         context,
                         Intent(context, ModelImportService::class.java)
                             .setData(uri)
+                            .putExtra(ModelImportService.EXTRA_REQUEST_TOKEN, token)
                             .addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION),
                     )
                 },
