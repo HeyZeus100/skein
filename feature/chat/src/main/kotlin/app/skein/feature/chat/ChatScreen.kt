@@ -14,7 +14,9 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.key
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -108,6 +110,9 @@ public fun ChatScreen(
     LaunchedEffect(viewModel) { initialMessage?.let(viewModel::send) }
 
     val ownedTurn = remember(turnController, docId) { turnController?.state(docId) }
+    // A global status change seeds ownership from the controller's current snapshot,
+    // while collection keeps Stop/Done and FIFO handoffs reactive between engine updates.
+    val modelTurn = key(modelStatus, turnController, docId) { ownedTurn?.collectAsState()?.value?.turn }
     val density = LocalDensity.current
     var paneHeight by remember { mutableIntStateOf(0) }
     var paneBounds by remember { mutableStateOf(Rect.Zero) }
@@ -127,9 +132,7 @@ public fun ChatScreen(
         Column(Modifier.fillMaxSize()) {
             Column(Modifier.onSizeChanged { headerHeight = it.height }) {
                 topBar()
-                // Read current ownership when global engine status recomposes; the view model's
-                // observer still drives turn updates, but can trail a fast FIFO handoff.
-                ChatModelIndicator(modelStatus, ownedTurn?.value?.turn)
+                ChatModelIndicator(modelStatus, modelTurn)
                 if (viewModel.banner != ChatBanner.NONE) {
                     ChatErrorBanner(viewModel.banner, viewModel.canRetry, viewModel::retry)
                 }
