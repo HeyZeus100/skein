@@ -6,6 +6,22 @@ commits. **Fold remains HOLD.** Read the current
 [execution evidence](skein-ux-accuracy-execution.md) for resumed results; preserve
 the original checkpoint artifacts and recovery trees described here.
 
+The runtime queue completed at `56a46f5`: ordinary XML has 264 passes plus one
+nonexecuted retrieval opt-in assumption recorded as a failure; structural smoke
+has 12/12 completed cases and all token/control checks pass; real retrieval
+integrity checks pass while all three ranking gates fail. Default recall@8 is
+0.60, graph recall is zero, and full hybrid remains INELIGIBLE. The later drawer
+date-fixture fix is `7b2786d`, remotely screenshot-verified at `4a6c3e2`; production
+clock defaults and image tolerance did not change. Native citation retention
+`skein-i1y1` and encrypted storage `skein-xtov.24.10.1` are now closed on actual
+test evidence. Remaining findings are recorded in Beads, including `skein-u66y`
+(opt-in XML), `skein-rw52` (graph reachability), `skein-vj5r` (FTS probe ambiguity)
+and the existing quality/lifecycle gates. **The sections below preserve the
+original pause snapshot, not current issue status or repository inventory.**
+CI, actual screenshot verification and reproducibility all passed `4a6c3e2`.
+The [raw evidence bundle](../eval/runs/2026-09-28-resumed-56a46f5/README.md) preserves
+the measured failures as well as passes; follow the execution report for limits.
+
 **Owner paused work:** 2026-09-28, approximately 13:06 America/Los_Angeles.
 **Implementation head:** `13b73377f8f6c4fc485d82726b33280fd510cbb4`.
 Documentation/checkpoint commits follow that implementation head. The pause

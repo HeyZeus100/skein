@@ -257,8 +257,56 @@ use another fresh emulator/output/build directory for that repeat.
 
 A green job proves diagnostic execution, integrity, scope and determinism.
 Ranking gate failures remain `FAIL` in the report and runner summary, and the
-full hybrid gate remains **INELIGIBLE**. This wiring has host-test validation;
-it contains no claimed device scores. `skein-9744` remains open for the first
-actual baseline, reviewed failures, real production embedder/vector ablation,
+full hybrid gate remains **INELIGIBLE**. `skein-9744` remains open for reviewed
+baseline failures, real production embedder/vector ablation,
 full-hybrid eligibility and enforced quality gate, and any future nightly
 wiring. A diagnostic run cannot close those remaining requirements.
+
+## First measured baseline
+
+[Run 36505374600](https://github.com/HeyZeus100/skein/actions/runs/36505374600)
+executed source `56a46f5eedf217685528072bbf53a04f94e85aa5` on the fresh API 35
+emulator. Actual instrumentation XML contains one passing test, no failures and
+no skips. The prebuilt and installed vault test APK hashes match. The report
+contains 1,000 documents, 72 overlay documents, 850 chunks, 12 materialized gold
+links, no vectors, 76 queries per mode and three measured repetitions after a
+warm-up. Gold/corpus hashes and all 228 query/mode rows were independently checked;
+their 684 timed samples preserve deterministic result arrays.
+
+| Mode | Recall@8 | nDCG@8 | MRR@8 | Ranking gate | p50 / p95 ms |
+|---|---:|---:|---:|---|---:|
+| Lexical only | 0.616667 (37/60) | 0.612120 | 0.575000 | FAIL | 8.629 / 11.381 |
+| Graph only | 0.000000 (0/60) | 0.000000 | 0.000000 | FAIL | 0.713 / 1.089 |
+| Default lexical + graph | 0.600000 (36/60) | 0.601604 | 0.566667 | FAIL | 9.158 / 14.084 |
+
+The unchanged gates are recall ≥ 0.75 and nDCG ≥ 0.60. Scope, generated-source
+provenance, anchor and determinism violations are all zero. Those integrity
+results do not turn the failed ranking gates into a quality pass. Full hybrid
+remains **INELIGIBLE** without production embeddings.
+
+Graph-only retrieval returned no results for any query or repetition, despite
+the materialized links (`skein-rw52`). Current graph seeding uses exact titles and
+capitalized query n-grams; edge existence does not prove the query reaches a
+seed. Lexical and default modes rejected **0/16** absence queries and falsely
+rejected **2/60** answerable queries. Graph-only rejected all queries, so its
+16/16 absence rejection is accompanied by 60/60 false rejection. Calibrated
+weak-evidence rejection remains `skein-gg11.32`.
+
+The original report also retains 508 identical lexical-index probe warnings.
+They are observations, not independent proof of broken FTS triggers. All gold
+labels, thresholds, failed gates and raw results remain unchanged. The measured
+latencies describe this synthetic emulator workload, not Fold latency or model
+answer accuracy.
+
+The current ingest probe checks whether a new row appears in a **global top-50**
+prefix-word BM25 query. A healthy posting below that rank can produce the same
+warning; the repeated filler lexicon makes crowding plausible. The report does
+not retain probe ranks, so that is a hypothesis, not a diagnosis of all 508
+warnings. Chunk/revision anchor validation and ordinary database integrity checks
+also do not independently establish every FTS posting. `skein-vj5r` tracks the
+row-specific probe investigation to distinguish false warnings from real missing
+postings.
+
+The [raw baseline bundle](eval/runs/2026-09-28-resumed-56a46f5/README.md)
+retains the complete report and actual XML with SHA-256 checksums, independently
+of the workflow artifact's retention period.

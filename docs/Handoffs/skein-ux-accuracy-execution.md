@@ -88,6 +88,36 @@ intentional matrix skips; shell 208 with 14 intentional matrix skips. The scoped
 drawer suite also passed under `Pacific/Kiritimati`. Remote verification of this
 later fix remains separate from the runtime source above.
 
+[Remote screenshot verification 36505454999](https://github.com/HeyZeus100/skein/actions/runs/36505454999)
+passed the actual job on `4a6c3e2`, which contains that fix and evidence notes.
+[CI 36505454948](https://github.com/HeyZeus100/skein/actions/runs/36505454948)
+and [reproducibility 36505455003](https://github.com/HeyZeus100/skein/actions/runs/36505455003)
+also passed that exact head. The conditional SQLCipher source-verification job
+was skipped. Later commits contain only retained evidence and documentation;
+they do not extend the source scope of any runtime result.
+
+[Retrieval diagnostic 36505374600](https://github.com/HeyZeus100/skein/actions/runs/36505374600)
+executed at the original `56a46f5` runtime source: one real passing test, no
+failures/skips, matching installed test APK, zero scope/provenance/anchor/
+determinism violations. All three **ranking gates failed**. Lexical recall@8 was
+0.616667, graph 0, and default lexical+graph 0.600000 against the unchanged 0.75
+target; default nDCG@8 was 0.601604 against 0.60. Graph returned nothing for all
+76 queries. Lexical/default rejected none of the 16 absence queries. See the
+[full baseline and limits](../RETRIEVAL_EVAL.md#first-measured-baseline).
+The 508 lexical-index probe warnings are retained without treating their text
+as a proven trigger defect. No gold labels, thresholds or failed rows were
+changed. Full hybrid remains **INELIGIBLE**; `skein-9744`, `skein-gg11.32` and
+the measured graph follow-up `skein-rw52` remain open.
+
+The [durable raw evidence bundle](../eval/runs/2026-09-28-resumed-56a46f5/README.md)
+contains unmodified ordinary XML, synthetic rows/manifests/native arrays, and
+the complete retrieval report/XML, alongside separate review summaries. All 25
+indexed files passed SHA-256 verification after integration. Original trailing
+blank lines in two instrumentation logs are preserved as raw evidence; other
+source/documentation whitespace checks pass. Earlier failed runs and inactive
+pause checkpoints are unchanged. The Fold was not accessed or changed; its
+verification hold, Qwen behavior and answer-quality gates remain open.
+
 ## Recovered and implemented
 
 The interrupted shell was preserved before integration. The new navigation shell
@@ -173,9 +203,9 @@ test repository. `927d071` corrected it; full integrated app/chat/shared testing
 checks, explicit ktlint and both app AndroidTest compilations then passed (863
 tasks). At `13b7337`, merged retrieval/inference checks and both Android native
 ABIs also passed (343 tasks). The native host tokenizer regression now matches
-the exact 30-token reference while preserving control isolation. New emulator
-and physical-device runs remain pending; the failed historical runs above are
-retained unchanged.
+the exact 30-token reference while preserving control isolation. Emulator work
+was pending at that checkpoint; the resumed runs above now supply its evidence.
+Physical-device work remains on hold. Failed historical runs are unchanged.
 
 ## Limits of the evidence
 
