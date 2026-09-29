@@ -296,6 +296,35 @@ class ModelImportCoordinatorTest {
             assertThat(imports.state.value).isEqualTo(ModelImportState.Idle)
         }
 
+    @Test
+    fun `stale dismissal cannot clear a newer equal outcome with different result identity`() =
+        runTest {
+            val imports =
+                ModelImportCoordinator(
+                    ImmutableModelStore(temp.root),
+                    copy = { _, _ -> ModelCopyResult.Refused(ImportRefusal.Unsupported) },
+                    startExecution = { _, _ -> },
+                    scope = backgroundScope,
+                )
+            val owner = Any()
+            imports.attach(owner) { error("Refused before registration") }
+            imports.startImport(uri)
+            imports.executePending(1) {}
+            runCurrent()
+            val first = imports.state.value as ModelImportState.Done
+            imports.startImport(uri)
+            imports.executePending(2) {}
+            runCurrent()
+            val second = imports.state.value as ModelImportState.Done
+            assertThat(second).isEqualTo(first)
+            assertThat(second).isNotSameInstanceAs(first)
+            imports.dismissResult(first)
+            assertThat(imports.state.value).isSameInstanceAs(second)
+            imports.dismissResult(second)
+            assertThat(imports.state.value).isEqualTo(ModelImportState.Idle)
+            imports.detachOwner(owner)
+        }
+
     private fun copied(): ModelCopyResult.Copied =
         ModelCopyResult.Copied(
             ModelManifest(
