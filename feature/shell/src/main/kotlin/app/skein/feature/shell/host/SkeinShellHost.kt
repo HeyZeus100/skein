@@ -107,9 +107,11 @@ fun SkeinShellHost(
     search: (suspend (String) -> List<Document>)? = null,
     zone: ZoneId = ZoneId.systemDefault(),
     now: () -> Long = System::currentTimeMillis,
+    onNavigationReady: () -> Unit = {},
     entryContent: @Composable (SkeinKey) -> Unit = { PlaceholderEntry(it) },
 ) {
     val resolver by rememberUpdatedState(resolveKinds)
+    val navigationReady by rememberUpdatedState(onNavigationReady)
     var sanitised by remember { mutableStateOf(false) }
     // M4d: before the first entry renders. A failed lookup resolves nothing, so the stacks fail closed to their roots.
     LaunchedEffect(Unit) {
@@ -123,6 +125,8 @@ fun SkeinShellHost(
                 emptyMap()
             }
         shell.navigate { sanitise(it, kinds::get) }
+        // AL-14: a pending notification applies after restore, before any destination renders.
+        navigationReady()
         sanitised = true
     }
     if (!sanitised) return
@@ -194,6 +198,7 @@ fun SkeinShellHost(
                 spaces = spaces,
                 zone = zone,
                 now = now,
+                closeRequest = shell.drawerCloseRequest,
             ) {
                 // §8.3 rule 6b: Back at another destination's root goes to Chat; at the Chat root, to the system.
                 NavigationBackHandler(

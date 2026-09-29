@@ -35,6 +35,7 @@ import app.skein.feature.chat.entries.rememberChatHistory
 import app.skein.feature.editor.entries.KnowledgeDetailPlaceholder
 import app.skein.feature.editor.entries.KnowledgeEntry
 import app.skein.feature.editor.entries.KnowledgeEntryDeps
+import app.skein.feature.editor.entries.KnowledgePreparation
 import app.skein.feature.graph.entries.GraphEntry
 import app.skein.feature.graph.entries.GraphEntryDeps
 import app.skein.feature.models.ModelListItem
@@ -55,8 +56,10 @@ import app.skein.models.ModelServices
 import app.skein.vault.VaultSession
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.launch
 
 /**
@@ -72,10 +75,19 @@ internal fun NavShell(
     shell: SkeinShellState,
     settingsViewModel: SettingsViewModel,
     modifier: Modifier = Modifier,
+    onNavigationReady: () -> Unit = {},
+    knowledgePreparation: Flow<KnowledgePreparation> = flowOf(KnowledgePreparation()),
 ) {
     val personas = session.personaService
     val knowledge =
-        remember(session) { KnowledgeEntryDeps(session.repository, session.indexStore, personas.observeAll()) }
+        remember(session, knowledgePreparation) {
+            KnowledgeEntryDeps(
+                session.repository,
+                session.indexStore,
+                personas.observeAll(),
+                preparation = knowledgePreparation,
+            )
+        }
     val handoff = remember(session) { ChatHandoff() }
     val defaultSpaceId by produceState<String?>(null, personas) { value = personas.default().id }
     val history = rememberChatHistory(session.repository, shell)
@@ -108,6 +120,7 @@ internal fun NavShell(
         shell = shell,
         resolveKinds = kinds,
         modifier = modifier,
+        onNavigationReady = onNavigationReady,
         history = history,
         spaces = rememberSpaces(personas, shell),
         search = remember(session) { vaultSearch(session.repository) },
