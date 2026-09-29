@@ -1,0 +1,88 @@
+[
+  {
+    "name": "app.skein.AskPathComposeTest",
+    "tests": "9",
+    "failures": "0",
+    "errors": "0",
+    "skipped": "0",
+    "time": "3.275",
+    "cases": [
+      {
+        "name": "Knowledge on with no evidence shows an app reply and does not invoke generation",
+        "skipped": false,
+        "failure": false,
+        "error": false
+      },
+      {
+        "name": "chat with no default model shows guidance instead of crashing",
+        "skipped": false,
+        "failure": false,
+        "error": false
+      },
+      {
+        "name": "import model launches the document picker",
+        "skipped": false,
+        "failure": false,
+        "error": false
+      },
+      {
+        "name": "lock while Activity is stopped clears session flow and keeps unanswered USER durable",
+        "skipped": false,
+        "failure": false,
+        "error": false
+      },
+      {
+        "name": "locking a loaded model clears state and requests terminal teardown without synchronous unload",
+        "skipped": false,
+        "failure": false,
+        "error": false
+      },
+      {
+        "name": "importing a model shows progress then the default marker in models",
+        "skipped": false,
+        "failure": false,
+        "error": false
+      },
+      {
+        "name": "session turn survives navigation and Activity recreation and completes once",
+        "skipped": false,
+        "failure": false,
+        "error": false
+      },
+      {
+        "name": "chat sends a message and shows the streamed answer",
+        "skipped": false,
+        "failure": false,
+        "error": false
+      },
+      {
+        "name": "locking the vault with no model ever loaded never calls unload",
+        "skipped": false,
+        "failure": false,
+        "error": false
+      }
+    ]
+  },
+  {
+    "name": "app.skein.MainActivityModelImportTest",
+    "tests": "2",
+    "failures": "0",
+    "errors": "0",
+    "skipped": "0",
+    "time": "0.226",
+    "cases": [
+      {
+        "name": "copy survives recreation and completion makes visible Chat ready without navigation",
+        "skipped": false,
+        "failure": false,
+        "error": false
+      },
+      {
+        "name": "late rescued name after recreation cannot replace or dismiss newer import refusal",
+        "skipped": false,
+        "failure": false,
+        "error": false
+      }
+    ]
+  }
+]

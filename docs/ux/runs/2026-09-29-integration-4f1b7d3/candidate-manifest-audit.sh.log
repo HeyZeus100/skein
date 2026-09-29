@@ -1,0 +1,2 @@
+manifest-audit: auditing app/build/outputs/apk/foss/debug/app-foss-debug.apk (variant: debug)
+manifest-audit: PASS

@@ -1,0 +1,300 @@
+Compiled from "LlamaNative.kt"
+public final class app.skein.inference.service.LlamaNative {
+  public static final app.skein.inference.service.LlamaNative INSTANCE;
+
+  private static final java.lang.Object loadLogLock;
+
+  private static boolean loadLogCapturing;
+
+  private static final java.util.List<java.lang.String> loadLogLines;
+
+  private static final int MAX_CAPTURED_LOAD_LOG_LINES;
+
+  private static final int MAX_CAPTURED_LOAD_LOG_LINE_CHARS;
+
+  private app.skein.inference.service.LlamaNative();
+    Code:
+       0: aload_0
+       1: invokespecial #8                  // Method java/lang/Object."<init>":()V
+       4: return
+
+  public final native void backendInit();
+
+  public final native void setLogCallback();
+
+  public final native long loadModelFromFd(int, int, boolean, java.util.function.BooleanSupplier);
+
+  public static long loadModelFromFd$default(app.skein.inference.service.LlamaNative, int, int, boolean, java.util.function.BooleanSupplier, int, java.lang.Object);
+    Code:
+       0: iload         5
+       2: bipush        8
+       4: iand
+       5: ifeq          15
+       8: invokedynamic #34,  0             // InvokeDynamic #0:getAsBoolean:()Ljava/util/function/BooleanSupplier;
+      13: astore        4
+      15: aload_0
+      16: iload_1
+      17: iload_2
+      18: iload_3
+      19: aload         4
+      21: invokevirtual #36                 // Method loadModelFromFd:(IIZLjava/util/function/BooleanSupplier;)J
+      24: lreturn
+
+  public final native long loadModel(java.lang.String, int, boolean, java.util.function.BooleanSupplier);
+
+  public static long loadModel$default(app.skein.inference.service.LlamaNative, java.lang.String, int, boolean, java.util.function.BooleanSupplier, int, java.lang.Object);
+    Code:
+       0: iload         5
+       2: bipush        8
+       4: iand
+       5: ifeq          15
+       8: invokedynamic #45,  0             // InvokeDynamic #1:getAsBoolean:()Ljava/util/function/BooleanSupplier;
+      13: astore        4
+      15: aload_0
+      16: aload_1
+      17: iload_2
+      18: iload_3
+      19: aload         4
+      21: invokevirtual #47                 // Method loadModel:(Ljava/lang/String;IZLjava/util/function/BooleanSupplier;)J
+      24: lreturn
+
+  public final native void freeModel(long);
+
+  public final native long newContext(long, int, int, int, boolean);
+
+  public final native int contextLength(long);
+
+  public final native void freeContext(long);
+
+  public final native void freeContextSecure(long);
+
+  public final native long newSampler(float, int, float, float, float, long);
+
+  public final native void freeSampler(long);
+
+  public final native int[] tokenize(long, java.lang.String, boolean, boolean);
+
+  public final native int[] tokenizeScaffold(long, java.lang.String, boolean, int[]);
+
+  public final native byte[] tokenToPieceBytes(long, int);
+
+  public final java.lang.String tokenToPiece(long, int);
+    Code:
+       0: new           #68                 // class java/lang/String
+       3: dup
+       4: aload_0
+       5: lload_1
+       6: iload_3
+       7: invokevirtual #70                 // Method tokenToPieceBytes:(JI)[B
+      10: getstatic     #76                 // Field kotlin/text/Charsets.UTF_8:Ljava/nio/charset/Charset;
+      13: invokespecial #79                 // Method java/lang/String."<init>":([BLjava/nio/charset/Charset;)V
+      16: areturn
+
+  public final native java.lang.String applyChatTemplate(long, java.lang.String[], java.lang.String[], boolean);
+
+  public final native boolean isEog(long, int);
+
+  public final native int decodePrompt(long, int[], int);
+
+  public final native int sampleNext(long, long);
+
+  public final native float[] embed(long, int[]);
+
+  public final native void kvClear(long);
+
+  public final native void setCancelFlag(long, boolean);
+
+  public final native java.lang.String modelMeta(long, java.lang.String);
+
+  public final native boolean modelHasVision(long);
+
+  public final native int modelNEmbd(long);
+
+  public final native int handleCount();
+
+  public final native int secureFreeCount();
+
+  public final native java.lang.String backendReport(long, long, int);
+
+  public static final void onNativeLog(int, java.lang.String);
+    Code:
+       0: aload_1
+       1: ldc           #112                // String message
+       3: invokestatic  #118                // Method kotlin/jvm/internal/Intrinsics.checkNotNullParameter:(Ljava/lang/Object;Ljava/lang/String;)V
+       6: iload_0
+       7: tableswitch   { // 3 to 4
+                     3: 28
+                     4: 34
+               default: 40
+          }
+      28: getstatic     #124                // Field app/skein/inference/service/LlamaLogLevel.WARN:Lapp/skein/inference/service/LlamaLogLevel;
+      31: goto          43
+      34: getstatic     #127                // Field app/skein/inference/service/LlamaLogLevel.ERROR:Lapp/skein/inference/service/LlamaLogLevel;
+      37: goto          43
+      40: getstatic     #130                // Field app/skein/inference/service/LlamaLogLevel.DEBUG:Lapp/skein/inference/service/LlamaLogLevel;
+      43: astore_2
+      44: getstatic     #133                // Field INSTANCE:Lapp/skein/inference/service/LlamaNative;
+      47: aload_2
+      48: aload_1
+      49: invokespecial #137                // Method captureIfLoading:(Lapp/skein/inference/service/LlamaLogLevel;Ljava/lang/String;)V
+      52: getstatic     #142                // Field app/skein/inference/service/LlamaLogRedactor.INSTANCE:Lapp/skein/inference/service/LlamaLogRedactor;
+      55: aload_2
+      56: aload_1
+      57: invokevirtual #146                // Method app/skein/inference/service/LlamaLogRedactor.forward:(Lapp/skein/inference/service/LlamaLogLevel;Ljava/lang/String;)Ljava/lang/String;
+      60: dup
+      61: ifnonnull     66
+      64: pop
+      65: return
+      66: astore_3
+      67: aload_2
+      68: getstatic     #152                // Field app/skein/inference/service/LlamaNative$WhenMappings.$EnumSwitchMapping$0:[I
+      71: swap
+      72: invokevirtual #155                // Method app/skein/inference/service/LlamaLogLevel.ordinal:()I
+      75: iaload
+      76: iconst_1
+      77: if_icmpne     92
+      80: ldc           #157                // String llama.cpp
+      82: aload_3
+      83: aconst_null
+      84: iconst_4
+      85: aconst_null
+      86: invokestatic  #163                // Method app/skein/core/model/SkeinLog.e$default:(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;ILjava/lang/Object;)V
+      89: goto          101
+      92: ldc           #157                // String llama.cpp
+      94: aload_3
+      95: aconst_null
+      96: iconst_4
+      97: aconst_null
+      98: invokestatic  #166                // Method app/skein/core/model/SkeinLog.w$default:(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;ILjava/lang/Object;)V
+     101: return
+
+  private final void captureIfLoading(app.skein.inference.service.LlamaLogLevel, java.lang.String);
+    Code:
+       0: aload_1
+       1: getstatic     #124                // Field app/skein/inference/service/LlamaLogLevel.WARN:Lapp/skein/inference/service/LlamaLogLevel;
+       4: checkcast     #172                // class java/lang/Enum
+       7: invokevirtual #176                // Method app/skein/inference/service/LlamaLogLevel.compareTo:(Ljava/lang/Enum;)I
+      10: ifge          14
+      13: return
+      14: getstatic     #180                // Field loadLogLock:Ljava/lang/Object;
+      17: astore_3
+      18: aload_3
+      19: monitorenter
+      20: nop
+      21: iconst_0
+      22: istore        4
+      24: getstatic     #184                // Field loadLogCapturing:Z
+      27: ifeq          61
+      30: getstatic     #188                // Field loadLogLines:Ljava/util/List;
+      33: invokeinterface #193,  1          // InterfaceMethod java/util/List.size:()I
+      38: iconst_4
+      39: if_icmpge     61
+      42: getstatic     #188                // Field loadLogLines:Ljava/util/List;
+      45: checkcast     #195                // class java/util/Collection
+      48: aload_2
+      49: sipush        160
+      52: invokestatic  #201                // Method kotlin/text/StringsKt.take:(Ljava/lang/String;I)Ljava/lang/String;
+      55: invokeinterface #205,  2          // InterfaceMethod java/util/Collection.add:(Ljava/lang/Object;)Z
+      60: pop
+      61: nop
+      62: getstatic     #210                // Field kotlin/Unit.INSTANCE:Lkotlin/Unit;
+      65: astore        4
+      67: aload_3
+      68: monitorexit
+      69: goto          79
+      72: astore        5
+      74: aload_3
+      75: monitorexit
+      76: aload         5
+      78: athrow
+      79: return
+    Exception table:
+       from    to  target type
+          20    67    72   any
+          72    74    72   any
+
+  public final void beginLoadLogCapture();
+    Code:
+       0: getstatic     #180                // Field loadLogLock:Ljava/lang/Object;
+       3: astore_1
+       4: aload_1
+       5: monitorenter
+       6: nop
+       7: iconst_0
+       8: istore_2
+       9: iconst_1
+      10: putstatic     #184                // Field loadLogCapturing:Z
+      13: getstatic     #188                // Field loadLogLines:Ljava/util/List;
+      16: invokeinterface #217,  1          // InterfaceMethod java/util/List.clear:()V
+      21: nop
+      22: getstatic     #210                // Field kotlin/Unit.INSTANCE:Lkotlin/Unit;
+      25: astore_2
+      26: aload_1
+      27: monitorexit
+      28: goto          36
+      31: astore_3
+      32: aload_1
+      33: monitorexit
+      34: aload_3
+      35: athrow
+      36: return
+    Exception table:
+       from    to  target type
+           6    26    31   any
+          31    32    31   any
+
+  public final java.util.List<java.lang.String> drainLoadLogLines();
+    Code:
+       0: getstatic     #180                // Field loadLogLock:Ljava/lang/Object;
+       3: astore_1
+       4: aload_1
+       5: monitorenter
+       6: nop
+       7: iconst_0
+       8: istore_2
+       9: iconst_0
+      10: putstatic     #184                // Field loadLogCapturing:Z
+      13: getstatic     #188                // Field loadLogLines:Ljava/util/List;
+      16: checkcast     #223                // class java/lang/Iterable
+      19: invokestatic  #229                // Method kotlin/collections/CollectionsKt.toList:(Ljava/lang/Iterable;)Ljava/util/List;
+      22: astore_2
+      23: aload_1
+      24: monitorexit
+      25: aload_2
+      26: goto          34
+      29: astore_3
+      30: aload_1
+      31: monitorexit
+      32: aload_3
+      33: athrow
+      34: areturn
+    Exception table:
+       from    to  target type
+           6    23    29   any
+          29    30    29   any
+
+  private static final native boolean loadModelFromFd$lambda$0();
+
+  private static final native boolean loadModel$lambda$0();
+
+  static {};
+    Code:
+       0: new           #2                  // class app/skein/inference/service/LlamaNative
+       3: dup
+       4: invokespecial #232                // Method "<init>":()V
+       7: putstatic     #133                // Field INSTANCE:Lapp/skein/inference/service/LlamaNative;
+      10: nop
+      11: ldc           #234                // String skein_llama
+      13: invokestatic  #240                // Method java/lang/System.loadLibrary:(Ljava/lang/String;)V
+      16: nop
+      17: new           #4                  // class java/lang/Object
+      20: dup
+      21: invokespecial #8                  // Method java/lang/Object."<init>":()V
+      24: putstatic     #180                // Field loadLogLock:Ljava/lang/Object;
+      27: new           #242                // class java/util/ArrayList
+      30: dup
+      31: invokespecial #243                // Method java/util/ArrayList."<init>":()V
+      34: checkcast     #190                // class java/util/List
+      37: putstatic     #188                // Field loadLogLines:Ljava/util/List;
+      40: return
+}

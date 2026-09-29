@@ -1,0 +1,390 @@
+{
+  "current_committed_head": "e03e6051be09071aa2bad711b7c44060beb1cc67",
+  "working_tree_status": "",
+  "suites": [
+    {
+      "path": "build/agent-logs/focused-3-results/testDebugUnitTest/TEST-app.skein.core.designsystem.components.SkeinPartitionedDialogTest.xml",
+      "tests": 3,
+      "failures": 1,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "path": "build/agent-logs/focused-3-results/testDebugUnitTest/TEST-app.skein.core.designsystem.components.SkeinPartitionedMenuTest.xml",
+      "tests": 1,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "path": "build/agent-logs/focused-3-results/testDebugUnitTest/TEST-app.skein.core.designsystem.components.SkeinWindowPartitionTest.xml",
+      "tests": 4,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "path": "build/agent-logs/focused-4-results/designsystem/TEST-app.skein.core.designsystem.components.SkeinPartitionedDialogTest.xml",
+      "tests": 3,
+      "failures": 2,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "path": "build/agent-logs/focused-4-results/designsystem/TEST-app.skein.core.designsystem.components.SkeinPartitionedMenuTest.xml",
+      "tests": 1,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "path": "build/agent-logs/focused-4-results/designsystem/TEST-app.skein.core.designsystem.components.SkeinWindowPartitionTest.xml",
+      "tests": 4,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "path": "build/agent-logs/focused-4-results/shell/TEST-app.skein.feature.shell.host.HingeSurfaceIntegrationTest.xml",
+      "tests": 6,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "path": "build/agent-logs/focused-5-results/designsystem/TEST-app.skein.core.designsystem.components.SkeinDestructiveDialogTest.xml",
+      "tests": 5,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "path": "build/agent-logs/focused-5-results/designsystem/TEST-app.skein.core.designsystem.components.SkeinPartitionedDialogTest.xml",
+      "tests": 3,
+      "failures": 1,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "path": "build/agent-logs/focused-5-results/designsystem/TEST-app.skein.core.designsystem.components.SkeinPartitionedMenuTest.xml",
+      "tests": 1,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "path": "build/agent-logs/focused-5-results/designsystem/TEST-app.skein.core.designsystem.components.SkeinWindowPartitionTest.xml",
+      "tests": 4,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "path": "build/agent-logs/focused-5-results/shell/TEST-app.skein.feature.shell.host.HingeSurfaceIntegrationTest.xml",
+      "tests": 6,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "path": "build/agent-logs/focused-6-results/designsystem/TEST-app.skein.core.designsystem.components.SkeinDestructiveDialogTest.xml",
+      "tests": 5,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "path": "build/agent-logs/focused-6-results/designsystem/TEST-app.skein.core.designsystem.components.SkeinPartitionedDialogTest.xml",
+      "tests": 3,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "path": "build/agent-logs/focused-6-results/designsystem/TEST-app.skein.core.designsystem.components.SkeinPartitionedMenuTest.xml",
+      "tests": 1,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "path": "build/agent-logs/focused-6-results/designsystem/TEST-app.skein.core.designsystem.components.SkeinWindowPartitionTest.xml",
+      "tests": 4,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "path": "build/agent-logs/focused-7-results/designsystem/TEST-app.skein.core.designsystem.components.SkeinListRowHingeMenuTest.xml",
+      "tests": 1,
+      "failures": 1,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "path": "build/agent-logs/focused-7-results/designsystem/TEST-app.skein.core.designsystem.components.SkeinPartitionedDialogTest.xml",
+      "tests": 3,
+      "failures": 1,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "path": "build/agent-logs/focused-7-results/timeline/TEST-app.skein.feature.timeline.TimelineHingeMenuTest.xml",
+      "tests": 1,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "path": "build/agent-logs/focused-9-results/designsystem/TEST-app.skein.core.designsystem.components.SkeinDestructiveDialogTest.xml",
+      "tests": 5,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "path": "build/agent-logs/focused-9-results/designsystem/TEST-app.skein.core.designsystem.components.SkeinListRowHingeMenuTest.xml",
+      "tests": 1,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "path": "build/agent-logs/focused-9-results/designsystem/TEST-app.skein.core.designsystem.components.SkeinPartitionedDialogTest.xml",
+      "tests": 3,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "path": "build/agent-logs/focused-9-results/designsystem/TEST-app.skein.core.designsystem.components.SkeinPartitionedMenuTest.xml",
+      "tests": 1,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "path": "build/agent-logs/focused-9-results/editor/TEST-app.skein.feature.editor.notetab.NoteTabHingeMenuTest.xml",
+      "tests": 1,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "path": "build/agent-logs/focused-9-results/settings/TEST-app.skein.feature.settings.SettingsHingeMenuTest.xml",
+      "tests": 1,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "path": "build/agent-logs/focused-9-results/timeline/TEST-app.skein.feature.timeline.TimelineHingeMenuTest.xml",
+      "tests": 1,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    }
+  ],
+  "files": [
+    {
+      "path": "build/agent-logs/focused-3-results/testDebugUnitTest/TEST-app.skein.core.designsystem.components.SkeinPartitionedDialogTest.xml",
+      "sha256": "1e427b838e7f0b280a561cc68e290120b2558a611bc728ee43a47d6383b70dc7"
+    },
+    {
+      "path": "build/agent-logs/focused-3-results/testDebugUnitTest/TEST-app.skein.core.designsystem.components.SkeinPartitionedMenuTest.xml",
+      "sha256": "bb70c3eb05199293e73c7c77ed0309c5e1c091db19d09dfeb98cc078746ba675"
+    },
+    {
+      "path": "build/agent-logs/focused-3-results/testDebugUnitTest/TEST-app.skein.core.designsystem.components.SkeinWindowPartitionTest.xml",
+      "sha256": "986ce22bbaf81d10161167ae4896c3eca9a5ee181486a798035f4d9f76e1ed00"
+    },
+    {
+      "path": "build/agent-logs/focused-4-results/designsystem/TEST-app.skein.core.designsystem.components.SkeinPartitionedDialogTest.xml",
+      "sha256": "7ebdba40017abd68001e64834562751398b0cdbd827ea0a2f6680f2bfba4c6dd"
+    },
+    {
+      "path": "build/agent-logs/focused-4-results/designsystem/TEST-app.skein.core.designsystem.components.SkeinPartitionedMenuTest.xml",
+      "sha256": "0ba4cec966c7f6190caa062c5d389905b0714dcce7a149246762094f0f7bac3c"
+    },
+    {
+      "path": "build/agent-logs/focused-4-results/designsystem/TEST-app.skein.core.designsystem.components.SkeinWindowPartitionTest.xml",
+      "sha256": "d77f2c51b9a28d2f629adf40134f7b542ba04dc20d1fd2daf32648fa30d25410"
+    },
+    {
+      "path": "build/agent-logs/focused-4-results/dialog-resource-font1.png",
+      "sha256": "0afcfab589d3e2f1f2deb4aaf7046007fbbb2afd9c5e2a10627624fcda192905"
+    },
+    {
+      "path": "build/agent-logs/focused-4-results/shell/TEST-app.skein.feature.shell.host.HingeSurfaceIntegrationTest.xml",
+      "sha256": "c45bfba695179a66be6b7f625f63c8fd41ea31afa3c86df0e6f86b5aa582e20f"
+    },
+    {
+      "path": "build/agent-logs/focused-5-results/designsystem/TEST-app.skein.core.designsystem.components.SkeinDestructiveDialogTest.xml",
+      "sha256": "b8f2adf1440be385405701bb3efdd8ee1d5b498b7c9fefb27d74e9028e6a3c84"
+    },
+    {
+      "path": "build/agent-logs/focused-5-results/designsystem/TEST-app.skein.core.designsystem.components.SkeinPartitionedDialogTest.xml",
+      "sha256": "db180e01f70c043aca6966182a849cca1727d89915c551a9988dc569e569d7aa"
+    },
+    {
+      "path": "build/agent-logs/focused-5-results/designsystem/TEST-app.skein.core.designsystem.components.SkeinPartitionedMenuTest.xml",
+      "sha256": "eacf8bec3238dd13f009d06a74f51d61f98a32a9329ef7f7d9ec64cce8a636a6"
+    },
+    {
+      "path": "build/agent-logs/focused-5-results/designsystem/TEST-app.skein.core.designsystem.components.SkeinWindowPartitionTest.xml",
+      "sha256": "cf5fdd468831465bec0f700229544329fc800af81721b766fc1e4d0276b12d5b"
+    },
+    {
+      "path": "build/agent-logs/focused-5-results/shell/TEST-app.skein.feature.shell.host.HingeSurfaceIntegrationTest.xml",
+      "sha256": "72d07b77d8e68c957ae7c579d9dae9b611c3e10235e1474668d81ef5452485f3"
+    },
+    {
+      "path": "build/agent-logs/focused-6-results/designsystem/TEST-app.skein.core.designsystem.components.SkeinDestructiveDialogTest.xml",
+      "sha256": "2f8b5f0ed92ce4fed8de6d7b9ab439b5c5fe4ba930ca6bf7ee3bf285f2c64b9f"
+    },
+    {
+      "path": "build/agent-logs/focused-6-results/designsystem/TEST-app.skein.core.designsystem.components.SkeinPartitionedDialogTest.xml",
+      "sha256": "d970ce27179a267f880da63bd420c6560d81514cbd9e0fa56366aad32cf988d8"
+    },
+    {
+      "path": "build/agent-logs/focused-6-results/designsystem/TEST-app.skein.core.designsystem.components.SkeinPartitionedMenuTest.xml",
+      "sha256": "77d0d0e61dc811224de37c001de8af44cf7a85f292af1fce0032d8b150c23008"
+    },
+    {
+      "path": "build/agent-logs/focused-6-results/designsystem/TEST-app.skein.core.designsystem.components.SkeinWindowPartitionTest.xml",
+      "sha256": "f4433a5e1a8831a5394ac13621d696c99722f8325d1d94a213331f6c38377394"
+    },
+    {
+      "path": "build/agent-logs/focused-7-results/designsystem/TEST-app.skein.core.designsystem.components.SkeinListRowHingeMenuTest.xml",
+      "sha256": "3d971ed2a7d177a8f92757317f5dfb4b3f4fa8e68e44810697056a89564a7fcb"
+    },
+    {
+      "path": "build/agent-logs/focused-7-results/designsystem/TEST-app.skein.core.designsystem.components.SkeinPartitionedDialogTest.xml",
+      "sha256": "d5c7b8ecbb48b225f92ba6c40adbd3c67ab65ba6ab40dad1ae98180ad2332180"
+    },
+    {
+      "path": "build/agent-logs/focused-7-results/timeline/TEST-app.skein.feature.timeline.TimelineHingeMenuTest.xml",
+      "sha256": "071e51134557a101ddacc5c06c21e6250d7e1c4af90c3efaf7b7f81088ac170d"
+    },
+    {
+      "path": "build/agent-logs/focused-9-results/designsystem/TEST-app.skein.core.designsystem.components.SkeinDestructiveDialogTest.xml",
+      "sha256": "1b9f125d90d939ef53cc8ddba75d1183333a17402916b70b782900b50c960dbd"
+    },
+    {
+      "path": "build/agent-logs/focused-9-results/designsystem/TEST-app.skein.core.designsystem.components.SkeinListRowHingeMenuTest.xml",
+      "sha256": "81eac7650c4e62058905c458cab614c9581af233cc7a7f1b6ccc07be02cb3294"
+    },
+    {
+      "path": "build/agent-logs/focused-9-results/designsystem/TEST-app.skein.core.designsystem.components.SkeinPartitionedDialogTest.xml",
+      "sha256": "971307180a641e761abc257360584bb63878630bf8e6520047ecbd4340d9ec1f"
+    },
+    {
+      "path": "build/agent-logs/focused-9-results/designsystem/TEST-app.skein.core.designsystem.components.SkeinPartitionedMenuTest.xml",
+      "sha256": "7ca5aedde7e7101c26ff27f20b98b77db13b95be9b59f879817ab5cc67b75fb2"
+    },
+    {
+      "path": "build/agent-logs/focused-9-results/editor/TEST-app.skein.feature.editor.notetab.NoteTabHingeMenuTest.xml",
+      "sha256": "517cc1f1a8469ee9ea607a4352f1b14014e181f16ae3a46300abf955972bd987"
+    },
+    {
+      "path": "build/agent-logs/focused-9-results/settings/TEST-app.skein.feature.settings.SettingsHingeMenuTest.xml",
+      "sha256": "3d727a70d67f751cda409870f0e7a2aa1058b808ed131c7262555ec0d116687b"
+    },
+    {
+      "path": "build/agent-logs/focused-9-results/timeline/TEST-app.skein.feature.timeline.TimelineHingeMenuTest.xml",
+      "sha256": "dbd275cbc5b1df753511505ac7feb5d6eb625819606c0da976a9929157db1fb8"
+    },
+    {
+      "path": "build/agent-logs/hinge-windows-focused-1.exit",
+      "sha256": "4355a46b19d348dc2f57c046f8ef63d4538ebb936000f3c9ee954a27460dd865"
+    },
+    {
+      "path": "build/agent-logs/hinge-windows-focused-1.log",
+      "sha256": "203bbeb7eadd853eb5288946377fe33b159be78a0627f6123c9437ba6f3adbeb"
+    },
+    {
+      "path": "build/agent-logs/hinge-windows-focused-2.exit",
+      "sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa"
+    },
+    {
+      "path": "build/agent-logs/hinge-windows-focused-2.log",
+      "sha256": "ba2ec8d00d9c8c86d2feda6a8b3c2529d4ac6b15eccf8b165ecd93f7bf0541bc"
+    },
+    {
+      "path": "build/agent-logs/hinge-windows-focused-3.exit",
+      "sha256": "4355a46b19d348dc2f57c046f8ef63d4538ebb936000f3c9ee954a27460dd865"
+    },
+    {
+      "path": "build/agent-logs/hinge-windows-focused-3.log",
+      "sha256": "7b9f066641c4007be24247f4b63680ff195033b429360669e3fa1a1bb05ff29e"
+    },
+    {
+      "path": "build/agent-logs/hinge-windows-focused-4.exit",
+      "sha256": "4355a46b19d348dc2f57c046f8ef63d4538ebb936000f3c9ee954a27460dd865"
+    },
+    {
+      "path": "build/agent-logs/hinge-windows-focused-4.log",
+      "sha256": "a323ac2f9266c332e3bc1fd2795d32eccd12039a75f821bc26c29b291020f91a"
+    },
+    {
+      "path": "build/agent-logs/hinge-windows-focused-5.exit",
+      "sha256": "4355a46b19d348dc2f57c046f8ef63d4538ebb936000f3c9ee954a27460dd865"
+    },
+    {
+      "path": "build/agent-logs/hinge-windows-focused-5.log",
+      "sha256": "79c8d3ff93a9294e6b1242270551d0fd08ddd3550ed7a874bfc2e7d33e7eded3"
+    },
+    {
+      "path": "build/agent-logs/hinge-windows-focused-6.exit",
+      "sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa"
+    },
+    {
+      "path": "build/agent-logs/hinge-windows-focused-6.log",
+      "sha256": "b6afdefa96e71c19d191ec5b685d85b2c191a09e34b30a7a8b1c74f359e9e29a"
+    },
+    {
+      "path": "build/agent-logs/hinge-windows-focused-7.exit",
+      "sha256": "4355a46b19d348dc2f57c046f8ef63d4538ebb936000f3c9ee954a27460dd865"
+    },
+    {
+      "path": "build/agent-logs/hinge-windows-focused-7.log",
+      "sha256": "9d5f807b15054cfd4bee16e3d3e6b14b154ab13539f36adda76f3353f8d8658e"
+    },
+    {
+      "path": "build/agent-logs/hinge-windows-focused-8.exit",
+      "sha256": "4355a46b19d348dc2f57c046f8ef63d4538ebb936000f3c9ee954a27460dd865"
+    },
+    {
+      "path": "build/agent-logs/hinge-windows-focused-8.log",
+      "sha256": "de2d07081bcc004f9de6198d7231852aa9b2944fe203d71b5422f299bfa9e246"
+    },
+    {
+      "path": "build/agent-logs/hinge-windows-focused-9.exit",
+      "sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa"
+    },
+    {
+      "path": "build/agent-logs/hinge-windows-focused-9.log",
+      "sha256": "c3ce72f9ee26fad3dda36b16bba5ab2033841229844bfdf259f7993c3bbea4ce"
+    },
+    {
+      "path": "core/designsystem/build/agent-logs/partitioned-dialog-large-text-1790670344677.png",
+      "sha256": "d5d47705b406acfaed2fc2747e43b02bc8e409dfe3a00fc6154cea1794fa3618"
+    },
+    {
+      "path": "core/designsystem/build/agent-logs/partitioned-dialog-large-text-1790670669433.png",
+      "sha256": "d5d47705b406acfaed2fc2747e43b02bc8e409dfe3a00fc6154cea1794fa3618"
+    },
+    {
+      "path": "core/designsystem/build/agent-logs/partitioned-dialog-large-text-1790671228447.png",
+      "sha256": "d5d47705b406acfaed2fc2747e43b02bc8e409dfe3a00fc6154cea1794fa3618"
+    },
+    {
+      "path": "core/designsystem/build/agent-logs/partitioned-dialog-large-text-1790671497901.png",
+      "sha256": "d5d47705b406acfaed2fc2747e43b02bc8e409dfe3a00fc6154cea1794fa3618"
+    },
+    {
+      "path": "core/designsystem/build/agent-logs/partitioned-dialog-large-text.png",
+      "sha256": "0afcfab589d3e2f1f2deb4aaf7046007fbbb2afd9c5e2a10627624fcda192905"
+    }
+  ]
+}

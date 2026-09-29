@@ -1,0 +1,211 @@
+[
+  {
+    "module": "inference-service",
+    "classname": "app.skein.inference.service.LlamaNativeTest",
+    "name": "tokenizeReturnsAtLeastTwoIds",
+    "xml": "inference-service/build/outputs/androidTest-results/connected/debug/flavors/dev/TEST-test(AVD) - 15.xml",
+    "time": "0.019",
+    "status": "failure",
+    "kind": "failure",
+    "message": null,
+    "trace": "java.lang.UnsatisfiedLinkError: No implementation found for boolean app.skein.inference.service.LlamaNative.loadModel$lambda$0() (tried Java_app_skein_inference_service_LlamaNative_loadModel_00024lambda_000240 and Java_app_skein_inference_service_LlamaNative_loadModel_00024lambda_000240__) - is the library loaded, e.g. System.loadLibrary?\n\tat app.skein.inference.service.LlamaNative.loadModel$lambda$0(Native Method)\n\tat app.skein.inference.service.LlamaNative$$ExternalSyntheticLambda0.getAsBoolean(D8$$SyntheticClass:0)\n\tat app.skein.inference.service.LlamaNative.loadModel(Native Method)\n\tat app.skein.inference.service.LlamaNative.loadModel$default(LlamaNative.kt:143)\n\tat app.skein.inference.service.LlamaNativeTest.loadTinyModel(LlamaNativeTest.kt:643)\n\tat app.skein.inference.service.LlamaNativeTest.tokenizeReturnsAtLeastTwoIds(LlamaNativeTest.kt:171)\n"
+  },
+  {
+    "module": "inference-service",
+    "classname": "app.skein.inference.service.LlamaNativeTest",
+    "name": "decodePromptThenEightSamplesYieldsEightIds",
+    "xml": "inference-service/build/outputs/androidTest-results/connected/debug/flavors/dev/TEST-test(AVD) - 15.xml",
+    "time": "0.005",
+    "status": "failure",
+    "kind": "failure",
+    "message": null,
+    "trace": "java.lang.UnsatisfiedLinkError: No implementation found for boolean app.skein.inference.service.LlamaNative.loadModel$lambda$0() (tried Java_app_skein_inference_service_LlamaNative_loadModel_00024lambda_000240 and Java_app_skein_inference_service_LlamaNative_loadModel_00024lambda_000240__) - is the library loaded, e.g. System.loadLibrary?\n\tat app.skein.inference.service.LlamaNative.loadModel$lambda$0(Native Method)\n\tat app.skein.inference.service.LlamaNative$$ExternalSyntheticLambda0.getAsBoolean(D8$$SyntheticClass:0)\n\tat app.skein.inference.service.LlamaNative.loadModel(Native Method)\n\tat app.skein.inference.service.LlamaNative.loadModel$default(LlamaNative.kt:143)\n\tat app.skein.inference.service.LlamaNativeTest.loadTinyModel(LlamaNativeTest.kt:643)\n\tat app.skein.inference.service.LlamaNativeTest.decodePromptThenEightSamplesYieldsEightIds(LlamaNativeTest.kt:387)\n"
+  },
+  {
+    "module": "inference-service",
+    "classname": "app.skein.inference.service.LlamaNativeTest",
+    "name": "scaffoldTokenizerRejectsMalformedUnicodeAndInvalidByteRanges",
+    "xml": "inference-service/build/outputs/androidTest-results/connected/debug/flavors/dev/TEST-test(AVD) - 15.xml",
+    "time": "0.007",
+    "status": "failure",
+    "kind": "failure",
+    "message": null,
+    "trace": "java.lang.UnsatisfiedLinkError: No implementation found for boolean app.skein.inference.service.LlamaNative.loadModel$lambda$0() (tried Java_app_skein_inference_service_LlamaNative_loadModel_00024lambda_000240 and Java_app_skein_inference_service_LlamaNative_loadModel_00024lambda_000240__) - is the library loaded, e.g. System.loadLibrary?\n\tat app.skein.inference.service.LlamaNative.loadModel$lambda$0(Native Method)\n\tat app.skein.inference.service.LlamaNative$$ExternalSyntheticLambda0.getAsBoolean(D8$$SyntheticClass:0)\n\tat app.skein.inference.service.LlamaNative.loadModel(Native Method)\n\tat app.skein.inference.service.LlamaNative.loadModel$default(LlamaNative.kt:143)\n\tat app.skein.inference.service.LlamaNativeTest.loadTinyModel(LlamaNativeTest.kt:643)\n\tat app.skein.inference.service.LlamaNativeTest.scaffoldTokenizerRejectsMalformedUnicodeAndInvalidByteRanges(LlamaNativeTest.kt:296)\n"
+  },
+  {
+    "module": "inference-service",
+    "classname": "app.skein.inference.service.LlamaNativeTest",
+    "name": "secureFreeZeroesTheKvCacheBeforeFreeing",
+    "xml": "inference-service/build/outputs/androidTest-results/connected/debug/flavors/dev/TEST-test(AVD) - 15.xml",
+    "time": "0.006",
+    "status": "failure",
+    "kind": "failure",
+    "message": null,
+    "trace": "java.lang.UnsatisfiedLinkError: No implementation found for boolean app.skein.inference.service.LlamaNative.loadModel$lambda$0() (tried Java_app_skein_inference_service_LlamaNative_loadModel_00024lambda_000240 and Java_app_skein_inference_service_LlamaNative_loadModel_00024lambda_000240__) - is the library loaded, e.g. System.loadLibrary?\n\tat app.skein.inference.service.LlamaNative.loadModel$lambda$0(Native Method)\n\tat app.skein.inference.service.LlamaNative$$ExternalSyntheticLambda0.getAsBoolean(D8$$SyntheticClass:0)\n\tat app.skein.inference.service.LlamaNative.loadModel(Native Method)\n\tat app.skein.inference.service.LlamaNative.loadModel$default(LlamaNative.kt:143)\n\tat app.skein.inference.service.LlamaNativeTest.loadTinyModel(LlamaNativeTest.kt:643)\n\tat app.skein.inference.service.LlamaNativeTest.secureFreeZeroesTheKvCacheBeforeFreeing(LlamaNativeTest.kt:555)\n"
+  },
+  {
+    "module": "inference-service",
+    "classname": "app.skein.inference.service.LlamaNativeTest",
+    "name": "descriptorLoadCancellationFromProgressClosesOwnedStreamAndKeepsCallerFd",
+    "xml": "inference-service/build/outputs/androidTest-results/connected/debug/flavors/dev/TEST-test(AVD) - 15.xml",
+    "time": "0.106",
+    "status": "failure",
+    "kind": "failure",
+    "message": null,
+    "trace": "java.lang.UnsatisfiedLinkError: No implementation found for boolean app.skein.inference.service.LlamaNative.loadModelFromFd$lambda$0() (tried Java_app_skein_inference_service_LlamaNative_loadModelFromFd_00024lambda_000240 and Java_app_skein_inference_service_LlamaNative_loadModelFromFd_00024lambda_000240__) - is the library loaded, e.g. System.loadLibrary?\n\tat app.skein.inference.service.LlamaNative.loadModelFromFd$lambda$0(Native Method)\n\tat app.skein.inference.service.LlamaNative$$ExternalSyntheticLambda1.getAsBoolean(D8$$SyntheticClass:0)\n\tat app.skein.inference.service.LlamaNative.loadModelFromFd(Native Method)\n\tat app.skein.inference.service.LlamaNative.loadModelFromFd$default(LlamaNative.kt:119)\n\tat app.skein.inference.service.LlamaNativeTest.descriptorLoadCancellationFromProgressClosesOwnedStreamAndKeepsCallerFd(LlamaNativeTest.kt:140)\n"
+  },
+  {
+    "module": "inference-service",
+    "classname": "app.skein.inference.service.LlamaNativeTest",
+    "name": "sameSeedTwiceProducesTheSameIds",
+    "xml": "inference-service/build/outputs/androidTest-results/connected/debug/flavors/dev/TEST-test(AVD) - 15.xml",
+    "time": "0.003",
+    "status": "failure",
+    "kind": "failure",
+    "message": null,
+    "trace": "java.lang.UnsatisfiedLinkError: No implementation found for boolean app.skein.inference.service.LlamaNative.loadModel$lambda$0() (tried Java_app_skein_inference_service_LlamaNative_loadModel_00024lambda_000240 and Java_app_skein_inference_service_LlamaNative_loadModel_00024lambda_000240__) - is the library loaded, e.g. System.loadLibrary?\n\tat app.skein.inference.service.LlamaNative.loadModel$lambda$0(Native Method)\n\tat app.skein.inference.service.LlamaNative$$ExternalSyntheticLambda0.getAsBoolean(D8$$SyntheticClass:0)\n\tat app.skein.inference.service.LlamaNative.loadModel(Native Method)\n\tat app.skein.inference.service.LlamaNative.loadModel$default(LlamaNative.kt:143)\n\tat app.skein.inference.service.LlamaNativeTest.loadTinyModel(LlamaNativeTest.kt:643)\n\tat app.skein.inference.service.LlamaNativeTest.sameSeedTwiceProducesTheSameIds(LlamaNativeTest.kt:593)\n"
+  },
+  {
+    "module": "inference-service",
+    "classname": "app.skein.inference.service.LlamaNativeTest",
+    "name": "loadingANonGgufFileFailsWithInvalidModelAndLeaksNoHandle",
+    "xml": "inference-service/build/outputs/androidTest-results/connected/debug/flavors/dev/TEST-test(AVD) - 15.xml",
+    "time": "0.024",
+    "status": "failure",
+    "kind": "failure",
+    "message": null,
+    "trace": "expected instance of: app.skein.inference.service.LlamaException\nbut was instance of : java.lang.UnsatisfiedLinkError\nwith value          : java.lang.UnsatisfiedLinkError: No implementation found for boolean app.skein.inference.service.LlamaNative.loadModel$lambda$0() (tried Java_app_skein_inference_service_LlamaNative_loadModel_00024lambda_000240 and Java_app_skein_inference_service_LlamaNative_loadModel_00024lambda_000240__) - is the library loaded, e.g. System.loadLibrary?\n\tat app.skein.inference.service.LlamaNativeTest.loadingANonGgufFileFailsWithInvalidModelAndLeaksNoHandle(LlamaNativeTest.kt:482)\nCaused by: java.lang.UnsatisfiedLinkError: No implementation found for boolean app.skein.inference.service.LlamaNative.loadModel$lambda$0() (tried Java_app_skein_inference_service_LlamaNative_loadModel_00024lambda_000240 and Java_app_skein_inference_service_LlamaNative_loadModel_00024lambda_000240__) - is the library loaded, e.g. System.loadLibrary?\n\tat app.skein.inference.service.LlamaNative.loadModel$lambda$0(Native Method)\n\tat app.skein.inference.service.LlamaNative$$ExternalSyntheticLambda0.getAsBoolean(D8$$SyntheticClass:0)\n\tat app.skein.inference.service.LlamaNative.loadModel(Native Method)\n\tat app.skein.inference.service.LlamaNative.loadModel$default(LlamaNative.kt:143)\n\tat app.skein.inference.service.LlamaNativeTest.loadingANonGgufFileFailsWithInvalidModelAndLeaksNoHandle(LlamaNativeTest.kt:478)\n"
+  },
+  {
+    "module": "inference-service",
+    "classname": "app.skein.inference.service.LlamaNativeTest",
+    "name": "safeTemplateTokensMatchNativeTokensForBenignSyntheticConversation",
+    "xml": "inference-service/build/outputs/androidTest-results/connected/debug/flavors/dev/TEST-test(AVD) - 15.xml",
+    "time": "0.005",
+    "status": "failure",
+    "kind": "failure",
+    "message": null,
+    "trace": "java.lang.UnsatisfiedLinkError: No implementation found for boolean app.skein.inference.service.LlamaNative.loadModel$lambda$0() (tried Java_app_skein_inference_service_LlamaNative_loadModel_00024lambda_000240 and Java_app_skein_inference_service_LlamaNative_loadModel_00024lambda_000240__) - is the library loaded, e.g. System.loadLibrary?\n\tat app.skein.inference.service.LlamaNative.loadModel$lambda$0(Native Method)\n\tat app.skein.inference.service.LlamaNative$$ExternalSyntheticLambda0.getAsBoolean(D8$$SyntheticClass:0)\n\tat app.skein.inference.service.LlamaNative.loadModel(Native Method)\n\tat app.skein.inference.service.LlamaNative.loadModel$default(LlamaNative.kt:143)\n\tat app.skein.inference.service.LlamaNativeTest.loadTinyModel(LlamaNativeTest.kt:643)\n\tat app.skein.inference.service.LlamaNativeTest.safeTemplateTokensMatchNativeTokensForBenignSyntheticConversation(LlamaNativeTest.kt:240)\n"
+  },
+  {
+    "module": "inference-service",
+    "classname": "app.skein.inference.service.LlamaNativeTest",
+    "name": "goldenGreedySequenceIsPinned",
+    "xml": "inference-service/build/outputs/androidTest-results/connected/debug/flavors/dev/TEST-test(AVD) - 15.xml",
+    "time": "0.004",
+    "status": "failure",
+    "kind": "failure",
+    "message": null,
+    "trace": "java.lang.UnsatisfiedLinkError: No implementation found for boolean app.skein.inference.service.LlamaNative.loadModel$lambda$0() (tried Java_app_skein_inference_service_LlamaNative_loadModel_00024lambda_000240 and Java_app_skein_inference_service_LlamaNative_loadModel_00024lambda_000240__) - is the library loaded, e.g. System.loadLibrary?\n\tat app.skein.inference.service.LlamaNative.loadModel$lambda$0(Native Method)\n\tat app.skein.inference.service.LlamaNative$$ExternalSyntheticLambda0.getAsBoolean(D8$$SyntheticClass:0)\n\tat app.skein.inference.service.LlamaNative.loadModel(Native Method)\n\tat app.skein.inference.service.LlamaNative.loadModel$default(LlamaNative.kt:143)\n\tat app.skein.inference.service.LlamaNativeTest.loadTinyModel(LlamaNativeTest.kt:643)\n\tat app.skein.inference.service.LlamaNativeTest.goldenGreedySequenceIsPinned(LlamaNativeTest.kt:572)\n"
+  },
+  {
+    "module": "inference-service",
+    "classname": "app.skein.inference.service.LlamaNativeTest",
+    "name": "cancelFlagAbortsADecodeWithin100Ms",
+    "xml": "inference-service/build/outputs/androidTest-results/connected/debug/flavors/dev/TEST-test(AVD) - 15.xml",
+    "time": "0.003",
+    "status": "failure",
+    "kind": "failure",
+    "message": null,
+    "trace": "java.lang.UnsatisfiedLinkError: No implementation found for boolean app.skein.inference.service.LlamaNative.loadModel$lambda$0() (tried Java_app_skein_inference_service_LlamaNative_loadModel_00024lambda_000240 and Java_app_skein_inference_service_LlamaNative_loadModel_00024lambda_000240__) - is the library loaded, e.g. System.loadLibrary?\n\tat app.skein.inference.service.LlamaNative.loadModel$lambda$0(Native Method)\n\tat app.skein.inference.service.LlamaNative$$ExternalSyntheticLambda0.getAsBoolean(D8$$SyntheticClass:0)\n\tat app.skein.inference.service.LlamaNative.loadModel(Native Method)\n\tat app.skein.inference.service.LlamaNative.loadModel$default(LlamaNative.kt:143)\n\tat app.skein.inference.service.LlamaNativeTest.loadTinyModel(LlamaNativeTest.kt:643)\n\tat app.skein.inference.service.LlamaNativeTest.cancelFlagAbortsADecodeWithin100Ms(LlamaNativeTest.kt:432)\n"
+  },
+  {
+    "module": "inference-service",
+    "classname": "app.skein.inference.service.LlamaNativeTest",
+    "name": "controlsSpanningTemplateAndContentRemainLiteralInBothDirections",
+    "xml": "inference-service/build/outputs/androidTest-results/connected/debug/flavors/dev/TEST-test(AVD) - 15.xml",
+    "time": "0.003",
+    "status": "failure",
+    "kind": "failure",
+    "message": null,
+    "trace": "java.lang.UnsatisfiedLinkError: No implementation found for boolean app.skein.inference.service.LlamaNative.loadModel$lambda$0() (tried Java_app_skein_inference_service_LlamaNative_loadModel_00024lambda_000240 and Java_app_skein_inference_service_LlamaNative_loadModel_00024lambda_000240__) - is the library loaded, e.g. System.loadLibrary?\n\tat app.skein.inference.service.LlamaNative.loadModel$lambda$0(Native Method)\n\tat app.skein.inference.service.LlamaNative$$ExternalSyntheticLambda0.getAsBoolean(D8$$SyntheticClass:0)\n\tat app.skein.inference.service.LlamaNative.loadModel(Native Method)\n\tat app.skein.inference.service.LlamaNative.loadModel$default(LlamaNative.kt:143)\n\tat app.skein.inference.service.LlamaNativeTest.loadTinyModel(LlamaNativeTest.kt:643)\n\tat app.skein.inference.service.LlamaNativeTest.controlsSpanningTemplateAndContentRemainLiteralInBothDirections(LlamaNativeTest.kt:274)\n"
+  },
+  {
+    "module": "inference-service",
+    "classname": "app.skein.inference.service.LlamaNativeTest",
+    "name": "contextCapacityRejectsZeroWrongAndFreedHandles",
+    "xml": "inference-service/build/outputs/androidTest-results/connected/debug/flavors/dev/TEST-test(AVD) - 15.xml",
+    "time": "0.005",
+    "status": "failure",
+    "kind": "failure",
+    "message": null,
+    "trace": "java.lang.UnsatisfiedLinkError: No implementation found for boolean app.skein.inference.service.LlamaNative.loadModel$lambda$0() (tried Java_app_skein_inference_service_LlamaNative_loadModel_00024lambda_000240 and Java_app_skein_inference_service_LlamaNative_loadModel_00024lambda_000240__) - is the library loaded, e.g. System.loadLibrary?\n\tat app.skein.inference.service.LlamaNative.loadModel$lambda$0(Native Method)\n\tat app.skein.inference.service.LlamaNative$$ExternalSyntheticLambda0.getAsBoolean(D8$$SyntheticClass:0)\n\tat app.skein.inference.service.LlamaNative.loadModel(Native Method)\n\tat app.skein.inference.service.LlamaNative.loadModel$default(LlamaNative.kt:143)\n\tat app.skein.inference.service.LlamaNativeTest.loadTinyModel(LlamaNativeTest.kt:643)\n\tat app.skein.inference.service.LlamaNativeTest.contextCapacityRejectsZeroWrongAndFreedHandles(LlamaNativeTest.kt:369)\n"
+  },
+  {
+    "module": "inference-service",
+    "classname": "app.skein.inference.service.LlamaNativeTest",
+    "name": "nativeWhitespaceAndUnicodeTokensMatchWholePromptReference",
+    "xml": "inference-service/build/outputs/androidTest-results/connected/debug/flavors/dev/TEST-test(AVD) - 15.xml",
+    "time": "0.007",
+    "status": "failure",
+    "kind": "failure",
+    "message": null,
+    "trace": "java.lang.UnsatisfiedLinkError: No implementation found for boolean app.skein.inference.service.LlamaNative.loadModel$lambda$0() (tried Java_app_skein_inference_service_LlamaNative_loadModel_00024lambda_000240 and Java_app_skein_inference_service_LlamaNative_loadModel_00024lambda_000240__) - is the library loaded, e.g. System.loadLibrary?\n\tat app.skein.inference.service.LlamaNative.loadModel$lambda$0(Native Method)\n\tat app.skein.inference.service.LlamaNative$$ExternalSyntheticLambda0.getAsBoolean(D8$$SyntheticClass:0)\n\tat app.skein.inference.service.LlamaNative.loadModel(Native Method)\n\tat app.skein.inference.service.LlamaNative.loadModel$default(LlamaNative.kt:143)\n\tat app.skein.inference.service.LlamaNativeTest.loadTinyModel(LlamaNativeTest.kt:643)\n\tat app.skein.inference.service.LlamaNativeTest.nativeWhitespaceAndUnicodeTokensMatchWholePromptReference(LlamaNativeTest.kt:255)\n"
+  },
+  {
+    "module": "inference-service",
+    "classname": "app.skein.inference.service.LlamaNativeTest",
+    "name": "exactNativeCapacityAcceptsLastReservedPositionAndRefusesOneBeyond",
+    "xml": "inference-service/build/outputs/androidTest-results/connected/debug/flavors/dev/TEST-test(AVD) - 15.xml",
+    "time": "0.008",
+    "status": "failure",
+    "kind": "failure",
+    "message": null,
+    "trace": "java.lang.UnsatisfiedLinkError: No implementation found for boolean app.skein.inference.service.LlamaNative.loadModel$lambda$0() (tried Java_app_skein_inference_service_LlamaNative_loadModel_00024lambda_000240 and Java_app_skein_inference_service_LlamaNative_loadModel_00024lambda_000240__) - is the library loaded, e.g. System.loadLibrary?\n\tat app.skein.inference.service.LlamaNative.loadModel$lambda$0(Native Method)\n\tat app.skein.inference.service.LlamaNative$$ExternalSyntheticLambda0.getAsBoolean(D8$$SyntheticClass:0)\n\tat app.skein.inference.service.LlamaNative.loadModel(Native Method)\n\tat app.skein.inference.service.LlamaNative.loadModel$default(LlamaNative.kt:143)\n\tat app.skein.inference.service.LlamaNativeTest.loadTinyModel(LlamaNativeTest.kt:643)\n\tat app.skein.inference.service.LlamaNativeTest.exactNativeCapacityAcceptsLastReservedPositionAndRefusesOneBeyond(LlamaNativeTest.kt:340)\n"
+  },
+  {
+    "module": "inference-service",
+    "classname": "app.skein.inference.service.LlamaNativeTest",
+    "name": "embedIsUnitLengthAndModelWidth",
+    "xml": "inference-service/build/outputs/androidTest-results/connected/debug/flavors/dev/TEST-test(AVD) - 15.xml",
+    "time": "0.004",
+    "status": "failure",
+    "kind": "failure",
+    "message": null,
+    "trace": "java.lang.UnsatisfiedLinkError: No implementation found for boolean app.skein.inference.service.LlamaNative.loadModel$lambda$0() (tried Java_app_skein_inference_service_LlamaNative_loadModel_00024lambda_000240 and Java_app_skein_inference_service_LlamaNative_loadModel_00024lambda_000240__) - is the library loaded, e.g. System.loadLibrary?\n\tat app.skein.inference.service.LlamaNative.loadModel$lambda$0(Native Method)\n\tat app.skein.inference.service.LlamaNative$$ExternalSyntheticLambda0.getAsBoolean(D8$$SyntheticClass:0)\n\tat app.skein.inference.service.LlamaNative.loadModel(Native Method)\n\tat app.skein.inference.service.LlamaNative.loadModel$default(LlamaNative.kt:143)\n\tat app.skein.inference.service.LlamaNativeTest.loadTinyModel(LlamaNativeTest.kt:643)\n\tat app.skein.inference.service.LlamaNativeTest.embedIsUnitLengthAndModelWidth(LlamaNativeTest.kt:409)\n"
+  },
+  {
+    "module": "inference-service",
+    "classname": "app.skein.inference.service.LlamaNativeTest",
+    "name": "tokenToPieceConcatenatesBackToTheInput",
+    "xml": "inference-service/build/outputs/androidTest-results/connected/debug/flavors/dev/TEST-test(AVD) - 15.xml",
+    "time": "0.006",
+    "status": "failure",
+    "kind": "failure",
+    "message": null,
+    "trace": "java.lang.UnsatisfiedLinkError: No implementation found for boolean app.skein.inference.service.LlamaNative.loadModel$lambda$0() (tried Java_app_skein_inference_service_LlamaNative_loadModel_00024lambda_000240 and Java_app_skein_inference_service_LlamaNative_loadModel_00024lambda_000240__) - is the library loaded, e.g. System.loadLibrary?\n\tat app.skein.inference.service.LlamaNative.loadModel$lambda$0(Native Method)\n\tat app.skein.inference.service.LlamaNative$$ExternalSyntheticLambda0.getAsBoolean(D8$$SyntheticClass:0)\n\tat app.skein.inference.service.LlamaNative.loadModel(Native Method)\n\tat app.skein.inference.service.LlamaNative.loadModel$default(LlamaNative.kt:143)\n\tat app.skein.inference.service.LlamaNativeTest.loadTinyModel(LlamaNativeTest.kt:643)\n\tat app.skein.inference.service.LlamaNativeTest.tokenToPieceConcatenatesBackToTheInput(LlamaNativeTest.kt:183)\n"
+  },
+  {
+    "module": "inference-service",
+    "classname": "app.skein.inference.service.LlamaNativeTest",
+    "name": "chatTemplatingRenderUsesTheModelsOwnTemplateAndMarkersAroundTheContent",
+    "xml": "inference-service/build/outputs/androidTest-results/connected/debug/flavors/dev/TEST-test(AVD) - 15.xml",
+    "time": "0.003",
+    "status": "failure",
+    "kind": "failure",
+    "message": null,
+    "trace": "java.lang.UnsatisfiedLinkError: No implementation found for boolean app.skein.inference.service.LlamaNative.loadModel$lambda$0() (tried Java_app_skein_inference_service_LlamaNative_loadModel_00024lambda_000240 and Java_app_skein_inference_service_LlamaNative_loadModel_00024lambda_000240__) - is the library loaded, e.g. System.loadLibrary?\n\tat app.skein.inference.service.LlamaNative.loadModel$lambda$0(Native Method)\n\tat app.skein.inference.service.LlamaNative$$ExternalSyntheticLambda0.getAsBoolean(D8$$SyntheticClass:0)\n\tat app.skein.inference.service.LlamaNative.loadModel(Native Method)\n\tat app.skein.inference.service.LlamaNative.loadModel$default(LlamaNative.kt:143)\n\tat app.skein.inference.service.LlamaNativeTest.loadTinyModel(LlamaNativeTest.kt:643)\n\tat app.skein.inference.service.LlamaNativeTest.chatTemplatingRenderUsesTheModelsOwnTemplateAndMarkersAroundTheContent(LlamaNativeTest.kt:220)\n"
+  },
+  {
+    "module": "inference-service",
+    "classname": "app.skein.inference.service.LlamaNativeTest",
+    "name": "literalChatMlDelimiterCannotAddAnotherNativeControlToken",
+    "xml": "inference-service/build/outputs/androidTest-results/connected/debug/flavors/dev/TEST-test(AVD) - 15.xml",
+    "time": "0.004",
+    "status": "failure",
+    "kind": "failure",
+    "message": null,
+    "trace": "java.lang.UnsatisfiedLinkError: No implementation found for boolean app.skein.inference.service.LlamaNative.loadModel$lambda$0() (tried Java_app_skein_inference_service_LlamaNative_loadModel_00024lambda_000240 and Java_app_skein_inference_service_LlamaNative_loadModel_00024lambda_000240__) - is the library loaded, e.g. System.loadLibrary?\n\tat app.skein.inference.service.LlamaNative.loadModel$lambda$0(Native Method)\n\tat app.skein.inference.service.LlamaNative$$ExternalSyntheticLambda0.getAsBoolean(D8$$SyntheticClass:0)\n\tat app.skein.inference.service.LlamaNative.loadModel(Native Method)\n\tat app.skein.inference.service.LlamaNative.loadModel$default(LlamaNative.kt:143)\n\tat app.skein.inference.service.LlamaNativeTest.loadTinyModel(LlamaNativeTest.kt:643)\n\tat app.skein.inference.service.LlamaNativeTest.literalChatMlDelimiterCannotAddAnotherNativeControlToken(LlamaNativeTest.kt:323)\n"
+  },
+  {
+    "module": "inference-service",
+    "classname": "app.skein.inference.service.LlamaNativeTest",
+    "name": "applyChatTemplateContainsTheUserMessage",
+    "xml": "inference-service/build/outputs/androidTest-results/connected/debug/flavors/dev/TEST-test(AVD) - 15.xml",
+    "time": "0.006",
+    "status": "failure",
+    "kind": "failure",
+    "message": null,
+    "trace": "java.lang.UnsatisfiedLinkError: No implementation found for boolean app.skein.inference.service.LlamaNative.loadModel$lambda$0() (tried Java_app_skein_inference_service_LlamaNative_loadModel_00024lambda_000240 and Java_app_skein_inference_service_LlamaNative_loadModel_00024lambda_000240__) - is the library loaded, e.g. System.loadLibrary?\n\tat app.skein.inference.service.LlamaNative.loadModel$lambda$0(Native Method)\n\tat app.skein.inference.service.LlamaNative$$ExternalSyntheticLambda0.getAsBoolean(D8$$SyntheticClass:0)\n\tat app.skein.inference.service.LlamaNative.loadModel(Native Method)\n\tat app.skein.inference.service.LlamaNative.loadModel$default(LlamaNative.kt:143)\n\tat app.skein.inference.service.LlamaNativeTest.loadTinyModel(LlamaNativeTest.kt:643)\n\tat app.skein.inference.service.LlamaNativeTest.applyChatTemplateContainsTheUserMessage(LlamaNativeTest.kt:199)\n"
+  }
+]

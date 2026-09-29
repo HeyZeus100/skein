@@ -1,0 +1,9 @@
+{
+  "head": "19b071e86d73c314e7489bf66946e1f5fc6a37ca",
+  "files": {
+    "app/src/test/kotlin/app/skein/MainActivityModelImportTest.kt": "de9e378e768f0b604f40a0672a9e5f9ee00c29add60bf7cfaf2acb681ff0f479",
+    "app/src/test/kotlin/app/skein/TestSkeinApplication.kt": "1d1c38d1edcfff1d089e22655064f414d64650b1ebf0efe7fc43b31015ef31e1",
+    "app/src/main/kotlin/app/skein/shell/NavShell.kt": "ab0f48e1a302896fd47f5948104c7cb44e89ad56f3c9675a241cd8b74623900e",
+    "app/src/main/kotlin/app/skein/models/ModelImportCoordinator.kt": "fbbe9a80d98369f5d7b5619766aa1081245b73e7f752afdc1e6bafa29ff68357"
+  }
+}

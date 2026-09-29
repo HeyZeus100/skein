@@ -1,0 +1,26 @@
+[
+  {
+    "check": "native-opt-level.sh",
+    "exit": 0
+  },
+  {
+    "check": "elf-alignment.sh",
+    "exit": 0
+  },
+  {
+    "check": "jni-symbols.sh",
+    "exit": 0
+  },
+  {
+    "check": "sqlite-jni-symbols.sh",
+    "exit": 0
+  },
+  {
+    "check": "no-content-logging.sh",
+    "exit": 0
+  },
+  {
+    "check": "manifest-audit.sh",
+    "exit": 0
+  }
+]

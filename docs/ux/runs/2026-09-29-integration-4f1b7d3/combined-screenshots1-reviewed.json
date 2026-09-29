@@ -1,0 +1,94 @@
+{
+  "images": {
+    "unchanged": 552
+  },
+  "modules": [
+    {
+      "module": "feature/settings",
+      "summary": {
+        "total": 18,
+        "recorded": 0,
+        "added": 0,
+        "changed": 0,
+        "unchanged": 18
+      }
+    },
+    {
+      "module": "feature/chat",
+      "summary": {
+        "total": 164,
+        "recorded": 0,
+        "added": 0,
+        "changed": 0,
+        "unchanged": 164
+      }
+    },
+    {
+      "module": "feature/shell",
+      "summary": {
+        "total": 37,
+        "recorded": 0,
+        "added": 0,
+        "changed": 0,
+        "unchanged": 37
+      }
+    },
+    {
+      "module": "feature/graph",
+      "summary": {
+        "total": 18,
+        "recorded": 0,
+        "added": 0,
+        "changed": 0,
+        "unchanged": 18
+      }
+    },
+    {
+      "module": "feature/models",
+      "summary": {
+        "total": 38,
+        "recorded": 0,
+        "added": 0,
+        "changed": 0,
+        "unchanged": 38
+      }
+    },
+    {
+      "module": "feature/timeline",
+      "summary": {
+        "total": 20,
+        "recorded": 0,
+        "added": 0,
+        "changed": 0,
+        "unchanged": 20
+      }
+    },
+    {
+      "module": "feature/editor",
+      "summary": {
+        "total": 68,
+        "recorded": 0,
+        "added": 0,
+        "changed": 0,
+        "unchanged": 68
+      }
+    },
+    {
+      "module": "core/designsystem",
+      "summary": {
+        "total": 189,
+        "recorded": 0,
+        "added": 0,
+        "changed": 0,
+        "unchanged": 189
+      }
+    }
+  ],
+  "xml": {
+    "passed": 1241,
+    "skipped": 80,
+    "failures": 0,
+    "errors": 0
+  },
+  "note": "Uses actual Roborazzi type key; earlier results.json exploratory parser looked for result_type and is superseded."
+}

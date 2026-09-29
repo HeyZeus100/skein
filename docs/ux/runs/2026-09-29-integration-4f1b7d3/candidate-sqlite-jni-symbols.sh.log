@@ -1,0 +1,4 @@
+sqlite-jni-symbols: SkeinSQLiteNative.kt declares 25 external fun(s) on SkeinSQLiteNativeImpl
+sqlite-jni-symbols: core/vault/build/intermediates/cxx/Debug/6y733jp4/obj/arm64-v8a/libskein_sqlite_jni.so: 25 Java_ symbol(s), exactly the declared externals
+sqlite-jni-symbols: core/vault/build/intermediates/library_jni/fossDebug/copyFossDebugJniLibsProjectOnly/jni/arm64-v8a/libskein_sqlite_jni.so: 25 Java_ symbol(s), exactly the declared externals
+sqlite-jni-symbols: core/vault/build/intermediates/merged_native_libs/fossDebug/mergeFossDebugNativeLibs/out/lib/arm64-v8a/libskein_sqlite_jni.so: 25 Java_ symbol(s), exactly the declared externals

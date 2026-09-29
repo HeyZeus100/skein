@@ -1,0 +1,82 @@
+[
+  {
+    "class": "app.skein.MainActivityDraftRetentionTest",
+    "name": "production lock removes content and unlock loads the encrypted-row draft with its selection",
+    "tags": []
+  },
+  {
+    "class": "app.skein.MainActivityDraftRetentionTest",
+    "name": "production conversation restores the session draft and selection after activity recreation",
+    "tags": []
+  },
+  {
+    "class": "app.skein.MainActivityModelImportTest",
+    "name": "copy survives recreation and completion makes visible Chat ready without navigation",
+    "tags": []
+  },
+  {
+    "class": "app.skein.MainActivityModelImportTest",
+    "name": "late rescued name after recreation cannot replace or dismiss newer import refusal",
+    "tags": []
+  },
+  {
+    "class": "app.skein.models.ModelServicesImportLifecycleTest",
+    "name": "HIGH during parked unlock prevents old attachment cancelling newer registration",
+    "tags": []
+  },
+  {
+    "class": "app.skein.models.ModelServicesImportLifecycleTest",
+    "name": "close during parked cache refresh prevents late authorization and import admission",
+    "tags": []
+  },
+  {
+    "class": "app.skein.models.ModelServicesImportLifecycleTest",
+    "name": "close during parked unlock prevents old attachment cancelling newer registration",
+    "tags": []
+  },
+  {
+    "class": "app.skein.MainActivityDraftRetentionTest",
+    "name": "production lock removes content and unlock loads the encrypted-row draft with its selection",
+    "tags": []
+  },
+  {
+    "class": "app.skein.MainActivityDraftRetentionTest",
+    "name": "production conversation restores the session draft and selection after activity recreation",
+    "tags": []
+  },
+  {
+    "class": "app.skein.MainActivityModelImportTest",
+    "name": "copy survives recreation and completion makes visible Chat ready without navigation",
+    "tags": []
+  },
+  {
+    "class": "app.skein.MainActivityModelImportTest",
+    "name": "late rescued name after recreation cannot replace or dismiss newer import refusal",
+    "tags": []
+  },
+  {
+    "class": "app.skein.models.ModelServicesImportLifecycleTest",
+    "name": "HIGH during parked unlock prevents old attachment cancelling newer registration",
+    "tags": []
+  },
+  {
+    "class": "app.skein.models.ModelServicesImportLifecycleTest",
+    "name": "close during parked cache refresh prevents late authorization and import admission",
+    "tags": []
+  },
+  {
+    "class": "app.skein.models.ModelServicesImportLifecycleTest",
+    "name": "close during parked unlock prevents old attachment cancelling newer registration",
+    "tags": []
+  },
+  {
+    "class": "app.skein.inference.service.InferenceWorkerLifecycleTest",
+    "name": "decode OOM on the real worker securely cleans up and permits the next load",
+    "tags": []
+  },
+  {
+    "class": "app.skein.inference.service.InferenceWorkerLifecycleTest",
+    "name": "decode OOM on the real worker securely cleans up and permits the next load",
+    "tags": []
+  }
+]
