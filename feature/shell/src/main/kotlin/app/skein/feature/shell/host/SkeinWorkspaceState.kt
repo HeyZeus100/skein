@@ -9,6 +9,7 @@ import androidx.compose.runtime.saveable.Saver
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import app.skein.core.navigation.ChatKey
+import app.skein.core.navigation.Destination
 import app.skein.core.navigation.ChatSourceKey
 import app.skein.core.navigation.FileKey
 import app.skein.core.navigation.NoteKey
@@ -52,9 +53,11 @@ class SkeinWorkspaceState internal constructor(
         if (restored.currentStack.any { mutableDocument(it, restored) in owned }) {
             restored = secondary.navigator.goTo(restored, restored.currentStack.first())
         }
-        val primaryDraft = primary.nav.currentStack.filterIsInstance<NewChatKey>().lastOrNull()
-        if (primaryDraft != null && restored.currentStack.any { it == primaryDraft }) {
+        val primaryDrafts = primary.nav.stacks.values.flatten().filterIsInstance<NewChatKey>().toSet()
+        if (restored.stacks.values.flatten().any { it in primaryDrafts }) {
+            val previousDestination = restored.topLevel
             restored = secondary.navigator.goTo(restored, NewChatKey(SkeinId.random()))
+            if (previousDestination != Destination.CHAT) restored = secondary.navigator.switchTo(restored, previousDestination)
         }
         secondary.replaceNavigation(secondary.navigator.switchSpace(restored, primary.nav.space))
         primary.navigationGuard = { accept(WorkspacePane.PRIMARY, it) }
@@ -95,8 +98,9 @@ class SkeinWorkspaceState internal constructor(
         val other = other(pane)
         val otherShell = shell(other)
         val selected = next.currentStack.mapNotNull { mutableDocument(it, next) }.toSet()
+        val selectedDrafts = next.currentStack.filterIsInstance<NewChatKey>().toSet()
         // Retained, unplaced editors still have pending writers. Never give one document two owners.
-        if (selected.isNotEmpty() && otherShell.nav.currentStack.any { mutableDocument(it, otherShell.nav) in selected }) {
+        if (otherShell.nav.currentStack.any { mutableDocument(it, otherShell.nav) in selected || it in selectedDrafts }) {
             activate(other)
             return false
         }

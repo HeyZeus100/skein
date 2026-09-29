@@ -70,6 +70,21 @@ class SkeinWorkspaceStateTest {
     }
 
     @Test
+    fun `inactive restored chat drafts cannot alias another pane after a destination switch`() {
+        val primary = shell("primary")
+        primary.navigate { goTo(it, NewChatKey(DRAFT_D)) }
+        val secondary = shell("secondary", primary.nav)
+        primary.navigate { goTo(it, GraphKey()) }
+        val workspace = SkeinWorkspaceState(primary, secondary)
+        workspace.primary.navigate { switchTo(it, Destination.CHAT) }
+        assertNotEquals(workspace.primary.nav.currentStack.last(), workspace.secondary.nav.currentStack.last())
+        val secondaryDraft = workspace.secondary.nav.currentStack.last() as NewChatKey
+        workspace.primary.navigate { goTo(it, secondaryDraft) }
+        assertEquals(WorkspacePane.SECONDARY, workspace.activePane)
+        assertEquals(NewChatKey(DRAFT_D), workspace.primary.nav.currentStack.last())
+    }
+
+    @Test
     fun `swapping moves whole owners without changing routes or editable identities`() {
         val workspace = SkeinWorkspaceState(shell("primary"), shell("secondary"))
         workspace.primary.navigate { goTo(it, NoteKey(NOTE_B)) }
