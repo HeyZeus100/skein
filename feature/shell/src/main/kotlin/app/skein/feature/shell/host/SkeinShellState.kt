@@ -40,6 +40,7 @@ class SkeinShellState internal constructor(
     internal val entryState: Map<Destination, SaveableStateHolder>,
     val stores: SessionEntryStores,
     private val onReset: () -> Unit = {},
+    val ownerKey: String = "primary",
 ) {
     internal val navigator = Navigator()
 
@@ -47,6 +48,36 @@ class SkeinShellState internal constructor(
         private set
 
     val sheets = SheetPresentation()
+
+    /** Content-free namespace for the root composer; explicit draft keys take precedence. */
+    val rootDraftId: String =
+        if (ownerKey == "primary") "00000000-0000-0000-0000-000000000001" else "00000000-0000-0000-0000-000000000002"
+
+    internal var collapsedLists by mutableStateOf(setOf<Destination>())
+    internal var newChatKnowledgeChoices by mutableStateOf(mapOf<Pair<String, String>, Boolean>())
+
+    fun newChatKnowledgeEnabled(spaceId: String, draftId: String): Boolean =
+        newChatKnowledgeChoices[spaceId to draftId] ?: true
+
+    fun setNewChatKnowledgeEnabled(spaceId: String, draftId: String, enabled: Boolean) {
+        require(SkeinId.parse(spaceId) != null && SkeinId.parse(draftId) != null) { "Invalid draft preference identity" }
+        val identity = spaceId to draftId
+        newChatKnowledgeChoices = (newChatKnowledgeChoices - identity + (identity to enabled)).entries.toList()
+            .takeLast(MAX_DRAFT_CHOICES).associate { it.toPair() }
+    }
+
+    fun isListExpanded(destination: Destination): Boolean = destination !in collapsedLists
+
+    fun toggleList(destination: Destination) {
+        if (destination != Destination.CHAT && destination != Destination.KNOWLEDGE) return
+        collapsedLists = if (destination in collapsedLists) collapsedLists - destination else collapsedLists + destination
+    }
+
+    internal var navigationGuard: ((SkeinNavigationState) -> Boolean)? = null
+
+    internal fun replaceNavigation(state: SkeinNavigationState) {
+        nav = state
+    }
 
     /** The search overlay (`SkeinSearch.kt`) is open. Composition-scoped (T8): the lock closes it. */
     var searchOpen: Boolean by mutableStateOf(false)
@@ -73,7 +104,7 @@ class SkeinShellState internal constructor(
 
     /** Applies one [Navigator] transition; a null result (Back not consumed) changes nothing. */
     fun navigate(transition: Navigator.(SkeinNavigationState) -> SkeinNavigationState?) {
-        navigator.transition(nav)?.let { nav = it }
+        navigator.transition(nav)?.let { if (navigationGuard?.invoke(it) != false) nav = it }
     }
 
     /** The lock's hook: transient entries close and their raw ids leave memory; sheets fall back to the peek. */
@@ -97,6 +128,8 @@ class SkeinShellState internal constructor(
         searchOpen = false
         drawerCloseRequest = 0
         stores.clearAll()
+        collapsedLists = emptySet()
+        newChatKnowledgeChoices = emptyMap()
         onReset()
     }
 }
@@ -106,23 +139,28 @@ class SkeinShellState internal constructor(
  * from the saved-state Bundle only (M4b), never from the Intent.
  */
 @Composable
-fun rememberSkeinShellState(unlockManager: UnlockManager): SkeinShellState {
-    val stores = viewModel { SessionEntryStores(unlockManager) }
+fun rememberSkeinShellState(
+    unlockManager: UnlockManager,
+    ownerKey: String = "primary",
+): SkeinShellState {
+    require(ownerKey == "primary" || ownerKey == "secondary") { "Unknown workspace owner" }
+    val stores = viewModel(key = "skein.session.entries.$ownerKey") { SessionEntryStores(unlockManager) }
     // M4e: a vault reset starts a new generation. Everything saveable below is keyed by it, so the old
     // generation's T1 and T2 leave composition and their saved-state entries are unregistered with them.
     var generation by rememberSaveable { mutableIntStateOf(0) }
-    return key(generation) { rememberShellGeneration(stores) { generation++ } }
+    return key(ownerKey, generation) { rememberShellGeneration(stores, ownerKey) { generation++ } }
 }
 
 @Composable
 private fun rememberShellGeneration(
     stores: SessionEntryStores,
+    ownerKey: String,
     onReset: () -> Unit,
 ): SkeinShellState {
     val entryState = Destination.entries.associateWith { key(it) { rememberSaveableStateHolder() } }
     val shell =
-        rememberSaveable(saver = shellSaver(entryState, stores, onReset)) {
-            SkeinShellState(SkeinNavigationState.initial(), entryState, stores, onReset)
+        rememberSaveable(saver = shellSaver(entryState, stores, onReset, ownerKey)) {
+            SkeinShellState(SkeinNavigationState.initial(), entryState, stores, onReset, ownerKey)
         }
     DisposableEffect(shell) {
         val hook = stores.doOnLocked(shell::onLocked)
@@ -135,15 +173,52 @@ private fun shellSaver(
     entryState: Map<Destination, SaveableStateHolder>,
     stores: SessionEntryStores,
     onReset: () -> Unit,
+    ownerKey: String,
 ): Saver<SkeinShellState, Bundle> =
     Saver(
-        save = { bundleOf(SkeinNavCodec.encode(it.nav)) },
+        save = {
+            bundleOf(SkeinNavCodec.encode(it.nav)).apply {
+                putInt(LIST_VISIBILITY, it.collapsedLists.fold(0) { bits, destination -> bits or (1 shl destination.ordinal) })
+                putParcelableArrayList(DRAFT_CHOICES, it.newChatKnowledgeChoices.mapTo(ArrayList()) { (identity, enabled) ->
+                    Bundle().apply {
+                        putString("space", identity.first)
+                        putString("draft", identity.second)
+                        putInt("enabled", if (enabled) 1 else 0)
+                    }
+                })
+            }
+        },
         // Total (M4c): an unreadable Bundle restores the root stacks.
         restore = { saved ->
-            val nav = runCatching { SkeinNavCodec.decode(treeOf(saved)) }.getOrElse { SkeinNavigationState.initial() }
-            SkeinShellState(nav, entryState, stores, onReset)
+            val bits = saved.getInt(LIST_VISIBILITY, 0)
+            val navigation = Bundle(saved).apply {
+                remove(LIST_VISIBILITY)
+                remove(DRAFT_CHOICES)
+            }
+            val nav = runCatching { SkeinNavCodec.decode(treeOf(navigation)) }.getOrElse { SkeinNavigationState.initial() }
+            SkeinShellState(nav, entryState, stores, onReset, ownerKey).apply {
+                collapsedLists = setOf(Destination.CHAT, Destination.KNOWLEDGE).filterTo(mutableSetOf()) {
+                    bits and (1 shl it.ordinal) != 0
+                }
+                @Suppress("DEPRECATION")
+                val choices = saved.getParcelableArrayList<Bundle>(DRAFT_CHOICES).orEmpty().takeLast(MAX_DRAFT_CHOICES)
+                choices.forEach { choice ->
+                    val space = choice.getString("space")
+                    val draft = choice.getString("draft")
+                    val enabled = choice.getInt("enabled", -1)
+                    if (space != null && draft != null && SkeinId.parse(space) != null &&
+                        SkeinId.parse(draft) != null && enabled in 0..1
+                    ) {
+                        setNewChatKnowledgeEnabled(space, draft, enabled == 1)
+                    }
+                }
+            }
         },
     )
+
+private const val LIST_VISIBILITY = "skein_list_visibility"
+private const val DRAFT_CHOICES = "skein_draft_choices"
+private const val MAX_DRAFT_CHOICES = 16
 
 /** The codec's saved form, 1:1: a map is a Bundle, a list an `ArrayList<Bundle>`, leaves `String`/`Int`. */
 private fun bundleOf(tree: Map<*, *>): Bundle =
