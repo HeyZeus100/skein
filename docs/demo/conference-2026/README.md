@@ -4,7 +4,7 @@ Three fictional domain packs demonstrate asking about saved notes and opening th
 
 The [demo controls guide](controls.md) covers the split view, collapsible note/chat lists and first-send Knowledge switch in the workspace update.
 
-**Rehearsal status: NOT RUN.** Durations are planned targets, not measured performance. The UI route was inspected at integration commit `a4ba4f4`; identify and rehearse the installed candidate separately. This pack supports `skein-830f`. It is not an evaluation corpus, benchmark result or acceptance sign-off. Do not add it to evaluation gold or tune retrieval thresholds against it.
+**Rehearsal status: partial; demo not ready.** Durations are planned targets, not measured performance. The checkpoints below distinguish the original route inspection from actual checks on the installed candidate. This pack supports `skein-830f`. It is not an evaluation corpus, benchmark result or acceptance sign-off. Do not add it to evaluation gold or tune retrieval thresholds against it.
 
 **Physical checkpoint, 29 September at 10:48 UTC:** candidate `5ae91c2` is installed with its APK digest verified. The native public-model replay passed five template/token/control cases and EOG classification; the synthetic answer attempt hit its 900-second watchdog with no valid manifest or answer rows. Normal app launch succeeded, but the device keyguard requires the owner to unlock. **The demo is not ready and post-update UI rehearsal remains NOT RUN.** See the [physical evidence and open gates](runs/2026-09-29-physical/README.md).
 
@@ -12,7 +12,9 @@ The [demo controls guide](controls.md) covers the split view, collapsible note/c
 
 **Installation checkpoint, 16:47 UTC:** the workspace update at `28354dd25` was installed, with its copied APK hash, signer and data-preservation metadata verified. At that checkpoint, normal Android unlock was required and no new UI question or instrumentation had started. See the [workspace installation record](runs/2026-09-29-workspace-update/README.md). The demo remains **not ready** until its live checks pass.
 
-**Later live checkpoint:** the owner unlocked the Fold. New chat, collapsible lists, note/chat, two-note and note/graph layouts, Swap and draft retention were observed on the device, with no teal crease line. One controlled general question completed with Knowledge off; the exact two-sentence format was missed. [Physical UI and general-answer observations](runs/2026-09-29-workspace-update/ui-rehearsal.md) preserve the timing limit and earlier ambiguous interaction. Knowledge-on answers and full demo rehearsal remain pending.
+**Later live checkpoint:** the owner unlocked the Fold. New chat, collapsible lists, note/chat, two-note and note/graph layouts, Swap and draft retention were observed on the device, with no teal crease line. One controlled general question completed with Knowledge off; the exact two-sentence format was missed. [Physical UI and general-answer observations](runs/2026-09-29-workspace-update/ui-rehearsal.md) preserve the timing limit and earlier ambiguous interaction.
+
+**Knowledge-on checkpoint, 17:23 UTC:** the construction synthesis turn stayed blank and was stopped; the missing-PO answer acknowledged that no number was provided, but added an unsupported hedge and rendered no citation. The [controlled construction record](runs/2026-09-29-workspace-update/construction-probes.md) preserves the original timings and failures. The complete demo and citation gates remain open.
 
 The owner needs the Fold ready by **17:00 on 29 September 2026, America/Los_Angeles (PDT)**. The planned **code freeze is 16:00**, followed by final rehearsal on the same APK and model. The owner released the previous Fold HOLD for a verified update and demo checks with existing app data preserved. One designated runner owns all physical-device access.
 
@@ -108,13 +110,13 @@ The device runner records observations here or in linked evidence. Runtime rehea
 | Construction: three notes imported once; titles/bodies checked | Three import confirmations observed; body inspection and answer rehearsal pending. [UI checkpoint](runs/2026-09-29-ui-checkpoint/README.md). |
 | Aviation/mycology: any optional packs imported and checked | Six files staged; not imported. |
 | Indexing status, including pending semantic work | Aggregate UI reported one document awaiting search by meaning; all-demo readiness unproven. |
-| New-chat Knowledge state and same-Space retrieval | NOT RUN |
-| Construction cross-note question: facts and both supporting sources | NOT RUN |
+| New-chat Knowledge state and same-Space retrieval | Knowledge on verified before both construction sends; Context listed exactly the three fictional construction notes. This does not prove rendered citations. |
+| Construction cross-note question: facts and both supporting sources | FAILED visible-answer rehearsal: no text observed through 182.79s; stopped at 226.87s; no answer saved. |
 | Construction single-source fallback, if needed; original failure retained | NOT RUN |
-| Construction answer: first visible response / completion time | NOT RUN |
+| Construction answer: first visible response / completion time | Synthesis did not complete before Stop. Missing-PO answer first observed complete at 70.963s, after blank at 62.736s; exact TTFT/completion unmeasured. |
 | Rendered citation or identified Context fallback opens correct source | NOT RUN |
 | Owner's physical unfold: same chat, correct source, usable layout | NOT RUN |
-| Construction absent fact: no invented purchase order number | NOT RUN |
+| Construction absent fact: no invented purchase order number | No number invented in the controlled turn; unsupported extra hedge and missing citation prevent whole-answer acceptance. |
 | Optional aviation: correct facts/sources and no invented serial number | NOT RUN |
 | Optional mycology: synthetic readings identified, no invented temperature | NOT RUN |
 | Generation skipped for any refusal, if established by evidence | NOT RUN |
