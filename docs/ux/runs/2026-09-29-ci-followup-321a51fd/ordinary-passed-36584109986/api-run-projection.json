@@ -1,0 +1,18 @@
+{
+  "projection": {
+    "id": 36584109986,
+    "run_number": 54,
+    "run_attempt": 1,
+    "event": "workflow_dispatch",
+    "status": "completed",
+    "conclusion": "success",
+    "head_sha": "321a51fdb0d7f6624e0fb957b819b968965d5e3f",
+    "head_branch": "main",
+    "html_url": "https://github.com/HeyZeus100/skein/actions/runs/36584109986",
+    "created_at": "2026-09-29T14:37:55Z",
+    "updated_at": "2026-09-29T14:52:54Z"
+  },
+  "original_snapshot_sha256": "30f2162d195dbb27dcaeb0408c0e960533eef7ec583b76f5c203259ab5d5f06f",
+  "original_snapshot_bytes": 12034,
+  "omitted_fields": "Public actor/repository profile metadata and unrelated API URLs are omitted from this projection."
+}

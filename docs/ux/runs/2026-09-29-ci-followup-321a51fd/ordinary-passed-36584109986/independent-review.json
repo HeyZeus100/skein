@@ -1,0 +1,2700 @@
+{
+  "run_id": 36584109986,
+  "lane": "ordinary",
+  "source_sha": "321a51fdb0d7f6624e0fb957b819b968965d5e3f",
+  "conclusion": "success",
+  "workflow_run_url": "https://github.com/HeyZeus100/skein/actions/runs/36584109986",
+  "source_attribution": "GitHub run API plus host-declared checkout; no installed APK attestation",
+  "errors": [],
+  "artifacts": [
+    {
+      "id": 11041491749,
+      "path": "artifact-11041491749-connected-test-reports.zip",
+      "bytes": 973048,
+      "sha256": "14bf246b978617f81dea8e7735a09ca23dfbb0b889f6bc8fbc52db09aa2c0f50",
+      "api_digest_matched": true
+    }
+  ],
+  "jobs": [
+    {
+      "id": 109459702262,
+      "run_id": 36584109986,
+      "workflow_name": "Emulator instrumented tests",
+      "head_branch": "main",
+      "run_url": "https://api.github.com/repos/HeyZeus100/skein/actions/runs/36584109986",
+      "run_attempt": 1,
+      "node_id": "CR_kwDOUh-fnc8AAAAZfE6B9g",
+      "head_sha": "321a51fdb0d7f6624e0fb957b819b968965d5e3f",
+      "url": "https://api.github.com/repos/HeyZeus100/skein/actions/jobs/109459702262",
+      "html_url": "https://github.com/HeyZeus100/skein/actions/runs/36584109986/job/109459702262",
+      "status": "completed",
+      "conclusion": "success",
+      "created_at": "2026-09-29T14:37:57Z",
+      "started_at": "2026-09-29T14:37:59Z",
+      "completed_at": "2026-09-29T14:52:53Z",
+      "name": "Instrumented tests (API 35, x86_64)",
+      "steps": [
+        {
+          "name": "Set up job",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 1,
+          "started_at": "2026-09-29T14:37:59Z",
+          "completed_at": "2026-09-29T14:38:01Z"
+        },
+        {
+          "name": "Checkout",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 2,
+          "started_at": "2026-09-29T14:38:01Z",
+          "completed_at": "2026-09-29T14:38:15Z"
+        },
+        {
+          "name": "Set up JDK 17 (Temurin)",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 3,
+          "started_at": "2026-09-29T14:38:15Z",
+          "completed_at": "2026-09-29T14:38:15Z"
+        },
+        {
+          "name": "Cache the tiny GGUF test model",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 4,
+          "started_at": "2026-09-29T14:38:15Z",
+          "completed_at": "2026-09-29T14:38:16Z"
+        },
+        {
+          "name": "Choose the OpenSSL tarball cache directory",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 5,
+          "started_at": "2026-09-29T14:38:16Z",
+          "completed_at": "2026-09-29T14:38:16Z"
+        },
+        {
+          "name": "Derive pinned OpenSSL sha256 (cache key)",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 6,
+          "started_at": "2026-09-29T14:38:16Z",
+          "completed_at": "2026-09-29T14:38:16Z"
+        },
+        {
+          "name": "Cache the pinned OpenSSL tarball",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 7,
+          "started_at": "2026-09-29T14:38:16Z",
+          "completed_at": "2026-09-29T14:38:17Z"
+        },
+        {
+          "name": "Put Android SDK cmdline-tools / platform-tools / emulator on PATH",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 8,
+          "started_at": "2026-09-29T14:38:17Z",
+          "completed_at": "2026-09-29T14:38:17Z"
+        },
+        {
+          "name": "Install required Android SDK packages",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 9,
+          "started_at": "2026-09-29T14:38:17Z",
+          "completed_at": "2026-09-29T14:38:27Z"
+        },
+        {
+          "name": "Set up Gradle",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 10,
+          "started_at": "2026-09-29T14:38:27Z",
+          "completed_at": "2026-09-29T14:38:37Z"
+        },
+        {
+          "name": "Verify actual XML reviewer",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 11,
+          "started_at": "2026-09-29T14:38:37Z",
+          "completed_at": "2026-09-29T14:38:37Z"
+        },
+        {
+          "name": "Enable KVM",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 12,
+          "started_at": "2026-09-29T14:38:37Z",
+          "completed_at": "2026-09-29T14:38:37Z"
+        },
+        {
+          "name": "Run instrumented tests",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 13,
+          "started_at": "2026-09-29T14:38:37Z",
+          "completed_at": "2026-09-29T14:52:26Z"
+        },
+        {
+          "name": "Require complete passing ordinary instrumentation XML",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 14,
+          "started_at": "2026-09-29T14:52:26Z",
+          "completed_at": "2026-09-29T14:52:26Z"
+        },
+        {
+          "name": "Record instrumentation source and artifact hashes",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 15,
+          "started_at": "2026-09-29T14:52:26Z",
+          "completed_at": "2026-09-29T14:52:27Z"
+        },
+        {
+          "name": "Upload instrumented test reports",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 16,
+          "started_at": "2026-09-29T14:52:27Z",
+          "completed_at": "2026-09-29T14:52:28Z"
+        },
+        {
+          "name": "Post Set up Gradle",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 28,
+          "started_at": "2026-09-29T14:52:28Z",
+          "completed_at": "2026-09-29T14:52:50Z"
+        },
+        {
+          "name": "Post Cache the pinned OpenSSL tarball",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 29,
+          "started_at": "2026-09-29T14:52:50Z",
+          "completed_at": "2026-09-29T14:52:50Z"
+        },
+        {
+          "name": "Post Cache the tiny GGUF test model",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 30,
+          "started_at": "2026-09-29T14:52:50Z",
+          "completed_at": "2026-09-29T14:52:51Z"
+        },
+        {
+          "name": "Post Set up JDK 17 (Temurin)",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 31,
+          "started_at": "2026-09-29T14:52:51Z",
+          "completed_at": "2026-09-29T14:52:51Z"
+        },
+        {
+          "name": "Post Checkout",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 32,
+          "started_at": "2026-09-29T14:52:51Z",
+          "completed_at": "2026-09-29T14:52:51Z"
+        },
+        {
+          "name": "Complete job",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 33,
+          "started_at": "2026-09-29T14:52:51Z",
+          "completed_at": "2026-09-29T14:52:51Z"
+        }
+      ],
+      "check_run_url": "https://api.github.com/repos/HeyZeus100/skein/check-runs/109459702262",
+      "labels": [
+        "ubuntu-latest"
+      ],
+      "runner_id": 1000003807,
+      "runner_name": "GitHub Actions 1000003807",
+      "runner_group_id": 0,
+      "runner_group_name": "GitHub Actions"
+    }
+  ],
+  "run_log_zip_sha256": "bd790fdefd7eeadd6ce14d69faf8f512907882191ff336ebbb758edb33141868",
+  "workflow_review": {
+    "schema_version": 1,
+    "lane": "ordinary-instrumentation",
+    "modules": {
+      "app": {
+        "files": [
+          "app/build/outputs/androidTest-results/connected/debug/flavors/dev/TEST-test(AVD) - 15.xml"
+        ],
+        "tests": 38,
+        "passed": 38,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0,
+        "nonpassing_cases": []
+      },
+      "core/vault": {
+        "files": [
+          "core/vault/build/outputs/androidTest-results/connected/debug/flavors/dev/TEST-test(AVD) - 15.xml"
+        ],
+        "tests": 204,
+        "passed": 204,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0,
+        "nonpassing_cases": []
+      },
+      "inference-service": {
+        "files": [
+          "inference-service/build/outputs/androidTest-results/connected/debug/flavors/dev/TEST-test(AVD) - 15.xml"
+        ],
+        "tests": 39,
+        "passed": 39,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0,
+        "nonpassing_cases": []
+      }
+    },
+    "errors": [],
+    "passed": true
+  },
+  "verification_manifest": {
+    "built_apks": [
+      {
+        "path": "app/build/outputs/apk/androidTest/dev/debug/app-dev-debug-androidTest.apk",
+        "sha256": "0e30cdafee32e19edeb7e38ab6b4709cc59e494a7325af09430d58acda1758a4"
+      },
+      {
+        "path": "app/build/outputs/apk/dev/debug/app-dev-debug.apk",
+        "sha256": "8ddb7948828b7c9d244161b61a133e28bf74de79f7337a919130f02767118164"
+      },
+      {
+        "path": "core/vault/build/outputs/apk/androidTest/dev/debug/vault-dev-debug-androidTest.apk",
+        "sha256": "ed11a5090f8fd2ae2ce0f0a0c7bdd6f9195a121b8bf6bf0d1bd558a3a3702a32"
+      },
+      {
+        "path": "inference-service/build/outputs/apk/androidTest/dev/debug/inference-service-dev-debug-androidTest.apk",
+        "sha256": "45f067ddf26868c851527990f737b1c298c6753225309bcd363d3ef8ba1586a0"
+      }
+    ],
+    "built_apk_attribution": "host build outputs; installed bytes were not independently measured here",
+    "lane": "instrumentation",
+    "source_sha": "321a51fdb0d7f6624e0fb957b819b968965d5e3f",
+    "source_attribution": "host-declared git checkout, not APK attestation",
+    "files": [
+      {
+        "path": "app/build/outputs/androidTest-results/connected/debug/flavors/dev/TEST-test(AVD) - 15.xml",
+        "bytes": 8522,
+        "sha256": "7583724fef8433ec9e70d1a46eaa8244ee4297043a1f0c0bd3a0ade27b0ee483"
+      },
+      {
+        "path": "build/instrumentation-review.json",
+        "bytes": 983,
+        "sha256": "2b9474372f90097cfeca357a48ca216945294d66ca20c6c4d533a786844e0afb"
+      },
+      {
+        "path": "core/vault/build/outputs/androidTest-results/connected/debug/flavors/dev/TEST-test(AVD) - 15.xml",
+        "bytes": 38385,
+        "sha256": "d85b98f33aedc278a9e7c0366072081074447a36f563d3e3bdb4e90081517c3f"
+      },
+      {
+        "path": "inference-service/build/outputs/androidTest-results/connected/debug/flavors/dev/TEST-test(AVD) - 15.xml",
+        "bytes": 6497,
+        "sha256": "c918b5390154c8d5e57ff0a4690a47d7f3371f80c50246fe59933626f13d7cfd"
+      }
+    ]
+  },
+  "modules": {
+    "app": {
+      "tests": 38,
+      "passed": 38,
+      "failure": 0,
+      "error": 0,
+      "skipped": 0
+    },
+    "core/vault": {
+      "tests": 204,
+      "passed": 204,
+      "failure": 0,
+      "error": 0,
+      "skipped": 0
+    },
+    "inference-service": {
+      "tests": 39,
+      "passed": 39,
+      "failure": 0,
+      "error": 0,
+      "skipped": 0
+    }
+  },
+  "identity_comparison": {
+    "reference_run": 36551469886,
+    "expected": 281,
+    "missing": [],
+    "unexpected": [],
+    "duplicates": 0
+  },
+  "rehashed_manifest": [
+    {
+      "path": "app/build/outputs/androidTest-results/connected/debug/flavors/dev/TEST-test(AVD) - 15.xml",
+      "bytes": 8522,
+      "sha256": "7583724fef8433ec9e70d1a46eaa8244ee4297043a1f0c0bd3a0ade27b0ee483"
+    },
+    {
+      "path": "build/instrumentation-review.json",
+      "bytes": 983,
+      "sha256": "2b9474372f90097cfeca357a48ca216945294d66ca20c6c4d533a786844e0afb"
+    },
+    {
+      "path": "core/vault/build/outputs/androidTest-results/connected/debug/flavors/dev/TEST-test(AVD) - 15.xml",
+      "bytes": 38385,
+      "sha256": "d85b98f33aedc278a9e7c0366072081074447a36f563d3e3bdb4e90081517c3f"
+    },
+    {
+      "path": "inference-service/build/outputs/androidTest-results/connected/debug/flavors/dev/TEST-test(AVD) - 15.xml",
+      "bytes": 6497,
+      "sha256": "c918b5390154c8d5e57ff0a4690a47d7f3371f80c50246fe59933626f13d7cfd"
+    }
+  ],
+  "collector_scope": {
+    "entries": 4,
+    "expected_current_entries": 4,
+    "historical_docs_paths": [],
+    "missing": [],
+    "unexpected": []
+  },
+  "built_apk_declarations": [
+    {
+      "path": "app/build/outputs/apk/androidTest/dev/debug/app-dev-debug-androidTest.apk",
+      "sha256": "0e30cdafee32e19edeb7e38ab6b4709cc59e494a7325af09430d58acda1758a4",
+      "bytes_available": false,
+      "independently_rehashed": null
+    },
+    {
+      "path": "app/build/outputs/apk/dev/debug/app-dev-debug.apk",
+      "sha256": "8ddb7948828b7c9d244161b61a133e28bf74de79f7337a919130f02767118164",
+      "bytes_available": false,
+      "independently_rehashed": null
+    },
+    {
+      "path": "core/vault/build/outputs/apk/androidTest/dev/debug/vault-dev-debug-androidTest.apk",
+      "sha256": "ed11a5090f8fd2ae2ce0f0a0c7bdd6f9195a121b8bf6bf0d1bd558a3a3702a32",
+      "bytes_available": false,
+      "independently_rehashed": null
+    },
+    {
+      "path": "inference-service/build/outputs/apk/androidTest/dev/debug/inference-service-dev-debug-androidTest.apk",
+      "sha256": "45f067ddf26868c851527990f737b1c298c6753225309bcd363d3ef8ba1586a0",
+      "bytes_available": false,
+      "independently_rehashed": null
+    }
+  ],
+  "apk_attribution": "Manifest hashes are host build declarations; uploaded report archive may omit APK bytes. No installed-byte attestation.",
+  "counts": {
+    "tests": 281,
+    "passed": 281,
+    "failure": 0,
+    "error": 0,
+    "skipped": 0
+  },
+  "cases": [
+    {
+      "module": "app",
+      "class": "app.skein.SampleInstrumentedTest",
+      "name": "instrumentationTargetsTheAppUnderTest",
+      "time": "0.002",
+      "nonpassing": [],
+      "details": {}
+    },
+    {
+      "module": "app",
+      "class": "app.skein.inference.LlamaCppEngineInstrumentedTest",
+      "name": "lockAfterInspectionTerminatesTheProcessAndOnlyANewUnlockCanRebind",
+      "time": "5.470",
+      "nonpassing": [],
+      "details": {}
+    },
+    {
+      "module": "app",
+      "class": "app.skein.inference.LlamaCppEngineInstrumentedTest",
+      "name": "serviceDeathFailsTheStreamAndTheNextLoadRebinds",
+      "time": "4.845",
+      "nonpassing": [],
+      "details": {}
+    },
+    {
+      "module": "app",
+      "class": "app.skein.inference.LlamaCppEngineInstrumentedTest",
+      "name": "inspectReadsMetadataWithoutLoading",
+      "time": "3.502",
+      "nonpassing": [],
+      "details": {}
+    },
+    {
+      "module": "app",
+      "class": "app.skein.inference.LlamaCppEngineInstrumentedTest",
+      "name": "embed_without_capability_throws_invalid_model",
+      "time": "3.476",
+      "nonpassing": [],
+      "details": {}
+    },
+    {
+      "module": "app",
+      "class": "app.skein.inference.LlamaCppEngineInstrumentedTest",
+      "name": "stream_emits_done_last",
+      "time": "113.885",
+      "nonpassing": [],
+      "details": {}
+    },
+    {
+      "module": "app",
+      "class": "app.skein.inference.LlamaCppEngineInstrumentedTest",
+      "name": "load_bad_hash_returns_failure",
+      "time": "3.048",
+      "nonpassing": [],
+      "details": {}
+    },
+    {
+      "module": "app",
+      "class": "app.skein.inference.LlamaCppEngineInstrumentedTest",
+      "name": "cancel_stops_within_100ms",
+      "time": "3.506",
+      "nonpassing": [],
+      "details": {}
+    },
+    {
+      "module": "app",
+      "class": "app.skein.inference.LlamaCppEngineInstrumentedTest",
+      "name": "unload_then_stream_throws_not_loaded",
+      "time": "3.532",
+      "nonpassing": [],
+      "details": {}
+    },
+    {
+      "module": "app",
+      "class": "app.skein.inference.LlamaCppEngineInstrumentedTest",
+      "name": "second_stream_fails_busy",
+      "time": "10.295",
+      "nonpassing": [],
+      "details": {}
+    },
+    {
+      "module": "app",
+      "class": "app.skein.ingest.IngestWorkerInstrumentedTest",
+      "name": "three_queued_notes_are_chunked_searchable_and_linked_after_one_pass",
+      "time": "3.630",
+      "nonpassing": [],
+      "details": {}
+    },
+    {
+      "module": "app",
+      "class": "app.skein.ingest.IngestWorkerInstrumentedTest",
+      "name": "lock_cancels_the_unique_work_and_nothing_runs_while_locked",
+      "time": "0.972",
+      "nonpassing": [],
+      "details": {}
+    },
+    {
+      "module": "app",
+      "class": "app.skein.vault.FirstRunInstrumentedTest",
+      "name": "fresh_install_seeds_the_first_persona",
+      "time": "1.388",
+      "nonpassing": [],
+      "details": {}
+    },
+    {
+      "module": "app",
+      "class": "app.skein.vault.FirstRunInstrumentedTest",
+      "name": "second_launch_unlocks_without_setup",
+      "time": "1.641",
+      "nonpassing": [],
+      "details": {}
+    },
+    {
+      "module": "app",
+      "class": "app.skein.vault.FirstRunInstrumentedTest",
+      "name": "fresh_install_routes_to_setup_then_unlock_then_serves_the_root",
+      "time": "0.854",
+      "nonpassing": [],
+      "details": {}
+    },
+    {
+      "module": "app",
+      "class": "app.skein.vault.FirstRunInstrumentedTest",
+      "name": "a_second_setup_is_refused_and_the_vault_still_opens",
+      "time": "1.661",
+      "nonpassing": [],
+      "details": {}
+    },
+    {
+      "module": "app",
+      "class": "app.skein.vault.LockPolicySettingsRecreationInstrumentedTest",
+      "name": "changingLockOnScreenOffPersistsAndSurvivesActivityRecreation",
+      "time": "0.561",
+      "nonpassing": [],
+      "details": {}
+    },
+    {
+      "module": "app",
+      "class": "app.skein.vault.VaultBootstrapInstrumentedTest",
+      "name": "lock_after_bringUp_serves_no_roots",
+      "time": "0.740",
+      "nonpassing": [],
+      "details": {}
+    },
+    {
+      "module": "app",
+      "class": "app.skein.vault.VaultBootstrapInstrumentedTest",
+      "name": "a_second_unlock_reopens_the_same_vault_file",
+      "time": "1.029",
+      "nonpassing": [],
+      "details": {}
+    },
+    {
+      "module": "app",
+      "class": "app.skein.vault.VaultBootstrapInstrumentedTest",
+      "name": "unlock_then_bringUp_serves_the_vault_root",
+      "time": "0.536",
+      "nonpassing": [],
+      "details": {}
+    },
+    {
+      "module": "app",
+      "class": "app.skein.vault.VaultBootstrapInstrumentedTest",
+      "name": "timed_out_write_rolls_back_before_a_fresh_session_reopens_the_vault",
+      "time": "1.800",
+      "nonpassing": [],
+      "details": {}
+    },
+    {
+      "module": "app",
+      "class": "app.skein.vault.provider.VaultDocumentsProviderGrantInstrumentedTest",
+      "name": "read_worksAgain_afterLockThenReUnlock_usingTheSameDocumentId",
+      "time": "1.316",
+      "nonpassing": [],
+      "details": {}
+    },
+    {
+      "module": "app",
+      "class": "app.skein.vault.provider.VaultDocumentsProviderGrantInstrumentedTest",
+      "name": "read_throwsFileNotFoundException_afterTheVaultLocks",
+      "time": "0.649",
+      "nonpassing": [],
+      "details": {}
+    },
+    {
+      "module": "app",
+      "class": "app.skein.vault.provider.VaultDocumentsProviderGrantInstrumentedTest",
+      "name": "openDocument_roundTrips_theSeededNoteBytes_throughTheRealAuthority",
+      "time": "0.709",
+      "nonpassing": [],
+      "details": {}
+    },
+    {
+      "module": "app",
+      "class": "app.skein.vault.provider.VaultDocumentsProviderGrantInstrumentedTest",
+      "name": "rootRow_neverAdvertises_flagSupportsIsChild",
+      "time": "0.723",
+      "nonpassing": [],
+      "details": {}
+    },
+    {
+      "module": "app",
+      "class": "app.skein.vault.provider.VaultDocumentsProviderGrantInstrumentedTest",
+      "name": "takePersistableUriPermission_alwaysThrows_becauseNoPersistableGrantIsEverOffered",
+      "time": "0.593",
+      "nonpassing": [],
+      "details": {}
+    },
+    {
+      "module": "app",
+      "class": "app.skein.vault.provider.VaultDocumentsProviderTest",
+      "name": "openDocument_write_updatesTheNoteAndEnqueuesIngest",
+      "time": "0.163",
+      "nonpassing": [],
+      "details": {}
+    },
+    {
+      "module": "app",
+      "class": "app.skein.vault.provider.VaultDocumentsProviderTest",
+      "name": "openDocument_read_streamsExactlyWhatExportMarkdownProduces",
+      "time": "0.114",
+      "nonpassing": [],
+      "details": {}
+    },
+    {
+      "module": "app",
+      "class": "app.skein.vault.provider.VaultDocumentsProviderTest",
+      "name": "queryDocument_honoursARequestedProjection",
+      "time": "0.053",
+      "nonpassing": [],
+      "details": {}
+    },
+    {
+      "module": "app",
+      "class": "app.skein.vault.provider.VaultDocumentsProviderTest",
+      "name": "openDocument_read_streamsTheOriginalAttachmentBytes",
+      "time": "0.042",
+      "nonpassing": [],
+      "details": {}
+    },
+    {
+      "module": "app",
+      "class": "app.skein.vault.provider.VaultDocumentsProviderTest",
+      "name": "isChildDocument_scopesNotesUnderTheNotesDirectoryOnly",
+      "time": "0.054",
+      "nonpassing": [],
+      "details": {}
+    },
+    {
+      "module": "app",
+      "class": "app.skein.vault.provider.VaultDocumentsProviderTest",
+      "name": "queryChildDocuments_ofAttachments_listsEveryAttachmentWithItsStoredMimeType",
+      "time": "0.046",
+      "nonpassing": [],
+      "details": {}
+    },
+    {
+      "module": "app",
+      "class": "app.skein.vault.provider.VaultDocumentsProviderTest",
+      "name": "queryChildDocuments_ofNotes_listsEveryMarkdownDocumentAsTextMarkdown",
+      "time": "0.057",
+      "nonpassing": [],
+      "details": {}
+    },
+    {
+      "module": "app",
+      "class": "app.skein.vault.provider.VaultDocumentsProviderTest",
+      "name": "queryRoots_listsOneVaultRoot",
+      "time": "0.035",
+      "nonpassing": [],
+      "details": {}
+    },
+    {
+      "module": "app",
+      "class": "app.skein.vault.provider.VaultDocumentsProviderTest",
+      "name": "queryChildDocuments_ofRoot_listsNotesAndAttachments",
+      "time": "0.034",
+      "nonpassing": [],
+      "details": {}
+    },
+    {
+      "module": "app",
+      "class": "app.skein.vault.provider.VaultDocumentsProviderTest",
+      "name": "openDocument_refusesReadWriteMode",
+      "time": "0.040",
+      "nonpassing": [],
+      "details": {}
+    },
+    {
+      "module": "app",
+      "class": "app.skein.vault.provider.VaultDocumentsProviderTest",
+      "name": "locked_everyQueryAndOpenThrowsAndNothingIsListed",
+      "time": "0.034",
+      "nonpassing": [],
+      "details": {}
+    },
+    {
+      "module": "app",
+      "class": "app.skein.vault.security.AtRestEncryptionInstrumentedTest",
+      "name": "no_plaintext_or_key_material_on_disk_vault_db_is_not_sqlite_magic_and_lock_zeroes_the_key",
+      "time": "0.750",
+      "nonpassing": [],
+      "details": {}
+    },
+    {
+      "module": "core/vault",
+      "class": "app.skein.core.vault.db.SkeinSQLiteDriverInstrumentedTest",
+      "name": "vecVersionMatchesPinned",
+      "time": "0.001",
+      "nonpassing": [],
+      "details": {}
+    },
+    {
+      "module": "core/vault",
+      "class": "app.skein.core.vault.db.SkeinSQLiteDriverInstrumentedTest",
+      "name": "cipherVersionMatchesPinnedSqlcipher",
+      "time": "0.000",
+      "nonpassing": [],
+      "details": {}
+    },
+    {
+      "module": "core/vault",
+      "class": "app.skein.core.vault.db.SkeinSQLiteDriverInstrumentedTest",
+      "name": "getBlobRoundTrips256ByteInt8Vector",
+      "time": "0.031",
+      "nonpassing": [],
+      "details": {}
+    },
+    {
+      "module": "core/vault",
+      "class": "app.skein.core.vault.db.SkeinSQLiteDriverInstrumentedTest",
+      "name": "fts5VirtualTableProbe",
+      "time": "0.009",
+      "nonpassing": [],
+      "details": {}
+    },
+    {
+      "module": "core/vault",
+      "class": "app.skein.core.vault.db.SkeinSQLiteDriverInstrumentedTest",
+      "name": "openingWithWrongKeyThrowsNotADatabase",
+      "time": "0.014",
+      "nonpassing": [],
+      "details": {}
+    },
+    {
+      "module": "core/vault",
+      "class": "app.skein.core.vault.db.SkeinSQLiteDriverInstrumentedTest",
+      "name": "passphraseRoundTrip",
+      "time": "0.501",
+      "nonpassing": [],
+      "details": {}
+    },
+    {
+      "module": "core/vault",
+      "class": "app.skein.core.vault.db.SkeinSQLiteDriverInstrumentedTest",
+      "name": "bindAndGetRoundTripsForAllSupportedTypes",
+      "time": "0.011",
+      "nonpassing": [],
+      "details": {}
+    },
+    {
+      "module": "core/vault",
+      "class": "app.skein.core.vault.db.SkeinSQLiteDriverInstrumentedTest",
+      "name": "keyedOpenRunsSection4_9PragmaSequence",
+      "time": "0.005",
+      "nonpassing": [],
+      "details": {}
+    },
+    {
+      "module": "core/vault",
+      "class": "app.skein.core.vault.db.migrations.MigratorInstrumentedTest",
+      "name": "freshDatabaseMigratesToLatestVersionWithAllSchemaObjects",
+      "time": "0.060",
+      "nonpassing": [],
+      "details": {}
+    },
+    {
+      "module": "core/vault",
+      "class": "app.skein.core.vault.db.migrations.MigratorInstrumentedTest",
+      "name": "deletingChunkRemovesItFromFtsAndVec",
+      "time": "0.053",
+      "nonpassing": [],
+      "details": {}
+    },
+    {
+      "module": "core/vault",
+      "class": "app.skein.core.vault.db.migrations.MigratorInstrumentedTest",
+      "name": "insertingNoteDocumentEnqueuesCreatedReason",
+      "time": "0.041",
+      "nonpassing": [],
+      "details": {}
+    },
+    {
+      "module": "core/vault",
+      "class": "app.skein.core.vault.db.migrations.MigratorInstrumentedTest",
+      "name": "ledgerSeedsPre005DatabaseAndStillAppliesTheGapFillerWithoutLoweringUserVersion",
+      "time": "0.060",
+      "nonpassing": [],
+      "details": {}
+    },
+    {
+      "module": "core/vault",
+      "class": "app.skein.core.vault.db.migrations.MigratorInstrumentedTest",
+      "name": "afterMigration010ReChunkingLeavesNoResidue",
+      "time": "0.046",
+      "nonpassing": [],
+      "details": {}
+    },
+    {
+      "module": "core/vault",
+      "class": "app.skein.core.vault.db.migrations.MigratorInstrumentedTest",
+      "name": "brokenMigrationRollsBackAndLeavesUserVersionUnchanged",
+      "time": "0.011",
+      "nonpassing": [],
+      "details": {}
+    },
+    {
+      "module": "core/vault",
+      "class": "app.skein.core.vault.db.migrations.MigratorInstrumentedTest",
+      "name": "insertingChunkMakesTextFindableViaFtsMatch",
+      "time": "0.044",
+      "nonpassing": [],
+      "details": {}
+    },
+    {
+      "module": "core/vault",
+      "class": "app.skein.core.vault.db.migrations.MigratorInstrumentedTest",
+      "name": "updatingOnlyPersonaIdDoesNotEnqueue",
+      "time": "0.044",
+      "nonpassing": [],
+      "details": {}
+    },
+    {
+      "module": "core/vault",
+      "class": "app.skein.core.vault.db.migrations.MigratorInstrumentedTest",
+      "name": "exportStageDefaultsToUnsweptAndCascadesWithItsDocument",
+      "time": "0.046",
+      "nonpassing": [],
+      "details": {}
+    },
+    {
+      "module": "core/vault",
+      "class": "app.skein.core.vault.db.migrations.MigratorInstrumentedTest",
+      "name": "migration011UpgradesExistingVaultAndDraftForeignKeyPreventsResurrection",
+      "time": "0.100",
+      "nonpassing": [],
+      "details": {}
+    },
+    {
+      "module": "core/vault",
+      "class": "app.skein.core.vault.db.migrations.MigratorInstrumentedTest",
+      "name": "migration010IsIdempotentOnRerun",
+      "time": "0.061",
+      "nonpassing": [],
+      "details": {}
+    },
+    {
+      "module": "core/vault",
+      "class": "app.skein.core.vault.db.migrations.MigratorInstrumentedTest",
+      "name": "updatingBodyMdEnqueuesUpdatedReason",
+      "time": "0.043",
+      "nonpassing": [],
+      "details": {}
+    },
+    {
+      "module": "core/vault",
+      "class": "app.skein.core.vault.db.migrations.MigratorInstrumentedTest",
+      "name": "chunkByteOffsetColumnsRoundTrip",
+      "time": "0.048",
+      "nonpassing": [],
+      "details": {}
+    },
+    {
+      "module": "core/vault",
+      "class": "app.skein.core.vault.db.migrations.MigratorInstrumentedTest",
+      "name": "runningMigrateTwiceIsANoop",
+      "time": "0.045",
+      "nonpassing": [],
+      "details": {}
+    },
+    {
+      "module": "core/vault",
+      "class": "app.skein.core.vault.db.migrations.MigratorInstrumentedTest",
+      "name": "afterMigration010ADeletedTokenLeavesNoBytesInChunksFtsData",
+      "time": "0.046",
+      "nonpassing": [],
+      "details": {}
+    },
+    {
+      "module": "core/vault",
+      "class": "app.skein.core.vault.db.migrations.MigratorInstrumentedTest",
+      "name": "rowsSeededBeforeMigration007SurviveTheDropAndDocumentsIsUnaffected",
+      "time": "0.050",
+      "nonpassing": [],
+      "details": {}
+    },
+    {
+      "module": "core/vault",
+      "class": "app.skein.core.vault.db.migrations.MigratorInstrumentedTest",
+      "name": "documentRevisionsUpsertsByContentAddressAndCascadesWithItsDocument",
+      "time": "0.048",
+      "nonpassing": [],
+      "details": {}
+    },
+    {
+      "module": "core/vault",
+      "class": "app.skein.core.vault.db.migrations.MigratorInstrumentedTest",
+      "name": "ingestQueueAttemptsDefaultsToZeroAndResetsOnReQueue",
+      "time": "0.043",
+      "nonpassing": [],
+      "details": {}
+    },
+    {
+      "module": "core/vault",
+      "class": "app.skein.core.vault.db.migrations.MigratorInstrumentedTest",
+      "name": "migration010EnablesFts5SecureDelete",
+      "time": "0.039",
+      "nonpassing": [],
+      "details": {}
+    },
+    {
+      "module": "core/vault",
+      "class": "app.skein.core.vault.db.migrations.MigratorInstrumentedTest",
+      "name": "freshDatabaseLedgerListsEveryAppliedVersion",
+      "time": "0.040",
+      "nonpassing": [],
+      "details": {}
+    },
+    {
+      "module": "core/vault",
+      "class": "app.skein.core.vault.db.migrations.MigratorInstrumentedTest",
+      "name": "migration010OptimizePurgesResidueWrittenBeforeIt",
+      "time": "0.062",
+      "nonpassing": [],
+      "details": {}
+    },
+    {
+      "module": "core/vault",
+      "class": "app.skein.core.vault.export.stage.ExportStageRepositoryContractTest",
+      "name": "markAllStagesSweptLeavesNothingUnswept",
+      "time": "0.060",
+      "nonpassing": [],
+      "details": {}
+    },
+    {
+      "module": "core/vault",
+      "class": "app.skein.core.vault.export.stage.ExportStageRepositoryContractTest",
+      "name": "markingAnAlreadySweptStageReportsFalse",
+      "time": "0.031",
+      "nonpassing": [],
+      "details": {}
+    },
+    {
+      "module": "core/vault",
+      "class": "app.skein.core.vault.export.stage.ExportStageRepositoryContractTest",
+      "name": "aFreshlyInsertedStageIsNotSwept",
+      "time": "0.028",
+      "nonpassing": [],
+      "details": {}
+    },
+    {
+      "module": "core/vault",
+      "class": "app.skein.core.vault.export.stage.ExportStageRepositoryContractTest",
+      "name": "aStageWithNoDocumentSurvivesUnrelatedDocumentDeletes",
+      "time": "0.046",
+      "nonpassing": [],
+      "details": {}
+    },
+    {
+      "module": "core/vault",
+      "class": "app.skein.core.vault.export.stage.ExportStageRepositoryContractTest",
+      "name": "markingAnUnknownStageReportsFalse",
+      "time": "0.026",
+      "nonpassing": [],
+      "details": {}
+    },
+    {
+      "module": "core/vault",
+      "class": "app.skein.core.vault.export.stage.ExportStageRepositoryContractTest",
+      "name": "listUnsweptOmitsRowsAlreadyMarkedSwept",
+      "time": "0.030",
+      "nonpassing": [],
+      "details": {}
+    },
+    {
+      "module": "core/vault",
+      "class": "app.skein.core.vault.export.stage.ExportStageRepositoryContractTest",
+      "name": "markAllStagesSweptReportsHowManyRowsItChanged",
+      "time": "0.028",
+      "nonpassing": [],
+      "details": {}
+    },
+    {
+      "module": "core/vault",
+      "class": "app.skein.core.vault.export.stage.ExportStageRepositoryContractTest",
+      "name": "deletingTheDocumentCascadesItsStageRowAway",
+      "time": "0.031",
+      "nonpassing": [],
+      "details": {}
+    },
+    {
+      "module": "core/vault",
+      "class": "app.skein.core.vault.export.stage.ExportStageRepositoryContractTest",
+      "name": "reinsertingTheSameStageIdReplacesTheRowRatherThanThrowing",
+      "time": "0.031",
+      "nonpassing": [],
+      "details": {}
+    },
+    {
+      "module": "core/vault",
+      "class": "app.skein.core.vault.export.stage.ExportStageRepositoryContractTest",
+      "name": "listUnsweptReturnsTheMostOverduePlaintextFirst",
+      "time": "0.025",
+      "nonpassing": [],
+      "details": {}
+    },
+    {
+      "module": "core/vault",
+      "class": "app.skein.core.vault.export.stage.ExportStageRepositoryContractTest",
+      "name": "markingAStageSweptReportsTrueTheFirstTime",
+      "time": "0.026",
+      "nonpassing": [],
+      "details": {}
+    },
+    {
+      "module": "core/vault",
+      "class": "app.skein.core.vault.export.stage.ExportStageRepositoryContractTest",
+      "name": "insertedStageReadsBackWithEveryColumnIntact",
+      "time": "0.028",
+      "nonpassing": [],
+      "details": {}
+    },
+    {
+      "module": "core/vault",
+      "class": "app.skein.core.vault.export.stage.ExportStageRepositoryContractTest",
+      "name": "anUnrecordedStageIdReadsBackAsNull",
+      "time": "0.026",
+      "nonpassing": [],
+      "details": {}
+    },
+    {
+      "module": "core/vault",
+      "class": "app.skein.core.vault.index.GraphRecallAcceptanceTest",
+      "name": "ordinaryPhraseDiscoversLongerTitlesAndLinkedAnswerWithinEvidenceScope",
+      "time": "0.166",
+      "nonpassing": [],
+      "details": {}
+    },
+    {
+      "module": "core/vault",
+      "class": "app.skein.core.vault.index.IndexStoreImplAcceptanceTest",
+      "name": "unicodeQueryTermsMatchTheActualDefaultSqliteTokenizer",
+      "time": "0.044",
+      "nonpassing": [],
+      "details": {}
+    },
+    {
+      "module": "core/vault",
+      "class": "app.skein.core.vault.index.IndexStoreImplAcceptanceTest",
+      "name": "unicodeOnlyIngestProbeFindsAMissingMiddleRowBetweenHealthyRows",
+      "time": "0.035",
+      "nonpassing": [],
+      "details": {}
+    },
+    {
+      "module": "core/vault",
+      "class": "app.skein.core.vault.index.IndexStoreImplAcceptanceTest",
+      "name": "bm25DoesNotThrowOnTwentyAdversarialQueryStrings",
+      "time": "0.031",
+      "nonpassing": [],
+      "details": {}
+    },
+    {
+      "module": "core/vault",
+      "class": "app.skein.core.vault.index.IndexStoreImplAcceptanceTest",
+      "name": "ingestRowProbeWarnsWhenTheActualInsertTriggerIsMissing",
+      "time": "0.027",
+      "nonpassing": [],
+      "details": {}
+    },
+    {
+      "module": "core/vault",
+      "class": "app.skein.core.vault.index.IndexStoreImplAcceptanceTest",
+      "name": "knnReturnsExactlyKRowsOverA10000VectorCorpus",
+      "time": "1.189",
+      "nonpassing": [],
+      "details": {}
+    },
+    {
+      "module": "core/vault",
+      "class": "app.skein.core.vault.index.IndexStoreImplAcceptanceTest",
+      "name": "actualTokenizerBoundsSkipWholeTokensAndNeverInventPostingFragments",
+      "time": "0.033",
+      "nonpassing": [],
+      "details": {}
+    },
+    {
+      "module": "core/vault",
+      "class": "app.skein.core.vault.index.IndexStoreImplAcceptanceTest",
+      "name": "ingestRowProbeVerifiesHealthyPostingBelowTheGlobalTop50",
+      "time": "0.050",
+      "nonpassing": [],
+      "details": {}
+    },
+    {
+      "module": "core/vault",
+      "class": "app.skein.core.vault.index.IndexStoreImplAcceptanceTest",
+      "name": "aReplaceChunksWhoseInsertAbortsRollsBackAndPublishesNoIndexChange",
+      "time": "0.027",
+      "nonpassing": [],
+      "details": {}
+    },
+    {
+      "module": "core/vault",
+      "class": "app.skein.core.vault.index.IndexStoreImplAcceptanceTest",
+      "name": "unicodeOnlyIngestProbeWarnsWhenTheInsertTriggerIsMissing",
+      "time": "0.029",
+      "nonpassing": [],
+      "details": {}
+    },
+    {
+      "module": "core/vault",
+      "class": "app.skein.core.vault.index.IndexStoreImplAcceptanceTest",
+      "name": "ingestRowProbeDetectsAMissingLaterPostingWhenTheFirstRowIsHealthy",
+      "time": "0.031",
+      "nonpassing": [],
+      "details": {}
+    },
+    {
+      "module": "core/vault",
+      "class": "app.skein.core.vault.index.IndexStoreImplAcceptanceTest",
+      "name": "unicodeOnlyIngestProbeChecksARealPostingWithoutAsciiFallback",
+      "time": "0.027",
+      "nonpassing": [],
+      "details": {}
+    },
+    {
+      "module": "core/vault",
+      "class": "app.skein.core.vault.index.IndexStoreImplAcceptanceTest",
+      "name": "unicodeAdversarialQueriesRemainLiteralAndCannotBroadenToUnrelatedRows",
+      "time": "0.029",
+      "nonpassing": [],
+      "details": {}
+    },
+    {
+      "module": "core/vault",
+      "class": "app.skein.core.vault.index.IndexStoreImplAcceptanceTest",
+      "name": "replaceEdgesWithWIKILINKDoesNotTouchENTITYEdgesOfTheSameSource",
+      "time": "0.026",
+      "nonpassing": [],
+      "details": {}
+    },
+    {
+      "module": "core/vault",
+      "class": "app.skein.core.vault.index.IndexStoreImplAcceptanceTest",
+      "name": "unicodeTextBindingPreservesSupplementaryAndLegacyModifiedUtf8",
+      "time": "0.028",
+      "nonpassing": [],
+      "details": {}
+    },
+    {
+      "module": "core/vault",
+      "class": "app.skein.core.vault.index.IndexStoreImplAcceptanceTest",
+      "name": "aCommittedReplaceChunksPublishesExactlyOneChunksReplaced",
+      "time": "0.027",
+      "nonpassing": [],
+      "details": {}
+    },
+    {
+      "module": "core/vault",
+      "class": "app.skein.core.vault.index.IndexStoreImplAcceptanceTest",
+      "name": "ingestRowProbeDoesNotTreatAsciiInsideAUnicodeTokenAsAMissingPosting",
+      "time": "0.023",
+      "nonpassing": [],
+      "details": {}
+    },
+    {
+      "module": "core/vault",
+      "class": "app.skein.core.vault.index.IndexStoreImplContractTest",
+      "name": "edgesTo_returns_backlinks",
+      "time": "0.021",
+      "nonpassing": [],
+      "details": {}
+    },
+    {
+      "module": "core/vault",
+      "class": "app.skein.core.vault.index.IndexStoreImplContractTest",
+      "name": "observeChanges_does_not_replay_changes_made_before_subscribing",
+      "time": "0.019",
+      "nonpassing": [],
+      "details": {}
+    },
+    {
+      "module": "core/vault",
+      "class": "app.skein.core.vault.index.IndexStoreImplContractTest",
+      "name": "observeChanges_emits_ChunksReplaced_by_the_time_replaceChunks_returns",
+      "time": "0.020",
+      "nonpassing": [],
+      "details": {}
+    },
+    {
+      "module": "core/vault",
+      "class": "app.skein.core.vault.index.IndexStoreImplContractTest",
+      "name": "replaceChunks_deletes_old_chunk_ids",
+      "time": "0.019",
+      "nonpassing": [],
+      "details": {}
+    },
+    {
+      "module": "core/vault",
+      "class": "app.skein.core.vault.index.IndexStoreImplContractTest",
+      "name": "observeChanges_emits_EmbeddingsUpdated_with_the_written_chunk_ids",
+      "time": "0.022",
+      "nonpassing": [],
+      "details": {}
+    },
+    {
+      "module": "core/vault",
+      "class": "app.skein.core.vault.index.IndexStoreImplContractTest",
+      "name": "bm25_finds_an_exact_term",
+      "time": "0.017",
+      "nonpassing": [],
+      "details": {}
+    },
+    {
+      "module": "core/vault",
+      "class": "app.skein.core.vault.index.IndexStoreImplContractTest",
+      "name": "replaceChunks_stamps_revisionHash_and_byte_offsets_that_getChunks_reads_back",
+      "time": "0.021",
+      "nonpassing": [],
+      "details": {}
+    },
+    {
+      "module": "core/vault",
+      "class": "app.skein.core.vault.index.IndexStoreImplContractTest",
+      "name": "chunksForDocs_also_reads_back_revisionHash_and_byte_offsets",
+      "time": "0.021",
+      "nonpassing": [],
+      "details": {}
+    },
+    {
+      "module": "core/vault",
+      "class": "app.skein.core.vault.index.IndexStoreImplContractTest",
+      "name": "observeChanges_delivers_one_event_per_call_in_publication_order",
+      "time": "0.025",
+      "nonpassing": [],
+      "details": {}
+    },
+    {
+      "module": "core/vault",
+      "class": "app.skein.core.vault.index.IndexStoreImplContractTest",
+      "name": "observeChanges_is_silent_for_a_no_op_replaceEdges",
+      "time": "0.023",
+      "nonpassing": [],
+      "details": {}
+    },
+    {
+      "module": "core/vault",
+      "class": "app.skein.core.vault.index.IndexStoreImplContractTest",
+      "name": "observeChanges_emits_ChunksReplaced_even_when_the_new_chunk_list_is_empty",
+      "time": "0.021",
+      "nonpassing": [],
+      "details": {}
+    },
+    {
+      "module": "core/vault",
+      "class": "app.skein.core.vault.index.IndexStoreImplContractTest",
+      "name": "observeChanges_emits_EdgesReplaced_carrying_the_nominated_kinds",
+      "time": "0.018",
+      "nonpassing": [],
+      "details": {}
+    },
+    {
+      "module": "core/vault",
+      "class": "app.skein.core.vault.index.IndexStoreImplContractTest",
+      "name": "knn_returns_nearest_first_for_orthogonal_int8_vectors",
+      "time": "0.018",
+      "nonpassing": [],
+      "details": {}
+    },
+    {
+      "module": "core/vault",
+      "class": "app.skein.core.vault.index.IndexStoreImplContractTest",
+      "name": "replaceChunks_with_no_revisionHash_or_offsets_reads_back_null_for_all_three",
+      "time": "0.024",
+      "nonpassing": [],
+      "details": {}
+    },
+    {
+      "module": "core/vault",
+      "class": "app.skein.core.vault.index.IndexStoreImplContractTest",
+      "name": "lexical_match_is_specific_to_one_row_and_removed_when_replaced",
+      "time": "0.019",
+      "nonpassing": [],
+      "details": {}
+    },
+    {
+      "module": "core/vault",
+      "class": "app.skein.core.vault.index.IndexStoreImplContractTest",
+      "name": "neighborhood_hops2_stops_at_maxNodes",
+      "time": "0.021",
+      "nonpassing": [],
+      "details": {}
+    },
+    {
+      "module": "core/vault",
+      "class": "app.skein.core.vault.index.LexicalRecallAcceptanceTest",
+      "name": "recallOfSqliteCipherRanksTheBothTermsChunkFirstWithScoresNormalizedTo01",
+      "time": "0.026",
+      "nonpassing": [],
+      "details": {}
+    },
+    {
+      "module": "core/vault",
+      "class": "app.skein.core.vault.index.LexicalRecallAcceptanceTest",
+      "name": "lexicalRecallDoesNotThrowOnTwentyAdversarialQueryStrings",
+      "time": "0.024",
+      "nonpassing": [],
+      "details": {}
+    },
+    {
+      "module": "core/vault",
+      "class": "app.skein.core.vault.index.VectorRecallAcceptanceTest",
+      "name": "recallRanksTheChunkMatchingTheQueryVectorFirstScoresMappedTo01",
+      "time": "0.019",
+      "nonpassing": [],
+      "details": {}
+    },
+    {
+      "module": "core/vault",
+      "class": "app.skein.core.vault.key.VaultKeyProviderInstrumentedTest",
+      "name": "createKey_without_strongbox_produces_a_usable_alias",
+      "time": "0.022",
+      "nonpassing": [],
+      "details": {}
+    },
+    {
+      "module": "core/vault",
+      "class": "app.skein.core.vault.key.VaultKeyProviderInstrumentedTest",
+      "name": "encryptCipher_on_authRequired_key_requires_user_authentication",
+      "time": "0.010",
+      "nonpassing": [],
+      "details": {}
+    },
+    {
+      "module": "core/vault",
+      "class": "app.skein.core.vault.key.VaultKeyProviderInstrumentedTest",
+      "name": "hasStrongBox_probe_runs_without_throwing",
+      "time": "0.004",
+      "nonpassing": [],
+      "details": {}
+    },
+    {
+      "module": "core/vault",
+      "class": "app.skein.core.vault.key.VaultKeyProvidersInstrumentedTest",
+      "name": "forDevice_builds_the_real_provider_locked_and_without_touching_disk",
+      "time": "0.008",
+      "nonpassing": [],
+      "details": {}
+    },
+    {
+      "module": "core/vault",
+      "class": "app.skein.core.vault.key.VaultKeyProvidersInstrumentedTest",
+      "name": "envelope_round_trips_and_rewraps_on_the_device_filesystem",
+      "time": "0.009",
+      "nonpassing": [],
+      "details": {}
+    },
+    {
+      "module": "core/vault",
+      "class": "app.skein.core.vault.key.VaultKeyProvidersInstrumentedTest",
+      "name": "unlock_before_setup_reports_NotInitialised_and_creates_nothing",
+      "time": "0.007",
+      "nonpassing": [],
+      "details": {}
+    },
+    {
+      "module": "core/vault",
+      "class": "app.skein.core.vault.key.VaultKeyProvidersInstrumentedTest",
+      "name": "unlock_over_a_real_auth_bound_alias_yields_no_key_without_authentication",
+      "time": "0.016",
+      "nonpassing": [],
+      "details": {}
+    },
+    {
+      "module": "core/vault",
+      "class": "app.skein.core.vault.key.VaultKeyProvidersInstrumentedTest",
+      "name": "setup_without_an_enrolled_biometric_leaves_no_envelope_and_no_aliases",
+      "time": "0.013",
+      "nonpassing": [],
+      "details": {}
+    },
+    {
+      "module": "core/vault",
+      "class": "app.skein.core.vault.lifecycle.VaultLifecycleInstrumentedTest",
+      "name": "createThenOpenThenCloseThenOpenThenCloseRoundTrip",
+      "time": "0.061",
+      "nonpassing": [],
+      "details": {}
+    },
+    {
+      "module": "core/vault",
+      "class": "app.skein.core.vault.lifecycle.VaultLifecycleInstrumentedTest",
+      "name": "createTwiceFailsWithAlreadyExists",
+      "time": "0.044",
+      "nonpassing": [],
+      "details": {}
+    },
+    {
+      "module": "core/vault",
+      "class": "app.skein.core.vault.lifecycle.VaultLifecycleInstrumentedTest",
+      "name": "integrityCheckWhileNotOpenReportsNotOpen",
+      "time": "0.001",
+      "nonpassing": [],
+      "details": {}
+    },
+    {
+      "module": "core/vault",
+      "class": "app.skein.core.vault.lifecycle.VaultLifecycleInstrumentedTest",
+      "name": "openNonexistentVaultFailsWithNotFound",
+      "time": "0.001",
+      "nonpassing": [],
+      "details": {}
+    },
+    {
+      "module": "core/vault",
+      "class": "app.skein.core.vault.lifecycle.VaultLifecycleInstrumentedTest",
+      "name": "closeLeavesNoWalOrShmResidue",
+      "time": "0.049",
+      "nonpassing": [],
+      "details": {}
+    },
+    {
+      "module": "core/vault",
+      "class": "app.skein.core.vault.lifecycle.VaultLifecycleInstrumentedTest",
+      "name": "openWithWrongKeyReturnsTypedWrongKey",
+      "time": "0.049",
+      "nonpassing": [],
+      "details": {}
+    },
+    {
+      "module": "core/vault",
+      "class": "app.skein.core.vault.lifecycle.VaultLifecycleInstrumentedTest",
+      "name": "integrityCheckOnAFreshlyCreatedVaultReportsOk",
+      "time": "0.072",
+      "nonpassing": [],
+      "details": {}
+    },
+    {
+      "module": "core/vault",
+      "class": "app.skein.core.vault.lifecycle.VaultResetInstrumentedTest",
+      "name": "reset_removes_real_Keystore_aliases",
+      "time": "0.004",
+      "nonpassing": [],
+      "details": {}
+    },
+    {
+      "module": "core/vault",
+      "class": "app.skein.core.vault.lifecycle.VaultResetInstrumentedTest",
+      "name": "reset_deletes_real_files_under_filesDir",
+      "time": "0.007",
+      "nonpassing": [],
+      "details": {}
+    },
+    {
+      "module": "core/vault",
+      "class": "app.skein.core.vault.lifecycle.VaultResetInstrumentedTest",
+      "name": "reset_refuses_while_unlocked_and_leaves_real_files_alone",
+      "time": "0.002",
+      "nonpassing": [],
+      "details": {}
+    },
+    {
+      "module": "core/vault",
+      "class": "app.skein.core.vault.models.ModelRegistryImplContractTest",
+      "name": "setDefault_accepts_an_id_with_no_backing_row",
+      "time": "0.029",
+      "nonpassing": [],
+      "details": {}
+    },
+    {
+      "module": "core/vault",
+      "class": "app.skein.core.vault.models.ModelRegistryImplContractTest",
+      "name": "upsert_replaces_an_existing_row_with_the_same_id",
+      "time": "0.023",
+      "nonpassing": [],
+      "details": {}
+    },
+    {
+      "module": "core/vault",
+      "class": "app.skein.core.vault.models.ModelRegistryImplContractTest",
+      "name": "default_is_null_for_a_fresh_registry",
+      "time": "0.017",
+      "nonpassing": [],
+      "details": {}
+    },
+    {
+      "module": "core/vault",
+      "class": "app.skein.core.vault.models.ModelRegistryImplContractTest",
+      "name": "list_is_empty_for_a_fresh_registry",
+      "time": "0.022",
+      "nonpassing": [],
+      "details": {}
+    },
+    {
+      "module": "core/vault",
+      "class": "app.skein.core.vault.models.ModelRegistryImplContractTest",
+      "name": "delete_removes_the_row",
+      "time": "0.027",
+      "nonpassing": [],
+      "details": {}
+    },
+    {
+      "module": "core/vault",
+      "class": "app.skein.core.vault.models.ModelRegistryImplContractTest",
+      "name": "get_returns_null_for_an_unknown_id",
+      "time": "0.018",
+      "nonpassing": [],
+      "details": {}
+    },
+    {
+      "module": "core/vault",
+      "class": "app.skein.core.vault.models.ModelRegistryImplContractTest",
+      "name": "setDefault_null_clears_the_default",
+      "time": "0.023",
+      "nonpassing": [],
+      "details": {}
+    },
+    {
+      "module": "core/vault",
+      "class": "app.skein.core.vault.models.ModelRegistryImplContractTest",
+      "name": "delete_of_an_unknown_id_is_a_no_op",
+      "time": "0.019",
+      "nonpassing": [],
+      "details": {}
+    },
+    {
+      "module": "core/vault",
+      "class": "app.skein.core.vault.models.ModelRegistryImplContractTest",
+      "name": "list_reflects_every_upserted_record",
+      "time": "0.021",
+      "nonpassing": [],
+      "details": {}
+    },
+    {
+      "module": "core/vault",
+      "class": "app.skein.core.vault.models.ModelRegistryImplContractTest",
+      "name": "setDefault_then_default_round_trips",
+      "time": "0.021",
+      "nonpassing": [],
+      "details": {}
+    },
+    {
+      "module": "core/vault",
+      "class": "app.skein.core.vault.models.ModelRegistryImplContractTest",
+      "name": "upsert_then_get_round_trips_every_field",
+      "time": "0.019",
+      "nonpassing": [],
+      "details": {}
+    },
+    {
+      "module": "core/vault",
+      "class": "app.skein.core.vault.persona.PersonaServiceImplContractTest",
+      "name": "default_creates_default_once_and_returns_same_id_on_second_call",
+      "time": "0.015",
+      "nonpassing": [],
+      "details": {}
+    },
+    {
+      "module": "core/vault",
+      "class": "app.skein.core.vault.persona.PersonaServiceImplContractTest",
+      "name": "delete_of_last_persona_throws_illegal_state",
+      "time": "0.015",
+      "nonpassing": [],
+      "details": {}
+    },
+    {
+      "module": "core/vault",
+      "class": "app.skein.core.vault.persona.PersonaServiceImplContractTest",
+      "name": "observeAll_emits_after_create",
+      "time": "0.018",
+      "nonpassing": [],
+      "details": {}
+    },
+    {
+      "module": "core/vault",
+      "class": "app.skein.core.vault.repository.ObjectLifecycleEmulatorLaneTest",
+      "name": "a_committed_delete_survives_pool_close_and_reopen",
+      "time": "0.091",
+      "nonpassing": [],
+      "details": {}
+    },
+    {
+      "module": "core/vault",
+      "class": "app.skein.core.vault.repository.ObjectLifecycleEmulatorLaneTest",
+      "name": "pragma_secure_delete_is_on_for_every_pool_connection",
+      "time": "0.049",
+      "nonpassing": [],
+      "details": {}
+    },
+    {
+      "module": "core/vault",
+      "class": "app.skein.core.vault.repository.ObjectLifecycleEmulatorLaneTest",
+      "name": "cascade_leaves_no_chunks_fts_matches_or_vec_rows",
+      "time": "0.078",
+      "nonpassing": [],
+      "details": {}
+    },
+    {
+      "module": "core/vault",
+      "class": "app.skein.core.vault.repository.ObjectLifecycleEmulatorLaneTest",
+      "name": "a_note_created_with_a_deleted_notes_title_regains_its_backlinks",
+      "time": "0.065",
+      "nonpassing": [],
+      "details": {}
+    },
+    {
+      "module": "core/vault",
+      "class": "app.skein.core.vault.repository.ObjectLifecycleEmulatorLaneTest",
+      "name": "attachment_blob_outlives_a_delete_whose_commit_fails",
+      "time": "0.064",
+      "nonpassing": [],
+      "details": {}
+    },
+    {
+      "module": "core/vault",
+      "class": "app.skein.core.vault.repository.ObjectLifecycleEmulatorLaneTest",
+      "name": "fts_delete_cost_with_secure_delete_is_recorded",
+      "time": "1.528",
+      "nonpassing": [],
+      "details": {}
+    },
+    {
+      "module": "core/vault",
+      "class": "app.skein.core.vault.repository.VaultRepositoryImplContractTest",
+      "name": "observeTimeline_reemits_within_50ms_of_a_write_on_another_coroutine",
+      "time": "0.024",
+      "nonpassing": [],
+      "details": {}
+    },
+    {
+      "module": "core/vault",
+      "class": "app.skein.core.vault.repository.VaultRepositoryImplContractTest",
+      "name": "searchBodies_quantum_returns_bm25_ranked_hit_with_bracket_snippet",
+      "time": "0.022",
+      "nonpassing": [],
+      "details": {}
+    },
+    {
+      "module": "core/vault",
+      "class": "app.skein.core.vault.repository.VaultRepositoryImplContractTest",
+      "name": "createDocument_callers_id_wins_over_frontmatter_id_key",
+      "time": "0.020",
+      "nonpassing": [],
+      "details": {}
+    },
+    {
+      "module": "core/vault",
+      "class": "app.skein.core.vault.repository.VaultRepositoryImplContractTest",
+      "name": "orphan_edge_sweep_deletes_edges_from_missing_sources_and_stray_vectors",
+      "time": "0.020",
+      "nonpassing": [],
+      "details": {}
+    },
+    {
+      "module": "core/vault",
+      "class": "app.skein.core.vault.repository.VaultRepositoryImplContractTest",
+      "name": "createDocument_frontmatter_id_key_is_the_fallback_when_caller_supplies_none",
+      "time": "0.021",
+      "nonpassing": [],
+      "details": {}
+    },
+    {
+      "module": "core/vault",
+      "class": "app.skein.core.vault.repository.VaultRepositoryImplContractTest",
+      "name": "altered_excerpt_does_not_unpin_other_citations_or_its_own_revision",
+      "time": "0.039",
+      "nonpassing": [],
+      "details": {}
+    },
+    {
+      "module": "core/vault",
+      "class": "app.skein.core.vault.repository.VaultRepositoryImplContractTest",
+      "name": "staged_export_file_of_a_deleted_document_is_purged_after_commit",
+      "time": "0.022",
+      "nonpassing": [],
+      "details": {}
+    },
+    {
+      "module": "core/vault",
+      "class": "app.skein.core.vault.repository.VaultRepositoryImplContractTest",
+      "name": "a_frontmatter_only_edit_requeues_ingest",
+      "time": "0.022",
+      "nonpassing": [],
+      "details": {}
+    },
+    {
+      "module": "core/vault",
+      "class": "app.skein.core.vault.repository.VaultRepositoryImplContractTest",
+      "name": "deleteDocument_sentinel_matches_EdgeUpserter_for_a_non_ascii_title",
+      "time": "0.024",
+      "nonpassing": [],
+      "details": {}
+    },
+    {
+      "module": "core/vault",
+      "class": "app.skein.core.vault.repository.VaultRepositoryImplContractTest",
+      "name": "attachment_round_trip_1MiB_of_random_bytes",
+      "time": "0.099",
+      "nonpassing": [],
+      "details": {}
+    },
+    {
+      "module": "core/vault",
+      "class": "app.skein.core.vault.repository.VaultRepositoryImplContractTest",
+      "name": "attachment_blob_is_deleted_only_after_commit",
+      "time": "0.022",
+      "nonpassing": [],
+      "details": {}
+    },
+    {
+      "module": "core/vault",
+      "class": "app.skein.core.vault.repository.VaultRepositoryImplContractTest",
+      "name": "renameDocument_requeues_ingest_with_a_fresh_queued_at",
+      "time": "0.025",
+      "nonpassing": [],
+      "details": {}
+    },
+    {
+      "module": "core/vault",
+      "class": "app.skein.core.vault.repository.VaultRepositoryImplContractTest",
+      "name": "deleteDocument_id_spelling_equal_to_title_still_has_only_an_id_binding",
+      "time": "0.022",
+      "nonpassing": [],
+      "details": {}
+    },
+    {
+      "module": "core/vault",
+      "class": "app.skein.core.vault.repository.VaultRepositoryImplContractTest",
+      "name": "a_chat_documents_snapshots_stay_bounded_and_its_citations_still_resolve",
+      "time": "0.101",
+      "nonpassing": [],
+      "details": {}
+    },
+    {
+      "module": "core/vault",
+      "class": "app.skein.core.vault.repository.VaultRepositoryImplContractTest",
+      "name": "renameDocument_does_not_treat_code_literal_id_as_a_link_binding",
+      "time": "0.022",
+      "nonpassing": [],
+      "details": {}
+    },
+    {
+      "module": "core/vault",
+      "class": "app.skein.core.vault.repository.VaultRepositoryImplContractTest",
+      "name": "sweep_never_removes_the_current_revision",
+      "time": "0.016",
+      "nonpassing": [],
+      "details": {}
+    },
+    {
+      "module": "core/vault",
+      "class": "app.skein.core.vault.repository.VaultRepositoryImplContractTest",
+      "name": "recordIngestFailure_count_resets_when_the_document_is_re_queued",
+      "time": "0.022",
+      "nonpassing": [],
+      "details": {}
+    },
+    {
+      "module": "core/vault",
+      "class": "app.skein.core.vault.repository.VaultRepositoryImplContractTest",
+      "name": "deleteDocument_rewrites_wikilink_in_edges_to_the_title_sentinel_at_weight_half",
+      "time": "0.022",
+      "nonpassing": [],
+      "details": {}
+    },
+    {
+      "module": "core/vault",
+      "class": "app.skein.core.vault.repository.VaultRepositoryImplContractTest",
+      "name": "replaceBody_never_writes_the_title",
+      "time": "0.024",
+      "nonpassing": [],
+      "details": {}
+    },
+    {
+      "module": "core/vault",
+      "class": "app.skein.core.vault.repository.VaultRepositoryImplContractTest",
+      "name": "recordIngestFailure_increments_and_persists_across_dequeue",
+      "time": "0.024",
+      "nonpassing": [],
+      "details": {}
+    },
+    {
+      "module": "core/vault",
+      "class": "app.skein.core.vault.repository.VaultRepositoryImplContractTest",
+      "name": "a_message_without_citations_still_round_trips_legacy_chunk_ids",
+      "time": "0.019",
+      "nonpassing": [],
+      "details": {}
+    },
+    {
+      "module": "core/vault",
+      "class": "app.skein.core.vault.repository.VaultRepositoryImplContractTest",
+      "name": "deleteDocument_keeps_other_chats_citation_excerpts",
+      "time": "0.026",
+      "nonpassing": [],
+      "details": {}
+    },
+    {
+      "module": "core/vault",
+      "class": "app.skein.core.vault.repository.VaultRepositoryImplContractTest",
+      "name": "sweep_is_idempotent",
+      "time": "0.024",
+      "nonpassing": [],
+      "details": {}
+    },
+    {
+      "module": "core/vault",
+      "class": "app.skein.core.vault.repository.VaultRepositoryImplContractTest",
+      "name": "commit_acknowledgements_wait_for_outer_commit_and_never_run_on_rollback",
+      "time": "0.016",
+      "nonpassing": [],
+      "details": {}
+    },
+    {
+      "module": "core/vault",
+      "class": "app.skein.core.vault.repository.VaultRepositoryImplContractTest",
+      "name": "createDocument_captures_a_revision_addressing_the_content",
+      "time": "0.020",
+      "nonpassing": [],
+      "details": {}
+    },
+    {
+      "module": "core/vault",
+      "class": "app.skein.core.vault.repository.VaultRepositoryImplContractTest",
+      "name": "cancellation_immediately_after_commit_cannot_skip_acknowledgement_or_undo_the_send",
+      "time": "0.024",
+      "nonpassing": [],
+      "details": {}
+    },
+    {
+      "module": "core/vault",
+      "class": "app.skein.core.vault.repository.VaultRepositoryImplContractTest",
+      "name": "updateBody_bumps_updated_at_and_changes_content_hash",
+      "time": "0.023",
+      "nonpassing": [],
+      "details": {}
+    },
+    {
+      "module": "core/vault",
+      "class": "app.skein.core.vault.repository.VaultRepositoryImplContractTest",
+      "name": "appendMessage_rematerializes_bodymd_containing_message_text",
+      "time": "0.023",
+      "nonpassing": [],
+      "details": {}
+    },
+    {
+      "module": "core/vault",
+      "class": "app.skein.core.vault.repository.VaultRepositoryImplContractTest",
+      "name": "recordIngestFailure_returns_zero_and_writes_nothing_once_the_entry_is_gone",
+      "time": "0.018",
+      "nonpassing": [],
+      "details": {}
+    },
+    {
+      "module": "core/vault",
+      "class": "app.skein.core.vault.repository.VaultRepositoryImplContractTest",
+      "name": "appendMessage_round_trips_a_citation_record",
+      "time": "0.032",
+      "nonpassing": [],
+      "details": {}
+    },
+    {
+      "module": "core/vault",
+      "class": "app.skein.core.vault.repository.VaultRepositoryImplContractTest",
+      "name": "updateBody_rejects_attachments_and_chats",
+      "time": "0.025",
+      "nonpassing": [],
+      "details": {}
+    },
+    {
+      "module": "core/vault",
+      "class": "app.skein.core.vault.repository.VaultRepositoryImplContractTest",
+      "name": "commit_acknowledgement_registration_requires_this_repositorys_transaction",
+      "time": "0.035",
+      "nonpassing": [],
+      "details": {}
+    },
+    {
+      "module": "core/vault",
+      "class": "app.skein.core.vault.repository.VaultRepositoryImplContractTest",
+      "name": "sweep_removes_an_uncited_superseded_revision",
+      "time": "0.024",
+      "nonpassing": [],
+      "details": {}
+    },
+    {
+      "module": "core/vault",
+      "class": "app.skein.core.vault.repository.VaultRepositoryImplContractTest",
+      "name": "index_writes_for_a_missing_source_document_are_skipped",
+      "time": "0.021",
+      "nonpassing": [],
+      "details": {}
+    },
+    {
+      "module": "core/vault",
+      "class": "app.skein.core.vault.repository.VaultRepositoryImplContractTest",
+      "name": "a_citation_into_a_deleted_document_does_not_match",
+      "time": "0.021",
+      "nonpassing": [],
+      "details": {}
+    },
+    {
+      "module": "core/vault",
+      "class": "app.skein.core.vault.repository.VaultRepositoryImplContractTest",
+      "name": "searchTitles_and_searchBodies_never_return_a_deleted_document",
+      "time": "0.026",
+      "nonpassing": [],
+      "details": {}
+    },
+    {
+      "module": "core/vault",
+      "class": "app.skein.core.vault.repository.VaultRepositoryImplContractTest",
+      "name": "completeIngest_noop_when_requeued",
+      "time": "0.023",
+      "nonpassing": [],
+      "details": {}
+    },
+    {
+      "module": "core/vault",
+      "class": "app.skein.core.vault.repository.VaultRepositoryImplContractTest",
+      "name": "orphan_edge_sweep_is_idempotent",
+      "time": "0.024",
+      "nonpassing": [],
+      "details": {}
+    },
+    {
+      "module": "core/vault",
+      "class": "app.skein.core.vault.repository.VaultRepositoryImplContractTest",
+      "name": "observeDocument_emits_null_after_delete",
+      "time": "0.023",
+      "nonpassing": [],
+      "details": {}
+    },
+    {
+      "module": "core/vault",
+      "class": "app.skein.core.vault.repository.VaultRepositoryImplContractTest",
+      "name": "countChatsCiting_counts_distinct_chats_by_decoded_citation_records",
+      "time": "0.036",
+      "nonpassing": [],
+      "details": {}
+    },
+    {
+      "module": "core/vault",
+      "class": "app.skein.core.vault.repository.VaultRepositoryImplContractTest",
+      "name": "updateBody_changes_the_revision_hash_and_keeps_the_old_revision_readable",
+      "time": "0.023",
+      "nonpassing": [],
+      "details": {}
+    },
+    {
+      "module": "core/vault",
+      "class": "app.skein.core.vault.repository.VaultRepositoryImplContractTest",
+      "name": "deleteDocument_removes_cite_in_edges",
+      "time": "0.021",
+      "nonpassing": [],
+      "details": {}
+    },
+    {
+      "module": "core/vault",
+      "class": "app.skein.core.vault.repository.VaultRepositoryImplContractTest",
+      "name": "deleteDocument_removes_the_documents_chunks",
+      "time": "0.023",
+      "nonpassing": [],
+      "details": {}
+    },
+    {
+      "module": "core/vault",
+      "class": "app.skein.core.vault.repository.VaultRepositoryImplContractTest",
+      "name": "new_draft_same_id_is_separate_in_each_space",
+      "time": "0.025",
+      "nonpassing": [],
+      "details": {}
+    },
+    {
+      "module": "core/vault",
+      "class": "app.skein.core.vault.repository.VaultRepositoryImplContractTest",
+      "name": "sweep_keeps_a_superseded_revision_still_cited_by_a_message",
+      "time": "0.030",
+      "nonpassing": [],
+      "details": {}
+    },
+    {
+      "module": "core/vault",
+      "class": "app.skein.core.vault.repository.VaultRepositoryImplContractTest",
+      "name": "observeTimeline_orders_newest_first_and_filters_by_persona",
+      "time": "0.033",
+      "nonpassing": [],
+      "details": {}
+    },
+    {
+      "module": "core/vault",
+      "class": "app.skein.core.vault.repository.VaultRepositoryImplContractTest",
+      "name": "writes_to_a_deleted_document_throw_NoSuchElementException_and_write_nothing",
+      "time": "0.029",
+      "nonpassing": [],
+      "details": {}
+    },
+    {
+      "module": "core/vault",
+      "class": "app.skein.core.vault.repository.VaultRepositoryImplContractTest",
+      "name": "deleteDocument_is_idempotent_for_a_missing_id",
+      "time": "0.018",
+      "nonpassing": [],
+      "details": {}
+    },
+    {
+      "module": "core/vault",
+      "class": "app.skein.core.vault.repository.VaultRepositoryImplContractTest",
+      "name": "a_closed_repository_cannot_borrow_another_repositorys_transaction",
+      "time": "0.034",
+      "nonpassing": [],
+      "details": {}
+    },
+    {
+      "module": "core/vault",
+      "class": "app.skein.core.vault.repository.VaultRepositoryImplContractTest",
+      "name": "replay_detects_a_source_that_changed_under_a_citation",
+      "time": "0.029",
+      "nonpassing": [],
+      "details": {}
+    },
+    {
+      "module": "core/vault",
+      "class": "app.skein.core.vault.repository.VaultRepositoryImplContractTest",
+      "name": "renameDocument_on_an_attachment_keeps_its_byte_hash",
+      "time": "0.023",
+      "nonpassing": [],
+      "details": {}
+    },
+    {
+      "module": "core/vault",
+      "class": "app.skein.core.vault.repository.VaultRepositoryImplContractTest",
+      "name": "transaction_nests_writes_without_deadlock",
+      "time": "0.025",
+      "nonpassing": [],
+      "details": {}
+    },
+    {
+      "module": "core/vault",
+      "class": "app.skein.core.vault.repository.VaultRepositoryImplContractTest",
+      "name": "deleteDocument_removes_the_row_and_getDocument_returns_null",
+      "time": "0.015",
+      "nonpassing": [],
+      "details": {}
+    },
+    {
+      "module": "core/vault",
+      "class": "app.skein.core.vault.repository.VaultRepositoryImplContractTest",
+      "name": "draft_roundtrip_preserves_unicode_selection_and_has_no_document_side_effects",
+      "time": "0.026",
+      "nonpassing": [],
+      "details": {}
+    },
+    {
+      "module": "core/vault",
+      "class": "app.skein.core.vault.repository.VaultRepositoryImplContractTest",
+      "name": "orphan_edge_sweep_deletes_edges_to_missing_documents_and_requeues_their_sources",
+      "time": "0.025",
+      "nonpassing": [],
+      "details": {}
+    },
+    {
+      "module": "core/vault",
+      "class": "app.skein.core.vault.repository.VaultRepositoryImplContractTest",
+      "name": "deleteDocument_removes_out_edges_of_every_kind",
+      "time": "0.021",
+      "nonpassing": [],
+      "details": {}
+    },
+    {
+      "module": "core/vault",
+      "class": "app.skein.core.vault.repository.VaultRepositoryImplContractTest",
+      "name": "observeMessages_emits_empty_after_the_chat_is_deleted",
+      "time": "0.027",
+      "nonpassing": [],
+      "details": {}
+    },
+    {
+      "module": "core/vault",
+      "class": "app.skein.core.vault.repository.VaultRepositoryImplContractTest",
+      "name": "quiesce_timeout_rolls_back_and_never_reopens_admission",
+      "time": "0.039",
+      "nonpassing": [],
+      "details": {}
+    },
+    {
+      "module": "core/vault",
+      "class": "app.skein.core.vault.repository.VaultRepositoryImplContractTest",
+      "name": "draft_batch_rolls_back_and_quiesce_refuses_late_writes",
+      "time": "0.021",
+      "nonpassing": [],
+      "details": {}
+    },
+    {
+      "module": "core/vault",
+      "class": "app.skein.core.vault.repository.VaultRepositoryImplContractTest",
+      "name": "failing_acknowledgement_does_not_undo_commit_or_prevent_the_next_acknowledgement",
+      "time": "0.020",
+      "nonpassing": [],
+      "details": {}
+    },
+    {
+      "module": "core/vault",
+      "class": "app.skein.core.vault.repository.VaultRepositoryImplContractTest",
+      "name": "deleteDocument_requeues_the_surviving_document_with_the_same_title",
+      "time": "0.027",
+      "nonpassing": [],
+      "details": {}
+    },
+    {
+      "module": "core/vault",
+      "class": "app.skein.core.vault.repository.VaultRepositoryImplContractTest",
+      "name": "a_failed_transaction_rolls_back_every_delete_in_it",
+      "time": "0.032",
+      "nonpassing": [],
+      "details": {}
+    },
+    {
+      "module": "core/vault",
+      "class": "app.skein.core.vault.repository.VaultRepositoryImplContractTest",
+      "name": "create_then_get_preserves_frontmatter_id",
+      "time": "0.028",
+      "nonpassing": [],
+      "details": {}
+    },
+    {
+      "module": "core/vault",
+      "class": "app.skein.core.vault.repository.VaultRepositoryImplContractTest",
+      "name": "send_and_draft_clear_commit_together_or_both_roll_back",
+      "time": "0.022",
+      "nonpassing": [],
+      "details": {}
+    },
+    {
+      "module": "core/vault",
+      "class": "app.skein.core.vault.repository.VaultRepositoryImplContractTest",
+      "name": "an_undone_edit_resolves_back_to_the_original_revision",
+      "time": "0.025",
+      "nonpassing": [],
+      "details": {}
+    },
+    {
+      "module": "core/vault",
+      "class": "app.skein.core.vault.repository.VaultRepositoryImplContractTest",
+      "name": "renameDocument_keeps_content_hash_and_captures_no_revision",
+      "time": "0.021",
+      "nonpassing": [],
+      "details": {}
+    },
+    {
+      "module": "core/vault",
+      "class": "app.skein.core.vault.repository.VaultRepositoryImplContractTest",
+      "name": "renameDocument_preserves_explicit_id_links_and_detaches_a_mixed_title_link",
+      "time": "0.022",
+      "nonpassing": [],
+      "details": {}
+    },
+    {
+      "module": "core/vault",
+      "class": "app.skein.core.vault.repository.VaultRepositoryImplContractTest",
+      "name": "quiesce_drains_nested_transaction_and_refuses_late_writes",
+      "time": "0.021",
+      "nonpassing": [],
+      "details": {}
+    },
+    {
+      "module": "core/vault",
+      "class": "app.skein.core.vault.repository.VaultRepositoryImplContractTest",
+      "name": "attachments_have_no_revisions",
+      "time": "0.022",
+      "nonpassing": [],
+      "details": {}
+    },
+    {
+      "module": "core/vault",
+      "class": "app.skein.core.vault.repository.VaultRepositoryImplContractTest",
+      "name": "a_real_frontmatter_edit_does_change_the_revision_hash",
+      "time": "0.024",
+      "nonpassing": [],
+      "details": {}
+    },
+    {
+      "module": "core/vault",
+      "class": "app.skein.core.vault.repository.VaultRepositoryImplContractTest",
+      "name": "observeTimeline_drops_the_deleted_document",
+      "time": "0.026",
+      "nonpassing": [],
+      "details": {}
+    },
+    {
+      "module": "core/vault",
+      "class": "app.skein.core.vault.repository.VaultRepositoryImplContractTest",
+      "name": "a_late_autosave_never_resurrects_a_deleted_note",
+      "time": "0.023",
+      "nonpassing": [],
+      "details": {}
+    },
+    {
+      "module": "core/vault",
+      "class": "app.skein.core.vault.repository.VaultRepositoryImplContractTest",
+      "name": "renameDocument_with_ifTitleIs_writes_nothing_when_the_title_changed",
+      "time": "0.023",
+      "nonpassing": [],
+      "details": {}
+    },
+    {
+      "module": "core/vault",
+      "class": "app.skein.core.vault.repository.VaultRepositoryImplContractTest",
+      "name": "retitling_alone_does_not_change_the_revision_hash",
+      "time": "0.023",
+      "nonpassing": [],
+      "details": {}
+    },
+    {
+      "module": "core/vault",
+      "class": "app.skein.core.vault.repository.VaultRepositoryImplContractTest",
+      "name": "renameDocument_changes_only_the_title",
+      "time": "0.023",
+      "nonpassing": [],
+      "details": {}
+    },
+    {
+      "module": "core/vault",
+      "class": "app.skein.core.vault.repository.VaultRepositoryImplContractTest",
+      "name": "renameDocument_detaches_wikilink_in_edges_to_the_old_title_sentinel",
+      "time": "0.024",
+      "nonpassing": [],
+      "details": {}
+    },
+    {
+      "module": "core/vault",
+      "class": "app.skein.core.vault.repository.VaultRepositoryImplContractTest",
+      "name": "renameDocument_does_not_change_updated_at",
+      "time": "0.029",
+      "nonpassing": [],
+      "details": {}
+    },
+    {
+      "module": "core/vault",
+      "class": "app.skein.core.vault.repository.VaultRepositoryImplContractTest",
+      "name": "deleted_chat_cascades_draft_and_late_write_cannot_resurrect_it",
+      "time": "0.024",
+      "nonpassing": [],
+      "details": {}
+    },
+    {
+      "module": "core/vault",
+      "class": "app.skein.core.vault.repository.VaultRepositoryImplContractTest",
+      "name": "renameDocument_keeps_cite_in_edges",
+      "time": "0.022",
+      "nonpassing": [],
+      "details": {}
+    },
+    {
+      "module": "core/vault",
+      "class": "app.skein.core.vault.repository.VaultRepositoryImplContractTest",
+      "name": "kindsOf_returns_only_requested_live_kinds_in_a_large_batch",
+      "time": "0.041",
+      "nonpassing": [],
+      "details": {}
+    },
+    {
+      "module": "core/vault",
+      "class": "app.skein.core.vault.repository.VaultRepositoryImplContractTest",
+      "name": "kindsOf_reads_its_own_transaction_without_deadlocking",
+      "time": "0.032",
+      "nonpassing": [],
+      "details": {}
+    },
+    {
+      "module": "core/vault",
+      "class": "app.skein.core.vault.repository.VaultRepositoryImplContractTest",
+      "name": "deleteDocument_explicit_id_link_is_not_a_title_link_to_a_replacement",
+      "time": "0.026",
+      "nonpassing": [],
+      "details": {}
+    },
+    {
+      "module": "core/vault",
+      "class": "app.skein.core.vault.repository.VaultRepositoryImplContractTest",
+      "name": "deleteDocument_removes_messages_revisions_and_the_ingest_queue_entry",
+      "time": "0.023",
+      "nonpassing": [],
+      "details": {}
+    },
+    {
+      "module": "core/vault",
+      "class": "app.skein.core.vault.repository.VaultRepositoryImplContractTest",
+      "name": "a_cosmetic_frontmatter_rewrite_does_not_change_the_revision_hash",
+      "time": "0.024",
+      "nonpassing": [],
+      "details": {}
+    },
+    {
+      "module": "core/vault",
+      "class": "app.skein.core.vault.repository.VaultRepositoryImplContractTest",
+      "name": "renameDocument_trims_collapses_line_breaks_and_rejects_blank_or_over_200",
+      "time": "0.021",
+      "nonpassing": [],
+      "details": {}
+    },
+    {
+      "module": "core/vault",
+      "class": "app.skein.core.vault.repository.VaultRepositoryImplContractTest",
+      "name": "capturing_unchanged_content_is_idempotent",
+      "time": "0.024",
+      "nonpassing": [],
+      "details": {}
+    },
+    {
+      "module": "core/vault",
+      "class": "app.skein.core.vault.repository.VaultRepositoryImplContractTest",
+      "name": "deleting_a_document_cascades_its_revisions_ahead_of_any_sweep",
+      "time": "0.022",
+      "nonpassing": [],
+      "details": {}
+    },
+    {
+      "module": "core/vault",
+      "class": "app.skein.vault.SchemaLoadInstrumentedTest",
+      "name": "test001InitialSqlLoadsStatementByStatementOnTheSpikeDriver",
+      "time": "0.016",
+      "nonpassing": [],
+      "details": {}
+    },
+    {
+      "module": "inference-service",
+      "class": "app.skein.inference.service.InferenceServiceInstrumentedTest",
+      "name": "aGenerationStreamsTokensAndCompletesExactlyOnce",
+      "time": "4.435",
+      "nonpassing": [],
+      "details": {}
+    },
+    {
+      "module": "inference-service",
+      "class": "app.skein.inference.service.InferenceServiceInstrumentedTest",
+      "name": "anUnlockedServiceLoadsFromADescriptor",
+      "time": "1.076",
+      "nonpassing": [],
+      "details": {}
+    },
+    {
+      "module": "inference-service",
+      "class": "app.skein.inference.service.InferenceServiceInstrumentedTest",
+      "name": "cpuOnlyLoadReportsNoGpuOrIgpuDevice",
+      "time": "1.168",
+      "nonpassing": [],
+      "details": {}
+    },
+    {
+      "module": "inference-service",
+      "class": "app.skein.inference.service.InferenceServiceInstrumentedTest",
+      "name": "lockingMidGenerationCancelsThenLockedTerminatesTheIsolatedProcess",
+      "time": "2.009",
+      "nonpassing": [],
+      "details": {}
+    },
+    {
+      "module": "inference-service",
+      "class": "app.skein.inference.service.InferenceServiceInstrumentedTest",
+      "name": "aLockingServiceRefusesTheNextGenerateBeforeProcessTeardown",
+      "time": "1.047",
+      "nonpassing": [],
+      "details": {}
+    },
+    {
+      "module": "inference-service",
+      "class": "app.skein.inference.service.InferenceServiceInstrumentedTest",
+      "name": "cpuOnlyLoadReportsExactlyOneCpuDevice",
+      "time": "1.054",
+      "nonpassing": [],
+      "details": {}
+    },
+    {
+      "module": "inference-service",
+      "class": "app.skein.inference.service.InferenceServiceInstrumentedTest",
+      "name": "aColdServiceRefusesLoadUntilUnlocked",
+      "time": "0.408",
+      "nonpassing": [],
+      "details": {}
+    },
+    {
+      "module": "inference-service",
+      "class": "app.skein.inference.service.InferenceServiceInstrumentedTest",
+      "name": "aLoadedServiceReportsReady",
+      "time": "1.035",
+      "nonpassing": [],
+      "details": {}
+    },
+    {
+      "module": "inference-service",
+      "class": "app.skein.inference.service.InferenceServiceInstrumentedTest",
+      "name": "anOversizedAnswerReservationIsRefusedBeforeTokenStreaming",
+      "time": "1.035",
+      "nonpassing": [],
+      "details": {}
+    },
+    {
+      "module": "inference-service",
+      "class": "app.skein.inference.service.InferenceServiceInstrumentedTest",
+      "name": "aHashMismatchIsRefusedAndLeavesTheServiceUnloaded",
+      "time": "0.520",
+      "nonpassing": [],
+      "details": {}
+    },
+    {
+      "module": "inference-service",
+      "class": "app.skein.inference.service.InferenceServiceInstrumentedTest",
+      "name": "cancelMidGenerationCompletesAsCancelledWithinTheBudget",
+      "time": "1.828",
+      "nonpassing": [],
+      "details": {}
+    },
+    {
+      "module": "inference-service",
+      "class": "app.skein.inference.service.InferenceServiceInstrumentedTest",
+      "name": "staleLockedPushDoesNotKillNewlyAuthorizedService",
+      "time": "1.068",
+      "nonpassing": [],
+      "details": {}
+    },
+    {
+      "module": "inference-service",
+      "class": "app.skein.inference.service.InferenceServiceInstrumentedTest",
+      "name": "unloadIsIdempotent",
+      "time": "1.046",
+      "nonpassing": [],
+      "details": {}
+    },
+    {
+      "module": "inference-service",
+      "class": "app.skein.inference.service.InferenceServiceInstrumentedTest",
+      "name": "aSecondConcurrentGenerateIsRefusedWithBusy",
+      "time": "1.778",
+      "nonpassing": [],
+      "details": {}
+    },
+    {
+      "module": "inference-service",
+      "class": "app.skein.inference.service.InferenceServiceInstrumentedTest",
+      "name": "aHighGpuLayersLoadReportsAGpuDeviceWhenVulkanIsAvailable",
+      "time": "1.046",
+      "nonpassing": [],
+      "details": {}
+    },
+    {
+      "module": "inference-service",
+      "class": "app.skein.inference.service.InferenceServiceInstrumentedTest",
+      "name": "theServiceBindsAndReportsUnloaded",
+      "time": "0.173",
+      "nonpassing": [],
+      "details": {}
+    },
+    {
+      "module": "inference-service",
+      "class": "app.skein.inference.service.LlamaNativeTest",
+      "name": "tokenizeReturnsAtLeastTwoIds",
+      "time": "0.121",
+      "nonpassing": [],
+      "details": {}
+    },
+    {
+      "module": "inference-service",
+      "class": "app.skein.inference.service.LlamaNativeTest",
+      "name": "zeroHandlesThrowIllegalStateException",
+      "time": "0.003",
+      "nonpassing": [],
+      "details": {}
+    },
+    {
+      "module": "inference-service",
+      "class": "app.skein.inference.service.LlamaNativeTest",
+      "name": "decodePromptThenEightSamplesYieldsEightIds",
+      "time": "0.808",
+      "nonpassing": [],
+      "details": {}
+    },
+    {
+      "module": "inference-service",
+      "class": "app.skein.inference.service.LlamaNativeTest",
+      "name": "scaffoldTokenizerRejectsMalformedUnicodeAndInvalidByteRanges",
+      "time": "0.091",
+      "nonpassing": [],
+      "details": {}
+    },
+    {
+      "module": "inference-service",
+      "class": "app.skein.inference.service.LlamaNativeTest",
+      "name": "secureFreeZeroesTheKvCacheBeforeFreeing",
+      "time": "0.098",
+      "nonpassing": [],
+      "details": {}
+    },
+    {
+      "module": "inference-service",
+      "class": "app.skein.inference.service.LlamaNativeTest",
+      "name": "descriptorLoadCancellationFromProgressClosesOwnedStreamAndKeepsCallerFd",
+      "time": "0.176",
+      "nonpassing": [],
+      "details": {}
+    },
+    {
+      "module": "inference-service",
+      "class": "app.skein.inference.service.LlamaNativeTest",
+      "name": "sameSeedTwiceProducesTheSameIds",
+      "time": "1.831",
+      "nonpassing": [],
+      "details": {}
+    },
+    {
+      "module": "inference-service",
+      "class": "app.skein.inference.service.LlamaNativeTest",
+      "name": "loadingANonGgufFileFailsWithInvalidModelAndLeaksNoHandle",
+      "time": "0.041",
+      "nonpassing": [],
+      "details": {}
+    },
+    {
+      "module": "inference-service",
+      "class": "app.skein.inference.service.LlamaNativeTest",
+      "name": "safeTemplateTokensMatchNativeTokensForBenignSyntheticConversation",
+      "time": "0.097",
+      "nonpassing": [],
+      "details": {}
+    },
+    {
+      "module": "inference-service",
+      "class": "app.skein.inference.service.LlamaNativeTest",
+      "name": "goldenGreedySequenceIsPinned",
+      "time": "1.375",
+      "nonpassing": [],
+      "details": {}
+    },
+    {
+      "module": "inference-service",
+      "class": "app.skein.inference.service.LlamaNativeTest",
+      "name": "cancelFlagAbortsADecodeWithin100Ms",
+      "time": "0.112",
+      "nonpassing": [],
+      "details": {}
+    },
+    {
+      "module": "inference-service",
+      "class": "app.skein.inference.service.LlamaNativeTest",
+      "name": "controlsSpanningTemplateAndContentRemainLiteralInBothDirections",
+      "time": "0.099",
+      "nonpassing": [],
+      "details": {}
+    },
+    {
+      "module": "inference-service",
+      "class": "app.skein.inference.service.LlamaNativeTest",
+      "name": "contextCapacityRejectsZeroWrongAndFreedHandles",
+      "time": "0.096",
+      "nonpassing": [],
+      "details": {}
+    },
+    {
+      "module": "inference-service",
+      "class": "app.skein.inference.service.LlamaNativeTest",
+      "name": "nativeWhitespaceAndUnicodeTokensMatchWholePromptReference",
+      "time": "0.099",
+      "nonpassing": [],
+      "details": {}
+    },
+    {
+      "module": "inference-service",
+      "class": "app.skein.inference.service.LlamaNativeTest",
+      "name": "exactNativeCapacityAcceptsLastReservedPositionAndRefusesOneBeyond",
+      "time": "10.641",
+      "nonpassing": [],
+      "details": {}
+    },
+    {
+      "module": "inference-service",
+      "class": "app.skein.inference.service.LlamaNativeTest",
+      "name": "pathLoadCancellationFromProgressRetainsNoNativeHandle",
+      "time": "0.091",
+      "nonpassing": [],
+      "details": {}
+    },
+    {
+      "module": "inference-service",
+      "class": "app.skein.inference.service.LlamaNativeTest",
+      "name": "embedIsUnitLengthAndModelWidth",
+      "time": "0.177",
+      "nonpassing": [],
+      "details": {}
+    },
+    {
+      "module": "inference-service",
+      "class": "app.skein.inference.service.LlamaNativeTest",
+      "name": "backendReportWithNoModelReportsOnlyCompileTimeCpuFeatures",
+      "time": "0.003",
+      "nonpassing": [],
+      "details": {}
+    },
+    {
+      "module": "inference-service",
+      "class": "app.skein.inference.service.LlamaNativeTest",
+      "name": "tokenToPieceConcatenatesBackToTheInput",
+      "time": "0.093",
+      "nonpassing": [],
+      "details": {}
+    },
+    {
+      "module": "inference-service",
+      "class": "app.skein.inference.service.LlamaNativeTest",
+      "name": "chatTemplatingRenderUsesTheModelsOwnTemplateAndMarkersAroundTheContent",
+      "time": "0.089",
+      "nonpassing": [],
+      "details": {}
+    },
+    {
+      "module": "inference-service",
+      "class": "app.skein.inference.service.LlamaNativeTest",
+      "name": "errorMessagesCarryNoPromptText",
+      "time": "0.001",
+      "nonpassing": [],
+      "details": {}
+    },
+    {
+      "module": "inference-service",
+      "class": "app.skein.inference.service.LlamaNativeTest",
+      "name": "literalChatMlDelimiterCannotAddAnotherNativeControlToken",
+      "time": "0.091",
+      "nonpassing": [],
+      "details": {}
+    },
+    {
+      "module": "inference-service",
+      "class": "app.skein.inference.service.LlamaNativeTest",
+      "name": "applyChatTemplateContainsTheUserMessage",
+      "time": "0.086",
+      "nonpassing": [],
+      "details": {}
+    }
+  ],
+  "xml_files": [
+    {
+      "path": "app/build/outputs/androidTest-results/connected/debug/flavors/dev/TEST-test(AVD) - 15.xml",
+      "sha256": "7583724fef8433ec9e70d1a46eaa8244ee4297043a1f0c0bd3a0ade27b0ee483",
+      "bytes": 8522,
+      "suite_attributes": {
+        "tests": "38",
+        "failures": "0",
+        "errors": "0",
+        "skipped": "0",
+        "time": "0.000",
+        "timestamp": "2026-09-29T14:52:08",
+        "hostname": "localhost"
+      }
+    },
+    {
+      "path": "core/vault/build/outputs/androidTest-results/connected/debug/flavors/dev/TEST-test(AVD) - 15.xml",
+      "sha256": "d85b98f33aedc278a9e7c0366072081074447a36f563d3e3bdb4e90081517c3f",
+      "bytes": 38385,
+      "suite_attributes": {
+        "tests": "204",
+        "failures": "0",
+        "errors": "0",
+        "skipped": "0",
+        "time": "0.000",
+        "timestamp": "2026-09-29T14:52:24",
+        "hostname": "localhost"
+      }
+    },
+    {
+      "path": "inference-service/build/outputs/androidTest-results/connected/debug/flavors/dev/TEST-test(AVD) - 15.xml",
+      "sha256": "c918b5390154c8d5e57ff0a4690a47d7f3371f80c50246fe59933626f13d7cfd",
+      "bytes": 6497,
+      "suite_attributes": {
+        "tests": "39",
+        "failures": "0",
+        "errors": "0",
+        "skipped": "0",
+        "time": "0.000",
+        "timestamp": "2026-09-29T14:49:08",
+        "hostname": "localhost"
+      }
+    }
+  ],
+  "nonpassing": []
+}

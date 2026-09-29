@@ -1,0 +1,799 @@
+{
+  "run_id": 36584103370,
+  "lane": "foldable",
+  "source_sha": "321a51fdb0d7f6624e0fb957b819b968965d5e3f",
+  "conclusion": "failure",
+  "workflow_run_url": "https://github.com/HeyZeus100/skein/actions/runs/36584103370",
+  "source_attribution": "GitHub run API plus host-declared checkout; no installed APK attestation",
+  "errors": [
+    "window-geometry.jsonl: Expecting value: line 1 column 1 (char 0)"
+  ],
+  "artifacts": [
+    {
+      "id": 11041317265,
+      "path": "artifact-11041317265-foldable-gate-7.6in Foldable-321a51fdb0d7f6624e0fb957b819b968965d5e3f.zip",
+      "bytes": 156518407,
+      "sha256": "715ac7b0b939a66335edf120f4278742b9a5984c7a9b7d36eb19fa1dc9f2e910",
+      "api_digest_matched": true
+    }
+  ],
+  "jobs": [
+    {
+      "id": 109459678528,
+      "run_id": 36584103370,
+      "workflow_name": "Foldable production gate",
+      "head_branch": "main",
+      "run_url": "https://api.github.com/repos/HeyZeus100/skein/actions/runs/36584103370",
+      "run_attempt": 1,
+      "node_id": "CR_kwDOUh-fnc8AAAAZfE4lQA",
+      "head_sha": "321a51fdb0d7f6624e0fb957b819b968965d5e3f",
+      "url": "https://api.github.com/repos/HeyZeus100/skein/actions/jobs/109459678528",
+      "html_url": "https://github.com/HeyZeus100/skein/actions/runs/36584103370/job/109459678528",
+      "status": "completed",
+      "conclusion": "failure",
+      "created_at": "2026-09-29T14:37:54Z",
+      "started_at": "2026-09-29T14:37:56Z",
+      "completed_at": "2026-09-29T14:52:49Z",
+      "name": "7.6in Foldable compatibility production gate (API 35)",
+      "steps": [
+        {
+          "name": "Set up job",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 1,
+          "started_at": "2026-09-29T14:37:56Z",
+          "completed_at": "2026-09-29T14:37:59Z"
+        },
+        {
+          "name": "Checkout dispatched source",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 2,
+          "started_at": "2026-09-29T14:37:59Z",
+          "completed_at": "2026-09-29T14:38:13Z"
+        },
+        {
+          "name": "Set up JDK 17",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 3,
+          "started_at": "2026-09-29T14:38:13Z",
+          "completed_at": "2026-09-29T14:38:14Z"
+        },
+        {
+          "name": "Set up Gradle",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 4,
+          "started_at": "2026-09-29T14:38:14Z",
+          "completed_at": "2026-09-29T14:38:26Z"
+        },
+        {
+          "name": "Choose pinned OpenSSL cache",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 5,
+          "started_at": "2026-09-29T14:38:26Z",
+          "completed_at": "2026-09-29T14:38:26Z"
+        },
+        {
+          "name": "Derive OpenSSL cache pin",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 6,
+          "started_at": "2026-09-29T14:38:26Z",
+          "completed_at": "2026-09-29T14:38:26Z"
+        },
+        {
+          "name": "Cache pinned OpenSSL tarball",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 7,
+          "started_at": "2026-09-29T14:38:26Z",
+          "completed_at": "2026-09-29T14:38:27Z"
+        },
+        {
+          "name": "Install Linux emulator runtime library",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 8,
+          "started_at": "2026-09-29T14:38:27Z",
+          "completed_at": "2026-09-29T14:38:42Z"
+        },
+        {
+          "name": "SDK tools and exact fold profile",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 9,
+          "started_at": "2026-09-29T14:38:42Z",
+          "completed_at": "2026-09-29T14:38:57Z"
+        },
+        {
+          "name": "Install workflow parser",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 10,
+          "started_at": "2026-09-29T14:38:57Z",
+          "completed_at": "2026-09-29T14:39:00Z"
+        },
+        {
+          "name": "Verify workflow and evidence reviewer",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 11,
+          "started_at": "2026-09-29T14:39:00Z",
+          "completed_at": "2026-09-29T14:39:01Z"
+        },
+        {
+          "name": "Resolve host and test runtime with pinned verification",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 12,
+          "started_at": "2026-09-29T14:39:01Z",
+          "completed_at": "2026-09-29T14:39:23Z"
+        },
+        {
+          "name": "Explicit Kotlin lint",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 13,
+          "started_at": "2026-09-29T14:39:23Z",
+          "completed_at": "2026-09-29T14:39:31Z"
+        },
+        {
+          "name": "Enable KVM",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 14,
+          "started_at": "2026-09-29T14:39:31Z",
+          "completed_at": "2026-09-29T14:39:31Z"
+        },
+        {
+          "name": "Run production gate on foldable emulator",
+          "status": "completed",
+          "conclusion": "failure",
+          "number": 15,
+          "started_at": "2026-09-29T14:39:31Z",
+          "completed_at": "2026-09-29T14:52:27Z"
+        },
+        {
+          "name": "Review actual XML and artifact hashes",
+          "status": "completed",
+          "conclusion": "failure",
+          "number": 16,
+          "started_at": "2026-09-29T14:52:27Z",
+          "completed_at": "2026-09-29T14:52:28Z"
+        },
+        {
+          "name": "Preserve foldable evidence",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 17,
+          "started_at": "2026-09-29T14:52:28Z",
+          "completed_at": "2026-09-29T14:52:37Z"
+        },
+        {
+          "name": "Post Cache pinned OpenSSL tarball",
+          "status": "completed",
+          "conclusion": "skipped",
+          "number": 31,
+          "started_at": "2026-09-29T14:52:37Z",
+          "completed_at": "2026-09-29T14:52:37Z"
+        },
+        {
+          "name": "Post Set up Gradle",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 32,
+          "started_at": "2026-09-29T14:52:37Z",
+          "completed_at": "2026-09-29T14:52:47Z"
+        },
+        {
+          "name": "Post Set up JDK 17",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 33,
+          "started_at": "2026-09-29T14:52:47Z",
+          "completed_at": "2026-09-29T14:52:47Z"
+        },
+        {
+          "name": "Post Checkout dispatched source",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 34,
+          "started_at": "2026-09-29T14:52:47Z",
+          "completed_at": "2026-09-29T14:52:48Z"
+        },
+        {
+          "name": "Complete job",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 35,
+          "started_at": "2026-09-29T14:52:48Z",
+          "completed_at": "2026-09-29T14:52:48Z"
+        }
+      ],
+      "check_run_url": "https://api.github.com/repos/HeyZeus100/skein/check-runs/109459678528",
+      "labels": [
+        "ubuntu-latest"
+      ],
+      "runner_id": 1000003806,
+      "runner_name": "GitHub Actions 1000003806",
+      "runner_group_id": 0,
+      "runner_group_name": "GitHub Actions"
+    }
+  ],
+  "run_log_zip_sha256": "db4afea22d02b6e42c16c8da9d2358809e0e486f690b38e045889dba25467272",
+  "identity_comparison": {
+    "missing": [],
+    "unexpected": [],
+    "duplicates": 0
+  },
+  "workflow_review": {
+    "schema_version": 1,
+    "lane": "foldable-gate",
+    "source_sha": "321a51fdb0d7f6624e0fb957b819b968965d5e3f",
+    "control_transport": "guarded host emulator-console fold/unfold and UiAutomation rotation; no physical sensor claim",
+    "source_attestation": "host-declared checkout",
+    "apk_attestation": "build outputs; not installed-package attestation",
+    "expected_source_sha": "321a51fdb0d7f6624e0fb957b819b968965d5e3f",
+    "profile": "7.6in Foldable",
+    "cases": [
+      {
+        "class": "app.skein.foldable.MainActivityFoldableGateTest",
+        "name": "gateSurvivesClosedFlatClosedWithoutActivityReplacement",
+        "nonpassing": [
+          "failure"
+        ]
+      },
+      {
+        "class": "app.skein.foldable.MainActivityFoldableGateTest",
+        "name": "gateSurvivesOuterLandscapeWithoutExposingNavDisplay",
+        "nonpassing": [
+          "failure"
+        ]
+      }
+    ],
+    "artifacts": {
+      "build/foldable-evidence/avd-config.ini": "a1f5dcc0136bbd5faaf6232bdf5267994586947b8e3ee4beeb9a95ba571ee6eb",
+      "app/build/outputs/androidTest-results/connected/debug/flavors/dev/TEST-skein_foldable_gate(AVD) - 15.xml": "2ebc995d03ae8b442bdee76131032cce3397a495b09e27e20fbcafbbad559a36",
+      "app/build/outputs/apk/dev/debug/app-dev-debug.apk": "b5574e3a4dd63cc14fc1ee006a0e6c33d12344c9f4d639508a903c193801abc3",
+      "app/build/outputs/apk/androidTest/dev/debug/app-dev-debug-androidTest.apk": "aa9173f782d8e3041246dba01b45a8a9f3c17fa7b5d9f717e97cbd3bb80219e4",
+      "build/foldable-evidence/console-run-id.txt": "433e4fb8fa2c96d3373dfb0bf97b64d530ee5652b23b70e350dd38d28e290019",
+      "build/foldable-evidence/console-events.jsonl": "6bd8931404fc1d893d167f55d33e519901973dbaa38b8eed20857080449d1b6e"
+    },
+    "errors": [
+      "unexpected, duplicate, failed or skipped testcase: ('app.skein.foldable.MainActivityFoldableGateTest', 'gateSurvivesClosedFlatClosedWithoutActivityReplacement'); ['failure']",
+      "unexpected, duplicate, failed or skipped testcase: ('app.skein.foldable.MainActivityFoldableGateTest', 'gateSurvivesOuterLandscapeWithoutExposingNavDisplay'); ['failure']",
+      "missing or malformed runtime geometry JSONL",
+      "missing or invalid console protocol evidence: controller did not start and stop cleanly"
+    ],
+    "profile_scope": "generic deprecated foldable compatibility",
+    "avd_hardware": {
+      "hw.accelerometer": "yes",
+      "hw.accelerometer_uncalibrated": "yes",
+      "hw.arc": "false",
+      "hw.audioInput": "yes",
+      "hw.audioOutput": "yes",
+      "hw.battery": "yes",
+      "hw.camera.back": "emulated",
+      "hw.camera.back.orientation": "90",
+      "hw.camera.front": "none",
+      "hw.camera.front.orientation": "90",
+      "hw.cpu.arch": "x86_64",
+      "hw.cpu.ncore": "2",
+      "hw.dPad": "no",
+      "hw.device.hash2": "MD5:fe3c7944f73dad8e63044eed411a421f",
+      "hw.device.manufacturer": "Generic",
+      "hw.device.name": "7.6in Foldable",
+      "hw.display1.density": "0",
+      "hw.display1.flag": "0",
+      "hw.display1.height": "0",
+      "hw.display1.width": "0",
+      "hw.display1.xOffset": "-1",
+      "hw.display1.yOffset": "-1",
+      "hw.display2.density": "0",
+      "hw.display2.flag": "0",
+      "hw.display2.height": "0",
+      "hw.display2.width": "0",
+      "hw.display2.xOffset": "-1",
+      "hw.display2.yOffset": "-1",
+      "hw.display3.density": "0",
+      "hw.display3.flag": "0",
+      "hw.display3.height": "0",
+      "hw.display3.width": "0",
+      "hw.display3.xOffset": "-1",
+      "hw.display3.yOffset": "-1",
+      "hw.displayRegion.0.1.height": "2208",
+      "hw.displayRegion.0.1.width": "884",
+      "hw.displayRegion.0.1.xOffset": "0",
+      "hw.displayRegion.0.1.yOffset": "0",
+      "hw.displayRegion.0.2.height": "0",
+      "hw.displayRegion.0.2.width": "0",
+      "hw.displayRegion.0.2.xOffset": "-1",
+      "hw.displayRegion.0.2.yOffset": "-1",
+      "hw.displayRegion.0.3.height": "0",
+      "hw.displayRegion.0.3.width": "0",
+      "hw.displayRegion.0.3.xOffset": "-1",
+      "hw.displayRegion.0.3.yOffset": "-1",
+      "hw.gltransport": "pipe",
+      "hw.gltransport.asg.dataRingSize": "32768",
+      "hw.gltransport.asg.writeBufferSize": "1048576",
+      "hw.gltransport.asg.writeStepSize": "4096",
+      "hw.gltransport.drawFlushInterval": "800",
+      "hw.gps": "yes",
+      "hw.gpu.enabled": "no",
+      "hw.gpu.mode": "auto",
+      "hw.gsmModem": "yes",
+      "hw.gyroscope": "yes",
+      "hw.hotplug_multi_display": "no",
+      "hw.initialOrientation": "portrait",
+      "hw.keyboard": "no",
+      "hw.keyboard.charmap": "qwerty2",
+      "hw.keyboard.lid": "yes",
+      "hw.lcd.backlight": "yes",
+      "hw.lcd.circular": "false",
+      "hw.lcd.density": "420",
+      "hw.lcd.depth": "32",
+      "hw.lcd.height": "2208",
+      "hw.lcd.transparent": "false",
+      "hw.lcd.vsync": "60",
+      "hw.lcd.width": "1768",
+      "hw.mainKeys": "no",
+      "hw.multi_display_window": "no",
+      "hw.ramSize": "1536M",
+      "hw.rotaryInput": "no",
+      "hw.screen": "multi-touch",
+      "hw.sdCard": "yes",
+      "hw.sensor.hinge": "yes",
+      "hw.sensor.hinge.areas": "884-0-1-2208",
+      "hw.sensor.hinge.count": "1",
+      "hw.sensor.hinge.defaults": "180",
+      "hw.sensor.hinge.fold_to_displayRegion.0.1_at_posture": "1",
+      "hw.sensor.hinge.ranges": "0-180",
+      "hw.sensor.hinge.resizable.config": "1",
+      "hw.sensor.hinge.sub_type": "1",
+      "hw.sensor.hinge.type": "1",
+      "hw.sensor.hinge_angles_posture_definitions": "0-30, 30-150, 150-180",
+      "hw.sensor.posture_list": "1, 2, 3",
+      "hw.sensor.roll": "no",
+      "hw.sensor.roll.count": "0",
+      "hw.sensor.roll.resize_to_displayRegion.0.1_at_posture": "6",
+      "hw.sensor.roll.resize_to_displayRegion.0.2_at_posture": "6",
+      "hw.sensor.roll.resize_to_displayRegion.0.3_at_posture": "6",
+      "hw.sensors.gyroscope_uncalibrated": "yes",
+      "hw.sensors.heading": "no",
+      "hw.sensors.heart_rate": "no",
+      "hw.sensors.humidity": "yes",
+      "hw.sensors.light": "yes",
+      "hw.sensors.magnetic_field": "yes",
+      "hw.sensors.magnetic_field_uncalibrated": "yes",
+      "hw.sensors.orientation": "yes",
+      "hw.sensors.pressure": "yes",
+      "hw.sensors.proximity": "yes",
+      "hw.sensors.rgbclight": "no",
+      "hw.sensors.temperature": "yes",
+      "hw.sensors.wrist_tilt": "no",
+      "hw.touchpad0": "no",
+      "hw.touchpad0.height": "400",
+      "hw.touchpad0.width": "600",
+      "hw.trackBall": "no",
+      "hw.useext4": "yes"
+    },
+    "passed": false,
+    "remaining_gates": [
+      "Pixel 9 Pro Fold profile acceptance",
+      "hinge-angle/sensor assertions",
+      "unlocked A-G",
+      "real IME and focus",
+      "system_server heap privacy",
+      "physical Fold A-G acceptance outside this lane"
+    ]
+  },
+  "rehashed_manifest": [
+    {
+      "path": "build/foldable-evidence/avd-config.ini",
+      "bytes": 3995,
+      "sha256": "a1f5dcc0136bbd5faaf6232bdf5267994586947b8e3ee4beeb9a95ba571ee6eb"
+    },
+    {
+      "path": "app/build/outputs/androidTest-results/connected/debug/flavors/dev/TEST-skein_foldable_gate(AVD) - 15.xml",
+      "bytes": 1398,
+      "sha256": "2ebc995d03ae8b442bdee76131032cce3397a495b09e27e20fbcafbbad559a36"
+    },
+    {
+      "path": "app/build/outputs/apk/dev/debug/app-dev-debug.apk",
+      "bytes": 171611846,
+      "sha256": "b5574e3a4dd63cc14fc1ee006a0e6c33d12344c9f4d639508a903c193801abc3"
+    },
+    {
+      "path": "app/build/outputs/apk/androidTest/dev/debug/app-dev-debug-androidTest.apk",
+      "bytes": 94568933,
+      "sha256": "aa9173f782d8e3041246dba01b45a8a9f3c17fa7b5d9f717e97cbd3bb80219e4"
+    },
+    {
+      "path": "build/foldable-evidence/console-run-id.txt",
+      "bytes": 33,
+      "sha256": "433e4fb8fa2c96d3373dfb0bf97b64d530ee5652b23b70e350dd38d28e290019"
+    },
+    {
+      "path": "build/foldable-evidence/console-events.jsonl",
+      "bytes": 225,
+      "sha256": "6bd8931404fc1d893d167f55d33e519901973dbaa38b8eed20857080449d1b6e"
+    }
+  ],
+  "runtime-device-states.txt": {
+    "text": "Supported states: [\n  DeviceState{identifier=1, name='CLOSED', app_accessible=true, cancel_when_requester_not_on_top=false},\n  DeviceState{identifier=2, name='HALF_OPENED', app_accessible=true, cancel_when_requester_not_on_top=false},\n  DeviceState{identifier=3, name='OPENED', app_accessible=true, cancel_when_requester_not_on_top=false},\n]\n\nSupported states: [\n  DeviceState{identifier=1, name='CLOSED', app_accessible=true, cancel_when_requester_not_on_top=false},\n  DeviceState{identifier=2, name='HALF_OPENED', app_accessible=true, cancel_when_requester_not_on_top=false},\n  DeviceState{identifier=3, name='OPENED', app_accessible=true, cancel_when_requester_not_on_top=false},\n]\n\n",
+    "sha256": "56cf5836047856f7792b1f17de77360a45959edc624fd0dc20d971e885183f13"
+  },
+  "emulator-version.txt": {
+    "text": "Android emulator version 37.1.11.0 (build_id 15917651) (CL:N/A)\nCopyright (C) 2006-2024 The Android Open Source Project and many others.\nThis program is a derivative of the QEMU CPU emulator (www.qemu.org).\n\n  This software is licensed under the terms of the GNU General Public\n  License version 2, as published by the Free Software Foundation, and\n  may be copied, distributed, and modified under those terms.\n\n  This program is distributed in the hope that it will be useful,\n  but WITHOUT ANY WARRANTY; without even the implied warranty of\n  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the\n  GNU General Public License for more details.\n\n",
+    "sha256": "10bd3d86ba7af09acd91e7a0bc0073038cbb5d3d2479d1667e52129f43058116"
+  },
+  "submodule-shas.txt": {
+    "text": " ad9184e76a66b1001c29db9b0a3e87f646c64de0 third_party/SPIRV-Headers (ad9184e)\n 8864cdc896bbc2a9b6eb36b3218fc9ef57908d77 third_party/Vulkan-Headers (8864cdc)\n b29c606e28a01b1bc8c1351026a0fa6e616bf6c4 third_party/llama.cpp (b29c606)\n",
+    "sha256": "2a90e5c956c86f81a8d96e8e3300f9cedb932e6d798dddf14917b1a1a247582c"
+  },
+  "requested-profile.txt": {
+    "text": "7.6in Foldable\n",
+    "sha256": "9d884945fe4b6419e23c23778ea5954659f99fc73b2ed4b2fe94844559195f1f"
+  },
+  "console-controller.log": {
+    "text": "malformed request JSON\n",
+    "sha256": "df189a2e9ff673b001ceb92bda50400d15b3211fffb8bf8d0b6447178c87011a"
+  },
+  "console-run-id.txt": {
+    "text": "6f161c15436c4fe3a6c1d60f23942445\n",
+    "sha256": "433e4fb8fa2c96d3373dfb0bf97b64d530ee5652b23b70e350dd38d28e290019"
+  },
+  "console-final-request.json": {
+    "text": "{\"run_id\":\"6f161c15436c4fe3a6c1d60f23942445\",\"sequence\":2,\"nonce\":\"62a736983d76426c9b184e50637f7970\",\"action\":\"fold\"}",
+    "sha256": "c5832dae219ea3593a1a08ce5a557d61f58a32b48ae36332679acd3a5abfa03c"
+  },
+  "console-final-ack.json": {
+    "text": "cat: files/foldable-console-ack.json: No such file or directory\n",
+    "sha256": "9c9338f3a5fcee12ed5dc1580023bc7289c62456f1ddb081b5c5b252b47438eb"
+  },
+  "avd_config": {
+    "PlayStore.enabled": "no",
+    "abi.type": "x86_64",
+    "avd.id": "<build>",
+    "avd.ini.encoding": "UTF-8",
+    "avd.name": "<build>",
+    "disk.cachePartition": "yes",
+    "disk.cachePartition.size": "66MB",
+    "disk.dataPartition.path": "<temp>",
+    "disk.dataPartition.size": "6442450944",
+    "disk.systemPartition.size": "0",
+    "disk.vendorPartition.size": "0",
+    "environment.height": "0",
+    "environment.width": "0",
+    "fastboot.forceChosenSnapshotBoot": "no",
+    "fastboot.forceColdBoot": "no",
+    "fastboot.forceFastBoot": "yes",
+    "firstboot.bootFromDownloadableSnapshot": "yes",
+    "firstboot.bootFromLocalSnapshot": "yes",
+    "firstboot.saveToLocalSnapshot": "yes",
+    "hw.accelerometer": "yes",
+    "hw.accelerometer_uncalibrated": "yes",
+    "hw.arc": "false",
+    "hw.audioInput": "yes",
+    "hw.audioOutput": "yes",
+    "hw.battery": "yes",
+    "hw.camera.back": "emulated",
+    "hw.camera.back.orientation": "90",
+    "hw.camera.front": "none",
+    "hw.camera.front.orientation": "90",
+    "hw.cpu.arch": "x86_64",
+    "hw.cpu.ncore": "2",
+    "hw.dPad": "no",
+    "hw.device.hash2": "MD5:fe3c7944f73dad8e63044eed411a421f",
+    "hw.device.manufacturer": "Generic",
+    "hw.device.name": "7.6in Foldable",
+    "hw.display1.density": "0",
+    "hw.display1.flag": "0",
+    "hw.display1.height": "0",
+    "hw.display1.width": "0",
+    "hw.display1.xOffset": "-1",
+    "hw.display1.yOffset": "-1",
+    "hw.display2.density": "0",
+    "hw.display2.flag": "0",
+    "hw.display2.height": "0",
+    "hw.display2.width": "0",
+    "hw.display2.xOffset": "-1",
+    "hw.display2.yOffset": "-1",
+    "hw.display3.density": "0",
+    "hw.display3.flag": "0",
+    "hw.display3.height": "0",
+    "hw.display3.width": "0",
+    "hw.display3.xOffset": "-1",
+    "hw.display3.yOffset": "-1",
+    "hw.displayRegion.0.1.height": "2208",
+    "hw.displayRegion.0.1.width": "884",
+    "hw.displayRegion.0.1.xOffset": "0",
+    "hw.displayRegion.0.1.yOffset": "0",
+    "hw.displayRegion.0.2.height": "0",
+    "hw.displayRegion.0.2.width": "0",
+    "hw.displayRegion.0.2.xOffset": "-1",
+    "hw.displayRegion.0.2.yOffset": "-1",
+    "hw.displayRegion.0.3.height": "0",
+    "hw.displayRegion.0.3.width": "0",
+    "hw.displayRegion.0.3.xOffset": "-1",
+    "hw.displayRegion.0.3.yOffset": "-1",
+    "hw.gltransport": "pipe",
+    "hw.gltransport.asg.dataRingSize": "32768",
+    "hw.gltransport.asg.writeBufferSize": "1048576",
+    "hw.gltransport.asg.writeStepSize": "4096",
+    "hw.gltransport.drawFlushInterval": "800",
+    "hw.gps": "yes",
+    "hw.gpu.enabled": "no",
+    "hw.gpu.mode": "auto",
+    "hw.gsmModem": "yes",
+    "hw.gyroscope": "yes",
+    "hw.hotplug_multi_display": "no",
+    "hw.initialOrientation": "portrait",
+    "hw.keyboard": "no",
+    "hw.keyboard.charmap": "qwerty2",
+    "hw.keyboard.lid": "yes",
+    "hw.lcd.backlight": "yes",
+    "hw.lcd.circular": "false",
+    "hw.lcd.density": "420",
+    "hw.lcd.depth": "32",
+    "hw.lcd.height": "2208",
+    "hw.lcd.transparent": "false",
+    "hw.lcd.vsync": "60",
+    "hw.lcd.width": "1768",
+    "hw.mainKeys": "no",
+    "hw.multi_display_window": "no",
+    "hw.ramSize": "1536M",
+    "hw.rotaryInput": "no",
+    "hw.screen": "multi-touch",
+    "hw.sdCard": "yes",
+    "hw.sensor.hinge": "yes",
+    "hw.sensor.hinge.areas": "884-0-1-2208",
+    "hw.sensor.hinge.count": "1",
+    "hw.sensor.hinge.defaults": "180",
+    "hw.sensor.hinge.fold_to_displayRegion.0.1_at_posture": "1",
+    "hw.sensor.hinge.ranges": "0-180",
+    "hw.sensor.hinge.resizable.config": "1",
+    "hw.sensor.hinge.sub_type": "1",
+    "hw.sensor.hinge.type": "1",
+    "hw.sensor.hinge_angles_posture_definitions": "0-30, 30-150, 150-180",
+    "hw.sensor.posture_list": "1, 2, 3",
+    "hw.sensor.roll": "no",
+    "hw.sensor.roll.count": "0",
+    "hw.sensor.roll.resize_to_displayRegion.0.1_at_posture": "6",
+    "hw.sensor.roll.resize_to_displayRegion.0.2_at_posture": "6",
+    "hw.sensor.roll.resize_to_displayRegion.0.3_at_posture": "6",
+    "hw.sensors.gyroscope_uncalibrated": "yes",
+    "hw.sensors.heading": "no",
+    "hw.sensors.heart_rate": "no",
+    "hw.sensors.humidity": "yes",
+    "hw.sensors.light": "yes",
+    "hw.sensors.magnetic_field": "yes",
+    "hw.sensors.magnetic_field_uncalibrated": "yes",
+    "hw.sensors.orientation": "yes",
+    "hw.sensors.pressure": "yes",
+    "hw.sensors.proximity": "yes",
+    "hw.sensors.rgbclight": "no",
+    "hw.sensors.temperature": "yes",
+    "hw.sensors.wrist_tilt": "no",
+    "hw.touchpad0": "no",
+    "hw.touchpad0.height": "400",
+    "hw.touchpad0.width": "600",
+    "hw.trackBall": "no",
+    "hw.useext4": "yes",
+    "image.sysdir.1": "system-images/android-35/google_apis/x86_64/",
+    "kernel.newDeviceNaming": "autodetect",
+    "kernel.supportsYaffs2": "autodetect",
+    "runtime.network.latency": "none",
+    "runtime.network.speed": "full",
+    "sdcard.size": "512 MB",
+    "showDeviceFrame": "yes",
+    "tag.display": "Google APIs",
+    "tag.id": "google_apis",
+    "test.delayAdbTillBootComplete": "0",
+    "test.monitorAdb": "0",
+    "test.quitAfterBootTimeOut": "-1",
+    "userdata.useQcow2": "no",
+    "vm.heapSize": "228M"
+  },
+  "geometry": [],
+  "protocol": [
+    {
+      "avd": "skein_foldable_gate",
+      "event": "started",
+      "run_id": "6f161c15436c4fe3a6c1d60f23942445",
+      "serial": "emulator-5554"
+    },
+    {
+      "event": "fatal",
+      "reason": "malformed request JSON",
+      "run_id": "6f161c15436c4fe3a6c1d60f23942445"
+    }
+  ],
+  "apk_bytes": [
+    {
+      "path": "app/build/outputs/apk/androidTest/dev/debug/app-dev-debug-androidTest.apk",
+      "bytes": 94568933,
+      "sha256": "aa9173f782d8e3041246dba01b45a8a9f3c17fa7b5d9f717e97cbd3bb80219e4",
+      "attribution": "downloaded host build output; not installed bytes",
+      "zip_integrity_ok": true,
+      "native_libraries": []
+    },
+    {
+      "path": "app/build/outputs/apk/dev/debug/app-dev-debug.apk",
+      "bytes": 171611846,
+      "sha256": "b5574e3a4dd63cc14fc1ee006a0e6c33d12344c9f4d639508a903c193801abc3",
+      "attribution": "downloaded host build output; not installed bytes",
+      "zip_integrity_ok": true,
+      "native_libraries": [
+        {
+          "path": "lib/arm64-v8a/libandroidx.graphics.path.so",
+          "bytes": 10096,
+          "sha256": "41e9a793c43a0f4fddb19e33f346bace464f30f888ba7b9eaf96294ea115bfb6"
+        },
+        {
+          "path": "lib/arm64-v8a/libdatastore_shared_counter.so",
+          "bytes": 7784,
+          "sha256": "178f89a2c6c9234ddf980dd4cd1f3616186a46b2b932aafa6707abd04c5fd76a"
+        },
+        {
+          "path": "lib/arm64-v8a/libonnxruntime.so",
+          "bytes": 27985944,
+          "sha256": "850f897a50d369b3305582244210f5649be9cfeb193c5807fba14146301616c7"
+        },
+        {
+          "path": "lib/arm64-v8a/libonnxruntime4j_jni.so",
+          "bytes": 83208,
+          "sha256": "f86f2a5f56b907e4a25d67febc422ec13f5a265d36665f50e2808de6e4a515b6"
+        },
+        {
+          "path": "lib/arm64-v8a/libskein_llama.so",
+          "bytes": 33413072,
+          "sha256": "b3fe7bf00e66a9d476479ea5c1e65497586552d8d9c03efb470c856439101a88"
+        },
+        {
+          "path": "lib/arm64-v8a/libskein_sqlite.so",
+          "bytes": 6268816,
+          "sha256": "ef84dfbbbf1806ef24ddf2e94c270a450b643f4b64e798bacb156a437d7643d6"
+        },
+        {
+          "path": "lib/arm64-v8a/libskein_sqlite_jni.so",
+          "bytes": 19296,
+          "sha256": "2d6454ff03023ef85f0d19fd7c3cce88169b5b212a9de86b7fe649b98ff5d229"
+        },
+        {
+          "path": "lib/x86_64/libandroidx.graphics.path.so",
+          "bytes": 10760,
+          "sha256": "4e56c996f13670e70082658de7880c4020eabf4f25e43387f88ed78a713fc9f0"
+        },
+        {
+          "path": "lib/x86_64/libdatastore_shared_counter.so",
+          "bytes": 7336,
+          "sha256": "ccd1862ef8f854d2322f3ee07adebd107890ded3b7c96b8f3528ac99aab4a4f6"
+        },
+        {
+          "path": "lib/x86_64/libonnxruntime.so",
+          "bytes": 33975544,
+          "sha256": "12aee04e178cde314725526b1a8e0b06ca20bd717ea252dd65d0b752f0088bd1"
+        },
+        {
+          "path": "lib/x86_64/libonnxruntime4j_jni.so",
+          "bytes": 80272,
+          "sha256": "9283970dbce849057eaf29fe3dfa3db1f7324d1dfcecc952e56eed61f6482c2d"
+        },
+        {
+          "path": "lib/x86_64/libskein_llama.so",
+          "bytes": 5489440,
+          "sha256": "6584e6771bfd6de9ae410143dc026275e022429756a74e538b14320a76ee5a7f"
+        },
+        {
+          "path": "lib/x86_64/libskein_sqlite.so",
+          "bytes": 6700000,
+          "sha256": "8e1701869e6e68d5733206bf268bfbb1cdb076c2f2bfcf67084efd2e0030f527"
+        },
+        {
+          "path": "lib/x86_64/libskein_sqlite_jni.so",
+          "bytes": 18544,
+          "sha256": "22345baf1d62b7dd28df2c46f945fc3fec2237ce3cef7d085b5964e2fef176c2"
+        }
+      ]
+    }
+  ],
+  "geometry_check": {
+    "rows": 0,
+    "exact_five_steps": false
+  },
+  "protocol_check": {
+    "events": 2,
+    "requests": 0,
+    "commands": 0,
+    "acks": 0,
+    "failures": [
+      {
+        "event": "fatal",
+        "reason": "malformed request JSON",
+        "run_id": "6f161c15436c4fe3a6c1d60f23942445"
+      }
+    ],
+    "alternating_actions": false,
+    "strict_causal_types": false
+  },
+  "remaining_scope": "Only two unopened-vault journeys on explicit generic profile; no Pixel9/realIME/hinge-angle/unlockedA-G/physicalFold/candidate-release inference.",
+  "counts": {
+    "tests": 2,
+    "passed": 0,
+    "failure": 2,
+    "error": 0,
+    "skipped": 0
+  },
+  "cases": [
+    {
+      "module": "app",
+      "class": "app.skein.foldable.MainActivityFoldableGateTest",
+      "name": "gateSurvivesClosedFlatClosedWithoutActivityReplacement",
+      "time": "90.319",
+      "nonpassing": [
+        "failure"
+      ],
+      "details": {
+        "failure": "java.lang.IllegalStateException: Console transport failed; host owns bounded cleanup\n\tat app.skein.foldable.FoldableDeviceControl.reset(FoldableDeviceControl.kt:50)\n\tat app.skein.foldable.MainActivityFoldableGateTest.resetDeviceOverrides(MainActivityFoldableGateTest.kt:50)\n"
+      }
+    },
+    {
+      "module": "app",
+      "class": "app.skein.foldable.MainActivityFoldableGateTest",
+      "name": "gateSurvivesOuterLandscapeWithoutExposingNavDisplay",
+      "time": "90.141",
+      "nonpassing": [
+        "failure"
+      ],
+      "details": {
+        "failure": "java.lang.IllegalStateException: Console transport failed; host owns bounded cleanup\n\tat app.skein.foldable.FoldableDeviceControl.reset(FoldableDeviceControl.kt:50)\n\tat app.skein.foldable.MainActivityFoldableGateTest.resetDeviceOverrides(MainActivityFoldableGateTest.kt:50)\n"
+      }
+    }
+  ],
+  "xml_files": [
+    {
+      "path": "app/build/outputs/androidTest-results/connected/debug/flavors/dev/TEST-skein_foldable_gate(AVD) - 15.xml",
+      "sha256": "2ebc995d03ae8b442bdee76131032cce3397a495b09e27e20fbcafbbad559a36",
+      "bytes": 1398,
+      "suite_attributes": {
+        "tests": "2",
+        "failures": "2",
+        "errors": "0",
+        "skipped": "0",
+        "time": "0.000",
+        "timestamp": "2026-09-29T14:52:19",
+        "hostname": "localhost"
+      }
+    }
+  ],
+  "nonpassing": [
+    {
+      "module": "app",
+      "class": "app.skein.foldable.MainActivityFoldableGateTest",
+      "name": "gateSurvivesClosedFlatClosedWithoutActivityReplacement",
+      "time": "90.319",
+      "nonpassing": [
+        "failure"
+      ],
+      "details": {
+        "failure": "java.lang.IllegalStateException: Console transport failed; host owns bounded cleanup\n\tat app.skein.foldable.FoldableDeviceControl.reset(FoldableDeviceControl.kt:50)\n\tat app.skein.foldable.MainActivityFoldableGateTest.resetDeviceOverrides(MainActivityFoldableGateTest.kt:50)\n"
+      }
+    },
+    {
+      "module": "app",
+      "class": "app.skein.foldable.MainActivityFoldableGateTest",
+      "name": "gateSurvivesOuterLandscapeWithoutExposingNavDisplay",
+      "time": "90.141",
+      "nonpassing": [
+        "failure"
+      ],
+      "details": {
+        "failure": "java.lang.IllegalStateException: Console transport failed; host owns bounded cleanup\n\tat app.skein.foldable.FoldableDeviceControl.reset(FoldableDeviceControl.kt:50)\n\tat app.skein.foldable.MainActivityFoldableGateTest.resetDeviceOverrides(MainActivityFoldableGateTest.kt:50)\n"
+      }
+    }
+  ]
+}

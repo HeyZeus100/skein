@@ -1,0 +1,109 @@
+{
+  "prior_run_id": 36546817687,
+  "prior_source_sha": "4f1b7d334173544feb47190b3e2e7efc4a5e1688",
+  "prior_failure_details_sha256": "486afd283abba29bf7fa79727aaadaa603b7a9619510d3b5555d16b7f3ec8f10",
+  "prior_19_failures": [
+    {
+      "classname": "app.skein.inference.service.LlamaNativeTest",
+      "name": "tokenizeReturnsAtLeastTwoIds"
+    },
+    {
+      "classname": "app.skein.inference.service.LlamaNativeTest",
+      "name": "decodePromptThenEightSamplesYieldsEightIds"
+    },
+    {
+      "classname": "app.skein.inference.service.LlamaNativeTest",
+      "name": "scaffoldTokenizerRejectsMalformedUnicodeAndInvalidByteRanges"
+    },
+    {
+      "classname": "app.skein.inference.service.LlamaNativeTest",
+      "name": "secureFreeZeroesTheKvCacheBeforeFreeing"
+    },
+    {
+      "classname": "app.skein.inference.service.LlamaNativeTest",
+      "name": "descriptorLoadCancellationFromProgressClosesOwnedStreamAndKeepsCallerFd"
+    },
+    {
+      "classname": "app.skein.inference.service.LlamaNativeTest",
+      "name": "sameSeedTwiceProducesTheSameIds"
+    },
+    {
+      "classname": "app.skein.inference.service.LlamaNativeTest",
+      "name": "loadingANonGgufFileFailsWithInvalidModelAndLeaksNoHandle"
+    },
+    {
+      "classname": "app.skein.inference.service.LlamaNativeTest",
+      "name": "safeTemplateTokensMatchNativeTokensForBenignSyntheticConversation"
+    },
+    {
+      "classname": "app.skein.inference.service.LlamaNativeTest",
+      "name": "goldenGreedySequenceIsPinned"
+    },
+    {
+      "classname": "app.skein.inference.service.LlamaNativeTest",
+      "name": "cancelFlagAbortsADecodeWithin100Ms"
+    },
+    {
+      "classname": "app.skein.inference.service.LlamaNativeTest",
+      "name": "controlsSpanningTemplateAndContentRemainLiteralInBothDirections"
+    },
+    {
+      "classname": "app.skein.inference.service.LlamaNativeTest",
+      "name": "contextCapacityRejectsZeroWrongAndFreedHandles"
+    },
+    {
+      "classname": "app.skein.inference.service.LlamaNativeTest",
+      "name": "nativeWhitespaceAndUnicodeTokensMatchWholePromptReference"
+    },
+    {
+      "classname": "app.skein.inference.service.LlamaNativeTest",
+      "name": "exactNativeCapacityAcceptsLastReservedPositionAndRefusesOneBeyond"
+    },
+    {
+      "classname": "app.skein.inference.service.LlamaNativeTest",
+      "name": "embedIsUnitLengthAndModelWidth"
+    },
+    {
+      "classname": "app.skein.inference.service.LlamaNativeTest",
+      "name": "tokenToPieceConcatenatesBackToTheInput"
+    },
+    {
+      "classname": "app.skein.inference.service.LlamaNativeTest",
+      "name": "chatTemplatingRenderUsesTheModelsOwnTemplateAndMarkersAroundTheContent"
+    },
+    {
+      "classname": "app.skein.inference.service.LlamaNativeTest",
+      "name": "literalChatMlDelimiterCannotAddAnotherNativeControlToken"
+    },
+    {
+      "classname": "app.skein.inference.service.LlamaNativeTest",
+      "name": "applyChatTemplateContainsTheUserMessage"
+    }
+  ],
+  "critical_cases": [
+    {
+      "classname": "app.skein.inference.service.LlamaNativeTest",
+      "name": "descriptorLoadCancellationFromProgressClosesOwnedStreamAndKeepsCallerFd"
+    },
+    {
+      "classname": "app.skein.inference.service.LlamaNativeTest",
+      "name": "pathLoadCancellationFromProgressRetainsNoNativeHandle"
+    },
+    {
+      "classname": "app.skein.inference.service.InferenceServiceInstrumentedTest",
+      "name": "lockingMidGenerationCancelsThenLockedTerminatesTheIsolatedProcess"
+    },
+    {
+      "classname": "app.skein.inference.service.InferenceServiceInstrumentedTest",
+      "name": "aLockingServiceRefusesTheNextGenerateBeforeProcessTeardown"
+    },
+    {
+      "classname": "app.skein.inference.service.InferenceServiceInstrumentedTest",
+      "name": "staleLockedPushDoesNotKillNewlyAuthorizedService"
+    },
+    {
+      "classname": "app.skein.inference.LlamaCppEngineInstrumentedTest",
+      "name": "lockAfterInspectionTerminatesTheProcessAndOnlyANewUnlockCanRebind"
+    }
+  ]
+}
