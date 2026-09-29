@@ -27,14 +27,20 @@ import androidx.compose.ui.test.DeviceConfigurationOverride
 import androidx.compose.ui.test.WindowSize
 import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.assertIsNotDisplayed
+import androidx.compose.ui.test.hasAnyAncestor
+import androidx.compose.ui.test.hasScrollAction
+import androidx.compose.ui.test.hasTestTag
+import androidx.compose.ui.test.hasText
 import androidx.compose.ui.test.junit4.createAndroidComposeRule
 import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
+import androidx.compose.ui.test.performScrollToNode
 import androidx.compose.ui.unit.DpSize
 import androidx.compose.ui.unit.dp
 import app.skein.core.designsystem.theme.SkeinTheme
 import app.skein.feature.shell.layout.skeinWindowLayout
+import org.junit.Assert.assertEquals
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -59,6 +65,10 @@ class SkeinNavigationContainerTest {
     /** One container, driven by a live-mutable [size] the test flips mid-composition. */
     private fun setContent(
         size: MutableState<DpSize>,
+        onNavigate: (SkeinDestination) -> Unit = {},
+        onNewChat: () -> Unit = {},
+        onSearch: () -> Unit = {},
+        history: List<ChatHistoryItem> = emptyList(),
         content: @Composable () -> Unit,
     ) {
         composeRule.setContent {
@@ -73,16 +83,75 @@ class SkeinNavigationContainerTest {
                     SkeinNavigationContainer(
                         decision = decision,
                         destination = SkeinDestination.CHAT,
-                        onNavigate = {},
-                        onNewChat = {},
-                        onSearch = {},
-                        history = emptyList(),
+                        onNavigate = onNavigate,
+                        onNewChat = onNewChat,
+                        onSearch = onSearch,
+                        history = history,
                         spaces = emptyList(),
                         content = content,
                     )
                 }
             }
         }
+    }
+
+    @Test
+    fun `drawer destination closes a drawer opened by content beside a rail`() {
+        assertRailDrawerActionCloses("Settings", "navigate:SETTINGS")
+    }
+
+    @Test
+    fun `drawer New chat closes a drawer opened by content beside a rail`() {
+        assertRailDrawerActionCloses(" New chat", "new-chat")
+    }
+
+    @Test
+    fun `drawer Search closes a drawer opened by content beside a rail`() {
+        assertRailDrawerActionCloses("Search or run a command", "search")
+    }
+
+    @Test
+    fun `drawer history closes a drawer opened by content beside a rail`() {
+        assertRailDrawerActionCloses("Retained chat", "history")
+    }
+
+    private fun assertRailDrawerActionCloses(
+        label: String,
+        expectedAction: String,
+    ) {
+        val actions = mutableListOf<String>()
+        setContent(
+            mutableStateOf(EXPANDED),
+            onNavigate = { actions += "navigate:$it" },
+            onNewChat = { actions += "new-chat" },
+            onSearch = { actions += "search" },
+            history =
+                listOf(
+                    ChatHistoryItem(
+                        id = "retained-chat",
+                        title = "Retained chat",
+                        lastMessageAtMillis = 0,
+                        timeLabel = "Earlier",
+                        onOpen = { actions += "history" },
+                    ),
+                ),
+        ) {
+            val opener = LocalSkeinDrawerOpener.current
+            Text("open", modifier = Modifier.testTag(OPEN_DRAWER_TAG).clickable(onClick = opener))
+        }
+        composeRule.onNodeWithTag(SkeinNavContainerTestTags.RAIL).assertIsDisplayed()
+        composeRule.onNodeWithTag(OPEN_DRAWER_TAG).performClick()
+        composeRule.onNodeWithTag(SkeinNavContainerTestTags.DRAWER_SHEET).assertIsDisplayed()
+        composeRule
+            .onNode(hasScrollAction() and hasAnyAncestor(hasTestTag(SkeinNavContainerTestTags.DRAWER_SHEET)))
+            .performScrollToNode(hasText(label))
+        composeRule
+            .onNode(hasText(label) and hasAnyAncestor(hasTestTag(SkeinNavContainerTestTags.DRAWER_SHEET)))
+            .performClick()
+        composeRule.waitForIdle()
+        assertEquals(listOf(expectedAction), actions)
+        composeRule.onNodeWithTag(SkeinNavContainerTestTags.DRAWER_SHEET).assertIsNotDisplayed()
+        composeRule.onNodeWithTag(SkeinNavContainerTestTags.RAIL).assertIsDisplayed()
     }
 
     @Test

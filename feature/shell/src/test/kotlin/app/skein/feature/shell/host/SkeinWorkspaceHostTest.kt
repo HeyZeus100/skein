@@ -33,11 +33,16 @@ import androidx.compose.ui.test.assertContentDescriptionEquals
 import androidx.compose.ui.test.assertCountEquals
 import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.assertIsFocused
+import androidx.compose.ui.test.assertIsNotDisplayed
 import androidx.compose.ui.test.assertIsNotEnabled
 import androidx.compose.ui.test.assertIsNotSelected
 import androidx.compose.ui.test.assertIsSelected
 import androidx.compose.ui.test.captureToImage
 import androidx.compose.ui.test.click
+import androidx.compose.ui.test.hasAnyAncestor
+import androidx.compose.ui.test.hasContentDescription
+import androidx.compose.ui.test.hasTestTag
+import androidx.compose.ui.test.hasText
 import androidx.compose.ui.test.junit4.createAndroidComposeRule
 import androidx.compose.ui.test.longClick
 import androidx.compose.ui.test.onAllNodesWithTag
@@ -58,6 +63,7 @@ import app.skein.core.designsystem.theme.SkeinTheme
 import app.skein.core.designsystem.theme.SkeinThemeMode
 import app.skein.core.navigation.ChatKey
 import app.skein.core.navigation.Destination
+import app.skein.core.navigation.NewChatKey
 import app.skein.core.navigation.NoteKey
 import app.skein.core.vault.session.UnlockManager
 import app.skein.feature.shell.container.SkeinNavContainerTestTags
@@ -94,6 +100,109 @@ class SkeinWorkspaceHostTest {
     private val showPrimaryDialog = mutableStateOf(false)
     private val theme = mutableStateOf(SkeinThemeMode.LIGHT)
     private val focusRequesters = mutableMapOf<String, FocusRequester>()
+
+    @Test
+    fun `split child menu Search closes the rail container drawer and opens only its owner search`() {
+        size.value = DpSize(1007.dp, 1043.dp)
+        setHost(searchEnabled = true)
+        rule.runOnIdle {
+            workspace.primary.navigate { goTo(it, ChatKey(CHAT_A)) }
+            workspace.secondary.navigate { goTo(it, NoteKey(NOTE_B)) }
+        }
+        val secondaryNav = workspace.secondary.nav
+        rule.onNodeWithTag(WorkspaceTestTags.TOGGLE_SPLIT).performClick()
+        rule.onNodeWithTag(SkeinNavContainerTestTags.RAIL).assertIsDisplayed()
+        rule.onNodeWithTag(WorkspaceTestTags.TOGGLE_LIST).assertDoesNotExist()
+        rule
+            .onNode(
+                hasContentDescription("Open navigation") and
+                    hasAnyAncestor(hasTestTag(WorkspaceTestTags.PRIMARY_PANE)),
+            ).performClick()
+        rule.onNodeWithTag(SkeinNavContainerTestTags.DRAWER_SHEET).assertIsDisplayed()
+        rule
+            .onNode(
+                hasText("Search or run a command") and
+                    hasAnyAncestor(hasTestTag(SkeinNavContainerTestTags.DRAWER_SHEET)),
+            ).performClick()
+        rule.onNodeWithTag(SkeinNavContainerTestTags.DRAWER_SHEET).assertIsNotDisplayed()
+        rule
+            .onNode(
+                hasTestTag(SkeinSearchTestTags.OVERLAY) and
+                    hasAnyAncestor(hasTestTag(WorkspaceTestTags.PRIMARY_PANE)),
+            ).assertIsDisplayed()
+        rule.runOnIdle {
+            assertEquals(WorkspacePane.PRIMARY, workspace.activePane)
+            assertTrue(workspace.primary.searchOpen)
+            assertTrue(!workspace.secondary.searchOpen)
+            assertEquals(secondaryNav, workspace.secondary.nav)
+            assertTrue(workspace.splitRequested)
+        }
+    }
+
+    @Test
+    fun `split rail destination dismisses only active owner search`() {
+        assertSplitRailActionDismissesSearch(newChat = false)
+    }
+
+    @Test
+    fun `split rail New chat dismisses only active owner search`() {
+        assertSplitRailActionDismissesSearch(newChat = true)
+    }
+
+    private fun assertSplitRailActionDismissesSearch(newChat: Boolean) {
+        size.value = DpSize(1007.dp, 1043.dp)
+        setHost(searchEnabled = true)
+        rule.onNodeWithTag(WorkspaceTestTags.TOGGLE_SPLIT).performClick()
+        rule.runOnIdle {
+            workspace.secondary.navigate { goTo(it, NoteKey(NOTE_B)) }
+            workspace.secondary.openSearch()
+            workspace.primary.openSearch()
+        }
+        val secondaryNav = workspace.secondary.nav
+        // Each search requests focus when opened. Select the intended owner with a real field tap.
+        rule
+            .onNode(
+                hasTestTag(SkeinSearchTestTags.FIELD) and
+                    hasAnyAncestor(hasTestTag(WorkspaceTestTags.PRIMARY_PANE)),
+            ).performTouchInput { click() }
+        rule.onNodeWithTag(WorkspaceTestTags.PRIMARY_PANE).assertIsSelected()
+        rule
+            .onNode(
+                hasTestTag(SkeinSearchTestTags.OVERLAY) and
+                    hasAnyAncestor(hasTestTag(WorkspaceTestTags.PRIMARY_PANE)),
+            ).assertIsDisplayed()
+        rule
+            .onNode(
+                (if (newChat) hasContentDescription("New chat") else hasText("Settings")) and
+                    hasAnyAncestor(hasTestTag(SkeinNavContainerTestTags.RAIL)),
+            ).performClick()
+        rule
+            .onNode(
+                hasTestTag(SkeinSearchTestTags.OVERLAY) and
+                    hasAnyAncestor(hasTestTag(WorkspaceTestTags.PRIMARY_PANE)),
+            ).assertDoesNotExist()
+        rule
+            .onNode(
+                hasTestTag(SkeinSearchTestTags.OVERLAY) and
+                    hasAnyAncestor(hasTestTag(WorkspaceTestTags.SECONDARY_PANE)),
+            ).assertIsDisplayed()
+        rule.runOnIdle {
+            assertEquals(WorkspacePane.PRIMARY, workspace.activePane)
+            assertTrue(!workspace.primary.searchOpen)
+            assertTrue(workspace.secondary.searchOpen)
+            assertEquals(secondaryNav, workspace.secondary.nav)
+            assertTrue(workspace.splitRequested)
+            if (newChat) {
+                assertEquals(Destination.CHAT, workspace.primary.nav.topLevel)
+                assertTrue(
+                    workspace.primary.nav.currentStack
+                        .last() is NewChatKey,
+                )
+            } else {
+                assertEquals(Destination.SETTINGS, workspace.primary.nav.topLevel)
+            }
+        }
+    }
 
     @Test
     fun `flat workspace controls expose labels on long press`() {
@@ -527,7 +636,10 @@ class SkeinWorkspaceHostTest {
         ).outputStream().use { assertTrue(bitmap.compress(Bitmap.CompressFormat.PNG, 100, it)) }
     }
 
-    private fun setHost(verticalHinge: Boolean? = null) {
+    private fun setHost(
+        verticalHinge: Boolean? = null,
+        searchEnabled: Boolean = false,
+    ) {
         rule.setContent {
             SkeinTheme(mode = theme.value) {
                 DeviceConfigurationOverride(DeviceConfigurationOverride.WindowSize(size.value)) {
@@ -576,10 +688,10 @@ class SkeinWorkspaceHostTest {
                             workspace,
                             emptyList(),
                             emptyList(),
-                            false,
+                            searchEnabled,
                             windowAdaptiveInfo = info,
                         ) { shell ->
-                            SkeinShellHost(shell, { emptyMap() }) { entry ->
+                            SkeinShellHost(shell, { emptyMap() }, search = { emptyList() }) { entry ->
                                 var counter by remember { mutableIntStateOf(0) }
                                 observedPostures[shell.ownerKey] = LocalSkeinWindowLayout.current.posture
                                 partitions[shell.ownerKey] = LocalSkeinWindowPartitions.current

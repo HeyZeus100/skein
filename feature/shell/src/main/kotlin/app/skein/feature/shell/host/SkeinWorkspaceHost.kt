@@ -148,8 +148,14 @@ fun SkeinWorkspaceHost(
         SkeinNavigationContainer(
             decision = layout,
             destination = SkeinDestination.valueOf(active.nav.topLevel.name),
-            onNavigate = { destination -> active.navigate { switchTo(it, Destination.valueOf(destination.name)) } },
-            onNewChat = { active.navigate { goTo(it, NewChatKey(SkeinId.random())) } },
+            onNavigate = { destination ->
+                active.closeSearch()
+                active.navigate { switchTo(it, Destination.valueOf(destination.name)) }
+            },
+            onNewChat = {
+                active.closeSearch()
+                active.navigate { goTo(it, NewChatKey(SkeinId.random())) }
+            },
             onSearch = { if (searchEnabled) active.openSearch() },
             history = history,
             spaces = spaces,
