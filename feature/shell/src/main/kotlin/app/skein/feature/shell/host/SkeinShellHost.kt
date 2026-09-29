@@ -48,6 +48,7 @@ import androidx.navigation3.ui.NavDisplay
 import androidx.navigationevent.NavigationEventInfo
 import androidx.navigationevent.compose.NavigationBackHandler
 import androidx.navigationevent.compose.rememberNavigationEventState
+import app.skein.core.designsystem.components.LocalSkeinWindowPartitions
 import app.skein.core.designsystem.theme.SkeinSize
 import app.skein.core.model.Document
 import app.skein.core.navigation.ChatContextKey
@@ -78,6 +79,7 @@ import app.skein.feature.shell.layout.SkeinNavContainer
 import app.skein.feature.shell.layout.SkeinPosture
 import app.skein.feature.shell.layout.currentSkeinWindowLayout
 import app.skein.feature.shell.layout.surfaceBounds
+import app.skein.feature.shell.layout.windowPartitions
 import app.skein.feature.shell.testing.ShellTestTags
 import java.time.ZoneId
 import kotlin.coroutines.cancellation.CancellationException
@@ -192,7 +194,10 @@ fun SkeinShellHost(
         )
 
     val top = shell.nav.topLevel
-    CompositionLocalProvider(LocalSkeinWindowLayout provides layout) {
+    CompositionLocalProvider(
+        LocalSkeinWindowLayout provides layout,
+        LocalSkeinWindowPartitions provides layout.windowPartitions(layoutDirection),
+    ) {
         Surface(modifier.fillMaxSize().testTag(ShellTestTags.SKEIN_SHELL_ROOT)) {
             SkeinNavigationContainer(
                 decision = layout,
