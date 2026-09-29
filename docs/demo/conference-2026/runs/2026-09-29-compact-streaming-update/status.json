@@ -1,0 +1,83 @@
+{
+  "schema_version": 1,
+  "status": "INSTALLED_VERIFIED_PHYSICAL_REHEARSAL_PENDING",
+  "source_sha": "920e820eb23d2c5f4b70dfa95515899559cb2098",
+  "installed_at_utc": "2026-09-29T18:25:03Z",
+  "app": {
+    "package": "app.skein",
+    "variant": "fossDebug",
+    "size_bytes": 127100043,
+    "sha256": "b3fab0e408d79a5566fdf2334000e6c0095d710fcd50b77774038b35fc6ad46b",
+    "signer_sha256": "75bcae7118a4635dd0fb153438e5bdbfd7aab5d467b3a0c2bb210eefde5becf9",
+    "version_code": 1,
+    "version_name": "0.1.0",
+    "abis": [
+      "arm64-v8a"
+    ]
+  },
+  "previous_app_sha256": "8053e8e10ee6dbe7b9e650506971bf30b93e64861bbdff1237420680d10b4eb9",
+  "install_attempts": 1,
+  "copy_back_full_sha256_verified": true,
+  "continuity": {
+    "firstInstallTime": true,
+    "dataDir": true,
+    "ceDataInode": true,
+    "deDataInode": true,
+    "uid": "unavailable; not claimed"
+  },
+  "checks": {
+    "ci": {
+      "run": 36609164145,
+      "passed": 5143,
+      "skipped": 88,
+      "bad": 0,
+      "xml": 504,
+      "fresh_test_tasks": 12,
+      "cached_test_tasks": 16
+    },
+    "screenshots": {
+      "run": 36609164126,
+      "passed": 1280,
+      "skipped": 80,
+      "bad": 0,
+      "xml": 151,
+      "unchanged_images": 552,
+      "fresh_test_tasks": 8
+    },
+    "ordinary": {
+      "run": 36609186474,
+      "passed": 281,
+      "skipped": 0,
+      "bad": 0,
+      "xml": 3,
+      "device": "API35 x86_64 emulator"
+    },
+    "reproducible": {
+      "run": 36609164127,
+      "unsigned_apk_pair_bytes_equal": true,
+      "apk_bytes": 100741875,
+      "apk_sha256": "74f232371bd25ab4c8ac0edfa3ceb3608fdad001e0dfc4df2ece2027fbf10446",
+      "native_pair_and_embedded_bytes_equal": true,
+      "native_sha256": "2aefda01808f10bf5693ab02d0857e0169dc09550b615896939cb176c032daff",
+      "tag_only_sqlcipher_skipped": true,
+      "negative_control_run": false
+    }
+  },
+  "local_review_sha256": {
+    "reproducible-root-review.json": "064c93354c6c1e071d3d9aafcd191ce6b36aa3ef9e3402c4df5121c549002221",
+    "native-equivalence-review.json": "7f75cd85a21c13ff2f24dba59f1b7df7aeb80301b57c59e316b0dcd1cea6d0ad",
+    "actual-checks-review.json": "5cd4ca8202d14a7f450a33699be4189e6eb71a58f663209772491aaffa09a438",
+    "build-source-review.json": "94a8c547694f9a20b629739f7e058ff3144010529263a2c0c748d27a09aafbc1",
+    "physical-update-root-review.json": "060a0a193637f73aff686a34a60193e28ad692f4243178f8e4f47ff19eb9efbc",
+    "screenshots-root-review.json": "1e4b297b374e2bdc10916af918cd7564930275d131e4b9020c6b3dd2e99c0aac",
+    "ci-root-review.json": "b3ecbe9ff94d1e3fd5c3f919a63a494fe1ad5a25111170e163f95a3c0e670cfd",
+    "ordinary-root-review.json": "472ed3cbc4ce0bc8196bfcd1c2dd21cafd42c6577c7cac05f39da2c69b32acf7"
+  },
+  "release_sha256": "e47af7953092b667d8dc1c264dea6f1a755822cb9baa1813ac77d81642f7d841",
+  "scope_limits": [
+    "New toolbar interactions and pre-Done/Stop retention await actual Fold rehearsal.",
+    "No model switch or new model quality claim.",
+    "Original failed screenshots and all old answer/device evidence retained.",
+    "Retrieval gold/thresholds unchanged; original failed retrieval and formal Fold gates remain open."
+  ]
+}
