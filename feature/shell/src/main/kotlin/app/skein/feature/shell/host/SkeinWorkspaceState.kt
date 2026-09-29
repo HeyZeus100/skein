@@ -47,17 +47,24 @@ class SkeinWorkspaceState internal constructor(
 
     init {
         // Saved state is untrusted input. Resolve duplicate mutable owners before either host composes.
-        val owned = primary.nav.currentStack.mapNotNull { mutableDocument(it, primary.nav) }.toSet()
+        val owned = primary.nav.stacks.values.flatten().mapNotNull { mutableDocument(it, primary.nav) }.toSet()
         var restored = secondary.nav
         owned.forEach { id -> restored = secondary.navigator.prune(restored, id) }
-        if (restored.currentStack.any { mutableDocument(it, restored) in owned }) {
-            restored = secondary.navigator.goTo(restored, restored.currentStack.first())
-        }
         val primaryDrafts = primary.nav.stacks.values.flatten().filterIsInstance<NewChatKey>().toSet()
-        if (restored.stacks.values.flatten().any { it in primaryDrafts }) {
-            val previousDestination = restored.topLevel
-            restored = secondary.navigator.goTo(restored, NewChatKey(SkeinId.random()))
-            if (previousDestination != Destination.CHAT) restored = secondary.navigator.switchTo(restored, previousDestination)
+        val previousDestination = restored.topLevel
+        for (destination in Destination.entries) {
+            val stack = restored.stack(destination)
+            if (stack.any { mutableDocument(it, restored) in owned || it in primaryDrafts }) {
+                // Draft IDs are not deletion targets for Navigator.prune. Reset only the
+                // conflicting restored destination before either owner can compose a writer.
+                restored = secondary.navigator.goTo(restored, stack.first())
+                if (destination == Destination.CHAT) {
+                    restored = secondary.navigator.goTo(restored, NewChatKey(SkeinId.random()))
+                }
+            }
+        }
+        if (restored.topLevel != previousDestination) {
+            restored = secondary.navigator.switchTo(restored, previousDestination)
         }
         secondary.replaceNavigation(secondary.navigator.switchSpace(restored, primary.nav.space))
         primary.navigationGuard = { accept(WorkspacePane.PRIMARY, it) }
@@ -99,8 +106,16 @@ class SkeinWorkspaceState internal constructor(
         val otherShell = shell(other)
         val selected = next.currentStack.mapNotNull { mutableDocument(it, next) }.toSet()
         val selectedDrafts = next.currentStack.filterIsInstance<NewChatKey>().toSet()
-        // Retained, unplaced editors still have pending writers. Never give one document two owners.
-        if (otherShell.nav.currentStack.any { mutableDocument(it, otherShell.nav) in selected || it in selectedDrafts }) {
+        // A destination switch can still be disposing/flushing the old editor. Reserve
+        // every retained stack until its entry is actually popped, never transfer writers.
+        val destinations = listOf(otherShell.nav.topLevel) + Destination.entries.filter { it != otherShell.nav.topLevel }
+        val owningDestination = destinations.firstOrNull { destination ->
+            otherShell.nav.stack(destination).any { mutableDocument(it, otherShell.nav) in selected || it in selectedDrafts }
+        }
+        if (owningDestination != null) {
+            if (owningDestination != otherShell.nav.topLevel) {
+                otherShell.replaceNavigation(otherShell.navigator.switchTo(otherShell.nav, owningDestination))
+            }
             activate(other)
             return false
         }

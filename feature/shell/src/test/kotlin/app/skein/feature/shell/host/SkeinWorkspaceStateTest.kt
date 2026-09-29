@@ -48,17 +48,42 @@ class SkeinWorkspaceStateTest {
     }
 
     @Test
-    fun `returning to an inspector cannot reactivate an editor already open in the other owner`() {
+    fun `inactive destination retains editor ownership and duplicate selection reveals it`() {
         val workspace = SkeinWorkspaceState(shell("primary"), shell("secondary"))
         workspace.primary.navigate { goTo(it, NoteKey(NOTE_B)) }
         workspace.primary.navigate { follow(it, ConnectionsKey(NOTE_B)) }
         workspace.primary.navigate { goTo(it, GraphKey()) }
         workspace.secondary.navigate { goTo(it, NoteKey(NOTE_B)) }
-        workspace.activate(WorkspacePane.PRIMARY)
-        workspace.primary.navigate { switchTo(it, Destination.KNOWLEDGE) }
-        assertEquals(WorkspacePane.SECONDARY, workspace.activePane)
+        assertEquals(WorkspacePane.PRIMARY, workspace.activePane)
+        assertEquals(Destination.KNOWLEDGE, workspace.primary.nav.topLevel)
+        assertEquals(ConnectionsKey(NOTE_B), workspace.primary.nav.currentStack.last())
+        assertEquals(listOf(KnowledgeHomeKey), workspace.secondary.nav.stack(Destination.KNOWLEDGE))
+    }
+
+    @Test
+    fun `restoration removes editable collisions from inactive destination stacks`() {
+        val primary = shell("primary")
+        primary.navigate { goTo(it, NoteKey(NOTE_B)) }
+        val secondary = shell("secondary", primary.nav)
+        primary.navigate { goTo(it, GraphKey()) }
+        secondary.navigate { goTo(it, ChatKey(CHAT_A)) }
+        val workspace = SkeinWorkspaceState(primary, secondary)
         assertEquals(Destination.GRAPH, workspace.primary.nav.topLevel)
-        assertEquals(NoteKey(NOTE_B), workspace.secondary.nav.currentStack.last())
+        assertEquals(Destination.CHAT, workspace.secondary.nav.topLevel)
+        assertEquals(listOf(KnowledgeHomeKey), workspace.secondary.nav.stack(Destination.KNOWLEDGE))
+        assertEquals(NoteKey(NOTE_B), workspace.primary.nav.stack(Destination.KNOWLEDGE).last())
+    }
+
+    @Test
+    fun `inactive destination reserves explicit chat draft identity at runtime`() {
+        val workspace = SkeinWorkspaceState(shell("primary"), shell("secondary"))
+        workspace.primary.navigate { goTo(it, NewChatKey(DRAFT_D)) }
+        workspace.primary.navigate { goTo(it, GraphKey()) }
+        workspace.activate(WorkspacePane.SECONDARY)
+        workspace.secondary.navigate { goTo(it, NewChatKey(DRAFT_D)) }
+        assertEquals(WorkspacePane.PRIMARY, workspace.activePane)
+        assertEquals(NewChatKey(DRAFT_D), workspace.primary.nav.currentStack.last())
+        assertFalse(workspace.secondary.nav.stacks.values.flatten().contains(NewChatKey(DRAFT_D)))
     }
 
     @Test
