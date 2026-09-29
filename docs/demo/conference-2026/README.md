@@ -18,6 +18,8 @@ The [demo controls guide](controls.md) covers the split view, collapsible note/c
 
 **Supplied-evidence checkpoint, 17:30 UTC:** the released four-case diagnostic completed with actual answer rows and one raw JUnit pass. Aviation answered correctly with a citation; the other cases retain quality/citation problems. The [v5 evidence](runs/2026-09-29-synthetic-v5/README.md) is separate from live retrieval rehearsal and preserves the previous timeout.
 
+**Aviation UI checkpoint, 17:53 UTC:** the six optional notes were imported once and their bodies verified. The live aviation answer was slow and wrong with eight fictional context rows. Its actual inline citation opened the correct source. The [aviation record](runs/2026-09-29-workspace-update/aviation-probe.md) preserves that distinction and the timing overrun; no model/profile change or retry occurred.
+
 The owner needs the Fold ready by **17:00 on 29 September 2026, America/Los_Angeles (PDT)**. The planned **code freeze is 16:00**, followed by final rehearsal on the same APK and model. The owner released the previous Fold HOLD for a verified update and demo checks with existing app data preserved. One designated runner owns all physical-device access.
 
 ## Preload before presenting
@@ -110,16 +112,16 @@ The device runner records observations here or in linked evidence. Runtime rehea
 | Date, runner, selected Space; network conditions | NOT RUN |
 | Existing vault/app data and secure settings preserved | `install -r`; first-install time, data-directory paths and CE/DE inode metadata unchanged; no data clear or security-setting change. Vault content verification after normal unlock remains pending. |
 | Construction: three notes imported once; titles/bodies checked | Three import confirmations observed; body inspection and answer rehearsal pending. [UI checkpoint](runs/2026-09-29-ui-checkpoint/README.md). |
-| Aviation/mycology: any optional packs imported and checked | Six files staged; not imported. |
+| Aviation/mycology: any optional packs imported and checked | All six imported once through the normal picker; all rendered titles/bodies match their fictional source files. |
 | Indexing status, including pending semantic work | Aggregate UI reported one document awaiting search by meaning; all-demo readiness unproven. |
 | New-chat Knowledge state and same-Space retrieval | Knowledge on verified before both construction sends; Context listed exactly the three fictional construction notes. This does not prove rendered citations. |
 | Construction cross-note question: facts and both supporting sources | FAILED visible-answer rehearsal: no text observed through 182.79s; stopped at 226.87s; no answer saved. |
 | Construction single-source fallback, if needed; original failure retained | NOT RUN |
 | Construction answer: first visible response / completion time | Synthesis did not complete before Stop. Missing-PO answer first observed complete at 70.963s, after blank at 62.736s; exact TTFT/completion unmeasured. |
-| Rendered citation or identified Context fallback opens correct source | NOT RUN |
+| Rendered citation or identified Context fallback opens correct source | Actual aviation inline [1] opened the correct Records Packet; full source body verified. The generated answer itself was wrong. |
 | Owner's physical unfold: same chat, correct source, usable layout | NOT RUN |
 | Construction absent fact: no invented purchase order number | No number invented in the controlled turn; unsupported extra hedge and missing citation prevent whole-answer acceptance. |
-| Optional aviation: correct facts/sources and no invented serial number | NOT RUN |
+| Optional aviation: correct facts/sources and no invented serial number | Live missing-log answer FAILED; correct source retrieved and citation opened it. Serial-number question not run. |
 | Optional mycology: synthetic readings identified, no invented temperature | NOT RUN |
 | Generation skipped for any refusal, if established by evidence | NOT RUN |
 | Stop during generation, then another successful question | NOT RUN |
