@@ -1,0 +1,52 @@
+{
+  "issue": "skein-xlc4",
+  "scope": "Robolectric native graphics only; no physical acceptance evidence",
+  "copies": [
+    {
+      "original_path": "/Users/andrewherrera/skein-worktrees/ux-new-chat-navigation-20260929/build/agent-logs/new-chat-navigation/baseline-single-back-8.log",
+      "original_bytes": 24745,
+      "original_sha256": "de7d1e8e3517cddb5bcb1d7750cfe3878b6349b955d72300fb91d2d4255c1586",
+      "portable_copy": "baseline-gradle.log.gz",
+      "portable_sha256": "5a0deb882d1fd31c18dfd9fb030744274d3e0cc66d494bf6df34d41606e3a34d",
+      "transformation": "lossless gzip mtime0"
+    },
+    {
+      "original_path": "/Users/andrewherrera/skein-worktrees/ux-new-chat-navigation-20260929/build/agent-logs/new-chat-navigation/baseline-back-check/TEST-app.skein.feature.shell.host.NewChatNavigationTest.xml.gz",
+      "original_bytes": 1593,
+      "original_sha256": "4ddfac08a3a2976b69cfc82cc93758ab5baad030a914d201ddc1752f72d9448c",
+      "portable_copy": "baseline-failed.xml.gz",
+      "portable_sha256": "4ddfac08a3a2976b69cfc82cc93758ab5baad030a914d201ddc1752f72d9448c",
+      "transformation": "copy"
+    },
+    {
+      "original_path": "/Users/andrewherrera/skein-worktrees/ux-new-chat-navigation-20260929/build/agent-logs/new-chat-navigation/focus-9-evidence/feature-shell-TEST-app.skein.feature.shell.host.NewChatNavigationTest.xml.gz",
+      "original_bytes": 1810,
+      "original_sha256": "28d72c7bbea2bff1731c40e19e304bdc44bda9ed4beac9b7f3f194c2e16c3a9f",
+      "portable_copy": "repaired-source-failed.xml.gz",
+      "portable_sha256": "28d72c7bbea2bff1731c40e19e304bdc44bda9ed4beac9b7f3f194c2e16c3a9f",
+      "transformation": "copy"
+    },
+    {
+      "original_path": "/Users/andrewherrera/skein-worktrees/ux-new-chat-navigation-20260929/build/agent-logs/new-chat-navigation/single-back-followup/NewChatNavigationTest.full-reproduction.kt.gz",
+      "original_bytes": 2239,
+      "original_sha256": "90c473467be8c69019a8d03001f38d4a133996bb3dc3ed6578f13bac83782f9e",
+      "portable_copy": "original-reproduction.kt.gz",
+      "portable_sha256": "90c473467be8c69019a8d03001f38d4a133996bb3dc3ed6578f13bac83782f9e",
+      "transformation": "copy"
+    },
+    {
+      "source_commit": "af0c9f94c93e14235096d22d57388431dfdb7027",
+      "source_path": "core/navigation/src/main/kotlin/app/skein/core/navigation/Navigator.kt",
+      "original_bytes": 15686,
+      "original_sha256": "70b15bd3e4ce556104fe711be5284fa5c794a7f160e7f99ccc9fd81d5ddc789b",
+      "portable_copy": "baseline-Navigator.kt.gz"
+    },
+    {
+      "source_commit": "af0c9f94c93e14235096d22d57388431dfdb7027",
+      "source_path": "feature/shell/src/main/kotlin/app/skein/feature/shell/host/SkeinShellHost.kt",
+      "original_bytes": 16385,
+      "original_sha256": "a8f2d9ac1f7878d4bc57ef00bf177fd20e93b7db8a431f68a1b016973ea7486d",
+      "portable_copy": "baseline-SkeinShellHost.kt.gz"
+    }
+  ]
+}
