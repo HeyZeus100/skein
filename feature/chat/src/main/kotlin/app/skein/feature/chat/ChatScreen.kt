@@ -16,14 +16,19 @@ import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.geometry.Rect
+import androidx.compose.ui.layout.boundsInWindow
+import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.layout.onSizeChanged
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.testTag
+import androidx.compose.ui.unit.DpRect
 import androidx.compose.ui.unit.dp
 import app.skein.core.designsystem.components.SkeinAction
 import app.skein.core.designsystem.components.SkeinNotice
@@ -81,6 +86,7 @@ public fun ChatScreen(
     initialMessage: String? = null,
     turnController: ChatTurnController? = null,
     composerState: DraftComposerState? = null,
+    tabletopHinge: DpRect? = null,
 ) {
     val scope = rememberCoroutineScope()
     val viewModel =
@@ -102,7 +108,15 @@ public fun ChatScreen(
 
     val density = LocalDensity.current
     var paneHeight by remember { mutableIntStateOf(0) }
-    Column(modifier = modifier.fillMaxSize().testTag(CHAT_SCREEN_TEST_TAG).onSizeChanged { paneHeight = it.height }) {
+    var paneBounds by remember { mutableStateOf(Rect.Zero) }
+    Column(
+        modifier =
+            modifier
+                .fillMaxSize()
+                .testTag(CHAT_SCREEN_TEST_TAG)
+                .onSizeChanged { paneHeight = it.height }
+                .onGloballyPositioned { paneBounds = it.boundsInWindow() },
+    ) {
         val maxHeight = with(density) { paneHeight.toDp() }
         var headerHeight by remember { mutableIntStateOf(0) }
         var contextHeight by remember { mutableIntStateOf(0) }
@@ -125,28 +139,34 @@ public fun ChatScreen(
                 modifier = Modifier.weight(1f).fillMaxWidth(),
             )
 
-            Column(Modifier.onSizeChanged { contextHeight = it.height }) {
-                contextChip()
-                DraftLoadNotice(composerState)
+            HingeSafeChatControls(
+                contentTopInWindow = with(density) { (paneBounds.top + headerHeight).toDp() },
+                bottomInWindow = with(density) { paneBounds.bottom.toDp() },
+                hinge = tabletopHinge,
+            ) {
+                Column(Modifier.onSizeChanged { contextHeight = it.height }) {
+                    contextChip()
+                    DraftLoadNotice(composerState)
+                }
+                ChatBottomBar(
+                    isGenerating = viewModel.isGenerating,
+                    onSend = { text ->
+                        if (composerState == null) {
+                            viewModel.send(text)
+                        } else {
+                            composerState.snapshot?.let { viewModel.enqueueControlled(it.draft.text, it.version) }
+                        }
+                    },
+                    composerState = composerState,
+                    maxHeight = composerMaxHeight,
+                    onCancel = viewModel::cancel,
+                    wikilinkSuggest = wikilinkSuggest,
+                    onAttach = viewModel::attach,
+                    onCreateWikilink = onCreateWikilink,
+                    onSlashCommand = onSlashCommand,
+                    modifier = Modifier.fillMaxWidth(),
+                )
             }
-            ChatBottomBar(
-                isGenerating = viewModel.isGenerating,
-                onSend = { text ->
-                    if (composerState == null) {
-                        viewModel.send(text)
-                    } else {
-                        composerState.snapshot?.let { viewModel.enqueueControlled(it.draft.text, it.version) }
-                    }
-                },
-                composerState = composerState,
-                maxHeight = composerMaxHeight,
-                onCancel = viewModel::cancel,
-                wikilinkSuggest = wikilinkSuggest,
-                onAttach = viewModel::attach,
-                onCreateWikilink = onCreateWikilink,
-                onSlashCommand = onSlashCommand,
-                modifier = Modifier.fillMaxWidth(),
-            )
         }
     }
 }

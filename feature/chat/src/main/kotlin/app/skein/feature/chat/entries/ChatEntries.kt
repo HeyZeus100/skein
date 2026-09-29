@@ -70,6 +70,7 @@ import app.skein.feature.shell.host.navMode
 import app.skein.feature.shell.host.open
 import app.skein.feature.shell.host.rememberEntryDocument
 import app.skein.feature.shell.layout.SkeinNavContainer
+import app.skein.feature.shell.layout.SkeinPosture
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.launch
 import java.time.Instant
@@ -214,6 +215,7 @@ private fun ChatRoute(
         initialMessage = first,
         turnController = deps.turns,
         composerState = composer,
+        tabletopHinge = (LocalSkeinWindowLayout.current.posture as? SkeinPosture.Tabletop)?.hinge,
         contextChip = {
             if (chatId != null) {
                 val label = if (ChatKnowledge.enabled(document.document)) "Knowledge on" else "Knowledge off"

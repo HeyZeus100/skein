@@ -114,6 +114,8 @@ dependencies {
     // whose session stores register with an `UnlockManager`.
     testImplementation(project(":core:vault"))
     testImplementation(libs.robolectric)
+    testImplementation(libs.material3.adaptive)
+    testImplementation(libs.androidx.window)
     // skein-xtov.9: Roborazzi screenshot tests (screenshots/ test package).
     testImplementation(libs.roborazzi)
     testImplementation(libs.roborazzi.compose)

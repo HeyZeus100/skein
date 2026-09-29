@@ -3,6 +3,8 @@
 // and the layout goldens.
 package app.skein.feature.chat.entries
 
+import androidx.compose.material3.adaptive.WindowAdaptiveInfo
+import androidx.compose.material3.adaptive.currentWindowAdaptiveInfoV2
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.test.DeviceConfigurationOverride
@@ -91,12 +93,13 @@ internal fun EntriesHost(
     onShell: (SkeinShellState) -> Unit,
     clock: () -> Long = System::currentTimeMillis,
     zone: ZoneId = ZoneOffset.UTC,
+    windowAdaptiveInfo: WindowAdaptiveInfo? = null,
 ) {
     if (size == null) {
-        Host(vault, pipeline, onShell, clock, zone)
+        Host(vault, pipeline, onShell, clock, zone, windowAdaptiveInfo)
     } else {
         DeviceConfigurationOverride(DeviceConfigurationOverride.WindowSize(size)) {
-            Host(vault, pipeline, onShell, clock, zone)
+            Host(vault, pipeline, onShell, clock, zone, windowAdaptiveInfo)
         }
     }
 }
@@ -108,6 +111,7 @@ private fun Host(
     onShell: (SkeinShellState) -> Unit,
     clock: () -> Long,
     zone: ZoneId,
+    windowAdaptiveInfo: WindowAdaptiveInfo?,
 ) {
     val manager = remember { idleUnlockManager() }
     val shell = rememberSkeinShellState(manager)
@@ -121,6 +125,7 @@ private fun Host(
         shell = shell,
         resolveKinds = navKindsOf(vault),
         history = history,
+        windowAdaptiveInfo = windowAdaptiveInfo ?: currentWindowAdaptiveInfoV2(),
         zone = zone,
         now = clock,
         detailPlaceholder = { destination ->
