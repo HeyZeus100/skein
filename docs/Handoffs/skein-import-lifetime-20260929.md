@@ -11,6 +11,10 @@ inspection leaves its sealed copy recoverable. The session's manager checks both
 coroutine cancellation and the injected authorization callback before import/adoption
 registry access and after inspection. Adoption and fresh-copy registration serialize
 within a session so the same sealed file is not inspected twice by those paths.
+Adoption scans completed sealed candidates against the authorized vault registry,
+including copies already known by the app-owned store. A known copy retains its
+original digest expectations and BLAKE3; changed bytes fail before inspection.
+The old store-only orphan filter remains unchanged for its other callers.
 
 `ModelImportCoordinator` is one application singleton. It owns the store, copy job,
 import admission and content-free progress/result flows. Closing an observer or an

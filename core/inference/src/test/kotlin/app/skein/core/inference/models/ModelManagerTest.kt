@@ -531,7 +531,7 @@ class ModelManagerTest {
             assertThat(closes).isEqualTo(2)
             assertThat(registry.list()).isEmpty()
             val id = (copied as ModelCopyResult.Copied).manifest.id
-            assertThat(store.orphanedDirectories(ModelManager.GENERATED_MAIN_FILE_NAME).map { it.name }).contains(id)
+            assertThat(store.registrationCandidates(ModelManager.GENERATED_MAIN_FILE_NAME).map { it.name }).contains(id)
             assertThat(runCatching { manager(authorized = { false }).registerCopied(copied) }.exceptionOrNull())
                 .isInstanceOf(kotlinx.coroutines.CancellationException::class.java)
             assertThat(registry.list()).isEmpty()
@@ -579,9 +579,29 @@ class ModelManagerTest {
                             fakeInspector().inspect(binding)
                         },
                 )
-            manager.adoptOrphans()
+            assertThat(manager.adoptOrphans().single().id).isEqualTo(copied.manifest.id)
             assertThat(manager.registerCopied(copied)).isInstanceOf(ImportOutcome.Imported::class.java)
             assertThat(inspections).isEqualTo(1)
             assertThat(registry.list()).hasSize(1)
+        }
+
+    @Test
+    fun `known sealed copy changed before next unlock is refused against original digest`(): Unit =
+        runTest {
+            val bytes = validGguf(bytesOf(11, 65_536))
+            val copied =
+                ModelImportStager(store, FakePickedFileReader(bytes = bytes), { free })
+                    .copy(Uri.parse("content://fake/model")) as ModelCopyResult.Copied
+            val main = copied.model.main.path
+            check(main.setWritable(true))
+            main.writeBytes(bytes.copyOf().also { it[it.lastIndex] = (it.last() + 1).toByte() })
+            val outcomes =
+                manager(
+                    inspector = ModelInspector { error("Changed bytes must not reach inspection") },
+                ).adoptOrphans()
+            val outcome = outcomes.single().outcome as ImportOutcome.Refused
+            val refusal = (outcome.refusal as ImportRefusal.FromStore).refusal
+            assertThat(refusal).isInstanceOf(ModelVerification.HashMismatch::class.java)
+            assertThat(registry.list()).isEmpty()
         }
 }

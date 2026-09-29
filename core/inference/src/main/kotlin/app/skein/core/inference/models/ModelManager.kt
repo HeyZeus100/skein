@@ -48,6 +48,7 @@ import app.skein.core.model.ModelOrigin
 import app.skein.core.model.ModelRecord
 import app.skein.core.model.ModelRegistry
 import app.skein.core.model.SkeinLog
+import app.skein.core.verify.DigestAlgorithm
 import app.skein.core.verify.ModelFileRole
 import app.skein.core.verify.ModelVerification
 import app.skein.ipc.ErrorCode
@@ -244,23 +245,44 @@ public class ModelManager(
         withContext(io) {
             registrationMutex.withLock {
                 val outcomes = mutableListOf<AdoptOutcome>()
-                for (directory in store.orphanedDirectories(GENERATED_MAIN_FILE_NAME)) {
+                for (directory in store.registrationCandidates(GENERATED_MAIN_FILE_NAME)) {
                     val id = directory.name
                     requireRegistryAuthorization()
                     if (!ID_PATTERN.matches(id) || registry.get(id) != null) continue
                     val main = File(directory, GENERATED_MAIN_FILE_NAME)
                     val (sha256, size) = hashFile(main)
                     val manifest = generatedManifest(id = id, displayName = id, sha256 = sha256, sizeBytes = size)
-                    val stored =
-                        when (val adopted = store.adoptSealed(id, GENERATED_MAIN_FILE_NAME, sha256, size)) {
-                            is ImmutableModelStore.AdoptResult.Refused -> {
-                                SkeinLog.w(TAG, "adoption refused: ${adopted.refusal.summary}")
-                                outcomes +=
-                                    AdoptOutcome(id, ImportOutcome.Refused(ImportRefusal.FromStore(adopted.refusal)))
-                                continue
+                    val known = store.stored(id)
+                    if (known != null) {
+                        val mismatch =
+                            when {
+                                known.main.sizeBytes != size -> ModelVerification.SizeMismatch(ModelFileRole.MAIN)
+                                !ModelVerifier.constantTimeEquals(known.main.sha256, sha256) ->
+                                    ModelVerification.HashMismatch(ModelFileRole.MAIN, DigestAlgorithm.SHA256)
+                                else -> null
                             }
-                            is ImmutableModelStore.AdoptResult.Adopted -> adopted.model
+                        if (mismatch != null) {
+                            outcomes += AdoptOutcome(id, ImportOutcome.Refused(ImportRefusal.FromStore(mismatch)))
+                            continue
                         }
+                    }
+                    val stored =
+                        known
+                            ?: when (val adopted = store.adoptSealed(id, GENERATED_MAIN_FILE_NAME, sha256, size)) {
+                                is ImmutableModelStore.AdoptResult.Refused -> {
+                                    SkeinLog.w(
+                                        TAG,
+                                        "adoption refused: ${adopted.refusal.summary}",
+                                    )
+                                    outcomes +=
+                                        AdoptOutcome(
+                                            id,
+                                            ImportOutcome.Refused(ImportRefusal.FromStore(adopted.refusal)),
+                                        )
+                                    continue
+                                }
+                                is ImmutableModelStore.AdoptResult.Adopted -> adopted.model
+                            }
                     val outcome =
                         finishGeneratedImport(
                             manifest = manifest,
