@@ -1,0 +1,58 @@
+{
+  "released_candidate_sha": "5ae91c238612bdd9b1511b3716d34b4fa5960dd2",
+  "reviewed_source_sha": "2e1dcbafd645d4bb9348340905949bc5cae90acf",
+  "source_date_epoch": 1790679589,
+  "non_documentation_changed_paths": [
+    ".github/workflows/foldable.yml",
+    "app/build.gradle.kts",
+    "app/src/foldableTest/kotlin/app/skein/foldable/FoldableDeviceControl.kt",
+    "app/src/foldableTest/kotlin/app/skein/foldable/MainActivityFoldableGateTest.kt",
+    "tools/ci/run-foldable-emulator.sh",
+    "tools/ci/test_foldable_workflow.py",
+    "tools/ci/verify-foldable.py"
+  ],
+  "unchanged_source_trees": {
+    "app/src/main": {
+      "released_object": "ccd60c3771d6bbb663654a7e369e2b7682a15793",
+      "reviewed_object": "ccd60c3771d6bbb663654a7e369e2b7682a15793",
+      "equal": true
+    },
+    "app/src/test": {
+      "released_object": "e2e3b31fa9a443d60afc9c16da674e6540023870",
+      "reviewed_object": "e2e3b31fa9a443d60afc9c16da674e6540023870",
+      "equal": true
+    },
+    "core": {
+      "released_object": "a1109b39e0ed16219de8b785b4b93e08ee5b494e",
+      "reviewed_object": "a1109b39e0ed16219de8b785b4b93e08ee5b494e",
+      "equal": true
+    },
+    "feature": {
+      "released_object": "7834e05785cf3645925e1fe82325d76f16a002f9",
+      "reviewed_object": "7834e05785cf3645925e1fe82325d76f16a002f9",
+      "equal": true
+    },
+    "inference-service": {
+      "released_object": "8b68633b9e46604b5251d71bb4069b77ffd1eb5f",
+      "reviewed_object": "8b68633b9e46604b5251d71bb4069b77ffd1eb5f",
+      "equal": true
+    },
+    "third_party": {
+      "released_object": "abbf1fb7e2583c5ce999cc2da5c717f40f5b2073",
+      "reviewed_object": "abbf1fb7e2583c5ce999cc2da5c717f40f5b2073",
+      "equal": true
+    },
+    "gradle": {
+      "released_object": "5ab2a6039b6580c90ae804e8ebe8b72b0bf942ad",
+      "reviewed_object": "5ab2a6039b6580c90ae804e8ebe8b72b0bf942ad",
+      "equal": true
+    },
+    "build-logic": {
+      "released_object": "ef72a3b3b59c30104efe558fb4835075b61cb3d2",
+      "reviewed_object": "ef72a3b3b59c30104efe558fb4835075b61cb3d2",
+      "equal": true
+    }
+  },
+  "app_build_config_change": "remove foldable-only emulatorControl.enable; no production implementation change",
+  "scope_limit": "Source relationship does not imply cross-source APK byte equality or any replacement of the released candidate."
+}

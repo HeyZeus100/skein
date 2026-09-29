@@ -1,0 +1,813 @@
+{
+  "at": "2026-09-29T11:07:00.993576+00:00",
+  "scope": "root independent reparse of all retained app XML; exact three source hashes and real command exit files verified",
+  "source_snapshot_sha256": "8f63959a4c1bc3495a20457bbecf28d6725d0b21f201bfc2eddb0c87698749d7",
+  "tests": 546,
+  "failures": 0,
+  "errors": 0,
+  "skips": 0,
+  "xml_files": 80,
+  "test_tasks": "Both full Dev/Foss unit tasks executed in full check, not FROM-CACHE/UP-TO-DATE. Explicit compile and ktlint passed separately.",
+  "xml": [
+    {
+      "path": "build/agent-logs/check/test-results/testDevDebugUnitTest/TEST-app.skein.AskPathComposeTest.xml",
+      "sha256": "3d017fa1b8aa0d8434cce722f12531b27e9c9afe88dd917dccd0b73b95d37cee",
+      "tests_failures_errors_skips": [
+        9,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "path": "build/agent-logs/check/test-results/testDevDebugUnitTest/TEST-app.skein.DataExtractionRulesTest.xml",
+      "sha256": "896b996023b8eb87b76ac07ec59ea3b72dab0bc6ab4eeccc7481ebb058aef48f",
+      "tests_failures_errors_skips": [
+        5,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "path": "build/agent-logs/check/test-results/testDevDebugUnitTest/TEST-app.skein.MainActivityAppearanceTest.xml",
+      "sha256": "5d871ededa6a97dcffd4833737cf9f2164edea6c067852584230c313c5575817",
+      "tests_failures_errors_skips": [
+        1,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "path": "build/agent-logs/check/test-results/testDevDebugUnitTest/TEST-app.skein.MainActivityComposeTest.xml",
+      "sha256": "e0d52862abb48afbd1c5d386b44b1a3a289e44acfd62fb5325da50ef3afa1bd9",
+      "tests_failures_errors_skips": [
+        27,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "path": "build/agent-logs/check/test-results/testDevDebugUnitTest/TEST-app.skein.MainActivityConfigChangeTest.xml",
+      "sha256": "2bb228dc592f4a6397b2c2e82c67d06c2c6c4200817cc1362019dafc3ce77dbf",
+      "tests_failures_errors_skips": [
+        1,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "path": "build/agent-logs/check/test-results/testDevDebugUnitTest/TEST-app.skein.MainActivityDebugTestTagsTest.xml",
+      "sha256": "a4ab56b093708f35c3857f61e6062f4e51996f00d70dc5926bfd05f17b62060b",
+      "tests_failures_errors_skips": [
+        2,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "path": "build/agent-logs/check/test-results/testDevDebugUnitTest/TEST-app.skein.MainActivityDraftRetentionTest.xml",
+      "sha256": "3e690a3bd7ab7d838402fa3a05dde94b6ab392fc9970cc78706eb6e5f7cf134d",
+      "tests_failures_errors_skips": [
+        2,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "path": "build/agent-logs/check/test-results/testDevDebugUnitTest/TEST-app.skein.MainActivityFlagSecureTest.xml",
+      "sha256": "adbaa6a810a1292117a096bc1833a2f8f599f9319da0bb0b9d3f9599029e9eb0",
+      "tests_failures_errors_skips": [
+        3,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "path": "build/agent-logs/check/test-results/testDevDebugUnitTest/TEST-app.skein.MainActivityModelImportTest.xml",
+      "sha256": "48e7e6d8e2b8dc7955ddd4051ea860f42e1ab94bfcd53a48ac52d342b3b98358",
+      "tests_failures_errors_skips": [
+        2,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "path": "build/agent-logs/check/test-results/testDevDebugUnitTest/TEST-app.skein.MainActivityNotificationDeepLinkTest.xml",
+      "sha256": "b455cca45c29d3b0c104dd6af43d38ec9cab094938410d26d1a6c636aa667b1b",
+      "tests_failures_errors_skips": [
+        7,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "path": "build/agent-logs/check/test-results/testDevDebugUnitTest/TEST-app.skein.MainActivitySearchInsetsTest.xml",
+      "sha256": "92bfd48b70753cd84ebf1939f8bfb65495797148939303e53143582410167854",
+      "tests_failures_errors_skips": [
+        1,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "path": "build/agent-logs/check/test-results/testDevDebugUnitTest/TEST-app.skein.MainActivitySystemBarsTest.xml",
+      "sha256": "34d953e889186f720897c8059faca5e9c490fb059749c1e8b576f0308128e69b",
+      "tests_failures_errors_skips": [
+        5,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "path": "build/agent-logs/check/test-results/testDevDebugUnitTest/TEST-app.skein.ManifestPolicyTest.xml",
+      "sha256": "1bd2e991fa6b97f37fb8c0a37a2b66125c844e3d10ae00255bb04c193dcc2c65",
+      "tests_failures_errors_skips": [
+        25,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "path": "build/agent-logs/check/test-results/testDevDebugUnitTest/TEST-app.skein.NavShellComposeTest.xml",
+      "sha256": "4529735420d6748adc44b0e1403dd6322ff85a4e9d504388593da4abab5a7671",
+      "tests_failures_errors_skips": [
+        1,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "path": "build/agent-logs/check/test-results/testDevDebugUnitTest/TEST-app.skein.NoFileProviderOnClasspathTest.xml",
+      "sha256": "395488a1871531b6e5da4d68edda42b64bf2f0ce7c4660cdae9df7da071a6b17",
+      "tests_failures_errors_skips": [
+        2,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "path": "build/agent-logs/check/test-results/testDevDebugUnitTest/TEST-app.skein.RecentsScreenshotDisabledTest.xml",
+      "sha256": "c79907fba9637b42de5b430eb3f4d2131ab9746f73d2328781152a33a7a99ce8",
+      "tests_failures_errors_skips": [
+        2,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "path": "build/agent-logs/check/test-results/testDevDebugUnitTest/TEST-app.skein.ShellHotfixComposeTest.xml",
+      "sha256": "e0acf5149ea6877f46101f19095c0f8b5a699212981844cfbae6ed6ec64deba0",
+      "tests_failures_errors_skips": [
+        6,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "path": "build/agent-logs/check/test-results/testDevDebugUnitTest/TEST-app.skein.benchmark.SyntheticFixturesTest.xml",
+      "sha256": "7a4b118eab1cbac4f165c00036a62a5f02c385e7fcfb34034cee600c2ac04235",
+      "tests_failures_errors_skips": [
+        3,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "path": "build/agent-logs/check/test-results/testDevDebugUnitTest/TEST-app.skein.benchmark.SyntheticSetupTest.xml",
+      "sha256": "510df80faac16045acb0da1fac74999a6cb125de4378d36352a109ace28de85a",
+      "tests_failures_errors_skips": [
+        11,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "path": "build/agent-logs/check/test-results/testDevDebugUnitTest/TEST-app.skein.export.stage.BootReceiverTest.xml",
+      "sha256": "39eb5bb76fdb027aad72bc162361849e09a9ceafe910da6cfd873658a1715262",
+      "tests_failures_errors_skips": [
+        8,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "path": "build/agent-logs/check/test-results/testDevDebugUnitTest/TEST-app.skein.export.stage.StagedPlaintextSweeperTest.xml",
+      "sha256": "a11cb9603d172289c688c03d8f7a5ca23679bec7918b3baa890b0abec17bf456",
+      "tests_failures_errors_skips": [
+        13,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "path": "build/agent-logs/check/test-results/testDevDebugUnitTest/TEST-app.skein.ingest.IngestSchedulerTest.xml",
+      "sha256": "8f169d2d0ccd12b084597446ff39e8ab705d89bdfcd1709e3b2fc549dd39f9c4",
+      "tests_failures_errors_skips": [
+        17,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "path": "build/agent-logs/check/test-results/testDevDebugUnitTest/TEST-app.skein.ingest.IngestWorkerTest.xml",
+      "sha256": "d7325908f3afcf095183735115b7d2016335b5d577adf1b41965e0ebd8eab6b7",
+      "tests_failures_errors_skips": [
+        14,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "path": "build/agent-logs/check/test-results/testDevDebugUnitTest/TEST-app.skein.ingest.ThermalIngestPacerTest.xml",
+      "sha256": "b05ba9cf204b056ce973db7e88df0dcc2b32ad6adbe4b200af340727bf663249",
+      "tests_failures_errors_skips": [
+        5,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "path": "build/agent-logs/check/test-results/testDevDebugUnitTest/TEST-app.skein.models.ManagedInferenceEngineTest.xml",
+      "sha256": "fe8c47cc7faeba8a804fa3bee2b6cbcb1eac60f447ea459efa417f8e54e26757",
+      "tests_failures_errors_skips": [
+        5,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "path": "build/agent-logs/check/test-results/testDevDebugUnitTest/TEST-app.skein.models.ModelImportCoordinatorTest.xml",
+      "sha256": "252818b57752580f9a425e4d034932fe9b203a58f3babe3b7913daebe769c7f3",
+      "tests_failures_errors_skips": [
+        9,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "path": "build/agent-logs/check/test-results/testDevDebugUnitTest/TEST-app.skein.models.ModelImportServiceLifetimeTest.xml",
+      "sha256": "baa0c42364645e17b3f54ae30dd3ba1df6a76e2472a0347695e40bd599d9b01e",
+      "tests_failures_errors_skips": [
+        3,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "path": "build/agent-logs/check/test-results/testDevDebugUnitTest/TEST-app.skein.models.ModelImportServiceTest.xml",
+      "sha256": "c602d0f7f9192c8e1b6e0e7cf0b4b6d4b77b9df9200d9d7c75159ba61a5737f4",
+      "tests_failures_errors_skips": [
+        1,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "path": "build/agent-logs/check/test-results/testDevDebugUnitTest/TEST-app.skein.models.ModelServicesImportLifecycleTest.xml",
+      "sha256": "51261cf96a6885ee91a416647231ae34a75fd60461ef938517a22cddc8b94131",
+      "tests_failures_errors_skips": [
+        3,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "path": "build/agent-logs/check/test-results/testDevDebugUnitTest/TEST-app.skein.notify.IndexingNotifierTest.xml",
+      "sha256": "51a73dc69b56fb3d9bc48a57c222c705d63d09105e432726497d2a1486c88265",
+      "tests_failures_errors_skips": [
+        2,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "path": "build/agent-logs/check/test-results/testDevDebugUnitTest/TEST-app.skein.shell.NotificationDeepLinksTest.xml",
+      "sha256": "4adae6b9eceb513b98886f96b16e3b04eb761e86fff946cf7dd82f9845ef3c30",
+      "tests_failures_errors_skips": [
+        5,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "path": "build/agent-logs/check/test-results/testDevDebugUnitTest/TEST-app.skein.system.AndroidSkeinLogSinkTest.xml",
+      "sha256": "e199f1267bb158e4de3e4e36097a35336c7ed0132977c8c92d94fd034f86e445",
+      "tests_failures_errors_skips": [
+        6,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "path": "build/agent-logs/check/test-results/testDevDebugUnitTest/TEST-app.skein.system.AppearancePrefsTest.xml",
+      "sha256": "32d6755190bb924af942fe5f0672f85f827fd66979201c5b0341057ffa6c00f3",
+      "tests_failures_errors_skips": [
+        4,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "path": "build/agent-logs/check/test-results/testDevDebugUnitTest/TEST-app.skein.system.NotificationsTest.xml",
+      "sha256": "e4a29c2f11c3675f339940d63316c2df823fd9362feddb0b525970c9db2dca13",
+      "tests_failures_errors_skips": [
+        2,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "path": "build/agent-logs/check/test-results/testDevDebugUnitTest/TEST-app.skein.system.SecurityPrefsTest.xml",
+      "sha256": "3c653bc60f8ae68fca7bfedfafc839ae84cc958188569a762b728529951c92d8",
+      "tests_failures_errors_skips": [
+        11,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "path": "build/agent-logs/check/test-results/testDevDebugUnitTest/TEST-app.skein.transfer.FolderImportJobTest.xml",
+      "sha256": "271b2b7634b5874c2a0805f11d2dc195cc69aa072e5614f0a7e55a3f3c3a581e",
+      "tests_failures_errors_skips": [
+        7,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "path": "build/agent-logs/check/test-results/testDevDebugUnitTest/TEST-app.skein.vault.LockPolicyObserverTest.xml",
+      "sha256": "1d665160e2f70c1d3be49de01dd9e4c6c63b8f214035c55a37c198c04fa646a2",
+      "tests_failures_errors_skips": [
+        5,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "path": "build/agent-logs/check/test-results/testDevDebugUnitTest/TEST-app.skein.vault.VaultBootstrapTest.xml",
+      "sha256": "9f907720fa1e0fee4c92938eccd4c4c940c5257520439db2497404af98d8f765",
+      "tests_failures_errors_skips": [
+        23,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "path": "build/agent-logs/check/test-results/testDevDebugUnitTest/TEST-app.skein.vault.VaultGatePhaseTest.xml",
+      "sha256": "01d7e130d25d6bf81ed9e76bb0e7400147c378aa202736170ebf6fb37633431c",
+      "tests_failures_errors_skips": [
+        12,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "path": "build/agent-logs/check/test-results/testDevDebugUnitTest/TEST-app.skein.vault.VaultQuiesceIntegrationTest.xml",
+      "sha256": "95256080d681b68f51edf520cf2bd3b9c7e44a1635675a18403adc7afd39cd76",
+      "tests_failures_errors_skips": [
+        3,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "path": "build/agent-logs/check/test-results/testFossDebugUnitTest/TEST-app.skein.AskPathComposeTest.xml",
+      "sha256": "fc0bb309830da71baef85f7b36fb5112176d664f924e6db94480d95042bf2fc2",
+      "tests_failures_errors_skips": [
+        9,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "path": "build/agent-logs/check/test-results/testFossDebugUnitTest/TEST-app.skein.DataExtractionRulesTest.xml",
+      "sha256": "4af885c8851c43b8a34cddfa42da21bda13fe3b05992fc72cf7749a133d85011",
+      "tests_failures_errors_skips": [
+        5,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "path": "build/agent-logs/check/test-results/testFossDebugUnitTest/TEST-app.skein.MainActivityAppearanceTest.xml",
+      "sha256": "ebb5724b4c896fa1298dc72b1991851f1b83bea23510d19b81d42e58a82d58f0",
+      "tests_failures_errors_skips": [
+        1,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "path": "build/agent-logs/check/test-results/testFossDebugUnitTest/TEST-app.skein.MainActivityComposeTest.xml",
+      "sha256": "17b7d41d9f07e8ee008447f413928fbe0447727cee92776f1c51a17ecd792b6e",
+      "tests_failures_errors_skips": [
+        27,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "path": "build/agent-logs/check/test-results/testFossDebugUnitTest/TEST-app.skein.MainActivityConfigChangeTest.xml",
+      "sha256": "34412c6ae99b1ca2b818ffc01133e4b0db98fd4f81cff78cca571f8c505bb48c",
+      "tests_failures_errors_skips": [
+        1,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "path": "build/agent-logs/check/test-results/testFossDebugUnitTest/TEST-app.skein.MainActivityDebugTestTagsTest.xml",
+      "sha256": "80cf1be3a8a942e9d6813e941c061d6458cd872395a5b435187c42e80c7674f0",
+      "tests_failures_errors_skips": [
+        2,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "path": "build/agent-logs/check/test-results/testFossDebugUnitTest/TEST-app.skein.MainActivityDraftRetentionTest.xml",
+      "sha256": "3d9c2e0423b29e467d991cdf86bb0d7dae17e3db6b00dcb15f0b4eb822f52df5",
+      "tests_failures_errors_skips": [
+        2,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "path": "build/agent-logs/check/test-results/testFossDebugUnitTest/TEST-app.skein.MainActivityFlagSecureTest.xml",
+      "sha256": "01e24037bd3fd97401b2bbd02da8de8b6071fbad7559d105dd8558d070cfb79c",
+      "tests_failures_errors_skips": [
+        3,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "path": "build/agent-logs/check/test-results/testFossDebugUnitTest/TEST-app.skein.MainActivityModelImportTest.xml",
+      "sha256": "3d0f3ae413e85182d7baf5a6b1a0efb9b3cddf1fa1e30f227966194d1b20686f",
+      "tests_failures_errors_skips": [
+        2,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "path": "build/agent-logs/check/test-results/testFossDebugUnitTest/TEST-app.skein.MainActivityNotificationDeepLinkTest.xml",
+      "sha256": "fda749a668223bbc7f4e51da32e72b2819782401fe6ff0ca8fa9c4af653c2d36",
+      "tests_failures_errors_skips": [
+        7,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "path": "build/agent-logs/check/test-results/testFossDebugUnitTest/TEST-app.skein.MainActivitySearchInsetsTest.xml",
+      "sha256": "54712847de3f42fdc9076d659828a4000f867892e3ae72585ce2716669d019c4",
+      "tests_failures_errors_skips": [
+        1,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "path": "build/agent-logs/check/test-results/testFossDebugUnitTest/TEST-app.skein.MainActivitySystemBarsTest.xml",
+      "sha256": "39d3a3d12998411cd2c8a69c74097aefafbce44a86a6cf23d26763c15870e241",
+      "tests_failures_errors_skips": [
+        5,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "path": "build/agent-logs/check/test-results/testFossDebugUnitTest/TEST-app.skein.ManifestPolicyTest.xml",
+      "sha256": "1ebfeba091981ddec3d7ffbae69ce0dfad684718662582d026d63367f7cd7ec8",
+      "tests_failures_errors_skips": [
+        25,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "path": "build/agent-logs/check/test-results/testFossDebugUnitTest/TEST-app.skein.NavShellComposeTest.xml",
+      "sha256": "1b801c771b8a949f155dee1882b0d4a62b505222f97ad793463d2389c46f6b5d",
+      "tests_failures_errors_skips": [
+        1,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "path": "build/agent-logs/check/test-results/testFossDebugUnitTest/TEST-app.skein.NoFileProviderOnClasspathTest.xml",
+      "sha256": "68ec4c1bf25d4d96485bc73117693b08bb50c34b6ec4107c469d0a902c52a530",
+      "tests_failures_errors_skips": [
+        2,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "path": "build/agent-logs/check/test-results/testFossDebugUnitTest/TEST-app.skein.RecentsScreenshotDisabledTest.xml",
+      "sha256": "69ea069b826e37ac8d49a4d34fb3a61c20ef0f434695c44b1f8fc5e451354772",
+      "tests_failures_errors_skips": [
+        2,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "path": "build/agent-logs/check/test-results/testFossDebugUnitTest/TEST-app.skein.ShellHotfixComposeTest.xml",
+      "sha256": "315064f4d7a0d83c8cfd18539e3ba81fd721fb03c2cd96d4b8dfd38801828505",
+      "tests_failures_errors_skips": [
+        6,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "path": "build/agent-logs/check/test-results/testFossDebugUnitTest/TEST-app.skein.benchmark.SyntheticFixturesTest.xml",
+      "sha256": "dbe0e409e9ab8f7f1da30f5fd627ee0f43b17087a0553410be0924f3f97fcee5",
+      "tests_failures_errors_skips": [
+        3,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "path": "build/agent-logs/check/test-results/testFossDebugUnitTest/TEST-app.skein.benchmark.SyntheticSetupTest.xml",
+      "sha256": "02cdfc37ef05e7d0e54893ebb7cce23667e5b40e2ecc2f617fe9f781fb694205",
+      "tests_failures_errors_skips": [
+        11,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "path": "build/agent-logs/check/test-results/testFossDebugUnitTest/TEST-app.skein.export.stage.BootReceiverTest.xml",
+      "sha256": "a720f2a0684fda1aa06699aabdcbea44657424ce7bb7be14b13e8fcc13bb84fa",
+      "tests_failures_errors_skips": [
+        8,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "path": "build/agent-logs/check/test-results/testFossDebugUnitTest/TEST-app.skein.export.stage.StagedPlaintextSweeperTest.xml",
+      "sha256": "cc884cffb03e9b23e81f2159825ae8af39a411085bf62b7616198cf55aaf0448",
+      "tests_failures_errors_skips": [
+        13,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "path": "build/agent-logs/check/test-results/testFossDebugUnitTest/TEST-app.skein.ingest.IngestSchedulerTest.xml",
+      "sha256": "cd146a1e9af43ca6c6853dee3bbc0eefc59874a4038158dca362cc0262462781",
+      "tests_failures_errors_skips": [
+        17,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "path": "build/agent-logs/check/test-results/testFossDebugUnitTest/TEST-app.skein.ingest.IngestWorkerTest.xml",
+      "sha256": "f8c861c259a44ffe3a204dd1bc7643f5020c98d5440d8dfbb730f0bff607de31",
+      "tests_failures_errors_skips": [
+        14,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "path": "build/agent-logs/check/test-results/testFossDebugUnitTest/TEST-app.skein.ingest.ThermalIngestPacerTest.xml",
+      "sha256": "7e2904dce2bdb78a6b30e1f0643362cd581a7663086d7e782e34ee57851d19d7",
+      "tests_failures_errors_skips": [
+        5,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "path": "build/agent-logs/check/test-results/testFossDebugUnitTest/TEST-app.skein.models.ManagedInferenceEngineTest.xml",
+      "sha256": "44792ab996666c3b31f9735f4ae2240602e8f67dd98046f5fdb46412248f9730",
+      "tests_failures_errors_skips": [
+        5,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "path": "build/agent-logs/check/test-results/testFossDebugUnitTest/TEST-app.skein.models.ModelImportCoordinatorTest.xml",
+      "sha256": "0dff0ba2c6ada9bc802ded8f5254b16d3b030e5bc7114a70f0a3abef55173b6f",
+      "tests_failures_errors_skips": [
+        9,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "path": "build/agent-logs/check/test-results/testFossDebugUnitTest/TEST-app.skein.models.ModelImportServiceLifetimeTest.xml",
+      "sha256": "18d0e3ed3114a9477235e0d066b5806db8d2672e392cdb56de551e49337f2253",
+      "tests_failures_errors_skips": [
+        3,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "path": "build/agent-logs/check/test-results/testFossDebugUnitTest/TEST-app.skein.models.ModelImportServiceTest.xml",
+      "sha256": "2692908da39183b5a2111d86f2676821f857194998b3fc9aaac59aa62fa71ab3",
+      "tests_failures_errors_skips": [
+        1,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "path": "build/agent-logs/check/test-results/testFossDebugUnitTest/TEST-app.skein.models.ModelServicesImportLifecycleTest.xml",
+      "sha256": "580e8665c416e08fb187060c399a7e5ae453eaed029bf4f9c5303e2dfee2e044",
+      "tests_failures_errors_skips": [
+        3,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "path": "build/agent-logs/check/test-results/testFossDebugUnitTest/TEST-app.skein.notify.IndexingNotifierTest.xml",
+      "sha256": "87708db4a58fede67fc5e56ff2ef029b9c67c59c2946da7677865c8dfa8bd1d8",
+      "tests_failures_errors_skips": [
+        2,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "path": "build/agent-logs/check/test-results/testFossDebugUnitTest/TEST-app.skein.shell.NotificationDeepLinksTest.xml",
+      "sha256": "596920e8be14a892ce34e4b3223cdd5dbd30741a32e902a6baf88c360ad7283e",
+      "tests_failures_errors_skips": [
+        5,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "path": "build/agent-logs/check/test-results/testFossDebugUnitTest/TEST-app.skein.system.AndroidSkeinLogSinkTest.xml",
+      "sha256": "b623b3bf13c235bf1a4a25c0326887ba3d905845f0117b4af2e952a5b651ba7b",
+      "tests_failures_errors_skips": [
+        6,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "path": "build/agent-logs/check/test-results/testFossDebugUnitTest/TEST-app.skein.system.AppearancePrefsTest.xml",
+      "sha256": "58d49c8e3d44514fc24a0bcc342b22f66ca4b7ec130720296914294aef898ee0",
+      "tests_failures_errors_skips": [
+        4,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "path": "build/agent-logs/check/test-results/testFossDebugUnitTest/TEST-app.skein.system.NotificationsTest.xml",
+      "sha256": "5febcf256084dff91f6c383667a7324f635da7e8b9623faebbd68f39f73011df",
+      "tests_failures_errors_skips": [
+        2,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "path": "build/agent-logs/check/test-results/testFossDebugUnitTest/TEST-app.skein.system.SecurityPrefsTest.xml",
+      "sha256": "8d25ca6c88ba1c09dfb7256b8a8ff4d329edc9e1dab35771fcecbabd731b6d91",
+      "tests_failures_errors_skips": [
+        11,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "path": "build/agent-logs/check/test-results/testFossDebugUnitTest/TEST-app.skein.transfer.FolderImportJobTest.xml",
+      "sha256": "ff678bdd84e4ebbcb8d4fa5c223baa412ca7df68b5ea529f6700283178ea25b0",
+      "tests_failures_errors_skips": [
+        7,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "path": "build/agent-logs/check/test-results/testFossDebugUnitTest/TEST-app.skein.vault.LockPolicyObserverTest.xml",
+      "sha256": "547302b90af6b6003e5cad9bce5573b0fc3f51b7d607934beacbdf7585ec9e6e",
+      "tests_failures_errors_skips": [
+        5,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "path": "build/agent-logs/check/test-results/testFossDebugUnitTest/TEST-app.skein.vault.VaultBootstrapTest.xml",
+      "sha256": "9be392538ef2396b3101c9575d7ad76ff0e11cc22bb519539bff06afb8fc1606",
+      "tests_failures_errors_skips": [
+        23,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "path": "build/agent-logs/check/test-results/testFossDebugUnitTest/TEST-app.skein.vault.VaultGatePhaseTest.xml",
+      "sha256": "2915ed4017bcd8296d4642869460e00b92b17bf136bccd1fc0b4c6f3ed381498",
+      "tests_failures_errors_skips": [
+        12,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "path": "build/agent-logs/check/test-results/testFossDebugUnitTest/TEST-app.skein.vault.VaultQuiesceIntegrationTest.xml",
+      "sha256": "11f1ec3d9c844f5f4198d9c4be51c93431913a8b72fb4156342b7b9699b7153e",
+      "tests_failures_errors_skips": [
+        3,
+        0,
+        0,
+        0
+      ]
+    }
+  ]
+}

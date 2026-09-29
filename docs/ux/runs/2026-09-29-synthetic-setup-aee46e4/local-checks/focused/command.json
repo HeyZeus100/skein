@@ -1,0 +1,10 @@
+[
+  "./gradlew",
+  "--max-workers=2",
+  "-Pskein.syntheticBenchmark=true",
+  ":app:testDevDebugUnitTest",
+  "--tests",
+  "app.skein.benchmark.SyntheticSetupTest",
+  "--tests",
+  "app.skein.benchmark.SyntheticFixturesTest"
+]

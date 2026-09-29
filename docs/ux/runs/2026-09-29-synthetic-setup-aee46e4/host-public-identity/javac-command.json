@@ -1,0 +1,11 @@
+{
+  "argv": [
+    "/opt/homebrew/Cellar/openjdk@17/17.0.20.1/libexec/openjdk.jdk/Contents/Home/bin/javac",
+    "-cp",
+    "/Users/andrewherrera/skein-worktrees/conference-demo-20260929/build/agent-logs/public-qwen-blake3-20260929/classes:/Users/andrewherrera/.gradle/caches/modules-2/files-2.1/org.jetbrains.kotlin/kotlin-stdlib/2.4.20/94c1451890d164aed65d43b3db0b7ecef7c183e7/kotlin-stdlib-2.4.20.jar",
+    "-d",
+    "/Users/andrewherrera/skein-worktrees/conference-demo-20260929/build/agent-logs/public-qwen-blake3-20260929/classes",
+    "/Users/andrewherrera/skein-worktrees/conference-demo-20260929/build/agent-logs/public-qwen-blake3-20260929/PublicModelIdentity.java"
+  ],
+  "timeout_seconds": 30
+}

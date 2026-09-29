@@ -1,0 +1,8 @@
+[
+  "./gradlew",
+  "--max-workers=2",
+  "-Pskein.syntheticBenchmark=true",
+  ":app:ktlintCheck",
+  ":app:compileDevDebugAndroidTestKotlin",
+  ":app:compileFossDebugAndroidTestKotlin"
+]

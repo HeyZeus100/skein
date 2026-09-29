@@ -1,0 +1,7 @@
+{
+  "test_source_sha": "aee46e4d6c391bddbfb55296117889e1f79afff6",
+  "production_app_source_sha": "5ae91c238612bdd9b1511b3716d34b4fa5960dd2",
+  "expected_production_app_sha256": "1f83b71c5fe60a6dc26fcac7a4c75b49fbf009b6e8c9d972b2176c18081c1323",
+  "source_attribution": "clean host checkout; installed bytes are not established by this build",
+  "source_delta": "three reviewed opt-in source/test files only"
+}

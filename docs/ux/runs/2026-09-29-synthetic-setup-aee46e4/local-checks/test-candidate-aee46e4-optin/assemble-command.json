@@ -1,0 +1,6 @@
+[
+  "./gradlew",
+  "--max-workers=2",
+  "-Pskein.syntheticBenchmark=true",
+  ":app:assembleFossDebugAndroidTest"
+]

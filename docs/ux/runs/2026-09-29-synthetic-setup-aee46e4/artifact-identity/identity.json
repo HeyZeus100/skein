@@ -1,0 +1,30 @@
+{
+  "status": "CAPTURED_NOT_RELEASED",
+  "test_source_sha": "aee46e4d6c391bddbfb55296117889e1f79afff6",
+  "app_source_sha": "5ae91c238612bdd9b1511b3716d34b4fa5960dd2",
+  "combined_source_sha": "8ae202a095a0725a0190195e7cf9f470ec39a4ac",
+  "source_attribution": "Host-declared clean isolated test checkout, exact three-file diff from released app source; not embedded APK source attestation",
+  "worker_worktree": "/Users/andrewherrera/skein-worktrees/conference-synthetic-setup-20260929",
+  "path": "/Users/andrewherrera/skein-worktrees/ux-integration-20260929/build/agent-logs/candidate-aee46e4-testonly/app-foss-debug-androidTest.apk",
+  "original_path": "/Users/andrewherrera/skein-worktrees/conference-synthetic-setup-20260929/app/build/outputs/apk/androidTest/foss/debug/app-foss-debug-androidTest.apk",
+  "sha256": "9575f53a36e6dbd1dcd9f4cdcfe4af6407a74d1566343bf5bb29ca0bc9edef95",
+  "bytes": 91163348,
+  "package": "app.skein.test",
+  "target_package": "app.skein",
+  "certificate_sha256": "75bcae7118a4635dd0fb153438e5bdbfd7aab5d467b3a0c2bb210eefde5becf9",
+  "signer_count": 1,
+  "changed_paths": [
+    "app/src/syntheticBenchmark/kotlin/app/skein/benchmark/SyntheticAnswerBenchmarkTest.kt",
+    "app/src/syntheticBenchmarkShared/kotlin/app/skein/benchmark/SyntheticSetup.kt",
+    "app/src/syntheticBenchmarkTest/kotlin/app/skein/benchmark/SyntheticSetupTest.kt"
+  ],
+  "native_libraries": {},
+  "archive_diff": {
+    "added": [],
+    "removed": [],
+    "changed": [
+      "classes7.dex"
+    ],
+    "native_libraries_equal": true
+  }
+}

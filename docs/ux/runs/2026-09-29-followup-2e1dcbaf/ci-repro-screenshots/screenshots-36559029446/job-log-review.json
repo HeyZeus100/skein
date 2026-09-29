@@ -1,0 +1,143 @@
+{
+  "source_sha": "2e1dcbafd645d4bb9348340905949bc5cae90acf",
+  "from_cache_task_lines": [],
+  "selected_log_lines": [
+    "2026-09-29T11:00:15.8537702Z Complete job name: Verify Roborazzi goldens",
+    "2026-09-29T11:00:33.7684215Z ##[group]Run ./gradlew --max-workers=2 --no-build-cache verifyRoborazziDebug --continue --stacktrace",
+    "2026-09-29T11:00:33.7685566Z \u001b[36;1m./gradlew --max-workers=2 --no-build-cache verifyRoborazziDebug --continue --stacktrace\u001b[0m",
+    "2026-09-29T11:06:16.4050207Z BUILD SUCCESSFUL in 5m 42s",
+    "2026-09-29T11:06:16.9893130Z \u001b[36;1mecho \"ux-baselines: ${kb} KiB\"\u001b[0m",
+    "2026-09-29T11:06:17.0099559Z ux-baselines: 35660 KiB",
+    "2026-09-29T11:06:34.3486305Z BUILD SUCCESSFUL in 8s"
+  ],
+  "steps": [
+    {
+      "name": "Set up job",
+      "status": "completed",
+      "conclusion": "success",
+      "number": 1,
+      "started_at": "2026-09-29T11:00:13Z",
+      "completed_at": "2026-09-29T11:00:15Z"
+    },
+    {
+      "name": "Checkout",
+      "status": "completed",
+      "conclusion": "success",
+      "number": 2,
+      "started_at": "2026-09-29T11:00:15Z",
+      "completed_at": "2026-09-29T11:00:20Z"
+    },
+    {
+      "name": "Set up JDK 17 (Temurin)",
+      "status": "completed",
+      "conclusion": "success",
+      "number": 3,
+      "started_at": "2026-09-29T11:00:20Z",
+      "completed_at": "2026-09-29T11:00:20Z"
+    },
+    {
+      "name": "Install required Android SDK platform",
+      "status": "completed",
+      "conclusion": "success",
+      "number": 4,
+      "started_at": "2026-09-29T11:00:20Z",
+      "completed_at": "2026-09-29T11:00:20Z"
+    },
+    {
+      "name": "Set up Gradle",
+      "status": "completed",
+      "conclusion": "success",
+      "number": 5,
+      "started_at": "2026-09-29T11:00:20Z",
+      "completed_at": "2026-09-29T11:00:33Z"
+    },
+    {
+      "name": "Verify screenshots",
+      "status": "completed",
+      "conclusion": "success",
+      "number": 6,
+      "started_at": "2026-09-29T11:00:33Z",
+      "completed_at": "2026-09-29T11:06:16Z"
+    },
+    {
+      "name": "Goldens untouched by verify",
+      "status": "completed",
+      "conclusion": "success",
+      "number": 7,
+      "started_at": "2026-09-29T11:06:16Z",
+      "completed_at": "2026-09-29T11:06:16Z"
+    },
+    {
+      "name": "Baseline size budget",
+      "status": "completed",
+      "conclusion": "success",
+      "number": 8,
+      "started_at": "2026-09-29T11:06:16Z",
+      "completed_at": "2026-09-29T11:06:17Z"
+    },
+    {
+      "name": "Job summary",
+      "status": "completed",
+      "conclusion": "skipped",
+      "number": 9,
+      "started_at": "2026-09-29T11:06:17Z",
+      "completed_at": "2026-09-29T11:06:17Z"
+    },
+    {
+      "name": "Upload screenshot diffs",
+      "status": "completed",
+      "conclusion": "skipped",
+      "number": 10,
+      "started_at": "2026-09-29T11:06:17Z",
+      "completed_at": "2026-09-29T11:06:17Z"
+    },
+    {
+      "name": "Record screenshot evidence source and hashes",
+      "status": "completed",
+      "conclusion": "success",
+      "number": 11,
+      "started_at": "2026-09-29T11:06:17Z",
+      "completed_at": "2026-09-29T11:06:17Z"
+    },
+    {
+      "name": "Upload screenshot verification records",
+      "status": "completed",
+      "conclusion": "success",
+      "number": 12,
+      "started_at": "2026-09-29T11:06:17Z",
+      "completed_at": "2026-09-29T11:06:21Z"
+    },
+    {
+      "name": "Post Set up Gradle",
+      "status": "completed",
+      "conclusion": "success",
+      "number": 22,
+      "started_at": "2026-09-29T11:06:21Z",
+      "completed_at": "2026-09-29T11:06:43Z"
+    },
+    {
+      "name": "Post Set up JDK 17 (Temurin)",
+      "status": "completed",
+      "conclusion": "success",
+      "number": 23,
+      "started_at": "2026-09-29T11:06:43Z",
+      "completed_at": "2026-09-29T11:06:43Z"
+    },
+    {
+      "name": "Post Checkout",
+      "status": "completed",
+      "conclusion": "success",
+      "number": 24,
+      "started_at": "2026-09-29T11:06:43Z",
+      "completed_at": "2026-09-29T11:06:43Z"
+    },
+    {
+      "name": "Complete job",
+      "status": "completed",
+      "conclusion": "success",
+      "number": 25,
+      "started_at": "2026-09-29T11:06:43Z",
+      "completed_at": "2026-09-29T11:06:43Z"
+    }
+  ]
+}

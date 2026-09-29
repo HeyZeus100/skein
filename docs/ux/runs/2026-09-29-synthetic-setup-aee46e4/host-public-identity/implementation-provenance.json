@@ -1,0 +1,31 @@
+{
+  "candidate_sha": "5ae91c238612bdd9b1511b3716d34b4fa5960dd2",
+  "source_matches_candidate": true,
+  "source_path": "/Users/andrewherrera/skein-worktrees/ux-integration-20260929/core/model/src/main/kotlin/app/skein/core/model/Blake3.kt",
+  "source_sha256": "46dd1dd48f66b3a8560b748b2e96a0ba1e4dab3480cc785607ee6b40a28e7739",
+  "compiled_classes": [
+    {
+      "original": "/Users/andrewherrera/skein-worktrees/ux-integration-20260929/core/model/build/classes/kotlin/main/app/skein/core/model/Blake3$ChunkState.class",
+      "copy": "/Users/andrewherrera/skein-worktrees/conference-demo-20260929/build/agent-logs/public-qwen-blake3-20260929/classes/app/skein/core/model/Blake3$ChunkState.class",
+      "sha256": "b7b47aba790a9235c3540e4210b3feb80aa4cf844ce6c20b8196ecc7588abc74"
+    },
+    {
+      "original": "/Users/andrewherrera/skein-worktrees/ux-integration-20260929/core/model/build/classes/kotlin/main/app/skein/core/model/Blake3$Hasher.class",
+      "copy": "/Users/andrewherrera/skein-worktrees/conference-demo-20260929/build/agent-logs/public-qwen-blake3-20260929/classes/app/skein/core/model/Blake3$Hasher.class",
+      "sha256": "4111b49becaf9a24ae1997efc26c784cfb99c190847c49bdc120c91a3136ede9"
+    },
+    {
+      "original": "/Users/andrewherrera/skein-worktrees/ux-integration-20260929/core/model/build/classes/kotlin/main/app/skein/core/model/Blake3$Output.class",
+      "copy": "/Users/andrewherrera/skein-worktrees/conference-demo-20260929/build/agent-logs/public-qwen-blake3-20260929/classes/app/skein/core/model/Blake3$Output.class",
+      "sha256": "8fcf61758c68f2e8019d3cdea8c8b3cd8106b5f9802464c42745e8e545943f73"
+    },
+    {
+      "original": "/Users/andrewherrera/skein-worktrees/ux-integration-20260929/core/model/build/classes/kotlin/main/app/skein/core/model/Blake3.class",
+      "copy": "/Users/andrewherrera/skein-worktrees/conference-demo-20260929/build/agent-logs/public-qwen-blake3-20260929/classes/app/skein/core/model/Blake3.class",
+      "sha256": "e98cce8ed71fe54f1f8099f84fee7dad2d04a4554be53184f2acc1e5a114d4f6"
+    }
+  ],
+  "kotlin_stdlib": "/Users/andrewherrera/.gradle/caches/modules-2/files-2.1/org.jetbrains.kotlin/kotlin-stdlib/2.4.20/94c1451890d164aed65d43b3db0b7ecef7c183e7/kotlin-stdlib-2.4.20.jar",
+  "kotlin_stdlib_sha256": "2226de463d309d4a5500a481320b3dea515a6981dcae1def531fbc158884e25f",
+  "attribution": "Existing compiled class files; source equality checked against candidate. Host-only public model identity, not device performance evidence."
+}

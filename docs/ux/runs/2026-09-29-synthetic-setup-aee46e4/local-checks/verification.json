@@ -1,0 +1,98 @@
+{
+  "issue": "skein-gg11.37",
+  "commit": "aee46e4d6c391bddbfb55296117889e1f79afff6",
+  "branch": "codex/conference-synthetic-setup-20260929",
+  "pushed": true,
+  "app_source_baseline": "5ae91c238612bdd9b1511b3716d34b4fa5960dd2",
+  "source_files": [
+    {
+      "path": "app/src/syntheticBenchmark/kotlin/app/skein/benchmark/SyntheticAnswerBenchmarkTest.kt",
+      "bytes": 26498,
+      "sha256": "6d930f5873ae86d043b0f6d22d96742932c36915f17fd65b0fb9f66e9abba14f"
+    },
+    {
+      "path": "app/src/syntheticBenchmarkShared/kotlin/app/skein/benchmark/SyntheticSetup.kt",
+      "bytes": 10636,
+      "sha256": "8a67e152a3f5aee5e6bc70ccb8452b5072c590e364425448fe048e0e8af2fd3b"
+    },
+    {
+      "path": "app/src/syntheticBenchmarkTest/kotlin/app/skein/benchmark/SyntheticSetupTest.kt",
+      "bytes": 13787,
+      "sha256": "6b0bd42b9bd8c803bbcf78c495cf7a2854595ded6aa91e4bf2d67911850e9cab"
+    }
+  ],
+  "checks": {
+    "format": {
+      "command": [
+        "./gradlew",
+        "--max-workers=2",
+        "-Pskein.syntheticBenchmark=true",
+        ":app:ktlintFormat"
+      ],
+      "exit": 0,
+      "log_sha256": "e474a017bcd18f2a2041359eac7503d605c7dbc205add03fa7d8b864429e8912"
+    },
+    "focused": {
+      "command": [
+        "./gradlew",
+        "--max-workers=2",
+        "-Pskein.syntheticBenchmark=true",
+        ":app:testDevDebugUnitTest",
+        "--tests",
+        "app.skein.benchmark.SyntheticSetupTest",
+        "--tests",
+        "app.skein.benchmark.SyntheticFixturesTest"
+      ],
+      "exit": 0,
+      "log_sha256": "405d3a667fa6303c54cea052f75666d642ee83a146e3b1383c4951dda8b5a2ec"
+    },
+    "compile": {
+      "command": [
+        "./gradlew",
+        "--max-workers=2",
+        "-Pskein.syntheticBenchmark=true",
+        ":app:ktlintCheck",
+        ":app:compileDevDebugAndroidTestKotlin",
+        ":app:compileFossDebugAndroidTestKotlin"
+      ],
+      "exit": 0,
+      "log_sha256": "9a8b032dc5bcb93ffdfedd7d938352f3584a5d4c2036b74e1787a2b5fec42688"
+    },
+    "check": {
+      "command": [
+        "./gradlew",
+        "--max-workers=2",
+        "-Pskein.syntheticBenchmark=true",
+        ":app:check"
+      ],
+      "exit": 0,
+      "log_sha256": "37e943c28c4272f07ffcc1018cbb8be50d037926ba3885fb7ca53fa2b819724c"
+    }
+  },
+  "full_app_xml": {
+    "testDevDebugUnitTest": {
+      "counts": {
+        "tests": 273,
+        "passed": 273,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0,
+        "xml_files": 40
+      },
+      "skipped_cases": []
+    },
+    "testFossDebugUnitTest": {
+      "counts": {
+        "tests": 273,
+        "passed": 273,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0,
+        "xml_files": 40
+      },
+      "skipped_cases": []
+    }
+  },
+  "runtime": "NOT_RUN; APK assembly/release and physical retry pending; no established cause for original900s timeout",
+  "production_scope": "No production sources, service checks, owner registry, gold labels, thresholds or deadlines changed"
+}

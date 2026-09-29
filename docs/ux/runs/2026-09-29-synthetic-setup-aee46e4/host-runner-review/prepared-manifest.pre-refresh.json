@@ -1,0 +1,61 @@
+{
+  "status": "HOST_ONLY_FINAL_READY_FOR_REVIEW_NOT_RELEASED",
+  "mock_tests": 31,
+  "mock_exit_code": 0,
+  "mock_test_log": "host-safety-tests-final.log",
+  "retained_initial_test_log": "host-safety-tests.log",
+  "initial_snapshot_directory": "/Users/andrewherrera/skein-worktrees/conference-demo-20260929/build/agent-logs/fold/20260929T081355Z-preflight-89bcc0/physical-runner-preparation-v4-initial",
+  "initial_driver_sha256": "dbfd7aa44ddbeb161fd3eb8b2bc226b758faec9b265055ee6026df6b906a67c0",
+  "device_commands_executed": false,
+  "test_build_sha": "aee46e4d6c391bddbfb55296117889e1f79afff6",
+  "files": {
+    "physical_synthetic.py": {
+      "bytes": 42981,
+      "sha256": "5433e207b752dc63b4d398dfb6daa2e97cc1ac5c04c037590c83bf74bcb9330f"
+    },
+    "test_physical_synthetic.py": {
+      "bytes": 37714,
+      "sha256": "289ba756920b3d7d23df21c16ad4a4cfc9535e109e63f5a57bcb07c965512ba7"
+    },
+    "host-safety-tests.log": {
+      "bytes": 4789,
+      "sha256": "834889205e7a385671088cc6d72d249fc1827749f842f4cc6206113d8236d41b"
+    },
+    "host-safety-tests.exit": {
+      "bytes": 2,
+      "sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa"
+    },
+    "host-safety-tests-final.log": {
+      "bytes": 5318,
+      "sha256": "5082e00976bac1c2583ccf393f7b2d8660decad6b23a0a6fd1092ece626fe416"
+    },
+    "host-safety-tests-final.exit": {
+      "bytes": 2,
+      "sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa"
+    },
+    "actual-prior-eog-guard.json": {
+      "bytes": 257,
+      "sha256": "6ef29f9cfd749c5726aa8e411ee46dbf5e1634838e40bb40ffb378384711b406"
+    },
+    "release.template.json": {
+      "bytes": 8058,
+      "sha256": "0146e7cd2921dcfb672fb5b8a84283c0b7186911f6474fbcd00b74fab8f22612"
+    },
+    "test-only-source-review.template.json": {
+      "bytes": 513,
+      "sha256": "c37688ad316b3ec28b38395bfe0891e20546fed53b11570785c8ce52da6d4cec"
+    },
+    "PLAN.md": {
+      "bytes": 3849,
+      "sha256": "6523ef6dd0e932a63f29b1c8b9c4de906eca7dab4f4992fd41387c5b4ac817bf"
+    },
+    "v3-v4.diff": {
+      "bytes": 20082,
+      "sha256": "12f8b3252af8d51c6495df86934bca943e826ab0161d193360b09fde5d6e7394"
+    },
+    "v4-initial-final.diff": {
+      "bytes": 6057,
+      "sha256": "6fea02c1e778cd534e8ec8973a2f9f955841a45bbbd2222530b588b6e3906e77"
+    }
+  }
+}

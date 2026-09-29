@@ -1,0 +1,58 @@
+{
+  "classification": "safe independent subset; not a replacement for owner full 31-case log",
+  "tests_run": 15,
+  "failures": 0,
+  "errors": 0,
+  "skipped": 0,
+  "selected_names": [
+    "test_legacy_released_manifest_is_rejected_before_any_command",
+    "test_parity_reuse_rejects_missing_or_changed_prior_released_app",
+    "test_parity_reuse_rejects_missing_or_malformed_eog_classification_facts",
+    "test_changed_test_source_keeps_production_identity_and_fresh_config",
+    "test_test_only_policy_rejects_changed_production_native_and_unreviewed_scope",
+    "test_host_identity_wrong_hash_or_model_binding_rejected",
+    "test_explicit_cross_release_parity_reuse_preserves_native_identity_scope",
+    "test_parity_reuse_rejects_changed_native_model_template_and_pins",
+    "test_parity_reuse_rejects_stale_rejected_incomplete_or_missing_approval",
+    "test_test_only_update_never_installs_when_current_app_mismatches",
+    "test_progress_collection_failure_keeps_partial_and_separate_error",
+    "test_progress_is_diagnostic_not_completion_and_rejects_truncation_or_wrong_run",
+    "test_unreleased_candidate_stops_before_any_command",
+    "test_parity_status_ok_cannot_hide_changed_actual_token_ids",
+    "test_blank_generation_does_not_count_as_an_answer"
+  ],
+  "extra_manifest_probes": [
+    {
+      "mutation": "test_build_sha",
+      "rejected": true
+    },
+    {
+      "mutation": "test_build_sha_provenance",
+      "rejected": true
+    },
+    {
+      "mutation": "model_blake3",
+      "rejected": true
+    },
+    {
+      "mutation": "model_blake3_provenance",
+      "rejected": true
+    },
+    {
+      "mutation": "host_model_identity_evidence_sha256",
+      "rejected": true
+    },
+    {
+      "mutation": "test_apk_sha256",
+      "rejected": true
+    },
+    {
+      "mutation": "partial_three_of_four_rows",
+      "rejected": true
+    }
+  ],
+  "subprocess_attempts": [],
+  "restricted_v2_fixtures_read": false,
+  "main_called": false,
+  "execute_path_called": false
+}

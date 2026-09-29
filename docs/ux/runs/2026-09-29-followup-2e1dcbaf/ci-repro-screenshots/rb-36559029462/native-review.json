@@ -1,0 +1,172 @@
+{
+  "source_sha": "2e1dcbafd645d4bb9348340905949bc5cae90acf",
+  "artifacts": [
+    {
+      "id": 11029268480,
+      "name": "so-determinism",
+      "archive_sha256": "33ef2423a63b1280aaae4e1d32eac05d1830c6376a33a1a3b9135367a9ee30b3",
+      "files": [],
+      "manifests": {
+        "SHA256SUMS.txt": [
+          {
+            "path": "run.37LYtbh0/SHA256SUMS.txt",
+            "sha256": "fda3a96aea2c171c24298fc4d35528fffcbf709223d8c3f8dcb015f5eb252dad",
+            "bytes": 501
+          },
+          {
+            "path": "run.37LYtbh0/build-1.log",
+            "sha256": "9612020b1a926c7cb19a8ad422efbe3efe053c600ca0fb6938ce8c0f3884dd2a",
+            "bytes": 40042
+          },
+          {
+            "path": "run.37LYtbh0/build-2.log",
+            "sha256": "8ad42f9bf381103479db24c260eea5c68b6b704f2dbfe8ee8107092940d461e0",
+            "bytes": 38595
+          },
+          {
+            "path": "run.37LYtbh0/context.txt",
+            "sha256": "36ba2e8a277c73c445c5d5a71b6d4b704e7133ed3b691d3cfe0dcf7abeae11b2",
+            "bytes": 552
+          },
+          {
+            "path": "run.37LYtbh0/libskein_llama.1.2aefda01.so",
+            "sha256": "2aefda01808f10bf5693ab02d0857e0169dc09550b615896939cb176c032daff",
+            "bytes": 25314032
+          },
+          {
+            "path": "run.37LYtbh0/libskein_llama.2.2aefda01.so",
+            "sha256": "2aefda01808f10bf5693ab02d0857e0169dc09550b615896939cb176c032daff",
+            "bytes": 25314032
+          },
+          {
+            "path": "run.37LYtbh0/result.txt",
+            "sha256": "ed163d69a09ddc0ffcbdf126a42d5745a93449fa7a39354788e948b7ac795c04",
+            "bytes": 14
+          },
+          {
+            "path": "run.log",
+            "sha256": "cd94a9fb0fe0f1fa1965b9344f8e52cdc0a696211d53ec23f94f5cc9a264fb9d",
+            "bytes": 777
+          },
+          {
+            "path": "workflow-context.txt",
+            "sha256": "bb0148717c15301881adea4a3586061bcf31212d7270fcabfe72182679b2ecc1",
+            "bytes": 85
+          }
+        ],
+        "run.37LYtbh0/SHA256SUMS.txt": [
+          {
+            "path": "context.txt",
+            "sha256": "36ba2e8a277c73c445c5d5a71b6d4b704e7133ed3b691d3cfe0dcf7abeae11b2",
+            "bytes": 552
+          },
+          {
+            "path": "result.txt",
+            "sha256": "ed163d69a09ddc0ffcbdf126a42d5745a93449fa7a39354788e948b7ac795c04",
+            "bytes": 14
+          },
+          {
+            "path": "build-1.log",
+            "sha256": "9612020b1a926c7cb19a8ad422efbe3efe053c600ca0fb6938ce8c0f3884dd2a",
+            "bytes": 40042
+          },
+          {
+            "path": "build-2.log",
+            "sha256": "8ad42f9bf381103479db24c260eea5c68b6b704f2dbfe8ee8107092940d461e0",
+            "bytes": 38595
+          },
+          {
+            "path": "libskein_llama.1.2aefda01.so",
+            "sha256": "2aefda01808f10bf5693ab02d0857e0169dc09550b615896939cb176c032daff",
+            "bytes": 25314032
+          },
+          {
+            "path": "libskein_llama.2.2aefda01.so",
+            "sha256": "2aefda01808f10bf5693ab02d0857e0169dc09550b615896939cb176c032daff",
+            "bytes": 25314032
+          }
+        ]
+      },
+      "workflow_context": {
+        "source_sha": "2e1dcbafd645d4bb9348340905949bc5cae90acf",
+        "run_id": "36559029462",
+        "run_attempt": "1"
+      },
+      "runs": [
+        {
+          "directory": "run.37LYtbh0",
+          "context": {
+            "source_sha": "2e1dcbafd645d4bb9348340905949bc5cae90acf",
+            "source_date_epoch": "1790679589",
+            "abi": "arm64-v8a",
+            "requested_builds": "2",
+            "negative_control": "0",
+            "max_workers": "2"
+          },
+          "context_sha256": "36ba2e8a277c73c445c5d5a71b6d4b704e7133ed3b691d3cfe0dcf7abeae11b2",
+          "result": {
+            "exit_status": "0"
+          },
+          "libraries": [
+            {
+              "path": "run.37LYtbh0/libskein_llama.1.2aefda01.so",
+              "sha256": "2aefda01808f10bf5693ab02d0857e0169dc09550b615896939cb176c032daff",
+              "bytes": 25314032,
+              "format": "ELF64 little-endian AArch64"
+            },
+            {
+              "path": "run.37LYtbh0/libskein_llama.2.2aefda01.so",
+              "sha256": "2aefda01808f10bf5693ab02d0857e0169dc09550b615896939cb176c032daff",
+              "bytes": 25314032,
+              "format": "ELF64 little-endian AArch64"
+            }
+          ],
+          "equal_libraries": true,
+          "logs": [
+            {
+              "path": "run.37LYtbh0/build-1.log",
+              "sha256": "9612020b1a926c7cb19a8ad422efbe3efe053c600ca0fb6938ce8c0f3884dd2a",
+              "bytes": 40042,
+              "build_successful": true,
+              "build_failed": false,
+              "lines": 493,
+              "native_task_lines": [
+                "> Task :inference-service:externalNativeBuildCleanDevRelease",
+                "> Task :inference-service:externalNativeBuildCleanDevDebug",
+                "> Task :inference-service:externalNativeBuildCleanFossRelease",
+                "> Task :inference-service:externalNativeBuildCleanFossDebug",
+                "> Task :core:vault:externalNativeBuildCleanDevRelease",
+                "> Task :core:vault:externalNativeBuildCleanFossRelease",
+                "> Task :core:vault:externalNativeBuildCleanDevDebug",
+                "> Task :core:vault:externalNativeBuildCleanFossDebug",
+                "> Task :inference-service:configureCMakeRelWithDebInfo[arm64-v8a]",
+                "> Task :inference-service:buildCMakeRelWithDebInfo[arm64-v8a][skein_llama]"
+              ]
+            },
+            {
+              "path": "run.37LYtbh0/build-2.log",
+              "sha256": "8ad42f9bf381103479db24c260eea5c68b6b704f2dbfe8ee8107092940d461e0",
+              "bytes": 38595,
+              "build_successful": true,
+              "build_failed": false,
+              "lines": 477,
+              "native_task_lines": [
+                "> Task :inference-service:externalNativeBuildCleanDevDebug",
+                "> Task :inference-service:externalNativeBuildCleanFossDebug",
+                "> Task :inference-service:externalNativeBuildCleanDevRelease",
+                "> Task :inference-service:externalNativeBuildCleanFossRelease",
+                "> Task :core:vault:externalNativeBuildCleanDevDebug",
+                "> Task :core:vault:externalNativeBuildCleanDevRelease",
+                "> Task :core:vault:externalNativeBuildCleanFossDebug",
+                "> Task :core:vault:externalNativeBuildCleanFossRelease",
+                "> Task :inference-service:configureCMakeRelWithDebInfo[arm64-v8a]",
+                "> Task :inference-service:buildCMakeRelWithDebInfo[arm64-v8a][skein_llama]"
+              ]
+            }
+          ]
+        }
+      ],
+      "worker_flag_evidence": "Retained exact script SHA matches source; its only per-build Gradle call includes --max-workers=2. Default Gradle logs do not echo argv."
+    }
+  ]
+}

@@ -1,0 +1,245 @@
+{
+  "scope": "read-only source and safe host mocks; no raw process dumps, raw native summary, APK, GGUF or native library",
+  "files": [
+    {
+      "original": "/Users/andrewherrera/skein-worktrees/ux-rb-evidence-20260929/build/agent-logs/physical-runner-v4-final-review-20260929/PLAN.md",
+      "original_bytes": 3849,
+      "original_sha256": "6523ef6dd0e932a63f29b1c8b9c4de906eca7dab4f4992fd41387c5b4ac817bf",
+      "copy": "PLAN.md",
+      "copy_bytes": 3849,
+      "copy_sha256": "6523ef6dd0e932a63f29b1c8b9c4de906eca7dab4f4992fd41387c5b4ac817bf",
+      "encoding": "identity",
+      "lossless_verified": true
+    },
+    {
+      "original": "/Users/andrewherrera/skein-worktrees/ux-rb-evidence-20260929/build/agent-logs/physical-runner-v4-final-review-20260929/REVIEW.md",
+      "original_bytes": 6594,
+      "original_sha256": "03ec9a84b2bc8c107a6af7259e4508acec6fcad14df68e4141dacd2551672c45",
+      "copy": "REVIEW.md",
+      "copy_bytes": 6594,
+      "copy_sha256": "03ec9a84b2bc8c107a6af7259e4508acec6fcad14df68e4141dacd2551672c45",
+      "encoding": "identity",
+      "lossless_verified": true
+    },
+    {
+      "original": "/Users/andrewherrera/skein-worktrees/ux-rb-evidence-20260929/build/agent-logs/physical-runner-v4-final-review-20260929/SHA256SUMS",
+      "original_bytes": 2107,
+      "original_sha256": "efee5c2bc5417acbd3c0867b93ee78738ea55570363d8c43b304e9c2cac515e8",
+      "copy": "original-review-SHA256SUMS",
+      "copy_bytes": 2107,
+      "copy_sha256": "efee5c2bc5417acbd3c0867b93ee78738ea55570363d8c43b304e9c2cac515e8",
+      "encoding": "identity",
+      "lossless_verified": true
+    },
+    {
+      "original": "/Users/andrewherrera/skein-worktrees/ux-rb-evidence-20260929/build/agent-logs/physical-runner-v4-final-review-20260929/actual-prior-eog-guard.json",
+      "original_bytes": 257,
+      "original_sha256": "6ef29f9cfd749c5726aa8e411ee46dbf5e1634838e40bb40ffb378384711b406",
+      "copy": "actual-prior-eog-guard.json",
+      "copy_bytes": 257,
+      "copy_sha256": "6ef29f9cfd749c5726aa8e411ee46dbf5e1634838e40bb40ffb378384711b406",
+      "encoding": "identity",
+      "lossless_verified": true
+    },
+    {
+      "original": "/Users/andrewherrera/skein-worktrees/ux-rb-evidence-20260929/build/agent-logs/physical-runner-v4-final-review-20260929/delta-and-test-review.json",
+      "original_bytes": 437,
+      "original_sha256": "82e7c9c86832e16428179dd07d819e7b4731335998a4f2e2ee3f76f33329a01d",
+      "copy": "delta-and-test-review.json",
+      "copy_bytes": 437,
+      "copy_sha256": "82e7c9c86832e16428179dd07d819e7b4731335998a4f2e2ee3f76f33329a01d",
+      "encoding": "identity",
+      "lossless_verified": true
+    },
+    {
+      "original": "/Users/andrewherrera/skein-worktrees/ux-rb-evidence-20260929/build/agent-logs/physical-runner-v4-final-review-20260929/final-manifest-review.json",
+      "original_bytes": 4742,
+      "original_sha256": "5919433e278f321b09243cc56643e28164ec23ae9c1009a327468fa36759e52a",
+      "copy": "final-manifest-review.json",
+      "copy_bytes": 4742,
+      "copy_sha256": "5919433e278f321b09243cc56643e28164ec23ae9c1009a327468fa36759e52a",
+      "encoding": "identity",
+      "lossless_verified": true
+    },
+    {
+      "original": "/Users/andrewherrera/skein-worktrees/ux-rb-evidence-20260929/build/agent-logs/physical-runner-v4-final-review-20260929/host-safety-tests-final.exit",
+      "original_bytes": 2,
+      "original_sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+      "copy": "host-safety-tests-final.exit",
+      "copy_bytes": 2,
+      "copy_sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+      "encoding": "identity",
+      "lossless_verified": true
+    },
+    {
+      "original": "/Users/andrewherrera/skein-worktrees/ux-rb-evidence-20260929/build/agent-logs/physical-runner-v4-final-review-20260929/host-safety-tests-final.log",
+      "original_bytes": 5318,
+      "original_sha256": "5082e00976bac1c2583ccf393f7b2d8660decad6b23a0a6fd1092ece626fe416",
+      "copy": "host-safety-tests-final.log.gz",
+      "copy_bytes": 1090,
+      "copy_sha256": "ed88c37bde45226d231f4216f6c741be35c41ca4a338e34d920c6ffbabc945bf",
+      "encoding": "gzip",
+      "lossless_verified": true
+    },
+    {
+      "original": "/Users/andrewherrera/skein-worktrees/ux-rb-evidence-20260929/build/agent-logs/physical-runner-v4-final-review-20260929/host-safety-tests.exit",
+      "original_bytes": 2,
+      "original_sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+      "copy": "host-safety-tests.exit",
+      "copy_bytes": 2,
+      "copy_sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+      "encoding": "identity",
+      "lossless_verified": true
+    },
+    {
+      "original": "/Users/andrewherrera/skein-worktrees/ux-rb-evidence-20260929/build/agent-logs/physical-runner-v4-final-review-20260929/host-safety-tests.log",
+      "original_bytes": 4789,
+      "original_sha256": "834889205e7a385671088cc6d72d249fc1827749f842f4cc6206113d8236d41b",
+      "copy": "host-safety-tests.log.gz",
+      "copy_bytes": 1021,
+      "copy_sha256": "5163e119aee2f1b9c8b1fb5af522ceb6e43b09c63d5b4c58308fe72a60c069bd",
+      "encoding": "gzip",
+      "lossless_verified": true
+    },
+    {
+      "original": "/Users/andrewherrera/skein-worktrees/ux-rb-evidence-20260929/build/agent-logs/physical-runner-v4-final-review-20260929/independent-prior-token-guard.json",
+      "original_bytes": 260,
+      "original_sha256": "d5a686b4dc3b4a2f992d170d3ed78f471b98bd0c4947e9695717871ed6d4f576",
+      "copy": "independent-prior-token-guard.json",
+      "copy_bytes": 260,
+      "copy_sha256": "d5a686b4dc3b4a2f992d170d3ed78f471b98bd0c4947e9695717871ed6d4f576",
+      "encoding": "identity",
+      "lossless_verified": true
+    },
+    {
+      "original": "/Users/andrewherrera/skein-worktrees/ux-rb-evidence-20260929/build/agent-logs/physical-runner-v4-final-review-20260929/physical_synthetic.py",
+      "original_bytes": 42981,
+      "original_sha256": "5433e207b752dc63b4d398dfb6daa2e97cc1ac5c04c037590c83bf74bcb9330f",
+      "copy": "physical_synthetic.py.gz",
+      "copy_bytes": 12486,
+      "copy_sha256": "e1cacf584724ac2874721304ec4940dc8687a3babcb7de16f0311b3dabb8b639",
+      "encoding": "gzip",
+      "lossless_verified": true
+    },
+    {
+      "original": "/Users/andrewherrera/skein-worktrees/ux-rb-evidence-20260929/build/agent-logs/physical-runner-v4-final-review-20260929/physical_synthetic.py.initial-to-final.diff",
+      "original_bytes": 5759,
+      "original_sha256": "9f3ee72c9bca79aa3eea1620a51b137e7a07aaf22d2fa01114979dcffa55f5bb",
+      "copy": "physical_synthetic.py.initial-to-final.diff.gz",
+      "copy_bytes": 1938,
+      "copy_sha256": "0803dd5ac49e486c62bd12a840f5e32143c35931309497ff45c019b192d6b7c0",
+      "encoding": "gzip",
+      "lossless_verified": true
+    },
+    {
+      "original": "/Users/andrewherrera/skein-worktrees/ux-rb-evidence-20260929/build/agent-logs/physical-runner-v4-final-review-20260929/prepared-manifest.json",
+      "original_bytes": 2333,
+      "original_sha256": "7d80e8fe477fbe52a8112b21a56161db098872b214781d31fb6547343aab6f54",
+      "copy": "prepared-manifest.json",
+      "copy_bytes": 2333,
+      "copy_sha256": "7d80e8fe477fbe52a8112b21a56161db098872b214781d31fb6547343aab6f54",
+      "encoding": "identity",
+      "lossless_verified": true
+    },
+    {
+      "original": "/Users/andrewherrera/skein-worktrees/ux-rb-evidence-20260929/build/agent-logs/physical-runner-v4-final-review-20260929/prepared-manifest.pre-refresh.json",
+      "original_bytes": 2333,
+      "original_sha256": "7d80e8fe477fbe52a8112b21a56161db098872b214781d31fb6547343aab6f54",
+      "copy": "prepared-manifest.pre-refresh.json",
+      "copy_bytes": 2333,
+      "copy_sha256": "7d80e8fe477fbe52a8112b21a56161db098872b214781d31fb6547343aab6f54",
+      "encoding": "identity",
+      "lossless_verified": true
+    },
+    {
+      "original": "/Users/andrewherrera/skein-worktrees/ux-rb-evidence-20260929/build/agent-logs/physical-runner-v4-final-review-20260929/release.template.json",
+      "original_bytes": 8058,
+      "original_sha256": "0146e7cd2921dcfb672fb5b8a84283c0b7186911f6474fbcd00b74fab8f22612",
+      "copy": "release.template.json",
+      "copy_bytes": 8058,
+      "copy_sha256": "0146e7cd2921dcfb672fb5b8a84283c0b7186911f6474fbcd00b74fab8f22612",
+      "encoding": "identity",
+      "lossless_verified": true
+    },
+    {
+      "original": "/Users/andrewherrera/skein-worktrees/ux-rb-evidence-20260929/build/agent-logs/physical-runner-v4-final-review-20260929/run_safe_subset.py",
+      "original_bytes": 5906,
+      "original_sha256": "49efd1b141ce8a52023559a3a454ae35f48f90eb0fec3bf433e5836164eddf52",
+      "copy": "run_safe_subset.py.gz",
+      "copy_bytes": 2392,
+      "copy_sha256": "e901e1c9504ca8007da325ddc148b6c15fbf336d2c96713d3d5a51dd05a268fa",
+      "encoding": "gzip",
+      "lossless_verified": true
+    },
+    {
+      "original": "/Users/andrewherrera/skein-worktrees/ux-rb-evidence-20260929/build/agent-logs/physical-runner-v4-final-review-20260929/safe-subset-result.json",
+      "original_bytes": 1986,
+      "original_sha256": "a71e932743c18f724d5ef76c46ec05ef78eb346654533594cf2b3d3455c029c0",
+      "copy": "safe-subset-result.json",
+      "copy_bytes": 1986,
+      "copy_sha256": "a71e932743c18f724d5ef76c46ec05ef78eb346654533594cf2b3d3455c029c0",
+      "encoding": "identity",
+      "lossless_verified": true
+    },
+    {
+      "original": "/Users/andrewherrera/skein-worktrees/ux-rb-evidence-20260929/build/agent-logs/physical-runner-v4-final-review-20260929/safe-subset.log",
+      "original_bytes": 2700,
+      "original_sha256": "d1b1af7c9d19f824811d824dd793366a01f60bafdad2f7234674db2329ac6845",
+      "copy": "safe-subset.log.gz",
+      "copy_bytes": 601,
+      "copy_sha256": "1f83ab327b56053340b886ea2cb1818ed87c0205f7e48f38a36cec209881421b",
+      "encoding": "gzip",
+      "lossless_verified": true
+    },
+    {
+      "original": "/Users/andrewherrera/skein-worktrees/ux-rb-evidence-20260929/build/agent-logs/physical-runner-v4-final-review-20260929/test-only-source-review.template.json",
+      "original_bytes": 513,
+      "original_sha256": "c37688ad316b3ec28b38395bfe0891e20546fed53b11570785c8ce52da6d4cec",
+      "copy": "test-only-source-review.template.json",
+      "copy_bytes": 513,
+      "copy_sha256": "c37688ad316b3ec28b38395bfe0891e20546fed53b11570785c8ce52da6d4cec",
+      "encoding": "identity",
+      "lossless_verified": true
+    },
+    {
+      "original": "/Users/andrewherrera/skein-worktrees/ux-rb-evidence-20260929/build/agent-logs/physical-runner-v4-final-review-20260929/test_physical_synthetic.py",
+      "original_bytes": 37714,
+      "original_sha256": "289ba756920b3d7d23df21c16ad4a4cfc9535e109e63f5a57bcb07c965512ba7",
+      "copy": "test_physical_synthetic.py.gz",
+      "copy_bytes": 8591,
+      "copy_sha256": "cd3df4d435d8342c63a34be1d9b681a3d35e565b51470ce9226144e28c77e244",
+      "encoding": "gzip",
+      "lossless_verified": true
+    },
+    {
+      "original": "/Users/andrewherrera/skein-worktrees/ux-rb-evidence-20260929/build/agent-logs/physical-runner-v4-final-review-20260929/test_physical_synthetic.py.initial-to-final.diff",
+      "original_bytes": 6944,
+      "original_sha256": "4db64e35de970ba12ee200817415312a6047edb27134dc87b57b8c98cd7a54a9",
+      "copy": "test_physical_synthetic.py.initial-to-final.diff.gz",
+      "copy_bytes": 2064,
+      "copy_sha256": "e7acec8fa88d42214a37a86f4302dab59e88ce36a9d0b8a34b3e5fb28d41711f",
+      "encoding": "gzip",
+      "lossless_verified": true
+    },
+    {
+      "original": "/Users/andrewherrera/skein-worktrees/ux-rb-evidence-20260929/build/agent-logs/physical-runner-v4-final-review-20260929/v3-v4.diff",
+      "original_bytes": 20082,
+      "original_sha256": "12f8b3252af8d51c6495df86934bca943e826ab0161d193360b09fde5d6e7394",
+      "copy": "v3-v4.diff.gz",
+      "copy_bytes": 5909,
+      "copy_sha256": "50c591fd19245d5dcf2c9612f61bc485ff7e78703d15def770e85b04ce7c9049",
+      "encoding": "gzip",
+      "lossless_verified": true
+    },
+    {
+      "original": "/Users/andrewherrera/skein-worktrees/ux-rb-evidence-20260929/build/agent-logs/physical-runner-v4-final-review-20260929/v4-initial-final.diff",
+      "original_bytes": 6057,
+      "original_sha256": "6fea02c1e778cd534e8ec8973a2f9f955841a45bbbd2222530b588b6e3906e77",
+      "copy": "v4-initial-final.diff.gz",
+      "copy_bytes": 2043,
+      "copy_sha256": "7f0f3ded2170c30d51aba361746aa33ea7bc8bfba87883c051464bd064f16932",
+      "encoding": "gzip",
+      "lossless_verified": true
+    }
+  ]
+}

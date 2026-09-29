@@ -1,0 +1,17 @@
+{
+  "approved": true,
+  "app_source_sha": "5ae91c238612bdd9b1511b3716d34b4fa5960dd2",
+  "test_build_sha": "aee46e4d6c391bddbfb55296117889e1f79afff6",
+  "production_app_unchanged": true,
+  "native_test_unchanged": true,
+  "changed_paths": [
+    "app/src/syntheticBenchmark/kotlin/app/skein/benchmark/SyntheticAnswerBenchmarkTest.kt",
+    "app/src/syntheticBenchmarkShared/kotlin/app/skein/benchmark/SyntheticSetup.kt",
+    "app/src/syntheticBenchmarkTest/kotlin/app/skein/benchmark/SyntheticSetupTest.kt"
+  ],
+  "combined_source_sha": "8ae202a095a0725a0190195e7cf9f470ec39a4ac",
+  "scope": "Exactly three opt-in files from5ae; production APK remains separately measured5ae, new testAPK has no native libraries and only classes7.dex changed inside ZIP",
+  "verification": "Worker actual546passes/0fail/error/skip,80XML;14focused; explicitktlint andbothAndroidTestcompiles. Root combined8ae bothflagsappcheck/lint/compilesPASS; unitcache reuse documented.",
+  "reviewer": "coordinator plus independent source and host helper review",
+  "artifact_identity_sha256": "e398a4c3457df9103754ef3cbed010cfec9c99a42a77111a9f4a8a4537cb0be6"
+}

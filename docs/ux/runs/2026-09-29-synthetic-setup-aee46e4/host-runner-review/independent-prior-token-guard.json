@@ -1,0 +1,8 @@
+{
+  "native_report_sha256": "34e0dd8f53e6a659131b84fbe696aeaec9a8bcbe7208e09e3ab3bf876547f727",
+  "token_cases": 5,
+  "classification_guard": "PASS",
+  "generated_stopping": "unmeasured",
+  "raw_summary_or_process_dump_read": false,
+  "device_action": false
+}

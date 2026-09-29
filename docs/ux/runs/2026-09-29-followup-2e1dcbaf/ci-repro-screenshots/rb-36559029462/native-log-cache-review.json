@@ -1,0 +1,16 @@
+[
+  {
+    "path": "run.37LYtbh0/build-1.log",
+    "from_cache": [],
+    "build_outcomes": [
+      "BUILD SUCCESSFUL in 3m 42s"
+    ]
+  },
+  {
+    "path": "run.37LYtbh0/build-2.log",
+    "from_cache": [],
+    "build_outcomes": [
+      "BUILD SUCCESSFUL in 2m 36s"
+    ]
+  }
+]

@@ -1,0 +1,7 @@
+{
+  "mode": "host-only actual prior artifact guard check",
+  "native_report_sha256": "34e0dd8f53e6a659131b84fbe696aeaec9a8bcbe7208e09e3ab3bf876547f727",
+  "classification_guard": "PASS",
+  "generation_stop_quality": "unmeasured",
+  "device_action": false
+}

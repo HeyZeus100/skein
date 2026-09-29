@@ -1,0 +1,137 @@
+{
+  "authorization": "NOT_RELEASED",
+  "source_sha": "5ae91c238612bdd9b1511b3716d34b4fa5960dd2",
+  "coordinator_release_reference": "FILL_NEW_EXPLICIT_RELEASE_REFERENCE",
+  "ordinary_source_sha": "5ae91c238612bdd9b1511b3716d34b4fa5960dd2",
+  "ordinary_reviewed": true,
+  "final_source_scope_reviewed": false,
+  "owner_idle_authorized": true,
+  "exact_target_force_stop_approved": true,
+  "opt_in_build_confirmed": false,
+  "checks": [
+    {
+      "name": "ordinary Android actualXML",
+      "status": "PASS",
+      "evidence": "/Users/andrewherrera/skein-worktrees/conference-demo-20260929/build/agent-logs/remote-review/ordinary-36551469886/evidence-review.json; root reparsed3XML281passes/0skips, all7required+19formerfailures pass."
+    },
+    {
+      "name": "full local check and explicit lint",
+      "status": "PASS",
+      "evidence": "/Users/andrewherrera/skein-worktrees/ux-integration-20260929/build/agent-logs/combined-check4-xml (source5ae5081pass86reviewedskips)"
+    },
+    {
+      "name": "fresh CI and native APK guards",
+      "status": "PASS",
+      "evidence": "GitHub36551451065 actualallguardstepsPASS; independentunit494XMLhashes verified at root-ci-36551451065/independent-review.json"
+    },
+    {
+      "name": "fresh strict screenshots",
+      "status": "PASS",
+      "evidence": "/Users/andrewherrera/skein-worktrees/conference-demo-20260929/build/agent-logs/remote-review/ux-insets-screenshots-36551451241/independent-review.json"
+    },
+    {
+      "name": "fresh reproducibility actual retained binaries",
+      "status": "PASS",
+      "evidence": "/Users/andrewherrera/skein-worktrees/conference-demo-20260929/build/agent-logs/remote-review/ux-insets-repro-36551451072/independent-review.json"
+    },
+    {
+      "name": "three locally-signed optin APK identities and actualDEX",
+      "status": "PASS",
+      "evidence": "/Users/andrewherrera/skein-worktrees/conference-demo-20260929/build/agent-logs/apk-review-5ae91c2-optin-20260929T095321Z/independent-review.json"
+    },
+    {
+      "name": "new opt-in test source and APK plus host-only repair checks",
+      "status": "PENDING",
+      "evidence": "FILL_ACTUAL_REVIEWED_CHECKS_AND_TEST_SOURCE_APK_PROVENANCE"
+    }
+  ],
+  "ordinary_xml": [
+    {
+      "module": "app",
+      "path": "/Users/andrewherrera/skein-worktrees/conference-demo-20260929/build/agent-logs/remote-review/ordinary-36551469886/reports/app/build/outputs/androidTest-results/connected/debug/flavors/dev/TEST-test(AVD) - 15.xml",
+      "sha256": "edf6794f5264c79d21807bfce1f89283d91efe3911f29e24a38936acb9cdf74e"
+    },
+    {
+      "module": "vault",
+      "path": "/Users/andrewherrera/skein-worktrees/conference-demo-20260929/build/agent-logs/remote-review/ordinary-36551469886/reports/core/vault/build/outputs/androidTest-results/connected/debug/flavors/dev/TEST-test(AVD) - 15.xml",
+      "sha256": "e962e358383812c4c1be47854dbbf39b0fda285cd4caa8b407674fd3deee9558"
+    },
+    {
+      "module": "inference-service",
+      "path": "/Users/andrewherrera/skein-worktrees/conference-demo-20260929/build/agent-logs/remote-review/ordinary-36551469886/reports/inference-service/build/outputs/androidTest-results/connected/debug/flavors/dev/TEST-test(AVD) - 15.xml",
+      "sha256": "e750db156ea4fe5654cf8c09a65de19c4efcef9400f91b352310bb42fa022adc"
+    }
+  ],
+  "required_ordinary_cases": [
+    "app.skein.inference.service.LlamaNativeTest#descriptorLoadCancellationFromProgressClosesOwnedStreamAndKeepsCallerFd",
+    "app.skein.inference.service.LlamaNativeTest#pathLoadCancellationFromProgressRetainsNoNativeHandle",
+    "app.skein.inference.service.LlamaNativeTest#tokenizeReturnsAtLeastTwoIds",
+    "app.skein.inference.service.InferenceServiceInstrumentedTest#lockingMidGenerationCancelsThenLockedTerminatesTheIsolatedProcess",
+    "app.skein.inference.service.InferenceServiceInstrumentedTest#aLockingServiceRefusesTheNextGenerateBeforeProcessTeardown",
+    "app.skein.inference.service.InferenceServiceInstrumentedTest#staleLockedPushDoesNotKillNewlyAuthorizedService",
+    "app.skein.inference.LlamaCppEngineInstrumentedTest#lockAfterInspectionTerminatesTheProcessAndOnlyANewUnlockCanRebind"
+  ],
+  "apks": {
+    "app": {
+      "path": "/Users/andrewherrera/skein-worktrees/ux-integration-20260929/build/agent-logs/candidate-5ae91c2-optin/app-foss-debug.apk",
+      "sha256": "1f83b71c5fe60a6dc26fcac7a4c75b49fbf009b6e8c9d972b2176c18081c1323"
+    },
+    "app_test": {
+      "path": "FILL_NEW_TEST_APK_PATH",
+      "sha256": "FILL_NEW_TEST_APK_SHA256"
+    },
+    "native_test": {
+      "path": "/Users/andrewherrera/skein-worktrees/ux-integration-20260929/build/agent-logs/candidate-5ae91c2-optin/inference-service-foss-debug-androidTest.apk",
+      "sha256": "bb1b2f496f6c831ced00f20d9dd08d6f571d87fcb48040dfba17f4a7c561f342"
+    }
+  },
+  "expected_installed_app_sha256": "1f83b71c5fe60a6dc26fcac7a4c75b49fbf009b6e8c9d972b2176c18081c1323",
+  "model_path": "/Users/andrewherrera/skein-worktrees/conference-demo-20260929/build/agent-logs/fold/20260929T081355Z-preflight-89bcc0/public-model-cache-qwen-2c5f9a121ae6/Qwen2.5-3B-Instruct-abliterated-Q3_K_M.gguf",
+  "fixture_path": "/Users/andrewherrera/skein-worktrees/conference-demo-20260929/docs/demo/conference-2026/fixtures/input.jsonl",
+  "llama_sha": "b29c606e28a01b1bc8c1351026a0fa6e616bf6c4",
+  "tokenizer_overlay_pins": "/Users/andrewherrera/skein-worktrees/ux-integration-20260929/native/llama/tokenizer-patches/PINS.txt",
+  "tokenizer_overlay_sha256": "71aba69a0fba8abc2df0a8f74f537182b79b29d60b13e74b7dc901e52dc36f29",
+  "preparation_helper": "/Users/andrewherrera/skein-worktrees/conference-demo-20260929/tools/eval/prepare_android_benchmark.py",
+  "adb": "/Users/andrewherrera/android-sdk/platform-tools/adb",
+  "apksigner": "/Users/andrewherrera/android-sdk/build-tools/36.0.0/apksigner",
+  "aapt2": "/Users/andrewherrera/android-sdk/build-tools/36.0.0/aapt2",
+  "unmet_gates": [
+    "quality/retrieval/physical UI not established by synthetic tests",
+    "host EOG evidence distinct from Android stop_reason evidence",
+    "Genericfoldemulatorinprogress; fullAL10/15/16 andexactPixel9/realIMEunlockedmatrix remainopen",
+    "Long-load/FGS/process-deathinference,80-case retrievalqualityandembedding gatesremainopen"
+  ],
+  "allowed_ordinary_skips": [],
+  "model_license_observation": "base Qwen Research License; distributor card apache-2.0; discrepancy unresolved, no eligibility conclusion",
+  "model_upstream": {
+    "repository": "tensorblock/Qwen2.5-3B-Instruct-abliterated-GGUF",
+    "revision": "574cf57acf9ca2a56ec7e62e3bd974a413881745",
+    "sha256": "2c5f9a121ae6695208e300c16acca303669afa4e18812061164dca9c97071b12"
+  },
+  "test_only_update": true,
+  "test_build_sha": "aee46e4d6c391bddbfb55296117889e1f79afff6",
+  "test_only_source_review": {
+    "path": "FILL_REVIEWED_TEST_SCOPE_JSON",
+    "sha256": "FILL_SCOPE_JSON_SHA256"
+  },
+  "preparation_helper_sha256": "ba62a5ee4e1ba4bfac11a75def7cc4368828b930f092eade9d8d2c334c7b0b91",
+  "host_model_identity": {
+    "path": "/Users/andrewherrera/skein-worktrees/conference-demo-20260929/build/agent-logs/public-qwen-blake3-20260929/identity.json",
+    "sha256": "625212a9771344d4069f06209fee7cf75b5e4bb375542932d43081b72c4463f2"
+  },
+  "parity_reuse": {
+    "approved": false,
+    "summary": {
+      "path": "/Users/andrewherrera/skein-worktrees/conference-demo-20260929/build/agent-logs/fold/physical-5ae91c2-20260929T102342Z-v2/native/summary.json",
+      "sha256": "b86f34c12fd4fff2c1b64f5758860f7af282b8d77eefd849068f2c276066d595"
+    },
+    "report": {
+      "path": "/Users/andrewherrera/skein-worktrees/conference-demo-20260929/build/agent-logs/fold/physical-5ae91c2-20260929T102342Z-v2/native/native-parity.json",
+      "sha256": "34e0dd8f53e6a659131b84fbe696aeaec9a8bcbe7208e09e3ab3bf876547f727"
+    },
+    "release": {
+      "path": "/Users/andrewherrera/skein-worktrees/conference-demo-20260929/build/agent-logs/fold/release-preparation/candidate-5ae91c2.released.json",
+      "sha256": "cf110c3857bc7d94ead8fde9438355f14193cf702061b00b60d0c842ef6c8f03"
+    }
+  }
+}

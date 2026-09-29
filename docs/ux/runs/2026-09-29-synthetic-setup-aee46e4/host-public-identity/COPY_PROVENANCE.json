@@ -1,0 +1,68 @@
+[
+  {
+    "file": "host-result.json",
+    "source": "/Users/andrewherrera/skein-worktrees/conference-demo-20260929/build/agent-logs/public-qwen-blake3-20260929/host-result.json",
+    "sha256": "ad536814397a675fbf11ff5d8edaf4afd60c9d4790ebe4166105bf549a4c9389",
+    "bytes": 1320
+  },
+  {
+    "file": "javac-command.json",
+    "source": "/Users/andrewherrera/skein-worktrees/conference-demo-20260929/build/agent-logs/public-qwen-blake3-20260929/javac-command.json",
+    "sha256": "a09d51512995e1c547ff3a1e6e5fc7ada002658578c95eae23bb26596d22bec0",
+    "bytes": 705
+  },
+  {
+    "file": "javac.stderr",
+    "source": "/Users/andrewherrera/skein-worktrees/conference-demo-20260929/build/agent-logs/public-qwen-blake3-20260929/javac.stderr",
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "bytes": 0
+  },
+  {
+    "file": "identity.stdout.jsonl",
+    "source": "/Users/andrewherrera/skein-worktrees/conference-demo-20260929/build/agent-logs/public-qwen-blake3-20260929/identity.stdout.jsonl",
+    "sha256": "a63e996016b7d3643268508c917b21bcd08f752035ed7467c3787cdba5b67da7",
+    "bytes": 908
+  },
+  {
+    "file": "javac.stdout",
+    "source": "/Users/andrewherrera/skein-worktrees/conference-demo-20260929/build/agent-logs/public-qwen-blake3-20260929/javac.stdout",
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "bytes": 0
+  },
+  {
+    "file": "implementation-provenance.json",
+    "source": "/Users/andrewherrera/skein-worktrees/conference-demo-20260929/build/agent-logs/public-qwen-blake3-20260929/implementation-provenance.json",
+    "sha256": "503ed5feaf26475ba211689f0a72e9a28691f8f286110be9a12af9986b9a2a3f",
+    "bytes": 2506
+  },
+  {
+    "file": "PublicModelIdentity.java",
+    "source": "/Users/andrewherrera/skein-worktrees/conference-demo-20260929/build/agent-logs/public-qwen-blake3-20260929/PublicModelIdentity.java",
+    "sha256": "4c619d516cdc367a64c2939bb324972b49646dae953f366b5895b54862e96646",
+    "bytes": 2376
+  },
+  {
+    "file": "identity.json",
+    "source": "/Users/andrewherrera/skein-worktrees/conference-demo-20260929/build/agent-logs/public-qwen-blake3-20260929/identity.json",
+    "sha256": "625212a9771344d4069f06209fee7cf75b5e4bb375542932d43081b72c4463f2",
+    "bytes": 2537
+  },
+  {
+    "file": "identity.stderr",
+    "source": "/Users/andrewherrera/skein-worktrees/conference-demo-20260929/build/agent-logs/public-qwen-blake3-20260929/identity.stderr",
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "bytes": 0
+  },
+  {
+    "file": "java-command.json",
+    "source": "/Users/andrewherrera/skein-worktrees/conference-demo-20260929/build/agent-logs/public-qwen-blake3-20260929/java-command.json",
+    "sha256": "298b696ea08358366573cd075cc2b0916eb5a191b7e65fa78d9cdb2f8e26ea6d",
+    "bytes": 1106
+  },
+  {
+    "file": "javac-exit.txt",
+    "source": "/Users/andrewherrera/skein-worktrees/conference-demo-20260929/build/agent-logs/public-qwen-blake3-20260929/javac-exit.txt",
+    "sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+    "bytes": 2
+  }
+]

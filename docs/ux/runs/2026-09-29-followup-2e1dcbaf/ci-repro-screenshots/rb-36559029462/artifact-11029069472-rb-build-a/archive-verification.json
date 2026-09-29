@@ -1,0 +1,9 @@
+{
+  "id": 11029069472,
+  "name": "rb-build-a",
+  "bytes": 100674120,
+  "sha256": "0eb5b3f3787f7f4ae33deca580a2dcdca9744d5dc92d1eef489efd6bbe4f20c5",
+  "api_digest": "sha256:0eb5b3f3787f7f4ae33deca580a2dcdca9744d5dc92d1eef489efd6bbe4f20c5",
+  "size_and_digest_match": true,
+  "source_sha": "2e1dcbafd645d4bb9348340905949bc5cae90acf"
+}

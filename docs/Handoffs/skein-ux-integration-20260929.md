@@ -158,7 +158,14 @@ ktlint and both affected AndroidTest compilations pass, alongside all ten host
 contracts. The original lint failure and corrected check are retained in the
 [transport bundle](../ux/runs/2026-09-29-fold-transport-2e1dcbaf/). Fresh generic
 [run 36559029738](https://github.com/HeyZeus100/skein/actions/runs/36559029738)
-is pending at this checkpoint; no runtime pass is yet claimed.
+finished with two failures before Activity launch. The catalog and committed
+CLOSED state are valid, but the actual window remains 674×841dp through the
+15-second geometry check. APK retention preserves the catalog; original artifact
+SHA256 is `022aa3b620c1238e68f1a7d8f32fd175add3c1c50c28b193fa146363244d4e7b`.
+Framework override alone does not actuate this generic folded region. A bounded
+host-console fold/unfold transport proposal is under review, with assertions
+unchanged. [Complete follow-up evidence](../ux/runs/2026-09-29-followup-2e1dcbaf/)
+also verifies fresh screenshots and the actual matching native/release pairs.
 Application code/APKs remain at the released `5ae91c238` source. The exact Pixel 9 Pro Fold
 profile remains the default and a separate open acceptance gate.
 
@@ -312,12 +319,24 @@ Absent output therefore points toward pre-manifest setup, subject to excluding
 output-path/write failure; a slow hash is a hypothesis, not a measured cause.
 Native parity exercises SHA256 and native loading without this app-harness BLAKE3
 pass or Binder path. Privacy-safe phase/byte progress is needed before a retry;
-no hashes, limits, frozen fixtures or quality thresholds may be weakened. The demo
-owner is preparing an isolated opt-in-only helper with early phase progress and
-optional explicitly bound host BLAKE3 identity, retaining a full on-device SHA256
-and byte-count check and the original BLAKE3 path when omitted. This requires a
-separate test APK/source review and release; no retry is authorized by the original
-artifact release. No production crypto or inference change is implied.
+no hashes, limits, frozen fixtures or quality thresholds may be weakened. The demo owner's isolated opt-in-only helper is verified at `aee46e4d6c391bddbfb55296117889e1f79afff6`
+and integrated at `8ae202a095a0725a0190195e7cf9f470ec39a4ac`. It adds early phase
+progress and optional explicitly bound host BLAKE3 identity, retaining full device
+SHA256/byte count and the old BLAKE3 path when omitted. All 546 app cases pass;
+explicit lint and both AndroidTest compilations pass. Root combined checks use
+both opt-in flags and record cached unit reuse separately.
+
+The [test-only release](../ux/runs/2026-09-29-synthetic-setup-aee46e4/) was published
+at **14:05:29 UTC**. The new test APK is 91,163,348 bytes, SHA256
+`9575f53a36e6dbd1dcd9f4cdcfe4af6407a74d1566343bf5bb29ca0bc9edef95`, with the matching
+single signer and expected target. Only `classes7.dex` differs inside its archive;
+no native libraries are present. The application and native test APK remain exact
+5ae artifacts. The final host runner passes 31 mocks plus independent checks,
+allows only test-package installation and pins explicit prior parity reuse.
+The sole demo runner must acknowledge current ownership and recheck installed
+identity before the one permitted exact-method attempt. Unchanged 900/180-second
+limits and all four cases apply. Actual retry progress/answer evidence is pending;
+no production crypto or inference implementation changed.
 
 The distributor/base-model license-label discrepancy
 remains recorded; this is not blanket artifact-license qualification.

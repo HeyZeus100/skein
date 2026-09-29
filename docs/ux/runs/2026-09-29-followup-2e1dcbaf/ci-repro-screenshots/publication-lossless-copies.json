@@ -1,0 +1,17 @@
+{
+  "reason": "Preserve exact raw whitespace using gzip for Git publication. Worker originals and ORIGINAL-SHA256SUMS unchanged.",
+  "copies": [
+    {
+      "original": "application-source-diff.txt",
+      "sha256": "4ad5d160b4b654aa61cac49c6c15376883d1ee2dd13e876a9c6b4e1f05988b55",
+      "lossless_copy": "application-source-diff.txt.gz",
+      "gzip_sha256": "d46c4f621868562a051003fa73c43e5f63ba74bf05d7efaf8bf320ac3ec6a61d"
+    },
+    {
+      "original": "source-commit.txt",
+      "sha256": "32400373c98a4ee48390663cd32af367ad8195a672d34d5ddf205f7510b1f4e2",
+      "lossless_copy": "source-commit.txt.gz",
+      "gzip_sha256": "d3ae4af3bd1815b425ad0c6850015c8749831cc98aa3314891610d5ba24a97bd"
+    }
+  ]
+}

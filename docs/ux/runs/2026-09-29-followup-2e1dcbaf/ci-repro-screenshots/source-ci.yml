@@ -1,0 +1,221 @@
+name: CI
+
+# E1.I3: unit tests, ktlint, Android lint, guard tasks, and a foss/debug
+# assemble on every push to main and every PR. Emulator instrumented tests
+# live in emulator.yml (dispatch + nightly only — see that file for why).
+# DCO sign-off is checked separately by dco.yml (E8.I1 / skein-1jm).
+#
+# E1.I12: every ./gradlew invocation below already enforces dependency
+# checksum verification because gradle/verification-metadata.xml is present
+# in the tree with <verify-metadata>true</verify-metadata> — that is Gradle's
+# default behavior, not something this workflow opts into. We deliberately do
+# NOT pass --dependency-verification=strict: it would add no enforcement
+# beyond the file-driven default and would add friction to Dependabot
+# version-bump PRs (see docs/VERIFICATION.md, "Why CI stays at default").
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  unit-lint-assemble:
+    name: Unit tests, lint, assemble (foss debug)
+    runs-on: ubuntu-latest
+    # E1.I4 (skein-ca2) raised this from 20: `assembleFossDebug` now also
+    # builds libskein_llama.so, which compiles llama.cpp + ggml and ~1100
+    # Vulkan shader variants through glslc on top of the OpenSSL/SQLCipher
+    # build E1.I5 already does.
+    timeout-minutes: 45
+    steps:
+      - name: Checkout
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v4.3.0
+        with:
+          # E1.I4: third_party/{llama.cpp,Vulkan-Headers,SPIRV-Headers} are the
+          # sources of libskein_llama.so. Without them the native build fails
+          # at configure.
+          submodules: true
+
+      # Fails if a submodule's checked-out commit or its recorded gitlink
+      # disagrees with native/llama/PINNED_COMMIT — i.e. if somebody moved a
+      # pin without saying so, or pulled a bump without updating their tree.
+      # Runs before anything expensive.
+      - name: Verify third_party submodule pins
+        run: ./tools/ci/check-submodules.sh
+
+      - name: Validate synthetic answer evaluation fixtures and reporting
+        run: python3 -m unittest discover -s tools/eval -p 'test_*.py' -v
+
+      - name: Verify raw evidence reviewers
+        run: python3 -m unittest discover -s tools/ci -p 'test_*.py' -v
+
+      - name: Set up JDK 17 (Temurin)
+        uses: actions/setup-java@de7274f081f381c8f8158605e0321c36c376e2e6 # v4.8.0
+        with:
+          distribution: temurin
+          java-version: "17"
+
+      # ubuntu-latest GitHub-hosted runners ship a pre-licensed Android SDK
+      # (ANDROID_HOME) that AGP can extend on demand; android-actions/setup-android
+      # was tried here but fails trying to install the retired "tools" package
+      # (https://github.com/android-actions/setup-android/issues — sdkmanager
+      # no longer serves it), so we rely on the preinstalled SDK instead.
+      - name: Install required Android SDK platform
+        run: |
+          sdkmanager "platforms;android-37" "build-tools;36.0.0" || true
+
+      # skein-qj5l: same rationale as emulator.yml — cache the pinned
+      # OpenSSL tarball outside the checkout, keyed on the pin's own
+      # sha256 (read out of native/sqlite/CMakeLists.txt so the key can
+      # never drift from the pin it names), so `assembleFossDebug` below
+      # only downloads it on a pin change. CMake still sha256-verifies
+      # whatever this restores and retries once on a mismatch.
+      # The `runner` context is not available in job-level `env` (GitHub
+      # rejects the workflow file), so the directory is exported from a step;
+      # native/sqlite/CMakeLists.txt reads SKEIN_OPENSSL_TARBALL_DIR at
+      # configure time.
+      - name: Choose the OpenSSL tarball cache directory
+        run: echo "SKEIN_OPENSSL_TARBALL_DIR=$RUNNER_TEMP/skein-openssl" >> "$GITHUB_ENV"
+
+      - name: Derive pinned OpenSSL sha256 (cache key)
+        id: openssl-pin
+        run: |
+          sha="$(grep -m1 '^set(OPENSSL_SHA256' native/sqlite/CMakeLists.txt | sed -E 's/.*"([0-9a-f]+)".*/\1/')"
+          if [ -z "$sha" ]; then
+            echo "::error::could not read OPENSSL_SHA256 from native/sqlite/CMakeLists.txt" >&2
+            exit 1
+          fi
+          echo "sha256=$sha" >> "$GITHUB_OUTPUT"
+
+      - name: Cache the pinned OpenSSL tarball
+        uses: actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0
+        with:
+          path: ${{ env.SKEIN_OPENSSL_TARBALL_DIR }}
+          key: openssl-tarball-${{ steps.openssl-pin.outputs.sha256 }}
+
+      # Handles Gradle dependency + build-cache caching automatically; no
+      # separate actions/cache step needed.
+      - name: Set up Gradle
+        uses: gradle/actions/setup-gradle@748248ddd2a24f49513d8f472f81c3a07d4d50e1 # v4.4.4
+        with:
+          cache-read-only: ${{ github.ref != 'refs/heads/main' }}
+
+      # `check` fans out to every subproject's unit tests
+      # (testDevDebugUnitTest, testFossDebugUnitTest, ...) plus the guard
+      # tasks wired into `check` by build-logic/guards
+      # (checkManifestGuards, checkDependencyGuards, checkIsolationGuards,
+      # licenseAudit) — see build-logic/guards/src/main/kotlin/app/skein/gradle.
+      - name: ktlint, Android lint, unit tests, guards
+        run: ./gradlew --max-workers=2 ktlintCheck lint check --stacktrace
+
+      # Keep actual XML on success and failure; workflow status is not test evidence.
+      - name: Record unit evidence source and hashes
+        if: always()
+        run: python3 tools/ci/verification-manifest.py unit build/unit-verification.json
+
+      - name: Upload unit-test reports
+        if: always()
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: unit-test-results
+          path: |
+            build/unit-verification.json
+            **/build/test-results/**/*.xml
+            **/build/reports/tests/**
+          if-no-files-found: ignore
+          retention-days: 14
+
+      - name: Assemble foss debug APK
+        run: ./gradlew --max-workers=2 assembleFossDebug --stacktrace
+
+      # skein-gg11.24: AGP configures debug variants with CMAKE_BUILD_TYPE=Debug,
+      # whose NDK flags carry no -O at all, so llama.cpp/ggml compiled at -O0
+      # and one 106-token prompt batch on the Fold had not finished after 98 s.
+      # native/llama/CMakeLists.txt §4a adds -O2 for the Debug configuration;
+      # this gate reads every compile_commands.json the assemble above
+      # configured and fails if any llama.cpp/JNI translation unit is below
+      # -O2 again. Blocking: the debug APK is the one every device smoke
+      # installs, so an -O0 native build makes every on-device number
+      # meaningless.
+      - name: Native optimisation level (libskein_llama.so translation units)
+        run: ./tools/ci/native-opt-level.sh
+
+      # skein-xth5 / skein-gg11.5 (recon docs/research/POCKETPAL_RECON.md §8.1
+      # B-8 / PP-48, OfflineLLM row OL-46): every PT_LOAD segment of the
+      # shipped native libraries must be aligned to >= 16 KiB, or mmap'ing
+      # them on a 16 KiB-page-size Android 16 device SIGBUSes at load time --
+      # exactly the operation Skein performs to map GGUF models.
+      # native/llama/CMakeLists.txt and native/sqlite/CMakeLists.txt now link
+      # every target with `-Wl,-z,max-page-size=16384` /
+      # `-Wl,-z,common-page-size=16384` (skein-gg11.5), so this is blocking:
+      # a regression here means a real device-load crash, not a known,
+      # tracked gap.
+      - name: 16 KiB ELF LOAD-segment alignment (libskein_llama.so, libskein_sqlite_jni.so)
+        run: ./tools/ci/elf-alignment.sh
+
+      # E4.I1 / skein-3aw: the JNI surface gate. Fails if the `Java_` symbols
+      # exported by libskein_llama.so are not EXACTLY the `external fun`s
+      # declared by LlamaNative.kt (a mismatch is an UnsatisfiedLinkError that
+      # would otherwise only surface on a device), or if the JNI sources grew a
+      # std::cout/printf that would print prompt text past LlamaLogRedactor.
+      # assembleFossDebug above builds the arm64-v8a .so; the dev flavor's
+      # x86_64 one is covered in emulator.yml's lane.
+      - name: JNI symbol surface (libskein_llama.so)
+        run: ./tools/ci/jni-symbols.sh
+
+      # skein-8ryv: the sqlite JNI surface gate. Fails if the `Java_` symbols
+      # exported by libskein_sqlite_jni.so are not EXACTLY the `external
+      # fun`s declared on SkeinSQLiteNativeImpl (a mismatch is the
+      # UnsatisfiedLinkError on nativeOpen that only a device run caught —
+      # the vault never opened). assembleFossDebug above builds
+      # core/vault's arm64-v8a .so.
+      - name: JNI symbol surface (libskein_sqlite_jni.so)
+        run: ./tools/ci/sqlite-jni-symbols.sh
+
+      # E4.I3 / skein-nxk: the content-logging gate that bead's acceptance
+      # criteria name. The isolated services are the processes that hold
+      # decrypted prompts, retrieved document text and generated tokens at
+      # once; spec §9 forbids logging any of it at ANY level in ANY build.
+      # SkeinLog's own level gate and LlamaLogRedactor both handle llama.cpp's
+      # output, but neither can see a first-party
+      # `SkeinLog.w(TAG, "prompt=$prompt")` added while debugging and
+      # forgotten. Source-only, so it needs nothing built.
+      - name: No prompt/token content in service logs
+        run: ./tools/ci/no-content-logging.sh
+
+      # E10.I9 / skein-rfz2: fails the build if a new exported component
+      # (activity/service/provider/receiver) shows up in the merged
+      # manifest beyond the debug allowlist (MainActivity,
+      # VaultDocumentsProvider, and debug-only PreviewActivity), plus the
+      # rest of the spec §9 manifest posture. `aapt2` ships in the
+      # build-tools package installed above; it's not on PATH by default.
+      - name: Manifest audit (exported components, permissions, backup posture)
+        run: |
+          export PATH="$ANDROID_HOME/build-tools/36.0.0:$PATH"
+          ./tools/ci/manifest-audit.sh app/build/outputs/apk/foss/debug/app-foss-debug.apk
+
+      # E0.I15 / skein-3v9: validates app/src/main/assets/models/*.skein.json
+      # against core/model/.../model-manifest.schema.json (that directory is
+      # empty until skein-bxk lands; an empty glob passes), and round-trips
+      # the accept/reject fixtures in
+      # core/inference/src/test/resources/manifests/ that
+      # ModelManifestFixtureTest feeds to the Kotlin parser. Running both
+      # readers over the same fixtures is what stops the documented schema and
+      # the parser that actually enforces it from drifting apart. Stdlib only
+      # — no pip install step on the runner.
+      - name: Validate model manifests
+        run: python3 tools/ci/validate-manifests.py
+
+      - name: Upload foss debug APK
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: skein-foss-debug-apk
+          path: app/build/outputs/apk/foss/debug/*.apk
+          if-no-files-found: warn
+          retention-days: 14

@@ -1,0 +1,20 @@
+{
+  "id": 11028318105,
+  "node_id": "MDg6QXJ0aWZhY3QxMTAyODMxODEwNQ==",
+  "name": "ux-verification-records",
+  "size_in_bytes": 441960,
+  "url": "https://api.github.com/repos/HeyZeus100/skein/actions/artifacts/11028318105",
+  "archive_download_url": "https://api.github.com/repos/HeyZeus100/skein/actions/artifacts/11028318105/zip",
+  "expired": false,
+  "digest": "sha256:5f4ccb3961f138e769b466a4ecc316f515c306c060124893db90ff0a00dbb592",
+  "created_at": "2026-09-29T11:06:21Z",
+  "updated_at": "2026-09-29T11:06:21Z",
+  "expires_at": "2026-10-13T11:06:19Z",
+  "workflow_run": {
+    "id": 36559029446,
+    "repository_id": 1377804189,
+    "head_repository_id": 1377804189,
+    "head_branch": "main",
+    "head_sha": "2e1dcbafd645d4bb9348340905949bc5cae90acf"
+  }
+}

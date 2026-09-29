@@ -1,0 +1,68 @@
+[
+  {
+    "run_id": 36559029276,
+    "id": 11028662716,
+    "name": "skein-foss-debug-apk",
+    "source_sha": "2e1dcbafd645d4bb9348340905949bc5cae90acf",
+    "bytes": 49498561,
+    "sha256": "0d69d6effa1787fc1afc99857ef2e42df2c465761caa8ad1744bacf85036a7f7",
+    "api_digest": "sha256:0d69d6effa1787fc1afc99857ef2e42df2c465761caa8ad1744bacf85036a7f7",
+    "original_archive": "/Users/andrewherrera/skein-worktrees/ux-hinge-windows-20260929/build/agent-logs/secondary-followup-2e1dcbaf/ci-36559029276/artifact-11028662716-skein-foss-debug-apk/archive.zip",
+    "metadata": "/Users/andrewherrera/skein-worktrees/ux-hinge-windows-20260929/build/agent-logs/secondary-followup-2e1dcbaf/ci-36559029276/artifact-11028662716-skein-foss-debug-apk/metadata.json"
+  },
+  {
+    "run_id": 36559029276,
+    "id": 11028557330,
+    "name": "unit-test-results",
+    "source_sha": "2e1dcbafd645d4bb9348340905949bc5cae90acf",
+    "bytes": 2519442,
+    "sha256": "e31476327217b33ec6391df1dbd10a43adafe664e0149a70453443fad9520f73",
+    "api_digest": "sha256:e31476327217b33ec6391df1dbd10a43adafe664e0149a70453443fad9520f73",
+    "original_archive": "/Users/andrewherrera/skein-worktrees/ux-hinge-windows-20260929/build/agent-logs/secondary-followup-2e1dcbaf/ci-36559029276/artifact-11028557330-unit-test-results/archive.zip",
+    "metadata": "/Users/andrewherrera/skein-worktrees/ux-hinge-windows-20260929/build/agent-logs/secondary-followup-2e1dcbaf/ci-36559029276/artifact-11028557330-unit-test-results/metadata.json"
+  },
+  {
+    "run_id": 36559029462,
+    "id": 11029268480,
+    "name": "so-determinism",
+    "source_sha": "2e1dcbafd645d4bb9348340905949bc5cae90acf",
+    "bytes": 50710914,
+    "sha256": "33ef2423a63b1280aaae4e1d32eac05d1830c6376a33a1a3b9135367a9ee30b3",
+    "api_digest": "sha256:33ef2423a63b1280aaae4e1d32eac05d1830c6376a33a1a3b9135367a9ee30b3",
+    "original_archive": "/Users/andrewherrera/skein-worktrees/ux-hinge-windows-20260929/build/agent-logs/secondary-followup-2e1dcbaf/rb-36559029462/artifact-11029268480-so-determinism/archive.zip",
+    "metadata": "/Users/andrewherrera/skein-worktrees/ux-hinge-windows-20260929/build/agent-logs/secondary-followup-2e1dcbaf/rb-36559029462/artifact-11029268480-so-determinism/metadata.json"
+  },
+  {
+    "run_id": 36559029462,
+    "id": 11029094038,
+    "name": "rb-build-b",
+    "source_sha": "2e1dcbafd645d4bb9348340905949bc5cae90acf",
+    "bytes": 100674134,
+    "sha256": "20145cb7777fdc3dfb28fd6ee41e882c6ea539ca8c130f2871fa8815591eeb1d",
+    "api_digest": "sha256:20145cb7777fdc3dfb28fd6ee41e882c6ea539ca8c130f2871fa8815591eeb1d",
+    "original_archive": "/Users/andrewherrera/skein-worktrees/ux-hinge-windows-20260929/build/agent-logs/secondary-followup-2e1dcbaf/rb-36559029462/artifact-11029094038-rb-build-b/archive.zip",
+    "metadata": "/Users/andrewherrera/skein-worktrees/ux-hinge-windows-20260929/build/agent-logs/secondary-followup-2e1dcbaf/rb-36559029462/artifact-11029094038-rb-build-b/metadata.json"
+  },
+  {
+    "run_id": 36559029462,
+    "id": 11029069472,
+    "name": "rb-build-a",
+    "source_sha": "2e1dcbafd645d4bb9348340905949bc5cae90acf",
+    "bytes": 100674120,
+    "sha256": "0eb5b3f3787f7f4ae33deca580a2dcdca9744d5dc92d1eef489efd6bbe4f20c5",
+    "api_digest": "sha256:0eb5b3f3787f7f4ae33deca580a2dcdca9744d5dc92d1eef489efd6bbe4f20c5",
+    "original_archive": "/Users/andrewherrera/skein-worktrees/ux-hinge-windows-20260929/build/agent-logs/secondary-followup-2e1dcbaf/rb-36559029462/artifact-11029069472-rb-build-a/archive.zip",
+    "metadata": "/Users/andrewherrera/skein-worktrees/ux-hinge-windows-20260929/build/agent-logs/secondary-followup-2e1dcbaf/rb-36559029462/artifact-11029069472-rb-build-a/metadata.json"
+  },
+  {
+    "run_id": 36559029446,
+    "id": 11028318105,
+    "name": "ux-verification-records",
+    "source_sha": "2e1dcbafd645d4bb9348340905949bc5cae90acf",
+    "bytes": 441960,
+    "sha256": "5f4ccb3961f138e769b466a4ecc316f515c306c060124893db90ff0a00dbb592",
+    "api_digest": "sha256:5f4ccb3961f138e769b466a4ecc316f515c306c060124893db90ff0a00dbb592",
+    "original_archive": "/Users/andrewherrera/skein-worktrees/ux-hinge-windows-20260929/build/agent-logs/secondary-followup-2e1dcbaf/screenshots-36559029446/artifact-11028318105-ux-verification-records/archive.zip",
+    "metadata": "/Users/andrewherrera/skein-worktrees/ux-hinge-windows-20260929/build/agent-logs/secondary-followup-2e1dcbaf/screenshots-36559029446/artifact-11028318105-ux-verification-records/metadata.json"
+  }
+]

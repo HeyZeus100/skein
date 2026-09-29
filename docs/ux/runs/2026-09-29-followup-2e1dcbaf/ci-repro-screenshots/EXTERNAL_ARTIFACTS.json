@@ -1,0 +1,56 @@
+[
+  {
+    "path": "/Users/andrewherrera/skein-worktrees/ux-hinge-windows-20260929/build/agent-logs/secondary-followup-2e1dcbaf/ci-36559029276/artifact-11028662716-skein-foss-debug-apk/archive.zip",
+    "relative_path": "ci-36559029276/artifact-11028662716-skein-foss-debug-apk/archive.zip",
+    "bytes": 49498561,
+    "sha256": "0d69d6effa1787fc1afc99857ef2e42df2c465761caa8ad1744bacf85036a7f7"
+  },
+  {
+    "path": "/Users/andrewherrera/skein-worktrees/ux-hinge-windows-20260929/build/agent-logs/secondary-followup-2e1dcbaf/ci-36559029276/artifact-11028662716-skein-foss-debug-apk/files/app-foss-debug.apk",
+    "relative_path": "ci-36559029276/artifact-11028662716-skein-foss-debug-apk/files/app-foss-debug.apk",
+    "bytes": 125280302,
+    "sha256": "38835c37e41e2beaa52e4d018b4ab284c43cea1387923f15ff748ea0542e25a9"
+  },
+  {
+    "path": "/Users/andrewherrera/skein-worktrees/ux-hinge-windows-20260929/build/agent-logs/secondary-followup-2e1dcbaf/rb-36559029462/artifact-11029069472-rb-build-a/archive.zip",
+    "relative_path": "rb-36559029462/artifact-11029069472-rb-build-a/archive.zip",
+    "bytes": 100674120,
+    "sha256": "0eb5b3f3787f7f4ae33deca580a2dcdca9744d5dc92d1eef489efd6bbe4f20c5"
+  },
+  {
+    "path": "/Users/andrewherrera/skein-worktrees/ux-hinge-windows-20260929/build/agent-logs/secondary-followup-2e1dcbaf/rb-36559029462/artifact-11029069472-rb-build-a/files/app-foss-release-unsigned.apk",
+    "relative_path": "rb-36559029462/artifact-11029069472-rb-build-a/files/app-foss-release-unsigned.apk",
+    "bytes": 100673247,
+    "sha256": "e8d47da32a79e5ba48593431822e7391cf33bfb12183a54339d31fb60bac7317"
+  },
+  {
+    "path": "/Users/andrewherrera/skein-worktrees/ux-hinge-windows-20260929/build/agent-logs/secondary-followup-2e1dcbaf/rb-36559029462/artifact-11029094038-rb-build-b/archive.zip",
+    "relative_path": "rb-36559029462/artifact-11029094038-rb-build-b/archive.zip",
+    "bytes": 100674134,
+    "sha256": "20145cb7777fdc3dfb28fd6ee41e882c6ea539ca8c130f2871fa8815591eeb1d"
+  },
+  {
+    "path": "/Users/andrewherrera/skein-worktrees/ux-hinge-windows-20260929/build/agent-logs/secondary-followup-2e1dcbaf/rb-36559029462/artifact-11029094038-rb-build-b/files/app-foss-release-unsigned.apk",
+    "relative_path": "rb-36559029462/artifact-11029094038-rb-build-b/files/app-foss-release-unsigned.apk",
+    "bytes": 100673247,
+    "sha256": "e8d47da32a79e5ba48593431822e7391cf33bfb12183a54339d31fb60bac7317"
+  },
+  {
+    "path": "/Users/andrewherrera/skein-worktrees/ux-hinge-windows-20260929/build/agent-logs/secondary-followup-2e1dcbaf/rb-36559029462/artifact-11029268480-so-determinism/archive.zip",
+    "relative_path": "rb-36559029462/artifact-11029268480-so-determinism/archive.zip",
+    "bytes": 50710914,
+    "sha256": "33ef2423a63b1280aaae4e1d32eac05d1830c6376a33a1a3b9135367a9ee30b3"
+  },
+  {
+    "path": "/Users/andrewherrera/skein-worktrees/ux-hinge-windows-20260929/build/agent-logs/secondary-followup-2e1dcbaf/rb-36559029462/artifact-11029268480-so-determinism/files/run.37LYtbh0/libskein_llama.1.2aefda01.so",
+    "relative_path": "rb-36559029462/artifact-11029268480-so-determinism/files/run.37LYtbh0/libskein_llama.1.2aefda01.so",
+    "bytes": 25314032,
+    "sha256": "2aefda01808f10bf5693ab02d0857e0169dc09550b615896939cb176c032daff"
+  },
+  {
+    "path": "/Users/andrewherrera/skein-worktrees/ux-hinge-windows-20260929/build/agent-logs/secondary-followup-2e1dcbaf/rb-36559029462/artifact-11029268480-so-determinism/files/run.37LYtbh0/libskein_llama.2.2aefda01.so",
+    "relative_path": "rb-36559029462/artifact-11029268480-so-determinism/files/run.37LYtbh0/libskein_llama.2.2aefda01.so",
+    "bytes": 25314032,
+    "sha256": "2aefda01808f10bf5693ab02d0857e0169dc09550b615896939cb176c032daff"
+  }
+]

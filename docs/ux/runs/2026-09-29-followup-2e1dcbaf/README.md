@@ -1,0 +1,9 @@
+# Follow-up at source 2e1dcbafd
+
+Exact source `2e1dcbafd645d4bb9348340905949bc5cae90acf`. The installed application remains the released `5ae91c238612bdd9b1511b3716d34b4fa5960dd2` APK; these host artifacts are not replacement candidates.
+
+[Actual CI/screenshot/reproducibility review](ci-repro-screenshots/REVIEW.md) verifies 5,079 unit passes / 88 skips (28 cached test tasks), 552 unchanged screenshots / 705 hashes, and actual matching native and complete APK pairs. Release A/B each contain 100,673,247 bytes, SHA256 `e8d47da32a79e5ba48593431822e7391cf33bfb12183a54339d31fb60bac7317`. Both cold libraries match `2aefda01808f10bf5693ab02d0857e0169dc09550b615896939cb176c032daff`. Expected tag/conditional skips remain explicit; no three-consecutive-main claim.
+
+[Foldable run 36559029738](https://github.com/HeyZeus100/skein/actions/runs/36559029738) fails both exact tests before Activity launch: two failures, zero passes/errors/skips, no geometry rows. The valid API35 catalog exposes CLOSED=1/HALF_OPENED=2/OPENED=3 and reports committed CLOSED, but the window stays 674×841dp / 1768×2208 pixels through the 15-second width assertion. Framework state override alone does not actuate this generic AVD's folded display region. Assertions are preserved. APK retention now works and preserves the runtime catalog; logcat records 3→1→3 twice, including cleanup. There is no standalone post-run rotation capture.
+
+`foldable-failed-36559029738-portable.zip` preserves raw non-APK evidence and its inventory. Archive SHA256 `71f2407d158233c61e4fc10a5ece4082181ed09cff53fa19b298e2a7b0bd3c19`, 1,578,614 bytes. The full original artifact11028628821 remains external with SHA256 `022aa3b620c1238e68f1a7d8f32fd175add3c1c50c28b193fa146363244d4e7b`; exact original paths and APK hashes are indexed inside. These are disposable emulator records, not physical-device data. A host console fold/unfold proposal is under review; no passing runtime coverage is implied by that proposal.

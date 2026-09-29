@@ -1,0 +1,21 @@
+{
+  "base_commit": "5ae91c238612bdd9b1511b3716d34b4fa5960dd2",
+  "scope": "opt-in synthetic setup only",
+  "files": [
+    {
+      "path": "app/src/syntheticBenchmark/kotlin/app/skein/benchmark/SyntheticAnswerBenchmarkTest.kt",
+      "bytes": 26498,
+      "sha256": "6d930f5873ae86d043b0f6d22d96742932c36915f17fd65b0fb9f66e9abba14f"
+    },
+    {
+      "path": "app/src/syntheticBenchmarkShared/kotlin/app/skein/benchmark/SyntheticSetup.kt",
+      "bytes": 10636,
+      "sha256": "8a67e152a3f5aee5e6bc70ccb8452b5072c590e364425448fe048e0e8af2fd3b"
+    },
+    {
+      "path": "app/src/syntheticBenchmarkTest/kotlin/app/skein/benchmark/SyntheticSetupTest.kt",
+      "bytes": 13787,
+      "sha256": "6b0bd42b9bd8c803bbcf78c495cf7a2854595ded6aa91e4bf2d67911850e9cab"
+    }
+  ]
+}

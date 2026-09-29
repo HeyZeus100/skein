@@ -1,0 +1,18 @@
+{
+  "changed_function_asts": [
+    "install_for_phase",
+    "validate",
+    "verify_parity_reuse"
+  ],
+  "added_functions": [
+    "verify_native_eog"
+  ],
+  "removed_functions": [],
+  "all_other_function_class_asts_unchanged": true,
+  "owner_mock_count": 31,
+  "owner_failures": 0,
+  "owner_skips": 0,
+  "safe_independent_mock_count": 15,
+  "safe_independent_manifest_probes": 7,
+  "restricted_raw_summary_or_process_dump_read": false
+}

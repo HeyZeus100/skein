@@ -1,0 +1,12 @@
+{"event":"progress","bytes":134217728,"elapsed_ms":660}
+{"event":"progress","bytes":268435456,"elapsed_ms":1290}
+{"event":"progress","bytes":402653184,"elapsed_ms":1910}
+{"event":"progress","bytes":536870912,"elapsed_ms":2526}
+{"event":"progress","bytes":671088640,"elapsed_ms":3145}
+{"event":"progress","bytes":805306368,"elapsed_ms":3765}
+{"event":"progress","bytes":939524096,"elapsed_ms":4386}
+{"event":"progress","bytes":1073741824,"elapsed_ms":5009}
+{"event":"progress","bytes":1207959552,"elapsed_ms":5632}
+{"event":"progress","bytes":1342177280,"elapsed_ms":6266}
+{"event":"progress","bytes":1476395008,"elapsed_ms":6889}
+{"event":"complete","bytes":1590475744,"sha256":"2c5f9a121ae6695208e300c16acca303669afa4e18812061164dca9c97071b12","blake3":"db158ff62057f42fef73363387db4bfac01da469475840dc0aad5dae70eb0e4a","elapsed_ms":7413,"classification":"host public-model identity; not device benchmark"}
