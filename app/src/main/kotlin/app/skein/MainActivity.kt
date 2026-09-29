@@ -14,6 +14,7 @@ import androidx.biometric.BiometricPrompt
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Button
 import androidx.compose.material3.CircularProgressIndicator
@@ -367,19 +368,18 @@ class MainActivity : FragmentActivity() {
                                 LaunchedEffect(navigationReady, pending) {
                                     if (navigationReady) notificationLinks.applyPending(navShell)
                                 }
-                                EdgeToEdgeSurface { m ->
-                                    NavShell(
-                                        session,
-                                        navShell,
-                                        settingsViewModel,
-                                        m,
-                                        onNavigationReady = {
-                                            notificationLinks.applyPending(navShell)
-                                            navigationReady = true
-                                        },
-                                        knowledgePreparation = knowledgePreparation,
-                                    )
-                                }
+                                // AL-11: each entry owns its insets; gate-safeDrawing would consume IME here.
+                                NavShell(
+                                    session,
+                                    navShell,
+                                    settingsViewModel,
+                                    Modifier.fillMaxSize(),
+                                    onNavigationReady = {
+                                        notificationLinks.applyPending(navShell)
+                                        navigationReady = true
+                                    },
+                                    knowledgePreparation = knowledgePreparation,
+                                )
                             }
                         }
                     },
