@@ -176,21 +176,26 @@ class Navigator(
     ): SkeinNavigationState = state.copy(space = space)
 
     /**
-     * What `NavDisplay` is given for [stack] in [mode] (§8.3 rule 6a): the saved
-     * stack with entries that would render identically to the one below elided.
-     * Today that is a trailing [NewChatKey] directly over the Chat root, in every
-     * mode whose root already shows the landing (all but [NavMode.SINGLE]). The
-     * saved stack is untouched, so a later Single window shows the landing again.
+     * What `NavDisplay` is given for [stack] in [mode]. An explicit new chat
+     * keeps its own draft identity, even where the root also shows a landing.
+     * Phone elides the root below that draft; wider windows keep Conversations
+     * beside the actual draft entry. The saved stack is untouched.
      */
     fun visibleStack(
         stack: List<SkeinKey>,
         mode: NavMode,
     ): List<SkeinKey> =
-        if (mode != NavMode.SINGLE && stack.size == 2 && stack[0] == ChatHomeKey && stack[1] is NewChatKey) {
-            stack.take(1)
+        if (mode == NavMode.PHONE && isChatLandingRoot(stack, mode)) {
+            stack.takeLast(1)
         } else {
             stack
         }
+
+    /** A bare unsent landing has no visible Back target except Single's Conversations list. */
+    fun isChatLandingRoot(
+        stack: List<SkeinKey>,
+        mode: NavMode,
+    ): Boolean = mode != NavMode.SINGLE && stack.size == 2 && stack[0] == ChatHomeKey && stack[1] is NewChatKey
 
     /**
      * System Back after the IME and transient overlays (§3.6 steps 3–6): pop the
@@ -210,6 +215,7 @@ class Navigator(
         state: SkeinNavigationState,
         mode: NavMode,
     ): SkeinNavigationState? {
+        if (isChatLandingRoot(state.currentStack, mode)) return null
         val visible = visibleStack(state.currentStack, mode)
         return if (visible.size > 1) state.withStack(state.topLevel, visible.dropLast(1)) else null
     }

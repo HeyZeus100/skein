@@ -462,7 +462,7 @@ When returning with a model ready, the card is absent, the subtitle reads `Qwen 
  80    side 320 (280)          detail 582 (468); landing column ≤ 720
 ```
 
-This is also the Conversations pane's `detailPlaceholder`, so a bare `[ChatHomeKey]` and `[ChatHomeKey, NewChatKey]` look identical, and Back from here leaves the app (§3.6 step 4). On first run the Conversations pane shows `No chats yet` (`CHAT_UX_SPEC.md` §11.2) in place of the list.
+This is also the Conversations pane's `detailPlaceholder`. A bare `[ChatHomeKey]` and `[ChatHomeKey, NewChatKey]` have the same structure, but the explicit `NewChatKey` renders its own draft; New chat must never reuse text from the root placeholder. Back from either landing leaves the app (§3.6 step 4). On first run the Conversations pane shows `No chats yet` (`CHAT_UX_SPEC.md` §11.2) in place of the list.
 
 **Short — outer landscape 1175 × 524 (owner) / 994 × 443 (stock):** the Phone landing with a one-line header. The actions sit in one row, the column is capped at 720 and centred, and Recent scrolls under them.
 
@@ -1189,11 +1189,11 @@ All keys are `@Serializable` and implement `NavKey`. **Fields are ids and enums 
 
 | Mode | `[ChatHomeKey]` shows | Where the chat history is | Back from a conversation |
 |---|---|---|---|
-| **Phone / Short** (drawer) | **the landing** (it shares the "new" draft with `NewChatKey`) | the drawer's Chats section | → the landing → leave the app |
+| **Phone / Short** (drawer) | **the landing** (the root draft; an explicit `NewChatKey` has its own draft) | the drawer's Chats section | → the landing → leave the app |
 | **Single** (rail, one pane) | **the Conversations list**, full width | this screen | → Conversations → leave the app |
 | **Dual / Triple** | Conversations list pane │ landing placeholder | the list pane | → `Conversations │ landing` → leave the app |
 
-The stack is identical in every mode. Only the rendering differs, so a fold never changes what is open. The landing's draft, focus and Recent list are keyed by "new", not by the composable that happens to show them.
+The saved stack is identical in every mode. Only the rendering differs, so a fold never changes what is open. Each explicit landing keeps its `NewChatKey(draftId)` entry identity across modes, and its encrypted draft is keyed by Space and draft id. The root landing has a separate stable draft per Space.
 
 The metadata helper and parameter names are those of `adaptive-navigation3` 1.3.0 (`ListDetailSceneStrategy.kt` L236–261, per `ANDROID_ADAPTIVE_SAMPLES.md` §4.2). The spike confirms the exact names, including how a scene key is passed.
 
@@ -1210,8 +1210,8 @@ The metadata helper and parameter names are those of `adaptive-navigation3` 1.3.
 3. **Selecting from a visible list replaces the detail.** It does not accumulate history, and Back goes to the list or root. Selecting while a detail is the only visible pane (Phone or Single) pushes the detail onto the list.
 4. **De-duplicate:** if the key is already in the current stack, pop back to it instead of pushing a second copy (Test B "no duplicate chat"). There is one `NewChatKey` per stack.
 5. **New chat (✎, Ctrl+N):** pop the Chat stack to `[ChatHomeKey]`, push `NewChatKey`, and focus the composer. **Re-selecting the current destination** in the rail or drawer pops that stack to its root.
-6. **Back:** §3.6. `NavDisplay` handles Back only when its stack has more than one entry. Two mechanisms make the rest exact:
-   - **(a) An elided view of the stack.** `NavDisplay` is given `nav.visibleStack(layout)`, a derived view of the saved stack. It elides entries that would render identically to the entry below them: today that is only a trailing `NewChatKey` over a root that already renders the landing (Phone, Short, Dual, Triple). The saved stack is untouched, so unfolding to a Single window shows the landing over the Conversations list again. Back on a Phone landing therefore sees a one-entry stack and is **not consumed**, and the system plays its predictive back-to-home. The draft lives under "new" in the draft store, so eliding the entry loses nothing.
+6. **Back:** §3.6. `NavDisplay` and its Material scenes handle Back only when a scene has a previous destination. Two mechanisms make the rest exact:
+   - **(a) Preserve the draft entry while suppressing a redundant landing Back.** Decorate every saved entry before deriving `nav.visibleStack(layout)`. For a bare `[ChatHomeKey, NewChatKey]`, Phone and Short present only the actual `NewChatKey`, so Back is **not consumed**. Dual and Triple show both entries, and use `PopUntilScaffoldValueChange` only for this bare landing: replacing the draft with the root placeholder would leave the same scaffold, so neither Material's internal handler nor `NavDisplay` consumes Back. Single keeps `PopUntilContentChange`, so Back returns to Conversations. Every other detail and followed stack also keeps `PopUntilContentChange`. The navigator uses the same bare-landing predicate; saved keys and decorated entry state survive resizing.
    - **(b) A shell handler for destination roots.** `NavigationBackHandler(isBackEnabled = nav.topLevel != Chat && nav.currentStack.size == 1)` switches to Chat. At the Chat root nothing is enabled, so the system handles Back.
 7. **Sanitise:** after unlock and after process-death restore, **silently** drop keys whose ids no longer resolve or whose kind changed (B8; `OBJECT_LIFECYCLE_SPEC.md` §3.5).
    - Draft keys are never dropped.
@@ -1243,7 +1243,7 @@ Both parameter names are to be verified in the spike. `lifecycle-viewmodel-navig
 
 ### 8.6 Back handling (navigation-event)
 
-- **Stack pops:** `NavDisplay`'s built-in handling (navigationevent) gives predictive back. It pops sheets, extras and details per §3.6, over the elided `visibleStack` (§8.3 rule 6a). Destination roots other than Chat are handled by the shell handler in rule 6b. The Chat root is left to the system.
+- **Stack pops:** `NavDisplay`'s built-in handling (navigationevent) gives predictive back. It pops sheets, extras and details per §3.6, with the bare-landing exception in §8.3 rule 6a. Destination roots other than Chat are handled by the shell handler in rule 6b. The Chat root is left to the system.
 - **Transient overlays:**
   - The palette registers one `NavigationBackHandler(state = rememberNavigationEventState(…), isBackEnabled = palette.isOpen, onBackCompleted = palette::close)` at **overlay priority**.
   - The drawer uses Material's own back handling, with the `drawerState` overload of `ModalDrawerSheet`. Today's overload without state may not close on Back (`AUDIT_SHELL.md` §12 item 3).
@@ -1287,7 +1287,7 @@ fun SkeinShell(
                 onBackCompleted = { nav.switchTo(TopLevel.Chat) },
             )
             NavDisplay(
-                backStack = nav.visibleStack(layout),                        // §8.3 rule 6a: elided view; the saved stack is untouched
+                backStack = nav.visibleStack(layout),                        // §8.3 rule 6a: keep the explicit draft identity
                 onBack = { nav.back(layout) },                               // §3.6
                 sceneStrategy = rememberSkeinSheetSceneStrategy(layout)
                     then rememberListDetailSceneStrategy(directive = layout.directive,
@@ -1404,7 +1404,7 @@ The suite is 46 JVM tests in 8 classes, Robolectric `@Config(sdk = [34])`, about
 *Holders, back and scenes (AL-08):*
 
 3. **T3:** do not use `rememberViewModelStoreNavEntryDecorator`. Use a ~30-line decorator over an Activity-scoped `SessionEntryStores`, whose `clearAll()` is the lock's session-closed hook (M12). `lifecycle-viewmodel-navigation3` is then not needed at runtime.
-4. **List-detail back:** use `BackNavigationBehavior.PopUntilContentChange`. This supersedes §8.4 step 2.
+4. **List-detail back:** use `BackNavigationBehavior.PopUntilContentChange`, except for a bare new-chat landing outside Single, which uses `PopUntilScaffoldValueChange` (§8.3 rule 6a). This supersedes §8.4 step 2.
 5. **Strategies are compared by value.** `rememberSceneState` recomputes scenes only when the strategy list or the entries change. The sheet strategy therefore takes the set of expanded sheets as an input, with `equals`; it must not read that set as state.
 6. **Step 1 is a custom scene, not `AdaptStrategy.Levitate`:**
    - a levitated pane is placed over the scaffold, so a bottom peek would cover the composer;
@@ -1412,7 +1412,7 @@ The suite is 46 JVM tests in 8 classes, Robolectric `@Config(sdk = [34])`, about
    - its scrim is fixed per strategy instance.
 
    The prototype docks the peek below the entry instead.
-7. **Elision is a pop.** §8.3 rule 6a's elided `visibleStack` counts as a pop for Nav3: the elided entry's T2 and T3 are cleared. That is fine for `NewChatKey`, whose draft lives in the draft store, but never elide an entry that owns state.
+7. **Presentation is not a pop.** Decorate the full saved stack before filtering the entries presented to `NavDisplay`. Phone's bare new-chat landing hides `ChatHomeKey`, but keeps both its saved state and the actual draft's T2/T3 ownership. Never drop a draft entry to substitute the root placeholder: that discards its identity and can display a different draft.
 8. **Scene transitions:** pass `transitionSpec` and `popTransitionSpec` a 150 ms fade (§2.7).
 9. **Versions:** `navigationevent-compose` resolves to **1.1.1**, because Nav3 UI 1.2.0 requires it; not the 1.0.1 of §8.6.
 

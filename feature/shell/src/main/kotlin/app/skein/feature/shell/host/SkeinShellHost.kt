@@ -173,21 +173,28 @@ fun SkeinShellHost(
                         rememberSaveableStateHolderNavEntryDecorator<SkeinKey>(shell.entryState.getValue(d)),
                         remember(shell.stores) { sessionEntryDecorator(shell.stores, d) },
                     )
-                // §8.3 rule 6a: the elided view; the saved stack is untouched.
-                rememberDecoratedNavEntries(
-                    shell.navigator.visibleStack(shell.nav.stack(d), mode),
-                    decorators,
-                    provider,
-                )
+                // Presenting Phone's draft alone must not pop the hidden Conversations state.
+                val stack = shell.nav.stack(d)
+                val visible =
+                    shell.navigator
+                        .visibleStack(stack, mode)
+                        .map { it.contentKey }
+                        .toSet()
+                rememberDecoratedNavEntries(stack, decorators, provider).filter { it.contentKey in visible }
             }
         }
     val strategies =
         listOf<SceneStrategy<SkeinKey>>(
             SkeinSheetSceneStrategy(layout, shell.sheets.expandedKeys, shell.sheets::expand, layoutDirection),
-            // §8.9 item 4: not PopUntilScaffoldValueChange, under which Back from `List | Detail` on Dual
-            // (the same scaffold value as `List | placeholder`) is not consumed and leaves the app.
+            // A bare draft replaces the landing placeholder, so Back must leave it to the system.
+            // Other details still pop even when `List | Detail` and `List | placeholder` share geometry.
             rememberListDetailSceneStrategy<SkeinKey>(
-                backNavigationBehavior = BackNavigationBehavior.PopUntilContentChange,
+                backNavigationBehavior =
+                    if (shell.navigator.isChatLandingRoot(shell.nav.currentStack, mode)) {
+                        BackNavigationBehavior.PopUntilScaffoldValueChange
+                    } else {
+                        BackNavigationBehavior.PopUntilContentChange
+                    },
                 directive = directive,
             ),
             rememberSupportingPaneSceneStrategy<SkeinKey>(directive = directive),
