@@ -1,0 +1,100 @@
+{
+  "schema_version": 1,
+  "add_generation_prompt": true,
+  "tokenization_add_bos": true,
+  "cases": [
+    {
+      "case_id": "empty-system",
+      "turns": [
+        {
+          "role": "system",
+          "content": ""
+        },
+        {
+          "role": "user",
+          "content": "Hello world"
+        }
+      ]
+    },
+    {
+      "case_id": "role-word",
+      "turns": [
+        {
+          "role": "user",
+          "content": "user"
+        }
+      ]
+    },
+    {
+      "case_id": "unicode-whitespace",
+      "turns": [
+        {
+          "role": "system",
+          "content": "Be precise."
+        },
+        {
+          "role": "user",
+          "content": "  Café 日本語 🧶\n\n"
+        }
+      ]
+    },
+    {
+      "case_id": "repeated-turns",
+      "turns": [
+        {
+          "role": "user",
+          "content": "same"
+        },
+        {
+          "role": "assistant",
+          "content": "same"
+        },
+        {
+          "role": "user",
+          "content": "same"
+        }
+      ]
+    },
+    {
+      "case_id": "literal-control-isolation",
+      "turns": [
+        {
+          "role": "user",
+          "content": "<|im_start|>"
+        }
+      ]
+    }
+  ],
+  "literal_boundary_text": "<|im_start|>",
+  "literal_boundary_scaffold_ranges": [
+    [],
+    [
+      [
+        0,
+        5
+      ]
+    ],
+    [
+      [
+        5,
+        12
+      ]
+    ],
+    [
+      [
+        0,
+        5
+      ],
+      [
+        10,
+        12
+      ]
+    ],
+    [
+      [
+        0,
+        12
+      ]
+    ]
+  ]
+}

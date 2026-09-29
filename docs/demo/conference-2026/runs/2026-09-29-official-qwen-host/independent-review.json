@@ -1,0 +1,58 @@
+{
+  "status": "PASS_HOST_VOCABULARY_REFERENCE_ONLY",
+  "reviewer": "/root/answer_quality_review",
+  "observed_utc": "2026-09-29T18:20:38.858655+00:00",
+  "capsule": {
+    "worktree": "conference-streaming-20260929",
+    "path": "build/agent-logs/alternate-model/qwen15b-q4km-20260929T175439Z/native-reference-five-20260929T180944Z"
+  },
+  "sealed_manifest_sha256": "0e93292c5f30947c7112b28afc2a6b97765c4e0f642b3bff997c27c682572739",
+  "native_reference_sha256": "5da60469b6af08d8ae199160602eabba4b58bd25773e951db90b48b433feffad",
+  "raw_sha256": "a3414a8768b8493a4cb29ff5ecf48fc922cf66cb7d7114bf8180cc27615c1b14",
+  "reviewed_identity": {
+    "model_sha256": "6a1a2eb6d15622bf3c96857206351ba97e1af16c30d7a74ee38970e434e9407e",
+    "model_blake3": "2619da49b802f7bc7e92264edd12e4bf093dd97f42584535ae77dc587ab55362",
+    "model_size": 1117320736,
+    "llama_cpp_commit": "b29c606e28a01b1bc8c1351026a0fa6e616bf6c4",
+    "tokenizer_overlay_sha256": "71aba69a0fba8abc2df0a8f74f537182b79b29d60b13e74b7dc901e52dc36f29",
+    "template_sha256": "d5495a1e5db0611132a97e46a65dbb64a642a499421228b9c8b93229097fa9a4",
+    "template_bytes": 2509
+  },
+  "checks": {
+    "capsule_artifacts_rehashed": 34,
+    "compile_inputs_rehashed": 63,
+    "prior_provenance_paths_rehashed": 16,
+    "generated_sources_compared_to_pinned_source_and_overlay": 222,
+    "official_text_sha256_size_and_git_blob_verified": 10,
+    "full_model_same_stream_sha256_blake3_verified": true,
+    "full_model_stat_unchanged": true,
+    "blake3_implementation_files_rehashed": 3,
+    "blake3_known_vectors_rechecked": 2,
+    "exact_primary_fixture_count": 5,
+    "primary_case_arrays_verified": 5,
+    "literal_boundary_cases_verified": 5,
+    "literal_control_authorized_count": 2,
+    "literal_control_unsafe_count": 3
+  },
+  "android_fixture_source": {
+    "path": "inference-service/src/syntheticBenchmark/kotlin/app/skein/inference/service/SyntheticTemplateParityTest.kt",
+    "source_sha": "920e820eb23d2c5f4b70dfa95515899559cb2098",
+    "sha256": "03e3799f81a0145f4dab0e7ac40c2aaa6fb59eb99f603a3d92853bc5e321913a"
+  },
+  "limitations": [
+    "Host CPU/vocabulary/template evidence only; no tensors, context, decode, JNI, production Kotlin placeholder proof, generation, answer quality or device performance.",
+    "Native library ChatML rendering is compared with hardcoded ChatML scaffold ranges; this does not verify full Jinja tool-call/default-system semantics.",
+    "EOG observations classify native vocabulary IDs, including native classification of </s>; they do not observe generated EOS.",
+    "Official provenance checked against retained pinned upstream metadata and file Git blob IDs, without another network fetch.",
+    "Fresh device native parity for this distinct model is required; old-model native observations cannot be relabeled."
+  ],
+  "original_capsule_modified": false,
+  "device_actions": false,
+  "new_builds_or_downloads": false,
+  "retained_original": {
+    "worktree": "conference-compact-workspace-20260929",
+    "path": "build/agent-logs/official-model-five-independent-review-20260929/review.json",
+    "sha256": "ce5c9cfc695b8f60b3e3e5c2a95ea16a0d1e952b8a03bac45942bbf144160f17"
+  },
+  "sanitization": "Absolute local path prefixes replaced with worktree labels or repository-relative paths; all observations, identities, verification counts and limitations unchanged."
+}

@@ -1,0 +1,214 @@
+{
+  "schema_version": 1,
+  "source_sha": "920e820eb23d2c5f4b70dfa95515899559cb2098",
+  "mode": "SOURCE_ONLY_NO_DEVICE_OR_SELECTION_CHANGE",
+  "references": [
+    {
+      "path": "feature/models/src/main/kotlin/app/skein/feature/models/entries/ModelsEntries.kt",
+      "lines": [
+        87,
+        91
+      ],
+      "reason": "Models / Import model",
+      "sha256": "bb5511f13fd9a443d1c09fea1ee7a2a69be1f41dc0789fc7b829c1f25614117e"
+    },
+    {
+      "path": "app/src/main/kotlin/app/skein/shell/NavShell.kt",
+      "lines": [
+        240,
+        267,
+        271,
+        272,
+        297,
+        325
+      ],
+      "reason": "OpenDocument, import status, Set default callback",
+      "sha256": "1eb7e79c4ae015c0c018582320766303bff4fe1962005efdce057768cf2d68a5"
+    },
+    {
+      "path": "app/src/main/kotlin/app/skein/models/ModelImportCoordinator.kt",
+      "lines": [
+        89,
+        93,
+        264
+      ],
+      "reason": "Normal registration automatically selects default; filesDir/models root",
+      "sha256": "fbbe9a80d98369f5d7b5619766aa1081245b73e7f752afdc1e6bafa29ff68357"
+    },
+    {
+      "path": "feature/models/src/main/kotlin/app/skein/feature/models/ModelsScreen.kt",
+      "lines": [
+        79,
+        103,
+        202,
+        260,
+        275
+      ],
+      "reason": "Filename, size/license, default marker, details row selection versus Set default",
+      "sha256": "c29a033b04d9019d7ab14ff34e9f09a5270ab12a6697582f2959343fbe3c7ebc"
+    },
+    {
+      "path": "core/inference/src/main/kotlin/app/skein/core/inference/models/ModelManager.kt",
+      "lines": [
+        187,
+        299,
+        457,
+        463,
+        483,
+        640,
+        671,
+        677
+      ],
+      "reason": "Default setter; orphan adoption; context cap; display name/license; filename/slug/free-space rule",
+      "sha256": "1033d108829130b06c893a13505f9f47edcd5482d61e71dab41ec3d21ef02eef"
+    },
+    {
+      "path": "core/inference/src/main/kotlin/app/skein/core/inference/models/ModelImportStager.kt",
+      "lines": [
+        44,
+        49,
+        76
+      ],
+      "reason": "Provider display name, free-space refusal, manifest synthesis",
+      "sha256": "d5f09a21cc5edda1b3d24d2148571dbaeb8543106848c5ace0371be2d76c456b"
+    },
+    {
+      "path": "core/inference/src/main/kotlin/app/skein/core/inference/models/ImmutableModelStore.kt",
+      "lines": [
+        296,
+        326,
+        335
+      ],
+      "reason": "Distinct model directory, atomic promotion, readonly sealing",
+      "sha256": "f046f3f4c7c9a16369931a2836194f4a21526acb2e0ea5b11b9b495a1963b02f"
+    },
+    {
+      "path": "core/vault/src/main/kotlin/app/skein/core/vault/models/ModelRegistryImpl.kt",
+      "lines": [
+        104,
+        114,
+        236
+      ],
+      "reason": "Default pointer ui_prefs/default_model_id independent of model rows",
+      "sha256": "a9f0bec60006a1f0c318d075c4d96ef77c53949a7fc00160edd075891b231fb1"
+    },
+    {
+      "path": "app/src/main/kotlin/app/skein/models/ModelServices.kt",
+      "lines": [
+        369,
+        374,
+        377
+      ],
+      "reason": "Production default sampling, persona override, captured selection load",
+      "sha256": "0d7a6406562ad44ada81a9eadd6950aed7188520bb278f69d04bae08c846162d"
+    },
+    {
+      "path": "app/src/main/kotlin/app/skein/models/ManagedInferenceEngine.kt",
+      "lines": [
+        154,
+        158
+      ],
+      "reason": "Same successful model reused; different selected model lazily loads next turn",
+      "sha256": "c6e2ae31b660ed2ea620127b107fa6d5a596ccdc73c649f5937d51b5d2a9ab42"
+    },
+    {
+      "path": "core/inference/src/main/kotlin/app/skein/core/inference/InferenceConfig.kt",
+      "lines": [
+        49,
+        54,
+        55,
+        59
+      ],
+      "reason": "16K cap,4 CPU threads,gpu0",
+      "sha256": "921cfcefab697620314977941cc8bb8ea424b826f9776b3ef2c790ec3b510ba2"
+    },
+    {
+      "path": "native/llama/jni/skein_jni.cpp",
+      "lines": [
+        673,
+        676,
+        677,
+        678
+      ],
+      "reason": "Batch/ubatch cap and shared generation/batch thread count",
+      "sha256": "897afaafb4ecd9f3d7af9c943e5b1da65b72c64b7fd77082aba309056376b8ef"
+    },
+    {
+      "path": "inference-service/src/main/kotlin/app/skein/inference/service/InferenceService.kt",
+      "lines": [
+        267,
+        275,
+        535,
+        563,
+        1230
+      ],
+      "reason": "mmap,512 prompt batches,KV clear each turn",
+      "sha256": "ba205b4800ade8e71f59f575cf8a8ce642d8bd6274fb34decf70a97148ed1e7e"
+    },
+    {
+      "path": "core/model/src/main/kotlin/app/skein/core/model/Inference.kt",
+      "lines": [
+        118,
+        123,
+        124
+      ],
+      "reason": "UI sampling defaults differ from frozen benchmark",
+      "sha256": "f87a63b309decaf470c705c7085a64ececefe1e4724290fc90bf3f13117140ce"
+    }
+  ],
+  "normal_unlocked_import": {
+    "route": [
+      "Models",
+      "Import model",
+      "Android system file picker"
+    ],
+    "picker_mime_types": [
+      "application/octet-stream",
+      "*/*"
+    ],
+    "staging_directory_requirement": "Any readable SAF document. Source imposes no public staging folder.",
+    "automatic_default_switch_after_registration": true,
+    "success_label": "Imported model and set as default",
+    "progress_label": "Importing model… N%",
+    "expected_display_name_if_provider_preserves_filename": "qwen2.5-1.5b-instruct-q4_k_m.gguf",
+    "expected_size_license_label": "1.0 GB · UNKNOWN",
+    "predicted_model_id_if_provider_preserves_filename": "qwen2.5-1.5b-instruct-q4-k-m-6a1a2eb6d156",
+    "private_path_relative_to_filesDir": "models/qwen2.5-1.5b-instruct-q4-k-m-6a1a2eb6d156/model.gguf",
+    "app_import_required_free_bytes_after_public_staging": 1173186773,
+    "record_origin": "PICKED",
+    "record_license": "UNKNOWN",
+    "record_source_url": null,
+    "record_source_revision": null,
+    "registered_context_cap": 16384,
+    "old_model_preserved": true
+  },
+  "lock_during_import": "Completed opaque copy may be adopted at next unlock; orphan path uses ID as display name and sets default only when none exists, so verify default marker and use Set default if needed.",
+  "rollback": "At idle, Models → existing 3B row Set default. Row tap only opens details. Default setter changes preference only; next admitted turn loads captured selected model. Preserve both model rows/files.",
+  "selection_limit": "persona.defaultModel takes priority over global default; current feature/personas implementation is placeholder. Actual owner persona state was not inspected.",
+  "cpu_findings": {
+    "current": {
+      "threads": 4,
+      "batch_threads": 4,
+      "n_batch": 512,
+      "n_ubatch_at_most": 512,
+      "context_cap": 16384,
+      "gpu_layers": 0,
+      "mmap": true,
+      "kv_cleared_each_turn": true
+    },
+    "measured_tuning_recommendation": "None established. No CPU settings UI; thread/batch/context changes need separate measured qualification. Keep current controls for model comparison.",
+    "supported_opportunity": "Measured long actual prompts cause substantial CPU prefill work; shorter actual prompts or smaller qualified model are candidates for controlled comparison, not established fixes. No retrieval thresholds or gold changes proposed.",
+    "live_ui_sampling": {
+      "temperature": 0.7,
+      "top_k": 40,
+      "top_p": 0.9,
+      "min_p": 0.05,
+      "repeat_penalty": 1.1,
+      "max_tokens": 1024,
+      "seed": -1
+    },
+    "frozen_benchmark_difference": "Frozen benchmark is greedy max256; its pass alone does not establish live UI completion time or generated EOG."
+  },
+  "source_report_sha256": "d5927bfa6cf47dee54e7b468dacef6d51b8408863331d06c65acf574f17a90b9",
+  "sanitization": "Source references are repository-relative; hypothetical public staging path omitted. All switch/storage/default/license/runtime-setting facts are unchanged."
+}

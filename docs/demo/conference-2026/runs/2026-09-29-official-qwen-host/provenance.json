@@ -1,0 +1,46 @@
+{
+  "schema_version": 1,
+  "scope": "CPU vocabulary-only host qualification; no tensors, context, decode, Android JNI or generation",
+  "llama_cpp_commit": "b29c606e28a01b1bc8c1351026a0fa6e616bf6c4",
+  "tokenizer_overlay_sha256": "71aba69a0fba8abc2df0a8f74f537182b79b29d60b13e74b7dc901e52dc36f29",
+  "sealed_capsule_manifest_sha256": "0e93292c5f30947c7112b28afc2a6b97765c4e0f642b3bff997c27c682572739",
+  "existing_four_case_probe_executable_sha256": "5dc0522b52a3473677ff180c70801f7ab36114be0e4c4997644454b7af52bb0c",
+  "five_case_probe_source_sha256": "ff95841b48128a3051ddd62270a57986f84385916b5732b1a1c77ce62a09ca38",
+  "five_case_probe_executable_sha256": "fa93075f48eda9eaddf4a9cbd1aa51fbaece7a7acf57a5c94e095e5cfa59ce7f",
+  "raw_report_sha256": "a3414a8768b8493a4cb29ff5ecf48fc922cf66cb7d7114bf8180cc27615c1b14",
+  "native_reference_sha256": "5da60469b6af08d8ae199160602eabba4b58bd25773e951db90b48b433feffad",
+  "raw_template_sha256": "d5495a1e5db0611132a97e46a65dbb64a642a499421228b9c8b93229097fa9a4",
+  "compile_inputs_verified_before_and_after": 63,
+  "generated_source_files_verified": 222,
+  "compile_exit_code": 0,
+  "probe_exit_code": 0,
+  "primary_cases_passed": 5,
+  "literal_boundary_cases_passed": 5,
+  "four_cases_equal_existing_independent_probe": true,
+  "lease_released": true,
+  "old_driver": {
+    "unchanged": true,
+    "new_candidate_rejected": true,
+    "rejections": [
+      "parity identity mismatch",
+      "unreviewed host model identity"
+    ],
+    "requirement": "A separately reviewed new-model profile/driver and fresh device parity; preserve old-model guards."
+  },
+  "unmeasured": [
+    "tensor_load",
+    "Android_JNI_and_production_boundary_proof",
+    "generation_stop_behavior",
+    "answer_quality",
+    "device_performance"
+  ],
+  "published_artifacts": {
+    "native-reference.json": "Byte-identical normalized candidate report",
+    "native-readiness.raw.json": "Byte-identical native stdout",
+    "template.utf8": "Byte-identical native-emitted template",
+    "case-inputs.json": "Byte-identical public fixture inventory",
+    "identity.json": "Sanitized exact public identity projection",
+    "independent-review.json": "Path-sanitized independent review with original hash",
+    "switch-source-review.json": "Source-only findings with repository-relative references"
+  }
+}
