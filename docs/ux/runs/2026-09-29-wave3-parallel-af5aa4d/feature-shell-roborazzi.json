@@ -1,0 +1,233 @@
+{
+  "summary": {
+    "total": 37,
+    "recorded": 0,
+    "added": 0,
+    "changed": 0,
+    "unchanged": 37
+  },
+  "results": [
+    {
+      "golden_file_path": "/Users/andrewherrera/skein-worktrees/ux-wave3-parallel-20260928/feature/shell/../../ux-baselines/feature-shell/fold-inner-1007-land/vault-setup__dark__fs100.png",
+      "timestamp": 1173495106254708,
+      "context_data": {},
+      "type": "unchanged"
+    },
+    {
+      "golden_file_path": "/Users/andrewherrera/skein-worktrees/ux-wave3-parallel-20260928/feature/shell/../../ux-baselines/feature-shell/fold-inner-1007-land/vault-setup__light__fs100.png",
+      "timestamp": 1173494997978000,
+      "context_data": {},
+      "type": "unchanged"
+    },
+    {
+      "golden_file_path": "/Users/andrewherrera/skein-worktrees/ux-wave3-parallel-20260928/feature/shell/../../ux-baselines/feature-shell/fold-inner-1007-land/vault-unlock-error__dark__fs100.png",
+      "timestamp": 1173495144019791,
+      "context_data": {},
+      "type": "unchanged"
+    },
+    {
+      "golden_file_path": "/Users/andrewherrera/skein-worktrees/ux-wave3-parallel-20260928/feature/shell/../../ux-baselines/feature-shell/fold-inner-1007-land/vault-unlock-error__light__fs100.png",
+      "timestamp": 1173495035745666,
+      "context_data": {},
+      "type": "unchanged"
+    },
+    {
+      "golden_file_path": "/Users/andrewherrera/skein-worktrees/ux-wave3-parallel-20260928/feature/shell/../../ux-baselines/feature-shell/fold-inner-1007-land/vault-unlock__dark__fs100.png",
+      "timestamp": 1173495069352500,
+      "context_data": {},
+      "type": "unchanged"
+    },
+    {
+      "golden_file_path": "/Users/andrewherrera/skein-worktrees/ux-wave3-parallel-20260928/feature/shell/../../ux-baselines/feature-shell/fold-inner-1007-land/vault-unlock__light__fs100.png",
+      "timestamp": 1173494953854583,
+      "context_data": {},
+      "type": "unchanged"
+    },
+    {
+      "golden_file_path": "/Users/andrewherrera/skein-worktrees/ux-wave3-parallel-20260928/feature/shell/../../ux-baselines/feature-shell/fold-inner-1007/nav-container-rail__dark__fs100.png",
+      "timestamp": 1173496311166708,
+      "context_data": {},
+      "type": "unchanged"
+    },
+    {
+      "golden_file_path": "/Users/andrewherrera/skein-worktrees/ux-wave3-parallel-20260928/feature/shell/../../ux-baselines/feature-shell/fold-inner-1007/nav-container-rail__light__fs100.png",
+      "timestamp": 1173496244135791,
+      "context_data": {},
+      "type": "unchanged"
+    },
+    {
+      "golden_file_path": "/Users/andrewherrera/skein-worktrees/ux-wave3-parallel-20260928/feature/shell/../../ux-baselines/feature-shell/fold-inner-1007/vault-setup__dark__fs100.png",
+      "timestamp": 1173494872620250,
+      "context_data": {},
+      "type": "unchanged"
+    },
+    {
+      "golden_file_path": "/Users/andrewherrera/skein-worktrees/ux-wave3-parallel-20260928/feature/shell/../../ux-baselines/feature-shell/fold-inner-1007/vault-setup__light__fs100.png",
+      "timestamp": 1173494755294625,
+      "context_data": {},
+      "type": "unchanged"
+    },
+    {
+      "golden_file_path": "/Users/andrewherrera/skein-worktrees/ux-wave3-parallel-20260928/feature/shell/../../ux-baselines/feature-shell/fold-inner-1007/vault-unlock-error__dark__fs100.png",
+      "timestamp": 1173494915964250,
+      "context_data": {},
+      "type": "unchanged"
+    },
+    {
+      "golden_file_path": "/Users/andrewherrera/skein-worktrees/ux-wave3-parallel-20260928/feature/shell/../../ux-baselines/feature-shell/fold-inner-1007/vault-unlock-error__light__fs100.png",
+      "timestamp": 1173494793216250,
+      "context_data": {},
+      "type": "unchanged"
+    },
+    {
+      "golden_file_path": "/Users/andrewherrera/skein-worktrees/ux-wave3-parallel-20260928/feature/shell/../../ux-baselines/feature-shell/fold-inner-1007/vault-unlock__dark__fs100.png",
+      "timestamp": 1173494829425875,
+      "context_data": {},
+      "type": "unchanged"
+    },
+    {
+      "golden_file_path": "/Users/andrewherrera/skein-worktrees/ux-wave3-parallel-20260928/feature/shell/../../ux-baselines/feature-shell/fold-inner-1007/vault-unlock__light__fs100.png",
+      "timestamp": 1173494707651375,
+      "context_data": {},
+      "type": "unchanged"
+    },
+    {
+      "golden_file_path": "/Users/andrewherrera/skein-worktrees/ux-wave3-parallel-20260928/feature/shell/../../ux-baselines/feature-shell/fold-outer-443/nav-container-drawer-open__dark__fs100.png",
+      "timestamp": 1173495729596250,
+      "context_data": {},
+      "type": "unchanged"
+    },
+    {
+      "golden_file_path": "/Users/andrewherrera/skein-worktrees/ux-wave3-parallel-20260928/feature/shell/../../ux-baselines/feature-shell/fold-outer-443/nav-container-drawer-open__light__fs100.png",
+      "timestamp": 1173495495328875,
+      "context_data": {},
+      "type": "unchanged"
+    },
+    {
+      "golden_file_path": "/Users/andrewherrera/skein-worktrees/ux-wave3-parallel-20260928/feature/shell/../../ux-baselines/feature-shell/fold-outer-443/type-scale__light__fs200.png",
+      "timestamp": 1173496442817583,
+      "context_data": {},
+      "type": "unchanged"
+    },
+    {
+      "golden_file_path": "/Users/andrewherrera/skein-worktrees/ux-wave3-parallel-20260928/feature/shell/../../ux-baselines/feature-shell/fold-outer-443/vault-setup__dark__fs100.png",
+      "timestamp": 1173494412974541,
+      "context_data": {},
+      "type": "unchanged"
+    },
+    {
+      "golden_file_path": "/Users/andrewherrera/skein-worktrees/ux-wave3-parallel-20260928/feature/shell/../../ux-baselines/feature-shell/fold-outer-443/vault-setup__light__fs100.png",
+      "timestamp": 1173494305689583,
+      "context_data": {},
+      "type": "unchanged"
+    },
+    {
+      "golden_file_path": "/Users/andrewherrera/skein-worktrees/ux-wave3-parallel-20260928/feature/shell/../../ux-baselines/feature-shell/fold-outer-443/vault-unlock-error__dark__fs100.png",
+      "timestamp": 1173494446665416,
+      "context_data": {},
+      "type": "unchanged"
+    },
+    {
+      "golden_file_path": "/Users/andrewherrera/skein-worktrees/ux-wave3-parallel-20260928/feature/shell/../../ux-baselines/feature-shell/fold-outer-443/vault-unlock-error__light__fs100.png",
+      "timestamp": 1173494343101708,
+      "context_data": {},
+      "type": "unchanged"
+    },
+    {
+      "golden_file_path": "/Users/andrewherrera/skein-worktrees/ux-wave3-parallel-20260928/feature/shell/../../ux-baselines/feature-shell/fold-outer-443/vault-unlock__dark__fs100.png",
+      "timestamp": 1173494377992375,
+      "context_data": {},
+      "type": "unchanged"
+    },
+    {
+      "golden_file_path": "/Users/andrewherrera/skein-worktrees/ux-wave3-parallel-20260928/feature/shell/../../ux-baselines/feature-shell/fold-outer-443/vault-unlock__light__fs100.png",
+      "timestamp": 1173494255264291,
+      "context_data": {},
+      "type": "unchanged"
+    },
+    {
+      "golden_file_path": "/Users/andrewherrera/skein-worktrees/ux-wave3-parallel-20260928/feature/shell/../../ux-baselines/feature-shell/fold-outer-524/nav-container-drawer-open__dark__fs100.png",
+      "timestamp": 1173496181401291,
+      "context_data": {},
+      "type": "unchanged"
+    },
+    {
+      "golden_file_path": "/Users/andrewherrera/skein-worktrees/ux-wave3-parallel-20260928/feature/shell/../../ux-baselines/feature-shell/fold-outer-524/nav-container-drawer-open__light__fs100.png",
+      "timestamp": 1173495958504333,
+      "context_data": {},
+      "type": "unchanged"
+    },
+    {
+      "golden_file_path": "/Users/andrewherrera/skein-worktrees/ux-wave3-parallel-20260928/feature/shell/../../ux-baselines/feature-shell/fold-outer-524/vault-setup__dark__fs100.png",
+      "timestamp": 1173494629303000,
+      "context_data": {},
+      "type": "unchanged"
+    },
+    {
+      "golden_file_path": "/Users/andrewherrera/skein-worktrees/ux-wave3-parallel-20260928/feature/shell/../../ux-baselines/feature-shell/fold-outer-524/vault-setup__light__fs100.png",
+      "timestamp": 1173494522010500,
+      "context_data": {},
+      "type": "unchanged"
+    },
+    {
+      "golden_file_path": "/Users/andrewherrera/skein-worktrees/ux-wave3-parallel-20260928/feature/shell/../../ux-baselines/feature-shell/fold-outer-524/vault-unlock-error__dark__fs100.png",
+      "timestamp": 1173494663173666,
+      "context_data": {},
+      "type": "unchanged"
+    },
+    {
+      "golden_file_path": "/Users/andrewherrera/skein-worktrees/ux-wave3-parallel-20260928/feature/shell/../../ux-baselines/feature-shell/fold-outer-524/vault-unlock-error__light__fs100.png",
+      "timestamp": 1173494561286500,
+      "context_data": {},
+      "type": "unchanged"
+    },
+    {
+      "golden_file_path": "/Users/andrewherrera/skein-worktrees/ux-wave3-parallel-20260928/feature/shell/../../ux-baselines/feature-shell/fold-outer-524/vault-unlock__dark__fs100.png",
+      "timestamp": 1173494594163375,
+      "context_data": {},
+      "type": "unchanged"
+    },
+    {
+      "golden_file_path": "/Users/andrewherrera/skein-worktrees/ux-wave3-parallel-20260928/feature/shell/../../ux-baselines/feature-shell/fold-outer-524/vault-unlock__light__fs100.png",
+      "timestamp": 1173494484839208,
+      "context_data": {},
+      "type": "unchanged"
+    },
+    {
+      "golden_file_path": "/Users/andrewherrera/skein-worktrees/ux-wave3-parallel-20260928/feature/shell/../../ux-baselines/feature-shell/phone/vault-setup__dark__fs100.png",
+      "timestamp": 1173494186116666,
+      "context_data": {},
+      "type": "unchanged"
+    },
+    {
+      "golden_file_path": "/Users/andrewherrera/skein-worktrees/ux-wave3-parallel-20260928/feature/shell/../../ux-baselines/feature-shell/phone/vault-setup__light__fs100.png",
+      "timestamp": 1173494095145250,
+      "context_data": {},
+      "type": "unchanged"
+    },
+    {
+      "golden_file_path": "/Users/andrewherrera/skein-worktrees/ux-wave3-parallel-20260928/feature/shell/../../ux-baselines/feature-shell/phone/vault-unlock-error__dark__fs100.png",
+      "timestamp": 1173494217096875,
+      "context_data": {},
+      "type": "unchanged"
+    },
+    {
+      "golden_file_path": "/Users/andrewherrera/skein-worktrees/ux-wave3-parallel-20260928/feature/shell/../../ux-baselines/feature-shell/phone/vault-unlock-error__light__fs100.png",
+      "timestamp": 1173494128361500,
+      "context_data": {},
+      "type": "unchanged"
+    },
+    {
+      "golden_file_path": "/Users/andrewherrera/skein-worktrees/ux-wave3-parallel-20260928/feature/shell/../../ux-baselines/feature-shell/phone/vault-unlock__dark__fs100.png",
+      "timestamp": 1173494155551125,
+      "context_data": {},
+      "type": "unchanged"
+    },
+    {
+      "golden_file_path": "/Users/andrewherrera/skein-worktrees/ux-wave3-parallel-20260928/feature/shell/../../ux-baselines/feature-shell/phone/vault-unlock__light__fs100.png",
+      "timestamp": 1173494032616875,
+      "context_data": {},
+      "type": "unchanged"
+    }
+  ]
+}

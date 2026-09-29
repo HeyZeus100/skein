@@ -1,0 +1,3598 @@
+{
+  "label": "ux-broad-checks",
+  "archiveSha256": "56077ba29c5cc8c3a955b11f79f6156ecdf06aa2839901b948dd1ae89f4a6fd7",
+  "totals": {
+    "actualCases": 1495,
+    "failure": 0,
+    "error": 0,
+    "skipped": 80,
+    "passed": 1415
+  },
+  "suites": [
+    {
+      "path": "app/build/test-results/testDevDebugUnitTest/TEST-app.skein.AskPathComposeTest.xml",
+      "suite": {
+        "name": "app.skein.AskPathComposeTest",
+        "tests": "9",
+        "skipped": "0",
+        "failures": "0",
+        "errors": "0",
+        "timestamp": "2026-09-29T06:33:13.571Z",
+        "hostname": "Andrews-MacBook-Pro.local",
+        "time": "3.903"
+      },
+      "actualCases": 9,
+      "failure": 0,
+      "error": 0,
+      "skipped": 0,
+      "badCases": []
+    },
+    {
+      "path": "app/build/test-results/testDevDebugUnitTest/TEST-app.skein.DataExtractionRulesTest.xml",
+      "suite": {
+        "name": "app.skein.DataExtractionRulesTest",
+        "tests": "5",
+        "skipped": "0",
+        "failures": "0",
+        "errors": "0",
+        "timestamp": "2026-09-29T06:33:17.476Z",
+        "hostname": "Andrews-MacBook-Pro.local",
+        "time": "0.007"
+      },
+      "actualCases": 5,
+      "failure": 0,
+      "error": 0,
+      "skipped": 0,
+      "badCases": []
+    },
+    {
+      "path": "app/build/test-results/testDevDebugUnitTest/TEST-app.skein.MainActivityAppearanceTest.xml",
+      "suite": {
+        "name": "app.skein.MainActivityAppearanceTest",
+        "tests": "1",
+        "skipped": "0",
+        "failures": "0",
+        "errors": "0",
+        "timestamp": "2026-09-29T06:33:17.485Z",
+        "hostname": "Andrews-MacBook-Pro.local",
+        "time": "2.686"
+      },
+      "actualCases": 1,
+      "failure": 0,
+      "error": 0,
+      "skipped": 0,
+      "badCases": []
+    },
+    {
+      "path": "app/build/test-results/testDevDebugUnitTest/TEST-app.skein.MainActivityComposeTest.xml",
+      "suite": {
+        "name": "app.skein.MainActivityComposeTest",
+        "tests": "27",
+        "skipped": "0",
+        "failures": "0",
+        "errors": "0",
+        "timestamp": "2026-09-29T06:33:20.175Z",
+        "hostname": "Andrews-MacBook-Pro.local",
+        "time": "1.102"
+      },
+      "actualCases": 27,
+      "failure": 0,
+      "error": 0,
+      "skipped": 0,
+      "badCases": []
+    },
+    {
+      "path": "app/build/test-results/testDevDebugUnitTest/TEST-app.skein.MainActivityConfigChangeTest.xml",
+      "suite": {
+        "name": "app.skein.MainActivityConfigChangeTest",
+        "tests": "1",
+        "skipped": "0",
+        "failures": "0",
+        "errors": "0",
+        "timestamp": "2026-09-29T06:33:21.278Z",
+        "hostname": "Andrews-MacBook-Pro.local",
+        "time": "0.023"
+      },
+      "actualCases": 1,
+      "failure": 0,
+      "error": 0,
+      "skipped": 0,
+      "badCases": []
+    },
+    {
+      "path": "app/build/test-results/testDevDebugUnitTest/TEST-app.skein.MainActivityDebugTestTagsTest.xml",
+      "suite": {
+        "name": "app.skein.MainActivityDebugTestTagsTest",
+        "tests": "2",
+        "skipped": "0",
+        "failures": "0",
+        "errors": "0",
+        "timestamp": "2026-09-29T06:33:21.303Z",
+        "hostname": "Andrews-MacBook-Pro.local",
+        "time": "0.039"
+      },
+      "actualCases": 2,
+      "failure": 0,
+      "error": 0,
+      "skipped": 0,
+      "badCases": []
+    },
+    {
+      "path": "app/build/test-results/testDevDebugUnitTest/TEST-app.skein.MainActivityFlagSecureTest.xml",
+      "suite": {
+        "name": "app.skein.MainActivityFlagSecureTest",
+        "tests": "3",
+        "skipped": "0",
+        "failures": "0",
+        "errors": "0",
+        "timestamp": "2026-09-29T06:33:21.343Z",
+        "hostname": "Andrews-MacBook-Pro.local",
+        "time": "0.056"
+      },
+      "actualCases": 3,
+      "failure": 0,
+      "error": 0,
+      "skipped": 0,
+      "badCases": []
+    },
+    {
+      "path": "app/build/test-results/testDevDebugUnitTest/TEST-app.skein.MainActivityNotificationDeepLinkTest.xml",
+      "suite": {
+        "name": "app.skein.MainActivityNotificationDeepLinkTest",
+        "tests": "7",
+        "skipped": "0",
+        "failures": "0",
+        "errors": "0",
+        "timestamp": "2026-09-29T06:33:21.406Z",
+        "hostname": "Andrews-MacBook-Pro.local",
+        "time": "0.283"
+      },
+      "actualCases": 7,
+      "failure": 0,
+      "error": 0,
+      "skipped": 0,
+      "badCases": []
+    },
+    {
+      "path": "app/build/test-results/testDevDebugUnitTest/TEST-app.skein.MainActivitySearchInsetsTest.xml",
+      "suite": {
+        "name": "app.skein.MainActivitySearchInsetsTest",
+        "tests": "1",
+        "skipped": "0",
+        "failures": "0",
+        "errors": "0",
+        "timestamp": "2026-09-29T06:33:21.691Z",
+        "hostname": "Andrews-MacBook-Pro.local",
+        "time": "0.198"
+      },
+      "actualCases": 1,
+      "failure": 0,
+      "error": 0,
+      "skipped": 0,
+      "badCases": []
+    },
+    {
+      "path": "app/build/test-results/testDevDebugUnitTest/TEST-app.skein.MainActivitySystemBarsTest.xml",
+      "suite": {
+        "name": "app.skein.MainActivitySystemBarsTest",
+        "tests": "5",
+        "skipped": "0",
+        "failures": "0",
+        "errors": "0",
+        "timestamp": "2026-09-29T06:33:21.891Z",
+        "hostname": "Andrews-MacBook-Pro.local",
+        "time": "0.058"
+      },
+      "actualCases": 5,
+      "failure": 0,
+      "error": 0,
+      "skipped": 0,
+      "badCases": []
+    },
+    {
+      "path": "app/build/test-results/testDevDebugUnitTest/TEST-app.skein.ManifestPolicyTest.xml",
+      "suite": {
+        "name": "app.skein.ManifestPolicyTest",
+        "tests": "24",
+        "skipped": "0",
+        "failures": "0",
+        "errors": "0",
+        "timestamp": "2026-09-29T06:33:21.953Z",
+        "hostname": "Andrews-MacBook-Pro.local",
+        "time": "0.134"
+      },
+      "actualCases": 24,
+      "failure": 0,
+      "error": 0,
+      "skipped": 0,
+      "badCases": []
+    },
+    {
+      "path": "app/build/test-results/testDevDebugUnitTest/TEST-app.skein.NavShellComposeTest.xml",
+      "suite": {
+        "name": "app.skein.NavShellComposeTest",
+        "tests": "1",
+        "skipped": "0",
+        "failures": "0",
+        "errors": "0",
+        "timestamp": "2026-09-29T06:33:22.089Z",
+        "hostname": "Andrews-MacBook-Pro.local",
+        "time": "0.043"
+      },
+      "actualCases": 1,
+      "failure": 0,
+      "error": 0,
+      "skipped": 0,
+      "badCases": []
+    },
+    {
+      "path": "app/build/test-results/testDevDebugUnitTest/TEST-app.skein.NoFileProviderOnClasspathTest.xml",
+      "suite": {
+        "name": "app.skein.NoFileProviderOnClasspathTest",
+        "tests": "2",
+        "skipped": "0",
+        "failures": "0",
+        "errors": "0",
+        "timestamp": "2026-09-29T06:33:22.133Z",
+        "hostname": "Andrews-MacBook-Pro.local",
+        "time": "0.463"
+      },
+      "actualCases": 2,
+      "failure": 0,
+      "error": 0,
+      "skipped": 0,
+      "badCases": []
+    },
+    {
+      "path": "app/build/test-results/testDevDebugUnitTest/TEST-app.skein.RecentsScreenshotDisabledTest.xml",
+      "suite": {
+        "name": "app.skein.RecentsScreenshotDisabledTest",
+        "tests": "2",
+        "skipped": "0",
+        "failures": "0",
+        "errors": "0",
+        "timestamp": "2026-09-29T06:33:22.597Z",
+        "hostname": "Andrews-MacBook-Pro.local",
+        "time": "0.074"
+      },
+      "actualCases": 2,
+      "failure": 0,
+      "error": 0,
+      "skipped": 0,
+      "badCases": []
+    },
+    {
+      "path": "app/build/test-results/testDevDebugUnitTest/TEST-app.skein.ShellHotfixComposeTest.xml",
+      "suite": {
+        "name": "app.skein.ShellHotfixComposeTest",
+        "tests": "6",
+        "skipped": "0",
+        "failures": "0",
+        "errors": "0",
+        "timestamp": "2026-09-29T06:33:22.672Z",
+        "hostname": "Andrews-MacBook-Pro.local",
+        "time": "0.449"
+      },
+      "actualCases": 6,
+      "failure": 0,
+      "error": 0,
+      "skipped": 0,
+      "badCases": []
+    },
+    {
+      "path": "app/build/test-results/testDevDebugUnitTest/TEST-app.skein.export.stage.BootReceiverTest.xml",
+      "suite": {
+        "name": "app.skein.export.stage.BootReceiverTest",
+        "tests": "8",
+        "skipped": "0",
+        "failures": "0",
+        "errors": "0",
+        "timestamp": "2026-09-29T06:33:23.122Z",
+        "hostname": "Andrews-MacBook-Pro.local",
+        "time": "0.049"
+      },
+      "actualCases": 8,
+      "failure": 0,
+      "error": 0,
+      "skipped": 0,
+      "badCases": []
+    },
+    {
+      "path": "app/build/test-results/testDevDebugUnitTest/TEST-app.skein.export.stage.StagedPlaintextSweeperTest.xml",
+      "suite": {
+        "name": "app.skein.export.stage.StagedPlaintextSweeperTest",
+        "tests": "13",
+        "skipped": "0",
+        "failures": "0",
+        "errors": "0",
+        "timestamp": "2026-09-29T06:33:23.173Z",
+        "hostname": "Andrews-MacBook-Pro.local",
+        "time": "1.198"
+      },
+      "actualCases": 13,
+      "failure": 0,
+      "error": 0,
+      "skipped": 0,
+      "badCases": []
+    },
+    {
+      "path": "app/build/test-results/testDevDebugUnitTest/TEST-app.skein.ingest.IngestSchedulerTest.xml",
+      "suite": {
+        "name": "app.skein.ingest.IngestSchedulerTest",
+        "tests": "17",
+        "skipped": "0",
+        "failures": "0",
+        "errors": "0",
+        "timestamp": "2026-09-29T06:33:24.373Z",
+        "hostname": "Andrews-MacBook-Pro.local",
+        "time": "0.532"
+      },
+      "actualCases": 17,
+      "failure": 0,
+      "error": 0,
+      "skipped": 0,
+      "badCases": []
+    },
+    {
+      "path": "app/build/test-results/testDevDebugUnitTest/TEST-app.skein.ingest.IngestWorkerTest.xml",
+      "suite": {
+        "name": "app.skein.ingest.IngestWorkerTest",
+        "tests": "14",
+        "skipped": "0",
+        "failures": "0",
+        "errors": "0",
+        "timestamp": "2026-09-29T06:33:24.906Z",
+        "hostname": "Andrews-MacBook-Pro.local",
+        "time": "0.131"
+      },
+      "actualCases": 14,
+      "failure": 0,
+      "error": 0,
+      "skipped": 0,
+      "badCases": []
+    },
+    {
+      "path": "app/build/test-results/testDevDebugUnitTest/TEST-app.skein.ingest.ThermalIngestPacerTest.xml",
+      "suite": {
+        "name": "app.skein.ingest.ThermalIngestPacerTest",
+        "tests": "5",
+        "skipped": "0",
+        "failures": "0",
+        "errors": "0",
+        "timestamp": "2026-09-29T06:33:25.038Z",
+        "hostname": "Andrews-MacBook-Pro.local",
+        "time": "0.001"
+      },
+      "actualCases": 5,
+      "failure": 0,
+      "error": 0,
+      "skipped": 0,
+      "badCases": []
+    },
+    {
+      "path": "app/build/test-results/testDevDebugUnitTest/TEST-app.skein.models.ManagedInferenceEngineTest.xml",
+      "suite": {
+        "name": "app.skein.models.ManagedInferenceEngineTest",
+        "tests": "4",
+        "skipped": "0",
+        "failures": "0",
+        "errors": "0",
+        "timestamp": "2026-09-29T06:33:25.040Z",
+        "hostname": "Andrews-MacBook-Pro.local",
+        "time": "0.038"
+      },
+      "actualCases": 4,
+      "failure": 0,
+      "error": 0,
+      "skipped": 0,
+      "badCases": []
+    },
+    {
+      "path": "app/build/test-results/testDevDebugUnitTest/TEST-app.skein.notify.IndexingNotifierTest.xml",
+      "suite": {
+        "name": "app.skein.notify.IndexingNotifierTest",
+        "tests": "2",
+        "skipped": "0",
+        "failures": "0",
+        "errors": "0",
+        "timestamp": "2026-09-29T06:33:25.079Z",
+        "hostname": "Andrews-MacBook-Pro.local",
+        "time": "0.234"
+      },
+      "actualCases": 2,
+      "failure": 0,
+      "error": 0,
+      "skipped": 0,
+      "badCases": []
+    },
+    {
+      "path": "app/build/test-results/testDevDebugUnitTest/TEST-app.skein.shell.NotificationDeepLinksTest.xml",
+      "suite": {
+        "name": "app.skein.shell.NotificationDeepLinksTest",
+        "tests": "5",
+        "skipped": "0",
+        "failures": "0",
+        "errors": "0",
+        "timestamp": "2026-09-29T06:33:25.314Z",
+        "hostname": "Andrews-MacBook-Pro.local",
+        "time": "0.029"
+      },
+      "actualCases": 5,
+      "failure": 0,
+      "error": 0,
+      "skipped": 0,
+      "badCases": []
+    },
+    {
+      "path": "app/build/test-results/testDevDebugUnitTest/TEST-app.skein.system.AndroidSkeinLogSinkTest.xml",
+      "suite": {
+        "name": "app.skein.system.AndroidSkeinLogSinkTest",
+        "tests": "6",
+        "skipped": "0",
+        "failures": "0",
+        "errors": "0",
+        "timestamp": "2026-09-29T06:33:25.344Z",
+        "hostname": "Andrews-MacBook-Pro.local",
+        "time": "0.023"
+      },
+      "actualCases": 6,
+      "failure": 0,
+      "error": 0,
+      "skipped": 0,
+      "badCases": []
+    },
+    {
+      "path": "app/build/test-results/testDevDebugUnitTest/TEST-app.skein.system.AppearancePrefsTest.xml",
+      "suite": {
+        "name": "app.skein.system.AppearancePrefsTest",
+        "tests": "4",
+        "skipped": "0",
+        "failures": "0",
+        "errors": "0",
+        "timestamp": "2026-09-29T06:33:25.368Z",
+        "hostname": "Andrews-MacBook-Pro.local",
+        "time": "0.023"
+      },
+      "actualCases": 4,
+      "failure": 0,
+      "error": 0,
+      "skipped": 0,
+      "badCases": []
+    },
+    {
+      "path": "app/build/test-results/testDevDebugUnitTest/TEST-app.skein.system.NotificationsTest.xml",
+      "suite": {
+        "name": "app.skein.system.NotificationsTest",
+        "tests": "2",
+        "skipped": "0",
+        "failures": "0",
+        "errors": "0",
+        "timestamp": "2026-09-29T06:33:25.392Z",
+        "hostname": "Andrews-MacBook-Pro.local",
+        "time": "0.01"
+      },
+      "actualCases": 2,
+      "failure": 0,
+      "error": 0,
+      "skipped": 0,
+      "badCases": []
+    },
+    {
+      "path": "app/build/test-results/testDevDebugUnitTest/TEST-app.skein.system.SecurityPrefsTest.xml",
+      "suite": {
+        "name": "app.skein.system.SecurityPrefsTest",
+        "tests": "11",
+        "skipped": "0",
+        "failures": "0",
+        "errors": "0",
+        "timestamp": "2026-09-29T06:33:25.403Z",
+        "hostname": "Andrews-MacBook-Pro.local",
+        "time": "0.065"
+      },
+      "actualCases": 11,
+      "failure": 0,
+      "error": 0,
+      "skipped": 0,
+      "badCases": []
+    },
+    {
+      "path": "app/build/test-results/testDevDebugUnitTest/TEST-app.skein.transfer.FolderImportJobTest.xml",
+      "suite": {
+        "name": "app.skein.transfer.FolderImportJobTest",
+        "tests": "7",
+        "skipped": "0",
+        "failures": "0",
+        "errors": "0",
+        "timestamp": "2026-09-29T06:33:25.470Z",
+        "hostname": "Andrews-MacBook-Pro.local",
+        "time": "0.086"
+      },
+      "actualCases": 7,
+      "failure": 0,
+      "error": 0,
+      "skipped": 0,
+      "badCases": []
+    },
+    {
+      "path": "app/build/test-results/testDevDebugUnitTest/TEST-app.skein.vault.LockPolicyObserverTest.xml",
+      "suite": {
+        "name": "app.skein.vault.LockPolicyObserverTest",
+        "tests": "5",
+        "skipped": "0",
+        "failures": "0",
+        "errors": "0",
+        "timestamp": "2026-09-29T06:33:25.556Z",
+        "hostname": "Andrews-MacBook-Pro.local",
+        "time": "0.001"
+      },
+      "actualCases": 5,
+      "failure": 0,
+      "error": 0,
+      "skipped": 0,
+      "badCases": []
+    },
+    {
+      "path": "app/build/test-results/testDevDebugUnitTest/TEST-app.skein.vault.VaultBootstrapTest.xml",
+      "suite": {
+        "name": "app.skein.vault.VaultBootstrapTest",
+        "tests": "23",
+        "skipped": "0",
+        "failures": "0",
+        "errors": "0",
+        "timestamp": "2026-09-29T06:33:25.559Z",
+        "hostname": "Andrews-MacBook-Pro.local",
+        "time": "0.347"
+      },
+      "actualCases": 23,
+      "failure": 0,
+      "error": 0,
+      "skipped": 0,
+      "badCases": []
+    },
+    {
+      "path": "app/build/test-results/testDevDebugUnitTest/TEST-app.skein.vault.VaultGatePhaseTest.xml",
+      "suite": {
+        "name": "app.skein.vault.VaultGatePhaseTest",
+        "tests": "12",
+        "skipped": "0",
+        "failures": "0",
+        "errors": "0",
+        "timestamp": "2026-09-29T06:33:25.907Z",
+        "hostname": "Andrews-MacBook-Pro.local",
+        "time": "0.003"
+      },
+      "actualCases": 12,
+      "failure": 0,
+      "error": 0,
+      "skipped": 0,
+      "badCases": []
+    },
+    {
+      "path": "app/build/test-results/testDevDebugUnitTest/TEST-app.skein.vault.VaultQuiesceIntegrationTest.xml",
+      "suite": {
+        "name": "app.skein.vault.VaultQuiesceIntegrationTest",
+        "tests": "3",
+        "skipped": "0",
+        "failures": "0",
+        "errors": "0",
+        "timestamp": "2026-09-29T06:33:25.911Z",
+        "hostname": "Andrews-MacBook-Pro.local",
+        "time": "0.019"
+      },
+      "actualCases": 3,
+      "failure": 0,
+      "error": 0,
+      "skipped": 0,
+      "badCases": []
+    },
+    {
+      "path": "app/build/test-results/testFossDebugUnitTest/TEST-app.skein.AskPathComposeTest.xml",
+      "suite": {
+        "name": "app.skein.AskPathComposeTest",
+        "tests": "9",
+        "skipped": "0",
+        "failures": "0",
+        "errors": "0",
+        "timestamp": "2026-09-29T06:33:17.137Z",
+        "hostname": "Andrews-MacBook-Pro.local",
+        "time": "3.404"
+      },
+      "actualCases": 9,
+      "failure": 0,
+      "error": 0,
+      "skipped": 0,
+      "badCases": []
+    },
+    {
+      "path": "app/build/test-results/testFossDebugUnitTest/TEST-app.skein.DataExtractionRulesTest.xml",
+      "suite": {
+        "name": "app.skein.DataExtractionRulesTest",
+        "tests": "5",
+        "skipped": "0",
+        "failures": "0",
+        "errors": "0",
+        "timestamp": "2026-09-29T06:33:20.543Z",
+        "hostname": "Andrews-MacBook-Pro.local",
+        "time": "0.008"
+      },
+      "actualCases": 5,
+      "failure": 0,
+      "error": 0,
+      "skipped": 0,
+      "badCases": []
+    },
+    {
+      "path": "app/build/test-results/testFossDebugUnitTest/TEST-app.skein.MainActivityAppearanceTest.xml",
+      "suite": {
+        "name": "app.skein.MainActivityAppearanceTest",
+        "tests": "1",
+        "skipped": "0",
+        "failures": "0",
+        "errors": "0",
+        "timestamp": "2026-09-29T06:33:20.552Z",
+        "hostname": "Andrews-MacBook-Pro.local",
+        "time": "2.7"
+      },
+      "actualCases": 1,
+      "failure": 0,
+      "error": 0,
+      "skipped": 0,
+      "badCases": []
+    },
+    {
+      "path": "app/build/test-results/testFossDebugUnitTest/TEST-app.skein.MainActivityComposeTest.xml",
+      "suite": {
+        "name": "app.skein.MainActivityComposeTest",
+        "tests": "27",
+        "skipped": "0",
+        "failures": "0",
+        "errors": "0",
+        "timestamp": "2026-09-29T06:33:23.256Z",
+        "hostname": "Andrews-MacBook-Pro.local",
+        "time": "1.113"
+      },
+      "actualCases": 27,
+      "failure": 0,
+      "error": 0,
+      "skipped": 0,
+      "badCases": []
+    },
+    {
+      "path": "app/build/test-results/testFossDebugUnitTest/TEST-app.skein.MainActivityConfigChangeTest.xml",
+      "suite": {
+        "name": "app.skein.MainActivityConfigChangeTest",
+        "tests": "1",
+        "skipped": "0",
+        "failures": "0",
+        "errors": "0",
+        "timestamp": "2026-09-29T06:33:24.370Z",
+        "hostname": "Andrews-MacBook-Pro.local",
+        "time": "0.025"
+      },
+      "actualCases": 1,
+      "failure": 0,
+      "error": 0,
+      "skipped": 0,
+      "badCases": []
+    },
+    {
+      "path": "app/build/test-results/testFossDebugUnitTest/TEST-app.skein.MainActivityDebugTestTagsTest.xml",
+      "suite": {
+        "name": "app.skein.MainActivityDebugTestTagsTest",
+        "tests": "2",
+        "skipped": "0",
+        "failures": "0",
+        "errors": "0",
+        "timestamp": "2026-09-29T06:33:24.396Z",
+        "hostname": "Andrews-MacBook-Pro.local",
+        "time": "0.048"
+      },
+      "actualCases": 2,
+      "failure": 0,
+      "error": 0,
+      "skipped": 0,
+      "badCases": []
+    },
+    {
+      "path": "app/build/test-results/testFossDebugUnitTest/TEST-app.skein.MainActivityFlagSecureTest.xml",
+      "suite": {
+        "name": "app.skein.MainActivityFlagSecureTest",
+        "tests": "3",
+        "skipped": "0",
+        "failures": "0",
+        "errors": "0",
+        "timestamp": "2026-09-29T06:33:24.445Z",
+        "hostname": "Andrews-MacBook-Pro.local",
+        "time": "0.05"
+      },
+      "actualCases": 3,
+      "failure": 0,
+      "error": 0,
+      "skipped": 0,
+      "badCases": []
+    },
+    {
+      "path": "app/build/test-results/testFossDebugUnitTest/TEST-app.skein.MainActivityNotificationDeepLinkTest.xml",
+      "suite": {
+        "name": "app.skein.MainActivityNotificationDeepLinkTest",
+        "tests": "7",
+        "skipped": "0",
+        "failures": "0",
+        "errors": "0",
+        "timestamp": "2026-09-29T06:33:24.501Z",
+        "hostname": "Andrews-MacBook-Pro.local",
+        "time": "0.329"
+      },
+      "actualCases": 7,
+      "failure": 0,
+      "error": 0,
+      "skipped": 0,
+      "badCases": []
+    },
+    {
+      "path": "app/build/test-results/testFossDebugUnitTest/TEST-app.skein.MainActivitySearchInsetsTest.xml",
+      "suite": {
+        "name": "app.skein.MainActivitySearchInsetsTest",
+        "tests": "1",
+        "skipped": "0",
+        "failures": "0",
+        "errors": "0",
+        "timestamp": "2026-09-29T06:33:24.832Z",
+        "hostname": "Andrews-MacBook-Pro.local",
+        "time": "0.211"
+      },
+      "actualCases": 1,
+      "failure": 0,
+      "error": 0,
+      "skipped": 0,
+      "badCases": []
+    },
+    {
+      "path": "app/build/test-results/testFossDebugUnitTest/TEST-app.skein.MainActivitySystemBarsTest.xml",
+      "suite": {
+        "name": "app.skein.MainActivitySystemBarsTest",
+        "tests": "5",
+        "skipped": "0",
+        "failures": "0",
+        "errors": "0",
+        "timestamp": "2026-09-29T06:33:25.045Z",
+        "hostname": "Andrews-MacBook-Pro.local",
+        "time": "0.064"
+      },
+      "actualCases": 5,
+      "failure": 0,
+      "error": 0,
+      "skipped": 0,
+      "badCases": []
+    },
+    {
+      "path": "app/build/test-results/testFossDebugUnitTest/TEST-app.skein.ManifestPolicyTest.xml",
+      "suite": {
+        "name": "app.skein.ManifestPolicyTest",
+        "tests": "24",
+        "skipped": "0",
+        "failures": "0",
+        "errors": "0",
+        "timestamp": "2026-09-29T06:33:25.115Z",
+        "hostname": "Andrews-MacBook-Pro.local",
+        "time": "0.123"
+      },
+      "actualCases": 24,
+      "failure": 0,
+      "error": 0,
+      "skipped": 0,
+      "badCases": []
+    },
+    {
+      "path": "app/build/test-results/testFossDebugUnitTest/TEST-app.skein.NavShellComposeTest.xml",
+      "suite": {
+        "name": "app.skein.NavShellComposeTest",
+        "tests": "1",
+        "skipped": "0",
+        "failures": "0",
+        "errors": "0",
+        "timestamp": "2026-09-29T06:33:25.240Z",
+        "hostname": "Andrews-MacBook-Pro.local",
+        "time": "0.036"
+      },
+      "actualCases": 1,
+      "failure": 0,
+      "error": 0,
+      "skipped": 0,
+      "badCases": []
+    },
+    {
+      "path": "app/build/test-results/testFossDebugUnitTest/TEST-app.skein.NoFileProviderOnClasspathTest.xml",
+      "suite": {
+        "name": "app.skein.NoFileProviderOnClasspathTest",
+        "tests": "2",
+        "skipped": "0",
+        "failures": "0",
+        "errors": "0",
+        "timestamp": "2026-09-29T06:33:25.277Z",
+        "hostname": "Andrews-MacBook-Pro.local",
+        "time": "0.346"
+      },
+      "actualCases": 2,
+      "failure": 0,
+      "error": 0,
+      "skipped": 0,
+      "badCases": []
+    },
+    {
+      "path": "app/build/test-results/testFossDebugUnitTest/TEST-app.skein.RecentsScreenshotDisabledTest.xml",
+      "suite": {
+        "name": "app.skein.RecentsScreenshotDisabledTest",
+        "tests": "2",
+        "skipped": "0",
+        "failures": "0",
+        "errors": "0",
+        "timestamp": "2026-09-29T06:33:25.623Z",
+        "hostname": "Andrews-MacBook-Pro.local",
+        "time": "0.099"
+      },
+      "actualCases": 2,
+      "failure": 0,
+      "error": 0,
+      "skipped": 0,
+      "badCases": []
+    },
+    {
+      "path": "app/build/test-results/testFossDebugUnitTest/TEST-app.skein.ShellHotfixComposeTest.xml",
+      "suite": {
+        "name": "app.skein.ShellHotfixComposeTest",
+        "tests": "6",
+        "skipped": "0",
+        "failures": "0",
+        "errors": "0",
+        "timestamp": "2026-09-29T06:33:25.723Z",
+        "hostname": "Andrews-MacBook-Pro.local",
+        "time": "0.463"
+      },
+      "actualCases": 6,
+      "failure": 0,
+      "error": 0,
+      "skipped": 0,
+      "badCases": []
+    },
+    {
+      "path": "app/build/test-results/testFossDebugUnitTest/TEST-app.skein.export.stage.BootReceiverTest.xml",
+      "suite": {
+        "name": "app.skein.export.stage.BootReceiverTest",
+        "tests": "8",
+        "skipped": "0",
+        "failures": "0",
+        "errors": "0",
+        "timestamp": "2026-09-29T06:33:26.188Z",
+        "hostname": "Andrews-MacBook-Pro.local",
+        "time": "0.05"
+      },
+      "actualCases": 8,
+      "failure": 0,
+      "error": 0,
+      "skipped": 0,
+      "badCases": []
+    },
+    {
+      "path": "app/build/test-results/testFossDebugUnitTest/TEST-app.skein.export.stage.StagedPlaintextSweeperTest.xml",
+      "suite": {
+        "name": "app.skein.export.stage.StagedPlaintextSweeperTest",
+        "tests": "13",
+        "skipped": "0",
+        "failures": "0",
+        "errors": "0",
+        "timestamp": "2026-09-29T06:33:26.239Z",
+        "hostname": "Andrews-MacBook-Pro.local",
+        "time": "1.104"
+      },
+      "actualCases": 13,
+      "failure": 0,
+      "error": 0,
+      "skipped": 0,
+      "badCases": []
+    },
+    {
+      "path": "app/build/test-results/testFossDebugUnitTest/TEST-app.skein.ingest.IngestSchedulerTest.xml",
+      "suite": {
+        "name": "app.skein.ingest.IngestSchedulerTest",
+        "tests": "17",
+        "skipped": "0",
+        "failures": "0",
+        "errors": "0",
+        "timestamp": "2026-09-29T06:33:27.345Z",
+        "hostname": "Andrews-MacBook-Pro.local",
+        "time": "0.545"
+      },
+      "actualCases": 17,
+      "failure": 0,
+      "error": 0,
+      "skipped": 0,
+      "badCases": []
+    },
+    {
+      "path": "app/build/test-results/testFossDebugUnitTest/TEST-app.skein.ingest.IngestWorkerTest.xml",
+      "suite": {
+        "name": "app.skein.ingest.IngestWorkerTest",
+        "tests": "14",
+        "skipped": "0",
+        "failures": "0",
+        "errors": "0",
+        "timestamp": "2026-09-29T06:33:27.891Z",
+        "hostname": "Andrews-MacBook-Pro.local",
+        "time": "0.144"
+      },
+      "actualCases": 14,
+      "failure": 0,
+      "error": 0,
+      "skipped": 0,
+      "badCases": []
+    },
+    {
+      "path": "app/build/test-results/testFossDebugUnitTest/TEST-app.skein.ingest.ThermalIngestPacerTest.xml",
+      "suite": {
+        "name": "app.skein.ingest.ThermalIngestPacerTest",
+        "tests": "5",
+        "skipped": "0",
+        "failures": "0",
+        "errors": "0",
+        "timestamp": "2026-09-29T06:33:28.035Z",
+        "hostname": "Andrews-MacBook-Pro.local",
+        "time": "0.003"
+      },
+      "actualCases": 5,
+      "failure": 0,
+      "error": 0,
+      "skipped": 0,
+      "badCases": []
+    },
+    {
+      "path": "app/build/test-results/testFossDebugUnitTest/TEST-app.skein.models.ManagedInferenceEngineTest.xml",
+      "suite": {
+        "name": "app.skein.models.ManagedInferenceEngineTest",
+        "tests": "4",
+        "skipped": "0",
+        "failures": "0",
+        "errors": "0",
+        "timestamp": "2026-09-29T06:33:28.038Z",
+        "hostname": "Andrews-MacBook-Pro.local",
+        "time": "0.04"
+      },
+      "actualCases": 4,
+      "failure": 0,
+      "error": 0,
+      "skipped": 0,
+      "badCases": []
+    },
+    {
+      "path": "app/build/test-results/testFossDebugUnitTest/TEST-app.skein.notify.IndexingNotifierTest.xml",
+      "suite": {
+        "name": "app.skein.notify.IndexingNotifierTest",
+        "tests": "2",
+        "skipped": "0",
+        "failures": "0",
+        "errors": "0",
+        "timestamp": "2026-09-29T06:33:28.079Z",
+        "hostname": "Andrews-MacBook-Pro.local",
+        "time": "0.234"
+      },
+      "actualCases": 2,
+      "failure": 0,
+      "error": 0,
+      "skipped": 0,
+      "badCases": []
+    },
+    {
+      "path": "app/build/test-results/testFossDebugUnitTest/TEST-app.skein.shell.NotificationDeepLinksTest.xml",
+      "suite": {
+        "name": "app.skein.shell.NotificationDeepLinksTest",
+        "tests": "5",
+        "skipped": "0",
+        "failures": "0",
+        "errors": "0",
+        "timestamp": "2026-09-29T06:33:28.314Z",
+        "hostname": "Andrews-MacBook-Pro.local",
+        "time": "0.028"
+      },
+      "actualCases": 5,
+      "failure": 0,
+      "error": 0,
+      "skipped": 0,
+      "badCases": []
+    },
+    {
+      "path": "app/build/test-results/testFossDebugUnitTest/TEST-app.skein.system.AndroidSkeinLogSinkTest.xml",
+      "suite": {
+        "name": "app.skein.system.AndroidSkeinLogSinkTest",
+        "tests": "6",
+        "skipped": "0",
+        "failures": "0",
+        "errors": "0",
+        "timestamp": "2026-09-29T06:33:28.343Z",
+        "hostname": "Andrews-MacBook-Pro.local",
+        "time": "0.028"
+      },
+      "actualCases": 6,
+      "failure": 0,
+      "error": 0,
+      "skipped": 0,
+      "badCases": []
+    },
+    {
+      "path": "app/build/test-results/testFossDebugUnitTest/TEST-app.skein.system.AppearancePrefsTest.xml",
+      "suite": {
+        "name": "app.skein.system.AppearancePrefsTest",
+        "tests": "4",
+        "skipped": "0",
+        "failures": "0",
+        "errors": "0",
+        "timestamp": "2026-09-29T06:33:28.372Z",
+        "hostname": "Andrews-MacBook-Pro.local",
+        "time": "0.023"
+      },
+      "actualCases": 4,
+      "failure": 0,
+      "error": 0,
+      "skipped": 0,
+      "badCases": []
+    },
+    {
+      "path": "app/build/test-results/testFossDebugUnitTest/TEST-app.skein.system.NotificationsTest.xml",
+      "suite": {
+        "name": "app.skein.system.NotificationsTest",
+        "tests": "2",
+        "skipped": "0",
+        "failures": "0",
+        "errors": "0",
+        "timestamp": "2026-09-29T06:33:28.395Z",
+        "hostname": "Andrews-MacBook-Pro.local",
+        "time": "0.01"
+      },
+      "actualCases": 2,
+      "failure": 0,
+      "error": 0,
+      "skipped": 0,
+      "badCases": []
+    },
+    {
+      "path": "app/build/test-results/testFossDebugUnitTest/TEST-app.skein.system.SecurityPrefsTest.xml",
+      "suite": {
+        "name": "app.skein.system.SecurityPrefsTest",
+        "tests": "11",
+        "skipped": "0",
+        "failures": "0",
+        "errors": "0",
+        "timestamp": "2026-09-29T06:33:28.406Z",
+        "hostname": "Andrews-MacBook-Pro.local",
+        "time": "0.077"
+      },
+      "actualCases": 11,
+      "failure": 0,
+      "error": 0,
+      "skipped": 0,
+      "badCases": []
+    },
+    {
+      "path": "app/build/test-results/testFossDebugUnitTest/TEST-app.skein.transfer.FolderImportJobTest.xml",
+      "suite": {
+        "name": "app.skein.transfer.FolderImportJobTest",
+        "tests": "7",
+        "skipped": "0",
+        "failures": "0",
+        "errors": "0",
+        "timestamp": "2026-09-29T06:33:28.485Z",
+        "hostname": "Andrews-MacBook-Pro.local",
+        "time": "0.091"
+      },
+      "actualCases": 7,
+      "failure": 0,
+      "error": 0,
+      "skipped": 0,
+      "badCases": []
+    },
+    {
+      "path": "app/build/test-results/testFossDebugUnitTest/TEST-app.skein.vault.LockPolicyObserverTest.xml",
+      "suite": {
+        "name": "app.skein.vault.LockPolicyObserverTest",
+        "tests": "5",
+        "skipped": "0",
+        "failures": "0",
+        "errors": "0",
+        "timestamp": "2026-09-29T06:33:28.576Z",
+        "hostname": "Andrews-MacBook-Pro.local",
+        "time": "0.001"
+      },
+      "actualCases": 5,
+      "failure": 0,
+      "error": 0,
+      "skipped": 0,
+      "badCases": []
+    },
+    {
+      "path": "app/build/test-results/testFossDebugUnitTest/TEST-app.skein.vault.VaultBootstrapTest.xml",
+      "suite": {
+        "name": "app.skein.vault.VaultBootstrapTest",
+        "tests": "23",
+        "skipped": "0",
+        "failures": "0",
+        "errors": "0",
+        "timestamp": "2026-09-29T06:33:28.579Z",
+        "hostname": "Andrews-MacBook-Pro.local",
+        "time": "0.366"
+      },
+      "actualCases": 23,
+      "failure": 0,
+      "error": 0,
+      "skipped": 0,
+      "badCases": []
+    },
+    {
+      "path": "app/build/test-results/testFossDebugUnitTest/TEST-app.skein.vault.VaultGatePhaseTest.xml",
+      "suite": {
+        "name": "app.skein.vault.VaultGatePhaseTest",
+        "tests": "12",
+        "skipped": "0",
+        "failures": "0",
+        "errors": "0",
+        "timestamp": "2026-09-29T06:33:28.945Z",
+        "hostname": "Andrews-MacBook-Pro.local",
+        "time": "0.003"
+      },
+      "actualCases": 12,
+      "failure": 0,
+      "error": 0,
+      "skipped": 0,
+      "badCases": []
+    },
+    {
+      "path": "app/build/test-results/testFossDebugUnitTest/TEST-app.skein.vault.VaultQuiesceIntegrationTest.xml",
+      "suite": {
+        "name": "app.skein.vault.VaultQuiesceIntegrationTest",
+        "tests": "3",
+        "skipped": "0",
+        "failures": "0",
+        "errors": "0",
+        "timestamp": "2026-09-29T06:33:28.949Z",
+        "hostname": "Andrews-MacBook-Pro.local",
+        "time": "0.02"
+      },
+      "actualCases": 3,
+      "failure": 0,
+      "error": 0,
+      "skipped": 0,
+      "badCases": []
+    },
+    {
+      "path": "feature/shell/build/test-results/testDebugUnitTest/TEST-app.skein.feature.shell.SkeinThemeColorsTest.xml",
+      "suite": {
+        "name": "app.skein.feature.shell.SkeinThemeColorsTest",
+        "tests": "1",
+        "skipped": "0",
+        "failures": "0",
+        "errors": "0",
+        "timestamp": "2026-09-29T06:33:29.998Z",
+        "hostname": "Andrews-MacBook-Pro.local",
+        "time": "2.241"
+      },
+      "actualCases": 1,
+      "failure": 0,
+      "error": 0,
+      "skipped": 0,
+      "badCases": []
+    },
+    {
+      "path": "feature/shell/build/test-results/testDebugUnitTest/TEST-app.skein.feature.shell.auth.BiometricUnlockDeviceLockGateTest.xml",
+      "suite": {
+        "name": "app.skein.feature.shell.auth.BiometricUnlockDeviceLockGateTest",
+        "tests": "3",
+        "skipped": "0",
+        "failures": "0",
+        "errors": "0",
+        "timestamp": "2026-09-29T06:33:32.242Z",
+        "hostname": "Andrews-MacBook-Pro.local",
+        "time": "0.292"
+      },
+      "actualCases": 3,
+      "failure": 0,
+      "error": 0,
+      "skipped": 0,
+      "badCases": []
+    },
+    {
+      "path": "feature/shell/build/test-results/testDebugUnitTest/TEST-app.skein.feature.shell.auth.BiometricUnlockOutcomeTest.xml",
+      "suite": {
+        "name": "app.skein.feature.shell.auth.BiometricUnlockOutcomeTest",
+        "tests": "17",
+        "skipped": "0",
+        "failures": "0",
+        "errors": "0",
+        "timestamp": "2026-09-29T06:33:32.538Z",
+        "hostname": "Andrews-MacBook-Pro.local",
+        "time": "0.003"
+      },
+      "actualCases": 17,
+      "failure": 0,
+      "error": 0,
+      "skipped": 0,
+      "badCases": []
+    },
+    {
+      "path": "feature/shell/build/test-results/testDebugUnitTest/TEST-app.skein.feature.shell.auth.BiometricUnlockResetAffordanceTest.xml",
+      "suite": {
+        "name": "app.skein.feature.shell.auth.BiometricUnlockResetAffordanceTest",
+        "tests": "6",
+        "skipped": "0",
+        "failures": "0",
+        "errors": "0",
+        "timestamp": "2026-09-29T06:33:32.542Z",
+        "hostname": "Andrews-MacBook-Pro.local",
+        "time": "0.382"
+      },
+      "actualCases": 6,
+      "failure": 0,
+      "error": 0,
+      "skipped": 0,
+      "badCases": []
+    },
+    {
+      "path": "feature/shell/build/test-results/testDebugUnitTest/TEST-app.skein.feature.shell.auth.VaultResetConfirmStateTest.xml",
+      "suite": {
+        "name": "app.skein.feature.shell.auth.VaultResetConfirmStateTest",
+        "tests": "17",
+        "skipped": "0",
+        "failures": "0",
+        "errors": "0",
+        "timestamp": "2026-09-29T06:33:32.925Z",
+        "hostname": "Andrews-MacBook-Pro.local",
+        "time": "0.054"
+      },
+      "actualCases": 17,
+      "failure": 0,
+      "error": 0,
+      "skipped": 0,
+      "badCases": []
+    },
+    {
+      "path": "feature/shell/build/test-results/testDebugUnitTest/TEST-app.skein.feature.shell.auth.VaultRestoreStateTest.xml",
+      "suite": {
+        "name": "app.skein.feature.shell.auth.VaultRestoreStateTest",
+        "tests": "24",
+        "skipped": "0",
+        "failures": "0",
+        "errors": "0",
+        "timestamp": "2026-09-29T06:33:32.980Z",
+        "hostname": "Andrews-MacBook-Pro.local",
+        "time": "12.357"
+      },
+      "actualCases": 24,
+      "failure": 0,
+      "error": 0,
+      "skipped": 0,
+      "badCases": []
+    },
+    {
+      "path": "feature/shell/build/test-results/testDebugUnitTest/TEST-app.skein.feature.shell.auth.VaultSetupStateTest.xml",
+      "suite": {
+        "name": "app.skein.feature.shell.auth.VaultSetupStateTest",
+        "tests": "15",
+        "skipped": "0",
+        "failures": "0",
+        "errors": "0",
+        "timestamp": "2026-09-29T06:33:45.339Z",
+        "hostname": "Andrews-MacBook-Pro.local",
+        "time": "0.015"
+      },
+      "actualCases": 15,
+      "failure": 0,
+      "error": 0,
+      "skipped": 0,
+      "badCases": []
+    },
+    {
+      "path": "feature/shell/build/test-results/testDebugUnitTest/TEST-app.skein.feature.shell.container.ChatHistoryGroupingTest.xml",
+      "suite": {
+        "name": "app.skein.feature.shell.container.ChatHistoryGroupingTest",
+        "tests": "4",
+        "skipped": "0",
+        "failures": "0",
+        "errors": "0",
+        "timestamp": "2026-09-29T06:33:45.355Z",
+        "hostname": "Andrews-MacBook-Pro.local",
+        "time": "0.005"
+      },
+      "actualCases": 4,
+      "failure": 0,
+      "error": 0,
+      "skipped": 0,
+      "badCases": []
+    },
+    {
+      "path": "feature/shell/build/test-results/testDebugUnitTest/TEST-app.skein.feature.shell.container.SkeinDrawerContentTest.xml",
+      "suite": {
+        "name": "app.skein.feature.shell.container.SkeinDrawerContentTest",
+        "tests": "5",
+        "skipped": "0",
+        "failures": "0",
+        "errors": "0",
+        "timestamp": "2026-09-29T06:33:45.363Z",
+        "hostname": "Andrews-MacBook-Pro.local",
+        "time": "0.362"
+      },
+      "actualCases": 5,
+      "failure": 0,
+      "error": 0,
+      "skipped": 0,
+      "badCases": []
+    },
+    {
+      "path": "feature/shell/build/test-results/testDebugUnitTest/TEST-app.skein.feature.shell.container.SkeinNavigationContainerAccessibilityTest.xml",
+      "suite": {
+        "name": "app.skein.feature.shell.container.SkeinNavigationContainerAccessibilityTest",
+        "tests": "2",
+        "skipped": "0",
+        "failures": "0",
+        "errors": "0",
+        "timestamp": "2026-09-29T06:33:45.727Z",
+        "hostname": "Andrews-MacBook-Pro.local",
+        "time": "2.33"
+      },
+      "actualCases": 2,
+      "failure": 0,
+      "error": 0,
+      "skipped": 0,
+      "badCases": []
+    },
+    {
+      "path": "feature/shell/build/test-results/testDebugUnitTest/TEST-app.skein.feature.shell.container.SkeinNavigationContainerTest.xml",
+      "suite": {
+        "name": "app.skein.feature.shell.container.SkeinNavigationContainerTest",
+        "tests": "3",
+        "skipped": "0",
+        "failures": "0",
+        "errors": "0",
+        "timestamp": "2026-09-29T06:33:48.059Z",
+        "hostname": "Andrews-MacBook-Pro.local",
+        "time": "0.336"
+      },
+      "actualCases": 3,
+      "failure": 0,
+      "error": 0,
+      "skipped": 0,
+      "badCases": []
+    },
+    {
+      "path": "feature/shell/build/test-results/testDebugUnitTest/TEST-app.skein.feature.shell.container.SkeinTabletopRailTest.xml",
+      "suite": {
+        "name": "app.skein.feature.shell.container.SkeinTabletopRailTest",
+        "tests": "2",
+        "skipped": "0",
+        "failures": "0",
+        "errors": "0",
+        "timestamp": "2026-09-29T06:33:48.398Z",
+        "hostname": "Andrews-MacBook-Pro.local",
+        "time": "0.328"
+      },
+      "actualCases": 2,
+      "failure": 0,
+      "error": 0,
+      "skipped": 0,
+      "badCases": []
+    },
+    {
+      "path": "feature/shell/build/test-results/testDebugUnitTest/TEST-app.skein.feature.shell.host.EntryInsetsTest.xml",
+      "suite": {
+        "name": "app.skein.feature.shell.host.EntryInsetsTest",
+        "tests": "1",
+        "skipped": "0",
+        "failures": "0",
+        "errors": "0",
+        "timestamp": "2026-09-29T06:33:48.732Z",
+        "hostname": "Andrews-MacBook-Pro.local",
+        "time": "0.096"
+      },
+      "actualCases": 1,
+      "failure": 0,
+      "error": 0,
+      "skipped": 0,
+      "badCases": []
+    },
+    {
+      "path": "feature/shell/build/test-results/testDebugUnitTest/TEST-app.skein.feature.shell.host.HingeSurfaceIntegrationTest.xml",
+      "suite": {
+        "name": "app.skein.feature.shell.host.HingeSurfaceIntegrationTest",
+        "tests": "5",
+        "skipped": "0",
+        "failures": "0",
+        "errors": "0",
+        "timestamp": "2026-09-29T06:33:48.833Z",
+        "hostname": "Andrews-MacBook-Pro.local",
+        "time": "0.569"
+      },
+      "actualCases": 5,
+      "failure": 0,
+      "error": 0,
+      "skipped": 0,
+      "badCases": []
+    },
+    {
+      "path": "feature/shell/build/test-results/testDebugUnitTest/TEST-app.skein.feature.shell.host.NavKindsOfTest.xml",
+      "suite": {
+        "name": "app.skein.feature.shell.host.NavKindsOfTest",
+        "tests": "1",
+        "skipped": "0",
+        "failures": "0",
+        "errors": "0",
+        "timestamp": "2026-09-29T06:33:49.403Z",
+        "hostname": "Andrews-MacBook-Pro.local",
+        "time": "0.008"
+      },
+      "actualCases": 1,
+      "failure": 0,
+      "error": 0,
+      "skipped": 0,
+      "badCases": []
+    },
+    {
+      "path": "feature/shell/build/test-results/testDebugUnitTest/TEST-app.skein.feature.shell.host.ShellLockSequenceTest.xml",
+      "suite": {
+        "name": "app.skein.feature.shell.host.ShellLockSequenceTest",
+        "tests": "4",
+        "skipped": "0",
+        "failures": "0",
+        "errors": "0",
+        "timestamp": "2026-09-29T06:33:49.413Z",
+        "hostname": "Andrews-MacBook-Pro.local",
+        "time": "0.281"
+      },
+      "actualCases": 4,
+      "failure": 0,
+      "error": 0,
+      "skipped": 0,
+      "badCases": []
+    },
+    {
+      "path": "feature/shell/build/test-results/testDebugUnitTest/TEST-app.skein.feature.shell.host.SkeinSearchTest.xml",
+      "suite": {
+        "name": "app.skein.feature.shell.host.SkeinSearchTest",
+        "tests": "3",
+        "skipped": "0",
+        "failures": "0",
+        "errors": "0",
+        "timestamp": "2026-09-29T06:33:49.696Z",
+        "hostname": "Andrews-MacBook-Pro.local",
+        "time": "0.287"
+      },
+      "actualCases": 3,
+      "failure": 0,
+      "error": 0,
+      "skipped": 0,
+      "badCases": []
+    },
+    {
+      "path": "feature/shell/build/test-results/testDebugUnitTest/TEST-app.skein.feature.shell.host.SkeinShellHostTest.xml",
+      "suite": {
+        "name": "app.skein.feature.shell.host.SkeinShellHostTest",
+        "tests": "6",
+        "skipped": "0",
+        "failures": "0",
+        "errors": "0",
+        "timestamp": "2026-09-29T06:33:49.985Z",
+        "hostname": "Andrews-MacBook-Pro.local",
+        "time": "0.346"
+      },
+      "actualCases": 6,
+      "failure": 0,
+      "error": 0,
+      "skipped": 0,
+      "badCases": []
+    },
+    {
+      "path": "feature/shell/build/test-results/testDebugUnitTest/TEST-app.skein.feature.shell.host.VaultResetClearsNavStateTest.xml",
+      "suite": {
+        "name": "app.skein.feature.shell.host.VaultResetClearsNavStateTest",
+        "tests": "1",
+        "skipped": "0",
+        "failures": "0",
+        "errors": "0",
+        "timestamp": "2026-09-29T06:33:50.333Z",
+        "hostname": "Andrews-MacBook-Pro.local",
+        "time": "0.053"
+      },
+      "actualCases": 1,
+      "failure": 0,
+      "error": 0,
+      "skipped": 0,
+      "badCases": []
+    },
+    {
+      "path": "feature/shell/build/test-results/testDebugUnitTest/TEST-app.skein.feature.shell.input.SecureTextFieldTest.xml",
+      "suite": {
+        "name": "app.skein.feature.shell.input.SecureTextFieldTest",
+        "tests": "2",
+        "skipped": "0",
+        "failures": "0",
+        "errors": "0",
+        "timestamp": "2026-09-29T06:33:50.388Z",
+        "hostname": "Andrews-MacBook-Pro.local",
+        "time": "0.053"
+      },
+      "actualCases": 2,
+      "failure": 0,
+      "error": 0,
+      "skipped": 0,
+      "badCases": []
+    },
+    {
+      "path": "feature/shell/build/test-results/testDebugUnitTest/TEST-app.skein.feature.shell.layout.SkeinHingeDebugOverlayTest.xml",
+      "suite": {
+        "name": "app.skein.feature.shell.layout.SkeinHingeDebugOverlayTest",
+        "tests": "1",
+        "skipped": "0",
+        "failures": "0",
+        "errors": "0",
+        "timestamp": "2026-09-29T06:33:50.443Z",
+        "hostname": "Andrews-MacBook-Pro.local",
+        "time": "0.028"
+      },
+      "actualCases": 1,
+      "failure": 0,
+      "error": 0,
+      "skipped": 0,
+      "badCases": []
+    },
+    {
+      "path": "feature/shell/build/test-results/testDebugUnitTest/TEST-app.skein.feature.shell.layout.SkeinHingeGeometryTest.xml",
+      "suite": {
+        "name": "app.skein.feature.shell.layout.SkeinHingeGeometryTest",
+        "tests": "4",
+        "skipped": "0",
+        "failures": "0",
+        "errors": "0",
+        "timestamp": "2026-09-29T06:33:50.472Z",
+        "hostname": "Andrews-MacBook-Pro.local",
+        "time": "0.004"
+      },
+      "actualCases": 4,
+      "failure": 0,
+      "error": 0,
+      "skipped": 0,
+      "badCases": []
+    },
+    {
+      "path": "feature/shell/build/test-results/testDebugUnitTest/TEST-app.skein.feature.shell.layout.SkeinHingeSafeAreaTest.xml",
+      "suite": {
+        "name": "app.skein.feature.shell.layout.SkeinHingeSafeAreaTest",
+        "tests": "2",
+        "skipped": "0",
+        "failures": "0",
+        "errors": "0",
+        "timestamp": "2026-09-29T06:33:50.477Z",
+        "hostname": "Andrews-MacBook-Pro.local",
+        "time": "0.073"
+      },
+      "actualCases": 2,
+      "failure": 0,
+      "error": 0,
+      "skipped": 0,
+      "badCases": []
+    },
+    {
+      "path": "feature/shell/build/test-results/testDebugUnitTest/TEST-app.skein.feature.shell.layout.SkeinLayoutDecisionSurfacesTest.xml",
+      "suite": {
+        "name": "app.skein.feature.shell.layout.SkeinLayoutDecisionSurfacesTest",
+        "tests": "4",
+        "skipped": "0",
+        "failures": "0",
+        "errors": "0",
+        "timestamp": "2026-09-29T06:33:50.550Z",
+        "hostname": "Andrews-MacBook-Pro.local",
+        "time": "0.001"
+      },
+      "actualCases": 4,
+      "failure": 0,
+      "error": 0,
+      "skipped": 0,
+      "badCases": []
+    },
+    {
+      "path": "feature/shell/build/test-results/testDebugUnitTest/TEST-app.skein.feature.shell.layout.SkeinLayoutDecisionTest.xml",
+      "suite": {
+        "name": "app.skein.feature.shell.layout.SkeinLayoutDecisionTest",
+        "tests": "38",
+        "skipped": "0",
+        "failures": "0",
+        "errors": "0",
+        "timestamp": "2026-09-29T06:33:50.558Z",
+        "hostname": "Andrews-MacBook-Pro.local",
+        "time": "0.002"
+      },
+      "actualCases": 38,
+      "failure": 0,
+      "error": 0,
+      "skipped": 0,
+      "badCases": []
+    },
+    {
+      "path": "feature/shell/build/test-results/testDebugUnitTest/TEST-app.skein.feature.shell.screenshots.AuthScreenshotTest.xml",
+      "suite": {
+        "name": "app.skein.feature.shell.screenshots.AuthScreenshotTest",
+        "tests": "30",
+        "skipped": "0",
+        "failures": "0",
+        "errors": "0",
+        "timestamp": "2026-09-29T06:33:50.566Z",
+        "hostname": "Andrews-MacBook-Pro.local",
+        "time": "0.715"
+      },
+      "actualCases": 30,
+      "failure": 0,
+      "error": 0,
+      "skipped": 0,
+      "badCases": []
+    },
+    {
+      "path": "feature/shell/build/test-results/testDebugUnitTest/TEST-app.skein.feature.shell.screenshots.SkeinNavigationContainerScreenshotTest.xml",
+      "suite": {
+        "name": "app.skein.feature.shell.screenshots.SkeinNavigationContainerScreenshotTest",
+        "tests": "20",
+        "skipped": "14",
+        "failures": "0",
+        "errors": "0",
+        "timestamp": "2026-09-29T06:33:51.284Z",
+        "hostname": "Andrews-MacBook-Pro.local",
+        "time": "0.548"
+      },
+      "actualCases": 20,
+      "failure": 0,
+      "error": 0,
+      "skipped": 14,
+      "badCases": [
+        {
+          "name": "rail[phone__light__fs100]",
+          "status": [
+            "skipped"
+          ]
+        },
+        {
+          "name": "drawerOpen[phone__light__fs100]",
+          "status": [
+            "skipped"
+          ]
+        },
+        {
+          "name": "rail[phone__dark__fs100]",
+          "status": [
+            "skipped"
+          ]
+        },
+        {
+          "name": "drawerOpen[phone__dark__fs100]",
+          "status": [
+            "skipped"
+          ]
+        },
+        {
+          "name": "rail[fold-outer-443__light__fs100]",
+          "status": [
+            "skipped"
+          ]
+        },
+        {
+          "name": "rail[fold-outer-443__dark__fs100]",
+          "status": [
+            "skipped"
+          ]
+        },
+        {
+          "name": "rail[fold-outer-524__light__fs100]",
+          "status": [
+            "skipped"
+          ]
+        },
+        {
+          "name": "rail[fold-outer-524__dark__fs100]",
+          "status": [
+            "skipped"
+          ]
+        },
+        {
+          "name": "drawerOpen[fold-inner-1007__light__fs100]",
+          "status": [
+            "skipped"
+          ]
+        },
+        {
+          "name": "drawerOpen[fold-inner-1007__dark__fs100]",
+          "status": [
+            "skipped"
+          ]
+        },
+        {
+          "name": "rail[fold-inner-1007-land__light__fs100]",
+          "status": [
+            "skipped"
+          ]
+        },
+        {
+          "name": "drawerOpen[fold-inner-1007-land__light__fs100]",
+          "status": [
+            "skipped"
+          ]
+        },
+        {
+          "name": "rail[fold-inner-1007-land__dark__fs100]",
+          "status": [
+            "skipped"
+          ]
+        },
+        {
+          "name": "drawerOpen[fold-inner-1007-land__dark__fs100]",
+          "status": [
+            "skipped"
+          ]
+        }
+      ]
+    },
+    {
+      "path": "feature/shell/build/test-results/testDebugUnitTest/TEST-app.skein.feature.shell.screenshots.SkeinTypeRenderingTest.xml",
+      "suite": {
+        "name": "app.skein.feature.shell.screenshots.SkeinTypeRenderingTest",
+        "tests": "3",
+        "skipped": "0",
+        "failures": "0",
+        "errors": "0",
+        "timestamp": "2026-09-29T06:33:51.835Z",
+        "hostname": "Andrews-MacBook-Pro.local",
+        "time": "0.078"
+      },
+      "actualCases": 3,
+      "failure": 0,
+      "error": 0,
+      "skipped": 0,
+      "badCases": []
+    },
+    {
+      "path": "feature/chat/build/test-results/testDebugUnitTest/TEST-app.skein.feature.chat.AccessibilitySweepSmokeTest.xml",
+      "suite": {
+        "name": "app.skein.feature.chat.AccessibilitySweepSmokeTest",
+        "tests": "1",
+        "skipped": "0",
+        "failures": "0",
+        "errors": "0",
+        "timestamp": "2026-09-29T06:33:35.984Z",
+        "hostname": "Andrews-MacBook-Pro.local",
+        "time": "3.038"
+      },
+      "actualCases": 1,
+      "failure": 0,
+      "error": 0,
+      "skipped": 0,
+      "badCases": []
+    },
+    {
+      "path": "feature/chat/build/test-results/testDebugUnitTest/TEST-app.skein.feature.chat.ChatComposerImeInsetTest.xml",
+      "suite": {
+        "name": "app.skein.feature.chat.ChatComposerImeInsetTest",
+        "tests": "6",
+        "skipped": "0",
+        "failures": "0",
+        "errors": "0",
+        "timestamp": "2026-09-29T06:33:39.029Z",
+        "hostname": "Andrews-MacBook-Pro.local",
+        "time": "1.943"
+      },
+      "actualCases": 6,
+      "failure": 0,
+      "error": 0,
+      "skipped": 0,
+      "badCases": []
+    },
+    {
+      "path": "feature/chat/build/test-results/testDebugUnitTest/TEST-app.skein.feature.chat.ChatImportSpaceTest.xml",
+      "suite": {
+        "name": "app.skein.feature.chat.ChatImportSpaceTest",
+        "tests": "2",
+        "skipped": "0",
+        "failures": "0",
+        "errors": "0",
+        "timestamp": "2026-09-29T06:33:40.975Z",
+        "hostname": "Andrews-MacBook-Pro.local",
+        "time": "0.046"
+      },
+      "actualCases": 2,
+      "failure": 0,
+      "error": 0,
+      "skipped": 0,
+      "badCases": []
+    },
+    {
+      "path": "feature/chat/build/test-results/testDebugUnitTest/TEST-app.skein.feature.chat.ChatInferenceErrorTest.xml",
+      "suite": {
+        "name": "app.skein.feature.chat.ChatInferenceErrorTest",
+        "tests": "4",
+        "skipped": "0",
+        "failures": "0",
+        "errors": "0",
+        "timestamp": "2026-09-29T06:33:41.022Z",
+        "hostname": "Andrews-MacBook-Pro.local",
+        "time": "0.303"
+      },
+      "actualCases": 4,
+      "failure": 0,
+      "error": 0,
+      "skipped": 0,
+      "badCases": []
+    },
+    {
+      "path": "feature/chat/build/test-results/testDebugUnitTest/TEST-app.skein.feature.chat.ChatScreenTest.xml",
+      "suite": {
+        "name": "app.skein.feature.chat.ChatScreenTest",
+        "tests": "5",
+        "skipped": "0",
+        "failures": "0",
+        "errors": "0",
+        "timestamp": "2026-09-29T06:33:41.327Z",
+        "hostname": "Andrews-MacBook-Pro.local",
+        "time": "0.286"
+      },
+      "actualCases": 5,
+      "failure": 0,
+      "error": 0,
+      "skipped": 0,
+      "badCases": []
+    },
+    {
+      "path": "feature/chat/build/test-results/testDebugUnitTest/TEST-app.skein.feature.chat.ChatTurnControllerTest.xml",
+      "suite": {
+        "name": "app.skein.feature.chat.ChatTurnControllerTest",
+        "tests": "11",
+        "skipped": "0",
+        "failures": "0",
+        "errors": "0",
+        "timestamp": "2026-09-29T06:33:41.614Z",
+        "hostname": "Andrews-MacBook-Pro.local",
+        "time": "0.05"
+      },
+      "actualCases": 11,
+      "failure": 0,
+      "error": 0,
+      "skipped": 0,
+      "badCases": []
+    },
+    {
+      "path": "feature/chat/build/test-results/testDebugUnitTest/TEST-app.skein.feature.chat.ChatTurnStateTest.xml",
+      "suite": {
+        "name": "app.skein.feature.chat.ChatTurnStateTest",
+        "tests": "1",
+        "skipped": "0",
+        "failures": "0",
+        "errors": "0",
+        "timestamp": "2026-09-29T06:33:41.664Z",
+        "hostname": "Andrews-MacBook-Pro.local",
+        "time": "0.008"
+      },
+      "actualCases": 1,
+      "failure": 0,
+      "error": 0,
+      "skipped": 0,
+      "badCases": []
+    },
+    {
+      "path": "feature/chat/build/test-results/testDebugUnitTest/TEST-app.skein.feature.chat.ComposerWikilinkCreateRowTest.xml",
+      "suite": {
+        "name": "app.skein.feature.chat.ComposerWikilinkCreateRowTest",
+        "tests": "1",
+        "skipped": "0",
+        "failures": "0",
+        "errors": "0",
+        "timestamp": "2026-09-29T06:33:41.673Z",
+        "hostname": "Andrews-MacBook-Pro.local",
+        "time": "0.047"
+      },
+      "actualCases": 1,
+      "failure": 0,
+      "error": 0,
+      "skipped": 0,
+      "badCases": []
+    },
+    {
+      "path": "feature/chat/build/test-results/testDebugUnitTest/TEST-app.skein.feature.chat.ImportFailureIsReportedTest.xml",
+      "suite": {
+        "name": "app.skein.feature.chat.ImportFailureIsReportedTest",
+        "tests": "2",
+        "skipped": "0",
+        "failures": "0",
+        "errors": "0",
+        "timestamp": "2026-09-29T06:33:41.722Z",
+        "hostname": "Andrews-MacBook-Pro.local",
+        "time": "0.076"
+      },
+      "actualCases": 2,
+      "failure": 0,
+      "error": 0,
+      "skipped": 0,
+      "badCases": []
+    },
+    {
+      "path": "feature/chat/build/test-results/testDebugUnitTest/TEST-app.skein.feature.chat.KnowledgeScopeTest.xml",
+      "suite": {
+        "name": "app.skein.feature.chat.KnowledgeScopeTest",
+        "tests": "5",
+        "skipped": "0",
+        "failures": "0",
+        "errors": "0",
+        "timestamp": "2026-09-29T06:33:41.798Z",
+        "hostname": "Andrews-MacBook-Pro.local",
+        "time": "0.014"
+      },
+      "actualCases": 5,
+      "failure": 0,
+      "error": 0,
+      "skipped": 0,
+      "badCases": []
+    },
+    {
+      "path": "feature/chat/build/test-results/testDebugUnitTest/TEST-app.skein.feature.chat.MessageListAnchoringTest.xml",
+      "suite": {
+        "name": "app.skein.feature.chat.MessageListAnchoringTest",
+        "tests": "1",
+        "skipped": "0",
+        "failures": "0",
+        "errors": "0",
+        "timestamp": "2026-09-29T06:33:41.812Z",
+        "hostname": "Andrews-MacBook-Pro.local",
+        "time": "0.039"
+      },
+      "actualCases": 1,
+      "failure": 0,
+      "error": 0,
+      "skipped": 0,
+      "badCases": []
+    },
+    {
+      "path": "feature/chat/build/test-results/testDebugUnitTest/TEST-app.skein.feature.chat.SendPipelineExactBudgetTest.xml",
+      "suite": {
+        "name": "app.skein.feature.chat.SendPipelineExactBudgetTest",
+        "tests": "3",
+        "skipped": "0",
+        "failures": "0",
+        "errors": "0",
+        "timestamp": "2026-09-29T06:33:41.851Z",
+        "hostname": "Andrews-MacBook-Pro.local",
+        "time": "0.006"
+      },
+      "actualCases": 3,
+      "failure": 0,
+      "error": 0,
+      "skipped": 0,
+      "badCases": []
+    },
+    {
+      "path": "feature/chat/build/test-results/testDebugUnitTest/TEST-app.skein.feature.chat.SendPipelineTest.xml",
+      "suite": {
+        "name": "app.skein.feature.chat.SendPipelineTest",
+        "tests": "7",
+        "skipped": "0",
+        "failures": "0",
+        "errors": "0",
+        "timestamp": "2026-09-29T06:33:41.858Z",
+        "hostname": "Andrews-MacBook-Pro.local",
+        "time": "0.039"
+      },
+      "actualCases": 7,
+      "failure": 0,
+      "error": 0,
+      "skipped": 0,
+      "badCases": []
+    },
+    {
+      "path": "feature/chat/build/test-results/testDebugUnitTest/TEST-app.skein.feature.chat.TurnFinalizerTest.xml",
+      "suite": {
+        "name": "app.skein.feature.chat.TurnFinalizerTest",
+        "tests": "2",
+        "skipped": "0",
+        "failures": "0",
+        "errors": "0",
+        "timestamp": "2026-09-29T06:33:41.898Z",
+        "hostname": "Andrews-MacBook-Pro.local",
+        "time": "0.003"
+      },
+      "actualCases": 2,
+      "failure": 0,
+      "error": 0,
+      "skipped": 0,
+      "badCases": []
+    },
+    {
+      "path": "feature/chat/build/test-results/testDebugUnitTest/TEST-app.skein.feature.chat.TurnSpaceBindingTest.xml",
+      "suite": {
+        "name": "app.skein.feature.chat.TurnSpaceBindingTest",
+        "tests": "3",
+        "skipped": "0",
+        "failures": "0",
+        "errors": "0",
+        "timestamp": "2026-09-29T06:33:41.901Z",
+        "hostname": "Andrews-MacBook-Pro.local",
+        "time": "0.006"
+      },
+      "actualCases": 3,
+      "failure": 0,
+      "error": 0,
+      "skipped": 0,
+      "badCases": []
+    },
+    {
+      "path": "feature/chat/build/test-results/testDebugUnitTest/TEST-app.skein.feature.chat.drafts.DraftComposerStateTest.xml",
+      "suite": {
+        "name": "app.skein.feature.chat.drafts.DraftComposerStateTest",
+        "tests": "3",
+        "skipped": "0",
+        "failures": "0",
+        "errors": "0",
+        "timestamp": "2026-09-29T06:33:41.909Z",
+        "hostname": "Andrews-MacBook-Pro.local",
+        "time": "0.108"
+      },
+      "actualCases": 3,
+      "failure": 0,
+      "error": 0,
+      "skipped": 0,
+      "badCases": []
+    },
+    {
+      "path": "feature/chat/build/test-results/testDebugUnitTest/TEST-app.skein.feature.chat.drafts.SessionDraftStoreTest.xml",
+      "suite": {
+        "name": "app.skein.feature.chat.drafts.SessionDraftStoreTest",
+        "tests": "16",
+        "skipped": "0",
+        "failures": "0",
+        "errors": "0",
+        "timestamp": "2026-09-29T06:33:42.018Z",
+        "hostname": "Andrews-MacBook-Pro.local",
+        "time": "0.016"
+      },
+      "actualCases": 16,
+      "failure": 0,
+      "error": 0,
+      "skipped": 0,
+      "badCases": []
+    },
+    {
+      "path": "feature/chat/build/test-results/testDebugUnitTest/TEST-app.skein.feature.chat.entries.ChatEntriesTest.xml",
+      "suite": {
+        "name": "app.skein.feature.chat.entries.ChatEntriesTest",
+        "tests": "10",
+        "skipped": "0",
+        "failures": "0",
+        "errors": "0",
+        "timestamp": "2026-09-29T06:33:42.037Z",
+        "hostname": "Andrews-MacBook-Pro.local",
+        "time": "0.931"
+      },
+      "actualCases": 10,
+      "failure": 0,
+      "error": 0,
+      "skipped": 0,
+      "badCases": []
+    },
+    {
+      "path": "feature/chat/build/test-results/testDebugUnitTest/TEST-app.skein.feature.chat.entries.KnowledgeInspectorTest.xml",
+      "suite": {
+        "name": "app.skein.feature.chat.entries.KnowledgeInspectorTest",
+        "tests": "3",
+        "skipped": "0",
+        "failures": "0",
+        "errors": "0",
+        "timestamp": "2026-09-29T06:33:42.971Z",
+        "hostname": "Andrews-MacBook-Pro.local",
+        "time": "0.404"
+      },
+      "actualCases": 3,
+      "failure": 0,
+      "error": 0,
+      "skipped": 0,
+      "badCases": []
+    },
+    {
+      "path": "feature/chat/build/test-results/testDebugUnitTest/TEST-app.skein.feature.chat.entries.ProvisionalTitleTest.xml",
+      "suite": {
+        "name": "app.skein.feature.chat.entries.ProvisionalTitleTest",
+        "tests": "4",
+        "skipped": "0",
+        "failures": "0",
+        "errors": "0",
+        "timestamp": "2026-09-29T06:33:43.376Z",
+        "hostname": "Andrews-MacBook-Pro.local",
+        "time": "0.002"
+      },
+      "actualCases": 4,
+      "failure": 0,
+      "error": 0,
+      "skipped": 0,
+      "badCases": []
+    },
+    {
+      "path": "feature/chat/build/test-results/testDebugUnitTest/TEST-app.skein.feature.chat.screenshots.ChatInferenceErrorScreenshotTest.xml",
+      "suite": {
+        "name": "app.skein.feature.chat.screenshots.ChatInferenceErrorScreenshotTest",
+        "tests": "36",
+        "skipped": "0",
+        "failures": "0",
+        "errors": "0",
+        "timestamp": "2026-09-29T06:33:43.382Z",
+        "hostname": "Andrews-MacBook-Pro.local",
+        "time": "2.543"
+      },
+      "actualCases": 36,
+      "failure": 0,
+      "error": 0,
+      "skipped": 0,
+      "badCases": []
+    },
+    {
+      "path": "feature/chat/build/test-results/testDebugUnitTest/TEST-app.skein.feature.chat.screenshots.ChatScreenshotTest.xml",
+      "suite": {
+        "name": "app.skein.feature.chat.screenshots.ChatScreenshotTest",
+        "tests": "42",
+        "skipped": "8",
+        "failures": "0",
+        "errors": "0",
+        "timestamp": "2026-09-29T06:33:45.930Z",
+        "hostname": "Andrews-MacBook-Pro.local",
+        "time": "1.108"
+      },
+      "actualCases": 42,
+      "failure": 0,
+      "error": 0,
+      "skipped": 8,
+      "badCases": [
+        {
+          "name": "chatStreaming[fold-outer-443__light__fs150]",
+          "status": [
+            "skipped"
+          ]
+        },
+        {
+          "name": "chatEmpty[fold-outer-443__light__fs150]",
+          "status": [
+            "skipped"
+          ]
+        },
+        {
+          "name": "chatStreaming[fold-outer-443__dark__fs150]",
+          "status": [
+            "skipped"
+          ]
+        },
+        {
+          "name": "chatEmpty[fold-outer-443__dark__fs150]",
+          "status": [
+            "skipped"
+          ]
+        },
+        {
+          "name": "chatStreaming[fold-outer-524__light__fs150]",
+          "status": [
+            "skipped"
+          ]
+        },
+        {
+          "name": "chatEmpty[fold-outer-524__light__fs150]",
+          "status": [
+            "skipped"
+          ]
+        },
+        {
+          "name": "chatStreaming[fold-outer-524__dark__fs150]",
+          "status": [
+            "skipped"
+          ]
+        },
+        {
+          "name": "chatEmpty[fold-outer-524__dark__fs150]",
+          "status": [
+            "skipped"
+          ]
+        }
+      ]
+    },
+    {
+      "path": "feature/chat/build/test-results/testDebugUnitTest/TEST-app.skein.feature.chat.screenshots.ChatShellScreenshotTest.xml",
+      "suite": {
+        "name": "app.skein.feature.chat.screenshots.ChatShellScreenshotTest",
+        "tests": "56",
+        "skipped": "4",
+        "failures": "0",
+        "errors": "0",
+        "timestamp": "2026-09-29T06:33:47.042Z",
+        "hostname": "Andrews-MacBook-Pro.local",
+        "time": "1.788"
+      },
+      "actualCases": 56,
+      "failure": 0,
+      "error": 0,
+      "skipped": 4,
+      "badCases": [
+        {
+          "name": "drawerOpen[fold-inner-1007__light__fs100]",
+          "status": [
+            "skipped"
+          ]
+        },
+        {
+          "name": "drawerOpen[fold-inner-1007__dark__fs100]",
+          "status": [
+            "skipped"
+          ]
+        },
+        {
+          "name": "drawerOpen[fold-inner-1007-land__light__fs100]",
+          "status": [
+            "skipped"
+          ]
+        },
+        {
+          "name": "drawerOpen[fold-inner-1007-land__dark__fs100]",
+          "status": [
+            "skipped"
+          ]
+        }
+      ]
+    },
+    {
+      "path": "feature/chat/build/test-results/testDebugUnitTest/TEST-app.skein.feature.chat.screenshots.KnowledgeInspectorScreenshotTest.xml",
+      "suite": {
+        "name": "app.skein.feature.chat.screenshots.KnowledgeInspectorScreenshotTest",
+        "tests": "42",
+        "skipped": "0",
+        "failures": "0",
+        "errors": "0",
+        "timestamp": "2026-09-29T06:33:48.834Z",
+        "hostname": "Andrews-MacBook-Pro.local",
+        "time": "1.429"
+      },
+      "actualCases": 42,
+      "failure": 0,
+      "error": 0,
+      "skipped": 0,
+      "badCases": []
+    },
+    {
+      "path": "feature/editor/build/test-results/testDebugUnitTest/TEST-app.skein.feature.editor.EditorAutosaveTest.xml",
+      "suite": {
+        "name": "app.skein.feature.editor.EditorAutosaveTest",
+        "tests": "6",
+        "skipped": "0",
+        "failures": "0",
+        "errors": "0",
+        "timestamp": "2026-09-29T06:33:52.552Z",
+        "hostname": "Andrews-MacBook-Pro.local",
+        "time": "0.077"
+      },
+      "actualCases": 6,
+      "failure": 0,
+      "error": 0,
+      "skipped": 0,
+      "badCases": []
+    },
+    {
+      "path": "feature/editor/build/test-results/testDebugUnitTest/TEST-app.skein.feature.editor.EditorStateFrontmatterTest.xml",
+      "suite": {
+        "name": "app.skein.feature.editor.EditorStateFrontmatterTest",
+        "tests": "14",
+        "skipped": "0",
+        "failures": "0",
+        "errors": "0",
+        "timestamp": "2026-09-29T06:33:52.630Z",
+        "hostname": "Andrews-MacBook-Pro.local",
+        "time": "0.005"
+      },
+      "actualCases": 14,
+      "failure": 0,
+      "error": 0,
+      "skipped": 0,
+      "badCases": []
+    },
+    {
+      "path": "feature/editor/build/test-results/testDebugUnitTest/TEST-app.skein.feature.editor.LineModelTest.xml",
+      "suite": {
+        "name": "app.skein.feature.editor.LineModelTest",
+        "tests": "4",
+        "skipped": "0",
+        "failures": "0",
+        "errors": "0",
+        "timestamp": "2026-09-29T06:33:52.636Z",
+        "hostname": "Andrews-MacBook-Pro.local",
+        "time": "0.001"
+      },
+      "actualCases": 4,
+      "failure": 0,
+      "error": 0,
+      "skipped": 0,
+      "badCases": []
+    },
+    {
+      "path": "feature/editor/build/test-results/testDebugUnitTest/TEST-app.skein.feature.editor.LivePreviewTransformerTest.xml",
+      "suite": {
+        "name": "app.skein.feature.editor.LivePreviewTransformerTest",
+        "tests": "23",
+        "skipped": "0",
+        "failures": "0",
+        "errors": "0",
+        "timestamp": "2026-09-29T06:33:52.638Z",
+        "hostname": "Andrews-MacBook-Pro.local",
+        "time": "0.012"
+      },
+      "actualCases": 23,
+      "failure": 0,
+      "error": 0,
+      "skipped": 0,
+      "badCases": []
+    },
+    {
+      "path": "feature/editor/build/test-results/testDebugUnitTest/TEST-app.skein.feature.editor.OffsetMappingTest.xml",
+      "suite": {
+        "name": "app.skein.feature.editor.OffsetMappingTest",
+        "tests": "8",
+        "skipped": "0",
+        "failures": "0",
+        "errors": "0",
+        "timestamp": "2026-09-29T06:33:52.651Z",
+        "hostname": "Andrews-MacBook-Pro.local",
+        "time": "0.01"
+      },
+      "actualCases": 8,
+      "failure": 0,
+      "error": 0,
+      "skipped": 0,
+      "badCases": []
+    },
+    {
+      "path": "feature/editor/build/test-results/testDebugUnitTest/TEST-app.skein.feature.editor.SkeinEditorInteractionTest.xml",
+      "suite": {
+        "name": "app.skein.feature.editor.SkeinEditorInteractionTest",
+        "tests": "16",
+        "skipped": "0",
+        "failures": "0",
+        "errors": "0",
+        "timestamp": "2026-09-29T06:33:52.721Z",
+        "hostname": "Andrews-MacBook-Pro.local",
+        "time": "3.119"
+      },
+      "actualCases": 16,
+      "failure": 0,
+      "error": 0,
+      "skipped": 0,
+      "badCases": []
+    },
+    {
+      "path": "feature/editor/build/test-results/testDebugUnitTest/TEST-app.skein.feature.editor.autocomplete.TitleMatcherTest.xml",
+      "suite": {
+        "name": "app.skein.feature.editor.autocomplete.TitleMatcherTest",
+        "tests": "7",
+        "skipped": "0",
+        "failures": "0",
+        "errors": "0",
+        "timestamp": "2026-09-29T06:33:55.842Z",
+        "hostname": "Andrews-MacBook-Pro.local",
+        "time": "0.001"
+      },
+      "actualCases": 7,
+      "failure": 0,
+      "error": 0,
+      "skipped": 0,
+      "badCases": []
+    },
+    {
+      "path": "feature/editor/build/test-results/testDebugUnitTest/TEST-app.skein.feature.editor.autocomplete.WikilinkAutocompleteStateTest.xml",
+      "suite": {
+        "name": "app.skein.feature.editor.autocomplete.WikilinkAutocompleteStateTest",
+        "tests": "13",
+        "skipped": "0",
+        "failures": "0",
+        "errors": "0",
+        "timestamp": "2026-09-29T06:33:55.843Z",
+        "hostname": "Andrews-MacBook-Pro.local",
+        "time": "0.011"
+      },
+      "actualCases": 13,
+      "failure": 0,
+      "error": 0,
+      "skipped": 0,
+      "badCases": []
+    },
+    {
+      "path": "feature/editor/build/test-results/testDebugUnitTest/TEST-app.skein.feature.editor.autocomplete.WikilinkTriggerTest.xml",
+      "suite": {
+        "name": "app.skein.feature.editor.autocomplete.WikilinkTriggerTest",
+        "tests": "12",
+        "skipped": "0",
+        "failures": "0",
+        "errors": "0",
+        "timestamp": "2026-09-29T06:33:55.854Z",
+        "hostname": "Andrews-MacBook-Pro.local",
+        "time": "0.001"
+      },
+      "actualCases": 12,
+      "failure": 0,
+      "error": 0,
+      "skipped": 0,
+      "badCases": []
+    },
+    {
+      "path": "feature/editor/build/test-results/testDebugUnitTest/TEST-app.skein.feature.editor.backlinks.BacklinksStateTest.xml",
+      "suite": {
+        "name": "app.skein.feature.editor.backlinks.BacklinksStateTest",
+        "tests": "8",
+        "skipped": "0",
+        "failures": "0",
+        "errors": "0",
+        "timestamp": "2026-09-29T06:33:55.857Z",
+        "hostname": "Andrews-MacBook-Pro.local",
+        "time": "0.045"
+      },
+      "actualCases": 8,
+      "failure": 0,
+      "error": 0,
+      "skipped": 0,
+      "badCases": []
+    },
+    {
+      "path": "feature/editor/build/test-results/testDebugUnitTest/TEST-app.skein.feature.editor.entries.KnowledgeEntriesTest.xml",
+      "suite": {
+        "name": "app.skein.feature.editor.entries.KnowledgeEntriesTest",
+        "tests": "4",
+        "skipped": "0",
+        "failures": "0",
+        "errors": "0",
+        "timestamp": "2026-09-29T06:33:55.905Z",
+        "hostname": "Andrews-MacBook-Pro.local",
+        "time": "0.983"
+      },
+      "actualCases": 4,
+      "failure": 0,
+      "error": 0,
+      "skipped": 0,
+      "badCases": []
+    },
+    {
+      "path": "feature/editor/build/test-results/testDebugUnitTest/TEST-app.skein.feature.editor.entries.KnowledgePreparationTest.xml",
+      "suite": {
+        "name": "app.skein.feature.editor.entries.KnowledgePreparationTest",
+        "tests": "1",
+        "skipped": "0",
+        "failures": "0",
+        "errors": "0",
+        "timestamp": "2026-09-29T06:33:56.889Z",
+        "hostname": "Andrews-MacBook-Pro.local",
+        "time": "0.068"
+      },
+      "actualCases": 1,
+      "failure": 0,
+      "error": 0,
+      "skipped": 0,
+      "badCases": []
+    },
+    {
+      "path": "feature/editor/build/test-results/testDebugUnitTest/TEST-app.skein.feature.editor.frontmatter.FrontmatterBlockTest.xml",
+      "suite": {
+        "name": "app.skein.feature.editor.frontmatter.FrontmatterBlockTest",
+        "tests": "5",
+        "skipped": "0",
+        "failures": "0",
+        "errors": "0",
+        "timestamp": "2026-09-29T06:33:56.958Z",
+        "hostname": "Andrews-MacBook-Pro.local",
+        "time": "0.0"
+      },
+      "actualCases": 5,
+      "failure": 0,
+      "error": 0,
+      "skipped": 0,
+      "badCases": []
+    },
+    {
+      "path": "feature/editor/build/test-results/testDebugUnitTest/TEST-app.skein.feature.editor.frontmatter.FrontmatterChipLabelTest.xml",
+      "suite": {
+        "name": "app.skein.feature.editor.frontmatter.FrontmatterChipLabelTest",
+        "tests": "4",
+        "skipped": "0",
+        "failures": "0",
+        "errors": "0",
+        "timestamp": "2026-09-29T06:33:56.959Z",
+        "hostname": "Andrews-MacBook-Pro.local",
+        "time": "0.001"
+      },
+      "actualCases": 4,
+      "failure": 0,
+      "error": 0,
+      "skipped": 0,
+      "badCases": []
+    },
+    {
+      "path": "feature/editor/build/test-results/testDebugUnitTest/TEST-app.skein.feature.editor.frontmatter.ProtectedIdGuardTest.xml",
+      "suite": {
+        "name": "app.skein.feature.editor.frontmatter.ProtectedIdGuardTest",
+        "tests": "7",
+        "skipped": "0",
+        "failures": "0",
+        "errors": "0",
+        "timestamp": "2026-09-29T06:33:56.960Z",
+        "hostname": "Andrews-MacBook-Pro.local",
+        "time": "0.001"
+      },
+      "actualCases": 7,
+      "failure": 0,
+      "error": 0,
+      "skipped": 0,
+      "badCases": []
+    },
+    {
+      "path": "feature/editor/build/test-results/testDebugUnitTest/TEST-app.skein.feature.editor.notetab.EditorFlushTest.xml",
+      "suite": {
+        "name": "app.skein.feature.editor.notetab.EditorFlushTest",
+        "tests": "3",
+        "skipped": "0",
+        "failures": "0",
+        "errors": "0",
+        "timestamp": "2026-09-29T06:33:56.962Z",
+        "hostname": "Andrews-MacBook-Pro.local",
+        "time": "0.092"
+      },
+      "actualCases": 3,
+      "failure": 0,
+      "error": 0,
+      "skipped": 0,
+      "badCases": []
+    },
+    {
+      "path": "feature/editor/build/test-results/testDebugUnitTest/TEST-app.skein.feature.editor.notetab.NoteTabEditorContrastTest.xml",
+      "suite": {
+        "name": "app.skein.feature.editor.notetab.NoteTabEditorContrastTest",
+        "tests": "2",
+        "skipped": "0",
+        "failures": "0",
+        "errors": "0",
+        "timestamp": "2026-09-29T06:33:57.056Z",
+        "hostname": "Andrews-MacBook-Pro.local",
+        "time": "2.315"
+      },
+      "actualCases": 2,
+      "failure": 0,
+      "error": 0,
+      "skipped": 0,
+      "badCases": []
+    },
+    {
+      "path": "feature/editor/build/test-results/testDebugUnitTest/TEST-app.skein.feature.editor.notetab.NoteTabShareTest.xml",
+      "suite": {
+        "name": "app.skein.feature.editor.notetab.NoteTabShareTest",
+        "tests": "6",
+        "skipped": "0",
+        "failures": "0",
+        "errors": "0",
+        "timestamp": "2026-09-29T06:33:59.373Z",
+        "hostname": "Andrews-MacBook-Pro.local",
+        "time": "0.068"
+      },
+      "actualCases": 6,
+      "failure": 0,
+      "error": 0,
+      "skipped": 0,
+      "badCases": []
+    },
+    {
+      "path": "feature/editor/build/test-results/testDebugUnitTest/TEST-app.skein.feature.editor.notetab.NoteTabStateTest.xml",
+      "suite": {
+        "name": "app.skein.feature.editor.notetab.NoteTabStateTest",
+        "tests": "15",
+        "skipped": "0",
+        "failures": "0",
+        "errors": "0",
+        "timestamp": "2026-09-29T06:33:59.442Z",
+        "hostname": "Andrews-MacBook-Pro.local",
+        "time": "0.031"
+      },
+      "actualCases": 15,
+      "failure": 0,
+      "error": 0,
+      "skipped": 0,
+      "badCases": []
+    },
+    {
+      "path": "feature/editor/build/test-results/testDebugUnitTest/TEST-app.skein.feature.editor.notetab.NoteTabWikilinkTest.xml",
+      "suite": {
+        "name": "app.skein.feature.editor.notetab.NoteTabWikilinkTest",
+        "tests": "5",
+        "skipped": "0",
+        "failures": "0",
+        "errors": "0",
+        "timestamp": "2026-09-29T06:33:59.474Z",
+        "hostname": "Andrews-MacBook-Pro.local",
+        "time": "0.228"
+      },
+      "actualCases": 5,
+      "failure": 0,
+      "error": 0,
+      "skipped": 0,
+      "badCases": []
+    },
+    {
+      "path": "feature/editor/build/test-results/testDebugUnitTest/TEST-app.skein.feature.editor.notetab.NoteTypingTest.xml",
+      "suite": {
+        "name": "app.skein.feature.editor.notetab.NoteTypingTest",
+        "tests": "2",
+        "skipped": "0",
+        "failures": "0",
+        "errors": "0",
+        "timestamp": "2026-09-29T06:33:59.703Z",
+        "hostname": "Andrews-MacBook-Pro.local",
+        "time": "0.074"
+      },
+      "actualCases": 2,
+      "failure": 0,
+      "error": 0,
+      "skipped": 0,
+      "badCases": []
+    },
+    {
+      "path": "feature/editor/build/test-results/testDebugUnitTest/TEST-app.skein.feature.editor.notetab.SaveAsIoErrorIsReportedTest.xml",
+      "suite": {
+        "name": "app.skein.feature.editor.notetab.SaveAsIoErrorIsReportedTest",
+        "tests": "2",
+        "skipped": "0",
+        "failures": "0",
+        "errors": "0",
+        "timestamp": "2026-09-29T06:33:59.778Z",
+        "hostname": "Andrews-MacBook-Pro.local",
+        "time": "0.119"
+      },
+      "actualCases": 2,
+      "failure": 0,
+      "error": 0,
+      "skipped": 0,
+      "badCases": []
+    },
+    {
+      "path": "feature/editor/build/test-results/testDebugUnitTest/TEST-app.skein.feature.editor.notetab.ShareMenuTest.xml",
+      "suite": {
+        "name": "app.skein.feature.editor.notetab.ShareMenuTest",
+        "tests": "4",
+        "skipped": "0",
+        "failures": "0",
+        "errors": "0",
+        "timestamp": "2026-09-29T06:33:59.898Z",
+        "hostname": "Andrews-MacBook-Pro.local",
+        "time": "0.149"
+      },
+      "actualCases": 4,
+      "failure": 0,
+      "error": 0,
+      "skipped": 0,
+      "badCases": []
+    },
+    {
+      "path": "feature/editor/build/test-results/testDebugUnitTest/TEST-app.skein.feature.editor.screenshots.KnowledgeShellScreenshotTest.xml",
+      "suite": {
+        "name": "app.skein.feature.editor.screenshots.KnowledgeShellScreenshotTest",
+        "tests": "30",
+        "skipped": "18",
+        "failures": "0",
+        "errors": "0",
+        "timestamp": "2026-09-29T06:34:00.055Z",
+        "hostname": "Andrews-MacBook-Pro.local",
+        "time": "1.537"
+      },
+      "actualCases": 30,
+      "failure": 0,
+      "error": 0,
+      "skipped": 18,
+      "badCases": [
+        {
+          "name": "file[phone__light__fs100]",
+          "status": [
+            "skipped"
+          ]
+        },
+        {
+          "name": "list[phone__light__fs100]",
+          "status": [
+            "skipped"
+          ]
+        },
+        {
+          "name": "note[phone__light__fs100]",
+          "status": [
+            "skipped"
+          ]
+        },
+        {
+          "name": "file[phone__dark__fs100]",
+          "status": [
+            "skipped"
+          ]
+        },
+        {
+          "name": "list[phone__dark__fs100]",
+          "status": [
+            "skipped"
+          ]
+        },
+        {
+          "name": "note[phone__dark__fs100]",
+          "status": [
+            "skipped"
+          ]
+        },
+        {
+          "name": "file[fold-outer-443__light__fs100]",
+          "status": [
+            "skipped"
+          ]
+        },
+        {
+          "name": "list[fold-outer-443__light__fs100]",
+          "status": [
+            "skipped"
+          ]
+        },
+        {
+          "name": "note[fold-outer-443__light__fs100]",
+          "status": [
+            "skipped"
+          ]
+        },
+        {
+          "name": "file[fold-outer-443__dark__fs100]",
+          "status": [
+            "skipped"
+          ]
+        },
+        {
+          "name": "list[fold-outer-443__dark__fs100]",
+          "status": [
+            "skipped"
+          ]
+        },
+        {
+          "name": "note[fold-outer-443__dark__fs100]",
+          "status": [
+            "skipped"
+          ]
+        },
+        {
+          "name": "file[fold-inner-1007-land__light__fs100]",
+          "status": [
+            "skipped"
+          ]
+        },
+        {
+          "name": "list[fold-inner-1007-land__light__fs100]",
+          "status": [
+            "skipped"
+          ]
+        },
+        {
+          "name": "note[fold-inner-1007-land__light__fs100]",
+          "status": [
+            "skipped"
+          ]
+        },
+        {
+          "name": "file[fold-inner-1007-land__dark__fs100]",
+          "status": [
+            "skipped"
+          ]
+        },
+        {
+          "name": "list[fold-inner-1007-land__dark__fs100]",
+          "status": [
+            "skipped"
+          ]
+        },
+        {
+          "name": "note[fold-inner-1007-land__dark__fs100]",
+          "status": [
+            "skipped"
+          ]
+        }
+      ]
+    },
+    {
+      "path": "feature/editor/build/test-results/testDebugUnitTest/TEST-app.skein.feature.editor.screenshots.NoteTabScreenshotTest.xml",
+      "suite": {
+        "name": "app.skein.feature.editor.screenshots.NoteTabScreenshotTest",
+        "tests": "20",
+        "skipped": "0",
+        "failures": "0",
+        "errors": "0",
+        "timestamp": "2026-09-29T06:34:01.595Z",
+        "hostname": "Andrews-MacBook-Pro.local",
+        "time": "0.609"
+      },
+      "actualCases": 20,
+      "failure": 0,
+      "error": 0,
+      "skipped": 0,
+      "badCases": []
+    },
+    {
+      "path": "feature/editor/build/test-results/testDebugUnitTest/TEST-app.skein.feature.editor.screenshots.UnresolvedLinkScreenshotTest.xml",
+      "suite": {
+        "name": "app.skein.feature.editor.screenshots.UnresolvedLinkScreenshotTest",
+        "tests": "36",
+        "skipped": "0",
+        "failures": "0",
+        "errors": "0",
+        "timestamp": "2026-09-29T06:34:02.208Z",
+        "hostname": "Andrews-MacBook-Pro.local",
+        "time": "1.574"
+      },
+      "actualCases": 36,
+      "failure": 0,
+      "error": 0,
+      "skipped": 0,
+      "badCases": []
+    },
+    {
+      "path": "feature/editor/build/test-results/testDebugUnitTest/TEST-app.skein.feature.editor.share.SaveAsIntentsTest.xml",
+      "suite": {
+        "name": "app.skein.feature.editor.share.SaveAsIntentsTest",
+        "tests": "4",
+        "skipped": "0",
+        "failures": "0",
+        "errors": "0",
+        "timestamp": "2026-09-29T06:34:03.783Z",
+        "hostname": "Andrews-MacBook-Pro.local",
+        "time": "0.021"
+      },
+      "actualCases": 4,
+      "failure": 0,
+      "error": 0,
+      "skipped": 0,
+      "badCases": []
+    },
+    {
+      "path": "feature/editor/build/test-results/testDebugUnitTest/TEST-app.skein.feature.editor.share.ShareIntentsTest.xml",
+      "suite": {
+        "name": "app.skein.feature.editor.share.ShareIntentsTest",
+        "tests": "5",
+        "skipped": "0",
+        "failures": "0",
+        "errors": "0",
+        "timestamp": "2026-09-29T06:34:03.804Z",
+        "hostname": "Andrews-MacBook-Pro.local",
+        "time": "0.021"
+      },
+      "actualCases": 5,
+      "failure": 0,
+      "error": 0,
+      "skipped": 0,
+      "badCases": []
+    },
+    {
+      "path": "feature/graph/build/test-results/testDebugUnitTest/TEST-app.skein.feature.graph.ForceLayoutTest.xml",
+      "suite": {
+        "name": "app.skein.feature.graph.ForceLayoutTest",
+        "tests": "10",
+        "skipped": "0",
+        "failures": "0",
+        "errors": "0",
+        "timestamp": "2026-09-29T06:33:53.500Z",
+        "hostname": "Andrews-MacBook-Pro.local",
+        "time": "0.024"
+      },
+      "actualCases": 10,
+      "failure": 0,
+      "error": 0,
+      "skipped": 0,
+      "badCases": []
+    },
+    {
+      "path": "feature/graph/build/test-results/testDebugUnitTest/TEST-app.skein.feature.graph.GraphHitTestTest.xml",
+      "suite": {
+        "name": "app.skein.feature.graph.GraphHitTestTest",
+        "tests": "7",
+        "skipped": "0",
+        "failures": "0",
+        "errors": "0",
+        "timestamp": "2026-09-29T06:33:53.526Z",
+        "hostname": "Andrews-MacBook-Pro.local",
+        "time": "0.002"
+      },
+      "actualCases": 7,
+      "failure": 0,
+      "error": 0,
+      "skipped": 0,
+      "badCases": []
+    },
+    {
+      "path": "feature/graph/build/test-results/testDebugUnitTest/TEST-app.skein.feature.graph.GraphSimulationTest.xml",
+      "suite": {
+        "name": "app.skein.feature.graph.GraphSimulationTest",
+        "tests": "4",
+        "skipped": "0",
+        "failures": "0",
+        "errors": "0",
+        "timestamp": "2026-09-29T06:33:53.529Z",
+        "hostname": "Andrews-MacBook-Pro.local",
+        "time": "0.004"
+      },
+      "actualCases": 4,
+      "failure": 0,
+      "error": 0,
+      "skipped": 0,
+      "badCases": []
+    },
+    {
+      "path": "feature/graph/build/test-results/testDebugUnitTest/TEST-app.skein.feature.graph.GraphStateTest.xml",
+      "suite": {
+        "name": "app.skein.feature.graph.GraphStateTest",
+        "tests": "9",
+        "skipped": "0",
+        "failures": "0",
+        "errors": "0",
+        "timestamp": "2026-09-29T06:33:53.534Z",
+        "hostname": "Andrews-MacBook-Pro.local",
+        "time": "0.077"
+      },
+      "actualCases": 9,
+      "failure": 0,
+      "error": 0,
+      "skipped": 0,
+      "badCases": []
+    },
+    {
+      "path": "feature/graph/build/test-results/testDebugUnitTest/TEST-app.skein.feature.graph.GraphTransformTest.xml",
+      "suite": {
+        "name": "app.skein.feature.graph.GraphTransformTest",
+        "tests": "8",
+        "skipped": "0",
+        "failures": "0",
+        "errors": "0",
+        "timestamp": "2026-09-29T06:33:53.612Z",
+        "hostname": "Andrews-MacBook-Pro.local",
+        "time": "0.0"
+      },
+      "actualCases": 8,
+      "failure": 0,
+      "error": 0,
+      "skipped": 0,
+      "badCases": []
+    },
+    {
+      "path": "feature/graph/build/test-results/testDebugUnitTest/TEST-app.skein.feature.graph.GraphViewDragTest.xml",
+      "suite": {
+        "name": "app.skein.feature.graph.GraphViewDragTest",
+        "tests": "2",
+        "skipped": "0",
+        "failures": "0",
+        "errors": "0",
+        "timestamp": "2026-09-29T06:33:53.672Z",
+        "hostname": "Andrews-MacBook-Pro.local",
+        "time": "2.041"
+      },
+      "actualCases": 2,
+      "failure": 0,
+      "error": 0,
+      "skipped": 0,
+      "badCases": []
+    },
+    {
+      "path": "feature/graph/build/test-results/testDebugUnitTest/TEST-app.skein.feature.graph.ImportedLinkNodeTest.xml",
+      "suite": {
+        "name": "app.skein.feature.graph.ImportedLinkNodeTest",
+        "tests": "2",
+        "skipped": "0",
+        "failures": "0",
+        "errors": "0",
+        "timestamp": "2026-09-29T06:33:55.713Z",
+        "hostname": "Andrews-MacBook-Pro.local",
+        "time": "0.001"
+      },
+      "actualCases": 2,
+      "failure": 0,
+      "error": 0,
+      "skipped": 0,
+      "badCases": []
+    },
+    {
+      "path": "feature/graph/build/test-results/testDebugUnitTest/TEST-app.skein.feature.graph.entries.GraphEntriesTest.xml",
+      "suite": {
+        "name": "app.skein.feature.graph.entries.GraphEntriesTest",
+        "tests": "2",
+        "skipped": "0",
+        "failures": "0",
+        "errors": "0",
+        "timestamp": "2026-09-29T06:33:55.716Z",
+        "hostname": "Andrews-MacBook-Pro.local",
+        "time": "0.559"
+      },
+      "actualCases": 2,
+      "failure": 0,
+      "error": 0,
+      "skipped": 0,
+      "badCases": []
+    },
+    {
+      "path": "feature/graph/build/test-results/testDebugUnitTest/TEST-app.skein.feature.graph.screenshots.GraphScreenshotTest.xml",
+      "suite": {
+        "name": "app.skein.feature.graph.screenshots.GraphScreenshotTest",
+        "tests": "10",
+        "skipped": "0",
+        "failures": "0",
+        "errors": "0",
+        "timestamp": "2026-09-29T06:33:56.283Z",
+        "hostname": "Andrews-MacBook-Pro.local",
+        "time": "2.743"
+      },
+      "actualCases": 10,
+      "failure": 0,
+      "error": 0,
+      "skipped": 0,
+      "badCases": []
+    },
+    {
+      "path": "feature/graph/build/test-results/testDebugUnitTest/TEST-app.skein.feature.graph.screenshots.GraphShellScreenshotTest.xml",
+      "suite": {
+        "name": "app.skein.feature.graph.screenshots.GraphShellScreenshotTest",
+        "tests": "20",
+        "skipped": "12",
+        "failures": "0",
+        "errors": "0",
+        "timestamp": "2026-09-29T06:33:59.029Z",
+        "hostname": "Andrews-MacBook-Pro.local",
+        "time": "0.562"
+      },
+      "actualCases": 20,
+      "failure": 0,
+      "error": 0,
+      "skipped": 12,
+      "badCases": [
+        {
+          "name": "empty[phone__light__fs100]",
+          "status": [
+            "skipped"
+          ]
+        },
+        {
+          "name": "centred[phone__light__fs100]",
+          "status": [
+            "skipped"
+          ]
+        },
+        {
+          "name": "empty[phone__dark__fs100]",
+          "status": [
+            "skipped"
+          ]
+        },
+        {
+          "name": "centred[phone__dark__fs100]",
+          "status": [
+            "skipped"
+          ]
+        },
+        {
+          "name": "empty[fold-outer-443__light__fs100]",
+          "status": [
+            "skipped"
+          ]
+        },
+        {
+          "name": "centred[fold-outer-443__light__fs100]",
+          "status": [
+            "skipped"
+          ]
+        },
+        {
+          "name": "empty[fold-outer-443__dark__fs100]",
+          "status": [
+            "skipped"
+          ]
+        },
+        {
+          "name": "centred[fold-outer-443__dark__fs100]",
+          "status": [
+            "skipped"
+          ]
+        },
+        {
+          "name": "empty[fold-inner-1007-land__light__fs100]",
+          "status": [
+            "skipped"
+          ]
+        },
+        {
+          "name": "centred[fold-inner-1007-land__light__fs100]",
+          "status": [
+            "skipped"
+          ]
+        },
+        {
+          "name": "empty[fold-inner-1007-land__dark__fs100]",
+          "status": [
+            "skipped"
+          ]
+        },
+        {
+          "name": "centred[fold-inner-1007-land__dark__fs100]",
+          "status": [
+            "skipped"
+          ]
+        }
+      ]
+    },
+    {
+      "path": "feature/models/build/test-results/testDebugUnitTest/TEST-app.skein.feature.models.ModelDeleteConfirmationTest.xml",
+      "suite": {
+        "name": "app.skein.feature.models.ModelDeleteConfirmationTest",
+        "tests": "2",
+        "skipped": "0",
+        "failures": "0",
+        "errors": "0",
+        "timestamp": "2026-09-29T06:34:01.031Z",
+        "hostname": "Andrews-MacBook-Pro.local",
+        "time": "2.686"
+      },
+      "actualCases": 2,
+      "failure": 0,
+      "error": 0,
+      "skipped": 0,
+      "badCases": []
+    },
+    {
+      "path": "feature/models/build/test-results/testDebugUnitTest/TEST-app.skein.feature.models.entries.ModelsEntriesTest.xml",
+      "suite": {
+        "name": "app.skein.feature.models.entries.ModelsEntriesTest",
+        "tests": "2",
+        "skipped": "0",
+        "failures": "0",
+        "errors": "0",
+        "timestamp": "2026-09-29T06:34:03.720Z",
+        "hostname": "Andrews-MacBook-Pro.local",
+        "time": "0.436"
+      },
+      "actualCases": 2,
+      "failure": 0,
+      "error": 0,
+      "skipped": 0,
+      "badCases": []
+    },
+    {
+      "path": "feature/models/build/test-results/testDebugUnitTest/TEST-app.skein.feature.models.screenshots.ModelsScreenshotTest.xml",
+      "suite": {
+        "name": "app.skein.feature.models.screenshots.ModelsScreenshotTest",
+        "tests": "30",
+        "skipped": "0",
+        "failures": "0",
+        "errors": "0",
+        "timestamp": "2026-09-29T06:34:04.166Z",
+        "hostname": "Andrews-MacBook-Pro.local",
+        "time": "3.735"
+      },
+      "actualCases": 30,
+      "failure": 0,
+      "error": 0,
+      "skipped": 0,
+      "badCases": []
+    },
+    {
+      "path": "feature/models/build/test-results/testDebugUnitTest/TEST-app.skein.feature.models.screenshots.ModelsShellScreenshotTest.xml",
+      "suite": {
+        "name": "app.skein.feature.models.screenshots.ModelsShellScreenshotTest",
+        "tests": "20",
+        "skipped": "12",
+        "failures": "0",
+        "errors": "0",
+        "timestamp": "2026-09-29T06:34:07.904Z",
+        "hostname": "Andrews-MacBook-Pro.local",
+        "time": "0.52"
+      },
+      "actualCases": 20,
+      "failure": 0,
+      "error": 0,
+      "skipped": 12,
+      "badCases": [
+        {
+          "name": "list[phone__light__fs100]",
+          "status": [
+            "skipped"
+          ]
+        },
+        {
+          "name": "details[phone__light__fs100]",
+          "status": [
+            "skipped"
+          ]
+        },
+        {
+          "name": "list[phone__dark__fs100]",
+          "status": [
+            "skipped"
+          ]
+        },
+        {
+          "name": "details[phone__dark__fs100]",
+          "status": [
+            "skipped"
+          ]
+        },
+        {
+          "name": "list[fold-outer-443__light__fs100]",
+          "status": [
+            "skipped"
+          ]
+        },
+        {
+          "name": "details[fold-outer-443__light__fs100]",
+          "status": [
+            "skipped"
+          ]
+        },
+        {
+          "name": "list[fold-outer-443__dark__fs100]",
+          "status": [
+            "skipped"
+          ]
+        },
+        {
+          "name": "details[fold-outer-443__dark__fs100]",
+          "status": [
+            "skipped"
+          ]
+        },
+        {
+          "name": "list[fold-inner-1007-land__light__fs100]",
+          "status": [
+            "skipped"
+          ]
+        },
+        {
+          "name": "details[fold-inner-1007-land__light__fs100]",
+          "status": [
+            "skipped"
+          ]
+        },
+        {
+          "name": "list[fold-inner-1007-land__dark__fs100]",
+          "status": [
+            "skipped"
+          ]
+        },
+        {
+          "name": "details[fold-inner-1007-land__dark__fs100]",
+          "status": [
+            "skipped"
+          ]
+        }
+      ]
+    },
+    {
+      "path": "feature/settings/build/test-results/testDebugUnitTest/TEST-app.skein.feature.settings.AccessibilitySweepSmokeTest.xml",
+      "suite": {
+        "name": "app.skein.feature.settings.AccessibilitySweepSmokeTest",
+        "tests": "1",
+        "skipped": "0",
+        "failures": "0",
+        "errors": "0",
+        "timestamp": "2026-09-29T06:34:05.245Z",
+        "hostname": "Andrews-MacBook-Pro.local",
+        "time": "2.915"
+      },
+      "actualCases": 1,
+      "failure": 0,
+      "error": 0,
+      "skipped": 0,
+      "badCases": []
+    },
+    {
+      "path": "feature/settings/build/test-results/testDebugUnitTest/TEST-app.skein.feature.settings.LicenseGroupingTest.xml",
+      "suite": {
+        "name": "app.skein.feature.settings.LicenseGroupingTest",
+        "tests": "7",
+        "skipped": "0",
+        "failures": "0",
+        "errors": "0",
+        "timestamp": "2026-09-29T06:34:08.162Z",
+        "hostname": "Andrews-MacBook-Pro.local",
+        "time": "0.002"
+      },
+      "actualCases": 7,
+      "failure": 0,
+      "error": 0,
+      "skipped": 0,
+      "badCases": []
+    },
+    {
+      "path": "feature/settings/build/test-results/testDebugUnitTest/TEST-app.skein.feature.settings.LicensesRepositoryTest.xml",
+      "suite": {
+        "name": "app.skein.feature.settings.LicensesRepositoryTest",
+        "tests": "6",
+        "skipped": "0",
+        "failures": "0",
+        "errors": "0",
+        "timestamp": "2026-09-29T06:34:08.165Z",
+        "hostname": "Andrews-MacBook-Pro.local",
+        "time": "0.01"
+      },
+      "actualCases": 6,
+      "failure": 0,
+      "error": 0,
+      "skipped": 0,
+      "badCases": []
+    },
+    {
+      "path": "feature/settings/build/test-results/testDebugUnitTest/TEST-app.skein.feature.settings.RecoveryExportStateTest.xml",
+      "suite": {
+        "name": "app.skein.feature.settings.RecoveryExportStateTest",
+        "tests": "21",
+        "skipped": "0",
+        "failures": "0",
+        "errors": "0",
+        "timestamp": "2026-09-29T06:34:08.177Z",
+        "hostname": "Andrews-MacBook-Pro.local",
+        "time": "0.045"
+      },
+      "actualCases": 21,
+      "failure": 0,
+      "error": 0,
+      "skipped": 0,
+      "badCases": []
+    },
+    {
+      "path": "feature/settings/build/test-results/testDebugUnitTest/TEST-app.skein.feature.settings.SettingsNoDeadControlsTest.xml",
+      "suite": {
+        "name": "app.skein.feature.settings.SettingsNoDeadControlsTest",
+        "tests": "2",
+        "skipped": "0",
+        "failures": "0",
+        "errors": "0",
+        "timestamp": "2026-09-29T06:34:08.223Z",
+        "hostname": "Andrews-MacBook-Pro.local",
+        "time": "1.271"
+      },
+      "actualCases": 2,
+      "failure": 0,
+      "error": 0,
+      "skipped": 0,
+      "badCases": []
+    },
+    {
+      "path": "feature/settings/build/test-results/testDebugUnitTest/TEST-app.skein.feature.settings.SettingsScreenTest.xml",
+      "suite": {
+        "name": "app.skein.feature.settings.SettingsScreenTest",
+        "tests": "2",
+        "skipped": "0",
+        "failures": "0",
+        "errors": "0",
+        "timestamp": "2026-09-29T06:34:09.495Z",
+        "hostname": "Andrews-MacBook-Pro.local",
+        "time": "0.134"
+      },
+      "actualCases": 2,
+      "failure": 0,
+      "error": 0,
+      "skipped": 0,
+      "badCases": []
+    },
+    {
+      "path": "feature/settings/build/test-results/testDebugUnitTest/TEST-app.skein.feature.settings.SettingsViewModelTest.xml",
+      "suite": {
+        "name": "app.skein.feature.settings.SettingsViewModelTest",
+        "tests": "16",
+        "skipped": "0",
+        "failures": "0",
+        "errors": "0",
+        "timestamp": "2026-09-29T06:34:09.629Z",
+        "hostname": "Andrews-MacBook-Pro.local",
+        "time": "0.021"
+      },
+      "actualCases": 16,
+      "failure": 0,
+      "error": 0,
+      "skipped": 0,
+      "badCases": []
+    },
+    {
+      "path": "feature/settings/build/test-results/testDebugUnitTest/TEST-app.skein.feature.settings.ThemeModeRowTest.xml",
+      "suite": {
+        "name": "app.skein.feature.settings.ThemeModeRowTest",
+        "tests": "1",
+        "skipped": "0",
+        "failures": "0",
+        "errors": "0",
+        "timestamp": "2026-09-29T06:34:09.651Z",
+        "hostname": "Andrews-MacBook-Pro.local",
+        "time": "0.089"
+      },
+      "actualCases": 1,
+      "failure": 0,
+      "error": 0,
+      "skipped": 0,
+      "badCases": []
+    },
+    {
+      "path": "feature/settings/build/test-results/testDebugUnitTest/TEST-app.skein.feature.settings.entries.SettingsEntriesTest.xml",
+      "suite": {
+        "name": "app.skein.feature.settings.entries.SettingsEntriesTest",
+        "tests": "2",
+        "skipped": "0",
+        "failures": "0",
+        "errors": "0",
+        "timestamp": "2026-09-29T06:34:09.742Z",
+        "hostname": "Andrews-MacBook-Pro.local",
+        "time": "0.468"
+      },
+      "actualCases": 2,
+      "failure": 0,
+      "error": 0,
+      "skipped": 0,
+      "badCases": []
+    },
+    {
+      "path": "feature/settings/build/test-results/testDebugUnitTest/TEST-app.skein.feature.settings.screenshots.SettingsScreenshotTest.xml",
+      "suite": {
+        "name": "app.skein.feature.settings.screenshots.SettingsScreenshotTest",
+        "tests": "10",
+        "skipped": "0",
+        "failures": "0",
+        "errors": "0",
+        "timestamp": "2026-09-29T06:34:10.216Z",
+        "hostname": "Andrews-MacBook-Pro.local",
+        "time": "0.298"
+      },
+      "actualCases": 10,
+      "failure": 0,
+      "error": 0,
+      "skipped": 0,
+      "badCases": []
+    },
+    {
+      "path": "feature/settings/build/test-results/testDebugUnitTest/TEST-app.skein.feature.settings.screenshots.SettingsShellScreenshotTest.xml",
+      "suite": {
+        "name": "app.skein.feature.settings.screenshots.SettingsShellScreenshotTest",
+        "tests": "20",
+        "skipped": "12",
+        "failures": "0",
+        "errors": "0",
+        "timestamp": "2026-09-29T06:34:10.521Z",
+        "hostname": "Andrews-MacBook-Pro.local",
+        "time": "0.965"
+      },
+      "actualCases": 20,
+      "failure": 0,
+      "error": 0,
+      "skipped": 12,
+      "badCases": [
+        {
+          "name": "category[phone__light__fs100]",
+          "status": [
+            "skipped"
+          ]
+        },
+        {
+          "name": "categories[phone__light__fs100]",
+          "status": [
+            "skipped"
+          ]
+        },
+        {
+          "name": "category[phone__dark__fs100]",
+          "status": [
+            "skipped"
+          ]
+        },
+        {
+          "name": "categories[phone__dark__fs100]",
+          "status": [
+            "skipped"
+          ]
+        },
+        {
+          "name": "category[fold-outer-443__light__fs100]",
+          "status": [
+            "skipped"
+          ]
+        },
+        {
+          "name": "categories[fold-outer-443__light__fs100]",
+          "status": [
+            "skipped"
+          ]
+        },
+        {
+          "name": "category[fold-outer-443__dark__fs100]",
+          "status": [
+            "skipped"
+          ]
+        },
+        {
+          "name": "categories[fold-outer-443__dark__fs100]",
+          "status": [
+            "skipped"
+          ]
+        },
+        {
+          "name": "category[fold-inner-1007-land__light__fs100]",
+          "status": [
+            "skipped"
+          ]
+        },
+        {
+          "name": "categories[fold-inner-1007-land__light__fs100]",
+          "status": [
+            "skipped"
+          ]
+        },
+        {
+          "name": "category[fold-inner-1007-land__dark__fs100]",
+          "status": [
+            "skipped"
+          ]
+        },
+        {
+          "name": "categories[fold-inner-1007-land__dark__fs100]",
+          "status": [
+            "skipped"
+          ]
+        }
+      ]
+    },
+    {
+      "path": "feature/timeline/build/test-results/testDebugUnitTest/TEST-app.skein.feature.timeline.TimelineFormattingTest.xml",
+      "suite": {
+        "name": "app.skein.feature.timeline.TimelineFormattingTest",
+        "tests": "14",
+        "skipped": "0",
+        "failures": "0",
+        "errors": "0",
+        "timestamp": "2026-09-29T06:34:09.813Z",
+        "hostname": "Andrews-MacBook-Pro.local",
+        "time": "0.024"
+      },
+      "actualCases": 14,
+      "failure": 0,
+      "error": 0,
+      "skipped": 0,
+      "badCases": []
+    },
+    {
+      "path": "feature/timeline/build/test-results/testDebugUnitTest/TEST-app.skein.feature.timeline.TimelineStateTest.xml",
+      "suite": {
+        "name": "app.skein.feature.timeline.TimelineStateTest",
+        "tests": "15",
+        "skipped": "0",
+        "failures": "0",
+        "errors": "0",
+        "timestamp": "2026-09-29T06:34:09.840Z",
+        "hostname": "Andrews-MacBook-Pro.local",
+        "time": "0.128"
+      },
+      "actualCases": 15,
+      "failure": 0,
+      "error": 0,
+      "skipped": 0,
+      "badCases": []
+    },
+    {
+      "path": "feature/timeline/build/test-results/testDebugUnitTest/TEST-app.skein.feature.timeline.screenshots.TimelineScreenshotTest.xml",
+      "suite": {
+        "name": "app.skein.feature.timeline.screenshots.TimelineScreenshotTest",
+        "tests": "20",
+        "skipped": "0",
+        "failures": "0",
+        "errors": "0",
+        "timestamp": "2026-09-29T06:34:10.038Z",
+        "hostname": "Andrews-MacBook-Pro.local",
+        "time": "3.544"
+      },
+      "actualCases": 20,
+      "failure": 0,
+      "error": 0,
+      "skipped": 0,
+      "badCases": []
+    }
+  ],
+  "sourceCommit": "af5aa4dc7e1cababa7d52b544a5a7a92834fb63f",
+  "skipReview": "80 unchanged parameterized screenshot matrix exclusions (non-applicable window/font cases), kept separate from passes; no functional or new regression test skipped."
+}
