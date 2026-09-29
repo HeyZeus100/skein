@@ -1,0 +1,94 @@
+{
+  "schema_version": 1,
+  "status": "PASS_FRESH_NATIVE_PARITY_ONLY",
+  "run_id": "qwen15b-native-b-20260929T190035Z",
+  "source_sha": "920e820eb23d2c5f4b70dfa95515899559cb2098",
+  "test_build_sha": "920e820eb23d2c5f4b70dfa95515899559cb2098",
+  "release_sha256": "5ab6b2e799022409ec2853072a85bb1a045391297dbff053a3469f37a1cc191b",
+  "model": {
+    "sha256": "6a1a2eb6d15622bf3c96857206351ba97e1af16c30d7a74ee38970e434e9407e",
+    "size_bytes": 1117320736,
+    "template_sha256": "d5495a1e5db0611132a97e46a65dbb64a642a499421228b9c8b93229097fa9a4",
+    "full_staged_sha256_and_byte_count_verified": true,
+    "native_test_full_file_sha256_verified": true
+  },
+  "installed_apks": {
+    "app": {
+      "sha256": "b3fab0e408d79a5566fdf2334000e6c0095d710fcd50b77774038b35fc6ad46b",
+      "size_bytes": 127100043,
+      "copied_installed_bytes_rehashed": true
+    },
+    "native_test": {
+      "sha256": "c1186bc554ae89d89a35983f883354e436cb34f2cebb790cc06a3a896409fb2d",
+      "size_bytes": 130304344,
+      "copied_installed_bytes_rehashed": true
+    }
+  },
+  "production_app_action": "verify already-installed bytes only",
+  "native_reference_sha256": "5da60469b6af08d8ae199160602eabba4b58bd25773e951db90b48b433feffad",
+  "model_profile_sha256": "ad578c27b6f1da08f5a44fadf392391de932548d36a116ff2933cc0572e06a8d",
+  "actual_cases": {
+    "empty-system": 15,
+    "role-word": 9,
+    "unicode-whitespace": 25,
+    "repeated-turns": 21,
+    "literal-control-isolation": 14
+  },
+  "all_actual_arrays_match_fresh_host_reference": true,
+  "native_eog_scope": "classification-only",
+  "native_eog_matches_host_reference": true,
+  "instrumentation": {
+    "class": "app.skein.inference.service.SyntheticTemplateParityTest",
+    "method": "publicModelNativeTokenParity",
+    "junit_tests_passed": 1,
+    "junit_reported_seconds": 1.614,
+    "host_elapsed_seconds": 4.856,
+    "exit_code": 0,
+    "instrumentation_code": -1,
+    "host_timeout": false,
+    "log_sha256": "7a9ad8f54def3af6d2a1ca831be0bc1b3ca888e4a1a35fec70802d9f082223b2",
+    "timing_scope": "Test/orchestration duration only; no answer-generation or prefill speed measurement."
+  },
+  "teardown": {
+    "remote_stop_verified": true,
+    "exact_processes_absent": [
+      "app.skein.inference.service.test"
+    ],
+    "consecutive_absent_pid_checks": 2,
+    "active_instrumentation_absent": true,
+    "proof_sha256": "eb3a4d557b0712dbd2074ab70498121391312cac0b8ee039d00b8f90713a821e"
+  },
+  "root_review": {
+    "worktree": "ux-integration-20260929",
+    "path": "build/agent-logs/candidate-920e820-qwen15b-v6b/native-root-review.json",
+    "sha256": "4922e36c2a57062a5702d51a756314f13e480731d4b360ce0a406c9f14e4313d",
+    "status": "PASS_FRESH_NATIVE_PARITY_ONLY",
+    "source_summary_sha256": "5235538c0f6eef5a4e506fe1ba5ae92177799470e83013d24ba6cb52061bfd87",
+    "native_report_sha256": "e7ede60d0fab342d2aef3b6cd13bf6298a99241422754c9902c937679fdc9ece"
+  },
+  "prior_v6_attempt": {
+    "status": "REJECT_NATIVE_ACCEPTANCE_READ_ONLY_PREFLIGHT_FAILURE",
+    "apk_installs": 0,
+    "model_transfers": 0,
+    "instrumentation_started": false,
+    "cause": "Read-only storage mount parser rejected the returned data-directory mount alias before mutation.",
+    "original_evidence_preserved": true,
+    "failure_review_sha256": "86049b24e6256789e76ee8c8845181bb53f749a6e7ddf43e3b86021845f47c92",
+    "narrow_successor_fix": "Only verify_phase_storage changed to accept the observed known mount alias; the rest of the driver AST and storage threshold were unchanged.",
+    "successor_driver_sha256": "373efa38f390b13b2992c1817883346b7b7a7db6fa87e88d10f01957af566362",
+    "host_mock_tests_passed": 44,
+    "driver_root_review_sha256": "db97dd5c6c41d6a13b9f8473e09213f591750c3a9a2a98f3092012428799f45e",
+    "driver_independent_review_sha256": "50b06b562403b0d25968bafb554515e5c82a797cce3f4da9788758ca41ef4a28"
+  },
+  "unmeasured_in_this_run": [
+    "generated_stopping",
+    "answer_quality",
+    "citation_quality",
+    "answer_generation_speed",
+    "prefill_speed",
+    "owner_app_model_selection",
+    "live_UI_rehearsal"
+  ],
+  "answer_phase": "Approved to proceed separately; this record contains no answer-phase result.",
+  "sanitization": "native-parity.json and instrumentation.log are byte-identical public test outputs. This status selects reviewed public facts, omitting device serials, raw commands, absolute local paths, storage capacity and owner/private metadata."
+}
