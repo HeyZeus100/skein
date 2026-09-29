@@ -45,6 +45,7 @@ import app.skein.feature.shell.layout.SkeinPosture
 import app.skein.feature.shell.layout.SurfacePresentation
 import app.skein.feature.shell.layout.presentationOf
 import app.skein.feature.shell.layout.surfaceBounds
+import app.skein.feature.shell.layout.windowPartitions
 
 /** Entry metadata key: the entry is a §2.5 sheet surface on one pane. */
 internal const val SHEET_METADATA_KEY = "app.skein.feature.shell.host.sheet"
@@ -106,6 +107,12 @@ internal class SkeinSheetSceneStrategy<T : Any>(
                 } else {
                     layout.surfaceBounds(surface, layoutDirection)
                 },
+            peekPartitions =
+                when (layout.posture) {
+                    is SkeinPosture.Tabletop -> layout.windowPartitions(layoutDirection)?.anchors
+                    is SkeinPosture.Book -> listOf(layout.surfaceBounds(surface, layoutDirection))
+                    SkeinPosture.Flat -> null
+                },
             bottomSheetHeight = layout.size.height * BOTTOM_SHEET_FRACTION,
             onExpand = { onExpand(sheet.contentKey) },
             onDismiss = onBack,
@@ -128,6 +135,7 @@ private class SheetScene<T : Any>(
     val expanded: Boolean,
     val side: Boolean,
     val boundsInWindow: DpRect?,
+    val peekPartitions: List<DpRect>?,
     val bottomSheetHeight: androidx.compose.ui.unit.Dp,
     val onExpand: () -> Unit,
     val onDismiss: () -> Unit,
@@ -141,16 +149,18 @@ private class SheetScene<T : Any>(
             Column(Modifier.fillMaxSize()) {
                 Box(Modifier.weight(1f).fillMaxWidth()) { underlying.Content() }
                 if (!expanded) {
-                    Surface(
-                        color = SkeinSheetDefaults.containerColor,
-                        shape = SkeinSheetDefaults.shape,
-                        modifier =
-                            Modifier
-                                .fillMaxWidth()
-                                .heightIn(min = SkeinSize.touchTarget)
-                                .clickable(onClickLabel = "Expand", onClick = onExpand)
-                                .testTag(SheetTestTags.PEEK),
-                    ) { CompositionLocalProvider(LocalSheetMode provides SheetMode.PEEK) { sheet.Content() } }
+                    HingeSafePeek(peekPartitions) {
+                        Surface(
+                            color = SkeinSheetDefaults.containerColor,
+                            shape = SkeinSheetDefaults.shape,
+                            modifier =
+                                Modifier
+                                    .fillMaxWidth()
+                                    .heightIn(min = SkeinSize.touchTarget)
+                                    .clickable(onClickLabel = "Expand", onClick = onExpand)
+                                    .testTag(SheetTestTags.PEEK),
+                        ) { CompositionLocalProvider(LocalSheetMode provides SheetMode.PEEK) { sheet.Content() } }
+                    }
                 }
             }
             if (expanded) {
@@ -196,6 +206,7 @@ private class SheetScene<T : Any>(
             other.expanded == expanded &&
             other.side == side &&
             other.boundsInWindow == boundsInWindow &&
+            other.peekPartitions == peekPartitions &&
             other.bottomSheetHeight == bottomSheetHeight
 
     override fun hashCode(): Int {
@@ -205,6 +216,7 @@ private class SheetScene<T : Any>(
         result = result * 31 + expanded.hashCode()
         result = result * 31 + side.hashCode()
         result = result * 31 + boundsInWindow.hashCode()
+        result = result * 31 + peekPartitions.hashCode()
         return result * 31 + bottomSheetHeight.hashCode()
     }
 }

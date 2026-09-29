@@ -166,10 +166,31 @@ class HingeSurfaceIntegrationTest {
         assertTrue("source remains usable", sourceBounds.height > 48f * density)
     }
 
+    @Test
+    fun `collapsed peek moves above near-bottom crease when lower partition cannot fit its control`() {
+        val separating = mutableStateOf(true)
+        setHost(DpSize(524.dp, 1175.dp), separating, hingeTop = 1140f, hingeBottom = 1150f)
+        composeRule.runOnIdle {
+            shell.navigate { goTo(it, ChatKey(CHAT_A)) }
+            shell.navigate { follow(it, ChatContextKey(CHAT_A)) }
+        }
+        composeRule.waitForIdle()
+        val peek = composeRule.onNodeWithTag(SheetTestTags.PEEK).fetchSemanticsNode().boundsInWindow
+        assertTrue("peek stays above hinge: $peek", peek.bottom <= 1140f * density + 1)
+        assertTrue("peek keeps a usable touch target: $peek", peek.height >= 48f * density - 1)
+        separating.value = false
+        composeRule.waitForIdle()
+        val flat = composeRule.onNodeWithTag(SheetTestTags.PEEK).fetchSemanticsNode().boundsInWindow
+        assertTrue("flat restores bottom placement: $flat", flat.bottom > 1140f * density)
+        assertEquals("peek state survives posture", 1, contextCompositionCount)
+    }
+
     private fun setHost(
         size: DpSize,
         separating: androidx.compose.runtime.MutableState<Boolean>,
         vertical: Boolean = false,
+        hingeTop: Float = HINGE_TOP,
+        hingeBottom: Float = HINGE_BOTTOM,
     ) {
         composeRule.setContent {
             SkeinTheme {
@@ -188,17 +209,17 @@ class HingeSurfaceIntegrationTest {
                                         HingeInfo(
                                             if (vertical) {
                                                 Rect(
-                                                    HINGE_TOP * density,
+                                                    hingeTop * density,
                                                     0f,
-                                                    HINGE_BOTTOM * density,
+                                                    hingeBottom * density,
                                                     size.height.value * density,
                                                 )
                                             } else {
                                                 Rect(
                                                     0f,
-                                                    HINGE_TOP * density,
+                                                    hingeTop * density,
                                                     size.width.value * density,
-                                                    HINGE_BOTTOM * density,
+                                                    hingeBottom * density,
                                                 )
                                             },
                                             isFlat = !separating.value,
