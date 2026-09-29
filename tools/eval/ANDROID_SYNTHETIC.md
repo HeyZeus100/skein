@@ -144,6 +144,13 @@ from the upstream `llama_sha`. Both source identities are declared host provenan
 not independently read back from the APK. The smoke runner computes the overlay
 digest before installing and checks it against the returned manifest. Older
 retained runs without this field predate the overlay and remain unchanged.
+The smoke also compares the app's returned `test_apk_sha256` with the host test
+APK digest. Before native parity starts, it obtains the native test package's
+installed APK path from Android, reads those APK bytes through `adb exec-out`,
+and hashes them on the host. The observed digest is retained as
+`smoke_summary.json`'s `installed_apk_sha256.native_test`, including on a mismatch.
+This lane installs monolithic APKs; missing, split, or unexpected package paths
+are refused rather than identifying a split installation by its base APK alone.
 `context.allocated` comes from the native
 context through the isolated measurement API. Measurement count is checked
 against generation statistics, but that count consistency is distinct from the

@@ -6,6 +6,7 @@ from pathlib import Path
 import re
 import subprocess
 import sys
+import tempfile
 
 from answer_eval import export_case, fixture
 from prepare_android_benchmark import file_sha256
@@ -33,6 +34,27 @@ class Emulator:
 
     def install(self, apk):
         command(self.prefix + ["install", "-r", str(apk)], timeout=180)
+
+    def installed_apk_sha256(self, package):
+        require(re.fullmatch(r"[A-Za-z0-9_.]+", package), "unsafe package name")
+        paths = self.shell("pm", "path", package).splitlines()
+        # This lane builds and installs one monolithic APK per package. A base
+        # digest alone cannot identify a split installation, so refuse it.
+        require(len(paths) == 1, "expected exactly one installed APK; splits are unsupported")
+        match = re.fullmatch(r"package:(/data/app/(?:[A-Za-z0-9_+=.~\-]+/)+base\.apk)", paths[0])
+        require(match is not None, "unexpected installed APK path")
+        installed_path = match.group(1)
+        require(not any(part in (".", "..") for part in installed_path.split("/")),
+                "unsafe installed APK path")
+        # Hash the installed bytes on the host, without assuming Android has a
+        # hashing utility or buffering an entire APK in memory. exec-out keeps
+        # binary bytes intact; only this package's public installed APK is read.
+        with tempfile.TemporaryDirectory(prefix="skein-installed-apk-") as directory:
+            downloaded = Path(directory) / "base.apk"
+            with downloaded.open("wb") as stream:
+                subprocess.run(self.prefix + ["exec-out", "cat", installed_path], check=True,
+                               stdout=stream, stderr=subprocess.PIPE, timeout=180)
+            return file_sha256(downloaded)
 
     def private_root(self, package):
         root = self.shell("run-as", package, "pwd").strip()
@@ -148,6 +170,10 @@ def main():
             app_output / "instrumentation.log")
         device.collect("app.skein", app_root, run_id, ("run_manifest.json", "answers.jsonl"), app_output)
         require(not device.host_timed_out, "instrumentation deadline expired; no second device workload is started")
+        installed_native_sha = device.installed_apk_sha256(native_package)
+        summary["installed_apk_sha256"] = {"native_test": installed_native_sha}
+        require(installed_native_sha == summary["apk_sha256"]["native_test"],
+                "installed native test APK provenance mismatch")
         native_model = device.stage(native_package, native_root, f"models/{lock['sha256']}/model.gguf", model)
         native_output = output / "native-parity"
         native_output.mkdir()
@@ -169,6 +195,7 @@ def main():
                 and manifest["llama_sha"] == llama_sha
                 and manifest["tokenizer_overlay_sha256"] == overlay_sha
                 and manifest["apk_sha256"] == summary["apk_sha256"]["app"]
+                and manifest["test_apk_sha256"] == summary["apk_sha256"]["app_test"]
                 and manifest["fixture_sha256"] == file_sha256(fixture_file)
                 and manifest["context"]["allocated"] > 0, "manifest provenance mismatch")
         require(parity["model_sha256"] == lock["sha256"]
