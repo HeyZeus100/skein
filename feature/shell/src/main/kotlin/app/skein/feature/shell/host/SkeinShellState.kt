@@ -60,7 +60,7 @@ class SkeinShellState internal constructor(
         newChatKnowledgeChoices[spaceId to draftId] ?: true
 
     fun setNewChatKnowledgeEnabled(spaceId: String, draftId: String, enabled: Boolean) {
-        require(SkeinId.parse(spaceId) != null && SkeinId.parse(draftId) != null) { "Invalid draft preference identity" }
+        require(SkeinId.parse(spaceId) != null && validDraftPreferenceId(draftId)) { "Invalid draft preference identity" }
         val identity = spaceId to draftId
         newChatKnowledgeChoices = (newChatKnowledgeChoices - identity + (identity to enabled)).entries.toList()
             .takeLast(MAX_DRAFT_CHOICES).associate { it.toPair() }
@@ -77,6 +77,28 @@ class SkeinShellState internal constructor(
 
     internal fun replaceNavigation(state: SkeinNavigationState) {
         nav = state
+    }
+
+    @Suppress("DEPRECATION") // Inspect optional UI fields by type; malformed saved input must remain total.
+    internal fun restorePreferences(saved: Bundle) {
+        val bits = runCatching { saved.get(LIST_VISIBILITY) as? Int }.getOrNull() ?: 0
+        collapsedLists = setOf(Destination.CHAT, Destination.KNOWLEDGE).filterTo(mutableSetOf()) {
+            bits and (1 shl it.ordinal) != 0
+        }
+        val choices = runCatching { saved.get(DRAFT_CHOICES) as? List<*> }.getOrNull().orEmpty().takeLast(MAX_DRAFT_CHOICES)
+        choices.forEach { raw ->
+            val choice = raw as? Bundle ?: return@forEach
+            runCatching {
+                val space = choice.get("space") as? String
+                val draft = choice.get("draft") as? String
+                val enabled = choice.get("enabled") as? Int
+                if (space != null && draft != null && SkeinId.parse(space) != null &&
+                    validDraftPreferenceId(draft) && enabled != null && enabled in 0..1
+                ) {
+                    setNewChatKnowledgeEnabled(space, draft, enabled == 1)
+                }
+            }
+        }
     }
 
     /** The search overlay (`SkeinSearch.kt`) is open. Composition-scoped (T8): the lock closes it. */
@@ -190,28 +212,13 @@ private fun shellSaver(
         },
         // Total (M4c): an unreadable Bundle restores the root stacks.
         restore = { saved ->
-            val bits = saved.getInt(LIST_VISIBILITY, 0)
             val navigation = Bundle(saved).apply {
                 remove(LIST_VISIBILITY)
                 remove(DRAFT_CHOICES)
             }
             val nav = runCatching { SkeinNavCodec.decode(treeOf(navigation)) }.getOrElse { SkeinNavigationState.initial() }
             SkeinShellState(nav, entryState, stores, onReset, ownerKey).apply {
-                collapsedLists = setOf(Destination.CHAT, Destination.KNOWLEDGE).filterTo(mutableSetOf()) {
-                    bits and (1 shl it.ordinal) != 0
-                }
-                @Suppress("DEPRECATION")
-                val choices = saved.getParcelableArrayList<Bundle>(DRAFT_CHOICES).orEmpty().takeLast(MAX_DRAFT_CHOICES)
-                choices.forEach { choice ->
-                    val space = choice.getString("space")
-                    val draft = choice.getString("draft")
-                    val enabled = choice.getInt("enabled", -1)
-                    if (space != null && draft != null && SkeinId.parse(space) != null &&
-                        SkeinId.parse(draft) != null && enabled in 0..1
-                    ) {
-                        setNewChatKnowledgeEnabled(space, draft, enabled == 1)
-                    }
-                }
+                restorePreferences(saved)
             }
         },
     )
@@ -219,6 +226,10 @@ private fun shellSaver(
 private const val LIST_VISIBILITY = "skein_list_visibility"
 private const val DRAFT_CHOICES = "skein_draft_choices"
 private const val MAX_DRAFT_CHOICES = 16
+
+private fun validDraftPreferenceId(value: String): Boolean =
+    value == "00000000-0000-0000-0000-000000000001" ||
+        value == "00000000-0000-0000-0000-000000000002" || SkeinId.parse(value) != null
 
 /** The codec's saved form, 1:1: a map is a Bundle, a list an `ArrayList<Bundle>`, leaves `String`/`Int`. */
 private fun bundleOf(tree: Map<*, *>): Bundle =
