@@ -3,6 +3,7 @@
 import argparse
 import hashlib
 import json
+import math
 import os
 from pathlib import Path
 import re
@@ -17,6 +18,9 @@ MODES = {"lexical_only", "graph_only", "lexical_graph_default"}
 RESULT_DIRECTORY = "core/vault/build/outputs/androidTest-results/connected"
 APK_DIRECTORY = "core/vault/build/outputs/apk/androidTest/dev/debug"
 REPOSITORY = Path(__file__).resolve().parents[2]
+VALIDATION_FIXTURE_SHA256 = "bf162254094103310102e28ad90b4c945bf24dd7f8f9a706039b2fe3a826b57c"
+# Frozen on development measurements before the reserved validation is run.
+MINIMUM_QUERY_COVERAGE = .5
 
 
 def require(condition, message):
@@ -37,7 +41,129 @@ def sha256(path):
     return digest.hexdigest()
 
 
-def validate_report(report, head, corpus_hash, gold_hash, queries):
+def finite_number(value):
+    return isinstance(value, (int, float)) and not isinstance(value, bool) and math.isfinite(value)
+
+
+def equal_metric(actual, expected, label):
+    require((actual is None and expected is None) or
+            (finite_number(actual) and finite_number(expected) and math.isclose(actual, expected, abs_tol=1e-10)),
+            "reserved validation metric mismatch: " + label)
+
+
+def validate_metric_summary(summary, rows):
+    require(summary.get("recall_gate") == .75 and summary.get("ndcg_gate") == .60,
+            "reserved validation quality thresholds changed")
+    answerable = [row for row in rows if row["answerable"]]
+    absence = [row for row in rows if not row["answerable"]]
+    samples = sorted(run["elapsed_ms"] for row in rows for run in row["runs"])
+    counts = dict(queries=len(rows), answerable_queries=len(answerable), absence_queries=len(absence),
+                  labelled_evidence_spans=sum(row["labelled_spans"] for row in rows),
+                  covered_evidence_spans=sum(row["covered_spans"] for row in rows),
+                  rejected_absence_queries=sum(row["rejected"] for row in absence),
+                  falsely_rejected_answerable_queries=sum(row["rejected"] for row in answerable),
+                  timed_samples=len(samples), recall_queries_scored=len(answerable), ndcg_queries_scored=len(answerable),
+                  scope_violations=0, provenance_violations=0, invalid_anchors=0, duplicate_results=0,
+                  nondeterministic_queries=0)
+    for key, value in counts.items():
+        require(type(summary.get(key)) is int and summary[key] == value, "reserved validation count mismatch: " + key)
+    mean = lambda values: sum(values) / len(values) if values else None
+    metrics = dict(macro_recall_at_8=mean([row["recall_at_8"] for row in answerable]),
+                   macro_ndcg_at_8=mean([row["ndcg_at_8"] for row in answerable]),
+                   mrr=mean([row["reciprocal_rank"] for row in answerable]),
+                   absence_rejection_rate=mean([row["rejected"] for row in absence]),
+                   false_rejection_rate=mean([row["rejected"] for row in answerable]),
+                   p50_ms=samples[math.ceil(len(samples) * .50) - 1],
+                   p95_ms=samples[math.ceil(len(samples) * .95) - 1], recall_gate=.75, ndcg_gate=.60)
+    for key, value in metrics.items():
+        equal_metric(summary.get(key), value, key)
+    expected = "NOT_APPLICABLE" if not answerable else (
+        "PASS" if metrics["macro_recall_at_8"] >= .75 and metrics["macro_ndcg_at_8"] >= .60 else "FAIL")
+    require(summary.get("ranking_gate_status") == expected, "reserved validation ranking status disagrees with rows")
+
+
+def validate_rejection_report(report, name, policy, fixture):
+    expected = dict(schema_version=1, status="MEASURED_DIAGNOSTIC", split="public_reserved_validation",
+                    blind_benchmark=False, fixture_sha256=VALIDATION_FIXTURE_SHA256,
+                    document_count=6, chunk_count=6, query_count=12, validated_answer_spans=6,
+                    embedder=None, entity_extractor=None, vector_count=0, full_hybrid_gate="INELIGIBLE",
+                    warmups_per_query=1, repetitions=3)
+    for key, value in expected.items():
+        require(key in report and type(report[key]) is type(value) and report[key] == value,
+                "reserved validation metadata mismatch: " + key)
+    mode = report.get("mode", {})
+    require(mode.get("name") == name and mode.get("configuration", {}).get("evidence_policy") == policy,
+            "reserved validation policy configuration mismatch")
+    labels = {query["id"]: query for query in fixture["queries"]}
+    documents = {document["id"] for document in fixture["documents"]}
+    rows = mode.get("queries", [])
+    require(len(rows) == 12 and {row["id"] for row in rows} == set(labels), "reserved validation queries missing or duplicated")
+    kinds = report.get("returned_source_kinds", {})
+    require(set(kinds) == set(labels), "reserved validation source-kind query inventory mismatch")
+    for row in rows:
+        label = labels[row["id"]]
+        answerable = bool(label["relevant"])
+        require(row.get("category") == label["category"] and row.get("space_alias") == "default"
+                and row.get("answerable") is answerable, "reserved validation query identity mismatch")
+        require(row.get("deterministic") is True and type(row.get("duplicate_results")) is int
+                and row["duplicate_results"] == 0,
+                "reserved validation determinism/duplicate failure")
+        for key in ("scope_violation_chunk_ids", "provenance_violation_chunk_ids", "invalid_anchor_chunk_ids"):
+            require(row.get(key) == [], "reserved validation integrity/security failure: " + key)
+        runs = row.get("runs", [])
+        source_kinds = kinds[row["id"]]
+        require(len(runs) == 3 and len(source_kinds) == 3, "reserved validation repetition count mismatch")
+        for run, run_kinds in zip(runs, source_kinds):
+            require(finite_number(run.get("elapsed_ms")) and run["elapsed_ms"] >= 0,
+                    "reserved validation duration invalid")
+            results = run.get("results", [])
+            require(len(results) <= 8 and len({item["chunk_id"] for item in results}) == len(results),
+                    "reserved validation duplicate/excess result")
+            require(run_kinds == ["NOTE"] * len(results), "reserved validation returned non-source or missing kind")
+            require(results == runs[0].get("results") and run.get("fingerprint") == runs[0].get("fingerprint")
+                    and isinstance(run.get("fingerprint"), str)
+                    and re.fullmatch(r"[a-f0-9]{64}", run.get("fingerprint", "")),
+                    "reserved validation raw arrays are nondeterministic")
+            for item in results:
+                require(type(item.get("chunk_id")) is int and item["chunk_id"] > 0 and item.get("doc_id") in documents,
+                        "reserved validation result identity invalid")
+                require(isinstance(item.get("doc_title"), str) and isinstance(item.get("text"), str)
+                        and isinstance(item.get("revision_hash"), str)
+                        and re.fullmatch(r"[a-f0-9]{64}", item.get("revision_hash", ""))
+                        and type(item.get("byte_start")) is int and type(item.get("byte_end")) is int
+                        and 0 <= item["byte_start"] < item["byte_end"], "reserved validation anchor invalid")
+                channels, scores = item.get("recalled_by", []), item.get("recall_scores", {})
+                require(channels and len(channels) == len(set(channels)) and set(channels) <= {"LEXICAL", "GRAPH"}
+                        and set(scores) == set(channels) and all(finite_number(score) for score in scores.values())
+                        and finite_number(item.get("score")), "reserved validation raw recall signals invalid")
+        require(row.get("rejected") is (not runs[0]["results"]), "reserved validation rejection disagrees with results")
+        require(type(row.get("labelled_spans")) is int and row["labelled_spans"] == int(answerable)
+                and type(row.get("covered_spans")) is int and 0 <= row["covered_spans"] <= int(answerable),
+                "reserved validation evidence counts invalid")
+        grades = row.get("grades", [])
+        require(len(grades) == len(runs[0]["results"]) and all(type(g) is int and 0 <= g <= 3 for g in grades),
+                "reserved validation grades invalid")
+        require(row["covered_spans"] == int(3 in grades), "reserved validation grade/evidence coverage mismatch")
+        equal_metric(row.get("recall_at_8"), row["covered_spans"] if answerable else None, "query recall")
+        dcg = sum((2 ** grade - 1) / math.log2(i + 2) for i, grade in enumerate(grades)) if answerable else None
+        equal_metric(row.get("dcg_at_8"), dcg, "query DCG")
+        ideal = row.get("ideal_dcg_at_8")
+        require((finite_number(ideal) and ideal > 0) if answerable else ideal is None, "reserved validation ideal DCG invalid")
+        equal_metric(row.get("ndcg_at_8"), dcg / ideal if answerable else None, "query nDCG")
+        equal_metric(row.get("reciprocal_rank"),
+                     next((1 / (i + 1) for i, grade in enumerate(grades) if grade == 3), 0) if answerable else None,
+                     "query reciprocal rank")
+    validate_metric_summary(mode["summary"], rows)
+    categories = {label["category"] for label in labels.values()}
+    require(set(mode.get("categories", {})) == categories, "reserved validation category inventory mismatch")
+    for category in categories:
+        validate_metric_summary(mode["categories"][category], [row for row in rows if row["category"] == category])
+    passed = all(row["covered_spans"] == row["labelled_spans"] if row["answerable"] else row["rejected"] for row in rows)
+    require(report.get("validation_status") == ("PASS" if passed else "FAIL"),
+            "reserved validation status disagrees with measured rows")
+
+
+def validate_report(report, head, corpus_hash, gold_hash, queries, validation_fixture):
     require(report.get("schema_version") == 1, "unexpected retrieval report schema")
     require(report.get("status") == "MEASURED_DIAGNOSTIC", "retrieval did not produce a measured diagnostic")
     require(report.get("build_revision") == head, "retrieval report source revision mismatch")
@@ -49,6 +175,15 @@ def validate_report(report, head, corpus_hash, gold_hash, queries):
             and report.get("vector_count") == 0, "unexpected hybrid eligibility or vector configuration")
     require(report.get("repetitions") == 3 and report.get("warmups_per_query_mode") == 1,
             "unexpected retrieval repetition configuration")
+    policy = report.get("evidence_policy", {})
+    require(policy.get("version") == "lexical-query-coverage-v1"
+            and finite_number(policy.get("minimum_query_coverage"))
+            and policy["minimum_query_coverage"] == MINIMUM_QUERY_COVERAGE
+            and policy.get("semantic_vector_policy") == "uncalibrated_bypass", "missing or invalid evidence policy")
+    validations = report.get("rejection_validation", {})
+    require(set(validations) == {"production_policy", "ungated_control"}, "missing reserved validation or ungated control")
+    validate_rejection_report(validations["production_policy"], "production_policy", policy, validation_fixture)
+    validate_rejection_report(validations["ungated_control"], "ungated_control", {"version": "disabled_control"}, validation_fixture)
     modes = report.get("modes", [])
     require(len(modes) == 3 and {mode["name"] for mode in modes} == MODES, "missing retrieval ablation")
     statuses = {}
@@ -285,14 +420,21 @@ def main(argv=None):
         verify_junit(repo / RESULT_DIRECTORY)
         report = json.loads((output / "retrieval.json").read_text())
         queries = json.loads((repo / "testing/src/main/resources/eval/gold.json").read_text())["queries"]
+        validation_fixture = repo / "testing/src/main/resources/eval/rejection-validation.json"
+        require(sha256(validation_fixture) == VALIDATION_FIXTURE_SHA256, "reserved validation fixture changed")
         summary["diagnostic_ranking_gates"] = validate_report(
             report, head,
             sha256(repo / "testing/src/main/resources/eval/corpus.json"),
             sha256(repo / "testing/src/main/resources/eval/gold.json"),
-            {query["id"]: query for query in queries})
+            {query["id"]: query for query in queries}, json.loads(validation_fixture.read_text()))
+        summary["diagnostic_rejection_validation"] = {
+            name: value["validation_status"] for name, value in report["rejection_validation"].items()}
+        summary["diagnostic_rejection_ranking_gates"] = {
+            name: value["mode"]["summary"]["ranking_gate_status"] for name, value in report["rejection_validation"].items()}
         summary["complete"] = True
         print("Measured retrieval diagnostic retained; full hybrid gate INELIGIBLE.")
         print(json.dumps(summary["diagnostic_ranking_gates"], sort_keys=True))
+        print(json.dumps(summary["diagnostic_rejection_validation"], sort_keys=True))
     except Exception as error:
         summary["failure_type"] = type(error).__name__
         raise

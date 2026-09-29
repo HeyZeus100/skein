@@ -17,6 +17,62 @@ import run_real_retrieval as runner
 HEAD = "a" * 40
 FIXTURES = runner.REPOSITORY / "testing/src/main/resources/eval"
 QUERIES = {row["id"]: row for row in json.loads((FIXTURES / "gold.json").read_text())["queries"]}
+VALIDATION_FIXTURE = json.loads((FIXTURES / "rejection-validation.json").read_text())
+POLICY = dict(version="lexical-query-coverage-v1", minimum_query_coverage=.5, semantic_vector_policy="uncalibrated_bypass")
+
+
+def reserved_summary(rows):
+    """All-empty synthetic runner fixture: six positives miss, six absences reject."""
+    positives = sum(row["answerable"] for row in rows)
+    return dict(queries=len(rows), answerable_queries=positives, absence_queries=len(rows)-positives,
+                labelled_evidence_spans=positives, covered_evidence_spans=0,
+                rejected_absence_queries=len(rows)-positives, falsely_rejected_answerable_queries=positives,
+                timed_samples=3*len(rows), recall_queries_scored=positives, ndcg_queries_scored=positives,
+                scope_violations=0, provenance_violations=0, invalid_anchors=0, duplicate_results=0,
+                nondeterministic_queries=0, macro_recall_at_8=0 if positives else None,
+                macro_ndcg_at_8=0 if positives else None, mrr=0 if positives else None,
+                absence_rejection_rate=1 if positives<len(rows) else None, false_rejection_rate=1 if positives else None,
+                p50_ms=1, p95_ms=1, recall_gate=.75, ndcg_gate=.60,
+                ranking_gate_status="FAIL" if positives else "NOT_APPLICABLE")
+
+
+def reserved_report(name, policy):
+    rows = []
+    for query in VALIDATION_FIXTURE["queries"]:
+        positive = bool(query["relevant"])
+        rows.append(dict(id=query["id"], category=query["category"], space_alias="default", answerable=positive,
+                         deterministic=True, duplicate_results=0, scope_violation_chunk_ids=[],
+                         provenance_violation_chunk_ids=[], invalid_anchor_chunk_ids=[], rejected=True,
+                         labelled_spans=int(positive), covered_spans=0, grades=[],
+                         recall_at_8=0 if positive else None, dcg_at_8=0 if positive else None,
+                         ideal_dcg_at_8=7 if positive else None, ndcg_at_8=0 if positive else None,
+                         reciprocal_rank=0 if positive else None,
+                         runs=[dict(elapsed_ms=1, fingerprint="a"*64, results=[]) for _ in range(3)]))
+    return dict(schema_version=1, status="MEASURED_DIAGNOSTIC", split="public_reserved_validation", blind_benchmark=False,
+                fixture_sha256=runner.VALIDATION_FIXTURE_SHA256, document_count=6, chunk_count=6, query_count=12,
+                validated_answer_spans=6, embedder=None, entity_extractor=None, vector_count=0,
+                full_hybrid_gate="INELIGIBLE", warmups_per_query=1, repetitions=3, validation_status="FAIL",
+                mode=dict(name=name, configuration=dict(evidence_policy=copy.deepcopy(policy)), queries=rows,
+                          summary=reserved_summary(rows), categories={category:reserved_summary([r for r in rows if r["category"]==category])
+                                                                     for category in {r["category"] for r in rows}}),
+                returned_source_kinds={row["id"]:[[],[],[]] for row in rows})
+
+
+def add_reserved_result(report):
+    """Synthetic structural result, deliberately assigned zero gain; never measured gold."""
+    value = report["rejection_validation"]["production_policy"]
+    row = next(row for row in value["mode"]["queries"] if row["answerable"])
+    item = dict(chunk_id=1, doc_id=VALIDATION_FIXTURE["documents"][0]["id"], doc_title="Runner contract",
+                text="Synthetic runner boundary bytes", revision_hash="b"*64, byte_start=0, byte_end=10,
+                score=1, recall_scores={"LEXICAL":2}, recalled_by=["LEXICAL"])
+    for run in row["runs"]:
+        run["results"] = [copy.deepcopy(item)]
+    row.update(grades=[0], rejected=False)
+    value["returned_source_kinds"][row["id"]] = [["NOTE"] for _ in range(3)]
+    for summary in (value["mode"]["summary"], value["mode"]["categories"][row["category"]]):
+        summary["falsely_rejected_answerable_queries"] -= 1
+        summary["false_rejection_rate"] = summary["falsely_rejected_answerable_queries"] / summary["answerable_queries"]
+    return row
 
 
 def measured_report():
@@ -34,6 +90,9 @@ def measured_report():
                 gold_sha256=runner.sha256(FIXTURES / "gold.json"), document_count=1000,
                 overlay_document_count=72, query_count=76, full_hybrid_gate="INELIGIBLE",
                 embedder=None, vector_count=0, repetitions=3, warmups_per_query_mode=1,
+                evidence_policy=copy.deepcopy(POLICY),
+                rejection_validation={"production_policy":reserved_report("production_policy", POLICY),
+                                      "ungated_control":reserved_report("ungated_control", {"version":"disabled_control"})},
                 modes=[dict(name=name, summary=copy.deepcopy(summary), queries=copy.deepcopy(rows))
                        for name in sorted(runner.MODES)])
 
@@ -41,7 +100,7 @@ def measured_report():
 class ReportContractTest(unittest.TestCase):
     def validate(self, report):
         return runner.validate_report(report, HEAD, runner.sha256(FIXTURES / "corpus.json"),
-                                      runner.sha256(FIXTURES / "gold.json"), QUERIES)
+                                      runner.sha256(FIXTURES / "gold.json"), QUERIES, VALIDATION_FIXTURE)
 
     def test_failed_ranking_remains_valid_diagnostic_and_ineligible_hybrid(self):
         self.assertEqual(self.validate(measured_report()), {name: "FAIL" for name in runner.MODES})
@@ -99,6 +158,126 @@ class ReportContractTest(unittest.TestCase):
                 with self.assertRaises(ValueError):
                     self.validate(report)
 
+    def test_reserved_failure_is_diagnostic_but_both_named_reports_and_policy_are_required(self):
+        self.validate(measured_report())
+        for field in ("evidence_policy", "rejection_validation"):
+            report = measured_report()
+            del report[field]
+            with self.assertRaises(ValueError):
+                self.validate(report)
+
+        for key in ("production_policy", "ungated_control"):
+            report = measured_report()
+            del report["rejection_validation"][key]
+            with self.assertRaises(ValueError):
+                self.validate(report)
+
+    def test_frozen_policy_metadata_cannot_drift(self):
+        for key, value in [("version","changed"),("minimum_query_coverage",.75),
+                          ("minimum_query_coverage",float("nan")),("semantic_vector_policy","claimed_calibrated")]:
+            report = measured_report()
+            report["evidence_policy"][key]=value
+            with self.subTest(key=key), self.assertRaises(ValueError):
+                self.validate(report)
+
+    def test_consistent_reserved_quality_pass_is_accepted(self):
+        report = measured_report()
+        labels = {query["id"]: query for query in VALIDATION_FIXTURE["queries"]}
+        for value in report["rejection_validation"].values():
+            for row in value["mode"]["queries"]:
+                if not row["answerable"]:
+                    continue
+                item = dict(chunk_id=1, doc_id=labels[row["id"]]["relevant"][0]["doc_id"],
+                            doc_title="Synthetic contract", text="Structural mock", revision_hash="b" * 64,
+                            byte_start=0, byte_end=10, score=1, recall_scores={"LEXICAL": 2}, recalled_by=["LEXICAL"])
+                for run in row["runs"]:
+                    run["results"] = [copy.deepcopy(item)]
+                row.update(covered_spans=1, recall_at_8=1, dcg_at_8=7, ndcg_at_8=1,
+                           reciprocal_rank=1, grades=[3], rejected=False)
+                value["returned_source_kinds"][row["id"]] = [["NOTE"] for _ in range(3)]
+            for summary in [value["mode"]["summary"], *value["mode"]["categories"].values()]:
+                if summary["answerable_queries"]:
+                    summary.update(covered_evidence_spans=summary["answerable_queries"],
+                                   falsely_rejected_answerable_queries=0, false_rejection_rate=0,
+                                   macro_recall_at_8=1, macro_ndcg_at_8=1, mrr=1, ranking_gate_status="PASS")
+            value["validation_status"] = "PASS"
+        self.validate(report)
+
+    def test_reserved_actual_result_signal_shape_and_repeat_arrays_are_checked(self):
+        report = measured_report()
+        add_reserved_result(report)
+        self.validate(report)
+        for mutation in (lambda item:item.update(doc_id="outside-fixture"),
+                         lambda item:item.update(revision_hash=None),lambda item:item.update(byte_end=-1),
+                         lambda item:item.update(score=float("inf")),lambda item:item.update(recall_scores={}),
+                         lambda item:item.update(recalled_by=["VECTOR"],recall_scores={"VECTOR":1})):
+            report = measured_report()
+            row = add_reserved_result(report)
+            for run in row["runs"]:
+                mutation(run["results"][0])
+            with self.assertRaises(ValueError):
+                self.validate(report)
+        report = measured_report()
+        row = add_reserved_result(report)
+        row["runs"][1]["results"][0]["text"] = "different repeated bytes"
+        with self.assertRaises(ValueError):
+            self.validate(report)
+        report = measured_report()
+        row = add_reserved_result(report)
+        report["rejection_validation"]["production_policy"]["returned_source_kinds"][row["id"]][1]=["CHAT"]
+        with self.assertRaises(ValueError):
+            self.validate(report)
+
+    def test_reserved_metadata_and_configuration_drift_fails(self):
+        for key, value in [("schema_version",2),("status","PASS"),("fixture_sha256","changed"),
+                          ("blind_benchmark",True),("document_count",7),("chunk_count",5),("query_count",11),
+                          ("validated_answer_spans",5),("embedder","injected"),("entity_extractor","fake"),
+                          ("vector_count",1),("full_hybrid_gate","PASS"),("warmups_per_query",0),("repetitions",2)]:
+            report = measured_report()
+            report["rejection_validation"]["production_policy"][key]=value
+            with self.subTest(key=key), self.assertRaises(ValueError):
+                self.validate(report)
+        for name in ("production_policy","ungated_control"):
+            report = measured_report()
+            report["rejection_validation"][name]["mode"]["configuration"]["evidence_policy"]={}
+            with self.assertRaises(ValueError):
+                self.validate(report)
+
+    def test_reserved_missing_duplicate_or_changed_query_identity_fails(self):
+        for mutation in (lambda rows:rows.pop(),lambda rows:rows.__setitem__(0,rows[1]),
+                         lambda rows:rows[0].update(category="wrong"),lambda rows:rows[0].update(space_alias="work"),
+                         lambda rows:rows[0].update(answerable=not rows[0]["answerable"])):
+            report = measured_report()
+            mutation(report["rejection_validation"]["production_policy"]["mode"]["queries"])
+            with self.assertRaises(ValueError):
+                self.validate(report)
+
+    def test_reserved_security_counts_and_actual_repetitions_cannot_be_hidden(self):
+        for key, value in [("deterministic",False),("duplicate_results",1),("scope_violation_chunk_ids",[1]),
+                          ("provenance_violation_chunk_ids",[1]),("invalid_anchor_chunk_ids",[1]),("rejected",False)]:
+            report = measured_report()
+            report["rejection_validation"]["production_policy"]["mode"]["queries"][0][key]=value
+            with self.subTest(key=key), self.assertRaises(ValueError):
+                self.validate(report)
+        for mutation in (lambda row:row["runs"].pop(),lambda row:row["runs"][1].update(fingerprint="b"*64),
+                         lambda row:row["runs"][1].update(elapsed_ms=float("nan")),
+                         lambda row:row["runs"][1].update(results=[dict(chunk_id=1)])):
+            report = measured_report()
+            mutation(report["rejection_validation"]["production_policy"]["mode"]["queries"][0])
+            with self.assertRaises(ValueError):
+                self.validate(report)
+
+    def test_reserved_kinds_aggregates_and_outcome_status_are_checked(self):
+        for mutation in (lambda v:v.update(returned_source_kinds={}),
+                         lambda v:v["returned_source_kinds"].__setitem__(next(iter(v["returned_source_kinds"])),[["CHAT"],[],[]]),
+                         lambda v:v["mode"]["summary"].update(falsely_rejected_answerable_queries=0),
+                         lambda v:v["mode"]["summary"].update(p95_ms=500),
+                         lambda v:v["mode"]["categories"].pop(next(iter(v["mode"]["categories"]))),
+                         lambda v:v.update(validation_status="PASS")):
+            report = measured_report()
+            mutation(report["rejection_validation"]["production_policy"])
+            with self.assertRaises(ValueError):
+                self.validate(report)
 
 class JunitEvidenceTest(unittest.TestCase):
     def test_only_one_executed_retrieval_case_is_accepted(self):
@@ -132,7 +311,7 @@ class RunnerIntegrationTest(unittest.TestCase):
         self.output = self.repo / "build/diagnostic/run"
         fixtures = self.repo / "testing/src/main/resources/eval"
         fixtures.mkdir(parents=True)
-        for name in ("corpus.json", "gold.json"):
+        for name in ("corpus.json", "gold.json", "rejection-validation.json"):
             (fixtures / name).write_bytes((FIXTURES / name).read_bytes())
         self.apk = self.repo / runner.APK_DIRECTORY / "vault-test.apk"
         self.apk.parent.mkdir(parents=True)
@@ -232,6 +411,8 @@ class RunnerIntegrationTest(unittest.TestCase):
         self.assertTrue(summary["complete"])
         self.assertEqual(summary["full_hybrid_gate"], "INELIGIBLE")
         self.assertEqual(summary["diagnostic_ranking_gates"], {name: "FAIL" for name in runner.MODES})
+        self.assertEqual(summary["diagnostic_rejection_validation"], {name: "FAIL" for name in ("production_policy", "ungated_control")})
+        self.assertEqual(summary["diagnostic_rejection_ranking_gates"], {name: "FAIL" for name in ("production_policy", "ungated_control")})
         self.assertEqual(summary["declared_build_revision"], HEAD)
         self.assertIn("not embedded APK attestation", summary["source_identity"])
         self.assertEqual(summary["installed_test_apk_sha256"], self.apk_digest)
@@ -275,6 +456,13 @@ class RunnerIntegrationTest(unittest.TestCase):
         with self.assertRaisesRegex(ValueError, "reviewed revision"):
             self.run_main()
         self.assertFalse(any(argv[0] == "adb" for argv in self.commands))
+
+    def test_reserved_fixture_hash_cannot_be_changed(self):
+        fixture = self.repo / "testing/src/main/resources/eval/rejection-validation.json"
+        fixture.write_bytes(fixture.read_bytes() + b"\n")
+        with self.assertRaisesRegex(ValueError, "reserved validation fixture changed"):
+            self.run_main()
+        self.assertFalse(self.summary()["complete"])
 
     def test_untracked_source_fails_before_adb(self):
         self.untracked = b"core/vault/src/main/Unreviewed.kt\n"
