@@ -63,7 +63,7 @@ internal fun ChatModelIndicator(
     ) {
         if (name != null) {
             Text(
-                text = name.removeSuffix(".gguf"),
+                text = name,
                 modifier = Modifier.weight(1f),
                 style = MaterialTheme.typography.labelMedium,
                 color = MaterialTheme.colorScheme.onSurfaceVariant,

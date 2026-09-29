@@ -22,7 +22,7 @@ internal fun chatModelStatuses(
         val id = status.modelId?.takeUnless { status.state == EngineState.UNLOADED } ?: return@transformLatest
         val name =
             try {
-                registry.get(id)?.model?.name?.trim()?.takeIf {
+                registry.get(id)?.model?.name?.trim()?.takeUnless { it == id }?.removeSuffix(".gguf")?.trim()?.takeIf {
                     it.isNotEmpty() &&
                         it != id &&
                         it.none { char -> char.isISOControl() || char == '/' || char == '\\' }

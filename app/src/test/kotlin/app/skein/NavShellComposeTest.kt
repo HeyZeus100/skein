@@ -108,10 +108,10 @@ class NavShellComposeTest {
             runBlocking { models.engine.load(loaded).getOrThrow() }
             composeRule.waitUntil(WAIT_MILLIS) {
                 composeRule.onAllNodesWithTag(CHAT_MODEL_STATUS_TEST_TAG).fetchSemanticsNodes().any { node ->
-                    node.config[SemanticsProperties.ContentDescription] == listOf("${loaded.name}. Loaded")
+                    node.config[SemanticsProperties.ContentDescription] == listOf("Qwen2.5-1.5B-Instruct. Loaded")
                 }
             }
-            composeRule.onNodeWithContentDescription("${loaded.name}. Loaded").assertExists()
+            composeRule.onNodeWithContentDescription("Qwen2.5-1.5B-Instruct. Loaded").assertExists()
             runBlocking { models.engine.unload() }
             composeRule.waitUntil(WAIT_MILLIS) {
                 composeRule.onAllNodesWithTag(CHAT_MODEL_STATUS_TEST_TAG).fetchSemanticsNodes().any { node ->

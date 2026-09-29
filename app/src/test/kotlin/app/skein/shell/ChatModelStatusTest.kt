@@ -31,11 +31,11 @@ class ChatModelStatusTest {
             val values = mutableListOf<ChatModelStatus>()
             backgroundScope.launch { chatModelStatuses(statuses, registry).collect(values::add) }
             runCurrent()
-            assertThat(values.last()).isEqualTo(observed(EngineState.LOADING, "Qwen2.5-1.5B-Instruct.gguf"))
+            assertThat(values.last()).isEqualTo(observed(EngineState.LOADING, "Qwen2.5-1.5B-Instruct"))
             for (state in listOf(EngineState.READY, EngineState.GENERATING, EngineState.ERROR)) {
                 statuses.value = ModelStatus("loaded", state)
                 runCurrent()
-                assertThat(values.last()).isEqualTo(observed(state, "Qwen2.5-1.5B-Instruct.gguf"))
+                assertThat(values.last()).isEqualTo(observed(state, "Qwen2.5-1.5B-Instruct"))
             }
             statuses.value = ModelStatus(null, EngineState.UNLOADED)
             runCurrent()
@@ -102,6 +102,7 @@ class ChatModelStatusTest {
                         when (id) {
                             "missing" -> null
                             "failed" -> error("private registry details")
+                            "stripped-id" -> record(id, "$id.gguf")
                             else -> record(id, id.removePrefix("name:"))
                         }
 
@@ -116,9 +117,12 @@ class ChatModelStatusTest {
                 "missing",
                 "failed",
                 "internal-id",
+                "stripped-id",
+                "name: .gguf",
                 "name:/private/model.gguf",
                 "name:C:\\model.gguf",
                 "name:bad\nname",
+                "name:.gguf",
             )) {
                 statuses.value = ModelStatus(id, EngineState.READY)
                 runCurrent()

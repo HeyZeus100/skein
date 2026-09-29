@@ -237,6 +237,6 @@ class ChatModelIndicatorTest {
     }
 
     private companion object {
-        const val NAME = "Qwen2.5-1.5B-Instruct-Q4_K_M-full-display-name.gguf"
+        const val NAME = "Qwen2.5-1.5B-Instruct-Q4_K_M-full-display-name"
     }
 }
