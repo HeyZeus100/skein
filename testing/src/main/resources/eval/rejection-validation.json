@@ -1,0 +1,176 @@
+{
+  "schema_version": 1,
+  "split": "public_reserved_validation",
+  "documents": [
+    {
+      "id": "01990000-0000-7000-8000-000000000001",
+      "title": "Ceramic kiln log",
+      "body_md": "The ceramic kiln reached a peak temperature of 1215 degrees Celsius during the glaze firing. The cooling vent stayed closed overnight.",
+      "persona_id": "default"
+    },
+    {
+      "id": "01990000-0000-7000-8000-000000000002",
+      "title": "Bicycle repair record",
+      "body_md": "The frayed rear brake cable was replaced with a stainless inner cable. Reusing the old housing reduced the bicycle repair parts bill.",
+      "persona_id": "default"
+    },
+    {
+      "id": "01990000-0000-7000-8000-000000000003",
+      "title": "Seed library ledger",
+      "body_md": "Nessa handles the return of borrowed seed packets at the seed library. Returned packets go in the blue tin beside the catalogue.",
+      "persona_id": "default"
+    },
+    {
+      "id": "01990000-0000-7000-8000-000000000004",
+      "title": "Upright piano maintenance card",
+      "body_md": "The upright piano needs a tuning every six months. Its last inspection found no loose hammers.",
+      "persona_id": "default"
+    },
+    {
+      "id": "01990000-0000-7000-8000-000000000005",
+      "title": "Telescope packing note",
+      "body_md": "The telescope eyepieces travel inside the padded red case. The tripod is carried separately.",
+      "persona_id": "default"
+    },
+    {
+      "id": "01990000-0000-7000-8000-000000000006",
+      "title": "Bread fermentation record",
+      "body_md": "After mixing, the bread dough rests in the refrigerator for eighteen hours. Shape the loaves before the final proof.",
+      "persona_id": "default"
+    }
+  ],
+  "queries": [
+    {
+      "id": "reserved-answerable-01",
+      "category": "answerable_lexical",
+      "query": "At what temperature did the ceramic kiln peak during the glaze firing?",
+      "persona_id": "default",
+      "answer": "1215 degrees Celsius",
+      "relevant": [
+        {
+          "doc_id": "01990000-0000-7000-8000-000000000001",
+          "grade": 3,
+          "evidence": "The ceramic kiln reached a peak temperature of 1215 degrees Celsius during the glaze firing."
+        }
+      ]
+    },
+    {
+      "id": "reserved-answerable-02",
+      "category": "answerable_lexical",
+      "query": "What replaced the frayed rear brake cable during the bicycle repair?",
+      "persona_id": "default",
+      "answer": "a stainless inner cable",
+      "relevant": [
+        {
+          "doc_id": "01990000-0000-7000-8000-000000000002",
+          "grade": 3,
+          "evidence": "The frayed rear brake cable was replaced with a stainless inner cable."
+        }
+      ]
+    },
+    {
+      "id": "reserved-answerable-03",
+      "category": "answerable_lexical",
+      "query": "Who handles borrowed seed packet returns at the seed library?",
+      "persona_id": "default",
+      "answer": "Nessa",
+      "relevant": [
+        {
+          "doc_id": "01990000-0000-7000-8000-000000000003",
+          "grade": 3,
+          "evidence": "Nessa handles the return of borrowed seed packets at the seed library."
+        }
+      ]
+    },
+    {
+      "id": "reserved-answerable-04",
+      "category": "answerable_paraphrase",
+      "query": "How regularly should the upright piano be tuned?",
+      "persona_id": "default",
+      "answer": "every six months",
+      "relevant": [
+        {
+          "doc_id": "01990000-0000-7000-8000-000000000004",
+          "grade": 3,
+          "evidence": "The upright piano needs a tuning every six months."
+        }
+      ]
+    },
+    {
+      "id": "reserved-answerable-05",
+      "category": "answerable_paraphrase",
+      "query": "Where are the telescope's eyepieces kept for transport?",
+      "persona_id": "default",
+      "answer": "inside the padded red case",
+      "relevant": [
+        {
+          "doc_id": "01990000-0000-7000-8000-000000000005",
+          "grade": 3,
+          "evidence": "The telescope eyepieces travel inside the padded red case."
+        }
+      ]
+    },
+    {
+      "id": "reserved-answerable-06",
+      "category": "answerable_paraphrase",
+      "query": "How long does the bread dough remain in the refrigerator?",
+      "persona_id": "default",
+      "answer": "eighteen hours",
+      "relevant": [
+        {
+          "doc_id": "01990000-0000-7000-8000-000000000006",
+          "grade": 3,
+          "evidence": "After mixing, the bread dough rests in the refrigerator for eighteen hours."
+        }
+      ]
+    },
+    {
+      "id": "reserved-related-only-01",
+      "category": "related_only",
+      "query": "What is the ceramic kiln's electricity cost per glaze firing?",
+      "persona_id": "default",
+      "answer": null,
+      "relevant": []
+    },
+    {
+      "id": "reserved-related-only-02",
+      "category": "related_only",
+      "query": "What torque in newton metres was used on the bicycle stem bolts?",
+      "persona_id": "default",
+      "answer": null,
+      "relevant": []
+    },
+    {
+      "id": "reserved-related-only-03",
+      "category": "related_only",
+      "query": "What is the annual membership fee for the seed library?",
+      "persona_id": "default",
+      "answer": null,
+      "relevant": []
+    },
+    {
+      "id": "reserved-no-match-01",
+      "category": "no_match",
+      "query": "What is the replacement filter number for the aquarium pump?",
+      "persona_id": "default",
+      "answer": null,
+      "relevant": []
+    },
+    {
+      "id": "reserved-no-match-02",
+      "category": "no_match",
+      "query": "Which platform does the morning tram to Silvermead leave from?",
+      "persona_id": "default",
+      "answer": null,
+      "relevant": []
+    },
+    {
+      "id": "reserved-no-match-03",
+      "category": "no_match",
+      "query": "What is the visitor wifi password at the veterinary clinic?",
+      "persona_id": "default",
+      "answer": null,
+      "relevant": []
+    }
+  ]
+}
