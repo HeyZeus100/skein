@@ -52,7 +52,6 @@ import kotlinx.serialization.json.jsonPrimitive
 import kotlinx.serialization.json.put
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertTrue
-import org.junit.Assume.assumeTrue
 import org.junit.Test
 import org.junit.runner.RunWith
 import java.io.File
@@ -62,7 +61,8 @@ import java.util.Collections
 /**
  * Opt-in real SQLite retrieval development evaluation (skein-9744).
  * No fake index, injected recall, gold edges, embeddings or source selection.
- * Run only with `skein.retrieval.eval=true`; see docs/RETRIEVAL_EVAL.md.
+ * Build with `-Pskein.retrievalEvaluation=true` and run with
+ * `skein.retrieval.eval=true`; see docs/RETRIEVAL_EVAL.md.
  * Diagnostic success is NOT the full hybrid gate: that remains INELIGIBLE
  * until the app has a production embedder and an actual measured baseline.
  */
@@ -72,7 +72,11 @@ public class RealRetrievalEvaluationTest {
     public fun evaluate_real_ingest_and_retrieval(): Unit =
         runBlocking {
             val args = InstrumentationRegistry.getArguments()
-            assumeTrue("opt-in retrieval evaluation", args.getString("skein.retrieval.eval") == "true")
+            assertEquals(
+                "explicit retrieval evaluation argument required",
+                "true",
+                args.getString("skein.retrieval.eval"),
+            )
             val instrumentation = InstrumentationRegistry.getInstrumentation()
             val context = instrumentation.targetContext
             val artifact = File(context.filesDir, "artifacts/eval/retrieval.json")

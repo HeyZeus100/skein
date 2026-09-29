@@ -56,7 +56,7 @@ jobs:
           sys.exit(not unittest.TextTestRunner(verbosity=2).run(suite).wasSuccessful())
           PY
           set -o pipefail
-          ./gradlew --max-workers=2 :core:vault:assembleDevDebugAndroidTest 2>&1 | tee build/retrieval-diagnostic/build.log
+          ./gradlew -Pskein.retrievalEvaluation=true --max-workers=2 :core:vault:assembleDevDebugAndroidTest 2>&1 | tee build/retrieval-diagnostic/build.log
       - name: Measure only the explicitly opted-in retrieval class
         uses: reactivecircus/android-emulator-runner@a421e43855164a8197daf9d8d40fe71c6996bb0d # v2.34.0
         with:

@@ -13,6 +13,16 @@ android {
     namespace = "app.skein.core.vault"
     compileSdk = 37
 
+    // Retrieval evaluation must be absent from the ordinary test APK. Runtime
+    // assumptions are serialized as XML failures by the pinned AGP/UTP runner.
+    if (providers.gradleProperty("skein.retrievalEvaluation").orNull == "true") {
+        sourceSets {
+            getByName("androidTest") {
+                kotlin.directories.add("src/retrievalEvaluation/kotlin")
+            }
+        }
+    }
+
     // Pin the NDK to match the E0.I7 spike (r27c). The reproducibility contract
     // in E1.I8 hashes the .so; a floating NDK version would break that.
     ndkVersion = "27.3.13750724"

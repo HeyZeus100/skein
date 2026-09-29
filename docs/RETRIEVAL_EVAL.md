@@ -112,9 +112,12 @@ explicit synthetic evaluation artifacts, not normal application logs.
 
 ## Real SQLite diagnostic harness
 
-`core/vault/src/androidTest/kotlin/app/skein/core/vault/eval/RealRetrievalEvaluationTest.kt`
-is an opt-in instrumented harness. Ordinary instrumentation runs skip it unless
-the `skein.retrieval.eval=true` argument is present. It uses an isolated encrypted
+`core/vault/src/retrievalEvaluation/kotlin/app/skein/core/vault/eval/RealRetrievalEvaluationTest.kt`
+is an opt-in instrumented harness. It is absent from ordinary test APKs; Gradle
+includes its source only with `-Pskein.retrievalEvaluation=true`. The dedicated
+run additionally requires `skein.retrieval.eval=true` and fails if that argument
+is missing; it never uses an assumption to silently avoid execution. It uses an
+isolated encrypted
 `VaultLifecycle` with all production migrations, `VaultRepositoryImpl`,
 `IndexStoreImpl`, and four real personas. Seeding creates documents only. The
 same components as `app/IngestPipelines.forSession` perform ingestion:
@@ -177,7 +180,7 @@ Build the dedicated library test APK; no inference-service model download is
 needed:
 
 ```sh
-./gradlew --max-workers=2 :core:vault:assembleDevDebugAndroidTest
+./gradlew -Pskein.retrievalEvaluation=true --max-workers=2 :core:vault:assembleDevDebugAndroidTest
 ```
 
 On an explicitly selected test emulator, install that APK and run only this
@@ -230,8 +233,9 @@ including uninstalled packages with retained data. It never clears or uninstalls
 an existing package to make a run possible. The absence check uses `pm list
 packages -u`; `pm path` has a nonzero exit code for an absent package.
 
-The connected task selects only the opt-in class and explicitly requests three
-repetitions. AGP's `android.injected.androidTest.leaveApksInstalledAfterRun=true`
+The connected task also sets the build-time opt-in property, selects only the
+retrieval class and explicitly requests three repetitions. AGP's
+`android.injected.androidTest.leaveApksInstalledAfterRun=true`
 keeps the test package available for report collection; this property maps to
 `keepInstalledApks` in the pinned AGP 9.4.1 implementation. A passing runner must
 find exactly one executed, passing testcase in actual AGP XML. Empty XML, an
@@ -261,6 +265,19 @@ full hybrid gate remains **INELIGIBLE**. `skein-9744` remains open for reviewed
 baseline failures, real production embedder/vector ablation,
 full-hybrid eligibility and enforced quality gate, and any future nightly
 wiring. A diagnostic run cannot close those remaining requirements.
+
+## Ordinary instrumentation separation
+
+The ordinary emulator lane never enables `skein.retrievalEvaluation`, so its
+APK contains no retrieval diagnostic testcase or runtime assumption. The
+existing synthetic benchmark sources remain separately opt-in. The lane runs
+`tools/ci/verify-instrumentation.py` even after a failing Gradle step, retains
+`instrumentation-review.json`, and requires actual cases from app, vault and
+inference-service. Any XML failure, error, skip, duplicate, missing module or
+unexpected retrieval testcase fails this review independently of UTP exit status.
+The existing explicitly excluded `@Ignore` tests remain outside the executed
+inventory; exclusion does not establish their acceptance. Raw XML is retained
+without rewriting failure or skip entries.
 
 ## First measured baseline
 

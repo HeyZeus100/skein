@@ -132,6 +132,9 @@ jobs:
       - name: Set up Gradle
         uses: gradle/actions/setup-gradle@748248ddd2a24f49513d8f472f81c3a07d4d50e1 # v4.4.4
 
+      - name: Verify actual XML reviewer
+        run: python3 -m unittest discover -s tools/ci -p test_verify_instrumentation.py -v
+
       # Required for hardware-accelerated emulation on GitHub-hosted Linux
       # runners.
       - name: Enable KVM
@@ -225,7 +228,13 @@ jobs:
             # One line on purpose: android-emulator-runner executes each
             # script line as its own command, so a backslash continuation
             # reached Gradle as a task named '\' (run 35877745743).
-            ./gradlew connectedDevDebugAndroidTest --continue --stacktrace -Pandroid.testInstrumentationRunnerArguments.notAnnotation=org.junit.Ignore; RC=$?; mkdir -p app/build/outputs/androidTest-results/connected/lane-logcat; adb logcat -d -v threadtime > app/build/outputs/androidTest-results/connected/lane-logcat/logcat.txt; exit $RC
+            ./gradlew --max-workers=2 connectedDevDebugAndroidTest --continue --stacktrace -Pandroid.testInstrumentationRunnerArguments.notAnnotation=org.junit.Ignore; RC=$?; mkdir -p app/build/outputs/androidTest-results/connected/lane-logcat; adb logcat -d -v threadtime > app/build/outputs/androidTest-results/connected/lane-logcat/logcat.txt; exit $RC
+
+      # UTP can exit successfully while serializing an assumption as failure.
+      # Inspect every real testcase even when Gradle or emulator startup fails.
+      - name: Require complete passing ordinary instrumentation XML
+        if: always()
+        run: python3 tools/ci/verify-instrumentation.py --output build/instrumentation-review.json
 
       - name: Upload instrumented test reports
         if: always()
@@ -233,6 +242,7 @@ jobs:
         with:
           name: connected-test-reports
           path: |
+            build/instrumentation-review.json
             **/build/reports/androidTests/connected/**
             **/build/outputs/androidTest-results/connected/**
           if-no-files-found: ignore

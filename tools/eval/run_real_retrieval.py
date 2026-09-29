@@ -169,7 +169,8 @@ def main(argv=None):
                 "use a fresh emulator without a prior retrieval test package")
         device_verified = True
         env = dict(os.environ, ANDROID_SERIAL=args.serial)
-        argv = ["./gradlew", "--no-daemon", "--max-workers=2", ":core:vault:connectedDevDebugAndroidTest", "--stacktrace",
+        argv = ["./gradlew", "--no-daemon", "--max-workers=2", "-Pskein.retrievalEvaluation=true",
+                ":core:vault:connectedDevDebugAndroidTest", "--stacktrace",
                 "-Pandroid.injected.androidTest.leaveApksInstalledAfterRun=true",
                 "-Pandroid.testInstrumentationRunnerArguments.class=" + TEST_CLASS,
                 "-Pandroid.testInstrumentationRunnerArguments.skein.retrieval.eval=true",

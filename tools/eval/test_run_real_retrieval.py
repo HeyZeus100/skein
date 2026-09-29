@@ -222,7 +222,7 @@ class RunnerIntegrationTest(unittest.TestCase):
         self.assertIn("not embedded APK attestation", summary["source_identity"])
         self.assertEqual(summary["installed_test_apk_sha256"], self.apk_digest)
         argv = self.instrument.call_args.args[0]
-        for arg in ["--no-daemon", "--max-workers=2",
+        for arg in ["--no-daemon", "--max-workers=2", "-Pskein.retrievalEvaluation=true",
                     "-Pandroid.injected.androidTest.leaveApksInstalledAfterRun=true",
                     "-Pandroid.testInstrumentationRunnerArguments.class=" + runner.TEST_CLASS,
                     "-Pandroid.testInstrumentationRunnerArguments.skein.retrieval.repetitions=3",
