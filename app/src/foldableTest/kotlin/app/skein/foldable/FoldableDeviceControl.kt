@@ -128,7 +128,8 @@ internal class FoldableDeviceControl {
                 check(ack.getString("run_id") == runId) { "Stale console acknowledgment run" }
                 if (ack.getInt("sequence") < sequence) return@await false
                 check(
-                    ack.get("sequence") == sequence && ack.getString("nonce") == nonce &&
+                    ack.get("sequence") == sequence &&
+                        ack.getString("nonce") == nonce &&
                         ack.getString("action") == action,
                 ) { "Mismatched console acknowledgment" }
                 check(ack.getString("status") == "ok") { "Host console request failed: $ack" }
