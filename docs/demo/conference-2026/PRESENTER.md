@@ -1,6 +1,6 @@
 # Skein: a short conference demo
 
-Use the fictional notes with **Knowledge on**. The latest completed rehearsal answered all four questions below correctly; first visible text took about 40–53 seconds. The general Knowledge-off test contained a factual error, so use the note-grounded examples for the presentation. The updated source7868 app is installed on the Fold with its copied-back APK verified. Its final split-view rehearsal encountered a navigation overlay bug; use a single workspace until that repair is verified. The answer results and timings below come from the earlier source920e four-question rehearsal.
+Use the fictional notes with **Knowledge on**. The latest completed rehearsal answered all four questions below correctly; first visible text took about 40–53 seconds. The general Knowledge-off test contained a factual error, so use the note-grounded examples for the presentation. The repaired sourcead70 app is installed on the Fold with its copied-back APK verified. The owner reproduced a remaining floating-drawer dismissal bug in split view; use a single workspace until the follow-up repair and rehearsal pass. The answer results and timings below come from the earlier source920e four-question rehearsal.
 
 Start with Construction. Open **DEMO: Cedar Cabinet Order**, then Chat → New chat. Ask:
 
@@ -8,7 +8,7 @@ Start with Construction. Open **DEMO: Cedar Cabinet Order**, then Chat → New c
 
 The checked answer identifies **RFI-017 awaiting finish-selection approval** and **Nora Elm** coordinating delivery. The 19 October target is unconfirmed. While it works, explain that these are fictional project coordination notes stored in Skein.
 
-The model currently omits inline citations. Open **Knowledge on → Context → Used in this answer** to inspect the supplied notes. Call this the context list, not an answer citation. The source-opening path was verified with the mycology Observation Log. Keep the note beside the chat using Split; tap the workspace you want to control, and use Swap to exchange their positions.
+The model currently omits inline citations. Open **Knowledge on → Context → Used in this answer** to inspect the supplied notes. Call this the context list, not an answer citation. The source-opening path was verified with the mycology Observation Log. After the split-view acceptance check passes, keep the note beside the chat using Split; tap the workspace you want to control, and use Swap to exchange their positions.
 
 Ask the missing-fact question:
 

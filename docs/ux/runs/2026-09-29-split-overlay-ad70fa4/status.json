@@ -1,0 +1,158 @@
+{
+  "source_sha": "ad70fa4d1fea13acdaa53422b3d5eb2fce17354c",
+  "status": "INSTALLED_VERIFIED_PHYSICAL_DRAWER_DISMISSAL_DEFECT_OPEN",
+  "app": {
+    "sha256": "fb409b35bb3295f1d0d00166ef4fd568182f668ea9107cdb9663d8c4f1451798",
+    "size_bytes": 128079415
+  },
+  "production_scope": [
+    "Close navigation drawer after its actions even when outer layout is a rail",
+    "Dismiss only the active workspace search before destination or New chat navigation"
+  ],
+  "local_checks": {
+    "passed": 824,
+    "skipped": 14,
+    "failures": 0,
+    "errors": 0,
+    "lint": "PASS",
+    "both_opt_in_android_test_compiles": "PASS"
+  },
+  "local_screens": {
+    "passed": 1298,
+    "skipped": 80,
+    "unchanged": 552
+  },
+  "remote_ci": {
+    "run": 36638553043,
+    "passed": 5171,
+    "skipped": 88,
+    "bad": 0,
+    "cached_unit_tasks": 12,
+    "new_overlay_cases_fresh": 7
+  },
+  "remote_screens": {
+    "run": 36638553082,
+    "passed": 1298,
+    "skipped": 80,
+    "unchanged": 552,
+    "new_overlay_cases_fresh": 7,
+    "no_build_cache": true
+  },
+  "remote_reproducibility": {
+    "status": "PASS",
+    "source_sha": "ad70fa4d1fea13acdaa53422b3d5eb2fce17354c",
+    "run": 36638553146,
+    "apk_pair_byte_equal": true,
+    "apk_sha256": "f03e345004bb69ec821a31c0907ee2d73db68f97b2d22409b80843f5d8b1485a",
+    "apk_bytes": 100758279,
+    "native_pair_byte_equal": true,
+    "native_sha256": "2aefda01808f10bf5693ab02d0857e0169dc09550b615896939cb176c032daff",
+    "native_bytes": 25314032,
+    "embedded_release_native_equal": true,
+    "limits": [
+      "Unsigned release reproducibility; not local signed debug byte equality.",
+      "Tag-only SQLCipher regeneration skipped. Native negative-control not run.",
+      "Full artifact archives verified against GitHub digest and actual payload."
+    ]
+  },
+  "ordinary": {
+    "run": 36638553382,
+    "status": "PASS",
+    "passed": 281,
+    "skipped": 0,
+    "failures": 0,
+    "errors": 0,
+    "xml_files": 3,
+    "artifact_sha256": "b19aacfb11f5d9c9a7bba75f597583bdf805768165ec460effa5ec95113aa00d"
+  },
+  "original_draft_recovery_on7868": {
+    "result": "RECOVERED_EXACT_TEXT",
+    "method": "One reselect of primary Chat destination",
+    "known_synthetic_note_links": 9,
+    "draft_sha256": "71e37fdec8b053035877969575517594c3ac181fb931299bd7c4665bf0ce8367",
+    "edits": 0,
+    "sends": 0,
+    "limits": "Earlier navigation/capture cause remains unassigned; original evidence retained."
+  },
+  "fresh_explicit_draft_on7868": {
+    "result": "PASS_ONE_SHOW_HIDE_CYCLE",
+    "synthetic_draft_sha256": "277e4dbf3e98a51b6bb47f241c39f9c443e76deaf35d6e61c44864e4120a02bd",
+    "visual_semantics_agree": true
+  },
+  "network_permission_review": {
+    "internet_permission_present": false,
+    "access_network_state_present": false,
+    "scope": "Candidate app only; previous scoped Mac/Fold checks separately retained."
+  },
+  "physical_ad70": "OPEN_SPLIT_DRAWER_DISMISSAL_FINDING",
+  "limits": [
+    "Model native bytes and selected model unchanged; no new model import or native trial",
+    "Original private screenshots stay local",
+    "Retrieval/embedding, citations, broad accuracy and formal Fold/M0 gates remain open"
+  ],
+  "root_review_pins": {
+    "actual-checks-review.json": "54cb5be17ce437b9657854ae4af783730c13d189868aad8e943be8b50f4cdd0b",
+    "build-source-review.json": "03af89525d000abba561868a5e7130450b6ca7b5b11e055f146c7486837a7f7f",
+    "ci-root-review.json": "e44c480a635084a01e11e197aa3457c05a6e23d220425374c4b34340ee2f4d5d",
+    "native-equivalence-review.json": "67039551ccc1242646e7cae094babbb960f1c460886e0ed24b099ac455851291",
+    "network-permission-review.json": "97fd4a6a1a59d8d4ec85aee3ad1b7262e43747e55ead1081db0b117ddcdbaaf5",
+    "ordinary-root-review.json": "3cb4dbf2d443fc9eb84ada2bebaeb4ab1508ac5397b2041ba59138d5d2868036",
+    "reproducible-root-review.json": "55c76589bd21d2880146422634934688850d95abee1ded746d72a48a15dd9021",
+    "screenshots-root-review.json": "efdc277144b56d31be246f60dacdce83bca0d4aead8138fd1bb43a9ec1561ba5"
+  },
+  "updater_review": {
+    "tests": 46,
+    "passed": 46,
+    "errors": 0,
+    "failures": 0,
+    "device_execution": false,
+    "driver_sha256": "f36547e021d3f48d5a993b7d4d1997fa86abe09fb1e5d56492c23e13c1cf8b22",
+    "expected_installed_source": "7868cff8e2848e0a84b2def3c14ae21c2569969b",
+    "independent_peer_review_sha256": "ef23628e45d48b5a8ccbfe4d1c8314be0185f9f62b2f5e8594a2e08359445b3a"
+  },
+  "release_sha256": "6a4803e8d3bb7d2b9b259c5d35d17bef10c580de9ced038cf94562a78aa56e2a",
+  "installation": {
+    "at": "2026-09-29T22:50:34.170132+00:00",
+    "summary_sha256": "34f7502958c42a8077c7c9542baa1c4c88cb97dc2ea9955604c955c0c8013f3a",
+    "install_attempts": 1,
+    "copied_back_sha256": "fb409b35bb3295f1d0d00166ef4fd568182f668ea9107cdb9663d8c4f1451798",
+    "copied_back_bytes": 128079415,
+    "data_preservation": {
+      "firstInstallTime": true,
+      "dataDir": true,
+      "ceDataInode": true,
+      "deDataInode": true,
+      "version_code": true,
+      "version_name": true
+    },
+    "uid_continuity": {
+      "before_available": false,
+      "after_available": false,
+      "checked": false,
+      "unchanged": null
+    },
+    "app_data_cleared": false,
+    "model_import_performed": false,
+    "old_apk_preserved": true
+  },
+  "pending_physical": [
+    "Actual sidebar/Split/Swap and overlay dismissal on repaired app",
+    "Original draft fingerprint on new app",
+    "One unchanged construction question with actual model activity/name",
+    "Imported official1.5B model detail Currently loaded",
+    "Final safe construction-note and chat split screenshot"
+  ],
+  "followup": {
+    "owner_report": "Split hamburger drawer cannot collapse",
+    "confirmed_source_gap": "gesturesEnabled requires outer DRAWER despite supported narrow-child opening under RAIL",
+    "sole_runner": "Fresh screenshots before post-launch UIinput; one bounded scrim-tap diagnosis",
+    "repair": "New isolated source repair in progress; all original evidence preserved",
+    "physical_scrim_tap": {
+      "dismissed": false,
+      "before_after_identical": true,
+      "screenshot_sha256": "efb7483dfda27ecc7525aaba1e463a2bf382dff2cdf203a612130b9a97ae21c9",
+      "taps": 1,
+      "other_mutations": 0
+    }
+  }
+}
