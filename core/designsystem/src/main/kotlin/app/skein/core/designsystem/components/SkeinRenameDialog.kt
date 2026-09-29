@@ -3,7 +3,6 @@ package app.skein.core.designsystem.components
 
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
@@ -55,8 +54,9 @@ fun SkeinRenameDialog(
     val confirmEnabled = !isBlank && !isUnchanged
     val supportingText: (@Composable () -> Unit)? = if (isBlank) ({ Text(blankMessage) }) else null
 
-    AlertDialog(
+    SkeinAlertDialog(
         onDismissRequest = onDismiss,
+        partition = SkeinDialogPartition.READING,
         modifier = modifier.testTag(SKEIN_RENAME_DIALOG_TEST_TAG),
         shape = SkeinDialogDefaults.shape,
         containerColor = SkeinDialogDefaults.containerColor,

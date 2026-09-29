@@ -11,7 +11,6 @@ import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
@@ -31,6 +30,8 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.unit.dp
+import app.skein.core.designsystem.components.SkeinAlertDialog
+import app.skein.core.designsystem.components.SkeinDialogPartition
 import app.skein.core.designsystem.icons.SkeinIcons
 import app.skein.feature.shell.host.entryBottomPadding
 import app.skein.feature.shell.input.SecureTextField
@@ -292,7 +293,8 @@ private fun LicenseUrlDialog(
     val clipboardManager = LocalClipboardManager.current
     val hasUrl = entry.url.isNotBlank()
 
-    AlertDialog(
+    SkeinAlertDialog(
+        partition = SkeinDialogPartition.READING,
         onDismissRequest = onDismiss,
         title = { Text(entry.name) },
         text = {

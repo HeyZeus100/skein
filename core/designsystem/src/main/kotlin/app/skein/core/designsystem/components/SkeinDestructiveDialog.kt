@@ -2,15 +2,16 @@
 // docs/ux/OBJECT_LIFECYCLE_SPEC.md: no-undo delete, copy per object).
 package app.skein.core.designsystem.components
 
-import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.withFrameNanos
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
+import androidx.compose.ui.focus.focusProperties
 import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.semantics.paneTitle
@@ -51,9 +52,10 @@ fun SkeinDestructiveDialog(
     cancelLabel: String = "Cancel",
 ) {
     val cancelFocusRequester = remember { FocusRequester() }
-    LaunchedEffect(Unit) { cancelFocusRequester.requestFocus() }
+    val partitioned = LocalSkeinWindowPartitions.current != null
+    LaunchedEffect(partitioned) { if (!partitioned) cancelFocusRequester.requestFocus() }
 
-    AlertDialog(
+    SkeinAlertDialog(
         onDismissRequest = onDismiss,
         modifier =
             modifier
@@ -65,10 +67,17 @@ fun SkeinDestructiveDialog(
         title = { Text(title) },
         text = { Text(consequence) },
         dismissButton = {
+            LaunchedEffect(partitioned) {
+                if (partitioned) {
+                    withFrameNanos { }
+                    cancelFocusRequester.requestFocus()
+                }
+            }
             TextButton(
                 onClick = onDismiss,
                 modifier =
                     Modifier
+                        .then(if (partitioned) Modifier.focusProperties { canFocus = true } else Modifier)
                         .focusRequester(cancelFocusRequester)
                         .testTag(SKEIN_DESTRUCTIVE_DIALOG_CANCEL_TEST_TAG),
             ) { Text(cancelLabel) }

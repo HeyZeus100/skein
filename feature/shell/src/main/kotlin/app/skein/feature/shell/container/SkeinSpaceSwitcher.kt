@@ -10,7 +10,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
@@ -23,10 +22,15 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.layout.boundsInWindow
+import androidx.compose.ui.layout.onGloballyPositioned
+import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.unit.DpRect
+import app.skein.core.designsystem.components.SkeinDropdownMenu
 import app.skein.core.designsystem.components.skeinFocusRing
 import app.skein.core.designsystem.icons.SkeinIcons
 import app.skein.core.designsystem.theme.SkeinSize
@@ -49,6 +53,8 @@ fun SkeinSpaceSwitcher(
 ) {
     if (spaces.size < 2) return
     var expanded by remember { mutableStateOf(false) }
+    var anchorBounds by remember { mutableStateOf<DpRect?>(null) }
+    val density = LocalDensity.current
     val current = spaces.firstOrNull { it.isSelected } ?: spaces.first()
 
     // compact (the 80 dp collapsed rail): a fixed touch-target square, no
@@ -71,7 +77,20 @@ fun SkeinSpaceSwitcher(
                 .clip(MaterialTheme.shapes.medium)
                 .clickable(role = Role.Button, onClick = { expanded = true })
                 .skeinFocusRing()
-                .testTag(SkeinNavContainerTestTags.SPACE_SWITCHER),
+                .testTag(SkeinNavContainerTestTags.SPACE_SWITCHER)
+                .onGloballyPositioned { coordinates ->
+                    anchorBounds =
+                        with(density) {
+                            coordinates.boundsInWindow().run {
+                                DpRect(
+                                    left.toDp(),
+                                    top.toDp(),
+                                    right.toDp(),
+                                    bottom.toDp(),
+                                )
+                            }
+                        }
+                },
         horizontalArrangement = if (compact) Arrangement.Center else Arrangement.Start,
         verticalAlignment = Alignment.CenterVertically,
     ) {
@@ -89,7 +108,7 @@ fun SkeinSpaceSwitcher(
                 modifier = Modifier.size(SkeinSize.iconChip),
             )
         }
-        DropdownMenu(expanded = expanded, onDismissRequest = { expanded = false }) {
+        SkeinDropdownMenu(expanded = expanded, onDismissRequest = { expanded = false }, anchorBounds = anchorBounds) {
             spaces.forEach { space ->
                 DropdownMenuItem(
                     text = { Text(space.name) },

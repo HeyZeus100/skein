@@ -39,7 +39,6 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
@@ -56,6 +55,8 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.unit.dp
+import app.skein.core.designsystem.components.SkeinAlertDialog
+import app.skein.core.designsystem.components.SkeinDialogPartition
 import app.skein.core.model.SkeinLog
 import app.skein.core.vault.key.PassphraseStrength
 import app.skein.feature.shell.input.SecureTextField
@@ -368,7 +369,8 @@ fun RecoveryKeyExportDialog(
         RecoveryExportUiState.Closed -> Unit
 
         is RecoveryExportUiState.Entering ->
-            AlertDialog(
+            SkeinAlertDialog(
+                partition = SkeinDialogPartition.READING,
                 modifier = modifier,
                 onDismissRequest = state::dismiss,
                 title = { Text("Export recovery key") },
@@ -426,7 +428,7 @@ fun RecoveryKeyExportDialog(
         RecoveryExportUiState.Deriving,
         RecoveryExportUiState.ChoosingDestination,
         ->
-            AlertDialog(
+            SkeinAlertDialog(
                 modifier = modifier,
                 onDismissRequest = {},
                 title = { Text("Export recovery key") },
@@ -435,7 +437,7 @@ fun RecoveryKeyExportDialog(
             )
 
         RecoveryExportUiState.Saved ->
-            AlertDialog(
+            SkeinAlertDialog(
                 modifier = modifier,
                 onDismissRequest = state::dismiss,
                 title = { Text("Recovery file saved") },
