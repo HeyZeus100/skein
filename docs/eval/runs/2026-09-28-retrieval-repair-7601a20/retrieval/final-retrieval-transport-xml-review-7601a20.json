@@ -1,0 +1,27 @@
+{
+  "schema_version": 1,
+  "status": "PASS",
+  "xml_path": "/private/tmp/skein-codex-repair-lanes/build/agent-logs/final-retrieval-36514924095/range-artifacts/core/vault/build/outputs/androidTest-results/connected/debug/flavors/dev/TEST-test(AVD) - 15.xml",
+  "xml_sha256": "32a9f5d6c4d553ed721b197192c5ed90384a3307f11e04fca15db84c3a82baea",
+  "testcases": [
+    {
+      "name": "evaluate_real_ingest_and_retrieval",
+      "classname": "app.skein.core.vault.eval.RealRetrievalEvaluationTest",
+      "time": "66.154"
+    }
+  ],
+  "failures": 0,
+  "errors": 0,
+  "skips": 0,
+  "report_sha256": "2435b8b11d2456524da2b8e63a75a004bcdb2f6585e73fc01b8c66fb084f2caa",
+  "report_bytes": 3186147,
+  "report_hash_matches_device_and_summary": true,
+  "collection_attempt_count": 1,
+  "collection_recovered": false,
+  "matching_apk_sha256": "30755daab8310307799ede117ca4e976a34d9efa1b5897f26a032b62623e0a60",
+  "source_identity_caveat": "host-declared clean checkout; not embedded APK attestation",
+  "quality_failure_preserved": {
+    "production_policy": "FAIL",
+    "ungated_control": "FAIL"
+  }
+}

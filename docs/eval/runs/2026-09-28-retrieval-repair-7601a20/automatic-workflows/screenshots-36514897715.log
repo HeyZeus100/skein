@@ -1,0 +1,1076 @@
+Verify Roborazzi goldens	Set up job	﻿2026-09-29T02:56:35.6665526Z Current runner version: '2.337.0'
+Verify Roborazzi goldens	Set up job	2026-09-29T02:56:35.6691001Z ##[group]Runner Image Provisioner
+Verify Roborazzi goldens	Set up job	2026-09-29T02:56:35.6691842Z Hosted Compute Agent
+Verify Roborazzi goldens	Set up job	2026-09-29T02:56:35.6692474Z Version: 20260828.587
+Verify Roborazzi goldens	Set up job	2026-09-29T02:56:35.6693196Z Commit: abac92662cab4cc7352de4f9f9d2e2419aad9c29
+Verify Roborazzi goldens	Set up job	2026-09-29T02:56:35.6694139Z Build Date: 2026-08-28T16:44:25Z
+Verify Roborazzi goldens	Set up job	2026-09-29T02:56:35.6694858Z Worker ID: {2791b6f2-e54f-4e86-8a17-8764b54654c5}
+Verify Roborazzi goldens	Set up job	2026-09-29T02:56:35.6695582Z Azure Region: eastus
+Verify Roborazzi goldens	Set up job	2026-09-29T02:56:35.6696175Z ##[endgroup]
+Verify Roborazzi goldens	Set up job	2026-09-29T02:56:35.6697732Z ##[group]Operating System
+Verify Roborazzi goldens	Set up job	2026-09-29T02:56:35.6698375Z Ubuntu
+Verify Roborazzi goldens	Set up job	2026-09-29T02:56:35.6699303Z 24.04.5
+Verify Roborazzi goldens	Set up job	2026-09-29T02:56:35.6699871Z LTS
+Verify Roborazzi goldens	Set up job	2026-09-29T02:56:35.6700416Z ##[endgroup]
+Verify Roborazzi goldens	Set up job	2026-09-29T02:56:35.6701016Z ##[group]Runner Image
+Verify Roborazzi goldens	Set up job	2026-09-29T02:56:35.6701651Z Image: ubuntu-24.04
+Verify Roborazzi goldens	Set up job	2026-09-29T02:56:35.6702201Z Version: 20260920.314.1
+Verify Roborazzi goldens	Set up job	2026-09-29T02:56:35.6703340Z Included Software: https://github.com/actions/runner-images/blob/ubuntu24/20260920.314/images/ubuntu/Ubuntu2404-Readme.md
+Verify Roborazzi goldens	Set up job	2026-09-29T02:56:35.6705529Z Image Release: https://github.com/actions/runner-images/releases/tag/ubuntu24%2F20260920.314
+Verify Roborazzi goldens	Set up job	2026-09-29T02:56:35.6706496Z ##[endgroup]
+Verify Roborazzi goldens	Set up job	2026-09-29T02:56:35.6707673Z ##[group]GITHUB_TOKEN Permissions
+Verify Roborazzi goldens	Set up job	2026-09-29T02:56:35.6709819Z Contents: read
+Verify Roborazzi goldens	Set up job	2026-09-29T02:56:35.6710422Z Metadata: read
+Verify Roborazzi goldens	Set up job	2026-09-29T02:56:35.6711071Z ##[endgroup]
+Verify Roborazzi goldens	Set up job	2026-09-29T02:56:35.6713137Z Secret source: Actions
+Verify Roborazzi goldens	Set up job	2026-09-29T02:56:35.6714400Z Cache mode: write
+Verify Roborazzi goldens	Set up job	2026-09-29T02:56:35.6715359Z Prepare workflow directory
+Verify Roborazzi goldens	Set up job	2026-09-29T02:56:35.7042424Z Prepare all required actions
+Verify Roborazzi goldens	Set up job	2026-09-29T02:56:35.7090683Z Getting action download info
+Verify Roborazzi goldens	Set up job	2026-09-29T02:56:35.9468247Z Download action repository 'actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1' (SHA:3d3c42e5aac5ba805825da76410c181273ba90b1)
+Verify Roborazzi goldens	Set up job	2026-09-29T02:56:36.0447175Z Download action repository 'actions/setup-java@de7274f081f381c8f8158605e0321c36c376e2e6' (SHA:de7274f081f381c8f8158605e0321c36c376e2e6)
+Verify Roborazzi goldens	Set up job	2026-09-29T02:56:36.3417865Z Download action repository 'gradle/actions@748248ddd2a24f49513d8f472f81c3a07d4d50e1' (SHA:748248ddd2a24f49513d8f472f81c3a07d4d50e1)
+Verify Roborazzi goldens	Set up job	2026-09-29T02:56:36.9798941Z Download action repository 'actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a' (SHA:043fb46d1a93c77aae656e7c1c64a875d1fc6a0a)
+Verify Roborazzi goldens	Set up job	2026-09-29T02:56:37.2183608Z Complete job name: Verify Roborazzi goldens
+Verify Roborazzi goldens	Checkout	﻿2026-09-29T02:56:37.3262352Z ##[group]Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+Verify Roborazzi goldens	Checkout	2026-09-29T02:56:37.3264604Z with:
+Verify Roborazzi goldens	Checkout	2026-09-29T02:56:37.3265694Z   repository: HeyZeus100/skein
+Verify Roborazzi goldens	Checkout	2026-09-29T02:56:37.3274303Z   token: ***
+Verify Roborazzi goldens	Checkout	2026-09-29T02:56:37.3275380Z   ssh-strict: true
+Verify Roborazzi goldens	Checkout	2026-09-29T02:56:37.3276393Z   ssh-user: git
+Verify Roborazzi goldens	Checkout	2026-09-29T02:56:37.3277404Z   persist-credentials: true
+Verify Roborazzi goldens	Checkout	2026-09-29T02:56:37.3278549Z   clean: true
+Verify Roborazzi goldens	Checkout	2026-09-29T02:56:37.3279575Z   sparse-checkout-cone-mode: true
+Verify Roborazzi goldens	Checkout	2026-09-29T02:56:37.3280758Z   fetch-depth: 1
+Verify Roborazzi goldens	Checkout	2026-09-29T02:56:37.3281827Z   fetch-tags: false
+Verify Roborazzi goldens	Checkout	2026-09-29T02:56:37.3282850Z   show-progress: true
+Verify Roborazzi goldens	Checkout	2026-09-29T02:56:37.3284071Z   lfs: false
+Verify Roborazzi goldens	Checkout	2026-09-29T02:56:37.3285124Z   submodules: false
+Verify Roborazzi goldens	Checkout	2026-09-29T02:56:37.3286157Z   set-safe-directory: true
+Verify Roborazzi goldens	Checkout	2026-09-29T02:56:37.3287369Z   allow-unsafe-pr-checkout: false
+Verify Roborazzi goldens	Checkout	2026-09-29T02:56:37.3288851Z ##[endgroup]
+Verify Roborazzi goldens	Checkout	2026-09-29T02:56:37.4407403Z Syncing repository: HeyZeus100/skein
+Verify Roborazzi goldens	Checkout	2026-09-29T02:56:37.4411359Z ##[group]Getting Git version info
+Verify Roborazzi goldens	Checkout	2026-09-29T02:56:37.4413687Z Working directory is '/home/runner/work/skein/skein'
+Verify Roborazzi goldens	Checkout	2026-09-29T02:56:37.4416962Z [command]/usr/bin/git version
+Verify Roborazzi goldens	Checkout	2026-09-29T02:56:37.4452700Z git version 2.55.0
+Verify Roborazzi goldens	Checkout	2026-09-29T02:56:37.4476540Z ##[endgroup]
+Verify Roborazzi goldens	Checkout	2026-09-29T02:56:37.4487489Z Temporarily overriding HOME='/home/runner/work/_temp/2dfafec7-36b3-49dd-af4a-049d48eb4018' before making global git config changes
+Verify Roborazzi goldens	Checkout	2026-09-29T02:56:37.4492376Z Adding repository directory to the temporary git global config as a safe directory
+Verify Roborazzi goldens	Checkout	2026-09-29T02:56:37.4496338Z [command]/usr/bin/git config --global --add safe.directory /home/runner/work/skein/skein
+Verify Roborazzi goldens	Checkout	2026-09-29T02:56:37.4550184Z Deleting the contents of '/home/runner/work/skein/skein'
+Verify Roborazzi goldens	Checkout	2026-09-29T02:56:37.4555165Z ##[group]Determining repository object format
+Verify Roborazzi goldens	Checkout	2026-09-29T02:56:37.4558278Z ##[endgroup]
+Verify Roborazzi goldens	Checkout	2026-09-29T02:56:37.4560780Z ##[group]Initializing the repository
+Verify Roborazzi goldens	Checkout	2026-09-29T02:56:37.4563122Z [command]/usr/bin/git init /home/runner/work/skein/skein
+Verify Roborazzi goldens	Checkout	2026-09-29T02:56:37.4705045Z hint: Using 'master' as the name for the initial branch. This default branch name
+Verify Roborazzi goldens	Checkout	2026-09-29T02:56:37.4707332Z hint: will change to "main" in Git 3.0. To configure the initial branch name
+Verify Roborazzi goldens	Checkout	2026-09-29T02:56:37.4709233Z hint: to use in all of your new repositories, which will suppress this warning,
+Verify Roborazzi goldens	Checkout	2026-09-29T02:56:37.4710749Z hint: call:
+Verify Roborazzi goldens	Checkout	2026-09-29T02:56:37.4711553Z hint:
+Verify Roborazzi goldens	Checkout	2026-09-29T02:56:37.4712569Z hint: 	git config --global init.defaultBranch <name>
+Verify Roborazzi goldens	Checkout	2026-09-29T02:56:37.4714062Z hint:
+Verify Roborazzi goldens	Checkout	2026-09-29T02:56:37.4715231Z hint: Names commonly chosen instead of 'master' are 'main', 'trunk' and
+Verify Roborazzi goldens	Checkout	2026-09-29T02:56:37.4717093Z hint: 'development'. The just-created branch can be renamed via this command:
+Verify Roborazzi goldens	Checkout	2026-09-29T02:56:37.4718608Z hint:
+Verify Roborazzi goldens	Checkout	2026-09-29T02:56:37.4719435Z hint: 	git branch -m <name>
+Verify Roborazzi goldens	Checkout	2026-09-29T02:56:37.4720375Z hint:
+Verify Roborazzi goldens	Checkout	2026-09-29T02:56:37.4721623Z hint: Disable this message with "git config set advice.defaultBranchName false"
+Verify Roborazzi goldens	Checkout	2026-09-29T02:56:37.4729315Z Initialized empty Git repository in /home/runner/work/skein/skein/.git/
+Verify Roborazzi goldens	Checkout	2026-09-29T02:56:37.4741268Z [command]/usr/bin/git remote add origin https://github.com/HeyZeus100/skein
+Verify Roborazzi goldens	Checkout	2026-09-29T02:56:37.4822407Z ##[endgroup]
+Verify Roborazzi goldens	Checkout	2026-09-29T02:56:37.4824342Z ##[group]Disabling automatic garbage collection
+Verify Roborazzi goldens	Checkout	2026-09-29T02:56:37.4826444Z [command]/usr/bin/git config --local gc.auto 0
+Verify Roborazzi goldens	Checkout	2026-09-29T02:56:37.4880258Z ##[endgroup]
+Verify Roborazzi goldens	Checkout	2026-09-29T02:56:37.4882457Z ##[group]Setting up auth
+Verify Roborazzi goldens	Checkout	2026-09-29T02:56:37.4883861Z Removing SSH command configuration
+Verify Roborazzi goldens	Checkout	2026-09-29T02:56:37.4886109Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+Verify Roborazzi goldens	Checkout	2026-09-29T02:56:37.4921861Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+Verify Roborazzi goldens	Checkout	2026-09-29T02:56:37.5354737Z Removing HTTP extra header
+Verify Roborazzi goldens	Checkout	2026-09-29T02:56:37.5361111Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+Verify Roborazzi goldens	Checkout	2026-09-29T02:56:37.5400271Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+Verify Roborazzi goldens	Checkout	2026-09-29T02:56:37.5620046Z Removing includeIf entries pointing to credentials config files
+Verify Roborazzi goldens	Checkout	2026-09-29T02:56:37.5625675Z [command]/usr/bin/git config --local --name-only --get-regexp ^includeIf\.gitdir:
+Verify Roborazzi goldens	Checkout	2026-09-29T02:56:37.5662918Z [command]/usr/bin/git submodule foreach --recursive git config --local --show-origin --name-only --get-regexp remote.origin.url
+Verify Roborazzi goldens	Checkout	2026-09-29T02:56:37.5894791Z [command]/usr/bin/git config --file /home/runner/work/_temp/git-credentials-da28513a-c3fa-49bb-b58e-a93a694d800b.config http.https://github.com/.extraheader AUTHORIZATION: basic ***
+Verify Roborazzi goldens	Checkout	2026-09-29T02:56:37.5935268Z [command]/usr/bin/git config --local includeIf.gitdir:/home/runner/work/skein/skein/.git.path /home/runner/work/_temp/git-credentials-da28513a-c3fa-49bb-b58e-a93a694d800b.config
+Verify Roborazzi goldens	Checkout	2026-09-29T02:56:37.5971806Z [command]/usr/bin/git config --local includeIf.gitdir:/home/runner/work/skein/skein/.git/worktrees/*.path /home/runner/work/_temp/git-credentials-da28513a-c3fa-49bb-b58e-a93a694d800b.config
+Verify Roborazzi goldens	Checkout	2026-09-29T02:56:37.6009577Z [command]/usr/bin/git config --local includeIf.gitdir:/github/workspace/.git.path /github/runner_temp/git-credentials-da28513a-c3fa-49bb-b58e-a93a694d800b.config
+Verify Roborazzi goldens	Checkout	2026-09-29T02:56:37.6047445Z [command]/usr/bin/git config --local includeIf.gitdir:/github/workspace/.git/worktrees/*.path /github/runner_temp/git-credentials-da28513a-c3fa-49bb-b58e-a93a694d800b.config
+Verify Roborazzi goldens	Checkout	2026-09-29T02:56:37.6084034Z ##[endgroup]
+Verify Roborazzi goldens	Checkout	2026-09-29T02:56:37.6086859Z ##[group]Fetching the repository
+Verify Roborazzi goldens	Checkout	2026-09-29T02:56:37.6091916Z [command]/usr/bin/git -c protocol.version=2 fetch --no-tags --prune --no-recurse-submodules --depth=1 origin +7601a20f7fe8a63109c21d1a69c0bbbc2630bb14:refs/remotes/origin/main
+Verify Roborazzi goldens	Checkout	2026-09-29T02:56:39.3824765Z From https://github.com/HeyZeus100/skein
+Verify Roborazzi goldens	Checkout	2026-09-29T02:56:39.3826481Z  * [new ref]         7601a20f7fe8a63109c21d1a69c0bbbc2630bb14 -> origin/main
+Verify Roborazzi goldens	Checkout	2026-09-29T02:56:39.3835189Z [command]/usr/bin/git branch --list --remote origin/main
+Verify Roborazzi goldens	Checkout	2026-09-29T02:56:39.3865045Z   origin/main
+Verify Roborazzi goldens	Checkout	2026-09-29T02:56:39.3874303Z [command]/usr/bin/git rev-parse refs/remotes/origin/main
+Verify Roborazzi goldens	Checkout	2026-09-29T02:56:39.3901171Z 7601a20f7fe8a63109c21d1a69c0bbbc2630bb14
+Verify Roborazzi goldens	Checkout	2026-09-29T02:56:39.3906176Z ##[endgroup]
+Verify Roborazzi goldens	Checkout	2026-09-29T02:56:39.3907140Z ##[group]Determining the checkout info
+Verify Roborazzi goldens	Checkout	2026-09-29T02:56:39.3908124Z ##[endgroup]
+Verify Roborazzi goldens	Checkout	2026-09-29T02:56:39.3911923Z [command]/usr/bin/git sparse-checkout disable
+Verify Roborazzi goldens	Checkout	2026-09-29T02:56:39.3967268Z [command]/usr/bin/git config --local --unset-all extensions.worktreeConfig
+Verify Roborazzi goldens	Checkout	2026-09-29T02:56:39.4000781Z ##[group]Checking out the ref
+Verify Roborazzi goldens	Checkout	2026-09-29T02:56:39.4006908Z [command]/usr/bin/git checkout --progress --force -B main refs/remotes/origin/main
+Verify Roborazzi goldens	Checkout	2026-09-29T02:56:39.8468084Z Switched to a new branch 'main'
+Verify Roborazzi goldens	Checkout	2026-09-29T02:56:39.8473439Z branch 'main' set up to track 'origin/main'.
+Verify Roborazzi goldens	Checkout	2026-09-29T02:56:39.8497489Z ##[endgroup]
+Verify Roborazzi goldens	Checkout	2026-09-29T02:56:39.8550558Z [command]/usr/bin/git log -1 --format=%H
+Verify Roborazzi goldens	Checkout	2026-09-29T02:56:39.8581972Z 7601a20f7fe8a63109c21d1a69c0bbbc2630bb14
+Verify Roborazzi goldens	Set up JDK 17 (Temurin)	﻿2026-09-29T02:56:39.8918316Z ##[group]Run actions/setup-java@de7274f081f381c8f8158605e0321c36c376e2e6
+Verify Roborazzi goldens	Set up JDK 17 (Temurin)	2026-09-29T02:56:39.8918765Z with:
+Verify Roborazzi goldens	Set up JDK 17 (Temurin)	2026-09-29T02:56:39.8918973Z   distribution: temurin
+Verify Roborazzi goldens	Set up JDK 17 (Temurin)	2026-09-29T02:56:39.8919205Z   java-version: 17
+Verify Roborazzi goldens	Set up JDK 17 (Temurin)	2026-09-29T02:56:39.8919418Z   java-package: jdk
+Verify Roborazzi goldens	Set up JDK 17 (Temurin)	2026-09-29T02:56:39.8919632Z   check-latest: false
+Verify Roborazzi goldens	Set up JDK 17 (Temurin)	2026-09-29T02:56:39.8919855Z   force-download: false
+Verify Roborazzi goldens	Set up JDK 17 (Temurin)	2026-09-29T02:56:39.8920078Z   set-default: true
+Verify Roborazzi goldens	Set up JDK 17 (Temurin)	2026-09-29T02:56:39.8920279Z   server-id: github
+Verify Roborazzi goldens	Set up JDK 17 (Temurin)	2026-09-29T02:56:39.8920512Z   mvn-repositories-include-central: true
+Verify Roborazzi goldens	Set up JDK 17 (Temurin)	2026-09-29T02:56:39.8920845Z   mvn-repositories-prioritize-central: true
+Verify Roborazzi goldens	Set up JDK 17 (Temurin)	2026-09-29T02:56:39.8921180Z   overwrite-settings: true
+Verify Roborazzi goldens	Set up JDK 17 (Temurin)	2026-09-29T02:56:39.8921454Z   cache-read-only: false
+Verify Roborazzi goldens	Set up JDK 17 (Temurin)	2026-09-29T02:56:39.8921677Z   job-status: success
+Verify Roborazzi goldens	Set up JDK 17 (Temurin)	2026-09-29T02:56:39.8924130Z   token: ***
+Verify Roborazzi goldens	Set up JDK 17 (Temurin)	2026-09-29T02:56:39.8924361Z   show-download-progress: false
+Verify Roborazzi goldens	Set up JDK 17 (Temurin)	2026-09-29T02:56:39.8924624Z   problem-matcher: true
+Verify Roborazzi goldens	Set up JDK 17 (Temurin)	2026-09-29T02:56:39.8924845Z ##[endgroup]
+Verify Roborazzi goldens	Set up JDK 17 (Temurin)	2026-09-29T02:56:39.9651914Z ##[group]Installed distributions
+Verify Roborazzi goldens	Set up JDK 17 (Temurin)	2026-09-29T02:56:40.0002830Z Resolved Java 17.0.20+1 from tool-cache
+Verify Roborazzi goldens	Set up JDK 17 (Temurin)	2026-09-29T02:56:40.0003427Z Setting Java 17.0.20+1 as the default
+Verify Roborazzi goldens	Set up JDK 17 (Temurin)	2026-09-29T02:56:40.0012458Z 
+Verify Roborazzi goldens	Set up JDK 17 (Temurin)	2026-09-29T02:56:40.0012670Z Java configuration:
+Verify Roborazzi goldens	Set up JDK 17 (Temurin)	2026-09-29T02:56:40.0013279Z   Distribution: temurin
+Verify Roborazzi goldens	Set up JDK 17 (Temurin)	2026-09-29T02:56:40.0014069Z   Version: 17.0.20+1
+Verify Roborazzi goldens	Set up JDK 17 (Temurin)	2026-09-29T02:56:40.0014762Z   Path: /opt/hostedtoolcache/Java_Temurin-Hotspot_jdk/17.0.20-1/x64
+Verify Roborazzi goldens	Set up JDK 17 (Temurin)	2026-09-29T02:56:40.0015321Z 
+Verify Roborazzi goldens	Set up JDK 17 (Temurin)	2026-09-29T02:56:40.0016017Z ##[endgroup]
+Verify Roborazzi goldens	Set up JDK 17 (Temurin)	2026-09-29T02:56:40.0044782Z Creating settings.xml with server-id: github
+Verify Roborazzi goldens	Set up JDK 17 (Temurin)	2026-09-29T02:56:40.0045488Z Creating toolchains.xml for JDK version 17 from temurin
+Verify Roborazzi goldens	Set up JDK 17 (Temurin)	2026-09-29T02:56:40.0046121Z Writing to /home/runner/.m2/settings.xml
+Verify Roborazzi goldens	Set up JDK 17 (Temurin)	2026-09-29T02:56:40.0056031Z Writing to /home/runner/.m2/toolchains.xml
+Verify Roborazzi goldens	Set up JDK 17 (Temurin)	2026-09-29T02:56:40.0063905Z Configured MAVEN_ARGS to include -ntp to suppress Maven transfer progress logs. Set 'show-download-progress: true' to keep the download progress output.
+Verify Roborazzi goldens	Install required Android SDK platform	﻿2026-09-29T02:56:40.0199342Z ##[group]Run sdkmanager "platforms;android-37" "build-tools;36.0.0" || true
+Verify Roborazzi goldens	Install required Android SDK platform	2026-09-29T02:56:40.0200026Z ^[[36;1msdkmanager "platforms;android-37" "build-tools;36.0.0" || true^[[0m
+Verify Roborazzi goldens	Install required Android SDK platform	2026-09-29T02:56:40.0560604Z shell: /usr/bin/bash -e {0}
+Verify Roborazzi goldens	Install required Android SDK platform	2026-09-29T02:56:40.0561045Z env:
+Verify Roborazzi goldens	Install required Android SDK platform	2026-09-29T02:56:40.0561496Z   JAVA_HOME: /opt/hostedtoolcache/Java_Temurin-Hotspot_jdk/17.0.20-1/x64
+Verify Roborazzi goldens	Install required Android SDK platform	2026-09-29T02:56:40.0562247Z   JAVA_HOME_17_X64: /opt/hostedtoolcache/Java_Temurin-Hotspot_jdk/17.0.20-1/x64
+Verify Roborazzi goldens	Install required Android SDK platform	2026-09-29T02:56:40.0562879Z   MAVEN_ARGS: -ntp
+Verify Roborazzi goldens	Install required Android SDK platform	2026-09-29T02:56:40.0563153Z ##[endgroup]
+Verify Roborazzi goldens	Install required Android SDK platform	2026-09-29T02:56:40.0676585Z /home/runner/work/_temp/ec1f594c-09e6-4cdc-8e4a-9332c4931c80.sh: line 1: sdkmanager: command not found
+Verify Roborazzi goldens	Set up Gradle	﻿2026-09-29T02:56:40.0851819Z ##[group]Run gradle/actions/setup-gradle@748248ddd2a24f49513d8f472f81c3a07d4d50e1
+Verify Roborazzi goldens	Set up Gradle	2026-09-29T02:56:40.0852295Z with:
+Verify Roborazzi goldens	Set up Gradle	2026-09-29T02:56:40.0852508Z   cache-read-only: false
+Verify Roborazzi goldens	Set up Gradle	2026-09-29T02:56:40.0852754Z   cache-disabled: false
+Verify Roborazzi goldens	Set up Gradle	2026-09-29T02:56:40.0852994Z   cache-write-only: false
+Verify Roborazzi goldens	Set up Gradle	2026-09-29T02:56:40.0853246Z   cache-overwrite-existing: false
+Verify Roborazzi goldens	Set up Gradle	2026-09-29T02:56:40.0853724Z   cache-cleanup: on-success
+Verify Roborazzi goldens	Set up Gradle	2026-09-29T02:56:40.0854029Z   gradle-home-cache-includes: caches
+Verify Roborazzi goldens	Set up Gradle	notifications
+Verify Roborazzi goldens	Set up Gradle	
+Verify Roborazzi goldens	Set up Gradle	2026-09-29T02:56:40.0854362Z   add-job-summary: always
+Verify Roborazzi goldens	Set up Gradle	2026-09-29T02:56:40.0854623Z   add-job-summary-as-pr-comment: never
+Verify Roborazzi goldens	Set up Gradle	2026-09-29T02:56:40.0854912Z   dependency-graph: disabled
+Verify Roborazzi goldens	Set up Gradle	2026-09-29T02:56:40.0855221Z   dependency-graph-report-dir: dependency-graph-reports
+Verify Roborazzi goldens	Set up Gradle	2026-09-29T02:56:40.0855589Z   dependency-graph-continue-on-failure: true
+Verify Roborazzi goldens	Set up Gradle	2026-09-29T02:56:40.0855892Z   build-scan-publish: false
+Verify Roborazzi goldens	Set up Gradle	2026-09-29T02:56:40.0856151Z   validate-wrappers: true
+Verify Roborazzi goldens	Set up Gradle	2026-09-29T02:56:40.0856396Z   allow-snapshot-wrappers: false
+Verify Roborazzi goldens	Set up Gradle	2026-09-29T02:56:40.0856681Z   gradle-home-cache-strict-match: false
+Verify Roborazzi goldens	Set up Gradle	2026-09-29T02:56:40.0880458Z   workflow-job-context: null
+Verify Roborazzi goldens	Set up Gradle	2026-09-29T02:56:40.0882903Z   github-token: ***
+Verify Roborazzi goldens	Set up Gradle	2026-09-29T02:56:40.0883138Z env:
+Verify Roborazzi goldens	Set up Gradle	2026-09-29T02:56:40.0883706Z   JAVA_HOME: /opt/hostedtoolcache/Java_Temurin-Hotspot_jdk/17.0.20-1/x64
+Verify Roborazzi goldens	Set up Gradle	2026-09-29T02:56:40.0884239Z   JAVA_HOME_17_X64: /opt/hostedtoolcache/Java_Temurin-Hotspot_jdk/17.0.20-1/x64
+Verify Roborazzi goldens	Set up Gradle	2026-09-29T02:56:40.0884637Z   MAVEN_ARGS: -ntp
+Verify Roborazzi goldens	Set up Gradle	2026-09-29T02:56:40.0884849Z ##[endgroup]
+Verify Roborazzi goldens	Set up Gradle	2026-09-29T02:56:42.5849428Z Merged default JDK locations into /home/runner/.m2/toolchains.xml
+Verify Roborazzi goldens	Set up Gradle	2026-09-29T02:56:42.5851081Z Preparing cache for cleanup.
+Verify Roborazzi goldens	Set up Gradle	2026-09-29T02:56:42.5855166Z ##[group]Restore Gradle state from cache
+Verify Roborazzi goldens	Set up Gradle	2026-09-29T02:56:42.6670159Z Cache hit for restore-key: gradle-home-v1|Linux-X64|ux-screenshots[858879bc056d14e4e506a7a687b5e93a]-890ad71298fcf53488ed6b4860ecdf3a81df5eb1
+Verify Roborazzi goldens	Set up Gradle	2026-09-29T02:56:42.9083624Z Received 6414032 of 6414032 (100.0%), 36.2 MBs/sec
+Verify Roborazzi goldens	Set up Gradle	2026-09-29T02:56:42.9085846Z Cache Size: ~6 MB (6414032 B)
+Verify Roborazzi goldens	Set up Gradle	2026-09-29T02:56:42.9117603Z [command]/usr/bin/tar -xf /home/runner/work/_temp/11488260-f59d-41f4-9865-4f0a3d117c0c/cache.tzst -P -C /home/runner/work/skein/skein --use-compress-program unzstd
+Verify Roborazzi goldens	Set up Gradle	2026-09-29T02:56:43.1069492Z Cache restored successfully
+Verify Roborazzi goldens	Set up Gradle	2026-09-29T02:56:43.1077433Z Restored cache entry with key gradle-home-v1|Linux-X64|ux-screenshots[858879bc056d14e4e506a7a687b5e93a]-7601a20f7fe8a63109c21d1a69c0bbbc2630bb14 to /home/runner/.gradle/caches,/home/runner/.gradle/notifications,/home/runner/.gradle/.setup-gradle in 521ms
+Verify Roborazzi goldens	Set up Gradle	2026-09-29T02:56:43.1844084Z Cache hit for: gradle-instrumented-jars-v1-5b813fb5d0ff4350d86eeab1256cc664
+Verify Roborazzi goldens	Set up Gradle	2026-09-29T02:56:43.1849497Z Cache hit for: gradle-kotlin-dsl-v1-8f42971662257f1cc6c277b6132a4820
+Verify Roborazzi goldens	Set up Gradle	2026-09-29T02:56:43.1895011Z Cache hit for: gradle-wrapper-zips-v1-ef43a8e2ea38ce83c4462b7d7ca3782b
+Verify Roborazzi goldens	Set up Gradle	2026-09-29T02:56:43.1900200Z Cache hit for: gradle-transforms-v1-611bcbd75b779fba7b65129465c0736e
+Verify Roborazzi goldens	Set up Gradle	2026-09-29T02:56:43.1907608Z Cache hit for: gradle-groovy-dsl-v1-e61d96b563b56841092c8656cfe49303
+Verify Roborazzi goldens	Set up Gradle	2026-09-29T02:56:43.1955910Z Cache hit for: gradle-generated-gradle-jars-v1-ccb60158c9231f6b9ef79eb2fb4b4a71
+Verify Roborazzi goldens	Set up Gradle	2026-09-29T02:56:43.1960198Z Cache hit for: gradle-dependencies-v1-a330f6fd43d6cd867464de6c38060142
+Verify Roborazzi goldens	Set up Gradle	2026-09-29T02:56:43.1996786Z Cache hit for: gradle-generated-gradle-jars-v1-dc5a4650abbad0b0d866cf541e44abd4
+Verify Roborazzi goldens	Set up Gradle	2026-09-29T02:56:43.2784486Z Received 64412 of 64412 (100.0%), 1.0 MBs/sec
+Verify Roborazzi goldens	Set up Gradle	2026-09-29T02:56:43.2785253Z Cache Size: ~0 MB (64412 B)
+Verify Roborazzi goldens	Set up Gradle	2026-09-29T02:56:43.3524002Z Received 26693 of 26693 (100.0%), 0.2 MBs/sec
+Verify Roborazzi goldens	Set up Gradle	2026-09-29T02:56:43.3525014Z Cache Size: ~0 MB (26693 B)
+Verify Roborazzi goldens	Set up Gradle	2026-09-29T02:56:43.4363959Z Received 3274328 of 3274328 (100.0%), 14.3 MBs/sec
+Verify Roborazzi goldens	Set up Gradle	2026-09-29T02:56:43.4364835Z Cache Size: ~3 MB (3274328 B)
+Verify Roborazzi goldens	Set up Gradle	2026-09-29T02:56:43.4378664Z Received 102946 of 102946 (100.0%), 0.5 MBs/sec
+Verify Roborazzi goldens	Set up Gradle	2026-09-29T02:56:43.4379402Z Cache Size: ~0 MB (102946 B)
+Verify Roborazzi goldens	Set up Gradle	2026-09-29T02:56:43.4529460Z [command]/usr/bin/tar -xf /home/runner/work/_temp/8f3d0674-51d8-4b13-a44e-78515e2b315f/cache.tzst -P -C /home/runner/work/skein/skein --use-compress-program unzstd
+Verify Roborazzi goldens	Set up Gradle	2026-09-29T02:56:43.4727696Z Cache restored successfully
+Verify Roborazzi goldens	Set up Gradle	2026-09-29T02:56:43.4729648Z [command]/usr/bin/tar -xf /home/runner/work/_temp/faea200f-f7f9-4b84-ada6-f14e0492e40d/cache.tzst -P -C /home/runner/work/skein/skein --use-compress-program unzstd
+Verify Roborazzi goldens	Set up Gradle	2026-09-29T02:56:43.4825275Z Restored cache entry with key gradle-instrumented-jars-v1-5b813fb5d0ff4350d86eeab1256cc664 to /home/runner/.gradle/caches/jars-*/*/ in 373ms
+Verify Roborazzi goldens	Set up Gradle	2026-09-29T02:56:43.4885024Z Cache restored successfully
+Verify Roborazzi goldens	Set up Gradle	2026-09-29T02:56:43.4955297Z Restored cache entry with key gradle-generated-gradle-jars-v1-ccb60158c9231f6b9ef79eb2fb4b4a71 to /home/runner/.gradle/caches/9.7.1/generated-gradle-jars/gradle-test-kit-9.7.1.jar in 387ms
+Verify Roborazzi goldens	Set up Gradle	2026-09-29T02:56:43.5109812Z [command]/usr/bin/tar -xf /home/runner/work/_temp/7c11a4d7-776a-4a59-988c-bbf0b235e0b3/cache.tzst -P -C /home/runner/work/skein/skein --use-compress-program unzstd
+Verify Roborazzi goldens	Set up Gradle	2026-09-29T02:56:43.5144964Z [command]/usr/bin/tar -xf /home/runner/work/_temp/6cd54598-8fda-4d7c-a08a-0e527d731cc1/cache.tzst -P -C /home/runner/work/skein/skein --use-compress-program unzstd
+Verify Roborazzi goldens	Set up Gradle	2026-09-29T02:56:43.5774808Z Cache restored successfully
+Verify Roborazzi goldens	Set up Gradle	2026-09-29T02:56:43.6048995Z Restored cache entry with key gradle-groovy-dsl-v1-e61d96b563b56841092c8656cfe49303 to /home/runner/.gradle/caches/*/groovy-dsl/*/ in 495ms
+Verify Roborazzi goldens	Set up Gradle	2026-09-29T02:56:44.2314203Z Received 43553702 of 43553702 (100.0%), 44.6 MBs/sec
+Verify Roborazzi goldens	Set up Gradle	2026-09-29T02:56:44.2316677Z Cache Size: ~42 MB (43553702 B)
+Verify Roborazzi goldens	Set up Gradle	2026-09-29T02:56:44.2377589Z Received 71303168 of 150662611 (47.3%), 67.9 MBs/sec
+Verify Roborazzi goldens	Set up Gradle	2026-09-29T02:56:44.2517097Z Received 58720256 of 246123845 (23.9%), 55.9 MBs/sec
+Verify Roborazzi goldens	Set up Gradle	2026-09-29T02:56:44.2908817Z Received 58720256 of 560982282 (10.5%), 55.9 MBs/sec
+Verify Roborazzi goldens	Set up Gradle	2026-09-29T02:56:44.3535487Z Cache restored successfully
+Verify Roborazzi goldens	Set up Gradle	2026-09-29T02:56:44.3620542Z Restored cache entry with key gradle-kotlin-dsl-v1-8f42971662257f1cc6c277b6132a4820 to /home/runner/.gradle/caches/*/kotlin-dsl/accessors/*/,/home/runner/.gradle/caches/*/kotlin-dsl/scripts/*/ in 1252ms
+Verify Roborazzi goldens	Set up Gradle	2026-09-29T02:56:44.3709884Z [command]/usr/bin/tar -xf /home/runner/work/_temp/97f0a9a3-c5d8-435d-b7e9-743d059b2e0d/cache.tzst -P -C /home/runner/work/skein/skein --use-compress-program unzstd
+Verify Roborazzi goldens	Set up Gradle	2026-09-29T02:56:44.8045866Z Cache restored successfully
+Verify Roborazzi goldens	Set up Gradle	2026-09-29T02:56:44.8094987Z Restored cache entry with key gradle-generated-gradle-jars-v1-dc5a4650abbad0b0d866cf541e44abd4 to /home/runner/.gradle/caches/9.7.1/generated-gradle-jars/gradle-api-9.7.1.jar in 1701ms
+Verify Roborazzi goldens	Set up Gradle	2026-09-29T02:56:45.1830729Z Received 150662611 of 150662611 (100.0%), 73.8 MBs/sec
+Verify Roborazzi goldens	Set up Gradle	2026-09-29T02:56:45.1833271Z Cache Size: ~144 MB (150662611 B)
+Verify Roborazzi goldens	Set up Gradle	2026-09-29T02:56:45.2560638Z Received 192937984 of 246123845 (78.4%), 91.7 MBs/sec
+Verify Roborazzi goldens	Set up Gradle	2026-09-29T02:56:45.2855091Z [command]/usr/bin/tar -xf /home/runner/work/_temp/e240c8ef-7259-40b9-91c6-992d424aee7a/cache.tzst -P -C /home/runner/work/skein/skein --use-compress-program unzstd
+Verify Roborazzi goldens	Set up Gradle	2026-09-29T02:56:45.2924533Z Received 205520896 of 560982282 (36.6%), 97.8 MBs/sec
+Verify Roborazzi goldens	Set up Gradle	2026-09-29T02:56:45.5600828Z Received 246123845 of 246123845 (100.0%), 101.6 MBs/sec
+Verify Roborazzi goldens	Set up Gradle	2026-09-29T02:56:45.5601977Z Cache Size: ~235 MB (246123845 B)
+Verify Roborazzi goldens	Set up Gradle	2026-09-29T02:56:45.5749799Z [command]/usr/bin/tar -xf /home/runner/work/_temp/264b3571-e14c-499d-9ad9-b4e5a5d52a58/cache.tzst -P -C /home/runner/work/skein/skein --use-compress-program unzstd
+Verify Roborazzi goldens	Set up Gradle	2026-09-29T02:56:45.6807734Z Cache restored successfully
+Verify Roborazzi goldens	Set up Gradle	2026-09-29T02:56:45.6877975Z Restored cache entry with key gradle-wrapper-zips-v1-ef43a8e2ea38ce83c4462b7d7ca3782b to /home/runner/.gradle/wrapper/dists/gradle-9.7.1-bin/1w1c7tv4s851m17nbqdsro2tv in 2579ms
+Verify Roborazzi goldens	Set up Gradle	2026-09-29T02:56:46.2925034Z Received 402653184 of 560982282 (71.8%), 127.8 MBs/sec
+Verify Roborazzi goldens	Set up Gradle	2026-09-29T02:56:46.9542508Z Received 560982282 of 560982282 (100.0%), 146.0 MBs/sec
+Verify Roborazzi goldens	Set up Gradle	2026-09-29T02:56:46.9545735Z Cache Size: ~535 MB (560982282 B)
+Verify Roborazzi goldens	Set up Gradle	2026-09-29T02:56:46.9651389Z [command]/usr/bin/tar -xf /home/runner/work/_temp/0bfbc0eb-db9f-4737-ad33-ea25e0dd7d69/cache.tzst -P -C /home/runner/work/skein/skein --use-compress-program unzstd
+Verify Roborazzi goldens	Set up Gradle	2026-09-29T02:56:48.2865918Z Cache restored successfully
+Verify Roborazzi goldens	Set up Gradle	2026-09-29T02:56:48.6806023Z Restored cache entry with key gradle-dependencies-v1-a330f6fd43d6cd867464de6c38060142 to /home/runner/.gradle/caches/modules-*/files-*/*/*/*/* in 5570ms
+Verify Roborazzi goldens	Set up Gradle	2026-09-29T02:56:49.1259799Z Cache restored successfully
+Verify Roborazzi goldens	Set up Gradle	2026-09-29T02:56:49.3295808Z Restored cache entry with key gradle-transforms-v1-611bcbd75b779fba7b65129465c0736e to /home/runner/.gradle/caches/transforms-4/*/,/home/runner/.gradle/caches/*/transforms/*/ in 6218ms
+Verify Roborazzi goldens	Set up Gradle	2026-09-29T02:56:49.3390816Z ##[endgroup]
+Verify Roborazzi goldens	Set up Gradle	2026-09-29T02:56:49.3883794Z ##[group]All Gradle Wrapper jars are valid
+Verify Roborazzi goldens	Set up Gradle	2026-09-29T02:56:49.3885313Z ✓ Found known Gradle Wrapper JAR files:
+Verify Roborazzi goldens	Set up Gradle	2026-09-29T02:56:49.3886350Z   7a9ce74cff467ca1bf60a4fcd9f05185acceda4d0f382434d393e17864262c5d gradle/wrapper/gradle-wrapper.jar
+Verify Roborazzi goldens	Set up Gradle	2026-09-29T02:56:49.3887353Z ##[endgroup]
+Verify Roborazzi goldens	Verify screenshots	﻿2026-09-29T02:56:49.5800164Z ##[group]Run ./gradlew --no-build-cache verifyRoborazziDebug --continue --stacktrace
+Verify Roborazzi goldens	Verify screenshots	2026-09-29T02:56:49.5801353Z ^[[36;1m./gradlew --no-build-cache verifyRoborazziDebug --continue --stacktrace^[[0m
+Verify Roborazzi goldens	Verify screenshots	2026-09-29T02:56:49.5887803Z shell: /usr/bin/bash --noprofile --norc -e -o pipefail {0}
+Verify Roborazzi goldens	Verify screenshots	2026-09-29T02:56:49.5888470Z env:
+Verify Roborazzi goldens	Verify screenshots	2026-09-29T02:56:49.5889075Z   JAVA_HOME: /opt/hostedtoolcache/Java_Temurin-Hotspot_jdk/17.0.20-1/x64
+Verify Roborazzi goldens	Verify screenshots	2026-09-29T02:56:49.5890212Z   JAVA_HOME_17_X64: /opt/hostedtoolcache/Java_Temurin-Hotspot_jdk/17.0.20-1/x64
+Verify Roborazzi goldens	Verify screenshots	2026-09-29T02:56:49.5890984Z   MAVEN_ARGS: -ntp
+Verify Roborazzi goldens	Verify screenshots	2026-09-29T02:56:49.5891491Z   GRADLE_ACTION_ID: gradle/actions/setup-gradle
+Verify Roborazzi goldens	Verify screenshots	2026-09-29T02:56:49.5892115Z   GRADLE_USER_HOME: /home/runner/.gradle
+Verify Roborazzi goldens	Verify screenshots	2026-09-29T02:56:49.5892674Z   GRADLE_BUILD_ACTION_SETUP_COMPLETED: true
+Verify Roborazzi goldens	Verify screenshots	2026-09-29T02:56:49.5893240Z   GRADLE_BUILD_ACTION_CACHE_RESTORED: true
+Verify Roborazzi goldens	Verify screenshots	2026-09-29T02:56:49.5894358Z   DEVELOCITY_INJECTION_INIT_SCRIPT_NAME: gradle-actions.inject-develocity.init.gradle
+Verify Roborazzi goldens	Verify screenshots	2026-09-29T02:56:49.5895413Z   DEVELOCITY_INJECTION_CUSTOM_VALUE: gradle-actions
+Verify Roborazzi goldens	Verify screenshots	2026-09-29T02:56:49.5896121Z   GITHUB_DEPENDENCY_GRAPH_ENABLED: false
+Verify Roborazzi goldens	Verify screenshots	2026-09-29T02:56:49.5896676Z ##[endgroup]
+Verify Roborazzi goldens	Verify screenshots	2026-09-29T02:56:51.4414978Z Starting a Gradle Daemon (subsequent builds will be faster)
+Verify Roborazzi goldens	Verify screenshots	2026-09-29T02:56:55.4422626Z Calculating task graph as no cached configuration is available for tasks: verifyRoborazziDebug
+Verify Roborazzi goldens	Verify screenshots	2026-09-29T02:57:03.9428717Z > Task :build-logic:guards:checkKotlinGradlePluginConfigurationErrors SKIPPED
+Verify Roborazzi goldens	Verify screenshots	2026-09-29T02:57:06.5434648Z > Task :build-logic:guards:pluginDescriptors
+Verify Roborazzi goldens	Verify screenshots	2026-09-29T02:57:06.6434760Z > Task :build-logic:guards:processResources
+Verify Roborazzi goldens	Verify screenshots	2026-09-29T02:57:17.8454181Z 
+Verify Roborazzi goldens	Verify screenshots	2026-09-29T02:57:17.8460069Z > Task :build-logic:guards:compileKotlin
+Verify Roborazzi goldens	Verify screenshots	2026-09-29T02:57:17.8485943Z w: file:///home/runner/work/skein/skein/build-logic/guards/src/main/kotlin/app/skein/gradle/LicenseAuditTask.kt:84:31 'fun fields(): (Mutable)Iterator<(Mutable)Map.(Mutable)Entry<String!, JsonNode!>!>!' is deprecated. Deprecated in Java.
+Verify Roborazzi goldens	Verify screenshots	2026-09-29T02:57:17.8497124Z w: file:///home/runner/work/skein/skein/build-logic/guards/src/main/kotlin/app/skein/gradle/PomLicenseExtractor.kt:123:18 'fun fields(): (Mutable)Iterator<(Mutable)Map.(Mutable)Entry<String!, JsonNode!>!>!' is deprecated. Deprecated in Java.
+Verify Roborazzi goldens	Verify screenshots	2026-09-29T02:57:17.8505476Z w: file:///home/runner/work/skein/skein/build-logic/guards/src/main/kotlin/app/skein/gradle/PomLicenseExtractor.kt:144:18 'fun fields(): (Mutable)Iterator<(Mutable)Map.(Mutable)Entry<String!, JsonNode!>!>!' is deprecated. Deprecated in Java.
+Verify Roborazzi goldens	Verify screenshots	2026-09-29T02:57:18.6414306Z 
+Verify Roborazzi goldens	Verify screenshots	2026-09-29T02:57:18.6419027Z > Task :build-logic:guards:compileJava NO-SOURCE
+Verify Roborazzi goldens	Verify screenshots	2026-09-29T02:57:18.6419754Z > Task :build-logic:guards:classes
+Verify Roborazzi goldens	Verify screenshots	2026-09-29T02:57:18.7412431Z > Task :build-logic:guards:jar
+Verify Roborazzi goldens	Verify screenshots	2026-09-29T02:57:55.3424900Z > Task :core:markdown:checkKotlinGradlePluginConfigurationErrors SKIPPED
+Verify Roborazzi goldens	Verify screenshots	2026-09-29T02:57:55.3454296Z > Task :testing-ui:preBuild UP-TO-DATE
+Verify Roborazzi goldens	Verify screenshots	2026-09-29T02:57:55.3455154Z > Task :testing-ui:preDebugBuild UP-TO-DATE
+Verify Roborazzi goldens	Verify screenshots	2026-09-29T02:57:55.3484040Z > Task :core:markdown:processResources NO-SOURCE
+Verify Roborazzi goldens	Verify screenshots	2026-09-29T02:57:55.3513964Z > Task :core:designsystem:preBuild UP-TO-DATE
+Verify Roborazzi goldens	Verify screenshots	2026-09-29T02:57:55.3544023Z > Task :core:designsystem:preDebugBuild UP-TO-DATE
+Verify Roborazzi goldens	Verify screenshots	2026-09-29T02:57:55.4413888Z > Task :testing-ui:generateDebugResources
+Verify Roborazzi goldens	Verify screenshots	2026-09-29T02:57:55.4484485Z > Task :core:designsystem:generateDebugResources
+Verify Roborazzi goldens	Verify screenshots	2026-09-29T02:57:55.4514225Z > Task :testing-ui:processDebugNavigationResources
+Verify Roborazzi goldens	Verify screenshots	2026-09-29T02:57:55.4534444Z > Task :core:designsystem:processDebugNavigationResources
+Verify Roborazzi goldens	Verify screenshots	2026-09-29T02:57:55.4609850Z > Task :core:designsystem:javaPreCompileDebug
+Verify Roborazzi goldens	Verify screenshots	2026-09-29T02:57:55.4655337Z > Task :testing-ui:javaPreCompileDebug
+Verify Roborazzi goldens	Verify screenshots	2026-09-29T02:57:55.4703252Z > Task :core:designsystem:preDebugUnitTestBuild UP-TO-DATE
+Verify Roborazzi goldens	Verify screenshots	2026-09-29T02:57:55.5435571Z > Task :testing-ui:mapDebugSourceSetPaths
+Verify Roborazzi goldens	Verify screenshots	2026-09-29T02:57:55.5464138Z > Task :testing-ui:packageDebugResources
+Verify Roborazzi goldens	Verify screenshots	2026-09-29T02:57:55.5494063Z > Task :testing-ui:writeDebugAarMetadata
+Verify Roborazzi goldens	Verify screenshots	2026-09-29T02:57:55.5524126Z > Task :testing-ui:compileDebugLibraryResources
+Verify Roborazzi goldens	Verify screenshots	2026-09-29T02:57:55.5554186Z > Task :core:designsystem:writeDebugAarMetadata
+Verify Roborazzi goldens	Verify screenshots	2026-09-29T02:57:55.5584416Z > Task :core:designsystem:packageDebugResources
+Verify Roborazzi goldens	Verify screenshots	2026-09-29T02:57:57.0439731Z > Task :core:designsystem:checkDebugUnitTestAarMetadata
+Verify Roborazzi goldens	Verify screenshots	2026-09-29T02:57:57.0484330Z > Task :core:designsystem:mapDebugSourceSetPaths
+Verify Roborazzi goldens	Verify screenshots	2026-09-29T02:57:57.3434748Z > Task :core:designsystem:compileDebugLibraryResources
+Verify Roborazzi goldens	Verify screenshots	2026-09-29T02:57:57.3435849Z > Task :core:designsystem:mapDebugUnitTestSourceSetPaths
+Verify Roborazzi goldens	Verify screenshots	2026-09-29T02:57:57.3523328Z > Task :core:designsystem:generateDebugUnitTestResources
+Verify Roborazzi goldens	Verify screenshots	2026-09-29T02:57:57.8484839Z > Task :testing-ui:parseDebugLocalResources
+Verify Roborazzi goldens	Verify screenshots	2026-09-29T02:57:57.8555012Z > Task :core:designsystem:parseDebugLocalResources
+Verify Roborazzi goldens	Verify screenshots	2026-09-29T02:57:57.9438445Z > Task :testing-ui:generateDebugRFile
+Verify Roborazzi goldens	Verify screenshots	2026-09-29T02:57:57.9464205Z > Task :core:designsystem:generateDebugRFile
+Verify Roborazzi goldens	Verify screenshots	2026-09-29T02:57:57.9504773Z > Task :testing-ui:extractDeepLinksDebug
+Verify Roborazzi goldens	Verify screenshots	2026-09-29T02:57:57.9577660Z > Task :core:designsystem:extractDeepLinksDebug
+Verify Roborazzi goldens	Verify screenshots	2026-09-29T02:57:58.1434636Z > Task :testing-ui:processDebugManifest
+Verify Roborazzi goldens	Verify screenshots	2026-09-29T02:57:58.1484354Z > Task :core:designsystem:processDebugManifest
+Verify Roborazzi goldens	Verify screenshots	2026-09-29T02:57:58.1510708Z > Task :core:designsystem:javaPreCompileDebugUnitTest
+Verify Roborazzi goldens	Verify screenshots	2026-09-29T02:57:58.1547125Z > Task :testing-ui:generateDebugAssets UP-TO-DATE
+Verify Roborazzi goldens	Verify screenshots	2026-09-29T02:57:58.1598320Z > Task :testing-ui:mergeDebugAssets
+Verify Roborazzi goldens	Verify screenshots	2026-09-29T02:57:58.1681927Z > Task :core:designsystem:generateDebugUnitTestAssets UP-TO-DATE
+Verify Roborazzi goldens	Verify screenshots	2026-09-29T02:57:58.1694432Z > Task :core:designsystem:generateDebugAssets UP-TO-DATE
+Verify Roborazzi goldens	Verify screenshots	2026-09-29T02:57:58.2444577Z > Task :core:designsystem:mergeDebugAssets
+Verify Roborazzi goldens	Verify screenshots	2026-09-29T02:57:58.3448758Z > Task :core:designsystem:mergeDebugUnitTestAssets
+Verify Roborazzi goldens	Verify screenshots	2026-09-29T02:57:58.3555413Z > Task :testing:checkKotlinGradlePluginConfigurationErrors SKIPPED
+Verify Roborazzi goldens	Verify screenshots	2026-09-29T02:57:58.3605711Z > Task :testing-fakes:checkKotlinGradlePluginConfigurationErrors SKIPPED
+Verify Roborazzi goldens	Verify screenshots	2026-09-29T02:57:58.3664330Z > Task :core:model:checkKotlinGradlePluginConfigurationErrors SKIPPED
+Verify Roborazzi goldens	Verify screenshots	2026-09-29T02:57:58.7436425Z > Task :core:designsystem:mergeDebugUnitTestManifest
+Verify Roborazzi goldens	Verify screenshots	2026-09-29T02:57:58.7458391Z > Task :core:designsystem:processDebugUnitTestManifest
+Verify Roborazzi goldens	Verify screenshots	2026-09-29T02:57:58.7504115Z > Task :core:model:processResources
+Verify Roborazzi goldens	Verify screenshots	2026-09-29T02:57:58.7550203Z > Task :testing-fakes:processResources NO-SOURCE
+Verify Roborazzi goldens	Verify screenshots	2026-09-29T02:57:58.7604132Z > Task :testing:processResources
+Verify Roborazzi goldens	Verify screenshots	2026-09-29T02:57:58.7605046Z > Task :core:navigation:checkKotlinGradlePluginConfigurationErrors SKIPPED
+Verify Roborazzi goldens	Verify screenshots	2026-09-29T02:58:00.3460415Z > Task :core:designsystem:mergeDebugUnitTestResources
+Verify Roborazzi goldens	Verify screenshots	2026-09-29T02:58:01.5462237Z > Task :core:designsystem:processDebugUnitTestResources
+Verify Roborazzi goldens	Verify screenshots	2026-09-29T02:58:01.6435678Z > Task :core:designsystem:packageDebugUnitTestForUnitTest
+Verify Roborazzi goldens	Verify screenshots	2026-09-29T02:58:01.6477878Z > Task :core:designsystem:generateDebugUnitTestConfig
+Verify Roborazzi goldens	Verify screenshots	2026-09-29T02:58:01.6529056Z > Task :core:navigation:processResources NO-SOURCE
+Verify Roborazzi goldens	Verify screenshots	2026-09-29T02:58:01.6529877Z > Task :core:export:preBuild UP-TO-DATE
+Verify Roborazzi goldens	Verify screenshots	2026-09-29T02:58:01.6530525Z > Task :core:export:preDebugBuild UP-TO-DATE
+Verify Roborazzi goldens	Verify screenshots	2026-09-29T02:58:01.6531231Z > Task :core:export:generateDebugResources
+Verify Roborazzi goldens	Verify screenshots	2026-09-29T02:58:01.7424925Z > Task :core:export:packageDebugResources
+Verify Roborazzi goldens	Verify screenshots	2026-09-29T02:58:01.7480047Z > Task :core:export:processDebugNavigationResources
+Verify Roborazzi goldens	Verify screenshots	2026-09-29T02:58:01.7534448Z > Task :core:export:parseDebugLocalResources
+Verify Roborazzi goldens	Verify screenshots	2026-09-29T02:58:01.7556636Z > Task :core:export:generateDebugRFile
+Verify Roborazzi goldens	Verify screenshots	2026-09-29T02:58:01.7624355Z > Task :core:vault:preBuild UP-TO-DATE
+Verify Roborazzi goldens	Verify screenshots	2026-09-29T02:58:01.7681856Z > Task :core:vault:preFossDebugBuild UP-TO-DATE
+Verify Roborazzi goldens	Verify screenshots	2026-09-29T02:58:01.8420245Z > Task :core:vault:generateFossDebugResources
+Verify Roborazzi goldens	Verify screenshots	2026-09-29T02:58:01.8433656Z > Task :core:vault:packageFossDebugResources
+Verify Roborazzi goldens	Verify screenshots	2026-09-29T02:58:01.8444312Z > Task :core:vault:processFossDebugNavigationResources
+Verify Roborazzi goldens	Verify screenshots	2026-09-29T02:58:01.8445174Z > Task :core:vault:parseFossDebugLocalResources
+Verify Roborazzi goldens	Verify screenshots	2026-09-29T02:58:01.9484554Z > Task :core:vault:generateFossDebugRFile
+Verify Roborazzi goldens	Verify screenshots	2026-09-29T02:58:01.9546426Z > Task :core:vault:javaPreCompileFossDebug
+Verify Roborazzi goldens	Verify screenshots	2026-09-29T02:58:01.9606146Z > Task :core:export:javaPreCompileDebug
+Verify Roborazzi goldens	Verify screenshots	2026-09-29T02:58:01.9654401Z > Task :core:rag:preBuild UP-TO-DATE
+Verify Roborazzi goldens	Verify screenshots	2026-09-29T02:58:01.9705805Z > Task :core:rag:preDebugBuild UP-TO-DATE
+Verify Roborazzi goldens	Verify screenshots	2026-09-29T02:58:01.9784909Z > Task :core:rag:generateDebugResources
+Verify Roborazzi goldens	Verify screenshots	2026-09-29T02:58:01.9874774Z > Task :core:rag:packageDebugResources
+Verify Roborazzi goldens	Verify screenshots	2026-09-29T02:58:01.9930422Z > Task :core:rag:processDebugNavigationResources
+Verify Roborazzi goldens	Verify screenshots	2026-09-29T02:58:01.9954295Z > Task :core:rag:parseDebugLocalResources
+Verify Roborazzi goldens	Verify screenshots	2026-09-29T02:58:02.0444647Z > Task :core:rag:generateDebugRFile
+Verify Roborazzi goldens	Verify screenshots	2026-09-29T02:58:02.0485840Z > Task :core:security:preBuild UP-TO-DATE
+Verify Roborazzi goldens	Verify screenshots	2026-09-29T02:58:02.0534948Z > Task :core:security:preDebugBuild UP-TO-DATE
+Verify Roborazzi goldens	Verify screenshots	2026-09-29T02:58:02.0562281Z > Task :core:security:generateDebugResources
+Verify Roborazzi goldens	Verify screenshots	2026-09-29T02:58:02.0564766Z > Task :core:security:packageDebugResources
+Verify Roborazzi goldens	Verify screenshots	2026-09-29T02:58:02.0594597Z > Task :core:security:processDebugNavigationResources
+Verify Roborazzi goldens	Verify screenshots	2026-09-29T02:58:02.1444821Z > Task :core:security:parseDebugLocalResources
+Verify Roborazzi goldens	Verify screenshots	2026-09-29T02:58:02.1494645Z > Task :core:security:generateDebugRFile
+Verify Roborazzi goldens	Verify screenshots	2026-09-29T02:58:02.1496399Z > Task :core:security:javaPreCompileDebug
+Verify Roborazzi goldens	Verify screenshots	2026-09-29T02:58:02.1524525Z > Task :core:rag:javaPreCompileDebug
+Verify Roborazzi goldens	Verify screenshots	2026-09-29T02:58:02.1554235Z > Task :feature:chat:preBuild UP-TO-DATE
+Verify Roborazzi goldens	Verify screenshots	2026-09-29T02:58:02.1584395Z > Task :feature:chat:preDebugBuild UP-TO-DATE
+Verify Roborazzi goldens	Verify screenshots	2026-09-29T02:58:02.1585352Z > Task :feature:chat:generateDebugResources
+Verify Roborazzi goldens	Verify screenshots	2026-09-29T02:58:02.2449047Z > Task :feature:chat:packageDebugResources
+Verify Roborazzi goldens	Verify screenshots	2026-09-29T02:58:02.2554503Z > Task :feature:chat:processDebugNavigationResources
+Verify Roborazzi goldens	Verify screenshots	2026-09-29T02:58:02.2614750Z > Task :feature:chat:parseDebugLocalResources
+Verify Roborazzi goldens	Verify screenshots	2026-09-29T02:58:02.2635215Z > Task :feature:chat:generateDebugRFile
+Verify Roborazzi goldens	Verify screenshots	2026-09-29T02:58:02.2664973Z > Task :feature:editor:preBuild UP-TO-DATE
+Verify Roborazzi goldens	Verify screenshots	2026-09-29T02:58:02.2694519Z > Task :feature:editor:preDebugBuild UP-TO-DATE
+Verify Roborazzi goldens	Verify screenshots	2026-09-29T02:58:02.3434572Z > Task :feature:editor:generateDebugResources
+Verify Roborazzi goldens	Verify screenshots	2026-09-29T02:58:02.3444311Z > Task :feature:editor:packageDebugResources
+Verify Roborazzi goldens	Verify screenshots	2026-09-29T02:58:02.3474821Z > Task :feature:editor:processDebugNavigationResources
+Verify Roborazzi goldens	Verify screenshots	2026-09-29T02:58:02.3504140Z > Task :feature:editor:parseDebugLocalResources
+Verify Roborazzi goldens	Verify screenshots	2026-09-29T02:58:02.3524112Z > Task :feature:editor:generateDebugRFile
+Verify Roborazzi goldens	Verify screenshots	2026-09-29T02:58:02.3530468Z > Task :feature:shell:preBuild UP-TO-DATE
+Verify Roborazzi goldens	Verify screenshots	2026-09-29T02:58:02.3551667Z > Task :feature:shell:preDebugBuild UP-TO-DATE
+Verify Roborazzi goldens	Verify screenshots	2026-09-29T02:58:02.4424607Z > Task :feature:shell:generateDebugResources
+Verify Roborazzi goldens	Verify screenshots	2026-09-29T02:58:02.4454215Z > Task :feature:shell:packageDebugResources
+Verify Roborazzi goldens	Verify screenshots	2026-09-29T02:58:02.4474251Z > Task :feature:shell:processDebugNavigationResources
+Verify Roborazzi goldens	Verify screenshots	2026-09-29T02:58:02.4484411Z > Task :feature:shell:parseDebugLocalResources
+Verify Roborazzi goldens	Verify screenshots	2026-09-29T02:58:02.5410009Z > Task :feature:shell:generateDebugRFile
+Verify Roborazzi goldens	Verify screenshots	2026-09-29T02:58:02.5434462Z > Task :feature:shell:javaPreCompileDebug
+Verify Roborazzi goldens	Verify screenshots	2026-09-29T02:58:02.5464205Z > Task :feature:timeline:preBuild UP-TO-DATE
+Verify Roborazzi goldens	Verify screenshots	2026-09-29T02:58:02.5483768Z > Task :feature:timeline:preDebugBuild UP-TO-DATE
+Verify Roborazzi goldens	Verify screenshots	2026-09-29T02:58:02.5522555Z > Task :feature:timeline:generateDebugResources
+Verify Roborazzi goldens	Verify screenshots	2026-09-29T02:58:02.6432184Z > Task :feature:timeline:packageDebugResources
+Verify Roborazzi goldens	Verify screenshots	2026-09-29T02:58:02.6484289Z > Task :feature:timeline:processDebugNavigationResources
+Verify Roborazzi goldens	Verify screenshots	2026-09-29T02:58:02.6514338Z > Task :feature:timeline:parseDebugLocalResources
+Verify Roborazzi goldens	Verify screenshots	2026-09-29T02:58:02.6574347Z > Task :feature:timeline:generateDebugRFile
+Verify Roborazzi goldens	Verify screenshots	2026-09-29T02:58:02.6600422Z > Task :feature:timeline:javaPreCompileDebug
+Verify Roborazzi goldens	Verify screenshots	2026-09-29T02:58:02.6624036Z > Task :feature:editor:javaPreCompileDebug
+Verify Roborazzi goldens	Verify screenshots	2026-09-29T02:58:02.7444838Z > Task :feature:chat:javaPreCompileDebug
+Verify Roborazzi goldens	Verify screenshots	2026-09-29T02:58:02.7499854Z > Task :feature:chat:preDebugUnitTestBuild UP-TO-DATE
+Verify Roborazzi goldens	Verify screenshots	2026-09-29T02:58:02.7574710Z > Task :core:export:mapDebugSourceSetPaths
+Verify Roborazzi goldens	Verify screenshots	2026-09-29T02:58:02.7599370Z > Task :core:export:compileDebugLibraryResources
+Verify Roborazzi goldens	Verify screenshots	2026-09-29T02:58:02.7642837Z > Task :core:rag:mapDebugSourceSetPaths
+Verify Roborazzi goldens	Verify screenshots	2026-09-29T02:58:02.7674209Z > Task :core:rag:compileDebugLibraryResources
+Verify Roborazzi goldens	Verify screenshots	2026-09-29T02:58:02.7703811Z > Task :core:security:mapDebugSourceSetPaths
+Verify Roborazzi goldens	Verify screenshots	2026-09-29T02:58:02.7704568Z > Task :core:security:compileDebugLibraryResources
+Verify Roborazzi goldens	Verify screenshots	2026-09-29T02:58:02.8484606Z > Task :core:vault:mapFossDebugSourceSetPaths
+Verify Roborazzi goldens	Verify screenshots	2026-09-29T02:58:02.8537926Z > Task :core:vault:compileFossDebugLibraryResources
+Verify Roborazzi goldens	Verify screenshots	2026-09-29T02:58:02.8589438Z > Task :core:export:writeDebugAarMetadata
+Verify Roborazzi goldens	Verify screenshots	2026-09-29T02:58:02.8634272Z > Task :core:rag:writeDebugAarMetadata
+Verify Roborazzi goldens	Verify screenshots	2026-09-29T02:58:02.8681627Z > Task :core:security:writeDebugAarMetadata
+Verify Roborazzi goldens	Verify screenshots	2026-09-29T02:58:02.8694195Z > Task :core:vault:writeFossDebugAarMetadata
+Verify Roborazzi goldens	Verify screenshots	2026-09-29T02:58:02.8750983Z > Task :feature:chat:writeDebugAarMetadata
+Verify Roborazzi goldens	Verify screenshots	2026-09-29T02:58:02.8804209Z > Task :feature:editor:writeDebugAarMetadata
+Verify Roborazzi goldens	Verify screenshots	2026-09-29T02:58:02.9434541Z > Task :feature:shell:writeDebugAarMetadata
+Verify Roborazzi goldens	Verify screenshots	2026-09-29T02:58:02.9524350Z > Task :feature:timeline:writeDebugAarMetadata
+Verify Roborazzi goldens	Verify screenshots	2026-09-29T02:58:03.3411734Z > Task :feature:chat:checkDebugUnitTestAarMetadata
+Verify Roborazzi goldens	Verify screenshots	2026-09-29T02:58:03.3424286Z > Task :feature:chat:mapDebugSourceSetPaths
+Verify Roborazzi goldens	Verify screenshots	2026-09-29T02:58:03.3454355Z > Task :feature:chat:compileDebugLibraryResources
+Verify Roborazzi goldens	Verify screenshots	2026-09-29T02:58:03.3484235Z > Task :feature:chat:mapDebugUnitTestSourceSetPaths
+Verify Roborazzi goldens	Verify screenshots	2026-09-29T02:58:03.4434496Z > Task :feature:chat:generateDebugUnitTestResources
+Verify Roborazzi goldens	Verify screenshots	2026-09-29T02:58:07.2434741Z > Task :feature:chat:mergeDebugUnitTestResources
+Verify Roborazzi goldens	Verify screenshots	2026-09-29T02:58:07.3409407Z > Task :core:export:extractDeepLinksDebug
+Verify Roborazzi goldens	Verify screenshots	2026-09-29T02:58:07.3426592Z > Task :core:export:processDebugManifest
+Verify Roborazzi goldens	Verify screenshots	2026-09-29T02:58:07.3434523Z > Task :core:rag:extractDeepLinksDebug
+Verify Roborazzi goldens	Verify screenshots	2026-09-29T02:58:07.3435364Z > Task :core:rag:processDebugManifest
+Verify Roborazzi goldens	Verify screenshots	2026-09-29T02:58:07.3436275Z > Task :core:security:extractDeepLinksDebug
+Verify Roborazzi goldens	Verify screenshots	2026-09-29T02:58:07.3437114Z > Task :core:security:processDebugManifest
+Verify Roborazzi goldens	Verify screenshots	2026-09-29T02:58:07.3437953Z > Task :core:vault:extractDeepLinksFossDebug
+Verify Roborazzi goldens	Verify screenshots	2026-09-29T02:58:07.4484722Z > Task :core:vault:processFossDebugManifest
+Verify Roborazzi goldens	Verify screenshots	2026-09-29T02:58:07.4544311Z > Task :feature:chat:extractDeepLinksDebug
+Verify Roborazzi goldens	Verify screenshots	2026-09-29T02:58:07.4622312Z > Task :feature:chat:processDebugManifest
+Verify Roborazzi goldens	Verify screenshots	2026-09-29T02:58:07.4698598Z > Task :feature:editor:extractDeepLinksDebug
+Verify Roborazzi goldens	Verify screenshots	2026-09-29T02:58:07.4721078Z > Task :feature:editor:processDebugManifest
+Verify Roborazzi goldens	Verify screenshots	2026-09-29T02:58:07.4774022Z > Task :feature:shell:extractDeepLinksDebug
+Verify Roborazzi goldens	Verify screenshots	2026-09-29T02:58:07.5484753Z > Task :feature:shell:processDebugManifest
+Verify Roborazzi goldens	Verify screenshots	2026-09-29T02:58:07.5515129Z > Task :feature:timeline:extractDeepLinksDebug
+Verify Roborazzi goldens	Verify screenshots	2026-09-29T02:58:07.5544384Z > Task :feature:timeline:processDebugManifest
+Verify Roborazzi goldens	Verify screenshots	2026-09-29T02:58:07.9474889Z > Task :feature:chat:mergeDebugUnitTestManifest
+Verify Roborazzi goldens	Verify screenshots	2026-09-29T02:58:07.9534375Z > Task :feature:chat:processDebugUnitTestManifest
+Verify Roborazzi goldens	Verify screenshots	2026-09-29T02:58:07.9594251Z > Task :feature:editor:mapDebugSourceSetPaths
+Verify Roborazzi goldens	Verify screenshots	2026-09-29T02:58:07.9632763Z > Task :feature:editor:compileDebugLibraryResources
+Verify Roborazzi goldens	Verify screenshots	2026-09-29T02:58:07.9634440Z > Task :feature:shell:mapDebugSourceSetPaths
+Verify Roborazzi goldens	Verify screenshots	2026-09-29T02:58:07.9636057Z > Task :feature:shell:compileDebugLibraryResources
+Verify Roborazzi goldens	Verify screenshots	2026-09-29T02:58:07.9637735Z > Task :feature:timeline:mapDebugSourceSetPaths
+Verify Roborazzi goldens	Verify screenshots	2026-09-29T02:58:07.9639296Z > Task :feature:timeline:compileDebugLibraryResources
+Verify Roborazzi goldens	Verify screenshots	2026-09-29T02:58:09.0411901Z > Task :feature:chat:processDebugUnitTestResources
+Verify Roborazzi goldens	Verify screenshots	2026-09-29T02:58:09.0479650Z > Task :feature:chat:javaPreCompileDebugUnitTest
+Verify Roborazzi goldens	Verify screenshots	2026-09-29T02:58:09.0494237Z > Task :core:export:generateDebugAssets UP-TO-DATE
+Verify Roborazzi goldens	Verify screenshots	2026-09-29T02:58:09.0524008Z > Task :core:export:mergeDebugAssets
+Verify Roborazzi goldens	Verify screenshots	2026-09-29T02:58:09.0541821Z > Task :core:rag:generateDebugAssets UP-TO-DATE
+Verify Roborazzi goldens	Verify screenshots	2026-09-29T02:58:09.0543144Z > Task :core:rag:mergeDebugAssets
+Verify Roborazzi goldens	Verify screenshots	2026-09-29T02:58:09.0544297Z > Task :core:security:generateDebugAssets UP-TO-DATE
+Verify Roborazzi goldens	Verify screenshots	2026-09-29T02:58:09.1416028Z > Task :core:security:mergeDebugAssets
+Verify Roborazzi goldens	Verify screenshots	2026-09-29T02:58:09.1484688Z > Task :core:vault:generateFossDebugAssets UP-TO-DATE
+Verify Roborazzi goldens	Verify screenshots	2026-09-29T02:58:09.1518443Z > Task :core:vault:mergeFossDebugAssets
+Verify Roborazzi goldens	Verify screenshots	2026-09-29T02:58:09.1544742Z > Task :feature:chat:generateDebugUnitTestAssets UP-TO-DATE
+Verify Roborazzi goldens	Verify screenshots	2026-09-29T02:58:09.1585429Z > Task :feature:chat:generateDebugAssets UP-TO-DATE
+Verify Roborazzi goldens	Verify screenshots	2026-09-29T02:58:09.1604054Z > Task :feature:chat:mergeDebugAssets
+Verify Roborazzi goldens	Verify screenshots	2026-09-29T02:58:09.1634916Z > Task :feature:editor:generateDebugAssets UP-TO-DATE
+Verify Roborazzi goldens	Verify screenshots	2026-09-29T02:58:09.1664050Z > Task :feature:editor:mergeDebugAssets
+Verify Roborazzi goldens	Verify screenshots	2026-09-29T02:58:09.1686255Z > Task :feature:shell:generateDebugAssets UP-TO-DATE
+Verify Roborazzi goldens	Verify screenshots	2026-09-29T02:58:09.1704944Z > Task :feature:shell:mergeDebugAssets
+Verify Roborazzi goldens	Verify screenshots	2026-09-29T02:58:09.1735066Z > Task :feature:timeline:generateDebugAssets UP-TO-DATE
+Verify Roborazzi goldens	Verify screenshots	2026-09-29T02:58:09.1764041Z > Task :feature:timeline:mergeDebugAssets
+Verify Roborazzi goldens	Verify screenshots	2026-09-29T02:58:09.4444988Z > Task :feature:chat:mergeDebugUnitTestAssets
+Verify Roborazzi goldens	Verify screenshots	2026-09-29T02:58:09.6410795Z > Task :feature:chat:packageDebugUnitTestForUnitTest
+Verify Roborazzi goldens	Verify screenshots	2026-09-29T02:58:09.6494259Z > Task :feature:chat:generateDebugUnitTestConfig
+Verify Roborazzi goldens	Verify screenshots	2026-09-29T02:58:09.6584340Z > Task :feature:editor:preDebugUnitTestBuild UP-TO-DATE
+Verify Roborazzi goldens	Verify screenshots	2026-09-29T02:58:09.7427383Z > Task :feature:editor:checkDebugUnitTestAarMetadata
+Verify Roborazzi goldens	Verify screenshots	2026-09-29T02:58:09.7475683Z > Task :feature:editor:mapDebugUnitTestSourceSetPaths
+Verify Roborazzi goldens	Verify screenshots	2026-09-29T02:58:09.7524154Z > Task :feature:editor:generateDebugUnitTestResources
+Verify Roborazzi goldens	Verify screenshots	2026-09-29T02:58:11.9414566Z > Task :feature:editor:mergeDebugUnitTestResources
+Verify Roborazzi goldens	Verify screenshots	2026-09-29T02:58:12.1416623Z > Task :feature:editor:mergeDebugUnitTestManifest
+Verify Roborazzi goldens	Verify screenshots	2026-09-29T02:58:12.1434352Z > Task :feature:editor:processDebugUnitTestManifest
+Verify Roborazzi goldens	Verify screenshots	2026-09-29T02:58:12.9428513Z > Task :feature:editor:processDebugUnitTestResources
+Verify Roborazzi goldens	Verify screenshots	2026-09-29T02:58:13.0414720Z > Task :feature:editor:javaPreCompileDebugUnitTest
+Verify Roborazzi goldens	Verify screenshots	2026-09-29T02:58:13.0464250Z > Task :feature:editor:generateDebugUnitTestAssets UP-TO-DATE
+Verify Roborazzi goldens	Verify screenshots	2026-09-29T02:58:13.1414513Z > Task :feature:editor:mergeDebugUnitTestAssets
+Verify Roborazzi goldens	Verify screenshots	2026-09-29T02:58:13.2414096Z > Task :feature:editor:packageDebugUnitTestForUnitTest
+Verify Roborazzi goldens	Verify screenshots	2026-09-29T02:58:13.2424219Z > Task :feature:editor:generateDebugUnitTestConfig
+Verify Roborazzi goldens	Verify screenshots	2026-09-29T02:58:13.2450978Z > Task :feature:graph:preBuild UP-TO-DATE
+Verify Roborazzi goldens	Verify screenshots	2026-09-29T02:58:13.2474191Z > Task :feature:graph:preDebugBuild UP-TO-DATE
+Verify Roborazzi goldens	Verify screenshots	2026-09-29T02:58:13.3444363Z > Task :feature:graph:generateDebugResources
+Verify Roborazzi goldens	Verify screenshots	2026-09-29T02:58:13.3445374Z > Task :feature:graph:packageDebugResources
+Verify Roborazzi goldens	Verify screenshots	2026-09-29T02:58:13.3474232Z > Task :feature:graph:processDebugNavigationResources
+Verify Roborazzi goldens	Verify screenshots	2026-09-29T02:58:13.3494096Z > Task :feature:graph:parseDebugLocalResources
+Verify Roborazzi goldens	Verify screenshots	2026-09-29T02:58:13.3504155Z > Task :feature:graph:generateDebugRFile
+Verify Roborazzi goldens	Verify screenshots	2026-09-29T02:58:13.3534280Z > Task :feature:graph:javaPreCompileDebug
+Verify Roborazzi goldens	Verify screenshots	2026-09-29T02:58:13.3554133Z > Task :feature:graph:preDebugUnitTestBuild UP-TO-DATE
+Verify Roborazzi goldens	Verify screenshots	2026-09-29T02:58:13.3579815Z > Task :feature:graph:writeDebugAarMetadata
+Verify Roborazzi goldens	Verify screenshots	2026-09-29T02:58:13.4428768Z > Task :feature:graph:checkDebugUnitTestAarMetadata
+Verify Roborazzi goldens	Verify screenshots	2026-09-29T02:58:13.4534660Z > Task :feature:graph:mapDebugSourceSetPaths
+Verify Roborazzi goldens	Verify screenshots	2026-09-29T02:58:13.4594552Z > Task :feature:graph:compileDebugLibraryResources
+Verify Roborazzi goldens	Verify screenshots	2026-09-29T02:58:13.4624530Z > Task :feature:graph:mapDebugUnitTestSourceSetPaths
+Verify Roborazzi goldens	Verify screenshots	2026-09-29T02:58:13.4654107Z > Task :feature:graph:generateDebugUnitTestResources
+Verify Roborazzi goldens	Verify screenshots	2026-09-29T02:58:15.2439234Z > Task :feature:graph:mergeDebugUnitTestResources
+Verify Roborazzi goldens	Verify screenshots	2026-09-29T02:58:15.2484270Z > Task :feature:graph:extractDeepLinksDebug
+Verify Roborazzi goldens	Verify screenshots	2026-09-29T02:58:15.3444411Z > Task :feature:graph:processDebugManifest
+Verify Roborazzi goldens	Verify screenshots	2026-09-29T02:58:15.5443336Z > Task :feature:graph:mergeDebugUnitTestManifest
+Verify Roborazzi goldens	Verify screenshots	2026-09-29T02:58:15.5484115Z > Task :feature:graph:processDebugUnitTestManifest
+Verify Roborazzi goldens	Verify screenshots	2026-09-29T02:58:16.3414539Z > Task :feature:graph:processDebugUnitTestResources
+Verify Roborazzi goldens	Verify screenshots	2026-09-29T02:58:16.3484040Z > Task :feature:graph:javaPreCompileDebugUnitTest
+Verify Roborazzi goldens	Verify screenshots	2026-09-29T02:58:16.3515343Z > Task :feature:graph:generateDebugUnitTestAssets UP-TO-DATE
+Verify Roborazzi goldens	Verify screenshots	2026-09-29T02:58:16.3597912Z > Task :feature:graph:generateDebugAssets UP-TO-DATE
+Verify Roborazzi goldens	Verify screenshots	2026-09-29T02:58:16.4414508Z > Task :feature:graph:mergeDebugAssets
+Verify Roborazzi goldens	Verify screenshots	2026-09-29T02:58:16.5474440Z > Task :feature:graph:mergeDebugUnitTestAssets
+Verify Roborazzi goldens	Verify screenshots	2026-09-29T02:58:16.6426502Z > Task :feature:graph:packageDebugUnitTestForUnitTest
+Verify Roborazzi goldens	Verify screenshots	2026-09-29T02:58:16.7434650Z > Task :feature:graph:generateDebugUnitTestConfig
+Verify Roborazzi goldens	Verify screenshots	2026-09-29T02:58:16.7494472Z > Task :feature:models:preBuild UP-TO-DATE
+Verify Roborazzi goldens	Verify screenshots	2026-09-29T02:58:16.7524179Z > Task :feature:models:preDebugBuild UP-TO-DATE
+Verify Roborazzi goldens	Verify screenshots	2026-09-29T02:58:16.7553846Z > Task :feature:models:generateDebugResources
+Verify Roborazzi goldens	Verify screenshots	2026-09-29T02:58:16.7614178Z > Task :feature:models:packageDebugResources
+Verify Roborazzi goldens	Verify screenshots	2026-09-29T02:58:16.7674252Z > Task :feature:models:processDebugNavigationResources
+Verify Roborazzi goldens	Verify screenshots	2026-09-29T02:58:16.7704115Z > Task :feature:models:parseDebugLocalResources
+Verify Roborazzi goldens	Verify screenshots	2026-09-29T02:58:16.7734077Z > Task :feature:models:generateDebugRFile
+Verify Roborazzi goldens	Verify screenshots	2026-09-29T02:58:16.7794149Z > Task :feature:models:javaPreCompileDebug
+Verify Roborazzi goldens	Verify screenshots	2026-09-29T02:58:16.7834190Z > Task :feature:models:preDebugUnitTestBuild UP-TO-DATE
+Verify Roborazzi goldens	Verify screenshots	2026-09-29T02:58:16.7856268Z > Task :feature:models:writeDebugAarMetadata
+Verify Roborazzi goldens	Verify screenshots	2026-09-29T02:58:16.7914052Z > Task :feature:models:checkDebugUnitTestAarMetadata
+Verify Roborazzi goldens	Verify screenshots	2026-09-29T02:58:16.7954057Z > Task :feature:models:mapDebugSourceSetPaths
+Verify Roborazzi goldens	Verify screenshots	2026-09-29T02:58:16.7974043Z > Task :feature:models:compileDebugLibraryResources
+Verify Roborazzi goldens	Verify screenshots	2026-09-29T02:58:16.8414528Z > Task :feature:models:mapDebugUnitTestSourceSetPaths
+Verify Roborazzi goldens	Verify screenshots	2026-09-29T02:58:16.8474294Z > Task :feature:models:generateDebugUnitTestResources
+Verify Roborazzi goldens	Verify screenshots	2026-09-29T02:58:18.2442958Z > Task :feature:models:mergeDebugUnitTestResources
+Verify Roborazzi goldens	Verify screenshots	2026-09-29T02:58:18.2474564Z > Task :feature:models:extractDeepLinksDebug
+Verify Roborazzi goldens	Verify screenshots	2026-09-29T02:58:18.2544417Z > Task :feature:models:processDebugManifest
+Verify Roborazzi goldens	Verify screenshots	2026-09-29T02:58:18.4474475Z > Task :feature:models:mergeDebugUnitTestManifest
+Verify Roborazzi goldens	Verify screenshots	2026-09-29T02:58:18.4484459Z > Task :core:navigation:compileKotlin
+Verify Roborazzi goldens	Verify screenshots	2026-09-29T02:58:18.4486152Z > Task :core:navigation:compileJava NO-SOURCE
+Verify Roborazzi goldens	Verify screenshots	2026-09-29T02:58:18.4544255Z > Task :core:navigation:classes UP-TO-DATE
+Verify Roborazzi goldens	Verify screenshots	2026-09-29T02:58:18.4553004Z > Task :feature:models:processDebugUnitTestManifest
+Verify Roborazzi goldens	Verify screenshots	2026-09-29T02:58:18.5495625Z > Task :core:navigation:jar
+Verify Roborazzi goldens	Verify screenshots	2026-09-29T02:58:18.5515210Z > Task :feature:models:javaPreCompileDebugUnitTest
+Verify Roborazzi goldens	Verify screenshots	2026-09-29T02:58:18.5544247Z > Task :feature:models:generateDebugUnitTestAssets UP-TO-DATE
+Verify Roborazzi goldens	Verify screenshots	2026-09-29T02:58:18.5575475Z > Task :feature:models:generateDebugAssets UP-TO-DATE
+Verify Roborazzi goldens	Verify screenshots	2026-09-29T02:58:18.5617677Z > Task :feature:models:mergeDebugAssets
+Verify Roborazzi goldens	Verify screenshots	2026-09-29T02:58:18.6444815Z > Task :feature:models:mergeDebugUnitTestAssets
+Verify Roborazzi goldens	Verify screenshots	2026-09-29T02:58:18.6486501Z > Task :feature:settings:preBuild UP-TO-DATE
+Verify Roborazzi goldens	Verify screenshots	2026-09-29T02:58:18.6514237Z > Task :feature:settings:preDebugBuild UP-TO-DATE
+Verify Roborazzi goldens	Verify screenshots	2026-09-29T02:58:18.6544076Z > Task :feature:settings:generateDebugResources
+Verify Roborazzi goldens	Verify screenshots	2026-09-29T02:58:18.7412700Z > Task :feature:settings:packageDebugResources
+Verify Roborazzi goldens	Verify screenshots	2026-09-29T02:58:18.7454654Z > Task :feature:settings:processDebugNavigationResources
+Verify Roborazzi goldens	Verify screenshots	2026-09-29T02:58:18.7495702Z > Task :feature:settings:parseDebugLocalResources
+Verify Roborazzi goldens	Verify screenshots	2026-09-29T02:58:18.7544342Z > Task :feature:settings:generateDebugRFile
+Verify Roborazzi goldens	Verify screenshots	2026-09-29T02:58:18.7585393Z > Task :feature:settings:javaPreCompileDebug
+Verify Roborazzi goldens	Verify screenshots	2026-09-29T02:58:18.7605934Z > Task :feature:settings:preDebugUnitTestBuild UP-TO-DATE
+Verify Roborazzi goldens	Verify screenshots	2026-09-29T02:58:18.7664226Z > Task :feature:settings:writeDebugAarMetadata
+Verify Roborazzi goldens	Verify screenshots	2026-09-29T02:58:18.8414562Z > Task :feature:settings:checkDebugUnitTestAarMetadata
+Verify Roborazzi goldens	Verify screenshots	2026-09-29T02:58:18.8508097Z > Task :feature:settings:mapDebugSourceSetPaths
+Verify Roborazzi goldens	Verify screenshots	2026-09-29T02:58:18.8554231Z > Task :feature:settings:compileDebugLibraryResources
+Verify Roborazzi goldens	Verify screenshots	2026-09-29T02:58:18.8644479Z > Task :feature:settings:mapDebugUnitTestSourceSetPaths
+Verify Roborazzi goldens	Verify screenshots	2026-09-29T02:58:18.8714584Z > Task :feature:settings:generateDebugUnitTestResources
+Verify Roborazzi goldens	Verify screenshots	2026-09-29T02:58:19.1464789Z > Task :core:model:compileKotlin
+Verify Roborazzi goldens	Verify screenshots	2026-09-29T02:58:19.1524339Z > Task :core:model:compileJava NO-SOURCE
+Verify Roborazzi goldens	Verify screenshots	2026-09-29T02:58:19.1563997Z > Task :core:model:classes
+Verify Roborazzi goldens	Verify screenshots	2026-09-29T02:58:19.1584188Z > Task :core:markdown:compileKotlin
+Verify Roborazzi goldens	Verify screenshots	2026-09-29T02:58:19.2411211Z > Task :core:markdown:compileJava NO-SOURCE
+Verify Roborazzi goldens	Verify screenshots	2026-09-29T02:58:19.2424194Z > Task :core:markdown:classes UP-TO-DATE
+Verify Roborazzi goldens	Verify screenshots	2026-09-29T02:58:19.3420699Z > Task :feature:models:processDebugUnitTestResources
+Verify Roborazzi goldens	Verify screenshots	2026-09-29T02:58:19.3450462Z > Task :core:model:jar
+Verify Roborazzi goldens	Verify screenshots	2026-09-29T02:58:19.3504213Z > Task :core:markdown:jar
+Verify Roborazzi goldens	Verify screenshots	2026-09-29T02:58:19.4419075Z > Task :feature:models:packageDebugUnitTestForUnitTest
+Verify Roborazzi goldens	Verify screenshots	2026-09-29T02:58:20.1444741Z > Task :feature:settings:mergeDebugUnitTestResources
+Verify Roborazzi goldens	Verify screenshots	2026-09-29T02:58:24.0409362Z > Task :core:security:compileDebugKotlin
+Verify Roborazzi goldens	Verify screenshots	2026-09-29T02:58:24.0464475Z > Task :core:security:compileDebugJavaWithJavac NO-SOURCE
+Verify Roborazzi goldens	Verify screenshots	2026-09-29T02:58:24.1424513Z > Task :core:security:bundleLibCompileToJarDebug
+Verify Roborazzi goldens	Verify screenshots	2026-09-29T02:58:34.7409807Z 
+Verify Roborazzi goldens	Verify screenshots	2026-09-29T02:58:34.7424356Z > Task :core:designsystem:compileDebugKotlin
+Verify Roborazzi goldens	Verify screenshots	2026-09-29T02:58:34.7466015Z w: file:///home/runner/work/skein/skein/core/designsystem/src/main/kotlin/app/skein/core/designsystem/theme/ThemeGallery.kt:69:33 'val glyphs: SkeinTokens.Glyphs' is deprecated. Timeline-era: spec §14.11 bans Unicode glyphs as UI icons. DS6's SkeinIcons (Material Symbols) is the successor; not yet built as of DS5.
+Verify Roborazzi goldens	Verify screenshots	2026-09-29T02:58:35.7433256Z 
+Verify Roborazzi goldens	Verify screenshots	2026-09-29T02:58:35.7454429Z > Task :core:designsystem:compileDebugJavaWithJavac NO-SOURCE
+Verify Roborazzi goldens	Verify screenshots	2026-09-29T02:58:35.8454789Z > Task :core:designsystem:bundleLibCompileToJarDebug
+Verify Roborazzi goldens	Verify screenshots	2026-09-29T02:58:36.3409060Z > Task :testing-fakes:compileKotlin
+Verify Roborazzi goldens	Verify screenshots	2026-09-29T02:58:36.3444207Z > Task :core:designsystem:bundleLibRuntimeToJarDebug
+Verify Roborazzi goldens	Verify screenshots	2026-09-29T02:58:36.3496205Z > Task :core:designsystem:processDebugJavaRes
+Verify Roborazzi goldens	Verify screenshots	2026-09-29T02:58:36.4444383Z > Task :testing-fakes:compileJava NO-SOURCE
+Verify Roborazzi goldens	Verify screenshots	2026-09-29T02:58:36.4454170Z > Task :testing-fakes:classes UP-TO-DATE
+Verify Roborazzi goldens	Verify screenshots	2026-09-29T02:58:36.5408866Z > Task :testing-fakes:jar
+Verify Roborazzi goldens	Verify screenshots	2026-09-29T02:58:38.5434216Z 
+Verify Roborazzi goldens	Verify screenshots	2026-09-29T02:58:38.5514464Z > Task :testing-ui:compileDebugKotlin
+Verify Roborazzi goldens	Verify screenshots	2026-09-29T02:58:38.5547901Z w: file:///home/runner/work/skein/skein/testing-ui/src/main/kotlin/app/skein/testing/ui/CaptureUx.kt:41:12 'fun <reified A : ComponentActivity> createAndroidComposeRule(effectContext: CoroutineContext = ...): AndroidComposeTestRule<ActivityScenarioRule<A>, A>' is deprecated. Use `androidx.compose.ui.test.junit4.v2.createAndroidComposeRule` instead. The v2 APIs use StandardTestDispatcher instead of UnconfinedTestDispatcher, which aligns with standard coroutine behavior by queuing tasks rather than executing them immediately. Tests relying on immediate execution may require explicit synchronization. Please refer to the migration guide for more details.
+Verify Roborazzi goldens	Verify screenshots	2026-09-29T02:58:38.5554613Z w: file:///home/runner/work/skein/skein/testing-ui/src/main/kotlin/app/skein/testing/ui/CaptureUx.kt:100:35 This declaration needs opt-in. Its usage should be marked with '@com.github.takahirom.roborazzi.ExperimentalRoborazziApi' or '@OptIn(com.github.takahirom.roborazzi.ExperimentalRoborazziApi::class)'
+Verify Roborazzi goldens	Verify screenshots	2026-09-29T02:58:39.1424072Z 
+Verify Roborazzi goldens	Verify screenshots	2026-09-29T02:58:39.1484561Z > Task :testing-ui:compileDebugJavaWithJavac NO-SOURCE
+Verify Roborazzi goldens	Verify screenshots	2026-09-29T02:58:39.1514060Z > Task :testing-ui:bundleLibRuntimeToJarDebug
+Verify Roborazzi goldens	Verify screenshots	2026-09-29T02:58:39.1574267Z > Task :testing-ui:processDebugJavaRes
+Verify Roborazzi goldens	Verify screenshots	2026-09-29T02:58:39.2434770Z > Task :testing-ui:bundleLibCompileToJarDebug
+Verify Roborazzi goldens	Verify screenshots	2026-09-29T02:58:40.0424454Z > Task :core:rag:compileDebugKotlin
+Verify Roborazzi goldens	Verify screenshots	2026-09-29T02:58:40.1436831Z > Task :core:rag:compileDebugJavaWithJavac NO-SOURCE
+Verify Roborazzi goldens	Verify screenshots	2026-09-29T02:58:40.1495744Z > Task :core:rag:bundleLibRuntimeToJarDebug
+Verify Roborazzi goldens	Verify screenshots	2026-09-29T02:58:40.1538749Z > Task :core:rag:processDebugJavaRes
+Verify Roborazzi goldens	Verify screenshots	2026-09-29T02:58:40.2424567Z > Task :core:security:bundleLibRuntimeToJarDebug
+Verify Roborazzi goldens	Verify screenshots	2026-09-29T02:58:40.2524010Z > Task :core:security:processDebugJavaRes
+Verify Roborazzi goldens	Verify screenshots	2026-09-29T02:58:40.2534828Z > Task :core:rag:bundleLibCompileToJarDebug
+Verify Roborazzi goldens	Verify screenshots	2026-09-29T02:58:45.2409203Z > Task :feature:timeline:compileDebugKotlin
+Verify Roborazzi goldens	Verify screenshots	2026-09-29T02:58:45.2493842Z > Task :feature:timeline:compileDebugJavaWithJavac NO-SOURCE
+Verify Roborazzi goldens	Verify screenshots	2026-09-29T02:58:45.2495471Z > Task :feature:timeline:bundleLibCompileToJarDebug
+Verify Roborazzi goldens	Verify screenshots	2026-09-29T02:58:45.2496230Z > Task :feature:timeline:bundleLibRuntimeToJarDebug
+Verify Roborazzi goldens	Verify screenshots	2026-09-29T02:58:45.2496936Z > Task :feature:timeline:processDebugJavaRes
+Verify Roborazzi goldens	Verify screenshots	2026-09-29T02:58:45.2497623Z > Task :feature:models:generateDebugUnitTestConfig
+Verify Roborazzi goldens	Verify screenshots	2026-09-29T02:58:45.2498295Z > Task :feature:settings:extractDeepLinksDebug
+Verify Roborazzi goldens	Verify screenshots	2026-09-29T02:58:45.2498946Z > Task :feature:settings:processDebugManifest
+Verify Roborazzi goldens	Verify screenshots	2026-09-29T02:58:45.3464550Z > Task :feature:settings:mergeDebugUnitTestManifest
+Verify Roborazzi goldens	Verify screenshots	2026-09-29T02:58:45.3534473Z > Task :feature:settings:processDebugUnitTestManifest
+Verify Roborazzi goldens	Verify screenshots	2026-09-29T02:58:46.0434545Z > Task :feature:settings:processDebugUnitTestResources
+Verify Roborazzi goldens	Verify screenshots	2026-09-29T02:58:46.0524344Z > Task :feature:settings:javaPreCompileDebugUnitTest
+Verify Roborazzi goldens	Verify screenshots	2026-09-29T02:58:46.0525305Z > Task :feature:settings:generateDebugUnitTestAssets UP-TO-DATE
+Verify Roborazzi goldens	Verify screenshots	2026-09-29T02:58:46.0585211Z > Task :feature:settings:generateDebugAssets UP-TO-DATE
+Verify Roborazzi goldens	Verify screenshots	2026-09-29T02:58:46.0657641Z > Task :feature:settings:mergeDebugAssets
+Verify Roborazzi goldens	Verify screenshots	2026-09-29T02:58:46.2415175Z > Task :feature:settings:mergeDebugUnitTestAssets
+Verify Roborazzi goldens	Verify screenshots	2026-09-29T02:58:46.3415291Z > Task :feature:settings:packageDebugUnitTestForUnitTest
+Verify Roborazzi goldens	Verify screenshots	2026-09-29T02:58:46.3416551Z > Task :feature:settings:generateDebugUnitTestConfig
+Verify Roborazzi goldens	Verify screenshots	2026-09-29T02:58:46.3417567Z > Task :feature:shell:preDebugUnitTestBuild UP-TO-DATE
+Verify Roborazzi goldens	Verify screenshots	2026-09-29T02:58:46.3418586Z > Task :feature:shell:checkDebugUnitTestAarMetadata
+Verify Roborazzi goldens	Verify screenshots	2026-09-29T02:58:46.3419489Z > Task :feature:shell:mapDebugUnitTestSourceSetPaths
+Verify Roborazzi goldens	Verify screenshots	2026-09-29T02:58:46.3420414Z > Task :feature:shell:generateDebugUnitTestResources
+Verify Roborazzi goldens	Verify screenshots	2026-09-29T02:58:47.8423967Z > Task :feature:shell:mergeDebugUnitTestResources
+Verify Roborazzi goldens	Verify screenshots	2026-09-29T02:58:48.0454466Z > Task :feature:shell:mergeDebugUnitTestManifest
+Verify Roborazzi goldens	Verify screenshots	2026-09-29T02:58:48.0484206Z > Task :feature:shell:processDebugUnitTestManifest
+Verify Roborazzi goldens	Verify screenshots	2026-09-29T02:58:48.6435168Z > Task :feature:shell:processDebugUnitTestResources
+Verify Roborazzi goldens	Verify screenshots	2026-09-29T02:58:48.7414545Z > Task :feature:shell:javaPreCompileDebugUnitTest
+Verify Roborazzi goldens	Verify screenshots	2026-09-29T02:58:48.7488054Z > Task :feature:shell:generateDebugUnitTestAssets UP-TO-DATE
+Verify Roborazzi goldens	Verify screenshots	2026-09-29T02:58:48.8514392Z > Task :feature:shell:mergeDebugUnitTestAssets
+Verify Roborazzi goldens	Verify screenshots	2026-09-29T02:58:48.9425173Z > Task :feature:shell:packageDebugUnitTestForUnitTest
+Verify Roborazzi goldens	Verify screenshots	2026-09-29T02:58:49.0454593Z > Task :feature:shell:generateDebugUnitTestConfig
+Verify Roborazzi goldens	Verify screenshots	2026-09-29T02:58:49.0504307Z > Task :feature:timeline:preDebugUnitTestBuild UP-TO-DATE
+Verify Roborazzi goldens	Verify screenshots	2026-09-29T02:58:49.0564376Z > Task :feature:timeline:checkDebugUnitTestAarMetadata
+Verify Roborazzi goldens	Verify screenshots	2026-09-29T02:58:49.0624327Z > Task :feature:timeline:mapDebugUnitTestSourceSetPaths
+Verify Roborazzi goldens	Verify screenshots	2026-09-29T02:58:49.0646297Z > Task :feature:timeline:generateDebugUnitTestResources
+Verify Roborazzi goldens	Verify screenshots	2026-09-29T02:58:49.4434589Z > Task :core:vault:compileFossDebugKotlin
+Verify Roborazzi goldens	Verify screenshots	2026-09-29T02:58:50.4414571Z > Task :core:designsystem:compileDebugUnitTestKotlin
+Verify Roborazzi goldens	Verify screenshots	2026-09-29T02:58:50.4444426Z > Task :core:designsystem:compileDebugUnitTestJavaWithJavac NO-SOURCE
+Verify Roborazzi goldens	Verify screenshots	2026-09-29T02:58:50.4504708Z > Task :core:designsystem:processDebugUnitTestJavaRes
+Verify Roborazzi goldens	Verify screenshots	2026-09-29T02:58:50.7436498Z > Task :feature:timeline:mergeDebugUnitTestResources
+Verify Roborazzi goldens	Verify screenshots	2026-09-29T02:58:50.7517706Z > Task :feature:timeline:mergeDebugUnitTestManifest
+Verify Roborazzi goldens	Verify screenshots	2026-09-29T02:58:50.7577675Z > Task :feature:timeline:processDebugUnitTestManifest
+Verify Roborazzi goldens	Verify screenshots	2026-09-29T02:58:51.3413877Z 
+Verify Roborazzi goldens	Verify screenshots	2026-09-29T02:58:51.3554686Z > Task :core:vault:compileFossDebugKotlin
+Verify Roborazzi goldens	Verify screenshots	2026-09-29T02:58:51.3565151Z w: file:///home/runner/work/skein/skein/core/vault/src/main/kotlin/app/skein/core/vault/key/AndroidBiometricAuthenticator.kt:137:46 Unnecessary safe call on a non-null receiver of type 'CharSequence'.
+Verify Roborazzi goldens	Verify screenshots	2026-09-29T02:58:51.3606381Z w: file:///home/runner/work/skein/skein/core/vault/src/main/kotlin/app/skein/core/vault/transfer/VaultZipImporter.kt:315:55 Expression is unused.
+Verify Roborazzi goldens	Verify screenshots	2026-09-29T02:58:51.3636580Z 
+Verify Roborazzi goldens	Verify screenshots	2026-09-29T02:58:51.3664207Z > Task :core:vault:compileFossDebugJavaWithJavac NO-SOURCE
+Verify Roborazzi goldens	Verify screenshots	2026-09-29T02:58:51.5409629Z > Task :core:vault:bundleLibCompileToJarFossDebug
+Verify Roborazzi goldens	Verify screenshots	2026-09-29T02:58:51.8432092Z > Task :testing:compileKotlin
+Verify Roborazzi goldens	Verify screenshots	2026-09-29T02:58:51.8458302Z > Task :testing:compileJava NO-SOURCE
+Verify Roborazzi goldens	Verify screenshots	2026-09-29T02:58:51.8504389Z > Task :testing:classes
+Verify Roborazzi goldens	Verify screenshots	2026-09-29T02:58:52.1424651Z > Task :testing:jar
+Verify Roborazzi goldens	Verify screenshots	2026-09-29T02:58:52.1514401Z > Task :feature:timeline:processDebugUnitTestResources
+Verify Roborazzi goldens	Verify screenshots	2026-09-29T02:58:52.2484659Z > Task :core:vault:bundleLibRuntimeToJarFossDebug
+Verify Roborazzi goldens	Verify screenshots	2026-09-29T02:58:52.2589774Z > Task :core:vault:processFossDebugJavaRes
+Verify Roborazzi goldens	Verify screenshots	2026-09-29T02:58:52.2634764Z > Task :feature:timeline:javaPreCompileDebugUnitTest
+Verify Roborazzi goldens	Verify screenshots	2026-09-29T02:58:52.2674763Z > Task :feature:timeline:generateDebugUnitTestAssets UP-TO-DATE
+Verify Roborazzi goldens	Verify screenshots	2026-09-29T02:58:52.4447231Z > Task :feature:timeline:mergeDebugUnitTestAssets
+Verify Roborazzi goldens	Verify screenshots	2026-09-29T02:58:52.6414764Z > Task :feature:timeline:packageDebugUnitTestForUnitTest
+Verify Roborazzi goldens	Verify screenshots	2026-09-29T02:58:52.6505884Z > Task :feature:timeline:generateDebugUnitTestConfig
+Verify Roborazzi goldens	Verify screenshots	2026-09-29T02:58:54.8424647Z > Task :core:export:compileDebugKotlin
+Verify Roborazzi goldens	Verify screenshots	2026-09-29T02:58:54.8438989Z > Task :core:export:compileDebugJavaWithJavac NO-SOURCE
+Verify Roborazzi goldens	Verify screenshots	2026-09-29T02:58:54.8463977Z > Task :core:export:processDebugJavaRes
+Verify Roborazzi goldens	Verify screenshots	2026-09-29T02:58:54.8484129Z > Task :core:export:bundleLibRuntimeToJarDebug
+Verify Roborazzi goldens	Verify screenshots	2026-09-29T02:58:54.8524010Z > Task :core:export:bundleLibCompileToJarDebug
+Verify Roborazzi goldens	Verify screenshots	2026-09-29T02:58:59.8444332Z > Task :feature:shell:compileDebugKotlin
+Verify Roborazzi goldens	Verify screenshots	2026-09-29T02:58:59.8527039Z > Task :feature:shell:compileDebugJavaWithJavac NO-SOURCE
+Verify Roborazzi goldens	Verify screenshots	2026-09-29T02:58:59.8570269Z > Task :feature:shell:processDebugJavaRes
+Verify Roborazzi goldens	Verify screenshots	2026-09-29T02:58:59.8620879Z > Task :feature:shell:bundleLibCompileToJarDebug
+Verify Roborazzi goldens	Verify screenshots	2026-09-29T02:58:59.8674510Z > Task :feature:shell:bundleLibRuntimeToJarDebug
+Verify Roborazzi goldens	Verify screenshots	2026-09-29T02:59:03.1418918Z > Task :feature:models:compileDebugKotlin
+Verify Roborazzi goldens	Verify screenshots	2026-09-29T02:59:03.1442349Z > Task :feature:models:compileDebugJavaWithJavac NO-SOURCE
+Verify Roborazzi goldens	Verify screenshots	2026-09-29T02:59:03.1474269Z > Task :feature:models:bundleLibRuntimeToJarDebug
+Verify Roborazzi goldens	Verify screenshots	2026-09-29T02:59:03.1524302Z > Task :feature:models:bundleLibCompileToJarDebug
+Verify Roborazzi goldens	Verify screenshots	2026-09-29T02:59:05.7433933Z 
+Verify Roborazzi goldens	Verify screenshots	2026-09-29T02:59:05.7564793Z > Task :feature:graph:compileDebugKotlin
+Verify Roborazzi goldens	Verify screenshots	2026-09-29T02:59:05.7579640Z w: file:///home/runner/work/skein/skein/feature/graph/src/main/kotlin/app/skein/feature/graph/GraphView.kt:109:9 'fun rememberTransformableState(onTransformation: (Float, Offset, Float) -> Unit): TransformableState' is deprecated. Prefer remembering a TransformableState with a onTransformation lambda that takes the centroid. This centroid (if specified) is the point at which zooming or rotation should happen around which allows for more natural transformations.
+Verify Roborazzi goldens	Verify screenshots	2026-09-29T02:59:06.0408200Z 
+Verify Roborazzi goldens	Verify screenshots	2026-09-29T02:59:06.0464806Z > Task :feature:graph:compileDebugJavaWithJavac NO-SOURCE
+Verify Roborazzi goldens	Verify screenshots	2026-09-29T02:59:06.0484129Z > Task :feature:graph:bundleLibRuntimeToJarDebug
+Verify Roborazzi goldens	Verify screenshots	2026-09-29T02:59:06.0524365Z > Task :feature:graph:bundleLibCompileToJarDebug
+Verify Roborazzi goldens	Verify screenshots	2026-09-29T02:59:06.9408902Z 
+Verify Roborazzi goldens	Verify screenshots	2026-09-29T02:59:06.9447756Z > Task :feature:models:compileDebugUnitTestKotlin
+Verify Roborazzi goldens	Verify screenshots	2026-09-29T02:59:06.9478020Z w: file:///home/runner/work/skein/skein/feature/models/src/test/kotlin/app/skein/feature/models/ModelDeleteConfirmationTest.kt:42:23 'fun <reified A : ComponentActivity> createAndroidComposeRule(effectContext: CoroutineContext = ...): AndroidComposeTestRule<ActivityScenarioRule<A>, A>' is deprecated. Use `androidx.compose.ui.test.junit4.v2.createAndroidComposeRule` instead. The v2 APIs use StandardTestDispatcher instead of UnconfinedTestDispatcher, which aligns with standard coroutine behavior by queuing tasks rather than executing them immediately. Tests relying on immediate execution may require explicit synchronization. Please refer to the migration guide for more details.
+Verify Roborazzi goldens	Verify screenshots	2026-09-29T02:59:06.9498161Z w: file:///home/runner/work/skein/skein/feature/models/src/test/kotlin/app/skein/feature/models/entries/ModelsEntriesTest.kt:42:23 'fun <reified A : ComponentActivity> createAndroidComposeRule(effectContext: CoroutineContext = ...): AndroidComposeTestRule<ActivityScenarioRule<A>, A>' is deprecated. Use `androidx.compose.ui.test.junit4.v2.createAndroidComposeRule` instead. The v2 APIs use StandardTestDispatcher instead of UnconfinedTestDispatcher, which aligns with standard coroutine behavior by queuing tasks rather than executing them immediately. Tests relying on immediate execution may require explicit synchronization. Please refer to the migration guide for more details.
+Verify Roborazzi goldens	Verify screenshots	2026-09-29T02:59:07.2414374Z 
+Verify Roborazzi goldens	Verify screenshots	2026-09-29T02:59:07.2480513Z > Task :feature:graph:processDebugJavaRes
+Verify Roborazzi goldens	Verify screenshots	2026-09-29T02:59:07.2508088Z > Task :feature:models:compileDebugUnitTestJavaWithJavac NO-SOURCE
+Verify Roborazzi goldens	Verify screenshots	2026-09-29T02:59:07.2564664Z > Task :feature:models:processDebugJavaRes
+Verify Roborazzi goldens	Verify screenshots	2026-09-29T02:59:07.3420911Z > Task :feature:models:processDebugUnitTestJavaRes
+Verify Roborazzi goldens	Verify screenshots	2026-09-29T02:59:09.7435550Z 
+Verify Roborazzi goldens	Verify screenshots	2026-09-29T02:59:09.7471794Z > Task :feature:editor:compileDebugKotlin
+Verify Roborazzi goldens	Verify screenshots	2026-09-29T02:59:09.7537158Z w: file:///home/runner/work/skein/skein/feature/editor/src/main/kotlin/app/skein/feature/editor/EditorState.kt:147:18 This declaration is in a preview state and can be changed in a backwards-incompatible manner with a best-effort migration. Its usage should be marked with '@kotlinx.coroutines.FlowPreview' or '@OptIn(kotlinx.coroutines.FlowPreview::class)' if you accept the drawback of relying on preview API
+Verify Roborazzi goldens	Verify screenshots	2026-09-29T02:59:09.7586532Z w: file:///home/runner/work/skein/skein/feature/editor/src/main/kotlin/app/skein/feature/editor/notetab/NoteTab.kt:281:43 'val glyphs: SkeinTokens.Glyphs' is deprecated. Timeline-era: spec §14.11 bans Unicode glyphs as UI icons. DS6's SkeinIcons (Material Symbols) is the successor; not yet built as of DS5.
+Verify Roborazzi goldens	Verify screenshots	2026-09-29T02:59:10.1433921Z 
+Verify Roborazzi goldens	Verify screenshots	2026-09-29T02:59:10.1464642Z > Task :feature:editor:compileDebugJavaWithJavac NO-SOURCE
+Verify Roborazzi goldens	Verify screenshots	2026-09-29T02:59:10.2434569Z > Task :feature:editor:bundleLibCompileToJarDebug
+Verify Roborazzi goldens	Verify screenshots	2026-09-29T02:59:12.1423909Z 
+Verify Roborazzi goldens	Verify screenshots	2026-09-29T02:59:12.1484630Z > Task :feature:graph:compileDebugUnitTestKotlin
+Verify Roborazzi goldens	Verify screenshots	2026-09-29T02:59:12.1518401Z w: file:///home/runner/work/skein/skein/feature/graph/src/test/kotlin/app/skein/feature/graph/GraphViewDragTest.kt:118:23 'fun <reified A : ComponentActivity> createAndroidComposeRule(effectContext: CoroutineContext = ...): AndroidComposeTestRule<ActivityScenarioRule<A>, A>' is deprecated. Use `androidx.compose.ui.test.junit4.v2.createAndroidComposeRule` instead. The v2 APIs use StandardTestDispatcher instead of UnconfinedTestDispatcher, which aligns with standard coroutine behavior by queuing tasks rather than executing them immediately. Tests relying on immediate execution may require explicit synchronization. Please refer to the migration guide for more details.
+Verify Roborazzi goldens	Verify screenshots	2026-09-29T02:59:12.1536907Z w: file:///home/runner/work/skein/skein/feature/graph/src/test/kotlin/app/skein/feature/graph/entries/GraphEntriesTest.kt:35:23 'fun <reified A : ComponentActivity> createAndroidComposeRule(effectContext: CoroutineContext = ...): AndroidComposeTestRule<ActivityScenarioRule<A>, A>' is deprecated. Use `androidx.compose.ui.test.junit4.v2.createAndroidComposeRule` instead. The v2 APIs use StandardTestDispatcher instead of UnconfinedTestDispatcher, which aligns with standard coroutine behavior by queuing tasks rather than executing them immediately. Tests relying on immediate execution may require explicit synchronization. Please refer to the migration guide for more details.
+Verify Roborazzi goldens	Verify screenshots	2026-09-29T02:59:12.5414195Z 
+Verify Roborazzi goldens	Verify screenshots	2026-09-29T02:59:12.5424617Z > Task :feature:editor:bundleLibRuntimeToJarDebug
+Verify Roborazzi goldens	Verify screenshots	2026-09-29T02:59:12.6425662Z > Task :feature:editor:processDebugJavaRes
+Verify Roborazzi goldens	Verify screenshots	2026-09-29T02:59:20.4424737Z > Task :core:designsystem:testDebugUnitTest
+Verify Roborazzi goldens	Verify screenshots	2026-09-29T02:59:25.5412301Z 
+Verify Roborazzi goldens	Verify screenshots	2026-09-29T02:59:25.5454609Z > Task :feature:editor:compileDebugUnitTestKotlin
+Verify Roborazzi goldens	Verify screenshots	2026-09-29T02:59:25.5485995Z w: file:///home/runner/work/skein/skein/feature/editor/src/test/kotlin/app/skein/feature/editor/EditorAutosaveTest.kt:42:13 This declaration needs opt-in. Its usage should be marked with '@kotlinx.coroutines.ExperimentalCoroutinesApi' or '@OptIn(kotlinx.coroutines.ExperimentalCoroutinesApi::class)'
+Verify Roborazzi goldens	Verify screenshots	2026-09-29T02:59:25.5575873Z w: file:///home/runner/work/skein/skein/feature/editor/src/test/kotlin/app/skein/feature/editor/EditorAutosaveTest.kt:43:13 This declaration needs opt-in. Its usage should be marked with '@kotlinx.coroutines.ExperimentalCoroutinesApi' or '@OptIn(kotlinx.coroutines.ExperimentalCoroutinesApi::class)'
+Verify Roborazzi goldens	Verify screenshots	2026-09-29T02:59:25.5635749Z w: file:///home/runner/work/skein/skein/feature/editor/src/test/kotlin/app/skein/feature/editor/EditorAutosaveTest.kt:45:13 This declaration needs opt-in. Its usage should be marked with '@kotlinx.coroutines.ExperimentalCoroutinesApi' or '@OptIn(kotlinx.coroutines.ExperimentalCoroutinesApi::class)'
+Verify Roborazzi goldens	Verify screenshots	2026-09-29T02:59:25.5725819Z w: file:///home/runner/work/skein/skein/feature/editor/src/test/kotlin/app/skein/feature/editor/EditorAutosaveTest.kt:46:13 This declaration needs opt-in. Its usage should be marked with '@kotlinx.coroutines.ExperimentalCoroutinesApi' or '@OptIn(kotlinx.coroutines.ExperimentalCoroutinesApi::class)'
+Verify Roborazzi goldens	Verify screenshots	2026-09-29T02:59:25.5730000Z w: file:///home/runner/work/skein/skein/feature/editor/src/test/kotlin/app/skein/feature/editor/EditorAutosaveTest.kt:50:13 This declaration needs opt-in. Its usage should be marked with '@kotlinx.coroutines.ExperimentalCoroutinesApi' or '@OptIn(kotlinx.coroutines.ExperimentalCoroutinesApi::class)'
+Verify Roborazzi goldens	Verify screenshots	2026-09-29T02:59:25.5820312Z w: file:///home/runner/work/skein/skein/feature/editor/src/test/kotlin/app/skein/feature/editor/EditorAutosaveTest.kt:51:13 This declaration needs opt-in. Its usage should be marked with '@kotlinx.coroutines.ExperimentalCoroutinesApi' or '@OptIn(kotlinx.coroutines.ExperimentalCoroutinesApi::class)'
+Verify Roborazzi goldens	Verify screenshots	2026-09-29T02:59:25.5839934Z w: file:///home/runner/work/skein/skein/feature/editor/src/test/kotlin/app/skein/feature/editor/EditorAutosaveTest.kt:68:13 This declaration needs opt-in. Its usage should be marked with '@kotlinx.coroutines.ExperimentalCoroutinesApi' or '@OptIn(kotlinx.coroutines.ExperimentalCoroutinesApi::class)'
+Verify Roborazzi goldens	Verify screenshots	2026-09-29T02:59:25.5936268Z w: file:///home/runner/work/skein/skein/feature/editor/src/test/kotlin/app/skein/feature/editor/EditorAutosaveTest.kt:69:13 This declaration needs opt-in. Its usage should be marked with '@kotlinx.coroutines.ExperimentalCoroutinesApi' or '@OptIn(kotlinx.coroutines.ExperimentalCoroutinesApi::class)'
+Verify Roborazzi goldens	Verify screenshots	2026-09-29T02:59:25.5996130Z w: file:///home/runner/work/skein/skein/feature/editor/src/test/kotlin/app/skein/feature/editor/EditorAutosaveTest.kt:153:13 This declaration needs opt-in. Its usage should be marked with '@kotlinx.coroutines.ExperimentalCoroutinesApi' or '@OptIn(kotlinx.coroutines.ExperimentalCoroutinesApi::class)'
+Verify Roborazzi goldens	Verify screenshots	2026-09-29T02:59:25.6039336Z w: file:///home/runner/work/skein/skein/feature/editor/src/test/kotlin/app/skein/feature/editor/EditorAutosaveTest.kt:154:13 This declaration needs opt-in. Its usage should be marked with '@kotlinx.coroutines.ExperimentalCoroutinesApi' or '@OptIn(kotlinx.coroutines.ExperimentalCoroutinesApi::class)'
+Verify Roborazzi goldens	Verify screenshots	2026-09-29T02:59:25.6098332Z w: file:///home/runner/work/skein/skein/feature/editor/src/test/kotlin/app/skein/feature/editor/SkeinEditorInteractionTest.kt:83:23 'fun <reified A : ComponentActivity> createAndroidComposeRule(effectContext: CoroutineContext = ...): AndroidComposeTestRule<ActivityScenarioRule<A>, A>' is deprecated. Use `androidx.compose.ui.test.junit4.v2.createAndroidComposeRule` instead. The v2 APIs use StandardTestDispatcher instead of UnconfinedTestDispatcher, which aligns with standard coroutine behavior by queuing tasks rather than executing them immediately. Tests relying on immediate execution may require explicit synchronization. Please refer to the migration guide for more details.
+Verify Roborazzi goldens	Verify screenshots	2026-09-29T02:59:25.6155954Z w: file:///home/runner/work/skein/skein/feature/editor/src/test/kotlin/app/skein/feature/editor/autocomplete/WikilinkAutocompleteStateTest.kt:49:13 This declaration needs opt-in. Its usage should be marked with '@kotlinx.coroutines.ExperimentalCoroutinesApi' or '@OptIn(kotlinx.coroutines.ExperimentalCoroutinesApi::class)'
+Verify Roborazzi goldens	Verify screenshots	2026-09-29T02:59:25.6160514Z w: file:///home/runner/work/skein/skein/feature/editor/src/test/kotlin/app/skein/feature/editor/autocomplete/WikilinkAutocompleteStateTest.kt:69:13 This declaration needs opt-in. Its usage should be marked with '@kotlinx.coroutines.ExperimentalCoroutinesApi' or '@OptIn(kotlinx.coroutines.ExperimentalCoroutinesApi::class)'
+Verify Roborazzi goldens	Verify screenshots	2026-09-29T02:59:25.6186434Z w: file:///home/runner/work/skein/skein/feature/editor/src/test/kotlin/app/skein/feature/editor/autocomplete/WikilinkAutocompleteStateTest.kt:89:13 This declaration needs opt-in. Its usage should be marked with '@kotlinx.coroutines.ExperimentalCoroutinesApi' or '@OptIn(kotlinx.coroutines.ExperimentalCoroutinesApi::class)'
+Verify Roborazzi goldens	Verify screenshots	2026-09-29T02:59:25.6246040Z w: file:///home/runner/work/skein/skein/feature/editor/src/test/kotlin/app/skein/feature/editor/autocomplete/WikilinkAutocompleteStateTest.kt:108:13 This declaration needs opt-in. Its usage should be marked with '@kotlinx.coroutines.ExperimentalCoroutinesApi' or '@OptIn(kotlinx.coroutines.ExperimentalCoroutinesApi::class)'
+Verify Roborazzi goldens	Verify screenshots	2026-09-29T02:59:25.6298696Z w: file:///home/runner/work/skein/skein/feature/editor/src/test/kotlin/app/skein/feature/editor/autocomplete/WikilinkAutocompleteStateTest.kt:128:13 This declaration needs opt-in. Its usage should be marked with '@kotlinx.coroutines.ExperimentalCoroutinesApi' or '@OptIn(kotlinx.coroutines.ExperimentalCoroutinesApi::class)'
+Verify Roborazzi goldens	Verify screenshots	2026-09-29T02:59:25.6356178Z w: file:///home/runner/work/skein/skein/feature/editor/src/test/kotlin/app/skein/feature/editor/autocomplete/WikilinkAutocompleteStateTest.kt:146:13 This declaration needs opt-in. Its usage should be marked with '@kotlinx.coroutines.ExperimentalCoroutinesApi' or '@OptIn(kotlinx.coroutines.ExperimentalCoroutinesApi::class)'
+Verify Roborazzi goldens	Verify screenshots	2026-09-29T02:59:25.6426624Z w: file:///home/runner/work/skein/skein/feature/editor/src/test/kotlin/app/skein/feature/editor/autocomplete/WikilinkAutocompleteStateTest.kt:166:13 This declaration needs opt-in. Its usage should be marked with '@kotlinx.coroutines.ExperimentalCoroutinesApi' or '@OptIn(kotlinx.coroutines.ExperimentalCoroutinesApi::class)'
+Verify Roborazzi goldens	Verify screenshots	2026-09-29T02:59:25.6476299Z w: file:///home/runner/work/skein/skein/feature/editor/src/test/kotlin/app/skein/feature/editor/autocomplete/WikilinkAutocompleteStateTest.kt:186:13 This declaration needs opt-in. Its usage should be marked with '@kotlinx.coroutines.ExperimentalCoroutinesApi' or '@OptIn(kotlinx.coroutines.ExperimentalCoroutinesApi::class)'
+Verify Roborazzi goldens	Verify screenshots	2026-09-29T02:59:25.6556377Z w: file:///home/runner/work/skein/skein/feature/editor/src/test/kotlin/app/skein/feature/editor/autocomplete/WikilinkAutocompleteStateTest.kt:189:13 This declaration needs opt-in. Its usage should be marked with '@kotlinx.coroutines.ExperimentalCoroutinesApi' or '@OptIn(kotlinx.coroutines.ExperimentalCoroutinesApi::class)'
+Verify Roborazzi goldens	Verify screenshots	2026-09-29T02:59:25.6561136Z w: file:///home/runner/work/skein/skein/feature/editor/src/test/kotlin/app/skein/feature/editor/autocomplete/WikilinkAutocompleteStateTest.kt:206:13 This declaration needs opt-in. Its usage should be marked with '@kotlinx.coroutines.ExperimentalCoroutinesApi' or '@OptIn(kotlinx.coroutines.ExperimentalCoroutinesApi::class)'
+Verify Roborazzi goldens	Verify screenshots	2026-09-29T02:59:25.6609264Z w: file:///home/runner/work/skein/skein/feature/editor/src/test/kotlin/app/skein/feature/editor/autocomplete/WikilinkAutocompleteStateTest.kt:239:13 This declaration needs opt-in. Its usage should be marked with '@kotlinx.coroutines.ExperimentalCoroutinesApi' or '@OptIn(kotlinx.coroutines.ExperimentalCoroutinesApi::class)'
+Verify Roborazzi goldens	Verify screenshots	2026-09-29T02:59:25.6706118Z w: file:///home/runner/work/skein/skein/feature/editor/src/test/kotlin/app/skein/feature/editor/autocomplete/WikilinkAutocompleteStateTest.kt:260:13 This declaration needs opt-in. Its usage should be marked with '@kotlinx.coroutines.ExperimentalCoroutinesApi' or '@OptIn(kotlinx.coroutines.ExperimentalCoroutinesApi::class)'
+Verify Roborazzi goldens	Verify screenshots	2026-09-29T02:59:25.6771348Z w: file:///home/runner/work/skein/skein/feature/editor/src/test/kotlin/app/skein/feature/editor/autocomplete/WikilinkAutocompleteStateTest.kt:265:13 This declaration needs opt-in. Its usage should be marked with '@kotlinx.coroutines.ExperimentalCoroutinesApi' or '@OptIn(kotlinx.coroutines.ExperimentalCoroutinesApi::class)'
+Verify Roborazzi goldens	Verify screenshots	2026-09-29T02:59:25.6842819Z w: file:///home/runner/work/skein/skein/feature/editor/src/test/kotlin/app/skein/feature/editor/autocomplete/WikilinkAutocompleteStateTest.kt:282:13 This declaration needs opt-in. Its usage should be marked with '@kotlinx.coroutines.ExperimentalCoroutinesApi' or '@OptIn(kotlinx.coroutines.ExperimentalCoroutinesApi::class)'
+Verify Roborazzi goldens	Verify screenshots	2026-09-29T02:59:25.6908200Z w: file:///home/runner/work/skein/skein/feature/editor/src/test/kotlin/app/skein/feature/editor/entries/KnowledgeEntriesTest.kt:51:23 'fun <reified A : ComponentActivity> createAndroidComposeRule(effectContext: CoroutineContext = ...): AndroidComposeTestRule<ActivityScenarioRule<A>, A>' is deprecated. Use `androidx.compose.ui.test.junit4.v2.createAndroidComposeRule` instead. The v2 APIs use StandardTestDispatcher instead of UnconfinedTestDispatcher, which aligns with standard coroutine behavior by queuing tasks rather than executing them immediately. Tests relying on immediate execution may require explicit synchronization. Please refer to the migration guide for more details.
+Verify Roborazzi goldens	Verify screenshots	2026-09-29T02:59:25.6978451Z w: file:///home/runner/work/skein/skein/feature/editor/src/test/kotlin/app/skein/feature/editor/notetab/EditorFlushTest.kt:48:23 'fun <reified A : ComponentActivity> createAndroidComposeRule(effectContext: CoroutineContext = ...): AndroidComposeTestRule<ActivityScenarioRule<A>, A>' is deprecated. Use `androidx.compose.ui.test.junit4.v2.createAndroidComposeRule` instead. The v2 APIs use StandardTestDispatcher instead of UnconfinedTestDispatcher, which aligns with standard coroutine behavior by queuing tasks rather than executing them immediately. Tests relying on immediate execution may require explicit synchronization. Please refer to the migration guide for more details.
+Verify Roborazzi goldens	Verify screenshots	2026-09-29T02:59:25.7038552Z w: file:///home/runner/work/skein/skein/feature/editor/src/test/kotlin/app/skein/feature/editor/notetab/NoteTabEditorContrastTest.kt:58:23 'fun <reified A : ComponentActivity> createAndroidComposeRule(effectContext: CoroutineContext = ...): AndroidComposeTestRule<ActivityScenarioRule<A>, A>' is deprecated. Use `androidx.compose.ui.test.junit4.v2.createAndroidComposeRule` instead. The v2 APIs use StandardTestDispatcher instead of UnconfinedTestDispatcher, which aligns with standard coroutine behavior by queuing tasks rather than executing them immediately. Tests relying on immediate execution may require explicit synchronization. Please refer to the migration guide for more details.
+Verify Roborazzi goldens	Verify screenshots	2026-09-29T02:59:25.7165706Z w: file:///home/runner/work/skein/skein/feature/editor/src/test/kotlin/app/skein/feature/editor/notetab/NoteTabEditorContrastTest.kt:68:59 'val DarkEditorSurface: Color' is deprecated. Colour tokens v2 (skein-xtov.23.2): read the role from SkeinColors.dark/light.
+Verify Roborazzi goldens	Verify screenshots	2026-09-29T02:59:25.7265952Z w: file:///home/runner/work/skein/skein/feature/editor/src/test/kotlin/app/skein/feature/editor/notetab/NoteTabEditorContrastTest.kt:69:40 'val DarkEditorSurface: Color' is deprecated. Colour tokens v2 (skein-xtov.23.2): read the role from SkeinColors.dark/light.
+Verify Roborazzi goldens	Verify screenshots	2026-09-29T02:59:25.7309765Z w: file:///home/runner/work/skein/skein/feature/editor/src/test/kotlin/app/skein/feature/editor/notetab/NoteTabEditorContrastTest.kt:88:59 'val LightEditorSurface: Color' is deprecated. Colour tokens v2 (skein-xtov.23.2): read the role from SkeinColors.dark/light.
+Verify Roborazzi goldens	Verify screenshots	2026-09-29T02:59:25.7375606Z w: file:///home/runner/work/skein/skein/feature/editor/src/test/kotlin/app/skein/feature/editor/notetab/NoteTabEditorContrastTest.kt:89:40 'val LightEditorSurface: Color' is deprecated. Colour tokens v2 (skein-xtov.23.2): read the role from SkeinColors.dark/light.
+Verify Roborazzi goldens	Verify screenshots	2026-09-29T02:59:25.7416059Z w: file:///home/runner/work/skein/skein/feature/editor/src/test/kotlin/app/skein/feature/editor/notetab/NoteTabShareTest.kt:41:13 This declaration needs opt-in. Its usage should be marked with '@kotlinx.coroutines.ExperimentalCoroutinesApi' or '@OptIn(kotlinx.coroutines.ExperimentalCoroutinesApi::class)'
+Verify Roborazzi goldens	Verify screenshots	2026-09-29T02:59:25.7491988Z w: file:///home/runner/work/skein/skein/feature/editor/src/test/kotlin/app/skein/feature/editor/notetab/NoteTabShareTest.kt:56:13 This declaration needs opt-in. Its usage should be marked with '@kotlinx.coroutines.ExperimentalCoroutinesApi' or '@OptIn(kotlinx.coroutines.ExperimentalCoroutinesApi::class)'
+Verify Roborazzi goldens	Verify screenshots	2026-09-29T02:59:25.7576155Z w: file:///home/runner/work/skein/skein/feature/editor/src/test/kotlin/app/skein/feature/editor/notetab/NoteTabShareTest.kt:71:13 This declaration needs opt-in. Its usage should be marked with '@kotlinx.coroutines.ExperimentalCoroutinesApi' or '@OptIn(kotlinx.coroutines.ExperimentalCoroutinesApi::class)'
+Verify Roborazzi goldens	Verify screenshots	2026-09-29T02:59:25.7626074Z w: file:///home/runner/work/skein/skein/feature/editor/src/test/kotlin/app/skein/feature/editor/notetab/NoteTabShareTest.kt:86:13 This declaration needs opt-in. Its usage should be marked with '@kotlinx.coroutines.ExperimentalCoroutinesApi' or '@OptIn(kotlinx.coroutines.ExperimentalCoroutinesApi::class)'
+Verify Roborazzi goldens	Verify screenshots	2026-09-29T02:59:25.7655525Z w: file:///home/runner/work/skein/skein/feature/editor/src/test/kotlin/app/skein/feature/editor/notetab/NoteTabShareTest.kt:101:13 This declaration needs opt-in. Its usage should be marked with '@kotlinx.coroutines.ExperimentalCoroutinesApi' or '@OptIn(kotlinx.coroutines.ExperimentalCoroutinesApi::class)'
+Verify Roborazzi goldens	Verify screenshots	2026-09-29T02:59:25.7746016Z w: file:///home/runner/work/skein/skein/feature/editor/src/test/kotlin/app/skein/feature/editor/notetab/NoteTabShareTest.kt:118:13 This declaration needs opt-in. Its usage should be marked with '@kotlinx.coroutines.ExperimentalCoroutinesApi' or '@OptIn(kotlinx.coroutines.ExperimentalCoroutinesApi::class)'
+Verify Roborazzi goldens	Verify screenshots	2026-09-29T02:59:25.7813685Z w: file:///home/runner/work/skein/skein/feature/editor/src/test/kotlin/app/skein/feature/editor/notetab/NoteTabWikilinkTest.kt:59:23 'fun <reified A : ComponentActivity> createAndroidComposeRule(effectContext: CoroutineContext = ...): AndroidComposeTestRule<ActivityScenarioRule<A>, A>' is deprecated. Use `androidx.compose.ui.test.junit4.v2.createAndroidComposeRule` instead. The v2 APIs use StandardTestDispatcher instead of UnconfinedTestDispatcher, which aligns with standard coroutine behavior by queuing tasks rather than executing them immediately. Tests relying on immediate execution may require explicit synchronization. Please refer to the migration guide for more details.
+Verify Roborazzi goldens	Verify screenshots	2026-09-29T02:59:25.7858074Z w: file:///home/runner/work/skein/skein/feature/editor/src/test/kotlin/app/skein/feature/editor/notetab/NoteTypingTest.kt:42:23 'fun <reified A : ComponentActivity> createAndroidComposeRule(effectContext: CoroutineContext = ...): AndroidComposeTestRule<ActivityScenarioRule<A>, A>' is deprecated. Use `androidx.compose.ui.test.junit4.v2.createAndroidComposeRule` instead. The v2 APIs use StandardTestDispatcher instead of UnconfinedTestDispatcher, which aligns with standard coroutine behavior by queuing tasks rather than executing them immediately. Tests relying on immediate execution may require explicit synchronization. Please refer to the migration guide for more details.
+Verify Roborazzi goldens	Verify screenshots	2026-09-29T02:59:25.7958375Z w: file:///home/runner/work/skein/skein/feature/editor/src/test/kotlin/app/skein/feature/editor/notetab/SaveAsIoErrorIsReportedTest.kt:40:23 'fun <reified A : ComponentActivity> createAndroidComposeRule(effectContext: CoroutineContext = ...): AndroidComposeTestRule<ActivityScenarioRule<A>, A>' is deprecated. Use `androidx.compose.ui.test.junit4.v2.createAndroidComposeRule` instead. The v2 APIs use StandardTestDispatcher instead of UnconfinedTestDispatcher, which aligns with standard coroutine behavior by queuing tasks rather than executing them immediately. Tests relying on immediate execution may require explicit synchronization. Please refer to the migration guide for more details.
+Verify Roborazzi goldens	Verify screenshots	2026-09-29T02:59:25.7985846Z w: file:///home/runner/work/skein/skein/feature/editor/src/test/kotlin/app/skein/feature/editor/notetab/ShareMenuTest.kt:43:23 'fun <reified A : ComponentActivity> createAndroidComposeRule(effectContext: CoroutineContext = ...): AndroidComposeTestRule<ActivityScenarioRule<A>, A>' is deprecated. Use `androidx.compose.ui.test.junit4.v2.createAndroidComposeRule` instead. The v2 APIs use StandardTestDispatcher instead of UnconfinedTestDispatcher, which aligns with standard coroutine behavior by queuing tasks rather than executing them immediately. Tests relying on immediate execution may require explicit synchronization. Please refer to the migration guide for more details.
+Verify Roborazzi goldens	Verify screenshots	2026-09-29T02:59:25.8065254Z w: file:///home/runner/work/skein/skein/feature/editor/src/test/kotlin/app/skein/feature/editor/screenshots/KnowledgeShellScreenshotTest.kt:69:13 'lateinit' is unnecessary: definitely initialized in constructors.
+Verify Roborazzi goldens	Verify screenshots	2026-09-29T02:59:25.8153952Z 
+Verify Roborazzi goldens	Verify screenshots	2026-09-29T02:59:25.8204487Z > Task :feature:editor:compileDebugUnitTestJavaWithJavac NO-SOURCE
+Verify Roborazzi goldens	Verify screenshots	2026-09-29T02:59:25.8270729Z > Task :feature:editor:processDebugUnitTestJavaRes
+Verify Roborazzi goldens	Verify screenshots	2026-09-29T02:59:26.4481724Z 
+Verify Roborazzi goldens	Verify screenshots	2026-09-29T02:59:26.4504458Z > Task :feature:chat:compileDebugKotlin
+Verify Roborazzi goldens	Verify screenshots	2026-09-29T02:59:26.4586591Z w: file:///home/runner/work/skein/skein/feature/chat/src/main/kotlin/app/skein/feature/chat/ChatBottomBar.kt:186:45 'val glyphs: SkeinTokens.Glyphs' is deprecated. Timeline-era: spec §14.11 bans Unicode glyphs as UI icons. DS6's SkeinIcons (Material Symbols) is the successor; not yet built as of DS5.
+Verify Roborazzi goldens	Verify screenshots	2026-09-29T02:59:26.4626445Z w: file:///home/runner/work/skein/skein/feature/chat/src/main/kotlin/app/skein/feature/chat/ChatScreenPreviews.kt:92:77 'val glyphs: SkeinTokens.Glyphs' is deprecated. Timeline-era: spec §14.11 bans Unicode glyphs as UI icons. DS6's SkeinIcons (Material Symbols) is the successor; not yet built as of DS5.
+Verify Roborazzi goldens	Verify screenshots	2026-09-29T02:59:26.4630830Z w: file:///home/runner/work/skein/skein/feature/chat/src/main/kotlin/app/skein/feature/chat/ChatScreenPreviews.kt:106:54 'val glyphs: SkeinTokens.Glyphs' is deprecated. Timeline-era: spec §14.11 bans Unicode glyphs as UI icons. DS6's SkeinIcons (Material Symbols) is the successor; not yet built as of DS5.
+Verify Roborazzi goldens	Verify screenshots	2026-09-29T02:59:26.4702510Z w: file:///home/runner/work/skein/skein/feature/chat/src/main/kotlin/app/skein/feature/chat/ChatTurnController.kt:157:21 Expression is unused.
+Verify Roborazzi goldens	Verify screenshots	2026-09-29T02:59:26.9463915Z 
+Verify Roborazzi goldens	Verify screenshots	2026-09-29T02:59:26.9524618Z > Task :feature:chat:compileDebugJavaWithJavac NO-SOURCE
+Verify Roborazzi goldens	Verify screenshots	2026-09-29T02:59:26.9585747Z > Task :feature:chat:bundleLibRuntimeToJarDebug
+Verify Roborazzi goldens	Verify screenshots	2026-09-29T02:59:27.0434655Z > Task :feature:chat:bundleLibCompileToJarDebug
+Verify Roborazzi goldens	Verify screenshots	2026-09-29T02:59:37.3431564Z > Task :feature:models:testDebugUnitTest
+Verify Roborazzi goldens	Verify screenshots	2026-09-29T02:59:46.1408229Z 
+Verify Roborazzi goldens	Verify screenshots	2026-09-29T02:59:46.1416304Z > Task :feature:chat:compileDebugUnitTestKotlin
+Verify Roborazzi goldens	Verify screenshots	2026-09-29T02:59:46.1425034Z w: file:///home/runner/work/skein/skein/feature/chat/src/test/kotlin/app/skein/feature/chat/AccessibilitySweepSmokeTest.kt:37:23 'fun <reified A : ComponentActivity> createAndroidComposeRule(effectContext: CoroutineContext = ...): AndroidComposeTestRule<ActivityScenarioRule<A>, A>' is deprecated. Use `androidx.compose.ui.test.junit4.v2.createAndroidComposeRule` instead. The v2 APIs use StandardTestDispatcher instead of UnconfinedTestDispatcher, which aligns with standard coroutine behavior by queuing tasks rather than executing them immediately. Tests relying on immediate execution may require explicit synchronization. Please refer to the migration guide for more details.
+Verify Roborazzi goldens	Verify screenshots	2026-09-29T02:59:46.1437365Z w: file:///home/runner/work/skein/skein/feature/chat/src/test/kotlin/app/skein/feature/chat/ChatComposerImeInsetTest.kt:61:23 'fun <reified A : ComponentActivity> createAndroidComposeRule(effectContext: CoroutineContext = ...): AndroidComposeTestRule<ActivityScenarioRule<A>, A>' is deprecated. Use `androidx.compose.ui.test.junit4.v2.createAndroidComposeRule` instead. The v2 APIs use StandardTestDispatcher instead of UnconfinedTestDispatcher, which aligns with standard coroutine behavior by queuing tasks rather than executing them immediately. Tests relying on immediate execution may require explicit synchronization. Please refer to the migration guide for more details.
+Verify Roborazzi goldens	Verify screenshots	2026-09-29T02:59:46.1446128Z w: file:///home/runner/work/skein/skein/feature/chat/src/test/kotlin/app/skein/feature/chat/ChatInferenceErrorTest.kt:26:23 'fun <reified A : ComponentActivity> createAndroidComposeRule(effectContext: CoroutineContext = ...): AndroidComposeTestRule<ActivityScenarioRule<A>, A>' is deprecated. Use `androidx.compose.ui.test.junit4.v2.createAndroidComposeRule` instead. The v2 APIs use StandardTestDispatcher instead of UnconfinedTestDispatcher, which aligns with standard coroutine behavior by queuing tasks rather than executing them immediately. Tests relying on immediate execution may require explicit synchronization. Please refer to the migration guide for more details.
+Verify Roborazzi goldens	Verify screenshots	2026-09-29T02:59:46.1452646Z w: file:///home/runner/work/skein/skein/feature/chat/src/test/kotlin/app/skein/feature/chat/ChatInferenceErrorTest.kt:72:17 This declaration needs opt-in. Its usage should be marked with '@kotlinx.coroutines.ExperimentalCoroutinesApi' or '@OptIn(kotlinx.coroutines.ExperimentalCoroutinesApi::class)'
+Verify Roborazzi goldens	Verify screenshots	2026-09-29T02:59:46.1457375Z w: file:///home/runner/work/skein/skein/feature/chat/src/test/kotlin/app/skein/feature/chat/ChatInferenceErrorTest.kt:76:17 This declaration needs opt-in. Its usage should be marked with '@kotlinx.coroutines.ExperimentalCoroutinesApi' or '@OptIn(kotlinx.coroutines.ExperimentalCoroutinesApi::class)'
+Verify Roborazzi goldens	Verify screenshots	2026-09-29T02:59:46.1487980Z w: file:///home/runner/work/skein/skein/feature/chat/src/test/kotlin/app/skein/feature/chat/ChatScreenTest.kt:56:23 'fun <reified A : ComponentActivity> createAndroidComposeRule(effectContext: CoroutineContext = ...): AndroidComposeTestRule<ActivityScenarioRule<A>, A>' is deprecated. Use `androidx.compose.ui.test.junit4.v2.createAndroidComposeRule` instead. The v2 APIs use StandardTestDispatcher instead of UnconfinedTestDispatcher, which aligns with standard coroutine behavior by queuing tasks rather than executing them immediately. Tests relying on immediate execution may require explicit synchronization. Please refer to the migration guide for more details.
+Verify Roborazzi goldens	Verify screenshots	2026-09-29T02:59:46.1515902Z w: file:///home/runner/work/skein/skein/feature/chat/src/test/kotlin/app/skein/feature/chat/ChatTurnControllerTest.kt:54:13 This declaration needs opt-in. Its usage should be marked with '@kotlinx.coroutines.ExperimentalCoroutinesApi' or '@OptIn(kotlinx.coroutines.ExperimentalCoroutinesApi::class)'
+Verify Roborazzi goldens	Verify screenshots	2026-09-29T02:59:46.1546041Z w: file:///home/runner/work/skein/skein/feature/chat/src/test/kotlin/app/skein/feature/chat/ChatTurnControllerTest.kt:56:13 This declaration needs opt-in. Its usage should be marked with '@kotlinx.coroutines.ExperimentalCoroutinesApi' or '@OptIn(kotlinx.coroutines.ExperimentalCoroutinesApi::class)'
+Verify Roborazzi goldens	Verify screenshots	2026-09-29T02:59:46.1575933Z w: file:///home/runner/work/skein/skein/feature/chat/src/test/kotlin/app/skein/feature/chat/ChatTurnControllerTest.kt:65:13 This declaration needs opt-in. Its usage should be marked with '@kotlinx.coroutines.ExperimentalCoroutinesApi' or '@OptIn(kotlinx.coroutines.ExperimentalCoroutinesApi::class)'
+Verify Roborazzi goldens	Verify screenshots	2026-09-29T02:59:46.1605736Z w: file:///home/runner/work/skein/skein/feature/chat/src/test/kotlin/app/skein/feature/chat/ChatTurnControllerTest.kt:67:13 This declaration needs opt-in. Its usage should be marked with '@kotlinx.coroutines.ExperimentalCoroutinesApi' or '@OptIn(kotlinx.coroutines.ExperimentalCoroutinesApi::class)'
+Verify Roborazzi goldens	Verify screenshots	2026-09-29T02:59:46.1635907Z w: file:///home/runner/work/skein/skein/feature/chat/src/test/kotlin/app/skein/feature/chat/ChatTurnControllerTest.kt:71:13 This declaration needs opt-in. Its usage should be marked with '@kotlinx.coroutines.ExperimentalCoroutinesApi' or '@OptIn(kotlinx.coroutines.ExperimentalCoroutinesApi::class)'
+Verify Roborazzi goldens	Verify screenshots	2026-09-29T02:59:46.1665229Z w: file:///home/runner/work/skein/skein/feature/chat/src/test/kotlin/app/skein/feature/chat/ChatTurnControllerTest.kt:76:13 This declaration needs opt-in. Its usage should be marked with '@kotlinx.coroutines.ExperimentalCoroutinesApi' or '@OptIn(kotlinx.coroutines.ExperimentalCoroutinesApi::class)'
+Verify Roborazzi goldens	Verify screenshots	2026-09-29T02:59:46.1669708Z w: file:///home/runner/work/skein/skein/feature/chat/src/test/kotlin/app/skein/feature/chat/ChatTurnControllerTest.kt:80:13 This declaration needs opt-in. Its usage should be marked with '@kotlinx.coroutines.ExperimentalCoroutinesApi' or '@OptIn(kotlinx.coroutines.ExperimentalCoroutinesApi::class)'
+Verify Roborazzi goldens	Verify screenshots	2026-09-29T02:59:46.1715862Z w: file:///home/runner/work/skein/skein/feature/chat/src/test/kotlin/app/skein/feature/chat/ChatTurnControllerTest.kt:83:13 This declaration needs opt-in. Its usage should be marked with '@kotlinx.coroutines.ExperimentalCoroutinesApi' or '@OptIn(kotlinx.coroutines.ExperimentalCoroutinesApi::class)'
+Verify Roborazzi goldens	Verify screenshots	2026-09-29T02:59:46.1745887Z w: file:///home/runner/work/skein/skein/feature/chat/src/test/kotlin/app/skein/feature/chat/ChatTurnControllerTest.kt:92:13 This declaration needs opt-in. Its usage should be marked with '@kotlinx.coroutines.ExperimentalCoroutinesApi' or '@OptIn(kotlinx.coroutines.ExperimentalCoroutinesApi::class)'
+Verify Roborazzi goldens	Verify screenshots	2026-09-29T02:59:46.1775820Z w: file:///home/runner/work/skein/skein/feature/chat/src/test/kotlin/app/skein/feature/chat/ChatTurnControllerTest.kt:104:39 This declaration needs opt-in. Its usage should be marked with '@kotlinx.coroutines.ExperimentalCoroutinesApi' or '@OptIn(kotlinx.coroutines.ExperimentalCoroutinesApi::class)'
+Verify Roborazzi goldens	Verify screenshots	2026-09-29T02:59:46.1803842Z w: file:///home/runner/work/skein/skein/feature/chat/src/test/kotlin/app/skein/feature/chat/ChatTurnControllerTest.kt:106:46 This declaration needs opt-in. Its usage should be marked with '@kotlinx.coroutines.ExperimentalCoroutinesApi' or '@OptIn(kotlinx.coroutines.ExperimentalCoroutinesApi::class)'
+Verify Roborazzi goldens	Verify screenshots	2026-09-29T02:59:46.1866472Z w: file:///home/runner/work/skein/skein/feature/chat/src/test/kotlin/app/skein/feature/chat/ChatTurnControllerTest.kt:126:13 This declaration needs opt-in. Its usage should be marked with '@kotlinx.coroutines.ExperimentalCoroutinesApi' or '@OptIn(kotlinx.coroutines.ExperimentalCoroutinesApi::class)'
+Verify Roborazzi goldens	Verify screenshots	2026-09-29T02:59:46.1901877Z w: file:///home/runner/work/skein/skein/feature/chat/src/test/kotlin/app/skein/feature/chat/ChatTurnControllerTest.kt:135:13 This declaration needs opt-in. Its usage should be marked with '@kotlinx.coroutines.ExperimentalCoroutinesApi' or '@OptIn(kotlinx.coroutines.ExperimentalCoroutinesApi::class)'
+Verify Roborazzi goldens	Verify screenshots	2026-09-29T02:59:46.1911059Z w: file:///home/runner/work/skein/skein/feature/chat/src/test/kotlin/app/skein/feature/chat/ChatTurnControllerTest.kt:145:13 This declaration needs opt-in. Its usage should be marked with '@kotlinx.coroutines.ExperimentalCoroutinesApi' or '@OptIn(kotlinx.coroutines.ExperimentalCoroutinesApi::class)'
+Verify Roborazzi goldens	Verify screenshots	2026-09-29T02:59:46.1918441Z w: file:///home/runner/work/skein/skein/feature/chat/src/test/kotlin/app/skein/feature/chat/ChatTurnControllerTest.kt:149:13 This declaration needs opt-in. Its usage should be marked with '@kotlinx.coroutines.ExperimentalCoroutinesApi' or '@OptIn(kotlinx.coroutines.ExperimentalCoroutinesApi::class)'
+Verify Roborazzi goldens	Verify screenshots	2026-09-29T02:59:46.1925402Z w: file:///home/runner/work/skein/skein/feature/chat/src/test/kotlin/app/skein/feature/chat/ChatTurnControllerTest.kt:152:13 This declaration needs opt-in. Its usage should be marked with '@kotlinx.coroutines.ExperimentalCoroutinesApi' or '@OptIn(kotlinx.coroutines.ExperimentalCoroutinesApi::class)'
+Verify Roborazzi goldens	Verify screenshots	2026-09-29T02:59:46.1932313Z w: file:///home/runner/work/skein/skein/feature/chat/src/test/kotlin/app/skein/feature/chat/ChatTurnControllerTest.kt:170:13 This declaration needs opt-in. Its usage should be marked with '@kotlinx.coroutines.ExperimentalCoroutinesApi' or '@OptIn(kotlinx.coroutines.ExperimentalCoroutinesApi::class)'
+Verify Roborazzi goldens	Verify screenshots	2026-09-29T02:59:46.1939247Z w: file:///home/runner/work/skein/skein/feature/chat/src/test/kotlin/app/skein/feature/chat/ChatTurnControllerTest.kt:184:13 This declaration needs opt-in. Its usage should be marked with '@kotlinx.coroutines.ExperimentalCoroutinesApi' or '@OptIn(kotlinx.coroutines.ExperimentalCoroutinesApi::class)'
+Verify Roborazzi goldens	Verify screenshots	2026-09-29T02:59:46.1946301Z w: file:///home/runner/work/skein/skein/feature/chat/src/test/kotlin/app/skein/feature/chat/ChatTurnControllerTest.kt:195:13 This declaration needs opt-in. Its usage should be marked with '@kotlinx.coroutines.ExperimentalCoroutinesApi' or '@OptIn(kotlinx.coroutines.ExperimentalCoroutinesApi::class)'
+Verify Roborazzi goldens	Verify screenshots	2026-09-29T02:59:46.1953134Z w: file:///home/runner/work/skein/skein/feature/chat/src/test/kotlin/app/skein/feature/chat/ChatTurnControllerTest.kt:204:13 This declaration needs opt-in. Its usage should be marked with '@kotlinx.coroutines.ExperimentalCoroutinesApi' or '@OptIn(kotlinx.coroutines.ExperimentalCoroutinesApi::class)'
+Verify Roborazzi goldens	Verify screenshots	2026-09-29T02:59:46.1960450Z w: file:///home/runner/work/skein/skein/feature/chat/src/test/kotlin/app/skein/feature/chat/ChatTurnControllerTest.kt:221:13 This declaration needs opt-in. Its usage should be marked with '@kotlinx.coroutines.ExperimentalCoroutinesApi' or '@OptIn(kotlinx.coroutines.ExperimentalCoroutinesApi::class)'
+Verify Roborazzi goldens	Verify screenshots	2026-09-29T02:59:46.1967539Z w: file:///home/runner/work/skein/skein/feature/chat/src/test/kotlin/app/skein/feature/chat/ChatTurnControllerTest.kt:225:13 This declaration needs opt-in. Its usage should be marked with '@kotlinx.coroutines.ExperimentalCoroutinesApi' or '@OptIn(kotlinx.coroutines.ExperimentalCoroutinesApi::class)'
+Verify Roborazzi goldens	Verify screenshots	2026-09-29T02:59:46.1974476Z w: file:///home/runner/work/skein/skein/feature/chat/src/test/kotlin/app/skein/feature/chat/ChatTurnControllerTest.kt:241:13 This declaration needs opt-in. Its usage should be marked with '@kotlinx.coroutines.ExperimentalCoroutinesApi' or '@OptIn(kotlinx.coroutines.ExperimentalCoroutinesApi::class)'
+Verify Roborazzi goldens	Verify screenshots	2026-09-29T02:59:46.1981416Z w: file:///home/runner/work/skein/skein/feature/chat/src/test/kotlin/app/skein/feature/chat/ChatTurnControllerTest.kt:250:13 This declaration needs opt-in. Its usage should be marked with '@kotlinx.coroutines.ExperimentalCoroutinesApi' or '@OptIn(kotlinx.coroutines.ExperimentalCoroutinesApi::class)'
+Verify Roborazzi goldens	Verify screenshots	2026-09-29T02:59:46.1993872Z w: file:///home/runner/work/skein/skein/feature/chat/src/test/kotlin/app/skein/feature/chat/ChatTurnControllerTest.kt:257:13 This declaration needs opt-in. Its usage should be marked with '@kotlinx.coroutines.ExperimentalCoroutinesApi' or '@OptIn(kotlinx.coroutines.ExperimentalCoroutinesApi::class)'
+Verify Roborazzi goldens	Verify screenshots	2026-09-29T02:59:46.2026045Z w: file:///home/runner/work/skein/skein/feature/chat/src/test/kotlin/app/skein/feature/chat/ChatTurnControllerTest.kt:269:13 This declaration needs opt-in. Its usage should be marked with '@kotlinx.coroutines.ExperimentalCoroutinesApi' or '@OptIn(kotlinx.coroutines.ExperimentalCoroutinesApi::class)'
+Verify Roborazzi goldens	Verify screenshots	2026-09-29T02:59:46.2056013Z w: file:///home/runner/work/skein/skein/feature/chat/src/test/kotlin/app/skein/feature/chat/ChatTurnControllerTest.kt:280:13 This declaration needs opt-in. Its usage should be marked with '@kotlinx.coroutines.ExperimentalCoroutinesApi' or '@OptIn(kotlinx.coroutines.ExperimentalCoroutinesApi::class)'
+Verify Roborazzi goldens	Verify screenshots	2026-09-29T02:59:46.2085697Z w: file:///home/runner/work/skein/skein/feature/chat/src/test/kotlin/app/skein/feature/chat/ChatTurnControllerTest.kt:284:13 This declaration needs opt-in. Its usage should be marked with '@kotlinx.coroutines.ExperimentalCoroutinesApi' or '@OptIn(kotlinx.coroutines.ExperimentalCoroutinesApi::class)'
+Verify Roborazzi goldens	Verify screenshots	2026-09-29T02:59:46.2115931Z w: file:///home/runner/work/skein/skein/feature/chat/src/test/kotlin/app/skein/feature/chat/ChatTurnControllerTest.kt:299:13 This declaration needs opt-in. Its usage should be marked with '@kotlinx.coroutines.ExperimentalCoroutinesApi' or '@OptIn(kotlinx.coroutines.ExperimentalCoroutinesApi::class)'
+Verify Roborazzi goldens	Verify screenshots	2026-09-29T02:59:46.2145628Z w: file:///home/runner/work/skein/skein/feature/chat/src/test/kotlin/app/skein/feature/chat/ChatTurnControllerTest.kt:311:13 This declaration needs opt-in. Its usage should be marked with '@kotlinx.coroutines.ExperimentalCoroutinesApi' or '@OptIn(kotlinx.coroutines.ExperimentalCoroutinesApi::class)'
+Verify Roborazzi goldens	Verify screenshots	2026-09-29T02:59:46.2175672Z w: file:///home/runner/work/skein/skein/feature/chat/src/test/kotlin/app/skein/feature/chat/ChatTurnControllerTest.kt:315:13 This declaration needs opt-in. Its usage should be marked with '@kotlinx.coroutines.ExperimentalCoroutinesApi' or '@OptIn(kotlinx.coroutines.ExperimentalCoroutinesApi::class)'
+Verify Roborazzi goldens	Verify screenshots	2026-09-29T02:59:46.2179806Z w: file:///home/runner/work/skein/skein/feature/chat/src/test/kotlin/app/skein/feature/chat/ChatTurnControllerTest.kt:320:13 This declaration needs opt-in. Its usage should be marked with '@kotlinx.coroutines.ExperimentalCoroutinesApi' or '@OptIn(kotlinx.coroutines.ExperimentalCoroutinesApi::class)'
+Verify Roborazzi goldens	Verify screenshots	2026-09-29T02:59:46.2205705Z w: file:///home/runner/work/skein/skein/feature/chat/src/test/kotlin/app/skein/feature/chat/ChatTurnControllerTest.kt:349:25 Expression is unused.
+Verify Roborazzi goldens	Verify screenshots	2026-09-29T02:59:46.2235949Z w: file:///home/runner/work/skein/skein/feature/chat/src/test/kotlin/app/skein/feature/chat/ChatTurnControllerTest.kt:353:17 This declaration needs opt-in. Its usage should be marked with '@kotlinx.coroutines.ExperimentalCoroutinesApi' or '@OptIn(kotlinx.coroutines.ExperimentalCoroutinesApi::class)'
+Verify Roborazzi goldens	Verify screenshots	2026-09-29T02:59:46.2266174Z w: file:///home/runner/work/skein/skein/feature/chat/src/test/kotlin/app/skein/feature/chat/ChatTurnControllerTest.kt:356:17 This declaration needs opt-in. Its usage should be marked with '@kotlinx.coroutines.ExperimentalCoroutinesApi' or '@OptIn(kotlinx.coroutines.ExperimentalCoroutinesApi::class)'
+Verify Roborazzi goldens	Verify screenshots	2026-09-29T02:59:46.2295968Z w: file:///home/runner/work/skein/skein/feature/chat/src/test/kotlin/app/skein/feature/chat/ChatTurnControllerTest.kt:386:13 This declaration needs opt-in. Its usage should be marked with '@kotlinx.coroutines.ExperimentalCoroutinesApi' or '@OptIn(kotlinx.coroutines.ExperimentalCoroutinesApi::class)'
+Verify Roborazzi goldens	Verify screenshots	2026-09-29T02:59:46.2325798Z w: file:///home/runner/work/skein/skein/feature/chat/src/test/kotlin/app/skein/feature/chat/ChatTurnControllerTest.kt:392:13 This declaration needs opt-in. Its usage should be marked with '@kotlinx.coroutines.ExperimentalCoroutinesApi' or '@OptIn(kotlinx.coroutines.ExperimentalCoroutinesApi::class)'
+Verify Roborazzi goldens	Verify screenshots	2026-09-29T02:59:46.2330137Z w: file:///home/runner/work/skein/skein/feature/chat/src/test/kotlin/app/skein/feature/chat/ChatTurnControllerTest.kt:395:13 This declaration needs opt-in. Its usage should be marked with '@kotlinx.coroutines.ExperimentalCoroutinesApi' or '@OptIn(kotlinx.coroutines.ExperimentalCoroutinesApi::class)'
+Verify Roborazzi goldens	Verify screenshots	2026-09-29T02:59:46.2355821Z w: file:///home/runner/work/skein/skein/feature/chat/src/test/kotlin/app/skein/feature/chat/ChatTurnControllerTest.kt:455:49 This declaration needs opt-in. Its usage should be marked with '@kotlinx.coroutines.ExperimentalCoroutinesApi' or '@OptIn(kotlinx.coroutines.ExperimentalCoroutinesApi::class)'
+Verify Roborazzi goldens	Verify screenshots	2026-09-29T02:59:46.2385754Z w: file:///home/runner/work/skein/skein/feature/chat/src/test/kotlin/app/skein/feature/chat/ChatTurnControllerTest.kt:464:18 This declaration needs opt-in. Its usage should be marked with '@kotlinx.coroutines.ExperimentalCoroutinesApi' or '@OptIn(kotlinx.coroutines.ExperimentalCoroutinesApi::class)'
+Verify Roborazzi goldens	Verify screenshots	2026-09-29T02:59:46.2417218Z w: file:///home/runner/work/skein/skein/feature/chat/src/test/kotlin/app/skein/feature/chat/ChatTurnControllerTest.kt:465:18 This declaration needs opt-in. Its usage should be marked with '@kotlinx.coroutines.ExperimentalCoroutinesApi' or '@OptIn(kotlinx.coroutines.ExperimentalCoroutinesApi::class)'
+Verify Roborazzi goldens	Verify screenshots	2026-09-29T02:59:46.2445898Z w: file:///home/runner/work/skein/skein/feature/chat/src/test/kotlin/app/skein/feature/chat/ChatTurnControllerTest.kt:466:18 This declaration needs opt-in. Its usage should be marked with '@kotlinx.coroutines.ExperimentalCoroutinesApi' or '@OptIn(kotlinx.coroutines.ExperimentalCoroutinesApi::class)'
+Verify Roborazzi goldens	Verify screenshots	2026-09-29T02:59:46.2505776Z w: file:///home/runner/work/skein/skein/feature/chat/src/test/kotlin/app/skein/feature/chat/ChatTurnStateTest.kt:124:17 This declaration needs opt-in. Its usage should be marked with '@kotlinx.coroutines.ExperimentalCoroutinesApi' or '@OptIn(kotlinx.coroutines.ExperimentalCoroutinesApi::class)'
+Verify Roborazzi goldens	Verify screenshots	2026-09-29T02:59:46.2566004Z w: file:///home/runner/work/skein/skein/feature/chat/src/test/kotlin/app/skein/feature/chat/ChatTurnStateTest.kt:125:17 This declaration needs opt-in. Its usage should be marked with '@kotlinx.coroutines.ExperimentalCoroutinesApi' or '@OptIn(kotlinx.coroutines.ExperimentalCoroutinesApi::class)'
+Verify Roborazzi goldens	Verify screenshots	2026-09-29T02:59:46.2595708Z w: file:///home/runner/work/skein/skein/feature/chat/src/test/kotlin/app/skein/feature/chat/ChatTurnStateTest.kt:136:17 This declaration needs opt-in. Its usage should be marked with '@kotlinx.coroutines.ExperimentalCoroutinesApi' or '@OptIn(kotlinx.coroutines.ExperimentalCoroutinesApi::class)'
+Verify Roborazzi goldens	Verify screenshots	2026-09-29T02:59:46.2655878Z w: file:///home/runner/work/skein/skein/feature/chat/src/test/kotlin/app/skein/feature/chat/ChatTurnStateTest.kt:137:17 This declaration needs opt-in. Its usage should be marked with '@kotlinx.coroutines.ExperimentalCoroutinesApi' or '@OptIn(kotlinx.coroutines.ExperimentalCoroutinesApi::class)'
+Verify Roborazzi goldens	Verify screenshots	2026-09-29T02:59:46.2818666Z w: file:///home/runner/work/skein/skein/feature/chat/src/test/kotlin/app/skein/feature/chat/ComposerWikilinkCreateRowTest.kt:33:23 'fun <reified A : ComponentActivity> createAndroidComposeRule(effectContext: CoroutineContext = ...): AndroidComposeTestRule<ActivityScenarioRule<A>, A>' is deprecated. Use `androidx.compose.ui.test.junit4.v2.createAndroidComposeRule` instead. The v2 APIs use StandardTestDispatcher instead of UnconfinedTestDispatcher, which aligns with standard coroutine behavior by queuing tasks rather than executing them immediately. Tests relying on immediate execution may require explicit synchronization. Please refer to the migration guide for more details.
+Verify Roborazzi goldens	Verify screenshots	2026-09-29T02:59:46.2828556Z w: file:///home/runner/work/skein/skein/feature/chat/src/test/kotlin/app/skein/feature/chat/ImportFailureIsReportedTest.kt:36:23 'fun <reified A : ComponentActivity> createAndroidComposeRule(effectContext: CoroutineContext = ...): AndroidComposeTestRule<ActivityScenarioRule<A>, A>' is deprecated. Use `androidx.compose.ui.test.junit4.v2.createAndroidComposeRule` instead. The v2 APIs use StandardTestDispatcher instead of UnconfinedTestDispatcher, which aligns with standard coroutine behavior by queuing tasks rather than executing them immediately. Tests relying on immediate execution may require explicit synchronization. Please refer to the migration guide for more details.
+Verify Roborazzi goldens	Verify screenshots	2026-09-29T02:59:46.2915979Z w: file:///home/runner/work/skein/skein/feature/chat/src/test/kotlin/app/skein/feature/chat/SendPipelineTest.kt:336:43 This declaration needs opt-in. Its usage should be marked with '@kotlinx.coroutines.ExperimentalCoroutinesApi' or '@OptIn(kotlinx.coroutines.ExperimentalCoroutinesApi::class)'
+Verify Roborazzi goldens	Verify screenshots	2026-09-29T02:59:46.2996557Z w: file:///home/runner/work/skein/skein/feature/chat/src/test/kotlin/app/skein/feature/chat/TurnFinalizerTest.kt:64:25 The corresponding parameter in the supertype 'VaultRepository' is named 'message'. This may cause problems when calling this function with named arguments.
+Verify Roborazzi goldens	Verify screenshots	2026-09-29T02:59:46.3061551Z w: file:///home/runner/work/skein/skein/feature/chat/src/test/kotlin/app/skein/feature/chat/drafts/DraftComposerStateTest.kt:44:23 'fun <reified A : ComponentActivity> createAndroidComposeRule(effectContext: CoroutineContext = ...): AndroidComposeTestRule<ActivityScenarioRule<A>, A>' is deprecated. Use `androidx.compose.ui.test.junit4.v2.createAndroidComposeRule` instead. The v2 APIs use StandardTestDispatcher instead of UnconfinedTestDispatcher, which aligns with standard coroutine behavior by queuing tasks rather than executing them immediately. Tests relying on immediate execution may require explicit synchronization. Please refer to the migration guide for more details.
+Verify Roborazzi goldens	Verify screenshots	2026-09-29T02:59:46.3114906Z w: file:///home/runner/work/skein/skein/feature/chat/src/test/kotlin/app/skein/feature/chat/drafts/SessionDraftStoreTest.kt:397:76 Expression is unused.
+Verify Roborazzi goldens	Verify screenshots	2026-09-29T02:59:46.3148174Z w: file:///home/runner/work/skein/skein/feature/chat/src/test/kotlin/app/skein/feature/chat/entries/ChatEntriesTest.kt:57:23 'fun <reified A : ComponentActivity> createAndroidComposeRule(effectContext: CoroutineContext = ...): AndroidComposeTestRule<ActivityScenarioRule<A>, A>' is deprecated. Use `androidx.compose.ui.test.junit4.v2.createAndroidComposeRule` instead. The v2 APIs use StandardTestDispatcher instead of UnconfinedTestDispatcher, which aligns with standard coroutine behavior by queuing tasks rather than executing them immediately. Tests relying on immediate execution may require explicit synchronization. Please refer to the migration guide for more details.
+Verify Roborazzi goldens	Verify screenshots	2026-09-29T02:59:46.3184031Z 
+Verify Roborazzi goldens	Verify screenshots	2026-09-29T02:59:46.3256195Z > Task :feature:chat:compileDebugUnitTestJavaWithJavac NO-SOURCE
+Verify Roborazzi goldens	Verify screenshots	2026-09-29T02:59:46.3284059Z > Task :feature:chat:processDebugJavaRes
+Verify Roborazzi goldens	Verify screenshots	2026-09-29T02:59:46.3334379Z > Task :feature:chat:processDebugUnitTestJavaRes
+Verify Roborazzi goldens	Verify screenshots	2026-09-29T02:59:55.5494569Z > Task :feature:editor:testDebugUnitTest
+Verify Roborazzi goldens	Verify screenshots	2026-09-29T03:00:16.2418111Z > Task :feature:chat:testDebugUnitTest
+Verify Roborazzi goldens	Verify screenshots	2026-09-29T03:00:31.9434655Z > Task :feature:graph:compileDebugUnitTestJavaWithJavac NO-SOURCE
+Verify Roborazzi goldens	Verify screenshots	2026-09-29T03:00:31.9484693Z > Task :feature:graph:processDebugUnitTestJavaRes
+Verify Roborazzi goldens	Verify screenshots	2026-09-29T03:00:49.8474860Z > Task :core:designsystem:finalizeTestRoborazziDebug
+Verify Roborazzi goldens	Verify screenshots	2026-09-29T03:00:49.8554263Z > Task :core:designsystem:verifyRoborazziDebug
+Verify Roborazzi goldens	Verify screenshots	2026-09-29T03:00:49.8644511Z > Task :feature:models:finalizeTestRoborazziDebug
+Verify Roborazzi goldens	Verify screenshots	2026-09-29T03:00:49.8714468Z > Task :feature:models:verifyRoborazziDebug
+Verify Roborazzi goldens	Verify screenshots	2026-09-29T03:00:57.5433848Z 
+Verify Roborazzi goldens	Verify screenshots	2026-09-29T03:00:57.5464740Z > Task :feature:settings:compileDebugKotlin
+Verify Roborazzi goldens	Verify screenshots	2026-09-29T03:00:57.5545768Z w: file:///home/runner/work/skein/skein/feature/settings/src/main/kotlin/app/skein/feature/settings/AboutScreen.kt:291:28 'val LocalClipboardManager: ProvidableCompositionLocal<ClipboardManager>' is deprecated. Use LocalClipboard instead which supports suspend functions.
+Verify Roborazzi goldens	Verify screenshots	2026-09-29T03:00:57.9414922Z 
+Verify Roborazzi goldens	Verify screenshots	2026-09-29T03:00:57.9465663Z > Task :feature:settings:compileDebugJavaWithJavac NO-SOURCE
+Verify Roborazzi goldens	Verify screenshots	2026-09-29T03:00:57.9515789Z > Task :feature:settings:bundleLibRuntimeToJarDebug
+Verify Roborazzi goldens	Verify screenshots	2026-09-29T03:00:57.9567935Z > Task :feature:settings:bundleLibCompileToJarDebug
+Verify Roborazzi goldens	Verify screenshots	2026-09-29T03:01:01.9444516Z > Task :feature:graph:testDebugUnitTest
+Verify Roborazzi goldens	Verify screenshots	2026-09-29T03:01:03.9464078Z 
+Verify Roborazzi goldens	Verify screenshots	2026-09-29T03:01:03.9494686Z > Task :feature:settings:compileDebugUnitTestKotlin
+Verify Roborazzi goldens	Verify screenshots	2026-09-29T03:01:03.9558503Z w: file:///home/runner/work/skein/skein/feature/settings/src/test/kotlin/app/skein/feature/settings/AccessibilitySweepSmokeTest.kt:36:23 'fun <reified A : ComponentActivity> createAndroidComposeRule(effectContext: CoroutineContext = ...): AndroidComposeTestRule<ActivityScenarioRule<A>, A>' is deprecated. Use `androidx.compose.ui.test.junit4.v2.createAndroidComposeRule` instead. The v2 APIs use StandardTestDispatcher instead of UnconfinedTestDispatcher, which aligns with standard coroutine behavior by queuing tasks rather than executing them immediately. Tests relying on immediate execution may require explicit synchronization. Please refer to the migration guide for more details.
+Verify Roborazzi goldens	Verify screenshots	2026-09-29T03:01:03.9628617Z w: file:///home/runner/work/skein/skein/feature/settings/src/test/kotlin/app/skein/feature/settings/SettingsNoDeadControlsTest.kt:21:23 'fun <reified A : ComponentActivity> createAndroidComposeRule(effectContext: CoroutineContext = ...): AndroidComposeTestRule<ActivityScenarioRule<A>, A>' is deprecated. Use `androidx.compose.ui.test.junit4.v2.createAndroidComposeRule` instead. The v2 APIs use StandardTestDispatcher instead of UnconfinedTestDispatcher, which aligns with standard coroutine behavior by queuing tasks rather than executing them immediately. Tests relying on immediate execution may require explicit synchronization. Please refer to the migration guide for more details.
+Verify Roborazzi goldens	Verify screenshots	2026-09-29T03:01:03.9648469Z w: file:///home/runner/work/skein/skein/feature/settings/src/test/kotlin/app/skein/feature/settings/SettingsScreenTest.kt:29:23 'fun <reified A : ComponentActivity> createAndroidComposeRule(effectContext: CoroutineContext = ...): AndroidComposeTestRule<ActivityScenarioRule<A>, A>' is deprecated. Use `androidx.compose.ui.test.junit4.v2.createAndroidComposeRule` instead. The v2 APIs use StandardTestDispatcher instead of UnconfinedTestDispatcher, which aligns with standard coroutine behavior by queuing tasks rather than executing them immediately. Tests relying on immediate execution may require explicit synchronization. Please refer to the migration guide for more details.
+Verify Roborazzi goldens	Verify screenshots	2026-09-29T03:01:03.9689704Z w: file:///home/runner/work/skein/skein/feature/settings/src/test/kotlin/app/skein/feature/settings/entries/SettingsEntriesTest.kt:35:23 'fun <reified A : ComponentActivity> createAndroidComposeRule(effectContext: CoroutineContext = ...): AndroidComposeTestRule<ActivityScenarioRule<A>, A>' is deprecated. Use `androidx.compose.ui.test.junit4.v2.createAndroidComposeRule` instead. The v2 APIs use StandardTestDispatcher instead of UnconfinedTestDispatcher, which aligns with standard coroutine behavior by queuing tasks rather than executing them immediately. Tests relying on immediate execution may require explicit synchronization. Please refer to the migration guide for more details.
+Verify Roborazzi goldens	Verify screenshots	2026-09-29T03:01:03.9775255Z 
+Verify Roborazzi goldens	Verify screenshots	2026-09-29T03:01:03.9834616Z > Task :feature:settings:compileDebugUnitTestJavaWithJavac NO-SOURCE
+Verify Roborazzi goldens	Verify screenshots	2026-09-29T03:01:03.9864216Z > Task :feature:settings:processDebugJavaRes
+Verify Roborazzi goldens	Verify screenshots	2026-09-29T03:01:03.9954370Z > Task :feature:settings:processDebugUnitTestJavaRes
+Verify Roborazzi goldens	Verify screenshots	2026-09-29T03:01:31.5444506Z > Task :feature:editor:finalizeTestRoborazziDebug
+Verify Roborazzi goldens	Verify screenshots	2026-09-29T03:01:31.5514465Z > Task :feature:editor:verifyRoborazziDebug
+Verify Roborazzi goldens	Verify screenshots	2026-09-29T03:01:33.9414509Z > Task :feature:settings:testDebugUnitTest
+Verify Roborazzi goldens	Verify screenshots	2026-09-29T03:01:38.9429300Z > Task :feature:graph:finalizeTestRoborazziDebug
+Verify Roborazzi goldens	Verify screenshots	2026-09-29T03:01:38.9464556Z > Task :feature:graph:verifyRoborazziDebug
+Verify Roborazzi goldens	Verify screenshots	2026-09-29T03:01:43.0412269Z > Task :feature:timeline:compileDebugUnitTestKotlin
+Verify Roborazzi goldens	Verify screenshots	2026-09-29T03:01:43.0481338Z > Task :feature:timeline:compileDebugUnitTestJavaWithJavac NO-SOURCE
+Verify Roborazzi goldens	Verify screenshots	2026-09-29T03:01:43.1474708Z > Task :feature:timeline:processDebugUnitTestJavaRes
+Verify Roborazzi goldens	Verify screenshots	2026-09-29T03:01:46.0425891Z 
+Verify Roborazzi goldens	Verify screenshots	2026-09-29T03:01:46.0426979Z > Task :feature:shell:compileDebugUnitTestKotlin
+Verify Roborazzi goldens	Verify screenshots	2026-09-29T03:01:46.0488540Z w: file:///home/runner/work/skein/skein/feature/shell/src/test/kotlin/app/skein/feature/shell/SkeinThemeColorsTest.kt:31:23 'fun <reified A : ComponentActivity> createAndroidComposeRule(effectContext: CoroutineContext = ...): AndroidComposeTestRule<ActivityScenarioRule<A>, A>' is deprecated. Use `androidx.compose.ui.test.junit4.v2.createAndroidComposeRule` instead. The v2 APIs use StandardTestDispatcher instead of UnconfinedTestDispatcher, which aligns with standard coroutine behavior by queuing tasks rather than executing them immediately. Tests relying on immediate execution may require explicit synchronization. Please refer to the migration guide for more details.
+Verify Roborazzi goldens	Verify screenshots	2026-09-29T03:01:46.0558383Z w: file:///home/runner/work/skein/skein/feature/shell/src/test/kotlin/app/skein/feature/shell/auth/BiometricUnlockDeviceLockGateTest.kt:44:23 'fun <reified A : ComponentActivity> createAndroidComposeRule(effectContext: CoroutineContext = ...): AndroidComposeTestRule<ActivityScenarioRule<A>, A>' is deprecated. Use `androidx.compose.ui.test.junit4.v2.createAndroidComposeRule` instead. The v2 APIs use StandardTestDispatcher instead of UnconfinedTestDispatcher, which aligns with standard coroutine behavior by queuing tasks rather than executing them immediately. Tests relying on immediate execution may require explicit synchronization. Please refer to the migration guide for more details.
+Verify Roborazzi goldens	Verify screenshots	2026-09-29T03:01:46.0567401Z w: file:///home/runner/work/skein/skein/feature/shell/src/test/kotlin/app/skein/feature/shell/auth/BiometricUnlockResetAffordanceTest.kt:35:23 'fun <reified A : ComponentActivity> createAndroidComposeRule(effectContext: CoroutineContext = ...): AndroidComposeTestRule<ActivityScenarioRule<A>, A>' is deprecated. Use `androidx.compose.ui.test.junit4.v2.createAndroidComposeRule` instead. The v2 APIs use StandardTestDispatcher instead of UnconfinedTestDispatcher, which aligns with standard coroutine behavior by queuing tasks rather than executing them immediately. Tests relying on immediate execution may require explicit synchronization. Please refer to the migration guide for more details.
+Verify Roborazzi goldens	Verify screenshots	2026-09-29T03:01:46.0618017Z w: file:///home/runner/work/skein/skein/feature/shell/src/test/kotlin/app/skein/feature/shell/container/SkeinDrawerContentTest.kt:55:23 'fun <reified A : ComponentActivity> createAndroidComposeRule(effectContext: CoroutineContext = ...): AndroidComposeTestRule<ActivityScenarioRule<A>, A>' is deprecated. Use `androidx.compose.ui.test.junit4.v2.createAndroidComposeRule` instead. The v2 APIs use StandardTestDispatcher instead of UnconfinedTestDispatcher, which aligns with standard coroutine behavior by queuing tasks rather than executing them immediately. Tests relying on immediate execution may require explicit synchronization. Please refer to the migration guide for more details.
+Verify Roborazzi goldens	Verify screenshots	2026-09-29T03:01:46.0688518Z w: file:///home/runner/work/skein/skein/feature/shell/src/test/kotlin/app/skein/feature/shell/container/SkeinNavigationContainerAccessibilityTest.kt:65:23 'fun <reified A : ComponentActivity> createAndroidComposeRule(effectContext: CoroutineContext = ...): AndroidComposeTestRule<ActivityScenarioRule<A>, A>' is deprecated. Use `androidx.compose.ui.test.junit4.v2.createAndroidComposeRule` instead. The v2 APIs use StandardTestDispatcher instead of UnconfinedTestDispatcher, which aligns with standard coroutine behavior by queuing tasks rather than executing them immediately. Tests relying on immediate execution may require explicit synchronization. Please refer to the migration guide for more details.
+Verify Roborazzi goldens	Verify screenshots	2026-09-29T03:01:46.0728413Z w: file:///home/runner/work/skein/skein/feature/shell/src/test/kotlin/app/skein/feature/shell/container/SkeinNavigationContainerTest.kt:57:23 'fun <reified A : ComponentActivity> createAndroidComposeRule(effectContext: CoroutineContext = ...): AndroidComposeTestRule<ActivityScenarioRule<A>, A>' is deprecated. Use `androidx.compose.ui.test.junit4.v2.createAndroidComposeRule` instead. The v2 APIs use StandardTestDispatcher instead of UnconfinedTestDispatcher, which aligns with standard coroutine behavior by queuing tasks rather than executing them immediately. Tests relying on immediate execution may require explicit synchronization. Please refer to the migration guide for more details.
+Verify Roborazzi goldens	Verify screenshots	2026-09-29T03:01:46.0768484Z w: file:///home/runner/work/skein/skein/feature/shell/src/test/kotlin/app/skein/feature/shell/host/ShellLockSequenceTest.kt:44:23 'fun <reified A : ComponentActivity> createAndroidComposeRule(effectContext: CoroutineContext = ...): AndroidComposeTestRule<ActivityScenarioRule<A>, A>' is deprecated. Use `androidx.compose.ui.test.junit4.v2.createAndroidComposeRule` instead. The v2 APIs use StandardTestDispatcher instead of UnconfinedTestDispatcher, which aligns with standard coroutine behavior by queuing tasks rather than executing them immediately. Tests relying on immediate execution may require explicit synchronization. Please refer to the migration guide for more details.
+Verify Roborazzi goldens	Verify screenshots	2026-09-29T03:01:46.0838518Z w: file:///home/runner/work/skein/skein/feature/shell/src/test/kotlin/app/skein/feature/shell/host/SkeinShellHostTest.kt:61:23 'fun <reified A : ComponentActivity> createAndroidComposeRule(effectContext: CoroutineContext = ...): AndroidComposeTestRule<ActivityScenarioRule<A>, A>' is deprecated. Use `androidx.compose.ui.test.junit4.v2.createAndroidComposeRule` instead. The v2 APIs use StandardTestDispatcher instead of UnconfinedTestDispatcher, which aligns with standard coroutine behavior by queuing tasks rather than executing them immediately. Tests relying on immediate execution may require explicit synchronization. Please refer to the migration guide for more details.
+Verify Roborazzi goldens	Verify screenshots	2026-09-29T03:01:46.0878326Z w: file:///home/runner/work/skein/skein/feature/shell/src/test/kotlin/app/skein/feature/shell/host/VaultResetClearsNavStateTest.kt:38:23 'fun <reified A : ComponentActivity> createAndroidComposeRule(effectContext: CoroutineContext = ...): AndroidComposeTestRule<ActivityScenarioRule<A>, A>' is deprecated. Use `androidx.compose.ui.test.junit4.v2.createAndroidComposeRule` instead. The v2 APIs use StandardTestDispatcher instead of UnconfinedTestDispatcher, which aligns with standard coroutine behavior by queuing tasks rather than executing them immediately. Tests relying on immediate execution may require explicit synchronization. Please refer to the migration guide for more details.
+Verify Roborazzi goldens	Verify screenshots	2026-09-29T03:01:46.0918346Z w: file:///home/runner/work/skein/skein/feature/shell/src/test/kotlin/app/skein/feature/shell/input/SecureTextFieldTest.kt:55:23 'fun <reified A : ComponentActivity> createAndroidComposeRule(effectContext: CoroutineContext = ...): AndroidComposeTestRule<ActivityScenarioRule<A>, A>' is deprecated. Use `androidx.compose.ui.test.junit4.v2.createAndroidComposeRule` instead. The v2 APIs use StandardTestDispatcher instead of UnconfinedTestDispatcher, which aligns with standard coroutine behavior by queuing tasks rather than executing them immediately. Tests relying on immediate execution may require explicit synchronization. Please refer to the migration guide for more details.
+Verify Roborazzi goldens	Verify screenshots	2026-09-29T03:01:46.0986138Z w: file:///home/runner/work/skein/skein/feature/shell/src/test/kotlin/app/skein/feature/shell/input/SecureTextFieldTest.kt:74:13 'fun PlatformTextInputMethodTestOverride(sessionHandler: PlatformTextInputSession, content: ComposableFunction0<Unit>): Unit' is deprecated. Use InterceptPlatformTextInput instead.
+Verify Roborazzi goldens	Verify screenshots	2026-09-29T03:01:46.1036299Z w: file:///home/runner/work/skein/skein/feature/shell/src/test/kotlin/app/skein/feature/shell/screenshots/AuthScreenshotTest.kt:63:23 'fun <reified A : ComponentActivity> createAndroidComposeRule(effectContext: CoroutineContext = ...): AndroidComposeTestRule<ActivityScenarioRule<A>, A>' is deprecated. Use `androidx.compose.ui.test.junit4.v2.createAndroidComposeRule` instead. The v2 APIs use StandardTestDispatcher instead of UnconfinedTestDispatcher, which aligns with standard coroutine behavior by queuing tasks rather than executing them immediately. Tests relying on immediate execution may require explicit synchronization. Please refer to the migration guide for more details.
+Verify Roborazzi goldens	Verify screenshots	2026-09-29T03:01:46.5424104Z 
+Verify Roborazzi goldens	Verify screenshots	2026-09-29T03:01:46.5486728Z > Task :feature:shell:compileDebugUnitTestJavaWithJavac NO-SOURCE
+Verify Roborazzi goldens	Verify screenshots	2026-09-29T03:01:46.5514352Z > Task :feature:shell:processDebugUnitTestJavaRes
+Verify Roborazzi goldens	Verify screenshots	2026-09-29T03:02:13.1454646Z > Task :feature:timeline:testDebugUnitTest
+Verify Roborazzi goldens	Verify screenshots	2026-09-29T03:02:13.2409432Z > Task :feature:settings:finalizeTestRoborazziDebug
+Verify Roborazzi goldens	Verify screenshots	2026-09-29T03:02:13.2424371Z > Task :feature:settings:verifyRoborazziDebug
+Verify Roborazzi goldens	Verify screenshots	2026-09-29T03:02:16.5424469Z > Task :feature:shell:testDebugUnitTest
+Verify Roborazzi goldens	Verify screenshots	2026-09-29T03:02:21.5424627Z > Task :feature:timeline:finalizeTestRoborazziDebug
+Verify Roborazzi goldens	Verify screenshots	2026-09-29T03:02:21.5454283Z > Task :feature:timeline:verifyRoborazziDebug
+Verify Roborazzi goldens	Verify screenshots	2026-09-29T03:02:28.0409009Z > Task :feature:chat:verifyRoborazziDebug
+Verify Roborazzi goldens	Verify screenshots	2026-09-29T03:02:28.0409794Z > Task :feature:chat:finalizeTestRoborazziDebug
+Verify Roborazzi goldens	Verify screenshots	2026-09-29T03:02:49.9408610Z > Task :feature:shell:finalizeTestRoborazziDebug
+Verify Roborazzi goldens	Verify screenshots	2026-09-29T03:02:49.9409412Z > Task :feature:shell:verifyRoborazziDebug
+Verify Roborazzi goldens	Verify screenshots	2026-09-29T03:02:49.9410260Z gradle/actions: Writing build results to /home/runner/work/_temp/.gradle-actions/build-results/__run_2-1790650617045.json
+Verify Roborazzi goldens	Verify screenshots	2026-09-29T03:02:49.9410760Z 
+Verify Roborazzi goldens	Verify screenshots	2026-09-29T03:02:49.9411210Z [Incubating] Problems report is available at: file:///home/runner/work/skein/skein/build/reports/problems/problems-report.html
+Verify Roborazzi goldens	Verify screenshots	2026-09-29T03:02:49.9411727Z 
+Verify Roborazzi goldens	Verify screenshots	2026-09-29T03:02:50.0411158Z BUILD SUCCESSFUL in 6m
+Verify Roborazzi goldens	Verify screenshots	2026-09-29T03:02:50.0422634Z 344 actionable tasks: 344 executed
+Verify Roborazzi goldens	Verify screenshots	2026-09-29T03:02:50.0432210Z Configuration cache entry stored.
+Verify Roborazzi goldens	Goldens untouched by verify	﻿2026-09-29T03:02:50.3733158Z ##[group]Run git diff --exit-code -- ux-baselines/
+Verify Roborazzi goldens	Goldens untouched by verify	2026-09-29T03:02:50.3734414Z ^[[36;1mgit diff --exit-code -- ux-baselines/^[[0m
+Verify Roborazzi goldens	Goldens untouched by verify	2026-09-29T03:02:50.3800393Z shell: /usr/bin/bash --noprofile --norc -e -o pipefail {0}
+Verify Roborazzi goldens	Goldens untouched by verify	2026-09-29T03:02:50.3800819Z env:
+Verify Roborazzi goldens	Goldens untouched by verify	2026-09-29T03:02:50.3801194Z   JAVA_HOME: /opt/hostedtoolcache/Java_Temurin-Hotspot_jdk/17.0.20-1/x64
+Verify Roborazzi goldens	Goldens untouched by verify	2026-09-29T03:02:50.3801795Z   JAVA_HOME_17_X64: /opt/hostedtoolcache/Java_Temurin-Hotspot_jdk/17.0.20-1/x64
+Verify Roborazzi goldens	Goldens untouched by verify	2026-09-29T03:02:50.3802272Z   MAVEN_ARGS: -ntp
+Verify Roborazzi goldens	Goldens untouched by verify	2026-09-29T03:02:50.3802590Z   GRADLE_ACTION_ID: gradle/actions/setup-gradle
+Verify Roborazzi goldens	Goldens untouched by verify	2026-09-29T03:02:50.3802981Z   GRADLE_USER_HOME: /home/runner/.gradle
+Verify Roborazzi goldens	Goldens untouched by verify	2026-09-29T03:02:50.3803588Z   GRADLE_BUILD_ACTION_SETUP_COMPLETED: true
+Verify Roborazzi goldens	Goldens untouched by verify	2026-09-29T03:02:50.3804054Z   GRADLE_BUILD_ACTION_CACHE_RESTORED: true
+Verify Roborazzi goldens	Goldens untouched by verify	2026-09-29T03:02:50.3804599Z   DEVELOCITY_INJECTION_INIT_SCRIPT_NAME: gradle-actions.inject-develocity.init.gradle
+Verify Roborazzi goldens	Goldens untouched by verify	2026-09-29T03:02:50.3805176Z   DEVELOCITY_INJECTION_CUSTOM_VALUE: gradle-actions
+Verify Roborazzi goldens	Goldens untouched by verify	2026-09-29T03:02:50.3805608Z   GITHUB_DEPENDENCY_GRAPH_ENABLED: false
+Verify Roborazzi goldens	Goldens untouched by verify	2026-09-29T03:02:50.3805946Z ##[endgroup]
+Verify Roborazzi goldens	Baseline size budget	﻿2026-09-29T03:02:50.5413226Z ##[group]Run kb=$(du -sk --exclude=before --exclude=device-before --exclude=device ux-baselines | cut -f1)
+Verify Roborazzi goldens	Baseline size budget	2026-09-29T03:02:50.5414323Z ^[[36;1mkb=$(du -sk --exclude=before --exclude=device-before --exclude=device ux-baselines | cut -f1)^[[0m
+Verify Roborazzi goldens	Baseline size budget	2026-09-29T03:02:50.5414870Z ^[[36;1mecho "ux-baselines: ${kb} KiB"^[[0m
+Verify Roborazzi goldens	Baseline size budget	2026-09-29T03:02:50.5415312Z ^[[36;1m[ "$kb" -le 51200 ] || { echo "::error::ux-baselines over 50 MiB"; exit 1; }^[[0m
+Verify Roborazzi goldens	Baseline size budget	2026-09-29T03:02:50.5415836Z ^[[36;1m[ "$kb" -le 40960 ] || echo "::warning::ux-baselines over 40 MiB"^[[0m
+Verify Roborazzi goldens	Baseline size budget	2026-09-29T03:02:50.5476957Z shell: /usr/bin/bash --noprofile --norc -e -o pipefail {0}
+Verify Roborazzi goldens	Baseline size budget	2026-09-29T03:02:50.5477354Z env:
+Verify Roborazzi goldens	Baseline size budget	2026-09-29T03:02:50.5477706Z   JAVA_HOME: /opt/hostedtoolcache/Java_Temurin-Hotspot_jdk/17.0.20-1/x64
+Verify Roborazzi goldens	Baseline size budget	2026-09-29T03:02:50.5478252Z   JAVA_HOME_17_X64: /opt/hostedtoolcache/Java_Temurin-Hotspot_jdk/17.0.20-1/x64
+Verify Roborazzi goldens	Baseline size budget	2026-09-29T03:02:50.5478692Z   MAVEN_ARGS: -ntp
+Verify Roborazzi goldens	Baseline size budget	2026-09-29T03:02:50.5478990Z   GRADLE_ACTION_ID: gradle/actions/setup-gradle
+Verify Roborazzi goldens	Baseline size budget	2026-09-29T03:02:50.5479360Z   GRADLE_USER_HOME: /home/runner/.gradle
+Verify Roborazzi goldens	Baseline size budget	2026-09-29T03:02:50.5479730Z   GRADLE_BUILD_ACTION_SETUP_COMPLETED: true
+Verify Roborazzi goldens	Baseline size budget	2026-09-29T03:02:50.5480084Z   GRADLE_BUILD_ACTION_CACHE_RESTORED: true
+Verify Roborazzi goldens	Baseline size budget	2026-09-29T03:02:50.5480590Z   DEVELOCITY_INJECTION_INIT_SCRIPT_NAME: gradle-actions.inject-develocity.init.gradle
+Verify Roborazzi goldens	Baseline size budget	2026-09-29T03:02:50.5481121Z   DEVELOCITY_INJECTION_CUSTOM_VALUE: gradle-actions
+Verify Roborazzi goldens	Baseline size budget	2026-09-29T03:02:50.5481495Z   GITHUB_DEPENDENCY_GRAPH_ENABLED: false
+Verify Roborazzi goldens	Baseline size budget	2026-09-29T03:02:50.5481816Z ##[endgroup]
+Verify Roborazzi goldens	Baseline size budget	2026-09-29T03:02:50.5617498Z ux-baselines: 35660 KiB
+Verify Roborazzi goldens	Post Set up Gradle	﻿2026-09-29T03:02:50.5834251Z Post job cleanup.
+Verify Roborazzi goldens	Post Set up Gradle	2026-09-29T03:02:50.8349004Z In post-action step
+Verify Roborazzi goldens	Post Set up Gradle	2026-09-29T03:02:50.8360959Z ##[group]Stopping Gradle daemons
+Verify Roborazzi goldens	Post Set up Gradle	2026-09-29T03:02:50.8362312Z Stopping Gradle daemons for /home/runner/.gradle/wrapper/dists/gradle-9.7.1-bin/1w1c7tv4s851m17nbqdsro2tv/gradle-9.7.1
+Verify Roborazzi goldens	Post Set up Gradle	2026-09-29T03:02:50.8380356Z [command]/home/runner/.gradle/wrapper/dists/gradle-9.7.1-bin/1w1c7tv4s851m17nbqdsro2tv/gradle-9.7.1/bin/gradle --stop
+Verify Roborazzi goldens	Post Set up Gradle	2026-09-29T03:02:51.5588562Z Stopping Daemon(s)
+Verify Roborazzi goldens	Post Set up Gradle	2026-09-29T03:02:51.5590234Z 1 Daemon stopped
+Verify Roborazzi goldens	Post Set up Gradle	2026-09-29T03:02:51.5733292Z ##[endgroup]
+Verify Roborazzi goldens	Post Set up Gradle	2026-09-29T03:02:51.5800837Z ##[group]Provision Gradle >= 9.7.1
+Verify Roborazzi goldens	Post Set up Gradle	2026-09-29T03:02:54.5561528Z Gradle version 9.7.1 is available at /usr/bin/gradle and >= 9.7.1. Not installing.
+Verify Roborazzi goldens	Post Set up Gradle	2026-09-29T03:02:54.5562504Z ##[endgroup]
+Verify Roborazzi goldens	Post Set up Gradle	2026-09-29T03:02:54.5566248Z ##[group]Executing Gradle to clean up caches
+Verify Roborazzi goldens	Post Set up Gradle	2026-09-29T03:02:54.5567009Z Cleaning up caches last used before 1790650602585
+Verify Roborazzi goldens	Post Set up Gradle	2026-09-29T03:02:54.5569323Z [command]/usr/bin/gradle -g /home/runner/.gradle -I init.gradle --info --no-daemon --no-scan --build-cache -DGITHUB_DEPENDENCY_GRAPH_ENABLED=false -DGRADLE_ACTIONS_SKIP_BUILD_RESULT_CAPTURE=true noop
+Verify Roborazzi goldens	Post Set up Gradle	2026-09-29T03:02:54.9776697Z Initialized native services in: /home/runner/.gradle/native
+Verify Roborazzi goldens	Post Set up Gradle	2026-09-29T03:02:54.9811590Z Initialized jansi services in: /home/runner/.gradle/native
+Verify Roborazzi goldens	Post Set up Gradle	2026-09-29T03:02:55.1210004Z The current JVM process isn't compatible with build requirement. The maximum heap size is insufficient.
+Verify Roborazzi goldens	Post Set up Gradle	2026-09-29T03:02:55.1210961Z 
+Verify Roborazzi goldens	Post Set up Gradle	2026-09-29T03:02:55.4206536Z To honour the JVM settings for this build a single-use Daemon process will be forked. For more on this, please refer to https://docs.gradle.org/9.7.1/userguide/gradle_daemon.html#sec:disabling_the_daemon in the Gradle documentation.
+Verify Roborazzi goldens	Post Set up Gradle	2026-09-29T03:02:55.4225292Z Starting process 'Gradle build daemon'. Working directory: /home/runner/.gradle/daemon/9.7.1 Command: /usr/lib/jvm/temurin-17-jdk-amd64/bin/java --add-opens=java.base/java.lang=ALL-UNNAMED --add-opens=java.base/java.lang.invoke=ALL-UNNAMED --add-opens=java.base/java.util=ALL-UNNAMED --add-opens=java.prefs/java.util.prefs=ALL-UNNAMED --add-exports=jdk.compiler/com.sun.tools.javac.api=ALL-UNNAMED --add-exports=jdk.compiler/com.sun.tools.javac.util=ALL-UNNAMED --add-opens=java.base/java.nio.charset=ALL-UNNAMED --add-opens=java.base/java.net=ALL-UNNAMED --add-opens=java.base/java.util.concurrent=ALL-UNNAMED --add-opens=java.base/java.util.concurrent.atomic=ALL-UNNAMED --add-opens=java.xml/javax.xml.namespace=ALL-UNNAMED --add-opens=java.base/java.time=ALL-UNNAMED -XX:MaxMetaspaceSize=384m -XX:+HeapDumpOnOutOfMemoryError -Xms256m -Xmx512m -Dfile.encoding=UTF-8 -Duser.country -Duser.language=en -Duser.variant -cp /usr/share/gradle-9.7.1/lib/gradle-daemon-main-9.7.1.jar -javaagent:/usr/share/gradle-9.7.1/lib/agents/gradle-instrumentation-agent-9.7.1.jar org.gradle.launcher.daemon.bootstrap.GradleDaemon 9.7.1
+Verify Roborazzi goldens	Post Set up Gradle	2026-09-29T03:02:55.4232399Z Successfully started process 'Gradle build daemon'
+Verify Roborazzi goldens	Post Set up Gradle	2026-09-29T03:02:58.2224655Z An attempt to start the daemon took 2.871 secs.
+Verify Roborazzi goldens	Post Set up Gradle	2026-09-29T03:02:58.3206336Z The client will now receive all logging from the daemon (pid: 3791). The daemon log file: /home/runner/.gradle/daemon/9.7.1/daemon-3791.out.log
+Verify Roborazzi goldens	Post Set up Gradle	2026-09-29T03:02:58.3207865Z Daemon will be stopped at the end of the build 
+Verify Roborazzi goldens	Post Set up Gradle	2026-09-29T03:02:59.1200508Z Using 4 worker leases.
+Verify Roborazzi goldens	Post Set up Gradle	2026-09-29T03:02:59.2213759Z Operational build model parameters: {cachingModelBuilding=false, configurationCache=false, configurationCacheDisabledReason=null, configurationCacheParallelLoad=false, configurationCacheParallelStore=false, configureOnDemand=false, invalidateCoupledProjects=false, isolatedProjects=false, isolatedProjectsDiagnostics=false, isolatedProjectsDangerouslyIgnoreProblems=false, modelAsProjectDependency=false, modelBuilding=false, parallelModelBuilding=false, parallelProjectConfiguration=false, parallelProjectExecution=false, vintage=true}
+Verify Roborazzi goldens	Post Set up Gradle	2026-09-29T03:02:59.8203012Z Received JVM installation metadata from '/usr/lib/jvm/temurin-17-jdk-amd64': {JAVA_HOME=/usr/lib/jvm/temurin-17-jdk-amd64, JAVA_VERSION=17.0.20.1, JAVA_VENDOR=Eclipse Adoptium, RUNTIME_NAME=OpenJDK Runtime Environment, RUNTIME_VERSION=17.0.20.1+1, VM_NAME=OpenJDK 64-Bit Server VM, VM_VERSION=17.0.20.1+1, VM_VENDOR=Eclipse Adoptium, OS_ARCH=amd64}
+Verify Roborazzi goldens	Post Set up Gradle	2026-09-29T03:03:00.2201000Z Watching the file system is configured to be enabled if available
+Verify Roborazzi goldens	Post Set up Gradle	2026-09-29T03:03:00.2201730Z Now considering [/home/runner/work/_temp/dummy-cleanup-project] as hierarchies to watch
+Verify Roborazzi goldens	Post Set up Gradle	2026-09-29T03:03:00.2202279Z File system watching is active
+Verify Roborazzi goldens	Post Set up Gradle	2026-09-29T03:03:00.8204305Z Caching disabled for Groovy DSL script compilation (cp_init) because:
+Verify Roborazzi goldens	Post Set up Gradle	2026-09-29T03:03:00.8205782Z   Build cache is disabled
+Verify Roborazzi goldens	Post Set up Gradle	2026-09-29T03:03:00.8206594Z   Not worth caching.
+Verify Roborazzi goldens	Post Set up Gradle	2026-09-29T03:03:00.9202991Z Compiling initialization script '/home/runner/work/_temp/dummy-cleanup-project/init.gradle' using SubsetScriptTransformer.
+Verify Roborazzi goldens	Post Set up Gradle	2026-09-29T03:03:01.9234836Z Caching disabled for Groovy DSL script compilation (init) because:
+Verify Roborazzi goldens	Post Set up Gradle	2026-09-29T03:03:01.9264283Z   Build cache is disabled
+Verify Roborazzi goldens	Post Set up Gradle	2026-09-29T03:03:01.9283682Z   Not worth caching.
+Verify Roborazzi goldens	Post Set up Gradle	2026-09-29T03:03:01.9300071Z Compiling initialization script '/home/runner/work/_temp/dummy-cleanup-project/init.gradle' using BuildScriptTransformer.
+Verify Roborazzi goldens	Post Set up Gradle	2026-09-29T03:03:02.5234676Z gradle/actions: Not capturing build results
+Verify Roborazzi goldens	Post Set up Gradle	2026-09-29T03:03:02.7214640Z Starting Build
+Verify Roborazzi goldens	Post Set up Gradle	2026-09-29T03:03:02.8219282Z Settings evaluated using settings file '/home/runner/work/_temp/dummy-cleanup-project/settings.gradle'.
+Verify Roborazzi goldens	Post Set up Gradle	2026-09-29T03:03:02.8235478Z Using local directory build cache for the root build (location = /home/runner/.gradle/caches/build-cache-1, remove unused entries = older than 2026-09-29 02:56:42 UTC).
+Verify Roborazzi goldens	Post Set up Gradle	2026-09-29T03:03:02.9210285Z Projects loaded. Root project using build file '/home/runner/work/_temp/dummy-cleanup-project/build.gradle'.
+Verify Roborazzi goldens	Post Set up Gradle	2026-09-29T03:03:02.9215626Z Included projects: [root project 'dummy-cleanup-project']
+Verify Roborazzi goldens	Post Set up Gradle	2026-09-29T03:03:03.2227763Z 
+Verify Roborazzi goldens	Post Set up Gradle	2026-09-29T03:03:03.2241413Z > Configure project :
+Verify Roborazzi goldens	Post Set up Gradle	2026-09-29T03:03:03.2252789Z Evaluating root project 'dummy-cleanup-project' using build file '/home/runner/work/_temp/dummy-cleanup-project/build.gradle'.
+Verify Roborazzi goldens	Post Set up Gradle	2026-09-29T03:03:03.2269179Z All projects evaluated.
+Verify Roborazzi goldens	Post Set up Gradle	2026-09-29T03:03:03.2274671Z Task name matched 'noop'
+Verify Roborazzi goldens	Post Set up Gradle	2026-09-29T03:03:03.2275507Z Selected primary task 'noop' from project :
+Verify Roborazzi goldens	Post Set up Gradle	2026-09-29T03:03:03.2276488Z Tasks to be executed: [task ':noop']
+Verify Roborazzi goldens	Post Set up Gradle	2026-09-29T03:03:03.2277395Z Tasks that were excluded: []
+Verify Roborazzi goldens	Post Set up Gradle	2026-09-29T03:03:03.2278453Z Resolve mutations for :noop (Thread[Execution worker,5,main]) started.
+Verify Roborazzi goldens	Post Set up Gradle	2026-09-29T03:03:03.2279955Z :noop (Thread[Execution worker,5,main]) started.
+Verify Roborazzi goldens	Post Set up Gradle	2026-09-29T03:03:03.3205155Z 
+Verify Roborazzi goldens	Post Set up Gradle	2026-09-29T03:03:03.3215472Z > Task :noop UP-TO-DATE
+Verify Roborazzi goldens	Post Set up Gradle	2026-09-29T03:03:03.3224936Z Skipping task ':noop' as it has no actions.
+Verify Roborazzi goldens	Post Set up Gradle	2026-09-29T03:03:03.3231214Z 
+Verify Roborazzi goldens	Post Set up Gradle	2026-09-29T03:03:03.3231679Z BUILD SUCCESSFUL in 8s
+Verify Roborazzi goldens	Post Set up Gradle	2026-09-29T03:03:03.3233044Z Consider enabling configuration cache to speed up this build: https://docs.gradle.org/9.7.1/userguide/configuration_cache_enabling.html
+Verify Roborazzi goldens	Post Set up Gradle	2026-09-29T03:03:03.3235351Z Build cache (/home/runner/.gradle/caches/build-cache-1) removing files not accessed on or after Tue Sep 29 02:56:42 UTC 2026.
+Verify Roborazzi goldens	Post Set up Gradle	2026-09-29T03:03:03.3237208Z Build cache (/home/runner/.gradle/caches/build-cache-1) cleanup deleted 0 files/directories.
+Verify Roborazzi goldens	Post Set up Gradle	2026-09-29T03:03:03.3238684Z Build cache (/home/runner/.gradle/caches/build-cache-1) cleaned up in 0.003 secs.
+Verify Roborazzi goldens	Post Set up Gradle	2026-09-29T03:03:03.3240144Z dependencies-accessors removing files not accessed on or after Tue Sep 29 02:56:42 UTC 2026.
+Verify Roborazzi goldens	Post Set up Gradle	2026-09-29T03:03:03.3258082Z dependencies-accessors cleanup deleted 0 files/directories.
+Verify Roborazzi goldens	Post Set up Gradle	2026-09-29T03:03:03.3259244Z dependencies-accessors cleaned up in 0.003 secs.
+Verify Roborazzi goldens	Post Set up Gradle	2026-09-29T03:03:03.3284343Z jars (/home/runner/.gradle/caches/jars-9) cleanup deleted 0 files/directories.
+Verify Roborazzi goldens	Post Set up Gradle	2026-09-29T03:03:03.3314616Z jars (/home/runner/.gradle/caches/jars-9) removing files not accessed on or after Tue Sep 29 02:56:42 UTC 2026.
+Verify Roborazzi goldens	Post Set up Gradle	2026-09-29T03:03:03.3325139Z jars (/home/runner/.gradle/caches/jars-9) cleanup deleted 1 files/directories.
+Verify Roborazzi goldens	Post Set up Gradle	2026-09-29T03:03:03.3326515Z jars (/home/runner/.gradle/caches/jars-9) cleaned up in 0.007 secs.
+Verify Roborazzi goldens	Post Set up Gradle	2026-09-29T03:03:03.3329823Z artifact cache (/home/runner/.gradle/caches/modules-2) cleanup deleted 0 files/directories.
+Verify Roborazzi goldens	Post Set up Gradle	2026-09-29T03:03:03.3335222Z artifact cache (/home/runner/.gradle/caches/modules-2) [subdir: /home/runner/.gradle/caches/modules-2/resources-2.1] cleanup deleted 0 files/directories.
+Verify Roborazzi goldens	Post Set up Gradle	2026-09-29T03:03:03.3340164Z artifact cache (/home/runner/.gradle/caches/modules-2) [subdir: /home/runner/.gradle/caches/modules-2/resources-2.1] removing files not accessed on or after Tue Sep 29 02:56:42 UTC 2026.
+Verify Roborazzi goldens	Post Set up Gradle	2026-09-29T03:03:03.3342771Z artifact cache (/home/runner/.gradle/caches/modules-2) [subdir: /home/runner/.gradle/caches/modules-2/resources-2.1] cleanup deleted 0 files/directories.
+Verify Roborazzi goldens	Post Set up Gradle	2026-09-29T03:03:03.3347322Z artifact cache (/home/runner/.gradle/caches/modules-2) [subdir: /home/runner/.gradle/caches/modules-2/files-2.1] cleanup deleted 0 files/directories.
+Verify Roborazzi goldens	Post Set up Gradle	2026-09-29T03:03:03.3363357Z artifact cache (/home/runner/.gradle/caches/modules-2) [subdir: /home/runner/.gradle/caches/modules-2/files-2.1] removing files not accessed on or after Tue Sep 29 02:56:42 UTC 2026.
+Verify Roborazzi goldens	Post Set up Gradle	2026-09-29T03:03:03.6208206Z artifact cache (/home/runner/.gradle/caches/modules-2) [subdir: /home/runner/.gradle/caches/modules-2/files-2.1] cleanup deleted 0 files/directories.
+Verify Roborazzi goldens	Post Set up Gradle	2026-09-29T03:03:03.6236084Z artifact cache (/home/runner/.gradle/caches/modules-2) [subdir: /home/runner/.gradle/caches/modules-2/metadata-2.107] cleanup deleted 0 files/directories.
+Verify Roborazzi goldens	Post Set up Gradle	2026-09-29T03:03:03.6238599Z artifact cache (/home/runner/.gradle/caches/modules-2) cleanup deleted 0 files/directories.
+Verify Roborazzi goldens	Post Set up Gradle	2026-09-29T03:03:03.6240634Z artifact cache (/home/runner/.gradle/caches/modules-2) cleaned up in 0.236 secs.
+Verify Roborazzi goldens	Post Set up Gradle	2026-09-29T03:03:03.6242483Z Artifact transforms cache removing files not accessed on or after Tue Sep 29 02:56:42 UTC 2026.
+Verify Roborazzi goldens	Post Set up Gradle	2026-09-29T03:03:03.9248025Z Cache entries evicted. In-memory cache of /home/runner/.gradle/caches/journal-1/file-access.bin: Size{4515} MaxSize{4700}, CacheStats{hitCount=12, missCount=4491, loadSuccessCount=4492, loadExceptionCount=0, totalLoadTime=368345197, evictionCount=1} 
+Verify Roborazzi goldens	Post Set up Gradle	2026-09-29T03:03:03.9265058Z Performance may suffer from in-memory cache misses. Increase max heap size of Gradle build process to reduce cache misses.
+Verify Roborazzi goldens	Post Set up Gradle	2026-09-29T03:03:03.9268134Z Cache entries evicted. In-memory cache of /home/runner/.gradle/caches/journal-1/file-access.bin: Size{4700} MaxSize{4700}, CacheStats{hitCount=12, missCount=5146, loadSuccessCount=5147, loadExceptionCount=0, totalLoadTime=402477152, evictionCount=471} 
+Verify Roborazzi goldens	Post Set up Gradle	2026-09-29T03:03:03.9271296Z Performance may suffer from in-memory cache misses. Increase max heap size of Gradle build process to reduce cache misses.
+Verify Roborazzi goldens	Post Set up Gradle	2026-09-29T03:03:03.9272762Z Artifact transforms cache cleanup deleted 0 files/directories.
+Verify Roborazzi goldens	Post Set up Gradle	2026-09-29T03:03:03.9781485Z Artifact transforms cache cleaned up in 0.41 secs.
+Verify Roborazzi goldens	Post Set up Gradle	2026-09-29T03:03:03.9784920Z groovy-dsl removing files not accessed on or after Tue Sep 29 02:56:42 UTC 2026.
+Verify Roborazzi goldens	Post Set up Gradle	2026-09-29T03:03:03.9792775Z groovy-dsl cleanup deleted 0 files/directories.
+Verify Roborazzi goldens	Post Set up Gradle	2026-09-29T03:03:03.9795541Z groovy-dsl cleaned up in 0.004 secs.
+Verify Roborazzi goldens	Post Set up Gradle	2026-09-29T03:03:04.0241641Z ##[endgroup]
+Verify Roborazzi goldens	Post Set up Gradle	2026-09-29T03:03:04.0242181Z ##[group]Caching Gradle state
+Verify Roborazzi goldens	Post Set up Gradle	2026-09-29T03:03:04.0332291Z Not saving configuration-cache state, as no encryption key was provided
+Verify Roborazzi goldens	Post Set up Gradle	2026-09-29T03:03:04.6490745Z [command]/usr/bin/tar --posix -cf cache.tzst --exclude cache.tzst -P -C /home/runner/work/skein/skein --files-from manifest.txt --use-compress-program zstdmt
+Verify Roborazzi goldens	Post Set up Gradle	2026-09-29T03:03:04.8018942Z Sent 64574 of 64574 (100.0%), 1.0 MBs/sec
+Verify Roborazzi goldens	Post Set up Gradle	2026-09-29T03:03:05.6642323Z Saved cache entry with key gradle-instrumented-jars-v1-cce91f5e9bbd400ec5f84556eed92917 from /home/runner/.gradle/caches/jars-*/*/ in 1034ms
+Verify Roborazzi goldens	Post Set up Gradle	2026-09-29T03:03:05.7080781Z [command]/usr/bin/tar --posix -cf cache.tzst --exclude cache.tzst -P -C /home/runner/work/skein/skein --files-from manifest.txt --use-compress-program zstdmt
+Verify Roborazzi goldens	Post Set up Gradle	2026-09-29T03:03:05.8319851Z Sent 105132 of 105132 (100.0%), 2.6 MBs/sec
+Verify Roborazzi goldens	Post Set up Gradle	2026-09-29T03:03:05.9318583Z Saved cache entry with key gradle-groovy-dsl-v1-0331d39dfdb7a9f719cdb3f351dec4ef from /home/runner/.gradle/caches/*/groovy-dsl/*/ in 250ms
+Verify Roborazzi goldens	Post Set up Gradle	2026-09-29T03:03:06.2082348Z [command]/usr/bin/tar --posix -cf cache.tzst --exclude cache.tzst -P -C /home/runner/work/skein/skein --files-from manifest.txt --use-compress-program zstdmt
+Verify Roborazzi goldens	Post Set up Gradle	2026-09-29T03:03:07.8802946Z Failed to save cache entry with path '/home/runner/.gradle/caches/modules-*/files-*/*/*/*/*' and key: gradle-dependencies-v1-eb60925b40a262b0f3f936e6294c27a5: ReserveCacheError: Unable to reserve cache with key gradle-dependencies-v1-eb60925b40a262b0f3f936e6294c27a5, another job may be creating this cache.
+Verify Roborazzi goldens	Post Set up Gradle	2026-09-29T03:03:08.2333951Z [command]/usr/bin/tar --posix -cf cache.tzst --exclude cache.tzst -P -C /home/runner/work/skein/skein --files-from manifest.txt --use-compress-program zstdmt
+Verify Roborazzi goldens	Post Set up Gradle	2026-09-29T03:03:11.6958440Z Sent 44949052 of 246275644 (18.3%), 42.9 MBs/sec
+Verify Roborazzi goldens	Post Set up Gradle	2026-09-29T03:03:12.1519365Z Sent 246275644 of 246275644 (100.0%), 161.3 MBs/sec
+Verify Roborazzi goldens	Post Set up Gradle	2026-09-29T03:03:12.2758933Z Saved cache entry with key gradle-transforms-v1-04dc4e5fd74b2568256649ae53ed12b3 from /home/runner/.gradle/caches/transforms-4/*/,/home/runner/.gradle/caches/*/transforms/*/ in 5371ms
+Verify Roborazzi goldens	Post Set up Gradle	2026-09-29T03:03:14.6623315Z [command]/usr/bin/tar --posix -cf cache.tzst --exclude cache.tzst -P -C /home/runner/work/skein/skein --files-from manifest.txt --use-compress-program zstdmt
+Verify Roborazzi goldens	Post Set up Gradle	2026-09-29T03:03:15.1102051Z Sent 6430321 of 6430321 (100.0%), 31.9 MBs/sec
+Verify Roborazzi goldens	Post Set up Gradle	2026-09-29T03:03:15.2140352Z Saved cache entry with key gradle-home-v1|Linux-X64|ux-screenshots[858879bc056d14e4e506a7a687b5e93a]-7601a20f7fe8a63109c21d1a69c0bbbc2630bb14 from /home/runner/.gradle/caches,/home/runner/.gradle/notifications,/home/runner/.gradle/.setup-gradle in 563ms
+Verify Roborazzi goldens	Post Set up Gradle	2026-09-29T03:03:15.2142360Z ##[endgroup]
+Verify Roborazzi goldens	Post Set up Gradle	2026-09-29T03:03:15.2149997Z Generating Job Summary
+Verify Roborazzi goldens	Post Set up Gradle	2026-09-29T03:03:15.2165476Z Completed post-action step
+Verify Roborazzi goldens	Post Set up JDK 17 (Temurin)	﻿2026-09-29T03:03:15.2431736Z Post job cleanup.
+Verify Roborazzi goldens	Post Checkout	﻿2026-09-29T03:03:15.3347918Z Post job cleanup.
+Verify Roborazzi goldens	Post Checkout	2026-09-29T03:03:15.4219578Z [command]/usr/bin/git version
+Verify Roborazzi goldens	Post Checkout	2026-09-29T03:03:15.4264752Z git version 2.55.0
+Verify Roborazzi goldens	Post Checkout	2026-09-29T03:03:15.4325093Z Temporarily overriding HOME='/home/runner/work/_temp/e545d6c4-1074-4a08-b882-3f883ecd674c' before making global git config changes
+Verify Roborazzi goldens	Post Checkout	2026-09-29T03:03:15.4327000Z Adding repository directory to the temporary git global config as a safe directory
+Verify Roborazzi goldens	Post Checkout	2026-09-29T03:03:15.4328722Z [command]/usr/bin/git config --global --add safe.directory /home/runner/work/skein/skein
+Verify Roborazzi goldens	Post Checkout	2026-09-29T03:03:15.4386332Z Removing SSH command configuration
+Verify Roborazzi goldens	Post Checkout	2026-09-29T03:03:15.4387418Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+Verify Roborazzi goldens	Post Checkout	2026-09-29T03:03:15.4420287Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+Verify Roborazzi goldens	Post Checkout	2026-09-29T03:03:15.4765858Z Removing HTTP extra header
+Verify Roborazzi goldens	Post Checkout	2026-09-29T03:03:15.4767221Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+Verify Roborazzi goldens	Post Checkout	2026-09-29T03:03:15.4807769Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+Verify Roborazzi goldens	Post Checkout	2026-09-29T03:03:15.5084801Z Removing includeIf entries pointing to credentials config files
+Verify Roborazzi goldens	Post Checkout	2026-09-29T03:03:15.5091812Z [command]/usr/bin/git config --local --name-only --get-regexp ^includeIf\.gitdir:
+Verify Roborazzi goldens	Post Checkout	2026-09-29T03:03:15.5125034Z includeif.gitdir:/home/runner/work/skein/skein/.git.path
+Verify Roborazzi goldens	Post Checkout	2026-09-29T03:03:15.5126372Z includeif.gitdir:/home/runner/work/skein/skein/.git/worktrees/*.path
+Verify Roborazzi goldens	Post Checkout	2026-09-29T03:03:15.5127661Z includeif.gitdir:/github/workspace/.git.path
+Verify Roborazzi goldens	Post Checkout	2026-09-29T03:03:15.5128815Z includeif.gitdir:/github/workspace/.git/worktrees/*.path
+Verify Roborazzi goldens	Post Checkout	2026-09-29T03:03:15.5138464Z [command]/usr/bin/git config --local --get-all includeif.gitdir:/home/runner/work/skein/skein/.git.path
+Verify Roborazzi goldens	Post Checkout	2026-09-29T03:03:15.5167677Z /home/runner/work/_temp/git-credentials-da28513a-c3fa-49bb-b58e-a93a694d800b.config
+Verify Roborazzi goldens	Post Checkout	2026-09-29T03:03:15.5185307Z [command]/usr/bin/git config --local --unset includeif.gitdir:/home/runner/work/skein/skein/.git.path \/home\/runner\/work\/_temp\/git\-credentials\-da28513a\-c3fa\-49bb\-b58e\-a93a694d800b\.config
+Verify Roborazzi goldens	Post Checkout	2026-09-29T03:03:15.5219914Z [command]/usr/bin/git config --local --get-all includeif.gitdir:/home/runner/work/skein/skein/.git/worktrees/*.path
+Verify Roborazzi goldens	Post Checkout	2026-09-29T03:03:15.5251214Z /home/runner/work/_temp/git-credentials-da28513a-c3fa-49bb-b58e-a93a694d800b.config
+Verify Roborazzi goldens	Post Checkout	2026-09-29T03:03:15.5273070Z [command]/usr/bin/git config --local --unset includeif.gitdir:/home/runner/work/skein/skein/.git/worktrees/*.path \/home\/runner\/work\/_temp\/git\-credentials\-da28513a\-c3fa\-49bb\-b58e\-a93a694d800b\.config
+Verify Roborazzi goldens	Post Checkout	2026-09-29T03:03:15.5315019Z [command]/usr/bin/git config --local --get-all includeif.gitdir:/github/workspace/.git.path
+Verify Roborazzi goldens	Post Checkout	2026-09-29T03:03:15.5342259Z /github/runner_temp/git-credentials-da28513a-c3fa-49bb-b58e-a93a694d800b.config
+Verify Roborazzi goldens	Post Checkout	2026-09-29T03:03:15.5350777Z [command]/usr/bin/git config --local --unset includeif.gitdir:/github/workspace/.git.path \/github\/runner_temp\/git\-credentials\-da28513a\-c3fa\-49bb\-b58e\-a93a694d800b\.config
+Verify Roborazzi goldens	Post Checkout	2026-09-29T03:03:15.5390171Z [command]/usr/bin/git config --local --get-all includeif.gitdir:/github/workspace/.git/worktrees/*.path
+Verify Roborazzi goldens	Post Checkout	2026-09-29T03:03:15.5418363Z /github/runner_temp/git-credentials-da28513a-c3fa-49bb-b58e-a93a694d800b.config
+Verify Roborazzi goldens	Post Checkout	2026-09-29T03:03:15.5428102Z [command]/usr/bin/git config --local --unset includeif.gitdir:/github/workspace/.git/worktrees/*.path \/github\/runner_temp\/git\-credentials\-da28513a\-c3fa\-49bb\-b58e\-a93a694d800b\.config
+Verify Roborazzi goldens	Post Checkout	2026-09-29T03:03:15.5467500Z [command]/usr/bin/git submodule foreach --recursive git config --local --show-origin --name-only --get-regexp remote.origin.url
+Verify Roborazzi goldens	Post Checkout	2026-09-29T03:03:15.5695024Z Removing credentials config '/home/runner/work/_temp/git-credentials-da28513a-c3fa-49bb-b58e-a93a694d800b.config'
+Verify Roborazzi goldens	Complete job	﻿2026-09-29T03:03:15.5844654Z Cleaning up orphan processes
+Verify Roborazzi goldens	Complete job	2026-09-29T03:03:15.6129567Z ##[warning]Node.js 20 is deprecated. The following actions target Node.js 20 but are being forced to run on Node.js 24: gradle/actions/setup-gradle@748248ddd2a24f49513d8f472f81c3a07d4d50e1. For more information see: https://github.blog/changelog/2025-09-19-deprecation-of-node-20-on-github-actions-runners/

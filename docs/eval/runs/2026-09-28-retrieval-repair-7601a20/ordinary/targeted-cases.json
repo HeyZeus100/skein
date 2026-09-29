@@ -1,0 +1,26 @@
+[
+  {
+    "classname": "app.skein.core.vault.index.IndexStoreImplAcceptanceTest",
+    "name": "ingestRowProbeVerifiesHealthyPostingBelowTheGlobalTop50"
+  },
+  {
+    "classname": "app.skein.core.vault.index.IndexStoreImplAcceptanceTest",
+    "name": "ingestRowProbeWarnsWhenTheActualInsertTriggerIsMissing"
+  },
+  {
+    "classname": "app.skein.core.vault.index.IndexStoreImplAcceptanceTest",
+    "name": "ingestRowProbeDetectsAMissingLaterPostingWhenTheFirstRowIsHealthy"
+  },
+  {
+    "classname": "app.skein.core.vault.index.IndexStoreImplAcceptanceTest",
+    "name": "ingestRowProbeDoesNotTreatAsciiInsideAUnicodeTokenAsAMissingPosting"
+  },
+  {
+    "classname": "app.skein.core.vault.index.IndexStoreImplContractTest",
+    "name": "lexical_match_is_specific_to_one_row_and_removed_when_replaced"
+  },
+  {
+    "classname": "app.skein.core.vault.index.GraphRecallAcceptanceTest",
+    "name": "ordinaryPhraseDiscoversLongerTitlesAndLinkedAnswerWithinEvidenceScope"
+  }
+]

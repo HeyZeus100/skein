@@ -1,0 +1,12 @@
+{
+  "report_sha256": "2435b8b11d2456524da2b8e63a75a004bcdb2f6585e73fc01b8c66fb084f2caa",
+  "integrity_status": "PASS",
+  "quality_status": "FAIL",
+  "reserved_policy_minus_control": {
+    "covered_evidence_spans": -1,
+    "macro_recall_at_8": -0.16666666666666663,
+    "macro_ndcg_at_8": -0.16666666666666663,
+    "rejected_absence_queries": 5,
+    "falsely_rejected_answerable_queries": 1
+  }
+}

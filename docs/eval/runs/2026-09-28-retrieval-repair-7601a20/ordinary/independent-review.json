@@ -1,0 +1,73 @@
+{
+  "schema_version": 1,
+  "lane": "ordinary-instrumentation",
+  "modules": {
+    "app": {
+      "files": [
+        "app/build/outputs/androidTest-results/connected/debug/flavors/dev/TEST-test(AVD) - 15.xml"
+      ],
+      "tests": 37,
+      "passed": 37,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "nonpassing_cases": []
+    },
+    "core/vault": {
+      "files": [
+        "core/vault/build/outputs/androidTest-results/connected/debug/flavors/dev/TEST-test(AVD) - 15.xml"
+      ],
+      "tests": 197,
+      "passed": 197,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "nonpassing_cases": []
+    },
+    "inference-service": {
+      "files": [
+        "inference-service/build/outputs/androidTest-results/connected/debug/flavors/dev/TEST-test(AVD) - 15.xml"
+      ],
+      "tests": 36,
+      "passed": 36,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "nonpassing_cases": []
+    }
+  },
+  "errors": [],
+  "passed": true,
+  "source_revision": "7601a20f7fe8a63109c21d1a69c0bbbc2630bb14",
+  "workflow_run_id": 36514921869,
+  "actual_case_count": 270,
+  "retrieval_class_absent": true,
+  "targeted_cases": [
+    {
+      "classname": "app.skein.core.vault.index.IndexStoreImplAcceptanceTest",
+      "name": "ingestRowProbeVerifiesHealthyPostingBelowTheGlobalTop50"
+    },
+    {
+      "classname": "app.skein.core.vault.index.IndexStoreImplAcceptanceTest",
+      "name": "ingestRowProbeWarnsWhenTheActualInsertTriggerIsMissing"
+    },
+    {
+      "classname": "app.skein.core.vault.index.IndexStoreImplAcceptanceTest",
+      "name": "ingestRowProbeDetectsAMissingLaterPostingWhenTheFirstRowIsHealthy"
+    },
+    {
+      "classname": "app.skein.core.vault.index.IndexStoreImplAcceptanceTest",
+      "name": "ingestRowProbeDoesNotTreatAsciiInsideAUnicodeTokenAsAMissingPosting"
+    },
+    {
+      "classname": "app.skein.core.vault.index.IndexStoreImplContractTest",
+      "name": "lexical_match_is_specific_to_one_row_and_removed_when_replaced"
+    },
+    {
+      "classname": "app.skein.core.vault.index.GraphRecallAcceptanceTest",
+      "name": "ordinaryPhraseDiscoversLongerTitlesAndLinkedAnswerWithinEvidenceScope"
+    }
+  ],
+  "prior_270_case_inventory_preserved": true,
+  "new_testcase_identities": []
+}

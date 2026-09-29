@@ -1,0 +1,213 @@
+{
+  "runs": [
+    {
+      "name": "ci",
+      "run_id": 36514897657,
+      "source_revision": "7601a20f7fe8a63109c21d1a69c0bbbc2630bb14",
+      "conclusion": "success",
+      "jobs": [
+        {
+          "name": "Unit tests, lint, assemble (foss debug)",
+          "conclusion": "success",
+          "executed_steps": [
+            "Set up job",
+            "Checkout",
+            "Verify third_party submodule pins",
+            "Validate synthetic answer evaluation fixtures and reporting",
+            "Set up JDK 17 (Temurin)",
+            "Install required Android SDK platform",
+            "Choose the OpenSSL tarball cache directory",
+            "Derive pinned OpenSSL sha256 (cache key)",
+            "Cache the pinned OpenSSL tarball",
+            "Set up Gradle",
+            "ktlint, Android lint, unit tests, guards",
+            "Assemble foss debug APK",
+            "Native optimisation level (libskein_llama.so translation units)",
+            "16 KiB ELF LOAD-segment alignment (libskein_llama.so, libskein_sqlite_jni.so)",
+            "JNI symbol surface (libskein_llama.so)",
+            "JNI symbol surface (libskein_sqlite_jni.so)",
+            "No prompt/token content in service logs",
+            "Manifest audit (exported components, permissions, backup posture)",
+            "Validate model manifests",
+            "Upload foss debug APK",
+            "Post Set up Gradle",
+            "Post Cache the pinned OpenSSL tarball",
+            "Post Set up JDK 17 (Temurin)",
+            "Post Checkout",
+            "Complete job"
+          ],
+          "skipped_steps": [
+            "Upload unit-test reports on failure"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "screenshots",
+      "run_id": 36514897715,
+      "source_revision": "7601a20f7fe8a63109c21d1a69c0bbbc2630bb14",
+      "conclusion": "success",
+      "jobs": [
+        {
+          "name": "Verify Roborazzi goldens",
+          "conclusion": "success",
+          "executed_steps": [
+            "Set up job",
+            "Checkout",
+            "Set up JDK 17 (Temurin)",
+            "Install required Android SDK platform",
+            "Set up Gradle",
+            "Verify screenshots",
+            "Goldens untouched by verify",
+            "Baseline size budget",
+            "Post Set up Gradle",
+            "Post Set up JDK 17 (Temurin)",
+            "Post Checkout",
+            "Complete job"
+          ],
+          "skipped_steps": [
+            "Job summary",
+            "Upload screenshot diffs"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "repro",
+      "run_id": 36514897631,
+      "source_revision": "7601a20f7fe8a63109c21d1a69c0bbbc2630bb14",
+      "conclusion": "success",
+      "jobs": [
+        {
+          "name": "Toolchain manifest and tool self-tests",
+          "conclusion": "success",
+          "executed_steps": [
+            "Set up job",
+            "Checkout",
+            "Set up Python",
+            "Install PyYAML (reproducible-builds.yml parser)",
+            "reproducible-builds.yml agrees with the tree",
+            "manifest-check self-test",
+            "SOURCE_DATE_EPOCH derivation self-test",
+            "strip-signature self-test",
+            "normalize-apk self-test",
+            "APK comparator self-test",
+            "verify.sh self-test",
+            "so-determinism self-test",
+            "Post Set up Python",
+            "Post Checkout",
+            "Complete job"
+          ],
+          "skipped_steps": []
+        },
+        {
+          "name": "Verify SQLCipher amalgamation matches pinned source",
+          "conclusion": "skipped",
+          "executed_steps": [],
+          "skipped_steps": []
+        },
+        {
+          "name": "libskein_llama.so is a function of its sources",
+          "conclusion": "success",
+          "executed_steps": [
+            "Set up job",
+            "Checkout",
+            "Verify third_party submodule pins",
+            "Set up JDK 17 (Temurin)",
+            "Install required Android SDK platform",
+            "Set up Gradle",
+            "Derive SOURCE_DATE_EPOCH from the commit",
+            "Two cold builds of libskein_llama.so, compared",
+            "Post Set up Gradle",
+            "Post Set up JDK 17 (Temurin)",
+            "Post Checkout",
+            "Complete job"
+          ],
+          "skipped_steps": [
+            "Upload the differing libraries"
+          ]
+        },
+        {
+          "name": "Build b (unsigned foss release)",
+          "conclusion": "success",
+          "executed_steps": [
+            "Set up job",
+            "Checkout (build b)",
+            "Verify third_party submodule pins",
+            "Set up JDK 17 (Temurin)",
+            "Install required Android SDK platform",
+            "Choose the OpenSSL tarball cache directory",
+            "Derive pinned OpenSSL sha256 (cache key)",
+            "Cache the pinned OpenSSL tarball",
+            "Set up Gradle",
+            "Derive SOURCE_DATE_EPOCH from the commit",
+            "Assemble foss release",
+            "Record hash and build context",
+            "Upload build b",
+            "Post Set up Gradle",
+            "Post Cache the pinned OpenSSL tarball",
+            "Post Set up JDK 17 (Temurin)",
+            "Post Checkout (build b)",
+            "Complete job"
+          ],
+          "skipped_steps": []
+        },
+        {
+          "name": "Build a (unsigned foss release)",
+          "conclusion": "success",
+          "executed_steps": [
+            "Set up job",
+            "Checkout (build a)",
+            "Verify third_party submodule pins",
+            "Set up JDK 17 (Temurin)",
+            "Install required Android SDK platform",
+            "Choose the OpenSSL tarball cache directory",
+            "Derive pinned OpenSSL sha256 (cache key)",
+            "Cache the pinned OpenSSL tarball",
+            "Set up Gradle",
+            "Derive SOURCE_DATE_EPOCH from the commit",
+            "Assemble foss release",
+            "Record hash and build context",
+            "Upload build a",
+            "Post Set up Gradle",
+            "Post Cache the pinned OpenSSL tarball",
+            "Post Set up JDK 17 (Temurin)",
+            "Post Checkout (build a)",
+            "Complete job"
+          ],
+          "skipped_steps": []
+        },
+        {
+          "name": "Compare the two builds",
+          "conclusion": "success",
+          "executed_steps": [
+            "Set up job",
+            "Checkout",
+            "Download build a",
+            "Download build b",
+            "Show both build contexts",
+            "Self-test the APK comparator",
+            "sha256sum -c across runners",
+            "Compare unsigned release APKs entry by entry",
+            "Verdict",
+            "Post Checkout",
+            "Complete job"
+          ],
+          "skipped_steps": [
+            "Classify the difference",
+            "Install diffoscope",
+            "Produce the diffoscope report",
+            "Upload apk-diff"
+          ]
+        }
+      ]
+    }
+  ],
+  "sqlcipher_skip_reason": "Workflow is tag-only: if startsWith(github.ref, refs/tags/v). This run is a main push; no SQLCipher regeneration was executed.",
+  "ci_unit_skip_counts": "Not inferred from the job badge. Ordinary instrumentation counts are separately checked against actual testcase XML.",
+  "screenshots_eight_verify_tasks_observed": true,
+  "reproducibility_apk_sha256": "0b479bc00258998ece7b49f5ed6160a4d74189da49a726b33c4ff453293e5057",
+  "reproducibility_apk_bytes": 100456459,
+  "reproducibility_identical_entries": 826,
+  "reproducibility_verdict": "IDENTICAL"
+}

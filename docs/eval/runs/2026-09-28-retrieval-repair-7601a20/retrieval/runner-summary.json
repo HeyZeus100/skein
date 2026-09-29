@@ -1,0 +1,42 @@
+{
+  "schema_version": 1,
+  "mode": "real-retrieval-diagnostic",
+  "declared_build_revision": "7601a20f7fe8a63109c21d1a69c0bbbc2630bb14",
+  "source_identity": "host-declared clean checkout; not embedded APK attestation",
+  "full_hybrid_gate": "INELIGIBLE",
+  "complete": true,
+  "host_timeout": false,
+  "built_test_apk_sha256": "30755daab8310307799ede117ca4e976a34d9efa1b5897f26a032b62623e0a60",
+  "gradle_exit_code": 0,
+  "post_instrumentation_test_apk_sha256": "30755daab8310307799ede117ca4e976a34d9efa1b5897f26a032b62623e0a60",
+  "report_collected": true,
+  "selected_collection_attempt": 1,
+  "collection_attempts": [
+    {
+      "number": 1,
+      "directory": "collection-attempts/01",
+      "errors": [],
+      "host_report_sha256": "2435b8b11d2456524da2b8e63a75a004bcdb2f6585e73fc01b8c66fb084f2caa",
+      "device_report_sha256": "2435b8b11d2456524da2b8e63a75a004bcdb2f6585e73fc01b8c66fb084f2caa",
+      "report_verified": true,
+      "installed_test_apk_sha256": "30755daab8310307799ede117ca4e976a34d9efa1b5897f26a032b62623e0a60"
+    }
+  ],
+  "report_collection_attempt": 1,
+  "report_sha256": "2435b8b11d2456524da2b8e63a75a004bcdb2f6585e73fc01b8c66fb084f2caa",
+  "collection_recovered": false,
+  "installed_test_apk_sha256": "30755daab8310307799ede117ca4e976a34d9efa1b5897f26a032b62623e0a60",
+  "diagnostic_ranking_gates": {
+    "lexical_only": "FAIL",
+    "graph_only": "FAIL",
+    "lexical_graph_default": "PASS"
+  },
+  "diagnostic_rejection_validation": {
+    "production_policy": "FAIL",
+    "ungated_control": "FAIL"
+  },
+  "diagnostic_rejection_ranking_gates": {
+    "production_policy": "PASS",
+    "ungated_control": "PASS"
+  }
+}

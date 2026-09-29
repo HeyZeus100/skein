@@ -1,0 +1,153 @@
+{
+  "artifact_id": 11011040398,
+  "artifact_archive_size": 1652360,
+  "all_range_entries_equal_full_download": true,
+  "selected_report_stdout_equals_retrieval_json": true,
+  "files": [
+    {
+      "path": "real-retrieval-DIAGNOSTIC-hybrid-INELIGIBLE-7601a20f7fe8a63109c21d1a69c0bbbc2630bb14/build/retrieval-diagnostic/build.log",
+      "size": 26010,
+      "sha256": "b45677d6b2370b5a6d015482f07049ee205376e3989b6c37a0009a11262bda59"
+    },
+    {
+      "path": "real-retrieval-DIAGNOSTIC-hybrid-INELIGIBLE-7601a20f7fe8a63109c21d1a69c0bbbc2630bb14/build/retrieval-diagnostic/run/collection-attempts/01/installed-path.command.json",
+      "size": 147,
+      "sha256": "00d4c964ce94a0aa1b83497dcf49a64aeecadaa175363f0534fbcce025fa489c"
+    },
+    {
+      "path": "real-retrieval-DIAGNOSTIC-hybrid-INELIGIBLE-7601a20f7fe8a63109c21d1a69c0bbbc2630bb14/build/retrieval-diagnostic/run/collection-attempts/01/installed-path.stderr",
+      "size": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "real-retrieval-DIAGNOSTIC-hybrid-INELIGIBLE-7601a20f7fe8a63109c21d1a69c0bbbc2630bb14/build/retrieval-diagnostic/run/collection-attempts/01/installed-path.stdout",
+      "size": 105,
+      "sha256": "9d7ca576a95f566dfc9d02676bf5c91d3e7a6b382aff5e945660d94276924824"
+    },
+    {
+      "path": "real-retrieval-DIAGNOSTIC-hybrid-INELIGIBLE-7601a20f7fe8a63109c21d1a69c0bbbc2630bb14/build/retrieval-diagnostic/run/collection-attempts/01/installed-sha256.command.json",
+      "size": 213,
+      "sha256": "455140766caf81afc30447925e2e662f2ddd92a93b8a169a5e88097dde9fec37"
+    },
+    {
+      "path": "real-retrieval-DIAGNOSTIC-hybrid-INELIGIBLE-7601a20f7fe8a63109c21d1a69c0bbbc2630bb14/build/retrieval-diagnostic/run/collection-attempts/01/installed-sha256.stderr",
+      "size": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "real-retrieval-DIAGNOSTIC-hybrid-INELIGIBLE-7601a20f7fe8a63109c21d1a69c0bbbc2630bb14/build/retrieval-diagnostic/run/collection-attempts/01/installed-sha256.stdout",
+      "size": 163,
+      "sha256": "0d00d6368ae93a7073702f78d97a941c052f7e0a2ab40acdba2feeacdf319e2d"
+    },
+    {
+      "path": "real-retrieval-DIAGNOSTIC-hybrid-INELIGIBLE-7601a20f7fe8a63109c21d1a69c0bbbc2630bb14/build/retrieval-diagnostic/run/collection-attempts/01/report-sha256.command.json",
+      "size": 202,
+      "sha256": "c2be41621b91c67282deae57f6bd1d65b72b63c1eee5f724e55f80d243c69b1e"
+    },
+    {
+      "path": "real-retrieval-DIAGNOSTIC-hybrid-INELIGIBLE-7601a20f7fe8a63109c21d1a69c0bbbc2630bb14/build/retrieval-diagnostic/run/collection-attempts/01/report-sha256.stderr",
+      "size": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "real-retrieval-DIAGNOSTIC-hybrid-INELIGIBLE-7601a20f7fe8a63109c21d1a69c0bbbc2630bb14/build/retrieval-diagnostic/run/collection-attempts/01/report-sha256.stdout",
+      "size": 102,
+      "sha256": "f35b2d52e8c706bf722c075744f6140aaa5c2dbc8fc8571ec4962ac1253ac8c4"
+    },
+    {
+      "path": "real-retrieval-DIAGNOSTIC-hybrid-INELIGIBLE-7601a20f7fe8a63109c21d1a69c0bbbc2630bb14/build/retrieval-diagnostic/run/collection-attempts/01/report.command.json",
+      "size": 196,
+      "sha256": "4ce43c57ec18cdb8150c9e67053d44813b7dffd987578232088cb8557bdc9fee"
+    },
+    {
+      "path": "real-retrieval-DIAGNOSTIC-hybrid-INELIGIBLE-7601a20f7fe8a63109c21d1a69c0bbbc2630bb14/build/retrieval-diagnostic/run/collection-attempts/01/report.stderr",
+      "size": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "real-retrieval-DIAGNOSTIC-hybrid-INELIGIBLE-7601a20f7fe8a63109c21d1a69c0bbbc2630bb14/build/retrieval-diagnostic/run/collection-attempts/01/report.stdout",
+      "size": 3186147,
+      "sha256": "2435b8b11d2456524da2b8e63a75a004bcdb2f6585e73fc01b8c66fb084f2caa"
+    },
+    {
+      "path": "real-retrieval-DIAGNOSTIC-hybrid-INELIGIBLE-7601a20f7fe8a63109c21d1a69c0bbbc2630bb14/build/retrieval-diagnostic/run/instrumentation-gradle.log",
+      "size": 8497,
+      "sha256": "50bf34b96257e4bf38bbac949f6290768bc63ddc06ee9b9782d5ef10c6a54a0c"
+    },
+    {
+      "path": "real-retrieval-DIAGNOSTIC-hybrid-INELIGIBLE-7601a20f7fe8a63109c21d1a69c0bbbc2630bb14/build/retrieval-diagnostic/run/logcat.txt",
+      "size": 9727988,
+      "sha256": "b095104329795e14e3b64b48491c01bc5569086e7f97688434ff3f23bbec0433"
+    },
+    {
+      "path": "real-retrieval-DIAGNOSTIC-hybrid-INELIGIBLE-7601a20f7fe8a63109c21d1a69c0bbbc2630bb14/build/retrieval-diagnostic/run/retrieval.json",
+      "size": 3186147,
+      "sha256": "2435b8b11d2456524da2b8e63a75a004bcdb2f6585e73fc01b8c66fb084f2caa"
+    },
+    {
+      "path": "real-retrieval-DIAGNOSTIC-hybrid-INELIGIBLE-7601a20f7fe8a63109c21d1a69c0bbbc2630bb14/build/retrieval-diagnostic/run/runner-summary.json",
+      "size": 1648,
+      "sha256": "7abeb664c0637738740789be071511559c79c64e4e397a2da8431a5ef0ba26e0"
+    },
+    {
+      "path": "real-retrieval-DIAGNOSTIC-hybrid-INELIGIBLE-7601a20f7fe8a63109c21d1a69c0bbbc2630bb14/core/vault/build/outputs/androidTest-results/connected/debug/flavors/dev/TEST-test(AVD) - 15.xml",
+      "size": 611,
+      "sha256": "32a9f5d6c4d553ed721b197192c5ed90384a3307f11e04fca15db84c3a82baea"
+    },
+    {
+      "path": "real-retrieval-DIAGNOSTIC-hybrid-INELIGIBLE-7601a20f7fe8a63109c21d1a69c0bbbc2630bb14/core/vault/build/outputs/androidTest-results/connected/debug/flavors/dev/test(AVD) - 15/device-info.pb",
+      "size": 112,
+      "sha256": "8690a9dcdbe34d879780107bdc5bfb1daddf7ce4a1ff618f735eb6048050ce56"
+    },
+    {
+      "path": "real-retrieval-DIAGNOSTIC-hybrid-INELIGIBLE-7601a20f7fe8a63109c21d1a69c0bbbc2630bb14/core/vault/build/outputs/androidTest-results/connected/debug/flavors/dev/test(AVD) - 15/logcat-app.skein.core.vault.eval.RealRetrievalEvaluationTest-evaluate_real_ingest_and_retrieval.txt",
+      "size": 2423160,
+      "sha256": "8aa1cf81683b6c6d2f2e40b13ceee04cbd47b2b01f95ba9dd798d7175e87f734"
+    },
+    {
+      "path": "real-retrieval-DIAGNOSTIC-hybrid-INELIGIBLE-7601a20f7fe8a63109c21d1a69c0bbbc2630bb14/core/vault/build/outputs/androidTest-results/connected/debug/flavors/dev/test(AVD) - 15/test-result.pb",
+      "size": 511,
+      "sha256": "d2ab89d753591d4f20ec3ea8e33fe14e204e7e21aee061c17a6de0df69482877"
+    },
+    {
+      "path": "real-retrieval-DIAGNOSTIC-hybrid-INELIGIBLE-7601a20f7fe8a63109c21d1a69c0bbbc2630bb14/core/vault/build/outputs/androidTest-results/connected/debug/flavors/dev/test-result-exit-code.txt",
+      "size": 1,
+      "sha256": "5feceb66ffc86f38d952786c6d696c79c2dbc239dd4e91b46729d73a27fb57e9"
+    },
+    {
+      "path": "real-retrieval-DIAGNOSTIC-hybrid-INELIGIBLE-7601a20f7fe8a63109c21d1a69c0bbbc2630bb14/core/vault/build/outputs/androidTest-results/connected/debug/flavors/dev/test-result.pb",
+      "size": 513,
+      "sha256": "deb522f1316ea161e92a08177d061c1583bacf5b3206c0dfe5445347bb171277"
+    },
+    {
+      "path": "real-retrieval-DIAGNOSTIC-hybrid-INELIGIBLE-7601a20f7fe8a63109c21d1a69c0bbbc2630bb14/core/vault/build/reports/androidTests/connected/debug/flavors/dev/app.skein.core.vault.eval.RealRetrievalEvaluationTest.html",
+      "size": 1817,
+      "sha256": "38c76814aa00ce847cd9ef44061d54227575e38a7b3c6f92de2819afba4782e2"
+    },
+    {
+      "path": "real-retrieval-DIAGNOSTIC-hybrid-INELIGIBLE-7601a20f7fe8a63109c21d1a69c0bbbc2630bb14/core/vault/build/reports/androidTests/connected/debug/flavors/dev/app.skein.core.vault.eval.html",
+      "size": 1882,
+      "sha256": "54d6c119cf49ee7a3c6183a29b9d2cd28a304ff4cd2d44d83e5103a0fe0a26b2"
+    },
+    {
+      "path": "real-retrieval-DIAGNOSTIC-hybrid-INELIGIBLE-7601a20f7fe8a63109c21d1a69c0bbbc2630bb14/core/vault/build/reports/androidTests/connected/debug/flavors/dev/css/base-style.css",
+      "size": 2428,
+      "sha256": "2851d0b2f14f4ff1b75f0d01438887911eb474e235be93e561709227cefb18db"
+    },
+    {
+      "path": "real-retrieval-DIAGNOSTIC-hybrid-INELIGIBLE-7601a20f7fe8a63109c21d1a69c0bbbc2630bb14/core/vault/build/reports/androidTests/connected/debug/flavors/dev/css/style.css",
+      "size": 1798,
+      "sha256": "f1b366319836f8726d0939654d0eeddfc5b20f67d9e5954b9a1632c60f2f31bf"
+    },
+    {
+      "path": "real-retrieval-DIAGNOSTIC-hybrid-INELIGIBLE-7601a20f7fe8a63109c21d1a69c0bbbc2630bb14/core/vault/build/reports/androidTests/connected/debug/flavors/dev/index.html",
+      "size": 2235,
+      "sha256": "25a14c6455eca2f65dde73e8749d2489fe3521419523307235e46b489dc5a2a7"
+    },
+    {
+      "path": "real-retrieval-DIAGNOSTIC-hybrid-INELIGIBLE-7601a20f7fe8a63109c21d1a69c0bbbc2630bb14/core/vault/build/reports/androidTests/connected/debug/flavors/dev/js/report.js",
+      "size": 2933,
+      "sha256": "0aa306f94805890682c639b2d5c06108801d64b859a171a3c6eea66c8bab4c6a"
+    }
+  ]
+}
