@@ -1,0 +1,523 @@
+﻿2026-09-29T09:21:17.4850539Z Current runner version: '2.337.0'
+2026-09-29T09:21:17.4876505Z ##[group]Runner Image Provisioner
+2026-09-29T09:21:17.4877507Z Hosted Compute Agent
+2026-09-29T09:21:17.4878050Z Version: 20260828.587
+2026-09-29T09:21:17.4878668Z Commit: abac92662cab4cc7352de4f9f9d2e2419aad9c29
+2026-09-29T09:21:17.4879354Z Build Date: 2026-08-28T16:44:25Z
+2026-09-29T09:21:17.4879971Z Worker ID: {4fe9c091-1083-44b7-8c31-612a38bcb58f}
+2026-09-29T09:21:17.4880643Z Azure Region: westus3
+2026-09-29T09:21:17.4881148Z ##[endgroup]
+2026-09-29T09:21:17.4882802Z ##[group]Operating System
+2026-09-29T09:21:17.4883396Z Ubuntu
+2026-09-29T09:21:17.4884066Z 24.04.5
+2026-09-29T09:21:17.4884573Z LTS
+2026-09-29T09:21:17.4885035Z ##[endgroup]
+2026-09-29T09:21:17.4885536Z ##[group]Runner Image
+2026-09-29T09:21:17.4886120Z Image: ubuntu-24.04
+2026-09-29T09:21:17.4886629Z Version: 20260920.314.1
+2026-09-29T09:21:17.4887834Z Included Software: https://github.com/actions/runner-images/blob/ubuntu24/20260920.314/images/ubuntu/Ubuntu2404-Readme.md
+2026-09-29T09:21:17.4889219Z Image Release: https://github.com/actions/runner-images/releases/tag/ubuntu24%2F20260920.314
+2026-09-29T09:21:17.4890108Z ##[endgroup]
+2026-09-29T09:21:17.4891476Z ##[group]GITHUB_TOKEN Permissions
+2026-09-29T09:21:17.4893850Z Contents: read
+2026-09-29T09:21:17.4894379Z Metadata: read
+2026-09-29T09:21:17.4894974Z ##[endgroup]
+2026-09-29T09:21:17.4897181Z Secret source: Actions
+2026-09-29T09:21:17.4898079Z Cache mode: write
+2026-09-29T09:21:17.4898775Z Prepare workflow directory
+2026-09-29T09:21:17.5226602Z Prepare all required actions
+2026-09-29T09:21:17.5278530Z Getting action download info
+2026-09-29T09:21:17.8871838Z Download action repository 'actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1' (SHA:3d3c42e5aac5ba805825da76410c181273ba90b1)
+2026-09-29T09:21:17.9722553Z Download action repository 'actions/setup-java@de7274f081f381c8f8158605e0321c36c376e2e6' (SHA:de7274f081f381c8f8158605e0321c36c376e2e6)
+2026-09-29T09:21:18.9042939Z Download action repository 'gradle/actions@748248ddd2a24f49513d8f472f81c3a07d4d50e1' (SHA:748248ddd2a24f49513d8f472f81c3a07d4d50e1)
+2026-09-29T09:21:20.5046445Z Download action repository 'actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a' (SHA:043fb46d1a93c77aae656e7c1c64a875d1fc6a0a)
+2026-09-29T09:21:20.6866583Z Complete job name: libskein_llama.so is a function of its sources
+2026-09-29T09:21:20.7567943Z ##[group]Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+2026-09-29T09:21:20.7568840Z with:
+2026-09-29T09:21:20.7569195Z   submodules: true
+2026-09-29T09:21:20.7569543Z   repository: HeyZeus100/skein
+2026-09-29T09:21:20.7572356Z   token: ***
+2026-09-29T09:21:20.7572712Z   ssh-strict: true
+2026-09-29T09:21:20.7573071Z   ssh-user: git
+2026-09-29T09:21:20.7573422Z   persist-credentials: true
+2026-09-29T09:21:20.7573941Z   clean: true
+2026-09-29T09:21:20.7574325Z   sparse-checkout-cone-mode: true
+2026-09-29T09:21:20.7574746Z   fetch-depth: 1
+2026-09-29T09:21:20.7575138Z   fetch-tags: false
+2026-09-29T09:21:20.7575496Z   show-progress: true
+2026-09-29T09:21:20.7575840Z   lfs: false
+2026-09-29T09:21:20.7576195Z   set-safe-directory: true
+2026-09-29T09:21:20.7576597Z   allow-unsafe-pr-checkout: false
+2026-09-29T09:21:20.7577301Z ##[endgroup]
+2026-09-29T09:21:20.8568512Z Syncing repository: HeyZeus100/skein
+2026-09-29T09:21:20.8570552Z ##[group]Getting Git version info
+2026-09-29T09:21:20.8571533Z Working directory is '/home/runner/work/skein/skein'
+2026-09-29T09:21:20.8572488Z [command]/usr/bin/git version
+2026-09-29T09:21:20.8639972Z git version 2.55.0
+2026-09-29T09:21:20.8665013Z ##[endgroup]
+2026-09-29T09:21:20.8676721Z Temporarily overriding HOME='/home/runner/work/_temp/48cea8e1-a306-4007-b87d-93dbba936b47' before making global git config changes
+2026-09-29T09:21:20.8678537Z Adding repository directory to the temporary git global config as a safe directory
+2026-09-29T09:21:20.8685902Z [command]/usr/bin/git config --global --add safe.directory /home/runner/work/skein/skein
+2026-09-29T09:21:20.8737909Z Deleting the contents of '/home/runner/work/skein/skein'
+2026-09-29T09:21:20.8742059Z ##[group]Determining repository object format
+2026-09-29T09:21:20.8744241Z ##[endgroup]
+2026-09-29T09:21:20.8745269Z ##[group]Initializing the repository
+2026-09-29T09:21:20.8750590Z [command]/usr/bin/git init /home/runner/work/skein/skein
+2026-09-29T09:21:20.8851260Z hint: Using 'master' as the name for the initial branch. This default branch name
+2026-09-29T09:21:20.8853161Z hint: will change to "main" in Git 3.0. To configure the initial branch name
+2026-09-29T09:21:20.8855007Z hint: to use in all of your new repositories, which will suppress this warning,
+2026-09-29T09:21:20.8856351Z hint: call:
+2026-09-29T09:21:20.8857140Z hint:
+2026-09-29T09:21:20.8858010Z hint: 	git config --global init.defaultBranch <name>
+2026-09-29T09:21:20.8859057Z hint:
+2026-09-29T09:21:20.8860028Z hint: Names commonly chosen instead of 'master' are 'main', 'trunk' and
+2026-09-29T09:21:20.8861271Z hint: 'development'. The just-created branch can be renamed via this command:
+2026-09-29T09:21:20.8862467Z hint:
+2026-09-29T09:21:20.8863182Z hint: 	git branch -m <name>
+2026-09-29T09:21:20.8864217Z hint:
+2026-09-29T09:21:20.8865228Z hint: Disable this message with "git config set advice.defaultBranchName false"
+2026-09-29T09:21:20.8866751Z Initialized empty Git repository in /home/runner/work/skein/skein/.git/
+2026-09-29T09:21:20.8869725Z [command]/usr/bin/git remote add origin https://github.com/HeyZeus100/skein
+2026-09-29T09:21:20.8914061Z ##[endgroup]
+2026-09-29T09:21:20.8915081Z ##[group]Disabling automatic garbage collection
+2026-09-29T09:21:20.8917318Z [command]/usr/bin/git config --local gc.auto 0
+2026-09-29T09:21:20.8967195Z ##[endgroup]
+2026-09-29T09:21:20.8968992Z ##[group]Setting up auth
+2026-09-29T09:21:20.8969844Z Removing SSH command configuration
+2026-09-29T09:21:20.8970619Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+2026-09-29T09:21:20.8999506Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+2026-09-29T09:21:20.9342080Z Removing HTTP extra header
+2026-09-29T09:21:20.9348976Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+2026-09-29T09:21:20.9381446Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+2026-09-29T09:21:20.9578082Z Removing includeIf entries pointing to credentials config files
+2026-09-29T09:21:20.9582703Z [command]/usr/bin/git config --local --name-only --get-regexp ^includeIf\.gitdir:
+2026-09-29T09:21:20.9614264Z [command]/usr/bin/git submodule foreach --recursive git config --local --show-origin --name-only --get-regexp remote.origin.url
+2026-09-29T09:21:20.9812702Z [command]/usr/bin/git config --file /home/runner/work/_temp/git-credentials-8f48e49e-e820-4bf1-a075-d826969f7e60.config http.https://github.com/.extraheader AUTHORIZATION: basic ***
+2026-09-29T09:21:20.9846628Z [command]/usr/bin/git config --local includeIf.gitdir:/home/runner/work/skein/skein/.git.path /home/runner/work/_temp/git-credentials-8f48e49e-e820-4bf1-a075-d826969f7e60.config
+2026-09-29T09:21:20.9879405Z [command]/usr/bin/git config --local includeIf.gitdir:/home/runner/work/skein/skein/.git/worktrees/*.path /home/runner/work/_temp/git-credentials-8f48e49e-e820-4bf1-a075-d826969f7e60.config
+2026-09-29T09:21:20.9913994Z [command]/usr/bin/git config --local includeIf.gitdir:/github/workspace/.git.path /github/runner_temp/git-credentials-8f48e49e-e820-4bf1-a075-d826969f7e60.config
+2026-09-29T09:21:20.9945845Z [command]/usr/bin/git config --local includeIf.gitdir:/github/workspace/.git/worktrees/*.path /github/runner_temp/git-credentials-8f48e49e-e820-4bf1-a075-d826969f7e60.config
+2026-09-29T09:21:20.9974321Z ##[endgroup]
+2026-09-29T09:21:20.9975283Z ##[group]Fetching the repository
+2026-09-29T09:21:20.9982222Z [command]/usr/bin/git -c protocol.version=2 fetch --no-tags --prune --no-recurse-submodules --depth=1 origin +5a3ab9b986950651733e6040b43c7958f0ae25ac:refs/remotes/origin/codex/ux-integration-20260929
+2026-09-29T09:21:24.0870211Z From https://github.com/HeyZeus100/skein
+2026-09-29T09:21:24.0871683Z  * [new ref]         5a3ab9b986950651733e6040b43c7958f0ae25ac -> origin/codex/ux-integration-20260929
+2026-09-29T09:21:24.0878994Z [command]/usr/bin/git branch --list --remote origin/codex/ux-integration-20260929
+2026-09-29T09:21:24.0903960Z   origin/codex/ux-integration-20260929
+2026-09-29T09:21:24.0916377Z [command]/usr/bin/git rev-parse refs/remotes/origin/codex/ux-integration-20260929
+2026-09-29T09:21:24.0935068Z 5a3ab9b986950651733e6040b43c7958f0ae25ac
+2026-09-29T09:21:24.0938982Z ##[endgroup]
+2026-09-29T09:21:24.0939508Z ##[group]Determining the checkout info
+2026-09-29T09:21:24.0940149Z ##[endgroup]
+2026-09-29T09:21:24.0946674Z [command]/usr/bin/git sparse-checkout disable
+2026-09-29T09:21:24.0998970Z [command]/usr/bin/git config --local --unset-all extensions.worktreeConfig
+2026-09-29T09:21:24.1030351Z ##[group]Checking out the ref
+2026-09-29T09:21:24.1042860Z [command]/usr/bin/git checkout --progress --force -B codex/ux-integration-20260929 refs/remotes/origin/codex/ux-integration-20260929
+2026-09-29T09:21:24.5494628Z Switched to a new branch 'codex/ux-integration-20260929'
+2026-09-29T09:21:24.5499788Z branch 'codex/ux-integration-20260929' set up to track 'origin/codex/ux-integration-20260929'.
+2026-09-29T09:21:24.5519853Z ##[endgroup]
+2026-09-29T09:21:24.5520781Z ##[group]Setting up auth for fetching submodules
+2026-09-29T09:21:24.5528861Z [command]/usr/bin/git config --file /home/runner/work/_temp/git-credentials-8f48e49e-e820-4bf1-a075-d826969f7e60.config http.https://github.com/.extraheader AUTHORIZATION: basic ***
+2026-09-29T09:21:24.5576127Z [command]/usr/bin/git config --global include.path /home/runner/work/_temp/git-credentials-8f48e49e-e820-4bf1-a075-d826969f7e60.config
+2026-09-29T09:21:24.5608497Z [command]/usr/bin/git config --global --unset-all url.https://github.com/.insteadOf
+2026-09-29T09:21:24.5638213Z [command]/usr/bin/git config --global --add url.https://github.com/.insteadOf git@github.com:
+2026-09-29T09:21:24.5683011Z [command]/usr/bin/git config --global --add url.https://github.com/.insteadOf org-273493118@github.com:
+2026-09-29T09:21:24.5712931Z ##[endgroup]
+2026-09-29T09:21:24.5713982Z ##[group]Fetching submodules
+2026-09-29T09:21:24.5718132Z [command]/usr/bin/git submodule sync
+2026-09-29T09:21:24.5930655Z [command]/usr/bin/git -c protocol.version=2 submodule update --init --force --depth=1
+2026-09-29T09:21:24.6141684Z Submodule 'third_party/SPIRV-Headers' (https://github.com/KhronosGroup/SPIRV-Headers) registered for path 'third_party/SPIRV-Headers'
+2026-09-29T09:21:24.6144267Z Submodule 'third_party/Vulkan-Headers' (https://github.com/KhronosGroup/Vulkan-Headers) registered for path 'third_party/Vulkan-Headers'
+2026-09-29T09:21:24.6149369Z Submodule 'third_party/llama.cpp' (https://github.com/ggml-org/llama.cpp) registered for path 'third_party/llama.cpp'
+2026-09-29T09:21:24.6176912Z Cloning into '/home/runner/work/skein/skein/third_party/SPIRV-Headers'...
+2026-09-29T09:21:25.8648886Z Cloning into '/home/runner/work/skein/skein/third_party/Vulkan-Headers'...
+2026-09-29T09:21:27.0119446Z Cloning into '/home/runner/work/skein/skein/third_party/llama.cpp'...
+2026-09-29T09:21:31.9787839Z From https://github.com/KhronosGroup/SPIRV-Headers
+2026-09-29T09:21:31.9788919Z  * branch            ad9184e76a66b1001c29db9b0a3e87f646c64de0 -> FETCH_HEAD
+2026-09-29T09:21:32.0026306Z Submodule path 'third_party/SPIRV-Headers': checked out 'ad9184e76a66b1001c29db9b0a3e87f646c64de0'
+2026-09-29T09:21:33.9056559Z From https://github.com/KhronosGroup/Vulkan-Headers
+2026-09-29T09:21:33.9057348Z  * branch            8864cdc896bbc2a9b6eb36b3218fc9ef57908d77 -> FETCH_HEAD
+2026-09-29T09:21:34.0031165Z Submodule path 'third_party/Vulkan-Headers': checked out '8864cdc896bbc2a9b6eb36b3218fc9ef57908d77'
+2026-09-29T09:21:37.0739566Z From https://github.com/ggml-org/llama.cpp
+2026-09-29T09:21:37.0740089Z  * branch            b29c606e28a01b1bc8c1351026a0fa6e616bf6c4 -> FETCH_HEAD
+2026-09-29T09:21:37.6919111Z Submodule path 'third_party/llama.cpp': checked out 'b29c606e28a01b1bc8c1351026a0fa6e616bf6c4'
+2026-09-29T09:21:37.6933827Z [command]/usr/bin/git submodule foreach git config --local gc.auto 0
+2026-09-29T09:21:37.7132371Z Entering 'third_party/SPIRV-Headers'
+2026-09-29T09:21:37.7269017Z Entering 'third_party/Vulkan-Headers'
+2026-09-29T09:21:37.7292348Z Entering 'third_party/llama.cpp'
+2026-09-29T09:21:37.7321428Z ##[endgroup]
+2026-09-29T09:21:37.7322040Z ##[group]Persisting credentials for submodules
+2026-09-29T09:21:37.7328926Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'url\.https\:\/\/github\.com\/\.insteadOf' && git config --local --unset-all 'url.https://github.com/.insteadOf' || :"
+2026-09-29T09:21:37.7521149Z Entering 'third_party/SPIRV-Headers'
+2026-09-29T09:21:37.7559690Z Entering 'third_party/Vulkan-Headers'
+2026-09-29T09:21:37.7597311Z Entering 'third_party/llama.cpp'
+2026-09-29T09:21:37.7687784Z [command]/usr/bin/git submodule foreach git config --local --show-origin --name-only --get-regexp remote.origin.url
+2026-09-29T09:21:37.7882039Z Entering 'third_party/SPIRV-Headers'
+2026-09-29T09:21:37.7901668Z file:/home/runner/work/skein/skein/.git/modules/third_party/SPIRV-Headers/config	remote.origin.url
+2026-09-29T09:21:37.7903205Z Entering 'third_party/Vulkan-Headers'
+2026-09-29T09:21:37.7921631Z file:/home/runner/work/skein/skein/.git/modules/third_party/Vulkan-Headers/config	remote.origin.url
+2026-09-29T09:21:37.7923467Z Entering 'third_party/llama.cpp'
+2026-09-29T09:21:37.7942032Z file:/home/runner/work/skein/skein/.git/modules/third_party/llama.cpp/config	remote.origin.url
+2026-09-29T09:21:37.7960286Z [command]/usr/bin/git config --file /home/runner/work/skein/skein/.git/modules/third_party/SPIRV-Headers/config includeIf.gitdir:/home/runner/work/skein/skein/.git/modules/third_party/SPIRV-Headers.path /home/runner/work/_temp/git-credentials-8f48e49e-e820-4bf1-a075-d826969f7e60.config
+2026-09-29T09:21:37.7998434Z [command]/usr/bin/git config --file /home/runner/work/skein/skein/.git/modules/third_party/SPIRV-Headers/config includeIf.gitdir:/github/workspace/.git/modules/third_party/SPIRV-Headers.path /github/runner_temp/git-credentials-8f48e49e-e820-4bf1-a075-d826969f7e60.config
+2026-09-29T09:21:37.8043791Z [command]/usr/bin/git config --file /home/runner/work/skein/skein/.git/modules/third_party/Vulkan-Headers/config includeIf.gitdir:/home/runner/work/skein/skein/.git/modules/third_party/Vulkan-Headers.path /home/runner/work/_temp/git-credentials-8f48e49e-e820-4bf1-a075-d826969f7e60.config
+2026-09-29T09:21:37.8081489Z [command]/usr/bin/git config --file /home/runner/work/skein/skein/.git/modules/third_party/Vulkan-Headers/config includeIf.gitdir:/github/workspace/.git/modules/third_party/Vulkan-Headers.path /github/runner_temp/git-credentials-8f48e49e-e820-4bf1-a075-d826969f7e60.config
+2026-09-29T09:21:37.8119580Z [command]/usr/bin/git config --file /home/runner/work/skein/skein/.git/modules/third_party/llama.cpp/config includeIf.gitdir:/home/runner/work/skein/skein/.git/modules/third_party/llama.cpp.path /home/runner/work/_temp/git-credentials-8f48e49e-e820-4bf1-a075-d826969f7e60.config
+2026-09-29T09:21:37.8154686Z [command]/usr/bin/git config --file /home/runner/work/skein/skein/.git/modules/third_party/llama.cpp/config includeIf.gitdir:/github/workspace/.git/modules/third_party/llama.cpp.path /github/runner_temp/git-credentials-8f48e49e-e820-4bf1-a075-d826969f7e60.config
+2026-09-29T09:21:37.8186686Z [command]/usr/bin/git submodule foreach git config --local --add 'url.https://github.com/.insteadOf' 'git@github.com:'
+2026-09-29T09:21:37.8377142Z Entering 'third_party/SPIRV-Headers'
+2026-09-29T09:21:37.8401396Z Entering 'third_party/Vulkan-Headers'
+2026-09-29T09:21:37.8423886Z Entering 'third_party/llama.cpp'
+2026-09-29T09:21:37.8459098Z [command]/usr/bin/git submodule foreach git config --local --add 'url.https://github.com/.insteadOf' 'org-273493118@github.com:'
+2026-09-29T09:21:37.8660385Z Entering 'third_party/SPIRV-Headers'
+2026-09-29T09:21:37.8684772Z Entering 'third_party/Vulkan-Headers'
+2026-09-29T09:21:37.8707978Z Entering 'third_party/llama.cpp'
+2026-09-29T09:21:37.8735716Z ##[endgroup]
+2026-09-29T09:21:37.8776232Z [command]/usr/bin/git log -1 --format=%H
+2026-09-29T09:21:37.8804603Z 5a3ab9b986950651733e6040b43c7958f0ae25ac
+2026-09-29T09:21:37.9001372Z ##[group]Run ./tools/ci/check-submodules.sh
+2026-09-29T09:21:37.9001790Z [36;1m./tools/ci/check-submodules.sh[0m
+2026-09-29T09:21:37.9187203Z shell: /usr/bin/bash -e {0}
+2026-09-29T09:21:37.9187515Z ##[endgroup]
+2026-09-29T09:21:37.9520345Z check-submodules: OK (3 submodule pin(s) match native/llama/PINNED_COMMIT)
+2026-09-29T09:21:37.9677790Z ##[group]Run actions/setup-java@de7274f081f381c8f8158605e0321c36c376e2e6
+2026-09-29T09:21:37.9678178Z with:
+2026-09-29T09:21:37.9678383Z   distribution: temurin
+2026-09-29T09:21:37.9678649Z   java-version: 17
+2026-09-29T09:21:37.9678862Z   java-package: jdk
+2026-09-29T09:21:37.9679070Z   check-latest: false
+2026-09-29T09:21:37.9679278Z   force-download: false
+2026-09-29T09:21:37.9679488Z   set-default: true
+2026-09-29T09:21:37.9679686Z   server-id: github
+2026-09-29T09:21:37.9679919Z   mvn-repositories-include-central: true
+2026-09-29T09:21:37.9680225Z   mvn-repositories-prioritize-central: true
+2026-09-29T09:21:37.9680523Z   overwrite-settings: true
+2026-09-29T09:21:37.9680756Z   cache-read-only: false
+2026-09-29T09:21:37.9680971Z   job-status: success
+2026-09-29T09:21:37.9683315Z   token: ***
+2026-09-29T09:21:37.9683528Z   show-download-progress: false
+2026-09-29T09:21:37.9683999Z   problem-matcher: true
+2026-09-29T09:21:37.9684224Z ##[endgroup]
+2026-09-29T09:21:38.0384928Z ##[group]Installed distributions
+2026-09-29T09:21:38.0669882Z Resolved Java 17.0.20+1 from tool-cache
+2026-09-29T09:21:38.0670442Z Setting Java 17.0.20+1 as the default
+2026-09-29T09:21:38.0678491Z 
+2026-09-29T09:21:38.0678941Z Java configuration:
+2026-09-29T09:21:38.0679348Z   Distribution: temurin
+2026-09-29T09:21:38.0679690Z   Version: 17.0.20+1
+2026-09-29T09:21:38.0680208Z   Path: /opt/hostedtoolcache/Java_Temurin-Hotspot_jdk/17.0.20-1/x64
+2026-09-29T09:21:38.0680642Z 
+2026-09-29T09:21:38.0681111Z ##[endgroup]
+2026-09-29T09:21:38.0724055Z Creating settings.xml with server-id: github
+2026-09-29T09:21:38.0724736Z Creating toolchains.xml for JDK version 17 from temurin
+2026-09-29T09:21:38.0725336Z Writing to /home/runner/.m2/settings.xml
+2026-09-29T09:21:38.0734510Z Writing to /home/runner/.m2/toolchains.xml
+2026-09-29T09:21:38.0743990Z Configured MAVEN_ARGS to include -ntp to suppress Maven transfer progress logs. Set 'show-download-progress: true' to keep the download progress output.
+2026-09-29T09:21:38.0878743Z ##[group]Run sdkmanager "platforms;android-37" "build-tools;36.0.0" || true
+2026-09-29T09:21:38.0879727Z [36;1msdkmanager "platforms;android-37" "build-tools;36.0.0" || true[0m
+2026-09-29T09:21:38.0940649Z shell: /usr/bin/bash -e {0}
+2026-09-29T09:21:38.0941138Z env:
+2026-09-29T09:21:38.0941716Z   JAVA_HOME: /opt/hostedtoolcache/Java_Temurin-Hotspot_jdk/17.0.20-1/x64
+2026-09-29T09:21:38.0942687Z   JAVA_HOME_17_X64: /opt/hostedtoolcache/Java_Temurin-Hotspot_jdk/17.0.20-1/x64
+2026-09-29T09:21:38.0943468Z   MAVEN_ARGS: -ntp
+2026-09-29T09:21:38.0944055Z ##[endgroup]
+2026-09-29T09:21:38.1039211Z /home/runner/work/_temp/46561268-80ca-446d-8023-b97753c8bc1c.sh: line 1: sdkmanager: command not found
+2026-09-29T09:21:38.1241516Z ##[group]Run gradle/actions/setup-gradle@748248ddd2a24f49513d8f472f81c3a07d4d50e1
+2026-09-29T09:21:38.1241965Z with:
+2026-09-29T09:21:38.1242173Z   cache-read-only: true
+2026-09-29T09:21:38.1242394Z   cache-disabled: false
+2026-09-29T09:21:38.1242616Z   cache-write-only: false
+2026-09-29T09:21:38.1242855Z   cache-overwrite-existing: false
+2026-09-29T09:21:38.1243111Z   cache-cleanup: on-success
+2026-09-29T09:21:38.1243391Z   gradle-home-cache-includes: caches
+notifications
+
+2026-09-29T09:21:38.1244165Z   add-job-summary: always
+2026-09-29T09:21:38.1244422Z   add-job-summary-as-pr-comment: never
+2026-09-29T09:21:38.1244695Z   dependency-graph: disabled
+2026-09-29T09:21:38.1245004Z   dependency-graph-report-dir: dependency-graph-reports
+2026-09-29T09:21:38.1245358Z   dependency-graph-continue-on-failure: true
+2026-09-29T09:21:38.1245649Z   build-scan-publish: false
+2026-09-29T09:21:38.1245886Z   validate-wrappers: true
+2026-09-29T09:21:38.1246119Z   allow-snapshot-wrappers: false
+2026-09-29T09:21:38.1246438Z   gradle-home-cache-strict-match: false
+2026-09-29T09:21:38.1246708Z   workflow-job-context: null
+2026-09-29T09:21:38.1249092Z   github-token: ***
+2026-09-29T09:21:38.1249301Z env:
+2026-09-29T09:21:38.1249601Z   JAVA_HOME: /opt/hostedtoolcache/Java_Temurin-Hotspot_jdk/17.0.20-1/x64
+2026-09-29T09:21:38.1250075Z   JAVA_HOME_17_X64: /opt/hostedtoolcache/Java_Temurin-Hotspot_jdk/17.0.20-1/x64
+2026-09-29T09:21:38.1250453Z   MAVEN_ARGS: -ntp
+2026-09-29T09:21:38.1250660Z ##[endgroup]
+2026-09-29T09:21:40.0462462Z Merged default JDK locations into /home/runner/.m2/toolchains.xml
+2026-09-29T09:21:40.0464773Z ##[group]Restore Gradle state from cache
+2026-09-29T09:21:40.2591731Z Cache hit for restore-key: gradle-home-v1|Linux-X64|ux-screenshots[858879bc056d14e4e506a7a687b5e93a]-4f1b7d334173544feb47190b3e2e7efc4a5e1688
+2026-09-29T09:21:41.4920214Z Received 2321924 of 6516228 (35.6%), 2.2 MBs/sec
+2026-09-29T09:21:41.5498402Z Received 6516228 of 6516228 (100.0%), 5.9 MBs/sec
+2026-09-29T09:21:41.5501340Z Cache Size: ~6 MB (6516228 B)
+2026-09-29T09:21:41.5530258Z [command]/usr/bin/tar -xf /home/runner/work/_temp/7aefa9e1-f262-42fc-ae5c-ff6ec6c78f17/cache.tzst -P -C /home/runner/work/skein/skein --use-compress-program unzstd
+2026-09-29T09:21:41.6702480Z Cache restored successfully
+2026-09-29T09:21:41.6709762Z Restored cache entry with key gradle-home-v1|Linux-X64|native-determinism[f805c23014558cb726355870089a85d4]-5a3ab9b986950651733e6040b43c7958f0ae25ac to /home/runner/.gradle/caches,/home/runner/.gradle/notifications,/home/runner/.gradle/.setup-gradle in 1623ms
+2026-09-29T09:21:41.8805473Z Cache hit for: gradle-groovy-dsl-v1-89eaa93a48f5b0a90c5489862ff63be4
+2026-09-29T09:21:41.8836855Z Cache hit for: gradle-generated-gradle-jars-v1-dc5a4650abbad0b0d866cf541e44abd4
+2026-09-29T09:21:41.8840605Z Cache hit for: gradle-generated-gradle-jars-v1-ccb60158c9231f6b9ef79eb2fb4b4a71
+2026-09-29T09:21:41.8880424Z Cache hit for: gradle-kotlin-dsl-v1-0247b731e1250c72860c43b69471b2b0
+2026-09-29T09:21:41.8900829Z Cache hit for: gradle-wrapper-zips-v1-ef43a8e2ea38ce83c4462b7d7ca3782b
+2026-09-29T09:21:41.8918042Z Cache hit for: gradle-instrumented-jars-v1-d0cb6ede35d75188130a47c652426322
+2026-09-29T09:21:41.8957131Z Cache hit for: gradle-transforms-v1-a0512c195ff1dd325c611668cdc55e71
+2026-09-29T09:21:41.8977424Z Cache hit for: gradle-dependencies-v1-e2fa1f6b8c800c23a1324636928d6fa2
+2026-09-29T09:21:42.2691633Z Received 64536 of 64536 (100.0%), 0.4 MBs/sec
+2026-09-29T09:21:42.2692137Z Cache Size: ~0 MB (64536 B)
+2026-09-29T09:21:42.3195702Z [command]/usr/bin/tar -xf /home/runner/work/_temp/4b0e034b-2f29-42aa-94a8-bb730a07e52b/cache.tzst -P -C /home/runner/work/skein/skein --use-compress-program unzstd
+2026-09-29T09:21:42.3335515Z Cache restored successfully
+2026-09-29T09:21:42.3337304Z Restored cache entry with key gradle-instrumented-jars-v1-d0cb6ede35d75188130a47c652426322 to /home/runner/.gradle/caches/jars-*/*/ in 661ms
+2026-09-29T09:21:42.3760928Z Received 26693 of 26693 (100.0%), 0.1 MBs/sec
+2026-09-29T09:21:42.3761913Z Cache Size: ~0 MB (26693 B)
+2026-09-29T09:21:42.3780453Z [command]/usr/bin/tar -xf /home/runner/work/_temp/f5343861-e677-429e-8fcc-088720bf6a94/cache.tzst -P -C /home/runner/work/skein/skein --use-compress-program unzstd
+2026-09-29T09:21:42.3843112Z Cache restored successfully
+2026-09-29T09:21:42.3844658Z Restored cache entry with key gradle-generated-gradle-jars-v1-ccb60158c9231f6b9ef79eb2fb4b4a71 to /home/runner/.gradle/caches/9.7.1/generated-gradle-jars/gradle-test-kit-9.7.1.jar in 713ms
+2026-09-29T09:21:42.3888721Z Received 105227 of 105227 (100.0%), 0.3 MBs/sec
+2026-09-29T09:21:42.3889270Z Cache Size: ~0 MB (105227 B)
+2026-09-29T09:21:42.3921535Z [command]/usr/bin/tar -xf /home/runner/work/_temp/74872c36-c213-4c43-b84a-7ccf40c0542e/cache.tzst -P -C /home/runner/work/skein/skein --use-compress-program unzstd
+2026-09-29T09:21:42.4058245Z Cache restored successfully
+2026-09-29T09:21:42.4065844Z Restored cache entry with key gradle-groovy-dsl-v1-89eaa93a48f5b0a90c5489862ff63be4 to /home/runner/.gradle/caches/*/groovy-dsl/*/ in 734ms
+2026-09-29T09:21:43.0822282Z Received 30970790 of 43553702 (71.1%), 29.5 MBs/sec
+2026-09-29T09:21:43.1077560Z Received 33554432 of 150662611 (22.3%), 32.0 MBs/sec
+2026-09-29T09:21:43.1237586Z Received 12582912 of 561710093 (2.2%), 12.0 MBs/sec
+2026-09-29T09:21:43.1257196Z Received 3652775 of 3652775 (100.0%), 3.5 MBs/sec
+2026-09-29T09:21:43.1259448Z Cache Size: ~3 MB (3652775 B)
+2026-09-29T09:21:43.1398155Z Received 16777216 of 244084229 (6.9%), 16.0 MBs/sec
+2026-09-29T09:21:43.1444414Z [command]/usr/bin/tar -xf /home/runner/work/_temp/57225043-a179-42c4-98ff-d473d8586733/cache.tzst -P -C /home/runner/work/skein/skein --use-compress-program unzstd
+2026-09-29T09:21:43.2705212Z Received 43553702 of 43553702 (100.0%), 34.9 MBs/sec
+2026-09-29T09:21:43.2706299Z Cache Size: ~42 MB (43553702 B)
+2026-09-29T09:21:43.3118110Z [command]/usr/bin/tar -xf /home/runner/work/_temp/03059a6c-5697-4e57-b311-37187c212d49/cache.tzst -P -C /home/runner/work/skein/skein --use-compress-program unzstd
+2026-09-29T09:21:43.7030180Z Cache restored successfully
+2026-09-29T09:21:43.7151447Z Restored cache entry with key gradle-kotlin-dsl-v1-0247b731e1250c72860c43b69471b2b0 to /home/runner/.gradle/caches/*/kotlin-dsl/accessors/*/,/home/runner/.gradle/caches/*/kotlin-dsl/scripts/*/ in 2042ms
+2026-09-29T09:21:43.7987145Z Cache restored successfully
+2026-09-29T09:21:43.8012535Z Restored cache entry with key gradle-generated-gradle-jars-v1-dc5a4650abbad0b0d866cf541e44abd4 to /home/runner/.gradle/caches/9.7.1/generated-gradle-jars/gradle-api-9.7.1.jar in 2129ms
+2026-09-29T09:21:44.1425718Z Received 134217728 of 150662611 (89.1%), 63.0 MBs/sec
+2026-09-29T09:21:44.1426968Z Received 134217728 of 561710093 (23.9%), 63.4 MBs/sec
+2026-09-29T09:21:44.1639469Z Received 96468992 of 244084229 (39.5%), 45.4 MBs/sec
+2026-09-29T09:21:44.2479664Z Received 150662611 of 150662611 (100.0%), 67.1 MBs/sec
+2026-09-29T09:21:44.2482113Z Cache Size: ~144 MB (150662611 B)
+2026-09-29T09:21:44.2552031Z [command]/usr/bin/tar -xf /home/runner/work/_temp/b47be8a6-efb0-45f0-9fb4-bd3d3c57aced/cache.tzst -P -C /home/runner/work/skein/skein --use-compress-program unzstd
+2026-09-29T09:21:44.4886014Z Cache restored successfully
+2026-09-29T09:21:44.5007567Z Restored cache entry with key gradle-wrapper-zips-v1-ef43a8e2ea38ce83c4462b7d7ca3782b to /home/runner/.gradle/wrapper/dists/gradle-9.7.1-bin/1w1c7tv4s851m17nbqdsro2tv in 2826ms
+2026-09-29T09:21:45.1435402Z Received 264241152 of 561710093 (47.0%), 83.4 MBs/sec
+2026-09-29T09:21:45.1641571Z Received 231501317 of 244084229 (94.8%), 73.0 MBs/sec
+2026-09-29T09:21:45.3797946Z Received 244084229 of 244084229 (100.0%), 71.8 MBs/sec
+2026-09-29T09:21:45.3800316Z Cache Size: ~233 MB (244084229 B)
+2026-09-29T09:21:45.3830474Z [command]/usr/bin/tar -xf /home/runner/work/_temp/ba8b802b-5c9b-40c6-a4e9-5b1ec9de8cec/cache.tzst -P -C /home/runner/work/skein/skein --use-compress-program unzstd
+2026-09-29T09:21:46.1417124Z Received 402653184 of 561710093 (71.7%), 95.5 MBs/sec
+2026-09-29T09:21:47.2139036Z Received 536870912 of 561710093 (95.6%), 100.5 MBs/sec
+2026-09-29T09:21:47.6535508Z Cache restored successfully
+2026-09-29T09:21:47.6784564Z Received 561710093 of 561710093 (100.0%), 96.4 MBs/sec
+2026-09-29T09:21:47.6787558Z Cache Size: ~536 MB (561710093 B)
+2026-09-29T09:21:47.6813276Z [command]/usr/bin/tar -xf /home/runner/work/_temp/927d6d7f-683c-40c2-801e-a7cf409a9e8e/cache.tzst -P -C /home/runner/work/skein/skein --use-compress-program unzstd
+2026-09-29T09:21:48.1666520Z Restored cache entry with key gradle-transforms-v1-a0512c195ff1dd325c611668cdc55e71 to /home/runner/.gradle/caches/transforms-4/*/,/home/runner/.gradle/caches/*/transforms/*/ in 6493ms
+2026-09-29T09:21:48.5881569Z Cache restored successfully
+2026-09-29T09:21:48.6646906Z Restored cache entry with key gradle-dependencies-v1-e2fa1f6b8c800c23a1324636928d6fa2 to /home/runner/.gradle/caches/modules-*/files-*/*/*/*/* in 6992ms
+2026-09-29T09:21:48.7135143Z ##[endgroup]
+2026-09-29T09:21:48.8230795Z ##[group]All Gradle Wrapper jars are valid
+2026-09-29T09:21:48.8232374Z ✓ Found known Gradle Wrapper JAR files:
+2026-09-29T09:21:48.8233307Z   7a9ce74cff467ca1bf60a4fcd9f05185acceda4d0f382434d393e17864262c5d gradle/wrapper/gradle-wrapper.jar
+2026-09-29T09:21:48.8234560Z   e996d452d2645e70c01c11143ca2d3742734a28da2bf61f25c82bdc288c9e637 third_party/llama.cpp/examples/llama.android/gradle/wrapper/gradle-wrapper.jar
+2026-09-29T09:21:48.8235707Z ##[endgroup]
+2026-09-29T09:21:48.9145622Z ##[group]Run epoch="$(./tools/rb/source-date-epoch.sh HEAD)"
+2026-09-29T09:21:48.9146324Z [36;1mepoch="$(./tools/rb/source-date-epoch.sh HEAD)"[0m
+2026-09-29T09:21:48.9146866Z [36;1mecho "SOURCE_DATE_EPOCH=${epoch}" >> "$GITHUB_ENV"[0m
+2026-09-29T09:21:48.9147417Z [36;1mecho "SOURCE_DATE_EPOCH=${epoch}"[0m
+2026-09-29T09:21:48.9184054Z shell: /usr/bin/bash -e {0}
+2026-09-29T09:21:48.9184623Z env:
+2026-09-29T09:21:48.9185097Z   JAVA_HOME: /opt/hostedtoolcache/Java_Temurin-Hotspot_jdk/17.0.20-1/x64
+2026-09-29T09:21:48.9185793Z   JAVA_HOME_17_X64: /opt/hostedtoolcache/Java_Temurin-Hotspot_jdk/17.0.20-1/x64
+2026-09-29T09:21:48.9186338Z   MAVEN_ARGS: -ntp
+2026-09-29T09:21:48.9186775Z   GRADLE_ACTION_ID: gradle/actions/setup-gradle
+2026-09-29T09:21:48.9187291Z   GRADLE_USER_HOME: /home/runner/.gradle
+2026-09-29T09:21:48.9187737Z   GRADLE_BUILD_ACTION_SETUP_COMPLETED: true
+2026-09-29T09:21:48.9188192Z   GRADLE_BUILD_ACTION_CACHE_RESTORED: true
+2026-09-29T09:21:48.9188897Z   DEVELOCITY_INJECTION_INIT_SCRIPT_NAME: gradle-actions.inject-develocity.init.gradle
+2026-09-29T09:21:48.9189580Z   DEVELOCITY_INJECTION_CUSTOM_VALUE: gradle-actions
+2026-09-29T09:21:48.9190035Z   GITHUB_DEPENDENCY_GRAPH_ENABLED: false
+2026-09-29T09:21:48.9191554Z ##[endgroup]
+2026-09-29T09:21:48.9660329Z SOURCE_DATE_EPOCH=1790673628
+2026-09-29T09:21:49.0122454Z ##[group]Run set -o pipefail
+2026-09-29T09:21:49.0122813Z [36;1mset -o pipefail[0m
+2026-09-29T09:21:49.0123117Z [36;1mmkdir -p "$RUNNER_TEMP/so"[0m
+2026-09-29T09:21:49.0123512Z [36;1mprintf 'source_sha=%s\nrun_id=%s\nrun_attempt=%s\n' \[0m
+2026-09-29T09:21:49.0124226Z [36;1m  "$GITHUB_SHA" "$GITHUB_RUN_ID" "$GITHUB_RUN_ATTEMPT" > "$RUNNER_TEMP/so/workflow-context.txt"[0m
+2026-09-29T09:21:49.0124838Z [36;1m./tools/rb/so-determinism.sh --builds 2 --keep "$RUNNER_TEMP/so" \[0m
+2026-09-29T09:21:49.0125293Z [36;1m  2>&1 | tee "$RUNNER_TEMP/so/run.log"[0m
+2026-09-29T09:21:49.0162450Z shell: /usr/bin/bash -e {0}
+2026-09-29T09:21:49.0162769Z env:
+2026-09-29T09:21:49.0163142Z   JAVA_HOME: /opt/hostedtoolcache/Java_Temurin-Hotspot_jdk/17.0.20-1/x64
+2026-09-29T09:21:49.0163833Z   JAVA_HOME_17_X64: /opt/hostedtoolcache/Java_Temurin-Hotspot_jdk/17.0.20-1/x64
+2026-09-29T09:21:49.0164278Z   MAVEN_ARGS: -ntp
+2026-09-29T09:21:49.0164589Z   GRADLE_ACTION_ID: gradle/actions/setup-gradle
+2026-09-29T09:21:49.0165032Z   GRADLE_USER_HOME: /home/runner/.gradle
+2026-09-29T09:21:49.0165373Z   GRADLE_BUILD_ACTION_SETUP_COMPLETED: true
+2026-09-29T09:21:49.0165726Z   GRADLE_BUILD_ACTION_CACHE_RESTORED: true
+2026-09-29T09:21:49.0166211Z   DEVELOCITY_INJECTION_INIT_SCRIPT_NAME: gradle-actions.inject-develocity.init.gradle
+2026-09-29T09:21:49.0166730Z   DEVELOCITY_INJECTION_CUSTOM_VALUE: gradle-actions
+2026-09-29T09:21:49.0167112Z   GITHUB_DEPENDENCY_GRAPH_ENABLED: false
+2026-09-29T09:21:49.0167437Z   SOURCE_DATE_EPOCH: 1790673628
+2026-09-29T09:21:49.0167723Z ##[endgroup]
+2026-09-29T09:21:50.5728456Z so-determinism: 2 cold build(s) of :inference-service:assembleFossRelease
+2026-09-29T09:21:50.5729594Z   repo                 /home/runner/work/skein/skein
+2026-09-29T09:21:50.5730358Z   abi                  arm64-v8a
+2026-09-29T09:21:50.5731124Z   source commit        5a3ab9b986950651733e6040b43c7958f0ae25ac
+2026-09-29T09:21:50.5731608Z   SOURCE_DATE_EPOCH    1790673628
+2026-09-29T09:21:50.5733367Z   shader patches       ON
+2026-09-29T09:21:50.5734242Z   build logs           /home/runner/work/_temp/so/run.h6APgG5s
+2026-09-29T09:21:50.5734573Z 
+2026-09-29T09:25:32.8994224Z   build 1  2aefda01808f10bf5693ab02d0857e0169dc09550b615896939cb176c032daff
+2026-09-29T09:28:05.4304127Z   build 2  2aefda01808f10bf5693ab02d0857e0169dc09550b615896939cb176c032daff
+2026-09-29T09:28:05.4304568Z 
+2026-09-29T09:28:05.4331621Z   1 2aefda01808f10bf5693ab02d0857e0169dc09550b615896939cb176c032daff
+2026-09-29T09:28:05.4332234Z   2 2aefda01808f10bf5693ab02d0857e0169dc09550b615896939cb176c032daff
+2026-09-29T09:28:05.4472726Z [ok]   libskein_llama.so (arm64-v8a): 2 build(s), 1 distinct sha256
+2026-09-29T09:28:05.4473534Z 
+2026-09-29T09:28:05.4474823Z libskein_llama.so is a function of its sources across 2 cold builds.
+2026-09-29T09:28:05.7706529Z ##[group]Run set -o pipefail
+2026-09-29T09:28:05.7706909Z [36;1mset -o pipefail[0m
+2026-09-29T09:28:05.7707220Z [36;1mif [ -d "$RUNNER_TEMP/so" ]; then[0m
+2026-09-29T09:28:05.7707561Z [36;1m  cd "$RUNNER_TEMP/so"[0m
+2026-09-29T09:28:05.7707945Z [36;1m  find . -type f ! -path './SHA256SUMS.txt' -print0 \[0m
+2026-09-29T09:28:05.7708392Z [36;1m    | sort -z | xargs -0 -r sha256sum > SHA256SUMS.txt[0m
+2026-09-29T09:28:05.7708747Z [36;1mfi[0m
+2026-09-29T09:28:05.7745341Z shell: /usr/bin/bash -e {0}
+2026-09-29T09:28:05.7745657Z env:
+2026-09-29T09:28:05.7746025Z   JAVA_HOME: /opt/hostedtoolcache/Java_Temurin-Hotspot_jdk/17.0.20-1/x64
+2026-09-29T09:28:05.7746585Z   JAVA_HOME_17_X64: /opt/hostedtoolcache/Java_Temurin-Hotspot_jdk/17.0.20-1/x64
+2026-09-29T09:28:05.7747032Z   MAVEN_ARGS: -ntp
+2026-09-29T09:28:05.7747328Z   GRADLE_ACTION_ID: gradle/actions/setup-gradle
+2026-09-29T09:28:05.7747692Z   GRADLE_USER_HOME: /home/runner/.gradle
+2026-09-29T09:28:05.7748085Z   GRADLE_BUILD_ACTION_SETUP_COMPLETED: true
+2026-09-29T09:28:05.7748449Z   GRADLE_BUILD_ACTION_CACHE_RESTORED: true
+2026-09-29T09:28:05.7748933Z   DEVELOCITY_INJECTION_INIT_SCRIPT_NAME: gradle-actions.inject-develocity.init.gradle
+2026-09-29T09:28:05.7749459Z   DEVELOCITY_INJECTION_CUSTOM_VALUE: gradle-actions
+2026-09-29T09:28:05.7749821Z   GITHUB_DEPENDENCY_GRAPH_ENABLED: false
+2026-09-29T09:28:05.7750152Z   SOURCE_DATE_EPOCH: 1790673628
+2026-09-29T09:28:05.7750438Z ##[endgroup]
+2026-09-29T09:28:05.8378283Z ##[group]Run actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a
+2026-09-29T09:28:05.8378730Z with:
+2026-09-29T09:28:05.8378969Z   name: so-determinism
+2026-09-29T09:28:05.8379254Z   path: /home/runner/work/_temp/so/
+2026-09-29T09:28:05.8379565Z   if-no-files-found: warn
+2026-09-29T09:28:05.8379848Z   retention-days: 30
+2026-09-29T09:28:05.8380104Z   compression-level: 0
+2026-09-29T09:28:05.8380367Z   overwrite: false
+2026-09-29T09:28:05.8380631Z   include-hidden-files: false
+2026-09-29T09:28:05.8380919Z   archive: true
+2026-09-29T09:28:05.8381171Z env:
+2026-09-29T09:28:05.8381519Z   JAVA_HOME: /opt/hostedtoolcache/Java_Temurin-Hotspot_jdk/17.0.20-1/x64
+2026-09-29T09:28:05.8382045Z   JAVA_HOME_17_X64: /opt/hostedtoolcache/Java_Temurin-Hotspot_jdk/17.0.20-1/x64
+2026-09-29T09:28:05.8382463Z   MAVEN_ARGS: -ntp
+2026-09-29T09:28:05.8382757Z   GRADLE_ACTION_ID: gradle/actions/setup-gradle
+2026-09-29T09:28:05.8383104Z   GRADLE_USER_HOME: /home/runner/.gradle
+2026-09-29T09:28:05.8383489Z   GRADLE_BUILD_ACTION_SETUP_COMPLETED: true
+2026-09-29T09:28:05.8384094Z   GRADLE_BUILD_ACTION_CACHE_RESTORED: true
+2026-09-29T09:28:05.8384697Z   DEVELOCITY_INJECTION_INIT_SCRIPT_NAME: gradle-actions.inject-develocity.init.gradle
+2026-09-29T09:28:05.8385219Z   DEVELOCITY_INJECTION_CUSTOM_VALUE: gradle-actions
+2026-09-29T09:28:05.8385583Z   GITHUB_DEPENDENCY_GRAPH_ENABLED: false
+2026-09-29T09:28:05.8385914Z   SOURCE_DATE_EPOCH: 1790673628
+2026-09-29T09:28:05.8386202Z ##[endgroup]
+2026-09-29T09:28:05.9874738Z With the provided path, there will be 10 files uploaded
+2026-09-29T09:28:05.9877369Z Artifact name is valid!
+2026-09-29T09:28:05.9878019Z Root directory input is valid!
+2026-09-29T09:28:06.3272088Z Uploading artifact: so-determinism.zip
+2026-09-29T09:28:06.3315984Z Beginning upload of artifact content to blob storage
+2026-09-29T09:28:07.0808086Z Uploaded bytes 8388608
+2026-09-29T09:28:07.1426833Z Uploaded bytes 16777216
+2026-09-29T09:28:07.1665039Z Uploaded bytes 25165824
+2026-09-29T09:28:07.2648479Z Uploaded bytes 33554432
+2026-09-29T09:28:07.3292069Z Uploaded bytes 41943040
+2026-09-29T09:28:07.3475982Z Uploaded bytes 50331648
+2026-09-29T09:28:07.4142378Z Uploaded bytes 50711050
+2026-09-29T09:28:07.4704811Z Finished uploading artifact content to blob storage!
+2026-09-29T09:28:07.4705919Z SHA256 digest of uploaded artifact is 20c9cdfc3d9c409c7b453a183a9424767b84698f02d89322c6ea5640fca9323d
+2026-09-29T09:28:07.4707051Z Finalizing artifact upload
+2026-09-29T09:28:07.8190651Z Artifact so-determinism successfully finalized. Artifact ID 11023678920
+2026-09-29T09:28:07.8191654Z Artifact so-determinism has been successfully uploaded! Final size is 50711050 bytes. Artifact ID is 11023678920
+2026-09-29T09:28:07.8195268Z Artifact download URL: https://github.com/HeyZeus100/skein/actions/runs/36548576075/artifacts/11023678920
+2026-09-29T09:28:07.8416548Z Post job cleanup.
+2026-09-29T09:28:08.0860238Z In post-action step
+2026-09-29T09:28:08.0869659Z Cache is read-only: will not save state for use in subsequent builds.
+2026-09-29T09:28:08.0877127Z Generating Job Summary
+2026-09-29T09:28:08.0894342Z Completed post-action step
+2026-09-29T09:28:08.1053537Z Post job cleanup.
+2026-09-29T09:28:08.1927124Z Post job cleanup.
+2026-09-29T09:28:08.2784916Z [command]/usr/bin/git version
+2026-09-29T09:28:08.2823757Z git version 2.55.0
+2026-09-29T09:28:08.2868473Z Temporarily overriding HOME='/home/runner/work/_temp/49e6fb49-60b6-4611-96e4-e82a887db5a4' before making global git config changes
+2026-09-29T09:28:08.2870007Z Adding repository directory to the temporary git global config as a safe directory
+2026-09-29T09:28:08.2871871Z [command]/usr/bin/git config --global --add safe.directory /home/runner/work/skein/skein
+2026-09-29T09:28:08.2902869Z Removing SSH command configuration
+2026-09-29T09:28:08.2909947Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+2026-09-29T09:28:08.2947757Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+2026-09-29T09:28:08.3162179Z Entering 'third_party/SPIRV-Headers'
+2026-09-29T09:28:08.3207681Z Entering 'third_party/Vulkan-Headers'
+2026-09-29T09:28:08.3246255Z Entering 'third_party/llama.cpp'
+2026-09-29T09:28:08.3299845Z Removing HTTP extra header
+2026-09-29T09:28:08.3315039Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+2026-09-29T09:28:08.3344174Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+2026-09-29T09:28:08.3560296Z Entering 'third_party/SPIRV-Headers'
+2026-09-29T09:28:08.3601104Z Entering 'third_party/Vulkan-Headers'
+2026-09-29T09:28:08.3640049Z Entering 'third_party/llama.cpp'
+2026-09-29T09:28:08.3700285Z Removing includeIf entries pointing to credentials config files
+2026-09-29T09:28:08.3707370Z [command]/usr/bin/git config --local --name-only --get-regexp ^includeIf\.gitdir:
+2026-09-29T09:28:08.3737388Z includeif.gitdir:/home/runner/work/skein/skein/.git.path
+2026-09-29T09:28:08.3738633Z includeif.gitdir:/home/runner/work/skein/skein/.git/worktrees/*.path
+2026-09-29T09:28:08.3739704Z includeif.gitdir:/github/workspace/.git.path
+2026-09-29T09:28:08.3740710Z includeif.gitdir:/github/workspace/.git/worktrees/*.path
+2026-09-29T09:28:08.3747017Z [command]/usr/bin/git config --local --get-all includeif.gitdir:/home/runner/work/skein/skein/.git.path
+2026-09-29T09:28:08.3779256Z /home/runner/work/_temp/git-credentials-8f48e49e-e820-4bf1-a075-d826969f7e60.config
+2026-09-29T09:28:08.3791932Z [command]/usr/bin/git config --local --unset includeif.gitdir:/home/runner/work/skein/skein/.git.path \/home\/runner\/work\/_temp\/git\-credentials\-8f48e49e\-e820\-4bf1\-a075\-d826969f7e60\.config
+2026-09-29T09:28:08.3837109Z [command]/usr/bin/git config --local --get-all includeif.gitdir:/home/runner/work/skein/skein/.git/worktrees/*.path
+2026-09-29T09:28:08.3852138Z /home/runner/work/_temp/git-credentials-8f48e49e-e820-4bf1-a075-d826969f7e60.config
+2026-09-29T09:28:08.3862923Z [command]/usr/bin/git config --local --unset includeif.gitdir:/home/runner/work/skein/skein/.git/worktrees/*.path \/home\/runner\/work\/_temp\/git\-credentials\-8f48e49e\-e820\-4bf1\-a075\-d826969f7e60\.config
+2026-09-29T09:28:08.3902333Z [command]/usr/bin/git config --local --get-all includeif.gitdir:/github/workspace/.git.path
+2026-09-29T09:28:08.3924469Z /github/runner_temp/git-credentials-8f48e49e-e820-4bf1-a075-d826969f7e60.config
+2026-09-29T09:28:08.3932938Z [command]/usr/bin/git config --local --unset includeif.gitdir:/github/workspace/.git.path \/github\/runner_temp\/git\-credentials\-8f48e49e\-e820\-4bf1\-a075\-d826969f7e60\.config
+2026-09-29T09:28:08.3968207Z [command]/usr/bin/git config --local --get-all includeif.gitdir:/github/workspace/.git/worktrees/*.path
+2026-09-29T09:28:08.3988773Z /github/runner_temp/git-credentials-8f48e49e-e820-4bf1-a075-d826969f7e60.config
+2026-09-29T09:28:08.3996486Z [command]/usr/bin/git config --local --unset includeif.gitdir:/github/workspace/.git/worktrees/*.path \/github\/runner_temp\/git\-credentials\-8f48e49e\-e820\-4bf1\-a075\-d826969f7e60\.config
+2026-09-29T09:28:08.4033949Z [command]/usr/bin/git submodule foreach --recursive git config --local --show-origin --name-only --get-regexp remote.origin.url
+2026-09-29T09:28:08.4231612Z Entering 'third_party/SPIRV-Headers'
+2026-09-29T09:28:08.4251246Z file:/home/runner/work/skein/skein/.git/modules/third_party/SPIRV-Headers/config	remote.origin.url
+2026-09-29T09:28:08.4266273Z Entering 'third_party/Vulkan-Headers'
+2026-09-29T09:28:08.4285156Z file:/home/runner/work/skein/skein/.git/modules/third_party/Vulkan-Headers/config	remote.origin.url
+2026-09-29T09:28:08.4300611Z Entering 'third_party/llama.cpp'
+2026-09-29T09:28:08.4319126Z file:/home/runner/work/skein/skein/.git/modules/third_party/llama.cpp/config	remote.origin.url
+2026-09-29T09:28:08.4355278Z [command]/usr/bin/git config --file /home/runner/work/skein/skein/.git/modules/third_party/SPIRV-Headers/config --name-only --get-regexp ^includeIf\.gitdir:
+2026-09-29T09:28:08.4385599Z includeif.gitdir:/home/runner/work/skein/skein/.git/modules/third_party/SPIRV-Headers.path
+2026-09-29T09:28:08.4386808Z includeif.gitdir:/github/workspace/.git/modules/third_party/SPIRV-Headers.path
+2026-09-29T09:28:08.4395497Z [command]/usr/bin/git config --file /home/runner/work/skein/skein/.git/modules/third_party/SPIRV-Headers/config --get-all includeif.gitdir:/home/runner/work/skein/skein/.git/modules/third_party/SPIRV-Headers.path
+2026-09-29T09:28:08.4420308Z /home/runner/work/_temp/git-credentials-8f48e49e-e820-4bf1-a075-d826969f7e60.config
+2026-09-29T09:28:08.4430502Z [command]/usr/bin/git config --file /home/runner/work/skein/skein/.git/modules/third_party/SPIRV-Headers/config --unset includeif.gitdir:/home/runner/work/skein/skein/.git/modules/third_party/SPIRV-Headers.path \/home\/runner\/work\/_temp\/git\-credentials\-8f48e49e\-e820\-4bf1\-a075\-d826969f7e60\.config
+2026-09-29T09:28:08.4469677Z [command]/usr/bin/git config --file /home/runner/work/skein/skein/.git/modules/third_party/SPIRV-Headers/config --get-all includeif.gitdir:/github/workspace/.git/modules/third_party/SPIRV-Headers.path
+2026-09-29T09:28:08.4493574Z /github/runner_temp/git-credentials-8f48e49e-e820-4bf1-a075-d826969f7e60.config
+2026-09-29T09:28:08.4512860Z [command]/usr/bin/git config --file /home/runner/work/skein/skein/.git/modules/third_party/SPIRV-Headers/config --unset includeif.gitdir:/github/workspace/.git/modules/third_party/SPIRV-Headers.path \/github\/runner_temp\/git\-credentials\-8f48e49e\-e820\-4bf1\-a075\-d826969f7e60\.config
+2026-09-29T09:28:08.4541694Z [command]/usr/bin/git config --file /home/runner/work/skein/skein/.git/modules/third_party/Vulkan-Headers/config --name-only --get-regexp ^includeIf\.gitdir:
+2026-09-29T09:28:08.4567094Z includeif.gitdir:/home/runner/work/skein/skein/.git/modules/third_party/Vulkan-Headers.path
+2026-09-29T09:28:08.4568017Z includeif.gitdir:/github/workspace/.git/modules/third_party/Vulkan-Headers.path
+2026-09-29T09:28:08.4577666Z [command]/usr/bin/git config --file /home/runner/work/skein/skein/.git/modules/third_party/Vulkan-Headers/config --get-all includeif.gitdir:/home/runner/work/skein/skein/.git/modules/third_party/Vulkan-Headers.path
+2026-09-29T09:28:08.4599224Z /home/runner/work/_temp/git-credentials-8f48e49e-e820-4bf1-a075-d826969f7e60.config
+2026-09-29T09:28:08.4608527Z [command]/usr/bin/git config --file /home/runner/work/skein/skein/.git/modules/third_party/Vulkan-Headers/config --unset includeif.gitdir:/home/runner/work/skein/skein/.git/modules/third_party/Vulkan-Headers.path \/home\/runner\/work\/_temp\/git\-credentials\-8f48e49e\-e820\-4bf1\-a075\-d826969f7e60\.config
+2026-09-29T09:28:08.4650786Z [command]/usr/bin/git config --file /home/runner/work/skein/skein/.git/modules/third_party/Vulkan-Headers/config --get-all includeif.gitdir:/github/workspace/.git/modules/third_party/Vulkan-Headers.path
+2026-09-29T09:28:08.4673414Z /github/runner_temp/git-credentials-8f48e49e-e820-4bf1-a075-d826969f7e60.config
+2026-09-29T09:28:08.4682213Z [command]/usr/bin/git config --file /home/runner/work/skein/skein/.git/modules/third_party/Vulkan-Headers/config --unset includeif.gitdir:/github/workspace/.git/modules/third_party/Vulkan-Headers.path \/github\/runner_temp\/git\-credentials\-8f48e49e\-e820\-4bf1\-a075\-d826969f7e60\.config
+2026-09-29T09:28:08.4717182Z [command]/usr/bin/git config --file /home/runner/work/skein/skein/.git/modules/third_party/llama.cpp/config --name-only --get-regexp ^includeIf\.gitdir:
+2026-09-29T09:28:08.4739010Z includeif.gitdir:/home/runner/work/skein/skein/.git/modules/third_party/llama.cpp.path
+2026-09-29T09:28:08.4739738Z includeif.gitdir:/github/workspace/.git/modules/third_party/llama.cpp.path
+2026-09-29T09:28:08.4746256Z [command]/usr/bin/git config --file /home/runner/work/skein/skein/.git/modules/third_party/llama.cpp/config --get-all includeif.gitdir:/home/runner/work/skein/skein/.git/modules/third_party/llama.cpp.path
+2026-09-29T09:28:08.4767436Z /home/runner/work/_temp/git-credentials-8f48e49e-e820-4bf1-a075-d826969f7e60.config
+2026-09-29T09:28:08.4775731Z [command]/usr/bin/git config --file /home/runner/work/skein/skein/.git/modules/third_party/llama.cpp/config --unset includeif.gitdir:/home/runner/work/skein/skein/.git/modules/third_party/llama.cpp.path \/home\/runner\/work\/_temp\/git\-credentials\-8f48e49e\-e820\-4bf1\-a075\-d826969f7e60\.config
+2026-09-29T09:28:08.4810358Z [command]/usr/bin/git config --file /home/runner/work/skein/skein/.git/modules/third_party/llama.cpp/config --get-all includeif.gitdir:/github/workspace/.git/modules/third_party/llama.cpp.path
+2026-09-29T09:28:08.4836024Z /github/runner_temp/git-credentials-8f48e49e-e820-4bf1-a075-d826969f7e60.config
+2026-09-29T09:28:08.4878878Z [command]/usr/bin/git config --file /home/runner/work/skein/skein/.git/modules/third_party/llama.cpp/config --unset includeif.gitdir:/github/workspace/.git/modules/third_party/llama.cpp.path \/github\/runner_temp\/git\-credentials\-8f48e49e\-e820\-4bf1\-a075\-d826969f7e60\.config
+2026-09-29T09:28:08.4909989Z Removing credentials config '/home/runner/work/_temp/git-credentials-8f48e49e-e820-4bf1-a075-d826969f7e60.config'
+2026-09-29T09:28:08.5037000Z Cleaning up orphan processes
+2026-09-29T09:28:08.5311672Z Terminate orphan process: pid (2747) (java)
+2026-09-29T09:28:08.5462963Z Terminate orphan process: pid (2816) (java)
+2026-09-29T09:28:08.5506680Z Terminate orphan process: pid (2953) (java)
+2026-09-29T09:28:08.5529015Z ##[warning]Node.js 20 is deprecated. The following actions target Node.js 20 but are being forced to run on Node.js 24: gradle/actions/setup-gradle@748248ddd2a24f49513d8f472f81c3a07d4d50e1. For more information see: https://github.blog/changelog/2025-09-19-deprecation-of-node-20-on-github-actions-runners/

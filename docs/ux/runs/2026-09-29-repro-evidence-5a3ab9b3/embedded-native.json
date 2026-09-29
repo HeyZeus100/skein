@@ -1,0 +1,16 @@
+[
+  {
+    "artifact_id": 11023498781,
+    "entry": "lib/arm64-v8a/libskein_llama.so",
+    "sha256": "2aefda01808f10bf5693ab02d0857e0169dc09550b615896939cb176c032daff",
+    "bytes": 25314032,
+    "apk_entries": 826
+  },
+  {
+    "artifact_id": 11024241923,
+    "entry": "lib/arm64-v8a/libskein_llama.so",
+    "sha256": "2aefda01808f10bf5693ab02d0857e0169dc09550b615896939cb176c032daff",
+    "bytes": 25314032,
+    "apk_entries": 826
+  }
+]

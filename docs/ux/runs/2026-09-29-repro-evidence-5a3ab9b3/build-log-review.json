@@ -1,0 +1,53 @@
+{
+  "job-109340984272.log": {
+    "skipped": [
+      "2026-09-29T09:21:53.5229942Z > Task :build-logic:guards:checkKotlinGradlePluginConfigurationErrors SKIPPED",
+      "2026-09-29T09:22:33.7445233Z > Task :core:model:checkKotlinGradlePluginConfigurationErrors SKIPPED",
+      "2026-09-29T09:22:33.7447163Z > Task :core:verify:checkKotlinGradlePluginConfigurationErrors SKIPPED",
+      "2026-09-29T09:22:33.7449204Z > Task :core:markdown:checkKotlinGradlePluginConfigurationErrors SKIPPED",
+      "2026-09-29T09:22:47.3241603Z > Task :core:navigation:checkKotlinGradlePluginConfigurationErrors SKIPPED"
+    ],
+    "cache_restore": [],
+    "failure_markers": [],
+    "success": [
+      "2026-09-29T09:31:38.8224033Z BUILD SUCCESSFUL in 9m 56s"
+    ]
+  },
+  "job-109340984568.log": {
+    "skipped": [
+      "2026-09-29T09:21:55.6913126Z > Task :build-logic:guards:checkKotlinGradlePluginConfigurationErrors SKIPPED",
+      "2026-09-29T09:22:39.3944365Z > Task :core:model:checkKotlinGradlePluginConfigurationErrors SKIPPED",
+      "2026-09-29T09:22:39.3947260Z > Task :core:verify:checkKotlinGradlePluginConfigurationErrors SKIPPED",
+      "2026-09-29T09:22:39.3949516Z > Task :core:markdown:checkKotlinGradlePluginConfigurationErrors SKIPPED",
+      "2026-09-29T09:22:53.4973228Z > Task :core:navigation:checkKotlinGradlePluginConfigurationErrors SKIPPED"
+    ],
+    "cache_restore": [],
+    "failure_markers": [],
+    "success": [
+      "2026-09-29T09:32:05.0905070Z BUILD SUCCESSFUL in 10m 19s"
+    ]
+  },
+  "artifact-11023678920-so-determinism/files/run.h6APgG5s/build-2.log": {
+    "skipped": [
+      "> Task :core:model:checkKotlinGradlePluginConfigurationErrors SKIPPED",
+      "> Task :core:verify:checkKotlinGradlePluginConfigurationErrors SKIPPED"
+    ],
+    "cache_restore": [],
+    "failure_markers": [],
+    "success": [
+      "BUILD SUCCESSFUL in 2m 32s"
+    ]
+  },
+  "artifact-11023678920-so-determinism/files/run.h6APgG5s/build-1.log": {
+    "skipped": [
+      "> Task :build-logic:guards:checkKotlinGradlePluginConfigurationErrors SKIPPED",
+      "> Task :core:model:checkKotlinGradlePluginConfigurationErrors SKIPPED",
+      "> Task :core:verify:checkKotlinGradlePluginConfigurationErrors SKIPPED"
+    ],
+    "cache_restore": [],
+    "failure_markers": [],
+    "success": [
+      "BUILD SUCCESSFUL in 3m 41s"
+    ]
+  }
+}

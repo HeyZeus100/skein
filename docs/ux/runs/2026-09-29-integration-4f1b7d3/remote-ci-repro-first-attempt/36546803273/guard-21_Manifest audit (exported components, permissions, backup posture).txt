@@ -1,0 +1,19 @@
+﻿2026-09-29T09:26:15.8623017Z ##[group]Run export PATH="$ANDROID_HOME/build-tools/36.0.0:$PATH"
+2026-09-29T09:26:15.8623565Z [36;1mexport PATH="$ANDROID_HOME/build-tools/36.0.0:$PATH"[0m
+2026-09-29T09:26:15.8624132Z [36;1m./tools/ci/manifest-audit.sh app/build/outputs/apk/foss/debug/app-foss-debug.apk[0m
+2026-09-29T09:26:15.8685821Z shell: /usr/bin/bash -e {0}
+2026-09-29T09:26:15.8686133Z env:
+2026-09-29T09:26:15.8686507Z   JAVA_HOME: /opt/hostedtoolcache/Java_Temurin-Hotspot_jdk/17.0.20-1/x64
+2026-09-29T09:26:15.8687096Z   JAVA_HOME_17_X64: /opt/hostedtoolcache/Java_Temurin-Hotspot_jdk/17.0.20-1/x64
+2026-09-29T09:26:15.8687550Z   MAVEN_ARGS: -ntp
+2026-09-29T09:26:15.8687926Z   SKEIN_OPENSSL_TARBALL_DIR: /home/runner/work/_temp/skein-openssl
+2026-09-29T09:26:15.8688367Z   GRADLE_ACTION_ID: gradle/actions/setup-gradle
+2026-09-29T09:26:15.8688730Z   GRADLE_USER_HOME: /home/runner/.gradle
+2026-09-29T09:26:15.8689079Z   GRADLE_BUILD_ACTION_SETUP_COMPLETED: true
+2026-09-29T09:26:15.8689432Z   GRADLE_BUILD_ACTION_CACHE_RESTORED: true
+2026-09-29T09:26:15.8689952Z   DEVELOCITY_INJECTION_INIT_SCRIPT_NAME: gradle-actions.inject-develocity.init.gradle
+2026-09-29T09:26:15.8690487Z   DEVELOCITY_INJECTION_CUSTOM_VALUE: gradle-actions
+2026-09-29T09:26:15.8690862Z   GITHUB_DEPENDENCY_GRAPH_ENABLED: false
+2026-09-29T09:26:15.8691182Z ##[endgroup]
+2026-09-29T09:26:15.8829100Z manifest-audit: auditing app/build/outputs/apk/foss/debug/app-foss-debug.apk (variant: debug)
+2026-09-29T09:26:16.4284997Z manifest-audit: PASS

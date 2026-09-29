@@ -1,0 +1,18 @@
+﻿2026-09-29T09:26:14.4309385Z ##[group]Run ./tools/ci/native-opt-level.sh
+2026-09-29T09:26:14.4309829Z [36;1m./tools/ci/native-opt-level.sh[0m
+2026-09-29T09:26:14.4372485Z shell: /usr/bin/bash -e {0}
+2026-09-29T09:26:14.4372806Z env:
+2026-09-29T09:26:14.4373199Z   JAVA_HOME: /opt/hostedtoolcache/Java_Temurin-Hotspot_jdk/17.0.20-1/x64
+2026-09-29T09:26:14.4373774Z   JAVA_HOME_17_X64: /opt/hostedtoolcache/Java_Temurin-Hotspot_jdk/17.0.20-1/x64
+2026-09-29T09:26:14.4374218Z   MAVEN_ARGS: -ntp
+2026-09-29T09:26:14.4374587Z   SKEIN_OPENSSL_TARBALL_DIR: /home/runner/work/_temp/skein-openssl
+2026-09-29T09:26:14.4375360Z   GRADLE_ACTION_ID: gradle/actions/setup-gradle
+2026-09-29T09:26:14.4375769Z   GRADLE_USER_HOME: /home/runner/.gradle
+2026-09-29T09:26:14.4376222Z   GRADLE_BUILD_ACTION_SETUP_COMPLETED: true
+2026-09-29T09:26:14.4376659Z   GRADLE_BUILD_ACTION_CACHE_RESTORED: true
+2026-09-29T09:26:14.4377169Z   DEVELOCITY_INJECTION_INIT_SCRIPT_NAME: gradle-actions.inject-develocity.init.gradle
+2026-09-29T09:26:14.4377701Z   DEVELOCITY_INJECTION_CUSTOM_VALUE: gradle-actions
+2026-09-29T09:26:14.4378117Z   GITHUB_DEPENDENCY_GRAPH_ENABLED: false
+2026-09-29T09:26:14.4378443Z ##[endgroup]
+2026-09-29T09:26:14.4789705Z native-opt-level: ok: /home/runner/work/skein/skein/inference-service/.cxx/Debug/w4c23683/arm64-v8a/compile_commands.json: 34 llama.cpp/JNI translation units at -O2/-O3
+2026-09-29T09:26:14.5029748Z native-opt-level: ok: /home/runner/work/skein/skein/inference-service/.cxx/tools/devDebug/arm64-v8a/compile_commands.json: 34 llama.cpp/JNI translation units at -O2/-O3

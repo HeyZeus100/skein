@@ -1,0 +1,8 @@
+build_id=a
+abs_path=/home/runner/work/skein/skein/rb-a/skein
+commit=5a3ab9b986950651733e6040b43c7958f0ae25ac
+source_date_epoch=1790673628
+runner=Linux/X64
+jdk: openjdk version "17.0.20.1" 2026-08-18
+jdk: OpenJDK Runtime Environment Temurin-17.0.20.1+1 (build 17.0.20.1+1)
+jdk: OpenJDK 64-Bit Server VM Temurin-17.0.20.1+1 (build 17.0.20.1+1, mixed mode, sharing)

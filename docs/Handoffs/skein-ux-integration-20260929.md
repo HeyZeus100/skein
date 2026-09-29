@@ -120,7 +120,11 @@ Remote CI unit XML contains **5,077 passes, 88 skips, zero failures/errors** acr
 492 independently hashed files. The two additional skips are the existing
 `skein-lds9` CI-only failed-open retry cases; both pass locally. All 16 critical
 both-flavor draft, import-observer, late-attachment and OOM-worker cases pass.
-CI assembly/native guards still await final review. Ordinary instrumentation
+CI assembly and every native guard pass: 34 llama/JNI translation units use
+O2/O3; all inspected ELF segments are at least 16 KiB; 27 llama and 25 SQLite
+declared JNI exports match; content logging and manifest audits pass. Model
+manifest validation checks 24 fixtures and ships zero manifests. These source
+JNI guards do not inspect compiler-generated default callback methods. Ordinary instrumentation
 **failed**: 281 actual cases comprise app 38/38, vault 204/204 and service 20/39;
 19 failures, no errors/skips, missing or duplicate identities. The actual archive
 SHA256 is `6a94f342f898fad355cef244338dd107f51dab7a22a255bd293503d219bd373f`,
@@ -151,11 +155,32 @@ worker cap. CI-only integration `5a3ab9b986950651733e6040b43c7958f0ae25ac` adds
 on success and failure. Six helper self-tests, shell syntax and workflow checks pass.
 [Corrected reproducibility run 36548576075](https://github.com/HeyZeus100/skein/actions/runs/36548576075)
 is separate from the preserved original run. It does not change application inputs
-or the frozen `4f1b7d334` candidate. Its actual evidence review is pending.
+or the frozen `4f1b7d334` candidate. Its native evidence is now independently verified: actual archive
+`20c9cdfc3d9c409c7b453a183a9424767b84698f02d89322c6ea5640fca9323d`
+matches GitHub's digest; both retained 25,314,032-byte AArch64 libraries hash to
+`2aefda01808f10bf5693ab02d0857e0169dc09550b615896939cb176c032daff`.
+All nine outer and six inner manifest entries verify, both CMake builds executed,
+and context records clean source `5a3ab9b98`, epoch `1790673628` and exact submodule
+pins. The cap is proved by the hashed, executed script; normal Gradle logs do not
+echo argv. `skein-m7o9` is closed on this evidence. Corrected release APK comparison
+also passes: two 100,673,247-byte APKs share SHA256
+`cf7261f383637ff17149b54be987cf35012aa734e1374f88c2da012cc6116163`, with all 826 entries
+and full-file equality checked independently. Its later source epoch differs from
+the first run; APK equality is required within each run, not across those epochs.
+See the [corrected evidence bundle](../ux/runs/2026-09-29-repro-evidence-5a3ab9b3/).
+None of these results override the ordinary JNI failure.
 
-Foldable compatibility runtime follows ordinary instrumentation with explicitly
-selected `pixel_fold`; the SDK catalog lacks the exact `pixel_9_pro_fold` profile,
-and no silent fallback is allowed.
+[First foldable run 36549916881](https://github.com/HeyZeus100/skein/actions/runs/36549916881)
+explicitly selected `pixel_fold` at source `4f1b7d334` and failed closed before
+emulator launch: this GitHub runner's catalog lacks both branded Pixel profiles,
+although the local catalog had `pixel_fold`. Its actual review has zero tests,
+two missing identities, no APKs and no geometry; no runtime coverage was gained.
+The original artifact hash is
+`3dfe89dd802257b2e2cca62073a32432c5682e9421515362b79f664c18ff7830`.
+The observed `7.6in Foldable` generic profile is being added as an explicit
+compatibility choice; default Pixel 9 selection and exact fail-closed behavior
+remain. This unopened-vault gate is independent of the rejected native callback
+and cannot approve the candidate or close full unlocked A–G acceptance.
 
 The owner released Fold HOLD **only for a data-preserving update and demo checks**,
 with readiness requested by 17:00 PDT on 29 September. The conference-demo session's

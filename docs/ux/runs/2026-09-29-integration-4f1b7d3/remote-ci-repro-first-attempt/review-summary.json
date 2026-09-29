@@ -1,0 +1,706 @@
+{
+  "source_sha": "4f1b7d334173544feb47190b3e2e7efc4a5e1688",
+  "reviewed_at": "2026-09-29T09:28:30.636281+00:00",
+  "source_scope": "Host-declared checkout metadata and CI API head SHA; no embedded source or installed APK attestation.",
+  "runs": {
+    "36546803273": {
+      "url": "https://github.com/HeyZeus100/skein/actions/runs/36546803273",
+      "status": "completed",
+      "conclusion": "success",
+      "raw_run": {
+        "path": "/Users/andrewherrera/skein-worktrees/ux-fold-coverage-20260929/build/agent-logs/remote-4f1b7d3-20260929/36546803273/20260929T092719.951711Z-run.json",
+        "bytes": 11971,
+        "sha256": "11c6205fc6d615e43eecb9f84e1722634c0413f62d6956562628a4424bcd86d7"
+      },
+      "raw_jobs": {
+        "path": "/Users/andrewherrera/skein-worktrees/ux-fold-coverage-20260929/build/agent-logs/remote-4f1b7d3-20260929/36546803273/20260929T092719.951711Z-jobs.json",
+        "bytes": 5817,
+        "sha256": "ef0624fab791df0f8b20891339ea956b83b5c7fb531fcea4c59d021cd061a552"
+      },
+      "raw_artifacts": {
+        "path": "/Users/andrewherrera/skein-worktrees/ux-fold-coverage-20260929/build/agent-logs/remote-4f1b7d3-20260929/36546803273/20260929T092719.951711Z-artifacts.json",
+        "bytes": 1393,
+        "sha256": "2ab4f1bcd8a70e9f9507fd2ade0e2f3c1401f6aa5dae962bee71945611f26661"
+      },
+      "raw_logs": {
+        "path": "/Users/andrewherrera/skein-worktrees/ux-fold-coverage-20260929/build/agent-logs/remote-4f1b7d3-20260929/36546803273/run-logs.zip",
+        "bytes": 147837,
+        "sha256": "0ce360b2d49f99ea1d1d4f215eb41fd432416a17c92a03e1b1aac086fd8d82d8"
+      },
+      "jobs": [
+        {
+          "id": 109335040513,
+          "name": "Unit tests, lint, assemble (foss debug)",
+          "status": "completed",
+          "conclusion": "success"
+        }
+      ]
+    },
+    "36546803361": {
+      "url": "https://github.com/HeyZeus100/skein/actions/runs/36546803361",
+      "status": "completed",
+      "conclusion": "success",
+      "raw_run": {
+        "path": "/Users/andrewherrera/skein-worktrees/ux-fold-coverage-20260929/build/agent-logs/remote-4f1b7d3-20260929/36546803361/20260929T091947.025158Z-run.json",
+        "bytes": 12009,
+        "sha256": "191faab63553dd9b2b4a83ac6a1bbbe085ba6609ea82866814fbdab0f3230a29"
+      },
+      "raw_jobs": {
+        "path": "/Users/andrewherrera/skein-worktrees/ux-fold-coverage-20260929/build/agent-logs/remote-4f1b7d3-20260929/36546803361/20260929T091947.025158Z-jobs.json",
+        "bytes": 18532,
+        "sha256": "23e4f49fb976fd7e1c972514725a11f06e4f05fcc424e8b87a2ad2335ea67981"
+      },
+      "raw_artifacts": {
+        "path": "/Users/andrewherrera/skein-worktrees/ux-fold-coverage-20260929/build/agent-logs/remote-4f1b7d3-20260929/36546803361/20260929T091947.025158Z-artifacts.json",
+        "bytes": 1379,
+        "sha256": "459ab158ecd976f467d3deff5ad52a3e31e471d62663d811eaa3ea290cf0e5f1"
+      },
+      "raw_logs": {
+        "path": "/Users/andrewherrera/skein-worktrees/ux-fold-coverage-20260929/build/agent-logs/remote-4f1b7d3-20260929/36546803361/run-logs.zip",
+        "bytes": 192724,
+        "sha256": "0e8c8ab45f25d49bec321794a444e7d2508b1b2768d7dc9d8914c51eae7d9474"
+      },
+      "jobs": [
+        {
+          "id": 109335041415,
+          "name": "Toolchain manifest and tool self-tests",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "id": 109335043344,
+          "name": "Verify SQLCipher amalgamation matches pinned source",
+          "status": "completed",
+          "conclusion": "skipped"
+        },
+        {
+          "id": 109335143821,
+          "name": "libskein_llama.so is a function of its sources",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "id": 109335143854,
+          "name": "Build b (unsigned foss release)",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "id": 109335143983,
+          "name": "Build a (unsigned foss release)",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "id": 109339495361,
+          "name": "Compare the two builds",
+          "status": "completed",
+          "conclusion": "success"
+        }
+      ]
+    }
+  },
+  "artifacts": [
+    {
+      "path": "/Users/andrewherrera/skein-worktrees/ux-fold-coverage-20260929/build/agent-logs/remote-4f1b7d3-20260929/36546803273/artifact-11023292830-unit-test-results.zip",
+      "bytes": 2538232,
+      "sha256": "9b4011ff6f05f2399308a38d91430392615e1712f6825cbdfbefe54c0dbb0b7d",
+      "zip_entries": 1805,
+      "published_digest_matches": true,
+      "unit": {
+        "manifest_path": "build/unit-verification.json",
+        "manifest_sha256": "3b6ad0c6bc281e388e8687f4974c6db8d94a925a3e920da486a1c2e0a5006f34",
+        "manifest_source": "4f1b7d334173544feb47190b3e2e7efc4a5e1688",
+        "source_attribution": "host-declared git checkout, not APK attestation",
+        "verified_files": 492,
+        "actual_cases": {
+          "passed": 5077,
+          "skipped": 88
+        },
+        "xml_root_counts": {
+          "tests": 5165,
+          "skipped": 88,
+          "failures": 0,
+          "errors": 0
+        },
+        "critical_cases": [
+          {
+            "path": "app/build/test-results/testDevDebugUnitTest/TEST-app.skein.MainActivityDraftRetentionTest.xml",
+            "class": "app.skein.MainActivityDraftRetentionTest",
+            "name": "production lock removes content and unlock loads the encrypted-row draft with its selection",
+            "outcome": "passed"
+          },
+          {
+            "path": "app/build/test-results/testDevDebugUnitTest/TEST-app.skein.MainActivityDraftRetentionTest.xml",
+            "class": "app.skein.MainActivityDraftRetentionTest",
+            "name": "production conversation restores the session draft and selection after activity recreation",
+            "outcome": "passed"
+          },
+          {
+            "path": "app/build/test-results/testDevDebugUnitTest/TEST-app.skein.MainActivityModelImportTest.xml",
+            "class": "app.skein.MainActivityModelImportTest",
+            "name": "copy survives recreation and completion makes visible Chat ready without navigation",
+            "outcome": "passed"
+          },
+          {
+            "path": "app/build/test-results/testDevDebugUnitTest/TEST-app.skein.MainActivityModelImportTest.xml",
+            "class": "app.skein.MainActivityModelImportTest",
+            "name": "late rescued name after recreation cannot replace or dismiss newer import refusal",
+            "outcome": "passed"
+          },
+          {
+            "path": "app/build/test-results/testDevDebugUnitTest/TEST-app.skein.models.ModelServicesImportLifecycleTest.xml",
+            "class": "app.skein.models.ModelServicesImportLifecycleTest",
+            "name": "HIGH during parked unlock prevents old attachment cancelling newer registration",
+            "outcome": "passed"
+          },
+          {
+            "path": "app/build/test-results/testDevDebugUnitTest/TEST-app.skein.models.ModelServicesImportLifecycleTest.xml",
+            "class": "app.skein.models.ModelServicesImportLifecycleTest",
+            "name": "close during parked cache refresh prevents late authorization and import admission",
+            "outcome": "passed"
+          },
+          {
+            "path": "app/build/test-results/testDevDebugUnitTest/TEST-app.skein.models.ModelServicesImportLifecycleTest.xml",
+            "class": "app.skein.models.ModelServicesImportLifecycleTest",
+            "name": "close during parked unlock prevents old attachment cancelling newer registration",
+            "outcome": "passed"
+          },
+          {
+            "path": "app/build/test-results/testFossDebugUnitTest/TEST-app.skein.MainActivityDraftRetentionTest.xml",
+            "class": "app.skein.MainActivityDraftRetentionTest",
+            "name": "production lock removes content and unlock loads the encrypted-row draft with its selection",
+            "outcome": "passed"
+          },
+          {
+            "path": "app/build/test-results/testFossDebugUnitTest/TEST-app.skein.MainActivityDraftRetentionTest.xml",
+            "class": "app.skein.MainActivityDraftRetentionTest",
+            "name": "production conversation restores the session draft and selection after activity recreation",
+            "outcome": "passed"
+          },
+          {
+            "path": "app/build/test-results/testFossDebugUnitTest/TEST-app.skein.MainActivityModelImportTest.xml",
+            "class": "app.skein.MainActivityModelImportTest",
+            "name": "copy survives recreation and completion makes visible Chat ready without navigation",
+            "outcome": "passed"
+          },
+          {
+            "path": "app/build/test-results/testFossDebugUnitTest/TEST-app.skein.MainActivityModelImportTest.xml",
+            "class": "app.skein.MainActivityModelImportTest",
+            "name": "late rescued name after recreation cannot replace or dismiss newer import refusal",
+            "outcome": "passed"
+          },
+          {
+            "path": "app/build/test-results/testFossDebugUnitTest/TEST-app.skein.models.ModelServicesImportLifecycleTest.xml",
+            "class": "app.skein.models.ModelServicesImportLifecycleTest",
+            "name": "HIGH during parked unlock prevents old attachment cancelling newer registration",
+            "outcome": "passed"
+          },
+          {
+            "path": "app/build/test-results/testFossDebugUnitTest/TEST-app.skein.models.ModelServicesImportLifecycleTest.xml",
+            "class": "app.skein.models.ModelServicesImportLifecycleTest",
+            "name": "close during parked cache refresh prevents late authorization and import admission",
+            "outcome": "passed"
+          },
+          {
+            "path": "app/build/test-results/testFossDebugUnitTest/TEST-app.skein.models.ModelServicesImportLifecycleTest.xml",
+            "class": "app.skein.models.ModelServicesImportLifecycleTest",
+            "name": "close during parked unlock prevents old attachment cancelling newer registration",
+            "outcome": "passed"
+          },
+          {
+            "path": "inference-service/build/test-results/testDevDebugUnitTest/TEST-app.skein.inference.service.InferenceWorkerLifecycleTest.xml",
+            "class": "app.skein.inference.service.InferenceWorkerLifecycleTest",
+            "name": "decode OOM on the real worker securely cleans up and permits the next load",
+            "outcome": "passed"
+          },
+          {
+            "path": "inference-service/build/test-results/testFossDebugUnitTest/TEST-app.skein.inference.service.InferenceWorkerLifecycleTest.xml",
+            "class": "app.skein.inference.service.InferenceWorkerLifecycleTest",
+            "name": "decode OOM on the real worker securely cleans up and permits the next load",
+            "outcome": "passed"
+          }
+        ],
+        "skips_by_class": {
+          "app.skein.MainActivityComposeTest": 2,
+          "app.skein.core.rag.embed.EmbedderServiceImplTest": 4,
+          "app.skein.core.vault.transfer.ImportServiceImplContractTest": 2,
+          "app.skein.feature.chat.screenshots.ChatScreenshotTest": 8,
+          "app.skein.feature.chat.screenshots.ChatShellScreenshotTest": 4,
+          "app.skein.feature.editor.screenshots.KnowledgeShellScreenshotTest": 18,
+          "app.skein.feature.graph.screenshots.GraphShellScreenshotTest": 12,
+          "app.skein.feature.models.screenshots.ModelsShellScreenshotTest": 12,
+          "app.skein.feature.settings.screenshots.SettingsShellScreenshotTest": 12,
+          "app.skein.feature.shell.screenshots.SkeinNavigationContainerScreenshotTest": 14
+        },
+        "failures": []
+      }
+    },
+    {
+      "path": "/Users/andrewherrera/skein-worktrees/ux-fold-coverage-20260929/build/agent-logs/remote-4f1b7d3-20260929/36546803273/artifact-11023508850-skein-foss-debug-apk.zip",
+      "bytes": 49498508,
+      "sha256": "7425af3b73e0d609a66af4053c78deedf682cb06c42b214c95874b710cb71c33",
+      "zip_entries": 1,
+      "published_digest_matches": true,
+      "apks": [
+        {
+          "path": "app-foss-debug.apk",
+          "bytes": 125280302,
+          "sha256": "bbb12f0e0d174d5e67195beffb7cf0ea0a4fc71c90bb871707a5fc05d0fdb748",
+          "native_libraries": {
+            "lib/arm64-v8a/libandroidx.graphics.path.so": "41e9a793c43a0f4fddb19e33f346bace464f30f888ba7b9eaf96294ea115bfb6",
+            "lib/arm64-v8a/libdatastore_shared_counter.so": "178f89a2c6c9234ddf980dd4cd1f3616186a46b2b932aafa6707abd04c5fd76a",
+            "lib/arm64-v8a/libonnxruntime.so": "850f897a50d369b3305582244210f5649be9cfeb193c5807fba14146301616c7",
+            "lib/arm64-v8a/libonnxruntime4j_jni.so": "f86f2a5f56b907e4a25d67febc422ec13f5a265d36665f50e2808de6e4a515b6",
+            "lib/arm64-v8a/libskein_llama.so": "b3fe7bf00e66a9d476479ea5c1e65497586552d8d9c03efb470c856439101a88",
+            "lib/arm64-v8a/libskein_sqlite.so": "ef84dfbbbf1806ef24ddf2e94c270a450b643f4b64e798bacb156a437d7643d6",
+            "lib/arm64-v8a/libskein_sqlite_jni.so": "2d6454ff03023ef85f0d19fd7c3cce88169b5b212a9de86b7fe649b98ff5d229"
+          },
+          "v1_signature_entries": [],
+          "v2_v3_magic_present": true,
+          "native_layout": [
+            {
+              "name": "lib/arm64-v8a/libandroidx.graphics.path.so",
+              "machine": 183,
+              "pt_load_alignments": [
+                16384,
+                16384,
+                16384
+              ],
+              "zip_data_offset": 49954816,
+              "compression": 0
+            },
+            {
+              "name": "lib/arm64-v8a/libdatastore_shared_counter.so",
+              "machine": 183,
+              "pt_load_alignments": [
+                16384,
+                16384,
+                16384,
+                16384
+              ],
+              "zip_data_offset": 49971200,
+              "compression": 0
+            },
+            {
+              "name": "lib/arm64-v8a/libonnxruntime.so",
+              "machine": 183,
+              "pt_load_alignments": [
+                16384,
+                16384,
+                16384
+              ],
+              "zip_data_offset": 49987584,
+              "compression": 0
+            },
+            {
+              "name": "lib/arm64-v8a/libonnxruntime4j_jni.so",
+              "machine": 183,
+              "pt_load_alignments": [
+                16384,
+                16384
+              ],
+              "zip_data_offset": 77987840,
+              "compression": 0
+            },
+            {
+              "name": "lib/arm64-v8a/libskein_llama.so",
+              "machine": 183,
+              "pt_load_alignments": [
+                16384,
+                16384,
+                16384
+              ],
+              "zip_data_offset": 78086144,
+              "compression": 0
+            },
+            {
+              "name": "lib/arm64-v8a/libskein_sqlite.so",
+              "machine": 183,
+              "pt_load_alignments": [
+                16384,
+                16384,
+                16384
+              ],
+              "zip_data_offset": 111509504,
+              "compression": 0
+            },
+            {
+              "name": "lib/arm64-v8a/libskein_sqlite_jni.so",
+              "machine": 183,
+              "pt_load_alignments": [
+                16384,
+                16384
+              ],
+              "zip_data_offset": 117784576,
+              "compression": 0
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "path": "/Users/andrewherrera/skein-worktrees/ux-fold-coverage-20260929/build/agent-logs/remote-4f1b7d3-20260929/36546803361/artifact-11023047271-rb-build-b.zip",
+      "bytes": 100674134,
+      "sha256": "c5ec51606b8093e038a9d875060df980dd542194eff2f284c5546538894595df",
+      "zip_entries": 3,
+      "published_digest_matches": true,
+      "apks": [
+        {
+          "path": "app-foss-release-unsigned.apk",
+          "bytes": 100673247,
+          "sha256": "3d4930f8aa134ac46bc4c7b672bdf2e18a1c9bff698f1a461dea96d5bff70522",
+          "native_libraries": {
+            "lib/arm64-v8a/libandroidx.graphics.path.so": "41e9a793c43a0f4fddb19e33f346bace464f30f888ba7b9eaf96294ea115bfb6",
+            "lib/arm64-v8a/libdatastore_shared_counter.so": "178f89a2c6c9234ddf980dd4cd1f3616186a46b2b932aafa6707abd04c5fd76a",
+            "lib/arm64-v8a/libonnxruntime.so": "850f897a50d369b3305582244210f5649be9cfeb193c5807fba14146301616c7",
+            "lib/arm64-v8a/libonnxruntime4j_jni.so": "f86f2a5f56b907e4a25d67febc422ec13f5a265d36665f50e2808de6e4a515b6",
+            "lib/arm64-v8a/libskein_llama.so": "2aefda01808f10bf5693ab02d0857e0169dc09550b615896939cb176c032daff",
+            "lib/arm64-v8a/libskein_sqlite.so": "e70b3c768dddfb1c236c3360c39697db4ad433340a02e2a6e69c4f813a784782",
+            "lib/arm64-v8a/libskein_sqlite_jni.so": "2d6454ff03023ef85f0d19fd7c3cce88169b5b212a9de86b7fe649b98ff5d229"
+          },
+          "v1_signature_entries": [],
+          "v2_v3_magic_present": false,
+          "native_layout": [
+            {
+              "name": "lib/arm64-v8a/libandroidx.graphics.path.so",
+              "machine": 183,
+              "pt_load_alignments": [
+                16384,
+                16384,
+                16384
+              ],
+              "zip_data_offset": 33685504,
+              "compression": 0
+            },
+            {
+              "name": "lib/arm64-v8a/libdatastore_shared_counter.so",
+              "machine": 183,
+              "pt_load_alignments": [
+                16384,
+                16384,
+                16384,
+                16384
+              ],
+              "zip_data_offset": 33701888,
+              "compression": 0
+            },
+            {
+              "name": "lib/arm64-v8a/libonnxruntime.so",
+              "machine": 183,
+              "pt_load_alignments": [
+                16384,
+                16384,
+                16384
+              ],
+              "zip_data_offset": 33718272,
+              "compression": 0
+            },
+            {
+              "name": "lib/arm64-v8a/libonnxruntime4j_jni.so",
+              "machine": 183,
+              "pt_load_alignments": [
+                16384,
+                16384
+              ],
+              "zip_data_offset": 61718528,
+              "compression": 0
+            },
+            {
+              "name": "lib/arm64-v8a/libskein_llama.so",
+              "machine": 183,
+              "pt_load_alignments": [
+                16384,
+                16384,
+                16384
+              ],
+              "zip_data_offset": 61816832,
+              "compression": 0
+            },
+            {
+              "name": "lib/arm64-v8a/libskein_sqlite.so",
+              "machine": 183,
+              "pt_load_alignments": [
+                16384,
+                16384,
+                16384
+              ],
+              "zip_data_offset": 87146496,
+              "compression": 0
+            },
+            {
+              "name": "lib/arm64-v8a/libskein_sqlite_jni.so",
+              "machine": 183,
+              "pt_load_alignments": [
+                16384,
+                16384
+              ],
+              "zip_data_offset": 93405184,
+              "compression": 0
+            }
+          ]
+        }
+      ],
+      "build_context": "build_id=b\nabs_path=/home/runner/work/skein/skein/rb-b/nested/deeper/skein\ncommit=4f1b7d334173544feb47190b3e2e7efc4a5e1688\nsource_date_epoch=1790672335\nrunner=Linux/X64\njdk: openjdk version \"17.0.20.1\" 2026-08-18\njdk: OpenJDK Runtime Environment Temurin-17.0.20.1+1 (build 17.0.20.1+1)\njdk: OpenJDK 64-Bit Server VM Temurin-17.0.20.1+1 (build 17.0.20.1+1, mixed mode, sharing)\n",
+      "published_inner_hashes": "3d4930f8aa134ac46bc4c7b672bdf2e18a1c9bff698f1a461dea96d5bff70522  app-foss-release-unsigned.apk\n"
+    },
+    {
+      "path": "/Users/andrewherrera/skein-worktrees/ux-fold-coverage-20260929/build/agent-logs/remote-4f1b7d3-20260929/36546803361/artifact-11023661673-rb-build-a.zip",
+      "bytes": 100674120,
+      "sha256": "ca8056eb6edeb7b1930586663cfdc56e3600005cf3a528993fa9fdd77494bfb5",
+      "zip_entries": 3,
+      "published_digest_matches": true,
+      "apks": [
+        {
+          "path": "app-foss-release-unsigned.apk",
+          "bytes": 100673247,
+          "sha256": "3d4930f8aa134ac46bc4c7b672bdf2e18a1c9bff698f1a461dea96d5bff70522",
+          "native_libraries": {
+            "lib/arm64-v8a/libandroidx.graphics.path.so": "41e9a793c43a0f4fddb19e33f346bace464f30f888ba7b9eaf96294ea115bfb6",
+            "lib/arm64-v8a/libdatastore_shared_counter.so": "178f89a2c6c9234ddf980dd4cd1f3616186a46b2b932aafa6707abd04c5fd76a",
+            "lib/arm64-v8a/libonnxruntime.so": "850f897a50d369b3305582244210f5649be9cfeb193c5807fba14146301616c7",
+            "lib/arm64-v8a/libonnxruntime4j_jni.so": "f86f2a5f56b907e4a25d67febc422ec13f5a265d36665f50e2808de6e4a515b6",
+            "lib/arm64-v8a/libskein_llama.so": "2aefda01808f10bf5693ab02d0857e0169dc09550b615896939cb176c032daff",
+            "lib/arm64-v8a/libskein_sqlite.so": "e70b3c768dddfb1c236c3360c39697db4ad433340a02e2a6e69c4f813a784782",
+            "lib/arm64-v8a/libskein_sqlite_jni.so": "2d6454ff03023ef85f0d19fd7c3cce88169b5b212a9de86b7fe649b98ff5d229"
+          },
+          "v1_signature_entries": [],
+          "v2_v3_magic_present": false,
+          "native_layout": [
+            {
+              "name": "lib/arm64-v8a/libandroidx.graphics.path.so",
+              "machine": 183,
+              "pt_load_alignments": [
+                16384,
+                16384,
+                16384
+              ],
+              "zip_data_offset": 33685504,
+              "compression": 0
+            },
+            {
+              "name": "lib/arm64-v8a/libdatastore_shared_counter.so",
+              "machine": 183,
+              "pt_load_alignments": [
+                16384,
+                16384,
+                16384,
+                16384
+              ],
+              "zip_data_offset": 33701888,
+              "compression": 0
+            },
+            {
+              "name": "lib/arm64-v8a/libonnxruntime.so",
+              "machine": 183,
+              "pt_load_alignments": [
+                16384,
+                16384,
+                16384
+              ],
+              "zip_data_offset": 33718272,
+              "compression": 0
+            },
+            {
+              "name": "lib/arm64-v8a/libonnxruntime4j_jni.so",
+              "machine": 183,
+              "pt_load_alignments": [
+                16384,
+                16384
+              ],
+              "zip_data_offset": 61718528,
+              "compression": 0
+            },
+            {
+              "name": "lib/arm64-v8a/libskein_llama.so",
+              "machine": 183,
+              "pt_load_alignments": [
+                16384,
+                16384,
+                16384
+              ],
+              "zip_data_offset": 61816832,
+              "compression": 0
+            },
+            {
+              "name": "lib/arm64-v8a/libskein_sqlite.so",
+              "machine": 183,
+              "pt_load_alignments": [
+                16384,
+                16384,
+                16384
+              ],
+              "zip_data_offset": 87146496,
+              "compression": 0
+            },
+            {
+              "name": "lib/arm64-v8a/libskein_sqlite_jni.so",
+              "machine": 183,
+              "pt_load_alignments": [
+                16384,
+                16384
+              ],
+              "zip_data_offset": 93405184,
+              "compression": 0
+            }
+          ]
+        }
+      ],
+      "build_context": "build_id=a\nabs_path=/home/runner/work/skein/skein/rb-a/skein\ncommit=4f1b7d334173544feb47190b3e2e7efc4a5e1688\nsource_date_epoch=1790672335\nrunner=Linux/X64\njdk: openjdk version \"17.0.20.1\" 2026-08-18\njdk: OpenJDK Runtime Environment Temurin-17.0.20.1+1 (build 17.0.20.1+1)\njdk: OpenJDK 64-Bit Server VM Temurin-17.0.20.1+1 (build 17.0.20.1+1, mixed mode, sharing)\n",
+      "published_inner_hashes": "3d4930f8aa134ac46bc4c7b672bdf2e18a1c9bff698f1a461dea96d5bff70522  app-foss-release-unsigned.apk\n"
+    }
+  ],
+  "release_comparison": {
+    "actual_sha256_equal": true,
+    "actual_bytes_equal": true,
+    "sha256_a": "3d4930f8aa134ac46bc4c7b672bdf2e18a1c9bff698f1a461dea96d5bff70522",
+    "sha256_b": "3d4930f8aa134ac46bc4c7b672bdf2e18a1c9bff698f1a461dea96d5bff70522",
+    "native_hashes_equal": true,
+    "direct_byte_equality": true
+  },
+  "candidate_release_status": {
+    "status": "REJECTED_BY_COORDINATOR",
+    "reported_reason": "Ordinary instrumentation run 36546817687 has 19 JNI default-supplier/synthetic-native method failures; issue skein-gg11.36.",
+    "scope": "Coordinator-reported separate lane; not independently audited in this CI/repro review. These successful source/build checks do not approve installation."
+  },
+  "ci_guard_findings": {
+    "native_optimization": "34 llama/JNI translation units at O2/O3 in each of two compile_commands records",
+    "elf_alignment": "10 build copies inspected by runner; all PT_LOAD >=16384",
+    "llama_jni": "27 declared LlamaNative external functions, exact Java_ surface in 5 build copies",
+    "sqlite_jni": "25 declared SkeinSQLiteNativeImpl external functions, exact Java_ surface in 5 build copies",
+    "content_logging": "19 source files clean",
+    "manifest_audit": "PASS debug APK",
+    "model_manifests": "24 manifests checked, 0 shipped"
+  },
+  "unit_local_comparison": {
+    "local_previously_audited": {
+      "passed": 5079,
+      "skipped": 86,
+      "failures": 0,
+      "errors": 0
+    },
+    "remote": {
+      "passed": 5077,
+      "skipped": 88,
+      "failures": 0,
+      "errors": 0
+    },
+    "additional_remote_skips": {
+      "test": "app.skein.MainActivityComposeTest.retrying after a failed open brings the shell up once the vault opens",
+      "variants": [
+        "DevDebug",
+        "FossDebug"
+      ],
+      "reason": "skein-lds9: skipped on CI, runs locally",
+      "source": "app/src/test/kotlin/app/skein/MainActivityComposeTest.kt:550"
+    }
+  },
+  "ci_guard_logs": [
+    {
+      "path": "/Users/andrewherrera/skein-worktrees/ux-fold-coverage-20260929/build/agent-logs/remote-4f1b7d3-20260929/36546803273/guard-16_Native optimisation level (libskein_llama.so translation units).txt",
+      "bytes": 1589,
+      "sha256": "30bcf64a2bc5ec62325860dc18fa8cdfcd441b373eb8bd1a61ad2a64cbca4f5d",
+      "zip_member": "Unit tests, lint, assemble (foss debug)/16_Native optimisation level (libskein_llama.so translation units).txt",
+      "result_lines": [
+        "2026-09-29T09:26:14.4789705Z native-opt-level: ok: /home/runner/work/skein/skein/inference-service/.cxx/Debug/w4c23683/arm64-v8a/compile_commands.json: 34 llama.cpp/JNI translation units at -O2/-O3",
+        "2026-09-29T09:26:14.5029748Z native-opt-level: ok: /home/runner/work/skein/skein/inference-service/.cxx/tools/devDebug/arm64-v8a/compile_commands.json: 34 llama.cpp/JNI translation units at -O2/-O3"
+      ]
+    },
+    {
+      "path": "/Users/andrewherrera/skein-worktrees/ux-fold-coverage-20260929/build/agent-logs/remote-4f1b7d3-20260929/36546803273/guard-17_16 KiB ELF LOAD-segment alignment (libskein_llama.so, libskein_sqlite_jni.so).txt",
+      "bytes": 3477,
+      "sha256": "a2a7cb362287c8072a6854e600ecf6c382577b3bcd8411cf87314685c4e8d386",
+      "zip_member": "Unit tests, lint, assemble (foss debug)/17_16 KiB ELF LOAD-segment alignment (libskein_llama.so, libskein_sqlite_jni.so).txt",
+      "result_lines": [
+        "2026-09-29T09:26:14.6078403Z elf-alignment: core/vault/build/intermediates/cxx/Debug/6y733jp4/obj/arm64-v8a/libskein_sqlite_jni.so (arm64-v8a): 2 PT_LOAD segment(s), all p_align >= 16384: PASS",
+        "2026-09-29T09:26:14.6226917Z elf-alignment: core/vault/build/intermediates/library_and_local_jars_jni/fossDebug/copyFossDebugJniLibsProjectAndLocalJars/jni/arm64-v8a/libskein_sqlite_jni.so (arm64-v8a): 2 PT_LOAD segment(s), all p_align >= 16384: PASS",
+        "2026-09-29T09:26:14.6376254Z elf-alignment: core/vault/build/intermediates/library_jni/fossDebug/copyFossDebugJniLibsProjectOnly/jni/arm64-v8a/libskein_sqlite_jni.so (arm64-v8a): 2 PT_LOAD segment(s), all p_align >= 16384: PASS",
+        "2026-09-29T09:26:14.6523787Z elf-alignment: core/vault/build/intermediates/merged_native_libs/fossDebug/mergeFossDebugNativeLibs/out/lib/arm64-v8a/libskein_sqlite_jni.so (arm64-v8a): 2 PT_LOAD segment(s), all p_align >= 16384: PASS",
+        "2026-09-29T09:26:14.6672254Z elf-alignment: core/vault/build/intermediates/stripped_native_libs/fossDebug/stripFossDebugDebugSymbols/out/lib/arm64-v8a/libskein_sqlite_jni.so (arm64-v8a): 2 PT_LOAD segment(s), all p_align >= 16384: PASS",
+        "2026-09-29T09:26:14.6851068Z elf-alignment: inference-service/build/intermediates/cxx/Debug/w4c23683/obj/arm64-v8a/libskein_llama.so (arm64-v8a): 3 PT_LOAD segment(s), all p_align >= 16384: PASS",
+        "2026-09-29T09:26:14.7030257Z elf-alignment: inference-service/build/intermediates/library_and_local_jars_jni/fossDebug/copyFossDebugJniLibsProjectAndLocalJars/jni/arm64-v8a/libskein_llama.so (arm64-v8a): 3 PT_LOAD segment(s), all p_align >= 16384: PASS",
+        "2026-09-29T09:26:14.7208369Z elf-alignment: inference-service/build/intermediates/library_jni/fossDebug/copyFossDebugJniLibsProjectOnly/jni/arm64-v8a/libskein_llama.so (arm64-v8a): 3 PT_LOAD segment(s), all p_align >= 16384: PASS",
+        "2026-09-29T09:26:14.7386514Z elf-alignment: inference-service/build/intermediates/merged_native_libs/fossDebug/mergeFossDebugNativeLibs/out/lib/arm64-v8a/libskein_llama.so (arm64-v8a): 3 PT_LOAD segment(s), all p_align >= 16384: PASS",
+        "2026-09-29T09:26:14.7562777Z elf-alignment: inference-service/build/intermediates/stripped_native_libs/fossDebug/stripFossDebugDebugSymbols/out/lib/arm64-v8a/libskein_llama.so (arm64-v8a): 3 PT_LOAD segment(s), all p_align >= 16384: PASS"
+      ]
+    },
+    {
+      "path": "/Users/andrewherrera/skein-worktrees/ux-fold-coverage-20260929/build/agent-logs/remote-4f1b7d3-20260929/36546803273/guard-18_JNI symbol surface (libskein_llama.so).txt",
+      "bytes": 2456,
+      "sha256": "c8187c98fb8d45e4de919e094b489633c89ed82c3f02ea463f3f2d9f7b55925b",
+      "zip_member": "Unit tests, lint, assemble (foss debug)/18_JNI symbol surface (libskein_llama.so).txt",
+      "result_lines": [
+        "2026-09-29T09:26:14.7880073Z jni-symbols: LlamaNative.kt declares 27 external fun(s)",
+        "2026-09-29T09:26:15.5382770Z jni-symbols: inference-service/build/intermediates/cxx/Debug/w4c23683/obj/arm64-v8a/libskein_llama.so: 27 Java_ symbol(s), exactly the declared externals",
+        "2026-09-29T09:26:15.5574880Z jni-symbols: inference-service/build/intermediates/library_and_local_jars_jni/fossDebug/copyFossDebugJniLibsProjectAndLocalJars/jni/arm64-v8a/libskein_llama.so: 27 Java_ symbol(s), exactly the declared externals",
+        "2026-09-29T09:26:15.5769259Z jni-symbols: inference-service/build/intermediates/library_jni/fossDebug/copyFossDebugJniLibsProjectOnly/jni/arm64-v8a/libskein_llama.so: 27 Java_ symbol(s), exactly the declared externals",
+        "2026-09-29T09:26:15.5968427Z jni-symbols: inference-service/build/intermediates/merged_native_libs/fossDebug/mergeFossDebugNativeLibs/out/lib/arm64-v8a/libskein_llama.so: 27 Java_ symbol(s), exactly the declared externals",
+        "2026-09-29T09:26:15.6160025Z jni-symbols: inference-service/build/intermediates/stripped_native_libs/fossDebug/stripFossDebugDebugSymbols/out/lib/arm64-v8a/libskein_llama.so: 27 Java_ symbol(s), exactly the declared externals"
+      ]
+    },
+    {
+      "path": "/Users/andrewherrera/skein-worktrees/ux-fold-coverage-20260929/build/agent-logs/remote-4f1b7d3-20260929/36546803273/guard-19_JNI symbol surface (libskein_sqlite_jni.so).txt",
+      "bytes": 2435,
+      "sha256": "1ad996e88a0ac0f8c516869a1fbf7a99d6da8f7e2d55c78fb389e7172aa364e8",
+      "zip_member": "Unit tests, lint, assemble (foss debug)/19_JNI symbol surface (libskein_sqlite_jni.so).txt",
+      "result_lines": [
+        "2026-09-29T09:26:15.6427096Z sqlite-jni-symbols: SkeinSQLiteNative.kt declares 25 external fun(s) on SkeinSQLiteNativeImpl",
+        "2026-09-29T09:26:15.6799516Z sqlite-jni-symbols: core/vault/build/intermediates/cxx/Debug/6y733jp4/obj/arm64-v8a/libskein_sqlite_jni.so: 25 Java_ symbol(s), exactly the declared externals",
+        "2026-09-29T09:26:15.6968441Z sqlite-jni-symbols: core/vault/build/intermediates/library_and_local_jars_jni/fossDebug/copyFossDebugJniLibsProjectAndLocalJars/jni/arm64-v8a/libskein_sqlite_jni.so: 25 Java_ symbol(s), exactly the declared externals",
+        "2026-09-29T09:26:15.7137744Z sqlite-jni-symbols: core/vault/build/intermediates/library_jni/fossDebug/copyFossDebugJniLibsProjectOnly/jni/arm64-v8a/libskein_sqlite_jni.so: 25 Java_ symbol(s), exactly the declared externals",
+        "2026-09-29T09:26:15.7303242Z sqlite-jni-symbols: core/vault/build/intermediates/merged_native_libs/fossDebug/mergeFossDebugNativeLibs/out/lib/arm64-v8a/libskein_sqlite_jni.so: 25 Java_ symbol(s), exactly the declared externals",
+        "2026-09-29T09:26:15.7472605Z sqlite-jni-symbols: core/vault/build/intermediates/stripped_native_libs/fossDebug/stripFossDebugDebugSymbols/out/lib/arm64-v8a/libskein_sqlite_jni.so: 25 Java_ symbol(s), exactly the declared externals"
+      ]
+    },
+    {
+      "path": "/Users/andrewherrera/skein-worktrees/ux-fold-coverage-20260929/build/agent-logs/remote-4f1b7d3-20260929/36546803273/guard-20_No prompt_token content in service logs.txt",
+      "bytes": 1307,
+      "sha256": "2ba06d7e172d54208fc8b739a78947964f40cbdc95fbb273eb74dff521fe44c1",
+      "zip_member": "Unit tests, lint, assemble (foss debug)/20_No prompt_token content in service logs.txt",
+      "result_lines": [
+        "2026-09-29T09:26:15.8589916Z no-content-logging: clean: 19 file(s), no SkeinLog call references model content"
+      ]
+    },
+    {
+      "path": "/Users/andrewherrera/skein-worktrees/ux-fold-coverage-20260929/build/agent-logs/remote-4f1b7d3-20260929/36546803273/guard-21_Manifest audit (exported components, permissions, backup posture).txt",
+      "bytes": 1531,
+      "sha256": "48624ce0ba067793d012b000172f76d61ace9a9e79272f24fa0de33def4cacbc",
+      "zip_member": "Unit tests, lint, assemble (foss debug)/21_Manifest audit (exported components, permissions, backup posture).txt",
+      "result_lines": [
+        "2026-09-29T09:26:16.4284997Z manifest-audit: PASS"
+      ]
+    },
+    {
+      "path": "/Users/andrewherrera/skein-worktrees/ux-fold-coverage-20260929/build/agent-logs/remote-4f1b7d3-20260929/36546803273/guard-22_Validate model manifests.txt",
+      "bytes": 1345,
+      "sha256": "d82cdf7eeac975346c64ba4016c07b891bf2426625644b04706489e9e1a5651d",
+      "zip_member": "Unit tests, lint, assemble (foss debug)/22_Validate model manifests.txt",
+      "result_lines": [
+        "2026-09-29T09:26:16.4802974Z validate-manifests: checked 24 manifest(s) (0 shipped)",
+        "2026-09-29T09:26:16.4803720Z validate-manifests: OK"
+      ]
+    }
+  ],
+  "native_cold_build": {
+    "raw_log": {
+      "path": "/Users/andrewherrera/skein-worktrees/ux-fold-coverage-20260929/build/agent-logs/remote-4f1b7d3-20260929/36546803361/job-109335143821-native-determinism.log",
+      "bytes": 44127,
+      "sha256": "29cdb4979191623d1a9260b1a37137659900a7779131ff86e34121abd74d14a8"
+    },
+    "builds": 2,
+    "runner_reported_sha256_each": "2aefda01808f10bf5693ab02d0857e0169dc09550b615896939cb176c032daff",
+    "independently_rehashed_release_apk_llama_matches": true,
+    "scope": "Success cold-build .so copies were not uploaded; both retained release APK libraries independently match the two runner-reported cold-build hashes."
+  },
+  "remaining_scope": [
+    "SQLCipher pinned-source regeneration job skipped: tag-only. It did not pass in this run.",
+    "Original reproducibility Gradle invocations lacked --max-workers=2; preserved original evidence. Later corrected runs are outside this review.",
+    "This is one source commit, not evidence by itself for three consecutive main commits.",
+    "No physical device, emulator, runtime retrieval-quality, embedding-quality, IME/focus, or full fold acceptance claims."
+  ],
+  "full_review": {
+    "path": "/Users/andrewherrera/skein-worktrees/ux-fold-coverage-20260929/build/agent-logs/remote-4f1b7d3-20260929/review-final-full.json",
+    "bytes": 589640,
+    "sha256": "01a78f20277093ac26755a06342902af8177c50f960432ddc963fef5a79c8c97"
+  }
+}

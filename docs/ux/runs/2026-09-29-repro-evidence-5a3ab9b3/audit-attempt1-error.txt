@@ -1,0 +1,1 @@
+Local audit helper selected run.log as a directory using glob(run.*); NotADirectoryError before final report emission. Empty native-audit.json preserved. Fixed directory selection only; raw archive and extracted evidence unchanged.

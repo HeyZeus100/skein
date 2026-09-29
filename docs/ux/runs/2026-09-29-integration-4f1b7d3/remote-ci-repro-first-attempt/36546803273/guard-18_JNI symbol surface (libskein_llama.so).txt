@@ -1,0 +1,23 @@
+﻿2026-09-29T09:26:14.7607857Z ##[group]Run ./tools/ci/jni-symbols.sh
+2026-09-29T09:26:14.7608271Z [36;1m./tools/ci/jni-symbols.sh[0m
+2026-09-29T09:26:14.7670692Z shell: /usr/bin/bash -e {0}
+2026-09-29T09:26:14.7671011Z env:
+2026-09-29T09:26:14.7671386Z   JAVA_HOME: /opt/hostedtoolcache/Java_Temurin-Hotspot_jdk/17.0.20-1/x64
+2026-09-29T09:26:14.7671972Z   JAVA_HOME_17_X64: /opt/hostedtoolcache/Java_Temurin-Hotspot_jdk/17.0.20-1/x64
+2026-09-29T09:26:14.7672424Z   MAVEN_ARGS: -ntp
+2026-09-29T09:26:14.7672798Z   SKEIN_OPENSSL_TARBALL_DIR: /home/runner/work/_temp/skein-openssl
+2026-09-29T09:26:14.7673241Z   GRADLE_ACTION_ID: gradle/actions/setup-gradle
+2026-09-29T09:26:14.7673614Z   GRADLE_USER_HOME: /home/runner/.gradle
+2026-09-29T09:26:14.7673968Z   GRADLE_BUILD_ACTION_SETUP_COMPLETED: true
+2026-09-29T09:26:14.7674319Z   GRADLE_BUILD_ACTION_CACHE_RESTORED: true
+2026-09-29T09:26:14.7674814Z   DEVELOCITY_INJECTION_INIT_SCRIPT_NAME: gradle-actions.inject-develocity.init.gradle
+2026-09-29T09:26:14.7675508Z   DEVELOCITY_INJECTION_CUSTOM_VALUE: gradle-actions
+2026-09-29T09:26:14.7675918Z   GITHUB_DEPENDENCY_GRAPH_ENABLED: false
+2026-09-29T09:26:14.7676241Z ##[endgroup]
+2026-09-29T09:26:14.7827893Z jni-symbols: no std::cout/printf/__android_log_* in native/llama/jni
+2026-09-29T09:26:14.7880073Z jni-symbols: LlamaNative.kt declares 27 external fun(s)
+2026-09-29T09:26:15.5382770Z jni-symbols: inference-service/build/intermediates/cxx/Debug/w4c23683/obj/arm64-v8a/libskein_llama.so: 27 Java_ symbol(s), exactly the declared externals
+2026-09-29T09:26:15.5574880Z jni-symbols: inference-service/build/intermediates/library_and_local_jars_jni/fossDebug/copyFossDebugJniLibsProjectAndLocalJars/jni/arm64-v8a/libskein_llama.so: 27 Java_ symbol(s), exactly the declared externals
+2026-09-29T09:26:15.5769259Z jni-symbols: inference-service/build/intermediates/library_jni/fossDebug/copyFossDebugJniLibsProjectOnly/jni/arm64-v8a/libskein_llama.so: 27 Java_ symbol(s), exactly the declared externals
+2026-09-29T09:26:15.5968427Z jni-symbols: inference-service/build/intermediates/merged_native_libs/fossDebug/mergeFossDebugNativeLibs/out/lib/arm64-v8a/libskein_llama.so: 27 Java_ symbol(s), exactly the declared externals
+2026-09-29T09:26:15.6160025Z jni-symbols: inference-service/build/intermediates/stripped_native_libs/fossDebug/stripFossDebugDebugSymbols/out/lib/arm64-v8a/libskein_llama.so: 27 Java_ symbol(s), exactly the declared externals

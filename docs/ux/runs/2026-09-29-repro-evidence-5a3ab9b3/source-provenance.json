@@ -1,0 +1,12 @@
+{
+  "run_id": 36548576075,
+  "head_sha": "5a3ab9b986950651733e6040b43c7958f0ae25ac",
+  "prior_verified_source": "4f1b7d334173544feb47190b3e2e7efc4a5e1688",
+  "diff_paths": [
+    ".github/workflows/reproducible-build.yml",
+    "tools/rb/so-determinism.sh"
+  ],
+  "self_test_log_sha256": "9f0fe8051329b0d97c1ccba65a2af28090fc7ea3f1aec21f5d001ab388f83e62",
+  "source_script_sha256": "3f3421ec9562cceefd6341921c65841108e5419bc80b083c67345117c3729098",
+  "source_workflow_sha256": "60e1b16ce69607d85c05938d8c87229bb19aaa4d7333917dd9f5e9922bcb96f6"
+}

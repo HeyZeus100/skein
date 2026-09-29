@@ -1,0 +1,477 @@
+Reusing configuration cache.
+> Task :app:clean UP-TO-DATE
+> Task :clean
+> Task :embedder-service:clean UP-TO-DATE
+> Task :inference-service:externalNativeBuildCleanDevDebug
+> Task :inference-service:externalNativeBuildCleanDevRelease
+> Task :inference-service:externalNativeBuildCleanFossRelease
+> Task :testing:clean UP-TO-DATE
+> Task :inference-service:externalNativeBuildCleanFossDebug
+> Task :testing-fakes:clean UP-TO-DATE
+> Task :testing-ui:clean UP-TO-DATE
+> Task :core:agent:clean UP-TO-DATE
+> Task :core:designsystem:clean UP-TO-DATE
+> Task :core:export:clean UP-TO-DATE
+> Task :core:inference:clean UP-TO-DATE
+> Task :core:ipc:clean
+> Task :core:markdown:clean UP-TO-DATE
+> Task :core:model:clean
+> Task :core:navigation:clean UP-TO-DATE
+> Task :core:rag:clean UP-TO-DATE
+> Task :core:security:clean UP-TO-DATE
+> Task :core:vault:externalNativeBuildCleanDevDebug
+> Task :core:vault:externalNativeBuildCleanDevRelease
+> Task :core:vault:externalNativeBuildCleanFossDebug
+> Task :core:vault:externalNativeBuildCleanFossRelease
+> Task :core:vault:clean UP-TO-DATE
+> Task :core:verify:clean
+> Task :feature:chat:clean UP-TO-DATE
+> Task :feature:editor:clean UP-TO-DATE
+> Task :feature:graph:clean UP-TO-DATE
+> Task :inference-service:clean
+> Task :feature:models:clean UP-TO-DATE
+> Task :feature:onboarding:clean UP-TO-DATE
+> Task :feature:personas:clean UP-TO-DATE
+> Task :feature:shell:clean UP-TO-DATE
+> Task :feature:timeline:clean UP-TO-DATE
+> Task :inference-service:preBuild UP-TO-DATE
+> Task :inference-service:preFossReleaseBuild UP-TO-DATE
+> Task :core:ipc:preBuild UP-TO-DATE
+> Task :core:ipc:preReleaseBuild UP-TO-DATE
+> Task :feature:settings:clean UP-TO-DATE
+> Task :inference-service:preDevReleaseBuild UP-TO-DATE
+> Task :core:ipc:writeReleaseAarMetadata
+> Task :inference-service:checkFossReleaseAarMetadata
+> Task :inference-service:mergeFossReleaseJniLibFolders
+> Task :inference-service:extractDeepLinksForAarFossRelease UP-TO-DATE
+> Task :core:model:checkKotlinGradlePluginConfigurationErrors SKIPPED
+
+> Task :inference-service:configureCMakeRelWithDebInfo[arm64-v8a]
+C/C++: CMake Deprecation Warning at /usr/local/lib/android/sdk/ndk/27.3.13750724/build/cmake/android.toolchain.cmake:35 (cmake_minimum_required):
+C/C++:   Compatibility with CMake < 3.10 will be removed from a future version of
+C/C++:   CMake.
+C/C++:   Update the VERSION argument <min> value.  Or, use the <min>...<max> syntax
+C/C++:   to tell CMake that the project requires at least <min> but has been updated
+C/C++:   to work with policies introduced by <max> or earlier.
+C/C++: Call Stack (most recent call first):
+C/C++:   /usr/local/lib/android/sdk/cmake/3.31.5/share/cmake-3.31/Modules/CMakeDetermineSystem.cmake:146 (include)
+C/C++:   CMakeLists.txt:2 (project)
+C/C++: CMake Deprecation Warning at /usr/local/lib/android/sdk/ndk/27.3.13750724/build/cmake/android-legacy.toolchain.cmake:35 (cmake_minimum_required):
+C/C++:   Compatibility with CMake < 3.10 will be removed from a future version of
+C/C++:   CMake.
+C/C++:   Update the VERSION argument <min> value.  Or, use the <min>...<max> syntax
+C/C++:   to tell CMake that the project requires at least <min> but has been updated
+C/C++:   to work with policies introduced by <max> or earlier.
+C/C++: Call Stack (most recent call first):
+C/C++:   /usr/local/lib/android/sdk/ndk/27.3.13750724/build/cmake/android.toolchain.cmake:55 (include)
+C/C++:   /usr/local/lib/android/sdk/cmake/3.31.5/share/cmake-3.31/Modules/CMakeDetermineSystem.cmake:146 (include)
+C/C++:   CMakeLists.txt:2 (project)
+C/C++: CMake Deprecation Warning at /usr/local/lib/android/sdk/ndk/27.3.13750724/build/cmake/android.toolchain.cmake:35 (cmake_minimum_required):
+C/C++:   Compatibility with CMake < 3.10 will be removed from a future version of
+C/C++:   CMake.
+C/C++:   Update the VERSION argument <min> value.  Or, use the <min>...<max> syntax
+C/C++:   to tell CMake that the project requires at least <min> but has been updated
+C/C++:   to work with policies introduced by <max> or earlier.
+C/C++: Call Stack (most recent call first):
+C/C++:   /home/runner/work/skein/skein/inference-service/.cxx/RelWithDebInfo/2b1y4s1g/arm64-v8a/CMakeFiles/3.31.5/CMakeSystem.cmake:6 (include)
+C/C++:   CMakeLists.txt:2 (project)
+C/C++: CMake Deprecation Warning at /usr/local/lib/android/sdk/ndk/27.3.13750724/build/cmake/flags.cmake:18 (cmake_minimum_required):
+C/C++:   Compatibility with CMake < 3.10 will be removed from a future version of
+C/C++:   CMake.
+C/C++:   Update the VERSION argument <min> value.  Or, use the <min>...<max> syntax
+C/C++:   to tell CMake that the project requires at least <min> but has been updated
+C/C++:   to work with policies introduced by <max> or earlier.
+C/C++: Call Stack (most recent call first):
+C/C++:   /usr/local/lib/android/sdk/cmake/3.31.5/share/cmake-3.31/Modules/Platform/Android-Clang.cmake:23 (include)
+C/C++:   /usr/local/lib/android/sdk/cmake/3.31.5/share/cmake-3.31/Modules/Platform/Android-Clang-CXX.cmake:1 (include)
+C/C++:   /usr/local/lib/android/sdk/cmake/3.31.5/share/cmake-3.31/Modules/CMakeCXXInformation.cmake:48 (include)
+C/C++:   CMakeLists.txt:2 (project)
+C/C++: CMake Deprecation Warning at /usr/local/lib/android/sdk/ndk/27.3.13750724/build/cmake/android.toolchain.cmake:35 (cmake_minimum_required):
+C/C++:   Compatibility with CMake < 3.10 will be removed from a future version of
+C/C++:   CMake.
+C/C++:   Update the VERSION argument <min> value.  Or, use the <min>...<max> syntax
+C/C++:   to tell CMake that the project requires at least <min> but has been updated
+C/C++:   to work with policies introduced by <max> or earlier.
+C/C++: Call Stack (most recent call first):
+C/C++:   /home/runner/work/skein/skein/inference-service/.cxx/RelWithDebInfo/2b1y4s1g/arm64-v8a/CMakeFiles/3.31.5/CMakeSystem.cmake:6 (include)
+C/C++:   /home/runner/work/skein/skein/inference-service/.cxx/RelWithDebInfo/2b1y4s1g/arm64-v8a/CMakeFiles/CMakeScratch/TryCompile-HQluL6/CMakeLists.txt:2 (project)
+C/C++: CMake Deprecation Warning at /usr/local/lib/android/sdk/ndk/27.3.13750724/build/cmake/android-legacy.toolchain.cmake:35 (cmake_minimum_required):
+C/C++:   Compatibility with CMake < 3.10 will be removed from a future version of
+C/C++:   CMake.
+C/C++:   Update the VERSION argument <min> value.  Or, use the <min>...<max> syntax
+C/C++:   to tell CMake that the project requires at least <min> but has been updated
+C/C++:   to work with policies introduced by <max> or earlier.
+C/C++: Call Stack (most recent call first):
+C/C++:   /usr/local/lib/android/sdk/ndk/27.3.13750724/build/cmake/android.toolchain.cmake:55 (include)
+C/C++:   /home/runner/work/skein/skein/inference-service/.cxx/RelWithDebInfo/2b1y4s1g/arm64-v8a/CMakeFiles/3.31.5/CMakeSystem.cmake:6 (include)
+C/C++:   /home/runner/work/skein/skein/inference-service/.cxx/RelWithDebInfo/2b1y4s1g/arm64-v8a/CMakeFiles/CMakeScratch/TryCompile-HQluL6/CMakeLists.txt:2 (project)
+C/C++: CMake Deprecation Warning at /usr/local/lib/android/sdk/ndk/27.3.13750724/build/cmake/flags.cmake:18 (cmake_minimum_required):
+C/C++:   Compatibility with CMake < 3.10 will be removed from a future version of
+C/C++:   CMake.
+C/C++:   Update the VERSION argument <min> value.  Or, use the <min>...<max> syntax
+C/C++:   to tell CMake that the project requires at least <min> but has been updated
+C/C++:   to work with policies introduced by <max> or earlier.
+C/C++: Call Stack (most recent call first):
+C/C++:   /usr/local/lib/android/sdk/cmake/3.31.5/share/cmake-3.31/Modules/Platform/Android-Clang.cmake:23 (include)
+C/C++:   /usr/local/lib/android/sdk/cmake/3.31.5/share/cmake-3.31/Modules/Platform/Android-Clang-CXX.cmake:1 (include)
+C/C++:   /usr/local/lib/android/sdk/cmake/3.31.5/share/cmake-3.31/Modules/CMakeCXXInformation.cmake:48 (include)
+C/C++:   /home/runner/work/skein/skein/inference-service/.cxx/RelWithDebInfo/2b1y4s1g/arm64-v8a/CMakeFiles/CMakeScratch/TryCompile-HQluL6/CMakeLists.txt:2 (project)
+C/C++: CMake Deprecation Warning at /usr/local/lib/android/sdk/ndk/27.3.13750724/build/cmake/android.toolchain.cmake:35 (cmake_minimum_required):
+C/C++:   Compatibility with CMake < 3.10 will be removed from a future version of
+C/C++:   CMake.
+C/C++:   Update the VERSION argument <min> value.  Or, use the <min>...<max> syntax
+C/C++:   to tell CMake that the project requires at least <min> but has been updated
+C/C++:   to work with policies introduced by <max> or earlier.
+C/C++: Call Stack (most recent call first):
+C/C++:   /home/runner/work/skein/skein/inference-service/.cxx/RelWithDebInfo/2b1y4s1g/arm64-v8a/CMakeFiles/3.31.5/CMakeSystem.cmake:6 (include)
+C/C++:   /home/runner/work/skein/skein/inference-service/.cxx/RelWithDebInfo/2b1y4s1g/arm64-v8a/CMakeFiles/CMakeScratch/TryCompile-aGPYzH/CMakeLists.txt:2 (project)
+C/C++: CMake Deprecation Warning at /usr/local/lib/android/sdk/ndk/27.3.13750724/build/cmake/android-legacy.toolchain.cmake:35 (cmake_minimum_required):
+C/C++:   Compatibility with CMake < 3.10 will be removed from a future version of
+C/C++:   CMake.
+C/C++:   Update the VERSION argument <min> value.  Or, use the <min>...<max> syntax
+C/C++:   to tell CMake that the project requires at least <min> but has been updated
+C/C++:   to work with policies introduced by <max> or earlier.
+C/C++: Call Stack (most recent call first):
+C/C++:   /usr/local/lib/android/sdk/ndk/27.3.13750724/build/cmake/android.toolchain.cmake:55 (include)
+C/C++:   /home/runner/work/skein/skein/inference-service/.cxx/RelWithDebInfo/2b1y4s1g/arm64-v8a/CMakeFiles/3.31.5/CMakeSystem.cmake:6 (include)
+C/C++:   /home/runner/work/skein/skein/inference-service/.cxx/RelWithDebInfo/2b1y4s1g/arm64-v8a/CMakeFiles/CMakeScratch/TryCompile-aGPYzH/CMakeLists.txt:2 (project)
+C/C++: CMake Deprecation Warning at /usr/local/lib/android/sdk/ndk/27.3.13750724/build/cmake/flags.cmake:18 (cmake_minimum_required):
+C/C++:   Compatibility with CMake < 3.10 will be removed from a future version of
+C/C++:   CMake.
+C/C++:   Update the VERSION argument <min> value.  Or, use the <min>...<max> syntax
+C/C++:   to tell CMake that the project requires at least <min> but has been updated
+C/C++:   to work with policies introduced by <max> or earlier.
+C/C++: Call Stack (most recent call first):
+C/C++:   /usr/local/lib/android/sdk/cmake/3.31.5/share/cmake-3.31/Modules/Platform/Android-Clang.cmake:23 (include)
+C/C++:   /usr/local/lib/android/sdk/cmake/3.31.5/share/cmake-3.31/Modules/Platform/Android-Clang-C.cmake:1 (include)
+C/C++:   /usr/local/lib/android/sdk/cmake/3.31.5/share/cmake-3.31/Modules/CMakeCInformation.cmake:48 (include)
+C/C++:   /home/runner/work/skein/skein/inference-service/.cxx/RelWithDebInfo/2b1y4s1g/arm64-v8a/CMakeFiles/CMakeScratch/TryCompile-aGPYzH/CMakeLists.txt:2 (project)
+C/C++: CMAKE_BUILD_TYPE=RelWithDebInfo
+C/C++: CMake Deprecation Warning at /usr/local/lib/android/sdk/ndk/27.3.13750724/build/cmake/android.toolchain.cmake:35 (cmake_minimum_required):
+C/C++:   Compatibility with CMake < 3.10 will be removed from a future version of
+C/C++:   CMake.
+C/C++:   Update the VERSION argument <min> value.  Or, use the <min>...<max> syntax
+C/C++:   to tell CMake that the project requires at least <min> but has been updated
+C/C++:   to work with policies introduced by <max> or earlier.
+C/C++: Call Stack (most recent call first):
+C/C++:   /home/runner/work/skein/skein/inference-service/.cxx/RelWithDebInfo/2b1y4s1g/arm64-v8a/CMakeFiles/3.31.5/CMakeSystem.cmake:6 (include)
+C/C++:   /home/runner/work/skein/skein/inference-service/.cxx/RelWithDebInfo/2b1y4s1g/arm64-v8a/CMakeFiles/CMakeScratch/TryCompile-jLTM9Y/CMakeLists.txt:3 (project)
+C/C++: CMake Deprecation Warning at /usr/local/lib/android/sdk/ndk/27.3.13750724/build/cmake/android-legacy.toolchain.cmake:35 (cmake_minimum_required):
+C/C++:   Compatibility with CMake < 3.10 will be removed from a future version of
+C/C++:   CMake.
+C/C++:   Update the VERSION argument <min> value.  Or, use the <min>...<max> syntax
+C/C++:   to tell CMake that the project requires at least <min> but has been updated
+C/C++:   to work with policies introduced by <max> or earlier.
+C/C++: Call Stack (most recent call first):
+C/C++:   /usr/local/lib/android/sdk/ndk/27.3.13750724/build/cmake/android.toolchain.cmake:55 (include)
+C/C++:   /home/runner/work/skein/skein/inference-service/.cxx/RelWithDebInfo/2b1y4s1g/arm64-v8a/CMakeFiles/3.31.5/CMakeSystem.cmake:6 (include)
+C/C++:   /home/runner/work/skein/skein/inference-service/.cxx/RelWithDebInfo/2b1y4s1g/arm64-v8a/CMakeFiles/CMakeScratch/TryCompile-jLTM9Y/CMakeLists.txt:3 (project)
+C/C++: CMake Deprecation Warning at /usr/local/lib/android/sdk/ndk/27.3.13750724/build/cmake/flags.cmake:18 (cmake_minimum_required):
+C/C++:   Compatibility with CMake < 3.10 will be removed from a future version of
+C/C++:   CMake.
+C/C++:   Update the VERSION argument <min> value.  Or, use the <min>...<max> syntax
+C/C++:   to tell CMake that the project requires at least <min> but has been updated
+C/C++:   to work with policies introduced by <max> or earlier.
+C/C++: Call Stack (most recent call first):
+C/C++:   /usr/local/lib/android/sdk/cmake/3.31.5/share/cmake-3.31/Modules/Platform/Android-Clang.cmake:23 (include)
+C/C++:   /usr/local/lib/android/sdk/cmake/3.31.5/share/cmake-3.31/Modules/Platform/Android-Clang-C.cmake:1 (include)
+C/C++:   /usr/local/lib/android/sdk/cmake/3.31.5/share/cmake-3.31/Modules/CMakeCInformation.cmake:48 (include)
+C/C++:   /home/runner/work/skein/skein/inference-service/.cxx/RelWithDebInfo/2b1y4s1g/arm64-v8a/CMakeFiles/CMakeScratch/TryCompile-jLTM9Y/CMakeLists.txt:3 (project)
+C/C++: CMake Deprecation Warning at /usr/local/lib/android/sdk/ndk/27.3.13750724/build/cmake/android.toolchain.cmake:35 (cmake_minimum_required):
+C/C++:   Compatibility with CMake < 3.10 will be removed from a future version of
+C/C++:   CMake.
+C/C++:   Update the VERSION argument <min> value.  Or, use the <min>...<max> syntax
+C/C++:   to tell CMake that the project requires at least <min> but has been updated
+C/C++:   to work with policies introduced by <max> or earlier.
+C/C++: Call Stack (most recent call first):
+C/C++:   /home/runner/work/skein/skein/inference-service/.cxx/RelWithDebInfo/2b1y4s1g/arm64-v8a/CMakeFiles/3.31.5/CMakeSystem.cmake:6 (include)
+C/C++:   /home/runner/work/skein/skein/inference-service/.cxx/RelWithDebInfo/2b1y4s1g/arm64-v8a/CMakeFiles/CMakeScratch/TryCompile-lPO2IJ/CMakeLists.txt:3 (project)
+C/C++: CMake Deprecation Warning at /usr/local/lib/android/sdk/ndk/27.3.13750724/build/cmake/android-legacy.toolchain.cmake:35 (cmake_minimum_required):
+C/C++:   Compatibility with CMake < 3.10 will be removed from a future version of
+C/C++:   CMake.
+C/C++:   Update the VERSION argument <min> value.  Or, use the <min>...<max> syntax
+C/C++:   to tell CMake that the project requires at least <min> but has been updated
+C/C++:   to work with policies introduced by <max> or earlier.
+C/C++: Call Stack (most recent call first):
+C/C++:   /usr/local/lib/android/sdk/ndk/27.3.13750724/build/cmake/android.toolchain.cmake:55 (include)
+C/C++:   /home/runner/work/skein/skein/inference-service/.cxx/RelWithDebInfo/2b1y4s1g/arm64-v8a/CMakeFiles/3.31.5/CMakeSystem.cmake:6 (include)
+C/C++:   /home/runner/work/skein/skein/inference-service/.cxx/RelWithDebInfo/2b1y4s1g/arm64-v8a/CMakeFiles/CMakeScratch/TryCompile-lPO2IJ/CMakeLists.txt:3 (project)
+C/C++: CMake Deprecation Warning at /usr/local/lib/android/sdk/ndk/27.3.13750724/build/cmake/flags.cmake:18 (cmake_minimum_required):
+C/C++:   Compatibility with CMake < 3.10 will be removed from a future version of
+C/C++:   CMake.
+C/C++:   Update the VERSION argument <min> value.  Or, use the <min>...<max> syntax
+C/C++:   to tell CMake that the project requires at least <min> but has been updated
+C/C++:   to work with policies introduced by <max> or earlier.
+C/C++: Call Stack (most recent call first):
+C/C++:   /usr/local/lib/android/sdk/cmake/3.31.5/share/cmake-3.31/Modules/Platform/Android-Clang.cmake:23 (include)
+C/C++:   /usr/local/lib/android/sdk/cmake/3.31.5/share/cmake-3.31/Modules/Platform/Android-Clang-C.cmake:1 (include)
+C/C++:   /usr/local/lib/android/sdk/cmake/3.31.5/share/cmake-3.31/Modules/CMakeCInformation.cmake:48 (include)
+C/C++:   /home/runner/work/skein/skein/inference-service/.cxx/RelWithDebInfo/2b1y4s1g/arm64-v8a/CMakeFiles/CMakeScratch/TryCompile-lPO2IJ/CMakeLists.txt:3 (project)
+C/C++: CMake Deprecation Warning at /usr/local/lib/android/sdk/ndk/27.3.13750724/build/cmake/android.toolchain.cmake:35 (cmake_minimum_required):
+C/C++:   Compatibility with CMake < 3.10 will be removed from a future version of
+C/C++:   CMake.
+C/C++:   Update the VERSION argument <min> value.  Or, use the <min>...<max> syntax
+C/C++:   to tell CMake that the project requires at least <min> but has been updated
+C/C++:   to work with policies introduced by <max> or earlier.
+C/C++: Call Stack (most recent call first):
+C/C++:   /home/runner/work/skein/skein/inference-service/.cxx/RelWithDebInfo/2b1y4s1g/arm64-v8a/CMakeFiles/3.31.5/CMakeSystem.cmake:6 (include)
+C/C++:   /home/runner/work/skein/skein/inference-service/.cxx/RelWithDebInfo/2b1y4s1g/arm64-v8a/CMakeFiles/CMakeScratch/TryCompile-r9PzZS/CMakeLists.txt:3 (project)
+C/C++: CMake Deprecation Warning at /usr/local/lib/android/sdk/ndk/27.3.13750724/build/cmake/android-legacy.toolchain.cmake:35 (cmake_minimum_required):
+C/C++:   Compatibility with CMake < 3.10 will be removed from a future version of
+C/C++:   CMake.
+C/C++:   Update the VERSION argument <min> value.  Or, use the <min>...<max> syntax
+C/C++:   to tell CMake that the project requires at least <min> but has been updated
+C/C++:   to work with policies introduced by <max> or earlier.
+C/C++: Call Stack (most recent call first):
+C/C++:   /usr/local/lib/android/sdk/ndk/27.3.13750724/build/cmake/android.toolchain.cmake:55 (include)
+C/C++:   /home/runner/work/skein/skein/inference-service/.cxx/RelWithDebInfo/2b1y4s1g/arm64-v8a/CMakeFiles/3.31.5/CMakeSystem.cmake:6 (include)
+C/C++:   /home/runner/work/skein/skein/inference-service/.cxx/RelWithDebInfo/2b1y4s1g/arm64-v8a/CMakeFiles/CMakeScratch/TryCompile-r9PzZS/CMakeLists.txt:3 (project)
+C/C++: CMake Deprecation Warning at /usr/local/lib/android/sdk/ndk/27.3.13750724/build/cmake/flags.cmake:18 (cmake_minimum_required):
+C/C++:   Compatibility with CMake < 3.10 will be removed from a future version of
+C/C++:   CMake.
+C/C++:   Update the VERSION argument <min> value.  Or, use the <min>...<max> syntax
+C/C++:   to tell CMake that the project requires at least <min> but has been updated
+C/C++:   to work with policies introduced by <max> or earlier.
+C/C++: Call Stack (most recent call first):
+C/C++:   /usr/local/lib/android/sdk/cmake/3.31.5/share/cmake-3.31/Modules/Platform/Android-Clang.cmake:23 (include)
+C/C++:   /usr/local/lib/android/sdk/cmake/3.31.5/share/cmake-3.31/Modules/Platform/Android-Clang-CXX.cmake:1 (include)
+C/C++:   /usr/local/lib/android/sdk/cmake/3.31.5/share/cmake-3.31/Modules/CMakeCXXInformation.cmake:48 (include)
+C/C++:   /home/runner/work/skein/skein/inference-service/.cxx/RelWithDebInfo/2b1y4s1g/arm64-v8a/CMakeFiles/CMakeScratch/TryCompile-r9PzZS/CMakeLists.txt:3 (project)
+C/C++: CMake Deprecation Warning at /usr/local/lib/android/sdk/ndk/27.3.13750724/build/cmake/android.toolchain.cmake:35 (cmake_minimum_required):
+C/C++:   Compatibility with CMake < 3.10 will be removed from a future version of
+C/C++:   CMake.
+C/C++:   Update the VERSION argument <min> value.  Or, use the <min>...<max> syntax
+C/C++:   to tell CMake that the project requires at least <min> but has been updated
+C/C++:   to work with policies introduced by <max> or earlier.
+C/C++: Call Stack (most recent call first):
+C/C++:   /home/runner/work/skein/skein/inference-service/.cxx/RelWithDebInfo/2b1y4s1g/arm64-v8a/CMakeFiles/3.31.5/CMakeSystem.cmake:6 (include)
+C/C++:   /home/runner/work/skein/skein/inference-service/.cxx/RelWithDebInfo/2b1y4s1g/arm64-v8a/CMakeFiles/CMakeScratch/TryCompile-UxWbv1/CMakeLists.txt:3 (project)
+C/C++: CMake Deprecation Warning at /usr/local/lib/android/sdk/ndk/27.3.13750724/build/cmake/android-legacy.toolchain.cmake:35 (cmake_minimum_required):
+C/C++:   Compatibility with CMake < 3.10 will be removed from a future version of
+C/C++:   CMake.
+C/C++:   Update the VERSION argument <min> value.  Or, use the <min>...<max> syntax
+C/C++:   to tell CMake that the project requires at least <min> but has been updated
+C/C++:   to work with policies introduced by <max> or earlier.
+C/C++: Call Stack (most recent call first):
+C/C++:   /usr/local/lib/android/sdk/ndk/27.3.13750724/build/cmake/android.toolchain.cmake:55 (include)
+C/C++:   /home/runner/work/skein/skein/inference-service/.cxx/RelWithDebInfo/2b1y4s1g/arm64-v8a/CMakeFiles/3.31.5/CMakeSystem.cmake:6 (include)
+C/C++:   /home/runner/work/skein/skein/inference-service/.cxx/RelWithDebInfo/2b1y4s1g/arm64-v8a/CMakeFiles/CMakeScratch/TryCompile-UxWbv1/CMakeLists.txt:3 (project)
+C/C++: CMake Deprecation Warning at /usr/local/lib/android/sdk/ndk/27.3.13750724/build/cmake/flags.cmake:18 (cmake_minimum_required):
+C/C++:   Compatibility with CMake < 3.10 will be removed from a future version of
+C/C++:   CMake.
+C/C++:   Update the VERSION argument <min> value.  Or, use the <min>...<max> syntax
+C/C++:   to tell CMake that the project requires at least <min> but has been updated
+C/C++:   to work with policies introduced by <max> or earlier.
+C/C++: Call Stack (most recent call first):
+C/C++:   /usr/local/lib/android/sdk/cmake/3.31.5/share/cmake-3.31/Modules/Platform/Android-Clang.cmake:23 (include)
+C/C++:   /usr/local/lib/android/sdk/cmake/3.31.5/share/cmake-3.31/Modules/Platform/Android-Clang-CXX.cmake:1 (include)
+C/C++:   /usr/local/lib/android/sdk/cmake/3.31.5/share/cmake-3.31/Modules/CMakeCXXInformation.cmake:48 (include)
+C/C++:   /home/runner/work/skein/skein/inference-service/.cxx/RelWithDebInfo/2b1y4s1g/arm64-v8a/CMakeFiles/CMakeScratch/TryCompile-UxWbv1/CMakeLists.txt:3 (project)
+C/C++: CMake Deprecation Warning at /usr/local/lib/android/sdk/ndk/27.3.13750724/build/cmake/android.toolchain.cmake:35 (cmake_minimum_required):
+C/C++:   Compatibility with CMake < 3.10 will be removed from a future version of
+C/C++:   CMake.
+C/C++:   Update the VERSION argument <min> value.  Or, use the <min>...<max> syntax
+C/C++:   to tell CMake that the project requires at least <min> but has been updated
+C/C++:   to work with policies introduced by <max> or earlier.
+C/C++: Call Stack (most recent call first):
+C/C++:   /home/runner/work/skein/skein/inference-service/.cxx/RelWithDebInfo/2b1y4s1g/arm64-v8a/CMakeFiles/3.31.5/CMakeSystem.cmake:6 (include)
+C/C++:   /home/runner/work/skein/skein/inference-service/.cxx/RelWithDebInfo/2b1y4s1g/arm64-v8a/CMakeFiles/CMakeScratch/TryCompile-8tIlx9/CMakeLists.txt:3 (project)
+C/C++: CMake Deprecation Warning at /usr/local/lib/android/sdk/ndk/27.3.13750724/build/cmake/android-legacy.toolchain.cmake:35 (cmake_minimum_required):
+C/C++:   Compatibility with CMake < 3.10 will be removed from a future version of
+C/C++:   CMake.
+C/C++:   Update the VERSION argument <min> value.  Or, use the <min>...<max> syntax
+C/C++:   to tell CMake that the project requires at least <min> but has been updated
+C/C++:   to work with policies introduced by <max> or earlier.
+C/C++: Call Stack (most recent call first):
+C/C++:   /usr/local/lib/android/sdk/ndk/27.3.13750724/build/cmake/android.toolchain.cmake:55 (include)
+C/C++:   /home/runner/work/skein/skein/inference-service/.cxx/RelWithDebInfo/2b1y4s1g/arm64-v8a/CMakeFiles/3.31.5/CMakeSystem.cmake:6 (include)
+C/C++:   /home/runner/work/skein/skein/inference-service/.cxx/RelWithDebInfo/2b1y4s1g/arm64-v8a/CMakeFiles/CMakeScratch/TryCompile-8tIlx9/CMakeLists.txt:3 (project)
+C/C++: CMake Deprecation Warning at /usr/local/lib/android/sdk/ndk/27.3.13750724/build/cmake/flags.cmake:18 (cmake_minimum_required):
+C/C++:   Compatibility with CMake < 3.10 will be removed from a future version of
+C/C++:   CMake.
+C/C++:   Update the VERSION argument <min> value.  Or, use the <min>...<max> syntax
+C/C++:   to tell CMake that the project requires at least <min> but has been updated
+C/C++:   to work with policies introduced by <max> or earlier.
+C/C++: Call Stack (most recent call first):
+C/C++:   /usr/local/lib/android/sdk/cmake/3.31.5/share/cmake-3.31/Modules/Platform/Android-Clang.cmake:23 (include)
+C/C++:   /usr/local/lib/android/sdk/cmake/3.31.5/share/cmake-3.31/Modules/Platform/Android-Clang-CXX.cmake:1 (include)
+C/C++:   /usr/local/lib/android/sdk/cmake/3.31.5/share/cmake-3.31/Modules/CMakeCXXInformation.cmake:48 (include)
+C/C++:   /home/runner/work/skein/skein/inference-service/.cxx/RelWithDebInfo/2b1y4s1g/arm64-v8a/CMakeFiles/CMakeScratch/TryCompile-8tIlx9/CMakeLists.txt:3 (project)
+C/C++: CMake Deprecation Warning at /usr/local/lib/android/sdk/ndk/27.3.13750724/build/cmake/android.toolchain.cmake:35 (cmake_minimum_required):
+C/C++:   Compatibility with CMake < 3.10 will be removed from a future version of
+C/C++:   CMake.
+C/C++:   Update the VERSION argument <min> value.  Or, use the <min>...<max> syntax
+C/C++:   to tell CMake that the project requires at least <min> but has been updated
+C/C++:   to work with policies introduced by <max> or earlier.
+C/C++: Call Stack (most recent call first):
+C/C++:   /home/runner/work/skein/skein/inference-service/.cxx/RelWithDebInfo/2b1y4s1g/arm64-v8a/CMakeFiles/3.31.5/CMakeSystem.cmake:6 (include)
+C/C++:   /home/runner/work/skein/skein/inference-service/.cxx/RelWithDebInfo/2b1y4s1g/arm64-v8a/CMakeFiles/CMakeScratch/TryCompile-04RWfq/CMakeLists.txt:3 (project)
+C/C++: CMake Deprecation Warning at /usr/local/lib/android/sdk/ndk/27.3.13750724/build/cmake/android-legacy.toolchain.cmake:35 (cmake_minimum_required):
+C/C++:   Compatibility with CMake < 3.10 will be removed from a future version of
+C/C++:   CMake.
+C/C++:   Update the VERSION argument <min> value.  Or, use the <min>...<max> syntax
+C/C++:   to tell CMake that the project requires at least <min> but has been updated
+C/C++:   to work with policies introduced by <max> or earlier.
+C/C++: Call Stack (most recent call first):
+C/C++:   /usr/local/lib/android/sdk/ndk/27.3.13750724/build/cmake/android.toolchain.cmake:55 (include)
+C/C++:   /home/runner/work/skein/skein/inference-service/.cxx/RelWithDebInfo/2b1y4s1g/arm64-v8a/CMakeFiles/3.31.5/CMakeSystem.cmake:6 (include)
+C/C++:   /home/runner/work/skein/skein/inference-service/.cxx/RelWithDebInfo/2b1y4s1g/arm64-v8a/CMakeFiles/CMakeScratch/TryCompile-04RWfq/CMakeLists.txt:3 (project)
+C/C++: CMake Deprecation Warning at /usr/local/lib/android/sdk/ndk/27.3.13750724/build/cmake/flags.cmake:18 (cmake_minimum_required):
+C/C++:   Compatibility with CMake < 3.10 will be removed from a future version of
+C/C++:   CMake.
+C/C++:   Update the VERSION argument <min> value.  Or, use the <min>...<max> syntax
+C/C++:   to tell CMake that the project requires at least <min> but has been updated
+C/C++:   to work with policies introduced by <max> or earlier.
+C/C++: Call Stack (most recent call first):
+C/C++:   /usr/local/lib/android/sdk/cmake/3.31.5/share/cmake-3.31/Modules/Platform/Android-Clang.cmake:23 (include)
+C/C++:   /usr/local/lib/android/sdk/cmake/3.31.5/share/cmake-3.31/Modules/Platform/Android-Clang-CXX.cmake:1 (include)
+C/C++:   /usr/local/lib/android/sdk/cmake/3.31.5/share/cmake-3.31/Modules/CMakeCXXInformation.cmake:48 (include)
+C/C++:   /home/runner/work/skein/skein/inference-service/.cxx/RelWithDebInfo/2b1y4s1g/arm64-v8a/CMakeFiles/CMakeScratch/TryCompile-04RWfq/CMakeLists.txt:3 (project)
+C/C++: CMake Deprecation Warning at /usr/local/lib/android/sdk/ndk/27.3.13750724/build/cmake/android.toolchain.cmake:35 (cmake_minimum_required):
+C/C++:   Compatibility with CMake < 3.10 will be removed from a future version of
+C/C++:   CMake.
+C/C++:   Update the VERSION argument <min> value.  Or, use the <min>...<max> syntax
+C/C++:   to tell CMake that the project requires at least <min> but has been updated
+C/C++:   to work with policies introduced by <max> or earlier.
+C/C++: Call Stack (most recent call first):
+C/C++:   /home/runner/work/skein/skein/inference-service/.cxx/RelWithDebInfo/2b1y4s1g/arm64-v8a/CMakeFiles/3.31.5/CMakeSystem.cmake:6 (include)
+C/C++:   /home/runner/work/skein/skein/inference-service/.cxx/RelWithDebInfo/2b1y4s1g/arm64-v8a/CMakeFiles/CMakeScratch/TryCompile-oKV5WW/CMakeLists.txt:3 (project)
+C/C++: CMake Deprecation Warning at /usr/local/lib/android/sdk/ndk/27.3.13750724/build/cmake/android-legacy.toolchain.cmake:35 (cmake_minimum_required):
+C/C++:   Compatibility with CMake < 3.10 will be removed from a future version of
+C/C++:   CMake.
+C/C++:   Update the VERSION argument <min> value.  Or, use the <min>...<max> syntax
+C/C++:   to tell CMake that the project requires at least <min> but has been updated
+C/C++:   to work with policies introduced by <max> or earlier.
+C/C++: Call Stack (most recent call first):
+C/C++:   /usr/local/lib/android/sdk/ndk/27.3.13750724/build/cmake/android.toolchain.cmake:55 (include)
+C/C++:   /home/runner/work/skein/skein/inference-service/.cxx/RelWithDebInfo/2b1y4s1g/arm64-v8a/CMakeFiles/3.31.5/CMakeSystem.cmake:6 (include)
+C/C++:   /home/runner/work/skein/skein/inference-service/.cxx/RelWithDebInfo/2b1y4s1g/arm64-v8a/CMakeFiles/CMakeScratch/TryCompile-oKV5WW/CMakeLists.txt:3 (project)
+C/C++: CMake Deprecation Warning at /usr/local/lib/android/sdk/ndk/27.3.13750724/build/cmake/flags.cmake:18 (cmake_minimum_required):
+C/C++:   Compatibility with CMake < 3.10 will be removed from a future version of
+C/C++:   CMake.
+C/C++:   Update the VERSION argument <min> value.  Or, use the <min>...<max> syntax
+C/C++:   to tell CMake that the project requires at least <min> but has been updated
+C/C++:   to work with policies introduced by <max> or earlier.
+C/C++: Call Stack (most recent call first):
+C/C++:   /usr/local/lib/android/sdk/cmake/3.31.5/share/cmake-3.31/Modules/Platform/Android-Clang.cmake:23 (include)
+C/C++:   /usr/local/lib/android/sdk/cmake/3.31.5/share/cmake-3.31/Modules/Platform/Android-Clang-CXX.cmake:1 (include)
+C/C++:   /usr/local/lib/android/sdk/cmake/3.31.5/share/cmake-3.31/Modules/CMakeCXXInformation.cmake:48 (include)
+C/C++:   /home/runner/work/skein/skein/inference-service/.cxx/RelWithDebInfo/2b1y4s1g/arm64-v8a/CMakeFiles/CMakeScratch/TryCompile-oKV5WW/CMakeLists.txt:3 (project)
+C/C++: CMake Deprecation Warning at /usr/local/lib/android/sdk/ndk/27.3.13750724/build/cmake/android.toolchain.cmake:35 (cmake_minimum_required):
+C/C++:   Compatibility with CMake < 3.10 will be removed from a future version of
+C/C++:   CMake.
+C/C++:   Update the VERSION argument <min> value.  Or, use the <min>...<max> syntax
+C/C++:   to tell CMake that the project requires at least <min> but has been updated
+C/C++:   to work with policies introduced by <max> or earlier.
+C/C++: Call Stack (most recent call first):
+C/C++:   /home/runner/work/skein/skein/inference-service/.cxx/RelWithDebInfo/2b1y4s1g/arm64-v8a/CMakeFiles/3.31.5/CMakeSystem.cmake:6 (include)
+C/C++:   /home/runner/work/skein/skein/inference-service/.cxx/RelWithDebInfo/2b1y4s1g/arm64-v8a/CMakeFiles/CMakeScratch/TryCompile-qjjOl7/CMakeLists.txt:3 (project)
+C/C++: CMake Deprecation Warning at /usr/local/lib/android/sdk/ndk/27.3.13750724/build/cmake/android-legacy.toolchain.cmake:35 (cmake_minimum_required):
+C/C++:   Compatibility with CMake < 3.10 will be removed from a future version of
+C/C++:   CMake.
+C/C++:   Update the VERSION argument <min> value.  Or, use the <min>...<max> syntax
+C/C++:   to tell CMake that the project requires at least <min> but has been updated
+C/C++:   to work with policies introduced by <max> or earlier.
+C/C++: Call Stack (most recent call first):
+C/C++:   /usr/local/lib/android/sdk/ndk/27.3.13750724/build/cmake/android.toolchain.cmake:55 (include)
+C/C++:   /home/runner/work/skein/skein/inference-service/.cxx/RelWithDebInfo/2b1y4s1g/arm64-v8a/CMakeFiles/3.31.5/CMakeSystem.cmake:6 (include)
+C/C++:   /home/runner/work/skein/skein/inference-service/.cxx/RelWithDebInfo/2b1y4s1g/arm64-v8a/CMakeFiles/CMakeScratch/TryCompile-qjjOl7/CMakeLists.txt:3 (project)
+C/C++: CMake Deprecation Warning at /usr/local/lib/android/sdk/ndk/27.3.13750724/build/cmake/flags.cmake:18 (cmake_minimum_required):
+C/C++:   Compatibility with CMake < 3.10 will be removed from a future version of
+C/C++:   CMake.
+C/C++:   Update the VERSION argument <min> value.  Or, use the <min>...<max> syntax
+C/C++:   to tell CMake that the project requires at least <min> but has been updated
+C/C++:   to work with policies introduced by <max> or earlier.
+C/C++: Call Stack (most recent call first):
+C/C++:   /usr/local/lib/android/sdk/cmake/3.31.5/share/cmake-3.31/Modules/Platform/Android-Clang.cmake:23 (include)
+C/C++:   /usr/local/lib/android/sdk/cmake/3.31.5/share/cmake-3.31/Modules/Platform/Android-Clang-CXX.cmake:1 (include)
+C/C++:   /usr/local/lib/android/sdk/cmake/3.31.5/share/cmake-3.31/Modules/CMakeCXXInformation.cmake:48 (include)
+C/C++:   /home/runner/work/skein/skein/inference-service/.cxx/RelWithDebInfo/2b1y4s1g/arm64-v8a/CMakeFiles/CMakeScratch/TryCompile-qjjOl7/CMakeLists.txt:3 (project)
+C/C++: CMake Deprecation Warning at /usr/local/lib/android/sdk/ndk/27.3.13750724/build/cmake/android.toolchain.cmake:35 (cmake_minimum_required):
+C/C++:   Compatibility with CMake < 3.10 will be removed from a future version of
+C/C++:   CMake.
+C/C++:   Update the VERSION argument <min> value.  Or, use the <min>...<max> syntax
+C/C++:   to tell CMake that the project requires at least <min> but has been updated
+C/C++:   to work with policies introduced by <max> or earlier.
+C/C++: Call Stack (most recent call first):
+C/C++:   /home/runner/work/skein/skein/inference-service/.cxx/RelWithDebInfo/2b1y4s1g/arm64-v8a/CMakeFiles/3.31.5/CMakeSystem.cmake:6 (include)
+C/C++:   /home/runner/work/skein/skein/inference-service/.cxx/RelWithDebInfo/2b1y4s1g/arm64-v8a/CMakeFiles/CMakeScratch/TryCompile-j0zwew/CMakeLists.txt:3 (project)
+C/C++: CMake Deprecation Warning at /usr/local/lib/android/sdk/ndk/27.3.13750724/build/cmake/android-legacy.toolchain.cmake:35 (cmake_minimum_required):
+C/C++:   Compatibility with CMake < 3.10 will be removed from a future version of
+C/C++:   CMake.
+C/C++:   Update the VERSION argument <min> value.  Or, use the <min>...<max> syntax
+C/C++:   to tell CMake that the project requires at least <min> but has been updated
+C/C++:   to work with policies introduced by <max> or earlier.
+C/C++: Call Stack (most recent call first):
+C/C++:   /usr/local/lib/android/sdk/ndk/27.3.13750724/build/cmake/android.toolchain.cmake:55 (include)
+C/C++:   /home/runner/work/skein/skein/inference-service/.cxx/RelWithDebInfo/2b1y4s1g/arm64-v8a/CMakeFiles/3.31.5/CMakeSystem.cmake:6 (include)
+C/C++:   /home/runner/work/skein/skein/inference-service/.cxx/RelWithDebInfo/2b1y4s1g/arm64-v8a/CMakeFiles/CMakeScratch/TryCompile-j0zwew/CMakeLists.txt:3 (project)
+C/C++: CMake Deprecation Warning at /usr/local/lib/android/sdk/ndk/27.3.13750724/build/cmake/flags.cmake:18 (cmake_minimum_required):
+C/C++:   Compatibility with CMake < 3.10 will be removed from a future version of
+C/C++:   CMake.
+C/C++:   Update the VERSION argument <min> value.  Or, use the <min>...<max> syntax
+C/C++:   to tell CMake that the project requires at least <min> but has been updated
+C/C++:   to work with policies introduced by <max> or earlier.
+C/C++: Call Stack (most recent call first):
+C/C++:   /usr/local/lib/android/sdk/cmake/3.31.5/share/cmake-3.31/Modules/Platform/Android-Clang.cmake:23 (include)
+C/C++:   /usr/local/lib/android/sdk/cmake/3.31.5/share/cmake-3.31/Modules/Platform/Android-Clang-CXX.cmake:1 (include)
+C/C++:   /usr/local/lib/android/sdk/cmake/3.31.5/share/cmake-3.31/Modules/CMakeCXXInformation.cmake:48 (include)
+C/C++:   /home/runner/work/skein/skein/inference-service/.cxx/RelWithDebInfo/2b1y4s1g/arm64-v8a/CMakeFiles/CMakeScratch/TryCompile-j0zwew/CMakeLists.txt:3 (project)
+
+> Task :core:model:compileKotlin
+> Task :core:model:compileJava NO-SOURCE
+> Task :core:model:processResources
+> Task :core:model:classes
+> Task :core:model:jar
+> Task :core:verify:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :core:verify:compileKotlin
+> Task :core:verify:compileJava NO-SOURCE
+> Task :core:verify:processResources NO-SOURCE
+> Task :core:verify:classes UP-TO-DATE
+> Task :core:verify:jar
+> Task :inference-service:generateFossReleaseBuildConfig
+> Task :inference-service:generateFossReleaseResources
+> Task :inference-service:packageFossReleaseResources
+> Task :inference-service:processFossReleaseNavigationResources
+> Task :inference-service:parseFossReleaseLocalResources
+> Task :inference-service:generateFossReleaseRFile
+> Task :core:ipc:compileReleaseAidl
+> Task :core:ipc:generateReleaseResources
+> Task :core:ipc:packageReleaseResources
+> Task :core:ipc:processReleaseNavigationResources
+> Task :core:ipc:parseReleaseLocalResources
+> Task :core:ipc:generateReleaseRFile
+> Task :core:ipc:compileReleaseKotlin
+> Task :core:ipc:javaPreCompileRelease
+> Task :core:ipc:compileReleaseJavaWithJavac
+> Task :core:ipc:bundleLibCompileToJarRelease
+> Task :inference-service:extractFossReleaseAnnotations
+> Task :inference-service:generateFossReleaseAssets UP-TO-DATE
+> Task :inference-service:mergeFossReleaseAssets
+> Task :inference-service:compileFossReleaseKotlin
+> Task :inference-service:javaPreCompileFossRelease
+> Task :inference-service:compileFossReleaseJavaWithJavac
+> Task :inference-service:mergeFossReleaseGeneratedProguardFiles UP-TO-DATE
+> Task :inference-service:mergeFossReleaseConsumerProguardFiles UP-TO-DATE
+> Task :inference-service:prepareFossReleaseArtProfile UP-TO-DATE
+> Task :inference-service:prepareLintJarForPublish UP-TO-DATE
+> Task :inference-service:processFossReleaseManifest
+> Task :inference-service:processFossReleaseJavaRes
+> Task :inference-service:mergeFossReleaseJavaResource
+> Task :inference-service:syncFossReleaseLibJars
+> Task :inference-service:writeFossReleaseAarMetadata
+> Task :inference-service:mapFossReleaseSourceSetPaths
+> Task :inference-service:mergeFossReleaseResources
+> Task :core:ipc:mapReleaseSourceSetPaths
+> Task :core:ipc:compileReleaseLibraryResources
+> Task :inference-service:verifyFossReleaseResources
+> Task :inference-service:buildCMakeRelWithDebInfo[arm64-v8a][skein_llama]
+> Task :inference-service:mergeFossReleaseNativeLibs
+> Task :inference-service:stripFossReleaseDebugSymbols
+> Task :inference-service:copyFossReleaseJniLibsProjectAndLocalJars
+> Task :inference-service:bundleFossReleaseAar
+> Task :inference-service:assembleFossRelease
+
+BUILD SUCCESSFUL in 2m 32s
+86 actionable tasks: 58 executed, 28 up-to-date
+Configuration cache entry reused.

@@ -1,0 +1,20 @@
+{
+  "reason": "APK-containing immutable ZIPs retained in original owning worktree; exact hashes independently reviewed. Not copied into git.",
+  "files": [
+    {
+      "original_path": "/Users/andrewherrera/skein-worktrees/ux-fold-coverage-20260929/build/agent-logs/remote-4f1b7d3-20260929/36546803361/artifact-11023661673-rb-build-a.zip",
+      "bytes": 100674120,
+      "sha256": "ca8056eb6edeb7b1930586663cfdc56e3600005cf3a528993fa9fdd77494bfb5"
+    },
+    {
+      "original_path": "/Users/andrewherrera/skein-worktrees/ux-fold-coverage-20260929/build/agent-logs/remote-4f1b7d3-20260929/36546803361/artifact-11023047271-rb-build-b.zip",
+      "bytes": 100674134,
+      "sha256": "c5ec51606b8093e038a9d875060df980dd542194eff2f284c5546538894595df"
+    },
+    {
+      "original_path": "/Users/andrewherrera/skein-worktrees/ux-fold-coverage-20260929/build/agent-logs/remote-4f1b7d3-20260929/36546803273/artifact-11023508850-skein-foss-debug-apk.zip",
+      "bytes": 49498508,
+      "sha256": "7425af3b73e0d609a66af4053c78deedf682cb06c42b214c95874b710cb71c33"
+    }
+  ]
+}

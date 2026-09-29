@@ -1,0 +1,29 @@
+{
+  "run_id": 36548576075,
+  "head_sha": "5a3ab9b986950651733e6040b43c7958f0ae25ac",
+  "status": "completed",
+  "conclusion": "success",
+  "snapshot": "snapshot-20260929T093512.449680Z.json",
+  "skips": [
+    {
+      "job": "Verify SQLCipher amalgamation matches pinned source",
+      "reason": "tag-only amalgamation integrity job on workflow_dispatch"
+    },
+    {
+      "job": "Compare the two builds",
+      "step": "Classify the difference"
+    },
+    {
+      "job": "Compare the two builds",
+      "step": "Install diffoscope"
+    },
+    {
+      "job": "Compare the two builds",
+      "step": "Produce the diffoscope report"
+    },
+    {
+      "job": "Compare the two builds",
+      "step": "Upload apk-diff"
+    }
+  ]
+}

@@ -1,0 +1,40 @@
+{
+  "scope": "Original ZIPs/APKs/ELFs retained immutably in owning worktree. Exact bytes were independently reviewed; omitted only from git bundle.",
+  "files": [
+    {
+      "original_path": "/Users/andrewherrera/skein-worktrees/ux-rb-evidence-20260929/build/agent-logs/rb-36548576075/artifact-11023498781-rb-build-b/archive.zip",
+      "bytes": 100674134,
+      "sha256": "587db1a606ffd7fd3ae8adebc612dd78879ec85e0fac1c6fcc9aa723f3eb3ad8"
+    },
+    {
+      "original_path": "/Users/andrewherrera/skein-worktrees/ux-rb-evidence-20260929/build/agent-logs/rb-36548576075/artifact-11023678920-so-determinism/archive.zip",
+      "bytes": 50711050,
+      "sha256": "20c9cdfc3d9c409c7b453a183a9424767b84698f02d89322c6ea5640fca9323d"
+    },
+    {
+      "original_path": "/Users/andrewherrera/skein-worktrees/ux-rb-evidence-20260929/build/agent-logs/rb-36548576075/artifact-11024241923-rb-build-a/archive.zip",
+      "bytes": 100674120,
+      "sha256": "84e716d9b4ae6200cb79dffdb937bfc2c47764ff0481b0f21a5ccb4e912685ab"
+    },
+    {
+      "original_path": "/Users/andrewherrera/skein-worktrees/ux-rb-evidence-20260929/build/agent-logs/rb-36548576075/artifact-11024241923-rb-build-a/files/app-foss-release-unsigned.apk",
+      "bytes": 100673247,
+      "sha256": "cf7261f383637ff17149b54be987cf35012aa734e1374f88c2da012cc6116163"
+    },
+    {
+      "original_path": "/Users/andrewherrera/skein-worktrees/ux-rb-evidence-20260929/build/agent-logs/rb-36548576075/artifact-11023678920-so-determinism/files/run.h6APgG5s/libskein_llama.1.2aefda01.so",
+      "bytes": 25314032,
+      "sha256": "2aefda01808f10bf5693ab02d0857e0169dc09550b615896939cb176c032daff"
+    },
+    {
+      "original_path": "/Users/andrewherrera/skein-worktrees/ux-rb-evidence-20260929/build/agent-logs/rb-36548576075/artifact-11023678920-so-determinism/files/run.h6APgG5s/libskein_llama.2.2aefda01.so",
+      "bytes": 25314032,
+      "sha256": "2aefda01808f10bf5693ab02d0857e0169dc09550b615896939cb176c032daff"
+    },
+    {
+      "original_path": "/Users/andrewherrera/skein-worktrees/ux-rb-evidence-20260929/build/agent-logs/rb-36548576075/artifact-11023498781-rb-build-b/files/app-foss-release-unsigned.apk",
+      "bytes": 100673247,
+      "sha256": "cf7261f383637ff17149b54be987cf35012aa734e1374f88c2da012cc6116163"
+    }
+  ]
+}

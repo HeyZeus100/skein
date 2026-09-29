@@ -1,0 +1,17 @@
+﻿2026-09-29T09:26:15.7504919Z ##[group]Run ./tools/ci/no-content-logging.sh
+2026-09-29T09:26:15.7505848Z [36;1m./tools/ci/no-content-logging.sh[0m
+2026-09-29T09:26:15.7571378Z shell: /usr/bin/bash -e {0}
+2026-09-29T09:26:15.7571695Z env:
+2026-09-29T09:26:15.7572062Z   JAVA_HOME: /opt/hostedtoolcache/Java_Temurin-Hotspot_jdk/17.0.20-1/x64
+2026-09-29T09:26:15.7572649Z   JAVA_HOME_17_X64: /opt/hostedtoolcache/Java_Temurin-Hotspot_jdk/17.0.20-1/x64
+2026-09-29T09:26:15.7573103Z   MAVEN_ARGS: -ntp
+2026-09-29T09:26:15.7573479Z   SKEIN_OPENSSL_TARBALL_DIR: /home/runner/work/_temp/skein-openssl
+2026-09-29T09:26:15.7574120Z   GRADLE_ACTION_ID: gradle/actions/setup-gradle
+2026-09-29T09:26:15.7574494Z   GRADLE_USER_HOME: /home/runner/.gradle
+2026-09-29T09:26:15.7574842Z   GRADLE_BUILD_ACTION_SETUP_COMPLETED: true
+2026-09-29T09:26:15.7575422Z   GRADLE_BUILD_ACTION_CACHE_RESTORED: true
+2026-09-29T09:26:15.7575946Z   DEVELOCITY_INJECTION_INIT_SCRIPT_NAME: gradle-actions.inject-develocity.init.gradle
+2026-09-29T09:26:15.7576477Z   DEVELOCITY_INJECTION_CUSTOM_VALUE: gradle-actions
+2026-09-29T09:26:15.7576901Z   GITHUB_DEPENDENCY_GRAPH_ENABLED: false
+2026-09-29T09:26:15.7577224Z ##[endgroup]
+2026-09-29T09:26:15.8589916Z no-content-logging: clean: 19 file(s), no SkeinLog call references model content

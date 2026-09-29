@@ -21,10 +21,13 @@ identity requires the separate sole hardware runner's recorded comparison.
 Earlier worker failures, the first test-APK capture failure and the exploratory
 wrong-key screenshot summary remain at their original paths. Later successful
 checks do not erase or rewrite them. No gold images, labels or thresholds changed.
-No owner screenshots, vault contents, tokens, personal identifiers or secret keys
-are included here. Qwen identity records concern the public shared model copy.
+No owner screenshots, vault contents, private prompt/answer text or secret keys
+are included here. Preserved workflow and source records contain normal contributor
+and account metadata and absolute owning-worktree paths. Qwen identity records concern the public shared model copy.
 
 Remote screenshot artifacts are retained under `remote-screenshots-36546803140`;
 its downloaded ZIP hash matches GitHub's artifact digest. Compressed review includes
-all 80 explicit parameter-assumption exclusions. Other remote lanes are recorded
-as they finish; pending lanes are never represented by workflow success alone.
+all 80 explicit parameter-assumption exclusions. The original CI/repro subtree preserves its owning-tree SHA256SUMS-review.txt,
+which includes locally retained large ZIPs and uncompressed names. Use the outer
+portable SHA256SUMS for this subset. Other remote lanes are recorded as they
+finish; pending lanes are never represented by workflow success alone.
