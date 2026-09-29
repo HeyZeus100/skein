@@ -1,0 +1,13 @@
+{
+  "argv": [
+    "adb",
+    "-s",
+    "emulator-5554",
+    "exec-out",
+    "run-as",
+    "app.skein.core.vault.test",
+    "cat",
+    "files/artifacts/eval/retrieval.json"
+  ],
+  "exit_code": 0
+}

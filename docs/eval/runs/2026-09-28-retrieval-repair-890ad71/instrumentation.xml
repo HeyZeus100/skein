@@ -1,0 +1,9 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<testsuites tests="1" failures="0" errors="0" skipped="0" time="0.000" timestamp="2026-09-29T02:35:30" hostname="localhost">
+  <testsuite name="app.skein.core.vault.eval.RealRetrievalEvaluationTest" tests="1" failures="0" errors="0" skipped="0" time="26.721" timestamp="2026-09-29T02:35:30" hostname="localhost">
+    <properties>
+      <property name="device" value="emulator-5554" />
+    </properties>
+    <testcase name="evaluate_real_ingest_and_retrieval" classname="app.skein.core.vault.eval.RealRetrievalEvaluationTest" time="26.721" />
+  </testsuite>
+</testsuites>

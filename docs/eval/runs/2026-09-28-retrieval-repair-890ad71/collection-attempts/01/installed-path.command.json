@@ -1,0 +1,12 @@
+{
+  "argv": [
+    "adb",
+    "-s",
+    "emulator-5554",
+    "shell",
+    "pm",
+    "path",
+    "app.skein.core.vault.test"
+  ],
+  "exit_code": 0
+}

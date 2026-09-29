@@ -1,0 +1,11 @@
+{
+  "argv": [
+    "adb",
+    "-s",
+    "emulator-5554",
+    "shell",
+    "sha256sum",
+    "/data/app/~~3rpz0kUFCxrTC7wiOvdX0Q==/app.skein.core.vault.test-CwRHumrnF4r8bCa1AjNiBA==/base.apk"
+  ],
+  "exit_code": 0
+}

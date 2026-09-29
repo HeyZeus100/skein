@@ -1,0 +1,2901 @@
+{
+  "schema_version": 1,
+  "purpose": "development calibration, not independent validation",
+  "source_report_sha256": "23985b1f67125be83eda0ca2fe0be77d1c34d75a2b9033e175848c0199403d0c",
+  "gold_sha256": "4fd5034368e250179425f06bbcb1cc40513f2f3c5ceb998bd6a9eedf298c820f",
+  "declared_build_revision": "890ad71298fcf53488ed6b4860ecdf3a81df5eb1",
+  "selection": "query-level gate; original rankings and gold retained",
+  "stop_words": [
+    "a",
+    "an",
+    "and",
+    "are",
+    "as",
+    "at",
+    "be",
+    "been",
+    "being",
+    "but",
+    "by",
+    "can",
+    "could",
+    "did",
+    "do",
+    "does",
+    "for",
+    "from",
+    "he",
+    "here",
+    "how",
+    "i",
+    "if",
+    "in",
+    "is",
+    "it",
+    "may",
+    "me",
+    "might",
+    "must",
+    "my",
+    "no",
+    "not",
+    "of",
+    "on",
+    "or",
+    "our",
+    "shall",
+    "she",
+    "should",
+    "than",
+    "that",
+    "the",
+    "their",
+    "them",
+    "then",
+    "there",
+    "these",
+    "they",
+    "this",
+    "those",
+    "to",
+    "was",
+    "we",
+    "were",
+    "what",
+    "when",
+    "where",
+    "which",
+    "who",
+    "why",
+    "will",
+    "with",
+    "would",
+    "you",
+    "your"
+  ],
+  "modes": {
+    "lexical_only": {
+      "rows": [
+        {
+          "id": "lexical-01",
+          "category": "lexical",
+          "answerable": true,
+          "candidate_count": 8,
+          "recall_at_8": 1.0,
+          "ndcg_at_8": 1.0,
+          "max_lexical_score": 24.392321240807696,
+          "max_query_coverage": 0.6666666666666666
+        },
+        {
+          "id": "lexical-02",
+          "category": "lexical",
+          "answerable": true,
+          "candidate_count": 8,
+          "recall_at_8": 1.0,
+          "ndcg_at_8": 1.0,
+          "max_lexical_score": 5.581022503698753,
+          "max_query_coverage": 0.6666666666666666
+        },
+        {
+          "id": "lexical-03",
+          "category": "lexical",
+          "answerable": true,
+          "candidate_count": 8,
+          "recall_at_8": 1.0,
+          "ndcg_at_8": 1.0,
+          "max_lexical_score": 24.392321240807696,
+          "max_query_coverage": 0.6666666666666666
+        },
+        {
+          "id": "lexical-04",
+          "category": "lexical",
+          "answerable": true,
+          "candidate_count": 8,
+          "recall_at_8": 1.0,
+          "ndcg_at_8": 1.0,
+          "max_lexical_score": 24.392321240807696,
+          "max_query_coverage": 0.6666666666666666
+        },
+        {
+          "id": "lexical-05",
+          "category": "lexical",
+          "answerable": true,
+          "candidate_count": 8,
+          "recall_at_8": 1.0,
+          "ndcg_at_8": 1.0,
+          "max_lexical_score": 24.392321240807696,
+          "max_query_coverage": 0.6666666666666666
+        },
+        {
+          "id": "lexical-06",
+          "category": "lexical",
+          "answerable": true,
+          "candidate_count": 8,
+          "recall_at_8": 1.0,
+          "ndcg_at_8": 1.0,
+          "max_lexical_score": 24.392321240807696,
+          "max_query_coverage": 0.6666666666666666
+        },
+        {
+          "id": "lexical-07",
+          "category": "lexical",
+          "answerable": true,
+          "candidate_count": 8,
+          "recall_at_8": 1.0,
+          "ndcg_at_8": 1.0,
+          "max_lexical_score": 24.392321240807696,
+          "max_query_coverage": 0.6666666666666666
+        },
+        {
+          "id": "lexical-08",
+          "category": "lexical",
+          "answerable": true,
+          "candidate_count": 8,
+          "recall_at_8": 1.0,
+          "ndcg_at_8": 1.0,
+          "max_lexical_score": 24.392321240807696,
+          "max_query_coverage": 0.6666666666666666
+        },
+        {
+          "id": "lexical-09",
+          "category": "lexical",
+          "answerable": true,
+          "candidate_count": 8,
+          "recall_at_8": 1.0,
+          "ndcg_at_8": 1.0,
+          "max_lexical_score": 24.392321240807696,
+          "max_query_coverage": 0.6666666666666666
+        },
+        {
+          "id": "lexical-10",
+          "category": "lexical",
+          "answerable": true,
+          "candidate_count": 8,
+          "recall_at_8": 1.0,
+          "ndcg_at_8": 1.0,
+          "max_lexical_score": 24.392321240807696,
+          "max_query_coverage": 0.6666666666666666
+        },
+        {
+          "id": "lexical-11",
+          "category": "lexical",
+          "answerable": true,
+          "candidate_count": 8,
+          "recall_at_8": 1.0,
+          "ndcg_at_8": 1.0,
+          "max_lexical_score": 24.392321240807696,
+          "max_query_coverage": 0.6666666666666666
+        },
+        {
+          "id": "lexical-12",
+          "category": "lexical",
+          "answerable": true,
+          "candidate_count": 8,
+          "recall_at_8": 1.0,
+          "ndcg_at_8": 1.0,
+          "max_lexical_score": 24.392321240807696,
+          "max_query_coverage": 0.6666666666666666
+        },
+        {
+          "id": "semantic-01",
+          "category": "semantic",
+          "answerable": true,
+          "candidate_count": 0,
+          "recall_at_8": 0.0,
+          "ndcg_at_8": 0.0,
+          "max_lexical_score": 0.0,
+          "max_query_coverage": 0.0
+        },
+        {
+          "id": "semantic-02",
+          "category": "semantic",
+          "answerable": true,
+          "candidate_count": 8,
+          "recall_at_8": 0.0,
+          "ndcg_at_8": 0.0,
+          "max_lexical_score": 14.27585071738941,
+          "max_query_coverage": 0.0
+        },
+        {
+          "id": "semantic-03",
+          "category": "semantic",
+          "answerable": true,
+          "candidate_count": 8,
+          "recall_at_8": 1.0,
+          "ndcg_at_8": 0.6309297535714574,
+          "max_lexical_score": 2.5572270870374654,
+          "max_query_coverage": 0.0
+        },
+        {
+          "id": "semantic-04",
+          "category": "semantic",
+          "answerable": true,
+          "candidate_count": 8,
+          "recall_at_8": 0.0,
+          "ndcg_at_8": 0.0,
+          "max_lexical_score": 12.168694930236622,
+          "max_query_coverage": 0.0
+        },
+        {
+          "id": "semantic-05",
+          "category": "semantic",
+          "answerable": true,
+          "candidate_count": 1,
+          "recall_at_8": 0.0,
+          "ndcg_at_8": 0.0,
+          "max_lexical_score": 9.987936260514125,
+          "max_query_coverage": 0.0
+        },
+        {
+          "id": "semantic-06",
+          "category": "semantic",
+          "answerable": true,
+          "candidate_count": 8,
+          "recall_at_8": 0.0,
+          "ndcg_at_8": 0.0,
+          "max_lexical_score": 12.652281367908877,
+          "max_query_coverage": 0.16666666666666666
+        },
+        {
+          "id": "semantic-07",
+          "category": "semantic",
+          "answerable": true,
+          "candidate_count": 8,
+          "recall_at_8": 0.0,
+          "ndcg_at_8": 0.0,
+          "max_lexical_score": 9.987936260514125,
+          "max_query_coverage": 0.0
+        },
+        {
+          "id": "semantic-08",
+          "category": "semantic",
+          "answerable": true,
+          "candidate_count": 8,
+          "recall_at_8": 0.0,
+          "ndcg_at_8": 0.0,
+          "max_lexical_score": 9.987936260514125,
+          "max_query_coverage": 0.2
+        },
+        {
+          "id": "semantic-09",
+          "category": "semantic",
+          "answerable": true,
+          "candidate_count": 0,
+          "recall_at_8": 0.0,
+          "ndcg_at_8": 0.0,
+          "max_lexical_score": 0.0,
+          "max_query_coverage": 0.0
+        },
+        {
+          "id": "semantic-10",
+          "category": "semantic",
+          "answerable": true,
+          "candidate_count": 8,
+          "recall_at_8": 0.0,
+          "ndcg_at_8": 0.0,
+          "max_lexical_score": 16.255955156271497,
+          "max_query_coverage": 0.2
+        },
+        {
+          "id": "semantic-11",
+          "category": "semantic",
+          "answerable": true,
+          "candidate_count": 8,
+          "recall_at_8": 0.0,
+          "ndcg_at_8": 0.0,
+          "max_lexical_score": 4.45820090756904,
+          "max_query_coverage": 0.0
+        },
+        {
+          "id": "semantic-12",
+          "category": "semantic",
+          "answerable": true,
+          "candidate_count": 3,
+          "recall_at_8": 0.0,
+          "ndcg_at_8": 0.0,
+          "max_lexical_score": 9.987936260514125,
+          "max_query_coverage": 0.16666666666666666
+        },
+        {
+          "id": "graph-01",
+          "category": "graph",
+          "answerable": true,
+          "candidate_count": 8,
+          "recall_at_8": 0.0,
+          "ndcg_at_8": 0.1310456303875653,
+          "max_lexical_score": 26.9750125355356,
+          "max_query_coverage": 1.0
+        },
+        {
+          "id": "graph-02",
+          "category": "graph",
+          "answerable": true,
+          "candidate_count": 8,
+          "recall_at_8": 0.0,
+          "ndcg_at_8": 0.1310456303875653,
+          "max_lexical_score": 26.9750125355356,
+          "max_query_coverage": 1.0
+        },
+        {
+          "id": "graph-03",
+          "category": "graph",
+          "answerable": true,
+          "candidate_count": 8,
+          "recall_at_8": 0.0,
+          "ndcg_at_8": 0.1310456303875653,
+          "max_lexical_score": 26.9750125355356,
+          "max_query_coverage": 1.0
+        },
+        {
+          "id": "graph-04",
+          "category": "graph",
+          "answerable": true,
+          "candidate_count": 8,
+          "recall_at_8": 0.0,
+          "ndcg_at_8": 0.1310456303875653,
+          "max_lexical_score": 26.9750125355356,
+          "max_query_coverage": 1.0
+        },
+        {
+          "id": "graph-05",
+          "category": "graph",
+          "answerable": true,
+          "candidate_count": 8,
+          "recall_at_8": 0.0,
+          "ndcg_at_8": 0.1310456303875653,
+          "max_lexical_score": 26.9750125355356,
+          "max_query_coverage": 1.0
+        },
+        {
+          "id": "graph-06",
+          "category": "graph",
+          "answerable": true,
+          "candidate_count": 8,
+          "recall_at_8": 0.0,
+          "ndcg_at_8": 0.1310456303875653,
+          "max_lexical_score": 26.9750125355356,
+          "max_query_coverage": 1.0
+        },
+        {
+          "id": "graph-07",
+          "category": "graph",
+          "answerable": true,
+          "candidate_count": 8,
+          "recall_at_8": 0.0,
+          "ndcg_at_8": 0.1310456303875653,
+          "max_lexical_score": 26.9750125355356,
+          "max_query_coverage": 1.0
+        },
+        {
+          "id": "graph-08",
+          "category": "graph",
+          "answerable": true,
+          "candidate_count": 8,
+          "recall_at_8": 0.0,
+          "ndcg_at_8": 0.1310456303875653,
+          "max_lexical_score": 26.9750125355356,
+          "max_query_coverage": 1.0
+        },
+        {
+          "id": "graph-09",
+          "category": "graph",
+          "answerable": true,
+          "candidate_count": 8,
+          "recall_at_8": 0.0,
+          "ndcg_at_8": 0.1310456303875653,
+          "max_lexical_score": 26.9750125355356,
+          "max_query_coverage": 1.0
+        },
+        {
+          "id": "graph-10",
+          "category": "graph",
+          "answerable": true,
+          "candidate_count": 8,
+          "recall_at_8": 0.0,
+          "ndcg_at_8": 0.1310456303875653,
+          "max_lexical_score": 26.9750125355356,
+          "max_query_coverage": 1.0
+        },
+        {
+          "id": "graph-11",
+          "category": "graph",
+          "answerable": true,
+          "candidate_count": 8,
+          "recall_at_8": 0.0,
+          "ndcg_at_8": 0.1310456303875653,
+          "max_lexical_score": 26.9750125355356,
+          "max_query_coverage": 1.0
+        },
+        {
+          "id": "graph-12",
+          "category": "graph",
+          "answerable": true,
+          "candidate_count": 8,
+          "recall_at_8": 0.0,
+          "ndcg_at_8": 0.1310456303875653,
+          "max_lexical_score": 26.9750125355356,
+          "max_query_coverage": 1.0
+        },
+        {
+          "id": "persona-01",
+          "category": "persona",
+          "answerable": true,
+          "candidate_count": 8,
+          "recall_at_8": 1.0,
+          "ndcg_at_8": 1.0,
+          "max_lexical_score": 34.68090877780047,
+          "max_query_coverage": 1.0
+        },
+        {
+          "id": "persona-02",
+          "category": "persona",
+          "answerable": true,
+          "candidate_count": 6,
+          "recall_at_8": 1.0,
+          "ndcg_at_8": 1.0,
+          "max_lexical_score": 35.10702858060449,
+          "max_query_coverage": 1.0
+        },
+        {
+          "id": "persona-03",
+          "category": "persona",
+          "answerable": true,
+          "candidate_count": 8,
+          "recall_at_8": 1.0,
+          "ndcg_at_8": 1.0,
+          "max_lexical_score": 34.92681765427883,
+          "max_query_coverage": 1.0
+        },
+        {
+          "id": "persona-04",
+          "category": "persona",
+          "answerable": true,
+          "candidate_count": 6,
+          "recall_at_8": 1.0,
+          "ndcg_at_8": 1.0,
+          "max_lexical_score": 34.92681765427883,
+          "max_query_coverage": 1.0
+        },
+        {
+          "id": "persona-05",
+          "category": "persona",
+          "answerable": true,
+          "candidate_count": 8,
+          "recall_at_8": 1.0,
+          "ndcg_at_8": 0.6309297535714574,
+          "max_lexical_score": 35.167068723217405,
+          "max_query_coverage": 1.0
+        },
+        {
+          "id": "persona-06",
+          "category": "persona",
+          "answerable": true,
+          "candidate_count": 6,
+          "recall_at_8": 1.0,
+          "ndcg_at_8": 1.0,
+          "max_lexical_score": 35.167068723217405,
+          "max_query_coverage": 1.0
+        },
+        {
+          "id": "persona-07",
+          "category": "persona",
+          "answerable": true,
+          "candidate_count": 8,
+          "recall_at_8": 1.0,
+          "ndcg_at_8": 0.6309297535714574,
+          "max_lexical_score": 34.8627753374968,
+          "max_query_coverage": 1.0
+        },
+        {
+          "id": "persona-08",
+          "category": "persona",
+          "answerable": true,
+          "candidate_count": 6,
+          "recall_at_8": 1.0,
+          "ndcg_at_8": 1.0,
+          "max_lexical_score": 34.8627753374968,
+          "max_query_coverage": 1.0
+        },
+        {
+          "id": "persona-09",
+          "category": "persona",
+          "answerable": true,
+          "candidate_count": 8,
+          "recall_at_8": 1.0,
+          "ndcg_at_8": 0.6309297535714574,
+          "max_lexical_score": 35.25990555543428,
+          "max_query_coverage": 1.0
+        },
+        {
+          "id": "persona-10",
+          "category": "persona",
+          "answerable": true,
+          "candidate_count": 6,
+          "recall_at_8": 1.0,
+          "ndcg_at_8": 1.0,
+          "max_lexical_score": 35.25990555543428,
+          "max_query_coverage": 1.0
+        },
+        {
+          "id": "persona-11",
+          "category": "persona",
+          "answerable": true,
+          "candidate_count": 8,
+          "recall_at_8": 1.0,
+          "ndcg_at_8": 0.6309297535714574,
+          "max_lexical_score": 34.80052024148656,
+          "max_query_coverage": 1.0
+        },
+        {
+          "id": "persona-12",
+          "category": "persona",
+          "answerable": true,
+          "candidate_count": 6,
+          "recall_at_8": 1.0,
+          "ndcg_at_8": 1.0,
+          "max_lexical_score": 34.80052024148656,
+          "max_query_coverage": 1.0
+        },
+        {
+          "id": "adversarial-01",
+          "category": "adversarial",
+          "answerable": true,
+          "candidate_count": 8,
+          "recall_at_8": 1.0,
+          "ndcg_at_8": 1.0,
+          "max_lexical_score": 101.0107914063026,
+          "max_query_coverage": 1.0
+        },
+        {
+          "id": "adversarial-02",
+          "category": "adversarial",
+          "answerable": true,
+          "candidate_count": 8,
+          "recall_at_8": 1.0,
+          "ndcg_at_8": 1.0,
+          "max_lexical_score": 122.93876271684302,
+          "max_query_coverage": 1.0
+        },
+        {
+          "id": "adversarial-03",
+          "category": "adversarial",
+          "answerable": true,
+          "candidate_count": 8,
+          "recall_at_8": 1.0,
+          "ndcg_at_8": 1.0,
+          "max_lexical_score": 88.11677547007311,
+          "max_query_coverage": 1.0
+        },
+        {
+          "id": "adversarial-04",
+          "category": "adversarial",
+          "answerable": true,
+          "candidate_count": 8,
+          "recall_at_8": 1.0,
+          "ndcg_at_8": 1.0,
+          "max_lexical_score": 94.22802518329075,
+          "max_query_coverage": 1.0
+        },
+        {
+          "id": "adversarial-05",
+          "category": "adversarial",
+          "answerable": true,
+          "candidate_count": 8,
+          "recall_at_8": 1.0,
+          "ndcg_at_8": 1.0,
+          "max_lexical_score": 65.11731025230759,
+          "max_query_coverage": 1.0
+        },
+        {
+          "id": "adversarial-06",
+          "category": "adversarial",
+          "answerable": true,
+          "candidate_count": 8,
+          "recall_at_8": 1.0,
+          "ndcg_at_8": 1.0,
+          "max_lexical_score": 93.86820525372468,
+          "max_query_coverage": 1.0
+        },
+        {
+          "id": "adversarial-07",
+          "category": "adversarial",
+          "answerable": true,
+          "candidate_count": 8,
+          "recall_at_8": 1.0,
+          "ndcg_at_8": 1.0,
+          "max_lexical_score": 96.30500661930893,
+          "max_query_coverage": 1.0
+        },
+        {
+          "id": "adversarial-08",
+          "category": "adversarial",
+          "answerable": true,
+          "candidate_count": 8,
+          "recall_at_8": 1.0,
+          "ndcg_at_8": 1.0,
+          "max_lexical_score": 106.08973574510772,
+          "max_query_coverage": 1.0
+        },
+        {
+          "id": "adversarial-09",
+          "category": "adversarial",
+          "answerable": true,
+          "candidate_count": 8,
+          "recall_at_8": 1.0,
+          "ndcg_at_8": 1.0,
+          "max_lexical_score": 82.80553627547145,
+          "max_query_coverage": 1.0
+        },
+        {
+          "id": "adversarial-10",
+          "category": "adversarial",
+          "answerable": true,
+          "candidate_count": 8,
+          "recall_at_8": 1.0,
+          "ndcg_at_8": 1.0,
+          "max_lexical_score": 95.31184746883405,
+          "max_query_coverage": 1.0
+        },
+        {
+          "id": "adversarial-11",
+          "category": "adversarial",
+          "answerable": true,
+          "candidate_count": 8,
+          "recall_at_8": 1.0,
+          "ndcg_at_8": 1.0,
+          "max_lexical_score": 75.81871194637944,
+          "max_query_coverage": 1.0
+        },
+        {
+          "id": "adversarial-12",
+          "category": "adversarial",
+          "answerable": true,
+          "candidate_count": 8,
+          "recall_at_8": 1.0,
+          "ndcg_at_8": 1.0,
+          "max_lexical_score": 97.90788835304271,
+          "max_query_coverage": 1.0
+        },
+        {
+          "id": "no_match-01",
+          "category": "no_match",
+          "answerable": false,
+          "candidate_count": 8,
+          "recall_at_8": null,
+          "ndcg_at_8": null,
+          "max_lexical_score": 13.787928312375717,
+          "max_query_coverage": 0.3333333333333333
+        },
+        {
+          "id": "weak_only-01",
+          "category": "weak_only",
+          "answerable": false,
+          "candidate_count": 8,
+          "recall_at_8": null,
+          "ndcg_at_8": null,
+          "max_lexical_score": 15.209508454946342,
+          "max_query_coverage": 0.0
+        },
+        {
+          "id": "no_match-02",
+          "category": "no_match",
+          "answerable": false,
+          "candidate_count": 8,
+          "recall_at_8": null,
+          "ndcg_at_8": null,
+          "max_lexical_score": 13.787928312375717,
+          "max_query_coverage": 0.3333333333333333
+        },
+        {
+          "id": "weak_only-02",
+          "category": "weak_only",
+          "answerable": false,
+          "candidate_count": 8,
+          "recall_at_8": null,
+          "ndcg_at_8": null,
+          "max_lexical_score": 15.209508454946342,
+          "max_query_coverage": 0.0
+        },
+        {
+          "id": "no_match-03",
+          "category": "no_match",
+          "answerable": false,
+          "candidate_count": 8,
+          "recall_at_8": null,
+          "ndcg_at_8": null,
+          "max_lexical_score": 13.787928312375717,
+          "max_query_coverage": 0.3333333333333333
+        },
+        {
+          "id": "weak_only-03",
+          "category": "weak_only",
+          "answerable": false,
+          "candidate_count": 8,
+          "recall_at_8": null,
+          "ndcg_at_8": null,
+          "max_lexical_score": 15.209508454946342,
+          "max_query_coverage": 0.0
+        },
+        {
+          "id": "no_match-04",
+          "category": "no_match",
+          "answerable": false,
+          "candidate_count": 8,
+          "recall_at_8": null,
+          "ndcg_at_8": null,
+          "max_lexical_score": 13.787928312375717,
+          "max_query_coverage": 0.3333333333333333
+        },
+        {
+          "id": "weak_only-04",
+          "category": "weak_only",
+          "answerable": false,
+          "candidate_count": 8,
+          "recall_at_8": null,
+          "ndcg_at_8": null,
+          "max_lexical_score": 15.209508454946342,
+          "max_query_coverage": 0.0
+        },
+        {
+          "id": "no_match-05",
+          "category": "no_match",
+          "answerable": false,
+          "candidate_count": 8,
+          "recall_at_8": null,
+          "ndcg_at_8": null,
+          "max_lexical_score": 13.787928312375717,
+          "max_query_coverage": 0.3333333333333333
+        },
+        {
+          "id": "weak_only-05",
+          "category": "weak_only",
+          "answerable": false,
+          "candidate_count": 8,
+          "recall_at_8": null,
+          "ndcg_at_8": null,
+          "max_lexical_score": 15.209508454946342,
+          "max_query_coverage": 0.0
+        },
+        {
+          "id": "no_match-06",
+          "category": "no_match",
+          "answerable": false,
+          "candidate_count": 8,
+          "recall_at_8": null,
+          "ndcg_at_8": null,
+          "max_lexical_score": 13.787928312375717,
+          "max_query_coverage": 0.3333333333333333
+        },
+        {
+          "id": "weak_only-06",
+          "category": "weak_only",
+          "answerable": false,
+          "candidate_count": 8,
+          "recall_at_8": null,
+          "ndcg_at_8": null,
+          "max_lexical_score": 15.209508454946342,
+          "max_query_coverage": 0.0
+        },
+        {
+          "id": "no_match-07",
+          "category": "no_match",
+          "answerable": false,
+          "candidate_count": 8,
+          "recall_at_8": null,
+          "ndcg_at_8": null,
+          "max_lexical_score": 13.787928312375717,
+          "max_query_coverage": 0.3333333333333333
+        },
+        {
+          "id": "weak_only-07",
+          "category": "weak_only",
+          "answerable": false,
+          "candidate_count": 8,
+          "recall_at_8": null,
+          "ndcg_at_8": null,
+          "max_lexical_score": 15.209508454946342,
+          "max_query_coverage": 0.0
+        },
+        {
+          "id": "no_match-08",
+          "category": "no_match",
+          "answerable": false,
+          "candidate_count": 8,
+          "recall_at_8": null,
+          "ndcg_at_8": null,
+          "max_lexical_score": 13.787928312375717,
+          "max_query_coverage": 0.3333333333333333
+        },
+        {
+          "id": "weak_only-08",
+          "category": "weak_only",
+          "answerable": false,
+          "candidate_count": 8,
+          "recall_at_8": null,
+          "ndcg_at_8": null,
+          "max_lexical_score": 15.209508454946342,
+          "max_query_coverage": 0.0
+        }
+      ],
+      "coverage_sweep": [
+        {
+          "threshold": 0,
+          "answerable_queries": 60,
+          "absence_queries": 16,
+          "rejected_absence_queries": 0,
+          "falsely_rejected_answerable_queries": 2,
+          "recall_at_8_after_query_gate": 0.6166666666666667,
+          "ndcg_at_8_after_query_gate": 0.6121199388751345
+        },
+        {
+          "threshold": 0.25,
+          "answerable_queries": 60,
+          "absence_queries": 16,
+          "rejected_absence_queries": 8,
+          "falsely_rejected_answerable_queries": 12,
+          "recall_at_8_after_query_gate": 0.6,
+          "ndcg_at_8_after_query_gate": 0.6016044429822769
+        },
+        {
+          "threshold": 0.5,
+          "answerable_queries": 60,
+          "absence_queries": 16,
+          "rejected_absence_queries": 16,
+          "falsely_rejected_answerable_queries": 12,
+          "recall_at_8_after_query_gate": 0.6,
+          "ndcg_at_8_after_query_gate": 0.6016044429822769
+        },
+        {
+          "threshold": 0.75,
+          "answerable_queries": 60,
+          "absence_queries": 16,
+          "rejected_absence_queries": 16,
+          "falsely_rejected_answerable_queries": 24,
+          "recall_at_8_after_query_gate": 0.4,
+          "ndcg_at_8_after_query_gate": 0.4016044429822769
+        },
+        {
+          "threshold": 1,
+          "answerable_queries": 60,
+          "absence_queries": 16,
+          "rejected_absence_queries": 16,
+          "falsely_rejected_answerable_queries": 24,
+          "recall_at_8_after_query_gate": 0.4,
+          "ndcg_at_8_after_query_gate": 0.4016044429822769
+        }
+      ],
+      "raw_bm25_sweep": [
+        {
+          "threshold": 0,
+          "answerable_queries": 60,
+          "absence_queries": 16,
+          "rejected_absence_queries": 0,
+          "falsely_rejected_answerable_queries": 2,
+          "recall_at_8_after_query_gate": 0.6166666666666667,
+          "ndcg_at_8_after_query_gate": 0.6121199388751345
+        },
+        {
+          "threshold": 1e-05,
+          "answerable_queries": 60,
+          "absence_queries": 16,
+          "rejected_absence_queries": 0,
+          "falsely_rejected_answerable_queries": 2,
+          "recall_at_8_after_query_gate": 0.6166666666666667,
+          "ndcg_at_8_after_query_gate": 0.6121199388751345
+        },
+        {
+          "threshold": 1,
+          "answerable_queries": 60,
+          "absence_queries": 16,
+          "rejected_absence_queries": 0,
+          "falsely_rejected_answerable_queries": 2,
+          "recall_at_8_after_query_gate": 0.6166666666666667,
+          "ndcg_at_8_after_query_gate": 0.6121199388751345
+        },
+        {
+          "threshold": 5,
+          "answerable_queries": 60,
+          "absence_queries": 16,
+          "rejected_absence_queries": 0,
+          "falsely_rejected_answerable_queries": 4,
+          "recall_at_8_after_query_gate": 0.6,
+          "ndcg_at_8_after_query_gate": 0.6016044429822769
+        },
+        {
+          "threshold": 10,
+          "answerable_queries": 60,
+          "absence_queries": 16,
+          "rejected_absence_queries": 0,
+          "falsely_rejected_answerable_queries": 9,
+          "recall_at_8_after_query_gate": 0.5833333333333334,
+          "ndcg_at_8_after_query_gate": 0.5849377763156103
+        },
+        {
+          "threshold": 15,
+          "answerable_queries": 60,
+          "absence_queries": 16,
+          "rejected_absence_queries": 8,
+          "falsely_rejected_answerable_queries": 12,
+          "recall_at_8_after_query_gate": 0.5833333333333334,
+          "ndcg_at_8_after_query_gate": 0.5849377763156103
+        },
+        {
+          "threshold": 20,
+          "answerable_queries": 60,
+          "absence_queries": 16,
+          "rejected_absence_queries": 16,
+          "falsely_rejected_answerable_queries": 13,
+          "recall_at_8_after_query_gate": 0.5833333333333334,
+          "ndcg_at_8_after_query_gate": 0.5849377763156103
+        }
+      ],
+      "categories_at_coverage_half": {
+        "adversarial": {
+          "threshold": 0.5,
+          "answerable_queries": 12,
+          "absence_queries": 0,
+          "rejected_absence_queries": 0,
+          "falsely_rejected_answerable_queries": 0,
+          "recall_at_8_after_query_gate": 1.0,
+          "ndcg_at_8_after_query_gate": 1.0
+        },
+        "graph": {
+          "threshold": 0.5,
+          "answerable_queries": 12,
+          "absence_queries": 0,
+          "rejected_absence_queries": 0,
+          "falsely_rejected_answerable_queries": 0,
+          "recall_at_8_after_query_gate": 0.0,
+          "ndcg_at_8_after_query_gate": 0.1310456303875653
+        },
+        "lexical": {
+          "threshold": 0.5,
+          "answerable_queries": 12,
+          "absence_queries": 0,
+          "rejected_absence_queries": 0,
+          "falsely_rejected_answerable_queries": 0,
+          "recall_at_8_after_query_gate": 1.0,
+          "ndcg_at_8_after_query_gate": 1.0
+        },
+        "no_match": {
+          "threshold": 0.5,
+          "answerable_queries": 0,
+          "absence_queries": 8,
+          "rejected_absence_queries": 8,
+          "falsely_rejected_answerable_queries": 0,
+          "recall_at_8_after_query_gate": null,
+          "ndcg_at_8_after_query_gate": null
+        },
+        "persona": {
+          "threshold": 0.5,
+          "answerable_queries": 12,
+          "absence_queries": 0,
+          "rejected_absence_queries": 0,
+          "falsely_rejected_answerable_queries": 0,
+          "recall_at_8_after_query_gate": 1.0,
+          "ndcg_at_8_after_query_gate": 0.8769765845238191
+        },
+        "semantic": {
+          "threshold": 0.5,
+          "answerable_queries": 12,
+          "absence_queries": 0,
+          "rejected_absence_queries": 0,
+          "falsely_rejected_answerable_queries": 12,
+          "recall_at_8_after_query_gate": 0.0,
+          "ndcg_at_8_after_query_gate": 0.0
+        },
+        "weak_only": {
+          "threshold": 0.5,
+          "answerable_queries": 0,
+          "absence_queries": 8,
+          "rejected_absence_queries": 8,
+          "falsely_rejected_answerable_queries": 0,
+          "recall_at_8_after_query_gate": null,
+          "ndcg_at_8_after_query_gate": null
+        }
+      }
+    },
+    "graph_only": {
+      "rows": [
+        {
+          "id": "lexical-01",
+          "category": "lexical",
+          "answerable": true,
+          "candidate_count": 0,
+          "recall_at_8": 0.0,
+          "ndcg_at_8": 0.0,
+          "max_lexical_score": 0.0,
+          "max_query_coverage": 0.0
+        },
+        {
+          "id": "lexical-02",
+          "category": "lexical",
+          "answerable": true,
+          "candidate_count": 0,
+          "recall_at_8": 0.0,
+          "ndcg_at_8": 0.0,
+          "max_lexical_score": 0.0,
+          "max_query_coverage": 0.0
+        },
+        {
+          "id": "lexical-03",
+          "category": "lexical",
+          "answerable": true,
+          "candidate_count": 0,
+          "recall_at_8": 0.0,
+          "ndcg_at_8": 0.0,
+          "max_lexical_score": 0.0,
+          "max_query_coverage": 0.0
+        },
+        {
+          "id": "lexical-04",
+          "category": "lexical",
+          "answerable": true,
+          "candidate_count": 0,
+          "recall_at_8": 0.0,
+          "ndcg_at_8": 0.0,
+          "max_lexical_score": 0.0,
+          "max_query_coverage": 0.0
+        },
+        {
+          "id": "lexical-05",
+          "category": "lexical",
+          "answerable": true,
+          "candidate_count": 0,
+          "recall_at_8": 0.0,
+          "ndcg_at_8": 0.0,
+          "max_lexical_score": 0.0,
+          "max_query_coverage": 0.0
+        },
+        {
+          "id": "lexical-06",
+          "category": "lexical",
+          "answerable": true,
+          "candidate_count": 0,
+          "recall_at_8": 0.0,
+          "ndcg_at_8": 0.0,
+          "max_lexical_score": 0.0,
+          "max_query_coverage": 0.0
+        },
+        {
+          "id": "lexical-07",
+          "category": "lexical",
+          "answerable": true,
+          "candidate_count": 0,
+          "recall_at_8": 0.0,
+          "ndcg_at_8": 0.0,
+          "max_lexical_score": 0.0,
+          "max_query_coverage": 0.0
+        },
+        {
+          "id": "lexical-08",
+          "category": "lexical",
+          "answerable": true,
+          "candidate_count": 0,
+          "recall_at_8": 0.0,
+          "ndcg_at_8": 0.0,
+          "max_lexical_score": 0.0,
+          "max_query_coverage": 0.0
+        },
+        {
+          "id": "lexical-09",
+          "category": "lexical",
+          "answerable": true,
+          "candidate_count": 0,
+          "recall_at_8": 0.0,
+          "ndcg_at_8": 0.0,
+          "max_lexical_score": 0.0,
+          "max_query_coverage": 0.0
+        },
+        {
+          "id": "lexical-10",
+          "category": "lexical",
+          "answerable": true,
+          "candidate_count": 0,
+          "recall_at_8": 0.0,
+          "ndcg_at_8": 0.0,
+          "max_lexical_score": 0.0,
+          "max_query_coverage": 0.0
+        },
+        {
+          "id": "lexical-11",
+          "category": "lexical",
+          "answerable": true,
+          "candidate_count": 0,
+          "recall_at_8": 0.0,
+          "ndcg_at_8": 0.0,
+          "max_lexical_score": 0.0,
+          "max_query_coverage": 0.0
+        },
+        {
+          "id": "lexical-12",
+          "category": "lexical",
+          "answerable": true,
+          "candidate_count": 0,
+          "recall_at_8": 0.0,
+          "ndcg_at_8": 0.0,
+          "max_lexical_score": 0.0,
+          "max_query_coverage": 0.0
+        },
+        {
+          "id": "semantic-01",
+          "category": "semantic",
+          "answerable": true,
+          "candidate_count": 0,
+          "recall_at_8": 0.0,
+          "ndcg_at_8": 0.0,
+          "max_lexical_score": 0.0,
+          "max_query_coverage": 0.0
+        },
+        {
+          "id": "semantic-02",
+          "category": "semantic",
+          "answerable": true,
+          "candidate_count": 0,
+          "recall_at_8": 0.0,
+          "ndcg_at_8": 0.0,
+          "max_lexical_score": 0.0,
+          "max_query_coverage": 0.0
+        },
+        {
+          "id": "semantic-03",
+          "category": "semantic",
+          "answerable": true,
+          "candidate_count": 0,
+          "recall_at_8": 0.0,
+          "ndcg_at_8": 0.0,
+          "max_lexical_score": 0.0,
+          "max_query_coverage": 0.0
+        },
+        {
+          "id": "semantic-04",
+          "category": "semantic",
+          "answerable": true,
+          "candidate_count": 0,
+          "recall_at_8": 0.0,
+          "ndcg_at_8": 0.0,
+          "max_lexical_score": 0.0,
+          "max_query_coverage": 0.0
+        },
+        {
+          "id": "semantic-05",
+          "category": "semantic",
+          "answerable": true,
+          "candidate_count": 0,
+          "recall_at_8": 0.0,
+          "ndcg_at_8": 0.0,
+          "max_lexical_score": 0.0,
+          "max_query_coverage": 0.0
+        },
+        {
+          "id": "semantic-06",
+          "category": "semantic",
+          "answerable": true,
+          "candidate_count": 0,
+          "recall_at_8": 0.0,
+          "ndcg_at_8": 0.0,
+          "max_lexical_score": 0.0,
+          "max_query_coverage": 0.0
+        },
+        {
+          "id": "semantic-07",
+          "category": "semantic",
+          "answerable": true,
+          "candidate_count": 0,
+          "recall_at_8": 0.0,
+          "ndcg_at_8": 0.0,
+          "max_lexical_score": 0.0,
+          "max_query_coverage": 0.0
+        },
+        {
+          "id": "semantic-08",
+          "category": "semantic",
+          "answerable": true,
+          "candidate_count": 0,
+          "recall_at_8": 0.0,
+          "ndcg_at_8": 0.0,
+          "max_lexical_score": 0.0,
+          "max_query_coverage": 0.0
+        },
+        {
+          "id": "semantic-09",
+          "category": "semantic",
+          "answerable": true,
+          "candidate_count": 0,
+          "recall_at_8": 0.0,
+          "ndcg_at_8": 0.0,
+          "max_lexical_score": 0.0,
+          "max_query_coverage": 0.0
+        },
+        {
+          "id": "semantic-10",
+          "category": "semantic",
+          "answerable": true,
+          "candidate_count": 0,
+          "recall_at_8": 0.0,
+          "ndcg_at_8": 0.0,
+          "max_lexical_score": 0.0,
+          "max_query_coverage": 0.0
+        },
+        {
+          "id": "semantic-11",
+          "category": "semantic",
+          "answerable": true,
+          "candidate_count": 0,
+          "recall_at_8": 0.0,
+          "ndcg_at_8": 0.0,
+          "max_lexical_score": 0.0,
+          "max_query_coverage": 0.0
+        },
+        {
+          "id": "semantic-12",
+          "category": "semantic",
+          "answerable": true,
+          "candidate_count": 0,
+          "recall_at_8": 0.0,
+          "ndcg_at_8": 0.0,
+          "max_lexical_score": 0.0,
+          "max_query_coverage": 0.0
+        },
+        {
+          "id": "graph-01",
+          "category": "graph",
+          "answerable": true,
+          "candidate_count": 2,
+          "recall_at_8": 1.0,
+          "ndcg_at_8": 0.7098097413968654,
+          "max_lexical_score": 0.0,
+          "max_query_coverage": 1.0
+        },
+        {
+          "id": "graph-02",
+          "category": "graph",
+          "answerable": true,
+          "candidate_count": 2,
+          "recall_at_8": 1.0,
+          "ndcg_at_8": 0.7098097413968654,
+          "max_lexical_score": 0.0,
+          "max_query_coverage": 1.0
+        },
+        {
+          "id": "graph-03",
+          "category": "graph",
+          "answerable": true,
+          "candidate_count": 2,
+          "recall_at_8": 1.0,
+          "ndcg_at_8": 0.7098097413968654,
+          "max_lexical_score": 0.0,
+          "max_query_coverage": 1.0
+        },
+        {
+          "id": "graph-04",
+          "category": "graph",
+          "answerable": true,
+          "candidate_count": 2,
+          "recall_at_8": 1.0,
+          "ndcg_at_8": 0.7098097413968654,
+          "max_lexical_score": 0.0,
+          "max_query_coverage": 1.0
+        },
+        {
+          "id": "graph-05",
+          "category": "graph",
+          "answerable": true,
+          "candidate_count": 2,
+          "recall_at_8": 1.0,
+          "ndcg_at_8": 0.7098097413968654,
+          "max_lexical_score": 0.0,
+          "max_query_coverage": 1.0
+        },
+        {
+          "id": "graph-06",
+          "category": "graph",
+          "answerable": true,
+          "candidate_count": 2,
+          "recall_at_8": 1.0,
+          "ndcg_at_8": 0.7098097413968654,
+          "max_lexical_score": 0.0,
+          "max_query_coverage": 1.0
+        },
+        {
+          "id": "graph-07",
+          "category": "graph",
+          "answerable": true,
+          "candidate_count": 2,
+          "recall_at_8": 1.0,
+          "ndcg_at_8": 0.7098097413968654,
+          "max_lexical_score": 0.0,
+          "max_query_coverage": 1.0
+        },
+        {
+          "id": "graph-08",
+          "category": "graph",
+          "answerable": true,
+          "candidate_count": 2,
+          "recall_at_8": 1.0,
+          "ndcg_at_8": 0.7098097413968654,
+          "max_lexical_score": 0.0,
+          "max_query_coverage": 1.0
+        },
+        {
+          "id": "graph-09",
+          "category": "graph",
+          "answerable": true,
+          "candidate_count": 2,
+          "recall_at_8": 1.0,
+          "ndcg_at_8": 0.7098097413968654,
+          "max_lexical_score": 0.0,
+          "max_query_coverage": 1.0
+        },
+        {
+          "id": "graph-10",
+          "category": "graph",
+          "answerable": true,
+          "candidate_count": 2,
+          "recall_at_8": 1.0,
+          "ndcg_at_8": 0.7098097413968654,
+          "max_lexical_score": 0.0,
+          "max_query_coverage": 1.0
+        },
+        {
+          "id": "graph-11",
+          "category": "graph",
+          "answerable": true,
+          "candidate_count": 2,
+          "recall_at_8": 1.0,
+          "ndcg_at_8": 0.7098097413968654,
+          "max_lexical_score": 0.0,
+          "max_query_coverage": 1.0
+        },
+        {
+          "id": "graph-12",
+          "category": "graph",
+          "answerable": true,
+          "candidate_count": 2,
+          "recall_at_8": 1.0,
+          "ndcg_at_8": 0.7098097413968654,
+          "max_lexical_score": 0.0,
+          "max_query_coverage": 1.0
+        },
+        {
+          "id": "persona-01",
+          "category": "persona",
+          "answerable": true,
+          "candidate_count": 0,
+          "recall_at_8": 0.0,
+          "ndcg_at_8": 0.0,
+          "max_lexical_score": 0.0,
+          "max_query_coverage": 0.0
+        },
+        {
+          "id": "persona-02",
+          "category": "persona",
+          "answerable": true,
+          "candidate_count": 0,
+          "recall_at_8": 0.0,
+          "ndcg_at_8": 0.0,
+          "max_lexical_score": 0.0,
+          "max_query_coverage": 0.0
+        },
+        {
+          "id": "persona-03",
+          "category": "persona",
+          "answerable": true,
+          "candidate_count": 0,
+          "recall_at_8": 0.0,
+          "ndcg_at_8": 0.0,
+          "max_lexical_score": 0.0,
+          "max_query_coverage": 0.0
+        },
+        {
+          "id": "persona-04",
+          "category": "persona",
+          "answerable": true,
+          "candidate_count": 0,
+          "recall_at_8": 0.0,
+          "ndcg_at_8": 0.0,
+          "max_lexical_score": 0.0,
+          "max_query_coverage": 0.0
+        },
+        {
+          "id": "persona-05",
+          "category": "persona",
+          "answerable": true,
+          "candidate_count": 0,
+          "recall_at_8": 0.0,
+          "ndcg_at_8": 0.0,
+          "max_lexical_score": 0.0,
+          "max_query_coverage": 0.0
+        },
+        {
+          "id": "persona-06",
+          "category": "persona",
+          "answerable": true,
+          "candidate_count": 0,
+          "recall_at_8": 0.0,
+          "ndcg_at_8": 0.0,
+          "max_lexical_score": 0.0,
+          "max_query_coverage": 0.0
+        },
+        {
+          "id": "persona-07",
+          "category": "persona",
+          "answerable": true,
+          "candidate_count": 0,
+          "recall_at_8": 0.0,
+          "ndcg_at_8": 0.0,
+          "max_lexical_score": 0.0,
+          "max_query_coverage": 0.0
+        },
+        {
+          "id": "persona-08",
+          "category": "persona",
+          "answerable": true,
+          "candidate_count": 0,
+          "recall_at_8": 0.0,
+          "ndcg_at_8": 0.0,
+          "max_lexical_score": 0.0,
+          "max_query_coverage": 0.0
+        },
+        {
+          "id": "persona-09",
+          "category": "persona",
+          "answerable": true,
+          "candidate_count": 0,
+          "recall_at_8": 0.0,
+          "ndcg_at_8": 0.0,
+          "max_lexical_score": 0.0,
+          "max_query_coverage": 0.0
+        },
+        {
+          "id": "persona-10",
+          "category": "persona",
+          "answerable": true,
+          "candidate_count": 0,
+          "recall_at_8": 0.0,
+          "ndcg_at_8": 0.0,
+          "max_lexical_score": 0.0,
+          "max_query_coverage": 0.0
+        },
+        {
+          "id": "persona-11",
+          "category": "persona",
+          "answerable": true,
+          "candidate_count": 0,
+          "recall_at_8": 0.0,
+          "ndcg_at_8": 0.0,
+          "max_lexical_score": 0.0,
+          "max_query_coverage": 0.0
+        },
+        {
+          "id": "persona-12",
+          "category": "persona",
+          "answerable": true,
+          "candidate_count": 0,
+          "recall_at_8": 0.0,
+          "ndcg_at_8": 0.0,
+          "max_lexical_score": 0.0,
+          "max_query_coverage": 0.0
+        },
+        {
+          "id": "adversarial-01",
+          "category": "adversarial",
+          "answerable": true,
+          "candidate_count": 0,
+          "recall_at_8": 0.0,
+          "ndcg_at_8": 0.0,
+          "max_lexical_score": 0.0,
+          "max_query_coverage": 0.0
+        },
+        {
+          "id": "adversarial-02",
+          "category": "adversarial",
+          "answerable": true,
+          "candidate_count": 0,
+          "recall_at_8": 0.0,
+          "ndcg_at_8": 0.0,
+          "max_lexical_score": 0.0,
+          "max_query_coverage": 0.0
+        },
+        {
+          "id": "adversarial-03",
+          "category": "adversarial",
+          "answerable": true,
+          "candidate_count": 0,
+          "recall_at_8": 0.0,
+          "ndcg_at_8": 0.0,
+          "max_lexical_score": 0.0,
+          "max_query_coverage": 0.0
+        },
+        {
+          "id": "adversarial-04",
+          "category": "adversarial",
+          "answerable": true,
+          "candidate_count": 0,
+          "recall_at_8": 0.0,
+          "ndcg_at_8": 0.0,
+          "max_lexical_score": 0.0,
+          "max_query_coverage": 0.0
+        },
+        {
+          "id": "adversarial-05",
+          "category": "adversarial",
+          "answerable": true,
+          "candidate_count": 0,
+          "recall_at_8": 0.0,
+          "ndcg_at_8": 0.0,
+          "max_lexical_score": 0.0,
+          "max_query_coverage": 0.0
+        },
+        {
+          "id": "adversarial-06",
+          "category": "adversarial",
+          "answerable": true,
+          "candidate_count": 0,
+          "recall_at_8": 0.0,
+          "ndcg_at_8": 0.0,
+          "max_lexical_score": 0.0,
+          "max_query_coverage": 0.0
+        },
+        {
+          "id": "adversarial-07",
+          "category": "adversarial",
+          "answerable": true,
+          "candidate_count": 0,
+          "recall_at_8": 0.0,
+          "ndcg_at_8": 0.0,
+          "max_lexical_score": 0.0,
+          "max_query_coverage": 0.0
+        },
+        {
+          "id": "adversarial-08",
+          "category": "adversarial",
+          "answerable": true,
+          "candidate_count": 0,
+          "recall_at_8": 0.0,
+          "ndcg_at_8": 0.0,
+          "max_lexical_score": 0.0,
+          "max_query_coverage": 0.0
+        },
+        {
+          "id": "adversarial-09",
+          "category": "adversarial",
+          "answerable": true,
+          "candidate_count": 0,
+          "recall_at_8": 0.0,
+          "ndcg_at_8": 0.0,
+          "max_lexical_score": 0.0,
+          "max_query_coverage": 0.0
+        },
+        {
+          "id": "adversarial-10",
+          "category": "adversarial",
+          "answerable": true,
+          "candidate_count": 0,
+          "recall_at_8": 0.0,
+          "ndcg_at_8": 0.0,
+          "max_lexical_score": 0.0,
+          "max_query_coverage": 0.0
+        },
+        {
+          "id": "adversarial-11",
+          "category": "adversarial",
+          "answerable": true,
+          "candidate_count": 0,
+          "recall_at_8": 0.0,
+          "ndcg_at_8": 0.0,
+          "max_lexical_score": 0.0,
+          "max_query_coverage": 0.0
+        },
+        {
+          "id": "adversarial-12",
+          "category": "adversarial",
+          "answerable": true,
+          "candidate_count": 0,
+          "recall_at_8": 0.0,
+          "ndcg_at_8": 0.0,
+          "max_lexical_score": 0.0,
+          "max_query_coverage": 0.0
+        },
+        {
+          "id": "no_match-01",
+          "category": "no_match",
+          "answerable": false,
+          "candidate_count": 0,
+          "recall_at_8": null,
+          "ndcg_at_8": null,
+          "max_lexical_score": 0.0,
+          "max_query_coverage": 0.0
+        },
+        {
+          "id": "weak_only-01",
+          "category": "weak_only",
+          "answerable": false,
+          "candidate_count": 0,
+          "recall_at_8": null,
+          "ndcg_at_8": null,
+          "max_lexical_score": 0.0,
+          "max_query_coverage": 0.0
+        },
+        {
+          "id": "no_match-02",
+          "category": "no_match",
+          "answerable": false,
+          "candidate_count": 0,
+          "recall_at_8": null,
+          "ndcg_at_8": null,
+          "max_lexical_score": 0.0,
+          "max_query_coverage": 0.0
+        },
+        {
+          "id": "weak_only-02",
+          "category": "weak_only",
+          "answerable": false,
+          "candidate_count": 0,
+          "recall_at_8": null,
+          "ndcg_at_8": null,
+          "max_lexical_score": 0.0,
+          "max_query_coverage": 0.0
+        },
+        {
+          "id": "no_match-03",
+          "category": "no_match",
+          "answerable": false,
+          "candidate_count": 0,
+          "recall_at_8": null,
+          "ndcg_at_8": null,
+          "max_lexical_score": 0.0,
+          "max_query_coverage": 0.0
+        },
+        {
+          "id": "weak_only-03",
+          "category": "weak_only",
+          "answerable": false,
+          "candidate_count": 0,
+          "recall_at_8": null,
+          "ndcg_at_8": null,
+          "max_lexical_score": 0.0,
+          "max_query_coverage": 0.0
+        },
+        {
+          "id": "no_match-04",
+          "category": "no_match",
+          "answerable": false,
+          "candidate_count": 0,
+          "recall_at_8": null,
+          "ndcg_at_8": null,
+          "max_lexical_score": 0.0,
+          "max_query_coverage": 0.0
+        },
+        {
+          "id": "weak_only-04",
+          "category": "weak_only",
+          "answerable": false,
+          "candidate_count": 0,
+          "recall_at_8": null,
+          "ndcg_at_8": null,
+          "max_lexical_score": 0.0,
+          "max_query_coverage": 0.0
+        },
+        {
+          "id": "no_match-05",
+          "category": "no_match",
+          "answerable": false,
+          "candidate_count": 0,
+          "recall_at_8": null,
+          "ndcg_at_8": null,
+          "max_lexical_score": 0.0,
+          "max_query_coverage": 0.0
+        },
+        {
+          "id": "weak_only-05",
+          "category": "weak_only",
+          "answerable": false,
+          "candidate_count": 0,
+          "recall_at_8": null,
+          "ndcg_at_8": null,
+          "max_lexical_score": 0.0,
+          "max_query_coverage": 0.0
+        },
+        {
+          "id": "no_match-06",
+          "category": "no_match",
+          "answerable": false,
+          "candidate_count": 0,
+          "recall_at_8": null,
+          "ndcg_at_8": null,
+          "max_lexical_score": 0.0,
+          "max_query_coverage": 0.0
+        },
+        {
+          "id": "weak_only-06",
+          "category": "weak_only",
+          "answerable": false,
+          "candidate_count": 0,
+          "recall_at_8": null,
+          "ndcg_at_8": null,
+          "max_lexical_score": 0.0,
+          "max_query_coverage": 0.0
+        },
+        {
+          "id": "no_match-07",
+          "category": "no_match",
+          "answerable": false,
+          "candidate_count": 0,
+          "recall_at_8": null,
+          "ndcg_at_8": null,
+          "max_lexical_score": 0.0,
+          "max_query_coverage": 0.0
+        },
+        {
+          "id": "weak_only-07",
+          "category": "weak_only",
+          "answerable": false,
+          "candidate_count": 0,
+          "recall_at_8": null,
+          "ndcg_at_8": null,
+          "max_lexical_score": 0.0,
+          "max_query_coverage": 0.0
+        },
+        {
+          "id": "no_match-08",
+          "category": "no_match",
+          "answerable": false,
+          "candidate_count": 0,
+          "recall_at_8": null,
+          "ndcg_at_8": null,
+          "max_lexical_score": 0.0,
+          "max_query_coverage": 0.0
+        },
+        {
+          "id": "weak_only-08",
+          "category": "weak_only",
+          "answerable": false,
+          "candidate_count": 0,
+          "recall_at_8": null,
+          "ndcg_at_8": null,
+          "max_lexical_score": 0.0,
+          "max_query_coverage": 0.0
+        }
+      ],
+      "coverage_sweep": [
+        {
+          "threshold": 0,
+          "answerable_queries": 60,
+          "absence_queries": 16,
+          "rejected_absence_queries": 16,
+          "falsely_rejected_answerable_queries": 48,
+          "recall_at_8_after_query_gate": 0.2,
+          "ndcg_at_8_after_query_gate": 0.14196194827937306
+        },
+        {
+          "threshold": 0.25,
+          "answerable_queries": 60,
+          "absence_queries": 16,
+          "rejected_absence_queries": 16,
+          "falsely_rejected_answerable_queries": 48,
+          "recall_at_8_after_query_gate": 0.2,
+          "ndcg_at_8_after_query_gate": 0.14196194827937306
+        },
+        {
+          "threshold": 0.5,
+          "answerable_queries": 60,
+          "absence_queries": 16,
+          "rejected_absence_queries": 16,
+          "falsely_rejected_answerable_queries": 48,
+          "recall_at_8_after_query_gate": 0.2,
+          "ndcg_at_8_after_query_gate": 0.14196194827937306
+        },
+        {
+          "threshold": 0.75,
+          "answerable_queries": 60,
+          "absence_queries": 16,
+          "rejected_absence_queries": 16,
+          "falsely_rejected_answerable_queries": 48,
+          "recall_at_8_after_query_gate": 0.2,
+          "ndcg_at_8_after_query_gate": 0.14196194827937306
+        },
+        {
+          "threshold": 1,
+          "answerable_queries": 60,
+          "absence_queries": 16,
+          "rejected_absence_queries": 16,
+          "falsely_rejected_answerable_queries": 48,
+          "recall_at_8_after_query_gate": 0.2,
+          "ndcg_at_8_after_query_gate": 0.14196194827937306
+        }
+      ],
+      "raw_bm25_sweep": [
+        {
+          "threshold": 0,
+          "answerable_queries": 60,
+          "absence_queries": 16,
+          "rejected_absence_queries": 16,
+          "falsely_rejected_answerable_queries": 48,
+          "recall_at_8_after_query_gate": 0.2,
+          "ndcg_at_8_after_query_gate": 0.14196194827937306
+        },
+        {
+          "threshold": 1e-05,
+          "answerable_queries": 60,
+          "absence_queries": 16,
+          "rejected_absence_queries": 16,
+          "falsely_rejected_answerable_queries": 60,
+          "recall_at_8_after_query_gate": 0.0,
+          "ndcg_at_8_after_query_gate": 0.0
+        },
+        {
+          "threshold": 1,
+          "answerable_queries": 60,
+          "absence_queries": 16,
+          "rejected_absence_queries": 16,
+          "falsely_rejected_answerable_queries": 60,
+          "recall_at_8_after_query_gate": 0.0,
+          "ndcg_at_8_after_query_gate": 0.0
+        },
+        {
+          "threshold": 5,
+          "answerable_queries": 60,
+          "absence_queries": 16,
+          "rejected_absence_queries": 16,
+          "falsely_rejected_answerable_queries": 60,
+          "recall_at_8_after_query_gate": 0.0,
+          "ndcg_at_8_after_query_gate": 0.0
+        },
+        {
+          "threshold": 10,
+          "answerable_queries": 60,
+          "absence_queries": 16,
+          "rejected_absence_queries": 16,
+          "falsely_rejected_answerable_queries": 60,
+          "recall_at_8_after_query_gate": 0.0,
+          "ndcg_at_8_after_query_gate": 0.0
+        },
+        {
+          "threshold": 15,
+          "answerable_queries": 60,
+          "absence_queries": 16,
+          "rejected_absence_queries": 16,
+          "falsely_rejected_answerable_queries": 60,
+          "recall_at_8_after_query_gate": 0.0,
+          "ndcg_at_8_after_query_gate": 0.0
+        },
+        {
+          "threshold": 20,
+          "answerable_queries": 60,
+          "absence_queries": 16,
+          "rejected_absence_queries": 16,
+          "falsely_rejected_answerable_queries": 60,
+          "recall_at_8_after_query_gate": 0.0,
+          "ndcg_at_8_after_query_gate": 0.0
+        }
+      ],
+      "categories_at_coverage_half": {
+        "adversarial": {
+          "threshold": 0.5,
+          "answerable_queries": 12,
+          "absence_queries": 0,
+          "rejected_absence_queries": 0,
+          "falsely_rejected_answerable_queries": 12,
+          "recall_at_8_after_query_gate": 0.0,
+          "ndcg_at_8_after_query_gate": 0.0
+        },
+        "graph": {
+          "threshold": 0.5,
+          "answerable_queries": 12,
+          "absence_queries": 0,
+          "rejected_absence_queries": 0,
+          "falsely_rejected_answerable_queries": 0,
+          "recall_at_8_after_query_gate": 1.0,
+          "ndcg_at_8_after_query_gate": 0.7098097413968653
+        },
+        "lexical": {
+          "threshold": 0.5,
+          "answerable_queries": 12,
+          "absence_queries": 0,
+          "rejected_absence_queries": 0,
+          "falsely_rejected_answerable_queries": 12,
+          "recall_at_8_after_query_gate": 0.0,
+          "ndcg_at_8_after_query_gate": 0.0
+        },
+        "no_match": {
+          "threshold": 0.5,
+          "answerable_queries": 0,
+          "absence_queries": 8,
+          "rejected_absence_queries": 8,
+          "falsely_rejected_answerable_queries": 0,
+          "recall_at_8_after_query_gate": null,
+          "ndcg_at_8_after_query_gate": null
+        },
+        "persona": {
+          "threshold": 0.5,
+          "answerable_queries": 12,
+          "absence_queries": 0,
+          "rejected_absence_queries": 0,
+          "falsely_rejected_answerable_queries": 12,
+          "recall_at_8_after_query_gate": 0.0,
+          "ndcg_at_8_after_query_gate": 0.0
+        },
+        "semantic": {
+          "threshold": 0.5,
+          "answerable_queries": 12,
+          "absence_queries": 0,
+          "rejected_absence_queries": 0,
+          "falsely_rejected_answerable_queries": 12,
+          "recall_at_8_after_query_gate": 0.0,
+          "ndcg_at_8_after_query_gate": 0.0
+        },
+        "weak_only": {
+          "threshold": 0.5,
+          "answerable_queries": 0,
+          "absence_queries": 8,
+          "rejected_absence_queries": 8,
+          "falsely_rejected_answerable_queries": 0,
+          "recall_at_8_after_query_gate": null,
+          "ndcg_at_8_after_query_gate": null
+        }
+      }
+    },
+    "lexical_graph_default": {
+      "rows": [
+        {
+          "id": "lexical-01",
+          "category": "lexical",
+          "answerable": true,
+          "candidate_count": 8,
+          "recall_at_8": 1.0,
+          "ndcg_at_8": 1.0,
+          "max_lexical_score": 24.392321240807696,
+          "max_query_coverage": 0.6666666666666666
+        },
+        {
+          "id": "lexical-02",
+          "category": "lexical",
+          "answerable": true,
+          "candidate_count": 8,
+          "recall_at_8": 1.0,
+          "ndcg_at_8": 1.0,
+          "max_lexical_score": 5.581022503698753,
+          "max_query_coverage": 0.6666666666666666
+        },
+        {
+          "id": "lexical-03",
+          "category": "lexical",
+          "answerable": true,
+          "candidate_count": 8,
+          "recall_at_8": 1.0,
+          "ndcg_at_8": 1.0,
+          "max_lexical_score": 24.392321240807696,
+          "max_query_coverage": 0.6666666666666666
+        },
+        {
+          "id": "lexical-04",
+          "category": "lexical",
+          "answerable": true,
+          "candidate_count": 8,
+          "recall_at_8": 1.0,
+          "ndcg_at_8": 1.0,
+          "max_lexical_score": 24.392321240807696,
+          "max_query_coverage": 0.6666666666666666
+        },
+        {
+          "id": "lexical-05",
+          "category": "lexical",
+          "answerable": true,
+          "candidate_count": 8,
+          "recall_at_8": 1.0,
+          "ndcg_at_8": 1.0,
+          "max_lexical_score": 24.392321240807696,
+          "max_query_coverage": 0.6666666666666666
+        },
+        {
+          "id": "lexical-06",
+          "category": "lexical",
+          "answerable": true,
+          "candidate_count": 8,
+          "recall_at_8": 1.0,
+          "ndcg_at_8": 1.0,
+          "max_lexical_score": 24.392321240807696,
+          "max_query_coverage": 0.6666666666666666
+        },
+        {
+          "id": "lexical-07",
+          "category": "lexical",
+          "answerable": true,
+          "candidate_count": 8,
+          "recall_at_8": 1.0,
+          "ndcg_at_8": 1.0,
+          "max_lexical_score": 24.392321240807696,
+          "max_query_coverage": 0.6666666666666666
+        },
+        {
+          "id": "lexical-08",
+          "category": "lexical",
+          "answerable": true,
+          "candidate_count": 8,
+          "recall_at_8": 1.0,
+          "ndcg_at_8": 1.0,
+          "max_lexical_score": 24.392321240807696,
+          "max_query_coverage": 0.6666666666666666
+        },
+        {
+          "id": "lexical-09",
+          "category": "lexical",
+          "answerable": true,
+          "candidate_count": 8,
+          "recall_at_8": 1.0,
+          "ndcg_at_8": 1.0,
+          "max_lexical_score": 24.392321240807696,
+          "max_query_coverage": 0.6666666666666666
+        },
+        {
+          "id": "lexical-10",
+          "category": "lexical",
+          "answerable": true,
+          "candidate_count": 8,
+          "recall_at_8": 1.0,
+          "ndcg_at_8": 1.0,
+          "max_lexical_score": 24.392321240807696,
+          "max_query_coverage": 0.6666666666666666
+        },
+        {
+          "id": "lexical-11",
+          "category": "lexical",
+          "answerable": true,
+          "candidate_count": 8,
+          "recall_at_8": 1.0,
+          "ndcg_at_8": 1.0,
+          "max_lexical_score": 24.392321240807696,
+          "max_query_coverage": 0.6666666666666666
+        },
+        {
+          "id": "lexical-12",
+          "category": "lexical",
+          "answerable": true,
+          "candidate_count": 8,
+          "recall_at_8": 1.0,
+          "ndcg_at_8": 1.0,
+          "max_lexical_score": 24.392321240807696,
+          "max_query_coverage": 0.6666666666666666
+        },
+        {
+          "id": "semantic-01",
+          "category": "semantic",
+          "answerable": true,
+          "candidate_count": 0,
+          "recall_at_8": 0.0,
+          "ndcg_at_8": 0.0,
+          "max_lexical_score": 0.0,
+          "max_query_coverage": 0.0
+        },
+        {
+          "id": "semantic-02",
+          "category": "semantic",
+          "answerable": true,
+          "candidate_count": 8,
+          "recall_at_8": 0.0,
+          "ndcg_at_8": 0.0,
+          "max_lexical_score": 14.27585071738941,
+          "max_query_coverage": 0.0
+        },
+        {
+          "id": "semantic-03",
+          "category": "semantic",
+          "answerable": true,
+          "candidate_count": 8,
+          "recall_at_8": 0.0,
+          "ndcg_at_8": 0.0,
+          "max_lexical_score": 2.1923903314063624,
+          "max_query_coverage": 0.0
+        },
+        {
+          "id": "semantic-04",
+          "category": "semantic",
+          "answerable": true,
+          "candidate_count": 8,
+          "recall_at_8": 0.0,
+          "ndcg_at_8": 0.0,
+          "max_lexical_score": 12.168694930236622,
+          "max_query_coverage": 0.0
+        },
+        {
+          "id": "semantic-05",
+          "category": "semantic",
+          "answerable": true,
+          "candidate_count": 1,
+          "recall_at_8": 0.0,
+          "ndcg_at_8": 0.0,
+          "max_lexical_score": 9.987936260514125,
+          "max_query_coverage": 0.0
+        },
+        {
+          "id": "semantic-06",
+          "category": "semantic",
+          "answerable": true,
+          "candidate_count": 8,
+          "recall_at_8": 0.0,
+          "ndcg_at_8": 0.0,
+          "max_lexical_score": 12.652281367908877,
+          "max_query_coverage": 0.0
+        },
+        {
+          "id": "semantic-07",
+          "category": "semantic",
+          "answerable": true,
+          "candidate_count": 8,
+          "recall_at_8": 0.0,
+          "ndcg_at_8": 0.0,
+          "max_lexical_score": 9.987936260514125,
+          "max_query_coverage": 0.0
+        },
+        {
+          "id": "semantic-08",
+          "category": "semantic",
+          "answerable": true,
+          "candidate_count": 8,
+          "recall_at_8": 0.0,
+          "ndcg_at_8": 0.0,
+          "max_lexical_score": 2.1199598129073456,
+          "max_query_coverage": 0.0
+        },
+        {
+          "id": "semantic-09",
+          "category": "semantic",
+          "answerable": true,
+          "candidate_count": 0,
+          "recall_at_8": 0.0,
+          "ndcg_at_8": 0.0,
+          "max_lexical_score": 0.0,
+          "max_query_coverage": 0.0
+        },
+        {
+          "id": "semantic-10",
+          "category": "semantic",
+          "answerable": true,
+          "candidate_count": 8,
+          "recall_at_8": 0.0,
+          "ndcg_at_8": 0.0,
+          "max_lexical_score": 6.7339205090236005,
+          "max_query_coverage": 0.2
+        },
+        {
+          "id": "semantic-11",
+          "category": "semantic",
+          "answerable": true,
+          "candidate_count": 8,
+          "recall_at_8": 0.0,
+          "ndcg_at_8": 0.0,
+          "max_lexical_score": 4.45820090756904,
+          "max_query_coverage": 0.0
+        },
+        {
+          "id": "semantic-12",
+          "category": "semantic",
+          "answerable": true,
+          "candidate_count": 3,
+          "recall_at_8": 0.0,
+          "ndcg_at_8": 0.0,
+          "max_lexical_score": 9.987936260514125,
+          "max_query_coverage": 0.16666666666666666
+        },
+        {
+          "id": "graph-01",
+          "category": "graph",
+          "answerable": true,
+          "candidate_count": 8,
+          "recall_at_8": 1.0,
+          "ndcg_at_8": 0.7098097413968654,
+          "max_lexical_score": 26.9750125355356,
+          "max_query_coverage": 1.0
+        },
+        {
+          "id": "graph-02",
+          "category": "graph",
+          "answerable": true,
+          "candidate_count": 8,
+          "recall_at_8": 1.0,
+          "ndcg_at_8": 0.7098097413968654,
+          "max_lexical_score": 26.9750125355356,
+          "max_query_coverage": 1.0
+        },
+        {
+          "id": "graph-03",
+          "category": "graph",
+          "answerable": true,
+          "candidate_count": 8,
+          "recall_at_8": 1.0,
+          "ndcg_at_8": 0.7098097413968654,
+          "max_lexical_score": 26.9750125355356,
+          "max_query_coverage": 1.0
+        },
+        {
+          "id": "graph-04",
+          "category": "graph",
+          "answerable": true,
+          "candidate_count": 8,
+          "recall_at_8": 1.0,
+          "ndcg_at_8": 0.7098097413968654,
+          "max_lexical_score": 26.9750125355356,
+          "max_query_coverage": 1.0
+        },
+        {
+          "id": "graph-05",
+          "category": "graph",
+          "answerable": true,
+          "candidate_count": 8,
+          "recall_at_8": 1.0,
+          "ndcg_at_8": 0.7098097413968654,
+          "max_lexical_score": 26.9750125355356,
+          "max_query_coverage": 1.0
+        },
+        {
+          "id": "graph-06",
+          "category": "graph",
+          "answerable": true,
+          "candidate_count": 8,
+          "recall_at_8": 1.0,
+          "ndcg_at_8": 0.7098097413968654,
+          "max_lexical_score": 26.9750125355356,
+          "max_query_coverage": 1.0
+        },
+        {
+          "id": "graph-07",
+          "category": "graph",
+          "answerable": true,
+          "candidate_count": 8,
+          "recall_at_8": 1.0,
+          "ndcg_at_8": 0.7098097413968654,
+          "max_lexical_score": 26.9750125355356,
+          "max_query_coverage": 1.0
+        },
+        {
+          "id": "graph-08",
+          "category": "graph",
+          "answerable": true,
+          "candidate_count": 8,
+          "recall_at_8": 1.0,
+          "ndcg_at_8": 0.7098097413968654,
+          "max_lexical_score": 26.9750125355356,
+          "max_query_coverage": 1.0
+        },
+        {
+          "id": "graph-09",
+          "category": "graph",
+          "answerable": true,
+          "candidate_count": 8,
+          "recall_at_8": 1.0,
+          "ndcg_at_8": 0.7098097413968654,
+          "max_lexical_score": 26.9750125355356,
+          "max_query_coverage": 1.0
+        },
+        {
+          "id": "graph-10",
+          "category": "graph",
+          "answerable": true,
+          "candidate_count": 8,
+          "recall_at_8": 1.0,
+          "ndcg_at_8": 0.7098097413968654,
+          "max_lexical_score": 26.9750125355356,
+          "max_query_coverage": 1.0
+        },
+        {
+          "id": "graph-11",
+          "category": "graph",
+          "answerable": true,
+          "candidate_count": 8,
+          "recall_at_8": 1.0,
+          "ndcg_at_8": 0.7098097413968654,
+          "max_lexical_score": 26.9750125355356,
+          "max_query_coverage": 1.0
+        },
+        {
+          "id": "graph-12",
+          "category": "graph",
+          "answerable": true,
+          "candidate_count": 8,
+          "recall_at_8": 1.0,
+          "ndcg_at_8": 0.7098097413968654,
+          "max_lexical_score": 26.9750125355356,
+          "max_query_coverage": 1.0
+        },
+        {
+          "id": "persona-01",
+          "category": "persona",
+          "answerable": true,
+          "candidate_count": 8,
+          "recall_at_8": 1.0,
+          "ndcg_at_8": 1.0,
+          "max_lexical_score": 34.68090877780047,
+          "max_query_coverage": 1.0
+        },
+        {
+          "id": "persona-02",
+          "category": "persona",
+          "answerable": true,
+          "candidate_count": 6,
+          "recall_at_8": 1.0,
+          "ndcg_at_8": 1.0,
+          "max_lexical_score": 35.10702858060449,
+          "max_query_coverage": 1.0
+        },
+        {
+          "id": "persona-03",
+          "category": "persona",
+          "answerable": true,
+          "candidate_count": 8,
+          "recall_at_8": 1.0,
+          "ndcg_at_8": 1.0,
+          "max_lexical_score": 34.92681765427883,
+          "max_query_coverage": 1.0
+        },
+        {
+          "id": "persona-04",
+          "category": "persona",
+          "answerable": true,
+          "candidate_count": 6,
+          "recall_at_8": 1.0,
+          "ndcg_at_8": 1.0,
+          "max_lexical_score": 34.92681765427883,
+          "max_query_coverage": 1.0
+        },
+        {
+          "id": "persona-05",
+          "category": "persona",
+          "answerable": true,
+          "candidate_count": 8,
+          "recall_at_8": 1.0,
+          "ndcg_at_8": 0.6309297535714574,
+          "max_lexical_score": 35.167068723217405,
+          "max_query_coverage": 1.0
+        },
+        {
+          "id": "persona-06",
+          "category": "persona",
+          "answerable": true,
+          "candidate_count": 6,
+          "recall_at_8": 1.0,
+          "ndcg_at_8": 1.0,
+          "max_lexical_score": 35.167068723217405,
+          "max_query_coverage": 1.0
+        },
+        {
+          "id": "persona-07",
+          "category": "persona",
+          "answerable": true,
+          "candidate_count": 8,
+          "recall_at_8": 1.0,
+          "ndcg_at_8": 0.6309297535714574,
+          "max_lexical_score": 34.8627753374968,
+          "max_query_coverage": 1.0
+        },
+        {
+          "id": "persona-08",
+          "category": "persona",
+          "answerable": true,
+          "candidate_count": 6,
+          "recall_at_8": 1.0,
+          "ndcg_at_8": 1.0,
+          "max_lexical_score": 34.8627753374968,
+          "max_query_coverage": 1.0
+        },
+        {
+          "id": "persona-09",
+          "category": "persona",
+          "answerable": true,
+          "candidate_count": 8,
+          "recall_at_8": 1.0,
+          "ndcg_at_8": 0.6309297535714574,
+          "max_lexical_score": 35.25990555543428,
+          "max_query_coverage": 1.0
+        },
+        {
+          "id": "persona-10",
+          "category": "persona",
+          "answerable": true,
+          "candidate_count": 6,
+          "recall_at_8": 1.0,
+          "ndcg_at_8": 1.0,
+          "max_lexical_score": 35.25990555543428,
+          "max_query_coverage": 1.0
+        },
+        {
+          "id": "persona-11",
+          "category": "persona",
+          "answerable": true,
+          "candidate_count": 8,
+          "recall_at_8": 1.0,
+          "ndcg_at_8": 0.6309297535714574,
+          "max_lexical_score": 34.80052024148656,
+          "max_query_coverage": 1.0
+        },
+        {
+          "id": "persona-12",
+          "category": "persona",
+          "answerable": true,
+          "candidate_count": 6,
+          "recall_at_8": 1.0,
+          "ndcg_at_8": 1.0,
+          "max_lexical_score": 34.80052024148656,
+          "max_query_coverage": 1.0
+        },
+        {
+          "id": "adversarial-01",
+          "category": "adversarial",
+          "answerable": true,
+          "candidate_count": 8,
+          "recall_at_8": 1.0,
+          "ndcg_at_8": 1.0,
+          "max_lexical_score": 101.0107914063026,
+          "max_query_coverage": 1.0
+        },
+        {
+          "id": "adversarial-02",
+          "category": "adversarial",
+          "answerable": true,
+          "candidate_count": 8,
+          "recall_at_8": 1.0,
+          "ndcg_at_8": 1.0,
+          "max_lexical_score": 122.93876271684302,
+          "max_query_coverage": 1.0
+        },
+        {
+          "id": "adversarial-03",
+          "category": "adversarial",
+          "answerable": true,
+          "candidate_count": 8,
+          "recall_at_8": 1.0,
+          "ndcg_at_8": 1.0,
+          "max_lexical_score": 88.11677547007311,
+          "max_query_coverage": 1.0
+        },
+        {
+          "id": "adversarial-04",
+          "category": "adversarial",
+          "answerable": true,
+          "candidate_count": 8,
+          "recall_at_8": 1.0,
+          "ndcg_at_8": 1.0,
+          "max_lexical_score": 94.22802518329075,
+          "max_query_coverage": 1.0
+        },
+        {
+          "id": "adversarial-05",
+          "category": "adversarial",
+          "answerable": true,
+          "candidate_count": 8,
+          "recall_at_8": 1.0,
+          "ndcg_at_8": 1.0,
+          "max_lexical_score": 65.11731025230759,
+          "max_query_coverage": 1.0
+        },
+        {
+          "id": "adversarial-06",
+          "category": "adversarial",
+          "answerable": true,
+          "candidate_count": 8,
+          "recall_at_8": 1.0,
+          "ndcg_at_8": 1.0,
+          "max_lexical_score": 93.86820525372468,
+          "max_query_coverage": 1.0
+        },
+        {
+          "id": "adversarial-07",
+          "category": "adversarial",
+          "answerable": true,
+          "candidate_count": 8,
+          "recall_at_8": 1.0,
+          "ndcg_at_8": 1.0,
+          "max_lexical_score": 96.30500661930893,
+          "max_query_coverage": 1.0
+        },
+        {
+          "id": "adversarial-08",
+          "category": "adversarial",
+          "answerable": true,
+          "candidate_count": 8,
+          "recall_at_8": 1.0,
+          "ndcg_at_8": 1.0,
+          "max_lexical_score": 106.08973574510772,
+          "max_query_coverage": 1.0
+        },
+        {
+          "id": "adversarial-09",
+          "category": "adversarial",
+          "answerable": true,
+          "candidate_count": 8,
+          "recall_at_8": 1.0,
+          "ndcg_at_8": 1.0,
+          "max_lexical_score": 82.80553627547145,
+          "max_query_coverage": 1.0
+        },
+        {
+          "id": "adversarial-10",
+          "category": "adversarial",
+          "answerable": true,
+          "candidate_count": 8,
+          "recall_at_8": 1.0,
+          "ndcg_at_8": 1.0,
+          "max_lexical_score": 95.31184746883405,
+          "max_query_coverage": 1.0
+        },
+        {
+          "id": "adversarial-11",
+          "category": "adversarial",
+          "answerable": true,
+          "candidate_count": 8,
+          "recall_at_8": 1.0,
+          "ndcg_at_8": 1.0,
+          "max_lexical_score": 75.81871194637944,
+          "max_query_coverage": 1.0
+        },
+        {
+          "id": "adversarial-12",
+          "category": "adversarial",
+          "answerable": true,
+          "candidate_count": 8,
+          "recall_at_8": 1.0,
+          "ndcg_at_8": 1.0,
+          "max_lexical_score": 97.90788835304271,
+          "max_query_coverage": 1.0
+        },
+        {
+          "id": "no_match-01",
+          "category": "no_match",
+          "answerable": false,
+          "candidate_count": 8,
+          "recall_at_8": null,
+          "ndcg_at_8": null,
+          "max_lexical_score": 13.787928312375717,
+          "max_query_coverage": 0.3333333333333333
+        },
+        {
+          "id": "weak_only-01",
+          "category": "weak_only",
+          "answerable": false,
+          "candidate_count": 8,
+          "recall_at_8": null,
+          "ndcg_at_8": null,
+          "max_lexical_score": 15.209508454946342,
+          "max_query_coverage": 0.0
+        },
+        {
+          "id": "no_match-02",
+          "category": "no_match",
+          "answerable": false,
+          "candidate_count": 8,
+          "recall_at_8": null,
+          "ndcg_at_8": null,
+          "max_lexical_score": 13.787928312375717,
+          "max_query_coverage": 0.3333333333333333
+        },
+        {
+          "id": "weak_only-02",
+          "category": "weak_only",
+          "answerable": false,
+          "candidate_count": 8,
+          "recall_at_8": null,
+          "ndcg_at_8": null,
+          "max_lexical_score": 15.209508454946342,
+          "max_query_coverage": 0.0
+        },
+        {
+          "id": "no_match-03",
+          "category": "no_match",
+          "answerable": false,
+          "candidate_count": 8,
+          "recall_at_8": null,
+          "ndcg_at_8": null,
+          "max_lexical_score": 13.787928312375717,
+          "max_query_coverage": 0.3333333333333333
+        },
+        {
+          "id": "weak_only-03",
+          "category": "weak_only",
+          "answerable": false,
+          "candidate_count": 8,
+          "recall_at_8": null,
+          "ndcg_at_8": null,
+          "max_lexical_score": 15.209508454946342,
+          "max_query_coverage": 0.0
+        },
+        {
+          "id": "no_match-04",
+          "category": "no_match",
+          "answerable": false,
+          "candidate_count": 8,
+          "recall_at_8": null,
+          "ndcg_at_8": null,
+          "max_lexical_score": 13.787928312375717,
+          "max_query_coverage": 0.3333333333333333
+        },
+        {
+          "id": "weak_only-04",
+          "category": "weak_only",
+          "answerable": false,
+          "candidate_count": 8,
+          "recall_at_8": null,
+          "ndcg_at_8": null,
+          "max_lexical_score": 15.209508454946342,
+          "max_query_coverage": 0.0
+        },
+        {
+          "id": "no_match-05",
+          "category": "no_match",
+          "answerable": false,
+          "candidate_count": 8,
+          "recall_at_8": null,
+          "ndcg_at_8": null,
+          "max_lexical_score": 13.787928312375717,
+          "max_query_coverage": 0.3333333333333333
+        },
+        {
+          "id": "weak_only-05",
+          "category": "weak_only",
+          "answerable": false,
+          "candidate_count": 8,
+          "recall_at_8": null,
+          "ndcg_at_8": null,
+          "max_lexical_score": 15.209508454946342,
+          "max_query_coverage": 0.0
+        },
+        {
+          "id": "no_match-06",
+          "category": "no_match",
+          "answerable": false,
+          "candidate_count": 8,
+          "recall_at_8": null,
+          "ndcg_at_8": null,
+          "max_lexical_score": 13.787928312375717,
+          "max_query_coverage": 0.3333333333333333
+        },
+        {
+          "id": "weak_only-06",
+          "category": "weak_only",
+          "answerable": false,
+          "candidate_count": 8,
+          "recall_at_8": null,
+          "ndcg_at_8": null,
+          "max_lexical_score": 15.209508454946342,
+          "max_query_coverage": 0.0
+        },
+        {
+          "id": "no_match-07",
+          "category": "no_match",
+          "answerable": false,
+          "candidate_count": 8,
+          "recall_at_8": null,
+          "ndcg_at_8": null,
+          "max_lexical_score": 13.787928312375717,
+          "max_query_coverage": 0.3333333333333333
+        },
+        {
+          "id": "weak_only-07",
+          "category": "weak_only",
+          "answerable": false,
+          "candidate_count": 8,
+          "recall_at_8": null,
+          "ndcg_at_8": null,
+          "max_lexical_score": 15.209508454946342,
+          "max_query_coverage": 0.0
+        },
+        {
+          "id": "no_match-08",
+          "category": "no_match",
+          "answerable": false,
+          "candidate_count": 8,
+          "recall_at_8": null,
+          "ndcg_at_8": null,
+          "max_lexical_score": 13.787928312375717,
+          "max_query_coverage": 0.3333333333333333
+        },
+        {
+          "id": "weak_only-08",
+          "category": "weak_only",
+          "answerable": false,
+          "candidate_count": 8,
+          "recall_at_8": null,
+          "ndcg_at_8": null,
+          "max_lexical_score": 15.209508454946342,
+          "max_query_coverage": 0.0
+        }
+      ],
+      "coverage_sweep": [
+        {
+          "threshold": 0,
+          "answerable_queries": 60,
+          "absence_queries": 16,
+          "rejected_absence_queries": 0,
+          "falsely_rejected_answerable_queries": 2,
+          "recall_at_8_after_query_gate": 0.8,
+          "ndcg_at_8_after_query_gate": 0.7173572651841369
+        },
+        {
+          "threshold": 0.25,
+          "answerable_queries": 60,
+          "absence_queries": 16,
+          "rejected_absence_queries": 8,
+          "falsely_rejected_answerable_queries": 12,
+          "recall_at_8_after_query_gate": 0.8,
+          "ndcg_at_8_after_query_gate": 0.7173572651841369
+        },
+        {
+          "threshold": 0.5,
+          "answerable_queries": 60,
+          "absence_queries": 16,
+          "rejected_absence_queries": 16,
+          "falsely_rejected_answerable_queries": 12,
+          "recall_at_8_after_query_gate": 0.8,
+          "ndcg_at_8_after_query_gate": 0.7173572651841369
+        },
+        {
+          "threshold": 0.75,
+          "answerable_queries": 60,
+          "absence_queries": 16,
+          "rejected_absence_queries": 16,
+          "falsely_rejected_answerable_queries": 24,
+          "recall_at_8_after_query_gate": 0.6,
+          "ndcg_at_8_after_query_gate": 0.5173572651841369
+        },
+        {
+          "threshold": 1,
+          "answerable_queries": 60,
+          "absence_queries": 16,
+          "rejected_absence_queries": 16,
+          "falsely_rejected_answerable_queries": 24,
+          "recall_at_8_after_query_gate": 0.6,
+          "ndcg_at_8_after_query_gate": 0.5173572651841369
+        }
+      ],
+      "raw_bm25_sweep": [
+        {
+          "threshold": 0,
+          "answerable_queries": 60,
+          "absence_queries": 16,
+          "rejected_absence_queries": 0,
+          "falsely_rejected_answerable_queries": 2,
+          "recall_at_8_after_query_gate": 0.8,
+          "ndcg_at_8_after_query_gate": 0.7173572651841369
+        },
+        {
+          "threshold": 1e-05,
+          "answerable_queries": 60,
+          "absence_queries": 16,
+          "rejected_absence_queries": 0,
+          "falsely_rejected_answerable_queries": 2,
+          "recall_at_8_after_query_gate": 0.8,
+          "ndcg_at_8_after_query_gate": 0.7173572651841369
+        },
+        {
+          "threshold": 1,
+          "answerable_queries": 60,
+          "absence_queries": 16,
+          "rejected_absence_queries": 0,
+          "falsely_rejected_answerable_queries": 2,
+          "recall_at_8_after_query_gate": 0.8,
+          "ndcg_at_8_after_query_gate": 0.7173572651841369
+        },
+        {
+          "threshold": 5,
+          "answerable_queries": 60,
+          "absence_queries": 16,
+          "rejected_absence_queries": 0,
+          "falsely_rejected_answerable_queries": 5,
+          "recall_at_8_after_query_gate": 0.8,
+          "ndcg_at_8_after_query_gate": 0.7173572651841369
+        },
+        {
+          "threshold": 10,
+          "answerable_queries": 60,
+          "absence_queries": 16,
+          "rejected_absence_queries": 0,
+          "falsely_rejected_answerable_queries": 10,
+          "recall_at_8_after_query_gate": 0.7833333333333333,
+          "ndcg_at_8_after_query_gate": 0.7006905985174702
+        },
+        {
+          "threshold": 15,
+          "answerable_queries": 60,
+          "absence_queries": 16,
+          "rejected_absence_queries": 8,
+          "falsely_rejected_answerable_queries": 13,
+          "recall_at_8_after_query_gate": 0.7833333333333333,
+          "ndcg_at_8_after_query_gate": 0.7006905985174702
+        },
+        {
+          "threshold": 20,
+          "answerable_queries": 60,
+          "absence_queries": 16,
+          "rejected_absence_queries": 16,
+          "falsely_rejected_answerable_queries": 13,
+          "recall_at_8_after_query_gate": 0.7833333333333333,
+          "ndcg_at_8_after_query_gate": 0.7006905985174702
+        }
+      ],
+      "categories_at_coverage_half": {
+        "adversarial": {
+          "threshold": 0.5,
+          "answerable_queries": 12,
+          "absence_queries": 0,
+          "rejected_absence_queries": 0,
+          "falsely_rejected_answerable_queries": 0,
+          "recall_at_8_after_query_gate": 1.0,
+          "ndcg_at_8_after_query_gate": 1.0
+        },
+        "graph": {
+          "threshold": 0.5,
+          "answerable_queries": 12,
+          "absence_queries": 0,
+          "rejected_absence_queries": 0,
+          "falsely_rejected_answerable_queries": 0,
+          "recall_at_8_after_query_gate": 1.0,
+          "ndcg_at_8_after_query_gate": 0.7098097413968653
+        },
+        "lexical": {
+          "threshold": 0.5,
+          "answerable_queries": 12,
+          "absence_queries": 0,
+          "rejected_absence_queries": 0,
+          "falsely_rejected_answerable_queries": 0,
+          "recall_at_8_after_query_gate": 1.0,
+          "ndcg_at_8_after_query_gate": 1.0
+        },
+        "no_match": {
+          "threshold": 0.5,
+          "answerable_queries": 0,
+          "absence_queries": 8,
+          "rejected_absence_queries": 8,
+          "falsely_rejected_answerable_queries": 0,
+          "recall_at_8_after_query_gate": null,
+          "ndcg_at_8_after_query_gate": null
+        },
+        "persona": {
+          "threshold": 0.5,
+          "answerable_queries": 12,
+          "absence_queries": 0,
+          "rejected_absence_queries": 0,
+          "falsely_rejected_answerable_queries": 0,
+          "recall_at_8_after_query_gate": 1.0,
+          "ndcg_at_8_after_query_gate": 0.8769765845238191
+        },
+        "semantic": {
+          "threshold": 0.5,
+          "answerable_queries": 12,
+          "absence_queries": 0,
+          "rejected_absence_queries": 0,
+          "falsely_rejected_answerable_queries": 12,
+          "recall_at_8_after_query_gate": 0.0,
+          "ndcg_at_8_after_query_gate": 0.0
+        },
+        "weak_only": {
+          "threshold": 0.5,
+          "answerable_queries": 0,
+          "absence_queries": 8,
+          "rejected_absence_queries": 8,
+          "falsely_rejected_answerable_queries": 0,
+          "recall_at_8_after_query_gate": null,
+          "ndcg_at_8_after_query_gate": null
+        }
+      }
+    }
+  }
+}
