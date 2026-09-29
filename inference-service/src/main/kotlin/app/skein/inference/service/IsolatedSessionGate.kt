@@ -75,6 +75,12 @@ class IsolatedSessionGate(
     private val authorizedEpoch = AtomicLong(SessionEpoch.NONE)
     private val released = AtomicBoolean(false)
 
+    // Session epochs increase monotonically. A delayed two-way unlock from a
+    // connection attempt cannot resurrect an epoch that already locked.
+    // Mutations and release callbacks share this monitor so a stale release
+    // cannot pass its check, race a newer unlock, then kill the new session.
+    private var revokedThrough = SessionEpoch.NONE
+
     /** The epoch currently admitted, or [SessionEpoch.NONE]. */
     val authorized: Long get() = authorizedEpoch.get()
 
@@ -93,6 +99,22 @@ class IsolatedSessionGate(
         }
 
     /**
+     * Publishes short-lived engine state only while this epoch is authorized.
+     * Lock revocation and this action have one linearization point. Callers
+     * may take the engine monitor inside [action], never in the reverse order;
+     * native work and blocking cleanup must remain outside this action.
+     */
+    @Synchronized
+    fun withAuthorization(
+        requestEpoch: Long,
+        action: () -> Unit,
+    ): Boolean {
+        if (guard(requestEpoch) is GateResult.Refuse) return false
+        action()
+        return true
+    }
+
+    /**
      * `:app` authorized [epoch]; sent on unlock and again on every fresh bind.
      *
      * Reached from a TWO-WAY binder transaction (skein-gg11.8), so it must stay
@@ -101,7 +123,9 @@ class IsolatedSessionGate(
      * request will be admitted. Idempotent — re-sending the same epoch (the
      * fresh-bind re-send of §5.3) authorizes the same session again.
      */
+    @Synchronized
     fun onUnlocked(epoch: Long) {
+        if (epoch <= revokedThrough || epoch < authorizedEpoch.get()) return
         released.set(false)
         authorizedEpoch.set(epoch)
     }
@@ -118,11 +142,13 @@ class IsolatedSessionGate(
      *
      * Revocation first, cancellation second — see this file's header.
      */
+    @Synchronized
     fun onLocking(
         epoch: Long,
         budgetMillis: Long,
     ) {
         if (!appliesTo(epoch)) return
+        revokedThrough = maxOf(revokedThrough, epoch)
         authorizedEpoch.set(SessionEpoch.NONE)
         onCancelRequests(epoch)
     }
@@ -136,8 +162,10 @@ class IsolatedSessionGate(
      * is the slow half (it frees a native context, zeroing the KV cache on the
      * way), and the gate is already shut for all of it.
      */
+    @Synchronized
     fun onLocked(epoch: Long) {
         if (!appliesTo(epoch)) return
+        revokedThrough = maxOf(revokedThrough, epoch)
         authorizedEpoch.set(SessionEpoch.NONE)
         if (released.compareAndSet(false, true)) onReleaseState()
     }
@@ -149,6 +177,7 @@ class IsolatedSessionGate(
      */
     private fun appliesTo(epoch: Long): Boolean {
         val current = authorizedEpoch.get()
-        return current == SessionEpoch.NONE || current == epoch
+        return epoch != SessionEpoch.NONE &&
+            (current == epoch || (current == SessionEpoch.NONE && epoch >= revokedThrough))
     }
 }

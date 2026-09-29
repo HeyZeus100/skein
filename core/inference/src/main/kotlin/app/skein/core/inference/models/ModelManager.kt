@@ -48,19 +48,24 @@ import app.skein.core.model.ModelOrigin
 import app.skein.core.model.ModelRecord
 import app.skein.core.model.ModelRegistry
 import app.skein.core.model.SkeinLog
+import app.skein.core.verify.DigestAlgorithm
 import app.skein.core.verify.ModelFileRole
 import app.skein.core.verify.ModelVerification
+import app.skein.core.verify.ModelVerifier
 import app.skein.ipc.ErrorCode
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.channels.ProducerScope
+import kotlinx.coroutines.currentCoroutineContext
+import kotlinx.coroutines.ensureActive
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.buffer
 import kotlinx.coroutines.flow.channelFlow
 import kotlinx.coroutines.flow.flowOn
+import kotlinx.coroutines.sync.Mutex
+import kotlinx.coroutines.sync.withLock
 import kotlinx.coroutines.withContext
 import java.io.File
-import java.io.IOException
 import java.io.InputStream
 import java.security.MessageDigest
 
@@ -113,7 +118,11 @@ public class ModelManager(
      * screen after the picker closed) and was swiped away as "stuck".
      */
     private val io: CoroutineDispatcher = Dispatchers.IO,
+    /** Revoked synchronously at lock; checked before every import/adoption registry access. */
+    private val canUseRegistry: () -> Boolean = { true },
 ) {
+    private val registrationMutex = Mutex()
+
     /**
      * Imports [source], reporting progress as it goes and terminating with
      * exactly one [ImportProgress.Done].
@@ -176,6 +185,7 @@ public class ModelManager(
     }
 
     public suspend fun setDefault(id: ModelId?) {
+        requireRegistryAuthorization()
         registry.setDefault(id)
     }
 
@@ -234,42 +244,67 @@ public class ModelManager(
      */
     public suspend fun adoptOrphans(): List<AdoptOutcome> =
         withContext(io) {
-            val outcomes = mutableListOf<AdoptOutcome>()
-            for (directory in store.orphanedDirectories(GENERATED_MAIN_FILE_NAME)) {
-                val id = directory.name
-                if (!ID_PATTERN.matches(id) || registry.get(id) != null) continue
-                val main = File(directory, GENERATED_MAIN_FILE_NAME)
-                val (sha256, size) = hashFile(main)
-                val manifest = generatedManifest(id = id, displayName = id, sha256 = sha256, sizeBytes = size)
-                val stored =
-                    when (val adopted = store.adoptSealed(id, GENERATED_MAIN_FILE_NAME, sha256, size)) {
-                        is ImmutableModelStore.AdoptResult.Refused -> {
-                            SkeinLog.w(TAG, "adoption refused: ${adopted.refusal.summary}")
-                            outcomes +=
-                                AdoptOutcome(id, ImportOutcome.Refused(ImportRefusal.FromStore(adopted.refusal)))
+            registrationMutex.withLock {
+                val outcomes = mutableListOf<AdoptOutcome>()
+                for (directory in store.registrationCandidates(GENERATED_MAIN_FILE_NAME)) {
+                    val id = directory.name
+                    requireRegistryAuthorization()
+                    if (!ID_PATTERN.matches(id) || registry.get(id) != null) continue
+                    val main = File(directory, GENERATED_MAIN_FILE_NAME)
+                    val (sha256, size) = hashFile(main)
+                    val manifest = generatedManifest(id = id, displayName = id, sha256 = sha256, sizeBytes = size)
+                    val known = store.stored(id)
+                    if (known != null) {
+                        val mismatch =
+                            when {
+                                known.main.sizeBytes != size -> ModelVerification.SizeMismatch(ModelFileRole.MAIN)
+                                !ModelVerifier.constantTimeEquals(known.main.sha256, sha256) ->
+                                    ModelVerification.HashMismatch(ModelFileRole.MAIN, DigestAlgorithm.SHA256)
+                                else -> null
+                            }
+                        if (mismatch != null) {
+                            outcomes += AdoptOutcome(id, ImportOutcome.Refused(ImportRefusal.FromStore(mismatch)))
                             continue
                         }
-                        is ImmutableModelStore.AdoptResult.Adopted -> adopted.model
                     }
-                val outcome =
-                    finishGeneratedImport(
-                        manifest = manifest,
-                        storedModel = stored,
-                        displayName = id,
-                        origin = ModelOrigin.PICKED,
-                        sourceUrl = null,
-                        sourceRevision = null,
-                    )
-                when (outcome) {
-                    is ImportOutcome.Imported -> {
-                        if (registry.default() == null) setDefault(id)
-                        SkeinLog.i(TAG, "adopted an orphaned model into the registry")
+                    val stored =
+                        known
+                            ?: when (val adopted = store.adoptSealed(id, GENERATED_MAIN_FILE_NAME, sha256, size)) {
+                                is ImmutableModelStore.AdoptResult.Refused -> {
+                                    SkeinLog.w(
+                                        TAG,
+                                        "adoption refused: ${adopted.refusal.summary}",
+                                    )
+                                    outcomes +=
+                                        AdoptOutcome(
+                                            id,
+                                            ImportOutcome.Refused(ImportRefusal.FromStore(adopted.refusal)),
+                                        )
+                                    continue
+                                }
+                                is ImmutableModelStore.AdoptResult.Adopted -> adopted.model
+                            }
+                    val outcome =
+                        finishGeneratedImport(
+                            manifest = manifest,
+                            storedModel = stored,
+                            displayName = id,
+                            origin = ModelOrigin.PICKED,
+                            sourceUrl = null,
+                            sourceRevision = null,
+                        )
+                    when (outcome) {
+                        is ImportOutcome.Imported -> {
+                            requireRegistryAuthorization()
+                            if (registry.default() == null) setDefault(id)
+                            SkeinLog.i(TAG, "adopted an orphaned model into the registry")
+                        }
+                        is ImportOutcome.Refused -> SkeinLog.w(TAG, "adoption refused: ${outcome.refusal.describe()}")
                     }
-                    is ImportOutcome.Refused -> SkeinLog.w(TAG, "adoption refused: ${outcome.refusal.describe()}")
+                    outcomes += AdoptOutcome(id, outcome)
                 }
-                outcomes += AdoptOutcome(id, outcome)
+                outcomes
             }
-            outcomes
         }
 
     /** One [adoptOrphans] entry: the directory's id and how its registration went. */
@@ -313,6 +348,7 @@ public class ModelManager(
                 sourceRevision = manifest.source?.revision,
                 licenseSpdx = manifest.license.spdx,
             )
+        requireRegistryAuthorization()
         registry.upsert(record)
         return ImportOutcome.Imported(record)
     }
@@ -324,65 +360,35 @@ public class ModelManager(
     private suspend fun importPicked(
         uri: Uri,
         reporter: ProgressReporter,
-    ): ImportOutcome {
-        val handle =
-            try {
-                pickedFileReader.open(uri)
-            } catch (e: IOException) {
-                return ImportOutcome.Refused(ImportRefusal.SourceUnavailable(e.message ?: "I/O error"))
-            } catch (e: SecurityException) {
-                return ImportOutcome.Refused(
-                    ImportRefusal.SourceUnavailable(e.message ?: "permission grant unavailable"),
-                )
-            }
-
-        val declaredSize = handle.sizeBytes
-        val displayName = handle.displayName
-        if (declaredSize == null) {
-            handle.close()
-            return ImportOutcome.Refused(ImportRefusal.SourceMetadataUnavailable)
+    ): ImportOutcome =
+        when (
+            val copied =
+                ModelImportStager(store, pickedFileReader, freeBytes, io).copy(uri) { processed, total ->
+                    reporter.report(processed, total)
+                }
+        ) {
+            is ModelCopyResult.Refused -> ImportOutcome.Refused(copied.refusal)
+            is ModelCopyResult.Copied -> registerCopied(copied)
         }
 
-        // Fast bounds check on the claimed size — before any real work, let
-        // alone any write.
-        sizeRefusal(declaredSize)?.let {
-            handle.close()
-            return ImportOutcome.Refused(it)
+    /** Session-authorized tail of an app-owned opaque copy. No provider stream remains open. */
+    public suspend fun registerCopied(copied: ModelCopyResult.Copied): ImportOutcome =
+        registrationMutex.withLock {
+            requireRegistryAuthorization()
+            registry.get(copied.manifest.id)?.let { return@withLock ImportOutcome.Imported(it) }
+            finishGeneratedImport(
+                manifest = copied.manifest,
+                storedModel = copied.model,
+                displayName = copied.manifest.name,
+                origin = ModelOrigin.PICKED,
+                sourceUrl = null,
+                sourceRevision = null,
+            )
         }
-        spaceRefusal(declaredSize)?.let {
-            handle.close()
-            return ImportOutcome.Refused(it)
-        }
 
-        // Pass 1: hash-only, read-only. No disk write happens here — see
-        // this file's header for why a second read is the right trade-off.
-        // Progress counts both passes against twice the declared size.
-        reporter.totalBytes = declaredSize * 2
-        val (sha256, observedSize) = hashOnly(handle, reporter)
-
-        // The provider's declared size may have lied; re-check the size
-        // this pass actually observed, still before any write.
-        sizeRefusal(observedSize)?.let { return ImportOutcome.Refused(it) }
-
-        val id = deriveId(displayName, sha256)
-        val manifest = generatedManifest(id = id, displayName = displayName, sha256 = sha256, sizeBytes = observedSize)
-
-        // Pass 2: the real, hashed, single-pass copy into the store —
-        // ImmutableModelStore.import, unchanged.
-        val storedModel =
-            when (val result = store.import(manifest, pickedBytesSource(uri, reporter))) {
-                is ImportResult.Refused -> return ImportOutcome.Refused(ImportRefusal.FromStore(result.refusal))
-                is ImportResult.Imported -> result.model
-            }
-
-        return finishGeneratedImport(
-            manifest = manifest,
-            storedModel = storedModel,
-            displayName = displayName,
-            origin = ModelOrigin.PICKED,
-            sourceUrl = null,
-            sourceRevision = null,
-        )
+    private suspend fun requireRegistryAuthorization() {
+        currentCoroutineContext().ensureActive()
+        if (!canUseRegistry()) throw kotlinx.coroutines.CancellationException("Model session is locked")
     }
 
     /** The bounded pre-check, then the real inspection, then registration. Shared by every "no manifest" source. */
@@ -394,6 +400,7 @@ public class ModelManager(
         sourceUrl: String?,
         sourceRevision: String?,
     ): ImportOutcome {
+        requireRegistryAuthorization()
         val preCheckRefusal = runPreCheck(manifest.id)
         if (preCheckRefusal != null) {
             store.delete(manifest.id)
@@ -409,7 +416,9 @@ public class ModelManager(
                 is BindResult.Bound -> bound.binding
             }
 
+        requireRegistryAuthorization()
         val inspection = modelInspector.inspect(binding)
+        requireRegistryAuthorization()
         if (inspection.errorCode != ErrorCode.OK) {
             // Only a verdict on the FILE deletes the sealed copy. A locked
             // session, a busy or dead service say nothing about the bytes —
@@ -473,6 +482,7 @@ public class ModelManager(
                 sourceRevision = sourceRevision,
                 licenseSpdx = UNKNOWN_LICENSE,
             )
+        requireRegistryAuthorization()
         registry.upsert(record)
         return ImportOutcome.Imported(record)
     }
@@ -496,38 +506,12 @@ public class ModelManager(
         }
     }
 
-    private fun pickedBytesSource(
-        uri: Uri,
-        reporter: ProgressReporter,
-    ): ModelBytesSource =
-        ModelBytesSource { _ ->
-            CountingInputStream(pickedFileReader.open(uri).stream, reporter::advance)
-        }
-
     private fun countingSource(
         inner: ModelBytesSource,
         reporter: ProgressReporter,
     ): ModelBytesSource =
         ModelBytesSource { file ->
             inner.open(file)?.let { CountingInputStream(it, reporter::advance) }
-        }
-
-    private fun hashOnly(
-        handle: PickedFileHandle,
-        reporter: ProgressReporter,
-    ): Pair<String, Long> =
-        handle.use {
-            val digest = MessageDigest.getInstance("SHA-256")
-            val buffer = ByteArray(HASH_BUFFER_BYTES)
-            var total = 0L
-            while (true) {
-                val read = it.stream.read(buffer)
-                if (read < 0) break
-                digest.update(buffer, 0, read)
-                total += read
-                reporter.advance(read)
-            }
-            Hex.encode(digest.digest()) to total
         }
 
     /**
@@ -544,8 +528,21 @@ public class ModelManager(
         private var processed = 0L
         private var lastReported = 0L
 
+        fun report(
+            bytesProcessed: Long,
+            total: Long,
+        ) {
+            totalBytes = total
+            processed = bytesProcessed
+            publish()
+        }
+
         fun advance(bytes: Int) {
             processed += bytes
+            publish()
+        }
+
+        private fun publish() {
             val step = if (totalBytes > 0) maxOf(totalBytes / 100, 1L) else REPORT_STEP_BYTES
             if (processed - lastReported >= step) {
                 lastReported = processed
@@ -581,37 +578,15 @@ public class ModelManager(
         return if (available < required) ImportRefusal.InsufficientSpace(required, available) else null
     }
 
-    /** The manifest a no-manifest source (picked file, adopted directory) gets: TEXT, UNKNOWN licence, one MAIN file. */
-    private fun generatedManifest(
-        id: String,
-        displayName: String?,
-        sha256: String,
-        sizeBytes: Long,
-    ): ModelManifest =
-        ModelManifest(
-            id = id,
-            manifestVersion = ModelManifest.SUPPORTED_VERSION,
-            name = displayName?.takeIf { it.isNotBlank() } ?: id,
-            format = ModelFormat.GGUF,
-            capabilities = setOf(Capability.TEXT),
-            license = ManifestLicense(spdx = UNKNOWN_LICENSE),
-            main =
-                ManifestFile(
-                    role = ModelFileRole.MAIN,
-                    file = GENERATED_MAIN_FILE_NAME,
-                    sha256 = sha256,
-                    sizeBytes = sizeBytes,
-                ),
-            companions = emptyList(),
-        )
-
     /** SHA-256 and size of a file on disk, streamed; used to adopt a sealed directory. */
-    private fun hashFile(file: File): Pair<String, Long> =
-        file.inputStream().use { stream ->
+    private suspend fun hashFile(file: File): Pair<String, Long> {
+        val context = currentCoroutineContext()
+        return file.inputStream().use { stream ->
             val digest = MessageDigest.getInstance("SHA-256")
             val buffer = ByteArray(HASH_BUFFER_BYTES)
             var total = 0L
             while (true) {
+                context.ensureActive()
                 val read = stream.read(buffer)
                 if (read < 0) break
                 digest.update(buffer, 0, read)
@@ -619,18 +594,43 @@ public class ModelManager(
             }
             Hex.encode(digest.digest()) to total
         }
-
-    private fun deriveId(
-        displayName: String?,
-        sha256: String,
-    ): String {
-        val suffix = sha256.take(ID_HASH_SUFFIX_LENGTH)
-        val slug = slugify(displayName ?: "model")
-        val candidate = "$slug-$suffix".take(MAX_ID_LENGTH)
-        return if (ID_PATTERN.matches(candidate)) candidate else "model-$suffix"
     }
 
     public companion object {
+        /** The manifest a no-manifest source (picked file, adopted directory) gets: TEXT, UNKNOWN licence, one MAIN file. */
+        internal fun generatedManifest(
+            id: String,
+            displayName: String?,
+            sha256: String,
+            sizeBytes: Long,
+        ): ModelManifest =
+            ModelManifest(
+                id = id,
+                manifestVersion = ModelManifest.SUPPORTED_VERSION,
+                name = displayName?.takeIf { it.isNotBlank() } ?: id,
+                format = ModelFormat.GGUF,
+                capabilities = setOf(Capability.TEXT),
+                license = ManifestLicense(spdx = UNKNOWN_LICENSE),
+                main =
+                    ManifestFile(
+                        role = ModelFileRole.MAIN,
+                        file = GENERATED_MAIN_FILE_NAME,
+                        sha256 = sha256,
+                        sizeBytes = sizeBytes,
+                    ),
+                companions = emptyList(),
+            )
+
+        internal fun deriveId(
+            displayName: String?,
+            sha256: String,
+        ): String {
+            val suffix = sha256.take(ID_HASH_SUFFIX_LENGTH)
+            val slug = slugify(displayName ?: "model")
+            val candidate = "$slug-$suffix".take(MAX_ID_LENGTH)
+            return if (ID_PATTERN.matches(candidate)) candidate else "model-$suffix"
+        }
+
         private const val TAG = "ModelManager"
 
         /** `docs/design/SKEIN_HUB.md` §3.2: a declared size outside this range refuses before any allocation. */

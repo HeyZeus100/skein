@@ -95,6 +95,9 @@ class TestSkeinApplication : SkeinApplication() {
 
     var enableSessionChat: Boolean = false
 
+    /** Terminal inference-lock requests, independent of synchronous delegate unload. */
+    val terminalModelLockEpochs = java.util.Collections.synchronizedList(mutableListOf<Long>())
+
     /** Backs `/models`, `/import model` and the default-model lookup [ManagedInferenceEngine.defaultModel] reads. */
     val modelRegistry = InMemoryModelRegistry()
 
@@ -208,9 +211,9 @@ class TestSkeinApplication : SkeinApplication() {
      * same shape (store/registry/manager/engine/sendPipeline), but every
      * Android/Binder-bound collaborator (`LlamaCppEngine`,
      * `AndroidServiceConnector`, `ContentResolverPickedFileReader`) is
-     * replaced by its fake, and the three session-epoch pushes are left at
-     * [ModelServices]'s own no-op defaults (they are `LlamaCppEngine`-only
-     * API — see that class's constructor doc). [indexStore] is the SAME
+     * replaced by its fake. The terminal lock push records its epoch and
+     * synchronous managed-state teardown mirrors production; the other
+     * session-epoch pushes use no-op defaults. [indexStore] is the SAME
      * instance the enclosing [VaultSession] gets, so `RetrievalServiceImpl`
      * sees whatever a test indexes.
      */
@@ -317,6 +320,8 @@ class TestSkeinApplication : SkeinApplication() {
             turns = turns,
             drafts = drafts,
             markLockEpoch = lockEpoch::set,
+            pushOnSessionLocked = { lockedEpoch -> terminalModelLockEpochs += lockedEpoch },
+            clearEngineState = managed::closeSession,
         )
     }
 

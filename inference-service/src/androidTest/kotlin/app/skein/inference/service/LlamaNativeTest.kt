@@ -17,6 +17,7 @@
 package app.skein.inference.service
 
 import android.content.Context
+import android.os.ParcelFileDescriptor
 import androidx.test.core.app.ApplicationProvider
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.platform.app.InstrumentationRegistry
@@ -30,6 +31,7 @@ import java.io.File
 import java.util.concurrent.CountDownLatch
 import java.util.concurrent.TimeUnit
 import java.util.concurrent.atomic.AtomicReference
+import java.util.function.BooleanSupplier
 import kotlin.concurrent.thread
 import kotlin.math.abs
 import kotlin.math.sqrt
@@ -107,6 +109,57 @@ class LlamaNativeTest {
         sampler = 0L
         ctx = 0L
         model = 0L
+        assertThat(LlamaNative.handleCount()).isEqualTo(0)
+    }
+
+    @Test
+    fun descriptorLoadCancellationFromProgressClosesOwnedStreamAndKeepsCallerFd() {
+        val file = File(assumeModel())
+        ParcelFileDescriptor.open(file, ParcelFileDescriptor.MODE_READ_ONLY).use { descriptor ->
+            var polls = 0
+            val failure =
+                runCatching {
+                    model =
+                        LlamaNative.loadModelFromFd(
+                            descriptor.fd,
+                            nGpuLayers = 0,
+                            useMmap = true,
+                            // Initial check passes. The second tensor callback
+                            // aborts, proving this is cancellation IN the loader.
+                            cancellation = BooleanSupplier { ++polls >= 3 },
+                        )
+                }.exceptionOrNull()
+
+            assertThat(failure).isInstanceOf(LlamaException::class.java)
+            assertThat((failure as LlamaException).code).isEqualTo(LlamaErrorCode.CANCELLED)
+            assertThat(polls).isEqualTo(3)
+            assertThat(LlamaNative.handleCount()).isEqualTo(0)
+            assertThat(descriptor.fileDescriptor.valid()).isTrue()
+            // The same caller-owned descriptor remains usable after native
+            // cancellation, including its independent duplicated FILE* owner.
+            model = LlamaNative.loadModelFromFd(descriptor.fd, nGpuLayers = 0, useMmap = true)
+            assertThat(model).isNotEqualTo(0L)
+        }
+    }
+
+    @Test
+    fun pathLoadCancellationFromProgressRetainsNoNativeHandle() {
+        val path = assumeModel()
+        var polls = 0
+        val failure =
+            runCatching {
+                model =
+                    LlamaNative.loadModel(
+                        path,
+                        nGpuLayers = 0,
+                        useMmap = true,
+                        cancellation = BooleanSupplier { ++polls >= 3 },
+                    )
+            }.exceptionOrNull()
+
+        assertThat(failure).isInstanceOf(LlamaException::class.java)
+        assertThat((failure as LlamaException).code).isEqualTo(LlamaErrorCode.CANCELLED)
+        assertThat(polls).isEqualTo(3)
         assertThat(LlamaNative.handleCount()).isEqualTo(0)
     }
 

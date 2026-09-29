@@ -59,6 +59,7 @@ import app.skein.core.model.InferenceException
 import app.skein.core.model.Model
 import app.skein.core.model.ModelFormat
 import app.skein.core.model.SamplingParams
+import app.skein.ipc.ErrorCode
 import app.skein.testing.InferenceEngineContractTest
 import com.google.common.truth.Truth.assertThat
 import kotlinx.coroutines.Dispatchers
@@ -86,6 +87,7 @@ class LlamaCppEngineInstrumentedTest : InferenceEngineContractTest() {
     private lateinit var engine: LlamaCppEngine
     private lateinit var modelSha256: String
     private lateinit var modelId: String
+    private var currentEpoch = EPOCH
 
     @Before
     fun setUp() {
@@ -115,7 +117,7 @@ class LlamaCppEngineInstrumentedTest : InferenceEngineContractTest() {
                 connector = AndroidServiceConnector(context),
                 pins = pinSource(),
                 spillDir = File(context.cacheDir, "engine-instrumented").also { it.mkdirs() },
-                sessionEpoch = { EPOCH },
+                sessionEpoch = { currentEpoch },
             )
         // `IsolatedSessionGate` starts at `SessionEpoch.NONE` and refuses
         // everything until an explicit unlock push (LOCK_POLICY_INDEXING.md
@@ -228,6 +230,24 @@ class LlamaCppEngineInstrumentedTest : InferenceEngineContractTest() {
             val inspection = engine.inspect(binding())
 
             assertThat(inspection.errorCode).isEqualTo(0)
+        }
+
+    @Test
+    fun lockAfterInspectionTerminatesTheProcessAndOnlyANewUnlockCanRebind(): Unit =
+        runTest(timeout = testTimeout) {
+            assertThat(engine.inspect(binding()).errorCode).isEqualTo(ErrorCode.OK)
+            val oldPid = checkNotNull(inferencePid()) { "inspection process is absent" }
+            engine.onSessionLocking(currentEpoch, 150L)
+            engine.onSessionLocked(currentEpoch)
+            assertThat(waitForDeath(oldPid)).isTrue()
+            assertThat(engine.inspect(binding()).errorCode).isEqualTo(ErrorCode.SESSION_LOCKED)
+            assertThat(engine.status.value.state).isEqualTo(EngineState.UNLOADED)
+            currentEpoch++
+            engine.onSessionUnlocked(currentEpoch)
+            engine.load(textModel()).getOrThrow()
+            assertThat(checkNotNull(inferencePid())).isNotEqualTo(oldPid)
+            assertThat(engine.status.value.state).isEqualTo(EngineState.READY)
+            engine.onSessionLocked(currentEpoch)
         }
 
     // ------------------------------------------------------------ fixtures

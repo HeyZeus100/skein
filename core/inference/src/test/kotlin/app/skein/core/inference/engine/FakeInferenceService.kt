@@ -75,6 +75,12 @@ internal class FakeInferenceService : IInferenceService {
     /** Runs inside `load`, before it returns — lets a test hold the engine in LOADING. */
     var beforeLoadReturns: (() -> Unit)? = null
 
+    var beforeInspectReturns: (() -> Unit)? = null
+
+    var beforeLockingReturns: (() -> Unit)? = null
+
+    var beforeUnlockApplies: (() -> Unit)? = null
+
     /** Runs on the worker, before the terminal callback — lets a test hold a generation in flight. */
     var beforeDone: (() -> Unit)? = null
 
@@ -200,6 +206,7 @@ internal class FakeInferenceService : IInferenceService {
         epochs += req.sessionEpoch
         closeAll(req.binding)
         if (refuses(req.sessionEpoch)) return ModelInspection.refused(ErrorCode.SESSION_LOCKED)
+        beforeInspectReturns?.invoke()
         return inspectResult
     }
 
@@ -341,6 +348,7 @@ internal class FakeInferenceService : IInferenceService {
         budgetMillis: Long,
     ) {
         lockingPushes += epoch
+        beforeLockingReturns?.invoke()
         revoke(epoch)
     }
 
@@ -358,6 +366,7 @@ internal class FakeInferenceService : IInferenceService {
      */
     override fun onSessionUnlocked(epoch: Long) {
         unlockedPushes += epoch
+        beforeUnlockApplies?.invoke()
         if (unlockApplyDelayMillis > 0L) Thread.sleep(unlockApplyDelayMillis)
         authorizedEpoch.set(epoch)
     }

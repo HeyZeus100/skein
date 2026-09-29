@@ -17,6 +17,7 @@ package app.skein.inference.service
 
 import android.os.ParcelFileDescriptor
 import app.skein.core.model.SkeinLog
+import app.skein.core.verify.VerifyProgress
 import app.skein.ipc.BackendDeviceParcel
 import app.skein.ipc.BackendDeviceType
 import app.skein.ipc.BackendReportRequest
@@ -43,6 +44,8 @@ import java.io.File
 import java.security.MessageDigest
 import java.util.concurrent.CountDownLatch
 import java.util.concurrent.TimeUnit
+import java.util.concurrent.atomic.AtomicReference
+import java.util.function.BooleanSupplier
 
 @RunWith(RobolectricTestRunner::class)
 @Config(sdk = [34])
@@ -909,6 +912,7 @@ class InferenceEngineStateTest {
                     fd: Int,
                     nGpuLayers: Int,
                     useMmap: Boolean,
+                    cancellation: BooleanSupplier,
                 ): Long = throw LlamaException(LlamaErrorCode.INVALID_MODEL, "not a gguf")
             }
         val engine = InferenceEngineState(invalid, InlineTaskRunner(), CallbackDispatcher(InlineTaskRunner()))
@@ -925,6 +929,7 @@ class InferenceEngineStateTest {
                     fd: Int,
                     nGpuLayers: Int,
                     useMmap: Boolean,
+                    cancellation: BooleanSupplier,
                 ): Long = throw LlamaException(LlamaErrorCode.OUT_OF_MEMORY, "mmap")
             }
         val engine = InferenceEngineState(oom, InlineTaskRunner(), CallbackDispatcher(InlineTaskRunner()))
@@ -1171,6 +1176,7 @@ class InferenceEngineStateTest {
                     fd: Int,
                     nGpuLayers: Int,
                     useMmap: Boolean,
+                    cancellation: BooleanSupplier,
                 ): Long = throw LlamaException(LlamaErrorCode.INVALID_MODEL, "model load failed")
             }
         invalid.scriptedLoadLogLines = listOf("truncated tensor blk.0.attn_q.weight")
@@ -1212,6 +1218,7 @@ class InferenceEngineStateTest {
                     fd: Int,
                     nGpuLayers: Int,
                     useMmap: Boolean,
+                    cancellation: BooleanSupplier,
                 ): Long = throw LlamaException(LlamaErrorCode.INVALID_MODEL, "model load failed")
             }
         invalid.scriptedLoadLogLines = listOf("failed to open /data/data/app.skein/files/models/model.gguf")
@@ -1239,6 +1246,7 @@ class InferenceEngineStateTest {
                     fd: Int,
                     nGpuLayers: Int,
                     useMmap: Boolean,
+                    cancellation: BooleanSupplier,
                 ): Long = throw LlamaException(LlamaErrorCode.INVALID_MODEL, "model load failed")
             }
         invalid.scriptedLoadLogLines = listOf("unknown architecture")
@@ -1605,6 +1613,252 @@ class InferenceEngineStateTest {
                     ),
                 ),
         )
+
+    @Test
+    fun `locking during inspection verification cancels before native loading`() {
+        lateinit var service: InferenceEngineState
+        var ticks = 0
+        service =
+            InferenceEngineState(
+                backend,
+                InlineTaskRunner(),
+                callbacks,
+                verificationProgress =
+                    VerifyProgress {
+                        ticks++
+                        service.onSessionLocking(epoch, LOCK_BUDGET_MILLIS)
+                    },
+            )
+        service.onSessionUnlocked(epoch)
+        val request = inspectRequest()
+
+        assertThat(service.inspect(request).errorCode).isEqualTo(ErrorCode.CANCELLED)
+        assertThat(ticks).isEqualTo(1)
+        assertThat(backend.loadedFds).isEmpty()
+        assertThat(request.binding.files.all { isClosed(it.fd) }).isTrue()
+    }
+
+    @Test
+    fun `unload during inspection cancels its native token and frees late model`() {
+        lateinit var service: InferenceEngineState
+        var observedCancellation = false
+        val duringLoad =
+            object : FakeLlamaBackend() {
+                override fun loadModelFromFd(
+                    fd: Int,
+                    nGpuLayers: Int,
+                    useMmap: Boolean,
+                    cancellation: BooleanSupplier,
+                ): Long {
+                    service.unload()
+                    observedCancellation = cancellation.asBoolean
+                    return super.loadModelFromFd(fd, nGpuLayers, useMmap, cancellation)
+                }
+            }
+        service = InferenceEngineState(duringLoad, InlineTaskRunner(), callbacks)
+        service.onSessionUnlocked(epoch)
+
+        assertThat(service.inspect(inspectRequest()).errorCode).isEqualTo(ErrorCode.CANCELLED)
+        assertThat(observedCancellation).isTrue()
+        assertThat(duringLoad.liveModels).isEmpty()
+        assertThat(duringLoad.newContextCalls).isEqualTo(0)
+    }
+
+    @Test
+    fun `locking during native load cannot publish READY or allocate a context`() {
+        lateinit var service: InferenceEngineState
+        val duringLoad =
+            object : FakeLlamaBackend() {
+                override fun loadModelFromFd(
+                    fd: Int,
+                    nGpuLayers: Int,
+                    useMmap: Boolean,
+                    cancellation: BooleanSupplier,
+                ): Long {
+                    service.onSessionLocking(epoch, LOCK_BUDGET_MILLIS)
+                    return super.loadModelFromFd(fd, nGpuLayers, useMmap, cancellation)
+                }
+            }
+        service = InferenceEngineState(duringLoad, InlineTaskRunner(), callbacks)
+        service.onSessionUnlocked(epoch)
+
+        assertThat(service.load(loadRequest())).isEqualTo(ErrorCode.CANCELLED)
+        assertThat(service.status().state).isEqualTo("unloaded")
+        assertThat(duringLoad.newContextCalls).isEqualTo(0)
+        assertThat(duringLoad.liveModels).isEmpty()
+    }
+
+    @Test
+    fun `unload during context creation securely frees late context and model`() {
+        lateinit var service: InferenceEngineState
+        val duringContext =
+            object : FakeLlamaBackend() {
+                override fun newContext(
+                    model: Long,
+                    nCtx: Int,
+                    nThreads: Int,
+                    nBatch: Int,
+                    embeddings: Boolean,
+                ): Long {
+                    service.unload()
+                    return super.newContext(model, nCtx, nThreads, nBatch, embeddings)
+                }
+            }
+        service = InferenceEngineState(duringContext, InlineTaskRunner(), callbacks)
+        service.onSessionUnlocked(epoch)
+
+        assertThat(service.load(loadRequest())).isEqualTo(ErrorCode.CANCELLED)
+        assertThat(duringContext.secureFrees).hasSize(1)
+        assertThat(duringContext.liveContexts).isEmpty()
+        assertThat(duringContext.liveModels).isEmpty()
+        assertThat(service.status().state).isEqualTo("unloaded")
+    }
+
+    @Test
+    fun `an overlapping inspection is BUSY and closes received descriptors`() {
+        lateinit var service: InferenceEngineState
+        val overlapping = inspectRequest()
+        var nestedCode: Int? = null
+        val duringLoad =
+            object : FakeLlamaBackend() {
+                override fun loadModelFromFd(
+                    fd: Int,
+                    nGpuLayers: Int,
+                    useMmap: Boolean,
+                    cancellation: BooleanSupplier,
+                ): Long {
+                    nestedCode = service.inspect(overlapping).errorCode
+                    return super.loadModelFromFd(fd, nGpuLayers, useMmap, cancellation)
+                }
+            }
+        service = InferenceEngineState(duringLoad, InlineTaskRunner(), callbacks)
+        service.onSessionUnlocked(epoch)
+
+        assertThat(service.inspect(inspectRequest()).errorCode).isEqualTo(ErrorCode.OK)
+        assertThat(nestedCode).isEqualTo(ErrorCode.BUSY)
+        assertThat(overlapping.binding.files.all { isClosed(it.fd) }).isTrue()
+    }
+
+    @Test
+    fun `a cancelled operation cannot inherit authorization from a newer unlock`() {
+        lateinit var service: InferenceEngineState
+        var first = true
+        val duringLoad =
+            object : FakeLlamaBackend() {
+                override fun loadModelFromFd(
+                    fd: Int,
+                    nGpuLayers: Int,
+                    useMmap: Boolean,
+                    cancellation: BooleanSupplier,
+                ): Long {
+                    if (first) {
+                        first = false
+                        service.onSessionLocking(epoch, LOCK_BUDGET_MILLIS)
+                        service.onSessionUnlocked(epoch + 1)
+                    }
+                    return super.loadModelFromFd(fd, nGpuLayers, useMmap, cancellation)
+                }
+            }
+        service = InferenceEngineState(duringLoad, InlineTaskRunner(), callbacks)
+        service.onSessionUnlocked(epoch)
+
+        assertThat(service.load(loadRequest())).isEqualTo(ErrorCode.CANCELLED)
+        assertThat(service.load(loadRequest(epoch = epoch + 1))).isEqualTo(ErrorCode.OK)
+        assertThat(duringLoad.liveModels).hasSize(1)
+    }
+
+    @Test
+    fun `lock deadline terminates independently of a parked native loader`() {
+        val entered = CountDownLatch(1)
+        val release = CountDownLatch(1)
+        val terminated = CountDownLatch(1)
+        val outcome = AtomicReference<ModelInspection>()
+        val failure = AtomicReference<Throwable>()
+        val duringLoad =
+            object : FakeLlamaBackend() {
+                override fun loadModelFromFd(
+                    fd: Int,
+                    nGpuLayers: Int,
+                    useMmap: Boolean,
+                    cancellation: BooleanSupplier,
+                ): Long {
+                    entered.countDown()
+                    check(release.await(AWAIT_SECONDS, TimeUnit.SECONDS))
+                    return super.loadModelFromFd(fd, nGpuLayers, useMmap, cancellation)
+                }
+            }
+        val service =
+            InferenceEngineState(
+                duringLoad,
+                InlineTaskRunner(),
+                callbacks,
+                terminateProcess = { terminated.countDown() },
+            )
+        service.onSessionUnlocked(epoch)
+        val request = inspectRequest()
+        val loader =
+            Thread {
+                try {
+                    outcome.set(service.inspect(request))
+                } catch (error: Throwable) {
+                    failure.set(error)
+                }
+            }.apply { isDaemon = true }
+        loader.start()
+        try {
+            assertThat(entered.await(AWAIT_SECONDS, TimeUnit.SECONDS)).isTrue()
+            service.onSessionLocking(epoch, LOCK_BUDGET_MILLIS)
+            service.onSessionLocked(epoch)
+            assertThat(terminated.count).isEqualTo(0L)
+            assertThat(loader.isAlive).isTrue()
+            assertThat(service.inspect(inspectRequest()).errorCode).isEqualTo(ErrorCode.SESSION_LOCKED)
+        } finally {
+            release.countDown()
+            loader.join(AWAIT_SECONDS * 1_000L)
+        }
+        assertThat(failure.get()).isNull()
+        assertThat(outcome.get().errorCode).isEqualTo(ErrorCode.CANCELLED)
+        assertThat(duringLoad.liveModels).isEmpty()
+    }
+
+    @Test
+    fun `a stale locked push cannot terminate a newer authorized process`() {
+        var terminations = 0
+        val service =
+            InferenceEngineState(backend, InlineTaskRunner(), callbacks, terminateProcess = { terminations++ })
+        service.onSessionUnlocked(epoch + 1)
+
+        service.onSessionLocked(epoch)
+
+        assertThat(terminations).isEqualTo(0)
+        assertThat(service.load(loadRequest(epoch = epoch + 1))).isEqualTo(ErrorCode.OK)
+    }
+
+    @Test
+    fun `unexpected context failure releases model pins and operation admission`() {
+        val broken =
+            object : FakeLlamaBackend() {
+                override fun newContext(
+                    model: Long,
+                    nCtx: Int,
+                    nThreads: Int,
+                    nBatch: Int,
+                    embeddings: Boolean,
+                ): Long = throw IllegalStateException("context failed")
+            }
+        val service = InferenceEngineState(broken, InlineTaskRunner(), callbacks)
+        service.onSessionUnlocked(epoch)
+        val request = loadRequest()
+
+        assertThat(
+            runCatching { service.load(request) }.exceptionOrNull(),
+        ).isInstanceOf(IllegalStateException::class.java)
+        assertThat(request.binding.files.all { isClosed(it.fd) }).isTrue()
+        assertThat(broken.liveModels).isEmpty()
+        assertThat(service.status().state).isEqualTo("unloaded")
+        assertThat(service.inspect(inspectRequest()).errorCode).isEqualTo(ErrorCode.OK)
+        assertThat(broken.liveModels).isEmpty()
+    }
 
     // ------------------------------------------------------------ fixtures
 

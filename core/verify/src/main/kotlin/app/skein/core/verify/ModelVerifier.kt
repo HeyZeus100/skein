@@ -519,6 +519,7 @@ object ModelVerifier {
         val expectedBlake3 = binding.main.expectedBlake3
 
         hook.afterPreMmapVerify(binding)
+        if (cancellation.isCancelled()) return LoadVerification.Refused(ModelVerification.Cancelled(ModelFileRole.MAIN))
 
         val mapped =
             try {
@@ -537,6 +538,7 @@ object ModelVerifier {
                 verifyAfterMmapSha256(binding.main.expectedSha256, mapped, cancellation, progress)
             }
         if (postMmap is ModelVerification.Refusal) return LoadVerification.Refused(postMmap)
+        if (cancellation.isCancelled()) return LoadVerification.Refused(ModelVerification.Cancelled(ModelFileRole.MAIN))
 
         val gate2 = if (expectedBlake3 != null) "blake3" else "sha256"
         SkeinLog.i(TAG, "model verified: both gates passed files=${binding.files.size} gate2=$gate2")

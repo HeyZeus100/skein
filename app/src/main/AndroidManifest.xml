@@ -39,24 +39,22 @@
 
     <!--
         E5.I10 (skein-7v3): androidx.work:work-runtime merges four
-        uses-permissions of its own. Three are still removed from the merged
+        uses-permissions of its own. Two are still removed from the merged
         manifest; RECEIVE_BOOT_COMPLETED is now declared above for Skein's own
         BootReceiver (skein-0m1z) rather than removed:
           - ACCESS_NETWORK_STATE: only consulted by WorkManager's network
             constraint tracker, which is never registered because
             `IngestWorker` runs with `NetworkType.NOT_REQUIRED`
             (LOCK_POLICY_INDEXING.md §3.2: no constraints gate at all).
-          - FOREGROUND_SERVICE: expedited/foreground work is not used
-            (on API 30 it would need a foreground service + notification).
           - WAKE_LOCK: only acquired by the pre-API-23 alarm scheduler and
-            the foreground-service path; minSdk is 30 and neither is used.
+            the WorkManager foreground-service path; neither is used.
     -->
     <uses-permission
         android:name="android.permission.ACCESS_NETWORK_STATE"
         tools:node="remove" />
-    <uses-permission
-        android:name="android.permission.FOREGROUND_SERVICE"
-        tools:node="remove" />
+    <!-- User-selected local model imports survive Activity and vault lifecycle changes. -->
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE_DATA_SYNC" />
     <uses-permission
         android:name="android.permission.WAKE_LOCK"
         tools:node="remove" />
@@ -112,6 +110,12 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <!-- Opaque import copy only; inspection still runs in the isolated inference process. -->
+        <service
+            android:name="app.skein.models.ModelImportService"
+            android:exported="false"
+            android:foregroundServiceType="dataSync" />
 
         <!--
             Isolated inference process (spec §2.6, §4.1). No Android permissions

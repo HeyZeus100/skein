@@ -201,8 +201,18 @@ class ImmutableModelStore(
      */
     fun orphanedDirectories(mainFileName: String): List<File> =
         synchronized(monitor) {
+            registrationCandidates(mainFileName).filter { !registry.containsKey(it.name) }
+        }
+
+    /**
+     * Complete sealed copies, including ones known by this process but not yet in the vault registry.
+     * An app-owned store survives vault epochs, so its in-memory map is not proof of SQL registration.
+     * The session manager must filter these against its authorized registry before adopting anything.
+     */
+    fun registrationCandidates(mainFileName: String): List<File> =
+        synchronized(monitor) {
             (modelsRoot.listFiles() ?: emptyArray())
-                .filter { it.isDirectory && isSafeId(it.name) && !registry.containsKey(it.name) }
+                .filter { it.isDirectory && isSafeId(it.name) }
                 .filter { dir -> File(dir, mainFileName).isFile && !isStaleStaging(dir) }
                 .filter { dir -> dir.listFiles()?.none { it.name.endsWith(TEMP_SUFFIX) } ?: false }
                 .sortedBy { it.name }
