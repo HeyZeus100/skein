@@ -1,0 +1,46 @@
+{
+  "baseline_sha": "a4ba4f4",
+  "worktree": "/Users/andrewherrera/skein-worktrees/ux-fold-coverage-20260929",
+  "gate": "AL-10 audit; AL-15/16 progress only",
+  "tests": {
+    "MainActivityDraftRetentionTest": {
+      "tests": 2,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    "host_reviewers": {
+      "tests": 5,
+      "failures": 0
+    }
+  },
+  "compilation": [
+    ":app:compileDevDebugUnitTestKotlin",
+    ":app:compileDevDebugAndroidTestKotlin"
+  ],
+  "lint": ":app:ktlintCheck",
+  "resolved_configurations": [
+    "devDebugAndroidTestRuntimeClasspath",
+    "unified-test-platform-gradle-work-action"
+  ],
+  "new_dependency_artifacts": 32,
+  "existing_dependency_pins_changed": false,
+  "artifacts": {
+    "build/agent-logs/fold-check1.log": "fed6b3bd02ff613c5c5636214979b5b0954ca3ed817eb1ed1a0e99fb9cff2e12",
+    "build/agent-logs/fold-check2.log": "250df76dce7b7fd7f290808456532c4c5420c102b6bbf490e84a35c4a2e36958",
+    "build/agent-logs/fold-check3.log": "4827d9c16c8dfac2367211ffe01cb941cf7e44534c26eacebc5b7e2c4238d8ac",
+    "build/agent-logs/fold-check4.log": "c5054e83984134a42b022fba8489cc6ad7911276453dafaae0050b37d9090d7e",
+    "build/agent-logs/fold-check2-results/TEST-app.skein.MainActivityDraftRetentionTest.xml": "84e8e332a8e717d945bb640d7df6175a6aebe31b6b80a65c8c6cde12c03c4761",
+    "build/agent-logs/fold-check4-results/TEST-app.skein.MainActivityDraftRetentionTest.xml": "489a7e994987e8deed5974fe5fd9795c3247e59a96efe5933269277c784fa5b4",
+    "build/agent-logs/dependency-verification.json": "082fd0f19c8bdc1c87be56169bc90d1f2791ef4ae591858c5b3788dc65ef82a7",
+    "build/agent-logs/local-device-profiles.txt": "757f421ebc179f6fe3a9968787c1c87947c5244e7f2454a9e50e813ee32b9bff"
+  },
+  "physical_access": "none; scoped update/demo sole runner /root/fts_verification",
+  "open": [
+    "AL10 focus/scroll/entry-view-state gaps",
+    "AL15 full A-G and D7 all surfaces/process restore",
+    "AL16 actual foldable runtime incl real IME",
+    "Pixel9ProFold exact profile",
+    "retrieval quality and embedding gates"
+  ]
+}

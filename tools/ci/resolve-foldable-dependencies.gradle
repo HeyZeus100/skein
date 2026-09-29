@@ -1,0 +1,19 @@
+// Resolution only: never enumerates devices, installs an APK, or launches instrumentation.
+// AGP 9.4.1 UtpDependency.GRADLE_WORK_ACTION names this host runtime configuration.
+gradle.projectsEvaluated {
+    def app = rootProject.findProject(':app')
+    if (app == null) return // The init script also visits the included build-logic build.
+    app.tasks.register('resolveFoldableRuntime') {
+        doLast {
+            ['devDebugAndroidTestRuntimeClasspath', 'unified-test-platform-gradle-work-action'].each { name ->
+                def configuration = app.configurations.getByName(name)
+                if (!configuration.canBeResolved) {
+                    throw new GradleException("Foldable configuration is not resolvable: $name")
+                }
+                configuration.resolve().sort { it.name }.each { artifact ->
+                    println("${name}: ${artifact.name}")
+                }
+            }
+        }
+    }
+}

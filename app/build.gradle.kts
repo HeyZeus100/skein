@@ -13,6 +13,8 @@ plugins {
     id("app.skein.guard.license")
 }
 
+val foldableTests = providers.gradleProperty("skein.foldableTests").orNull == "true"
+
 android {
     namespace = "app.skein"
     compileSdk = 37
@@ -31,6 +33,13 @@ android {
                     listOf("src/syntheticBenchmarkTest/kotlin", "src/syntheticBenchmarkShared/kotlin"),
                 )
             }
+        }
+    }
+
+    if (foldableTests) {
+        sourceSets.getByName("androidTest") {
+            kotlin.directories.add("src/foldableTest/kotlin")
+            manifest.srcFile("src/foldableTest/AndroidManifest.xml")
         }
     }
 
@@ -117,6 +126,7 @@ android {
     }
 
     testOptions {
+        emulatorControl.enable = foldableTests
         unitTests {
             // E3.I1: ManifestPolicyTest reads the manifest's resource
             // references (dataExtractionRules) via Robolectric's shadowed
@@ -263,6 +273,9 @@ dependencies {
     // `TestListenableWorkerBuilder` for `IngestWorkerTest` (Robolectric) and
     // the compile-only `IngestWorkerInstrumentedTest` (run gated on skein-k3b2).
     testImplementation(libs.androidx.work.testing)
+    if (foldableTests) {
+        androidTestImplementation(libs.androidx.test.espresso.device)
+    }
     androidTestImplementation(platform(libs.compose.bom))
     androidTestImplementation(libs.androidx.work.testing)
     androidTestImplementation(libs.androidx.test.ext.junit)

@@ -1,0 +1,61 @@
+"""Guard the opt-in lane's dispatch, platform and dependency verification contract."""
+from pathlib import Path
+import shlex
+import tomllib
+import unittest
+import xml.etree.ElementTree as ET
+
+import yaml
+
+ROOT = Path(__file__).resolve().parents[2]
+
+
+class FoldableWorkflowContractTest(unittest.TestCase):
+    def test_exact_and_compatibility_profiles_are_explicit_and_labelled(self):
+        workflow = yaml.safe_load((ROOT / ".github/workflows/foldable.yml").read_text())
+        # PyYAML's YAML 1.1 resolver treats the GitHub `on` key as a boolean.
+        triggers = workflow.get("on", workflow.get(True))
+        self.assertEqual({"workflow_dispatch"}, set(triggers))
+        profile = triggers["workflow_dispatch"]["inputs"]["profile"]
+        self.assertEqual("pixel_9_pro_fold", profile["default"])
+        self.assertEqual(["pixel_9_pro_fold", "pixel_fold"], profile["options"])
+        job = workflow["jobs"]["foldable"]
+        self.assertIn("inputs.profile", job["name"])
+        steps = job["steps"]
+        emulator = next(step for step in steps if "android-emulator-runner@" in step.get("uses", ""))
+        self.assertEqual("${{ inputs.profile }}", emulator["with"]["profile"])
+        sdk = next(step["run"] for step in steps if step.get("name") == "SDK tools and exact fold profile")
+        tokens = shlex.split(sdk)
+        self.assertIn("platforms;android-37.0", tokens)
+        self.assertNotIn("platforms;android-37", tokens)
+        self.assertIn('case "$SKEIN_FOLD_PROFILE" in pixel_9_pro_fold|pixel_fold)', sdk)
+        for step in steps:
+            if "./gradlew" in step.get("run", ""):
+                self.assertIn("--max-workers=2", step["run"])
+        upload = next(step for step in steps if "upload-artifact@" in step.get("uses", ""))
+        self.assertEqual("always()", upload["if"])
+        self.assertIn("inputs.profile", upload["with"]["name"])
+
+    def test_espresso_pin_and_test_only_network_manifest_are_verified(self):
+        catalog = tomllib.loads((ROOT / "gradle/libs.versions.toml").read_text())
+        version = catalog["versions"]["androidx-test-espresso-device"]
+        self.assertEqual("1.1.0", version)
+        ns = {"m": "https://schema.gradle.org/dependency-verification"}
+        metadata = ET.parse(ROOT / "gradle/verification-metadata.xml")
+        component = metadata.find(
+            f"m:components/m:component[@group='androidx.test.espresso'][@name='espresso-device'][@version='{version}']", ns)
+        artifacts = {node.get("name"): node.find("m:sha256", ns).get("value")
+                     for node in component.findall("m:artifact", ns)}
+        self.assertEqual("be57100db268c03247f365a31209f9c2b83b7f3b3ea9f7f2334c40ecb835c010",
+                         artifacts["espresso-device-1.1.0.aar"])
+        self.assertEqual("673a610fed1dd0aaf66e9e8d3eb11a4b60ca5c933585d7b842e498e9bfd6309e",
+                         artifacts["espresso-device-1.1.0.pom"])
+        manifest = ET.parse(ROOT / "app/src/foldableTest/AndroidManifest.xml")
+        permissions = {node.get("{http://schemas.android.com/apk/res/android}name")
+                       for node in manifest.findall("uses-permission")}
+        self.assertEqual({"android.permission.INTERNET", "android.permission.ACCESS_NETWORK_STATE",
+                          "android.permission.ACCESS_LOCAL_NETWORK"}, permissions)
+
+
+if __name__ == "__main__":
+    unittest.main()
