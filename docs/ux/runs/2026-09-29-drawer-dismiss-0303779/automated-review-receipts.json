@@ -1,0 +1,67 @@
+{
+  "source_sha": "0303779fcb14a3ed37b9355d07ad98934e2d12a5",
+  "scope": "All required automated gates accepted for exact application source; installed bytes and physical acceptance are separately recorded.",
+  "reviews": [
+    {
+      "review": "ci-root-review.json",
+      "sha256": "ed4bc50de86b8fb269a522e814da0fbec65c49fc58fafb61c4517a00fa6afd5c",
+      "source_sha": "0303779fcb14a3ed37b9355d07ad98934e2d12a5",
+      "status": "PASS",
+      "local_path": "build/agent-logs/candidate-0303779fc-review/ci-root-review.json"
+    },
+    {
+      "review": "ordinary-root-review.json",
+      "sha256": "a4576659148294933bac413b707365f9e5c0ff2bd8aba8b28d3d8bc0f39474c4",
+      "source_sha": "0303779fcb14a3ed37b9355d07ad98934e2d12a5",
+      "status": "PASS",
+      "local_path": "build/agent-logs/candidate-0303779fc-review/ordinary-root-review.json"
+    },
+    {
+      "review": "screenshots-root-review.json",
+      "sha256": "c6baec3b4891116effafef675519f41c96a9d00737c05e6f8ef51c132c97632f",
+      "source_sha": "0303779fcb14a3ed37b9355d07ad98934e2d12a5",
+      "status": "PASS",
+      "local_path": "build/agent-logs/candidate-0303779fc-review/screenshots-root-review.json"
+    },
+    {
+      "review": "build-source-review.json",
+      "sha256": "4a42c4b78422736a904f190c447c791eae24208d84d1175207cf845304ba8d9c",
+      "source_sha": "0303779fcb14a3ed37b9355d07ad98934e2d12a5",
+      "status": "PASS",
+      "local_path": "build/agent-logs/candidate-0303779fc-review/build-source-review.json"
+    },
+    {
+      "review": "native-equivalence-review.json",
+      "sha256": "76bb1a01f2254e187ec606eb5e9704ab4d0b5d67f12bd7c434535ef6a7b9348e",
+      "source_sha": "0303779fcb14a3ed37b9355d07ad98934e2d12a5",
+      "status": "PASS",
+      "local_path": "build/agent-logs/candidate-0303779fc-review/native-equivalence-review.json"
+    },
+    {
+      "review": "network-permission-review.json",
+      "sha256": "48fda4498d75a075f510373c4d832390071e4cedc07ed81d257489aaa298881e",
+      "source_sha": "0303779fcb14a3ed37b9355d07ad98934e2d12a5",
+      "status": "PASS",
+      "local_path": "build/agent-logs/candidate-0303779fc-review/network-permission-review.json"
+    },
+    {
+      "review": "reproducible-root-review.json",
+      "sha256": "bee4fd973c0d99e735639898f3c210696f31a320829c71e78123ee0eb7843c61",
+      "source_sha": "0303779fcb14a3ed37b9355d07ad98934e2d12a5",
+      "status": "PASS",
+      "local_path": "build/agent-logs/candidate-0303779fc-review/reproducible-root-review.json"
+    },
+    {
+      "review": "actual-checks-review.json",
+      "sha256": "bd48892feeeb3bec2bb707099bcf4f9525fe21e7fa93fc935a79afb26065aeaf",
+      "source_sha": "0303779fcb14a3ed37b9355d07ad98934e2d12a5",
+      "status": "PASS",
+      "local_path": "build/agent-logs/candidate-0303779fc-review/actual-checks-review.json"
+    }
+  ],
+  "installation_review": {
+    "local_path": "build/agent-logs/candidate-0303779fc-review/installed-root-review.json",
+    "sha256": "97356b9947ce294c8cddbe18f22cb1f81f305c4737ecf8da2cfb1dc4ceb6e0ae",
+    "scope": "Copied-back APK and package metadata; not UI acceptance"
+  }
+}

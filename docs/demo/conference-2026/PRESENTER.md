@@ -1,6 +1,6 @@
 # Skein: a short conference demo
 
-Use the fictional notes with **Knowledge on**. The latest completed rehearsal answered all four questions below correctly; first visible text took about 40–53 seconds. The general Knowledge-off test contained a factual error, so use the note-grounded examples for the presentation. The repaired sourcead70 app is installed on the Fold with its copied-back APK verified. The owner reproduced a remaining floating-drawer dismissal bug in split view; use a single workspace until the follow-up repair and rehearsal pass. The answer results and timings below come from the earlier source920e four-question rehearsal.
+Use the fictional notes with **Knowledge on**. The latest completed rehearsal answered all four questions below correctly; first visible text took about 40–53 seconds. The general Knowledge-off test contained a factual error, so use the note-grounded examples for the presentation. The source030 drawer repair is installed on the Fold with its copied-back APK verified. Its physical rehearsal is waiting for the normal vault unlock; use a single workspace until that rehearsal passes. The answer results and timings below come from the earlier source920e four-question rehearsal.
 
 Start with Construction. Open **DEMO: Cedar Cabinet Order**, then Chat → New chat. Ask:
 

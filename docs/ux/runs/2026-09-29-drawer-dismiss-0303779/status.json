@@ -1,0 +1,190 @@
+{
+  "source_sha": "0303779fcb14a3ed37b9355d07ad98934e2d12a5",
+  "status": "INSTALLED_VERIFIED_AWAITING_NORMAL_VAULT_UNLOCK",
+  "app": {
+    "sha256": "c9b2ffd8ca4306c63c9e7bb3975de4b5e2b6a57a04385c39d4c49eb33f87c14e",
+    "size_bytes": 128079415
+  },
+  "production_change": "Enable scrim/swipe gestures whenever the modal drawer is open, including an outer rail layout. Closed-edge opening stays disabled; existing Back handler unchanged.",
+  "regressions": {
+    "new_cases": 5,
+    "focused_passed": 30,
+    "full_shell_passed": 257,
+    "full_shell_skipped": 14,
+    "failures": 0,
+    "errors": 0
+  },
+  "local_checks": {
+    "passed": 829,
+    "skipped": 14,
+    "failures": 0,
+    "errors": 0,
+    "explicit_ktlint": "PASS",
+    "android_lint_errors": 0,
+    "both_opt_in_android_test_compiles": "PASS"
+  },
+  "local_screens": {
+    "passed": 1303,
+    "skipped": 80,
+    "unchanged": 552
+  },
+  "run_ids": {
+    "ci": 36643196454,
+    "screenshots": 36643196416,
+    "ordinary": 36643196118,
+    "reproducible": 36643196409
+  },
+  "installed_predecessor": {
+    "source_sha": "ad70fa4d1fea13acdaa53422b3d5eb2fce17354c",
+    "sha256": "fb409b35bb3295f1d0d00166ef4fd568182f668ea9107cdb9663d8c4f1451798",
+    "size_bytes": 128079415
+  },
+  "predecessor_physical": {
+    "scrim_tap": "FAIL: one real empty-scrim tap left drawer open; paired screenshots identical",
+    "normal_back": "PASS: one Back closed drawer and original nine-link draft matched",
+    "original_draft_sha256": "71e37fdec8b053035877969575517594c3ac181fb931299bd7c4665bf0ce8367",
+    "back_limit": "KEYCODE_BACK dispatch is not predictive-swipe animation proof",
+    "overlay_actions": {
+      "drawer_knowledge_close": true,
+      "search_settings_close": true,
+      "search_new_chat_close": true,
+      "edits": 0,
+      "sends": 0,
+      "review_sha256": "5edd416d38a58636ae65008164ca7f3bb751a8bbdc37d58efa5071783d0a05b6",
+      "limits": "Observed on installedad70; candidate030 changes only gesture predicate. Owner conversation retained; rawframes private."
+    }
+  },
+  "updater": {
+    "driver_sha256": "6ec3cccf7e261c716ae59f57618b0d383b84be910ddc6624b1579c62749e98f8",
+    "independent_root_host_mocks_passed": 46,
+    "changed_constants": [
+      "CURRENT_SHA",
+      "CURRENT_SOURCE"
+    ],
+    "current_size_unchanged": 128079415,
+    "device_execution": true,
+    "peer_review_sha256": "ac63bf77d4eabb536523ca2e5822b5435e891c0ef97f5bf8b7f47eb6cded2bbe"
+  },
+  "physical_acceptance": "PENDING_NORMAL_VAULT_UNLOCK_AND_REHEARSAL",
+  "limits": [
+    "Original private screenshots and failing evidence retained locally",
+    "Native bytes/model/default/drafts/retrieval thresholds and all goldens unchanged",
+    "Broader retrieval/embedding, citations, model accuracy and formal Fold/M0 gates remain open"
+  ],
+  "remote_screens": {
+    "run": 36643196416,
+    "status": "PASS",
+    "passed": 1303,
+    "skipped": 80,
+    "failures": 0,
+    "errors": 0,
+    "unchanged": 552,
+    "prior_cases_retained": 1378,
+    "new_touch_cases": 5,
+    "targeted_cases_fresh": 12,
+    "no_build_cache": true
+  },
+  "remote_ci": {
+    "run": 36643196454,
+    "status": "PASS",
+    "passed": 5176,
+    "skipped": 88,
+    "failures": 0,
+    "errors": 0,
+    "prior_cases_retained": 5259,
+    "new_touch_cases": 5,
+    "targeted_cases_fresh": 12,
+    "unrelated_cached_unit_tasks": 12
+  },
+  "remote_ordinary": {
+    "run": 36643196118,
+    "status": "PASS",
+    "xml_files": 3,
+    "unique_passed": 281,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0,
+    "diagnostic_classes_absent": true,
+    "source_checker_recomputation_equal": true
+  },
+  "remote_reproducible": {
+    "status": "PASS",
+    "source_sha": "0303779fcb14a3ed37b9355d07ad98934e2d12a5",
+    "run": 36643196409,
+    "apk_pair_byte_equal": true,
+    "apk_sha256": "213125944927318af7080d9fbcacdb6990e4b04fd063181283234e60526585cb",
+    "apk_bytes": 100758279,
+    "native_pair_byte_equal": true,
+    "native_sha256": "2aefda01808f10bf5693ab02d0857e0169dc09550b615896939cb176c032daff",
+    "native_bytes": 25314032,
+    "embedded_release_native_equal": true,
+    "artifacts": [
+      {
+        "name": "rb-build-a",
+        "path": "build/agent-logs/remote-dismiss-0303779/36643196409/11068220428/archive.zip",
+        "size_bytes": 100759152,
+        "sha256": "95c2a5e2b5cef6e1a13d0d782884c5c3cf36df4d0a5765bf25fc86b6c87c067c",
+        "apk_sha256": "213125944927318af7080d9fbcacdb6990e4b04fd063181283234e60526585cb",
+        "apk_size_bytes": 100758279
+      },
+      {
+        "name": "so-determinism",
+        "path": "build/agent-logs/remote-dismiss-0303779/36643196409/11068145354/archive.zip",
+        "size_bytes": 50711050,
+        "sha256": "fc8a1b4a1d50a8fa2dd948c076b897687201fe987155c5f096f1b264fddaa59f",
+        "manifest_pins_verified": 15
+      },
+      {
+        "name": "rb-build-b",
+        "path": "build/agent-logs/remote-dismiss-0303779/36643196409/11067299889/archive.zip",
+        "size_bytes": 100759166,
+        "sha256": "73de7fa785a8429e8acb378256a936ca90d25d24b4c9fe860c8c4a012cff8430",
+        "apk_sha256": "213125944927318af7080d9fbcacdb6990e4b04fd063181283234e60526585cb",
+        "apk_size_bytes": 100758279
+      }
+    ],
+    "limits": [
+      "Unsigned release reproducibility; not local signed debug byte equality.",
+      "Tag-only SQLCipher regeneration skipped. Native negative-control not run.",
+      "Full artifact archives verified against GitHub digest and actual payload."
+    ]
+  },
+  "release": {
+    "manifest_sha256": "5986c1c0bb65018d839c46b7bc14aee38b5a372dd5981f91df91914963e2ba19",
+    "host_validation": "PASS_NO_ADB",
+    "source_sha": "0303779fcb14a3ed37b9355d07ad98934e2d12a5"
+  },
+  "installation": {
+    "status": "PASS",
+    "source_sha": "0303779fcb14a3ed37b9355d07ad98934e2d12a5",
+    "summary_sha256": "361e8bdf6a2ea07f46e0d71a69ed1c4a54e851c1ff1eedba6c2fac1b1d97efa1",
+    "summary_path": "conference-demo-20260929/build/agent-logs/fold/physical-update-0303779fc-20260929T232803Z/summary.json",
+    "install_attempts": 1,
+    "copied_apks_rehashed": [
+      {
+        "role": "previous_apk_preserved",
+        "sha256": "fb409b35bb3295f1d0d00166ef4fd568182f668ea9107cdb9663d8c4f1451798",
+        "bytes": 128079415
+      },
+      {
+        "role": "installed_apk_preserved",
+        "sha256": "c9b2ffd8ca4306c63c9e7bb3975de4b5e2b6a57a04385c39d4c49eb33f87c14e",
+        "bytes": 128079415
+      }
+    ],
+    "continuity_checks": {
+      "firstInstallTime": true,
+      "dataDir": true,
+      "ceDataInode": true,
+      "deDataInode": true,
+      "version_code": true,
+      "version_name": true
+    },
+    "uid_available": false,
+    "data_clear": false,
+    "other_apks": false,
+    "updated_at": "2026-09-29T23:28:18.200519+00:00",
+    "scope": "Exact copied-back application bytes and package metadata; physical interaction acceptance separate.",
+    "summary_path_scope": "Retained sibling worktree relative to local worktrees root"
+  }
+}
