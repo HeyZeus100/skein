@@ -4,7 +4,7 @@ This continues the [earlier continuation](skein-orchestrator-continuation-202609
 
 ## Published implementation checkpoint
 
-Main and integration branch `codex/ux-integration-20260929` were both pushed through `8042a4cef675458a9f408acf0a994fe451ad2378`. The four exact-source workflows are terminal, with one ordinary encrypted test failure preserved below. This document records an intermediate checkpoint, not acceptance of all six parents.
+Main and integration branch `codex/ux-integration-20260929` were pushed through `8042a4cef675458a9f408acf0a994fe451ad2378`, then `05ca780cdcb75044ea93af6a2d943454295697b7`. The first checkpoint has one ordinary encrypted test failure; the second exposed an inference-cancellation failure in CI. Both original failures are preserved below. This document records an intermediate checkpoint, not acceptance of all six parents.
 
 - `e65474a28` retains chat presentation in the navigation entry ViewModel and restores transcript position by canonical message ID and offset. New messages no longer force a reader to the bottom; an explicit latest-messages action is available. Focus/IME restoration and physical adaptive-layout acceptance remain open.
 - `b2beaf660` adds atomic attachment/extracted-NOTE deletion, preserves stored chat quotes, detaches non-NOTE source metadata without deleting those items, guards late vector writes and import/delete races, and sweeps unreferenced attachment ciphertext while respecting active writers. Fourteen encrypted instrumentation cases executed at `8042`: thirteen passed and one failed on a stale pre-message chat-body expectation. Corrected runtime acceptance remains open.
@@ -47,6 +47,14 @@ At that clean, unchanged commit, combined lint/check/build and instrumentation c
 An independent reviewer verified all actual XML and source-inventory hashes, the exact 24 added tests and unchanged 86 skip identities/reasons, all eight fresh screenshot tasks, APK/native bytes, and the APK manifest with no INTERNET permission.
 
 The queued remote verification is one frozen-source batch: automatic CI/UX/reproducibility first, then ordinary encrypted instrumentation, generic foldable compatibility, and explicit fresh40 retrieval diagnostics sequentially. These runtime gates remain pending here. No fresh40 results or model answers have yet been produced, and no production backend or contextual retrieval default has been activated.
+
+## Preserved second-checkpoint CI failure
+
+At frozen `05ca780cd`, CI `36702345809` failed `LlamaCppEngineBehaviourTest.closingTheFlowCancelsTheRequest`: the expected per-request cancellation was absent. Actual retained XML contains **2,917 passes, six skips and one failure across 294 XML files**. This is a partial run: 2,648 expected full-suite identities did not execute, and no debug APK artifact was produced. All three relevant engine/fake/test source files are unchanged from `8042`. The [original CI artifact and independent review](../ux/runs/2026-09-30-six-priorities/remote05ca/ci/) are retained.
+
+Source investigation found that prompt collector cancellation can return from the I/O dispatch before reaching `awaitClose`, skipping its remote-cancellation cleanup. Cancellation before entering that I/O block can also bypass local spill-descriptor cleanup. Root filed and claimed P0 `skein-y2xm`, blocking answer-quality parent `skein-gg11.30`, and assigned an isolated three-file repair with deterministic old-source negative controls. No retry, skip, assertion relaxation or increased timing window accepts this failure.
+
+The same-source UX `36702345861` passed independently inspected 1,354 cases with 80 unchanged skips and 552 unchanged screenshots across eight freshly executed tasks. Its pass does not override CI failure. Reproducibility `36702345804` passed root and independent actual-byte review: both APKs are 101,039,915 bytes with SHA-256 `0477e87598372469ab247b054221033d7e1482511f90c48dd29c1b8cfbb4d9ab`; both cold native libraries and both embedded llama payloads are byte-identical at SHA-256 `2aefda01808f10bf5693ab02d0857e0169dc09550b615896939cb176c032daff`. Distinct build roots, source/epoch, all manifests, archive/API digests and terminal comparison jobs were checked. Tag-only SQLCipher regeneration remains skipped. Original APK/native archives remain retained in ignored integration evidence, with their complete hashes in the [published review](../ux/runs/2026-09-30-six-priorities/remote05ca/repro/). The ordinary/foldable/fresh40 queue is held for the cancellation fix and a new verified checkpoint. Candidate/evaluator fixtures, source freezes, labels and thresholds remain unchanged, and no fresh40 outputs have been generated.
 
 ## Physical and preservation boundary
 

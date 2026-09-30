@@ -1,0 +1,109 @@
+{
+  "source": "05ca780cdcb75044ea93af6a2d943454295697b7",
+  "run": 36702345804,
+  "apk_pair": [
+    {
+      "archive": "rb-build-a.zip",
+      "archive_bytes": 101040788,
+      "archive_sha256": "2bccdfb264ea4a6e5151f268180215818434aacaeb75c5afca3907c49e8800dd",
+      "apk_bytes": 101039915,
+      "apk_sha256": "0477e87598372469ab247b054221033d7e1482511f90c48dd29c1b8cfbb4d9ab",
+      "native_payloads": [
+        {
+          "path": "lib/arm64-v8a/libandroidx.graphics.path.so",
+          "sha256": "41e9a793c43a0f4fddb19e33f346bace464f30f888ba7b9eaf96294ea115bfb6",
+          "bytes": 10096
+        },
+        {
+          "path": "lib/arm64-v8a/libdatastore_shared_counter.so",
+          "sha256": "178f89a2c6c9234ddf980dd4cd1f3616186a46b2b932aafa6707abd04c5fd76a",
+          "bytes": 7784
+        },
+        {
+          "path": "lib/arm64-v8a/libonnxruntime.so",
+          "sha256": "850f897a50d369b3305582244210f5649be9cfeb193c5807fba14146301616c7",
+          "bytes": 27985944
+        },
+        {
+          "path": "lib/arm64-v8a/libonnxruntime4j_jni.so",
+          "sha256": "f86f2a5f56b907e4a25d67febc422ec13f5a265d36665f50e2808de6e4a515b6",
+          "bytes": 83208
+        },
+        {
+          "path": "lib/arm64-v8a/libskein_llama.so",
+          "sha256": "2aefda01808f10bf5693ab02d0857e0169dc09550b615896939cb176c032daff",
+          "bytes": 25314032
+        },
+        {
+          "path": "lib/arm64-v8a/libskein_sqlite.so",
+          "sha256": "312cd87c2f46c7e064b063e028ab6046434220e7cc74c08d098a87891680448f",
+          "bytes": 6249008
+        },
+        {
+          "path": "lib/arm64-v8a/libskein_sqlite_jni.so",
+          "sha256": "7e9bcb2377cc19c35de3625665c4a4f9eaaf647c842c20c6d5091fc2cd8a2767",
+          "bytes": 22304
+        }
+      ]
+    },
+    {
+      "archive": "rb-build-b.zip",
+      "archive_bytes": 101040802,
+      "archive_sha256": "e287f587a33bdc8b5d726fe4c64244aabafecf0de31d3c947bd90c225ad30c42",
+      "apk_bytes": 101039915,
+      "apk_sha256": "0477e87598372469ab247b054221033d7e1482511f90c48dd29c1b8cfbb4d9ab",
+      "native_payloads": [
+        {
+          "path": "lib/arm64-v8a/libandroidx.graphics.path.so",
+          "sha256": "41e9a793c43a0f4fddb19e33f346bace464f30f888ba7b9eaf96294ea115bfb6",
+          "bytes": 10096
+        },
+        {
+          "path": "lib/arm64-v8a/libdatastore_shared_counter.so",
+          "sha256": "178f89a2c6c9234ddf980dd4cd1f3616186a46b2b932aafa6707abd04c5fd76a",
+          "bytes": 7784
+        },
+        {
+          "path": "lib/arm64-v8a/libonnxruntime.so",
+          "sha256": "850f897a50d369b3305582244210f5649be9cfeb193c5807fba14146301616c7",
+          "bytes": 27985944
+        },
+        {
+          "path": "lib/arm64-v8a/libonnxruntime4j_jni.so",
+          "sha256": "f86f2a5f56b907e4a25d67febc422ec13f5a265d36665f50e2808de6e4a515b6",
+          "bytes": 83208
+        },
+        {
+          "path": "lib/arm64-v8a/libskein_llama.so",
+          "sha256": "2aefda01808f10bf5693ab02d0857e0169dc09550b615896939cb176c032daff",
+          "bytes": 25314032
+        },
+        {
+          "path": "lib/arm64-v8a/libskein_sqlite.so",
+          "sha256": "312cd87c2f46c7e064b063e028ab6046434220e7cc74c08d098a87891680448f",
+          "bytes": 6249008
+        },
+        {
+          "path": "lib/arm64-v8a/libskein_sqlite_jni.so",
+          "sha256": "7e9bcb2377cc19c35de3625665c4a4f9eaaf647c842c20c6d5091fc2cd8a2767",
+          "bytes": 22304
+        }
+      ]
+    }
+  ],
+  "native_pair": [
+    {
+      "path": "run.2TbjSHXJ/libskein_llama.1.2aefda01.so",
+      "bytes": 25314032,
+      "sha256": "2aefda01808f10bf5693ab02d0857e0169dc09550b615896939cb176c032daff"
+    },
+    {
+      "path": "run.2TbjSHXJ/libskein_llama.2.2aefda01.so",
+      "bytes": 25314032,
+      "sha256": "2aefda01808f10bf5693ab02d0857e0169dc09550b615896939cb176c032daff"
+    }
+  ],
+  "actual_apk_bytes_equal": true,
+  "actual_native_bytes_equal": true,
+  "scope": "Reproducibility only; same-source CI failure remains failure; tag SQLCipher regeneration skipped."
+}

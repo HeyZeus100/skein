@@ -1,0 +1,32 @@
+{
+  "run": 36702345804,
+  "source": "05ca780cdcb75044ea93af6a2d943454295697b7",
+  "conclusion": "success",
+  "artifacts": [
+    {
+      "id": 11091375115,
+      "name": "rb-build-a",
+      "path": "build/agent-logs/six-priorities-20260930/remote-final/repro/rb-build-a.zip",
+      "bytes": 101040788,
+      "sha256": "2bccdfb264ea4a6e5151f268180215818434aacaeb75c5afca3907c49e8800dd",
+      "api_digest": "sha256:2bccdfb264ea4a6e5151f268180215818434aacaeb75c5afca3907c49e8800dd"
+    },
+    {
+      "id": 11090487945,
+      "name": "rb-build-b",
+      "path": "build/agent-logs/six-priorities-20260930/remote-final/repro/rb-build-b.zip",
+      "bytes": 101040802,
+      "sha256": "e287f587a33bdc8b5d726fe4c64244aabafecf0de31d3c947bd90c225ad30c42",
+      "api_digest": "sha256:e287f587a33bdc8b5d726fe4c64244aabafecf0de31d3c947bd90c225ad30c42"
+    },
+    {
+      "id": 11089909937,
+      "name": "so-determinism",
+      "path": "build/agent-logs/six-priorities-20260930/remote-final/repro/so-determinism.zip",
+      "bytes": 50711050,
+      "sha256": "dc1b822eaaf6e027cf9e9de6a7e51361e3c3a150b06078849b6996b8b4481051",
+      "api_digest": "sha256:dc1b822eaaf6e027cf9e9de6a7e51361e3c3a150b06078849b6996b8b4481051"
+    }
+  ],
+  "logs_sha256": "96d37afa210fcfd5b4ce64016dbcb83b2db62d8f010b32475731888fc9caddf5"
+}

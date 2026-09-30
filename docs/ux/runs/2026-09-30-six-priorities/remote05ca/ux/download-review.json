@@ -1,0 +1,16 @@
+{
+  "run": 36702345861,
+  "source": "05ca780cdcb75044ea93af6a2d943454295697b7",
+  "conclusion": "success",
+  "artifacts": [
+    {
+      "id": 11090592495,
+      "name": "ux-verification-records",
+      "path": "build/agent-logs/six-priorities-20260930/remote-final/ux/ux-verification-records.zip",
+      "bytes": 455795,
+      "sha256": "c07ecc22725015c14707ac275ef6ca39bfca7b30e5a10a3b9a07e750a5a50776",
+      "api_digest": "sha256:c07ecc22725015c14707ac275ef6ca39bfca7b30e5a10a3b9a07e750a5a50776"
+    }
+  ],
+  "logs_sha256": "31680c93887f9fd93f98c51785a9fa23c284e72181578de5cfe95993b1d61bf8"
+}
