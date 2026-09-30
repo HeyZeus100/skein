@@ -246,6 +246,14 @@ public sealed class UnlockResult {
         public val factor: VaultKeyProvider.Factor,
     ) : UnlockResult()
 
+    /**
+     * The requested factor's device key is absent. The envelope is preserved;
+     * this does not establish that the other factor is absent or permit setup.
+     */
+    public data class KeyMaterialGone(
+        public val factor: VaultKeyProvider.Factor,
+    ) : UnlockResult()
+
     /** No key envelope exists yet (`keys/key-envelope.v1`) — call [VaultKeyProvider.setup] first. */
     public object NotInitialised : UnlockResult()
 
@@ -284,6 +292,11 @@ public sealed class RewrapResult {
      * design (`ATTACHMENT_ENCRYPTION.md` §3.8 residual risk).
      */
     public object BothFactorsInvalidated : RewrapResult()
+
+    /** The recovery factor's key is absent; no envelope or alias was changed. */
+    public data class KeyMaterialGone(
+        public val factor: VaultKeyProvider.Factor,
+    ) : RewrapResult()
 
     public data class Failed(
         public val reason: String,

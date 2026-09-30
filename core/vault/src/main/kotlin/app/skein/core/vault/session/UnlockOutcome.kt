@@ -31,6 +31,11 @@ public sealed class UnlockOutcome {
         public val factor: VaultKeyProvider.Factor,
     ) : UnlockOutcome()
 
+    /** The requested device key is absent. Remains Locked; never implies first-run setup. */
+    public data class KeyMaterialGone(
+        public val factor: VaultKeyProvider.Factor,
+    ) : UnlockOutcome()
+
     public object NotInitialised : UnlockOutcome()
 
     /**
@@ -79,6 +84,11 @@ public sealed class RecoveryOutcome {
 
     public object BothFactorsInvalidated : RecoveryOutcome()
 
+    /** The recovery factor's device key is absent; existing vault data is untouched. */
+    public data class KeyMaterialGone(
+        public val factor: VaultKeyProvider.Factor,
+    ) : RecoveryOutcome()
+
     public data class Failed(
         public val reason: String,
     ) : RecoveryOutcome()
@@ -96,6 +106,7 @@ internal fun UnlockResult.toOutcomeWithoutToken(): UnlockOutcome =
         is UnlockResult.Success -> UnlockOutcome.Success(token)
         is UnlockResult.UserCancelled -> UnlockOutcome.UserCancelled
         is UnlockResult.KeyPermanentlyInvalidated -> UnlockOutcome.KeyPermanentlyInvalidated(factor)
+        is UnlockResult.KeyMaterialGone -> UnlockOutcome.KeyMaterialGone(factor)
         is UnlockResult.NotInitialised -> UnlockOutcome.NotInitialised
         is UnlockResult.DeviceLocked -> UnlockOutcome.DeviceLocked
         is UnlockResult.Failed -> UnlockOutcome.Failed(reason)
@@ -113,5 +124,6 @@ internal fun RewrapResult.toOutcome(token: AuthorizationToken?): RecoveryOutcome
             }
         is RewrapResult.UserCancelled -> RecoveryOutcome.UserCancelled
         is RewrapResult.BothFactorsInvalidated -> RecoveryOutcome.BothFactorsInvalidated
+        is RewrapResult.KeyMaterialGone -> RecoveryOutcome.KeyMaterialGone(factor)
         is RewrapResult.Failed -> RecoveryOutcome.Failed(reason)
     }

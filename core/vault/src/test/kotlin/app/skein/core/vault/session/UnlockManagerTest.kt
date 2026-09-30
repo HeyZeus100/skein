@@ -20,6 +20,7 @@
 package app.skein.core.vault.session
 
 import app.skein.core.model.AuthorizationToken
+import app.skein.core.model.SkeinLog
 import app.skein.core.vault.key.RewrapResult
 import app.skein.core.vault.key.UnlockResult
 import app.skein.core.vault.key.VaultKeyProvider
@@ -118,6 +119,34 @@ class UnlockManagerTest {
             assertThat(outcome)
                 .isEqualTo(UnlockOutcome.KeyPermanentlyInvalidated(UNLOCK_BIOMETRIC))
             assertThat(h.manager.state.value).isEqualTo(UnlockState.RecoveryRequired)
+        }
+
+    @Test
+    fun `missing requested key leaves Locked without a token and logs only finite identifiers`() =
+        runTest {
+            val h = Harness()
+            val messages = mutableListOf<String>()
+            val previousSink = SkeinLog.sink
+            SkeinLog.sink =
+                SkeinLog.Sink { _, _, message, throwable ->
+                    assertThat(throwable).isNull()
+                    messages += message
+                }
+            try {
+                for (factor in VaultKeyProvider.Factor.entries) {
+                    val code = if (factor == VaultKeyProvider.Factor.BIOMETRIC) 1 else 2
+                    val outcome = h.manager.unlockWith(factor) { UnlockResult.KeyMaterialGone(factor) }
+
+                    assertThat(outcome).isEqualTo(UnlockOutcome.KeyMaterialGone(factor))
+                    assertThat(h.manager.state.value).isEqualTo(UnlockState.Locked)
+                    assertThat(h.manager.authorizationToken.value).isNull()
+                    assertThat(messages.last()).isEqualTo("unlock outcome: kind=KeyMaterialGone factor=$code")
+                }
+                assertThat(messages).hasSize(2)
+                assertThat(h.provider.lockCallCount.get()).isEqualTo(0)
+            } finally {
+                SkeinLog.sink = previousSink
+            }
         }
 
     @Test
@@ -867,6 +896,23 @@ class UnlockManagerTest {
             // Assert
             assertThat(outcome).isEqualTo(RecoveryOutcome.BothFactorsInvalidated)
             assertThat(h.manager.state.value).isEqualTo(UnlockState.Locked)
+        }
+
+    @Test
+    fun `missing recovery key drops to Locked without authorizing setup or unlock`() =
+        runTest {
+            val h = Harness()
+            h.manager.unlockWith(UNLOCK_BIOMETRIC) {
+                UnlockResult.KeyPermanentlyInvalidated(UNLOCK_BIOMETRIC)
+            }
+            val factor = VaultKeyProvider.Factor.DEVICE_CREDENTIAL
+
+            val outcome = h.manager.recoverAndRewrapWith { RewrapResult.KeyMaterialGone(factor) }
+
+            assertThat(outcome).isEqualTo(RecoveryOutcome.KeyMaterialGone(factor))
+            assertThat(h.manager.state.value).isEqualTo(UnlockState.Locked)
+            assertThat(h.manager.authorizationToken.value).isNull()
+            assertThat(h.provider.lockCallCount.get()).isEqualTo(0)
         }
 
     @Test

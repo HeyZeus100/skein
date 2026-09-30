@@ -12,6 +12,7 @@ package app.skein.feature.shell.auth
 import androidx.biometric.BiometricPrompt
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.ui.test.assertIsDisplayed
+import androidx.compose.ui.test.assertTextContains
 import androidx.compose.ui.test.junit4.createAndroidComposeRule
 import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.performClick
@@ -33,12 +34,21 @@ import org.robolectric.annotation.Config
 class BiometricUnlockResetAffordanceTest {
     @get:Rule
     val composeRule = createAndroidComposeRule<FragmentActivity>()
+    private var unlockCalls = 0
 
     private fun setContent(
         outcome: UnlockResult,
         onResetRequested: (() -> Unit)? = { },
+        onKeyMaterialGoneResetRequested: ((VaultKeyProvider.Factor) -> Unit)? = null,
     ) {
-        val manager = UnlockManager(keyProvider = FakeVaultKeyProvider { outcome })
+        val manager =
+            UnlockManager(
+                keyProvider =
+                    FakeVaultKeyProvider {
+                        unlockCalls++
+                        outcome
+                    },
+            )
         composeRule.setContent {
             MaterialTheme {
                 BiometricUnlockScreen(
@@ -46,6 +56,7 @@ class BiometricUnlockResetAffordanceTest {
                     onUnlocked = {},
                     onRecoveryRequired = {},
                     onResetRequested = onResetRequested,
+                    onKeyMaterialGoneResetRequested = onKeyMaterialGoneResetRequested,
                 )
             }
         }
@@ -95,6 +106,54 @@ class BiometricUnlockResetAffordanceTest {
         composeRule.onNodeWithTag(ShellTestTags.BIOMETRIC_UNLOCK_RESET_BUTTON).performClick()
 
         org.junit.Assert.assertTrue(requested)
+    }
+
+    @Test
+    fun `missing biometric key preserves the chance of credential recovery without retrying`() {
+        setContent(UnlockResult.KeyMaterialGone(VaultKeyProvider.Factor.BIOMETRIC))
+
+        composeRule
+            .onNodeWithTag(ShellTestTags.BIOMETRIC_UNLOCK_MESSAGE)
+            .assertTextContains("The device-credential key may still be available.", substring = true)
+        composeRule.onNodeWithTag(ShellTestTags.BIOMETRIC_UNLOCK_RETRY_BUTTON).assertDoesNotExist()
+        composeRule.onNodeWithTag(ShellTestTags.BIOMETRIC_UNLOCK_RESET_BUTTON).assertDoesNotExist()
+        composeRule.waitForIdle()
+        org.junit.Assert.assertEquals(1, unlockCalls)
+    }
+
+    @Test
+    fun `missing credential key reset invokes only its typed callback after the click`() {
+        var genericReset = false
+        var requestedFactor: VaultKeyProvider.Factor? = null
+        val factor = VaultKeyProvider.Factor.DEVICE_CREDENTIAL
+        setContent(
+            UnlockResult.KeyMaterialGone(factor),
+            onResetRequested = { genericReset = true },
+            onKeyMaterialGoneResetRequested = { requestedFactor = it },
+        )
+
+        composeRule
+            .onNodeWithTag(ShellTestTags.BIOMETRIC_UNLOCK_MESSAGE)
+            .assertTextContains("The fingerprint or face key may still be available.", substring = true)
+        org.junit.Assert.assertNull(requestedFactor)
+        composeRule.onNodeWithTag(ShellTestTags.BIOMETRIC_UNLOCK_RETRY_BUTTON).assertDoesNotExist()
+        composeRule.onNodeWithTag(ShellTestTags.BIOMETRIC_UNLOCK_RESET_BUTTON).performClick()
+
+        org.junit.Assert.assertEquals(factor, requestedFactor)
+        org.junit.Assert.assertFalse(genericReset)
+        org.junit.Assert.assertEquals(1, unlockCalls)
+    }
+
+    @Test
+    fun `generic failure cannot enter typed key-loss reset even when host offers it`() {
+        var requested = false
+        setContent(
+            UnlockResult.Failed("cipher init failed: KeyStoreException"),
+            onKeyMaterialGoneResetRequested = { requested = true },
+        )
+
+        composeRule.onNodeWithTag(ShellTestTags.BIOMETRIC_UNLOCK_RESET_BUTTON).assertDoesNotExist()
+        org.junit.Assert.assertFalse(requested)
     }
 }
 

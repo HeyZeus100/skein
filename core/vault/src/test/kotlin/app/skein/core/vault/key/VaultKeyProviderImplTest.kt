@@ -15,7 +15,7 @@ import org.junit.Test
 
 class VaultKeyProviderImplTest {
     private fun newProvider(
-        keystore: FakeKeystoreFacade = FakeKeystoreFacade(strongBoxAvailable = true),
+        keystore: KeystoreFacade = FakeKeystoreFacade(strongBoxAvailable = true),
         storage: FakeMasterKeyStorage = FakeMasterKeyStorage(),
     ) = VaultKeyProviderImpl(
         keystore = keystore,
@@ -248,6 +248,89 @@ class VaultKeyProviderImplTest {
         }
 
     // ---- unlock / lock ------------------------------------------------
+
+    @Test
+    fun `missing requested key preserves the envelope and surviving factor`() =
+        runTest {
+            for (factor in VaultKeyProvider.Factor.entries) {
+                val keystore = FakeKeystoreFacade(strongBoxAvailable = true)
+                val storage = FakeMasterKeyStorage()
+                val provider = newProvider(keystore, storage)
+                provider.setupNoUi()
+                provider.unlockNoUi(factor)
+                val originalMaster = provider.currentKey()!!.copyOf()
+                provider.lock()
+                val originalEnvelope = storage.readActive()
+                val createCalls = keystore.createCalls.toList()
+                val missingAlias =
+                    if (factor == VaultKeyProvider.Factor.BIOMETRIC) {
+                        VaultKeyProviderImpl.ALIAS_BIOMETRIC
+                    } else {
+                        VaultKeyProviderImpl.ALIAS_CREDENTIAL
+                    }
+                keystore.deleteEntry(missingAlias)
+
+                repeat(2) {
+                    assertThat(provider.unlockNoUi(factor)).isEqualTo(UnlockResult.KeyMaterialGone(factor))
+                    assertThat(provider.currentKey()).isNull()
+                    assertThat(provider.isInitialised()).isTrue()
+                    assertThat(storage.readActive()).isEqualTo(originalEnvelope)
+                    assertThat(keystore.createCalls).containsExactlyElementsIn(createCalls).inOrder()
+                }
+                val survivor =
+                    if (factor == VaultKeyProvider.Factor.BIOMETRIC) {
+                        VaultKeyProvider.Factor.DEVICE_CREDENTIAL
+                    } else {
+                        VaultKeyProvider.Factor.BIOMETRIC
+                    }
+                assertThat(provider.unlockNoUi(survivor)).isInstanceOf(UnlockResult.Success::class.java)
+                assertThat(provider.currentKey()).isEqualTo(originalMaster)
+            }
+        }
+
+    @Test
+    fun `missing recovery key never rewrites an envelope or creates replacement aliases`() =
+        runTest {
+            val keystore = FakeKeystoreFacade(strongBoxAvailable = true)
+            val storage = FakeMasterKeyStorage()
+            val provider = newProvider(keystore, storage)
+            provider.setupNoUi()
+            val originalEnvelope = storage.readActive()
+            val createsBefore = keystore.createCalls.toList()
+            keystore.invalidatedAliases += VaultKeyProviderImpl.ALIAS_BIOMETRIC
+            keystore.deleteEntry(VaultKeyProviderImpl.ALIAS_CREDENTIAL)
+
+            assertThat(provider.rewrapNoUi(VaultKeyProvider.Factor.DEVICE_CREDENTIAL))
+                .isEqualTo(RewrapResult.KeyMaterialGone(VaultKeyProvider.Factor.DEVICE_CREDENTIAL))
+            assertThat(storage.readActive()).isEqualTo(originalEnvelope)
+            assertThat(keystore.createCalls).containsExactlyElementsIn(createsBefore).inOrder()
+            assertThat(keystore.containsAlias(VaultKeyProviderImpl.ALIAS_BIOMETRIC)).isTrue()
+            assertThat(provider.currentKey()).isNull()
+        }
+
+    @Test
+    fun `unavailable key lookup remains generic failure instead of missing key`() =
+        runTest {
+            val keystore = FakeKeystoreFacade(strongBoxAvailable = true)
+            val storage = FakeMasterKeyStorage()
+            newProvider(keystore, storage).setupNoUi()
+            val originalEnvelope = storage.readActive()
+            val unavailable =
+                object : KeystoreFacade by keystore {
+                    override fun decryptCipher(
+                        alias: String,
+                        iv: ByteArray,
+                    ): javax.crypto.Cipher = throw java.security.KeyStoreException("private diagnostic sentinel")
+                }
+            val provider = newProvider(unavailable, storage)
+
+            assertThat(provider.unlockNoUi(VaultKeyProvider.Factor.BIOMETRIC))
+                .isEqualTo(UnlockResult.Failed("cipher init failed: KeyStoreException"))
+            assertThat(provider.rewrapNoUi(VaultKeyProvider.Factor.DEVICE_CREDENTIAL))
+                .isEqualTo(RewrapResult.Failed("cipher init failed: KeyStoreException"))
+            assertThat(storage.readActive()).isEqualTo(originalEnvelope)
+            assertThat(provider.currentKey()).isNull()
+        }
 
     @Test
     fun `unlock over a corrupt envelope returns Failed with the bounded reason`() =
@@ -613,16 +696,27 @@ class VaultKeyProviderImplTest {
     @Test
     fun `Failed reasons never carry key material`() =
         runTest {
-            // Arrange — force a cipher-init failure by clearing the alias.
+            // Arrange — a genuine lookup failure carrying sensitive details,
+            // distinct from a successful lookup that reports a missing key.
             val keystore = FakeKeystoreFacade(strongBoxAvailable = true)
             val storage = FakeMasterKeyStorage()
             val provider = newProvider(keystore = keystore, storage = storage)
             provider.setupNoUi()
             val row = storage.readActive()!!
             val wrappedBytesHex = row.wrappedBytesBiometric!!.joinToString("") { "%02x".format(it) }
-            keystore.deleteEntry(VaultKeyProviderImpl.ALIAS_BIOMETRIC)
+            val failingProvider =
+                newProvider(
+                    keystore =
+                        object : KeystoreFacade by keystore {
+                            override fun decryptCipher(
+                                alias: String,
+                                iv: ByteArray,
+                            ): javax.crypto.Cipher = throw java.security.KeyStoreException(wrappedBytesHex)
+                        },
+                    storage = storage,
+                )
             // Act
-            val result = provider.unlockNoUi(VaultKeyProvider.Factor.BIOMETRIC)
+            val result = failingProvider.unlockNoUi(VaultKeyProvider.Factor.BIOMETRIC)
             // Assert — the reason names the exception class, not any bytes
             // from the wrapped ciphertext or the IV.
             assertThat(result).isInstanceOf(UnlockResult.Failed::class.java)

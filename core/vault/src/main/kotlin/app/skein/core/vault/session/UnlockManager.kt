@@ -255,6 +255,12 @@ public class UnlockManager
                         _state.value = UnlockState.RecoveryRequired
                         UnlockOutcome.KeyPermanentlyInvalidated(result.factor)
                     }
+                    is UnlockResult.KeyMaterialGone -> {
+                        _state.value = UnlockState.Locked
+                        _authorizationToken.value = null
+                        logMissingKey("unlock", result.factor)
+                        UnlockOutcome.KeyMaterialGone(result.factor)
+                    }
                     UnlockResult.UserCancelled -> {
                         _state.value = UnlockState.Locked
                         UnlockOutcome.UserCancelled
@@ -428,6 +434,12 @@ public class UnlockManager
                         _authorizationToken.value = null
                         RecoveryOutcome.BothFactorsInvalidated
                     }
+                    is RewrapResult.KeyMaterialGone -> {
+                        _state.value = UnlockState.Locked
+                        _authorizationToken.value = null
+                        logMissingKey("recovery", result.factor)
+                        RecoveryOutcome.KeyMaterialGone(result.factor)
+                    }
                     is RewrapResult.Failed -> {
                         _state.value = UnlockState.RecoveryRequired
                         RecoveryOutcome.Failed(result.reason)
@@ -436,6 +448,18 @@ public class UnlockManager
             }
 
         // ---- idle-lock ---------------------------------------------------
+
+        private fun logMissingKey(
+            operation: String,
+            factor: VaultKeyProvider.Factor,
+        ) {
+            val factorCode =
+                when (factor) {
+                    VaultKeyProvider.Factor.BIOMETRIC -> 1
+                    VaultKeyProvider.Factor.DEVICE_CREDENTIAL -> 2
+                }
+            SkeinLog.w(TAG, "$operation outcome: kind=KeyMaterialGone factor=$factorCode")
+        }
 
         /**
          * Records user activity. No-op when the state is not [UnlockState.Unlocked]

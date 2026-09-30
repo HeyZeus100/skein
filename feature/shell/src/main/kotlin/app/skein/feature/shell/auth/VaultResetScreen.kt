@@ -1,8 +1,9 @@
 // skein-v3wb — the app's one sanctioned destructive-flow UI: confirms, then
 // runs `VaultReset.reset()`.
 //
-// Reachable ONLY from `BiometricUnlockScreen`'s corrupt/unreadable-envelope
-// state today (its `onResetRequested` param) — never from a generic
+// Reachable from `BiometricUnlockScreen`'s corrupt/unreadable-envelope or
+// confirmed missing-device-key state (its `onResetRequested` or
+// `onKeyMaterialGoneResetRequested` callback) — never from a generic
 // failure, never auto-shown. A future Settings › Security entry point may
 // reuse this same composable behind the identical two-step confirmation;
 // wiring that is out of scope here (see the bd's concurrency note).
@@ -57,6 +58,7 @@ public fun VaultResetScreen(
     onReset: () -> Unit,
     onDismiss: () -> Unit,
     modifier: Modifier = Modifier,
+    explanation: String? = null,
 ) {
     val scope = rememberCoroutineScope()
     val state =
@@ -78,7 +80,8 @@ public fun VaultResetScreen(
             modifier = Modifier.padding(horizontal = GUTTER).widthIn(max = MAX_CONTENT_WIDTH),
         ) {
             when (state.step) {
-                VaultResetStep.TypeConfirmation -> TypeConfirmationStep(state, onDismiss)
+                VaultResetStep.TypeConfirmation ->
+                    TypeConfirmationStep(state, onDismiss, explanation ?: TYPE_STEP_EXPLANATION)
                 VaultResetStep.FinalConfirm -> FinalConfirmStep(state, onDismiss)
             }
         }
@@ -89,6 +92,7 @@ public fun VaultResetScreen(
 private fun TypeConfirmationStep(
     state: VaultResetConfirmState,
     onDismiss: () -> Unit,
+    explanation: String,
 ) {
     Text(
         text = "Reset Skein",
@@ -96,7 +100,7 @@ private fun TypeConfirmationStep(
         textAlign = TextAlign.Center,
     )
     Text(
-        text = TYPE_STEP_EXPLANATION,
+        text = explanation,
         style = MaterialTheme.typography.bodyMedium,
         textAlign = TextAlign.Center,
     )

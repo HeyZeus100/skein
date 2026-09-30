@@ -41,12 +41,8 @@
 // can now route to the host's setup screen ([onNotInitialised]) instead of
 // dead-ending in a retry.
 //
-// skein-v3wb: the corrupt/unreadable-envelope state is the ONLY place in the
-// app that ever offers the destructive "reset vault" flow — never for a
-// cancellation or any other failure reason. [onResetRequested], when
-// supplied, adds a "Reset vault…" affordance alongside that state's retry
-// button; omitting it (the default) renders the message with no reset
-// affordance at all, e.g. for a host that hasn't wired the flow yet.
+// The corrupt/unreadable-envelope and confirmed missing-device-key states
+// may offer the guarded reset flow. Cancellation and generic errors never do.
 
 package app.skein.feature.shell.auth
 
@@ -62,9 +58,13 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.widthIn
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Button
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -114,6 +114,9 @@ import kotlinx.coroutines.launch
  *    ([EnvelopeUnreadable]) shows a distinct message and, when
  *    [onResetRequested] is supplied, a "Reset vault…" affordance; every
  *    other failure shows the generic retry text with no reset affordance.
+ *  - [UnlockOutcome.KeyMaterialGone] preserves the vault and explains the
+ *    missing factor, without assuming that the other factor is unavailable.
+ *    Only an explicit tap invokes [onKeyMaterialGoneResetRequested], when supplied.
  *  - [UnlockOutcome.DeviceLocked] (skein-9psb) is NOT a failure: it means
  *    `Cipher.init` on the Layer-0 alias raced the keyguard's own unlock
  *    signal. The screen shows [BiometricUnlockUiState.WaitingForUnlock] (no
@@ -152,6 +155,7 @@ public fun BiometricUnlockScreen(
     modifier: Modifier = Modifier,
     onNotInitialised: (() -> Unit)? = null,
     onResetRequested: (() -> Unit)? = null,
+    onKeyMaterialGoneResetRequested: ((VaultKeyProvider.Factor) -> Unit)? = null,
     biometricPromptTitle: String = "Unlock Skein",
     biometricPromptSubtitle: String = "Authenticate to open Skein",
     biometricPromptNegativeButton: String = "Cancel",
@@ -212,6 +216,9 @@ public fun BiometricUnlockScreen(
                         deviceUnlockWakeSignals(context, activity).first { !effectiveIsDeviceLocked() }
                         presentPrompt()
                     }
+                },
+                onKeyMaterialGone = { factor ->
+                    uiState = BiometricUnlockUiState.KeyMaterialGone(factor)
                 },
             )
         }
@@ -284,6 +291,35 @@ public fun BiometricUnlockScreen(
                     }
                 }
 
+            is BiometricUnlockUiState.KeyMaterialGone ->
+                Column(
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                    verticalArrangement = Arrangement.spacedBy(SPACING),
+                    modifier =
+                        Modifier
+                            .padding(horizontal = 24.dp)
+                            .widthIn(max = 480.dp)
+                            .verticalScroll(rememberScrollState()),
+                ) {
+                    Text(
+                        text = keyMaterialGoneMessage(state.factor),
+                        style = MaterialTheme.typography.bodyMedium,
+                        textAlign = TextAlign.Center,
+                        modifier = Modifier.testTag(ShellTestTags.BIOMETRIC_UNLOCK_MESSAGE),
+                    )
+                    // Absence of one factor does not establish that all
+                    // recovery is impossible. Keep the vault intact unless
+                    // the owner explicitly enters the existing two-step reset.
+                    onKeyMaterialGoneResetRequested?.let { reset ->
+                        OutlinedButton(
+                            onClick = { reset(state.factor) },
+                            modifier = Modifier.testTag(ShellTestTags.BIOMETRIC_UNLOCK_RESET_BUTTON),
+                        ) {
+                            Text("Reset Skein…")
+                        }
+                    }
+                }
+
             is BiometricUnlockUiState.EnvelopeUnreadableRetry ->
                 Column(
                     horizontalAlignment = Alignment.CenterHorizontally,
@@ -302,9 +338,8 @@ public fun BiometricUnlockScreen(
                     ) {
                         Text("Try again")
                     }
-                    // skein-v3wb: reachable ONLY from this state — never for
-                    // a cancellation or any other failure — and only when
-                    // the host has wired a reset destination at all.
+                    // Generic failure and cancellation never offer reset.
+                    // Missing-key reset uses its separate typed callback above.
                     val reset = onResetRequested
                     if (reset != null) {
                         Button(
@@ -332,6 +367,10 @@ private sealed class BiometricUnlockUiState {
      * drives the transition out of this state.
      */
     object WaitingForUnlock : BiometricUnlockUiState()
+
+    data class KeyMaterialGone(
+        val factor: VaultKeyProvider.Factor,
+    ) : BiometricUnlockUiState()
 
     /** [message] is a user-facing string only — never a raw exception/reason. */
     data class Retry(
@@ -363,6 +402,7 @@ internal tailrec fun handleOutcome(
     onRetry: (String) -> Unit,
     onEnvelopeUnreadable: ((String) -> Unit)? = null,
     onDeviceLocked: () -> Unit = {},
+    onKeyMaterialGone: ((VaultKeyProvider.Factor) -> Unit)? = null,
 ) {
     when (outcome) {
         is UnlockOutcome.Success -> onUnlocked(outcome.token)
@@ -375,8 +415,15 @@ internal tailrec fun handleOutcome(
                 onRetry,
                 onEnvelopeUnreadable,
                 onDeviceLocked,
+                onKeyMaterialGone,
             )
         is UnlockOutcome.KeyPermanentlyInvalidated -> onRecoveryRequired()
+        is UnlockOutcome.KeyMaterialGone ->
+            if (onKeyMaterialGone != null) {
+                onKeyMaterialGone(outcome.factor)
+            } else {
+                onRetry(keyMaterialGoneMessage(outcome.factor))
+            }
         UnlockOutcome.UserCancelled ->
             onRetry("Authentication was cancelled.")
         UnlockOutcome.NotInitialised ->
@@ -400,6 +447,18 @@ internal tailrec fun handleOutcome(
             }
     }
 }
+
+internal fun keyMaterialGoneMessage(factor: VaultKeyProvider.Factor): String =
+    when (factor) {
+        VaultKeyProvider.Factor.BIOMETRIC ->
+            "The Android key for fingerprint or face unlock is missing. " +
+                "The device-credential key may still be available. "
+        VaultKeyProvider.Factor.DEVICE_CREDENTIAL ->
+            "The Android key for device-credential unlock is missing. " +
+                "The fingerprint or face key may still be available. "
+    } +
+        "Nothing has been changed. Keep this vault while recovery is assessed. " +
+        "Resetting permanently deletes the vault's notes, chats, attachments, and keys. Imported models are kept."
 
 /**
  * skein-9psb: true iff [activity]'s hosting lifecycle is at least

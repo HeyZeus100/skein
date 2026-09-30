@@ -19,13 +19,17 @@ package app.skein.core.vault.key
 import java.security.KeyStore
 import javax.crypto.Cipher
 
+/** Only a successful key lookup returning no entry proves missing key material. */
+internal class KeyMaterialMissingException : Exception("device security key is unavailable")
+
 /**
  * Abstraction over the `AndroidKeyStore` operations `VaultKeyProviderImpl`
  * needs. All methods MUST propagate
  * `android.security.keystore.KeyPermanentlyInvalidatedException` (or its
  * simulated fake analogue) unchanged so the caller can route to the rewrap
  * flow — swallowing or wrapping this exception would erase the recovery
- * signal.
+ * signal. A successful lookup with no entry throws [KeyMaterialMissingException];
+ * lookup or cipher failures must never be translated into that absence signal.
  */
 internal interface KeystoreFacade {
     /**

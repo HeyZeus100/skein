@@ -1,5 +1,6 @@
 package app.skein.feature.shell.auth
 
+import app.skein.core.vault.key.VaultKeyProvider
 import app.skein.core.vault.session.UnlockOutcome
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertFalse
@@ -22,6 +23,7 @@ class BiometricUnlockOutcomeTest {
         var retryMessage: String? = null
         var envelopeUnreadableMessage: String? = null
         var deviceLocked = false
+        var missingKeyFactor: VaultKeyProvider.Factor? = null
     }
 
     private fun run(
@@ -43,6 +45,7 @@ class BiometricUnlockOutcomeTest {
                     null
                 },
             onDeviceLocked = { effects.deviceLocked = true },
+            onKeyMaterialGone = { effects.missingKeyFactor = it },
         )
         return effects
     }
@@ -135,6 +138,39 @@ class BiometricUnlockOutcomeTest {
     }
 
     // ---- skein-v3wb: the reset-affordance routing ---------------------------
+
+    @Test
+    fun `missing key has a distinct route without authentication retry setup or invalidation recovery`() {
+        for (factor in VaultKeyProvider.Factor.entries) {
+            val effects = run(UnlockOutcome.KeyMaterialGone(factor), withEnvelopeUnreadableRoute = true)
+
+            assertEquals(factor, effects.missingKeyFactor)
+            assertNull(effects.retryMessage)
+            assertNull(effects.envelopeUnreadableMessage)
+            assertFalse(effects.unlocked)
+            assertFalse(effects.notInitialised)
+            assertFalse(effects.recovery)
+            assertFalse(effects.deviceLocked)
+        }
+    }
+
+    @Test
+    fun `coalesced missing key retains its factor and distinct route`() {
+        val factor = VaultKeyProvider.Factor.BIOMETRIC
+        val effects = run(UnlockOutcome.Coalesced(UnlockOutcome.KeyMaterialGone(factor)))
+
+        assertEquals(factor, effects.missingKeyFactor)
+        assertNull(effects.retryMessage)
+    }
+
+    @Test
+    fun `generic diagnostic text cannot masquerade as confirmed key loss`() {
+        val effects = run(UnlockOutcome.Failed("KeyMaterialGone"), withEnvelopeUnreadableRoute = true)
+
+        assertNull(effects.missingKeyFactor)
+        assertNull(effects.envelopeUnreadableMessage)
+        assertEquals("Couldn't verify your identity.", effects.retryMessage)
+    }
 
     @Test
     fun `a corrupt envelope routes to onEnvelopeUnreadable when the host offers it`() {

@@ -80,7 +80,7 @@ internal class FakeKeystoreFacade(
 
     override fun encryptCipher(alias: String): Cipher {
         checkNotInvalidated(alias)
-        val key = keys[alias] ?: error("no key at alias '$alias'")
+        val key = keys[alias] ?: throw KeyMaterialMissingException()
         val cipher = Cipher.getInstance("AES/GCM/NoPadding").apply { init(Cipher.ENCRYPT_MODE, key) }
         if (alias in rejectWrapForAlias) {
             // Consume this cipher instance so the caller's own `doFinal`
@@ -100,7 +100,7 @@ internal class FakeKeystoreFacade(
             // device — Cipher.init throws before any authentication step.
             throw UserNotAuthenticatedException("simulated: device locked")
         }
-        val key = keys[alias] ?: error("no key at alias '$alias'")
+        val key = keys[alias] ?: throw KeyMaterialMissingException()
         return Cipher.getInstance("AES/GCM/NoPadding").apply {
             init(Cipher.DECRYPT_MODE, key, GCMParameterSpec(128, iv))
         }

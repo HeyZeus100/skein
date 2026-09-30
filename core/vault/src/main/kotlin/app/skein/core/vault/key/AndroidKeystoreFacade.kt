@@ -79,7 +79,7 @@ internal class AndroidKeystoreFacade(
     override fun containsAlias(alias: String): Boolean = keyStore.containsAlias(alias)
 
     override fun encryptCipher(alias: String): Cipher {
-        val key = keyStore.getKey(alias, null) as SecretKey
+        val key = requireKey(alias)
         return Cipher.getInstance(TRANSFORMATION).apply { init(Cipher.ENCRYPT_MODE, key) }
     }
 
@@ -87,13 +87,18 @@ internal class AndroidKeystoreFacade(
         alias: String,
         iv: ByteArray,
     ): Cipher {
-        val key = keyStore.getKey(alias, null) as SecretKey
+        val key = requireKey(alias)
         return Cipher.getInstance(TRANSFORMATION).apply {
             init(Cipher.DECRYPT_MODE, key, GCMParameterSpec(GCM_TAG_BITS, iv))
         }
     }
 
     override fun rawKeyStoreOrNull(): KeyStore = keyStore
+
+    // A missing entry is different from an invalidated key, an unavailable
+    // Keystore, or a Cipher.init failure. Never infer absence from an exception.
+    private fun requireKey(alias: String): SecretKey =
+        (keyStore.getKey(alias, null) ?: throw KeyMaterialMissingException()) as SecretKey
 
     private companion object {
         const val ANDROID_KEY_STORE = "AndroidKeyStore"

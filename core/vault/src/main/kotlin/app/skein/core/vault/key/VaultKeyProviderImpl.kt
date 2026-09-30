@@ -272,6 +272,8 @@ public class VaultKeyProviderImpl internal constructor(
         val cipher =
             try {
                 keystore.decryptCipher(alias, iv)
+            } catch (_: KeyMaterialMissingException) {
+                return UnlockResult.KeyMaterialGone(factor)
             } catch (_: KeyPermanentlyInvalidatedException) {
                 return UnlockResult.KeyPermanentlyInvalidated(factor)
             } catch (t: Throwable) {
@@ -319,6 +321,8 @@ public class VaultKeyProviderImpl internal constructor(
         val cipher =
             try {
                 keystore.decryptCipher(aliasFor(survivingFactor), survivingIv)
+            } catch (_: KeyMaterialMissingException) {
+                return RewrapResult.KeyMaterialGone(survivingFactor)
             } catch (_: KeyPermanentlyInvalidatedException) {
                 return RewrapResult.BothFactorsInvalidated
             } catch (t: Throwable) {
