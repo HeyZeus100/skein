@@ -1,0 +1,125 @@
+{
+  "schema_version": 1,
+  "reviewer": "fold_acceptance",
+  "review_kind": "independent_read_only_source_review",
+  "source_base": "8042a4cef675458a9f408acf0a994fe451ad2378",
+  "snapshot_sha256": "35ddf09901e8fd902c31086857557af585e40f7b0a70d8465cf999ff96e18469",
+  "files": [
+    {
+      "path": "core/vault/src/androidTest/kotlin/app/skein/core/vault/key/recovery/ExistingVaultKeyProofInstrumentedTest.kt",
+      "sha256": "b95cdf8122fd8823090cd8b1cf60ffbdd8a6910579fad6ce0f43ec440858e713",
+      "bytes": 6545
+    },
+    {
+      "path": "core/vault/src/main/kotlin/app/skein/core/vault/db/RecoveryProofNative.kt",
+      "sha256": "8d98a464bde3a7ea79140b543393ea79cad4d204f8673684bd14abdd7dbb06ce",
+      "bytes": 419
+    },
+    {
+      "path": "core/vault/src/main/kotlin/app/skein/core/vault/key/recovery/ClosedVaultRecoverySnapshot.kt",
+      "sha256": "d8ec2dce7e6229c2f88a4b01b41911b309d571aa76e230639663d106aed51b29",
+      "bytes": 4690
+    },
+    {
+      "path": "core/vault/src/main/kotlin/app/skein/core/vault/key/recovery/ExistingVaultKeyProof.kt",
+      "sha256": "a2133af55b09390489f978607787fad7ba50bfbf83bac9639a76d958a3d2d15f",
+      "bytes": 1727
+    },
+    {
+      "path": "core/vault/src/main/kotlin/app/skein/core/vault/key/recovery/RecoveryEnvelopeTransaction.kt",
+      "sha256": "700259e6df58ed02630d55c93ada39735825fbbb6fdc865688fa68fc91ae23ee",
+      "bytes": 5707
+    },
+    {
+      "path": "core/vault/src/main/kotlin/app/skein/core/vault/key/recovery/RecoveryEnvelopeV2.kt",
+      "sha256": "5869e18b9e65214f1eecd1afaf44589641be6dd214fb3d8d01407e4b1495974c",
+      "bytes": 5058
+    },
+    {
+      "path": "core/vault/src/test/kotlin/app/skein/core/vault/key/recovery/ClosedVaultRecoverySnapshotTest.kt",
+      "sha256": "ee2e3744221d094d3b3324d38457089bcf5e177dcee2e933d5c395a467b0668c",
+      "bytes": 4155
+    },
+    {
+      "path": "core/vault/src/test/kotlin/app/skein/core/vault/key/recovery/ExistingVaultKeyProofTest.kt",
+      "sha256": "e89999dc2a949269b0a91b23a9851e0018a05492d4ed5503cc1835b993aa5c24",
+      "bytes": 5832
+    },
+    {
+      "path": "core/vault/src/test/kotlin/app/skein/core/vault/key/recovery/RecoveryEnvelopeTransactionTest.kt",
+      "sha256": "f28626355ccd845a3d1050faf793f2e361177107919599f0426a8de74a742d7f",
+      "bytes": 7266
+    },
+    {
+      "path": "core/vault/src/test/kotlin/app/skein/core/vault/key/recovery/RecoveryEnvelopeV2Test.kt",
+      "sha256": "c04fa9410f418ca2390faf2a0b8fc5cff89008f4aeaf24ab02527ef345818dc1",
+      "bytes": 2920
+    },
+    {
+      "path": "native/sqlite/CMakeLists.txt",
+      "sha256": "513e771fdd2aa940ff48bc89414a3ad0a158dec22b98e263fbda5473e2337a9d",
+      "bytes": 32263
+    },
+    {
+      "path": "native/sqlite/androidx-jni/skein_recovery_proof_jni.c",
+      "sha256": "a8898d637beacc03a0449a6a9d0c28de83963e1df8b637391774fc70a6e12bd1",
+      "bytes": 5963
+    },
+    {
+      "path": "tools/ci/sqlite-jni-symbols.sh",
+      "sha256": "02946eef4aada7cb7c34783a3374f08e01956ebe523efa0dfd0a5f4054977afb",
+      "bytes": 5729
+    },
+    {
+      "path": "tools/ci/test_sqlite_jni_symbols.py",
+      "sha256": "52d005dcb1c4c4a5e51998378909d62c9977031e943b9ca135a3ef7de29f4ff2",
+      "bytes": 2443
+    }
+  ],
+  "conclusion": "PASS bounded unwired source slice after two corrections; validation unexecuted",
+  "authored_test_methods": {
+    "jvm": 23,
+    "android": 4
+  },
+  "executed_tests": 0,
+  "findings": [
+    {
+      "id": "recovery-parent-directory-durability",
+      "origin": "root coordinator",
+      "status": "corrected source, test unexecuted",
+      "anchors": [
+        "RecoveryEnvelopeTransaction.kt:42-62",
+        "RecoveryEnvelopeTransactionTest.kt:51-70"
+      ],
+      "detail": "Fsync transaction and recovery-envelopes then existing keys before install/active rename; old/new retained; injected keys-sync failure cannot reach rename."
+    },
+    {
+      "id": "proof-private-copy-identity",
+      "origin": "independent fold_acceptance review",
+      "status": "corrected source, tests unexecuted",
+      "anchors": [
+        "ClosedVaultRecoverySnapshot.kt:29-38",
+        "ExistingVaultKeyProof.kt:23-25",
+        "ExistingVaultKeyProofTest.kt:57-94"
+      ],
+      "detail": "Proof now binds both original sources and private DB/WAL to capture hashes, including absent WAL, before and after native; private SHM may be generated. Pre-call and nominal-native-success mutation regressions preserve original bytes and consume key."
+    }
+  ],
+  "reviewed_invariants": [
+    "Raw-key x-hex pragma agrees with production driver; JNI opens READONLY/NOFOLLOW without CREATE/URI/immutable, rejects plaintext/empty/missing/nonregular before encrypted page reads; no migration or original connection/checkpoint.",
+    "Snapshot requires asserted exclusive closed lease, canonical non-symlink paths, stable DB/WAL/SHM/envelope sources and no reset/hot journal; hashes complement a future real lease and are not isolation from arbitrary same-UID mutation.",
+    "Native proof checks encrypted schema, supported version, required tables, quick_check and cipher_integrity_check; native and Kotlin candidate buffers are wiped. Local amalgamation confirms cipher_integrity_check errors produce rows and no-row is healthy.",
+    "Envelope CAS preserves active until rename, retains exact old/new bytes for ambiguous outcomes, reconciles by exact active bytes rather than phase marker; no alias deletion. directorySynced false remains separate from observed COMMITTED.",
+    "V2 codec validates paired canonical aliases and bounded sizes, preserves legacy reader refusal; checksum is corruption detection, not authenticated provenance.",
+    "Exact JNI gate permits only two named classes and tests missing/extra old/new/arbitrary class scenarios; no automatic expansion to arbitrary classes.",
+    "Source usage search found no production issuer, provider, setup, UI or active storage caller. New native symbol alone is not activation."
+  ],
+  "limits": [
+    "No build, JVM, JNI, device or power-loss result is claimed by this review; 23 JVM methods and 4 encrypted Android methods are authored only.",
+    "No production closed/exclusive lease issuer; all writer/open/reset/recovery exclusion and final CAS/rename admission still need implementation and runtime proof.",
+    "RecoveryEnvelopeTransaction is an internal filesystem primitive, not key-recovery authority; proof-to-candidate-wrap binding, authenticated factor readback and production V2 provider behavior remain absent.",
+    "Strict private WAL identity includes absence; if actual read-only SQLite changes private WAL, native acceptance must fail and any accommodation needs explicit review.",
+    "Power-loss durability, interrupted real encrypted proof, hostile same-UID races, Keystore authentication, user recovery UI and Fold acceptance remain open."
+  ],
+  "created_at_utc": "2026-09-30T09:31:42.095581+00:00"
+}

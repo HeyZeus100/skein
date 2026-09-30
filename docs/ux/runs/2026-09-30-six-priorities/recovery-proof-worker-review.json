@@ -1,0 +1,452 @@
+{
+  "schema_version": 1,
+  "source_base": "8042a4cef675458a9f408acf0a994fe451ad2378",
+  "source_scope": "14 approved unwired recovery proof/format/transaction/JNI guard files",
+  "source_files": [
+    {
+      "path": "core/vault/src/androidTest/kotlin/app/skein/core/vault/key/recovery/ExistingVaultKeyProofInstrumentedTest.kt",
+      "sha256": "0518228cb32fcc4a189496d7f5ffe9ca11bdd668ec84c2a4ec564739d86c00a3"
+    },
+    {
+      "path": "core/vault/src/main/kotlin/app/skein/core/vault/db/RecoveryProofNative.kt",
+      "sha256": "30e05da275c21570174ca28b5246f36f4c96b4d5a813913194b0b6f263ea57d1"
+    },
+    {
+      "path": "core/vault/src/main/kotlin/app/skein/core/vault/key/recovery/ClosedVaultRecoverySnapshot.kt",
+      "sha256": "082111682ad6eebca1ca60fea3a6126336ac4ffb64707ec986113d94ff9a70b2"
+    },
+    {
+      "path": "core/vault/src/main/kotlin/app/skein/core/vault/key/recovery/ExistingVaultKeyProof.kt",
+      "sha256": "ceafbac4a949d2fdb56504916697982a500998eddf2bacd715f988e0a6e0b528"
+    },
+    {
+      "path": "core/vault/src/main/kotlin/app/skein/core/vault/key/recovery/RecoveryEnvelopeTransaction.kt",
+      "sha256": "2def96a30786ba2f714dc7612eccf1e8e395405b896b8f1ff090d281f8c584f1"
+    },
+    {
+      "path": "core/vault/src/main/kotlin/app/skein/core/vault/key/recovery/RecoveryEnvelopeV2.kt",
+      "sha256": "b823c4f5975f77b2555459a565c10720344b9d32daa1db6b5a76097880dfcf90"
+    },
+    {
+      "path": "core/vault/src/test/kotlin/app/skein/core/vault/key/recovery/ClosedVaultRecoverySnapshotTest.kt",
+      "sha256": "844f890281631cb85749d2701888b1990b523470e03297eec42eb66fa8f79d18"
+    },
+    {
+      "path": "core/vault/src/test/kotlin/app/skein/core/vault/key/recovery/ExistingVaultKeyProofTest.kt",
+      "sha256": "bbbeac3e8a82cffd86fd57fde0cf36ec6732d3acdd79229a0afc186bb7c1107f"
+    },
+    {
+      "path": "core/vault/src/test/kotlin/app/skein/core/vault/key/recovery/RecoveryEnvelopeTransactionTest.kt",
+      "sha256": "4118610bdfa3ceded7b4d469a971ab4790acf12da2540ba232c2b89a834225cd"
+    },
+    {
+      "path": "core/vault/src/test/kotlin/app/skein/core/vault/key/recovery/RecoveryEnvelopeV2Test.kt",
+      "sha256": "d4feeda738d44a51f8b50f7c62afecfd7fb5e45e03613d63700ab1086c672656"
+    },
+    {
+      "path": "native/sqlite/CMakeLists.txt",
+      "sha256": "513e771fdd2aa940ff48bc89414a3ad0a158dec22b98e263fbda5473e2337a9d"
+    },
+    {
+      "path": "native/sqlite/androidx-jni/skein_recovery_proof_jni.c",
+      "sha256": "a8898d637beacc03a0449a6a9d0c28de83963e1df8b637391774fc70a6e12bd1"
+    },
+    {
+      "path": "tools/ci/sqlite-jni-symbols.sh",
+      "sha256": "02946eef4aada7cb7c34783a3374f08e01956ebe523efa0dfd0a5f4054977afb"
+    },
+    {
+      "path": "tools/ci/test_sqlite_jni_symbols.py",
+      "sha256": "52d005dcb1c4c4a5e51998378909d62c9977031e943b9ca135a3ef7de29f4ff2"
+    }
+  ],
+  "jvm": {
+    "tests": 23,
+    "passed": 23,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0,
+    "xml": [
+      {
+        "path": "core/vault/build/test-results/testDevDebugUnitTest/TEST-app.skein.core.vault.key.recovery.ClosedVaultRecoverySnapshotTest.xml",
+        "sha256": "6c2e5c679bba0b6ad7032766fd1d5ff0018cc312c25c54d97c2a8ab0d543b675",
+        "tests": 5,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      {
+        "path": "core/vault/build/test-results/testDevDebugUnitTest/TEST-app.skein.core.vault.key.recovery.ExistingVaultKeyProofTest.xml",
+        "sha256": "a6af628a39d08571f61a878aadd29860666cf2058b81409b03e745eb8329a793",
+        "tests": 6,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      {
+        "path": "core/vault/build/test-results/testDevDebugUnitTest/TEST-app.skein.core.vault.key.recovery.RecoveryEnvelopeTransactionTest.xml",
+        "sha256": "b680412d861625e8fd4552b0e0a83c21d4b0bfed092f631755e482041286c380",
+        "tests": 7,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      {
+        "path": "core/vault/build/test-results/testDevDebugUnitTest/TEST-app.skein.core.vault.key.recovery.RecoveryEnvelopeV2Test.xml",
+        "sha256": "09c0af07d8cc0fe3c4408fd050b028f15a8b2fa6b15856bd0d3094c074dda9b4",
+        "tests": 5,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      }
+    ],
+    "cases": [
+      {
+        "class": "app.skein.core.vault.key.recovery.ClosedVaultRecoverySnapshotTest",
+        "name": "lease loss source replacement and closed snapshot cannot authorize proof",
+        "outcome": "passed"
+      },
+      {
+        "class": "app.skein.core.vault.key.recovery.ClosedVaultRecoverySnapshotTest",
+        "name": "missing database envelope hot journal and reset refuse",
+        "outcome": "passed"
+      },
+      {
+        "class": "app.skein.core.vault.key.recovery.ClosedVaultRecoverySnapshotTest",
+        "name": "capture copies ciphertext and WAL while leaving all source bytes untouched",
+        "outcome": "passed"
+      },
+      {
+        "class": "app.skein.core.vault.key.recovery.ClosedVaultRecoverySnapshotTest",
+        "name": "symlink source is refused and target is preserved",
+        "outcome": "passed"
+      },
+      {
+        "class": "app.skein.core.vault.key.recovery.ClosedVaultRecoverySnapshotTest",
+        "name": "unestablished lease refuses before creating private copies",
+        "outcome": "passed"
+      },
+      {
+        "class": "app.skein.core.vault.key.recovery.ExistingVaultKeyProofTest",
+        "name": "native refusal statuses never count as proof and zero every key",
+        "outcome": "passed"
+      },
+      {
+        "class": "app.skein.core.vault.key.recovery.ExistingVaultKeyProofTest",
+        "name": "lease lost before or during native work refuses even nominal native success",
+        "outcome": "passed"
+      },
+      {
+        "class": "app.skein.core.vault.key.recovery.ExistingVaultKeyProofTest",
+        "name": "proof consumes key and passes only private copy to native verifier",
+        "outcome": "passed"
+      },
+      {
+        "class": "app.skein.core.vault.key.recovery.ExistingVaultKeyProofTest",
+        "name": "private database WAL mutation or new WAL cannot turn native success into proof",
+        "outcome": "passed"
+      },
+      {
+        "class": "app.skein.core.vault.key.recovery.ExistingVaultKeyProofTest",
+        "name": "private ciphertext replacement before proof refuses without native call",
+        "outcome": "passed"
+      },
+      {
+        "class": "app.skein.core.vault.key.recovery.ExistingVaultKeyProofTest",
+        "name": "native exception and invalid key length still zero consumed buffers",
+        "outcome": "passed"
+      },
+      {
+        "class": "app.skein.core.vault.key.recovery.RecoveryEnvelopeTransactionTest",
+        "name": "replacement retains exact old and new bytes and restart recognizes active generation",
+        "outcome": "passed"
+      },
+      {
+        "class": "app.skein.core.vault.key.recovery.RecoveryEnvelopeTransactionTest",
+        "name": "guarded reset marker refuses before any new files",
+        "outcome": "passed"
+      },
+      {
+        "class": "app.skein.core.vault.key.recovery.RecoveryEnvelopeTransactionTest",
+        "name": "failure at every persisted boundary preserves both restart choices",
+        "outcome": "passed"
+      },
+      {
+        "class": "app.skein.core.vault.key.recovery.RecoveryEnvelopeTransactionTest",
+        "name": "failure publishing new backup parent prevents active replacement",
+        "outcome": "passed"
+      },
+      {
+        "class": "app.skein.core.vault.key.recovery.RecoveryEnvelopeTransactionTest",
+        "name": "stale active generation never gets overwritten and unknown bytes remain retained",
+        "outcome": "passed"
+      },
+      {
+        "class": "app.skein.core.vault.key.recovery.RecoveryEnvelopeTransactionTest",
+        "name": "lease cancellation before rename cannot change active envelope",
+        "outcome": "passed"
+      },
+      {
+        "class": "app.skein.core.vault.key.recovery.RecoveryEnvelopeTransactionTest",
+        "name": "reused transaction or missing receipt is unknown and never erased",
+        "outcome": "passed"
+      },
+      {
+        "class": "app.skein.core.vault.key.recovery.RecoveryEnvelopeV2Test",
+        "name": "invalid wrap sizes cannot be serialized",
+        "outcome": "passed"
+      },
+      {
+        "class": "app.skein.core.vault.key.recovery.RecoveryEnvelopeV2Test",
+        "name": "digest correct but cross-factor alias or unknown format is rejected",
+        "outcome": "passed"
+      },
+      {
+        "class": "app.skein.core.vault.key.recovery.RecoveryEnvelopeV2Test",
+        "name": "new format round trips canonical factor aliases and exact wraps",
+        "outcome": "passed"
+      },
+      {
+        "class": "app.skein.core.vault.key.recovery.RecoveryEnvelopeV2Test",
+        "name": "legacy decoder refuses v2 rather than dropping dynamic alias names",
+        "outcome": "passed"
+      },
+      {
+        "class": "app.skein.core.vault.key.recovery.RecoveryEnvelopeV2Test",
+        "name": "tamper truncated oversize and trailing bytes fail without disclosing payload",
+        "outcome": "passed"
+      }
+    ],
+    "execution": "focused-native-1 executed all23 and AndroidTest compilation before dependency-only native configuration failure; same-source focused-native-2 reused these tasks UP-TO-DATE and completed native assembly"
+  },
+  "android": {
+    "new_tests": 4,
+    "compiled": true,
+    "executed": false,
+    "acceptance": "OPEN; next ordinary emulator batch required, no Fold/install/auth operations"
+  },
+  "native": {
+    "abis": [
+      "arm64-v8a",
+      "x86_64"
+    ],
+    "built_in": "focused-native-2",
+    "jni_guard": "PASS exact26 Java_ externals across8 built/packaged copies",
+    "binaries": [
+      {
+        "path": "core/vault/build/intermediates/cxx/Debug/6y733jp4/obj/arm64-v8a/libskein_sqlite.so",
+        "sha256": "116a12e2b828a8d8033d8aaac084757e96d89944507955bfd5abab857e270079",
+        "bytes": 13858512
+      },
+      {
+        "path": "core/vault/build/intermediates/cxx/Debug/6y733jp4/obj/arm64-v8a/libskein_sqlite_jni.so",
+        "sha256": "a5b13d5fdf17da7466905a9ff38c80fc8269f3a3dc4d7d14c0ead6833d40b8da",
+        "bytes": 113968
+      },
+      {
+        "path": "core/vault/build/intermediates/cxx/Debug/6y733jp4/obj/x86_64/libskein_sqlite.so",
+        "sha256": "4a79b88f31b74707812c113aea3ab91a5522c0d6e5dcbc3a42009e00caec2977",
+        "bytes": 13896024
+      },
+      {
+        "path": "core/vault/build/intermediates/cxx/Debug/6y733jp4/obj/x86_64/libskein_sqlite_jni.so",
+        "sha256": "594970aea249cd3cd12a1af30b2b805b5960957a8bbf22db8b4b598ede1382d1",
+        "bytes": 111832
+      },
+      {
+        "path": "core/vault/build/intermediates/library_and_local_jars_jni/devDebug/copyDevDebugJniLibsProjectAndLocalJars/jni/arm64-v8a/libskein_sqlite.so",
+        "sha256": "00a04ba8fda9b13cbe6211a9f04c66fe1f8233724e7cbef5d987a08156df328e",
+        "bytes": 6269000
+      },
+      {
+        "path": "core/vault/build/intermediates/library_and_local_jars_jni/devDebug/copyDevDebugJniLibsProjectAndLocalJars/jni/arm64-v8a/libskein_sqlite_jni.so",
+        "sha256": "2ca53aa854232b3f5e16c798b53f80e6630d49df0b4882bd5737609f645c9f0a",
+        "bytes": 22320
+      },
+      {
+        "path": "core/vault/build/intermediates/library_and_local_jars_jni/devDebug/copyDevDebugJniLibsProjectAndLocalJars/jni/x86_64/libskein_sqlite.so",
+        "sha256": "e8361bb47754a48642fe3f286f220e286b58087cd8765098b27fcf32e9164e54",
+        "bytes": 6700000
+      },
+      {
+        "path": "core/vault/build/intermediates/library_and_local_jars_jni/devDebug/copyDevDebugJniLibsProjectAndLocalJars/jni/x86_64/libskein_sqlite_jni.so",
+        "sha256": "526adecb81980878955bc2c401014f56ef733949369184ee314b34fdf92d4b68",
+        "bytes": 22080
+      },
+      {
+        "path": "core/vault/build/intermediates/merged_native_libs/devDebug/mergeDevDebugNativeLibs/out/lib/arm64-v8a/libskein_sqlite.so",
+        "sha256": "116a12e2b828a8d8033d8aaac084757e96d89944507955bfd5abab857e270079",
+        "bytes": 13858512
+      },
+      {
+        "path": "core/vault/build/intermediates/merged_native_libs/devDebug/mergeDevDebugNativeLibs/out/lib/arm64-v8a/libskein_sqlite_jni.so",
+        "sha256": "a5b13d5fdf17da7466905a9ff38c80fc8269f3a3dc4d7d14c0ead6833d40b8da",
+        "bytes": 113968
+      },
+      {
+        "path": "core/vault/build/intermediates/merged_native_libs/devDebug/mergeDevDebugNativeLibs/out/lib/x86_64/libskein_sqlite.so",
+        "sha256": "4a79b88f31b74707812c113aea3ab91a5522c0d6e5dcbc3a42009e00caec2977",
+        "bytes": 13896024
+      },
+      {
+        "path": "core/vault/build/intermediates/merged_native_libs/devDebug/mergeDevDebugNativeLibs/out/lib/x86_64/libskein_sqlite_jni.so",
+        "sha256": "594970aea249cd3cd12a1af30b2b805b5960957a8bbf22db8b4b598ede1382d1",
+        "bytes": 111832
+      },
+      {
+        "path": "core/vault/build/intermediates/stripped_native_libs/devDebug/stripDevDebugDebugSymbols/out/lib/arm64-v8a/libskein_sqlite.so",
+        "sha256": "00a04ba8fda9b13cbe6211a9f04c66fe1f8233724e7cbef5d987a08156df328e",
+        "bytes": 6269000
+      },
+      {
+        "path": "core/vault/build/intermediates/stripped_native_libs/devDebug/stripDevDebugDebugSymbols/out/lib/arm64-v8a/libskein_sqlite_jni.so",
+        "sha256": "2ca53aa854232b3f5e16c798b53f80e6630d49df0b4882bd5737609f645c9f0a",
+        "bytes": 22320
+      },
+      {
+        "path": "core/vault/build/intermediates/stripped_native_libs/devDebug/stripDevDebugDebugSymbols/out/lib/x86_64/libskein_sqlite.so",
+        "sha256": "e8361bb47754a48642fe3f286f220e286b58087cd8765098b27fcf32e9164e54",
+        "bytes": 6700000
+      },
+      {
+        "path": "core/vault/build/intermediates/stripped_native_libs/devDebug/stripDevDebugDebugSymbols/out/lib/x86_64/libskein_sqlite_jni.so",
+        "sha256": "526adecb81980878955bc2c401014f56ef733949369184ee314b34fdf92d4b68",
+        "bytes": 22080
+      }
+    ],
+    "aars": [
+      {
+        "path": "core/vault/build/outputs/aar/vault-dev-debug.aar",
+        "sha256": "753a339cfd1e8982c4b6d4d00377d2503a54c8fe1368b831f57555398931816b",
+        "bytes": 6539410
+      }
+    ]
+  },
+  "host_guard": {
+    "unittest_methods": 1,
+    "scenarios": 6,
+    "passed": true,
+    "scenarios_covered": [
+      "exact",
+      "missing old",
+      "missing new",
+      "extra old",
+      "extra new",
+      "extra arbitrary class"
+    ]
+  },
+  "ktlint": "PASS explicit ktlintCheck executed first invocation; reused on second",
+  "logs": [
+    {
+      "path": "build/agent-logs/recovery-proof-20260930/format-1.log",
+      "sha256": "bb6e82e2bdc05f9a95fbc164d340e7c98199a7646f21a8e865d856ccf38caeca",
+      "command": {
+        "owner": "coordinator",
+        "pid": 44760,
+        "token": "e17cf9dc-5dac-465a-b595-ab7bccdb4d1f",
+        "worktree": "/Users/andrewherrera/skein-worktrees/recovery-proof-priorities-20260930",
+        "started_at": "2026-09-30T09:36:00.681629+00:00",
+        "command": [
+          "./gradlew",
+          "--no-daemon",
+          "--max-workers=2",
+          ":core:vault:ktlintFormat"
+        ]
+      }
+    },
+    {
+      "path": "build/agent-logs/recovery-proof-20260930/focused-native-1.log",
+      "sha256": "eb26fc7125727ae0f773eeb17da5f49fdef41f7302e46a555c73b34d63796926",
+      "command": {
+        "owner": "coordinator",
+        "pid": 44836,
+        "token": "6cee71f3-282c-44f1-ad49-37f33b7d8d4a",
+        "worktree": "/Users/andrewherrera/skein-worktrees/recovery-proof-priorities-20260930",
+        "started_at": "2026-09-30T09:36:19.917206+00:00",
+        "command": [
+          "./gradlew",
+          "--no-daemon",
+          "--max-workers=2",
+          ":core:vault:ktlintCheck",
+          ":core:vault:testDevDebugUnitTest",
+          "--tests",
+          "app.skein.core.vault.key.recovery.*",
+          ":core:vault:compileDevDebugAndroidTestKotlin",
+          ":core:vault:assembleDevDebug"
+        ]
+      }
+    },
+    {
+      "path": "build/agent-logs/recovery-proof-20260930/focused-native-2.log",
+      "sha256": "795bd307c1ae8384a3cb9849f1b69b5f5a40a5c5a40fd0b21ef6130060706d10",
+      "command": {
+        "owner": "coordinator",
+        "pid": 45470,
+        "token": "401eb8e8-febf-43c2-8282-80b5f4ae6b4b",
+        "worktree": "/Users/andrewherrera/skein-worktrees/recovery-proof-priorities-20260930",
+        "started_at": "2026-09-30T09:39:58.573591+00:00",
+        "command": [
+          "./gradlew",
+          "--no-daemon",
+          "--max-workers=2",
+          ":core:vault:ktlintCheck",
+          ":core:vault:testDevDebugUnitTest",
+          "--tests",
+          "app.skein.core.vault.key.recovery.*",
+          ":core:vault:compileDevDebugAndroidTestKotlin",
+          ":core:vault:assembleDevDebug"
+        ]
+      }
+    },
+    {
+      "path": "build/agent-logs/recovery-proof-20260930/jni-surface-1.log",
+      "sha256": "899e4feebd65c6c0921ab28040ff70821f36b6d9dc59831ea688de272c0776c0",
+      "command": {
+        "owner": "coordinator",
+        "pid": 77573,
+        "token": "411f7b54-89be-44be-b735-e6b2e18b1e0a",
+        "worktree": "/Users/andrewherrera/skein-worktrees/recovery-proof-priorities-20260930",
+        "started_at": "2026-09-30T09:40:55.114824+00:00",
+        "command": [
+          "bash",
+          "tools/ci/sqlite-jni-symbols.sh"
+        ]
+      }
+    },
+    {
+      "path": "build/agent-logs/recovery-proof-20260930/jni-host-tests-1.log",
+      "sha256": "0e41bba95e902bf6fd56ed31dac6484c0a344d91664383f053cbf2ce64c06dc5",
+      "command": {
+        "owner": "coordinator",
+        "pid": 77735,
+        "token": "58ae6ec1-9e9c-45f2-a85a-45962dea580b",
+        "worktree": "/Users/andrewherrera/skein-worktrees/recovery-proof-priorities-20260930",
+        "started_at": "2026-09-30T09:41:10.868842+00:00",
+        "command": [
+          "python3",
+          "-m",
+          "unittest",
+          "tools.ci.test_sqlite_jni_symbols"
+        ]
+      }
+    }
+  ],
+  "dependency_failure": {
+    "source": "/Users/andrewherrera/skein/native/sqlite/third_party/openssl-3.5.4.tar.gz",
+    "destination": "native/sqlite/third_party/openssl-3.5.4.tar.gz",
+    "sha256": "967311f84955316969bdb1d8d4b983718ef42338639c621ec4c34fddef355e99",
+    "size": 53190367,
+    "prior_payload_retained": null,
+    "failure_archive_sha256": "b5655a8be32ed71941197698d22755e1264112fdbd3ebb37b0e48cb4c86bc425",
+    "failure_note": "Existing CMake download code automatically removes hash-mismatching payloads after logging their digest and size. The final failed payload was absent after invocation; original failure log and JVM XML preserved, no claim that removed download bytes survive."
+  },
+  "peer_source_review_sha256": "db9d3033a5b94657a1109874d060d6cb4b5b72bf7587aef6f8c872de5e42deff",
+  "limitations": [
+    "No production lease issuer, provider/storage activation, authenticated wrapping, reset/startup reconciliation, app/UI recovery wiring or token publication.",
+    "Filesystem replacement is not candidate recovery authority; proof-to-same-candidate wrapped-key binding still required before activation.",
+    "Real encrypted4 tests compiled only; no cryptographic device/runtime recovery acceptance.",
+    "Fault injection/restart classification tests do not establish power-loss guarantees.",
+    "Existing CMake downloader removed bad payload bytes itself; original hashes/sizes/logs and XML are preserved, not those removed payloads."
+  ],
+  "created_at_utc": "2026-09-30T09:42:22.246942+00:00"
+}

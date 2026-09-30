@@ -1,0 +1,15 @@
+{
+  "candidate": "822aca15dd7761d94f5bffe7a4e7fc4e2d502de0",
+  "actual_xml_files": 4,
+  "passed": 23,
+  "failure": 0,
+  "error": 0,
+  "skip": 0,
+  "source_hashes_verified": 14,
+  "actual_native_file_hashes_verified": 16,
+  "original_archive_sha256": "d61702a0bb0215bff9b884be31034019a6a06181adcf1f25e315be03586d9a54",
+  "new_encrypted_tests": "4 compiled, unexecuted",
+  "production_activation": false,
+  "key_zeroing": "Kotlin finally wipes consumed Java key; JNI wipes only its local stack/hex buffers",
+  "dependency_failure": "original pin mismatch log retained; failing fetch payload removed by CMake before inspection; exact existing cached archive independently hash verified"
+}
