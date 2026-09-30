@@ -1,0 +1,100 @@
+To honour the JVM settings for this build a single-use Daemon process will be forked. For more on this, please refer to https://docs.gradle.org/9.7.1/userguide/gradle_daemon.html#sec:disabling_the_daemon in the Gradle documentation.
+Daemon will be stopped at the end of the build 
+Calculating task graph as no cached configuration is available for tasks: :core:inference:ktlintCheck :core:inference:testDebugUnitTest
+> Task :build-logic:guards:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :build-logic:guards:compileKotlin UP-TO-DATE
+> Task :build-logic:guards:compileJava NO-SOURCE
+> Task :build-logic:guards:pluginDescriptors UP-TO-DATE
+> Task :build-logic:guards:processResources UP-TO-DATE
+> Task :build-logic:guards:classes UP-TO-DATE
+> Task :build-logic:guards:jar UP-TO-DATE
+> Task :testing:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :testing-fakes:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :core:model:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :core:inference:loadKtlintReporters UP-TO-DATE
+> Task :core:inference:runKtlintCheckOverAndroidTestDebugSourceSet NO-SOURCE
+> Task :core:inference:ktlintAndroidTestDebugSourceSetCheck SKIPPED
+> Task :core:inference:runKtlintCheckOverAndroidTestReleaseSourceSet NO-SOURCE
+> Task :core:inference:ktlintAndroidTestReleaseSourceSetCheck SKIPPED
+> Task :core:inference:runKtlintCheckOverAndroidTestSourceSet UP-TO-DATE
+> Task :core:inference:ktlintAndroidTestSourceSetCheck UP-TO-DATE
+> Task :core:inference:runKtlintCheckOverDebugSourceSet NO-SOURCE
+> Task :core:inference:ktlintDebugSourceSetCheck SKIPPED
+> Task :core:inference:runKtlintCheckOverKotlinScripts UP-TO-DATE
+> Task :core:inference:ktlintKotlinScriptCheck UP-TO-DATE
+> Task :core:inference:runKtlintCheckOverMainSourceSet UP-TO-DATE
+> Task :core:inference:ktlintMainSourceSetCheck UP-TO-DATE
+> Task :core:inference:runKtlintCheckOverReleaseSourceSet NO-SOURCE
+> Task :core:inference:ktlintReleaseSourceSetCheck SKIPPED
+> Task :core:inference:runKtlintCheckOverTestDebugSourceSet NO-SOURCE
+> Task :core:inference:ktlintTestDebugSourceSetCheck SKIPPED
+> Task :core:inference:runKtlintCheckOverTestFixturesDebugSourceSet NO-SOURCE
+> Task :core:inference:ktlintTestFixturesDebugSourceSetCheck SKIPPED
+> Task :core:inference:runKtlintCheckOverTestFixturesReleaseSourceSet NO-SOURCE
+> Task :core:inference:ktlintTestFixturesReleaseSourceSetCheck SKIPPED
+> Task :core:model:compileKotlin UP-TO-DATE
+> Task :core:inference:runKtlintCheckOverTestFixturesSourceSet NO-SOURCE
+> Task :core:inference:ktlintTestFixturesSourceSetCheck SKIPPED
+> Task :core:inference:runKtlintCheckOverTestReleaseSourceSet NO-SOURCE
+> Task :core:inference:ktlintTestReleaseSourceSetCheck SKIPPED
+> Task :core:model:compileJava NO-SOURCE
+> Task :core:model:processResources UP-TO-DATE
+> Task :core:model:classes UP-TO-DATE
+> Task :core:model:jar UP-TO-DATE
+> Task :testing-fakes:compileKotlin UP-TO-DATE
+> Task :testing-fakes:compileJava NO-SOURCE
+> Task :testing-fakes:processResources NO-SOURCE
+> Task :testing-fakes:classes UP-TO-DATE
+> Task :testing-fakes:jar UP-TO-DATE
+> Task :testing:compileKotlin UP-TO-DATE
+> Task :testing:compileJava NO-SOURCE
+> Task :testing:processResources UP-TO-DATE
+> Task :testing:classes UP-TO-DATE
+> Task :testing:jar UP-TO-DATE
+> Task :core:verify:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :core:verify:compileKotlin UP-TO-DATE
+> Task :core:verify:compileJava NO-SOURCE
+> Task :core:verify:processResources NO-SOURCE
+> Task :core:verify:classes UP-TO-DATE
+> Task :core:verify:jar UP-TO-DATE
+> Task :core:inference:preBuild UP-TO-DATE
+> Task :core:inference:preDebugBuild UP-TO-DATE
+> Task :core:inference:generateDebugResources UP-TO-DATE
+> Task :core:inference:packageDebugResources UP-TO-DATE
+> Task :core:inference:processDebugNavigationResources UP-TO-DATE
+> Task :core:inference:parseDebugLocalResources UP-TO-DATE
+> Task :core:inference:generateDebugRFile UP-TO-DATE
+> Task :core:ipc:preBuild UP-TO-DATE
+> Task :core:ipc:preDebugBuild UP-TO-DATE
+> Task :core:ipc:compileDebugAidl UP-TO-DATE
+> Task :core:ipc:generateDebugResources UP-TO-DATE
+> Task :core:ipc:packageDebugResources UP-TO-DATE
+> Task :core:ipc:processDebugNavigationResources UP-TO-DATE
+> Task :core:ipc:parseDebugLocalResources UP-TO-DATE
+> Task :core:ipc:generateDebugRFile UP-TO-DATE
+> Task :core:ipc:compileDebugKotlin UP-TO-DATE
+> Task :core:ipc:javaPreCompileDebug UP-TO-DATE
+> Task :core:ipc:compileDebugJavaWithJavac UP-TO-DATE
+> Task :core:ipc:bundleLibCompileToJarDebug UP-TO-DATE
+> Task :core:inference:compileDebugKotlin UP-TO-DATE
+> Task :core:inference:javaPreCompileDebug UP-TO-DATE
+> Task :core:inference:compileDebugJavaWithJavac NO-SOURCE
+> Task :core:inference:bundleLibRuntimeToJarDebug UP-TO-DATE
+> Task :core:inference:bundleLibCompileToJarDebug UP-TO-DATE
+> Task :core:inference:preDebugUnitTestBuild UP-TO-DATE
+> Task :core:inference:generateDebugUnitTestStubRFile UP-TO-DATE
+> Task :core:inference:runKtlintCheckOverTestSourceSet
+> Task :core:inference:ktlintTestSourceSetCheck
+> Task :core:inference:ktlintCheck
+> Task :core:inference:javaPreCompileDebugUnitTest UP-TO-DATE
+> Task :core:inference:processDebugJavaRes UP-TO-DATE
+> Task :core:ipc:bundleLibRuntimeToJarDebug UP-TO-DATE
+> Task :core:ipc:processDebugJavaRes UP-TO-DATE
+> Task :core:inference:compileDebugUnitTestKotlin
+> Task :core:inference:compileDebugUnitTestJavaWithJavac NO-SOURCE
+> Task :core:inference:processDebugUnitTestJavaRes UP-TO-DATE
+> Task :core:inference:testDebugUnitTest
+
+BUILD SUCCESSFUL in 3m 15s
+50 actionable tasks: 4 executed, 46 up-to-date
+Configuration cache entry stored.

@@ -1,0 +1,106 @@
+{
+  "date": "2026-09-30",
+  "bead": "skein-7jmg",
+  "reviewer": "/root/fold_transport",
+  "base": "a2effe4ac39e88af5fd577017a5e7ce0bdbce400",
+  "result": "Source and original XML support the mixed test-clock diagnosis and bounded test-only repair. No corrected tests executed by reviewer.",
+  "source": [
+    {
+      "path": "core/inference/src/test/kotlin/app/skein/core/inference/engine/LlamaCppEngineBehaviourTest.kt",
+      "base": {
+        "bytes": 51972,
+        "sha256": "4485f4afebc916335be27c46f40de3769d665debfbe7d265ab1cd60ee303bc7a"
+      },
+      "reviewed": {
+        "bytes": 52461,
+        "sha256": "b0fcd0dcca6a07bd7137b52a732034f7f6051945503b284f0449e3c74a9c5961"
+      },
+      "unchanged": false
+    },
+    {
+      "path": "core/inference/src/main/kotlin/app/skein/core/inference/engine/LlamaCppEngine.kt",
+      "base": {
+        "bytes": 45146,
+        "sha256": "5ba6d3c603b0ef3e1eed249152c487668209b07eaa6d0b8a2b755e7eb285f7e8"
+      },
+      "reviewed": {
+        "bytes": 45146,
+        "sha256": "5ba6d3c603b0ef3e1eed249152c487668209b07eaa6d0b8a2b755e7eb285f7e8"
+      },
+      "unchanged": true
+    },
+    {
+      "path": "core/inference/src/main/kotlin/app/skein/core/inference/engine/ModelTransactions.kt",
+      "base": {
+        "bytes": 3292,
+        "sha256": "fad519775672c849e2bcd225ce258e3176f93ca93394e8cc0fb605a7e870cbd1"
+      },
+      "reviewed": {
+        "bytes": 3292,
+        "sha256": "fad519775672c849e2bcd225ce258e3176f93ca93394e8cc0fb605a7e870cbd1"
+      },
+      "unchanged": true
+    },
+    {
+      "path": "core/inference/src/test/kotlin/app/skein/core/inference/engine/FakeInferenceService.kt",
+      "base": {
+        "bytes": 15630,
+        "sha256": "06c705d25c09af3e6cdc35aeb26151a32a54f76dd6d23e697177bfed486c5313"
+      },
+      "reviewed": {
+        "bytes": 15630,
+        "sha256": "06c705d25c09af3e6cdc35aeb26151a32a54f76dd6d23e697177bfed486c5313"
+      },
+      "unchanged": true
+    }
+  ],
+  "diff": {
+    "bytes": 3989,
+    "sha256": "f4953447739f3a580332fcef07acee8f15098296b4671687347ce58b2fd8cb27"
+  },
+  "preserved": {
+    "test_identities": 62,
+    "identities_equal": true,
+    "timeout_500ms_occurrences": 10,
+    "assertThat_occurrences": 120,
+    "new_real_clock_wrappers": 5
+  },
+  "actual_original_ci": {
+    "run_id": 36751785059,
+    "url": "https://github.com/HeyZeus100/skein/actions/runs/36751785059",
+    "archive": {
+      "bytes": 1255682,
+      "sha256": "2d4eafb7be60886faf42a181d07c9e220a50503d180a88a3f8c06d33820aadc0"
+    },
+    "xml_suites": 226,
+    "tests": 2200,
+    "failures": [
+      {
+        "xml": "core/inference/build/test-results/testDebugUnitTest/TEST-app.skein.core.inference.engine.LlamaCppEngineBehaviourTest.xml",
+        "xml_receipt": {
+          "bytes": 15910,
+          "sha256": "525698b2e00e5e2b46dd337f1aef94f4481a344666380e449732eaa345421508"
+        },
+        "test": "lockStopsWaitingForBlockedInspectionAndRejectsLateSuccess",
+        "seconds": "0.032",
+        "type": "kotlinx.coroutines.TimeoutCancellationException",
+        "message": "kotlinx.coroutines.TimeoutCancellationException: Timed out after 500ms of _virtual_ (kotlinx.coroutines.test) time. To use the real time, wrap 'withTimeout' in 'withContext(Dispatchers.Default.limitedParallelism(1))'",
+        "source_site": "LlamaCppEngineBehaviourTest.kt:665 inspection.await() in the a2effe source"
+      }
+    ],
+    "errors": 0,
+    "skipped": 2,
+    "passed": 2197
+  },
+  "analysis": [
+    "Test setup explicitly injects Dispatchers.IO; default lateEngine also uses Dispatchers.IO.",
+    "ModelTransactions creates its own SupervisorJob + io scope. lockControl also uses SupervisorJob + io. The blocked inspection and lock pushes therefore complete on real threads outside runTest virtual scheduling.",
+    "Original withTimeout(500L) inherits runTest scheduler. The actual error explicitly reports virtual time, with the testcase lasting only 0.032 seconds.",
+    "withContext(Dispatchers.Default) gives the same 500 ms timeout a real dispatcher and retains suspension while IO work completes. Existing neighboring handshake/lock race tests already use this pattern.",
+    "Five wrappers cover the locking-push poll, blocked-inspect deadline, locked-push poll, blocked-load deadline and late-binding locked-push poll across four unchanged test identities. No production edits or increased timeout."
+  ],
+  "limits": [
+    "Original negative is preserved; proposed repair still needs source-matched local and corrected CI execution.",
+    "A passing repaired host suite will not establish physical-device, native-model or other acceptance gates."
+  ]
+}

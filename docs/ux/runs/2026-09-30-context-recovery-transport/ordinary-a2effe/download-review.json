@@ -1,0 +1,16 @@
+{
+  "run": 36768397150,
+  "source": "a2effe4ac39e88af5fd577017a5e7ce0bdbce400",
+  "conclusion": "success",
+  "artifacts": [
+    {
+      "id": 11122653690,
+      "name": "connected-test-reports",
+      "path": "build/agent-logs/resume-context-20260930/remote/ordinary-a2effe/connected-test-reports.zip",
+      "bytes": 942248,
+      "sha256": "1c7e22677ec5bf3c5672e8a077148fb0be15e2822ae8823e1e7a4aec48f21691",
+      "api_digest": "sha256:1c7e22677ec5bf3c5672e8a077148fb0be15e2822ae8823e1e7a4aec48f21691"
+    }
+  ],
+  "logs_sha256": "b7304e28da52e8e07b288de5a3d77d62a17ed9ef87ec5e0ba50fcc36efb51bf9"
+}

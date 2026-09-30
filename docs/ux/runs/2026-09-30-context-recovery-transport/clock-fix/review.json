@@ -1,0 +1,21 @@
+{
+  "issue": "skein-7jmg",
+  "source_sha256": "b0fcd0dcca6a07bd7137b52a732034f7f6051945503b284f0449e3c74a9c5961",
+  "parent": "a2effe4ac39e88af5fd577017a5e7ce0bdbce400",
+  "source_path": "core/inference/src/test/kotlin/app/skein/core/inference/engine/LlamaCppEngineBehaviourTest.kt",
+  "actual_xml_files": 21,
+  "counts": {
+    "passed": 333
+  },
+  "archive_sha256": "232c4c1c93b4bdbed27e4ea44520f83643ac3b858d9b332ab85a7f0dc1239c90",
+  "command": [
+    "./gradlew",
+    "--no-daemon",
+    "--max-workers=2",
+    ":core:inference:ktlintCheck",
+    ":core:inference:testDebugUnitTest",
+    "--console=plain"
+  ],
+  "production_changed": false,
+  "deadlines": "five500ms scopes on real dispatcher; all existing assertions/identities unchanged"
+}

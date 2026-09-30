@@ -1,0 +1,311 @@
+{
+  "date": "2026-09-30",
+  "reviewer": "/root/fold_transport",
+  "run": {
+    "id": 36768397150,
+    "head_sha": "a2effe4ac39e88af5fd577017a5e7ce0bdbce400",
+    "conclusion": "success",
+    "html_url": "https://github.com/HeyZeus100/skein/actions/runs/36768397150",
+    "run_attempt": 1
+  },
+  "archive": {
+    "bytes": 942248,
+    "sha256": "1c7e22677ec5bf3c5672e8a077148fb0be15e2822ae8823e1e7a4aec48f21691"
+  },
+  "api_digest_matches": true,
+  "manifest": {
+    "bytes": 1931,
+    "sha256": "35e650a9b32c2afc3f9f28d3da8dd009a4911388ac96f295041232b51cb2d809"
+  },
+  "manifest_records_verified": 4,
+  "actual_case_elements": 303,
+  "passed": 303,
+  "failures": 0,
+  "errors": 0,
+  "skipped": 0,
+  "unique_test_identities": 303,
+  "modules": [
+    {
+      "path": "app/build/outputs/androidTest-results/connected/debug/flavors/dev/TEST-test(AVD) - 15.xml",
+      "bytes": 9320,
+      "sha256": "8d9510db1402bf73be85aea60a16a474a950152ba812c4bb3fde525e6a5304c5",
+      "actual_case_elements": 41,
+      "statuses": {
+        "passed": 41
+      }
+    },
+    {
+      "path": "core/vault/build/outputs/androidTest-results/connected/debug/flavors/dev/TEST-test(AVD) - 15.xml",
+      "bytes": 42406,
+      "sha256": "aa791d156c88331d6f885370cdfb696ae638e295e5b44b6021d26f4f35a5e761",
+      "actual_case_elements": 223,
+      "statuses": {
+        "passed": 223
+      }
+    },
+    {
+      "path": "inference-service/build/outputs/androidTest-results/connected/debug/flavors/dev/TEST-test(AVD) - 15.xml",
+      "bytes": 6497,
+      "sha256": "8b110db5b01c441d2d7906586984e87522cdb5dc5eea9ac5d62dc3bf77928f52",
+      "actual_case_elements": 39,
+      "statuses": {
+        "passed": 39
+      }
+    }
+  ],
+  "suites": [
+    {
+      "module_xml": "app/build/outputs/androidTest-results/connected/debug/flavors/dev/TEST-test(AVD) - 15.xml",
+      "suite": "app.skein.SampleInstrumentedTest",
+      "tests": 1,
+      "passed": 1
+    },
+    {
+      "module_xml": "app/build/outputs/androidTest-results/connected/debug/flavors/dev/TEST-test(AVD) - 15.xml",
+      "suite": "app.skein.chat.ContextualSendPathInstrumentedTest",
+      "tests": 3,
+      "passed": 3
+    },
+    {
+      "module_xml": "app/build/outputs/androidTest-results/connected/debug/flavors/dev/TEST-test(AVD) - 15.xml",
+      "suite": "app.skein.inference.LlamaCppEngineInstrumentedTest",
+      "tests": 9,
+      "passed": 9
+    },
+    {
+      "module_xml": "app/build/outputs/androidTest-results/connected/debug/flavors/dev/TEST-test(AVD) - 15.xml",
+      "suite": "app.skein.ingest.IngestWorkerInstrumentedTest",
+      "tests": 2,
+      "passed": 2
+    },
+    {
+      "module_xml": "app/build/outputs/androidTest-results/connected/debug/flavors/dev/TEST-test(AVD) - 15.xml",
+      "suite": "app.skein.vault.FirstRunInstrumentedTest",
+      "tests": 4,
+      "passed": 4
+    },
+    {
+      "module_xml": "app/build/outputs/androidTest-results/connected/debug/flavors/dev/TEST-test(AVD) - 15.xml",
+      "suite": "app.skein.vault.LockPolicySettingsRecreationInstrumentedTest",
+      "tests": 1,
+      "passed": 1
+    },
+    {
+      "module_xml": "app/build/outputs/androidTest-results/connected/debug/flavors/dev/TEST-test(AVD) - 15.xml",
+      "suite": "app.skein.vault.VaultBootstrapInstrumentedTest",
+      "tests": 4,
+      "passed": 4
+    },
+    {
+      "module_xml": "app/build/outputs/androidTest-results/connected/debug/flavors/dev/TEST-test(AVD) - 15.xml",
+      "suite": "app.skein.vault.provider.VaultDocumentsProviderGrantInstrumentedTest",
+      "tests": 5,
+      "passed": 5
+    },
+    {
+      "module_xml": "app/build/outputs/androidTest-results/connected/debug/flavors/dev/TEST-test(AVD) - 15.xml",
+      "suite": "app.skein.vault.provider.VaultDocumentsProviderTest",
+      "tests": 11,
+      "passed": 11
+    },
+    {
+      "module_xml": "app/build/outputs/androidTest-results/connected/debug/flavors/dev/TEST-test(AVD) - 15.xml",
+      "suite": "app.skein.vault.security.AtRestEncryptionInstrumentedTest",
+      "tests": 1,
+      "passed": 1
+    },
+    {
+      "module_xml": "core/vault/build/outputs/androidTest-results/connected/debug/flavors/dev/TEST-test(AVD) - 15.xml",
+      "suite": "app.skein.core.vault.db.SkeinSQLiteDriverInstrumentedTest",
+      "tests": 8,
+      "passed": 8
+    },
+    {
+      "module_xml": "core/vault/build/outputs/androidTest-results/connected/debug/flavors/dev/TEST-test(AVD) - 15.xml",
+      "suite": "app.skein.core.vault.db.migrations.MigratorInstrumentedTest",
+      "tests": 21,
+      "passed": 21
+    },
+    {
+      "module_xml": "core/vault/build/outputs/androidTest-results/connected/debug/flavors/dev/TEST-test(AVD) - 15.xml",
+      "suite": "app.skein.core.vault.export.stage.ExportStageRepositoryContractTest",
+      "tests": 13,
+      "passed": 13
+    },
+    {
+      "module_xml": "core/vault/build/outputs/androidTest-results/connected/debug/flavors/dev/TEST-test(AVD) - 15.xml",
+      "suite": "app.skein.core.vault.index.GraphRecallAcceptanceTest",
+      "tests": 1,
+      "passed": 1
+    },
+    {
+      "module_xml": "core/vault/build/outputs/androidTest-results/connected/debug/flavors/dev/TEST-test(AVD) - 15.xml",
+      "suite": "app.skein.core.vault.index.IndexStoreImplAcceptanceTest",
+      "tests": 16,
+      "passed": 16
+    },
+    {
+      "module_xml": "core/vault/build/outputs/androidTest-results/connected/debug/flavors/dev/TEST-test(AVD) - 15.xml",
+      "suite": "app.skein.core.vault.index.IndexStoreImplContractTest",
+      "tests": 16,
+      "passed": 16
+    },
+    {
+      "module_xml": "core/vault/build/outputs/androidTest-results/connected/debug/flavors/dev/TEST-test(AVD) - 15.xml",
+      "suite": "app.skein.core.vault.index.LexicalRecallAcceptanceTest",
+      "tests": 2,
+      "passed": 2
+    },
+    {
+      "module_xml": "core/vault/build/outputs/androidTest-results/connected/debug/flavors/dev/TEST-test(AVD) - 15.xml",
+      "suite": "app.skein.core.vault.index.VectorRecallAcceptanceTest",
+      "tests": 1,
+      "passed": 1
+    },
+    {
+      "module_xml": "core/vault/build/outputs/androidTest-results/connected/debug/flavors/dev/TEST-test(AVD) - 15.xml",
+      "suite": "app.skein.core.vault.key.VaultKeyProviderInstrumentedTest",
+      "tests": 3,
+      "passed": 3
+    },
+    {
+      "module_xml": "core/vault/build/outputs/androidTest-results/connected/debug/flavors/dev/TEST-test(AVD) - 15.xml",
+      "suite": "app.skein.core.vault.key.VaultKeyProvidersInstrumentedTest",
+      "tests": 5,
+      "passed": 5
+    },
+    {
+      "module_xml": "core/vault/build/outputs/androidTest-results/connected/debug/flavors/dev/TEST-test(AVD) - 15.xml",
+      "suite": "app.skein.core.vault.key.recovery.ExistingVaultKeyProofInstrumentedTest",
+      "tests": 5,
+      "passed": 5
+    },
+    {
+      "module_xml": "core/vault/build/outputs/androidTest-results/connected/debug/flavors/dev/TEST-test(AVD) - 15.xml",
+      "suite": "app.skein.core.vault.lifecycle.VaultLifecycleInstrumentedTest",
+      "tests": 7,
+      "passed": 7
+    },
+    {
+      "module_xml": "core/vault/build/outputs/androidTest-results/connected/debug/flavors/dev/TEST-test(AVD) - 15.xml",
+      "suite": "app.skein.core.vault.lifecycle.VaultResetInstrumentedTest",
+      "tests": 3,
+      "passed": 3
+    },
+    {
+      "module_xml": "core/vault/build/outputs/androidTest-results/connected/debug/flavors/dev/TEST-test(AVD) - 15.xml",
+      "suite": "app.skein.core.vault.models.ModelRegistryImplContractTest",
+      "tests": 11,
+      "passed": 11
+    },
+    {
+      "module_xml": "core/vault/build/outputs/androidTest-results/connected/debug/flavors/dev/TEST-test(AVD) - 15.xml",
+      "suite": "app.skein.core.vault.persona.PersonaServiceImplContractTest",
+      "tests": 3,
+      "passed": 3
+    },
+    {
+      "module_xml": "core/vault/build/outputs/androidTest-results/connected/debug/flavors/dev/TEST-test(AVD) - 15.xml",
+      "suite": "app.skein.core.vault.repository.FileLifecycleInstrumentedTest",
+      "tests": 14,
+      "passed": 14
+    },
+    {
+      "module_xml": "core/vault/build/outputs/androidTest-results/connected/debug/flavors/dev/TEST-test(AVD) - 15.xml",
+      "suite": "app.skein.core.vault.repository.ObjectLifecycleEmulatorLaneTest",
+      "tests": 6,
+      "passed": 6
+    },
+    {
+      "module_xml": "core/vault/build/outputs/androidTest-results/connected/debug/flavors/dev/TEST-test(AVD) - 15.xml",
+      "suite": "app.skein.core.vault.repository.VaultRepositoryImplContractTest",
+      "tests": 87,
+      "passed": 87
+    },
+    {
+      "module_xml": "core/vault/build/outputs/androidTest-results/connected/debug/flavors/dev/TEST-test(AVD) - 15.xml",
+      "suite": "app.skein.vault.SchemaLoadInstrumentedTest",
+      "tests": 1,
+      "passed": 1
+    },
+    {
+      "module_xml": "inference-service/build/outputs/androidTest-results/connected/debug/flavors/dev/TEST-test(AVD) - 15.xml",
+      "suite": "app.skein.inference.service.InferenceServiceInstrumentedTest",
+      "tests": 16,
+      "passed": 16
+    },
+    {
+      "module_xml": "inference-service/build/outputs/androidTest-results/connected/debug/flavors/dev/TEST-test(AVD) - 15.xml",
+      "suite": "app.skein.inference.service.LlamaNativeTest",
+      "tests": 23,
+      "passed": 23
+    }
+  ],
+  "device_properties": [
+    "emulator-5554"
+  ],
+  "workflow_api": 35,
+  "workflow_abi": "x86_64",
+  "contextual_send_path_cases": [
+    {
+      "class": "app.skein.chat.ContextualSendPathInstrumentedTest",
+      "name": "committed_source_deletion_preserves_quotes_and_refuses_contextual_generation",
+      "status": "passed",
+      "seconds": "0.291"
+    },
+    {
+      "class": "app.skein.chat.ContextualSendPathInstrumentedTest",
+      "name": "edited_and_reingested_source_cannot_repin_a_previous_encrypted_turn",
+      "status": "passed",
+      "seconds": "0.186"
+    },
+    {
+      "class": "app.skein.chat.ContextualSendPathInstrumentedTest",
+      "name": "persisted_citation_resolves_raw_followup_through_encrypted_send_path",
+      "status": "passed",
+      "seconds": "0.217"
+    }
+  ],
+  "host_declared_apk_receipts": [
+    {
+      "path": "app/build/outputs/apk/androidTest/dev/debug/app-dev-debug-androidTest.apk",
+      "sha256": "831a321f5c9a92443fe6305b209ccd14d82f6aa4e0565a3b84da3e3d0f8c4e19"
+    },
+    {
+      "path": "app/build/outputs/apk/dev/debug/app-dev-debug.apk",
+      "sha256": "764aeb8070b890f52a7905273ef5f58a6cd987d6194f4128347e96196991414f"
+    },
+    {
+      "path": "core/vault/build/outputs/apk/androidTest/dev/debug/vault-dev-debug-androidTest.apk",
+      "sha256": "3fb917bfdb94b26ce97013b566627e2ca7a28f6991bd8edf759b85bce23609a9"
+    },
+    {
+      "path": "inference-service/build/outputs/apk/androidTest/dev/debug/inference-service-dev-debug-androidTest.apk",
+      "sha256": "c3853b1cb0d4885418dd04adb8b225609fe807d84a5b1a50a2a2f0926beb1745"
+    }
+  ],
+  "reviewed_source_at_run_commit": [
+    {
+      "path": ".github/workflows/emulator.yml",
+      "bytes": 14907,
+      "sha256": "5599deb96b14dfda856782ccd46d6e11792fe5c2dabc2beb2c647b4d55ee6f3a"
+    },
+    {
+      "path": "app/src/androidTest/kotlin/app/skein/chat/ContextualSendPathInstrumentedTest.kt",
+      "bytes": 15139,
+      "sha256": "013f40082828bcc76e7e14a3871282375921166401c99aec4ba89013dfb490eb"
+    }
+  ],
+  "log_receipt": {
+    "bytes": 96200,
+    "sha256": "b7304e28da52e8e07b288de5a3d77d62a17ed9ef87ec5e0ba50fcc36efb51bf9"
+  },
+  "limits": [
+    "Manifest pins three actual XML reports and generated reviewer JSON. It declares built APK hashes, but APK bytes and independently read-back installed hashes are absent from the artifact.",
+    "303 actual case elements reconcile with nested suite totals and XML root totals; no ignored case is counted as pass.",
+    "New three contextual cases execute encrypted opener/migrations/repository/FTS/ingest plus real chat queue/send/retrieval with synthetic test keys and scripted inference. This is Android integration evidence, not actual model quality or relevance/abstention calibration.",
+    "Ordinary emulator lane contains no opt-in foldable geometry or synthetic benchmark acceptance. API35 x86_64 emulator is distinct from physical Fold installation, authentication, model or UX acceptance.",
+    "Historical a2effe source only; later local test-clock fix and future workflow-policy edits need separately attributed checks.",
+    "Review inspected existing terminal artifacts only; no new hosted dispatch, build or device commands."
+  ]
+}

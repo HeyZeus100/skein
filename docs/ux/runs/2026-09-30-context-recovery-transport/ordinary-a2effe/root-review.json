@@ -1,0 +1,33 @@
+{
+  "run": 36768397150,
+  "source": "a2effe4ac39e88af5fd577017a5e7ce0bdbce400",
+  "actual_counts": {
+    "passed": 303
+  },
+  "actual_xml_files": 3,
+  "manifest_members_rehashed": 4,
+  "archive_sha256": "1c7e22677ec5bf3c5672e8a077148fb0be15e2822ae8823e1e7a4aec48f21691",
+  "actual_APKs_in_archive": 0,
+  "contextual_send_cases": [
+    [
+      "app.skein.chat.ContextualSendPathInstrumentedTest",
+      "committed_source_deletion_preserves_quotes_and_refuses_contextual_generation",
+      "passed"
+    ],
+    [
+      "app.skein.chat.ContextualSendPathInstrumentedTest",
+      "edited_and_reingested_source_cannot_repin_a_previous_encrypted_turn",
+      "passed"
+    ],
+    [
+      "app.skein.chat.ContextualSendPathInstrumentedTest",
+      "persisted_citation_resolves_raw_followup_through_encrypted_send_path",
+      "passed"
+    ]
+  ],
+  "limitations": [
+    "Scripted inference only; no answer-quality or semantic-relevance acceptance.",
+    "No physical installation; Fold still historicale62.",
+    "New file-reload source and later harness/clock corrections are not attributed to this older source."
+  ]
+}

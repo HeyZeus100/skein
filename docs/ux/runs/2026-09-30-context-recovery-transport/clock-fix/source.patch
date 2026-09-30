@@ -1,0 +1,70 @@
+diff --git a/core/inference/src/test/kotlin/app/skein/core/inference/engine/LlamaCppEngineBehaviourTest.kt b/core/inference/src/test/kotlin/app/skein/core/inference/engine/LlamaCppEngineBehaviourTest.kt
+index a3f3f7b9d..6c82d3830 100644
+--- a/core/inference/src/test/kotlin/app/skein/core/inference/engine/LlamaCppEngineBehaviourTest.kt
++++ b/core/inference/src/test/kotlin/app/skein/core/inference/engine/LlamaCppEngineBehaviourTest.kt
+@@ -642,7 +642,9 @@ class LlamaCppEngineBehaviourTest {
+ 
+             engine.onSessionLocking(21L, 250L)
+ 
+-            withTimeout(500L) { while (service.lockingPushes.isEmpty()) delay(1L) }
++            withContext(Dispatchers.Default) {
++                withTimeout(500L) { while (service.lockingPushes.isEmpty()) delay(1L) }
++            }
+             assertThat(service.lockingPushes).containsExactly(21L)
+         }
+ 
+@@ -659,12 +661,17 @@ class LlamaCppEngineBehaviourTest {
+             try {
+                 val inspection = async(Dispatchers.IO) { engine.inspect(fixture.binding()) }
+                 assertThat(entered.await(5, TimeUnit.SECONDS)).isTrue()
+-                withTimeout(500L) {
+-                    engine.onSessionLocking(epoch, 150L)
+-                    engine.onSessionLocked(epoch)
+-                    assertThat(inspection.await().errorCode).isEqualTo(ErrorCode.SESSION_LOCKED)
++                // The service and inspection run on real IO threads, outside runTest virtual time.
++                withContext(Dispatchers.Default) {
++                    withTimeout(500L) {
++                        engine.onSessionLocking(epoch, 150L)
++                        engine.onSessionLocked(epoch)
++                        assertThat(inspection.await().errorCode).isEqualTo(ErrorCode.SESSION_LOCKED)
++                    }
++                }
++                withContext(Dispatchers.Default) {
++                    withTimeout(500L) { while (service.lockedPushes.isEmpty()) delay(1L) }
+                 }
+-                withTimeout(500L) { while (service.lockedPushes.isEmpty()) delay(1L) }
+                 assertThat(service.lockedPushes).containsExactly(epoch)
+                 assertThat(connector.disconnects).isEqualTo(0)
+                 assertThat(engine.inspect(fixture.binding()).errorCode).isEqualTo(ErrorCode.SESSION_LOCKED)
+@@ -689,12 +696,14 @@ class LlamaCppEngineBehaviourTest {
+             try {
+                 val loading = async(Dispatchers.IO) { engine.load(fixture.model()) }
+                 assertThat(entered.await(5, TimeUnit.SECONDS)).isTrue()
+-                withTimeout(500L) {
+-                    engine.onSessionLocking(epoch, 150L)
+-                    engine.onSessionLocked(epoch)
+-                    assertThat(
+-                        loading.await().exceptionOrNull(),
+-                    ).isInstanceOf(InferenceException.SessionLocked::class.java)
++                withContext(Dispatchers.Default) {
++                    withTimeout(500L) {
++                        engine.onSessionLocking(epoch, 150L)
++                        engine.onSessionLocked(epoch)
++                        assertThat(
++                            loading.await().exceptionOrNull(),
++                        ).isInstanceOf(InferenceException.SessionLocked::class.java)
++                    }
+                 }
+                 assertThat(fixture.store.isOpen(fixture.model().id)).isFalse()
+                 release.countDown()
+@@ -730,7 +739,9 @@ class LlamaCppEngineBehaviourTest {
+             assertThat(inspection.await().errorCode).isEqualTo(ErrorCode.SESSION_LOCKED)
+             assertThat(service.inspects).isEmpty()
+             assertThat(service.unlockedPushes).isEmpty()
+-            withTimeout(500L) { while (service.lockedPushes.isEmpty()) delay(1L) }
++            withContext(Dispatchers.Default) {
++                withTimeout(500L) { while (service.lockedPushes.isEmpty()) delay(1L) }
++            }
+             assertThat(service.lockedPushes).containsExactly(epoch)
+         }
+ 
