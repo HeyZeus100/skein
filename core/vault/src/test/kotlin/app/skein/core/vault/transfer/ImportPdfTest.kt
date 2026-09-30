@@ -114,6 +114,34 @@ public class ImportPdfTest {
             assertThat(sections[2]).isEqualTo("Page Three")
         }
 
+    @Test
+    public fun `blank pages retain their positions around extracted text and metadata`(): Unit =
+        runTest {
+            val repo = InMemoryVaultRepository()
+            val bytes =
+                buildPdf(
+                    title = "  Mixed pages  ",
+                    pages =
+                        listOf(
+                            blankPage(),
+                            textPage("Page Two"),
+                            blankPage(),
+                            textPage("Page Four"),
+                            blankPage(),
+                        ),
+                )
+
+            val result = service(repo).importPdf("mixed.pdf", stream(bytes), personaId = null)
+
+            val note = repo.getDocument(result.documentId)!!
+            assertThat(note.title).isEqualTo("Mixed pages")
+            assertThat(note.bodyMd)
+                .isEqualTo("\n\n---\n\nPage Two\n\n---\n\n\n\n---\n\nPage Four\n\n---\n\n")
+            assertThat((note.frontmatter[FrontmatterKeys.SOURCE] as JsonPrimitive).content)
+                .isEqualTo(result.attachmentId)
+            assertThat(repo.openAttachment(result.attachmentId!!).use { it.readBytes() }).isEqualTo(bytes)
+        }
+
     // ------------------------------------------------------------------
     // Uncompressed content stream (FlateDecode is exercised by every other
     // test here — pdfbox-android compresses by default).
@@ -163,6 +191,39 @@ public class ImportPdfTest {
                 .isEqualTo("_No text layer found in scanned.pdf._")
             assertThat(result.attachmentId).isNotNull()
             assertThat(repo.getDocument(result.attachmentId!!)).isNotNull()
+        }
+
+    @Test
+    public fun `two blank pages yield the notice while preserving metadata and attachment bytes`(): Unit =
+        runTest {
+            val repo = InMemoryVaultRepository()
+            val bytes = buildPdf(title = "  Blank scan  ", pages = listOf(blankPage(), blankPage()))
+
+            val result = service(repo).importPdf("blank-pages.pdf", stream(bytes), personaId = null)
+
+            val note = repo.getDocument(result.documentId)!!
+            assertThat(note.kind).isEqualTo(DocumentKind.NOTE)
+            assertThat(note.title).isEqualTo("Blank scan")
+            assertThat(note.bodyMd).isEqualTo("_No text layer found in blank-pages.pdf._")
+            assertThat((note.frontmatter[FrontmatterKeys.SOURCE] as JsonPrimitive).content)
+                .isEqualTo(result.attachmentId)
+            val attachment = repo.getDocument(result.attachmentId!!)!!
+            assertThat(attachment.kind).isEqualTo(DocumentKind.ATTACHMENT)
+            assertThat(repo.attachmentMimeType(attachment.id)).isEqualTo("application/pdf")
+            assertThat(repo.openAttachment(attachment.id).use { it.readBytes() }).isEqualTo(bytes)
+        }
+
+    @Test
+    public fun `whitespace-only pages yield the notice rather than page separators`(): Unit =
+        runTest {
+            val repo = InMemoryVaultRepository()
+            val bytes = buildPdf(pages = listOf(textPage("   "), textPage("  ")))
+
+            val result = service(repo).importPdf("whitespace.pdf", stream(bytes), personaId = null)
+
+            assertThat(repo.getDocument(result.documentId)!!.bodyMd)
+                .isEqualTo("_No text layer found in whitespace.pdf._")
+            assertThat(repo.openAttachment(result.attachmentId!!).use { it.readBytes() }).isEqualTo(bytes)
         }
 
     // ------------------------------------------------------------------

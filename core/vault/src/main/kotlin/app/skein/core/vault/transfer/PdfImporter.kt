@@ -115,14 +115,17 @@ internal object PdfImporter {
 
                 val stripper = PDFTextStripper()
                 val body = StringBuilder()
+                var hasText = false
                 for (pageNumber in 1..pageCount) {
                     stripper.startPage = pageNumber
                     stripper.endPage = pageNumber
                     val pageText = stripper.getText(document).trim('\n')
+                    if (pageText.isNotBlank()) hasText = true
                     if (pageNumber > 1) body.append(PAGE_BREAK)
                     body.append(pageText)
                 }
-                PdfExtraction(text = body.toString().ifBlank { null }, title = title)
+                // Page separators alone do not establish a usable text layer.
+                PdfExtraction(text = if (hasText) body.toString() else null, title = title)
             }
         } catch (_: Exception) {
             // Deliberately broad (never `Error`/`OutOfMemoryError`, which
