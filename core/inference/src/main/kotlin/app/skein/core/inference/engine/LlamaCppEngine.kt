@@ -360,6 +360,7 @@ public class LlamaCppEngine(
                 if (!activeStream.compareAndSet(null, holder)) throw InferenceException.Busy()
             }
 
+            var submissionAttempted = false
             try {
                 val sampling = if (params == NO_OPINION) SamplingDefaults.forModel(model) else params
                 val request =
@@ -371,108 +372,90 @@ public class LlamaCppEngine(
                         expectedModelSha256 = prompt.expectedModelSha256,
                     )
 
-                val callback =
-                    object : IInferenceCallback.Stub() {
-                        override fun onTokens(
-                            id: Int,
-                            pieces: Array<out String>?,
-                            ids: IntArray?,
-                            dropped: Int,
-                        ): Unit =
-                            synchronized(lifecycle) {
-                                if (id != requestId || activeStream.get() !== holder) return@synchronized
-                                if (dropped > 0) {
-                                    // A count, not content. `skein-6as` renders the
-                                    // "output truncated for speed" state from the
-                                    // partial turn it already has; the locked
-                                    // `Token` hierarchy has no variant to carry it.
-                                    SkeinLog.w(TAG, "service shed $dropped token batches under backpressure")
-                                }
-                                val texts = pieces ?: return@synchronized
-                                val tokenIds = ids
-                                texts.forEachIndexed { index, piece ->
-                                    trySend(Token.Text(text = piece, id = tokenIds?.getOrNull(index) ?: 0))
-                                }
-                            }
-
-                        override fun onDone(
-                            id: Int,
-                            stats: GenStats?,
-                        ): Unit =
-                            synchronized(lifecycle) {
-                                if (id != requestId || activeStream.get() !== holder) return@synchronized
-                                stats?.let {
-                                    // Numbers only (spec §9) — the smoke's TTFT and tok/s record.
-                                    SkeinLog.i(
-                                        TAG,
-                                        "generation done: reason=${it.stopReason} n_in=${it.promptTokens} " +
-                                            "n_out=${it.generatedTokens} ttft=${it.ttftMs}ms rate=${"%.2f".format(
-                                                it.tokensPerSec,
-                                            )}/s",
-                                    )
-                                    trySend(it.toToken())
-                                    _status.update { current ->
-                                        current.copy(state = EngineState.READY, tokensPerSec = it.tokensPerSec)
+                try {
+                    val callback =
+                        object : IInferenceCallback.Stub() {
+                            override fun onTokens(
+                                id: Int,
+                                pieces: Array<out String>?,
+                                ids: IntArray?,
+                                dropped: Int,
+                            ): Unit =
+                                synchronized(lifecycle) {
+                                    if (id != requestId || activeStream.get() !== holder) return@synchronized
+                                    if (dropped > 0) {
+                                        // A count, not content. `skein-6as` renders the
+                                        // "output truncated for speed" state from the
+                                        // partial turn it already has; the locked
+                                        // `Token` hierarchy has no variant to carry it.
+                                        SkeinLog.w(TAG, "service shed $dropped token batches under backpressure")
+                                    }
+                                    val texts = pieces ?: return@synchronized
+                                    val tokenIds = ids
+                                    texts.forEachIndexed { index, piece ->
+                                        trySend(Token.Text(text = piece, id = tokenIds?.getOrNull(index) ?: 0))
                                     }
                                 }
-                                close()
-                            }
 
-                        override fun onError(
-                            id: Int,
-                            code: Int,
-                            message: String?,
-                        ): Unit =
-                            synchronized(lifecycle) {
-                                if (id != requestId || activeStream.get() !== holder) return@synchronized
-                                // `toException` sanitizes the service's untrusted
-                                // diagnostic; a null return is OK/CANCELLED, which
-                                // is a normal end of stream, not a failure.
-                                close(ErrorCodes.toException(code, message.orEmpty()))
-                            }
-                    }
+                            override fun onDone(
+                                id: Int,
+                                stats: GenStats?,
+                            ): Unit =
+                                synchronized(lifecycle) {
+                                    if (id != requestId || activeStream.get() !== holder) return@synchronized
+                                    stats?.let {
+                                        // Numbers only (spec §9) — the smoke's TTFT and tok/s record.
+                                        SkeinLog.i(
+                                            TAG,
+                                            "generation done: reason=${it.stopReason} n_in=${it.promptTokens} " +
+                                                "n_out=${it.generatedTokens} ttft=${it.ttftMs}ms rate=${"%.2f".format(
+                                                    it.tokensPerSec,
+                                                )}/s",
+                                        )
+                                        trySend(it.toToken())
+                                        _status.update { current ->
+                                            current.copy(state = EngineState.READY, tokensPerSec = it.tokensPerSec)
+                                        }
+                                    }
+                                    close()
+                                }
 
-                withContext(io) {
-                    try {
+                            override fun onError(
+                                id: Int,
+                                code: Int,
+                                message: String?,
+                            ): Unit =
+                                synchronized(lifecycle) {
+                                    if (id != requestId || activeStream.get() !== holder) return@synchronized
+                                    // `toException` sanitizes the service's untrusted
+                                    // diagnostic; a null return is OK/CANCELLED, which
+                                    // is a normal end of stream, not a failure.
+                                    close(ErrorCodes.toException(code, message.orEmpty()))
+                                }
+                        }
+
+                    withContext(io) {
                         synchronized(lifecycle) {
                             if (activeStream.get() !== holder) throw InferenceException.SessionLocked()
                             _status.update { it.copy(modelId = model.id, state = EngineState.GENERATING) }
                         }
+                        // A throwing transaction can still have been delivered. Its
+                        // original service/request pair therefore owns cancellation too.
+                        submissionAttempted = true
                         runRemote { service.generate(request, callback) }
-                    } finally {
-                        closeLocalCopies(request)
                     }
+                } finally {
+                    // This scope starts immediately after encode, outside the IO
+                    // lambda: prompt cancellation can prevent that lambda from entering.
+                    closeLocalCopies(request)
                 }
 
-                awaitClose {
-                    synchronized(lifecycle) {
-                        activeStream.compareAndSet(holder, null).also { removed ->
-                            if (removed) {
-                                _status.update { current ->
-                                    if (current.state ==
-                                        EngineState.GENERATING
-                                    ) {
-                                        current.copy(state = EngineState.READY)
-                                    } else {
-                                        current
-                                    }
-                                }
-                            }
-                        }
-                    }
-                    // Unconditional, per plan E4.I4. A `cancel` for a request
-                    // the service already finished is a no-op there, and the
-                    // alternative — deciding locally whether to send it — is
-                    // a race whose losing side leaks a running generation.
-                    runCatching { service.cancel(requestId) }
-                }
-            } catch (failure: Throwable) {
+                awaitClose { }
+            } finally {
                 synchronized(lifecycle) {
                     if (activeStream.compareAndSet(holder, null)) {
                         _status.update { current ->
-                            if (current.state ==
-                                EngineState.GENERATING
-                            ) {
+                            if (current.state == EngineState.GENERATING) {
                                 current.copy(state = EngineState.READY)
                             } else {
                                 current
@@ -480,7 +463,12 @@ public class LlamaCppEngine(
                         }
                     }
                 }
-                throw failure
+                // Registration of awaitClose is not guaranteed: the collector may
+                // cancel on a token before withContext resumes from generate. Keep
+                // cleanup outside that registration, scoped to the captured request.
+                // A completed/refused request's cancel is harmless and cleanup failure
+                // must not replace the caller's original result or cancellation.
+                if (submissionAttempted) runCatching { service.cancel(requestId) }
             }
             // Bounded by `SamplingParams.maxTokens` pieces for one generation,
             // so "unlimited" is a few thousand small objects at worst. The

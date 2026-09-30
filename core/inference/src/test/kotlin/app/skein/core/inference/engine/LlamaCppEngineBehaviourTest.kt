@@ -9,6 +9,8 @@
 
 package app.skein.core.inference.engine
 
+import android.os.ParcelFileDescriptor
+import android.os.RemoteException
 import app.skein.core.inference.InferenceConfig
 import app.skein.core.model.ChatMessage
 import app.skein.core.model.EngineState
@@ -30,6 +32,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.NonCancellable
 import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitCancellation
+import kotlinx.coroutines.cancelAndJoin
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.toList
@@ -43,6 +46,14 @@ import org.junit.Test
 import org.junit.rules.TemporaryFolder
 import org.junit.runner.RunWith
 import org.robolectric.RobolectricTestRunner
+import org.robolectric.annotation.Config
+import org.robolectric.annotation.Implementation
+import org.robolectric.annotation.Implements
+import org.robolectric.shadows.ShadowParcelFileDescriptor
+import org.robolectric.util.ReflectionHelpers
+import org.robolectric.util.ReflectionHelpers.ClassParameter
+import java.io.File
+import java.util.concurrent.CopyOnWriteArrayList
 import java.util.concurrent.CountDownLatch
 import java.util.concurrent.Executors
 import java.util.concurrent.TimeUnit
@@ -202,6 +213,185 @@ class LlamaCppEngineBehaviourTest {
 
             val requestId = service.generates.single().requestId
             assertThat(service.cancels).contains(requestId)
+        }
+
+    @Test
+    fun cancellationBeforeGenerateReturnsStillCancelsSubmittedRequest(): Unit =
+        runTest {
+            engine.load(fixture.model()).getOrThrow()
+            val submitted = CountDownLatch(1)
+            val tokenReceived = CountDownLatch(1)
+            val releaseReturn = CountDownLatch(1)
+            val releaseWorker = CountDownLatch(1)
+            service.completionDelayMillis = 0L
+            service.beforeGenerateReturns = {
+                submitted.countDown()
+                check(releaseReturn.await(5, TimeUnit.SECONDS))
+            }
+            service.beforeDone = { check(releaseWorker.await(5, TimeUnit.SECONDS)) }
+            val collector =
+                launch(Dispatchers.Default) {
+                    engine.stream(prompt("é".repeat(20_000)), params()).collect {
+                        tokenReceived.countDown()
+                        awaitCancellation()
+                    }
+                }
+            try {
+                assertThat(submitted.await(5, TimeUnit.SECONDS)).isTrue()
+                assertThat(tokenReceived.await(5, TimeUnit.SECONDS)).isTrue()
+                collector.cancel()
+                releaseReturn.countDown()
+                collector.join()
+
+                val request = service.generates.single()
+                assertThat(service.cancels).containsExactly(request.requestId)
+                assertThat(engine.status.value.state).isEqualTo(EngineState.READY)
+                val fd =
+                    request.messages
+                        .single()
+                        .contentFd!!
+                        .fd
+                assertThat(runCatching { fd.fd }.getOrDefault(-1)).isLessThan(0)
+            } finally {
+                releaseReturn.countDown()
+                releaseWorker.countDown()
+                collector.cancelAndJoin()
+                service.awaitIdle()
+            }
+        }
+
+    @Test
+    @Config(shadows = [RecordingSpillDescriptorShadow::class])
+    fun cancellationBeforeIoEntryClosesUnsubmittedSpillDescriptors(): Unit =
+        runTest {
+            val queued = AtomicReference<Runnable?>(null)
+            val queueNext = AtomicBoolean(false)
+            val entered = CountDownLatch(1)
+            val dispatcher =
+                object : CoroutineDispatcher() {
+                    override fun dispatch(
+                        context: CoroutineContext,
+                        block: Runnable,
+                    ) {
+                        if (queueNext.compareAndSet(true, false)) {
+                            queued.set(block)
+                            entered.countDown()
+                        } else {
+                            Dispatchers.IO.dispatch(context, block)
+                        }
+                    }
+                }
+            val spillDir = temporaryFolder.newFolder("queued-spill")
+            val queuedEngine = LlamaCppEngine(connector, fixture.pins, spillDir, { epoch }, io = dispatcher)
+            queuedEngine.load(fixture.model()).getOrThrow()
+            RecordingSpillDescriptorShadow.opened.clear()
+            queueNext.set(true)
+            val collector =
+                launch(Dispatchers.Default) {
+                    queuedEngine.stream(prompt("é".repeat(20_000)), params()).toList()
+                }
+            try {
+                assertThat(entered.await(5, TimeUnit.SECONDS)).isTrue()
+                val descriptors = RecordingSpillDescriptorShadow.opened.toList()
+                assertThat(descriptors).hasSize(1)
+                assertThat(descriptors.single().fd).isAtLeast(0)
+                collector.cancel()
+                queued.getAndSet(null)!!.run()
+                collector.join()
+
+                assertThat(service.generates).isEmpty()
+                assertThat(service.cancels).isEmpty()
+                assertThat(runCatching { descriptors.single().fd }.getOrDefault(-1)).isLessThan(0)
+                assertThat(spillDir.listFiles().orEmpty()).isEmpty()
+                assertThat(queuedEngine.status.value.state).isEqualTo(EngineState.READY)
+            } finally {
+                collector.cancel()
+                queued.getAndSet(null)?.run()
+                collector.join()
+                // Also release a leaked descriptor when this is run as an old-source negative control.
+                RecordingSpillDescriptorShadow.opened.forEach { runCatching { it.close() } }
+                RecordingSpillDescriptorShadow.opened.clear()
+            }
+        }
+
+    @Test
+    fun throwingSubmittedTransactionStillCancelsWithoutMaskingOriginalFailure(): Unit =
+        runTest {
+            engine.load(fixture.model()).getOrThrow()
+            val releaseWorker = CountDownLatch(1)
+            service.completionDelayMillis = 0L
+            service.beforeDone = { check(releaseWorker.await(5, TimeUnit.SECONDS)) }
+            service.beforeGenerateReturns = { throw RemoteException("synthetic transport failure") }
+            service.cancelFailure = IllegalStateException("synthetic cancel failure")
+            try {
+                val failure = runCatching { engine.stream(prompt(), params()).toList() }.exceptionOrNull()
+                assertThat(failure).isInstanceOf(InferenceException.ServiceDied::class.java)
+                assertThat(service.cancels).containsExactly(service.generates.single().requestId)
+                assertThat(engine.status.value.state).isEqualTo(EngineState.READY)
+            } finally {
+                releaseWorker.countDown()
+                service.awaitIdle()
+            }
+        }
+
+    @Test
+    fun lateCancelledSubmissionCannotCancelOrClearNewSessionStream(): Unit =
+        runTest {
+            engine.onSessionUnlocked(epoch)
+            engine.load(fixture.model()).getOrThrow()
+            val oldSubmitted = CountDownLatch(1)
+            val releaseOldReturn = CountDownLatch(1)
+            service.completionDelayMillis = 0L
+            service.beforeGenerateReturns = {
+                oldSubmitted.countDown()
+                check(releaseOldReturn.await(5, TimeUnit.SECONDS))
+            }
+            val oldCollector = launch(Dispatchers.Default) { engine.stream(prompt(), params()).toList() }
+            val replacement = FakeInferenceService()
+            val newTokenReceived = CountDownLatch(1)
+            val releaseNewWorker = CountDownLatch(1)
+            replacement.completionDelayMillis = 0L
+            replacement.beforeDone = { check(releaseNewWorker.await(5, TimeUnit.SECONDS)) }
+            var newCollector: kotlinx.coroutines.Job? = null
+            try {
+                assertThat(oldSubmitted.await(5, TimeUnit.SECONDS)).isTrue()
+                oldCollector.cancel()
+                engine.onSessionLocked(epoch)
+                epoch++
+                connector.service = replacement
+                engine.onSessionUnlocked(epoch)
+                engine.load(fixture.model()).getOrThrow()
+                newCollector =
+                    launch(Dispatchers.Default) {
+                        engine.stream(prompt(), params()).collect {
+                            newTokenReceived.countDown()
+                            awaitCancellation()
+                        }
+                    }
+                assertThat(newTokenReceived.await(5, TimeUnit.SECONDS)).isTrue()
+                val newStatus = engine.status.value
+                val newRequest = replacement.generates.single().requestId
+                val oldRequest = service.generates.single().requestId
+                assertThat(newRequest).isNotEqualTo(oldRequest)
+                assertThat(newStatus.state).isEqualTo(EngineState.GENERATING)
+
+                releaseOldReturn.countDown()
+                oldCollector.join()
+
+                assertThat(service.cancels).containsExactly(oldRequest)
+                assertThat(replacement.cancels).isEmpty()
+                assertThat(engine.status.value).isEqualTo(newStatus)
+                newCollector.cancelAndJoin()
+                assertThat(replacement.cancels).containsExactly(newRequest)
+                assertThat(engine.status.value.state).isEqualTo(EngineState.READY)
+            } finally {
+                releaseOldReturn.countDown()
+                releaseNewWorker.countDown()
+                oldCollector.cancelAndJoin()
+                newCollector?.cancelAndJoin()
+                service.awaitIdle()
+                replacement.awaitIdle()
+            }
         }
 
     @Test
@@ -1041,6 +1231,28 @@ class LlamaCppEngineBehaviourTest {
         }
 
     // ------------------------------------------------------------- helpers
+
+    /** Records the actual descriptors opened by PromptSpiller without a production test seam. */
+    @Implements(ParcelFileDescriptor::class)
+    class RecordingSpillDescriptorShadow : ShadowParcelFileDescriptor() {
+        companion object {
+            val opened = CopyOnWriteArrayList<ParcelFileDescriptor>()
+
+            @Implementation(methodName = "open")
+            @JvmStatic
+            fun recordOpen(
+                file: File,
+                mode: Int,
+            ): ParcelFileDescriptor =
+                ReflectionHelpers
+                    .callStaticMethod<ParcelFileDescriptor>(
+                        ShadowParcelFileDescriptor::class.java,
+                        "open",
+                        ClassParameter.from(File::class.java, file),
+                        ClassParameter.from(Int::class.javaPrimitiveType!!, mode),
+                    ).also { opened += it }
+        }
+    }
 
     private fun prompt(text: String = "hi"): Prompt = Prompt(listOf(ChatMessage(Role.USER, text)))
 

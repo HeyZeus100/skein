@@ -77,6 +77,12 @@ internal class FakeInferenceService : IInferenceService {
 
     var beforeInspectReturns: (() -> Unit)? = null
 
+    /** Runs after generation is accepted, while the synchronous transaction is still returning. */
+    var beforeGenerateReturns: (() -> Unit)? = null
+
+    /** A failed cancel must not replace the original stream failure. */
+    var cancelFailure: RuntimeException? = null
+
     var beforeLockingReturns: (() -> Unit)? = null
 
     var beforeUnlockApplies: (() -> Unit)? = null
@@ -264,6 +270,7 @@ internal class FakeInferenceService : IInferenceService {
         active.set(Worker(req.requestId, thread, cancelled))
         thread.isDaemon = true
         thread.start()
+        beforeGenerateReturns?.invoke()
     }
 
     private fun runWorker(
@@ -306,6 +313,7 @@ internal class FakeInferenceService : IInferenceService {
             ?.takeIf { it.requestId == requestId }
             ?.cancelled
             ?.set(true)
+        cancelFailure?.let { throw it }
     }
 
     override fun unload() {
