@@ -62,6 +62,9 @@ public class ChatTurnController(
     private val monitor = Any()
     private val admission = Mutex()
     private val pendingAdmissions = mutableSetOf<Job>()
+    private val admittingChats = mutableSetOf<DocId>()
+    private val deleteReservations = mutableSetOf<DocId>()
+    private val deletedChats = mutableSetOf<DocId>()
     private var phase = Phase.OPEN
     private val flows = mutableMapOf<DocId, MutableStateFlow<ChatTurnSnapshot>>()
     private val closeListeners = mutableSetOf<() -> Unit>()
@@ -166,7 +169,9 @@ public class ChatTurnController(
 
     public fun state(chatId: DocId): StateFlow<ChatTurnSnapshot> =
         synchronized(monitor) {
-            if (phase == Phase.CLOSED) return@synchronized MutableStateFlow(ChatTurnSnapshot()).asStateFlow()
+            if (phase == Phase.CLOSED || chatId in deletedChats) {
+                return@synchronized MutableStateFlow(ChatTurnSnapshot()).asStateFlow()
+            }
             flows.getOrPut(chatId) { MutableStateFlow(ChatTurnSnapshot()) }.asStateFlow()
         }
 
@@ -221,7 +226,7 @@ public class ChatTurnController(
         version: Long?,
         append: suspend () -> PreparedChatTurn,
     ): DocId =
-        admissionTask {
+        admissionTask(chatId) {
             admission.withLock {
                 synchronized(monitor) {
                     checkOpen()
@@ -260,16 +265,29 @@ public class ChatTurnController(
             }
         }
 
-    private suspend fun admissionTask(block: suspend () -> DocId): DocId {
+    private suspend fun admissionTask(
+        chatId: DocId?,
+        block: suspend () -> DocId,
+    ): DocId {
         val job = currentCoroutineContext()[Job]!!
         synchronized(monitor) {
             checkOpen()
+            if (chatId != null) {
+                if (chatId in deletedChats) throw NoSuchElementException("Chat no longer exists")
+                if (chatId in deleteReservations || chatId in admittingChats || records[chatId]?.finished == false) {
+                    throw InferenceException.Busy()
+                }
+                admittingChats += chatId
+            }
             pendingAdmissions += job
         }
         try {
             return block()
         } finally {
-            synchronized(monitor) { pendingAdmissions -= job }
+            synchronized(monitor) {
+                pendingAdmissions -= job
+                if (chatId != null) admittingChats -= chatId
+            }
         }
     }
 
@@ -394,16 +412,76 @@ public class ChatTurnController(
         wake.trySend(Unit)
     }
 
-    /** A pending delete owns the terminal action and must never acquire a lock-time partial answer. */
-    public fun markDeleting(chatId: DocId) {
-        val record =
-            synchronized(monitor) {
-                records[chatId]?.also {
-                    it.deleting = true
-                    freeze(it)
+    /**
+     * Reserves an idle/missing chat after confirmation, atomically against send/retry admission.
+     * Queued, preparing, generating and finalizing turns refuse deletion; this never stops a turn.
+     * A second caller does not acquire the first caller's reservation. Commit or roll back exactly once.
+     */
+    public fun tryBeginDelete(chatId: DocId): Boolean =
+        synchronized(monitor) {
+            if (!accepts() ||
+                chatId in deletedChats ||
+                chatId in deleteReservations ||
+                chatId in admittingChats ||
+                records[chatId]?.finished == false ||
+                records[chatId]?.job?.isActive == true ||
+                records[chatId]?.cancelJob?.isActive == true
+            ) {
+                return@synchronized false
+            }
+            deleteReservations.add(chatId)
+        }
+
+    /** Rollback only: releases admission without changing the existing turn, draft or outcome. */
+    public fun cancelDelete(chatId: DocId) {
+        synchronized(monitor) { deleteReservations.remove(chatId) }
+    }
+
+    /** Repository postcommit hook; idempotent, synchronous and safe after epoch revocation/close. */
+    public fun finishDelete(chatId: DocId) {
+        synchronized(monitor) {
+            deletedChats += chatId
+            deleteReservations -= chatId
+            records.remove(chatId)?.let { record ->
+                record.deleting = true
+                record.frozen = true
+                record.finished = true
+                queue.remove(record)
+                record.text.clear()
+                record.segments.clear()
+                record.citations.clear()
+                record.context = null
+                record.snapshot = null
+                record.prepared = null
+                record.finalizer.clear()
+            }
+            flows.remove(chatId)?.value = ChatTurnSnapshot()
+            invalidateSourceCommitted(chatId)
+        }
+    }
+
+    /** Removes a committed deletion from live source inspectors without stopping another chat. */
+    public fun invalidateSourceCommitted(documentId: DocId) {
+        synchronized(monitor) {
+            pipeline.invalidateCommittedDocument(documentId)
+            flows.values.forEach { state ->
+                val current = state.value
+                val filtered = current.outcome?.let(pipeline::retainedOutcome)
+                if (filtered !== current.outcome) {
+                    state.value =
+                        ChatTurnSnapshot(current.turn, current.citations, filtered, current.userMessageId)
                 }
-            } ?: return
-        scheduleCancel(record)
+            }
+            // An active turn keeps its immutable evidence until finalization (lifecycle §3.3). Its eventual
+            // public outcome is filtered too; persisted citation excerpts remain valid history.
+            records.values.filter { it.finished }.forEach { record ->
+                if (record.context?.retrieved?.any { it.docId == documentId } == true) {
+                    record.context = null
+                    record.snapshot = null
+                    record.segments.clear()
+                }
+            }
+        }
     }
 
     /** HIGH-tier hook: synchronous freeze only, engine cancellation is scheduled without waiting. */
@@ -477,6 +555,9 @@ public class ChatTurnController(
             closeListeners.toList().forEach { it() }
             closeListeners.clear()
             pendingAdmissions.clear()
+            admittingChats.clear()
+            deleteReservations.clear()
+            deletedChats.clear()
         }
         wake.close()
         worker.cancel()
@@ -530,7 +611,10 @@ public class ChatTurnController(
             synchronized(monitor) {
                 // Only LOW owns a lock-time write. A completion in the tiny gap
                 // between epoch revocation and HIGH freeze stays pending for LOW.
-                if (phase == Phase.CLOSED ||
+                if (record.finished ||
+                    record.deleting ||
+                    records[record.chatId] !== record ||
+                    phase == Phase.CLOSED ||
                     (phase == Phase.OPEN && unlockedEpoch() != epoch) ||
                     (phase == Phase.LOCKING && !lockFlush)
                 ) {
@@ -541,7 +625,7 @@ public class ChatTurnController(
         if (snapshot == null) {
             synchronized(monitor) {
                 record.finished = true
-                if (phase == Phase.OPEN) {
+                if (phase == Phase.OPEN && !record.deleting && records[record.chatId] === record) {
                     flow(record.chatId).value =
                         ChatTurnSnapshot(
                             ChatTurnState.Interrupted(""),
@@ -571,10 +655,14 @@ public class ChatTurnController(
                         } else {
                             ChatTurnState.Done
                         },
-                        outcome = snapshot.outcome(message),
+                        outcome = pipeline.retainedOutcome(snapshot.outcome(message)),
                         userMessageId = record.userId,
                     )
             }
+            // Finalized state lives in the public outcome; don't retain another private evidence copy.
+            record.context = null
+            record.snapshot = null
+            record.segments.clear()
         }
     }
 
@@ -598,6 +686,7 @@ public class ChatTurnController(
         lockFlush: Boolean,
     ): Boolean =
         !record.deleting &&
+            records[record.chatId] === record &&
             when (phase) {
                 Phase.OPEN -> !lockFlush && unlockedEpoch() == epoch
                 Phase.LOCKING -> lockFlush && lockingEpoch() == epoch

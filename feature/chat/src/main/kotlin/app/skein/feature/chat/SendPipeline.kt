@@ -195,6 +195,8 @@ public class SendPipeline(
 
     @Volatile private var preparationCancelled = false
     private val _lastOutcome = MutableStateFlow<TurnOutcome?>(null)
+    private val outcomeMonitor = Any()
+    private val deletedDocuments = mutableSetOf<DocId>()
 
     /** The most recently finished turn's metadata — the context panel's "last turn" (spec §8.4). */
     public val lastOutcome: StateFlow<TurnOutcome?> = _lastOutcome.asStateFlow()
@@ -286,12 +288,44 @@ public class SendPipeline(
         snapshot: TurnAnswerSnapshot,
         message: Message?,
     ) {
-        _lastOutcome.value = snapshot.outcome(message)
+        synchronized(outcomeMonitor) { _lastOutcome.value = retainedOutcome(snapshot.outcome(message)) }
     }
 
     public fun clearSessionState() {
-        _lastOutcome.value = null
+        synchronized(outcomeMonitor) {
+            _lastOutcome.value = null
+            deletedDocuments.clear()
+        }
     }
+
+    /** Postcommit only. Late publication cannot restore deleted source offers or this chat's outcome. */
+    public fun invalidateCommittedDocument(documentId: DocId) {
+        synchronized(outcomeMonitor) {
+            deletedDocuments += documentId
+            _lastOutcome.value = _lastOutcome.value?.let(::retainedOutcome)
+        }
+    }
+
+    internal fun retainedOutcome(outcome: TurnOutcome): TurnOutcome? =
+        synchronized(outcomeMonitor) {
+            if (outcome.chatDocId in deletedDocuments) return@synchronized null
+            if (outcome.retrieved.none { it.docId in deletedDocuments } &&
+                outcome.assembled.citations.values
+                    .none { it.docId in deletedDocuments }
+            ) {
+                return@synchronized outcome
+            }
+            outcome.copy(
+                retrieved = outcome.retrieved.filterNot { it.docId in deletedDocuments },
+                assembled =
+                    outcome.assembled.copy(
+                        // Prompt text contains verbatim evidence; do not try to redact by substring.
+                        // The inspector only needs the surviving indexed offers and budget metadata.
+                        prompt = Prompt(emptyList()),
+                        citations = outcome.assembled.citations.filterValues { it.docId !in deletedDocuments },
+                    ),
+            )
+        }
 
     private fun execute(
         admission: suspend () -> PreparedChatTurn,

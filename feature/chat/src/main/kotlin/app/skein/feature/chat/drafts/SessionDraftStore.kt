@@ -2,6 +2,7 @@ package app.skein.feature.chat.drafts
 
 import app.skein.core.model.ChatDraft
 import app.skein.core.model.ChatDraftKey
+import app.skein.core.model.DocId
 import app.skein.core.model.VaultRepository
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.CoroutineScope
@@ -69,6 +70,8 @@ public class SessionDraftStore(
 
     private val guard = Any()
     private val entries = mutableMapOf<ChatDraftKey, Entry>()
+    private val discardedChats = mutableSetOf<DocId>()
+    private val pendingSends = mutableMapOf<Job, ChatDraftKey>()
     private val flushMutex = Mutex()
     private val activeFlushes = mutableSetOf<Job>()
     private val ownerJob = SupervisorJob(sessionScope.coroutineContext[Job])
@@ -88,7 +91,7 @@ public class SessionDraftStore(
 
     public fun state(key: ChatDraftKey): StateFlow<DraftLoadState> =
         synchronized(guard) {
-            if (closed) return@synchronized closedFlow
+            if (closed || isDiscarded(key)) return@synchronized closedFlow
             entries[key]?.let { return@synchronized it.state.asStateFlow() }
             if (!admitsUnlocked()) return@synchronized closedFlow
             val entry = Entry()
@@ -137,8 +140,9 @@ public class SessionDraftStore(
         coroutineScope {
             val sendJob = coroutineContext[Job]!!
             synchronized(guard) {
-                check(admitsUnlocked()) { "Draft session unavailable" }
+                check(admitsUnlocked() && !isDiscarded(key)) { "Draft session unavailable" }
                 activeFlushes += sendJob
+                pendingSends[sendJob] = key
             }
             try {
                 flushMutex.withLock {
@@ -154,6 +158,9 @@ public class SessionDraftStore(
                             ) { "Draft is not available for sending" }
                         }
                         val result = appendUser()
+                        synchronized(guard) {
+                            check(!isDiscarded(key)) { "Draft is no longer available" }
+                        }
                         repository.deleteDraft(key)
                         repository.afterTransactionCommit { acknowledgeSent(key, sentVersion) }
                         coroutineContext.ensureActive()
@@ -161,7 +168,10 @@ public class SessionDraftStore(
                     }
                 }
             } finally {
-                synchronized(guard) { activeFlushes -= sendJob }
+                synchronized(guard) {
+                    activeFlushes -= sendJob
+                    pendingSends -= sendJob
+                }
             }
         }
 
@@ -217,6 +227,27 @@ public class SessionDraftStore(
         if (lockEpoch == epoch) close()
     }
 
+    /**
+     * Repository postcommit cleanup for one deleted chat. Its FK cascade owns persisted draft
+     * deletion. Old subscribers are scrubbed, late loads/sends are revoked, and stale views cannot
+     * reopen this key in the same session. Unrelated existing and New-chat drafts remain writable.
+     */
+    public fun discardCommitted(chatId: DocId) {
+        val sends =
+            synchronized(guard) {
+                discardedChats += chatId
+                val key = ChatDraftKey.Existing(chatId)
+                entries.remove(key)?.let { entry ->
+                    entry.state.value = DraftLoadState.Closed
+                    entry.dirty = false
+                    entry.loadJob?.cancel()
+                    entry.debounceJob?.cancel()
+                }
+                pendingSends.filterValues { it == key }.keys.toList()
+            }
+        sends.forEach(Job::cancel)
+    }
+
     /** Also required on session disposal before onLocked; every previously handed-out flow is scrubbed. */
     override fun close() {
         val flushes =
@@ -225,6 +256,8 @@ public class SessionDraftStore(
                 closed = true
                 entries.values.forEach { it.state.value = DraftLoadState.Closed }
                 entries.clear()
+                discardedChats.clear()
+                pendingSends.clear()
                 activeFlushes.toList().also { activeFlushes.clear() }
             }
         ownerJob.cancel()
@@ -232,6 +265,8 @@ public class SessionDraftStore(
     }
 
     private fun admitsUnlocked(): Boolean = !closed && !lockingStarted && unlockedEpoch() == epoch
+
+    private fun isDiscarded(key: ChatDraftKey): Boolean = key is ChatDraftKey.Existing && key.chatId in discardedChats
 
     private fun admitsFlush(lockFlush: Boolean): Boolean =
         !closed && if (lockFlush) lockingStarted && lockingEpoch() == epoch else admitsUnlocked()
@@ -319,7 +354,16 @@ public class SessionDraftStore(
                                                 entry?.dirty == true &&
                                                 ready?.snapshot?.version == item.snapshot.version
                                         }
-                                    if (current) repository.writeDraft(item.key, item.snapshot.draft)
+                                    if (current) {
+                                        repository.writeDraft(item.key, item.snapshot.draft)
+                                        // A writer already in progress must roll back if committed cleanup
+                                        // revoked its key while suspended. Never restore a cascaded draft.
+                                        synchronized(guard) {
+                                            if (isDiscarded(item.key)) {
+                                                throw CancellationException("Draft was discarded")
+                                            }
+                                        }
+                                    }
                                 }
                                 coroutineContext.ensureActive()
                                 true

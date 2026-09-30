@@ -5,6 +5,7 @@ import app.skein.core.model.ChatDraft
 import app.skein.core.model.ChatDraftKey
 import app.skein.core.model.DocumentKind
 import app.skein.core.model.InferenceEngine
+import app.skein.core.model.InferenceException
 import app.skein.core.model.Locator
 import app.skein.core.model.NewDocument
 import app.skein.core.model.NewMessage
@@ -106,6 +107,7 @@ class ChatTurnControllerTest {
             assertEquals("visible partial answer" + INTERRUPTED_MARKER, messages.last().contentMd)
             assertEquals("visible partial answer", (view.value.turn as ChatTurnState.Interrupted).partial)
             assertEquals(StopReason.CANCELLED, view.value.outcome?.stopReason)
+            assertFalse(f.controller.tryBeginDelete(chat))
 
             f.engine.channels[0].trySend(Token.Text(" late output", 2))
             f.controller.stop(chat)
@@ -114,6 +116,8 @@ class ChatTurnControllerTest {
             runCurrent()
 
             assertEquals(messages, f.repo.listMessages(chat))
+            assertTrue(f.controller.tryBeginDelete(chat))
+            f.controller.cancelDelete(chat)
             f.close()
         }
 
@@ -194,7 +198,7 @@ class ChatTurnControllerTest {
             next.close()
         }
 
-    @Test fun `pending delete suppresses partial and close synchronously clears a stopped view`() =
+    @Test fun `generating chat refuses deletion and lock still saves its visible partial`() =
         runTest {
             val f = Fixture(this)
             val chat = f.chat()
@@ -203,12 +207,19 @@ class ChatTurnControllerTest {
             runCurrent()
             f.visible("visible [1]")
             assertFalse(vm.messages.isEmpty())
-            f.controller.markDeleting(chat)
+            assertFalse(f.controller.tryBeginDelete(chat))
             f.unlocked = null
             f.locking = 7L
             f.controller.onLockingHigh(7L, 500L)
             f.controller.onLockingLow(7L, 500L)
-            assertEquals(1, f.repo.listMessages(chat).size)
+            assertEquals(2, f.repo.listMessages(chat).size)
+            assertEquals(
+                "visible [1]" + INTERRUPTED_MARKER,
+                f.repo
+                    .listMessages(chat)
+                    .last()
+                    .contentMd,
+            )
             f.close()
             // No lifecycle/recomposition/scheduler advancement needed to clear old UI holders.
             assertTrue(vm.messages.isEmpty())
@@ -216,6 +227,253 @@ class ChatTurnControllerTest {
             assertTrue(vm.streamingCitations.isEmpty())
             runCurrent()
             assertTrue(vm.messages.isEmpty())
+        }
+
+    @Test fun `reservation rejects racing send retry and duplicate confirmation until rollback`() =
+        runTest {
+            val f = Fixture(this)
+            val chat = f.chat()
+            val key = ChatDraftKey.Existing(chat)
+            val draft = f.drafts.state(key)
+            runCurrent()
+            val captured = f.drafts.update(key, ChatDraft("keep on rollback"))!!
+            assertTrue(f.controller.tryBeginDelete(chat))
+            assertFalse(f.controller.tryBeginDelete(chat))
+            assertTrue(
+                runCatching { f.controller.enqueue(chat, captured.draft.text, captured.version).await() }
+                    .exceptionOrNull() is InferenceException.Busy,
+            )
+            assertTrue(
+                runCatching { f.controller.retry(chat, "not-a-message").await() }
+                    .exceptionOrNull() is InferenceException.Busy,
+            )
+            assertTrue(f.repo.listMessages(chat).isEmpty())
+            assertEquals(captured, (draft.value as DraftLoadState.Ready).snapshot)
+            f.controller.cancelDelete(chat)
+            f.controller.enqueue(chat, captured.draft.text, captured.version).await()
+            runCurrent()
+            assertEquals(
+                "keep on rollback",
+                f.repo
+                    .listMessages(chat)
+                    .single()
+                    .contentMd,
+            )
+            f.engine.finish(0)
+            runCurrent()
+            f.close()
+        }
+
+    @Test fun `admission waiting for USER commit and queued turn both refuse deletion`() =
+        runTest {
+            val gated = GatedRepository()
+            val f = Fixture(this, gated)
+            val first = f.chat()
+            val second = f.chat()
+            gated.blockNext = true
+            val pending = f.controller.enqueue(first, "pending user")
+            runCurrent()
+            assertTrue(gated.entered.isCompleted)
+            assertTrue(f.repo.listMessages(first).isEmpty())
+            assertFalse(f.controller.tryBeginDelete(first))
+            gated.release.complete(Unit)
+            pending.await()
+            f.controller.enqueue(second, "queued user").await()
+            runCurrent()
+            assertTrue(
+                f.controller
+                    .state(second)
+                    .value.turn is ChatTurnState.Queued,
+            )
+            assertFalse(f.controller.tryBeginDelete(second))
+            assertFalse(f.controller.tryBeginDelete(first))
+            f.engine.finish(0)
+            runCurrent()
+            f.engine.finish(1)
+            runCurrent()
+            assertTrue(f.controller.tryBeginDelete(first))
+            f.controller.cancelDelete(first)
+            f.close()
+        }
+
+    @Test fun `failed admission releases missing chat for idempotent committed cleanup`() =
+        runTest {
+            val f = Fixture(this)
+            assertTrue(runCatching { f.controller.enqueue("missing-chat", "not admitted").await() }.isFailure)
+            assertTrue(f.controller.tryBeginDelete("missing-chat"))
+            f.repo.transaction {
+                f.repo.deleteDocument("missing-chat")
+                f.repo.afterTransactionCommit { f.controller.finishDelete("missing-chat") }
+            }
+            assertNull(
+                f.controller
+                    .state("missing-chat")
+                    .value.turn,
+            )
+            assertTrue(f.engine.prompts.isEmpty())
+            f.close()
+        }
+
+    @Test fun `committed delete scrubs old holders idempotently without clearing another chat outcome`() =
+        runTest {
+            val f = Fixture(this)
+            val first = f.chat()
+            val second = f.chat()
+            val old = f.controller.state(first)
+            f.controller.enqueue(first, "first").await()
+            runCurrent()
+            f.visible("first answer [1]")
+            f.engine.finish(0)
+            runCurrent()
+            assertTrue(old.value.outcome != null)
+            f.controller.enqueue(second, "second").await()
+            runCurrent()
+            f.visible("second answer [1]")
+            f.engine.finish(1)
+            runCurrent()
+            val other = f.controller.state(second).value
+            val last = f.pipeline.lastOutcome.value
+            assertTrue(f.controller.tryBeginDelete(first))
+            f.repo.transaction {
+                f.repo.deleteDocument(first)
+                f.repo.afterTransactionCommit {
+                    f.controller.finishDelete(first)
+                    f.drafts.discardCommitted(first)
+                }
+            }
+            f.controller.finishDelete(first)
+            f.controller.cancelDelete(first)
+            assertNull(old.value.turn)
+            assertNull(old.value.outcome)
+            assertNull(old.value.userMessageId)
+            assertTrue(old.value.citations.isEmpty())
+            assertNull(
+                f.controller
+                    .state(first)
+                    .value.turn,
+            )
+            assertTrue(runCatching { f.controller.enqueue(first, "late").await() }.isFailure)
+            assertTrue(f.repo.listMessages(first).isEmpty())
+            assertEquals(other, f.controller.state(second).value)
+            assertEquals(last, f.pipeline.lastOutcome.value)
+            assertFalse(f.controller.tryBeginDelete(first))
+            f.close()
+        }
+
+    @Test fun `committed cleanup after epoch revocation clears latest outcome and cannot publish late empty stop`() =
+        runTest {
+            val f = Fixture(this)
+            val first = f.chat()
+            val queued = f.chat()
+            f.controller.enqueue(first, "first").await()
+            f.controller.enqueue(queued, "queued").await()
+            runCurrent()
+            val old = f.controller.state(queued)
+            // Queue Stop finishes synchronously, but its launched empty end callback has not run.
+            f.controller.stop(queued)
+            assertTrue(f.controller.tryBeginDelete(queued))
+            f.repo.transaction {
+                f.repo.deleteDocument(queued)
+                f.repo.afterTransactionCommit { f.controller.finishDelete(queued) }
+            }
+            runCurrent()
+            assertNull(old.value.turn)
+            f.visible("finished [1]")
+            f.engine.finish(0)
+            runCurrent()
+            assertEquals(
+                first,
+                f.pipeline.lastOutcome.value
+                    ?.chatDocId,
+            )
+            assertTrue(f.controller.tryBeginDelete(first))
+            f.repo.transaction {
+                f.repo.deleteDocument(first)
+                f.repo.afterTransactionCommit {
+                    f.unlocked = null
+                    f.locking = 7L
+                    f.controller.onLockingHigh(7L, 500L)
+                    f.controller.finishDelete(first)
+                }
+            }
+            f.controller.onLockingLow(7L, 500L)
+            assertNull(f.pipeline.lastOutcome.value)
+            assertNull(
+                f.controller
+                    .state(first)
+                    .value.outcome,
+            )
+            assertTrue(f.repo.listMessages(first).isEmpty())
+            f.close()
+        }
+
+    @Test fun `source deletion filters finished and late outcomes but preserves answer citation history`() =
+        runTest {
+            val survivor = SOURCE.copy(chunkId = 2, docId = "survivor", text = "other evidence")
+            val f = Fixture(this, sources = listOf(SOURCE, survivor))
+            val first = f.chat()
+            val second = f.chat()
+            f.controller.enqueue(first, "first").await()
+            runCurrent()
+            f.visible("answer [1]")
+            f.engine.finish(0)
+            runCurrent()
+            val old = f.controller.state(first)
+            val message = f.repo.listMessages(first).last()
+            assertEquals(
+                2,
+                old.value.outcome!!
+                    .retrieved.size,
+            )
+            f.controller.enqueue(second, "running during deletion").await()
+            runCurrent()
+            f.visible("another [1]")
+            val running =
+                f.controller
+                    .state(second)
+                    .value.turn
+            f.controller.invalidateSourceCommitted(SOURCE.docId)
+            assertEquals(
+                running,
+                f.controller
+                    .state(second)
+                    .value.turn,
+            )
+            assertEquals(ChatTurnState.Done, old.value.turn)
+            assertEquals(listOf(survivor), old.value.outcome!!.retrieved)
+            assertEquals(
+                mapOf(2 to survivor),
+                old.value.outcome!!
+                    .assembled.citations,
+            )
+            assertTrue(
+                old.value.outcome!!
+                    .assembled.prompt.messages
+                    .isEmpty(),
+            )
+            assertEquals(message, f.repo.listMessages(first).last())
+            f.engine.finish(1)
+            runCurrent()
+            val late =
+                f.controller
+                    .state(second)
+                    .value.outcome!!
+            assertEquals(listOf(survivor), late.retrieved)
+            assertEquals(mapOf(2 to survivor), late.assembled.citations)
+            assertTrue(
+                late.assembled.prompt.messages
+                    .isEmpty(),
+            )
+            assertEquals(late, f.pipeline.lastOutcome.value)
+            assertTrue(
+                f.repo
+                    .listMessages(second)
+                    .last()
+                    .citations!!
+                    .retrieved
+                    .isNotEmpty(),
+            )
+            f.close()
         }
 
     @Test fun `lock removes queued turns and old epoch cannot dispatch after delayed cancel`() =
@@ -367,6 +625,7 @@ class ChatTurnControllerTest {
             f.engine.finish(0)
             runCurrent()
             assertTrue(gated.entered.isCompleted)
+            assertFalse(f.controller.tryBeginDelete(chat))
             f.unlocked = null
             f.locking = 7L
             f.controller.onLockingHigh(7L, 500L)
@@ -503,6 +762,7 @@ class ChatTurnControllerTest {
         val test: TestScope,
         val repo: VaultRepository = InMemoryVaultRepository(),
         val epoch: Long = 7L,
+        sources: List<Retrieved> = listOf(SOURCE),
     ) {
         var unlocked: Long? = epoch
         var locking: Long? = null
@@ -510,7 +770,7 @@ class ChatTurnControllerTest {
         var idleCheck: suspend () -> Unit = { idle.await() }
         var persona = Persona("space", "Space", "Original instructions", "original-model", 0)
         val engine = ControlledEngine()
-        val retrieval = FakeRetrievalService(listOf(SOURCE))
+        val retrieval = FakeRetrievalService(sources)
         val preparedModels = mutableListOf<String?>()
         val pipeline =
             SendPipeline(
