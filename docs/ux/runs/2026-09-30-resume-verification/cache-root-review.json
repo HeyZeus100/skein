@@ -1,0 +1,10 @@
+{
+  "status": "PASS",
+  "reviewed_commit": "a5988dee40938ae2a4a8e1fdb347ff376e335b1e",
+  "integration_commit": "db16be9dc",
+  "stage_hash_entries_verified": 35,
+  "raw_xml_inspected": true,
+  "guard_unchanged": true,
+  "summary_sha256": "9814e386328d4b83f020be97e83bf30f63fa0df21641b736d0fd16e19a4201f1",
+  "transient_feature_source_restored": true
+}

@@ -1,5 +1,7 @@
 # Skein orchestrator resume, 29 September 2026
 
+**30 September continuation:** the normal owner unlock and bounded e62 physical deletion checks are complete. The [current continuation handoff](skein-orchestrator-continuation-20260930.md) records the new evidence, source changes and remaining gates. The pending-unlock and outgoing-owner descriptions below are the preserved earlier checkpoint, not current instructions to repeat fixtures or installation.
+
 Start here for the next session. The owner requested this handoff after the chat/note deletion update. It supersedes historical pause/HOLD and installed-build summaries only where explicitly stated below. Read `AGENTS.md`, run `bd prime`, refresh Git/Beads/coordination state, and continue autonomously. Do not restart completed September 28 graph/FTS/instrumentation assignments or completed September 29 UX/inference implementations.
 
 ## Current installed update

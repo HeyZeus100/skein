@@ -1,0 +1,653 @@
+{
+  "schema_version": 1,
+  "scope": "Read-only independent resume review of retained bytes, not fresh execution or device acceptance",
+  "worktree": "/Users/andrewherrera/skein-worktrees/evidence-audit-resume-20260930",
+  "deletion_receipts": [
+    {
+      "path": "/Users/andrewherrera/skein-worktrees/ux-integration-20260929/build/agent-logs/candidate-e62f94785-review/ci-root-review.json",
+      "bytes": 25264,
+      "sha256": "0a039a3c661067162b766199dc00adb2ec94f681784a77c4768920b5019d7816"
+    },
+    {
+      "path": "/Users/andrewherrera/skein-worktrees/ux-integration-20260929/build/agent-logs/candidate-e62f94785-review/ordinary-root-review.json",
+      "bytes": 4178,
+      "sha256": "652398aeeeae62113475fbe3800ca216f139e0f6429d08315d28a4a354e7eb90"
+    },
+    {
+      "path": "/Users/andrewherrera/skein-worktrees/ux-integration-20260929/build/agent-logs/candidate-e62f94785-review/screenshots-root-review.json",
+      "bytes": 889,
+      "sha256": "6f7779f60568d2d6dd69d703f082f24e6ddc034e88c55c6062bac3f75b2c7d42"
+    },
+    {
+      "path": "/Users/andrewherrera/skein-worktrees/ux-integration-20260929/build/agent-logs/candidate-e62f94785-review/reproducible-root-review.json",
+      "bytes": 7700,
+      "sha256": "23bc75a25ff9af6945b13a5d502215577efa97f087bf592eaa15588d087fc3ec"
+    },
+    {
+      "path": "/Users/andrewherrera/skein-worktrees/ux-integration-20260929/build/agent-logs/candidate-e62f94785-review/build-source-review.json",
+      "bytes": 3350,
+      "sha256": "f0450bbdf4d936ecbb57fd301c68868f2d4e6bf3dea92f1b3eb1791c3b985e31"
+    },
+    {
+      "path": "/Users/andrewherrera/skein-worktrees/ux-integration-20260929/build/agent-logs/candidate-e62f94785-review/native-equivalence-review.json",
+      "bytes": 2052,
+      "sha256": "ff9738845abc2050efd76b2783509785831a0d3f6bd75f858b127d4075d43e21"
+    },
+    {
+      "path": "/Users/andrewherrera/skein-worktrees/ux-integration-20260929/build/agent-logs/candidate-e62f94785-review/current-installed-delta.json",
+      "bytes": 5977,
+      "sha256": "1407b2c18e59525d03471ed0656e263153512aef158250eaf2f78b949f7e42b6"
+    },
+    {
+      "path": "/Users/andrewherrera/skein-worktrees/ux-integration-20260929/build/agent-logs/candidate-e62f94785-review/network-permission-review.json",
+      "bytes": 1790,
+      "sha256": "e2800ede0469e741b296f452cdce7937c60eec54eaf83d99f0a57da16c5ce727"
+    },
+    {
+      "path": "/Users/andrewherrera/skein-worktrees/ux-integration-20260929/build/agent-logs/candidate-e62f94785-review/actual-checks-review.json",
+      "bytes": 1262,
+      "sha256": "b6710c1ddb511bb126bffd62542890322df79ffdeaa077bfa4cd07bbdd992615"
+    },
+    {
+      "path": "/Users/andrewherrera/skein-worktrees/ux-integration-20260929/build/agent-logs/delete-combined-1/actual/review.json",
+      "bytes": 274072,
+      "sha256": "45282f60797efdfecfefbaea1762b037bddff98921490b5e9672fcaee0ae2409"
+    },
+    {
+      "path": "/Users/andrewherrera/skein-worktrees/ux-integration-20260929/build/agent-logs/delete-screens-assembly-1/actual/review.json",
+      "bytes": 162376,
+      "sha256": "4a5521f6d606302823af19f036857fe7c386e7f06198874168cc6e3a9be5e463"
+    },
+    {
+      "path": "/Users/andrewherrera/skein-worktrees/ux-integration-20260929/build/agent-logs/delete-root-focused-3-actual/review.json",
+      "bytes": 4143,
+      "sha256": "bd6afe265474f6dcf9c38fc1a7c6e73bfeea0b9403ba8bc2469b78c3880b41cc"
+    },
+    {
+      "path": "/Users/andrewherrera/skein-worktrees/ux-integration-20260929/build/agent-logs/delete-updater-root-review/review.json",
+      "bytes": 8875,
+      "sha256": "4c366b4ed208f61e7518efd47a4cda032ebe6e3e598033f1daf947457ae50d27"
+    },
+    {
+      "path": "/Users/andrewherrera/skein-worktrees/ux-integration-20260929/build/agent-logs/candidate-e62f94785-review/installed-root-review.json",
+      "bytes": 1195,
+      "sha256": "0586deafd5afe4cdf636f180a00a33e94e76ffea94e0693cf0027437ab377478"
+    }
+  ],
+  "bundle_manifests": [
+    {
+      "manifest": {
+        "path": "/Users/andrewherrera/skein-worktrees/evidence-audit-resume-20260930/docs/ux/runs/2026-09-29-confirmed-delete-e62f947/SHA256SUMS",
+        "bytes": 251,
+        "sha256": "428dc9ff0f967564fecf8c9e6faa0aaaf5eeed78583152c5884fb66cbd4e0e1d"
+      },
+      "entries_verified": 3
+    },
+    {
+      "manifest": {
+        "path": "/Users/andrewherrera/skein-worktrees/evidence-audit-resume-20260930/docs/eval/runs/2026-09-28-retrieval-continuation-8b8884b/SHA256SUMS",
+        "bytes": 3366,
+        "sha256": "551c33824a87e4b524adb0052dc6589e167e9fdc42097fd6fa9322f2bf67afa4"
+      },
+      "entries_verified": 34
+    }
+  ],
+  "deletion_remote": {
+    "ci": {
+      "manifest": {
+        "path": "/Users/andrewherrera/skein-worktrees/delete-lifecycle-20260929/build/agent-logs/remote-delete-e62f947/36654289372/unit-test-results/build/unit-verification.json",
+        "bytes": 123589,
+        "sha256": "feabf69ad169f8ad78e1beca18cf1d186d0df4e9bb55b378d46de681350d21cd"
+      },
+      "source_sha": "e62f94785ef8e696d8ee59745fd299fe1f83cc4a",
+      "files_verified": 514,
+      "inventory_sha256": "fd9ec6a752d9af7e1a70455d9cfed52311a8e8b5c463b8a3484e62bf9d02d164",
+      "xml": {
+        "xml_files": 514,
+        "actual_cases": {
+          "tests": 5320,
+          "passed": 5232,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 88
+        },
+        "unique_class_test_identities": 4115,
+        "diagnostic_identities": []
+      },
+      "screenshot_types": {},
+      "run": {
+        "id": 36654289372,
+        "head_sha": "e62f94785ef8e696d8ee59745fd299fe1f83cc4a",
+        "conclusion": "success",
+        "run_attempt": 1
+      },
+      "jobs": [
+        {
+          "name": "Unit tests, lint, assemble (foss debug)",
+          "conclusion": "success",
+          "non_success_steps": []
+        }
+      ],
+      "api_records": [
+        {
+          "path": "/Users/andrewherrera/skein-worktrees/delete-lifecycle-20260929/build/agent-logs/remote-delete-e62f947/36654289372/run.json",
+          "bytes": 12003,
+          "sha256": "ed9105affe67bd2eca5f9dd6958e4b463465cc40ea45b600c530022a1199cf26"
+        },
+        {
+          "path": "/Users/andrewherrera/skein-worktrees/delete-lifecycle-20260929/build/agent-logs/remote-delete-e62f947/36654289372/jobs.json",
+          "bytes": 5817,
+          "sha256": "5e98fc156582d3be9e7bc0ad8faae06f33de6ef473ffd566069a15f382dd98b3"
+        },
+        {
+          "path": "/Users/andrewherrera/skein-worktrees/delete-lifecycle-20260929/build/agent-logs/remote-delete-e62f947/36654289372/artifacts.json",
+          "bytes": 1393,
+          "sha256": "986e53c149f6cbda432b9552bd9561578280916656342b525d26bb76f30dab86"
+        }
+      ],
+      "archive": {
+        "path": "/Users/andrewherrera/skein-worktrees/delete-lifecycle-20260929/build/agent-logs/remote-delete-e62f947/36654289372/unit-test-results.zip",
+        "bytes": 2601283,
+        "sha256": "96b60dc069f55eceefdd30840b0c94353ba249f964fae5b3e0c5ad9945a8ee8f",
+        "api_bytes_match": true,
+        "crc_failed_member": null
+      },
+      "cached_unit_test_tasks": [
+        ":core:export:testDebugUnitTest",
+        ":core:inference:testDebugUnitTest",
+        ":core:ipc:testDebugUnitTest",
+        ":core:rag:testDebugUnitTest",
+        ":core:security:testDebugUnitTest",
+        ":core:vault:testDevDebugUnitTest",
+        ":core:vault:testFossDebugUnitTest",
+        ":embedder-service:testDebugUnitTest",
+        ":inference-service:testDevDebugUnitTest",
+        ":inference-service:testFossDebugUnitTest"
+      ]
+    },
+    "ordinary": {
+      "manifest": {
+        "path": "/Users/andrewherrera/skein-worktrees/delete-lifecycle-20260929/build/agent-logs/remote-delete-e62f947/36654289463/connected-test-reports/build/instrumentation-verification.json",
+        "bytes": 1931,
+        "sha256": "84856bc2865349d36b2ba40fcb4ef1234b148220d04aed399ec44d391e871687"
+      },
+      "source_sha": "e62f94785ef8e696d8ee59745fd299fe1f83cc4a",
+      "files_verified": 4,
+      "inventory_sha256": "c0ef765c76f92bca2b831c39672bf6bdb6052d4a2407c69a0d2a6510cadee427",
+      "xml": {
+        "xml_files": 3,
+        "actual_cases": {
+          "tests": 281,
+          "passed": 281,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0
+        },
+        "unique_class_test_identities": 281,
+        "diagnostic_identities": []
+      },
+      "screenshot_types": {},
+      "run": {
+        "id": 36654289463,
+        "head_sha": "e62f94785ef8e696d8ee59745fd299fe1f83cc4a",
+        "conclusion": "success",
+        "run_attempt": 1
+      },
+      "jobs": [
+        {
+          "name": "Instrumented tests (API 35, x86_64)",
+          "conclusion": "success",
+          "non_success_steps": []
+        }
+      ],
+      "api_records": [
+        {
+          "path": "/Users/andrewherrera/skein-worktrees/delete-lifecycle-20260929/build/agent-logs/remote-delete-e62f947/36654289463/run.json",
+          "bytes": 12020,
+          "sha256": "73f719fb904f3702829860442c3779074980718c6b0ea44c7fc44be69024599a"
+        },
+        {
+          "path": "/Users/andrewherrera/skein-worktrees/delete-lifecycle-20260929/build/agent-logs/remote-delete-e62f947/36654289463/jobs.json",
+          "bytes": 4692,
+          "sha256": "dfaff64f4147d41ecb066cc2352d60aebd5821d0ababeda48a965a04d4725982"
+        },
+        {
+          "path": "/Users/andrewherrera/skein-worktrees/delete-lifecycle-20260929/build/agent-logs/remote-delete-e62f947/36654289463/artifacts.json",
+          "bytes": 714,
+          "sha256": "dce8da7b77d3b7bf03503704d32d795a37b3423f9773d95a3c63c880b773dcac"
+        }
+      ],
+      "archive": {
+        "path": "/Users/andrewherrera/skein-worktrees/delete-lifecycle-20260929/build/agent-logs/remote-delete-e62f947/36654289463/connected-test-reports.zip",
+        "bytes": 973109,
+        "sha256": "672b3a93ead07a32949c1c4a1462e24e843f1dd2fa260e14090bc34eb3acb3fc",
+        "api_bytes_match": true,
+        "crc_failed_member": null
+      },
+      "cached_unit_test_tasks": []
+    },
+    "screenshots": {
+      "manifest": {
+        "path": "/Users/andrewherrera/skein-worktrees/delete-chat-ui-20260929/build/agent-logs/remote-delete-e62f947/36654289286/ux-verification-records/build/screenshot-verification.json",
+        "bytes": 174643,
+        "sha256": "39f19b462227d12c0f0c7fa1d0e2fcedb5fff720c0804109cf9562143d903547"
+      },
+      "source_sha": "e62f94785ef8e696d8ee59745fd299fe1f83cc4a",
+      "files_verified": 715,
+      "inventory_sha256": "44748574732fb4ca7aaf57c32d17709bcbd7eeca82b1970f2bd139f5117a5f9a",
+      "xml": {
+        "xml_files": 155,
+        "actual_cases": {
+          "tests": 1413,
+          "passed": 1333,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 80
+        },
+        "unique_class_test_identities": 1413,
+        "diagnostic_identities": []
+      },
+      "screenshot_types": {
+        "unchanged": 552
+      },
+      "run": {
+        "id": 36654289286,
+        "head_sha": "e62f94785ef8e696d8ee59745fd299fe1f83cc4a",
+        "conclusion": "success",
+        "run_attempt": 1
+      },
+      "jobs": [
+        {
+          "name": "Verify Roborazzi goldens",
+          "conclusion": "success",
+          "non_success_steps": [
+            {
+              "name": "Job summary",
+              "conclusion": "skipped"
+            },
+            {
+              "name": "Upload screenshot diffs",
+              "conclusion": "skipped"
+            }
+          ]
+        }
+      ],
+      "api_records": [
+        {
+          "path": "/Users/andrewherrera/skein-worktrees/delete-chat-ui-20260929/build/agent-logs/remote-delete-e62f947/36654289286/run.json",
+          "bytes": 12026,
+          "sha256": "db8ac19307ec7bcfb5cf089c29c3d24608f183ac6b967a259ee9f3b383246bae"
+        },
+        {
+          "path": "/Users/andrewherrera/skein-worktrees/delete-chat-ui-20260929/build/agent-logs/remote-delete-e62f947/36654289286/jobs.json",
+          "bytes": 3524,
+          "sha256": "f4663d810ba0c2828a08e34aa606f43f191e8bbb6c19f32bb15ca298df10af4f"
+        },
+        {
+          "path": "/Users/andrewherrera/skein-worktrees/delete-chat-ui-20260929/build/agent-logs/remote-delete-e62f947/36654289286/artifacts.json",
+          "bytes": 715,
+          "sha256": "ca483e43e7a56267ab24b694bf9c0e2892a9a174167fa6fa7e1f315af83fb47d"
+        }
+      ],
+      "archive": {
+        "path": "/Users/andrewherrera/skein-worktrees/delete-chat-ui-20260929/build/agent-logs/remote-delete-e62f947/36654289286/ux-verification-records.zip",
+        "bytes": 452062,
+        "sha256": "0b6465563ad4b654471566c8af5c93667067ad1bd1d4bb416853d6a1b6307af5",
+        "api_bytes_match": true,
+        "crc_failed_member": null
+      },
+      "cached_unit_test_tasks": []
+    }
+  },
+  "deletion_local": {
+    "receipt": {
+      "path": "/Users/andrewherrera/skein-worktrees/ux-integration-20260929/build/agent-logs/delete-combined-1/actual/review.json",
+      "bytes": 274072,
+      "sha256": "45282f60797efdfecfefbaea1762b037bddff98921490b5e9672fcaee0ae2409"
+    },
+    "files_verified": 514,
+    "xml": {
+      "xml_files": 514,
+      "actual_cases": {
+        "tests": 5320,
+        "passed": 5234,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 86
+      },
+      "unique_class_test_identities": 4115,
+      "diagnostic_identities": []
+    }
+  },
+  "installation": {
+    "summary": {
+      "path": "/Users/andrewherrera/skein-worktrees/conference-demo-20260929/build/agent-logs/fold/physical-update-e62f94785-20260930T013355Z/summary.json",
+      "bytes": 9051,
+      "sha256": "34b53f94c68471999273aff4dc65fbd222c599eee2342de3f288e4cce337dbcf"
+    },
+    "previous": {
+      "path": "/Users/andrewherrera/skein-worktrees/conference-demo-20260929/build/agent-logs/fold/physical-update-e62f94785-20260930T013355Z/previous-installed.apk",
+      "bytes": 128079415,
+      "sha256": "c9b2ffd8ca4306c63c9e7bb3975de4b5e2b6a57a04385c39d4c49eb33f87c14e"
+    },
+    "installed": {
+      "path": "/Users/andrewherrera/skein-worktrees/conference-demo-20260929/build/agent-logs/fold/physical-update-e62f94785-20260930T013355Z/new-installed.apk",
+      "bytes": 128085735,
+      "sha256": "4052c0a8ba6363baa1f7387fcce0703ad0ca73e1355a7c7b22512583bca4d4a4"
+    },
+    "attempts": 1,
+    "continuity": {
+      "firstInstallTime": true,
+      "dataDir": true,
+      "ceDataInode": true,
+      "deDataInode": true,
+      "version_code": true,
+      "version_name": true
+    },
+    "uid_continuity": {
+      "before_available": false,
+      "after_available": false,
+      "checked": false,
+      "unchanged": null
+    },
+    "native_entries_equal": true,
+    "native_entry_hashes": {
+      "lib/arm64-v8a/libandroidx.graphics.path.so": "41e9a793c43a0f4fddb19e33f346bace464f30f888ba7b9eaf96294ea115bfb6",
+      "lib/arm64-v8a/libdatastore_shared_counter.so": "178f89a2c6c9234ddf980dd4cd1f3616186a46b2b932aafa6707abd04c5fd76a",
+      "lib/arm64-v8a/libonnxruntime.so": "850f897a50d369b3305582244210f5649be9cfeb193c5807fba14146301616c7",
+      "lib/arm64-v8a/libonnxruntime4j_jni.so": "f86f2a5f56b907e4a25d67febc422ec13f5a265d36665f50e2808de6e4a515b6",
+      "lib/arm64-v8a/libskein_llama.so": "b1ff614714a8973d9359fba0034482534c9a65ba8e28d1cab995ed428bf89ee3",
+      "lib/arm64-v8a/libskein_sqlite.so": "00a04ba8fda9b13cbe6211a9f04c66fe1f8233724e7cbef5d987a08156df328e",
+      "lib/arm64-v8a/libskein_sqlite_jni.so": "54e60807eedc5cd2fed7789033cd3cb625b84abcf0c4df57a71b4f6c4725f262"
+    }
+  },
+  "reproducibility": {
+    "apk_pair": [
+      {
+        "path": "/Users/andrewherrera/skein-worktrees/delete-chat-ui-20260929/build/agent-logs/remote-delete-e62f947/36654289302/rb-build-a/app-foss-release-unsigned.apk",
+        "bytes": 100840227,
+        "sha256": "669f359ae8e24cf081f077f3df060518fafef19e1edc7384dcaf31c69785c613"
+      },
+      {
+        "path": "/Users/andrewherrera/skein-worktrees/delete-chat-ui-20260929/build/agent-logs/remote-delete-e62f947/36654289302/rb-build-b/app-foss-release-unsigned.apk",
+        "bytes": 100840227,
+        "sha256": "669f359ae8e24cf081f077f3df060518fafef19e1edc7384dcaf31c69785c613"
+      }
+    ],
+    "apk_pair_byte_equal": true,
+    "native_pair": [
+      {
+        "path": "/Users/andrewherrera/skein-worktrees/delete-chat-ui-20260929/build/agent-logs/remote-delete-e62f947/36654289302/so-determinism/run.SJKOsCMS/libskein_llama.1.2aefda01.so",
+        "bytes": 25314032,
+        "sha256": "2aefda01808f10bf5693ab02d0857e0169dc09550b615896939cb176c032daff"
+      },
+      {
+        "path": "/Users/andrewherrera/skein-worktrees/delete-chat-ui-20260929/build/agent-logs/remote-delete-e62f947/36654289302/so-determinism/run.SJKOsCMS/libskein_llama.2.2aefda01.so",
+        "bytes": 25314032,
+        "sha256": "2aefda01808f10bf5693ab02d0857e0169dc09550b615896939cb176c032daff"
+      }
+    ],
+    "native_pair_byte_equal": true
+  },
+  "retrieval": {
+    "report": {
+      "path": "/Users/andrewherrera/skein-worktrees/evidence-audit-resume-20260930/docs/eval/runs/2026-09-28-retrieval-continuation-8b8884b/retrieval/retrieval.json",
+      "bytes": 4685276,
+      "sha256": "b51830389930206f991de92be217cc55bcd0371e9bebf34646bef570ab5d0745"
+    },
+    "xml": {
+      "xml_files": 1,
+      "actual_cases": {
+        "tests": 1,
+        "passed": 1,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "unique_class_test_identities": 1,
+      "diagnostic_identities": [
+        [
+          "app.skein.core.vault.eval.RealRetrievalEvaluationTest",
+          "evaluate_real_ingest_and_retrieval"
+        ]
+      ]
+    },
+    "ordinary_xml": {
+      "xml_files": 3,
+      "actual_cases": {
+        "tests": 277,
+        "passed": 277,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "unique_class_test_identities": 277,
+      "diagnostic_identities": []
+    },
+    "collection": {
+      "complete": true,
+      "require_quality": true,
+      "gradle_exit_code": 0,
+      "selected_collection_attempt": 1,
+      "quality_gate": {
+        "status": "FAIL",
+        "gates": {
+          "development_ranking": "PASS",
+          "development_absence": "PASS",
+          "reserved_regression": "FAIL",
+          "independent_validation": "FAIL"
+        }
+      },
+      "failure_type": "ValueError",
+      "built_test_apk_sha256": "aaa895db11c95fb989d2c682fc14db6d38e1818978055201717b3aa906c803fc",
+      "installed_test_apk_sha256": "aaa895db11c95fb989d2c682fc14db6d38e1818978055201717b3aa906c803fc",
+      "post_instrumentation_test_apk_sha256": "aaa895db11c95fb989d2c682fc14db6d38e1818978055201717b3aa906c803fc"
+    },
+    "workflow": {
+      "conclusion": "failure",
+      "head_sha": "8b8884b4b24a93f1ae72461840518ba2ebaaafb3",
+      "jobs": [
+        {
+          "name": "Opt-in real SQLite retrieval (API 35)",
+          "conclusion": "failure",
+          "failed_steps": [
+            "Measure only the explicitly opted-in retrieval class"
+          ]
+        }
+      ]
+    },
+    "inventory": {
+      "full_hybrid_gate": "INELIGIBLE",
+      "vector_count": 0,
+      "vectors_pending_documents": 850,
+      "pending_embedding_chunks": 850,
+      "tokenizer": "ApproximateTokenizer; same build revision",
+      "embedder": null,
+      "lexical_probe_audit": {
+        "audit_active": true,
+        "observation_point": "immediately_after_replaceChunks_before_production_row_probes",
+        "ingest_timing": "includes_legacy_rank_and_row_match_audit_queries",
+        "documents_written": 850,
+        "documents_without_rows": 0,
+        "legacy_unprobeable_documents": 0,
+        "legacy_probes": 850,
+        "legacy_top50_misses": 508,
+        "legacy_misses_with_row_match": 508,
+        "legacy_misses_without_row_match": 0,
+        "legacy_hits_without_row_match": 0,
+        "row_match_queries": 850,
+        "scope": "sampled_legacy_term_postings_not_full_index_integrity"
+      },
+      "ingest_warnings": []
+    },
+    "complete_archive": {
+      "pin": {
+        "path": "/Users/andrewherrera/skein-worktrees/evidence-audit-resume-20260930/docs/eval/runs/2026-09-28-retrieval-continuation-8b8884b/retrieval/complete-original-artifact.tar.gz",
+        "bytes": 1540691,
+        "sha256": "a090cb456900f8a7d8dd94a2ca6472958edffd41e194cb8f7f2c3e9f8a8ef9e6"
+      },
+      "members": 29,
+      "members_verified": 29,
+      "exact_inventory": true
+    },
+    "recomputed_validation": {
+      "rejection_validation": {
+        "production_policy": {
+          "covered_evidence_spans": 5,
+          "labelled_evidence_spans": 6,
+          "answerable_queries": 6,
+          "absence_queries": 6,
+          "rejected_absence_queries": 5,
+          "falsely_rejected_answerable_queries": 1,
+          "actual_source_occurrences": 108,
+          "strict_status": "FAIL"
+        },
+        "ungated_control": {
+          "covered_evidence_spans": 6,
+          "labelled_evidence_spans": 6,
+          "answerable_queries": 6,
+          "absence_queries": 6,
+          "rejected_absence_queries": 0,
+          "falsely_rejected_answerable_queries": 0,
+          "actual_source_occurrences": 216,
+          "strict_status": "FAIL"
+        },
+        "experimental_candidate": {
+          "covered_evidence_spans": 5,
+          "labelled_evidence_spans": 6,
+          "answerable_queries": 6,
+          "absence_queries": 6,
+          "rejected_absence_queries": 6,
+          "falsely_rejected_answerable_queries": 1,
+          "actual_source_occurrences": 90,
+          "strict_status": "FAIL"
+        }
+      },
+      "independent_validation": {
+        "production_policy": {
+          "covered_evidence_spans": 9,
+          "labelled_evidence_spans": 12,
+          "answerable_queries": 12,
+          "absence_queries": 12,
+          "rejected_absence_queries": 6,
+          "falsely_rejected_answerable_queries": 3,
+          "actual_source_occurrences": 273,
+          "strict_status": "FAIL"
+        },
+        "ungated_control": {
+          "covered_evidence_spans": 12,
+          "labelled_evidence_spans": 12,
+          "answerable_queries": 12,
+          "absence_queries": 12,
+          "rejected_absence_queries": 0,
+          "falsely_rejected_answerable_queries": 0,
+          "actual_source_occurrences": 489,
+          "strict_status": "FAIL"
+        },
+        "experimental_candidate": {
+          "covered_evidence_spans": 10,
+          "labelled_evidence_spans": 12,
+          "answerable_queries": 12,
+          "absence_queries": 12,
+          "rejected_absence_queries": 7,
+          "falsely_rejected_answerable_queries": 2,
+          "actual_source_occurrences": 273,
+          "strict_status": "FAIL"
+        }
+      }
+    },
+    "source_revalidation": {
+      "rejection_validation/production_policy": {
+        "reviewed_queries": 12,
+        "reviewed_source_occurrences": 108,
+        "source_bytes_anchors_revisions_fingerprints_and_grades": "PASS"
+      },
+      "rejection_validation/ungated_control": {
+        "reviewed_queries": 12,
+        "reviewed_source_occurrences": 216,
+        "source_bytes_anchors_revisions_fingerprints_and_grades": "PASS"
+      },
+      "rejection_validation/experimental_candidate": {
+        "reviewed_queries": 12,
+        "reviewed_source_occurrences": 90,
+        "source_bytes_anchors_revisions_fingerprints_and_grades": "PASS"
+      },
+      "independent_validation/production_policy": {
+        "reviewed_queries": 24,
+        "reviewed_source_occurrences": 273,
+        "source_bytes_anchors_revisions_fingerprints_and_grades": "PASS"
+      },
+      "independent_validation/ungated_control": {
+        "reviewed_queries": 24,
+        "reviewed_source_occurrences": 489,
+        "source_bytes_anchors_revisions_fingerprints_and_grades": "PASS"
+      },
+      "independent_validation/experimental_candidate": {
+        "reviewed_queries": 24,
+        "reviewed_source_occurrences": 273,
+        "source_bytes_anchors_revisions_fingerprints_and_grades": "PASS"
+      }
+    }
+  },
+  "frozen_policy": {
+    "manifest": {
+      "path": "/Users/andrewherrera/skein-worktrees/evidence-audit-resume-20260930/tools/eval/retrieval-policy-freeze.json",
+      "bytes": 1074,
+      "sha256": "67f5e98f5c5af25c0a2573c3d9694c0774abe24dccb2ae2caa3caa69e993554f"
+    },
+    "production": {
+      "version": "lexical-query-coverage-v1",
+      "minimum_query_coverage": 0.5,
+      "semantic_vector_policy": "uncalibrated_bypass"
+    },
+    "experimental": {
+      "version": "lexical-fact-shape-v2-experimental",
+      "minimum_query_coverage": 0.5,
+      "minimum_value_coverage": 0.25,
+      "semantic_vector_policy": "uncalibrated_bypass"
+    },
+    "source_files": [
+      {
+        "path": "/Users/andrewherrera/skein-worktrees/evidence-audit-resume-20260930/core/rag/src/main/kotlin/app/skein/core/rag/retrieval/LexicalEvidenceGate.kt",
+        "bytes": 4694,
+        "sha256": "33f6c132c932c9482c9850217c6dc5aedb379fbd383cbaed87971b48d042b445"
+      },
+      {
+        "path": "/Users/andrewherrera/skein-worktrees/evidence-audit-resume-20260930/core/rag/src/main/kotlin/app/skein/core/rag/retrieval/RequestedValue.kt",
+        "bytes": 3208,
+        "sha256": "c18b49c6d1576fc60bee65c9dce02f16a15c2521eb0dd64a130d8894e52191b7"
+      }
+    ],
+    "fixtures": [
+      {
+        "path": "/Users/andrewherrera/skein-worktrees/evidence-audit-resume-20260930/testing/src/main/resources/eval/corpus.json",
+        "bytes": 16139,
+        "sha256": "f86eb3540ef2400c056275aa50ad90f63293c11d7349ecaa664d116b02e7bd7f"
+      },
+      {
+        "path": "/Users/andrewherrera/skein-worktrees/evidence-audit-resume-20260930/testing/src/main/resources/eval/gold.json",
+        "bytes": 32963,
+        "sha256": "4fd5034368e250179425f06bbcb1cc40513f2f3c5ceb998bd6a9eedf298c820f"
+      },
+      {
+        "path": "/Users/andrewherrera/skein-worktrees/evidence-audit-resume-20260930/testing/src/main/resources/eval/rejection-validation.json",
+        "bytes": 5947,
+        "sha256": "bf162254094103310102e28ad90b4c945bf24dd7f8f9a706039b2fe3a826b57c"
+      },
+      {
+        "path": "/Users/andrewherrera/skein-worktrees/evidence-audit-resume-20260930/testing/src/main/resources/eval/rejection-validation-20260928.json",
+        "bytes": 12558,
+        "sha256": "4f79b2ddcf42dedd6b7f83c10402855f683fcebc3045d9e4668f6da2951759e8"
+      }
+    ]
+  },
+  "issues": [],
+  "status": "PASS_RETAINED_EVIDENCE_INTEGRITY",
+  "limits": [
+    "No fresh test/build/CI/device run performed",
+    "CI/local unit results include reused outputs",
+    "Quality failure preserved; both exposed validation sets are now regression evidence",
+    "Source attribution is host declared; APK digest identity is separately established",
+    "Physical deletion acceptance is outside this read-only audit"
+  ]
+}

@@ -1,0 +1,165 @@
+{
+  "schema_version": 1,
+  "status": "PASS_STATIC_REVIEW_NO_BLOCKERS",
+  "reviewed_at": "2026-09-30T02:34:49.108185+00:00",
+  "scope": "Independent read-only security review of bounded typed missing-key outcome and guarded reset UI; dirty working snapshots, not a compilation or runtime claim",
+  "blockers": [],
+  "files": [
+    {
+      "tree": "worker",
+      "path": "core/vault/src/main/kotlin/app/skein/core/vault/key/AndroidKeystoreFacade.kt",
+      "sha256": "7962fee6815a912c15518da1f648d18c9444595ff86d3d64ae55020627d0afad",
+      "bytes": 4493
+    },
+    {
+      "tree": "worker",
+      "path": "core/vault/src/main/kotlin/app/skein/core/vault/key/KeystoreFacade.kt",
+      "sha256": "68cbe31c3e9df0a8b3150dbafac3ef960d3cfc06c4751dfb10a023601d4cb515",
+      "bytes": 4618
+    },
+    {
+      "tree": "worker",
+      "path": "core/vault/src/main/kotlin/app/skein/core/vault/key/VaultKeyProvider.kt",
+      "sha256": "916f033c85fa7ca662c5cf042a33c3cca61f5bdcc27d16655bc596d63eb8f40f",
+      "bytes": 13455
+    },
+    {
+      "tree": "worker",
+      "path": "core/vault/src/main/kotlin/app/skein/core/vault/key/VaultKeyProviderImpl.kt",
+      "sha256": "713041697ed958c9def5c1c7b184465dcc9538b9c8117df5e57b9ab9bde73b8a",
+      "bytes": 26549
+    },
+    {
+      "tree": "worker",
+      "path": "core/vault/src/main/kotlin/app/skein/core/vault/session/UnlockManager.kt",
+      "sha256": "e2bc899ca3c349cd05220e6234d5652b4a8e71c961d8a97de0cef320a17091f7",
+      "bytes": 35046
+    },
+    {
+      "tree": "worker",
+      "path": "core/vault/src/main/kotlin/app/skein/core/vault/session/UnlockOutcome.kt",
+      "sha256": "7e64b03e271cc8052441d79197dce122e3dc14271564e8e0f9c82507ba039f78",
+      "bytes": 5094
+    },
+    {
+      "tree": "worker",
+      "path": "core/vault/src/test/kotlin/app/skein/core/vault/key/FakeKeystoreFacade.kt",
+      "sha256": "b49990aefc7c7354c3605690af9f96bc9b08e2190989d3f770c1e5bf8a93d526",
+      "bytes": 4924
+    },
+    {
+      "tree": "worker",
+      "path": "core/vault/src/test/kotlin/app/skein/core/vault/key/VaultKeyProviderImplTest.kt",
+      "sha256": "72486de6bcd52717c62151e0ada24aabd1e0562a469140ebe1df4a17fec8c219",
+      "bytes": 33119
+    },
+    {
+      "tree": "worker",
+      "path": "core/vault/src/test/kotlin/app/skein/core/vault/session/UnlockManagerTest.kt",
+      "sha256": "d6f73898bac9304c68642bec251efab0466472c56191b66b14dae7211a60d40f",
+      "bytes": 39719
+    },
+    {
+      "tree": "worker",
+      "path": "feature/shell/src/main/kotlin/app/skein/feature/shell/auth/BiometricUnlockScreen.kt",
+      "sha256": "78165dec9d7b1ef7eda3ec4beb7e5dd20af5fdd017eadfe475c7c2a19f70bb3a",
+      "bytes": 25217
+    },
+    {
+      "tree": "worker",
+      "path": "feature/shell/src/main/kotlin/app/skein/feature/shell/auth/VaultResetScreen.kt",
+      "sha256": "916deec4ec16e5565c4fb495881a35f2ec34c8d632d3fdc2611e66066f0313f1",
+      "bytes": 7410
+    },
+    {
+      "tree": "worker",
+      "path": "feature/shell/src/test/kotlin/app/skein/feature/shell/auth/BiometricUnlockOutcomeTest.kt",
+      "sha256": "5768d27dc980c900bebfa5b77513263b0a8fe73480222c4fecfacf588d207e92",
+      "bytes": 8318
+    },
+    {
+      "tree": "worker",
+      "path": "feature/shell/src/test/kotlin/app/skein/feature/shell/auth/BiometricUnlockResetAffordanceTest.kt",
+      "sha256": "d768e379cf180065b2fb8cd895776e89e6ef8ce5a37e3426e93dbc4eca1b9110",
+      "bytes": 7689
+    },
+    {
+      "tree": "worker",
+      "path": "core/vault/src/test/kotlin/app/skein/core/vault/key/AndroidKeystoreFacadeTest.kt",
+      "sha256": "861cb9802e069dac2c8e882d5993917dcbaea674d29db6cd26290253dd70dadd",
+      "bytes": 1630
+    },
+    {
+      "tree": "integration",
+      "path": "app/src/main/kotlin/app/skein/MainActivity.kt",
+      "sha256": "9b1315fb0fbb12328cf2a376bf5802aa97a8bf76d127dd80aef209efa3365115",
+      "bytes": 34183
+    },
+    {
+      "tree": "integration",
+      "path": "app/src/test/kotlin/app/skein/MainActivityKeyMaterialGoneTest.kt",
+      "sha256": "20a3f8706c5435d27fd66f8f0084540b892ae6d21a18daf875efaac233e97faa",
+      "bytes": 7640
+    },
+    {
+      "tree": "unchanged",
+      "path": "feature/shell/src/main/kotlin/app/skein/feature/shell/auth/VaultResetConfirmState.kt",
+      "sha256": "4d7600fbea123798c63b4ea34df985b16a285bc477192127a45200ecb829fd7f",
+      "bytes": 4379
+    },
+    {
+      "tree": "unchanged",
+      "path": "core/vault/src/main/kotlin/app/skein/core/vault/lifecycle/VaultReset.kt",
+      "sha256": "38c885e6eebf8d208fe00683cd891435e2fed2ea7c6a030709adbce26ba308bf",
+      "bytes": 11491
+    }
+  ],
+  "checks": [
+    {
+      "check": "absence_classification",
+      "result": "PASS",
+      "evidence": "AndroidKeystoreFacade.requireKey throws the typed signal only when getKey(alias,null) returns null. Lookup exceptions, invalidated key exceptions and Cipher.init failures retain prior classification."
+    },
+    {
+      "check": "preservation_before_reset",
+      "result": "PASS",
+      "evidence": "VaultKeyProviderImpl catches absence immediately after decryptCipher and before authentication, unwrap, envelope writes, replacement key creation or alias deletion, for unlock and recovery."
+    },
+    {
+      "check": "authorization_lifetime",
+      "result": "PASS",
+      "evidence": "Missing outcome leaves Locked and clears authorization token. Success remains the only new unlock-token issuance path. Per-use authentication, strong biometric requirement, device-unlocked requirement, StrongBox policy and existing key zeroing/lock sequence are unchanged."
+    },
+    {
+      "check": "finite_private_diagnostics",
+      "result": "PASS",
+      "evidence": "Exception uses fixed generic text without alias; missing-key log carries only bounded operation, outcome kind and factor code1/2. Generic failure strings cannot synthesize typed absence."
+    },
+    {
+      "check": "honest_factor_scope",
+      "result": "PASS",
+      "evidence": "Both UI factor messages say other factor may remain. Reset explanation explicitly does not assert all recovery lost. MainActivity preserves provisioned/envelope status until confirmed reset success."
+    },
+    {
+      "check": "reset_guards",
+      "result": "PASS",
+      "evidence": "Missing screen only calls root reset-routing callback after explicit click. Existing VaultResetConfirmState requires exact RESET then separate final confirmation; cancel before either deletion preserves fixtures. No delete happens on typing or first click; unchanged VaultReset rejects unlocked reset and enumerates vault-owned files without deleting models/datastore."
+    },
+    {
+      "check": "route_context",
+      "result": "PASS",
+      "evidence": "Root clears missing factor for generic unreadable-envelope reset and after successful reset, and uses distinct explanation for missing-key callback. Cancellation returns to normal locked entry; no setup-on-missing route."
+    },
+    {
+      "check": "test_source_coverage",
+      "result": "REVIEWED_NOT_EXECUTED",
+      "evidence": "Facade null-vs-exception, provider envelope/surviving-factor, session token/log, shell typed-vs-generic/reset affordance and root Activity two-step/cancellation/model-preference preservation assertions inspected."
+    }
+  ],
+  "limits": [
+    "No build/test/CI/device actions performed by reviewer; coordinator must inspect actual XML from fresh execution.",
+    "This review covers the captured working source hashes; later semantic changes need a delta review.",
+    "Full recovery using existing envelope/passphrase and device-credential fallback UI remain open; this slice offers honest locked state and explicitly guarded reset only.",
+    "No broad physical device security or recovery acceptance claimed."
+  ]
+}

@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="app.skein.core.designsystem.theme.NoImplementationStringTest" tests="2" skipped="0" failures="0" errors="0" timestamp="2026-09-30T02:31:38.459Z" hostname="Andrews-MacBook-Pro.local" time="0.029">
+  <properties/>
+  <testcase name="no bead id, 'Coming in v' placeholder or gguf filename in a production string" classname="app.skein.core.designsystem.theme.NoImplementationStringTest" time="0.028"/>
+  <testcase name="detector self-test - bad snippets are caught, good ones are not" classname="app.skein.core.designsystem.theme.NoImplementationStringTest" time="0.001"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

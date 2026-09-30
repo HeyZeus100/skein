@@ -1,0 +1,288 @@
+{
+  "status": "PASS_REAL_GRADLE_CACHE_NEGATIVE_CONTROL",
+  "output": "/Users/andrewherrera/skein-worktrees/evidence-audit-resume-20260930/build/agent-logs/u6iu-cache-control-20260930T023127Z",
+  "original_source": {
+    "path": "/Users/andrewherrera/skein-worktrees/evidence-audit-resume-20260930/build/agent-logs/u6iu-cache-control-20260930T023127Z/ChatModelStatus.original.kt",
+    "bytes": 3227,
+    "sha256": "4e3bf0a32d59c683859b7e1ca9ca77ed53243e2a7e820165713ce2260a113b75"
+  },
+  "restored_source": {
+    "path": "/Users/andrewherrera/skein-worktrees/evidence-audit-resume-20260930/feature/chat/src/main/kotlin/app/skein/feature/chat/ChatModelStatus.kt",
+    "bytes": 3227,
+    "sha256": "4e3bf0a32d59c683859b7e1ca9ca77ed53243e2a7e820165713ce2260a113b75"
+  },
+  "restored_exactly": true,
+  "stages": [
+    {
+      "stage": "01-baseline",
+      "started_at": "2026-09-30T02:31:28.080865+00:00",
+      "exit_code": 0,
+      "task_outcome": "EXECUTED",
+      "log": {
+        "path": "/Users/andrewherrera/skein-worktrees/evidence-audit-resume-20260930/build/agent-logs/u6iu-cache-control-20260930T023127Z/01-baseline/gradle.log",
+        "bytes": 158182,
+        "sha256": "ebdc838b24e58feef347fd46fe40747846fe76a628fba9b652f810211014792c"
+      },
+      "xml": [
+        {
+          "path": "/Users/andrewherrera/skein-worktrees/evidence-audit-resume-20260930/build/agent-logs/u6iu-cache-control-20260930T023127Z/01-baseline/TEST-app.skein.core.designsystem.theme.NoAmbientAnimationTest.xml",
+          "bytes": 721,
+          "sha256": "1f0ec9a2c4ef5834b6d33a30dd1c93aa5331bdf71dc61fb950aa36ef70f60d8f"
+        },
+        {
+          "path": "/Users/andrewherrera/skein-worktrees/evidence-audit-resume-20260930/build/agent-logs/u6iu-cache-control-20260930T023127Z/01-baseline/TEST-app.skein.core.designsystem.theme.NoHardCodedColorTest.xml",
+          "bytes": 672,
+          "sha256": "f1f8ff87d079d75acad1fd448422415894bcf2fc2357f24f4f768ccb7abb942c"
+        },
+        {
+          "path": "/Users/andrewherrera/skein-worktrees/evidence-audit-resume-20260930/build/agent-logs/u6iu-cache-control-20260930T023127Z/01-baseline/TEST-app.skein.core.designsystem.theme.NoImplementationStringTest.xml",
+          "bytes": 717,
+          "sha256": "5579b9797655adbe2f020e25fef5a1a0b6d4cf3caacaeadefa878a5bc6f23dbc"
+        },
+        {
+          "path": "/Users/andrewherrera/skein-worktrees/evidence-audit-resume-20260930/build/agent-logs/u6iu-cache-control-20260930T023127Z/01-baseline/TEST-app.skein.core.designsystem.theme.NoLegacyGlyphIconTest.xml",
+          "bytes": 694,
+          "sha256": "feaf0cbcf5c025ff5de1f822a2b7122d42425646ad7266aa3dfd024f43afafe2"
+        },
+        {
+          "path": "/Users/andrewherrera/skein-worktrees/evidence-audit-resume-20260930/build/agent-logs/u6iu-cache-control-20260930T023127Z/01-baseline/TEST-app.skein.core.designsystem.theme.NoShadowOrGradientTest.xml",
+          "bytes": 725,
+          "sha256": "69b6ef857384854edbbc286d6274ec7ba19f1df47ddac3155d3d42e162acfb9f"
+        },
+        {
+          "path": "/Users/andrewherrera/skein-worktrees/evidence-audit-resume-20260930/build/agent-logs/u6iu-cache-control-20260930T023127Z/01-baseline/TEST-app.skein.core.designsystem.theme.SkeinColorContrastTest.xml",
+          "bytes": 1321,
+          "sha256": "e4371dc4746d9e04b164fd3b5b01ec8b209d4f49283abfa6d58498fdfc42a08f"
+        }
+      ],
+      "counts": {
+        "tests": 16,
+        "passed": 16,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "cache_key_lines": [
+        "Build cache key for task ':core:designsystem:testDebugUnitTest' is a9e5099d5200bf0aa4533a7a55c4899f"
+      ],
+      "invalidation_reason_lines": []
+    },
+    {
+      "stage": "02-cache-hit",
+      "started_at": "2026-09-30T02:31:34.076385+00:00",
+      "exit_code": 0,
+      "task_outcome": "FROM-CACHE",
+      "log": {
+        "path": "/Users/andrewherrera/skein-worktrees/evidence-audit-resume-20260930/build/agent-logs/u6iu-cache-control-20260930T023127Z/02-cache-hit/gradle.log",
+        "bytes": 84705,
+        "sha256": "a02d8dcca09cc0e20139a0969d15733b2bce4c791e5ad72fb92fa5a0ae17ac82"
+      },
+      "xml": [
+        {
+          "path": "/Users/andrewherrera/skein-worktrees/evidence-audit-resume-20260930/build/agent-logs/u6iu-cache-control-20260930T023127Z/02-cache-hit/TEST-app.skein.core.designsystem.theme.NoAmbientAnimationTest.xml",
+          "bytes": 721,
+          "sha256": "1f0ec9a2c4ef5834b6d33a30dd1c93aa5331bdf71dc61fb950aa36ef70f60d8f"
+        },
+        {
+          "path": "/Users/andrewherrera/skein-worktrees/evidence-audit-resume-20260930/build/agent-logs/u6iu-cache-control-20260930T023127Z/02-cache-hit/TEST-app.skein.core.designsystem.theme.NoHardCodedColorTest.xml",
+          "bytes": 672,
+          "sha256": "f1f8ff87d079d75acad1fd448422415894bcf2fc2357f24f4f768ccb7abb942c"
+        },
+        {
+          "path": "/Users/andrewherrera/skein-worktrees/evidence-audit-resume-20260930/build/agent-logs/u6iu-cache-control-20260930T023127Z/02-cache-hit/TEST-app.skein.core.designsystem.theme.NoImplementationStringTest.xml",
+          "bytes": 717,
+          "sha256": "5579b9797655adbe2f020e25fef5a1a0b6d4cf3caacaeadefa878a5bc6f23dbc"
+        },
+        {
+          "path": "/Users/andrewherrera/skein-worktrees/evidence-audit-resume-20260930/build/agent-logs/u6iu-cache-control-20260930T023127Z/02-cache-hit/TEST-app.skein.core.designsystem.theme.NoLegacyGlyphIconTest.xml",
+          "bytes": 694,
+          "sha256": "feaf0cbcf5c025ff5de1f822a2b7122d42425646ad7266aa3dfd024f43afafe2"
+        },
+        {
+          "path": "/Users/andrewherrera/skein-worktrees/evidence-audit-resume-20260930/build/agent-logs/u6iu-cache-control-20260930T023127Z/02-cache-hit/TEST-app.skein.core.designsystem.theme.NoShadowOrGradientTest.xml",
+          "bytes": 725,
+          "sha256": "69b6ef857384854edbbc286d6274ec7ba19f1df47ddac3155d3d42e162acfb9f"
+        },
+        {
+          "path": "/Users/andrewherrera/skein-worktrees/evidence-audit-resume-20260930/build/agent-logs/u6iu-cache-control-20260930T023127Z/02-cache-hit/TEST-app.skein.core.designsystem.theme.SkeinColorContrastTest.xml",
+          "bytes": 1321,
+          "sha256": "e4371dc4746d9e04b164fd3b5b01ec8b209d4f49283abfa6d58498fdfc42a08f"
+        }
+      ],
+      "counts": {
+        "tests": 16,
+        "passed": 16,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "cache_key_lines": [
+        "Build cache key for task ':core:designsystem:testDebugUnitTest' is a9e5099d5200bf0aa4533a7a55c4899f"
+      ],
+      "invalidation_reason_lines": []
+    },
+    {
+      "stage": "03-offending-source",
+      "started_at": "2026-09-30T02:31:35.283591+00:00",
+      "exit_code": 1,
+      "task_outcome": "FAILED",
+      "log": {
+        "path": "/Users/andrewherrera/skein-worktrees/evidence-audit-resume-20260930/build/agent-logs/u6iu-cache-control-20260930T023127Z/03-offending-source/gradle.log",
+        "bytes": 85487,
+        "sha256": "6771668d6e1a0e304e671e63262075dccf17361d28c199671601bae30ef99e88"
+      },
+      "xml": [
+        {
+          "path": "/Users/andrewherrera/skein-worktrees/evidence-audit-resume-20260930/build/agent-logs/u6iu-cache-control-20260930T023127Z/03-offending-source/TEST-app.skein.core.designsystem.theme.NoAmbientAnimationTest.xml",
+          "bytes": 718,
+          "sha256": "a92359a53afce2f2fa2cea8fb0fede15be259445136fae6def1bd23b091837be"
+        },
+        {
+          "path": "/Users/andrewherrera/skein-worktrees/evidence-audit-resume-20260930/build/agent-logs/u6iu-cache-control-20260930T023127Z/03-offending-source/TEST-app.skein.core.designsystem.theme.NoHardCodedColorTest.xml",
+          "bytes": 674,
+          "sha256": "54d4c387bd0c65fac63fa58b26ac1cce4bd95d3553509f0b8373476401353ec9"
+        },
+        {
+          "path": "/Users/andrewherrera/skein-worktrees/evidence-audit-resume-20260930/build/agent-logs/u6iu-cache-control-20260930T023127Z/03-offending-source/TEST-app.skein.core.designsystem.theme.NoImplementationStringTest.xml",
+          "bytes": 5777,
+          "sha256": "e7f1b435b85a00ab56a98b0cc9366f7ed33fafbe9730b06e804a626c6674f2d9"
+        },
+        {
+          "path": "/Users/andrewherrera/skein-worktrees/evidence-audit-resume-20260930/build/agent-logs/u6iu-cache-control-20260930T023127Z/03-offending-source/TEST-app.skein.core.designsystem.theme.NoLegacyGlyphIconTest.xml",
+          "bytes": 694,
+          "sha256": "1a5be74b3e42c2b933d79573918a5ba3003386ba9a73ade1342248026f6f5167"
+        },
+        {
+          "path": "/Users/andrewherrera/skein-worktrees/evidence-audit-resume-20260930/build/agent-logs/u6iu-cache-control-20260930T023127Z/03-offending-source/TEST-app.skein.core.designsystem.theme.NoShadowOrGradientTest.xml",
+          "bytes": 726,
+          "sha256": "97208298bbd39813fe2a19f0e927b03868902c84e3bfdcf05580551e8104eb75"
+        },
+        {
+          "path": "/Users/andrewherrera/skein-worktrees/evidence-audit-resume-20260930/build/agent-logs/u6iu-cache-control-20260930T023127Z/03-offending-source/TEST-app.skein.core.designsystem.theme.SkeinColorContrastTest.xml",
+          "bytes": 1319,
+          "sha256": "b357b21c09fe15a81cf3df7468c03d206381f6284da2992511ae310691f1af12"
+        }
+      ],
+      "counts": {
+        "tests": 16,
+        "passed": 15,
+        "failures": 1,
+        "errors": 0,
+        "skipped": 0
+      },
+      "cache_key_lines": [
+        "Build cache key for task ':core:designsystem:testDebugUnitTest' is 7144d7728ecb048da747f3e70f68d96e"
+      ],
+      "invalidation_reason_lines": [
+        "  Input property 'sourceGuardKotlin' file /Users/andrewherrera/skein-worktrees/evidence-audit-resume-20260930/feature/chat/src/main/kotlin/app/skein/feature/chat/ChatModelStatus.kt has changed.",
+        "      /Users/andrewherrera/skein-worktrees/evidence-audit-resume-20260930/feature/chat/src/main/kotlin/app/skein/feature/chat/ChatModelStatus.kt: \"Coming in v1.1\""
+      ]
+    },
+    {
+      "stage": "04-restored-source",
+      "started_at": "2026-09-30T02:31:37.094597+00:00",
+      "exit_code": 0,
+      "task_outcome": "FROM-CACHE",
+      "log": {
+        "path": "/Users/andrewherrera/skein-worktrees/evidence-audit-resume-20260930/build/agent-logs/u6iu-cache-control-20260930T023127Z/04-restored-source/gradle.log",
+        "bytes": 45997,
+        "sha256": "b1c04084b97f71b26672227156bbef8783f77d8a35f1d601cfca270197264c55"
+      },
+      "xml": [
+        {
+          "path": "/Users/andrewherrera/skein-worktrees/evidence-audit-resume-20260930/build/agent-logs/u6iu-cache-control-20260930T023127Z/04-restored-source/TEST-app.skein.core.designsystem.theme.NoAmbientAnimationTest.xml",
+          "bytes": 721,
+          "sha256": "1f0ec9a2c4ef5834b6d33a30dd1c93aa5331bdf71dc61fb950aa36ef70f60d8f"
+        },
+        {
+          "path": "/Users/andrewherrera/skein-worktrees/evidence-audit-resume-20260930/build/agent-logs/u6iu-cache-control-20260930T023127Z/04-restored-source/TEST-app.skein.core.designsystem.theme.NoHardCodedColorTest.xml",
+          "bytes": 672,
+          "sha256": "f1f8ff87d079d75acad1fd448422415894bcf2fc2357f24f4f768ccb7abb942c"
+        },
+        {
+          "path": "/Users/andrewherrera/skein-worktrees/evidence-audit-resume-20260930/build/agent-logs/u6iu-cache-control-20260930T023127Z/04-restored-source/TEST-app.skein.core.designsystem.theme.NoImplementationStringTest.xml",
+          "bytes": 717,
+          "sha256": "5579b9797655adbe2f020e25fef5a1a0b6d4cf3caacaeadefa878a5bc6f23dbc"
+        },
+        {
+          "path": "/Users/andrewherrera/skein-worktrees/evidence-audit-resume-20260930/build/agent-logs/u6iu-cache-control-20260930T023127Z/04-restored-source/TEST-app.skein.core.designsystem.theme.NoLegacyGlyphIconTest.xml",
+          "bytes": 694,
+          "sha256": "feaf0cbcf5c025ff5de1f822a2b7122d42425646ad7266aa3dfd024f43afafe2"
+        },
+        {
+          "path": "/Users/andrewherrera/skein-worktrees/evidence-audit-resume-20260930/build/agent-logs/u6iu-cache-control-20260930T023127Z/04-restored-source/TEST-app.skein.core.designsystem.theme.NoShadowOrGradientTest.xml",
+          "bytes": 725,
+          "sha256": "69b6ef857384854edbbc286d6274ec7ba19f1df47ddac3155d3d42e162acfb9f"
+        },
+        {
+          "path": "/Users/andrewherrera/skein-worktrees/evidence-audit-resume-20260930/build/agent-logs/u6iu-cache-control-20260930T023127Z/04-restored-source/TEST-app.skein.core.designsystem.theme.SkeinColorContrastTest.xml",
+          "bytes": 1321,
+          "sha256": "e4371dc4746d9e04b164fd3b5b01ec8b209d4f49283abfa6d58498fdfc42a08f"
+        }
+      ],
+      "counts": {
+        "tests": 16,
+        "passed": 16,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "cache_key_lines": [
+        "Build cache key for task ':core:designsystem:testDebugUnitTest' is a9e5099d5200bf0aa4533a7a55c4899f"
+      ],
+      "invalidation_reason_lines": []
+    },
+    {
+      "stage": "05-restored-fresh",
+      "started_at": "2026-09-30T02:31:37.823748+00:00",
+      "exit_code": 0,
+      "task_outcome": "EXECUTED",
+      "log": {
+        "path": "/Users/andrewherrera/skein-worktrees/evidence-audit-resume-20260930/build/agent-logs/u6iu-cache-control-20260930T023127Z/05-restored-fresh/gradle.log",
+        "bytes": 49312,
+        "sha256": "3a4332c9183c9b46eb292d80e3deb74bf390a7020b88b5f93a892d78916d297c"
+      },
+      "xml": [
+        {
+          "path": "/Users/andrewherrera/skein-worktrees/evidence-audit-resume-20260930/build/agent-logs/u6iu-cache-control-20260930T023127Z/05-restored-fresh/TEST-app.skein.core.designsystem.theme.NoAmbientAnimationTest.xml",
+          "bytes": 719,
+          "sha256": "0045fa444eec24c7460117197083f2cef939e7d6c8e0020d327b4c194a89427d"
+        },
+        {
+          "path": "/Users/andrewherrera/skein-worktrees/evidence-audit-resume-20260930/build/agent-logs/u6iu-cache-control-20260930T023127Z/05-restored-fresh/TEST-app.skein.core.designsystem.theme.NoHardCodedColorTest.xml",
+          "bytes": 672,
+          "sha256": "408cbeb7d19eefce44b46d73c7379d311432cb38f59acfa73f621375dffc73b4"
+        },
+        {
+          "path": "/Users/andrewherrera/skein-worktrees/evidence-audit-resume-20260930/build/agent-logs/u6iu-cache-control-20260930T023127Z/05-restored-fresh/TEST-app.skein.core.designsystem.theme.NoImplementationStringTest.xml",
+          "bytes": 717,
+          "sha256": "13f6d69fae08889a0265e4e00445cbb773e72f8eddf8cf8cef3078c94f0a46cf"
+        },
+        {
+          "path": "/Users/andrewherrera/skein-worktrees/evidence-audit-resume-20260930/build/agent-logs/u6iu-cache-control-20260930T023127Z/05-restored-fresh/TEST-app.skein.core.designsystem.theme.NoLegacyGlyphIconTest.xml",
+          "bytes": 694,
+          "sha256": "a910741bc195f60dd71ae522448f69d7eccbc04e9d27ada3ec6d18b5e1728f00"
+        },
+        {
+          "path": "/Users/andrewherrera/skein-worktrees/evidence-audit-resume-20260930/build/agent-logs/u6iu-cache-control-20260930T023127Z/05-restored-fresh/TEST-app.skein.core.designsystem.theme.NoShadowOrGradientTest.xml",
+          "bytes": 726,
+          "sha256": "fe6d60c37074341f5cb6064d724223cccdaacfc6e27db106e24f4030b6f0be1f"
+        },
+        {
+          "path": "/Users/andrewherrera/skein-worktrees/evidence-audit-resume-20260930/build/agent-logs/u6iu-cache-control-20260930T023127Z/05-restored-fresh/TEST-app.skein.core.designsystem.theme.SkeinColorContrastTest.xml",
+          "bytes": 1320,
+          "sha256": "e71dc3e94c54c5999d23f0707e7ffd4dd16d5847c704589e6cbfba678ccf15d9"
+        }
+      ],
+      "counts": {
+        "tests": 16,
+        "passed": 16,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "cache_key_lines": [],
+      "invalidation_reason_lines": []
+    }
+  ]
+}

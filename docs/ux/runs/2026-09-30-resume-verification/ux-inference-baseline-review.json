@@ -1,0 +1,523 @@
+{
+  "review_source": "3abd9366ff2343d3c92ac08fc236543328d25072",
+  "kind": "read_only_rehash_and_actual_xml_review",
+  "capsules": [
+    {
+      "path": "docs/ux/runs/2026-09-29-confirmed-delete-e62f947",
+      "records": 3,
+      "all_match": true,
+      "mismatches": []
+    },
+    {
+      "path": "docs/ux/runs/2026-09-29-foldable-failed-36598598934-28354dd2",
+      "records": 46,
+      "all_match": true,
+      "mismatches": []
+    },
+    {
+      "path": "docs/demo/conference-2026/runs/2026-09-29-official-qwen-live",
+      "records": 9,
+      "all_match": true,
+      "mismatches": []
+    },
+    {
+      "path": "docs/ux/runs/2026-09-29-drawer-dismiss-0303779",
+      "records": 10,
+      "all_match": true,
+      "mismatches": []
+    },
+    {
+      "path": "docs/eval/runs/2026-09-29-inference-model-identities",
+      "records": 3,
+      "all_match": true,
+      "mismatches": []
+    }
+  ],
+  "delete_review_receipts": [
+    {
+      "path": "/Users/andrewherrera/skein-worktrees/ux-integration-20260929/build/agent-logs/candidate-e62f94785-review/ci-root-review.json",
+      "sha256": "0a039a3c661067162b766199dc00adb2ec94f681784a77c4768920b5019d7816",
+      "match": true
+    },
+    {
+      "path": "/Users/andrewherrera/skein-worktrees/ux-integration-20260929/build/agent-logs/candidate-e62f94785-review/ordinary-root-review.json",
+      "sha256": "652398aeeeae62113475fbe3800ca216f139e0f6429d08315d28a4a354e7eb90",
+      "match": true
+    },
+    {
+      "path": "/Users/andrewherrera/skein-worktrees/ux-integration-20260929/build/agent-logs/candidate-e62f94785-review/screenshots-root-review.json",
+      "sha256": "6f7779f60568d2d6dd69d703f082f24e6ddc034e88c55c6062bac3f75b2c7d42",
+      "match": true
+    },
+    {
+      "path": "/Users/andrewherrera/skein-worktrees/ux-integration-20260929/build/agent-logs/candidate-e62f94785-review/reproducible-root-review.json",
+      "sha256": "23bc75a25ff9af6945b13a5d502215577efa97f087bf592eaa15588d087fc3ec",
+      "match": true
+    },
+    {
+      "path": "/Users/andrewherrera/skein-worktrees/ux-integration-20260929/build/agent-logs/candidate-e62f94785-review/build-source-review.json",
+      "sha256": "f0450bbdf4d936ecbb57fd301c68868f2d4e6bf3dea92f1b3eb1791c3b985e31",
+      "match": true
+    },
+    {
+      "path": "/Users/andrewherrera/skein-worktrees/ux-integration-20260929/build/agent-logs/candidate-e62f94785-review/native-equivalence-review.json",
+      "sha256": "ff9738845abc2050efd76b2783509785831a0d3f6bd75f858b127d4075d43e21",
+      "match": true
+    },
+    {
+      "path": "/Users/andrewherrera/skein-worktrees/ux-integration-20260929/build/agent-logs/candidate-e62f94785-review/current-installed-delta.json",
+      "sha256": "1407b2c18e59525d03471ed0656e263153512aef158250eaf2f78b949f7e42b6",
+      "match": true
+    },
+    {
+      "path": "/Users/andrewherrera/skein-worktrees/ux-integration-20260929/build/agent-logs/candidate-e62f94785-review/network-permission-review.json",
+      "sha256": "e2800ede0469e741b296f452cdce7937c60eec54eaf83d99f0a57da16c5ce727",
+      "match": true
+    },
+    {
+      "path": "/Users/andrewherrera/skein-worktrees/ux-integration-20260929/build/agent-logs/candidate-e62f94785-review/actual-checks-review.json",
+      "sha256": "b6710c1ddb511bb126bffd62542890322df79ffdeaa077bfa4cd07bbdd992615",
+      "match": true
+    },
+    {
+      "path": "/Users/andrewherrera/skein-worktrees/ux-integration-20260929/build/agent-logs/delete-combined-1/actual/review.json",
+      "sha256": "45282f60797efdfecfefbaea1762b037bddff98921490b5e9672fcaee0ae2409",
+      "match": true
+    },
+    {
+      "path": "/Users/andrewherrera/skein-worktrees/ux-integration-20260929/build/agent-logs/delete-screens-assembly-1/actual/review.json",
+      "sha256": "4a5521f6d606302823af19f036857fe7c386e7f06198874168cc6e3a9be5e463",
+      "match": true
+    },
+    {
+      "path": "/Users/andrewherrera/skein-worktrees/ux-integration-20260929/build/agent-logs/delete-root-focused-3-actual/review.json",
+      "sha256": "bd6afe265474f6dcf9c38fc1a7c6e73bfeea0b9403ba8bc2469b78c3880b41cc",
+      "match": true
+    },
+    {
+      "path": "/Users/andrewherrera/skein-worktrees/ux-integration-20260929/build/agent-logs/delete-updater-root-review/review.json",
+      "sha256": "4c366b4ed208f61e7518efd47a4cda032ebe6e3e598033f1daf947457ae50d27",
+      "match": true
+    },
+    {
+      "path": "/Users/andrewherrera/skein-worktrees/ux-integration-20260929/build/agent-logs/candidate-e62f94785-review/installed-root-review.json",
+      "sha256": "0586deafd5afe4cdf636f180a00a33e94e76ffea94e0693cf0027437ab377478",
+      "match": true
+    }
+  ],
+  "ordinary_xml": [
+    {
+      "path": "/Users/andrewherrera/skein-worktrees/delete-lifecycle-20260929/build/agent-logs/remote-delete-e62f947/36654289463/connected-test-reports/inference-service/build/outputs/androidTest-results/connected/debug/flavors/dev/TEST-test(AVD) - 15.xml",
+      "sha256": "d80c04de9883d73e131065a57984da2b5999a1fd5b35964c67ffefad0ce14c65",
+      "tests": 39,
+      "failures": 0,
+      "errors": 0,
+      "skips": 0,
+      "critical_lifecycle_cases": [
+        {
+          "name": "lockingMidGenerationCancelsThenLockedTerminatesTheIsolatedProcess",
+          "classname": "app.skein.inference.service.InferenceServiceInstrumentedTest",
+          "time": "1.514"
+        },
+        {
+          "name": "aLockingServiceRefusesTheNextGenerateBeforeProcessTeardown",
+          "classname": "app.skein.inference.service.InferenceServiceInstrumentedTest",
+          "time": "0.900"
+        },
+        {
+          "name": "cancelMidGenerationCompletesAsCancelledWithinTheBudget",
+          "classname": "app.skein.inference.service.InferenceServiceInstrumentedTest",
+          "time": "1.545"
+        },
+        {
+          "name": "staleLockedPushDoesNotKillNewlyAuthorizedService",
+          "classname": "app.skein.inference.service.InferenceServiceInstrumentedTest",
+          "time": "0.948"
+        },
+        {
+          "name": "descriptorLoadCancellationFromProgressClosesOwnedStreamAndKeepsCallerFd",
+          "classname": "app.skein.inference.service.LlamaNativeTest",
+          "time": "0.173"
+        },
+        {
+          "name": "cancelFlagAbortsADecodeWithin100Ms",
+          "classname": "app.skein.inference.service.LlamaNativeTest",
+          "time": "0.146"
+        },
+        {
+          "name": "pathLoadCancellationFromProgressRetainsNoNativeHandle",
+          "classname": "app.skein.inference.service.LlamaNativeTest",
+          "time": "0.085"
+        }
+      ]
+    },
+    {
+      "path": "/Users/andrewherrera/skein-worktrees/delete-lifecycle-20260929/build/agent-logs/remote-delete-e62f947/36654289463/connected-test-reports/app/build/outputs/androidTest-results/connected/debug/flavors/dev/TEST-test(AVD) - 15.xml",
+      "sha256": "2d6ac6c29a107c95b651589720476ee3599754116cf2a4473e7c6da35aa2d5d0",
+      "tests": 38,
+      "failures": 0,
+      "errors": 0,
+      "skips": 0,
+      "critical_lifecycle_cases": [
+        {
+          "name": "lockAfterInspectionTerminatesTheProcessAndOnlyANewUnlockCanRebind",
+          "classname": "app.skein.inference.LlamaCppEngineInstrumentedTest",
+          "time": "5.226"
+        },
+        {
+          "name": "cancel_stops_within_100ms",
+          "classname": "app.skein.inference.LlamaCppEngineInstrumentedTest",
+          "time": "2.953"
+        },
+        {
+          "name": "lock_cancels_the_unique_work_and_nothing_runs_while_locked",
+          "classname": "app.skein.ingest.IngestWorkerInstrumentedTest",
+          "time": "0.430"
+        }
+      ]
+    },
+    {
+      "path": "/Users/andrewherrera/skein-worktrees/delete-lifecycle-20260929/build/agent-logs/remote-delete-e62f947/36654289463/connected-test-reports/core/vault/build/outputs/androidTest-results/connected/debug/flavors/dev/TEST-test(AVD) - 15.xml",
+      "sha256": "f807938aa1888100ecb62d40055ba9213f0189b007a4852053abe83d26bda0c3",
+      "tests": 204,
+      "failures": 0,
+      "errors": 0,
+      "skips": 0,
+      "critical_lifecycle_cases": [
+        {
+          "name": "cancellation_immediately_after_commit_cannot_skip_acknowledgement_or_undo_the_send",
+          "classname": "app.skein.core.vault.repository.VaultRepositoryImplContractTest",
+          "time": "0.016"
+        }
+      ]
+    }
+  ],
+  "fold_xml": [
+    {
+      "path": "/Users/andrewherrera/skein-worktrees/readiness-audit-resume-20260930/docs/ux/runs/2026-09-29-foldable-failed-36598598934-28354dd2/artifact/app/build/outputs/androidTest-results/connected/debug/flavors/dev/TEST-skein_foldable_gate(AVD) - 15.xml",
+      "sha256": "3d05635c4ca6dbddda762113ed36aed3fa60995ca7f638635fc2e9c478ce4979",
+      "cases": [
+        {
+          "name": {
+            "name": "gateSurvivesClosedFlatClosedWithoutActivityReplacement",
+            "classname": "app.skein.foldable.MainActivityFoldableGateTest",
+            "time": "20.195"
+          },
+          "failure": "java.lang.IllegalStateException: Timed out waiting for CLOSED Activity window geometry; activityWindow=ActivityWindowGeometry(configuration={1.0 310mcc260mnc [en_US] ldltr sw674dp w674dp h841dp 420dpi lrg port finger qwerty/v/v -nav/h winConfig={ mBounds=Rect(0, 0 - 1768, 2208) mAppBounds=Rect(0, 0 - 1768, 2208) mMaxBounds=Rect(0, 0 - 1768, 2208) mDisplayRotation=ROTATION_0 mWindowingMode=fullscreen mActivityType=standard mAlwaysOnTop=undefined mRotation=ROTATION_0} as.2 s.4 fontWeightAdjustment=0}, bounds=Rect(0, 0 - 1768, 2208), activityIdentity=169782737); nonUiTargetConfiguration={1.0 310mcc260mnc [en_US] ldltr sw674dp w674dp h841dp 420dpi lrg port finger qwerty/v/v -nav/h winConfig={ mBounds=Rect(0, 0 - 1768, 2208) mAppBounds=Rect(0, 0 - 1768, 2208) mMaxBounds=Rect(0, 0 - 1768, 2208) mDisplayRotation=ROTATION_0 mWindowingMode=fullscreen mActivityType=undefined mAlwaysOnTop=undefined mRotation=ROTATION_0} as.2 s.20 fontWeightAdjustment=0}\n\tat app.skein.foldable.FoldableDeviceControl.await(FoldableDeviceControl.kt:198)\n\tat app.skein.foldable.FoldableDeviceControl.await$default(FoldableDeviceControl.kt:185)\n\tat app.skein.foldable.FoldableDeviceControl.requestState(FoldableDeviceControl.kt:97)\n\tat app.skein.foldable.FoldableDeviceControl.closed(FoldableDeviceControl.kt:42)\n\tat app.skein.foldable.MainActivityFoldableGateTest.gateSurvivesClosedFlatClosedWithoutActivityReplacement(MainActivityFoldableGateTest.kt:70)\n",
+          "error": null
+        },
+        {
+          "name": {
+            "name": "gateSurvivesOuterLandscapeWithoutExposingNavDisplay",
+            "classname": "app.skein.foldable.MainActivityFoldableGateTest",
+            "time": "19.038"
+          },
+          "failure": "java.lang.IllegalStateException: Timed out waiting for CLOSED Activity window geometry; activityWindow=ActivityWindowGeometry(configuration={1.0 310mcc260mnc [en_US] ldltr sw674dp w674dp h841dp 420dpi lrg port finger qwerty/v/v -nav/h winConfig={ mBounds=Rect(0, 0 - 1768, 2208) mAppBounds=Rect(0, 0 - 1768, 2208) mMaxBounds=Rect(0, 0 - 1768, 2208) mDisplayRotation=ROTATION_0 mWindowingMode=fullscreen mActivityType=standard mAlwaysOnTop=undefined mRotation=ROTATION_0} as.2 s.4 fontWeightAdjustment=0}, bounds=Rect(0, 0 - 1768, 2208), activityIdentity=78371802); nonUiTargetConfiguration={1.0 310mcc260mnc [en_US] ldltr sw674dp w674dp h841dp 420dpi lrg port finger qwerty/v/v -nav/h winConfig={ mBounds=Rect(0, 0 - 1768, 2208) mAppBounds=Rect(0, 0 - 1768, 2208) mMaxBounds=Rect(0, 0 - 1768, 2208) mDisplayRotation=ROTATION_0 mWindowingMode=fullscreen mActivityType=undefined mAlwaysOnTop=undefined mRotation=ROTATION_0} as.2 s.20 fontWeightAdjustment=0}\n\tat app.skein.foldable.FoldableDeviceControl.await(FoldableDeviceControl.kt:198)\n\tat app.skein.foldable.FoldableDeviceControl.await$default(FoldableDeviceControl.kt:185)\n\tat app.skein.foldable.FoldableDeviceControl.requestState(FoldableDeviceControl.kt:97)\n\tat app.skein.foldable.FoldableDeviceControl.closed(FoldableDeviceControl.kt:42)\n\tat app.skein.foldable.MainActivityFoldableGateTest.gateSurvivesOuterLandscapeWithoutExposingNavDisplay(MainActivityFoldableGateTest.kt:102)\n",
+          "error": null
+        }
+      ]
+    }
+  ],
+  "fold_geometry_raw": "cat: files/foldable-gate-metrics.jsonl: No such file or directory\n",
+  "fold_protocol": {
+    "run_id": 36598598934,
+    "source_sha": "28354dd25bb4995930ff46a71752f43f8a0d5df3",
+    "counts": {
+      "tests": 2,
+      "passed": 0,
+      "failure": 2,
+      "error": 0,
+      "skipped": 0
+    },
+    "identity_comparison": {
+      "missing": [],
+      "unexpected": [],
+      "duplicates": 0
+    },
+    "geometry_rows": 0,
+    "derived_Activity_geometry": [],
+    "protocol_event_counts": {
+      "started": 1,
+      "request": 4,
+      "console": 4,
+      "ack": 4,
+      "stopped": 1
+    },
+    "verified_causal_sequences": [
+      {
+        "sequence": 1,
+        "action": "fold",
+        "nonce": "0e1b7c2a8b7d49d5a8b16cef99e9464e",
+        "command_returncode": 0,
+        "matching_ACKs": 1
+      },
+      {
+        "sequence": 2,
+        "action": "unfold",
+        "nonce": "0443d9b49bbd41258bc3892485fe7be5",
+        "command_returncode": 0,
+        "matching_ACKs": 1
+      },
+      {
+        "sequence": 3,
+        "action": "fold",
+        "nonce": "c5e8391b494c495e89319c151ef5b146",
+        "command_returncode": 0,
+        "matching_ACKs": 1
+      },
+      {
+        "sequence": 4,
+        "action": "unfold",
+        "nonce": "c7bda6c7b5ce4e7eb5ca7c9aa15af2ea",
+        "command_returncode": 0,
+        "matching_ACKs": 1
+      }
+    ],
+    "six_causal_sequences_and_flat_cleanup_verified": false,
+    "XML_pass_and_source_assertion_scope": "Passing exact source-bound test methods imply setup gate displayed, NavDisplay absent, FLAG_SECURE and same original Activity including guarded @After flat reset. These assertions are not separately attested by screenshots; failed tests imply no complete journey acceptance.",
+    "source_bound_security_cleanup_passed": false,
+    "source_attestation": "GitHub API plus host-declared checkout and uploaded build-output bytes; installed package bytes not independently measured.",
+    "remaining_gates": [
+      "Pixel 9 Pro Fold profile acceptance",
+      "hinge-angle/sensor assertions",
+      "unlocked A-G",
+      "real IME and focus",
+      "system_server heap privacy",
+      "physical Fold A-G acceptance outside this lane"
+    ],
+    "errors": [
+      "Two exact tests have not both passed",
+      "Five unique expected Activity geometry records absent",
+      "Six causal requests/commands/matchedACKs plus flat cleanup not established: ValueError"
+    ],
+    "passed": false
+  },
+  "fold_provenance": [
+    {
+      "path": "api-jobs.json",
+      "published_match": true,
+      "raw_match": true
+    },
+    {
+      "path": "api-artifacts.json",
+      "published_match": true,
+      "raw_match": true
+    },
+    {
+      "path": "logs/workflow-job.log.gz",
+      "published_match": true,
+      "raw_match": true
+    },
+    {
+      "path": "independent-evidence-review.json.gz",
+      "published_match": true,
+      "raw_match": true
+    },
+    {
+      "path": "activity-protocol-review.json",
+      "published_match": true,
+      "raw_match": true
+    },
+    {
+      "path": "partial-failure-diagnosis.json",
+      "published_match": true,
+      "raw_match": true
+    },
+    {
+      "path": "logs/display-transitions-excerpt.txt.gz",
+      "published_match": true,
+      "raw_match": true
+    },
+    {
+      "path": "artifact/app/build/outputs/androidTest-results/connected/debug/flavors/dev/TEST-skein_foldable_gate(AVD) - 15.xml",
+      "published_match": true,
+      "raw_match": true
+    },
+    {
+      "path": "artifact/build/foldable-evidence/avd-config.ini",
+      "published_match": true,
+      "raw_match": true
+    },
+    {
+      "path": "artifact/build/foldable-evidence/requested-profile.txt",
+      "published_match": true,
+      "raw_match": true
+    },
+    {
+      "path": "artifact/build/foldable-evidence/source-sha.txt",
+      "published_match": true,
+      "raw_match": true
+    },
+    {
+      "path": "artifact/build/foldable-evidence/submodule-shas.txt",
+      "published_match": true,
+      "raw_match": true
+    },
+    {
+      "path": "artifact/build/foldable-evidence/runtime-device-states.txt.gz",
+      "published_match": true,
+      "raw_match": true
+    },
+    {
+      "path": "artifact/build/foldable-evidence/runtime-device-states-error.txt",
+      "published_match": true,
+      "raw_match": true
+    },
+    {
+      "path": "artifact/build/foldable-evidence/emulator-version.txt.gz",
+      "published_match": true,
+      "raw_match": true
+    },
+    {
+      "path": "artifact/build/foldable-evidence/console-events.jsonl",
+      "published_match": true,
+      "raw_match": true
+    },
+    {
+      "path": "artifact/build/foldable-evidence/console-run-id.txt",
+      "published_match": true,
+      "raw_match": true
+    },
+    {
+      "path": "artifact/build/foldable-evidence/console-controller.log",
+      "published_match": true,
+      "raw_match": true
+    },
+    {
+      "path": "artifact/build/foldable-evidence/console-final-request.json",
+      "published_match": true,
+      "raw_match": true
+    },
+    {
+      "path": "artifact/build/foldable-evidence/console-final-request-error.txt",
+      "published_match": true,
+      "raw_match": true
+    },
+    {
+      "path": "artifact/build/foldable-evidence/console-final-ack.json",
+      "published_match": true,
+      "raw_match": true
+    },
+    {
+      "path": "artifact/build/foldable-evidence/console-final-ack-error.txt",
+      "published_match": true,
+      "raw_match": true
+    },
+    {
+      "path": "artifact/build/foldable-evidence/window-geometry.jsonl",
+      "published_match": true,
+      "raw_match": true
+    },
+    {
+      "path": "artifact/build/foldable-evidence/window-geometry-error.txt",
+      "published_match": true,
+      "raw_match": true
+    },
+    {
+      "path": "artifact/build/foldable-evidence/review.json",
+      "published_match": true,
+      "raw_match": true
+    },
+    {
+      "path": "artifact/build/foldable-evidence/gradle.log.gz",
+      "published_match": true,
+      "raw_match": true
+    },
+    {
+      "path": "artifact/build/foldable-evidence/initial-window.txt",
+      "published_match": true,
+      "raw_match": true
+    },
+    {
+      "path": "artifact/build/foldable-evidence/device-profiles.txt.gz",
+      "published_match": true,
+      "raw_match": true
+    },
+    {
+      "path": "artifact/build/foldable-evidence/sdk-tool-path.txt",
+      "published_match": true,
+      "raw_match": true
+    },
+    {
+      "path": "artifact/build/foldable-evidence/sdk-tool-source.properties",
+      "published_match": true,
+      "raw_match": true
+    },
+    {
+      "path": "artifact/app/build/outputs/androidTest-results/connected/debug/flavors/dev/skein_foldable_gate(AVD) - 15/logcat-app.skein.foldable.MainActivityFoldableGateTest-gateSurvivesClosedFlatClosedWithoutActivityReplacement.txt.gz",
+      "published_match": true,
+      "raw_match": true
+    },
+    {
+      "path": "artifact/app/build/outputs/androidTest-results/connected/debug/flavors/dev/skein_foldable_gate(AVD) - 15/logcat-app.skein.foldable.MainActivityFoldableGateTest-gateSurvivesOuterLandscapeWithoutExposingNavDisplay.txt.gz",
+      "published_match": true,
+      "raw_match": true
+    },
+    {
+      "path": "source/SOURCE-FILES.json",
+      "published_match": true,
+      "raw_match": true
+    },
+    {
+      "path": "source/.github/workflows/foldable.yml.gz",
+      "published_match": true,
+      "raw_match": true
+    },
+    {
+      "path": "source/tools/ci/verify-foldable.py.gz",
+      "published_match": true,
+      "raw_match": true
+    },
+    {
+      "path": "source/tools/ci/run-foldable-emulator.sh.gz",
+      "published_match": true,
+      "raw_match": true
+    },
+    {
+      "path": "source/tools/ci/foldable-console-bridge.py.gz",
+      "published_match": true,
+      "raw_match": true
+    },
+    {
+      "path": "source/app/src/foldableTest/kotlin/app/skein/foldable/MainActivityFoldableGateTest.kt.gz",
+      "published_match": true,
+      "raw_match": true
+    },
+    {
+      "path": "source/app/src/foldableTest/kotlin/app/skein/foldable/FoldableDeviceControl.kt.gz",
+      "published_match": true,
+      "raw_match": true
+    },
+    {
+      "path": "source/app/src/main/AndroidManifest.xml.gz",
+      "published_match": true,
+      "raw_match": true
+    }
+  ],
+  "ordinary_manifest": {
+    "source_sha": "e62f94785ef8e696d8ee59745fd299fe1f83cc4a",
+    "sha256": "84856bc2865349d36b2ba40fcb4ef1234b148220d04aed399ec44d391e871687",
+    "files": [
+      {
+        "path": "app/build/outputs/androidTest-results/connected/debug/flavors/dev/TEST-test(AVD) - 15.xml",
+        "match": true,
+        "size_match": true
+      },
+      {
+        "path": "build/instrumentation-review.json",
+        "match": true,
+        "size_match": true
+      },
+      {
+        "path": "core/vault/build/outputs/androidTest-results/connected/debug/flavors/dev/TEST-test(AVD) - 15.xml",
+        "match": true,
+        "size_match": true
+      },
+      {
+        "path": "inference-service/build/outputs/androidTest-results/connected/debug/flavors/dev/TEST-test(AVD) - 15.xml",
+        "match": true,
+        "size_match": true
+      }
+    ]
+  }
+}

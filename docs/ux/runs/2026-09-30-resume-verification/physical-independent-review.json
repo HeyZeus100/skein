@@ -1,0 +1,245 @@
+{
+  "schema_version": 1,
+  "reviewed_at": "2026-09-30T02:46:22.991535+00:00",
+  "scope": "Read-only recomputation from original private XML/actions without transcribing background content; published popup XML privacy review",
+  "issues": [],
+  "private_receipts": {
+    "count": 154,
+    "verified_bytes": 3954306,
+    "manifest": {
+      "path": "/Users/andrewherrera/skein-worktrees/fold-acceptance-resume-20260930/docs/ux/runs/2026-09-30-delete-physical-e62/private-evidence-receipts.json",
+      "bytes": 49216,
+      "sha256": "5cb0ee99f271e67b58b3c053534d0437a266485f7278e3c28c7c9e5ca9c7ad38"
+    }
+  },
+  "published_xml": [
+    {
+      "path": "/Users/andrewherrera/skein-worktrees/fold-acceptance-resume-20260930/docs/ux/runs/2026-09-30-delete-physical-e62/note-list-row-confirmation.xml",
+      "bytes": 5706,
+      "sha256": "f3698f11362d7969d484969adc5e53ae213cda6e4f89148057c281b85b710fed",
+      "byte_equal_original": true,
+      "privacy_allowlist_pass": true
+    },
+    {
+      "path": "/Users/andrewherrera/skein-worktrees/fold-acceptance-resume-20260930/docs/ux/runs/2026-09-30-delete-physical-e62/note-header-cancel-confirmation.xml",
+      "bytes": 5706,
+      "sha256": "f3698f11362d7969d484969adc5e53ae213cda6e4f89148057c281b85b710fed",
+      "byte_equal_original": true,
+      "privacy_allowlist_pass": true
+    },
+    {
+      "path": "/Users/andrewherrera/skein-worktrees/fold-acceptance-resume-20260930/docs/ux/runs/2026-09-30-delete-physical-e62/note-header-delete-confirmation.xml",
+      "bytes": 5706,
+      "sha256": "f3698f11362d7969d484969adc5e53ae213cda6e4f89148057c281b85b710fed",
+      "byte_equal_original": true,
+      "privacy_allowlist_pass": true
+    },
+    {
+      "path": "/Users/andrewherrera/skein-worktrees/fold-acceptance-resume-20260930/docs/ux/runs/2026-09-30-delete-physical-e62/chat-list-row-confirmation.xml",
+      "bytes": 5714,
+      "sha256": "870a164b8d249a2c795a1396c1454d6a804bcc3ab08127d41fa14e54137d6c49",
+      "byte_equal_original": true,
+      "privacy_allowlist_pass": true
+    },
+    {
+      "path": "/Users/andrewherrera/skein-worktrees/fold-acceptance-resume-20260930/docs/ux/runs/2026-09-30-delete-physical-e62/chat-header-cancel-confirmation.xml",
+      "bytes": 5714,
+      "sha256": "870a164b8d249a2c795a1396c1454d6a804bcc3ab08127d41fa14e54137d6c49",
+      "byte_equal_original": true,
+      "privacy_allowlist_pass": true
+    },
+    {
+      "path": "/Users/andrewherrera/skein-worktrees/fold-acceptance-resume-20260930/docs/ux/runs/2026-09-30-delete-physical-e62/chat-header-delete-confirmation.xml",
+      "bytes": 5714,
+      "sha256": "870a164b8d249a2c795a1396c1454d6a804bcc3ab08127d41fa14e54137d6c49",
+      "byte_equal_original": true,
+      "privacy_allowlist_pass": true
+    },
+    {
+      "path": "/Users/andrewherrera/skein-worktrees/fold-acceptance-resume-20260930/docs/ux/runs/2026-09-30-delete-physical-e62/chat-active-delete-disabled.xml",
+      "bytes": 2898,
+      "sha256": "8d4d2f67bbc50056393d36019b0cb51157e9aa9216f975d34091e225f19c6d75",
+      "byte_equal_original": true,
+      "privacy_allowlist_pass": true
+    }
+  ],
+  "active_turn": {
+    "observations": [
+      {
+        "seconds": 4.327,
+        "stop_enabled": true,
+        "answering": false
+      },
+      {
+        "seconds": 9.859,
+        "stop_enabled": true,
+        "answering": true
+      }
+    ],
+    "label_itself_enabled": "true",
+    "owning_clickable_enabled": "false",
+    "original_leaf_only_false_preserved": true,
+    "action_record_count": 42,
+    "send_count": 1,
+    "stop_count": 1,
+    "retry_count": 0,
+    "stop_seconds": 21.013,
+    "idle_send_observed": true,
+    "native_generation_proven": false
+  },
+  "fresh_composer_verified_empty": true,
+  "fixture_checks": {
+    "note_list_row_cancel": {
+      "exact_disposable_title_and_content": true
+    },
+    "note_header_cancel": {
+      "exact_disposable_title_and_content": true
+    },
+    "note_delete": {
+      "disposable_marker_absent": true
+    },
+    "chat_list_row_cancel": {
+      "exact_disposable_title_and_content": true
+    },
+    "chat_header_cancel": {
+      "exact_disposable_title_and_content": true
+    },
+    "chat_delete": {
+      "disposable_marker_absent": true
+    }
+  },
+  "exact_target_dialog_actions": {
+    "chat/Cancel": 2,
+    "chat/Delete": 1,
+    "note/Cancel": 2,
+    "note/Delete": 1
+  },
+  "workspace": {
+    "observations": [
+      {
+        "workspace": "primary",
+        "destination": "Chat",
+        "existing_visible_list_exact": true,
+        "fixture_absent": true
+      },
+      {
+        "workspace": "secondary",
+        "destination": "Chat",
+        "existing_visible_list_exact": true,
+        "fixture_absent": true
+      },
+      {
+        "workspace": "secondary",
+        "destination": "Knowledge",
+        "existing_visible_list_exact": true,
+        "fixture_absent": true
+      },
+      {
+        "workspace": "secondary",
+        "destination": "Chat_after_navigation",
+        "existing_visible_list_exact": true,
+        "fixture_absent": true
+      },
+      {
+        "workspace": "primary",
+        "destination": "Knowledge",
+        "existing_visible_list_exact": true,
+        "fixture_absent": true
+      },
+      {
+        "workspace": "primary",
+        "destination": "Chat_after_navigation",
+        "existing_visible_list_exact": true,
+        "fixture_absent": true
+      }
+    ],
+    "chat_list_fingerprint": {
+      "text_count": 31,
+      "text_sequence_sha256": "f4a10ec9ff362f759386c23140e29e1b0b92a978fb6eb255775de04ba562ef36"
+    },
+    "knowledge_list_fingerprint": {
+      "text_count": 25,
+      "text_sequence_sha256": "e1f333b1b8f3ec5d6be47c2c2f992b17b31b31e414ad2aea25a563a01652277c"
+    },
+    "secondary_route_composer_knowledge_retained": true,
+    "restart_or_hidden_stack_coverage": false
+  },
+  "generation_limits": {
+    "prompt_only_saved_chat": true,
+    "no_answer_saved_banner": true,
+    "model_unavailable_observed": true,
+    "cause_diagnosed": false,
+    "model_identity_proven": false,
+    "answer_quality_proven": false
+  },
+  "public_files": [
+    {
+      "path": "/Users/andrewherrera/skein-worktrees/fold-acceptance-resume-20260930/docs/ux/runs/2026-09-30-delete-physical-e62/README.md",
+      "bytes": 4598,
+      "sha256": "8639909b9206c0f2acfff7d51985e4ba59172aab257c226a8aa520cba94e89a9"
+    },
+    {
+      "path": "/Users/andrewherrera/skein-worktrees/fold-acceptance-resume-20260930/docs/ux/runs/2026-09-30-delete-physical-e62/actual-xml-artifacts.json",
+      "bytes": 3709,
+      "sha256": "61beffa711f7b33d396466376e100be81463eb670a351e2091bf5874eff7bb19"
+    },
+    {
+      "path": "/Users/andrewherrera/skein-worktrees/fold-acceptance-resume-20260930/docs/ux/runs/2026-09-30-delete-physical-e62/chat-active-delete-disabled.xml",
+      "bytes": 2898,
+      "sha256": "8d4d2f67bbc50056393d36019b0cb51157e9aa9216f975d34091e225f19c6d75"
+    },
+    {
+      "path": "/Users/andrewherrera/skein-worktrees/fold-acceptance-resume-20260930/docs/ux/runs/2026-09-30-delete-physical-e62/chat-header-cancel-confirmation.xml",
+      "bytes": 5714,
+      "sha256": "870a164b8d249a2c795a1396c1454d6a804bcc3ab08127d41fa14e54137d6c49"
+    },
+    {
+      "path": "/Users/andrewherrera/skein-worktrees/fold-acceptance-resume-20260930/docs/ux/runs/2026-09-30-delete-physical-e62/chat-header-delete-confirmation.xml",
+      "bytes": 5714,
+      "sha256": "870a164b8d249a2c795a1396c1454d6a804bcc3ab08127d41fa14e54137d6c49"
+    },
+    {
+      "path": "/Users/andrewherrera/skein-worktrees/fold-acceptance-resume-20260930/docs/ux/runs/2026-09-30-delete-physical-e62/chat-list-row-confirmation.xml",
+      "bytes": 5714,
+      "sha256": "870a164b8d249a2c795a1396c1454d6a804bcc3ab08127d41fa14e54137d6c49"
+    },
+    {
+      "path": "/Users/andrewherrera/skein-worktrees/fold-acceptance-resume-20260930/docs/ux/runs/2026-09-30-delete-physical-e62/note-header-cancel-confirmation.xml",
+      "bytes": 5706,
+      "sha256": "f3698f11362d7969d484969adc5e53ae213cda6e4f89148057c281b85b710fed"
+    },
+    {
+      "path": "/Users/andrewherrera/skein-worktrees/fold-acceptance-resume-20260930/docs/ux/runs/2026-09-30-delete-physical-e62/note-header-delete-confirmation.xml",
+      "bytes": 5706,
+      "sha256": "f3698f11362d7969d484969adc5e53ae213cda6e4f89148057c281b85b710fed"
+    },
+    {
+      "path": "/Users/andrewherrera/skein-worktrees/fold-acceptance-resume-20260930/docs/ux/runs/2026-09-30-delete-physical-e62/note-list-row-confirmation.xml",
+      "bytes": 5706,
+      "sha256": "f3698f11362d7969d484969adc5e53ae213cda6e4f89148057c281b85b710fed"
+    },
+    {
+      "path": "/Users/andrewherrera/skein-worktrees/fold-acceptance-resume-20260930/docs/ux/runs/2026-09-30-delete-physical-e62/physical-results.json",
+      "bytes": 8683,
+      "sha256": "a36d3069d7757c584d3b480ddd507454daf20246d6d933b2cdf10782046a2cc7"
+    },
+    {
+      "path": "/Users/andrewherrera/skein-worktrees/fold-acceptance-resume-20260930/docs/ux/runs/2026-09-30-delete-physical-e62/private-evidence-receipts.json",
+      "bytes": 49216,
+      "sha256": "5cb0ee99f271e67b58b3c053534d0437a266485f7278e3c28c7c9e5ca9c7ad38"
+    },
+    {
+      "path": "/Users/andrewherrera/skein-worktrees/fold-acceptance-resume-20260930/docs/ux/runs/2026-09-30-delete-physical-e62/status.json",
+      "bytes": 4072,
+      "sha256": "f678ee7c678a2bf3a70e4ddf5451032ad0bc3537e293e47ad6437e9627c06f21"
+    }
+  ],
+  "status": "PASS_BOUNDED_PHYSICAL_EVIDENCE_AND_PRIVACY_REVIEW",
+  "limits": [
+    "No device access or physical actions by reviewer",
+    "Private background XML parsed for exact booleans and aggregate hashes only; no background strings copied or transcribed",
+    "UI Answering and disabled Delete establish UI contract, not native generation or successful assistant output",
+    "Visible lists/owning routes checked after navigation; no restart, hidden stack or simultaneous duplicate-owner acceptance",
+    "Original nine-link draft not reselected or independently rehashed; no full Fold/New-chat/M0/retrieval/model-quality acceptance"
+  ]
+}

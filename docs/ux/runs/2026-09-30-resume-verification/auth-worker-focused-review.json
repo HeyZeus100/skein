@@ -1,0 +1,181 @@
+{
+  "baseline_sha": "3abd9366ff2343d3c92ac08fc236543328d25072",
+  "diff_sha256": "98f6466147a031d5aba1c1426fc7e1ffa760f7d70c428d64ef9dd3dd7ac30ee8",
+  "reports": [
+    {
+      "path": "focused-6-xml/core/vault/testDevDebugUnitTest/TEST-app.skein.core.vault.key.AndroidKeystoreFacadeTest.xml",
+      "sha256": "17f1f755cc8bc222ea9ee0ab0f85b9b80da26558cff26e45a34785b59cb6d3f4",
+      "tests": 2,
+      "failures": 0,
+      "errors": 0,
+      "skips": 0,
+      "new_key_loss_cases": [
+        "key lookup exception is not classified as missing",
+        "null key lookup becomes typed absence without exposing the alias"
+      ]
+    },
+    {
+      "path": "focused-6-xml/core/vault/testDevDebugUnitTest/TEST-app.skein.core.vault.key.VaultKeyProviderImplTest.xml",
+      "sha256": "a5f089e3193e890942111bea5a57f4ca0521602bb861f94b3ccd16b4bdf3d819",
+      "tests": 42,
+      "failures": 0,
+      "errors": 0,
+      "skips": 0,
+      "new_key_loss_cases": [
+        "missing requested key preserves the envelope and surviving factor",
+        "missing recovery key never rewrites an envelope or creates replacement aliases",
+        "unavailable key lookup remains generic failure instead of missing key"
+      ]
+    },
+    {
+      "path": "focused-6-xml/core/vault/testDevDebugUnitTest/TEST-app.skein.core.vault.session.UnlockManagerTest.xml",
+      "sha256": "b1127ff3448efd921608438a3710b65b6df1ae32c84f9834fec13c7211af1499",
+      "tests": 43,
+      "failures": 0,
+      "errors": 0,
+      "skips": 0,
+      "new_key_loss_cases": [
+        "missing requested key leaves Locked without a token and logs only finite identifiers",
+        "missing recovery key drops to Locked without authorizing setup or unlock"
+      ]
+    },
+    {
+      "path": "focused-6-xml/feature/shell/testDebugUnitTest/TEST-app.skein.feature.shell.auth.BiometricUnlockDeviceLockGateTest.xml",
+      "sha256": "0250241b54d0de4ed2c9c5fadb012be1fd241f3e122622e5f1d6684d477d12ea",
+      "tests": 3,
+      "failures": 0,
+      "errors": 0,
+      "skips": 0,
+      "new_key_loss_cases": []
+    },
+    {
+      "path": "focused-6-xml/feature/shell/testDebugUnitTest/TEST-app.skein.feature.shell.auth.BiometricUnlockOutcomeTest.xml",
+      "sha256": "91df108d2deadcc4b0c74c07270d1e10b1cd8ebb0942aa57e0214e7bb9937712",
+      "tests": 20,
+      "failures": 0,
+      "errors": 0,
+      "skips": 0,
+      "new_key_loss_cases": [
+        "missing key has a distinct route without authentication retry setup or invalidation recovery",
+        "coalesced missing key retains its factor and distinct route",
+        "generic diagnostic text cannot masquerade as confirmed key loss"
+      ]
+    },
+    {
+      "path": "focused-6-xml/feature/shell/testDebugUnitTest/TEST-app.skein.feature.shell.auth.BiometricUnlockResetAffordanceTest.xml",
+      "sha256": "371565c76f0d6ab6bd8059c2187e86f79e1580554f12ab0b55c0aee2fb8bd995",
+      "tests": 9,
+      "failures": 0,
+      "errors": 0,
+      "skips": 0,
+      "new_key_loss_cases": [
+        "missing biometric key preserves the chance of credential recovery without retrying",
+        "generic failure cannot enter typed key-loss reset even when host offers it",
+        "missing credential key reset invokes only its typed callback after the click"
+      ]
+    },
+    {
+      "path": "focused-6-xml/feature/shell/testDebugUnitTest/TEST-app.skein.feature.shell.auth.VaultResetConfirmStateTest.xml",
+      "sha256": "b01266ea4311c986b29816e5f433bb24538e346f90f9935330762fb3f12314ae",
+      "tests": 17,
+      "failures": 0,
+      "errors": 0,
+      "skips": 0,
+      "new_key_loss_cases": []
+    }
+  ],
+  "totals": {
+    "tests": 136,
+    "failures": 0,
+    "errors": 0,
+    "skips": 0
+  },
+  "build": "BUILD SUCCESSFUL in 8s; 188 tasks,87executed101up-to-date; unit tasks executed (no FROM-CACHE)",
+  "limits": [
+    "Focused JVM/Robolectric checks only; no device auth/security changes or runtime key loss reproduction.",
+    "No safe passphrase rewrap or credential fallback UI is implemented; broader gg11.29 remains open.",
+    "Root app integration and combined full tests pending."
+  ],
+  "prior_attempts": [
+    {
+      "attempt": 1,
+      "failure": "wrong shell flavor task name; no tests"
+    },
+    {
+      "attempt": 2,
+      "failure": "new core test multiline formatting; no tests"
+    },
+    {
+      "attempt": 3,
+      "failure": "new shell test formatting; no tests"
+    },
+    {
+      "attempt": 4,
+      "failure": "unavailable ApplicationProvider test dependency; switched to existing Robolectric RuntimeEnvironment; no tests"
+    },
+    {
+      "attempt": 5,
+      "failure": "86passes/1failure: original generic-Failed privacy test used missing-alias input now typed; retained generic privacy assertion using real thrown KeyStoreException carrying ciphertext sentinel instead."
+    }
+  ],
+  "verified_commit": "5e90656c7ed7f41ae9bc4ae6b5a37d89ccac7664",
+  "source_files": [
+    {
+      "path": "core/vault/src/main/kotlin/app/skein/core/vault/key/AndroidKeystoreFacade.kt",
+      "sha256": "7962fee6815a912c15518da1f648d18c9444595ff86d3d64ae55020627d0afad"
+    },
+    {
+      "path": "core/vault/src/main/kotlin/app/skein/core/vault/key/KeystoreFacade.kt",
+      "sha256": "68cbe31c3e9df0a8b3150dbafac3ef960d3cfc06c4751dfb10a023601d4cb515"
+    },
+    {
+      "path": "core/vault/src/main/kotlin/app/skein/core/vault/key/VaultKeyProvider.kt",
+      "sha256": "916f033c85fa7ca662c5cf042a33c3cca61f5bdcc27d16655bc596d63eb8f40f"
+    },
+    {
+      "path": "core/vault/src/main/kotlin/app/skein/core/vault/key/VaultKeyProviderImpl.kt",
+      "sha256": "713041697ed958c9def5c1c7b184465dcc9538b9c8117df5e57b9ab9bde73b8a"
+    },
+    {
+      "path": "core/vault/src/main/kotlin/app/skein/core/vault/session/UnlockManager.kt",
+      "sha256": "e2bc899ca3c349cd05220e6234d5652b4a8e71c961d8a97de0cef320a17091f7"
+    },
+    {
+      "path": "core/vault/src/main/kotlin/app/skein/core/vault/session/UnlockOutcome.kt",
+      "sha256": "7e64b03e271cc8052441d79197dce122e3dc14271564e8e0f9c82507ba039f78"
+    },
+    {
+      "path": "core/vault/src/test/kotlin/app/skein/core/vault/key/AndroidKeystoreFacadeTest.kt",
+      "sha256": "c25d6e4a6cc1923b28ab741743bda508e4f8552d24b474304aebcd8d4422c6f6"
+    },
+    {
+      "path": "core/vault/src/test/kotlin/app/skein/core/vault/key/FakeKeystoreFacade.kt",
+      "sha256": "b49990aefc7c7354c3605690af9f96bc9b08e2190989d3f770c1e5bf8a93d526"
+    },
+    {
+      "path": "core/vault/src/test/kotlin/app/skein/core/vault/key/VaultKeyProviderImplTest.kt",
+      "sha256": "1fe550564d332ccbee8cbcdc7700aa1b6ee7e221982c28c36235ca802d423933"
+    },
+    {
+      "path": "core/vault/src/test/kotlin/app/skein/core/vault/session/UnlockManagerTest.kt",
+      "sha256": "a5b9223817f692d915e6d474cec0a563fcac5853bb56576241d0beaab0cb4849"
+    },
+    {
+      "path": "feature/shell/src/main/kotlin/app/skein/feature/shell/auth/BiometricUnlockScreen.kt",
+      "sha256": "78165dec9d7b1ef7eda3ec4beb7e5dd20af5fdd017eadfe475c7c2a19f70bb3a"
+    },
+    {
+      "path": "feature/shell/src/main/kotlin/app/skein/feature/shell/auth/VaultResetScreen.kt",
+      "sha256": "28998a610add0320cca36d9561083d608b4c55f25764c0d4278471ef215c05d1"
+    },
+    {
+      "path": "feature/shell/src/test/kotlin/app/skein/feature/shell/auth/BiometricUnlockOutcomeTest.kt",
+      "sha256": "5768d27dc980c900bebfa5b77513263b0a8fe73480222c4fecfacf588d207e92"
+    },
+    {
+      "path": "feature/shell/src/test/kotlin/app/skein/feature/shell/auth/BiometricUnlockResetAffordanceTest.kt",
+      "sha256": "558cee21aefe1f83f2e22270d67993bde9c62cfd072a8b459025a4155d82d197"
+    }
+  ],
+  "lease_released": true
+}

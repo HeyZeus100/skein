@@ -1,0 +1,4020 @@
+{
+  "source_application_commit": "b62977f3a62e813ef21c0928a8a425ca5562a679",
+  "checkout_head_at_gate_start": "b62977f3a62e813ef21c0928a8a425ca5562a679",
+  "scope": "All8 Roborazzi modules actual XML and per-image JSON; no build cache; no baseline changes",
+  "totals": {
+    "tests": 1419,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 80,
+    "passed": 1339
+  },
+  "images": {
+    "unchanged": 552
+  },
+  "exit": 0,
+  "log_sha256": "21d3f1d6253f9db07b7f6c552c7a00f63c0252578cb8efd85874be98dfac2d10",
+  "actual_archive_sha256": "3421dbec785ab9990ae3074a3e72b91fc1d64424ff52ce620e0c2d74130431b4",
+  "files": [
+    {
+      "path": "core/designsystem/build/test-results/testDebugUnitTest/TEST-app.skein.core.designsystem.components.SkeinChipsTest.xml",
+      "sha256": "60e999bb8449df0fe7ff45373226444714a4f68bfa0d5d98276bd228924f2501",
+      "tests": 5,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "path": "core/designsystem/build/test-results/testDebugUnitTest/TEST-app.skein.core.designsystem.components.SkeinComponentsBehaviourTest.xml",
+      "sha256": "b429dc2bf1d3915abc64d333c527a9ef9916ceba86c2b304859b851b84ed4347",
+      "tests": 18,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "path": "core/designsystem/build/test-results/testDebugUnitTest/TEST-app.skein.core.designsystem.components.SkeinComponentsScreenshotTest.xml",
+      "sha256": "0a742a9d00c6760eac9b0ade9e2b1b79b7a96ce0efd6961215e19b93be9c052d",
+      "tests": 56,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "path": "core/designsystem/build/test-results/testDebugUnitTest/TEST-app.skein.core.designsystem.components.SkeinDestructiveDialogTest.xml",
+      "sha256": "48f0fb05c4e286a57369e305bc24f3cc692d9dcf791538eb3ffa0b80d77ae298",
+      "tests": 5,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "path": "core/designsystem/build/test-results/testDebugUnitTest/TEST-app.skein.core.designsystem.components.SkeinFocusRingTest.xml",
+      "sha256": "6cb3fbf5c22bbfab72b259b6a93dd2a289d76c7e4f549b310947239f89a68bf8",
+      "tests": 4,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "path": "core/designsystem/build/test-results/testDebugUnitTest/TEST-app.skein.core.designsystem.components.SkeinInteractionPrimitivesScreenshotTest.xml",
+      "sha256": "c64f25d5d5061debefb7140ff3e723de6dd13f6b568603e29a6200a1cd36ea6e",
+      "tests": 3,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "path": "core/designsystem/build/test-results/testDebugUnitTest/TEST-app.skein.core.designsystem.components.SkeinKeycapsTest.xml",
+      "sha256": "2213525180e67d8e0aeca73a9e57e910584334a67c6e91e87fdea0331997b0e5",
+      "tests": 3,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "path": "core/designsystem/build/test-results/testDebugUnitTest/TEST-app.skein.core.designsystem.components.SkeinListRowHingeMenuTest.xml",
+      "sha256": "c678546d69fa3bdfcbc030b25cfe1bc43f3a6c13d7470b5bcf2e8db7a5794784",
+      "tests": 1,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "path": "core/designsystem/build/test-results/testDebugUnitTest/TEST-app.skein.core.designsystem.components.SkeinPartitionedDialogTest.xml",
+      "sha256": "2fbb03e11e236ba377ffb904cc834dce08549ab48a54a9c8cb86d43cdd7eadcb",
+      "tests": 4,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "path": "core/designsystem/build/test-results/testDebugUnitTest/TEST-app.skein.core.designsystem.components.SkeinPartitionedMenuTest.xml",
+      "sha256": "10e47870412618f8af69fbcb45c13e8b83d511b435b9ae6ef6249b4c9249b741",
+      "tests": 2,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "path": "core/designsystem/build/test-results/testDebugUnitTest/TEST-app.skein.core.designsystem.components.SkeinRenameDialogTest.xml",
+      "sha256": "3c5338173d324a162ebeca0c40366cedc0057e9f7c186a0312b04ba91ebf4a1f",
+      "tests": 6,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "path": "core/designsystem/build/test-results/testDebugUnitTest/TEST-app.skein.core.designsystem.components.SkeinSnackbarTest.xml",
+      "sha256": "85dbf69c517f29c0f2ee4d8d2a2ac61acda5626f2c341b73cdedb63f353b3e69",
+      "tests": 2,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "path": "core/designsystem/build/test-results/testDebugUnitTest/TEST-app.skein.core.designsystem.components.SkeinTooltipTest.xml",
+      "sha256": "c34a3fec4b0aae385660b82ec483a5fc789645c83ea2fb1097d3c8087dced3ab",
+      "tests": 1,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "path": "core/designsystem/build/test-results/testDebugUnitTest/TEST-app.skein.core.designsystem.components.SkeinWindowPartitionTest.xml",
+      "sha256": "b874e998aef707d51a0adfb00ed03ab202c44948950479a37c72ff9cd6cac977",
+      "tests": 4,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "path": "core/designsystem/build/test-results/testDebugUnitTest/TEST-app.skein.core.designsystem.components.screenshots.SkeinOverlaysScreenshotTest.xml",
+      "sha256": "0a35b76369bd5edd4ea413319ed00cd4e9be5b133b332398f456506c9414d794",
+      "tests": 6,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "path": "core/designsystem/build/test-results/testDebugUnitTest/TEST-app.skein.core.designsystem.icons.SkeinIconsTest.xml",
+      "sha256": "0030da8a90ae07365eefe6f7b312a5b49759d91f4cf315a1f448542871c59bd1",
+      "tests": 1,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "path": "core/designsystem/build/test-results/testDebugUnitTest/TEST-app.skein.core.designsystem.theme.NoAmbientAnimationTest.xml",
+      "sha256": "de853a8585d5a62448af4febe30ee8d7526b6a7519917fdf60fb6287c97fb30d",
+      "tests": 2,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "path": "core/designsystem/build/test-results/testDebugUnitTest/TEST-app.skein.core.designsystem.theme.NoHardCodedColorTest.xml",
+      "sha256": "03386460067ff58f02713ee6dcfdd4e47faac1b0bbfed8a627c254725afe0717",
+      "tests": 2,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "path": "core/designsystem/build/test-results/testDebugUnitTest/TEST-app.skein.core.designsystem.theme.NoImplementationStringTest.xml",
+      "sha256": "69ded093999b975ea8057dd3e9e225a06b409446b3951985253f6a644ae63d19",
+      "tests": 2,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "path": "core/designsystem/build/test-results/testDebugUnitTest/TEST-app.skein.core.designsystem.theme.NoLegacyGlyphIconTest.xml",
+      "sha256": "7452418d36f3878a6e688286e8d8a945e4e98f22f2a7a18de7f20c283d0ebd3a",
+      "tests": 2,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "path": "core/designsystem/build/test-results/testDebugUnitTest/TEST-app.skein.core.designsystem.theme.NoShadowOrGradientTest.xml",
+      "sha256": "83d27d15fac6c13648c109773b270d9ee15abd726bea9419f1e78330edb64b28",
+      "tests": 2,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "path": "core/designsystem/build/test-results/testDebugUnitTest/TEST-app.skein.core.designsystem.theme.SkeinColorContrastTest.xml",
+      "sha256": "91f6a33adacb75a12d7e670602099c5abb8772795aad1f47e43654a7b4828673",
+      "tests": 6,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "path": "core/designsystem/build/test-results/testDebugUnitTest/TEST-app.skein.core.designsystem.theme.SkeinGalleryExtrasScreenshotTest.xml",
+      "sha256": "fd05a69b4fda748f4a101edfe4df1419eb5da38d9ed3937a94e52ee5fd8e6066",
+      "tests": 4,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "path": "core/designsystem/build/test-results/testDebugUnitTest/TEST-app.skein.core.designsystem.theme.SkeinMarkdownStyleTest.xml",
+      "sha256": "b853019bd6a5173c85f3c27f95bdadb8bb2decb32f20490fb2fdf8aa650d9d3c",
+      "tests": 9,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "path": "core/designsystem/build/test-results/testDebugUnitTest/TEST-app.skein.core.designsystem.theme.SkeinMotionTest.xml",
+      "sha256": "bc4c40b83f760053a4bb3cca53c73bf14284dc6bdfa73dc15b1e07ebe18527fe",
+      "tests": 2,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "path": "core/designsystem/build/test-results/testDebugUnitTest/TEST-app.skein.core.designsystem.theme.SkeinReducedMotionTest.xml",
+      "sha256": "89daab914fbb7316afef988baa3dcadec14abaff6cd41beaa536c2e580f08f96",
+      "tests": 3,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "path": "core/designsystem/build/test-results/testDebugUnitTest/TEST-app.skein.core.designsystem.theme.SkeinShapesTest.xml",
+      "sha256": "d64435923b0e3596ae8e407f8c109612c8d750f23d97a69eecb4d4ae1922086c",
+      "tests": 4,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "path": "core/designsystem/build/test-results/testDebugUnitTest/TEST-app.skein.core.designsystem.theme.SkeinSpaceSizeLayoutTest.xml",
+      "sha256": "2d12b3dce2e31c5fba7badd3a9aa1bb122d80ac2cc46ee87e8cdfe0cb001e129",
+      "tests": 4,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "path": "core/designsystem/build/test-results/testDebugUnitTest/TEST-app.skein.core.designsystem.theme.SkeinTokensGalleryScreenshotTest.xml",
+      "sha256": "f3fbc0d2311493a62417f74b36db08959fdd525560a4f39f6245249e19e7418d",
+      "tests": 120,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "path": "core/designsystem/build/test-results/testDebugUnitTest/TEST-app.skein.core.designsystem.theme.SkeinTypographyTest.xml",
+      "sha256": "bbeebd6a7574f9994c04691eaca6b261fbd51900c8f3facc1c85464f9f3527ff",
+      "tests": 5,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "path": "core/designsystem/build/test-results/roborazzi/debug/results/1240552053235375_component-segmented-control__light__fs100.json",
+      "sha256": "9fe806433be9763a9b0d41b411bc722d968ce770df2fc695c220c8ba34ffaaa8",
+      "type": "unchanged"
+    },
+    {
+      "path": "core/designsystem/build/test-results/roborazzi/debug/results/1240552198179500_component-empty-state__light__fs100.json",
+      "sha256": "6fcb2528f7c752b7645b4cdf9f8c7bc32c26901ae46ac1b4b1d925ca5a3b23ca",
+      "type": "unchanged"
+    },
+    {
+      "path": "core/designsystem/build/test-results/roborazzi/debug/results/1240552251975583_component-notice__light__fs100.json",
+      "sha256": "71b70ed7713da4530c03db2f926b37e32805f51c7f2278d8633f008f11212502",
+      "type": "unchanged"
+    },
+    {
+      "path": "core/designsystem/build/test-results/roborazzi/debug/results/1240552287490375_component-status__light__fs100.json",
+      "sha256": "bf2828747a0422109c7c9986393b2d87ab01a335510d0dad853eb1d1466c144b",
+      "type": "unchanged"
+    },
+    {
+      "path": "core/designsystem/build/test-results/roborazzi/debug/results/1240552359074083_component-top-app-bar__light__fs100.json",
+      "sha256": "692e0059a4c76a4c9dbed8012fc1dccf33c79dc8ce0d2b11bc13db65093797cf",
+      "type": "unchanged"
+    },
+    {
+      "path": "core/designsystem/build/test-results/roborazzi/debug/results/1240552442283833_component-search-field__light__fs100.json",
+      "sha256": "918005d6acedcc43fd8f2749932391207fd2c1658d3baa458b4301ea8318dcc7",
+      "type": "unchanged"
+    },
+    {
+      "path": "core/designsystem/build/test-results/roborazzi/debug/results/1240552508832208_component-list-row__light__fs100.json",
+      "sha256": "6e5f36c52789752ab39b8777503666fa73cbc55fd3be8593570bc64733a113cb",
+      "type": "unchanged"
+    },
+    {
+      "path": "core/designsystem/build/test-results/roborazzi/debug/results/1240552560455416_component-segmented-control__dark__fs100.json",
+      "sha256": "64874de589c01314cfe8dfe76b2f74dadffae19f7b8f427cce9f920da2301e12",
+      "type": "unchanged"
+    },
+    {
+      "path": "core/designsystem/build/test-results/roborazzi/debug/results/1240552603050666_component-empty-state__dark__fs100.json",
+      "sha256": "abfd497df0858b8aad116d98f05a04ba5ee2d191739eec93036e9a8302e838bc",
+      "type": "unchanged"
+    },
+    {
+      "path": "core/designsystem/build/test-results/roborazzi/debug/results/1240552642348458_component-notice__dark__fs100.json",
+      "sha256": "50cb67a030a0fef94479c8e3603ee37645871632d3be0dc43622faeb2f021064",
+      "type": "unchanged"
+    },
+    {
+      "path": "core/designsystem/build/test-results/roborazzi/debug/results/1240552672251458_component-status__dark__fs100.json",
+      "sha256": "9ce4837e3e2a4f1f27d205ef53807935c7de0885b200c8002fd3a5d6bc98618f",
+      "type": "unchanged"
+    },
+    {
+      "path": "core/designsystem/build/test-results/roborazzi/debug/results/1240552724115666_component-top-app-bar__dark__fs100.json",
+      "sha256": "7c29b21526cf9a298814266b5397bf03d9483ed297594f158da97e0e51d2c629",
+      "type": "unchanged"
+    },
+    {
+      "path": "core/designsystem/build/test-results/roborazzi/debug/results/1240552762271625_component-search-field__dark__fs100.json",
+      "sha256": "3522aa9a5293350f6f80bc2adff027241dcc69d80293150fe8694d55fdcb1627",
+      "type": "unchanged"
+    },
+    {
+      "path": "core/designsystem/build/test-results/roborazzi/debug/results/1240552801219875_component-list-row__dark__fs100.json",
+      "sha256": "f53dcf3fc08ad8a3317930f23a62615ca46867042ce8dd243b1ff5090791568b",
+      "type": "unchanged"
+    },
+    {
+      "path": "core/designsystem/build/test-results/roborazzi/debug/results/1240552842900500_component-segmented-control__light__fs200.json",
+      "sha256": "2850dc6e461fc9c8998848950683beb099df8655e37a5bbdde92686772e12a4e",
+      "type": "unchanged"
+    },
+    {
+      "path": "core/designsystem/build/test-results/roborazzi/debug/results/1240552885637041_component-empty-state__light__fs200.json",
+      "sha256": "92179a8972321bff63137c434ce7f3391bee63436611edfb1542b6b288ddfe0f",
+      "type": "unchanged"
+    },
+    {
+      "path": "core/designsystem/build/test-results/roborazzi/debug/results/1240552928500750_component-notice__light__fs200.json",
+      "sha256": "4a8da91092bcc903b5c0d0664e774f0a4fa1a6e6334fceed73535d145daa904f",
+      "type": "unchanged"
+    },
+    {
+      "path": "core/designsystem/build/test-results/roborazzi/debug/results/1240552958437583_component-status__light__fs200.json",
+      "sha256": "652590d6eb3fe857561c5c3b000d9959107c12b26177d65e63f4eb5b2a897a7f",
+      "type": "unchanged"
+    },
+    {
+      "path": "core/designsystem/build/test-results/roborazzi/debug/results/1240553016379416_component-top-app-bar__light__fs200.json",
+      "sha256": "b3700f2ce346ea4cb65be85251a742616c53fbe5c54a53572cf3e670d9afe628",
+      "type": "unchanged"
+    },
+    {
+      "path": "core/designsystem/build/test-results/roborazzi/debug/results/1240553058454333_component-search-field__light__fs200.json",
+      "sha256": "0354f787b4bf81edacbc50e634f09f3a1b9f1fd4dd8478732601ad8431774530",
+      "type": "unchanged"
+    },
+    {
+      "path": "core/designsystem/build/test-results/roborazzi/debug/results/1240553094981416_component-list-row__light__fs200.json",
+      "sha256": "ed7bbe32be49a27fe2d7478d5849c4434ee1174405fc08f0902005b1fb1db480",
+      "type": "unchanged"
+    },
+    {
+      "path": "core/designsystem/build/test-results/roborazzi/debug/results/1240553135384833_component-segmented-control__dark__fs200.json",
+      "sha256": "049c624de8069bc0bb53920d903689c619c6620a984f900de8150553ee4b7913",
+      "type": "unchanged"
+    },
+    {
+      "path": "core/designsystem/build/test-results/roborazzi/debug/results/1240553167807416_component-empty-state__dark__fs200.json",
+      "sha256": "cb75cc2b816da8a93add26e6dcd60218443ad5fa5e5186f0f7d690f8b238158a",
+      "type": "unchanged"
+    },
+    {
+      "path": "core/designsystem/build/test-results/roborazzi/debug/results/1240553205596625_component-notice__dark__fs200.json",
+      "sha256": "84a515f5df7c082ed70f9ab238c6cc1475b8b08265d34c8c1ea846dcd5b70b00",
+      "type": "unchanged"
+    },
+    {
+      "path": "core/designsystem/build/test-results/roborazzi/debug/results/1240553231758083_component-status__dark__fs200.json",
+      "sha256": "b6a860245e58776ba446a1c6d441d99b9585127d0aac3c583807a567b1901ee9",
+      "type": "unchanged"
+    },
+    {
+      "path": "core/designsystem/build/test-results/roborazzi/debug/results/1240553279433333_component-top-app-bar__dark__fs200.json",
+      "sha256": "3d4a716e0996b457c6c7de81e782f77e77256272fd1c756ffc918a32ccef00ef",
+      "type": "unchanged"
+    },
+    {
+      "path": "core/designsystem/build/test-results/roborazzi/debug/results/1240553314235916_component-search-field__dark__fs200.json",
+      "sha256": "57a4feb4e3c4351ccccded9508a1315e79054ecfff752e36a642b75dc1bf1053",
+      "type": "unchanged"
+    },
+    {
+      "path": "core/designsystem/build/test-results/roborazzi/debug/results/1240553349048625_component-list-row__dark__fs200.json",
+      "sha256": "9e1082c2da8225e6c07595481b31648fe4a6a6aa9114f5d1680f9d90280c9664",
+      "type": "unchanged"
+    },
+    {
+      "path": "core/designsystem/build/test-results/roborazzi/debug/results/1240553393556041_component-segmented-control__light__fs100.json",
+      "sha256": "6a1be150062e6b4dc6644aa19e576710b9ea159f216432de91c548ea086f2aa2",
+      "type": "unchanged"
+    },
+    {
+      "path": "core/designsystem/build/test-results/roborazzi/debug/results/1240553435109541_component-empty-state__light__fs100.json",
+      "sha256": "3620417668aa9f290b4df2d5df18658f33360146aa3e01b02026eb213be9853d",
+      "type": "unchanged"
+    },
+    {
+      "path": "core/designsystem/build/test-results/roborazzi/debug/results/1240553476240791_component-notice__light__fs100.json",
+      "sha256": "826a58e616dbb345fe550706fc64c5afac087e63b43ada14d0fbb9cce0561d59",
+      "type": "unchanged"
+    },
+    {
+      "path": "core/designsystem/build/test-results/roborazzi/debug/results/1240553508857541_component-status__light__fs100.json",
+      "sha256": "7683c7701ed6254260da09fe4559e870b9a0420aa5eee1ef7bf67e8ac3ed8b3a",
+      "type": "unchanged"
+    },
+    {
+      "path": "core/designsystem/build/test-results/roborazzi/debug/results/1240553553164083_component-top-app-bar__light__fs100.json",
+      "sha256": "82048d743f0fe826a3ba27d0c03b6f8b537b0f572a8eec873f0108a198fc7f06",
+      "type": "unchanged"
+    },
+    {
+      "path": "core/designsystem/build/test-results/roborazzi/debug/results/1240553583444291_component-search-field__light__fs100.json",
+      "sha256": "0510af8d20aba74686684743fbb3587b9aa66551790303539d484bd84b722dcd",
+      "type": "unchanged"
+    },
+    {
+      "path": "core/designsystem/build/test-results/roborazzi/debug/results/1240553622264833_component-list-row__light__fs100.json",
+      "sha256": "5cd927f84b2d7946faf6d3177509ebbb3ba5948c88978d3ccff052d1f1d95018",
+      "type": "unchanged"
+    },
+    {
+      "path": "core/designsystem/build/test-results/roborazzi/debug/results/1240553658613666_component-segmented-control__dark__fs100.json",
+      "sha256": "e4edfbbe3688de6c9b469741aa6232bc1be0d02573fc776088a19d6ba085e532",
+      "type": "unchanged"
+    },
+    {
+      "path": "core/designsystem/build/test-results/roborazzi/debug/results/1240553700154375_component-empty-state__dark__fs100.json",
+      "sha256": "aa3c975fae3d0be368201e0463bf62cfb15e33d363a9090c5f5b41a9298a58ab",
+      "type": "unchanged"
+    },
+    {
+      "path": "core/designsystem/build/test-results/roborazzi/debug/results/1240553742442208_component-notice__dark__fs100.json",
+      "sha256": "88bda4dbabcceee3b11078ef88be0eabdb0f7a5021d0c3480b1de53ddfdcb2ef",
+      "type": "unchanged"
+    },
+    {
+      "path": "core/designsystem/build/test-results/roborazzi/debug/results/1240553773834583_component-status__dark__fs100.json",
+      "sha256": "c9fb752df2073fa4feb0b8a704b3a9d7758f68c3b1444ce36f9cbc0ff5f54faa",
+      "type": "unchanged"
+    },
+    {
+      "path": "core/designsystem/build/test-results/roborazzi/debug/results/1240553823239083_component-top-app-bar__dark__fs100.json",
+      "sha256": "6c2e778f5d64ee307efb31485a60ad4415687bc6a5a9759abb8ef443154781ec",
+      "type": "unchanged"
+    },
+    {
+      "path": "core/designsystem/build/test-results/roborazzi/debug/results/1240553855000791_component-search-field__dark__fs100.json",
+      "sha256": "6056225a86d53abeffd879ba54d515cd565ce6c189efcd87ca9de8a926f7e6b5",
+      "type": "unchanged"
+    },
+    {
+      "path": "core/designsystem/build/test-results/roborazzi/debug/results/1240553892069708_component-list-row__dark__fs100.json",
+      "sha256": "726b8b98ba8090d9f961f812d3dbfddb1bf9ce48f46f9042981c5943b8437625",
+      "type": "unchanged"
+    },
+    {
+      "path": "core/designsystem/build/test-results/roborazzi/debug/results/1240553931279208_component-segmented-control__light__fs200.json",
+      "sha256": "0d3ebff9792c08501cb8f1af6e0dd56ca85d3b4c88bbe3aadce12e78b16c6c2d",
+      "type": "unchanged"
+    },
+    {
+      "path": "core/designsystem/build/test-results/roborazzi/debug/results/1240553964953416_component-empty-state__light__fs200.json",
+      "sha256": "882dceccbee142c8dcc1726b761546b9a4dc270f9fabcfb4f014a0f1d31f101a",
+      "type": "unchanged"
+    },
+    {
+      "path": "core/designsystem/build/test-results/roborazzi/debug/results/1240554001548583_component-notice__light__fs200.json",
+      "sha256": "4620c9ea4d8d475143d3d84fcd43a9786bcbcf98ad3381813c2048a44ed5ac29",
+      "type": "unchanged"
+    },
+    {
+      "path": "core/designsystem/build/test-results/roborazzi/debug/results/1240554027042458_component-status__light__fs200.json",
+      "sha256": "e41722ed4e92b1372a9ea1752a2e1d34194d894c52efa0886db44c82f70b4963",
+      "type": "unchanged"
+    },
+    {
+      "path": "core/designsystem/build/test-results/roborazzi/debug/results/1240554074354291_component-top-app-bar__light__fs200.json",
+      "sha256": "de9741c4154db0c478b06491c7ec06aa98229f38ee7f1dfb7bbb3f484e7aea35",
+      "type": "unchanged"
+    },
+    {
+      "path": "core/designsystem/build/test-results/roborazzi/debug/results/1240554108024666_component-search-field__light__fs200.json",
+      "sha256": "edd98ba0ea67db659999fad9796a9d9f4de0b3c64203d51dafe1c885ccf52591",
+      "type": "unchanged"
+    },
+    {
+      "path": "core/designsystem/build/test-results/roborazzi/debug/results/1240554148311500_component-list-row__light__fs200.json",
+      "sha256": "33fa6d3e7b5ec221f9a82dec677ae55ac525d4a4ca5506ab492511def41e04dc",
+      "type": "unchanged"
+    },
+    {
+      "path": "core/designsystem/build/test-results/roborazzi/debug/results/1240554183902125_component-segmented-control__dark__fs200.json",
+      "sha256": "d86d958343eda4e30f87623c5804716ef360400906108daf52ae371bd69c25ca",
+      "type": "unchanged"
+    },
+    {
+      "path": "core/designsystem/build/test-results/roborazzi/debug/results/1240554227799958_component-empty-state__dark__fs200.json",
+      "sha256": "563215c1ad495ce02e08390f8638ce1aa50ff5de971f42cd0b5e1ec3a3b218a7",
+      "type": "unchanged"
+    },
+    {
+      "path": "core/designsystem/build/test-results/roborazzi/debug/results/1240554266805541_component-notice__dark__fs200.json",
+      "sha256": "67c466ee48025a7b2af454a199e4964236958afba66f44dc4cea33b4162b20e8",
+      "type": "unchanged"
+    },
+    {
+      "path": "core/designsystem/build/test-results/roborazzi/debug/results/1240554296710666_component-status__dark__fs200.json",
+      "sha256": "0cb60facec1f9e63689a6b3efd1057d2be54be95cf338a41be1d1942388d8c31",
+      "type": "unchanged"
+    },
+    {
+      "path": "core/designsystem/build/test-results/roborazzi/debug/results/1240554336249416_component-top-app-bar__dark__fs200.json",
+      "sha256": "55b99fc43f570d643f882046d1a45ab3813cce9f40f2014d650196a142b57a6f",
+      "type": "unchanged"
+    },
+    {
+      "path": "core/designsystem/build/test-results/roborazzi/debug/results/1240554368299041_component-search-field__dark__fs200.json",
+      "sha256": "838ac85041da2296b64c2685078d44df84e10d36eb34ad74819bec472e7e7290",
+      "type": "unchanged"
+    },
+    {
+      "path": "core/designsystem/build/test-results/roborazzi/debug/results/1240554404177666_component-list-row__dark__fs200.json",
+      "sha256": "4a58aac848aa9096fe90650e444f70b04a25a8b5bc46eeac1f952da4a768cbd4",
+      "type": "unchanged"
+    },
+    {
+      "path": "core/designsystem/build/test-results/roborazzi/debug/results/1240554740366625_components-gallery__light__fs100.json",
+      "sha256": "d9674f605d0bb1c1df6bcf4827b7520e651091a008139d0a25316b12b949ba99",
+      "type": "unchanged"
+    },
+    {
+      "path": "core/designsystem/build/test-results/roborazzi/debug/results/1240554773980833_components-gallery__dark__fs100.json",
+      "sha256": "86941e49575cc00e57ab19fd97a3b2ccd2d6357af765d27de9032e846185444a",
+      "type": "unchanged"
+    },
+    {
+      "path": "core/designsystem/build/test-results/roborazzi/debug/results/1240554809754583_components-gallery__light__fs200.json",
+      "sha256": "14cdc46c655c52d240039041404b5f3f5887eef5f2236ea07bcd0a8313be85db",
+      "type": "unchanged"
+    },
+    {
+      "path": "core/designsystem/build/test-results/roborazzi/debug/results/1240555783421583_snackbar-no-action__light__fs100.json",
+      "sha256": "06b3cce261772437fbfd1b799c290ef9ca99e02ce819f0e2055a2ba6f14dc75b",
+      "type": "unchanged"
+    },
+    {
+      "path": "core/designsystem/build/test-results/roborazzi/debug/results/1240555816628750_snackbar-with-action__light__fs100.json",
+      "sha256": "cbf2aae90db43cbe5ddfdfb450cfbe5e3a7d4ea835b01c5f494813b76d5ad94b",
+      "type": "unchanged"
+    },
+    {
+      "path": "core/designsystem/build/test-results/roborazzi/debug/results/1240555864305875_destructive-dialog__light__fs100.json",
+      "sha256": "6d24435da37d91fdb030a803ee36c0f1f29f8a0e98f056d4835c48a8bcc99d16",
+      "type": "unchanged"
+    },
+    {
+      "path": "core/designsystem/build/test-results/roborazzi/debug/results/1240555888085166_snackbar-no-action__dark__fs100.json",
+      "sha256": "4b947d60517d37968abdb0c91253260902ad602c8788fc9d944158f1b1a8758c",
+      "type": "unchanged"
+    },
+    {
+      "path": "core/designsystem/build/test-results/roborazzi/debug/results/1240555918489250_snackbar-with-action__dark__fs100.json",
+      "sha256": "ed8d4a62486e3a7a6ed9053442602c6acdf4358b0f574bcb3f9fcf0569842b79",
+      "type": "unchanged"
+    },
+    {
+      "path": "core/designsystem/build/test-results/roborazzi/debug/results/1240555950838916_destructive-dialog__dark__fs100.json",
+      "sha256": "224972a7eac26d4175874e66a19732334b3aaf8b1dae3b21d497f1d2da489f0b",
+      "type": "unchanged"
+    },
+    {
+      "path": "core/designsystem/build/test-results/roborazzi/debug/results/1240557127834291_gallery-overlays__light__fs100.json",
+      "sha256": "4aebd6c7fbb27bc013a3644a6d0ba0314d90578fac78308f5ba328b60829c135",
+      "type": "unchanged"
+    },
+    {
+      "path": "core/designsystem/build/test-results/roborazzi/debug/results/1240557177036958_gallery-list-row-rtl__light__fs100.json",
+      "sha256": "c8cb719b164f9dc75dc1c6032e6ddb1a9f8b4f70b2de3963711788999e71ff47",
+      "type": "unchanged"
+    },
+    {
+      "path": "core/designsystem/build/test-results/roborazzi/debug/results/1240557207164041_gallery-overlays__dark__fs100.json",
+      "sha256": "884b488e973eb41829e1aeee59124822f3013c214b505682b8b0c753270e2cf9",
+      "type": "unchanged"
+    },
+    {
+      "path": "core/designsystem/build/test-results/roborazzi/debug/results/1240557233599625_gallery-list-row-rtl__dark__fs100.json",
+      "sha256": "f3109b4e630de130bf4bea4955452202eac6b67e0834278ce6c2d4ee6ebda0ad",
+      "type": "unchanged"
+    },
+    {
+      "path": "core/designsystem/build/test-results/roborazzi/debug/results/1240557311124166_gallery-tokens-icons-1__light__fs100.json",
+      "sha256": "d21653c3d5e34e7225e262c13f2e7a54ea6df19bff687a26adcba30aa6ad2c19",
+      "type": "unchanged"
+    },
+    {
+      "path": "core/designsystem/build/test-results/roborazzi/debug/results/1240557345438291_gallery-tokens-icons-2__light__fs100.json",
+      "sha256": "4ec92e32db40f3afb5b07aac9fd7806d1a1b60b0d7017156b809991fdaa32200",
+      "type": "unchanged"
+    },
+    {
+      "path": "core/designsystem/build/test-results/roborazzi/debug/results/1240557375095541_gallery-tokens-icons-3__light__fs100.json",
+      "sha256": "ae8834a1df387a6a65b468f8b3fe8c09efa8e4f25da9ee5e37803948a3584e45",
+      "type": "unchanged"
+    },
+    {
+      "path": "core/designsystem/build/test-results/roborazzi/debug/results/1240557405348916_gallery-tokens-radius__light__fs100.json",
+      "sha256": "ff7b94ef0301fc27f93feddcc27dd5acdf000b8c14400fc28baa440387ee2217",
+      "type": "unchanged"
+    },
+    {
+      "path": "core/designsystem/build/test-results/roborazzi/debug/results/1240557432923833_gallery-tokens-type-large__light__fs100.json",
+      "sha256": "ee260e0be1ff86991bb713451608106c84937a2a96992a1ee7376a474a8aae87",
+      "type": "unchanged"
+    },
+    {
+      "path": "core/designsystem/build/test-results/roborazzi/debug/results/1240557463364000_gallery-tokens-type-small__light__fs100.json",
+      "sha256": "bd5b3df6fcdd962556af28e27f1cb4c42ca088fa8f8a2e1c6f22eb4065e46f3c",
+      "type": "unchanged"
+    },
+    {
+      "path": "core/designsystem/build/test-results/roborazzi/debug/results/1240557488462875_gallery-tokens-colour-1__light__fs100.json",
+      "sha256": "75fd1ef133c41ddfb7463605c70635aff9217b3ee891648cb97bc37c0e432b87",
+      "type": "unchanged"
+    },
+    {
+      "path": "core/designsystem/build/test-results/roborazzi/debug/results/1240557512011250_gallery-tokens-colour-2__light__fs100.json",
+      "sha256": "e078c30c60b2988368af48aab8b6b8a56034aa1beaed39ba429e6565afd65599",
+      "type": "unchanged"
+    },
+    {
+      "path": "core/designsystem/build/test-results/roborazzi/debug/results/1240557539324041_gallery-tokens-spacing__light__fs100.json",
+      "sha256": "f39cadc9f3aa7525970e49710fdacda82da2b945dfca7d351350347bf9c78134",
+      "type": "unchanged"
+    },
+    {
+      "path": "core/designsystem/build/test-results/roborazzi/debug/results/1240557574785750_gallery-tokens-theme-specimen__light__fs100.json",
+      "sha256": "f695bef3dc9ecf85d989286108be0c6b977e47dbc7e616cdf628a5770f4bf727",
+      "type": "unchanged"
+    },
+    {
+      "path": "core/designsystem/build/test-results/roborazzi/debug/results/1240557607731958_gallery-tokens-icons-1__dark__fs100.json",
+      "sha256": "be13b20d9344f8ed95b2ab9c651fa3529715b93ff06ce0f013361b76f3aede8d",
+      "type": "unchanged"
+    },
+    {
+      "path": "core/designsystem/build/test-results/roborazzi/debug/results/1240557639009333_gallery-tokens-icons-2__dark__fs100.json",
+      "sha256": "5d66151870a78854f3c0d9062f2ce5a56de9d50923843b6d48115c627a3eb785",
+      "type": "unchanged"
+    },
+    {
+      "path": "core/designsystem/build/test-results/roborazzi/debug/results/1240557669166458_gallery-tokens-icons-3__dark__fs100.json",
+      "sha256": "99aee5ae0ca3c605bdfe539c6de8ee777a7b88ce85f5fae33e0b1fae6a8cad44",
+      "type": "unchanged"
+    },
+    {
+      "path": "core/designsystem/build/test-results/roborazzi/debug/results/1240557694364791_gallery-tokens-radius__dark__fs100.json",
+      "sha256": "6fbc85220f5c2c62169868fe44c4c0fee34f0714b5d8ccfe35c6247ab73763b0",
+      "type": "unchanged"
+    },
+    {
+      "path": "core/designsystem/build/test-results/roborazzi/debug/results/1240557719172291_gallery-tokens-type-large__dark__fs100.json",
+      "sha256": "5f866f74505ee6da7534a7717c5fbdcae1c5f5173055840b3cc65a6e679fede1",
+      "type": "unchanged"
+    },
+    {
+      "path": "core/designsystem/build/test-results/roborazzi/debug/results/1240557745725041_gallery-tokens-type-small__dark__fs100.json",
+      "sha256": "a43cbac8be2889051d4799f5a00b9156fc868c585a1ee4a3a3a9344fc0e7690e",
+      "type": "unchanged"
+    },
+    {
+      "path": "core/designsystem/build/test-results/roborazzi/debug/results/1240557768282833_gallery-tokens-colour-1__dark__fs100.json",
+      "sha256": "5a581f8c4687507c06635d3789146970e328217e4035b9f5c70f0b75a66fd82f",
+      "type": "unchanged"
+    },
+    {
+      "path": "core/designsystem/build/test-results/roborazzi/debug/results/1240557791184666_gallery-tokens-colour-2__dark__fs100.json",
+      "sha256": "914469fb0c8df410f51470026c235299075707e34b8cbb16a9b4cadd4c443083",
+      "type": "unchanged"
+    },
+    {
+      "path": "core/designsystem/build/test-results/roborazzi/debug/results/1240557819667208_gallery-tokens-spacing__dark__fs100.json",
+      "sha256": "f0ddbaf0d8c0f784759fb35d0b118fb2ac5b8c3377576279254fbf62c8a9d36a",
+      "type": "unchanged"
+    },
+    {
+      "path": "core/designsystem/build/test-results/roborazzi/debug/results/1240557847131708_gallery-tokens-theme-specimen__dark__fs100.json",
+      "sha256": "3f283a065b53940f01253b823f87f31e902dd8d029e57f0a6e8e90844f0a1814",
+      "type": "unchanged"
+    },
+    {
+      "path": "core/designsystem/build/test-results/roborazzi/debug/results/1240557881549375_gallery-tokens-icons-1__light__fs200.json",
+      "sha256": "37d60a55089bf093959a1fa379e654aa108ad9680a23bde7db8b97eed31ff7c1",
+      "type": "unchanged"
+    },
+    {
+      "path": "core/designsystem/build/test-results/roborazzi/debug/results/1240557918337291_gallery-tokens-icons-2__light__fs200.json",
+      "sha256": "be54602022462cdf10cdc41cf0c8aa6b31d1ef3dcf5802e1e977e2acaaecbaae",
+      "type": "unchanged"
+    },
+    {
+      "path": "core/designsystem/build/test-results/roborazzi/debug/results/1240557945787875_gallery-tokens-icons-3__light__fs200.json",
+      "sha256": "13702345487cecb93160e89a1cefa2d7bec66601236c909642a90cfee900fb02",
+      "type": "unchanged"
+    },
+    {
+      "path": "core/designsystem/build/test-results/roborazzi/debug/results/1240557968031125_gallery-tokens-radius__light__fs200.json",
+      "sha256": "90718a5b51d2b95e5682f1904fc02fda19d6d69f7efd73186351d4744b1afe77",
+      "type": "unchanged"
+    },
+    {
+      "path": "core/designsystem/build/test-results/roborazzi/debug/results/1240557993605541_gallery-tokens-type-large__light__fs200.json",
+      "sha256": "f394eca6e0744bdddd341f28c4c2c6f71f4282c4b647ca77fd18b74d90086077",
+      "type": "unchanged"
+    },
+    {
+      "path": "core/designsystem/build/test-results/roborazzi/debug/results/1240558016414125_gallery-tokens-type-small__light__fs200.json",
+      "sha256": "4b5c26b9431aa0f557ff1781579c75ee75648a158e208bc0b5b9090167e739d1",
+      "type": "unchanged"
+    },
+    {
+      "path": "core/designsystem/build/test-results/roborazzi/debug/results/1240558040550833_gallery-tokens-colour-1__light__fs200.json",
+      "sha256": "b4d1e07c707063db16d9814b89c5d865368562f947de75021c00992236e27b2e",
+      "type": "unchanged"
+    },
+    {
+      "path": "core/designsystem/build/test-results/roborazzi/debug/results/1240558062556875_gallery-tokens-colour-2__light__fs200.json",
+      "sha256": "e1bb9d2a1fdeddcf15afa472c5c1afb9819395957b879987d5fecdc3609b98cd",
+      "type": "unchanged"
+    },
+    {
+      "path": "core/designsystem/build/test-results/roborazzi/debug/results/1240558084210333_gallery-tokens-spacing__light__fs200.json",
+      "sha256": "864ed778c4f197f17e492cbecee35ae5e399a82c101a685591538800ebc82827",
+      "type": "unchanged"
+    },
+    {
+      "path": "core/designsystem/build/test-results/roborazzi/debug/results/1240558112094500_gallery-tokens-theme-specimen__light__fs200.json",
+      "sha256": "6875d71d1ed4324e44d015b486ce5cd5bd46b5661c942973d2dba8d5712ca6f8",
+      "type": "unchanged"
+    },
+    {
+      "path": "core/designsystem/build/test-results/roborazzi/debug/results/1240558140739250_gallery-tokens-icons-1__dark__fs200.json",
+      "sha256": "f5f4183db9fbd459d40103c7e3da353ae8c6ceb4d9b391d0c3e8a365b76b5c6e",
+      "type": "unchanged"
+    },
+    {
+      "path": "core/designsystem/build/test-results/roborazzi/debug/results/1240558172656833_gallery-tokens-icons-2__dark__fs200.json",
+      "sha256": "85b8be87bbd02ee928c121a09b287e92a79cb14d496db43f3c7b84b1c2fe9e87",
+      "type": "unchanged"
+    },
+    {
+      "path": "core/designsystem/build/test-results/roborazzi/debug/results/1240558202538541_gallery-tokens-icons-3__dark__fs200.json",
+      "sha256": "a4a6a4e7135cfa3317c0523204c20289aa47357582131575ca8943b330b0fbe1",
+      "type": "unchanged"
+    },
+    {
+      "path": "core/designsystem/build/test-results/roborazzi/debug/results/1240558229863208_gallery-tokens-radius__dark__fs200.json",
+      "sha256": "fc0e7875e6f6a79c74b4e51aa259f87446e0a0aa39f3540cea3a179f5351864b",
+      "type": "unchanged"
+    },
+    {
+      "path": "core/designsystem/build/test-results/roborazzi/debug/results/1240558253865041_gallery-tokens-type-large__dark__fs200.json",
+      "sha256": "d45a25d2c278957ff70bec3dc6daa6580843ca940b0edb164daf2f13b0862ce8",
+      "type": "unchanged"
+    },
+    {
+      "path": "core/designsystem/build/test-results/roborazzi/debug/results/1240558280273791_gallery-tokens-type-small__dark__fs200.json",
+      "sha256": "e7573c0818a8ee5ee0f992db4711b4379e2f70af4ebaa84660a312ef93edabba",
+      "type": "unchanged"
+    },
+    {
+      "path": "core/designsystem/build/test-results/roborazzi/debug/results/1240558306758041_gallery-tokens-colour-1__dark__fs200.json",
+      "sha256": "df8a9e9a917a79839ef04f0da8bf6d9c0b28e97d801ad37c65c2fa8765f7b1fb",
+      "type": "unchanged"
+    },
+    {
+      "path": "core/designsystem/build/test-results/roborazzi/debug/results/1240558331491458_gallery-tokens-colour-2__dark__fs200.json",
+      "sha256": "4a51e713a48dd2f5e9c7e037aab749ad9d4960d475a97db5e13c1d750c6362c3",
+      "type": "unchanged"
+    },
+    {
+      "path": "core/designsystem/build/test-results/roborazzi/debug/results/1240558355026916_gallery-tokens-spacing__dark__fs200.json",
+      "sha256": "b4d8e62d25012701f23bac5ad9096e224a61ac5e40d3fbd59abe94acd263d158",
+      "type": "unchanged"
+    },
+    {
+      "path": "core/designsystem/build/test-results/roborazzi/debug/results/1240558381954666_gallery-tokens-theme-specimen__dark__fs200.json",
+      "sha256": "5f3bc48de6103d05fe3f2c9bb94cc319789597adabcf9ba514f3aa28672cea00",
+      "type": "unchanged"
+    },
+    {
+      "path": "core/designsystem/build/test-results/roborazzi/debug/results/1240558412794958_gallery-tokens-icons-1__light__fs100.json",
+      "sha256": "e5567150b19bb4e114635de889a31fde651fa6b938078084903273c9d27fcd40",
+      "type": "unchanged"
+    },
+    {
+      "path": "core/designsystem/build/test-results/roborazzi/debug/results/1240558440050708_gallery-tokens-icons-2__light__fs100.json",
+      "sha256": "bdc95501efa73dabf816b84cbbb869f2310bea875d153fe6e6bd6d8aa348b9ea",
+      "type": "unchanged"
+    },
+    {
+      "path": "core/designsystem/build/test-results/roborazzi/debug/results/1240558463357041_gallery-tokens-icons-3__light__fs100.json",
+      "sha256": "e3b0b820a0dda26d3c2894ba56d0eb0d3b532c91f1d95b521c27c4d2c8fb06c1",
+      "type": "unchanged"
+    },
+    {
+      "path": "core/designsystem/build/test-results/roborazzi/debug/results/1240558488868750_gallery-tokens-radius__light__fs100.json",
+      "sha256": "6d98e8bc440a7068da0688562ba218d6d482aab955636c5b4b327c17e4582d1e",
+      "type": "unchanged"
+    },
+    {
+      "path": "core/designsystem/build/test-results/roborazzi/debug/results/1240558522236291_gallery-tokens-type-large__light__fs100.json",
+      "sha256": "c2298e5487d5606b4d81567a95d57fd9284d0c5ba60a64dd5d65296ea2a48d4b",
+      "type": "unchanged"
+    },
+    {
+      "path": "core/designsystem/build/test-results/roborazzi/debug/results/1240558554274125_gallery-tokens-type-small__light__fs100.json",
+      "sha256": "1c2fca2e2b38f4b24ad74edb34be6f34bb5615868c13a95a9003f69ec589cb8b",
+      "type": "unchanged"
+    },
+    {
+      "path": "core/designsystem/build/test-results/roborazzi/debug/results/1240558585562916_gallery-tokens-colour-1__light__fs100.json",
+      "sha256": "c66c8802c940d5e87a34093372316e139f3b16a4001cf22edc9c41d149bfae33",
+      "type": "unchanged"
+    },
+    {
+      "path": "core/designsystem/build/test-results/roborazzi/debug/results/1240558611516125_gallery-tokens-colour-2__light__fs100.json",
+      "sha256": "ede93d7dea95a9061aff565be405bcaefb5d82416149a77934959bc01fe2ac84",
+      "type": "unchanged"
+    },
+    {
+      "path": "core/designsystem/build/test-results/roborazzi/debug/results/1240558635398333_gallery-tokens-spacing__light__fs100.json",
+      "sha256": "0551b9549f4c0a1fc9b3eae6e378f078b368aa28789c82b01629bee80b7a83be",
+      "type": "unchanged"
+    },
+    {
+      "path": "core/designsystem/build/test-results/roborazzi/debug/results/1240558662898041_gallery-tokens-theme-specimen__light__fs100.json",
+      "sha256": "cc0b4124df72ea6d1f81f057461aaaf16c685aaba95be13182e1a238f8927de3",
+      "type": "unchanged"
+    },
+    {
+      "path": "core/designsystem/build/test-results/roborazzi/debug/results/1240558699170250_gallery-tokens-icons-1__dark__fs100.json",
+      "sha256": "cf86e47fe7c9d51dbfedbc56d61ebbb1202e0df999c0235a7277970b1af11fcd",
+      "type": "unchanged"
+    },
+    {
+      "path": "core/designsystem/build/test-results/roborazzi/debug/results/1240558732545375_gallery-tokens-icons-2__dark__fs100.json",
+      "sha256": "30c05ccf584a99ffee4d71392617f0b9a60d3bb50ea1fe57640046f62d26fa0f",
+      "type": "unchanged"
+    },
+    {
+      "path": "core/designsystem/build/test-results/roborazzi/debug/results/1240558765696083_gallery-tokens-icons-3__dark__fs100.json",
+      "sha256": "312af901c5da6016f05a83534f556cdd000bbd0d39d970348f0663f9bf26268d",
+      "type": "unchanged"
+    },
+    {
+      "path": "core/designsystem/build/test-results/roborazzi/debug/results/1240558788398250_gallery-tokens-radius__dark__fs100.json",
+      "sha256": "5e2654ea07c0a228b0197f96603f6e78252474a24b5dbf1c3790a007c6bf66fa",
+      "type": "unchanged"
+    },
+    {
+      "path": "core/designsystem/build/test-results/roborazzi/debug/results/1240558813691541_gallery-tokens-type-large__dark__fs100.json",
+      "sha256": "f17ac4f32644d2d5c22d3005468074bbe7e7097ae2bdd33bc24633234917b187",
+      "type": "unchanged"
+    },
+    {
+      "path": "core/designsystem/build/test-results/roborazzi/debug/results/1240558835924708_gallery-tokens-type-small__dark__fs100.json",
+      "sha256": "5e21e0c80818074bd823e73c7737a9c11483bc8ed3f96241297b2c268ab749f0",
+      "type": "unchanged"
+    },
+    {
+      "path": "core/designsystem/build/test-results/roborazzi/debug/results/1240558864043291_gallery-tokens-colour-1__dark__fs100.json",
+      "sha256": "629e3fe513c2549916cad239168e3cf949b6a23746bf2cbe65f5dda412cff842",
+      "type": "unchanged"
+    },
+    {
+      "path": "core/designsystem/build/test-results/roborazzi/debug/results/1240558888809375_gallery-tokens-colour-2__dark__fs100.json",
+      "sha256": "0f17a7c9120540b5d8522d111e1765001d02021040c238522cdf6cd0c7c42a50",
+      "type": "unchanged"
+    },
+    {
+      "path": "core/designsystem/build/test-results/roborazzi/debug/results/1240558916203541_gallery-tokens-spacing__dark__fs100.json",
+      "sha256": "1c00d5da9495fdf95a4b6440e0581ae90b68ba312f40bc7871e9f0e6e0d81d02",
+      "type": "unchanged"
+    },
+    {
+      "path": "core/designsystem/build/test-results/roborazzi/debug/results/1240558948391250_gallery-tokens-theme-specimen__dark__fs100.json",
+      "sha256": "37e8f61cdf3dc2e6412c7380360cc0aaf3deaeb91c1618d9da980358e0a61f64",
+      "type": "unchanged"
+    },
+    {
+      "path": "core/designsystem/build/test-results/roborazzi/debug/results/1240558976226750_gallery-tokens-icons-1__light__fs200.json",
+      "sha256": "3fb3d3c91809aab0fee42a0cfd2485386837f1517302707d9dd7f93d6ed776b6",
+      "type": "unchanged"
+    },
+    {
+      "path": "core/designsystem/build/test-results/roborazzi/debug/results/1240559004333041_gallery-tokens-icons-2__light__fs200.json",
+      "sha256": "14a6e690e18db601fc4ca4a48bb6c828ee82b6ac03d3cdac21dcd2683285cf54",
+      "type": "unchanged"
+    },
+    {
+      "path": "core/designsystem/build/test-results/roborazzi/debug/results/1240559031485500_gallery-tokens-icons-3__light__fs200.json",
+      "sha256": "e950b81a97b0309c4929480fabb8c54dd1ea06dba336c2a4a366bb74b4c792fc",
+      "type": "unchanged"
+    },
+    {
+      "path": "core/designsystem/build/test-results/roborazzi/debug/results/1240559055010208_gallery-tokens-radius__light__fs200.json",
+      "sha256": "ea2fd0a78d03d24a047ddee52f58363b7128490369663c5cee204d8f02571bea",
+      "type": "unchanged"
+    },
+    {
+      "path": "core/designsystem/build/test-results/roborazzi/debug/results/1240559082326666_gallery-tokens-type-large__light__fs200.json",
+      "sha256": "a741d2502b08a5c87404307bbb62899d0e88efa41e163306c8256fd9b0c46d29",
+      "type": "unchanged"
+    },
+    {
+      "path": "core/designsystem/build/test-results/roborazzi/debug/results/1240559107610875_gallery-tokens-type-small__light__fs200.json",
+      "sha256": "c1c3c223d304b08c43fea95947d3d7451722e1f265dd5ede44c5e2164e2514d5",
+      "type": "unchanged"
+    },
+    {
+      "path": "core/designsystem/build/test-results/roborazzi/debug/results/1240559134854333_gallery-tokens-colour-1__light__fs200.json",
+      "sha256": "849f8aabe78152ed35251e5a06534354b019b108bd2fee0ee876407a4cf3240c",
+      "type": "unchanged"
+    },
+    {
+      "path": "core/designsystem/build/test-results/roborazzi/debug/results/1240559161526333_gallery-tokens-colour-2__light__fs200.json",
+      "sha256": "cd46970a5db001fe646845d013e325132127060849327357339d08659fdccdf6",
+      "type": "unchanged"
+    },
+    {
+      "path": "core/designsystem/build/test-results/roborazzi/debug/results/1240559190358208_gallery-tokens-spacing__light__fs200.json",
+      "sha256": "e5f632cbf832f84ca03b7ae4f38acd609afd386ab8a835b0a31d6be25bb15120",
+      "type": "unchanged"
+    },
+    {
+      "path": "core/designsystem/build/test-results/roborazzi/debug/results/1240559216504166_gallery-tokens-theme-specimen__light__fs200.json",
+      "sha256": "ac283f7b0992d91703ccdd23978fa2220eada60bee55aaf6848613132cfa04ce",
+      "type": "unchanged"
+    },
+    {
+      "path": "core/designsystem/build/test-results/roborazzi/debug/results/1240559243540416_gallery-tokens-icons-1__dark__fs200.json",
+      "sha256": "8b99cfb779aafe31bc8000b9294ca6a1f8ada6529a6b7f6685cc9bb4cfd6c43e",
+      "type": "unchanged"
+    },
+    {
+      "path": "core/designsystem/build/test-results/roborazzi/debug/results/1240559271492041_gallery-tokens-icons-2__dark__fs200.json",
+      "sha256": "4963be4978724e318d29ec52674dc359d6b06d3188ee687ff6412114f9c21fa7",
+      "type": "unchanged"
+    },
+    {
+      "path": "core/designsystem/build/test-results/roborazzi/debug/results/1240559299079791_gallery-tokens-icons-3__dark__fs200.json",
+      "sha256": "4a6d93a4770e99dc99d7c6e03623a3ab6f4fd98f955a1acaf530499540a4a3ca",
+      "type": "unchanged"
+    },
+    {
+      "path": "core/designsystem/build/test-results/roborazzi/debug/results/1240559321410583_gallery-tokens-radius__dark__fs200.json",
+      "sha256": "a1fb3682db01b07a10a3f6f58e0a6a9a9485f0882983ca8d36910598657ae7f3",
+      "type": "unchanged"
+    },
+    {
+      "path": "core/designsystem/build/test-results/roborazzi/debug/results/1240559348736541_gallery-tokens-type-large__dark__fs200.json",
+      "sha256": "ec739a64215b92d987cbeed3ab1780da67bb3cfd4035d0780f2dfcb27718b7a9",
+      "type": "unchanged"
+    },
+    {
+      "path": "core/designsystem/build/test-results/roborazzi/debug/results/1240559376598458_gallery-tokens-type-small__dark__fs200.json",
+      "sha256": "ab8931d192bcac8d32d66eeab45070bf2f76cc88a4d6c145dfe5e74a27c6cda9",
+      "type": "unchanged"
+    },
+    {
+      "path": "core/designsystem/build/test-results/roborazzi/debug/results/1240559406951916_gallery-tokens-colour-1__dark__fs200.json",
+      "sha256": "351f6a514ea6367f9bcb278e2a5fbfff279c7d1def58afe6060034cc208fa011",
+      "type": "unchanged"
+    },
+    {
+      "path": "core/designsystem/build/test-results/roborazzi/debug/results/1240559437811458_gallery-tokens-colour-2__dark__fs200.json",
+      "sha256": "a02dbf72eb59cf6cb499a7c15f0cd8b8b255fdd9ef2027815665cde6ddf6e5f6",
+      "type": "unchanged"
+    },
+    {
+      "path": "core/designsystem/build/test-results/roborazzi/debug/results/1240559462280416_gallery-tokens-spacing__dark__fs200.json",
+      "sha256": "42507e947e42b06365a7b80243d981ca41ed8809885f8b049334dcc2053bc391",
+      "type": "unchanged"
+    },
+    {
+      "path": "core/designsystem/build/test-results/roborazzi/debug/results/1240559488575125_gallery-tokens-theme-specimen__dark__fs200.json",
+      "sha256": "3ebe0ac938117028d4e44a7816120678c44e653136e3a026761d861d86325407",
+      "type": "unchanged"
+    },
+    {
+      "path": "core/designsystem/build/test-results/roborazzi/debug/results/1240559514716750_gallery-tokens-icons-1__light__fs100.json",
+      "sha256": "20b8e607523d39b0fff9e5c21625ff8778d2017406436ffd3efa3f7a9b940d4e",
+      "type": "unchanged"
+    },
+    {
+      "path": "core/designsystem/build/test-results/roborazzi/debug/results/1240559537752166_gallery-tokens-icons-2__light__fs100.json",
+      "sha256": "22c26d92a0a7d1bcda104d383aef92c78bbc842a0f3c442994d537a5ed4bff3d",
+      "type": "unchanged"
+    },
+    {
+      "path": "core/designsystem/build/test-results/roborazzi/debug/results/1240559562224916_gallery-tokens-icons-3__light__fs100.json",
+      "sha256": "fbf67da34e4babf8fd273bd56473a31ab4dfb4064c1e4a5e19d627ef540a44b2",
+      "type": "unchanged"
+    },
+    {
+      "path": "core/designsystem/build/test-results/roborazzi/debug/results/1240559583814416_gallery-tokens-radius__light__fs100.json",
+      "sha256": "a4221fa85176a6d59f51ad2b4c37daa7ec2d5658154aba7585dbf178e053d518",
+      "type": "unchanged"
+    },
+    {
+      "path": "core/designsystem/build/test-results/roborazzi/debug/results/1240559611207666_gallery-tokens-type-large__light__fs100.json",
+      "sha256": "f29bfe8ab642ef7d5c2a766cefbbd01aa381f5cfc584790735cb255ca50ff22a",
+      "type": "unchanged"
+    },
+    {
+      "path": "core/designsystem/build/test-results/roborazzi/debug/results/1240559638440041_gallery-tokens-type-small__light__fs100.json",
+      "sha256": "62e8e130eae8e492018eea0cbc89ce285f061f6f5f5ef8a10d44e272f6be02fe",
+      "type": "unchanged"
+    },
+    {
+      "path": "core/designsystem/build/test-results/roborazzi/debug/results/1240559670081416_gallery-tokens-colour-1__light__fs100.json",
+      "sha256": "52edb8b7dc65a6e10ccfe0b6ba78bc3e4960523f2588280713b18330ba126975",
+      "type": "unchanged"
+    },
+    {
+      "path": "core/designsystem/build/test-results/roborazzi/debug/results/1240559692471625_gallery-tokens-colour-2__light__fs100.json",
+      "sha256": "ddb32b37816ea70ddf7659599ee513b0108e74331452de9052b960d77b28569d",
+      "type": "unchanged"
+    },
+    {
+      "path": "core/designsystem/build/test-results/roborazzi/debug/results/1240559713513041_gallery-tokens-spacing__light__fs100.json",
+      "sha256": "483d764f5cb03ee8795649351a2dfd1dc712df8a28da8c0afc3d941bdc32fa47",
+      "type": "unchanged"
+    },
+    {
+      "path": "core/designsystem/build/test-results/roborazzi/debug/results/1240559738892791_gallery-tokens-theme-specimen__light__fs100.json",
+      "sha256": "896a4d2b7518c9d6ad919840d6d8e6bd497ce59199427bef6340c852916d07e1",
+      "type": "unchanged"
+    },
+    {
+      "path": "core/designsystem/build/test-results/roborazzi/debug/results/1240559763796125_gallery-tokens-icons-1__dark__fs100.json",
+      "sha256": "162839219b957499f644c19cd4ae02d14f64b4a1a3e0c647cef1c6566a704399",
+      "type": "unchanged"
+    },
+    {
+      "path": "core/designsystem/build/test-results/roborazzi/debug/results/1240559788468791_gallery-tokens-icons-2__dark__fs100.json",
+      "sha256": "45cee5301723bfd105e6c4ec7316304815e3f55eb3ec221e033b71e03aab2155",
+      "type": "unchanged"
+    },
+    {
+      "path": "core/designsystem/build/test-results/roborazzi/debug/results/1240559812279583_gallery-tokens-icons-3__dark__fs100.json",
+      "sha256": "b68b673e7516bcf1d1a6656ad3bab8cc1ea87677dc84d93daa22c902e8615ea9",
+      "type": "unchanged"
+    },
+    {
+      "path": "core/designsystem/build/test-results/roborazzi/debug/results/1240559838497583_gallery-tokens-radius__dark__fs100.json",
+      "sha256": "43114704310ec353506d5caedba418efe356ae500a1e7c143cd85732eb46ace9",
+      "type": "unchanged"
+    },
+    {
+      "path": "core/designsystem/build/test-results/roborazzi/debug/results/1240559868517250_gallery-tokens-type-large__dark__fs100.json",
+      "sha256": "9d387b8dd8984ef443ad3226340204dd2568e99f94f4ce7028c247159ed6c1bd",
+      "type": "unchanged"
+    },
+    {
+      "path": "core/designsystem/build/test-results/roborazzi/debug/results/1240559894950333_gallery-tokens-type-small__dark__fs100.json",
+      "sha256": "7bf5fd8241c1e4b5cfefffe812ce5746b0eb050ffa1eee35d33bd7090f86c1d8",
+      "type": "unchanged"
+    },
+    {
+      "path": "core/designsystem/build/test-results/roborazzi/debug/results/1240559919333000_gallery-tokens-colour-1__dark__fs100.json",
+      "sha256": "3863999feba8694829a24b98cda3780d6179546bff6092856dd26fdaa1eac24d",
+      "type": "unchanged"
+    },
+    {
+      "path": "core/designsystem/build/test-results/roborazzi/debug/results/1240559946712125_gallery-tokens-colour-2__dark__fs100.json",
+      "sha256": "3fca308c597bb0aab2773f68bdeea44e9ebe2320d159cc003620dc29aa07cedf",
+      "type": "unchanged"
+    },
+    {
+      "path": "core/designsystem/build/test-results/roborazzi/debug/results/1240559970211250_gallery-tokens-spacing__dark__fs100.json",
+      "sha256": "95beb1390e13f43ba32a75577223309f5eda99a38442a32a4bbe068aa1d1a323",
+      "type": "unchanged"
+    },
+    {
+      "path": "core/designsystem/build/test-results/roborazzi/debug/results/1240559996231458_gallery-tokens-theme-specimen__dark__fs100.json",
+      "sha256": "9d3acb8681ddae27fc4e1544bf9601312900fe8ee7028e5acf94f13505b82027",
+      "type": "unchanged"
+    },
+    {
+      "path": "core/designsystem/build/test-results/roborazzi/debug/results/1240560023158541_gallery-tokens-icons-1__light__fs200.json",
+      "sha256": "9ac9bcb895f97f337140e4a93dd4697768e2e9b4e27f8ffbd3a87b295b1021e5",
+      "type": "unchanged"
+    },
+    {
+      "path": "core/designsystem/build/test-results/roborazzi/debug/results/1240560054777750_gallery-tokens-icons-2__light__fs200.json",
+      "sha256": "c66028c0100073d74f74b9b7cfd3d730f1eaaf3427fc6c5641f3c4f5928f5b55",
+      "type": "unchanged"
+    },
+    {
+      "path": "core/designsystem/build/test-results/roborazzi/debug/results/1240560081619291_gallery-tokens-icons-3__light__fs200.json",
+      "sha256": "7cf337ca6224d5229bea96c7787d5927e78836e95635c14d306e5523f433d1dc",
+      "type": "unchanged"
+    },
+    {
+      "path": "core/designsystem/build/test-results/roborazzi/debug/results/1240560105115958_gallery-tokens-radius__light__fs200.json",
+      "sha256": "bf773fb387ad431d953195861e75c520bd69a6f668d2170d1654ca655c709a3a",
+      "type": "unchanged"
+    },
+    {
+      "path": "core/designsystem/build/test-results/roborazzi/debug/results/1240560134278500_gallery-tokens-type-large__light__fs200.json",
+      "sha256": "4458d45623351b33a316c06f8846775e019a27558a1718024ca5e0485cc66272",
+      "type": "unchanged"
+    },
+    {
+      "path": "core/designsystem/build/test-results/roborazzi/debug/results/1240560162774041_gallery-tokens-type-small__light__fs200.json",
+      "sha256": "e05b6620427e37b7ea48f6e40ea302f997c1c0f64c01c681562727947cb4608f",
+      "type": "unchanged"
+    },
+    {
+      "path": "core/designsystem/build/test-results/roborazzi/debug/results/1240560191577791_gallery-tokens-colour-1__light__fs200.json",
+      "sha256": "974ef802aec11be96ffc14faba724d5cf9fff07187b91d9ea5c549fff8e50801",
+      "type": "unchanged"
+    },
+    {
+      "path": "core/designsystem/build/test-results/roborazzi/debug/results/1240560220976541_gallery-tokens-colour-2__light__fs200.json",
+      "sha256": "8fc9e541935ab62bf76af6daa7d17c69c7cfc192241a5b2f5ef1bbbcd70d11e3",
+      "type": "unchanged"
+    },
+    {
+      "path": "core/designsystem/build/test-results/roborazzi/debug/results/1240560247942750_gallery-tokens-spacing__light__fs200.json",
+      "sha256": "73b183df85be033756995793648a4ea44f1e0f58601ee6c77ac03f424cb1b5bf",
+      "type": "unchanged"
+    },
+    {
+      "path": "core/designsystem/build/test-results/roborazzi/debug/results/1240560278320000_gallery-tokens-theme-specimen__light__fs200.json",
+      "sha256": "5e2a71cd2a63b15d37de63ab800325ff88499de89740802ddebc565522910297",
+      "type": "unchanged"
+    },
+    {
+      "path": "core/designsystem/build/test-results/roborazzi/debug/results/1240560306361250_gallery-tokens-icons-1__dark__fs200.json",
+      "sha256": "ff8b44ba959e47b02d788a5b7d6f6733ad59bed8c3fc21f12805def719646a88",
+      "type": "unchanged"
+    },
+    {
+      "path": "core/designsystem/build/test-results/roborazzi/debug/results/1240560336713875_gallery-tokens-icons-2__dark__fs200.json",
+      "sha256": "d6376c1e6a9d9a5915eb204ab258aadc8420cd9e7a34fbc0b2d3e00a625e4037",
+      "type": "unchanged"
+    },
+    {
+      "path": "core/designsystem/build/test-results/roborazzi/debug/results/1240560364990250_gallery-tokens-icons-3__dark__fs200.json",
+      "sha256": "041f8038c068f94a66b1024098fcecefb10cdea961f16bdea1609c34d44782de",
+      "type": "unchanged"
+    },
+    {
+      "path": "core/designsystem/build/test-results/roborazzi/debug/results/1240560389574125_gallery-tokens-radius__dark__fs200.json",
+      "sha256": "4afebc6f0579ba668ce3653789adef0efb3b2f999bf85a7ad88a46dfd1f38d4e",
+      "type": "unchanged"
+    },
+    {
+      "path": "core/designsystem/build/test-results/roborazzi/debug/results/1240560429233666_gallery-tokens-type-large__dark__fs200.json",
+      "sha256": "eabbf8115e8b85ba8a5975d39f635a67b75cd0f8a69c44cc80fab299f74fc7a9",
+      "type": "unchanged"
+    },
+    {
+      "path": "core/designsystem/build/test-results/roborazzi/debug/results/1240560472042541_gallery-tokens-type-small__dark__fs200.json",
+      "sha256": "6d4d7196225b5e25840e0bf3157389e2b524b68a6c1ad832c4d1b08fbec61c08",
+      "type": "unchanged"
+    },
+    {
+      "path": "core/designsystem/build/test-results/roborazzi/debug/results/1240560497893541_gallery-tokens-colour-1__dark__fs200.json",
+      "sha256": "7b5cb4b4e58dfa4e2875c606b9d2d54555d55a04820aa6344b76675543d45043",
+      "type": "unchanged"
+    },
+    {
+      "path": "core/designsystem/build/test-results/roborazzi/debug/results/1240560520903625_gallery-tokens-colour-2__dark__fs200.json",
+      "sha256": "a6b472a2f0656e433c0536a642be8428288974cd6a025d04e6192f7fa9985f0c",
+      "type": "unchanged"
+    },
+    {
+      "path": "core/designsystem/build/test-results/roborazzi/debug/results/1240560544203958_gallery-tokens-spacing__dark__fs200.json",
+      "sha256": "b790a7f975e1868b80db0fbf33038673b97b2305e647d66250fdaba3e36b7aae",
+      "type": "unchanged"
+    },
+    {
+      "path": "core/designsystem/build/test-results/roborazzi/debug/results/1240560572606333_gallery-tokens-theme-specimen__dark__fs200.json",
+      "sha256": "3952864ee4b3a557b242c7a4031034589958e51901d5280752fed2e44659f4d3",
+      "type": "unchanged"
+    },
+    {
+      "path": "feature/chat/build/test-results/testDebugUnitTest/TEST-app.skein.feature.chat.AccessibilitySweepSmokeTest.xml",
+      "sha256": "f925dc44f3c14253be93c59ef163d5ab60e4cf4aa3d847a264786b668c607b3d",
+      "tests": 1,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "path": "feature/chat/build/test-results/testDebugUnitTest/TEST-app.skein.feature.chat.ChatComposerImeInsetTest.xml",
+      "sha256": "114554d0026b9a3e3e6f07b3eb1f131faaab6c36618d179d99454cb8b39af2e5",
+      "tests": 6,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "path": "feature/chat/build/test-results/testDebugUnitTest/TEST-app.skein.feature.chat.ChatImportSpaceTest.xml",
+      "sha256": "e7995861772ce55030b56b6e51eb936ae6157ad533648831016a9bb5bd99a8f1",
+      "tests": 2,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "path": "feature/chat/build/test-results/testDebugUnitTest/TEST-app.skein.feature.chat.ChatInferenceErrorTest.xml",
+      "sha256": "0094ad1bd39104e1b40e9ecf07f4d6bceaf5702d42c74cfcfe95ce1ed776b365",
+      "tests": 4,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "path": "feature/chat/build/test-results/testDebugUnitTest/TEST-app.skein.feature.chat.ChatModelIndicatorTest.xml",
+      "sha256": "b3c2aa85bd8e88b230609e33a31efc42e1a260ea139eb35459a32c8ea8d684bf",
+      "tests": 3,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "path": "feature/chat/build/test-results/testDebugUnitTest/TEST-app.skein.feature.chat.ChatScreenTest.xml",
+      "sha256": "e92a2cd209e6e47242e4e2bfac85a9dbfa1176f55432ff494927533c6722e10d",
+      "tests": 5,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "path": "feature/chat/build/test-results/testDebugUnitTest/TEST-app.skein.feature.chat.ChatTurnControllerTest.xml",
+      "sha256": "814d9c91d903cdf666e8f42fcc7809dac70db13f72f4c07a207dff377ed7b971",
+      "tests": 19,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "path": "feature/chat/build/test-results/testDebugUnitTest/TEST-app.skein.feature.chat.ChatTurnStateTest.xml",
+      "sha256": "17d1f9d5268843f5b1db82e19869e16ec88bc3ccc8673e98938b5d584cc3e3a8",
+      "tests": 1,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "path": "feature/chat/build/test-results/testDebugUnitTest/TEST-app.skein.feature.chat.ComposerWikilinkCreateRowTest.xml",
+      "sha256": "da9454aad45d719b388f6e326de71e37c75fa37703f8c4bbde52873e7c72abe0",
+      "tests": 1,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "path": "feature/chat/build/test-results/testDebugUnitTest/TEST-app.skein.feature.chat.ImportFailureIsReportedTest.xml",
+      "sha256": "ac33eeb7196d6b506b2bd412ae87f90ee23ba48e494dc8460aa33774ee1adeb3",
+      "tests": 2,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "path": "feature/chat/build/test-results/testDebugUnitTest/TEST-app.skein.feature.chat.KnowledgeScopeTest.xml",
+      "sha256": "fc23a1165e7201d24e5810f0a57da34c167faf4bccd1d08d07222e90a969588d",
+      "tests": 5,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "path": "feature/chat/build/test-results/testDebugUnitTest/TEST-app.skein.feature.chat.MessageListAnchoringTest.xml",
+      "sha256": "2533c75d372ef44ebbab5b0e44af4002f01603b53f1c96b22162764acad18121",
+      "tests": 1,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "path": "feature/chat/build/test-results/testDebugUnitTest/TEST-app.skein.feature.chat.OverlayImeInsetTest.xml",
+      "sha256": "a87599f38d45eab96b2ed4bf68a1d367f6d6334081f5ad786230d653545f67cd",
+      "tests": 4,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "path": "feature/chat/build/test-results/testDebugUnitTest/TEST-app.skein.feature.chat.SendPipelineExactBudgetTest.xml",
+      "sha256": "b452127d6552dfbf7fe95e0877829bdc285aac42982d0f46b46a110ce28b5f22",
+      "tests": 3,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "path": "feature/chat/build/test-results/testDebugUnitTest/TEST-app.skein.feature.chat.SendPipelineTest.xml",
+      "sha256": "d01a0f03c7ae748ace2a540e437f0136eb1056f7a93a1dbbf3702b15162ebeac",
+      "tests": 9,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "path": "feature/chat/build/test-results/testDebugUnitTest/TEST-app.skein.feature.chat.TabletopChatControlsTest.xml",
+      "sha256": "7a7a2a9f047c761dea421419479540fd253c73c19bd5470e2302b178c1878a77",
+      "tests": 3,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "path": "feature/chat/build/test-results/testDebugUnitTest/TEST-app.skein.feature.chat.TurnFinalizerTest.xml",
+      "sha256": "72c9a057c30ed0822581d556ea2f78a81a8cbdee9e7096a4913fae1c0724d5bd",
+      "tests": 2,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "path": "feature/chat/build/test-results/testDebugUnitTest/TEST-app.skein.feature.chat.TurnSpaceBindingTest.xml",
+      "sha256": "aed77516ddf11c32b2ab9a5536969920195302529d10e74ffcd4ee49aa0453d5",
+      "tests": 3,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "path": "feature/chat/build/test-results/testDebugUnitTest/TEST-app.skein.feature.chat.drafts.DraftComposerStateTest.xml",
+      "sha256": "aeef5c397653e0cac5e597b85e9588bcc6fffdb485f296601faf430abadf08e8",
+      "tests": 3,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "path": "feature/chat/build/test-results/testDebugUnitTest/TEST-app.skein.feature.chat.drafts.SessionDraftStoreTest.xml",
+      "sha256": "9e242e7b7a1e3b87f849d95da1a1b299479f3873ecdd5277c8fef8563186eedc",
+      "tests": 21,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "path": "feature/chat/build/test-results/testDebugUnitTest/TEST-app.skein.feature.chat.entries.ChatDeleteUiTest.xml",
+      "sha256": "f0c99b80498e9df3cb665272a26497120ac3f9e9a869852c7ad673ddd4c7c7e8",
+      "tests": 6,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "path": "feature/chat/build/test-results/testDebugUnitTest/TEST-app.skein.feature.chat.entries.ChatEntriesTest.xml",
+      "sha256": "28864667393478fd383556e1eb19ca33c1d36082ca2ea9b90a5acc10a161c59c",
+      "tests": 13,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "path": "feature/chat/build/test-results/testDebugUnitTest/TEST-app.skein.feature.chat.entries.KnowledgeInspectorTest.xml",
+      "sha256": "a47c61642aaab0a8a2ec603ee9cb82069d38172be3d20d3a32ba82a2f8a745dd",
+      "tests": 3,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "path": "feature/chat/build/test-results/testDebugUnitTest/TEST-app.skein.feature.chat.entries.ProvisionalTitleTest.xml",
+      "sha256": "861023d87d031eb5d203d90fc8b8d9b93899b7340a4e855e64227db5b84ee57c",
+      "tests": 4,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "path": "feature/chat/build/test-results/testDebugUnitTest/TEST-app.skein.feature.chat.screenshots.ChatInferenceErrorScreenshotTest.xml",
+      "sha256": "f7389e9cd03fac68b83d4ba59c04b4648c4532649a6d88f3470adcd4a270e028",
+      "tests": 36,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "path": "feature/chat/build/test-results/testDebugUnitTest/TEST-app.skein.feature.chat.screenshots.ChatScreenshotTest.xml",
+      "sha256": "6cc0b5b79be55a4e9f23bf2e1c643f8a7b0d9435d2e7360f79ff56cc9ea7dc86",
+      "tests": 42,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 8
+    },
+    {
+      "path": "feature/chat/build/test-results/testDebugUnitTest/TEST-app.skein.feature.chat.screenshots.ChatShellScreenshotTest.xml",
+      "sha256": "05353a96d614b8dd96873645db3ec53d2257c4fd346e5078a09ed3dc33bf9880",
+      "tests": 56,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 4
+    },
+    {
+      "path": "feature/chat/build/test-results/testDebugUnitTest/TEST-app.skein.feature.chat.screenshots.KnowledgeInspectorScreenshotTest.xml",
+      "sha256": "6b4efaa6886c71b8cb66944c7ba6f878a9b455df8c132192622e6a2404d02998",
+      "tests": 42,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "path": "feature/chat/build/test-results/roborazzi/debug/results/1240556767292458_chat-error-context-full__light__fs100.json",
+      "sha256": "1e9f65cb2023ba1f74f54433f0a07695e93478515a7d48fb13af72cc120d4e5e",
+      "type": "unchanged"
+    },
+    {
+      "path": "feature/chat/build/test-results/roborazzi/debug/results/1240556921010833_chat-error-model-changed__light__fs100.json",
+      "sha256": "84a33433505499f00bd98ef4cff4185b8c31df78aa705711438719e72ba430e4",
+      "type": "unchanged"
+    },
+    {
+      "path": "feature/chat/build/test-results/roborazzi/debug/results/1240557042636500_chat-error-request-too-large__light__fs100.json",
+      "sha256": "c442de338be8729c7f3dc90bd7df11ac288c0bec7fe85171d321cfba2f85659e",
+      "type": "unchanged"
+    },
+    {
+      "path": "feature/chat/build/test-results/roborazzi/debug/results/1240557167022291_chat-error-context-full__light__fs150.json",
+      "sha256": "73b7e24d396ec14b1a7dda03c1847f01447b26b048244728fbd86caccf9e5f22",
+      "type": "unchanged"
+    },
+    {
+      "path": "feature/chat/build/test-results/roborazzi/debug/results/1240557290520208_chat-error-model-changed__light__fs150.json",
+      "sha256": "568b3d0fbd8d692ed8cd133215b1c4bc11b6f53a0d0dc2a4f857f8334309fc6a",
+      "type": "unchanged"
+    },
+    {
+      "path": "feature/chat/build/test-results/roborazzi/debug/results/1240557415816541_chat-error-request-too-large__light__fs150.json",
+      "sha256": "d0a1d3e34d08d04d31ec1c8ee895b487acd59e12e2fced3db5c150fd387f7d04",
+      "type": "unchanged"
+    },
+    {
+      "path": "feature/chat/build/test-results/roborazzi/debug/results/1240557534437083_chat-error-context-full__dark__fs100.json",
+      "sha256": "8c8f55aa2f688701724e2ce8193009840d2febfe8fd0453d9a7c695bbf271340",
+      "type": "unchanged"
+    },
+    {
+      "path": "feature/chat/build/test-results/roborazzi/debug/results/1240557637595000_chat-error-model-changed__dark__fs100.json",
+      "sha256": "020cb381f150629757ba675e365f658b44e3da8e56f20d7e1b36fef3ebe2d422",
+      "type": "unchanged"
+    },
+    {
+      "path": "feature/chat/build/test-results/roborazzi/debug/results/1240557743992458_chat-error-request-too-large__dark__fs100.json",
+      "sha256": "f2ce6b20a0734c536907cb233ea2328b6a9f3f23bbb0a57ded3fee313335f99a",
+      "type": "unchanged"
+    },
+    {
+      "path": "feature/chat/build/test-results/roborazzi/debug/results/1240557852355208_chat-error-context-full__dark__fs150.json",
+      "sha256": "eff1a49ee76d451c374ff43bd90f3393a1cb2636c7dc06da68c9ba0f6b17a40f",
+      "type": "unchanged"
+    },
+    {
+      "path": "feature/chat/build/test-results/roborazzi/debug/results/1240557956714000_chat-error-model-changed__dark__fs150.json",
+      "sha256": "e9e8b7c212cc6ac4882b533eea620051d3df9fadc38c9911975c942464f847dc",
+      "type": "unchanged"
+    },
+    {
+      "path": "feature/chat/build/test-results/roborazzi/debug/results/1240558055346708_chat-error-request-too-large__dark__fs150.json",
+      "sha256": "7bf0312992642051cd413ec6fd15ba71f08940b6c8060926523cb3392cf727ab",
+      "type": "unchanged"
+    },
+    {
+      "path": "feature/chat/build/test-results/roborazzi/debug/results/1240558144578083_chat-error-context-full__light__fs100.json",
+      "sha256": "faf2f60676e83a19dbe15d0dbbbab38168b7f199bb4ba8f2545438482fe34a1b",
+      "type": "unchanged"
+    },
+    {
+      "path": "feature/chat/build/test-results/roborazzi/debug/results/1240558224918875_chat-error-model-changed__light__fs100.json",
+      "sha256": "61b14e9baf939bad1941a8899fbd546e4d6c6909518ff3c83585388d67c4045a",
+      "type": "unchanged"
+    },
+    {
+      "path": "feature/chat/build/test-results/roborazzi/debug/results/1240558301526041_chat-error-request-too-large__light__fs100.json",
+      "sha256": "3adc2a92755147d61bef48f2cf6d7a5852caf3ced8afed48d5c4f61f1570c6c0",
+      "type": "unchanged"
+    },
+    {
+      "path": "feature/chat/build/test-results/roborazzi/debug/results/1240558381762500_chat-error-context-full__light__fs150.json",
+      "sha256": "57cf289bb5f840ca3ac1bd42b40ba63a57cacbadac8214a6a49ed9508ea178ce",
+      "type": "unchanged"
+    },
+    {
+      "path": "feature/chat/build/test-results/roborazzi/debug/results/1240558463406708_chat-error-model-changed__light__fs150.json",
+      "sha256": "b228a78d5e2c7efbba8af1a885f55f866a5b4f026a585d32b4c03fb96fe675a8",
+      "type": "unchanged"
+    },
+    {
+      "path": "feature/chat/build/test-results/roborazzi/debug/results/1240558546719166_chat-error-request-too-large__light__fs150.json",
+      "sha256": "d4222f05bbdd0fd33516d350edfdbae6facc2a8eac6ac05d3f09b89bac801494",
+      "type": "unchanged"
+    },
+    {
+      "path": "feature/chat/build/test-results/roborazzi/debug/results/1240558631096041_chat-error-context-full__dark__fs100.json",
+      "sha256": "5a00944ddba39376ff49832ca6e5126ea5287349c3b25b4061a6b517d3f30673",
+      "type": "unchanged"
+    },
+    {
+      "path": "feature/chat/build/test-results/roborazzi/debug/results/1240558709743833_chat-error-model-changed__dark__fs100.json",
+      "sha256": "261acc7387e20f6e668a2ef380505fd7a6c6669500de076a1bcc5b0b92786b75",
+      "type": "unchanged"
+    },
+    {
+      "path": "feature/chat/build/test-results/roborazzi/debug/results/1240558784029958_chat-error-request-too-large__dark__fs100.json",
+      "sha256": "ae1e9e383049344846ecad2c8e11a9caf07ef6d0ed1764235a3a7fdae3a00567",
+      "type": "unchanged"
+    },
+    {
+      "path": "feature/chat/build/test-results/roborazzi/debug/results/1240558863589583_chat-error-context-full__dark__fs150.json",
+      "sha256": "e9d1c3bb8278fc5e7ce82359a63e5de6e2f2ae549ace7338b08cc07f70d8135a",
+      "type": "unchanged"
+    },
+    {
+      "path": "feature/chat/build/test-results/roborazzi/debug/results/1240558937579333_chat-error-model-changed__dark__fs150.json",
+      "sha256": "a44a82f290f52b5e92f3a911eb575a6e87cfd4ae61772c12d067c1aa3d3d27e8",
+      "type": "unchanged"
+    },
+    {
+      "path": "feature/chat/build/test-results/roborazzi/debug/results/1240559009883750_chat-error-request-too-large__dark__fs150.json",
+      "sha256": "987c940f8e1d91a1041d7aa5e3bc81e9b0e623426f5c76570c4d7130731df6ef",
+      "type": "unchanged"
+    },
+    {
+      "path": "feature/chat/build/test-results/roborazzi/debug/results/1240559165908000_chat-error-context-full__light__fs100.json",
+      "sha256": "905f4f2156655b394634467631892b8179e7643afeca622458051361fe0c3dcb",
+      "type": "unchanged"
+    },
+    {
+      "path": "feature/chat/build/test-results/roborazzi/debug/results/1240559256177291_chat-error-model-changed__light__fs100.json",
+      "sha256": "7cfba22946854aa8e4ecfb28eccad4f7dfdc716d4ee598cc08c7adeb4689365e",
+      "type": "unchanged"
+    },
+    {
+      "path": "feature/chat/build/test-results/roborazzi/debug/results/1240559350616333_chat-error-request-too-large__light__fs100.json",
+      "sha256": "720e0430107ccb1a20657ecb01abc4751cfdf32d50ec9c743de6ce473db5d0ca",
+      "type": "unchanged"
+    },
+    {
+      "path": "feature/chat/build/test-results/roborazzi/debug/results/1240559438090541_chat-error-context-full__light__fs150.json",
+      "sha256": "b186938e27bbda87b697221ef9b0070954671a1940b4cb1d759b2058ddac7994",
+      "type": "unchanged"
+    },
+    {
+      "path": "feature/chat/build/test-results/roborazzi/debug/results/1240559524991750_chat-error-model-changed__light__fs150.json",
+      "sha256": "dff400f70353dcd8b35393843a8d9b494687b8f27fb23d956dd60d9ab7dd1394",
+      "type": "unchanged"
+    },
+    {
+      "path": "feature/chat/build/test-results/roborazzi/debug/results/1240559611482125_chat-error-request-too-large__light__fs150.json",
+      "sha256": "035769a78c03e3b7d1dba29baacd8a49cf80346551c5e25c3ef75078e5b7f56c",
+      "type": "unchanged"
+    },
+    {
+      "path": "feature/chat/build/test-results/roborazzi/debug/results/1240559707945708_chat-error-context-full__dark__fs100.json",
+      "sha256": "ad26d12a618df77b95e14c0f01b5011513cb6cebf048c769e6b435f70a6ff9c7",
+      "type": "unchanged"
+    },
+    {
+      "path": "feature/chat/build/test-results/roborazzi/debug/results/1240559800882166_chat-error-model-changed__dark__fs100.json",
+      "sha256": "9035e0735759650b1ac73e0f4a71c47a3ad0c53cfddd474f8befbce84e864861",
+      "type": "unchanged"
+    },
+    {
+      "path": "feature/chat/build/test-results/roborazzi/debug/results/1240559887970708_chat-error-request-too-large__dark__fs100.json",
+      "sha256": "2afdee311554f8abb13fe2a3b6f92ade266a9d6d3678258f4934f5405362122e",
+      "type": "unchanged"
+    },
+    {
+      "path": "feature/chat/build/test-results/roborazzi/debug/results/1240559970076416_chat-error-context-full__dark__fs150.json",
+      "sha256": "fec41c36dc8937ee7bde20ba8f4f5cb4d25de47bf9752a57803368834a67eafe",
+      "type": "unchanged"
+    },
+    {
+      "path": "feature/chat/build/test-results/roborazzi/debug/results/1240560053468083_chat-error-model-changed__dark__fs150.json",
+      "sha256": "c30380275e33efe5e5260476fde6e7a4a5efeba6c9e1aa7e6e93513217f7e63a",
+      "type": "unchanged"
+    },
+    {
+      "path": "feature/chat/build/test-results/roborazzi/debug/results/1240560137330125_chat-error-request-too-large__dark__fs150.json",
+      "sha256": "0d7e156c982dc5aa3b0e25874be3d8c0cddb77209b0b6fc7e269f2315ed0262e",
+      "type": "unchanged"
+    },
+    {
+      "path": "feature/chat/build/test-results/roborazzi/debug/results/1240560262679625_chat-streaming__light__fs100.json",
+      "sha256": "0ec2b4aabb90535eebf1bcfc95c7f5decc44524d29f440f1f681e41170303c6d",
+      "type": "unchanged"
+    },
+    {
+      "path": "feature/chat/build/test-results/roborazzi/debug/results/1240560306946750_chat-long__light__fs100.json",
+      "sha256": "bed33928f50af973b10fc4f37bacdb6c7a241dee146ad26f2d670a051adcc0ae",
+      "type": "unchanged"
+    },
+    {
+      "path": "feature/chat/build/test-results/roborazzi/debug/results/1240560335507791_chat-empty__light__fs100.json",
+      "sha256": "5b6873ccbc1b3b191b1ced2d3dd9ed57ae642b19c7467ef35d2d3720577d6a88",
+      "type": "unchanged"
+    },
+    {
+      "path": "feature/chat/build/test-results/roborazzi/debug/results/1240560388189208_chat-streaming__dark__fs100.json",
+      "sha256": "9dbc2641eeddc59b35bac6755b70d76a294815280f7333a048a96623b91f9807",
+      "type": "unchanged"
+    },
+    {
+      "path": "feature/chat/build/test-results/roborazzi/debug/results/1240560425391541_chat-long__dark__fs100.json",
+      "sha256": "7e44c646fbd18946ef915ebbad304e468d80a8ec83549e037e9194ab103052a1",
+      "type": "unchanged"
+    },
+    {
+      "path": "feature/chat/build/test-results/roborazzi/debug/results/1240560452922583_chat-empty__dark__fs100.json",
+      "sha256": "7be8b9edca57dd1b791534c0f69910bc4fc9669a029eb88a6480c8a4a94e46f1",
+      "type": "unchanged"
+    },
+    {
+      "path": "feature/chat/build/test-results/roborazzi/debug/results/1240560505699958_chat-streaming__light__fs100.json",
+      "sha256": "7c03185e40efe1e6c8b2c056e2ba4f93a21c12a4ba72b0ba1d1b6961a92d50e0",
+      "type": "unchanged"
+    },
+    {
+      "path": "feature/chat/build/test-results/roborazzi/debug/results/1240560555043958_chat-long__light__fs100.json",
+      "sha256": "55f68182429e5d37db0baeafaff2f81d32cfbf5f5a17fa11ba108cc888eda84a",
+      "type": "unchanged"
+    },
+    {
+      "path": "feature/chat/build/test-results/roborazzi/debug/results/1240560585482250_chat-empty__light__fs100.json",
+      "sha256": "5bc014ee7838471fbd91dbcd809a05e95cce937b58df5e8ce73c1477b964b1c5",
+      "type": "unchanged"
+    },
+    {
+      "path": "feature/chat/build/test-results/roborazzi/debug/results/1240560633736333_chat-streaming__dark__fs100.json",
+      "sha256": "c4646942ec615f23f07f6960edf28ee79f237ed0b27b69332ed831c948a35441",
+      "type": "unchanged"
+    },
+    {
+      "path": "feature/chat/build/test-results/roborazzi/debug/results/1240560680410791_chat-long__dark__fs100.json",
+      "sha256": "f26487910fe83234857a2a3f1b8cfc06b21c32e594a9e4153c586e9e6f8ab89d",
+      "type": "unchanged"
+    },
+    {
+      "path": "feature/chat/build/test-results/roborazzi/debug/results/1240560710004791_chat-empty__dark__fs100.json",
+      "sha256": "58e3d48bd18d32087aaa45bb3e2e076d04712d2a5b1571085cd6c0201e626635",
+      "type": "unchanged"
+    },
+    {
+      "path": "feature/chat/build/test-results/roborazzi/debug/results/1240560756222041_chat-streaming__light__fs100.json",
+      "sha256": "64a9ef9ef104830699198870fe8349062ba8e839eb29b13482e495608e2786dd",
+      "type": "unchanged"
+    },
+    {
+      "path": "feature/chat/build/test-results/roborazzi/debug/results/1240560797602250_chat-long__light__fs100.json",
+      "sha256": "db16cb2de4a0e4efffe49607bd5050ae9e47c81ea7f226760ed96a6f72d2e3a7",
+      "type": "unchanged"
+    },
+    {
+      "path": "feature/chat/build/test-results/roborazzi/debug/results/1240560826058791_chat-empty__light__fs100.json",
+      "sha256": "6dbc77a22b783e39e44a3a8fe1a128adf82c50bfa321ace6193095ccd3bd5fe3",
+      "type": "unchanged"
+    },
+    {
+      "path": "feature/chat/build/test-results/roborazzi/debug/results/1240560880507333_chat-streaming__dark__fs100.json",
+      "sha256": "ade7386ccbd1ff4ffe76378c1199ba2102f03387cdb4022653c9356dcdba543b",
+      "type": "unchanged"
+    },
+    {
+      "path": "feature/chat/build/test-results/roborazzi/debug/results/1240560916170041_chat-long__dark__fs100.json",
+      "sha256": "3b9fa5e4dae934eca6cd6bafbe6a39b47eef555453d71a180f722605573ead13",
+      "type": "unchanged"
+    },
+    {
+      "path": "feature/chat/build/test-results/roborazzi/debug/results/1240560944624041_chat-empty__dark__fs100.json",
+      "sha256": "99efc63ac75c6fc35c75055218b42c7b38083d9218aacdbe56434751adad83c0",
+      "type": "unchanged"
+    },
+    {
+      "path": "feature/chat/build/test-results/roborazzi/debug/results/1240560995703708_chat-streaming__light__fs100.json",
+      "sha256": "34efad1be1dc7ec877f861770d5037730ddace14da3c035ccea90329292f91ab",
+      "type": "unchanged"
+    },
+    {
+      "path": "feature/chat/build/test-results/roborazzi/debug/results/1240561041326458_chat-long__light__fs100.json",
+      "sha256": "86312b7b53babf3c118a417e4ae7a9a4893f0c171a8ee5d1e0cd30864bb41eb2",
+      "type": "unchanged"
+    },
+    {
+      "path": "feature/chat/build/test-results/roborazzi/debug/results/1240561080490916_chat-empty__light__fs100.json",
+      "sha256": "284d9c7b22b1cd77e9e74cea2423ae46897f7fce8c3424e48eec11c8eb09400d",
+      "type": "unchanged"
+    },
+    {
+      "path": "feature/chat/build/test-results/roborazzi/debug/results/1240561152189125_chat-streaming__dark__fs100.json",
+      "sha256": "b5acb0fffbaa9d339e30e9bea2d30333daec2c7c52d53f846f01d058e4478e93",
+      "type": "unchanged"
+    },
+    {
+      "path": "feature/chat/build/test-results/roborazzi/debug/results/1240561195797833_chat-long__dark__fs100.json",
+      "sha256": "3c89c69e4292740157ac49d3468e46841a8a1b9818180c21e6ae6ff357616713",
+      "type": "unchanged"
+    },
+    {
+      "path": "feature/chat/build/test-results/roborazzi/debug/results/1240561231908833_chat-empty__dark__fs100.json",
+      "sha256": "8ba9a4e4b3ce9b9641aab58ef14f1cbb3f962a3a316473202238eb135f7d4bdf",
+      "type": "unchanged"
+    },
+    {
+      "path": "feature/chat/build/test-results/roborazzi/debug/results/1240561283721416_chat-streaming__light__fs100.json",
+      "sha256": "763b18c5536c4442d9f9a063f4290f348f1b820ee886ddf2425117ff905ba706",
+      "type": "unchanged"
+    },
+    {
+      "path": "feature/chat/build/test-results/roborazzi/debug/results/1240561330115750_chat-long__light__fs100.json",
+      "sha256": "ebcf6ebe7115ffeab3fb1466e046cf98b9a58d8fb43cab97c4f949963fc309d6",
+      "type": "unchanged"
+    },
+    {
+      "path": "feature/chat/build/test-results/roborazzi/debug/results/1240561368682708_chat-empty__light__fs100.json",
+      "sha256": "872942f2568d3a0b21bf1636dfdc1f5fbfe24e11dc935e574abb6a5c835c2cc0",
+      "type": "unchanged"
+    },
+    {
+      "path": "feature/chat/build/test-results/roborazzi/debug/results/1240561429771583_chat-streaming__dark__fs100.json",
+      "sha256": "837eb7a02551c77d500c4f9a4c916a4a60c7eafb283b1448db3d26643951d596",
+      "type": "unchanged"
+    },
+    {
+      "path": "feature/chat/build/test-results/roborazzi/debug/results/1240561475937666_chat-long__dark__fs100.json",
+      "sha256": "be36efce026ea0d9493ffa8e7d4ee06ec76e831cabffbf5fc395781de50ef695",
+      "type": "unchanged"
+    },
+    {
+      "path": "feature/chat/build/test-results/roborazzi/debug/results/1240561512939708_chat-empty__dark__fs100.json",
+      "sha256": "03a65d6603fedd75df065de34513912a09bb50bd06c1cb097af5b55a70c0f4b3",
+      "type": "unchanged"
+    },
+    {
+      "path": "feature/chat/build/test-results/roborazzi/debug/results/1240561574973166_chat-long__light__fs150.json",
+      "sha256": "65b4af5af24038a4e8d66664665601f11f2d47e5e8dc0cc36f9efeeb49db2e62",
+      "type": "unchanged"
+    },
+    {
+      "path": "feature/chat/build/test-results/roborazzi/debug/results/1240561636646083_chat-long__dark__fs150.json",
+      "sha256": "bc2c1e2342ad2753276369f2a85ee7813d583f5bc8d43f690f639e2a1ea5e21c",
+      "type": "unchanged"
+    },
+    {
+      "path": "feature/chat/build/test-results/roborazzi/debug/results/1240561697107416_chat-long__light__fs150.json",
+      "sha256": "a081c09347c597d9fc3ec960560b4aba2361f13b77e7bc8d44917be033ca2779",
+      "type": "unchanged"
+    },
+    {
+      "path": "feature/chat/build/test-results/roborazzi/debug/results/1240561760685541_chat-long__dark__fs150.json",
+      "sha256": "d8b235ac2982192530256f37cda4175ea5a89df248311af34c28f4552717ca1f",
+      "type": "unchanged"
+    },
+    {
+      "path": "feature/chat/build/test-results/roborazzi/debug/results/1240561841833583_shell-chat-inspector__light__fs100.json",
+      "sha256": "7438048e14eb3a1a34b0352169670b99ff0df0c45e387884c8b1af32857214ff",
+      "type": "unchanged"
+    },
+    {
+      "path": "feature/chat/build/test-results/roborazzi/debug/results/1240561900551166_shell-chat-drawer-open__light__fs100.json",
+      "sha256": "0e43341469dd4247b0cc03e0923a2ecdac9b8de539fdcf88a7b04d8536dba312",
+      "type": "unchanged"
+    },
+    {
+      "path": "feature/chat/build/test-results/roborazzi/debug/results/1240561942492166_shell-chat-conversation__light__fs100.json",
+      "sha256": "92daff1aa4b9801e6b8dd4b76c9e2650cccd163fe9ab4926dc91e45b995bbe3a",
+      "type": "unchanged"
+    },
+    {
+      "path": "feature/chat/build/test-results/roborazzi/debug/results/1240561977776916_shell-chat-root__light__fs100.json",
+      "sha256": "359ffece84cc89cdcc5d986e24b8d342f7e41bd242589c4861b9c10cc1ed93fc",
+      "type": "unchanged"
+    },
+    {
+      "path": "feature/chat/build/test-results/roborazzi/debug/results/1240562023920291_shell-chat-inspector__dark__fs100.json",
+      "sha256": "71d797b0c8f138c1100d0eb9e5353b353aba88468621fcf8c09008132fa6a217",
+      "type": "unchanged"
+    },
+    {
+      "path": "feature/chat/build/test-results/roborazzi/debug/results/1240562063532000_shell-chat-drawer-open__dark__fs100.json",
+      "sha256": "58180827cc54eab0fd2acddad347fdf6897ec776c2f680b221672a7e9dbeea80",
+      "type": "unchanged"
+    },
+    {
+      "path": "feature/chat/build/test-results/roborazzi/debug/results/1240562100683000_shell-chat-conversation__dark__fs100.json",
+      "sha256": "46d69714982f2432fc96c23d3b25dc9764078a6c037ec7591f1f26b5dfb99ba7",
+      "type": "unchanged"
+    },
+    {
+      "path": "feature/chat/build/test-results/roborazzi/debug/results/1240562132746416_shell-chat-root__dark__fs100.json",
+      "sha256": "09eb5d8cb06249bd6875c32e4c5b5df546ad48d23d8be44ab51b5c0b1cbb8bdc",
+      "type": "unchanged"
+    },
+    {
+      "path": "feature/chat/build/test-results/roborazzi/debug/results/1240562181931833_shell-chat-inspector__light__fs100.json",
+      "sha256": "a80287144bccfc6445a916b575f135d50a059fd5703b1a372b6fe99a47fbdf14",
+      "type": "unchanged"
+    },
+    {
+      "path": "feature/chat/build/test-results/roborazzi/debug/results/1240562231143208_shell-chat-drawer-open__light__fs100.json",
+      "sha256": "5b3873cb7f7c3790f179031c3f7c467da3396260141ee9de1a4b901ee445772a",
+      "type": "unchanged"
+    },
+    {
+      "path": "feature/chat/build/test-results/roborazzi/debug/results/1240562281811500_shell-chat-conversation__light__fs100.json",
+      "sha256": "3afee6cba8bca4825fb1e121aebf46d0fa6a992d25b650ffdae6b4c6e1bc31b5",
+      "type": "unchanged"
+    },
+    {
+      "path": "feature/chat/build/test-results/roborazzi/debug/results/1240562325025375_shell-chat-root__light__fs100.json",
+      "sha256": "4dbd432382bf7d094ca1690446e59f865b83d24f5f22346a37c08e95673cd02a",
+      "type": "unchanged"
+    },
+    {
+      "path": "feature/chat/build/test-results/roborazzi/debug/results/1240562392789333_shell-chat-inspector__dark__fs100.json",
+      "sha256": "6d421d9662c1752c6c81106585b5cfb1c8dc642365e8b3e01d9d346a4c55715d",
+      "type": "unchanged"
+    },
+    {
+      "path": "feature/chat/build/test-results/roborazzi/debug/results/1240562440521916_shell-chat-drawer-open__dark__fs100.json",
+      "sha256": "c37d569fef5ff228695ef4f8796b1d152788576cfa756b33249f915201e633c4",
+      "type": "unchanged"
+    },
+    {
+      "path": "feature/chat/build/test-results/roborazzi/debug/results/1240562484966666_shell-chat-conversation__dark__fs100.json",
+      "sha256": "3957b424fd2dbf708475504bbd03315038906bb7a6d70200b1eddaf6bdcf7dfb",
+      "type": "unchanged"
+    },
+    {
+      "path": "feature/chat/build/test-results/roborazzi/debug/results/1240562527910708_shell-chat-root__dark__fs100.json",
+      "sha256": "a45114d9fb4cd7ca814518b3bb811d24e5ad2cf6554857e6efef16e9a2ac5a76",
+      "type": "unchanged"
+    },
+    {
+      "path": "feature/chat/build/test-results/roborazzi/debug/results/1240562577402083_shell-chat-inspector__light__fs100.json",
+      "sha256": "b830331c98aae1471d6ef3426db9a47fe758cd4881359fe736b4028d9851f8d1",
+      "type": "unchanged"
+    },
+    {
+      "path": "feature/chat/build/test-results/roborazzi/debug/results/1240562621987458_shell-chat-drawer-open__light__fs100.json",
+      "sha256": "6c3861f6c771e9f69fa8016e596db1413b991c284783974492462379735e3e8a",
+      "type": "unchanged"
+    },
+    {
+      "path": "feature/chat/build/test-results/roborazzi/debug/results/1240562664892000_shell-chat-conversation__light__fs100.json",
+      "sha256": "a2cf0126e069387666231252a41dbffe87d0892348e6601554419afaf88dfccd",
+      "type": "unchanged"
+    },
+    {
+      "path": "feature/chat/build/test-results/roborazzi/debug/results/1240562704669166_shell-chat-root__light__fs100.json",
+      "sha256": "0404438f9a3b7811bb4bedfe665b69b8b8481f1a5109e7b3b95cc1fcd230dc63",
+      "type": "unchanged"
+    },
+    {
+      "path": "feature/chat/build/test-results/roborazzi/debug/results/1240562756672041_shell-chat-inspector__dark__fs100.json",
+      "sha256": "05e5ccf0193a4d6441af3b36dab7706cd9e9e8d377cbe439ea58ee118e02aad9",
+      "type": "unchanged"
+    },
+    {
+      "path": "feature/chat/build/test-results/roborazzi/debug/results/1240562806917500_shell-chat-drawer-open__dark__fs100.json",
+      "sha256": "844dab1156360ed15a42031fde8997b3f9e302d16726220d67ddab8c7ec8579d",
+      "type": "unchanged"
+    },
+    {
+      "path": "feature/chat/build/test-results/roborazzi/debug/results/1240562849254333_shell-chat-conversation__dark__fs100.json",
+      "sha256": "398f18a379e67c3507f0ea22a8f0188e10034d367a502c870e15c00b9b59160e",
+      "type": "unchanged"
+    },
+    {
+      "path": "feature/chat/build/test-results/roborazzi/debug/results/1240562885914833_shell-chat-root__dark__fs100.json",
+      "sha256": "6303a5b3a4d8d13910cfda6d54eebb45d4500ac9c036b7db7e92154634ae1506",
+      "type": "unchanged"
+    },
+    {
+      "path": "feature/chat/build/test-results/roborazzi/debug/results/1240562988520166_shell-chat-inspector__light__fs100.json",
+      "sha256": "c1aba756c5319cc83324712d7cacff3fb665238dbd78c5b3e312361bbe6f3227",
+      "type": "unchanged"
+    },
+    {
+      "path": "feature/chat/build/test-results/roborazzi/debug/results/1240563057843375_shell-chat-conversation__light__fs100.json",
+      "sha256": "aa4e9538e44494764217992e7e8c4833171a4b0a3a6e53ad9aa0e8fce7fb73ca",
+      "type": "unchanged"
+    },
+    {
+      "path": "feature/chat/build/test-results/roborazzi/debug/results/1240563110078875_shell-chat-root__light__fs100.json",
+      "sha256": "41e24900042ead5c869651cdcf1e639fd9382baae946578c4fe1f79682c94a1f",
+      "type": "unchanged"
+    },
+    {
+      "path": "feature/chat/build/test-results/roborazzi/debug/results/1240563206274833_shell-chat-inspector__dark__fs100.json",
+      "sha256": "52ae9020a37baf55ae72fbae154825b91b3cdbb4434efdfe0b5a7ade788860f5",
+      "type": "unchanged"
+    },
+    {
+      "path": "feature/chat/build/test-results/roborazzi/debug/results/1240563286164333_shell-chat-conversation__dark__fs100.json",
+      "sha256": "8d2c7a9b3ff0586650e8db3c14a5bf2b01ec87611f05a4081884fa784b0c3d44",
+      "type": "unchanged"
+    },
+    {
+      "path": "feature/chat/build/test-results/roborazzi/debug/results/1240563335588291_shell-chat-root__dark__fs100.json",
+      "sha256": "603744473ba66744208aa868d427504c8310ce7e77caf45afbd388970a987f17",
+      "type": "unchanged"
+    },
+    {
+      "path": "feature/chat/build/test-results/roborazzi/debug/results/1240563423060166_shell-chat-inspector__light__fs100.json",
+      "sha256": "dcd0677bc02e7758d404f78b508d5d5440e0adfaa9a3f2a63a3d04d71e10e2c1",
+      "type": "unchanged"
+    },
+    {
+      "path": "feature/chat/build/test-results/roborazzi/debug/results/1240563496434208_shell-chat-conversation__light__fs100.json",
+      "sha256": "27497f68ad270a1ebf126a8cb583fc7fccab55880807ffc0de54beb4c4a73e5f",
+      "type": "unchanged"
+    },
+    {
+      "path": "feature/chat/build/test-results/roborazzi/debug/results/1240563548699916_shell-chat-root__light__fs100.json",
+      "sha256": "71cb9f23cf3f2b34002eb2c9c6785ec3fee761a81b5e9b06e408c7087ba3a49d",
+      "type": "unchanged"
+    },
+    {
+      "path": "feature/chat/build/test-results/roborazzi/debug/results/1240563640008166_shell-chat-inspector__dark__fs100.json",
+      "sha256": "d1106ef4dc39dc0f8091939dcf0030d80bcf2c50f0bd58827d78e23e5e4e5d6b",
+      "type": "unchanged"
+    },
+    {
+      "path": "feature/chat/build/test-results/roborazzi/debug/results/1240563708567791_shell-chat-conversation__dark__fs100.json",
+      "sha256": "e00ec890fa9e5ad67fa7b8d6fb049adb4c94c657a9d56ae1bb0631858c87ce8b",
+      "type": "unchanged"
+    },
+    {
+      "path": "feature/chat/build/test-results/roborazzi/debug/results/1240563757556458_shell-chat-root__dark__fs100.json",
+      "sha256": "65f18b75f55780e746c17ed1f8db7d6cfe5ccf066b490b114a1f0b0e7ecfebad",
+      "type": "unchanged"
+    },
+    {
+      "path": "feature/chat/build/test-results/roborazzi/debug/results/1240563804144958_shell-chat-inspector__light__fs150.json",
+      "sha256": "8f4943dc8672dace95a8ff8e6dba6f539a9e40ff3f99755b3a0ea928fb1ee4a6",
+      "type": "unchanged"
+    },
+    {
+      "path": "feature/chat/build/test-results/roborazzi/debug/results/1240563848727625_shell-chat-drawer-open__light__fs150.json",
+      "sha256": "2943c6ac9356c7669d882fe5a9236ee7c175bcf8a145ce4a9cd746565cbe2409",
+      "type": "unchanged"
+    },
+    {
+      "path": "feature/chat/build/test-results/roborazzi/debug/results/1240563895220500_shell-chat-conversation__light__fs150.json",
+      "sha256": "aeb29196afa79932c177234dffb1250a927df380f95c1eafe02077750d0b6343",
+      "type": "unchanged"
+    },
+    {
+      "path": "feature/chat/build/test-results/roborazzi/debug/results/1240563936307208_shell-chat-root__light__fs150.json",
+      "sha256": "ee14155dd6d75bcc04d9a20c676de0ddf2fb4327674ca602f3866a4adf04f1f4",
+      "type": "unchanged"
+    },
+    {
+      "path": "feature/chat/build/test-results/roborazzi/debug/results/1240563989483458_shell-chat-inspector__dark__fs150.json",
+      "sha256": "5df5c1470674f20bf9678912d098cc9cd6cdd38e5e00e65b528794cc14291429",
+      "type": "unchanged"
+    },
+    {
+      "path": "feature/chat/build/test-results/roborazzi/debug/results/1240564032277875_shell-chat-drawer-open__dark__fs150.json",
+      "sha256": "205b7d1e337b178047cd42ff7839ee51253ed2e43ad988c48268114000da4e55",
+      "type": "unchanged"
+    },
+    {
+      "path": "feature/chat/build/test-results/roborazzi/debug/results/1240564085797958_shell-chat-conversation__dark__fs150.json",
+      "sha256": "1a03bacb2090fc63ec207e9a78eae58f5713a996cf28a9a1a8932424132055df",
+      "type": "unchanged"
+    },
+    {
+      "path": "feature/chat/build/test-results/roborazzi/debug/results/1240564125836625_shell-chat-root__dark__fs150.json",
+      "sha256": "48d0a1f9109806cd2997ed0bdfcbc4d76940ac8eb3d7e36f4f43d889eb341cf6",
+      "type": "unchanged"
+    },
+    {
+      "path": "feature/chat/build/test-results/roborazzi/debug/results/1240564177091458_shell-chat-inspector__light__fs150.json",
+      "sha256": "b63f8efdd6d66843e5515500900b1b2f6cdb99c9825404b1e76c48bae4075f2b",
+      "type": "unchanged"
+    },
+    {
+      "path": "feature/chat/build/test-results/roborazzi/debug/results/1240564226827166_shell-chat-drawer-open__light__fs150.json",
+      "sha256": "7b9e1582f99d7750298067b8f16b3326070bd606b55f414283a1968628e1b4bf",
+      "type": "unchanged"
+    },
+    {
+      "path": "feature/chat/build/test-results/roborazzi/debug/results/1240564268420958_shell-chat-conversation__light__fs150.json",
+      "sha256": "e84da4d8c2e336b4b0037ab45fcbfdc1a6c67fce76bf003727cc5b14504efd86",
+      "type": "unchanged"
+    },
+    {
+      "path": "feature/chat/build/test-results/roborazzi/debug/results/1240564306553916_shell-chat-root__light__fs150.json",
+      "sha256": "4861f7ee16541b5213899a859e88c8297a9e5bfcbacd0ecc938174b0929b7acd",
+      "type": "unchanged"
+    },
+    {
+      "path": "feature/chat/build/test-results/roborazzi/debug/results/1240564358426125_shell-chat-inspector__dark__fs150.json",
+      "sha256": "b69230a49576f73cd78a662192c750d44ec46ba5d6e39f6ddc634f289632d448",
+      "type": "unchanged"
+    },
+    {
+      "path": "feature/chat/build/test-results/roborazzi/debug/results/1240564408036541_shell-chat-drawer-open__dark__fs150.json",
+      "sha256": "263b23386c3a11d9d788c87f768d44653d2accd98209ff6a1550e8f1c10136e5",
+      "type": "unchanged"
+    },
+    {
+      "path": "feature/chat/build/test-results/roborazzi/debug/results/1240564451250416_shell-chat-conversation__dark__fs150.json",
+      "sha256": "d7b4b3d85228567f20b771c603f4ed9e6efaf611915070ca4b789c2642c2c24f",
+      "type": "unchanged"
+    },
+    {
+      "path": "feature/chat/build/test-results/roborazzi/debug/results/1240564489093416_shell-chat-root__dark__fs150.json",
+      "sha256": "69cb0beaf15495dd5b0babf2da7619cd8c615e3a4270eb2e8ff246dc810fa15f",
+      "type": "unchanged"
+    },
+    {
+      "path": "feature/chat/build/test-results/roborazzi/debug/results/1240564550486708_chat-knowledge-inspector-off__light__fs100.json",
+      "sha256": "629ef6768afc5dffcce8b46d20c23361bc3d634d3f48cf35711f73060e07261f",
+      "type": "unchanged"
+    },
+    {
+      "path": "feature/chat/build/test-results/roborazzi/debug/results/1240564593979625_chat-knowledge-inspector-used__light__fs100.json",
+      "sha256": "d7c09815b130b45d5f017fcc4ebef3bf10fb4c90e4e8e5b9f109811cd11d23ca",
+      "type": "unchanged"
+    },
+    {
+      "path": "feature/chat/build/test-results/roborazzi/debug/results/1240564630457041_chat-knowledge-off__light__fs100.json",
+      "sha256": "add73aa8e7032daa0360a69076e3a388f87b6a864f0266699a10adc6be354042",
+      "type": "unchanged"
+    },
+    {
+      "path": "feature/chat/build/test-results/roborazzi/debug/results/1240564676153708_chat-knowledge-inspector-off__dark__fs100.json",
+      "sha256": "28af9a3bfca2662b5cbb5bca394ba9a1f23623e766f90405c37a32e0d0fddfba",
+      "type": "unchanged"
+    },
+    {
+      "path": "feature/chat/build/test-results/roborazzi/debug/results/1240564722606666_chat-knowledge-inspector-used__dark__fs100.json",
+      "sha256": "f146cf279d28e4ff46e4b3121d7600c3b0d6c141e5a2feb84d45a33b9e4739af",
+      "type": "unchanged"
+    },
+    {
+      "path": "feature/chat/build/test-results/roborazzi/debug/results/1240564765218208_chat-knowledge-off__dark__fs100.json",
+      "sha256": "58d28cf3ecf823beec9cf546c0bf7c535ee7e4846087ca15a05814792cb7d354",
+      "type": "unchanged"
+    },
+    {
+      "path": "feature/chat/build/test-results/roborazzi/debug/results/1240564823482833_chat-knowledge-inspector-off__light__fs100.json",
+      "sha256": "7be635ebe5bfbc7bfa58dfe581db006a5b47c1c7976b77595e255d28689b3465",
+      "type": "unchanged"
+    },
+    {
+      "path": "feature/chat/build/test-results/roborazzi/debug/results/1240564882166958_chat-knowledge-inspector-used__light__fs100.json",
+      "sha256": "bc4984dbb7f9c4b04425a9aebb7112f07771dacbc7e10cb46e4e6a566b41f92d",
+      "type": "unchanged"
+    },
+    {
+      "path": "feature/chat/build/test-results/roborazzi/debug/results/1240564936923750_chat-knowledge-off__light__fs100.json",
+      "sha256": "d17b77a6bb2aea3041b6a2905c0219ee0afa74d9d5454347802c5c14d20c6eee",
+      "type": "unchanged"
+    },
+    {
+      "path": "feature/chat/build/test-results/roborazzi/debug/results/1240564988823875_chat-knowledge-inspector-off__dark__fs100.json",
+      "sha256": "24e6cfc7bb08516a657c80c8e7e2da6596fce8b5158ba6b991a4cf234d50c18a",
+      "type": "unchanged"
+    },
+    {
+      "path": "feature/chat/build/test-results/roborazzi/debug/results/1240565040601583_chat-knowledge-inspector-used__dark__fs100.json",
+      "sha256": "bbb05f28daa8f3c322c812d7e10e1eec2780785557946b98c845c1be96f376fd",
+      "type": "unchanged"
+    },
+    {
+      "path": "feature/chat/build/test-results/roborazzi/debug/results/1240565082600458_chat-knowledge-off__dark__fs100.json",
+      "sha256": "b37a60eba14e6b46ef3136c285f1354b55134aac3bd32c883427d0a1e9ed4e2a",
+      "type": "unchanged"
+    },
+    {
+      "path": "feature/chat/build/test-results/roborazzi/debug/results/1240565130715250_chat-knowledge-inspector-off__light__fs100.json",
+      "sha256": "b93708d30c0805da9f866954dc4dace26918cfc298bbab4df0e388166fbdaa57",
+      "type": "unchanged"
+    },
+    {
+      "path": "feature/chat/build/test-results/roborazzi/debug/results/1240565175483000_chat-knowledge-inspector-used__light__fs100.json",
+      "sha256": "fb1d246a78bd06fe24334c2706e045090588e2c93eb30d65c38298fae42e178d",
+      "type": "unchanged"
+    },
+    {
+      "path": "feature/chat/build/test-results/roborazzi/debug/results/1240565212815958_chat-knowledge-off__light__fs100.json",
+      "sha256": "9599d83b4759886169ed818bb176124fe542223387855af2d0583df34e5675b0",
+      "type": "unchanged"
+    },
+    {
+      "path": "feature/chat/build/test-results/roborazzi/debug/results/1240565261750875_chat-knowledge-inspector-off__dark__fs100.json",
+      "sha256": "5762edb7c5bfd2763c6412782439fab9e6bfb10ae040efce26d3bb3de328a330",
+      "type": "unchanged"
+    },
+    {
+      "path": "feature/chat/build/test-results/roborazzi/debug/results/1240565313963333_chat-knowledge-inspector-used__dark__fs100.json",
+      "sha256": "0570b9ce99c1ae43f868b31de658f59eab6b11b3140a036bb4c3c58e02496570",
+      "type": "unchanged"
+    },
+    {
+      "path": "feature/chat/build/test-results/roborazzi/debug/results/1240565359304333_chat-knowledge-off__dark__fs100.json",
+      "sha256": "1d0c839e33c25220bb3ff5ece6ea1ee8a2eb980902e3ded664adf62da9535611",
+      "type": "unchanged"
+    },
+    {
+      "path": "feature/chat/build/test-results/roborazzi/debug/results/1240565429922458_chat-knowledge-inspector-off__light__fs100.json",
+      "sha256": "cb11036cfe77dd2dbbfd135035c1d3ba2f5a53c364aa928fd2b0837d7f232775",
+      "type": "unchanged"
+    },
+    {
+      "path": "feature/chat/build/test-results/roborazzi/debug/results/1240565505353875_chat-knowledge-inspector-used__light__fs100.json",
+      "sha256": "233c9f8245d0e8518596af3d47ee74193cfd9106d85f814ebd7217a6cff88bd8",
+      "type": "unchanged"
+    },
+    {
+      "path": "feature/chat/build/test-results/roborazzi/debug/results/1240565554786166_chat-knowledge-off__light__fs100.json",
+      "sha256": "a0dc6df7ee02ac83e9734a512e2a5656e1b1a7f1b0e13371fb44c1ae6aea2fa3",
+      "type": "unchanged"
+    },
+    {
+      "path": "feature/chat/build/test-results/roborazzi/debug/results/1240565621260708_chat-knowledge-inspector-off__dark__fs100.json",
+      "sha256": "ad8bf213fb15d1544a19f1fa73f070da6950580d3d980a6db758eb873cb18070",
+      "type": "unchanged"
+    },
+    {
+      "path": "feature/chat/build/test-results/roborazzi/debug/results/1240565698908166_chat-knowledge-inspector-used__dark__fs100.json",
+      "sha256": "207dd916b4de09c6f856e46791d7a0786cf2a425db45b9b3392ad7ef639f1486",
+      "type": "unchanged"
+    },
+    {
+      "path": "feature/chat/build/test-results/roborazzi/debug/results/1240565758813125_chat-knowledge-off__dark__fs100.json",
+      "sha256": "e124d0bb22e893a4d55c6f55c409bf09336944cda176480a4985e5a6502c1b87",
+      "type": "unchanged"
+    },
+    {
+      "path": "feature/chat/build/test-results/roborazzi/debug/results/1240565824092250_chat-knowledge-inspector-off__light__fs100.json",
+      "sha256": "74bca7f6e004ebfd585fbb0af1b5ac58c3ed94aa60d644be83ad5c2650cd1c25",
+      "type": "unchanged"
+    },
+    {
+      "path": "feature/chat/build/test-results/roborazzi/debug/results/1240565891184333_chat-knowledge-inspector-used__light__fs100.json",
+      "sha256": "e9971169f620e0d540ad9c254d864b96734387541c0f592b46798224e5b67ece",
+      "type": "unchanged"
+    },
+    {
+      "path": "feature/chat/build/test-results/roborazzi/debug/results/1240565943518750_chat-knowledge-off__light__fs100.json",
+      "sha256": "ab981ae0a87d9605d52ef685a9add3a9f260b1fbd4eaf7cba87afb1200eaa984",
+      "type": "unchanged"
+    },
+    {
+      "path": "feature/chat/build/test-results/roborazzi/debug/results/1240566007993083_chat-knowledge-inspector-off__dark__fs100.json",
+      "sha256": "066b3ae8f0597c0f55feb614f896c0799d231e826dcaff2337ba4ba4e7912a4d",
+      "type": "unchanged"
+    },
+    {
+      "path": "feature/chat/build/test-results/roborazzi/debug/results/1240566073995791_chat-knowledge-inspector-used__dark__fs100.json",
+      "sha256": "16920247869b8c950c0964bfc339fdf9c876ea36815cd62d194bf5a1f8e680de",
+      "type": "unchanged"
+    },
+    {
+      "path": "feature/chat/build/test-results/roborazzi/debug/results/1240566129000291_chat-knowledge-off__dark__fs100.json",
+      "sha256": "4dbffa5cbaf8cd2ba506344b81218785ecec5c19f10adc7db73b03a0066c1b44",
+      "type": "unchanged"
+    },
+    {
+      "path": "feature/chat/build/test-results/roborazzi/debug/results/1240566174912458_chat-knowledge-inspector-off__light__fs150.json",
+      "sha256": "938c73f543cafd479c1a068fa8e1c83387506c98b908c6ab9e35aa190164e2e9",
+      "type": "unchanged"
+    },
+    {
+      "path": "feature/chat/build/test-results/roborazzi/debug/results/1240566217314875_chat-knowledge-inspector-used__light__fs150.json",
+      "sha256": "5cdecdf2fe5ec806633c83b8e0c3e4d3e8008168a9cfec406bef76d429cdad9a",
+      "type": "unchanged"
+    },
+    {
+      "path": "feature/chat/build/test-results/roborazzi/debug/results/1240566252193833_chat-knowledge-off__light__fs150.json",
+      "sha256": "b116eee2f5e535ffaaa356ba796d1a65d26aa872611455fa4f74abbadaf1767c",
+      "type": "unchanged"
+    },
+    {
+      "path": "feature/chat/build/test-results/roborazzi/debug/results/1240566294851625_chat-knowledge-inspector-off__dark__fs150.json",
+      "sha256": "848b33392f6e2a3100546e1849aa4144c155e5f122212943698b7f62852e6775",
+      "type": "unchanged"
+    },
+    {
+      "path": "feature/chat/build/test-results/roborazzi/debug/results/1240566337505833_chat-knowledge-inspector-used__dark__fs150.json",
+      "sha256": "cb0cec13ef0cbc1db53bed3b57abfa24bea88c3cb5103b74b132d229cd824f52",
+      "type": "unchanged"
+    },
+    {
+      "path": "feature/chat/build/test-results/roborazzi/debug/results/1240566377447583_chat-knowledge-off__dark__fs150.json",
+      "sha256": "0e4eccfce920aaa9ce3b212ff9f593407d47d9f6c6d885b42ca64e01d8696656",
+      "type": "unchanged"
+    },
+    {
+      "path": "feature/chat/build/test-results/roborazzi/debug/results/1240566433453125_chat-knowledge-inspector-off__light__fs150.json",
+      "sha256": "1e23548096b0f234c3214b4d757fd2c7a1f50b1fcdcb630d25b850a705add9e6",
+      "type": "unchanged"
+    },
+    {
+      "path": "feature/chat/build/test-results/roborazzi/debug/results/1240566486449250_chat-knowledge-inspector-used__light__fs150.json",
+      "sha256": "1bf4965af92b1b9d8deadae9960bbc2523ba843d0bb19a50d8137c13d7b445e1",
+      "type": "unchanged"
+    },
+    {
+      "path": "feature/chat/build/test-results/roborazzi/debug/results/1240566522244458_chat-knowledge-off__light__fs150.json",
+      "sha256": "4156ab4ba0d5fe7b66c14166effc347248340984829019adf76cb672040145fe",
+      "type": "unchanged"
+    },
+    {
+      "path": "feature/chat/build/test-results/roborazzi/debug/results/1240566569057833_chat-knowledge-inspector-off__dark__fs150.json",
+      "sha256": "4a513f11860c977f3db8560a611c77b91128a1bc672f633e8b8771919ea80cb7",
+      "type": "unchanged"
+    },
+    {
+      "path": "feature/chat/build/test-results/roborazzi/debug/results/1240566612780625_chat-knowledge-inspector-used__dark__fs150.json",
+      "sha256": "6ee9452464657fba9b17b19f3803494f1f0e44eb1c376c19b7b0263c471e63c3",
+      "type": "unchanged"
+    },
+    {
+      "path": "feature/chat/build/test-results/roborazzi/debug/results/1240566647546583_chat-knowledge-off__dark__fs150.json",
+      "sha256": "c9900026de7e4668ce04389ebfc3ff0d809fa04f8a11d16e4183ff96462f8642",
+      "type": "unchanged"
+    },
+    {
+      "path": "feature/graph/build/test-results/testDebugUnitTest/TEST-app.skein.feature.graph.ForceLayoutTest.xml",
+      "sha256": "0ecee3c36eae5bdfae8ae7fbadeb6983d6f7824972c2e59da2768540b8730cd1",
+      "tests": 10,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "path": "feature/graph/build/test-results/testDebugUnitTest/TEST-app.skein.feature.graph.GraphHitTestTest.xml",
+      "sha256": "5adbf2dc67e92f6e40d603cc26aed8a15df11044d5142a623a12b83c40e715ec",
+      "tests": 7,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "path": "feature/graph/build/test-results/testDebugUnitTest/TEST-app.skein.feature.graph.GraphSimulationTest.xml",
+      "sha256": "a57d736f66c1a40f588d65bf32fd1575bb35a2587914b9e7592bc0e3c83d70ce",
+      "tests": 4,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "path": "feature/graph/build/test-results/testDebugUnitTest/TEST-app.skein.feature.graph.GraphStateTest.xml",
+      "sha256": "6a59fd8b424ce0aac3653e38d9f4b71172d3c84f3d9977be40294a422c3ef099",
+      "tests": 9,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "path": "feature/graph/build/test-results/testDebugUnitTest/TEST-app.skein.feature.graph.GraphTransformTest.xml",
+      "sha256": "6c5f409f39650eb8eeeef97125a50cfe8f2168777b19630948239b53ecfe3237",
+      "tests": 8,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "path": "feature/graph/build/test-results/testDebugUnitTest/TEST-app.skein.feature.graph.GraphViewDragTest.xml",
+      "sha256": "4eb1a0b2dcc172dcf9b2a0fe443d1f750ef3f339da4bfe2789184ef23230fe59",
+      "tests": 2,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "path": "feature/graph/build/test-results/testDebugUnitTest/TEST-app.skein.feature.graph.ImportedLinkNodeTest.xml",
+      "sha256": "36b1b7dd4827c11997da89864d606a18b7e04491fba7ceaee26ab78d86cb3f55",
+      "tests": 2,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "path": "feature/graph/build/test-results/testDebugUnitTest/TEST-app.skein.feature.graph.entries.GraphEntriesTest.xml",
+      "sha256": "349a06bb0e874635b5f3b42f9c5dd85de66234753018e20f644548ce2600261f",
+      "tests": 2,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "path": "feature/graph/build/test-results/testDebugUnitTest/TEST-app.skein.feature.graph.screenshots.GraphScreenshotTest.xml",
+      "sha256": "139cda17c96f5c2721339707159fd8fa0562ebc395790e9c9964231d2e809a91",
+      "tests": 10,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "path": "feature/graph/build/test-results/testDebugUnitTest/TEST-app.skein.feature.graph.screenshots.GraphShellScreenshotTest.xml",
+      "sha256": "3af013d477a12901fb886085c6db07f1ca7846cbc69d1f28e6bd16ab0bf84f46",
+      "tests": 20,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 12
+    },
+    {
+      "path": "feature/graph/build/test-results/roborazzi/debug/results/1240572922535333_graph__light__fs100.json",
+      "sha256": "3b64323980d65f954b100d33494d2ad1577965b9002bd04c2498f0a3c017dd23",
+      "type": "unchanged"
+    },
+    {
+      "path": "feature/graph/build/test-results/roborazzi/debug/results/1240573108865250_graph__dark__fs100.json",
+      "sha256": "8bf0cacac324f7c41f78a88c3b222c29d6056c6d2058f5b9ff200fa0835f13a8",
+      "type": "unchanged"
+    },
+    {
+      "path": "feature/graph/build/test-results/roborazzi/debug/results/1240573244152666_graph__light__fs100.json",
+      "sha256": "ca28bd2e28ac3fe7b9849db2ec7792be824f7b9b2aee1c72e9ad458a6c7ff3cc",
+      "type": "unchanged"
+    },
+    {
+      "path": "feature/graph/build/test-results/roborazzi/debug/results/1240573344469000_graph__dark__fs100.json",
+      "sha256": "65a04983798baca8d230aad82c669c2034f0967a7d84e3cb39bf07f15a0bb4cc",
+      "type": "unchanged"
+    },
+    {
+      "path": "feature/graph/build/test-results/roborazzi/debug/results/1240573450541458_graph__light__fs100.json",
+      "sha256": "04f0e81c8e9597cd857cf73bc7247f5692f92d86422832a7f9f011a71c97d536",
+      "type": "unchanged"
+    },
+    {
+      "path": "feature/graph/build/test-results/roborazzi/debug/results/1240573536419166_graph__dark__fs100.json",
+      "sha256": "855dc3e94baceb3b2654d646b2907ebf4faf2e13098d17d77ef58968e2c76692",
+      "type": "unchanged"
+    },
+    {
+      "path": "feature/graph/build/test-results/roborazzi/debug/results/1240573672059625_graph__light__fs100.json",
+      "sha256": "8656ae92a1d64e84654cec58f050fc3a396b3962cd1ea3eee216f7e3d8bbd5ec",
+      "type": "unchanged"
+    },
+    {
+      "path": "feature/graph/build/test-results/roborazzi/debug/results/1240573782065666_graph__dark__fs100.json",
+      "sha256": "968590d52ebab78ebfd1e8c189c96b5f87cd2b7144d9bf7e5cccd38dfac00f7a",
+      "type": "unchanged"
+    },
+    {
+      "path": "feature/graph/build/test-results/roborazzi/debug/results/1240573879836291_graph__light__fs100.json",
+      "sha256": "63849b49da7713dc3164c7bcb916b34caa6dcb74a4a36973f3d9eb6e6006e6d4",
+      "type": "unchanged"
+    },
+    {
+      "path": "feature/graph/build/test-results/roborazzi/debug/results/1240573976527125_graph__dark__fs100.json",
+      "sha256": "1e5252d943816d031397c62a9d7b4f318376575662f2e98a48cce6f0cde86c79",
+      "type": "unchanged"
+    },
+    {
+      "path": "feature/graph/build/test-results/roborazzi/debug/results/1240574194087541_graph-empty__light__fs100.json",
+      "sha256": "1c1471aa4b956ba4a5f9927f95b4f9cc7495f890906724d548d5dfc3a182cd85",
+      "type": "unchanged"
+    },
+    {
+      "path": "feature/graph/build/test-results/roborazzi/debug/results/1240574261570416_graph-centred__light__fs100.json",
+      "sha256": "0c25e66b4270b3208b0838d5263c4396b0a41dc31aa0a4af4540de69e3211e13",
+      "type": "unchanged"
+    },
+    {
+      "path": "feature/graph/build/test-results/roborazzi/debug/results/1240574324716708_graph-empty__dark__fs100.json",
+      "sha256": "979d7d0b9a41be4140a983d52ff12fff3866cc0e5a10bbc6565c7f9d79cc6a67",
+      "type": "unchanged"
+    },
+    {
+      "path": "feature/graph/build/test-results/roborazzi/debug/results/1240574394898625_graph-centred__dark__fs100.json",
+      "sha256": "f7b0525a47fa285011ee3644b7bfff28851a575d3da7879942dbc3b167cf40ac",
+      "type": "unchanged"
+    },
+    {
+      "path": "feature/graph/build/test-results/roborazzi/debug/results/1240574476036750_graph-empty__light__fs100.json",
+      "sha256": "9a943e74582ba12858fb94e22059526d99a4556e18e1005ca5adbe36dc29901b",
+      "type": "unchanged"
+    },
+    {
+      "path": "feature/graph/build/test-results/roborazzi/debug/results/1240574561010500_graph-centred__light__fs100.json",
+      "sha256": "eb82588b7b3af3856c572332594bd1ddf435aa248fdd296b93a6a62ce431f816",
+      "type": "unchanged"
+    },
+    {
+      "path": "feature/graph/build/test-results/roborazzi/debug/results/1240574641112416_graph-empty__dark__fs100.json",
+      "sha256": "a28950f957b24515b714ab3543efeacb3e850df9cdd84d243b52f5479427a014",
+      "type": "unchanged"
+    },
+    {
+      "path": "feature/graph/build/test-results/roborazzi/debug/results/1240574721428500_graph-centred__dark__fs100.json",
+      "sha256": "06792570485eecca188caefc6815d2ca29c4d7b43c7851c15be3e50dc203d87e",
+      "type": "unchanged"
+    },
+    {
+      "path": "feature/editor/build/test-results/testDebugUnitTest/TEST-app.skein.feature.editor.EditorAutosaveTest.xml",
+      "sha256": "7282d26e19fe2f35fb3fdd7107d4ac8a250f1257fac757e2d4a00dd3e4957149",
+      "tests": 6,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "path": "feature/editor/build/test-results/testDebugUnitTest/TEST-app.skein.feature.editor.EditorStateFrontmatterTest.xml",
+      "sha256": "e533781d68a940267d9f7c4b18e033855741d5b4a07dd55511b3b3479de6bdb8",
+      "tests": 14,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "path": "feature/editor/build/test-results/testDebugUnitTest/TEST-app.skein.feature.editor.LineModelTest.xml",
+      "sha256": "e56155b806b70913d6fbc2a5d6273d0031bb8463ae7e8458ad77bdef93cac58e",
+      "tests": 4,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "path": "feature/editor/build/test-results/testDebugUnitTest/TEST-app.skein.feature.editor.LivePreviewTransformerTest.xml",
+      "sha256": "65e0e6994d92609dabf52fcbb1d510b475a54322ddcb2b86264f34012e5a23ce",
+      "tests": 23,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "path": "feature/editor/build/test-results/testDebugUnitTest/TEST-app.skein.feature.editor.OffsetMappingTest.xml",
+      "sha256": "81d545ebba28ec65a6a64a79f1cc1715a00e06dabc2e302b25478e9735187394",
+      "tests": 8,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "path": "feature/editor/build/test-results/testDebugUnitTest/TEST-app.skein.feature.editor.SkeinEditorInteractionTest.xml",
+      "sha256": "1cbb794ba10a0b1cec6df0a7a072ccf5bf7edde414ed2967c12160182aaadddc",
+      "tests": 16,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "path": "feature/editor/build/test-results/testDebugUnitTest/TEST-app.skein.feature.editor.autocomplete.TitleMatcherTest.xml",
+      "sha256": "7d37a82d8b166d47ca091be7321cf54015aa7efb3ca574c3355d2537f8404ea8",
+      "tests": 7,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "path": "feature/editor/build/test-results/testDebugUnitTest/TEST-app.skein.feature.editor.autocomplete.WikilinkAutocompleteStateTest.xml",
+      "sha256": "77eee1ae13e8d87844d8b790a131a928b16a83dfa8e1764bb54606a6214afeda",
+      "tests": 13,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "path": "feature/editor/build/test-results/testDebugUnitTest/TEST-app.skein.feature.editor.autocomplete.WikilinkPopupHingeTest.xml",
+      "sha256": "6ec0204a072427d86117d9d8ae178536e86348e0649238049cda5cebb829b3dc",
+      "tests": 2,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "path": "feature/editor/build/test-results/testDebugUnitTest/TEST-app.skein.feature.editor.autocomplete.WikilinkTriggerTest.xml",
+      "sha256": "872c20242e2a9ad22e59b9afb4115027390a680a8730c449db35deb57fbf75c2",
+      "tests": 12,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "path": "feature/editor/build/test-results/testDebugUnitTest/TEST-app.skein.feature.editor.backlinks.BacklinksStateTest.xml",
+      "sha256": "38a1582f6f8609913c9b6add378ab05bf2735a1256b132355fccb26468b45fd3",
+      "tests": 8,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "path": "feature/editor/build/test-results/testDebugUnitTest/TEST-app.skein.feature.editor.entries.KnowledgeEntriesTest.xml",
+      "sha256": "1b486e84262eb52634f743ad842774a8a3d662dcc3a40620a951cb91861ba255",
+      "tests": 4,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "path": "feature/editor/build/test-results/testDebugUnitTest/TEST-app.skein.feature.editor.entries.KnowledgeListRetentionTest.xml",
+      "sha256": "183389bbcef97bfc6b2f0edcfb957997259bc29ce4372a4ae1f396afb694e7e1",
+      "tests": 1,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "path": "feature/editor/build/test-results/testDebugUnitTest/TEST-app.skein.feature.editor.entries.KnowledgePreparationTest.xml",
+      "sha256": "9a5835242a878b970beab389cfd7b3712e887a1961c96b7dac0f22bf28f1e327",
+      "tests": 1,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "path": "feature/editor/build/test-results/testDebugUnitTest/TEST-app.skein.feature.editor.entries.NoteDeleteMenusTest.xml",
+      "sha256": "9c81d3d5a063d08e6e37341cd4e0d071ea4a1375c876c8a929050a92e9cb992b",
+      "tests": 2,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "path": "feature/editor/build/test-results/testDebugUnitTest/TEST-app.skein.feature.editor.frontmatter.FrontmatterBlockTest.xml",
+      "sha256": "b96819c42fc19d2f656e00a79a87d9af4cd3c8346e2dbdfec89efee76a2d1560",
+      "tests": 5,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "path": "feature/editor/build/test-results/testDebugUnitTest/TEST-app.skein.feature.editor.frontmatter.FrontmatterChipLabelTest.xml",
+      "sha256": "4df5dd131109d62d4bbc4539ede9f4c0e2ff7de97d7f6a5355edd60eb5553360",
+      "tests": 4,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "path": "feature/editor/build/test-results/testDebugUnitTest/TEST-app.skein.feature.editor.frontmatter.ProtectedIdGuardTest.xml",
+      "sha256": "7b8d3e7f961622fcec65a768ed2d248a9653f1fa91341de426c91deb7071871c",
+      "tests": 7,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "path": "feature/editor/build/test-results/testDebugUnitTest/TEST-app.skein.feature.editor.notetab.EditorFlushTest.xml",
+      "sha256": "090b0e24fe715f4527754b73d4ba02e73bd2db5a016340d9b45dcf2882626f04",
+      "tests": 3,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "path": "feature/editor/build/test-results/testDebugUnitTest/TEST-app.skein.feature.editor.notetab.NoteDeletionRegistryTest.xml",
+      "sha256": "85b9d17dbbef14d1f813f56e557175e0dbd2bc35e1d4e7026e673ef5e3a43e9c",
+      "tests": 7,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "path": "feature/editor/build/test-results/testDebugUnitTest/TEST-app.skein.feature.editor.notetab.NoteTabEditorContrastTest.xml",
+      "sha256": "7847cbc98e139cff8e60b223bb3f66643bb2055d638fb46abeaa5f9b5d7063f6",
+      "tests": 2,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "path": "feature/editor/build/test-results/testDebugUnitTest/TEST-app.skein.feature.editor.notetab.NoteTabHingeMenuTest.xml",
+      "sha256": "c2a4fa8d3a22b0387bcd9a20e1888ce4224a85fd36398e3587b3a8b246c23f03",
+      "tests": 1,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "path": "feature/editor/build/test-results/testDebugUnitTest/TEST-app.skein.feature.editor.notetab.NoteTabShareTest.xml",
+      "sha256": "96981df68c5ba32ecb7de386de4f270c14b1c40fbf18092acb4bdd4fa02cbd3f",
+      "tests": 6,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "path": "feature/editor/build/test-results/testDebugUnitTest/TEST-app.skein.feature.editor.notetab.NoteTabStateTest.xml",
+      "sha256": "a6fc150831dea0d580a222f84901a01000c6dafc2850d545d648a6206eccd349",
+      "tests": 15,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "path": "feature/editor/build/test-results/testDebugUnitTest/TEST-app.skein.feature.editor.notetab.NoteTabWikilinkTest.xml",
+      "sha256": "76f6ad29b5830c1e59ab1a8bda3f0db03e6210d62688d320c269d22a65879e91",
+      "tests": 5,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "path": "feature/editor/build/test-results/testDebugUnitTest/TEST-app.skein.feature.editor.notetab.NoteTypingTest.xml",
+      "sha256": "02c93dc165bae8d77f07eab6b4ee7f05c7bf7659ed3ac4c8e4c61b3419284b58",
+      "tests": 2,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "path": "feature/editor/build/test-results/testDebugUnitTest/TEST-app.skein.feature.editor.notetab.SaveAsIoErrorIsReportedTest.xml",
+      "sha256": "22085a729aa1028ce7add056b530b8c5916f6a5265d827ccc96416fb99c7519b",
+      "tests": 2,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "path": "feature/editor/build/test-results/testDebugUnitTest/TEST-app.skein.feature.editor.notetab.ShareMenuTest.xml",
+      "sha256": "b8a423094b1dfddf1cc69c3744235f651842f263dc73157b7ce3c23d34e17bca",
+      "tests": 4,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "path": "feature/editor/build/test-results/testDebugUnitTest/TEST-app.skein.feature.editor.screenshots.KnowledgeShellScreenshotTest.xml",
+      "sha256": "0037edcf8c43ed59ea6375eda4a238d0d920db3c0cf75c817ca2685b62a059bb",
+      "tests": 30,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 18
+    },
+    {
+      "path": "feature/editor/build/test-results/testDebugUnitTest/TEST-app.skein.feature.editor.screenshots.NoteTabScreenshotTest.xml",
+      "sha256": "47a35ade5ef65cf9efbf678bf4de8d68f6112fffe2ff351c1a79cb728aba95db",
+      "tests": 20,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "path": "feature/editor/build/test-results/testDebugUnitTest/TEST-app.skein.feature.editor.screenshots.UnresolvedLinkScreenshotTest.xml",
+      "sha256": "f1b2366c41f38c4fd04e173f9fccbe34ab44634c7e95c491ab1e58ccce75b4df",
+      "tests": 36,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "path": "feature/editor/build/test-results/testDebugUnitTest/TEST-app.skein.feature.editor.share.SaveAsIntentsTest.xml",
+      "sha256": "be519d1f1b653aefe3f587b43db3e238e57e9e50e8d371b9cb85ebc93b487e13",
+      "tests": 4,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "path": "feature/editor/build/test-results/testDebugUnitTest/TEST-app.skein.feature.editor.share.ShareIntentsTest.xml",
+      "sha256": "47cbc6152dbac3420017a39752cc9511387dae20f3b8127836feeb51134a6f5d",
+      "tests": 5,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "path": "feature/editor/build/test-results/roborazzi/debug/results/1240570598971916_shell-knowledge-file__light__fs100.json",
+      "sha256": "965d9e7a6d66cff8e1bb5884c3640f02c5db2363513a5cb74135bb5dad5d967c",
+      "type": "unchanged"
+    },
+    {
+      "path": "feature/editor/build/test-results/roborazzi/debug/results/1240570725831000_shell-knowledge-list__light__fs100.json",
+      "sha256": "49344a0f9aaef00432f83ccdc6c30d9594faebddeaae6f08cb8b0d6059359c6d",
+      "type": "unchanged"
+    },
+    {
+      "path": "feature/editor/build/test-results/roborazzi/debug/results/1240570855265916_shell-knowledge-note__light__fs100.json",
+      "sha256": "337c9781656d5fd86bfc5204b6195d9db56321cb6f0c64925f2795a82f1237df",
+      "type": "unchanged"
+    },
+    {
+      "path": "feature/editor/build/test-results/roborazzi/debug/results/1240570969377375_shell-knowledge-file__dark__fs100.json",
+      "sha256": "27fe006ea79e80114e863393e30a4972b6d553bc6a911d77c3baab55ca77f49f",
+      "type": "unchanged"
+    },
+    {
+      "path": "feature/editor/build/test-results/roborazzi/debug/results/1240571067668083_shell-knowledge-list__dark__fs100.json",
+      "sha256": "e84cb3511444984de87e1c8bfe0fbd7d9529fadbc0578b3003a63f58589d5ba7",
+      "type": "unchanged"
+    },
+    {
+      "path": "feature/editor/build/test-results/roborazzi/debug/results/1240571163996000_shell-knowledge-note__dark__fs100.json",
+      "sha256": "8eae2181d08402ae416e98a01c935ce8f65920b699f11e55ad33d9b44ad63bb8",
+      "type": "unchanged"
+    },
+    {
+      "path": "feature/editor/build/test-results/roborazzi/debug/results/1240571317784333_shell-knowledge-file__light__fs100.json",
+      "sha256": "2a92019e219971a0ba2524ca5bce1a06b76106d150597bbd9350dd44b1486f11",
+      "type": "unchanged"
+    },
+    {
+      "path": "feature/editor/build/test-results/roborazzi/debug/results/1240571420528375_shell-knowledge-list__light__fs100.json",
+      "sha256": "6963d10c995382684084f7c1ac296295b05256898f27a36ef9c1ea068d4d0511",
+      "type": "unchanged"
+    },
+    {
+      "path": "feature/editor/build/test-results/roborazzi/debug/results/1240571532398041_shell-knowledge-note__light__fs100.json",
+      "sha256": "2817515fa164a93dfaedb0d8b3bb64b82ccc32706937e53f7ad6e1fe55e79c3c",
+      "type": "unchanged"
+    },
+    {
+      "path": "feature/editor/build/test-results/roborazzi/debug/results/1240571647743916_shell-knowledge-file__dark__fs100.json",
+      "sha256": "ee00ede760b00cb8032723de9375d9d2333438f3686169d53e6bed1f0ae69b48",
+      "type": "unchanged"
+    },
+    {
+      "path": "feature/editor/build/test-results/roborazzi/debug/results/1240571742580750_shell-knowledge-list__dark__fs100.json",
+      "sha256": "83b2194ca53f66de4f0d362119b85d09df651e120ea013290a4925e0eedff363",
+      "type": "unchanged"
+    },
+    {
+      "path": "feature/editor/build/test-results/roborazzi/debug/results/1240571837809916_shell-knowledge-note__dark__fs100.json",
+      "sha256": "0df80692bc52d9b28f3b62be4223f439ba82c8e9a5a3eb8936da76bb764962ad",
+      "type": "unchanged"
+    },
+    {
+      "path": "feature/editor/build/test-results/roborazzi/debug/results/1240571976033375_note__light__fs100.json",
+      "sha256": "38ee22bc87b5ee14a4dbcad8ea7420c0fd19dff9aa2ee257a7bd7b2cd88479ff",
+      "type": "unchanged"
+    },
+    {
+      "path": "feature/editor/build/test-results/roborazzi/debug/results/1240572036167166_note-backlinks__light__fs100.json",
+      "sha256": "137ff75a9f7807158a4686f6372bd523dfd095f1af5c1e8573513633328ef1d2",
+      "type": "unchanged"
+    },
+    {
+      "path": "feature/editor/build/test-results/roborazzi/debug/results/1240572072004291_note__dark__fs100.json",
+      "sha256": "880c8f9f7cc7d53aa33c4190cc2580f928debfd1021348007f51c0d69e1f4b88",
+      "type": "unchanged"
+    },
+    {
+      "path": "feature/editor/build/test-results/roborazzi/debug/results/1240572119727916_note-backlinks__dark__fs100.json",
+      "sha256": "fb8fd79ac8652d6498e04d8d71ef5d1ba61bad28e591a9a73ca824ddf274a491",
+      "type": "unchanged"
+    },
+    {
+      "path": "feature/editor/build/test-results/roborazzi/debug/results/1240572167900458_note__light__fs100.json",
+      "sha256": "84511a7bbd18079be236b6f0ae4ee33898e1f9079af70f807f803e1bba4ddad7",
+      "type": "unchanged"
+    },
+    {
+      "path": "feature/editor/build/test-results/roborazzi/debug/results/1240572225376166_note-backlinks__light__fs100.json",
+      "sha256": "fc08c4f7d4ca3f3ff9632616d107addeafd035558a7fbbcfe7430654a1a66ee2",
+      "type": "unchanged"
+    },
+    {
+      "path": "feature/editor/build/test-results/roborazzi/debug/results/1240572263042791_note__dark__fs100.json",
+      "sha256": "2965c4d99aa54108b16afadadbad3002db61d8d6b2440ac9f2b6e1afc667a798",
+      "type": "unchanged"
+    },
+    {
+      "path": "feature/editor/build/test-results/roborazzi/debug/results/1240572311070333_note-backlinks__dark__fs100.json",
+      "sha256": "3466bc169d5c4c8d41a59fc590403bf511c98c3598998a6c6c14463035d9dd24",
+      "type": "unchanged"
+    },
+    {
+      "path": "feature/editor/build/test-results/roborazzi/debug/results/1240572353616500_note__light__fs100.json",
+      "sha256": "131829caeb8412e53c2e8ed2363f49a81e592bd10a9e4c283eae105d8b5734dc",
+      "type": "unchanged"
+    },
+    {
+      "path": "feature/editor/build/test-results/roborazzi/debug/results/1240572408980166_note-backlinks__light__fs100.json",
+      "sha256": "c727570d1a5db036d5b0b38f932ebb9dcfe3ca66182ae5e96d12d8c901898953",
+      "type": "unchanged"
+    },
+    {
+      "path": "feature/editor/build/test-results/roborazzi/debug/results/1240572446194583_note__dark__fs100.json",
+      "sha256": "44d72b974b5f8b68d23efc7d8bde5b2d2e91ceef2ecf3b097eec3606eeb7580c",
+      "type": "unchanged"
+    },
+    {
+      "path": "feature/editor/build/test-results/roborazzi/debug/results/1240572493004958_note-backlinks__dark__fs100.json",
+      "sha256": "b20bfed188a9556b3ee2b935cacf16ff5b428b4aedabc2133e4011fe0838c63d",
+      "type": "unchanged"
+    },
+    {
+      "path": "feature/editor/build/test-results/roborazzi/debug/results/1240572540808875_note__light__fs100.json",
+      "sha256": "6047f45756f178af2c0b4591786731b79706c03dc706520f89a37df3b7c926e2",
+      "type": "unchanged"
+    },
+    {
+      "path": "feature/editor/build/test-results/roborazzi/debug/results/1240572604664291_note-backlinks__light__fs100.json",
+      "sha256": "6f4af74d386af01ba769d7478e6382b14fcffddb2cba183e273d51115d76fdcc",
+      "type": "unchanged"
+    },
+    {
+      "path": "feature/editor/build/test-results/roborazzi/debug/results/1240572647813125_note__dark__fs100.json",
+      "sha256": "553d64714863c42f5ea6ae447046bbd8513c4c82a43257bf4a1f94be901f96df",
+      "type": "unchanged"
+    },
+    {
+      "path": "feature/editor/build/test-results/roborazzi/debug/results/1240572705095500_note-backlinks__dark__fs100.json",
+      "sha256": "812d1412300d40851b36f00adc6f52014f9e70d97466501fb9dfbfca3b04c1e0",
+      "type": "unchanged"
+    },
+    {
+      "path": "feature/editor/build/test-results/roborazzi/debug/results/1240572750067333_note__light__fs100.json",
+      "sha256": "e6b07e8fd7ba1c22f61ccb33353bc245145fa76337df7755c78e65cf2de170c1",
+      "type": "unchanged"
+    },
+    {
+      "path": "feature/editor/build/test-results/roborazzi/debug/results/1240572809289791_note-backlinks__light__fs100.json",
+      "sha256": "acc04f1dd5bb47d77e93b667c0e3ffd197efaa53e3af74d421206d70375c5c09",
+      "type": "unchanged"
+    },
+    {
+      "path": "feature/editor/build/test-results/roborazzi/debug/results/1240572858088625_note__dark__fs100.json",
+      "sha256": "f38c8b82a89220fb24e2115ce6c0f8c95cf2dba8dd963fbabaae37450809795b",
+      "type": "unchanged"
+    },
+    {
+      "path": "feature/editor/build/test-results/roborazzi/debug/results/1240572919187208_note-backlinks__dark__fs100.json",
+      "sha256": "4135f4253d73c1d2adcffb4b3f790ac95079d4ad902065be45f8d79570aa342a",
+      "type": "unchanged"
+    },
+    {
+      "path": "feature/editor/build/test-results/roborazzi/debug/results/1240572986647041_knowledge-link-deleted__light__fs100.json",
+      "sha256": "33caf7ae7a44a6925fb6b61c4843f6b7f6e713ed04c52fd6c6d27807dc956657",
+      "type": "unchanged"
+    },
+    {
+      "path": "feature/editor/build/test-results/roborazzi/debug/results/1240573042528791_knowledge-link-missing__light__fs100.json",
+      "sha256": "1f29fe10797d844ad498592f761fb6bc85e5d8143313064acffe95b0dd48028d",
+      "type": "unchanged"
+    },
+    {
+      "path": "feature/editor/build/test-results/roborazzi/debug/results/1240573103890208_knowledge-link-ambiguous__light__fs100.json",
+      "sha256": "b418fe9351c1ea975e9a4717f9bd4bd7691d4ea17782227de33e7bf290ae3dc2",
+      "type": "unchanged"
+    },
+    {
+      "path": "feature/editor/build/test-results/roborazzi/debug/results/1240573163321083_knowledge-link-deleted__light__fs150.json",
+      "sha256": "7c20886a4816820b94f1602c878a943e6bd169d77b69b461c0dbeeb2dbe2e5ae",
+      "type": "unchanged"
+    },
+    {
+      "path": "feature/editor/build/test-results/roborazzi/debug/results/1240573216872166_knowledge-link-missing__light__fs150.json",
+      "sha256": "ac92f9c741fc3b530a40aaa3fec7205bb132f9d56579679845c75bf4ceb72977",
+      "type": "unchanged"
+    },
+    {
+      "path": "feature/editor/build/test-results/roborazzi/debug/results/1240573275353250_knowledge-link-ambiguous__light__fs150.json",
+      "sha256": "8494070d060a90aca0f77758654728e16b8998b9aa3cfe1888f251a33641d39f",
+      "type": "unchanged"
+    },
+    {
+      "path": "feature/editor/build/test-results/roborazzi/debug/results/1240573341433416_knowledge-link-deleted__dark__fs100.json",
+      "sha256": "01fcf26db09c8ce71abe5cf9288c36b6b0e41037b44060fa70d483a606c62c89",
+      "type": "unchanged"
+    },
+    {
+      "path": "feature/editor/build/test-results/roborazzi/debug/results/1240573403421708_knowledge-link-missing__dark__fs100.json",
+      "sha256": "d154643bb0d02762794da94538d8de4b66fbb032d575444a1547c2fa7217c77e",
+      "type": "unchanged"
+    },
+    {
+      "path": "feature/editor/build/test-results/roborazzi/debug/results/1240573468269083_knowledge-link-ambiguous__dark__fs100.json",
+      "sha256": "c2fdd7afb1bd2dfaaddcf09be9ab88feef904b6bd07c04a5a92534b10fc0a02b",
+      "type": "unchanged"
+    },
+    {
+      "path": "feature/editor/build/test-results/roborazzi/debug/results/1240573526338083_knowledge-link-deleted__dark__fs150.json",
+      "sha256": "06247548b043f273dfd1d0cdd3dce2cb4574d2e1d781fa7f5f2f6228625a4bdb",
+      "type": "unchanged"
+    },
+    {
+      "path": "feature/editor/build/test-results/roborazzi/debug/results/1240573579589000_knowledge-link-missing__dark__fs150.json",
+      "sha256": "53d67a835e5ca79de44799778ef64a156faa6eb91cb84bbd7cee164ccb1f9d8e",
+      "type": "unchanged"
+    },
+    {
+      "path": "feature/editor/build/test-results/roborazzi/debug/results/1240573635160250_knowledge-link-ambiguous__dark__fs150.json",
+      "sha256": "0e893c8fc511e6388f8bbc1e5a45191f90d39bdbf27be629f9e30ce30e173d39",
+      "type": "unchanged"
+    },
+    {
+      "path": "feature/editor/build/test-results/roborazzi/debug/results/1240573697700291_knowledge-link-deleted__light__fs100.json",
+      "sha256": "45c62fd69a21b305f2d3a383151a94edec5a288b39a2e3c4ef7b2e1a28626262",
+      "type": "unchanged"
+    },
+    {
+      "path": "feature/editor/build/test-results/roborazzi/debug/results/1240573753139791_knowledge-link-missing__light__fs100.json",
+      "sha256": "d905b172e26f2436ab679f63aa53d38c6bc48b347d9b2b2944e759209cb71df4",
+      "type": "unchanged"
+    },
+    {
+      "path": "feature/editor/build/test-results/roborazzi/debug/results/1240573807618083_knowledge-link-ambiguous__light__fs100.json",
+      "sha256": "b7487d22d787fd16ee27ea4492601130b28499ed07d65aefc64ee2986fd739fe",
+      "type": "unchanged"
+    },
+    {
+      "path": "feature/editor/build/test-results/roborazzi/debug/results/1240573860377583_knowledge-link-deleted__light__fs150.json",
+      "sha256": "8383f75d08e8f676fff2787a649233e3b1cd687f11a45e3dc2820f7163848f73",
+      "type": "unchanged"
+    },
+    {
+      "path": "feature/editor/build/test-results/roborazzi/debug/results/1240573915918750_knowledge-link-missing__light__fs150.json",
+      "sha256": "6976e22e896ca3dfd895f088524abe9886f1d277b75fbd9b4af7ca334f547233",
+      "type": "unchanged"
+    },
+    {
+      "path": "feature/editor/build/test-results/roborazzi/debug/results/1240573981295875_knowledge-link-ambiguous__light__fs150.json",
+      "sha256": "8030ff76a16b4155c38ac5b1d9b8265e08c0cd2d74ad8a5ce09c738d21a13982",
+      "type": "unchanged"
+    },
+    {
+      "path": "feature/editor/build/test-results/roborazzi/debug/results/1240574042011250_knowledge-link-deleted__dark__fs100.json",
+      "sha256": "52066df787208ae644bd51d77f7162299a2413a3de46514f611f81d0019ced9e",
+      "type": "unchanged"
+    },
+    {
+      "path": "feature/editor/build/test-results/roborazzi/debug/results/1240574096529333_knowledge-link-missing__dark__fs100.json",
+      "sha256": "4eb5cd1bd065fbc81aa9cf0f633eed5b5ca72103e9b89f194196b630179bfae8",
+      "type": "unchanged"
+    },
+    {
+      "path": "feature/editor/build/test-results/roborazzi/debug/results/1240574157457833_knowledge-link-ambiguous__dark__fs100.json",
+      "sha256": "3909c92425076f8ab2f0c5cff39f67a895901726d552e9640d8ec15e53bc2fc3",
+      "type": "unchanged"
+    },
+    {
+      "path": "feature/editor/build/test-results/roborazzi/debug/results/1240574210544833_knowledge-link-deleted__dark__fs150.json",
+      "sha256": "88418f6c7b7b9bc25d35802332263a772b5f097dd9f49ed8eef5b42eb3e80bb2",
+      "type": "unchanged"
+    },
+    {
+      "path": "feature/editor/build/test-results/roborazzi/debug/results/1240574264607333_knowledge-link-missing__dark__fs150.json",
+      "sha256": "a8a644aafbf38db538b86eab695a4b2a46a6776a541d0544eb3e6cbb6eb3b7a9",
+      "type": "unchanged"
+    },
+    {
+      "path": "feature/editor/build/test-results/roborazzi/debug/results/1240574316224125_knowledge-link-ambiguous__dark__fs150.json",
+      "sha256": "a6d717620b0376761e6d8da74ea64832b80e4c1fefbc30cd1b045a2566600647",
+      "type": "unchanged"
+    },
+    {
+      "path": "feature/editor/build/test-results/roborazzi/debug/results/1240574392446208_knowledge-link-deleted__light__fs100.json",
+      "sha256": "a5ac7a37b44dad069a9a2ced29060728ad9cb06e011466a012c346cab2b709d1",
+      "type": "unchanged"
+    },
+    {
+      "path": "feature/editor/build/test-results/roborazzi/debug/results/1240574476174000_knowledge-link-missing__light__fs100.json",
+      "sha256": "d44609bc27d803369699c53548f5080ee298a48a74dbe8c778defed3893e0ffe",
+      "type": "unchanged"
+    },
+    {
+      "path": "feature/editor/build/test-results/roborazzi/debug/results/1240574562900833_knowledge-link-ambiguous__light__fs100.json",
+      "sha256": "686ef6af7ec7d2056b7dd8c5a9e99372ecaf1f81d9ce632095b6d445f1bb7851",
+      "type": "unchanged"
+    },
+    {
+      "path": "feature/editor/build/test-results/roborazzi/debug/results/1240574640733291_knowledge-link-deleted__light__fs150.json",
+      "sha256": "b6410f23bc2c475325d1d72d2827b54ad820bf5dd9e2a8ba35ff666c79c60162",
+      "type": "unchanged"
+    },
+    {
+      "path": "feature/editor/build/test-results/roborazzi/debug/results/1240574714683791_knowledge-link-missing__light__fs150.json",
+      "sha256": "6816f239b8ae8834e636941418b56c5ffdc00e8d001ad95b829deca2f1770160",
+      "type": "unchanged"
+    },
+    {
+      "path": "feature/editor/build/test-results/roborazzi/debug/results/1240574796834666_knowledge-link-ambiguous__light__fs150.json",
+      "sha256": "8a19e4d2a5a1fb06f2dfd89c9c113aa2b7bfc7f95ebdc2c1ae27fa0b180b63cf",
+      "type": "unchanged"
+    },
+    {
+      "path": "feature/editor/build/test-results/roborazzi/debug/results/1240574861320791_knowledge-link-deleted__dark__fs100.json",
+      "sha256": "60c07a2f25f3359704a1aa17e7e61932b37d95384b5c018ef163f98638beecc3",
+      "type": "unchanged"
+    },
+    {
+      "path": "feature/editor/build/test-results/roborazzi/debug/results/1240574929660166_knowledge-link-missing__dark__fs100.json",
+      "sha256": "e054b19ba27f3ed4d640c3e15f335d396bef4fca0e86d313566cf9423421221f",
+      "type": "unchanged"
+    },
+    {
+      "path": "feature/editor/build/test-results/roborazzi/debug/results/1240574998975458_knowledge-link-ambiguous__dark__fs100.json",
+      "sha256": "bf299d2250019dd81b185bc9f1253c5b99d5b315f7bdad2d16fdff203e7760c6",
+      "type": "unchanged"
+    },
+    {
+      "path": "feature/editor/build/test-results/roborazzi/debug/results/1240575060559166_knowledge-link-deleted__dark__fs150.json",
+      "sha256": "3393ee4ae2b88006b7c8f990eda21edf81fa69f2426aa8c45cd6b390cd1c30bd",
+      "type": "unchanged"
+    },
+    {
+      "path": "feature/editor/build/test-results/roborazzi/debug/results/1240575118546791_knowledge-link-missing__dark__fs150.json",
+      "sha256": "acbb4708b3f30044d27f35dd39ef6ce348555306a398adb03a78ee823c3ea2b9",
+      "type": "unchanged"
+    },
+    {
+      "path": "feature/editor/build/test-results/roborazzi/debug/results/1240575175242541_knowledge-link-ambiguous__dark__fs150.json",
+      "sha256": "6f533127f5580121033bd9637e0a196397577dc77bb0cd595f1c17f96b6ffa4f",
+      "type": "unchanged"
+    },
+    {
+      "path": "feature/settings/build/test-results/testDebugUnitTest/TEST-app.skein.feature.settings.AccessibilitySweepSmokeTest.xml",
+      "sha256": "5c17de6a8c7e6e813cd4f8bd49975a370ad8bc9db8c755be0b067a2b2f32db39",
+      "tests": 1,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "path": "feature/settings/build/test-results/testDebugUnitTest/TEST-app.skein.feature.settings.LicenseGroupingTest.xml",
+      "sha256": "ce71c4030fca4146dbfabfda4eda62e3be0a12861bbd9d7cccfd0e9477adf432",
+      "tests": 7,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "path": "feature/settings/build/test-results/testDebugUnitTest/TEST-app.skein.feature.settings.LicensesRepositoryTest.xml",
+      "sha256": "77d3420d8570725fcb7087a2e1b1e5182513a63c1b64ab19a17d6f5c80b1cf5c",
+      "tests": 6,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "path": "feature/settings/build/test-results/testDebugUnitTest/TEST-app.skein.feature.settings.RecoveryExportStateTest.xml",
+      "sha256": "a0141e5c238395e5af813831f35a90fc9ca6ecd437dcabe25508ab3c43e69f3f",
+      "tests": 21,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "path": "feature/settings/build/test-results/testDebugUnitTest/TEST-app.skein.feature.settings.SettingsHingeMenuTest.xml",
+      "sha256": "1584b34bde1dc96187bd3ffeb020e19bd2a4f681eaa537dbe299f626d0ccf764",
+      "tests": 1,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "path": "feature/settings/build/test-results/testDebugUnitTest/TEST-app.skein.feature.settings.SettingsNoDeadControlsTest.xml",
+      "sha256": "cee58682aa1a4c1b52feacf8f09f6510aaabe88135fb2954cad20043b90b0377",
+      "tests": 2,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "path": "feature/settings/build/test-results/testDebugUnitTest/TEST-app.skein.feature.settings.SettingsScreenTest.xml",
+      "sha256": "95032756d27e39e83d90fca51e80cef7946808a9a72d1331fdd66aa77a93ace2",
+      "tests": 2,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "path": "feature/settings/build/test-results/testDebugUnitTest/TEST-app.skein.feature.settings.SettingsViewModelTest.xml",
+      "sha256": "1d7f88651330d93fde6dfc208ecad375d4df8fe5ee1f5fc66b13343eb9d8b6ae",
+      "tests": 16,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "path": "feature/settings/build/test-results/testDebugUnitTest/TEST-app.skein.feature.settings.ThemeModeRowTest.xml",
+      "sha256": "a56960f0f74593c735d160ce8ca339b6255a4cac16a06f543f82ee97b68aa5c1",
+      "tests": 1,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "path": "feature/settings/build/test-results/testDebugUnitTest/TEST-app.skein.feature.settings.entries.SettingsEntriesTest.xml",
+      "sha256": "172d0375f15a299ec89e20d6e76abc5be9022c5136ea301487f86530c5f81dcb",
+      "tests": 2,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "path": "feature/settings/build/test-results/testDebugUnitTest/TEST-app.skein.feature.settings.screenshots.SettingsScreenshotTest.xml",
+      "sha256": "3bf57a14a6f30a7031c1d8f5df675ee2a110472833c6d265ec7cf1eebb52b75f",
+      "tests": 10,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "path": "feature/settings/build/test-results/testDebugUnitTest/TEST-app.skein.feature.settings.screenshots.SettingsShellScreenshotTest.xml",
+      "sha256": "0554e9f9330f874485ea9ed51dcbfcf0baabb5676cd843ae2cf8181139d7dfd4",
+      "tests": 20,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 12
+    },
+    {
+      "path": "feature/settings/build/test-results/roborazzi/debug/results/1240581435462375_settings-privacy__light__fs100.json",
+      "sha256": "e91f7807615deb530a8d53e858567c3dc1eaa6d22f50984a04df77431a5d2f83",
+      "type": "unchanged"
+    },
+    {
+      "path": "feature/settings/build/test-results/roborazzi/debug/results/1240581514182250_settings-privacy__dark__fs100.json",
+      "sha256": "afb1732024692045510d972d95e4a59ce7d3e72d24aab35d95472ca51491694a",
+      "type": "unchanged"
+    },
+    {
+      "path": "feature/settings/build/test-results/roborazzi/debug/results/1240581564925166_settings-privacy__light__fs100.json",
+      "sha256": "b1ece841b3a0f2e17577b4834b773c48472d50a58e4a0e313b94240bfc3e17c8",
+      "type": "unchanged"
+    },
+    {
+      "path": "feature/settings/build/test-results/roborazzi/debug/results/1240581611243583_settings-privacy__dark__fs100.json",
+      "sha256": "ffc7a2df5c90b74693427f34081741c098021a92160000150827cc765fdc7224",
+      "type": "unchanged"
+    },
+    {
+      "path": "feature/settings/build/test-results/roborazzi/debug/results/1240581663937000_settings-privacy__light__fs100.json",
+      "sha256": "fd1a620e2dbdc5a5e5b82cbdfea6ab38ba4b6cd004d6454a04bab58a8f10047a",
+      "type": "unchanged"
+    },
+    {
+      "path": "feature/settings/build/test-results/roborazzi/debug/results/1240581713512708_settings-privacy__dark__fs100.json",
+      "sha256": "c30d00eb4366da477066203f267a72dcad40315ec7da78135b12064aca6e427e",
+      "type": "unchanged"
+    },
+    {
+      "path": "feature/settings/build/test-results/roborazzi/debug/results/1240581767087833_settings-privacy__light__fs100.json",
+      "sha256": "7e614cbc0784ce1c401bb0df7f63d6a28c35a5d9c4aff0523b17a087a18fc0c0",
+      "type": "unchanged"
+    },
+    {
+      "path": "feature/settings/build/test-results/roborazzi/debug/results/1240581822850500_settings-privacy__dark__fs100.json",
+      "sha256": "55ff5e225bf034f264b2edf9b601a4917d5558a8965739940ad8ec64d35f034d",
+      "type": "unchanged"
+    },
+    {
+      "path": "feature/settings/build/test-results/roborazzi/debug/results/1240581882427416_settings-privacy__light__fs100.json",
+      "sha256": "bd027e1c80ad93154de0aaee87c755508cf93d01ab2a92af7b0dd6d6e6a90d1f",
+      "type": "unchanged"
+    },
+    {
+      "path": "feature/settings/build/test-results/roborazzi/debug/results/1240581936737625_settings-privacy__dark__fs100.json",
+      "sha256": "2dff0637432a1e713906ccab78cf116a4ee18eb5f6f0e77ca40352f6b228e722",
+      "type": "unchanged"
+    },
+    {
+      "path": "feature/settings/build/test-results/roborazzi/debug/results/1240582366184708_settings-category__light__fs100.json",
+      "sha256": "4bca1216c481a0207c937b6e9f816d7389fd519946a7e86b939b81b3b44a05dd",
+      "type": "unchanged"
+    },
+    {
+      "path": "feature/settings/build/test-results/roborazzi/debug/results/1240582445745666_settings-categories__light__fs100.json",
+      "sha256": "146df49ea9c55e7c37ce118b8f058eacb8f93177f7082018c40991d6e1c99206",
+      "type": "unchanged"
+    },
+    {
+      "path": "feature/settings/build/test-results/roborazzi/debug/results/1240582544835083_settings-category__dark__fs100.json",
+      "sha256": "2a07a510b8ea84da18e7eb4e7abafbf8fa1455bd187a20f463918f2bb484e6e2",
+      "type": "unchanged"
+    },
+    {
+      "path": "feature/settings/build/test-results/roborazzi/debug/results/1240582620756458_settings-categories__dark__fs100.json",
+      "sha256": "a74de2d90b0dd8d303f3e9e42555fbe9934513b97071cf2149aba36ee992de0a",
+      "type": "unchanged"
+    },
+    {
+      "path": "feature/settings/build/test-results/roborazzi/debug/results/1240582829868708_settings-category__light__fs100.json",
+      "sha256": "1217639898056ea694cab2a9bf10e15858fb1cadbb9da47396bf49ae946e382a",
+      "type": "unchanged"
+    },
+    {
+      "path": "feature/settings/build/test-results/roborazzi/debug/results/1240582939982666_settings-categories__light__fs100.json",
+      "sha256": "f07c7fbee83679265330685ade80df27c678bcc06844633fd8d00ea30c91076e",
+      "type": "unchanged"
+    },
+    {
+      "path": "feature/settings/build/test-results/roborazzi/debug/results/1240583057632875_settings-category__dark__fs100.json",
+      "sha256": "cc924123f9458b2ec4558009f40dd3a8e5406be9e7c8ebd2a61837d79a292885",
+      "type": "unchanged"
+    },
+    {
+      "path": "feature/settings/build/test-results/roborazzi/debug/results/1240583160300250_settings-categories__dark__fs100.json",
+      "sha256": "51ac07200285ce9c589ca5b991a001fa6b15bb3352ae1c1f4a9715646042730d",
+      "type": "unchanged"
+    },
+    {
+      "path": "feature/models/build/test-results/testDebugUnitTest/TEST-app.skein.feature.models.ModelDeleteConfirmationTest.xml",
+      "sha256": "851597d8f2f405620f6f2c41de1bc2c65024abd05664ab446e1563fb698dd091",
+      "tests": 2,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "path": "feature/models/build/test-results/testDebugUnitTest/TEST-app.skein.feature.models.entries.ModelsEntriesTest.xml",
+      "sha256": "5d4a8d2b94903a068342516048f366f8422ce6f1d875dfbc7b9abc43872d6c5c",
+      "tests": 6,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "path": "feature/models/build/test-results/testDebugUnitTest/TEST-app.skein.feature.models.screenshots.ModelsScreenshotTest.xml",
+      "sha256": "7691d0fed441ff4db617af0167cd3a2f30cb656ed566dbdb85f4a48822ee8eb4",
+      "tests": 30,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "path": "feature/models/build/test-results/testDebugUnitTest/TEST-app.skein.feature.models.screenshots.ModelsShellScreenshotTest.xml",
+      "sha256": "8abccbc10fc583e86d03f0fb0b9673906b5e511c6626be11d657194c8b235449",
+      "tests": 20,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 12
+    },
+    {
+      "path": "feature/models/build/test-results/roborazzi/debug/results/1240581436594875_models__light__fs100.json",
+      "sha256": "ec541e407d20afcb4b1d5be7b9fda4ed98f2da07a34f58c00798ac1d657df49c",
+      "type": "unchanged"
+    },
+    {
+      "path": "feature/models/build/test-results/roborazzi/debug/results/1240581622434875_models-delete-confirm__light__fs100.json",
+      "sha256": "0f2108147a1914b258cb6b1c224ab78bac04b08ca08d553950cbbb23ce2aefeb",
+      "type": "unchanged"
+    },
+    {
+      "path": "feature/models/build/test-results/roborazzi/debug/results/1240581697067083_models-empty__light__fs100.json",
+      "sha256": "7cb0dce3abe2284b76f4b1a3a1f7f460c115b14265ff8c1e342bc51ee725402c",
+      "type": "unchanged"
+    },
+    {
+      "path": "feature/models/build/test-results/roborazzi/debug/results/1240581767517708_models__dark__fs100.json",
+      "sha256": "f7725dc1b69e5aec8eb55d172660a3d49615eac21a0c6c78876e6bf2d48df999",
+      "type": "unchanged"
+    },
+    {
+      "path": "feature/models/build/test-results/roborazzi/debug/results/1240581857365958_models-delete-confirm__dark__fs100.json",
+      "sha256": "dc55bda8fa5dc0400c2ea7474e735a792da46d9cdb71acd5bc8d4c548f2c8854",
+      "type": "unchanged"
+    },
+    {
+      "path": "feature/models/build/test-results/roborazzi/debug/results/1240581926146916_models-empty__dark__fs100.json",
+      "sha256": "c3947bd2b93650416f2214b8b11e10b926bca0f349b7fc52646d3b4f7bebeaae",
+      "type": "unchanged"
+    },
+    {
+      "path": "feature/models/build/test-results/roborazzi/debug/results/1240582007797791_models__light__fs100.json",
+      "sha256": "2e2d23cbb84e06d43df5a6a46a9d235561ab9a7a99cc81d5496982857dd6423d",
+      "type": "unchanged"
+    },
+    {
+      "path": "feature/models/build/test-results/roborazzi/debug/results/1240582107268708_models-delete-confirm__light__fs100.json",
+      "sha256": "892d1099342658a1347c9e92bd04d245d7595cfa0799dc326b17f98088e012cf",
+      "type": "unchanged"
+    },
+    {
+      "path": "feature/models/build/test-results/roborazzi/debug/results/1240582174443916_models-empty__light__fs100.json",
+      "sha256": "5419b0986a455603512b0701e0ec89bf5ad1820ff4fcf4ea7dab1bea92f0f5e4",
+      "type": "unchanged"
+    },
+    {
+      "path": "feature/models/build/test-results/roborazzi/debug/results/1240582242861666_models__dark__fs100.json",
+      "sha256": "1c13d9ef0190935aa465a9c71e4eadcffd84ea852848e543f743e78066452e5e",
+      "type": "unchanged"
+    },
+    {
+      "path": "feature/models/build/test-results/roborazzi/debug/results/1240582328991458_models-delete-confirm__dark__fs100.json",
+      "sha256": "715731feb778832b3c186cebc37bd6214a231d897cc94fd038798d842682dd72",
+      "type": "unchanged"
+    },
+    {
+      "path": "feature/models/build/test-results/roborazzi/debug/results/1240582395221875_models-empty__dark__fs100.json",
+      "sha256": "63647945f47f2e9964839b9393adef5e91ae124c9b2c03cbea42620b0afc8b18",
+      "type": "unchanged"
+    },
+    {
+      "path": "feature/models/build/test-results/roborazzi/debug/results/1240582466634416_models__light__fs100.json",
+      "sha256": "f60e02d27f6be4165485703dcce5461f1894332c686b34c32dc56113b7dcd10a",
+      "type": "unchanged"
+    },
+    {
+      "path": "feature/models/build/test-results/roborazzi/debug/results/1240582552256958_models-delete-confirm__light__fs100.json",
+      "sha256": "6205215301632378ad23cf3c2c936ce2f0eeb3c41281144c57dd17573f2695aa",
+      "type": "unchanged"
+    },
+    {
+      "path": "feature/models/build/test-results/roborazzi/debug/results/1240582618918166_models-empty__light__fs100.json",
+      "sha256": "09dfc2d8919eb921810f2f20c16a5228f12c72fb2d13e0b984f8ae9441bc1821",
+      "type": "unchanged"
+    },
+    {
+      "path": "feature/models/build/test-results/roborazzi/debug/results/1240582683845041_models__dark__fs100.json",
+      "sha256": "ab84d4c02f1492c3bce86b52afbe9a1fd16851e0a8ef8adc58fb25ff6e970c18",
+      "type": "unchanged"
+    },
+    {
+      "path": "feature/models/build/test-results/roborazzi/debug/results/1240582765980666_models-delete-confirm__dark__fs100.json",
+      "sha256": "0adffb2755b2aff30809fcbcd5be0569cf87b9c0e9a9d65dd2cb28348c38edd7",
+      "type": "unchanged"
+    },
+    {
+      "path": "feature/models/build/test-results/roborazzi/debug/results/1240582825016250_models-empty__dark__fs100.json",
+      "sha256": "92eea12914e0f833b08bf80e85c1cf81ae4c0e4053ac8050383e99e1f1aeda9b",
+      "type": "unchanged"
+    },
+    {
+      "path": "feature/models/build/test-results/roborazzi/debug/results/1240582919908750_models__light__fs100.json",
+      "sha256": "31bfd5e4d68e0324ceef155d8dc718e42317de5af96ccfbe3db0e1804dc33735",
+      "type": "unchanged"
+    },
+    {
+      "path": "feature/models/build/test-results/roborazzi/debug/results/1240583017749000_models-delete-confirm__light__fs100.json",
+      "sha256": "0b65e56a87c881dc06dd8f002a16597100138f213358353891d2523a820d8063",
+      "type": "unchanged"
+    },
+    {
+      "path": "feature/models/build/test-results/roborazzi/debug/results/1240583095719416_models-empty__light__fs100.json",
+      "sha256": "912dd2cbd868dd88181becccea6e3beaeacd7c3fa85a37fc60c1bb6532d7d46d",
+      "type": "unchanged"
+    },
+    {
+      "path": "feature/models/build/test-results/roborazzi/debug/results/1240583185987833_models__dark__fs100.json",
+      "sha256": "e1341aa3f0595271888ed6f73ebc359f1ac38b6714628efb7056b5435a22b9d5",
+      "type": "unchanged"
+    },
+    {
+      "path": "feature/models/build/test-results/roborazzi/debug/results/1240583281780625_models-delete-confirm__dark__fs100.json",
+      "sha256": "34a586c8a489ac7f72ddf29958ed4731dbd5e4776f9b01ec0f3a9e9d4cb00100",
+      "type": "unchanged"
+    },
+    {
+      "path": "feature/models/build/test-results/roborazzi/debug/results/1240583350633958_models-empty__dark__fs100.json",
+      "sha256": "7b0c3b352174c0d41524591e044f9accce7e9a93a73666e7fe5786e39fedd42b",
+      "type": "unchanged"
+    },
+    {
+      "path": "feature/models/build/test-results/roborazzi/debug/results/1240583416648875_models__light__fs100.json",
+      "sha256": "4dd0e82dd806809b46ec9e143c18895641f64ecfed673421762a6814efd6e021",
+      "type": "unchanged"
+    },
+    {
+      "path": "feature/models/build/test-results/roborazzi/debug/results/1240583494891958_models-delete-confirm__light__fs100.json",
+      "sha256": "9a48eaabe70b923008cd574347a835849170820b3532a619aa5b8e15aa79da6e",
+      "type": "unchanged"
+    },
+    {
+      "path": "feature/models/build/test-results/roborazzi/debug/results/1240583553999958_models-empty__light__fs100.json",
+      "sha256": "f3c4a808f8f52383e48c2db6463fedf6868a592d95c7a6475af47d29435e3faf",
+      "type": "unchanged"
+    },
+    {
+      "path": "feature/models/build/test-results/roborazzi/debug/results/1240583619499541_models__dark__fs100.json",
+      "sha256": "259053002ce1264ecd45350ad22c7e3e376e6e5ccd10aed4feda64c982437cbc",
+      "type": "unchanged"
+    },
+    {
+      "path": "feature/models/build/test-results/roborazzi/debug/results/1240583710170666_models-delete-confirm__dark__fs100.json",
+      "sha256": "eb127c5f8dd5934880ab25e2ddcfaaf9f331237664aa6bdcc7d4a2a637125ece",
+      "type": "unchanged"
+    },
+    {
+      "path": "feature/models/build/test-results/roborazzi/debug/results/1240583777569875_models-empty__dark__fs100.json",
+      "sha256": "99d79ea26f81e4c217437258929e2551d0860af734271d3f68af88b44814d305",
+      "type": "unchanged"
+    },
+    {
+      "path": "feature/models/build/test-results/roborazzi/debug/results/1240583942914666_models-list__light__fs100.json",
+      "sha256": "384ef4f362fa7789f34791edd91916ba1b8f64754a094dd972ad90a2db8ed463",
+      "type": "unchanged"
+    },
+    {
+      "path": "feature/models/build/test-results/roborazzi/debug/results/1240583994080541_models-details__light__fs100.json",
+      "sha256": "339e48521fb90f1163ea32a5c333dcf6f4a1c320aa4abe3f5d932bad7cc4d7b8",
+      "type": "unchanged"
+    },
+    {
+      "path": "feature/models/build/test-results/roborazzi/debug/results/1240584040932250_models-list__dark__fs100.json",
+      "sha256": "dc25601c47311fbc6583d92da9c331e557fe965742cf4410846e8500a5d95672",
+      "type": "unchanged"
+    },
+    {
+      "path": "feature/models/build/test-results/roborazzi/debug/results/1240584098306041_models-details__dark__fs100.json",
+      "sha256": "b72b7e528aeabab44ca6aecdb2278441e009d246d5f914ba5e3a0ade796f31ba",
+      "type": "unchanged"
+    },
+    {
+      "path": "feature/models/build/test-results/roborazzi/debug/results/1240584167138208_models-list__light__fs100.json",
+      "sha256": "35f4beb16c79b251671ab109ac839dd60fec9f203c4c7f03c414eaffe4935623",
+      "type": "unchanged"
+    },
+    {
+      "path": "feature/models/build/test-results/roborazzi/debug/results/1240584256256708_models-details__light__fs100.json",
+      "sha256": "c3427c31bc40c356a730ea9c3bba56c12391b25d867bcaec020a649f8d8973d1",
+      "type": "unchanged"
+    },
+    {
+      "path": "feature/models/build/test-results/roborazzi/debug/results/1240584317317708_models-list__dark__fs100.json",
+      "sha256": "e782e69fe8d057c735e53146b3030baa9035dd8056efb83c0214f1f2de88ace2",
+      "type": "unchanged"
+    },
+    {
+      "path": "feature/models/build/test-results/roborazzi/debug/results/1240584401457291_models-details__dark__fs100.json",
+      "sha256": "ec7d934ac6dd0b31b751e5db2af74cba1c6bbd5b82b5fb121bce57b00ac7beb6",
+      "type": "unchanged"
+    },
+    {
+      "path": "feature/timeline/build/test-results/testDebugUnitTest/TEST-app.skein.feature.timeline.TimelineFormattingTest.xml",
+      "sha256": "801c8b6dc21d62682ae61784cfb71b1fd4465db0409d70fd3ca0c8eb4bac5ae7",
+      "tests": 14,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "path": "feature/timeline/build/test-results/testDebugUnitTest/TEST-app.skein.feature.timeline.TimelineHingeFilterTest.xml",
+      "sha256": "a2ee2d0fd425db7117b7836345735e90aebee38715750282ab3d9b6268415ecd",
+      "tests": 1,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "path": "feature/timeline/build/test-results/testDebugUnitTest/TEST-app.skein.feature.timeline.TimelineHingeMenuTest.xml",
+      "sha256": "7e9fa5a1c585b8c157a70ef0dc4298a18a4b9736cd580024046cf8aeabc73e43",
+      "tests": 1,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "path": "feature/timeline/build/test-results/testDebugUnitTest/TEST-app.skein.feature.timeline.TimelineStateTest.xml",
+      "sha256": "0c912ad9c8b478919a1801e49d33f1426a2e0ac4be56fb887a5cb09614fe9cb6",
+      "tests": 15,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "path": "feature/timeline/build/test-results/testDebugUnitTest/TEST-app.skein.feature.timeline.screenshots.TimelineScreenshotTest.xml",
+      "sha256": "79e7a12dfd2dc8867194bed898b572a6808d68643f52a72f3b575d73e9c9b67e",
+      "tests": 20,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "path": "feature/timeline/build/test-results/roborazzi/debug/results/1240589678000833_timeline__light__fs100.json",
+      "sha256": "f3f8db414e538088cf63869e8f1cef330fa1595e65a8aeca5bc7badbe5fcb5bd",
+      "type": "unchanged"
+    },
+    {
+      "path": "feature/timeline/build/test-results/roborazzi/debug/results/1240589742145416_timeline-empty__light__fs100.json",
+      "sha256": "7e8f6989ef29f056670fb15e8dd2d643875821cab8b78312e34af28a7c739336",
+      "type": "unchanged"
+    },
+    {
+      "path": "feature/timeline/build/test-results/roborazzi/debug/results/1240589816555166_timeline__dark__fs100.json",
+      "sha256": "6d7260cb4aebc1907a4ce76d3943c03e34812ca85803e44fe0a4d1a09d3c2750",
+      "type": "unchanged"
+    },
+    {
+      "path": "feature/timeline/build/test-results/roborazzi/debug/results/1240589858666291_timeline-empty__dark__fs100.json",
+      "sha256": "727dc76e59f643ccd0d963902d7ef246ec5b06314fd68522e0bb65fd8e31902c",
+      "type": "unchanged"
+    },
+    {
+      "path": "feature/timeline/build/test-results/roborazzi/debug/results/1240589931770583_timeline__light__fs100.json",
+      "sha256": "0acf3421fc57dd2f9ff04be1727dcfff0db25242c9daa8fb2755ad04697aca97",
+      "type": "unchanged"
+    },
+    {
+      "path": "feature/timeline/build/test-results/roborazzi/debug/results/1240589977949958_timeline-empty__light__fs100.json",
+      "sha256": "e4089c1256b8f9897168cf591ea904b509842b65cf1726169bd0aa1f7f4060b9",
+      "type": "unchanged"
+    },
+    {
+      "path": "feature/timeline/build/test-results/roborazzi/debug/results/1240590048842125_timeline__dark__fs100.json",
+      "sha256": "26c9bc668ba8d3892df5d25c845f8c91f2de56f60c49745f6ab724f313c012a2",
+      "type": "unchanged"
+    },
+    {
+      "path": "feature/timeline/build/test-results/roborazzi/debug/results/1240590093025000_timeline-empty__dark__fs100.json",
+      "sha256": "0cdfb1423b8f1aa5e16b6cd39070daae3824391732873e68b3f775030032b24f",
+      "type": "unchanged"
+    },
+    {
+      "path": "feature/timeline/build/test-results/roborazzi/debug/results/1240590157368916_timeline__light__fs100.json",
+      "sha256": "f5ffa8bd9ad3b049abf0e0687d43b141564abf83b20db6d35aa7cbdf83ebbfc0",
+      "type": "unchanged"
+    },
+    {
+      "path": "feature/timeline/build/test-results/roborazzi/debug/results/1240590199170166_timeline-empty__light__fs100.json",
+      "sha256": "9a9cd49ab5bd9215b39617a6a6f9dc65ba0fc35c5b9d3da92bebce4cfc3a8010",
+      "type": "unchanged"
+    },
+    {
+      "path": "feature/timeline/build/test-results/roborazzi/debug/results/1240590258367583_timeline__dark__fs100.json",
+      "sha256": "5dc6025372ca12c006bea1ee2596a292c93b772d699e0325c5cebdda7f6ddec9",
+      "type": "unchanged"
+    },
+    {
+      "path": "feature/timeline/build/test-results/roborazzi/debug/results/1240590299801916_timeline-empty__dark__fs100.json",
+      "sha256": "ef6d52ac0d52c0a3739a8e45b123808adb46f6f67577b69ea6b929b359fe1022",
+      "type": "unchanged"
+    },
+    {
+      "path": "feature/timeline/build/test-results/roborazzi/debug/results/1240590366430666_timeline__light__fs100.json",
+      "sha256": "ad5ac8f9ddc4a18cf8c5a5f5b57a838e8dbc00fcb52db94ef0f692f0591fb248",
+      "type": "unchanged"
+    },
+    {
+      "path": "feature/timeline/build/test-results/roborazzi/debug/results/1240590416067625_timeline-empty__light__fs100.json",
+      "sha256": "a6b0d407a39cabaeebdf9e2e848333330a997465cd8aec6b868fca866242496a",
+      "type": "unchanged"
+    },
+    {
+      "path": "feature/timeline/build/test-results/roborazzi/debug/results/1240590483529833_timeline__dark__fs100.json",
+      "sha256": "f480061d52fdc66ba274dd73b4921a4fe84b8368be5ef0be93d1a6221a5c4ff1",
+      "type": "unchanged"
+    },
+    {
+      "path": "feature/timeline/build/test-results/roborazzi/debug/results/1240590532361000_timeline-empty__dark__fs100.json",
+      "sha256": "fe2fde46cf285c0bf6e9e07ea8efbec13bad20af0373adaeeb0205dd0b8b97e8",
+      "type": "unchanged"
+    },
+    {
+      "path": "feature/timeline/build/test-results/roborazzi/debug/results/1240590593319916_timeline__light__fs100.json",
+      "sha256": "86e0ef7fab7e28ce84f2b388466205104fefd33c1976b92b3022643f24d28fc6",
+      "type": "unchanged"
+    },
+    {
+      "path": "feature/timeline/build/test-results/roborazzi/debug/results/1240590639794875_timeline-empty__light__fs100.json",
+      "sha256": "bce294d3e4ee70b1df777855ddfa9173598477b5afefaeadc13cf5120e3876b6",
+      "type": "unchanged"
+    },
+    {
+      "path": "feature/timeline/build/test-results/roborazzi/debug/results/1240590703898583_timeline__dark__fs100.json",
+      "sha256": "902b1ad1ae40da547a1981cb621d809d848eac90ff6cd1e4e480e3df1b7cba49",
+      "type": "unchanged"
+    },
+    {
+      "path": "feature/timeline/build/test-results/roborazzi/debug/results/1240590752820083_timeline-empty__dark__fs100.json",
+      "sha256": "ffd734e635898d2d7fd0c8dfc2ed65e572936ef895a00458c087ee8f535dd7e6",
+      "type": "unchanged"
+    },
+    {
+      "path": "feature/shell/build/test-results/testDebugUnitTest/TEST-app.skein.feature.shell.SkeinThemeColorsTest.xml",
+      "sha256": "32ea76faa8518329ff5e6a4d1dd19003f23ccaf0890c393c9e3b122113141c7a",
+      "tests": 1,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "path": "feature/shell/build/test-results/testDebugUnitTest/TEST-app.skein.feature.shell.auth.BiometricUnlockDeviceLockGateTest.xml",
+      "sha256": "7c619c3418c1732751cd26571baab01f2834da67f512942be4f45245d044be7f",
+      "tests": 3,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "path": "feature/shell/build/test-results/testDebugUnitTest/TEST-app.skein.feature.shell.auth.BiometricUnlockOutcomeTest.xml",
+      "sha256": "8f204f9a1c78950bf5cc1208dc7c106344314da7d4c48fbfdb8f33c85e861bf6",
+      "tests": 20,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "path": "feature/shell/build/test-results/testDebugUnitTest/TEST-app.skein.feature.shell.auth.BiometricUnlockResetAffordanceTest.xml",
+      "sha256": "6785193316e1433c200cc8759e025f7982bed0ab5428ff23888306c4dfe3e65e",
+      "tests": 9,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "path": "feature/shell/build/test-results/testDebugUnitTest/TEST-app.skein.feature.shell.auth.VaultResetConfirmStateTest.xml",
+      "sha256": "233249fac919000470ff8cfd5e3938303dd2dd7ed8ee285d5cefbe0b44460812",
+      "tests": 17,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "path": "feature/shell/build/test-results/testDebugUnitTest/TEST-app.skein.feature.shell.auth.VaultRestoreStateTest.xml",
+      "sha256": "ca80d2db3a4aa18cc5edaefb5803281c15afdf55791cec15f1aed91157f54a2c",
+      "tests": 24,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "path": "feature/shell/build/test-results/testDebugUnitTest/TEST-app.skein.feature.shell.auth.VaultSetupStateTest.xml",
+      "sha256": "59d735c20f884e51584934e70cadccd4513f803382963cbd22772bdeb51e1835",
+      "tests": 15,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "path": "feature/shell/build/test-results/testDebugUnitTest/TEST-app.skein.feature.shell.container.ChatHistoryGroupingTest.xml",
+      "sha256": "8a22763ca6ed683bca87c37a3cd8289efc4a76715e09c0075b4c3c1cd454fc6f",
+      "tests": 4,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "path": "feature/shell/build/test-results/testDebugUnitTest/TEST-app.skein.feature.shell.container.SkeinDrawerContentTest.xml",
+      "sha256": "cd50fc3870a6ee1e32ff96d28e40a016c39ad82ad045bf30a2bd218db0b1f358",
+      "tests": 5,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "path": "feature/shell/build/test-results/testDebugUnitTest/TEST-app.skein.feature.shell.container.SkeinNavigationContainerAccessibilityTest.xml",
+      "sha256": "648b002fbdc48d8a49c87e1ac9b0fec9827558eb5996275803e111001a692361",
+      "tests": 2,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "path": "feature/shell/build/test-results/testDebugUnitTest/TEST-app.skein.feature.shell.container.SkeinNavigationContainerTest.xml",
+      "sha256": "c1159fc696dfbc495eb6d11a36c445bdf6290628d3e48c40146300028c3f398e",
+      "tests": 11,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "path": "feature/shell/build/test-results/testDebugUnitTest/TEST-app.skein.feature.shell.container.SkeinTabletopRailTest.xml",
+      "sha256": "cd8dee1858b2d7db79e99dba44ea6bbf5bc9595dc1af233d3b59f27fccd46458",
+      "tests": 2,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "path": "feature/shell/build/test-results/testDebugUnitTest/TEST-app.skein.feature.shell.host.EntryInsetsTest.xml",
+      "sha256": "4ddf93d97a2c856593c21e9adc246db0ca26068e07d4ad3cf397bdf5d876ada8",
+      "tests": 2,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "path": "feature/shell/build/test-results/testDebugUnitTest/TEST-app.skein.feature.shell.host.HingeSurfaceIntegrationTest.xml",
+      "sha256": "026ec4e2df95cb465aa7811bc509cfa008921344cb7ab7d56e8f238293a2f9ce",
+      "tests": 6,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "path": "feature/shell/build/test-results/testDebugUnitTest/TEST-app.skein.feature.shell.host.NavKindsOfTest.xml",
+      "sha256": "8ac22aed9e92084a96129bc15fae369532fe43229fa90b1ab9264bfde307b339",
+      "tests": 1,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "path": "feature/shell/build/test-results/testDebugUnitTest/TEST-app.skein.feature.shell.host.NewChatNavigationTest.xml",
+      "sha256": "4de55fe820769552d13b705d9a80e6d945af69667558625eb9c2eda29fbca728",
+      "tests": 3,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "path": "feature/shell/build/test-results/testDebugUnitTest/TEST-app.skein.feature.shell.host.ShellLockSequenceTest.xml",
+      "sha256": "152e846f4d07ee379a5ff1dbef533aecc500ea8db4fd479990e211e81c536284",
+      "tests": 4,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "path": "feature/shell/build/test-results/testDebugUnitTest/TEST-app.skein.feature.shell.host.SkeinSearchTest.xml",
+      "sha256": "98e05a6817f95efbe06e09e2c0d6f4fa910db2d67fb5cb8ec02ec03d2fe186a9",
+      "tests": 3,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "path": "feature/shell/build/test-results/testDebugUnitTest/TEST-app.skein.feature.shell.host.SkeinShellHostTest.xml",
+      "sha256": "7ffeb48081bb30699aa4c2fdce962c77f0bd8e2f88a454c66925ed459347cb82",
+      "tests": 6,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "path": "feature/shell/build/test-results/testDebugUnitTest/TEST-app.skein.feature.shell.host.SkeinShellPreferencesTest.xml",
+      "sha256": "c623760f19aa634500dbc3c11823e757e4c2fd9784bf3ca1e746f54acb421d6e",
+      "tests": 4,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "path": "feature/shell/build/test-results/testDebugUnitTest/TEST-app.skein.feature.shell.host.SkeinSidebarHostTest.xml",
+      "sha256": "68b99e7ec3cc5b8884f91726d4e429fe57d05e66987fc311d0846e43ec6dde35",
+      "tests": 2,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "path": "feature/shell/build/test-results/testDebugUnitTest/TEST-app.skein.feature.shell.host.SkeinWorkspaceHostTest.xml",
+      "sha256": "a621d729fe1fce5d17fbfca6414bde8643bdf8341d272e7ceaf0edd69e8f5f93",
+      "tests": 19,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "path": "feature/shell/build/test-results/testDebugUnitTest/TEST-app.skein.feature.shell.host.SkeinWorkspaceStateTest.xml",
+      "sha256": "2e00e6a205b79890475cb36e1ecffd2de34a376428b7778372a15fafd2866c4f",
+      "tests": 12,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "path": "feature/shell/build/test-results/testDebugUnitTest/TEST-app.skein.feature.shell.host.VaultResetClearsNavStateTest.xml",
+      "sha256": "4bb954c0ecf2b734b07f2f12f6bcef0e215773d9afc88e3687a77814e869dc16",
+      "tests": 1,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "path": "feature/shell/build/test-results/testDebugUnitTest/TEST-app.skein.feature.shell.input.SecureTextFieldTest.xml",
+      "sha256": "60f1ae3910fd6ec32f5a8bbcf37d1b3b667fb79fa1663dcaf407429f7c2c3828",
+      "tests": 2,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "path": "feature/shell/build/test-results/testDebugUnitTest/TEST-app.skein.feature.shell.layout.SkeinHingeDebugOverlayTest.xml",
+      "sha256": "0678c2ac3613c43d562e8723aa64047e5d5ae4232cedcc8382c04e3d5a398c07",
+      "tests": 1,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "path": "feature/shell/build/test-results/testDebugUnitTest/TEST-app.skein.feature.shell.layout.SkeinHingeGeometryTest.xml",
+      "sha256": "4399e850f05baa5d4b6b36c528fe3c872ff452eb9f1141cdaccbb8f75d4cfe3a",
+      "tests": 4,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "path": "feature/shell/build/test-results/testDebugUnitTest/TEST-app.skein.feature.shell.layout.SkeinHingeSafeAreaTest.xml",
+      "sha256": "ae6493f8a19ba6a774645e47f5359fdd0562ca259413b12bfc61e6447dac84e7",
+      "tests": 2,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "path": "feature/shell/build/test-results/testDebugUnitTest/TEST-app.skein.feature.shell.layout.SkeinLayoutDecisionSurfacesTest.xml",
+      "sha256": "576de10c9ff291a9943bfaadedb0676a7baaab58eea8dfeaefb4c193ad290cec",
+      "tests": 4,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "path": "feature/shell/build/test-results/testDebugUnitTest/TEST-app.skein.feature.shell.layout.SkeinLayoutDecisionTest.xml",
+      "sha256": "a10ac20722303eeb3c489077fde6fee0ae8763b7c39fc95550413a37e3171ebc",
+      "tests": 38,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "path": "feature/shell/build/test-results/testDebugUnitTest/TEST-app.skein.feature.shell.screenshots.AuthScreenshotTest.xml",
+      "sha256": "b7c0816984ff068e90cfc7757948eea60ffa6166221261f9e5d7d246311862dd",
+      "tests": 30,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "path": "feature/shell/build/test-results/testDebugUnitTest/TEST-app.skein.feature.shell.screenshots.SkeinNavigationContainerScreenshotTest.xml",
+      "sha256": "5d06a86001b6f2806d6302dfd013a7b466f08a1ec0871c77896c01e6778d12e2",
+      "tests": 20,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 14
+    },
+    {
+      "path": "feature/shell/build/test-results/testDebugUnitTest/TEST-app.skein.feature.shell.screenshots.SkeinTypeRenderingTest.xml",
+      "sha256": "582415245757c176025c81827a03dffccb723a2dc572e6fc671851d6d71e6434",
+      "tests": 3,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "path": "feature/shell/build/test-results/roborazzi/debug/results/1240607523163541_vault-unlock__light__fs100.json",
+      "sha256": "5fc83a928ce79a0af8421ab1195449cb1b3fb948f467e1a2068824ef11631f40",
+      "type": "unchanged"
+    },
+    {
+      "path": "feature/shell/build/test-results/roborazzi/debug/results/1240607578302416_vault-setup__light__fs100.json",
+      "sha256": "33d1b2d89af103df3942fe9709668074fa0eba3cccb856f484464915567b0a39",
+      "type": "unchanged"
+    },
+    {
+      "path": "feature/shell/build/test-results/roborazzi/debug/results/1240607604980208_vault-unlock-error__light__fs100.json",
+      "sha256": "d638f354060329d2665bd5682fe56e9d8fb7ad5900013aaa9acd1676dade8c58",
+      "type": "unchanged"
+    },
+    {
+      "path": "feature/shell/build/test-results/roborazzi/debug/results/1240607627725875_vault-unlock__dark__fs100.json",
+      "sha256": "4d067d19464ca461d7901d28140bcc37df7abf21e058a7e7f9e68b43a46c8943",
+      "type": "unchanged"
+    },
+    {
+      "path": "feature/shell/build/test-results/roborazzi/debug/results/1240607656412666_vault-setup__dark__fs100.json",
+      "sha256": "e05665d71999525919171b38534aeaa48c7f294bc29e8e823aa70d6576dbdb68",
+      "type": "unchanged"
+    },
+    {
+      "path": "feature/shell/build/test-results/roborazzi/debug/results/1240607682660708_vault-unlock-error__dark__fs100.json",
+      "sha256": "24f02a342ca26a1a9e52a1c93883957ff75646464c3a76525285f3493e9196c7",
+      "type": "unchanged"
+    },
+    {
+      "path": "feature/shell/build/test-results/roborazzi/debug/results/1240607714638000_vault-unlock__light__fs100.json",
+      "sha256": "5681444d6b0c31842c77a3c6536d6f0d28d9a95c74d7b204096ac240c0da218f",
+      "type": "unchanged"
+    },
+    {
+      "path": "feature/shell/build/test-results/roborazzi/debug/results/1240607745596041_vault-setup__light__fs100.json",
+      "sha256": "d1aec6b4db9996dc788239888be8d68af4c6759a470fdba8062a407d2986a865",
+      "type": "unchanged"
+    },
+    {
+      "path": "feature/shell/build/test-results/roborazzi/debug/results/1240607779274791_vault-unlock-error__light__fs100.json",
+      "sha256": "58cb96b208bd1347d61c70711d037ae84d2f4aeff040c9d3c1a3f7599b6a2953",
+      "type": "unchanged"
+    },
+    {
+      "path": "feature/shell/build/test-results/roborazzi/debug/results/1240607821695250_vault-unlock__dark__fs100.json",
+      "sha256": "ed3f142d23f4f5c979683b5140cca2bc630b8e5bf88eecec4615a05f0b9a7f5f",
+      "type": "unchanged"
+    },
+    {
+      "path": "feature/shell/build/test-results/roborazzi/debug/results/1240607853387000_vault-setup__dark__fs100.json",
+      "sha256": "108e52f3d5f792da2bdb2d3bd294bce2e6e5158a7a3b96e75e94cb1be2953864",
+      "type": "unchanged"
+    },
+    {
+      "path": "feature/shell/build/test-results/roborazzi/debug/results/1240607882965875_vault-unlock-error__dark__fs100.json",
+      "sha256": "79366a2ccce1827dc73612365fc81c38c2987bcb4db9c776be2c464d0becc047",
+      "type": "unchanged"
+    },
+    {
+      "path": "feature/shell/build/test-results/roborazzi/debug/results/1240607915725500_vault-unlock__light__fs100.json",
+      "sha256": "96372b5efc82c9a7b873bdedbe3a238bed18df0a19917c0fb58a3dde4af3dc65",
+      "type": "unchanged"
+    },
+    {
+      "path": "feature/shell/build/test-results/roborazzi/debug/results/1240607948794750_vault-setup__light__fs100.json",
+      "sha256": "d62fca7ad2003d0bab31387eb344ede0dc20935cc1ab4c36d88c94e062e32fb2",
+      "type": "unchanged"
+    },
+    {
+      "path": "feature/shell/build/test-results/roborazzi/debug/results/1240607981807541_vault-unlock-error__light__fs100.json",
+      "sha256": "c3dd75e282d3a45364ebe5f4e2e1b72ad8062c58d830f40fa46f77a33f14e9d6",
+      "type": "unchanged"
+    },
+    {
+      "path": "feature/shell/build/test-results/roborazzi/debug/results/1240608015116458_vault-unlock__dark__fs100.json",
+      "sha256": "bc43483e3c6fd64a4d43d5da067508f1726c08517d97ff01a365d209caaca374",
+      "type": "unchanged"
+    },
+    {
+      "path": "feature/shell/build/test-results/roborazzi/debug/results/1240608046391375_vault-setup__dark__fs100.json",
+      "sha256": "79b16f0702414b1dd6089d03bc524a1640ded2676b83b6dab67cbde2b2237e73",
+      "type": "unchanged"
+    },
+    {
+      "path": "feature/shell/build/test-results/roborazzi/debug/results/1240608073476375_vault-unlock-error__dark__fs100.json",
+      "sha256": "9e4b952866db52c795283d6c164575c5dc0ff3869d29c1f9c77a2e52b4016f45",
+      "type": "unchanged"
+    },
+    {
+      "path": "feature/shell/build/test-results/roborazzi/debug/results/1240608111555833_vault-unlock__light__fs100.json",
+      "sha256": "84a7a1b99be29e8f8ead3181efd2cd13dc28e84c3238504b43676411b11cd504",
+      "type": "unchanged"
+    },
+    {
+      "path": "feature/shell/build/test-results/roborazzi/debug/results/1240608149800125_vault-setup__light__fs100.json",
+      "sha256": "db9934998c4d97b191b0032d575576603ac52a555a144c83505b7c614f24399e",
+      "type": "unchanged"
+    },
+    {
+      "path": "feature/shell/build/test-results/roborazzi/debug/results/1240608185226708_vault-unlock-error__light__fs100.json",
+      "sha256": "cca4ed19df65e9d8ba1f23c791c568d4a01a47301bd5abadffc80e9e627afa83",
+      "type": "unchanged"
+    },
+    {
+      "path": "feature/shell/build/test-results/roborazzi/debug/results/1240608220839333_vault-unlock__dark__fs100.json",
+      "sha256": "96c73484996ed1a0c49b2ebfa91ad2e3198cef230f59339a895031282152ff28",
+      "type": "unchanged"
+    },
+    {
+      "path": "feature/shell/build/test-results/roborazzi/debug/results/1240608258673375_vault-setup__dark__fs100.json",
+      "sha256": "ab390fca3b05cf3756c16e151d9db73553cc54e103c23a08a2793e3fe806a512",
+      "type": "unchanged"
+    },
+    {
+      "path": "feature/shell/build/test-results/roborazzi/debug/results/1240608296146791_vault-unlock-error__dark__fs100.json",
+      "sha256": "97851eeb8b94b859b1b162be9d42c5fe2cf68f563362de1bc43a82a312c0fd29",
+      "type": "unchanged"
+    },
+    {
+      "path": "feature/shell/build/test-results/roborazzi/debug/results/1240608333873250_vault-unlock__light__fs100.json",
+      "sha256": "d434fe5bb1ab50c750b59b5810dca372642517899e4ea72e82d33affa3a2c2db",
+      "type": "unchanged"
+    },
+    {
+      "path": "feature/shell/build/test-results/roborazzi/debug/results/1240608373375375_vault-setup__light__fs100.json",
+      "sha256": "b7c2bcb2a727cebee5a03db472da7814ed49c35bd971896481274cdbf9965fa5",
+      "type": "unchanged"
+    },
+    {
+      "path": "feature/shell/build/test-results/roborazzi/debug/results/1240608413684250_vault-unlock-error__light__fs100.json",
+      "sha256": "559a79ec9bd23c7526069696b8b7df87ccf0ee93f295f56bb3aba5f3aaf4a515",
+      "type": "unchanged"
+    },
+    {
+      "path": "feature/shell/build/test-results/roborazzi/debug/results/1240608449184333_vault-unlock__dark__fs100.json",
+      "sha256": "e767988b5e1e0c28c54536b07783fbe31a379b55cda4fbe6452ae4407210ff85",
+      "type": "unchanged"
+    },
+    {
+      "path": "feature/shell/build/test-results/roborazzi/debug/results/1240608486077375_vault-setup__dark__fs100.json",
+      "sha256": "887fad084f0282a4302f0669d77c74fcb58571a0fa1495ee6e0de45f5b6c1722",
+      "type": "unchanged"
+    },
+    {
+      "path": "feature/shell/build/test-results/roborazzi/debug/results/1240608522045458_vault-unlock-error__dark__fs100.json",
+      "sha256": "13ee31af08f3f6aa5334f39410d6d05e0bc757020e826f785a2150598db01bb8",
+      "type": "unchanged"
+    },
+    {
+      "path": "feature/shell/build/test-results/roborazzi/debug/results/1240608820102958_nav-container-drawer-open__light__fs100.json",
+      "sha256": "fa5ac62c2091d852eaf247b66217a638e4ed41d9ed7389595e2f704a57b8c59d",
+      "type": "unchanged"
+    },
+    {
+      "path": "feature/shell/build/test-results/roborazzi/debug/results/1240609031172083_nav-container-drawer-open__dark__fs100.json",
+      "sha256": "987a90106d3e41a802e2c87e9414eb97e6e7833e6a6020ed6adef86566848205",
+      "type": "unchanged"
+    },
+    {
+      "path": "feature/shell/build/test-results/roborazzi/debug/results/1240609246659250_nav-container-drawer-open__light__fs100.json",
+      "sha256": "820cef381cab69a3be0070cd14ec379f01df86ba8bf44be333daed2f8e4832d7",
+      "type": "unchanged"
+    },
+    {
+      "path": "feature/shell/build/test-results/roborazzi/debug/results/1240609463546375_nav-container-drawer-open__dark__fs100.json",
+      "sha256": "16a6143be0c4b564c246254815e07b1a9c293b94fe09bb4ba6e8fe3e27535a53",
+      "type": "unchanged"
+    },
+    {
+      "path": "feature/shell/build/test-results/roborazzi/debug/results/1240609511212416_nav-container-rail__light__fs100.json",
+      "sha256": "351cd8b83a32af97ba29e4d6bb78de3299ca1efe23fc0211d0040465ec98ed90",
+      "type": "unchanged"
+    },
+    {
+      "path": "feature/shell/build/test-results/roborazzi/debug/results/1240609573411375_nav-container-rail__dark__fs100.json",
+      "sha256": "044b040d958da126a887a0d47176d77669044e2456c507123b7bcf435dc4efe8",
+      "type": "unchanged"
+    },
+    {
+      "path": "feature/shell/build/test-results/roborazzi/debug/results/1240609687677500_type-scale__light__fs200.json",
+      "sha256": "bacd9ba2d02ec50c0c731e80540baad035081f1fe051bc19416b8960e53e75a7",
+      "type": "unchanged"
+    }
+  ]
+}
