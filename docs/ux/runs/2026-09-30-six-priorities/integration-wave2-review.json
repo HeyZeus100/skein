@@ -1,0 +1,65 @@
+{
+  "source": {
+    "head_at_start": "efe5b3e6900b236e1da20514f1cd588f7d75f869",
+    "head_at_finish": "ed4de3c77eb0b899035e24c304496ff394fb1de8",
+    "intervening_changes": "documentation/evidence only, application and test sources verified byte-identical by git diff",
+    "installed_attestation": false
+  },
+  "counts": {
+    "tests": 5548,
+    "passed": 5462,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 86
+  },
+  "xml_files": 554,
+  "archive_sha256": "b3725b54b5c443c46a7e31d193709ba9fc7c054cc76d0df55f2190ed91d1296d",
+  "apk": {
+    "path": "app/build/outputs/apk/foss/debug/app-foss-debug.apk",
+    "bytes": 128100635,
+    "sha256": "31dbfc3f0cc2194a3e5538d31369f8733f46a1c2308dc01a35eaf2e304597657",
+    "native_payloads": [
+      {
+        "path": "lib/arm64-v8a/libandroidx.graphics.path.so",
+        "bytes": 10096,
+        "sha256": "41e9a793c43a0f4fddb19e33f346bace464f30f888ba7b9eaf96294ea115bfb6"
+      },
+      {
+        "path": "lib/arm64-v8a/libdatastore_shared_counter.so",
+        "bytes": 7784,
+        "sha256": "178f89a2c6c9234ddf980dd4cd1f3616186a46b2b932aafa6707abd04c5fd76a"
+      },
+      {
+        "path": "lib/arm64-v8a/libonnxruntime.so",
+        "bytes": 27985944,
+        "sha256": "850f897a50d369b3305582244210f5649be9cfeb193c5807fba14146301616c7"
+      },
+      {
+        "path": "lib/arm64-v8a/libonnxruntime4j_jni.so",
+        "bytes": 83208,
+        "sha256": "f86f2a5f56b907e4a25d67febc422ec13f5a265d36665f50e2808de6e4a515b6"
+      },
+      {
+        "path": "lib/arm64-v8a/libskein_llama.so",
+        "bytes": 33413256,
+        "sha256": "b1ff614714a8973d9359fba0034482534c9a65ba8e28d1cab995ed428bf89ee3"
+      },
+      {
+        "path": "lib/arm64-v8a/libskein_sqlite.so",
+        "bytes": 6269000,
+        "sha256": "00a04ba8fda9b13cbe6211a9f04c66fe1f8233724e7cbef5d987a08156df328e"
+      },
+      {
+        "path": "lib/arm64-v8a/libskein_sqlite_jni.so",
+        "bytes": 22320,
+        "sha256": "2ca53aa854232b3f5e16c798b53f80e6630d49df0b4882bd5737609f645c9f0a"
+      }
+    ]
+  },
+  "log_sha256": "f4a321648871f3ac22a30c962e3a06e0533709070c64de15bce28a26a59d66a7",
+  "limitations": [
+    "Includes no fresh40 adapter source or actual fresh evaluation.",
+    "AndroidTest compilation does not execute encrypted or physical tests.",
+    "Documentation-only commit occurred during run; application and test code unchanged."
+  ]
+}
