@@ -43,6 +43,11 @@ internal object IndexSql {
     const val DOCUMENT_EXISTS: String =
         "SELECT 1 FROM documents WHERE id = ?"
 
+    // Called inside the embedding writer's BEGIN IMMEDIATE. A deleted/replaced
+    // chunk must not be resurrected in the independent vec0 virtual table.
+    const val LIVE_CHUNK_EXISTS: String =
+        "SELECT 1 FROM chunks c JOIN documents d ON d.id = c.doc_id WHERE c.id = ?"
+
     // `chunks.id` (INTEGER PRIMARY KEY, i.e. a rowid alias) is bound
     // explicitly rather than left for SQLite to auto-assign. SQLite's
     // default ROWID rule is "largest existing ROWID + 1, or 1 if the table

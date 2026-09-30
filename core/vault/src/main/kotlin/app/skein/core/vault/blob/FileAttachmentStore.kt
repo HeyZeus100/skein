@@ -16,6 +16,7 @@
 
 package app.skein.core.vault.blob
 
+import app.skein.core.model.AttachmentSweepResult
 import app.skein.core.model.DocId
 import java.io.File
 import java.io.IOException
@@ -23,6 +24,7 @@ import java.io.InputStream
 import java.io.OutputStream
 import java.io.RandomAccessFile
 import java.nio.file.Files
+import java.nio.file.LinkOption
 import java.nio.file.StandardCopyOption
 
 /**
@@ -62,6 +64,8 @@ public class FileAttachmentStore(
     private val dir: File,
     private val masterKey: () -> ByteArray,
 ) : AttachmentStore {
+    private val writes = AttachmentWriteRegistry.forDirectory(dir)
+
     init {
         dir.mkdirs()
     }
@@ -81,36 +85,37 @@ public class FileAttachmentStore(
         id: DocId,
         allowOverwrite: Boolean,
         write: suspend (OutputStream) -> Unit,
-    ): Long {
-        requireSafeId(id)
-        dir.mkdirs()
-        val finalFile = File(dir, id)
-        val tempFile = File(dir, ".$id.${System.nanoTime()}.tmp")
-        try {
-            val written = writeToTempFile(id, tempFile, write)
-            // An attachment id names exactly one plaintext for its lifetime;
-            // replacing one silently is data loss. (Before v2 this check was
-            // also what kept AES-GCM safe, since the key and nonce sequence
-            // were deterministic in the id alone -- the random per-write salt
-            // now carries that part on its own.) Checked right before the
-            // rename, not up front, to keep the TOCTOU window as small as
-            // possible; a concurrent writer losing this race gets
-            // ATOMIC_MOVE's own FileAlreadyExistsException instead, which
-            // still cannot land a silent overwrite.
-            if (!allowOverwrite && finalFile.exists()) throw AttachmentException.AlreadyExists(id)
-            val options =
-                if (allowOverwrite) {
-                    arrayOf(StandardCopyOption.REPLACE_EXISTING)
-                } else {
-                    arrayOf(StandardCopyOption.ATOMIC_MOVE)
-                }
-            Files.move(tempFile.toPath(), finalFile.toPath(), *options)
-            return written
-        } catch (t: Throwable) {
-            tempFile.delete()
-            throw t
+    ): Long =
+        withWriteReservation(id) {
+            requireSafeId(id)
+            dir.mkdirs()
+            val finalFile = File(dir, id)
+            val tempFile = File(dir, ".$id.${System.nanoTime()}.tmp")
+            try {
+                val written = writeToTempFile(id, tempFile, write)
+                // An attachment id names exactly one plaintext for its lifetime;
+                // replacing one silently is data loss. (Before v2 this check was
+                // also what kept AES-GCM safe, since the key and nonce sequence
+                // were deterministic in the id alone -- the random per-write salt
+                // now carries that part on its own.) Checked right before the
+                // rename, not up front, to keep the TOCTOU window as small as
+                // possible; a concurrent writer losing this race gets
+                // ATOMIC_MOVE's own FileAlreadyExistsException instead, which
+                // still cannot land a silent overwrite.
+                if (!allowOverwrite && finalFile.exists()) throw AttachmentException.AlreadyExists(id)
+                val options =
+                    if (allowOverwrite) {
+                        arrayOf(StandardCopyOption.REPLACE_EXISTING)
+                    } else {
+                        arrayOf(StandardCopyOption.ATOMIC_MOVE)
+                    }
+                Files.move(tempFile.toPath(), finalFile.toPath(), *options)
+                written
+            } catch (t: Throwable) {
+                tempFile.delete()
+                throw t
+            }
         }
-    }
 
     private suspend fun writeToTempFile(
         id: DocId,
@@ -148,8 +153,56 @@ public class FileAttachmentStore(
 
     override suspend fun delete(id: DocId) {
         requireSafeId(id)
-        File(dir, id).delete()
+        Files.deleteIfExists(File(dir, id).toPath())
     }
+
+    override suspend fun <T> withWriteReservation(
+        id: DocId,
+        block: suspend () -> T,
+    ): T {
+        requireSafeId(id)
+        return writes.reserve(id, block)
+    }
+
+    override suspend fun sweepOrphans(
+        liveIds: Set<DocId>,
+        nowMillis: Long,
+    ): AttachmentSweepResult =
+        writes.sweep { active ->
+            var blobs = 0
+            var temporary = 0
+            var retained = 0
+            var failed = 0
+            // Do not follow symlinks, descend into directories, or infer ownership of
+            // archive names / unknown files. Only production UUID and SKAT temp shapes.
+            val files = dir.listFiles() ?: throw IOException("Cannot list attachment directory")
+            for (file in files) {
+                if (!Files.isRegularFile(file.toPath(), LinkOption.NOFOLLOW_LINKS)) continue
+                val temporaryId = TEMPORARY_NAME.matchEntire(file.name)?.groupValues?.get(1)
+                val blobId = file.name.takeIf { BLOB_NAME.matches(it) }
+                val id = temporaryId ?: blobId ?: continue
+                if (id in active) {
+                    retained++
+                    continue
+                }
+                if (temporaryId != null) {
+                    val modified = file.lastModified()
+                    if (modified <= 0L || modified > nowMillis - TEMPORARY_GRACE_MILLIS) continue
+                } else if (id in liveIds) {
+                    continue
+                }
+                try {
+                    if (Files.deleteIfExists(file.toPath())) {
+                        if (temporaryId != null) temporary++ else blobs++
+                    }
+                } catch (_: IOException) {
+                    failed++
+                } catch (_: SecurityException) {
+                    failed++
+                }
+            }
+            AttachmentSweepResult(blobs, temporary, retained, failed)
+        }
 
     /**
      * The plaintext length recorded in the container header, without
@@ -219,5 +272,12 @@ public class FileAttachmentStore(
         require(id.isNotEmpty() && id != "." && id != ".." && File(id).name == id) {
             "invalid attachment id"
         }
+    }
+
+    private companion object {
+        const val UUID_NAME = "[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}"
+        val BLOB_NAME = Regex(UUID_NAME)
+        val TEMPORARY_NAME = Regex("\\.($UUID_NAME)\\.-?[0-9]+\\.tmp")
+        const val TEMPORARY_GRACE_MILLIS = 15 * 60 * 1_000L
     }
 }

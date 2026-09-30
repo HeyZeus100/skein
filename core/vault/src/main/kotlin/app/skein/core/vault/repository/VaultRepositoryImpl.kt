@@ -67,6 +67,7 @@ package app.skein.core.vault.repository
 
 import androidx.sqlite.SQLiteConnection
 import androidx.sqlite.SQLiteStatement
+import app.skein.core.model.AttachmentSweepResult
 import app.skein.core.model.ChatDraft
 import app.skein.core.model.ChatDraftKey
 import app.skein.core.model.Citation
@@ -77,6 +78,11 @@ import app.skein.core.model.DocumentHit
 import app.skein.core.model.DocumentKind
 import app.skein.core.model.DocumentRevision
 import app.skein.core.model.DocumentTitles
+import app.skein.core.model.FileDeletionReceipt
+import app.skein.core.model.FileDeletionTarget
+import app.skein.core.model.FileDeletionTargetChangedException
+import app.skein.core.model.FileLifecycle
+import app.skein.core.model.FrontmatterKeys
 import app.skein.core.model.IngestItem
 import app.skein.core.model.IngestReason
 import app.skein.core.model.Message
@@ -138,6 +144,7 @@ public class VaultRepositoryImpl(
     private val clock: () -> Long = System::currentTimeMillis,
     private val io: CoroutineDispatcher = Dispatchers.IO,
 ) : VaultRepository,
+    FileLifecycle,
     // skein-0m1z: `export_stages` (migration 005) is vault-internal
     // bookkeeping, so it is a `:core:vault` interface rather than an
     // addition to the `:core:model` `VaultRepository` contract (which the
@@ -437,6 +444,13 @@ public class VaultRepositoryImpl(
     // OBJECT_LIFECYCLE_SPEC.md §3.3: every row-level effect in this one
     // transaction; files outside the database only after its COMMIT.
     override suspend fun deleteDocument(id: DocId) {
+        deleteDocumentRows(id, deleteBlob = true)
+    }
+
+    private suspend fun deleteDocumentRows(
+        id: DocId,
+        deleteBlob: Boolean,
+    ) {
         writeTx {
             val doomed = getDocument(id)
             if (doomed != null) {
@@ -463,10 +477,98 @@ public class VaultRepositoryImpl(
             // a failed COMMIT then leaves the attachment whole, bytes included.
             // A missing blob is a no-op, which keeps a delete of a missing id
             // idempotent.
-            afterCommit { attachments.delete(id) }
+            if (deleteBlob) afterCommit { attachments.delete(id) }
             publish(TableChange.Documents(id))
         }
     }
+
+    override suspend fun resolveFileDeletion(id: DocId): FileDeletionTarget? {
+        val document = getDocument(id) ?: return null
+        val attachment =
+            when (document.kind) {
+                DocumentKind.ATTACHMENT -> document
+                DocumentKind.NOTE -> {
+                    val source = (document.frontmatter[FrontmatterKeys.SOURCE] as? JsonPrimitive)?.content
+                    source?.let { getDocument(it) }?.takeIf { it.kind == DocumentKind.ATTACHMENT }
+                }
+                else -> null
+            } ?: return null
+        return FileDeletionTarget(
+            attachment,
+            selectFileTextNotes(attachment.id),
+            selectFileSourceDependents(attachment.id),
+        )
+    }
+
+    override suspend fun deleteFile(target: FileDeletionTarget): FileDeletionReceipt =
+        writeTx {
+            val id = target.attachment.id
+            require(target.attachment.kind == DocumentKind.ATTACHMENT)
+            val attachment = getDocument(id)
+            val notes = selectFileTextNotes(id)
+            val dependents = selectFileSourceDependents(id)
+            val expected = target.extractedNotes.map { it.id }.toSet()
+            val expectedDependents = target.sourceDependents.associate { it.id to it.kind }
+            val alreadyGone =
+                attachment == null &&
+                    notes.isEmpty() &&
+                    dependents.isEmpty() &&
+                    expected.all { getDocument(it) == null }
+            if (!alreadyGone &&
+                (
+                    attachment?.kind != DocumentKind.ATTACHMENT ||
+                        notes.map { it.id }.toSet() != expected ||
+                        dependents.associate { it.id to it.kind } != expectedDependents
+                )
+            ) {
+                throw FileDeletionTargetChangedException()
+            }
+            val receipt = FileDeleteReceipt(target.documentIds, dependents.mapTo(mutableSetOf()) { it.id })
+            if (!alreadyGone) {
+                for (dependent in dependents) {
+                    updateFrontmatter(dependent.id, JsonObject(dependent.frontmatter - FrontmatterKeys.SOURCE))
+                }
+                for (note in notes) deleteDocumentRows(note.id, deleteBlob = false)
+                deleteDocumentRows(id, deleteBlob = false)
+            }
+            afterTransactionCommit { receipt.committed = true }
+            afterCommit {
+                // Failure leaves the receipt pending. writeTx logs the failure's type,
+                // and the next unlock sweep retries; metadata is already committed.
+                attachments.delete(id)
+                receipt.attachmentCleanupPending = false
+            }
+            receipt
+        }
+
+    override suspend fun sweepOrphanAttachments(): AttachmentSweepResult =
+        writeTx {
+            val live = mutableSetOf<DocId>()
+            writer.prepare(VaultSql.SELECT_LIVE_ATTACHMENT_REFERENCES).use { statement ->
+                while (statement.step()) live += statement.getText(0)
+            }
+            // No metadata is changed. BEGIN IMMEDIATE prevents another connection
+            // from committing a new reference between this snapshot and the unlink.
+            // Active blob writers are skipped, never awaited while holding SQLite.
+            attachments.sweepOrphans(live, clock())
+        }
+
+    private suspend fun selectFileTextNotes(id: DocId): List<Document> =
+        withReader { connection ->
+            connection.prepare(VaultSql.SELECT_FILE_TEXT_NOTES).use { statement ->
+                statement.bindText(1, id)
+                buildList { while (statement.step()) add(readDocument(statement)) }
+            }
+        }
+
+    private suspend fun selectFileSourceDependents(id: DocId): List<Document> =
+        withReader { connection ->
+            connection.prepare(VaultSql.SELECT_FILE_SOURCE_DEPENDENTS).use { statement ->
+                statement.bindText(1, id)
+                statement.bindText(2, id)
+                buildList { while (statement.step()) add(readDocument(statement)) }
+            }
+        }
 
     override fun observeDocument(id: DocId): Flow<Document?> =
         changeTicks { it is TableChange.Documents && it.docId == id }
@@ -609,14 +711,22 @@ public class VaultRepositoryImpl(
 
     // ponytail: decodes every citation payload in the vault; runs once when a
     // delete dialog opens. An index on a documentId side table if that is slow.
-    override suspend fun countChatsCiting(id: DocId): Int =
+    override suspend fun countChatsCiting(id: DocId): Int = countChatsCitingAny(setOf(id), excludedChat = id)
+
+    override suspend fun countChatsCitingFile(target: FileDeletionTarget): Int =
+        countChatsCitingAny(target.documentIds, excludedChat = target.attachment.id)
+
+    private suspend fun countChatsCitingAny(
+        ids: Set<DocId>,
+        excludedChat: DocId,
+    ): Int =
         withReader { conn ->
             conn.prepare(VaultSql.SELECT_OTHER_CHATS_RETRIEVED_CHUNKS).use { stmt ->
-                stmt.bindText(1, id)
+                stmt.bindText(1, excludedChat)
                 val chats = HashSet<DocId>()
                 while (stmt.step()) {
                     val pins = CitationRecordJson.revisionPins(stmt.getText(1))
-                    if (pins?.any { it.first == id } == true) {
+                    if (pins?.any { it.first in ids } == true) {
                         chats += stmt.getText(0)
                     }
                 }
@@ -788,44 +898,79 @@ public class VaultRepositoryImpl(
         title: String,
         mimeType: String,
         write: suspend (OutputStream) -> Unit,
+    ): Document = createAttachmentAndLink(title, mimeType, write) { }
+
+    override suspend fun createAttachmentWithExtractedNotes(
+        title: String,
+        mimeType: String,
+        extractedNoteIds: Set<DocId>,
+        expectedSource: DocId,
+        write: suspend (OutputStream) -> Unit,
+    ): Document =
+        createAttachmentAndLink(title, mimeType, write) { attachment ->
+            val notes = extractedNoteIds.map { requireDocument(it) }
+            require(
+                notes.all {
+                    it.kind in setOf(DocumentKind.NOTE, DocumentKind.AIOUT) &&
+                        (it.frontmatter[FrontmatterKeys.SOURCE] as? JsonPrimitive)?.content == expectedSource
+                },
+            ) { "Imported file sources changed" }
+            for (note in notes) {
+                updateFrontmatter(
+                    note.id,
+                    JsonObject(
+                        note.frontmatter + (FrontmatterKeys.SOURCE to JsonPrimitive(attachment.id)),
+                    ),
+                )
+            }
+        }
+
+    private suspend fun createAttachmentAndLink(
+        title: String,
+        mimeType: String,
+        write: suspend (OutputStream) -> Unit,
+        link: suspend (Document) -> Unit,
     ): Document {
         // Bytes are materialized (and hashed) outside the writer
         // transaction — blob I/O may be slow and must not hold the DB
         // writer lock; the DB insert below is the only part guarded by it.
         val id = Uuid7.generate()
-        val size = attachments.write(id, write)
-        val digest = hashAttachment(id)
-        return writeTx {
-            val now = clock()
-            val frontmatter =
-                buildJsonObject {
-                    put(FRONTMATTER_ID_KEY, JsonPrimitive(id))
-                    put("mime", JsonPrimitive(mimeType))
-                    put("size", JsonPrimitive(size))
+        checkWriteAdmission()
+        return attachments.withWriteReservation(id) {
+            val size = attachments.write(id, write)
+            val digest = hashAttachment(id)
+            writeTx {
+                val now = clock()
+                val frontmatter =
+                    buildJsonObject {
+                        put(FRONTMATTER_ID_KEY, JsonPrimitive(id))
+                        put("mime", JsonPrimitive(mimeType))
+                        put("size", JsonPrimitive(size))
+                    }
+                writer.prepare(VaultSql.INSERT_ATTACHMENT_DOCUMENT).use { stmt ->
+                    stmt.bindText(1, id)
+                    stmt.bindText(2, title)
+                    stmt.bindLong(3, now)
+                    stmt.bindLong(4, now)
+                    stmt.bindText(5, encodeFrontmatter(frontmatter))
+                    bindNullableText(stmt, 6, digest)
+                    stmt.bindText(7, mimeType)
+                    stmt.bindLong(8, size)
+                    stmt.step()
                 }
-            writer.prepare(VaultSql.INSERT_ATTACHMENT_DOCUMENT).use { stmt ->
-                stmt.bindText(1, id)
-                stmt.bindText(2, title)
-                stmt.bindLong(3, now)
-                stmt.bindLong(4, now)
-                stmt.bindText(5, encodeFrontmatter(frontmatter))
-                bindNullableText(stmt, 6, digest)
-                stmt.bindText(7, mimeType)
-                stmt.bindLong(8, size)
-                stmt.step()
+                publish(TableChange.Documents(id))
+                Document(
+                    id = id,
+                    kind = DocumentKind.ATTACHMENT,
+                    title = title,
+                    bodyMd = null,
+                    createdAt = now,
+                    updatedAt = now,
+                    personaId = null,
+                    frontmatter = frontmatter,
+                    contentHash = digest,
+                ).also { link(it) }
             }
-            publish(TableChange.Documents(id))
-            Document(
-                id = id,
-                kind = DocumentKind.ATTACHMENT,
-                title = title,
-                bodyMd = null,
-                createdAt = now,
-                updatedAt = now,
-                personaId = null,
-                frontmatter = frontmatter,
-                contentHash = digest,
-            )
         }
     }
 
@@ -1406,6 +1551,17 @@ public class VaultRepositoryImpl(
         val connection: SQLiteConnection,
     ) {
         val mutex: Mutex = Mutex()
+    }
+
+    private class FileDeleteReceipt(
+        override val documentIds: Set<DocId>,
+        override val detachedDocumentIds: Set<DocId>,
+    ) : FileDeletionReceipt {
+        @Volatile
+        override var committed: Boolean = false
+
+        @Volatile
+        override var attachmentCleanupPending: Boolean = true
     }
 
     /** Coroutine-context marker for an in-flight [writeTx]/[transaction]: makes nested writes and reads reentrant. */

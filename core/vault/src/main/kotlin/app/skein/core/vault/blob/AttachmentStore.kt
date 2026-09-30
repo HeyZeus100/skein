@@ -16,6 +16,7 @@
 
 package app.skein.core.vault.blob
 
+import app.skein.core.model.AttachmentSweepResult
 import app.skein.core.model.DocId
 import java.io.ByteArrayInputStream
 import java.io.ByteArrayOutputStream
@@ -37,6 +38,18 @@ public interface AttachmentStore {
 
     /** Byte count previously written for [id], or `null` when the id is unknown. */
     public suspend fun size(id: DocId): Long?
+
+    /** Protect the whole blob-write → metadata-commit interval from an orphan sweep. */
+    public suspend fun <T> withWriteReservation(
+        id: DocId,
+        block: suspend () -> T,
+    ): T = block()
+
+    /** Called with the database writer transaction held; must not wait for an active write. */
+    public suspend fun sweepOrphans(
+        liveIds: Set<DocId>,
+        nowMillis: Long,
+    ): AttachmentSweepResult = throw UnsupportedOperationException("Attachment orphan sweep is unavailable")
 }
 
 /**
@@ -46,17 +59,19 @@ public interface AttachmentStore {
  */
 public class InMemoryAttachmentStore : AttachmentStore {
     private val blobs: MutableMap<DocId, ByteArray> = ConcurrentHashMap()
+    private val writes = AttachmentWriteRegistry.inMemory()
 
     override suspend fun write(
         id: DocId,
         write: suspend (OutputStream) -> Unit,
-    ): Long {
-        val sink = ByteArrayOutputStream()
-        write(sink)
-        val bytes = sink.toByteArray()
-        blobs[id] = bytes
-        return bytes.size.toLong()
-    }
+    ): Long =
+        withWriteReservation(id) {
+            val sink = ByteArrayOutputStream()
+            write(sink)
+            val bytes = sink.toByteArray()
+            blobs[id] = bytes
+            bytes.size.toLong()
+        }
 
     override suspend fun open(id: DocId): InputStream {
         val bytes = blobs[id] ?: throw NoSuchElementException("no attachment blob for id=$id")
@@ -68,4 +83,19 @@ public class InMemoryAttachmentStore : AttachmentStore {
     }
 
     override suspend fun size(id: DocId): Long? = blobs[id]?.size?.toLong()
+
+    override suspend fun <T> withWriteReservation(
+        id: DocId,
+        block: suspend () -> T,
+    ): T = writes.reserve(id, block)
+
+    override suspend fun sweepOrphans(
+        liveIds: Set<DocId>,
+        nowMillis: Long,
+    ): AttachmentSweepResult =
+        writes.sweep { active ->
+            val orphans = blobs.keys.filter { it !in liveIds && it !in active }
+            orphans.forEach(blobs::remove)
+            AttachmentSweepResult(removedBlobs = orphans.size, retainedActiveFiles = blobs.keys.count { it in active })
+        }
 }

@@ -193,16 +193,24 @@ public class IndexStoreImpl(
         if (embeddings.isEmpty()) return
         mutex.withLock {
             transaction {
-                connection.prepare(IndexSql.UPSERT_EMBEDDING).use { stmt ->
-                    for ((id, vec) in embeddings) {
-                        stmt.reset()
-                        stmt.clearBindings()
-                        stmt.bindLong(1, id)
-                        stmt.bindBlob(2, vec)
-                        stmt.step()
+                val accepted = mutableListOf<ChunkId>()
+                connection.prepare(IndexSql.LIVE_CHUNK_EXISTS).use { live ->
+                    connection.prepare(IndexSql.UPSERT_EMBEDDING).use { stmt ->
+                        for ((id, vec) in embeddings) {
+                            live.reset()
+                            live.clearBindings()
+                            live.bindLong(1, id)
+                            if (!live.step()) continue
+                            stmt.reset()
+                            stmt.clearBindings()
+                            stmt.bindLong(1, id)
+                            stmt.bindBlob(2, vec)
+                            stmt.step()
+                            accepted += id
+                        }
                     }
                 }
-                publish(IndexChange.EmbeddingsUpdated(embeddings.map { it.first }))
+                if (accepted.isNotEmpty()) publish(IndexChange.EmbeddingsUpdated(accepted))
             }
         }
     }

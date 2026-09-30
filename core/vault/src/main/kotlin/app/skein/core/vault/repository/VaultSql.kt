@@ -84,6 +84,21 @@ internal object VaultSql {
         "SELECT id, kind, title, body_md, created_at, updated_at, persona_id, frontmatter, content_hash " +
             "FROM documents WHERE id = ?"
 
+    const val SELECT_FILE_TEXT_NOTES: String =
+        "SELECT $DOCUMENT_SELECT_COLUMNS FROM documents " +
+            "WHERE kind = 'note' AND json_type(frontmatter, '$.source') = 'text' " +
+            "AND json_extract(frontmatter, '$.source') = ? ORDER BY id"
+
+    const val SELECT_FILE_SOURCE_DEPENDENTS: String =
+        "SELECT $DOCUMENT_SELECT_COLUMNS FROM documents " +
+            "WHERE kind != 'note' AND id != ? AND json_type(frontmatter, '$.source') = 'text' " +
+            "AND json_extract(frontmatter, '$.source') = ? ORDER BY id"
+
+    // Be conservative about restored/shared references, even when a source's row is missing.
+    const val SELECT_LIVE_ATTACHMENT_REFERENCES: String =
+        "SELECT id FROM documents UNION SELECT json_extract(frontmatter, '$.source') FROM documents " +
+            "WHERE json_type(frontmatter, '$.source') = 'text'"
+
     const val SELECT_DOCUMENT_BY_TITLE_EXACT: String =
         "SELECT id, kind, title, body_md, created_at, updated_at, persona_id, frontmatter, content_hash " +
             "FROM documents WHERE title = ? COLLATE NOCASE ORDER BY updated_at DESC LIMIT 1"

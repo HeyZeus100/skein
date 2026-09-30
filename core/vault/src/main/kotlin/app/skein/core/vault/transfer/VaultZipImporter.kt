@@ -16,8 +16,8 @@
 //   - Attachments get fresh ids. `VaultRepository.createAttachment` mints
 //     its own, and that keeps an archive-supplied string from ever naming a
 //     blob file. Notes imported from the same archive that cite one through
-//     `source:` are rewritten to the new id after the pass (an export writes
-//     notes before attachments, so the rewrite cannot happen inline). An
+//     `source:` are linked in the attachment row's transaction. Entries arriving
+//     after their attachment link in the note's creation transaction. An
 //     attachment is skipped when its archive id is already in the vault, or
 //     when every note in the archive citing it was skipped — so re-importing
 //     an archive does not leave a second, orphaned copy of each PDF. One that
@@ -35,6 +35,8 @@ package app.skein.core.vault.transfer
 
 import app.skein.core.model.DocId
 import app.skein.core.model.Document
+import app.skein.core.model.DocumentKind
+import app.skein.core.model.FileLifecycle
 import app.skein.core.model.FrontmatterKeys
 import app.skein.core.model.VaultRepository
 import app.skein.core.model.VaultZipImportResult
@@ -156,7 +158,6 @@ internal class VaultZipImporter(
         } catch (_: StopImport) {
             truncated = true
         }
-        rewriteCitations()
         if (manifestSeen) links.restoreOriginalGuards() else links.finish()
         return VaultZipImportResult(imported = imported, skipped = skipped, truncated = truncated)
     }
@@ -204,10 +205,26 @@ internal class VaultZipImporter(
         }
         val hint = manifest[name]?.let { ManifestHint(it.string("id"), it.string("kind"), it.string("title")) }
         val outcome =
-            if (manifestSeen) {
-                importDocument(name, bytes, hint)
-            } else {
-                links.importArchived(name) { importDocument(name.substringAfterLast('/'), bytes, hint) }
+            repository.transaction {
+                val importedDocument =
+                    if (manifestSeen) {
+                        importDocument(name, bytes, hint)
+                    } else {
+                        links.importArchived(name) { importDocument(name.substringAfterLast('/'), bytes, hint) }
+                    }
+                importedDocument.also { outcome ->
+                    val newId = newAttachmentIds[outcome.source]
+                    val created = outcome.created
+                    if (newId != null && created != null && created.kind in SOURCE_KINDS) {
+                        check(
+                            repository.getDocument(newId)?.kind == DocumentKind.ATTACHMENT,
+                        ) { "Imported file was deleted" }
+                        repository.updateFrontmatter(
+                            created.id,
+                            JsonObject(created.frontmatter + (FrontmatterKeys.SOURCE to JsonPrimitive(newId))),
+                        )
+                    }
+                }
             }
         val created = outcome.created
         if (created == null) {
@@ -238,27 +255,42 @@ internal class VaultZipImporter(
             hint?.string("mime")
                 ?: AttachmentExtensions.mimeTypeFor(fileName.substringAfterLast('.', missingDelimiterValue = ""))
         val attachment =
-            repository.createAttachment(title = hint?.string("title") ?: fileName, mimeType = mimeType) { out ->
-                reader.copyTo(out)
+            if (repository is FileLifecycle) {
+                repository.createAttachmentWithExtractedNotes(
+                    title = hint?.string("title") ?: fileName,
+                    mimeType = mimeType,
+                    extractedNoteIds = sourceNotes(archiveId).mapTo(mutableSetOf()) { it.id },
+                    expectedSource = archiveId,
+                ) { out -> reader.copyTo(out) }
+            } else {
+                // Non-production repositories still preserve atomicity. The real
+                // capability above keeps potentially slow blob I/O outside SQLite.
+                repository.transaction {
+                    repository
+                        .createAttachment(title = hint?.string("title") ?: fileName, mimeType = mimeType) { out ->
+                            reader.copyTo(out)
+                        }.also { attachment ->
+                            for (document in sourceNotes(archiveId)) {
+                                val current = checkNotNull(repository.getDocument(document.id))
+                                check(current.frontmatter[FrontmatterKeys.SOURCE] == JsonPrimitive(archiveId))
+                                repository.updateFrontmatter(
+                                    document.id,
+                                    JsonObject(
+                                        current.frontmatter + (FrontmatterKeys.SOURCE to JsonPrimitive(attachment.id)),
+                                    ),
+                                )
+                            }
+                        }
+                }
             }
         newAttachmentIds[archiveId] = attachment.id
         imported += 1
     }
 
-    /** Points each imported note's `source:` at the id its attachment was imported under. */
-    private suspend fun rewriteCitations() {
-        for (document in citingDocuments) {
-            val source = (document.frontmatter[FrontmatterKeys.SOURCE] as? JsonPrimitive)?.content ?: continue
-            val newId = newAttachmentIds[source] ?: continue
-            repository.updateFrontmatter(
-                document.id,
-                JsonObject(
-                    (repository.getDocument(document.id) ?: continue).frontmatter +
-                        (FrontmatterKeys.SOURCE to JsonPrimitive(newId)),
-                ),
-            )
+    private fun sourceNotes(source: DocId): List<Document> =
+        citingDocuments.filter {
+            it.kind in SOURCE_KINDS && (it.frontmatter[FrontmatterKeys.SOURCE] as? JsonPrimitive)?.content == source
         }
-    }
 
     private fun JsonObject.string(key: String): String? = (this[key] as? JsonPrimitive)?.contentOrNull
 
@@ -327,6 +359,7 @@ internal class VaultZipImporter(
         private const val DOCUMENT_SUFFIX: String = ".md"
         private const val BUFFER_BYTES: Int = 8 * 1024
         private const val BYTE_MASK: Int = 0xFF
+        private val SOURCE_KINDS = setOf(DocumentKind.NOTE, DocumentKind.AIOUT)
         private val DRIVE_PREFIX: Regex = Regex("^[A-Za-z]:")
 
         /**

@@ -157,21 +157,28 @@ public class ImportServiceImpl(
 
         val sourceFrontmatter = buildJsonObject { put(FrontmatterKeys.SOURCE, JsonPrimitive(attachment.id)) }
         val note =
-            repository.createDocument(
-                NewDocument(
-                    kind = DocumentKind.NOTE,
-                    title = title,
-                    bodyMd = body,
-                    personaId = personaId,
-                    frontmatter =
-                        reconcileFrontmatter(
-                            sourceFrontmatter,
-                            DocumentKind.NOTE,
-                            title,
-                            existing = null,
-                        ),
-                ),
-            )
+            repository.transaction {
+                // A File can be deleted while PDFBox extracts its text. Serialize this
+                // check and NOTE creation with deletion so extracted text cannot return.
+                check(repository.getDocument(attachment.id)?.kind == DocumentKind.ATTACHMENT) {
+                    "Imported file was deleted"
+                }
+                repository.createDocument(
+                    NewDocument(
+                        kind = DocumentKind.NOTE,
+                        title = title,
+                        bodyMd = body,
+                        personaId = personaId,
+                        frontmatter =
+                            reconcileFrontmatter(
+                                sourceFrontmatter,
+                                DocumentKind.NOTE,
+                                title,
+                                existing = null,
+                            ),
+                    ),
+                )
+            }
         return ImportResult(documentId = note.id, attachmentId = attachment.id, created = true)
     }
 
