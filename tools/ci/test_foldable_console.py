@@ -26,11 +26,12 @@ class FakeAdb:
         self.read_exit = 0
         self.read_stderr = ""
         self.ack = None
+        self.diagnostic_timeout = False
 
     def __call__(self, argv, **kwargs):
         self.calls.append((argv, kwargs))
         assert argv[:3] == ["adb", "-s", "emulator-5554"]
-        assert kwargs["timeout"] == 10 and kwargs["check"] is False
+        assert kwargs["timeout"] in (5, 10) and kwargs["check"] is False
         args = argv[3:]
         if args == ["shell", "getprop", "ro.kernel.qemu"]:
             output = self.qemu
@@ -44,6 +45,13 @@ class FakeAdb:
             assert args[3:] == ["sh", "-c", "'cat > files/foldable-console-ack.json.tmp && mv -f files/foldable-console-ack.json.tmp files/foldable-console-ack.json'"]
             self.ack = json.loads(kwargs["input"])
             output = ""
+        elif tuple(args) in bridge.DISPLAY_READS:
+            assert kwargs["timeout"] == 5
+            if self.diagnostic_timeout:
+                raise subprocess.TimeoutExpired(argv, 5)
+            output = {bridge.DISPLAY_READS[0]: "Folded area: 0,0,884,2208\n",
+                      bridge.DISPLAY_READS[1]: "1\n",
+                      bridge.DISPLAY_READS[2]: "DISPLAY MANAGER (dumpsys display)\n"}[tuple(args)]
         elif args in (["exec-out", "run-as", "app.skein", "head", "-c", "1025", bridge.REQUEST],
                        ["shell", "-T", "run-as", "app.skein", "head", "-c", "1025", bridge.REQUEST]):
             if self.read_timeout:
@@ -120,6 +128,40 @@ class ConsoleProtocolTest(unittest.TestCase):
         with self.assertRaises(bridge.ProtocolError):
             self.host.handle(self.request())
         self.assertEqual([["emu", "fold"], ["emu", "unfold"]], self.adb.mutations())
+
+    def test_display_reads_are_bound_to_one_exchange_and_replay_does_not_recapture(self):
+        self.host.display_diagnostics = True
+        request = self.request()
+        self.host.handle(request)
+        self.host.handle(request)
+        rows = [json.loads(line) for line in (self.path / "display-diagnostics.jsonl").read_text().splitlines()]
+        self.assertEqual(1, len(rows))
+        self.assertEqual(request, {key: rows[0][key] for key in request})
+        self.assertEqual("console_ok_before_ack", rows[0]["phase"])
+        self.assertEqual([list(command) for command in bridge.DISPLAY_READS], [r["command"] for r in rows[0]["reads"]])
+        self.assertEqual([["emu", "fold"]], self.adb.mutations())
+        self.assertEqual("ok", self.adb.ack["status"])
+        self.assertLessEqual(rows[0]["started_monotonic_ns"], rows[0]["finished_monotonic_ns"])
+
+    def test_display_timeout_is_preserved_and_never_allows_another_posture_mutation(self):
+        self.host.display_diagnostics = True
+        self.adb.diagnostic_timeout = True
+        with self.assertRaises(subprocess.TimeoutExpired):
+            self.host.handle(self.request())
+        self.host.cleanup()
+        self.assertEqual([["emu", "fold"]], self.adb.mutations())
+        row = json.loads((self.path / "display-diagnostics.jsonl").read_text())
+        self.assertIn("error", row)
+        self.assertEqual([], row["reads"])
+        self.assertEqual("error", self.adb.ack["status"])
+
+    def test_display_collection_refuses_prior_evidence(self):
+        (self.path / "display-diagnostics.jsonl").write_text("preserve original\n")
+        with self.assertRaisesRegex(bridge.ProtocolError, "earlier controller"):
+            bridge.Bridge("emulator-5554", RUN, self.path, run=self.adb,
+                          environment={"GITHUB_ACTIONS": "true"}, display_diagnostics=True)
+        self.assertEqual("preserve original\n", (self.path / "display-diagnostics.jsonl").read_text())
+        self.assertEqual([], self.adb.calls)
 
     def test_timeout_is_poisoned_error_ack_without_retry(self):
         self.adb.timeout = True

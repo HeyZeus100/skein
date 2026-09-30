@@ -29,6 +29,9 @@ jobs:
     env:
       SKEIN_FOLD_PROFILE: ${{ inputs.profile }}
       SKEIN_FOLD_AVD_NAME: skein_foldable_gate
+      # Generic hinge profiles synchronize folded area through the Qt window path.
+      # This is a bounded emulator diagnosis, not exact Pixel/Fold acceptance.
+      SKEIN_FOLD_EMULATOR_OPTIONS: -gpu swiftshader_indirect -noaudio -no-boot-anim -camera-back none
     steps:
       - name: Checkout dispatched source
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v4.3.0
@@ -59,7 +62,7 @@ jobs:
       - name: Install Linux emulator runtime library
         run: |
           sudo apt-get update
-          sudo env DEBIAN_FRONTEND=noninteractive apt-get install --yes --no-install-recommends libpulse0
+          sudo env DEBIAN_FRONTEND=noninteractive apt-get install --yes --no-install-recommends libpulse0 xvfb x11-utils libxkbcommon-x11-0 libxcb-cursor0
       - name: SDK tools and exact fold profile
         shell: bash
         run: |
@@ -95,6 +98,8 @@ jobs:
           echo 'KERNEL=="kvm", GROUP="kvm", MODE="0666", OPTIONS+="static_node=kvm"' | sudo tee /etc/udev/rules.d/99-kvm4all.rules
           sudo udevadm control --reload-rules
           sudo udevadm trigger --name-match=kvm
+      - name: Start owned virtual display for Qt emulator
+        run: bash tools/ci/run-foldable-emulator.sh start-display
       - name: Run production gate on foldable emulator
         uses: reactivecircus/android-emulator-runner@a421e43855164a8197daf9d8d40fe71c6996bb0d # v2.34.0
         with:
@@ -104,8 +109,11 @@ jobs:
           profile: ${{ inputs.profile }}
           avd-name: ${{ env.SKEIN_FOLD_AVD_NAME }}
           disable-animations: true
-          emulator-options: -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -camera-back none
+          emulator-options: ${{ env.SKEIN_FOLD_EMULATOR_OPTIONS }}
           script: bash tools/ci/run-foldable-emulator.sh
+      - name: Stop owned virtual display
+        if: always()
+        run: bash tools/ci/run-foldable-emulator.sh stop-display
       - name: Review actual XML and artifact hashes
         if: always()
         run: python3 tools/ci/verify-foldable.py --expected-sha "$GITHUB_SHA" --profile "$SKEIN_FOLD_PROFILE" --output build/foldable-evidence/review.json

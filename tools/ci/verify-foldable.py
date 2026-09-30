@@ -51,6 +51,36 @@ def review(repository, expected_sha, profile="pixel_9_pro_fold"):
             result["errors"].append("generic compatibility profile has unexpected manufacturer")
     except (OSError, ValueError):
         result["errors"].append("missing or malformed actual AVD config")
+    sdk_path = repository / "build/foldable-evidence/sdk-runtime-receipts.json"
+    try:
+        sdk = json.loads(sdk_path.read_text())
+        image_dir = "system-images/android-35/google_apis/x86_64"
+        if (type(sdk["schema_version"]) is not int or sdk["schema_version"] != 1 or
+                sdk["attribution"] != "host SDK files, not emulator process attestation or original failed image equality" or
+                sdk["avd_config_sha256"] != sha256(config_path) or
+                sdk["image_sysdir"] != config["image.sysdir.1"] or
+                sdk["image_sysdir"].rstrip("/") != image_dir):
+            raise ValueError("SDK/config attribution mismatch")
+        files = sdk["files"]
+        paths = {row["path"] for row in files}
+        payloads = sdk["system_image_payloads"]
+        required = {f"{image_dir}/{name}" for name in ("system.img", "vendor.img", "ramdisk.img")}
+        metadata = {"emulator/source.properties", "emulator/emulator",
+                    "emulator/qemu/linux-x86_64/qemu-system-x86_64", f"{image_dir}/source.properties"}
+        if (len(paths) != len(files) or len(set(payloads)) != len(payloads) or
+                not required <= set(payloads) or not metadata <= paths or not set(payloads) <= paths or
+                not any(path.startswith(f"{image_dir}/kernel-ranchu") for path in payloads)):
+            raise ValueError("missing or duplicate raw system-image payload receipts")
+        if any(not path.startswith(image_dir + "/") or "/" in path[len(image_dir) + 1:] or
+               not (path.endswith(".img") or path.startswith(image_dir + "/kernel-ranchu")) for path in payloads):
+            raise ValueError("unexpected system-image payload path")
+        if any(type(row["bytes"]) is not int or row["bytes"] <= 0 or
+               not re.fullmatch(r"[0-9a-f]{64}", row["sha256"]) for row in files):
+            raise ValueError("invalid SDK file hash/size")
+        result["artifacts"][str(sdk_path.relative_to(repository))] = sha256(sdk_path)
+        result["sdk_attribution"] = sdk["attribution"]
+    except (OSError, ValueError, KeyError, TypeError):
+        result["errors"].append("missing or malformed SDK/image payload receipts")
     seen = set()
     for path in sorted((repository / "app/build/outputs/androidTest-results/connected").rglob("*.xml")):
         result["artifacts"][str(path.relative_to(repository))] = sha256(path)
@@ -178,6 +208,35 @@ def review(repository, expected_sha, profile="pixel_9_pro_fold"):
         result["console_requests"] = requests
     except (OSError, ValueError, KeyError, TypeError, IndexError) as error:
         result["errors"].append(f"missing or invalid console protocol evidence: {error}")
+    diagnostics = run_path.with_name("display-diagnostics.jsonl")
+    try:
+        samples = [json.loads(line) for line in diagnostics.read_text().splitlines() if line.strip()]
+        result["artifacts"][str(diagnostics.relative_to(repository))] = sha256(diagnostics)
+        requests = result.get("console_requests", [])
+        if len(samples) != 6 or len(requests) != 6:
+            raise ValueError("six exchange-bound display samples required")
+        commands = [["shell", "wm", "folded-area"], ["shell", "cmd", "device_state", "print-state"],
+                    ["shell", "dumpsys", "display"]]
+        last_end = 0
+        for sample, request in zip(samples, requests):
+            if any(sample[key] != request[key] for key in ("run_id", "sequence", "nonce", "action")):
+                raise ValueError("display sample differs from console exchange")
+            if sample.get("schema_version") != 1 or sample.get("phase") != "console_ok_before_ack" or "error" in sample:
+                raise ValueError("failed or unknown display sample")
+            start, end = sample["started_monotonic_ns"], sample["finished_monotonic_ns"]
+            if type(start) is not int or type(end) is not int or not 0 < start <= end or start < last_end:
+                raise ValueError("invalid display sample interval")
+            last_end = end
+            reads = sample["reads"]
+            if [read["command"] for read in reads] != commands:
+                raise ValueError("missing, changed or extra display reads")
+            if any(type(read["returncode"]) is not int or read["returncode"] != 0 or read["stderr"] != "" or
+                   not isinstance(read["stdout"], str) or not read["stdout"].strip() for read in reads):
+                raise ValueError("display read did not complete successfully")
+        result["display_diagnostics"] = dict(samples=len(samples), phase="console_ok_before_ack",
+                                             scope="instantaneous emulator configuration; never substitutes Activity geometry")
+    except (OSError, ValueError, KeyError, TypeError) as error:
+        result["errors"].append(f"missing or invalid display diagnostic evidence: {error}")
     result["passed"] = not result["errors"]
     result["remaining_gates"] = (["Pixel 9 Pro Fold profile acceptance"] if profile != "pixel_9_pro_fold" else []) + ["hinge-angle/sensor assertions", "unlocked A-G", "real IME and focus", "system_server heap privacy", "physical Fold A-G acceptance outside this lane"]
     return result

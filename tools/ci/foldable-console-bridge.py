@@ -16,6 +16,9 @@ LIMIT = 1024
 TOKEN = re.compile(r"[0-9a-f]{32}")
 KEYS = {"run_id", "sequence", "nonce", "action"}
 ACTIONS = {"fold", "unfold"}
+DISPLAY_READS = (("shell", "wm", "folded-area"),
+                 ("shell", "cmd", "device_state", "print-state"),
+                 ("shell", "dumpsys", "display"))
 
 
 class ProtocolError(RuntimeError):
@@ -48,7 +51,7 @@ def decode_request(raw, run_id):
 
 
 class Bridge:
-    def __init__(self, serial, run_id, evidence, run=subprocess.run, environment=None):
+    def __init__(self, serial, run_id, evidence, run=subprocess.run, environment=None, display_diagnostics=False):
         self.environment = os.environ if environment is None else environment
         if self.environment.get("GITHUB_ACTIONS") != "true":
             raise ProtocolError("requires disposable GitHub Actions host")
@@ -64,17 +67,20 @@ class Bridge:
         self.timed_out = False
         self.last_attempt = None
         self.last_succeeded = False
+        self.display_diagnostics = display_diagnostics
         evidence.mkdir(parents=True, exist_ok=True)
+        if display_diagnostics and (evidence / "display-diagnostics.jsonl").exists():
+            raise ProtocolError("refusing to append display diagnostics from an earlier controller")
 
     def event(self, kind, **fields):
         with (self.evidence / "console-events.jsonl").open("a") as output:
             output.write(json.dumps({"event": kind, "run_id": self.run_id, **fields}, sort_keys=True) + "\n")
 
-    def adb(self, *args, input=None):
+    def adb(self, *args, input=None, timeout=10):
         # All calls are explicitly serial-targeted, bounded, and shell=False.
         try:
             return self.run(["adb", "-s", self.serial, *args], input=input, text=True,
-                            capture_output=True, timeout=10, check=False)
+                            capture_output=True, timeout=timeout, check=False)
         except subprocess.TimeoutExpired:
             self.timed_out = True
             self.poisoned = True
@@ -120,6 +126,26 @@ class Bridge:
                      f"'cat > {ACK}.tmp && mv -f {ACK}.tmp {ACK}'", input=body)
         self.event("ack", **ack)
 
+    def capture_display(self, request):
+        """Read-only diagnostics after console OK, before ACK; never substitutes Activity geometry."""
+        sample = {**request, "schema_version": 1, "phase": "console_ok_before_ack",
+                  "started_monotonic_ns": time.monotonic_ns(), "reads": []}
+        try:
+            self.guard()
+            for command in DISPLAY_READS:
+                result = self.adb(*command, timeout=5)
+                sample["reads"].append(dict(command=list(command), returncode=result.returncode,
+                                            stdout=result.stdout, stderr=result.stderr))
+                if result.returncode or result.stderr or not result.stdout.strip():
+                    raise ProtocolError("display diagnostic read failed")
+        except (ProtocolError, subprocess.TimeoutExpired) as error:
+            sample["error"] = str(error)
+            raise
+        finally:
+            sample["finished_monotonic_ns"] = time.monotonic_ns()
+            with (self.evidence / "display-diagnostics.jsonl").open("a") as output:
+                output.write(json.dumps(sample, sort_keys=True) + "\n")
+
     def handle(self, request):
         if self.poisoned:
             raise ProtocolError("transport already failed; mutations cannot be retried")
@@ -142,6 +168,8 @@ class Bridge:
             if result.returncode or result.stdout.strip() != "OK" or "KO" in result.stderr:
                 raise ProtocolError("console command did not return exact OK")
             self.last_succeeded = True
+            if self.display_diagnostics:
+                self.capture_display(request)
             self.last_ack = {**request, "status": "ok"}
             self.write_ack(self.last_ack)
         except (ProtocolError, subprocess.TimeoutExpired) as error:
@@ -194,8 +222,9 @@ def main():
     parser.add_argument("--run-id", required=True)
     parser.add_argument("--evidence", type=Path, required=True)
     parser.add_argument("--stop-file", type=Path, required=True)
+    parser.add_argument("--display-diagnostics", action="store_true")
     args = parser.parse_args()
-    bridge = Bridge(args.serial, args.run_id, args.evidence)
+    bridge = Bridge(args.serial, args.run_id, args.evidence, display_diagnostics=args.display_diagnostics)
     try:
         bridge.serve(args.stop_file)
     except (ProtocolError, subprocess.TimeoutExpired, OSError) as error:
