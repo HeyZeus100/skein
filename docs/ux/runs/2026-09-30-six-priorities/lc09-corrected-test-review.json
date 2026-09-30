@@ -1,0 +1,38 @@
+{
+  "status": "PASS lint and AndroidTest Kotlin compilation only",
+  "source_base": "8042a4cef675458a9f408acf0a994fe451ad2378",
+  "changed_file": {
+    "path": "core/vault/src/androidTest/kotlin/app/skein/core/vault/repository/FileLifecycleInstrumentedTest.kt",
+    "sha256": "8b67c79e3cfb5df4688b34543ade59993bd76a82c10752d50516e29768d04f64"
+  },
+  "production_unchanged": {
+    "path": "core/vault/src/main/kotlin/app/skein/core/vault/repository/VaultRepositoryImpl.kt",
+    "sha256": "fb16ce89e88f8e0f266f24f7407ababe52ca7e6b42ec988ca1ef9f06e55286a1"
+  },
+  "log": {
+    "path": "build/agent-logs/lc09-followup-compile-1.log",
+    "sha256": "9f13c8d915cfcca19acd379ba6fb2d8eee8379dd1f7bcee9eed6a22625ba947b"
+  },
+  "executed_runtime_tests": 0,
+  "source_test_methods": 14,
+  "original_actual_run": 36694179099,
+  "original_actual_counts": {
+    "tests": 295,
+    "passed": 294,
+    "failures": 1,
+    "errors": 0,
+    "skipped": 0
+  },
+  "original_triage_sha256": "baf261db6e76a965a14eb48b0385d7537c755e089939af55106e2a3250e2ac69",
+  "identity_review_sha256": "81ca6d9965c59b1f2ba83acfe834242b22a61b48296991292e4c4206cc4a9b16",
+  "submodules": [
+    " ad9184e76a66b1001c29db9b0a3e87f646c64de0 third_party/SPIRV-Headers (1.5.4.raytracing.fixed-472-gad9184e76)",
+    " 8864cdc896bbc2a9b6eb36b3218fc9ef57908d77 third_party/Vulkan-Headers (v1.4.350)",
+    " b29c606e28a01b1bc8c1351026a0fa6e616bf6c4 third_party/llama.cpp (v0.4.1)"
+  ],
+  "limits": [
+    "Original failed run remains failed; no remote rerun or physical execution in this worker.",
+    "The corrected encrypted delete/unlink/reopen method must actually execute before its gate can pass.",
+    "Full survivor-editor UX remains fail-closed; this backend test is not production UI acceptance."
+  ]
+}

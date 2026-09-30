@@ -1,0 +1,37 @@
+{
+  "status": "PASS bounded runner/workflow source review; adapter review pending",
+  "reviewer": "fold_acceptance",
+  "review_kind": "read-only source; no tests or devices executed by reviewer",
+  "files": [
+    {
+      "path": "tools/eval/run_real_retrieval.py",
+      "sha256": "099703645f1ff03c27be9cc869072905b3f1ff6bc56e430d75092af98d7a9f08"
+    },
+    {
+      "path": "tools/eval/test_run_real_retrieval.py",
+      "sha256": "fa34bf18d1b0f0615b48d28eb1e74468e124e5779c13e80c79e129a1a8d32737"
+    },
+    {
+      "path": ".github/workflows/retrieval-diagnostic.yml",
+      "sha256": "b262682cc91e9efdea9240311baca22b215b8507b482502a42b28e5a4079b7c2"
+    }
+  ],
+  "fixture_sha256": "653b79ce9ab1c36776b5876d1b5d687a1d335f811f388b832fd0d9d258952674",
+  "findings": [],
+  "invariants": [
+    "Explicit opt-in unchanged by default; freeze arguments rejected without opt-in and full lowercase SHA shape required before external operation. Workflow passes input via quoted environment values; checkout fetch-depth0 permits ancestor checks.",
+    "Source freeze requires commit ancestry, exact tracked inventory and SHA256 byte equality for candidate roots and all explicitly named evaluator files, plus exact frozen fixture; main clean checkout checks precede device access. Workflow also performs fresh40 validation before APK build/emulator action.",
+    "Primary modes must each contain exactly40 unique known rows; six context cases always UNEXECUTED/attemptedfalse/warmupnull/samplesempty/scorenull. Component diagnostic nested data receives no primary credit.",
+    "Fixed40/22/18/24 denominators retained. Executed rows require one warmup and3successful finite-latency samples. ERROR/TIMEOUT/UNEXECUTED cannot have a score.",
+    "Absence claims checked against all three raw sample evidence lists; summary integer counters and strict successes recomputed, nondeterminism/provenance violations cannot keep strict credit.",
+    "Fresh40 status INCOMPLETE keeps quality guard from passing. Expanded ranking remains INELIGIBLE; default reports cannot silently include fresh40.",
+    "Runner explicitly labels itself structural row/count review; it does not claim independent source/span/candidate-input proof. Existing artifact/installed APK/hash/actual JUnit guards retained."
+  ],
+  "limits": [
+    "Source freeze tracks declared source roots/files, not an independent byte attestation of executing code. Existing built/installed test APK and report-byte guards still required at runtime.",
+    "Runner trusts emitted covered-span/provenance/determinism fields except structural/absence/count consistency; substantive revision/source-span/pin/input review is deferred to the adapter and independent raw-evidence review.",
+    "Revision replay4 runtime proof and six real application context paths have not executed in this review; unsupported context remains open.",
+    "Root-selected Python tests are outside this reviewer execution; no test-pass result is asserted here."
+  ],
+  "created_at_utc": "2026-09-30T09:59:38.554284+00:00"
+}

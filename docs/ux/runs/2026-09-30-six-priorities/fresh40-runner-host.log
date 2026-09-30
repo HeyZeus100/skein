@@ -1,0 +1,86 @@
+{"owner": "coordinator", "pid": 80408, "token": "5f8ba8c9-817d-45c8-b174-6df1162aa28d", "worktree": "/Users/andrewherrera/skein-worktrees/ux-integration-20260929", "started_at": "2026-09-30T09:58:18.457876+00:00", "command": ["python3", "-m", "unittest", "discover", "-s", "tools/eval", "-p", "test_run_real_retrieval.py", "-v"]}
+test_errors_and_false_empty_claims_cannot_receive_absence_credit (test_run_real_retrieval.Fresh40ContractTest.test_errors_and_false_empty_claims_cannot_receive_absence_credit) ... ok
+test_freeze_arguments_rejected_before_any_external_operation (test_run_real_retrieval.Fresh40ContractTest.test_freeze_arguments_rejected_before_any_external_operation) ... ok
+test_freeze_checks_actual_git_bytes_and_added_files (test_run_real_retrieval.Fresh40ContractTest.test_freeze_checks_actual_git_bytes_and_added_files) ... ok
+test_full_denominator_keeps_component_context_unexecuted (test_run_real_retrieval.Fresh40ContractTest.test_full_denominator_keeps_component_context_unexecuted) ... ok
+test_nondeterminism_cannot_keep_successful_summary (test_run_real_retrieval.Fresh40ContractTest.test_nondeterminism_cannot_keep_successful_summary) ... ok
+test_opt_in_requires_two_exact_full_freezes (test_run_real_retrieval.Fresh40ContractTest.test_opt_in_requires_two_exact_full_freezes) ... ok
+test_rejects_component_credit_missing_rows_and_oracle_query_substitution (test_run_real_retrieval.Fresh40ContractTest.test_rejects_component_credit_missing_rows_and_oracle_query_substitution) ... ok
+test_ablations_and_ungated_control_are_not_quality_acceptance_gates (test_run_real_retrieval.IndependentValidationTest.test_ablations_and_ungated_control_are_not_quality_acceptance_gates) ... ok
+test_freeze_preserves_source_spans_scope_and_inventory_without_executing_retrieval (test_run_real_retrieval.IndependentValidationTest.test_freeze_preserves_source_spans_scope_and_inventory_without_executing_retrieval) ... ok
+test_missing_new_validation_or_changed_freeze_cannot_pass (test_run_real_retrieval.IndependentValidationTest.test_missing_new_validation_or_changed_freeze_cannot_pass) ... ok
+test_missing_xml_cannot_pass (test_run_real_retrieval.JunitEvidenceTest.test_missing_xml_cannot_pass) ... ok
+test_only_one_executed_retrieval_case_is_accepted (test_run_real_retrieval.JunitEvidenceTest.test_only_one_executed_retrieval_case_is_accepted) ... ok
+test_failed_logcat_collection_retains_partial_bytes_and_stderr (test_run_real_retrieval.ProcessAndWorkflowTest.test_failed_logcat_collection_retains_partial_bytes_and_stderr) ... ok
+test_real_host_timeout_preserves_output (test_run_real_retrieval.ProcessAndWorkflowTest.test_real_host_timeout_preserves_output) ... ok
+test_timeout_kills_owned_descendants_even_after_wrapper_exits (test_run_real_retrieval.ProcessAndWorkflowTest.test_timeout_kills_owned_descendants_even_after_wrapper_exits) ... ok
+test_workflow_discovery_guard_rejects_zero_tests (test_run_real_retrieval.ProcessAndWorkflowTest.test_workflow_discovery_guard_rejects_zero_tests) ... ok
+test_workflow_single_command_preserves_selected_serial_and_exact_sha (test_run_real_retrieval.ProcessAndWorkflowTest.test_workflow_single_command_preserves_selected_serial_and_exact_sha) ... ok
+test_consistent_reserved_quality_pass_is_accepted (test_run_real_retrieval.ReportContractTest.test_consistent_reserved_quality_pass_is_accepted) ... ok
+test_failed_ranking_remains_valid_diagnostic_and_ineligible_hybrid (test_run_real_retrieval.ReportContractTest.test_failed_ranking_remains_valid_diagnostic_and_ineligible_hybrid) ... ok
+test_frozen_policy_metadata_cannot_drift (test_run_real_retrieval.ReportContractTest.test_frozen_policy_metadata_cannot_drift) ... ok
+test_rejects_changed_denominators_thresholds_and_hidden_integrity_failure (test_run_real_retrieval.ReportContractTest.test_rejects_changed_denominators_thresholds_and_hidden_integrity_failure) ... ok
+test_rejects_invalid_individual_rows_even_with_zero_summary_violations (test_run_real_retrieval.ReportContractTest.test_rejects_invalid_individual_rows_even_with_zero_summary_violations) ... ok
+test_rejects_missing_duplicate_or_unrecognized_query (test_run_real_retrieval.ReportContractTest.test_rejects_missing_duplicate_or_unrecognized_query) ... ok
+test_rejects_report_or_provenance_configuration_drift (test_run_real_retrieval.ReportContractTest.test_rejects_report_or_provenance_configuration_drift) ... ok
+test_requires_all_distinct_ablations (test_run_real_retrieval.ReportContractTest.test_requires_all_distinct_ablations) ... ok
+test_reserved_actual_result_signal_shape_and_repeat_arrays_are_checked (test_run_real_retrieval.ReportContractTest.test_reserved_actual_result_signal_shape_and_repeat_arrays_are_checked) ... ok
+test_reserved_failure_is_diagnostic_but_both_named_reports_and_policy_are_required (test_run_real_retrieval.ReportContractTest.test_reserved_failure_is_diagnostic_but_both_named_reports_and_policy_are_required) ... ok
+test_reserved_ideal_dcg_cannot_drift_when_all_retrieved_gains_are_zero (test_run_real_retrieval.ReportContractTest.test_reserved_ideal_dcg_cannot_drift_when_all_retrieved_gains_are_zero) ... ok
+test_reserved_kinds_aggregates_and_outcome_status_are_checked (test_run_real_retrieval.ReportContractTest.test_reserved_kinds_aggregates_and_outcome_status_are_checked) ... ok
+test_reserved_metadata_and_configuration_drift_fails (test_run_real_retrieval.ReportContractTest.test_reserved_metadata_and_configuration_drift_fails) ... ok
+test_reserved_missing_duplicate_or_changed_query_identity_fails (test_run_real_retrieval.ReportContractTest.test_reserved_missing_duplicate_or_changed_query_identity_fails) ... ok
+test_reserved_security_counts_and_actual_repetitions_cannot_be_hidden (test_run_real_retrieval.ReportContractTest.test_reserved_security_counts_and_actual_repetitions_cannot_be_hidden) ... ok
+test_apk_rebuilt_during_instrumentation_is_rejected (test_run_real_retrieval.RunnerIntegrationTest.test_apk_rebuilt_during_instrumentation_is_rejected) ... ok
+test_complete_json_with_wrong_device_digest_cannot_pass (test_run_real_retrieval.RunnerIntegrationTest.test_complete_json_with_wrong_device_digest_cannot_pass) ... ok
+test_different_installed_apk_is_rejected (test_run_real_retrieval.RunnerIntegrationTest.test_different_installed_apk_is_rejected) ... ok
+test_existing_output_is_preserved_and_rejected (test_run_real_retrieval.RunnerIntegrationTest.test_existing_output_is_preserved_and_rejected) ... ok
+test_failed_quality_is_retained_as_diagnostic_not_upgraded_to_hybrid_pass (test_run_real_retrieval.RunnerIntegrationTest.test_failed_quality_is_retained_as_diagnostic_not_upgraded_to_hybrid_pass) ... ok
+test_gradle_failure_retains_raw_harness_failure_and_real_exit (test_run_real_retrieval.RunnerIntegrationTest.test_gradle_failure_retains_raw_harness_failure_and_real_exit) ... ok
+test_hybrid_enforcement_cannot_upgrade_diagnostic_integrity (test_run_real_retrieval.RunnerIntegrationTest.test_hybrid_enforcement_cannot_upgrade_diagnostic_integrity) ... ok
+test_installed_mismatch_is_terminal_even_when_report_is_partial (test_run_real_retrieval.RunnerIntegrationTest.test_installed_mismatch_is_terminal_even_when_report_is_partial) ... ok
+test_missing_policy_freeze_fails_before_instrumentation (test_run_real_retrieval.RunnerIntegrationTest.test_missing_policy_freeze_fails_before_instrumentation) ... ok
+test_persistent_installed_apk_transport_failure_retains_all_errors (test_run_real_retrieval.RunnerIntegrationTest.test_persistent_installed_apk_transport_failure_retains_all_errors) ... ok
+test_persistent_truncated_json_fails_after_exactly_three_preserved_attempts (test_run_real_retrieval.RunnerIntegrationTest.test_persistent_truncated_json_fails_after_exactly_three_preserved_attempts) ... ok
+test_policy_source_drift_fails_before_instrumentation (test_run_real_retrieval.RunnerIntegrationTest.test_policy_source_drift_fails_before_instrumentation) ... ok
+test_prior_test_package_or_retained_data_is_not_modified_or_collected (test_run_real_retrieval.RunnerIntegrationTest.test_prior_test_package_or_retained_data_is_not_modified_or_collected) ... ok
+test_quality_enforcement_fails_after_retaining_complete_measured_evidence (test_run_real_retrieval.RunnerIntegrationTest.test_quality_enforcement_fails_after_retaining_complete_measured_evidence) ... ok
+test_refuses_non_emulator_property_before_any_mutation_or_collection (test_run_real_retrieval.RunnerIntegrationTest.test_refuses_non_emulator_property_before_any_mutation_or_collection) ... ok
+test_refuses_physical_or_ambiguous_serial_before_any_command (test_run_real_retrieval.RunnerIntegrationTest.test_refuses_physical_or_ambiguous_serial_before_any_command) ... ok
+test_removed_test_package_cannot_pass (test_run_real_retrieval.RunnerIntegrationTest.test_removed_test_package_cannot_pass) ... ok
+test_reserved_fixture_hash_cannot_be_changed (test_run_real_retrieval.RunnerIntegrationTest.test_reserved_fixture_hash_cannot_be_changed) ... ok
+test_skipped_real_xml_cannot_be_overridden_by_gradle_success (test_run_real_retrieval.RunnerIntegrationTest.test_skipped_real_xml_cannot_be_overridden_by_gradle_success) ... ok
+test_source_mismatch_fails_before_adb (test_run_real_retrieval.RunnerIntegrationTest.test_source_mismatch_fails_before_adb) ... ok
+test_stale_agp_xml_is_preserved_and_rejected (test_run_real_retrieval.RunnerIntegrationTest.test_stale_agp_xml_is_preserved_and_rejected) ... ok
+test_timeout_stops_only_selected_test_package_and_collects_failure_evidence (test_run_real_retrieval.RunnerIntegrationTest.test_timeout_stops_only_selected_test_package_and_collects_failure_evidence) ... ok
+test_transport_disconnect_retains_partial_stdout_and_verbatim_stderr (test_run_real_retrieval.RunnerIntegrationTest.test_transport_disconnect_retains_partial_stdout_and_verbatim_stderr) ... ok
+test_unavailable_report_preserves_failure_and_missing_marker (test_run_real_retrieval.RunnerIntegrationTest.test_unavailable_report_preserves_failure_and_missing_marker) ... ok
+test_untracked_source_fails_before_adb (test_run_real_retrieval.RunnerIntegrationTest.test_untracked_source_fails_before_adb) ... ok
+test_zero_exit_truncated_json_recovers_without_repeating_instrumentation (test_run_real_retrieval.RunnerIntegrationTest.test_zero_exit_truncated_json_recovers_without_repeating_instrumentation) ... ok
+test_original_raw_evidence_is_validated_without_upgrading_reserved_failure (test_run_real_retrieval.SourceOracleTest.test_original_raw_evidence_is_validated_without_upgrading_reserved_failure) ... ok
+test_tampered_actual_source_bytes_anchors_revision_or_gold_credit_fail (test_run_real_retrieval.SourceOracleTest.test_tampered_actual_source_bytes_anchors_revision_or_gold_credit_fail) ... ok
+
+----------------------------------------------------------------------
+Ran 60 tests in 1.706s
+
+OK
+Measured retrieval diagnostic retained; full hybrid gate INELIGIBLE.
+{"graph_only": "FAIL", "lexical_graph_default": "FAIL", "lexical_only": "FAIL"}
+{"experimental_candidate": "FAIL", "production_policy": "FAIL", "ungated_control": "FAIL"}
+{"gates": {"development_absence": "PASS", "development_ranking": "FAIL", "independent_validation": "FAIL", "reserved_regression": "FAIL"}, "status": "FAIL"}
+Measured retrieval diagnostic retained; full hybrid gate INELIGIBLE.
+{"graph_only": "FAIL", "lexical_graph_default": "FAIL", "lexical_only": "FAIL"}
+{"experimental_candidate": "FAIL", "production_policy": "FAIL", "ungated_control": "FAIL"}
+{"gates": {"development_absence": "PASS", "development_ranking": "FAIL", "independent_validation": "FAIL", "reserved_regression": "FAIL"}, "status": "FAIL"}
+Measured retrieval diagnostic retained; full hybrid gate INELIGIBLE.
+{"graph_only": "FAIL", "lexical_graph_default": "FAIL", "lexical_only": "FAIL"}
+{"experimental_candidate": "FAIL", "production_policy": "FAIL", "ungated_control": "FAIL"}
+{"gates": {"development_absence": "PASS", "development_ranking": "FAIL", "independent_validation": "FAIL", "reserved_regression": "FAIL"}, "status": "FAIL"}
+Measured retrieval diagnostic retained; full hybrid gate INELIGIBLE.
+{"graph_only": "FAIL", "lexical_graph_default": "FAIL", "lexical_only": "FAIL"}
+{"experimental_candidate": "FAIL", "production_policy": "FAIL", "ungated_control": "FAIL"}
+{"gates": {"development_absence": "PASS", "development_ranking": "FAIL", "independent_validation": "FAIL", "reserved_regression": "FAIL"}, "status": "FAIL"}
+Measured retrieval diagnostic retained; full hybrid gate INELIGIBLE.
+{"graph_only": "FAIL", "lexical_graph_default": "FAIL", "lexical_only": "FAIL"}
+{"experimental_candidate": "FAIL", "production_policy": "FAIL", "ungated_control": "FAIL"}
+{"gates": {"development_absence": "PASS", "development_ranking": "FAIL", "independent_validation": "FAIL", "reserved_regression": "FAIL"}, "status": "FAIL"}

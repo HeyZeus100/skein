@@ -1,0 +1,189 @@
+{
+  "status": "HOST_VERIFIED_REVISED_CANDIDATE_FREEZE",
+  "commit": "47d3ceea5affc33f8e994e75e30f10aaa9b9934e",
+  "preserved_original_candidate": "65b7cc983",
+  "preserved_original_receipt_sha256": "9349054e0e57ffc1f8f01de2b4781795007c2504b2cf5af5ae1aa4d1c01dd2c6",
+  "source_fix_reason": "Source-derived compatibility correction: IngestSteps stores actual Chunker heading metadata; independently identified before any fresh40 execution.",
+  "source_files": [
+    {
+      "path": "core/model/src/main/kotlin/app/skein/core/model/ContextualRetrieval.kt",
+      "bytes": 2233,
+      "sha256": "87e3dadf95d746e33c7711af8aad5de084aa28f5d20510b90724b69026383cf0"
+    },
+    {
+      "path": "core/rag/src/main/kotlin/app/skein/core/rag/retrieval/EvidenceSelection.kt",
+      "bytes": 1526,
+      "sha256": "5d578bb285ab2bca19205ddad425a8cc770503e575c0e4ba6d2f54b998657abb"
+    },
+    {
+      "path": "core/rag/src/main/kotlin/app/skein/core/rag/retrieval/EvidenceUnitSelector.kt",
+      "bytes": 11696,
+      "sha256": "a12b81d4eaebfcb3607725f83e50de63b6743a11ef64e23584173b0afc3d6151"
+    },
+    {
+      "path": "core/rag/src/main/kotlin/app/skein/core/rag/retrieval/ProvenanceFollowUpResolver.kt",
+      "bytes": 2951,
+      "sha256": "7be817e3dd1c739b0f8586618816241e1e62d1ff1105816a72501a19d9ff6795"
+    },
+    {
+      "path": "core/rag/src/main/kotlin/app/skein/core/rag/retrieval/RetrievalServiceImpl.kt",
+      "bytes": 13809,
+      "sha256": "1fbc77f1c5b81edee720c99eb9cb0f82935b7bb49e8056c04d305fe7f5703920"
+    },
+    {
+      "path": "core/rag/src/test/kotlin/app/skein/core/rag/retrieval/ContextualRetrievalServiceTest.kt",
+      "bytes": 8602,
+      "sha256": "cf4d3e19d3014cbd53619d0ac69dfc2a9b9b10eb5c9961c240e17997195a0214"
+    },
+    {
+      "path": "core/rag/src/test/kotlin/app/skein/core/rag/retrieval/EvidenceUnitSelectorTest.kt",
+      "bytes": 19842,
+      "sha256": "c149c66953c8bb4f9397ef63a2c5043f4ff5d34af0e331b0a6b027a1eb2f85b8"
+    },
+    {
+      "path": "core/rag/src/test/kotlin/app/skein/core/rag/retrieval/ProvenanceFollowUpResolverTest.kt",
+      "bytes": 6297,
+      "sha256": "4042cab244baf8b994483ced8b7e32d3eead8a7149d1ac496e6edcf6878b0749"
+    }
+  ],
+  "stages": {
+    "breadcrumb-negative-1": {
+      "counts": {
+        "tests": 21,
+        "failures": 4,
+        "errors": 0,
+        "skips": 0
+      },
+      "failures": [
+        {
+          "class": "app.skein.core.rag.retrieval.EvidenceUnitSelectorTest",
+          "name": "actual production heading ingest expands without embedding metadata as evidence",
+          "message": "java.util.NoSuchElementException: List is empty."
+        },
+        {
+          "class": "app.skein.core.rag.retrieval.EvidenceUnitSelectorTest",
+          "name": "fenced heading text is never promoted into breadcrumb metadata",
+          "message": "java.util.NoSuchElementException: List is empty."
+        },
+        {
+          "class": "app.skein.core.rag.retrieval.EvidenceUnitSelectorTest",
+          "name": "actual Setext Unicode CRLF ingest retains canonical byte evidence",
+          "message": "java.util.NoSuchElementException: List is empty."
+        },
+        {
+          "class": "app.skein.core.rag.retrieval.EvidenceUnitSelectorTest",
+          "name": "actual small chunks preserve last heading context through overlap and heading changes",
+          "message": "com.google.common.truth.AssertionErrorWithFacts: expected not to contain: INVALID_ANCHOR\nbut was                : [INVALID_ANCHOR]"
+        }
+      ],
+      "actual_xml": [
+        {
+          "path": "build/agent-logs/contextual-retrieval-20260930/breadcrumb-negative-1/core/rag/build/test-results/testDebugUnitTest/TEST-app.skein.core.rag.retrieval.EvidenceUnitSelectorTest.xml",
+          "bytes": 28190,
+          "sha256": "2aab7f76aa96a3a99cc014d9de8b3e1ea7f6ce2636390694e2d74c14fd3fb3d8"
+        }
+      ]
+    },
+    "breadcrumb-fixed-1": {
+      "counts": {
+        "tests": 74,
+        "failures": 0,
+        "errors": 0,
+        "skips": 0
+      },
+      "failures": [],
+      "actual_xml": [
+        {
+          "path": "build/agent-logs/contextual-retrieval-20260930/breadcrumb-fixed-1/core/rag/build/test-results/testDebugUnitTest/TEST-app.skein.core.rag.retrieval.AuthoritativeEvidenceTest.xml",
+          "bytes": 1246,
+          "sha256": "5d7ef906d3e96b844ff1d8de8f72c45ba22c2fad56b1f327fdccb53273de0617"
+        },
+        {
+          "path": "build/agent-logs/contextual-retrieval-20260930/breadcrumb-fixed-1/core/rag/build/test-results/testDebugUnitTest/TEST-app.skein.core.rag.retrieval.ContextualRetrievalServiceTest.xml",
+          "bytes": 1464,
+          "sha256": "4fd87b0e5d796d7e14c8041cdf16354a5b755491d729a83ca101e4de86935d44"
+        },
+        {
+          "path": "build/agent-logs/contextual-retrieval-20260930/breadcrumb-fixed-1/core/rag/build/test-results/testDebugUnitTest/TEST-app.skein.core.rag.retrieval.EvidenceUnitSelectorTest.xml",
+          "bytes": 3885,
+          "sha256": "5b65ee1c53b1f068f2e5097c549678cec3464aec35b3ab08dd2f552cdaa93671"
+        },
+        {
+          "path": "build/agent-logs/contextual-retrieval-20260930/breadcrumb-fixed-1/core/rag/build/test-results/testDebugUnitTest/TEST-app.skein.core.rag.retrieval.LexicalEvidenceGateTest.xml",
+          "bytes": 2117,
+          "sha256": "cff77900ba24c9fed8644fac0286f0c0113a034428ad84f9da1c50a2a60a32e2"
+        },
+        {
+          "path": "build/agent-logs/contextual-retrieval-20260930/breadcrumb-fixed-1/core/rag/build/test-results/testDebugUnitTest/TEST-app.skein.core.rag.retrieval.ProvenanceFollowUpResolverTest.xml",
+          "bytes": 1649,
+          "sha256": "2d006e6da548d3517b74899e0231e22886f36b773b59be06ab481a304929626b"
+        },
+        {
+          "path": "build/agent-logs/contextual-retrieval-20260930/breadcrumb-fixed-1/core/rag/build/test-results/testDebugUnitTest/TEST-app.skein.core.rag.retrieval.RetrievalServiceImplContractTest.xml",
+          "bytes": 1820,
+          "sha256": "1b5d77ccc804015c6b81d391cb5e984c6e9b6829b62819b7ba48316a18c1db47"
+        },
+        {
+          "path": "build/agent-logs/contextual-retrieval-20260930/breadcrumb-fixed-1/core/rag/build/test-results/testDebugUnitTest/TEST-app.skein.core.rag.retrieval.RetrievalServiceImplEndToEndTest.xml",
+          "bytes": 865,
+          "sha256": "3c47a15b8c3a475a9cc1c27bcb0c6d91ded0c74174d452178f2c84612fe9149f"
+        },
+        {
+          "path": "build/agent-logs/contextual-retrieval-20260930/breadcrumb-fixed-1/core/rag/build/test-results/testDebugUnitTest/TEST-app.skein.core.rag.retrieval.RetrievalServiceImplTest.xml",
+          "bytes": 2438,
+          "sha256": "80993d1c08fe952a4791851be478be986ba2602fa7927ac9e787a86dc635f9c3"
+        }
+      ]
+    }
+  },
+  "logs_and_control_receipts": [
+    {
+      "path": "build/agent-logs/contextual-breadcrumb-20260930/format-1.log",
+      "bytes": 2386,
+      "sha256": "858a0b84712e6e26f8506004303c9b73ce0ba8736a6901bb1ca9ba7177a0f86c"
+    },
+    {
+      "path": "build/agent-logs/contextual-breadcrumb-20260930/negative-1.log",
+      "bytes": 119737,
+      "sha256": "f7f049b6458895b1783a6b2d4d6d123b74bfb24912ca278ca46882025db275f2"
+    },
+    {
+      "path": "build/agent-logs/contextual-breadcrumb-20260930/fixed-1.log",
+      "bytes": 103701,
+      "sha256": "0cfa20db3976e4086723376d8b1e11d4becf1587b3e13e9abee4cb51e248af7c"
+    },
+    {
+      "path": "build/agent-logs/contextual-breadcrumb-20260930/negative-control-result.json",
+      "bytes": 750,
+      "sha256": "1214fcaf96786199e9c552133cdd7e81091f7f3e68a949abe59866af8a88389c"
+    },
+    {
+      "path": "build/agent-logs/contextual-breadcrumb-20260930/restoration.json",
+      "bytes": 223,
+      "sha256": "9141dd3042b1b7cccf601b36e05b4eb92e7aba7137b25c85abc9ad15493c1f44"
+    }
+  ],
+  "source_restoration": {
+    "expected_fixed_sha256": "a12b81d4eaebfcb3607725f83e50de63b6743a11ef64e23584173b0afc3d6151",
+    "actual_restored_sha256": "a12b81d4eaebfcb3607725f83e50de63b6743a11ef64e23584173b0afc3d6151",
+    "exact_restoration": true
+  },
+  "final_task_status": {
+    "rag_focused_tests": "EXECUTED 74 passes",
+    "rag_ktlint": "EXECUTED PASS",
+    "model_ktlint": "UP-TO-DATE PASS",
+    "model_isolation": "EXECUTED PASS",
+    "rag_no_raw_logging": "EXECUTED PASS",
+    "rag_no_test_doubles": "EXECUTED PASS"
+  },
+  "candidate_definition": "Existing exact source bytes OR literal production-scanner last-heading metadata + twoLF + exact source bytes accepted. Returned expanded units use only immutable revision bytes; no arbitrary prefix/suffix accepted.",
+  "frozen_before_fresh_evaluation": true,
+  "fresh40_facts_queries_labels_read": false,
+  "old_gold_or_threshold_changes": false,
+  "limitations": [
+    "New independent expanded-unit evaluator remains OPEN; old exact-chunk scorer cannot confer quality acceptance.",
+    "Actual contextual app path UNEXECUTED; candidate explicit opt-in only.",
+    "No semantic entailment/completeness/contradiction resolution or model/backend/device acceptance.",
+    "Production heading scanner conventions are intentionally reused; supported metadata does not certify complete CommonMark semantics."
+  ]
+}

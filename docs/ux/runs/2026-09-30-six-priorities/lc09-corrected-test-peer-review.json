@@ -1,0 +1,30 @@
+{
+  "status": "SOURCE_REVIEW_PASS_RUNTIME_OPEN",
+  "source": {
+    "path": "core/vault/src/androidTest/kotlin/app/skein/core/vault/repository/FileLifecycleInstrumentedTest.kt",
+    "sha256": "8b67c79e3cfb5df4688b34543ade59993bd76a82c10752d50516e29768d04f64"
+  },
+  "production_unchanged": {
+    "path": "core/vault/src/main/kotlin/app/skein/core/vault/repository/VaultRepositoryImpl.kt",
+    "sha256": "fb16ce89e88f8e0f266f24f7407ababe52ca7e6b42ec988ca1ef9f06e55286a1"
+  },
+  "actual_original_failure": [
+    {
+      "path": "/Users/andrewherrera/skein-worktrees/ux-integration-20260929/build/agent-logs/six-priorities-20260930/remote8042/ordinary/unpacked/core/vault/build/outputs/androidTest-results/connected/debug/flavors/dev/TEST-test(AVD) - 15.xml",
+      "sha256": "d23119283edfd890030292666b01075157356a1c4cf57e8dc3660d17c4717426",
+      "case": {
+        "name": "failed_post_commit_unlink_is_pending_and_recovered_after_reopen",
+        "classname": "app.skein.core.vault.repository.FileLifecycleInstrumentedTest",
+        "time": "0.082"
+      },
+      "failure_first_line": "org.junit.ComparisonFailure: expected:<[synthetic body]> but was:<[**user:** synthetic message]>"
+    }
+  ],
+  "findings": [
+    "appendMessage materializes canonical transcript before deletion (VaultRepositoryImpl665\u2013679); old pre-append creation Document is stale.",
+    "Corrected test snapshots persisted chat and full messages after append, asserts canonical transcript, then retains strict source-only detach helper comparisons.",
+    "Full messages and surviving AIOUT/CHAT invariants are now checked both after delete and after reopened one-then-zero orphan sweep.",
+    "No production change or relaxed helper. Original failure before reopen remains failed; corrected encrypted runtime requires future run."
+  ],
+  "commands_executed": "Read-only source/XML/hash review only; no tests/build/device/CI."
+}

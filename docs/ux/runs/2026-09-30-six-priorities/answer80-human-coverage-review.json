@@ -1,0 +1,81 @@
+{
+  "status": "PASS host reporting regression; no model outputs",
+  "base_commit": "20a730623c0d194892041c3bfa1b519a384ad6d9",
+  "tests": 16,
+  "passed": 16,
+  "failed": 0,
+  "errors": 0,
+  "skipped": 0,
+  "test_identities": [
+    "test_duplicate_rows_wrong_fixture_and_mock_engine_are_rejected (test_answer_eval.AnswerEvaluationTest.test_duplicate_rows_wrong_fixture_and_mock_engine_are_rejected)",
+    "test_export_has_no_gold_and_excludes_deleted_other_space_and_general_sources (test_answer_eval.AnswerEvaluationTest.test_export_has_no_gold_and_excludes_deleted_other_space_and_general_sources)",
+    "test_fixture_is_reproducible_and_has_disjoint_reserved_inputs (test_answer_eval.AnswerEvaluationTest.test_fixture_is_reproducible_and_has_disjoint_reserved_inputs)",
+    "test_missing_and_unreviewed_outputs_stay_in_denominator (test_answer_eval.AnswerEvaluationTest.test_missing_and_unreviewed_outputs_stay_in_denominator)",
+    "test_reviewed_correctness_and_claim_counts_are_separate_from_source_membership (test_answer_eval.AnswerEvaluationTest.test_reviewed_correctness_and_claim_counts_are_separate_from_source_membership)",
+    "test_timeout_and_oom_do_not_disappear_from_report (test_answer_eval.AnswerEvaluationTest.test_timeout_and_oom_do_not_disappear_from_report)",
+    "test_unknown_revision_and_fabricated_quote_are_structural_failures (test_answer_eval.AnswerEvaluationTest.test_unknown_revision_and_fabricated_quote_are_structural_failures)",
+    "test_ai_review_does_not_claim_human_grading (test_heldout_answer_eval.HeldoutAnswerEvaluationTest.test_ai_review_does_not_claim_human_grading)",
+    "test_all_timeouts_are_zero_correctness_and_never_a_quality_pass (test_heldout_answer_eval.HeldoutAnswerEvaluationTest.test_all_timeouts_are_zero_correctness_and_never_a_quality_pass)",
+    "test_changed_provenance_duplicate_rows_and_inconsistent_grade_fail (test_heldout_answer_eval.HeldoutAnswerEvaluationTest.test_changed_provenance_duplicate_rows_and_inconsistent_grade_fail)",
+    "test_complete_human_review_requires_complete_records_and_valid_sources (test_heldout_answer_eval.HeldoutAnswerEvaluationTest.test_complete_human_review_requires_complete_records_and_valid_sources)",
+    "test_conflict_cannot_lose_one_side_of_required_evidence (test_heldout_answer_eval.HeldoutAnswerEvaluationTest.test_conflict_cannot_lose_one_side_of_required_evidence)",
+    "test_full_fixture_integrity_and_gold_free_export (test_heldout_answer_eval.HeldoutAnswerEvaluationTest.test_full_fixture_integrity_and_gold_free_export)",
+    "test_hash_drift_and_pending_peer_review_fail_closed (test_heldout_answer_eval.HeldoutAnswerEvaluationTest.test_hash_drift_and_pending_peer_review_fail_closed)",
+    "test_missing_unreviewed_and_timeout_results_stay_in_full_denominator (test_heldout_answer_eval.HeldoutAnswerEvaluationTest.test_missing_unreviewed_and_timeout_results_stay_in_full_denominator)",
+    "test_missing_utf8_span_and_scope_leak_are_rejected (test_heldout_answer_eval.HeldoutAnswerEvaluationTest.test_missing_utf8_span_and_scope_leak_are_rejected)"
+  ],
+  "log_sha256": "b0b191ccec8e2f86244b16a6d3f56ee50fa90fd7fa7cea0e11c9ba5befe38229",
+  "preserved_files": [
+    {
+      "path": "testing/src/main/resources/eval/answers/manifest.json",
+      "sha256": "65598c9b06c97fbe0534361e57d626a4cbd6560826dfd49cf651f21da43333b9"
+    },
+    {
+      "path": "testing/src/main/resources/eval/answers/development.json",
+      "sha256": "ae9b6ea542f7d632d2349b467a948a76477d620becd6c812e9d7a6d54087d1ea"
+    },
+    {
+      "path": "testing/src/main/resources/eval/answers/reserved.json",
+      "sha256": "aaf2e8bcbed756164e731db5749b2849dea55df301254e9fdc32ba96533d76b3"
+    },
+    {
+      "path": "tools/eval/generate_answer_fixture.py",
+      "sha256": "968a90ca866a64c64003eb33f67ae1759e49b837d9661b7347229d84798fc2cb"
+    },
+    {
+      "path": "tools/eval/answer_eval.py",
+      "sha256": "a36fee3768caa193e8c48fc017b71b505a032f65f4c891d2b5283367c9d16047"
+    },
+    {
+      "path": "tools/eval/retrieval-policy-freeze.json",
+      "sha256": "67f5e98f5c5af25c0a2573c3d9694c0774abe24dccb2ae2caa3caa69e993554f"
+    },
+    {
+      "path": "testing/src/main/resources/eval/answers/heldout-20260930/cases.json",
+      "sha256": "b0b83e5f5f25d35b4c8d2f6ae0c0e5a4029f5ef27904413eb4e531977f7a2026"
+    },
+    {
+      "path": "testing/src/main/resources/eval/answers/heldout-20260930/manifest.json",
+      "sha256": "29b776baa901c85e31ce430069860e8fb3a1a9d402acb491e048dc99eb40898f"
+    }
+  ],
+  "changed_files": [
+    {
+      "path": "testing/src/main/resources/eval/answers/heldout-20260930/README.md",
+      "sha256": "4335bc5a174fa437c43aab3b1941c54330545ca77a1de2de1fe817668bed9575"
+    },
+    {
+      "path": "tools/eval/heldout_answer_eval.py",
+      "sha256": "cefddca1a210b078407f56acf9b1fb83ec146a0da69d23df7951599651b34e09"
+    },
+    {
+      "path": "tools/eval/test_heldout_answer_eval.py",
+      "sha256": "7a190748e56109e1a99b276282c4f84e60edd5c66f3be70a16a47a9586e3382a"
+    }
+  ],
+  "change": "human_review_complete now requires structural completeness plus at least one successful output and all successful outputs declared human reviewed; successful_outputs_human_reviewed remains separate.",
+  "limits": [
+    "No model output, human output grading, quality qualification, latency, runtime Space/lifecycle or physical device acceptance performed.",
+    "All-timeout or low-correctness reports cannot become quality passes; unchanged calculator/threshold/gold files preserved."
+  ]
+}

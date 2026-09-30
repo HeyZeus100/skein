@@ -1,0 +1,131 @@
+{
+  "status": "PASS host tooling and shell syntax; emulator hypothesis unexecuted",
+  "source_base": "8042a4cef675458a9f408acf0a994fe451ad2378",
+  "files": [
+    {
+      "path": ".github/workflows/foldable.yml",
+      "sha256": "909baf0a0d5f67fa8756367d37d6dd76e3d445464cb70c27fdeabf94b108969e"
+    },
+    {
+      "path": "tools/ci/foldable-console-bridge.py",
+      "sha256": "4259a869f1132b83b6c35ddd88fdec0caa8c686e59892b8a50855778c526b269"
+    },
+    {
+      "path": "tools/ci/run-foldable-emulator.sh",
+      "sha256": "14d0b2fbc7b752939c3132bff6922bbe9ab5898239ecf113b280d86e562cdb4a"
+    },
+    {
+      "path": "tools/ci/test_foldable_console.py",
+      "sha256": "140ebb2726518a54c64276ac4a245a0dbd393a81d934bd61a140f935e7759ade"
+    },
+    {
+      "path": "tools/ci/test_foldable_workflow.py",
+      "sha256": "e0c1dc7d5ea7dc731f0c81d79524c01b53c0b83d70b3f592511751ed57adac4f"
+    },
+    {
+      "path": "tools/ci/test_verify_foldable.py",
+      "sha256": "1b5a9a63222ef145d1364c05c918269ebb00fc17301ea1a7c5e8efb8b8633c3e"
+    },
+    {
+      "path": "tools/ci/verify-foldable.py",
+      "sha256": "27e8e0dc07dd703652cc8bb948ee3b4b18d33682bbc7d50ce39e65e3d36a45cc"
+    }
+  ],
+  "unchanged_activity_files": [
+    {
+      "path": "app/src/foldableTest/kotlin/app/skein/foldable/FoldableDeviceControl.kt",
+      "sha256": "66b952d1b17b696240def8e33367191af029b0e1db4a2feccdb594e81879cb35"
+    },
+    {
+      "path": "app/src/foldableTest/kotlin/app/skein/foldable/MainActivityFoldableGateTest.kt",
+      "sha256": "c1a45b458456edef2ce9c3dd19807fa2bce16b57b36895329862ea7ef19d7076"
+    }
+  ],
+  "logs": [
+    {
+      "path": "build/agent-logs/al16-headful-host-tests-1.log",
+      "sha256": "136e6e6de514b94b875de9f8655edab28b71e1de963a3fff30258d9ad7d176b4"
+    },
+    {
+      "path": "build/agent-logs/al16-headful-host-tests-2.log",
+      "sha256": "40b9f17aff6dc0d422a26676df0833bbd89d45dba97f67c34bdf4902c4b8d9c9"
+    },
+    {
+      "path": "build/agent-logs/al16-headful-shell-syntax-1.log",
+      "sha256": "84bcfa031fc3e115ef926f44042ad72c18394caa72a9a0b093677d6d33ec5576"
+    }
+  ],
+  "final_host_tests": {
+    "tests": 37,
+    "passed": 37,
+    "failed": 0,
+    "errors": 0,
+    "skipped": 0,
+    "identities": [
+      "test_changed_old_out_of_order_or_reused_nonce_cannot_mutate (test_foldable_console.ConsoleProtocolTest.test_changed_old_out_of_order_or_reused_nonce_cannot_mutate)",
+      "test_cleanup_unfold_is_only_after_owned_fold_and_is_guarded (test_foldable_console.ConsoleProtocolTest.test_cleanup_unfold_is_only_after_owned_fold_and_is_guarded)",
+      "test_console_ko_is_not_success (test_foldable_console.ConsoleProtocolTest.test_console_ko_is_not_success)",
+      "test_display_collection_refuses_prior_evidence (test_foldable_console.ConsoleProtocolTest.test_display_collection_refuses_prior_evidence)",
+      "test_display_reads_are_bound_to_one_exchange_and_replay_does_not_recapture (test_foldable_console.ConsoleProtocolTest.test_display_reads_are_bound_to_one_exchange_and_replay_does_not_recapture)",
+      "test_display_timeout_is_preserved_and_never_allows_another_posture_mutation (test_foldable_console.ConsoleProtocolTest.test_display_timeout_is_preserved_and_never_allows_another_posture_mutation)",
+      "test_exact_replay_only_replies_with_matched_cached_ack (test_foldable_console.ConsoleProtocolTest.test_exact_replay_only_replies_with_matched_cached_ack)",
+      "test_exit_aware_read_keeps_real_errors_and_malformed_data_fatal (test_foldable_console.ConsoleProtocolTest.test_exit_aware_read_keeps_real_errors_and_malformed_data_fatal)",
+      "test_fold_timeout_withholds_all_further_posture_mutations (test_foldable_console.ConsoleProtocolTest.test_fold_timeout_withholds_all_further_posture_mutations)",
+      "test_guards_reject_physical_serial_ci_and_invalid_run_before_any_command (test_foldable_console.ConsoleProtocolTest.test_guards_reject_physical_serial_ci_and_invalid_run_before_any_command)",
+      "test_json_rejects_stale_unknown_duplicate_oversized_and_wrong_shapes (test_foldable_console.ConsoleProtocolTest.test_json_rejects_stale_unknown_duplicate_oversized_and_wrong_shapes)",
+      "test_private_request_read_has_fixed_path_and_byte_limit (test_foldable_console.ConsoleProtocolTest.test_private_request_read_has_fixed_path_and_byte_limit)",
+      "test_request_read_timeout_after_fold_also_withholds_cleanup (test_foldable_console.ConsoleProtocolTest.test_request_read_timeout_after_fold_also_withholds_cleanup)",
+      "test_shell_stop_escalates_and_reaps_a_stalled_owned_controller (test_foldable_console.ConsoleProtocolTest.test_shell_stop_escalates_and_reaps_a_stalled_owned_controller)",
+      "test_stop_and_lifetime_are_bounded_and_recorded (test_foldable_console.ConsoleProtocolTest.test_stop_and_lifetime_are_bounded_and_recorded)",
+      "test_timeout_is_poisoned_error_ack_without_retry (test_foldable_console.ConsoleProtocolTest.test_timeout_is_poisoned_error_ack_without_retry)",
+      "test_uninstalled_package_and_missing_private_file_wait_without_parsing_diagnostics (test_foldable_console.ConsoleProtocolTest.test_uninstalled_package_and_missing_private_file_wait_without_parsing_diagnostics)",
+      "test_wrong_qemu_or_avd_cannot_mutate_or_write_ack (test_foldable_console.ConsoleProtocolTest.test_wrong_qemu_or_avd_cannot_mutate_or_write_ack)",
+      "test_espresso_pin_and_test_only_network_manifest_are_verified (test_foldable_workflow.FoldableWorkflowContractTest.test_espresso_pin_and_test_only_network_manifest_are_verified)",
+      "test_exact_and_compatibility_profiles_are_explicit_and_labelled (test_foldable_workflow.FoldableWorkflowContractTest.test_exact_and_compatibility_profiles_are_explicit_and_labelled)",
+      "test_failed_display_owner_publication_terminates_only_the_owned_child (test_foldable_workflow.FoldableWorkflowContractTest.test_failed_display_owner_publication_terminates_only_the_owned_child)",
+      "test_linux_emulator_library_is_installed_before_the_version_probe (test_foldable_workflow.FoldableWorkflowContractTest.test_linux_emulator_library_is_installed_before_the_version_probe)",
+      "test_owned_display_cleanup_never_signals_a_reused_pid_and_bounds_escalation (test_foldable_workflow.FoldableWorkflowContractTest.test_owned_display_cleanup_never_signals_a_reused_pid_and_bounds_escalation)",
+      "test_scoped_xvfb_is_started_before_emulator_and_always_cleaned (test_foldable_workflow.FoldableWorkflowContractTest.test_scoped_xvfb_is_started_before_emulator_and_always_cleaned)",
+      "test_sdk_receipts_hash_actual_image_and_kernel_bytes_and_refuse_missing_payloads (test_foldable_workflow.FoldableWorkflowContractTest.test_sdk_receipts_hash_actual_image_and_kernel_bytes_and_refuse_missing_payloads)",
+      "test_spaced_catalog_id_is_exact_and_missing_profile_never_falls_back (test_foldable_workflow.FoldableWorkflowContractTest.test_spaced_catalog_id_is_exact_and_missing_profile_never_falls_back)",
+      "test_ack_before_console_or_non_alternating_posture_cannot_pass (test_verify_foldable.FoldableEvidenceReviewTest.test_ack_before_console_or_non_alternating_posture_cannot_pass)",
+      "test_counts_actual_cases_and_hashes_source_bound_artifacts (test_verify_foldable.FoldableEvidenceReviewTest.test_counts_actual_cases_and_hashes_source_bound_artifacts)",
+      "test_display_diagnostics_cannot_be_missing_stale_partial_or_failed (test_verify_foldable.FoldableEvidenceReviewTest.test_display_diagnostics_cannot_be_missing_stale_partial_or_failed)",
+      "test_empty_failure_skip_and_duplicate_cannot_pass (test_verify_foldable.FoldableEvidenceReviewTest.test_empty_failure_skip_and_duplicate_cannot_pass)",
+      "test_failed_mismatched_duplicate_or_unstopped_console_cannot_pass (test_verify_foldable.FoldableEvidenceReviewTest.test_failed_mismatched_duplicate_or_unstopped_console_cannot_pass)",
+      "test_generic_profile_is_explicit_and_preserves_pixel_acceptance_gate (test_verify_foldable.FoldableEvidenceReviewTest.test_generic_profile_is_explicit_and_preserves_pixel_acceptance_gate)",
+      "test_geometry_must_show_wider_inner_window_and_same_activity_per_journey (test_verify_foldable.FoldableEvidenceReviewTest.test_geometry_must_show_wider_inner_window_and_same_activity_per_journey)",
+      "test_missing_hinge_or_wrong_actual_profile_cannot_pass (test_verify_foldable.FoldableEvidenceReviewTest.test_missing_hinge_or_wrong_actual_profile_cannot_pass)",
+      "test_non_activity_missing_or_contradictory_window_geometry_cannot_pass (test_verify_foldable.FoldableEvidenceReviewTest.test_non_activity_missing_or_contradictory_window_geometry_cannot_pass)",
+      "test_sdk_image_receipts_cannot_be_missing_metadata_only_or_bound_to_another_config (test_verify_foldable.FoldableEvidenceReviewTest.test_sdk_image_receipts_cannot_be_missing_metadata_only_or_bound_to_another_config)",
+      "test_wrong_source_missing_case_and_malformed_xml_cannot_pass (test_verify_foldable.FoldableEvidenceReviewTest.test_wrong_source_missing_case_and_malformed_xml_cannot_pass)"
+    ]
+  },
+  "first_host_run": {
+    "tests": 37,
+    "passed": 36,
+    "failed": 1,
+    "cause": "Static source-text assertion still used shell -nolisten tcp string after actual launcher became Python argv; exact real launcher argv test already passed.",
+    "preserved_receipt_sha256": "683583ce50a48235800930f865a50c428a489f89b55c3c90bb8562896b3dc1c8"
+  },
+  "original_diagnosis_sha256": "29e758d5e46ea06bb6366975e044977f31242051571f0c033ab461f21c8e3161",
+  "peer_reviews": [
+    {
+      "scope": "initial source excluding later image payload extension",
+      "sha256": "8d52f7707f7f450d48310aa9095bf94846da902a9f4562bcf64409fc663c0225"
+    },
+    {
+      "scope": "owned startup child correction excluding later image payload extension",
+      "sha256": "dbc42f7c16d0d505283d57ca67359650647a51a9fc7dd37f132cb3d121145093"
+    }
+  ],
+  "current_image_receipt_scope": "Copied AVD image.sysdir.1 selects exact API35/google_apis/x86_64 package; require metadata matches and no extra search paths/explicit boot overrides. Hash actual nonempty regular *.img and kernel-ranchu* files, with mandatory system/vendor/ramdisk/kernel; include emulator executable files and metadata. Review requires raw payload/config binding but does not independently possess host SDK bytes.",
+  "limits": [
+    "No emulator, native build, physical Fold, model or new runtime download was performed.",
+    "Qt-window hypothesis inferred from pinned upstream source; that source is not attested to original emulator37.1.11 build15917651. Original run36598598934 remains two failed CLOSED Activity assertions, six-exchange gate unmet.",
+    "Host SDK payload digests are host file receipts, not emulator process or original failed-image equality attestation. Actual runtime package contents/hashes will be obtained only on future CI execution.",
+    "Exactly six original console exchanges and five Activity geometry records/600dp/orientation/same-Activity assertions preserved; display snapshots never replace Activity metrics.",
+    "Generic7.6in Foldable remains compatibility-only; exact Pixel9 profile and unlocked owner Fold A-G acceptance remain open.",
+    "Current image-payload extension has host positive/negative tests; final coordinator source review still pending."
+  ]
+}

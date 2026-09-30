@@ -1,0 +1,26 @@
+{
+  "status": "PASS host runner regressions only; no fresh40 runtime outputs",
+  "tests": 60,
+  "passed": 60,
+  "failure": 0,
+  "errors": 0,
+  "skips": 0,
+  "log_sha256": "a2dec0eb274a302a27c9868cdaf3d496e77978decf38647e9f96faa5ee6bc45a",
+  "source_files": [
+    {
+      "path": "tools/eval/run_real_retrieval.py",
+      "sha256": "099703645f1ff03c27be9cc869072905b3f1ff6bc56e430d75092af98d7a9f08"
+    },
+    {
+      "path": "tools/eval/test_run_real_retrieval.py",
+      "sha256": "fa34bf18d1b0f0615b48d28eb1e74468e124e5779c13e80c79e129a1a8d32737"
+    },
+    {
+      "path": ".github/workflows/retrieval-diagnostic.yml",
+      "sha256": "b262682cc91e9efdea9240311baca22b215b8507b482502a42b28e5a4079b7c2"
+    }
+  ],
+  "candidate_freeze_integrated": "687c8eea8",
+  "actual_app_context": "UNEXECUTED",
+  "note": "Printed retrieval diagnostics in this host-test log are synthetic mocked test cases, not new measured retrieval quality."
+}

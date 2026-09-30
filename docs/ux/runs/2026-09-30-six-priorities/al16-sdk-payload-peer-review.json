@@ -1,0 +1,35 @@
+{
+  "status": "SOURCE_REVIEW_PASS_RUNTIME_OPEN",
+  "commit": "f46279f3a5cda98fca7386b2e47c105079fde4d7",
+  "scope": "Final SDK image payload attribution extension only; previous process/diagnostic source reviews remain sealed",
+  "files": [
+    {
+      "path": "tools/ci/run-foldable-emulator.sh",
+      "sha256": "14d0b2fbc7b752939c3132bff6922bbe9ab5898239ecf113b280d86e562cdb4a"
+    },
+    {
+      "path": "tools/ci/verify-foldable.py",
+      "sha256": "27e8e0dc07dd703652cc8bb948ee3b4b18d33682bbc7d50ce39e65e3d36a45cc"
+    },
+    {
+      "path": "tools/ci/test_foldable_workflow.py",
+      "sha256": "e0c1dc7d5ea7dc731f0c81d79524c01b53c0b83d70b3f592511751ed57adac4f"
+    },
+    {
+      "path": "tools/ci/test_verify_foldable.py",
+      "sha256": "1b5a9a63222ef145d1364c05c918269ebb00fc17301ea1a7c5e8efb8b8633c3e"
+    }
+  ],
+  "host_validation_receipt_sha256": "a57968978176dea09f1fe7c8174db170272d921bb3085ae1c9afb83a7ea517de",
+  "findings": [
+    "run-foldable-emulator.sh124\u2013154 derives SDK root and exact API35/google_apis/x86_64 package from retained AVD config, rejects duplicate keys, extra sysdirs, explicit boot overrides and symlink/redirected package, verifies source.properties API/tag/ABI.",
+    "run-foldable-emulator.sh155\u2013181 hashes actual nonempty regular package *.img and kernel-ranchu* bytes with mandatory system/vendor/ramdisk/kernel, retains emulator binaries and properties, and binds receipt to config SHA256. No guessed package or version-only substitution.",
+    "verify-foldable.py54\u201383 requires config digest/sysdir binding, distinct nonempty payload inventory, mandatory payload/kernel records and SHA256/positive-size shape. Raw SDK files are not retained in artifact, so this validates host receipt integrity/shape, not independent recomputation of remote image bytes.",
+    "Synthetic host tests exercise actual hashing code on real temporary bytes, digest change after byte mutation, missing payload, extra path/override and wrong package failures; verifier negatives reject missing/config-mismatched metadata-only receipts. Source-only reviewer did not rerun these tests."
+  ],
+  "limits": [
+    "Actual remote SDK hashes will be collected on future execution; no runtime or installed-emulator attestation yet.",
+    "No equality claim to original failed emulator image, no proof Qt path fixes geometry.",
+    "Exact six console exchanges/five Activity samples/geometry thresholds remain required, generic compatibility does not close exact profile or physical Fold gates."
+  ]
+}
