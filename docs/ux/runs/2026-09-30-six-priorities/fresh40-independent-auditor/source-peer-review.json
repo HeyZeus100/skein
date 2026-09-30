@@ -1,0 +1,39 @@
+{
+  "verdict": "PASS_BOUNDED_SOURCE_REVIEW",
+  "source_receipt_sha256": "f585f781b4f24ca50748b038595e9fec4b4172d15f844eaac5cbc2c620ba68ff",
+  "files": [
+    {
+      "path": "/Users/andrewherrera/skein-worktrees/answer-quality-heldout-20260930/build/agent-logs/fresh40-independent-audit/audit_fresh40.py",
+      "sha256": "97c60fc08e1d95bd4d74f8179fea9ff11665b6e6691c026955ff2f2e4a966fec",
+      "bytes": 37428
+    },
+    {
+      "path": "/Users/andrewherrera/skein-worktrees/answer-quality-heldout-20260930/build/agent-logs/fresh40-independent-audit/test_audit_fresh40.py",
+      "sha256": "a915c393e9711f502cb484af27b3d44261beaee9f1b6bb871b049c543f2a4452",
+      "bytes": 10563
+    },
+    {
+      "path": "/Users/andrewherrera/skein-worktrees/answer-quality-heldout-20260930/build/agent-logs/fresh40-independent-audit/README.md",
+      "sha256": "2244214dc104933d7e43f2cbe190421942f1a6ebe956c048c6260ddfa3215dd4",
+      "bytes": 2650
+    }
+  ],
+  "reviewer_tests_executed": false,
+  "candidate_outputs_read": false,
+  "checks": [
+    "Independent frozen Git object inventory, fixture checksum, raw JSON digest, duplicate-key/nonfinite refusal.",
+    "Source/Space/revision/UTF8 byte identities and full indexed-row attribution bound before source-span credit.",
+    "Original per-query candidate ranking signals distinguished from full-index enumeration scores; raw rank8 cap consumes malformed entries without rank9 backfill.",
+    "Complete span union and competing-source coverage; member reuse, overlap and out-of-scope evidence cannot receive credit.",
+    "Fixed primary40/22answer/18absence/24span accounting; six contextual primary rows remain unexecuted, component diagnostics excluded.",
+    "Stage failures/timeouts are not empty-correct rejections; measured repetitions and result determinism gate strict success.",
+    "Bounded independent revision hash and whole-short-note chunk map inspected against production source. All24 frozen current/historical bodies use only ASCII space/LF whitespace, no Nl/No numeric categories or supplementary characters, so broader Unicode tokenizer parity differences do not affect this pinned corpus.",
+    "Full-block partition and single-H1 final breadcrumb preserve entire raw body, including final newline."
+  ],
+  "limits": [
+    "Source review only by this reviewer; sibling separately reported20 executed synthetic controls.",
+    "No actual fresh40 output, remote runtime, database bytes or installed APK observed.",
+    "Warmup provenance violations remain separately retained; PASS_RAW_REPORT_CONSISTENCY is not retrieval-quality PASS.",
+    "Independent single-chunk BLAKE3 and short-note packing checks are intentionally pinned-corpus bounds, not a general chunker/tokenizer oracle."
+  ]
+}

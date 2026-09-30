@@ -1,0 +1,67 @@
+{
+  "commit": "428b0c7a210592f2cc3753b5cf8e184a6aac359f",
+  "base": "05ca780cdcb75044ea93af6a2d943454295697b7",
+  "bead": "skein-y2xm",
+  "signed_off": true,
+  "worktree_clean": true,
+  "scope": [
+    {
+      "path": "core/inference/src/main/kotlin/app/skein/core/inference/engine/LlamaCppEngine.kt",
+      "sha256": "5ba6d3c603b0ef3e1eed249152c487668209b07eaa6d0b8a2b755e7eb285f7e8"
+    },
+    {
+      "path": "core/inference/src/test/kotlin/app/skein/core/inference/engine/LlamaCppEngineBehaviourTest.kt",
+      "sha256": "4485f4afebc916335be27c46f40de3769d665debfbe7d265ab1cd60ee303bc7a"
+    },
+    {
+      "path": "core/inference/src/test/kotlin/app/skein/core/inference/engine/FakeInferenceService.kt",
+      "sha256": "06c705d25c09af3e6cdc35aeb26151a32a54f76dd6d23e697177bfed486c5313"
+    }
+  ],
+  "test_results": {
+    "fixed": {
+      "xml": 21,
+      "passed": 333,
+      "failed": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    "negative": {
+      "tests": 3,
+      "intended_failures": 3,
+      "errors": 0,
+      "skipped": 0,
+      "production_exact_base": true
+    },
+    "harness_failure_retained": "negative-1.log accidental JVM static shadow override; fixed without production mutation"
+  },
+  "evidence": [
+    {
+      "path": "build/agent-logs/inference-cancel-race/source-ready-1.json",
+      "sha256": "98f3a9bbc56df57536b1d40b5e9d33eed799d0b1c8c6c752116906879bfbdbcd"
+    },
+    {
+      "path": "build/agent-logs/inference-cancel-race/fixed-review.json",
+      "sha256": "efa79052db636bddcbaf59fd07b9f392614d4d7c99f2d43311180747c3413380"
+    },
+    {
+      "path": "build/agent-logs/inference-cancel-race/fixed-actual.zip",
+      "sha256": "c2935ba39fb62fd358caaeb755cd1e4912d0c848a8ef84f607aa34207ade0fdd"
+    },
+    {
+      "path": "build/agent-logs/inference-cancel-race/negative-actual.zip",
+      "sha256": "4efc934530ed7363b4a6bc91221c64b3cc884dfa4ca5dc8fb543ff3bab3a16e9"
+    },
+    {
+      "path": "build/agent-logs/inference-cancel-race/independent-peer-review.json",
+      "sha256": "75eb4b9d479f45283f4ef38f431c084a6c122ac1b9e2c920d7d2a028bb71e5f8"
+    }
+  ],
+  "build_slot": "RELEASED",
+  "root_owns_integration_push_and_beads": true,
+  "limitations": [
+    "No fresh CI at corrected source yet; original05ca CI failure remains retained.",
+    "JVM fake-service and real shadow descriptor lifetime evidence only; native/physical acceptance remains open.",
+    "No model/content/device changes; retrieval candidate/evaluator/golds/thresholds unchanged."
+  ]
+}

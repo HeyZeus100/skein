@@ -1,0 +1,21 @@
+{
+  "base": "05ca780cdcb75044ea93af6a2d943454295697b7",
+  "files": [
+    {
+      "path": "core/inference/src/main/kotlin/app/skein/core/inference/engine/LlamaCppEngine.kt",
+      "sha256": "5ba6d3c603b0ef3e1eed249152c487668209b07eaa6d0b8a2b755e7eb285f7e8"
+    },
+    {
+      "path": "core/inference/src/test/kotlin/app/skein/core/inference/engine/LlamaCppEngineBehaviourTest.kt",
+      "sha256": "4485f4afebc916335be27c46f40de3769d665debfbe7d265ab1cd60ee303bc7a"
+    },
+    {
+      "path": "core/inference/src/test/kotlin/app/skein/core/inference/engine/FakeInferenceService.kt",
+      "sha256": "06c705d25c09af3e6cdc35aeb26151a32a54f76dd6d23e697177bfed486c5313"
+    }
+  ],
+  "negative_archive": "negative-actual.zip",
+  "negative_archive_sha256": "4efc934530ed7363b4a6bc91221c64b3cc884dfa4ca5dc8fb543ff3bab3a16e9",
+  "production_negative_tests": 3,
+  "new_tests_total": 4
+}

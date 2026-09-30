@@ -1,0 +1,62 @@
+{
+  "status": "PASS_20_SYNTHETIC_AUDITOR_CONTROLS_RUNTIME_UNEXECUTED",
+  "created_at_utc": "2026-09-30T10:38:39.492014+00:00",
+  "source_ready_receipt_sha256": "f585f781b4f24ca50748b038595e9fec4b4172d15f844eaac5cbc2c620ba68ff",
+  "files": [
+    {
+      "path": "/Users/andrewherrera/skein-worktrees/answer-quality-heldout-20260930/build/agent-logs/fresh40-independent-audit/audit_fresh40.py",
+      "sha256": "97c60fc08e1d95bd4d74f8179fea9ff11665b6e6691c026955ff2f2e4a966fec",
+      "bytes": 37428
+    },
+    {
+      "path": "/Users/andrewherrera/skein-worktrees/answer-quality-heldout-20260930/build/agent-logs/fresh40-independent-audit/test_audit_fresh40.py",
+      "sha256": "a915c393e9711f502cb484af27b3d44261beaee9f1b6bb871b049c543f2a4452",
+      "bytes": 10563
+    },
+    {
+      "path": "/Users/andrewherrera/skein-worktrees/answer-quality-heldout-20260930/build/agent-logs/fresh40-independent-audit/README.md",
+      "sha256": "2244214dc104933d7e43f2cbe190421942f1a6ebe956c048c6260ddfa3215dd4",
+      "bytes": 2650
+    }
+  ],
+  "tests": {
+    "actual_testcase_results": [
+      "test_adjacent_valid_ranges_union_and_one_byte_gap_does_not (test_audit_fresh40.AuditorControls.test_adjacent_valid_ranges_union_and_one_byte_gap_does_not)",
+      "test_conflict_requires_both_spans (test_audit_fresh40.AuditorControls.test_conflict_requires_both_spans)",
+      "test_determinism_compares_raw_results_without_latency (test_audit_fresh40.AuditorControls.test_determinism_compares_raw_results_without_latency)",
+      "test_duplicate_result_preserves_first_rank_and_consumes_second (test_audit_fresh40.AuditorControls.test_duplicate_result_preserves_first_rank_and_consumes_second)",
+      "test_empty_stage_error_cannot_be_labelled_executed (test_audit_fresh40.AuditorControls.test_empty_stage_error_cannot_be_labelled_executed)",
+      "test_exact_source_byte_forgery_cannot_get_credit (test_audit_fresh40.AuditorControls.test_exact_source_byte_forgery_cannot_get_credit)",
+      "test_expanded_member_changed_text_or_signal_is_rejected (test_audit_fresh40.AuditorControls.test_expanded_member_changed_text_or_signal_is_rejected)",
+      "test_fabricated_covered_count_is_rejected (test_audit_fresh40.AuditorControls.test_fabricated_covered_count_is_rejected)",
+      "test_indexed_baseline_does_not_accept_forged_embedding_breadcrumb (test_audit_fresh40.AuditorControls.test_indexed_baseline_does_not_accept_forged_embedding_breadcrumb)",
+      "test_invalid_eighth_rank_is_not_backfilled_by_ninth (test_audit_fresh40.AuditorControls.test_invalid_eighth_rank_is_not_backfilled_by_ninth)",
+      "test_json_duplicate_keys_and_nonfinite_values_are_refused (test_audit_fresh40.AuditorControls.test_json_duplicate_keys_and_nonfinite_values_are_refused)",
+      "test_legitimate_raw_member_and_full_span (test_audit_fresh40.AuditorControls.test_legitimate_raw_member_and_full_span)",
+      "test_partial_source_span_never_counts_as_whole (test_audit_fresh40.AuditorControls.test_partial_source_span_never_counts_as_whole)",
+      "test_public_blake3_vectors_and_bounded_refusal (test_audit_fresh40.AuditorControls.test_public_blake3_vectors_and_bounded_refusal)",
+      "test_raw_admission_is_preserved_even_when_provenance_invalid (test_audit_fresh40.AuditorControls.test_raw_admission_is_preserved_even_when_provenance_invalid)",
+      "test_reused_member_and_overlap_invalidate_both (test_audit_fresh40.AuditorControls.test_reused_member_and_overlap_invalidate_both)",
+      "test_short_note_breadcrumb_and_token_count_are_independent (test_audit_fresh40.AuditorControls.test_short_note_breadcrumb_and_token_count_are_independent)",
+      "test_stale_revision_and_wrong_space_and_forbidden_doc_are_rejected (test_audit_fresh40.AuditorControls.test_stale_revision_and_wrong_space_and_forbidden_doc_are_rejected)",
+      "test_unexecuted_context_cannot_carry_score_or_samples (test_audit_fresh40.AuditorControls.test_unexecuted_context_cannot_carry_score_or_samples)",
+      "test_utf8_mid_character_offset_is_invalid (test_audit_fresh40.AuditorControls.test_utf8_mid_character_offset_is_invalid)"
+    ],
+    "tests": 20,
+    "passed": 20,
+    "failed": 0,
+    "errors": 0,
+    "skipped": 0
+  },
+  "log": "/Users/andrewherrera/skein-worktrees/answer-quality-heldout-20260930/build/agent-logs/fresh40-independent-audit/synthetic-controls-1.log",
+  "log_sha256": "96f223a86cdce11d29e4909f45378bb922d0349e86e452967191b4b658c11716",
+  "exit": 0,
+  "lease_released_by_helper": true,
+  "fresh40_outputs_read": false,
+  "build_device_ci_commands": false,
+  "limits": [
+    "Only synthetic host control tests ran; no fresh40 report or candidate runtime has executed.",
+    "Source-only peer review found no blocker so far; final parity check paused for higher-priority CI failure.",
+    "Source files remain exactly frozen source-ready-1 bytes."
+  ]
+}

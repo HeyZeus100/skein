@@ -1,0 +1,236 @@
+{
+  "status": "PASS bounded P0 source review and independent negative/fixed artifact review",
+  "reviewer": "fold_acceptance",
+  "reviewer_execution": "Read-only source/artifact/hash/XML review; no builds, tests, CI or device commands",
+  "base": "05ca780cdcb75044ea93af6a2d943454295697b7",
+  "source_ready_receipt_sha256": "98f3a9bbc56df57536b1d40b5e9d33eed799d0b1c8c6c752116906879bfbdbcd",
+  "source_files": [
+    {
+      "path": "core/inference/src/main/kotlin/app/skein/core/inference/engine/LlamaCppEngine.kt",
+      "sha256": "5ba6d3c603b0ef3e1eed249152c487668209b07eaa6d0b8a2b755e7eb285f7e8"
+    },
+    {
+      "path": "core/inference/src/test/kotlin/app/skein/core/inference/engine/LlamaCppEngineBehaviourTest.kt",
+      "sha256": "4485f4afebc916335be27c46f40de3769d665debfbe7d265ab1cd60ee303bc7a"
+    },
+    {
+      "path": "core/inference/src/test/kotlin/app/skein/core/inference/engine/FakeInferenceService.kt",
+      "sha256": "06c705d25c09af3e6cdc35aeb26151a32a54f76dd6d23e697177bfed486c5313"
+    }
+  ],
+  "findings_remaining": [],
+  "source_invariants": [
+    {
+      "anchor": "LlamaCppEngine.kt:375",
+      "claim": "Descriptor ownership starts immediately after successful encode, surrounds callback construction and IO dispatcher admission, and closes once in finally immediately after the transaction or pre-entry cancellation. PromptSpiller still closes partial encodes itself."
+    },
+    {
+      "anchor": "LlamaCppEngine.kt:444",
+      "claim": "submissionAttempted is set immediately before the remote generate call, so a possibly delivered throwing transaction is cancelled; requests never entering submission are not cancelled."
+    },
+    {
+      "anchor": "LlamaCppEngine.kt:453",
+      "claim": "awaitClose only suspends. The outer finally runs whether cancellation wins before registration, the transaction throws, callbacks finish/refuse, or the flow closes."
+    },
+    {
+      "anchor": "LlamaCppEngine.kt:455",
+      "claim": "Only CAS of this exact holder may clear activeStream or reset GENERATING to READY. Already-revoked or replacement session state is preserved."
+    },
+    {
+      "anchor": "LlamaCppEngine.kt:471",
+      "claim": "Cleanup cancels the captured original service and request ID, outside lifecycle lock, with failure suppressed so original cancellation/transport error is retained. Existing callback holder/ID guards remain unchanged."
+    }
+  ],
+  "original_remote_failure": {
+    "run": 36702345809,
+    "xml_sha256": "13cded9d93f75399738c947d185c280c0c8ea12942206dfe65fd9d003f60237e",
+    "tests": 58,
+    "passed": 57,
+    "failed": 1,
+    "failure": "closingTheFlowCancelsTheRequest expected cancel1 but actual[]"
+  },
+  "negative_control": {
+    "archive_sha256": "4efc934530ed7363b4a6bc91221c64b3cc884dfa4ca5dc8fb543ff3bab3a16e9",
+    "production_exact_git_base": true,
+    "tests": 3,
+    "failed": 3,
+    "errors": 0,
+    "skipped": 0,
+    "cases": [
+      {
+        "name": "throwingSubmittedTransactionStillCancelsWithoutMaskingOriginalFailure",
+        "failure_message": "com.google.common.truth.AssertionErrorWithFacts: missing (1): 1\n---\nexpected   : [1]\nbut was    : []",
+        "test_body_sha256": "f4e24c3208786e9cc3c20115eb9ab664be4fa8bcd4d73baf80de33b5af0f6f57",
+        "same_body_passed_fixed": true
+      },
+      {
+        "name": "cancellationBeforeGenerateReturnsStillCancelsSubmittedRequest",
+        "failure_message": "com.google.common.truth.AssertionErrorWithFacts: missing (1): 1\n---\nexpected   : [1]\nbut was    : []",
+        "test_body_sha256": "bb6f82008824320158fa0d1b058d3ff6d39cac5e523fe12ba40f9e3227bd49d1",
+        "same_body_passed_fixed": true
+      },
+      {
+        "name": "cancellationBeforeIoEntryClosesUnsubmittedSpillDescriptors",
+        "failure_message": "com.google.common.truth.AssertionErrorWithFacts: expected to be less than: 0\nbut was                 : 135",
+        "test_body_sha256": "ddac4175afd6424a57d473cec8eaefb18ec2749e896e14b0bb8be1c912b2fa1c",
+        "same_body_passed_fixed": true
+      }
+    ],
+    "fake_service_identical_to_fixed": true,
+    "all6manifest_files_rehashed": true
+  },
+  "initial_harness_compile_failure": {
+    "preserved_log_sha256": "1ec3fe54b8d4b6e536d446f95b31c27426a71eea101fc56d17c4f8dae6feb275",
+    "errors": [
+      "e: file:///Users/andrewherrera/skein-worktrees/inference-cancel-race-20260930/core/inference/src/test/kotlin/app/skein/core/inference/engine/LlamaCppEngineBehaviourTest.kt:1183:13 Accidental override: The following declarations have the same JVM signature (open(Ljava/io/File;I)Landroid/os/ParcelFileDescriptor;):",
+      "BUILD FAILED in 20s"
+    ],
+    "tests_executed": false,
+    "interpretation": "Separate test-shadow naming compilation failure retained; not the production negative control."
+  },
+  "fixed_validation": {
+    "archive_sha256": "c2935ba39fb62fd358caaeb755cd1e4912d0c848a8ef84f607aa34207ade0fdd",
+    "author_receipt_sha256": "efa79052db636bddcbaf59fd07b9f392614d4d7c99f2d43311180747c3413380",
+    "log_sha256": "30facf488f22de52e217643b9b6ea7054320ef1c31070977b933cbaecbe69dfc",
+    "xml": [
+      {
+        "path": "core/inference/build/test-results/testDebugUnitTest/TEST-app.skein.core.inference.ContextBudgetCacheTest.xml",
+        "sha256": "89f624baaaa66815ffedb6a5438eaf9977cd93180734dfb0a31e235412d78558",
+        "tests": 4
+      },
+      {
+        "path": "core/inference/build/test-results/testDebugUnitTest/TEST-app.skein.core.inference.ContextBudgetTest.xml",
+        "sha256": "4fc92dada9be4955ab319ff851a297fc0e69f01beee5beb4b1961c7bf8605375",
+        "tests": 5
+      },
+      {
+        "path": "core/inference/build/test-results/testDebugUnitTest/TEST-app.skein.core.inference.LlamaCppEngineTest.xml",
+        "sha256": "59d5ae8ab97bddc43ee4b23550a3033eea4e3fbd159c41992f7144aa2e60cacf",
+        "tests": 6
+      },
+      {
+        "path": "core/inference/build/test-results/testDebugUnitTest/TEST-app.skein.core.inference.engine.EngineErrorMappingTest.xml",
+        "sha256": "d630c6492d199cdb0ad8b06cb8d5c43a4526a119c8a53e8678c8e77fed5afbaa",
+        "tests": 11
+      },
+      {
+        "path": "core/inference/build/test-results/testDebugUnitTest/TEST-app.skein.core.inference.engine.LlamaCppEngineBehaviourTest.xml",
+        "sha256": "2f169622fefedd004ea58a3687b447d8a125ef504b84835367466f8f3037dea6",
+        "tests": 62
+      },
+      {
+        "path": "core/inference/build/test-results/testDebugUnitTest/TEST-app.skein.core.inference.engine.ModelTransactionsTest.xml",
+        "sha256": "eda81160e3060eb1ca98014c20a5dd7f7d26325ec80f64e0707abea17106ac47",
+        "tests": 2
+      },
+      {
+        "path": "core/inference/build/test-results/testDebugUnitTest/TEST-app.skein.core.inference.engine.SamplingDefaultsTest.xml",
+        "sha256": "8dd48e60dc579639b8f64a392758c6944a1f6f66b107c57bd838f512ed3ec160",
+        "tests": 15
+      },
+      {
+        "path": "core/inference/build/test-results/testDebugUnitTest/TEST-app.skein.core.inference.models.GgufPreCheckTest.xml",
+        "sha256": "7b0cad2610e46b38ed6d357b713755346c82f6757105687006084a7d7f66652a",
+        "tests": 14
+      },
+      {
+        "path": "core/inference/build/test-results/testDebugUnitTest/TEST-app.skein.core.inference.models.ImmutableModelStoreTest.xml",
+        "sha256": "c5044fb0544fdb68a8e239ff639b851c4192b7afcbe352e50a02ab05c3b862db",
+        "tests": 26
+      },
+      {
+        "path": "core/inference/build/test-results/testDebugUnitTest/TEST-app.skein.core.inference.models.ManifestAttestationTest.xml",
+        "sha256": "5d4cdb94a7876f234701db8cb8f6fd8334efcac845c27e7e1f2180fb72a0fcea",
+        "tests": 4
+      },
+      {
+        "path": "core/inference/build/test-results/testDebugUnitTest/TEST-app.skein.core.inference.models.ModelManagerTest.xml",
+        "sha256": "109a52004ae91faa2656dab744d1d82672d45952fa034c539662bb33b92a782d",
+        "tests": 22
+      },
+      {
+        "path": "core/inference/build/test-results/testDebugUnitTest/TEST-app.skein.core.inference.models.ModelManifestFixtureTest.xml",
+        "sha256": "3b2e7fbcf685dbefa9f59267c5f24d7373cad0a71c93b9d4ce62ef600ae54b0b",
+        "tests": 45
+      },
+      {
+        "path": "core/inference/build/test-results/testDebugUnitTest/TEST-app.skein.core.inference.models.ModelManifestTest.xml",
+        "sha256": "46a3ba134ab508beede44fe6f2205678983572f9040e1dc10be04999804019f7",
+        "tests": 11
+      },
+      {
+        "path": "core/inference/build/test-results/testDebugUnitTest/TEST-app.skein.core.inference.models.ModelVerifierCancellationTest.xml",
+        "sha256": "1bbda427ad41b44531e5c82f43d1a8c7822ea2a5c68842a0dd7879bf91b07971",
+        "tests": 8
+      },
+      {
+        "path": "core/inference/build/test-results/testDebugUnitTest/TEST-app.skein.core.inference.models.ModelVerifierTest.xml",
+        "sha256": "05e58bc47416895d03e2e84153c81f899643f26a76fbc7915c49643651e4011b",
+        "tests": 19
+      },
+      {
+        "path": "core/inference/build/test-results/testDebugUnitTest/TEST-app.skein.core.inference.models.PinnedModelFileTest.xml",
+        "sha256": "9d44e4c7922506dc1c63c56ea8be72ba105f44f7f3167cab71ea90fb7938e733",
+        "tests": 15
+      },
+      {
+        "path": "core/inference/build/test-results/testDebugUnitTest/TEST-app.skein.core.inference.models.VerifyBindingsTest.xml",
+        "sha256": "f5db146ccd3512f311dd6e44d28411c6117d30f50ac6c224b5989331b291e8d3",
+        "tests": 6
+      },
+      {
+        "path": "core/inference/build/test-results/testDebugUnitTest/TEST-app.skein.core.inference.models.WireBindingsTest.xml",
+        "sha256": "853d0b28f9aed89e27fb0d16d11d8d479d3792143c4bee1d115cad4139cafe56",
+        "tests": 14
+      },
+      {
+        "path": "core/inference/build/test-results/testDebugUnitTest/TEST-app.skein.core.inference.thermal.BatteryOkEvaluatorTest.xml",
+        "sha256": "9066e1b4c19b8590ec021c3cbf07fce58cfdb6265c7d42a88a0c669e210442ec",
+        "tests": 7
+      },
+      {
+        "path": "core/inference/build/test-results/testDebugUnitTest/TEST-app.skein.core.inference.thermal.ThermalBackoffTableTest.xml",
+        "sha256": "2f1f38d74c5c420bd837b65b750b301bcb5b0817a97908ea6b2fb34431fe484e",
+        "tests": 16
+      },
+      {
+        "path": "core/inference/build/test-results/testDebugUnitTest/TEST-app.skein.core.inference.thermal.ThermalGovernorCoreTest.xml",
+        "sha256": "8af45475977f96e3846c2505f89501e6cebb333d752423ccc47a715ce62d1fcd",
+        "tests": 21
+      }
+    ],
+    "tests": 333,
+    "passed": 333,
+    "failed": 0,
+    "errors": 0,
+    "skipped": 0,
+    "ktlint": "PASS",
+    "test_task": "EXECUTED not cache/up-to-date",
+    "behavior_tests": 62,
+    "original58identities_retained_and_passed": true,
+    "added4identities": [
+      [
+        "app.skein.core.inference.engine.LlamaCppEngineBehaviourTest",
+        "cancellationBeforeGenerateReturnsStillCancelsSubmittedRequest"
+      ],
+      [
+        "app.skein.core.inference.engine.LlamaCppEngineBehaviourTest",
+        "cancellationBeforeIoEntryClosesUnsubmittedSpillDescriptors"
+      ],
+      [
+        "app.skein.core.inference.engine.LlamaCppEngineBehaviourTest",
+        "lateCancelledSubmissionCannotCancelOrClearNewSessionStream"
+      ],
+      [
+        "app.skein.core.inference.engine.LlamaCppEngineBehaviourTest",
+        "throwingSubmittedTransactionStillCancelsWithoutMaskingOriginalFailure"
+      ]
+    ]
+  },
+  "limits": [
+    "Fake-service/Robolectric descriptor tests establish the bounded app-side ownership correction, not native cancellation latency or process/physical Fold acceptance.",
+    "Original remote CI05ca remains a failed run; corrected-source CI/integration gates remain coordinator work.",
+    "No models, native code, device state, candidate/evaluator source, gold labels or thresholds changed."
+  ],
+  "created_at_utc": "2026-09-30T10:46:02.332021+00:00"
+}

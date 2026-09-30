@@ -1,0 +1,2134 @@
+{
+  "source_base": "05ca780cdcb75044ea93af6a2d943454295697b7",
+  "counts": {
+    "pass": 333
+  },
+  "xml_count": 21,
+  "cases": [
+    {
+      "path": "core/inference/build/test-results/testDebugUnitTest/TEST-app.skein.core.inference.ContextBudgetCacheTest.xml",
+      "class": "app.skein.core.inference.ContextBudgetCacheTest",
+      "name": "cache misses count only the new turns, not re-counted history",
+      "status": "pass"
+    },
+    {
+      "path": "core/inference/build/test-results/testDebugUnitTest/TEST-app.skein.core.inference.ContextBudgetCacheTest.xml",
+      "class": "app.skein.core.inference.ContextBudgetCacheTest",
+      "name": "cache hit ratio is at least 90 percent over a 20-turn conversation",
+      "status": "pass"
+    },
+    {
+      "path": "core/inference/build/test-results/testDebugUnitTest/TEST-app.skein.core.inference.ContextBudgetCacheTest.xml",
+      "class": "app.skein.core.inference.ContextBudgetCacheTest",
+      "name": "identical text counted twice is a single miss followed by a hit",
+      "status": "pass"
+    },
+    {
+      "path": "core/inference/build/test-results/testDebugUnitTest/TEST-app.skein.core.inference.ContextBudgetCacheTest.xml",
+      "class": "app.skein.core.inference.ContextBudgetCacheTest",
+      "name": "cache evicts the least-recently-used entry beyond its configured size",
+      "status": "pass"
+    },
+    {
+      "path": "core/inference/build/test-results/testDebugUnitTest/TEST-app.skein.core.inference.ContextBudgetTest.xml",
+      "class": "app.skein.core.inference.ContextBudgetTest",
+      "name": "contextLength folds the safety margin in",
+      "status": "pass"
+    },
+    {
+      "path": "core/inference/build/test-results/testDebugUnitTest/TEST-app.skein.core.inference.ContextBudgetTest.xml",
+      "class": "app.skein.core.inference.ContextBudgetTest",
+      "name": "maxRetrievedTokens is capped at 3072 for the pinned inputs",
+      "status": "pass"
+    },
+    {
+      "path": "core/inference/build/test-results/testDebugUnitTest/TEST-app.skein.core.inference.ContextBudgetTest.xml",
+      "class": "app.skein.core.inference.ContextBudgetTest",
+      "name": "history budget derived from contextLength minus reserve minus system minus retrieved is 11960",
+      "status": "pass"
+    },
+    {
+      "path": "core/inference/build/test-results/testDebugUnitTest/TEST-app.skein.core.inference.ContextBudgetTest.xml",
+      "class": "app.skein.core.inference.ContextBudgetTest",
+      "name": "reserveForAnswer is passed through unchanged",
+      "status": "pass"
+    },
+    {
+      "path": "core/inference/build/test-results/testDebugUnitTest/TEST-app.skein.core.inference.ContextBudgetTest.xml",
+      "class": "app.skein.core.inference.ContextBudgetTest",
+      "name": "changing the model clears tokenizer counts and respects its smaller context",
+      "status": "pass"
+    },
+    {
+      "path": "core/inference/build/test-results/testDebugUnitTest/TEST-app.skein.core.inference.LlamaCppEngineTest.xml",
+      "class": "app.skein.core.inference.LlamaCppEngineTest",
+      "name": "embed_without_capability_throws_invalid_model",
+      "status": "pass"
+    },
+    {
+      "path": "core/inference/build/test-results/testDebugUnitTest/TEST-app.skein.core.inference.LlamaCppEngineTest.xml",
+      "class": "app.skein.core.inference.LlamaCppEngineTest",
+      "name": "stream_emits_done_last",
+      "status": "pass"
+    },
+    {
+      "path": "core/inference/build/test-results/testDebugUnitTest/TEST-app.skein.core.inference.LlamaCppEngineTest.xml",
+      "class": "app.skein.core.inference.LlamaCppEngineTest",
+      "name": "load_bad_hash_returns_failure",
+      "status": "pass"
+    },
+    {
+      "path": "core/inference/build/test-results/testDebugUnitTest/TEST-app.skein.core.inference.LlamaCppEngineTest.xml",
+      "class": "app.skein.core.inference.LlamaCppEngineTest",
+      "name": "cancel_stops_within_100ms",
+      "status": "pass"
+    },
+    {
+      "path": "core/inference/build/test-results/testDebugUnitTest/TEST-app.skein.core.inference.LlamaCppEngineTest.xml",
+      "class": "app.skein.core.inference.LlamaCppEngineTest",
+      "name": "unload_then_stream_throws_not_loaded",
+      "status": "pass"
+    },
+    {
+      "path": "core/inference/build/test-results/testDebugUnitTest/TEST-app.skein.core.inference.LlamaCppEngineTest.xml",
+      "class": "app.skein.core.inference.LlamaCppEngineTest",
+      "name": "second_stream_fails_busy",
+      "status": "pass"
+    },
+    {
+      "path": "core/inference/build/test-results/testDebugUnitTest/TEST-app.skein.core.inference.engine.EngineErrorMappingTest.xml",
+      "class": "app.skein.core.inference.engine.EngineErrorMappingTest",
+      "name": "theServiceDiagnosticNeverReachesTheExceptionUnsanitized",
+      "status": "pass"
+    },
+    {
+      "path": "core/inference/build/test-results/testDebugUnitTest/TEST-app.skein.core.inference.engine.EngineErrorMappingTest.xml",
+      "class": "app.skein.core.inference.engine.EngineErrorMappingTest",
+      "name": "tokenCountMapsACodedServiceFailure",
+      "status": "pass"
+    },
+    {
+      "path": "core/inference/build/test-results/testDebugUnitTest/TEST-app.skein.core.inference.engine.EngineErrorMappingTest.xml",
+      "class": "app.skein.core.inference.engine.EngineErrorMappingTest",
+      "name": "sessionLockedIsDistinctFromServiceDied",
+      "status": "pass"
+    },
+    {
+      "path": "core/inference/build/test-results/testDebugUnitTest/TEST-app.skein.core.inference.engine.EngineErrorMappingTest.xml",
+      "class": "app.skein.core.inference.engine.EngineErrorMappingTest",
+      "name": "streamMapsEveryErrorCode",
+      "status": "pass"
+    },
+    {
+      "path": "core/inference/build/test-results/testDebugUnitTest/TEST-app.skein.core.inference.engine.EngineErrorMappingTest.xml",
+      "class": "app.skein.core.inference.engine.EngineErrorMappingTest",
+      "name": "everyErrorCodeConstantHasARow",
+      "status": "pass"
+    },
+    {
+      "path": "core/inference/build/test-results/testDebugUnitTest/TEST-app.skein.core.inference.engine.EngineErrorMappingTest.xml",
+      "class": "app.skein.core.inference.engine.EngineErrorMappingTest",
+      "name": "embedMapsACodedServiceFailure",
+      "status": "pass"
+    },
+    {
+      "path": "core/inference/build/test-results/testDebugUnitTest/TEST-app.skein.core.inference.engine.EngineErrorMappingTest.xml",
+      "class": "app.skein.core.inference.engine.EngineErrorMappingTest",
+      "name": "anUnrecognisedCodeDegradesToInternal",
+      "status": "pass"
+    },
+    {
+      "path": "core/inference/build/test-results/testDebugUnitTest/TEST-app.skein.core.inference.engine.EngineErrorMappingTest.xml",
+      "class": "app.skein.core.inference.engine.EngineErrorMappingTest",
+      "name": "aServiceHashMismatchCarriesTheDigestTheClientAskedFor",
+      "status": "pass"
+    },
+    {
+      "path": "core/inference/build/test-results/testDebugUnitTest/TEST-app.skein.core.inference.engine.EngineErrorMappingTest.xml",
+      "class": "app.skein.core.inference.engine.EngineErrorMappingTest",
+      "name": "loadMapsEveryErrorCode",
+      "status": "pass"
+    },
+    {
+      "path": "core/inference/build/test-results/testDebugUnitTest/TEST-app.skein.core.inference.engine.EngineErrorMappingTest.xml",
+      "class": "app.skein.core.inference.engine.EngineErrorMappingTest",
+      "name": "aRegistryDigestThatDisagreesWithTheManifestIsAMismatchWithBothSides",
+      "status": "pass"
+    },
+    {
+      "path": "core/inference/build/test-results/testDebugUnitTest/TEST-app.skein.core.inference.engine.EngineErrorMappingTest.xml",
+      "class": "app.skein.core.inference.engine.EngineErrorMappingTest",
+      "name": "loadNeverThrows",
+      "status": "pass"
+    },
+    {
+      "path": "core/inference/build/test-results/testDebugUnitTest/TEST-app.skein.core.inference.engine.LlamaCppEngineBehaviourTest.xml",
+      "class": "app.skein.core.inference.engine.LlamaCppEngineBehaviourTest",
+      "name": "throwingSubmittedTransactionStillCancelsWithoutMaskingOriginalFailure",
+      "status": "pass"
+    },
+    {
+      "path": "core/inference/build/test-results/testDebugUnitTest/TEST-app.skein.core.inference.engine.LlamaCppEngineBehaviourTest.xml",
+      "class": "app.skein.core.inference.engine.LlamaCppEngineBehaviourTest",
+      "name": "unloadTellsTheService",
+      "status": "pass"
+    },
+    {
+      "path": "core/inference/build/test-results/testDebugUnitTest/TEST-app.skein.core.inference.engine.LlamaCppEngineBehaviourTest.xml",
+      "class": "app.skein.core.inference.engine.LlamaCppEngineBehaviourTest",
+      "name": "loadRequestTakesThreadsFromTheConfig",
+      "status": "pass"
+    },
+    {
+      "path": "core/inference/build/test-results/testDebugUnitTest/TEST-app.skein.core.inference.engine.LlamaCppEngineBehaviourTest.xml",
+      "class": "app.skein.core.inference.engine.LlamaCppEngineBehaviourTest",
+      "name": "loadRequestAsksForEmbeddingModeOnlyForAnEmbeddingModel",
+      "status": "pass"
+    },
+    {
+      "path": "core/inference/build/test-results/testDebugUnitTest/TEST-app.skein.core.inference.engine.LlamaCppEngineBehaviourTest.xml",
+      "class": "app.skein.core.inference.engine.LlamaCppEngineBehaviourTest",
+      "name": "aShortPromptTravelsInline",
+      "status": "pass"
+    },
+    {
+      "path": "core/inference/build/test-results/testDebugUnitTest/TEST-app.skein.core.inference.engine.LlamaCppEngineBehaviourTest.xml",
+      "class": "app.skein.core.inference.engine.LlamaCppEngineBehaviourTest",
+      "name": "countAsksTheServicesTokenizer",
+      "status": "pass"
+    },
+    {
+      "path": "core/inference/build/test-results/testDebugUnitTest/TEST-app.skein.core.inference.engine.LlamaCppEngineBehaviourTest.xml",
+      "class": "app.skein.core.inference.engine.LlamaCppEngineBehaviourTest",
+      "name": "aGateEnforcingServiceRefusesALoadItWasNeverUnlockedFor",
+      "status": "pass"
+    },
+    {
+      "path": "core/inference/build/test-results/testDebugUnitTest/TEST-app.skein.core.inference.engine.LlamaCppEngineBehaviourTest.xml",
+      "class": "app.skein.core.inference.engine.LlamaCppEngineBehaviourTest",
+      "name": "deathReleasesTheStoreLock",
+      "status": "pass"
+    },
+    {
+      "path": "core/inference/build/test-results/testDebugUnitTest/TEST-app.skein.core.inference.engine.LlamaCppEngineBehaviourTest.xml",
+      "class": "app.skein.core.inference.engine.LlamaCppEngineBehaviourTest",
+      "name": "anExplicitSamplingParamsWins",
+      "status": "pass"
+    },
+    {
+      "path": "core/inference/build/test-results/testDebugUnitTest/TEST-app.skein.core.inference.engine.LlamaCppEngineBehaviourTest.xml",
+      "class": "app.skein.core.inference.engine.LlamaCppEngineBehaviourTest",
+      "name": "aBindingThatArrivesAfterLockIsRevokedWithoutDispatchingInspection",
+      "status": "pass"
+    },
+    {
+      "path": "core/inference/build/test-results/testDebugUnitTest/TEST-app.skein.core.inference.engine.LlamaCppEngineBehaviourTest.xml",
+      "class": "app.skein.core.inference.engine.LlamaCppEngineBehaviourTest",
+      "name": "aSpilledMessageArrivesByteForByte",
+      "status": "pass"
+    },
+    {
+      "path": "core/inference/build/test-results/testDebugUnitTest/TEST-app.skein.core.inference.engine.LlamaCppEngineBehaviourTest.xml",
+      "class": "app.skein.core.inference.engine.LlamaCppEngineBehaviourTest",
+      "name": "unloadReturnsToUnloadedAndReleasesTheStoreLock",
+      "status": "pass"
+    },
+    {
+      "path": "core/inference/build/test-results/testDebugUnitTest/TEST-app.skein.core.inference.engine.LlamaCppEngineBehaviourTest.xml",
+      "class": "app.skein.core.inference.engine.LlamaCppEngineBehaviourTest",
+      "name": "countWithoutAServiceFailsWithModelNotLoaded",
+      "status": "pass"
+    },
+    {
+      "path": "core/inference/build/test-results/testDebugUnitTest/TEST-app.skein.core.inference.engine.LlamaCppEngineBehaviourTest.xml",
+      "class": "app.skein.core.inference.engine.LlamaCppEngineBehaviourTest",
+      "name": "blockedLockingPushCannotDelayLockedPushOrLocalRevocation",
+      "status": "pass"
+    },
+    {
+      "path": "core/inference/build/test-results/testDebugUnitTest/TEST-app.skein.core.inference.engine.LlamaCppEngineBehaviourTest.xml",
+      "class": "app.skein.core.inference.engine.LlamaCppEngineBehaviourTest",
+      "name": "aRevokedEpochCannotBeReauthorizedByALateUnlockPush",
+      "status": "pass"
+    },
+    {
+      "path": "core/inference/build/test-results/testDebugUnitTest/TEST-app.skein.core.inference.engine.LlamaCppEngineBehaviourTest.xml",
+      "class": "app.skein.core.inference.engine.LlamaCppEngineBehaviourTest",
+      "name": "lockStopsWaitingForABlockedUnlockHandshake",
+      "status": "pass"
+    },
+    {
+      "path": "core/inference/build/test-results/testDebugUnitTest/TEST-app.skein.core.inference.engine.LlamaCppEngineBehaviourTest.xml",
+      "class": "app.skein.core.inference.engine.LlamaCppEngineBehaviourTest",
+      "name": "staleLockCannotRevokeNewSession",
+      "status": "pass"
+    },
+    {
+      "path": "core/inference/build/test-results/testDebugUnitTest/TEST-app.skein.core.inference.engine.LlamaCppEngineBehaviourTest.xml",
+      "class": "app.skein.core.inference.engine.LlamaCppEngineBehaviourTest",
+      "name": "aLoadIssuedStraightAfterAnUnlockPushIsAdmitted",
+      "status": "pass"
+    },
+    {
+      "path": "core/inference/build/test-results/testDebugUnitTest/TEST-app.skein.core.inference.engine.LlamaCppEngineBehaviourTest.xml",
+      "class": "app.skein.core.inference.engine.LlamaCppEngineBehaviourTest",
+      "name": "lockDoesNotWaitForLoadingGateAndNeverPublishesLateReady",
+      "status": "pass"
+    },
+    {
+      "path": "core/inference/build/test-results/testDebugUnitTest/TEST-app.skein.core.inference.engine.LlamaCppEngineBehaviourTest.xml",
+      "class": "app.skein.core.inference.engine.LlamaCppEngineBehaviourTest",
+      "name": "lockStopsWaitingForANeverDeliveredBinding",
+      "status": "pass"
+    },
+    {
+      "path": "core/inference/build/test-results/testDebugUnitTest/TEST-app.skein.core.inference.engine.LlamaCppEngineBehaviourTest.xml",
+      "class": "app.skein.core.inference.engine.LlamaCppEngineBehaviourTest",
+      "name": "aLongPromptSpillsPerMessageWithRolesPreserved",
+      "status": "pass"
+    },
+    {
+      "path": "core/inference/build/test-results/testDebugUnitTest/TEST-app.skein.core.inference.engine.LlamaCppEngineBehaviourTest.xml",
+      "class": "app.skein.core.inference.engine.LlamaCppEngineBehaviourTest",
+      "name": "lateGenerationCompletionCannotRepublishReadyAfterLockOrOverwriteANewLoad",
+      "status": "pass"
+    },
+    {
+      "path": "core/inference/build/test-results/testDebugUnitTest/TEST-app.skein.core.inference.engine.LlamaCppEngineBehaviourTest.xml",
+      "class": "app.skein.core.inference.engine.LlamaCppEngineBehaviourTest",
+      "name": "deathFailsTheInFlightStreamWithServiceDied",
+      "status": "pass"
+    },
+    {
+      "path": "core/inference/build/test-results/testDebugUnitTest/TEST-app.skein.core.inference.engine.LlamaCppEngineBehaviourTest.xml",
+      "class": "app.skein.core.inference.engine.LlamaCppEngineBehaviourTest",
+      "name": "inspectSendsOneDescriptorPerBoundFile",
+      "status": "pass"
+    },
+    {
+      "path": "core/inference/build/test-results/testDebugUnitTest/TEST-app.skein.core.inference.engine.LlamaCppEngineBehaviourTest.xml",
+      "class": "app.skein.core.inference.engine.LlamaCppEngineBehaviourTest",
+      "name": "generationPreservesPreparedModelIdentity",
+      "status": "pass"
+    },
+    {
+      "path": "core/inference/build/test-results/testDebugUnitTest/TEST-app.skein.core.inference.engine.LlamaCppEngineBehaviourTest.xml",
+      "class": "app.skein.core.inference.engine.LlamaCppEngineBehaviourTest",
+      "name": "streamEndsWithDoneCarryingTheServicesStats",
+      "status": "pass"
+    },
+    {
+      "path": "core/inference/build/test-results/testDebugUnitTest/TEST-app.skein.core.inference.engine.LlamaCppEngineBehaviourTest.xml",
+      "class": "app.skein.core.inference.engine.LlamaCppEngineBehaviourTest",
+      "name": "inspectCarriesTheSessionEpoch",
+      "status": "pass"
+    },
+    {
+      "path": "core/inference/build/test-results/testDebugUnitTest/TEST-app.skein.core.inference.engine.LlamaCppEngineBehaviourTest.xml",
+      "class": "app.skein.core.inference.engine.LlamaCppEngineBehaviourTest",
+      "name": "streamWithoutALoadedModelFailsWithModelNotLoaded",
+      "status": "pass"
+    },
+    {
+      "path": "core/inference/build/test-results/testDebugUnitTest/TEST-app.skein.core.inference.engine.LlamaCppEngineBehaviourTest.xml",
+      "class": "app.skein.core.inference.engine.LlamaCppEngineBehaviourTest",
+      "name": "aLoadConcurrentWithARebindDoesNotOvertakeTheResentUnlock",
+      "status": "pass"
+    },
+    {
+      "path": "core/inference/build/test-results/testDebugUnitTest/TEST-app.skein.core.inference.engine.LlamaCppEngineBehaviourTest.xml",
+      "class": "app.skein.core.inference.engine.LlamaCppEngineBehaviourTest",
+      "name": "theLockingBudgetIsPushedToTheService",
+      "status": "pass"
+    },
+    {
+      "path": "core/inference/build/test-results/testDebugUnitTest/TEST-app.skein.core.inference.engine.LlamaCppEngineBehaviourTest.xml",
+      "class": "app.skein.core.inference.engine.LlamaCppEngineBehaviourTest",
+      "name": "cancellationBeforeGenerateReturnsStillCancelsSubmittedRequest",
+      "status": "pass"
+    },
+    {
+      "path": "core/inference/build/test-results/testDebugUnitTest/TEST-app.skein.core.inference.engine.LlamaCppEngineBehaviourTest.xml",
+      "class": "app.skein.core.inference.engine.LlamaCppEngineBehaviourTest",
+      "name": "cancelledHandshakeCannotLockASameEpochReplacementConnection",
+      "status": "pass"
+    },
+    {
+      "path": "core/inference/build/test-results/testDebugUnitTest/TEST-app.skein.core.inference.engine.LlamaCppEngineBehaviourTest.xml",
+      "class": "app.skein.core.inference.engine.LlamaCppEngineBehaviourTest",
+      "name": "theUnlockedEpochIsResentOnAFreshBind",
+      "status": "pass"
+    },
+    {
+      "path": "core/inference/build/test-results/testDebugUnitTest/TEST-app.skein.core.inference.engine.LlamaCppEngineBehaviourTest.xml",
+      "class": "app.skein.core.inference.engine.LlamaCppEngineBehaviourTest",
+      "name": "inspectNeedsNoLoadedModel",
+      "status": "pass"
+    },
+    {
+      "path": "core/inference/build/test-results/testDebugUnitTest/TEST-app.skein.core.inference.engine.LlamaCppEngineBehaviourTest.xml",
+      "class": "app.skein.core.inference.engine.LlamaCppEngineBehaviourTest",
+      "name": "onlyTheOversizedMessageSpills",
+      "status": "pass"
+    },
+    {
+      "path": "core/inference/build/test-results/testDebugUnitTest/TEST-app.skein.core.inference.engine.LlamaCppEngineBehaviourTest.xml",
+      "class": "app.skein.core.inference.engine.LlamaCppEngineBehaviourTest",
+      "name": "exactMeasurementSpillsMessagesAndClosesDescriptorsEvenOnRefusal",
+      "status": "pass"
+    },
+    {
+      "path": "core/inference/build/test-results/testDebugUnitTest/TEST-app.skein.core.inference.engine.LlamaCppEngineBehaviourTest.xml",
+      "class": "app.skein.core.inference.engine.LlamaCppEngineBehaviourTest",
+      "name": "statusMovesUnloadedLoadingReadyGeneratingReady",
+      "status": "pass"
+    },
+    {
+      "path": "core/inference/build/test-results/testDebugUnitTest/TEST-app.skein.core.inference.engine.LlamaCppEngineBehaviourTest.xml",
+      "class": "app.skein.core.inference.engine.LlamaCppEngineBehaviourTest",
+      "name": "exactMeasurementRejectsChangedReturnedModelAndNeverUsesTokenCounter",
+      "status": "pass"
+    },
+    {
+      "path": "core/inference/build/test-results/testDebugUnitTest/TEST-app.skein.core.inference.engine.LlamaCppEngineBehaviourTest.xml",
+      "class": "app.skein.core.inference.engine.LlamaCppEngineBehaviourTest",
+      "name": "cancellationBeforeIoEntryClosesUnsubmittedSpillDescriptors",
+      "status": "pass"
+    },
+    {
+      "path": "core/inference/build/test-results/testDebugUnitTest/TEST-app.skein.core.inference.engine.LlamaCppEngineBehaviourTest.xml",
+      "class": "app.skein.core.inference.engine.LlamaCppEngineBehaviourTest",
+      "name": "theFirstLoadAfterARebindIsAdmitted",
+      "status": "pass"
+    },
+    {
+      "path": "core/inference/build/test-results/testDebugUnitTest/TEST-app.skein.core.inference.engine.LlamaCppEngineBehaviourTest.xml",
+      "class": "app.skein.core.inference.engine.LlamaCppEngineBehaviourTest",
+      "name": "aRefusedLoadLeavesTheEngineInError",
+      "status": "pass"
+    },
+    {
+      "path": "core/inference/build/test-results/testDebugUnitTest/TEST-app.skein.core.inference.engine.LlamaCppEngineBehaviourTest.xml",
+      "class": "app.skein.core.inference.engine.LlamaCppEngineBehaviourTest",
+      "name": "lockStopsWaitingForBlockedInspectionAndRejectsLateSuccess",
+      "status": "pass"
+    },
+    {
+      "path": "core/inference/build/test-results/testDebugUnitTest/TEST-app.skein.core.inference.engine.LlamaCppEngineBehaviourTest.xml",
+      "class": "app.skein.core.inference.engine.LlamaCppEngineBehaviourTest",
+      "name": "exactMeasurementCarriesFreshEpochSamplingAndLoadedIdentity",
+      "status": "pass"
+    },
+    {
+      "path": "core/inference/build/test-results/testDebugUnitTest/TEST-app.skein.core.inference.engine.LlamaCppEngineBehaviourTest.xml",
+      "class": "app.skein.core.inference.engine.LlamaCppEngineBehaviourTest",
+      "name": "lateCancelledSubmissionCannotCancelOrClearNewSessionStream",
+      "status": "pass"
+    },
+    {
+      "path": "core/inference/build/test-results/testDebugUnitTest/TEST-app.skein.core.inference.engine.LlamaCppEngineBehaviourTest.xml",
+      "class": "app.skein.core.inference.engine.LlamaCppEngineBehaviourTest",
+      "name": "loadCarriesTheSessionEpoch",
+      "status": "pass"
+    },
+    {
+      "path": "core/inference/build/test-results/testDebugUnitTest/TEST-app.skein.core.inference.engine.LlamaCppEngineBehaviourTest.xml",
+      "class": "app.skein.core.inference.engine.LlamaCppEngineBehaviourTest",
+      "name": "inspectSurfacesARefusalAsACodeNotAnException",
+      "status": "pass"
+    },
+    {
+      "path": "core/inference/build/test-results/testDebugUnitTest/TEST-app.skein.core.inference.engine.LlamaCppEngineBehaviourTest.xml",
+      "class": "app.skein.core.inference.engine.LlamaCppEngineBehaviourTest",
+      "name": "aCallerWithNoOpinionGetsTheModelFamilyDefaults",
+      "status": "pass"
+    },
+    {
+      "path": "core/inference/build/test-results/testDebugUnitTest/TEST-app.skein.core.inference.engine.LlamaCppEngineBehaviourTest.xml",
+      "class": "app.skein.core.inference.engine.LlamaCppEngineBehaviourTest",
+      "name": "theUnlockedEpochIsPushedToTheService",
+      "status": "pass"
+    },
+    {
+      "path": "core/inference/build/test-results/testDebugUnitTest/TEST-app.skein.core.inference.engine.LlamaCppEngineBehaviourTest.xml",
+      "class": "app.skein.core.inference.engine.LlamaCppEngineBehaviourTest",
+      "name": "manyMediumMessagesSpillUntilTheRequestFits",
+      "status": "pass"
+    },
+    {
+      "path": "core/inference/build/test-results/testDebugUnitTest/TEST-app.skein.core.inference.engine.LlamaCppEngineBehaviourTest.xml",
+      "class": "app.skein.core.inference.engine.LlamaCppEngineBehaviourTest",
+      "name": "loadRequestDefaultsToCpuOnly",
+      "status": "pass"
+    },
+    {
+      "path": "core/inference/build/test-results/testDebugUnitTest/TEST-app.skein.core.inference.engine.LlamaCppEngineBehaviourTest.xml",
+      "class": "app.skein.core.inference.engine.LlamaCppEngineBehaviourTest",
+      "name": "eachStreamUsesAFreshRequestId",
+      "status": "pass"
+    },
+    {
+      "path": "core/inference/build/test-results/testDebugUnitTest/TEST-app.skein.core.inference.engine.LlamaCppEngineBehaviourTest.xml",
+      "class": "app.skein.core.inference.engine.LlamaCppEngineBehaviourTest",
+      "name": "closingTheFlowCancelsTheRequest",
+      "status": "pass"
+    },
+    {
+      "path": "core/inference/build/test-results/testDebugUnitTest/TEST-app.skein.core.inference.engine.LlamaCppEngineBehaviourTest.xml",
+      "class": "app.skein.core.inference.engine.LlamaCppEngineBehaviourTest",
+      "name": "theNextLoadAfterADeathRebinds",
+      "status": "pass"
+    },
+    {
+      "path": "core/inference/build/test-results/testDebugUnitTest/TEST-app.skein.core.inference.engine.LlamaCppEngineBehaviourTest.xml",
+      "class": "app.skein.core.inference.engine.LlamaCppEngineBehaviourTest",
+      "name": "loadRequestClampsTheContextToTheConfiguredCap",
+      "status": "pass"
+    },
+    {
+      "path": "core/inference/build/test-results/testDebugUnitTest/TEST-app.skein.core.inference.engine.LlamaCppEngineBehaviourTest.xml",
+      "class": "app.skein.core.inference.engine.LlamaCppEngineBehaviourTest",
+      "name": "inspectReturnsWhatTheServiceRead",
+      "status": "pass"
+    },
+    {
+      "path": "core/inference/build/test-results/testDebugUnitTest/TEST-app.skein.core.inference.engine.LlamaCppEngineBehaviourTest.xml",
+      "class": "app.skein.core.inference.engine.LlamaCppEngineBehaviourTest",
+      "name": "neitherThePromptNorTheServiceDiagnosticReachesTheLog",
+      "status": "pass"
+    },
+    {
+      "path": "core/inference/build/test-results/testDebugUnitTest/TEST-app.skein.core.inference.engine.LlamaCppEngineBehaviourTest.xml",
+      "class": "app.skein.core.inference.engine.LlamaCppEngineBehaviourTest",
+      "name": "everyRequestCarriesTheEpochCurrentAtTheTimeOfTheCall",
+      "status": "pass"
+    },
+    {
+      "path": "core/inference/build/test-results/testDebugUnitTest/TEST-app.skein.core.inference.engine.LlamaCppEngineBehaviourTest.xml",
+      "class": "app.skein.core.inference.engine.LlamaCppEngineBehaviourTest",
+      "name": "deathReturnsTheEngineToUnloaded",
+      "status": "pass"
+    },
+    {
+      "path": "core/inference/build/test-results/testDebugUnitTest/TEST-app.skein.core.inference.engine.LlamaCppEngineBehaviourTest.xml",
+      "class": "app.skein.core.inference.engine.LlamaCppEngineBehaviourTest",
+      "name": "aLockedSessionIsNotReauthorizedByARebind",
+      "status": "pass"
+    },
+    {
+      "path": "core/inference/build/test-results/testDebugUnitTest/TEST-app.skein.core.inference.engine.LlamaCppEngineBehaviourTest.xml",
+      "class": "app.skein.core.inference.engine.LlamaCppEngineBehaviourTest",
+      "name": "unloadKeepsTheBinding",
+      "status": "pass"
+    },
+    {
+      "path": "core/inference/build/test-results/testDebugUnitTest/TEST-app.skein.core.inference.engine.LlamaCppEngineBehaviourTest.xml",
+      "class": "app.skein.core.inference.engine.LlamaCppEngineBehaviourTest",
+      "name": "streamEmitsOneTokenTextPerPiece",
+      "status": "pass"
+    },
+    {
+      "path": "core/inference/build/test-results/testDebugUnitTest/TEST-app.skein.core.inference.engine.LlamaCppEngineBehaviourTest.xml",
+      "class": "app.skein.core.inference.engine.LlamaCppEngineBehaviourTest",
+      "name": "embedReturnsTheServicesVector",
+      "status": "pass"
+    },
+    {
+      "path": "core/inference/build/test-results/testDebugUnitTest/TEST-app.skein.core.inference.engine.ModelTransactionsTest.xml",
+      "class": "app.skein.core.inference.engine.ModelTransactionsTest",
+      "name": "cancellationBeforeWorkerStartsClosesResourcesWithoutDispatch",
+      "status": "pass"
+    },
+    {
+      "path": "core/inference/build/test-results/testDebugUnitTest/TEST-app.skein.core.inference.engine.ModelTransactionsTest.xml",
+      "class": "app.skein.core.inference.engine.ModelTransactionsTest",
+      "name": "revocationReleasesCallerButKeepsTransactionResourcesUntilBlockingCallReturns",
+      "status": "pass"
+    },
+    {
+      "path": "core/inference/build/test-results/testDebugUnitTest/TEST-app.skein.core.inference.engine.SamplingDefaultsTest.xml",
+      "class": "app.skein.core.inference.engine.SamplingDefaultsTest",
+      "name": "gemmaLeavesUnstatedFieldsAtTheSpecBaseline",
+      "status": "pass"
+    },
+    {
+      "path": "core/inference/build/test-results/testDebugUnitTest/TEST-app.skein.core.inference.engine.SamplingDefaultsTest.xml",
+      "class": "app.skein.core.inference.engine.SamplingDefaultsTest",
+      "name": "gemmaTopKIsPinned",
+      "status": "pass"
+    },
+    {
+      "path": "core/inference/build/test-results/testDebugUnitTest/TEST-app.skein.core.inference.engine.SamplingDefaultsTest.xml",
+      "class": "app.skein.core.inference.engine.SamplingDefaultsTest",
+      "name": "theFamilyIsFoundInTheModelId",
+      "status": "pass"
+    },
+    {
+      "path": "core/inference/build/test-results/testDebugUnitTest/TEST-app.skein.core.inference.engine.SamplingDefaultsTest.xml",
+      "class": "app.skein.core.inference.engine.SamplingDefaultsTest",
+      "name": "qwenTemperatureIsPinned",
+      "status": "pass"
+    },
+    {
+      "path": "core/inference/build/test-results/testDebugUnitTest/TEST-app.skein.core.inference.engine.SamplingDefaultsTest.xml",
+      "class": "app.skein.core.inference.engine.SamplingDefaultsTest",
+      "name": "noPersonaOverrideFallsBackToTheFamilyDefaults",
+      "status": "pass"
+    },
+    {
+      "path": "core/inference/build/test-results/testDebugUnitTest/TEST-app.skein.core.inference.engine.SamplingDefaultsTest.xml",
+      "class": "app.skein.core.inference.engine.SamplingDefaultsTest",
+      "name": "matchingIsCaseInsensitive",
+      "status": "pass"
+    },
+    {
+      "path": "core/inference/build/test-results/testDebugUnitTest/TEST-app.skein.core.inference.engine.SamplingDefaultsTest.xml",
+      "class": "app.skein.core.inference.engine.SamplingDefaultsTest",
+      "name": "qwenTopPIsPinned",
+      "status": "pass"
+    },
+    {
+      "path": "core/inference/build/test-results/testDebugUnitTest/TEST-app.skein.core.inference.engine.SamplingDefaultsTest.xml",
+      "class": "app.skein.core.inference.engine.SamplingDefaultsTest",
+      "name": "anImportedModelOfNoKnownFamilyGetsTheSpecBaseline",
+      "status": "pass"
+    },
+    {
+      "path": "core/inference/build/test-results/testDebugUnitTest/TEST-app.skein.core.inference.engine.SamplingDefaultsTest.xml",
+      "class": "app.skein.core.inference.engine.SamplingDefaultsTest",
+      "name": "theOverrideReplacesRatherThanMerges",
+      "status": "pass"
+    },
+    {
+      "path": "core/inference/build/test-results/testDebugUnitTest/TEST-app.skein.core.inference.engine.SamplingDefaultsTest.xml",
+      "class": "app.skein.core.inference.engine.SamplingDefaultsTest",
+      "name": "qwenLeavesUnstatedFieldsAtTheSpecBaseline",
+      "status": "pass"
+    },
+    {
+      "path": "core/inference/build/test-results/testDebugUnitTest/TEST-app.skein.core.inference.engine.SamplingDefaultsTest.xml",
+      "class": "app.skein.core.inference.engine.SamplingDefaultsTest",
+      "name": "theFamilyIsFoundInTheModelName",
+      "status": "pass"
+    },
+    {
+      "path": "core/inference/build/test-results/testDebugUnitTest/TEST-app.skein.core.inference.engine.SamplingDefaultsTest.xml",
+      "class": "app.skein.core.inference.engine.SamplingDefaultsTest",
+      "name": "aPersonaOverrideReplacesTheFamilyDefaults",
+      "status": "pass"
+    },
+    {
+      "path": "core/inference/build/test-results/testDebugUnitTest/TEST-app.skein.core.inference.engine.SamplingDefaultsTest.xml",
+      "class": "app.skein.core.inference.engine.SamplingDefaultsTest",
+      "name": "gemmaTemperatureIsPinned",
+      "status": "pass"
+    },
+    {
+      "path": "core/inference/build/test-results/testDebugUnitTest/TEST-app.skein.core.inference.engine.SamplingDefaultsTest.xml",
+      "class": "app.skein.core.inference.engine.SamplingDefaultsTest",
+      "name": "qwenRepeatPenaltyIsPinned",
+      "status": "pass"
+    },
+    {
+      "path": "core/inference/build/test-results/testDebugUnitTest/TEST-app.skein.core.inference.engine.SamplingDefaultsTest.xml",
+      "class": "app.skein.core.inference.engine.SamplingDefaultsTest",
+      "name": "gemmaTopPIsPinned",
+      "status": "pass"
+    },
+    {
+      "path": "core/inference/build/test-results/testDebugUnitTest/TEST-app.skein.core.inference.models.GgufPreCheckTest.xml",
+      "class": "app.skein.core.inference.models.GgufPreCheckTest",
+      "name": "a_large_string_array_is_skipped_without_materialising_its_content",
+      "status": "pass"
+    },
+    {
+      "path": "core/inference/build/test-results/testDebugUnitTest/TEST-app.skein.core.inference.models.GgufPreCheckTest.xml",
+      "class": "app.skein.core.inference.models.GgufPreCheckTest",
+      "name": "unsupported_version_is_refused",
+      "status": "pass"
+    },
+    {
+      "path": "core/inference/build/test-results/testDebugUnitTest/TEST-app.skein.core.inference.models.GgufPreCheckTest.xml",
+      "class": "app.skein.core.inference.models.GgufPreCheckTest",
+      "name": "v2_width_is_64_bit_and_parses",
+      "status": "pass"
+    },
+    {
+      "path": "core/inference/build/test-results/testDebugUnitTest/TEST-app.skein.core.inference.models.GgufPreCheckTest.xml",
+      "class": "app.skein.core.inference.models.GgufPreCheckTest",
+      "name": "tensor_count_past_the_bound_is_refused",
+      "status": "pass"
+    },
+    {
+      "path": "core/inference/build/test-results/testDebugUnitTest/TEST-app.skein.core.inference.models.GgufPreCheckTest.xml",
+      "class": "app.skein.core.inference.models.GgufPreCheckTest",
+      "name": "kv_count_past_the_bound_is_refused",
+      "status": "pass"
+    },
+    {
+      "path": "core/inference/build/test-results/testDebugUnitTest/TEST-app.skein.core.inference.models.GgufPreCheckTest.xml",
+      "class": "app.skein.core.inference.models.GgufPreCheckTest",
+      "name": "a_length_claiming_bytes_beyond_the_real_file_is_refused",
+      "status": "pass"
+    },
+    {
+      "path": "core/inference/build/test-results/testDebugUnitTest/TEST-app.skein.core.inference.models.GgufPreCheckTest.xml",
+      "class": "app.skein.core.inference.models.GgufPreCheckTest",
+      "name": "metadata_larger_than_the_prefix_is_plausible_not_refused",
+      "status": "pass"
+    },
+    {
+      "path": "core/inference/build/test-results/testDebugUnitTest/TEST-app.skein.core.inference.models.GgufPreCheckTest.xml",
+      "class": "app.skein.core.inference.models.GgufPreCheckTest",
+      "name": "bad_magic_is_refused",
+      "status": "pass"
+    },
+    {
+      "path": "core/inference/build/test-results/testDebugUnitTest/TEST-app.skein.core.inference.models.GgufPreCheckTest.xml",
+      "class": "app.skein.core.inference.models.GgufPreCheckTest",
+      "name": "v1_width_is_32_bit_and_parses",
+      "status": "pass"
+    },
+    {
+      "path": "core/inference/build/test-results/testDebugUnitTest/TEST-app.skein.core.inference.models.GgufPreCheckTest.xml",
+      "class": "app.skein.core.inference.models.GgufPreCheckTest",
+      "name": "the_FileChannel_overload_reads_a_real_pinned_descriptor",
+      "status": "pass"
+    },
+    {
+      "path": "core/inference/build/test-results/testDebugUnitTest/TEST-app.skein.core.inference.models.GgufPreCheckTest.xml",
+      "class": "app.skein.core.inference.models.GgufPreCheckTest",
+      "name": "a_prefix_ending_inside_the_header_itself_is_still_refused",
+      "status": "pass"
+    },
+    {
+      "path": "core/inference/build/test-results/testDebugUnitTest/TEST-app.skein.core.inference.models.GgufPreCheckTest.xml",
+      "class": "app.skein.core.inference.models.GgufPreCheckTest",
+      "name": "truncated_header_is_refused_not_misread",
+      "status": "pass"
+    },
+    {
+      "path": "core/inference/build/test-results/testDebugUnitTest/TEST-app.skein.core.inference.models.GgufPreCheckTest.xml",
+      "class": "app.skein.core.inference.models.GgufPreCheckTest",
+      "name": "a_valid_tiny_header_with_no_kv_pairs_is_accepted",
+      "status": "pass"
+    },
+    {
+      "path": "core/inference/build/test-results/testDebugUnitTest/TEST-app.skein.core.inference.models.GgufPreCheckTest.xml",
+      "class": "app.skein.core.inference.models.GgufPreCheckTest",
+      "name": "zero_length_file_is_refused",
+      "status": "pass"
+    },
+    {
+      "path": "core/inference/build/test-results/testDebugUnitTest/TEST-app.skein.core.inference.models.ImmutableModelStoreTest.xml",
+      "class": "app.skein.core.inference.models.ImmutableModelStoreTest",
+      "name": "sealed file cannot be opened for writing",
+      "status": "pass"
+    },
+    {
+      "path": "core/inference/build/test-results/testDebugUnitTest/TEST-app.skein.core.inference.models.ImmutableModelStoreTest.xml",
+      "class": "app.skein.core.inference.models.ImmutableModelStoreTest",
+      "name": "import of a fresh id succeeds while another model is loaded",
+      "status": "pass"
+    },
+    {
+      "path": "core/inference/build/test-results/testDebugUnitTest/TEST-app.skein.core.inference.models.ImmutableModelStoreTest.xml",
+      "class": "app.skein.core.inference.models.ImmutableModelStoreTest",
+      "name": "delete after release removes the sealed directory",
+      "status": "pass"
+    },
+    {
+      "path": "core/inference/build/test-results/testDebugUnitTest/TEST-app.skein.core.inference.models.ImmutableModelStoreTest.xml",
+      "class": "app.skein.core.inference.models.ImmutableModelStoreTest",
+      "name": "sha256 mismatch on import is refused",
+      "status": "pass"
+    },
+    {
+      "path": "core/inference/build/test-results/testDebugUnitTest/TEST-app.skein.core.inference.models.ImmutableModelStoreTest.xml",
+      "class": "app.skein.core.inference.models.ImmutableModelStoreTest",
+      "name": "imported bytes are identical to the source",
+      "status": "pass"
+    },
+    {
+      "path": "core/inference/build/test-results/testDebugUnitTest/TEST-app.skein.core.inference.models.ImmutableModelStoreTest.xml",
+      "class": "app.skein.core.inference.models.ImmutableModelStoreTest",
+      "name": "required companion missing from the source is refused",
+      "status": "pass"
+    },
+    {
+      "path": "core/inference/build/test-results/testDebugUnitTest/TEST-app.skein.core.inference.models.ImmutableModelStoreTest.xml",
+      "class": "app.skein.core.inference.models.ImmutableModelStoreTest",
+      "name": "import writes every manifest file into the store",
+      "status": "pass"
+    },
+    {
+      "path": "core/inference/build/test-results/testDebugUnitTest/TEST-app.skein.core.inference.models.ImmutableModelStoreTest.xml",
+      "class": "app.skein.core.inference.models.ImmutableModelStoreTest",
+      "name": "optional companion missing from the source is skipped",
+      "status": "pass"
+    },
+    {
+      "path": "core/inference/build/test-results/testDebugUnitTest/TEST-app.skein.core.inference.models.ImmutableModelStoreTest.xml",
+      "class": "app.skein.core.inference.models.ImmutableModelStoreTest",
+      "name": "delete of an in-use id is refused as InUse",
+      "status": "pass"
+    },
+    {
+      "path": "core/inference/build/test-results/testDebugUnitTest/TEST-app.skein.core.inference.models.ImmutableModelStoreTest.xml",
+      "class": "app.skein.core.inference.models.ImmutableModelStoreTest",
+      "name": "import leaves no temporary files behind",
+      "status": "pass"
+    },
+    {
+      "path": "core/inference/build/test-results/testDebugUnitTest/TEST-app.skein.core.inference.models.ImmutableModelStoreTest.xml",
+      "class": "app.skein.core.inference.models.ImmutableModelStoreTest",
+      "name": "size mismatch is refused before the hash is trusted",
+      "status": "pass"
+    },
+    {
+      "path": "core/inference/build/test-results/testDebugUnitTest/TEST-app.skein.core.inference.models.ImmutableModelStoreTest.xml",
+      "class": "app.skein.core.inference.models.ImmutableModelStoreTest",
+      "name": "opening an unknown id is refused",
+      "status": "pass"
+    },
+    {
+      "path": "core/inference/build/test-results/testDebugUnitTest/TEST-app.skein.core.inference.models.ImmutableModelStoreTest.xml",
+      "class": "app.skein.core.inference.models.ImmutableModelStoreTest",
+      "name": "a staging directory left by an interrupted import does not block the next import",
+      "status": "pass"
+    },
+    {
+      "path": "core/inference/build/test-results/testDebugUnitTest/TEST-app.skein.core.inference.models.ImmutableModelStoreTest.xml",
+      "class": "app.skein.core.inference.models.ImmutableModelStoreTest",
+      "name": "a directory holding a promoted file is still refused as already imported",
+      "status": "pass"
+    },
+    {
+      "path": "core/inference/build/test-results/testDebugUnitTest/TEST-app.skein.core.inference.models.ImmutableModelStoreTest.xml",
+      "class": "app.skein.core.inference.models.ImmutableModelStoreTest",
+      "name": "declared blake3 that disagrees with the bytes is refused",
+      "status": "pass"
+    },
+    {
+      "path": "core/inference/build/test-results/testDebugUnitTest/TEST-app.skein.core.inference.models.ImmutableModelStoreTest.xml",
+      "class": "app.skein.core.inference.models.ImmutableModelStoreTest",
+      "name": "two concurrent loaders share one lock",
+      "status": "pass"
+    },
+    {
+      "path": "core/inference/build/test-results/testDebugUnitTest/TEST-app.skein.core.inference.models.ImmutableModelStoreTest.xml",
+      "class": "app.skein.core.inference.models.ImmutableModelStoreTest",
+      "name": "import reports posix enforcement on a posix filesystem",
+      "status": "pass"
+    },
+    {
+      "path": "core/inference/build/test-results/testDebugUnitTest/TEST-app.skein.core.inference.models.ImmutableModelStoreTest.xml",
+      "class": "app.skein.core.inference.models.ImmutableModelStoreTest",
+      "name": "import records the blake3 of the same bytes",
+      "status": "pass"
+    },
+    {
+      "path": "core/inference/build/test-results/testDebugUnitTest/TEST-app.skein.core.inference.models.ImmutableModelStoreTest.xml",
+      "class": "app.skein.core.inference.models.ImmutableModelStoreTest",
+      "name": "re-import over an existing idle id is refused",
+      "status": "pass"
+    },
+    {
+      "path": "core/inference/build/test-results/testDebugUnitTest/TEST-app.skein.core.inference.models.ImmutableModelStoreTest.xml",
+      "class": "app.skein.core.inference.models.ImmutableModelStoreTest",
+      "name": "sha256 mismatch on import leaves no file behind",
+      "status": "pass"
+    },
+    {
+      "path": "core/inference/build/test-results/testDebugUnitTest/TEST-app.skein.core.inference.models.ImmutableModelStoreTest.xml",
+      "class": "app.skein.core.inference.models.ImmutableModelStoreTest",
+      "name": "lock is held while the model is open",
+      "status": "pass"
+    },
+    {
+      "path": "core/inference/build/test-results/testDebugUnitTest/TEST-app.skein.core.inference.models.ImmutableModelStoreTest.xml",
+      "class": "app.skein.core.inference.models.ImmutableModelStoreTest",
+      "name": "re-import over an in-use id is refused as InUse",
+      "status": "pass"
+    },
+    {
+      "path": "core/inference/build/test-results/testDebugUnitTest/TEST-app.skein.core.inference.models.ImmutableModelStoreTest.xml",
+      "class": "app.skein.core.inference.models.ImmutableModelStoreTest",
+      "name": "model stays locked until every concurrent loader releases",
+      "status": "pass"
+    },
+    {
+      "path": "core/inference/build/test-results/testDebugUnitTest/TEST-app.skein.core.inference.models.ImmutableModelStoreTest.xml",
+      "class": "app.skein.core.inference.models.ImmutableModelStoreTest",
+      "name": "imported files are sealed read-only",
+      "status": "pass"
+    },
+    {
+      "path": "core/inference/build/test-results/testDebugUnitTest/TEST-app.skein.core.inference.models.ImmutableModelStoreTest.xml",
+      "class": "app.skein.core.inference.models.ImmutableModelStoreTest",
+      "name": "imported directory is sealed read and execute only",
+      "status": "pass"
+    },
+    {
+      "path": "core/inference/build/test-results/testDebugUnitTest/TEST-app.skein.core.inference.models.ImmutableModelStoreTest.xml",
+      "class": "app.skein.core.inference.models.ImmutableModelStoreTest",
+      "name": "lock is released after the last handle closes",
+      "status": "pass"
+    },
+    {
+      "path": "core/inference/build/test-results/testDebugUnitTest/TEST-app.skein.core.inference.models.ManifestAttestationTest.xml",
+      "class": "app.skein.core.inference.models.ManifestAttestationTest",
+      "name": "a verified attestation cannot be supplied to the load gate",
+      "status": "pass"
+    },
+    {
+      "path": "core/inference/build/test-results/testDebugUnitTest/TEST-app.skein.core.inference.models.ManifestAttestationTest.xml",
+      "class": "app.skein.core.inference.models.ManifestAttestationTest",
+      "name": "the default binding reports everything as unattested",
+      "status": "pass"
+    },
+    {
+      "path": "core/inference/build/test-results/testDebugUnitTest/TEST-app.skein.core.inference.models.ManifestAttestationTest.xml",
+      "class": "app.skein.core.inference.models.ManifestAttestationTest",
+      "name": "an unattested verdict claims no coverage",
+      "status": "pass"
+    },
+    {
+      "path": "core/inference/build/test-results/testDebugUnitTest/TEST-app.skein.core.inference.models.ManifestAttestationTest.xml",
+      "class": "app.skein.core.inference.models.ManifestAttestationTest",
+      "name": "a manifest binding carries no attestation field",
+      "status": "pass"
+    },
+    {
+      "path": "core/inference/build/test-results/testDebugUnitTest/TEST-app.skein.core.inference.models.ModelManagerTest.xml",
+      "class": "app.skein.core.inference.models.ModelManagerTest",
+      "name": "AC5 setDefault then default round trips",
+      "status": "pass"
+    },
+    {
+      "path": "core/inference/build/test-results/testDebugUnitTest/TEST-app.skein.core.inference.models.ModelManagerTest.xml",
+      "class": "app.skein.core.inference.models.ModelManagerTest",
+      "name": "r8ah 4 a record whose model is genuinely missing is reported not deregistered",
+      "status": "pass"
+    },
+    {
+      "path": "core/inference/build/test-results/testDebugUnitTest/TEST-app.skein.core.inference.models.ModelManagerTest.xml",
+      "class": "app.skein.core.inference.models.ModelManagerTest",
+      "name": "delete of an idle model removes the row and clears the default",
+      "status": "pass"
+    },
+    {
+      "path": "core/inference/build/test-results/testDebugUnitTest/TEST-app.skein.core.inference.models.ModelManagerTest.xml",
+      "class": "app.skein.core.inference.models.ModelManagerTest",
+      "name": "adoption racing a completed copy uses one registry identity and does not reinspect",
+      "status": "pass"
+    },
+    {
+      "path": "core/inference/build/test-results/testDebugUnitTest/TEST-app.skein.core.inference.models.ModelManagerTest.xml",
+      "class": "app.skein.core.inference.models.ModelManagerTest",
+      "name": "r8ah 3 a model is never marked installed on file existence alone",
+      "status": "pass"
+    },
+    {
+      "path": "core/inference/build/test-results/testDebugUnitTest/TEST-app.skein.core.inference.models.ModelManagerTest.xml",
+      "class": "app.skein.core.inference.models.ModelManagerTest",
+      "name": "AC2 import with a wrong-hash manifest leaves no file and returns HashMismatch",
+      "status": "pass"
+    },
+    {
+      "path": "core/inference/build/test-results/testDebugUnitTest/TEST-app.skein.core.inference.models.ModelManagerTest.xml",
+      "class": "app.skein.core.inference.models.ModelManagerTest",
+      "name": "r8ah 4 a record whose path no longer resolves is re-anchored",
+      "status": "pass"
+    },
+    {
+      "path": "core/inference/build/test-results/testDebugUnitTest/TEST-app.skein.core.inference.models.ModelManagerTest.xml",
+      "class": "app.skein.core.inference.models.ModelManagerTest",
+      "name": "AC5 delete of the loaded model is refused",
+      "status": "pass"
+    },
+    {
+      "path": "core/inference/build/test-results/testDebugUnitTest/TEST-app.skein.core.inference.models.ModelManagerTest.xml",
+      "class": "app.skein.core.inference.models.ModelManagerTest",
+      "name": "a staging directory and a registered directory are not adopted",
+      "status": "pass"
+    },
+    {
+      "path": "core/inference/build/test-results/testDebugUnitTest/TEST-app.skein.core.inference.models.ModelManagerTest.xml",
+      "class": "app.skein.core.inference.models.ModelManagerTest",
+      "name": "AC1 import of a fixture file with a matching bundled manifest",
+      "status": "pass"
+    },
+    {
+      "path": "core/inference/build/test-results/testDebugUnitTest/TEST-app.skein.core.inference.models.ModelManagerTest.xml",
+      "class": "app.skein.core.inference.models.ModelManagerTest",
+      "name": "the import does its reading on the io dispatcher not on the collector's thread",
+      "status": "pass"
+    },
+    {
+      "path": "core/inference/build/test-results/testDebugUnitTest/TEST-app.skein.core.inference.models.ModelManagerTest.xml",
+      "class": "app.skein.core.inference.models.ModelManagerTest",
+      "name": "AC5 default is null then clears back to null",
+      "status": "pass"
+    },
+    {
+      "path": "core/inference/build/test-results/testDebugUnitTest/TEST-app.skein.core.inference.models.ModelManagerTest.xml",
+      "class": "app.skein.core.inference.models.ModelManagerTest",
+      "name": "a picked import reports monotonic progress across both passes and ends complete",
+      "status": "pass"
+    },
+    {
+      "path": "core/inference/build/test-results/testDebugUnitTest/TEST-app.skein.core.inference.models.ModelManagerTest.xml",
+      "class": "app.skein.core.inference.models.ModelManagerTest",
+      "name": "r8ah 1 a killed import leaves nothing loadable",
+      "status": "pass"
+    },
+    {
+      "path": "core/inference/build/test-results/testDebugUnitTest/TEST-app.skein.core.inference.models.ModelManagerTest.xml",
+      "class": "app.skein.core.inference.models.ModelManagerTest",
+      "name": "a transient inspection failure keeps the sealed files, a verdict on the file deletes them",
+      "status": "pass"
+    },
+    {
+      "path": "core/inference/build/test-results/testDebugUnitTest/TEST-app.skein.core.inference.models.ModelManagerTest.xml",
+      "class": "app.skein.core.inference.models.ModelManagerTest",
+      "name": "r8ah 2 a digest that no longer matches is refused not rescued by a stale hash",
+      "status": "pass"
+    },
+    {
+      "path": "core/inference/build/test-results/testDebugUnitTest/TEST-app.skein.core.inference.models.ModelManagerTest.xml",
+      "class": "app.skein.core.inference.models.ModelManagerTest",
+      "name": "opaque copy closes both provider streams without inspection or registry then adopts after unlock",
+      "status": "pass"
+    },
+    {
+      "path": "core/inference/build/test-results/testDebugUnitTest/TEST-app.skein.core.inference.models.ModelManagerTest.xml",
+      "class": "app.skein.core.inference.models.ModelManagerTest",
+      "name": "AC4 insufficient space refuses before any write",
+      "status": "pass"
+    },
+    {
+      "path": "core/inference/build/test-results/testDebugUnitTest/TEST-app.skein.core.inference.models.ModelManagerTest.xml",
+      "class": "app.skein.core.inference.models.ModelManagerTest",
+      "name": "a sealed directory whose registration was lost is adopted at unlock and becomes the default",
+      "status": "pass"
+    },
+    {
+      "path": "core/inference/build/test-results/testDebugUnitTest/TEST-app.skein.core.inference.models.ModelManagerTest.xml",
+      "class": "app.skein.core.inference.models.ModelManagerTest",
+      "name": "lock during inspection refuses registry publication and preserves sealed copy for new epoch",
+      "status": "pass"
+    },
+    {
+      "path": "core/inference/build/test-results/testDebugUnitTest/TEST-app.skein.core.inference.models.ModelManagerTest.xml",
+      "class": "app.skein.core.inference.models.ModelManagerTest",
+      "name": "AC3 import without manifest generates UNKNOWN license and correct size_bytes",
+      "status": "pass"
+    },
+    {
+      "path": "core/inference/build/test-results/testDebugUnitTest/TEST-app.skein.core.inference.models.ModelManagerTest.xml",
+      "class": "app.skein.core.inference.models.ModelManagerTest",
+      "name": "known sealed copy changed before next unlock is refused against original digest",
+      "status": "pass"
+    },
+    {
+      "path": "core/inference/build/test-results/testDebugUnitTest/TEST-app.skein.core.inference.models.ModelManifestFixtureTest.xml",
+      "class": "app.skein.core.inference.models.ModelManifestFixtureTest",
+      "name": "companion file name that escapes the store directory is refused",
+      "status": "pass"
+    },
+    {
+      "path": "core/inference/build/test-results/testDebugUnitTest/TEST-app.skein.core.inference.models.ModelManifestFixtureTest.xml",
+      "class": "app.skein.core.inference.models.ModelManifestFixtureTest",
+      "name": "toModel carries size_bytes",
+      "status": "pass"
+    },
+    {
+      "path": "core/inference/build/test-results/testDebugUnitTest/TEST-app.skein.core.inference.models.ModelManifestFixtureTest.xml",
+      "class": "app.skein.core.inference.models.ModelManifestFixtureTest",
+      "name": "toModel carries the attestation url when the manifest declares one",
+      "status": "pass"
+    },
+    {
+      "path": "core/inference/build/test-results/testDebugUnitTest/TEST-app.skein.core.inference.models.ModelManifestFixtureTest.xml",
+      "class": "app.skein.core.inference.models.ModelManifestFixtureTest",
+      "name": "main declared inside companions is refused",
+      "status": "pass"
+    },
+    {
+      "path": "core/inference/build/test-results/testDebugUnitTest/TEST-app.skein.core.inference.models.ModelManifestFixtureTest.xml",
+      "class": "app.skein.core.inference.models.ModelManifestFixtureTest",
+      "name": "unknown root property is refused",
+      "status": "pass"
+    },
+    {
+      "path": "core/inference/build/test-results/testDebugUnitTest/TEST-app.skein.core.inference.models.ModelManifestFixtureTest.xml",
+      "class": "app.skein.core.inference.models.ModelManifestFixtureTest",
+      "name": "unknown companion role is refused",
+      "status": "pass"
+    },
+    {
+      "path": "core/inference/build/test-results/testDebugUnitTest/TEST-app.skein.core.inference.models.ModelManifestFixtureTest.xml",
+      "class": "app.skein.core.inference.models.ModelManifestFixtureTest",
+      "name": "toModel carries the companion sha256 from the manifest",
+      "status": "pass"
+    },
+    {
+      "path": "core/inference/build/test-results/testDebugUnitTest/TEST-app.skein.core.inference.models.ModelManifestFixtureTest.xml",
+      "class": "app.skein.core.inference.models.ModelManifestFixtureTest",
+      "name": "source provenance survives parsing",
+      "status": "pass"
+    },
+    {
+      "path": "core/inference/build/test-results/testDebugUnitTest/TEST-app.skein.core.inference.models.ModelManifestFixtureTest.xml",
+      "class": "app.skein.core.inference.models.ModelManifestFixtureTest",
+      "name": "unknown capability is refused",
+      "status": "pass"
+    },
+    {
+      "path": "core/inference/build/test-results/testDebugUnitTest/TEST-app.skein.core.inference.models.ModelManifestFixtureTest.xml",
+      "class": "app.skein.core.inference.models.ModelManifestFixtureTest",
+      "name": "attestation is exposed as an object and verifies nothing",
+      "status": "pass"
+    },
+    {
+      "path": "core/inference/build/test-results/testDebugUnitTest/TEST-app.skein.core.inference.models.ModelManifestFixtureTest.xml",
+      "class": "app.skein.core.inference.models.ModelManifestFixtureTest",
+      "name": "toModel uses the supplied absolute path for the main file",
+      "status": "pass"
+    },
+    {
+      "path": "core/inference/build/test-results/testDebugUnitTest/TEST-app.skein.core.inference.models.ModelManifestFixtureTest.xml",
+      "class": "app.skein.core.inference.models.ModelManifestFixtureTest",
+      "name": "toModel omits a companion with no supplied path",
+      "status": "pass"
+    },
+    {
+      "path": "core/inference/build/test-results/testDebugUnitTest/TEST-app.skein.core.inference.models.ModelManifestFixtureTest.xml",
+      "class": "app.skein.core.inference.models.ModelManifestFixtureTest",
+      "name": "attestation covers defaults to main only when absent",
+      "status": "pass"
+    },
+    {
+      "path": "core/inference/build/test-results/testDebugUnitTest/TEST-app.skein.core.inference.models.ModelManifestFixtureTest.xml",
+      "class": "app.skein.core.inference.models.ModelManifestFixtureTest",
+      "name": "context_length below the floor is refused",
+      "status": "pass"
+    },
+    {
+      "path": "core/inference/build/test-results/testDebugUnitTest/TEST-app.skein.core.inference.models.ModelManifestFixtureTest.xml",
+      "class": "app.skein.core.inference.models.ModelManifestFixtureTest",
+      "name": "non-hex sha256 is refused",
+      "status": "pass"
+    },
+    {
+      "path": "core/inference/build/test-results/testDebugUnitTest/TEST-app.skein.core.inference.models.ModelManifestFixtureTest.xml",
+      "class": "app.skein.core.inference.models.ModelManifestFixtureTest",
+      "name": "unknown companion property is refused",
+      "status": "pass"
+    },
+    {
+      "path": "core/inference/build/test-results/testDebugUnitTest/TEST-app.skein.core.inference.models.ModelManifestFixtureTest.xml",
+      "class": "app.skein.core.inference.models.ModelManifestFixtureTest",
+      "name": "toModel maps capabilities onto the locked contract",
+      "status": "pass"
+    },
+    {
+      "path": "core/inference/build/test-results/testDebugUnitTest/TEST-app.skein.core.inference.models.ModelManifestFixtureTest.xml",
+      "class": "app.skein.core.inference.models.ModelManifestFixtureTest",
+      "name": "toModel carries the manifest identity onto the Model",
+      "status": "pass"
+    },
+    {
+      "path": "core/inference/build/test-results/testDebugUnitTest/TEST-app.skein.core.inference.models.ModelManifestFixtureTest.xml",
+      "class": "app.skein.core.inference.models.ModelManifestFixtureTest",
+      "name": "license is parsed as an object with a required spdx id",
+      "status": "pass"
+    },
+    {
+      "path": "core/inference/build/test-results/testDebugUnitTest/TEST-app.skein.core.inference.models.ModelManifestFixtureTest.xml",
+      "class": "app.skein.core.inference.models.ModelManifestFixtureTest",
+      "name": "attestation without a certificate identity is refused",
+      "status": "pass"
+    },
+    {
+      "path": "core/inference/build/test-results/testDebugUnitTest/TEST-app.skein.core.inference.models.ModelManifestFixtureTest.xml",
+      "class": "app.skein.core.inference.models.ModelManifestFixtureTest",
+      "name": "attestationUrl reads through to the attestation object",
+      "status": "pass"
+    },
+    {
+      "path": "core/inference/build/test-results/testDebugUnitTest/TEST-app.skein.core.inference.models.ModelManifestFixtureTest.xml",
+      "class": "app.skein.core.inference.models.ModelManifestFixtureTest",
+      "name": "both default model manifests are present as fixtures",
+      "status": "pass"
+    },
+    {
+      "path": "core/inference/build/test-results/testDebugUnitTest/TEST-app.skein.core.inference.models.ModelManifestFixtureTest.xml",
+      "class": "app.skein.core.inference.models.ModelManifestFixtureTest",
+      "name": "duplicate companion role is refused",
+      "status": "pass"
+    },
+    {
+      "path": "core/inference/build/test-results/testDebugUnitTest/TEST-app.skein.core.inference.models.ModelManifestFixtureTest.xml",
+      "class": "app.skein.core.inference.models.ModelManifestFixtureTest",
+      "name": "empty capabilities list is refused",
+      "status": "pass"
+    },
+    {
+      "path": "core/inference/build/test-results/testDebugUnitTest/TEST-app.skein.core.inference.models.ModelManifestFixtureTest.xml",
+      "class": "app.skein.core.inference.models.ModelManifestFixtureTest",
+      "name": "main file name that escapes the store directory is refused",
+      "status": "pass"
+    },
+    {
+      "path": "core/inference/build/test-results/testDebugUnitTest/TEST-app.skein.core.inference.models.ModelManifestFixtureTest.xml",
+      "class": "app.skein.core.inference.models.ModelManifestFixtureTest",
+      "name": "missing license spdx is refused",
+      "status": "pass"
+    },
+    {
+      "path": "core/inference/build/test-results/testDebugUnitTest/TEST-app.skein.core.inference.models.ModelManifestFixtureTest.xml",
+      "class": "app.skein.core.inference.models.ModelManifestFixtureTest",
+      "name": "every fixture under invalid is refused",
+      "status": "pass"
+    },
+    {
+      "path": "core/inference/build/test-results/testDebugUnitTest/TEST-app.skein.core.inference.models.ModelManifestFixtureTest.xml",
+      "class": "app.skein.core.inference.models.ModelManifestFixtureTest",
+      "name": "duplicate capabilities are refused",
+      "status": "pass"
+    },
+    {
+      "path": "core/inference/build/test-results/testDebugUnitTest/TEST-app.skein.core.inference.models.ModelManifestFixtureTest.xml",
+      "class": "app.skein.core.inference.models.ModelManifestFixtureTest",
+      "name": "unparseable document is refused rather than thrown",
+      "status": "pass"
+    },
+    {
+      "path": "core/inference/build/test-results/testDebugUnitTest/TEST-app.skein.core.inference.models.ModelManifestFixtureTest.xml",
+      "class": "app.skein.core.inference.models.ModelManifestFixtureTest",
+      "name": "no refusal summary leaks a digest or a path",
+      "status": "pass"
+    },
+    {
+      "path": "core/inference/build/test-results/testDebugUnitTest/TEST-app.skein.core.inference.models.ModelManifestFixtureTest.xml",
+      "class": "app.skein.core.inference.models.ModelManifestFixtureTest",
+      "name": "malformed id is refused",
+      "status": "pass"
+    },
+    {
+      "path": "core/inference/build/test-results/testDebugUnitTest/TEST-app.skein.core.inference.models.ModelManifestFixtureTest.xml",
+      "class": "app.skein.core.inference.models.ModelManifestFixtureTest",
+      "name": "context_length falls back to the Model default when absent",
+      "status": "pass"
+    },
+    {
+      "path": "core/inference/build/test-results/testDebugUnitTest/TEST-app.skein.core.inference.models.ModelManifestFixtureTest.xml",
+      "class": "app.skein.core.inference.models.ModelManifestFixtureTest",
+      "name": "capabilities map onto the locked Capability enum",
+      "status": "pass"
+    },
+    {
+      "path": "core/inference/build/test-results/testDebugUnitTest/TEST-app.skein.core.inference.models.ModelManifestFixtureTest.xml",
+      "class": "app.skein.core.inference.models.ModelManifestFixtureTest",
+      "name": "every fixture under valid parses",
+      "status": "pass"
+    },
+    {
+      "path": "core/inference/build/test-results/testDebugUnitTest/TEST-app.skein.core.inference.models.ModelManifestFixtureTest.xml",
+      "class": "app.skein.core.inference.models.ModelManifestFixtureTest",
+      "name": "declared blake3 on the main file is preserved",
+      "status": "pass"
+    },
+    {
+      "path": "core/inference/build/test-results/testDebugUnitTest/TEST-app.skein.core.inference.models.ModelManifestFixtureTest.xml",
+      "class": "app.skein.core.inference.models.ModelManifestFixtureTest",
+      "name": "unknown format is refused",
+      "status": "pass"
+    },
+    {
+      "path": "core/inference/build/test-results/testDebugUnitTest/TEST-app.skein.core.inference.models.ModelManifestFixtureTest.xml",
+      "class": "app.skein.core.inference.models.ModelManifestFixtureTest",
+      "name": "format maps onto the locked ModelFormat enum",
+      "status": "pass"
+    },
+    {
+      "path": "core/inference/build/test-results/testDebugUnitTest/TEST-app.skein.core.inference.models.ModelManifestFixtureTest.xml",
+      "class": "app.skein.core.inference.models.ModelManifestFixtureTest",
+      "name": "toModel resolves a companion path onto its role",
+      "status": "pass"
+    },
+    {
+      "path": "core/inference/build/test-results/testDebugUnitTest/TEST-app.skein.core.inference.models.ModelManifestFixtureTest.xml",
+      "class": "app.skein.core.inference.models.ModelManifestFixtureTest",
+      "name": "wrong manifest_version is refused",
+      "status": "pass"
+    },
+    {
+      "path": "core/inference/build/test-results/testDebugUnitTest/TEST-app.skein.core.inference.models.ModelManifestFixtureTest.xml",
+      "class": "app.skein.core.inference.models.ModelManifestFixtureTest",
+      "name": "toModel rejects a companion path for a role the manifest does not cover",
+      "status": "pass"
+    },
+    {
+      "path": "core/inference/build/test-results/testDebugUnitTest/TEST-app.skein.core.inference.models.ModelManifestFixtureTest.xml",
+      "class": "app.skein.core.inference.models.ModelManifestFixtureTest",
+      "name": "companion without sha256 is refused as CompanionMissing",
+      "status": "pass"
+    },
+    {
+      "path": "core/inference/build/test-results/testDebugUnitTest/TEST-app.skein.core.inference.models.ModelManifestFixtureTest.xml",
+      "class": "app.skein.core.inference.models.ModelManifestFixtureTest",
+      "name": "attestationUrl is null when the manifest declares no attestation",
+      "status": "pass"
+    },
+    {
+      "path": "core/inference/build/test-results/testDebugUnitTest/TEST-app.skein.core.inference.models.ModelManifestFixtureTest.xml",
+      "class": "app.skein.core.inference.models.ModelManifestFixtureTest",
+      "name": "toModel carries context_length",
+      "status": "pass"
+    },
+    {
+      "path": "core/inference/build/test-results/testDebugUnitTest/TEST-app.skein.core.inference.models.ModelManifestFixtureTest.xml",
+      "class": "app.skein.core.inference.models.ModelManifestFixtureTest",
+      "name": "an optional companion is marked not required",
+      "status": "pass"
+    },
+    {
+      "path": "core/inference/build/test-results/testDebugUnitTest/TEST-app.skein.core.inference.models.ModelManifestFixtureTest.xml",
+      "class": "app.skein.core.inference.models.ModelManifestFixtureTest",
+      "name": "license url and notes survive parsing",
+      "status": "pass"
+    },
+    {
+      "path": "core/inference/build/test-results/testDebugUnitTest/TEST-app.skein.core.inference.models.ModelManifestTest.xml",
+      "class": "app.skein.core.inference.models.ModelManifestTest",
+      "name": "main declared inside companions is refused",
+      "status": "pass"
+    },
+    {
+      "path": "core/inference/build/test-results/testDebugUnitTest/TEST-app.skein.core.inference.models.ModelManifestTest.xml",
+      "class": "app.skein.core.inference.models.ModelManifestTest",
+      "name": "every parsed file carries a sha256",
+      "status": "pass"
+    },
+    {
+      "path": "core/inference/build/test-results/testDebugUnitTest/TEST-app.skein.core.inference.models.ModelManifestTest.xml",
+      "class": "app.skein.core.inference.models.ModelManifestTest",
+      "name": "complete manifest parses",
+      "status": "pass"
+    },
+    {
+      "path": "core/inference/build/test-results/testDebugUnitTest/TEST-app.skein.core.inference.models.ModelManifestTest.xml",
+      "class": "app.skein.core.inference.models.ModelManifestTest",
+      "name": "unknown companion role is refused",
+      "status": "pass"
+    },
+    {
+      "path": "core/inference/build/test-results/testDebugUnitTest/TEST-app.skein.core.inference.models.ModelManifestTest.xml",
+      "class": "app.skein.core.inference.models.ModelManifestTest",
+      "name": "declared blake3 is preserved",
+      "status": "pass"
+    },
+    {
+      "path": "core/inference/build/test-results/testDebugUnitTest/TEST-app.skein.core.inference.models.ModelManifestTest.xml",
+      "class": "app.skein.core.inference.models.ModelManifestTest",
+      "name": "parsed manifest covers main plus every companion",
+      "status": "pass"
+    },
+    {
+      "path": "core/inference/build/test-results/testDebugUnitTest/TEST-app.skein.core.inference.models.ModelManifestTest.xml",
+      "class": "app.skein.core.inference.models.ModelManifestTest",
+      "name": "duplicate companion role is refused",
+      "status": "pass"
+    },
+    {
+      "path": "core/inference/build/test-results/testDebugUnitTest/TEST-app.skein.core.inference.models.ModelManifestTest.xml",
+      "class": "app.skein.core.inference.models.ModelManifestTest",
+      "name": "unparseable document is refused rather than thrown",
+      "status": "pass"
+    },
+    {
+      "path": "core/inference/build/test-results/testDebugUnitTest/TEST-app.skein.core.inference.models.ModelManifestTest.xml",
+      "class": "app.skein.core.inference.models.ModelManifestTest",
+      "name": "file name that escapes the store directory is refused",
+      "status": "pass"
+    },
+    {
+      "path": "core/inference/build/test-results/testDebugUnitTest/TEST-app.skein.core.inference.models.ModelManifestTest.xml",
+      "class": "app.skein.core.inference.models.ModelManifestTest",
+      "name": "manifest version 1 is refused",
+      "status": "pass"
+    },
+    {
+      "path": "core/inference/build/test-results/testDebugUnitTest/TEST-app.skein.core.inference.models.ModelManifestTest.xml",
+      "class": "app.skein.core.inference.models.ModelManifestTest",
+      "name": "companion without sha256 is refused as CompanionMissing",
+      "status": "pass"
+    },
+    {
+      "path": "core/inference/build/test-results/testDebugUnitTest/TEST-app.skein.core.inference.models.ModelVerifierCancellationTest.xml",
+      "class": "app.skein.core.inference.models.ModelVerifierCancellationTest",
+      "name": "a cancelled channel digest stops after the read already in flight",
+      "status": "pass"
+    },
+    {
+      "path": "core/inference/build/test-results/testDebugUnitTest/TEST-app.skein.core.inference.models.ModelVerifierCancellationTest.xml",
+      "class": "app.skein.core.inference.models.ModelVerifierCancellationTest",
+      "name": "an uncancelled verification still passes both gates",
+      "status": "pass"
+    },
+    {
+      "path": "core/inference/build/test-results/testDebugUnitTest/TEST-app.skein.core.inference.models.ModelVerifierCancellationTest.xml",
+      "class": "app.skein.core.inference.models.ModelVerifierCancellationTest",
+      "name": "a cancelled pre-mmap gate refuses with Cancelled, not HashMismatch",
+      "status": "pass"
+    },
+    {
+      "path": "core/inference/build/test-results/testDebugUnitTest/TEST-app.skein.core.inference.models.ModelVerifierCancellationTest.xml",
+      "class": "app.skein.core.inference.models.ModelVerifierCancellationTest",
+      "name": "a cancelled channel digest reports Cancelled rather than a digest",
+      "status": "pass"
+    },
+    {
+      "path": "core/inference/build/test-results/testDebugUnitTest/TEST-app.skein.core.inference.models.ModelVerifierCancellationTest.xml",
+      "class": "app.skein.core.inference.models.ModelVerifierCancellationTest",
+      "name": "a cancelled stream digest stops after the read already in flight",
+      "status": "pass"
+    },
+    {
+      "path": "core/inference/build/test-results/testDebugUnitTest/TEST-app.skein.core.inference.models.ModelVerifierCancellationTest.xml",
+      "class": "app.skein.core.inference.models.ModelVerifierCancellationTest",
+      "name": "a cancelled post-mmap digest stops after the chunk already in flight",
+      "status": "pass"
+    },
+    {
+      "path": "core/inference/build/test-results/testDebugUnitTest/TEST-app.skein.core.inference.models.ModelVerifierCancellationTest.xml",
+      "class": "app.skein.core.inference.models.ModelVerifierCancellationTest",
+      "name": "progress covers every byte of the binding when nothing cancels",
+      "status": "pass"
+    },
+    {
+      "path": "core/inference/build/test-results/testDebugUnitTest/TEST-app.skein.core.inference.models.ModelVerifierCancellationTest.xml",
+      "class": "app.skein.core.inference.models.ModelVerifierCancellationTest",
+      "name": "a cancelled load gate produces no mapping",
+      "status": "pass"
+    },
+    {
+      "path": "core/inference/build/test-results/testDebugUnitTest/TEST-app.skein.core.inference.models.ModelVerifierTest.xml",
+      "class": "app.skein.core.inference.models.ModelVerifierTest",
+      "name": "constant time compare accepts equal digests",
+      "status": "pass"
+    },
+    {
+      "path": "core/inference/build/test-results/testDebugUnitTest/TEST-app.skein.core.inference.models.ModelVerifierTest.xml",
+      "class": "app.skein.core.inference.models.ModelVerifierTest",
+      "name": "every bound file has a post-mmap expectation",
+      "status": "pass"
+    },
+    {
+      "path": "core/inference/build/test-results/testDebugUnitTest/TEST-app.skein.core.inference.models.ModelVerifierTest.xml",
+      "class": "app.skein.core.inference.models.ModelVerifierTest",
+      "name": "modification before the pre-mmap gate is caught by sha256, not by blake3",
+      "status": "pass"
+    },
+    {
+      "path": "core/inference/build/test-results/testDebugUnitTest/TEST-app.skein.core.inference.models.ModelVerifierTest.xml",
+      "class": "app.skein.core.inference.models.ModelVerifierTest",
+      "name": "without a declared blake3 the post-mmap gate re-hashes the mapping with sha256 and still catches the write",
+      "status": "pass"
+    },
+    {
+      "path": "core/inference/build/test-results/testDebugUnitTest/TEST-app.skein.core.inference.models.ModelVerifierTest.xml",
+      "class": "app.skein.core.inference.models.ModelVerifierTest",
+      "name": "binding a complete manifest succeeds",
+      "status": "pass"
+    },
+    {
+      "path": "core/inference/build/test-results/testDebugUnitTest/TEST-app.skein.core.inference.models.ModelVerifierTest.xml",
+      "class": "app.skein.core.inference.models.ModelVerifierTest",
+      "name": "in-place modification while the region is mapped is detected as Tampered",
+      "status": "pass"
+    },
+    {
+      "path": "core/inference/build/test-results/testDebugUnitTest/TEST-app.skein.core.inference.models.ModelVerifierTest.xml",
+      "class": "app.skein.core.inference.models.ModelVerifierTest",
+      "name": "post-mmap gate refuses a blake3 expectation the mapped bytes do not meet",
+      "status": "pass"
+    },
+    {
+      "path": "core/inference/build/test-results/testDebugUnitTest/TEST-app.skein.core.inference.models.ModelVerifierTest.xml",
+      "class": "app.skein.core.inference.models.ModelVerifierTest",
+      "name": "without a declared blake3 an untouched model passes both gates",
+      "status": "pass"
+    },
+    {
+      "path": "core/inference/build/test-results/testDebugUnitTest/TEST-app.skein.core.inference.models.ModelVerifierTest.xml",
+      "class": "app.skein.core.inference.models.ModelVerifierTest",
+      "name": "the pre-mmap pass observes a blake3 only when asked",
+      "status": "pass"
+    },
+    {
+      "path": "core/inference/build/test-results/testDebugUnitTest/TEST-app.skein.core.inference.models.ModelVerifierTest.xml",
+      "class": "app.skein.core.inference.models.ModelVerifierTest",
+      "name": "a manifest companion absent from the store refuses the binding",
+      "status": "pass"
+    },
+    {
+      "path": "core/inference/build/test-results/testDebugUnitTest/TEST-app.skein.core.inference.models.ModelVerifierTest.xml",
+      "class": "app.skein.core.inference.models.ModelVerifierTest",
+      "name": "full load gate returns a mapping when both digests match",
+      "status": "pass"
+    },
+    {
+      "path": "core/inference/build/test-results/testDebugUnitTest/TEST-app.skein.core.inference.models.ModelVerifierTest.xml",
+      "class": "app.skein.core.inference.models.ModelVerifierTest",
+      "name": "constant time compare rejects non-hex input instead of throwing",
+      "status": "pass"
+    },
+    {
+      "path": "core/inference/build/test-results/testDebugUnitTest/TEST-app.skein.core.inference.models.ModelVerifierTest.xml",
+      "class": "app.skein.core.inference.models.ModelVerifierTest",
+      "name": "pre-mmap gate passes for an untouched import",
+      "status": "pass"
+    },
+    {
+      "path": "core/inference/build/test-results/testDebugUnitTest/TEST-app.skein.core.inference.models.ModelVerifierTest.xml",
+      "class": "app.skein.core.inference.models.ModelVerifierTest",
+      "name": "binding covers every file the loader may open",
+      "status": "pass"
+    },
+    {
+      "path": "core/inference/build/test-results/testDebugUnitTest/TEST-app.skein.core.inference.models.ModelVerifierTest.xml",
+      "class": "app.skein.core.inference.models.ModelVerifierTest",
+      "name": "the mapped region digests to the manifest blake3",
+      "status": "pass"
+    },
+    {
+      "path": "core/inference/build/test-results/testDebugUnitTest/TEST-app.skein.core.inference.models.ModelVerifierTest.xml",
+      "class": "app.skein.core.inference.models.ModelVerifierTest",
+      "name": "constant time compare rejects a one-nibble difference",
+      "status": "pass"
+    },
+    {
+      "path": "core/inference/build/test-results/testDebugUnitTest/TEST-app.skein.core.inference.models.ModelVerifierTest.xml",
+      "class": "app.skein.core.inference.models.ModelVerifierTest",
+      "name": "in-place modification between the two gates is detected as Tampered",
+      "status": "pass"
+    },
+    {
+      "path": "core/inference/build/test-results/testDebugUnitTest/TEST-app.skein.core.inference.models.ModelVerifierTest.xml",
+      "class": "app.skein.core.inference.models.ModelVerifierTest",
+      "name": "a companion the manifest does not cover refuses the binding",
+      "status": "pass"
+    },
+    {
+      "path": "core/inference/build/test-results/testDebugUnitTest/TEST-app.skein.core.inference.models.ModelVerifierTest.xml",
+      "class": "app.skein.core.inference.models.ModelVerifierTest",
+      "name": "a companion tampered after import is caught on the next load",
+      "status": "pass"
+    },
+    {
+      "path": "core/inference/build/test-results/testDebugUnitTest/TEST-app.skein.core.inference.models.PinnedModelFileTest.xml",
+      "class": "app.skein.core.inference.models.PinnedModelFileTest",
+      "name": "a dup that fails refuses instead of throwing",
+      "status": "pass"
+    },
+    {
+      "path": "core/inference/build/test-results/testDebugUnitTest/TEST-app.skein.core.inference.models.PinnedModelFileTest.xml",
+      "class": "app.skein.core.inference.models.PinnedModelFileTest",
+      "name": "closing twice is a no-op",
+      "status": "pass"
+    },
+    {
+      "path": "core/inference/build/test-results/testDebugUnitTest/TEST-app.skein.core.inference.models.PinnedModelFileTest.xml",
+      "class": "app.skein.core.inference.models.PinnedModelFileTest",
+      "name": "a refused verification closes the descriptor so there is none to hand to the engine",
+      "status": "pass"
+    },
+    {
+      "path": "core/inference/build/test-results/testDebugUnitTest/TEST-app.skein.core.inference.models.PinnedModelFileTest.xml",
+      "class": "app.skein.core.inference.models.PinnedModelFileTest",
+      "name": "a tampered main file refuses the pinned load with a hash mismatch",
+      "status": "pass"
+    },
+    {
+      "path": "core/inference/build/test-results/testDebugUnitTest/TEST-app.skein.core.inference.models.PinnedModelFileTest.xml",
+      "class": "app.skein.core.inference.models.PinnedModelFileTest",
+      "name": "the engine path names the duplicated descriptor",
+      "status": "pass"
+    },
+    {
+      "path": "core/inference/build/test-results/testDebugUnitTest/TEST-app.skein.core.inference.models.PinnedModelFileTest.xml",
+      "class": "app.skein.core.inference.models.PinnedModelFileTest",
+      "name": "unload closes every descriptor the load pinned",
+      "status": "pass"
+    },
+    {
+      "path": "core/inference/build/test-results/testDebugUnitTest/TEST-app.skein.core.inference.models.PinnedModelFileTest.xml",
+      "class": "app.skein.core.inference.models.PinnedModelFileTest",
+      "name": "a pinned file reports the size of the descriptor it holds",
+      "status": "pass"
+    },
+    {
+      "path": "core/inference/build/test-results/testDebugUnitTest/TEST-app.skein.core.inference.models.PinnedModelFileTest.xml",
+      "class": "app.skein.core.inference.models.PinnedModelFileTest",
+      "name": "the path itself really does resolve to the replacement",
+      "status": "pass"
+    },
+    {
+      "path": "core/inference/build/test-results/testDebugUnitTest/TEST-app.skein.core.inference.models.PinnedModelFileTest.xml",
+      "class": "app.skein.core.inference.models.PinnedModelFileTest",
+      "name": "the same swap is harmless once the companion arrived as a descriptor",
+      "status": "pass"
+    },
+    {
+      "path": "core/inference/build/test-results/testDebugUnitTest/TEST-app.skein.core.inference.models.PinnedModelFileTest.xml",
+      "class": "app.skein.core.inference.models.PinnedModelFileTest",
+      "name": "renaming the path out from under the pin does not change what the pin reads",
+      "status": "pass"
+    },
+    {
+      "path": "core/inference/build/test-results/testDebugUnitTest/TEST-app.skein.core.inference.models.PinnedModelFileTest.xml",
+      "class": "app.skein.core.inference.models.PinnedModelFileTest",
+      "name": "a load verified through the pin survives the path being swapped",
+      "status": "pass"
+    },
+    {
+      "path": "core/inference/build/test-results/testDebugUnitTest/TEST-app.skein.core.inference.models.PinnedModelFileTest.xml",
+      "class": "app.skein.core.inference.models.PinnedModelFileTest",
+      "name": "unload closes the descriptor",
+      "status": "pass"
+    },
+    {
+      "path": "core/inference/build/test-results/testDebugUnitTest/TEST-app.skein.core.inference.models.PinnedModelFileTest.xml",
+      "class": "app.skein.core.inference.models.PinnedModelFileTest",
+      "name": "the pinned digest is still the digest the manifest declares after the swap",
+      "status": "pass"
+    },
+    {
+      "path": "core/inference/build/test-results/testDebugUnitTest/TEST-app.skein.core.inference.models.PinnedModelFileTest.xml",
+      "class": "app.skein.core.inference.models.PinnedModelFileTest",
+      "name": "a verified pin stays open for the model's lifetime",
+      "status": "pass"
+    },
+    {
+      "path": "core/inference/build/test-results/testDebugUnitTest/TEST-app.skein.core.inference.models.PinnedModelFileTest.xml",
+      "class": "app.skein.core.inference.models.PinnedModelFileTest",
+      "name": "a companion swapped on disk defeats a load that reads it by path",
+      "status": "pass"
+    },
+    {
+      "path": "core/inference/build/test-results/testDebugUnitTest/TEST-app.skein.core.inference.models.VerifyBindingsTest.xml",
+      "class": "app.skein.core.inference.models.VerifyBindingsTest",
+      "name": "the main file keeps its blake3, so the app side never falls back",
+      "status": "pass"
+    },
+    {
+      "path": "core/inference/build/test-results/testDebugUnitTest/TEST-app.skein.core.inference.models.VerifyBindingsTest.xml",
+      "class": "app.skein.core.inference.models.VerifyBindingsTest",
+      "name": "every bound file survives the conversion, in order",
+      "status": "pass"
+    },
+    {
+      "path": "core/inference/build/test-results/testDebugUnitTest/TEST-app.skein.core.inference.models.VerifyBindingsTest.xml",
+      "class": "app.skein.core.inference.models.VerifyBindingsTest",
+      "name": "every converted file keeps its expected size",
+      "status": "pass"
+    },
+    {
+      "path": "core/inference/build/test-results/testDebugUnitTest/TEST-app.skein.core.inference.models.VerifyBindingsTest.xml",
+      "class": "app.skein.core.inference.models.VerifyBindingsTest",
+      "name": "the ModelHandle overload verifies a freshly imported model",
+      "status": "pass"
+    },
+    {
+      "path": "core/inference/build/test-results/testDebugUnitTest/TEST-app.skein.core.inference.models.VerifyBindingsTest.xml",
+      "class": "app.skein.core.inference.models.VerifyBindingsTest",
+      "name": "the main file keeps its sha256",
+      "status": "pass"
+    },
+    {
+      "path": "core/inference/build/test-results/testDebugUnitTest/TEST-app.skein.core.inference.models.VerifyBindingsTest.xml",
+      "class": "app.skein.core.inference.models.VerifyBindingsTest",
+      "name": "every converted file keeps its store path",
+      "status": "pass"
+    },
+    {
+      "path": "core/inference/build/test-results/testDebugUnitTest/TEST-app.skein.core.inference.models.WireBindingsTest.xml",
+      "class": "app.skein.core.inference.models.WireBindingsTest",
+      "name": "toWire returns a null attestation when no bundle file was resolved for it",
+      "status": "pass"
+    },
+    {
+      "path": "core/inference/build/test-results/testDebugUnitTest/TEST-app.skein.core.inference.models.WireBindingsTest.xml",
+      "class": "app.skein.core.inference.models.WireBindingsTest",
+      "name": "toWire carries the manifest id and version from the binding",
+      "status": "pass"
+    },
+    {
+      "path": "core/inference/build/test-results/testDebugUnitTest/TEST-app.skein.core.inference.models.WireBindingsTest.xml",
+      "class": "app.skein.core.inference.models.WireBindingsTest",
+      "name": "the wire binding survives a real Parcel round trip",
+      "status": "pass"
+    },
+    {
+      "path": "core/inference/build/test-results/testDebugUnitTest/TEST-app.skein.core.inference.models.WireBindingsTest.xml",
+      "class": "app.skein.core.inference.models.WireBindingsTest",
+      "name": "toWire carries expected size bytes verbatim for every file",
+      "status": "pass"
+    },
+    {
+      "path": "core/inference/build/test-results/testDebugUnitTest/TEST-app.skein.core.inference.models.WireBindingsTest.xml",
+      "class": "app.skein.core.inference.models.WireBindingsTest",
+      "name": "toWire maps main and every companion role in manifest order",
+      "status": "pass"
+    },
+    {
+      "path": "core/inference/build/test-results/testDebugUnitTest/TEST-app.skein.core.inference.models.WireBindingsTest.xml",
+      "class": "app.skein.core.inference.models.WireBindingsTest",
+      "name": "toWire opens a readable descriptor over a companion's real bytes",
+      "status": "pass"
+    },
+    {
+      "path": "core/inference/build/test-results/testDebugUnitTest/TEST-app.skein.core.inference.models.WireBindingsTest.xml",
+      "class": "app.skein.core.inference.models.WireBindingsTest",
+      "name": "toWire builds an AttestationRefParcel when a bundle file is supplied",
+      "status": "pass"
+    },
+    {
+      "path": "core/inference/build/test-results/testDebugUnitTest/TEST-app.skein.core.inference.models.WireBindingsTest.xml",
+      "class": "app.skein.core.inference.models.WireBindingsTest",
+      "name": "the client's descriptor is already closed once the wire binding is marshalled",
+      "status": "pass"
+    },
+    {
+      "path": "core/inference/build/test-results/testDebugUnitTest/TEST-app.skein.core.inference.models.WireBindingsTest.xml",
+      "class": "app.skein.core.inference.models.WireBindingsTest",
+      "name": "toWire's attestation covers default to main when the manifest omits covers",
+      "status": "pass"
+    },
+    {
+      "path": "core/inference/build/test-results/testDebugUnitTest/TEST-app.skein.core.inference.models.WireBindingsTest.xml",
+      "class": "app.skein.core.inference.models.WireBindingsTest",
+      "name": "a failed conversion closes every descriptor already opened",
+      "status": "pass"
+    },
+    {
+      "path": "core/inference/build/test-results/testDebugUnitTest/TEST-app.skein.core.inference.models.WireBindingsTest.xml",
+      "class": "app.skein.core.inference.models.WireBindingsTest",
+      "name": "toWire opens a readable descriptor over the real main file bytes",
+      "status": "pass"
+    },
+    {
+      "path": "core/inference/build/test-results/testDebugUnitTest/TEST-app.skein.core.inference.models.WireBindingsTest.xml",
+      "class": "app.skein.core.inference.models.WireBindingsTest",
+      "name": "toWire's attestation descriptor is readable over the supplied bundle bytes",
+      "status": "pass"
+    },
+    {
+      "path": "core/inference/build/test-results/testDebugUnitTest/TEST-app.skein.core.inference.models.WireBindingsTest.xml",
+      "class": "app.skein.core.inference.models.WireBindingsTest",
+      "name": "toWire returns a null attestation when the manifest declares none",
+      "status": "pass"
+    },
+    {
+      "path": "core/inference/build/test-results/testDebugUnitTest/TEST-app.skein.core.inference.models.WireBindingsTest.xml",
+      "class": "app.skein.core.inference.models.WireBindingsTest",
+      "name": "toWire carries expected sha256 verbatim for every file",
+      "status": "pass"
+    },
+    {
+      "path": "core/inference/build/test-results/testDebugUnitTest/TEST-app.skein.core.inference.thermal.BatteryOkEvaluatorTest.xml",
+      "class": "app.skein.core.inference.thermal.BatteryOkEvaluatorTest",
+      "name": "unplugged 20 percent scaled to a non-100 scale is ok",
+      "status": "pass"
+    },
+    {
+      "path": "core/inference/build/test-results/testDebugUnitTest/TEST-app.skein.core.inference.thermal.BatteryOkEvaluatorTest.xml",
+      "class": "app.skein.core.inference.thermal.BatteryOkEvaluatorTest",
+      "name": "not charging and unknown status is not ok below the floor",
+      "status": "pass"
+    },
+    {
+      "path": "core/inference/build/test-results/testDebugUnitTest/TEST-app.skein.core.inference.thermal.BatteryOkEvaluatorTest.xml",
+      "class": "app.skein.core.inference.thermal.BatteryOkEvaluatorTest",
+      "name": "unplugged at or above 20 percent is ok",
+      "status": "pass"
+    },
+    {
+      "path": "core/inference/build/test-results/testDebugUnitTest/TEST-app.skein.core.inference.thermal.BatteryOkEvaluatorTest.xml",
+      "class": "app.skein.core.inference.thermal.BatteryOkEvaluatorTest",
+      "name": "an unreadable scale fails closed",
+      "status": "pass"
+    },
+    {
+      "path": "core/inference/build/test-results/testDebugUnitTest/TEST-app.skein.core.inference.thermal.BatteryOkEvaluatorTest.xml",
+      "class": "app.skein.core.inference.thermal.BatteryOkEvaluatorTest",
+      "name": "full is ok regardless of level",
+      "status": "pass"
+    },
+    {
+      "path": "core/inference/build/test-results/testDebugUnitTest/TEST-app.skein.core.inference.thermal.BatteryOkEvaluatorTest.xml",
+      "class": "app.skein.core.inference.thermal.BatteryOkEvaluatorTest",
+      "name": "unplugged below 20 percent is not ok",
+      "status": "pass"
+    },
+    {
+      "path": "core/inference/build/test-results/testDebugUnitTest/TEST-app.skein.core.inference.thermal.BatteryOkEvaluatorTest.xml",
+      "class": "app.skein.core.inference.thermal.BatteryOkEvaluatorTest",
+      "name": "charging is ok regardless of level",
+      "status": "pass"
+    },
+    {
+      "path": "core/inference/build/test-results/testDebugUnitTest/TEST-app.skein.core.inference.thermal.ThermalBackoffTableTest.xml",
+      "class": "app.skein.core.inference.thermal.ThermalBackoffTableTest",
+      "name": "nextIndex de-escalation cascades multiple levels in one reading",
+      "status": "pass"
+    },
+    {
+      "path": "core/inference/build/test-results/testDebugUnitTest/TEST-app.skein.core.inference.thermal.ThermalBackoffTableTest.xml",
+      "class": "app.skein.core.inference.thermal.ThermalBackoffTableTest",
+      "name": "constructor rejects entries not strictly ascending",
+      "status": "pass"
+    },
+    {
+      "path": "core/inference/build/test-results/testDebugUnitTest/TEST-app.skein.core.inference.thermal.ThermalBackoffTableTest.xml",
+      "class": "app.skein.core.inference.thermal.ThermalBackoffTableTest",
+      "name": "indexFor just below Paused threshold is still Reduced",
+      "status": "pass"
+    },
+    {
+      "path": "core/inference/build/test-results/testDebugUnitTest/TEST-app.skein.core.inference.thermal.ThermalBackoffTableTest.xml",
+      "class": "app.skein.core.inference.thermal.ThermalBackoffTableTest",
+      "name": "indexFor headroom above 1 stays at the highest entry",
+      "status": "pass"
+    },
+    {
+      "path": "core/inference/build/test-results/testDebugUnitTest/TEST-app.skein.core.inference.thermal.ThermalBackoffTableTest.xml",
+      "class": "app.skein.core.inference.thermal.ThermalBackoffTableTest",
+      "name": "indexFor exactly at Paused threshold is Paused",
+      "status": "pass"
+    },
+    {
+      "path": "core/inference/build/test-results/testDebugUnitTest/TEST-app.skein.core.inference.thermal.ThermalBackoffTableTest.xml",
+      "class": "app.skein.core.inference.thermal.ThermalBackoffTableTest",
+      "name": "constructor rejects an empty entry list",
+      "status": "pass"
+    },
+    {
+      "path": "core/inference/build/test-results/testDebugUnitTest/TEST-app.skein.core.inference.thermal.ThermalBackoffTableTest.xml",
+      "class": "app.skein.core.inference.thermal.ThermalBackoffTableTest",
+      "name": "constructor rejects a first entry with minHeadroom above zero",
+      "status": "pass"
+    },
+    {
+      "path": "core/inference/build/test-results/testDebugUnitTest/TEST-app.skein.core.inference.thermal.ThermalBackoffTableTest.xml",
+      "class": "app.skein.core.inference.thermal.ThermalBackoffTableTest",
+      "name": "indexFor exactly at Reduced threshold is Reduced",
+      "status": "pass"
+    },
+    {
+      "path": "core/inference/build/test-results/testDebugUnitTest/TEST-app.skein.core.inference.thermal.ThermalBackoffTableTest.xml",
+      "class": "app.skein.core.inference.thermal.ThermalBackoffTableTest",
+      "name": "nextIndex escalates immediately at the threshold with no margin",
+      "status": "pass"
+    },
+    {
+      "path": "core/inference/build/test-results/testDebugUnitTest/TEST-app.skein.core.inference.thermal.ThermalBackoffTableTest.xml",
+      "class": "app.skein.core.inference.thermal.ThermalBackoffTableTest",
+      "name": "DEFAULT is ascending and starts at Nominal",
+      "status": "pass"
+    },
+    {
+      "path": "core/inference/build/test-results/testDebugUnitTest/TEST-app.skein.core.inference.thermal.ThermalBackoffTableTest.xml",
+      "class": "app.skein.core.inference.thermal.ThermalBackoffTableTest",
+      "name": "indexFor below first non-zero threshold is Nominal",
+      "status": "pass"
+    },
+    {
+      "path": "core/inference/build/test-results/testDebugUnitTest/TEST-app.skein.core.inference.thermal.ThermalBackoffTableTest.xml",
+      "class": "app.skein.core.inference.thermal.ThermalBackoffTableTest",
+      "name": "nextIndex escalation cascades multiple levels in one reading",
+      "status": "pass"
+    },
+    {
+      "path": "core/inference/build/test-results/testDebugUnitTest/TEST-app.skein.core.inference.thermal.ThermalBackoffTableTest.xml",
+      "class": "app.skein.core.inference.thermal.ThermalBackoffTableTest",
+      "name": "constructor rejects a negative hysteresis margin",
+      "status": "pass"
+    },
+    {
+      "path": "core/inference/build/test-results/testDebugUnitTest/TEST-app.skein.core.inference.thermal.ThermalBackoffTableTest.xml",
+      "class": "app.skein.core.inference.thermal.ThermalBackoffTableTest",
+      "name": "nextIndex de-escalates once headroom clears the margin",
+      "status": "pass"
+    },
+    {
+      "path": "core/inference/build/test-results/testDebugUnitTest/TEST-app.skein.core.inference.thermal.ThermalBackoffTableTest.xml",
+      "class": "app.skein.core.inference.thermal.ThermalBackoffTableTest",
+      "name": "nextIndex does not flap across a threshold plus or minus epsilon",
+      "status": "pass"
+    },
+    {
+      "path": "core/inference/build/test-results/testDebugUnitTest/TEST-app.skein.core.inference.thermal.ThermalBackoffTableTest.xml",
+      "class": "app.skein.core.inference.thermal.ThermalBackoffTableTest",
+      "name": "nextIndex does not de-escalate within the hysteresis margin",
+      "status": "pass"
+    },
+    {
+      "path": "core/inference/build/test-results/testDebugUnitTest/TEST-app.skein.core.inference.thermal.ThermalGovernorCoreTest.xml",
+      "class": "app.skein.core.inference.thermal.ThermalGovernorCoreTest",
+      "name": "no polling when inactive",
+      "status": "pass"
+    },
+    {
+      "path": "core/inference/build/test-results/testDebugUnitTest/TEST-app.skein.core.inference.thermal.ThermalGovernorCoreTest.xml",
+      "class": "app.skein.core.inference.thermal.ThermalGovernorCoreTest",
+      "name": "headroom well below the first threshold yields Nominal",
+      "status": "pass"
+    },
+    {
+      "path": "core/inference/build/test-results/testDebugUnitTest/TEST-app.skein.core.inference.thermal.ThermalGovernorCoreTest.xml",
+      "class": "app.skein.core.inference.thermal.ThermalGovernorCoreTest",
+      "name": "NaN headroom fires the unsupported callback exactly once across repeated NaN readings",
+      "status": "pass"
+    },
+    {
+      "path": "core/inference/build/test-results/testDebugUnitTest/TEST-app.skein.core.inference.thermal.ThermalGovernorCoreTest.xml",
+      "class": "app.skein.core.inference.thermal.ThermalGovernorCoreTest",
+      "name": "activate then tick polls headroom exactly once",
+      "status": "pass"
+    },
+    {
+      "path": "core/inference/build/test-results/testDebugUnitTest/TEST-app.skein.core.inference.thermal.ThermalGovernorCoreTest.xml",
+      "class": "app.skein.core.inference.thermal.ThermalGovernorCoreTest",
+      "name": "activate subscribes to the status source",
+      "status": "pass"
+    },
+    {
+      "path": "core/inference/build/test-results/testDebugUnitTest/TEST-app.skein.core.inference.thermal.ThermalGovernorCoreTest.xml",
+      "class": "app.skein.core.inference.thermal.ThermalGovernorCoreTest",
+      "name": "headroom in the Reduced band yields Reduced with the table's thread count",
+      "status": "pass"
+    },
+    {
+      "path": "core/inference/build/test-results/testDebugUnitTest/TEST-app.skein.core.inference.thermal.ThermalGovernorCoreTest.xml",
+      "class": "app.skein.core.inference.thermal.ThermalGovernorCoreTest",
+      "name": "headroom in the Paused band yields Paused with untilMs from the clock plus duration",
+      "status": "pass"
+    },
+    {
+      "path": "core/inference/build/test-results/testDebugUnitTest/TEST-app.skein.core.inference.thermal.ThermalGovernorCoreTest.xml",
+      "class": "app.skein.core.inference.thermal.ThermalGovernorCoreTest",
+      "name": "Paused re-arms with a fresh deadline if still hot at expiry",
+      "status": "pass"
+    },
+    {
+      "path": "core/inference/build/test-results/testDebugUnitTest/TEST-app.skein.core.inference.thermal.ThermalGovernorCoreTest.xml",
+      "class": "app.skein.core.inference.thermal.ThermalGovernorCoreTest",
+      "name": "NaN headroom yields Nominal",
+      "status": "pass"
+    },
+    {
+      "path": "core/inference/build/test-results/testDebugUnitTest/TEST-app.skein.core.inference.thermal.ThermalGovernorCoreTest.xml",
+      "class": "app.skein.core.inference.thermal.ThermalGovernorCoreTest",
+      "name": "repeated ticks within one second do not repoll",
+      "status": "pass"
+    },
+    {
+      "path": "core/inference/build/test-results/testDebugUnitTest/TEST-app.skein.core.inference.thermal.ThermalGovernorCoreTest.xml",
+      "class": "app.skein.core.inference.thermal.ThermalGovernorCoreTest",
+      "name": "state de-escalates once headroom clears the hysteresis margin",
+      "status": "pass"
+    },
+    {
+      "path": "core/inference/build/test-results/testDebugUnitTest/TEST-app.skein.core.inference.thermal.ThermalGovernorCoreTest.xml",
+      "class": "app.skein.core.inference.thermal.ThermalGovernorCoreTest",
+      "name": "a status change event polls immediately even under the cadence",
+      "status": "pass"
+    },
+    {
+      "path": "core/inference/build/test-results/testDebugUnitTest/TEST-app.skein.core.inference.thermal.ThermalGovernorCoreTest.xml",
+      "class": "app.skein.core.inference.thermal.ThermalGovernorCoreTest",
+      "name": "Paused holds and does not poll before expiry",
+      "status": "pass"
+    },
+    {
+      "path": "core/inference/build/test-results/testDebugUnitTest/TEST-app.skein.core.inference.thermal.ThermalGovernorCoreTest.xml",
+      "class": "app.skein.core.inference.thermal.ThermalGovernorCoreTest",
+      "name": "initial state is Nominal",
+      "status": "pass"
+    },
+    {
+      "path": "core/inference/build/test-results/testDebugUnitTest/TEST-app.skein.core.inference.thermal.ThermalGovernorCoreTest.xml",
+      "class": "app.skein.core.inference.thermal.ThermalGovernorCoreTest",
+      "name": "reference count reaching zero deactivates",
+      "status": "pass"
+    },
+    {
+      "path": "core/inference/build/test-results/testDebugUnitTest/TEST-app.skein.core.inference.thermal.ThermalGovernorCoreTest.xml",
+      "class": "app.skein.core.inference.thermal.ThermalGovernorCoreTest",
+      "name": "a tick at or past the one second cadence repolls",
+      "status": "pass"
+    },
+    {
+      "path": "core/inference/build/test-results/testDebugUnitTest/TEST-app.skein.core.inference.thermal.ThermalGovernorCoreTest.xml",
+      "class": "app.skein.core.inference.thermal.ThermalGovernorCoreTest",
+      "name": "Paused re-evaluates and de-escalates once expired and cooled",
+      "status": "pass"
+    },
+    {
+      "path": "core/inference/build/test-results/testDebugUnitTest/TEST-app.skein.core.inference.thermal.ThermalGovernorCoreTest.xml",
+      "class": "app.skein.core.inference.thermal.ThermalGovernorCoreTest",
+      "name": "state does not flap back to Nominal within the hysteresis margin",
+      "status": "pass"
+    },
+    {
+      "path": "core/inference/build/test-results/testDebugUnitTest/TEST-app.skein.core.inference.thermal.ThermalGovernorCoreTest.xml",
+      "class": "app.skein.core.inference.thermal.ThermalGovernorCoreTest",
+      "name": "deactivate unsubscribes from the status source",
+      "status": "pass"
+    },
+    {
+      "path": "core/inference/build/test-results/testDebugUnitTest/TEST-app.skein.core.inference.thermal.ThermalGovernorCoreTest.xml",
+      "class": "app.skein.core.inference.thermal.ThermalGovernorCoreTest",
+      "name": "reference counting requires a matching deactivate per activate",
+      "status": "pass"
+    },
+    {
+      "path": "core/inference/build/test-results/testDebugUnitTest/TEST-app.skein.core.inference.thermal.ThermalGovernorCoreTest.xml",
+      "class": "app.skein.core.inference.thermal.ThermalGovernorCoreTest",
+      "name": "deactivate stops polling",
+      "status": "pass"
+    }
+  ],
+  "files": [
+    {
+      "path": "core/inference/src/main/kotlin/app/skein/core/inference/engine/LlamaCppEngine.kt",
+      "sha256": "5ba6d3c603b0ef3e1eed249152c487668209b07eaa6d0b8a2b755e7eb285f7e8"
+    },
+    {
+      "path": "core/inference/src/test/kotlin/app/skein/core/inference/engine/LlamaCppEngineBehaviourTest.kt",
+      "sha256": "4485f4afebc916335be27c46f40de3769d665debfbe7d265ab1cd60ee303bc7a"
+    },
+    {
+      "path": "core/inference/src/test/kotlin/app/skein/core/inference/engine/FakeInferenceService.kt",
+      "sha256": "06c705d25c09af3e6cdc35aeb26151a32a54f76dd6d23e697177bfed486c5313"
+    },
+    {
+      "path": "core/inference/build/test-results/testDebugUnitTest/TEST-app.skein.core.inference.ContextBudgetCacheTest.xml",
+      "bytes": 987,
+      "sha256": "89f624baaaa66815ffedb6a5438eaf9977cd93180734dfb0a31e235412d78558"
+    },
+    {
+      "path": "core/inference/build/test-results/testDebugUnitTest/TEST-app.skein.core.inference.ContextBudgetTest.xml",
+      "bytes": 1097,
+      "sha256": "4fc92dada9be4955ab319ff851a297fc0e69f01beee5beb4b1961c7bf8605375"
+    },
+    {
+      "path": "core/inference/build/test-results/testDebugUnitTest/TEST-app.skein.core.inference.LlamaCppEngineTest.xml",
+      "bytes": 1071,
+      "sha256": "59d5ae8ab97bddc43ee4b23550a3033eea4e3fbd159c41992f7144aa2e60cacf"
+    },
+    {
+      "path": "core/inference/build/test-results/testDebugUnitTest/TEST-app.skein.core.inference.engine.EngineErrorMappingTest.xml",
+      "bytes": 1880,
+      "sha256": "d630c6492d199cdb0ad8b06cb8d5c43a4526a119c8a53e8678c8e77fed5afbaa"
+    },
+    {
+      "path": "core/inference/build/test-results/testDebugUnitTest/TEST-app.skein.core.inference.engine.LlamaCppEngineBehaviourTest.xml",
+      "bytes": 9618,
+      "sha256": "2f169622fefedd004ea58a3687b447d8a125ef504b84835367466f8f3037dea6"
+    },
+    {
+      "path": "core/inference/build/test-results/testDebugUnitTest/TEST-app.skein.core.inference.engine.ModelTransactionsTest.xml",
+      "bytes": 692,
+      "sha256": "eda81160e3060eb1ca98014c20a5dd7f7d26325ec80f64e0707abea17106ac47"
+    },
+    {
+      "path": "core/inference/build/test-results/testDebugUnitTest/TEST-app.skein.core.inference.engine.SamplingDefaultsTest.xml",
+      "bytes": 2284,
+      "sha256": "8dd48e60dc579639b8f64a392758c6944a1f6f66b107c57bd838f512ed3ec160"
+    },
+    {
+      "path": "core/inference/build/test-results/testDebugUnitTest/TEST-app.skein.core.inference.models.GgufPreCheckTest.xml",
+      "bytes": 2254,
+      "sha256": "7b0cad2610e46b38ed6d357b713755346c82f6757105687006084a7d7f66652a"
+    },
+    {
+      "path": "core/inference/build/test-results/testDebugUnitTest/TEST-app.skein.core.inference.models.ImmutableModelStoreTest.xml",
+      "bytes": 4278,
+      "sha256": "c5044fb0544fdb68a8e239ff639b851c4192b7afcbe352e50a02ab05c3b862db"
+    },
+    {
+      "path": "core/inference/build/test-results/testDebugUnitTest/TEST-app.skein.core.inference.models.ManifestAttestationTest.xml",
+      "bytes": 961,
+      "sha256": "5d4cdb94a7876f234701db8cb8f6fd8334efcac845c27e7e1f2180fb72a0fcea"
+    },
+    {
+      "path": "core/inference/build/test-results/testDebugUnitTest/TEST-app.skein.core.inference.models.ModelManagerTest.xml",
+      "bytes": 3980,
+      "sha256": "109a52004ae91faa2656dab744d1d82672d45952fa034c539662bb33b92a782d"
+    },
+    {
+      "path": "core/inference/build/test-results/testDebugUnitTest/TEST-app.skein.core.inference.models.ModelManifestFixtureTest.xml",
+      "bytes": 6960,
+      "sha256": "3b2e7fbcf685dbefa9f59267c5f24d7373cad0a71c93b9d4ce62ef600ae54b0b"
+    },
+    {
+      "path": "core/inference/build/test-results/testDebugUnitTest/TEST-app.skein.core.inference.models.ModelManifestTest.xml",
+      "bytes": 1829,
+      "sha256": "46a3ba134ab508beede44fe6f2205678983572f9040e1dc10be04999804019f7"
+    },
+    {
+      "path": "core/inference/build/test-results/testDebugUnitTest/TEST-app.skein.core.inference.models.ModelVerifierCancellationTest.xml",
+      "bytes": 1715,
+      "sha256": "1bbda427ad41b44531e5c82f43d1a8c7822ea2a5c68842a0dd7879bf91b07971"
+    },
+    {
+      "path": "core/inference/build/test-results/testDebugUnitTest/TEST-app.skein.core.inference.models.ModelVerifierTest.xml",
+      "bytes": 3309,
+      "sha256": "05e58bc47416895d03e2e84153c81f899643f26a76fbc7915c49643651e4011b"
+    },
+    {
+      "path": "core/inference/build/test-results/testDebugUnitTest/TEST-app.skein.core.inference.models.PinnedModelFileTest.xml",
+      "bytes": 2680,
+      "sha256": "9d44e4c7922506dc1c63c56ea8be72ba105f44f7f3167cab71ea90fb7938e733"
+    },
+    {
+      "path": "core/inference/build/test-results/testDebugUnitTest/TEST-app.skein.core.inference.models.VerifyBindingsTest.xml",
+      "bytes": 1224,
+      "sha256": "f5db146ccd3512f311dd6e44d28411c6117d30f50ac6c224b5989331b291e8d3"
+    },
+    {
+      "path": "core/inference/build/test-results/testDebugUnitTest/TEST-app.skein.core.inference.models.WireBindingsTest.xml",
+      "bytes": 2590,
+      "sha256": "853d0b28f9aed89e27fb0d16d11d8d479d3792143c4bee1d115cad4139cafe56"
+    },
+    {
+      "path": "core/inference/build/test-results/testDebugUnitTest/TEST-app.skein.core.inference.thermal.BatteryOkEvaluatorTest.xml",
+      "bytes": 1340,
+      "sha256": "9066e1b4c19b8590ec021c3cbf07fce58cfdb6265c7d42a88a0c669e210442ec"
+    },
+    {
+      "path": "core/inference/build/test-results/testDebugUnitTest/TEST-app.skein.core.inference.thermal.ThermalBackoffTableTest.xml",
+      "bytes": 2846,
+      "sha256": "2f1f38d74c5c420bd837b65b750b301bcb5b0817a97908ea6b2fb34431fe484e"
+    },
+    {
+      "path": "core/inference/build/test-results/testDebugUnitTest/TEST-app.skein.core.inference.thermal.ThermalGovernorCoreTest.xml",
+      "bytes": 3577,
+      "sha256": "8af45475977f96e3846c2505f89501e6cebb333d752423ccc47a715ce62d1fcd"
+    }
+  ],
+  "task_executed": ":core:inference:testDebugUnitTest",
+  "ktlint": "PASS",
+  "log_sha256": "30facf488f22de52e217643b9b6ea7054320ef1c31070977b933cbaecbe69dfc",
+  "limits": [
+    "JVM fake-service/descriptor regression; no native process or physical-device acceptance",
+    "Remote CI remains failed at05ca pending corrected checkpoint rerun",
+    "No candidate/evaluator/fixture/threshold changes"
+  ]
+}
