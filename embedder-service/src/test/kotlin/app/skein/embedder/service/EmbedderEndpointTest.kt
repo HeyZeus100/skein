@@ -172,7 +172,30 @@ class EmbedderEndpointTest {
     }
 
     @Test
-    fun hardLockUsesBackstopInsteadOfFreeingBackendWhileNativeCallStillRuns() {
+    fun hardLockUsesBackstopInsteadOfFreeingBackendWhileNativeCallStillRuns() = runHardLockScenario(7)
+
+    @Test
+    fun futureLockCancelsOlderNativeCallAndRefusesDelayedUnlockWithoutConcurrentFree() = runHardLockScenario(8)
+
+    @Test
+    fun futureLockClosesObsoleteIdleModelAndDoesNotAuthorizeDelayedEpoch() {
+        val backend = TestBackend()
+        EmbedderEndpoint(EmbedderBackendFactory { _, _, _, _ -> backend }, {}).use { endpoint ->
+            endpoint.onSessionUnlocked(7)
+            assertEquals(ErrorCode.OK, endpoint.load(request()))
+            endpoint.onSessionLocking(8, 500)
+            assertEquals(1, backend.closes.get())
+            endpoint.onSessionUnlocked(8)
+            assertCode(ErrorCode.SESSION_LOCKED) {
+                endpoint.tokenCountForSession(EmbedderTokenCountRequest("synthetic", 8, 1))
+            }
+            assertCode(ErrorCode.SESSION_LOCKED) {
+                endpoint.tokenCountForSession(EmbedderTokenCountRequest("synthetic", 7, 2))
+            }
+        }
+    }
+
+    private fun runHardLockScenario(lockEpoch: Long) {
         val entered = CountDownLatch(1)
         val finish = CountDownLatch(1)
         val exited = CountDownLatch(1)
@@ -224,12 +247,16 @@ class EmbedderEndpointTest {
                 }
             try {
                 assertTrue(entered.await(2, TimeUnit.SECONDS))
-                endpoint.onSessionLocking(7, 500)
+                endpoint.onSessionLocking(lockEpoch, 500)
                 assertEquals(ErrorCode.SESSION_LOCKED, ErrorCodes.codeOf(caller.get(2, TimeUnit.SECONDS)!!))
                 assertEquals(0, backend.closes.get())
-                endpoint.onSessionLocked(7)
+                endpoint.onSessionUnlocked(lockEpoch)
+                assertCode(ErrorCode.SESSION_LOCKED) {
+                    endpoint.tokenCountForSession(EmbedderTokenCountRequest("synthetic", lockEpoch, 3))
+                }
+                endpoint.onSessionLocked(lockEpoch)
                 assertEquals(1, hardStops.get())
-                assertCode(ErrorCode.BUSY) { endpoint.onSessionUnlocked(8) }
+                assertCode(ErrorCode.BUSY) { endpoint.onSessionUnlocked(lockEpoch + 1) }
                 assertEquals(0, backend.closes.get())
             } finally {
                 finish.countDown()

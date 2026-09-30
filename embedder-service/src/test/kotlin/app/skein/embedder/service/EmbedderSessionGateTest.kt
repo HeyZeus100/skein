@@ -38,6 +38,19 @@ class EmbedderSessionGateTest {
     }
 
     @Test
+    fun `future lock revokes older authorization and rejects its delayed unlock`() {
+        val gate = EmbedderSessionGate()
+        assertTrue(gate.authorize(5))
+        assertTrue(gate.revoke(6))
+        assertFalse(gate.admits(5))
+        assertFalse(gate.authorize(6))
+        assertFalse(gate.authorize(5))
+        assertTrue(gate.authorize(7))
+        assertFalse(gate.revoke(6))
+        assertTrue(gate.admits(7))
+    }
+
+    @Test
     fun `revoked publication never runs its action`() {
         val gate = EmbedderSessionGate()
         gate.authorize(1)

@@ -178,6 +178,14 @@ internal class EmbedderRequestWorker(
         }
     }
 
+    fun cancelThrough(epoch: Long) {
+        synchronized(lock) {
+            active?.takeIf { it.epoch <= epoch }?.cancel(EmbedderRequestFailure.SESSION_LOCKED)
+        }
+    }
+
+    fun isBusyThrough(epoch: Long): Boolean = synchronized(lock) { active?.let { it.epoch <= epoch } == true }
+
     fun isBusy(): Boolean = synchronized(lock) { active != null }
 
     fun isBusy(epoch: Long): Boolean = synchronized(lock) { active?.epoch == epoch }

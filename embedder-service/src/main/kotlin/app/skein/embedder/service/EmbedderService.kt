@@ -209,21 +209,21 @@ internal class EmbedderEndpoint(
         budgetMillis: Long,
     ) {
         if (!gate.revoke(epoch)) return
-        worker.cancelEpoch(epoch)
-        clear(epoch)
+        worker.cancelThrough(epoch)
+        clearThrough(epoch)
     }
 
     override fun onSessionLocked(epoch: Long) {
         if (!gate.revoke(epoch)) return
-        worker.cancelEpoch(epoch)
-        clear(epoch)
+        worker.cancelThrough(epoch)
+        clearThrough(epoch)
         // Never concurrently free native state still executing. Only this isolated process
         // is terminated at the hard lock backstop; idle models can close normally.
-        if (worker.isBusy(epoch)) hardStop()
+        if (worker.isBusyThrough(epoch)) hardStop()
     }
 
-    private fun clear(epoch: Long) {
-        val previous = loaded.get()?.takeIf { it.epoch == epoch } ?: return
+    private fun clearThrough(epoch: Long) {
+        val previous = loaded.get()?.takeIf { it.epoch <= epoch } ?: return
         if (loaded.compareAndSet(previous, null)) previous.release()
     }
 

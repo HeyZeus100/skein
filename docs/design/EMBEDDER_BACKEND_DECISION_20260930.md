@@ -180,3 +180,18 @@ Actual XML copies and exact task/command/log hashes are retained at
 `b619b108fec1e22653efc88be2ebea8685531c9fd269a042a9177bd390e836bd` in the isolated
 embedding worktree. Tests use synthetic verified bytes and injected test-only
 backends. They establish the host boundary, not native model acceptance.
+
+Independent review subsequently found and corrected a future-epoch ordering bug:
+a lock for epoch 6 while epoch 5 remained authorized must tombstone epoch 6 and
+revoke all older work. The gate now records that watermark; endpoint cancellation,
+model cleanup, and the hard-lock backstop cover obsolete epochs through the lock
+value while preserving a newer authorized epoch. Three added regressions failed
+against the original implementation (15 cases: 12 pass, three failures), and the
+fixed full embedder suite passes all 40 cases with no failures/errors/skips.
+The new negative-control source substitutions were restored in `finally` and
+verified byte-for-byte. Lint and all three embedder guards passed again.
+
+Both actual XML sets, commands, logs, and restoration hashes are retained at
+`build/agent-logs/embedder-boundary-20260930/future-lock-fixed/review.json`, SHA-256
+`11bb5208eddfcf372ec6b00388ed14676e24db5c197b883c303eef08a98b1ebd`.
+The earlier passing XML remains immutable; it did not cover this ordering case.

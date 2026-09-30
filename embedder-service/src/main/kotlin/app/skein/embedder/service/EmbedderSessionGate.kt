@@ -34,8 +34,10 @@ internal class EmbedderSessionGate {
     @Synchronized
     fun revoke(epoch: Long): Boolean {
         if (epoch <= 0L) return false
-        if (authorizedEpoch != epoch && !(authorizedEpoch == 0L && epoch >= revokedThrough)) return false
+        // Even an early future lock is a tombstone: its delayed unlock must not
+        // authorize work, and any older authorization is revoked with it.
         revokedThrough = maxOf(revokedThrough, epoch)
+        if (authorizedEpoch > epoch) return false
         authorizedEpoch = 0L
         return true
     }
