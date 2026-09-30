@@ -1,0 +1,70 @@
+{
+  "mode": "protobuf only; no inference; all recursively reachable TensorProto fields inspected",
+  "model": {
+    "bytes": 137296292,
+    "sha256": "b4342336debaea79de872370664b0aaeb67dea4605513d00ee236ea871a81f27"
+  },
+  "onnx_parser": "1.23.0",
+  "protobuf_messages_inspected": 11550,
+  "ir_version": 7,
+  "producer": [
+    "onnx.quantize",
+    "0.1.0"
+  ],
+  "opsets": [
+    {
+      "domain": "",
+      "version": 14
+    }
+  ],
+  "inputs": [
+    {
+      "name": "input_ids",
+      "type": "INT64",
+      "shape": [
+        "batch_size",
+        "sequence_length"
+      ]
+    },
+    {
+      "name": "token_type_ids",
+      "type": "INT64",
+      "shape": [
+        "batch_size",
+        "sequence_length"
+      ]
+    },
+    {
+      "name": "attention_mask",
+      "type": "INT64",
+      "shape": [
+        "batch_size",
+        "sequence_length"
+      ]
+    }
+  ],
+  "outputs": [
+    {
+      "name": "last_hidden_state",
+      "type": "FLOAT",
+      "shape": [
+        "batch_size",
+        "sequence_length",
+        768
+      ]
+    }
+  ],
+  "top_level_nodes": 1566,
+  "top_level_initializers": 260,
+  "all_tensor_fields_by_type": {
+    "INT64": 17,
+    "FLOAT": 119,
+    "UINT8": 4,
+    "INT8": 120
+  },
+  "external_tensor_references": [],
+  "limitations": [
+    "Model parser/schema inspection does not prove inference correctness, export provenance or reference parity.",
+    "No ONNX Runtime session was constructed and no model bytes downloaded."
+  ]
+}

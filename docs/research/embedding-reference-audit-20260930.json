@@ -1,0 +1,298 @@
+{
+  "schema_version": 1,
+  "date": "2026-09-30",
+  "bead": "skein-lbw.1",
+  "source_base": "8f084343cf2b67395d2d707b33f6ee578d801c89",
+  "reviewer": "/root/fold_transport, independently reviewing the original embedding worker evidence",
+  "result": "Bounded reference audit complete. Retained host execution and arithmetic are internally consistent; independent model/reference qualification and production acceptance remain open.",
+  "scope": {
+    "performed": [
+      "Read original packet, runner/tokenizer/quantizer/backend source, frozen corpus/gold, actual raw stages and original logs.",
+      "Rehashed all 1583 original manifest records, actual candidate weights, 6 classpath JARs, 9 acquisition records and the separately acquired pooling config.",
+      "Parsed the existing ONNX protobuf recursively and recomputed retained postprocessing only.",
+      "Verified all 12 published host files byte-for-byte against original retained files."
+    ],
+    "new_model_inferences": 0,
+    "new_builds_or_tests": 0,
+    "new_model_downloads": 0,
+    "device_commands": 0,
+    "production_edits": 0,
+    "preservation": "Original raw stages, labels, thresholds, documents, models, owner state and old evidence remain untouched. Root owns Beads and integration. No runtime/default-model choice is made here.",
+    "source_access": "Pinned official metadata/model card contents were read locally and checked against retained authority records. No successful fresh web response is claimed."
+  },
+  "evidence": {
+    "original_experiment_directory": "/Users/andrewherrera/skein-worktrees/embedding-priorities-20260930/build/agent-logs/embedder-experiment-20260930",
+    "original_decision_directory": "/Users/andrewherrera/skein-worktrees/embedding-priorities-20260930/build/agent-logs/embedder-decision-20260930",
+    "derived": [
+      {
+        "path": "docs/ux/runs/2026-09-30-embedding-reference-audit/retained-stage-review.json",
+        "bytes": 4272,
+        "sha256": "8165f3bac7b945a36908f589e52ba3c03fb34681d85c10ad1cac786fda204730"
+      },
+      {
+        "path": "docs/ux/runs/2026-09-30-embedding-reference-audit/graph-review.json",
+        "bytes": 1463,
+        "sha256": "eb8122cdf673696062cbd8205c1a75635db43657a59aa7fb19e84154f946b7f4"
+      },
+      {
+        "path": "docs/ux/runs/2026-09-30-embedding-reference-audit/metadata-review.json",
+        "bytes": 15068,
+        "sha256": "9db8ca984f440f66465f1e63f6719412846e8752c98a7e8cee1d52036ce5319f"
+      },
+      {
+        "path": "docs/ux/runs/2026-09-30-embedding-reference-audit/retained-authorities.zip",
+        "bytes": 25393,
+        "sha256": "966a87153326a75547b538f338b5bf50b6b726f73ade601edb06c0a4c7431248"
+      }
+    ],
+    "inspectors": [
+      {
+        "path": "docs/ux/runs/2026-09-30-embedding-reference-audit/inspect_retained.py",
+        "bytes": 6655,
+        "sha256": "e0c9f0e05d7bfc86eb19cce3ea46ed646f1039418af7f1eab05419328f7ccecc"
+      },
+      {
+        "path": "docs/ux/runs/2026-09-30-embedding-reference-audit/inspect_graph.py",
+        "bytes": 3158,
+        "sha256": "e92e39534e51f5c0c2b50ba3bf9fe93124ae6238f6998612e05e76d8f3631d7e"
+      },
+      {
+        "path": "docs/ux/runs/2026-09-30-embedding-reference-audit/inspect_metadata.py",
+        "bytes": 8385,
+        "sha256": "864bb78ea24a8280ba90fa8d3cc431411fffd268619721487e40460b6a0706ac"
+      }
+    ],
+    "reproduction": "Run inspectors with python3 and the explicit --experiment/--decision/--repo or --model arguments in their argparse interfaces; choose new --output paths to preserve receipts. NumPy 2.5.3 and ONNX protobuf parser 1.23.0 were already installed. These inspectors never create an ORT session.",
+    "additional_source_receipts": [
+      {
+        "path": "docs/superpowers/plans/2026-09-19-skein-v1-plan.md",
+        "bytes": 438820,
+        "sha256": "846a79fe8d779d61851059c7a41aff65977ff7986fc5f4f5408c3f26ff80a27b"
+      },
+      {
+        "path": "docs/eval/runs/2026-09-28-retrieval-repair-7601a20/retrieval/retrieval.json",
+        "bytes": 3186147,
+        "sha256": "2435b8b11d2456524da2b8e63a75a004bcdb2f6585e73fc01b8c66fb084f2caa"
+      }
+    ],
+    "archive_limit": "Metadata/card and original command/compiler logs only; no model weights, native libraries or owner content. Every member was re-read and compared to its retained source."
+  },
+  "identity_and_export": {
+    "candidate": {
+      "repository": "nomic-ai/nomic-embed-text-v1.5",
+      "revision": "e9b6763023c676ca8431644204f50c2b100d9aab",
+      "file": "onnx/model_int8.onnx",
+      "bytes": 137296292,
+      "sha256": "b4342336debaea79de872370664b0aaeb67dea4605513d00ee236ea871a81f27",
+      "status": "Actual retained bytes match the pinned LFS size/hash; host loaded this candidate in the original authorized run."
+    },
+    "reference_export": {
+      "file": "onnx/model.onnx",
+      "declared_bytes": 547310275,
+      "declared_sha256": "147d5aa88c2101237358e17796cf3a227cead1ec304ec34b465bb08e9d952965",
+      "status": "Pinned upstream LFS declaration only in the reviewed evidence; no local acquisition, execution or reference parity."
+    },
+    "graph": {
+      "ir": 7,
+      "opset": 14,
+      "producer": "onnx.quantize 0.1.0",
+      "nodes": 1566,
+      "top_level_initializers": 260,
+      "recursive_tensor_fields": 260,
+      "external_tensor_references": 0,
+      "scope": "All 11550 recursively reachable protobuf messages inspected, including tensor attributes/subgraphs/functions. No inference performed.",
+      "inputs": [
+        {
+          "name": "input_ids",
+          "type": "INT64",
+          "shape": [
+            "batch_size",
+            "sequence_length"
+          ]
+        },
+        {
+          "name": "token_type_ids",
+          "type": "INT64",
+          "shape": [
+            "batch_size",
+            "sequence_length"
+          ]
+        },
+        {
+          "name": "attention_mask",
+          "type": "INT64",
+          "shape": [
+            "batch_size",
+            "sequence_length"
+          ]
+        }
+      ],
+      "outputs": [
+        {
+          "name": "last_hidden_state",
+          "type": "FLOAT",
+          "shape": [
+            "batch_size",
+            "sequence_length",
+            768
+          ]
+        }
+      ]
+    },
+    "export_provenance_limit": "Producer metadata, hash identity and successful load do not independently identify or reproduce the original exporter settings, calibration/quantization procedure, HF source checkpoint computation, or numerical error against a full-precision reference.",
+    "reference_implementation_limit": "Pinned config auto_map names custom Nomic code in another repository. Before any independent reference run, pin and review the chosen native library implementation or exact custom code and all checkpoint/runtime dependencies; do not automatically execute remote code.",
+    "gguf": "The packet retains only pinned GGUF Q4_K_M/F16 declarations and upstream claims. Neither has been run in the reviewed experiment, so no ONNX-versus-GGUF winner is established."
+  },
+  "what_the_original_run_measured": {
+    "mode": "Functional precheck on macOS arm64, JVM ONNX Runtime 1.27.0 CPU, 1 thread, batch 1, two repetitions.",
+    "chronology": {
+      "freeze": "2026-09-30T08:44:57.371393+00:00",
+      "acquire_start": "2026-09-30T08:46:40.218975+00:00",
+      "acquire_finish": "2026-09-30T08:48:02.536287+00:00",
+      "execution_start": "2026-09-30T08:58:01.176333+00:00"
+    },
+    "development_records": 128,
+    "development_labeled_queries": 48,
+    "distinct_input_role_pairs": 131,
+    "runtime_calls": 262,
+    "roles": "search_query: and search_document: prefixes; three selected inputs also run with the opposite prefix, twice.",
+    "raw_stages": [
+      "token IDs as i32 little endian",
+      "last_hidden_state as f32 little endian",
+      "masked mean as f32 little endian",
+      "full 768-dimensional layer normalization as f32 little endian",
+      "first 256 dimensions then L2 as f32 little endian",
+      "canonical int8 vector"
+    ],
+    "raw_stage_files": 1572,
+    "repeat_stage_pairs_byte_identical": 786,
+    "internal_postprocessing_checks": {
+      "sequential_f32_mean_exact": 262,
+      "recorded_mean_to_layer_exact": 262,
+      "recorded_layer_to_norm256_exact": 262,
+      "recorded_norm256_to_int8_exact": 262
+    },
+    "arithmetic_scope": "For source-inferred all-one masks in these unpadded batch-one encodings, all retained means, layer-normalized vectors, normalized vectors and int8 outputs rederive exactly. This is conditional internal consistency of retained stages, not independent model correctness.",
+    "finite": true,
+    "final_l2_norm_range": [
+      0.9999999425558515,
+      1.000000059102573
+    ],
+    "rows_with_cls_101_and_sep_102": 262,
+    "rows_at_512_token_cap": 6,
+    "float64_postprocessing_residuals": {
+      "max_abs": {
+        "mean": 1.8489081412553787e-06,
+        "layer": 2.180816677910258e-06,
+        "norm256": 1.3419050709506664e-07
+      },
+      "interpretation": "Descriptive recomputation from the same retained hidden states, not a separately executed model reference, error tolerance, or qualification pass."
+    },
+    "timing": {
+      "reported_run_ns_ms": {
+        "median": 9.321708000000001,
+        "p95_nearest_rank": 13.456333,
+        "max": 241.70525
+      },
+      "source_scope": "Timer starts before constructing the three OnnxTensors, ends immediately after session.run and before getValue materialization. It is not pure kernel timing or end-to-end service latency.",
+      "original_load_ms": 154.9535,
+      "original_process_real_seconds": 5.7,
+      "original_macos_maximum_resident_bytes": 1043677184,
+      "limits": "Mixed 6\u2013512 token inputs, no controlled warmup/batch/thread matrix. JVM/native/raw-output-retention allocations are included; macOS RSS is not Android PSS or Fold thermal/latency acceptance."
+    },
+    "binary_attribution_limit": "Original manifest seals runner Java source, raw results, invocation/configuration and classpath receipts, but excludes scratch HostNomicExperiment.class. Current class bytes are recorded in metadata-review.json as current-only; no retroactive historical class attestation.",
+    "tensor_retention_limit": "Actual mask and token_type_ids runtime tensors were not retained. Source provides all-one mask and single-sequence zero-type construction, but raw tensors cannot be independently compared from this run."
+  },
+  "tokenizer_and_postprocessing_boundaries": {
+    "existing_gold": {
+      "reference": "tokenizers 0.22.1, according to immutable fixture metadata",
+      "cases": 300,
+      "truncation_cases": 40,
+      "sha256": "829d328fd2351078360954aed77e360e2282386d8d608cc59bf1608380f8e372",
+      "scope": "Existing fixture bytes/provenance inspected and preserved. No test suite rerun, gold regeneration, or independent reference tokenization of all 131 actual experiment inputs performed."
+    },
+    "tokenizer_identity": "Acquired tokenizer.json is byte-identical to decompressed checked-in Nomic test resource, SHA256 d241a60d5e8f04cc1b2b3e9ef7a4921b27bf526d9f6050ab90f9267a1f9e5c66. Test-resource identity is not production installation.",
+    "length_scope": "Original runner explicitly truncates to 512 including specials. Six retained rows are capped at 512; source config/card long-context metadata does not qualify execution beyond 512, mixed padding or batch sizes greater than one.",
+    "required_nomic_order": "Task prefix -> exact tokenizer/masks/types -> token hidden states -> masked mean -> full-width layer normalization -> slice 256 -> L2 -> shared int8 quantizer.",
+    "upstream_authority": "Pinned README Matryoshka examples and separately Git-blob-verified mean-pooling configuration. Card example uses a different slice size; Skein contract fixes 256. Model-internal normalization epsilon 1e-12 is distinct from scratch pooled-vector epsilon 1e-5.",
+    "generic_helper_gap": "Current Pooling.meanPool accumulates doubles, while scratch Java accumulates sequential float32. Pooling.matryoshkaInt8 performs slicing/L2/int8 but no full-width layer normalization. No selected backend uses these as a qualified Nomic pipeline. A future artifact-specific adapter must identify which stages its exact export includes and apply each needed stage once; these helper differences remain unqualified.",
+    "onnx_adapter_gap": "OnnxSession.runFloat supports one FLOAT input and flattened output; the actual Nomic export requires three INT64 inputs and named rank-three FLOAT output with validated dimensions. A production adapter has not been implemented or accepted.",
+    "quantization": "Original run uses unchanged Int8Quantizer clamp/round rule on normalized 256-vector. The audit reproduced all retained output bytes; reference vector/ranking drift from quantized model weights and final int8 representation remains unmeasured."
+  },
+  "semantic_and_production_status": {
+    "semantic_metrics": "No retrieval, ranking, relevance, abstention or labeled development metric was produced by the original functional precheck or by this audit.",
+    "smoke_gate": {
+      "owner": "skein-079",
+      "status": "UNMEASURED",
+      "fixed_requirement": "Int8 cosine of the cat/mat sentence with cat/rug paraphrase must exceed its cosine with quarterly revenue report by at least 0.15, as already specified. One smoke example does not establish general quality."
+    },
+    "data_policy": "128-record/48-label corpus is consumed development evidence. Repeated original runs and Fresh40 remain regression evidence; retain failures, labels and original thresholds. Never call these blind validation. Freeze distinct unseen holdout and policy before any future holdout outputs.",
+    "production_backend": "EmbedderService default backendFactory is null; production load refuses NOT_LOADED. Host scratch execution is not production wiring or registration.",
+    "retained_runtime": {
+      "full_hybrid_gate": "INELIGIBLE",
+      "vector_count": 0,
+      "vectors_pending_documents": 850,
+      "pending_embedding_chunks": 850,
+      "tokenizer": "ApproximateTokenizer; same build revision",
+      "embedder": null
+    },
+    "retained_runtime_scope": "Historical actual retrieval JSON rehashed. Its zero vectors and INELIGIBLE full-hybrid result are not superseded by host arithmetic or this audit.",
+    "still_open": [
+      "Independent reference/export numerical qualification",
+      "Exact experiment-input tokenizer parity and retained runtime masks/type IDs",
+      "Semantic development and separately frozen heldout evaluation",
+      "Backend factory/module and immutable verified-FD mapping integration",
+      "Actual Android tensor/IPC/cancellation/hard-lock/process-death execution",
+      "Fold memory, thermal and end-to-end latency acceptance",
+      "Human embedder_path decision and authorized production reindexing"
+    ]
+  },
+  "bounded_next_gates": [
+    {
+      "order": 1,
+      "kind": "reference qualification",
+      "deliverable": "Pin separately qualified full-precision export/checkpoint, reviewed implementation/exporter/runtime and all tokenizer/config companions. Acquire only under coordinator authorization; hash every opened artifact. Record expected schema, output semantics and existing acceptance limits before outputs.",
+      "pass_evidence": "Actual bytes/hashes, complete source/runtime provenance and reference tensors, including all raw input tensors; producer strings and model filenames alone cannot pass."
+    },
+    {
+      "order": 2,
+      "kind": "tokenizer integration qualification",
+      "deliverable": "Compare every frozen prefixed input to the pinned independent tokenizer; retain IDs, specials, masks, type IDs and truncation metadata. Add explicitly frozen padding/batch/Unicode/boundary cases if required. Keep immutable old gold.",
+      "pass_evidence": "Exact per-case input parity with all failures retained. Batch-one/all-one masks cannot qualify padded batches or long-context operation."
+    },
+    {
+      "order": 3,
+      "kind": "numerical qualification",
+      "deliverable": "Separate HF-to-FP32-export parity, FP32-to-int8-model drift and final 256/int8 postprocessing drift. Compare hidden state, masked mean, full layer normalization, slice/L2 and int8 outputs using predeclared tolerances and drift metrics.",
+      "pass_evidence": "Independent reference stage outputs and per-case deltas, including negative cases and all failures; no tolerance derived from the present residuals. Repetition equality alone cannot pass."
+    },
+    {
+      "order": 4,
+      "kind": "semantic acceptance",
+      "deliverable": "Run preserved development labels and fixed skein-079 smoke margin after numerical qualification; separately freeze previously unseen validation cases and relevance/abstention policy before outputs.",
+      "pass_evidence": "Actual labeled results, preserved failed cases and unchanged thresholds. Report development, regression and blind evidence separately; reused Fresh40 never counts as blind."
+    },
+    {
+      "order": 5,
+      "kind": "implementation and integration",
+      "deliverable": "Implement one reviewed backend adapter using already verified immutable mappings/descriptors, exact tensor schema and artifact-specific normalization; retain isolation and publication/lock boundaries. Revisit GGUF only in its own explicitly queued comparison.",
+      "pass_evidence": "Source-hashed host and actual Android integration evidence; a helper-only test or test-injected factory cannot establish production selection."
+    },
+    {
+      "order": 6,
+      "kind": "runtime and physical acceptance",
+      "deliverable": "Coordinator dispatches the actual isolated Android service path; sole Fold runner checks current connection and normal owner unlock before authorized hardware work. Measure load/peak PSS, latency, cancellation, hard lock, FD ownership, death/rebind and thermal behavior.",
+      "pass_evidence": "Exact APK/model/source hashes and actual runtime artifacts, with emulator and physical Fold results separately classified. Human-approved backend decision and production reindex authorization remain separate gates."
+    }
+  ],
+  "packet_reading_correction": "The packet opening contains historical no-execution wording, but its later Bounded host functional precheck explicitly records the subsequently authorized 262 calls. Read those chronologically; neither no execution ever nor production acceptance is an accurate summary.",
+  "acceptance": {
+    "audit": "COMPLETE_BOUNDED",
+    "host_raw_evidence": "VERIFIED_INTERNAL_CONSISTENCY",
+    "independent_reference": "OPEN",
+    "production_backend": "UNSELECTED",
+    "android_runtime": "UNACCEPTED",
+    "physical_fold": "UNACCEPTED",
+    "full_hybrid": "INELIGIBLE_RETAINED_EVIDENCE"
+  }
+}

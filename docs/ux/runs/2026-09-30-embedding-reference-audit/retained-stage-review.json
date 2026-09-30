@@ -1,0 +1,106 @@
+{
+  "rows": 262,
+  "pairs": 131,
+  "stage_files": 1572,
+  "manifest_records": 1583,
+  "raw_stage_repeat_pairs": 786,
+  "model": {
+    "bytes": 137296292,
+    "sha256": "b4342336debaea79de872370664b0aaeb67dea4605513d00ee236ea871a81f27"
+  },
+  "manifest": {
+    "bytes": 301095,
+    "sha256": "5a72c37eca02792d5e32bbd20d0c5a3d92ade3834306f430cf3f7da3fecdb98a"
+  },
+  "rows_receipt": {
+    "bytes": 53886,
+    "sha256": "64dbaa916d0aebc5c2abdf84949ab359fce2ede449663d232deeb68ae7b841f2"
+  },
+  "stage_checks": {
+    "sequential_f32_mean_exact": 262,
+    "recorded_mean_to_layer_exact": 262,
+    "recorded_layer_to_norm256_exact": 262,
+    "recorded_norm256_to_int8_exact": 262
+  },
+  "max_abs_residual_float64": {
+    "mean": 1.8489081412553787e-06,
+    "layer": 2.180816677910258e-06,
+    "norm256": 1.3419050709506664e-07
+  },
+  "all_floats_finite": true,
+  "cls_sep_all": true,
+  "rows_at_512_tokens": 6,
+  "norm_range": [
+    0.9999999425558515,
+    1.000000059102573
+  ],
+  "timing_descriptive_ms": {
+    "median": 9.321708000000001,
+    "p95_nearest_rank": 13.456333,
+    "max": 241.70525
+  },
+  "classpath_receipts": [
+    {
+      "path": "/Users/andrewherrera/.gradle/caches/modules-2/files-2.1/com.microsoft.onnxruntime/onnxruntime/1.27.0/c324c4aa3d68a3768198b5c7e05a0fc5d365084e/onnxruntime-1.27.0.jar",
+      "expected_sha256": "00546de2041215df2771c7665f318ba4b40f024feefa3903ceb2600983e159c5",
+      "actual": {
+        "bytes": 43364304,
+        "sha256": "00546de2041215df2771c7665f318ba4b40f024feefa3903ceb2600983e159c5"
+      },
+      "matches": true
+    },
+    {
+      "path": "/Users/andrewherrera/.gradle/caches/modules-2/files-2.1/org.jetbrains.kotlin/kotlin-stdlib/2.4.20/94c1451890d164aed65d43b3db0b7ecef7c183e7/kotlin-stdlib-2.4.20.jar",
+      "expected_sha256": "2226de463d309d4a5500a481320b3dea515a6981dcae1def531fbc158884e25f",
+      "actual": {
+        "bytes": 1853314,
+        "sha256": "2226de463d309d4a5500a481320b3dea515a6981dcae1def531fbc158884e25f"
+      },
+      "matches": true
+    },
+    {
+      "path": "/Users/andrewherrera/.gradle/caches/modules-2/files-2.1/org.jetbrains.kotlinx/kotlinx-serialization-json-jvm/1.11.0/e7e045e99e56f07599bb9ccb708c2190e2af0606/kotlinx-serialization-json-jvm-1.11.0.jar",
+      "expected_sha256": "563a25b4eb5c9128ae9c2479f3d1a5c44dcd176112b91cf03682e906eba5c935",
+      "actual": {
+        "bytes": 294166,
+        "sha256": "563a25b4eb5c9128ae9c2479f3d1a5c44dcd176112b91cf03682e906eba5c935"
+      },
+      "matches": true
+    },
+    {
+      "path": "/Users/andrewherrera/.gradle/caches/modules-2/files-2.1/org.jetbrains.kotlinx/kotlinx-serialization-core-jvm/1.11.0/c1905c9bf7452b045d5af9248835abe64ddad6bf/kotlinx-serialization-core-jvm-1.11.0.jar",
+      "expected_sha256": "f4a801c647d4351327cd9e1ac4113e2be9ea37a64ab0abae269c25a52e28f35d",
+      "actual": {
+        "bytes": 404509,
+        "sha256": "f4a801c647d4351327cd9e1ac4113e2be9ea37a64ab0abae269c25a52e28f35d"
+      },
+      "matches": true
+    },
+    {
+      "path": "/Users/andrewherrera/skein-worktrees/embedding-priorities-20260930/core/model/build/libs/model.jar",
+      "expected_sha256": "4951b7af5c7709d89fca41b6ddb62ad9b6baed51bad388137052cb2ff39ac5ab",
+      "actual": {
+        "bytes": 201824,
+        "sha256": "4951b7af5c7709d89fca41b6ddb62ad9b6baed51bad388137052cb2ff39ac5ab"
+      },
+      "matches": true
+    },
+    {
+      "path": "/Users/andrewherrera/skein-worktrees/embedding-priorities-20260930/core/rag/build/intermediates/compile_library_classes_jar/debug/bundleLibCompileToJarDebug/classes.jar",
+      "expected_sha256": "d24d030fe4d71ede4845b343226d1e479683326788a69289b8e009291a2a0739",
+      "actual": {
+        "bytes": 709410,
+        "sha256": "d24d030fe4d71ede4845b343226d1e479683326788a69289b8e009291a2a0739"
+      },
+      "matches": true
+    }
+  ],
+  "limits": [
+    "No model inference/session/native code was executed.",
+    "Retained-stage arithmetic is not independent HF/FP32/quantized-export numerical parity.",
+    "Masks and type IDs are source-inferred, not retained runtime tensor bytes.",
+    "No new semantic/retrieval/held-out score or threshold was calculated.",
+    "The scratch runner class was not in the original 1583-record manifest; its source was."
+  ],
+  "numpy_version": "2.5.3"
+}
