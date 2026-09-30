@@ -38,6 +38,16 @@ An independent retrieval fixture has 22 new synthetic notes and 40 queries. Its 
 
 The qualified ONNX candidate was acquired only into new ignored experiment storage after a separate synthetic development corpus was frozen. Actual model bytes match the pinned 137,296,292-byte artifact hash `b4342336debaea79de872370664b0aaeb67dea4605513d00ee236ea871a81f27`. The bounded first host functional run completed 262 calls with byte-identical repeat vectors. This is not a full timing matrix, independent reference parity, Android memory/thermal acceptance or a human-approved backend decision. `skein-5hr`, production embedding/reindex and full hybrid retrieval remain open.
 
+## Final local freeze before remote execution
+
+The complete application and evaluator source is committed at `11e308155ba6e67bab873fec4325c8c9ec42a70c`. Candidate freeze is `687c8eea8342779b3d87517fc1f2cd20cd4385fb`; evaluator freeze is `11e308155ba6e67bab873fec4325c8c9ec42a70c`. Actual frozen source inventories, Git ancestry and file hashes passed before any evaluation runtime. The adapter worker and peer both verified its nine files and 24 focused tests; review fixed a stored-row versus assembled-evidence attribution gap before freeze.
+
+At that clean, unchanged commit, combined lint/check/build and instrumentation compilation passed: **5,486 passes, 86 skips, zero failures/errors across 557 XML files**. All 106 evaluation host tests and 51 CI evidence/tooling tests passed. Strict screenshot verification passed with 1,354 passes, 80 skips and 552 unchanged images. The host APK is 128,100,635 bytes, SHA-256 `31dbfc3f0cc2194a3e5538d31369f8733f46a1c2308dc01a35eaf2e304597657`; this is not installed-device attestation. Raw XML, logs, source inventories and reviews are in the [final local evidence](../ux/runs/2026-09-30-six-priorities/final-local11e308/).
+
+An independent reviewer verified all actual XML and source-inventory hashes, the exact 24 added tests and unchanged 86 skip identities/reasons, all eight fresh screenshot tasks, APK/native bytes, and the APK manifest with no INTERNET permission.
+
+The queued remote verification is one frozen-source batch: automatic CI/UX/reproducibility first, then ordinary encrypted instrumentation, generic foldable compatibility, and explicit fresh40 retrieval diagnostics sequentially. These runtime gates remain pending here. No fresh40 results or model answers have yet been produced, and no production backend or contextual retrieval default has been activated.
+
 ## Physical and preservation boundary
 
 The earlier disposable-only `skein-57m1` physical acceptance remains complete. The installed Fold application remains historical verified source `e62f94785ef8e696d8ee59745fd299fe1f83cc4a`; none of this new code has been installed. The sole physical runner's new preflight at 08:44 UTC found no ADB device, issued no device shell/UI/launch/generation commands, and released its own lease. Root requested normal reconnection and owner unlock; further device work is held pending that response. No reinstall, reimport, default change or owner-vault reset is authorized merely to resume.

@@ -1,0 +1,392 @@
+{
+  "status": "VERIFIED_COMPONENT_ADAPTER_RUNTIME_UNEXECUTED",
+  "source_head": "dc2920e628742e5b4218b4c7e60db1cc3d030c39",
+  "source_files": [
+    {
+      "path": "core/vault/src/retrievalEvaluation/kotlin/app/skein/core/vault/eval/FreshContextualValidationEvaluation.kt",
+      "sha256": "bfc7c1da1996affd2cb4106c7d848b7f4f29437fc967a32e1830161a3c5c4caf"
+    },
+    {
+      "path": "core/vault/src/retrievalEvaluation/kotlin/app/skein/core/vault/eval/RealRetrievalEvaluationTest.kt",
+      "sha256": "75a43bb338f1d9b4625ea990c59eae31c5ec41ebe84282dcca5f8d6e7c34444a"
+    },
+    {
+      "path": "docs/eval/FRESH_CONTEXTUAL_VALIDATION_20260930.md",
+      "sha256": "23eb2fb642e49406cf098aa1b5997a60a48f01c95aeead46e46aff759441516a"
+    },
+    {
+      "path": "testing/src/main/kotlin/app/skein/testing/eval/ExpandedRetrievalMetrics.kt",
+      "sha256": "374639ba7a4f95c93d4d4e6b11e36b5ab940374639db9c4053c71b9484defd7c"
+    },
+    {
+      "path": "testing/src/main/kotlin/app/skein/testing/eval/FreshContextualValidationFixture.kt",
+      "sha256": "700e3e08c3a95dfa2ecbd227db345ce0c8b4318d2b98ee850ca6c032ce23d29e"
+    },
+    {
+      "path": "testing/src/main/kotlin/app/skein/testing/eval/FreshContextualValidationReport.kt",
+      "sha256": "a42db7644a1f7895ffc04aa15d3b492ad084f59f0641be4b473b6c99255e3d23"
+    },
+    {
+      "path": "testing/src/test/kotlin/app/skein/testing/eval/ExpandedRetrievalMetricsTest.kt",
+      "sha256": "8a5bf61f4e0df1b2df551a578b8246340b9869b60b90198937856929b74f4fef"
+    },
+    {
+      "path": "testing/src/test/kotlin/app/skein/testing/eval/FreshContextualValidationFixtureTest.kt",
+      "sha256": "8c5ed9eaba7ecdcd2d9228c5b4ea4c463850aac5513a698953ca9b720cfb20a9"
+    },
+    {
+      "path": "testing/src/test/kotlin/app/skein/testing/eval/FreshContextualValidationReportTest.kt",
+      "sha256": "aa0450cb83c45a2467d2ff3b064b3ee0bb301e737f28970bf8b22218db3509e7"
+    }
+  ],
+  "candidate_original_commit": "47d3ceea5affc33f8e994e75e30f10aaa9b9934e",
+  "candidate_cherry_pick": "dc2920e628742e5b4218b4c7e60db1cc3d030c39",
+  "commands": [
+    {
+      "path": "build/agent-logs/fresh-contextual-evaluator-20260930/format-1.log",
+      "sha256": "dc78a0636129598c5acbc74bd7d27d4643f468335734ca80d440b5d886b85025",
+      "lease": {
+        "owner": "coordinator",
+        "pid": 97102,
+        "token": "1935ef01-acc9-487e-b3e6-c18e3b4cebf9",
+        "worktree": "/Users/andrewherrera/skein-worktrees/fresh-contextual-evaluator-20260930",
+        "started_at": "2026-09-30T10:06:22.249771+00:00",
+        "command": [
+          "./gradlew",
+          "--no-daemon",
+          "--max-workers=2",
+          "-Pskein.retrievalEvaluation=true",
+          ":testing:ktlintFormat",
+          ":core:vault:ktlintFormat"
+        ]
+      },
+      "success": false,
+      "result": "BUILD FAILED in 9s",
+      "task_outcomes": [
+        "> Task :testing:loadKtlintReporters FROM-CACHE",
+        "> Task :testing:runKtlintFormatOverKotlinScripts FROM-CACHE",
+        "> Task :testing:ktlintKotlinScriptFormat FROM-CACHE",
+        "> Task :testing:runKtlintFormatOverTestSourceSet",
+        "> Task :testing:ktlintTestSourceSetFormat",
+        "> Task :testing:runKtlintFormatOverMainSourceSet",
+        "> Task :testing:ktlintMainSourceSetFormat FAILED"
+      ]
+    },
+    {
+      "path": "build/agent-logs/fresh-contextual-evaluator-20260930/format-2.log",
+      "sha256": "b13a1a45c6e19c9aa169d7718848ff1176fc41cc0cfef2e5068973d648da31db",
+      "lease": {
+        "owner": "coordinator",
+        "pid": 97203,
+        "token": "636104b1-6b8a-425f-8e2d-9ea8ec1d819a",
+        "worktree": "/Users/andrewherrera/skein-worktrees/fresh-contextual-evaluator-20260930",
+        "started_at": "2026-09-30T10:07:07.334272+00:00",
+        "command": [
+          "./gradlew",
+          "--no-daemon",
+          "--max-workers=2",
+          "-Pskein.retrievalEvaluation=true",
+          ":testing:ktlintFormat",
+          ":core:vault:ktlintFormat"
+        ]
+      },
+      "success": false,
+      "result": "BUILD FAILED in 4s",
+      "task_outcomes": [
+        "> Task :testing:loadKtlintReporters UP-TO-DATE",
+        "> Task :testing:runKtlintFormatOverKotlinScripts UP-TO-DATE",
+        "> Task :testing:ktlintKotlinScriptFormat UP-TO-DATE",
+        "> Task :testing:runKtlintFormatOverTestSourceSet",
+        "> Task :testing:ktlintTestSourceSetFormat",
+        "> Task :testing:runKtlintFormatOverMainSourceSet",
+        "> Task :testing:ktlintMainSourceSetFormat",
+        "> Task :testing:ktlintFormat"
+      ]
+    },
+    {
+      "path": "build/agent-logs/fresh-contextual-evaluator-20260930/focused-1.log",
+      "sha256": "704604c5c4e3f74e4f4d4db1b8e0324d0530a9c807a02f7e1d6a8aeb814634b8",
+      "lease": {
+        "owner": "coordinator",
+        "pid": 97313,
+        "token": "a25c64ca-af93-4b9d-b3b9-19dbe8f80d73",
+        "worktree": "/Users/andrewherrera/skein-worktrees/fresh-contextual-evaluator-20260930",
+        "started_at": "2026-09-30T10:07:51.222387+00:00",
+        "command": [
+          "./gradlew",
+          "--no-daemon",
+          "--max-workers=2",
+          "-Pskein.retrievalEvaluation=true",
+          ":testing:ktlintCheck",
+          ":testing:test",
+          "--tests",
+          "app.skein.testing.eval.FreshContextualValidationFixtureTest",
+          "--tests",
+          "app.skein.testing.eval.ExpandedRetrievalMetricsTest",
+          "--tests",
+          "app.skein.testing.eval.FreshContextualValidationReportTest",
+          ":core:vault:ktlintCheck",
+          ":core:vault:compileDevDebugAndroidTestKotlin"
+        ]
+      },
+      "success": true,
+      "result": "BUILD SUCCESSFUL in 16s",
+      "task_outcomes": [
+        "> Task :testing:checkKotlinGradlePluginConfigurationErrors SKIPPED",
+        "> Task :testing:loadKtlintReporters UP-TO-DATE",
+        "> Task :testing:runKtlintCheckOverKotlinScripts FROM-CACHE",
+        "> Task :testing:ktlintKotlinScriptCheck FROM-CACHE",
+        "> Task :testing:runKtlintCheckOverTestSourceSet",
+        "> Task :testing:ktlintTestSourceSetCheck",
+        "> Task :testing:runKtlintCheckOverMainSourceSet",
+        "> Task :testing:ktlintMainSourceSetCheck",
+        "> Task :testing:ktlintCheck",
+        "> Task :testing:processResources",
+        "> Task :testing:processTestResources NO-SOURCE",
+        "> Task :core:vault:ktlintCheck",
+        "> Task :testing:compileKotlin",
+        "> Task :testing:compileJava NO-SOURCE",
+        "> Task :testing:classes",
+        "> Task :testing:jar",
+        "> Task :testing:compileTestKotlin",
+        "> Task :testing:compileTestJava NO-SOURCE",
+        "> Task :testing:testClasses UP-TO-DATE",
+        "> Task :testing:test",
+        "> Task :core:vault:compileDevDebugAndroidTestKotlin"
+      ]
+    },
+    {
+      "path": "build/agent-logs/fresh-contextual-evaluator-20260930/format-3.log",
+      "sha256": "1de4316e968a4b3ac67722175677bba67a8be1a527cc6d356e42171fd0a8524e",
+      "lease": {
+        "owner": "coordinator",
+        "pid": 97787,
+        "token": "562047f2-c573-483c-971a-03d646981c5f",
+        "worktree": "/Users/andrewherrera/skein-worktrees/fresh-contextual-evaluator-20260930",
+        "started_at": "2026-09-30T10:15:04.984608+00:00",
+        "command": [
+          "./gradlew",
+          "--no-daemon",
+          "--max-workers=2",
+          "-Pskein.retrievalEvaluation=true",
+          ":testing:ktlintFormat"
+        ]
+      },
+      "success": true,
+      "result": "BUILD SUCCESSFUL in 6s",
+      "task_outcomes": [
+        "> Task :testing:loadKtlintReporters UP-TO-DATE",
+        "> Task :testing:runKtlintFormatOverKotlinScripts UP-TO-DATE",
+        "> Task :testing:ktlintKotlinScriptFormat UP-TO-DATE",
+        "> Task :testing:runKtlintFormatOverTestSourceSet",
+        "> Task :testing:runKtlintFormatOverMainSourceSet",
+        "> Task :testing:ktlintMainSourceSetFormat",
+        "> Task :testing:ktlintTestSourceSetFormat",
+        "> Task :testing:ktlintFormat"
+      ]
+    },
+    {
+      "path": "build/agent-logs/fresh-contextual-evaluator-20260930/focused-2.log",
+      "sha256": "1fa03491023b51513c580145ab96ce878b8dd54276b5e7f5f96fa3ef815a5db5",
+      "lease": {
+        "owner": "coordinator",
+        "pid": 97865,
+        "token": "dd8ada03-1e8e-4350-879d-9efcadda6ceb",
+        "worktree": "/Users/andrewherrera/skein-worktrees/fresh-contextual-evaluator-20260930",
+        "started_at": "2026-09-30T10:15:20.471506+00:00",
+        "command": [
+          "./gradlew",
+          "--no-daemon",
+          "--max-workers=2",
+          "-Pskein.retrievalEvaluation=true",
+          ":testing:ktlintCheck",
+          ":testing:test",
+          "--tests",
+          "app.skein.testing.eval.FreshContextualValidationFixtureTest",
+          "--tests",
+          "app.skein.testing.eval.ExpandedRetrievalMetricsTest",
+          "--tests",
+          "app.skein.testing.eval.FreshContextualValidationReportTest",
+          ":core:vault:ktlintCheck",
+          ":core:vault:compileDevDebugAndroidTestKotlin"
+        ]
+      },
+      "success": true,
+      "result": "BUILD SUCCESSFUL in 8s",
+      "task_outcomes": [
+        "> Task :testing:checkKotlinGradlePluginConfigurationErrors SKIPPED",
+        "> Task :testing:loadKtlintReporters UP-TO-DATE",
+        "> Task :testing:runKtlintCheckOverKotlinScripts UP-TO-DATE",
+        "> Task :testing:ktlintKotlinScriptCheck UP-TO-DATE",
+        "> Task :testing:runKtlintCheckOverTestSourceSet",
+        "> Task :testing:ktlintTestSourceSetCheck",
+        "> Task :testing:runKtlintCheckOverMainSourceSet",
+        "> Task :testing:ktlintMainSourceSetCheck",
+        "> Task :testing:ktlintCheck",
+        "> Task :testing:processResources UP-TO-DATE",
+        "> Task :testing:processTestResources NO-SOURCE",
+        "> Task :core:vault:ktlintCheck",
+        "> Task :testing:compileKotlin",
+        "> Task :testing:compileJava NO-SOURCE",
+        "> Task :testing:classes UP-TO-DATE",
+        "> Task :testing:jar",
+        "> Task :testing:compileTestKotlin",
+        "> Task :testing:compileTestJava NO-SOURCE",
+        "> Task :testing:testClasses UP-TO-DATE",
+        "> Task :testing:test",
+        "> Task :core:vault:compileDevDebugAndroidTestKotlin"
+      ]
+    }
+  ],
+  "actual_xml": [
+    {
+      "path": "testing/build/test-results/test/TEST-app.skein.testing.eval.ExpandedRetrievalMetricsTest.xml",
+      "sha256": "80be9dfd9d79fef2582def12a7f149a417ca6e4b3e526ffd6724a64ff1f1c15b",
+      "tests": 13,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "path": "testing/build/test-results/test/TEST-app.skein.testing.eval.FreshContextualValidationFixtureTest.xml",
+      "sha256": "543edf9b6f70e1c7f8a799c525ad797ea61f538083bb690f3bed43943c3216ee",
+      "tests": 5,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "path": "testing/build/test-results/test/TEST-app.skein.testing.eval.FreshContextualValidationReportTest.xml",
+      "sha256": "ab1943e593f25a62b8a3f09af4ecf759bf1195bb4319cb0d8bf516befee4bdc9",
+      "tests": 6,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    }
+  ],
+  "jvm": {
+    "passed": 24,
+    "failed": 0,
+    "errors": 0,
+    "skipped": 0,
+    "xml_files": 3
+  },
+  "compiled_helper_classes": [
+    {
+      "path": "core/vault/build/intermediates/built_in_kotlinc/devDebugAndroidTest/compileDevDebugAndroidTestKotlin/classes/app/skein/core/vault/eval/FreshContextualValidationEvaluation$evaluate$$inlined$sortedBy$1.class",
+      "sha256": "85cb99b01e5e5b439143739dfd00cdedb9cb246359edcda0a2c80d6a13266ca8"
+    },
+    {
+      "path": "core/vault/build/intermediates/built_in_kotlinc/devDebugAndroidTest/compileDevDebugAndroidTestKotlin/classes/app/skein/core/vault/eval/FreshContextualValidationEvaluation$evaluate$1.class",
+      "sha256": "77e9e6cb5fe5c72b5e597186e3272b1ca175fb31e60c96e75f454af155690758"
+    },
+    {
+      "path": "core/vault/build/intermediates/built_in_kotlinc/devDebugAndroidTest/compileDevDebugAndroidTestKotlin/classes/app/skein/core/vault/eval/FreshContextualValidationEvaluation$evaluate$ingest$1.class",
+      "sha256": "9d95eae6b2c0d95cee04dfc6ed3967d677b9ed798f0d8b6db864fe54729e848f"
+    },
+    {
+      "path": "core/vault/build/intermediates/built_in_kotlinc/devDebugAndroidTest/compileDevDebugAndroidTestKotlin/classes/app/skein/core/vault/eval/FreshContextualValidationEvaluation$evaluate$pipeline$1.class",
+      "sha256": "5c7453bd267d660324359ef4fd50fb42a43d23fe518e520bf0fcd1c98a17f065"
+    },
+    {
+      "path": "core/vault/build/intermediates/built_in_kotlinc/devDebugAndroidTest/compileDevDebugAndroidTestKotlin/classes/app/skein/core/vault/eval/FreshContextualValidationEvaluation$evaluate$pipeline$2$link$1.class",
+      "sha256": "9e3bc5c27de8ba762d72b39d1d9b6e189c83f3cb0a04d6ad648e7cb16b92384e"
+    },
+    {
+      "path": "core/vault/build/intermediates/built_in_kotlinc/devDebugAndroidTest/compileDevDebugAndroidTestKotlin/classes/app/skein/core/vault/eval/FreshContextualValidationEvaluation$evaluate$pipeline$2.class",
+      "sha256": "ac0c8213b20cc51f026982c6e1a375252aab05f6337ae47d8fb727bd07733151"
+    },
+    {
+      "path": "core/vault/build/intermediates/built_in_kotlinc/devDebugAndroidTest/compileDevDebugAndroidTestKotlin/classes/app/skein/core/vault/eval/FreshContextualValidationEvaluation$evaluate$pipeline$3.class",
+      "sha256": "342f214d5bfeb8e9929fc3ff9bcddc18b8425fa9ab352d4a8e24b330adb0bfb9"
+    },
+    {
+      "path": "core/vault/build/intermediates/built_in_kotlinc/devDebugAndroidTest/compileDevDebugAndroidTestKotlin/classes/app/skein/core/vault/eval/FreshContextualValidationEvaluation$execute$1.class",
+      "sha256": "6cb011643f099b448b92cfda3780924a1759165cf7d21bb2d5bef8a5c5b48d55"
+    },
+    {
+      "path": "core/vault/build/intermediates/built_in_kotlinc/devDebugAndroidTest/compileDevDebugAndroidTestKotlin/classes/app/skein/core/vault/eval/FreshContextualValidationEvaluation$execute$sample$1.class",
+      "sha256": "907e41427df1cd0ea9b58d87573a9f6725196985db18f85ae0762ddf3b256dde"
+    },
+    {
+      "path": "core/vault/build/intermediates/built_in_kotlinc/devDebugAndroidTest/compileDevDebugAndroidTestKotlin/classes/app/skein/core/vault/eval/FreshContextualValidationEvaluation$execute$sample$status$1.class",
+      "sha256": "2a0fe74f97990587cf697bd8487c6de8fb36632e2bc669946ce88e7fb7194749"
+    },
+    {
+      "path": "core/vault/build/intermediates/built_in_kotlinc/devDebugAndroidTest/compileDevDebugAndroidTestKotlin/classes/app/skein/core/vault/eval/FreshContextualValidationEvaluation$execute$service$1.class",
+      "sha256": "bf5a6bf625d8d58c68f3a01e3b3212da5a1ad280bf904aea1ad0755398b232ee"
+    },
+    {
+      "path": "core/vault/build/intermediates/built_in_kotlinc/devDebugAndroidTest/compileDevDebugAndroidTestKotlin/classes/app/skein/core/vault/eval/FreshContextualValidationEvaluation.class",
+      "sha256": "a8abf735148e266ac28f6460f4a5d7c69be9c4949215e513069e18fb56bd676e"
+    }
+  ],
+  "legacy_unchanged": [
+    {
+      "path": "testing/src/main/resources/eval/corpus.json",
+      "sha256": "f86eb3540ef2400c056275aa50ad90f63293c11d7349ecaa664d116b02e7bd7f",
+      "unchanged_from_head": true
+    },
+    {
+      "path": "testing/src/main/resources/eval/gold.json",
+      "sha256": "4fd5034368e250179425f06bbcb1cc40513f2f3c5ceb998bd6a9eedf298c820f",
+      "unchanged_from_head": true
+    },
+    {
+      "path": "testing/src/main/resources/eval/rejection-validation.json",
+      "sha256": "bf162254094103310102e28ad90b4c945bf24dd7f8f9a706039b2fe3a826b57c",
+      "unchanged_from_head": true
+    },
+    {
+      "path": "testing/src/main/resources/eval/rejection-validation-20260928.json",
+      "sha256": "4f79b2ddcf42dedd6b7f83c10402855f683fcebc3045d9e4668f6da2951759e8",
+      "unchanged_from_head": true
+    },
+    {
+      "path": "testing/src/main/resources/eval/rejection-validation-20260930.json",
+      "sha256": "653b79ce9ab1c36776b5876d1b5d687a1d335f811f388b832fd0d9d258952674",
+      "unchanged_from_head": true
+    },
+    {
+      "path": "testing/src/main/kotlin/app/skein/testing/eval/RetrievalMetrics.kt",
+      "sha256": "e11c1ea9b405e37c6eff4e0412db48bf4ab8869921ab252125ed8371ca3d6de6",
+      "unchanged_from_head": true
+    },
+    {
+      "path": "testing/src/main/kotlin/app/skein/testing/eval/RetrievalEvaluationReport.kt",
+      "sha256": "f1c8ec7dfd0e59f1e5279b601f740f12d56d192c8f289ebf65af862eabc40e05",
+      "unchanged_from_head": true
+    },
+    {
+      "path": "core/vault/src/retrievalEvaluation/kotlin/app/skein/core/vault/eval/RejectionValidationEvaluation.kt",
+      "sha256": "56b1e2d55f4a85de15659c7b53485e525ce668d2a1e7d54f33dfe91755391518",
+      "unchanged_from_head": true
+    }
+  ],
+  "recovery_or_owner_content_accessed": false,
+  "fresh40_retrieval_executed": false,
+  "fold_accessed": false,
+  "local_build_slot_released": true,
+  "limits": [
+    "Six primary conversation-context cases are UNEXECUTED; component diagnostics cannot credit primary40.",
+    "Four revision cases require actual encrypted runtime evidence; compiled helper alone does not accept replay.",
+    "No expanded nDCG or old threshold reuse; full hybrid remains INELIGIBLE.",
+    "Real baseline/candidate outputs have not been produced; no source tuning on them.",
+    "First two formatting failures retained; final explicit lint checks pass.",
+    "No production context/embedding/default policy activation."
+  ],
+  "peer_correction": "Bind independently verified stored chunk/doc identity to assembled enumeration; malformed index excluded and hard violation; two adversarial controls added.",
+  "prior_22_test_receipt": {
+    "path": "build/agent-logs/fresh-contextual-evaluator-20260930/verification-prepeer.json",
+    "sha256": "1b116534b1e917359292e5c73aa93f4438ebe41750340613a0d431e07798d333",
+    "archive_sha256": "f69bd000bdc38bfe5d3798420baf7abc4ac1b980608b3c4918f58f0ade49d749"
+  },
+  "commit": "a4e4b47c2c3313ea8c7eb119563acc097b9771f2",
+  "signed_off": true,
+  "worktree_clean": true,
+  "peer_review": {
+    "path": "/Users/andrewherrera/skein-worktrees/answer-quality-heldout-20260930/build/agent-logs/fresh40-contextual-peer/adapter-source-review.json",
+    "sha256": "946ff05417c65ca04df3297a46ddee277f6e2d099f252815ba78db88a34c01f8",
+    "status": "PASS"
+  }
+}

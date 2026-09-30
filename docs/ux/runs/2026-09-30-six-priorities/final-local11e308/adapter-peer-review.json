@@ -1,0 +1,297 @@
+{
+  "status": "PASS bounded source review and independent actual24-test XML/hash review; fresh40 runtime UNEXECUTED",
+  "reviewer": "fold_acceptance",
+  "review_kind": "Read-only source and receipt review; no build/test/device/runtime by reviewer",
+  "head": "dc2920e628742e5b4218b4c7e60db1cc3d030c39",
+  "source_ready_receipt": "/Users/andrewherrera/skein-worktrees/fresh-contextual-evaluator-20260930/build/agent-logs/fresh-contextual-evaluator-20260930/source-ready-5.json",
+  "source_ready_receipt_sha256": "dea096d4d923951a2e42bf2b0e3a5cd7cfd5206c9b9eed2aca26f1a9721a84f2",
+  "files": [
+    {
+      "path": "core/vault/src/retrievalEvaluation/kotlin/app/skein/core/vault/eval/FreshContextualValidationEvaluation.kt",
+      "sha256": "bfc7c1da1996affd2cb4106c7d848b7f4f29437fc967a32e1830161a3c5c4caf"
+    },
+    {
+      "path": "core/vault/src/retrievalEvaluation/kotlin/app/skein/core/vault/eval/RealRetrievalEvaluationTest.kt",
+      "sha256": "75a43bb338f1d9b4625ea990c59eae31c5ec41ebe84282dcca5f8d6e7c34444a"
+    },
+    {
+      "path": "docs/eval/FRESH_CONTEXTUAL_VALIDATION_20260930.md",
+      "sha256": "23eb2fb642e49406cf098aa1b5997a60a48f01c95aeead46e46aff759441516a"
+    },
+    {
+      "path": "testing/src/main/kotlin/app/skein/testing/eval/ExpandedRetrievalMetrics.kt",
+      "sha256": "374639ba7a4f95c93d4d4e6b11e36b5ab940374639db9c4053c71b9484defd7c"
+    },
+    {
+      "path": "testing/src/main/kotlin/app/skein/testing/eval/FreshContextualValidationFixture.kt",
+      "sha256": "700e3e08c3a95dfa2ecbd227db345ce0c8b4318d2b98ee850ca6c032ce23d29e"
+    },
+    {
+      "path": "testing/src/main/kotlin/app/skein/testing/eval/FreshContextualValidationReport.kt",
+      "sha256": "a42db7644a1f7895ffc04aa15d3b492ad084f59f0641be4b473b6c99255e3d23"
+    },
+    {
+      "path": "testing/src/test/kotlin/app/skein/testing/eval/ExpandedRetrievalMetricsTest.kt",
+      "sha256": "8a5bf61f4e0df1b2df551a578b8246340b9869b60b90198937856929b74f4fef"
+    },
+    {
+      "path": "testing/src/test/kotlin/app/skein/testing/eval/FreshContextualValidationFixtureTest.kt",
+      "sha256": "8c5ed9eaba7ecdcd2d9228c5b4ea4c463850aac5513a698953ca9b720cfb20a9"
+    },
+    {
+      "path": "testing/src/test/kotlin/app/skein/testing/eval/FreshContextualValidationReportTest.kt",
+      "sha256": "aa0450cb83c45a2467d2ff3b064b3ee0bb301e737f28970bf8b22218db3509e7"
+    }
+  ],
+  "fixture_sha256": "653b79ce9ab1c36776b5876d1b5d687a1d335f811f388b832fd0d9d258952674",
+  "finding_resolved": {
+    "problem": "Whole-index assembly was trusted by ID/locator and then compared to query assembly from the same production path, allowing a systematic assembly metadata/text error to agree with itself despite a different stored row.",
+    "resolution": "Pure validIndexedIdentity binds stored ID/document/text/revision to assembly, actual current document title/kind/hash, raw UTF8 boundaries and independent canonical locator/ordinal. Helper refuses before sampling; scorer excludes malformed indexed entries and reports a hard provenance violation.",
+    "regressions": "Actual passing synthetic malformed ID/document/text/revision/title/kind/ordinal controls reject baseline credit; forged expanded-member enumeration gets zero credit; Unicode CRLF raw/canonical conversion control passes.",
+    "anchors": [
+      "ExpandedRetrievalMetrics.kt:59",
+      "ExpandedRetrievalMetrics.kt:136",
+      "FreshContextualValidationEvaluation.kt:269",
+      "ExpandedRetrievalMetricsTest.kt:47",
+      "ExpandedRetrievalMetricsTest.kt:74"
+    ]
+  },
+  "findings_remaining": [],
+  "reviewed_invariants": [
+    {
+      "paths": [
+        "FreshContextualValidationFixture.kt:50",
+        "FreshContextualValidationFixture.kt:149"
+      ],
+      "claim": "Raw query and last prior USER query reach the component request. Only explicitly pinned current source identities with matching frozen body hash and Space are included. Assistant prose and oracle resolution are excluded. Space-switch pins retain historical source Space rather than being relabelled."
+    },
+    {
+      "paths": [
+        "FreshContextualValidationFixture.kt:90",
+        "FreshContextualValidationFixture.kt:190"
+      ],
+      "claim": "Frozen fixture SHA checked before decode; exact40 ordered query IDs,22 answers,18 absences,24 exact grade3 spans,6 context,4 revision cases. Both spans required for each of2 conflict cases."
+    },
+    {
+      "paths": [
+        "FreshContextualValidationEvaluation.kt:125",
+        "FreshContextualValidationEvaluation.kt:170"
+      ],
+      "claim": "Revision setup uses production create/ingest/updateBody/ingest and reads retained immutable prior revisions plus only-current indexed revisions. Ingest warnings fail setup. This enables4 component revision rows only when the native helper actually succeeds."
+    },
+    {
+      "paths": [
+        "FreshContextualValidationEvaluation.kt:175",
+        "FreshContextualValidationEvaluation.kt:209",
+        "FreshContextualValidationEvaluation.kt:269"
+      ],
+      "claim": "Actual document raw body/title/Space equals frozen source; raw/canonical body and frontmatter/current revision hashes agree. Whole actual chunk count and exact production chunker text/breadcrumb/token/offset/embedder metadata are validated. Bound assembly identity checked before usable index snapshot."
+    },
+    {
+      "paths": [
+        "ExpandedRetrievalMetrics.kt:123",
+        "ExpandedRetrievalMetrics.kt:170",
+        "ExpandedRetrievalMetrics.kt:212",
+        "ExpandedRetrievalMetrics.kt:251"
+      ],
+      "claim": "Expanded UTF8 bytes, requested Space, NOTE kind, current revision, full member identities, original ranking signals, representative and order are checked. Unknown/reused/overlapping members fail; invalid raw ranks consume positions. Required fullspan interval coverage counts all conflict evidence, with result9 unable to replace an invalid top8 slot."
+    },
+    {
+      "paths": [
+        "FreshContextualValidationEvaluation.kt:279",
+        "FreshContextualValidationReport.kt:65",
+        "FreshContextualValidationReport.kt:124"
+      ],
+      "claim": "Exactly6 primary context rows are empty UNEXECUTED executions with score null; fixture-fed context API results appear only under component_diagnostic. Summary uses all40/22/18/24 fixed denominators and primary rows only; unsupported rows cannot inflate credit."
+    },
+    {
+      "paths": [
+        "FreshContextualValidationEvaluation.kt:405",
+        "FreshContextualValidationReport.kt:199"
+      ],
+      "claim": "One warmup and all repetitions are retained with raw output/warnings/status. Any timeout, exception or nonexpected recall warning prevents scoring, including production empty-on-error fallback. Only exact missing-embedder warning is allowed. Raw evidence admission survives failed provenance; strict success also needs deterministic successful outputs."
+    },
+    {
+      "paths": [
+        "docs/eval/FRESH_CONTEXTUAL_VALIDATION_20260930.md:17",
+        "docs/eval/FRESH_CONTEXTUAL_VALIDATION_20260930.md:65"
+      ],
+      "claim": "Explicit opt-in only, host-supplied commit IDs are labelled attribution, expanded ranking and full hybrid stay INELIGIBLE, no threshold/default/gold changes and no claim of application lifecycle or answer quality."
+    }
+  ],
+  "validation": {
+    "actual_xml": [
+      {
+        "path": "testing/build/test-results/test/TEST-app.skein.testing.eval.ExpandedRetrievalMetricsTest.xml",
+        "sha256": "80be9dfd9d79fef2582def12a7f149a417ca6e4b3e526ffd6724a64ff1f1c15b",
+        "counts": {
+          "tests": 13,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0
+        },
+        "actual_testcase_count": 13,
+        "identities": [
+          {
+            "class": "app.skein.testing.eval.ExpandedRetrievalMetricsTest",
+            "name": "overlapping_units_are_both_invalid_and_duplicate_rank_does_not_backfill"
+          },
+          {
+            "class": "app.skein.testing.eval.ExpandedRetrievalMetricsTest",
+            "name": "missing_extra_and_reused_members_fail_closed"
+          },
+          {
+            "class": "app.skein.testing.eval.ExpandedRetrievalMetricsTest",
+            "name": "scope_staleness_unknown_rows_and_forged_bytes_cannot_earn_coverage"
+          },
+          {
+            "class": "app.skein.testing.eval.ExpandedRetrievalMetricsTest",
+            "name": "split_utf8_and_nonfinite_signals_are_refused"
+          },
+          {
+            "class": "app.skein.testing.eval.ExpandedRetrievalMetricsTest",
+            "name": "repetition_aggregation_never_calls_one_empty_sample_a_correct_rejection"
+          },
+          {
+            "class": "app.skein.testing.eval.ExpandedRetrievalMetricsTest",
+            "name": "enumeration_output_must_match_actual_stored_row_and_document_before_it_is_trusted"
+          },
+          {
+            "class": "app.skein.testing.eval.ExpandedRetrievalMetricsTest",
+            "name": "every_competing_fact_is_required_even_when_one_is_rank_one"
+          },
+          {
+            "class": "app.skein.testing.eval.ExpandedRetrievalMetricsTest",
+            "name": "stored_raw_offsets_are_independently_bound_to_canonical_unicode_locator"
+          },
+          {
+            "class": "app.skein.testing.eval.ExpandedRetrievalMetricsTest",
+            "name": "legitimate_expansion_has_all_span_credit_without_legacy_chunk_identity"
+          },
+          {
+            "class": "app.skein.testing.eval.ExpandedRetrievalMetricsTest",
+            "name": "adjacent_units_can_jointly_cover_one_span_without_duplicate_credit"
+          },
+          {
+            "class": "app.skein.testing.eval.ExpandedRetrievalMetricsTest",
+            "name": "query_scores_compare_to_original_candidates_and_not_enumeration_scores"
+          },
+          {
+            "class": "app.skein.testing.eval.ExpandedRetrievalMetricsTest",
+            "name": "representative_is_first_original_member_and_must_cover_full_member_anchor"
+          },
+          {
+            "class": "app.skein.testing.eval.ExpandedRetrievalMetricsTest",
+            "name": "metadata_prefix_in_index_does_not_legitimize_prefix_in_returned_evidence"
+          }
+        ]
+      },
+      {
+        "path": "testing/build/test-results/test/TEST-app.skein.testing.eval.FreshContextualValidationFixtureTest.xml",
+        "sha256": "543edf9b6f70e1c7f8a799c525ad797ea61f538083bb690f3bed43943c3216ee",
+        "counts": {
+          "tests": 5,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0
+        },
+        "actual_testcase_count": 5,
+        "identities": [
+          {
+            "class": "app.skein.testing.eval.FreshContextualValidationFixtureTest",
+            "name": "frozen_schema_keeps_all_spans_absences_and_distinct_runtime_requirements"
+          },
+          {
+            "class": "app.skein.testing.eval.FreshContextualValidationFixtureTest",
+            "name": "changed_source_body_cannot_be_relabelled_with_a_frozen_pin"
+          },
+          {
+            "class": "app.skein.testing.eval.FreshContextualValidationFixtureTest",
+            "name": "raw_query_and_only_prior_user_and_source_pins_reach_request"
+          },
+          {
+            "class": "app.skein.testing.eval.FreshContextualValidationFixtureTest",
+            "name": "assistant_only_claim_does_not_become_a_source_and_cross_space_pin_is_not_reassigned"
+          },
+          {
+            "class": "app.skein.testing.eval.FreshContextualValidationFixtureTest",
+            "name": "changed_bytes_missing_rows_and_changed_protocol_are_refused"
+          }
+        ]
+      },
+      {
+        "path": "testing/build/test-results/test/TEST-app.skein.testing.eval.FreshContextualValidationReportTest.xml",
+        "sha256": "ab1943e593f25a62b8a3f09af4ecf759bf1195bb4319cb0d8bf516befee4bdc9",
+        "counts": {
+          "tests": 6,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0
+        },
+        "actual_testcase_count": 6,
+        "identities": [
+          {
+            "class": "app.skein.testing.eval.FreshContextualValidationReportTest",
+            "name": "nondeterminism_hard_fails_and_never_earns_strict_or_all_span_success"
+          },
+          {
+            "class": "app.skein.testing.eval.FreshContextualValidationReportTest",
+            "name": "complete_raw_samples_and_null_error_result_are_both_retained"
+          },
+          {
+            "class": "app.skein.testing.eval.FreshContextualValidationReportTest",
+            "name": "omitted_duplicate_context_credited_and_incomplete_sample_rows_are_rejected"
+          },
+          {
+            "class": "app.skein.testing.eval.FreshContextualValidationReportTest",
+            "name": "perfect_component_diagnostics_never_credit_primary_context_cases"
+          },
+          {
+            "class": "app.skein.testing.eval.FreshContextualValidationReportTest",
+            "name": "all_forty_rows_and_all_denominators_survive_errors_timeouts_and_unexecuted_context"
+          },
+          {
+            "class": "app.skein.testing.eval.FreshContextualValidationReportTest",
+            "name": "an_empty_error_has_no_absence_credit_and_cannot_carry_a_score"
+          }
+        ]
+      }
+    ],
+    "totals": {
+      "tests": 24,
+      "passed": 24,
+      "failed": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    "log": "/Users/andrewherrera/skein-worktrees/fresh-contextual-evaluator-20260930/build/agent-logs/fresh-contextual-evaluator-20260930/focused-2.log",
+    "log_sha256": "1fa03491023b51513c580145ab96ce878b8dd54276b5e7f5f96fa3ef815a5db5",
+    "observed_commands": [
+      "./gradlew",
+      "--no-daemon",
+      "--max-workers=2",
+      "-Pskein.retrievalEvaluation=true",
+      ":testing:ktlintCheck",
+      ":testing:test",
+      "--tests",
+      "app.skein.testing.eval.FreshContextualValidationFixtureTest",
+      "--tests",
+      "app.skein.testing.eval.ExpandedRetrievalMetricsTest",
+      "--tests",
+      "app.skein.testing.eval.FreshContextualValidationReportTest",
+      ":core:vault:ktlintCheck",
+      ":core:vault:compileDevDebugAndroidTestKotlin"
+    ],
+    "result": "BUILD SUCCESSFUL in8s; testing/vault ktlint checks and opt-in AndroidTest compile; host synthetic tests only",
+    "executed_by_reviewer": false
+  },
+  "remaining_limits": [
+    "No fresh40 retrieval output has been executed or reviewed. Compilation and host synthetic tests do not prove native encrypted repository execution.",
+    "Six application conversation-context cases remain primary UNEXECUTED until real app SendPipeline context wiring is exercised. Component diagnostics never establish it.",
+    "Four revision cases are a disposable repository component protocol, not app editor/lock/process lifecycle acceptance.",
+    "Host runner checks structural summaries; future raw evidence review must independently recompute source/member/span/scope results. Host supplied source IDs do not attest running APK bytes by themselves.",
+    "No embedder/vector/hybrid qualification, answer generation/quality, citation presentation or physical Fold acceptance is established.",
+    "AI-reviewed synthetic source/gold validation is not human output grading or generalization proof."
+  ],
+  "created_at_utc": "2026-09-30T10:17:53.888754+00:00"
+}

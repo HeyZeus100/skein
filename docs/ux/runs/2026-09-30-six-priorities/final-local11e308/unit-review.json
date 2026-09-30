@@ -1,0 +1,14 @@
+{
+  "head": "11e308155ba6e67bab873fec4325c8c9ec42a70c",
+  "counts": {
+    "tests": 5572,
+    "passed": 5486,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 86
+  },
+  "xml_files": 557,
+  "files": 557,
+  "archive_sha256": "b4aa1c7c33703b9f5775a9b7914fb4166f3fe177488d2a1e4cffd76698535e18",
+  "result_types": {}
+}
