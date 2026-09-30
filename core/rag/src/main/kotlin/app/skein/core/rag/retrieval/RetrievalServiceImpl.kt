@@ -61,11 +61,15 @@
 // `ScoreFusion`, or `RetrievedAssembler` — it only composes them.
 package app.skein.core.rag.retrieval
 
+import app.skein.core.model.ChunkId
 import app.skein.core.model.CitationSourceKind
+import app.skein.core.model.ContextualRetrievalRequest
+import app.skein.core.model.ContextualRetrievalResult
+import app.skein.core.model.ContextualRetrievalService
 import app.skein.core.model.EmbedderService
+import app.skein.core.model.FollowUpResolution
 import app.skein.core.model.IndexStore
 import app.skein.core.model.PersonaId
-import app.skein.core.model.RetrievalService
 import app.skein.core.model.Retrieved
 import app.skein.core.model.ScoredChunk
 import app.skein.core.model.SkeinLog
@@ -119,7 +123,7 @@ public class RetrievalServiceImpl(
     private val stages: RecallStages = RecallStages(),
     /** Null is an explicit ungated evaluation/control path; production uses the lexical coverage gate. */
     private val evidenceGate: LexicalEvidenceGate? = LexicalEvidenceGate(),
-) : RetrievalService {
+) : ContextualRetrievalService {
     private val lexicalRecall = LexicalRecall(index)
     private val graphRecall = GraphRecall(index, repository)
     private val ranker = PprRanker(index, repository, config, legacyPersonaId, includeChatHistory)
@@ -144,6 +148,53 @@ public class RetrievalServiceImpl(
         val ranked = ranker.rank(sources, personaId, k)
         val candidates = assembler.assemble(ranked, sources).take(k)
         return evidenceGate?.select(query, candidates) ?: candidates
+    }
+
+    /**
+     * Explicit candidate path. It preserves the original query for the existing evidence policy;
+     * a verified prior source only changes recall, never the support question or gate threshold.
+     * The legacy String overload above deliberately retains its exact behavior.
+     */
+    override suspend fun retrieveContext(request: ContextualRetrievalRequest): ContextualRetrievalResult {
+        val resolver = ProvenanceFollowUpResolver(repository, legacyPersonaId)
+        val resolved = resolver.resolve(request)
+
+        fun result(
+            evidence: List<Retrieved> = emptyList(),
+            candidates: List<Retrieved> = emptyList(),
+            exclusions: Map<String, Int> = emptyMap(),
+            resolution: FollowUpResolution = resolved.resolution,
+            members: Map<ChunkId, List<Retrieved>> = emptyMap(),
+        ) = ContextualRetrievalResult(
+            originalQuery = request.query,
+            recallQuery = resolved.recallQuery,
+            resolution = resolution,
+            anchorDocumentIds = resolved.anchorIds,
+            evidence = evidence,
+            originalCandidates = candidates,
+            evidenceMembers = members,
+            exclusionCounts = exclusions,
+        )
+        if (request.k <= 0 || resolved.resolution !in setOf(FollowUpResolution.DIRECT, FollowUpResolution.RESOLVED)) {
+            return result()
+        }
+        val sources = recallAll(resolved.recallQuery)
+        val ranked = ranker.rank(sources, request.personaId, request.k)
+        val candidates = assembler.assemble(ranked, sources).take(request.k)
+        val anchored = candidates.filter { resolved.anchorIds.isEmpty() || it.docId in resolved.anchorIds }
+        val selected = EvidenceUnitSelector(repository, legacyPersonaId).select(anchored, request.personaId)
+        val exclusions = selected.exclusions.mapKeys { it.key.name }.toMutableMap()
+        if (anchored.size != candidates.size) exclusions["OUTSIDE_FOLLOW_UP_ANCHOR"] = candidates.size - anchored.size
+        // A source edit during recall must not turn an old pin into a newly resolved source.
+        if (request.followUp != null) {
+            val rechecked = resolver.resolve(request)
+            if (rechecked.resolution != FollowUpResolution.RESOLVED) {
+                return result(candidates = candidates, exclusions = exclusions, resolution = rechecked.resolution)
+            }
+        }
+        val evidence = evidenceGate?.select(request.query, selected.evidence) ?: selected.evidence
+        val members = selected.units.filter { it.source in evidence }.associate { it.source.chunkId to it.members }
+        return result(evidence, candidates, exclusions, members = members)
     }
 
     /** Spec §7.2 recall step: the three sources, fanned out concurrently on [io]. See file header. */
