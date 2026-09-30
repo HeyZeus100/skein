@@ -2,8 +2,10 @@
 
 **Status: qualification and measurement proposal, not an approved `embedder_path` decision.**
 `skein-5hr`, `skein-lbw`, `skein-079`, and `skein-hwsa` remain open. The production
-service has no selected backend factory. No weights were downloaded, installed,
-reimported, or executed for this packet, and no device commands were issued.
+service has no selected backend factory. The first packet used metadata only; a
+subsequently authorized scratch qualification is recorded below. No model was
+installed in Skein, reimported into owner storage, or executed, and no device
+commands were issued.
 Existing owner models, content, gold labels, thresholds, and original evidence
 remain untouched. Source baseline is `0e56b433ff9db9323123c8afd9c33dc58fab5e8e`.
 
@@ -195,3 +197,36 @@ Both actual XML sets, commands, logs, and restoration hashes are retained at
 `build/agent-logs/embedder-boundary-20260930/future-lock-fixed/review.json`, SHA-256
 `11bb5208eddfcf372ec6b00388ed14676e24db5c197b883c303eef08a98b1ebd`.
 The earlier passing XML remains immutable; it did not cover this ordering case.
+
+
+## Authorized isolated artifact qualification
+
+After the initial proposal, the coordinator authorized acquisition into the
+embedding worktree's ignored `build/agent-logs/embedder-experiment-20260930/models`.
+Before acquisition, 128 new synthetic development records and 48 independently
+authored query labels were frozen, including support, unrelated text, revised
+facts, absent attributes, follow-up context, Unicode and token-boundary probes.
+This is development data, not new held-out validation. Freeze receipt SHA-256:
+`f4f551b9ea7ad069de35b82efeb16bf82c809db4f5d4eabcbcb8f07089815af3`;
+corpus `95f0a6b920f06a6f57dffaa6513ce8373dda67a6a75739828e9d1f07a63690dd`;
+gold `8a12d110037fbf7ffdc4c0325f771969547479f229a734c474d60ae32ad7523a`.
+
+The ONNX int8 candidate's actual downloaded 137,296,292 bytes match
+`b4342336debaea79de872370664b0aaeb67dea4605513d00ee236ea871a81f27`.
+Tokenizer, config, special-token metadata, sentence-transformer module metadata,
+and model card were verified against Git blob IDs from the pinned source tree.
+The tokenizer also matches the existing independent raw artifact hash above.
+The acquisition receipt is `model-acquisition-receipt.json` in that scratch
+experiment directory, SHA-256
+`f16dc90985481cb3436f19476c5da19d3211a1f3d2b895983cd2ea0ef9f89423`.
+
+Read-only protobuf inspection found ONNX IR 7/opset 14, three INT64 tensors
+(`input_ids`, `token_type_ids`, `attention_mask`) shaped `[batch, sequence]`, and
+FLOAT `last_hidden_state` shaped `[batch, sequence, 768]`. There are 1,566 nodes,
+260 top-level initializers and no external references in those initializers.
+The separately verified pooling config selects mean-token pooling. Inspection
+receipt `graph-inspection.json` SHA-256 is
+`8ae888690527f977b5b05f365118b1a317f909aebcbb4f6bf22f8b024242058e`.
+These are parsed schema facts. No ORT session, remote model code, inference,
+latency/memory benchmark, or Android acceptance was executed. The reference
+export, GGUF comparison, fresh held-out evaluation, and human decision remain open.
