@@ -1,0 +1,20 @@
+{
+  "run": 36751785164,
+  "source": "a2effe4ac39e88af5fd577017a5e7ce0bdbce400",
+  "archive_sha256": "f89ad9ab2939634ffc1e6425100759ea963ad5990e6b15250f8b05978a86b4d1",
+  "manifest_members_verified": 720,
+  "actual_xml_files": 160,
+  "counts": {
+    "tests": 1455,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 80,
+    "passed": 1375
+  },
+  "unchanged_images": 552,
+  "limits": [
+    "Host screenshot evidence only; no physical Fold acceptance.",
+    "Historical run predates manual-only owner CI policy.",
+    "Actual artifact contains image-result JSON, not PNG or APK bytes."
+  ]
+}

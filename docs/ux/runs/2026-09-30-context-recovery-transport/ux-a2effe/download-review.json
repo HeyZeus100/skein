@@ -1,0 +1,16 @@
+{
+  "run": 36751785164,
+  "source": "a2effe4ac39e88af5fd577017a5e7ce0bdbce400",
+  "conclusion": "success",
+  "artifacts": [
+    {
+      "id": 11115725519,
+      "name": "ux-verification-records",
+      "path": "build/agent-logs/resume-context-20260930/remote/ux-a2effe/ux-verification-records.zip",
+      "bytes": 457250,
+      "sha256": "f89ad9ab2939634ffc1e6425100759ea963ad5990e6b15250f8b05978a86b4d1",
+      "api_digest": "sha256:f89ad9ab2939634ffc1e6425100759ea963ad5990e6b15250f8b05978a86b4d1"
+    }
+  ],
+  "logs_sha256": "a335864c254c9a5eff6ecfb38c3ad750d7116c2cd19c623697d8f4b292106f5c"
+}
