@@ -39,6 +39,8 @@ def prepare(model, expected_sha256, expected_size, profile):
     eos = report["declared_token_ids"].get("tokenizer.ggml.eos_token_id")
     if not eos or eos["type"] != 3 or not eos["text"] or len(eos["text"].encode("utf-8")) > 128:
         raise ValueError("declared EOS control is unavailable")
+    if report["declared_token_spelling_occurrences"]["tokenizer.ggml.eos_token_id"] != 1:
+        raise ValueError("declared EOS spelling is ambiguous in the vocabulary")
     eog = [turn_end]
     if eos["id"] != turn_end["id"]:
         eog.append({"spelling": eos["text"], "id": eos["id"], "type": eos["type"]})

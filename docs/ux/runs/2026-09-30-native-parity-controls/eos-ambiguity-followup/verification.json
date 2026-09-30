@@ -1,0 +1,36 @@
+{
+  "parent": "beb07e696959281d28445757f3cc5032d5c0da38",
+  "review_gap": "Distinct declared EOS had duplicate vocabulary spelling; host preparation previously accepted it.",
+  "fix": "Count occurrences for declared token spellings in one bounded vocabulary pass; EOS must occur exactly once.",
+  "files": [
+    {
+      "path": "tools/eval/prepare_native_parity.py",
+      "sha256": "187f4e4bc82dcc0eadd0d2a439069a29932b685992ba09bf7b919ff5747a2dd0"
+    },
+    {
+      "path": "tools/eval/qualify_model_artifact.py",
+      "sha256": "69cfc4d791005378b75079a246335d4bb1da3fdf349826378c489d4f0140d4f2"
+    },
+    {
+      "path": "tools/eval/test_prepare_native_parity.py",
+      "sha256": "c379200571c0feb333200c392a78f7586cb633a4ecc3ee058bd20818a5c2ed5f"
+    },
+    {
+      "path": "tools/eval/test_qualify_model_artifact.py",
+      "sha256": "9a541616f51b5f2906f1578aef8c88609997ed1aed60fb667e8e4817348f5c37"
+    }
+  ],
+  "affected_python_tests": 15,
+  "result": "PASS",
+  "kotlin_changed": false,
+  "gradle_native_device_actions": false,
+  "original_554_unit_113_python_evidence": "Retained from parent; not rerun or relabeled as new execution.",
+  "counterexample": {
+    "result": "rejected",
+    "error": "declared EOS spelling is ambiguous in the vocabulary",
+    "fixture_sha256": "48a1f9eefc78dc459d95b892aee42a9f8a65fcc637b164eb4f2d3b89b76e1fa1",
+    "bytes": 457
+  },
+  "runtime_model_quality_physical_acceptance": "Unmeasured and unchanged; metadata-only synthetic fixture.",
+  "archive_sha256": "238db1e38d625b478d38ad047196ed3a2ec5375bea5da77d952cdd8ea4f2cc8f"
+}

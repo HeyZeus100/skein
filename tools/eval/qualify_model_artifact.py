@@ -112,6 +112,11 @@ def metadata_report(data, controls=DEFAULT_CONTROLS):
         if type(value) is not int or not 0 <= value < len(tokens):
             raise ValueError("declared tokenizer token ID outside vocabulary")
         declared[key] = {"id": value, "text": tokens[value].decode("utf-8"), "type": types[value]}
+    # One bounded vocabulary pass, rather than a full scan for every declared ID.
+    declared_spellings = {tokens[entry["id"]]: 0 for entry in declared.values()}
+    for token in tokens:
+        if token in declared_spellings:
+            declared_spellings[token] += 1
     selected = set(controls)
     selected_bytes = {text.encode("utf-8") for text in selected}
     control_entries = [{"id": i, "text": token.decode("utf-8"), "type": types[i]}
@@ -140,6 +145,9 @@ def metadata_report(data, controls=DEFAULT_CONTROLS):
             "in file order, including template; no tensor/header data."
         ),
         "declared_token_ids": declared,
+        "declared_token_spelling_occurrences": {
+            key: declared_spellings[tokens[entry["id"]]] for key, entry in declared.items()
+        },
         "control_entries": control_entries,
         "requested_controls_absent": sorted(selected - {entry["text"] for entry in control_entries}),
         # Raw occurrence is only a prerequisite; native rendering and literal isolation still need testing.

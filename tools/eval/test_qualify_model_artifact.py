@@ -53,6 +53,7 @@ class QualificationTest(unittest.TestCase):
         self.assertEqual(hashlib.sha256(data[offset:]).hexdigest(), report["tokenizer_metadata_sha256"])
         self.assertEqual({"id": 1, "text": "<eos>", "type": 3},
                          report["declared_token_ids"]["tokenizer.ggml.eos_token_id"])
+        self.assertEqual({"tokenizer.ggml.eos_token_id": 1}, report["declared_token_spelling_occurrences"])
         self.assertIn("<|im_start|>", report["requested_controls_absent"])
         self.assertEqual(["<eos>", "<start_of_turn>"], report["requested_controls_in_template"])
         self.assertIn("native_eog", report["unmeasured"])
@@ -88,6 +89,10 @@ class QualificationTest(unittest.TestCase):
         self.assertEqual(first["template_sha256"], changed["template_sha256"])
         self.assertNotEqual(first["tokenizer_metadata_sha256"], changed["tokenizer_metadata_sha256"])
         self.assertEqual(1, changed["declared_token_ids"]["tokenizer.ggml.eos_token_id"]["type"])
+
+    def test_duplicate_declared_spelling_is_reported_without_claiming_native_support(self):
+        report = qualification.metadata_report(fixture(tokens=("<bos>", "<eos>", "<start_of_turn>", "<eos>")))
+        self.assertEqual({"tokenizer.ggml.eos_token_id": 2}, report["declared_token_spelling_occurrences"])
 
     def test_changed_file_is_not_published_as_qualified(self):
         data = fixture()

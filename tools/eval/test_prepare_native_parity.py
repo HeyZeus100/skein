@@ -66,6 +66,13 @@ class PrepareParityTest(unittest.TestCase):
         with self.assertRaisesRegex(ValueError, "16 KiB"):
             self.prepare(fixture(name="Gemma 4 E4B " + "x" * 16_384))
 
+    def test_declared_eos_with_duplicate_vocabulary_spelling_is_rejected(self):
+        for duplicate_type in (1, 3):
+            data = fixture(tokens=("<bos>", "<eos>", "<|turn>", "<turn|>", "<eos>"),
+                           types=(3, 3, 3, 3, duplicate_type))
+            with self.subTest(duplicate_type=duplicate_type), self.assertRaisesRegex(ValueError, "EOS spelling is ambiguous"):
+                self.prepare(data)
+
     def test_unsupported_identity_and_template_refuse_a_manifest(self):
         cases = [fixture(architecture="gemma3"), fixture(name="Gemma 4 E2B it"),
                  fixture(template="<start_of_turn>{{ content }}<end_of_turn>"),
