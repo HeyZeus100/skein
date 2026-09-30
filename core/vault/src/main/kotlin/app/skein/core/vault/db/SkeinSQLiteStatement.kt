@@ -11,7 +11,11 @@ import androidx.sqlite.SQLiteStatement
 public class SkeinSQLiteStatement internal constructor(
     private val native: SkeinSQLiteNative,
     private val stmtHandle: Long,
+    private val onFinalized: () -> Unit = {},
 ) : SQLiteStatement {
+    private val lifetime = Any()
+
+    @Volatile
     private var closed = false
 
     override fun bindBlob(
@@ -122,9 +126,12 @@ public class SkeinSQLiteStatement internal constructor(
     }
 
     override fun close() {
-        if (!closed) {
-            closed = true
-            native.nativeFinalize(stmtHandle)
+        synchronized(lifetime) {
+            if (!closed) {
+                closed = true
+                native.nativeFinalize(stmtHandle)
+                onFinalized()
+            }
         }
     }
 

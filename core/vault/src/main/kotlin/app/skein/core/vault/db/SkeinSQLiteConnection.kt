@@ -15,18 +15,34 @@ public class SkeinSQLiteConnection internal constructor(
     private val native: SkeinSQLiteNative,
     private val dbHandle: Long,
 ) : SQLiteConnection {
-    private var closed = false
+    private val lifetime = Any()
 
-    override fun prepare(sql: String): SkeinSQLiteStatement {
-        checkOpen()
-        val stmtHandle = native.nativePrepare(dbHandle, sql)
-        return SkeinSQLiteStatement(native, stmtHandle)
-    }
+    @Volatile
+    private var closed = false
+    private var nativeClosed = false
+    private var statements = 0
+
+    /** close_v2 may defer native closure until the last prepared statement is finalized. */
+    internal val closedForRecovery: Boolean
+        get() = synchronized(lifetime) { nativeClosed && statements == 0 }
+
+    override fun prepare(sql: String): SkeinSQLiteStatement =
+        synchronized(lifetime) {
+            checkOpen()
+            val stmtHandle = native.nativePrepare(dbHandle, sql)
+            statements++
+            SkeinSQLiteStatement(native, stmtHandle) {
+                synchronized(lifetime) { statements-- }
+            }
+        }
 
     override fun close() {
-        if (!closed) {
-            closed = true
-            native.nativeClose(dbHandle)
+        synchronized(lifetime) {
+            if (!closed) {
+                closed = true
+                native.nativeClose(dbHandle)
+                nativeClosed = true
+            }
         }
     }
 

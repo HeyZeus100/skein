@@ -1,0 +1,211 @@
+{"owner": "/root/recovery", "coordinator": "/root", "scope": "core vault lint/dev+foss unit/AndroidTest compile", "worktree": "/Users/andrewherrera/skein-worktrees/recovery-binding-resume-20260930", "at": "2026-09-30T17:08:20.221622+00:00", "pid": 31604, "token": "86c3de89-4eb1-4e22-948e-a3a26508beae", "command": ["./gradlew", ":core:vault:ktlintCheck", ":core:vault:testDevDebugUnitTest", ":core:vault:testFossDebugUnitTest", ":core:vault:compileDevDebugAndroidTestKotlin", ":core:vault:compileFossDebugAndroidTestKotlin", "--no-daemon", "--max-workers=2", "--console=plain"], "updated_at": "2026-09-30T17:16:30.496214+00:00"}
+To honour the JVM settings for this build a single-use Daemon process will be forked. For more on this, please refer to https://docs.gradle.org/9.7.1/userguide/gradle_daemon.html#sec:disabling_the_daemon in the Gradle documentation.
+Daemon will be stopped at the end of the build 
+Reusing configuration cache.
+> Task :testing:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :testing-fakes:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :core:model:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :core:vault:loadKtlintReporters UP-TO-DATE
+> Task :core:vault:runKtlintCheckOverAndroidTestDebugSourceSet NO-SOURCE
+> Task :core:vault:ktlintAndroidTestDebugSourceSetCheck SKIPPED
+> Task :core:vault:runKtlintCheckOverAndroidTestDevDebugSourceSet NO-SOURCE
+> Task :core:vault:ktlintAndroidTestDevDebugSourceSetCheck SKIPPED
+> Task :core:vault:runKtlintCheckOverAndroidTestDevSourceSet NO-SOURCE
+> Task :core:vault:ktlintAndroidTestDevSourceSetCheck SKIPPED
+> Task :core:vault:runKtlintCheckOverAndroidTestFossDebugSourceSet NO-SOURCE
+> Task :core:vault:ktlintAndroidTestFossDebugSourceSetCheck SKIPPED
+> Task :core:vault:runKtlintCheckOverAndroidTestFossSourceSet NO-SOURCE
+> Task :core:vault:ktlintAndroidTestFossSourceSetCheck SKIPPED
+> Task :core:vault:runKtlintCheckOverAndroidTestReleaseSourceSet NO-SOURCE
+> Task :core:vault:ktlintAndroidTestReleaseSourceSetCheck SKIPPED
+> Task :core:vault:runKtlintCheckOverAndroidTestSourceSet UP-TO-DATE
+> Task :core:vault:ktlintAndroidTestSourceSetCheck UP-TO-DATE
+> Task :core:vault:runKtlintCheckOverDebugSourceSet NO-SOURCE
+> Task :core:vault:ktlintDebugSourceSetCheck SKIPPED
+> Task :core:vault:runKtlintCheckOverDevDebugSourceSet NO-SOURCE
+> Task :core:vault:ktlintDevDebugSourceSetCheck SKIPPED
+> Task :core:vault:runKtlintCheckOverDevReleaseSourceSet NO-SOURCE
+> Task :core:vault:ktlintDevReleaseSourceSetCheck SKIPPED
+> Task :core:vault:runKtlintCheckOverDevSourceSet NO-SOURCE
+> Task :core:vault:ktlintDevSourceSetCheck SKIPPED
+> Task :core:model:compileKotlin UP-TO-DATE
+> Task :core:vault:runKtlintCheckOverFossDebugSourceSet NO-SOURCE
+> Task :core:vault:ktlintFossDebugSourceSetCheck SKIPPED
+> Task :core:vault:runKtlintCheckOverFossReleaseSourceSet NO-SOURCE
+> Task :core:vault:ktlintFossReleaseSourceSetCheck SKIPPED
+> Task :core:vault:runKtlintCheckOverFossSourceSet NO-SOURCE
+> Task :core:vault:ktlintFossSourceSetCheck SKIPPED
+> Task :core:vault:runKtlintCheckOverKotlinScripts UP-TO-DATE
+> Task :core:vault:ktlintKotlinScriptCheck UP-TO-DATE
+> Task :core:vault:runKtlintCheckOverReleaseSourceSet NO-SOURCE
+> Task :core:vault:ktlintReleaseSourceSetCheck SKIPPED
+> Task :core:vault:runKtlintCheckOverTestDebugSourceSet NO-SOURCE
+> Task :core:vault:ktlintTestDebugSourceSetCheck SKIPPED
+> Task :core:vault:runKtlintCheckOverTestDevDebugSourceSet NO-SOURCE
+> Task :core:vault:ktlintTestDevDebugSourceSetCheck SKIPPED
+> Task :core:vault:runKtlintCheckOverTestDevSourceSet NO-SOURCE
+> Task :core:vault:ktlintTestDevSourceSetCheck SKIPPED
+> Task :core:vault:runKtlintCheckOverTestFixturesDebugSourceSet NO-SOURCE
+> Task :core:vault:ktlintTestFixturesDebugSourceSetCheck SKIPPED
+> Task :core:vault:runKtlintCheckOverTestFixturesDevSourceSet NO-SOURCE
+> Task :core:vault:ktlintTestFixturesDevSourceSetCheck SKIPPED
+> Task :core:vault:runKtlintCheckOverTestFixturesFossSourceSet NO-SOURCE
+> Task :core:vault:ktlintTestFixturesFossSourceSetCheck SKIPPED
+> Task :core:vault:runKtlintCheckOverTestFixturesReleaseSourceSet NO-SOURCE
+> Task :core:vault:ktlintTestFixturesReleaseSourceSetCheck SKIPPED
+> Task :core:vault:runKtlintCheckOverTestFixturesSourceSet NO-SOURCE
+> Task :core:vault:ktlintTestFixturesSourceSetCheck SKIPPED
+> Task :core:vault:runKtlintCheckOverTestFossDebugSourceSet NO-SOURCE
+> Task :core:vault:ktlintTestFossDebugSourceSetCheck SKIPPED
+> Task :core:vault:runKtlintCheckOverTestFossSourceSet NO-SOURCE
+> Task :core:vault:ktlintTestFossSourceSetCheck SKIPPED
+> Task :core:vault:runKtlintCheckOverTestReleaseSourceSet NO-SOURCE
+> Task :core:vault:ktlintTestReleaseSourceSetCheck SKIPPED
+> Task :core:vault:runKtlintCheckOverMainSourceSet
+> Task :core:vault:ktlintMainSourceSetCheck
+> Task :core:model:compileJava NO-SOURCE
+> Task :core:model:processResources UP-TO-DATE
+> Task :core:model:classes UP-TO-DATE
+> Task :core:model:jar UP-TO-DATE
+> Task :testing-fakes:compileKotlin UP-TO-DATE
+> Task :testing-fakes:compileJava NO-SOURCE
+> Task :testing-fakes:processResources NO-SOURCE
+> Task :testing-fakes:classes UP-TO-DATE
+> Task :testing-fakes:jar UP-TO-DATE
+> Task :testing:compileKotlin UP-TO-DATE
+> Task :testing:compileJava NO-SOURCE
+> Task :testing:processResources UP-TO-DATE
+> Task :testing:classes UP-TO-DATE
+> Task :testing:jar UP-TO-DATE
+> Task :core:markdown:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :core:markdown:compileKotlin UP-TO-DATE
+> Task :core:markdown:compileJava NO-SOURCE
+> Task :core:markdown:processResources NO-SOURCE
+> Task :core:markdown:classes UP-TO-DATE
+> Task :core:markdown:jar UP-TO-DATE
+> Task :core:vault:preBuild UP-TO-DATE
+> Task :core:vault:preDevDebugBuild UP-TO-DATE
+> Task :core:vault:generateDevDebugResources UP-TO-DATE
+> Task :core:vault:packageDevDebugResources UP-TO-DATE
+> Task :core:vault:processDevDebugNavigationResources UP-TO-DATE
+> Task :core:vault:parseDevDebugLocalResources UP-TO-DATE
+> Task :core:vault:generateDevDebugRFile UP-TO-DATE
+> Task :core:vault:runKtlintCheckOverTestSourceSet
+> Task :core:vault:ktlintTestSourceSetCheck
+> Task :core:vault:ktlintCheck
+> Task :core:vault:javaPreCompileDevDebug UP-TO-DATE
+> Task :core:vault:preDevDebugUnitTestBuild UP-TO-DATE
+> Task :core:vault:writeDevDebugAarMetadata UP-TO-DATE
+> Task :core:vault:checkDevDebugUnitTestAarMetadata UP-TO-DATE
+> Task :core:vault:mapDevDebugSourceSetPaths UP-TO-DATE
+> Task :core:vault:compileDevDebugLibraryResources UP-TO-DATE
+> Task :core:vault:mapDevDebugUnitTestSourceSetPaths UP-TO-DATE
+> Task :core:vault:generateDevDebugUnitTestResources UP-TO-DATE
+> Task :core:vault:mergeDevDebugUnitTestResources UP-TO-DATE
+> Task :core:vault:extractDeepLinksDevDebug UP-TO-DATE
+> Task :core:vault:processDevDebugManifest UP-TO-DATE
+> Task :core:vault:mergeDevDebugUnitTestManifest UP-TO-DATE
+> Task :core:vault:processDevDebugUnitTestManifest UP-TO-DATE
+> Task :core:vault:processDevDebugUnitTestResources UP-TO-DATE
+> Task :core:vault:javaPreCompileDevDebugUnitTest UP-TO-DATE
+> Task :core:vault:generateDevDebugUnitTestAssets UP-TO-DATE
+> Task :core:vault:generateDevDebugAssets UP-TO-DATE
+> Task :core:vault:mergeDevDebugAssets UP-TO-DATE
+> Task :core:vault:mergeDevDebugUnitTestAssets UP-TO-DATE
+> Task :core:vault:packageDevDebugUnitTestForUnitTest UP-TO-DATE
+> Task :core:vault:generateDevDebugUnitTestConfig UP-TO-DATE
+> Task :core:vault:preFossDebugBuild UP-TO-DATE
+> Task :core:vault:generateFossDebugResources UP-TO-DATE
+> Task :core:vault:packageFossDebugResources UP-TO-DATE
+> Task :core:vault:processFossDebugNavigationResources UP-TO-DATE
+> Task :core:vault:parseFossDebugLocalResources UP-TO-DATE
+> Task :core:vault:generateFossDebugRFile UP-TO-DATE
+> Task :core:vault:compileDevDebugKotlin
+> Task :core:vault:compileDevDebugJavaWithJavac NO-SOURCE
+> Task :core:vault:bundleLibRuntimeToJarDevDebug
+> Task :core:vault:bundleLibCompileToJarDevDebug
+> Task :core:vault:compileFossDebugKotlin
+> Task :core:vault:processDevDebugJavaRes UP-TO-DATE
+> Task :core:vault:javaPreCompileFossDebug UP-TO-DATE
+> Task :core:vault:compileFossDebugJavaWithJavac NO-SOURCE
+> Task :core:vault:bundleLibRuntimeToJarFossDebug
+> Task :core:vault:bundleLibCompileToJarFossDebug
+> Task :core:vault:preFossDebugUnitTestBuild UP-TO-DATE
+> Task :core:vault:writeFossDebugAarMetadata UP-TO-DATE
+> Task :core:vault:checkFossDebugUnitTestAarMetadata UP-TO-DATE
+> Task :core:vault:mapFossDebugSourceSetPaths UP-TO-DATE
+> Task :core:vault:compileFossDebugLibraryResources UP-TO-DATE
+> Task :core:vault:mapFossDebugUnitTestSourceSetPaths UP-TO-DATE
+> Task :core:vault:generateFossDebugUnitTestResources UP-TO-DATE
+> Task :core:vault:mergeFossDebugUnitTestResources UP-TO-DATE
+> Task :core:vault:extractDeepLinksFossDebug UP-TO-DATE
+> Task :core:vault:processFossDebugManifest UP-TO-DATE
+> Task :core:vault:mergeFossDebugUnitTestManifest UP-TO-DATE
+> Task :core:vault:processFossDebugUnitTestManifest UP-TO-DATE
+> Task :core:vault:processFossDebugUnitTestResources UP-TO-DATE
+
+> Task :core:vault:compileDevDebugUnitTestKotlin
+w: file:///Users/andrewherrera/skein-worktrees/recovery-binding-resume-20260930/core/vault/src/test/kotlin/app/skein/core/vault/key/recovery/AuthenticatedRecoveryPreparationTest.kt:212:13 This declaration needs opt-in. Its usage should be marked with '@kotlinx.coroutines.ExperimentalCoroutinesApi' or '@OptIn(kotlinx.coroutines.ExperimentalCoroutinesApi::class)'
+w: file:///Users/andrewherrera/skein-worktrees/recovery-binding-resume-20260930/core/vault/src/test/kotlin/app/skein/core/vault/key/recovery/AuthenticatedRecoveryPreparationTest.kt:231:13 This declaration needs opt-in. Its usage should be marked with '@kotlinx.coroutines.ExperimentalCoroutinesApi' or '@OptIn(kotlinx.coroutines.ExperimentalCoroutinesApi::class)'
+
+> Task :core:vault:compileDevDebugUnitTestJavaWithJavac NO-SOURCE
+> Task :core:vault:processDevDebugUnitTestJavaRes UP-TO-DATE
+
+> Task :core:vault:compileFossDebugUnitTestKotlin
+w: file:///Users/andrewherrera/skein-worktrees/recovery-binding-resume-20260930/core/vault/src/test/kotlin/app/skein/core/vault/key/recovery/AuthenticatedRecoveryPreparationTest.kt:212:13 This declaration needs opt-in. Its usage should be marked with '@kotlinx.coroutines.ExperimentalCoroutinesApi' or '@OptIn(kotlinx.coroutines.ExperimentalCoroutinesApi::class)'
+w: file:///Users/andrewherrera/skein-worktrees/recovery-binding-resume-20260930/core/vault/src/test/kotlin/app/skein/core/vault/key/recovery/AuthenticatedRecoveryPreparationTest.kt:231:13 This declaration needs opt-in. Its usage should be marked with '@kotlinx.coroutines.ExperimentalCoroutinesApi' or '@OptIn(kotlinx.coroutines.ExperimentalCoroutinesApi::class)'
+
+> Task :core:vault:javaPreCompileFossDebugUnitTest UP-TO-DATE
+> Task :core:vault:compileFossDebugUnitTestJavaWithJavac NO-SOURCE
+> Task :core:vault:generateFossDebugUnitTestAssets UP-TO-DATE
+> Task :core:vault:generateFossDebugAssets UP-TO-DATE
+> Task :core:vault:mergeFossDebugAssets UP-TO-DATE
+> Task :core:vault:mergeFossDebugUnitTestAssets UP-TO-DATE
+> Task :core:vault:packageFossDebugUnitTestForUnitTest UP-TO-DATE
+> Task :core:vault:generateFossDebugUnitTestConfig UP-TO-DATE
+> Task :core:vault:processFossDebugJavaRes UP-TO-DATE
+> Task :core:vault:processFossDebugUnitTestJavaRes UP-TO-DATE
+> Task :core:vault:testFossDebugUnitTest
+> Task :core:rag:preBuild UP-TO-DATE
+> Task :core:rag:preDebugBuild UP-TO-DATE
+> Task :core:vault:testDevDebugUnitTest
+> Task :core:rag:processDebugNavigationResources UP-TO-DATE
+> Task :core:rag:generateDebugResources UP-TO-DATE
+> Task :core:security:preBuild UP-TO-DATE
+> Task :core:security:preDebugBuild UP-TO-DATE
+> Task :core:security:generateDebugResources UP-TO-DATE
+> Task :core:rag:packageDebugResources UP-TO-DATE
+> Task :core:rag:parseDebugLocalResources UP-TO-DATE
+> Task :core:security:packageDebugResources UP-TO-DATE
+> Task :core:security:processDebugNavigationResources UP-TO-DATE
+> Task :core:rag:generateDebugRFile UP-TO-DATE
+> Task :core:security:javaPreCompileDebug UP-TO-DATE
+> Task :core:security:parseDebugLocalResources UP-TO-DATE
+> Task :core:rag:javaPreCompileDebug UP-TO-DATE
+> Task :core:vault:preDevDebugAndroidTestBuild UP-TO-DATE
+> Task :core:security:generateDebugRFile UP-TO-DATE
+> Task :core:vault:generateDevDebugAndroidTestResources UP-TO-DATE
+> Task :core:vault:packageDevDebugAndroidTestResources UP-TO-DATE
+> Task :core:vault:processDevDebugAndroidTestNavigationResources UP-TO-DATE
+> Task :core:vault:parseDevDebugAndroidTestLocalResources UP-TO-DATE
+> Task :core:vault:generateDevDebugAndroidTestRFile UP-TO-DATE
+> Task :core:vault:preFossDebugAndroidTestBuild UP-TO-DATE
+> Task :core:vault:generateFossDebugAndroidTestResources UP-TO-DATE
+> Task :core:vault:packageFossDebugAndroidTestResources UP-TO-DATE
+> Task :core:vault:processFossDebugAndroidTestNavigationResources UP-TO-DATE
+> Task :core:vault:parseFossDebugAndroidTestLocalResources UP-TO-DATE
+> Task :core:vault:generateFossDebugAndroidTestRFile UP-TO-DATE
+> Task :core:security:compileDebugKotlin UP-TO-DATE
+> Task :core:security:compileDebugJavaWithJavac NO-SOURCE
+> Task :core:security:bundleLibCompileToJarDebug UP-TO-DATE
+> Task :core:rag:compileDebugKotlin UP-TO-DATE
+> Task :core:rag:compileDebugJavaWithJavac NO-SOURCE
+> Task :core:rag:bundleLibCompileToJarDebug UP-TO-DATE
+> Task :core:vault:compileFossDebugAndroidTestKotlin UP-TO-DATE
+> Task :core:vault:compileDevDebugAndroidTestKotlin UP-TO-DATE
+
+[Incubating] Problems report is available at: file:///Users/andrewherrera/skein-worktrees/recovery-binding-resume-20260930/build/reports/problems/problems-report.html
+
+BUILD SUCCESSFUL in 15s
+107 actionable tasks: 14 executed, 93 up-to-date
+Configuration cache entry reused.

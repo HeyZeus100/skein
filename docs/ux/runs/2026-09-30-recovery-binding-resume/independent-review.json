@@ -1,0 +1,851 @@
+{
+  "schema_version": 1,
+  "reviewer": "/root/fold_transport",
+  "at": "2026-09-30T17:19:03.215822+00:00",
+  "status": "PASS_BOUNDED_PREPARATION_IMPLEMENTATION",
+  "base_source": "8f084343cf2b67395d2d707b33f6ee578d801c89",
+  "frozen_source_manifest": {
+    "path": "/Users/andrewherrera/skein-worktrees/recovery-binding-resume-20260930/build/agent-logs/recovery-binding-resume-20260930/attempt-09-source.json",
+    "sha256": "6e5f2bcc2a96d698193612c2c2867be903bc274d2a692126ae847b12998b0ad0"
+  },
+  "verified_current_source_files": {
+    "core/vault/src/main/kotlin/app/skein/core/vault/db/SkeinSQLiteConnection.kt": {
+      "bytes": 3061,
+      "sha256": "6ff997293c7411a865e2d2ffdd7188432e005ff99f42a570692e76c9b724da91"
+    },
+    "core/vault/src/main/kotlin/app/skein/core/vault/db/SkeinSQLiteStatement.kt": {
+      "bytes": 3693,
+      "sha256": "d106eb5bc08aff23a04e1ee84c0d6f5ff07c6717246bcd2ecd23a5215a657ea4"
+    },
+    "core/vault/src/main/kotlin/app/skein/core/vault/key/VaultKeyProviderImpl.kt": {
+      "bytes": 28026,
+      "sha256": "451dcec600a1804e81f6f871046e700c2f1938cc2877b64946c0e5c69156802b"
+    },
+    "core/vault/src/main/kotlin/app/skein/core/vault/key/VaultKeyProviders.kt": {
+      "bytes": 2180,
+      "sha256": "5e51134bb126eebac520b7246d8c6a14f2779d3f2ad757253a77a73253b3bee8"
+    },
+    "core/vault/src/main/kotlin/app/skein/core/vault/key/recovery/ClosedVaultRecoverySnapshot.kt": {
+      "bytes": 6462,
+      "sha256": "a3247edce4f4021ed9ac85fcd2ba52e53c6be61f3ae93858bf7a34db089cb135"
+    },
+    "core/vault/src/main/kotlin/app/skein/core/vault/key/recovery/RecoveryEnvelopeTransaction.kt": {
+      "bytes": 5924,
+      "sha256": "1d4077420e31ffc096cfc2064639417e70f7201ef542318198dc28f9b11076e3"
+    },
+    "core/vault/src/main/kotlin/app/skein/core/vault/key/recovery/RecoveryEnvelopeV2.kt": {
+      "bytes": 5884,
+      "sha256": "a328098f90e0f2e952d8233107f1ebda11fa432870c6573974bcd74dee379214"
+    },
+    "core/vault/src/main/kotlin/app/skein/core/vault/lifecycle/ConnectionPool.kt": {
+      "bytes": 8276,
+      "sha256": "9c1f2abaa7141de8571badc5f07927224f59fa33f297e156cf980d986325c5dd"
+    },
+    "core/vault/src/main/kotlin/app/skein/core/vault/lifecycle/VaultLifecycle.kt": {
+      "bytes": 32023,
+      "sha256": "506415a651cff56c08b451e43a2fe8a1585e2f983f56004372028abc15e1af63"
+    },
+    "core/vault/src/main/kotlin/app/skein/core/vault/lifecycle/VaultReset.kt": {
+      "bytes": 11974,
+      "sha256": "de318fdb8d13d7228cd8f7a5b8fae2052417ef65a387dfcf203ab9e2ee7262e4"
+    },
+    "core/vault/src/main/kotlin/app/skein/core/vault/key/RecoveryKeyAdmission.kt": {
+      "bytes": 2477,
+      "sha256": "53a6dfceee3f45eb9e8a0637dc545b93efc123162a2af36a2f85842c7a04f46c"
+    },
+    "core/vault/src/main/kotlin/app/skein/core/vault/key/recovery/AuthenticatedRecoveryPreparation.kt": {
+      "bytes": 10212,
+      "sha256": "a3acb541d4a5aacf37edc5f66b262b0dd65bad8b9148bd09040ec9ad7c508220"
+    },
+    "core/vault/src/main/kotlin/app/skein/core/vault/lifecycle/VaultRecoveryExclusion.kt": {
+      "bytes": 3456,
+      "sha256": "17c7901e474dd927f4a7472e4cd10e81986a1b391d13e09eee55e88432619e89"
+    },
+    "core/vault/src/test/kotlin/app/skein/core/vault/db/RecoveryClosureTest.kt": {
+      "bytes": 1791,
+      "sha256": "7b4fa618155963a577148114ea6d11c694a381acfa0fe60b77f364c1061511c9"
+    },
+    "core/vault/src/test/kotlin/app/skein/core/vault/key/RecoveryKeyAdmissionTest.kt": {
+      "bytes": 6750,
+      "sha256": "92630bbe470d2e692d253806c6c646394d4c216c1d2c6d6d630060e687ce8656"
+    },
+    "core/vault/src/test/kotlin/app/skein/core/vault/key/recovery/AuthenticatedRecoveryPreparationTest.kt": {
+      "bytes": 17670,
+      "sha256": "206f4712f425d67367bc4ae9e5131dc27fb6fa66a69219b2d953467109cc0239"
+    },
+    "core/vault/src/test/kotlin/app/skein/core/vault/lifecycle/VaultRecoveryExclusionTest.kt": {
+      "bytes": 7165,
+      "sha256": "bafd5adce1ee07ab40effb9c7f87edeb3d7198f3d53c5991f33f578907ce39e4"
+    }
+  },
+  "archive": {
+    "path": "/Users/andrewherrera/skein-worktrees/recovery-binding-resume-20260930/build/agent-logs/recovery-binding-resume-20260930/attempt-09-final-actual.zip",
+    "bytes": 179270,
+    "sha256": "1291d7f53d5b1fbddbdb7dcb0313de2add9d5407e0669b1b2d6192710d0cef52"
+  },
+  "actual_xml_counts": {
+    "tests": 1474,
+    "passed": 1472,
+    "failures": 0,
+    "errors": 0,
+    "skips": 2,
+    "xml": 136
+  },
+  "actual_xml_receipts": [
+    {
+      "path": "core/vault/build/test-results/testDevDebugUnitTest/TEST-app.skein.core.vault.blob.AttachmentOrphanSweepTest.xml",
+      "sha256": "a84deb81fc4dd861a4dc7a11f3a7e299c407822725bc3b995db9b3d539f19fde",
+      "bytes": 1036
+    },
+    {
+      "path": "core/vault/build/test-results/testDevDebugUnitTest/TEST-app.skein.core.vault.blob.FileAttachmentStoreTest.xml",
+      "sha256": "e5dfa2d0465f796a17e9844f144f8a6f8e9d5cce37ddcd4dc1334983b1528ec6",
+      "bytes": 3806
+    },
+    {
+      "path": "core/vault/build/test-results/testDevDebugUnitTest/TEST-app.skein.core.vault.codec.FrontmatterTest.xml",
+      "sha256": "624faf88af8c0bc304233855f81cc8d67748d19f3126ed11a9f4e19ce42d970b",
+      "bytes": 2161
+    },
+    {
+      "path": "core/vault/build/test-results/testDevDebugUnitTest/TEST-app.skein.core.vault.db.RecoveryClosureTest.xml",
+      "sha256": "3fdb0c2dc5725d8671bf315f1b5b23510bb42b21147021fd81128bb2e4f5fb68",
+      "bytes": 799
+    },
+    {
+      "path": "core/vault/build/test-results/testDevDebugUnitTest/TEST-app.skein.core.vault.db.SkeinSQLiteDriverTest.xml",
+      "sha256": "dda889c5f8893db20ff0fd4ee940b02b26c15a2bdd8d8cdb09b01d656cd412fe",
+      "bytes": 3232
+    },
+    {
+      "path": "core/vault/build/test-results/testDevDebugUnitTest/TEST-app.skein.core.vault.db.SkeinSQLiteTextBindingTest.xml",
+      "sha256": "bfc578b70644284937f6a4c23c1618e18c6cfb34d6ad50045151ec750f2fc121",
+      "bytes": 536
+    },
+    {
+      "path": "core/vault/build/test-results/testDevDebugUnitTest/TEST-app.skein.core.vault.db.migrations.MigrationColumnUniquenessTest.xml",
+      "sha256": "bb7c79c72b48c4f56756cac416f4b0ce095a5ffbc563886ab2644dd8d9299de7",
+      "bytes": 545
+    },
+    {
+      "path": "core/vault/build/test-results/testDevDebugUnitTest/TEST-app.skein.core.vault.db.migrations.MigrationStatementSplitterTest.xml",
+      "sha256": "46dbab24394661545b06a00062d8ed9d4c7d1510c53f0b1ea05ece610b9fc603",
+      "bytes": 2121
+    },
+    {
+      "path": "core/vault/build/test-results/testDevDebugUnitTest/TEST-app.skein.core.vault.db.migrations.MigratorTest.xml",
+      "sha256": "add1d048feb92f3811758f7c9108f94c5d6069ca94dd53062765d39ce861e1fb",
+      "bytes": 3220
+    },
+    {
+      "path": "core/vault/build/test-results/testDevDebugUnitTest/TEST-app.skein.core.vault.export.ExportServiceDocxTest.xml",
+      "sha256": "3f41cffb168fa3522998a879fd09ae319d1c4ecf9a443929a4cb2a383309b4b7",
+      "bytes": 990
+    },
+    {
+      "path": "core/vault/build/test-results/testDevDebugUnitTest/TEST-app.skein.core.vault.export.ExportServiceImplContractTest.xml",
+      "sha256": "fc3bf5685e2f771561f9fa9d49ebd08fe8d6c1a2bbd3b6479be8e5616ac91b45",
+      "bytes": 1288
+    },
+    {
+      "path": "core/vault/build/test-results/testDevDebugUnitTest/TEST-app.skein.core.vault.export.MarkdownExportTest.xml",
+      "sha256": "233eaef3ddf172ded0c76529b23732c38179681c6fa99523fa1b2417f8b7cd33",
+      "bytes": 1164
+    },
+    {
+      "path": "core/vault/build/test-results/testDevDebugUnitTest/TEST-app.skein.core.vault.export.SafeFileNameTest.xml",
+      "sha256": "8902231e4a82366fc9dab177650d628e0f580e2b3f49c9424bbfe448fd8a158c",
+      "bytes": 1821
+    },
+    {
+      "path": "core/vault/build/test-results/testDevDebugUnitTest/TEST-app.skein.core.vault.export.VaultZipTest.xml",
+      "sha256": "64c753d5b92381a38fdc39c3bc34a2b0b24bf9f3154f80cfbf4c12f30be8e457",
+      "bytes": 1577
+    },
+    {
+      "path": "core/vault/build/test-results/testDevDebugUnitTest/TEST-app.skein.core.vault.export.docx.DocxTemplateTest.xml",
+      "sha256": "0a06778d3351915caf97d643b5fa367abd0faf5538869c2c53f31a98f6d1c3ce",
+      "bytes": 1344
+    },
+    {
+      "path": "core/vault/build/test-results/testDevDebugUnitTest/TEST-app.skein.core.vault.export.docx.DocxWriterTest.xml",
+      "sha256": "d7317cc7920a21c58341bca994e2dc6bbe28a3ab5e48f5bce7f7881b1b1bad9a",
+      "bytes": 2686
+    },
+    {
+      "path": "core/vault/build/test-results/testDevDebugUnitTest/TEST-app.skein.core.vault.export.docx.XmlEscaperTest.xml",
+      "sha256": "32b6556f06e0153b9918710a00dc3c2694300fc6bf42b60c0a167db3a1a01c46",
+      "bytes": 1463
+    },
+    {
+      "path": "core/vault/build/test-results/testDevDebugUnitTest/TEST-app.skein.core.vault.export.stage.StagedPlaintextSweepTest.xml",
+      "sha256": "c36c91926475596ba4ac3c8734317a9293f48b02cb1169f5961df1eefa7dbf75",
+      "bytes": 3237
+    },
+    {
+      "path": "core/vault/build/test-results/testDevDebugUnitTest/TEST-app.skein.core.vault.extract.DanglingResolverTest.xml",
+      "sha256": "e0af77b15987117f0402e1ad39c025380dc70c7ed4da30a61cafc08254786421",
+      "bytes": 1512
+    },
+    {
+      "path": "core/vault/build/test-results/testDevDebugUnitTest/TEST-app.skein.core.vault.extract.EdgeUpserterTest.xml",
+      "sha256": "538dd4330a3a08498acb24868309bc62b3fe61dc193fd7496d923af7d1504a89",
+      "bytes": 2598
+    },
+    {
+      "path": "core/vault/build/test-results/testDevDebugUnitTest/TEST-app.skein.core.vault.extract.EntityIndexerTest.xml",
+      "sha256": "da2a5f97c9381e63f2efe1ef78c5ecfdb8baf84da9863c5bbe3b72b28074a683",
+      "bytes": 2937
+    },
+    {
+      "path": "core/vault/build/test-results/testDevDebugUnitTest/TEST-app.skein.core.vault.extract.TagExtractorTest.xml",
+      "sha256": "17a2efdb4814a264f18d84293da64a20dd7791fbc340609b92963f307adaa670",
+      "bytes": 2160
+    },
+    {
+      "path": "core/vault/build/test-results/testDevDebugUnitTest/TEST-app.skein.core.vault.extract.WikilinkExtractorTest.xml",
+      "sha256": "4de5fd712793aafd4fcb4ce72f9125db8a0911aedc2ed75175cf827121bed339",
+      "bytes": 1940
+    },
+    {
+      "path": "core/vault/build/test-results/testDevDebugUnitTest/TEST-app.skein.core.vault.id.Uuid7Test.xml",
+      "sha256": "4eff4e5763beecfd8f066c2b7e7c5124dba391e097b5cc4ef6f48a9b2c0950cb",
+      "bytes": 976
+    },
+    {
+      "path": "core/vault/build/test-results/testDevDebugUnitTest/TEST-app.skein.core.vault.index.FtsQuerySanitizerTest.xml",
+      "sha256": "3d8833fd360368cab83fba2bb9dd5f14dda85c6d4233a4d19f89010a3f228840",
+      "bytes": 1013
+    },
+    {
+      "path": "core/vault/build/test-results/testDevDebugUnitTest/TEST-app.skein.core.vault.index.IndexSqlTest.xml",
+      "sha256": "50974e7f53a71cee6ce72dfb3c26cddf112e41946152ff042ab6f2ba4a75d677",
+      "bytes": 2080
+    },
+    {
+      "path": "core/vault/build/test-results/testDevDebugUnitTest/TEST-app.skein.core.vault.index.IndexStoreImplChunkIdTest.xml",
+      "sha256": "ffed621f91bacdafcd4fc58b0d5f25b3a723088db19ea2590c20a7cb24af94a3",
+      "bytes": 523
+    },
+    {
+      "path": "core/vault/build/test-results/testDevDebugUnitTest/TEST-app.skein.core.vault.key.AndroidBiometricAuthenticatorTest.xml",
+      "sha256": "a7896ef5470b4f764bd7a3cd9d861e140a77a54ecc44a080a8da8ac57ddde327",
+      "bytes": 1113
+    },
+    {
+      "path": "core/vault/build/test-results/testDevDebugUnitTest/TEST-app.skein.core.vault.key.AndroidKeystoreFacadeTest.xml",
+      "sha256": "34b6cb3bab5dcf1d0fd0241adff2ce40b14401896270a45d9612966e5b92c8db",
+      "bytes": 660
+    },
+    {
+      "path": "core/vault/build/test-results/testDevDebugUnitTest/TEST-app.skein.core.vault.key.CredentialSurvivorUnlockTest.xml",
+      "sha256": "a58872d88de66ae9351ae8cf06ea3ae305c3b7648a8b822ce04e9b05925a439e",
+      "bytes": 551
+    },
+    {
+      "path": "core/vault/build/test-results/testDevDebugUnitTest/TEST-app.skein.core.vault.key.FileMasterKeyStorageTest.xml",
+      "sha256": "ad5c06a994f28da57bc62ef5146082b61634b44ece9772dde7ee1eca3bfd120b",
+      "bytes": 4431
+    },
+    {
+      "path": "core/vault/build/test-results/testDevDebugUnitTest/TEST-app.skein.core.vault.key.PassphraseKeyExportTest.xml",
+      "sha256": "bc1b2fa43361a9b2d86d0d08d6c003fa0ea8dc5c4e6414c23c4eb90a7db21783",
+      "bytes": 13149
+    },
+    {
+      "path": "core/vault/build/test-results/testDevDebugUnitTest/TEST-app.skein.core.vault.key.PassphraseStrengthTest.xml",
+      "sha256": "47aa28eea835915ee0b1706ee1aa32a6f3d89308585d9b5456278f0ff347b98b",
+      "bytes": 1741
+    },
+    {
+      "path": "core/vault/build/test-results/testDevDebugUnitTest/TEST-app.skein.core.vault.key.Pbkdf2VectorTest.xml",
+      "sha256": "ecf35d0e1daafd5a3bbf3ad8cca40dfe015dd3b61a7514f8efc3050bc81517ae",
+      "bytes": 1091
+    },
+    {
+      "path": "core/vault/build/test-results/testDevDebugUnitTest/TEST-app.skein.core.vault.key.PromptInfoForFactorTest.xml",
+      "sha256": "2b223d7162c65b6de7bc1dd45999fd92aa9f1e6e5d2b33f9d6982af4509c97d7",
+      "bytes": 2512
+    },
+    {
+      "path": "core/vault/build/test-results/testDevDebugUnitTest/TEST-app.skein.core.vault.key.RecoveryKeyAdmissionTest.xml",
+      "sha256": "920fad11bff0cb3fa29340cdf0469160716aa2687efed4f61398dfa524e3637f",
+      "bytes": 1348
+    },
+    {
+      "path": "core/vault/build/test-results/testDevDebugUnitTest/TEST-app.skein.core.vault.key.VaultKeyProviderImplTest.xml",
+      "sha256": "f190d461e71c4300045a03ba54ba899870bf0fa6c5356c399ce5c57dcd9c7503",
+      "bytes": 6863
+    },
+    {
+      "path": "core/vault/build/test-results/testDevDebugUnitTest/TEST-app.skein.core.vault.key.VaultKeyProviderImportTest.xml",
+      "sha256": "117f7b6dd8f7ac3cd79409ee0714a3bc8b170fa5f54172c19bb5b17506bb4d03",
+      "bytes": 1895
+    },
+    {
+      "path": "core/vault/build/test-results/testDevDebugUnitTest/TEST-app.skein.core.vault.key.recovery.AuthenticatedRecoveryPreparationTest.xml",
+      "sha256": "7be7d1ea09195fd6551ba457a0f3427498b771cdea4f13b6405f8381049fd5b7",
+      "bytes": 3243
+    },
+    {
+      "path": "core/vault/build/test-results/testDevDebugUnitTest/TEST-app.skein.core.vault.key.recovery.ClosedVaultRecoverySnapshotTest.xml",
+      "sha256": "000e24968f5ce0f19a830618c3fb57b7bce85a2e1ff8e74c8bb7c8e61e3bac02",
+      "bytes": 1817
+    },
+    {
+      "path": "core/vault/build/test-results/testDevDebugUnitTest/TEST-app.skein.core.vault.key.recovery.ExistingVaultKeyProofTest.xml",
+      "sha256": "050e47acd30930c4d741fdfdb729864803b738b9574a1eefc35475bea80b38fb",
+      "bytes": 1804
+    },
+    {
+      "path": "core/vault/build/test-results/testDevDebugUnitTest/TEST-app.skein.core.vault.key.recovery.RecoveryEnvelopeTransactionTest.xml",
+      "sha256": "5d8e8031be91a899d4069ad1fdfc08aa52ff09680bab44bef019aebfc39dc96d",
+      "bytes": 1627
+    },
+    {
+      "path": "core/vault/build/test-results/testDevDebugUnitTest/TEST-app.skein.core.vault.key.recovery.RecoveryEnvelopeV2Test.xml",
+      "sha256": "bd24c8d6e26d5529fae600845bccb6174e4b9838c83b04c75893ea1bfb87e891",
+      "bytes": 1180
+    },
+    {
+      "path": "core/vault/build/test-results/testDevDebugUnitTest/TEST-app.skein.core.vault.lifecycle.ConnectionPoolTest.xml",
+      "sha256": "4fe49a824514f48243d90ca6097d53e21fe9ec812089c728ff3a5a00a51b0b85",
+      "bytes": 1881
+    },
+    {
+      "path": "core/vault/build/test-results/testDevDebugUnitTest/TEST-app.skein.core.vault.lifecycle.VaultLifecycleTest.xml",
+      "sha256": "677a6fd58fd6f09c98e173a79f41abffcc93f82e53d94e7c8e61116f68bff1d6",
+      "bytes": 3025
+    },
+    {
+      "path": "core/vault/build/test-results/testDevDebugUnitTest/TEST-app.skein.core.vault.lifecycle.VaultRecoveryExclusionTest.xml",
+      "sha256": "874be61127e3a526b3d4f0927db7734450b33b7dee0702dca7e8fbf9d8fc2a87",
+      "bytes": 1593
+    },
+    {
+      "path": "core/vault/build/test-results/testDevDebugUnitTest/TEST-app.skein.core.vault.lifecycle.VaultResetTest.xml",
+      "sha256": "8370fe413e61dad4f21553351542d263924207eca03435875e0f6fb504d1a70f",
+      "bytes": 2715
+    },
+    {
+      "path": "core/vault/build/test-results/testDevDebugUnitTest/TEST-app.skein.core.vault.models.ModelRegistryImplDefaultTest.xml",
+      "sha256": "20236bd1b878a22dcbc118cb0eca446af050c76db9efe40f8aa2d876c5796551",
+      "bytes": 1039
+    },
+    {
+      "path": "core/vault/build/test-results/testDevDebugUnitTest/TEST-app.skein.core.vault.provider.ProviderCursorsTest.xml",
+      "sha256": "d33bbf84d9ef06dbf60874c53b8549990f51c5935df13d86ae2be3da4d59f9f4",
+      "bytes": 4091
+    },
+    {
+      "path": "core/vault/build/test-results/testDevDebugUnitTest/TEST-app.skein.core.vault.provider.ProviderIdsTest.xml",
+      "sha256": "68dc0dd190756badf9f8012e22eeeb7e12eb41c6b8dd567ab3bef9f3c742695a",
+      "bytes": 2489
+    },
+    {
+      "path": "core/vault/build/test-results/testDevDebugUnitTest/TEST-app.skein.core.vault.provider.VaultDocumentsBackendTest.xml",
+      "sha256": "c709253827685624a7415235d833b6ef44ad80a93decab0b7e7ff8250c06c0aa",
+      "bytes": 8638
+    },
+    {
+      "path": "core/vault/build/test-results/testDevDebugUnitTest/TEST-app.skein.core.vault.repository.KindLookupTest.xml",
+      "sha256": "0a05408003c9209b047cd078c0a820623e1cb79aaf51099d22e8691945afa721",
+      "bytes": 824
+    },
+    {
+      "path": "core/vault/build/test-results/testDevDebugUnitTest/TEST-app.skein.core.vault.repository.VaultSqlTest.xml",
+      "sha256": "d179968812b13a7929caa9d325d807b52e66ace9fc8e788eb3120a37b0fa2702",
+      "bytes": 1490
+    },
+    {
+      "path": "core/vault/build/test-results/testDevDebugUnitTest/TEST-app.skein.core.vault.repository.WriterQuiesceTest.xml",
+      "sha256": "080632ca01e5d9a0c6e0b24a225de4b6536ba0f125168524cc6b777ed4cac278",
+      "bytes": 1150
+    },
+    {
+      "path": "core/vault/build/test-results/testDevDebugUnitTest/TEST-app.skein.core.vault.security.AtRestEncryptionTest.xml",
+      "sha256": "083be375ebdbcfd559e603b97ff301a9fc1189323df20c7de65927435d735a32",
+      "bytes": 900
+    },
+    {
+      "path": "core/vault/build/test-results/testDevDebugUnitTest/TEST-app.skein.core.vault.security.NoPlaintextLeakInMessagesTest.xml",
+      "sha256": "0979525501ac0f8fa1680509af2f27a6139844a98252d46e998e82a05659ad5a",
+      "bytes": 1426
+    },
+    {
+      "path": "core/vault/build/test-results/testDevDebugUnitTest/TEST-app.skein.core.vault.session.UnlockManagerAuthenticationCancellationTest.xml",
+      "sha256": "161f0a700e6e0f0391db170f4ddb91ac0017bc2ea9965c7e608e62cb3ba3f777",
+      "bytes": 1159
+    },
+    {
+      "path": "core/vault/build/test-results/testDevDebugUnitTest/TEST-app.skein.core.vault.session.UnlockManagerSurvivingFactorTest.xml",
+      "sha256": "9339082a771cef89c5af45626998117a8ab719564fe57c3a2fc0ef68d2cc05f9",
+      "bytes": 1499
+    },
+    {
+      "path": "core/vault/build/test-results/testDevDebugUnitTest/TEST-app.skein.core.vault.session.UnlockManagerTest.xml",
+      "sha256": "d775b52ce39bb2c848361802da4ddc514ab4b1516bcb2285c88be50381ff0dc5",
+      "bytes": 6692
+    },
+    {
+      "path": "core/vault/build/test-results/testDevDebugUnitTest/TEST-app.skein.core.vault.transfer.ImportPdfMemorySmokeTest.xml",
+      "sha256": "434c97550d1138a3c50952c913e90fc6c945fc9af0925a94365a18cc5485e176",
+      "bytes": 9837
+    },
+    {
+      "path": "core/vault/build/test-results/testDevDebugUnitTest/TEST-app.skein.core.vault.transfer.ImportPdfTest.xml",
+      "sha256": "29b087b5a6ae404fab7d808f89098a3b0729c3a6896ebd7b55f72b5b2f145dab",
+      "bytes": 2044
+    },
+    {
+      "path": "core/vault/build/test-results/testDevDebugUnitTest/TEST-app.skein.core.vault.transfer.ImportServiceImplContractTest.xml",
+      "sha256": "00f8844284d88be847c7d742b075d8b32c8e57444560a67fc4a2ed16b37f2db9",
+      "bytes": 6165
+    },
+    {
+      "path": "core/vault/build/test-results/testDevDebugUnitTest/TEST-app.skein.core.vault.transfer.ImportTextMemorySmokeTest.xml",
+      "sha256": "8c045b5211143956de8c3d961f22deba191f5cc922d00cb6961905f15a397ff9",
+      "bytes": 522
+    },
+    {
+      "path": "core/vault/build/test-results/testDevDebugUnitTest/TEST-app.skein.core.vault.transfer.ImportTextTest.xml",
+      "sha256": "3215d11f47993d397037d356012cab88647f6e3a2f81476bb228d3487a4d063d",
+      "bytes": 3302
+    },
+    {
+      "path": "core/vault/build/test-results/testDevDebugUnitTest/TEST-app.skein.core.vault.transfer.MarkdownImportLinkerTest.xml",
+      "sha256": "9b22179c56c1af48efe57e8c8e405bbe0c3d86f66099b60c33280558c0d9dc2b",
+      "bytes": 2491
+    },
+    {
+      "path": "core/vault/build/test-results/testDevDebugUnitTest/TEST-app.skein.core.vault.transfer.MimeSnifferTest.xml",
+      "sha256": "1df6aa69dc7a8f9d29a9b71f8d7b5c7e47edeb32e17d05ec2b61bd3cc660c1ed",
+      "bytes": 1062
+    },
+    {
+      "path": "core/vault/build/test-results/testDevDebugUnitTest/TEST-app.skein.core.vault.transfer.PdfResourceLoaderTest.xml",
+      "sha256": "2af663d12f9c2675b19dd929ac25d28fb48c8c31203a251a0a5075c978299aec",
+      "bytes": 515
+    },
+    {
+      "path": "core/vault/build/test-results/testDevDebugUnitTest/TEST-app.skein.core.vault.transfer.VaultZipImportTest.xml",
+      "sha256": "97b89fbbd46a37a66fe351f389b7ab20f2b7635b7514acdc14d229360dbd39d3",
+      "bytes": 2240
+    },
+    {
+      "path": "core/vault/build/test-results/testFossDebugUnitTest/TEST-app.skein.core.vault.blob.AttachmentOrphanSweepTest.xml",
+      "sha256": "2ec9901278fc862eb914598f7c7c504eb6b80eb2750f0dd617862e6941a30346",
+      "bytes": 1036
+    },
+    {
+      "path": "core/vault/build/test-results/testFossDebugUnitTest/TEST-app.skein.core.vault.blob.FileAttachmentStoreTest.xml",
+      "sha256": "2318531e26adaff9ce7a8cff8131ac3fc468a4b26f48d75ae876d127932f65dd",
+      "bytes": 3805
+    },
+    {
+      "path": "core/vault/build/test-results/testFossDebugUnitTest/TEST-app.skein.core.vault.codec.FrontmatterTest.xml",
+      "sha256": "137ec46c36eab5ca89eb680df655c7d0a09b462348add0e78e7a10b90178ae80",
+      "bytes": 2163
+    },
+    {
+      "path": "core/vault/build/test-results/testFossDebugUnitTest/TEST-app.skein.core.vault.db.RecoveryClosureTest.xml",
+      "sha256": "f184e5f54018fe96dfd090475e750c8cb452d677bb3ae1ade54df3a0c275e102",
+      "bytes": 799
+    },
+    {
+      "path": "core/vault/build/test-results/testFossDebugUnitTest/TEST-app.skein.core.vault.db.SkeinSQLiteDriverTest.xml",
+      "sha256": "312ab6e3fd12c2bafc61651bd9947d8593c2a8d06b8fd1839d1e532dcb5ea1c6",
+      "bytes": 3234
+    },
+    {
+      "path": "core/vault/build/test-results/testFossDebugUnitTest/TEST-app.skein.core.vault.db.SkeinSQLiteTextBindingTest.xml",
+      "sha256": "f31b53dba9a2c9bb43bbc35588c7ca0c860b44d3a0928943c1755d93354b1bba",
+      "bytes": 532
+    },
+    {
+      "path": "core/vault/build/test-results/testFossDebugUnitTest/TEST-app.skein.core.vault.db.migrations.MigrationColumnUniquenessTest.xml",
+      "sha256": "097f80d2437c22893c735b786c35779a329c288fbf38867c1068bbd3e564d3f5",
+      "bytes": 545
+    },
+    {
+      "path": "core/vault/build/test-results/testFossDebugUnitTest/TEST-app.skein.core.vault.db.migrations.MigrationStatementSplitterTest.xml",
+      "sha256": "f638017a6c3af627c58d955d0dfafc5a4af66348512ac75e2f7f7483f1c2500f",
+      "bytes": 2119
+    },
+    {
+      "path": "core/vault/build/test-results/testFossDebugUnitTest/TEST-app.skein.core.vault.db.migrations.MigratorTest.xml",
+      "sha256": "58a76abad2636bcd6eac5cd9a7924933aa5f68b325a61000258674cc62397270",
+      "bytes": 3220
+    },
+    {
+      "path": "core/vault/build/test-results/testFossDebugUnitTest/TEST-app.skein.core.vault.export.ExportServiceDocxTest.xml",
+      "sha256": "4320fc490ece22d1406282e428337833d75dad65a0e15ef98a4e37c2ce1b8328",
+      "bytes": 991
+    },
+    {
+      "path": "core/vault/build/test-results/testFossDebugUnitTest/TEST-app.skein.core.vault.export.ExportServiceImplContractTest.xml",
+      "sha256": "0b3f6a8d299450fa115092ac89cae97e391348eec24aab7fe29605eb8edb0981",
+      "bytes": 1290
+    },
+    {
+      "path": "core/vault/build/test-results/testFossDebugUnitTest/TEST-app.skein.core.vault.export.MarkdownExportTest.xml",
+      "sha256": "52bc9bd8c50f13c2c8e2958e4adf88f35037b07cce26b1a50686421f3b2e6d54",
+      "bytes": 1162
+    },
+    {
+      "path": "core/vault/build/test-results/testFossDebugUnitTest/TEST-app.skein.core.vault.export.SafeFileNameTest.xml",
+      "sha256": "db7f544133919fa45ba27e2247e8d89092bca0641d143199f43dd58ca49c354c",
+      "bytes": 1821
+    },
+    {
+      "path": "core/vault/build/test-results/testFossDebugUnitTest/TEST-app.skein.core.vault.export.VaultZipTest.xml",
+      "sha256": "564e3c858ebd41b9d378c9e369798ddb61ad39f916cf56cf50c1e25f4f9254f2",
+      "bytes": 1579
+    },
+    {
+      "path": "core/vault/build/test-results/testFossDebugUnitTest/TEST-app.skein.core.vault.export.docx.DocxTemplateTest.xml",
+      "sha256": "419feb76dab13ca544653f21ff1a657fec8572848f6b04dffede50ec0e36bfab",
+      "bytes": 1343
+    },
+    {
+      "path": "core/vault/build/test-results/testFossDebugUnitTest/TEST-app.skein.core.vault.export.docx.DocxWriterTest.xml",
+      "sha256": "2b2086e799283d56ad0bf01fae081049496c23ee987d33e68b77230baa871252",
+      "bytes": 2688
+    },
+    {
+      "path": "core/vault/build/test-results/testFossDebugUnitTest/TEST-app.skein.core.vault.export.docx.XmlEscaperTest.xml",
+      "sha256": "b908faacf670112af06c689beaaabbaff9ceccc4721aeef048b0375f3469d57d",
+      "bytes": 1461
+    },
+    {
+      "path": "core/vault/build/test-results/testFossDebugUnitTest/TEST-app.skein.core.vault.export.stage.StagedPlaintextSweepTest.xml",
+      "sha256": "3e89245cdd3ff08d0b99b59c22ed0298e564aceb7b0dc7fca4ed036323e22514",
+      "bytes": 3239
+    },
+    {
+      "path": "core/vault/build/test-results/testFossDebugUnitTest/TEST-app.skein.core.vault.extract.DanglingResolverTest.xml",
+      "sha256": "ad2f49b5d6ed415c04a48217cd98abb10ba31626e0daae6a2f887e50d5abb90a",
+      "bytes": 1513
+    },
+    {
+      "path": "core/vault/build/test-results/testFossDebugUnitTest/TEST-app.skein.core.vault.extract.EdgeUpserterTest.xml",
+      "sha256": "d8a01ec7ba3f05dacf6b8eb6e36e41469f002701e047314c18e6bbd72ca1d25c",
+      "bytes": 2594
+    },
+    {
+      "path": "core/vault/build/test-results/testFossDebugUnitTest/TEST-app.skein.core.vault.extract.EntityIndexerTest.xml",
+      "sha256": "36085dff44e154a4307df77b723e2dabba2da4d7b5a40278224dfa0b9911c5cf",
+      "bytes": 2931
+    },
+    {
+      "path": "core/vault/build/test-results/testFossDebugUnitTest/TEST-app.skein.core.vault.extract.TagExtractorTest.xml",
+      "sha256": "558cb05a29f263ddd715e1471607cbec3a4535a726be4836e2ecd7f9d35084b7",
+      "bytes": 2160
+    },
+    {
+      "path": "core/vault/build/test-results/testFossDebugUnitTest/TEST-app.skein.core.vault.extract.WikilinkExtractorTest.xml",
+      "sha256": "265669d122ec2fb1c442e6c05ec5182447a7461e32611289ef2f8ecc26552c06",
+      "bytes": 1942
+    },
+    {
+      "path": "core/vault/build/test-results/testFossDebugUnitTest/TEST-app.skein.core.vault.id.Uuid7Test.xml",
+      "sha256": "e577c69eeea04e0e0f5cd2023f755cfc1c57aeacc385c0c6f24015097cdfab31",
+      "bytes": 976
+    },
+    {
+      "path": "core/vault/build/test-results/testFossDebugUnitTest/TEST-app.skein.core.vault.index.FtsQuerySanitizerTest.xml",
+      "sha256": "7e1018c792bf2425b1b6550a60570c71a3953371f6dba4aa49962f9a07924430",
+      "bytes": 1013
+    },
+    {
+      "path": "core/vault/build/test-results/testFossDebugUnitTest/TEST-app.skein.core.vault.index.IndexSqlTest.xml",
+      "sha256": "92cf7f7f1c2a7916bc0bcc7a85405328585c27193990f782ebe0e99b69d5d6cf",
+      "bytes": 2082
+    },
+    {
+      "path": "core/vault/build/test-results/testFossDebugUnitTest/TEST-app.skein.core.vault.index.IndexStoreImplChunkIdTest.xml",
+      "sha256": "9c16c2148c16acd4b8984c22cf0dcb855a3aa612a173677f947e8cf3b9d4abee",
+      "bytes": 523
+    },
+    {
+      "path": "core/vault/build/test-results/testFossDebugUnitTest/TEST-app.skein.core.vault.key.AndroidBiometricAuthenticatorTest.xml",
+      "sha256": "c5180b10898f91ecef13098add10eca5c22a67ed394c9d726e00d21ffe600663",
+      "bytes": 1112
+    },
+    {
+      "path": "core/vault/build/test-results/testFossDebugUnitTest/TEST-app.skein.core.vault.key.AndroidKeystoreFacadeTest.xml",
+      "sha256": "de562560baed2e9634a7f4f526e0e17ea4dff02c8f62fd4df3b00567a5f29bbd",
+      "bytes": 660
+    },
+    {
+      "path": "core/vault/build/test-results/testFossDebugUnitTest/TEST-app.skein.core.vault.key.CredentialSurvivorUnlockTest.xml",
+      "sha256": "1432a5f561e0eff8f971a675bcefd8f2a6d5402a0febbc8434700b36f4813efa",
+      "bytes": 551
+    },
+    {
+      "path": "core/vault/build/test-results/testFossDebugUnitTest/TEST-app.skein.core.vault.key.FileMasterKeyStorageTest.xml",
+      "sha256": "c05e0cdd8c24b6097ecb50c2b8fdbdfd25b035c85e899c83971708b507302307",
+      "bytes": 4433
+    },
+    {
+      "path": "core/vault/build/test-results/testFossDebugUnitTest/TEST-app.skein.core.vault.key.PassphraseKeyExportTest.xml",
+      "sha256": "f0d5860d12c617dd1ab4997acba8b9e0fb48653109005802408675419e90f3ae",
+      "bytes": 49866
+    },
+    {
+      "path": "core/vault/build/test-results/testFossDebugUnitTest/TEST-app.skein.core.vault.key.PassphraseStrengthTest.xml",
+      "sha256": "16a76fad4bc845a16d0f19e2f87f690ffc458e9ed24a8a401d1e3267d0bb559c",
+      "bytes": 1741
+    },
+    {
+      "path": "core/vault/build/test-results/testFossDebugUnitTest/TEST-app.skein.core.vault.key.Pbkdf2VectorTest.xml",
+      "sha256": "4625487351acf19b47bbb1533af9310ea9a810d7e1acd38507f4323353e8ea9c",
+      "bytes": 1091
+    },
+    {
+      "path": "core/vault/build/test-results/testFossDebugUnitTest/TEST-app.skein.core.vault.key.PromptInfoForFactorTest.xml",
+      "sha256": "895b3bf737b27f49d547269c4e9efd017d5eefee4deb16490e91175673f4e900",
+      "bytes": 2512
+    },
+    {
+      "path": "core/vault/build/test-results/testFossDebugUnitTest/TEST-app.skein.core.vault.key.RecoveryKeyAdmissionTest.xml",
+      "sha256": "702b538c65d9270c13a94b96ea41748f3ef0537be4e634b9c6bc05607ea12034",
+      "bytes": 1349
+    },
+    {
+      "path": "core/vault/build/test-results/testFossDebugUnitTest/TEST-app.skein.core.vault.key.VaultKeyProviderImplTest.xml",
+      "sha256": "7fd72bf1605eb07bd35f09398f0feb4ca742619214989b77064060ea5c06f5aa",
+      "bytes": 6861
+    },
+    {
+      "path": "core/vault/build/test-results/testFossDebugUnitTest/TEST-app.skein.core.vault.key.VaultKeyProviderImportTest.xml",
+      "sha256": "3547c4caf36db81c9f2e1d958b3b66f02c4707201a9651b20c5cd905f91abeeb",
+      "bytes": 1897
+    },
+    {
+      "path": "core/vault/build/test-results/testFossDebugUnitTest/TEST-app.skein.core.vault.key.recovery.AuthenticatedRecoveryPreparationTest.xml",
+      "sha256": "7abfe12f76f89998641355acaf3171650e6e40b2fe4cc3baf1b957c7a347845d",
+      "bytes": 3243
+    },
+    {
+      "path": "core/vault/build/test-results/testFossDebugUnitTest/TEST-app.skein.core.vault.key.recovery.ClosedVaultRecoverySnapshotTest.xml",
+      "sha256": "9120012fe1db3a4eb432ac060d6871f7cce36a1868d9a54af8fc1b142044693f",
+      "bytes": 1818
+    },
+    {
+      "path": "core/vault/build/test-results/testFossDebugUnitTest/TEST-app.skein.core.vault.key.recovery.ExistingVaultKeyProofTest.xml",
+      "sha256": "779963be5b8c5d7152b3509950e11bccbe8e6975556be5a8912cca72d241f2e7",
+      "bytes": 1805
+    },
+    {
+      "path": "core/vault/build/test-results/testFossDebugUnitTest/TEST-app.skein.core.vault.key.recovery.RecoveryEnvelopeTransactionTest.xml",
+      "sha256": "22664037f17442ddbe9a9d08a1758209bfa6ae61681fcab4659cdca4bfafc685",
+      "bytes": 1626
+    },
+    {
+      "path": "core/vault/build/test-results/testFossDebugUnitTest/TEST-app.skein.core.vault.key.recovery.RecoveryEnvelopeV2Test.xml",
+      "sha256": "abc32274f59ad615d6701e88a51da16dccc5441e694c146bb7ed65ff7ca1b3cc",
+      "bytes": 1180
+    },
+    {
+      "path": "core/vault/build/test-results/testFossDebugUnitTest/TEST-app.skein.core.vault.lifecycle.ConnectionPoolTest.xml",
+      "sha256": "4b8e33f2ab16e7b4bd946bc359014707c0781775a3029157463177cadf91ad5c",
+      "bytes": 1879
+    },
+    {
+      "path": "core/vault/build/test-results/testFossDebugUnitTest/TEST-app.skein.core.vault.lifecycle.VaultLifecycleTest.xml",
+      "sha256": "4f7a90d936eb8448210082357c36c06186758f3e2daacd688ea7e949a8d6dbb3",
+      "bytes": 3025
+    },
+    {
+      "path": "core/vault/build/test-results/testFossDebugUnitTest/TEST-app.skein.core.vault.lifecycle.VaultRecoveryExclusionTest.xml",
+      "sha256": "9c15101fcf50691bc0fed20be6b9eefe759ca53c00afe59e646e0c359c1f1988",
+      "bytes": 1593
+    },
+    {
+      "path": "core/vault/build/test-results/testFossDebugUnitTest/TEST-app.skein.core.vault.lifecycle.VaultResetTest.xml",
+      "sha256": "b5ab1924afd57af42310c5b6caf99e73afada1cd8e3309942448519d070220f2",
+      "bytes": 2719
+    },
+    {
+      "path": "core/vault/build/test-results/testFossDebugUnitTest/TEST-app.skein.core.vault.models.ModelRegistryImplDefaultTest.xml",
+      "sha256": "807443f600c6699cf7efadc4544f4be2784a2b455c2bd008f7d062bbe358c9de",
+      "bytes": 1039
+    },
+    {
+      "path": "core/vault/build/test-results/testFossDebugUnitTest/TEST-app.skein.core.vault.provider.ProviderCursorsTest.xml",
+      "sha256": "b3625d11af923728f01c2656f05ba93c998253920c361e12db5b945894e879b9",
+      "bytes": 4091
+    },
+    {
+      "path": "core/vault/build/test-results/testFossDebugUnitTest/TEST-app.skein.core.vault.provider.ProviderIdsTest.xml",
+      "sha256": "6969bf262b858c20e3f382feb9cf2108cd1548ec5699055af808f5f1868a5ef3",
+      "bytes": 2491
+    },
+    {
+      "path": "core/vault/build/test-results/testFossDebugUnitTest/TEST-app.skein.core.vault.provider.VaultDocumentsBackendTest.xml",
+      "sha256": "d4fd415200f4ea005e7cd4e52d9e73cc4668241b65ec2a24837ff44372d83eca",
+      "bytes": 8639
+    },
+    {
+      "path": "core/vault/build/test-results/testFossDebugUnitTest/TEST-app.skein.core.vault.repository.KindLookupTest.xml",
+      "sha256": "ceb1a275c011d6667dc1ed335a55a4ce352d4130bf9ffc33f04fecfc107f55f7",
+      "bytes": 824
+    },
+    {
+      "path": "core/vault/build/test-results/testFossDebugUnitTest/TEST-app.skein.core.vault.repository.VaultSqlTest.xml",
+      "sha256": "415230b7e885651aea9cdae94a5effa57630349366de011371ad02bf9c9aaa35",
+      "bytes": 1494
+    },
+    {
+      "path": "core/vault/build/test-results/testFossDebugUnitTest/TEST-app.skein.core.vault.repository.WriterQuiesceTest.xml",
+      "sha256": "ebf3164d42413ced78750a3b675d0e778a223f4eeb5099bc26ec48ff2c9048b8",
+      "bytes": 1150
+    },
+    {
+      "path": "core/vault/build/test-results/testFossDebugUnitTest/TEST-app.skein.core.vault.security.AtRestEncryptionTest.xml",
+      "sha256": "603781faa7c6f3527fba78bd3bd484f073286a4d5650b02713a98b3e9cbe5e50",
+      "bytes": 900
+    },
+    {
+      "path": "core/vault/build/test-results/testFossDebugUnitTest/TEST-app.skein.core.vault.security.NoPlaintextLeakInMessagesTest.xml",
+      "sha256": "8689bd59bbf5a63aa6d7a4ce09255bb68c095644784e494972fb338ff546b89c",
+      "bytes": 1426
+    },
+    {
+      "path": "core/vault/build/test-results/testFossDebugUnitTest/TEST-app.skein.core.vault.session.UnlockManagerAuthenticationCancellationTest.xml",
+      "sha256": "144348fe0cc8de8785b694abc64bf934a2af33a4516eaa8ac0fb8a54cc5506b2",
+      "bytes": 1157
+    },
+    {
+      "path": "core/vault/build/test-results/testFossDebugUnitTest/TEST-app.skein.core.vault.session.UnlockManagerSurvivingFactorTest.xml",
+      "sha256": "bcb215f9ca2a6e80f82d332a7af9ad72d7224b3fd64b180c385dfe10fda7b73d",
+      "bytes": 1497
+    },
+    {
+      "path": "core/vault/build/test-results/testFossDebugUnitTest/TEST-app.skein.core.vault.session.UnlockManagerTest.xml",
+      "sha256": "98944c74c63cb08ec8aa27513fbc1a19886b8cd1a50c7df193782b4255bf8fc7",
+      "bytes": 6698
+    },
+    {
+      "path": "core/vault/build/test-results/testFossDebugUnitTest/TEST-app.skein.core.vault.transfer.ImportPdfMemorySmokeTest.xml",
+      "sha256": "cdb667d7df534604d02b434abee1ee76d6040605f40a6ccbaa6685aaecb47dae",
+      "bytes": 9837
+    },
+    {
+      "path": "core/vault/build/test-results/testFossDebugUnitTest/TEST-app.skein.core.vault.transfer.ImportPdfTest.xml",
+      "sha256": "5801ecbe6ae436e555bcc93d37bd8bed79851e0942dbddef1ef1cea780bc79f3",
+      "bytes": 2044
+    },
+    {
+      "path": "core/vault/build/test-results/testFossDebugUnitTest/TEST-app.skein.core.vault.transfer.ImportServiceImplContractTest.xml",
+      "sha256": "9e1b3082a36d3ec8f9a5c693812a8bd07f80d801cea089d7f6539ff524d272bc",
+      "bytes": 6163
+    },
+    {
+      "path": "core/vault/build/test-results/testFossDebugUnitTest/TEST-app.skein.core.vault.transfer.ImportTextMemorySmokeTest.xml",
+      "sha256": "647952b7ea9e2dd541279c536a4fa4e3a03128106f30c7ef2f68dc5a380af852",
+      "bytes": 522
+    },
+    {
+      "path": "core/vault/build/test-results/testFossDebugUnitTest/TEST-app.skein.core.vault.transfer.ImportTextTest.xml",
+      "sha256": "92bcba278c75c030e5dcca46f47276a98741076709cac9a8a22e49baa8eecbe5",
+      "bytes": 3303
+    },
+    {
+      "path": "core/vault/build/test-results/testFossDebugUnitTest/TEST-app.skein.core.vault.transfer.MarkdownImportLinkerTest.xml",
+      "sha256": "13af0cbb3b1db3db26d86ed2f0d94ca57303f6d545e1711125147fad88a855f6",
+      "bytes": 2493
+    },
+    {
+      "path": "core/vault/build/test-results/testFossDebugUnitTest/TEST-app.skein.core.vault.transfer.MimeSnifferTest.xml",
+      "sha256": "43a02faf1429895061a35cfde87360d8847d06ef435f9862053ae76d2db5559b",
+      "bytes": 1062
+    },
+    {
+      "path": "core/vault/build/test-results/testFossDebugUnitTest/TEST-app.skein.core.vault.transfer.PdfResourceLoaderTest.xml",
+      "sha256": "dd9bbe95ef05c6c50b7ab9a75094b84bae382cd0ba8b39dce2527f16615625b6",
+      "bytes": 515
+    },
+    {
+      "path": "core/vault/build/test-results/testFossDebugUnitTest/TEST-app.skein.core.vault.transfer.VaultZipImportTest.xml",
+      "sha256": "18aecdba2c8fb9a608341d96145887966ce7a6608fecbc05fc61eb33dd802a5f",
+      "bytes": 2241
+    }
+  ],
+  "new_test_occurrences": 62,
+  "new_methods": 31,
+  "both_vault_unit_tasks_executed": true,
+  "unchanged_skip_elements": [
+    {
+      "path": "core/vault/build/test-results/testDevDebugUnitTest/TEST-app.skein.core.vault.transfer.ImportServiceImplContractTest.xml",
+      "class": "app.skein.core.vault.transfer.ImportServiceImplContractTest",
+      "name": "importImage_without_a_vision_model_creates_only_the_attachment",
+      "xml": "<skipped message=\"org.junit.AssumptionViolatedException: importImage_without_a_vision_model_creates_only_the_attachment is owned by E2.I9 (bd skein-rni); ImportServiceImpl throws UnsupportedOperationException for it until that bead lands\" type=\"org.junit.AssumptionViolatedException\">org.junit.AssumptionViolatedException: importImage_without_a_vision_model_creates_only_the_attachment is owned by E2.I9 (bd skein-rni); ImportServiceImpl throws UnsupportedOperationException for it until that bead lands\n\tat app.skein.core.vault.transfer.ImportServiceImplContractTest$pendingEntryPoints$1$1.evaluate(ImportServiceImplContractTest.kt:55)\n\tat org.junit.runners.ParentRunner$3.evaluate(ParentRunner.java:306)\n\tat org.junit.runners.BlockJUnit4ClassRunner$1.evaluate(BlockJUnit4ClassRunner.java:100)\n\tat org.junit.runners.ParentRunner.runLeaf(ParentRunner.java:366)\n\tat org.junit.runners.BlockJUnit4ClassRunner.runChild(BlockJUnit4ClassRunner.java:103)\n\tat org.junit.runners.BlockJUnit4ClassRunner.runChild(BlockJUnit4ClassRunner.java:63)\n\tat org.junit.runners.ParentRunner$4.run(ParentRunner.java:331)\n\tat org.junit.runners.ParentRunner$1.schedule(ParentRunner.java:79)\n\tat org.junit.runners.ParentRunner.runChildren(ParentRunner.java:329)\n\tat org.junit.runners.ParentRunner.access$100(ParentRunner.java:66)\n\tat org.junit.runners.ParentRunner$2.evaluate(ParentRunner.java:293)\n\tat org.junit.runners.ParentRunner$3.evaluate(ParentRunner.java:306)\n\tat org.junit.runners.ParentRunner.run(ParentRunner.java:413)\n\tat org.junit.runner.JUnitCore.run(JUnitCore.java:137)\n\tat org.junit.runner.JUnitCore.run(JUnitCore.java:115)\n\tat org.gradle.api.internal.tasks.testing.junit.JUnitTestExecutor.runRequest(JUnitTestExecutor.java:174)\n\tat org.gradle.api.internal.tasks.testing.junit.JUnitTestExecutor.accept(JUnitTestExecutor.java:84)\n\tat org.gradle.api.internal.tasks.testing.junit.JUnitTestExecutor.accept(JUnitTestExecutor.java:47)\n\tat org.gradle.api.internal.tasks.testing.junit.AbstractJUnitTestDefinitionProcessor.processTestDefinition(AbstractJUnitTestDefinitionProcessor.java:65)\n\tat org.gradle.api.internal.tasks.testing.SuiteTestDefinitionProcessor.processTestDefinition(SuiteTestDefinitionProcessor.java:53)\n\tat jdk.internal.reflect.GeneratedMethodAccessor8.invoke(Unknown Source)\n\tat java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)\n\tat java.base/java.lang.reflect.Method.invoke(Method.java:569)\n\tat org.gradle.internal.dispatch.MethodInvocation.invokeOn(MethodInvocation.java:77)\n\tat org.gradle.internal.dispatch.ReflectionDispatch.dispatch(ReflectionDispatch.java:28)\n\tat org.gradle.internal.dispatch.ReflectionDispatch.dispatch(ReflectionDispatch.java:19)\n\tat org.gradle.internal.dispatch.ContextClassLoaderDispatch.dispatch(ContextClassLoaderDispatch.java:33)\n\tat org.gradle.internal.dispatch.ProxyDispatchAdapter$DispatchingInvocationHandler.invoke(ProxyDispatchAdapter.java:88)\n\tat jdk.proxy1/jdk.proxy1.$Proxy4.processTestDefinition(Unknown Source)\n\tat org.gradle.api.internal.tasks.testing.worker.TestWorker$2.run(TestWorker.java:178)\n\tat org.gradle.api.internal.tasks.testing.worker.TestWorker.executeAndMaintainThreadName(TestWorker.java:126)\n\tat org.gradle.api.internal.tasks.testing.worker.TestWorker.execute(TestWorker.java:103)\n\tat org.gradle.api.internal.tasks.testing.worker.TestWorker.execute(TestWorker.java:63)\n\tat org.gradle.process.internal.worker.child.ActionExecutionWorker.execute(ActionExecutionWorker.java:56)\n\tat org.gradle.process.internal.worker.child.SystemApplicationClassLoaderWorker.call(SystemApplicationClassLoaderWorker.java:122)\n\tat org.gradle.process.internal.worker.child.SystemApplicationClassLoaderWorker.call(SystemApplicationClassLoaderWorker.java:72)\n\tat worker.org.gradle.process.internal.worker.GradleWorkerMain.run(GradleWorkerMain.java:69)\n\tat worker.org.gradle.process.internal.worker.GradleWorkerMain.main(GradleWorkerMain.java:74)\n</skipped>\n  "
+    },
+    {
+      "path": "core/vault/build/test-results/testFossDebugUnitTest/TEST-app.skein.core.vault.transfer.ImportServiceImplContractTest.xml",
+      "class": "app.skein.core.vault.transfer.ImportServiceImplContractTest",
+      "name": "importImage_without_a_vision_model_creates_only_the_attachment",
+      "xml": "<skipped message=\"org.junit.AssumptionViolatedException: importImage_without_a_vision_model_creates_only_the_attachment is owned by E2.I9 (bd skein-rni); ImportServiceImpl throws UnsupportedOperationException for it until that bead lands\" type=\"org.junit.AssumptionViolatedException\">org.junit.AssumptionViolatedException: importImage_without_a_vision_model_creates_only_the_attachment is owned by E2.I9 (bd skein-rni); ImportServiceImpl throws UnsupportedOperationException for it until that bead lands\n\tat app.skein.core.vault.transfer.ImportServiceImplContractTest$pendingEntryPoints$1$1.evaluate(ImportServiceImplContractTest.kt:55)\n\tat org.junit.runners.ParentRunner$3.evaluate(ParentRunner.java:306)\n\tat org.junit.runners.BlockJUnit4ClassRunner$1.evaluate(BlockJUnit4ClassRunner.java:100)\n\tat org.junit.runners.ParentRunner.runLeaf(ParentRunner.java:366)\n\tat org.junit.runners.BlockJUnit4ClassRunner.runChild(BlockJUnit4ClassRunner.java:103)\n\tat org.junit.runners.BlockJUnit4ClassRunner.runChild(BlockJUnit4ClassRunner.java:63)\n\tat org.junit.runners.ParentRunner$4.run(ParentRunner.java:331)\n\tat org.junit.runners.ParentRunner$1.schedule(ParentRunner.java:79)\n\tat org.junit.runners.ParentRunner.runChildren(ParentRunner.java:329)\n\tat org.junit.runners.ParentRunner.access$100(ParentRunner.java:66)\n\tat org.junit.runners.ParentRunner$2.evaluate(ParentRunner.java:293)\n\tat org.junit.runners.ParentRunner$3.evaluate(ParentRunner.java:306)\n\tat org.junit.runners.ParentRunner.run(ParentRunner.java:413)\n\tat org.junit.runner.JUnitCore.run(JUnitCore.java:137)\n\tat org.junit.runner.JUnitCore.run(JUnitCore.java:115)\n\tat org.gradle.api.internal.tasks.testing.junit.JUnitTestExecutor.runRequest(JUnitTestExecutor.java:174)\n\tat org.gradle.api.internal.tasks.testing.junit.JUnitTestExecutor.accept(JUnitTestExecutor.java:84)\n\tat org.gradle.api.internal.tasks.testing.junit.JUnitTestExecutor.accept(JUnitTestExecutor.java:47)\n\tat org.gradle.api.internal.tasks.testing.junit.AbstractJUnitTestDefinitionProcessor.processTestDefinition(AbstractJUnitTestDefinitionProcessor.java:65)\n\tat org.gradle.api.internal.tasks.testing.SuiteTestDefinitionProcessor.processTestDefinition(SuiteTestDefinitionProcessor.java:53)\n\tat jdk.internal.reflect.GeneratedMethodAccessor8.invoke(Unknown Source)\n\tat java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)\n\tat java.base/java.lang.reflect.Method.invoke(Method.java:569)\n\tat org.gradle.internal.dispatch.MethodInvocation.invokeOn(MethodInvocation.java:77)\n\tat org.gradle.internal.dispatch.ReflectionDispatch.dispatch(ReflectionDispatch.java:28)\n\tat org.gradle.internal.dispatch.ReflectionDispatch.dispatch(ReflectionDispatch.java:19)\n\tat org.gradle.internal.dispatch.ContextClassLoaderDispatch.dispatch(ContextClassLoaderDispatch.java:33)\n\tat org.gradle.internal.dispatch.ProxyDispatchAdapter$DispatchingInvocationHandler.invoke(ProxyDispatchAdapter.java:88)\n\tat jdk.proxy1/jdk.proxy1.$Proxy4.processTestDefinition(Unknown Source)\n\tat org.gradle.api.internal.tasks.testing.worker.TestWorker$2.run(TestWorker.java:178)\n\tat org.gradle.api.internal.tasks.testing.worker.TestWorker.executeAndMaintainThreadName(TestWorker.java:126)\n\tat org.gradle.api.internal.tasks.testing.worker.TestWorker.execute(TestWorker.java:103)\n\tat org.gradle.api.internal.tasks.testing.worker.TestWorker.execute(TestWorker.java:63)\n\tat org.gradle.process.internal.worker.child.ActionExecutionWorker.execute(ActionExecutionWorker.java:56)\n\tat org.gradle.process.internal.worker.child.SystemApplicationClassLoaderWorker.call(SystemApplicationClassLoaderWorker.java:122)\n\tat org.gradle.process.internal.worker.child.SystemApplicationClassLoaderWorker.call(SystemApplicationClassLoaderWorker.java:72)\n\tat worker.org.gradle.process.internal.worker.GradleWorkerMain.run(GradleWorkerMain.java:69)\n\tat worker.org.gradle.process.internal.worker.GradleWorkerMain.main(GradleWorkerMain.java:74)\n</skipped>\n  "
+    }
+  ],
+  "final_added_identities_since_attempt04": [
+    [
+      "core/vault/build/test-results/testDevDebugUnitTest/TEST-app.skein.core.vault.key.recovery.AuthenticatedRecoveryPreparationTest.xml",
+      "app.skein.core.vault.key.recovery.AuthenticatedRecoveryPreparationTest",
+      "lock revocation completes while staging IO is blocked and invalidates prepared receipt",
+      "passed"
+    ],
+    [
+      "core/vault/build/test-results/testFossDebugUnitTest/TEST-app.skein.core.vault.key.recovery.AuthenticatedRecoveryPreparationTest.xml",
+      "app.skein.core.vault.key.recovery.AuthenticatedRecoveryPreparationTest",
+      "lock revocation completes while staging IO is blocked and invalidates prepared receipt",
+      "passed"
+    ]
+  ],
+  "prior_attempt04_identities_preserved": true,
+  "original_native_verifier_and_AndroidTest_bodies_unchanged": true,
+  "source_review": [
+    "Canonical process-wide exclusion covers production VaultKeyProviders factory, VaultLifecycle open/create/live pool and explicit reset/resume; direct test/native/cross-process owners are deliberately outside stated contract.",
+    "Key authentication holds admission through operation and retains it while master key is live; lock invalidates in-flight proof and prevents late result from publishing currentKey.",
+    "Connection close_v2 cannot attest closure while prepared statements remain; native close/finalization uncertainty or failed open poison recovery/reset until process restart. Ordinary admission remains available.",
+    "Candidate privately copied and caller input zeroed before proof; same verified candidate is encrypted under exact authenticated Cipher instances and read back after each factor authentication. Header/factor metadata is GCM AAD after authorization; checksum alone is not trusted.",
+    "Snapshots seal DB/WAL/private proof and preserve live DB/WAL/SHM/old envelope; active envelope and original aliases are never activated/replaced by preparation. New staged old/new bytes and new aliases remain evidence on cancellation/failure.",
+    "Lock latency regression independently reproduced against earlier staging under monitor; fixed stage performs all full-file hashes/fsync outside monitor and only validates non-authorizing receipt under final guard.",
+    "Reset contention is refused before destructive paths; concurrent lock invalidates recovery without releasing exclusion until preparation cleanup."
+  ],
+  "negative_control_review": {
+    "status": "EXPECTED_NEGATIVE_CONTROL_VERIFIED",
+    "archive": "/Users/andrewherrera/skein-worktrees/recovery-binding-resume-20260930/build/agent-logs/recovery-binding-resume-20260930/attempt-06-negative-actual.zip",
+    "sha256": "9c9e9bc37bf7b9498cb0f854e47a4f14b20f82b7864ead511cedce5c31c2c557",
+    "source_hashes_verified": 17,
+    "xml": [
+      {
+        "path": "core/vault/build/test-results/testDevDebugUnitTest/TEST-app.skein.core.vault.key.recovery.AuthenticatedRecoveryPreparationTest.xml",
+        "sha256": "9872c3c644b99f9b40e3efb5df4743239b0a51fbe3c2f26404f50e46822d5f63",
+        "tests": 15,
+        "passed": 14,
+        "failures": [
+          "lock revocation completes while staging IO is blocked and invalidates prepared receipt"
+        ],
+        "errors": 0,
+        "skips": 0
+      }
+    ],
+    "cause": "Original stage holds revocation monitor during injected paused fsync; competing invalidateRecovery cannot complete until filesystem action released.",
+    "current_source_review": "Fixed stage removes all full-file hashes and fsync from final monitor; non-authorizing Prepared receipt validates lease only. Actual final corrected gate pending.",
+    "not_claimed": [
+      "Real Android hardware authentication or power-loss",
+      "Existing-envelope activation/integration",
+      "Physical recovery acceptance"
+    ]
+  },
+  "remaining_gates": [
+    "v2 reader/provider/UI integration and actual active-envelope replacement",
+    "legacy rewrap remains pre-existing unaccepted; wrapper does not claim rollback of late-auth alias/envelope side effects",
+    "encrypted Android production lease/authentication/readback and crash/power-loss acceptance",
+    "physical owner Fold recovery; no new code installed or synthetic recovery run here"
+  ],
+  "reviewer_operations": "Source/archive/XML read only; no builds, runtime or device actions."
+}

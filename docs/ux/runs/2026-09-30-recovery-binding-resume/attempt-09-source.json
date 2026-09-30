@@ -1,0 +1,73 @@
+{
+  "base": "8f084343cf2b67395d2d707b33f6ee578d801c89",
+  "files": {
+    "core/vault/src/main/kotlin/app/skein/core/vault/db/SkeinSQLiteConnection.kt": {
+      "bytes": 3061,
+      "sha256": "6ff997293c7411a865e2d2ffdd7188432e005ff99f42a570692e76c9b724da91"
+    },
+    "core/vault/src/main/kotlin/app/skein/core/vault/db/SkeinSQLiteStatement.kt": {
+      "bytes": 3693,
+      "sha256": "d106eb5bc08aff23a04e1ee84c0d6f5ff07c6717246bcd2ecd23a5215a657ea4"
+    },
+    "core/vault/src/main/kotlin/app/skein/core/vault/key/VaultKeyProviderImpl.kt": {
+      "bytes": 28026,
+      "sha256": "451dcec600a1804e81f6f871046e700c2f1938cc2877b64946c0e5c69156802b"
+    },
+    "core/vault/src/main/kotlin/app/skein/core/vault/key/VaultKeyProviders.kt": {
+      "bytes": 2180,
+      "sha256": "5e51134bb126eebac520b7246d8c6a14f2779d3f2ad757253a77a73253b3bee8"
+    },
+    "core/vault/src/main/kotlin/app/skein/core/vault/key/recovery/ClosedVaultRecoverySnapshot.kt": {
+      "bytes": 6462,
+      "sha256": "a3247edce4f4021ed9ac85fcd2ba52e53c6be61f3ae93858bf7a34db089cb135"
+    },
+    "core/vault/src/main/kotlin/app/skein/core/vault/key/recovery/RecoveryEnvelopeTransaction.kt": {
+      "bytes": 5924,
+      "sha256": "1d4077420e31ffc096cfc2064639417e70f7201ef542318198dc28f9b11076e3"
+    },
+    "core/vault/src/main/kotlin/app/skein/core/vault/key/recovery/RecoveryEnvelopeV2.kt": {
+      "bytes": 5884,
+      "sha256": "a328098f90e0f2e952d8233107f1ebda11fa432870c6573974bcd74dee379214"
+    },
+    "core/vault/src/main/kotlin/app/skein/core/vault/lifecycle/ConnectionPool.kt": {
+      "bytes": 8276,
+      "sha256": "9c1f2abaa7141de8571badc5f07927224f59fa33f297e156cf980d986325c5dd"
+    },
+    "core/vault/src/main/kotlin/app/skein/core/vault/lifecycle/VaultLifecycle.kt": {
+      "bytes": 32023,
+      "sha256": "506415a651cff56c08b451e43a2fe8a1585e2f983f56004372028abc15e1af63"
+    },
+    "core/vault/src/main/kotlin/app/skein/core/vault/lifecycle/VaultReset.kt": {
+      "bytes": 11974,
+      "sha256": "de318fdb8d13d7228cd8f7a5b8fae2052417ef65a387dfcf203ab9e2ee7262e4"
+    },
+    "core/vault/src/main/kotlin/app/skein/core/vault/key/RecoveryKeyAdmission.kt": {
+      "bytes": 2477,
+      "sha256": "53a6dfceee3f45eb9e8a0637dc545b93efc123162a2af36a2f85842c7a04f46c"
+    },
+    "core/vault/src/main/kotlin/app/skein/core/vault/key/recovery/AuthenticatedRecoveryPreparation.kt": {
+      "bytes": 10212,
+      "sha256": "a3acb541d4a5aacf37edc5f66b262b0dd65bad8b9148bd09040ec9ad7c508220"
+    },
+    "core/vault/src/main/kotlin/app/skein/core/vault/lifecycle/VaultRecoveryExclusion.kt": {
+      "bytes": 3456,
+      "sha256": "17c7901e474dd927f4a7472e4cd10e81986a1b391d13e09eee55e88432619e89"
+    },
+    "core/vault/src/test/kotlin/app/skein/core/vault/db/RecoveryClosureTest.kt": {
+      "bytes": 1791,
+      "sha256": "7b4fa618155963a577148114ea6d11c694a381acfa0fe60b77f364c1061511c9"
+    },
+    "core/vault/src/test/kotlin/app/skein/core/vault/key/RecoveryKeyAdmissionTest.kt": {
+      "bytes": 6750,
+      "sha256": "92630bbe470d2e692d253806c6c646394d4c216c1d2c6d6d630060e687ce8656"
+    },
+    "core/vault/src/test/kotlin/app/skein/core/vault/key/recovery/AuthenticatedRecoveryPreparationTest.kt": {
+      "bytes": 17670,
+      "sha256": "206f4712f425d67367bc4ae9e5131dc27fb6fa66a69219b2d953467109cc0239"
+    },
+    "core/vault/src/test/kotlin/app/skein/core/vault/lifecycle/VaultRecoveryExclusionTest.kt": {
+      "bytes": 7165,
+      "sha256": "bafd5adce1ee07ab40effb9c7f87edeb3d7198f3d53c5991f33f578907ce39e4"
+    }
+  }
+}

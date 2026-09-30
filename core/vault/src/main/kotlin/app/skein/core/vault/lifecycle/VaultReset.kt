@@ -132,6 +132,7 @@ public class VaultReset(
     private val keystore: KeystoreAliasDeleter,
     private val isUnlocked: () -> Boolean,
 ) {
+    private val recoveryExclusion = VaultRecoveryExclusion.forDirectory(vaultDir)
     private val markerFile = File(vaultDir, MARKER_FILE_NAME)
     private val envelopeFile = FileMasterKeyStorage.envelopeFileIn(vaultDir)
 
@@ -151,6 +152,9 @@ public class VaultReset(
             SkeinLog.w(LOG_TAG, "reset refused: vault is unlocked")
             return VaultResetResult.RefusedUnlocked
         }
+        val admission =
+            recoveryExclusion.acquireReset()
+                ?: return VaultResetResult.Failed("vault operation in progress")
         SkeinLog.i(LOG_TAG, "reset started")
         return try {
             vaultDir.mkdirs()
@@ -164,6 +168,8 @@ public class VaultReset(
             // carry a path, and this non-negotiable never logs one.
             SkeinLog.e(LOG_TAG, "reset failed: io failure (${e.javaClass.simpleName})")
             VaultResetResult.Failed("vault reset io failure: ${e.javaClass.simpleName}")
+        } finally {
+            admission.close()
         }
     }
 
@@ -178,11 +184,16 @@ public class VaultReset(
      */
     public fun resumeIfPending(): Boolean {
         if (!markerFile.exists()) return false
-        SkeinLog.w(LOG_TAG, "resuming a reset interrupted by a previous process death")
-        deleteOwnedPaths()
-        markerFile.delete()
-        SkeinLog.i(LOG_TAG, "resumed reset completed")
-        return true
+        val admission =
+            recoveryExclusion.acquireReset()
+                ?: throw IllegalStateException("vault operation in progress")
+        admission.use {
+            SkeinLog.w(LOG_TAG, "resuming a reset interrupted by a previous process death")
+            deleteOwnedPaths()
+            markerFile.delete()
+            SkeinLog.i(LOG_TAG, "resumed reset completed")
+            return true
+        }
     }
 
     private fun deleteOwnedPaths() {

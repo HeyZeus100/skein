@@ -8,6 +8,7 @@ package app.skein.core.vault.key
 
 import android.content.Context
 import app.skein.core.vault.lifecycle.VaultPaths
+import app.skein.core.vault.lifecycle.VaultRecoveryExclusion
 
 /** Factories for [VaultKeyProvider]. */
 public object VaultKeyProviders {
@@ -22,8 +23,8 @@ public object VaultKeyProviders {
      * `app/src/main/res/xml/{data_extraction_rules,backup_rules_legacy}.xml`.
      *
      * Pass the same [paths] the vault lifecycle uses so the envelope sits
-     * beside the `vault.db` it unlocks. Construction performs no I/O and
-     * does not load the Keystore; the first [VaultKeyProvider.unlock] on a
+     * beside the `vault.db` it unlocks. Construction resolves that directory
+     * but does not read the envelope or load the Keystore; the first [VaultKeyProvider.unlock] on a
      * device with no envelope reports [UnlockResult.NotInitialised] until
      * [VaultKeyProvider.setup] has run once — [VaultKeyProvider.isInitialised]
      * reports the same fact without a prompt, for the first-run gate.
@@ -37,6 +38,7 @@ public object VaultKeyProviders {
             keystore = AndroidKeystoreFacade(app),
             biometric = AndroidBiometricAuthenticator(app),
             storage = FileMasterKeyStorage(FileMasterKeyStorage.envelopeFileIn(paths.vaultDir)),
+            recoveryExclusion = VaultRecoveryExclusion.forDirectory(paths.vaultDir),
         )
     }
 }

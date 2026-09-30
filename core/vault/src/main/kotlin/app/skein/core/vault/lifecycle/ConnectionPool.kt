@@ -22,6 +22,7 @@
 package app.skein.core.vault.lifecycle
 
 import androidx.sqlite.SQLiteConnection
+import app.skein.core.vault.db.SkeinSQLiteConnection
 import app.skein.core.vault.db.SkeinSQLiteDriver
 
 /**
@@ -60,6 +61,10 @@ public class ConnectionPool private constructor(
     private var liveReaders: List<SQLiteConnection>?,
 ) {
     private val lock = Any()
+    private val allConnections = listOfNotNull(liveWriter) + liveReaders.orEmpty()
+
+    internal val closedForRecovery: Boolean
+        get() = allConnections.all { (it as? SkeinSQLiteConnection)?.closedForRecovery == true }
 
     /**
      * The single writer connection. Throws [ConnectionPoolClosedException]

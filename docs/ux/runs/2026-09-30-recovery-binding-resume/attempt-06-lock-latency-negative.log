@@ -1,0 +1,99 @@
+{"owner": "/root/recovery", "coordinator": "/root", "scope": "core vault lint/dev+foss unit/AndroidTest compile", "worktree": "/Users/andrewherrera/skein-worktrees/recovery-binding-resume-20260930", "at": "2026-09-30T17:08:20.221622+00:00", "pid": 31391, "token": "86c3de89-4eb1-4e22-948e-a3a26508beae", "command": ["./gradlew", ":core:vault:testDevDebugUnitTest", "--tests", "*AuthenticatedRecoveryPreparationTest*", "--no-daemon", "--max-workers=2", "--console=plain"], "updated_at": "2026-09-30T17:14:47.009244+00:00"}
+To honour the JVM settings for this build a single-use Daemon process will be forked. For more on this, please refer to https://docs.gradle.org/9.7.1/userguide/gradle_daemon.html#sec:disabling_the_daemon in the Gradle documentation.
+Daemon will be stopped at the end of the build 
+Calculating task graph as no cached configuration is available for tasks: :core:vault:testDevDebugUnitTest --tests *AuthenticatedRecoveryPreparationTest*
+> Task :build-logic:guards:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :build-logic:guards:compileKotlin UP-TO-DATE
+> Task :build-logic:guards:compileJava NO-SOURCE
+> Task :build-logic:guards:pluginDescriptors UP-TO-DATE
+> Task :build-logic:guards:processResources UP-TO-DATE
+> Task :build-logic:guards:classes UP-TO-DATE
+> Task :build-logic:guards:jar UP-TO-DATE
+> Task :testing:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :testing-fakes:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :core:model:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :core:model:processResources UP-TO-DATE
+> Task :testing-fakes:processResources NO-SOURCE
+> Task :testing:processResources UP-TO-DATE
+> Task :core:markdown:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :core:model:compileKotlin UP-TO-DATE
+> Task :core:model:compileJava NO-SOURCE
+> Task :core:model:classes UP-TO-DATE
+> Task :core:model:jar UP-TO-DATE
+> Task :core:markdown:compileKotlin UP-TO-DATE
+> Task :core:markdown:compileJava NO-SOURCE
+> Task :core:markdown:processResources NO-SOURCE
+> Task :core:markdown:classes UP-TO-DATE
+> Task :core:markdown:jar UP-TO-DATE
+> Task :core:vault:preBuild UP-TO-DATE
+> Task :core:vault:preDevDebugBuild UP-TO-DATE
+> Task :core:vault:generateDevDebugResources UP-TO-DATE
+> Task :testing-fakes:compileKotlin UP-TO-DATE
+> Task :core:vault:packageDevDebugResources UP-TO-DATE
+> Task :testing-fakes:compileJava NO-SOURCE
+> Task :testing-fakes:classes UP-TO-DATE
+> Task :core:vault:processDevDebugNavigationResources UP-TO-DATE
+> Task :testing-fakes:jar UP-TO-DATE
+> Task :core:vault:parseDevDebugLocalResources UP-TO-DATE
+> Task :core:vault:generateDevDebugRFile UP-TO-DATE
+> Task :testing:compileKotlin UP-TO-DATE
+> Task :testing:compileJava NO-SOURCE
+> Task :testing:classes UP-TO-DATE
+> Task :testing:jar UP-TO-DATE
+> Task :core:vault:javaPreCompileDevDebug UP-TO-DATE
+> Task :core:vault:preDevDebugUnitTestBuild UP-TO-DATE
+> Task :core:vault:writeDevDebugAarMetadata UP-TO-DATE
+> Task :core:vault:compileDevDebugKotlin UP-TO-DATE
+> Task :core:vault:compileDevDebugJavaWithJavac NO-SOURCE
+> Task :core:vault:bundleLibRuntimeToJarDevDebug UP-TO-DATE
+> Task :core:vault:bundleLibCompileToJarDevDebug UP-TO-DATE
+> Task :core:vault:mapDevDebugSourceSetPaths UP-TO-DATE
+> Task :core:vault:compileDevDebugLibraryResources UP-TO-DATE
+> Task :core:vault:mapDevDebugUnitTestSourceSetPaths UP-TO-DATE
+> Task :core:vault:generateDevDebugUnitTestResources UP-TO-DATE
+> Task :core:vault:mergeDevDebugUnitTestResources UP-TO-DATE
+> Task :core:vault:checkDevDebugUnitTestAarMetadata UP-TO-DATE
+> Task :core:vault:extractDeepLinksDevDebug UP-TO-DATE
+> Task :core:vault:javaPreCompileDevDebugUnitTest UP-TO-DATE
+> Task :core:vault:processDevDebugManifest UP-TO-DATE
+> Task :core:vault:generateDevDebugUnitTestAssets UP-TO-DATE
+> Task :core:vault:generateDevDebugAssets UP-TO-DATE
+> Task :core:vault:mergeDevDebugAssets UP-TO-DATE
+> Task :core:vault:mergeDevDebugUnitTestAssets UP-TO-DATE
+> Task :core:vault:processDevDebugJavaRes UP-TO-DATE
+> Task :core:vault:mergeDevDebugUnitTestManifest UP-TO-DATE
+> Task :core:vault:processDevDebugUnitTestManifest UP-TO-DATE
+> Task :core:vault:processDevDebugUnitTestResources UP-TO-DATE
+> Task :core:vault:packageDevDebugUnitTestForUnitTest UP-TO-DATE
+> Task :core:vault:generateDevDebugUnitTestConfig UP-TO-DATE
+
+> Task :core:vault:compileDevDebugUnitTestKotlin
+w: file:///Users/andrewherrera/skein-worktrees/recovery-binding-resume-20260930/core/vault/src/test/kotlin/app/skein/core/vault/key/recovery/AuthenticatedRecoveryPreparationTest.kt:212:13 This declaration needs opt-in. Its usage should be marked with '@kotlinx.coroutines.ExperimentalCoroutinesApi' or '@OptIn(kotlinx.coroutines.ExperimentalCoroutinesApi::class)'
+w: file:///Users/andrewherrera/skein-worktrees/recovery-binding-resume-20260930/core/vault/src/test/kotlin/app/skein/core/vault/key/recovery/AuthenticatedRecoveryPreparationTest.kt:231:13 This declaration needs opt-in. Its usage should be marked with '@kotlinx.coroutines.ExperimentalCoroutinesApi' or '@OptIn(kotlinx.coroutines.ExperimentalCoroutinesApi::class)'
+
+> Task :core:vault:compileDevDebugUnitTestJavaWithJavac NO-SOURCE
+> Task :core:vault:processDevDebugUnitTestJavaRes UP-TO-DATE
+
+> Task :core:vault:testDevDebugUnitTest
+
+AuthenticatedRecoveryPreparationTest > lock revocation completes while staging IO is blocked and invalidates prepared receipt FAILED
+    com.google.common.truth.AssertionErrorWithFacts at AuthenticatedRecoveryPreparationTest.kt:355
+
+15 tests completed, 1 failed
+
+> Task :core:vault:testDevDebugUnitTest FAILED
+
+[Incubating] Problems report is available at: file:///Users/andrewherrera/skein-worktrees/recovery-binding-resume-20260930/build/reports/problems/problems-report.html
+
+FAILURE: Build failed with an exception.
+
+* What went wrong:
+Execution failed for task ':core:vault:testDevDebugUnitTest'.
+> There were failing tests. See the report at: file:///Users/andrewherrera/skein-worktrees/recovery-binding-resume-20260930/core/vault/build/reports/tests/testDevDebugUnitTest/index.html
+
+* Try:
+> Run with --scan to get full insights from a Build Scan (powered by Develocity).
+
+BUILD FAILED in 15s
+44 actionable tasks: 2 executed, 42 up-to-date
+Configuration cache entry stored.

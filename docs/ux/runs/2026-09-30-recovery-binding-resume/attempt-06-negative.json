@@ -1,0 +1,44 @@
+{
+  "source": {
+    "core/vault/src/main/kotlin/app/skein/core/vault/db/SkeinSQLiteConnection.kt": "6ff997293c7411a865e2d2ffdd7188432e005ff99f42a570692e76c9b724da91",
+    "core/vault/src/main/kotlin/app/skein/core/vault/db/SkeinSQLiteStatement.kt": "d106eb5bc08aff23a04e1ee84c0d6f5ff07c6717246bcd2ecd23a5215a657ea4",
+    "core/vault/src/main/kotlin/app/skein/core/vault/key/VaultKeyProviderImpl.kt": "451dcec600a1804e81f6f871046e700c2f1938cc2877b64946c0e5c69156802b",
+    "core/vault/src/main/kotlin/app/skein/core/vault/key/VaultKeyProviders.kt": "1e91972d0c2b182073e2edaae3f1f110e1a834dd9da58572aa30912d6c4154a9",
+    "core/vault/src/main/kotlin/app/skein/core/vault/key/recovery/ClosedVaultRecoverySnapshot.kt": "a3247edce4f4021ed9ac85fcd2ba52e53c6be61f3ae93858bf7a34db089cb135",
+    "core/vault/src/main/kotlin/app/skein/core/vault/key/recovery/RecoveryEnvelopeTransaction.kt": "1d4077420e31ffc096cfc2064639417e70f7201ef542318198dc28f9b11076e3",
+    "core/vault/src/main/kotlin/app/skein/core/vault/key/recovery/RecoveryEnvelopeV2.kt": "a328098f90e0f2e952d8233107f1ebda11fa432870c6573974bcd74dee379214",
+    "core/vault/src/main/kotlin/app/skein/core/vault/lifecycle/ConnectionPool.kt": "9c1f2abaa7141de8571badc5f07927224f59fa33f297e156cf980d986325c5dd",
+    "core/vault/src/main/kotlin/app/skein/core/vault/lifecycle/VaultLifecycle.kt": "506415a651cff56c08b451e43a2fe8a1585e2f983f56004372028abc15e1af63",
+    "core/vault/src/main/kotlin/app/skein/core/vault/lifecycle/VaultReset.kt": "de318fdb8d13d7228cd8f7a5b8fae2052417ef65a387dfcf203ab9e2ee7262e4",
+    "core/vault/src/main/kotlin/app/skein/core/vault/key/RecoveryKeyAdmission.kt": "53a6dfceee3f45eb9e8a0637dc545b93efc123162a2af36a2f85842c7a04f46c",
+    "core/vault/src/main/kotlin/app/skein/core/vault/key/recovery/AuthenticatedRecoveryPreparation.kt": "caac3cb656905897f9272c8a6d8454bf2caf52ab58274443c8f6e0b64c888677",
+    "core/vault/src/main/kotlin/app/skein/core/vault/lifecycle/VaultRecoveryExclusion.kt": "17c7901e474dd927f4a7472e4cd10e81986a1b391d13e09eee55e88432619e89",
+    "core/vault/src/test/kotlin/app/skein/core/vault/db/RecoveryClosureTest.kt": "7b4fa618155963a577148114ea6d11c694a381acfa0fe60b77f364c1061511c9",
+    "core/vault/src/test/kotlin/app/skein/core/vault/key/RecoveryKeyAdmissionTest.kt": "92630bbe470d2e692d253806c6c646394d4c216c1d2c6d6d630060e687ce8656",
+    "core/vault/src/test/kotlin/app/skein/core/vault/key/recovery/AuthenticatedRecoveryPreparationTest.kt": "29733bb33e4acaa3ea4807ae9ca97efe38a2afaf9b02b4b42b92b17d08e82925",
+    "core/vault/src/test/kotlin/app/skein/core/vault/lifecycle/VaultRecoveryExclusionTest.kt": "bafd5adce1ee07ab40effb9c7f87edeb3d7198f3d53c5991f33f578907ce39e4"
+  },
+  "xml": [
+    {
+      "path": "core/vault/build/test-results/testDevDebugUnitTest/TEST-app.skein.core.vault.key.recovery.AuthenticatedRecoveryPreparationTest.xml",
+      "sha256": "9872c3c644b99f9b40e3efb5df4743239b0a51fbe3c2f26404f50e46822d5f63",
+      "counts": {
+        "name": "app.skein.core.vault.key.recovery.AuthenticatedRecoveryPreparationTest",
+        "tests": "15",
+        "skipped": "0",
+        "failures": "1",
+        "errors": "0",
+        "timestamp": "2026-09-30T17:14:56.171Z",
+        "hostname": "Andrews-MacBook-Pro.local",
+        "time": "5.364"
+      },
+      "failed": [
+        {
+          "name": "lock revocation completes while staging IO is blocked and invalidates prepared receipt",
+          "classname": "app.skein.core.vault.key.recovery.AuthenticatedRecoveryPreparationTest",
+          "time": "5.057"
+        }
+      ]
+    }
+  ]
+}

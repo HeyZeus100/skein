@@ -1,0 +1,7 @@
+Recovery preparation and production exclusion, based on publication `8f084343cf2b67395d2d707b33f6ee578d801c89`, implement the bounded `skein-gg11.29.1` slice. See `worker-receipt.json` for scope, artifact hashes and limits.
+
+The final host run passes 1,472 cases with two unchanged skips across 136 actual XML files. All 31 new methods execute in both variants. The blocked-staging-I/O negative control preserves its one intended failure; the corrected case passes in both final suites. Instrumentation compilation is not runtime execution. The ordinary 300-case encrypted test identities and all native code remain unchanged.
+
+Production admission covers key authentication/live keys, lifecycle pools and reset across separate app instances for the same canonical directory. Incomplete native closure or failed opening/migration blocks recovery/reset until a clean process restart. Preparation binds the exact proved candidate to four authenticated CryptoObject operations and GCM metadata, then preserves old/new staged bytes. It does not install a v2 envelope, activate a session, reset a vault, or repair the legacy rewrap mutation path. Stage receipts cannot authorize activation.
+
+Android authenticated preparation, v2 reader/provider/UI integration, safe legacy rewrap, restart/power-loss behavior and physical Fold acceptance remain open. The coordinator owns integration, Beads and publication. All original evidence and worktrees are retained.

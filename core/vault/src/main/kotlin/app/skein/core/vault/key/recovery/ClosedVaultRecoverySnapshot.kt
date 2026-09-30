@@ -6,12 +6,18 @@ import java.nio.file.Files
 import java.nio.file.LinkOption.NOFOLLOW_LINKS
 import java.security.MessageDigest
 
-/** No production issuer exists yet. An isOpen poll alone does not implement this contract. */
+/** Issued by VaultRecoveryExclusion; an isOpen poll alone does not implement this contract. */
 internal interface ClosedVaultRecoveryLease {
     val vaultDirectory: File
 
     /** Must cover open/create/reset/other recovery for the entire operation, or throw. */
     fun assertExclusiveAndClosed()
+
+    /** Serializes the final publication with revocation; production overrides with its admission guard. */
+    fun <T> whileExclusiveAndClosed(action: () -> T): T {
+        assertExclusiveAndClosed()
+        return action()
+    }
 }
 
 internal class RecoverySnapshotRefused : IllegalStateException("recovery snapshot unavailable")

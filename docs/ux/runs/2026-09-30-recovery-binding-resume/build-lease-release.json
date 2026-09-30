@@ -1,0 +1,24 @@
+{
+  "owner": "/root/recovery",
+  "coordinator": "/root",
+  "scope": "core vault lint/dev+foss unit/AndroidTest compile",
+  "worktree": "/Users/andrewherrera/skein-worktrees/recovery-binding-resume-20260930",
+  "at": "2026-09-30T17:08:20.221622+00:00",
+  "pid": 31604,
+  "token": "86c3de89-4eb1-4e22-948e-a3a26508beae",
+  "command": [
+    "./gradlew",
+    ":core:vault:ktlintCheck",
+    ":core:vault:testDevDebugUnitTest",
+    ":core:vault:testFossDebugUnitTest",
+    ":core:vault:compileDevDebugAndroidTestKotlin",
+    ":core:vault:compileFossDebugAndroidTestKotlin",
+    "--no-daemon",
+    "--max-workers=2",
+    "--console=plain"
+  ],
+  "updated_at": "2026-09-30T17:16:30.496214+00:00",
+  "released_at": "2026-09-30T17:17:35.627780+00:00",
+  "terminal_log": "build/agent-logs/recovery-binding-resume-20260930/attempt-09-final.log",
+  "terminal_exit": 0
+}

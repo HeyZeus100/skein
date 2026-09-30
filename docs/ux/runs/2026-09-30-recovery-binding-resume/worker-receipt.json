@@ -1,0 +1,115 @@
+{
+  "issue": "skein-gg11.29.1",
+  "parent": "skein-gg11.29",
+  "baseline_commit": "8f084343cf2b67395d2d707b33f6ee578d801c89",
+  "worker_branch": "codex/recovery-binding-resume-20260930",
+  "implementation": [
+    "Production factory and lifecycle/reset share process-wide canonical-directory exclusion. Reservations span asynchronous authentication, retained live master keys and live pools.",
+    "Lock invalidates recovery without releasing its reservation before cleanup; stale authentication completion and queued requests cannot publish a live key.",
+    "Connection/pool close receipts account for outstanding prepared statements. Uncertain close/finalization or failed opening/migration permanently refuses recovery/reset for this process; ordinary admission remains available. Clean process restart is required to clear that refusal.",
+    "Preparation alone proves a private ciphertext snapshot, creates fresh transaction-scoped aliases using existing StrongBox policy, authenticates two wraps and two decrypt readbacks using exact Cipher identity, and checks equal candidate bytes. Metadata and factor are bound as GCM AAD after authentication.",
+    "Staging retains exact old and new envelopes with readback and directory sync. Original active envelope, DB/WAL/SHM and original aliases are never changed by preparation. Caller candidate, proof copy and readback buffers are zeroed.",
+    "Whole ciphertext hashes and staging IO run outside the lock-revocation monitor; the final prepared-receipt check only validates the lease. The existing unwired transaction primitive serializes its final compare/rename with revocation."
+  ],
+  "acceptance_boundaries": [
+    "Existing-envelope recovery is NOT activated. No v2 reader/provider/UI path, active envelope replacement, session minting or automatic reset exists in this slice.",
+    "Prepared receipts identify retained evidence only and cannot authorize activation. Restart/integration must repeat key proof and authentication.",
+    "Existing v1 envelope must decode to recover generation and hardware policy. Corrupt/unsupported envelope recovery remains unavailable.",
+    "Legacy surviving-factor rewrap mutation safety remains unaccepted. New admission prevents concurrent recovery and late key publication; it does not claim to repair legacy alias/envelope changes after late authentication.",
+    "Exclusion covers production app owners in one process. Raw external/native connections and cross-process file locking are outside this contract.",
+    "Host fake/JCE tests are not Android per-use authentication, encrypted recovery preparation runtime, power-loss or physical Fold acceptance. No device commands, APK creation/installation or backend/default-model changes occurred."
+  ],
+  "verification": {
+    "command": [
+      "./gradlew",
+      ":core:vault:ktlintCheck",
+      ":core:vault:testDevDebugUnitTest",
+      ":core:vault:testFossDebugUnitTest",
+      ":core:vault:compileDevDebugAndroidTestKotlin",
+      ":core:vault:compileFossDebugAndroidTestKotlin",
+      "--no-daemon",
+      "--max-workers=2",
+      "--console=plain"
+    ],
+    "final_log": "attempt-09-final.log",
+    "exit": 0,
+    "actual_xml_files": 136,
+    "passes": 1472,
+    "skips": 2,
+    "failures": 0,
+    "errors": 0,
+    "new_host_methods": 31,
+    "new_host_occurrences": 62,
+    "fresh_tasks": [
+      ":core:vault:testDevDebugUnitTest",
+      ":core:vault:testFossDebugUnitTest"
+    ],
+    "final_instrumentation_compilation": "Both tasks UP-TO-DATE; earlier attempt04 compiled them. Original AndroidTest sources and native/sqlite are unchanged from baseline; no runtime cases executed.",
+    "negative_control": "Attempt06 runs the identical blocked-staging-sync latch case against the earlier monitor-held production body: 14 passes and exactly one intended failure in preparation suite. Fixed final suite executes the case successfully in both variants.",
+    "preserved_tooling_failures": "Attempts01/03/07 ktlint; attempt02 formatting had one unformatted long line. Logs and reports retained in earlier-attempts.zip. Attempts04/05 earlier passing source and actual XML are retained separately.",
+    "unchanged_skips": [
+      {
+        "variant": "testDevDebugUnitTest",
+        "class": "app.skein.core.vault.transfer.ImportServiceImplContractTest",
+        "name": "importImage_without_a_vision_model_creates_only_the_attachment"
+      },
+      {
+        "variant": "testFossDebugUnitTest",
+        "class": "app.skein.core.vault.transfer.ImportServiceImplContractTest",
+        "name": "importImage_without_a_vision_model_creates_only_the_attachment"
+      }
+    ]
+  },
+  "files": {
+    "attempt-06-lock-latency-negative.exit": {
+      "bytes": 2,
+      "sha256": "4355a46b19d348dc2f57c046f8ef63d4538ebb936000f3c9ee954a27460dd865"
+    },
+    "attempt-06-lock-latency-negative.log": {
+      "bytes": 6267,
+      "sha256": "3f831efafa5b86c72e4e22f1548e6095c193e9640fedfd7bf4308baf090a98d6"
+    },
+    "attempt-06-negative-actual.zip": {
+      "bytes": 50156,
+      "sha256": "9c9e9bc37bf7b9498cb0f854e47a4f14b20f82b7864ead511cedce5c31c2c557"
+    },
+    "attempt-06-negative.json": {
+      "bytes": 3558,
+      "sha256": "85f25bcb04332c73d851620c1ed7b0a75c709f59a0a88c95239b79d33c4c4ea4"
+    },
+    "attempt-09-final-actual.zip": {
+      "bytes": 179270,
+      "sha256": "1291d7f53d5b1fbddbdb7dcb0313de2add9d5407e0669b1b2d6192710d0cef52"
+    },
+    "attempt-09-final.exit": {
+      "bytes": 2,
+      "sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa"
+    },
+    "attempt-09-final.log": {
+      "bytes": 13744,
+      "sha256": "f65180d725d58ecb7e8bacd5e04498f98ff81a6276424c28fda2c81a79a41158"
+    },
+    "attempt-09-source.json": {
+      "bytes": 3510,
+      "sha256": "6e5f2bcc2a96d698193612c2c2867be903bc274d2a692126ae847b12998b0ad0"
+    },
+    "attempt-09-xml.json": {
+      "bytes": 63152,
+      "sha256": "c7b3cd92e620cd172fc7f19e430858c955ee62f44bc16264e770ffeb4ecea494"
+    },
+    "build-lease-release.json": {
+      "bytes": 857,
+      "sha256": "40ff678119dccf33e34a36b0834a71fa723149313d3664e4b7cbaf45cb83da2e"
+    },
+    "earlier-attempts.zip": {
+      "bytes": 426426,
+      "sha256": "68f4e62e391dc42fe0c2e648884cc617c5c80e590a962f6614017477f76cc1d5"
+    },
+    "independent-review.json": {
+      "bytes": 51054,
+      "sha256": "9795679fb86932fa6a08beb64c5e7e3e06941926b92a9ab248a2d553188e9547"
+    }
+  },
+  "publication": "Worker commit supplied to coordinator only; root owns Beads, integration, CI/runtime queue and pushes. No independent acceptance of parent recovery.",
+  "independent_review": "PASS for bounded stage-only scope; see independent-review.json; no reviewer builds."
+}

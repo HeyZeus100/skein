@@ -50,6 +50,7 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
+import java.io.Closeable
 import java.security.SecureRandom
 
 /** Outcome of [VaultLifecycle.create]. */
@@ -161,6 +162,8 @@ public class VaultLifecycle(
     private val migrationsResourcePath: String = MIGRATIONS_PATH,
 ) {
     private val lock = Mutex()
+    private val recoveryExclusion = VaultRecoveryExclusion.forDirectory(paths.vaultDir)
+    private var admission: Closeable? = null
     private var pool: ConnectionPool? = null
     private var lastOpen: OpenResult.Success? = null
 
@@ -181,11 +184,11 @@ public class VaultLifecycle(
      * onboarding step (`E6.I13`) expects.
      */
     public suspend fun create(key: ByteArray): CreateResult =
-        lock.withLock {
+        withAdmission<CreateResult>(key, CreateResult.Failed("vault recovery or reset in progress")) {
             val dbFile = paths.databaseFile
             if (dbFile.exists()) {
                 key.fill(0)
-                return@withLock CreateResult.AlreadyExists
+                return@withAdmission CreateResult.AlreadyExists
             }
 
             val migrationKey = key.copyOf()
@@ -197,10 +200,10 @@ public class VaultLifecycle(
                     runMigrations(migrationKey, dbFile.absolutePath)
                 } catch (ex: SkeinSQLiteException) {
                     liveKey.fill(0)
-                    return@withLock CreateResult.Failed(ex.message)
+                    return@withAdmission CreateResult.Failed(ex.message)
                 } catch (ex: EncryptedDatabaseWithoutKeyException) {
                     liveKey.fill(0)
-                    return@withLock CreateResult.Failed(ex.message ?: "migration failed")
+                    return@withAdmission CreateResult.Failed(ex.message ?: "migration failed")
                 }
 
             val livePool =
@@ -213,21 +216,22 @@ public class VaultLifecycle(
                         busyTimeoutMs = busyTimeoutMs,
                     )
                 } catch (ex: SkeinSQLiteException) {
-                    return@withLock CreateResult.Failed(ex.message)
+                    return@withAdmission CreateResult.Failed(ex.message)
                 } catch (ex: EncryptedDatabaseWithoutKeyException) {
-                    return@withLock CreateResult.Failed(ex.message ?: "open after create failed")
+                    return@withAdmission CreateResult.Failed(ex.message ?: "open after create failed")
                 }
 
+            pool = livePool
             try {
                 seedDefaultPersona(livePool.writer())
             } catch (ex: SkeinSQLiteException) {
                 livePool.closeAll()
+                pool = null
                 dbFile.delete()
-                return@withLock CreateResult.Failed(ex.message)
+                return@withAdmission CreateResult.Failed(ex.message)
             }
 
             val cipherVersion = readCipherVersion(livePool.writer())
-            pool = livePool
             // Also primes `lastOpen` so a subsequent `open()` call with the
             // vault already live (e.g. right after `create`) hits the
             // idempotent no-op branch below instead of opening a second,
@@ -248,17 +252,17 @@ public class VaultLifecycle(
      * contract for expected, user-facing outcomes.
      */
     public suspend fun open(key: ByteArray): OpenResult =
-        lock.withLock {
+        withAdmission<OpenResult>(key, OpenResult.Failed("vault recovery or reset in progress")) {
             val alreadyOpen = lastOpen
             if (mutableIsOpen.value && alreadyOpen != null) {
                 key.fill(0)
-                return@withLock alreadyOpen
+                return@withAdmission alreadyOpen
             }
 
             val dbFile = paths.databaseFile
             if (!dbFile.exists()) {
                 key.fill(0)
-                return@withLock OpenResult.NotFound
+                return@withAdmission OpenResult.NotFound
             }
 
             val migrationKey = key.copyOf()
@@ -270,15 +274,15 @@ public class VaultLifecycle(
                     runMigrations(migrationKey, dbFile.absolutePath)
                 } catch (ex: SkeinSQLiteException) {
                     liveKey.fill(0)
-                    return@withLock OpenResult.WrongKey
+                    return@withAdmission OpenResult.WrongKey
                 } catch (ex: EncryptedDatabaseWithoutKeyException) {
                     liveKey.fill(0)
-                    return@withLock OpenResult.WrongKey
+                    return@withAdmission OpenResult.WrongKey
                 }
 
             if (migrateResult.toVersion < 1) {
                 liveKey.fill(0)
-                return@withLock OpenResult.Failed(
+                return@withAdmission OpenResult.Failed(
                     "schema user_version is ${migrateResult.toVersion} after migrate() — expected >= 1",
                 )
             }
@@ -299,13 +303,13 @@ public class VaultLifecycle(
                         busyTimeoutMs = busyTimeoutMs,
                     )
                 } catch (ex: SkeinSQLiteException) {
-                    return@withLock OpenResult.WrongKey
+                    return@withAdmission OpenResult.WrongKey
                 } catch (ex: EncryptedDatabaseWithoutKeyException) {
-                    return@withLock OpenResult.WrongKey
+                    return@withAdmission OpenResult.WrongKey
                 }
 
-            val cipherVersion = readCipherVersion(livePool.writer())
             pool = livePool
+            val cipherVersion = readCipherVersion(livePool.writer())
             mutableIsOpen.value = true
             val result = OpenResult.Success(migrateResult, cipherVersion)
             lastOpen = result
@@ -362,10 +366,46 @@ public class VaultLifecycle(
                     "WAL checkpoint on close failed (${t.javaClass.simpleName}); closing the pool regardless",
                 )
             } finally {
-                livePool.closeAll()
+                try {
+                    livePool.closeAll()
+                } finally {
+                    if (!livePool.closedForRecovery) recoveryExclusion.poisonRecovery()
+                    admission?.close()
+                    admission = null
+                }
             }
         }
     }
+
+    private suspend fun <T> withAdmission(
+        key: ByteArray,
+        refused: T,
+        action: () -> T,
+    ): T =
+        try {
+            lock.withLock {
+                if (admission == null) admission = recoveryExclusion.admit() ?: return@withLock refused
+                try {
+                    action().also {
+                        // Failed opening/migration may have swallowed a native close failure. With no
+                        // complete connection receipt, require clean process restart before recovery.
+                        if (it is CreateResult.Failed || it is OpenResult.Failed || it == OpenResult.WrongKey) {
+                            recoveryExclusion.poisonRecovery()
+                        }
+                    }
+                } catch (failure: Throwable) {
+                    recoveryExclusion.poisonRecovery()
+                    throw failure
+                } finally {
+                    if (pool == null) {
+                        admission?.close()
+                        admission = null
+                    }
+                }
+            }
+        } finally {
+            key.fill(0)
+        }
 
     /**
      * The live [ConnectionPool] backing this vault — one writer +

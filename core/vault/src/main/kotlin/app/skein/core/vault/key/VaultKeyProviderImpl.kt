@@ -37,6 +37,7 @@ import android.security.keystore.UserNotAuthenticatedException
 import androidx.biometric.BiometricPrompt
 import androidx.fragment.app.FragmentActivity
 import app.skein.core.model.AuthorizationToken
+import app.skein.core.vault.lifecycle.VaultRecoveryExclusion
 import java.security.SecureRandom
 import java.util.concurrent.atomic.AtomicLong
 import javax.crypto.Cipher
@@ -56,11 +57,13 @@ public class VaultKeyProviderImpl internal constructor(
     private val storage: MasterKeyStorage,
     private val random: SecureRandom = SecureRandom(),
     private val clock: () -> Long = System::currentTimeMillis,
+    recoveryExclusion: VaultRecoveryExclusion? = null,
 ) : VaultKeyProvider {
     @Volatile
     private var master: ByteArray? = null
 
     private val epoch = AtomicLong(0L)
+    private val recoveryAdmission = recoveryExclusion?.let { RecoveryKeyAdmission({ master }, ::clearKey, it) }
 
     override suspend fun setup(
         activity: FragmentActivity,
@@ -85,7 +88,7 @@ public class VaultKeyProviderImpl internal constructor(
         factor: VaultKeyProvider.Factor,
     ): UnlockResult = unlockWith(factor) { f, cipher -> biometric.authenticate(activity, prompt, f, cipher) }
 
-    override fun currentKey(): ByteArray? = master
+    override fun currentKey(): ByteArray? = if (recoveryAdmission == null) master else recoveryAdmission.currentKey()
 
     override fun isInitialised(): Boolean =
         try {
@@ -100,6 +103,10 @@ public class VaultKeyProviderImpl internal constructor(
         }
 
     override fun lock() {
+        if (recoveryAdmission == null) clearKey() else recoveryAdmission.lock()
+    }
+
+    private fun clearKey() {
         zero(master)
         master = null
         // Epoch is bumped on lock too so any AuthorizationToken captured
@@ -128,6 +135,30 @@ public class VaultKeyProviderImpl internal constructor(
     internal suspend fun rewrapNoUi(survivingFactor: VaultKeyProvider.Factor): RewrapResult =
         rewrapWith(survivingFactor) { _, cipher -> AuthResult.Success(cipher) }
 
+    private suspend fun setupWith(
+        existingMaster: ByteArray?,
+        auth: AuthenticateFn,
+    ): SetupResult =
+        recoveryAdmission?.guarded(SetupResult.Failed(RECOVERY_BUSY), SetupResult.UserCancelled) {
+            setupAdmitted(existingMaster, auth)
+        } ?: setupAdmitted(existingMaster, auth)
+
+    private suspend fun unlockWith(
+        factor: VaultKeyProvider.Factor,
+        auth: AuthenticateFn,
+    ): UnlockResult =
+        recoveryAdmission?.guarded(UnlockResult.Failed(RECOVERY_BUSY), UnlockResult.UserCancelled) {
+            unlockAdmitted(factor, auth)
+        } ?: unlockAdmitted(factor, auth)
+
+    private suspend fun rewrapWith(
+        survivingFactor: VaultKeyProvider.Factor,
+        auth: AuthenticateFn,
+    ): RewrapResult =
+        recoveryAdmission?.guarded(RewrapResult.Failed(RECOVERY_BUSY), RewrapResult.UserCancelled) {
+            rewrapAdmitted(survivingFactor, auth)
+        } ?: rewrapAdmitted(survivingFactor, auth)
+
     // ---- shared orchestration -----------------------------------------
 
     /**
@@ -140,7 +171,7 @@ public class VaultKeyProviderImpl internal constructor(
      * buffer it passed in, and the copy this method makes is zeroed in the
      * same `finally` that zeroes a generated master.
      */
-    private suspend fun setupWith(
+    private suspend fun setupAdmitted(
         existingMaster: ByteArray?,
         auth: AuthenticateFn,
     ): SetupResult {
@@ -249,7 +280,7 @@ public class VaultKeyProviderImpl internal constructor(
         }
     }
 
-    private suspend fun unlockWith(
+    private suspend fun unlockAdmitted(
         factor: VaultKeyProvider.Factor,
         auth: AuthenticateFn,
     ): UnlockResult {
@@ -299,7 +330,7 @@ public class VaultKeyProviderImpl internal constructor(
         return UnlockResult.Success(AuthorizationToken(epoch.incrementAndGet()))
     }
 
-    private suspend fun rewrapWith(
+    private suspend fun rewrapAdmitted(
         survivingFactor: VaultKeyProvider.Factor,
         auth: AuthenticateFn,
     ): RewrapResult {
@@ -530,6 +561,7 @@ public class VaultKeyProviderImpl internal constructor(
     internal fun epochForTest(): Long = epoch.get()
 
     public companion object {
+        private const val RECOVERY_BUSY = "vault recovery or reset in progress"
         internal const val ALIAS_BIOMETRIC: String = "skein_master_bio_v1"
         internal const val ALIAS_CREDENTIAL: String = "skein_master_cred_v1"
         internal const val MASTER_KEY_LEN: Int = 32

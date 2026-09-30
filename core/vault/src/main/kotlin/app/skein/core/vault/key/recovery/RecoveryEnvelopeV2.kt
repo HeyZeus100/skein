@@ -24,6 +24,11 @@ internal data class RecoveryEnvelopeV2(
 
     fun alias(biometric: Boolean): String = alias(transactionId, biometric)
 
+    /** Authenticated by each GCM wrap; the trailing envelope digest is only corruption detection. */
+    fun authenticationData(biometric: Boolean): ByteArray =
+        "SKEINKEY:2:$transactionId:$generation:$createdAt:$strongBoxBacked:${if (biometric) 1 else 2}"
+            .toByteArray(Charsets.US_ASCII)
+
     fun encode(): ByteArray {
         require(generation > 1 && createdAt >= 0) { "invalid recovery generation" }
         val bytes = ByteArrayOutputStream()

@@ -61,10 +61,16 @@ internal class RecoveryEnvelopeTransaction(
             syncWrite(next, encoded)
             lease.assertExclusiveAndClosed()
             boundary(Boundary.BEFORE_RENAME)
-            lease.assertExclusiveAndClosed()
-            if (!read(active).contentEquals(expectedOld)) return Result(State.UNKNOWN)
-            // The lease must also serialize this final check/rename with lock admission at activation.
-            Files.move(next.toPath(), active.toPath(), ATOMIC_MOVE, REPLACE_EXISTING)
+            val replaced =
+                lease.whileExclusiveAndClosed {
+                    if (!read(active).contentEquals(expectedOld)) {
+                        false
+                    } else {
+                        Files.move(next.toPath(), active.toPath(), ATOMIC_MOVE, REPLACE_EXISTING)
+                        true
+                    }
+                }
+            if (!replaced) return Result(State.UNKNOWN)
             boundary(Boundary.AFTER_RENAME)
             syncDirectory(active.parentFile)
             return Result(State.COMMITTED, directorySynced = true)
