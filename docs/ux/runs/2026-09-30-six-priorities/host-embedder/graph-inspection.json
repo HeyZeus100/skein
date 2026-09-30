@@ -1,0 +1,79 @@
+{
+  "purpose": "Read-only protobuf and pinned companion verification; no runtime execution",
+  "weight_sha256": "b4342336debaea79de872370664b0aaeb67dea4605513d00ee236ea871a81f27",
+  "onnx_parser_version": "1.23.0",
+  "model_ir_version": 7,
+  "producer_name": "onnx.quantize",
+  "producer_version": "0.1.0",
+  "opset_imports": [
+    {
+      "domain": "",
+      "version": 14
+    }
+  ],
+  "inputs": [
+    {
+      "name": "input_ids",
+      "element_type": "INT64",
+      "shape": [
+        "batch_size",
+        "sequence_length"
+      ]
+    },
+    {
+      "name": "token_type_ids",
+      "element_type": "INT64",
+      "shape": [
+        "batch_size",
+        "sequence_length"
+      ]
+    },
+    {
+      "name": "attention_mask",
+      "element_type": "INT64",
+      "shape": [
+        "batch_size",
+        "sequence_length"
+      ]
+    }
+  ],
+  "outputs": [
+    {
+      "name": "last_hidden_state",
+      "element_type": "FLOAT",
+      "shape": [
+        "batch_size",
+        "sequence_length",
+        768
+      ]
+    }
+  ],
+  "nodes": 1566,
+  "initializers": 260,
+  "external_initializer_references": [],
+  "node_domains": [
+    ""
+  ],
+  "pooling_companion": {
+    "path": "build/agent-logs/embedder-experiment-20260930/models/pooling-config.json",
+    "source_url": "https://huggingface.co/nomic-ai/nomic-embed-text-v1.5/resolve/e9b6763023c676ca8431644204f50c2b100d9aab/1_Pooling/config.json",
+    "sha256": "3d6180f7233df2f529d65ea60c8db4af614fb78cbe99fd81103dcfeb9f8166a5",
+    "bytes": 286,
+    "git_blob_sha1": "9472f065b9b87e268dad290b6aaceb2f205c2135",
+    "declared_oid": "9472f065b9b87e268dad290b6aaceb2f205c2135",
+    "data": {
+      "word_embedding_dimension": 768,
+      "pooling_mode_cls_token": false,
+      "pooling_mode_mean_tokens": true,
+      "pooling_mode_max_tokens": false,
+      "pooling_mode_mean_sqrt_len_tokens": false,
+      "pooling_mode_weightedmean_tokens": false,
+      "pooling_mode_lasttoken": false
+    }
+  },
+  "limitations": [
+    "No runtime load success, platform execution-provider compatibility, output quality, latency or memory measured.",
+    "Graph metadata alone does not prove all normalization stages or integer weight quantization correctness.",
+    "Future adapter must consume only qualified files; no trust_remote_code execution performed."
+  ]
+}

@@ -1,0 +1,21 @@
+{
+  "frozen_at_utc": "2026-09-30T08:44:57.371393+00:00",
+  "source_base": "0e56b433ff9db9323123c8afd9c33dc58fab5e8e",
+  "stage": "development only",
+  "model_bytes_acquired_at_freeze": false,
+  "model_execution_at_freeze": false,
+  "records": 128,
+  "labeled_queries": 48,
+  "files": [
+    {
+      "path": "build/agent-logs/embedder-experiment-20260930/corpus.json",
+      "bytes": 38843,
+      "sha256": "95f0a6b920f06a6f57dffaa6513ce8373dda67a6a75739828e9d1f07a63690dd"
+    },
+    {
+      "path": "build/agent-logs/embedder-experiment-20260930/gold.json",
+      "bytes": 19930,
+      "sha256": "8a12d110037fbf7ffdc4c0325f771969547479f229a734c474d60ae32ad7523a"
+    }
+  ]
+}

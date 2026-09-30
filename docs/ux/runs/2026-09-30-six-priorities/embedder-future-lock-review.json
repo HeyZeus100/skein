@@ -1,0 +1,168 @@
+{
+  "scope": "Future-epoch revocation regression; host only, no live model/device proof",
+  "baseline": "c5adcfa31",
+  "negative_control": {
+    "totals": {
+      "tests": 15,
+      "failures": 3,
+      "errors": 0,
+      "skipped": 0,
+      "passed": 12
+    },
+    "failed_cases": [
+      {
+        "suite": "app.skein.embedder.service.EmbedderEndpointTest",
+        "case": "futureLockClosesObsoleteIdleModelAndDoesNotAuthorizeDelayedEpoch"
+      },
+      {
+        "suite": "app.skein.embedder.service.EmbedderEndpointTest",
+        "case": "futureLockCancelsOlderNativeCallAndRefusesDelayedUnlockWithoutConcurrentFree"
+      },
+      {
+        "suite": "app.skein.embedder.service.EmbedderSessionGateTest",
+        "case": "future lock revokes older authorization and rejects its delayed unlock"
+      }
+    ],
+    "files": [
+      {
+        "path": "build/agent-logs/embedder-boundary-20260930/future-lock-control/actual-test-results/TEST-app.skein.embedder.service.EmbedderEndpointTest.xml",
+        "sha256": "c71f4fec3178145b9c22c0dbadea05f8fed162811cec041769dfb2aa50b8b048",
+        "bytes": 7678,
+        "suite": "app.skein.embedder.service.EmbedderEndpointTest",
+        "timestamp": "2026-09-30T08:45:37.747Z"
+      },
+      {
+        "path": "build/agent-logs/embedder-boundary-20260930/future-lock-control/actual-test-results/TEST-app.skein.embedder.service.EmbedderSessionGateTest.xml",
+        "sha256": "c8e7572b583a94a66142fe6a84071bfb91928bfeea8e883e2de5482d85c395ef",
+        "bytes": 5635,
+        "suite": "app.skein.embedder.service.EmbedderSessionGateTest",
+        "timestamp": "2026-09-30T08:45:40.796Z"
+      }
+    ]
+  },
+  "fixed": {
+    "totals": {
+      "tests": 40,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "passed": 40
+    },
+    "failed_cases": [],
+    "files": [
+      {
+        "path": "build/agent-logs/embedder-boundary-20260930/future-lock-fixed/actual-test-results/TEST-app.skein.embedder.service.EmbedderEndpointTest.xml",
+        "sha256": "b29887eef68cd32a802379cac559f3dc7fe0b5f7c15dc02d3adc7d8d40987991",
+        "bytes": 1874,
+        "suite": "app.skein.embedder.service.EmbedderEndpointTest",
+        "timestamp": "2026-09-30T08:46:03.595Z"
+      },
+      {
+        "path": "build/agent-logs/embedder-boundary-20260930/future-lock-fixed/actual-test-results/TEST-app.skein.embedder.service.EmbedderRequestWorkerTest.xml",
+        "sha256": "4269ddf89885cff4c4db256ce51eece49c91c843e55dd38651cb4285b82cd252",
+        "bytes": 1257,
+        "suite": "app.skein.embedder.service.EmbedderRequestWorkerTest",
+        "timestamp": "2026-09-30T08:46:04.578Z"
+      },
+      {
+        "path": "build/agent-logs/embedder-boundary-20260930/future-lock-fixed/actual-test-results/TEST-app.skein.embedder.service.EmbedderSessionGateTest.xml",
+        "sha256": "e9261a470bb083a05c3f6addeadfa1038e75290362cc2b297bf063b62910c3a5",
+        "bytes": 1097,
+        "suite": "app.skein.embedder.service.EmbedderSessionGateTest",
+        "timestamp": "2026-09-30T08:46:04.576Z"
+      },
+      {
+        "path": "build/agent-logs/embedder-boundary-20260930/future-lock-fixed/actual-test-results/TEST-app.skein.embedder.service.EmbedderTransportTest.xml",
+        "sha256": "5735373a16496bc7a12262ca5b43118ed0b34e3636ae4fa262bbc1b6e732d23c",
+        "bytes": 1055,
+        "suite": "app.skein.embedder.service.EmbedderTransportTest",
+        "timestamp": "2026-09-30T08:46:04.683Z"
+      },
+      {
+        "path": "build/agent-logs/embedder-boundary-20260930/future-lock-fixed/actual-test-results/TEST-app.skein.embedder.service.PoolingTest.xml",
+        "sha256": "5121365b916000d21df913c47434e1dd3330270c44d85b08aebd39a4e8642c06",
+        "bytes": 1452,
+        "suite": "app.skein.embedder.service.PoolingTest",
+        "timestamp": "2026-09-30T08:46:04.710Z"
+      },
+      {
+        "path": "build/agent-logs/embedder-boundary-20260930/future-lock-fixed/actual-test-results/TEST-app.skein.embedder.service.VerifiedEmbedderModelsTest.xml",
+        "sha256": "ab0049bddef7ddf6eac06a4f01e944d9f41d6ff87dd18881e4fad6f9f535b06e",
+        "bytes": 1115,
+        "suite": "app.skein.embedder.service.VerifiedEmbedderModelsTest",
+        "timestamp": "2026-09-30T08:46:04.714Z"
+      },
+      {
+        "path": "build/agent-logs/embedder-boundary-20260930/future-lock-fixed/actual-test-results/TEST-app.skein.embedder.service.onnx.OrtSmokeTest.xml",
+        "sha256": "bc262a8656505b098df94c984eeabc0d4dd5442452f0e399efcde159df634113",
+        "bytes": 476,
+        "suite": "app.skein.embedder.service.onnx.OrtSmokeTest",
+        "timestamp": "2026-09-30T08:46:04.738Z"
+      }
+    ]
+  },
+  "logs": {
+    "build/agent-logs/embedder-boundary-20260930/future-lock-control/gradle.log": {
+      "sha256": "79c0166f84e3aa4dbc88d38098e017fea71ce3dd63f56ea742505e7ecbe4cbd0",
+      "command": [
+        "./gradlew",
+        "--no-daemon",
+        "--max-workers=2",
+        ":embedder-service:testDebugUnitTest",
+        "--tests",
+        "app.skein.embedder.service.EmbedderSessionGateTest",
+        "--tests",
+        "app.skein.embedder.service.EmbedderEndpointTest"
+      ],
+      "test_tasks": [
+        "> Task :embedder-service:testDebugUnitTest",
+        "> Task :embedder-service:testDebugUnitTest FAILED"
+      ]
+    },
+    "build/agent-logs/embedder-boundary-20260930/future-lock-fixed.log": {
+      "sha256": "b68ba14416bc8d43111f3a210c4d5fe576246edc68414c0eadad52810585a282",
+      "command": [
+        "./gradlew",
+        "--no-daemon",
+        "--max-workers=2",
+        ":embedder-service:ktlintFormat",
+        ":embedder-service:testDebugUnitTest",
+        ":embedder-service:ktlintCheck",
+        ":embedder-service:checkIsolationGuards",
+        ":embedder-service:checkNoRawLogging",
+        ":embedder-service:checkNoTestDoublesInMain"
+      ],
+      "test_tasks": [
+        "> Task :embedder-service:testDebugUnitTest"
+      ]
+    }
+  },
+  "restoration": {
+    "baseline": "c5adcfa31",
+    "fixed_source_sha256": {
+      "embedder-service/src/main/kotlin/app/skein/embedder/service/EmbedderSessionGate.kt": "4780ed7df3f00259bf401098a1d0e9a94cf7eeb45b766a25c4ff893a37aeff0c",
+      "embedder-service/src/main/kotlin/app/skein/embedder/service/EmbedderRequestWorker.kt": "90af06589292084b38ba2e82c5bfad52a109a1619e23b973f968f045db5c8175",
+      "embedder-service/src/main/kotlin/app/skein/embedder/service/EmbedderService.kt": "80685c34855b9df6cccd9c12cadddecdb58349877ec1c843c2f93d9cfb3a4992"
+    },
+    "command": [
+      "python3",
+      "/Users/andrewherrera/skein-worktrees/ux-integration-20260929/build/agent-logs/leased_run.py",
+      "/Users/andrewherrera/skein-worktrees/embedding-priorities-20260930/build/agent-logs/embedder-boundary-20260930/future-lock-control/gradle.log",
+      "./gradlew",
+      "--no-daemon",
+      "--max-workers=2",
+      ":embedder-service:testDebugUnitTest",
+      "--tests",
+      "app.skein.embedder.service.EmbedderSessionGateTest",
+      "--tests",
+      "app.skein.embedder.service.EmbedderEndpointTest"
+    ],
+    "exit": 1,
+    "restored_sha256": {
+      "embedder-service/src/main/kotlin/app/skein/embedder/service/EmbedderSessionGate.kt": "4780ed7df3f00259bf401098a1d0e9a94cf7eeb45b766a25c4ff893a37aeff0c",
+      "embedder-service/src/main/kotlin/app/skein/embedder/service/EmbedderRequestWorker.kt": "90af06589292084b38ba2e82c5bfad52a109a1619e23b973f968f045db5c8175",
+      "embedder-service/src/main/kotlin/app/skein/embedder/service/EmbedderService.kt": "80685c34855b9df6cccd9c12cadddecdb58349877ec1c843c2f93d9cfb3a4992"
+    },
+    "exact_source_restored": true
+  }
+}

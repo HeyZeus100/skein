@@ -1,0 +1,2044 @@
+{
+  "schema": "skein-recovery-fallback-verification-v1",
+  "baseline": "0e56b433ff9db9323123c8afd9c33dc58fab5e8e",
+  "source_hashes": {
+    "core/vault/src/main/kotlin/app/skein/core/vault/key/AndroidBiometricAuthenticator.kt": "72bd1effd4da673cbec11e0f909631524fd6b9680a48b0584ab9a7c021f01a3c",
+    "core/vault/src/main/kotlin/app/skein/core/vault/session/UnlockManager.kt": "8de9b355de6aa6062d08aa254f184c8a8823a554e6289bf150f5328247c2cbfb",
+    "core/vault/src/main/kotlin/app/skein/core/vault/session/UnlockOutcome.kt": "8030b92d3a73a7522ae5e92eda5a65ab3a1adf07cbe8770d79f11bc90a5f09e9",
+    "core/vault/src/main/kotlin/app/skein/core/vault/session/UnlockState.kt": "cba7814d3de83f941ffe5b180461e667292fdde7810f29bde5c84612b059ee3b",
+    "feature/shell/src/main/kotlin/app/skein/feature/shell/auth/BiometricUnlockScreen.kt": "026a89db82440529a84e321ccf4531c96ddeb9009ff476be6ab210e766108322",
+    "feature/shell/src/main/kotlin/app/skein/feature/shell/testing/ShellTestTags.kt": "bf65fcc26f6d4dfd70da79a0d3c59b30705b4b788c771a94b2d7cfcd2997674c",
+    "core/vault/src/test/kotlin/app/skein/core/vault/key/AndroidBiometricAuthenticatorTest.kt": "aa89d725167e8ef6b8903af7eb4d6a9f493b07f1d6f655c557dd7146e2f09b0f",
+    "core/vault/src/test/kotlin/app/skein/core/vault/key/CredentialSurvivorUnlockTest.kt": "bd86c9b3deda6b6e95d19edf25c4b3d6d10904c98cf51d8d65a818cc00cc5eb6",
+    "core/vault/src/test/kotlin/app/skein/core/vault/session/UnlockManagerAuthenticationCancellationTest.kt": "99aa837b999f37dd1b4f4e7801dd20c827f2993a83c2298bac00ec081f35257a",
+    "core/vault/src/test/kotlin/app/skein/core/vault/session/UnlockManagerSurvivingFactorTest.kt": "fc2712a8418c98b9e13989d5f6f75f1b452b2c0ffdd696911efe8a42cda298e3",
+    "feature/shell/src/main/kotlin/app/skein/feature/shell/auth/UnlockPromptFlow.kt": "836e94a630efb5e11024666846dd8fd8250e6e98ee257aa5154058961fa05f32",
+    "feature/shell/src/main/kotlin/app/skein/feature/shell/auth/VaultFactorRecoveryScreen.kt": "b4ee863d8806eeac044b78003e6dbfaae7a2dea73d515168ef67db37a9d6e23e",
+    "feature/shell/src/test/kotlin/app/skein/feature/shell/auth/BiometricUnlockCredentialFallbackTest.kt": "2b9c6ab6fc1c655720ecc8d3875813198e37654885ad6b41c153a2b97a96da37",
+    "feature/shell/src/test/kotlin/app/skein/feature/shell/auth/VaultFactorRecoveryScreenTest.kt": "21e89c6f70fa192fe3b0698ccafdc3736f5a2d12c023ffe870e355bc05f2d2e8"
+  },
+  "tests": {
+    "core/vault": {
+      "tests": 191,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    "feature/shell": {
+      "tests": 99,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    }
+  },
+  "xml": [
+    {
+      "path": "core/vault/build/test-results/testDevDebugUnitTest/TEST-app.skein.core.vault.key.AndroidBiometricAuthenticatorTest.xml",
+      "sha256": "c99d70dcef5b980e7949619ec8cc3a5ca048007745ac54bb0108d946d743b700",
+      "counts": {
+        "tests": 4,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "cases": [
+        {
+          "class": "app.skein.core.vault.key.AndroidBiometricAuthenticatorTest",
+          "name": "credential attempt binds the same cipher to only device credentials and completes once",
+          "skipped": false,
+          "failed": false
+        },
+        {
+          "class": "app.skein.core.vault.key.AndroidBiometricAuthenticatorTest",
+          "name": "a failed biometric match is nonterminal and user cancellation stays distinct",
+          "skipped": false,
+          "failed": false
+        },
+        {
+          "class": "app.skein.core.vault.key.AndroidBiometricAuthenticatorTest",
+          "name": "a missing or different successful cipher never authorizes the requested operation",
+          "skipped": false,
+          "failed": false
+        },
+        {
+          "class": "app.skein.core.vault.key.AndroidBiometricAuthenticatorTest",
+          "name": "cancellation dismisses the platform prompt and ignores late success and error callbacks",
+          "skipped": false,
+          "failed": false
+        }
+      ]
+    },
+    {
+      "path": "core/vault/build/test-results/testDevDebugUnitTest/TEST-app.skein.core.vault.key.AndroidKeystoreFacadeTest.xml",
+      "sha256": "c5b7257ee4ae0a80ea5cfbf58bfb2dcf2844c1c22a168a0d03bc46a43d2eb296",
+      "counts": {
+        "tests": 2,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "cases": [
+        {
+          "class": "app.skein.core.vault.key.AndroidKeystoreFacadeTest",
+          "name": "key lookup exception is not classified as missing",
+          "skipped": false,
+          "failed": false
+        },
+        {
+          "class": "app.skein.core.vault.key.AndroidKeystoreFacadeTest",
+          "name": "null key lookup becomes typed absence without exposing the alias",
+          "skipped": false,
+          "failed": false
+        }
+      ]
+    },
+    {
+      "path": "core/vault/build/test-results/testDevDebugUnitTest/TEST-app.skein.core.vault.key.CredentialSurvivorUnlockTest.xml",
+      "sha256": "fc8ee9950d22c8b556ba85f74df398300f2a13b74ba9050b52be0427b681862c",
+      "counts": {
+        "tests": 1,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "cases": [
+        {
+          "class": "app.skein.core.vault.key.CredentialSurvivorUnlockTest",
+          "name": "missing biometric and cancelled then successful credential leave envelope and survivor unchanged",
+          "skipped": false,
+          "failed": false
+        }
+      ]
+    },
+    {
+      "path": "core/vault/build/test-results/testDevDebugUnitTest/TEST-app.skein.core.vault.key.FileMasterKeyStorageTest.xml",
+      "sha256": "92e0b878136abf36f17a22f89e517f373ec7e80cf120571a4e8d55acf16792e7",
+      "counts": {
+        "tests": 27,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "cases": [
+        {
+          "class": "app.skein.core.vault.key.FileMasterKeyStorageTest",
+          "name": "the envelope holds the wrapped bytes and never the plaintext master",
+          "skipped": false,
+          "failed": false
+        },
+        {
+          "class": "app.skein.core.vault.key.FileMasterKeyStorageTest",
+          "name": "envelope lives at keys slash key-envelope v1 under the vault dir",
+          "skipped": false,
+          "failed": false
+        },
+        {
+          "class": "app.skein.core.vault.key.FileMasterKeyStorageTest",
+          "name": "rewrap bumps the version and replaces only the rewrapped factor",
+          "skipped": false,
+          "failed": false
+        },
+        {
+          "class": "app.skein.core.vault.key.FileMasterKeyStorageTest",
+          "name": "rewrap without an envelope is rejected",
+          "skipped": false,
+          "failed": false
+        },
+        {
+          "class": "app.skein.core.vault.key.FileMasterKeyStorageTest",
+          "name": "an interrupted rewrap leaves the previous envelope readable",
+          "skipped": false,
+          "failed": false
+        },
+        {
+          "class": "app.skein.core.vault.key.FileMasterKeyStorageTest",
+          "name": "writeInitial refuses to overwrite an existing envelope",
+          "skipped": false,
+          "failed": false
+        },
+        {
+          "class": "app.skein.core.vault.key.FileMasterKeyStorageTest",
+          "name": "writeInitial creates the keys directory",
+          "skipped": false,
+          "failed": false
+        },
+        {
+          "class": "app.skein.core.vault.key.FileMasterKeyStorageTest",
+          "name": "writeInitial then readActive round-trips every field",
+          "skipped": false,
+          "failed": false
+        },
+        {
+          "class": "app.skein.core.vault.key.FileMasterKeyStorageTest",
+          "name": "a corrupt envelope blocks writeInitial rather than being silently replaced",
+          "skipped": false,
+          "failed": false
+        },
+        {
+          "class": "app.skein.core.vault.key.FileMasterKeyStorageTest",
+          "name": "rewrap of the credential factor keeps the biometric factor",
+          "skipped": false,
+          "failed": false
+        },
+        {
+          "class": "app.skein.core.vault.key.FileMasterKeyStorageTest",
+          "name": "an unknown format version is reported as CORRUPT",
+          "skipped": false,
+          "failed": false
+        },
+        {
+          "class": "app.skein.core.vault.key.FileMasterKeyStorageTest",
+          "name": "rewrap with a stale currentVersion is rejected and leaves the envelope unchanged",
+          "skipped": false,
+          "failed": false
+        },
+        {
+          "class": "app.skein.core.vault.key.FileMasterKeyStorageTest",
+          "name": "trailing garbage after the digest is reported as CORRUPT",
+          "skipped": false,
+          "failed": false
+        },
+        {
+          "class": "app.skein.core.vault.key.FileMasterKeyStorageTest",
+          "name": "corruption errors never carry envelope bytes",
+          "skipped": false,
+          "failed": false
+        },
+        {
+          "class": "app.skein.core.vault.key.FileMasterKeyStorageTest",
+          "name": "unlock via the file backend recovers the same master through either factor",
+          "skipped": false,
+          "failed": false
+        },
+        {
+          "class": "app.skein.core.vault.key.FileMasterKeyStorageTest",
+          "name": "readActive returns null when no envelope exists",
+          "skipped": false,
+          "failed": false
+        },
+        {
+          "class": "app.skein.core.vault.key.FileMasterKeyStorageTest",
+          "name": "writes leave no temp file behind",
+          "skipped": false,
+          "failed": false
+        },
+        {
+          "class": "app.skein.core.vault.key.FileMasterKeyStorageTest",
+          "name": "a fresh storage instance over the same file reads what another wrote",
+          "skipped": false,
+          "failed": false
+        },
+        {
+          "class": "app.skein.core.vault.key.FileMasterKeyStorageTest",
+          "name": "round trip preserves strongBoxBacked=false",
+          "skipped": false,
+          "failed": false
+        },
+        {
+          "class": "app.skein.core.vault.key.FileMasterKeyStorageTest",
+          "name": "round trip preserves an absent factor as null",
+          "skipped": false,
+          "failed": false
+        },
+        {
+          "class": "app.skein.core.vault.key.FileMasterKeyStorageTest",
+          "name": "a flipped byte in the body is reported as CORRUPT",
+          "skipped": false,
+          "failed": false
+        },
+        {
+          "class": "app.skein.core.vault.key.FileMasterKeyStorageTest",
+          "name": "an empty envelope file is reported as CORRUPT",
+          "skipped": false,
+          "failed": false
+        },
+        {
+          "class": "app.skein.core.vault.key.FileMasterKeyStorageTest",
+          "name": "a truncated envelope is reported as CORRUPT",
+          "skipped": false,
+          "failed": false
+        },
+        {
+          "class": "app.skein.core.vault.key.FileMasterKeyStorageTest",
+          "name": "a flipped byte in the integrity digest is reported as CORRUPT",
+          "skipped": false,
+          "failed": false
+        },
+        {
+          "class": "app.skein.core.vault.key.FileMasterKeyStorageTest",
+          "name": "readActive returns null when the keys directory itself is missing",
+          "skipped": false,
+          "failed": false
+        },
+        {
+          "class": "app.skein.core.vault.key.FileMasterKeyStorageTest",
+          "name": "a wrong magic is reported as CORRUPT",
+          "skipped": false,
+          "failed": false
+        },
+        {
+          "class": "app.skein.core.vault.key.FileMasterKeyStorageTest",
+          "name": "a stale temp file from an interrupted write is replaced, not read",
+          "skipped": false,
+          "failed": false
+        }
+      ]
+    },
+    {
+      "path": "core/vault/build/test-results/testDevDebugUnitTest/TEST-app.skein.core.vault.key.PassphraseKeyExportTest.xml",
+      "sha256": "b92b98de096bee10c0e09e1526e407507b4879e8211210285887d2ab468fbdec",
+      "counts": {
+        "tests": 23,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "cases": [
+        {
+          "class": "app.skein.core.vault.key.PassphraseKeyExportTest",
+          "name": "export does not mutate the caller's passphrase",
+          "skipped": false,
+          "failed": false
+        },
+        {
+          "class": "app.skein.core.vault.key.PassphraseKeyExportTest",
+          "name": "the exported file contains no window of the passphrase",
+          "skipped": false,
+          "failed": false
+        },
+        {
+          "class": "app.skein.core.vault.key.PassphraseKeyExportTest",
+          "name": "a file that is not a recovery export fails with MALFORMED",
+          "skipped": false,
+          "failed": false
+        },
+        {
+          "class": "app.skein.core.vault.key.PassphraseKeyExportTest",
+          "name": "import does not mutate the caller's passphrase",
+          "skipped": false,
+          "failed": false
+        },
+        {
+          "class": "app.skein.core.vault.key.PassphraseKeyExportTest",
+          "name": "export does not mutate the caller's master key",
+          "skipped": false,
+          "failed": false
+        },
+        {
+          "class": "app.skein.core.vault.key.PassphraseKeyExportTest",
+          "name": "failure messages carry no key or passphrase material",
+          "skipped": false,
+          "failed": false
+        },
+        {
+          "class": "app.skein.core.vault.key.PassphraseKeyExportTest",
+          "name": "export then import with the same passphrase recovers the master key",
+          "skipped": false,
+          "failed": false
+        },
+        {
+          "class": "app.skein.core.vault.key.PassphraseKeyExportTest",
+          "name": "an absurd iteration count is refused rather than run",
+          "skipped": false,
+          "failed": false
+        },
+        {
+          "class": "app.skein.core.vault.key.PassphraseKeyExportTest",
+          "name": "a master key of the wrong length is refused",
+          "skipped": false,
+          "failed": false
+        },
+        {
+          "class": "app.skein.core.vault.key.PassphraseKeyExportTest",
+          "name": "a newer format version fails with UNSUPPORTED_VERSION",
+          "skipped": false,
+          "failed": false
+        },
+        {
+          "class": "app.skein.core.vault.key.PassphraseKeyExportTest",
+          "name": "round trip at the production parameters recovers the master key",
+          "skipped": false,
+          "failed": false
+        },
+        {
+          "class": "app.skein.core.vault.key.PassphraseKeyExportTest",
+          "name": "a rewritten iteration count fails the AAD-bound tag check",
+          "skipped": false,
+          "failed": false
+        },
+        {
+          "class": "app.skein.core.vault.key.PassphraseKeyExportTest",
+          "name": "the exported file contains no hex rendering of the master key",
+          "skipped": false,
+          "failed": false
+        },
+        {
+          "class": "app.skein.core.vault.key.PassphraseKeyExportTest",
+          "name": "a wrong passphrase never yields a different key instead of failing",
+          "skipped": false,
+          "failed": false
+        },
+        {
+          "class": "app.skein.core.vault.key.PassphraseKeyExportTest",
+          "name": "a passphrase below the floor is refused",
+          "skipped": false,
+          "failed": false
+        },
+        {
+          "class": "app.skein.core.vault.key.PassphraseKeyExportTest",
+          "name": "trailing bytes after the document fail with MALFORMED",
+          "skipped": false,
+          "failed": false
+        },
+        {
+          "class": "app.skein.core.vault.key.PassphraseKeyExportTest",
+          "name": "two exports of the same key under the same passphrase differ",
+          "skipped": false,
+          "failed": false
+        },
+        {
+          "class": "app.skein.core.vault.key.PassphraseKeyExportTest",
+          "name": "a failed import leaves no recovered plaintext behind to return",
+          "skipped": false,
+          "failed": false
+        },
+        {
+          "class": "app.skein.core.vault.key.PassphraseKeyExportTest",
+          "name": "a tampered ciphertext fails with the same reason as a wrong passphrase",
+          "skipped": false,
+          "failed": false
+        },
+        {
+          "class": "app.skein.core.vault.key.PassphraseKeyExportTest",
+          "name": "the exported file declares the pinned KDF and iteration count",
+          "skipped": false,
+          "failed": false
+        },
+        {
+          "class": "app.skein.core.vault.key.PassphraseKeyExportTest",
+          "name": "the exported file contains no window of the raw master key",
+          "skipped": false,
+          "failed": false
+        },
+        {
+          "class": "app.skein.core.vault.key.PassphraseKeyExportTest",
+          "name": "a downgraded iteration count is refused before any derivation",
+          "skipped": false,
+          "failed": false
+        },
+        {
+          "class": "app.skein.core.vault.key.PassphraseKeyExportTest",
+          "name": "a wrong passphrase fails with WRONG_PASSPHRASE",
+          "skipped": false,
+          "failed": false
+        }
+      ]
+    },
+    {
+      "path": "core/vault/build/test-results/testDevDebugUnitTest/TEST-app.skein.core.vault.key.PassphraseStrengthTest.xml",
+      "sha256": "5c9405b6514ff4d321473f64417cd0476e2fe8a1aefa67806a12cdb2e76e569d",
+      "counts": {
+        "tests": 10,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "cases": [
+        {
+          "class": "app.skein.core.vault.key.PassphraseStrengthTest",
+          "name": "a mixed twenty-character passphrase scores STRONG",
+          "skipped": false,
+          "failed": false
+        },
+        {
+          "class": "app.skein.core.vault.key.PassphraseStrengthTest",
+          "name": "only TOO_SHORT is unacceptable",
+          "skipped": false,
+          "failed": false
+        },
+        {
+          "class": "app.skein.core.vault.key.PassphraseStrengthTest",
+          "name": "class count sees all four classes",
+          "skipped": false,
+          "failed": false
+        },
+        {
+          "class": "app.skein.core.vault.key.PassphraseStrengthTest",
+          "name": "class count sees a single class",
+          "skipped": false,
+          "failed": false
+        },
+        {
+          "class": "app.skein.core.vault.key.PassphraseStrengthTest",
+          "name": "minimum length with a single character class scores WEAK",
+          "skipped": false,
+          "failed": false
+        },
+        {
+          "class": "app.skein.core.vault.key.PassphraseStrengthTest",
+          "name": "exactly the minimum length clears the floor",
+          "skipped": false,
+          "failed": false
+        },
+        {
+          "class": "app.skein.core.vault.key.PassphraseStrengthTest",
+          "name": "minimum length with three character classes scores FAIR",
+          "skipped": false,
+          "failed": false
+        },
+        {
+          "class": "app.skein.core.vault.key.PassphraseStrengthTest",
+          "name": "a passphrase below the minimum length scores TOO_SHORT",
+          "skipped": false,
+          "failed": false
+        },
+        {
+          "class": "app.skein.core.vault.key.PassphraseStrengthTest",
+          "name": "a long single-class passphrase reaches STRONG on length alone",
+          "skipped": false,
+          "failed": false
+        },
+        {
+          "class": "app.skein.core.vault.key.PassphraseStrengthTest",
+          "name": "evaluate does not mutate the caller's passphrase",
+          "skipped": false,
+          "failed": false
+        }
+      ]
+    },
+    {
+      "path": "core/vault/build/test-results/testDevDebugUnitTest/TEST-app.skein.core.vault.key.Pbkdf2VectorTest.xml",
+      "sha256": "af12e19d44fe9368e55db234b7b295a87662f779a94108a18301bdee83fbbaf9",
+      "counts": {
+        "tests": 5,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "cases": [
+        {
+          "class": "app.skein.core.vault.key.Pbkdf2VectorTest",
+          "name": "PBKDF2-HMAC-SHA256 matches the published vector at two iterations",
+          "skipped": false,
+          "failed": false
+        },
+        {
+          "class": "app.skein.core.vault.key.Pbkdf2VectorTest",
+          "name": "PBKDF2-HMAC-SHA256 matches the published vector at one iteration",
+          "skipped": false,
+          "failed": false
+        },
+        {
+          "class": "app.skein.core.vault.key.Pbkdf2VectorTest",
+          "name": "the export pins the 600 000-iteration floor for imports",
+          "skipped": false,
+          "failed": false
+        },
+        {
+          "class": "app.skein.core.vault.key.Pbkdf2VectorTest",
+          "name": "PBKDF2-HMAC-SHA256 matches the published vector at 4096 iterations",
+          "skipped": false,
+          "failed": false
+        },
+        {
+          "class": "app.skein.core.vault.key.Pbkdf2VectorTest",
+          "name": "PBKDF2-HMAC-SHA256 matches the published multi-part vector",
+          "skipped": false,
+          "failed": false
+        }
+      ]
+    },
+    {
+      "path": "core/vault/build/test-results/testDevDebugUnitTest/TEST-app.skein.core.vault.key.PromptInfoForFactorTest.xml",
+      "sha256": "5cfb2389072b2f45b067ad0fc5c80dbb794727b140e0f7b89a061baf979de735",
+      "counts": {
+        "tests": 14,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "cases": [
+        {
+          "class": "app.skein.core.vault.key.PromptInfoForFactorTest",
+          "name": "caller's subtitle is preserved when it set one, for BIOMETRIC",
+          "skipped": false,
+          "failed": false
+        },
+        {
+          "class": "app.skein.core.vault.key.PromptInfoForFactorTest",
+          "name": "DEVICE_CREDENTIAL factor allows only DEVICE_CREDENTIAL",
+          "skipped": false,
+          "failed": false
+        },
+        {
+          "class": "app.skein.core.vault.key.PromptInfoForFactorTest",
+          "name": "DEVICE_CREDENTIAL factor never allows BIOMETRIC_STRONG",
+          "skipped": false,
+          "failed": false
+        },
+        {
+          "class": "app.skein.core.vault.key.PromptInfoForFactorTest",
+          "name": "BIOMETRIC factor always carries a non-empty negative button",
+          "skipped": false,
+          "failed": false
+        },
+        {
+          "class": "app.skein.core.vault.key.PromptInfoForFactorTest",
+          "name": "description is absent when the caller set none",
+          "skipped": false,
+          "failed": false
+        },
+        {
+          "class": "app.skein.core.vault.key.PromptInfoForFactorTest",
+          "name": "BIOMETRIC factor falls back to a step-1 subtitle when the caller set none",
+          "skipped": false,
+          "failed": false
+        },
+        {
+          "class": "app.skein.core.vault.key.PromptInfoForFactorTest",
+          "name": "DEVICE_CREDENTIAL factor never carries a negative button",
+          "skipped": false,
+          "failed": false
+        },
+        {
+          "class": "app.skein.core.vault.key.PromptInfoForFactorTest",
+          "name": "BIOMETRIC factor keeps the caller's negative button text when it set one",
+          "skipped": false,
+          "failed": false
+        },
+        {
+          "class": "app.skein.core.vault.key.PromptInfoForFactorTest",
+          "name": "caller's subtitle is preserved when it set one, for DEVICE_CREDENTIAL",
+          "skipped": false,
+          "failed": false
+        },
+        {
+          "class": "app.skein.core.vault.key.PromptInfoForFactorTest",
+          "name": "description is preserved verbatim when the caller set one",
+          "skipped": false,
+          "failed": false
+        },
+        {
+          "class": "app.skein.core.vault.key.PromptInfoForFactorTest",
+          "name": "title is preserved verbatim for both factors",
+          "skipped": false,
+          "failed": false
+        },
+        {
+          "class": "app.skein.core.vault.key.PromptInfoForFactorTest",
+          "name": "BIOMETRIC factor never allows DEVICE_CREDENTIAL",
+          "skipped": false,
+          "failed": false
+        },
+        {
+          "class": "app.skein.core.vault.key.PromptInfoForFactorTest",
+          "name": "BIOMETRIC factor allows only BIOMETRIC_STRONG",
+          "skipped": false,
+          "failed": false
+        },
+        {
+          "class": "app.skein.core.vault.key.PromptInfoForFactorTest",
+          "name": "DEVICE_CREDENTIAL factor falls back to a step-2 subtitle when the caller set none",
+          "skipped": false,
+          "failed": false
+        }
+      ]
+    },
+    {
+      "path": "core/vault/build/test-results/testDevDebugUnitTest/TEST-app.skein.core.vault.key.VaultKeyProviderImplTest.xml",
+      "sha256": "de3c45fdad55ee27e19b596c3b80542f5997d5a9b480d1ef02965e6ac3f09942",
+      "counts": {
+        "tests": 42,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "cases": [
+        {
+          "class": "app.skein.core.vault.key.VaultKeyProviderImplTest",
+          "name": "isInitialised is true over an unreadable envelope",
+          "skipped": false,
+          "failed": false
+        },
+        {
+          "class": "app.skein.core.vault.key.VaultKeyProviderImplTest",
+          "name": "unlock returns DeviceLocked when the keystore reports the device is locked",
+          "skipped": false,
+          "failed": false
+        },
+        {
+          "class": "app.skein.core.vault.key.VaultKeyProviderImplTest",
+          "name": "isInitialised never touches the Keystore",
+          "skipped": false,
+          "failed": false
+        },
+        {
+          "class": "app.skein.core.vault.key.VaultKeyProviderImplTest",
+          "name": "unlock without setup returns NotInitialised",
+          "skipped": false,
+          "failed": false
+        },
+        {
+          "class": "app.skein.core.vault.key.VaultKeyProviderImplTest",
+          "name": "isInitialised is false before setup",
+          "skipped": false,
+          "failed": false
+        },
+        {
+          "class": "app.skein.core.vault.key.VaultKeyProviderImplTest",
+          "name": "setup writes wrapped bytes to storage for both factors",
+          "skipped": false,
+          "failed": false
+        },
+        {
+          "class": "app.skein.core.vault.key.VaultKeyProviderImplTest",
+          "name": "setup cleans up both aliases and reports Failed when the biometric wrap is rejected",
+          "skipped": false,
+          "failed": false
+        },
+        {
+          "class": "app.skein.core.vault.key.VaultKeyProviderImplTest",
+          "name": "lock zeroes the master ByteArray in place",
+          "skipped": false,
+          "failed": false
+        },
+        {
+          "class": "app.skein.core.vault.key.VaultKeyProviderImplTest",
+          "name": "setup with StrongBox reports Success with strongBoxBacked=true",
+          "skipped": false,
+          "failed": false
+        },
+        {
+          "class": "app.skein.core.vault.key.VaultKeyProviderImplTest",
+          "name": "isInitialised is true after setup",
+          "skipped": false,
+          "failed": false
+        },
+        {
+          "class": "app.skein.core.vault.key.VaultKeyProviderImplTest",
+          "name": "setup rejection does not persist an envelope",
+          "skipped": false,
+          "failed": false
+        },
+        {
+          "class": "app.skein.core.vault.key.VaultKeyProviderImplTest",
+          "name": "rewrapAfterInvalidation_leaves_masterKey_accessible",
+          "skipped": false,
+          "failed": false
+        },
+        {
+          "class": "app.skein.core.vault.key.VaultKeyProviderImplTest",
+          "name": "unlock does not leave a master key behind when the device is locked",
+          "skipped": false,
+          "failed": false
+        },
+        {
+          "class": "app.skein.core.vault.key.VaultKeyProviderImplTest",
+          "name": "setup then unlock via device credential factor also returns the same master",
+          "skipped": false,
+          "failed": false
+        },
+        {
+          "class": "app.skein.core.vault.key.VaultKeyProviderImplTest",
+          "name": "missing requested key preserves the envelope and surviving factor",
+          "skipped": false,
+          "failed": false
+        },
+        {
+          "class": "app.skein.core.vault.key.VaultKeyProviderImplTest",
+          "name": "rewrap bumps master key version in storage",
+          "skipped": false,
+          "failed": false
+        },
+        {
+          "class": "app.skein.core.vault.key.VaultKeyProviderImplTest",
+          "name": "AuthorizationToken epoch changes across rewrap",
+          "skipped": false,
+          "failed": false
+        },
+        {
+          "class": "app.skein.core.vault.key.VaultKeyProviderImplTest",
+          "name": "missing recovery key never rewrites an envelope or creates replacement aliases",
+          "skipped": false,
+          "failed": false
+        },
+        {
+          "class": "app.skein.core.vault.key.VaultKeyProviderImplTest",
+          "name": "setup cleans up both aliases and reports Failed when the device credential wrap is rejected",
+          "skipped": false,
+          "failed": false
+        },
+        {
+          "class": "app.skein.core.vault.key.VaultKeyProviderImplTest",
+          "name": "a second unlock after lock unwraps the same master bytes",
+          "skipped": false,
+          "failed": false
+        },
+        {
+          "class": "app.skein.core.vault.key.VaultKeyProviderImplTest",
+          "name": "unlock throwing outside KeyPermanentlyInvalidated surfaces as Failed",
+          "skipped": false,
+          "failed": false
+        },
+        {
+          "class": "app.skein.core.vault.key.VaultKeyProviderImplTest",
+          "name": "AuthorizationToken epoch changes across lock and unlock",
+          "skipped": false,
+          "failed": false
+        },
+        {
+          "class": "app.skein.core.vault.key.VaultKeyProviderImplTest",
+          "name": "rewrap preserves the master key bytes byte-for-byte",
+          "skipped": false,
+          "failed": false
+        },
+        {
+          "class": "app.skein.core.vault.key.VaultKeyProviderImplTest",
+          "name": "unlock over a corrupt envelope returns Failed with the bounded reason",
+          "skipped": false,
+          "failed": false
+        },
+        {
+          "class": "app.skein.core.vault.key.VaultKeyProviderImplTest",
+          "name": "unlock after setup makes currentKey return 32-byte master",
+          "skipped": false,
+          "failed": false
+        },
+        {
+          "class": "app.skein.core.vault.key.VaultKeyProviderImplTest",
+          "name": "rewrap over a corrupt envelope returns Failed",
+          "skipped": false,
+          "failed": false
+        },
+        {
+          "class": "app.skein.core.vault.key.VaultKeyProviderImplTest",
+          "name": "unavailable key lookup remains generic failure instead of missing key",
+          "skipped": false,
+          "failed": false
+        },
+        {
+          "class": "app.skein.core.vault.key.VaultKeyProviderImplTest",
+          "name": "setup without StrongBox reports StrongBoxUnavailableFallback",
+          "skipped": false,
+          "failed": false
+        },
+        {
+          "class": "app.skein.core.vault.key.VaultKeyProviderImplTest",
+          "name": "unlock zeroes any pre-existing master before overwriting",
+          "skipped": false,
+          "failed": false
+        },
+        {
+          "class": "app.skein.core.vault.key.VaultKeyProviderImplTest",
+          "name": "setup over a corrupt envelope is refused without touching the Keystore",
+          "skipped": false,
+          "failed": false
+        },
+        {
+          "class": "app.skein.core.vault.key.VaultKeyProviderImplTest",
+          "name": "rewrap when surviving factor is also invalidated returns BothFactorsInvalidated",
+          "skipped": false,
+          "failed": false
+        },
+        {
+          "class": "app.skein.core.vault.key.VaultKeyProviderImplTest",
+          "name": "lock is idempotent",
+          "skipped": false,
+          "failed": false
+        },
+        {
+          "class": "app.skein.core.vault.key.VaultKeyProviderImplTest",
+          "name": "KeyPermanentlyInvalidatedException can be constructed and caught under returnDefaultValues",
+          "skipped": false,
+          "failed": false
+        },
+        {
+          "class": "app.skein.core.vault.key.VaultKeyProviderImplTest",
+          "name": "Failed reasons never carry key material",
+          "skipped": false,
+          "failed": false
+        },
+        {
+          "class": "app.skein.core.vault.key.VaultKeyProviderImplTest",
+          "name": "isDeviceLockedFailure recognises UserNotAuthenticatedException by type",
+          "skipped": false,
+          "failed": false
+        },
+        {
+          "class": "app.skein.core.vault.key.VaultKeyProviderImplTest",
+          "name": "isDeviceLockedFailure does not match KeyPermanentlyInvalidatedException",
+          "skipped": false,
+          "failed": false
+        },
+        {
+          "class": "app.skein.core.vault.key.VaultKeyProviderImplTest",
+          "name": "setup when already initialised is refused and leaves the aliases untouched",
+          "skipped": false,
+          "failed": false
+        },
+        {
+          "class": "app.skein.core.vault.key.VaultKeyProviderImplTest",
+          "name": "unlock returns KeyPermanentlyInvalidated when the alias is dead",
+          "skipped": false,
+          "failed": false
+        },
+        {
+          "class": "app.skein.core.vault.key.VaultKeyProviderImplTest",
+          "name": "rewrap reports Failed when the re-wrap is rejected by the keystore",
+          "skipped": false,
+          "failed": false
+        },
+        {
+          "class": "app.skein.core.vault.key.VaultKeyProviderImplTest",
+          "name": "isInitialised is true over a corrupt envelope so nothing offers a re-setup",
+          "skipped": false,
+          "failed": false
+        },
+        {
+          "class": "app.skein.core.vault.key.VaultKeyProviderImplTest",
+          "name": "isDeviceLockedFailure never matches on message text alone",
+          "skipped": false,
+          "failed": false
+        },
+        {
+          "class": "app.skein.core.vault.key.VaultKeyProviderImplTest",
+          "name": "setup with no enrolled biometric reports NoBiometricEnrolled",
+          "skipped": false,
+          "failed": false
+        }
+      ]
+    },
+    {
+      "path": "core/vault/build/test-results/testDevDebugUnitTest/TEST-app.skein.core.vault.key.VaultKeyProviderImportTest.xml",
+      "sha256": "7441457dbd79feae14cb0fe4c3b80cfadf0754d4eb687fe9c4824af63d80a766",
+      "counts": {
+        "tests": 10,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "cases": [
+        {
+          "class": "app.skein.core.vault.key.VaultKeyProviderImportTest",
+          "name": "a fresh setup after alias loss produces a DIFFERENT master",
+          "skipped": false,
+          "failed": false
+        },
+        {
+          "class": "app.skein.core.vault.key.VaultKeyProviderImportTest",
+          "name": "importing over a live vault is refused as AlreadyInitialised",
+          "skipped": false,
+          "failed": false
+        },
+        {
+          "class": "app.skein.core.vault.key.VaultKeyProviderImportTest",
+          "name": "setup with a wrong-length master is refused",
+          "skipped": false,
+          "failed": false
+        },
+        {
+          "class": "app.skein.core.vault.key.VaultKeyProviderImportTest",
+          "name": "setup with an existing master adopts exactly those bytes",
+          "skipped": false,
+          "failed": false
+        },
+        {
+          "class": "app.skein.core.vault.key.VaultKeyProviderImportTest",
+          "name": "setup with an existing master reports Success",
+          "skipped": false,
+          "failed": false
+        },
+        {
+          "class": "app.skein.core.vault.key.VaultKeyProviderImportTest",
+          "name": "setup with an existing master creates both Layer-0 aliases",
+          "skipped": false,
+          "failed": false
+        },
+        {
+          "class": "app.skein.core.vault.key.VaultKeyProviderImportTest",
+          "name": "setup does not take ownership of the caller's master buffer",
+          "skipped": false,
+          "failed": false
+        },
+        {
+          "class": "app.skein.core.vault.key.VaultKeyProviderImportTest",
+          "name": "a recovery import under the wrong passphrase never reaches setup",
+          "skipped": false,
+          "failed": false
+        },
+        {
+          "class": "app.skein.core.vault.key.VaultKeyProviderImportTest",
+          "name": "setup with a wrong-length master persists nothing",
+          "skipped": false,
+          "failed": false
+        },
+        {
+          "class": "app.skein.core.vault.key.VaultKeyProviderImportTest",
+          "name": "importing after alias and envelope loss recovers the same master key",
+          "skipped": false,
+          "failed": false
+        }
+      ]
+    },
+    {
+      "path": "core/vault/build/test-results/testDevDebugUnitTest/TEST-app.skein.core.vault.session.UnlockManagerAuthenticationCancellationTest.xml",
+      "sha256": "6d1996e453fde74540475c6d781071fa81ef615656958cfb5ac55f0d226ace46",
+      "counts": {
+        "tests": 4,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "cases": [
+        {
+          "class": "app.skein.core.vault.session.UnlockManagerAuthenticationCancellationTest",
+          "name": "caller cancellation discards a key produced by a late callback",
+          "skipped": false,
+          "failed": false
+        },
+        {
+          "class": "app.skein.core.vault.session.UnlockManagerAuthenticationCancellationTest",
+          "name": "missing biometric followed by credential success retains normal observer semantics",
+          "skipped": false,
+          "failed": false
+        },
+        {
+          "class": "app.skein.core.vault.session.UnlockManagerAuthenticationCancellationTest",
+          "name": "concurrent credential attempts authenticate once and coalesce the same token",
+          "skipped": false,
+          "failed": false
+        },
+        {
+          "class": "app.skein.core.vault.session.UnlockManagerAuthenticationCancellationTest",
+          "name": "lock wins over noncooperative late authentication without publishing any authorization",
+          "skipped": false,
+          "failed": false
+        }
+      ]
+    },
+    {
+      "path": "core/vault/build/test-results/testDevDebugUnitTest/TEST-app.skein.core.vault.session.UnlockManagerSurvivingFactorTest.xml",
+      "sha256": "614663b395fea3b083eba4dc2b193c13711e844f123cb8b14a36b6cb582ca45f",
+      "counts": {
+        "tests": 6,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "cases": [
+        {
+          "class": "app.skein.core.vault.session.UnlockManagerSurvivingFactorTest",
+          "name": "survivor failures stay distinct and retain recovery context",
+          "skipped": false,
+          "failed": false
+        },
+        {
+          "class": "app.skein.core.vault.session.UnlockManagerSurvivingFactorTest",
+          "name": "key-invalidated lock preserves known recovery context while explicit cancel clears it",
+          "skipped": false,
+          "failed": false
+        },
+        {
+          "class": "app.skein.core.vault.session.UnlockManagerSurvivingFactorTest",
+          "name": "normal unlock cannot bypass recovery and unknown invalidation never guesses a factor",
+          "skipped": false,
+          "failed": false
+        },
+        {
+          "class": "app.skein.core.vault.session.UnlockManagerSurvivingFactorTest",
+          "name": "known invalidation derives opposite factor and publishes ordinary success without rewrap",
+          "skipped": false,
+          "failed": false
+        },
+        {
+          "class": "app.skein.core.vault.session.UnlockManagerSurvivingFactorTest",
+          "name": "lock cancels late survivor success and rejects a new unlock admitted after lock request",
+          "skipped": false,
+          "failed": false
+        },
+        {
+          "class": "app.skein.core.vault.session.UnlockManagerSurvivingFactorTest",
+          "name": "caller cancellation retains invalidation context but clears any late unwrapped key",
+          "skipped": false,
+          "failed": false
+        }
+      ]
+    },
+    {
+      "path": "core/vault/build/test-results/testDevDebugUnitTest/TEST-app.skein.core.vault.session.UnlockManagerTest.xml",
+      "sha256": "044c3cc90d1a419acad1673661c608930a3e0ec03b9214f3d6ac63fcdf900013",
+      "counts": {
+        "tests": 43,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "cases": [
+        {
+          "class": "app.skein.core.vault.session.UnlockManagerTest",
+          "name": "recoverAndRewrap cancel drops to Locked",
+          "skipped": false,
+          "failed": false
+        },
+        {
+          "class": "app.skein.core.vault.session.UnlockManagerTest",
+          "name": "recoverAndRewrap on success transitions RecoveryRequired to Unlocked",
+          "skipped": false,
+          "failed": false
+        },
+        {
+          "class": "app.skein.core.vault.session.UnlockManagerTest",
+          "name": "lock from Unlocked zeros key then transitions to Locked",
+          "skipped": false,
+          "failed": false
+        },
+        {
+          "class": "app.skein.core.vault.session.UnlockManagerTest",
+          "name": "TEARDOWN observers run after both HIGH and LOW",
+          "skipped": false,
+          "failed": false
+        },
+        {
+          "class": "app.skein.core.vault.session.UnlockManagerTest",
+          "name": "missing requested key leaves Locked without a token and logs only finite identifiers",
+          "skipped": false,
+          "failed": false
+        },
+        {
+          "class": "app.skein.core.vault.session.UnlockManagerTest",
+          "name": "unlock DeviceLocked leaves state Locked and is not a Failed",
+          "skipped": false,
+          "failed": false
+        },
+        {
+          "class": "app.skein.core.vault.session.UnlockManagerTest",
+          "name": "unlock failed leaves state Locked",
+          "skipped": false,
+          "failed": false
+        },
+        {
+          "class": "app.skein.core.vault.session.UnlockManagerTest",
+          "name": "lock from RecoveryRequired transitions to Locked without invoking keyProvider",
+          "skipped": false,
+          "failed": false
+        },
+        {
+          "class": "app.skein.core.vault.session.UnlockManagerTest",
+          "name": "unlock success transitions Locked to Unlocked and publishes token",
+          "skipped": false,
+          "failed": false
+        },
+        {
+          "class": "app.skein.core.vault.session.UnlockManagerTest",
+          "name": "two concurrent unlock calls result in exactly one auth invocation",
+          "skipped": false,
+          "failed": false
+        },
+        {
+          "class": "app.skein.core.vault.session.UnlockManagerTest",
+          "name": "recoverAndRewrap success throws IllegalStateException when contract violated",
+          "skipped": false,
+          "failed": false
+        },
+        {
+          "class": "app.skein.core.vault.session.UnlockManagerTest",
+          "name": "unlock KeyPermanentlyInvalidated transitions to RecoveryRequired",
+          "skipped": false,
+          "failed": false
+        },
+        {
+          "class": "app.skein.core.vault.session.UnlockManagerTest",
+          "name": "unlock user cancel leaves state Locked",
+          "skipped": false,
+          "failed": false
+        },
+        {
+          "class": "app.skein.core.vault.session.UnlockManagerTest",
+          "name": "initial state is Locked",
+          "skipped": false,
+          "failed": false
+        },
+        {
+          "class": "app.skein.core.vault.session.UnlockManagerTest",
+          "name": "a TEARDOWN observer that never acks still cannot hold the key alive",
+          "skipped": false,
+          "failed": false
+        },
+        {
+          "class": "app.skein.core.vault.session.UnlockManagerTest",
+          "name": "TEARDOWN still runs when a HIGH observer exhausts the shared budget",
+          "skipped": false,
+          "failed": false
+        },
+        {
+          "class": "app.skein.core.vault.session.UnlockManagerTest",
+          "name": "poke is no-op when Locked",
+          "skipped": false,
+          "failed": false
+        },
+        {
+          "class": "app.skein.core.vault.session.UnlockManagerTest",
+          "name": "throwing HIGH observer does not skip keyProvider lock and reaches Locked",
+          "skipped": false,
+          "failed": false
+        },
+        {
+          "class": "app.skein.core.vault.session.UnlockManagerTest",
+          "name": "lock is idempotent when already Locked",
+          "skipped": false,
+          "failed": false
+        },
+        {
+          "class": "app.skein.core.vault.session.UnlockManagerTest",
+          "name": "throwing observer does not prevent later same- and lower-priority observers from running",
+          "skipped": false,
+          "failed": false
+        },
+        {
+          "class": "app.skein.core.vault.session.UnlockManagerTest",
+          "name": "unlock succeeds after a lock in which an observer threw",
+          "skipped": false,
+          "failed": false
+        },
+        {
+          "class": "app.skein.core.vault.session.UnlockManagerTest",
+          "name": "recoverAndRewrap failed stays in RecoveryRequired",
+          "skipped": false,
+          "failed": false
+        },
+        {
+          "class": "app.skein.core.vault.session.UnlockManagerTest",
+          "name": "recoverAndRewrap from wrong state returns IllegalTransition",
+          "skipped": false,
+          "failed": false
+        },
+        {
+          "class": "app.skein.core.vault.session.UnlockManagerTest",
+          "name": "TEARDOWN runs before the key is zeroed",
+          "skipped": false,
+          "failed": false
+        },
+        {
+          "class": "app.skein.core.vault.session.UnlockManagerTest",
+          "name": "recoverAndRewrap both-factors-invalidated drops to Locked",
+          "skipped": false,
+          "failed": false
+        },
+        {
+          "class": "app.skein.core.vault.session.UnlockManagerTest",
+          "name": "a throwing TEARDOWN observer does not skip keyProvider lock",
+          "skipped": false,
+          "failed": false
+        },
+        {
+          "class": "app.skein.core.vault.session.UnlockManagerTest",
+          "name": "idle poll locks when timeout elapsed",
+          "skipped": false,
+          "failed": false
+        },
+        {
+          "class": "app.skein.core.vault.session.UnlockManagerTest",
+          "name": "missing recovery key drops to Locked without authorizing setup or unlock",
+          "skipped": false,
+          "failed": false
+        },
+        {
+          "class": "app.skein.core.vault.session.UnlockManagerTest",
+          "name": "addLockObserver disposable removes the observer",
+          "skipped": false,
+          "failed": false
+        },
+        {
+          "class": "app.skein.core.vault.session.UnlockManagerTest",
+          "name": "HIGH observers run before LOW observers",
+          "skipped": false,
+          "failed": false
+        },
+        {
+          "class": "app.skein.core.vault.session.UnlockManagerTest",
+          "name": "initial policy matches the ctor idleTimeout and secure defaults",
+          "skipped": false,
+          "failed": false
+        },
+        {
+          "class": "app.skein.core.vault.session.UnlockManagerTest",
+          "name": "throwing LOW observer does not skip keyProvider lock and reaches Locked",
+          "skipped": false,
+          "failed": false
+        },
+        {
+          "class": "app.skein.core.vault.session.UnlockManagerTest",
+          "name": "poke extends idle timeout",
+          "skipped": false,
+          "failed": false
+        },
+        {
+          "class": "app.skein.core.vault.session.UnlockManagerTest",
+          "name": "lock with KEY_INVALIDATED lands in RecoveryRequired",
+          "skipped": false,
+          "failed": false
+        },
+        {
+          "class": "app.skein.core.vault.session.UnlockManagerTest",
+          "name": "observers see Locking then Locked within budget",
+          "skipped": false,
+          "failed": false
+        },
+        {
+          "class": "app.skein.core.vault.session.UnlockManagerTest",
+          "name": "unlock when already Unlocked returns Coalesced",
+          "skipped": false,
+          "failed": false
+        },
+        {
+          "class": "app.skein.core.vault.session.UnlockManagerTest",
+          "name": "configure clamps an idle timeout above the plan ceiling",
+          "skipped": false,
+          "failed": false
+        },
+        {
+          "class": "app.skein.core.vault.session.UnlockManagerTest",
+          "name": "configure updates idle timeout used by the idle poller",
+          "skipped": false,
+          "failed": false
+        },
+        {
+          "class": "app.skein.core.vault.session.UnlockManagerTest",
+          "name": "configure updates lockOnScreenOff and lockOnBackground flags",
+          "skipped": false,
+          "failed": false
+        },
+        {
+          "class": "app.skein.core.vault.session.UnlockManagerTest",
+          "name": "observer that never acks triggers FORCE_TIMEOUT but zeroize still runs",
+          "skipped": false,
+          "failed": false
+        },
+        {
+          "class": "app.skein.core.vault.session.UnlockManagerTest",
+          "name": "authorizationToken StateFlow reflects unlock and lock transitions",
+          "skipped": false,
+          "failed": false
+        },
+        {
+          "class": "app.skein.core.vault.session.UnlockManagerTest",
+          "name": "configure clamps an idle timeout below the plan floor",
+          "skipped": false,
+          "failed": false
+        },
+        {
+          "class": "app.skein.core.vault.session.UnlockManagerTest",
+          "name": "idle poll does not lock before timeout",
+          "skipped": false,
+          "failed": false
+        }
+      ]
+    },
+    {
+      "path": "feature/shell/build/test-results/testDebugUnitTest/TEST-app.skein.feature.shell.auth.BiometricUnlockCredentialFallbackTest.xml",
+      "sha256": "9f25636368e680effa86fb1ca8f0f1b9424d3c576c8cb2c997a5008922670289",
+      "counts": {
+        "tests": 6,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "cases": [
+        {
+          "class": "app.skein.feature.shell.auth.BiometricUnlockCredentialFallbackTest",
+          "name": "credential invalidation remains recovery-required and never publishes success",
+          "skipped": false,
+          "failed": false
+        },
+        {
+          "class": "app.skein.feature.shell.auth.BiometricUnlockCredentialFallbackTest",
+          "name": "missing credential remains a typed failure with no repeated credential action or automatic reset",
+          "skipped": false,
+          "failed": false
+        },
+        {
+          "class": "app.skein.feature.shell.auth.BiometricUnlockCredentialFallbackTest",
+          "name": "two queued credential clicks present once and disposal cancels the pending attempt",
+          "skipped": false,
+          "failed": false
+        },
+        {
+          "class": "app.skein.feature.shell.auth.BiometricUnlockCredentialFallbackTest",
+          "name": "cancelled credential attempt stays locked and retry keeps selected factor",
+          "skipped": false,
+          "failed": false
+        },
+        {
+          "class": "app.skein.feature.shell.auth.BiometricUnlockCredentialFallbackTest",
+          "name": "credential device-lock race waits and repeats credential only after wake",
+          "skipped": false,
+          "failed": false
+        },
+        {
+          "class": "app.skein.feature.shell.auth.BiometricUnlockCredentialFallbackTest",
+          "name": "missing biometric offers explicit credential authentication without automatic recovery or reset",
+          "skipped": false,
+          "failed": false
+        }
+      ]
+    },
+    {
+      "path": "feature/shell/build/test-results/testDebugUnitTest/TEST-app.skein.feature.shell.auth.BiometricUnlockDeviceLockGateTest.xml",
+      "sha256": "0fd4181d37f98735e943ebfec64c832a3b2e7c99c7ed10f29c7a459a4493a688",
+      "counts": {
+        "tests": 3,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "cases": [
+        {
+          "class": "app.skein.feature.shell.auth.BiometricUnlockDeviceLockGateTest",
+          "name": "an unlock-present event triggers the suppressed prompt",
+          "skipped": false,
+          "failed": false
+        },
+        {
+          "class": "app.skein.feature.shell.auth.BiometricUnlockDeviceLockGateTest",
+          "name": "an already-unlocked device presents immediately, unchanged from before skein-9psb",
+          "skipped": false,
+          "failed": false
+        },
+        {
+          "class": "app.skein.feature.shell.auth.BiometricUnlockDeviceLockGateTest",
+          "name": "a locked keyguard suppresses the auto-prompt",
+          "skipped": false,
+          "failed": false
+        }
+      ]
+    },
+    {
+      "path": "feature/shell/build/test-results/testDebugUnitTest/TEST-app.skein.feature.shell.auth.BiometricUnlockOutcomeTest.xml",
+      "sha256": "819c4e2340eb1a28847550f2dba3b6ffe3e2e790443433741468a58bb11f3be7",
+      "counts": {
+        "tests": 20,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "cases": [
+        {
+          "class": "app.skein.feature.shell.auth.BiometricUnlockOutcomeTest",
+          "name": "a coalesced NotInitialised is unwrapped before routing",
+          "skipped": false,
+          "failed": false
+        },
+        {
+          "class": "app.skein.feature.shell.auth.BiometricUnlockOutcomeTest",
+          "name": "a coalesced corrupt envelope is unwrapped before routing to onEnvelopeUnreadable",
+          "skipped": false,
+          "failed": false
+        },
+        {
+          "class": "app.skein.feature.shell.auth.BiometricUnlockOutcomeTest",
+          "name": "NotInitialised falls back to a retry message without a setup route",
+          "skipped": false,
+          "failed": false
+        },
+        {
+          "class": "app.skein.feature.shell.auth.BiometricUnlockOutcomeTest",
+          "name": "a generic failure never routes to onEnvelopeUnreadable even when the host offers it",
+          "skipped": false,
+          "failed": false
+        },
+        {
+          "class": "app.skein.feature.shell.auth.BiometricUnlockOutcomeTest",
+          "name": "missing key has a distinct route without authentication retry setup or invalidation recovery",
+          "skipped": false,
+          "failed": false
+        },
+        {
+          "class": "app.skein.feature.shell.auth.BiometricUnlockOutcomeTest",
+          "name": "a coalesced DeviceLocked is unwrapped before routing",
+          "skipped": false,
+          "failed": false
+        },
+        {
+          "class": "app.skein.feature.shell.auth.BiometricUnlockOutcomeTest",
+          "name": "NotInitialised routes to setup when the host offers a route",
+          "skipped": false,
+          "failed": false
+        },
+        {
+          "class": "app.skein.feature.shell.auth.BiometricUnlockOutcomeTest",
+          "name": "coalesced missing key retains its factor and distinct route",
+          "skipped": false,
+          "failed": false
+        },
+        {
+          "class": "app.skein.feature.shell.auth.BiometricUnlockOutcomeTest",
+          "name": "DeviceLocked routes to onDeviceLocked, never onRetry",
+          "skipped": false,
+          "failed": false
+        },
+        {
+          "class": "app.skein.feature.shell.auth.BiometricUnlockOutcomeTest",
+          "name": "user cancellation never routes to onEnvelopeUnreadable even when the host offers it",
+          "skipped": false,
+          "failed": false
+        },
+        {
+          "class": "app.skein.feature.shell.auth.BiometricUnlockOutcomeTest",
+          "name": "a generic failure never surfaces its reason",
+          "skipped": false,
+          "failed": false
+        },
+        {
+          "class": "app.skein.feature.shell.auth.BiometricUnlockOutcomeTest",
+          "name": "a corrupt envelope routes to onEnvelopeUnreadable when the host offers it",
+          "skipped": false,
+          "failed": false
+        },
+        {
+          "class": "app.skein.feature.shell.auth.BiometricUnlockOutcomeTest",
+          "name": "a corrupt envelope shows a message distinct from the generic failure",
+          "skipped": false,
+          "failed": false
+        },
+        {
+          "class": "app.skein.feature.shell.auth.BiometricUnlockOutcomeTest",
+          "name": "a corrupt envelope falls back to onRetry without an onEnvelopeUnreadable route",
+          "skipped": false,
+          "failed": false
+        },
+        {
+          "class": "app.skein.feature.shell.auth.BiometricUnlockOutcomeTest",
+          "name": "a corrupt envelope never routes to setup",
+          "skipped": false,
+          "failed": false
+        },
+        {
+          "class": "app.skein.feature.shell.auth.BiometricUnlockOutcomeTest",
+          "name": "DeviceLocked never invokes onUnlocked or onRecoveryRequired",
+          "skipped": false,
+          "failed": false
+        },
+        {
+          "class": "app.skein.feature.shell.auth.BiometricUnlockOutcomeTest",
+          "name": "generic diagnostic text cannot masquerade as confirmed key loss",
+          "skipped": false,
+          "failed": false
+        },
+        {
+          "class": "app.skein.feature.shell.auth.BiometricUnlockOutcomeTest",
+          "name": "the corrupt-envelope message promises nothing was changed",
+          "skipped": false,
+          "failed": false
+        },
+        {
+          "class": "app.skein.feature.shell.auth.BiometricUnlockOutcomeTest",
+          "name": "an unreadable envelope also routes to onEnvelopeUnreadable when offered",
+          "skipped": false,
+          "failed": false
+        },
+        {
+          "class": "app.skein.feature.shell.auth.BiometricUnlockOutcomeTest",
+          "name": "an unreadable envelope shows the same message as a corrupt one",
+          "skipped": false,
+          "failed": false
+        }
+      ]
+    },
+    {
+      "path": "feature/shell/build/test-results/testDebugUnitTest/TEST-app.skein.feature.shell.auth.BiometricUnlockResetAffordanceTest.xml",
+      "sha256": "678a53cad6e53da4279ccacb92ae86f122eb8350db7613fdb1069fc608993ea1",
+      "counts": {
+        "tests": 9,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "cases": [
+        {
+          "class": "app.skein.feature.shell.auth.BiometricUnlockResetAffordanceTest",
+          "name": "tapping the reset affordance invokes onResetRequested",
+          "skipped": false,
+          "failed": false
+        },
+        {
+          "class": "app.skein.feature.shell.auth.BiometricUnlockResetAffordanceTest",
+          "name": "missing biometric key preserves the chance of credential recovery without retrying",
+          "skipped": false,
+          "failed": false
+        },
+        {
+          "class": "app.skein.feature.shell.auth.BiometricUnlockResetAffordanceTest",
+          "name": "a corrupt envelope offers the reset affordance when the host wires one",
+          "skipped": false,
+          "failed": false
+        },
+        {
+          "class": "app.skein.feature.shell.auth.BiometricUnlockResetAffordanceTest",
+          "name": "generic failure cannot enter typed key-loss reset even when host offers it",
+          "skipped": false,
+          "failed": false
+        },
+        {
+          "class": "app.skein.feature.shell.auth.BiometricUnlockResetAffordanceTest",
+          "name": "missing credential key reset invokes only its typed callback after the click",
+          "skipped": false,
+          "failed": false
+        },
+        {
+          "class": "app.skein.feature.shell.auth.BiometricUnlockResetAffordanceTest",
+          "name": "user cancellation never offers the reset affordance",
+          "skipped": false,
+          "failed": false
+        },
+        {
+          "class": "app.skein.feature.shell.auth.BiometricUnlockResetAffordanceTest",
+          "name": "a generic failure never offers the reset affordance",
+          "skipped": false,
+          "failed": false
+        },
+        {
+          "class": "app.skein.feature.shell.auth.BiometricUnlockResetAffordanceTest",
+          "name": "an unreadable envelope offers the reset affordance when the host wires one",
+          "skipped": false,
+          "failed": false
+        },
+        {
+          "class": "app.skein.feature.shell.auth.BiometricUnlockResetAffordanceTest",
+          "name": "a corrupt envelope offers no reset affordance when the host does not wire one",
+          "skipped": false,
+          "failed": false
+        }
+      ]
+    },
+    {
+      "path": "feature/shell/build/test-results/testDebugUnitTest/TEST-app.skein.feature.shell.auth.VaultFactorRecoveryScreenTest.xml",
+      "sha256": "70a9ef8aba2373141c8dad3dc901dac08255a5f7ab578e36689f079d12c17126",
+      "counts": {
+        "tests": 5,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "cases": [
+        {
+          "class": "app.skein.feature.shell.auth.VaultFactorRecoveryScreenTest",
+          "name": "disposing recovery screen cancels authentication and late completion cannot unlock",
+          "skipped": false,
+          "failed": false
+        },
+        {
+          "class": "app.skein.feature.shell.auth.VaultFactorRecoveryScreenTest",
+          "name": "unknown failed factor renders guidance and never guesses an authentication method",
+          "skipped": false,
+          "failed": false
+        },
+        {
+          "class": "app.skein.feature.shell.auth.VaultFactorRecoveryScreenTest",
+          "name": "missing survivor leaves recovery intact without another prompt or destructive action",
+          "skipped": false,
+          "failed": false
+        },
+        {
+          "class": "app.skein.feature.shell.auth.VaultFactorRecoveryScreenTest",
+          "name": "survivor success calls the host once without setup or replacement",
+          "skipped": false,
+          "failed": false
+        },
+        {
+          "class": "app.skein.feature.shell.auth.VaultFactorRecoveryScreenTest",
+          "name": "known biometric invalidation offers one explicit credential action then preserves typed retry",
+          "skipped": false,
+          "failed": false
+        }
+      ]
+    },
+    {
+      "path": "feature/shell/build/test-results/testDebugUnitTest/TEST-app.skein.feature.shell.auth.VaultResetConfirmStateTest.xml",
+      "sha256": "4f40d02516e8d4a9a8c55acc78b68bac4968f09d173ee5feb0ae42de14662590",
+      "counts": {
+        "tests": 17,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "cases": [
+        {
+          "class": "app.skein.feature.shell.auth.VaultResetConfirmStateTest",
+          "name": "typing RESET alone never runs the reset",
+          "skipped": false,
+          "failed": false
+        },
+        {
+          "class": "app.skein.feature.shell.auth.VaultResetConfirmStateTest",
+          "name": "Success calls onReset",
+          "skipped": false,
+          "failed": false
+        },
+        {
+          "class": "app.skein.feature.shell.auth.VaultResetConfirmStateTest",
+          "name": "RefusedUnlocked shows a message and never calls onReset",
+          "skipped": false,
+          "failed": false
+        },
+        {
+          "class": "app.skein.feature.shell.auth.VaultResetConfirmStateTest",
+          "name": "a second tap of confirmReset while resetting does not issue a second call",
+          "skipped": false,
+          "failed": false
+        },
+        {
+          "class": "app.skein.feature.shell.auth.VaultResetConfirmStateTest",
+          "name": "both the typed confirmation and the final confirm are required to run reset",
+          "skipped": false,
+          "failed": false
+        },
+        {
+          "class": "app.skein.feature.shell.auth.VaultResetConfirmStateTest",
+          "name": "wrong typed text leaves canContinue false",
+          "skipped": false,
+          "failed": false
+        },
+        {
+          "class": "app.skein.feature.shell.auth.VaultResetConfirmStateTest",
+          "name": "confirmReset is a no-op on the type-confirmation step",
+          "skipped": false,
+          "failed": false
+        },
+        {
+          "class": "app.skein.feature.shell.auth.VaultResetConfirmStateTest",
+          "name": "cancel clears any error message",
+          "skipped": false,
+          "failed": false
+        },
+        {
+          "class": "app.skein.feature.shell.auth.VaultResetConfirmStateTest",
+          "name": "starts on the type-confirmation step with an empty field",
+          "skipped": false,
+          "failed": false
+        },
+        {
+          "class": "app.skein.feature.shell.auth.VaultResetConfirmStateTest",
+          "name": "continueToFinalConfirm advances once the typed text matches",
+          "skipped": false,
+          "failed": false
+        },
+        {
+          "class": "app.skein.feature.shell.auth.VaultResetConfirmStateTest",
+          "name": "cancel returns to the type-confirmation step and clears the typed text",
+          "skipped": false,
+          "failed": false
+        },
+        {
+          "class": "app.skein.feature.shell.auth.VaultResetConfirmStateTest",
+          "name": "continueToFinalConfirm is a no-op while the typed text is wrong",
+          "skipped": false,
+          "failed": false
+        },
+        {
+          "class": "app.skein.feature.shell.auth.VaultResetConfirmStateTest",
+          "name": "Failed shows a message and never calls onReset",
+          "skipped": false,
+          "failed": false
+        },
+        {
+          "class": "app.skein.feature.shell.auth.VaultResetConfirmStateTest",
+          "name": "an empty field leaves canContinue false",
+          "skipped": false,
+          "failed": false
+        },
+        {
+          "class": "app.skein.feature.shell.auth.VaultResetConfirmStateTest",
+          "name": "the exact word RESET makes canContinue true",
+          "skipped": false,
+          "failed": false
+        },
+        {
+          "class": "app.skein.feature.shell.auth.VaultResetConfirmStateTest",
+          "name": "resetting resets to false after a refusal so the user can retry",
+          "skipped": false,
+          "failed": false
+        },
+        {
+          "class": "app.skein.feature.shell.auth.VaultResetConfirmStateTest",
+          "name": "resetting is true only while the reset is in flight",
+          "skipped": false,
+          "failed": false
+        }
+      ]
+    },
+    {
+      "path": "feature/shell/build/test-results/testDebugUnitTest/TEST-app.skein.feature.shell.auth.VaultRestoreStateTest.xml",
+      "sha256": "6559c5e15e4957138c5c8895fd23b454bbacb5761c15ac0e93c824509c44c255",
+      "counts": {
+        "tests": 24,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "cases": [
+        {
+          "class": "app.skein.feature.shell.auth.VaultRestoreStateTest",
+          "name": "a chosen file moves to passphrase entry",
+          "skipped": false,
+          "failed": false
+        },
+        {
+          "class": "app.skein.feature.shell.auth.VaultRestoreStateTest",
+          "name": "beginning a file choice moves to ChoosingFile",
+          "skipped": false,
+          "failed": false
+        },
+        {
+          "class": "app.skein.feature.shell.auth.VaultRestoreStateTest",
+          "name": "a file that is not a recovery export reports UnreadableFile",
+          "skipped": false,
+          "failed": false
+        },
+        {
+          "class": "app.skein.feature.shell.auth.VaultRestoreStateTest",
+          "name": "the recovered master is zeroed before restoreWith returns",
+          "skipped": false,
+          "failed": false
+        },
+        {
+          "class": "app.skein.feature.shell.auth.VaultRestoreStateTest",
+          "name": "a successful submit clears the typed passphrase",
+          "skipped": false,
+          "failed": false
+        },
+        {
+          "class": "app.skein.feature.shell.auth.VaultRestoreStateTest",
+          "name": "no failure message carries the passphrase",
+          "skipped": false,
+          "failed": false
+        },
+        {
+          "class": "app.skein.feature.shell.auth.VaultRestoreStateTest",
+          "name": "a StrongBox fallback reports Provisioned with false",
+          "skipped": false,
+          "failed": false
+        },
+        {
+          "class": "app.skein.feature.shell.auth.VaultRestoreStateTest",
+          "name": "a wrong passphrase reports WrongPassphrase",
+          "skipped": false,
+          "failed": false
+        },
+        {
+          "class": "app.skein.feature.shell.auth.VaultRestoreStateTest",
+          "name": "submit is enabled once a file and a passphrase are in hand",
+          "skipped": false,
+          "failed": false
+        },
+        {
+          "class": "app.skein.feature.shell.auth.VaultRestoreStateTest",
+          "name": "an existing envelope reports AlreadyInitialised",
+          "skipped": false,
+          "failed": false
+        },
+        {
+          "class": "app.skein.feature.shell.auth.VaultRestoreStateTest",
+          "name": "a second submit while one is in flight does not run setup twice",
+          "skipped": false,
+          "failed": false
+        },
+        {
+          "class": "app.skein.feature.shell.auth.VaultRestoreStateTest",
+          "name": "submit is disabled until something is typed",
+          "skipped": false,
+          "failed": false
+        },
+        {
+          "class": "app.skein.feature.shell.auth.VaultRestoreStateTest",
+          "name": "a wrong passphrase never reaches setup",
+          "skipped": false,
+          "failed": false
+        },
+        {
+          "class": "app.skein.feature.shell.auth.VaultRestoreStateTest",
+          "name": "a cancelled wrap prompt reports Cancelled",
+          "skipped": false,
+          "failed": false
+        },
+        {
+          "class": "app.skein.feature.shell.auth.VaultRestoreStateTest",
+          "name": "an already-initialised device routes to unlock",
+          "skipped": false,
+          "failed": false
+        },
+        {
+          "class": "app.skein.feature.shell.auth.VaultRestoreStateTest",
+          "name": "cancelling from passphrase entry returns to Idle",
+          "skipped": false,
+          "failed": false
+        },
+        {
+          "class": "app.skein.feature.shell.auth.VaultRestoreStateTest",
+          "name": "a dismissed picker returns to Idle",
+          "skipped": false,
+          "failed": false
+        },
+        {
+          "class": "app.skein.feature.shell.auth.VaultRestoreStateTest",
+          "name": "a correct passphrase hands the recovered master to setup",
+          "skipped": false,
+          "failed": false
+        },
+        {
+          "class": "app.skein.feature.shell.auth.VaultRestoreStateTest",
+          "name": "a newer-format file reports UnsupportedFile",
+          "skipped": false,
+          "failed": false
+        },
+        {
+          "class": "app.skein.feature.shell.auth.VaultRestoreStateTest",
+          "name": "a successful restore reports Provisioned with the StrongBox flag",
+          "skipped": false,
+          "failed": false
+        },
+        {
+          "class": "app.skein.feature.shell.auth.VaultRestoreStateTest",
+          "name": "an unreadable envelope is routed to unlock, not to a retry",
+          "skipped": false,
+          "failed": false
+        },
+        {
+          "class": "app.skein.feature.shell.auth.VaultRestoreStateTest",
+          "name": "a wrong passphrase returns to entry with a message",
+          "skipped": false,
+          "failed": false
+        },
+        {
+          "class": "app.skein.feature.shell.auth.VaultRestoreStateTest",
+          "name": "the flow starts Idle",
+          "skipped": false,
+          "failed": false
+        },
+        {
+          "class": "app.skein.feature.shell.auth.VaultRestoreStateTest",
+          "name": "a successful submit calls onProvisioned",
+          "skipped": false,
+          "failed": false
+        }
+      ]
+    },
+    {
+      "path": "feature/shell/build/test-results/testDebugUnitTest/TEST-app.skein.feature.shell.auth.VaultSetupStateTest.xml",
+      "sha256": "b0dec36f845bb93b5a02f1dceb8230f1e025a885d394e10483b588c544af374e",
+      "counts": {
+        "tests": 15,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "cases": [
+        {
+          "class": "app.skein.feature.shell.auth.VaultSetupStateTest",
+          "name": "cancellation and failure show different messages",
+          "skipped": false,
+          "failed": false
+        },
+        {
+          "class": "app.skein.feature.shell.auth.VaultSetupStateTest",
+          "name": "any other Failed offers a retry",
+          "skipped": false,
+          "failed": false
+        },
+        {
+          "class": "app.skein.feature.shell.auth.VaultSetupStateTest",
+          "name": "a second begin while in flight does not run setup again",
+          "skipped": false,
+          "failed": false
+        },
+        {
+          "class": "app.skein.feature.shell.auth.VaultSetupStateTest",
+          "name": "a Failed reason is never surfaced verbatim",
+          "skipped": false,
+          "failed": false
+        },
+        {
+          "class": "app.skein.feature.shell.auth.VaultSetupStateTest",
+          "name": "UserCancelled offers a retry",
+          "skipped": false,
+          "failed": false
+        },
+        {
+          "class": "app.skein.feature.shell.auth.VaultSetupStateTest",
+          "name": "begin after a cancellation runs setup again",
+          "skipped": false,
+          "failed": false
+        },
+        {
+          "class": "app.skein.feature.shell.auth.VaultSetupStateTest",
+          "name": "an unreadable envelope routes to unlock, never to a retry of setup",
+          "skipped": false,
+          "failed": false
+        },
+        {
+          "class": "app.skein.feature.shell.auth.VaultSetupStateTest",
+          "name": "NoBiometricEnrolled shows the enrolment guidance",
+          "skipped": false,
+          "failed": false
+        },
+        {
+          "class": "app.skein.feature.shell.auth.VaultSetupStateTest",
+          "name": "Success reports provisioned with strongBoxBacked=true",
+          "skipped": false,
+          "failed": false
+        },
+        {
+          "class": "app.skein.feature.shell.auth.VaultSetupStateTest",
+          "name": "starts in Ready without calling setup",
+          "skipped": false,
+          "failed": false
+        },
+        {
+          "class": "app.skein.feature.shell.auth.VaultSetupStateTest",
+          "name": "begin moves to InProgress while setup is running",
+          "skipped": false,
+          "failed": false
+        },
+        {
+          "class": "app.skein.feature.shell.auth.VaultSetupStateTest",
+          "name": "StrongBoxUnavailableFallback reports provisioned with strongBoxBacked=false",
+          "skipped": false,
+          "failed": false
+        },
+        {
+          "class": "app.skein.feature.shell.auth.VaultSetupStateTest",
+          "name": "a corrupt envelope routes to unlock, never to a retry of setup",
+          "skipped": false,
+          "failed": false
+        },
+        {
+          "class": "app.skein.feature.shell.auth.VaultSetupStateTest",
+          "name": "AlreadyInitialised routes to unlock without reporting provisioned",
+          "skipped": false,
+          "failed": false
+        },
+        {
+          "class": "app.skein.feature.shell.auth.VaultSetupStateTest",
+          "name": "setup throwing offers a retry instead of crashing",
+          "skipped": false,
+          "failed": false
+        }
+      ]
+    }
+  ],
+  "log": "build/agent-logs/credential-fallback-20260930/combined-focused-2.log",
+  "log_sha256": "33a9ed81ea4b5cecd2480f1f48d90383c80e932b108b5fa06f1f3a62fac8437d",
+  "task_reuse": "Core191 executed in combined-focused-1 (shell compile failed); same core source reused UP-TO-DATE in combined-focused-2. Shell auth executes in combined-focused-2. Explicit ktlint checks and both requested AndroidTest Kotlin compiles pass; execution/cache details retained in log.",
+  "limits": [
+    "No AndroidKeystore/Fold/emulator runtime acceptance",
+    "No original owner vault read/write or model reimport",
+    "MainActivity integration owned by root, not tested in this worktree",
+    "Passphrase existing-envelope transaction not implemented; legacy rewrap cancellation not repaired by this slice",
+    "No full project lint/check run in this focused gate"
+  ],
+  "failure_logs_retained": [
+    "recovery-first.log",
+    "recovery-format-and-test.log",
+    "recovery-focused-third.log",
+    "credential-fallback-20260930/combined-focused-1.log"
+  ]
+}

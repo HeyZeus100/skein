@@ -1,0 +1,9 @@
+{
+  "reviewer": "root",
+  "manifest_sha256": "5a72c37eca02792d5e32bbd20d0c5a3d92ade3834306f430cf3f7da3fecdb98a",
+  "manifest_records_verified": 1583,
+  "raw_repeat_pairs_verified": 786,
+  "actual_rows": 262,
+  "all_retained_float_stages_finite": true,
+  "scope": "host functional precheck only; no reference numeric parity, Android performance or semantic quality acceptance"
+}

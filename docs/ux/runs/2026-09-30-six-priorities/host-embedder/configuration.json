@@ -1,0 +1,1 @@
+{"mode":"functional-precheck","threads":1,"batch":1,"repeats":2,"max_tokens":512,"layer_norm_epsilon":1e-5,"load_ns":154953500,"reference_pipeline_parity":"UNMEASURED","android_acceptance":false}

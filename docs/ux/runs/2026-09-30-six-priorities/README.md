@@ -1,0 +1,15 @@
+# Six-priority checkpoint evidence
+
+Application checkpoint `c28881e1f`; independent retrieval fixture integration `217ec1b31`. See the [execution handoff](../../../Handoffs/skein-six-priorities-20260930.md). These records do not close all parent Beads.
+
+The combined local gate has 5,376 passes, 86 unchanged skips and no failures/errors across 542 actual XML files. The focused application/editor gate has 23 passes. The subsequent strict screenshot gate has 1,354 passes, 80 skips and 552 unchanged image records, with all eight test tasks executed without the build cache. The full gate attributes the then-uncommitted integration patch and new test hashes; the only later application delta is refusal wording. The screenshot gate uses committed application source. Exact-source remote acceptance is pending publication.
+
+`integration-independent-review.json` records the second reviewer's full XML hash and skip-identity comparison. The archives retain the raw XML and screenshot JSON; the receipts name their original paths and SHA-256 values. Recovery and LC09 worker reviews are bounded to their actual host tests and compilation. In particular, the fourteen new encrypted file-lifecycle instrumentation tests have not run at this checkpoint.
+
+The embedding future-lock record preserves a real old-source negative control (three intended failures) and the fixed complete suite (40 passes). Original failure XML and logs remain in the embedding worktree; its receipt identifies their hashes. The production backend remains unavailable by default.
+
+`host-embedder/` contains the independently frozen synthetic development inputs, standalone host runner, raw result rows and artifact manifests. Root rehashed all 1,583 manifest records and compared all 786 raw repeat-stage pairs. There are 262 functional calls, 131 role inputs, and 1,572 raw stage files. The large raw stages and the model remain in the original ignored experiment directory in `embedding-priorities-20260930`; model bytes are not committed. The original acquisition, freeze and runtime receipts are preserved verbatim. Descriptive host timing is not a controlled benchmark, semantic validation, Android PSS measurement or human backend approval. Independent reference pipeline parity remains unmeasured.
+
+The two retrieval fixture reviews cover the final pre-output fixture hash `653b79ce9ab1c36776b5876d1b5d687a1d335f811f388b832fd0d9d258952674`. Five schema-integrity tests pass. All 40 retrieval-quality cases remain unexecuted; ten require revision or conversation runtime support. The candidate implementation lane remains blind to this fixture's facts and labels.
+
+The Fold is not connected over ADB at this checkpoint. No new installation, import, physical generation or owner-content mutation occurred. The earlier `skein-57m1` acceptance on installed e62 remains separately attributed to its original evidence. Original failed Fold geometry evidence and all original golds/thresholds are preserved.

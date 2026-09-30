@@ -1,0 +1,827 @@
+{
+  "result": "host focused success; AndroidTest compilation success; instrumentation NOT executed",
+  "counts": {
+    "tests": 115,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 1
+  },
+  "xml_files": 14,
+  "suites": [
+    {
+      "path": "core/vault/build/test-results/testDevDebugUnitTest/TEST-app.skein.core.vault.blob.AttachmentOrphanSweepTest.xml",
+      "sha256": "4b42e6f602fabd4c05fdd4bd332cbb7c5e42d5f00d1406923de0499bb16c7c1b",
+      "suite": "app.skein.core.vault.blob.AttachmentOrphanSweepTest",
+      "counts": {
+        "tests": 4,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "cases": [
+        {
+          "name": "failed explicit unlink throws instead of silently claiming success",
+          "classname": "app.skein.core.vault.blob.AttachmentOrphanSweepTest",
+          "status": "passed"
+        },
+        {
+          "name": "a new store instance cannot sweep a blob awaiting metadata commit",
+          "classname": "app.skein.core.vault.blob.AttachmentOrphanSweepTest",
+          "status": "passed"
+        },
+        {
+          "name": "active old temporary write is retained and cancellation releases its reservation",
+          "classname": "app.skein.core.vault.blob.AttachmentOrphanSweepTest",
+          "status": "passed"
+        },
+        {
+          "name": "sweep removes only unreferenced UUID blobs and old recognized temporary files",
+          "classname": "app.skein.core.vault.blob.AttachmentOrphanSweepTest",
+          "status": "passed"
+        }
+      ]
+    },
+    {
+      "path": "core/vault/build/test-results/testDevDebugUnitTest/TEST-app.skein.core.vault.blob.FileAttachmentStoreTest.xml",
+      "sha256": "f81bd21b76e4cf74ddd257071a1dccfd6e14184dc52a342ff5fde64d44c515e0",
+      "suite": "app.skein.core.vault.blob.FileAttachmentStoreTest",
+      "counts": {
+        "tests": 21,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "cases": [
+        {
+          "name": "the writer zeroes its key, salt and plaintext buffers on close",
+          "classname": "app.skein.core.vault.blob.FileAttachmentStoreTest",
+          "status": "passed"
+        },
+        {
+          "name": "HKDF derives different file keys for different ids under the same master",
+          "classname": "app.skein.core.vault.blob.FileAttachmentStoreTest",
+          "status": "passed"
+        },
+        {
+          "name": "a version 1 container is refused with UnsupportedVersion",
+          "classname": "app.skein.core.vault.blob.FileAttachmentStoreTest",
+          "status": "passed"
+        },
+        {
+          "name": "a forged total plaintext length does not truncate the bytes a read returns",
+          "classname": "app.skein.core.vault.blob.FileAttachmentStoreTest",
+          "status": "passed"
+        },
+        {
+          "name": "two writes of identical bytes to the same id produce different ciphertext",
+          "classname": "app.skein.core.vault.blob.FileAttachmentStoreTest",
+          "status": "passed"
+        },
+        {
+          "name": "flipping one ciphertext byte throws AttachmentCorruptException wrapping AEADBadTagException",
+          "classname": "app.skein.core.vault.blob.FileAttachmentStoreTest",
+          "status": "passed"
+        },
+        {
+          "name": "appending data after the final chunk throws AttachmentCorruptException",
+          "classname": "app.skein.core.vault.blob.FileAttachmentStoreTest",
+          "status": "passed"
+        },
+        {
+          "name": "tampering with the header file salt throws AttachmentCorruptException",
+          "classname": "app.skein.core.vault.blob.FileAttachmentStoreTest",
+          "status": "passed"
+        },
+        {
+          "name": "HKDF re-derives the same key for the same id and file salt",
+          "classname": "app.skein.core.vault.blob.FileAttachmentStoreTest",
+          "status": "passed"
+        },
+        {
+          "name": "forging an interior chunk's final flag throws AttachmentCorruptException",
+          "classname": "app.skein.core.vault.blob.FileAttachmentStoreTest",
+          "status": "passed"
+        },
+        {
+          "name": "truncating the file to a chunk boundary throws AttachmentTruncatedException",
+          "classname": "app.skein.core.vault.blob.FileAttachmentStoreTest",
+          "status": "passed"
+        },
+        {
+          "name": "the reader re-derives the file key from the header salt of the container on disk",
+          "classname": "app.skein.core.vault.blob.FileAttachmentStoreTest",
+          "status": "passed"
+        },
+        {
+          "name": "every master key copy the supplier hands out is wiped after the file key is derived",
+          "classname": "app.skein.core.vault.blob.FileAttachmentStoreTest",
+          "status": "passed"
+        },
+        {
+          "name": "the reader zeroes its key and plaintext buffers on close",
+          "classname": "app.skein.core.vault.blob.FileAttachmentStoreTest",
+          "status": "passed"
+        },
+        {
+          "name": "dropping the final chunk throws AttachmentTruncatedException",
+          "classname": "app.skein.core.vault.blob.FileAttachmentStoreTest",
+          "status": "passed"
+        },
+        {
+          "name": "master key bytes never appear verbatim in any file under dir",
+          "classname": "app.skein.core.vault.blob.FileAttachmentStoreTest",
+          "status": "passed"
+        },
+        {
+          "name": "writing the same id twice throws AlreadyExists and leaves the first write untouched",
+          "classname": "app.skein.core.vault.blob.FileAttachmentStoreTest",
+          "status": "passed"
+        },
+        {
+          "name": "raw file does not contain the plaintext marker",
+          "classname": "app.skein.core.vault.blob.FileAttachmentStoreTest",
+          "status": "passed"
+        },
+        {
+          "name": "round trips 0B, 1B, 1MiB-1, 1MiB and 5MiB+3 bytes exactly",
+          "classname": "app.skein.core.vault.blob.FileAttachmentStoreTest",
+          "status": "passed"
+        },
+        {
+          "name": "two writes to the same id draw different file salts",
+          "classname": "app.skein.core.vault.blob.FileAttachmentStoreTest",
+          "status": "passed"
+        },
+        {
+          "name": "HKDF derives different file keys for the same id under different file salts",
+          "classname": "app.skein.core.vault.blob.FileAttachmentStoreTest",
+          "status": "passed"
+        }
+      ]
+    },
+    {
+      "path": "core/vault/build/test-results/testDevDebugUnitTest/TEST-app.skein.core.vault.index.FtsQuerySanitizerTest.xml",
+      "sha256": "8fc827d66456ed0a032a2a7803aa6de7bb7db6f1a548ced653b86c7beac882f5",
+      "suite": "app.skein.core.vault.index.FtsQuerySanitizerTest",
+      "counts": {
+        "tests": 4,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "cases": [
+        {
+          "name": "quoted terms cannot inject FTS grammar even if caller violates tokenizer contract",
+          "classname": "app.skein.core.vault.index.FtsQuerySanitizerTest",
+          "status": "passed"
+        },
+        {
+          "name": "query count and utf8 term sizes are bounded without truncating tokens",
+          "classname": "app.skein.core.vault.index.FtsQuerySanitizerTest",
+          "status": "passed"
+        },
+        {
+          "name": "unicode tokenizer output is preserved rather than split into ascii fragments",
+          "classname": "app.skein.core.vault.index.FtsQuerySanitizerTest",
+          "status": "passed"
+        },
+        {
+          "name": "terms are quoted and OR joined with prefix only on last term",
+          "classname": "app.skein.core.vault.index.FtsQuerySanitizerTest",
+          "status": "passed"
+        }
+      ]
+    },
+    {
+      "path": "core/vault/build/test-results/testDevDebugUnitTest/TEST-app.skein.core.vault.index.IndexSqlTest.xml",
+      "sha256": "98228cd3375e11d1d364e2eae251d741973ff3ad23250ca7e2e34808ff0d4333",
+      "suite": "app.skein.core.vault.index.IndexSqlTest",
+      "counts": {
+        "tests": 12,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "cases": [
+        {
+          "name": "INSERT_CHUNK binds an explicit id instead of relying on rowid auto-assignment",
+          "classname": "app.skein.core.vault.index.IndexSqlTest",
+          "status": "passed"
+        },
+        {
+          "name": "knn query uses vec_int8 constructor and k predicate",
+          "classname": "app.skein.core.vault.index.IndexSqlTest",
+          "status": "passed"
+        },
+        {
+          "name": "selectChunksForDocs uses ROW_NUMBER window with a limitPerDoc bind",
+          "classname": "app.skein.core.vault.index.IndexSqlTest",
+          "status": "passed"
+        },
+        {
+          "name": "placeholders builds a comma-joined run of question marks",
+          "classname": "app.skein.core.vault.index.IndexSqlTest",
+          "status": "passed"
+        },
+        {
+          "name": "deleteEdgesForSrcKinds binds src plus each kind",
+          "classname": "app.skein.core.vault.index.IndexSqlTest",
+          "status": "passed"
+        },
+        {
+          "name": "placeholders rejects zero because SQLite forbids IN parentheses",
+          "classname": "app.skein.core.vault.index.IndexSqlTest",
+          "status": "passed"
+        },
+        {
+          "name": "vec int8 dimension matches migration DDL",
+          "classname": "app.skein.core.vault.index.IndexSqlTest",
+          "status": "passed"
+        },
+        {
+          "name": "UPSERT_EMBEDDING wraps the bound blob in vec_int8 for the int8 vec0 column",
+          "classname": "app.skein.core.vault.index.IndexSqlTest",
+          "status": "passed"
+        },
+        {
+          "name": "selectChunksByIds embeds the placeholder run inside an IN-list",
+          "classname": "app.skein.core.vault.index.IndexSqlTest",
+          "status": "passed"
+        },
+        {
+          "name": "bm25 query orders by bm25 rank ascending",
+          "classname": "app.skein.core.vault.index.IndexSqlTest",
+          "status": "passed"
+        },
+        {
+          "name": "SELECT_MAX_CHUNK_ID seeds the chunk-id counter from every id already on disk",
+          "classname": "app.skein.core.vault.index.IndexSqlTest",
+          "status": "passed"
+        },
+        {
+          "name": "edgesTouchingNodes binds each node twice to cover both directions",
+          "classname": "app.skein.core.vault.index.IndexSqlTest",
+          "status": "passed"
+        }
+      ]
+    },
+    {
+      "path": "core/vault/build/test-results/testDevDebugUnitTest/TEST-app.skein.core.vault.index.IndexStoreImplChunkIdTest.xml",
+      "sha256": "da0664b6d7e037af560b8c17971266072edb6d01d0763bfef5916f1612b5434b",
+      "suite": "app.skein.core.vault.index.IndexStoreImplChunkIdTest",
+      "counts": {
+        "tests": 1,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "cases": [
+        {
+          "name": "replaceChunks never reissues an id already handed out for the same doc",
+          "classname": "app.skein.core.vault.index.IndexStoreImplChunkIdTest",
+          "status": "passed"
+        }
+      ]
+    },
+    {
+      "path": "core/vault/build/test-results/testDevDebugUnitTest/TEST-app.skein.core.vault.transfer.ImportPdfMemorySmokeTest.xml",
+      "sha256": "c4fa871e6a286e636948dc982037f94f1c5ab6068c59d19be88bbb56133b38da",
+      "suite": "app.skein.core.vault.transfer.ImportPdfMemorySmokeTest",
+      "counts": {
+        "tests": 1,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "cases": [
+        {
+          "name": "a 50-page pdf import stays within the allocation smoke bound",
+          "classname": "app.skein.core.vault.transfer.ImportPdfMemorySmokeTest",
+          "status": "passed"
+        }
+      ]
+    },
+    {
+      "path": "core/vault/build/test-results/testDevDebugUnitTest/TEST-app.skein.core.vault.transfer.ImportPdfTest.xml",
+      "sha256": "ba8df544b3f019d5bc57273b29cef6ad72bb2f11a266e4056171d00b653b4f3c",
+      "suite": "app.skein.core.vault.transfer.ImportPdfTest",
+      "counts": {
+        "tests": 11,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "cases": [
+        {
+          "name": "whitespace-only pages yield the notice rather than page separators",
+          "classname": "app.skein.core.vault.transfer.ImportPdfTest",
+          "status": "passed"
+        },
+        {
+          "name": "a 3-page pdf yields a note with three sections separated by the page break",
+          "classname": "app.skein.core.vault.transfer.ImportPdfTest",
+          "status": "passed"
+        },
+        {
+          "name": "blank pages retain their positions around extracted text and metadata",
+          "classname": "app.skein.core.vault.transfer.ImportPdfTest",
+          "status": "passed"
+        },
+        {
+          "name": "single-page pdf with a Title extracts text and titles the note from metadata",
+          "classname": "app.skein.core.vault.transfer.ImportPdfTest",
+          "status": "passed"
+        },
+        {
+          "name": "a scanned pdf with no text layer yields the notice body",
+          "classname": "app.skein.core.vault.transfer.ImportPdfTest",
+          "status": "passed"
+        },
+        {
+          "name": "an encrypted pdf yields the notice body, not an error",
+          "classname": "app.skein.core.vault.transfer.ImportPdfTest",
+          "status": "passed"
+        },
+        {
+          "name": "a malformed pdf yields the notice body and still stores the attachment",
+          "classname": "app.skein.core.vault.transfer.ImportPdfTest",
+          "status": "passed"
+        },
+        {
+          "name": "an uncompressed content stream still extracts text",
+          "classname": "app.skein.core.vault.transfer.ImportPdfTest",
+          "status": "passed"
+        },
+        {
+          "name": "a TJ kerning array extracts as one continuous word",
+          "classname": "app.skein.core.vault.transfer.ImportPdfTest",
+          "status": "passed"
+        },
+        {
+          "name": "a pdf with no Title metadata falls back to the file name",
+          "classname": "app.skein.core.vault.transfer.ImportPdfTest",
+          "status": "passed"
+        },
+        {
+          "name": "two blank pages yield the notice while preserving metadata and attachment bytes",
+          "classname": "app.skein.core.vault.transfer.ImportPdfTest",
+          "status": "passed"
+        }
+      ]
+    },
+    {
+      "path": "core/vault/build/test-results/testDevDebugUnitTest/TEST-app.skein.core.vault.transfer.ImportServiceImplContractTest.xml",
+      "sha256": "f70c5e58bcbec77283c83a773f887af4412d05bc74f0e8126ae73c670062bbac",
+      "suite": "app.skein.core.vault.transfer.ImportServiceImplContractTest",
+      "counts": {
+        "tests": 11,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 1
+      },
+      "cases": [
+        {
+          "name": "importPdf_creates_both_an_attachment_and_a_note",
+          "classname": "app.skein.core.vault.transfer.ImportServiceImplContractTest",
+          "status": "passed"
+        },
+        {
+          "name": "importText_lands_in_the_target_persona",
+          "classname": "app.skein.core.vault.transfer.ImportServiceImplContractTest",
+          "status": "passed"
+        },
+        {
+          "name": "importPdf_lands_its_note_in_the_target_persona",
+          "classname": "app.skein.core.vault.transfer.ImportServiceImplContractTest",
+          "status": "passed"
+        },
+        {
+          "name": "importText_without_frontmatter_id_creates_a_new_document",
+          "classname": "app.skein.core.vault.transfer.ImportServiceImplContractTest",
+          "status": "passed"
+        },
+        {
+          "name": "importVaultZip_imports_every_document_and_attachment_into_the_target_persona",
+          "classname": "app.skein.core.vault.transfer.ImportServiceImplContractTest",
+          "status": "passed"
+        },
+        {
+          "name": "importVaultZip_manifest_restoration_keeps_top_level_layout",
+          "classname": "app.skein.core.vault.transfer.ImportServiceImplContractTest",
+          "status": "passed"
+        },
+        {
+          "name": "importImage_without_a_vision_model_creates_only_the_attachment",
+          "classname": "app.skein.core.vault.transfer.ImportServiceImplContractTest",
+          "status": "skipped"
+        },
+        {
+          "name": "importVaultZip_of_the_same_archive_twice_imports_nothing_the_second_time",
+          "classname": "app.skein.core.vault.transfer.ImportServiceImplContractTest",
+          "status": "passed"
+        },
+        {
+          "name": "importVaultZip_imports_nested_markdown_and_skips_unsafe_names_and_chats",
+          "classname": "app.skein.core.vault.transfer.ImportServiceImplContractTest",
+          "status": "passed"
+        },
+        {
+          "name": "importText_with_a_known_frontmatter_id_creates_a_new_document_and_reports_the_conflict",
+          "classname": "app.skein.core.vault.transfer.ImportServiceImplContractTest",
+          "status": "passed"
+        },
+        {
+          "name": "importVaultZip_never_overwrites_a_document_with_the_same_id",
+          "classname": "app.skein.core.vault.transfer.ImportServiceImplContractTest",
+          "status": "passed"
+        }
+      ]
+    },
+    {
+      "path": "core/vault/build/test-results/testDevDebugUnitTest/TEST-app.skein.core.vault.transfer.ImportTextMemorySmokeTest.xml",
+      "sha256": "207819b67ff8b91dd98642b943a5fd94b1e43af41d7e0bb22a2f321230c3e56c",
+      "suite": "app.skein.core.vault.transfer.ImportTextMemorySmokeTest",
+      "counts": {
+        "tests": 1,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "cases": [
+        {
+          "name": "a 10 MB plain text import stays within the allocation smoke bound",
+          "classname": "app.skein.core.vault.transfer.ImportTextMemorySmokeTest",
+          "status": "passed"
+        }
+      ]
+    },
+    {
+      "path": "core/vault/build/test-results/testDevDebugUnitTest/TEST-app.skein.core.vault.transfer.ImportTextTest.xml",
+      "sha256": "3899445b2ed6ac0340f9ff809f8444f7666d5e4fd0b51e01c88850847866c9b9",
+      "suite": "app.skein.core.vault.transfer.ImportTextTest",
+      "counts": {
+        "tests": 19,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "cases": [
+        {
+          "name": "source without a trailing newline still closes the fence on its own line",
+          "classname": "app.skein.core.vault.transfer.ImportTextTest",
+          "status": "passed"
+        },
+        {
+          "name": "malformed frontmatter falls back to the whole file as the body",
+          "classname": "app.skein.core.vault.transfer.ImportTextTest",
+          "status": "passed"
+        },
+        {
+          "name": "persona id is recorded on the created document",
+          "classname": "app.skein.core.vault.transfer.ImportTextTest",
+          "status": "passed"
+        },
+        {
+          "name": "source code that happens to start with a yaml document marker is not parsed as frontmatter",
+          "classname": "app.skein.core.vault.transfer.ImportTextTest",
+          "status": "passed"
+        },
+        {
+          "name": "source containing a triple backtick uses a longer fence",
+          "classname": "app.skein.core.vault.transfer.ImportTextTest",
+          "status": "passed"
+        },
+        {
+          "name": "re-importing a known id twice creates a second document and preserves the original",
+          "classname": "app.skein.core.vault.transfer.ImportTextTest",
+          "status": "passed"
+        },
+        {
+          "name": "plain text with a level-one heading takes it as the title",
+          "classname": "app.skein.core.vault.transfer.ImportTextTest",
+          "status": "passed"
+        },
+        {
+          "name": "a frontmatter id that names an attachment creates a new note and reports the conflict",
+          "classname": "app.skein.core.vault.transfer.ImportTextTest",
+          "status": "passed"
+        },
+        {
+          "name": "a kotlin source file is wrapped in a fenced block and titled with the file name",
+          "classname": "app.skein.core.vault.transfer.ImportTextTest",
+          "status": "passed"
+        },
+        {
+          "name": "non-ascii text survives decoding",
+          "classname": "app.skein.core.vault.transfer.ImportTextTest",
+          "status": "passed"
+        },
+        {
+          "name": "re-importing markdown exported by ExportServiceImpl creates a new document and reports the conflict",
+          "classname": "app.skein.core.vault.transfer.ImportTextTest",
+          "status": "passed"
+        },
+        {
+          "name": "a frontmatter id that names a chat document is never overwritten",
+          "classname": "app.skein.core.vault.transfer.ImportTextTest",
+          "status": "passed"
+        },
+        {
+          "name": "importImage is deferred to its owning bead",
+          "classname": "app.skein.core.vault.transfer.ImportTextTest",
+          "status": "passed"
+        },
+        {
+          "name": "plain text without a heading is titled from the file name without its extension",
+          "classname": "app.skein.core.vault.transfer.ImportTextTest",
+          "status": "passed"
+        },
+        {
+          "name": "a frontmatter id that names an aiout document is never overwritten",
+          "classname": "app.skein.core.vault.transfer.ImportTextTest",
+          "status": "passed"
+        },
+        {
+          "name": "utf-8 bom is stripped and windows line endings are normalized",
+          "classname": "app.skein.core.vault.transfer.ImportTextTest",
+          "status": "passed"
+        },
+        {
+          "name": "frontmatter title wins over a heading",
+          "classname": "app.skein.core.vault.transfer.ImportTextTest",
+          "status": "passed"
+        },
+        {
+          "name": "frontmatter splitting matches Frontmatter parse exactly",
+          "classname": "app.skein.core.vault.transfer.ImportTextTest",
+          "status": "passed"
+        },
+        {
+          "name": "markdown with an unknown frontmatter id is created under that id",
+          "classname": "app.skein.core.vault.transfer.ImportTextTest",
+          "status": "passed"
+        }
+      ]
+    },
+    {
+      "path": "core/vault/build/test-results/testDevDebugUnitTest/TEST-app.skein.core.vault.transfer.MarkdownImportLinkerTest.xml",
+      "sha256": "abcc004ee1f5fa081b272d71d94f3292959bc7b4a11ca62de4671bc80dbc0091",
+      "suite": "app.skein.core.vault.transfer.MarkdownImportLinkerTest",
+      "counts": {
+        "tests": 12,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "cases": [
+        {
+          "name": "filenames frontmatter titles headings and aliases resolve without overwriting display titles",
+          "classname": "app.skein.core.vault.transfer.MarkdownImportLinkerTest",
+          "status": "passed"
+        },
+        {
+          "name": "directory qualified relative extension case and Unicode normalized paths resolve within tree",
+          "classname": "app.skein.core.vault.transfer.MarkdownImportLinkerTest",
+          "status": "passed"
+        },
+        {
+          "name": "linked index preserves ID edge on rename and deletion cannot retarget it through title resolver",
+          "classname": "app.skein.core.vault.transfer.MarkdownImportLinkerTest",
+          "status": "passed"
+        },
+        {
+          "name": "non UUID frontmatter IDs stay unchanged but are never interpolated as stable links",
+          "classname": "app.skein.core.vault.transfer.MarkdownImportLinkerTest",
+          "status": "passed"
+        },
+        {
+          "name": "ingest of an older imported revision keeps its guards after final rewrite",
+          "classname": "app.skein.core.vault.transfer.MarkdownImportLinkerTest",
+          "status": "passed"
+        },
+        {
+          "name": "target deleted during import is left unresolved",
+          "classname": "app.skein.core.vault.transfer.MarkdownImportLinkerTest",
+          "status": "passed"
+        },
+        {
+          "name": "ambiguous basenames aliases and titles cannot fall through to newest title or dangling resolution",
+          "classname": "app.skein.core.vault.transfer.MarkdownImportLinkerTest",
+          "status": "passed"
+        },
+        {
+          "name": "code spans fences and self heading links are untouched",
+          "classname": "app.skein.core.vault.transfer.MarkdownImportLinkerTest",
+          "status": "passed"
+        },
+        {
+          "name": "UUID links survive rename and existing UUID spelling is preserved",
+          "classname": "app.skein.core.vault.transfer.MarkdownImportLinkerTest",
+          "status": "passed"
+        },
+        {
+          "name": "missing and escaping links never bind unrelated existing or subsequently created notes",
+          "classname": "app.skein.core.vault.transfer.MarkdownImportLinkerTest",
+          "status": "passed"
+        },
+        {
+          "name": "cancelled session stays guarded before finish and never binds existing same-title note",
+          "classname": "app.skein.core.vault.transfer.MarkdownImportLinkerTest",
+          "status": "passed"
+        },
+        {
+          "name": "uppercase archived UUID resolves by its persisted ID",
+          "classname": "app.skein.core.vault.transfer.MarkdownImportLinkerTest",
+          "status": "passed"
+        }
+      ]
+    },
+    {
+      "path": "core/vault/build/test-results/testDevDebugUnitTest/TEST-app.skein.core.vault.transfer.MimeSnifferTest.xml",
+      "sha256": "0944612be6722252b4496b880706156f13d2d1a5ae1361be7d71a6ed54d105f4",
+      "suite": "app.skein.core.vault.transfer.MimeSnifferTest",
+      "counts": {
+        "tests": 5,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "cases": [
+        {
+          "name": "markdown and plain text are prose whichever way they are labelled",
+          "classname": "app.skein.core.vault.transfer.MimeSnifferTest",
+          "status": "passed"
+        },
+        {
+          "name": "mime type is the fallback when the extension says nothing",
+          "classname": "app.skein.core.vault.transfer.MimeSnifferTest",
+          "status": "passed"
+        },
+        {
+          "name": "extension wins over a conflicting mime type",
+          "classname": "app.skein.core.vault.transfer.MimeSnifferTest",
+          "status": "passed"
+        },
+        {
+          "name": "a shebang line is sniffed when neither extension nor mime type help",
+          "classname": "app.skein.core.vault.transfer.MimeSnifferTest",
+          "status": "passed"
+        },
+        {
+          "name": "unrecognized input is prose",
+          "classname": "app.skein.core.vault.transfer.MimeSnifferTest",
+          "status": "passed"
+        }
+      ]
+    },
+    {
+      "path": "core/vault/build/test-results/testDevDebugUnitTest/TEST-app.skein.core.vault.transfer.PdfResourceLoaderTest.xml",
+      "sha256": "5d28fa6d353ad9d22a9c4666bbeaa8e1b9617fca7ef48aaec8dc8768ad4eebef",
+      "suite": "app.skein.core.vault.transfer.PdfResourceLoaderTest",
+      "counts": {
+        "tests": 1,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "cases": [
+        {
+          "name": "a second ensureInitialized call does not touch the context again",
+          "classname": "app.skein.core.vault.transfer.PdfResourceLoaderTest",
+          "status": "passed"
+        }
+      ]
+    },
+    {
+      "path": "core/vault/build/test-results/testDevDebugUnitTest/TEST-app.skein.core.vault.transfer.VaultZipImportTest.xml",
+      "sha256": "3fc40bb0fec69d13518bd8c0e62a8a12ce1ea84f993dcc5ff6a95f71ff0acc70",
+      "suite": "app.skein.core.vault.transfer.VaultZipImportTest",
+      "counts": {
+        "tests": 12,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "cases": [
+        {
+          "name": "the entry count cap stops the import",
+          "classname": "app.skein.core.vault.transfer.VaultZipImportTest",
+          "status": "passed"
+        },
+        {
+          "name": "export then import restores notes and AI outputs, re-points a PDF note, and skips chats",
+          "classname": "app.skein.core.vault.transfer.VaultZipImportTest",
+          "status": "passed"
+        },
+        {
+          "name": "an entry over the size cap stops the import and leaves no partial attachment",
+          "classname": "app.skein.core.vault.transfer.VaultZipImportTest",
+          "status": "passed"
+        },
+        {
+          "name": "entry names that would escape a directory are unsafe",
+          "classname": "app.skein.core.vault.transfer.VaultZipImportTest",
+          "status": "passed"
+        },
+        {
+          "name": "a document over its cap is skipped and the import goes on",
+          "classname": "app.skein.core.vault.transfer.VaultZipImportTest",
+          "status": "passed"
+        },
+        {
+          "name": "late and malformed manifests preserve restored wikilinks and frontmatter",
+          "classname": "app.skein.core.vault.transfer.VaultZipImportTest",
+          "status": "passed"
+        },
+        {
+          "name": "a truncated archive stops cleanly and the caller's stream stays open",
+          "classname": "app.skein.core.vault.transfer.VaultZipImportTest",
+          "status": "passed"
+        },
+        {
+          "name": "skipped entries count toward the total cap",
+          "classname": "app.skein.core.vault.transfer.VaultZipImportTest",
+          "status": "passed"
+        },
+        {
+          "name": "a malformed manifest is ignored, not fatal",
+          "classname": "app.skein.core.vault.transfer.VaultZipImportTest",
+          "status": "passed"
+        },
+        {
+          "name": "invalid UTF-8 imports with replacement characters",
+          "classname": "app.skein.core.vault.transfer.VaultZipImportTest",
+          "status": "passed"
+        },
+        {
+          "name": "ordinary nested Markdown archive resolves path links while keeping heading and frontmatter titles",
+          "classname": "app.skein.core.vault.transfer.VaultZipImportTest",
+          "status": "passed"
+        },
+        {
+          "name": "truncated ordinary archive never rewrites a link to a file not imported",
+          "classname": "app.skein.core.vault.transfer.VaultZipImportTest",
+          "status": "passed"
+        }
+      ]
+    }
+  ],
+  "source_receipts": [
+    {
+      "path": "core/model/src/main/kotlin/app/skein/core/model/FileLifecycle.kt",
+      "sha256": "8f7b8297352f062e407e82e9eda757d686d8a045276d3a5ded24561de40e5565"
+    },
+    {
+      "path": "core/vault/src/androidTest/kotlin/app/skein/core/vault/repository/FileLifecycleInstrumentedTest.kt",
+      "sha256": "6f68deed0a6214ed8b5ca4fbe339305f8ad12db530a1d7ef6e1822a1c98acad6"
+    },
+    {
+      "path": "core/vault/src/main/kotlin/app/skein/core/vault/blob/AttachmentStore.kt",
+      "sha256": "c2a7d53483e83c6d30d3a96776dad202390546f0d989ead3e1538fb3ada3c049"
+    },
+    {
+      "path": "core/vault/src/main/kotlin/app/skein/core/vault/blob/AttachmentWriteRegistry.kt",
+      "sha256": "e863ebdc79d1aee28928f05b0d02542b2fec7e76440fb9eb31de519c015e07b6"
+    },
+    {
+      "path": "core/vault/src/main/kotlin/app/skein/core/vault/blob/FileAttachmentStore.kt",
+      "sha256": "478031e2af13362bd037ebb510ed14f16fd2436f7f881f4a950e08c440cd90fb"
+    },
+    {
+      "path": "core/vault/src/main/kotlin/app/skein/core/vault/index/IndexSql.kt",
+      "sha256": "a7532369212245061587a1516d5120464f17dee2396b3fd8397b4c4890b9415b"
+    },
+    {
+      "path": "core/vault/src/main/kotlin/app/skein/core/vault/index/IndexStoreImpl.kt",
+      "sha256": "f3c992de0790310fe0a06095ab07c8bf04a263a414cdf308431f6063325903c4"
+    },
+    {
+      "path": "core/vault/src/main/kotlin/app/skein/core/vault/repository/VaultRepositoryImpl.kt",
+      "sha256": "fb16ce89e88f8e0f266f24f7407ababe52ca7e6b42ec988ca1ef9f06e55286a1"
+    },
+    {
+      "path": "core/vault/src/main/kotlin/app/skein/core/vault/repository/VaultSql.kt",
+      "sha256": "584d0635f7a7be587bedbb95bb454c5ddb89f4939e3b7a2b09985d0cb68281a1"
+    },
+    {
+      "path": "core/vault/src/main/kotlin/app/skein/core/vault/transfer/ImportServiceImpl.kt",
+      "sha256": "9664a7fb46b1296a6fcca4741e6df757d10e7861d2e9507feeb15998ab6ada57"
+    },
+    {
+      "path": "core/vault/src/main/kotlin/app/skein/core/vault/transfer/VaultZipImporter.kt",
+      "sha256": "8d0135caa2475b046e31ae3925344c3c6c92dcafdeb1681fd04e157f3adabf68"
+    },
+    {
+      "path": "core/vault/src/test/kotlin/app/skein/core/vault/blob/AttachmentOrphanSweepTest.kt",
+      "sha256": "8ea7e279be12d405e08f31e857da363d37f27845eef05f06d99dc5b2a283738d"
+    }
+  ],
+  "log_sha256": "f30e42ab190ee16d8bfe93c4ecccc11d41fb16750cc7556bd38f036f77ccf2d6",
+  "xml_archive_sha256": "acd238ac68a75af00e3636be8252d74ca674243fc22500324c0881d6570f2437",
+  "limitations": [
+    "No Fold commands, install, import or owner content access.",
+    "No encrypted instrumentation results claimed before ordinary emulator run.",
+    "Source-dependent survivor editor UI remains fail closed pending safe reload reservation seam.",
+    "Vector negative control uses unchanged pre-guard raw UPSERT SQL; it is not a production-revert run."
+  ]
+}

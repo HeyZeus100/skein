@@ -1,0 +1,65 @@
+{
+  "reviewer": "fold_acceptance",
+  "status": "PASS bounded source and actual host XML review",
+  "actual_xml_files": 542,
+  "counts": {
+    "pass": 5376,
+    "skipped": 86
+  },
+  "archive_sha256": "debfa5af663b7c9e275917bce56eafe0819e8263ff9f8fc4599de8ef0043548e",
+  "review_sha256": "dcfb6cb5efc9ca2222f4065a6a04944bdd9b1f6147ea9a8ffe1014e87fedb27e",
+  "baseline_path": "resume-20260930/candidate2-local-unit-actual.zip",
+  "baseline_source": "9d5f7b725f5c78225741ec85e5c41e4e7e73257e",
+  "baseline_archive_sha256": "d2e322dc7dbb17e2ef7b6561f95e987273d32aa9b600f4786a1f09f1967ed513",
+  "baseline_counts": {
+    "pass": 5266,
+    "skipped": 86
+  },
+  "skip_identity_added": [],
+  "skip_identity_removed": [],
+  "source_receipts": [
+    {
+      "path": "app/src/main/kotlin/app/skein/shell/DocumentDeleteCoordinator.kt",
+      "sha256": "6a386a2329a9946374be437fb7a46a27f96d3b2089271c162349c5b0b32068ef"
+    },
+    {
+      "path": "app/src/main/kotlin/app/skein/shell/DocumentDeletionServices.kt",
+      "sha256": "b4c70799263255c1b18e9d9ac505b76c7d2c89de5eff18d53a06d08e5ffd049e"
+    },
+    {
+      "path": "core/vault/src/main/kotlin/app/skein/core/vault/repository/VaultRepositoryImpl.kt",
+      "sha256": "fb16ce89e88f8e0f266f24f7407ababe52ca7e6b42ec988ca1ef9f06e55286a1"
+    },
+    {
+      "path": "feature/editor/src/main/kotlin/app/skein/feature/editor/entries/KnowledgeEntries.kt",
+      "sha256": "f4b8c1b1560c3dbfd336ce7342e40bd98a53d4658d8faf7717537f5db85839f2"
+    },
+    {
+      "path": "feature/editor/src/main/kotlin/app/skein/feature/editor/entries/FileRoute.kt",
+      "sha256": "cdd62ec7f6988200790db01a0e53eea0729dca28280015e39f2767d120e40f78"
+    },
+    {
+      "path": "feature/editor/src/main/kotlin/app/skein/feature/editor/entries/FileDeleteMenu.kt",
+      "sha256": "fae9346f1a4c7d8515d16645009a74fe698f10353a948867f695de0a672d231e"
+    },
+    {
+      "path": "app/src/test/kotlin/app/skein/shell/FileDocumentDeleteCoordinatorTest.kt",
+      "sha256": "5d095a4c8df559f8f6c04c5670b9cb46260e509da81d1c46c5eddbb85b1511b3"
+    },
+    {
+      "path": "feature/editor/src/test/kotlin/app/skein/feature/editor/entries/FileDeleteMenusTest.kt",
+      "sha256": "70c07823b6061889c20949d17ba04b3de197a759b3269bab265f070b88acdecf"
+    }
+  ],
+  "findings": [
+    "No blocker in new file deletion coordination: reserve all before drain, no writer transaction during drain, exact membership revalidation in backend, after-COMMIT flag before cancellation return, reverse rollback only before commit.",
+    "Source-dependent UI path refuses rather than marks surviving documents deleted; existing source-link removal copy suggests unsupported action and should say cannot be deleted yet.",
+    "File quote count is distinct backend count; linking-note count deduplicates across target IDs and excludes deleted target IDs.",
+    "Menu tests prove callback-only storage behavior, coordinator fakes prove application contracts; actual SQLCipher instrumented execution is still open."
+  ],
+  "limitations": [
+    "Host actual XML validates these tests, not physical Fold acceptance.",
+    "Source hash in host manifest declares checked-out parent plus dirty patch/untracked receipts, not installed APK identity.",
+    "Surviving dependent editor reload UX remains unsupported."
+  ]
+}

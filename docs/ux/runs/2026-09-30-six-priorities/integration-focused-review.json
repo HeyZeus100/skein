@@ -1,0 +1,51 @@
+{
+  "totals": {
+    "tests": 23,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0
+  },
+  "xml": [
+    {
+      "path": "app/build/test-results/testFossDebugUnitTest/TEST-app.skein.vault.FactorRecoveryGateTest.xml",
+      "sha256": "c6a69d6db0f0cc4f765395af8ea39a02a2469381be3b5fdb7dc18803faa370c4",
+      "counts": {
+        "tests": 3,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      }
+    },
+    {
+      "path": "app/build/test-results/testFossDebugUnitTest/TEST-app.skein.shell.DocumentDeleteCoordinatorTest.xml",
+      "sha256": "4b23cfac00e4043292b9f30331c7f7f3b42edc7914f40ef764a38ec1acd5c047",
+      "counts": {
+        "tests": 11,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      }
+    },
+    {
+      "path": "app/build/test-results/testFossDebugUnitTest/TEST-app.skein.shell.FileDocumentDeleteCoordinatorTest.xml",
+      "sha256": "56548c0b6b600404ea487d9a17ba34e0ba31b0fa58290c325eb6db3afcc4b822",
+      "counts": {
+        "tests": 8,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      }
+    },
+    {
+      "path": "feature/editor/build/test-results/testDebugUnitTest/TEST-app.skein.feature.editor.entries.FileDeleteMenusTest.xml",
+      "sha256": "15c6914b2ad43981899509512f8ca77668087a4fbd9388d0dfc02d928c2a1178",
+      "counts": {
+        "tests": 1,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      }
+    }
+  ],
+  "archive_sha256": "1b8df35f19640c969a911c0456177a96687d838b33a0dc4a164f268d83ace42b"
+}

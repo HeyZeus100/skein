@@ -1,0 +1,165 @@
+{
+  "reviewer": "fold_acceptance",
+  "status": "PASS after pre-freeze pronoun correction",
+  "fixture_sha256": "653b79ce9ab1c36776b5876d1b5d687a1d335f811f388b832fd0d9d258952674",
+  "notes": 22,
+  "cases": 40,
+  "answerable": 22,
+  "absence": 18,
+  "spans": [
+    {
+      "case": "independent-20260930-01",
+      "doc": "019b0930-0000-7000-8000-000000000001",
+      "byte_start": 26,
+      "byte_end": 110
+    },
+    {
+      "case": "independent-20260930-02",
+      "doc": "019b0930-0000-7000-8000-000000000002",
+      "byte_start": 17,
+      "byte_end": 153
+    },
+    {
+      "case": "independent-20260930-03",
+      "doc": "019b0930-0000-7000-8000-000000000003",
+      "byte_start": 29,
+      "byte_end": 105
+    },
+    {
+      "case": "independent-20260930-04",
+      "doc": "019b0930-0000-7000-8000-000000000004",
+      "byte_start": 69,
+      "byte_end": 119
+    },
+    {
+      "case": "independent-20260930-05",
+      "doc": "019b0930-0000-7000-8000-000000000005",
+      "byte_start": 17,
+      "byte_end": 74
+    },
+    {
+      "case": "independent-20260930-06",
+      "doc": "019b0930-0000-7000-8000-000000000006",
+      "byte_start": 107,
+      "byte_end": 137
+    },
+    {
+      "case": "independent-20260930-07",
+      "doc": "019b0930-0000-7000-8000-000000000007",
+      "byte_start": 22,
+      "byte_end": 148
+    },
+    {
+      "case": "independent-20260930-08",
+      "doc": "019b0930-0000-7000-8000-000000000008",
+      "byte_start": 21,
+      "byte_end": 87
+    },
+    {
+      "case": "independent-20260930-17",
+      "doc": "019b0930-0000-7000-8000-000000000009",
+      "byte_start": 19,
+      "byte_end": 98
+    },
+    {
+      "case": "independent-20260930-17",
+      "doc": "019b0930-0000-7000-8000-000000000010",
+      "byte_start": 19,
+      "byte_end": 100
+    },
+    {
+      "case": "independent-20260930-18",
+      "doc": "019b0930-0000-7000-8000-000000000009",
+      "byte_start": 19,
+      "byte_end": 98
+    },
+    {
+      "case": "independent-20260930-18",
+      "doc": "019b0930-0000-7000-8000-000000000010",
+      "byte_start": 19,
+      "byte_end": 100
+    },
+    {
+      "case": "independent-20260930-19",
+      "doc": "019b0930-0000-7000-8000-000000000012",
+      "byte_start": 27,
+      "byte_end": 190
+    },
+    {
+      "case": "independent-20260930-21",
+      "doc": "019b0930-0000-7000-8000-000000000013",
+      "byte_start": 25,
+      "byte_end": 71
+    },
+    {
+      "case": "independent-20260930-22",
+      "doc": "019b0930-0000-7000-8000-000000000014",
+      "byte_start": 22,
+      "byte_end": 79
+    },
+    {
+      "case": "independent-20260930-25",
+      "doc": "019b0930-0000-7000-8000-000000000015",
+      "byte_start": 24,
+      "byte_end": 78
+    },
+    {
+      "case": "independent-20260930-26",
+      "doc": "019b0930-0000-7000-8000-000000000016",
+      "byte_start": 24,
+      "byte_end": 78
+    },
+    {
+      "case": "independent-20260930-27",
+      "doc": "019b0930-0000-7000-8000-000000000017",
+      "byte_start": 78,
+      "byte_end": 111
+    },
+    {
+      "case": "independent-20260930-28",
+      "doc": "019b0930-0000-7000-8000-000000000018",
+      "byte_start": 18,
+      "byte_end": 79
+    },
+    {
+      "case": "independent-20260930-31",
+      "doc": "019b0930-0000-7000-8000-000000000008",
+      "byte_start": 88,
+      "byte_end": 155
+    },
+    {
+      "case": "independent-20260930-32",
+      "doc": "019b0930-0000-7000-8000-000000000020",
+      "byte_start": 80,
+      "byte_end": 113
+    },
+    {
+      "case": "independent-20260930-36",
+      "doc": "019b0930-0000-7000-8000-000000000021",
+      "byte_start": 113,
+      "byte_end": 166
+    },
+    {
+      "case": "independent-20260930-37",
+      "doc": "019b0930-0000-7000-8000-000000000021",
+      "byte_start": 26,
+      "byte_end": 112
+    },
+    {
+      "case": "independent-20260930-38",
+      "doc": "019b0930-0000-7000-8000-000000000022",
+      "byte_start": 26,
+      "byte_end": 121
+    }
+  ],
+  "verified_source_pins": 5,
+  "runtime_context_cases": 10,
+  "substantive_review": [
+    "Read all source bodies and all 40 questions/answers; facts and current-Space labels agree.",
+    "Both unresolved conflicts require both competing spans; explicit supersession has authoritative source.",
+    "Previous revisions are distinct, old current-price value cannot answer current absence.",
+    "Raw followup/oracle separation and unsupported prior assistant source absence preserved.",
+    "No candidate implementation or outputs read. No retrieval executed."
+  ],
+  "limitation": "AI peer fixture integrity review, no human grading or retrieval/model result."
+}

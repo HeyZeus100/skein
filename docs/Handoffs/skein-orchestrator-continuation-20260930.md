@@ -1,5 +1,7 @@
 # Skein continuation, 30 September 2026
 
+The owner subsequently authorized execution of all six priority groups. Continue from the [six-priority execution checkpoint](skein-six-priorities-20260930.md) and the live coordination record; the evidence below remains the earlier accepted baseline.
+
 The owner confirmed “Unlocked and idle.” Bounded `skein-57m1` physical acceptance on the already installed e62 application is complete. The application was not reinstalled and models were not imported. Read the [physical evidence](../ux/runs/2026-09-30-delete-physical-e62/README.md) and [resume verification](../ux/runs/2026-09-30-resume-verification/README.md), then refresh Git, Beads and coordination before claiming ownership.
 
 ## Application and physical boundary

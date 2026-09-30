@@ -1,0 +1,902 @@
+{
+  "schema_version": 1,
+  "purpose": "New synthetic development corpus only; not held-out validation or owner data",
+  "rows": [
+    {
+      "id": "dev-01-current",
+      "text": "The Aster field kit contains 17 brass clips. Its case is amber. This is the current packing record.",
+      "is_query": false,
+      "group": "dev-01",
+      "kind": "current"
+    },
+    {
+      "id": "dev-01-paraphrase",
+      "text": "For the Aster kit, pack 17 clips made of brass in the amber case.",
+      "is_query": false,
+      "group": "dev-01",
+      "kind": "paraphrase"
+    },
+    {
+      "id": "dev-01-unrelated",
+      "text": "The Aster rehearsal starts after sunset. Musicians should bring a printed melody and a folding chair.",
+      "is_query": false,
+      "group": "dev-01",
+      "kind": "unrelated"
+    },
+    {
+      "id": "dev-01-superseded",
+      "text": "Old packing record: the Aster kit contained 26 brass clips. This count was superseded by the current packing record.",
+      "is_query": false,
+      "group": "dev-01",
+      "kind": "superseded"
+    },
+    {
+      "id": "dev-01-question",
+      "text": "How many brass clips are in the Aster field kit?",
+      "is_query": true,
+      "group": "dev-01",
+      "kind": "question"
+    },
+    {
+      "id": "dev-01-query-paraphrase",
+      "text": "What quantity of brass fasteners should be packed for Aster?",
+      "is_query": true,
+      "group": "dev-01",
+      "kind": "query-paraphrase"
+    },
+    {
+      "id": "dev-01-absent-fact",
+      "text": "Who manufactured the clips for the Aster field kit?",
+      "is_query": true,
+      "group": "dev-01",
+      "kind": "absent-fact"
+    },
+    {
+      "id": "dev-01-followup",
+      "text": "What color is its case?",
+      "is_query": true,
+      "group": "dev-01",
+      "kind": "followup"
+    },
+    {
+      "id": "dev-02-current",
+      "text": "The Birch field kit contains 20 brass clips. Its case is violet. This is the current packing record.",
+      "is_query": false,
+      "group": "dev-02",
+      "kind": "current"
+    },
+    {
+      "id": "dev-02-paraphrase",
+      "text": "For the Birch kit, pack 20 clips made of brass in the violet case.",
+      "is_query": false,
+      "group": "dev-02",
+      "kind": "paraphrase"
+    },
+    {
+      "id": "dev-02-unrelated",
+      "text": "The Birch rehearsal starts after sunset. Musicians should bring a printed melody and a folding chair.",
+      "is_query": false,
+      "group": "dev-02",
+      "kind": "unrelated"
+    },
+    {
+      "id": "dev-02-superseded",
+      "text": "Old packing record: the Birch kit contained 29 brass clips. This count was superseded by the current packing record.",
+      "is_query": false,
+      "group": "dev-02",
+      "kind": "superseded"
+    },
+    {
+      "id": "dev-02-question",
+      "text": "How many brass clips are in the Birch field kit?",
+      "is_query": true,
+      "group": "dev-02",
+      "kind": "question"
+    },
+    {
+      "id": "dev-02-query-paraphrase",
+      "text": "What quantity of brass fasteners should be packed for Birch?",
+      "is_query": true,
+      "group": "dev-02",
+      "kind": "query-paraphrase"
+    },
+    {
+      "id": "dev-02-absent-fact",
+      "text": "Who manufactured the clips for the Birch field kit?",
+      "is_query": true,
+      "group": "dev-02",
+      "kind": "absent-fact"
+    },
+    {
+      "id": "dev-02-followup",
+      "text": "What color is its case?",
+      "is_query": true,
+      "group": "dev-02",
+      "kind": "followup"
+    },
+    {
+      "id": "dev-03-current",
+      "text": "The Cobalt field kit contains 23 brass clips. Its case is indigo. This is the current packing record.",
+      "is_query": false,
+      "group": "dev-03",
+      "kind": "current"
+    },
+    {
+      "id": "dev-03-paraphrase",
+      "text": "For the Cobalt kit, pack 23 clips made of brass in the indigo case.",
+      "is_query": false,
+      "group": "dev-03",
+      "kind": "paraphrase"
+    },
+    {
+      "id": "dev-03-unrelated",
+      "text": "The Cobalt rehearsal starts after sunset. Musicians should bring a printed melody and a folding chair.",
+      "is_query": false,
+      "group": "dev-03",
+      "kind": "unrelated"
+    },
+    {
+      "id": "dev-03-superseded",
+      "text": "Old packing record: the Cobalt kit contained 32 brass clips. This count was superseded by the current packing record.",
+      "is_query": false,
+      "group": "dev-03",
+      "kind": "superseded"
+    },
+    {
+      "id": "dev-03-question",
+      "text": "How many brass clips are in the Cobalt field kit?",
+      "is_query": true,
+      "group": "dev-03",
+      "kind": "question"
+    },
+    {
+      "id": "dev-03-query-paraphrase",
+      "text": "What quantity of brass fasteners should be packed for Cobalt?",
+      "is_query": true,
+      "group": "dev-03",
+      "kind": "query-paraphrase"
+    },
+    {
+      "id": "dev-03-absent-fact",
+      "text": "Who manufactured the clips for the Cobalt field kit?",
+      "is_query": true,
+      "group": "dev-03",
+      "kind": "absent-fact"
+    },
+    {
+      "id": "dev-03-followup",
+      "text": "What color is its case?",
+      "is_query": true,
+      "group": "dev-03",
+      "kind": "followup"
+    },
+    {
+      "id": "dev-04-current",
+      "text": "The Dahlia field kit contains 26 brass clips. Its case is silver. This is the current packing record.",
+      "is_query": false,
+      "group": "dev-04",
+      "kind": "current"
+    },
+    {
+      "id": "dev-04-paraphrase",
+      "text": "For the Dahlia kit, pack 26 clips made of brass in the silver case.",
+      "is_query": false,
+      "group": "dev-04",
+      "kind": "paraphrase"
+    },
+    {
+      "id": "dev-04-unrelated",
+      "text": "The Dahlia rehearsal starts after sunset. Musicians should bring a printed melody and a folding chair.",
+      "is_query": false,
+      "group": "dev-04",
+      "kind": "unrelated"
+    },
+    {
+      "id": "dev-04-superseded",
+      "text": "Old packing record: the Dahlia kit contained 35 brass clips. This count was superseded by the current packing record.",
+      "is_query": false,
+      "group": "dev-04",
+      "kind": "superseded"
+    },
+    {
+      "id": "dev-04-question",
+      "text": "How many brass clips are in the Dahlia field kit?",
+      "is_query": true,
+      "group": "dev-04",
+      "kind": "question"
+    },
+    {
+      "id": "dev-04-query-paraphrase",
+      "text": "What quantity of brass fasteners should be packed for Dahlia?",
+      "is_query": true,
+      "group": "dev-04",
+      "kind": "query-paraphrase"
+    },
+    {
+      "id": "dev-04-absent-fact",
+      "text": "Who manufactured the clips for the Dahlia field kit?",
+      "is_query": true,
+      "group": "dev-04",
+      "kind": "absent-fact"
+    },
+    {
+      "id": "dev-04-followup",
+      "text": "What color is its case?",
+      "is_query": true,
+      "group": "dev-04",
+      "kind": "followup"
+    },
+    {
+      "id": "dev-05-current",
+      "text": "The Elm field kit contains 29 brass clips. Its case is orange. This is the current packing record.",
+      "is_query": false,
+      "group": "dev-05",
+      "kind": "current"
+    },
+    {
+      "id": "dev-05-paraphrase",
+      "text": "For the Elm kit, pack 29 clips made of brass in the orange case.",
+      "is_query": false,
+      "group": "dev-05",
+      "kind": "paraphrase"
+    },
+    {
+      "id": "dev-05-unrelated",
+      "text": "The Elm rehearsal starts after sunset. Musicians should bring a printed melody and a folding chair.",
+      "is_query": false,
+      "group": "dev-05",
+      "kind": "unrelated"
+    },
+    {
+      "id": "dev-05-superseded",
+      "text": "Old packing record: the Elm kit contained 38 brass clips. This count was superseded by the current packing record.",
+      "is_query": false,
+      "group": "dev-05",
+      "kind": "superseded"
+    },
+    {
+      "id": "dev-05-question",
+      "text": "How many brass clips are in the Elm field kit?",
+      "is_query": true,
+      "group": "dev-05",
+      "kind": "question"
+    },
+    {
+      "id": "dev-05-query-paraphrase",
+      "text": "What quantity of brass fasteners should be packed for Elm?",
+      "is_query": true,
+      "group": "dev-05",
+      "kind": "query-paraphrase"
+    },
+    {
+      "id": "dev-05-absent-fact",
+      "text": "Who manufactured the clips for the Elm field kit?",
+      "is_query": true,
+      "group": "dev-05",
+      "kind": "absent-fact"
+    },
+    {
+      "id": "dev-05-followup",
+      "text": "What color is its case?",
+      "is_query": true,
+      "group": "dev-05",
+      "kind": "followup"
+    },
+    {
+      "id": "dev-06-current",
+      "text": "The Fable field kit contains 32 brass clips. Its case is copper. This is the current packing record.",
+      "is_query": false,
+      "group": "dev-06",
+      "kind": "current"
+    },
+    {
+      "id": "dev-06-paraphrase",
+      "text": "For the Fable kit, pack 32 clips made of brass in the copper case.",
+      "is_query": false,
+      "group": "dev-06",
+      "kind": "paraphrase"
+    },
+    {
+      "id": "dev-06-unrelated",
+      "text": "The Fable rehearsal starts after sunset. Musicians should bring a printed melody and a folding chair.",
+      "is_query": false,
+      "group": "dev-06",
+      "kind": "unrelated"
+    },
+    {
+      "id": "dev-06-superseded",
+      "text": "Old packing record: the Fable kit contained 41 brass clips. This count was superseded by the current packing record.",
+      "is_query": false,
+      "group": "dev-06",
+      "kind": "superseded"
+    },
+    {
+      "id": "dev-06-question",
+      "text": "How many brass clips are in the Fable field kit?",
+      "is_query": true,
+      "group": "dev-06",
+      "kind": "question"
+    },
+    {
+      "id": "dev-06-query-paraphrase",
+      "text": "What quantity of brass fasteners should be packed for Fable?",
+      "is_query": true,
+      "group": "dev-06",
+      "kind": "query-paraphrase"
+    },
+    {
+      "id": "dev-06-absent-fact",
+      "text": "Who manufactured the clips for the Fable field kit?",
+      "is_query": true,
+      "group": "dev-06",
+      "kind": "absent-fact"
+    },
+    {
+      "id": "dev-06-followup",
+      "text": "What color is its case?",
+      "is_query": true,
+      "group": "dev-06",
+      "kind": "followup"
+    },
+    {
+      "id": "dev-07-current",
+      "text": "The Granite field kit contains 35 brass clips. Its case is teal. This is the current packing record.",
+      "is_query": false,
+      "group": "dev-07",
+      "kind": "current"
+    },
+    {
+      "id": "dev-07-paraphrase",
+      "text": "For the Granite kit, pack 35 clips made of brass in the teal case.",
+      "is_query": false,
+      "group": "dev-07",
+      "kind": "paraphrase"
+    },
+    {
+      "id": "dev-07-unrelated",
+      "text": "The Granite rehearsal starts after sunset. Musicians should bring a printed melody and a folding chair.",
+      "is_query": false,
+      "group": "dev-07",
+      "kind": "unrelated"
+    },
+    {
+      "id": "dev-07-superseded",
+      "text": "Old packing record: the Granite kit contained 44 brass clips. This count was superseded by the current packing record.",
+      "is_query": false,
+      "group": "dev-07",
+      "kind": "superseded"
+    },
+    {
+      "id": "dev-07-question",
+      "text": "How many brass clips are in the Granite field kit?",
+      "is_query": true,
+      "group": "dev-07",
+      "kind": "question"
+    },
+    {
+      "id": "dev-07-query-paraphrase",
+      "text": "What quantity of brass fasteners should be packed for Granite?",
+      "is_query": true,
+      "group": "dev-07",
+      "kind": "query-paraphrase"
+    },
+    {
+      "id": "dev-07-absent-fact",
+      "text": "Who manufactured the clips for the Granite field kit?",
+      "is_query": true,
+      "group": "dev-07",
+      "kind": "absent-fact"
+    },
+    {
+      "id": "dev-07-followup",
+      "text": "What color is its case?",
+      "is_query": true,
+      "group": "dev-07",
+      "kind": "followup"
+    },
+    {
+      "id": "dev-08-current",
+      "text": "The Harbor field kit contains 38 brass clips. Its case is crimson. This is the current packing record.",
+      "is_query": false,
+      "group": "dev-08",
+      "kind": "current"
+    },
+    {
+      "id": "dev-08-paraphrase",
+      "text": "For the Harbor kit, pack 38 clips made of brass in the crimson case.",
+      "is_query": false,
+      "group": "dev-08",
+      "kind": "paraphrase"
+    },
+    {
+      "id": "dev-08-unrelated",
+      "text": "The Harbor rehearsal starts after sunset. Musicians should bring a printed melody and a folding chair.",
+      "is_query": false,
+      "group": "dev-08",
+      "kind": "unrelated"
+    },
+    {
+      "id": "dev-08-superseded",
+      "text": "Old packing record: the Harbor kit contained 47 brass clips. This count was superseded by the current packing record.",
+      "is_query": false,
+      "group": "dev-08",
+      "kind": "superseded"
+    },
+    {
+      "id": "dev-08-question",
+      "text": "How many brass clips are in the Harbor field kit?",
+      "is_query": true,
+      "group": "dev-08",
+      "kind": "question"
+    },
+    {
+      "id": "dev-08-query-paraphrase",
+      "text": "What quantity of brass fasteners should be packed for Harbor?",
+      "is_query": true,
+      "group": "dev-08",
+      "kind": "query-paraphrase"
+    },
+    {
+      "id": "dev-08-absent-fact",
+      "text": "Who manufactured the clips for the Harbor field kit?",
+      "is_query": true,
+      "group": "dev-08",
+      "kind": "absent-fact"
+    },
+    {
+      "id": "dev-08-followup",
+      "text": "What color is its case?",
+      "is_query": true,
+      "group": "dev-08",
+      "kind": "followup"
+    },
+    {
+      "id": "dev-09-current",
+      "text": "The Iris field kit contains 41 brass clips. Its case is ivory. This is the current packing record.",
+      "is_query": false,
+      "group": "dev-09",
+      "kind": "current"
+    },
+    {
+      "id": "dev-09-paraphrase",
+      "text": "For the Iris kit, pack 41 clips made of brass in the ivory case.",
+      "is_query": false,
+      "group": "dev-09",
+      "kind": "paraphrase"
+    },
+    {
+      "id": "dev-09-unrelated",
+      "text": "The Iris rehearsal starts after sunset. Musicians should bring a printed melody and a folding chair.",
+      "is_query": false,
+      "group": "dev-09",
+      "kind": "unrelated"
+    },
+    {
+      "id": "dev-09-superseded",
+      "text": "Old packing record: the Iris kit contained 50 brass clips. This count was superseded by the current packing record.",
+      "is_query": false,
+      "group": "dev-09",
+      "kind": "superseded"
+    },
+    {
+      "id": "dev-09-question",
+      "text": "How many brass clips are in the Iris field kit?",
+      "is_query": true,
+      "group": "dev-09",
+      "kind": "question"
+    },
+    {
+      "id": "dev-09-query-paraphrase",
+      "text": "What quantity of brass fasteners should be packed for Iris?",
+      "is_query": true,
+      "group": "dev-09",
+      "kind": "query-paraphrase"
+    },
+    {
+      "id": "dev-09-absent-fact",
+      "text": "Who manufactured the clips for the Iris field kit?",
+      "is_query": true,
+      "group": "dev-09",
+      "kind": "absent-fact"
+    },
+    {
+      "id": "dev-09-followup",
+      "text": "What color is its case?",
+      "is_query": true,
+      "group": "dev-09",
+      "kind": "followup"
+    },
+    {
+      "id": "dev-10-current",
+      "text": "The Juniper field kit contains 44 brass clips. Its case is maroon. This is the current packing record.",
+      "is_query": false,
+      "group": "dev-10",
+      "kind": "current"
+    },
+    {
+      "id": "dev-10-paraphrase",
+      "text": "For the Juniper kit, pack 44 clips made of brass in the maroon case.",
+      "is_query": false,
+      "group": "dev-10",
+      "kind": "paraphrase"
+    },
+    {
+      "id": "dev-10-unrelated",
+      "text": "The Juniper rehearsal starts after sunset. Musicians should bring a printed melody and a folding chair.",
+      "is_query": false,
+      "group": "dev-10",
+      "kind": "unrelated"
+    },
+    {
+      "id": "dev-10-superseded",
+      "text": "Old packing record: the Juniper kit contained 53 brass clips. This count was superseded by the current packing record.",
+      "is_query": false,
+      "group": "dev-10",
+      "kind": "superseded"
+    },
+    {
+      "id": "dev-10-question",
+      "text": "How many brass clips are in the Juniper field kit?",
+      "is_query": true,
+      "group": "dev-10",
+      "kind": "question"
+    },
+    {
+      "id": "dev-10-query-paraphrase",
+      "text": "What quantity of brass fasteners should be packed for Juniper?",
+      "is_query": true,
+      "group": "dev-10",
+      "kind": "query-paraphrase"
+    },
+    {
+      "id": "dev-10-absent-fact",
+      "text": "Who manufactured the clips for the Juniper field kit?",
+      "is_query": true,
+      "group": "dev-10",
+      "kind": "absent-fact"
+    },
+    {
+      "id": "dev-10-followup",
+      "text": "What color is its case?",
+      "is_query": true,
+      "group": "dev-10",
+      "kind": "followup"
+    },
+    {
+      "id": "dev-11-current",
+      "text": "The Kestrel field kit contains 47 brass clips. Its case is cyan. This is the current packing record.",
+      "is_query": false,
+      "group": "dev-11",
+      "kind": "current"
+    },
+    {
+      "id": "dev-11-paraphrase",
+      "text": "For the Kestrel kit, pack 47 clips made of brass in the cyan case.",
+      "is_query": false,
+      "group": "dev-11",
+      "kind": "paraphrase"
+    },
+    {
+      "id": "dev-11-unrelated",
+      "text": "The Kestrel rehearsal starts after sunset. Musicians should bring a printed melody and a folding chair.",
+      "is_query": false,
+      "group": "dev-11",
+      "kind": "unrelated"
+    },
+    {
+      "id": "dev-11-superseded",
+      "text": "Old packing record: the Kestrel kit contained 56 brass clips. This count was superseded by the current packing record.",
+      "is_query": false,
+      "group": "dev-11",
+      "kind": "superseded"
+    },
+    {
+      "id": "dev-11-question",
+      "text": "How many brass clips are in the Kestrel field kit?",
+      "is_query": true,
+      "group": "dev-11",
+      "kind": "question"
+    },
+    {
+      "id": "dev-11-query-paraphrase",
+      "text": "What quantity of brass fasteners should be packed for Kestrel?",
+      "is_query": true,
+      "group": "dev-11",
+      "kind": "query-paraphrase"
+    },
+    {
+      "id": "dev-11-absent-fact",
+      "text": "Who manufactured the clips for the Kestrel field kit?",
+      "is_query": true,
+      "group": "dev-11",
+      "kind": "absent-fact"
+    },
+    {
+      "id": "dev-11-followup",
+      "text": "What color is its case?",
+      "is_query": true,
+      "group": "dev-11",
+      "kind": "followup"
+    },
+    {
+      "id": "dev-12-current",
+      "text": "The Linden field kit contains 50 brass clips. Its case is ochre. This is the current packing record.",
+      "is_query": false,
+      "group": "dev-12",
+      "kind": "current"
+    },
+    {
+      "id": "dev-12-paraphrase",
+      "text": "For the Linden kit, pack 50 clips made of brass in the ochre case.",
+      "is_query": false,
+      "group": "dev-12",
+      "kind": "paraphrase"
+    },
+    {
+      "id": "dev-12-unrelated",
+      "text": "The Linden rehearsal starts after sunset. Musicians should bring a printed melody and a folding chair.",
+      "is_query": false,
+      "group": "dev-12",
+      "kind": "unrelated"
+    },
+    {
+      "id": "dev-12-superseded",
+      "text": "Old packing record: the Linden kit contained 59 brass clips. This count was superseded by the current packing record.",
+      "is_query": false,
+      "group": "dev-12",
+      "kind": "superseded"
+    },
+    {
+      "id": "dev-12-question",
+      "text": "How many brass clips are in the Linden field kit?",
+      "is_query": true,
+      "group": "dev-12",
+      "kind": "question"
+    },
+    {
+      "id": "dev-12-query-paraphrase",
+      "text": "What quantity of brass fasteners should be packed for Linden?",
+      "is_query": true,
+      "group": "dev-12",
+      "kind": "query-paraphrase"
+    },
+    {
+      "id": "dev-12-absent-fact",
+      "text": "Who manufactured the clips for the Linden field kit?",
+      "is_query": true,
+      "group": "dev-12",
+      "kind": "absent-fact"
+    },
+    {
+      "id": "dev-12-followup",
+      "text": "What color is its case?",
+      "is_query": true,
+      "group": "dev-12",
+      "kind": "followup"
+    },
+    {
+      "id": "edge-01",
+      "text": "",
+      "is_query": true,
+      "group": "edges",
+      "kind": "transport-tokenizer-boundary"
+    },
+    {
+      "id": "edge-02",
+      "text": " ",
+      "is_query": false,
+      "group": "edges",
+      "kind": "transport-tokenizer-boundary"
+    },
+    {
+      "id": "edge-03",
+      "text": "\n\t",
+      "is_query": true,
+      "group": "edges",
+      "kind": "transport-tokenizer-boundary"
+    },
+    {
+      "id": "edge-04",
+      "text": "alpha\u0000beta",
+      "is_query": false,
+      "group": "edges",
+      "kind": "transport-tokenizer-boundary"
+    },
+    {
+      "id": "edge-05",
+      "text": "café",
+      "is_query": true,
+      "group": "edges",
+      "kind": "transport-tokenizer-boundary"
+    },
+    {
+      "id": "edge-06",
+      "text": "café",
+      "is_query": false,
+      "group": "edges",
+      "kind": "transport-tokenizer-boundary"
+    },
+    {
+      "id": "edge-07",
+      "text": "日本語の合成文です。",
+      "is_query": true,
+      "group": "edges",
+      "kind": "transport-tokenizer-boundary"
+    },
+    {
+      "id": "edge-08",
+      "text": "مرحبا بالعالم",
+      "is_query": false,
+      "group": "edges",
+      "kind": "transport-tokenizer-boundary"
+    },
+    {
+      "id": "edge-09",
+      "text": "Пример синтетического текста.",
+      "is_query": true,
+      "group": "edges",
+      "kind": "transport-tokenizer-boundary"
+    },
+    {
+      "id": "edge-10",
+      "text": "🙂 🚲",
+      "is_query": false,
+      "group": "edges",
+      "kind": "transport-tokenizer-boundary"
+    },
+    {
+      "id": "edge-11",
+      "text": "42",
+      "is_query": true,
+      "group": "edges",
+      "kind": "transport-tokenizer-boundary"
+    },
+    {
+      "id": "edge-12",
+      "text": "-3.5",
+      "is_query": false,
+      "group": "edges",
+      "kind": "transport-tokenizer-boundary"
+    },
+    {
+      "id": "edge-13",
+      "text": "1,200.00",
+      "is_query": true,
+      "group": "edges",
+      "kind": "transport-tokenizer-boundary"
+    },
+    {
+      "id": "edge-14",
+      "text": "alpha—beta",
+      "is_query": false,
+      "group": "edges",
+      "kind": "transport-tokenizer-boundary"
+    },
+    {
+      "id": "edge-15",
+      "text": "snake_case",
+      "is_query": true,
+      "group": "edges",
+      "kind": "transport-tokenizer-boundary"
+    },
+    {
+      "id": "edge-16",
+      "text": "https://example.invalid/synthetic",
+      "is_query": false,
+      "group": "edges",
+      "kind": "transport-tokenizer-boundary"
+    },
+    {
+      "id": "edge-17",
+      "text": "<b>synthetic</b>",
+      "is_query": true,
+      "group": "edges",
+      "kind": "transport-tokenizer-boundary"
+    },
+    {
+      "id": "edge-18",
+      "text": "# Heading\n\nSynthetic paragraph.",
+      "is_query": false,
+      "group": "edges",
+      "kind": "transport-tokenizer-boundary"
+    },
+    {
+      "id": "edge-19",
+      "text": "First sentence. Second sentence.",
+      "is_query": true,
+      "group": "edges",
+      "kind": "transport-tokenizer-boundary"
+    },
+    {
+      "id": "edge-20",
+      "text": "First\r\nSecond",
+      "is_query": false,
+      "group": "edges",
+      "kind": "transport-tokenizer-boundary"
+    },
+    {
+      "id": "edge-21",
+      "text": "A  B\tC",
+      "is_query": true,
+      "group": "edges",
+      "kind": "transport-tokenizer-boundary"
+    },
+    {
+      "id": "edge-22",
+      "text": "[CLS] [SEP] [MASK]",
+      "is_query": false,
+      "group": "edges",
+      "kind": "transport-tokenizer-boundary"
+    },
+    {
+      "id": "edge-23",
+      "text": "ALPHA alpha Alpha",
+      "is_query": true,
+      "group": "edges",
+      "kind": "transport-tokenizer-boundary"
+    },
+    {
+      "id": "edge-24",
+      "text": "not approved; rejected",
+      "is_query": false,
+      "group": "edges",
+      "kind": "transport-tokenizer-boundary"
+    },
+    {
+      "id": "edge-25",
+      "text": "approved; not rejected",
+      "is_query": true,
+      "group": "edges",
+      "kind": "transport-tokenizer-boundary"
+    },
+    {
+      "id": "edge-26",
+      "text": "left | center | right",
+      "is_query": false,
+      "group": "edges",
+      "kind": "transport-tokenizer-boundary"
+    },
+    {
+      "id": "edge-27",
+      "text": "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+      "is_query": true,
+      "group": "edges",
+      "kind": "transport-tokenizer-boundary"
+    },
+    {
+      "id": "edge-28",
+      "text": "a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a ",
+      "is_query": false,
+      "group": "edges",
+      "kind": "transport-tokenizer-boundary"
+    },
+    {
+      "id": "edge-29",
+      "text": "a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a ",
+      "is_query": true,
+      "group": "edges",
+      "kind": "transport-tokenizer-boundary"
+    },
+    {
+      "id": "edge-30",
+      "text": "a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a ",
+      "is_query": false,
+      "group": "edges",
+      "kind": "transport-tokenizer-boundary"
+    },
+    {
+      "id": "edge-31",
+      "text": "b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b ",
+      "is_query": true,
+      "group": "edges",
+      "kind": "transport-tokenizer-boundary"
+    },
+    {
+      "id": "edge-32",
+      "text": "​‍﻿",
+      "is_query": false,
+      "group": "edges",
+      "kind": "transport-tokenizer-boundary"
+    }
+  ]
+}

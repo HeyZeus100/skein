@@ -1,0 +1,827 @@
+{
+  "schema_version": 1,
+  "label_authoring": "Written from synthetic source facts before any model bytes were acquired or executed; no model-generated labels",
+  "labels": [
+    {
+      "query": "dev-01-question",
+      "supports": [
+        "dev-01-current",
+        "dev-01-paraphrase"
+      ],
+      "related_but_conflicting": [
+        "dev-01-superseded"
+      ],
+      "unrelated": [
+        "dev-01-unrelated"
+      ],
+      "expected_fact": {
+        "subject": "Aster field kit",
+        "attribute": "brass clip count",
+        "value": 17
+      },
+      "authority": "current synthetic packing record"
+    },
+    {
+      "query": "dev-01-query-paraphrase",
+      "supports": [
+        "dev-01-current",
+        "dev-01-paraphrase"
+      ],
+      "related_but_conflicting": [
+        "dev-01-superseded"
+      ],
+      "unrelated": [
+        "dev-01-unrelated"
+      ],
+      "expected_fact": {
+        "subject": "Aster field kit",
+        "attribute": "brass clip count",
+        "value": 17
+      }
+    },
+    {
+      "query": "dev-01-absent-fact",
+      "supports": [],
+      "related_without_requested_fact": [
+        "dev-01-current",
+        "dev-01-paraphrase",
+        "dev-01-superseded"
+      ],
+      "expected_fact": null
+    },
+    {
+      "query": "dev-01-followup",
+      "supports": [
+        "dev-01-current",
+        "dev-01-paraphrase"
+      ],
+      "requires_context": {
+        "prior_user_query": "dev-01-question",
+        "prior_validated_source_ids": [
+          "dev-01-current"
+        ],
+        "scope": "synthetic shared space"
+      },
+      "expected_fact": {
+        "subject": "Aster field kit",
+        "attribute": "case color",
+        "value": "amber"
+      }
+    },
+    {
+      "query": "dev-02-question",
+      "supports": [
+        "dev-02-current",
+        "dev-02-paraphrase"
+      ],
+      "related_but_conflicting": [
+        "dev-02-superseded"
+      ],
+      "unrelated": [
+        "dev-02-unrelated"
+      ],
+      "expected_fact": {
+        "subject": "Birch field kit",
+        "attribute": "brass clip count",
+        "value": 20
+      },
+      "authority": "current synthetic packing record"
+    },
+    {
+      "query": "dev-02-query-paraphrase",
+      "supports": [
+        "dev-02-current",
+        "dev-02-paraphrase"
+      ],
+      "related_but_conflicting": [
+        "dev-02-superseded"
+      ],
+      "unrelated": [
+        "dev-02-unrelated"
+      ],
+      "expected_fact": {
+        "subject": "Birch field kit",
+        "attribute": "brass clip count",
+        "value": 20
+      }
+    },
+    {
+      "query": "dev-02-absent-fact",
+      "supports": [],
+      "related_without_requested_fact": [
+        "dev-02-current",
+        "dev-02-paraphrase",
+        "dev-02-superseded"
+      ],
+      "expected_fact": null
+    },
+    {
+      "query": "dev-02-followup",
+      "supports": [
+        "dev-02-current",
+        "dev-02-paraphrase"
+      ],
+      "requires_context": {
+        "prior_user_query": "dev-02-question",
+        "prior_validated_source_ids": [
+          "dev-02-current"
+        ],
+        "scope": "synthetic shared space"
+      },
+      "expected_fact": {
+        "subject": "Birch field kit",
+        "attribute": "case color",
+        "value": "violet"
+      }
+    },
+    {
+      "query": "dev-03-question",
+      "supports": [
+        "dev-03-current",
+        "dev-03-paraphrase"
+      ],
+      "related_but_conflicting": [
+        "dev-03-superseded"
+      ],
+      "unrelated": [
+        "dev-03-unrelated"
+      ],
+      "expected_fact": {
+        "subject": "Cobalt field kit",
+        "attribute": "brass clip count",
+        "value": 23
+      },
+      "authority": "current synthetic packing record"
+    },
+    {
+      "query": "dev-03-query-paraphrase",
+      "supports": [
+        "dev-03-current",
+        "dev-03-paraphrase"
+      ],
+      "related_but_conflicting": [
+        "dev-03-superseded"
+      ],
+      "unrelated": [
+        "dev-03-unrelated"
+      ],
+      "expected_fact": {
+        "subject": "Cobalt field kit",
+        "attribute": "brass clip count",
+        "value": 23
+      }
+    },
+    {
+      "query": "dev-03-absent-fact",
+      "supports": [],
+      "related_without_requested_fact": [
+        "dev-03-current",
+        "dev-03-paraphrase",
+        "dev-03-superseded"
+      ],
+      "expected_fact": null
+    },
+    {
+      "query": "dev-03-followup",
+      "supports": [
+        "dev-03-current",
+        "dev-03-paraphrase"
+      ],
+      "requires_context": {
+        "prior_user_query": "dev-03-question",
+        "prior_validated_source_ids": [
+          "dev-03-current"
+        ],
+        "scope": "synthetic shared space"
+      },
+      "expected_fact": {
+        "subject": "Cobalt field kit",
+        "attribute": "case color",
+        "value": "indigo"
+      }
+    },
+    {
+      "query": "dev-04-question",
+      "supports": [
+        "dev-04-current",
+        "dev-04-paraphrase"
+      ],
+      "related_but_conflicting": [
+        "dev-04-superseded"
+      ],
+      "unrelated": [
+        "dev-04-unrelated"
+      ],
+      "expected_fact": {
+        "subject": "Dahlia field kit",
+        "attribute": "brass clip count",
+        "value": 26
+      },
+      "authority": "current synthetic packing record"
+    },
+    {
+      "query": "dev-04-query-paraphrase",
+      "supports": [
+        "dev-04-current",
+        "dev-04-paraphrase"
+      ],
+      "related_but_conflicting": [
+        "dev-04-superseded"
+      ],
+      "unrelated": [
+        "dev-04-unrelated"
+      ],
+      "expected_fact": {
+        "subject": "Dahlia field kit",
+        "attribute": "brass clip count",
+        "value": 26
+      }
+    },
+    {
+      "query": "dev-04-absent-fact",
+      "supports": [],
+      "related_without_requested_fact": [
+        "dev-04-current",
+        "dev-04-paraphrase",
+        "dev-04-superseded"
+      ],
+      "expected_fact": null
+    },
+    {
+      "query": "dev-04-followup",
+      "supports": [
+        "dev-04-current",
+        "dev-04-paraphrase"
+      ],
+      "requires_context": {
+        "prior_user_query": "dev-04-question",
+        "prior_validated_source_ids": [
+          "dev-04-current"
+        ],
+        "scope": "synthetic shared space"
+      },
+      "expected_fact": {
+        "subject": "Dahlia field kit",
+        "attribute": "case color",
+        "value": "silver"
+      }
+    },
+    {
+      "query": "dev-05-question",
+      "supports": [
+        "dev-05-current",
+        "dev-05-paraphrase"
+      ],
+      "related_but_conflicting": [
+        "dev-05-superseded"
+      ],
+      "unrelated": [
+        "dev-05-unrelated"
+      ],
+      "expected_fact": {
+        "subject": "Elm field kit",
+        "attribute": "brass clip count",
+        "value": 29
+      },
+      "authority": "current synthetic packing record"
+    },
+    {
+      "query": "dev-05-query-paraphrase",
+      "supports": [
+        "dev-05-current",
+        "dev-05-paraphrase"
+      ],
+      "related_but_conflicting": [
+        "dev-05-superseded"
+      ],
+      "unrelated": [
+        "dev-05-unrelated"
+      ],
+      "expected_fact": {
+        "subject": "Elm field kit",
+        "attribute": "brass clip count",
+        "value": 29
+      }
+    },
+    {
+      "query": "dev-05-absent-fact",
+      "supports": [],
+      "related_without_requested_fact": [
+        "dev-05-current",
+        "dev-05-paraphrase",
+        "dev-05-superseded"
+      ],
+      "expected_fact": null
+    },
+    {
+      "query": "dev-05-followup",
+      "supports": [
+        "dev-05-current",
+        "dev-05-paraphrase"
+      ],
+      "requires_context": {
+        "prior_user_query": "dev-05-question",
+        "prior_validated_source_ids": [
+          "dev-05-current"
+        ],
+        "scope": "synthetic shared space"
+      },
+      "expected_fact": {
+        "subject": "Elm field kit",
+        "attribute": "case color",
+        "value": "orange"
+      }
+    },
+    {
+      "query": "dev-06-question",
+      "supports": [
+        "dev-06-current",
+        "dev-06-paraphrase"
+      ],
+      "related_but_conflicting": [
+        "dev-06-superseded"
+      ],
+      "unrelated": [
+        "dev-06-unrelated"
+      ],
+      "expected_fact": {
+        "subject": "Fable field kit",
+        "attribute": "brass clip count",
+        "value": 32
+      },
+      "authority": "current synthetic packing record"
+    },
+    {
+      "query": "dev-06-query-paraphrase",
+      "supports": [
+        "dev-06-current",
+        "dev-06-paraphrase"
+      ],
+      "related_but_conflicting": [
+        "dev-06-superseded"
+      ],
+      "unrelated": [
+        "dev-06-unrelated"
+      ],
+      "expected_fact": {
+        "subject": "Fable field kit",
+        "attribute": "brass clip count",
+        "value": 32
+      }
+    },
+    {
+      "query": "dev-06-absent-fact",
+      "supports": [],
+      "related_without_requested_fact": [
+        "dev-06-current",
+        "dev-06-paraphrase",
+        "dev-06-superseded"
+      ],
+      "expected_fact": null
+    },
+    {
+      "query": "dev-06-followup",
+      "supports": [
+        "dev-06-current",
+        "dev-06-paraphrase"
+      ],
+      "requires_context": {
+        "prior_user_query": "dev-06-question",
+        "prior_validated_source_ids": [
+          "dev-06-current"
+        ],
+        "scope": "synthetic shared space"
+      },
+      "expected_fact": {
+        "subject": "Fable field kit",
+        "attribute": "case color",
+        "value": "copper"
+      }
+    },
+    {
+      "query": "dev-07-question",
+      "supports": [
+        "dev-07-current",
+        "dev-07-paraphrase"
+      ],
+      "related_but_conflicting": [
+        "dev-07-superseded"
+      ],
+      "unrelated": [
+        "dev-07-unrelated"
+      ],
+      "expected_fact": {
+        "subject": "Granite field kit",
+        "attribute": "brass clip count",
+        "value": 35
+      },
+      "authority": "current synthetic packing record"
+    },
+    {
+      "query": "dev-07-query-paraphrase",
+      "supports": [
+        "dev-07-current",
+        "dev-07-paraphrase"
+      ],
+      "related_but_conflicting": [
+        "dev-07-superseded"
+      ],
+      "unrelated": [
+        "dev-07-unrelated"
+      ],
+      "expected_fact": {
+        "subject": "Granite field kit",
+        "attribute": "brass clip count",
+        "value": 35
+      }
+    },
+    {
+      "query": "dev-07-absent-fact",
+      "supports": [],
+      "related_without_requested_fact": [
+        "dev-07-current",
+        "dev-07-paraphrase",
+        "dev-07-superseded"
+      ],
+      "expected_fact": null
+    },
+    {
+      "query": "dev-07-followup",
+      "supports": [
+        "dev-07-current",
+        "dev-07-paraphrase"
+      ],
+      "requires_context": {
+        "prior_user_query": "dev-07-question",
+        "prior_validated_source_ids": [
+          "dev-07-current"
+        ],
+        "scope": "synthetic shared space"
+      },
+      "expected_fact": {
+        "subject": "Granite field kit",
+        "attribute": "case color",
+        "value": "teal"
+      }
+    },
+    {
+      "query": "dev-08-question",
+      "supports": [
+        "dev-08-current",
+        "dev-08-paraphrase"
+      ],
+      "related_but_conflicting": [
+        "dev-08-superseded"
+      ],
+      "unrelated": [
+        "dev-08-unrelated"
+      ],
+      "expected_fact": {
+        "subject": "Harbor field kit",
+        "attribute": "brass clip count",
+        "value": 38
+      },
+      "authority": "current synthetic packing record"
+    },
+    {
+      "query": "dev-08-query-paraphrase",
+      "supports": [
+        "dev-08-current",
+        "dev-08-paraphrase"
+      ],
+      "related_but_conflicting": [
+        "dev-08-superseded"
+      ],
+      "unrelated": [
+        "dev-08-unrelated"
+      ],
+      "expected_fact": {
+        "subject": "Harbor field kit",
+        "attribute": "brass clip count",
+        "value": 38
+      }
+    },
+    {
+      "query": "dev-08-absent-fact",
+      "supports": [],
+      "related_without_requested_fact": [
+        "dev-08-current",
+        "dev-08-paraphrase",
+        "dev-08-superseded"
+      ],
+      "expected_fact": null
+    },
+    {
+      "query": "dev-08-followup",
+      "supports": [
+        "dev-08-current",
+        "dev-08-paraphrase"
+      ],
+      "requires_context": {
+        "prior_user_query": "dev-08-question",
+        "prior_validated_source_ids": [
+          "dev-08-current"
+        ],
+        "scope": "synthetic shared space"
+      },
+      "expected_fact": {
+        "subject": "Harbor field kit",
+        "attribute": "case color",
+        "value": "crimson"
+      }
+    },
+    {
+      "query": "dev-09-question",
+      "supports": [
+        "dev-09-current",
+        "dev-09-paraphrase"
+      ],
+      "related_but_conflicting": [
+        "dev-09-superseded"
+      ],
+      "unrelated": [
+        "dev-09-unrelated"
+      ],
+      "expected_fact": {
+        "subject": "Iris field kit",
+        "attribute": "brass clip count",
+        "value": 41
+      },
+      "authority": "current synthetic packing record"
+    },
+    {
+      "query": "dev-09-query-paraphrase",
+      "supports": [
+        "dev-09-current",
+        "dev-09-paraphrase"
+      ],
+      "related_but_conflicting": [
+        "dev-09-superseded"
+      ],
+      "unrelated": [
+        "dev-09-unrelated"
+      ],
+      "expected_fact": {
+        "subject": "Iris field kit",
+        "attribute": "brass clip count",
+        "value": 41
+      }
+    },
+    {
+      "query": "dev-09-absent-fact",
+      "supports": [],
+      "related_without_requested_fact": [
+        "dev-09-current",
+        "dev-09-paraphrase",
+        "dev-09-superseded"
+      ],
+      "expected_fact": null
+    },
+    {
+      "query": "dev-09-followup",
+      "supports": [
+        "dev-09-current",
+        "dev-09-paraphrase"
+      ],
+      "requires_context": {
+        "prior_user_query": "dev-09-question",
+        "prior_validated_source_ids": [
+          "dev-09-current"
+        ],
+        "scope": "synthetic shared space"
+      },
+      "expected_fact": {
+        "subject": "Iris field kit",
+        "attribute": "case color",
+        "value": "ivory"
+      }
+    },
+    {
+      "query": "dev-10-question",
+      "supports": [
+        "dev-10-current",
+        "dev-10-paraphrase"
+      ],
+      "related_but_conflicting": [
+        "dev-10-superseded"
+      ],
+      "unrelated": [
+        "dev-10-unrelated"
+      ],
+      "expected_fact": {
+        "subject": "Juniper field kit",
+        "attribute": "brass clip count",
+        "value": 44
+      },
+      "authority": "current synthetic packing record"
+    },
+    {
+      "query": "dev-10-query-paraphrase",
+      "supports": [
+        "dev-10-current",
+        "dev-10-paraphrase"
+      ],
+      "related_but_conflicting": [
+        "dev-10-superseded"
+      ],
+      "unrelated": [
+        "dev-10-unrelated"
+      ],
+      "expected_fact": {
+        "subject": "Juniper field kit",
+        "attribute": "brass clip count",
+        "value": 44
+      }
+    },
+    {
+      "query": "dev-10-absent-fact",
+      "supports": [],
+      "related_without_requested_fact": [
+        "dev-10-current",
+        "dev-10-paraphrase",
+        "dev-10-superseded"
+      ],
+      "expected_fact": null
+    },
+    {
+      "query": "dev-10-followup",
+      "supports": [
+        "dev-10-current",
+        "dev-10-paraphrase"
+      ],
+      "requires_context": {
+        "prior_user_query": "dev-10-question",
+        "prior_validated_source_ids": [
+          "dev-10-current"
+        ],
+        "scope": "synthetic shared space"
+      },
+      "expected_fact": {
+        "subject": "Juniper field kit",
+        "attribute": "case color",
+        "value": "maroon"
+      }
+    },
+    {
+      "query": "dev-11-question",
+      "supports": [
+        "dev-11-current",
+        "dev-11-paraphrase"
+      ],
+      "related_but_conflicting": [
+        "dev-11-superseded"
+      ],
+      "unrelated": [
+        "dev-11-unrelated"
+      ],
+      "expected_fact": {
+        "subject": "Kestrel field kit",
+        "attribute": "brass clip count",
+        "value": 47
+      },
+      "authority": "current synthetic packing record"
+    },
+    {
+      "query": "dev-11-query-paraphrase",
+      "supports": [
+        "dev-11-current",
+        "dev-11-paraphrase"
+      ],
+      "related_but_conflicting": [
+        "dev-11-superseded"
+      ],
+      "unrelated": [
+        "dev-11-unrelated"
+      ],
+      "expected_fact": {
+        "subject": "Kestrel field kit",
+        "attribute": "brass clip count",
+        "value": 47
+      }
+    },
+    {
+      "query": "dev-11-absent-fact",
+      "supports": [],
+      "related_without_requested_fact": [
+        "dev-11-current",
+        "dev-11-paraphrase",
+        "dev-11-superseded"
+      ],
+      "expected_fact": null
+    },
+    {
+      "query": "dev-11-followup",
+      "supports": [
+        "dev-11-current",
+        "dev-11-paraphrase"
+      ],
+      "requires_context": {
+        "prior_user_query": "dev-11-question",
+        "prior_validated_source_ids": [
+          "dev-11-current"
+        ],
+        "scope": "synthetic shared space"
+      },
+      "expected_fact": {
+        "subject": "Kestrel field kit",
+        "attribute": "case color",
+        "value": "cyan"
+      }
+    },
+    {
+      "query": "dev-12-question",
+      "supports": [
+        "dev-12-current",
+        "dev-12-paraphrase"
+      ],
+      "related_but_conflicting": [
+        "dev-12-superseded"
+      ],
+      "unrelated": [
+        "dev-12-unrelated"
+      ],
+      "expected_fact": {
+        "subject": "Linden field kit",
+        "attribute": "brass clip count",
+        "value": 50
+      },
+      "authority": "current synthetic packing record"
+    },
+    {
+      "query": "dev-12-query-paraphrase",
+      "supports": [
+        "dev-12-current",
+        "dev-12-paraphrase"
+      ],
+      "related_but_conflicting": [
+        "dev-12-superseded"
+      ],
+      "unrelated": [
+        "dev-12-unrelated"
+      ],
+      "expected_fact": {
+        "subject": "Linden field kit",
+        "attribute": "brass clip count",
+        "value": 50
+      }
+    },
+    {
+      "query": "dev-12-absent-fact",
+      "supports": [],
+      "related_without_requested_fact": [
+        "dev-12-current",
+        "dev-12-paraphrase",
+        "dev-12-superseded"
+      ],
+      "expected_fact": null
+    },
+    {
+      "query": "dev-12-followup",
+      "supports": [
+        "dev-12-current",
+        "dev-12-paraphrase"
+      ],
+      "requires_context": {
+        "prior_user_query": "dev-12-question",
+        "prior_validated_source_ids": [
+          "dev-12-current"
+        ],
+        "scope": "synthetic shared space"
+      },
+      "expected_fact": {
+        "subject": "Linden field kit",
+        "attribute": "case color",
+        "value": "ochre"
+      }
+    }
+  ],
+  "constraints": {
+    "retained_existing_thresholds": true,
+    "production_candidate_selection": false,
+    "no_assistant_prose_as_authority": true,
+    "conflicting_text_is_related_not_unrelated": true,
+    "empty_and_unicode_cases_are_functional_not_semantic_acceptance": true,
+    "token_limit_boundary_counts": "a-repeat cases are proposed boundary probes; exact prefix-inclusive tokenizer counts must be reported, not assumed from word count"
+  },
+  "experiment_protocol": {
+    "batch_sizes": [
+      1,
+      8,
+      32
+    ],
+    "thread_counts": [
+      1,
+      2,
+      4
+    ],
+    "warmups_per_cell": 2,
+    "measured_repetitions_per_cell": 10,
+    "fixed_requirements": [
+      "identical input repeated in same configuration gives byte-identical final 256-byte output",
+      "all accepted outputs finite, 256 int8 bytes, normalized before quantization",
+      "prefix selection and truncation recorded separately",
+      "preserve all failures and raw candidate vectors"
+    ],
+    "semantic_thresholds": "No new acceptance threshold assigned; this development experiment reports margins and drift. Existing skein-079 margin >=0.15 remains its own unchanged smoke gate."
+  }
+}

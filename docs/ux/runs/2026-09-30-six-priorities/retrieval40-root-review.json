@@ -1,0 +1,24 @@
+{
+  "scope": "independent pre-output source and gold review",
+  "reviewer": "root integrator, not retrieval candidate implementer",
+  "fixture_sha256": "653b79ce9ab1c36776b5876d1b5d687a1d335f811f388b832fd0d9d258952674",
+  "documents": 22,
+  "queries": 40,
+  "answerable": 22,
+  "absence": 18,
+  "checks": [
+    "source facts and answer labels",
+    "all gold spans unique and scoped",
+    "all source-pin body hashes match",
+    "both conflicting sources required",
+    "current revision replay required",
+    "raw followups separate from oracle resolution",
+    "assistant-only unsupported claims not evidence",
+    "cross-Space pin not authorization"
+  ],
+  "findings": "PASS after peer pre-freeze ambiguity correction to followup36; no thresholds/golds from earlier fixtures changed",
+  "limitations": [
+    "10 runtime-context cases require supported adapter or remain UNEXECUTED in40-case denominator",
+    "No model/retrieval candidate output inspected; this is fixture review only"
+  ]
+}

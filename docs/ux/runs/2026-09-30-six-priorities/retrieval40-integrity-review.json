@@ -1,0 +1,39 @@
+{
+  "schema": "skein-independent-retrieval-fixture-freeze-v1",
+  "baseline": "b2beaf6607ce5ccd96d3862e92892a7ed033800b",
+  "counts": {
+    "tests": 5,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0
+  },
+  "xml": "testing/build/test-results/test/TEST-app.skein.testing.eval.FreshRejectionValidationFixtureTest.xml",
+  "xml_sha256": "f6a11ed4d9cb3bcd3394042c6e34ee682ae3d3cf06ebcdaede626411b7ef1dd0",
+  "cases": [
+    "competing_sources_are_both_required_and_current_revisions_have_real_distinct_history",
+    "unsupported_runtime_contexts_remain_in_the_full_denominator",
+    "raw_followups_and_oracle_resolution_stay_separate_with_exact_source_pins",
+    "every_gold_span_is_unique_current_source_text_in_the_requested_space",
+    "frozen_bytes_counts_and_authorship_match_the_independent_split"
+  ],
+  "source_hashes": {
+    "docs/eval/FRESH_VALIDATION_20260930.md": "0a78bd5e52e508d0636755fc98a674969cbcb50b95273597af7d5bfb07e607be",
+    "testing/src/main/resources/eval/rejection-validation-20260930.json": "653b79ce9ab1c36776b5876d1b5d687a1d335f811f388b832fd0d9d258952674",
+    "testing/src/test/kotlin/app/skein/testing/eval/FreshRejectionValidationFixtureTest.kt": "a6cd69a47a567ce918257179151220c7a63206942609b0a41ac3af1107306cd5"
+  },
+  "old_evidence_hashes_unchanged": {
+    "testing/src/main/resources/eval/corpus.json": "f86eb3540ef2400c056275aa50ad90f63293c11d7349ecaa664d116b02e7bd7f",
+    "testing/src/main/resources/eval/gold.json": "4fd5034368e250179425f06bbcb1cc40513f2f3c5ceb998bd6a9eedf298c820f",
+    "testing/src/main/resources/eval/rejection-validation.json": "bf162254094103310102e28ad90b4c945bf24dd7f8f9a706039b2fe3a826b57c",
+    "testing/src/main/resources/eval/rejection-validation-20260928.json": "4f79b2ddcf42dedd6b7f83c10402855f683fcebc3045d9e4668f6da2951759e8",
+    "testing/src/main/kotlin/app/skein/testing/eval/RetrievalMetrics.kt": "e11c1ea9b405e37c6eff4e0412db48bf4ab8869921ab252125ed8371ca3d6de6"
+  },
+  "candidate_outputs_seen": false,
+  "candidate_evaluation_run": false,
+  "peer_review_sha256": "200caa357e9d8dd7ddaf291ee59f73b27193383c04438c6b206c8942d7ac9812",
+  "logs": {
+    "format-1.log": "82d6c5f960e93073eb23d5e5b828651908d92310fb27816e5b4974e579c13dd7",
+    "integrity-1.log": "d6833a7befe5ed33498920a14a17212e66fc8be31d5f422bdcd1da45f0019f16"
+  },
+  "scope": "Fixture integrity and ktlint only; all40 retrieval quality cases unexecuted;10 need explicit runtime capabilities"
+}

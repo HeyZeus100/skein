@@ -1,0 +1,49 @@
+{
+  "status": "PASS",
+  "scope": "host functional precheck only; no held-out retrieval outputs",
+  "rows": 262,
+  "unique_role_inputs": 131,
+  "raw_stage_files": 1572,
+  "repeat_byte_comparisons": 786,
+  "errors": [],
+  "normalized_l2_range": [
+    0.9999999425558516,
+    1.0000000591025733
+  ],
+  "prefix_probes_differ": {
+    "dev-01-current": {
+      "ids.i32le": true,
+      "int8": true
+    },
+    "dev-01-question": {
+      "ids.i32le": true,
+      "int8": true
+    },
+    "edge-01": {
+      "ids.i32le": true,
+      "int8": true
+    }
+  },
+  "descriptive_mixed_input_run_ms": {
+    "min": 4.07475,
+    "median": 9.321708000000001,
+    "p95_nearest_rank": 13.456333,
+    "max": 241.70525
+  },
+  "tokens_range": [
+    6,
+    512
+  ],
+  "load_ms": 154.9535,
+  "wall_seconds": 5.7,
+  "mac_max_resident_bytes": 1043677184,
+  "mac_peak_footprint_bytes": 1012352752,
+  "artifact_manifest_sha256": "5a72c37eca02792d5e32bbd20d0c5a3d92ade3834306f430cf3f7da3fecdb98a",
+  "limitations": [
+    "No warm-up-controlled timing matrix; timings mix 6-512 token inputs and raw artifact writing.",
+    "Independent HuggingFace/reference numeric parity unmeasured; custom layernorm postprocessing is provisional.",
+    "CPU macOS JVM only, no Android PSS, Fold performance, isolated-service model loading or death/cancellation runtime acceptance.",
+    "No backend winner, production activation, or human approval.",
+    "Frozen synthetic development gold remains separate; no semantic metrics or held-out policy evaluation in this precheck."
+  ]
+}

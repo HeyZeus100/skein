@@ -1,0 +1,135 @@
+{
+  "review": "LC09 independent read-only backend review",
+  "base_revision": "0e56b433ff9db9323123c8afd9c33dc58fab5e8e",
+  "worktree": "/Users/andrewherrera/skein-worktrees/file-lifecycle-priorities-20260930",
+  "blocking_regressions_found": [],
+  "findings": [
+    {
+      "area": "sweep/write ordering",
+      "result": "Reservation registration holds only registry monitor and releases before any suspending work; repository outer reservation spans blob write, hash, and metadata transaction. Sweep acquires BEGIN IMMEDIATE then registry; active writers skipped without waiting. Shared canonical-directory registry covers same-process old/new store instances."
+    },
+    {
+      "area": "delete atomicity",
+      "result": "Revalidates exact NOTE IDs and non-NOTE dependent ID/kind under same writer transaction; deletes attachment/text rows and indexes atomically, preserves saved quote payloads and non-NOTE content while detaching source. Repeated already-gone operation remains idempotent."
+    },
+    {
+      "area": "receipt/cleanup",
+      "result": "Volatile committed acknowledgement runs immediately after successful outer COMMIT before change emission. Blob unlink is post-commit; failure/cancellation leaves pending truth and sweep retry. Source uses existing commit/cancellation mechanism; app must retain receipt inside outer transaction to observe COMMIT if dispatcher return is cancelled."
+    },
+    {
+      "area": "import races",
+      "result": "PDF source existence check and NOTE creation share a transaction. ZIP pre-attachment notes are linked with attachment insertion after exact expected-source revalidation; attachment-first later notes revalidate new attachment and link in note transaction. Earlier imported entries retain existing partial-import semantics on failure."
+    },
+    {
+      "area": "late indexing",
+      "result": "vec0 write now checks live chunk joined to document within BEGIN IMMEDIATE, skips missing IDs and publishes only accepted ones; existing replaceChunks/replaceEdges parent guards remain. This is not a new claim about cross-session stale IDs."
+    },
+    {
+      "area": "conservative file sweep",
+      "result": "Only no-follow regular files matching UUID blob or recognized expired temp names can unlink. Live document/source IDs, active IDs, unknown names, directories, symlinks and recent temps remain. Missing blob metadata is preserved; deletion errors counted."
+    },
+    {
+      "area": "test design",
+      "result": "14 instrumentation tests found including real encrypted SQLite/SKAT lifecycle fixtures, failed outer COMMIT, post-commit unlink failure/reopen, late vector negative control, membership/dependent changes, lock cancellation, write/commit reservation, PDF and both ZIP orderings. Four host orphan-sweep cases use real SKAT files. Reviewer executed none; coordinator/implementer own current build and emulator gates."
+    }
+  ],
+  "limits": [
+    "Read-only source/test design review; no Gradle, native SQLite instrumentation, device, or owner-vault actions.",
+    "Root app editor reservation, routing, pre-unlock sweep wiring and owner UI acceptance not included in this backend review.",
+    "No new whole-archive atomicity guarantee: earlier archive entries retain existing partial-import behavior.",
+    "No claim of multi-process attachment writers; shared registry is process-local and production design must retain one app process owner."
+  ],
+  "sources": [
+    {
+      "path": "core/model/src/main/kotlin/app/skein/core/model/FileLifecycle.kt",
+      "sha256": "8f7b8297352f062e407e82e9eda757d686d8a045276d3a5ded24561de40e5565",
+      "bytes": 4111,
+      "anchors": {}
+    },
+    {
+      "path": "core/vault/src/androidTest/kotlin/app/skein/core/vault/repository/FileLifecycleInstrumentedTest.kt",
+      "sha256": "6f68deed0a6214ed8b5ca4fbe339305f8ad12db530a1d7ef6e1822a1c98acad6",
+      "bytes": 29524,
+      "anchors": {}
+    },
+    {
+      "path": "core/vault/src/main/kotlin/app/skein/core/vault/blob/AttachmentStore.kt",
+      "sha256": "c2a7d53483e83c6d30d3a96776dad202390546f0d989ead3e1538fb3ada3c049",
+      "bytes": 3991,
+      "anchors": {}
+    },
+    {
+      "path": "core/vault/src/main/kotlin/app/skein/core/vault/blob/AttachmentWriteRegistry.kt",
+      "sha256": "e863ebdc79d1aee28928f05b0d02542b2fec7e76440fb9eb31de519c015e07b6",
+      "bytes": 1469,
+      "anchors": {
+        "suspend fun <T> reserve": 15,
+        "fun <T> sweep": 30,
+        "fun forDirectory": 37
+      }
+    },
+    {
+      "path": "core/vault/src/main/kotlin/app/skein/core/vault/blob/FileAttachmentStore.kt",
+      "sha256": "478031e2af13362bd037ebb510ed14f16fd2436f7f881f4a950e08c440cd90fb",
+      "bytes": 11872,
+      "anchors": {
+        "override suspend fun sweepOrphans": 167
+      }
+    },
+    {
+      "path": "core/vault/src/main/kotlin/app/skein/core/vault/index/IndexSql.kt",
+      "sha256": "a7532369212245061587a1516d5120464f17dee2396b3fd8397b4c4890b9415b",
+      "bytes": 9368,
+      "anchors": {}
+    },
+    {
+      "path": "core/vault/src/main/kotlin/app/skein/core/vault/index/IndexStoreImpl.kt",
+      "sha256": "f3c992de0790310fe0a06095ab07c8bf04a263a414cdf308431f6063325903c4",
+      "bytes": 27361,
+      "anchors": {
+        "override suspend fun putEmbeddings": 184
+      }
+    },
+    {
+      "path": "core/vault/src/main/kotlin/app/skein/core/vault/repository/VaultRepositoryImpl.kt",
+      "sha256": "fb16ce89e88f8e0f266f24f7407ababe52ca7e6b42ec988ca1ef9f06e55286a1",
+      "bytes": 68499,
+      "anchors": {
+        "override suspend fun deleteFile": 503,
+        "override suspend fun sweepOrphanAttachments": 544,
+        "private suspend fun createAttachmentAndLink": 928,
+        "private suspend fun <T> writeTx": 1308
+      }
+    },
+    {
+      "path": "core/vault/src/main/kotlin/app/skein/core/vault/repository/VaultSql.kt",
+      "sha256": "584d0635f7a7be587bedbb95bb454c5ddb89f4939e3b7a2b09985d0cb68281a1",
+      "bytes": 23358,
+      "anchors": {}
+    },
+    {
+      "path": "core/vault/src/main/kotlin/app/skein/core/vault/transfer/ImportServiceImpl.kt",
+      "sha256": "9664a7fb46b1296a6fcca4741e6df757d10e7861d2e9507feeb15998ab6ada57",
+      "bytes": 23623,
+      "anchors": {
+        "val extraction = PdfImporter.extract": 154,
+        "Imported file was deleted": 164
+      }
+    },
+    {
+      "path": "core/vault/src/main/kotlin/app/skein/core/vault/transfer/VaultZipImporter.kt",
+      "sha256": "8d0135caa2475b046e31ae3925344c3c6c92dcafdeb1681fd04e157f3adabf68",
+      "bytes": 16784,
+      "anchors": {
+        "private suspend fun importDocumentEntry": 197,
+        "private suspend fun importAttachmentEntry": 242
+      }
+    },
+    {
+      "path": "core/vault/src/test/kotlin/app/skein/core/vault/blob/AttachmentOrphanSweepTest.kt",
+      "sha256": "8ea7e279be12d405e08f31e857da363d37f27845eef05f06d99dc5b2a283738d",
+      "bytes": 5204,
+      "anchors": {}
+    }
+  ]
+}
