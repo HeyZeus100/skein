@@ -231,13 +231,18 @@ public class FileLifecycleInstrumentedTest {
                     NewDocument(DocumentKind.CHAT, "Saved chat", "synthetic body", frontmatter = source(attachment.id)),
                 )
             v.repo.appendMessage(chat.id, NewMessage(Role.USER, "synthetic message"))
+            // appendMessage materializes the chat transcript before file deletion starts.
+            val chatBeforeDelete = checkNotNull(v.repo.getDocument(chat.id))
+            val messagesBeforeDelete = v.repo.listMessages(chat.id)
+            assertEquals("**user:** synthetic message", chatBeforeDelete.bodyMd)
             val receipt = v.repo.deleteFile(checkNotNull(v.repo.resolveFileDeletion(attachment.id)))
             assertTrue(receipt.committed)
             assertTrue(receipt.attachmentCleanupPending)
             assertEquals(setOf(aiout.id, chat.id), receipt.detachedDocumentIds)
             assertEquals(setOf(attachment.id, note.id), receipt.documentIds)
             assertDetached(aiout, checkNotNull(v.repo.getDocument(aiout.id)))
-            assertDetached(chat, checkNotNull(v.repo.getDocument(chat.id)))
+            assertDetached(chatBeforeDelete, checkNotNull(v.repo.getDocument(chat.id)))
+            assertEquals(messagesBeforeDelete, v.repo.listMessages(chat.id))
             assertEquals(
                 "synthetic message",
                 v.repo
@@ -254,6 +259,9 @@ public class FileLifecycleInstrumentedTest {
             assertEquals(1, reopened.repo.sweepOrphanAttachments().removedBlobs)
             assertFalse(File(v.dir, "attachments/${attachment.id}").exists())
             assertEquals(0, reopened.repo.sweepOrphanAttachments().removedBlobs)
+            assertDetached(aiout, checkNotNull(reopened.repo.getDocument(aiout.id)))
+            assertDetached(chatBeforeDelete, checkNotNull(reopened.repo.getDocument(chat.id)))
+            assertEquals(messagesBeforeDelete, reopened.repo.listMessages(chat.id))
         }
 
     @Test
