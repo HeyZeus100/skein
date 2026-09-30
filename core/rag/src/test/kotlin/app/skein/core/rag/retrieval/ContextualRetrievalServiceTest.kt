@@ -1,5 +1,6 @@
 package app.skein.core.rag.retrieval
 
+import app.skein.core.model.ContextualEvidenceMode
 import app.skein.core.model.ContextualRetrievalRequest
 import app.skein.core.model.Document
 import app.skein.core.model.DocumentKind
@@ -137,6 +138,51 @@ class ContextualRetrievalServiceTest {
             assertThat(result.resolution).isEqualTo(FollowUpResolution.MISSING_CONTEXT)
             assertThat(result.originalCandidates).isEmpty()
             assertThat(result.evidence).isEmpty()
+        }
+
+    @Test
+    fun `indexed followup validates without expanding selected source bytes or changing scores`() =
+        runTest {
+            val fixture = fixture()
+            val request =
+                ContextualRetrievalRequest(
+                    "hooks",
+                    followUp = context(fixture.doc),
+                    evidenceMode = ContextualEvidenceMode.INDEXED,
+                )
+            val result = fixture.service.retrieveContext(request)
+            assertThat(result.evidence.single().text).isEqualTo("Seven hooks")
+            assertThat(result.evidence).isEqualTo(result.originalCandidates)
+            assertThat(fixture.service.isContextCurrent(request, result.evidence)).isTrue()
+            val forged = result.evidence.single().copy(text = "Invented hooks")
+            assertThat(fixture.service.isContextCurrent(request, listOf(forged))).isFalse()
+        }
+
+    @Test
+    fun `freshness recheck rejects evidence from a document outside the resolved anchor`() =
+        runTest {
+            val fixture = fixture()
+            val request =
+                ContextualRetrievalRequest(
+                    "hooks",
+                    followUp = context(fixture.doc),
+                    evidenceMode = ContextualEvidenceMode.INDEXED,
+                )
+            val evidence =
+                fixture.service
+                    .retrieveContext(request)
+                    .evidence
+                    .single()
+            assertThat(fixture.service.isContextCurrent(request, listOf(evidence.copy(docId = "other")))).isFalse()
+        }
+
+    @Test
+    fun `freshness recheck does not accept an unpinned direct request as contextual proof`() =
+        runTest {
+            val fixture = fixture()
+            val request = ContextualRetrievalRequest("hooks", evidenceMode = ContextualEvidenceMode.INDEXED)
+            assertThat(fixture.service.isContextCurrent(request, fixture.service.retrieveContext(request).evidence))
+                .isFalse()
         }
 
     private data class Fixture(

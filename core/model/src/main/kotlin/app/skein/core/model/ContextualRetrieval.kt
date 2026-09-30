@@ -14,11 +14,18 @@ public data class RetrievalFollowUpContext(
     val citedSources: List<RetrievalSourcePin>,
 )
 
+/** Structural expansion stays an explicit experiment; chat follow-ups use verified indexed bytes. */
+public enum class ContextualEvidenceMode {
+    INDEXED,
+    STRUCTURAL,
+}
+
 public data class ContextualRetrievalRequest(
     val query: String,
     val k: Int = 8,
     val personaId: PersonaId? = null,
     val followUp: RetrievalFollowUpContext? = null,
+    val evidenceMode: ContextualEvidenceMode = ContextualEvidenceMode.STRUCTURAL,
 )
 
 /** Structural source resolution only. RESOLVED is not evidence that the requested fact is supported. */
@@ -55,4 +62,10 @@ public data class ContextualRetrievalResult(
 /** Additive, explicitly opt-in path. Existing [RetrievalService] callers retain their current policy. */
 public interface ContextualRetrievalService : RetrievalService {
     public suspend fun retrieveContext(request: ContextualRetrievalRequest): ContextualRetrievalResult
+
+    /** Recheck pinned sources after suspendable prompt preparation. Unsupported implementations fail closed. */
+    public suspend fun isContextCurrent(
+        request: ContextualRetrievalRequest,
+        evidence: List<Retrieved>,
+    ): Boolean = false
 }

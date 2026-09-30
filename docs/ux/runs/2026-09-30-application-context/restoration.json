@@ -1,0 +1,33 @@
+{
+  "allSevenMatchSuccessfulFull3": true,
+  "sources": [
+    {
+      "path": "core/model/src/main/kotlin/app/skein/core/model/ContextualRetrieval.kt",
+      "sha256": "808199aaa373e422eba31235b3563ac66e67bdf1056069d4b69f1701480247b6"
+    },
+    {
+      "path": "core/rag/src/main/kotlin/app/skein/core/rag/retrieval/EvidenceUnitSelector.kt",
+      "sha256": "9d15ba4dde25407e3cd00d9d41119602242d9eb2889db4a76ab40514f5ed7857"
+    },
+    {
+      "path": "core/rag/src/main/kotlin/app/skein/core/rag/retrieval/RetrievalServiceImpl.kt",
+      "sha256": "b73b444cfcfcc0f9606bb56aa8a02d8056f9e6bcd4a841ad1ef6c67186e83cbd"
+    },
+    {
+      "path": "core/rag/src/test/kotlin/app/skein/core/rag/retrieval/ContextualRetrievalServiceTest.kt",
+      "sha256": "e7ed06366a09d89b8c890b139252dcd9828e6252630148c3fc8ee5df12878cc4"
+    },
+    {
+      "path": "feature/chat/src/main/kotlin/app/skein/feature/chat/ChatFollowUpContext.kt",
+      "sha256": "f008c39bf92d926d5de8f0ec2e2831c0832dabce349b53b22c7a5665e027e3d3"
+    },
+    {
+      "path": "feature/chat/src/main/kotlin/app/skein/feature/chat/SendPipeline.kt",
+      "sha256": "eca058239e3517522abf210b24d53ffb028c92996e4b62a280394bb43e6a20cb"
+    },
+    {
+      "path": "feature/chat/src/test/kotlin/app/skein/feature/chat/ContextualSendPathTest.kt",
+      "sha256": "759ada9eeab38a1c11206b91f30d6852604c24590ec3fd26119ecf8cde68dc80"
+    }
+  ]
+}

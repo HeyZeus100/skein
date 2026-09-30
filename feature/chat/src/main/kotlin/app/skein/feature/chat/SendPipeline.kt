@@ -25,6 +25,7 @@ package app.skein.feature.chat
 import app.skein.core.model.AnswerPolicy
 import app.skein.core.model.AnswerScope
 import app.skein.core.model.AssembledPrompt
+import app.skein.core.model.ContextualRetrievalService
 import app.skein.core.model.DocId
 import app.skein.core.model.InferenceEngine
 import app.skein.core.model.InferenceException
@@ -49,7 +50,9 @@ import app.skein.core.rag.chat.Segment
 import app.skein.core.rag.prompt.ExactPromptAssembler
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.channels.Channel
+import kotlinx.coroutines.currentCoroutineContext
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.ensureActive
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -190,6 +193,7 @@ public class SendPipeline(
     private val selectModel: (suspend (Persona?) -> TurnModelSelection)? = null,
 ) {
     private val turnGate = Mutex()
+    private val followUpContext = ChatFollowUpContext()
 
     @Volatile private var activeChatId: DocId? = null
 
@@ -288,12 +292,18 @@ public class SendPipeline(
         snapshot: TurnAnswerSnapshot,
         message: Message?,
     ) {
-        synchronized(outcomeMonitor) { _lastOutcome.value = retainedOutcome(snapshot.outcome(message)) }
+        synchronized(outcomeMonitor) {
+            val outcome = retainedOutcome(snapshot.outcome(message))
+            _lastOutcome.value = outcome
+            if (outcome != null) followUpContext.committed(snapshot, message)
+        }
     }
 
     public fun clearSessionState() {
         synchronized(outcomeMonitor) {
             _lastOutcome.value = null
+            preparationCancelled = true
+            followUpContext.close()
             deletedDocuments.clear()
         }
     }
@@ -302,6 +312,7 @@ public class SendPipeline(
     public fun invalidateCommittedDocument(documentId: DocId) {
         synchronized(outcomeMonitor) {
             deletedDocuments += documentId
+            followUpContext.invalidate(documentId)
             _lastOutcome.value = _lastOutcome.value?.let(::retainedOutcome)
         }
     }
@@ -361,12 +372,23 @@ public class SendPipeline(
                         }
                     }
                 if (preparationCancelled) throw CancellationException("prompt preparation cancelled")
+                val contextualService = retrievalService as? ContextualRetrievalService
+                val contextRequest =
+                    if (answerScope == AnswerScope.KNOWLEDGE && contextualService != null) {
+                        followUpContext.request(turn, priorHistory, RETRIEVAL_K)
+                    } else {
+                        null
+                    }
                 val retrieved =
-                    if (answerScope == AnswerScope.KNOWLEDGE) {
+                    if (contextRequest != null) {
+                        checkNotNull(contextualService).retrieveContext(contextRequest).evidence
+                    } else if (answerScope == AnswerScope.KNOWLEDGE) {
                         retrievalService.retrieveContext(text, RETRIEVAL_K, persona?.id)
                     } else {
                         emptyList()
                     }
+                currentCoroutineContext().ensureActive()
+                if (preparationCancelled) throw CancellationException("prompt preparation cancelled")
                 val params = turn.params
                 val budget = budgetFor(params.maxTokens, AnswerPolicy.systemPrompt(persona, answerScope))
                 val assembled =
@@ -389,8 +411,16 @@ public class SendPipeline(
                         )
                     }
                 if (preparationCancelled) throw CancellationException("prompt preparation cancelled")
+                val contextCurrent =
+                    contextRequest == null ||
+                        checkNotNull(
+                            contextualService,
+                        ).isContextCurrent(contextRequest, assembled.citations.values.toList())
+                currentCoroutineContext().ensureActive()
+                if (preparationCancelled) throw CancellationException("prompt preparation cancelled")
                 val noEvidence =
-                    answerScope == AnswerScope.KNOWLEDGE &&
+                    !contextCurrent ||
+                        answerScope == AnswerScope.KNOWLEDGE &&
                         !retrievalService.acceptsEvidence(text, assembled.citations.values.toList())
                 // A supporting tail chunk can be removed by either budget pass.
                 // An application-owned abstention uses no sources or model prompt.

@@ -1,0 +1,24 @@
+# Bounded application-context retrieval, 30 September 2026
+
+Implementation for `skein-gg11.32.2` connects the real `ChatTurnController` → `SendPipeline` → `RetrievalServiceImpl` path. The application's existing `ModelServices` composition already supplies this concrete service; no new app activation seam or runtime/model switch is needed.
+
+The opt-in syntax is deliberately narrow: grammatical prefixes followed by `its`, `that note/source/document`, `this note/source/document`, or `the same note/source/document`. Examples include “What is its color?” and “What is in that note?”. A new named subject such as “What is Mars and its climate?” remains a direct raw query. Bare “it”, broader ellipsis and general conversation understanding are not implemented.
+
+Context comes from the immediately preceding canonical persisted USER/ASSISTANT pair. Only actually cited v1 source IDs and revision hashes can supply pins. A bounded 32-chat in-memory completion attestation binds those exact message IDs to the previous turn's captured Space. Interrupted, uncited, ambiguous, oversized, unattested or intervening-user contexts refuse resolution. Historical/reopened conversations do not gain a fabricated previous Space: contextual follow-ups remain unavailable until a cited answer completes in the current unlocked session. Session close clears the attestation.
+
+The original current user query remains the evidence-policy and prompt input. Only the verified source title and prior user query aid recall; assistant prose is never retrieval authority. Production uses an additive indexed mode, verifying source revision hashes, exact UTF-8 locator bytes, current NOTE kind, source deletion and Space ownership while preserving original scores and recall signals. It does not activate structural unit expansion. A second source check after suspendable prompt budgeting catches observed edits/deletes before generation. These read APIs do not promise an atomic snapshot against a later writer. Cancellation checks prevent late retrieval/freshness callbacks from publishing or generating after Stop or lock.
+
+The direct String retrieval implementation, lexical threshold **0.5**, labels, fixtures and model/backend defaults are unchanged. Recognition and source provenance are separate from semantic relevance or honest absence calibration.
+
+## Actual evidence
+
+`source-and-results.json` records actual source bytes, Java version, all XML hashes, skip identities and archive hashes. The positive and negative ZIPs contain the original XML and all seven tested source files; each payload was opened, parsed and rehashed before this record was written.
+
+- Full affected rag/chat host suites: **704 passed, 16 skipped, zero failures/errors across 68 XML suites**. All three affected module ktlint checks passed. The chat task executed; the rag task reused the prior successful full-suite output at byte-identical rag source. These are host tests, including synthetic repository and inference ports, not encrypted Android runtime or physical acceptance.
+- The 21 new send-path tests execute the real controller/send/retrieval composition with persisted canonical messages and current source revisions, rather than injecting a prepared follow-up request. Three additional contextual-service tests check indexed byte/score preservation and provenance refusal.
+- Final controlled negative: replacing only `SendPipeline.kt` with the unchanged publication baseline produced **three intended failures out of three**, because the actual send path never called contextual retrieval. The exact same final test bytes are in both source archives. All seven source/test files were restored byte-for-byte to the successful full-suite inventory afterward; the final on-disk test output may therefore be the negative run, while `positive-actual-xml.zip` is the sealed positive evidence.
+- `development-history.zip` retains initial style/compile failures, the prompt-wrapper assertion failure (18/19 passed), the corresponding first full-suite failure, and the earlier negative. The assertion was corrected to inspect the actual `User:` section of the existing quoted-evidence prompt. No production answer policy was relaxed. These development attempts are not substitutes for the final attributed positive/negative pair.
+
+## Open acceptance
+
+The encrypted application integration, durable cross-session provenance, broader conversational resolution, runtime and physical acceptance remain open. The six Fresh40 application-context rows still require a capable real application adapter before execution credit; they were not run here. Fresh40 remains consumed regression evidence, with its original failures, labels and thresholds preserved. No model answers, new retrieval-quality measurements, device commands or Fold installations were performed.

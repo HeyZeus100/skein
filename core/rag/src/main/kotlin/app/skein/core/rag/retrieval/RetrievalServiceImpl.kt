@@ -63,6 +63,7 @@ package app.skein.core.rag.retrieval
 
 import app.skein.core.model.ChunkId
 import app.skein.core.model.CitationSourceKind
+import app.skein.core.model.ContextualEvidenceMode
 import app.skein.core.model.ContextualRetrievalRequest
 import app.skein.core.model.ContextualRetrievalResult
 import app.skein.core.model.ContextualRetrievalService
@@ -182,7 +183,12 @@ public class RetrievalServiceImpl(
         val ranked = ranker.rank(sources, request.personaId, request.k)
         val candidates = assembler.assemble(ranked, sources).take(request.k)
         val anchored = candidates.filter { resolved.anchorIds.isEmpty() || it.docId in resolved.anchorIds }
-        val selected = EvidenceUnitSelector(repository, legacyPersonaId).select(anchored, request.personaId)
+        val selected =
+            EvidenceUnitSelector(repository, legacyPersonaId).select(
+                anchored,
+                request.personaId,
+                expandUnits = request.evidenceMode == ContextualEvidenceMode.STRUCTURAL,
+            )
         val exclusions = selected.exclusions.mapKeys { it.key.name }.toMutableMap()
         if (anchored.size != candidates.size) exclusions["OUTSIDE_FOLLOW_UP_ANCHOR"] = candidates.size - anchored.size
         // A source edit during recall must not turn an old pin into a newly resolved source.
@@ -195,6 +201,20 @@ public class RetrievalServiceImpl(
         val evidence = evidenceGate?.select(request.query, selected.evidence) ?: selected.evidence
         val members = selected.units.filter { it.source in evidence }.associate { it.source.chunkId to it.members }
         return result(evidence, candidates, exclusions, members = members)
+    }
+
+    override suspend fun isContextCurrent(
+        request: ContextualRetrievalRequest,
+        evidence: List<Retrieved>,
+    ): Boolean {
+        val resolved = ProvenanceFollowUpResolver(repository, legacyPersonaId).resolve(request)
+        if (resolved.resolution != FollowUpResolution.RESOLVED ||
+            evidence.any { it.docId !in resolved.anchorIds }
+        ) {
+            return false
+        }
+        val verified = EvidenceUnitSelector(repository, legacyPersonaId).select(evidence, request.personaId, false)
+        return verified.evidence == evidence
     }
 
     /** Spec §7.2 recall step: the three sources, fanned out concurrently on [io]. See file header. */

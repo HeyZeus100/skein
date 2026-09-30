@@ -26,6 +26,7 @@ public class EvidenceUnitSelector(
     public suspend fun select(
         candidates: List<Retrieved>,
         personaId: PersonaId?,
+        expandUnits: Boolean = true,
     ): EvidenceSelection {
         val units = mutableListOf<EvidenceUnit>()
         val exclusions = linkedMapOf<EvidenceExclusion, Int>()
@@ -34,10 +35,14 @@ public class EvidenceUnitSelector(
             exclusions[reason] = (exclusions[reason] ?: 0) + 1
         }
         for (candidate in candidates) {
-            val expanded = expand(candidate, personaId)
+            val expanded = expand(candidate, personaId, expandUnits)
             val source = expanded.first
             if (source == null) {
                 exclude(checkNotNull(expanded.second))
+                continue
+            }
+            if (!expandUnits) {
+                units += EvidenceUnit(source, listOf(candidate))
                 continue
             }
             val overlaps = overlappingIndices(units, source)
@@ -116,6 +121,7 @@ public class EvidenceUnitSelector(
     private suspend fun expand(
         candidate: Retrieved,
         personaId: PersonaId?,
+        expandUnits: Boolean,
     ): Pair<Retrieved?, EvidenceExclusion?> {
         val document = repository.getDocument(candidate.docId) ?: return refused(EvidenceExclusion.MISSING_SOURCE)
         if (!document.isAuthoritativeEvidence()) return refused(EvidenceExclusion.UNSUPPORTED_SOURCE)
@@ -147,6 +153,13 @@ public class EvidenceUnitSelector(
             // The metadata never enters the returned evidence: that is built from body below.
             val indexed = "$heading\n\n".toByteArray(Charsets.UTF_8) + slice
             if (!indexed.contentEquals(original)) return refused(EvidenceExclusion.INVALID_ANCHOR)
+        }
+        if (!expandUnits) {
+            return candidate.copy(
+                docTitle = document.title,
+                text = slice.toString(Charsets.UTF_8),
+                sourceKind = document.kind,
+            ) to null
         }
         val blocks = blocks(body).filter { it.start < anchor.byteEnd && it.end > anchor.byteStart }
         if (blocks.isEmpty() || blocks.any { !it.complete }) return refused(EvidenceExclusion.INCOMPLETE_UNIT)

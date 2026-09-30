@@ -1,0 +1,1292 @@
+{
+  "base_commit": "8f084343cf2b67395d2d707b33f6ee578d801c89",
+  "scope": "bounded current-session production source-reference follow-ups; no general conversation or quality acceptance",
+  "java": {
+    "path": "/opt/homebrew/Cellar/openjdk@17/17.0.20.1/libexec/openjdk.jdk/Contents/Home/bin/java",
+    "version": "openjdk version \"17.0.20.1\" 2026-08-18\nOpenJDK Runtime Environment Homebrew (build 17.0.20.1+0)\nOpenJDK 64-Bit Server VM Homebrew (build 17.0.20.1+0, mixed mode, sharing)\n"
+  },
+  "positive": {
+    "counts": {
+      "tests": 720,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 16,
+      "passes": 704
+    },
+    "xml": [
+      {
+        "path": "core/rag/build/test-results/testDebugUnitTest/TEST-app.skein.core.rag.chat.CitationParserTest.xml",
+        "sha256": "90e18b65eee43b4c9608def2a7c3b30506ba68924f924e57813c27cad798677d",
+        "suite": {
+          "name": "app.skein.core.rag.chat.CitationParserTest",
+          "tests": "18",
+          "skipped": "0",
+          "failures": "0",
+          "errors": "0",
+          "timestamp": "2026-09-30T17:03:26.276Z",
+          "hostname": "Andrews-MacBook-Pro.local",
+          "time": "0.025"
+        }
+      },
+      {
+        "path": "core/rag/build/test-results/testDebugUnitTest/TEST-app.skein.core.rag.chat.CitationRecordsTest.xml",
+        "sha256": "6284d5b67cebd9acc19ee76b6911bc00e36cd7b3173a5a360d3fbbc0c30490ab",
+        "suite": {
+          "name": "app.skein.core.rag.chat.CitationRecordsTest",
+          "tests": "11",
+          "skipped": "0",
+          "failures": "0",
+          "errors": "0",
+          "timestamp": "2026-09-30T17:03:26.303Z",
+          "hostname": "Andrews-MacBook-Pro.local",
+          "time": "0.053"
+        }
+      },
+      {
+        "path": "core/rag/build/test-results/testDebugUnitTest/TEST-app.skein.core.rag.chunk.ChunkerTest.xml",
+        "sha256": "26650e02ddcba634b5c02988ef31a4e06cb44d80d0dd4fb8b1e33a3c6fb0d3d1",
+        "suite": {
+          "name": "app.skein.core.rag.chunk.ChunkerTest",
+          "tests": "20",
+          "skipped": "0",
+          "failures": "0",
+          "errors": "0",
+          "timestamp": "2026-09-30T17:03:26.358Z",
+          "hostname": "Andrews-MacBook-Pro.local",
+          "time": "0.391"
+        }
+      },
+      {
+        "path": "core/rag/build/test-results/testDebugUnitTest/TEST-app.skein.core.rag.chunk.ChunkerThroughputTest.xml",
+        "sha256": "3be63673b6fd08385f275c4fd00776d14c8dc29d1aa1cc3d7e3ef679a1489c88",
+        "suite": {
+          "name": "app.skein.core.rag.chunk.ChunkerThroughputTest",
+          "tests": "1",
+          "skipped": "0",
+          "failures": "0",
+          "errors": "0",
+          "timestamp": "2026-09-30T17:03:26.750Z",
+          "hostname": "Andrews-MacBook-Pro.local",
+          "time": "0.704"
+        }
+      },
+      {
+        "path": "core/rag/build/test-results/testDebugUnitTest/TEST-app.skein.core.rag.chunk.MarkdownBlockScannerTest.xml",
+        "sha256": "c009a37af99373920526b4b888ab9483aad5928e6d82440f04006fab82b0adde",
+        "suite": {
+          "name": "app.skein.core.rag.chunk.MarkdownBlockScannerTest",
+          "tests": "11",
+          "skipped": "0",
+          "failures": "0",
+          "errors": "0",
+          "timestamp": "2026-09-30T17:03:27.455Z",
+          "hostname": "Andrews-MacBook-Pro.local",
+          "time": "0.001"
+        }
+      },
+      {
+        "path": "core/rag/build/test-results/testDebugUnitTest/TEST-app.skein.core.rag.embed.EmbedderServiceImplTest.xml",
+        "sha256": "b6509e1671db85ed68981319b037ecae83e1153885d8a58386eb4c38e2ef6dee",
+        "suite": {
+          "name": "app.skein.core.rag.embed.EmbedderServiceImplTest",
+          "tests": "4",
+          "skipped": "4",
+          "failures": "0",
+          "errors": "0",
+          "timestamp": "2026-09-30T17:03:27.457Z",
+          "hostname": "Andrews-MacBook-Pro.local",
+          "time": "0.002"
+        }
+      },
+      {
+        "path": "core/rag/build/test-results/testDebugUnitTest/TEST-app.skein.core.rag.embed.EmbeddingBoundaryTest.xml",
+        "sha256": "c7fd083f19111779b8b76a4d110c0bc9dce509688fe05dc39f5785608982c8a7",
+        "suite": {
+          "name": "app.skein.core.rag.embed.EmbeddingBoundaryTest",
+          "tests": "9",
+          "skipped": "0",
+          "failures": "0",
+          "errors": "0",
+          "timestamp": "2026-09-30T17:03:27.460Z",
+          "hostname": "Andrews-MacBook-Pro.local",
+          "time": "0.025"
+        }
+      },
+      {
+        "path": "core/rag/build/test-results/testDebugUnitTest/TEST-app.skein.core.rag.ingest.IngestPipelineTest.xml",
+        "sha256": "5ed09d095efa96cd89c0f9a72414eec014581176944bd21647437524f5bdf5b0",
+        "suite": {
+          "name": "app.skein.core.rag.ingest.IngestPipelineTest",
+          "tests": "29",
+          "skipped": "0",
+          "failures": "0",
+          "errors": "0",
+          "timestamp": "2026-09-30T17:03:27.488Z",
+          "hostname": "Andrews-MacBook-Pro.local",
+          "time": "0.118"
+        }
+      },
+      {
+        "path": "core/rag/build/test-results/testDebugUnitTest/TEST-app.skein.core.rag.ingest.IngestStepsTest.xml",
+        "sha256": "24a3c5be6555b5de17ea7d31ea14b9e748c9fa25850ba9ce77a021aece89579f",
+        "suite": {
+          "name": "app.skein.core.rag.ingest.IngestStepsTest",
+          "tests": "16",
+          "skipped": "0",
+          "failures": "0",
+          "errors": "0",
+          "timestamp": "2026-09-30T17:03:27.608Z",
+          "hostname": "Andrews-MacBook-Pro.local",
+          "time": "0.028"
+        }
+      },
+      {
+        "path": "core/rag/build/test-results/testDebugUnitTest/TEST-app.skein.core.rag.prompt.ExactPromptAssemblerTest.xml",
+        "sha256": "9d7fbc7e712fafd3765ef0181d02d84bdce1862b7d7b65b3673bc3af01879657",
+        "suite": {
+          "name": "app.skein.core.rag.prompt.ExactPromptAssemblerTest",
+          "tests": "7",
+          "skipped": "0",
+          "failures": "0",
+          "errors": "0",
+          "timestamp": "2026-09-30T17:03:27.638Z",
+          "hostname": "Andrews-MacBook-Pro.local",
+          "time": "0.013"
+        }
+      },
+      {
+        "path": "core/rag/build/test-results/testDebugUnitTest/TEST-app.skein.core.rag.prompt.PromptAssemblerImplInjectionTest.xml",
+        "sha256": "83c562aa70f0c4b5b7c7c3501ae910bbda2fd4afcf37a9d5ca5a6fbea33f1d6b",
+        "suite": {
+          "name": "app.skein.core.rag.prompt.PromptAssemblerImplInjectionTest",
+          "tests": "1",
+          "skipped": "0",
+          "failures": "0",
+          "errors": "0",
+          "timestamp": "2026-09-30T17:03:27.651Z",
+          "hostname": "Andrews-MacBook-Pro.local",
+          "time": "0.001"
+        }
+      },
+      {
+        "path": "core/rag/build/test-results/testDebugUnitTest/TEST-app.skein.core.rag.prompt.PromptAssemblerImplPropertyTest.xml",
+        "sha256": "5ba53828848d8c9357d2f990b5fd0d296433d782ad8fbf2d3070ace255778a38",
+        "suite": {
+          "name": "app.skein.core.rag.prompt.PromptAssemblerImplPropertyTest",
+          "tests": "1",
+          "skipped": "0",
+          "failures": "0",
+          "errors": "0",
+          "timestamp": "2026-09-30T17:03:27.653Z",
+          "hostname": "Andrews-MacBook-Pro.local",
+          "time": "0.023"
+        }
+      },
+      {
+        "path": "core/rag/build/test-results/testDebugUnitTest/TEST-app.skein.core.rag.prompt.PromptAssemblerImplTest.xml",
+        "sha256": "da920edde446091764af4a380641515b67d1192fe54c9f74e3be238307a818aa",
+        "suite": {
+          "name": "app.skein.core.rag.prompt.PromptAssemblerImplTest",
+          "tests": "27",
+          "skipped": "0",
+          "failures": "0",
+          "errors": "0",
+          "timestamp": "2026-09-30T17:03:27.681Z",
+          "hostname": "Andrews-MacBook-Pro.local",
+          "time": "0.005"
+        }
+      },
+      {
+        "path": "core/rag/build/test-results/testDebugUnitTest/TEST-app.skein.core.rag.rank.LocatorTest.xml",
+        "sha256": "8a9b99108787a864069a80b6af85de5224f953e192dd7fea34d55c1626b82a23",
+        "suite": {
+          "name": "app.skein.core.rag.rank.LocatorTest",
+          "tests": "5",
+          "skipped": "0",
+          "failures": "0",
+          "errors": "0",
+          "timestamp": "2026-09-30T17:03:27.686Z",
+          "hostname": "Andrews-MacBook-Pro.local",
+          "time": "0.003"
+        }
+      },
+      {
+        "path": "core/rag/build/test-results/testDebugUnitTest/TEST-app.skein.core.rag.rank.PersonalizedPageRankTest.xml",
+        "sha256": "c0b45a67a4c3d2d747fb5fc31007e8da9db1a15462fa9e77b313c01da9bae762",
+        "suite": {
+          "name": "app.skein.core.rag.rank.PersonalizedPageRankTest",
+          "tests": "15",
+          "skipped": "0",
+          "failures": "0",
+          "errors": "0",
+          "timestamp": "2026-09-30T17:03:27.689Z",
+          "hostname": "Andrews-MacBook-Pro.local",
+          "time": "0.004"
+        }
+      },
+      {
+        "path": "core/rag/build/test-results/testDebugUnitTest/TEST-app.skein.core.rag.rank.PprRankerEndToEndTest.xml",
+        "sha256": "d147b1bfd7db5cde0c66e286cedd0880afe7e421d0bc1106207ffd0ad172f160",
+        "suite": {
+          "name": "app.skein.core.rag.rank.PprRankerEndToEndTest",
+          "tests": "4",
+          "skipped": "0",
+          "failures": "0",
+          "errors": "0",
+          "timestamp": "2026-09-30T17:03:27.694Z",
+          "hostname": "Andrews-MacBook-Pro.local",
+          "time": "0.521"
+        }
+      },
+      {
+        "path": "core/rag/build/test-results/testDebugUnitTest/TEST-app.skein.core.rag.rank.PprRankerTest.xml",
+        "sha256": "e0c3677ee501bca5c88fbc3895001cf87970c5d12abb8268f15930e400f420fc",
+        "suite": {
+          "name": "app.skein.core.rag.rank.PprRankerTest",
+          "tests": "15",
+          "skipped": "0",
+          "failures": "0",
+          "errors": "0",
+          "timestamp": "2026-09-30T17:03:28.216Z",
+          "hostname": "Andrews-MacBook-Pro.local",
+          "time": "0.01"
+        }
+      },
+      {
+        "path": "core/rag/build/test-results/testDebugUnitTest/TEST-app.skein.core.rag.rank.PprRankerThroughputTest.xml",
+        "sha256": "097153247233aef827978c6acd3b30199d74f4df7c826fdae98eea7a932262fd",
+        "suite": {
+          "name": "app.skein.core.rag.rank.PprRankerThroughputTest",
+          "tests": "1",
+          "skipped": "0",
+          "failures": "0",
+          "errors": "0",
+          "timestamp": "2026-09-30T17:03:28.227Z",
+          "hostname": "Andrews-MacBook-Pro.local",
+          "time": "0.044"
+        }
+      },
+      {
+        "path": "core/rag/build/test-results/testDebugUnitTest/TEST-app.skein.core.rag.rank.RetrievedAssemblerEndToEndTest.xml",
+        "sha256": "3f133a3e690a53b305a51f7042c20449983042f8529f17c450eff12476e31317",
+        "suite": {
+          "name": "app.skein.core.rag.rank.RetrievedAssemblerEndToEndTest",
+          "tests": "2",
+          "skipped": "0",
+          "failures": "0",
+          "errors": "0",
+          "timestamp": "2026-09-30T17:03:28.272Z",
+          "hostname": "Andrews-MacBook-Pro.local",
+          "time": "0.466"
+        }
+      },
+      {
+        "path": "core/rag/build/test-results/testDebugUnitTest/TEST-app.skein.core.rag.rank.RetrievedAssemblerTest.xml",
+        "sha256": "c710d3772907e2616e19c2ed06e6d2c6aec0ee7dd7f38540ab5e47af20f43c6f",
+        "suite": {
+          "name": "app.skein.core.rag.rank.RetrievedAssemblerTest",
+          "tests": "7",
+          "skipped": "0",
+          "failures": "0",
+          "errors": "0",
+          "timestamp": "2026-09-30T17:03:28.739Z",
+          "hostname": "Andrews-MacBook-Pro.local",
+          "time": "0.002"
+        }
+      },
+      {
+        "path": "core/rag/build/test-results/testDebugUnitTest/TEST-app.skein.core.rag.rank.ScoreFusionTest.xml",
+        "sha256": "92be14e9e63b9d0c67e71601b5c3568e269f612ed4e905271e9ed4bc1597fe55",
+        "suite": {
+          "name": "app.skein.core.rag.rank.ScoreFusionTest",
+          "tests": "14",
+          "skipped": "0",
+          "failures": "0",
+          "errors": "0",
+          "timestamp": "2026-09-30T17:03:28.741Z",
+          "hostname": "Andrews-MacBook-Pro.local",
+          "time": "0.001"
+        }
+      },
+      {
+        "path": "core/rag/build/test-results/testDebugUnitTest/TEST-app.skein.core.rag.recall.GraphRecallTest.xml",
+        "sha256": "899e651228efe054b8bff67b059b2f3b3a65481608e380e8bc5ef20aab1682d2",
+        "suite": {
+          "name": "app.skein.core.rag.recall.GraphRecallTest",
+          "tests": "17",
+          "skipped": "0",
+          "failures": "0",
+          "errors": "0",
+          "timestamp": "2026-09-30T17:03:28.743Z",
+          "hostname": "Andrews-MacBook-Pro.local",
+          "time": "0.01"
+        }
+      },
+      {
+        "path": "core/rag/build/test-results/testDebugUnitTest/TEST-app.skein.core.rag.recall.LexicalRecallTest.xml",
+        "sha256": "09154d9099399065dabe24bf568002245be00fba930c7db99188d3f3e337bdca",
+        "suite": {
+          "name": "app.skein.core.rag.recall.LexicalRecallTest",
+          "tests": "12",
+          "skipped": "0",
+          "failures": "0",
+          "errors": "0",
+          "timestamp": "2026-09-30T17:03:28.754Z",
+          "hostname": "Andrews-MacBook-Pro.local",
+          "time": "0.006"
+        }
+      },
+      {
+        "path": "core/rag/build/test-results/testDebugUnitTest/TEST-app.skein.core.rag.recall.QueryNgramsTest.xml",
+        "sha256": "11cce878c6b3673e6dcff38af8e3860d1424e3120c3f2ced4e0c0e1e9546dfc5",
+        "suite": {
+          "name": "app.skein.core.rag.recall.QueryNgramsTest",
+          "tests": "7",
+          "skipped": "0",
+          "failures": "0",
+          "errors": "0",
+          "timestamp": "2026-09-30T17:03:28.760Z",
+          "hostname": "Andrews-MacBook-Pro.local",
+          "time": "0.0"
+        }
+      },
+      {
+        "path": "core/rag/build/test-results/testDebugUnitTest/TEST-app.skein.core.rag.recall.VectorRecallTest.xml",
+        "sha256": "fb2077876a828369df0bf8a304dcbeae11db5590090f5546e89ccf2ce8de6607",
+        "suite": {
+          "name": "app.skein.core.rag.recall.VectorRecallTest",
+          "tests": "7",
+          "skipped": "0",
+          "failures": "0",
+          "errors": "0",
+          "timestamp": "2026-09-30T17:03:28.761Z",
+          "hostname": "Andrews-MacBook-Pro.local",
+          "time": "0.004"
+        }
+      },
+      {
+        "path": "core/rag/build/test-results/testDebugUnitTest/TEST-app.skein.core.rag.retrieval.AuthoritativeEvidenceTest.xml",
+        "sha256": "edb202fe9de0ddeaaa046598ffc9573b2ec1b419b3914e243dafb46d86348078",
+        "suite": {
+          "name": "app.skein.core.rag.retrieval.AuthoritativeEvidenceTest",
+          "tests": "5",
+          "skipped": "0",
+          "failures": "0",
+          "errors": "0",
+          "timestamp": "2026-09-30T17:03:28.765Z",
+          "hostname": "Andrews-MacBook-Pro.local",
+          "time": "0.007"
+        }
+      },
+      {
+        "path": "core/rag/build/test-results/testDebugUnitTest/TEST-app.skein.core.rag.retrieval.ContextualRetrievalServiceTest.xml",
+        "sha256": "462586f866bace2f7073bdc88c00e4eba4a6ab5b972bddc5c05405042da7b671",
+        "suite": {
+          "name": "app.skein.core.rag.retrieval.ContextualRetrievalServiceTest",
+          "tests": "9",
+          "skipped": "0",
+          "failures": "0",
+          "errors": "0",
+          "timestamp": "2026-09-30T17:03:28.772Z",
+          "hostname": "Andrews-MacBook-Pro.local",
+          "time": "0.01"
+        }
+      },
+      {
+        "path": "core/rag/build/test-results/testDebugUnitTest/TEST-app.skein.core.rag.retrieval.EvidenceUnitSelectorTest.xml",
+        "sha256": "de96f2c64aac9330ee0d14d891b111abc0a50db5026597f01f4b10aa5bcbf9a3",
+        "suite": {
+          "name": "app.skein.core.rag.retrieval.EvidenceUnitSelectorTest",
+          "tests": "21",
+          "skipped": "0",
+          "failures": "0",
+          "errors": "0",
+          "timestamp": "2026-09-30T17:03:28.783Z",
+          "hostname": "Andrews-MacBook-Pro.local",
+          "time": "0.024"
+        }
+      },
+      {
+        "path": "core/rag/build/test-results/testDebugUnitTest/TEST-app.skein.core.rag.retrieval.LexicalEvidenceGateTest.xml",
+        "sha256": "8b5a94b3d41a48f5dbf84fdc81c988a90b7d294a434615c06e317f6349903fdd",
+        "suite": {
+          "name": "app.skein.core.rag.retrieval.LexicalEvidenceGateTest",
+          "tests": "11",
+          "skipped": "0",
+          "failures": "0",
+          "errors": "0",
+          "timestamp": "2026-09-30T17:03:28.807Z",
+          "hostname": "Andrews-MacBook-Pro.local",
+          "time": "0.005"
+        }
+      },
+      {
+        "path": "core/rag/build/test-results/testDebugUnitTest/TEST-app.skein.core.rag.retrieval.ProvenanceFollowUpResolverTest.xml",
+        "sha256": "cb1f28cdcdba3ac72780f2c0ff576dcde86106de8d828f3bc5bbfa658308878c",
+        "suite": {
+          "name": "app.skein.core.rag.retrieval.ProvenanceFollowUpResolverTest",
+          "tests": "8",
+          "skipped": "0",
+          "failures": "0",
+          "errors": "0",
+          "timestamp": "2026-09-30T17:03:28.812Z",
+          "hostname": "Andrews-MacBook-Pro.local",
+          "time": "0.003"
+        }
+      },
+      {
+        "path": "core/rag/build/test-results/testDebugUnitTest/TEST-app.skein.core.rag.retrieval.RetrievalServiceImplContractTest.xml",
+        "sha256": "f31eb27177fc97180324ce44ee4a3d88b707b6174e41991335ed4fcb1191549a",
+        "suite": {
+          "name": "app.skein.core.rag.retrieval.RetrievalServiceImplContractTest",
+          "tests": "9",
+          "skipped": "0",
+          "failures": "0",
+          "errors": "0",
+          "timestamp": "2026-09-30T17:03:28.816Z",
+          "hostname": "Andrews-MacBook-Pro.local",
+          "time": "0.006"
+        }
+      },
+      {
+        "path": "core/rag/build/test-results/testDebugUnitTest/TEST-app.skein.core.rag.retrieval.RetrievalServiceImplEndToEndTest.xml",
+        "sha256": "36e098b997bf2795aba6aba14d7eb4ab0ca91ba27136c8e9e7ae22f63d32bb6f",
+        "suite": {
+          "name": "app.skein.core.rag.retrieval.RetrievalServiceImplEndToEndTest",
+          "tests": "2",
+          "skipped": "0",
+          "failures": "0",
+          "errors": "0",
+          "timestamp": "2026-09-30T17:03:28.822Z",
+          "hostname": "Andrews-MacBook-Pro.local",
+          "time": "0.561"
+        }
+      },
+      {
+        "path": "core/rag/build/test-results/testDebugUnitTest/TEST-app.skein.core.rag.retrieval.RetrievalServiceImplTest.xml",
+        "sha256": "71e3bf53d52be0a34302c559d80862ab1fa58a998bef62e4bbc091b327381dc6",
+        "suite": {
+          "name": "app.skein.core.rag.retrieval.RetrievalServiceImplTest",
+          "tests": "12",
+          "skipped": "0",
+          "failures": "0",
+          "errors": "0",
+          "timestamp": "2026-09-30T17:03:29.383Z",
+          "hostname": "Andrews-MacBook-Pro.local",
+          "time": "0.05"
+        }
+      },
+      {
+        "path": "core/rag/build/test-results/testDebugUnitTest/TEST-app.skein.core.rag.tokenizers.ApproximateTokenizerTest.xml",
+        "sha256": "ad8cf2110fe8187015d1152a1b49d3d6c9d2d290d7597df8cd3a4c17eef8d36f",
+        "suite": {
+          "name": "app.skein.core.rag.tokenizers.ApproximateTokenizerTest",
+          "tests": "6",
+          "skipped": "0",
+          "failures": "0",
+          "errors": "0",
+          "timestamp": "2026-09-30T17:03:29.434Z",
+          "hostname": "Andrews-MacBook-Pro.local",
+          "time": "0.0"
+        }
+      },
+      {
+        "path": "core/rag/build/test-results/testDebugUnitTest/TEST-app.skein.core.rag.tokenizers.TokenizerFactoryTest.xml",
+        "sha256": "7a7ff3b7c9ff26ab272ccb461d5655fbcc30fcbddc3f4dfc97a275ac45d6062f",
+        "suite": {
+          "name": "app.skein.core.rag.tokenizers.TokenizerFactoryTest",
+          "tests": "14",
+          "skipped": "0",
+          "failures": "0",
+          "errors": "0",
+          "timestamp": "2026-09-30T17:03:29.435Z",
+          "hostname": "Andrews-MacBook-Pro.local",
+          "time": "0.177"
+        }
+      },
+      {
+        "path": "core/rag/build/test-results/testDebugUnitTest/TEST-app.skein.core.rag.tokenizers.TokenizerThroughputTest.xml",
+        "sha256": "0b09bdb5b641d8c700dabb9323f4fd2b41fea8fbab4ca1433c5158538ad51538",
+        "suite": {
+          "name": "app.skein.core.rag.tokenizers.TokenizerThroughputTest",
+          "tests": "2",
+          "skipped": "0",
+          "failures": "0",
+          "errors": "0",
+          "timestamp": "2026-09-30T17:03:29.612Z",
+          "hostname": "Andrews-MacBook-Pro.local",
+          "time": "0.511"
+        }
+      },
+      {
+        "path": "core/rag/build/test-results/testDebugUnitTest/TEST-app.skein.core.rag.tokenizers.UnigramTokenizerTest.xml",
+        "sha256": "24aae6b0afa3ca932fbafc36a6f6a8db98ebd01d533192dd4cf78769c61a6048",
+        "suite": {
+          "name": "app.skein.core.rag.tokenizers.UnigramTokenizerTest",
+          "tests": "14",
+          "skipped": "0",
+          "failures": "0",
+          "errors": "0",
+          "timestamp": "2026-09-30T17:03:30.124Z",
+          "hostname": "Andrews-MacBook-Pro.local",
+          "time": "0.089"
+        }
+      },
+      {
+        "path": "core/rag/build/test-results/testDebugUnitTest/TEST-app.skein.core.rag.tokenizers.WordPieceTokenizerTest.xml",
+        "sha256": "464ffd36a0c09fb4a7f77d4c4b9d73edd1ef7e2eb00d1ed64f29b03da03c6e89",
+        "suite": {
+          "name": "app.skein.core.rag.tokenizers.WordPieceTokenizerTest",
+          "tests": "22",
+          "skipped": "0",
+          "failures": "0",
+          "errors": "0",
+          "timestamp": "2026-09-30T17:03:30.214Z",
+          "hostname": "Andrews-MacBook-Pro.local",
+          "time": "0.047"
+        }
+      },
+      {
+        "path": "feature/chat/build/test-results/testDebugUnitTest/TEST-app.skein.feature.chat.AccessibilitySweepSmokeTest.xml",
+        "sha256": "a5fb3c31fe447f48f5091a727b1f12ee5e06afe34525726a28dc7bc671cc65bb",
+        "suite": {
+          "name": "app.skein.feature.chat.AccessibilitySweepSmokeTest",
+          "tests": "1",
+          "skipped": "0",
+          "failures": "0",
+          "errors": "0",
+          "timestamp": "2026-09-30T17:05:11.952Z",
+          "hostname": "Andrews-MacBook-Pro.local",
+          "time": "3.167"
+        }
+      },
+      {
+        "path": "feature/chat/build/test-results/testDebugUnitTest/TEST-app.skein.feature.chat.ChatComposerImeInsetTest.xml",
+        "sha256": "b65cd65d62d0fa630e3f383fe1b5b3e8a66ae851daa83e82aaef3b79e206d286",
+        "suite": {
+          "name": "app.skein.feature.chat.ChatComposerImeInsetTest",
+          "tests": "6",
+          "skipped": "0",
+          "failures": "0",
+          "errors": "0",
+          "timestamp": "2026-09-30T17:05:15.125Z",
+          "hostname": "Andrews-MacBook-Pro.local",
+          "time": "1.752"
+        }
+      },
+      {
+        "path": "feature/chat/build/test-results/testDebugUnitTest/TEST-app.skein.feature.chat.ChatImportSpaceTest.xml",
+        "sha256": "38cc56a3767cb99e7e0cd8adf699ee09b23093d32a5ab94af1d3a3aab0656120",
+        "suite": {
+          "name": "app.skein.feature.chat.ChatImportSpaceTest",
+          "tests": "2",
+          "skipped": "0",
+          "failures": "0",
+          "errors": "0",
+          "timestamp": "2026-09-30T17:05:16.878Z",
+          "hostname": "Andrews-MacBook-Pro.local",
+          "time": "0.009"
+        }
+      },
+      {
+        "path": "feature/chat/build/test-results/testDebugUnitTest/TEST-app.skein.feature.chat.ChatInferenceErrorTest.xml",
+        "sha256": "0a47266b441169b9fc20ccee10eb0c3047eefc79f2d8194573086850884959f1",
+        "suite": {
+          "name": "app.skein.feature.chat.ChatInferenceErrorTest",
+          "tests": "4",
+          "skipped": "0",
+          "failures": "0",
+          "errors": "0",
+          "timestamp": "2026-09-30T17:05:16.888Z",
+          "hostname": "Andrews-MacBook-Pro.local",
+          "time": "0.297"
+        }
+      },
+      {
+        "path": "feature/chat/build/test-results/testDebugUnitTest/TEST-app.skein.feature.chat.ChatModelIndicatorTest.xml",
+        "sha256": "c70afe79911fce583a709e7f90ac7b4605a0596b7937d672c1f1ba34607904fa",
+        "suite": {
+          "name": "app.skein.feature.chat.ChatModelIndicatorTest",
+          "tests": "3",
+          "skipped": "0",
+          "failures": "0",
+          "errors": "0",
+          "timestamp": "2026-09-30T17:05:17.187Z",
+          "hostname": "Andrews-MacBook-Pro.local",
+          "time": "0.188"
+        }
+      },
+      {
+        "path": "feature/chat/build/test-results/testDebugUnitTest/TEST-app.skein.feature.chat.ChatScreenTest.xml",
+        "sha256": "21e47b85e5414a09081c2771970d7d405ab3806adbafd76ec30d52b5a0ca35e7",
+        "suite": {
+          "name": "app.skein.feature.chat.ChatScreenTest",
+          "tests": "5",
+          "skipped": "0",
+          "failures": "0",
+          "errors": "0",
+          "timestamp": "2026-09-30T17:05:17.376Z",
+          "hostname": "Andrews-MacBook-Pro.local",
+          "time": "0.28"
+        }
+      },
+      {
+        "path": "feature/chat/build/test-results/testDebugUnitTest/TEST-app.skein.feature.chat.ChatTurnControllerTest.xml",
+        "sha256": "0046a1a26c7c508485544f81e3f835c618bb7a6ced0368dd318f167fcd71ebb9",
+        "suite": {
+          "name": "app.skein.feature.chat.ChatTurnControllerTest",
+          "tests": "19",
+          "skipped": "0",
+          "failures": "0",
+          "errors": "0",
+          "timestamp": "2026-09-30T17:05:17.657Z",
+          "hostname": "Andrews-MacBook-Pro.local",
+          "time": "0.035"
+        }
+      },
+      {
+        "path": "feature/chat/build/test-results/testDebugUnitTest/TEST-app.skein.feature.chat.ChatTurnStateTest.xml",
+        "sha256": "9722d73356981e9c610270d3e7eb6b7985a3e839b6405c51e20f353f79eecb9e",
+        "suite": {
+          "name": "app.skein.feature.chat.ChatTurnStateTest",
+          "tests": "1",
+          "skipped": "0",
+          "failures": "0",
+          "errors": "0",
+          "timestamp": "2026-09-30T17:05:17.693Z",
+          "hostname": "Andrews-MacBook-Pro.local",
+          "time": "0.006"
+        }
+      },
+      {
+        "path": "feature/chat/build/test-results/testDebugUnitTest/TEST-app.skein.feature.chat.ComposerWikilinkCreateRowTest.xml",
+        "sha256": "249d4b83b4aa9d13e0dad5127e76a0810c76eb74fb499224835dcca36c2f3541",
+        "suite": {
+          "name": "app.skein.feature.chat.ComposerWikilinkCreateRowTest",
+          "tests": "1",
+          "skipped": "0",
+          "failures": "0",
+          "errors": "0",
+          "timestamp": "2026-09-30T17:05:17.700Z",
+          "hostname": "Andrews-MacBook-Pro.local",
+          "time": "0.043"
+        }
+      },
+      {
+        "path": "feature/chat/build/test-results/testDebugUnitTest/TEST-app.skein.feature.chat.ContextualSendPathTest.xml",
+        "sha256": "c3a54ac9f4e5949058ca4a1a71f6532e33b2110b6c90dd38969c01716c834b71",
+        "suite": {
+          "name": "app.skein.feature.chat.ContextualSendPathTest",
+          "tests": "21",
+          "skipped": "0",
+          "failures": "0",
+          "errors": "0",
+          "timestamp": "2026-09-30T17:05:11.725Z",
+          "hostname": "Andrews-MacBook-Pro.local",
+          "time": "0.174"
+        }
+      },
+      {
+        "path": "feature/chat/build/test-results/testDebugUnitTest/TEST-app.skein.feature.chat.ImportFailureIsReportedTest.xml",
+        "sha256": "104bbc79d7b9241b2bcad3e60e2e17684b9f59ab8ea196aac421e8507ec47d92",
+        "suite": {
+          "name": "app.skein.feature.chat.ImportFailureIsReportedTest",
+          "tests": "2",
+          "skipped": "0",
+          "failures": "0",
+          "errors": "0",
+          "timestamp": "2026-09-30T17:05:17.744Z",
+          "hostname": "Andrews-MacBook-Pro.local",
+          "time": "0.076"
+        }
+      },
+      {
+        "path": "feature/chat/build/test-results/testDebugUnitTest/TEST-app.skein.feature.chat.KnowledgeScopeTest.xml",
+        "sha256": "02570668c611fb3b7edbf9d9f879ce41939c00f1e29ed34726918d4b8927901e",
+        "suite": {
+          "name": "app.skein.feature.chat.KnowledgeScopeTest",
+          "tests": "5",
+          "skipped": "0",
+          "failures": "0",
+          "errors": "0",
+          "timestamp": "2026-09-30T17:05:17.821Z",
+          "hostname": "Andrews-MacBook-Pro.local",
+          "time": "0.008"
+        }
+      },
+      {
+        "path": "feature/chat/build/test-results/testDebugUnitTest/TEST-app.skein.feature.chat.MessageListAnchoringTest.xml",
+        "sha256": "687d8a53bfc36764c8b34a11581c451e96c8d0ed0baa8b71e388ec68b141b297",
+        "suite": {
+          "name": "app.skein.feature.chat.MessageListAnchoringTest",
+          "tests": "3",
+          "skipped": "0",
+          "failures": "0",
+          "errors": "0",
+          "timestamp": "2026-09-30T17:05:17.830Z",
+          "hostname": "Andrews-MacBook-Pro.local",
+          "time": "0.142"
+        }
+      },
+      {
+        "path": "feature/chat/build/test-results/testDebugUnitTest/TEST-app.skein.feature.chat.OverlayImeInsetTest.xml",
+        "sha256": "009459b49f0d47568086a6b7dc7f7ea5618aa4677d51f269fa16981d587dae96",
+        "suite": {
+          "name": "app.skein.feature.chat.OverlayImeInsetTest",
+          "tests": "4",
+          "skipped": "0",
+          "failures": "0",
+          "errors": "0",
+          "timestamp": "2026-09-30T17:05:17.974Z",
+          "hostname": "Andrews-MacBook-Pro.local",
+          "time": "0.387"
+        }
+      },
+      {
+        "path": "feature/chat/build/test-results/testDebugUnitTest/TEST-app.skein.feature.chat.SendPipelineExactBudgetTest.xml",
+        "sha256": "055ad19b72badaf4124cc7ddd8b3d34dcb6ebc3de96671da3761f4f5af2ed1e1",
+        "suite": {
+          "name": "app.skein.feature.chat.SendPipelineExactBudgetTest",
+          "tests": "3",
+          "skipped": "0",
+          "failures": "0",
+          "errors": "0",
+          "timestamp": "2026-09-30T17:05:18.361Z",
+          "hostname": "Andrews-MacBook-Pro.local",
+          "time": "0.007"
+        }
+      },
+      {
+        "path": "feature/chat/build/test-results/testDebugUnitTest/TEST-app.skein.feature.chat.SendPipelineTest.xml",
+        "sha256": "9514406f505dd3c78a806cca2e50a6b4d8fada2da4761f9b481da21a21b10e23",
+        "suite": {
+          "name": "app.skein.feature.chat.SendPipelineTest",
+          "tests": "9",
+          "skipped": "0",
+          "failures": "0",
+          "errors": "0",
+          "timestamp": "2026-09-30T17:05:18.369Z",
+          "hostname": "Andrews-MacBook-Pro.local",
+          "time": "0.044"
+        }
+      },
+      {
+        "path": "feature/chat/build/test-results/testDebugUnitTest/TEST-app.skein.feature.chat.TabletopChatControlsTest.xml",
+        "sha256": "9eec345965631ed9fb44a203c1b3b83405753e6a5aa29b5787a7c9c0a218b162",
+        "suite": {
+          "name": "app.skein.feature.chat.TabletopChatControlsTest",
+          "tests": "3",
+          "skipped": "0",
+          "failures": "0",
+          "errors": "0",
+          "timestamp": "2026-09-30T17:05:18.414Z",
+          "hostname": "Andrews-MacBook-Pro.local",
+          "time": "0.194"
+        }
+      },
+      {
+        "path": "feature/chat/build/test-results/testDebugUnitTest/TEST-app.skein.feature.chat.TurnFinalizerTest.xml",
+        "sha256": "4857249d2c42b9a8bc9c96e5518aed4a254c404fa0f3849773f58c10f2e44d54",
+        "suite": {
+          "name": "app.skein.feature.chat.TurnFinalizerTest",
+          "tests": "2",
+          "skipped": "0",
+          "failures": "0",
+          "errors": "0",
+          "timestamp": "2026-09-30T17:05:18.609Z",
+          "hostname": "Andrews-MacBook-Pro.local",
+          "time": "0.003"
+        }
+      },
+      {
+        "path": "feature/chat/build/test-results/testDebugUnitTest/TEST-app.skein.feature.chat.TurnSpaceBindingTest.xml",
+        "sha256": "1c40577da568a868b6115ae495e94233583ff025b9690fc768da9406ae51f16a",
+        "suite": {
+          "name": "app.skein.feature.chat.TurnSpaceBindingTest",
+          "tests": "3",
+          "skipped": "0",
+          "failures": "0",
+          "errors": "0",
+          "timestamp": "2026-09-30T17:05:18.613Z",
+          "hostname": "Andrews-MacBook-Pro.local",
+          "time": "0.005"
+        }
+      },
+      {
+        "path": "feature/chat/build/test-results/testDebugUnitTest/TEST-app.skein.feature.chat.drafts.DraftComposerStateTest.xml",
+        "sha256": "19bfec9f803a5d5b17e3f8d3429b8837cfd1a59f08d8dc03e9c458b48e286f60",
+        "suite": {
+          "name": "app.skein.feature.chat.drafts.DraftComposerStateTest",
+          "tests": "3",
+          "skipped": "0",
+          "failures": "0",
+          "errors": "0",
+          "timestamp": "2026-09-30T17:05:18.620Z",
+          "hostname": "Andrews-MacBook-Pro.local",
+          "time": "0.1"
+        }
+      },
+      {
+        "path": "feature/chat/build/test-results/testDebugUnitTest/TEST-app.skein.feature.chat.drafts.SessionDraftStoreTest.xml",
+        "sha256": "e7265d4b2e143d61e623ac63293f592f2561ad6300fe9950adda970f843a89e9",
+        "suite": {
+          "name": "app.skein.feature.chat.drafts.SessionDraftStoreTest",
+          "tests": "21",
+          "skipped": "0",
+          "failures": "0",
+          "errors": "0",
+          "timestamp": "2026-09-30T17:05:18.721Z",
+          "hostname": "Andrews-MacBook-Pro.local",
+          "time": "0.023"
+        }
+      },
+      {
+        "path": "feature/chat/build/test-results/testDebugUnitTest/TEST-app.skein.feature.chat.entries.ChatDeleteUiTest.xml",
+        "sha256": "9cfbcf4458e87d1b8cc8d2382eabd51a6df24a98dfd87cacb04365348fe27763",
+        "suite": {
+          "name": "app.skein.feature.chat.entries.ChatDeleteUiTest",
+          "tests": "6",
+          "skipped": "0",
+          "failures": "0",
+          "errors": "0",
+          "timestamp": "2026-09-30T17:05:18.746Z",
+          "hostname": "Andrews-MacBook-Pro.local",
+          "time": "0.399"
+        }
+      },
+      {
+        "path": "feature/chat/build/test-results/testDebugUnitTest/TEST-app.skein.feature.chat.entries.ChatEntriesTest.xml",
+        "sha256": "9803a171b377701e8435056e41714a10a142d42fbc1ed6393245ead257349b17",
+        "suite": {
+          "name": "app.skein.feature.chat.entries.ChatEntriesTest",
+          "tests": "13",
+          "skipped": "0",
+          "failures": "0",
+          "errors": "0",
+          "timestamp": "2026-09-30T17:05:19.148Z",
+          "hostname": "Andrews-MacBook-Pro.local",
+          "time": "0.868"
+        }
+      },
+      {
+        "path": "feature/chat/build/test-results/testDebugUnitTest/TEST-app.skein.feature.chat.entries.ChatEntryPresentationTest.xml",
+        "sha256": "eb9849a9e724250c1512fff58a9c05044851217b74470c1df68b224e8e429f92",
+        "suite": {
+          "name": "app.skein.feature.chat.entries.ChatEntryPresentationTest",
+          "tests": "1",
+          "skipped": "0",
+          "failures": "0",
+          "errors": "0",
+          "timestamp": "2026-09-30T17:05:20.018Z",
+          "hostname": "Andrews-MacBook-Pro.local",
+          "time": "0.034"
+        }
+      },
+      {
+        "path": "feature/chat/build/test-results/testDebugUnitTest/TEST-app.skein.feature.chat.entries.KnowledgeInspectorTest.xml",
+        "sha256": "fbfc09fa17d4ad9799dc913bca715feb8f4ebd8019cb55bfffb981a9d11f1142",
+        "suite": {
+          "name": "app.skein.feature.chat.entries.KnowledgeInspectorTest",
+          "tests": "3",
+          "skipped": "0",
+          "failures": "0",
+          "errors": "0",
+          "timestamp": "2026-09-30T17:05:20.054Z",
+          "hostname": "Andrews-MacBook-Pro.local",
+          "time": "0.386"
+        }
+      },
+      {
+        "path": "feature/chat/build/test-results/testDebugUnitTest/TEST-app.skein.feature.chat.entries.ProvisionalTitleTest.xml",
+        "sha256": "aebaba8e73ff3ea566aa124c32414f4e1ea0e6fa24f5ae8e8c1aa6bbe85c626d",
+        "suite": {
+          "name": "app.skein.feature.chat.entries.ProvisionalTitleTest",
+          "tests": "4",
+          "skipped": "0",
+          "failures": "0",
+          "errors": "0",
+          "timestamp": "2026-09-30T17:05:20.441Z",
+          "hostname": "Andrews-MacBook-Pro.local",
+          "time": "0.002"
+        }
+      },
+      {
+        "path": "feature/chat/build/test-results/testDebugUnitTest/TEST-app.skein.feature.chat.screenshots.ChatInferenceErrorScreenshotTest.xml",
+        "sha256": "b8040f3289affbf1c4d0e3e70ddff6ccfe5b9b9bd56f2594200a010337c3130f",
+        "suite": {
+          "name": "app.skein.feature.chat.screenshots.ChatInferenceErrorScreenshotTest",
+          "tests": "36",
+          "skipped": "0",
+          "failures": "0",
+          "errors": "0",
+          "timestamp": "2026-09-30T17:05:20.446Z",
+          "hostname": "Andrews-MacBook-Pro.local",
+          "time": "2.452"
+        }
+      },
+      {
+        "path": "feature/chat/build/test-results/testDebugUnitTest/TEST-app.skein.feature.chat.screenshots.ChatScreenshotTest.xml",
+        "sha256": "9f1499607a31b859a8ec0e0b612d063402555027883f14d24a739f366e842725",
+        "suite": {
+          "name": "app.skein.feature.chat.screenshots.ChatScreenshotTest",
+          "tests": "42",
+          "skipped": "8",
+          "failures": "0",
+          "errors": "0",
+          "timestamp": "2026-09-30T17:05:22.901Z",
+          "hostname": "Andrews-MacBook-Pro.local",
+          "time": "0.957"
+        }
+      },
+      {
+        "path": "feature/chat/build/test-results/testDebugUnitTest/TEST-app.skein.feature.chat.screenshots.ChatShellScreenshotTest.xml",
+        "sha256": "3a6d8821ad059a43361ebafbfa2d5bd2547051782016903d3b1a3dd13cfcf361",
+        "suite": {
+          "name": "app.skein.feature.chat.screenshots.ChatShellScreenshotTest",
+          "tests": "56",
+          "skipped": "4",
+          "failures": "0",
+          "errors": "0",
+          "timestamp": "2026-09-30T17:05:23.862Z",
+          "hostname": "Andrews-MacBook-Pro.local",
+          "time": "1.564"
+        }
+      },
+      {
+        "path": "feature/chat/build/test-results/testDebugUnitTest/TEST-app.skein.feature.chat.screenshots.KnowledgeInspectorScreenshotTest.xml",
+        "sha256": "ae3c087a66b5467cd302177186feec625c3acba7bb7055bf5a568333fbc7f036",
+        "suite": {
+          "name": "app.skein.feature.chat.screenshots.KnowledgeInspectorScreenshotTest",
+          "tests": "42",
+          "skipped": "0",
+          "failures": "0",
+          "errors": "0",
+          "timestamp": "2026-09-30T17:05:25.429Z",
+          "hostname": "Andrews-MacBook-Pro.local",
+          "time": "1.275"
+        }
+      }
+    ],
+    "sources": [
+      {
+        "path": "core/model/src/main/kotlin/app/skein/core/model/ContextualRetrieval.kt",
+        "sha256": "808199aaa373e422eba31235b3563ac66e67bdf1056069d4b69f1701480247b6"
+      },
+      {
+        "path": "core/rag/src/main/kotlin/app/skein/core/rag/retrieval/EvidenceUnitSelector.kt",
+        "sha256": "9d15ba4dde25407e3cd00d9d41119602242d9eb2889db4a76ab40514f5ed7857"
+      },
+      {
+        "path": "core/rag/src/main/kotlin/app/skein/core/rag/retrieval/RetrievalServiceImpl.kt",
+        "sha256": "b73b444cfcfcc0f9606bb56aa8a02d8056f9e6bcd4a841ad1ef6c67186e83cbd"
+      },
+      {
+        "path": "core/rag/src/test/kotlin/app/skein/core/rag/retrieval/ContextualRetrievalServiceTest.kt",
+        "sha256": "e7ed06366a09d89b8c890b139252dcd9828e6252630148c3fc8ee5df12878cc4"
+      },
+      {
+        "path": "feature/chat/src/main/kotlin/app/skein/feature/chat/ChatFollowUpContext.kt",
+        "sha256": "f008c39bf92d926d5de8f0ec2e2831c0832dabce349b53b22c7a5665e027e3d3"
+      },
+      {
+        "path": "feature/chat/src/main/kotlin/app/skein/feature/chat/SendPipeline.kt",
+        "sha256": "eca058239e3517522abf210b24d53ffb028c92996e4b62a280394bb43e6a20cb"
+      },
+      {
+        "path": "feature/chat/src/test/kotlin/app/skein/feature/chat/ContextualSendPathTest.kt",
+        "sha256": "759ada9eeab38a1c11206b91f30d6852604c24590ec3fd26119ecf8cde68dc80"
+      }
+    ],
+    "skips": [
+      {
+        "module": "core/rag",
+        "name": "embed_documents_same_text_returns_same_vector",
+        "classname": "app.skein.core.rag.embed.EmbedderServiceImplTest",
+        "time": "0.0",
+        "status": "skipped"
+      },
+      {
+        "module": "core/rag",
+        "name": "embed_documents_returns_256_bytes_each",
+        "classname": "app.skein.core.rag.embed.EmbedderServiceImplTest",
+        "time": "0.0",
+        "status": "skipped"
+      },
+      {
+        "module": "core/rag",
+        "name": "rerank_throws_when_unsupported",
+        "classname": "app.skein.core.rag.embed.EmbedderServiceImplTest",
+        "time": "0.0",
+        "status": "skipped"
+      },
+      {
+        "module": "core/rag",
+        "name": "embed_query_differs_from_embed_documents_for_same_text",
+        "classname": "app.skein.core.rag.embed.EmbedderServiceImplTest",
+        "time": "0.0",
+        "status": "skipped"
+      },
+      {
+        "module": "feature/chat",
+        "name": "chatStreaming[fold-outer-443__light__fs150]",
+        "classname": "app.skein.feature.chat.screenshots.ChatScreenshotTest",
+        "time": "0.015",
+        "status": "skipped"
+      },
+      {
+        "module": "feature/chat",
+        "name": "chatEmpty[fold-outer-443__light__fs150]",
+        "classname": "app.skein.feature.chat.screenshots.ChatScreenshotTest",
+        "time": "0.011",
+        "status": "skipped"
+      },
+      {
+        "module": "feature/chat",
+        "name": "chatStreaming[fold-outer-443__dark__fs150]",
+        "classname": "app.skein.feature.chat.screenshots.ChatScreenshotTest",
+        "time": "0.011",
+        "status": "skipped"
+      },
+      {
+        "module": "feature/chat",
+        "name": "chatEmpty[fold-outer-443__dark__fs150]",
+        "classname": "app.skein.feature.chat.screenshots.ChatScreenshotTest",
+        "time": "0.013",
+        "status": "skipped"
+      },
+      {
+        "module": "feature/chat",
+        "name": "chatStreaming[fold-outer-524__light__fs150]",
+        "classname": "app.skein.feature.chat.screenshots.ChatScreenshotTest",
+        "time": "0.01",
+        "status": "skipped"
+      },
+      {
+        "module": "feature/chat",
+        "name": "chatEmpty[fold-outer-524__light__fs150]",
+        "classname": "app.skein.feature.chat.screenshots.ChatScreenshotTest",
+        "time": "0.011",
+        "status": "skipped"
+      },
+      {
+        "module": "feature/chat",
+        "name": "chatStreaming[fold-outer-524__dark__fs150]",
+        "classname": "app.skein.feature.chat.screenshots.ChatScreenshotTest",
+        "time": "0.011",
+        "status": "skipped"
+      },
+      {
+        "module": "feature/chat",
+        "name": "chatEmpty[fold-outer-524__dark__fs150]",
+        "classname": "app.skein.feature.chat.screenshots.ChatScreenshotTest",
+        "time": "0.011",
+        "status": "skipped"
+      },
+      {
+        "module": "feature/chat",
+        "name": "drawerOpen[fold-inner-1007__light__fs100]",
+        "classname": "app.skein.feature.chat.screenshots.ChatShellScreenshotTest",
+        "time": "0.011",
+        "status": "skipped"
+      },
+      {
+        "module": "feature/chat",
+        "name": "drawerOpen[fold-inner-1007__dark__fs100]",
+        "classname": "app.skein.feature.chat.screenshots.ChatShellScreenshotTest",
+        "time": "0.009",
+        "status": "skipped"
+      },
+      {
+        "module": "feature/chat",
+        "name": "drawerOpen[fold-inner-1007-land__light__fs100]",
+        "classname": "app.skein.feature.chat.screenshots.ChatShellScreenshotTest",
+        "time": "0.01",
+        "status": "skipped"
+      },
+      {
+        "module": "feature/chat",
+        "name": "drawerOpen[fold-inner-1007-land__dark__fs100]",
+        "classname": "app.skein.feature.chat.screenshots.ChatShellScreenshotTest",
+        "time": "0.009",
+        "status": "skipped"
+      }
+    ],
+    "task_attribution": {
+      "core:rag:testDebugUnitTest": "UP-TO-DATE from full1 passing core suite at byte-identical rag source",
+      "feature:chat:testDebugUnitTest": "executed successfully in full3",
+      "ktlint": "all three affected modules passed"
+    }
+  },
+  "negative": {
+    "counts": {
+      "tests": 3,
+      "failures": 3,
+      "errors": 0,
+      "skipped": 0,
+      "passes": 0
+    },
+    "xml": [
+      {
+        "path": "feature/chat/build/test-results/testDebugUnitTest/TEST-app.skein.feature.chat.ContextualSendPathTest.xml",
+        "sha256": "16d61eec0b6f5200b067a26fe79a261fa2a7317d117b80e44024e4a6215e1221",
+        "suite": {
+          "name": "app.skein.feature.chat.ContextualSendPathTest",
+          "tests": "3",
+          "skipped": "0",
+          "failures": "3",
+          "errors": "0",
+          "timestamp": "2026-09-30T17:06:09.882Z",
+          "hostname": "Andrews-MacBook-Pro.local",
+          "time": "0.083"
+        }
+      }
+    ],
+    "sources": [
+      {
+        "path": "core/model/src/main/kotlin/app/skein/core/model/ContextualRetrieval.kt",
+        "sha256": "808199aaa373e422eba31235b3563ac66e67bdf1056069d4b69f1701480247b6"
+      },
+      {
+        "path": "core/rag/src/main/kotlin/app/skein/core/rag/retrieval/EvidenceUnitSelector.kt",
+        "sha256": "9d15ba4dde25407e3cd00d9d41119602242d9eb2889db4a76ab40514f5ed7857"
+      },
+      {
+        "path": "core/rag/src/main/kotlin/app/skein/core/rag/retrieval/RetrievalServiceImpl.kt",
+        "sha256": "b73b444cfcfcc0f9606bb56aa8a02d8056f9e6bcd4a841ad1ef6c67186e83cbd"
+      },
+      {
+        "path": "core/rag/src/test/kotlin/app/skein/core/rag/retrieval/ContextualRetrievalServiceTest.kt",
+        "sha256": "e7ed06366a09d89b8c890b139252dcd9828e6252630148c3fc8ee5df12878cc4"
+      },
+      {
+        "path": "feature/chat/src/main/kotlin/app/skein/feature/chat/ChatFollowUpContext.kt",
+        "sha256": "f008c39bf92d926d5de8f0ec2e2831c0832dabce349b53b22c7a5665e027e3d3"
+      },
+      {
+        "path": "feature/chat/src/main/kotlin/app/skein/feature/chat/SendPipeline.kt",
+        "sha256": "68468f795b9abf3ce3e36a27032fc7bc5368484d0f75f362092888a3da91512e"
+      },
+      {
+        "path": "feature/chat/src/test/kotlin/app/skein/feature/chat/ContextualSendPathTest.kt",
+        "sha256": "759ada9eeab38a1c11206b91f30d6852604c24590ec3fd26119ecf8cde68dc80"
+      }
+    ],
+    "cases": [
+      {
+        "module": "feature/chat",
+        "name": "source edit before followup rejects the prior revision without repinning",
+        "classname": "app.skein.feature.chat.ContextualSendPathTest",
+        "time": "0.072",
+        "status": "failed"
+      },
+      {
+        "module": "feature/chat",
+        "name": "previous Space cannot be fabricated from the new default Space",
+        "classname": "app.skein.feature.chat.ContextualSendPathTest",
+        "time": "0.004",
+        "status": "failed"
+      },
+      {
+        "module": "feature/chat",
+        "name": "real send resolves prior committed citation and preserves raw query and original scores",
+        "classname": "app.skein.feature.chat.ContextualSendPathTest",
+        "time": "0.005",
+        "status": "failed"
+      }
+    ],
+    "single_source_delta": [
+      [
+        "feature/chat/src/main/kotlin/app/skein/feature/chat/SendPipeline.kt",
+        "eca058239e3517522abf210b24d53ffb028c92996e4b62a280394bb43e6a20cb",
+        "68468f795b9abf3ce3e36a27032fc7bc5368484d0f75f362092888a3da91512e"
+      ]
+    ]
+  },
+  "restoration": {
+    "allSevenMatchSuccessfulFull3": true,
+    "sources": [
+      {
+        "path": "core/model/src/main/kotlin/app/skein/core/model/ContextualRetrieval.kt",
+        "sha256": "808199aaa373e422eba31235b3563ac66e67bdf1056069d4b69f1701480247b6"
+      },
+      {
+        "path": "core/rag/src/main/kotlin/app/skein/core/rag/retrieval/EvidenceUnitSelector.kt",
+        "sha256": "9d15ba4dde25407e3cd00d9d41119602242d9eb2889db4a76ab40514f5ed7857"
+      },
+      {
+        "path": "core/rag/src/main/kotlin/app/skein/core/rag/retrieval/RetrievalServiceImpl.kt",
+        "sha256": "b73b444cfcfcc0f9606bb56aa8a02d8056f9e6bcd4a841ad1ef6c67186e83cbd"
+      },
+      {
+        "path": "core/rag/src/test/kotlin/app/skein/core/rag/retrieval/ContextualRetrievalServiceTest.kt",
+        "sha256": "e7ed06366a09d89b8c890b139252dcd9828e6252630148c3fc8ee5df12878cc4"
+      },
+      {
+        "path": "feature/chat/src/main/kotlin/app/skein/feature/chat/ChatFollowUpContext.kt",
+        "sha256": "f008c39bf92d926d5de8f0ec2e2831c0832dabce349b53b22c7a5665e027e3d3"
+      },
+      {
+        "path": "feature/chat/src/main/kotlin/app/skein/feature/chat/SendPipeline.kt",
+        "sha256": "eca058239e3517522abf210b24d53ffb028c92996e4b62a280394bb43e6a20cb"
+      },
+      {
+        "path": "feature/chat/src/test/kotlin/app/skein/feature/chat/ContextualSendPathTest.kt",
+        "sha256": "759ada9eeab38a1c11206b91f30d6852604c24590ec3fd26119ecf8cde68dc80"
+      }
+    ]
+  },
+  "new_tests": {
+    "ContextualSendPathTest": 21,
+    "ContextualRetrievalServiceTest": 3
+  },
+  "open_gates": [
+    "application encrypted runtime",
+    "six consumed Fresh40 application-context cases remain UNEXECUTED without capable adapter",
+    "across-session durable previous-Space provenance",
+    "general conversational/coreference semantics",
+    "relevance and honest absence calibration at frozen0.5",
+    "physical Fold installation and acceptance"
+  ],
+  "artifacts": [
+    {
+      "path": "development-history.zip",
+      "bytes": 74204,
+      "sha256": "ac701148fcd179dfafdc9bce312e39a278dbc9a7d4f19cdf75e45f4c002e7265"
+    },
+    {
+      "path": "negative-actual-xml.zip",
+      "bytes": 2146,
+      "sha256": "fc604b48c5c84697b9d840953c469cd922d8884a8775a9e1ea0d0b24d339f9ed"
+    },
+    {
+      "path": "negative-gradle.log",
+      "bytes": 14761,
+      "sha256": "f6e76a85255ae13d461d4aa10081e43550e519c557cd170ac9efd86ff7f6b774"
+    },
+    {
+      "path": "negative-source.zip",
+      "bytes": 26768,
+      "sha256": "c3bbe7791c6fbf1f68d338bc489f340d22f1806452cc48eb24cfb287ba0d6beb"
+    },
+    {
+      "path": "positive-actual-xml.zip",
+      "bytes": 61439,
+      "sha256": "abffca444d981e6576bd0c1bec347f960c5458b296b2ccd2d5d4eef9d50af475"
+    },
+    {
+      "path": "positive-gradle.log",
+      "bytes": 20351,
+      "sha256": "c6d27cfc00259ded5382894e8eb82d9baec1c48217a213b686082528ba1a7052"
+    },
+    {
+      "path": "positive-source.zip",
+      "bytes": 27002,
+      "sha256": "4cacc44049a3e07ce1610f5526aaf7a647e0a8ae1b0a62b0d9bbaa3e91ff34c2"
+    },
+    {
+      "path": "restoration.json",
+      "bytes": 1389,
+      "sha256": "f1835b66cb8195fc22980504d62d1471e4e6ee8eaf7a052204aac69cd9ae948b"
+    }
+  ]
+}
