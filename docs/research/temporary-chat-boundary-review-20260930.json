@@ -1,0 +1,69 @@
+{
+  "schema_version": 1,
+  "bead": "skein-4v3c.1",
+  "source": "8f084343cf2b67395d2d707b33f6ee578d801c89",
+  "status": "SOURCE_REVIEW_ONLY_MODE_NOT_IMPLEMENTED",
+  "findings": [
+    "Knowledge off selects GENERAL but SendPipeline.admit still appends a durable USER. ChatTurnController.enqueueNew creates CHAT inside atomic draft/send admission. TurnFinalizer persists assistant content and citation records. These paths cannot be reused by toggling retrieval only.",
+    "SessionDraftStore intentionally writes encrypted drafts after debounce and flushes at lock; temporary composer must never receive this store or a durable draft key. Preserve existing normal drafts during every mode transition.",
+    "SkeinNavCodec serializes canonical ChatKey/NewChatKey identifiers. Temporary routes require excluded transient identity and no restorable transcript, title or content-bearing entry saved state. A disappearing route does not prove no persistence.",
+    "ModelServices HIGH lock revokes turns; LOW flushes ordinary answers/drafts, closeSessionState clears app state. Ephemeral work must synchronously revoke then discard without entering durable LOW flush. Stop preserves only memory; errors and model changes must not route through ordinary retry persistence.",
+    "Native JNI uses llama_memory_clear(memory,true) for context clearing. This is a useful existing primitive, not evidence that immutable Kotlin/IPC strings or all allocator/device buffers are erased. Instrument cleanup and failure; do not display privacy success on uncertain native cleanup."
+  ],
+  "proposed_lifetime": {
+    "owner": "Unlocked vault session epoch, separate temporary-session ID and memory-only transcript/composer",
+    "rotation": "Can retain while same live epoch/controller; no SavedStateHandle or Bundle content",
+    "background": "Follow existing lock policy; keep visible disclosure that background alone may not immediately lock. On idle/screen-off lock, synchronously revoke publication and discard session.",
+    "close_lock_process_death": "Discard; relaunch cannot restore. An in-flight native request must cancel/clear or isolated process terminate under established lock backstop.",
+    "split_and_spaces": "Keep independent temp handles per explicitly owned live Space/session; moving panes is not a save. Reject obsolete callbacks after Space/lifetime change.",
+    "copy_or_save": "No implicit durable copy. Any later explicit save/export is separately disclosed and intentionally retained; no such action implemented by this review."
+  },
+  "verification": {
+    "host": "Spy forbidden persistence interfaces with unique markers including canceled/late callbacks and low-lock finalization; enforce absent navigation serialization and logs.",
+    "encrypted_runtime": "Inspect real DB tables, derived indexes, files and captured saved state before/after lifecycle events; retain actual XML/JSON/byte receipts. Test marker controls on normal saved chats to show inspection can detect persistence.",
+    "physical": "App/source/model identities, current connection + normal owner unlock, one synthetic temporary session at a time, saved drafts preserved; physical check remains open.",
+    "limits": "No claim of universal secure erasure, screenshots/clipboard/keyboards outside boundary, or instantaneous immutable-string zeroization."
+  },
+  "implementation_children": [
+    "skein-4v3c.2",
+    "skein-4v3c.3",
+    "skein-4v3c.4"
+  ],
+  "source_receipts": [
+    {
+      "path": "feature/chat/src/main/kotlin/app/skein/feature/chat/SendPipeline.kt",
+      "bytes": 24397,
+      "sha256": "68468f795b9abf3ce3e36a27032fc7bc5368484d0f75f362092888a3da91512e"
+    },
+    {
+      "path": "feature/chat/src/main/kotlin/app/skein/feature/chat/ChatTurnController.kt",
+      "bytes": 29145,
+      "sha256": "82a76542fa35c59ddbbf6fabc74777d4b2824e049d2f36142b8a6894408a1c58"
+    },
+    {
+      "path": "feature/chat/src/main/kotlin/app/skein/feature/chat/drafts/SessionDraftStore.kt",
+      "bytes": 17442,
+      "sha256": "b8a61191eeffce652643c2d49d23c98f8c05e9fd857050761651d0bbf546a003"
+    },
+    {
+      "path": "app/src/main/kotlin/app/skein/models/ModelServices.kt",
+      "bytes": 23498,
+      "sha256": "0d7a6406562ad44ada81a9eadd6950aed7188520bb278f69d04bae08c846162d"
+    },
+    {
+      "path": "core/navigation/src/main/kotlin/app/skein/core/navigation/SkeinNavCodec.kt",
+      "bytes": 12624,
+      "sha256": "2f21a2d13e8deab879fde18a57ad7228923cb9ca13f39963d519c16c72fa85ab"
+    },
+    {
+      "path": "native/llama/jni/skein_jni.cpp",
+      "bytes": 67336,
+      "sha256": "897afaafb4ecd9f3d7af9c943e5b1da65b72c64b7fd77082aba309056376b8ef"
+    },
+    {
+      "path": "feature/chat/src/main/kotlin/app/skein/feature/chat/PreparedChatTurn.kt",
+      "bytes": 5184,
+      "sha256": "1ed34fb6fc17d59d59d6cfb75d767e00d3272871124e3050a74fe6b048769b9f"
+    }
+  ]
+}

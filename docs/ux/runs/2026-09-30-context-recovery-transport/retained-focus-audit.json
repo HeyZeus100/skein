@@ -1,0 +1,52 @@
+{
+  "schema_version": 1,
+  "bead": "skein-xtov.24.10.4",
+  "source_baseline": "8f084343cf2b67395d2d707b33f6ee578d801c89",
+  "scope": "Read-only retained-focus audit; no new UI implementation or device acceptance",
+  "implemented_and_preserved": [
+    "ChatEntryPresentation is entry ViewModel over session-owned ChatTurnController; clears on lock/pop.",
+    "ChatViewModel preserves transcript anchor by canonical message ID and offset; explicit latest action avoids forced scroll.",
+    "DraftComposerState obtains text/selection from encrypted SessionDraftStore; IME composition range remains memory-local and is not persisted."
+  ],
+  "gaps": [
+    "ChatBottomBar has no FocusRequester or retained focus/scene identity hook. Spec AL10 explicitly requires one requestFocus after scene move only when prior intent still eligible.",
+    "SkeinWorkspaceHost activates pane from focus; a blind composer autofocus can steal active pane or dismiss intended dialog/overlay focus. Any implementation must bind to current workspace and visible route, not generic composition lifecycle.",
+    "Caret storage does not prove focus or real IME continuity. Existing host representation and screenshots cannot satisfy the physical focus/IME criterion."
+  ],
+  "next_implementation_bead": "skein-xtov.24.10.5",
+  "verification_contract": [
+    "Use content-free ephemeral focus intent in existing entry/session owner; clear on explicit blur, entry disposal and lock.",
+    "Compose test same retained entry through source navigation and repeated size/pane flips; preserve text/selection/scroll, request once per eligible move. Include inactive pane, drawer/dialog, user blur, restored locked navigation, closed entry negative cases.",
+    "Run focused host UI tests and unchanged screenshot checks; record actual device IME geometry and owner synthetic flow only on verified installed source."
+  ],
+  "sources": [
+    {
+      "path": "feature/chat/src/main/kotlin/app/skein/feature/chat/ChatBottomBar.kt",
+      "sha256": "ab71e044b058bedef0f0dd3a5570555033bc0969a66b3d78f4d8be7518c280bc"
+    },
+    {
+      "path": "feature/chat/src/main/kotlin/app/skein/feature/chat/ChatScreen.kt",
+      "sha256": "2a977922e50b8db6dcb512ebba90029b94ec17f1b4dfa80689df93b7f359bef0"
+    },
+    {
+      "path": "feature/chat/src/main/kotlin/app/skein/feature/chat/ChatViewModel.kt",
+      "sha256": "86ce411ea4a67daa7de4dfd82d7e324e1e4f9e0f55e824c4309de73e0c515a80"
+    },
+    {
+      "path": "feature/chat/src/main/kotlin/app/skein/feature/chat/entries/ChatEntryPresentation.kt",
+      "sha256": "d168c1bd9afce511212a00146649858bf24d0acfe9ca715f8e66dfbc791e39ba"
+    },
+    {
+      "path": "feature/chat/src/main/kotlin/app/skein/feature/chat/drafts/DraftComposerState.kt",
+      "sha256": "81b99086476605914661f3222f7ae1c5a434799dee8fdd4eaaa942d2f6947a9d"
+    },
+    {
+      "path": "feature/shell/src/main/kotlin/app/skein/feature/shell/host/SkeinWorkspaceHost.kt",
+      "sha256": "f8218c70fbd63a9a49662809171daaf5508d91f2e0b494a1d766fede4515171f"
+    },
+    {
+      "path": "feature/chat/src/test/kotlin/app/skein/feature/chat/entries/ChatEntryPresentationTest.kt",
+      "sha256": "bdb46c6c0ab2289b742490f6135b55f39e7032237d466f3270f8c0d1b756dff1"
+    }
+  ]
+}

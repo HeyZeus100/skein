@@ -1,0 +1,23 @@
+{
+  "worker_commit": "6713feb19",
+  "integrated": "340b2ac1a",
+  "archives": [
+    {
+      "file": "positive-actual-xml.zip",
+      "sha256": "abffca444d981e6576bd0c1bec347f960c5458b296b2ccd2d5d4eef9d50af475",
+      "cases": 720,
+      "failed": 0,
+      "errors": 0,
+      "skips": 16
+    },
+    {
+      "file": "negative-actual-xml.zip",
+      "sha256": "fc604b48c5c84697b9d840953c469cd922d8884a8775a9e1ea0d0b24d339f9ed",
+      "cases": 3,
+      "failed": 3,
+      "errors": 0,
+      "skips": 0
+    }
+  ],
+  "positive_sources_match_integrated_bytes": true
+}

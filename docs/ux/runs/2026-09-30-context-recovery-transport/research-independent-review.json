@@ -1,0 +1,136 @@
+{
+  "schema_version": 1,
+  "reviewer": "/root/fold_transport",
+  "at": "2026-09-30T17:05:56.997959+00:00",
+  "status": "PASS_BOUNDED_SOURCE_REVIEW",
+  "documents": [
+    {
+      "path": "docs/research/gemma-e4b-multimodal-feasibility-20260930.json",
+      "bytes": 24306,
+      "sha256": "9155235011cef0c98be1d0c45f56efc436937b8b3ae808caf67323f4efe2b541"
+    },
+    {
+      "path": "docs/research/temporary-chat-boundary-review-20260930.json",
+      "bytes": 4867,
+      "sha256": "89170e1f5e52438ff5eee87c6b6f7aef5cb854529941439df38091a6599c4f4d"
+    }
+  ],
+  "checks": {
+    "listed_receipts_actual_hash_matches": 45,
+    "mismatches": 0,
+    "model_LFS_pointer_rows_verified": 9,
+    "actual_model_bytes_verified": false,
+    "llama_submodule_HEAD": "b29c606e28a01b1bc8c1351026a0fa6e616bf6c4",
+    "llama_submodule_worktree_clean": true,
+    "local_source_receipt_revision": "8f084343cf2b67395d2d707b33f6ee578d801c89",
+    "published_metadata_members_exact": 11
+  },
+  "independent_actual_support": [
+    {
+      "path": "feature/chat/src/main/kotlin/app/skein/feature/chat/PreparedChatTurn.kt",
+      "bytes": 5184,
+      "sha256": "1ed34fb6fc17d59d59d6cfb75d767e00d3272871124e3050a74fe6b048769b9f"
+    },
+    {
+      "path": "third_party/llama.cpp/tools/mtmd/mtmd.h",
+      "bytes": 22390,
+      "sha256": "b0f1ba884e8688980789f0547147d2b7330d65772ebac8f36c0dbb8ece7cf7d0"
+    },
+    {
+      "path": "third_party/llama.cpp/tools/mtmd/mtmd-helper.h",
+      "bytes": 13142,
+      "sha256": "a4f69e73bf7a4e93fdaac8052ca315e8b8f2c16942dc26f0d2e69238f3b5eb4b"
+    },
+    {
+      "path": "third_party/llama.cpp/tools/mtmd/models/gemma4v.cpp",
+      "bytes": 4888,
+      "sha256": "776bc47dacb61ad815bc867c584590a13842147991d79947882087d7690dd6ac"
+    }
+  ],
+  "additional_metadata_support": [
+    {
+      "path": "build/agent-logs/resume-context-20260930/multimodal/google--gemma-4-E4B-it.json",
+      "bytes": 24424,
+      "sha256": "2db6ff7193e17bf399de2fce7c9041c89ecf8ec2787948feb89dadd4362494fe"
+    },
+    {
+      "path": "build/agent-logs/resume-context-20260930/multimodal/google-ai-edge--LiteRT-LM-commit.json",
+      "bytes": 39934,
+      "sha256": "1770ff069b0ea16ba1b648d7e9b305269893fa401f6b621c18d8aaf999d95ce1"
+    },
+    {
+      "path": "build/agent-logs/resume-context-20260930/multimodal/google-ai-edge--LiteRT-LM-release.json",
+      "bytes": 4991,
+      "sha256": "bb9caba4498a5764279edbb1a5c39ea4e293268eb0585caeb1e3c60d20098091"
+    },
+    {
+      "path": "build/agent-logs/resume-context-20260930/multimodal/litert-community--gemma-4-E4B-it-litert-lm.json",
+      "bytes": 14613,
+      "sha256": "29e48c1e43998397451f35393266ac465c3078f6beff2e0a10a263487f7d7aff"
+    },
+    {
+      "path": "build/agent-logs/resume-context-20260930/multimodal/microsoft--onnxruntime-commit.json",
+      "bytes": 195896,
+      "sha256": "b6c9d9bc3b9e037b61f36749eab35a9d592889065a3a89032dcd7a84ef635d44"
+    },
+    {
+      "path": "build/agent-logs/resume-context-20260930/multimodal/microsoft--onnxruntime-genai-commit.json",
+      "bytes": 9464,
+      "sha256": "02eed0b8694636e80d31ef165381f2e418324bec4165dcaa1ca093977012839d"
+    },
+    {
+      "path": "build/agent-logs/resume-context-20260930/multimodal/microsoft--onnxruntime-genai-release.json",
+      "bytes": 27680,
+      "sha256": "533e0a43f09e045436c4dc97ccd6040759972e5c60b5f1acf5d0f01ff0415757"
+    },
+    {
+      "path": "build/agent-logs/resume-context-20260930/multimodal/microsoft--onnxruntime-release.json",
+      "bytes": 46560,
+      "sha256": "3a8ac4e61861166cddb91792a2d31a190f23746ab8ee8a5a95a20d333816752a"
+    },
+    {
+      "path": "build/agent-logs/resume-context-20260930/multimodal/onnx-community--gemma-4-E4B-it-ONNX.json",
+      "bytes": 50714,
+      "sha256": "2dfc7b73b998b1b9e0ed88e0361e2136258a18a21ca26831ec50ded59fbac7e7"
+    },
+    {
+      "path": "build/agent-logs/resume-context-20260930/multimodal/unsloth--gemma-4-E4B-it-GGUF.json",
+      "bytes": 28425,
+      "sha256": "290fbd6d3c2fda6179600ca7c48d35bfbe73ff8c187af6eee0b70223c6a7bcf3"
+    }
+  ],
+  "findings": [
+    "Existing chat USER/create/assistant/citation paths are durable even when Knowledge is off; SessionDraftStore debounce/LOW flush persists. Temporary mode is not implemented and needs separate memory-only admission and lock behavior.",
+    "CMake disables LLAMA_BUILD_TOOLS; pinned mtmd source has filename-based projector construction and gemma4v support, but Skein JNI/service does not evaluate received images. Descriptor-bound companion integration remains required.",
+    "Pinned LiteRT Engine.kt passes modelPath/cacheDir; bounded plan correctly refuses to infer isolated verified-FD compatibility.",
+    "Pinned ORT Gemma4 processor handles pixel_position_ids and ort_extensions; incomplete candidate set and Transformers.js/GenAI compatibility caveat are correct.",
+    "Templates differ by actual hashes; no export parity, model acquisition, installed artifact identity or physical acceptance is established.",
+    "No production/runtime/default-model/security-boundary activation is authorized by this plan."
+  ],
+  "nonblocking_suggestions": [],
+  "fresh_primary_docs": [
+    {
+      "url": "https://developers.google.com/edge/litert-lm/models/gemma-4",
+      "supports": "Current E4B support and MTP guidance; throughput is upstream-device evidence only."
+    },
+    {
+      "url": "https://developers.google.com/edge/litert-lm/android",
+      "supports": "Android Kotlin modelPath/cacheDir engine and multimodal image/audio API; not Skein isolation acceptance."
+    }
+  ],
+  "verification_limits": [
+    "No models downloaded or executed.",
+    "No app build/runtime or device commands for this review.",
+    "Plan/source review only, not implementation or acceptance."
+  ],
+  "resolved_suggestions": [
+    "All11 runtime release/commit and model API authorities are now individually hash-recorded and published byte-exact in ZIP.",
+    "PreparedChatTurn.kt persistence source receipt added and rehashed against8f084343.",
+    "Exact artifact identity finding explicitly scoped to reviewed repository records; owner artifact unobserved."
+  ],
+  "published_authority_archive": {
+    "path": "docs/research/gemma-e4b-feasibility-authorities-20260930.zip",
+    "bytes": 102980,
+    "sha256": "a5f6e936217feacdf943832f1575b3b63e0198ec92228c7ad96fb0e0465d09ab"
+  }
+}

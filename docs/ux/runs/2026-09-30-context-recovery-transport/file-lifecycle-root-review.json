@@ -1,0 +1,130 @@
+{
+  "bead": "skein-xtov.27.2.1",
+  "review": "Retained actual encrypted repository acceptance rechecked, no new test execution",
+  "tested_source": "465dac627c15acf5399a6ac596f0c6703791d040",
+  "run": 36714651814,
+  "archive_sha256": "10a6eec35d2dba6a9b5e438da0b4dcaeeef85fa666844512a7f2e449dbb69471",
+  "actual_cases": [
+    {
+      "class": "app.skein.core.vault.repository.FileLifecycleInstrumentedTest",
+      "name": "zip_attachment_and_existing_text_link_before_a_delete_can_observe_them",
+      "outcome": "passed"
+    },
+    {
+      "class": "app.skein.core.vault.repository.FileLifecycleInstrumentedTest",
+      "name": "unlock_sweep_retains_shared_references_and_missing_blob_metadata",
+      "outcome": "passed"
+    },
+    {
+      "class": "app.skein.core.vault.repository.FileLifecycleInstrumentedTest",
+      "name": "pdf_extraction_finishing_after_file_delete_cannot_create_its_note",
+      "outcome": "passed"
+    },
+    {
+      "class": "app.skein.core.vault.repository.FileLifecycleInstrumentedTest",
+      "name": "late_ingest_cannot_restore_deleted_text_chunks_vectors_or_edges",
+      "outcome": "passed"
+    },
+    {
+      "class": "app.skein.core.vault.repository.FileLifecycleInstrumentedTest",
+      "name": "import_reservation_survives_blob_landing_before_metadata_and_sweep_does_not_deadlock",
+      "outcome": "passed"
+    },
+    {
+      "class": "app.skein.core.vault.repository.FileLifecycleInstrumentedTest",
+      "name": "failed_post_commit_unlink_is_pending_and_recovered_after_reopen",
+      "outcome": "passed"
+    },
+    {
+      "class": "app.skein.core.vault.repository.FileLifecycleInstrumentedTest",
+      "name": "a_new_surviving_source_dependent_requires_fresh_editor_reservations",
+      "outcome": "passed"
+    },
+    {
+      "class": "app.skein.core.vault.repository.FileLifecycleInstrumentedTest",
+      "name": "lock_cancels_uncommitted_file_delete_without_removing_bytes",
+      "outcome": "passed"
+    },
+    {
+      "class": "app.skein.core.vault.repository.FileLifecycleInstrumentedTest",
+      "name": "changed_import_source_rolls_back_attachment_linkage_and_leaves_unrelated_note_intact",
+      "outcome": "passed"
+    },
+    {
+      "class": "app.skein.core.vault.repository.FileLifecycleInstrumentedTest",
+      "name": "file_delete_removes_all_text_indexes_and_bytes_but_retains_quotes_and_other_files",
+      "outcome": "passed"
+    },
+    {
+      "class": "app.skein.core.vault.repository.FileLifecycleInstrumentedTest",
+      "name": "quoting_chat_count_deduplicates_multiple_text_sources_and_turns",
+      "outcome": "passed"
+    },
+    {
+      "class": "app.skein.core.vault.repository.FileLifecycleInstrumentedTest",
+      "name": "zip_with_attachment_entry_before_notes_links_later_notes_atomically",
+      "outcome": "passed"
+    },
+    {
+      "class": "app.skein.core.vault.repository.FileLifecycleInstrumentedTest",
+      "name": "changed_membership_is_rejected_before_any_partial_delete",
+      "outcome": "passed"
+    },
+    {
+      "class": "app.skein.core.vault.repository.FileLifecycleInstrumentedTest",
+      "name": "failed_outer_commit_preserves_every_row_index_and_blob",
+      "outcome": "passed"
+    }
+  ],
+  "current_source_receipts": [
+    {
+      "path": "core/model/src/main/kotlin/app/skein/core/model/FileLifecycle.kt",
+      "sha256": "8f7b8297352f062e407e82e9eda757d686d8a045276d3a5ded24561de40e5565"
+    },
+    {
+      "path": "core/vault/src/androidTest/kotlin/app/skein/core/vault/repository/FileLifecycleInstrumentedTest.kt",
+      "sha256": "8b67c79e3cfb5df4688b34543ade59993bd76a82c10752d50516e29768d04f64"
+    },
+    {
+      "path": "core/vault/src/main/kotlin/app/skein/core/vault/blob/AttachmentStore.kt",
+      "sha256": "c2a7d53483e83c6d30d3a96776dad202390546f0d989ead3e1538fb3ada3c049"
+    },
+    {
+      "path": "core/vault/src/main/kotlin/app/skein/core/vault/blob/AttachmentWriteRegistry.kt",
+      "sha256": "e863ebdc79d1aee28928f05b0d02542b2fec7e76440fb9eb31de519c015e07b6"
+    },
+    {
+      "path": "core/vault/src/main/kotlin/app/skein/core/vault/blob/FileAttachmentStore.kt",
+      "sha256": "478031e2af13362bd037ebb510ed14f16fd2436f7f881f4a950e08c440cd90fb"
+    },
+    {
+      "path": "core/vault/src/main/kotlin/app/skein/core/vault/index/IndexSql.kt",
+      "sha256": "a7532369212245061587a1516d5120464f17dee2396b3fd8397b4c4890b9415b"
+    },
+    {
+      "path": "core/vault/src/main/kotlin/app/skein/core/vault/index/IndexStoreImpl.kt",
+      "sha256": "f3c992de0790310fe0a06095ab07c8bf04a263a414cdf308431f6063325903c4"
+    },
+    {
+      "path": "core/vault/src/main/kotlin/app/skein/core/vault/repository/VaultRepositoryImpl.kt",
+      "sha256": "fb16ce89e88f8e0f266f24f7407ababe52ca7e6b42ec988ca1ef9f06e55286a1"
+    },
+    {
+      "path": "core/vault/src/main/kotlin/app/skein/core/vault/repository/VaultSql.kt",
+      "sha256": "584d0635f7a7be587bedbb95bb454c5ddb89f4939e3b7a2b09985d0cb68281a1"
+    },
+    {
+      "path": "core/vault/src/main/kotlin/app/skein/core/vault/transfer/ImportServiceImpl.kt",
+      "sha256": "9664a7fb46b1296a6fcca4741e6df757d10e7861d2e9507feeb15998ab6ada57"
+    },
+    {
+      "path": "core/vault/src/main/kotlin/app/skein/core/vault/transfer/VaultZipImporter.kt",
+      "sha256": "8d0135caa2475b046e31ae3925344c3c6c92dcafdeb1681fd04e157f3adabf68"
+    },
+    {
+      "path": "core/vault/src/test/kotlin/app/skein/core/vault/blob/AttachmentOrphanSweepTest.kt",
+      "sha256": "8ea7e279be12d405e08f31e857da363d37f27845eef05f06d99dc5b2a283738d"
+    }
+  ],
+  "limits": "Current shared file UI still refuses surviving non-NOTE dependent editors. Physical file flow and reload integration remain open; old57m1 delete acceptance on e62 was bounded note/chat only."
+}

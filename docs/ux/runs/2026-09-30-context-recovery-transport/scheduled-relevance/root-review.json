@@ -1,0 +1,89 @@
+{
+  "run": 36730663226,
+  "source": "8f084343cf2b67395d2d707b33f6ee578d801c89",
+  "event": "schedule",
+  "verdict": "EXPECTED_PRESERVED_QUALITY_FAILURE_NOT_NEW_VALIDATION",
+  "archive_sha256": "5a6d193189228080454604fa670ca4fb80a2bbeaea1358f9f51b69401939a4a8",
+  "raw_report_sha256": "63e83e838256775245be16e249ad6f8510191dc3806c9a990af63c2ab94201fc",
+  "actual_xml": [
+    {
+      "path": "core/vault/build/outputs/androidTest-results/connected/debug/flavors/dev/TEST-test(AVD) - 15.xml",
+      "sha256": "1584fe418bab747a9bf36bf44b57aa60c77a807e224e8e8da73f9a7e0d2b8f35",
+      "attributes": {
+        "tests": "1",
+        "failures": "0",
+        "errors": "0",
+        "skipped": "0",
+        "time": "0.000",
+        "timestamp": "2026-09-30T14:45:01",
+        "hostname": "localhost"
+      },
+      "actual_testcases": 1
+    }
+  ],
+  "root_recomputed_rows": {
+    "rejection_validation": {
+      "production_policy": {
+        "covered_answers": 5,
+        "answers": 6,
+        "correct_absence_rejections": 5,
+        "absences": 6,
+        "false_rejections": 1,
+        "reported_validation_status": "FAIL"
+      },
+      "ungated_control": {
+        "covered_answers": 6,
+        "answers": 6,
+        "correct_absence_rejections": 0,
+        "absences": 6,
+        "false_rejections": 0,
+        "reported_validation_status": "FAIL"
+      },
+      "experimental_candidate": {
+        "covered_answers": 5,
+        "answers": 6,
+        "correct_absence_rejections": 6,
+        "absences": 6,
+        "false_rejections": 1,
+        "reported_validation_status": "FAIL"
+      }
+    },
+    "independent_validation": {
+      "production_policy": {
+        "covered_answers": 9,
+        "answers": 12,
+        "correct_absence_rejections": 6,
+        "absences": 12,
+        "false_rejections": 3,
+        "reported_validation_status": "FAIL"
+      },
+      "ungated_control": {
+        "covered_answers": 12,
+        "answers": 12,
+        "correct_absence_rejections": 0,
+        "absences": 12,
+        "false_rejections": 0,
+        "reported_validation_status": "FAIL"
+      },
+      "experimental_candidate": {
+        "covered_answers": 10,
+        "answers": 12,
+        "correct_absence_rejections": 7,
+        "absences": 12,
+        "false_rejections": 2,
+        "reported_validation_status": "FAIL"
+      }
+    }
+  },
+  "quality_gate": {
+    "status": "FAIL",
+    "gates": {
+      "development_ranking": "PASS",
+      "development_absence": "PASS",
+      "reserved_regression": "FAIL",
+      "independent_validation": "FAIL"
+    }
+  },
+  "attribution": "Actual XML/report inspected and row counts recomputed. Native model answers absent. APK identity is host/device-declared matching hashes; APK bytes absent from this artifact.",
+  "fresh40": "This scheduled run uses earlier consumed fixtures; it is not a new fresh40 measurement or blind validation."
+}

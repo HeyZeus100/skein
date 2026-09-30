@@ -1,0 +1,434 @@
+{
+  "schema_version": 1,
+  "bead": "skein-m6v.1",
+  "reviewed_at": "2026-09-30T16:57:41.206700+00:00",
+  "skein_source": "8f084343cf2b67395d2d707b33f6ee578d801c89",
+  "status": "BOUNDED_FEASIBILITY_PLAN_NOT_RUNTIME_QUALIFICATION",
+  "authorization": "Research and synthetic qualification planning only. No production runtime, default model, capability or security-boundary switch. No model weights downloaded or executed in this review.",
+  "identity_finding": "No exact acquired/selected E4B artifact is established by the reviewed repository records; owner artifact identity remains unobserved: test manifest contains f00dface/0ddba11f placeholder hashes; tools/m0-benchmark/models.yaml has TBD size/hash. The following is an explicit prospective qualification target matching the planned unsloth Q4_K_M entry, not a claim about owner-installed models.",
+  "reference_target": {
+    "repo": "unsloth/gemma-4-E4B-it-GGUF",
+    "revision": "bfc15c382204943c3a8fff0c750b94ae2364d7a3",
+    "url": "https://huggingface.co/unsloth/gemma-4-E4B-it-GGUF/tree/bfc15c382204943c3a8fff0c750b94ae2364d7a3",
+    "artifacts": [
+      {
+        "file": "gemma-4-E4B-it-Q4_K_M.gguf",
+        "bytes": 4977171584,
+        "upstream_declared_sha256": "85a896a047553e842f25297ee5b031d64ff30147d9c4af17b1e4b394cd1fab87",
+        "git_blob": "14883a6b60cbc0037228a9769ce57d59ae892fa9",
+        "actual_model_bytes_verified": false
+      },
+      {
+        "file": "mmproj-F16.gguf",
+        "bytes": 990372672,
+        "upstream_declared_sha256": "ddf46c21d7078e95338cfc22306b19b276a29a5ad089023449dd54d4b6170a51",
+        "git_blob": "a260ff2377ce139c1baaf114cbb6b72146489fee",
+        "actual_model_bytes_verified": false
+      }
+    ]
+  },
+  "upstream_base": {
+    "repo": "google/gemma-4-E4B-it",
+    "current_reference_revision": "ee0ef6023621cff504d758262d4e04895a5af4a2",
+    "caveat": "Current base reference is not proven conversion lineage. Conversion commit, quantizer, base checkpoint identity and projector compatibility must be established before parity claims."
+  },
+  "paths": [
+    {
+      "runtime": "llama.cpp + mtmd",
+      "pin": "b29c606e28a01b1bc8c1351026a0fa6e616bf6c4",
+      "pin_authority": "native/llama/PINNED_COMMIT",
+      "artifact_relationship": "Only path directly targeting the exact planned GGUF plus matching projector without format conversion.",
+      "observed": "Pinned source contains gemma4 language model, gemma4v projector, mtmd_init_from_file, bitmap/tokenize/eval helpers. Skein production CMake/JNI do not integrate mtmd; modelHasVision is only metadata, and service closes received images without evaluating them.",
+      "required_work": "Add bounded verified main/projector descriptor ownership and static mtmd linkage within existing isolated service; do not reopen adjacent paths. Decode bounded images in isolation, validate dimensions and encoded/decoded limits, preserve prompt delimiters and effective positions/image token budget. Cover exact JNI surface, absence/wrong companion refusal and cleanup.",
+      "compatibility_gate": "Artifact-specific tokenizer/control/EOG and exact prompt rendering parity must pass before generation. Legacy native renderer has known strict-content parity constraints; architecture support is insufficient.",
+      "decision": "First qualification candidate because it preserves the existing runtime and artifact format, not a selected winner."
+    },
+    {
+      "runtime": "LiteRT-LM",
+      "release": "v0.17.1",
+      "pin": "5e58e9a0aef7abf7091207a8b1d1063a1c800f08",
+      "artifact": {
+        "repo": "litert-community/gemma-4-E4B-it-litert-lm",
+        "revision": "2eee7ac325f20eb8c9ac1d0e972f7c84663062da",
+        "url": "https://huggingface.co/litert-community/gemma-4-E4B-it-litert-lm/tree/2eee7ac325f20eb8c9ac1d0e972f7c84663062da",
+        "artifacts": [
+          {
+            "file": "gemma-4-E4B-it.litertlm",
+            "bytes": 3659530240,
+            "upstream_declared_sha256": "0b2a8980ce155fd97673d8e820b4d29d9c7d99b8fa6806f425d969b145bd52e0",
+            "git_blob": "e0118a53f9dbe0a5263af53318eda8cb07c8aefe",
+            "actual_model_bytes_verified": false
+          },
+          {
+            "file": "gemma-4-E4B-it-gpu.litertlm",
+            "bytes": 2969059328,
+            "upstream_declared_sha256": "4912bb5a9c30993c51a7711f763212077458529312175df0573a78323a2bb7ff",
+            "git_blob": "6bd2691fe31ec1805c616cec5bbe49dfb76901a5",
+            "actual_model_bytes_verified": false
+          }
+        ]
+      },
+      "artifact_relationship": "Separate converted exports, not the GGUF bytes and not an interchangeable mmproj. CPU/general versus GPU package may differ.",
+      "observed": "Official Android and Gemma4 documentation describe Kotlin engine/conversation multimodal support and E4B. Upstream device throughput and memory tables are not Fold measurements. Pinned Kotlin Engine.initialize passes engineConfig.modelPath and cacheDir to JNI; a verified FD-compatible integration is not established by the inspected API.",
+      "required_work": "Prove verified immutable FD/mapping intake and offline operation inside existing isolated no-network boundary, lifecycle cancellation/hard-lock teardown, build/license/provenance and no hidden asset discovery. Current manifest format supports gguf/onnx only: adding litertlm is a separately reviewed schema/verification change. No boundary waiver if path-based engine loading cannot satisfy policy.",
+      "decision": "Alternative feasibility candidate only; requires controlled conversion/reference equivalence and isolated Android prototype."
+    },
+    {
+      "runtime": "ONNX Runtime / GenAI",
+      "runtime_release": "v1.30.0",
+      "runtime_pin": "f2c39fe2f838cf35ce7da92824f5a5e3ee6e88a7",
+      "genai_release": "v0.17.0",
+      "genai_pin": "1d67be30e5b1ed0c264f6f41c598f85157e8288b",
+      "artifact": {
+        "repo": "onnx-community/gemma-4-E4B-it-ONNX",
+        "revision": "843f250f23bc91754def1e0f0db390dacd1e6b05",
+        "url": "https://huggingface.co/onnx-community/gemma-4-E4B-it-ONNX/tree/843f250f23bc91754def1e0f0db390dacd1e6b05",
+        "artifacts": [
+          {
+            "file": "onnx/decoder_model_merged_q4.onnx",
+            "bytes": 814829,
+            "upstream_declared_sha256": "af764e3b468255401694cf9acbdf859e7e2febd8cd9abd1443ab8ab5493d1f99",
+            "git_blob": "b969edce01c01783d806f07fe7bfc56562eb1cf3",
+            "actual_model_bytes_verified": false
+          },
+          {
+            "file": "onnx/decoder_model_merged_q4.onnx_data",
+            "bytes": 2093703168,
+            "upstream_declared_sha256": "3f0dda0cd6b575a49c9a8753250256518a2b9a053ed4cc9dddb6e228a3732099",
+            "git_blob": "868030287266d47cadfad9a445c0b61d466abca3",
+            "actual_model_bytes_verified": false
+          },
+          {
+            "file": "onnx/decoder_model_merged_q4.onnx_data_1",
+            "bytes": 1286205440,
+            "upstream_declared_sha256": "3ce62ea330a5549d791d9b7a2a72dcad8cd4f4083fac490b72b1d539f46f07eb",
+            "git_blob": "7a3b01f48531384528bd5b4f1e87ddfb23837b34",
+            "actual_model_bytes_verified": false
+          },
+          {
+            "file": "onnx/vision_encoder_q4.onnx",
+            "bytes": 200082,
+            "upstream_declared_sha256": "ae64cce8def6731c586c4e899ebe9cf56a24c6420d141fb41ed88e3afe704c99",
+            "git_blob": "1d1074cd4b74dababeb8ec93d5456ca172dd00e6",
+            "actual_model_bytes_verified": false
+          },
+          {
+            "file": "onnx/vision_encoder_q4.onnx_data",
+            "bytes": 115251392,
+            "upstream_declared_sha256": "4f8b2fc97064387b0fb63d2927fe80518279f09b00acf52764353fd6eb44494a",
+            "git_blob": "a7b9fb39eea6230af56c2b6d72e497c4e39c3736",
+            "actual_model_bytes_verified": false
+          }
+        ]
+      },
+      "artifact_relationship": "Listed decoder/vision are an incomplete candidate set, not a runnable manifest. Resolve all embeddings, tokenizer, external tensors and preprocessing companions from actual graph references. Transformers.js export layout is not proof of ORT GenAI config compatibility.",
+      "observed": "Publisher offers E4B ONNX multimodal exports; current GenAI advertises Gemma/Android and upstream Gemma4 work exists. Exact exporter/runtime/operator/architecture and per-layer input compatibility must be proven from pinned source and actual tensors. Pinned GenAI source has Gemma4MultiModalProcessor, pixel_position_ids handling and preprocessing through ort_extensions. Actual Transformers.js export/GenAI integration remains unproven.",
+      "required_work": "Audit opset/custom operators, external-data confinement and every opened sidecar; qualify Android CPU then eligible delegates. Preserve no-network isolated service, authenticated descriptor intake, bounded tensors, cancellation and lock. Do not infer generation backend approval from the separate Nomic ONNX embedding precheck.",
+      "decision": "Higher integration uncertainty for this exact GGUF target; research/export comparison only."
+    }
+  ],
+  "qualification_sequence": [
+    {
+      "stage": "Identity and reference freeze",
+      "gate": "Acquire only into new ignored evaluation storage when qualification proceeds, verify every actual byte hash/size and license/source/conversion lineage. Capture full GGUF metadata/tokenizer/template and all projector metadata. Freeze synthetic development images/queries and expected outcomes before model output. Separate development and future unseen validation; never reuse Fresh40 as blind."
+    },
+    {
+      "stage": "Host semantic parity",
+      "gate": "Start with text-only strict prompt/EOG controls then one image per request: printed synthetic text, shapes/counts, rotation/EXIF, empty/corrupt/oversized/unsupported input and deliberate image-free absence. Keep same pixel inputs, instruction, image token budget, context and bounded decoding. Compare expected facts, unsupported claims and text-only degradation. Cross-export results remain confounded until base weights/quantizer/preprocessing/template equivalence is demonstrated."
+    },
+    {
+      "stage": "Isolated Android prototype",
+      "gate": "Separate test-only build; actual XML and raw JSON plus APK/native/model/companion/template hashes. Prove missing/wrong hash and mismatched projector refusal, truncated FD, process death/rebind, cancel during preprocess/prefill/decode, lock during each phase, stale callbacks and no app/network bypass. No owner content."
+    },
+    {
+      "stage": "Physical measurement",
+      "gate": "Exactly one runner after connection and normal owner unlock. Measure cold/warm load, image preprocess/prefill/first-token/decode separately, at least two warmups and ten recorded repetitions for each successful bounded cell, simultaneous app+runtime+projector+KV/image peak PSS, OOM/thermal state, cancel and hard-lock. Start one512px image and4096 context; larger cells require a justified budget. Existing static RAM/core claims and E4B effective parameter count are not memory acceptance."
+    },
+    {
+      "stage": "Decision",
+      "gate": "Publish every failed cell, source/toolchain/artifact hashes, raw outputs and provenance, exact missing cells and reproducibility limits. m6v/rni/0xat and5hr remain open. A later explicit authorized integration decision is required before production runtime/default or capability activation."
+    }
+  ],
+  "freshness_and_templates": {
+    "source_templates_differ": true,
+    "google_template_sha256": "0a2c8073c878ab1da004bee933a998606537bbb62016310352c7285c3f01c5b5",
+    "litert_template_sha256": "02b3091acf53c0b722e3db0c7a1b4980363edcc2d85549dafa339ff5dbfff629",
+    "onnx_template_sha256": "781d10940fbc44be40064b5d43a056fc486c84ceaa55538226368b57314132bf",
+    "MTP": "Old Bead claim that Gemma4 has no MTP heads is stale against current primary documentation. Exact auxiliary artifacts remain unqualified and speculation is outside this bounded vision plan."
+  },
+  "sources": [
+    {
+      "url": "https://developers.google.com/edge/litert-lm/models/gemma-4",
+      "claim": "Official E4B support and distinct litertlm conversion; upstream perf only."
+    },
+    {
+      "url": "https://developers.google.com/edge/litert-lm/android",
+      "claim": "Android engine and multimodal API surface."
+    },
+    {
+      "url": "https://github.com/microsoft/onnxruntime-genai/tree/1d67be30e5b1ed0c264f6f41c598f85157e8288b",
+      "claim": "Pinned GenAI source, broad support not exact export qualification."
+    }
+  ],
+  "upstream_receipts": [
+    {
+      "name": "litert-android",
+      "url": "https://raw.githubusercontent.com/google-ai-edge/LiteRT-LM/5e58e9a0aef7abf7091207a8b1d1063a1c800f08/kotlin/README.md",
+      "exit": 0,
+      "bytes": 104,
+      "sha256": "98686087659945666edadde0c45489ad126b320f53476cc714f6516a8dfe6f58"
+    },
+    {
+      "name": "litert-readme",
+      "url": "https://raw.githubusercontent.com/google-ai-edge/LiteRT-LM/5e58e9a0aef7abf7091207a8b1d1063a1c800f08/README.md",
+      "exit": 0,
+      "bytes": 10594,
+      "sha256": "7732a78b3dbd877a800bab99949f0cfd473720b00c5d1d71b96dd7d936b18447"
+    },
+    {
+      "name": "ort-genai-readme",
+      "url": "https://raw.githubusercontent.com/microsoft/onnxruntime-genai/1d67be30e5b1ed0c264f6f41c598f85157e8288b/README.md",
+      "exit": 0,
+      "bytes": 7740,
+      "sha256": "def446b34b6658c43d0a8972cd0b247be33912b6625f5d584f8c9a9e6290f958"
+    },
+    {
+      "name": "ort-gemma4",
+      "url": "https://raw.githubusercontent.com/microsoft/onnxruntime-genai/1d67be30e5b1ed0c264f6f41c598f85157e8288b/src/models/gemma4.cpp",
+      "exit": 56,
+      "error": "curl: (56) The requested URL returned error: 404\n"
+    },
+    {
+      "name": "unsloth--gemma-4-E4B-it-GGUF--README.md",
+      "url": "https://huggingface.co/unsloth/gemma-4-E4B-it-GGUF/resolve/bfc15c382204943c3a8fff0c750b94ae2364d7a3/README.md",
+      "exit": 0,
+      "bytes": 28503,
+      "sha256": "d741f0752fcf433cc3960ae20c609dbb159c25ce269da3b004246e8fd34245a3"
+    },
+    {
+      "name": "unsloth--gemma-4-E4B-it-GGUF--config.json",
+      "url": "https://huggingface.co/unsloth/gemma-4-E4B-it-GGUF/resolve/bfc15c382204943c3a8fff0c750b94ae2364d7a3/config.json",
+      "exit": 0,
+      "bytes": 5232,
+      "sha256": "09d9b0ea0fa2e809f78ed15c0a0e3f03a9fc8d642ed60fcd18f474e2f7b08b0a"
+    },
+    {
+      "name": "litert-community--gemma-4-E4B-it-litert-lm--README.md",
+      "url": "https://huggingface.co/litert-community/gemma-4-E4B-it-litert-lm/resolve/2eee7ac325f20eb8c9ac1d0e972f7c84663062da/README.md",
+      "exit": 0,
+      "bytes": 13270,
+      "sha256": "f3ebc499f63a23e1fef97853252bde252997c83f2c828178aacc339276b2008f"
+    },
+    {
+      "name": "litert-community--gemma-4-E4B-it-litert-lm--chat_template.jinja",
+      "url": "https://huggingface.co/litert-community/gemma-4-E4B-it-litert-lm/resolve/2eee7ac325f20eb8c9ac1d0e972f7c84663062da/chat_template.jinja",
+      "exit": 0,
+      "bytes": 11995,
+      "sha256": "02b3091acf53c0b722e3db0c7a1b4980363edcc2d85549dafa339ff5dbfff629"
+    },
+    {
+      "name": "onnx-community--gemma-4-E4B-it-ONNX--README.md",
+      "url": "https://huggingface.co/onnx-community/gemma-4-E4B-it-ONNX/resolve/843f250f23bc91754def1e0f0db390dacd1e6b05/README.md",
+      "exit": 0,
+      "bytes": 27835,
+      "sha256": "a7efa3b6983d5448e5a8a5a2395926defe36f34b26fb13826a6db0d7e34975ea"
+    },
+    {
+      "name": "onnx-community--gemma-4-E4B-it-ONNX--config.json",
+      "url": "https://huggingface.co/onnx-community/gemma-4-E4B-it-ONNX/resolve/843f250f23bc91754def1e0f0db390dacd1e6b05/config.json",
+      "exit": 0,
+      "bytes": 5741,
+      "sha256": "3251c77df50bccec2037f7e06a023105aeacbc89b784d990b1d279fc83ff9b1f"
+    },
+    {
+      "name": "onnx-community--gemma-4-E4B-it-ONNX--processor_config.json",
+      "url": "https://huggingface.co/onnx-community/gemma-4-E4B-it-ONNX/resolve/843f250f23bc91754def1e0f0db390dacd1e6b05/processor_config.json",
+      "exit": 0,
+      "bytes": 1689,
+      "sha256": "32bdf45d2ad4cc29a0822ddd157a182de76644f0419a6228d151495256e9813c"
+    },
+    {
+      "name": "onnx-community--gemma-4-E4B-it-ONNX--chat_template.jinja",
+      "url": "https://huggingface.co/onnx-community/gemma-4-E4B-it-ONNX/resolve/843f250f23bc91754def1e0f0db390dacd1e6b05/chat_template.jinja",
+      "exit": 0,
+      "bytes": 16317,
+      "sha256": "781d10940fbc44be40064b5d43a056fc486c84ceaa55538226368b57314132bf"
+    },
+    {
+      "name": "google--gemma-4-E4B-it--README.md",
+      "url": "https://huggingface.co/google/gemma-4-E4B-it/resolve/ee0ef6023621cff504d758262d4e04895a5af4a2/README.md",
+      "exit": 0,
+      "bytes": 27956,
+      "sha256": "b21e4f69614ccd77baa2f3797d05311040dee07b989cb9f0d25111aa4b605b2c"
+    },
+    {
+      "name": "google--gemma-4-E4B-it--config.json",
+      "url": "https://huggingface.co/google/gemma-4-E4B-it/resolve/ee0ef6023621cff504d758262d4e04895a5af4a2/config.json",
+      "exit": 0,
+      "bytes": 5145,
+      "sha256": "33b10c02df3c2e8536cf323d29d53262aaa2f4d11dbe19bc729373fbe90295d4"
+    },
+    {
+      "name": "google--gemma-4-E4B-it--processor_config.json",
+      "url": "https://huggingface.co/google/gemma-4-E4B-it/resolve/ee0ef6023621cff504d758262d4e04895a5af4a2/processor_config.json",
+      "exit": 0,
+      "bytes": 1689,
+      "sha256": "32bdf45d2ad4cc29a0822ddd157a182de76644f0419a6228d151495256e9813c"
+    },
+    {
+      "name": "google--gemma-4-E4B-it--chat_template.jinja",
+      "url": "https://huggingface.co/google/gemma-4-E4B-it/resolve/ee0ef6023621cff504d758262d4e04895a5af4a2/chat_template.jinja",
+      "exit": 0,
+      "bytes": 18569,
+      "sha256": "0a2c8073c878ab1da004bee933a998606537bbb62016310352c7285c3f01c5b5"
+    },
+    {
+      "name": "litert-engine",
+      "url": "https://raw.githubusercontent.com/google-ai-edge/LiteRT-LM/5e58e9a0aef7abf7091207a8b1d1063a1c800f08/kotlin/java/com/google/ai/edge/litertlm/Engine.kt",
+      "exit": 0,
+      "bytes": 7666,
+      "sha256": "e2848c6f296e646ab42dbcc32b5d6c258074a004bd5c093761284b0f19cbcccc"
+    },
+    {
+      "name": "litert-conversation",
+      "url": "https://raw.githubusercontent.com/google-ai-edge/LiteRT-LM/5e58e9a0aef7abf7091207a8b1d1063a1c800f08/kotlin/java/com/google/ai/edge/litertlm/Conversation.kt",
+      "exit": 0,
+      "bytes": 33111,
+      "sha256": "188ceb90cbc5a0d35de27440fe06ef58805e778b79495c6fa9a77998ad9fdc45"
+    },
+    {
+      "name": "ort-gemma4-processor",
+      "url": "https://raw.githubusercontent.com/microsoft/onnxruntime-genai/1d67be30e5b1ed0c264f6f41c598f85157e8288b/src/models/preprocessing/gemma4_multimodal_processor.cpp",
+      "exit": 0,
+      "bytes": 21106,
+      "sha256": "1ef9b011a59b687862201363c6881eb1ed279dacd0277a611a7c07b9c981ce2a"
+    },
+    {
+      "name": "ort-model-factory",
+      "url": "https://raw.githubusercontent.com/microsoft/onnxruntime-genai/1d67be30e5b1ed0c264f6f41c598f85157e8288b/src/models/model.cpp",
+      "exit": 0,
+      "bytes": 46993,
+      "sha256": "04be0b059a78e407e0d3e4a159714ff29c08b5407f140bb95e3161526f4ace84"
+    }
+  ],
+  "local_source_receipts": [
+    {
+      "path": "core/inference/src/test/resources/manifests/valid/gemma-4-e4b-it-q4km.skein.json",
+      "bytes": 1463,
+      "sha256": "0fde67ea99e46e00d5af85e400faa1a84aaa52c718b90af5eba7fdb26af03254"
+    },
+    {
+      "path": "tools/m0-benchmark/models.yaml",
+      "bytes": 5741,
+      "sha256": "e3f27305a5b46a91f14f7c239ff65d594444b833a75739fb0e6bfbb404d95fc7"
+    },
+    {
+      "path": "native/llama/PINNED_COMMIT",
+      "bytes": 2663,
+      "sha256": "0111623ec1370e7ca1fd5c071f2d1abcab802604327dc028e3442366a0660200"
+    },
+    {
+      "path": "native/llama/CMakeLists.txt",
+      "bytes": 45012,
+      "sha256": "023433619412c43878ee15894c8257f99e6c05daec4c34a679e62954f4c57def"
+    },
+    {
+      "path": "native/llama/jni/skein_jni.cpp",
+      "bytes": 67336,
+      "sha256": "897afaafb4ecd9f3d7af9c943e5b1da65b72c64b7fd77082aba309056376b8ef"
+    },
+    {
+      "path": "core/vault/src/main/kotlin/app/skein/core/vault/transfer/ImportServiceImpl.kt",
+      "bytes": 23623,
+      "sha256": "9664a7fb46b1296a6fcca4741e6df757d10e7861d2e9507feeb15998ab6ada57"
+    },
+    {
+      "path": "inference-service/src/main/kotlin/app/skein/inference/service/InferenceService.kt",
+      "bytes": 52278,
+      "sha256": "ba205b4800ade8e71f59f575cf8a8ce642d8bd6274fb34decf70a97148ed1e7e"
+    },
+    {
+      "path": "core/model/src/main/resources/schema/model-manifest.schema.json",
+      "bytes": 7625,
+      "sha256": "d2a92c143f3158636a999164a7684ce2d25bf8b223270e74ef2322d282b841ee"
+    }
+  ],
+  "metadata_authority_receipts": [
+    {
+      "name": "unsloth--gemma-4-E4B-it-GGUF.json",
+      "url": "https://huggingface.co/api/models/unsloth/gemma-4-E4B-it-GGUF?blobs=true",
+      "returned_revision": "bfc15c382204943c3a8fff0c750b94ae2364d7a3",
+      "bytes": 28425,
+      "sha256": "290fbd6d3c2fda6179600ca7c48d35bfbe73ff8c187af6eee0b70223c6a7bcf3",
+      "attribution": "Captured upstream declaration; model bytes not downloaded."
+    },
+    {
+      "name": "ggml-org--gemma-4-E4B-it-GGUF.json",
+      "url": "https://huggingface.co/api/models/ggml-org/gemma-4-E4B-it-GGUF?blobs=true",
+      "returned_revision": "b8093469224f83f5c38f691eb906c380e9e63114",
+      "bytes": 22222,
+      "sha256": "94dbfef99f802a656a0bcc94b20f0e0211f045dbd8364c7cfcd40053cf535284",
+      "attribution": "Captured upstream declaration; model bytes not downloaded."
+    },
+    {
+      "name": "litert-community--gemma-4-E4B-it-litert-lm.json",
+      "url": "https://huggingface.co/api/models/litert-community/gemma-4-E4B-it-litert-lm?blobs=true",
+      "returned_revision": "2eee7ac325f20eb8c9ac1d0e972f7c84663062da",
+      "bytes": 14613,
+      "sha256": "29e48c1e43998397451f35393266ac465c3078f6beff2e0a10a263487f7d7aff",
+      "attribution": "Captured upstream declaration; model bytes not downloaded."
+    },
+    {
+      "name": "onnx-community--gemma-4-E4B-it-ONNX.json",
+      "url": "https://huggingface.co/api/models/onnx-community/gemma-4-E4B-it-ONNX?blobs=true",
+      "returned_revision": "843f250f23bc91754def1e0f0db390dacd1e6b05",
+      "bytes": 50714,
+      "sha256": "2dfc7b73b998b1b9e0ed88e0361e2136258a18a21ca26831ec50ded59fbac7e7",
+      "attribution": "Captured upstream declaration; model bytes not downloaded."
+    },
+    {
+      "name": "google--gemma-4-E4B-it.json",
+      "url": "https://huggingface.co/api/models/google/gemma-4-E4B-it?blobs=true",
+      "returned_revision": "ee0ef6023621cff504d758262d4e04895a5af4a2",
+      "bytes": 24424,
+      "sha256": "2db6ff7193e17bf399de2fce7c9041c89ecf8ec2787948feb89dadd4362494fe",
+      "attribution": "Captured upstream declaration; model bytes not downloaded."
+    },
+    {
+      "name": "google-ai-edge--LiteRT-LM-release.json",
+      "url": "https://api.github.com/repos/google-ai-edge/LiteRT-LM/releases/latest",
+      "bytes": 4991,
+      "sha256": "bb9caba4498a5764279edbb1a5c39ea4e293268eb0585caeb1e3c60d20098091"
+    },
+    {
+      "name": "google-ai-edge--LiteRT-LM-commit.json",
+      "url": "https://api.github.com/repos/google-ai-edge/LiteRT-LM/commits/v0.17.1",
+      "bytes": 39934,
+      "sha256": "1770ff069b0ea16ba1b648d7e9b305269893fa401f6b621c18d8aaf999d95ce1"
+    },
+    {
+      "name": "microsoft--onnxruntime-genai-release.json",
+      "url": "https://api.github.com/repos/microsoft/onnxruntime-genai/releases/latest",
+      "bytes": 27680,
+      "sha256": "533e0a43f09e045436c4dc97ccd6040759972e5c60b5f1acf5d0f01ff0415757"
+    },
+    {
+      "name": "microsoft--onnxruntime-genai-commit.json",
+      "url": "https://api.github.com/repos/microsoft/onnxruntime-genai/commits/v0.17.0",
+      "bytes": 9464,
+      "sha256": "02eed0b8694636e80d31ef165381f2e418324bec4165dcaa1ca093977012839d"
+    },
+    {
+      "name": "microsoft--onnxruntime-release.json",
+      "url": "https://api.github.com/repos/microsoft/onnxruntime/releases/latest",
+      "bytes": 46560,
+      "sha256": "3a8ac4e61861166cddb91792a2d31a190f23746ab8ee8a5a95a20d333816752a"
+    },
+    {
+      "name": "microsoft--onnxruntime-commit.json",
+      "url": "https://api.github.com/repos/microsoft/onnxruntime/commits/v1.30.0",
+      "bytes": 195896,
+      "sha256": "b6c9d9bc3b9e037b61f36749eab35a9d592889065a3a89032dcd7a84ef635d44"
+    }
+  ]
+}
