@@ -1,0 +1,236 @@
+{
+  "state": "installed_and_hashed",
+  "started": "2026-09-30T23:35:47.809083+00:00",
+  "original_attempt": "/Users/andrewherrera/skein-worktrees/fold-transport-resume-20260930/build/agent-logs/local-emulator-feasibility-20260930/sdk-compatible-image/install-attempt-01/result.json",
+  "original_attempt_sha256": "bffb9946f5fbcbc9a30427853e28cf43f7fd5a9e0a44de7b58becda68aaa3bf2",
+  "original_deadline_seconds": 900,
+  "authorized_total_acquisition_deadline_seconds": 1500,
+  "absolute_deadline": "2026-09-30T23:44:47.636961+00:00",
+  "package": "system-images;android-35;google_apis;arm64-v8a",
+  "token": "5d25e6b1-ed40-495d-9e79-2cd3e99d9e4d",
+  "model_or_device_actions": 0,
+  "license_acceptance_actions": 0,
+  "original_prefix": {
+    "bytes": 1504826160,
+    "sha256": "314c17579b0b270b085e3f8bd554d23f4f0808f7b2bd152022441eafb00ef3ba"
+  },
+  "sdk_cache_removed_by_original_installer_shutdown": true,
+  "license_before_sha256": "9dce0be88e239ee0d4fad023badcfaf4b8d6c54cedd45139dd463875229a4a15",
+  "range": [
+    1504826160,
+    1778933979
+  ],
+  "curl_argv": [
+    "/usr/bin/curl",
+    "--fail",
+    "--silent",
+    "--show-error",
+    "--location",
+    "--proto",
+    "=https",
+    "--proto-redir",
+    "=https",
+    "--connect-timeout",
+    "20",
+    "--max-time",
+    "419",
+    "--max-filesize",
+    "274107820",
+    "--range",
+    "1504826160-1778933979",
+    "--dump-header",
+    "/Users/andrewherrera/skein-worktrees/fold-transport-resume-20260930/build/agent-logs/local-emulator-feasibility-20260930/sdk-compatible-image/install-attempt-03/range-headers.txt",
+    "--output",
+    "/Users/andrewherrera/skein-worktrees/fold-transport-resume-20260930/build/agent-logs/local-emulator-feasibility-20260930/sdk-compatible-image/install-attempt-03/suffix.partial",
+    "--write-out",
+    "%{http_code}",
+    "https://dl.google.com/android/repository/sys-img/google_apis/arm64-v8a-35_r09.zip"
+  ],
+  "curl_exit": 0,
+  "suffix": {
+    "bytes": 274107820,
+    "sha256": "43aff66a0edf085e4477804cee5aa439a5d861338f1fc902604b100add4f6707",
+    "content_range": [
+      1504826160,
+      1778933979,
+      1778933980
+    ]
+  },
+  "archive": {
+    "bytes": 1778933980,
+    "sha1": "16f5bceca236b2737008977c4aaf826e46a8de7d",
+    "sha256": "d2e7c6076e5df54d3677605a324daf9edf813b2808c216bdb1687f6b2b6aed99"
+  },
+  "sdkmanager_argv": [
+    "/Users/andrewherrera/android-sdk/cmdline-tools/latest/bin/sdkmanager",
+    "--sdk_root=/Users/andrewherrera/android-sdk",
+    "--channel=0",
+    "--verbose",
+    "--install",
+    "system-images;android-35;google_apis;arm64-v8a"
+  ],
+  "exit": 0,
+  "installed_metadata": {
+    "path": "system-images;android-35;google_apis;arm64-v8a",
+    "revision": 9,
+    "extension": 13
+  },
+  "files": [
+    {
+      "path": "NOTICE.txt",
+      "bytes": 20106158,
+      "sha256": "cd037fbc74785480bdef48894b9245b3f157db65327f05ace0e8f68abd1b37f4"
+    },
+    {
+      "path": "VerifiedBootParams.textproto",
+      "bytes": 356,
+      "sha256": "47bec2cf2e3f822c1ee9a299f5a723674ce3f67565661123940be0605360e02b"
+    },
+    {
+      "path": "advancedFeatures.ini",
+      "bytes": 758,
+      "sha256": "b293a499caf9a3a2b0ba8e95fbc3d9113c8d3c33da27af59c6284e5f81119e5e"
+    },
+    {
+      "path": "build.prop",
+      "bytes": 4758,
+      "sha256": "0e90e5c253335e4fc7ba24502a077bfecbf93d524db19ad75798e27fa50135f4"
+    },
+    {
+      "path": "data/empty_data_disk",
+      "bytes": 107,
+      "sha256": "e4dc7c33a83013f3d9eb9b5a5693c912e83a9c7f978933b5c7600039dbfde903"
+    },
+    {
+      "path": "data/local.prop",
+      "bytes": 46,
+      "sha256": "49b05d093a46d35d85df01fb99133f077fcc725cc49efe1a1bedae884d24e20b"
+    },
+    {
+      "path": "data/misc/GoldfishSkinConfig",
+      "bytes": 783,
+      "sha256": "763b66cad27dc57354f456bb763e27acf8859059890e6515daba90e77c906b75"
+    },
+    {
+      "path": "data/misc/apns/apns-conf.xml",
+      "bytes": 6575,
+      "sha256": "c35b899f2b6296aee4a9742302651cce9eb64622669d4d8fe8d276ca11060eb6"
+    },
+    {
+      "path": "data/misc/emulator/config/radioconfig.xml",
+      "bytes": 1433,
+      "sha256": "534a81b662ad62fc70ec0ea22715670524a05a066afc9fdac8e7c0f5a7789cd7"
+    },
+    {
+      "path": "data/misc/emulator/version.txt",
+      "bytes": 112,
+      "sha256": "2f4ecb211f6b497d6011a75390fb0469ceaec4b816c10209198e43bafa57c695"
+    },
+    {
+      "path": "data/misc/modem_simulator/etc/modem_simulator/files/numeric_operator.xml",
+      "bytes": 297,
+      "sha256": "c2557e604beea20b67642cdbb14ae7b792f804e4476b3f6cf47035690234f436"
+    },
+    {
+      "path": "data/misc/modem_simulator/iccprofile_for_carrierapitests.xml",
+      "bytes": 16537,
+      "sha256": "dc4b5f5344f084fc44f89250bbcf2b12e452eb98c104e4ef3ec115366eb6ce32"
+    },
+    {
+      "path": "data/misc/modem_simulator/iccprofile_for_sim0.xml",
+      "bytes": 14647,
+      "sha256": "a2744726a306b18d7547251026201aa5c6a9e120aa1555992eeb8b0a3b4aa6d9"
+    },
+    {
+      "path": "data/misc/modem_simulator/iccprofile_for_sim_tel_alaska.xml",
+      "bytes": 14474,
+      "sha256": "462cc26ddaa9d6c470a2d9415771c80e323b526b1863f099accb298955b14db3"
+    },
+    {
+      "path": "data/misc/pixel_9_pro_fold/devicestate/device_state_configuration.xml",
+      "bytes": 1644,
+      "sha256": "8bebf4943ed3fc50973ac428ab8c8c0d71700af81419f44fc95a59f52f873838"
+    },
+    {
+      "path": "data/misc/pixel_9_pro_fold/display_settings.xml",
+      "bytes": 303,
+      "sha256": "2adca8f98a2c8ee0f780e10ca16587ac92641df5e93ab4437c3c47ad41b0041d"
+    },
+    {
+      "path": "data/misc/pixel_9_pro_fold/displayconfig/display_layout_configuration.xml",
+      "bytes": 1311,
+      "sha256": "a64e2eca65bc2f9196215fb72a88c9035a584319f8b3da3606fff161be642be8"
+    },
+    {
+      "path": "data/misc/pixel_9_pro_fold/extra_feature.xml",
+      "bytes": 829,
+      "sha256": "ba27b7a61457027e2a77917f8b07d716d3e918097901a14833749252b15aa38f"
+    },
+    {
+      "path": "data/misc/pixel_fold/devicestate/device_state_configuration.xml",
+      "bytes": 1644,
+      "sha256": "8bebf4943ed3fc50973ac428ab8c8c0d71700af81419f44fc95a59f52f873838"
+    },
+    {
+      "path": "data/misc/pixel_fold/display_settings.xml",
+      "bytes": 303,
+      "sha256": "2adca8f98a2c8ee0f780e10ca16587ac92641df5e93ab4437c3c47ad41b0041d"
+    },
+    {
+      "path": "data/misc/pixel_fold/displayconfig/display_layout_configuration.xml",
+      "bytes": 1311,
+      "sha256": "a64e2eca65bc2f9196215fb72a88c9035a584319f8b3da3606fff161be642be8"
+    },
+    {
+      "path": "data/misc/pixel_fold/extra_feature.xml",
+      "bytes": 829,
+      "sha256": "ba27b7a61457027e2a77917f8b07d716d3e918097901a14833749252b15aa38f"
+    },
+    {
+      "path": "encryptionkey.img",
+      "bytes": 18874368,
+      "sha256": "522bd0b6a2c92e37de465059bb9487bb9597a9aae032b469a8ebe0b38146d8c3"
+    },
+    {
+      "path": "kernel-ranchu",
+      "bytes": 14474326,
+      "sha256": "a9dda2ae115395ea352bca2201294b4df0020a7f425cbfae879ee66a03a8f19f"
+    },
+    {
+      "path": "kernel_cmdline.txt",
+      "bytes": 16,
+      "sha256": "5bd6571f46a3e593053a7c6c37f4eed840c0da2278506fa53d1ff021e9d4d8e4"
+    },
+    {
+      "path": "package.xml",
+      "bytes": 19129,
+      "sha256": "638e3aba0ed172a921f6215bb773f27143978ff7dc70a0b1196a7e536b381b2d"
+    },
+    {
+      "path": "ramdisk.img",
+      "bytes": 2080115,
+      "sha256": "46ff502d0e0a1d8f844d29c084a8b797107513d26199825f0d827836a87e84d7"
+    },
+    {
+      "path": "source.properties",
+      "bytes": 363,
+      "sha256": "bd5cb4bc86ef478b0f37a034aa2b460165b391e8cb6504cb13b8ca1c462c4848"
+    },
+    {
+      "path": "system.img",
+      "bytes": 3891265536,
+      "sha256": "5d9c9213a36f9034e85719baffba88d0a4b6ab992bbf80fdc7c4dfd21d070597"
+    },
+    {
+      "path": "vendor.img",
+      "bytes": 111149056,
+      "sha256": "af71ded6307254f8bfa4711c87cbc82f60fe1f31b424ccff20db540639ab460b"
+    }
+  ],
+  "license_after_sha256": "9dce0be88e239ee0d4fad023badcfaf4b8d6c54cedd45139dd463875229a4a15",
+  "original_prefix_preserved": true,
+  "passed": true,
+  "matching_build_lease_released": true,
+  "ended": "2026-09-30T23:38:46.921516+00:00",
+  "total_acquisition_elapsed_seconds": 1139.284566
+}

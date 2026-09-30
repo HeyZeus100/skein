@@ -1,0 +1,32 @@
+{
+  "selected_dev_host_apks": [
+    {
+      "path": "app/build/outputs/apk/androidTest/dev/debug/app-dev-debug-androidTest.apk",
+      "sha256": "f40932a0bba2f0cd312c43bc4643b7ca00d32bf0de91c502bba1684ab5ef33ee",
+      "bytes": 91173736
+    },
+    {
+      "path": "app/build/outputs/apk/dev/debug/app-dev-debug.apk",
+      "sha256": "7dc73261c536ae2b7ac3bc797c4d3c90cb8a9e28140dd31589df7eb561bd5c62",
+      "bytes": 172388849
+    },
+    {
+      "path": "core/vault/build/outputs/apk/androidTest/dev/debug/vault-dev-debug-androidTest.apk",
+      "sha256": "53fbcd7a27596b52ee4be2f059ecca8c265a1e28c1d1fdb6dfde9a8b63858cb7",
+      "bytes": 53702199
+    },
+    {
+      "path": "inference-service/build/outputs/apk/androidTest/dev/debug/inference-service-dev-debug-androidTest.apk",
+      "sha256": "502b0342516386721ec850fab97fbc336b558f5b30e25d388e61750575e8e20d",
+      "bytes": 135746312
+    }
+  ],
+  "attribution": "Only these4dev artifacts correspond to ordinary02. The3FOSS outputs in the inventory are pre-existing host outputs and do not earn ordinary02 runtime attribution. No installed-byte readback.",
+  "private_raw_zip": {
+    "path": "build/agent-logs/local-ordinary-20260930-02/raw-instrumentation.zip",
+    "bytes": 793534,
+    "sha256": "691b0253b4c618b76a25abd36160d6d2acd4d94fdab01a73c500af6f1c0f060d"
+  },
+  "public_xml_zip_sha256": "fdb81ef846d80bd71c73c96478915cd688d877ab073f528bd7b95c029302df59",
+  "preservation": "Original complete archive and emulator logs remain private and unchanged; this capsule copies actual XML and bounded public-safe receipts."
+}

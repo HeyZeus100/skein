@@ -1,0 +1,20 @@
+{
+  "records": [
+    {
+      "path": "install-attempt-01-result.json",
+      "bytes": 1124,
+      "sha256": "bffb9946f5fbcbc9a30427853e28cf43f7fd5a9e0a44de7b58becda68aaa3bf2"
+    },
+    {
+      "path": "install-attempt-02-result.json",
+      "bytes": 1060,
+      "sha256": "884ea08689eeeecabc3d9320e9b6bccff68759d4a92fd2e6bf5b68b1909b3854"
+    },
+    {
+      "path": "install-attempt-03-result.json",
+      "bytes": 8111,
+      "sha256": "028719046165d3a5771447c224cb9b8eac97f52892be945676ab872f4f1663c2"
+    }
+  ],
+  "preservation": "Original archives, timeout prefix, validated suffix, SDK operation metadata, logs and original ATD AVD remain retained privately. No failed attempt was overwritten or relabeled."
+}

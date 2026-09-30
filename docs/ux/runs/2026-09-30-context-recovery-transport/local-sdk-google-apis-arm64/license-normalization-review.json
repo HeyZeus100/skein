@@ -1,0 +1,16 @@
+[
+  {
+    "id": "android-sdk-license",
+    "raw_sha1": "efa68a6b3c661d18699d5c026771d5911cdc2f83",
+    "sdk_TrimStringAdapter_normalized_sha1": "24333f8a63b6825ea9c5514f83c2829b004d1fee",
+    "accepted": true,
+    "normalization": "SDK generated LicenseType.value @XmlJavaTypeAdapter TrimStringAdapter: whitespace normalization precedes License.getLicenseHash"
+  },
+  {
+    "id": "android-sdk-arm-dbt-license",
+    "raw_sha1": "fd1c727d205c6167a4cfeda6feb95c2c2523f686",
+    "sdk_TrimStringAdapter_normalized_sha1": "859f317696f67ef3d7f30a50a5560e7834b43903",
+    "accepted": true,
+    "normalization": "SDK generated LicenseType.value @XmlJavaTypeAdapter TrimStringAdapter: whitespace normalization precedes License.getLicenseHash"
+  }
+]

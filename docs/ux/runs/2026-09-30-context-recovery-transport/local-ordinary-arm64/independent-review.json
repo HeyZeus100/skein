@@ -1,0 +1,47 @@
+{
+  "reviewer": "/root/application_context",
+  "delivery": "Independent worker final message to coordinator after read-only actual artifact inspection",
+  "result": "PASS",
+  "runtime_checkout": "10bfdc2bd8556dab22a52af0d647131bd3f5cf09",
+  "application_source": "534161291b5b392994a73eb098affc6d43893086",
+  "actual_xml_files": 3,
+  "nested_suites": 31,
+  "actual_cases": {
+    "app": 41,
+    "vault": 223,
+    "inference": 39,
+    "passed": 303,
+    "failures": 0,
+    "errors": 0,
+    "skips": 0
+  },
+  "baseline": "all303 identities and outcomes retained; no additions/removals/duplicates;3context and14LC09 present",
+  "raw_archive_sha256": "691b0253b4c618b76a25abd36160d6d2acd4d94fdab01a73c500af6f1c0f060d",
+  "baseline_archive_sha256": "1c7e22677ec5bf3c5672e8a077148fb0be15e2822ae8823e1e7a4aec48f21691",
+  "command_records_verified": 84,
+  "live_and_retained_apk_hashes_verified": 7,
+  "runtime_selected_dev_apks": 4,
+  "preexisting_foss_apks_excluded": 3,
+  "dev_app_sha256": "7dc73261c536ae2b7ac3bc797c4d3c90cb8a9e28140dd31589df7eb561bd5c62",
+  "manifests": "Decoded binary manifests: no INTERNET;14DEV and7FOSS native payloads verified",
+  "sdk": {
+    "archive_bytes": 1778933980,
+    "archive_sha256": "d2e7c6076e5df54d3677605a324daf9edf813b2808c216bdb1687f6b2b6aed99",
+    "publisher_sha1_matches": true,
+    "installed_image_files_verified": 30,
+    "runtime_binaries_verified": 3,
+    "package": "API35 Google APIs arm64 revision9 extension13"
+  },
+  "tiny_model_disk_and_apk_asset": {
+    "bytes": 88202080,
+    "sha256": "741ad12b64088fedc17c33aacb22e48be1972ef36a39f03666dd68bd15614fb9"
+  },
+  "cleanup": "Owned emulator PID gone, ports5580/5581 empty, both leases absent, owner AVD config hashes unchanged",
+  "limits": [
+    "303 cases are consumed ordinary regression, not new blind quality validation.",
+    "Installed APK readback NOT_MEASURED.",
+    "No physical Fold, geometry/nonce, actual E4B or answer-quality acceptance.",
+    "New AIOUT dirty-lock encrypted coordinator runtime gate remains open."
+  ],
+  "reviewer_actions": "No edits, builds or device actions."
+}

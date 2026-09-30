@@ -1,0 +1,29 @@
+{
+  "state": "installing",
+  "started": "2026-09-30T23:19:47.636961+00:00",
+  "token": "9ec1a8a7-ef22-423e-96c5-99d0279532e1",
+  "package": "system-images;android-35;google_apis;arm64-v8a",
+  "expected_revision": 9,
+  "expected_extension": 13,
+  "expected_archive_size": 1778933980,
+  "expected_archive_publisher_sha1": "16f5bceca236b2737008977c4aaf826e46a8de7d",
+  "model_acquisition": false,
+  "device_actions": 0,
+  "automatic_license_acceptance": false,
+  "license_before_sha256": "9dce0be88e239ee0d4fad023badcfaf4b8d6c54cedd45139dd463875229a4a15",
+  "argv": [
+    "/Users/andrewherrera/android-sdk/cmdline-tools/latest/bin/sdkmanager",
+    "--sdk_root=/Users/andrewherrera/android-sdk",
+    "--channel=0",
+    "--verbose",
+    "--install",
+    "system-images;android-35;google_apis;arm64-v8a"
+  ],
+  "pid": 46567,
+  "timeout_seconds": 900,
+  "error": "RuntimeError('bounded15minute installation exceeded; preserve partials')",
+  "passed": false,
+  "matching_build_lease_released": true,
+  "ended": "2026-09-30T23:34:47.715505+00:00",
+  "log_sha256": "39262ab8d8d0cf67ca87d147999424db9a052e6a0c8cb15a4c0b65e7d308fc16"
+}

@@ -1,0 +1,49 @@
+{
+  "files": [
+    {
+      "path": "actual-xml.zip",
+      "bytes": 11072,
+      "sha256": "fdb81ef846d80bd71c73c96478915cd688d877ab073f528bd7b95c029302df59"
+    },
+    {
+      "path": "artifact-attribution.json",
+      "bytes": 1579,
+      "sha256": "c5728d89a26825d0d4dfb11da15ec61ba40f0a1889452acdf5bf8670cd71d74e"
+    },
+    {
+      "path": "bounded-runtime-receipt.json",
+      "bytes": 3222,
+      "sha256": "5335f2d122e14f19c00b780f3e9c06b8d1474ef8a93b994a5ded415483b25742"
+    },
+    {
+      "path": "gradle.log",
+      "bytes": 55519,
+      "sha256": "1cc0e85a047fa22eecad3e82eefa40690d2e57cff863f45722597a0915de36e9"
+    },
+    {
+      "path": "independent-review.json",
+      "bytes": 2095,
+      "sha256": "fb3fcc6146936b36d19962ff81a5fff42d0faafd8cfb65c2602e9e88b32963ab"
+    },
+    {
+      "path": "instrumentation-review.json",
+      "bytes": 1067,
+      "sha256": "fb83c097bd30f10cc30167a2d775bbc0192cda37626851e9ee5b817cc2a93166"
+    },
+    {
+      "path": "instrumentation-verification.json",
+      "bytes": 2419,
+      "sha256": "eea76ab84448237f9dae548982cca24dcd51f798d12da6adff78207fd845d3e4"
+    },
+    {
+      "path": "result.json",
+      "bytes": 59507,
+      "sha256": "528e6631170152e775cd2f86fcefc195c8050168f5ee77df85174420d80c2ae0"
+    },
+    {
+      "path": "root-review.json",
+      "bytes": 879,
+      "sha256": "292246dc4c67ef593e5e810fb2d69179cf38bbb125b857a290fc425f5ac128be"
+    }
+  ]
+}

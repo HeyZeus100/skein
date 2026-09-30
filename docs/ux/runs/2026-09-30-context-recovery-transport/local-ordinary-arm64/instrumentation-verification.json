@@ -1,0 +1,53 @@
+{
+  "built_apks": [
+    {
+      "path": "app/build/outputs/apk/androidTest/dev/debug/app-dev-debug-androidTest.apk",
+      "sha256": "f40932a0bba2f0cd312c43bc4643b7ca00d32bf0de91c502bba1684ab5ef33ee"
+    },
+    {
+      "path": "app/build/outputs/apk/androidTest/foss/debug/app-foss-debug-androidTest.apk",
+      "sha256": "0896f7bab8e1cc78eeaad41cb716e6f59d038943837723d4754eafd5fad2c67f"
+    },
+    {
+      "path": "app/build/outputs/apk/dev/debug/app-dev-debug.apk",
+      "sha256": "7dc73261c536ae2b7ac3bc797c4d3c90cb8a9e28140dd31589df7eb561bd5c62"
+    },
+    {
+      "path": "app/build/outputs/apk/foss/debug/app-foss-debug.apk",
+      "sha256": "662cf5bb257dc3bdb44e9e128c2866f0b07225c13c682b16dad2bbf0ba9d779c"
+    },
+    {
+      "path": "core/vault/build/outputs/apk/androidTest/dev/debug/vault-dev-debug-androidTest.apk",
+      "sha256": "53fbcd7a27596b52ee4be2f059ecca8c265a1e28c1d1fdb6dfde9a8b63858cb7"
+    },
+    {
+      "path": "inference-service/build/outputs/apk/androidTest/dev/debug/inference-service-dev-debug-androidTest.apk",
+      "sha256": "502b0342516386721ec850fab97fbc336b558f5b30e25d388e61750575e8e20d"
+    },
+    {
+      "path": "inference-service/build/outputs/apk/androidTest/foss/debug/inference-service-foss-debug-androidTest.apk",
+      "sha256": "c1186bc554ae89d89a35983f883354e436cb34f2cebb790cc06a3a896409fb2d"
+    }
+  ],
+  "built_apk_attribution": "host build outputs; installed bytes were not independently measured here",
+  "lane": "instrumentation",
+  "source_sha": "10bfdc2bd8556dab22a52af0d647131bd3f5cf09",
+  "source_attribution": "host-declared git checkout, not APK attestation",
+  "files": [
+    {
+      "path": "app/build/outputs/androidTest-results/connected/debug/flavors/dev/TEST-skein_local_ordinary_20260930_02(AVD) - 15.xml",
+      "bytes": 9320,
+      "sha256": "18f5690b8c1ef52a643fb66360960472be3f3e6e2f44e2e0cc1bb36751622726"
+    },
+    {
+      "path": "core/vault/build/outputs/androidTest-results/connected/debug/flavors/dev/TEST-skein_local_ordinary_20260930_02(AVD) - 15.xml",
+      "bytes": 42406,
+      "sha256": "c8639fe079cb501f5849a83ecb308ebef026e69716568f92c657c4c42a7f1dbd"
+    },
+    {
+      "path": "inference-service/build/outputs/androidTest-results/connected/debug/flavors/dev/TEST-skein_local_ordinary_20260930_02(AVD) - 15.xml",
+      "bytes": 6494,
+      "sha256": "eeacc0cd41532b779383113db194e6fdf68f75e81c7622226cf5b561983e2d48"
+    }
+  ]
+}

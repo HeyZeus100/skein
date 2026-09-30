@@ -1,0 +1,142 @@
+{
+  "application_source": "534161291b5b392994a73eb098affc6d43893086",
+  "correction": "Earlier source-and-owner-review names tools/eval/fixtures, which is not the actual fixture directory and earns no fixture-preservation evidence. This explicit byte review supersedes that one path check; original receipt remains retained.",
+  "fixtures": [
+    {
+      "path": "testing/src/main/resources/eval/answers/development.json",
+      "bytes": 15498,
+      "sha256": "ae9b6ea542f7d632d2349b467a948a76477d620becd6c812e9d7a6d54087d1ea",
+      "matches_15941fd15": true
+    },
+    {
+      "path": "testing/src/main/resources/eval/answers/heldout-20260930/README.md",
+      "bytes": 6815,
+      "sha256": "4335bc5a174fa437c43aab3b1941c54330545ca77a1de2de1fe817668bed9575",
+      "matches_15941fd15": true
+    },
+    {
+      "path": "testing/src/main/resources/eval/answers/heldout-20260930/cases.json",
+      "bytes": 180894,
+      "sha256": "b0b83e5f5f25d35b4c8d2f6ae0c0e5a4029f5ef27904413eb4e531977f7a2026",
+      "matches_15941fd15": true
+    },
+    {
+      "path": "testing/src/main/resources/eval/answers/heldout-20260930/manifest.json",
+      "bytes": 2286,
+      "sha256": "29b776baa901c85e31ce430069860e8fb3a1a9d402acb491e048dc99eb40898f",
+      "matches_15941fd15": true
+    },
+    {
+      "path": "testing/src/main/resources/eval/answers/manifest.json",
+      "bytes": 1076,
+      "sha256": "65598c9b06c97fbe0534361e57d626a4cbd6560826dfd49cf651f21da43333b9",
+      "matches_15941fd15": true
+    },
+    {
+      "path": "testing/src/main/resources/eval/answers/reserved.json",
+      "bytes": 101350,
+      "sha256": "aaf2e8bcbed756164e731db5749b2849dea55df301254e9fdc32ba96533d76b3",
+      "matches_15941fd15": true
+    },
+    {
+      "path": "testing/src/main/resources/eval/corpus.json",
+      "bytes": 16139,
+      "sha256": "f86eb3540ef2400c056275aa50ad90f63293c11d7349ecaa664d116b02e7bd7f",
+      "matches_15941fd15": true
+    },
+    {
+      "path": "testing/src/main/resources/eval/gold.json",
+      "bytes": 32963,
+      "sha256": "4fd5034368e250179425f06bbcb1cc40513f2f3c5ceb998bd6a9eedf298c820f",
+      "matches_15941fd15": true
+    },
+    {
+      "path": "testing/src/main/resources/eval/rejection-validation-20260928.json",
+      "bytes": 12558,
+      "sha256": "4f79b2ddcf42dedd6b7f83c10402855f683fcebc3045d9e4668f6da2951759e8",
+      "matches_15941fd15": true
+    },
+    {
+      "path": "testing/src/main/resources/eval/rejection-validation-20260930.json",
+      "bytes": 38295,
+      "sha256": "653b79ce9ab1c36776b5876d1b5d687a1d335f811f388b832fd0d9d258952674",
+      "matches_15941fd15": true
+    },
+    {
+      "path": "testing/src/main/resources/eval/rejection-validation.json",
+      "bytes": 5947,
+      "sha256": "bf162254094103310102e28ad90b4c945bf24dd7f8f9a706039b2fe3a826b57c",
+      "matches_15941fd15": true
+    }
+  ],
+  "evaluator_freeze": [
+    {
+      "path": ".github/workflows/retrieval-diagnostic.yml",
+      "sha256": "b262682cc91e9efdea9240311baca22b215b8507b482502a42b28e5a4079b7c2",
+      "matches_frozen": true
+    },
+    {
+      "path": "core/vault/src/retrievalEvaluation/kotlin/app/skein/core/vault/eval/FreshContextualValidationEvaluation.kt",
+      "sha256": "bfc7c1da1996affd2cb4106c7d848b7f4f29437fc967a32e1830161a3c5c4caf",
+      "matches_frozen": true
+    },
+    {
+      "path": "core/vault/src/retrievalEvaluation/kotlin/app/skein/core/vault/eval/RealRetrievalEvaluationTest.kt",
+      "sha256": "75a43bb338f1d9b4625ea990c59eae31c5ec41ebe84282dcca5f8d6e7c34444a",
+      "matches_frozen": true
+    },
+    {
+      "path": "docs/eval/FRESH_CONTEXTUAL_VALIDATION_20260930.md",
+      "sha256": "23eb2fb642e49406cf098aa1b5997a60a48f01c95aeead46e46aff759441516a",
+      "matches_frozen": true
+    },
+    {
+      "path": "testing/src/main/kotlin/app/skein/testing/eval/ExpandedRetrievalMetrics.kt",
+      "sha256": "374639ba7a4f95c93d4d4e6b11e36b5ab940374639db9c4053c71b9484defd7c",
+      "matches_frozen": true
+    },
+    {
+      "path": "testing/src/main/kotlin/app/skein/testing/eval/FreshContextualValidationFixture.kt",
+      "sha256": "700e3e08c3a95dfa2ecbd227db345ce0c8b4318d2b98ee850ca6c032ce23d29e",
+      "matches_frozen": true
+    },
+    {
+      "path": "testing/src/main/kotlin/app/skein/testing/eval/FreshContextualValidationReport.kt",
+      "sha256": "a42db7644a1f7895ffc04aa15d3b492ad084f59f0641be4b473b6c99255e3d23",
+      "matches_frozen": true
+    },
+    {
+      "path": "testing/src/main/resources/eval/rejection-validation-20260930.json",
+      "sha256": "653b79ce9ab1c36776b5876d1b5d687a1d335f811f388b832fd0d9d258952674",
+      "matches_frozen": true
+    },
+    {
+      "path": "testing/src/test/kotlin/app/skein/testing/eval/ExpandedRetrievalMetricsTest.kt",
+      "sha256": "8a5bf61f4e0df1b2df551a578b8246340b9869b60b90198937856929b74f4fef",
+      "matches_frozen": true
+    },
+    {
+      "path": "testing/src/test/kotlin/app/skein/testing/eval/FreshContextualValidationFixtureTest.kt",
+      "sha256": "8c5ed9eaba7ecdcd2d9228c5b4ea4c463850aac5513a698953ca9b720cfb20a9",
+      "matches_frozen": true
+    },
+    {
+      "path": "testing/src/test/kotlin/app/skein/testing/eval/FreshContextualValidationReportTest.kt",
+      "sha256": "aa0450cb83c45a2467d2ff3b064b3ee0bb301e737f28970bf8b22218db3509e7",
+      "matches_frozen": true
+    },
+    {
+      "path": "tools/eval/run_real_retrieval.py",
+      "sha256": "099703645f1ff03c27be9cc869072905b3f1ff6bc56e430d75092af98d7a9f08",
+      "matches_frozen": true
+    },
+    {
+      "path": "tools/eval/test_run_real_retrieval.py",
+      "sha256": "fa34bf18d1b0f0615b48d28eb1e74468e124e5779c13e80c79e129a1a8d32737",
+      "matches_frozen": true
+    }
+  ],
+  "preparation_error": "First review script wrongly expected the manual-only policy to change retrieval-diagnostic.yml; exact hashes show that already-manual workflow and all13 frozen evaluator files remain unchanged. Failed count assertion produced no report and changed no source or fixture.",
+  "fresh40": "Consumed regression only; no labels/thresholds/gold/results changed or rerun.",
+  "answer80": "Hash comparison only; no case contents inspected or outputs produced."
+}

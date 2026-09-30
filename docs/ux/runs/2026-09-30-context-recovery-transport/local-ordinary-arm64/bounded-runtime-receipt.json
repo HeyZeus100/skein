@@ -1,0 +1,105 @@
+{
+  "status": "PASS actual local ordinary runtime; independent peer pending",
+  "source_head": "10bfdc2bd8556dab22a52af0d647131bd3f5cf09",
+  "application_code_checkpoint": "534161291b5b392994a73eb098affc6d43893086",
+  "final_tracked_source_clean": true,
+  "actual_modules": {
+    "app": {
+      "counts": {
+        "tests": 41,
+        "failure": 0,
+        "error": 0,
+        "skipped": 0
+      },
+      "nested_suites": 10,
+      "sha256": "18f5690b8c1ef52a643fb66360960472be3f3e6e2f44e2e0cc1bb36751622726"
+    },
+    "core/vault": {
+      "counts": {
+        "tests": 223,
+        "failure": 0,
+        "error": 0,
+        "skipped": 0
+      },
+      "nested_suites": 19,
+      "sha256": "c8639fe079cb501f5849a83ecb308ebef026e69716568f92c657c4c42a7f1dbd"
+    },
+    "inference-service": {
+      "counts": {
+        "tests": 39,
+        "failure": 0,
+        "error": 0,
+        "skipped": 0
+      },
+      "nested_suites": 2,
+      "sha256": "eeacc0cd41532b779383113db194e6fdf68f75e81c7622226cf5b561983e2d48"
+    }
+  },
+  "actual_counts": {
+    "tests": 303,
+    "failure": 0,
+    "error": 0,
+    "skipped": 0
+  },
+  "consumed_baseline": {
+    "sha256": "1c7e22677ec5bf3c5672e8a077148fb0be15e2822ae8823e1e7a4aec48f21691",
+    "tests": 303,
+    "missing": [],
+    "added": []
+  },
+  "platform": "macOS/API35/google_apis/arm64-v8a",
+  "hardware": "Owned disposable emulator5580 only; no physical actions",
+  "serial": "emulator-5580",
+  "avd": "skein_local_ordinary_20260930_02",
+  "normal_synthetic_unlock_verified": true,
+  "test_model_unchanged": true,
+  "owner_avd_unchanged": true,
+  "listeners_after_cleanup": {
+    "5580": [],
+    "5581": []
+  },
+  "released_matching_leases": [
+    "device.lock",
+    "build.lock"
+  ],
+  "controller_sha256": "f83ace1e084f0bf94d90d6e7fb3c6997536f17fbe8a3f466fc0163d93eb0413a",
+  "files": [
+    {
+      "path": "result.json",
+      "bytes": 59507,
+      "sha256": "528e6631170152e775cd2f86fcefc195c8050168f5ee77df85174420d80c2ae0"
+    },
+    {
+      "path": "instrumentation-review.json",
+      "bytes": 1067,
+      "sha256": "fb83c097bd30f10cc30167a2d775bbc0192cda37626851e9ee5b817cc2a93166"
+    },
+    {
+      "path": "instrumentation-verification.json",
+      "bytes": 2419,
+      "sha256": "eea76ab84448237f9dae548982cca24dcd51f798d12da6adff78207fd845d3e4"
+    },
+    {
+      "path": "raw-instrumentation.zip",
+      "bytes": 793534,
+      "sha256": "691b0253b4c618b76a25abd36160d6d2acd4d94fdab01a73c500af6f1c0f060d"
+    },
+    {
+      "path": "commands/0078-ordinary-gradle.stdout",
+      "bytes": 55519,
+      "sha256": "1cc0e85a047fa22eecad3e82eefa40690d2e57cff863f45722597a0915de36e9"
+    },
+    {
+      "path": "commands/0078-ordinary-gradle.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  ],
+  "limits": [
+    "Linux/x86_64 historical runtime remains separately attributed.",
+    "No physical Fold installation/readback or owner acceptance.",
+    "No corrected fold transport exchange/Activity geometry/exactPixel acceptance.",
+    "No actual E4B runtime/model quality/multimodal qualification.",
+    "Built APK hashes in manifest are host outputs, not independently measured installed bytes."
+  ]
+}

@@ -1,0 +1,14 @@
+{
+  "archive_bytes": 1778933980,
+  "publisher_sha1_matched": "16f5bceca236b2737008977c4aaf826e46a8de7d",
+  "actual_sha256": "d2e7c6076e5df54d3677605a324daf9edf813b2808c216bdb1687f6b2b6aed99",
+  "package": {
+    "api-level": "35",
+    "extension-level": "13",
+    "abi": "arm64-v8a",
+    "revision": "9"
+  },
+  "actual_package_xml_sha256": "638e3aba0ed172a921f6215bb773f27143978ff7dc70a0b1196a7e536b381b2d",
+  "preparation_error": "First root XML review incorrectly flattened revision/major and dependencies/min-revision/major, causing an assertion before any report or mutation. Correct review selects only localPackage/revision/major; original SDK XML unchanged.",
+  "scope": "Official SDK dependency only. No application/runtime/default model switch or physical installation. Archive and interrupted prefixes retained privately."
+}

@@ -1,0 +1,21 @@
+{
+  "runtime_checkout": "10bfdc2bd8556dab22a52af0d647131bd3f5cf09",
+  "tested_application_source": "534161291b5b392994a73eb098affc6d43893086",
+  "actual_cases": 303,
+  "actual_failures": 0,
+  "actual_errors": 0,
+  "actual_skips": 0,
+  "all_prior_303_identities_retained": true,
+  "actual_archive_sha256": "691b0253b4c618b76a25abd36160d6d2acd4d94fdab01a73c500af6f1c0f060d",
+  "manifest_members_verified": 3,
+  "source_clean_after": true,
+  "model_unchanged": true,
+  "owner_avd_unchanged": true,
+  "emulator_cleanup_verified": true,
+  "physical_acceptance": false,
+  "limits": [
+    "API35 google_apis arm64 revision9/ext13 local emulator; distinct from prior Linux x86_64.",
+    "APK hashes are host outputs, not installed-byte readback.",
+    "Does not qualify new AIOUT coordinator lock-persistence path, full recovery activation, fold geometry or model answer quality."
+  ]
+}

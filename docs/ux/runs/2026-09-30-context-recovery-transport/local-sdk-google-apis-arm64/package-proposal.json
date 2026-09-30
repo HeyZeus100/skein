@@ -1,0 +1,74 @@
+{
+  "url": "https://dl.google.com/android/repository/sys-img/google_apis/sys-img2-3.xml",
+  "package": "system-images;android-35;google_apis;arm64-v8a",
+  "revision": 9,
+  "extension": 13,
+  "archive_url": "https://dl.google.com/android/repository/sys-img/google_apis/arm64-v8a-35_r09.zip",
+  "archive_bytes": 1778933980,
+  "archive_publisher_sha1": "16f5bceca236b2737008977c4aaf826e46a8de7d",
+  "archive_sha256": "not acquired yet; measure after download",
+  "license": "android-sdk-arm-dbt-license",
+  "license_sdk_normalized_sha1": "859f317696f67ef3d7f30a50a5560e7834b43903",
+  "already_accepted": true,
+  "correction": "Earlier raw XML text hash mismatch was not the SDK license hash; SDK TrimStringAdapter normalization yields exact already accepted record. No license acceptance performed.",
+  "sdk_repository_jar_sha256": "df2533e154b736a0a95e4804893aa59099552842bf9635cda3751be9e894a0e2",
+  "files": [
+    {
+      "path": "License.javap.txt",
+      "bytes": 13801,
+      "sha256": "ac27e20938ce926ed969c05feff58dbbd843076df59cb6b0a58ee5ec1bca7fe1"
+    },
+    {
+      "path": "LicenseType.javap.txt",
+      "bytes": 11796,
+      "sha256": "c4fc2d0d15c5892ad7bdb35dc7fa68ac1fb4a1264f58d3e85a4a33d8b2aebd20"
+    },
+    {
+      "path": "TrimStringAdapter.javap.txt",
+      "bytes": 3258,
+      "sha256": "bd8ea9261948c0c3d5bd924d5bb406ba177c78e387462b354a98ea2133ab9a27"
+    },
+    {
+      "path": "android-sdk-arm-dbt-license-raw.txt",
+      "bytes": 17327,
+      "sha256": "0682da42e0ca119ce29503c265587f8ae17277094f9262b54c1d2bb99557c6f5"
+    },
+    {
+      "path": "android-sdk-arm-dbt-license-sdk-normalized.txt",
+      "bytes": 17325,
+      "sha256": "40c84fcaf07486a54c07f8a68460e1f399714e95d27999d237b3e05a8b19ded0"
+    },
+    {
+      "path": "android-sdk-license-raw.txt",
+      "bytes": 16962,
+      "sha256": "1f8729233617b193fd619213792ae16a41b95d2bbbf525dfe66998252ba68b16"
+    },
+    {
+      "path": "android-sdk-license-sdk-normalized.txt",
+      "bytes": 16960,
+      "sha256": "aaf80cd0aee7e569ffa8a4be1b61189c0fefccf23068e38dfafe336289b8c723"
+    },
+    {
+      "path": "catalog-headers.txt",
+      "bytes": 545,
+      "sha256": "30b409c7d12615598733cb2b1634e6e66ca272df8a2e3646381ac96f81f1ad19"
+    },
+    {
+      "path": "google-apis-sys-img2-3.xml",
+      "bytes": 234884,
+      "sha256": "ca88ffcac97e390caa8315c5c4b07942dbc445355ebfff53aa51f56863c21076"
+    },
+    {
+      "path": "license-normalization-review.json",
+      "bytes": 739,
+      "sha256": "bcad216d41d0bff6626997517b1334420cd3897712f3f3a30192c796b1791c65"
+    },
+    {
+      "path": "selected-package.xml",
+      "bytes": 1256,
+      "sha256": "75142a4025184bef8f42331e184c3520d1b6608ebcbc25334ead1c736253b74b"
+    }
+  ],
+  "acquisition": "NOT_STARTED; root latest no-install instruction remains in force",
+  "secure_lock_support": "UNQUALIFIED until observed on fresh AVD; production tests unchanged"
+}

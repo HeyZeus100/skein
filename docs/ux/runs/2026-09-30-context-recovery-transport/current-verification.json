@@ -16,7 +16,22 @@
   "runtime": {
     "earlier_source": "a2effe4ac39e88af5fd577017a5e7ce0bdbce400",
     "earlier_API35_x86_64_passes": 303,
-    "current_API35_arm64": "ATD secure-lock setup refused; zero tests executed. Compatible-image qualification in progress under skein-8e6y."
+    "current_API35_arm64": {
+      "status": "PASS",
+      "checkout": "10bfdc2bd8556dab22a52af0d647131bd3f5cf09",
+      "application_source": "534161291b5b392994a73eb098affc6d43893086",
+      "image": "google_apis arm64-v8a revision9 extension13",
+      "actual_passes": 303,
+      "failures": 0,
+      "errors": 0,
+      "skips": 0,
+      "prior_303_identities_retained": true,
+      "selected_dev_host_apks": 4,
+      "installed_apk_readback": false,
+      "atd_failure_preserved": true,
+      "physical_acceptance": false,
+      "independent_review": "PASS;303exact prior identities, actualXML/APK/SDK/model/cleanup reviewed"
+    }
   },
   "physical": {
     "installed_application": "e62f94785ef8e696d8ee59745fd299fe1f83cc4a",
@@ -32,5 +47,11 @@
     "Independent embedding reference, Android backend, human decision and hybrid quality",
     "Temporary Chats nonpersistent implementation and acceptance"
   ],
-  "fresh40": "Consumed regression: original20/40 strict,12 false absence admissions,6 contextual cases unexecuted. No new run, relabeling or threshold change."
+  "fresh40": "Consumed regression: original20/40 strict,12 false absence admissions,6 contextual cases unexecuted. No new run, relabeling or threshold change.",
+  "coordination": {
+    "build_queue": "idle after actual emulator cleanup",
+    "device_queue": "idle; sole physical runner remains fold_transport",
+    "owner_preservation": "21 original file hashes, status and stash preserved; all worktrees and original evidence retained",
+    "beads_remote_sync": "Attempted once; no Dolt remote configured. Beads remains locally versioned."
+  }
 }

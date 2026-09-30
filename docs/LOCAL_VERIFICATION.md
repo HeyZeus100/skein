@@ -66,6 +66,13 @@ the owner's physical Fold. Keep ABI, API level, emulator image, profile and
 actual Activity geometry in the receipt: a local arm64 emulator does not prove
 the earlier Linux/KVM x86_64 configuration or an exact Fold profile.
 
+The local API 35 Google APIs ARM64 image, revision 9/extension 13, passed the
+303-case ordinary suite at application source `534161291`. The installed ATD
+image cannot set the secure lock required by these tests; its refusal remains
+recorded. Use a new owned AVD, explicit serial, normal synthetic credential setup
+and the [qualified runtime evidence](ux/runs/2026-09-30-context-recovery-transport/local-ordinary-arm64/).
+This ordinary result does not qualify the separate foldable geometry gate.
+
 Linux dependency resolution, cross-host screenshot parity and independent
 reproducibility are separate checks. A cached local build cannot stand in for
 the two independent build roots/runners required by the reproducibility gate.
