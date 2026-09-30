@@ -19,6 +19,7 @@ import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.TestScope
 import kotlinx.coroutines.test.runCurrent
 import kotlinx.coroutines.test.runTest
+import kotlinx.serialization.json.JsonObject
 import kotlinx.serialization.json.buildJsonObject
 import kotlinx.serialization.json.put
 import org.junit.Test
@@ -52,23 +53,62 @@ class FileDocumentDeleteCoordinatorTest {
     private fun TestScope.coordinator(
         port: Port,
         drain: CompletableDeferred<Unit>? = null,
-    ) = DocumentDeleteCoordinator(port, index, this, { document ->
-        events += "reserve:${document.id}"
-        object : PendingDocumentDelete {
-            override suspend fun awaitIdle() {
-                events += "drain:${document.id}"
-                drain?.await()
-            }
+        qualifySurvivors: Boolean = false,
+        reload: CompletableDeferred<Unit>? = null,
+        reloadSucceeds: Boolean = true,
+        refuseSurvivor: Boolean = false,
+    ) = DocumentDeleteCoordinator(
+        port,
+        index,
+        this,
+        { document ->
+            events += "reserve:${document.id}"
+            object : PendingDocumentDelete {
+                override suspend fun awaitIdle() {
+                    events += "drain:${document.id}"
+                    drain?.await()
+                }
 
-            override fun commit() {
-                events += "commit:${document.id}"
-            }
+                override fun commit() {
+                    events += "commit:${document.id}"
+                }
 
-            override suspend fun rollback() {
-                events += "rollback:${document.id}"
+                override suspend fun rollback() {
+                    events += "rollback:${document.id}"
+                }
             }
-        }
-    }, { pruned += it }, notices)
+        },
+        { pruned += it },
+        notices,
+        canReloadSource = { qualifySurvivors && it.kind == DocumentKind.AIOUT },
+        reserveSourceReload = { document, _ ->
+            if (refuseSurvivor) {
+                null
+            } else {
+                events += "reserve:${document.id}"
+                object : PendingDocumentDelete {
+                    override suspend fun awaitIdle() {
+                        events += "drain:${document.id}"
+                        drain?.await()
+                    }
+
+                    override fun commit() {
+                        events += "commit:${document.id}"
+                    }
+
+                    override suspend fun afterCommit(): Boolean {
+                        events += "reload:${document.id}"
+                        reload?.await()
+                        return reloadSucceeds
+                    }
+
+                    override suspend fun rollback() {
+                        events += "rollback:${document.id}"
+                    }
+                }
+            }
+        },
+    )
 
     @Test fun `cancel from an extracted note preserves the entire file and reserves nothing`() =
         runTest {
@@ -196,6 +236,146 @@ class FileDocumentDeleteCoordinatorTest {
             assertThat(coordinator.prompt.value?.consequence).contains("It was quoted in 1 chat. Those quotes stay.")
         }
 
+    private suspend fun withSurvivor(kind: DocumentKind = DocumentKind.AIOUT): FileDeletionTarget {
+        val target = fixture()
+        val other =
+            if (kind == DocumentKind.ATTACHMENT) {
+                vault.createAttachment("Other file", "text/plain") { it.write(byteArrayOf(9)) }
+            } else {
+                vault.createDocument(NewDocument(kind, "Keep saved item", "Retained body"))
+            }
+        val linked =
+            vault.updateFrontmatter(
+                other.id,
+                buildJsonObject {
+                    put("source", target.attachment.id)
+                    put("unrelated", "retained")
+                },
+            )
+        return target.copy(sourceDependents = listOf(linked))
+    }
+
+    @Test fun `qualified AIOUT survivor reserves before any drain and reloads after commit without pruning`() =
+        runTest {
+            val target = withSurvivor()
+            val survivor = target.sourceDependents.single()
+            val drain = CompletableDeferred<Unit>()
+            val port = Port(target)
+            val coordinator = coordinator(port, drain, qualifySurvivors = true)
+            coordinator.request(target.attachment.id)
+            runCurrent()
+            assertThat(coordinator.prompt.value).isNotNull()
+            assertThat(coordinator.prompt.value?.consequence).contains("Saved AI outputs stay.")
+            coordinator.confirm()
+            runCurrent()
+            assertThat(
+                events.take(4),
+            ).containsExactlyElementsIn(target.affectedDocumentIds.map { "reserve:$it" }).inOrder()
+            assertThat(port.calls).isEqualTo(0)
+            drain.complete(Unit)
+            runCurrent()
+            assertThat(port.calls).isEqualTo(1)
+            assertThat(events.indexOf("reload:${survivor.id}")).isGreaterThan(events.indexOf("commit:${survivor.id}"))
+            assertThat(pruned).containsExactlyElementsIn(target.documentIds)
+            val saved = checkNotNull(vault.getDocument(survivor.id))
+            assertThat(saved.bodyMd).isEqualTo(survivor.bodyMd)
+            assertThat(saved.title).isEqualTo(survivor.title)
+            assertThat(saved.frontmatter).isEqualTo(JsonObject(survivor.frontmatter - "source"))
+        }
+
+    @Test fun `unsupported CHAT survivor remains refused even when AIOUT reload is qualified`() =
+        runTest {
+            val target = withSurvivor(DocumentKind.CHAT)
+            val port = Port(target)
+            val coordinator = coordinator(port, qualifySurvivors = true)
+            coordinator.request(target.attachment.id)
+            runCurrent()
+            assertThat(coordinator.prompt.value).isNull()
+            coordinator.confirm()
+            runCurrent()
+            assertThat(port.calls).isEqualTo(0)
+            assertThat(events).isEmpty()
+            assertThat(
+                vault.getDocument(target.sourceDependents.single().id),
+            ).isEqualTo(target.sourceDependents.single())
+        }
+
+    @Test fun `unsupported ATTACHMENT survivor remains refused even when AIOUT reload is qualified`() =
+        runTest {
+            val target = withSurvivor(DocumentKind.ATTACHMENT)
+            val port = Port(target)
+            val coordinator = coordinator(port, qualifySurvivors = true)
+            coordinator.request(target.attachment.id)
+            runCurrent()
+            assertThat(coordinator.prompt.value).isNull()
+            assertThat(port.calls).isEqualTo(0)
+            assertThat(events).isEmpty()
+            assertThat(
+                vault.getDocument(target.sourceDependents.single().id),
+            ).isEqualTo(target.sourceDependents.single())
+        }
+
+    @Test fun `failed transaction rolls back survivor reservation without reloading or pruning`() =
+        runTest {
+            val target = withSurvivor()
+            val coordinator = coordinator(Port(target).apply { failAfterFirstDelete = true }, qualifySurvivors = true)
+            coordinator.request(target.attachment.id)
+            runCurrent()
+            coordinator.confirm()
+            runCurrent()
+            assertThat(events.filter { it.startsWith("rollback:") }).hasSize(4)
+            assertThat(events.filter { it.startsWith("reload:") }).isEmpty()
+            assertThat(pruned).isEmpty()
+            assertThat(
+                vault.getDocument(target.sourceDependents.single().id),
+            ).isEqualTo(target.sourceDependents.single())
+        }
+
+    @Test fun `unavailable survivor reservation restores deleted writers before any drain`() =
+        runTest {
+            val target = withSurvivor()
+            val port = Port(target)
+            val coordinator = coordinator(port, qualifySurvivors = true, refuseSurvivor = true)
+            coordinator.request(target.attachment.id)
+            runCurrent()
+            coordinator.confirm()
+            runCurrent()
+            assertThat(port.calls).isEqualTo(0)
+            assertThat(events.filter { it.startsWith("drain:") }).isEmpty()
+            assertThat(events.filter { it.startsWith("rollback:") }).hasSize(3)
+            assertThat(pruned).isEmpty()
+        }
+
+    @Test fun `failed survivor reload reports committed deletion and never rolls it back`() =
+        runTest {
+            val target = withSurvivor()
+            val coordinator = coordinator(Port(target), qualifySurvivors = true, reloadSucceeds = false)
+            coordinator.request(target.attachment.id)
+            runCurrent()
+            coordinator.confirm()
+            runCurrent()
+            assertThat(coordinator.message.value?.text).isEqualTo(
+                "File and extracted text deleted. Reopen saved items before editing them.",
+            )
+            assertThat(events.filter { it.startsWith("rollback:") }).isEmpty()
+            assertThat(pruned).containsExactlyElementsIn(target.documentIds)
+            assertThat(vault.getDocument(target.sourceDependents.single().id)).isNotNull()
+        }
+
+    @Test fun `commit return cancellation still reloads surviving writer and keeps its route`() =
+        runTest {
+            val target = withSurvivor()
+            val coordinator = coordinator(Port(target).apply { cancelAfterCommit = true }, qualifySurvivors = true)
+            coordinator.request(target.attachment.id)
+            runCurrent()
+            coordinator.confirm()
+            runCurrent()
+            assertThat(events).contains("reload:${target.sourceDependents.single().id}")
+            assertThat(pruned).containsExactlyElementsIn(target.documentIds)
+            assertThat(events.filter { it.startsWith("rollback:") }).isEmpty()
+            assertThat(notices.consumeInterrupted()).isFalse()
+        }
+
     private inner class Port(
         private val target: FileDeletionTarget,
     ) : VaultRepository by vault,
@@ -217,10 +397,13 @@ class FileDocumentDeleteCoordinatorTest {
             val receipt =
                 object : FileDeletionReceipt {
                     override val documentIds = target.documentIds
-                    override val detachedDocumentIds = emptySet<DocId>()
+                    override val detachedDocumentIds = target.sourceDependents.mapTo(mutableSetOf()) { it.id }
                     override var committed = false
                     override val attachmentCleanupPending get() = cleanupPending
                 }
+            for (dependent in target.sourceDependents) {
+                vault.updateFrontmatter(dependent.id, JsonObject(dependent.frontmatter - "source"))
+            }
             for (id in target.documentIds) {
                 vault.deleteDocument(id)
                 if (failAfterFirstDelete) error("synthetic transaction failure")

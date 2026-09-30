@@ -98,6 +98,7 @@ public class EditorState(
     public val autosaveDebounce: Duration = Duration.ofMillis(500),
     internal val autosaveScope: CoroutineScope = CoroutineScope(SupervisorJob() + Dispatchers.Default),
     initialFrontmatterExpanded: Boolean = false,
+    private val normalizeSource: (String) -> String = { it },
 ) {
     public var value: TextFieldValue by mutableStateOf(
         if (initialFrontmatterExpanded) initial else initial.selectionFrom(FrontmatterBlock.bodyStart(initial.text)),
@@ -155,6 +156,39 @@ public class EditorState(
         deletionBlocked = false
     }
 
+    internal fun mergePendingSource(merge: (local: String, saved: String) -> String): String =
+        merge(value.text, lastSavedText)
+
+    internal fun hasPendingEdits(): Boolean = value.text != lastSavedText
+
+    internal fun isReservedAndSaved(): Boolean = deletionBlocked && !saveMutex.isLocked && value.text == lastSavedText
+
+    /** Reconcile a paused editor against current metadata without acknowledging its unsaved edits. */
+    internal fun rebaseAfterMetadataChange(
+        persisted: String,
+        merge: (local: String, previouslySaved: String) -> String,
+    ) {
+        check(deletionBlocked)
+        value = value.withSource(merge(value.text, lastSavedText))
+        lastSavedText = persisted
+        autosaveStatusState.value = if (value.text == persisted) AutosaveStatus.SAVED else AutosaveStatus.UNSAVED
+        Snapshot.sendApplyNotifications()
+    }
+
+    private fun TextFieldValue.withSource(source: String): TextFieldValue {
+        if (source == text) return this
+        val oldStart = FrontmatterBlock.bodyStart(text)
+        val newStart = FrontmatterBlock.bodyStart(source)
+
+        fun offset(position: Int): Int =
+            (if (position >= oldStart) position + newStart - oldStart else position).coerceIn(0, source.length)
+        return copy(
+            text = source,
+            selection = TextRange(offset(selection.start), offset(selection.end)),
+            composition = null,
+        )
+    }
+
     /** Text most recently handed to [onSave] successfully. */
     private var lastSavedText: String = initial.text
 
@@ -189,7 +223,7 @@ public class EditorState(
             } else {
                 newValue
             }
-        val effective = keepOutOfHiddenFrontmatter(guarded)
+        val effective = keepOutOfHiddenFrontmatter(guarded.withSource(normalizeSource(guarded.text)))
         idEditRejectedState.value = guard.rejected
         value = effective
         if (effective.text != lastSavedText) {
@@ -261,7 +295,7 @@ public class EditorState(
     /** Runs [onSave] for [pending], updating [autosaveStatus]/[autosaveError]. Serialized by [saveMutex]. */
     private suspend fun performSave(pending: TextFieldValue): Boolean =
         saveMutex.withLock {
-            if (deletionBlocked) return@withLock true
+            if (deletionBlocked || pending.text != value.text) return@withLock true
             if (pending.text == lastSavedText) return@withLock true
             autosaveStatusState.value = AutosaveStatus.SAVING
             try {

@@ -127,22 +127,22 @@ public fun NoteTab(
 ) {
     val scope = rememberCoroutineScope()
     val state =
-        remember(docId, vaultRepository, indexStore) {
+        remember(docId, vaultRepository, indexStore, noteDeletions) {
             NoteTabState(
                 docId = docId,
                 vaultRepository = vaultRepository,
                 indexStore = indexStore,
                 scope = scope,
                 onOpenDocument = onOpenDocument,
+                noteDeletions = noteDeletions,
             )
         }
 
     DisposableEffect(state, noteDeletions) {
-        val deletionRegistration = noteDeletions?.register(state)
         registerFlush(state::flush)
         onDispose {
             unregisterFlush()
-            deletionRegistration?.dispose()
+            state.unregisterDeletionWriter()
             // UX-P0-11: `scope` dies with this composition (tab close, note →
             // chat, lock, fold) and takes the debounce and any in-flight write
             // with it, so the last edits are flushed on a scope that outlives it.

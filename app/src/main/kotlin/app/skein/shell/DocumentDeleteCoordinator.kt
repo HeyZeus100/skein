@@ -25,10 +25,15 @@ import java.util.concurrent.atomic.AtomicBoolean
 internal interface PendingDocumentDelete {
     suspend fun awaitIdle() = Unit
 
+    fun validateReadyForCommit() = Unit
+
     /** Called synchronously after COMMIT, before repository change signals, possibly on IO. */
     fun commit()
 
     suspend fun rollback()
+
+    /** Surviving writers stay reserved until their current metadata has been reloaded. */
+    suspend fun afterCommit(): Boolean = true
 }
 
 internal data class DocumentDeletePrompt(
@@ -77,6 +82,8 @@ internal class DocumentDeleteCoordinator(
     private val reserve: (Document) -> PendingDocumentDelete?,
     private val prune: (DocId) -> Unit,
     private val notices: DocumentDeleteNotices,
+    private val canReloadSource: (Document) -> Boolean = { false },
+    private val reserveSourceReload: (Document, DocId) -> PendingDocumentDelete? = { _, _ -> null },
 ) {
     private val _prompt = MutableStateFlow<DocumentDeletePrompt?>(null)
     val prompt = _prompt.asStateFlow()
@@ -102,8 +109,8 @@ internal class DocumentDeleteCoordinator(
                     _prompt.value = buildPrompt(document)
                 } else {
                     val file = (repository as? FileLifecycle)?.resolveFileDeletion(id)
-                    if (file != null && file.sourceDependents.isNotEmpty()) {
-                        // Delete reservations cannot safely resume surviving editors after a metadata change yet.
+                    if (file != null && file.sourceDependents.any { !canReloadSource(it) }) {
+                        // Only explicitly qualified surviving writers may resume after metadata changes.
                         announce("This file is used by another saved item and can't be deleted yet.")
                     } else if (file != null) {
                         _prompt.value = buildPrompt(file.attachment, file)
@@ -208,16 +215,22 @@ internal class DocumentDeleteCoordinator(
         val committed = AtomicBoolean(false)
         var receipt: FileDeletionReceipt? = null
         try {
-            check(file.sourceDependents.isEmpty()) { "Surviving file dependents require a reload reservation" }
+            check(file.sourceDependents.all(canReloadSource)) { "Surviving file writer cannot reload" }
             val lifecycle = repository as? FileLifecycle ?: error("File deletion unavailable")
             // Reserve every editor before awaiting any of them. No SQLite writer lock is held here.
             for (document in listOf(file.attachment) + file.extractedNotes) {
                 val pending = reserve(document) ?: error("File writer unavailable")
                 reservations += pending
             }
+            for (document in file.sourceDependents) {
+                val pending = reserveSourceReload(document, file.attachment.id) ?: error("Source writer unavailable")
+                reservations += pending
+            }
             reservations.forEach { it.awaitIdle() }
             repository.transaction {
+                reservations.forEach { it.validateReadyForCommit() }
                 receipt = lifecycle.deleteFile(file)
+                reservations.forEach { it.validateReadyForCommit() }
                 repository.afterTransactionCommit {
                     committed.set(true)
                     reservations.forEach { it.commit() }
@@ -234,8 +247,22 @@ internal class DocumentDeleteCoordinator(
             withContext(NonCancellable) {
                 if (committed.get()) {
                     file.documentIds.forEach(prune)
+                    val reloaded =
+                        withTimeoutOrNull(2_000) {
+                            reservations
+                                .map { pending ->
+                                    try {
+                                        pending.afterCommit()
+                                    } catch (error: Exception) {
+                                        if (error is CancellationException) throw error
+                                        false
+                                    }
+                                }.all { it }
+                        } == true
                     announce(
-                        if (receipt?.attachmentCleanupPending != false) {
+                        if (!reloaded) {
+                            "File and extracted text deleted. Reopen saved items before editing them."
+                        } else if (receipt?.attachmentCleanupPending != false) {
                             "File and extracted text deleted. File cleanup will retry when you unlock."
                         } else {
                             "File and extracted text deleted."
@@ -274,6 +301,9 @@ internal class DocumentDeleteCoordinator(
                 else -> "note"
             }
         val lines = mutableListOf("This permanently removes the $noun from Skein.")
+        if (file?.sourceDependents?.isNotEmpty() == true) {
+            lines += "Saved AI outputs stay. Their source link to this file is removed."
+        }
         if (document.kind == DocumentKind.CHAT &&
             index
                 .edgesFrom(

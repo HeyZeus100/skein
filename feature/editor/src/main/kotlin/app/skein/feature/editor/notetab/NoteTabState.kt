@@ -14,6 +14,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.text.input.TextFieldValue
 import app.skein.core.model.DocId
+import app.skein.core.model.Document
 import app.skein.core.model.DocumentKind
 import app.skein.core.model.FrontmatterKeys
 import app.skein.core.model.IndexStore
@@ -30,11 +31,17 @@ import app.skein.feature.editor.backlinks.BacklinksState
 import app.skein.feature.editor.share.SaveAsFormat
 import app.skein.feature.editor.share.SaveAsIntents
 import app.skein.feature.editor.share.ShareIntents
+import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.CoroutineStart
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.ensureActive
 import kotlinx.coroutines.flow.filter
+import kotlinx.coroutines.isActive
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
+import kotlinx.coroutines.withTimeoutOrNull
 import kotlinx.serialization.json.JsonObject
 import kotlinx.serialization.json.JsonPrimitive
 import kotlinx.serialization.json.buildJsonObject
@@ -68,6 +75,7 @@ public class NoteTabState(
     private val scope: CoroutineScope,
     public val onOpenDocument: (DocId, String) -> Unit = { _, _ -> },
     private val autosaveDebounce: Duration = Duration.ofMillis(500),
+    noteDeletions: NoteDeletionRegistry? = null,
 ) {
     private val writeMutex = Mutex()
 
@@ -75,19 +83,27 @@ public class NoteTabState(
     private var deletionBlocked = false
 
     private var lastSavedTitle = ""
+    private val admission = Any()
+    private var pauseGeneration = 0L
+    private val detachedSources = mutableSetOf<DocId>()
 
     /** Stops title writes and editor saves synchronously, including later dispose/lock flushes. */
     internal fun pauseForDeletion() {
-        deletionBlocked = true
-        editorState.pauseForDeletion()
+        synchronized(admission) {
+            pauseGeneration++
+            deletionBlocked = true
+            editorState.pauseForDeletion()
+        }
     }
 
     internal suspend fun awaitDeletionIdle() {
+        loadJob.join()
         editorState.awaitDeletionIdle()
         writeMutex.withLock { }
     }
 
     internal fun resumeAfterDeletionFailure() {
+        if (!scope.coroutineContext.isActive) return
         deletionBlocked = false
         editorState.resumeAfterDeletionFailure()
     }
@@ -97,6 +113,128 @@ public class NoteTabState(
             saveTitle()
         } finally {
             flush()
+        }
+    }
+
+    /** Persist surviving drafts while their old source is still live, before the file transaction. */
+    internal suspend fun prepareSourceDetachment(sourceId: DocId) {
+        awaitDeletionIdle()
+        writeMutex.withLock {
+            scope.coroutineContext.ensureActive()
+            check(deletionBlocked)
+            val saved =
+                vaultRepository.transaction {
+                    val current = checkNotNull(vaultRepository.getDocument(docId))
+                    check(current.kind == DocumentKind.AIOUT)
+                    check(current.frontmatter[FrontmatterKeys.SOURCE] == JsonPrimitive(sourceId))
+                    check(vaultRepository.getDocument(sourceId)?.kind == DocumentKind.ATTACHMENT)
+                    scope.coroutineContext.ensureActive()
+                    val (frontmatter, body) =
+                        Frontmatter.parse(
+                            mergeCurrentDocument(current, preserveSourceEdit = true),
+                        )
+                    if (frontmatter != current.frontmatter) vaultRepository.updateFrontmatter(docId, frontmatter)
+                    if (body != current.bodyMd) vaultRepository.replaceBody(docId, body)
+                    if (title != lastSavedTitle) vaultRepository.renameDocument(docId, title)
+                    scope.coroutineContext.ensureActive()
+                    checkNotNull(vaultRepository.getDocument(docId))
+                }
+            // The normal editor remains paused. Only this acknowledged precommit save
+            // may clear its dirty state; a later reload/lock cannot discard unsaved bytes.
+            synchronized(admission) {
+                val persisted = Frontmatter.render(saved.frontmatter, saved.bodyMd.orEmpty())
+                editorState.rebaseAfterMetadataChange(persisted) { _, _ -> persisted }
+                if (title == lastSavedTitle) title = saved.title
+                lastSavedTitle = saved.title
+            }
+        }
+    }
+
+    internal fun hasPendingEdits(): Boolean = title != lastSavedTitle || editorState.hasPendingEdits()
+
+    internal fun sourceDetachmentReady(): Boolean =
+        scope.coroutineContext.isActive &&
+            loadJob.isCompleted &&
+            !writeMutex.isLocked &&
+            editorState.isReservedAndSaved() &&
+            title == lastSavedTitle
+
+    private fun mergeCurrentDocument(
+        current: Document,
+        preserveSourceEdit: Boolean,
+    ): String =
+        editorState.mergePendingSource { localText, savedText ->
+            val (local, body) = Frontmatter.parse(localText)
+            val (saved, savedBody) = Frontmatter.parse(savedText)
+            val merged = current.frontmatter.toMutableMap()
+            for (key in local.keys + saved.keys) {
+                if (key == FrontmatterKeys.ID || (key == FrontmatterKeys.SOURCE && !preserveSourceEdit)) continue
+                if (local[key] != saved[key]) {
+                    local[key]?.let { merged[key] = it } ?: merged.remove(key)
+                }
+            }
+            val retainedBody = if (body == savedBody) current.bodyMd.orEmpty() else body
+            Frontmatter.render(JsonObject(merged), retainedBody)
+        }
+
+    internal fun sourceWasDetached(sourceId: DocId) {
+        synchronized(admission) { detachedSources += sourceId }
+    }
+
+    /** New panes also re-read after any in-flight initial load; no stale snapshot can unblock them. */
+    internal fun scheduleSourceReload() {
+        scope.launch {
+            if (withTimeoutOrNull(2_000) { reloadAfterSourceDetachment() } != true) {
+                loadError = "Couldn't refresh this item. Reopen it before editing."
+                loading = false
+            }
+        }
+    }
+
+    /** Keep drafts, but use current persisted metadata and never revive a detached source association. */
+    internal suspend fun reloadAfterSourceDetachment(): Boolean {
+        val generation = synchronized(admission) { pauseGeneration }
+        try {
+            awaitDeletionIdle()
+            writeMutex.withLock {
+                scope.coroutineContext.ensureActive()
+                val current = checkNotNull(vaultRepository.getDocument(docId))
+                check(current.kind == DocumentKind.AIOUT)
+                check(!hasDetachedSource(current.frontmatter))
+                scope.coroutineContext.ensureActive()
+                synchronized(admission) {
+                    if (generation != pauseGeneration) return false
+                    val merged = mergeCurrentDocument(current, preserveSourceEdit = false)
+                    editorState.rebaseAfterMetadataChange(
+                        Frontmatter.render(current.frontmatter, current.bodyMd.orEmpty()),
+                    ) { _, _ -> merged }
+                    if (title == lastSavedTitle) title = current.title
+                    lastSavedTitle = current.title
+                    loadError = null
+                    deletionBlocked = false
+                    editorState.resumeAfterDeletionFailure()
+                }
+            }
+            return true
+        } catch (error: Exception) {
+            if (error is CancellationException && scope.coroutineContext.isActive) throw error
+            loadError = "Couldn't refresh this item. Reopen it before editing."
+            return false
+        }
+    }
+
+    private fun hasDetachedSource(frontmatter: JsonObject): Boolean =
+        synchronized(admission) {
+            (frontmatter[FrontmatterKeys.SOURCE] as? JsonPrimitive)?.content in detachedSources
+        }
+
+    private fun withoutDetachedSource(text: String): String {
+        if (synchronized(admission) { detachedSources.isEmpty() }) return text
+        val (frontmatter, body) = Frontmatter.parse(text)
+        return if (hasDetachedSource(frontmatter)) {
+            Frontmatter.render(JsonObject(frontmatter - FrontmatterKeys.SOURCE), body)
+        } else {
+            text
         }
     }
 
@@ -148,8 +286,23 @@ public class NoteTabState(
             onOpen = { openedId -> resolveTitleThenOpen(openedId) },
         )
 
+    private val loadJob: Job = scope.launch(start = CoroutineStart.LAZY) { load() }
+
+    // Enroll before initial load or any caller can receive an editable state. A pane
+    // entering between final validation and COMMIT therefore has no admitted draft.
+    private val deletionRegistration = noteDeletions?.register(this)
+    private val deletionScopeHandle =
+        scope.coroutineContext[Job]?.invokeOnCompletion {
+            deletionRegistration?.dispose()
+        }
+
     init {
-        scope.launch { load() }
+        loadJob.start()
+    }
+
+    internal fun unregisterDeletionWriter() {
+        deletionRegistration?.dispose()
+        deletionScopeHandle?.dispose()
     }
 
     /**
@@ -165,7 +318,10 @@ public class NoteTabState(
     public fun onTitleChange(newTitle: String) {
         if (deletionBlocked) return
         title = newTitle
-        scope.launch { saveTitle() }
+        val generation = synchronized(admission) { pauseGeneration }
+        scope.launch {
+            if (synchronized(admission) { generation == pauseGeneration }) saveTitle()
+        }
     }
 
     private suspend fun saveTitle() {
@@ -242,28 +398,30 @@ public class NoteTabState(
      * is empty, so a document without frontmatter seeds the editor with
      * exactly its body — byte-identical to pre-`E7.I3` behavior.
      */
-    private suspend fun load() {
-        loading = true
-        loadError = null
-        val document = vaultRepository.getDocument(docId)
-        if (document == null) {
-            loadError = "Note not found"
+    private suspend fun load() =
+        writeMutex.withLock {
+            loading = true
+            loadError = null
+            val document = vaultRepository.getDocument(docId)
+            if (document == null) {
+                loadError = "Note not found"
+                loading = false
+                return@withLock
+            }
+            title = document.title
+            lastSavedTitle = document.title
+            editorState =
+                EditorState(
+                    initial = TextFieldValue(Frontmatter.render(document.frontmatter, document.bodyMd.orEmpty())),
+                    onLinkOpen = ::onWikilinkClicked,
+                    onSave = { value -> saveEditorValue(value) },
+                    autosaveDebounce = autosaveDebounce,
+                    autosaveScope = scope,
+                    normalizeSource = ::withoutDetachedSource,
+                )
+            if (deletionBlocked) editorState.pauseForDeletion()
             loading = false
-            return
         }
-        title = document.title
-        lastSavedTitle = document.title
-        editorState =
-            EditorState(
-                initial = TextFieldValue(Frontmatter.render(document.frontmatter, document.bodyMd.orEmpty())),
-                onLinkOpen = ::onWikilinkClicked,
-                onSave = { value -> saveEditorValue(value) },
-                autosaveDebounce = autosaveDebounce,
-                autosaveScope = scope,
-            )
-        if (deletionBlocked) editorState.pauseForDeletion()
-        loading = false
-    }
 
     /**
      * Splits the editor's combined buffer back into frontmatter + body
@@ -279,7 +437,7 @@ public class NoteTabState(
     private suspend fun saveEditorValue(value: TextFieldValue) {
         writeMutex.withLock {
             if (deletionBlocked) return@withLock
-            val (frontmatter, body) = Frontmatter.parse(value.text)
+            val (frontmatter, body) = Frontmatter.parse(withoutDetachedSource(value.text))
             if (frontmatter.isNotEmpty()) {
                 val pinned: JsonObject =
                     buildJsonObject {

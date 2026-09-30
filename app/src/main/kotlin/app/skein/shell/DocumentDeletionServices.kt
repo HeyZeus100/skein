@@ -4,6 +4,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import app.skein.core.model.DocumentKind
+import app.skein.core.model.FileDeletionTargetChangedException
 import app.skein.feature.editor.notetab.NoteDeletionRegistry
 import app.skein.feature.shell.host.SkeinShellState
 import app.skein.vault.VaultSession
@@ -32,6 +33,27 @@ internal fun rememberDocumentDeletion(
                 scope = scope,
                 notices = notices,
                 prune = { id -> shells.forEach { it.pruneDocument(id) } },
+                canReloadSource = { it.kind == DocumentKind.AIOUT },
+                reserveSourceReload = { document, sourceId ->
+                    if (document.kind != DocumentKind.AIOUT) {
+                        null
+                    } else {
+                        val pending = notes.beginSourceDetachment(document.id, sourceId)
+                        object : PendingDocumentDelete {
+                            override suspend fun awaitIdle() = pending.awaitIdle()
+
+                            override fun validateReadyForCommit() {
+                                if (!pending.isReadyForCommit()) throw FileDeletionTargetChangedException()
+                            }
+
+                            override fun commit() = pending.commit()
+
+                            override suspend fun afterCommit(): Boolean = pending.reload()
+
+                            override suspend fun rollback() = pending.rollback()
+                        }
+                    }
+                },
                 reserve = { document ->
                     if (document.kind == DocumentKind.CHAT) {
                         if (turns != null && !turns.tryBeginDelete(document.id)) {
