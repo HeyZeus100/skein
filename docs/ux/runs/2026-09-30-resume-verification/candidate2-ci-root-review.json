@@ -1,0 +1,30 @@
+{
+  "source_sha": "605b0dfc2d660b36bbabf16c6b433e556948489d",
+  "run_id": 36663538838,
+  "reviewed_report_sha256": "ab290d3d3c036f9c1011fd1ff116ebfbfbfcb05d733b09825aa0ed559b40370e",
+  "archives_rehashed": [
+    {
+      "name": "unit-test-results",
+      "bytes": 2620437,
+      "sha256": "1c52cc484321d4177b2bc389d6c6af16b91592bcef5896fb9f23c2e776ffdcb7"
+    },
+    {
+      "name": "skein-foss-debug-apk",
+      "bytes": 49638085,
+      "sha256": "1861014736813bb3441cf8f2aac7d35d6130463d01cf5ea72e9caf5a49aa740f"
+    }
+  ],
+  "actual_xml_counts": {
+    "tests": 5352,
+    "passed": 5264,
+    "skipped": 88
+  },
+  "manifest_pins_verified": 518,
+  "historical_paths_in_manifest": 0,
+  "actual_apk_sha256": "2e2c41be054366021e6d22cac197379b527d54ababb5d280ef7a62eb5f2f3fc3",
+  "limitations": [
+    "Remote host checkout attribution is not installed APK attestation.",
+    "Skipped tests remain skipped; cached results remain identified in the peer report.",
+    "Physical Fold application remains e62; no install or native/model runtime inference."
+  ]
+}

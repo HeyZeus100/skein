@@ -1,0 +1,45 @@
+{
+  "source_sha": "605b0dfc2d660b36bbabf16c6b433e556948489d",
+  "run_id": 36664671504,
+  "archive_sha256": "61b12d96444fec505dcb3590c4088dca8f4d6a36e25a65f9864553d102b4a9d3",
+  "archive_bytes": 970589,
+  "actual_xml_counts": {
+    "tests": 281,
+    "passed": 281
+  },
+  "manifest_pins_verified": 4,
+  "copies": [
+    {
+      "original_path": "app/build/outputs/androidTest-results/connected/debug/flavors/dev/TEST-test(AVD) - 15.xml",
+      "public_copy": "candidate2-ordinary-app.xml",
+      "sha256": "67a4c9fbaaae6cb9ba6660dfbb3991d67da631b0ceaf6a04c8f36f979cc7ed31",
+      "bytes": 8522
+    },
+    {
+      "original_path": "build/instrumentation-review.json",
+      "public_copy": "candidate2-ordinary-host-review.json",
+      "sha256": "2b9474372f90097cfeca357a48ca216945294d66ca20c6c4d533a786844e0afb",
+      "bytes": 983
+    },
+    {
+      "original_path": "core/vault/build/outputs/androidTest-results/connected/debug/flavors/dev/TEST-test(AVD) - 15.xml",
+      "public_copy": "candidate2-ordinary-core-vault.xml",
+      "sha256": "13076fb37f5545756aa24153aaf477dfbc6633c5c3795ce5148b28054fe0693b",
+      "bytes": 38385
+    },
+    {
+      "original_path": "inference-service/build/outputs/androidTest-results/connected/debug/flavors/dev/TEST-test(AVD) - 15.xml",
+      "public_copy": "candidate2-ordinary-inference-service.xml",
+      "sha256": "2bd4cc5c074c76938ff86bf9f3d9df6687403c8caebd08818aa5afcd78661a34",
+      "bytes": 6496
+    }
+  ],
+  "reviewed_report_sha256": "1f41393ce1759bfde2133a40385b31b1f0480811a0105a9a87f9cbe977066752",
+  "limitations": [
+    "Manifest source and APK hashes are host-declared.",
+    "An emulator archive without APK bytes cannot independently verify built/installed APK hashes.",
+    "No Fold, installed e62, owner content, model quality, full hybrid retrieval or general runtime acceptance inferred.",
+    "This read-only review does not observe the owner Fold or install any application.",
+    "Ignored tests excluded by the ordinary runner remain outside these 281 executed cases; no new claim about previously excluded tests."
+  ]
+}

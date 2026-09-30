@@ -1,0 +1,664 @@
+{
+  "candidate": "605b0dfc2d660b36bbabf16c6b433e556948489d",
+  "status": "PASS_WITH_MINOR_TEMPORAL_WORDING_SUGGESTION",
+  "scope": "Read-only public documentation scope and links, actual published popup XML/JSON and digest checks. No Beads commands, no source/doc edits, no build/CI/device commands, no owner-vault or private-background access. Live issue status not independently queried; root remains sole Beads owner.",
+  "documents": [
+    {
+      "path": "docs/Handoffs/skein-orchestrator-continuation-20260930.md",
+      "sha256": "a3d2d2461735f08caaf34fdb57798a8fb567aa41dba906a739a2a63efed5c2a5"
+    },
+    {
+      "path": "docs/PRIVACY.md",
+      "sha256": "c983fca6d387121078761c7bc0739f04f487bb22007da19d9586bc56de6dbe4e"
+    },
+    {
+      "path": "docs/ux/runs/2026-09-30-delete-physical-e62/README.md",
+      "sha256": "8639909b9206c0f2acfff7d51985e4ba59172aab257c226a8aa520cba94e89a9"
+    },
+    {
+      "path": "docs/ux/runs/2026-09-30-resume-verification/README.md",
+      "sha256": "5f754af7a5053cebd472e3606538da3f572b960c6ef5b860655b4040541641b6"
+    },
+    {
+      "path": "docs/ux/runs/2026-09-30-pdf-empty/README.md",
+      "sha256": "0dd0cf7eea65dc57552b7c4e739359e219c436fcd19a3fb8b9b27ff4f683bbc6"
+    }
+  ],
+  "repo_local_links_checked": 52,
+  "broken_repo_local_links": [],
+  "link_records": [
+    {
+      "from": "docs/Handoffs/skein-orchestrator-continuation-20260930.md",
+      "line": 3,
+      "href": "../ux/runs/2026-09-30-delete-physical-e62/README.md",
+      "target": "docs/ux/runs/2026-09-30-delete-physical-e62/README.md",
+      "exists_at_candidate": true
+    },
+    {
+      "from": "docs/Handoffs/skein-orchestrator-continuation-20260930.md",
+      "line": 3,
+      "href": "../ux/runs/2026-09-30-resume-verification/README.md",
+      "target": "docs/ux/runs/2026-09-30-resume-verification/README.md",
+      "exists_at_candidate": true
+    },
+    {
+      "from": "docs/Handoffs/skein-orchestrator-continuation-20260930.md",
+      "line": 19,
+      "href": "../PRIVACY.md",
+      "target": "docs/PRIVACY.md",
+      "exists_at_candidate": true
+    },
+    {
+      "from": "docs/Handoffs/skein-orchestrator-continuation-20260930.md",
+      "line": 23,
+      "href": "../research/markitdown-marker-assessment-20260930.json",
+      "target": "docs/research/markitdown-marker-assessment-20260930.json",
+      "exists_at_candidate": true
+    },
+    {
+      "from": "docs/Handoffs/skein-orchestrator-continuation-20260930.md",
+      "line": 25,
+      "href": "../ux/runs/2026-09-30-pdf-empty/README.md",
+      "target": "docs/ux/runs/2026-09-30-pdf-empty/README.md",
+      "exists_at_candidate": true
+    },
+    {
+      "from": "docs/PRIVACY.md",
+      "line": 23,
+      "href": "ux/runs/2026-09-29-confirmed-delete-e62f947/README.md",
+      "target": "docs/ux/runs/2026-09-29-confirmed-delete-e62f947/README.md",
+      "exists_at_candidate": true
+    },
+    {
+      "from": "docs/PRIVACY.md",
+      "line": 27,
+      "href": "ux/runs/2026-09-30-delete-physical-e62/README.md",
+      "target": "docs/ux/runs/2026-09-30-delete-physical-e62/README.md",
+      "exists_at_candidate": true
+    },
+    {
+      "from": "docs/PRIVACY.md",
+      "line": 53,
+      "href": "../core/vault/src/main/kotlin/app/skein/core/vault/lifecycle/VaultLifecycle.kt",
+      "target": "core/vault/src/main/kotlin/app/skein/core/vault/lifecycle/VaultLifecycle.kt",
+      "exists_at_candidate": true
+    },
+    {
+      "from": "docs/PRIVACY.md",
+      "line": 54,
+      "href": "../core/vault/src/main/kotlin/app/skein/core/vault/repository/VaultRepositoryImpl.kt",
+      "target": "core/vault/src/main/kotlin/app/skein/core/vault/repository/VaultRepositoryImpl.kt",
+      "exists_at_candidate": true
+    },
+    {
+      "from": "docs/PRIVACY.md",
+      "line": 55,
+      "href": "../core/vault/src/main/resources/migrations/INDEX.txt",
+      "target": "core/vault/src/main/resources/migrations/INDEX.txt",
+      "exists_at_candidate": true
+    },
+    {
+      "from": "docs/PRIVACY.md",
+      "line": 56,
+      "href": "../core/vault/src/main/kotlin/app/skein/core/vault/blob/FileAttachmentStore.kt",
+      "target": "core/vault/src/main/kotlin/app/skein/core/vault/blob/FileAttachmentStore.kt",
+      "exists_at_candidate": true
+    },
+    {
+      "from": "docs/PRIVACY.md",
+      "line": 63,
+      "href": "../core/vault/src/main/kotlin/app/skein/core/vault/key/AndroidKeystoreFacade.kt",
+      "target": "core/vault/src/main/kotlin/app/skein/core/vault/key/AndroidKeystoreFacade.kt",
+      "exists_at_candidate": true
+    },
+    {
+      "from": "docs/PRIVACY.md",
+      "line": 65,
+      "href": "../core/vault/src/main/kotlin/app/skein/core/vault/key/VaultKeyProviderImpl.kt",
+      "target": "core/vault/src/main/kotlin/app/skein/core/vault/key/VaultKeyProviderImpl.kt",
+      "exists_at_candidate": true
+    },
+    {
+      "from": "docs/PRIVACY.md",
+      "line": 79,
+      "href": "../core/vault/src/main/resources/migrations/010_fts_secure_delete.sql",
+      "target": "core/vault/src/main/resources/migrations/010_fts_secure_delete.sql",
+      "exists_at_candidate": true
+    },
+    {
+      "from": "docs/PRIVACY.md",
+      "line": 86,
+      "href": "ux/OBJECT_LIFECYCLE_SPEC.md",
+      "target": "docs/ux/OBJECT_LIFECYCLE_SPEC.md",
+      "exists_at_candidate": true
+    },
+    {
+      "from": "docs/PRIVACY.md",
+      "line": 114,
+      "href": "../core/model/src/main/kotlin/app/skein/core/model/SkeinLog.kt",
+      "target": "core/model/src/main/kotlin/app/skein/core/model/SkeinLog.kt",
+      "exists_at_candidate": true
+    },
+    {
+      "from": "docs/PRIVACY.md",
+      "line": 115,
+      "href": "../app/src/main/kotlin/app/skein/system/AndroidSkeinLogSink.kt",
+      "target": "app/src/main/kotlin/app/skein/system/AndroidSkeinLogSink.kt",
+      "exists_at_candidate": true
+    },
+    {
+      "from": "docs/PRIVACY.md",
+      "line": 121,
+      "href": "../app/src/main/AndroidManifest.xml",
+      "target": "app/src/main/AndroidManifest.xml",
+      "exists_at_candidate": true
+    },
+    {
+      "from": "docs/PRIVACY.md",
+      "line": 126,
+      "href": "../app/src/test/kotlin/app/skein/ManifestPolicyTest.kt",
+      "target": "app/src/test/kotlin/app/skein/ManifestPolicyTest.kt",
+      "exists_at_candidate": true
+    },
+    {
+      "from": "docs/PRIVACY.md",
+      "line": 129,
+      "href": "../build-logic/guards/src/main/kotlin/app/skein/gradle/ManifestGuardPlugin.kt",
+      "target": "build-logic/guards/src/main/kotlin/app/skein/gradle/ManifestGuardPlugin.kt",
+      "exists_at_candidate": true
+    },
+    {
+      "from": "docs/PRIVACY.md",
+      "line": 147,
+      "href": "../app/src/main/kotlin/app/skein/models/ModelServices.kt",
+      "target": "app/src/main/kotlin/app/skein/models/ModelServices.kt",
+      "exists_at_candidate": true
+    },
+    {
+      "from": "docs/PRIVACY.md",
+      "line": 158,
+      "href": "Handoffs/skein-retrieval-repair-execution.md",
+      "target": "docs/Handoffs/skein-retrieval-repair-execution.md",
+      "exists_at_candidate": true
+    },
+    {
+      "from": "docs/PRIVACY.md",
+      "line": 169,
+      "href": "../core/vault/src/main/kotlin/app/skein/core/vault/export/ExportServiceImpl.kt",
+      "target": "core/vault/src/main/kotlin/app/skein/core/vault/export/ExportServiceImpl.kt",
+      "exists_at_candidate": true
+    },
+    {
+      "from": "docs/PRIVACY.md",
+      "line": 178,
+      "href": "../feature/editor/src/main/kotlin/app/skein/feature/editor/notetab/NoteTab.kt",
+      "target": "feature/editor/src/main/kotlin/app/skein/feature/editor/notetab/NoteTab.kt",
+      "exists_at_candidate": true
+    },
+    {
+      "from": "docs/PRIVACY.md",
+      "line": 184,
+      "href": "../app/src/main/kotlin/app/skein/export/stage/ExportStageCoordinator.kt",
+      "target": "app/src/main/kotlin/app/skein/export/stage/ExportStageCoordinator.kt",
+      "exists_at_candidate": true
+    },
+    {
+      "from": "docs/PRIVACY.md",
+      "line": 185,
+      "href": "../app/src/main/kotlin/app/skein/export/stage/BootReceiver.kt",
+      "target": "app/src/main/kotlin/app/skein/export/stage/BootReceiver.kt",
+      "exists_at_candidate": true
+    },
+    {
+      "from": "docs/PRIVACY.md",
+      "line": 201,
+      "href": "../core/vault/src/main/kotlin/app/skein/core/vault/provider/VaultDocumentsProvider.kt",
+      "target": "core/vault/src/main/kotlin/app/skein/core/vault/provider/VaultDocumentsProvider.kt",
+      "exists_at_candidate": true
+    },
+    {
+      "from": "docs/PRIVACY.md",
+      "line": 223,
+      "href": "../core/inference/src/main/kotlin/app/skein/core/inference/models/ModelImportStager.kt",
+      "target": "core/inference/src/main/kotlin/app/skein/core/inference/models/ModelImportStager.kt",
+      "exists_at_candidate": true
+    },
+    {
+      "from": "docs/PRIVACY.md",
+      "line": 224,
+      "href": "../core/inference/src/main/kotlin/app/skein/core/inference/models/ImmutableModelStore.kt",
+      "target": "core/inference/src/main/kotlin/app/skein/core/inference/models/ImmutableModelStore.kt",
+      "exists_at_candidate": true
+    },
+    {
+      "from": "docs/PRIVACY.md",
+      "line": 225,
+      "href": "Handoffs/skein-inference-lifecycle-20260929.md",
+      "target": "docs/Handoffs/skein-inference-lifecycle-20260929.md",
+      "exists_at_candidate": true
+    },
+    {
+      "from": "docs/PRIVACY.md",
+      "line": 227,
+      "href": "../core/verify/src/main/kotlin/app/skein/core/verify/ModelVerifier.kt",
+      "target": "core/verify/src/main/kotlin/app/skein/core/verify/ModelVerifier.kt",
+      "exists_at_candidate": true
+    },
+    {
+      "from": "docs/PRIVACY.md",
+      "line": 238,
+      "href": "../core/inference/src/main/kotlin/app/skein/core/inference/models/ManifestAttestation.kt",
+      "target": "core/inference/src/main/kotlin/app/skein/core/inference/models/ManifestAttestation.kt",
+      "exists_at_candidate": true
+    },
+    {
+      "from": "docs/PRIVACY.md",
+      "line": 248,
+      "href": "../app/src/main/res/xml/data_extraction_rules.xml",
+      "target": "app/src/main/res/xml/data_extraction_rules.xml",
+      "exists_at_candidate": true
+    },
+    {
+      "from": "docs/PRIVACY.md",
+      "line": 250,
+      "href": "../app/src/main/res/xml/backup_rules_legacy.xml",
+      "target": "app/src/main/res/xml/backup_rules_legacy.xml",
+      "exists_at_candidate": true
+    },
+    {
+      "from": "docs/PRIVACY.md",
+      "line": 262,
+      "href": "BACKUP_EXCLUSIONS.md",
+      "target": "docs/BACKUP_EXCLUSIONS.md",
+      "exists_at_candidate": true
+    },
+    {
+      "from": "docs/PRIVACY.md",
+      "line": 268,
+      "href": "superpowers/specs/2026-09-19-skein-design.md",
+      "target": "docs/superpowers/specs/2026-09-19-skein-design.md",
+      "exists_at_candidate": true
+    },
+    {
+      "from": "docs/PRIVACY.md",
+      "line": 269,
+      "href": "ux/SECURITY_REVIEW_D7.md",
+      "target": "docs/ux/SECURITY_REVIEW_D7.md",
+      "exists_at_candidate": true
+    },
+    {
+      "from": "docs/PRIVACY.md",
+      "line": 274,
+      "href": "../app/src/main/kotlin/app/skein/MainActivity.kt",
+      "target": "app/src/main/kotlin/app/skein/MainActivity.kt",
+      "exists_at_candidate": true
+    },
+    {
+      "from": "docs/PRIVACY.md",
+      "line": 281,
+      "href": "../feature/shell/src/main/kotlin/app/skein/feature/shell/input/SecureTextField.kt",
+      "target": "feature/shell/src/main/kotlin/app/skein/feature/shell/input/SecureTextField.kt",
+      "exists_at_candidate": true
+    },
+    {
+      "from": "docs/PRIVACY.md",
+      "line": 300,
+      "href": "VERIFICATION.md",
+      "target": "docs/VERIFICATION.md",
+      "exists_at_candidate": true
+    },
+    {
+      "from": "docs/ux/runs/2026-09-30-delete-physical-e62/README.md",
+      "line": 21,
+      "href": "chat-active-delete-disabled.xml",
+      "target": "docs/ux/runs/2026-09-30-delete-physical-e62/chat-active-delete-disabled.xml",
+      "exists_at_candidate": true
+    },
+    {
+      "from": "docs/ux/runs/2026-09-30-delete-physical-e62/README.md",
+      "line": 21,
+      "href": "physical-results.json",
+      "target": "docs/ux/runs/2026-09-30-delete-physical-e62/physical-results.json",
+      "exists_at_candidate": true
+    },
+    {
+      "from": "docs/ux/runs/2026-09-30-delete-physical-e62/README.md",
+      "line": 27,
+      "href": "status.json",
+      "target": "docs/ux/runs/2026-09-30-delete-physical-e62/status.json",
+      "exists_at_candidate": true
+    },
+    {
+      "from": "docs/ux/runs/2026-09-30-delete-physical-e62/README.md",
+      "line": 27,
+      "href": "physical-results.json",
+      "target": "docs/ux/runs/2026-09-30-delete-physical-e62/physical-results.json",
+      "exists_at_candidate": true
+    },
+    {
+      "from": "docs/ux/runs/2026-09-30-delete-physical-e62/README.md",
+      "line": 27,
+      "href": "actual-xml-artifacts.json",
+      "target": "docs/ux/runs/2026-09-30-delete-physical-e62/actual-xml-artifacts.json",
+      "exists_at_candidate": true
+    },
+    {
+      "from": "docs/ux/runs/2026-09-30-delete-physical-e62/README.md",
+      "line": 27,
+      "href": "private-evidence-receipts.json",
+      "target": "docs/ux/runs/2026-09-30-delete-physical-e62/private-evidence-receipts.json",
+      "exists_at_candidate": true
+    },
+    {
+      "from": "docs/ux/runs/2026-09-30-resume-verification/README.md",
+      "line": 3,
+      "href": "../2026-09-30-delete-physical-e62/README.md",
+      "target": "docs/ux/runs/2026-09-30-delete-physical-e62/README.md",
+      "exists_at_candidate": true
+    },
+    {
+      "from": "docs/ux/runs/2026-09-30-resume-verification/README.md",
+      "line": 3,
+      "href": "../2026-09-30-pdf-empty/README.md",
+      "target": "docs/ux/runs/2026-09-30-pdf-empty/README.md",
+      "exists_at_candidate": true
+    },
+    {
+      "from": "docs/ux/runs/2026-09-30-resume-verification/README.md",
+      "line": 22,
+      "href": "../../../Handoffs/skein-orchestrator-continuation-20260930.md",
+      "target": "docs/Handoffs/skein-orchestrator-continuation-20260930.md",
+      "exists_at_candidate": true
+    },
+    {
+      "from": "docs/ux/runs/2026-09-30-pdf-empty/README.md",
+      "line": 3,
+      "href": "../../../research/markitdown-marker-assessment-20260930.json",
+      "target": "docs/research/markitdown-marker-assessment-20260930.json",
+      "exists_at_candidate": true
+    },
+    {
+      "from": "docs/ux/runs/2026-09-30-pdf-empty/README.md",
+      "line": 14,
+      "href": "negative-1-actual.xml",
+      "target": "docs/ux/runs/2026-09-30-pdf-empty/negative-1-actual.xml",
+      "exists_at_candidate": true
+    },
+    {
+      "from": "docs/ux/runs/2026-09-30-pdf-empty/README.md",
+      "line": 16,
+      "href": "../2026-09-30-resume-verification/README.md",
+      "target": "docs/ux/runs/2026-09-30-resume-verification/README.md",
+      "exists_at_candidate": true
+    }
+  ],
+  "capsule_manifest_entries_rehashed": 37,
+  "manifest_records": [
+    {
+      "path": "docs/ux/runs/2026-09-30-resume-verification/README.md",
+      "sha256": "5f754af7a5053cebd472e3606538da3f572b960c6ef5b860655b4040541641b6"
+    },
+    {
+      "path": "docs/ux/runs/2026-09-30-resume-verification/auth-static-review.json",
+      "sha256": "c6bd5e39f4355cafc41dadb1a28baa724e6b83a45dd60a927008168cba6a529b"
+    },
+    {
+      "path": "docs/ux/runs/2026-09-30-resume-verification/auth-worker-focused-review.json",
+      "sha256": "7e29ace564e8947337653ad6ba6f65c3eb862d40124a7f38e71fe15e668d4d14"
+    },
+    {
+      "path": "docs/ux/runs/2026-09-30-resume-verification/baseline-audit.json",
+      "sha256": "d508ae39c849dc6e3be6a396da6f7aa2b33bcea716871b07c5e0046619c6fc70"
+    },
+    {
+      "path": "docs/ux/runs/2026-09-30-resume-verification/cache-control.json",
+      "sha256": "9814e386328d4b83f020be97e83bf30f63fa0df21641b736d0fd16e19a4201f1"
+    },
+    {
+      "path": "docs/ux/runs/2026-09-30-resume-verification/cache-root-review.json",
+      "sha256": "3862a121c7f5ba7bfda4e826dd8e0bb284f0eff34e1b0bd01d049292667a3b14"
+    },
+    {
+      "path": "docs/ux/runs/2026-09-30-resume-verification/candidate2-local-full.json",
+      "sha256": "582bcdca4a40d8b24f35890313dd460c0b44938221a6ccb487e223e93c42177d"
+    },
+    {
+      "path": "docs/ux/runs/2026-09-30-resume-verification/candidate2-local-independent-review.json",
+      "sha256": "1a0c43c2b536c1029aec562c7c27800406dc6fa77a860d602665b724adee9a31"
+    },
+    {
+      "path": "docs/ux/runs/2026-09-30-resume-verification/combined-local-full.json",
+      "sha256": "ba5a47aedaf0d13e06c527248a245e628c6be4068894297db19bc34170bed703"
+    },
+    {
+      "path": "docs/ux/runs/2026-09-30-resume-verification/combined-local-independent-review.json",
+      "sha256": "9eb86b8456c94c20d2806fb6c12abff37634d81b754778ec319ac56c16cc0c9c"
+    },
+    {
+      "path": "docs/ux/runs/2026-09-30-resume-verification/combined-local-screenshots.json",
+      "sha256": "2f03589ce6839d942d0e98af83faabe85663020378322b5abdb39df3ab539681"
+    },
+    {
+      "path": "docs/ux/runs/2026-09-30-resume-verification/expected-cache-negative.xml",
+      "sha256": "e7f1b435b85a00ab56a98b0cc9366f7ed33fafbe9730b06e804a626c6674f2d9"
+    },
+    {
+      "path": "docs/ux/runs/2026-09-30-resume-verification/extraction-assessment-root-review.json",
+      "sha256": "de4fe20e9e829ed846dace2cffa90a7dadd2227924ff34f2503ae2a774093e15"
+    },
+    {
+      "path": "docs/ux/runs/2026-09-30-resume-verification/manifest-scope-root-review.json",
+      "sha256": "05db67ac9c642b9dd75fcd734c536d76813d0778820b929be313b990ad03e920"
+    },
+    {
+      "path": "docs/ux/runs/2026-09-30-resume-verification/manifest-scope-worker-review.json",
+      "sha256": "8cfedc77f796e4bd469962192db76615c5f1b9701f125c2b8bb4feb02011fe46"
+    },
+    {
+      "path": "docs/ux/runs/2026-09-30-resume-verification/physical-independent-review.json",
+      "sha256": "3a159b34f3989163440f25aae64b4cc1a675c1c086272a0ad3fb523127e6cdce"
+    },
+    {
+      "path": "docs/ux/runs/2026-09-30-resume-verification/privacy-e62-existing-test-evidence.json",
+      "sha256": "6f73270774750ea973c52d9ea665c2b88938bc4cf056b0321ff0cf48851444df"
+    },
+    {
+      "path": "docs/ux/runs/2026-09-30-resume-verification/privacy-peer-review.json",
+      "sha256": "844cc9d101925522c5d9aaeb09274dadc4d94d418365ba8b57931677a8318c35"
+    },
+    {
+      "path": "docs/ux/runs/2026-09-30-resume-verification/privacy-source-review-receipts.json",
+      "sha256": "71302b58d45b3d8989fb8384fdbbd05f6c5b7343d81c8105832f2463f36d50a2"
+    },
+    {
+      "path": "docs/ux/runs/2026-09-30-resume-verification/privacy-source-review.json",
+      "sha256": "de84bfecadfcac2664abb5b80f0638b10e20b595c7314922100507f1384f5516"
+    },
+    {
+      "path": "docs/ux/runs/2026-09-30-resume-verification/remote-ci-binary-review.json",
+      "sha256": "ff57ea69db9e1c98b07fbd5cfd48f6a9dbe4c5b16040e8011ba757e9261d62d4"
+    },
+    {
+      "path": "docs/ux/runs/2026-09-30-resume-verification/remote-ci-review.json",
+      "sha256": "8db7ba8eaa1ee80362784715ec4fadc64a749f1db51adb0aac6d76af8df4ae70"
+    },
+    {
+      "path": "docs/ux/runs/2026-09-30-resume-verification/remote-repro-review.json",
+      "sha256": "6857e0c52332fdd4c0e38fee1b09e96dfcb4e0436310ad80ebdb4ce25dd62165"
+    },
+    {
+      "path": "docs/ux/runs/2026-09-30-resume-verification/remote-ux-repro-independent-review.json",
+      "sha256": "393868225fb9e1eb2c77f09494e9991d81e21d6912d376260388d7a01749be8a"
+    },
+    {
+      "path": "docs/ux/runs/2026-09-30-resume-verification/remote-ux-review.json",
+      "sha256": "f991c3a661baabf21d80487a5dffd956e5afaf07197d5b4a87a11e7c1e9325d9"
+    },
+    {
+      "path": "docs/ux/runs/2026-09-30-resume-verification/restored-fresh-cache-guard.xml",
+      "sha256": "13f6d69fae08889a0265e4e00445cbb773e72f8eddf8cf8cef3078c94f0a46cf"
+    },
+    {
+      "path": "docs/ux/runs/2026-09-30-resume-verification/ux-inference-baseline-review.json",
+      "sha256": "8d729580f8277df42c0a5444288a8c3c87adcb2eb9e3fcdf2ee2f0744194cf78"
+    },
+    {
+      "path": "docs/ux/runs/2026-09-30-pdf-empty/README.md",
+      "sha256": "0dd0cf7eea65dc57552b7c4e739359e219c436fcd19a3fb8b9b27ff4f683bbc6"
+    },
+    {
+      "path": "docs/ux/runs/2026-09-30-pdf-empty/TEST-app.skein.core.vault.transfer.ImportPdfMemorySmokeTest.xml",
+      "sha256": "e21262b51f7405b6da463b713be32aed3017c4953dda4696c378ba0e70d1ad77"
+    },
+    {
+      "path": "docs/ux/runs/2026-09-30-pdf-empty/TEST-app.skein.core.vault.transfer.ImportPdfTest.xml",
+      "sha256": "cc660e2afc5dd6f4427bdc2bfc7ce8bd595d3306752a43e64c603b8741dabdc1"
+    },
+    {
+      "path": "docs/ux/runs/2026-09-30-pdf-empty/TEST-app.skein.core.vault.transfer.PdfResourceLoaderTest.xml",
+      "sha256": "ce44af92134c72ab78d53a17eb37100520e1b8f24980d28c3b3cb67068919c14"
+    },
+    {
+      "path": "docs/ux/runs/2026-09-30-pdf-empty/fixed-1-review.json",
+      "sha256": "41cdd5298cc3e3bfbeff50a967b6003a04dfde69d73c61ae9badda7ab02ae61a"
+    },
+    {
+      "path": "docs/ux/runs/2026-09-30-pdf-empty/negative-1-actual.xml",
+      "sha256": "c60e3da2cb552ab8c92c0f516cbcb35ef3a2e91ffb9be5b81be915f62b1d4b22"
+    },
+    {
+      "path": "docs/ux/runs/2026-09-30-pdf-empty/negative-1-review.json",
+      "sha256": "76e63fc8a9bcb0139a363b118b273def8d4173e0433229a06bc230272277c088"
+    },
+    {
+      "path": "docs/ux/runs/2026-09-30-pdf-empty/negative-control-inputs.json",
+      "sha256": "1da0d55393ea2fd89685c612de6bbb3e7c17800cd7c399fb8944cd26ca51f822"
+    },
+    {
+      "path": "docs/ux/runs/2026-09-30-pdf-empty/peer-review.json",
+      "sha256": "5107b4ffd7c7032f89036110cbd760e79145c96d9b91f6e3fc76d61c51cd3f1e"
+    },
+    {
+      "path": "docs/ux/runs/2026-09-30-pdf-empty/validation-receipt.json",
+      "sha256": "cc70faec6e5c3d34f9f5c9e584404c79b8dee0d5e681a02d5cc0e2c0e5de5d1a"
+    }
+  ],
+  "published_popup_xml_digests_and_sizes_verified": 7,
+  "published_popup_xml": [
+    {
+      "path": "docs/ux/runs/2026-09-30-delete-physical-e62/chat-active-delete-disabled.xml",
+      "sha256": "8d4d2f67bbc50056393d36019b0cb51157e9aa9216f975d34091e225f19c6d75",
+      "visible_strings": [
+        "Delete\u2026",
+        "Stop the answer to delete this chat."
+      ]
+    },
+    {
+      "path": "docs/ux/runs/2026-09-30-delete-physical-e62/chat-header-cancel-confirmation.xml",
+      "sha256": "870a164b8d249a2c795a1396c1454d6a804bcc3ab08127d41fa14e54137d6c49",
+      "visible_strings": [
+        "Cancel",
+        "Delete",
+        "Delete \"Skein DELETE CHECK 023002 CHAT\"?",
+        "This permanently removes the conversation from Skein."
+      ]
+    },
+    {
+      "path": "docs/ux/runs/2026-09-30-delete-physical-e62/chat-header-delete-confirmation.xml",
+      "sha256": "870a164b8d249a2c795a1396c1454d6a804bcc3ab08127d41fa14e54137d6c49",
+      "visible_strings": [
+        "Cancel",
+        "Delete",
+        "Delete \"Skein DELETE CHECK 023002 CHAT\"?",
+        "This permanently removes the conversation from Skein."
+      ]
+    },
+    {
+      "path": "docs/ux/runs/2026-09-30-delete-physical-e62/chat-list-row-confirmation.xml",
+      "sha256": "870a164b8d249a2c795a1396c1454d6a804bcc3ab08127d41fa14e54137d6c49",
+      "visible_strings": [
+        "Cancel",
+        "Delete",
+        "Delete \"Skein DELETE CHECK 023002 CHAT\"?",
+        "This permanently removes the conversation from Skein."
+      ]
+    },
+    {
+      "path": "docs/ux/runs/2026-09-30-delete-physical-e62/note-header-cancel-confirmation.xml",
+      "sha256": "f3698f11362d7969d484969adc5e53ae213cda6e4f89148057c281b85b710fed",
+      "visible_strings": [
+        "Cancel",
+        "Delete",
+        "Delete \"Skein DELETE CHECK 023002 NOTE\"?",
+        "This permanently removes the note from Skein."
+      ]
+    },
+    {
+      "path": "docs/ux/runs/2026-09-30-delete-physical-e62/note-header-delete-confirmation.xml",
+      "sha256": "f3698f11362d7969d484969adc5e53ae213cda6e4f89148057c281b85b710fed",
+      "visible_strings": [
+        "Cancel",
+        "Delete",
+        "Delete \"Skein DELETE CHECK 023002 NOTE\"?",
+        "This permanently removes the note from Skein."
+      ]
+    },
+    {
+      "path": "docs/ux/runs/2026-09-30-delete-physical-e62/note-list-row-confirmation.xml",
+      "sha256": "f3698f11362d7969d484969adc5e53ae213cda6e4f89148057c281b85b710fed",
+      "visible_strings": [
+        "Cancel",
+        "Delete",
+        "Delete \"Skein DELETE CHECK 023002 NOTE\"?",
+        "This permanently removes the note from Skein."
+      ]
+    }
+  ],
+  "physical_scope_verified": [
+    "installed e62 and exact APK hash; no new install/import claimed",
+    "one disposable note/chat and one send/one Stop/zero retry",
+    "clickable Delete ancestor disabled; text leaf enabled does not establish actionable control",
+    "no native generation/model identity or assistant-answer claim",
+    "visible lists and owning route scope only; no app restart/hidden stack proof",
+    "secondary route/composer/Knowledge preserved but shared model status changed",
+    "original root draft was not edited or rehashed",
+    "new missing-key/PDF source not installed on Fold"
+  ],
+  "assessment_review": {
+    "sha256": "7aba6106fdc6511b63c7570aa4c308c698d42d683b8a4a7580c63623b3923aea",
+    "upstream_artifacts_listed": 21,
+    "skein_baseline_artifacts_rehashed": 6,
+    "source_refs_resolve": true,
+    "no_executed_upstream_conversion_or_model_claim": true,
+    "pinned_pre_fix_pdf_risk_is_historical": "PDF capsule explicitly preserves original assessment as earlier source-review phase; separate executable regression/fix is clearly identified.",
+    "benchmark_license_runtime_provenance_gates_explicit": true
+  },
+  "pdf_regression_public_xml": {
+    "negative_tests": 11,
+    "negative_expected_failures": 2,
+    "fixed_passes": 13
+  },
+  "open_gate_boundaries": [
+    "skein-gg11.29 existing-envelope recovery/credential fallback and physical runtime remain open",
+    "PDF TTL wiring/adversarial checks skein-efwt/skein-xg6d remain open",
+    "retrieval quality failure/threshold 0.5/golds preserved; hybrid embedding dependencies remain ineligible",
+    "general answers/rendered citations/New-chat/Fold/AL-16/M0/runtime/model remain open",
+    "file/extracted-note deletion remains excluded",
+    "later-candidate remote and ordinary gates explicitly pending at this checkpoint",
+    "converter adoption/benchmark/model-license clearance remain unmeasured"
+  ],
+  "findings": [
+    {
+      "severity": "minor",
+      "path": "docs/Handoffs/skein-orchestrator-continuation-20260930.md",
+      "line": 11,
+      "text": "The device is idle on primary Chat landing",
+      "suggestion": "Use \"The runner left the device idle on primary Chat landing\" to describe the recorded final observation rather than assert live state after owner access. Physical README already uses past tense."
+    }
+  ],
+  "limitations": [
+    "Did not re-audit 21 upstream source files or provide legal eligibility advice; root/peer source-hash assessment is correctly bounded and its published digest was verified.",
+    "Did not independently rerun builds or observe current device state.",
+    "Current remote/ordinary results may advance after this pinned documentation checkpoint."
+  ]
+}

@@ -1,0 +1,202 @@
+{
+  "status": "PASS",
+  "errors": [],
+  "candidate": "605b0dfc2d660b36bbabf16c6b433e556948489d",
+  "run_id": 36664671504,
+  "url": "https://github.com/HeyZeus100/skein/actions/runs/36664671504",
+  "baseline_run": 36654289463,
+  "baseline_receipt_sha256": "4cfafc62ad9c597daa1d365d1005e210efeb000ae02718c634e96aeed49228c2",
+  "api_receipts": [
+    {
+      "path": "build/agent-logs/ordinary-candidate605-audit/run-36664671504/run.json",
+      "sha256": "39fcfba155f67c9218ef58bca256c79d97f0e81948f40f54d18858bb4a269b52"
+    },
+    {
+      "path": "build/agent-logs/ordinary-candidate605-audit/run-36664671504/jobs.json",
+      "sha256": "2a2f509c0d5d0b56af5bbfad08504ca214bbee372f4c3048373b533d212ded35"
+    },
+    {
+      "path": "build/agent-logs/ordinary-candidate605-audit/run-36664671504/artifacts.json",
+      "sha256": "212f6449bc8529e34c82c3f24621dc1d652cedfcf1521f25eb0c732aaa52efc8"
+    }
+  ],
+  "required_steps": [
+    {
+      "name": "Checkout",
+      "passed": true,
+      "number": 2
+    },
+    {
+      "name": "Set up JDK 17 (Temurin)",
+      "passed": true,
+      "number": 3
+    },
+    {
+      "name": "Cache the tiny GGUF test model",
+      "passed": true,
+      "number": 4
+    },
+    {
+      "name": "Choose the OpenSSL tarball cache directory",
+      "passed": true,
+      "number": 5
+    },
+    {
+      "name": "Derive pinned OpenSSL sha256 (cache key)",
+      "passed": true,
+      "number": 6
+    },
+    {
+      "name": "Cache the pinned OpenSSL tarball",
+      "passed": true,
+      "number": 7
+    },
+    {
+      "name": "Put Android SDK cmdline-tools / platform-tools / emulator on PATH",
+      "passed": true,
+      "number": 8
+    },
+    {
+      "name": "Install required Android SDK packages",
+      "passed": true,
+      "number": 9
+    },
+    {
+      "name": "Set up Gradle",
+      "passed": true,
+      "number": 10
+    },
+    {
+      "name": "Verify actual XML reviewer",
+      "passed": true,
+      "number": 11
+    },
+    {
+      "name": "Enable KVM",
+      "passed": true,
+      "number": 12
+    },
+    {
+      "name": "Run instrumented tests",
+      "passed": true,
+      "number": 13
+    },
+    {
+      "name": "Require complete passing ordinary instrumentation XML",
+      "passed": true,
+      "number": 14
+    },
+    {
+      "name": "Record instrumentation source and artifact hashes",
+      "passed": true,
+      "number": 15
+    },
+    {
+      "name": "Upload instrumented test reports",
+      "passed": true,
+      "number": 16
+    }
+  ],
+  "archive": {
+    "path": "build/agent-logs/ordinary-candidate605-audit/run-36664671504/connected-test-reports.zip",
+    "sha256": "61b12d96444fec505dcb3590c4088dca8f4d6a36e25a65f9864553d102b4a9d3",
+    "api_digest": "sha256:61b12d96444fec505dcb3590c4088dca8f4d6a36e25a65f9864553d102b4a9d3",
+    "bytes": 970589,
+    "api_size": 970589,
+    "crc_checked": true
+  },
+  "manifest": {
+    "sha256": "265fca2dcf4fc61f1b7dd43fc7d6ffcdd87c40217e847636d8d726317dd30bc1",
+    "source_sha": "605b0dfc2d660b36bbabf16c6b433e556948489d",
+    "files_checked": 4,
+    "source_attribution": "host-declared git checkout, not APK attestation",
+    "built_apk_attribution": "host build outputs; installed bytes were not independently measured here",
+    "built_apks": [
+      {
+        "path": "app/build/outputs/apk/androidTest/dev/debug/app-dev-debug-androidTest.apk",
+        "sha256": "c0031aba98f41c615704b6b7956bad78b2fed0809669a314347f4d9f5b9585b9",
+        "bytes_in_artifact": false,
+        "independently_verified": false
+      },
+      {
+        "path": "app/build/outputs/apk/dev/debug/app-dev-debug.apk",
+        "sha256": "b4d809bf125b420e89a3c2f81837e5831a5bb0e07f4b42339e4618966cda1f48",
+        "bytes_in_artifact": false,
+        "independently_verified": false
+      },
+      {
+        "path": "core/vault/build/outputs/apk/androidTest/dev/debug/vault-dev-debug-androidTest.apk",
+        "sha256": "91a468ad00c197e7bac89ee9bfdf75fe889228371696680f4e6f3bd59d550a00",
+        "bytes_in_artifact": false,
+        "independently_verified": false
+      },
+      {
+        "path": "inference-service/build/outputs/apk/androidTest/dev/debug/inference-service-dev-debug-androidTest.apk",
+        "sha256": "d2c57749897c17d7d9fd721c841ab9e5a6b0a8987c9ff4a4215e1ed0bbd0a974",
+        "bytes_in_artifact": false,
+        "independently_verified": false
+      }
+    ]
+  },
+  "actual_xml": [
+    {
+      "path": "app/build/outputs/androidTest-results/connected/debug/flavors/dev/TEST-test(AVD) - 15.xml",
+      "sha256": "67a4c9fbaaae6cb9ba6660dfbb3991d67da631b0ceaf6a04c8f36f979cc7ed31",
+      "bytes": 8522,
+      "tests": 38
+    },
+    {
+      "path": "core/vault/build/outputs/androidTest-results/connected/debug/flavors/dev/TEST-test(AVD) - 15.xml",
+      "sha256": "13076fb37f5545756aa24153aaf477dfbc6633c5c3795ce5148b28054fe0693b",
+      "bytes": 38385,
+      "tests": 204
+    },
+    {
+      "path": "inference-service/build/outputs/androidTest-results/connected/debug/flavors/dev/TEST-test(AVD) - 15.xml",
+      "sha256": "2bd4cc5c074c76938ff86bf9f3d9df6687403c8caebd08818aa5afcd78661a34",
+      "bytes": 6496,
+      "tests": 39
+    }
+  ],
+  "totals": {
+    "tests": 281,
+    "passed": 281,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0
+  },
+  "test_identity_comparison": {
+    "app": {
+      "count": 38,
+      "removed": [],
+      "added": [],
+      "identical_to_accepted_e62": true
+    },
+    "core/vault": {
+      "count": 204,
+      "removed": [],
+      "added": [],
+      "identical_to_accepted_e62": true
+    },
+    "inference-service": {
+      "count": 39,
+      "removed": [],
+      "added": [],
+      "identical_to_accepted_e62": true
+    }
+  },
+  "independent_xml_review_matches_host": true,
+  "job_logs_sha256": "6a9eeba46328e047bf00263cf4036642f7bbce126f4de1f35862cc0774235fa6",
+  "instrumentation_task_lines": [
+    "2026-09-30T03:43:18.5273709Z > Task :app:connectedDevDebugAndroidTest",
+    "2026-09-30T03:44:00.9255846Z > Task :core:vault:connectedDevDebugAndroidTest",
+    "2026-09-30T03:42:32.2311268Z > Task :inference-service:connectedDevDebugAndroidTest"
+  ],
+  "limitations": [
+    "Manifest source and APK hashes are host-declared.",
+    "An emulator archive without APK bytes cannot independently verify built/installed APK hashes.",
+    "No Fold, installed e62, owner content, model quality, full hybrid retrieval or general runtime acceptance inferred.",
+    "This read-only review does not observe the owner Fold or install any application.",
+    "Ignored tests excluded by the ordinary runner remain outside these 281 executed cases; no new claim about previously excluded tests."
+  ]
+}

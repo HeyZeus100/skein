@@ -1,0 +1,43 @@
+{
+  "source_sha": "605b0dfc2d660b36bbabf16c6b433e556948489d",
+  "reviewed_report_sha256": "c1ed2466418d5e35f2d184f636ec5115ffa5899613355881bd7a684bde52a55f",
+  "archives_rehashed": [
+    {
+      "name": "ux-verification-records",
+      "sha256": "8eca50238bb1b8f63b0b6fe8f597f075cadbfee30c24c169a10aafa0af6dd656",
+      "bytes": 452071
+    },
+    {
+      "name": "rb-build-b",
+      "sha256": "d6d26f134ccb30b025f7d2d6cb67679d9d5dec548e0a8277532413f355e8527b",
+      "bytes": 100841114
+    },
+    {
+      "name": "rb-build-a",
+      "sha256": "8046b72e8369fc2cacf130ad3586a3c59855bc9493bdff2bd222d9a4aab59001",
+      "bytes": 100841100
+    },
+    {
+      "name": "so-determinism",
+      "sha256": "762424c97747819d39ff12ab556267c1e4d07c8367e4c45bafab0194fbd51c9c",
+      "bytes": 50711118
+    }
+  ],
+  "ux_actual_testcases": {
+    "tests": 1419,
+    "passed": 1339,
+    "skipped": 80
+  },
+  "ux_actual_manifest_pins": 715,
+  "apk_pair_bytes_equal": true,
+  "native_pair_bytes_equal_and_matches_embedded_llama": true,
+  "limitations": [
+    "Remote host/source evidence only; not installed APK attestation or physical acceptance",
+    "Unsigned release pair is distinct from signed debug e62 on Fold",
+    "Skipped tests remain skipped; no new goldens or broad missing-key/Fold layout acceptance",
+    "Tag-only SQLCipher regeneration skipped; no shader negative control in this run",
+    "Native pair covers llama; embedded native entry hashes do not alone establish every library matches older e62",
+    "No emulator/ordinary instrumentation result attributed to these two workflows",
+    "This root review reads retained archives and writes only review documentation; it does not install or execute an APK."
+  ]
+}

@@ -1,0 +1,419 @@
+{
+  "schema": "skein-recovery-next-step-audit-v1",
+  "source_sha": "605b0dfc2d660b36bbabf16c6b433e556948489d",
+  "bead": "skein-gg11.29",
+  "status": "bounded_static_findings; implementation_and_runtime_gates_open",
+  "scope": "Read-only next-step audit; no tracked edits, builds, device, dependency/tool installation, Beads changes or dispatch. Frozen application source unchanged.",
+  "findings": [
+    {
+      "fact": "Current passphrase import is first-run provisioning only. VaultRestoreState decrypts the export then calls setup(existingMaster); setup refuses any existing envelope before deleting/recreating aliases. A corrupt/unreadable envelope also does not authorize replacement.",
+      "anchors": [
+        {
+          "source": "restore",
+          "line": 80
+        },
+        {
+          "source": "setup_ui",
+          "line": 136
+        },
+        {
+          "source": "provider",
+          "line": 150
+        },
+        {
+          "source": "contract",
+          "line": 99
+        }
+      ],
+      "next_boundary": "Keep setup refusal intact. Existing-envelope recovery needs a separate explicit API/outcome and UI path, not removal of AlreadyInitialised or deletion/reset to reach Setup."
+    },
+    {
+      "fact": "Normal unlock already accepts either factor. Missing-key outcome returns manager to Locked; the screen always calls BIOMETRIC and offers only explicit reset on KeyMaterialGone.",
+      "anchors": [
+        {
+          "source": "manager",
+          "line": 202
+        },
+        {
+          "source": "manager",
+          "line": 258
+        },
+        {
+          "source": "unlock_ui",
+          "line": 203
+        },
+        {
+          "source": "unlock_ui",
+          "line": 294
+        }
+      ],
+      "next_boundary": "Smallest independent slice: an explicit credential retry in the Locked/missing-biometric-key flow using unlockManager.unlock(...DEVICE_CREDENTIAL), preserving the existing mutex, token publication and observers. This can recover access via a surviving factor without altering aliases/envelope."
+    },
+    {
+      "fact": "Permanent invalidation differs from missing alias: manager enters RecoveryRequired and ordinary unlock rejects that state. recoverAndRewrap requires RecoveryRequired; MainActivity currently renders only a notice there.",
+      "anchors": [
+        {
+          "source": "manager",
+          "line": 222
+        },
+        {
+          "source": "manager",
+          "line": 254
+        },
+        {
+          "source": "manager",
+          "line": 373
+        },
+        {
+          "source": "manager",
+          "line": 385
+        },
+        {
+          "source": "activity",
+          "line": 515
+        },
+        {
+          "source": "activity",
+          "line": 639
+        }
+      ],
+      "next_boundary": "Treat invalidation as its own typed transition and recovery UI. Do not turn missing alias, temporary failure or cancellation into permanent invalidation merely to reach rewrap. Existing rewrap can be wired only when its dead-factor/surviving-factor preconditions hold."
+    },
+    {
+      "fact": "Per-factor prompts are already derived. Credential uses DEVICE_CREDENTIAL only and no negative button; success requires returned CryptoObject cipher. Keys require per-use (0 second) authentication and unlocked device.",
+      "anchors": [
+        {
+          "source": "prompts",
+          "line": 59
+        },
+        {
+          "source": "prompts",
+          "line": 122
+        },
+        {
+          "source": "keystore",
+          "line": 57
+        }
+      ],
+      "next_boundary": "Reuse the factor-specific crypto-bound prompt; do not broaden the biometric prompt mask or auth validity to implement fallback. Test actual credential prompt binding separately from fake provider results."
+    },
+    {
+      "fact": "A passphrase export authenticates its own ciphertext and recovered master length, but its format contains no vault identity. A different vault export with its correct passphrase can therefore produce a valid unrelated 32-byte master.",
+      "anchors": [
+        {
+          "source": "recovery_format",
+          "line": 48
+        },
+        {
+          "source": "export",
+          "line": 193
+        },
+        {
+          "source": "export",
+          "line": 215
+        }
+      ],
+      "next_boundary": "Prove the candidate master opens the intended existing encrypted vault before any alias/envelope replacement. Missing DB, corruption, wrong key and I/O must be non-destructive typed refusal/indeterminate states, never permission to create a fresh vault."
+    },
+    {
+      "fact": "VaultLifecycle.open runs migrations and returns a cached successful result when already open. SkeinSQLiteDriver.open applies WAL pragmas and extension probes. Neither current entry point is a dedicated non-mutating candidate-key preflight.",
+      "anchors": [
+        {
+          "source": "lifecycle",
+          "line": 250
+        },
+        {
+          "source": "lifecycle",
+          "line": 268
+        },
+        {
+          "source": "driver",
+          "line": 63
+        },
+        {
+          "source": "driver",
+          "line": 181
+        }
+      ],
+      "next_boundary": "Add or identify a locked-session, existing-file-only validation seam that genuinely reads encrypted database content with the candidate and does not create/migrate/seed or use cached open success. Preserve DB/WAL/SHM and attachment state while proof is pending."
+    },
+    {
+      "fact": "Current rewrap deletes/recreates the presumed dead fixed alias before committing the new envelope. Its safety depends on the other factor remaining usable. Storage supports initial write or replacing one factor, with version check and atomic file rename; it is not a two-alias transaction.",
+      "anchors": [
+        {
+          "source": "provider",
+          "line": 353
+        },
+        {
+          "source": "provider",
+          "line": 374
+        },
+        {
+          "source": "storage_contract",
+          "line": 93
+        },
+        {
+          "source": "storage",
+          "line": 126
+        },
+        {
+          "source": "storage",
+          "line": 189
+        }
+      ],
+      "next_boundary": "Do not reuse setup or perform two uncoordinated single-factor rewrites to recover over an existing envelope. Preserve any working alias and original envelope through cancellation/failure/crash. An initial both-actually-missing-only recovery slice may reduce alias replacement risk; replacing existing aliases requires an explicit staging/commit/rollback design and persistence tests. Format/alias evolution, if needed, is a separate reviewed boundary."
+    },
+    {
+      "fact": "Existing import test simulates alias AND envelope removal and checks recovered master equality, not a real populated database/attachment restoration. Its helper only deletes aliases/envelope; production VaultReset also deletes DB/WAL/SHM/attachments.",
+      "anchors": [
+        {
+          "source": "import_test",
+          "line": 140
+        },
+        {
+          "source": "import_test",
+          "line": 220
+        },
+        {
+          "source": "reset",
+          "line": 188
+        }
+      ],
+      "next_boundary": "Do not use that test or its reset comment as proof that current UI reset preserves content. Full recovery acceptance needs real encrypted disposable content and preserved original envelope; keep Reset separate behind existing two guards."
+    },
+    {
+      "fact": "Restore zeroes the recovered master in finally and the submitted CharArray, logs only fixed outcome type, and does not retain a master in Compose state. The picker checks its 64KiB limit only after readBytes; restore performs the synchronous KDF in its launched scope.",
+      "anchors": [
+        {
+          "source": "restore",
+          "line": 111
+        },
+        {
+          "source": "restore",
+          "line": 207
+        },
+        {
+          "source": "restore",
+          "line": 225
+        },
+        {
+          "source": "setup_ui",
+          "line": 331
+        }
+      ],
+      "next_boundary": "Retain zeroization/outcome privacy and audit disposal/cancellation lifetimes for the new path. Bound file reads while reading and run expensive derivation off the main thread without overlapping prompts or stale completion publishing. This is adjacent scope to touch only when reusing the restore UI."
+    }
+  ],
+  "focused_tests_for_next_slice": [
+    {
+      "boundary": "Credential fallback",
+      "cases": [
+        "Missing biometric alias + usable credential: explicit credential action, one prompt, original master, new authorized epoch, no alias/envelope/DB/model mutation.",
+        "Credential absent, invalidated, cancelled, device-locked or temporary keystore error remain distinct; no reset/setup, no auth token on failure.",
+        "Concurrent taps, background/lock and late success cannot duplicate prompts or publish stale session; RecoveryRequired is not silently coerced to Locked."
+      ],
+      "existing_seams": [
+        {
+          "source": "manager_test",
+          "line": 138
+        },
+        {
+          "source": "manager_test",
+          "line": 816
+        },
+        {
+          "source": "manager_test",
+          "line": 908
+        },
+        {
+          "source": "prompt_test",
+          "line": 1
+        }
+      ]
+    },
+    {
+      "boundary": "Candidate master validation",
+      "cases": [
+        "Correct passphrase for a different vault export rejects before any write. Wrong passphrase/tampered/malformed/unsupported export and absent/corrupt DB preserve exact prior bytes/aliases.",
+        "Already-open lifecycle result cannot accidentally validate an unrelated key; fresh actual encrypted-content read required.",
+        "Typed status distinguishes cannot verify from total recovery loss without logging secrets."
+      ],
+      "existing_seams": [
+        {
+          "source": "restore_test",
+          "line": 61
+        },
+        {
+          "source": "restore_test",
+          "line": 75
+        },
+        {
+          "source": "import_test",
+          "line": 125
+        }
+      ]
+    },
+    {
+      "boundary": "Commit and preservation",
+      "cases": [
+        "Cancellation or injected error before/after each alias creation, wrap and envelope rename; compare exact old envelope and remaining working-factor usability. Restart at each boundary; no stuck transaction or destructive reset marker.",
+        "Stale envelope/version, concurrent reset/recovery and lock during prompts cannot commit an outdated recovery or expose an unauthorized session.",
+        "Real disposable encrypted note/chat/draft/revision plus attachment: restore same master, read original content; failed attempts keep DB/WAL/SHM, blobs, models and envelope unchanged. Models remain untouched for success too.",
+        "Copied candidate keys/passphrase arrays zeroed on success, failure and cancellation; no secret text in logs/UI state; recovered master lifetime follows normal lock observers."
+      ],
+      "existing_seams": [
+        {
+          "source": "storage_test",
+          "line": 194
+        },
+        {
+          "source": "storage_test",
+          "line": 247
+        },
+        {
+          "source": "restore_test",
+          "line": 61
+        },
+        {
+          "source": "bootstrap",
+          "line": 204
+        }
+      ]
+    }
+  ],
+  "recommendation": "Sequence a narrow non-mutating credential fallback first, then candidate-key proof and transactional existing-envelope recovery as separately reviewable changes. Keep the broad P0 recovery gate open until preservation, crash/cancellation and real disposable-device behavior are demonstrated. No source or runtime acceptance is supplied by this audit.",
+  "source_artifacts": [
+    {
+      "id": "provider",
+      "path": "core/vault/src/main/kotlin/app/skein/core/vault/key/VaultKeyProviderImpl.kt",
+      "sha256": "713041697ed958c9def5c1c7b184465dcc9538b9c8117df5e57b9ab9bde73b8a",
+      "bytes": 26549
+    },
+    {
+      "id": "contract",
+      "path": "core/vault/src/main/kotlin/app/skein/core/vault/key/VaultKeyProvider.kt",
+      "sha256": "916f033c85fa7ca662c5cf042a33c3cca61f5bdcc27d16655bc596d63eb8f40f",
+      "bytes": 13455
+    },
+    {
+      "id": "manager",
+      "path": "core/vault/src/main/kotlin/app/skein/core/vault/session/UnlockManager.kt",
+      "sha256": "e2bc899ca3c349cd05220e6234d5652b4a8e71c961d8a97de0cef320a17091f7",
+      "bytes": 35046
+    },
+    {
+      "id": "unlock_ui",
+      "path": "feature/shell/src/main/kotlin/app/skein/feature/shell/auth/BiometricUnlockScreen.kt",
+      "sha256": "78165dec9d7b1ef7eda3ec4beb7e5dd20af5fdd017eadfe475c7c2a19f70bb3a",
+      "bytes": 25217
+    },
+    {
+      "id": "restore",
+      "path": "feature/shell/src/main/kotlin/app/skein/feature/shell/auth/VaultRestoreState.kt",
+      "sha256": "0ab6a41d569544d526200ce404513ccd63cd8cd88ce53dd190a4d2481bef97af",
+      "bytes": 11924
+    },
+    {
+      "id": "setup_ui",
+      "path": "feature/shell/src/main/kotlin/app/skein/feature/shell/auth/VaultSetupScreen.kt",
+      "sha256": "3cd2e928d500664b1ff9472aa0db86d031652ac6391fccd1e8b7321d1488f706",
+      "bytes": 17512
+    },
+    {
+      "id": "activity",
+      "path": "app/src/main/kotlin/app/skein/MainActivity.kt",
+      "sha256": "9b1315fb0fbb12328cf2a376bf5802aa97a8bf76d127dd80aef209efa3365115",
+      "bytes": 34183
+    },
+    {
+      "id": "prompts",
+      "path": "core/vault/src/main/kotlin/app/skein/core/vault/key/AndroidBiometricAuthenticator.kt",
+      "sha256": "571bb89732b240a0311cbce131b1445021d2cc0d51359577f94e3fbf39fbca33",
+      "bytes": 7526
+    },
+    {
+      "id": "keystore",
+      "path": "core/vault/src/main/kotlin/app/skein/core/vault/key/AndroidKeystoreFacade.kt",
+      "sha256": "7962fee6815a912c15518da1f648d18c9444595ff86d3d64ae55020627d0afad",
+      "bytes": 4493
+    },
+    {
+      "id": "export",
+      "path": "core/vault/src/main/kotlin/app/skein/core/vault/key/PassphraseKeyExport.kt",
+      "sha256": "69afb4067f0d6c2949c48113d8d3ef2b1b98db6d73e440c0bd1f8884a2a0458e",
+      "bytes": 12997
+    },
+    {
+      "id": "recovery_format",
+      "path": "core/vault/src/main/kotlin/app/skein/core/vault/key/RecoveryEnvelope.kt",
+      "sha256": "cec1066c6d62116a2230cd96d0382a2392fc0e5ab1b18519c898a0fe8e8f48c8",
+      "bytes": 7500
+    },
+    {
+      "id": "storage_contract",
+      "path": "core/vault/src/main/kotlin/app/skein/core/vault/key/MasterKeyStorage.kt",
+      "sha256": "25c824c3ea4621cae58354ef10c38ef90cdadfa4f80d67b9248205905449a981",
+      "bytes": 6436
+    },
+    {
+      "id": "storage",
+      "path": "core/vault/src/main/kotlin/app/skein/core/vault/key/FileMasterKeyStorage.kt",
+      "sha256": "2dbc60d3c15d0a8f9f6ae35fe40a3732aeb58d971f498fdd43916eb5cd1d4cfc",
+      "bytes": 17846
+    },
+    {
+      "id": "lifecycle",
+      "path": "core/vault/src/main/kotlin/app/skein/core/vault/lifecycle/VaultLifecycle.kt",
+      "sha256": "ee3e899f4f24ac8a5ab19651b83f82d31914072577df764e36394e5494c8c8c6",
+      "bytes": 30228
+    },
+    {
+      "id": "driver",
+      "path": "core/vault/src/main/kotlin/app/skein/core/vault/db/SkeinSQLiteDriver.kt",
+      "sha256": "d4110d897cfeee84e0df153a4d86fbc113d1c12672048e77b8755adf293bccec",
+      "bytes": 12491
+    },
+    {
+      "id": "reset",
+      "path": "core/vault/src/main/kotlin/app/skein/core/vault/lifecycle/VaultReset.kt",
+      "sha256": "38c885e6eebf8d208fe00683cd891435e2fed2ea7c6a030709adbce26ba308bf",
+      "bytes": 11491
+    },
+    {
+      "id": "bootstrap",
+      "path": "app/src/main/kotlin/app/skein/vault/VaultBootstrap.kt",
+      "sha256": "258f1f6166763e8743a6ecf9ad4e183347f7225ff51fd342143509e37a162fa0",
+      "bytes": 14657
+    },
+    {
+      "id": "import_test",
+      "path": "core/vault/src/test/kotlin/app/skein/core/vault/key/VaultKeyProviderImportTest.kt",
+      "sha256": "0b1f0970173188b81b84d8c460920ee26697961a3aca56139903240831e92d9d",
+      "bytes": 9674
+    },
+    {
+      "id": "storage_test",
+      "path": "core/vault/src/test/kotlin/app/skein/core/vault/key/FileMasterKeyStorageTest.kt",
+      "sha256": "b28c13d7e27409d7b25b32dfa3eeca4ea2eedf661c4d812ae830004ec70dda3b",
+      "bytes": 15005
+    },
+    {
+      "id": "restore_test",
+      "path": "feature/shell/src/test/kotlin/app/skein/feature/shell/auth/VaultRestoreStateTest.kt",
+      "sha256": "5cbbea30f3691bd3b1dc30efa2ff025ba223c0d3223ddcaf7edd151b73ef9d01",
+      "bytes": 11628
+    },
+    {
+      "id": "manager_test",
+      "path": "core/vault/src/test/kotlin/app/skein/core/vault/session/UnlockManagerTest.kt",
+      "sha256": "a5b9223817f692d915e6d474cec0a563fcac5853bb56576241d0beaab0cb4849",
+      "bytes": 39747
+    },
+    {
+      "id": "prompt_test",
+      "path": "core/vault/src/test/kotlin/app/skein/core/vault/key/PromptInfoForFactorTest.kt",
+      "sha256": "bea63b31bedcbfbc2e7a659a843bd53d8b5d80bcc0b3c2e1b0c9f7e4dc550733",
+      "bytes": 8532
+    }
+  ]
+}
