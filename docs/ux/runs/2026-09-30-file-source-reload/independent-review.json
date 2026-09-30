@@ -1,0 +1,1167 @@
+{
+  "reviewer": "/root/recovery",
+  "scope": "independent actual XML/hash, frozen source and exact-method negative control audit; no reviewer builds/device",
+  "verdict": "PASS within bounded host implementation scope",
+  "source_base": "a2effe4ac39e88af5fd577017a5e7ce0bdbce400",
+  "source_files": [
+    {
+      "path": "app/src/main/kotlin/app/skein/shell/DocumentDeleteCoordinator.kt",
+      "sha256": "beefeac9961175afdc0ea05adf04a87a2093ce55c8f532d86b9bd9894a48eda4",
+      "bytes": 14382
+    },
+    {
+      "path": "app/src/main/kotlin/app/skein/shell/DocumentDeletionServices.kt",
+      "sha256": "0d2315aaea18d71da495c87bff23c5d0554ff4ff782ee469f904f2e2e349a881",
+      "bytes": 4061
+    },
+    {
+      "path": "app/src/test/kotlin/app/skein/shell/FileDocumentDeleteCoordinatorTest.kt",
+      "sha256": "37ac57b700ba7c4274b8eb4ecc42709cf7165d7792ce3d90ae969b8efd075f92",
+      "bytes": 18802
+    },
+    {
+      "path": "feature/editor/src/main/kotlin/app/skein/feature/editor/EditorState.kt",
+      "sha256": "d149fdcdd3e8c6b9d4c595cb7d33ba228192f514256e2adbe673b9c8c0f5cb90",
+      "bytes": 16223
+    },
+    {
+      "path": "feature/editor/src/main/kotlin/app/skein/feature/editor/notetab/NoteDeletionRegistry.kt",
+      "sha256": "08f63375bb658b7304c8d1c4e799fcfb2db4d1fab63537aeec5c2cd55f81f8f4",
+      "bytes": 9281
+    },
+    {
+      "path": "feature/editor/src/main/kotlin/app/skein/feature/editor/notetab/NoteTab.kt",
+      "sha256": "f0fe4232e5b49e7ed1a762a935919c1d2efd8f852489c57c5dc5c2d4f84cb65f",
+      "bytes": 20819
+    },
+    {
+      "path": "feature/editor/src/main/kotlin/app/skein/feature/editor/notetab/NoteTabState.kt",
+      "sha256": "02d4dbcdc8c77d622ecc0c9d6c3ed37718841cec3a02360cd439d1c50e04d913",
+      "bytes": 24545
+    },
+    {
+      "path": "feature/editor/src/test/kotlin/app/skein/feature/editor/notetab/NoteSourceDetachmentTest.kt",
+      "sha256": "de9d5e41db043a6477cfa8fb632161d6328e0e13bd566e74facd73497e26eb65",
+      "bytes": 27319
+    }
+  ],
+  "all8_live_hashes_restored_to_verified_positive_source": true,
+  "positive_archive_sha256": "b50404ec7c83ae4af4d0656238bdfc93fa35aecb15a3e37a439c98e248a32ac8",
+  "positive_counts": {
+    "pass": 896,
+    "skipped": 18
+  },
+  "xml_files": 127,
+  "all878_prior_case_outcomes_and_skip_details_preserved": true,
+  "exact_new_case_count": 36,
+  "added": [
+    {
+      "xml": "app/build/test-results/testDevDebugUnitTest/TEST-app.skein.shell.FileDocumentDeleteCoordinatorTest.xml",
+      "class": "app.skein.shell.FileDocumentDeleteCoordinatorTest",
+      "name": "commit return cancellation still reloads surviving writer and keeps its route"
+    },
+    {
+      "xml": "app/build/test-results/testDevDebugUnitTest/TEST-app.skein.shell.FileDocumentDeleteCoordinatorTest.xml",
+      "class": "app.skein.shell.FileDocumentDeleteCoordinatorTest",
+      "name": "failed survivor reload reports committed deletion and never rolls it back"
+    },
+    {
+      "xml": "app/build/test-results/testDevDebugUnitTest/TEST-app.skein.shell.FileDocumentDeleteCoordinatorTest.xml",
+      "class": "app.skein.shell.FileDocumentDeleteCoordinatorTest",
+      "name": "failed transaction rolls back survivor reservation without reloading or pruning"
+    },
+    {
+      "xml": "app/build/test-results/testDevDebugUnitTest/TEST-app.skein.shell.FileDocumentDeleteCoordinatorTest.xml",
+      "class": "app.skein.shell.FileDocumentDeleteCoordinatorTest",
+      "name": "qualified AIOUT survivor reserves before any drain and reloads after commit without pruning"
+    },
+    {
+      "xml": "app/build/test-results/testDevDebugUnitTest/TEST-app.skein.shell.FileDocumentDeleteCoordinatorTest.xml",
+      "class": "app.skein.shell.FileDocumentDeleteCoordinatorTest",
+      "name": "unavailable survivor reservation restores deleted writers before any drain"
+    },
+    {
+      "xml": "app/build/test-results/testDevDebugUnitTest/TEST-app.skein.shell.FileDocumentDeleteCoordinatorTest.xml",
+      "class": "app.skein.shell.FileDocumentDeleteCoordinatorTest",
+      "name": "unsupported ATTACHMENT survivor remains refused even when AIOUT reload is qualified"
+    },
+    {
+      "xml": "app/build/test-results/testDevDebugUnitTest/TEST-app.skein.shell.FileDocumentDeleteCoordinatorTest.xml",
+      "class": "app.skein.shell.FileDocumentDeleteCoordinatorTest",
+      "name": "unsupported CHAT survivor remains refused even when AIOUT reload is qualified"
+    },
+    {
+      "xml": "app/build/test-results/testFossDebugUnitTest/TEST-app.skein.shell.FileDocumentDeleteCoordinatorTest.xml",
+      "class": "app.skein.shell.FileDocumentDeleteCoordinatorTest",
+      "name": "commit return cancellation still reloads surviving writer and keeps its route"
+    },
+    {
+      "xml": "app/build/test-results/testFossDebugUnitTest/TEST-app.skein.shell.FileDocumentDeleteCoordinatorTest.xml",
+      "class": "app.skein.shell.FileDocumentDeleteCoordinatorTest",
+      "name": "failed survivor reload reports committed deletion and never rolls it back"
+    },
+    {
+      "xml": "app/build/test-results/testFossDebugUnitTest/TEST-app.skein.shell.FileDocumentDeleteCoordinatorTest.xml",
+      "class": "app.skein.shell.FileDocumentDeleteCoordinatorTest",
+      "name": "failed transaction rolls back survivor reservation without reloading or pruning"
+    },
+    {
+      "xml": "app/build/test-results/testFossDebugUnitTest/TEST-app.skein.shell.FileDocumentDeleteCoordinatorTest.xml",
+      "class": "app.skein.shell.FileDocumentDeleteCoordinatorTest",
+      "name": "qualified AIOUT survivor reserves before any drain and reloads after commit without pruning"
+    },
+    {
+      "xml": "app/build/test-results/testFossDebugUnitTest/TEST-app.skein.shell.FileDocumentDeleteCoordinatorTest.xml",
+      "class": "app.skein.shell.FileDocumentDeleteCoordinatorTest",
+      "name": "unavailable survivor reservation restores deleted writers before any drain"
+    },
+    {
+      "xml": "app/build/test-results/testFossDebugUnitTest/TEST-app.skein.shell.FileDocumentDeleteCoordinatorTest.xml",
+      "class": "app.skein.shell.FileDocumentDeleteCoordinatorTest",
+      "name": "unsupported ATTACHMENT survivor remains refused even when AIOUT reload is qualified"
+    },
+    {
+      "xml": "app/build/test-results/testFossDebugUnitTest/TEST-app.skein.shell.FileDocumentDeleteCoordinatorTest.xml",
+      "class": "app.skein.shell.FileDocumentDeleteCoordinatorTest",
+      "name": "unsupported CHAT survivor remains refused even when AIOUT reload is qualified"
+    },
+    {
+      "xml": "feature/editor/build/test-results/testDebugUnitTest/TEST-app.skein.feature.editor.notetab.NoteSourceDetachmentTest.xml",
+      "class": "app.skein.feature.editor.notetab.NoteSourceDetachmentTest",
+      "name": "a pane registered during reload is included and receives current metadata"
+    },
+    {
+      "xml": "feature/editor/build/test-results/testDebugUnitTest/TEST-app.skein.feature.editor.notetab.NoteSourceDetachmentTest.xml",
+      "class": "app.skein.feature.editor.notetab.NoteSourceDetachmentTest",
+      "name": "abandoned composition unregisters its constructor enrollment on scope completion"
+    },
+    {
+      "xml": "feature/editor/build/test-results/testDebugUnitTest/TEST-app.skein.feature.editor.notetab.NoteSourceDetachmentTest.xml",
+      "class": "app.skein.feature.editor.notetab.NoteSourceDetachmentTest",
+      "name": "bounded reload timeout does not mark survivor deleted or admit stale writers"
+    },
+    {
+      "xml": "feature/editor/build/test-results/testDebugUnitTest/TEST-app.skein.feature.editor.notetab.NoteSourceDetachmentTest.xml",
+      "class": "app.skein.feature.editor.notetab.NoteSourceDetachmentTest",
+      "name": "committed reload preserves dirty body title selection and user metadata while merging current fields"
+    },
+    {
+      "xml": "feature/editor/build/test-results/testDebugUnitTest/TEST-app.skein.feature.editor.notetab.NoteSourceDetachmentTest.xml",
+      "class": "app.skein.feature.editor.notetab.NoteSourceDetachmentTest",
+      "name": "failed precommit save refuses readiness and retains the source and dirty buffer"
+    },
+    {
+      "xml": "feature/editor/build/test-results/testDebugUnitTest/TEST-app.skein.feature.editor.notetab.NoteSourceDetachmentTest.xml",
+      "class": "app.skein.feature.editor.notetab.NoteSourceDetachmentTest",
+      "name": "failed reload keeps dirty buffer and writer paused until a fresh pane can reload"
+    },
+    {
+      "xml": "feature/editor/build/test-results/testDebugUnitTest/TEST-app.skein.feature.editor.notetab.NoteSourceDetachmentTest.xml",
+      "class": "app.skein.feature.editor.notetab.NoteSourceDetachmentTest",
+      "name": "initial stale read must finish before reload can resume an editor"
+    },
+    {
+      "xml": "feature/editor/build/test-results/testDebugUnitTest/TEST-app.skein.feature.editor.notetab.NoteSourceDetachmentTest.xml",
+      "class": "app.skein.feature.editor.notetab.NoteSourceDetachmentTest",
+      "name": "late dirty registrant prevents commit until its original content is durably flushed"
+    },
+    {
+      "xml": "feature/editor/build/test-results/testDebugUnitTest/TEST-app.skein.feature.editor.notetab.NoteSourceDetachmentTest.xml",
+      "class": "app.skein.feature.editor.notetab.NoteSourceDetachmentTest",
+      "name": "lock after commit preserves precommit dirty body title and metadata durably"
+    },
+    {
+      "xml": "feature/editor/build/test-results/testDebugUnitTest/TEST-app.skein.feature.editor.notetab.NoteSourceDetachmentTest.xml",
+      "class": "app.skein.feature.editor.notetab.NoteSourceDetachmentTest",
+      "name": "lock during suspended reload cannot reopen old session writer"
+    },
+    {
+      "xml": "feature/editor/build/test-results/testDebugUnitTest/TEST-app.skein.feature.editor.notetab.NoteSourceDetachmentTest.xml",
+      "class": "app.skein.feature.editor.notetab.NoteSourceDetachmentTest",
+      "name": "new pane after completed reload cannot reintroduce old source"
+    },
+    {
+      "xml": "feature/editor/build/test-results/testDebugUnitTest/TEST-app.skein.feature.editor.notetab.NoteSourceDetachmentTest.xml",
+      "class": "app.skein.feature.editor.notetab.NoteSourceDetachmentTest",
+      "name": "new pane during another detachment retains earlier source tombstones"
+    },
+    {
+      "xml": "feature/editor/build/test-results/testDebugUnitTest/TEST-app.skein.feature.editor.notetab.NoteSourceDetachmentTest.xml",
+      "class": "app.skein.feature.editor.notetab.NoteSourceDetachmentTest",
+      "name": "new pane reload has its own bound and leaves timed out writer paused"
+    },
+    {
+      "xml": "feature/editor/build/test-results/testDebugUnitTest/TEST-app.skein.feature.editor.notetab.NoteSourceDetachmentTest.xml",
+      "class": "app.skein.feature.editor.notetab.NoteSourceDetachmentTest",
+      "name": "old source in a late edit cannot reattach the removed file"
+    },
+    {
+      "xml": "feature/editor/build/test-results/testDebugUnitTest/TEST-app.skein.feature.editor.notetab.NoteSourceDetachmentTest.xml",
+      "class": "app.skein.feature.editor.notetab.NoteSourceDetachmentTest",
+      "name": "pane enrolled after final readiness cannot admit edits before commit and lock"
+    },
+    {
+      "xml": "feature/editor/build/test-results/testDebugUnitTest/TEST-app.skein.feature.editor.notetab.NoteSourceDetachmentTest.xml",
+      "class": "app.skein.feature.editor.notetab.NoteSourceDetachmentTest",
+      "name": "pending autosave before commit cannot later overwrite the refreshed metadata"
+    },
+    {
+      "xml": "feature/editor/build/test-results/testDebugUnitTest/TEST-app.skein.feature.editor.notetab.NoteSourceDetachmentTest.xml",
+      "class": "app.skein.feature.editor.notetab.NoteSourceDetachmentTest",
+      "name": "reservation drains already admitted write before detachment"
+    },
+    {
+      "xml": "feature/editor/build/test-results/testDebugUnitTest/TEST-app.skein.feature.editor.notetab.NoteSourceDetachmentTest.xml",
+      "class": "app.skein.feature.editor.notetab.NoteSourceDetachmentTest",
+      "name": "rollback preserves original source and pending body title and metadata"
+    },
+    {
+      "xml": "feature/editor/build/test-results/testDebugUnitTest/TEST-app.skein.feature.editor.notetab.NoteSourceDetachmentTest.xml",
+      "class": "app.skein.feature.editor.notetab.NoteSourceDetachmentTest",
+      "name": "two dirty body panes refuse before forced persistence or deletion"
+    },
+    {
+      "xml": "feature/editor/build/test-results/testDebugUnitTest/TEST-app.skein.feature.editor.notetab.NoteSourceDetachmentTest.xml",
+      "class": "app.skein.feature.editor.notetab.NoteSourceDetachmentTest",
+      "name": "two dirty metadata panes refuse before forced persistence or deletion"
+    },
+    {
+      "xml": "feature/editor/build/test-results/testDebugUnitTest/TEST-app.skein.feature.editor.notetab.NoteSourceDetachmentTest.xml",
+      "class": "app.skein.feature.editor.notetab.NoteSourceDetachmentTest",
+      "name": "two dirty title panes refuse before forced persistence or deletion"
+    },
+    {
+      "xml": "feature/editor/build/test-results/testDebugUnitTest/TEST-app.skein.feature.editor.notetab.NoteSourceDetachmentTest.xml",
+      "class": "app.skein.feature.editor.notetab.NoteSourceDetachmentTest",
+      "name": "unchanged buffer takes current body and title without stale overwrite"
+    }
+  ],
+  "negative": {
+    "archive_sha256": "efec21a9d86ad8f9f57eeff0ccf433709375077f118f4ad38d5d05cdecd5daae",
+    "counts": {
+      "failure": 2
+    },
+    "exact_original_request_method_only_restored": true,
+    "other7_files_and_remaining_coordinator_source_identical": true,
+    "failure": "Both dev/foss expected missing qualified-AIOUT delete prompt; this is not a whole-old-commit execution."
+  },
+  "executed_tasks": [
+    ":app:testDevDebugUnitTest",
+    ":app:testFossDebugUnitTest",
+    ":feature:editor:testDebugUnitTest",
+    ":app:compileDevDebugAndroidTestKotlin",
+    ":app:compileFossDebugAndroidTestKotlin",
+    ":feature:editor:compileDebugAndroidTestKotlin"
+  ],
+  "lint": "Both ktlintCheck tasks UP-TO-DATE in final full gate; same frozen sources; no fresh-lint-execution claim.",
+  "findings": {
+    "F1": "Resolved source and passing divergent body/title/metadata refusal regressions.",
+    "F2": "Resolved constructor enrollment and passing final-validation-to-COMMIT gap+lock regression.",
+    "F3": "Resolved scope completion cleanup and passing abandoned-composition regression."
+  },
+  "required_regressions_pass": [
+    "two dirty body panes refuse before forced persistence or deletion",
+    "two dirty title panes refuse before forced persistence or deletion",
+    "two dirty metadata panes refuse before forced persistence or deletion",
+    "pane enrolled after final readiness cannot admit edits before commit and lock",
+    "abandoned composition unregisters its constructor enrollment on scope completion",
+    "lock after commit preserves precommit dirty body title and metadata durably"
+  ],
+  "original_findings_preserved": [
+    "review-snapshot-01.json",
+    "review-snapshot-02.json"
+  ],
+  "runtime_physical": "No new runtime execution or physical acceptance; compiled AndroidTest tasks are not executed instrumentation.",
+  "files": [
+    {
+      "path": "app/build/test-results/testDevDebugUnitTest/TEST-app.skein.AskPathComposeTest.xml",
+      "sha256": "a67d948f68455098823598083bd180f4d613396f98fa9c185f3971e25efa8778",
+      "counts": {
+        "pass": 9
+      }
+    },
+    {
+      "path": "app/build/test-results/testDevDebugUnitTest/TEST-app.skein.DataExtractionRulesTest.xml",
+      "sha256": "a1680e5a18746d5136726717c74a8823df6289f5aaf2b3b9ab0e5ba49185929e",
+      "counts": {
+        "pass": 5
+      }
+    },
+    {
+      "path": "app/build/test-results/testDevDebugUnitTest/TEST-app.skein.MainActivityAppearanceTest.xml",
+      "sha256": "2c6b932ab673ce2dfb2b61c72addb566d585e6ff874daacdd2f56e4cbb81b0e2",
+      "counts": {
+        "pass": 1
+      }
+    },
+    {
+      "path": "app/build/test-results/testDevDebugUnitTest/TEST-app.skein.MainActivityComposeTest.xml",
+      "sha256": "985ef4c4c5023412846d2a2664b5714b0985005b5ac8e3313ab525d8d6fc3608",
+      "counts": {
+        "pass": 27
+      }
+    },
+    {
+      "path": "app/build/test-results/testDevDebugUnitTest/TEST-app.skein.MainActivityConfigChangeTest.xml",
+      "sha256": "b8383ce455ea83eeb732a810efd0c8d9d609d0e1f92cdf637722cf350a7cd93c",
+      "counts": {
+        "pass": 1
+      }
+    },
+    {
+      "path": "app/build/test-results/testDevDebugUnitTest/TEST-app.skein.MainActivityDebugTestTagsTest.xml",
+      "sha256": "4865f327e1c2faac7d095afa4dab59602c21a91b94b19a2d04d6f48267b3f1f4",
+      "counts": {
+        "pass": 2
+      }
+    },
+    {
+      "path": "app/build/test-results/testDevDebugUnitTest/TEST-app.skein.MainActivityDocumentDeleteTest.xml",
+      "sha256": "59080ab24b10fe3aaef2611ed27e0c7186a8212000c2f69f78985941f35456f0",
+      "counts": {
+        "pass": 2
+      }
+    },
+    {
+      "path": "app/build/test-results/testDevDebugUnitTest/TEST-app.skein.MainActivityDraftRetentionTest.xml",
+      "sha256": "3323e9e6f8b25ae4907a3d163118acdb93304a08e77cabfcce41c436cf0624bc",
+      "counts": {
+        "pass": 2
+      }
+    },
+    {
+      "path": "app/build/test-results/testDevDebugUnitTest/TEST-app.skein.MainActivityFlagSecureTest.xml",
+      "sha256": "8fca19bb6b0d5738f6fb2e4c146169ba0314397ce17cc1a781ab9a759bb6fb3e",
+      "counts": {
+        "pass": 3
+      }
+    },
+    {
+      "path": "app/build/test-results/testDevDebugUnitTest/TEST-app.skein.MainActivityKeyMaterialGoneTest.xml",
+      "sha256": "5aa575f8a37f35b70c87158c53d0d908fb8622cf800c62d11fee5edab25d3b49",
+      "counts": {
+        "pass": 3
+      }
+    },
+    {
+      "path": "app/build/test-results/testDevDebugUnitTest/TEST-app.skein.MainActivityModelImportTest.xml",
+      "sha256": "c7287814676f4bc3b3e509ccd1a581c0b1d6b5e0a181d4a35fc6f1324051be63",
+      "counts": {
+        "pass": 2
+      }
+    },
+    {
+      "path": "app/build/test-results/testDevDebugUnitTest/TEST-app.skein.MainActivityNotificationDeepLinkTest.xml",
+      "sha256": "3f5f3ff7828e1cde6fd13ce979efd289f75fd4c70084f514f3840449ab764c35",
+      "counts": {
+        "pass": 7
+      }
+    },
+    {
+      "path": "app/build/test-results/testDevDebugUnitTest/TEST-app.skein.MainActivitySearchInsetsTest.xml",
+      "sha256": "b73811b9cf6ae6a0e96bcae66284b8f50f0b2b60ac8822e6aaf2228eb709b1d4",
+      "counts": {
+        "pass": 1
+      }
+    },
+    {
+      "path": "app/build/test-results/testDevDebugUnitTest/TEST-app.skein.MainActivitySystemBarsTest.xml",
+      "sha256": "a16be9a77942c19ba99ba302802b7af015a0e7976b75fce6218a1a698fd37f9a",
+      "counts": {
+        "pass": 5
+      }
+    },
+    {
+      "path": "app/build/test-results/testDevDebugUnitTest/TEST-app.skein.MainActivityWorkspaceModelsTest.xml",
+      "sha256": "7ffe9186888134d75a1d49c26514f837e45af75c9d9a2ca950b60fc27204fe15",
+      "counts": {
+        "pass": 1
+      }
+    },
+    {
+      "path": "app/build/test-results/testDevDebugUnitTest/TEST-app.skein.MainActivityWorkspaceTest.xml",
+      "sha256": "a9008d0867fa195823f6d89e40fc3a5b3a15a7a2673ab17b930d5d24dd140d68",
+      "counts": {
+        "pass": 4
+      }
+    },
+    {
+      "path": "app/build/test-results/testDevDebugUnitTest/TEST-app.skein.ManifestPolicyTest.xml",
+      "sha256": "52bf1ea2cbfc06d19211f1cbc46a1c9ecb9fe2435f5b83a4c187c3eb2c96112e",
+      "counts": {
+        "pass": 25
+      }
+    },
+    {
+      "path": "app/build/test-results/testDevDebugUnitTest/TEST-app.skein.NavShellComposeTest.xml",
+      "sha256": "fa8291248a8d330014d66e03b93a3eff7fef8785d806149a97d6ebb02e5aeb89",
+      "counts": {
+        "pass": 5
+      }
+    },
+    {
+      "path": "app/build/test-results/testDevDebugUnitTest/TEST-app.skein.NoFileProviderOnClasspathTest.xml",
+      "sha256": "45164507ef88c1acbfa46eb5fac2a55aba4328db3a5add9b6be7633a5e5aa134",
+      "counts": {
+        "pass": 2
+      }
+    },
+    {
+      "path": "app/build/test-results/testDevDebugUnitTest/TEST-app.skein.RecentsScreenshotDisabledTest.xml",
+      "sha256": "0bed0a96b901e9149986ab5da0b4cff14578ea9685e57d3888c278e20c503b78",
+      "counts": {
+        "pass": 2
+      }
+    },
+    {
+      "path": "app/build/test-results/testDevDebugUnitTest/TEST-app.skein.ShellHotfixComposeTest.xml",
+      "sha256": "31bd920ab136fcd67abac1a911b4c807b13682769e8fd94a6ed1329a9b2cd559",
+      "counts": {
+        "pass": 6
+      }
+    },
+    {
+      "path": "app/build/test-results/testDevDebugUnitTest/TEST-app.skein.export.stage.BootReceiverTest.xml",
+      "sha256": "3b96514d04ac16108819e1be4f7f101983afec9248c7bed36c8b6b4c2b4e5f55",
+      "counts": {
+        "pass": 8
+      }
+    },
+    {
+      "path": "app/build/test-results/testDevDebugUnitTest/TEST-app.skein.export.stage.StagedPlaintextSweeperTest.xml",
+      "sha256": "63acd5ce38f10aa9b22ded42533144819cf797d8d2c8e4adf46e7d1a3787866b",
+      "counts": {
+        "pass": 13
+      }
+    },
+    {
+      "path": "app/build/test-results/testDevDebugUnitTest/TEST-app.skein.ingest.IngestSchedulerTest.xml",
+      "sha256": "8f88d1e249a8262d805868418e16da74542814172fc928fc0b273b68308f1fad",
+      "counts": {
+        "pass": 17
+      }
+    },
+    {
+      "path": "app/build/test-results/testDevDebugUnitTest/TEST-app.skein.ingest.IngestWorkerTest.xml",
+      "sha256": "3aa11ff962d65f192751009fdd6dce7cb7e9da2ff1cce29b409f486f874793a8",
+      "counts": {
+        "pass": 14
+      }
+    },
+    {
+      "path": "app/build/test-results/testDevDebugUnitTest/TEST-app.skein.ingest.ThermalIngestPacerTest.xml",
+      "sha256": "0a032a328e3303e22192318ff363c2ef2137a2e986af2e15e7f4fb5bfc6b73f9",
+      "counts": {
+        "pass": 5
+      }
+    },
+    {
+      "path": "app/build/test-results/testDevDebugUnitTest/TEST-app.skein.models.ManagedInferenceEngineTest.xml",
+      "sha256": "2e109574ab598d3e0f12557670b2dfd521d4b4edb68c77477723115ec2314822",
+      "counts": {
+        "pass": 5
+      }
+    },
+    {
+      "path": "app/build/test-results/testDevDebugUnitTest/TEST-app.skein.models.ModelImportCoordinatorTest.xml",
+      "sha256": "8ef12fcf4b8be9550dd0ea18e6a5e7cf525894bb63513acfe3db0d5d36514c0f",
+      "counts": {
+        "pass": 9
+      }
+    },
+    {
+      "path": "app/build/test-results/testDevDebugUnitTest/TEST-app.skein.models.ModelImportServiceLifetimeTest.xml",
+      "sha256": "5983299c1fbd009547cfcc841cf83b93873ba64227f1062451cc629904ecd246",
+      "counts": {
+        "pass": 3
+      }
+    },
+    {
+      "path": "app/build/test-results/testDevDebugUnitTest/TEST-app.skein.models.ModelImportServiceTest.xml",
+      "sha256": "f70c754cbbb39de2898a6682f360165539e68784f9d595a0d0b4766523e6fb77",
+      "counts": {
+        "pass": 1
+      }
+    },
+    {
+      "path": "app/build/test-results/testDevDebugUnitTest/TEST-app.skein.models.ModelServicesImportLifecycleTest.xml",
+      "sha256": "77c4f3a8884b79ceceec193a6f428b4921de446fd46c1cf73f0eda5b2ee887bb",
+      "counts": {
+        "pass": 3
+      }
+    },
+    {
+      "path": "app/build/test-results/testDevDebugUnitTest/TEST-app.skein.notify.IndexingNotifierTest.xml",
+      "sha256": "0a34f8b0e86925b488600179efca7dc560903c352c73a56b88c2dfebdcaa5f81",
+      "counts": {
+        "pass": 2
+      }
+    },
+    {
+      "path": "app/build/test-results/testDevDebugUnitTest/TEST-app.skein.shell.ChatModelStatusTest.xml",
+      "sha256": "a237759d95ca02bd010b8e339c1ebfcfd6a4e5517c302a274cf973da079bcaf0",
+      "counts": {
+        "pass": 4
+      }
+    },
+    {
+      "path": "app/build/test-results/testDevDebugUnitTest/TEST-app.skein.shell.DocumentDeleteCoordinatorTest.xml",
+      "sha256": "db0738d27e05955429614a70e22c5d2d4be0f30ef576968c128c318338e56da8",
+      "counts": {
+        "pass": 11
+      }
+    },
+    {
+      "path": "app/build/test-results/testDevDebugUnitTest/TEST-app.skein.shell.FileDocumentDeleteCoordinatorTest.xml",
+      "sha256": "be3d1e9657a80904ea3ce3f997b2835d1d0c511e6ca0aa0214c2c9ef9c378717",
+      "counts": {
+        "pass": 15
+      }
+    },
+    {
+      "path": "app/build/test-results/testDevDebugUnitTest/TEST-app.skein.shell.NotificationDeepLinksTest.xml",
+      "sha256": "1c8e3e26708bbd3c958b0b16747dad62d8b6f455de869f361d22389615a606ad",
+      "counts": {
+        "pass": 5
+      }
+    },
+    {
+      "path": "app/build/test-results/testDevDebugUnitTest/TEST-app.skein.system.AndroidSkeinLogSinkTest.xml",
+      "sha256": "3474d9a8ebcde116fb2350c9299e6e9c1072e44a854774a1eb565b7f66fe5ac6",
+      "counts": {
+        "pass": 6
+      }
+    },
+    {
+      "path": "app/build/test-results/testDevDebugUnitTest/TEST-app.skein.system.AppearancePrefsTest.xml",
+      "sha256": "c93e69e6352d636a0e68a3def7b5842002b3b6901778d65721ed41dd248d28eb",
+      "counts": {
+        "pass": 4
+      }
+    },
+    {
+      "path": "app/build/test-results/testDevDebugUnitTest/TEST-app.skein.system.NotificationsTest.xml",
+      "sha256": "64e3b65b9ed1e1aa3ea8e59db752c1414839dbf8d942cab56a1c856b869301ec",
+      "counts": {
+        "pass": 2
+      }
+    },
+    {
+      "path": "app/build/test-results/testDevDebugUnitTest/TEST-app.skein.system.SecurityPrefsTest.xml",
+      "sha256": "e8cb9d193fb6d9956931c3ac898faae1fd22b413b1a428f3ddd369609e3a31e7",
+      "counts": {
+        "pass": 11
+      }
+    },
+    {
+      "path": "app/build/test-results/testDevDebugUnitTest/TEST-app.skein.transfer.FolderImportJobTest.xml",
+      "sha256": "8b72a184b5ec30e51e7e3dc4b8bf8e5698e4d615d7f32260a61d625d509e6458",
+      "counts": {
+        "pass": 7
+      }
+    },
+    {
+      "path": "app/build/test-results/testDevDebugUnitTest/TEST-app.skein.vault.FactorRecoveryGateTest.xml",
+      "sha256": "fb0f536bc1ef5d5d53d04668d69e4754184daeabc7c9f5f2d6820c57a579e958",
+      "counts": {
+        "pass": 3
+      }
+    },
+    {
+      "path": "app/build/test-results/testDevDebugUnitTest/TEST-app.skein.vault.LockPolicyObserverTest.xml",
+      "sha256": "989a0e851f27676f947bfb37fe96544ac345e1472c044b281631ed18a6ce8b75",
+      "counts": {
+        "pass": 5
+      }
+    },
+    {
+      "path": "app/build/test-results/testDevDebugUnitTest/TEST-app.skein.vault.VaultBootstrapTest.xml",
+      "sha256": "8c630ea689321b725721d1aed4c9c401fe2495de4d5c311a0bac9df64e405a78",
+      "counts": {
+        "pass": 23
+      }
+    },
+    {
+      "path": "app/build/test-results/testDevDebugUnitTest/TEST-app.skein.vault.VaultGatePhaseTest.xml",
+      "sha256": "f417a2fe55c2c5705bd0206e6b6f7330e60a38ae4a031995a07618b886b2c4a5",
+      "counts": {
+        "pass": 12
+      }
+    },
+    {
+      "path": "app/build/test-results/testDevDebugUnitTest/TEST-app.skein.vault.VaultQuiesceIntegrationTest.xml",
+      "sha256": "4fdb65b85e41ce70b821c1af8902f5cd3c6fa2bb39dabad42699e558f67b3f3d",
+      "counts": {
+        "pass": 3
+      }
+    },
+    {
+      "path": "app/build/test-results/testFossDebugUnitTest/TEST-app.skein.AskPathComposeTest.xml",
+      "sha256": "a4f46612a7d6c13aa5a3d7c39955bf82c3bd2c3f339dee72e8ea52d14b777c76",
+      "counts": {
+        "pass": 9
+      }
+    },
+    {
+      "path": "app/build/test-results/testFossDebugUnitTest/TEST-app.skein.DataExtractionRulesTest.xml",
+      "sha256": "855b94ea1d977a0e1dfb60bb15ffbe3ffb19c1b6fee6d82e8559ba21183565e2",
+      "counts": {
+        "pass": 5
+      }
+    },
+    {
+      "path": "app/build/test-results/testFossDebugUnitTest/TEST-app.skein.MainActivityAppearanceTest.xml",
+      "sha256": "a83640d76b992b1a9802710b3b80e83d4657db953fa0176759bb02c1b3db3693",
+      "counts": {
+        "pass": 1
+      }
+    },
+    {
+      "path": "app/build/test-results/testFossDebugUnitTest/TEST-app.skein.MainActivityComposeTest.xml",
+      "sha256": "02200d95eb81aa54a777f271f3c04cc7a1bc11ecf53a000270203b8a36c19689",
+      "counts": {
+        "pass": 27
+      }
+    },
+    {
+      "path": "app/build/test-results/testFossDebugUnitTest/TEST-app.skein.MainActivityConfigChangeTest.xml",
+      "sha256": "b4b6181ce0dd5bd34733c64de2d50b6e51f8e73e10c4a66f5bdcf9ffeae89b88",
+      "counts": {
+        "pass": 1
+      }
+    },
+    {
+      "path": "app/build/test-results/testFossDebugUnitTest/TEST-app.skein.MainActivityDebugTestTagsTest.xml",
+      "sha256": "153cd1d4b9ef949ec175adbf290aa0ab9ab2641ae78bcf8d98d5b4868210a2c0",
+      "counts": {
+        "pass": 2
+      }
+    },
+    {
+      "path": "app/build/test-results/testFossDebugUnitTest/TEST-app.skein.MainActivityDocumentDeleteTest.xml",
+      "sha256": "25118efeeb317f658845e6739857b9995633aaa111d1e889c54fc51f1770f5b0",
+      "counts": {
+        "pass": 2
+      }
+    },
+    {
+      "path": "app/build/test-results/testFossDebugUnitTest/TEST-app.skein.MainActivityDraftRetentionTest.xml",
+      "sha256": "5b163e405e78ba9470e284958c081b111458f842c6085d71f190142f5a2e404e",
+      "counts": {
+        "pass": 2
+      }
+    },
+    {
+      "path": "app/build/test-results/testFossDebugUnitTest/TEST-app.skein.MainActivityFlagSecureTest.xml",
+      "sha256": "2e70a22cd51cdd790f679a38971c40148481bc04925c17cbfbf3c07fd732b0be",
+      "counts": {
+        "pass": 3
+      }
+    },
+    {
+      "path": "app/build/test-results/testFossDebugUnitTest/TEST-app.skein.MainActivityKeyMaterialGoneTest.xml",
+      "sha256": "955a38c1877f4be81bcabecf86ebfe5d214563707bd7793dcaf6b6d0b8856b61",
+      "counts": {
+        "pass": 3
+      }
+    },
+    {
+      "path": "app/build/test-results/testFossDebugUnitTest/TEST-app.skein.MainActivityModelImportTest.xml",
+      "sha256": "ea51d062cfa5f8645a78406019ebe0ea2b170a0ac0b7b4ab37d2f6970c48b4a2",
+      "counts": {
+        "pass": 2
+      }
+    },
+    {
+      "path": "app/build/test-results/testFossDebugUnitTest/TEST-app.skein.MainActivityNotificationDeepLinkTest.xml",
+      "sha256": "6558682f15a09d5a621cf8f850a196445fac10e42c49346684e19ea870728515",
+      "counts": {
+        "pass": 7
+      }
+    },
+    {
+      "path": "app/build/test-results/testFossDebugUnitTest/TEST-app.skein.MainActivitySearchInsetsTest.xml",
+      "sha256": "205fd1e5f2ce2f6cdb999110c65a2438c8c2add3690ca2ab730ffde496c2b062",
+      "counts": {
+        "pass": 1
+      }
+    },
+    {
+      "path": "app/build/test-results/testFossDebugUnitTest/TEST-app.skein.MainActivitySystemBarsTest.xml",
+      "sha256": "598de7e7dcb8df8dcc322690190a9b632469477dc62ddf2f94f58bff423a6d6f",
+      "counts": {
+        "pass": 5
+      }
+    },
+    {
+      "path": "app/build/test-results/testFossDebugUnitTest/TEST-app.skein.MainActivityWorkspaceModelsTest.xml",
+      "sha256": "2aa8d08fcb3ae208e473277464a45b91a05200501bb65b08bf2acbdae8a7489d",
+      "counts": {
+        "pass": 1
+      }
+    },
+    {
+      "path": "app/build/test-results/testFossDebugUnitTest/TEST-app.skein.MainActivityWorkspaceTest.xml",
+      "sha256": "dc41d68b7db74cc3e40bcae6952492c432dccc4dfa596382bd8cdb6553527877",
+      "counts": {
+        "pass": 4
+      }
+    },
+    {
+      "path": "app/build/test-results/testFossDebugUnitTest/TEST-app.skein.ManifestPolicyTest.xml",
+      "sha256": "0505699806c8f3112fbcb076974c63033770905db8b8018ae4bb83297cec0566",
+      "counts": {
+        "pass": 25
+      }
+    },
+    {
+      "path": "app/build/test-results/testFossDebugUnitTest/TEST-app.skein.NavShellComposeTest.xml",
+      "sha256": "7401932e490bfbc6263995dd1acdf4d6fc5b517225af4d7a830e4117bc5d0142",
+      "counts": {
+        "pass": 5
+      }
+    },
+    {
+      "path": "app/build/test-results/testFossDebugUnitTest/TEST-app.skein.NoFileProviderOnClasspathTest.xml",
+      "sha256": "2a811dfe34fcf727d61afbeaa067d7d76ae1271ed6757a352edcaa4f2ffe3f85",
+      "counts": {
+        "pass": 2
+      }
+    },
+    {
+      "path": "app/build/test-results/testFossDebugUnitTest/TEST-app.skein.RecentsScreenshotDisabledTest.xml",
+      "sha256": "f97fee9bf3b257d674da67d814679307c231aa954716313f2e813163198b3dca",
+      "counts": {
+        "pass": 2
+      }
+    },
+    {
+      "path": "app/build/test-results/testFossDebugUnitTest/TEST-app.skein.ShellHotfixComposeTest.xml",
+      "sha256": "19cfa034bda5cf5cde7f489293d73657f6bf6945fb48adfa20a2a7cd68473beb",
+      "counts": {
+        "pass": 6
+      }
+    },
+    {
+      "path": "app/build/test-results/testFossDebugUnitTest/TEST-app.skein.export.stage.BootReceiverTest.xml",
+      "sha256": "92904721598925900d399faf9c93f63f474603133473edf770b1c019e80af3a6",
+      "counts": {
+        "pass": 8
+      }
+    },
+    {
+      "path": "app/build/test-results/testFossDebugUnitTest/TEST-app.skein.export.stage.StagedPlaintextSweeperTest.xml",
+      "sha256": "a1c7e501e906143da5220b7fc7c31e09ae9fc6cdabbf2c387a1fcc65f702f4c0",
+      "counts": {
+        "pass": 13
+      }
+    },
+    {
+      "path": "app/build/test-results/testFossDebugUnitTest/TEST-app.skein.ingest.IngestSchedulerTest.xml",
+      "sha256": "73fb1fad440b5e43709094573b98bd75a851985db6e3092b68c7596d0c09314d",
+      "counts": {
+        "pass": 17
+      }
+    },
+    {
+      "path": "app/build/test-results/testFossDebugUnitTest/TEST-app.skein.ingest.IngestWorkerTest.xml",
+      "sha256": "41f6e79e1809607c4422455e8fe9d4471b2793579b9cf92d3c3786f49fa395f9",
+      "counts": {
+        "pass": 14
+      }
+    },
+    {
+      "path": "app/build/test-results/testFossDebugUnitTest/TEST-app.skein.ingest.ThermalIngestPacerTest.xml",
+      "sha256": "0adcceb942d38b7874df8aa19817c12a9ecb58d5e8c713ac13ea6cf742ca71ba",
+      "counts": {
+        "pass": 5
+      }
+    },
+    {
+      "path": "app/build/test-results/testFossDebugUnitTest/TEST-app.skein.models.ManagedInferenceEngineTest.xml",
+      "sha256": "468088185860095f9bb068e8b21024af8b0c30c0a3d50e1c6024ec905be6facc",
+      "counts": {
+        "pass": 5
+      }
+    },
+    {
+      "path": "app/build/test-results/testFossDebugUnitTest/TEST-app.skein.models.ModelImportCoordinatorTest.xml",
+      "sha256": "44a3e1e9c638d811a1baebb31477278658e523bfc3b1adaa411a1950f7ee57ad",
+      "counts": {
+        "pass": 9
+      }
+    },
+    {
+      "path": "app/build/test-results/testFossDebugUnitTest/TEST-app.skein.models.ModelImportServiceLifetimeTest.xml",
+      "sha256": "179329a9141155323e8ff01991b06d86b661e32e01879de1fe62aa9a5b2676b1",
+      "counts": {
+        "pass": 3
+      }
+    },
+    {
+      "path": "app/build/test-results/testFossDebugUnitTest/TEST-app.skein.models.ModelImportServiceTest.xml",
+      "sha256": "35f6808ffd9c11c4d11088fad7e3f56ef8d8add7d60aacf3f02edad4d8b6806b",
+      "counts": {
+        "pass": 1
+      }
+    },
+    {
+      "path": "app/build/test-results/testFossDebugUnitTest/TEST-app.skein.models.ModelServicesImportLifecycleTest.xml",
+      "sha256": "ca497ddf80ca58c55d95fcd90bb7306ded7172bc8cb22a9cf2d1b8bef9e3976c",
+      "counts": {
+        "pass": 3
+      }
+    },
+    {
+      "path": "app/build/test-results/testFossDebugUnitTest/TEST-app.skein.notify.IndexingNotifierTest.xml",
+      "sha256": "f2f935ae277deb63114d42ed47562a1ce6ccfb241504892fc6930f388a490960",
+      "counts": {
+        "pass": 2
+      }
+    },
+    {
+      "path": "app/build/test-results/testFossDebugUnitTest/TEST-app.skein.shell.ChatModelStatusTest.xml",
+      "sha256": "60d235e5cd10cf8d8ef05801cdbc1635edb0d1d15f90d98ac01475b5952bab79",
+      "counts": {
+        "pass": 4
+      }
+    },
+    {
+      "path": "app/build/test-results/testFossDebugUnitTest/TEST-app.skein.shell.DocumentDeleteCoordinatorTest.xml",
+      "sha256": "3032daf6cd04178cd45012dce353fc912ab61287545f1390b3754d74e529cc0a",
+      "counts": {
+        "pass": 11
+      }
+    },
+    {
+      "path": "app/build/test-results/testFossDebugUnitTest/TEST-app.skein.shell.FileDocumentDeleteCoordinatorTest.xml",
+      "sha256": "9d3647552a16417a3c42a0d7d2f9c4f6e2437972d820f53781213dd9dbf82b6d",
+      "counts": {
+        "pass": 15
+      }
+    },
+    {
+      "path": "app/build/test-results/testFossDebugUnitTest/TEST-app.skein.shell.NotificationDeepLinksTest.xml",
+      "sha256": "317006194ccf5b95b59f16d2a51999f5ebd12658106aa8c39d96e507b495fc8b",
+      "counts": {
+        "pass": 5
+      }
+    },
+    {
+      "path": "app/build/test-results/testFossDebugUnitTest/TEST-app.skein.system.AndroidSkeinLogSinkTest.xml",
+      "sha256": "cd2f193820c540412451d06f18e892e8b39b04767dd1729538c4f10223c0ff46",
+      "counts": {
+        "pass": 6
+      }
+    },
+    {
+      "path": "app/build/test-results/testFossDebugUnitTest/TEST-app.skein.system.AppearancePrefsTest.xml",
+      "sha256": "1ad5dbd73ae396b6b2265eb002c489e6a08b45bfd41c330252aa7a622ec757f0",
+      "counts": {
+        "pass": 4
+      }
+    },
+    {
+      "path": "app/build/test-results/testFossDebugUnitTest/TEST-app.skein.system.NotificationsTest.xml",
+      "sha256": "4f61b6a17832bce2b431593825dac61bc8e76da0eb177835565b3bdb6497240a",
+      "counts": {
+        "pass": 2
+      }
+    },
+    {
+      "path": "app/build/test-results/testFossDebugUnitTest/TEST-app.skein.system.SecurityPrefsTest.xml",
+      "sha256": "581319e1b5d088b299f616a517621c6814410c6166e50506dbfb98a49f94798e",
+      "counts": {
+        "pass": 11
+      }
+    },
+    {
+      "path": "app/build/test-results/testFossDebugUnitTest/TEST-app.skein.transfer.FolderImportJobTest.xml",
+      "sha256": "d24f985ec1e9a09484e71c5074adfd9e696513d548cb67c3a9eb3445550f7a84",
+      "counts": {
+        "pass": 7
+      }
+    },
+    {
+      "path": "app/build/test-results/testFossDebugUnitTest/TEST-app.skein.vault.FactorRecoveryGateTest.xml",
+      "sha256": "88901ea88b1bbf6e4561482a54c5a43e6572618303a37ef9b409f15310254d06",
+      "counts": {
+        "pass": 3
+      }
+    },
+    {
+      "path": "app/build/test-results/testFossDebugUnitTest/TEST-app.skein.vault.LockPolicyObserverTest.xml",
+      "sha256": "8579817698a81a1c0f579bd416e10cd21c5d36addc361d09238e666fe154ba1e",
+      "counts": {
+        "pass": 5
+      }
+    },
+    {
+      "path": "app/build/test-results/testFossDebugUnitTest/TEST-app.skein.vault.VaultBootstrapTest.xml",
+      "sha256": "f918f22d6cae1ef1564b1033e09bb8541f14082f24be054925262a95818cc2b8",
+      "counts": {
+        "pass": 23
+      }
+    },
+    {
+      "path": "app/build/test-results/testFossDebugUnitTest/TEST-app.skein.vault.VaultGatePhaseTest.xml",
+      "sha256": "1e9cb1641d11e234e1db72a3407787daf81523b115b0b32f329ccbe2bbc74b24",
+      "counts": {
+        "pass": 12
+      }
+    },
+    {
+      "path": "app/build/test-results/testFossDebugUnitTest/TEST-app.skein.vault.VaultQuiesceIntegrationTest.xml",
+      "sha256": "20d165740478a7eecff70bd0f7baa4983b640dc9d225684cb6837f679191dff5",
+      "counts": {
+        "pass": 3
+      }
+    },
+    {
+      "path": "feature/editor/build/test-results/testDebugUnitTest/TEST-app.skein.feature.editor.EditorAutosaveTest.xml",
+      "sha256": "70c051f3453e86e0a9b6280ad661de038d85d895526c5f99d3f480abd3866446",
+      "counts": {
+        "pass": 6
+      }
+    },
+    {
+      "path": "feature/editor/build/test-results/testDebugUnitTest/TEST-app.skein.feature.editor.EditorStateFrontmatterTest.xml",
+      "sha256": "be105adb49ed6c606c5d5afb65df8e843ceb04c5e052a12982c9090456701745",
+      "counts": {
+        "pass": 14
+      }
+    },
+    {
+      "path": "feature/editor/build/test-results/testDebugUnitTest/TEST-app.skein.feature.editor.LineModelTest.xml",
+      "sha256": "96be01d436556ce787f5c83e7aa0b95ed827bb63f1e16dc5715dfe881b9418ff",
+      "counts": {
+        "pass": 4
+      }
+    },
+    {
+      "path": "feature/editor/build/test-results/testDebugUnitTest/TEST-app.skein.feature.editor.LivePreviewTransformerTest.xml",
+      "sha256": "8d70dff24c2d8def351b366d194bf7cc9c35c3b3af2947938da67045c2f619b4",
+      "counts": {
+        "pass": 23
+      }
+    },
+    {
+      "path": "feature/editor/build/test-results/testDebugUnitTest/TEST-app.skein.feature.editor.OffsetMappingTest.xml",
+      "sha256": "69784e579f9e113ec4b6de654e8ff447e0263a52ffefd5e7156608f1d060f20f",
+      "counts": {
+        "pass": 8
+      }
+    },
+    {
+      "path": "feature/editor/build/test-results/testDebugUnitTest/TEST-app.skein.feature.editor.SkeinEditorInteractionTest.xml",
+      "sha256": "0756c2f2769e8b9a9bf45c9fcd322d7d9905ac81ba5eee7743d75a1068e0893a",
+      "counts": {
+        "pass": 16
+      }
+    },
+    {
+      "path": "feature/editor/build/test-results/testDebugUnitTest/TEST-app.skein.feature.editor.autocomplete.TitleMatcherTest.xml",
+      "sha256": "314aa0ed4d47e0b2ef9fadb382f755a2dc183692006840d5cf89a942d296ebbc",
+      "counts": {
+        "pass": 7
+      }
+    },
+    {
+      "path": "feature/editor/build/test-results/testDebugUnitTest/TEST-app.skein.feature.editor.autocomplete.WikilinkAutocompleteStateTest.xml",
+      "sha256": "eb316a717b63244342bb4e551d8425380f49fa277657cbaf34278e2a028a4d99",
+      "counts": {
+        "pass": 13
+      }
+    },
+    {
+      "path": "feature/editor/build/test-results/testDebugUnitTest/TEST-app.skein.feature.editor.autocomplete.WikilinkPopupHingeTest.xml",
+      "sha256": "90bb14a65b195d6f17f793e8aec9efb0bee91aba0c9a33379ba759c713b6cec2",
+      "counts": {
+        "pass": 2
+      }
+    },
+    {
+      "path": "feature/editor/build/test-results/testDebugUnitTest/TEST-app.skein.feature.editor.autocomplete.WikilinkTriggerTest.xml",
+      "sha256": "dfa89737ded18261466cc91c059696afd13aa53d72a08fbfd0c04fba76cdde8d",
+      "counts": {
+        "pass": 12
+      }
+    },
+    {
+      "path": "feature/editor/build/test-results/testDebugUnitTest/TEST-app.skein.feature.editor.backlinks.BacklinksStateTest.xml",
+      "sha256": "a6fa27bac9424ef01f57c5e9f89db6f0770cb394043da50e8e6c552322ab894f",
+      "counts": {
+        "pass": 8
+      }
+    },
+    {
+      "path": "feature/editor/build/test-results/testDebugUnitTest/TEST-app.skein.feature.editor.entries.FileDeleteMenusTest.xml",
+      "sha256": "8ec25b2f65f730c52a5a6a4a0e26467a356bf78011341cc516f9fbd3e1bf1707",
+      "counts": {
+        "pass": 1
+      }
+    },
+    {
+      "path": "feature/editor/build/test-results/testDebugUnitTest/TEST-app.skein.feature.editor.entries.KnowledgeEntriesTest.xml",
+      "sha256": "644a92339501e5b837deb8ad77b679af83cfd190c8edb274b24febbc02331ca9",
+      "counts": {
+        "pass": 4
+      }
+    },
+    {
+      "path": "feature/editor/build/test-results/testDebugUnitTest/TEST-app.skein.feature.editor.entries.KnowledgeListRetentionTest.xml",
+      "sha256": "25e7dd94dfe4fe5173cc4b0c62dfb483e77395464bc162ed9dc791006a11a4d1",
+      "counts": {
+        "pass": 1
+      }
+    },
+    {
+      "path": "feature/editor/build/test-results/testDebugUnitTest/TEST-app.skein.feature.editor.entries.KnowledgePreparationTest.xml",
+      "sha256": "bd3e6932947aaaf42b6fc9734bd900ca26d06cbe51ff54b36e2a4c6090484a17",
+      "counts": {
+        "pass": 1
+      }
+    },
+    {
+      "path": "feature/editor/build/test-results/testDebugUnitTest/TEST-app.skein.feature.editor.entries.NoteDeleteMenusTest.xml",
+      "sha256": "f339a3282598315364dde67a99f42ef152221bb2804b54843dad9e9b422028eb",
+      "counts": {
+        "pass": 2
+      }
+    },
+    {
+      "path": "feature/editor/build/test-results/testDebugUnitTest/TEST-app.skein.feature.editor.frontmatter.FrontmatterBlockTest.xml",
+      "sha256": "afe7502a0a906ce96dcba95f78d6aa8b66156ebf62cc51cc60f78db1ad8480b7",
+      "counts": {
+        "pass": 5
+      }
+    },
+    {
+      "path": "feature/editor/build/test-results/testDebugUnitTest/TEST-app.skein.feature.editor.frontmatter.FrontmatterChipLabelTest.xml",
+      "sha256": "fd6764be4e0a588b704bb75b1a415c50d6d5f0e628acf36921c0d732c5948722",
+      "counts": {
+        "pass": 4
+      }
+    },
+    {
+      "path": "feature/editor/build/test-results/testDebugUnitTest/TEST-app.skein.feature.editor.frontmatter.ProtectedIdGuardTest.xml",
+      "sha256": "57035e17f7e9023c19ac8f4679af08081fee1cc314ee8cf00d31ae17c10eff75",
+      "counts": {
+        "pass": 7
+      }
+    },
+    {
+      "path": "feature/editor/build/test-results/testDebugUnitTest/TEST-app.skein.feature.editor.notetab.EditorFlushTest.xml",
+      "sha256": "3970eeab8f7839f9243417ea09be7f30556c2987cd7cf9230ad5b42f19c13ceb",
+      "counts": {
+        "pass": 3
+      }
+    },
+    {
+      "path": "feature/editor/build/test-results/testDebugUnitTest/TEST-app.skein.feature.editor.notetab.NoteDeletionRegistryTest.xml",
+      "sha256": "877ef2e16b7f81b0fb4636962680d1274cd272e91624323f0ec99fc5e8a1a3bf",
+      "counts": {
+        "pass": 7
+      }
+    },
+    {
+      "path": "feature/editor/build/test-results/testDebugUnitTest/TEST-app.skein.feature.editor.notetab.NoteSourceDetachmentTest.xml",
+      "sha256": "f208075a0d6c32cf24c008048549c5c8707db30775a1b54f12683931690ffd91",
+      "counts": {
+        "pass": 22
+      }
+    },
+    {
+      "path": "feature/editor/build/test-results/testDebugUnitTest/TEST-app.skein.feature.editor.notetab.NoteTabEditorContrastTest.xml",
+      "sha256": "19d99077b2a81cc93f0c1f032a80882844ae1ed06bde551e034a9e3d0fa1dd3a",
+      "counts": {
+        "pass": 2
+      }
+    },
+    {
+      "path": "feature/editor/build/test-results/testDebugUnitTest/TEST-app.skein.feature.editor.notetab.NoteTabHingeMenuTest.xml",
+      "sha256": "769c80db5a7861b4f8d7898ce9c68db7d70658bc4e3f0368ebdc52bc179bc8ad",
+      "counts": {
+        "pass": 1
+      }
+    },
+    {
+      "path": "feature/editor/build/test-results/testDebugUnitTest/TEST-app.skein.feature.editor.notetab.NoteTabShareTest.xml",
+      "sha256": "15d75184d5ff0e5807a16845fa3506181c0392f3ff80ce7c37576166ab976872",
+      "counts": {
+        "pass": 6
+      }
+    },
+    {
+      "path": "feature/editor/build/test-results/testDebugUnitTest/TEST-app.skein.feature.editor.notetab.NoteTabStateTest.xml",
+      "sha256": "f88bee3c4fb797074ce2815dbab5d1fea1259117c63a9f4b102eb4ab6952be97",
+      "counts": {
+        "pass": 15
+      }
+    },
+    {
+      "path": "feature/editor/build/test-results/testDebugUnitTest/TEST-app.skein.feature.editor.notetab.NoteTabWikilinkTest.xml",
+      "sha256": "763df1671585ee8ce18abba9a35b4e578e1a8b5bc67ebf11d0c42c794be8a45a",
+      "counts": {
+        "pass": 5
+      }
+    },
+    {
+      "path": "feature/editor/build/test-results/testDebugUnitTest/TEST-app.skein.feature.editor.notetab.NoteTypingTest.xml",
+      "sha256": "4b774f7dbb630c826e047c8af1438c82717601360849be0c92875998497aebff",
+      "counts": {
+        "pass": 2
+      }
+    },
+    {
+      "path": "feature/editor/build/test-results/testDebugUnitTest/TEST-app.skein.feature.editor.notetab.SaveAsIoErrorIsReportedTest.xml",
+      "sha256": "60d41d1592979ca2c022227cf19e472be6a18b418cb9bf774b89310f2d4a3f8c",
+      "counts": {
+        "pass": 2
+      }
+    },
+    {
+      "path": "feature/editor/build/test-results/testDebugUnitTest/TEST-app.skein.feature.editor.notetab.ShareMenuTest.xml",
+      "sha256": "b6993a918ade8a15162c21ac5d470e1e79ab49a9ece6a2cf145b1cc14350fb9c",
+      "counts": {
+        "pass": 4
+      }
+    },
+    {
+      "path": "feature/editor/build/test-results/testDebugUnitTest/TEST-app.skein.feature.editor.screenshots.KnowledgeShellScreenshotTest.xml",
+      "sha256": "d4d0a815afab71fb48d0125460175c1c299b1237b3b28c1651d8cb0c04f86a82",
+      "counts": {
+        "skipped": 18,
+        "pass": 12
+      }
+    },
+    {
+      "path": "feature/editor/build/test-results/testDebugUnitTest/TEST-app.skein.feature.editor.screenshots.NoteTabScreenshotTest.xml",
+      "sha256": "a843f7e5c57f39d4ec5e15062db2f15d6d33436c4d3f493a4f8bc1326a4dc122",
+      "counts": {
+        "pass": 20
+      }
+    },
+    {
+      "path": "feature/editor/build/test-results/testDebugUnitTest/TEST-app.skein.feature.editor.screenshots.UnresolvedLinkScreenshotTest.xml",
+      "sha256": "3d233f220bbbbedf91c25e2aaead70311663548d866826ddf72ca9d14cb00ffc",
+      "counts": {
+        "pass": 36
+      }
+    },
+    {
+      "path": "feature/editor/build/test-results/testDebugUnitTest/TEST-app.skein.feature.editor.share.SaveAsIntentsTest.xml",
+      "sha256": "05ba5d646316b82b1f8a1b1180fd6157ac43c715aac49bb4d403209898cb7008",
+      "counts": {
+        "pass": 4
+      }
+    },
+    {
+      "path": "feature/editor/build/test-results/testDebugUnitTest/TEST-app.skein.feature.editor.share.ShareIntentsTest.xml",
+      "sha256": "5e174657cdc2f4eff21dfd3df84d0aa03361b9e0a46ad796ff9d3eae7d3c0d10",
+      "counts": {
+        "pass": 5
+      }
+    }
+  ]
+}

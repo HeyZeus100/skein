@@ -1,0 +1,564 @@
+To honour the JVM settings for this build a single-use Daemon process will be forked. For more on this, please refer to https://docs.gradle.org/9.7.1/userguide/gradle_daemon.html#sec:disabling_the_daemon in the Gradle documentation.
+Daemon will be stopped at the end of the build 
+Reusing configuration cache.
+> Task :testing:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :testing-fakes:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :core:model:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :core:model:processResources UP-TO-DATE
+> Task :testing-fakes:processResources NO-SOURCE
+> Task :testing:processResources UP-TO-DATE
+> Task :core:verify:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :core:verify:processResources NO-SOURCE
+> Task :core:markdown:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :core:model:compileKotlin UP-TO-DATE
+> Task :core:model:compileJava NO-SOURCE
+> Task :core:model:classes UP-TO-DATE
+> Task :core:model:jar UP-TO-DATE
+> Task :core:markdown:compileKotlin UP-TO-DATE
+> Task :core:verify:compileKotlin UP-TO-DATE
+> Task :testing-fakes:compileKotlin UP-TO-DATE
+> Task :core:verify:compileJava NO-SOURCE
+> Task :core:verify:classes UP-TO-DATE
+> Task :testing-fakes:compileJava NO-SOURCE
+> Task :testing-fakes:classes UP-TO-DATE
+> Task :core:verify:jar UP-TO-DATE
+> Task :testing-fakes:jar UP-TO-DATE
+> Task :core:markdown:compileJava NO-SOURCE
+> Task :core:markdown:processResources NO-SOURCE
+> Task :core:markdown:classes UP-TO-DATE
+> Task :core:markdown:jar UP-TO-DATE
+> Task :core:navigation:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :core:navigation:compileKotlin UP-TO-DATE
+> Task :testing:compileKotlin UP-TO-DATE
+> Task :core:navigation:compileJava NO-SOURCE
+> Task :testing:compileJava NO-SOURCE
+> Task :testing:classes UP-TO-DATE
+> Task :core:navigation:processResources NO-SOURCE
+> Task :core:navigation:classes UP-TO-DATE
+> Task :testing:jar UP-TO-DATE
+> Task :core:navigation:jar UP-TO-DATE
+> Task :app:preBuild UP-TO-DATE
+> Task :app:preDevDebugBuild UP-TO-DATE
+> Task :embedder-service:preBuild UP-TO-DATE
+> Task :app:generateDevDebugBuildConfig UP-TO-DATE
+> Task :embedder-service:preDebugBuild UP-TO-DATE
+> Task :app:generateDevDebugResources UP-TO-DATE
+> Task :embedder-service:processDebugNavigationResources UP-TO-DATE
+> Task :inference-service:preBuild UP-TO-DATE
+> Task :inference-service:preDevDebugBuild UP-TO-DATE
+> Task :inference-service:processDevDebugNavigationResources UP-TO-DATE
+> Task :core:designsystem:preBuild UP-TO-DATE
+> Task :core:designsystem:preDebugBuild UP-TO-DATE
+> Task :core:designsystem:processDebugNavigationResources UP-TO-DATE
+> Task :core:export:preBuild UP-TO-DATE
+> Task :core:export:preDebugBuild UP-TO-DATE
+> Task :app:packageDevDebugResources UP-TO-DATE
+> Task :core:inference:preBuild UP-TO-DATE
+> Task :core:inference:preDebugBuild UP-TO-DATE
+> Task :core:export:processDebugNavigationResources UP-TO-DATE
+> Task :core:ipc:preBuild UP-TO-DATE
+> Task :core:ipc:preDebugBuild UP-TO-DATE
+> Task :core:inference:processDebugNavigationResources UP-TO-DATE
+> Task :core:rag:preBuild UP-TO-DATE
+> Task :core:ipc:processDebugNavigationResources UP-TO-DATE
+> Task :core:rag:preDebugBuild UP-TO-DATE
+> Task :core:security:preBuild UP-TO-DATE
+> Task :core:security:preDebugBuild UP-TO-DATE
+> Task :core:rag:processDebugNavigationResources UP-TO-DATE
+> Task :core:security:processDebugNavigationResources UP-TO-DATE
+> Task :core:vault:preBuild UP-TO-DATE
+> Task :feature:chat:preBuild UP-TO-DATE
+> Task :core:vault:preDevDebugBuild UP-TO-DATE
+> Task :feature:chat:preDebugBuild UP-TO-DATE
+> Task :feature:chat:processDebugNavigationResources UP-TO-DATE
+> Task :core:vault:processDevDebugNavigationResources UP-TO-DATE
+> Task :feature:editor:preBuild UP-TO-DATE
+> Task :feature:graph:preBuild UP-TO-DATE
+> Task :feature:editor:preDebugBuild UP-TO-DATE
+> Task :feature:graph:preDebugBuild UP-TO-DATE
+> Task :feature:graph:processDebugNavigationResources UP-TO-DATE
+> Task :feature:editor:processDebugNavigationResources UP-TO-DATE
+> Task :feature:settings:preBuild UP-TO-DATE
+> Task :feature:models:preBuild UP-TO-DATE
+> Task :feature:settings:preDebugBuild UP-TO-DATE
+> Task :feature:models:preDebugBuild UP-TO-DATE
+> Task :feature:models:processDebugNavigationResources UP-TO-DATE
+> Task :feature:settings:processDebugNavigationResources UP-TO-DATE
+> Task :feature:shell:preBuild UP-TO-DATE
+> Task :feature:timeline:preBuild UP-TO-DATE
+> Task :feature:shell:preDebugBuild UP-TO-DATE
+> Task :feature:timeline:preDebugBuild UP-TO-DATE
+> Task :feature:shell:processDebugNavigationResources UP-TO-DATE
+> Task :feature:timeline:processDebugNavigationResources UP-TO-DATE
+> Task :embedder-service:generateDebugResources UP-TO-DATE
+> Task :embedder-service:packageDebugResources UP-TO-DATE
+> Task :embedder-service:parseDebugLocalResources UP-TO-DATE
+> Task :embedder-service:generateDebugRFile UP-TO-DATE
+> Task :core:ipc:compileDebugAidl UP-TO-DATE
+> Task :core:ipc:generateDebugResources UP-TO-DATE
+> Task :core:ipc:packageDebugResources UP-TO-DATE
+> Task :core:ipc:parseDebugLocalResources UP-TO-DATE
+> Task :core:ipc:generateDebugRFile UP-TO-DATE
+> Task :app:processDevDebugNavigationResources UP-TO-DATE
+> Task :app:parseDevDebugLocalResources UP-TO-DATE
+> Task :app:generateDevDebugRFile UP-TO-DATE
+> Task :core:ipc:javaPreCompileDebug UP-TO-DATE
+> Task :embedder-service:javaPreCompileDebug UP-TO-DATE
+> Task :core:ipc:compileDebugKotlin UP-TO-DATE
+> Task :inference-service:generateDevDebugBuildConfig UP-TO-DATE
+> Task :inference-service:generateDevDebugResources UP-TO-DATE
+> Task :core:ipc:compileDebugJavaWithJavac UP-TO-DATE
+> Task :inference-service:packageDevDebugResources UP-TO-DATE
+> Task :inference-service:parseDevDebugLocalResources UP-TO-DATE
+> Task :core:ipc:bundleLibCompileToJarDebug UP-TO-DATE
+> Task :inference-service:generateDevDebugRFile UP-TO-DATE
+> Task :inference-service:compileDevDebugKotlin UP-TO-DATE
+> Task :embedder-service:compileDebugKotlin UP-TO-DATE
+> Task :inference-service:javaPreCompileDevDebug UP-TO-DATE
+> Task :embedder-service:compileDebugJavaWithJavac NO-SOURCE
+> Task :embedder-service:bundleLibCompileToJarDebug UP-TO-DATE
+> Task :core:designsystem:generateDebugResources UP-TO-DATE
+> Task :inference-service:compileDevDebugJavaWithJavac UP-TO-DATE
+> Task :inference-service:bundleLibCompileToJarDevDebug UP-TO-DATE
+> Task :core:designsystem:javaPreCompileDebug UP-TO-DATE
+> Task :core:export:generateDebugResources UP-TO-DATE
+> Task :core:designsystem:packageDebugResources UP-TO-DATE
+> Task :core:designsystem:parseDebugLocalResources UP-TO-DATE
+> Task :core:export:packageDebugResources UP-TO-DATE
+> Task :core:export:parseDebugLocalResources UP-TO-DATE
+> Task :core:designsystem:generateDebugRFile UP-TO-DATE
+> Task :core:export:generateDebugRFile UP-TO-DATE
+> Task :core:vault:preFossDebugBuild UP-TO-DATE
+> Task :core:vault:generateFossDebugResources UP-TO-DATE
+> Task :core:vault:packageFossDebugResources UP-TO-DATE
+> Task :core:vault:processFossDebugNavigationResources UP-TO-DATE
+> Task :core:vault:parseFossDebugLocalResources UP-TO-DATE
+> Task :core:vault:generateFossDebugRFile UP-TO-DATE
+> Task :core:designsystem:compileDebugKotlin UP-TO-DATE
+> Task :core:designsystem:compileDebugJavaWithJavac NO-SOURCE
+> Task :core:designsystem:bundleLibCompileToJarDebug UP-TO-DATE
+> Task :core:vault:javaPreCompileFossDebug UP-TO-DATE
+> Task :core:export:javaPreCompileDebug UP-TO-DATE
+> Task :core:inference:generateDebugResources UP-TO-DATE
+> Task :core:vault:compileFossDebugKotlin UP-TO-DATE
+> Task :core:vault:compileFossDebugJavaWithJavac NO-SOURCE
+> Task :core:inference:packageDebugResources UP-TO-DATE
+> Task :core:vault:bundleLibCompileToJarFossDebug UP-TO-DATE
+> Task :core:inference:parseDebugLocalResources UP-TO-DATE
+> Task :core:inference:generateDebugRFile UP-TO-DATE
+> Task :core:export:compileDebugKotlin UP-TO-DATE
+> Task :core:export:compileDebugJavaWithJavac NO-SOURCE
+> Task :core:export:bundleLibCompileToJarDebug UP-TO-DATE
+> Task :core:inference:javaPreCompileDebug UP-TO-DATE
+> Task :core:inference:compileDebugKotlin UP-TO-DATE
+> Task :core:rag:generateDebugResources UP-TO-DATE
+> Task :core:inference:compileDebugJavaWithJavac NO-SOURCE
+> Task :core:inference:bundleLibCompileToJarDebug UP-TO-DATE
+> Task :core:rag:packageDebugResources UP-TO-DATE
+> Task :core:security:generateDebugResources UP-TO-DATE
+> Task :core:rag:parseDebugLocalResources UP-TO-DATE
+> Task :core:rag:generateDebugRFile UP-TO-DATE
+> Task :core:security:packageDebugResources UP-TO-DATE
+> Task :core:security:javaPreCompileDebug UP-TO-DATE
+> Task :core:rag:javaPreCompileDebug UP-TO-DATE
+> Task :core:security:parseDebugLocalResources UP-TO-DATE
+> Task :core:vault:generateDevDebugResources UP-TO-DATE
+> Task :core:security:generateDebugRFile UP-TO-DATE
+> Task :core:vault:packageDevDebugResources UP-TO-DATE
+> Task :core:vault:parseDevDebugLocalResources UP-TO-DATE
+> Task :core:vault:generateDevDebugRFile UP-TO-DATE
+> Task :core:security:compileDebugKotlin UP-TO-DATE
+> Task :core:security:compileDebugJavaWithJavac NO-SOURCE
+> Task :core:security:bundleLibCompileToJarDebug UP-TO-DATE
+> Task :core:vault:compileDevDebugKotlin UP-TO-DATE
+> Task :core:vault:javaPreCompileDevDebug UP-TO-DATE
+> Task :core:vault:compileDevDebugJavaWithJavac NO-SOURCE
+> Task :core:rag:compileDebugKotlin UP-TO-DATE
+> Task :core:vault:bundleLibCompileToJarDevDebug UP-TO-DATE
+> Task :feature:chat:generateDebugResources UP-TO-DATE
+> Task :core:rag:compileDebugJavaWithJavac NO-SOURCE
+> Task :core:rag:bundleLibCompileToJarDebug UP-TO-DATE
+> Task :feature:editor:generateDebugResources UP-TO-DATE
+> Task :feature:chat:packageDebugResources UP-TO-DATE
+> Task :feature:chat:parseDebugLocalResources UP-TO-DATE
+> Task :feature:editor:packageDebugResources UP-TO-DATE
+> Task :feature:chat:generateDebugRFile UP-TO-DATE
+> Task :feature:editor:parseDebugLocalResources UP-TO-DATE
+> Task :feature:shell:generateDebugResources UP-TO-DATE
+> Task :feature:editor:generateDebugRFile UP-TO-DATE
+> Task :feature:shell:javaPreCompileDebug UP-TO-DATE
+> Task :feature:shell:packageDebugResources UP-TO-DATE
+> Task :feature:timeline:generateDebugResources UP-TO-DATE
+> Task :feature:shell:parseDebugLocalResources UP-TO-DATE
+> Task :feature:shell:generateDebugRFile UP-TO-DATE
+> Task :feature:timeline:packageDebugResources UP-TO-DATE
+> Task :feature:timeline:parseDebugLocalResources UP-TO-DATE
+> Task :feature:timeline:generateDebugRFile UP-TO-DATE
+> Task :feature:timeline:compileDebugKotlin UP-TO-DATE
+> Task :feature:timeline:javaPreCompileDebug UP-TO-DATE
+> Task :feature:timeline:compileDebugJavaWithJavac NO-SOURCE
+> Task :feature:timeline:bundleLibCompileToJarDebug UP-TO-DATE
+> Task :feature:editor:javaPreCompileDebug UP-TO-DATE
+> Task :feature:chat:javaPreCompileDebug UP-TO-DATE
+> Task :feature:graph:generateDebugResources UP-TO-DATE
+> Task :feature:graph:packageDebugResources UP-TO-DATE
+> Task :feature:graph:parseDebugLocalResources UP-TO-DATE
+> Task :feature:graph:generateDebugRFile UP-TO-DATE
+> Task :feature:graph:javaPreCompileDebug UP-TO-DATE
+> Task :feature:models:generateDebugResources UP-TO-DATE
+> Task :feature:models:packageDebugResources UP-TO-DATE
+> Task :feature:shell:compileDebugKotlin UP-TO-DATE
+> Task :feature:models:parseDebugLocalResources UP-TO-DATE
+> Task :feature:shell:compileDebugJavaWithJavac NO-SOURCE
+> Task :feature:models:generateDebugRFile UP-TO-DATE
+> Task :feature:shell:bundleLibCompileToJarDebug UP-TO-DATE
+> Task :feature:models:javaPreCompileDebug UP-TO-DATE
+> Task :feature:graph:compileDebugKotlin UP-TO-DATE
+> Task :feature:graph:compileDebugJavaWithJavac NO-SOURCE
+> Task :feature:graph:bundleLibCompileToJarDebug UP-TO-DATE
+> Task :feature:editor:compileDebugKotlin UP-TO-DATE
+> Task :feature:editor:compileDebugJavaWithJavac NO-SOURCE
+> Task :feature:editor:bundleLibCompileToJarDebug UP-TO-DATE
+> Task :feature:models:compileDebugKotlin UP-TO-DATE
+> Task :feature:models:compileDebugJavaWithJavac NO-SOURCE
+> Task :feature:models:bundleLibCompileToJarDebug UP-TO-DATE
+> Task :feature:settings:generateDebugResources UP-TO-DATE
+> Task :feature:settings:packageDebugResources UP-TO-DATE
+> Task :feature:settings:parseDebugLocalResources UP-TO-DATE
+> Task :feature:settings:generateDebugRFile UP-TO-DATE
+> Task :feature:chat:compileDebugKotlin UP-TO-DATE
+> Task :feature:chat:compileDebugJavaWithJavac NO-SOURCE
+> Task :feature:chat:bundleLibCompileToJarDebug UP-TO-DATE
+> Task :feature:settings:javaPreCompileDebug UP-TO-DATE
+> Task :app:javaPreCompileDevDebug UP-TO-DATE
+> Task :feature:settings:compileDebugKotlin UP-TO-DATE
+> Task :embedder-service:writeDebugAarMetadata UP-TO-DATE
+> Task :feature:settings:compileDebugJavaWithJavac NO-SOURCE
+> Task :inference-service:writeDevDebugAarMetadata UP-TO-DATE
+> Task :feature:settings:bundleLibCompileToJarDebug UP-TO-DATE
+> Task :core:designsystem:writeDebugAarMetadata UP-TO-DATE
+> Task :core:export:writeDebugAarMetadata UP-TO-DATE
+> Task :core:inference:writeDebugAarMetadata UP-TO-DATE
+> Task :core:ipc:writeDebugAarMetadata UP-TO-DATE
+> Task :core:rag:writeDebugAarMetadata UP-TO-DATE
+> Task :core:security:writeDebugAarMetadata UP-TO-DATE
+> Task :core:vault:writeDevDebugAarMetadata UP-TO-DATE
+> Task :feature:chat:writeDebugAarMetadata UP-TO-DATE
+> Task :feature:editor:writeDebugAarMetadata UP-TO-DATE
+> Task :feature:graph:writeDebugAarMetadata UP-TO-DATE
+> Task :feature:models:writeDebugAarMetadata UP-TO-DATE
+> Task :feature:settings:writeDebugAarMetadata UP-TO-DATE
+> Task :feature:shell:writeDebugAarMetadata UP-TO-DATE
+> Task :feature:timeline:writeDebugAarMetadata UP-TO-DATE
+> Task :app:checkDevDebugAarMetadata UP-TO-DATE
+> Task :app:mapDevDebugSourceSetPaths UP-TO-DATE
+> Task :app:compileDevDebugNavigationResources UP-TO-DATE
+> Task :app:mergeDevDebugResources UP-TO-DATE
+> Task :app:createDevDebugCompatibleScreenManifests UP-TO-DATE
+> Task :app:extractDeepLinksDevDebug UP-TO-DATE
+> Task :embedder-service:extractDeepLinksDebug UP-TO-DATE
+> Task :embedder-service:processDebugManifest UP-TO-DATE
+> Task :inference-service:extractDeepLinksDevDebug UP-TO-DATE
+> Task :inference-service:processDevDebugManifest UP-TO-DATE
+> Task :core:designsystem:extractDeepLinksDebug UP-TO-DATE
+> Task :core:designsystem:processDebugManifest UP-TO-DATE
+> Task :core:export:extractDeepLinksDebug UP-TO-DATE
+> Task :core:export:processDebugManifest UP-TO-DATE
+> Task :core:inference:extractDeepLinksDebug UP-TO-DATE
+> Task :core:inference:processDebugManifest UP-TO-DATE
+> Task :core:ipc:extractDeepLinksDebug UP-TO-DATE
+> Task :core:ipc:processDebugManifest UP-TO-DATE
+> Task :core:rag:extractDeepLinksDebug UP-TO-DATE
+> Task :core:rag:processDebugManifest UP-TO-DATE
+> Task :core:security:extractDeepLinksDebug UP-TO-DATE
+> Task :core:security:processDebugManifest UP-TO-DATE
+> Task :core:vault:extractDeepLinksDevDebug UP-TO-DATE
+> Task :core:vault:processDevDebugManifest UP-TO-DATE
+> Task :feature:chat:extractDeepLinksDebug UP-TO-DATE
+> Task :feature:chat:processDebugManifest UP-TO-DATE
+> Task :feature:editor:extractDeepLinksDebug UP-TO-DATE
+> Task :feature:editor:processDebugManifest UP-TO-DATE
+> Task :feature:graph:extractDeepLinksDebug UP-TO-DATE
+> Task :feature:graph:processDebugManifest UP-TO-DATE
+> Task :feature:models:extractDeepLinksDebug UP-TO-DATE
+> Task :feature:models:processDebugManifest UP-TO-DATE
+> Task :feature:settings:extractDeepLinksDebug UP-TO-DATE
+> Task :feature:settings:processDebugManifest UP-TO-DATE
+> Task :feature:shell:extractDeepLinksDebug UP-TO-DATE
+> Task :feature:shell:processDebugManifest UP-TO-DATE
+> Task :feature:timeline:extractDeepLinksDebug UP-TO-DATE
+> Task :feature:timeline:processDebugManifest UP-TO-DATE
+> Task :app:processDevDebugMainManifest UP-TO-DATE
+> Task :app:processDevDebugManifest UP-TO-DATE
+> Task :app:processDevDebugManifestForPackage UP-TO-DATE
+> Task :embedder-service:mapDebugSourceSetPaths UP-TO-DATE
+> Task :embedder-service:compileDebugLibraryResources UP-TO-DATE
+> Task :inference-service:mapDevDebugSourceSetPaths UP-TO-DATE
+> Task :inference-service:compileDevDebugLibraryResources UP-TO-DATE
+> Task :core:designsystem:mapDebugSourceSetPaths UP-TO-DATE
+> Task :core:designsystem:compileDebugLibraryResources UP-TO-DATE
+> Task :core:export:mapDebugSourceSetPaths UP-TO-DATE
+> Task :core:export:compileDebugLibraryResources UP-TO-DATE
+> Task :core:inference:mapDebugSourceSetPaths UP-TO-DATE
+> Task :core:inference:compileDebugLibraryResources UP-TO-DATE
+> Task :core:ipc:mapDebugSourceSetPaths UP-TO-DATE
+> Task :core:ipc:compileDebugLibraryResources UP-TO-DATE
+> Task :core:rag:mapDebugSourceSetPaths UP-TO-DATE
+> Task :core:rag:compileDebugLibraryResources UP-TO-DATE
+> Task :core:security:mapDebugSourceSetPaths UP-TO-DATE
+> Task :core:security:compileDebugLibraryResources UP-TO-DATE
+> Task :core:vault:mapDevDebugSourceSetPaths UP-TO-DATE
+> Task :core:vault:compileDevDebugLibraryResources UP-TO-DATE
+> Task :feature:chat:mapDebugSourceSetPaths UP-TO-DATE
+> Task :feature:chat:compileDebugLibraryResources UP-TO-DATE
+> Task :feature:editor:mapDebugSourceSetPaths UP-TO-DATE
+> Task :feature:editor:compileDebugLibraryResources UP-TO-DATE
+> Task :feature:graph:mapDebugSourceSetPaths UP-TO-DATE
+> Task :feature:graph:compileDebugLibraryResources UP-TO-DATE
+> Task :feature:models:mapDebugSourceSetPaths UP-TO-DATE
+> Task :feature:models:compileDebugLibraryResources UP-TO-DATE
+> Task :feature:settings:mapDebugSourceSetPaths UP-TO-DATE
+> Task :feature:settings:compileDebugLibraryResources UP-TO-DATE
+> Task :feature:shell:mapDebugSourceSetPaths UP-TO-DATE
+> Task :feature:shell:compileDebugLibraryResources UP-TO-DATE
+> Task :feature:timeline:mapDebugSourceSetPaths UP-TO-DATE
+> Task :feature:timeline:compileDebugLibraryResources UP-TO-DATE
+> Task :app:processDevDebugResources UP-TO-DATE
+> Task :app:preDevDebugUnitTestBuild UP-TO-DATE
+> Task :app:javaPreCompileDevDebugUnitTest UP-TO-DATE
+> Task :app:generateDevDebugAssets UP-TO-DATE
+> Task :embedder-service:generateDebugAssets UP-TO-DATE
+> Task :embedder-service:mergeDebugAssets UP-TO-DATE
+> Task :inference-service:generateDevDebugAssets UP-TO-DATE
+> Task :inference-service:mergeDevDebugAssets UP-TO-DATE
+> Task :core:designsystem:generateDebugAssets UP-TO-DATE
+> Task :core:designsystem:mergeDebugAssets UP-TO-DATE
+> Task :core:export:generateDebugAssets UP-TO-DATE
+> Task :core:export:mergeDebugAssets UP-TO-DATE
+> Task :core:inference:generateDebugAssets UP-TO-DATE
+> Task :core:inference:mergeDebugAssets UP-TO-DATE
+> Task :core:ipc:generateDebugAssets UP-TO-DATE
+> Task :core:ipc:mergeDebugAssets UP-TO-DATE
+> Task :core:rag:generateDebugAssets UP-TO-DATE
+> Task :core:rag:mergeDebugAssets UP-TO-DATE
+> Task :core:security:generateDebugAssets UP-TO-DATE
+> Task :core:security:mergeDebugAssets UP-TO-DATE
+> Task :core:vault:generateDevDebugAssets UP-TO-DATE
+> Task :core:vault:mergeDevDebugAssets UP-TO-DATE
+> Task :feature:chat:generateDebugAssets UP-TO-DATE
+> Task :feature:chat:mergeDebugAssets UP-TO-DATE
+> Task :feature:editor:generateDebugAssets UP-TO-DATE
+> Task :feature:editor:mergeDebugAssets UP-TO-DATE
+> Task :feature:graph:generateDebugAssets UP-TO-DATE
+> Task :feature:graph:mergeDebugAssets UP-TO-DATE
+> Task :feature:models:generateDebugAssets UP-TO-DATE
+> Task :feature:models:mergeDebugAssets UP-TO-DATE
+> Task :feature:settings:generateDebugAssets UP-TO-DATE
+> Task :feature:settings:mergeDebugAssets UP-TO-DATE
+> Task :feature:shell:generateDebugAssets UP-TO-DATE
+> Task :feature:shell:mergeDebugAssets UP-TO-DATE
+> Task :feature:timeline:generateDebugAssets UP-TO-DATE
+> Task :feature:timeline:mergeDebugAssets UP-TO-DATE
+> Task :app:mergeDevDebugAssets UP-TO-DATE
+> Task :app:packageDevDebugUnitTestForUnitTest UP-TO-DATE
+> Task :app:mergeDevDebugUnitTestManifest UP-TO-DATE
+> Task :app:processDevDebugUnitTestManifest UP-TO-DATE
+> Task :app:generateDevDebugUnitTestConfig UP-TO-DATE
+> Task :embedder-service:bundleLibRuntimeToJarDebug UP-TO-DATE
+> Task :embedder-service:processDebugJavaRes UP-TO-DATE
+> Task :inference-service:bundleLibRuntimeToJarDevDebug UP-TO-DATE
+> Task :inference-service:processDevDebugJavaRes UP-TO-DATE
+> Task :core:designsystem:bundleLibRuntimeToJarDebug UP-TO-DATE
+> Task :core:designsystem:processDebugJavaRes UP-TO-DATE
+> Task :core:export:bundleLibRuntimeToJarDebug UP-TO-DATE
+> Task :core:export:processDebugJavaRes UP-TO-DATE
+> Task :core:inference:bundleLibRuntimeToJarDebug UP-TO-DATE
+> Task :core:inference:processDebugJavaRes UP-TO-DATE
+> Task :core:ipc:bundleLibRuntimeToJarDebug UP-TO-DATE
+> Task :core:ipc:processDebugJavaRes UP-TO-DATE
+> Task :core:rag:bundleLibRuntimeToJarDebug UP-TO-DATE
+> Task :core:rag:processDebugJavaRes UP-TO-DATE
+> Task :core:security:bundleLibRuntimeToJarDebug UP-TO-DATE
+> Task :core:security:processDebugJavaRes UP-TO-DATE
+> Task :core:vault:bundleLibRuntimeToJarDevDebug UP-TO-DATE
+> Task :core:vault:processDevDebugJavaRes UP-TO-DATE
+> Task :feature:chat:bundleLibRuntimeToJarDebug UP-TO-DATE
+> Task :feature:chat:processDebugJavaRes UP-TO-DATE
+> Task :feature:editor:bundleLibRuntimeToJarDebug UP-TO-DATE
+> Task :feature:editor:processDebugJavaRes UP-TO-DATE
+> Task :feature:graph:bundleLibRuntimeToJarDebug UP-TO-DATE
+> Task :feature:graph:processDebugJavaRes UP-TO-DATE
+> Task :feature:models:bundleLibRuntimeToJarDebug UP-TO-DATE
+> Task :feature:models:processDebugJavaRes UP-TO-DATE
+> Task :feature:settings:bundleLibRuntimeToJarDebug UP-TO-DATE
+> Task :feature:settings:processDebugJavaRes UP-TO-DATE
+> Task :feature:shell:bundleLibRuntimeToJarDebug UP-TO-DATE
+> Task :feature:shell:processDebugJavaRes UP-TO-DATE
+> Task :feature:timeline:bundleLibRuntimeToJarDebug UP-TO-DATE
+> Task :feature:timeline:processDebugJavaRes UP-TO-DATE
+> Task :app:preFossDebugBuild UP-TO-DATE
+> Task :app:generateFossDebugBuildConfig UP-TO-DATE
+> Task :app:generateFossDebugResources UP-TO-DATE
+> Task :app:packageFossDebugResources UP-TO-DATE
+> Task :inference-service:preFossDebugBuild UP-TO-DATE
+> Task :inference-service:processFossDebugNavigationResources UP-TO-DATE
+> Task :app:processFossDebugNavigationResources UP-TO-DATE
+> Task :app:parseFossDebugLocalResources UP-TO-DATE
+> Task :app:generateFossDebugRFile UP-TO-DATE
+> Task :inference-service:generateFossDebugBuildConfig UP-TO-DATE
+> Task :inference-service:generateFossDebugResources UP-TO-DATE
+> Task :inference-service:packageFossDebugResources UP-TO-DATE
+> Task :inference-service:parseFossDebugLocalResources UP-TO-DATE
+> Task :inference-service:generateFossDebugRFile UP-TO-DATE
+> Task :inference-service:compileFossDebugKotlin UP-TO-DATE
+> Task :inference-service:javaPreCompileFossDebug UP-TO-DATE
+> Task :inference-service:compileFossDebugJavaWithJavac UP-TO-DATE
+> Task :inference-service:bundleLibCompileToJarFossDebug UP-TO-DATE
+> Task :app:compileFossDebugKotlin
+> Task :app:compileDevDebugKotlin
+> Task :app:processDevDebugJavaRes UP-TO-DATE
+> Task :app:javaPreCompileFossDebug UP-TO-DATE
+> Task :app:compileDevDebugJavaWithJavac UP-TO-DATE
+> Task :app:compileFossDebugJavaWithJavac UP-TO-DATE
+> Task :app:bundleDevDebugClassesToRuntimeJar
+> Task :app:bundleDevDebugClassesToCompileJar
+> Task :inference-service:writeFossDebugAarMetadata UP-TO-DATE
+> Task :core:vault:writeFossDebugAarMetadata UP-TO-DATE
+> Task :app:checkFossDebugAarMetadata UP-TO-DATE
+> Task :app:mapFossDebugSourceSetPaths UP-TO-DATE
+> Task :app:compileFossDebugNavigationResources UP-TO-DATE
+> Task :app:mergeFossDebugResources UP-TO-DATE
+> Task :app:createFossDebugCompatibleScreenManifests UP-TO-DATE
+> Task :app:extractDeepLinksFossDebug UP-TO-DATE
+> Task :inference-service:extractDeepLinksFossDebug UP-TO-DATE
+> Task :inference-service:processFossDebugManifest UP-TO-DATE
+> Task :core:vault:extractDeepLinksFossDebug UP-TO-DATE
+> Task :core:vault:processFossDebugManifest UP-TO-DATE
+> Task :app:processFossDebugMainManifest UP-TO-DATE
+> Task :app:processFossDebugManifest UP-TO-DATE
+> Task :app:processFossDebugManifestForPackage UP-TO-DATE
+> Task :inference-service:mapFossDebugSourceSetPaths UP-TO-DATE
+> Task :inference-service:compileFossDebugLibraryResources UP-TO-DATE
+> Task :core:vault:mapFossDebugSourceSetPaths UP-TO-DATE
+> Task :core:vault:compileFossDebugLibraryResources UP-TO-DATE
+> Task :app:processFossDebugResources UP-TO-DATE
+> Task :app:bundleFossDebugClassesToRuntimeJar
+> Task :app:bundleFossDebugClassesToCompileJar
+> Task :app:preFossDebugUnitTestBuild UP-TO-DATE
+> Task :app:compileDevDebugUnitTestKotlin UP-TO-DATE
+> Task :app:compileFossDebugUnitTestKotlin UP-TO-DATE
+> Task :app:compileDevDebugUnitTestJavaWithJavac NO-SOURCE
+> Task :app:javaPreCompileFossDebugUnitTest UP-TO-DATE
+> Task :app:processDevDebugUnitTestJavaRes UP-TO-DATE
+> Task :app:compileFossDebugUnitTestJavaWithJavac NO-SOURCE
+> Task :app:generateFossDebugAssets UP-TO-DATE
+> Task :app:licenseAuditFossDebugRuntimeClasspath UP-TO-DATE
+> Task :inference-service:generateFossDebugAssets UP-TO-DATE
+> Task :inference-service:mergeFossDebugAssets UP-TO-DATE
+> Task :core:vault:generateFossDebugAssets UP-TO-DATE
+> Task :core:vault:mergeFossDebugAssets UP-TO-DATE
+> Task :app:mergeFossDebugAssets UP-TO-DATE
+> Task :app:packageFossDebugUnitTestForUnitTest UP-TO-DATE
+> Task :app:mergeFossDebugUnitTestManifest UP-TO-DATE
+> Task :app:processFossDebugUnitTestManifest UP-TO-DATE
+> Task :app:generateFossDebugUnitTestConfig UP-TO-DATE
+> Task :app:processFossDebugJavaRes UP-TO-DATE
+> Task :app:processFossDebugUnitTestJavaRes UP-TO-DATE
+> Task :inference-service:bundleLibRuntimeToJarFossDebug UP-TO-DATE
+> Task :inference-service:processFossDebugJavaRes UP-TO-DATE
+> Task :core:vault:bundleLibRuntimeToJarFossDebug UP-TO-DATE
+> Task :core:vault:processFossDebugJavaRes UP-TO-DATE
+
+> Task :app:testDevDebugUnitTest FAILED
+
+FileDocumentDeleteCoordinatorTest > qualified AIOUT survivor reserves before any drain and reloads after commit without pruning FAILED
+    expected not to be: null
+        at app//app.skein.shell.FileDocumentDeleteCoordinatorTest$qualified AIOUT survivor reserves before any drain and reloads after commit without pruning$1.invokeSuspend(FileDocumentDeleteCoordinatorTest.kt:267)
+        at app//app.skein.shell.FileDocumentDeleteCoordinatorTest$qualified AIOUT survivor reserves before any drain and reloads after commit without pruning$1.invoke(FileDocumentDeleteCoordinatorTest.kt)
+        at app//app.skein.shell.FileDocumentDeleteCoordinatorTest$qualified AIOUT survivor reserves before any drain and reloads after commit without pruning$1.invoke(FileDocumentDeleteCoordinatorTest.kt)
+        at app//kotlinx.coroutines.test.TestBuildersKt__TestBuildersKt$runTest$2$1$1.invokeSuspend(TestBuilders.kt:317)
+        at app//kotlin.coroutines.jvm.internal.BaseContinuationImpl.resumeWith(ContinuationImpl.kt:34)
+        at app//kotlinx.coroutines.DispatchedTask.run(DispatchedTask.kt:100)
+        at app//kotlinx.coroutines.test.TestDispatcher.processEvent$kotlinx_coroutines_test(TestDispatcher.kt:24)
+        at app//kotlinx.coroutines.test.TestCoroutineScheduler.tryRunNextTaskUnless$kotlinx_coroutines_test(TestCoroutineScheduler.kt:98)
+        at app//kotlinx.coroutines.test.TestBuildersKt__TestBuildersKt$runTest$2$1$workRunner$1.invokeSuspend(TestBuilders.kt:326)
+        at app//kotlin.coroutines.jvm.internal.BaseContinuationImpl.resumeWith(ContinuationImpl.kt:34)
+        at app//kotlinx.coroutines.DispatchedTask.run(DispatchedTask.kt:100)
+        at app//kotlinx.coroutines.EventLoopImplBase.processNextEvent(EventLoop.common.kt:256)
+        at app//kotlinx.coroutines.BlockingCoroutine.joinBlocking(Builders.kt:54)
+        at app//kotlinx.coroutines.BuildersKt__BuildersKt.runBlockingImpl(Builders.kt:30)
+        at app//kotlinx.coroutines.BuildersKt.runBlockingImpl(Unknown Source)
+        at app//kotlinx.coroutines.BuildersKt__Builders_concurrentKt.runBlockingK(Builders.concurrent.kt:172)
+        at app//kotlinx.coroutines.BuildersKt.runBlockingK(Unknown Source)
+        at app//kotlinx.coroutines.BuildersKt__Builders_concurrentKt.runBlockingK$default(Builders.concurrent.kt:157)
+        at app//kotlinx.coroutines.BuildersKt.runBlockingK$default(Unknown Source)
+        at app//kotlinx.coroutines.test.TestBuildersJvmKt.createTestResult(TestBuildersJvm.kt:10)
+        at app//kotlinx.coroutines.test.TestBuildersKt__TestBuildersKt.runTest-8Mi8wO0(TestBuilders.kt:309)
+        at app//kotlinx.coroutines.test.TestBuildersKt.runTest-8Mi8wO0(TestBuilders.kt:1)
+        at app//kotlinx.coroutines.test.TestBuildersKt__TestBuildersKt.runTest-8Mi8wO0(TestBuilders.kt:167)
+        at app//kotlinx.coroutines.test.TestBuildersKt.runTest-8Mi8wO0(TestBuilders.kt:1)
+        at app//kotlinx.coroutines.test.TestBuildersKt__TestBuildersKt.runTest-8Mi8wO0$default(TestBuilders.kt:159)
+        at app//kotlinx.coroutines.test.TestBuildersKt.runTest-8Mi8wO0$default(TestBuilders.kt:1)
+        at app//app.skein.shell.FileDocumentDeleteCoordinatorTest.qualified AIOUT survivor reserves before any drain and reloads after commit without pruning(FileDocumentDeleteCoordinatorTest.kt:259)
+
+1 test completed, 1 failed
+
+> Task :app:testFossDebugUnitTest FAILED
+
+FileDocumentDeleteCoordinatorTest > qualified AIOUT survivor reserves before any drain and reloads after commit without pruning FAILED
+    expected not to be: null
+        at app//app.skein.shell.FileDocumentDeleteCoordinatorTest$qualified AIOUT survivor reserves before any drain and reloads after commit without pruning$1.invokeSuspend(FileDocumentDeleteCoordinatorTest.kt:267)
+        at app//app.skein.shell.FileDocumentDeleteCoordinatorTest$qualified AIOUT survivor reserves before any drain and reloads after commit without pruning$1.invoke(FileDocumentDeleteCoordinatorTest.kt)
+        at app//app.skein.shell.FileDocumentDeleteCoordinatorTest$qualified AIOUT survivor reserves before any drain and reloads after commit without pruning$1.invoke(FileDocumentDeleteCoordinatorTest.kt)
+        at app//kotlinx.coroutines.test.TestBuildersKt__TestBuildersKt$runTest$2$1$1.invokeSuspend(TestBuilders.kt:317)
+        at app//kotlin.coroutines.jvm.internal.BaseContinuationImpl.resumeWith(ContinuationImpl.kt:34)
+        at app//kotlinx.coroutines.DispatchedTask.run(DispatchedTask.kt:100)
+        at app//kotlinx.coroutines.test.TestDispatcher.processEvent$kotlinx_coroutines_test(TestDispatcher.kt:24)
+        at app//kotlinx.coroutines.test.TestCoroutineScheduler.tryRunNextTaskUnless$kotlinx_coroutines_test(TestCoroutineScheduler.kt:98)
+        at app//kotlinx.coroutines.test.TestBuildersKt__TestBuildersKt$runTest$2$1$workRunner$1.invokeSuspend(TestBuilders.kt:326)
+        at app//kotlin.coroutines.jvm.internal.BaseContinuationImpl.resumeWith(ContinuationImpl.kt:34)
+        at app//kotlinx.coroutines.DispatchedTask.run(DispatchedTask.kt:100)
+        at app//kotlinx.coroutines.EventLoopImplBase.processNextEvent(EventLoop.common.kt:256)
+        at app//kotlinx.coroutines.BlockingCoroutine.joinBlocking(Builders.kt:54)
+        at app//kotlinx.coroutines.BuildersKt__BuildersKt.runBlockingImpl(Builders.kt:30)
+        at app//kotlinx.coroutines.BuildersKt.runBlockingImpl(Unknown Source)
+        at app//kotlinx.coroutines.BuildersKt__Builders_concurrentKt.runBlockingK(Builders.concurrent.kt:172)
+        at app//kotlinx.coroutines.BuildersKt.runBlockingK(Unknown Source)
+        at app//kotlinx.coroutines.BuildersKt__Builders_concurrentKt.runBlockingK$default(Builders.concurrent.kt:157)
+        at app//kotlinx.coroutines.BuildersKt.runBlockingK$default(Unknown Source)
+        at app//kotlinx.coroutines.test.TestBuildersJvmKt.createTestResult(TestBuildersJvm.kt:10)
+        at app//kotlinx.coroutines.test.TestBuildersKt__TestBuildersKt.runTest-8Mi8wO0(TestBuilders.kt:309)
+        at app//kotlinx.coroutines.test.TestBuildersKt.runTest-8Mi8wO0(TestBuilders.kt:1)
+        at app//kotlinx.coroutines.test.TestBuildersKt__TestBuildersKt.runTest-8Mi8wO0(TestBuilders.kt:167)
+        at app//kotlinx.coroutines.test.TestBuildersKt.runTest-8Mi8wO0(TestBuilders.kt:1)
+        at app//kotlinx.coroutines.test.TestBuildersKt__TestBuildersKt.runTest-8Mi8wO0$default(TestBuilders.kt:159)
+        at app//kotlinx.coroutines.test.TestBuildersKt.runTest-8Mi8wO0$default(TestBuilders.kt:1)
+        at app//app.skein.shell.FileDocumentDeleteCoordinatorTest.qualified AIOUT survivor reserves before any drain and reloads after commit without pruning(FileDocumentDeleteCoordinatorTest.kt:259)
+
+1 test completed, 1 failed
+
+FAILURE: Build completed with 2 failures.
+
+1: Task failed with an exception.
+-----------
+* What went wrong:
+Execution failed for task ':app:testDevDebugUnitTest'.
+> There were failing tests. See the report at: file:///Users/andrewherrera/skein-worktrees/file-reload-resume-20260930/app/build/reports/tests/testDevDebugUnitTest/index.html
+
+* Try:
+> Run with --scan to get full insights from a Build Scan (powered by Develocity).
+==============================================================================
+
+2: Task failed with an exception.
+-----------
+* What went wrong:
+Execution failed for task ':app:testFossDebugUnitTest'.
+> There were failing tests. See the report at: file:///Users/andrewherrera/skein-worktrees/file-reload-resume-20260930/app/build/reports/tests/testFossDebugUnitTest/index.html
+
+* Try:
+> Run with --scan to get full insights from a Build Scan (powered by Develocity).
+==============================================================================
+
+BUILD FAILED in 7s
+371 actionable tasks: 8 executed, 363 up-to-date
+Configuration cache entry reused.

@@ -1,0 +1,1319 @@
+{
+  "runtime_executed": false,
+  "tasks_executed": true,
+  "roots": [
+    {
+      "root": "app/build/intermediates/built_in_kotlinc/devDebugAndroidTest/compileDevDebugAndroidTestKotlin/classes",
+      "class_count": 120,
+      "files": [
+        {
+          "path": "app/build/intermediates/built_in_kotlinc/devDebugAndroidTest/compileDevDebugAndroidTestKotlin/classes/app/skein/SampleInstrumentedTest.class",
+          "sha256": "7288de1fc9235a116fc12fc695e17a447bfe7643e40a675958ed85a0ce640128",
+          "bytes": 1524
+        },
+        {
+          "path": "app/build/intermediates/built_in_kotlinc/devDebugAndroidTest/compileDevDebugAndroidTestKotlin/classes/app/skein/chat/ContextualSendPathInstrumentedTest$Companion.class",
+          "sha256": "5d52f972683c4e71e7e79dbeb226f20f984e1f4db83804b9a07bf13691f3e9d2",
+          "bytes": 997
+        },
+        {
+          "path": "app/build/intermediates/built_in_kotlinc/devDebugAndroidTest/compileDevDebugAndroidTestKotlin/classes/app/skein/chat/ContextualSendPathInstrumentedTest$Fixture$chat$1.class",
+          "sha256": "e8c28334c03b762ac9d8446a28746940375e1a27671de97eeaf23ac3fae91feb",
+          "bytes": 1905
+        },
+        {
+          "path": "app/build/intermediates/built_in_kotlinc/devDebugAndroidTest/compileDevDebugAndroidTestKotlin/classes/app/skein/chat/ContextualSendPathInstrumentedTest$Fixture$ingest$1.class",
+          "sha256": "f990833ca670ce933343d92f5d94a2b37989aca4643e19a29b2f82128458adcb",
+          "bytes": 1952
+        },
+        {
+          "path": "app/build/intermediates/built_in_kotlinc/devDebugAndroidTest/compileDevDebugAndroidTestKotlin/classes/app/skein/chat/ContextualSendPathInstrumentedTest$Fixture$observed$1$retrieveContext$1.class",
+          "sha256": "12d8cb44a9b1e1696a5533753ee939b07bdab71b4695529f3c60163e3cfdfd9f",
+          "bytes": 2020
+        },
+        {
+          "path": "app/build/intermediates/built_in_kotlinc/devDebugAndroidTest/compileDevDebugAndroidTestKotlin/classes/app/skein/chat/ContextualSendPathInstrumentedTest$Fixture$observed$1.class",
+          "sha256": "b9559fd1bbdae958396ca75047cb84d1f8934283bce77b4bf884ae330eab7076",
+          "bytes": 5700
+        },
+        {
+          "path": "app/build/intermediates/built_in_kotlinc/devDebugAndroidTest/compileDevDebugAndroidTestKotlin/classes/app/skein/chat/ContextualSendPathInstrumentedTest$Fixture$pipeline$1.class",
+          "sha256": "781e044ce5eefc1c2e50af5ee64a947f95cc0e935070e09ca022077cc9ba0e42",
+          "bytes": 2063
+        },
+        {
+          "path": "app/build/intermediates/built_in_kotlinc/devDebugAndroidTest/compileDevDebugAndroidTestKotlin/classes/app/skein/chat/ContextualSendPathInstrumentedTest$Fixture$pipeline$2.class",
+          "sha256": "c6612b005fcbadebc3f9b0e8d4a530be7612aedc51d3fb785b8cea46416a55db",
+          "bytes": 3401
+        },
+        {
+          "path": "app/build/intermediates/built_in_kotlinc/devDebugAndroidTest/compileDevDebugAndroidTestKotlin/classes/app/skein/chat/ContextualSendPathInstrumentedTest$Fixture$pipeline$3.class",
+          "sha256": "e167fd8e91a6aeb420e9235866a28ba874190232e275e4c0e436373f6a558e62",
+          "bytes": 3035
+        },
+        {
+          "path": "app/build/intermediates/built_in_kotlinc/devDebugAndroidTest/compileDevDebugAndroidTestKotlin/classes/app/skein/chat/ContextualSendPathInstrumentedTest$Fixture$seed$1.class",
+          "sha256": "d8a152011d4b2d409ecce8f8ed01f92c62ecf8b986919f51c35c552a3b600d62",
+          "bytes": 1958
+        },
+        {
+          "path": "app/build/intermediates/built_in_kotlinc/devDebugAndroidTest/compileDevDebugAndroidTestKotlin/classes/app/skein/chat/ContextualSendPathInstrumentedTest$Fixture$send$2$completed$1.class",
+          "sha256": "4252b294cb8d8fa829d4542e403351276def38bd221ca500bc7e4c929a384856",
+          "bytes": 3790
+        },
+        {
+          "path": "app/build/intermediates/built_in_kotlinc/devDebugAndroidTest/compileDevDebugAndroidTestKotlin/classes/app/skein/chat/ContextualSendPathInstrumentedTest$Fixture$send$2.class",
+          "sha256": "0939dd68585c62a92cb3f45a39b5864ea9c2dac33e46f6b645f38d9f19711f37",
+          "bytes": 5687
+        },
+        {
+          "path": "app/build/intermediates/built_in_kotlinc/devDebugAndroidTest/compileDevDebugAndroidTestKotlin/classes/app/skein/chat/ContextualSendPathInstrumentedTest$Fixture.class",
+          "sha256": "201486c46060a909e096bd9e4a8339b75060797dabc2e1449ea04f0367f5b838",
+          "bytes": 14666
+        },
+        {
+          "path": "app/build/intermediates/built_in_kotlinc/devDebugAndroidTest/compileDevDebugAndroidTestKotlin/classes/app/skein/chat/ContextualSendPathInstrumentedTest$TestEngine.class",
+          "sha256": "83106dd3305ec82799ce586ad7074307605de118c4ddd45a99ffb53138e9b09f",
+          "bytes": 4274
+        },
+        {
+          "path": "app/build/intermediates/built_in_kotlinc/devDebugAndroidTest/compileDevDebugAndroidTestKotlin/classes/app/skein/chat/ContextualSendPathInstrumentedTest$TestKey.class",
+          "sha256": "b466dd588bfa33e0108dfd260096737bc9331252873acf54aba3fd9717200707",
+          "bytes": 5583
+        },
+        {
+          "path": "app/build/intermediates/built_in_kotlinc/devDebugAndroidTest/compileDevDebugAndroidTestKotlin/classes/app/skein/chat/ContextualSendPathInstrumentedTest$committed_source_deletion_preserves_quotes_and_refuses_contextual_generation$1$1.class",
+          "sha256": "561ace0592f3634c7a605d9c71cf3273fe5df2edea860d4a8547702f37764582",
+          "bytes": 7527
+        },
+        {
+          "path": "app/build/intermediates/built_in_kotlinc/devDebugAndroidTest/compileDevDebugAndroidTestKotlin/classes/app/skein/chat/ContextualSendPathInstrumentedTest$committed_source_deletion_preserves_quotes_and_refuses_contextual_generation$1.class",
+          "sha256": "719a19bdd61d870dead5d3f0d2d95fc330f33818e0ba87c1557815b963c23650",
+          "bytes": 3933
+        },
+        {
+          "path": "app/build/intermediates/built_in_kotlinc/devDebugAndroidTest/compileDevDebugAndroidTestKotlin/classes/app/skein/chat/ContextualSendPathInstrumentedTest$edited_and_reingested_source_cannot_repin_a_previous_encrypted_turn$1$1.class",
+          "sha256": "7d76013e1ed94edb25cda54df58f2a72590ab4472fb747acce5a1095a2982b19",
+          "bytes": 8304
+        },
+        {
+          "path": "app/build/intermediates/built_in_kotlinc/devDebugAndroidTest/compileDevDebugAndroidTestKotlin/classes/app/skein/chat/ContextualSendPathInstrumentedTest$edited_and_reingested_source_cannot_repin_a_previous_encrypted_turn$1.class",
+          "sha256": "1b5c333d60bb3a628d44a8c52e1f43e63e2ad2fa013f716419c2b004c0fa68ec",
+          "bytes": 3879
+        },
+        {
+          "path": "app/build/intermediates/built_in_kotlinc/devDebugAndroidTest/compileDevDebugAndroidTestKotlin/classes/app/skein/chat/ContextualSendPathInstrumentedTest$persisted_citation_resolves_raw_followup_through_encrypted_send_path$1$1.class",
+          "sha256": "04b056601853d20445b97eba4568061aa56ea630f10b6aea1dff523cff59cc9d",
+          "bytes": 12381
+        },
+        {
+          "path": "app/build/intermediates/built_in_kotlinc/devDebugAndroidTest/compileDevDebugAndroidTestKotlin/classes/app/skein/chat/ContextualSendPathInstrumentedTest$persisted_citation_resolves_raw_followup_through_encrypted_send_path$1.class",
+          "sha256": "ef09d32ad0c6a003d39f7aaea89cd3bc7bb7ff4ea1269c084ce31bbd62ad3d9d",
+          "bytes": 3885
+        },
+        {
+          "path": "app/build/intermediates/built_in_kotlinc/devDebugAndroidTest/compileDevDebugAndroidTestKotlin/classes/app/skein/chat/ContextualSendPathInstrumentedTest$withFixture$1.class",
+          "sha256": "fcdf8b79f8596a64341a8c0e87923f510ba0ff209dedbf35d66cff1fec5223a9",
+          "bytes": 2575
+        },
+        {
+          "path": "app/build/intermediates/built_in_kotlinc/devDebugAndroidTest/compileDevDebugAndroidTestKotlin/classes/app/skein/chat/ContextualSendPathInstrumentedTest.class",
+          "sha256": "a79be04dbde175a95c2801c245923f49f18a3593f6a9445f507ebd207d5db9e6",
+          "bytes": 11986
+        },
+        {
+          "path": "app/build/intermediates/built_in_kotlinc/devDebugAndroidTest/compileDevDebugAndroidTestKotlin/classes/app/skein/inference/LlamaCppEngineInstrumentedTest$Companion.class",
+          "sha256": "bce9a82cae7cfa4906f3ce6942f8b131aaeeeaf12b30d314f085407d3256472d",
+          "bytes": 1041
+        },
+        {
+          "path": "app/build/intermediates/built_in_kotlinc/devDebugAndroidTest/compileDevDebugAndroidTestKotlin/classes/app/skein/inference/LlamaCppEngineInstrumentedTest$inspectReadsMetadataWithoutLoading$1.class",
+          "sha256": "7e9e49acc625b1c61659995948ae8ea2e67a5a3342b103c95065fa363ae5c2ff",
+          "bytes": 4350
+        },
+        {
+          "path": "app/build/intermediates/built_in_kotlinc/devDebugAndroidTest/compileDevDebugAndroidTestKotlin/classes/app/skein/inference/LlamaCppEngineInstrumentedTest$lockAfterInspectionTerminatesTheProcessAndOnlyANewUnlockCanRebind$1.class",
+          "sha256": "882b387743ec65186229afdba3edf00e10a1c582bf0d41ec02738d8c9cae6886",
+          "bytes": 8320
+        },
+        {
+          "path": "app/build/intermediates/built_in_kotlinc/devDebugAndroidTest/compileDevDebugAndroidTestKotlin/classes/app/skein/inference/LlamaCppEngineInstrumentedTest$pinSource$1.class",
+          "sha256": "9299b61ae6767900e849548a0fd04d57be27d6eef08accc831cb5f08431e6617",
+          "bytes": 3239
+        },
+        {
+          "path": "app/build/intermediates/built_in_kotlinc/devDebugAndroidTest/compileDevDebugAndroidTestKotlin/classes/app/skein/inference/LlamaCppEngineInstrumentedTest$serviceDeathFailsTheStreamAndTheNextLoadRebinds$1$killer$1.class",
+          "sha256": "8c6e95cc0935bb9fa36579ffd0607a3ec5d4fffa360acb4f643b252495da1876",
+          "bytes": 3729
+        },
+        {
+          "path": "app/build/intermediates/built_in_kotlinc/devDebugAndroidTest/compileDevDebugAndroidTestKotlin/classes/app/skein/inference/LlamaCppEngineInstrumentedTest$serviceDeathFailsTheStreamAndTheNextLoadRebinds$1.class",
+          "sha256": "5f6239747bc5442756bd0446169ffc2d919ad1093271b3b343c49132980e558c",
+          "bytes": 8970
+        },
+        {
+          "path": "app/build/intermediates/built_in_kotlinc/devDebugAndroidTest/compileDevDebugAndroidTestKotlin/classes/app/skein/inference/LlamaCppEngineInstrumentedTest$setUp$3.class",
+          "sha256": "9922658569cdb0c631d1991fa08c49b6123c75a27f2e2a0b53a7804fac7b9f43",
+          "bytes": 3605
+        },
+        {
+          "path": "app/build/intermediates/built_in_kotlinc/devDebugAndroidTest/compileDevDebugAndroidTestKotlin/classes/app/skein/inference/LlamaCppEngineInstrumentedTest.class",
+          "sha256": "c13909d2cb77d9c840d4f6c4f2407486b6946351a33ffa3eaf0553b54ae65a2d",
+          "bytes": 26561
+        },
+        {
+          "path": "app/build/intermediates/built_in_kotlinc/devDebugAndroidTest/compileDevDebugAndroidTestKotlin/classes/app/skein/ingest/IngestWorkerInstrumentedTest$Companion.class",
+          "sha256": "70caab3d06fa49d6b13cd2b41858a90c4fb2733d27266375b4e8f9456d56fbe1",
+          "bytes": 903
+        },
+        {
+          "path": "app/build/intermediates/built_in_kotlinc/devDebugAndroidTest/compileDevDebugAndroidTestKotlin/classes/app/skein/ingest/IngestWorkerInstrumentedTest$RandomKeyVaultKeyProvider.class",
+          "sha256": "fd17ecb1803094623c3bced586dc332a43b93cf76714758d9d05c12fa0afa077",
+          "bytes": 5844
+        },
+        {
+          "path": "app/build/intermediates/built_in_kotlinc/devDebugAndroidTest/compileDevDebugAndroidTestKotlin/classes/app/skein/ingest/IngestWorkerInstrumentedTest$bootstrap$1.class",
+          "sha256": "a439fa7c8bc94fdb98b5fdb27c566c512ee4943cb862412f0290b4f377dd4be1",
+          "bytes": 1685
+        },
+        {
+          "path": "app/build/intermediates/built_in_kotlinc/devDebugAndroidTest/compileDevDebugAndroidTestKotlin/classes/app/skein/ingest/IngestWorkerInstrumentedTest$bootstrap$2.class",
+          "sha256": "d34c7ecb951135ef3a47f1a19f76b9a8f30e38733da51fc78007601c9ce34cb1",
+          "bytes": 1264
+        },
+        {
+          "path": "app/build/intermediates/built_in_kotlinc/devDebugAndroidTest/compileDevDebugAndroidTestKotlin/classes/app/skein/ingest/IngestWorkerInstrumentedTest$lock_cancels_the_unique_work_and_nothing_runs_while_locked$1.class",
+          "sha256": "801061de78e2d3a75e9f4a0438bd32bfe6106f50ba7815498da3f23d63f75c1b",
+          "bytes": 4082
+        },
+        {
+          "path": "app/build/intermediates/built_in_kotlinc/devDebugAndroidTest/compileDevDebugAndroidTestKotlin/classes/app/skein/ingest/IngestWorkerInstrumentedTest$lock_cancels_the_unique_work_and_nothing_runs_while_locked$2.class",
+          "sha256": "a2a8a06b68cc84ff4052f8e9e5fcabe173f416a4a5e7a20a0d5f77d5cf247c95",
+          "bytes": 3852
+        },
+        {
+          "path": "app/build/intermediates/built_in_kotlinc/devDebugAndroidTest/compileDevDebugAndroidTestKotlin/classes/app/skein/ingest/IngestWorkerInstrumentedTest$setUp$2.class",
+          "sha256": "df3430aa6f01e4e3f3f4a7900ad3cccf37133576c39ecf759c692d4fa61c04d7",
+          "bytes": 1132
+        },
+        {
+          "path": "app/build/intermediates/built_in_kotlinc/devDebugAndroidTest/compileDevDebugAndroidTestKotlin/classes/app/skein/ingest/IngestWorkerInstrumentedTest$tearDown$1.class",
+          "sha256": "1a8b0756f1cb4f1917fabb97c533ad0a9869eca6eefbf56af56670313bd6bfd1",
+          "bytes": 3601
+        },
+        {
+          "path": "app/build/intermediates/built_in_kotlinc/devDebugAndroidTest/compileDevDebugAndroidTestKotlin/classes/app/skein/ingest/IngestWorkerInstrumentedTest$three_queued_notes_are_chunked_searchable_and_linked_after_one_pass$2.class",
+          "sha256": "0447bcdf0e64497b6153bed45723ccb286d36c0c5e272f4f4c9da31b8ccccf05",
+          "bytes": 9705
+        },
+        {
+          "path": "app/build/intermediates/built_in_kotlinc/devDebugAndroidTest/compileDevDebugAndroidTestKotlin/classes/app/skein/ingest/IngestWorkerInstrumentedTest$three_queued_notes_are_chunked_searchable_and_linked_after_one_pass$ids$1.class",
+          "sha256": "07061f2e24289c93c922208d14833d65d576be57bcd9e354f007c03f68133559",
+          "bytes": 7188
+        },
+        {
+          "path": "app/build/intermediates/built_in_kotlinc/devDebugAndroidTest/compileDevDebugAndroidTestKotlin/classes/app/skein/ingest/IngestWorkerInstrumentedTest$unlockAndBringUp$1$1$1.class",
+          "sha256": "7dcd1e6fb3025e77824436cc3d801c7de1396e3f88ccd6ac36fc2f8fe0a21899",
+          "bytes": 4346
+        },
+        {
+          "path": "app/build/intermediates/built_in_kotlinc/devDebugAndroidTest/compileDevDebugAndroidTestKotlin/classes/app/skein/ingest/IngestWorkerInstrumentedTest$unlockAndBringUp$result$1.class",
+          "sha256": "69ad5bc5377633f6b5849d065ac42e7299861f7e62c0872429a11e88785f6966",
+          "bytes": 3575
+        },
+        {
+          "path": "app/build/intermediates/built_in_kotlinc/devDebugAndroidTest/compileDevDebugAndroidTestKotlin/classes/app/skein/ingest/IngestWorkerInstrumentedTest.class",
+          "sha256": "824bf2810247315e950f7c115f051c83f2ce3c90f64b0dfabb47ba966a378c56",
+          "bytes": 19689
+        },
+        {
+          "path": "app/build/intermediates/built_in_kotlinc/devDebugAndroidTest/compileDevDebugAndroidTestKotlin/classes/app/skein/vault/FirstRunInstrumentedTest$Companion.class",
+          "sha256": "31729465e144a40cb82a6b5f5218918ea86ca5d6682d6b2c6bc8d51a689a4e87",
+          "bytes": 884
+        },
+        {
+          "path": "app/build/intermediates/built_in_kotlinc/devDebugAndroidTest/compileDevDebugAndroidTestKotlin/classes/app/skein/vault/FirstRunInstrumentedTest$EnvelopeModellingKeyProvider.class",
+          "sha256": "87d063fbd32af468371db676a2c48325402744a69487cda84c38ecc56233e833",
+          "bytes": 6725
+        },
+        {
+          "path": "app/build/intermediates/built_in_kotlinc/devDebugAndroidTest/compileDevDebugAndroidTestKotlin/classes/app/skein/vault/FirstRunInstrumentedTest$Launch$bootstrap$1.class",
+          "sha256": "9090813f39fc0a61133e5543ab1e21172bd658006d2c6cd1e079a7a8772ffd19",
+          "bytes": 1792
+        },
+        {
+          "path": "app/build/intermediates/built_in_kotlinc/devDebugAndroidTest/compileDevDebugAndroidTestKotlin/classes/app/skein/vault/FirstRunInstrumentedTest$Launch$bootstrap$2.class",
+          "sha256": "b996999688942a765d2abf3794c4685f9e5992bc5e17342212e24a62622e0d12",
+          "bytes": 2304
+        },
+        {
+          "path": "app/build/intermediates/built_in_kotlinc/devDebugAndroidTest/compileDevDebugAndroidTestKotlin/classes/app/skein/vault/FirstRunInstrumentedTest$Launch$end$1.class",
+          "sha256": "d9211c70c8d2843dc0df42d8b1befaeff4a7c16571817ea05d355345906cd0fd",
+          "bytes": 3595
+        },
+        {
+          "path": "app/build/intermediates/built_in_kotlinc/devDebugAndroidTest/compileDevDebugAndroidTestKotlin/classes/app/skein/vault/FirstRunInstrumentedTest$Launch$setUp$1$1.class",
+          "sha256": "4e9802135186c6f83f63c42415b86a407b707e45d591580c02fb1bb0844bbe7b",
+          "bytes": 4081
+        },
+        {
+          "path": "app/build/intermediates/built_in_kotlinc/devDebugAndroidTest/compileDevDebugAndroidTestKotlin/classes/app/skein/vault/FirstRunInstrumentedTest$Launch$unlockAndBringUp$1$1.class",
+          "sha256": "0a4174a5c1d2e34685ea24fc541ab02a0b3050cbef0a76c7ca602863e78debe4",
+          "bytes": 4462
+        },
+        {
+          "path": "app/build/intermediates/built_in_kotlinc/devDebugAndroidTest/compileDevDebugAndroidTestKotlin/classes/app/skein/vault/FirstRunInstrumentedTest$Launch$unlockAndBringUp$2.class",
+          "sha256": "679c0f0a8ea5ec1b18cf547b8e7f660ee25e21c332d06fb75e208db2a049c1e5",
+          "bytes": 3567
+        },
+        {
+          "path": "app/build/intermediates/built_in_kotlinc/devDebugAndroidTest/compileDevDebugAndroidTestKotlin/classes/app/skein/vault/FirstRunInstrumentedTest$Launch.class",
+          "sha256": "af3fd34be6729cbd37698060418fbda74323dcc3f2f2b99ea5ffb8b86b802aa2",
+          "bytes": 10016
+        },
+        {
+          "path": "app/build/intermediates/built_in_kotlinc/devDebugAndroidTest/compileDevDebugAndroidTestKotlin/classes/app/skein/vault/FirstRunInstrumentedTest$fresh_install_seeds_the_first_persona$personas$1.class",
+          "sha256": "2401a86f9deb39ea7450c8b61c2ad111b2f6c6e159e70b544afd564b4c54099e",
+          "bytes": 3658
+        },
+        {
+          "path": "app/build/intermediates/built_in_kotlinc/devDebugAndroidTest/compileDevDebugAndroidTestKotlin/classes/app/skein/vault/FirstRunInstrumentedTest.class",
+          "sha256": "70f893a8ab7d764f20707be6c8e049c9788404e5333f767a00c770f064311fc4",
+          "bytes": 11440
+        },
+        {
+          "path": "app/build/intermediates/built_in_kotlinc/devDebugAndroidTest/compileDevDebugAndroidTestKotlin/classes/app/skein/vault/LockPolicySettingsRecreationInstrumentedTest$Companion.class",
+          "sha256": "85c5bf9d0b037c6e19fa5f07ab92572fe6b5161d1ddea98a50ba2693f8be6f09",
+          "bytes": 1002
+        },
+        {
+          "path": "app/build/intermediates/built_in_kotlinc/devDebugAndroidTest/compileDevDebugAndroidTestKotlin/classes/app/skein/vault/LockPolicySettingsRecreationInstrumentedTest$UnusedVaultKeyProvider.class",
+          "sha256": "230d765e3df6a69fa001bbd24cd43ed67ea9e6278c0891df1bb41af4db1c6fe2",
+          "bytes": 4292
+        },
+        {
+          "path": "app/build/intermediates/built_in_kotlinc/devDebugAndroidTest/compileDevDebugAndroidTestKotlin/classes/app/skein/vault/LockPolicySettingsRecreationInstrumentedTest$changingLockOnScreenOffPersistsAndSurvivesActivityRecreation$1.class",
+          "sha256": "d5afdda9d4c2907631fc7512ef838b11326658419320ef69e34a88a4c381bf73",
+          "bytes": 3971
+        },
+        {
+          "path": "app/build/intermediates/built_in_kotlinc/devDebugAndroidTest/compileDevDebugAndroidTestKotlin/classes/app/skein/vault/LockPolicySettingsRecreationInstrumentedTest$changingLockOnScreenOffPersistsAndSurvivesActivityRecreation$2$1.class",
+          "sha256": "c08b0c709814a178452589edefbe7efe41252d11e3d9078893c4358f4a346df2",
+          "bytes": 3851
+        },
+        {
+          "path": "app/build/intermediates/built_in_kotlinc/devDebugAndroidTest/compileDevDebugAndroidTestKotlin/classes/app/skein/vault/LockPolicySettingsRecreationInstrumentedTest$changingLockOnScreenOffPersistsAndSurvivesActivityRecreation$2$3.class",
+          "sha256": "bf2ed8aa29edcb9e58a7286bc3988dc592d2eb3d8d1565e81dc7514bb8956243",
+          "bytes": 3979
+        },
+        {
+          "path": "app/build/intermediates/built_in_kotlinc/devDebugAndroidTest/compileDevDebugAndroidTestKotlin/classes/app/skein/vault/LockPolicySettingsRecreationInstrumentedTest$changingLockOnScreenOffPersistsAndSurvivesActivityRecreation$2$4.class",
+          "sha256": "6e7ad9e22bc9e127f263e7a4c9f62cef9333f0e4722d5e8bb1ead4ad6a2ae7f7",
+          "bytes": 4014
+        },
+        {
+          "path": "app/build/intermediates/built_in_kotlinc/devDebugAndroidTest/compileDevDebugAndroidTestKotlin/classes/app/skein/vault/LockPolicySettingsRecreationInstrumentedTest$resetPrefs$1.class",
+          "sha256": "fab954b1fa47d42443ebb1d01238985eb7cfa4767e921d28429c2d71da8feaef",
+          "bytes": 3747
+        },
+        {
+          "path": "app/build/intermediates/built_in_kotlinc/devDebugAndroidTest/compileDevDebugAndroidTestKotlin/classes/app/skein/vault/LockPolicySettingsRecreationInstrumentedTest$tearDown$1.class",
+          "sha256": "b176aebe310935bd5695d5268770c4d30e47f3633a8ea3eb23c1396340165cbb",
+          "bytes": 3582
+        },
+        {
+          "path": "app/build/intermediates/built_in_kotlinc/devDebugAndroidTest/compileDevDebugAndroidTestKotlin/classes/app/skein/vault/LockPolicySettingsRecreationInstrumentedTest$wireLockPolicy$1$1.class",
+          "sha256": "68dd9dada73249acd855f09d8009ea8e1931d2545a92c39af0089e1ef7e40e1a",
+          "bytes": 3475
+        },
+        {
+          "path": "app/build/intermediates/built_in_kotlinc/devDebugAndroidTest/compileDevDebugAndroidTestKotlin/classes/app/skein/vault/LockPolicySettingsRecreationInstrumentedTest$wireLockPolicy$1$2.class",
+          "sha256": "3f9fc58c73c6e08887e598fb4d531b3447deab30b5019244a2451687396bcba6",
+          "bytes": 2127
+        },
+        {
+          "path": "app/build/intermediates/built_in_kotlinc/devDebugAndroidTest/compileDevDebugAndroidTestKotlin/classes/app/skein/vault/LockPolicySettingsRecreationInstrumentedTest$wireLockPolicy$1.class",
+          "sha256": "2404b2c3715fc09849870c0932c531efd1dcd1c0d1cab3b3ccc4bb72df49bb0d",
+          "bytes": 4484
+        },
+        {
+          "path": "app/build/intermediates/built_in_kotlinc/devDebugAndroidTest/compileDevDebugAndroidTestKotlin/classes/app/skein/vault/LockPolicySettingsRecreationInstrumentedTest.class",
+          "sha256": "e8576d641af29ae94f40da09fd22511bc5782d2083f6f36fa67e38480bbb0f8f",
+          "bytes": 10928
+        },
+        {
+          "path": "app/build/intermediates/built_in_kotlinc/devDebugAndroidTest/compileDevDebugAndroidTestKotlin/classes/app/skein/vault/VaultBootstrapInstrumentedTest$Companion.class",
+          "sha256": "e8e5ca5a586893a154bbeaeaf0aa5ba40943613ba76af52018b849f967fe3773",
+          "bytes": 908
+        },
+        {
+          "path": "app/build/intermediates/built_in_kotlinc/devDebugAndroidTest/compileDevDebugAndroidTestKotlin/classes/app/skein/vault/VaultBootstrapInstrumentedTest$RandomKeyVaultKeyProvider.class",
+          "sha256": "652d2513f58718385922ef07e35a3e67bbf633f18dba41726c784a57ea9f338e",
+          "bytes": 6130
+        },
+        {
+          "path": "app/build/intermediates/built_in_kotlinc/devDebugAndroidTest/compileDevDebugAndroidTestKotlin/classes/app/skein/vault/VaultBootstrapInstrumentedTest$a_second_unlock_reopens_the_same_vault_file$1.class",
+          "sha256": "765c4cc24c460d2409745f9fb5da72af0df429473b49850401a2b171b17492ed",
+          "bytes": 3788
+        },
+        {
+          "path": "app/build/intermediates/built_in_kotlinc/devDebugAndroidTest/compileDevDebugAndroidTestKotlin/classes/app/skein/vault/VaultBootstrapInstrumentedTest$bootstrap$1.class",
+          "sha256": "2e66ca7ed008592eda0668845499f7070e431e20174ed4534e65e4680c5f8899",
+          "bytes": 1690
+        },
+        {
+          "path": "app/build/intermediates/built_in_kotlinc/devDebugAndroidTest/compileDevDebugAndroidTestKotlin/classes/app/skein/vault/VaultBootstrapInstrumentedTest$lock_after_bringUp_serves_no_roots$1.class",
+          "sha256": "f99df95bdb14faedcac772022860efeb231aede2dfa0c4c7999a56819f0bdafd",
+          "bytes": 3743
+        },
+        {
+          "path": "app/build/intermediates/built_in_kotlinc/devDebugAndroidTest/compileDevDebugAndroidTestKotlin/classes/app/skein/vault/VaultBootstrapInstrumentedTest$tearDown$1.class",
+          "sha256": "e72c7bab9d6a662580ae35cdf00bf30cfb5140158e6165526ab6cce4b7c9811c",
+          "bytes": 3612
+        },
+        {
+          "path": "app/build/intermediates/built_in_kotlinc/devDebugAndroidTest/compileDevDebugAndroidTestKotlin/classes/app/skein/vault/VaultBootstrapInstrumentedTest$timed_out_write_rolls_back_before_a_fresh_session_reopens_the_vault$1$1$1.class",
+          "sha256": "4d93884bb34daab21863373208f87a20c0efb8a2d534632717d07606dc61fd91",
+          "bytes": 2871
+        },
+        {
+          "path": "app/build/intermediates/built_in_kotlinc/devDebugAndroidTest/compileDevDebugAndroidTestKotlin/classes/app/skein/vault/VaultBootstrapInstrumentedTest$timed_out_write_rolls_back_before_a_fresh_session_reopens_the_vault$1$writing$1$1.class",
+          "sha256": "d29e9e26ef83009a356db040bec0921bebc72226cf969b8d764157048eba2f4a",
+          "bytes": 4679
+        },
+        {
+          "path": "app/build/intermediates/built_in_kotlinc/devDebugAndroidTest/compileDevDebugAndroidTestKotlin/classes/app/skein/vault/VaultBootstrapInstrumentedTest$timed_out_write_rolls_back_before_a_fresh_session_reopens_the_vault$1$writing$1.class",
+          "sha256": "2dc948897df66c770f5cf7bf496cd3b2e94f74a3f125ed3808e21c4c4d0b5dae",
+          "bytes": 4134
+        },
+        {
+          "path": "app/build/intermediates/built_in_kotlinc/devDebugAndroidTest/compileDevDebugAndroidTestKotlin/classes/app/skein/vault/VaultBootstrapInstrumentedTest$timed_out_write_rolls_back_before_a_fresh_session_reopens_the_vault$1.class",
+          "sha256": "05981463a11268de248e6d63db54f9c4979dbd7b8c031f7c77150e1365ea9ca3",
+          "bytes": 8251
+        },
+        {
+          "path": "app/build/intermediates/built_in_kotlinc/devDebugAndroidTest/compileDevDebugAndroidTestKotlin/classes/app/skein/vault/VaultBootstrapInstrumentedTest$timed_out_write_rolls_back_before_a_fresh_session_reopens_the_vault$2.class",
+          "sha256": "02bb881877229fa336eed114f397a6fcac9526921d025ffbf84fd9a9a6343278",
+          "bytes": 6038
+        },
+        {
+          "path": "app/build/intermediates/built_in_kotlinc/devDebugAndroidTest/compileDevDebugAndroidTestKotlin/classes/app/skein/vault/VaultBootstrapInstrumentedTest$timed_out_write_rolls_back_before_a_fresh_session_reopens_the_vault$saved$1.class",
+          "sha256": "40af4792864b17f342c3643a8f2621610eaa04719b773221a24f34630b2d271b",
+          "bytes": 4077
+        },
+        {
+          "path": "app/build/intermediates/built_in_kotlinc/devDebugAndroidTest/compileDevDebugAndroidTestKotlin/classes/app/skein/vault/VaultBootstrapInstrumentedTest$unlockAndBringUp$1$1$1.class",
+          "sha256": "4d9f600a9bcca14c2cd52d0391593574ad190228842fdae13da25593b0a868cc",
+          "bytes": 4329
+        },
+        {
+          "path": "app/build/intermediates/built_in_kotlinc/devDebugAndroidTest/compileDevDebugAndroidTestKotlin/classes/app/skein/vault/VaultBootstrapInstrumentedTest$unlockAndBringUp$result$1.class",
+          "sha256": "7b6ec7866929143645863d53c10b6f4f9a610a29f4330e3a96d9744be2d213e1",
+          "bytes": 3557
+        },
+        {
+          "path": "app/build/intermediates/built_in_kotlinc/devDebugAndroidTest/compileDevDebugAndroidTestKotlin/classes/app/skein/vault/VaultBootstrapInstrumentedTest.class",
+          "sha256": "bd9afd97242456fb3b430fa1cc90835880998e46678318f08c4984021edf8862",
+          "bytes": 14460
+        },
+        {
+          "path": "app/build/intermediates/built_in_kotlinc/devDebugAndroidTest/compileDevDebugAndroidTestKotlin/classes/app/skein/vault/provider/ProviderCursors.class",
+          "sha256": "e72f9697ee1e0d986d0797acf4b066da058ee655cb9e04b16a0db610711be543",
+          "bytes": 1006
+        },
+        {
+          "path": "app/build/intermediates/built_in_kotlinc/devDebugAndroidTest/compileDevDebugAndroidTestKotlin/classes/app/skein/vault/provider/ProviderIds.class",
+          "sha256": "3735571a83a89e7b7a0b0bca70072f2e5d3a35be9b5e48cca80ab84e540e2383",
+          "bytes": 2230
+        },
+        {
+          "path": "app/build/intermediates/built_in_kotlinc/devDebugAndroidTest/compileDevDebugAndroidTestKotlin/classes/app/skein/vault/provider/VaultDocumentsProviderGrantInstrumentedTest$Companion.class",
+          "sha256": "dd22f0bbeb3b44ae31f7d57809a4f9b49f93ccc38857caa4fa86463c26bfcd71",
+          "bytes": 987
+        },
+        {
+          "path": "app/build/intermediates/built_in_kotlinc/devDebugAndroidTest/compileDevDebugAndroidTestKotlin/classes/app/skein/vault/provider/VaultDocumentsProviderGrantInstrumentedTest$RandomKeyVaultKeyProvider.class",
+          "sha256": "ff14df75c974cd277d683ccdce4a39181753bad7c2a905f6bb76a5da0419b17f",
+          "bytes": 6319
+        },
+        {
+          "path": "app/build/intermediates/built_in_kotlinc/devDebugAndroidTest/compileDevDebugAndroidTestKotlin/classes/app/skein/vault/provider/VaultDocumentsProviderGrantInstrumentedTest$bootstrap$1.class",
+          "sha256": "75401565b7058b73aff8ea9240646d41b41363aac4e2dd9533e7ba1a0843e1ab",
+          "bytes": 1769
+        },
+        {
+          "path": "app/build/intermediates/built_in_kotlinc/devDebugAndroidTest/compileDevDebugAndroidTestKotlin/classes/app/skein/vault/provider/VaultDocumentsProviderGrantInstrumentedTest$read_throwsFileNotFoundException_afterTheVaultLocks$2.class",
+          "sha256": "a12a98faa63972082d4e63194a354a508958317adffeca8b903bd34bcbc53ba0",
+          "bytes": 4039
+        },
+        {
+          "path": "app/build/intermediates/built_in_kotlinc/devDebugAndroidTest/compileDevDebugAndroidTestKotlin/classes/app/skein/vault/provider/VaultDocumentsProviderGrantInstrumentedTest$read_worksAgain_afterLockThenReUnlock_usingTheSameDocumentId$2.class",
+          "sha256": "5e160a16b6ef3351079922e5f5afcd0552bf7f3fc4d1ccb415505db0cfe1bfdd",
+          "bytes": 4084
+        },
+        {
+          "path": "app/build/intermediates/built_in_kotlinc/devDebugAndroidTest/compileDevDebugAndroidTestKotlin/classes/app/skein/vault/provider/VaultDocumentsProviderGrantInstrumentedTest$read_worksAgain_afterLockThenReUnlock_usingTheSameDocumentId$3.class",
+          "sha256": "376840463bd51d8806fcc670164dbe68cba43fa8d88d94441f7e32851e706dd8",
+          "bytes": 4453
+        },
+        {
+          "path": "app/build/intermediates/built_in_kotlinc/devDebugAndroidTest/compileDevDebugAndroidTestKotlin/classes/app/skein/vault/provider/VaultDocumentsProviderGrantInstrumentedTest$seedNote$1.class",
+          "sha256": "43b5f7bf3ba7e06c49ac5f5385ee5356f31676c02cb63d9b4f9e7fe0f6bb6712",
+          "bytes": 4124
+        },
+        {
+          "path": "app/build/intermediates/built_in_kotlinc/devDebugAndroidTest/compileDevDebugAndroidTestKotlin/classes/app/skein/vault/provider/VaultDocumentsProviderGrantInstrumentedTest$tearDown$1.class",
+          "sha256": "54d710eb808a968ffa486f95b7feed8924874ccc91089345cd59d202c69b9250",
+          "bytes": 3823
+        },
+        {
+          "path": "app/build/intermediates/built_in_kotlinc/devDebugAndroidTest/compileDevDebugAndroidTestKotlin/classes/app/skein/vault/provider/VaultDocumentsProviderGrantInstrumentedTest$unlockAndBringUp$1$1$1.class",
+          "sha256": "d2dd103247ac3f68c9669718e485fb6e0769e9a64d2d715005f104a038e2bd63",
+          "bytes": 4562
+        },
+        {
+          "path": "app/build/intermediates/built_in_kotlinc/devDebugAndroidTest/compileDevDebugAndroidTestKotlin/classes/app/skein/vault/provider/VaultDocumentsProviderGrantInstrumentedTest$unlockAndBringUp$result$1.class",
+          "sha256": "f7d563888e697ef8df696e29e29cd6b13d1f445011256c8462187a206cab3dee",
+          "bytes": 3768
+        },
+        {
+          "path": "app/build/intermediates/built_in_kotlinc/devDebugAndroidTest/compileDevDebugAndroidTestKotlin/classes/app/skein/vault/provider/VaultDocumentsProviderGrantInstrumentedTest.class",
+          "sha256": "de7bd17a8db4cfa1bc3c541fe4f4050349e7678a709c2f80fa7b3594ab17ba2a",
+          "bytes": 24308
+        },
+        {
+          "path": "app/build/intermediates/built_in_kotlinc/devDebugAndroidTest/compileDevDebugAndroidTestKotlin/classes/app/skein/vault/provider/VaultDocumentsProviderTest$attachmentDocuments$1.class",
+          "sha256": "dbd7ff6c3e725c4933bc415f889f55060947ec56d06fc32b4a980a19ba3f28fa",
+          "bytes": 4298
+        },
+        {
+          "path": "app/build/intermediates/built_in_kotlinc/devDebugAndroidTest/compileDevDebugAndroidTestKotlin/classes/app/skein/vault/provider/VaultDocumentsProviderTest$markdownDocuments$1.class",
+          "sha256": "f16c18fd04a9d3806f81ae31032924282687fd6e9c8bef5cbcf02bf05710c4ec",
+          "bytes": 4496
+        },
+        {
+          "path": "app/build/intermediates/built_in_kotlinc/devDebugAndroidTest/compileDevDebugAndroidTestKotlin/classes/app/skein/vault/provider/VaultDocumentsProviderTest$openDocument_read_streamsExactlyWhatExportMarkdownProduces$expected$1$1.class",
+          "sha256": "206ebd399caac49988c320d4fe2b57a3b38ef68cb4ad734be2ebccb1cd30c901",
+          "bytes": 4232
+        },
+        {
+          "path": "app/build/intermediates/built_in_kotlinc/devDebugAndroidTest/compileDevDebugAndroidTestKotlin/classes/app/skein/vault/provider/VaultDocumentsProviderTest$openDocument_read_streamsTheOriginalAttachmentBytes$expected$1.class",
+          "sha256": "a32e6885e924c9042b1ce8587b36ef45d9b639bd4d140725d09fcae319413530",
+          "bytes": 5255
+        },
+        {
+          "path": "app/build/intermediates/built_in_kotlinc/devDebugAndroidTest/compileDevDebugAndroidTestKotlin/classes/app/skein/vault/provider/VaultDocumentsProviderTest$openDocument_write_updatesTheNoteAndEnqueuesIngest$2.class",
+          "sha256": "99718338bc31de514e4ffe3ff1c23ab12b34f79992c1cb05df50e9457142777d",
+          "bytes": 3971
+        },
+        {
+          "path": "app/build/intermediates/built_in_kotlinc/devDebugAndroidTest/compileDevDebugAndroidTestKotlin/classes/app/skein/vault/provider/VaultDocumentsProviderTest$openDocument_write_updatesTheNoteAndEnqueuesIngest$queued$1.class",
+          "sha256": "355f8f82690c8a3dfefae68e08a73b812fa06d8db7dcfa1572eb5a56ef3da007",
+          "bytes": 3858
+        },
+        {
+          "path": "app/build/intermediates/built_in_kotlinc/devDebugAndroidTest/compileDevDebugAndroidTestKotlin/classes/app/skein/vault/provider/VaultDocumentsProviderTest$openDocument_write_updatesTheNoteAndEnqueuesIngest$updated$1$1.class",
+          "sha256": "93b99b0c9ce1842f9d1bfdf1cb9f5c821cb8dfa38195046c8b4d6888dd335948",
+          "bytes": 4011
+        },
+        {
+          "path": "app/build/intermediates/built_in_kotlinc/devDebugAndroidTest/compileDevDebugAndroidTestKotlin/classes/app/skein/vault/provider/VaultDocumentsProviderTest$queryChildDocuments_ofAttachments_listsEveryAttachmentWithItsStoredMimeType$expected$1$1.class",
+          "sha256": "ea2111d504e601bc047e2e535b03b9d32afed2b0f696252bc3534d62b7d7e9fb",
+          "bytes": 4120
+        },
+        {
+          "path": "app/build/intermediates/built_in_kotlinc/devDebugAndroidTest/compileDevDebugAndroidTestKotlin/classes/app/skein/vault/provider/VaultDocumentsProviderTest.class",
+          "sha256": "f7b5fe33985163b693e3a0e838ac1f8f2868989a8795ed0e64d2b8ee76bee99a",
+          "bytes": 26108
+        },
+        {
+          "path": "app/build/intermediates/built_in_kotlinc/devDebugAndroidTest/compileDevDebugAndroidTestKotlin/classes/app/skein/vault/security/AtRestEncryptionInstrumentedTest$Companion.class",
+          "sha256": "eb2f72afbf9cc047834f1e86e5e7cfd5ecfa30e6e59a0b56fda04bcf1bf3a008",
+          "bytes": 1202
+        },
+        {
+          "path": "app/build/intermediates/built_in_kotlinc/devDebugAndroidTest/compileDevDebugAndroidTestKotlin/classes/app/skein/vault/security/AtRestEncryptionInstrumentedTest$RandomKeyVaultKeyProvider.class",
+          "sha256": "915b402bb84892701a026a30c6e154cc4eae45ac1bfdb4b613f20e657c379d8e",
+          "bytes": 6309
+        },
+        {
+          "path": "app/build/intermediates/built_in_kotlinc/devDebugAndroidTest/compileDevDebugAndroidTestKotlin/classes/app/skein/vault/security/AtRestEncryptionInstrumentedTest$no_plaintext_or_key_material_on_disk_vault_db_is_not_sqlite_magic_and_lock_zeroes_the_key$1.class",
+          "sha256": "a5cd7d0b47467914ff147b0a42084393977f1a58f2443a8fd9d3f50a1a79eaa9",
+          "bytes": 3698
+        },
+        {
+          "path": "app/build/intermediates/built_in_kotlinc/devDebugAndroidTest/compileDevDebugAndroidTestKotlin/classes/app/skein/vault/security/AtRestEncryptionInstrumentedTest$no_plaintext_or_key_material_on_disk_vault_db_is_not_sqlite_magic_and_lock_zeroes_the_key$3.class",
+          "sha256": "9864b43e0a50cd1591d9d45736e0073ea0c6b259a9baef7ca37eb7422b594fc3",
+          "bytes": 3699
+        },
+        {
+          "path": "app/build/intermediates/built_in_kotlinc/devDebugAndroidTest/compileDevDebugAndroidTestKotlin/classes/app/skein/vault/security/AtRestEncryptionInstrumentedTest$no_plaintext_or_key_material_on_disk_vault_db_is_not_sqlite_magic_and_lock_zeroes_the_key$4.class",
+          "sha256": "4b216965196f204b4fbf6f175cf0f07a0fc768cc75272a8f15acff5db35df3a9",
+          "bytes": 4119
+        },
+        {
+          "path": "app/build/intermediates/built_in_kotlinc/devDebugAndroidTest/compileDevDebugAndroidTestKotlin/classes/app/skein/vault/security/AtRestEncryptionInstrumentedTest$no_plaintext_or_key_material_on_disk_vault_db_is_not_sqlite_magic_and_lock_zeroes_the_key$6.class",
+          "sha256": "fd4d6835a07f939ff7050c499da6b417bb6bd116d99a3230979919a863b11321",
+          "bytes": 3990
+        },
+        {
+          "path": "app/build/intermediates/built_in_kotlinc/devDebugAndroidTest/compileDevDebugAndroidTestKotlin/classes/app/skein/vault/security/AtRestEncryptionInstrumentedTest$no_plaintext_or_key_material_on_disk_vault_db_is_not_sqlite_magic_and_lock_zeroes_the_key$attachmentDoc$1$1.class",
+          "sha256": "bece5af32b98bf23a61adf52f96809338d76e4c941bedc22ad42675089612922",
+          "bytes": 3545
+        },
+        {
+          "path": "app/build/intermediates/built_in_kotlinc/devDebugAndroidTest/compileDevDebugAndroidTestKotlin/classes/app/skein/vault/security/AtRestEncryptionInstrumentedTest$no_plaintext_or_key_material_on_disk_vault_db_is_not_sqlite_magic_and_lock_zeroes_the_key$attachmentDoc$1.class",
+          "sha256": "5eae9fb8494fec81a2889eada53520b956856e7b460c61390c55c887d2dd2e25",
+          "bytes": 4384
+        },
+        {
+          "path": "app/build/intermediates/built_in_kotlinc/devDebugAndroidTest/compileDevDebugAndroidTestKotlin/classes/app/skein/vault/security/AtRestEncryptionInstrumentedTest$no_plaintext_or_key_material_on_disk_vault_db_is_not_sqlite_magic_and_lock_zeroes_the_key$noteDoc$1.class",
+          "sha256": "00a41b46bd2c0824d1143b563f2b55825e179f9145e6edbe1205c89d4036f62a",
+          "bytes": 4832
+        },
+        {
+          "path": "app/build/intermediates/built_in_kotlinc/devDebugAndroidTest/compileDevDebugAndroidTestKotlin/classes/app/skein/vault/security/AtRestEncryptionInstrumentedTest$no_plaintext_or_key_material_on_disk_vault_db_is_not_sqlite_magic_and_lock_zeroes_the_key$readAttachment$1.class",
+          "sha256": "8c0fcc8ed8be63ba7f5718566aa4dc1d6a63959245a385a47d5d04c6450ec105",
+          "bytes": 5574
+        },
+        {
+          "path": "app/build/intermediates/built_in_kotlinc/devDebugAndroidTest/compileDevDebugAndroidTestKotlin/classes/app/skein/vault/security/AtRestEncryptionInstrumentedTest$no_plaintext_or_key_material_on_disk_vault_db_is_not_sqlite_magic_and_lock_zeroes_the_key$readNote$1.class",
+          "sha256": "ea8d5ea98dc73b5484562c3c291724d71136cc6d7c9ab98e053251411e946993",
+          "bytes": 4133
+        },
+        {
+          "path": "app/build/intermediates/built_in_kotlinc/devDebugAndroidTest/compileDevDebugAndroidTestKotlin/classes/app/skein/vault/security/AtRestEncryptionInstrumentedTest$no_plaintext_or_key_material_on_disk_vault_db_is_not_sqlite_magic_and_lock_zeroes_the_key$reopened$1.class",
+          "sha256": "f9202776fe4d25b15f2deb61b6f8d2533356f5c65abbbbd8b342cb88a364b712",
+          "bytes": 4026
+        },
+        {
+          "path": "app/build/intermediates/built_in_kotlinc/devDebugAndroidTest/compileDevDebugAndroidTestKotlin/classes/app/skein/vault/security/AtRestEncryptionInstrumentedTest$no_plaintext_or_key_material_on_disk_vault_db_is_not_sqlite_magic_and_lock_zeroes_the_key$session$1.class",
+          "sha256": "3bf9afcc2c9a27d3a7efdec08c1c65b24c741c66b89fa4ac0a5fca0fce8580c7",
+          "bytes": 4022
+        },
+        {
+          "path": "app/build/intermediates/built_in_kotlinc/devDebugAndroidTest/compileDevDebugAndroidTestKotlin/classes/app/skein/vault/security/AtRestEncryptionInstrumentedTest$tearDown$1.class",
+          "sha256": "75843d35dbf2da5c83bf2339585228f4a644faf5c449de339d419df257197f05",
+          "bytes": 3713
+        },
+        {
+          "path": "app/build/intermediates/built_in_kotlinc/devDebugAndroidTest/compileDevDebugAndroidTestKotlin/classes/app/skein/vault/security/AtRestEncryptionInstrumentedTest$unlockThroughManager$1$1$1.class",
+          "sha256": "2319a6660e15d90233defb67dad861e858f5a745049bceda4359bcbccb31b00b",
+          "bytes": 4461
+        },
+        {
+          "path": "app/build/intermediates/built_in_kotlinc/devDebugAndroidTest/compileDevDebugAndroidTestKotlin/classes/app/skein/vault/security/AtRestEncryptionInstrumentedTest.class",
+          "sha256": "c80ea74bf3a350068d1f1115510af4115c4d45c1f0046e997bbc98b92c5068f3",
+          "bytes": 18022
+        }
+      ]
+    },
+    {
+      "root": "app/build/intermediates/built_in_kotlinc/fossDebugAndroidTest/compileFossDebugAndroidTestKotlin/classes",
+      "class_count": 120,
+      "files": [
+        {
+          "path": "app/build/intermediates/built_in_kotlinc/fossDebugAndroidTest/compileFossDebugAndroidTestKotlin/classes/app/skein/SampleInstrumentedTest.class",
+          "sha256": "7288de1fc9235a116fc12fc695e17a447bfe7643e40a675958ed85a0ce640128",
+          "bytes": 1524
+        },
+        {
+          "path": "app/build/intermediates/built_in_kotlinc/fossDebugAndroidTest/compileFossDebugAndroidTestKotlin/classes/app/skein/chat/ContextualSendPathInstrumentedTest$Companion.class",
+          "sha256": "5d52f972683c4e71e7e79dbeb226f20f984e1f4db83804b9a07bf13691f3e9d2",
+          "bytes": 997
+        },
+        {
+          "path": "app/build/intermediates/built_in_kotlinc/fossDebugAndroidTest/compileFossDebugAndroidTestKotlin/classes/app/skein/chat/ContextualSendPathInstrumentedTest$Fixture$chat$1.class",
+          "sha256": "e8c28334c03b762ac9d8446a28746940375e1a27671de97eeaf23ac3fae91feb",
+          "bytes": 1905
+        },
+        {
+          "path": "app/build/intermediates/built_in_kotlinc/fossDebugAndroidTest/compileFossDebugAndroidTestKotlin/classes/app/skein/chat/ContextualSendPathInstrumentedTest$Fixture$ingest$1.class",
+          "sha256": "f990833ca670ce933343d92f5d94a2b37989aca4643e19a29b2f82128458adcb",
+          "bytes": 1952
+        },
+        {
+          "path": "app/build/intermediates/built_in_kotlinc/fossDebugAndroidTest/compileFossDebugAndroidTestKotlin/classes/app/skein/chat/ContextualSendPathInstrumentedTest$Fixture$observed$1$retrieveContext$1.class",
+          "sha256": "12d8cb44a9b1e1696a5533753ee939b07bdab71b4695529f3c60163e3cfdfd9f",
+          "bytes": 2020
+        },
+        {
+          "path": "app/build/intermediates/built_in_kotlinc/fossDebugAndroidTest/compileFossDebugAndroidTestKotlin/classes/app/skein/chat/ContextualSendPathInstrumentedTest$Fixture$observed$1.class",
+          "sha256": "b9559fd1bbdae958396ca75047cb84d1f8934283bce77b4bf884ae330eab7076",
+          "bytes": 5700
+        },
+        {
+          "path": "app/build/intermediates/built_in_kotlinc/fossDebugAndroidTest/compileFossDebugAndroidTestKotlin/classes/app/skein/chat/ContextualSendPathInstrumentedTest$Fixture$pipeline$1.class",
+          "sha256": "781e044ce5eefc1c2e50af5ee64a947f95cc0e935070e09ca022077cc9ba0e42",
+          "bytes": 2063
+        },
+        {
+          "path": "app/build/intermediates/built_in_kotlinc/fossDebugAndroidTest/compileFossDebugAndroidTestKotlin/classes/app/skein/chat/ContextualSendPathInstrumentedTest$Fixture$pipeline$2.class",
+          "sha256": "c6612b005fcbadebc3f9b0e8d4a530be7612aedc51d3fb785b8cea46416a55db",
+          "bytes": 3401
+        },
+        {
+          "path": "app/build/intermediates/built_in_kotlinc/fossDebugAndroidTest/compileFossDebugAndroidTestKotlin/classes/app/skein/chat/ContextualSendPathInstrumentedTest$Fixture$pipeline$3.class",
+          "sha256": "e167fd8e91a6aeb420e9235866a28ba874190232e275e4c0e436373f6a558e62",
+          "bytes": 3035
+        },
+        {
+          "path": "app/build/intermediates/built_in_kotlinc/fossDebugAndroidTest/compileFossDebugAndroidTestKotlin/classes/app/skein/chat/ContextualSendPathInstrumentedTest$Fixture$seed$1.class",
+          "sha256": "d8a152011d4b2d409ecce8f8ed01f92c62ecf8b986919f51c35c552a3b600d62",
+          "bytes": 1958
+        },
+        {
+          "path": "app/build/intermediates/built_in_kotlinc/fossDebugAndroidTest/compileFossDebugAndroidTestKotlin/classes/app/skein/chat/ContextualSendPathInstrumentedTest$Fixture$send$2$completed$1.class",
+          "sha256": "4252b294cb8d8fa829d4542e403351276def38bd221ca500bc7e4c929a384856",
+          "bytes": 3790
+        },
+        {
+          "path": "app/build/intermediates/built_in_kotlinc/fossDebugAndroidTest/compileFossDebugAndroidTestKotlin/classes/app/skein/chat/ContextualSendPathInstrumentedTest$Fixture$send$2.class",
+          "sha256": "0939dd68585c62a92cb3f45a39b5864ea9c2dac33e46f6b645f38d9f19711f37",
+          "bytes": 5687
+        },
+        {
+          "path": "app/build/intermediates/built_in_kotlinc/fossDebugAndroidTest/compileFossDebugAndroidTestKotlin/classes/app/skein/chat/ContextualSendPathInstrumentedTest$Fixture.class",
+          "sha256": "201486c46060a909e096bd9e4a8339b75060797dabc2e1449ea04f0367f5b838",
+          "bytes": 14666
+        },
+        {
+          "path": "app/build/intermediates/built_in_kotlinc/fossDebugAndroidTest/compileFossDebugAndroidTestKotlin/classes/app/skein/chat/ContextualSendPathInstrumentedTest$TestEngine.class",
+          "sha256": "83106dd3305ec82799ce586ad7074307605de118c4ddd45a99ffb53138e9b09f",
+          "bytes": 4274
+        },
+        {
+          "path": "app/build/intermediates/built_in_kotlinc/fossDebugAndroidTest/compileFossDebugAndroidTestKotlin/classes/app/skein/chat/ContextualSendPathInstrumentedTest$TestKey.class",
+          "sha256": "b466dd588bfa33e0108dfd260096737bc9331252873acf54aba3fd9717200707",
+          "bytes": 5583
+        },
+        {
+          "path": "app/build/intermediates/built_in_kotlinc/fossDebugAndroidTest/compileFossDebugAndroidTestKotlin/classes/app/skein/chat/ContextualSendPathInstrumentedTest$committed_source_deletion_preserves_quotes_and_refuses_contextual_generation$1$1.class",
+          "sha256": "561ace0592f3634c7a605d9c71cf3273fe5df2edea860d4a8547702f37764582",
+          "bytes": 7527
+        },
+        {
+          "path": "app/build/intermediates/built_in_kotlinc/fossDebugAndroidTest/compileFossDebugAndroidTestKotlin/classes/app/skein/chat/ContextualSendPathInstrumentedTest$committed_source_deletion_preserves_quotes_and_refuses_contextual_generation$1.class",
+          "sha256": "719a19bdd61d870dead5d3f0d2d95fc330f33818e0ba87c1557815b963c23650",
+          "bytes": 3933
+        },
+        {
+          "path": "app/build/intermediates/built_in_kotlinc/fossDebugAndroidTest/compileFossDebugAndroidTestKotlin/classes/app/skein/chat/ContextualSendPathInstrumentedTest$edited_and_reingested_source_cannot_repin_a_previous_encrypted_turn$1$1.class",
+          "sha256": "7d76013e1ed94edb25cda54df58f2a72590ab4472fb747acce5a1095a2982b19",
+          "bytes": 8304
+        },
+        {
+          "path": "app/build/intermediates/built_in_kotlinc/fossDebugAndroidTest/compileFossDebugAndroidTestKotlin/classes/app/skein/chat/ContextualSendPathInstrumentedTest$edited_and_reingested_source_cannot_repin_a_previous_encrypted_turn$1.class",
+          "sha256": "1b5c333d60bb3a628d44a8c52e1f43e63e2ad2fa013f716419c2b004c0fa68ec",
+          "bytes": 3879
+        },
+        {
+          "path": "app/build/intermediates/built_in_kotlinc/fossDebugAndroidTest/compileFossDebugAndroidTestKotlin/classes/app/skein/chat/ContextualSendPathInstrumentedTest$persisted_citation_resolves_raw_followup_through_encrypted_send_path$1$1.class",
+          "sha256": "04b056601853d20445b97eba4568061aa56ea630f10b6aea1dff523cff59cc9d",
+          "bytes": 12381
+        },
+        {
+          "path": "app/build/intermediates/built_in_kotlinc/fossDebugAndroidTest/compileFossDebugAndroidTestKotlin/classes/app/skein/chat/ContextualSendPathInstrumentedTest$persisted_citation_resolves_raw_followup_through_encrypted_send_path$1.class",
+          "sha256": "ef09d32ad0c6a003d39f7aaea89cd3bc7bb7ff4ea1269c084ce31bbd62ad3d9d",
+          "bytes": 3885
+        },
+        {
+          "path": "app/build/intermediates/built_in_kotlinc/fossDebugAndroidTest/compileFossDebugAndroidTestKotlin/classes/app/skein/chat/ContextualSendPathInstrumentedTest$withFixture$1.class",
+          "sha256": "fcdf8b79f8596a64341a8c0e87923f510ba0ff209dedbf35d66cff1fec5223a9",
+          "bytes": 2575
+        },
+        {
+          "path": "app/build/intermediates/built_in_kotlinc/fossDebugAndroidTest/compileFossDebugAndroidTestKotlin/classes/app/skein/chat/ContextualSendPathInstrumentedTest.class",
+          "sha256": "a79be04dbde175a95c2801c245923f49f18a3593f6a9445f507ebd207d5db9e6",
+          "bytes": 11986
+        },
+        {
+          "path": "app/build/intermediates/built_in_kotlinc/fossDebugAndroidTest/compileFossDebugAndroidTestKotlin/classes/app/skein/inference/LlamaCppEngineInstrumentedTest$Companion.class",
+          "sha256": "bce9a82cae7cfa4906f3ce6942f8b131aaeeeaf12b30d314f085407d3256472d",
+          "bytes": 1041
+        },
+        {
+          "path": "app/build/intermediates/built_in_kotlinc/fossDebugAndroidTest/compileFossDebugAndroidTestKotlin/classes/app/skein/inference/LlamaCppEngineInstrumentedTest$inspectReadsMetadataWithoutLoading$1.class",
+          "sha256": "7e9e49acc625b1c61659995948ae8ea2e67a5a3342b103c95065fa363ae5c2ff",
+          "bytes": 4350
+        },
+        {
+          "path": "app/build/intermediates/built_in_kotlinc/fossDebugAndroidTest/compileFossDebugAndroidTestKotlin/classes/app/skein/inference/LlamaCppEngineInstrumentedTest$lockAfterInspectionTerminatesTheProcessAndOnlyANewUnlockCanRebind$1.class",
+          "sha256": "882b387743ec65186229afdba3edf00e10a1c582bf0d41ec02738d8c9cae6886",
+          "bytes": 8320
+        },
+        {
+          "path": "app/build/intermediates/built_in_kotlinc/fossDebugAndroidTest/compileFossDebugAndroidTestKotlin/classes/app/skein/inference/LlamaCppEngineInstrumentedTest$pinSource$1.class",
+          "sha256": "9299b61ae6767900e849548a0fd04d57be27d6eef08accc831cb5f08431e6617",
+          "bytes": 3239
+        },
+        {
+          "path": "app/build/intermediates/built_in_kotlinc/fossDebugAndroidTest/compileFossDebugAndroidTestKotlin/classes/app/skein/inference/LlamaCppEngineInstrumentedTest$serviceDeathFailsTheStreamAndTheNextLoadRebinds$1$killer$1.class",
+          "sha256": "8c6e95cc0935bb9fa36579ffd0607a3ec5d4fffa360acb4f643b252495da1876",
+          "bytes": 3729
+        },
+        {
+          "path": "app/build/intermediates/built_in_kotlinc/fossDebugAndroidTest/compileFossDebugAndroidTestKotlin/classes/app/skein/inference/LlamaCppEngineInstrumentedTest$serviceDeathFailsTheStreamAndTheNextLoadRebinds$1.class",
+          "sha256": "5f6239747bc5442756bd0446169ffc2d919ad1093271b3b343c49132980e558c",
+          "bytes": 8970
+        },
+        {
+          "path": "app/build/intermediates/built_in_kotlinc/fossDebugAndroidTest/compileFossDebugAndroidTestKotlin/classes/app/skein/inference/LlamaCppEngineInstrumentedTest$setUp$3.class",
+          "sha256": "9922658569cdb0c631d1991fa08c49b6123c75a27f2e2a0b53a7804fac7b9f43",
+          "bytes": 3605
+        },
+        {
+          "path": "app/build/intermediates/built_in_kotlinc/fossDebugAndroidTest/compileFossDebugAndroidTestKotlin/classes/app/skein/inference/LlamaCppEngineInstrumentedTest.class",
+          "sha256": "c13909d2cb77d9c840d4f6c4f2407486b6946351a33ffa3eaf0553b54ae65a2d",
+          "bytes": 26561
+        },
+        {
+          "path": "app/build/intermediates/built_in_kotlinc/fossDebugAndroidTest/compileFossDebugAndroidTestKotlin/classes/app/skein/ingest/IngestWorkerInstrumentedTest$Companion.class",
+          "sha256": "70caab3d06fa49d6b13cd2b41858a90c4fb2733d27266375b4e8f9456d56fbe1",
+          "bytes": 903
+        },
+        {
+          "path": "app/build/intermediates/built_in_kotlinc/fossDebugAndroidTest/compileFossDebugAndroidTestKotlin/classes/app/skein/ingest/IngestWorkerInstrumentedTest$RandomKeyVaultKeyProvider.class",
+          "sha256": "fd17ecb1803094623c3bced586dc332a43b93cf76714758d9d05c12fa0afa077",
+          "bytes": 5844
+        },
+        {
+          "path": "app/build/intermediates/built_in_kotlinc/fossDebugAndroidTest/compileFossDebugAndroidTestKotlin/classes/app/skein/ingest/IngestWorkerInstrumentedTest$bootstrap$1.class",
+          "sha256": "a439fa7c8bc94fdb98b5fdb27c566c512ee4943cb862412f0290b4f377dd4be1",
+          "bytes": 1685
+        },
+        {
+          "path": "app/build/intermediates/built_in_kotlinc/fossDebugAndroidTest/compileFossDebugAndroidTestKotlin/classes/app/skein/ingest/IngestWorkerInstrumentedTest$bootstrap$2.class",
+          "sha256": "d34c7ecb951135ef3a47f1a19f76b9a8f30e38733da51fc78007601c9ce34cb1",
+          "bytes": 1264
+        },
+        {
+          "path": "app/build/intermediates/built_in_kotlinc/fossDebugAndroidTest/compileFossDebugAndroidTestKotlin/classes/app/skein/ingest/IngestWorkerInstrumentedTest$lock_cancels_the_unique_work_and_nothing_runs_while_locked$1.class",
+          "sha256": "801061de78e2d3a75e9f4a0438bd32bfe6106f50ba7815498da3f23d63f75c1b",
+          "bytes": 4082
+        },
+        {
+          "path": "app/build/intermediates/built_in_kotlinc/fossDebugAndroidTest/compileFossDebugAndroidTestKotlin/classes/app/skein/ingest/IngestWorkerInstrumentedTest$lock_cancels_the_unique_work_and_nothing_runs_while_locked$2.class",
+          "sha256": "a2a8a06b68cc84ff4052f8e9e5fcabe173f416a4a5e7a20a0d5f77d5cf247c95",
+          "bytes": 3852
+        },
+        {
+          "path": "app/build/intermediates/built_in_kotlinc/fossDebugAndroidTest/compileFossDebugAndroidTestKotlin/classes/app/skein/ingest/IngestWorkerInstrumentedTest$setUp$2.class",
+          "sha256": "df3430aa6f01e4e3f3f4a7900ad3cccf37133576c39ecf759c692d4fa61c04d7",
+          "bytes": 1132
+        },
+        {
+          "path": "app/build/intermediates/built_in_kotlinc/fossDebugAndroidTest/compileFossDebugAndroidTestKotlin/classes/app/skein/ingest/IngestWorkerInstrumentedTest$tearDown$1.class",
+          "sha256": "1a8b0756f1cb4f1917fabb97c533ad0a9869eca6eefbf56af56670313bd6bfd1",
+          "bytes": 3601
+        },
+        {
+          "path": "app/build/intermediates/built_in_kotlinc/fossDebugAndroidTest/compileFossDebugAndroidTestKotlin/classes/app/skein/ingest/IngestWorkerInstrumentedTest$three_queued_notes_are_chunked_searchable_and_linked_after_one_pass$2.class",
+          "sha256": "0447bcdf0e64497b6153bed45723ccb286d36c0c5e272f4f4c9da31b8ccccf05",
+          "bytes": 9705
+        },
+        {
+          "path": "app/build/intermediates/built_in_kotlinc/fossDebugAndroidTest/compileFossDebugAndroidTestKotlin/classes/app/skein/ingest/IngestWorkerInstrumentedTest$three_queued_notes_are_chunked_searchable_and_linked_after_one_pass$ids$1.class",
+          "sha256": "07061f2e24289c93c922208d14833d65d576be57bcd9e354f007c03f68133559",
+          "bytes": 7188
+        },
+        {
+          "path": "app/build/intermediates/built_in_kotlinc/fossDebugAndroidTest/compileFossDebugAndroidTestKotlin/classes/app/skein/ingest/IngestWorkerInstrumentedTest$unlockAndBringUp$1$1$1.class",
+          "sha256": "7dcd1e6fb3025e77824436cc3d801c7de1396e3f88ccd6ac36fc2f8fe0a21899",
+          "bytes": 4346
+        },
+        {
+          "path": "app/build/intermediates/built_in_kotlinc/fossDebugAndroidTest/compileFossDebugAndroidTestKotlin/classes/app/skein/ingest/IngestWorkerInstrumentedTest$unlockAndBringUp$result$1.class",
+          "sha256": "69ad5bc5377633f6b5849d065ac42e7299861f7e62c0872429a11e88785f6966",
+          "bytes": 3575
+        },
+        {
+          "path": "app/build/intermediates/built_in_kotlinc/fossDebugAndroidTest/compileFossDebugAndroidTestKotlin/classes/app/skein/ingest/IngestWorkerInstrumentedTest.class",
+          "sha256": "824bf2810247315e950f7c115f051c83f2ce3c90f64b0dfabb47ba966a378c56",
+          "bytes": 19689
+        },
+        {
+          "path": "app/build/intermediates/built_in_kotlinc/fossDebugAndroidTest/compileFossDebugAndroidTestKotlin/classes/app/skein/vault/FirstRunInstrumentedTest$Companion.class",
+          "sha256": "31729465e144a40cb82a6b5f5218918ea86ca5d6682d6b2c6bc8d51a689a4e87",
+          "bytes": 884
+        },
+        {
+          "path": "app/build/intermediates/built_in_kotlinc/fossDebugAndroidTest/compileFossDebugAndroidTestKotlin/classes/app/skein/vault/FirstRunInstrumentedTest$EnvelopeModellingKeyProvider.class",
+          "sha256": "87d063fbd32af468371db676a2c48325402744a69487cda84c38ecc56233e833",
+          "bytes": 6725
+        },
+        {
+          "path": "app/build/intermediates/built_in_kotlinc/fossDebugAndroidTest/compileFossDebugAndroidTestKotlin/classes/app/skein/vault/FirstRunInstrumentedTest$Launch$bootstrap$1.class",
+          "sha256": "9090813f39fc0a61133e5543ab1e21172bd658006d2c6cd1e079a7a8772ffd19",
+          "bytes": 1792
+        },
+        {
+          "path": "app/build/intermediates/built_in_kotlinc/fossDebugAndroidTest/compileFossDebugAndroidTestKotlin/classes/app/skein/vault/FirstRunInstrumentedTest$Launch$bootstrap$2.class",
+          "sha256": "b996999688942a765d2abf3794c4685f9e5992bc5e17342212e24a62622e0d12",
+          "bytes": 2304
+        },
+        {
+          "path": "app/build/intermediates/built_in_kotlinc/fossDebugAndroidTest/compileFossDebugAndroidTestKotlin/classes/app/skein/vault/FirstRunInstrumentedTest$Launch$end$1.class",
+          "sha256": "d9211c70c8d2843dc0df42d8b1befaeff4a7c16571817ea05d355345906cd0fd",
+          "bytes": 3595
+        },
+        {
+          "path": "app/build/intermediates/built_in_kotlinc/fossDebugAndroidTest/compileFossDebugAndroidTestKotlin/classes/app/skein/vault/FirstRunInstrumentedTest$Launch$setUp$1$1.class",
+          "sha256": "4e9802135186c6f83f63c42415b86a407b707e45d591580c02fb1bb0844bbe7b",
+          "bytes": 4081
+        },
+        {
+          "path": "app/build/intermediates/built_in_kotlinc/fossDebugAndroidTest/compileFossDebugAndroidTestKotlin/classes/app/skein/vault/FirstRunInstrumentedTest$Launch$unlockAndBringUp$1$1.class",
+          "sha256": "0a4174a5c1d2e34685ea24fc541ab02a0b3050cbef0a76c7ca602863e78debe4",
+          "bytes": 4462
+        },
+        {
+          "path": "app/build/intermediates/built_in_kotlinc/fossDebugAndroidTest/compileFossDebugAndroidTestKotlin/classes/app/skein/vault/FirstRunInstrumentedTest$Launch$unlockAndBringUp$2.class",
+          "sha256": "679c0f0a8ea5ec1b18cf547b8e7f660ee25e21c332d06fb75e208db2a049c1e5",
+          "bytes": 3567
+        },
+        {
+          "path": "app/build/intermediates/built_in_kotlinc/fossDebugAndroidTest/compileFossDebugAndroidTestKotlin/classes/app/skein/vault/FirstRunInstrumentedTest$Launch.class",
+          "sha256": "af3fd34be6729cbd37698060418fbda74323dcc3f2f2b99ea5ffb8b86b802aa2",
+          "bytes": 10016
+        },
+        {
+          "path": "app/build/intermediates/built_in_kotlinc/fossDebugAndroidTest/compileFossDebugAndroidTestKotlin/classes/app/skein/vault/FirstRunInstrumentedTest$fresh_install_seeds_the_first_persona$personas$1.class",
+          "sha256": "2401a86f9deb39ea7450c8b61c2ad111b2f6c6e159e70b544afd564b4c54099e",
+          "bytes": 3658
+        },
+        {
+          "path": "app/build/intermediates/built_in_kotlinc/fossDebugAndroidTest/compileFossDebugAndroidTestKotlin/classes/app/skein/vault/FirstRunInstrumentedTest.class",
+          "sha256": "70f893a8ab7d764f20707be6c8e049c9788404e5333f767a00c770f064311fc4",
+          "bytes": 11440
+        },
+        {
+          "path": "app/build/intermediates/built_in_kotlinc/fossDebugAndroidTest/compileFossDebugAndroidTestKotlin/classes/app/skein/vault/LockPolicySettingsRecreationInstrumentedTest$Companion.class",
+          "sha256": "85c5bf9d0b037c6e19fa5f07ab92572fe6b5161d1ddea98a50ba2693f8be6f09",
+          "bytes": 1002
+        },
+        {
+          "path": "app/build/intermediates/built_in_kotlinc/fossDebugAndroidTest/compileFossDebugAndroidTestKotlin/classes/app/skein/vault/LockPolicySettingsRecreationInstrumentedTest$UnusedVaultKeyProvider.class",
+          "sha256": "230d765e3df6a69fa001bbd24cd43ed67ea9e6278c0891df1bb41af4db1c6fe2",
+          "bytes": 4292
+        },
+        {
+          "path": "app/build/intermediates/built_in_kotlinc/fossDebugAndroidTest/compileFossDebugAndroidTestKotlin/classes/app/skein/vault/LockPolicySettingsRecreationInstrumentedTest$changingLockOnScreenOffPersistsAndSurvivesActivityRecreation$1.class",
+          "sha256": "d5afdda9d4c2907631fc7512ef838b11326658419320ef69e34a88a4c381bf73",
+          "bytes": 3971
+        },
+        {
+          "path": "app/build/intermediates/built_in_kotlinc/fossDebugAndroidTest/compileFossDebugAndroidTestKotlin/classes/app/skein/vault/LockPolicySettingsRecreationInstrumentedTest$changingLockOnScreenOffPersistsAndSurvivesActivityRecreation$2$1.class",
+          "sha256": "c08b0c709814a178452589edefbe7efe41252d11e3d9078893c4358f4a346df2",
+          "bytes": 3851
+        },
+        {
+          "path": "app/build/intermediates/built_in_kotlinc/fossDebugAndroidTest/compileFossDebugAndroidTestKotlin/classes/app/skein/vault/LockPolicySettingsRecreationInstrumentedTest$changingLockOnScreenOffPersistsAndSurvivesActivityRecreation$2$3.class",
+          "sha256": "bf2ed8aa29edcb9e58a7286bc3988dc592d2eb3d8d1565e81dc7514bb8956243",
+          "bytes": 3979
+        },
+        {
+          "path": "app/build/intermediates/built_in_kotlinc/fossDebugAndroidTest/compileFossDebugAndroidTestKotlin/classes/app/skein/vault/LockPolicySettingsRecreationInstrumentedTest$changingLockOnScreenOffPersistsAndSurvivesActivityRecreation$2$4.class",
+          "sha256": "6e7ad9e22bc9e127f263e7a4c9f62cef9333f0e4722d5e8bb1ead4ad6a2ae7f7",
+          "bytes": 4014
+        },
+        {
+          "path": "app/build/intermediates/built_in_kotlinc/fossDebugAndroidTest/compileFossDebugAndroidTestKotlin/classes/app/skein/vault/LockPolicySettingsRecreationInstrumentedTest$resetPrefs$1.class",
+          "sha256": "fab954b1fa47d42443ebb1d01238985eb7cfa4767e921d28429c2d71da8feaef",
+          "bytes": 3747
+        },
+        {
+          "path": "app/build/intermediates/built_in_kotlinc/fossDebugAndroidTest/compileFossDebugAndroidTestKotlin/classes/app/skein/vault/LockPolicySettingsRecreationInstrumentedTest$tearDown$1.class",
+          "sha256": "b176aebe310935bd5695d5268770c4d30e47f3633a8ea3eb23c1396340165cbb",
+          "bytes": 3582
+        },
+        {
+          "path": "app/build/intermediates/built_in_kotlinc/fossDebugAndroidTest/compileFossDebugAndroidTestKotlin/classes/app/skein/vault/LockPolicySettingsRecreationInstrumentedTest$wireLockPolicy$1$1.class",
+          "sha256": "68dd9dada73249acd855f09d8009ea8e1931d2545a92c39af0089e1ef7e40e1a",
+          "bytes": 3475
+        },
+        {
+          "path": "app/build/intermediates/built_in_kotlinc/fossDebugAndroidTest/compileFossDebugAndroidTestKotlin/classes/app/skein/vault/LockPolicySettingsRecreationInstrumentedTest$wireLockPolicy$1$2.class",
+          "sha256": "3f9fc58c73c6e08887e598fb4d531b3447deab30b5019244a2451687396bcba6",
+          "bytes": 2127
+        },
+        {
+          "path": "app/build/intermediates/built_in_kotlinc/fossDebugAndroidTest/compileFossDebugAndroidTestKotlin/classes/app/skein/vault/LockPolicySettingsRecreationInstrumentedTest$wireLockPolicy$1.class",
+          "sha256": "2404b2c3715fc09849870c0932c531efd1dcd1c0d1cab3b3ccc4bb72df49bb0d",
+          "bytes": 4484
+        },
+        {
+          "path": "app/build/intermediates/built_in_kotlinc/fossDebugAndroidTest/compileFossDebugAndroidTestKotlin/classes/app/skein/vault/LockPolicySettingsRecreationInstrumentedTest.class",
+          "sha256": "e8576d641af29ae94f40da09fd22511bc5782d2083f6f36fa67e38480bbb0f8f",
+          "bytes": 10928
+        },
+        {
+          "path": "app/build/intermediates/built_in_kotlinc/fossDebugAndroidTest/compileFossDebugAndroidTestKotlin/classes/app/skein/vault/VaultBootstrapInstrumentedTest$Companion.class",
+          "sha256": "e8e5ca5a586893a154bbeaeaf0aa5ba40943613ba76af52018b849f967fe3773",
+          "bytes": 908
+        },
+        {
+          "path": "app/build/intermediates/built_in_kotlinc/fossDebugAndroidTest/compileFossDebugAndroidTestKotlin/classes/app/skein/vault/VaultBootstrapInstrumentedTest$RandomKeyVaultKeyProvider.class",
+          "sha256": "652d2513f58718385922ef07e35a3e67bbf633f18dba41726c784a57ea9f338e",
+          "bytes": 6130
+        },
+        {
+          "path": "app/build/intermediates/built_in_kotlinc/fossDebugAndroidTest/compileFossDebugAndroidTestKotlin/classes/app/skein/vault/VaultBootstrapInstrumentedTest$a_second_unlock_reopens_the_same_vault_file$1.class",
+          "sha256": "765c4cc24c460d2409745f9fb5da72af0df429473b49850401a2b171b17492ed",
+          "bytes": 3788
+        },
+        {
+          "path": "app/build/intermediates/built_in_kotlinc/fossDebugAndroidTest/compileFossDebugAndroidTestKotlin/classes/app/skein/vault/VaultBootstrapInstrumentedTest$bootstrap$1.class",
+          "sha256": "2e66ca7ed008592eda0668845499f7070e431e20174ed4534e65e4680c5f8899",
+          "bytes": 1690
+        },
+        {
+          "path": "app/build/intermediates/built_in_kotlinc/fossDebugAndroidTest/compileFossDebugAndroidTestKotlin/classes/app/skein/vault/VaultBootstrapInstrumentedTest$lock_after_bringUp_serves_no_roots$1.class",
+          "sha256": "f99df95bdb14faedcac772022860efeb231aede2dfa0c4c7999a56819f0bdafd",
+          "bytes": 3743
+        },
+        {
+          "path": "app/build/intermediates/built_in_kotlinc/fossDebugAndroidTest/compileFossDebugAndroidTestKotlin/classes/app/skein/vault/VaultBootstrapInstrumentedTest$tearDown$1.class",
+          "sha256": "e72c7bab9d6a662580ae35cdf00bf30cfb5140158e6165526ab6cce4b7c9811c",
+          "bytes": 3612
+        },
+        {
+          "path": "app/build/intermediates/built_in_kotlinc/fossDebugAndroidTest/compileFossDebugAndroidTestKotlin/classes/app/skein/vault/VaultBootstrapInstrumentedTest$timed_out_write_rolls_back_before_a_fresh_session_reopens_the_vault$1$1$1.class",
+          "sha256": "4d93884bb34daab21863373208f87a20c0efb8a2d534632717d07606dc61fd91",
+          "bytes": 2871
+        },
+        {
+          "path": "app/build/intermediates/built_in_kotlinc/fossDebugAndroidTest/compileFossDebugAndroidTestKotlin/classes/app/skein/vault/VaultBootstrapInstrumentedTest$timed_out_write_rolls_back_before_a_fresh_session_reopens_the_vault$1$writing$1$1.class",
+          "sha256": "d29e9e26ef83009a356db040bec0921bebc72226cf969b8d764157048eba2f4a",
+          "bytes": 4679
+        },
+        {
+          "path": "app/build/intermediates/built_in_kotlinc/fossDebugAndroidTest/compileFossDebugAndroidTestKotlin/classes/app/skein/vault/VaultBootstrapInstrumentedTest$timed_out_write_rolls_back_before_a_fresh_session_reopens_the_vault$1$writing$1.class",
+          "sha256": "2dc948897df66c770f5cf7bf496cd3b2e94f74a3f125ed3808e21c4c4d0b5dae",
+          "bytes": 4134
+        },
+        {
+          "path": "app/build/intermediates/built_in_kotlinc/fossDebugAndroidTest/compileFossDebugAndroidTestKotlin/classes/app/skein/vault/VaultBootstrapInstrumentedTest$timed_out_write_rolls_back_before_a_fresh_session_reopens_the_vault$1.class",
+          "sha256": "05981463a11268de248e6d63db54f9c4979dbd7b8c031f7c77150e1365ea9ca3",
+          "bytes": 8251
+        },
+        {
+          "path": "app/build/intermediates/built_in_kotlinc/fossDebugAndroidTest/compileFossDebugAndroidTestKotlin/classes/app/skein/vault/VaultBootstrapInstrumentedTest$timed_out_write_rolls_back_before_a_fresh_session_reopens_the_vault$2.class",
+          "sha256": "02bb881877229fa336eed114f397a6fcac9526921d025ffbf84fd9a9a6343278",
+          "bytes": 6038
+        },
+        {
+          "path": "app/build/intermediates/built_in_kotlinc/fossDebugAndroidTest/compileFossDebugAndroidTestKotlin/classes/app/skein/vault/VaultBootstrapInstrumentedTest$timed_out_write_rolls_back_before_a_fresh_session_reopens_the_vault$saved$1.class",
+          "sha256": "40af4792864b17f342c3643a8f2621610eaa04719b773221a24f34630b2d271b",
+          "bytes": 4077
+        },
+        {
+          "path": "app/build/intermediates/built_in_kotlinc/fossDebugAndroidTest/compileFossDebugAndroidTestKotlin/classes/app/skein/vault/VaultBootstrapInstrumentedTest$unlockAndBringUp$1$1$1.class",
+          "sha256": "4d9f600a9bcca14c2cd52d0391593574ad190228842fdae13da25593b0a868cc",
+          "bytes": 4329
+        },
+        {
+          "path": "app/build/intermediates/built_in_kotlinc/fossDebugAndroidTest/compileFossDebugAndroidTestKotlin/classes/app/skein/vault/VaultBootstrapInstrumentedTest$unlockAndBringUp$result$1.class",
+          "sha256": "7b6ec7866929143645863d53c10b6f4f9a610a29f4330e3a96d9744be2d213e1",
+          "bytes": 3557
+        },
+        {
+          "path": "app/build/intermediates/built_in_kotlinc/fossDebugAndroidTest/compileFossDebugAndroidTestKotlin/classes/app/skein/vault/VaultBootstrapInstrumentedTest.class",
+          "sha256": "bd9afd97242456fb3b430fa1cc90835880998e46678318f08c4984021edf8862",
+          "bytes": 14460
+        },
+        {
+          "path": "app/build/intermediates/built_in_kotlinc/fossDebugAndroidTest/compileFossDebugAndroidTestKotlin/classes/app/skein/vault/provider/ProviderCursors.class",
+          "sha256": "e72f9697ee1e0d986d0797acf4b066da058ee655cb9e04b16a0db610711be543",
+          "bytes": 1006
+        },
+        {
+          "path": "app/build/intermediates/built_in_kotlinc/fossDebugAndroidTest/compileFossDebugAndroidTestKotlin/classes/app/skein/vault/provider/ProviderIds.class",
+          "sha256": "3735571a83a89e7b7a0b0bca70072f2e5d3a35be9b5e48cca80ab84e540e2383",
+          "bytes": 2230
+        },
+        {
+          "path": "app/build/intermediates/built_in_kotlinc/fossDebugAndroidTest/compileFossDebugAndroidTestKotlin/classes/app/skein/vault/provider/VaultDocumentsProviderGrantInstrumentedTest$Companion.class",
+          "sha256": "dd22f0bbeb3b44ae31f7d57809a4f9b49f93ccc38857caa4fa86463c26bfcd71",
+          "bytes": 987
+        },
+        {
+          "path": "app/build/intermediates/built_in_kotlinc/fossDebugAndroidTest/compileFossDebugAndroidTestKotlin/classes/app/skein/vault/provider/VaultDocumentsProviderGrantInstrumentedTest$RandomKeyVaultKeyProvider.class",
+          "sha256": "ff14df75c974cd277d683ccdce4a39181753bad7c2a905f6bb76a5da0419b17f",
+          "bytes": 6319
+        },
+        {
+          "path": "app/build/intermediates/built_in_kotlinc/fossDebugAndroidTest/compileFossDebugAndroidTestKotlin/classes/app/skein/vault/provider/VaultDocumentsProviderGrantInstrumentedTest$bootstrap$1.class",
+          "sha256": "75401565b7058b73aff8ea9240646d41b41363aac4e2dd9533e7ba1a0843e1ab",
+          "bytes": 1769
+        },
+        {
+          "path": "app/build/intermediates/built_in_kotlinc/fossDebugAndroidTest/compileFossDebugAndroidTestKotlin/classes/app/skein/vault/provider/VaultDocumentsProviderGrantInstrumentedTest$read_throwsFileNotFoundException_afterTheVaultLocks$2.class",
+          "sha256": "a12a98faa63972082d4e63194a354a508958317adffeca8b903bd34bcbc53ba0",
+          "bytes": 4039
+        },
+        {
+          "path": "app/build/intermediates/built_in_kotlinc/fossDebugAndroidTest/compileFossDebugAndroidTestKotlin/classes/app/skein/vault/provider/VaultDocumentsProviderGrantInstrumentedTest$read_worksAgain_afterLockThenReUnlock_usingTheSameDocumentId$2.class",
+          "sha256": "5e160a16b6ef3351079922e5f5afcd0552bf7f3fc4d1ccb415505db0cfe1bfdd",
+          "bytes": 4084
+        },
+        {
+          "path": "app/build/intermediates/built_in_kotlinc/fossDebugAndroidTest/compileFossDebugAndroidTestKotlin/classes/app/skein/vault/provider/VaultDocumentsProviderGrantInstrumentedTest$read_worksAgain_afterLockThenReUnlock_usingTheSameDocumentId$3.class",
+          "sha256": "376840463bd51d8806fcc670164dbe68cba43fa8d88d94441f7e32851e706dd8",
+          "bytes": 4453
+        },
+        {
+          "path": "app/build/intermediates/built_in_kotlinc/fossDebugAndroidTest/compileFossDebugAndroidTestKotlin/classes/app/skein/vault/provider/VaultDocumentsProviderGrantInstrumentedTest$seedNote$1.class",
+          "sha256": "43b5f7bf3ba7e06c49ac5f5385ee5356f31676c02cb63d9b4f9e7fe0f6bb6712",
+          "bytes": 4124
+        },
+        {
+          "path": "app/build/intermediates/built_in_kotlinc/fossDebugAndroidTest/compileFossDebugAndroidTestKotlin/classes/app/skein/vault/provider/VaultDocumentsProviderGrantInstrumentedTest$tearDown$1.class",
+          "sha256": "54d710eb808a968ffa486f95b7feed8924874ccc91089345cd59d202c69b9250",
+          "bytes": 3823
+        },
+        {
+          "path": "app/build/intermediates/built_in_kotlinc/fossDebugAndroidTest/compileFossDebugAndroidTestKotlin/classes/app/skein/vault/provider/VaultDocumentsProviderGrantInstrumentedTest$unlockAndBringUp$1$1$1.class",
+          "sha256": "d2dd103247ac3f68c9669718e485fb6e0769e9a64d2d715005f104a038e2bd63",
+          "bytes": 4562
+        },
+        {
+          "path": "app/build/intermediates/built_in_kotlinc/fossDebugAndroidTest/compileFossDebugAndroidTestKotlin/classes/app/skein/vault/provider/VaultDocumentsProviderGrantInstrumentedTest$unlockAndBringUp$result$1.class",
+          "sha256": "f7d563888e697ef8df696e29e29cd6b13d1f445011256c8462187a206cab3dee",
+          "bytes": 3768
+        },
+        {
+          "path": "app/build/intermediates/built_in_kotlinc/fossDebugAndroidTest/compileFossDebugAndroidTestKotlin/classes/app/skein/vault/provider/VaultDocumentsProviderGrantInstrumentedTest.class",
+          "sha256": "de7bd17a8db4cfa1bc3c541fe4f4050349e7678a709c2f80fa7b3594ab17ba2a",
+          "bytes": 24308
+        },
+        {
+          "path": "app/build/intermediates/built_in_kotlinc/fossDebugAndroidTest/compileFossDebugAndroidTestKotlin/classes/app/skein/vault/provider/VaultDocumentsProviderTest$attachmentDocuments$1.class",
+          "sha256": "dbd7ff6c3e725c4933bc415f889f55060947ec56d06fc32b4a980a19ba3f28fa",
+          "bytes": 4298
+        },
+        {
+          "path": "app/build/intermediates/built_in_kotlinc/fossDebugAndroidTest/compileFossDebugAndroidTestKotlin/classes/app/skein/vault/provider/VaultDocumentsProviderTest$markdownDocuments$1.class",
+          "sha256": "f16c18fd04a9d3806f81ae31032924282687fd6e9c8bef5cbcf02bf05710c4ec",
+          "bytes": 4496
+        },
+        {
+          "path": "app/build/intermediates/built_in_kotlinc/fossDebugAndroidTest/compileFossDebugAndroidTestKotlin/classes/app/skein/vault/provider/VaultDocumentsProviderTest$openDocument_read_streamsExactlyWhatExportMarkdownProduces$expected$1$1.class",
+          "sha256": "206ebd399caac49988c320d4fe2b57a3b38ef68cb4ad734be2ebccb1cd30c901",
+          "bytes": 4232
+        },
+        {
+          "path": "app/build/intermediates/built_in_kotlinc/fossDebugAndroidTest/compileFossDebugAndroidTestKotlin/classes/app/skein/vault/provider/VaultDocumentsProviderTest$openDocument_read_streamsTheOriginalAttachmentBytes$expected$1.class",
+          "sha256": "a32e6885e924c9042b1ce8587b36ef45d9b639bd4d140725d09fcae319413530",
+          "bytes": 5255
+        },
+        {
+          "path": "app/build/intermediates/built_in_kotlinc/fossDebugAndroidTest/compileFossDebugAndroidTestKotlin/classes/app/skein/vault/provider/VaultDocumentsProviderTest$openDocument_write_updatesTheNoteAndEnqueuesIngest$2.class",
+          "sha256": "99718338bc31de514e4ffe3ff1c23ab12b34f79992c1cb05df50e9457142777d",
+          "bytes": 3971
+        },
+        {
+          "path": "app/build/intermediates/built_in_kotlinc/fossDebugAndroidTest/compileFossDebugAndroidTestKotlin/classes/app/skein/vault/provider/VaultDocumentsProviderTest$openDocument_write_updatesTheNoteAndEnqueuesIngest$queued$1.class",
+          "sha256": "355f8f82690c8a3dfefae68e08a73b812fa06d8db7dcfa1572eb5a56ef3da007",
+          "bytes": 3858
+        },
+        {
+          "path": "app/build/intermediates/built_in_kotlinc/fossDebugAndroidTest/compileFossDebugAndroidTestKotlin/classes/app/skein/vault/provider/VaultDocumentsProviderTest$openDocument_write_updatesTheNoteAndEnqueuesIngest$updated$1$1.class",
+          "sha256": "93b99b0c9ce1842f9d1bfdf1cb9f5c821cb8dfa38195046c8b4d6888dd335948",
+          "bytes": 4011
+        },
+        {
+          "path": "app/build/intermediates/built_in_kotlinc/fossDebugAndroidTest/compileFossDebugAndroidTestKotlin/classes/app/skein/vault/provider/VaultDocumentsProviderTest$queryChildDocuments_ofAttachments_listsEveryAttachmentWithItsStoredMimeType$expected$1$1.class",
+          "sha256": "ea2111d504e601bc047e2e535b03b9d32afed2b0f696252bc3534d62b7d7e9fb",
+          "bytes": 4120
+        },
+        {
+          "path": "app/build/intermediates/built_in_kotlinc/fossDebugAndroidTest/compileFossDebugAndroidTestKotlin/classes/app/skein/vault/provider/VaultDocumentsProviderTest.class",
+          "sha256": "f7b5fe33985163b693e3a0e838ac1f8f2868989a8795ed0e64d2b8ee76bee99a",
+          "bytes": 26108
+        },
+        {
+          "path": "app/build/intermediates/built_in_kotlinc/fossDebugAndroidTest/compileFossDebugAndroidTestKotlin/classes/app/skein/vault/security/AtRestEncryptionInstrumentedTest$Companion.class",
+          "sha256": "eb2f72afbf9cc047834f1e86e5e7cfd5ecfa30e6e59a0b56fda04bcf1bf3a008",
+          "bytes": 1202
+        },
+        {
+          "path": "app/build/intermediates/built_in_kotlinc/fossDebugAndroidTest/compileFossDebugAndroidTestKotlin/classes/app/skein/vault/security/AtRestEncryptionInstrumentedTest$RandomKeyVaultKeyProvider.class",
+          "sha256": "915b402bb84892701a026a30c6e154cc4eae45ac1bfdb4b613f20e657c379d8e",
+          "bytes": 6309
+        },
+        {
+          "path": "app/build/intermediates/built_in_kotlinc/fossDebugAndroidTest/compileFossDebugAndroidTestKotlin/classes/app/skein/vault/security/AtRestEncryptionInstrumentedTest$no_plaintext_or_key_material_on_disk_vault_db_is_not_sqlite_magic_and_lock_zeroes_the_key$1.class",
+          "sha256": "a5cd7d0b47467914ff147b0a42084393977f1a58f2443a8fd9d3f50a1a79eaa9",
+          "bytes": 3698
+        },
+        {
+          "path": "app/build/intermediates/built_in_kotlinc/fossDebugAndroidTest/compileFossDebugAndroidTestKotlin/classes/app/skein/vault/security/AtRestEncryptionInstrumentedTest$no_plaintext_or_key_material_on_disk_vault_db_is_not_sqlite_magic_and_lock_zeroes_the_key$3.class",
+          "sha256": "9864b43e0a50cd1591d9d45736e0073ea0c6b259a9baef7ca37eb7422b594fc3",
+          "bytes": 3699
+        },
+        {
+          "path": "app/build/intermediates/built_in_kotlinc/fossDebugAndroidTest/compileFossDebugAndroidTestKotlin/classes/app/skein/vault/security/AtRestEncryptionInstrumentedTest$no_plaintext_or_key_material_on_disk_vault_db_is_not_sqlite_magic_and_lock_zeroes_the_key$4.class",
+          "sha256": "4b216965196f204b4fbf6f175cf0f07a0fc768cc75272a8f15acff5db35df3a9",
+          "bytes": 4119
+        },
+        {
+          "path": "app/build/intermediates/built_in_kotlinc/fossDebugAndroidTest/compileFossDebugAndroidTestKotlin/classes/app/skein/vault/security/AtRestEncryptionInstrumentedTest$no_plaintext_or_key_material_on_disk_vault_db_is_not_sqlite_magic_and_lock_zeroes_the_key$6.class",
+          "sha256": "fd4d6835a07f939ff7050c499da6b417bb6bd116d99a3230979919a863b11321",
+          "bytes": 3990
+        },
+        {
+          "path": "app/build/intermediates/built_in_kotlinc/fossDebugAndroidTest/compileFossDebugAndroidTestKotlin/classes/app/skein/vault/security/AtRestEncryptionInstrumentedTest$no_plaintext_or_key_material_on_disk_vault_db_is_not_sqlite_magic_and_lock_zeroes_the_key$attachmentDoc$1$1.class",
+          "sha256": "bece5af32b98bf23a61adf52f96809338d76e4c941bedc22ad42675089612922",
+          "bytes": 3545
+        },
+        {
+          "path": "app/build/intermediates/built_in_kotlinc/fossDebugAndroidTest/compileFossDebugAndroidTestKotlin/classes/app/skein/vault/security/AtRestEncryptionInstrumentedTest$no_plaintext_or_key_material_on_disk_vault_db_is_not_sqlite_magic_and_lock_zeroes_the_key$attachmentDoc$1.class",
+          "sha256": "5eae9fb8494fec81a2889eada53520b956856e7b460c61390c55c887d2dd2e25",
+          "bytes": 4384
+        },
+        {
+          "path": "app/build/intermediates/built_in_kotlinc/fossDebugAndroidTest/compileFossDebugAndroidTestKotlin/classes/app/skein/vault/security/AtRestEncryptionInstrumentedTest$no_plaintext_or_key_material_on_disk_vault_db_is_not_sqlite_magic_and_lock_zeroes_the_key$noteDoc$1.class",
+          "sha256": "00a41b46bd2c0824d1143b563f2b55825e179f9145e6edbe1205c89d4036f62a",
+          "bytes": 4832
+        },
+        {
+          "path": "app/build/intermediates/built_in_kotlinc/fossDebugAndroidTest/compileFossDebugAndroidTestKotlin/classes/app/skein/vault/security/AtRestEncryptionInstrumentedTest$no_plaintext_or_key_material_on_disk_vault_db_is_not_sqlite_magic_and_lock_zeroes_the_key$readAttachment$1.class",
+          "sha256": "8c0fcc8ed8be63ba7f5718566aa4dc1d6a63959245a385a47d5d04c6450ec105",
+          "bytes": 5574
+        },
+        {
+          "path": "app/build/intermediates/built_in_kotlinc/fossDebugAndroidTest/compileFossDebugAndroidTestKotlin/classes/app/skein/vault/security/AtRestEncryptionInstrumentedTest$no_plaintext_or_key_material_on_disk_vault_db_is_not_sqlite_magic_and_lock_zeroes_the_key$readNote$1.class",
+          "sha256": "ea8d5ea98dc73b5484562c3c291724d71136cc6d7c9ab98e053251411e946993",
+          "bytes": 4133
+        },
+        {
+          "path": "app/build/intermediates/built_in_kotlinc/fossDebugAndroidTest/compileFossDebugAndroidTestKotlin/classes/app/skein/vault/security/AtRestEncryptionInstrumentedTest$no_plaintext_or_key_material_on_disk_vault_db_is_not_sqlite_magic_and_lock_zeroes_the_key$reopened$1.class",
+          "sha256": "f9202776fe4d25b15f2deb61b6f8d2533356f5c65abbbbd8b342cb88a364b712",
+          "bytes": 4026
+        },
+        {
+          "path": "app/build/intermediates/built_in_kotlinc/fossDebugAndroidTest/compileFossDebugAndroidTestKotlin/classes/app/skein/vault/security/AtRestEncryptionInstrumentedTest$no_plaintext_or_key_material_on_disk_vault_db_is_not_sqlite_magic_and_lock_zeroes_the_key$session$1.class",
+          "sha256": "3bf9afcc2c9a27d3a7efdec08c1c65b24c741c66b89fa4ac0a5fca0fce8580c7",
+          "bytes": 4022
+        },
+        {
+          "path": "app/build/intermediates/built_in_kotlinc/fossDebugAndroidTest/compileFossDebugAndroidTestKotlin/classes/app/skein/vault/security/AtRestEncryptionInstrumentedTest$tearDown$1.class",
+          "sha256": "75843d35dbf2da5c83bf2339585228f4a644faf5c449de339d419df257197f05",
+          "bytes": 3713
+        },
+        {
+          "path": "app/build/intermediates/built_in_kotlinc/fossDebugAndroidTest/compileFossDebugAndroidTestKotlin/classes/app/skein/vault/security/AtRestEncryptionInstrumentedTest$unlockThroughManager$1$1$1.class",
+          "sha256": "2319a6660e15d90233defb67dad861e858f5a745049bceda4359bcbccb31b00b",
+          "bytes": 4461
+        },
+        {
+          "path": "app/build/intermediates/built_in_kotlinc/fossDebugAndroidTest/compileFossDebugAndroidTestKotlin/classes/app/skein/vault/security/AtRestEncryptionInstrumentedTest.class",
+          "sha256": "c80ea74bf3a350068d1f1115510af4115c4d45c1f0046e997bbc98b92c5068f3",
+          "bytes": 18022
+        }
+      ]
+    },
+    {
+      "root": "feature/editor/build/intermediates/built_in_kotlinc/debugAndroidTest/compileDebugAndroidTestKotlin/classes",
+      "class_count": 19,
+      "files": [
+        {
+          "path": "feature/editor/build/intermediates/built_in_kotlinc/debugAndroidTest/compileDebugAndroidTestKotlin/classes/app/skein/feature/editor/SkeinEditorInstrumentedTest.class",
+          "sha256": "78e2352bafb2fb368487739a39ed67a76a798fa9980f7d6012eaf8d31b7f0e2b",
+          "bytes": 20492
+        },
+        {
+          "path": "feature/editor/build/intermediates/built_in_kotlinc/debugAndroidTest/compileDebugAndroidTestKotlin/classes/app/skein/feature/editor/autocomplete/WikilinkAutocompleteInstrumentedTest$escape_closes_the_popup_without_changing_the_text$1$1$1$1.class",
+          "sha256": "3fbaf59446281daf9d81d0ae5590f4425d3bc6d7760966558496439711ca010a",
+          "bytes": 6459
+        },
+        {
+          "path": "feature/editor/build/intermediates/built_in_kotlinc/debugAndroidTest/compileDebugAndroidTestKotlin/classes/app/skein/feature/editor/autocomplete/WikilinkAutocompleteInstrumentedTest$hardware_down_arrow_then_enter_selects_the_second_row$1$1$1$1.class",
+          "sha256": "6a6543104c76055eb1452fe8ad97571f0bcc0223238a78034350476bd93e7e4b",
+          "bytes": 6499
+        },
+        {
+          "path": "feature/editor/build/intermediates/built_in_kotlinc/debugAndroidTest/compileDebugAndroidTestKotlin/classes/app/skein/feature/editor/autocomplete/WikilinkAutocompleteInstrumentedTest$selecting_a_row_inserts_the_full_wikilink_and_closes_the_popup$1$1$1$1.class",
+          "sha256": "c5ff22616aaebecb3424cd239b7565145971bda3114c249fcd5dd59fabbb54e4",
+          "bytes": 6584
+        },
+        {
+          "path": "feature/editor/build/intermediates/built_in_kotlinc/debugAndroidTest/compileDebugAndroidTestKotlin/classes/app/skein/feature/editor/autocomplete/WikilinkAutocompleteInstrumentedTest$selecting_the_create_row_invokes_the_create_callback_and_inserts_the_typed_text$1$1$1$1.class",
+          "sha256": "5c2ecd3eaf994367cdd5a7cb6ac7967fbdd726400b292b589cec6209c3126885",
+          "bytes": 3612
+        },
+        {
+          "path": "feature/editor/build/intermediates/built_in_kotlinc/debugAndroidTest/compileDebugAndroidTestKotlin/classes/app/skein/feature/editor/autocomplete/WikilinkAutocompleteInstrumentedTest$selecting_the_create_row_invokes_the_create_callback_and_inserts_the_typed_text$1$1$2.class",
+          "sha256": "08f8af5cf92d8d578ac0d8fccebcb7b1bef18b4248119b98c9da8000bbebbdf5",
+          "bytes": 3758
+        },
+        {
+          "path": "feature/editor/build/intermediates/built_in_kotlinc/debugAndroidTest/compileDebugAndroidTestKotlin/classes/app/skein/feature/editor/autocomplete/WikilinkAutocompleteInstrumentedTest$typing_double_bracket_and_a_prefix_shows_matching_titles_first$1$1$1$1.class",
+          "sha256": "7e9c1e32be4567fd7fb5d14ec050c294343a234c6f2e5743ffd618b83fce04d9",
+          "bytes": 6584
+        },
+        {
+          "path": "feature/editor/build/intermediates/built_in_kotlinc/debugAndroidTest/compileDebugAndroidTestKotlin/classes/app/skein/feature/editor/autocomplete/WikilinkAutocompleteInstrumentedTest.class",
+          "sha256": "1005547633ee48ea14a540a5e07d909d1c9c82e19696fc811119cc0b5c5a63f0",
+          "bytes": 26037
+        },
+        {
+          "path": "feature/editor/build/intermediates/built_in_kotlinc/debugAndroidTest/compileDebugAndroidTestKotlin/classes/app/skein/feature/editor/backlinks/BacklinksDrawerInstrumentedTest$expanding_the_drawer_shows_a_row_for_each_backlinking_document$1.class",
+          "sha256": "fe9faacdff16e9d5afe7e39ee5077d1bde9a4e8913bcf6406d5eed60902fd83f",
+          "bytes": 6130
+        },
+        {
+          "path": "feature/editor/build/intermediates/built_in_kotlinc/debugAndroidTest/compileDebugAndroidTestKotlin/classes/app/skein/feature/editor/backlinks/BacklinksDrawerInstrumentedTest$link$1.class",
+          "sha256": "a90a2d62db23f2265b6c42c2cf4db6283bccafbc23f91e048a4b59e741b691bb",
+          "bytes": 2401
+        },
+        {
+          "path": "feature/editor/build/intermediates/built_in_kotlinc/debugAndroidTest/compileDebugAndroidTestKotlin/classes/app/skein/feature/editor/backlinks/BacklinksDrawerInstrumentedTest$tapping_a_backlink_row_invokes_onOpen_with_the_source_document_id$1.class",
+          "sha256": "b2644ab9220bf4ab2cc050d70fa645cd3607d08e3e4be6b7626381315bf4330f",
+          "bytes": 5529
+        },
+        {
+          "path": "feature/editor/build/intermediates/built_in_kotlinc/debugAndroidTest/compileDebugAndroidTestKotlin/classes/app/skein/feature/editor/backlinks/BacklinksDrawerInstrumentedTest$the_drawer_starts_collapsed_with_only_the_header_visible$target$1.class",
+          "sha256": "a44c06882c3610528cb5debcf1d27c8b91b0cf1bdf453ece4956df91f6de5550",
+          "bytes": 4134
+        },
+        {
+          "path": "feature/editor/build/intermediates/built_in_kotlinc/debugAndroidTest/compileDebugAndroidTestKotlin/classes/app/skein/feature/editor/backlinks/BacklinksDrawerInstrumentedTest.class",
+          "sha256": "ba1b74cee89435fdb4480810af8860829c0994ba248b115a032169d0f656d963",
+          "bytes": 20564
+        },
+        {
+          "path": "feature/editor/build/intermediates/built_in_kotlinc/debugAndroidTest/compileDebugAndroidTestKotlin/classes/app/skein/feature/editor/notetab/NoteTabInstrumentedTest$the_flush_handle_is_registered_once_the_note_has_loaded_and_removed_on_disposal$doc$1.class",
+          "sha256": "49e855c82964ba9706776abac2e1879598d023cc88eb88e6108b39ca72a8e55c",
+          "bytes": 4135
+        },
+        {
+          "path": "feature/editor/build/intermediates/built_in_kotlinc/debugAndroidTest/compileDebugAndroidTestKotlin/classes/app/skein/feature/editor/notetab/NoteTabInstrumentedTest$the_graph_button_invokes_onOpenGraph_with_the_current_docId$doc$1.class",
+          "sha256": "d1374422b42c7248efd368d261ded48411e3d7eb62df71454c90def234ce5730",
+          "bytes": 4035
+        },
+        {
+          "path": "feature/editor/build/intermediates/built_in_kotlinc/debugAndroidTest/compileDebugAndroidTestKotlin/classes/app/skein/feature/editor/notetab/NoteTabInstrumentedTest$the_tab_renders_the_editor_and_the_collapsed_backlinks_drawer$doc$1.class",
+          "sha256": "aec0a9a71154b1e5ed48f1a5d92f9f7ec6d4a217e5f77e5cda1b6c3b774602f4",
+          "bytes": 4050
+        },
+        {
+          "path": "feature/editor/build/intermediates/built_in_kotlinc/debugAndroidTest/compileDebugAndroidTestKotlin/classes/app/skein/feature/editor/notetab/NoteTabInstrumentedTest.class",
+          "sha256": "363f1974ace6453fa19fe3b8b12401d00d76a4541a0b6c49927e3c0f06cef8f0",
+          "bytes": 19013
+        },
+        {
+          "path": "feature/editor/build/intermediates/built_in_kotlinc/debugAndroidTest/compileDebugAndroidTestKotlin/classes/app/skein/feature/editor/notetab/ShareMenuInstrumentedTest$setContent$doc$1.class",
+          "sha256": "f576aff294d1b7bf76bbb452ff0588a9ea15cf83339a11e04376cd307eb85993",
+          "bytes": 3852
+        },
+        {
+          "path": "feature/editor/build/intermediates/built_in_kotlinc/debugAndroidTest/compileDebugAndroidTestKotlin/classes/app/skein/feature/editor/notetab/ShareMenuInstrumentedTest.class",
+          "sha256": "1a5e8b949746ffaf8692b0758ad22e481ec7a4103008484e61772647fa67160d",
+          "bytes": 12507
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,9 @@
+{
+  "kind": "method-level old-source negative",
+  "base_commit": "a2effe4ac39e88af5fd577017a5e7ce0bdbce400",
+  "path": "app/src/main/kotlin/app/skein/shell/DocumentDeleteCoordinator.kt",
+  "method": "DocumentDeleteCoordinator.request",
+  "old_method_sha256": "91feea30d46cf658ad16494406a1c510a7fd68ebae52afdd219532366018f933",
+  "positive_method_sha256": "7d48600479e1643d2c202eddb9647233eee65e93a4aae54cd36235f9966d129a",
+  "note": "Only exact original request method changed; all remaining final source/tests match durable-source-1. Not a whole-old-commit build."
+}

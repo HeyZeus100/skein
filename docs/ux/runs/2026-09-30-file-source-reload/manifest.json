@@ -1,0 +1,110 @@
+{
+  "source_commit": "21c1df9bd060cf4b5d40b51283416f49bc28dc45",
+  "files": [
+    {
+      "path": "README.md",
+      "bytes": 5712,
+      "sha256": "58f4ef9b89a5fdb8124c17eda6c8502429c4dfa8b014bf085ccbce75d4ba4c7c"
+    },
+    {
+      "path": "baseline-comparison.json",
+      "bytes": 11498,
+      "sha256": "2a8ae862fd77103058f9a4b5e783005e44925adb1d09bbfd41e9197053b91b92"
+    },
+    {
+      "path": "development.zip",
+      "bytes": 114601,
+      "sha256": "b23bad079626c5ef52813737daab7ff586490eb42f8412412d9f1fc8e3a27698"
+    },
+    {
+      "path": "focused.log",
+      "bytes": 37693,
+      "sha256": "9ca39704e9184df5bf1ddc4d7552f2fe00929ca566309a22abb4c3da0e76908a"
+    },
+    {
+      "path": "full.log",
+      "bytes": 49216,
+      "sha256": "319e9d4434bb17b95bf3771328f92991283610d5da1b1b42cd99e47c0dd00314"
+    },
+    {
+      "path": "independent-history.zip",
+      "bytes": 56560,
+      "sha256": "468bf44ec168a2dd2784547d6ed7c322dd99ec773692dbc22f4ee7048a35db1d"
+    },
+    {
+      "path": "independent-review.json",
+      "bytes": 47950,
+      "sha256": "f4b50a1d8bee50f5fb40eed26db0c8af9d027e4eb3cdbe081da5eedc5edd9260"
+    },
+    {
+      "path": "independent-source-review.json",
+      "bytes": 3462,
+      "sha256": "4d3ee463f0ba6b09be16b00ede8115f95b34c36f539b44164489c00053615e42"
+    },
+    {
+      "path": "instrumentation-compilation.json",
+      "bytes": 92443,
+      "sha256": "b59473e089ba072c736054abfb89863d8a911983fb7871bc92e6ddf54af9fc06"
+    },
+    {
+      "path": "java-version.txt",
+      "bytes": 171,
+      "sha256": "2fe83b0053132e4e834defa82250462f4c62733d29bf76b19ee1bb3c14b06b39"
+    },
+    {
+      "path": "negative-actual.zip",
+      "bytes": 2279,
+      "sha256": "efec21a9d86ad8f9f57eeff0ccf433709375077f118f4ad38d5d05cdecd5daae"
+    },
+    {
+      "path": "negative-method.json",
+      "bytes": 568,
+      "sha256": "9fa2b6c41a81537dfa5c19fb8f2b496af4c72d9f05585c942a8ab5aa632e80f6"
+    },
+    {
+      "path": "negative-review.json",
+      "bytes": 1212,
+      "sha256": "0b5726878318cf561b85c969710317a09e00e7679c62bdd06ec4c64f1920ca0a"
+    },
+    {
+      "path": "negative-source.zip",
+      "bytes": 34621,
+      "sha256": "82fc9e52c9700693b32ef685a91bc5989dfc13c36981baf84f2e3761e3973369"
+    },
+    {
+      "path": "negative.log",
+      "bytes": 33530,
+      "sha256": "78b6427b8d6c3c8421d4de006055ef6677891ec4aa908a0883a02632b370652b"
+    },
+    {
+      "path": "preservation.json",
+      "bytes": 1071,
+      "sha256": "b179034a3f6277d5e655ce844306f30532dbd2da5f50c447919e492e5fbc4cf4"
+    },
+    {
+      "path": "restoration.json",
+      "bytes": 1759,
+      "sha256": "dab065d7d9e70cc17d072db70f34d9ba8034134f42c251e91618d6202b181c0d"
+    },
+    {
+      "path": "source.json",
+      "bytes": 1832,
+      "sha256": "5627d25a4950891058c482190a6dc142198f963fa58c74a10f055528052d1b55"
+    },
+    {
+      "path": "source.zip",
+      "bytes": 34631,
+      "sha256": "e617ee6e108cf3c1084cfc68bdf814f779a766e43c5be14bdf84cca76875d659"
+    },
+    {
+      "path": "unit-actual.zip",
+      "bytes": 100281,
+      "sha256": "b50404ec7c83ae4af4d0656238bdfc93fa35aecb15a3e37a439c98e248a32ac8"
+    },
+    {
+      "path": "unit-review.json",
+      "bytes": 211839,
+      "sha256": "ec19afcb4252a0361fbf2e4e9ef840697bbc44e0622a7784b610c370e96ec5ef"
+    }
+  ]
+}

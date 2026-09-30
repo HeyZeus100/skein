@@ -1,0 +1,45 @@
+{
+  "all_final_source_bytes_restored": true,
+  "files": [
+    {
+      "path": "app/src/main/kotlin/app/skein/shell/DocumentDeleteCoordinator.kt",
+      "sha256": "beefeac9961175afdc0ea05adf04a87a2093ce55c8f532d86b9bd9894a48eda4",
+      "matches": true
+    },
+    {
+      "path": "app/src/main/kotlin/app/skein/shell/DocumentDeletionServices.kt",
+      "sha256": "0d2315aaea18d71da495c87bff23c5d0554ff4ff782ee469f904f2e2e349a881",
+      "matches": true
+    },
+    {
+      "path": "app/src/test/kotlin/app/skein/shell/FileDocumentDeleteCoordinatorTest.kt",
+      "sha256": "37ac57b700ba7c4274b8eb4ecc42709cf7165d7792ce3d90ae969b8efd075f92",
+      "matches": true
+    },
+    {
+      "path": "feature/editor/src/main/kotlin/app/skein/feature/editor/EditorState.kt",
+      "sha256": "d149fdcdd3e8c6b9d4c595cb7d33ba228192f514256e2adbe673b9c8c0f5cb90",
+      "matches": true
+    },
+    {
+      "path": "feature/editor/src/main/kotlin/app/skein/feature/editor/notetab/NoteDeletionRegistry.kt",
+      "sha256": "08f63375bb658b7304c8d1c4e799fcfb2db4d1fab63537aeec5c2cd55f81f8f4",
+      "matches": true
+    },
+    {
+      "path": "feature/editor/src/main/kotlin/app/skein/feature/editor/notetab/NoteTab.kt",
+      "sha256": "f0fe4232e5b49e7ed1a762a935919c1d2efd8f852489c57c5dc5c2d4f84cb65f",
+      "matches": true
+    },
+    {
+      "path": "feature/editor/src/main/kotlin/app/skein/feature/editor/notetab/NoteTabState.kt",
+      "sha256": "02d4dbcdc8c77d622ecc0c9d6c3ed37718841cec3a02360cd439d1c50e04d913",
+      "matches": true
+    },
+    {
+      "path": "feature/editor/src/test/kotlin/app/skein/feature/editor/notetab/NoteSourceDetachmentTest.kt",
+      "sha256": "de9d5e41db043a6477cfa8fb632161d6328e0e13bd566e74facd73497e26eb65",
+      "matches": true
+    }
+  ]
+}

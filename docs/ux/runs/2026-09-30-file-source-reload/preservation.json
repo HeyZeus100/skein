@@ -1,0 +1,18 @@
+{
+  "base": "a2effe4ac39e88af5fd577017a5e7ce0bdbce400",
+  "closed_lc09_instrumented_source": {
+    "path": "core/vault/src/androidTest/kotlin/app/skein/core/vault/repository/FileLifecycleInstrumentedTest.kt",
+    "sha256": "8b67c79e3cfb5df4688b34543ade59993bd76a82c10752d50516e29768d04f64",
+    "byte_identical": true
+  },
+  "changed_paths": [
+    "app/src/main/kotlin/app/skein/shell/DocumentDeleteCoordinator.kt",
+    "app/src/main/kotlin/app/skein/shell/DocumentDeletionServices.kt",
+    "app/src/test/kotlin/app/skein/shell/FileDocumentDeleteCoordinatorTest.kt",
+    "feature/editor/src/main/kotlin/app/skein/feature/editor/EditorState.kt",
+    "feature/editor/src/main/kotlin/app/skein/feature/editor/notetab/NoteDeletionRegistry.kt",
+    "feature/editor/src/main/kotlin/app/skein/feature/editor/notetab/NoteTab.kt",
+    "feature/editor/src/main/kotlin/app/skein/feature/editor/notetab/NoteTabState.kt"
+  ],
+  "limits": "No device, hosted CI, Beads, model/default changes, calibration, fixture/gold/threshold edits, or owner-worktree edits. No fresh40 execution."
+}

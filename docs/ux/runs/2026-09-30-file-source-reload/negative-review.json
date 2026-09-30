@@ -1,0 +1,26 @@
+{
+  "executed_cases": 2,
+  "failures": 2,
+  "errors": 0,
+  "reason": "Original request method refuses qualified AIOUT source dependents; expected prompt missing",
+  "files": [
+    {
+      "path": "app/build/test-results/testDevDebugUnitTest/TEST-app.skein.shell.FileDocumentDeleteCoordinatorTest.xml",
+      "sha256": "99e0a9894a326db608d6a3d1307bcfe3069c4f0fe5bde9020581742d7f47f0fa",
+      "name": "qualified AIOUT survivor reserves before any drain and reloads after commit without pruning",
+      "failure": {
+        "message": "com.google.common.truth.AssertionErrorWithFacts: expected not to be: null",
+        "type": "com.google.common.truth.AssertionErrorWithFacts"
+      }
+    },
+    {
+      "path": "app/build/test-results/testFossDebugUnitTest/TEST-app.skein.shell.FileDocumentDeleteCoordinatorTest.xml",
+      "sha256": "fd0481473ad52f658afe233081b5b0c81fdb00269ae54fbb2764a54d45b273fa",
+      "name": "qualified AIOUT survivor reserves before any drain and reloads after commit without pruning",
+      "failure": {
+        "message": "com.google.common.truth.AssertionErrorWithFacts: expected not to be: null",
+        "type": "com.google.common.truth.AssertionErrorWithFacts"
+      }
+    }
+  ]
+}

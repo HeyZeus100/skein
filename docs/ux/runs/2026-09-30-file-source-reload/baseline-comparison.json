@@ -1,0 +1,192 @@
+{
+  "baseline": "docs/ux/runs/2026-09-30-context-recovery-transport/combined15941fd15/unit-actual.zip",
+  "baseline_sha256": "620808eaa3a1ffdbeebe6a8d854f63260dc2905f4ce2b77532f440ae1ee1122a",
+  "actual": "build/agent-logs/file-reload-20260930/durable-full-1-xml.zip",
+  "actual_sha256": "b50404ec7c83ae4af4d0656238bdfc93fa35aecb15a3e37a439c98e248a32ac8",
+  "before": 878,
+  "after": 914,
+  "added": [
+    {
+      "xml": "app/build/test-results/testDevDebugUnitTest/TEST-app.skein.shell.FileDocumentDeleteCoordinatorTest.xml",
+      "class": "app.skein.shell.FileDocumentDeleteCoordinatorTest",
+      "name": "commit return cancellation still reloads surviving writer and keeps its route"
+    },
+    {
+      "xml": "app/build/test-results/testDevDebugUnitTest/TEST-app.skein.shell.FileDocumentDeleteCoordinatorTest.xml",
+      "class": "app.skein.shell.FileDocumentDeleteCoordinatorTest",
+      "name": "failed survivor reload reports committed deletion and never rolls it back"
+    },
+    {
+      "xml": "app/build/test-results/testDevDebugUnitTest/TEST-app.skein.shell.FileDocumentDeleteCoordinatorTest.xml",
+      "class": "app.skein.shell.FileDocumentDeleteCoordinatorTest",
+      "name": "failed transaction rolls back survivor reservation without reloading or pruning"
+    },
+    {
+      "xml": "app/build/test-results/testDevDebugUnitTest/TEST-app.skein.shell.FileDocumentDeleteCoordinatorTest.xml",
+      "class": "app.skein.shell.FileDocumentDeleteCoordinatorTest",
+      "name": "qualified AIOUT survivor reserves before any drain and reloads after commit without pruning"
+    },
+    {
+      "xml": "app/build/test-results/testDevDebugUnitTest/TEST-app.skein.shell.FileDocumentDeleteCoordinatorTest.xml",
+      "class": "app.skein.shell.FileDocumentDeleteCoordinatorTest",
+      "name": "unavailable survivor reservation restores deleted writers before any drain"
+    },
+    {
+      "xml": "app/build/test-results/testDevDebugUnitTest/TEST-app.skein.shell.FileDocumentDeleteCoordinatorTest.xml",
+      "class": "app.skein.shell.FileDocumentDeleteCoordinatorTest",
+      "name": "unsupported ATTACHMENT survivor remains refused even when AIOUT reload is qualified"
+    },
+    {
+      "xml": "app/build/test-results/testDevDebugUnitTest/TEST-app.skein.shell.FileDocumentDeleteCoordinatorTest.xml",
+      "class": "app.skein.shell.FileDocumentDeleteCoordinatorTest",
+      "name": "unsupported CHAT survivor remains refused even when AIOUT reload is qualified"
+    },
+    {
+      "xml": "app/build/test-results/testFossDebugUnitTest/TEST-app.skein.shell.FileDocumentDeleteCoordinatorTest.xml",
+      "class": "app.skein.shell.FileDocumentDeleteCoordinatorTest",
+      "name": "commit return cancellation still reloads surviving writer and keeps its route"
+    },
+    {
+      "xml": "app/build/test-results/testFossDebugUnitTest/TEST-app.skein.shell.FileDocumentDeleteCoordinatorTest.xml",
+      "class": "app.skein.shell.FileDocumentDeleteCoordinatorTest",
+      "name": "failed survivor reload reports committed deletion and never rolls it back"
+    },
+    {
+      "xml": "app/build/test-results/testFossDebugUnitTest/TEST-app.skein.shell.FileDocumentDeleteCoordinatorTest.xml",
+      "class": "app.skein.shell.FileDocumentDeleteCoordinatorTest",
+      "name": "failed transaction rolls back survivor reservation without reloading or pruning"
+    },
+    {
+      "xml": "app/build/test-results/testFossDebugUnitTest/TEST-app.skein.shell.FileDocumentDeleteCoordinatorTest.xml",
+      "class": "app.skein.shell.FileDocumentDeleteCoordinatorTest",
+      "name": "qualified AIOUT survivor reserves before any drain and reloads after commit without pruning"
+    },
+    {
+      "xml": "app/build/test-results/testFossDebugUnitTest/TEST-app.skein.shell.FileDocumentDeleteCoordinatorTest.xml",
+      "class": "app.skein.shell.FileDocumentDeleteCoordinatorTest",
+      "name": "unavailable survivor reservation restores deleted writers before any drain"
+    },
+    {
+      "xml": "app/build/test-results/testFossDebugUnitTest/TEST-app.skein.shell.FileDocumentDeleteCoordinatorTest.xml",
+      "class": "app.skein.shell.FileDocumentDeleteCoordinatorTest",
+      "name": "unsupported ATTACHMENT survivor remains refused even when AIOUT reload is qualified"
+    },
+    {
+      "xml": "app/build/test-results/testFossDebugUnitTest/TEST-app.skein.shell.FileDocumentDeleteCoordinatorTest.xml",
+      "class": "app.skein.shell.FileDocumentDeleteCoordinatorTest",
+      "name": "unsupported CHAT survivor remains refused even when AIOUT reload is qualified"
+    },
+    {
+      "xml": "feature/editor/build/test-results/testDebugUnitTest/TEST-app.skein.feature.editor.notetab.NoteSourceDetachmentTest.xml",
+      "class": "app.skein.feature.editor.notetab.NoteSourceDetachmentTest",
+      "name": "a pane registered during reload is included and receives current metadata"
+    },
+    {
+      "xml": "feature/editor/build/test-results/testDebugUnitTest/TEST-app.skein.feature.editor.notetab.NoteSourceDetachmentTest.xml",
+      "class": "app.skein.feature.editor.notetab.NoteSourceDetachmentTest",
+      "name": "abandoned composition unregisters its constructor enrollment on scope completion"
+    },
+    {
+      "xml": "feature/editor/build/test-results/testDebugUnitTest/TEST-app.skein.feature.editor.notetab.NoteSourceDetachmentTest.xml",
+      "class": "app.skein.feature.editor.notetab.NoteSourceDetachmentTest",
+      "name": "bounded reload timeout does not mark survivor deleted or admit stale writers"
+    },
+    {
+      "xml": "feature/editor/build/test-results/testDebugUnitTest/TEST-app.skein.feature.editor.notetab.NoteSourceDetachmentTest.xml",
+      "class": "app.skein.feature.editor.notetab.NoteSourceDetachmentTest",
+      "name": "committed reload preserves dirty body title selection and user metadata while merging current fields"
+    },
+    {
+      "xml": "feature/editor/build/test-results/testDebugUnitTest/TEST-app.skein.feature.editor.notetab.NoteSourceDetachmentTest.xml",
+      "class": "app.skein.feature.editor.notetab.NoteSourceDetachmentTest",
+      "name": "failed precommit save refuses readiness and retains the source and dirty buffer"
+    },
+    {
+      "xml": "feature/editor/build/test-results/testDebugUnitTest/TEST-app.skein.feature.editor.notetab.NoteSourceDetachmentTest.xml",
+      "class": "app.skein.feature.editor.notetab.NoteSourceDetachmentTest",
+      "name": "failed reload keeps dirty buffer and writer paused until a fresh pane can reload"
+    },
+    {
+      "xml": "feature/editor/build/test-results/testDebugUnitTest/TEST-app.skein.feature.editor.notetab.NoteSourceDetachmentTest.xml",
+      "class": "app.skein.feature.editor.notetab.NoteSourceDetachmentTest",
+      "name": "initial stale read must finish before reload can resume an editor"
+    },
+    {
+      "xml": "feature/editor/build/test-results/testDebugUnitTest/TEST-app.skein.feature.editor.notetab.NoteSourceDetachmentTest.xml",
+      "class": "app.skein.feature.editor.notetab.NoteSourceDetachmentTest",
+      "name": "late dirty registrant prevents commit until its original content is durably flushed"
+    },
+    {
+      "xml": "feature/editor/build/test-results/testDebugUnitTest/TEST-app.skein.feature.editor.notetab.NoteSourceDetachmentTest.xml",
+      "class": "app.skein.feature.editor.notetab.NoteSourceDetachmentTest",
+      "name": "lock after commit preserves precommit dirty body title and metadata durably"
+    },
+    {
+      "xml": "feature/editor/build/test-results/testDebugUnitTest/TEST-app.skein.feature.editor.notetab.NoteSourceDetachmentTest.xml",
+      "class": "app.skein.feature.editor.notetab.NoteSourceDetachmentTest",
+      "name": "lock during suspended reload cannot reopen old session writer"
+    },
+    {
+      "xml": "feature/editor/build/test-results/testDebugUnitTest/TEST-app.skein.feature.editor.notetab.NoteSourceDetachmentTest.xml",
+      "class": "app.skein.feature.editor.notetab.NoteSourceDetachmentTest",
+      "name": "new pane after completed reload cannot reintroduce old source"
+    },
+    {
+      "xml": "feature/editor/build/test-results/testDebugUnitTest/TEST-app.skein.feature.editor.notetab.NoteSourceDetachmentTest.xml",
+      "class": "app.skein.feature.editor.notetab.NoteSourceDetachmentTest",
+      "name": "new pane during another detachment retains earlier source tombstones"
+    },
+    {
+      "xml": "feature/editor/build/test-results/testDebugUnitTest/TEST-app.skein.feature.editor.notetab.NoteSourceDetachmentTest.xml",
+      "class": "app.skein.feature.editor.notetab.NoteSourceDetachmentTest",
+      "name": "new pane reload has its own bound and leaves timed out writer paused"
+    },
+    {
+      "xml": "feature/editor/build/test-results/testDebugUnitTest/TEST-app.skein.feature.editor.notetab.NoteSourceDetachmentTest.xml",
+      "class": "app.skein.feature.editor.notetab.NoteSourceDetachmentTest",
+      "name": "old source in a late edit cannot reattach the removed file"
+    },
+    {
+      "xml": "feature/editor/build/test-results/testDebugUnitTest/TEST-app.skein.feature.editor.notetab.NoteSourceDetachmentTest.xml",
+      "class": "app.skein.feature.editor.notetab.NoteSourceDetachmentTest",
+      "name": "pane enrolled after final readiness cannot admit edits before commit and lock"
+    },
+    {
+      "xml": "feature/editor/build/test-results/testDebugUnitTest/TEST-app.skein.feature.editor.notetab.NoteSourceDetachmentTest.xml",
+      "class": "app.skein.feature.editor.notetab.NoteSourceDetachmentTest",
+      "name": "pending autosave before commit cannot later overwrite the refreshed metadata"
+    },
+    {
+      "xml": "feature/editor/build/test-results/testDebugUnitTest/TEST-app.skein.feature.editor.notetab.NoteSourceDetachmentTest.xml",
+      "class": "app.skein.feature.editor.notetab.NoteSourceDetachmentTest",
+      "name": "reservation drains already admitted write before detachment"
+    },
+    {
+      "xml": "feature/editor/build/test-results/testDebugUnitTest/TEST-app.skein.feature.editor.notetab.NoteSourceDetachmentTest.xml",
+      "class": "app.skein.feature.editor.notetab.NoteSourceDetachmentTest",
+      "name": "rollback preserves original source and pending body title and metadata"
+    },
+    {
+      "xml": "feature/editor/build/test-results/testDebugUnitTest/TEST-app.skein.feature.editor.notetab.NoteSourceDetachmentTest.xml",
+      "class": "app.skein.feature.editor.notetab.NoteSourceDetachmentTest",
+      "name": "two dirty body panes refuse before forced persistence or deletion"
+    },
+    {
+      "xml": "feature/editor/build/test-results/testDebugUnitTest/TEST-app.skein.feature.editor.notetab.NoteSourceDetachmentTest.xml",
+      "class": "app.skein.feature.editor.notetab.NoteSourceDetachmentTest",
+      "name": "two dirty metadata panes refuse before forced persistence or deletion"
+    },
+    {
+      "xml": "feature/editor/build/test-results/testDebugUnitTest/TEST-app.skein.feature.editor.notetab.NoteSourceDetachmentTest.xml",
+      "class": "app.skein.feature.editor.notetab.NoteSourceDetachmentTest",
+      "name": "two dirty title panes refuse before forced persistence or deletion"
+    },
+    {
+      "xml": "feature/editor/build/test-results/testDebugUnitTest/TEST-app.skein.feature.editor.notetab.NoteSourceDetachmentTest.xml",
+      "class": "app.skein.feature.editor.notetab.NoteSourceDetachmentTest",
+      "name": "unchanged buffer takes current body and title without stale overwrite"
+    }
+  ],
+  "removed": [],
+  "changed_prior_outcomes_or_skips": []
+}
