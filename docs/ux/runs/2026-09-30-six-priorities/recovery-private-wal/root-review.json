@@ -1,0 +1,36 @@
+{
+  "source_base": "08b0f10771b26202c57cceed9e1027f0654ad3cb",
+  "actual_xml_review": {
+    "negative": {
+      "tests": 2,
+      "intended_failures": 2,
+      "errors": 0,
+      "skips": 0
+    },
+    "fixed": {
+      "xml": 4,
+      "passed": 28,
+      "failures": 0,
+      "errors": 0,
+      "skips": 0
+    }
+  },
+  "archives": {
+    "negative": {
+      "manifest_records": 8,
+      "archive_sha256": "5e9fcf34cb2e27d30492d8c3cb85f9992e9d517266f9e95927d4b1c8d617a929"
+    },
+    "fixed": {
+      "manifest_records": 12,
+      "archive_sha256": "978cc51a7381b8924e6bcb9eb57f68b0236f8c6c7ffe72fb9b5cc1c1b6a53ea6"
+    }
+  },
+  "all_fixed_sources_restored_and_match": true,
+  "old_production_exact08b0": true,
+  "native_runtime": "UNEXECUTED; expected nextordinary300",
+  "limitations": [
+    "All5instrumented methods compile only; future native ordinary run must confirm exact outcomes.",
+    "Existing-envelope recovery remains unwired; no production lease/activation/physical owner-content acceptance.",
+    "No native flags/checkpoint/immutable/live opening/DB creation changes; source identities including absence remain strict."
+  ]
+}

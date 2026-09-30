@@ -1,0 +1,23 @@
+{
+  "snapshot_path": "core/vault/src/main/kotlin/app/skein/core/vault/key/recovery/ClosedVaultRecoverySnapshot.kt",
+  "source": "08b0f10771b26202c57cceed9e1027f0654ad3cb",
+  "bytes": 5140,
+  "sha256": "082111682ad6eebca1ca60fea3a6126336ac4ffb64707ec986113d94ff9a70b2",
+  "test_sources": [
+    {
+      "path": "core/vault/src/test/kotlin/app/skein/core/vault/key/recovery/ClosedVaultRecoverySnapshotTest.kt",
+      "bytes": 7339,
+      "sha256": "4cf3840b34b0b35806e9786955eeef24e406b275b8cc2db9740e9f5fc4ad6df6"
+    },
+    {
+      "path": "core/vault/src/test/kotlin/app/skein/core/vault/key/recovery/ExistingVaultKeyProofTest.kt",
+      "bytes": 8406,
+      "sha256": "d8327293aa8960afa158852249d9ee9ed3522e6f34db96c2e697c2eb702227e4"
+    },
+    {
+      "path": "core/vault/src/androidTest/kotlin/app/skein/core/vault/key/recovery/ExistingVaultKeyProofInstrumentedTest.kt",
+      "bytes": 8052,
+      "sha256": "3bb8e55e4315abd4f7d040c72faf4a449ef05e0df116926c7de53b7d16120fe2"
+    }
+  ]
+}

@@ -1,0 +1,131 @@
+{
+  "scope": "Independent read-only source mechanism and proposed design review; no proposed code authored or executed by reviewer",
+  "source": "08b0f10771b26202c57cceed9e1027f0654ad3cb",
+  "source_files": [
+    {
+      "path": "core/vault/src/main/kotlin/app/skein/core/vault/key/recovery/ClosedVaultRecoverySnapshot.kt",
+      "bytes": 5140,
+      "sha256": "082111682ad6eebca1ca60fea3a6126336ac4ffb64707ec986113d94ff9a70b2"
+    },
+    {
+      "path": "core/vault/src/main/kotlin/app/skein/core/vault/key/recovery/ExistingVaultKeyProof.kt",
+      "bytes": 1750,
+      "sha256": "ceafbac4a949d2fdb56504916697982a500998eddf2bacd715f988e0a6e0b528"
+    },
+    {
+      "path": "core/vault/src/test/kotlin/app/skein/core/vault/key/recovery/ClosedVaultRecoverySnapshotTest.kt",
+      "bytes": 4234,
+      "sha256": "844f890281631cb85749d2701888b1990b523470e03297eec42eb66fa8f79d18"
+    },
+    {
+      "path": "core/vault/src/test/kotlin/app/skein/core/vault/key/recovery/ExistingVaultKeyProofTest.kt",
+      "bytes": 6452,
+      "sha256": "bbbeac3e8a82cffd86fd57fde0cf36ec6732d3acdd79229a0afc186bb7c1107f"
+    },
+    {
+      "path": "core/vault/src/androidTest/kotlin/app/skein/core/vault/key/recovery/ExistingVaultKeyProofInstrumentedTest.kt",
+      "bytes": 6749,
+      "sha256": "0518228cb32fcc4a189496d7f5ffe9ca11bdd668ec84c2a4ec564739d86c00a3"
+    },
+    {
+      "path": "native/sqlite/androidx-jni/skein_recovery_proof_jni.c",
+      "bytes": 5963,
+      "sha256": "a8898d637beacc03a0449a6a9d0c28de83963e1df8b637391774fc70a6e12bd1"
+    },
+    {
+      "path": "native/sqlite/amalgamation/sqlite3.c",
+      "bytes": 9747724,
+      "sha256": "8adaff6b464052a74e7adaa3cfa2725400f48eca68f47856fa806eaf30bdf2c9"
+    },
+    {
+      "path": "native/sqlite/amalgamation/sqlite3.h",
+      "bytes": 692778,
+      "sha256": "e564d0492e7556a8ad2f30c8ec645b5a6abb89f32f7b40465a3032d937596401"
+    },
+    {
+      "path": "native/sqlite/amalgamation/sqlite3ext.h",
+      "bytes": 39175,
+      "sha256": "ac9645e5c9ff0cf176efdd6e75cb5e98f46295d38e02db5c4d208826a39ab4be"
+    },
+    {
+      "path": "native/sqlite/amalgamation/SHA256SUMS.txt",
+      "bytes": 1209,
+      "sha256": "6a148e3c15fa926ddd0e31ea6a2c2328d2115c93ec6966751cc768640a9a77fa"
+    }
+  ],
+  "amalgamation_pins": [
+    {
+      "path": "sqlite3.c",
+      "sha256": "8adaff6b464052a74e7adaa3cfa2725400f48eca68f47856fa806eaf30bdf2c9",
+      "matches_declared_pin": true
+    },
+    {
+      "path": "sqlite3.h",
+      "sha256": "e564d0492e7556a8ad2f30c8ec645b5a6abb89f32f7b40465a3032d937596401",
+      "matches_declared_pin": true
+    },
+    {
+      "path": "sqlite3ext.h",
+      "sha256": "ac9645e5c9ff0cf176efdd6e75cb5e98f46295d38e02db5c4d208826a39ab4be",
+      "matches_declared_pin": true
+    }
+  ],
+  "source_facts": [
+    {
+      "location": "ClosedVaultRecoverySnapshot.kt:29-38",
+      "fact": "Live source DB/WAL/SHM/envelope fingerprints are checked exactly before private DB/WAL fingerprints; current private comparison reuses source identities, so absent source WAL requires absent private WAL."
+    },
+    {
+      "location": "skein_recovery_proof_jni.c:55-70,84-89,97-124,128-131",
+      "fact": "Verifier only opens accepted private ciphertext path READONLY|NOFOLLOW, applies raw-key semantics and query_only, reads actual schema/integrity, then closes. It does not use immutable mode or URI, and candidate buffers are wiped."
+    },
+    {
+      "location": "sqlite3.c:69563-69566;46993-46997",
+      "fact": "sqlite3WalOpen opens the WAL sidecar READWRITE|CREATE|WAL independently of the main DB read-only flag; Unix CREATE maps to O_CREAT. A missing private WAL can therefore be created."
+    },
+    {
+      "location": "sqlite3.c:69228-69259",
+      "fact": "walIndexRecover initializes empty WAL index then only decodes a WAL header/frames when file length exceeds the32-byte WAL header; an empty file contributes no committed frames."
+    },
+    {
+      "location": "sqlite3.c:70345-70403;42376;42130;46993",
+      "fact": "WAL close deletes/truncates only after successful exclusive DB lock and checkpoint. Unix read-only main DB uses O_RDONLY, while exclusive lock uses F_WRLCK through the POSIX locking path."
+    }
+  ],
+  "hypothesis": {
+    "assessment": "Source-supported explanation for wrapper UNAVAILABLE after successful native read on absent-WAL snapshots; no independent retained private-WAL runtime receipt was reviewed yet.",
+    "reported_runtime_context": "Root/readiness report original WAL-present phase passes but closed/no-WAL branches fail. This source review does not relabel any original failure."
+  },
+  "preferred_design": {
+    "choice": "Precreate an explicit empty WAL in the newly owned private snapshot only when captured SOURCE WAL was absent, then enforce exact private identity before and after native proof.",
+    "reason": "Avoids adding a proof-time absence/empty equivalence. Source absence remains exact; any missing/replaced/nonempty private WAL after sealing refuses.",
+    "required_boundaries": [
+      "Use create-new semantics only inside the unique private directory; never create/truncate the live WAL.",
+      "Keep original source identity list unchanged, including absent WAL/SHM; still compare DB/WAL/SHM/envelope, markers and exclusive lease before and after.",
+      "Expected private DB identity must remain captured DB hash; expected private WAL must be captured WAL hash or known SHA256(empty) only for captured absence. Do not blindly trust newly fingerprinted replacement bytes as a fresh baseline after copy.",
+      "Call the existing fingerprint routine so symbolic links, changed canonical paths and nonregular files still refuse; no length-only bypass.",
+      "Keep JNI readonly/no-immutable/query_only and key-zeroing/result mapping unchanged.",
+      "Private nonempty WAL must remain exactly captured. Private empty WAL must remain empty and present once sealed; disappearance or any bytes refuse."
+    ],
+    "closure_expectation": "On current Android Unix VFS, the read-only main DB descriptor cannot satisfy the write lock required for WAL deletion/checkpoint; expected empty private WAL retention is source-supported. Keep strict post-check so unexpected platform behavior remains UNAVAILABLE; runtime remains a required gate."
+  },
+  "alternative": {
+    "choice": "Allow captured absence to compare equal to absent or fingerprint-validated empty private WAL during proof.",
+    "assessment": "Narrowly defensible because empty contains no frames, but weaker proof-time identity than precreation and unnecessary if current native runtime retains the staged empty file. Do not normalize captured nonempty WAL or any live source identity."
+  },
+  "meaningful_regressions": [
+    "Capture absent live WAL leaves it absent and creates a regular zero-byte private WAL; full original live identity preserved.",
+    "Initial populated private WAL remains identical to captured source before/after valid native proof; deleted, truncated, replaced or mutated private WAL refuses.",
+    "Sealed empty private WAL deletion, nonempty replacement, symbolic link and directory refuse. Rewriting identical empty bytes is unchanged byte identity, not a separately detectable inode-identity gate.",
+    "Live absent WAL or SHM becoming even empty must refuse; changes to any live DB/WAL/SHM/envelope refuse.",
+    "Private DB mutation before native skips native; mutation during nominal native success refuses; every key buffer still zeroed.",
+    "All native outcomes retain meaning: valid raw key VERIFIED; wrong key/corrupt refuses; WAL-dependent schema passes only with captured committed WAL; removing source WAL yields UNSUPPORTED_SCHEMA rather than incidental wrapper UNAVAILABLE; older supported schema never migrates.",
+    "Add real encrypted diagnostic assertions for private WAL existence/zero-byte content before direct native call and unchanged private/live bytes afterward; host stub success alone is not runtime evidence."
+  ],
+  "limits": [
+    "Precreation design reviewed, implementation diff not yet available.",
+    "No builds/tests/native model/device/CI commands executed.",
+    "No production recovery lease issuer, UI activation, unlock authorization or whole recovery acceptance implied.",
+    "Fresh40 facts/golds/query/case contents remained unread."
+  ]
+}

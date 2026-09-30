@@ -1,0 +1,75 @@
+{"owner": "coordinator", "pid": 8980, "token": "084efa96-7f31-4899-b1e3-ffa1e08b7d27", "worktree": "/Users/andrewherrera/skein-worktrees/recovery-wal-proof-20260930", "started_at": "2026-09-30T11:44:32.542990+00:00", "command": ["./gradlew", "--no-daemon", "--max-workers=2", ":core:vault:ktlintFormat"]}
+To honour the JVM settings for this build a single-use Daemon process will be forked. For more on this, please refer to https://docs.gradle.org/9.7.1/userguide/gradle_daemon.html#sec:disabling_the_daemon in the Gradle documentation.
+Daemon will be stopped at the end of the build 
+Calculating task graph as no cached configuration is available for tasks: :core:vault:ktlintFormat
+> Task :build-logic:guards:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :build-logic:guards:compileKotlin FROM-CACHE
+> Task :build-logic:guards:compileJava NO-SOURCE
+> Task :build-logic:guards:pluginDescriptors
+> Task :build-logic:guards:processResources
+> Task :build-logic:guards:classes
+> Task :build-logic:guards:jar
+> Task :core:vault:loadKtlintReporters FROM-CACHE
+> Task :core:vault:runKtlintFormatOverKotlinScripts FROM-CACHE
+> Task :core:vault:runKtlintFormatOverAndroidTestDebugSourceSet NO-SOURCE
+> Task :core:vault:runKtlintFormatOverAndroidTestDevDebugSourceSet NO-SOURCE
+> Task :core:vault:ktlintAndroidTestDebugSourceSetFormat SKIPPED
+> Task :core:vault:ktlintAndroidTestDevDebugSourceSetFormat SKIPPED
+> Task :core:vault:runKtlintFormatOverAndroidTestDevSourceSet NO-SOURCE
+> Task :core:vault:runKtlintFormatOverAndroidTestFossDebugSourceSet NO-SOURCE
+> Task :core:vault:ktlintAndroidTestDevSourceSetFormat SKIPPED
+> Task :core:vault:ktlintAndroidTestFossDebugSourceSetFormat SKIPPED
+> Task :core:vault:runKtlintFormatOverAndroidTestFossSourceSet NO-SOURCE
+> Task :core:vault:runKtlintFormatOverAndroidTestReleaseSourceSet NO-SOURCE
+> Task :core:vault:ktlintAndroidTestFossSourceSetFormat SKIPPED
+> Task :core:vault:ktlintAndroidTestReleaseSourceSetFormat SKIPPED
+> Task :core:vault:runKtlintFormatOverDebugSourceSet NO-SOURCE
+> Task :core:vault:ktlintDebugSourceSetFormat SKIPPED
+> Task :core:vault:runKtlintFormatOverDevDebugSourceSet NO-SOURCE
+> Task :core:vault:ktlintDevDebugSourceSetFormat SKIPPED
+> Task :core:vault:runKtlintFormatOverDevReleaseSourceSet NO-SOURCE
+> Task :core:vault:ktlintDevReleaseSourceSetFormat SKIPPED
+> Task :core:vault:runKtlintFormatOverDevSourceSet NO-SOURCE
+> Task :core:vault:ktlintDevSourceSetFormat SKIPPED
+> Task :core:vault:runKtlintFormatOverFossDebugSourceSet NO-SOURCE
+> Task :core:vault:ktlintFossDebugSourceSetFormat SKIPPED
+> Task :core:vault:runKtlintFormatOverFossReleaseSourceSet NO-SOURCE
+> Task :core:vault:ktlintFossReleaseSourceSetFormat SKIPPED
+> Task :core:vault:runKtlintFormatOverFossSourceSet NO-SOURCE
+> Task :core:vault:ktlintFossSourceSetFormat SKIPPED
+> Task :core:vault:ktlintKotlinScriptFormat FROM-CACHE
+> Task :core:vault:runKtlintFormatOverAndroidTestSourceSet
+> Task :core:vault:ktlintAndroidTestSourceSetFormat
+> Task :core:vault:runKtlintFormatOverReleaseSourceSet NO-SOURCE
+> Task :core:vault:ktlintReleaseSourceSetFormat SKIPPED
+> Task :core:vault:runKtlintFormatOverTestDebugSourceSet NO-SOURCE
+> Task :core:vault:ktlintTestDebugSourceSetFormat SKIPPED
+> Task :core:vault:runKtlintFormatOverTestDevDebugSourceSet NO-SOURCE
+> Task :core:vault:ktlintTestDevDebugSourceSetFormat SKIPPED
+> Task :core:vault:runKtlintFormatOverTestDevSourceSet NO-SOURCE
+> Task :core:vault:ktlintTestDevSourceSetFormat SKIPPED
+> Task :core:vault:runKtlintFormatOverTestFixturesDebugSourceSet NO-SOURCE
+> Task :core:vault:ktlintTestFixturesDebugSourceSetFormat SKIPPED
+> Task :core:vault:runKtlintFormatOverTestFixturesDevSourceSet NO-SOURCE
+> Task :core:vault:ktlintTestFixturesDevSourceSetFormat SKIPPED
+> Task :core:vault:runKtlintFormatOverTestFixturesFossSourceSet NO-SOURCE
+> Task :core:vault:ktlintTestFixturesFossSourceSetFormat SKIPPED
+> Task :core:vault:runKtlintFormatOverTestFixturesReleaseSourceSet NO-SOURCE
+> Task :core:vault:ktlintTestFixturesReleaseSourceSetFormat SKIPPED
+> Task :core:vault:runKtlintFormatOverTestFixturesSourceSet NO-SOURCE
+> Task :core:vault:ktlintTestFixturesSourceSetFormat SKIPPED
+> Task :core:vault:runKtlintFormatOverTestFossDebugSourceSet NO-SOURCE
+> Task :core:vault:ktlintTestFossDebugSourceSetFormat SKIPPED
+> Task :core:vault:runKtlintFormatOverTestFossSourceSet NO-SOURCE
+> Task :core:vault:ktlintTestFossSourceSetFormat SKIPPED
+> Task :core:vault:runKtlintFormatOverTestReleaseSourceSet NO-SOURCE
+> Task :core:vault:ktlintTestReleaseSourceSetFormat SKIPPED
+> Task :core:vault:runKtlintFormatOverMainSourceSet
+> Task :core:vault:ktlintMainSourceSetFormat
+> Task :core:vault:runKtlintFormatOverTestSourceSet
+> Task :core:vault:ktlintTestSourceSetFormat
+> Task :core:vault:ktlintFormat
+
+BUILD SUCCESSFUL in 9s
+13 actionable tasks: 9 executed, 4 from cache
+Configuration cache entry stored.

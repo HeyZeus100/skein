@@ -1,0 +1,85 @@
+{
+  "scope": "Supplemental retained-log/source diagnosis only; no command replay or source change",
+  "source": "08b0f10771b26202c57cceed9e1027f0654ad3cb",
+  "run": 36708565565,
+  "host_runtime_log": {
+    "archive": "/Users/andrewherrera/skein-worktrees/ux-integration-20260929/build/agent-logs/six-priorities-20260930/remote-final/foldable08b0/logs.zip",
+    "member": "7.6in Foldable compatibility production gate (API 35)/16_Run production gate on foldable emulator.txt",
+    "sha256": "109197ad07a9abdba6075902d14ab00a4191101a7c6cf198d14adfdaebcdc67d",
+    "observations": [
+      {
+        "line": 10,
+        "text": "2026-09-30T11:28:43.2227311Z   script: bash tools/ci/run-foldable-emulator.sh"
+      },
+      {
+        "line": 58,
+        "text": "2026-09-30T11:28:43.2897257Z bash tools/ci/run-foldable-emulator.sh"
+      },
+      {
+        "line": 82,
+        "text": "2026-09-30T11:29:20.9766974Z [command]/usr/bin/sh -c \\/usr/local/lib/android/sdk/emulator/emulator -port 5554 -avd skein_foldable_gate -gpu swiftshader_indirect -noaudio -no-boot-anim -camera-back none &"
+      },
+      {
+        "line": 208,
+        "text": "2026-09-30T11:29:31.1562149Z adb: device offline"
+      },
+      {
+        "line": 211,
+        "text": "2026-09-30T11:29:33.1664086Z adb: device offline"
+      },
+      {
+        "line": 214,
+        "text": "2026-09-30T11:29:35.1767744Z adb: device offline"
+      },
+      {
+        "line": 217,
+        "text": "2026-09-30T11:29:37.1895868Z adb: device offline"
+      },
+      {
+        "line": 249,
+        "text": "2026-09-30T11:30:06.2814017Z Emulator booted."
+      },
+      {
+        "line": 256,
+        "text": "2026-09-30T11:30:06.5234313Z [command]/usr/bin/sh -c bash tools/ci/run-foldable-emulator.sh"
+      }
+    ]
+  },
+  "test_logcat_observations": [
+    {
+      "line": 79522,
+      "text": "09-30 11:39:30.821  6102  6124 I TestRunner: started: gateSurvivesClosedFlatClosedWithoutActivityReplacement(app.skein.foldable.MainActivityFoldableGateTest)"
+    },
+    {
+      "line": 80583,
+      "text": "09-30 11:41:05.630  6102  6124 E TestRunner: java.lang.IllegalStateException: Timed out waiting for console fold acknowledgment; activityWindow=ActivityWindowGeometry(configuration={1.0 310mcc260mnc [en_US] ldltr sw674dp w674dp h841dp 420dpi lrg port finger qwerty/v/v -nav/h winConfig={ mBounds=Rect(0, 0 - 1768, 2208) mAppBounds=Rect(0, 0 - 1768, 2208) mMaxBounds=Rect(0, 0 - 1768, 2208) mDisplayRotation=ROTATION_0 mWindowingMode=fullscreen mActivityType=standard mAlwaysOnTop=undefined mRotation=ROTATION_0} as.2 s.4 fontWeightAdjustment=0}, bounds=Rect(0, 0 - 1768, 2208), activityIdentity=204027072); nonUiTargetConfiguration={1.0 310mcc260mnc [en_US] ldltr sw674dp w674dp h841dp 420dpi lrg port finger qwerty/v/v -nav/h winConfig={ mBounds=Rect(0, 0 - 1768, 2208) mAppBounds=Rect(0, 0 - 1768, 2208) mMaxBounds=Rect(0, 0 - 1768, 2208) mDisplayRotation=ROTATION_0 mWindowingMode=fullscreen mActivityType=undefined mAlwaysOnTop=undefined mRotation=ROTATION_0} as.2 s.24 fontWeightAdjustment=0}"
+    },
+    {
+      "line": 80734,
+      "text": "09-30 11:41:05.769  6102  6124 I TestRunner: started: gateSurvivesOuterLandscapeWithoutExposingNavDisplay(app.skein.foldable.MainActivityFoldableGateTest)"
+    },
+    {
+      "line": 81175,
+      "text": "09-30 11:42:39.490  6102  6124 E TestRunner: java.lang.IllegalStateException: Timed out waiting for console fold acknowledgment; activityWindow=null; nonUiTargetConfiguration={1.0 310mcc260mnc [en_US] ldltr sw674dp w674dp h841dp 420dpi lrg port finger qwerty/v/v -nav/h winConfig={ mBounds=Rect(0, 0 - 1768, 2208) mAppBounds=Rect(0, 0 - 1768, 2208) mMaxBounds=Rect(0, 0 - 1768, 2208) mDisplayRotation=ROTATION_0 mWindowingMode=fullscreen mActivityType=undefined mAlwaysOnTop=undefined mRotation=ROTATION_0} as.2 s.24 fontWeightAdjustment=0}"
+    }
+  ],
+  "controller_log_sha256": "d7f45307d456f06acccf41c6a3ef1120d870a1ac75840c5ade0ebd9f4c10a1a4",
+  "console_events_sha256": "7c32d2f47c0a57a46356620a6a9364004e95915394c6ac72cec8be0ced124cbe",
+  "confirmed": [
+    "Pinned action actually launched Qt emulator without -no-window.",
+    "Action boot polling logged four device-offline responses at11:29:31\u201311:29:37; these precede later helper execution and are not proof of the controller timeout cause.",
+    "Two test methods started11:39:30.821 and11:41:05.769; primary ACK timeouts logged11:41:05.630 and11:42:39.490.",
+    "Host controller fatal identifies only a10-second private-request read timeout. Events lack timestamps and successful unavailable/no-request polls are not logged."
+  ],
+  "source_context": [
+    "run-foldable-emulator.sh starts the host bridge before running Gradle connectedDevDebugAndroidTest, so polling spans build/install/test phases.",
+    "Bridge.guard succeeded before started event. read_request normally polls absent package/file until instrumentation writes the request; an ADB subprocess timeout poisons transport and suppresses cleanup mutation."
+  ],
+  "not_established": [
+    "Timed-out poll index, whether any earlier request-file read succeeded, and its exact timestamp/phase.",
+    "A concrete causal link to boot delay, build load, memory pressure, Xvfb or ADB contention.",
+    "Qt fold/resize behavior, since no console mutation or5 required Activity geometry samples exists."
+  ],
+  "resource_log_limit": "The searched logcat memory-related hits were PSI monitor initialization/BPF program registration, not evidence of an OOM kill. Host CPU/RSS/ADB daemon command timing was not retained.",
+  "bounded_followup": "skein-12pt remains open. Source fix needs a concrete mechanism; pre-register monotonic bridge command-start/end/timeout and readiness-phase receipts if a new diagnostic is authorized. No identical retry, retry of uncertain mutation, profile substitution or geometry threshold change justified by current evidence."
+}

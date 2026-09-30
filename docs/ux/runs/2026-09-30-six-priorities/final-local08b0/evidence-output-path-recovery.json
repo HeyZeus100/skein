@@ -1,0 +1,85 @@
+{
+  "event": "Coordinator reused final-local-1 path in ignored adapted script; original sealed Git bundle was unaffected. New results copied into unique final-cancel-1 before restoration.",
+  "source": "08b0f10771b26202c57cceed9e1027f0654ad3cb",
+  "new_files": [
+    {
+      "path": "before.json",
+      "bytes": 210,
+      "sha256": "27f70ba1482ca80888015333477b5fed93edea622f202609023d946ce03c48c5"
+    },
+    {
+      "path": "fresh40-source-freeze.json",
+      "bytes": 17943,
+      "sha256": "09c681e9e4bda3a7fdb7b6b16185c042bb2eb1f6d455016400bd7140e9a0a2cf"
+    },
+    {
+      "path": "unit-actual.zip",
+      "bytes": 540121,
+      "sha256": "7f4fa425df6d6babbb5d117a15cf4f3d0992d84a916db9b83ce83e0ab25763ac"
+    },
+    {
+      "path": "unit-review.json",
+      "bytes": 1704819,
+      "sha256": "35fbe9ea8ecd230e35db45c0a636f475b60a7e5cb8af5ab906c3f92546f8c0cb"
+    },
+    {
+      "path": "apk-review.json",
+      "bytes": 1432,
+      "sha256": "7b4198dc3ba4f0d61e6081dc72efc076940155c0e124d5781472675abaa67e89"
+    },
+    {
+      "path": "combined.log",
+      "bytes": 144969,
+      "sha256": "a3b632bb6ec0456979cf7b845fe68ec2bfabb431baa043245241fe9f7f30cb8c"
+    },
+    {
+      "path": "combined.exit",
+      "bytes": 2,
+      "sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa"
+    }
+  ],
+  "restored_original_files": [
+    "before.json",
+    "fresh40-source-freeze.json",
+    "unit-actual.zip",
+    "apk-review.json",
+    "combined.log",
+    "unit-review.json"
+  ],
+  "exact_preexisting_peer_pins_verified": [
+    {
+      "path": "/Users/andrewherrera/skein-worktrees/ux-integration-20260929/build/agent-logs/six-priorities-20260930/final-local-1/unit-actual.zip",
+      "bytes": 540368,
+      "sha256": "b4aa1c7c33703b9f5775a9b7914fb4166f3fe177488d2a1e4cffd76698535e18"
+    },
+    {
+      "path": "/Users/andrewherrera/skein-worktrees/ux-integration-20260929/build/agent-logs/six-priorities-20260930/final-local-1/unit-review.json",
+      "bytes": 1703481,
+      "sha256": "5edb53eb3ea4b2af744b1f4721bcff2989e54a675a5caecd11c6b2567d6eb37a"
+    },
+    {
+      "path": "/Users/andrewherrera/skein-worktrees/ux-integration-20260929/build/agent-logs/six-priorities-20260930/final-local-1/apk-review.json",
+      "bytes": 1432,
+      "sha256": "4d212af2dd9bc20d19914a27232a2305c09b300b0bb9c0674bfdb53a90cc6b48"
+    },
+    {
+      "path": "/Users/andrewherrera/skein-worktrees/ux-integration-20260929/build/agent-logs/six-priorities-20260930/final-local-1/fresh40-source-freeze.json",
+      "bytes": 17943,
+      "sha256": "09c681e9e4bda3a7fdb7b6b16185c042bb2eb1f6d455016400bd7140e9a0a2cf"
+    },
+    {
+      "path": "/Users/andrewherrera/skein-worktrees/ux-integration-20260929/build/agent-logs/six-priorities-20260930/final-local-1/combined.log",
+      "bytes": 144248,
+      "sha256": "a6b8f0d37a843b5da30d302c2dc21cc3f22f796795e3fce21779cf419e01ae11"
+    },
+    {
+      "path": "/Users/andrewherrera/skein-worktrees/ux-integration-20260929/build/agent-logs/six-priorities-20260930/final-local-1/before.json",
+      "bytes": 210,
+      "sha256": "f0794ca778aab280159839920eacdf1f3c41084b7c03fbb100673cc9981ccd3e"
+    }
+  ],
+  "derived_unit_review_reconstructed_from_original_archive": "Exact original1703481bytes/SHA5edb53eb... verified; no primaryXML/log/source receipts lost.",
+  "old_screenshots_and_python_logs": "not touched by cancellation-only script",
+  "future_guard": "unique output directory creation and corrected script path, before any next invocation",
+  "derived_unit_review_restored_sha256": "5edb53eb3ea4b2af744b1f4721bcff2989e54a675a5caecd11c6b2567d6eb37a"
+}

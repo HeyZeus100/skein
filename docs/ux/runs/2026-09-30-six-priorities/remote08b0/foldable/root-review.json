@@ -1,0 +1,259 @@
+{
+  "source": "08b0f10771b26202c57cceed9e1027f0654ad3cb",
+  "run": 36708565565,
+  "archive_bytes": 157036120,
+  "archive_sha256": "d3a1710b4c04adebf72249031d74e7cc08630febfc8ac7c3f6b01c5476e9a636",
+  "actual_files": [
+    {
+      "path": "build/foldable-evidence/avd-config.ini",
+      "bytes": 3995,
+      "sha256": "a1f5dcc0136bbd5faaf6232bdf5267994586947b8e3ee4beeb9a95ba571ee6eb"
+    },
+    {
+      "path": "build/foldable-evidence/console-controller.log",
+      "bytes": 167,
+      "sha256": "d7f45307d456f06acccf41c6a3ef1120d870a1ac75840c5ade0ebd9f4c10a1a4"
+    },
+    {
+      "path": "build/foldable-evidence/console-events.jsonl",
+      "bytes": 505,
+      "sha256": "7c32d2f47c0a57a46356620a6a9364004e95915394c6ac72cec8be0ced124cbe"
+    },
+    {
+      "path": "build/foldable-evidence/console-final-ack-error.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "build/foldable-evidence/console-final-ack.json",
+      "bytes": 64,
+      "sha256": "9c9338f3a5fcee12ed5dc1580023bc7289c62456f1ddb081b5c5b252b47438eb"
+    },
+    {
+      "path": "build/foldable-evidence/console-final-request-error.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "build/foldable-evidence/console-final-request.json",
+      "bytes": 117,
+      "sha256": "ff5005f520ecd891e3a717731232a678455ce4724623ae1968cf0fe53530abad"
+    },
+    {
+      "path": "build/foldable-evidence/console-run-id.txt",
+      "bytes": 33,
+      "sha256": "76b21b4083b0b9da08884c55c3e55ddd7cc6db57b3b7e5386afb8f1f0a9fd330"
+    },
+    {
+      "path": "build/foldable-evidence/console-stop-12b6394199874121bcd64329ecb8f18d",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "build/foldable-evidence/device-profiles.txt",
+      "bytes": 5265,
+      "sha256": "982e902d7431b7d6279e89062100ad7fcb9b52d5cbef3d7656378e8d033ba518"
+    },
+    {
+      "path": "build/foldable-evidence/emulator-options.txt",
+      "bytes": 67,
+      "sha256": "f543aa33b493b1db761716cda3780e6865307e4a3e1f5a91a7ae2a5dabad2b48"
+    },
+    {
+      "path": "build/foldable-evidence/emulator-properties.txt",
+      "bytes": 25124,
+      "sha256": "eea8af11b254dcfda5c1cadb3297a1f8b19511ffdbf715b06b4f6bbb3f65e333"
+    },
+    {
+      "path": "build/foldable-evidence/emulator-version.txt",
+      "bytes": 655,
+      "sha256": "10bd3d86ba7af09acd91e7a0bc0073038cbb5d3d2479d1667e52129f43058116"
+    },
+    {
+      "path": "build/foldable-evidence/gradle.log",
+      "bytes": 104905,
+      "sha256": "6bec335bbebf7d909d8ab75da9e6e772574d410d89af0f10e8e146fd753b60cc"
+    },
+    {
+      "path": "build/foldable-evidence/initial-window.txt",
+      "bytes": 47,
+      "sha256": "9658253257662caf6232291ba76d3d74ceef4641c76b059406caced525eea002"
+    },
+    {
+      "path": "build/foldable-evidence/requested-profile.txt",
+      "bytes": 15,
+      "sha256": "9d884945fe4b6419e23c23778ea5954659f99fc73b2ed4b2fe94844559195f1f"
+    },
+    {
+      "path": "build/foldable-evidence/logcat.txt",
+      "bytes": 11616408,
+      "sha256": "d80a593226b820a6a3ae525552f5c1a4905c47f078726c57bef9d257beee7649"
+    },
+    {
+      "path": "build/foldable-evidence/review.json",
+      "bytes": 6880,
+      "sha256": "2766a49d9846e56eab4f65e6de4bc24b540c8aaaf60f12a2796c2ddb54e84f76"
+    },
+    {
+      "path": "build/foldable-evidence/runtime-device-states-error.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "build/foldable-evidence/runtime-device-states.txt",
+      "bytes": 686,
+      "sha256": "56cf5836047856f7792b1f17de77360a45959edc624fd0dc20d971e885183f13"
+    },
+    {
+      "path": "build/foldable-evidence/sdk-runtime-receipts.json",
+      "bytes": 2850,
+      "sha256": "93ec61f71c3acf42b5f936951f18fca2f398c157af6afcd4300c59107863ffad"
+    },
+    {
+      "path": "build/foldable-evidence/sdk-tool-path.txt",
+      "bytes": 52,
+      "sha256": "64605fced015141d8016eaeed140f23cabbe078e47d9b36e9c8339075c37b1b0"
+    },
+    {
+      "path": "build/foldable-evidence/sdk-tool-source.properties",
+      "bytes": 86,
+      "sha256": "d4eb560d17731d9919dbb91bfecb2d90418cb60c21e07b6c02302a682fbb760e"
+    },
+    {
+      "path": "build/foldable-evidence/source-sha.txt",
+      "bytes": 41,
+      "sha256": "4c4ecbdbbb53a2c128eee225a77820b7c9676a78d0877bb0d0ef3dc087c96670"
+    },
+    {
+      "path": "build/foldable-evidence/submodule-shas.txt",
+      "bytes": 231,
+      "sha256": "2a90e5c956c86f81a8d96e8e3300f9cedb932e6d798dddf14917b1a1a247582c"
+    },
+    {
+      "path": "build/foldable-evidence/window-geometry-error.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "build/foldable-evidence/window-geometry.jsonl",
+      "bytes": 66,
+      "sha256": "1a195ac05d8e0c5f95036f52d8e6150499557ee554e988c3a6f67ad4200e6589"
+    },
+    {
+      "path": "build/foldable-evidence/xvfb-cleanup.json",
+      "bytes": 216,
+      "sha256": "5e21c26642107959aeb47aaa2e366e252733a668eebbe8b65f85aeba4b8f54b5"
+    },
+    {
+      "path": "build/foldable-evidence/xvfb-display-error.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "build/foldable-evidence/xvfb-display-info.txt",
+      "bytes": 26027,
+      "sha256": "f7246ac4c7a0f9285190d66c2c0e91307b1b1b3dd065b9a096568a24a98adedc"
+    },
+    {
+      "path": "build/foldable-evidence/xvfb-display.txt",
+      "bytes": 2,
+      "sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa"
+    },
+    {
+      "path": "build/foldable-evidence/xvfb-owner.json",
+      "bytes": 152,
+      "sha256": "ce46ff720289713a63734692962905de7c994cb4dbcf0f265a90715bfbe26831"
+    },
+    {
+      "path": "build/foldable-evidence/xvfb.log",
+      "bytes": 3522,
+      "sha256": "f55e2a6894d1dfbec3e5fcb281a8d1d729dfe04923cdfe02ca3a4e801739b3f2"
+    },
+    {
+      "path": "app/build/outputs/androidTest-results/connected/debug/flavors/dev/TEST-skein_foldable_gate(AVD) - 15.xml",
+      "bytes": 1398,
+      "sha256": "2e942a5a79b92488b8c53b835a1d4c26f15aa420497195b410b594584be565a7"
+    },
+    {
+      "path": "app/build/outputs/androidTest-results/connected/debug/flavors/dev/skein_foldable_gate(AVD) - 15/device-info.pb",
+      "bytes": 142,
+      "sha256": "4be8e169b69b9683876db4ebf2c3c55bc6c92469c4ae509cc2786cd8a34cacb0"
+    },
+    {
+      "path": "app/build/outputs/androidTest-results/connected/debug/flavors/dev/skein_foldable_gate(AVD) - 15/logcat-app.skein.foldable.MainActivityFoldableGateTest-gateSurvivesClosedFlatClosedWithoutActivityReplacement.txt",
+      "bytes": 126578,
+      "sha256": "7d900d6ab35b43bc5d3927a217ec43f98bbdf5b5e2ce60abfad724d7e911ae7a"
+    },
+    {
+      "path": "app/build/outputs/androidTest-results/connected/debug/flavors/dev/skein_foldable_gate(AVD) - 15/logcat-app.skein.foldable.MainActivityFoldableGateTest-gateSurvivesOuterLandscapeWithoutExposingNavDisplay.txt",
+      "bytes": 62355,
+      "sha256": "dda70ab257bfdded74eb95e5fc580888921a785cb28b1e08e263becbfa1609a5"
+    },
+    {
+      "path": "app/build/outputs/androidTest-results/connected/debug/flavors/dev/skein_foldable_gate(AVD) - 15/test-result.pb",
+      "bytes": 3519,
+      "sha256": "a165d75b9eb0b8be5d2d2aa8558c72ccbc6aaa0050a9bc8a9b731e9c87731b5f"
+    },
+    {
+      "path": "app/build/outputs/androidTest-results/connected/debug/flavors/dev/test-result-exit-code.txt",
+      "bytes": 1,
+      "sha256": "6b86b273ff34fce19d6b804eff5a3f5747ada4eaa22f1d49c01e52ddb7875b4b"
+    },
+    {
+      "path": "app/build/outputs/androidTest-results/connected/debug/flavors/dev/test-result.pb",
+      "bytes": 3521,
+      "sha256": "2276473cad0538bf6ae85158b233fd78ab96bb9aff9bf2d48f02eb860114cdc2"
+    },
+    {
+      "path": "app/build/reports/androidTests/connected/debug/flavors/dev/app.skein.foldable.MainActivityFoldableGateTest.html",
+      "bytes": 3007,
+      "sha256": "3f8ed12313729d3aad973b11e51f6ae2ff71bbde97c064a57f5f72b66950dd2c"
+    },
+    {
+      "path": "app/build/reports/androidTests/connected/debug/flavors/dev/app.skein.foldable.html",
+      "bytes": 2733,
+      "sha256": "5c617880f63dff6a4ebbe64bab61e4aaec0e30fefd9b5afbb686193e0c9c3625"
+    },
+    {
+      "path": "app/build/reports/androidTests/connected/debug/flavors/dev/css/base-style.css",
+      "bytes": 2428,
+      "sha256": "2851d0b2f14f4ff1b75f0d01438887911eb474e235be93e561709227cefb18db"
+    },
+    {
+      "path": "app/build/reports/androidTests/connected/debug/flavors/dev/css/style.css",
+      "bytes": 1798,
+      "sha256": "f1b366319836f8726d0939654d0eeddfc5b20f67d9e5954b9a1632c60f2f31bf"
+    },
+    {
+      "path": "app/build/reports/androidTests/connected/debug/flavors/dev/index.html",
+      "bytes": 3086,
+      "sha256": "bfaed8806966f3cab703237475b041b1ea51687b377c018c52e7d1d18513e73c"
+    },
+    {
+      "path": "app/build/reports/androidTests/connected/debug/flavors/dev/js/report.js",
+      "bytes": 2933,
+      "sha256": "0aa306f94805890682c639b2d5c06108801d64b859a171a3c6eea66c8bab4c6a"
+    },
+    {
+      "path": "app/build/outputs/apk/dev/debug/app-dev-debug.apk",
+      "bytes": 172274161,
+      "sha256": "3aab14982e7526db6c3a6f456f864ebf8b7d6215d4e7b0b7fd1c2dfb573b336a"
+    },
+    {
+      "path": "app/build/outputs/apk/androidTest/dev/debug/app-dev-debug-androidTest.apk",
+      "bytes": 94704258,
+      "sha256": "090138c324cf51a3d8286dfe51991518f814039baf1d08daea8d0304d6d6d0fe"
+    }
+  ],
+  "all_declared_artifact_hashes_match": true,
+  "passed": false,
+  "cases": 2,
+  "failures": 2,
+  "errors": 0,
+  "skips": 0,
+  "successful_console_exchanges": 0,
+  "activity_geometry_samples": 0,
+  "nonce_display_diagnostics": 0,
+  "cause": "bounded10s serial-targeted adb private request read timeout; no successful console exchange; logcat90s ACKtimeouts andXMLreset failures; geometry hypothesis unexecuted",
+  "remaining": "No generic compatibility, exactPixel9, unlocked flow, physical or installed-package attestation. SDK imagebytes are hostreceipts, not uploaded bytes."
+}

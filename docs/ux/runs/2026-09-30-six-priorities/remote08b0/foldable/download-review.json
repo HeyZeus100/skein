@@ -1,0 +1,16 @@
+{
+  "run": 36708565565,
+  "source": "08b0f10771b26202c57cceed9e1027f0654ad3cb",
+  "conclusion": "failure",
+  "artifacts": [
+    {
+      "id": 11093747552,
+      "name": "foldable-gate-7.6in Foldable-08b0f10771b26202c57cceed9e1027f0654ad3cb",
+      "path": "build/agent-logs/six-priorities-20260930/remote-final/foldable08b0/foldable-gate-7.6in Foldable-08b0f10771b26202c57cceed9e1027f0654ad3cb.zip",
+      "bytes": 157036120,
+      "sha256": "d3a1710b4c04adebf72249031d74e7cc08630febfc8ac7c3f6b01c5476e9a636",
+      "api_digest": "sha256:d3a1710b4c04adebf72249031d74e7cc08630febfc8ac7c3f6b01c5476e9a636"
+    }
+  ],
+  "logs_sha256": "ac9b3816af5e79b539ee6609b9012471e935999a10b1acea2499ed47d545cbd6"
+}

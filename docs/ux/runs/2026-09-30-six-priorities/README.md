@@ -1,5 +1,7 @@
 # Six-priority checkpoint evidence
 
+Latest verified application source is `08b0f10771b26202c57cceed9e1027f0654ad3cb`. `final-local08b0/` preserves 5,490 local passes and 86 unchanged skips; `remote08b0/` preserves CI with 5,488 passes and 88 unchanged skips, UX with 1,354 passes/80 skips/552 unchanged screenshots, and actual byte-identical release APK/native pairs. All include independent review. Tag-only SQLCipher regeneration was skipped. The final local folder also retains the evidence-output path incident and exact restoration receipts; the earlier sealed bundle was unchanged. The sections below describe historical checkpoints and do not supersede the latest execution handoff. Connected runtime, fresh40 and physical acceptance are not established by these host records.
+
 Application checkpoint `c28881e1f`; independent retrieval fixture integration `217ec1b31`. See the [execution handoff](../../../Handoffs/skein-six-priorities-20260930.md). These records do not close all parent Beads.
 
 The combined local gate has 5,376 passes, 86 unchanged skips and no failures/errors across 542 actual XML files. The focused application/editor gate has 23 passes. The subsequent strict screenshot gate has 1,354 passes, 80 skips and 552 unchanged image records, with all eight test tasks executed without the build cache. The full gate attributes the then-uncommitted integration patch and new test hashes; the only later application delta is refusal wording. The screenshot gate uses committed application source. Exact-source remote acceptance is pending publication.

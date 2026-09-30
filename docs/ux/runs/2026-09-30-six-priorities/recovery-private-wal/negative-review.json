@@ -1,0 +1,64 @@
+{
+  "base": "08b0f10771b26202c57cceed9e1027f0654ad3cb",
+  "production_snapshot_exact_base": true,
+  "tests": 2,
+  "intended_failures": 2,
+  "errors": 0,
+  "skipped": 0,
+  "cases": [
+    {
+      "class": "app.skein.core.vault.key.recovery.ClosedVaultRecoverySnapshotTest",
+      "name": "absent source WAL stages an empty private WAL without changing source absence",
+      "message": "com.google.common.truth.AssertionErrorWithFacts: expected to be true",
+      "xml": "core/vault/build/test-results/testDevDebugUnitTest/TEST-app.skein.core.vault.key.recovery.ClosedVaultRecoverySnapshotTest.xml"
+    },
+    {
+      "class": "app.skein.core.vault.key.recovery.ExistingVaultKeyProofTest",
+      "name": "read only native work leaving empty private WAL proves without changing source absence",
+      "message": "com.google.common.truth.Platform$ComparisonFailureWithFacts: expected: VERIFIED\nbut was : UNAVAILABLE",
+      "xml": "core/vault/build/test-results/testDevDebugUnitTest/TEST-app.skein.core.vault.key.recovery.ExistingVaultKeyProofTest.xml"
+    }
+  ],
+  "files": [
+    {
+      "path": "core/vault/src/main/kotlin/app/skein/core/vault/key/recovery/ClosedVaultRecoverySnapshot.kt",
+      "bytes": 5140,
+      "sha256": "082111682ad6eebca1ca60fea3a6126336ac4ffb64707ec986113d94ff9a70b2"
+    },
+    {
+      "path": "core/vault/src/test/kotlin/app/skein/core/vault/key/recovery/ClosedVaultRecoverySnapshotTest.kt",
+      "bytes": 7339,
+      "sha256": "4cf3840b34b0b35806e9786955eeef24e406b275b8cc2db9740e9f5fc4ad6df6"
+    },
+    {
+      "path": "core/vault/src/test/kotlin/app/skein/core/vault/key/recovery/ExistingVaultKeyProofTest.kt",
+      "bytes": 8406,
+      "sha256": "d8327293aa8960afa158852249d9ee9ed3522e6f34db96c2e697c2eb702227e4"
+    },
+    {
+      "path": "core/vault/src/androidTest/kotlin/app/skein/core/vault/key/recovery/ExistingVaultKeyProofInstrumentedTest.kt",
+      "bytes": 8052,
+      "sha256": "3bb8e55e4315abd4f7d040c72faf4a449ef05e0df116926c7de53b7d16120fe2"
+    },
+    {
+      "path": "core/vault/build/test-results/testDevDebugUnitTest/TEST-app.skein.core.vault.key.recovery.ClosedVaultRecoverySnapshotTest.xml",
+      "bytes": 933,
+      "sha256": "d2404e8b629b47a3621b74fa4dbe5acba5373d606f7163b1dc02b0f6b8396003"
+    },
+    {
+      "path": "core/vault/build/test-results/testDevDebugUnitTest/TEST-app.skein.core.vault.key.recovery.ExistingVaultKeyProofTest.xml",
+      "bytes": 998,
+      "sha256": "93bb781957f696748a97df1ddc4ec390b752faa7cb3c01cf569d50a090934e33"
+    },
+    {
+      "path": "build/agent-logs/recovery-wal-proof-20260930/negative-1.log",
+      "bytes": 11272,
+      "sha256": "3205a409d77646cc16ad74eeec325a509f996fdc86aca1581c1d6cf82b4b9e0e"
+    },
+    {
+      "path": "build/agent-logs/recovery-wal-proof-20260930/negative-source.json",
+      "bytes": 991,
+      "sha256": "c52188fbc1de14b8b8d75b5a0c2396f34c256d1fc08959a86ce8e94a67c05a55"
+    }
+  ]
+}

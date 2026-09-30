@@ -1,0 +1,25 @@
+{
+  "bead": "skein-1544",
+  "base": "08b0f10771b26202c57cceed9e1027f0654ad3cb",
+  "scope": [
+    "core/vault/src/main/kotlin/app/skein/core/vault/key/recovery/ClosedVaultRecoverySnapshot.kt",
+    "core/vault/src/test/kotlin/app/skein/core/vault/key/recovery/ClosedVaultRecoverySnapshotTest.kt",
+    "core/vault/src/test/kotlin/app/skein/core/vault/key/recovery/ExistingVaultKeyProofTest.kt",
+    "core/vault/src/androidTest/kotlin/app/skein/core/vault/key/recovery/ExistingVaultKeyProofInstrumentedTest.kt"
+  ],
+  "invariants": [
+    "Source DB/WAL/SHM/envelope identity includes exact absence and remains unchanged.",
+    "Private expected DB hash derives captured source DB; private WAL hash derives captured WAL or known SHA256(empty) only for captured absence.",
+    "Create-new empty WAL only inside new unique private snapshot directory before sealing.",
+    "Strict regular/no-follow/canonical fingerprint before and after native work; removal or nonempty change never normalized.",
+    "No native flags, readonly mode, immutable behavior, checkpoint, production issuer or recovery activation changed.",
+    "Original4 runtime test assertions remain intact; one additional direct-native empty-sidecar diagnostic yields expected ordinary300 identities if all run."
+  ],
+  "validation_plan": [
+    "Exact08b0 production negative on new host absent-WAL proof and capture controls, preserving originalXML/sourcehash.",
+    "Fixed focused snapshot/key-proof JVM tests plus unchanged recovery tests and ktlint after explicit root slot.",
+    "Compile5instrumented methods only locally; actual native behavior waits root-controlled future ordinaryrun."
+  ],
+  "runtime_diagnostic_scope": "Separate disposable closed copy; verify directnativecode0, absent private WAL becomes regularzero-byte file, source bytes and private DB bytes unchanged, explicitly wipe caller copy in testfinally.",
+  "status": "SOURCE_WORK_AUTHORIZED_NO_BUILD_GRANTED"
+}

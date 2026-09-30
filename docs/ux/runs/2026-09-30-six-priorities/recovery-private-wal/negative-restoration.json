@@ -1,0 +1,6 @@
+{
+  "all4_fixed_sources_exact_freeze": true,
+  "source_freeze_sha256": "a8c528cc3dec61dea8d1b295a2f87c0e2ca1fee776dd9ff74f03b6a98d777776",
+  "negative_archive_sha256": "5e9fcf34cb2e27d30492d8c3cb85f9992e9d517266f9e95927d4b1c8d617a929",
+  "restored_snapshot_sha256": "632ae4d6d130eff093ccc9576fc527ec51ad96c8ec787606f70fe76046622e7f"
+}

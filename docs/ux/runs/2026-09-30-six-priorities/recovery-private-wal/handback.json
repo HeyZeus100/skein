@@ -1,0 +1,94 @@
+{
+  "commit": "14fba935586e2933570159bb237a09151286353f",
+  "signed_off": true,
+  "base": "08b0f10771b26202c57cceed9e1027f0654ad3cb",
+  "bead": "skein-1544",
+  "scope": [
+    {
+      "path": "core/vault/src/main/kotlin/app/skein/core/vault/key/recovery/ClosedVaultRecoverySnapshot.kt",
+      "bytes": 6229,
+      "sha256": "632ae4d6d130eff093ccc9576fc527ec51ad96c8ec787606f70fe76046622e7f"
+    },
+    {
+      "path": "core/vault/src/test/kotlin/app/skein/core/vault/key/recovery/ClosedVaultRecoverySnapshotTest.kt",
+      "bytes": 7339,
+      "sha256": "4cf3840b34b0b35806e9786955eeef24e406b275b8cc2db9740e9f5fc4ad6df6"
+    },
+    {
+      "path": "core/vault/src/test/kotlin/app/skein/core/vault/key/recovery/ExistingVaultKeyProofTest.kt",
+      "bytes": 8406,
+      "sha256": "d8327293aa8960afa158852249d9ee9ed3522e6f34db96c2e697c2eb702227e4"
+    },
+    {
+      "path": "core/vault/src/androidTest/kotlin/app/skein/core/vault/key/recovery/ExistingVaultKeyProofInstrumentedTest.kt",
+      "bytes": 8052,
+      "sha256": "3bb8e55e4315abd4f7d040c72faf4a449ef05e0df116926c7de53b7d16120fe2"
+    }
+  ],
+  "worktree_clean": true,
+  "validation": {
+    "old_source_negative": {
+      "tests": 2,
+      "intended_failures": 2,
+      "errors": 0,
+      "skips": 0
+    },
+    "fixed": {
+      "xml": 4,
+      "tests": 28,
+      "passed": 28,
+      "failures": 0,
+      "errors": 0,
+      "skips": 0
+    },
+    "ktlint": "PASS",
+    "android_test_compile": {
+      "dev": "PASS",
+      "foss": "PASS",
+      "methods": 5,
+      "native_execution": "UNEXECUTED"
+    },
+    "original4_instrumented_bodies_byte_unchanged": true,
+    "independent_peer": "PASS"
+  },
+  "evidence": [
+    {
+      "path": "build/agent-logs/recovery-wal-proof-20260930/source-ready-2.json",
+      "bytes": 1189,
+      "sha256": "a8c528cc3dec61dea8d1b295a2f87c0e2ca1fee776dd9ff74f03b6a98d777776"
+    },
+    {
+      "path": "build/agent-logs/recovery-wal-proof-20260930/negative-actual.zip",
+      "bytes": 14005,
+      "sha256": "5e9fcf34cb2e27d30492d8c3cb85f9992e9d517266f9e95927d4b1c8d617a929"
+    },
+    {
+      "path": "build/agent-logs/recovery-wal-proof-20260930/negative-restoration.json",
+      "bytes": 335,
+      "sha256": "3ed907d85d061eed1cfe020299cb287848ab5fcc697f46de2e9cb2c9b2e945b2"
+    },
+    {
+      "path": "build/agent-logs/recovery-wal-proof-20260930/fixed-review.json",
+      "bytes": 14269,
+      "sha256": "abfe6fc1227b5a740e6935954e8c1f955affaca3d7f1eea0a66093709e271901"
+    },
+    {
+      "path": "build/agent-logs/recovery-wal-proof-20260930/fixed-actual.zip",
+      "bytes": 50510,
+      "sha256": "978cc51a7381b8924e6bcb9eb57f68b0236f8c6c7ffe72fb9b5cc1c1b6a53ea6"
+    },
+    {
+      "path": "build/agent-logs/recovery-wal-proof-20260930/independent-final-peer.json",
+      "bytes": 24502,
+      "sha256": "a2b89e037b1ec648b9e6c9f9ee95d54e68d3ffed12a32c717c38fc58f8005492"
+    }
+  ],
+  "build_slot": "RELEASED",
+  "coordinator_owns_integration_push_beads": true,
+  "limitations": [
+    "Actual five native recovery methods must pass a future ordinary run; expected ordinary total300 only after this source is integrated.",
+    "Original08b0 runtime failure299cases296pass3fail remains preserved.",
+    "gg11.29 existing-envelope recovery stays open and unwired; source/live DB/WAL/SHM/envelope preservation, production lease issuance and activation not inferred from host passes.",
+    "No device, owner content/model/draft, recovery envelope format, native flags or live checkpoint/open changes."
+  ]
+}

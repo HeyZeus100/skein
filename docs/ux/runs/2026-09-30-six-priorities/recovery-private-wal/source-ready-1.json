@@ -1,0 +1,35 @@
+{
+  "base": "08b0f10771b26202c57cceed9e1027f0654ad3cb",
+  "bead": "skein-1544",
+  "files": [
+    {
+      "path": "core/vault/src/main/kotlin/app/skein/core/vault/key/recovery/ClosedVaultRecoverySnapshot.kt",
+      "bytes": 6229,
+      "sha256": "632ae4d6d130eff093ccc9576fc527ec51ad96c8ec787606f70fe76046622e7f"
+    },
+    {
+      "path": "core/vault/src/test/kotlin/app/skein/core/vault/key/recovery/ClosedVaultRecoverySnapshotTest.kt",
+      "bytes": 7339,
+      "sha256": "4cf3840b34b0b35806e9786955eeef24e406b275b8cc2db9740e9f5fc4ad6df6"
+    },
+    {
+      "path": "core/vault/src/test/kotlin/app/skein/core/vault/key/recovery/ExistingVaultKeyProofTest.kt",
+      "bytes": 8406,
+      "sha256": "d8327293aa8960afa158852249d9ee9ed3522e6f34db96c2e697c2eb702227e4"
+    },
+    {
+      "path": "core/vault/src/androidTest/kotlin/app/skein/core/vault/key/recovery/ExistingVaultKeyProofInstrumentedTest.kt",
+      "bytes": 8052,
+      "sha256": "3bb8e55e4315abd4f7d040c72faf4a449ef05e0df116926c7de53b7d16120fe2"
+    }
+  ],
+  "tests_authored_only": {
+    "new_jvm": 5,
+    "total_existing_proof_and_snapshot_jvm": 16,
+    "instrumented_methods": 5,
+    "original4_instrumented_assertions_unchanged": true
+  },
+  "builds_tests_run": false,
+  "negative_control_plan": "Root-granted future old08b0 ClosedVaultRecoverySnapshot source with new absent-staging +native-empty-WAL host tests; seal actual intended failures then restore fixedsourcehash before fixed suite.",
+  "native_runtime": "UNEXECUTED; nextordinary expected300 includesnewdiagnostic"
+}

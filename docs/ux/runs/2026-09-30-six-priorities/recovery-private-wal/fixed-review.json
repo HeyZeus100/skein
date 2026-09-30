@@ -1,0 +1,264 @@
+{
+  "base": "08b0f10771b26202c57cceed9e1027f0654ad3cb",
+  "bead": "skein-1544",
+  "counts": {
+    "tests": 28,
+    "passed": 28,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0
+  },
+  "xml_files": 4,
+  "cases": [
+    {
+      "path": "core/vault/build/test-results/testDevDebugUnitTest/TEST-app.skein.core.vault.key.recovery.ClosedVaultRecoverySnapshotTest.xml",
+      "class": "app.skein.core.vault.key.recovery.ClosedVaultRecoverySnapshotTest",
+      "name": "lease loss source replacement and closed snapshot cannot authorize proof",
+      "outcome": "passed"
+    },
+    {
+      "path": "core/vault/build/test-results/testDevDebugUnitTest/TEST-app.skein.core.vault.key.recovery.ClosedVaultRecoverySnapshotTest.xml",
+      "class": "app.skein.core.vault.key.recovery.ClosedVaultRecoverySnapshotTest",
+      "name": "missing database envelope hot journal and reset refuse",
+      "outcome": "passed"
+    },
+    {
+      "path": "core/vault/build/test-results/testDevDebugUnitTest/TEST-app.skein.core.vault.key.recovery.ClosedVaultRecoverySnapshotTest.xml",
+      "class": "app.skein.core.vault.key.recovery.ClosedVaultRecoverySnapshotTest",
+      "name": "capture copies ciphertext and WAL while leaving all source bytes untouched",
+      "outcome": "passed"
+    },
+    {
+      "path": "core/vault/build/test-results/testDevDebugUnitTest/TEST-app.skein.core.vault.key.recovery.ClosedVaultRecoverySnapshotTest.xml",
+      "class": "app.skein.core.vault.key.recovery.ClosedVaultRecoverySnapshotTest",
+      "name": "absent source WAL stages an empty private WAL without changing source absence",
+      "outcome": "passed"
+    },
+    {
+      "path": "core/vault/build/test-results/testDevDebugUnitTest/TEST-app.skein.core.vault.key.recovery.ClosedVaultRecoverySnapshotTest.xml",
+      "class": "app.skein.core.vault.key.recovery.ClosedVaultRecoverySnapshotTest",
+      "name": "staged empty private WAL cannot disappear become nonempty or redirect to another file",
+      "outcome": "passed"
+    },
+    {
+      "path": "core/vault/build/test-results/testDevDebugUnitTest/TEST-app.skein.core.vault.key.recovery.ClosedVaultRecoverySnapshotTest.xml",
+      "class": "app.skein.core.vault.key.recovery.ClosedVaultRecoverySnapshotTest",
+      "name": "captured WAL keeps exact private identity including empty and nonempty evidence",
+      "outcome": "passed"
+    },
+    {
+      "path": "core/vault/build/test-results/testDevDebugUnitTest/TEST-app.skein.core.vault.key.recovery.ClosedVaultRecoverySnapshotTest.xml",
+      "class": "app.skein.core.vault.key.recovery.ClosedVaultRecoverySnapshotTest",
+      "name": "symlink source is refused and target is preserved",
+      "outcome": "passed"
+    },
+    {
+      "path": "core/vault/build/test-results/testDevDebugUnitTest/TEST-app.skein.core.vault.key.recovery.ClosedVaultRecoverySnapshotTest.xml",
+      "class": "app.skein.core.vault.key.recovery.ClosedVaultRecoverySnapshotTest",
+      "name": "unestablished lease refuses before creating private copies",
+      "outcome": "passed"
+    },
+    {
+      "path": "core/vault/build/test-results/testDevDebugUnitTest/TEST-app.skein.core.vault.key.recovery.ExistingVaultKeyProofTest.xml",
+      "class": "app.skein.core.vault.key.recovery.ExistingVaultKeyProofTest",
+      "name": "native refusal statuses never count as proof and zero every key",
+      "outcome": "passed"
+    },
+    {
+      "path": "core/vault/build/test-results/testDevDebugUnitTest/TEST-app.skein.core.vault.key.recovery.ExistingVaultKeyProofTest.xml",
+      "class": "app.skein.core.vault.key.recovery.ExistingVaultKeyProofTest",
+      "name": "lease lost before or during native work refuses even nominal native success",
+      "outcome": "passed"
+    },
+    {
+      "path": "core/vault/build/test-results/testDevDebugUnitTest/TEST-app.skein.core.vault.key.recovery.ExistingVaultKeyProofTest.xml",
+      "class": "app.skein.core.vault.key.recovery.ExistingVaultKeyProofTest",
+      "name": "proof consumes key and passes only private copy to native verifier",
+      "outcome": "passed"
+    },
+    {
+      "path": "core/vault/build/test-results/testDevDebugUnitTest/TEST-app.skein.core.vault.key.recovery.ExistingVaultKeyProofTest.xml",
+      "class": "app.skein.core.vault.key.recovery.ExistingVaultKeyProofTest",
+      "name": "private database WAL mutation or new WAL cannot turn native success into proof",
+      "outcome": "passed"
+    },
+    {
+      "path": "core/vault/build/test-results/testDevDebugUnitTest/TEST-app.skein.core.vault.key.recovery.ExistingVaultKeyProofTest.xml",
+      "class": "app.skein.core.vault.key.recovery.ExistingVaultKeyProofTest",
+      "name": "empty WAL or SHM appearing at source during proof still refuses and zeros candidate",
+      "outcome": "passed"
+    },
+    {
+      "path": "core/vault/build/test-results/testDevDebugUnitTest/TEST-app.skein.core.vault.key.recovery.ExistingVaultKeyProofTest.xml",
+      "class": "app.skein.core.vault.key.recovery.ExistingVaultKeyProofTest",
+      "name": "read only native work leaving empty private WAL proves without changing source absence",
+      "outcome": "passed"
+    },
+    {
+      "path": "core/vault/build/test-results/testDevDebugUnitTest/TEST-app.skein.core.vault.key.recovery.ExistingVaultKeyProofTest.xml",
+      "class": "app.skein.core.vault.key.recovery.ExistingVaultKeyProofTest",
+      "name": "private ciphertext replacement before proof refuses without native call",
+      "outcome": "passed"
+    },
+    {
+      "path": "core/vault/build/test-results/testDevDebugUnitTest/TEST-app.skein.core.vault.key.recovery.ExistingVaultKeyProofTest.xml",
+      "class": "app.skein.core.vault.key.recovery.ExistingVaultKeyProofTest",
+      "name": "native exception and invalid key length still zero consumed buffers",
+      "outcome": "passed"
+    },
+    {
+      "path": "core/vault/build/test-results/testDevDebugUnitTest/TEST-app.skein.core.vault.key.recovery.RecoveryEnvelopeTransactionTest.xml",
+      "class": "app.skein.core.vault.key.recovery.RecoveryEnvelopeTransactionTest",
+      "name": "replacement retains exact old and new bytes and restart recognizes active generation",
+      "outcome": "passed"
+    },
+    {
+      "path": "core/vault/build/test-results/testDevDebugUnitTest/TEST-app.skein.core.vault.key.recovery.RecoveryEnvelopeTransactionTest.xml",
+      "class": "app.skein.core.vault.key.recovery.RecoveryEnvelopeTransactionTest",
+      "name": "guarded reset marker refuses before any new files",
+      "outcome": "passed"
+    },
+    {
+      "path": "core/vault/build/test-results/testDevDebugUnitTest/TEST-app.skein.core.vault.key.recovery.RecoveryEnvelopeTransactionTest.xml",
+      "class": "app.skein.core.vault.key.recovery.RecoveryEnvelopeTransactionTest",
+      "name": "failure at every persisted boundary preserves both restart choices",
+      "outcome": "passed"
+    },
+    {
+      "path": "core/vault/build/test-results/testDevDebugUnitTest/TEST-app.skein.core.vault.key.recovery.RecoveryEnvelopeTransactionTest.xml",
+      "class": "app.skein.core.vault.key.recovery.RecoveryEnvelopeTransactionTest",
+      "name": "failure publishing new backup parent prevents active replacement",
+      "outcome": "passed"
+    },
+    {
+      "path": "core/vault/build/test-results/testDevDebugUnitTest/TEST-app.skein.core.vault.key.recovery.RecoveryEnvelopeTransactionTest.xml",
+      "class": "app.skein.core.vault.key.recovery.RecoveryEnvelopeTransactionTest",
+      "name": "stale active generation never gets overwritten and unknown bytes remain retained",
+      "outcome": "passed"
+    },
+    {
+      "path": "core/vault/build/test-results/testDevDebugUnitTest/TEST-app.skein.core.vault.key.recovery.RecoveryEnvelopeTransactionTest.xml",
+      "class": "app.skein.core.vault.key.recovery.RecoveryEnvelopeTransactionTest",
+      "name": "lease cancellation before rename cannot change active envelope",
+      "outcome": "passed"
+    },
+    {
+      "path": "core/vault/build/test-results/testDevDebugUnitTest/TEST-app.skein.core.vault.key.recovery.RecoveryEnvelopeTransactionTest.xml",
+      "class": "app.skein.core.vault.key.recovery.RecoveryEnvelopeTransactionTest",
+      "name": "reused transaction or missing receipt is unknown and never erased",
+      "outcome": "passed"
+    },
+    {
+      "path": "core/vault/build/test-results/testDevDebugUnitTest/TEST-app.skein.core.vault.key.recovery.RecoveryEnvelopeV2Test.xml",
+      "class": "app.skein.core.vault.key.recovery.RecoveryEnvelopeV2Test",
+      "name": "invalid wrap sizes cannot be serialized",
+      "outcome": "passed"
+    },
+    {
+      "path": "core/vault/build/test-results/testDevDebugUnitTest/TEST-app.skein.core.vault.key.recovery.RecoveryEnvelopeV2Test.xml",
+      "class": "app.skein.core.vault.key.recovery.RecoveryEnvelopeV2Test",
+      "name": "digest correct but cross-factor alias or unknown format is rejected",
+      "outcome": "passed"
+    },
+    {
+      "path": "core/vault/build/test-results/testDevDebugUnitTest/TEST-app.skein.core.vault.key.recovery.RecoveryEnvelopeV2Test.xml",
+      "class": "app.skein.core.vault.key.recovery.RecoveryEnvelopeV2Test",
+      "name": "new format round trips canonical factor aliases and exact wraps",
+      "outcome": "passed"
+    },
+    {
+      "path": "core/vault/build/test-results/testDevDebugUnitTest/TEST-app.skein.core.vault.key.recovery.RecoveryEnvelopeV2Test.xml",
+      "class": "app.skein.core.vault.key.recovery.RecoveryEnvelopeV2Test",
+      "name": "legacy decoder refuses v2 rather than dropping dynamic alias names",
+      "outcome": "passed"
+    },
+    {
+      "path": "core/vault/build/test-results/testDevDebugUnitTest/TEST-app.skein.core.vault.key.recovery.RecoveryEnvelopeV2Test.xml",
+      "class": "app.skein.core.vault.key.recovery.RecoveryEnvelopeV2Test",
+      "name": "tamper truncated oversize and trailing bytes fail without disclosing payload",
+      "outcome": "passed"
+    }
+  ],
+  "files": [
+    {
+      "path": "core/vault/src/main/kotlin/app/skein/core/vault/key/recovery/ClosedVaultRecoverySnapshot.kt",
+      "bytes": 6229,
+      "sha256": "632ae4d6d130eff093ccc9576fc527ec51ad96c8ec787606f70fe76046622e7f"
+    },
+    {
+      "path": "core/vault/src/test/kotlin/app/skein/core/vault/key/recovery/ClosedVaultRecoverySnapshotTest.kt",
+      "bytes": 7339,
+      "sha256": "4cf3840b34b0b35806e9786955eeef24e406b275b8cc2db9740e9f5fc4ad6df6"
+    },
+    {
+      "path": "core/vault/src/test/kotlin/app/skein/core/vault/key/recovery/ExistingVaultKeyProofTest.kt",
+      "bytes": 8406,
+      "sha256": "d8327293aa8960afa158852249d9ee9ed3522e6f34db96c2e697c2eb702227e4"
+    },
+    {
+      "path": "core/vault/src/androidTest/kotlin/app/skein/core/vault/key/recovery/ExistingVaultKeyProofInstrumentedTest.kt",
+      "bytes": 8052,
+      "sha256": "3bb8e55e4315abd4f7d040c72faf4a449ef05e0df116926c7de53b7d16120fe2"
+    },
+    {
+      "path": "core/vault/build/test-results/testDevDebugUnitTest/TEST-app.skein.core.vault.key.recovery.ClosedVaultRecoverySnapshotTest.xml",
+      "bytes": 1818,
+      "sha256": "df9b2fe2df57ce6c795f007ea8f9191c7ccd8b072dee400263d6e438147cd321"
+    },
+    {
+      "path": "core/vault/build/test-results/testDevDebugUnitTest/TEST-app.skein.core.vault.key.recovery.ExistingVaultKeyProofTest.xml",
+      "bytes": 1804,
+      "sha256": "a7bc6c4f1cbc272dd654ec87b356de313b31b61df7e72e58f598ca4c800b551b"
+    },
+    {
+      "path": "core/vault/build/test-results/testDevDebugUnitTest/TEST-app.skein.core.vault.key.recovery.RecoveryEnvelopeTransactionTest.xml",
+      "bytes": 1626,
+      "sha256": "9c9dc21aed552f4d045d632b8c8a5c691244fe8724afc6f4fdf5d2e695f791e2"
+    },
+    {
+      "path": "core/vault/build/test-results/testDevDebugUnitTest/TEST-app.skein.core.vault.key.recovery.RecoveryEnvelopeV2Test.xml",
+      "bytes": 1182,
+      "sha256": "ffdf1ea710bdd6061456b3c2daa6a9abd3f1e8e1b1b29a8ce108628d811025ac"
+    },
+    {
+      "path": "core/vault/build/intermediates/built_in_kotlinc/fossDebugAndroidTest/compileFossDebugAndroidTestKotlin/classes/app/skein/core/vault/key/recovery/ExistingVaultKeyProofInstrumentedTest$lease$1.class",
+      "bytes": 1350,
+      "sha256": "f52f2ac25f7b9d05020dd72a8e0c62b78074638d62a2a61699cf1377ac444b9d"
+    },
+    {
+      "path": "core/vault/build/intermediates/built_in_kotlinc/fossDebugAndroidTest/compileFossDebugAndroidTestKotlin/classes/app/skein/core/vault/key/recovery/ExistingVaultKeyProofInstrumentedTest.class",
+      "bytes": 18031,
+      "sha256": "d98441ec47b0f0cc88280ab8ee3d529572e0a3efbdb914379680fdbcc9554706"
+    },
+    {
+      "path": "core/vault/build/intermediates/built_in_kotlinc/devDebugAndroidTest/compileDevDebugAndroidTestKotlin/classes/app/skein/core/vault/key/recovery/ExistingVaultKeyProofInstrumentedTest$lease$1.class",
+      "bytes": 1350,
+      "sha256": "f52f2ac25f7b9d05020dd72a8e0c62b78074638d62a2a61699cf1377ac444b9d"
+    },
+    {
+      "path": "core/vault/build/intermediates/built_in_kotlinc/devDebugAndroidTest/compileDevDebugAndroidTestKotlin/classes/app/skein/core/vault/key/recovery/ExistingVaultKeyProofInstrumentedTest.class",
+      "bytes": 18031,
+      "sha256": "d98441ec47b0f0cc88280ab8ee3d529572e0a3efbdb914379680fdbcc9554706"
+    }
+  ],
+  "source_freeze_sha256": "a8c528cc3dec61dea8d1b295a2f87c0e2ca1fee776dd9ff74f03b6a98d777776",
+  "fixed_log_sha256": "d93faab75fb40521379bcf4f444855e6c54759dd14d8f4daf8a5aa057ced32d8",
+  "task_outcomes": {
+    ":core:vault:ktlintCheck": "EXECUTED",
+    ":core:vault:testDevDebugUnitTest": "EXECUTED",
+    ":core:vault:compileDevDebugAndroidTestKotlin": "EXECUTED",
+    ":core:vault:compileFossDebugAndroidTestKotlin": "EXECUTED"
+  },
+  "original4_instrumented_methods_unchanged": true,
+  "native_methods": 5,
+  "native_runtime": "UNEXECUTED",
+  "negative_archive_sha256": "5e9fcf34cb2e27d30492d8c3cb85f9992e9d517266f9e95927d4b1c8d617a929",
+  "negative_tests": 2,
+  "negative_intended_failures": 2,
+  "build_slot": "RELEASED",
+  "limits": [
+    "All5instrumented methods compile only; future native ordinary run must confirm exact outcomes.",
+    "Existing-envelope recovery remains unwired; no production lease/activation/physical owner-content acceptance.",
+    "No native flags/checkpoint/immutable/live opening/DB creation changes; source identities including absence remain strict."
+  ]
+}

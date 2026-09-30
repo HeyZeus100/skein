@@ -1,0 +1,504 @@
+{
+  "scope": "Independent original archive/API/source/actual-byte review of reproducibility lane only",
+  "source": "08b0f10771b26202c57cceed9e1027f0654ad3cb",
+  "run_id": 36704995442,
+  "status": "PASS",
+  "errors": [],
+  "inputs": [
+    {
+      "path": "/Users/andrewherrera/skein-worktrees/ux-integration-20260929/build/agent-logs/six-priorities-20260930/remote-final/repro-cancel-fixed/artifact-list.json",
+      "bytes": 2056,
+      "sha256": "2968716c0ca6014dceca39e21a011199cc3f5dab6f548aeb8601fc46e7804f40"
+    },
+    {
+      "path": "/Users/andrewherrera/skein-worktrees/ux-integration-20260929/build/agent-logs/six-priorities-20260930/remote-final/repro-cancel-fixed/run.json",
+      "bytes": 12129,
+      "sha256": "5711755e111467f548410bf0123040be0f21eefebacf87d78f874324e6928505"
+    },
+    {
+      "path": "/Users/andrewherrera/skein-worktrees/ux-integration-20260929/build/agent-logs/six-priorities-20260930/remote-final/repro-cancel-fixed/jobs.json",
+      "bytes": 18711,
+      "sha256": "1ee034692d3f577d35aaee1a041089256116996d028a3024084da278a9e43092"
+    },
+    {
+      "path": "/Users/andrewherrera/skein-worktrees/ux-integration-20260929/build/agent-logs/six-priorities-20260930/remote-final/repro-cancel-fixed/logs.zip",
+      "bytes": 195643,
+      "sha256": "c3e849e618ce796f62de0ae02061d99820a799dc0164d03f099b61de62cafa64"
+    }
+  ],
+  "workflow_source_sha256": "60e1b16ce69607d85c05938d8c87229bb19aaa4d7333917dd9f5e9922bcb96f6",
+  "native": {
+    "path": "/Users/andrewherrera/skein-worktrees/ux-integration-20260929/build/agent-logs/six-priorities-20260930/remote-final/repro-cancel-fixed/so-determinism.zip",
+    "bytes": 50710982,
+    "sha256": "4963bb01209e603dcd125d03cdf5d33b9e6b08fe4354d2c5d3a04f83256bd6c2",
+    "name": "so-determinism",
+    "artifact_id": 11091309290,
+    "api_digest": "sha256:4963bb01209e603dcd125d03cdf5d33b9e6b08fe4354d2c5d3a04f83256bd6c2",
+    "api_digest_size_match": true,
+    "declared_hash_checks": [
+      {
+        "manifest": "SHA256SUMS.txt",
+        "path": "run.7RC5DNsl/SHA256SUMS.txt",
+        "sha256": "e11a9483e6a0936ac285faf78e793cd2d3708b776b2c5940519c8e73988496f0",
+        "matches": true
+      },
+      {
+        "manifest": "SHA256SUMS.txt",
+        "path": "run.7RC5DNsl/build-1.log",
+        "sha256": "a42dcc4507a7da3e357d9049f8b8d5b411e9411c0b4e3664acdff51691921dec",
+        "matches": true
+      },
+      {
+        "manifest": "SHA256SUMS.txt",
+        "path": "run.7RC5DNsl/build-2.log",
+        "sha256": "917aff96ff549cbdf80625d93e3eda2c5c6e297327f3628551cff1f394fca885",
+        "matches": true
+      },
+      {
+        "manifest": "SHA256SUMS.txt",
+        "path": "run.7RC5DNsl/context.txt",
+        "sha256": "3a41e97adfeaaa6da966400d2a37601be73b42b00ae1fdcf6c047da31a6b1116",
+        "matches": true
+      },
+      {
+        "manifest": "SHA256SUMS.txt",
+        "path": "run.7RC5DNsl/libskein_llama.1.2aefda01.so",
+        "sha256": "2aefda01808f10bf5693ab02d0857e0169dc09550b615896939cb176c032daff",
+        "matches": true
+      },
+      {
+        "manifest": "SHA256SUMS.txt",
+        "path": "run.7RC5DNsl/libskein_llama.2.2aefda01.so",
+        "sha256": "2aefda01808f10bf5693ab02d0857e0169dc09550b615896939cb176c032daff",
+        "matches": true
+      },
+      {
+        "manifest": "SHA256SUMS.txt",
+        "path": "run.7RC5DNsl/result.txt",
+        "sha256": "ed163d69a09ddc0ffcbdf126a42d5745a93449fa7a39354788e948b7ac795c04",
+        "matches": true
+      },
+      {
+        "manifest": "SHA256SUMS.txt",
+        "path": "run.log",
+        "sha256": "cc2a852222447c972fdf9f24777a22efb92d0d8732a14412a2227ee7e411e717",
+        "matches": true
+      },
+      {
+        "manifest": "SHA256SUMS.txt",
+        "path": "workflow-context.txt",
+        "sha256": "a9372fd91525bc4c275fbf5196201d4bcc43e33f69214d80d19bce35b4865395",
+        "matches": true
+      },
+      {
+        "manifest": "run.7RC5DNsl/SHA256SUMS.txt",
+        "path": "run.7RC5DNsl/context.txt",
+        "sha256": "3a41e97adfeaaa6da966400d2a37601be73b42b00ae1fdcf6c047da31a6b1116",
+        "matches": true
+      },
+      {
+        "manifest": "run.7RC5DNsl/SHA256SUMS.txt",
+        "path": "run.7RC5DNsl/result.txt",
+        "sha256": "ed163d69a09ddc0ffcbdf126a42d5745a93449fa7a39354788e948b7ac795c04",
+        "matches": true
+      },
+      {
+        "manifest": "run.7RC5DNsl/SHA256SUMS.txt",
+        "path": "run.7RC5DNsl/build-1.log",
+        "sha256": "a42dcc4507a7da3e357d9049f8b8d5b411e9411c0b4e3664acdff51691921dec",
+        "matches": true
+      },
+      {
+        "manifest": "run.7RC5DNsl/SHA256SUMS.txt",
+        "path": "run.7RC5DNsl/build-2.log",
+        "sha256": "917aff96ff549cbdf80625d93e3eda2c5c6e297327f3628551cff1f394fca885",
+        "matches": true
+      },
+      {
+        "manifest": "run.7RC5DNsl/SHA256SUMS.txt",
+        "path": "run.7RC5DNsl/libskein_llama.1.2aefda01.so",
+        "sha256": "2aefda01808f10bf5693ab02d0857e0169dc09550b615896939cb176c032daff",
+        "matches": true
+      },
+      {
+        "manifest": "run.7RC5DNsl/SHA256SUMS.txt",
+        "path": "run.7RC5DNsl/libskein_llama.2.2aefda01.so",
+        "sha256": "2aefda01808f10bf5693ab02d0857e0169dc09550b615896939cb176c032daff",
+        "matches": true
+      }
+    ],
+    "native_library_paths": [
+      "run.7RC5DNsl/libskein_llama.1.2aefda01.so",
+      "run.7RC5DNsl/libskein_llama.2.2aefda01.so"
+    ],
+    "actual_pair_byte_equal": true,
+    "actual_library_sha256": "2aefda01808f10bf5693ab02d0857e0169dc09550b615896939cb176c032daff",
+    "actual_library_bytes": 25314032,
+    "context_sha256": "3a41e97adfeaaa6da966400d2a37601be73b42b00ae1fdcf6c047da31a6b1116",
+    "workflow_context_sha256": "a9372fd91525bc4c275fbf5196201d4bcc43e33f69214d80d19bce35b4865395",
+    "gitlink_pins": {
+      "third_party/SPIRV-Headers": "ad9184e76a66b1001c29db9b0a3e87f646c64de0",
+      "third_party/Vulkan-Headers": "8864cdc896bbc2a9b6eb36b3218fc9ef57908d77",
+      "third_party/llama.cpp": "b29c606e28a01b1bc8c1351026a0fa6e616bf6c4"
+    },
+    "source_epoch": "1790765270",
+    "script_sha256": "3f3421ec9562cceefd6341921c65841108e5419bc80b083c67345117c3729098",
+    "exit_result": "exit_status=0",
+    "build_logs": [
+      {
+        "path": "run.7RC5DNsl/build-1.log",
+        "sha256": "a42dcc4507a7da3e357d9049f8b8d5b411e9411c0b4e3664acdff51691921dec",
+        "successful": true
+      },
+      {
+        "path": "run.7RC5DNsl/build-2.log",
+        "sha256": "917aff96ff549cbdf80625d93e3eda2c5c6e297327f3628551cff1f394fca885",
+        "successful": true
+      }
+    ]
+  },
+  "apk_archives": [
+    {
+      "path": "/Users/andrewherrera/skein-worktrees/ux-integration-20260929/build/agent-logs/six-priorities-20260930/remote-final/repro-cancel-fixed/rb-build-a.zip",
+      "bytes": 101040788,
+      "sha256": "0e1dacfbea38aa6e31a64f07eaf68f2ce32d5ebea658f8544b8e7d8b27a0f3f8",
+      "name": "rb-build-a",
+      "artifact_id": 11091827145,
+      "api_digest": "sha256:0e1dacfbea38aa6e31a64f07eaf68f2ce32d5ebea658f8544b8e7d8b27a0f3f8",
+      "api_digest_size_match": true,
+      "declared_manifest_checks": [
+        {
+          "path": "app-foss-release-unsigned.apk",
+          "sha256": "865b93aa0c89ebe1a1aea61c74c86829cf38b7de6680542fdcd5570ab1e59afb",
+          "matches": true
+        }
+      ],
+      "actual_apk_bytes": 101039915,
+      "actual_apk_sha256": "865b93aa0c89ebe1a1aea61c74c86829cf38b7de6680542fdcd5570ab1e59afb",
+      "context_sha256": "4d1fb5cba9c70d9d558165ba3569d162c13ee1a55d343436de0a26741e57aa18",
+      "source_context": {
+        "build_id": "a",
+        "abs_path": "/home/runner/work/skein/skein/rb-a/skein",
+        "commit": "08b0f10771b26202c57cceed9e1027f0654ad3cb",
+        "source_date_epoch": "1790765270",
+        "runner": "Linux/X64"
+      },
+      "native_payloads": [
+        {
+          "path": "lib/arm64-v8a/libandroidx.graphics.path.so",
+          "bytes": 10096,
+          "sha256": "41e9a793c43a0f4fddb19e33f346bace464f30f888ba7b9eaf96294ea115bfb6"
+        },
+        {
+          "path": "lib/arm64-v8a/libdatastore_shared_counter.so",
+          "bytes": 7784,
+          "sha256": "178f89a2c6c9234ddf980dd4cd1f3616186a46b2b932aafa6707abd04c5fd76a"
+        },
+        {
+          "path": "lib/arm64-v8a/libonnxruntime.so",
+          "bytes": 27985944,
+          "sha256": "850f897a50d369b3305582244210f5649be9cfeb193c5807fba14146301616c7"
+        },
+        {
+          "path": "lib/arm64-v8a/libonnxruntime4j_jni.so",
+          "bytes": 83208,
+          "sha256": "f86f2a5f56b907e4a25d67febc422ec13f5a265d36665f50e2808de6e4a515b6"
+        },
+        {
+          "path": "lib/arm64-v8a/libskein_llama.so",
+          "bytes": 25314032,
+          "sha256": "2aefda01808f10bf5693ab02d0857e0169dc09550b615896939cb176c032daff"
+        },
+        {
+          "path": "lib/arm64-v8a/libskein_sqlite.so",
+          "bytes": 6249008,
+          "sha256": "04c37ee46eee965fdae4f5b2325df7d0b810edb6212619c6a08fef167c950c85"
+        },
+        {
+          "path": "lib/arm64-v8a/libskein_sqlite_jni.so",
+          "bytes": 22304,
+          "sha256": "7e9bcb2377cc19c35de3625665c4a4f9eaaf647c842c20c6d5091fc2cd8a2767"
+        }
+      ],
+      "dex_payloads": [
+        {
+          "path": "classes.dex",
+          "bytes": 11537476,
+          "sha256": "865b0006424528752c9f8737e4ca31dc6bbc68d832c70e448381f98ef426c01e"
+        },
+        {
+          "path": "classes2.dex",
+          "bytes": 8891900,
+          "sha256": "897fa15739891c3f6271a82e1eb65cd987d9adbc57d1c65fa5954bf9bb496625"
+        },
+        {
+          "path": "classes3.dex",
+          "bytes": 10871124,
+          "sha256": "59336c89cfbda3632ef4d02e938969e0cbcc9ece2c785545686a07d25c60b21f"
+        },
+        {
+          "path": "classes4.dex",
+          "bytes": 2724984,
+          "sha256": "0ce332e650274fcfb65edb86fc76cb295f7f857e911d325151c7663249b568aa"
+        }
+      ],
+      "embedded_llama_byte_equal_native_pair": true
+    },
+    {
+      "path": "/Users/andrewherrera/skein-worktrees/ux-integration-20260929/build/agent-logs/six-priorities-20260930/remote-final/repro-cancel-fixed/rb-build-b.zip",
+      "bytes": 101040802,
+      "sha256": "d08b38b1da7fb16c57b5e7db7a1a26c8295316f730e44433ab69be324efe8a3e",
+      "name": "rb-build-b",
+      "artifact_id": 11091364284,
+      "api_digest": "sha256:d08b38b1da7fb16c57b5e7db7a1a26c8295316f730e44433ab69be324efe8a3e",
+      "api_digest_size_match": true,
+      "declared_manifest_checks": [
+        {
+          "path": "app-foss-release-unsigned.apk",
+          "sha256": "865b93aa0c89ebe1a1aea61c74c86829cf38b7de6680542fdcd5570ab1e59afb",
+          "matches": true
+        }
+      ],
+      "actual_apk_bytes": 101039915,
+      "actual_apk_sha256": "865b93aa0c89ebe1a1aea61c74c86829cf38b7de6680542fdcd5570ab1e59afb",
+      "context_sha256": "4ec92dfbf65838aa0214fae70da115905fda1b7031b3d00ae82a2e42c9ba92d4",
+      "source_context": {
+        "build_id": "b",
+        "abs_path": "/home/runner/work/skein/skein/rb-b/nested/deeper/skein",
+        "commit": "08b0f10771b26202c57cceed9e1027f0654ad3cb",
+        "source_date_epoch": "1790765270",
+        "runner": "Linux/X64"
+      },
+      "native_payloads": [
+        {
+          "path": "lib/arm64-v8a/libandroidx.graphics.path.so",
+          "bytes": 10096,
+          "sha256": "41e9a793c43a0f4fddb19e33f346bace464f30f888ba7b9eaf96294ea115bfb6"
+        },
+        {
+          "path": "lib/arm64-v8a/libdatastore_shared_counter.so",
+          "bytes": 7784,
+          "sha256": "178f89a2c6c9234ddf980dd4cd1f3616186a46b2b932aafa6707abd04c5fd76a"
+        },
+        {
+          "path": "lib/arm64-v8a/libonnxruntime.so",
+          "bytes": 27985944,
+          "sha256": "850f897a50d369b3305582244210f5649be9cfeb193c5807fba14146301616c7"
+        },
+        {
+          "path": "lib/arm64-v8a/libonnxruntime4j_jni.so",
+          "bytes": 83208,
+          "sha256": "f86f2a5f56b907e4a25d67febc422ec13f5a265d36665f50e2808de6e4a515b6"
+        },
+        {
+          "path": "lib/arm64-v8a/libskein_llama.so",
+          "bytes": 25314032,
+          "sha256": "2aefda01808f10bf5693ab02d0857e0169dc09550b615896939cb176c032daff"
+        },
+        {
+          "path": "lib/arm64-v8a/libskein_sqlite.so",
+          "bytes": 6249008,
+          "sha256": "04c37ee46eee965fdae4f5b2325df7d0b810edb6212619c6a08fef167c950c85"
+        },
+        {
+          "path": "lib/arm64-v8a/libskein_sqlite_jni.so",
+          "bytes": 22304,
+          "sha256": "7e9bcb2377cc19c35de3625665c4a4f9eaaf647c842c20c6d5091fc2cd8a2767"
+        }
+      ],
+      "dex_payloads": [
+        {
+          "path": "classes.dex",
+          "bytes": 11537476,
+          "sha256": "865b0006424528752c9f8737e4ca31dc6bbc68d832c70e448381f98ef426c01e"
+        },
+        {
+          "path": "classes2.dex",
+          "bytes": 8891900,
+          "sha256": "897fa15739891c3f6271a82e1eb65cd987d9adbc57d1c65fa5954bf9bb496625"
+        },
+        {
+          "path": "classes3.dex",
+          "bytes": 10871124,
+          "sha256": "59336c89cfbda3632ef4d02e938969e0cbcc9ece2c785545686a07d25c60b21f"
+        },
+        {
+          "path": "classes4.dex",
+          "bytes": 2724984,
+          "sha256": "0ce332e650274fcfb65edb86fc76cb295f7f857e911d325151c7663249b568aa"
+        }
+      ],
+      "embedded_llama_byte_equal_native_pair": true
+    }
+  ],
+  "actual_apk_byte_equal": true,
+  "distinct_build_roots": true,
+  "required_jobs": [
+    {
+      "name": "Toolchain manifest and tool self-tests",
+      "id": 109853046189,
+      "head_sha": "08b0f10771b26202c57cceed9e1027f0654ad3cb",
+      "conclusion": "success",
+      "required_steps": {
+        "reproducible-builds.yml agrees with the tree": "success",
+        "manifest-check self-test": "success",
+        "SOURCE_DATE_EPOCH derivation self-test": "success",
+        "strip-signature self-test": "success",
+        "normalize-apk self-test": "success",
+        "APK comparator self-test": "success",
+        "verify.sh self-test": "success",
+        "so-determinism self-test": "success"
+      },
+      "other_steps": {
+        "Set up job": "success",
+        "Checkout": "success",
+        "Set up Python": "success",
+        "Install PyYAML (reproducible-builds.yml parser)": "success",
+        "Post Set up Python": "success",
+        "Post Checkout": "success",
+        "Complete job": "success"
+      }
+    },
+    {
+      "name": "libskein_llama.so is a function of its sources",
+      "id": 109853148018,
+      "head_sha": "08b0f10771b26202c57cceed9e1027f0654ad3cb",
+      "conclusion": "success",
+      "required_steps": {
+        "Verify third_party submodule pins": "success",
+        "Two cold builds of libskein_llama.so, compared": "success",
+        "Hash the retained native evidence": "success",
+        "Upload native determinism evidence": "success"
+      },
+      "other_steps": {
+        "Set up job": "success",
+        "Checkout": "success",
+        "Set up JDK 17 (Temurin)": "success",
+        "Install required Android SDK platform": "success",
+        "Set up Gradle": "success",
+        "Derive SOURCE_DATE_EPOCH from the commit": "success",
+        "Post Set up Gradle": "success",
+        "Post Set up JDK 17 (Temurin)": "success",
+        "Post Checkout": "success",
+        "Complete job": "success"
+      }
+    },
+    {
+      "name": "Build a (unsigned foss release)",
+      "id": 109853148167,
+      "head_sha": "08b0f10771b26202c57cceed9e1027f0654ad3cb",
+      "conclusion": "success",
+      "required_steps": {
+        "Verify third_party submodule pins": "success",
+        "Assemble foss release": "success",
+        "Record hash and build context": "success",
+        "Upload build a": "success"
+      },
+      "other_steps": {
+        "Set up job": "success",
+        "Checkout (build a)": "success",
+        "Set up JDK 17 (Temurin)": "success",
+        "Install required Android SDK platform": "success",
+        "Choose the OpenSSL tarball cache directory": "success",
+        "Derive pinned OpenSSL sha256 (cache key)": "success",
+        "Cache the pinned OpenSSL tarball": "success",
+        "Set up Gradle": "success",
+        "Derive SOURCE_DATE_EPOCH from the commit": "success",
+        "Post Set up Gradle": "success",
+        "Post Cache the pinned OpenSSL tarball": "success",
+        "Post Set up JDK 17 (Temurin)": "success",
+        "Post Checkout (build a)": "success",
+        "Complete job": "success"
+      }
+    },
+    {
+      "name": "Build b (unsigned foss release)",
+      "id": 109853147987,
+      "head_sha": "08b0f10771b26202c57cceed9e1027f0654ad3cb",
+      "conclusion": "success",
+      "required_steps": {
+        "Verify third_party submodule pins": "success",
+        "Assemble foss release": "success",
+        "Record hash and build context": "success",
+        "Upload build b": "success"
+      },
+      "other_steps": {
+        "Set up job": "success",
+        "Checkout (build b)": "success",
+        "Set up JDK 17 (Temurin)": "success",
+        "Install required Android SDK platform": "success",
+        "Choose the OpenSSL tarball cache directory": "success",
+        "Derive pinned OpenSSL sha256 (cache key)": "success",
+        "Cache the pinned OpenSSL tarball": "success",
+        "Set up Gradle": "success",
+        "Derive SOURCE_DATE_EPOCH from the commit": "success",
+        "Post Set up Gradle": "success",
+        "Post Cache the pinned OpenSSL tarball": "success",
+        "Post Set up JDK 17 (Temurin)": "success",
+        "Post Checkout (build b)": "success",
+        "Complete job": "success"
+      }
+    },
+    {
+      "name": "Compare the two builds",
+      "id": 109856821128,
+      "head_sha": "08b0f10771b26202c57cceed9e1027f0654ad3cb",
+      "conclusion": "success",
+      "required_steps": {
+        "Self-test the APK comparator": "success",
+        "sha256sum -c across runners": "success",
+        "Compare unsigned release APKs entry by entry": "success",
+        "Verdict": "success"
+      },
+      "other_steps": {
+        "Set up job": "success",
+        "Checkout": "success",
+        "Download build a": "success",
+        "Download build b": "success",
+        "Show both build contexts": "success",
+        "Classify the difference": "skipped",
+        "Install diffoscope": "skipped",
+        "Produce the diffoscope report": "skipped",
+        "Upload apk-diff": "skipped",
+        "Post Checkout": "success",
+        "Complete job": "success"
+      }
+    }
+  ],
+  "log_checks": [
+    {
+      "path": "Build a (unsigned foss release)/11_Assemble foss release.txt",
+      "sha256": "a24a21d0c65dce8958817162a373c98dbf3f1a2c6fa3e7bf8835b5ad2e651aae",
+      "cold_assemble_command_and_success": true
+    },
+    {
+      "path": "Build b (unsigned foss release)/11_Assemble foss release.txt",
+      "sha256": "f3bcc0f88c34905b560246dd9f05dc5c9e88136c1080743583496076d867f786",
+      "cold_assemble_command_and_success": true
+    },
+    {
+      "path": "Compare the two builds/7_sha256sum -c across runners.txt",
+      "sha256": "c675e7edf878746916a8bd36dbcd85730c6a26f50b3e53afa406866e60f0ad4c",
+      "tail": "2026-09-30T11:03:53.2133417Z shell: /usr/bin/bash -e {0}\n2026-09-30T11:03:53.2133699Z ##[endgroup]\n2026-09-30T11:03:53.2205804Z 865b93aa0c89ebe1a1aea61c74c86829cf38b7de6680542fdcd5570ab1e59afb  app-foss-release-unsigned.apk\n2026-09-30T11:03:53.2207095Z 865b93aa0c89ebe1a1aea61c74c86829cf38b7de6680542fdcd5570ab1e59afb  app-foss-release-unsigned.apk\n2026-09-30T11:03:53.3094822Z /tmp/rb-b/app-foss-release-unsigned.apk: OK"
+    },
+    {
+      "path": "Compare the two builds/8_Compare unsigned release APKs entry by entry.txt",
+      "sha256": "791c4f8dd42e39f460d1db4b3de92058f61f10ada9bc70ffec4eba79752065c5",
+      "tail": "2026-09-30T11:03:53.5483370Z        distinct mtimes: 19810101.010102 \n2026-09-30T11:04:01.9379609Z [ok]   all 831 entry contents identical\n2026-09-30T11:04:01.9380542Z [ok]   whole-file sha256 identical\n2026-09-30T11:04:01.9381041Z \n2026-09-30T11:04:01.9381626Z RESULT: IDENTICAL -- two-runner build of 08b0f10771b26202c57cceed9e1027f0654ad3cb"
+    },
+    {
+      "path": "Compare the two builds/13_Verdict.txt",
+      "sha256": "976097740e4983e94a179c0ab72959a044ede624e050ba6bb4eaaf6d8f2f7cd7",
+      "tail": "2026-09-30T11:04:01.9501165Z \u001b[36;1mfi\u001b[0m\n2026-09-30T11:04:01.9501503Z \u001b[36;1mecho \"Both runners produced a byte-identical app-foss-release-unsigned.apk.\"\u001b[0m\n2026-09-30T11:04:01.9536799Z shell: /usr/bin/bash -e {0}\n2026-09-30T11:04:01.9537080Z ##[endgroup]\n2026-09-30T11:04:01.9588935Z Both runners produced a byte-identical app-foss-release-unsigned.apk."
+    }
+  ],
+  "skipped_jobs": [
+    "Verify SQLCipher amalgamation matches pinned source"
+  ],
+  "limitations": [
+    "SQLCipher amalgamation regeneration job is conditional on refs/tags/v and skipped on this main push; no regeneration acceptance claim.",
+    "Native pair is same-job cold build determinism; unsigned APK pair is separate-job/path reproducibility. Neither is model/runtime or installed-package attestation.",
+    "Original05ca CI36702345809 failure stays preserved. This exact08b0 reproducibility review does not inspect or determine CI36704995396 acceptance.",
+    "No new physical device, fresh40 policy evaluation or backend approval. No blanket equality claim against e62 or earlier debug/release native inventories."
+  ]
+}

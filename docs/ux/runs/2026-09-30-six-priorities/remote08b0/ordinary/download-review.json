@@ -1,0 +1,16 @@
+{
+  "run": 36706479756,
+  "source": "08b0f10771b26202c57cceed9e1027f0654ad3cb",
+  "conclusion": "failure",
+  "artifacts": [
+    {
+      "id": 11092124567,
+      "name": "connected-test-reports",
+      "path": "build/agent-logs/six-priorities-20260930/remote-final/ordinary08b0/connected-test-reports.zip",
+      "bytes": 996948,
+      "sha256": "44d76a0cc42bfb5e6514dbde859a3fff4661ec3d9b6140f841110f22878d54ad",
+      "api_digest": "sha256:44d76a0cc42bfb5e6514dbde859a3fff4661ec3d9b6140f841110f22878d54ad"
+    }
+  ],
+  "logs_sha256": "62df8bda0c83880df13fb8878bb6f2f473db5ef107125384c5d36314506d41d9"
+}

@@ -1,0 +1,32 @@
+{
+  "run": 36704995442,
+  "source": "08b0f10771b26202c57cceed9e1027f0654ad3cb",
+  "conclusion": "success",
+  "artifacts": [
+    {
+      "id": 11091827145,
+      "name": "rb-build-a",
+      "path": "build/agent-logs/six-priorities-20260930/remote-final/repro-cancel-fixed/rb-build-a.zip",
+      "bytes": 101040788,
+      "sha256": "0e1dacfbea38aa6e31a64f07eaf68f2ce32d5ebea658f8544b8e7d8b27a0f3f8",
+      "api_digest": "sha256:0e1dacfbea38aa6e31a64f07eaf68f2ce32d5ebea658f8544b8e7d8b27a0f3f8"
+    },
+    {
+      "id": 11091364284,
+      "name": "rb-build-b",
+      "path": "build/agent-logs/six-priorities-20260930/remote-final/repro-cancel-fixed/rb-build-b.zip",
+      "bytes": 101040802,
+      "sha256": "d08b38b1da7fb16c57b5e7db7a1a26c8295316f730e44433ab69be324efe8a3e",
+      "api_digest": "sha256:d08b38b1da7fb16c57b5e7db7a1a26c8295316f730e44433ab69be324efe8a3e"
+    },
+    {
+      "id": 11091309290,
+      "name": "so-determinism",
+      "path": "build/agent-logs/six-priorities-20260930/remote-final/repro-cancel-fixed/so-determinism.zip",
+      "bytes": 50710982,
+      "sha256": "4963bb01209e603dcd125d03cdf5d33b9e6b08fe4354d2c5d3a04f83256bd6c2",
+      "api_digest": "sha256:4963bb01209e603dcd125d03cdf5d33b9e6b08fe4354d2c5d3a04f83256bd6c2"
+    }
+  ],
+  "logs_sha256": "c3e849e618ce796f62de0ae02061d99820a799dc0164d03f099b61de62cafa64"
+}

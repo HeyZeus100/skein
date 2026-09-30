@@ -1,0 +1,24 @@
+{
+  "run": 36704995396,
+  "source": "08b0f10771b26202c57cceed9e1027f0654ad3cb",
+  "conclusion": "success",
+  "artifacts": [
+    {
+      "id": 11092485744,
+      "name": "skein-foss-debug-apk",
+      "path": "build/agent-logs/six-priorities-20260930/remote-final/ci-cancel-fixed/skein-foss-debug-apk.zip",
+      "bytes": 49756109,
+      "sha256": "880ec48885df582fd88487939bd73165bee704bc94e9ba0a1a5cf6ef6022ea46",
+      "api_digest": "sha256:880ec48885df582fd88487939bd73165bee704bc94e9ba0a1a5cf6ef6022ea46"
+    },
+    {
+      "id": 11091816832,
+      "name": "unit-test-results",
+      "path": "build/agent-logs/six-priorities-20260930/remote-final/ci-cancel-fixed/unit-test-results.zip",
+      "bytes": 2761509,
+      "sha256": "b8c03273fd8d6d64509d7351d7eea012a64d02427469eff52b606e6d0ad517ed",
+      "api_digest": "sha256:b8c03273fd8d6d64509d7351d7eea012a64d02427469eff52b606e6d0ad517ed"
+    }
+  ],
+  "logs_sha256": "b143ff0e4db14e6238498e7e39fafa3cbd1da53a36853e274a3dede326551d80"
+}

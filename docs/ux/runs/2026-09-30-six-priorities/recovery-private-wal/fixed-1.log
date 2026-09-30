@@ -1,0 +1,228 @@
+{"owner": "coordinator", "pid": 9313, "token": "e7ac69df-1eaf-4641-aff3-50b0eaf91089", "worktree": "/Users/andrewherrera/skein-worktrees/recovery-wal-proof-20260930", "started_at": "2026-09-30T11:47:05.648669+00:00", "command": ["./gradlew", "--no-daemon", "--max-workers=2", ":core:vault:ktlintCheck", ":core:vault:testDevDebugUnitTest", "--tests", "app.skein.core.vault.key.recovery.*", ":core:vault:compileDevDebugAndroidTestKotlin", ":core:vault:compileFossDebugAndroidTestKotlin", "--no-build-cache"]}
+To honour the JVM settings for this build a single-use Daemon process will be forked. For more on this, please refer to https://docs.gradle.org/9.7.1/userguide/gradle_daemon.html#sec:disabling_the_daemon in the Gradle documentation.
+Daemon will be stopped at the end of the build 
+Calculating task graph as no cached configuration is available for tasks: :core:vault:ktlintCheck :core:vault:testDevDebugUnitTest --tests app.skein.core.vault.key.recovery.* :core:vault:compileDevDebugAndroidTestKotlin :core:vault:compileFossDebugAndroidTestKotlin
+> Task :build-logic:guards:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :build-logic:guards:compileKotlin UP-TO-DATE
+> Task :build-logic:guards:compileJava NO-SOURCE
+> Task :build-logic:guards:pluginDescriptors UP-TO-DATE
+> Task :build-logic:guards:processResources UP-TO-DATE
+> Task :build-logic:guards:classes UP-TO-DATE
+> Task :build-logic:guards:jar UP-TO-DATE
+> Task :testing:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :testing-fakes:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :core:model:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :core:vault:loadKtlintReporters UP-TO-DATE
+> Task :core:vault:runKtlintCheckOverAndroidTestDebugSourceSet NO-SOURCE
+> Task :core:vault:ktlintAndroidTestDebugSourceSetCheck SKIPPED
+> Task :core:vault:runKtlintCheckOverAndroidTestDevDebugSourceSet NO-SOURCE
+> Task :core:vault:ktlintAndroidTestDevDebugSourceSetCheck SKIPPED
+> Task :core:vault:runKtlintCheckOverAndroidTestDevSourceSet NO-SOURCE
+> Task :core:vault:ktlintAndroidTestDevSourceSetCheck SKIPPED
+> Task :core:vault:runKtlintCheckOverAndroidTestFossDebugSourceSet NO-SOURCE
+> Task :core:vault:ktlintAndroidTestFossDebugSourceSetCheck SKIPPED
+> Task :core:vault:runKtlintCheckOverAndroidTestFossSourceSet NO-SOURCE
+> Task :core:vault:ktlintAndroidTestFossSourceSetCheck SKIPPED
+> Task :core:vault:runKtlintCheckOverAndroidTestReleaseSourceSet NO-SOURCE
+> Task :core:vault:ktlintAndroidTestReleaseSourceSetCheck SKIPPED
+> Task :core:model:compileKotlin UP-TO-DATE
+> Task :core:vault:runKtlintCheckOverDebugSourceSet NO-SOURCE
+> Task :core:vault:ktlintDebugSourceSetCheck SKIPPED
+> Task :core:vault:runKtlintCheckOverDevDebugSourceSet NO-SOURCE
+> Task :core:vault:ktlintDevDebugSourceSetCheck SKIPPED
+> Task :core:vault:runKtlintCheckOverDevReleaseSourceSet NO-SOURCE
+> Task :core:vault:ktlintDevReleaseSourceSetCheck SKIPPED
+> Task :core:vault:runKtlintCheckOverDevSourceSet NO-SOURCE
+> Task :core:vault:ktlintDevSourceSetCheck SKIPPED
+> Task :core:vault:runKtlintCheckOverFossDebugSourceSet NO-SOURCE
+> Task :core:vault:ktlintFossDebugSourceSetCheck SKIPPED
+> Task :core:vault:runKtlintCheckOverFossReleaseSourceSet NO-SOURCE
+> Task :core:vault:ktlintFossReleaseSourceSetCheck SKIPPED
+> Task :core:vault:runKtlintCheckOverFossSourceSet NO-SOURCE
+> Task :core:vault:ktlintFossSourceSetCheck SKIPPED
+> Task :core:vault:runKtlintCheckOverKotlinScripts
+> Task :core:vault:ktlintKotlinScriptCheck
+> Task :core:vault:runKtlintCheckOverAndroidTestSourceSet
+> Task :core:vault:ktlintAndroidTestSourceSetCheck
+> Task :core:vault:runKtlintCheckOverReleaseSourceSet NO-SOURCE
+> Task :core:vault:ktlintReleaseSourceSetCheck SKIPPED
+> Task :core:vault:runKtlintCheckOverTestDebugSourceSet NO-SOURCE
+> Task :core:vault:ktlintTestDebugSourceSetCheck SKIPPED
+> Task :core:vault:runKtlintCheckOverTestDevDebugSourceSet NO-SOURCE
+> Task :core:vault:ktlintTestDevDebugSourceSetCheck SKIPPED
+> Task :core:vault:runKtlintCheckOverTestDevSourceSet NO-SOURCE
+> Task :core:vault:ktlintTestDevSourceSetCheck SKIPPED
+> Task :core:vault:runKtlintCheckOverTestFixturesDebugSourceSet NO-SOURCE
+> Task :core:vault:ktlintTestFixturesDebugSourceSetCheck SKIPPED
+> Task :core:vault:runKtlintCheckOverTestFixturesDevSourceSet NO-SOURCE
+> Task :core:vault:ktlintTestFixturesDevSourceSetCheck SKIPPED
+> Task :core:vault:runKtlintCheckOverTestFixturesFossSourceSet NO-SOURCE
+> Task :core:vault:ktlintTestFixturesFossSourceSetCheck SKIPPED
+> Task :core:vault:runKtlintCheckOverTestFixturesReleaseSourceSet NO-SOURCE
+> Task :core:vault:ktlintTestFixturesReleaseSourceSetCheck SKIPPED
+> Task :core:vault:runKtlintCheckOverTestFixturesSourceSet NO-SOURCE
+> Task :core:vault:ktlintTestFixturesSourceSetCheck SKIPPED
+> Task :core:vault:runKtlintCheckOverTestFossDebugSourceSet NO-SOURCE
+> Task :core:vault:ktlintTestFossDebugSourceSetCheck SKIPPED
+> Task :core:vault:runKtlintCheckOverTestFossSourceSet NO-SOURCE
+> Task :core:vault:ktlintTestFossSourceSetCheck SKIPPED
+> Task :core:vault:runKtlintCheckOverTestReleaseSourceSet NO-SOURCE
+> Task :core:vault:ktlintTestReleaseSourceSetCheck SKIPPED
+> Task :core:vault:runKtlintCheckOverMainSourceSet
+> Task :core:vault:ktlintMainSourceSetCheck
+> Task :core:model:compileJava NO-SOURCE
+> Task :core:model:processResources UP-TO-DATE
+> Task :core:model:classes UP-TO-DATE
+> Task :core:model:jar UP-TO-DATE
+> Task :testing-fakes:compileKotlin UP-TO-DATE
+> Task :testing-fakes:compileJava NO-SOURCE
+> Task :testing-fakes:processResources NO-SOURCE
+> Task :testing-fakes:classes UP-TO-DATE
+> Task :testing-fakes:jar UP-TO-DATE
+> Task :testing:compileKotlin UP-TO-DATE
+> Task :testing:compileJava NO-SOURCE
+> Task :testing:processResources UP-TO-DATE
+> Task :testing:classes UP-TO-DATE
+> Task :testing:jar UP-TO-DATE
+> Task :core:markdown:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :core:markdown:compileKotlin UP-TO-DATE
+> Task :core:markdown:compileJava NO-SOURCE
+> Task :core:markdown:processResources NO-SOURCE
+> Task :core:markdown:classes UP-TO-DATE
+> Task :core:markdown:jar UP-TO-DATE
+> Task :core:vault:preBuild UP-TO-DATE
+> Task :core:vault:preDevDebugBuild UP-TO-DATE
+> Task :core:vault:generateDevDebugResources UP-TO-DATE
+> Task :core:vault:packageDevDebugResources UP-TO-DATE
+> Task :core:vault:processDevDebugNavigationResources UP-TO-DATE
+> Task :core:vault:parseDevDebugLocalResources UP-TO-DATE
+> Task :core:vault:generateDevDebugRFile UP-TO-DATE
+> Task :core:vault:runKtlintCheckOverTestSourceSet
+> Task :core:vault:ktlintTestSourceSetCheck
+> Task :core:vault:ktlintCheck
+> Task :core:vault:javaPreCompileDevDebug UP-TO-DATE
+> Task :core:vault:preDevDebugUnitTestBuild UP-TO-DATE
+> Task :core:vault:writeDevDebugAarMetadata UP-TO-DATE
+> Task :core:vault:checkDevDebugUnitTestAarMetadata UP-TO-DATE
+> Task :core:vault:mapDevDebugSourceSetPaths UP-TO-DATE
+> Task :core:vault:compileDevDebugLibraryResources UP-TO-DATE
+> Task :core:vault:mapDevDebugUnitTestSourceSetPaths UP-TO-DATE
+> Task :core:vault:generateDevDebugUnitTestResources UP-TO-DATE
+> Task :core:vault:mergeDevDebugUnitTestResources UP-TO-DATE
+> Task :core:vault:extractDeepLinksDevDebug UP-TO-DATE
+> Task :core:vault:processDevDebugManifest UP-TO-DATE
+> Task :core:vault:mergeDevDebugUnitTestManifest UP-TO-DATE
+> Task :core:vault:processDevDebugUnitTestManifest UP-TO-DATE
+> Task :core:vault:processDevDebugUnitTestResources UP-TO-DATE
+> Task :core:vault:javaPreCompileDevDebugUnitTest UP-TO-DATE
+> Task :core:vault:generateDevDebugUnitTestAssets UP-TO-DATE
+> Task :core:vault:generateDevDebugAssets UP-TO-DATE
+> Task :core:vault:mergeDevDebugAssets UP-TO-DATE
+> Task :core:vault:mergeDevDebugUnitTestAssets UP-TO-DATE
+> Task :core:vault:packageDevDebugUnitTestForUnitTest UP-TO-DATE
+> Task :core:vault:generateDevDebugUnitTestConfig UP-TO-DATE
+> Task :core:rag:preBuild UP-TO-DATE
+> Task :core:rag:preDebugBuild UP-TO-DATE
+> Task :core:rag:generateDebugResources
+> Task :core:rag:packageDebugResources
+> Task :core:rag:processDebugNavigationResources
+> Task :core:rag:parseDebugLocalResources
+> Task :core:rag:generateDebugRFile
+> Task :core:security:preBuild UP-TO-DATE
+> Task :core:security:preDebugBuild UP-TO-DATE
+> Task :core:security:generateDebugResources
+> Task :core:security:packageDebugResources
+> Task :core:security:processDebugNavigationResources
+> Task :core:security:parseDebugLocalResources
+> Task :core:security:generateDebugRFile
+> Task :core:vault:compileDevDebugKotlin
+> Task :core:vault:compileDevDebugJavaWithJavac NO-SOURCE
+> Task :core:security:compileDebugKotlin
+> Task :core:vault:bundleLibRuntimeToJarDevDebug
+> Task :core:vault:bundleLibCompileToJarDevDebug
+> Task :core:vault:processDevDebugJavaRes UP-TO-DATE
+> Task :core:security:javaPreCompileDebug
+> Task :core:security:compileDebugJavaWithJavac NO-SOURCE
+> Task :core:security:bundleLibCompileToJarDebug
+> Task :core:vault:compileDevDebugUnitTestKotlin
+> Task :core:vault:compileDevDebugUnitTestJavaWithJavac NO-SOURCE
+> Task :core:vault:processDevDebugUnitTestJavaRes UP-TO-DATE
+> Task :core:vault:testDevDebugUnitTest
+> Task :core:rag:javaPreCompileDebug
+> Task :core:vault:preDevDebugAndroidTestBuild UP-TO-DATE
+> Task :core:vault:generateDevDebugAndroidTestResources
+> Task :core:vault:packageDevDebugAndroidTestResources
+> Task :core:vault:processDevDebugAndroidTestNavigationResources
+> Task :core:vault:parseDevDebugAndroidTestLocalResources
+> Task :core:vault:generateDevDebugAndroidTestRFile
+> Task :core:vault:preFossDebugBuild UP-TO-DATE
+> Task :core:vault:generateFossDebugResources
+> Task :core:vault:packageFossDebugResources
+> Task :core:vault:processFossDebugNavigationResources
+> Task :core:vault:parseFossDebugLocalResources
+> Task :core:vault:generateFossDebugRFile
+> Task :core:rag:compileDebugKotlin
+> Task :core:rag:compileDebugJavaWithJavac NO-SOURCE
+> Task :core:rag:bundleLibCompileToJarDebug
+
+> Task :core:vault:compileFossDebugKotlin
+w: file:///Users/andrewherrera/skein-worktrees/recovery-wal-proof-20260930/core/vault/src/main/kotlin/app/skein/core/vault/key/AndroidBiometricAuthenticator.kt:178:46 Unnecessary safe call on a non-null receiver of type 'CharSequence'.
+w: file:///Users/andrewherrera/skein-worktrees/recovery-wal-proof-20260930/core/vault/src/main/kotlin/app/skein/core/vault/key/recovery/RecoveryEnvelopeTransaction.kt:47:14 Only safe (?.) or non-null asserted (!!.) calls are allowed on a nullable receiver of type 'File?'.
+w: file:///Users/andrewherrera/skein-worktrees/recovery-wal-proof-20260930/core/vault/src/main/kotlin/app/skein/core/vault/key/recovery/RecoveryEnvelopeTransaction.kt:47:37 Only safe (?.) or non-null asserted (!!.) calls are allowed on a nullable receiver of type 'File?'.
+w: file:///Users/andrewherrera/skein-worktrees/recovery-wal-proof-20260930/core/vault/src/main/kotlin/app/skein/core/vault/key/recovery/RecoveryEnvelopeTransaction.kt:54:27 Java type mismatch: inferred type is 'File?', but 'File' was expected.
+w: file:///Users/andrewherrera/skein-worktrees/recovery-wal-proof-20260930/core/vault/src/main/kotlin/app/skein/core/vault/key/recovery/RecoveryEnvelopeTransaction.kt:58:27 Java type mismatch: inferred type is 'File?', but 'File' was expected.
+w: file:///Users/andrewherrera/skein-worktrees/recovery-wal-proof-20260930/core/vault/src/main/kotlin/app/skein/core/vault/key/recovery/RecoveryEnvelopeTransaction.kt:69:27 Java type mismatch: inferred type is 'File?', but 'File' was expected.
+w: file:///Users/andrewherrera/skein-worktrees/recovery-wal-proof-20260930/core/vault/src/main/kotlin/app/skein/core/vault/transfer/VaultZipImporter.kt:347:55 Expression is unused.
+
+> Task :core:vault:javaPreCompileFossDebug
+> Task :core:vault:compileFossDebugJavaWithJavac NO-SOURCE
+> Task :core:vault:bundleLibCompileToJarFossDebug
+> Task :core:vault:preFossDebugAndroidTestBuild UP-TO-DATE
+> Task :core:vault:generateFossDebugAndroidTestResources
+
+> Task :core:vault:compileDevDebugAndroidTestKotlin
+w: file:///Users/andrewherrera/skein-worktrees/recovery-wal-proof-20260930/core/vault/src/androidTest/kotlin/app/skein/core/vault/db/SkeinSQLiteDriverInstrumentedTest.kt:40:16 'fun openWithKey(fileName: String, passphrase: ByteArray?): SQLiteConnection' is deprecated. Use the primary SkeinSQLiteDriver(key: ByteArray) constructor and open(fileName) instead; openWithKey predates the §4.9 PRAGMA-based key setup and is kept only for callers that have not migrated yet.
+w: file:///Users/andrewherrera/skein-worktrees/recovery-wal-proof-20260930/core/vault/src/androidTest/kotlin/app/skein/core/vault/db/SkeinSQLiteDriverInstrumentedTest.kt:52:16 'fun openWithKey(fileName: String, passphrase: ByteArray?): SQLiteConnection' is deprecated. Use the primary SkeinSQLiteDriver(key: ByteArray) constructor and open(fileName) instead; openWithKey predates the §4.9 PRAGMA-based key setup and is kept only for callers that have not migrated yet.
+w: file:///Users/andrewherrera/skein-worktrees/recovery-wal-proof-20260930/core/vault/src/androidTest/kotlin/app/skein/core/vault/db/SkeinSQLiteDriverInstrumentedTest.kt:65:29 'fun openWithKey(fileName: String, passphrase: ByteArray?): SQLiteConnection' is deprecated. Use the primary SkeinSQLiteDriver(key: ByteArray) constructor and open(fileName) instead; openWithKey predates the §4.9 PRAGMA-based key setup and is kept only for callers that have not migrated yet.
+w: file:///Users/andrewherrera/skein-worktrees/recovery-wal-proof-20260930/core/vault/src/androidTest/kotlin/app/skein/core/vault/db/SkeinSQLiteDriverInstrumentedTest.kt:74:29 'fun openWithKey(fileName: String, passphrase: ByteArray?): SQLiteConnection' is deprecated. Use the primary SkeinSQLiteDriver(key: ByteArray) constructor and open(fileName) instead; openWithKey predates the §4.9 PRAGMA-based key setup and is kept only for callers that have not migrated yet.
+w: file:///Users/andrewherrera/skein-worktrees/recovery-wal-proof-20260930/core/vault/src/androidTest/kotlin/app/skein/core/vault/db/SkeinSQLiteDriverInstrumentedTest.kt:87:33 'fun openWithKey(fileName: String, passphrase: ByteArray?): SQLiteConnection' is deprecated. Use the primary SkeinSQLiteDriver(key: ByteArray) constructor and open(fileName) instead; openWithKey predates the §4.9 PRAGMA-based key setup and is kept only for callers that have not migrated yet.
+w: file:///Users/andrewherrera/skein-worktrees/recovery-wal-proof-20260930/core/vault/src/androidTest/kotlin/app/skein/core/vault/db/SkeinSQLiteDriverInstrumentedTest.kt:95:29 'fun openWithKey(fileName: String, passphrase: ByteArray?): SQLiteConnection' is deprecated. Use the primary SkeinSQLiteDriver(key: ByteArray) constructor and open(fileName) instead; openWithKey predates the §4.9 PRAGMA-based key setup and is kept only for callers that have not migrated yet.
+w: file:///Users/andrewherrera/skein-worktrees/recovery-wal-proof-20260930/core/vault/src/androidTest/kotlin/app/skein/core/vault/export/stage/ExportStageRepositoryContractTest.kt:55:27 'fun openWithKey(fileName: String, passphrase: ByteArray?): SQLiteConnection' is deprecated. Use the primary SkeinSQLiteDriver(key: ByteArray) constructor and open(fileName) instead; openWithKey predates the §4.9 PRAGMA-based key setup and is kept only for callers that have not migrated yet.
+w: file:///Users/andrewherrera/skein-worktrees/recovery-wal-proof-20260930/core/vault/src/androidTest/kotlin/app/skein/core/vault/index/IndexStoreImplAcceptanceTest.kt:693:27 'fun openWithKey(fileName: String, passphrase: ByteArray?): SQLiteConnection' is deprecated. Use the primary SkeinSQLiteDriver(key: ByteArray) constructor and open(fileName) instead; openWithKey predates the §4.9 PRAGMA-based key setup and is kept only for callers that have not migrated yet.
+w: file:///Users/andrewherrera/skein-worktrees/recovery-wal-proof-20260930/core/vault/src/androidTest/kotlin/app/skein/core/vault/index/IndexStoreImplContractTest.kt:79:27 'fun openWithKey(fileName: String, passphrase: ByteArray?): SQLiteConnection' is deprecated. Use the primary SkeinSQLiteDriver(key: ByteArray) constructor and open(fileName) instead; openWithKey predates the §4.9 PRAGMA-based key setup and is kept only for callers that have not migrated yet.
+w: file:///Users/andrewherrera/skein-worktrees/recovery-wal-proof-20260930/core/vault/src/androidTest/kotlin/app/skein/core/vault/index/LexicalRecallAcceptanceTest.kt:175:27 'fun openWithKey(fileName: String, passphrase: ByteArray?): SQLiteConnection' is deprecated. Use the primary SkeinSQLiteDriver(key: ByteArray) constructor and open(fileName) instead; openWithKey predates the §4.9 PRAGMA-based key setup and is kept only for callers that have not migrated yet.
+w: file:///Users/andrewherrera/skein-worktrees/recovery-wal-proof-20260930/core/vault/src/androidTest/kotlin/app/skein/core/vault/index/VectorRecallAcceptanceTest.kt:155:27 'fun openWithKey(fileName: String, passphrase: ByteArray?): SQLiteConnection' is deprecated. Use the primary SkeinSQLiteDriver(key: ByteArray) constructor and open(fileName) instead; openWithKey predates the §4.9 PRAGMA-based key setup and is kept only for callers that have not migrated yet.
+w: file:///Users/andrewherrera/skein-worktrees/recovery-wal-proof-20260930/core/vault/src/androidTest/kotlin/app/skein/core/vault/models/ModelRegistryImplContractTest.kt:62:27 'fun openWithKey(fileName: String, passphrase: ByteArray?): SQLiteConnection' is deprecated. Use the primary SkeinSQLiteDriver(key: ByteArray) constructor and open(fileName) instead; openWithKey predates the §4.9 PRAGMA-based key setup and is kept only for callers that have not migrated yet.
+w: file:///Users/andrewherrera/skein-worktrees/recovery-wal-proof-20260930/core/vault/src/androidTest/kotlin/app/skein/core/vault/persona/PersonaServiceImplContractTest.kt:53:27 'fun openWithKey(fileName: String, passphrase: ByteArray?): SQLiteConnection' is deprecated. Use the primary SkeinSQLiteDriver(key: ByteArray) constructor and open(fileName) instead; openWithKey predates the §4.9 PRAGMA-based key setup and is kept only for callers that have not migrated yet.
+w: file:///Users/andrewherrera/skein-worktrees/recovery-wal-proof-20260930/core/vault/src/androidTest/kotlin/app/skein/core/vault/repository/FileLifecycleInstrumentedTest.kt:170:44 Unnecessary non-null assertion (!!) on a non-null receiver of type 'FileDeletionReceipt'.
+w: file:///Users/andrewherrera/skein-worktrees/recovery-wal-proof-20260930/core/vault/src/androidTest/kotlin/app/skein/core/vault/repository/VaultRepositoryImplContractTest.kt:90:27 'fun openWithKey(fileName: String, passphrase: ByteArray?): SQLiteConnection' is deprecated. Use the primary SkeinSQLiteDriver(key: ByteArray) constructor and open(fileName) instead; openWithKey predates the §4.9 PRAGMA-based key setup and is kept only for callers that have not migrated yet.
+w: file:///Users/andrewherrera/skein-worktrees/recovery-wal-proof-20260930/core/vault/src/androidTest/kotlin/app/skein/vault/SchemaLoadInstrumentedTest.kt:36:29 'fun openWithKey(fileName: String, passphrase: ByteArray?): SQLiteConnection' is deprecated. Use the primary SkeinSQLiteDriver(key: ByteArray) constructor and open(fileName) instead; openWithKey predates the §4.9 PRAGMA-based key setup and is kept only for callers that have not migrated yet.
+
+> Task :core:vault:processFossDebugAndroidTestNavigationResources
+> Task :core:vault:packageFossDebugAndroidTestResources
+> Task :core:vault:parseFossDebugAndroidTestLocalResources
+> Task :core:vault:generateFossDebugAndroidTestRFile
+
+> Task :core:vault:compileFossDebugAndroidTestKotlin
+w: file:///Users/andrewherrera/skein-worktrees/recovery-wal-proof-20260930/core/vault/src/androidTest/kotlin/app/skein/core/vault/db/SkeinSQLiteDriverInstrumentedTest.kt:40:16 'fun openWithKey(fileName: String, passphrase: ByteArray?): SQLiteConnection' is deprecated. Use the primary SkeinSQLiteDriver(key: ByteArray) constructor and open(fileName) instead; openWithKey predates the §4.9 PRAGMA-based key setup and is kept only for callers that have not migrated yet.
+w: file:///Users/andrewherrera/skein-worktrees/recovery-wal-proof-20260930/core/vault/src/androidTest/kotlin/app/skein/core/vault/db/SkeinSQLiteDriverInstrumentedTest.kt:52:16 'fun openWithKey(fileName: String, passphrase: ByteArray?): SQLiteConnection' is deprecated. Use the primary SkeinSQLiteDriver(key: ByteArray) constructor and open(fileName) instead; openWithKey predates the §4.9 PRAGMA-based key setup and is kept only for callers that have not migrated yet.
+w: file:///Users/andrewherrera/skein-worktrees/recovery-wal-proof-20260930/core/vault/src/androidTest/kotlin/app/skein/core/vault/db/SkeinSQLiteDriverInstrumentedTest.kt:65:29 'fun openWithKey(fileName: String, passphrase: ByteArray?): SQLiteConnection' is deprecated. Use the primary SkeinSQLiteDriver(key: ByteArray) constructor and open(fileName) instead; openWithKey predates the §4.9 PRAGMA-based key setup and is kept only for callers that have not migrated yet.
+w: file:///Users/andrewherrera/skein-worktrees/recovery-wal-proof-20260930/core/vault/src/androidTest/kotlin/app/skein/core/vault/db/SkeinSQLiteDriverInstrumentedTest.kt:74:29 'fun openWithKey(fileName: String, passphrase: ByteArray?): SQLiteConnection' is deprecated. Use the primary SkeinSQLiteDriver(key: ByteArray) constructor and open(fileName) instead; openWithKey predates the §4.9 PRAGMA-based key setup and is kept only for callers that have not migrated yet.
+w: file:///Users/andrewherrera/skein-worktrees/recovery-wal-proof-20260930/core/vault/src/androidTest/kotlin/app/skein/core/vault/db/SkeinSQLiteDriverInstrumentedTest.kt:87:33 'fun openWithKey(fileName: String, passphrase: ByteArray?): SQLiteConnection' is deprecated. Use the primary SkeinSQLiteDriver(key: ByteArray) constructor and open(fileName) instead; openWithKey predates the §4.9 PRAGMA-based key setup and is kept only for callers that have not migrated yet.
+w: file:///Users/andrewherrera/skein-worktrees/recovery-wal-proof-20260930/core/vault/src/androidTest/kotlin/app/skein/core/vault/db/SkeinSQLiteDriverInstrumentedTest.kt:95:29 'fun openWithKey(fileName: String, passphrase: ByteArray?): SQLiteConnection' is deprecated. Use the primary SkeinSQLiteDriver(key: ByteArray) constructor and open(fileName) instead; openWithKey predates the §4.9 PRAGMA-based key setup and is kept only for callers that have not migrated yet.
+w: file:///Users/andrewherrera/skein-worktrees/recovery-wal-proof-20260930/core/vault/src/androidTest/kotlin/app/skein/core/vault/export/stage/ExportStageRepositoryContractTest.kt:55:27 'fun openWithKey(fileName: String, passphrase: ByteArray?): SQLiteConnection' is deprecated. Use the primary SkeinSQLiteDriver(key: ByteArray) constructor and open(fileName) instead; openWithKey predates the §4.9 PRAGMA-based key setup and is kept only for callers that have not migrated yet.
+w: file:///Users/andrewherrera/skein-worktrees/recovery-wal-proof-20260930/core/vault/src/androidTest/kotlin/app/skein/core/vault/index/IndexStoreImplAcceptanceTest.kt:693:27 'fun openWithKey(fileName: String, passphrase: ByteArray?): SQLiteConnection' is deprecated. Use the primary SkeinSQLiteDriver(key: ByteArray) constructor and open(fileName) instead; openWithKey predates the §4.9 PRAGMA-based key setup and is kept only for callers that have not migrated yet.
+w: file:///Users/andrewherrera/skein-worktrees/recovery-wal-proof-20260930/core/vault/src/androidTest/kotlin/app/skein/core/vault/index/IndexStoreImplContractTest.kt:79:27 'fun openWithKey(fileName: String, passphrase: ByteArray?): SQLiteConnection' is deprecated. Use the primary SkeinSQLiteDriver(key: ByteArray) constructor and open(fileName) instead; openWithKey predates the §4.9 PRAGMA-based key setup and is kept only for callers that have not migrated yet.
+w: file:///Users/andrewherrera/skein-worktrees/recovery-wal-proof-20260930/core/vault/src/androidTest/kotlin/app/skein/core/vault/index/LexicalRecallAcceptanceTest.kt:175:27 'fun openWithKey(fileName: String, passphrase: ByteArray?): SQLiteConnection' is deprecated. Use the primary SkeinSQLiteDriver(key: ByteArray) constructor and open(fileName) instead; openWithKey predates the §4.9 PRAGMA-based key setup and is kept only for callers that have not migrated yet.
+w: file:///Users/andrewherrera/skein-worktrees/recovery-wal-proof-20260930/core/vault/src/androidTest/kotlin/app/skein/core/vault/index/VectorRecallAcceptanceTest.kt:155:27 'fun openWithKey(fileName: String, passphrase: ByteArray?): SQLiteConnection' is deprecated. Use the primary SkeinSQLiteDriver(key: ByteArray) constructor and open(fileName) instead; openWithKey predates the §4.9 PRAGMA-based key setup and is kept only for callers that have not migrated yet.
+w: file:///Users/andrewherrera/skein-worktrees/recovery-wal-proof-20260930/core/vault/src/androidTest/kotlin/app/skein/core/vault/models/ModelRegistryImplContractTest.kt:62:27 'fun openWithKey(fileName: String, passphrase: ByteArray?): SQLiteConnection' is deprecated. Use the primary SkeinSQLiteDriver(key: ByteArray) constructor and open(fileName) instead; openWithKey predates the §4.9 PRAGMA-based key setup and is kept only for callers that have not migrated yet.
+w: file:///Users/andrewherrera/skein-worktrees/recovery-wal-proof-20260930/core/vault/src/androidTest/kotlin/app/skein/core/vault/persona/PersonaServiceImplContractTest.kt:53:27 'fun openWithKey(fileName: String, passphrase: ByteArray?): SQLiteConnection' is deprecated. Use the primary SkeinSQLiteDriver(key: ByteArray) constructor and open(fileName) instead; openWithKey predates the §4.9 PRAGMA-based key setup and is kept only for callers that have not migrated yet.
+w: file:///Users/andrewherrera/skein-worktrees/recovery-wal-proof-20260930/core/vault/src/androidTest/kotlin/app/skein/core/vault/repository/FileLifecycleInstrumentedTest.kt:170:44 Unnecessary non-null assertion (!!) on a non-null receiver of type 'FileDeletionReceipt'.
+w: file:///Users/andrewherrera/skein-worktrees/recovery-wal-proof-20260930/core/vault/src/androidTest/kotlin/app/skein/core/vault/repository/VaultRepositoryImplContractTest.kt:90:27 'fun openWithKey(fileName: String, passphrase: ByteArray?): SQLiteConnection' is deprecated. Use the primary SkeinSQLiteDriver(key: ByteArray) constructor and open(fileName) instead; openWithKey predates the §4.9 PRAGMA-based key setup and is kept only for callers that have not migrated yet.
+w: file:///Users/andrewherrera/skein-worktrees/recovery-wal-proof-20260930/core/vault/src/androidTest/kotlin/app/skein/vault/SchemaLoadInstrumentedTest.kt:36:29 'fun openWithKey(fileName: String, passphrase: ByteArray?): SQLiteConnection' is deprecated. Use the primary SkeinSQLiteDriver(key: ByteArray) constructor and open(fileName) instead; openWithKey predates the §4.9 PRAGMA-based key setup and is kept only for callers that have not migrated yet.
+
+[Incubating] Problems report is available at: file:///Users/andrewherrera/skein-worktrees/recovery-wal-proof-20260930/build/reports/problems/problems-report.html
+
+BUILD SUCCESSFUL in 18s
+89 actionable tasks: 49 executed, 40 up-to-date
+Configuration cache entry stored.

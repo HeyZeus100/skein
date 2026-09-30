@@ -1,0 +1,15 @@
+{
+  "source": "08b0f10771b26202c57cceed9e1027f0654ad3cb",
+  "run": 36704995442,
+  "actual_apk_pair_equal": true,
+  "apk_bytes": 101039915,
+  "apk_sha256": "865b93aa0c89ebe1a1aea61c74c86829cf38b7de6680542fdcd5570ab1e59afb",
+  "actual_native_pair_equal": true,
+  "native_bytes": 25314032,
+  "native_sha256": "2aefda01808f10bf5693ab02d0857e0169dc09550b615896939cb176c032daff",
+  "embedded_llama_matches_native": true,
+  "limitations": [
+    "Reproducibility at this source only; no installed-device or cross-source binary equality.",
+    "Tag-only SQLCipher regeneration skipped."
+  ]
+}

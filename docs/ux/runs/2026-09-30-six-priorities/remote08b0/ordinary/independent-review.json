@@ -1,0 +1,3470 @@
+{
+  "schema_version": 1,
+  "verdict": "FAIL_ORDINARY_RECOVERY_PROOF_RUNTIME",
+  "run_id": 36706479756,
+  "url": "https://github.com/HeyZeus100/skein/actions/runs/36706479756",
+  "source_sha": "08b0f10771b26202c57cceed9e1027f0654ad3cb",
+  "artifact_receipts": [
+    {
+      "path": "/Users/andrewherrera/skein-worktrees/ux-integration-20260929/build/agent-logs/six-priorities-20260930/remote-final/ordinary08b0/artifact-list.json",
+      "bytes": 714,
+      "sha256": "298ff3c174bd56133ca8a5d14ce268babe8b29cae0b02f1e42781e982a9d76d8"
+    },
+    {
+      "path": "/Users/andrewherrera/skein-worktrees/ux-integration-20260929/build/agent-logs/six-priorities-20260930/remote-final/ordinary08b0/logs.zip",
+      "bytes": 95280,
+      "sha256": "62df8bda0c83880df13fb8878bb6f2f473db5ef107125384c5d36314506d41d9"
+    },
+    {
+      "path": "/Users/andrewherrera/skein-worktrees/ux-integration-20260929/build/agent-logs/six-priorities-20260930/remote-final/ordinary08b0/connected-test-reports.zip",
+      "bytes": 996948,
+      "sha256": "44d76a0cc42bfb5e6514dbde859a3fff4661ec3d9b6140f841110f22878d54ad"
+    },
+    {
+      "path": "/Users/andrewherrera/skein-worktrees/ux-integration-20260929/build/agent-logs/six-priorities-20260930/remote-final/ordinary08b0/download-review.json",
+      "bytes": 604,
+      "sha256": "fc0b6a691840a5a42736eea89d0165739b0ed68a6f27d57f2d971190b52e924c"
+    },
+    {
+      "path": "/Users/andrewherrera/skein-worktrees/ux-integration-20260929/build/agent-logs/six-priorities-20260930/remote-final/ordinary08b0/run.json",
+      "bytes": 12099,
+      "sha256": "8c57b3ec2e5f411644cb40b3213e476ba735170be345e1b3557bfab64071f273"
+    },
+    {
+      "path": "/Users/andrewherrera/skein-worktrees/ux-integration-20260929/build/agent-logs/six-priorities-20260930/remote-final/ordinary08b0/jobs.json",
+      "bytes": 4692,
+      "sha256": "a24a317ccda607bbeddeb0794408247cd38226396de7faa5f8559ad2a5e599ab"
+    },
+    {
+      "path": "/Users/andrewherrera/skein-worktrees/ux-integration-20260929/build/agent-logs/six-priorities-20260930/remote-final/ordinary08b0/root-review.json",
+      "bytes": 98204,
+      "sha256": "26381e067aedcb660431b296dc09ba0a97bd604a288db8a9a1d2d9388ea5f536"
+    }
+  ],
+  "actual_counts": {
+    "tests": 299,
+    "passed": 296,
+    "failures": 3,
+    "errors": 0,
+    "skipped": 0
+  },
+  "module_counts": {
+    "app": {
+      "tests": 38,
+      "passed": 38,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    "core/vault": {
+      "tests": 222,
+      "passed": 219,
+      "failures": 3,
+      "errors": 0,
+      "skipped": 0
+    },
+    "inference-service": {
+      "tests": 39,
+      "passed": 39,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    }
+  },
+  "all_manifest_files_rehashed": true,
+  "manifest": {
+    "built_apks": [
+      {
+        "path": "app/build/outputs/apk/androidTest/dev/debug/app-dev-debug-androidTest.apk",
+        "sha256": "1c3b2777c2237773b5cab1aaec4a44b0443f29d8732e2d4e1c7eafe98d812478"
+      },
+      {
+        "path": "app/build/outputs/apk/dev/debug/app-dev-debug.apk",
+        "sha256": "a7b337242a857f473a887d2466cfb6e73597942414d72f937cec9eabbd635874"
+      },
+      {
+        "path": "core/vault/build/outputs/apk/androidTest/dev/debug/vault-dev-debug-androidTest.apk",
+        "sha256": "b2a3993502090d773139c46f13338c226d9041eab98316b33c29d6d6e0137fdd"
+      },
+      {
+        "path": "inference-service/build/outputs/apk/androidTest/dev/debug/inference-service-dev-debug-androidTest.apk",
+        "sha256": "b08e589491ef670abfbda6c1081c4309745efd55dd6ea6896c75c5c528285bed"
+      }
+    ],
+    "built_apk_attribution": "host build outputs; installed bytes were not independently measured here",
+    "lane": "instrumentation",
+    "source_sha": "08b0f10771b26202c57cceed9e1027f0654ad3cb",
+    "source_attribution": "host-declared git checkout, not APK attestation",
+    "files": [
+      {
+        "path": "app/build/outputs/androidTest-results/connected/debug/flavors/dev/TEST-test(AVD) - 15.xml",
+        "bytes": 8524,
+        "sha256": "31dc2a452f6d345dc9dbb007a973edf06f0ceadc43d9d35da80f3ef3e45736f4"
+      },
+      {
+        "path": "build/instrumentation-review.json",
+        "bytes": 1809,
+        "sha256": "42e7e27e5d8d7d24431cc4f4de5f056178aae19a71ed7a6e352c42072ea23f4d"
+      },
+      {
+        "path": "core/vault/build/outputs/androidTest-results/connected/debug/flavors/dev/TEST-test(AVD) - 15.xml",
+        "bytes": 42987,
+        "sha256": "e0a579a93106cf46c95614c2ca038efc7246595a41d9c8bd46883bb70399d986"
+      },
+      {
+        "path": "inference-service/build/outputs/androidTest-results/connected/debug/flavors/dev/TEST-test(AVD) - 15.xml",
+        "bytes": 6497,
+        "sha256": "e433750abff0f711a9bcea5b93fc6e2381fa2b4abb5424bf9d2bdd0fe0d28bc2"
+      }
+    ]
+  },
+  "xml_records": [
+    {
+      "path": "app/build/outputs/androidTest-results/connected/debug/flavors/dev/TEST-test(AVD) - 15.xml",
+      "bytes": 8524,
+      "sha256": "31dc2a452f6d345dc9dbb007a973edf06f0ceadc43d9d35da80f3ef3e45736f4"
+    },
+    {
+      "path": "core/vault/build/outputs/androidTest-results/connected/debug/flavors/dev/TEST-test(AVD) - 15.xml",
+      "bytes": 42987,
+      "sha256": "e0a579a93106cf46c95614c2ca038efc7246595a41d9c8bd46883bb70399d986"
+    },
+    {
+      "path": "inference-service/build/outputs/androidTest-results/connected/debug/flavors/dev/TEST-test(AVD) - 15.xml",
+      "bytes": 6497,
+      "sha256": "e433750abff0f711a9bcea5b93fc6e2381fa2b4abb5424bf9d2bdd0fe0d28bc2"
+    }
+  ],
+  "case_identities": [
+    {
+      "module": "app",
+      "class": "app.skein.SampleInstrumentedTest",
+      "name": "instrumentationTargetsTheAppUnderTest",
+      "outcome": [
+        "passed"
+      ],
+      "path": "app/build/outputs/androidTest-results/connected/debug/flavors/dev/TEST-test(AVD) - 15.xml",
+      "duration_seconds": "0.005"
+    },
+    {
+      "module": "app",
+      "class": "app.skein.inference.LlamaCppEngineInstrumentedTest",
+      "name": "lockAfterInspectionTerminatesTheProcessAndOnlyANewUnlockCanRebind",
+      "outcome": [
+        "passed"
+      ],
+      "path": "app/build/outputs/androidTest-results/connected/debug/flavors/dev/TEST-test(AVD) - 15.xml",
+      "duration_seconds": "9.052"
+    },
+    {
+      "module": "app",
+      "class": "app.skein.inference.LlamaCppEngineInstrumentedTest",
+      "name": "serviceDeathFailsTheStreamAndTheNextLoadRebinds",
+      "outcome": [
+        "passed"
+      ],
+      "path": "app/build/outputs/androidTest-results/connected/debug/flavors/dev/TEST-test(AVD) - 15.xml",
+      "duration_seconds": "4.902"
+    },
+    {
+      "module": "app",
+      "class": "app.skein.inference.LlamaCppEngineInstrumentedTest",
+      "name": "inspectReadsMetadataWithoutLoading",
+      "outcome": [
+        "passed"
+      ],
+      "path": "app/build/outputs/androidTest-results/connected/debug/flavors/dev/TEST-test(AVD) - 15.xml",
+      "duration_seconds": "3.518"
+    },
+    {
+      "module": "app",
+      "class": "app.skein.inference.LlamaCppEngineInstrumentedTest",
+      "name": "embed_without_capability_throws_invalid_model",
+      "outcome": [
+        "passed"
+      ],
+      "path": "app/build/outputs/androidTest-results/connected/debug/flavors/dev/TEST-test(AVD) - 15.xml",
+      "duration_seconds": "3.582"
+    },
+    {
+      "module": "app",
+      "class": "app.skein.inference.LlamaCppEngineInstrumentedTest",
+      "name": "stream_emits_done_last",
+      "outcome": [
+        "passed"
+      ],
+      "path": "app/build/outputs/androidTest-results/connected/debug/flavors/dev/TEST-test(AVD) - 15.xml",
+      "duration_seconds": "116.691"
+    },
+    {
+      "module": "app",
+      "class": "app.skein.inference.LlamaCppEngineInstrumentedTest",
+      "name": "load_bad_hash_returns_failure",
+      "outcome": [
+        "passed"
+      ],
+      "path": "app/build/outputs/androidTest-results/connected/debug/flavors/dev/TEST-test(AVD) - 15.xml",
+      "duration_seconds": "3.003"
+    },
+    {
+      "module": "app",
+      "class": "app.skein.inference.LlamaCppEngineInstrumentedTest",
+      "name": "cancel_stops_within_100ms",
+      "outcome": [
+        "passed"
+      ],
+      "path": "app/build/outputs/androidTest-results/connected/debug/flavors/dev/TEST-test(AVD) - 15.xml",
+      "duration_seconds": "3.567"
+    },
+    {
+      "module": "app",
+      "class": "app.skein.inference.LlamaCppEngineInstrumentedTest",
+      "name": "unload_then_stream_throws_not_loaded",
+      "outcome": [
+        "passed"
+      ],
+      "path": "app/build/outputs/androidTest-results/connected/debug/flavors/dev/TEST-test(AVD) - 15.xml",
+      "duration_seconds": "3.580"
+    },
+    {
+      "module": "app",
+      "class": "app.skein.inference.LlamaCppEngineInstrumentedTest",
+      "name": "second_stream_fails_busy",
+      "outcome": [
+        "passed"
+      ],
+      "path": "app/build/outputs/androidTest-results/connected/debug/flavors/dev/TEST-test(AVD) - 15.xml",
+      "duration_seconds": "10.382"
+    },
+    {
+      "module": "app",
+      "class": "app.skein.ingest.IngestWorkerInstrumentedTest",
+      "name": "three_queued_notes_are_chunked_searchable_and_linked_after_one_pass",
+      "outcome": [
+        "passed"
+      ],
+      "path": "app/build/outputs/androidTest-results/connected/debug/flavors/dev/TEST-test(AVD) - 15.xml",
+      "duration_seconds": "4.149"
+    },
+    {
+      "module": "app",
+      "class": "app.skein.ingest.IngestWorkerInstrumentedTest",
+      "name": "lock_cancels_the_unique_work_and_nothing_runs_while_locked",
+      "outcome": [
+        "passed"
+      ],
+      "path": "app/build/outputs/androidTest-results/connected/debug/flavors/dev/TEST-test(AVD) - 15.xml",
+      "duration_seconds": "1.357"
+    },
+    {
+      "module": "app",
+      "class": "app.skein.vault.FirstRunInstrumentedTest",
+      "name": "fresh_install_seeds_the_first_persona",
+      "outcome": [
+        "passed"
+      ],
+      "path": "app/build/outputs/androidTest-results/connected/debug/flavors/dev/TEST-test(AVD) - 15.xml",
+      "duration_seconds": "1.390"
+    },
+    {
+      "module": "app",
+      "class": "app.skein.vault.FirstRunInstrumentedTest",
+      "name": "second_launch_unlocks_without_setup",
+      "outcome": [
+        "passed"
+      ],
+      "path": "app/build/outputs/androidTest-results/connected/debug/flavors/dev/TEST-test(AVD) - 15.xml",
+      "duration_seconds": "1.546"
+    },
+    {
+      "module": "app",
+      "class": "app.skein.vault.FirstRunInstrumentedTest",
+      "name": "fresh_install_routes_to_setup_then_unlock_then_serves_the_root",
+      "outcome": [
+        "passed"
+      ],
+      "path": "app/build/outputs/androidTest-results/connected/debug/flavors/dev/TEST-test(AVD) - 15.xml",
+      "duration_seconds": "1.039"
+    },
+    {
+      "module": "app",
+      "class": "app.skein.vault.FirstRunInstrumentedTest",
+      "name": "a_second_setup_is_refused_and_the_vault_still_opens",
+      "outcome": [
+        "passed"
+      ],
+      "path": "app/build/outputs/androidTest-results/connected/debug/flavors/dev/TEST-test(AVD) - 15.xml",
+      "duration_seconds": "1.976"
+    },
+    {
+      "module": "app",
+      "class": "app.skein.vault.LockPolicySettingsRecreationInstrumentedTest",
+      "name": "changingLockOnScreenOffPersistsAndSurvivesActivityRecreation",
+      "outcome": [
+        "passed"
+      ],
+      "path": "app/build/outputs/androidTest-results/connected/debug/flavors/dev/TEST-test(AVD) - 15.xml",
+      "duration_seconds": "0.515"
+    },
+    {
+      "module": "app",
+      "class": "app.skein.vault.VaultBootstrapInstrumentedTest",
+      "name": "lock_after_bringUp_serves_no_roots",
+      "outcome": [
+        "passed"
+      ],
+      "path": "app/build/outputs/androidTest-results/connected/debug/flavors/dev/TEST-test(AVD) - 15.xml",
+      "duration_seconds": "45.716"
+    },
+    {
+      "module": "app",
+      "class": "app.skein.vault.VaultBootstrapInstrumentedTest",
+      "name": "a_second_unlock_reopens_the_same_vault_file",
+      "outcome": [
+        "passed"
+      ],
+      "path": "app/build/outputs/androidTest-results/connected/debug/flavors/dev/TEST-test(AVD) - 15.xml",
+      "duration_seconds": "1.024"
+    },
+    {
+      "module": "app",
+      "class": "app.skein.vault.VaultBootstrapInstrumentedTest",
+      "name": "unlock_then_bringUp_serves_the_vault_root",
+      "outcome": [
+        "passed"
+      ],
+      "path": "app/build/outputs/androidTest-results/connected/debug/flavors/dev/TEST-test(AVD) - 15.xml",
+      "duration_seconds": "0.597"
+    },
+    {
+      "module": "app",
+      "class": "app.skein.vault.VaultBootstrapInstrumentedTest",
+      "name": "timed_out_write_rolls_back_before_a_fresh_session_reopens_the_vault",
+      "outcome": [
+        "passed"
+      ],
+      "path": "app/build/outputs/androidTest-results/connected/debug/flavors/dev/TEST-test(AVD) - 15.xml",
+      "duration_seconds": "1.534"
+    },
+    {
+      "module": "app",
+      "class": "app.skein.vault.provider.VaultDocumentsProviderGrantInstrumentedTest",
+      "name": "read_worksAgain_afterLockThenReUnlock_usingTheSameDocumentId",
+      "outcome": [
+        "passed"
+      ],
+      "path": "app/build/outputs/androidTest-results/connected/debug/flavors/dev/TEST-test(AVD) - 15.xml",
+      "duration_seconds": "1.105"
+    },
+    {
+      "module": "app",
+      "class": "app.skein.vault.provider.VaultDocumentsProviderGrantInstrumentedTest",
+      "name": "read_throwsFileNotFoundException_afterTheVaultLocks",
+      "outcome": [
+        "passed"
+      ],
+      "path": "app/build/outputs/androidTest-results/connected/debug/flavors/dev/TEST-test(AVD) - 15.xml",
+      "duration_seconds": "0.572"
+    },
+    {
+      "module": "app",
+      "class": "app.skein.vault.provider.VaultDocumentsProviderGrantInstrumentedTest",
+      "name": "openDocument_roundTrips_theSeededNoteBytes_throughTheRealAuthority",
+      "outcome": [
+        "passed"
+      ],
+      "path": "app/build/outputs/androidTest-results/connected/debug/flavors/dev/TEST-test(AVD) - 15.xml",
+      "duration_seconds": "0.560"
+    },
+    {
+      "module": "app",
+      "class": "app.skein.vault.provider.VaultDocumentsProviderGrantInstrumentedTest",
+      "name": "rootRow_neverAdvertises_flagSupportsIsChild",
+      "outcome": [
+        "passed"
+      ],
+      "path": "app/build/outputs/androidTest-results/connected/debug/flavors/dev/TEST-test(AVD) - 15.xml",
+      "duration_seconds": "0.520"
+    },
+    {
+      "module": "app",
+      "class": "app.skein.vault.provider.VaultDocumentsProviderGrantInstrumentedTest",
+      "name": "takePersistableUriPermission_alwaysThrows_becauseNoPersistableGrantIsEverOffered",
+      "outcome": [
+        "passed"
+      ],
+      "path": "app/build/outputs/androidTest-results/connected/debug/flavors/dev/TEST-test(AVD) - 15.xml",
+      "duration_seconds": "0.573"
+    },
+    {
+      "module": "app",
+      "class": "app.skein.vault.provider.VaultDocumentsProviderTest",
+      "name": "openDocument_write_updatesTheNoteAndEnqueuesIngest",
+      "outcome": [
+        "passed"
+      ],
+      "path": "app/build/outputs/androidTest-results/connected/debug/flavors/dev/TEST-test(AVD) - 15.xml",
+      "duration_seconds": "0.169"
+    },
+    {
+      "module": "app",
+      "class": "app.skein.vault.provider.VaultDocumentsProviderTest",
+      "name": "openDocument_read_streamsExactlyWhatExportMarkdownProduces",
+      "outcome": [
+        "passed"
+      ],
+      "path": "app/build/outputs/androidTest-results/connected/debug/flavors/dev/TEST-test(AVD) - 15.xml",
+      "duration_seconds": "0.088"
+    },
+    {
+      "module": "app",
+      "class": "app.skein.vault.provider.VaultDocumentsProviderTest",
+      "name": "queryDocument_honoursARequestedProjection",
+      "outcome": [
+        "passed"
+      ],
+      "path": "app/build/outputs/androidTest-results/connected/debug/flavors/dev/TEST-test(AVD) - 15.xml",
+      "duration_seconds": "0.061"
+    },
+    {
+      "module": "app",
+      "class": "app.skein.vault.provider.VaultDocumentsProviderTest",
+      "name": "openDocument_read_streamsTheOriginalAttachmentBytes",
+      "outcome": [
+        "passed"
+      ],
+      "path": "app/build/outputs/androidTest-results/connected/debug/flavors/dev/TEST-test(AVD) - 15.xml",
+      "duration_seconds": "0.056"
+    },
+    {
+      "module": "app",
+      "class": "app.skein.vault.provider.VaultDocumentsProviderTest",
+      "name": "isChildDocument_scopesNotesUnderTheNotesDirectoryOnly",
+      "outcome": [
+        "passed"
+      ],
+      "path": "app/build/outputs/androidTest-results/connected/debug/flavors/dev/TEST-test(AVD) - 15.xml",
+      "duration_seconds": "0.037"
+    },
+    {
+      "module": "app",
+      "class": "app.skein.vault.provider.VaultDocumentsProviderTest",
+      "name": "queryChildDocuments_ofAttachments_listsEveryAttachmentWithItsStoredMimeType",
+      "outcome": [
+        "passed"
+      ],
+      "path": "app/build/outputs/androidTest-results/connected/debug/flavors/dev/TEST-test(AVD) - 15.xml",
+      "duration_seconds": "0.044"
+    },
+    {
+      "module": "app",
+      "class": "app.skein.vault.provider.VaultDocumentsProviderTest",
+      "name": "queryChildDocuments_ofNotes_listsEveryMarkdownDocumentAsTextMarkdown",
+      "outcome": [
+        "passed"
+      ],
+      "path": "app/build/outputs/androidTest-results/connected/debug/flavors/dev/TEST-test(AVD) - 15.xml",
+      "duration_seconds": "0.053"
+    },
+    {
+      "module": "app",
+      "class": "app.skein.vault.provider.VaultDocumentsProviderTest",
+      "name": "queryRoots_listsOneVaultRoot",
+      "outcome": [
+        "passed"
+      ],
+      "path": "app/build/outputs/androidTest-results/connected/debug/flavors/dev/TEST-test(AVD) - 15.xml",
+      "duration_seconds": "0.034"
+    },
+    {
+      "module": "app",
+      "class": "app.skein.vault.provider.VaultDocumentsProviderTest",
+      "name": "queryChildDocuments_ofRoot_listsNotesAndAttachments",
+      "outcome": [
+        "passed"
+      ],
+      "path": "app/build/outputs/androidTest-results/connected/debug/flavors/dev/TEST-test(AVD) - 15.xml",
+      "duration_seconds": "0.042"
+    },
+    {
+      "module": "app",
+      "class": "app.skein.vault.provider.VaultDocumentsProviderTest",
+      "name": "openDocument_refusesReadWriteMode",
+      "outcome": [
+        "passed"
+      ],
+      "path": "app/build/outputs/androidTest-results/connected/debug/flavors/dev/TEST-test(AVD) - 15.xml",
+      "duration_seconds": "0.037"
+    },
+    {
+      "module": "app",
+      "class": "app.skein.vault.provider.VaultDocumentsProviderTest",
+      "name": "locked_everyQueryAndOpenThrowsAndNothingIsListed",
+      "outcome": [
+        "passed"
+      ],
+      "path": "app/build/outputs/androidTest-results/connected/debug/flavors/dev/TEST-test(AVD) - 15.xml",
+      "duration_seconds": "0.034"
+    },
+    {
+      "module": "app",
+      "class": "app.skein.vault.security.AtRestEncryptionInstrumentedTest",
+      "name": "no_plaintext_or_key_material_on_disk_vault_db_is_not_sqlite_magic_and_lock_zeroes_the_key",
+      "outcome": [
+        "passed"
+      ],
+      "path": "app/build/outputs/androidTest-results/connected/debug/flavors/dev/TEST-test(AVD) - 15.xml",
+      "duration_seconds": "0.606"
+    },
+    {
+      "module": "core/vault",
+      "class": "app.skein.core.vault.db.SkeinSQLiteDriverInstrumentedTest",
+      "name": "vecVersionMatchesPinned",
+      "outcome": [
+        "passed"
+      ],
+      "path": "core/vault/build/outputs/androidTest-results/connected/debug/flavors/dev/TEST-test(AVD) - 15.xml",
+      "duration_seconds": "0.002"
+    },
+    {
+      "module": "core/vault",
+      "class": "app.skein.core.vault.db.SkeinSQLiteDriverInstrumentedTest",
+      "name": "cipherVersionMatchesPinnedSqlcipher",
+      "outcome": [
+        "passed"
+      ],
+      "path": "core/vault/build/outputs/androidTest-results/connected/debug/flavors/dev/TEST-test(AVD) - 15.xml",
+      "duration_seconds": "0.000"
+    },
+    {
+      "module": "core/vault",
+      "class": "app.skein.core.vault.db.SkeinSQLiteDriverInstrumentedTest",
+      "name": "getBlobRoundTrips256ByteInt8Vector",
+      "outcome": [
+        "passed"
+      ],
+      "path": "core/vault/build/outputs/androidTest-results/connected/debug/flavors/dev/TEST-test(AVD) - 15.xml",
+      "duration_seconds": "0.020"
+    },
+    {
+      "module": "core/vault",
+      "class": "app.skein.core.vault.db.SkeinSQLiteDriverInstrumentedTest",
+      "name": "fts5VirtualTableProbe",
+      "outcome": [
+        "passed"
+      ],
+      "path": "core/vault/build/outputs/androidTest-results/connected/debug/flavors/dev/TEST-test(AVD) - 15.xml",
+      "duration_seconds": "0.001"
+    },
+    {
+      "module": "core/vault",
+      "class": "app.skein.core.vault.db.SkeinSQLiteDriverInstrumentedTest",
+      "name": "openingWithWrongKeyThrowsNotADatabase",
+      "outcome": [
+        "passed"
+      ],
+      "path": "core/vault/build/outputs/androidTest-results/connected/debug/flavors/dev/TEST-test(AVD) - 15.xml",
+      "duration_seconds": "0.010"
+    },
+    {
+      "module": "core/vault",
+      "class": "app.skein.core.vault.db.SkeinSQLiteDriverInstrumentedTest",
+      "name": "passphraseRoundTrip",
+      "outcome": [
+        "passed"
+      ],
+      "path": "core/vault/build/outputs/androidTest-results/connected/debug/flavors/dev/TEST-test(AVD) - 15.xml",
+      "duration_seconds": "0.501"
+    },
+    {
+      "module": "core/vault",
+      "class": "app.skein.core.vault.db.SkeinSQLiteDriverInstrumentedTest",
+      "name": "bindAndGetRoundTripsForAllSupportedTypes",
+      "outcome": [
+        "passed"
+      ],
+      "path": "core/vault/build/outputs/androidTest-results/connected/debug/flavors/dev/TEST-test(AVD) - 15.xml",
+      "duration_seconds": "0.014"
+    },
+    {
+      "module": "core/vault",
+      "class": "app.skein.core.vault.db.SkeinSQLiteDriverInstrumentedTest",
+      "name": "keyedOpenRunsSection4_9PragmaSequence",
+      "outcome": [
+        "passed"
+      ],
+      "path": "core/vault/build/outputs/androidTest-results/connected/debug/flavors/dev/TEST-test(AVD) - 15.xml",
+      "duration_seconds": "0.004"
+    },
+    {
+      "module": "core/vault",
+      "class": "app.skein.core.vault.db.migrations.MigratorInstrumentedTest",
+      "name": "freshDatabaseMigratesToLatestVersionWithAllSchemaObjects",
+      "outcome": [
+        "passed"
+      ],
+      "path": "core/vault/build/outputs/androidTest-results/connected/debug/flavors/dev/TEST-test(AVD) - 15.xml",
+      "duration_seconds": "0.087"
+    },
+    {
+      "module": "core/vault",
+      "class": "app.skein.core.vault.db.migrations.MigratorInstrumentedTest",
+      "name": "deletingChunkRemovesItFromFtsAndVec",
+      "outcome": [
+        "passed"
+      ],
+      "path": "core/vault/build/outputs/androidTest-results/connected/debug/flavors/dev/TEST-test(AVD) - 15.xml",
+      "duration_seconds": "0.054"
+    },
+    {
+      "module": "core/vault",
+      "class": "app.skein.core.vault.db.migrations.MigratorInstrumentedTest",
+      "name": "insertingNoteDocumentEnqueuesCreatedReason",
+      "outcome": [
+        "passed"
+      ],
+      "path": "core/vault/build/outputs/androidTest-results/connected/debug/flavors/dev/TEST-test(AVD) - 15.xml",
+      "duration_seconds": "0.046"
+    },
+    {
+      "module": "core/vault",
+      "class": "app.skein.core.vault.db.migrations.MigratorInstrumentedTest",
+      "name": "ledgerSeedsPre005DatabaseAndStillAppliesTheGapFillerWithoutLoweringUserVersion",
+      "outcome": [
+        "passed"
+      ],
+      "path": "core/vault/build/outputs/androidTest-results/connected/debug/flavors/dev/TEST-test(AVD) - 15.xml",
+      "duration_seconds": "0.068"
+    },
+    {
+      "module": "core/vault",
+      "class": "app.skein.core.vault.db.migrations.MigratorInstrumentedTest",
+      "name": "afterMigration010ReChunkingLeavesNoResidue",
+      "outcome": [
+        "passed"
+      ],
+      "path": "core/vault/build/outputs/androidTest-results/connected/debug/flavors/dev/TEST-test(AVD) - 15.xml",
+      "duration_seconds": "0.050"
+    },
+    {
+      "module": "core/vault",
+      "class": "app.skein.core.vault.db.migrations.MigratorInstrumentedTest",
+      "name": "brokenMigrationRollsBackAndLeavesUserVersionUnchanged",
+      "outcome": [
+        "passed"
+      ],
+      "path": "core/vault/build/outputs/androidTest-results/connected/debug/flavors/dev/TEST-test(AVD) - 15.xml",
+      "duration_seconds": "0.012"
+    },
+    {
+      "module": "core/vault",
+      "class": "app.skein.core.vault.db.migrations.MigratorInstrumentedTest",
+      "name": "insertingChunkMakesTextFindableViaFtsMatch",
+      "outcome": [
+        "passed"
+      ],
+      "path": "core/vault/build/outputs/androidTest-results/connected/debug/flavors/dev/TEST-test(AVD) - 15.xml",
+      "duration_seconds": "0.046"
+    },
+    {
+      "module": "core/vault",
+      "class": "app.skein.core.vault.db.migrations.MigratorInstrumentedTest",
+      "name": "updatingOnlyPersonaIdDoesNotEnqueue",
+      "outcome": [
+        "passed"
+      ],
+      "path": "core/vault/build/outputs/androidTest-results/connected/debug/flavors/dev/TEST-test(AVD) - 15.xml",
+      "duration_seconds": "0.050"
+    },
+    {
+      "module": "core/vault",
+      "class": "app.skein.core.vault.db.migrations.MigratorInstrumentedTest",
+      "name": "exportStageDefaultsToUnsweptAndCascadesWithItsDocument",
+      "outcome": [
+        "passed"
+      ],
+      "path": "core/vault/build/outputs/androidTest-results/connected/debug/flavors/dev/TEST-test(AVD) - 15.xml",
+      "duration_seconds": "0.053"
+    },
+    {
+      "module": "core/vault",
+      "class": "app.skein.core.vault.db.migrations.MigratorInstrumentedTest",
+      "name": "migration011UpgradesExistingVaultAndDraftForeignKeyPreventsResurrection",
+      "outcome": [
+        "passed"
+      ],
+      "path": "core/vault/build/outputs/androidTest-results/connected/debug/flavors/dev/TEST-test(AVD) - 15.xml",
+      "duration_seconds": "0.149"
+    },
+    {
+      "module": "core/vault",
+      "class": "app.skein.core.vault.db.migrations.MigratorInstrumentedTest",
+      "name": "migration010IsIdempotentOnRerun",
+      "outcome": [
+        "passed"
+      ],
+      "path": "core/vault/build/outputs/androidTest-results/connected/debug/flavors/dev/TEST-test(AVD) - 15.xml",
+      "duration_seconds": "0.065"
+    },
+    {
+      "module": "core/vault",
+      "class": "app.skein.core.vault.db.migrations.MigratorInstrumentedTest",
+      "name": "updatingBodyMdEnqueuesUpdatedReason",
+      "outcome": [
+        "passed"
+      ],
+      "path": "core/vault/build/outputs/androidTest-results/connected/debug/flavors/dev/TEST-test(AVD) - 15.xml",
+      "duration_seconds": "0.059"
+    },
+    {
+      "module": "core/vault",
+      "class": "app.skein.core.vault.db.migrations.MigratorInstrumentedTest",
+      "name": "chunkByteOffsetColumnsRoundTrip",
+      "outcome": [
+        "passed"
+      ],
+      "path": "core/vault/build/outputs/androidTest-results/connected/debug/flavors/dev/TEST-test(AVD) - 15.xml",
+      "duration_seconds": "0.047"
+    },
+    {
+      "module": "core/vault",
+      "class": "app.skein.core.vault.db.migrations.MigratorInstrumentedTest",
+      "name": "runningMigrateTwiceIsANoop",
+      "outcome": [
+        "passed"
+      ],
+      "path": "core/vault/build/outputs/androidTest-results/connected/debug/flavors/dev/TEST-test(AVD) - 15.xml",
+      "duration_seconds": "0.050"
+    },
+    {
+      "module": "core/vault",
+      "class": "app.skein.core.vault.db.migrations.MigratorInstrumentedTest",
+      "name": "afterMigration010ADeletedTokenLeavesNoBytesInChunksFtsData",
+      "outcome": [
+        "passed"
+      ],
+      "path": "core/vault/build/outputs/androidTest-results/connected/debug/flavors/dev/TEST-test(AVD) - 15.xml",
+      "duration_seconds": "0.048"
+    },
+    {
+      "module": "core/vault",
+      "class": "app.skein.core.vault.db.migrations.MigratorInstrumentedTest",
+      "name": "rowsSeededBeforeMigration007SurviveTheDropAndDocumentsIsUnaffected",
+      "outcome": [
+        "passed"
+      ],
+      "path": "core/vault/build/outputs/androidTest-results/connected/debug/flavors/dev/TEST-test(AVD) - 15.xml",
+      "duration_seconds": "0.054"
+    },
+    {
+      "module": "core/vault",
+      "class": "app.skein.core.vault.db.migrations.MigratorInstrumentedTest",
+      "name": "documentRevisionsUpsertsByContentAddressAndCascadesWithItsDocument",
+      "outcome": [
+        "passed"
+      ],
+      "path": "core/vault/build/outputs/androidTest-results/connected/debug/flavors/dev/TEST-test(AVD) - 15.xml",
+      "duration_seconds": "0.051"
+    },
+    {
+      "module": "core/vault",
+      "class": "app.skein.core.vault.db.migrations.MigratorInstrumentedTest",
+      "name": "ingestQueueAttemptsDefaultsToZeroAndResetsOnReQueue",
+      "outcome": [
+        "passed"
+      ],
+      "path": "core/vault/build/outputs/androidTest-results/connected/debug/flavors/dev/TEST-test(AVD) - 15.xml",
+      "duration_seconds": "0.048"
+    },
+    {
+      "module": "core/vault",
+      "class": "app.skein.core.vault.db.migrations.MigratorInstrumentedTest",
+      "name": "migration010EnablesFts5SecureDelete",
+      "outcome": [
+        "passed"
+      ],
+      "path": "core/vault/build/outputs/androidTest-results/connected/debug/flavors/dev/TEST-test(AVD) - 15.xml",
+      "duration_seconds": "0.043"
+    },
+    {
+      "module": "core/vault",
+      "class": "app.skein.core.vault.db.migrations.MigratorInstrumentedTest",
+      "name": "freshDatabaseLedgerListsEveryAppliedVersion",
+      "outcome": [
+        "passed"
+      ],
+      "path": "core/vault/build/outputs/androidTest-results/connected/debug/flavors/dev/TEST-test(AVD) - 15.xml",
+      "duration_seconds": "0.043"
+    },
+    {
+      "module": "core/vault",
+      "class": "app.skein.core.vault.db.migrations.MigratorInstrumentedTest",
+      "name": "migration010OptimizePurgesResidueWrittenBeforeIt",
+      "outcome": [
+        "passed"
+      ],
+      "path": "core/vault/build/outputs/androidTest-results/connected/debug/flavors/dev/TEST-test(AVD) - 15.xml",
+      "duration_seconds": "0.062"
+    },
+    {
+      "module": "core/vault",
+      "class": "app.skein.core.vault.export.stage.ExportStageRepositoryContractTest",
+      "name": "markAllStagesSweptLeavesNothingUnswept",
+      "outcome": [
+        "passed"
+      ],
+      "path": "core/vault/build/outputs/androidTest-results/connected/debug/flavors/dev/TEST-test(AVD) - 15.xml",
+      "duration_seconds": "0.052"
+    },
+    {
+      "module": "core/vault",
+      "class": "app.skein.core.vault.export.stage.ExportStageRepositoryContractTest",
+      "name": "markingAnAlreadySweptStageReportsFalse",
+      "outcome": [
+        "passed"
+      ],
+      "path": "core/vault/build/outputs/androidTest-results/connected/debug/flavors/dev/TEST-test(AVD) - 15.xml",
+      "duration_seconds": "0.039"
+    },
+    {
+      "module": "core/vault",
+      "class": "app.skein.core.vault.export.stage.ExportStageRepositoryContractTest",
+      "name": "aFreshlyInsertedStageIsNotSwept",
+      "outcome": [
+        "passed"
+      ],
+      "path": "core/vault/build/outputs/androidTest-results/connected/debug/flavors/dev/TEST-test(AVD) - 15.xml",
+      "duration_seconds": "0.033"
+    },
+    {
+      "module": "core/vault",
+      "class": "app.skein.core.vault.export.stage.ExportStageRepositoryContractTest",
+      "name": "aStageWithNoDocumentSurvivesUnrelatedDocumentDeletes",
+      "outcome": [
+        "passed"
+      ],
+      "path": "core/vault/build/outputs/androidTest-results/connected/debug/flavors/dev/TEST-test(AVD) - 15.xml",
+      "duration_seconds": "0.061"
+    },
+    {
+      "module": "core/vault",
+      "class": "app.skein.core.vault.export.stage.ExportStageRepositoryContractTest",
+      "name": "markingAnUnknownStageReportsFalse",
+      "outcome": [
+        "passed"
+      ],
+      "path": "core/vault/build/outputs/androidTest-results/connected/debug/flavors/dev/TEST-test(AVD) - 15.xml",
+      "duration_seconds": "0.030"
+    },
+    {
+      "module": "core/vault",
+      "class": "app.skein.core.vault.export.stage.ExportStageRepositoryContractTest",
+      "name": "listUnsweptOmitsRowsAlreadyMarkedSwept",
+      "outcome": [
+        "passed"
+      ],
+      "path": "core/vault/build/outputs/androidTest-results/connected/debug/flavors/dev/TEST-test(AVD) - 15.xml",
+      "duration_seconds": "0.030"
+    },
+    {
+      "module": "core/vault",
+      "class": "app.skein.core.vault.export.stage.ExportStageRepositoryContractTest",
+      "name": "markAllStagesSweptReportsHowManyRowsItChanged",
+      "outcome": [
+        "passed"
+      ],
+      "path": "core/vault/build/outputs/androidTest-results/connected/debug/flavors/dev/TEST-test(AVD) - 15.xml",
+      "duration_seconds": "0.031"
+    },
+    {
+      "module": "core/vault",
+      "class": "app.skein.core.vault.export.stage.ExportStageRepositoryContractTest",
+      "name": "deletingTheDocumentCascadesItsStageRowAway",
+      "outcome": [
+        "passed"
+      ],
+      "path": "core/vault/build/outputs/androidTest-results/connected/debug/flavors/dev/TEST-test(AVD) - 15.xml",
+      "duration_seconds": "0.039"
+    },
+    {
+      "module": "core/vault",
+      "class": "app.skein.core.vault.export.stage.ExportStageRepositoryContractTest",
+      "name": "reinsertingTheSameStageIdReplacesTheRowRatherThanThrowing",
+      "outcome": [
+        "passed"
+      ],
+      "path": "core/vault/build/outputs/androidTest-results/connected/debug/flavors/dev/TEST-test(AVD) - 15.xml",
+      "duration_seconds": "0.028"
+    },
+    {
+      "module": "core/vault",
+      "class": "app.skein.core.vault.export.stage.ExportStageRepositoryContractTest",
+      "name": "listUnsweptReturnsTheMostOverduePlaintextFirst",
+      "outcome": [
+        "passed"
+      ],
+      "path": "core/vault/build/outputs/androidTest-results/connected/debug/flavors/dev/TEST-test(AVD) - 15.xml",
+      "duration_seconds": "0.031"
+    },
+    {
+      "module": "core/vault",
+      "class": "app.skein.core.vault.export.stage.ExportStageRepositoryContractTest",
+      "name": "markingAStageSweptReportsTrueTheFirstTime",
+      "outcome": [
+        "passed"
+      ],
+      "path": "core/vault/build/outputs/androidTest-results/connected/debug/flavors/dev/TEST-test(AVD) - 15.xml",
+      "duration_seconds": "0.023"
+    },
+    {
+      "module": "core/vault",
+      "class": "app.skein.core.vault.export.stage.ExportStageRepositoryContractTest",
+      "name": "insertedStageReadsBackWithEveryColumnIntact",
+      "outcome": [
+        "passed"
+      ],
+      "path": "core/vault/build/outputs/androidTest-results/connected/debug/flavors/dev/TEST-test(AVD) - 15.xml",
+      "duration_seconds": "0.024"
+    },
+    {
+      "module": "core/vault",
+      "class": "app.skein.core.vault.export.stage.ExportStageRepositoryContractTest",
+      "name": "anUnrecordedStageIdReadsBackAsNull",
+      "outcome": [
+        "passed"
+      ],
+      "path": "core/vault/build/outputs/androidTest-results/connected/debug/flavors/dev/TEST-test(AVD) - 15.xml",
+      "duration_seconds": "0.026"
+    },
+    {
+      "module": "core/vault",
+      "class": "app.skein.core.vault.index.GraphRecallAcceptanceTest",
+      "name": "ordinaryPhraseDiscoversLongerTitlesAndLinkedAnswerWithinEvidenceScope",
+      "outcome": [
+        "passed"
+      ],
+      "path": "core/vault/build/outputs/androidTest-results/connected/debug/flavors/dev/TEST-test(AVD) - 15.xml",
+      "duration_seconds": "0.179"
+    },
+    {
+      "module": "core/vault",
+      "class": "app.skein.core.vault.index.IndexStoreImplAcceptanceTest",
+      "name": "unicodeQueryTermsMatchTheActualDefaultSqliteTokenizer",
+      "outcome": [
+        "passed"
+      ],
+      "path": "core/vault/build/outputs/androidTest-results/connected/debug/flavors/dev/TEST-test(AVD) - 15.xml",
+      "duration_seconds": "0.047"
+    },
+    {
+      "module": "core/vault",
+      "class": "app.skein.core.vault.index.IndexStoreImplAcceptanceTest",
+      "name": "unicodeOnlyIngestProbeFindsAMissingMiddleRowBetweenHealthyRows",
+      "outcome": [
+        "passed"
+      ],
+      "path": "core/vault/build/outputs/androidTest-results/connected/debug/flavors/dev/TEST-test(AVD) - 15.xml",
+      "duration_seconds": "0.033"
+    },
+    {
+      "module": "core/vault",
+      "class": "app.skein.core.vault.index.IndexStoreImplAcceptanceTest",
+      "name": "bm25DoesNotThrowOnTwentyAdversarialQueryStrings",
+      "outcome": [
+        "passed"
+      ],
+      "path": "core/vault/build/outputs/androidTest-results/connected/debug/flavors/dev/TEST-test(AVD) - 15.xml",
+      "duration_seconds": "0.033"
+    },
+    {
+      "module": "core/vault",
+      "class": "app.skein.core.vault.index.IndexStoreImplAcceptanceTest",
+      "name": "ingestRowProbeWarnsWhenTheActualInsertTriggerIsMissing",
+      "outcome": [
+        "passed"
+      ],
+      "path": "core/vault/build/outputs/androidTest-results/connected/debug/flavors/dev/TEST-test(AVD) - 15.xml",
+      "duration_seconds": "0.029"
+    },
+    {
+      "module": "core/vault",
+      "class": "app.skein.core.vault.index.IndexStoreImplAcceptanceTest",
+      "name": "knnReturnsExactlyKRowsOverA10000VectorCorpus",
+      "outcome": [
+        "passed"
+      ],
+      "path": "core/vault/build/outputs/androidTest-results/connected/debug/flavors/dev/TEST-test(AVD) - 15.xml",
+      "duration_seconds": "1.273"
+    },
+    {
+      "module": "core/vault",
+      "class": "app.skein.core.vault.index.IndexStoreImplAcceptanceTest",
+      "name": "actualTokenizerBoundsSkipWholeTokensAndNeverInventPostingFragments",
+      "outcome": [
+        "passed"
+      ],
+      "path": "core/vault/build/outputs/androidTest-results/connected/debug/flavors/dev/TEST-test(AVD) - 15.xml",
+      "duration_seconds": "0.030"
+    },
+    {
+      "module": "core/vault",
+      "class": "app.skein.core.vault.index.IndexStoreImplAcceptanceTest",
+      "name": "ingestRowProbeVerifiesHealthyPostingBelowTheGlobalTop50",
+      "outcome": [
+        "passed"
+      ],
+      "path": "core/vault/build/outputs/androidTest-results/connected/debug/flavors/dev/TEST-test(AVD) - 15.xml",
+      "duration_seconds": "0.043"
+    },
+    {
+      "module": "core/vault",
+      "class": "app.skein.core.vault.index.IndexStoreImplAcceptanceTest",
+      "name": "aReplaceChunksWhoseInsertAbortsRollsBackAndPublishesNoIndexChange",
+      "outcome": [
+        "passed"
+      ],
+      "path": "core/vault/build/outputs/androidTest-results/connected/debug/flavors/dev/TEST-test(AVD) - 15.xml",
+      "duration_seconds": "0.025"
+    },
+    {
+      "module": "core/vault",
+      "class": "app.skein.core.vault.index.IndexStoreImplAcceptanceTest",
+      "name": "unicodeOnlyIngestProbeWarnsWhenTheInsertTriggerIsMissing",
+      "outcome": [
+        "passed"
+      ],
+      "path": "core/vault/build/outputs/androidTest-results/connected/debug/flavors/dev/TEST-test(AVD) - 15.xml",
+      "duration_seconds": "0.026"
+    },
+    {
+      "module": "core/vault",
+      "class": "app.skein.core.vault.index.IndexStoreImplAcceptanceTest",
+      "name": "ingestRowProbeDetectsAMissingLaterPostingWhenTheFirstRowIsHealthy",
+      "outcome": [
+        "passed"
+      ],
+      "path": "core/vault/build/outputs/androidTest-results/connected/debug/flavors/dev/TEST-test(AVD) - 15.xml",
+      "duration_seconds": "0.031"
+    },
+    {
+      "module": "core/vault",
+      "class": "app.skein.core.vault.index.IndexStoreImplAcceptanceTest",
+      "name": "unicodeOnlyIngestProbeChecksARealPostingWithoutAsciiFallback",
+      "outcome": [
+        "passed"
+      ],
+      "path": "core/vault/build/outputs/androidTest-results/connected/debug/flavors/dev/TEST-test(AVD) - 15.xml",
+      "duration_seconds": "0.026"
+    },
+    {
+      "module": "core/vault",
+      "class": "app.skein.core.vault.index.IndexStoreImplAcceptanceTest",
+      "name": "unicodeAdversarialQueriesRemainLiteralAndCannotBroadenToUnrelatedRows",
+      "outcome": [
+        "passed"
+      ],
+      "path": "core/vault/build/outputs/androidTest-results/connected/debug/flavors/dev/TEST-test(AVD) - 15.xml",
+      "duration_seconds": "0.028"
+    },
+    {
+      "module": "core/vault",
+      "class": "app.skein.core.vault.index.IndexStoreImplAcceptanceTest",
+      "name": "replaceEdgesWithWIKILINKDoesNotTouchENTITYEdgesOfTheSameSource",
+      "outcome": [
+        "passed"
+      ],
+      "path": "core/vault/build/outputs/androidTest-results/connected/debug/flavors/dev/TEST-test(AVD) - 15.xml",
+      "duration_seconds": "0.028"
+    },
+    {
+      "module": "core/vault",
+      "class": "app.skein.core.vault.index.IndexStoreImplAcceptanceTest",
+      "name": "unicodeTextBindingPreservesSupplementaryAndLegacyModifiedUtf8",
+      "outcome": [
+        "passed"
+      ],
+      "path": "core/vault/build/outputs/androidTest-results/connected/debug/flavors/dev/TEST-test(AVD) - 15.xml",
+      "duration_seconds": "0.026"
+    },
+    {
+      "module": "core/vault",
+      "class": "app.skein.core.vault.index.IndexStoreImplAcceptanceTest",
+      "name": "aCommittedReplaceChunksPublishesExactlyOneChunksReplaced",
+      "outcome": [
+        "passed"
+      ],
+      "path": "core/vault/build/outputs/androidTest-results/connected/debug/flavors/dev/TEST-test(AVD) - 15.xml",
+      "duration_seconds": "0.022"
+    },
+    {
+      "module": "core/vault",
+      "class": "app.skein.core.vault.index.IndexStoreImplAcceptanceTest",
+      "name": "ingestRowProbeDoesNotTreatAsciiInsideAUnicodeTokenAsAMissingPosting",
+      "outcome": [
+        "passed"
+      ],
+      "path": "core/vault/build/outputs/androidTest-results/connected/debug/flavors/dev/TEST-test(AVD) - 15.xml",
+      "duration_seconds": "0.026"
+    },
+    {
+      "module": "core/vault",
+      "class": "app.skein.core.vault.index.IndexStoreImplContractTest",
+      "name": "edgesTo_returns_backlinks",
+      "outcome": [
+        "passed"
+      ],
+      "path": "core/vault/build/outputs/androidTest-results/connected/debug/flavors/dev/TEST-test(AVD) - 15.xml",
+      "duration_seconds": "0.019"
+    },
+    {
+      "module": "core/vault",
+      "class": "app.skein.core.vault.index.IndexStoreImplContractTest",
+      "name": "observeChanges_does_not_replay_changes_made_before_subscribing",
+      "outcome": [
+        "passed"
+      ],
+      "path": "core/vault/build/outputs/androidTest-results/connected/debug/flavors/dev/TEST-test(AVD) - 15.xml",
+      "duration_seconds": "0.021"
+    },
+    {
+      "module": "core/vault",
+      "class": "app.skein.core.vault.index.IndexStoreImplContractTest",
+      "name": "observeChanges_emits_ChunksReplaced_by_the_time_replaceChunks_returns",
+      "outcome": [
+        "passed"
+      ],
+      "path": "core/vault/build/outputs/androidTest-results/connected/debug/flavors/dev/TEST-test(AVD) - 15.xml",
+      "duration_seconds": "0.012"
+    },
+    {
+      "module": "core/vault",
+      "class": "app.skein.core.vault.index.IndexStoreImplContractTest",
+      "name": "replaceChunks_deletes_old_chunk_ids",
+      "outcome": [
+        "passed"
+      ],
+      "path": "core/vault/build/outputs/androidTest-results/connected/debug/flavors/dev/TEST-test(AVD) - 15.xml",
+      "duration_seconds": "0.020"
+    },
+    {
+      "module": "core/vault",
+      "class": "app.skein.core.vault.index.IndexStoreImplContractTest",
+      "name": "observeChanges_emits_EmbeddingsUpdated_with_the_written_chunk_ids",
+      "outcome": [
+        "passed"
+      ],
+      "path": "core/vault/build/outputs/androidTest-results/connected/debug/flavors/dev/TEST-test(AVD) - 15.xml",
+      "duration_seconds": "0.022"
+    },
+    {
+      "module": "core/vault",
+      "class": "app.skein.core.vault.index.IndexStoreImplContractTest",
+      "name": "bm25_finds_an_exact_term",
+      "outcome": [
+        "passed"
+      ],
+      "path": "core/vault/build/outputs/androidTest-results/connected/debug/flavors/dev/TEST-test(AVD) - 15.xml",
+      "duration_seconds": "0.019"
+    },
+    {
+      "module": "core/vault",
+      "class": "app.skein.core.vault.index.IndexStoreImplContractTest",
+      "name": "replaceChunks_stamps_revisionHash_and_byte_offsets_that_getChunks_reads_back",
+      "outcome": [
+        "passed"
+      ],
+      "path": "core/vault/build/outputs/androidTest-results/connected/debug/flavors/dev/TEST-test(AVD) - 15.xml",
+      "duration_seconds": "0.023"
+    },
+    {
+      "module": "core/vault",
+      "class": "app.skein.core.vault.index.IndexStoreImplContractTest",
+      "name": "chunksForDocs_also_reads_back_revisionHash_and_byte_offsets",
+      "outcome": [
+        "passed"
+      ],
+      "path": "core/vault/build/outputs/androidTest-results/connected/debug/flavors/dev/TEST-test(AVD) - 15.xml",
+      "duration_seconds": "0.022"
+    },
+    {
+      "module": "core/vault",
+      "class": "app.skein.core.vault.index.IndexStoreImplContractTest",
+      "name": "observeChanges_delivers_one_event_per_call_in_publication_order",
+      "outcome": [
+        "passed"
+      ],
+      "path": "core/vault/build/outputs/androidTest-results/connected/debug/flavors/dev/TEST-test(AVD) - 15.xml",
+      "duration_seconds": "0.022"
+    },
+    {
+      "module": "core/vault",
+      "class": "app.skein.core.vault.index.IndexStoreImplContractTest",
+      "name": "observeChanges_is_silent_for_a_no_op_replaceEdges",
+      "outcome": [
+        "passed"
+      ],
+      "path": "core/vault/build/outputs/androidTest-results/connected/debug/flavors/dev/TEST-test(AVD) - 15.xml",
+      "duration_seconds": "0.031"
+    },
+    {
+      "module": "core/vault",
+      "class": "app.skein.core.vault.index.IndexStoreImplContractTest",
+      "name": "observeChanges_emits_ChunksReplaced_even_when_the_new_chunk_list_is_empty",
+      "outcome": [
+        "passed"
+      ],
+      "path": "core/vault/build/outputs/androidTest-results/connected/debug/flavors/dev/TEST-test(AVD) - 15.xml",
+      "duration_seconds": "0.021"
+    },
+    {
+      "module": "core/vault",
+      "class": "app.skein.core.vault.index.IndexStoreImplContractTest",
+      "name": "observeChanges_emits_EdgesReplaced_carrying_the_nominated_kinds",
+      "outcome": [
+        "passed"
+      ],
+      "path": "core/vault/build/outputs/androidTest-results/connected/debug/flavors/dev/TEST-test(AVD) - 15.xml",
+      "duration_seconds": "0.019"
+    },
+    {
+      "module": "core/vault",
+      "class": "app.skein.core.vault.index.IndexStoreImplContractTest",
+      "name": "knn_returns_nearest_first_for_orthogonal_int8_vectors",
+      "outcome": [
+        "passed"
+      ],
+      "path": "core/vault/build/outputs/androidTest-results/connected/debug/flavors/dev/TEST-test(AVD) - 15.xml",
+      "duration_seconds": "0.026"
+    },
+    {
+      "module": "core/vault",
+      "class": "app.skein.core.vault.index.IndexStoreImplContractTest",
+      "name": "replaceChunks_with_no_revisionHash_or_offsets_reads_back_null_for_all_three",
+      "outcome": [
+        "passed"
+      ],
+      "path": "core/vault/build/outputs/androidTest-results/connected/debug/flavors/dev/TEST-test(AVD) - 15.xml",
+      "duration_seconds": "0.018"
+    },
+    {
+      "module": "core/vault",
+      "class": "app.skein.core.vault.index.IndexStoreImplContractTest",
+      "name": "lexical_match_is_specific_to_one_row_and_removed_when_replaced",
+      "outcome": [
+        "passed"
+      ],
+      "path": "core/vault/build/outputs/androidTest-results/connected/debug/flavors/dev/TEST-test(AVD) - 15.xml",
+      "duration_seconds": "0.016"
+    },
+    {
+      "module": "core/vault",
+      "class": "app.skein.core.vault.index.IndexStoreImplContractTest",
+      "name": "neighborhood_hops2_stops_at_maxNodes",
+      "outcome": [
+        "passed"
+      ],
+      "path": "core/vault/build/outputs/androidTest-results/connected/debug/flavors/dev/TEST-test(AVD) - 15.xml",
+      "duration_seconds": "0.021"
+    },
+    {
+      "module": "core/vault",
+      "class": "app.skein.core.vault.index.LexicalRecallAcceptanceTest",
+      "name": "recallOfSqliteCipherRanksTheBothTermsChunkFirstWithScoresNormalizedTo01",
+      "outcome": [
+        "passed"
+      ],
+      "path": "core/vault/build/outputs/androidTest-results/connected/debug/flavors/dev/TEST-test(AVD) - 15.xml",
+      "duration_seconds": "0.021"
+    },
+    {
+      "module": "core/vault",
+      "class": "app.skein.core.vault.index.LexicalRecallAcceptanceTest",
+      "name": "lexicalRecallDoesNotThrowOnTwentyAdversarialQueryStrings",
+      "outcome": [
+        "passed"
+      ],
+      "path": "core/vault/build/outputs/androidTest-results/connected/debug/flavors/dev/TEST-test(AVD) - 15.xml",
+      "duration_seconds": "0.026"
+    },
+    {
+      "module": "core/vault",
+      "class": "app.skein.core.vault.index.VectorRecallAcceptanceTest",
+      "name": "recallRanksTheChunkMatchingTheQueryVectorFirstScoresMappedTo01",
+      "outcome": [
+        "passed"
+      ],
+      "path": "core/vault/build/outputs/androidTest-results/connected/debug/flavors/dev/TEST-test(AVD) - 15.xml",
+      "duration_seconds": "0.021"
+    },
+    {
+      "module": "core/vault",
+      "class": "app.skein.core.vault.key.VaultKeyProviderInstrumentedTest",
+      "name": "createKey_without_strongbox_produces_a_usable_alias",
+      "outcome": [
+        "passed"
+      ],
+      "path": "core/vault/build/outputs/androidTest-results/connected/debug/flavors/dev/TEST-test(AVD) - 15.xml",
+      "duration_seconds": "0.028"
+    },
+    {
+      "module": "core/vault",
+      "class": "app.skein.core.vault.key.VaultKeyProviderInstrumentedTest",
+      "name": "encryptCipher_on_authRequired_key_requires_user_authentication",
+      "outcome": [
+        "passed"
+      ],
+      "path": "core/vault/build/outputs/androidTest-results/connected/debug/flavors/dev/TEST-test(AVD) - 15.xml",
+      "duration_seconds": "0.012"
+    },
+    {
+      "module": "core/vault",
+      "class": "app.skein.core.vault.key.VaultKeyProviderInstrumentedTest",
+      "name": "hasStrongBox_probe_runs_without_throwing",
+      "outcome": [
+        "passed"
+      ],
+      "path": "core/vault/build/outputs/androidTest-results/connected/debug/flavors/dev/TEST-test(AVD) - 15.xml",
+      "duration_seconds": "0.005"
+    },
+    {
+      "module": "core/vault",
+      "class": "app.skein.core.vault.key.VaultKeyProvidersInstrumentedTest",
+      "name": "forDevice_builds_the_real_provider_locked_and_without_touching_disk",
+      "outcome": [
+        "passed"
+      ],
+      "path": "core/vault/build/outputs/androidTest-results/connected/debug/flavors/dev/TEST-test(AVD) - 15.xml",
+      "duration_seconds": "0.007"
+    },
+    {
+      "module": "core/vault",
+      "class": "app.skein.core.vault.key.VaultKeyProvidersInstrumentedTest",
+      "name": "envelope_round_trips_and_rewraps_on_the_device_filesystem",
+      "outcome": [
+        "passed"
+      ],
+      "path": "core/vault/build/outputs/androidTest-results/connected/debug/flavors/dev/TEST-test(AVD) - 15.xml",
+      "duration_seconds": "0.017"
+    },
+    {
+      "module": "core/vault",
+      "class": "app.skein.core.vault.key.VaultKeyProvidersInstrumentedTest",
+      "name": "unlock_before_setup_reports_NotInitialised_and_creates_nothing",
+      "outcome": [
+        "passed"
+      ],
+      "path": "core/vault/build/outputs/androidTest-results/connected/debug/flavors/dev/TEST-test(AVD) - 15.xml",
+      "duration_seconds": "0.005"
+    },
+    {
+      "module": "core/vault",
+      "class": "app.skein.core.vault.key.VaultKeyProvidersInstrumentedTest",
+      "name": "unlock_over_a_real_auth_bound_alias_yields_no_key_without_authentication",
+      "outcome": [
+        "passed"
+      ],
+      "path": "core/vault/build/outputs/androidTest-results/connected/debug/flavors/dev/TEST-test(AVD) - 15.xml",
+      "duration_seconds": "0.019"
+    },
+    {
+      "module": "core/vault",
+      "class": "app.skein.core.vault.key.VaultKeyProvidersInstrumentedTest",
+      "name": "setup_without_an_enrolled_biometric_leaves_no_envelope_and_no_aliases",
+      "outcome": [
+        "passed"
+      ],
+      "path": "core/vault/build/outputs/androidTest-results/connected/debug/flavors/dev/TEST-test(AVD) - 15.xml",
+      "duration_seconds": "0.006"
+    },
+    {
+      "module": "core/vault",
+      "class": "app.skein.core.vault.key.recovery.ExistingVaultKeyProofInstrumentedTest",
+      "name": "proofNeverMigratesOlderSupportedSchema",
+      "outcome": [
+        "failure"
+      ],
+      "path": "core/vault/build/outputs/androidTest-results/connected/debug/flavors/dev/TEST-test(AVD) - 15.xml",
+      "duration_seconds": "0.065",
+      "details": {
+        "failure": "<failure>expected: VERIFIED\nbut was : UNAVAILABLE\n\tat app.skein.core.vault.key.recovery.ExistingVaultKeyProofInstrumentedTest.proofNeverMigratesOlderSupportedSchema(ExistingVaultKeyProofInstrumentedTest.kt:105)\n</failure>\n    "
+      }
+    },
+    {
+      "module": "core/vault",
+      "class": "app.skein.core.vault.key.recovery.ExistingVaultKeyProofInstrumentedTest",
+      "name": "plaintextEmptyMissingCorruptAndUnknownSchemaNeverProveCandidate",
+      "outcome": [
+        "passed"
+      ],
+      "path": "core/vault/build/outputs/androidTest-results/connected/debug/flavors/dev/TEST-test(AVD) - 15.xml",
+      "duration_seconds": "0.036"
+    },
+    {
+      "module": "core/vault",
+      "class": "app.skein.core.vault.key.recovery.ExistingVaultKeyProofInstrumentedTest",
+      "name": "committedWalSchemaIsReadWithoutImmutableModeOrSourceCheckpoint",
+      "outcome": [
+        "failure"
+      ],
+      "path": "core/vault/build/outputs/androidTest-results/connected/debug/flavors/dev/TEST-test(AVD) - 15.xml",
+      "duration_seconds": "0.048",
+      "details": {
+        "failure": "<failure>expected: UNSUPPORTED_SCHEMA\nbut was : UNAVAILABLE\n\tat app.skein.core.vault.key.recovery.ExistingVaultKeyProofInstrumentedTest.committedWalSchemaIsReadWithoutImmutableModeOrSourceCheckpoint(ExistingVaultKeyProofInstrumentedTest.kt:92)\n</failure>\n    "
+      }
+    },
+    {
+      "module": "core/vault",
+      "class": "app.skein.core.vault.key.recovery.ExistingVaultKeyProofInstrumentedTest",
+      "name": "rawKeyProvesEncryptedPagesAndWrongKeyCannotChangeSources",
+      "outcome": [
+        "failure"
+      ],
+      "path": "core/vault/build/outputs/androidTest-results/connected/debug/flavors/dev/TEST-test(AVD) - 15.xml",
+      "duration_seconds": "0.040",
+      "details": {
+        "failure": "<failure>expected: VERIFIED\nbut was : UNAVAILABLE\n\tat app.skein.core.vault.key.recovery.ExistingVaultKeyProofInstrumentedTest.rawKeyProvesEncryptedPagesAndWrongKeyCannotChangeSources(ExistingVaultKeyProofInstrumentedTest.kt:36)\n</failure>\n    "
+      }
+    },
+    {
+      "module": "core/vault",
+      "class": "app.skein.core.vault.lifecycle.VaultLifecycleInstrumentedTest",
+      "name": "createThenOpenThenCloseThenOpenThenCloseRoundTrip",
+      "outcome": [
+        "passed"
+      ],
+      "path": "core/vault/build/outputs/androidTest-results/connected/debug/flavors/dev/TEST-test(AVD) - 15.xml",
+      "duration_seconds": "0.070"
+    },
+    {
+      "module": "core/vault",
+      "class": "app.skein.core.vault.lifecycle.VaultLifecycleInstrumentedTest",
+      "name": "createTwiceFailsWithAlreadyExists",
+      "outcome": [
+        "passed"
+      ],
+      "path": "core/vault/build/outputs/androidTest-results/connected/debug/flavors/dev/TEST-test(AVD) - 15.xml",
+      "duration_seconds": "0.044"
+    },
+    {
+      "module": "core/vault",
+      "class": "app.skein.core.vault.lifecycle.VaultLifecycleInstrumentedTest",
+      "name": "integrityCheckWhileNotOpenReportsNotOpen",
+      "outcome": [
+        "passed"
+      ],
+      "path": "core/vault/build/outputs/androidTest-results/connected/debug/flavors/dev/TEST-test(AVD) - 15.xml",
+      "duration_seconds": "0.000"
+    },
+    {
+      "module": "core/vault",
+      "class": "app.skein.core.vault.lifecycle.VaultLifecycleInstrumentedTest",
+      "name": "openNonexistentVaultFailsWithNotFound",
+      "outcome": [
+        "passed"
+      ],
+      "path": "core/vault/build/outputs/androidTest-results/connected/debug/flavors/dev/TEST-test(AVD) - 15.xml",
+      "duration_seconds": "0.001"
+    },
+    {
+      "module": "core/vault",
+      "class": "app.skein.core.vault.lifecycle.VaultLifecycleInstrumentedTest",
+      "name": "closeLeavesNoWalOrShmResidue",
+      "outcome": [
+        "passed"
+      ],
+      "path": "core/vault/build/outputs/androidTest-results/connected/debug/flavors/dev/TEST-test(AVD) - 15.xml",
+      "duration_seconds": "0.047"
+    },
+    {
+      "module": "core/vault",
+      "class": "app.skein.core.vault.lifecycle.VaultLifecycleInstrumentedTest",
+      "name": "openWithWrongKeyReturnsTypedWrongKey",
+      "outcome": [
+        "passed"
+      ],
+      "path": "core/vault/build/outputs/androidTest-results/connected/debug/flavors/dev/TEST-test(AVD) - 15.xml",
+      "duration_seconds": "0.050"
+    },
+    {
+      "module": "core/vault",
+      "class": "app.skein.core.vault.lifecycle.VaultLifecycleInstrumentedTest",
+      "name": "integrityCheckOnAFreshlyCreatedVaultReportsOk",
+      "outcome": [
+        "passed"
+      ],
+      "path": "core/vault/build/outputs/androidTest-results/connected/debug/flavors/dev/TEST-test(AVD) - 15.xml",
+      "duration_seconds": "0.051"
+    },
+    {
+      "module": "core/vault",
+      "class": "app.skein.core.vault.lifecycle.VaultResetInstrumentedTest",
+      "name": "reset_removes_real_Keystore_aliases",
+      "outcome": [
+        "passed"
+      ],
+      "path": "core/vault/build/outputs/androidTest-results/connected/debug/flavors/dev/TEST-test(AVD) - 15.xml",
+      "duration_seconds": "0.005"
+    },
+    {
+      "module": "core/vault",
+      "class": "app.skein.core.vault.lifecycle.VaultResetInstrumentedTest",
+      "name": "reset_deletes_real_files_under_filesDir",
+      "outcome": [
+        "passed"
+      ],
+      "path": "core/vault/build/outputs/androidTest-results/connected/debug/flavors/dev/TEST-test(AVD) - 15.xml",
+      "duration_seconds": "0.006"
+    },
+    {
+      "module": "core/vault",
+      "class": "app.skein.core.vault.lifecycle.VaultResetInstrumentedTest",
+      "name": "reset_refuses_while_unlocked_and_leaves_real_files_alone",
+      "outcome": [
+        "passed"
+      ],
+      "path": "core/vault/build/outputs/androidTest-results/connected/debug/flavors/dev/TEST-test(AVD) - 15.xml",
+      "duration_seconds": "0.003"
+    },
+    {
+      "module": "core/vault",
+      "class": "app.skein.core.vault.models.ModelRegistryImplContractTest",
+      "name": "setDefault_accepts_an_id_with_no_backing_row",
+      "outcome": [
+        "passed"
+      ],
+      "path": "core/vault/build/outputs/androidTest-results/connected/debug/flavors/dev/TEST-test(AVD) - 15.xml",
+      "duration_seconds": "0.026"
+    },
+    {
+      "module": "core/vault",
+      "class": "app.skein.core.vault.models.ModelRegistryImplContractTest",
+      "name": "upsert_replaces_an_existing_row_with_the_same_id",
+      "outcome": [
+        "passed"
+      ],
+      "path": "core/vault/build/outputs/androidTest-results/connected/debug/flavors/dev/TEST-test(AVD) - 15.xml",
+      "duration_seconds": "0.024"
+    },
+    {
+      "module": "core/vault",
+      "class": "app.skein.core.vault.models.ModelRegistryImplContractTest",
+      "name": "default_is_null_for_a_fresh_registry",
+      "outcome": [
+        "passed"
+      ],
+      "path": "core/vault/build/outputs/androidTest-results/connected/debug/flavors/dev/TEST-test(AVD) - 15.xml",
+      "duration_seconds": "0.017"
+    },
+    {
+      "module": "core/vault",
+      "class": "app.skein.core.vault.models.ModelRegistryImplContractTest",
+      "name": "list_is_empty_for_a_fresh_registry",
+      "outcome": [
+        "passed"
+      ],
+      "path": "core/vault/build/outputs/androidTest-results/connected/debug/flavors/dev/TEST-test(AVD) - 15.xml",
+      "duration_seconds": "0.017"
+    },
+    {
+      "module": "core/vault",
+      "class": "app.skein.core.vault.models.ModelRegistryImplContractTest",
+      "name": "delete_removes_the_row",
+      "outcome": [
+        "passed"
+      ],
+      "path": "core/vault/build/outputs/androidTest-results/connected/debug/flavors/dev/TEST-test(AVD) - 15.xml",
+      "duration_seconds": "0.017"
+    },
+    {
+      "module": "core/vault",
+      "class": "app.skein.core.vault.models.ModelRegistryImplContractTest",
+      "name": "get_returns_null_for_an_unknown_id",
+      "outcome": [
+        "passed"
+      ],
+      "path": "core/vault/build/outputs/androidTest-results/connected/debug/flavors/dev/TEST-test(AVD) - 15.xml",
+      "duration_seconds": "0.020"
+    },
+    {
+      "module": "core/vault",
+      "class": "app.skein.core.vault.models.ModelRegistryImplContractTest",
+      "name": "setDefault_null_clears_the_default",
+      "outcome": [
+        "passed"
+      ],
+      "path": "core/vault/build/outputs/androidTest-results/connected/debug/flavors/dev/TEST-test(AVD) - 15.xml",
+      "duration_seconds": "0.019"
+    },
+    {
+      "module": "core/vault",
+      "class": "app.skein.core.vault.models.ModelRegistryImplContractTest",
+      "name": "delete_of_an_unknown_id_is_a_no_op",
+      "outcome": [
+        "passed"
+      ],
+      "path": "core/vault/build/outputs/androidTest-results/connected/debug/flavors/dev/TEST-test(AVD) - 15.xml",
+      "duration_seconds": "0.019"
+    },
+    {
+      "module": "core/vault",
+      "class": "app.skein.core.vault.models.ModelRegistryImplContractTest",
+      "name": "list_reflects_every_upserted_record",
+      "outcome": [
+        "passed"
+      ],
+      "path": "core/vault/build/outputs/androidTest-results/connected/debug/flavors/dev/TEST-test(AVD) - 15.xml",
+      "duration_seconds": "0.018"
+    },
+    {
+      "module": "core/vault",
+      "class": "app.skein.core.vault.models.ModelRegistryImplContractTest",
+      "name": "setDefault_then_default_round_trips",
+      "outcome": [
+        "passed"
+      ],
+      "path": "core/vault/build/outputs/androidTest-results/connected/debug/flavors/dev/TEST-test(AVD) - 15.xml",
+      "duration_seconds": "0.014"
+    },
+    {
+      "module": "core/vault",
+      "class": "app.skein.core.vault.models.ModelRegistryImplContractTest",
+      "name": "upsert_then_get_round_trips_every_field",
+      "outcome": [
+        "passed"
+      ],
+      "path": "core/vault/build/outputs/androidTest-results/connected/debug/flavors/dev/TEST-test(AVD) - 15.xml",
+      "duration_seconds": "0.018"
+    },
+    {
+      "module": "core/vault",
+      "class": "app.skein.core.vault.persona.PersonaServiceImplContractTest",
+      "name": "default_creates_default_once_and_returns_same_id_on_second_call",
+      "outcome": [
+        "passed"
+      ],
+      "path": "core/vault/build/outputs/androidTest-results/connected/debug/flavors/dev/TEST-test(AVD) - 15.xml",
+      "duration_seconds": "0.013"
+    },
+    {
+      "module": "core/vault",
+      "class": "app.skein.core.vault.persona.PersonaServiceImplContractTest",
+      "name": "delete_of_last_persona_throws_illegal_state",
+      "outcome": [
+        "passed"
+      ],
+      "path": "core/vault/build/outputs/androidTest-results/connected/debug/flavors/dev/TEST-test(AVD) - 15.xml",
+      "duration_seconds": "0.014"
+    },
+    {
+      "module": "core/vault",
+      "class": "app.skein.core.vault.persona.PersonaServiceImplContractTest",
+      "name": "observeAll_emits_after_create",
+      "outcome": [
+        "passed"
+      ],
+      "path": "core/vault/build/outputs/androidTest-results/connected/debug/flavors/dev/TEST-test(AVD) - 15.xml",
+      "duration_seconds": "0.021"
+    },
+    {
+      "module": "core/vault",
+      "class": "app.skein.core.vault.repository.FileLifecycleInstrumentedTest",
+      "name": "zip_attachment_and_existing_text_link_before_a_delete_can_observe_them",
+      "outcome": [
+        "passed"
+      ],
+      "path": "core/vault/build/outputs/androidTest-results/connected/debug/flavors/dev/TEST-test(AVD) - 15.xml",
+      "duration_seconds": "0.191"
+    },
+    {
+      "module": "core/vault",
+      "class": "app.skein.core.vault.repository.FileLifecycleInstrumentedTest",
+      "name": "unlock_sweep_retains_shared_references_and_missing_blob_metadata",
+      "outcome": [
+        "passed"
+      ],
+      "path": "core/vault/build/outputs/androidTest-results/connected/debug/flavors/dev/TEST-test(AVD) - 15.xml",
+      "duration_seconds": "0.073"
+    },
+    {
+      "module": "core/vault",
+      "class": "app.skein.core.vault.repository.FileLifecycleInstrumentedTest",
+      "name": "pdf_extraction_finishing_after_file_delete_cannot_create_its_note",
+      "outcome": [
+        "passed"
+      ],
+      "path": "core/vault/build/outputs/androidTest-results/connected/debug/flavors/dev/TEST-test(AVD) - 15.xml",
+      "duration_seconds": "0.075"
+    },
+    {
+      "module": "core/vault",
+      "class": "app.skein.core.vault.repository.FileLifecycleInstrumentedTest",
+      "name": "late_ingest_cannot_restore_deleted_text_chunks_vectors_or_edges",
+      "outcome": [
+        "passed"
+      ],
+      "path": "core/vault/build/outputs/androidTest-results/connected/debug/flavors/dev/TEST-test(AVD) - 15.xml",
+      "duration_seconds": "0.075"
+    },
+    {
+      "module": "core/vault",
+      "class": "app.skein.core.vault.repository.FileLifecycleInstrumentedTest",
+      "name": "import_reservation_survives_blob_landing_before_metadata_and_sweep_does_not_deadlock",
+      "outcome": [
+        "passed"
+      ],
+      "path": "core/vault/build/outputs/androidTest-results/connected/debug/flavors/dev/TEST-test(AVD) - 15.xml",
+      "duration_seconds": "0.060"
+    },
+    {
+      "module": "core/vault",
+      "class": "app.skein.core.vault.repository.FileLifecycleInstrumentedTest",
+      "name": "failed_post_commit_unlink_is_pending_and_recovered_after_reopen",
+      "outcome": [
+        "passed"
+      ],
+      "path": "core/vault/build/outputs/androidTest-results/connected/debug/flavors/dev/TEST-test(AVD) - 15.xml",
+      "duration_seconds": "0.093"
+    },
+    {
+      "module": "core/vault",
+      "class": "app.skein.core.vault.repository.FileLifecycleInstrumentedTest",
+      "name": "a_new_surviving_source_dependent_requires_fresh_editor_reservations",
+      "outcome": [
+        "passed"
+      ],
+      "path": "core/vault/build/outputs/androidTest-results/connected/debug/flavors/dev/TEST-test(AVD) - 15.xml",
+      "duration_seconds": "0.063"
+    },
+    {
+      "module": "core/vault",
+      "class": "app.skein.core.vault.repository.FileLifecycleInstrumentedTest",
+      "name": "lock_cancels_uncommitted_file_delete_without_removing_bytes",
+      "outcome": [
+        "passed"
+      ],
+      "path": "core/vault/build/outputs/androidTest-results/connected/debug/flavors/dev/TEST-test(AVD) - 15.xml",
+      "duration_seconds": "0.086"
+    },
+    {
+      "module": "core/vault",
+      "class": "app.skein.core.vault.repository.FileLifecycleInstrumentedTest",
+      "name": "changed_import_source_rolls_back_attachment_linkage_and_leaves_unrelated_note_intact",
+      "outcome": [
+        "passed"
+      ],
+      "path": "core/vault/build/outputs/androidTest-results/connected/debug/flavors/dev/TEST-test(AVD) - 15.xml",
+      "duration_seconds": "0.060"
+    },
+    {
+      "module": "core/vault",
+      "class": "app.skein.core.vault.repository.FileLifecycleInstrumentedTest",
+      "name": "file_delete_removes_all_text_indexes_and_bytes_but_retains_quotes_and_other_files",
+      "outcome": [
+        "passed"
+      ],
+      "path": "core/vault/build/outputs/androidTest-results/connected/debug/flavors/dev/TEST-test(AVD) - 15.xml",
+      "duration_seconds": "0.117"
+    },
+    {
+      "module": "core/vault",
+      "class": "app.skein.core.vault.repository.FileLifecycleInstrumentedTest",
+      "name": "quoting_chat_count_deduplicates_multiple_text_sources_and_turns",
+      "outcome": [
+        "passed"
+      ],
+      "path": "core/vault/build/outputs/androidTest-results/connected/debug/flavors/dev/TEST-test(AVD) - 15.xml",
+      "duration_seconds": "0.081"
+    },
+    {
+      "module": "core/vault",
+      "class": "app.skein.core.vault.repository.FileLifecycleInstrumentedTest",
+      "name": "zip_with_attachment_entry_before_notes_links_later_notes_atomically",
+      "outcome": [
+        "passed"
+      ],
+      "path": "core/vault/build/outputs/androidTest-results/connected/debug/flavors/dev/TEST-test(AVD) - 15.xml",
+      "duration_seconds": "0.144"
+    },
+    {
+      "module": "core/vault",
+      "class": "app.skein.core.vault.repository.FileLifecycleInstrumentedTest",
+      "name": "changed_membership_is_rejected_before_any_partial_delete",
+      "outcome": [
+        "passed"
+      ],
+      "path": "core/vault/build/outputs/androidTest-results/connected/debug/flavors/dev/TEST-test(AVD) - 15.xml",
+      "duration_seconds": "0.062"
+    },
+    {
+      "module": "core/vault",
+      "class": "app.skein.core.vault.repository.FileLifecycleInstrumentedTest",
+      "name": "failed_outer_commit_preserves_every_row_index_and_blob",
+      "outcome": [
+        "passed"
+      ],
+      "path": "core/vault/build/outputs/androidTest-results/connected/debug/flavors/dev/TEST-test(AVD) - 15.xml",
+      "duration_seconds": "0.070"
+    },
+    {
+      "module": "core/vault",
+      "class": "app.skein.core.vault.repository.ObjectLifecycleEmulatorLaneTest",
+      "name": "a_committed_delete_survives_pool_close_and_reopen",
+      "outcome": [
+        "passed"
+      ],
+      "path": "core/vault/build/outputs/androidTest-results/connected/debug/flavors/dev/TEST-test(AVD) - 15.xml",
+      "duration_seconds": "0.086"
+    },
+    {
+      "module": "core/vault",
+      "class": "app.skein.core.vault.repository.ObjectLifecycleEmulatorLaneTest",
+      "name": "pragma_secure_delete_is_on_for_every_pool_connection",
+      "outcome": [
+        "passed"
+      ],
+      "path": "core/vault/build/outputs/androidTest-results/connected/debug/flavors/dev/TEST-test(AVD) - 15.xml",
+      "duration_seconds": "0.054"
+    },
+    {
+      "module": "core/vault",
+      "class": "app.skein.core.vault.repository.ObjectLifecycleEmulatorLaneTest",
+      "name": "cascade_leaves_no_chunks_fts_matches_or_vec_rows",
+      "outcome": [
+        "passed"
+      ],
+      "path": "core/vault/build/outputs/androidTest-results/connected/debug/flavors/dev/TEST-test(AVD) - 15.xml",
+      "duration_seconds": "0.063"
+    },
+    {
+      "module": "core/vault",
+      "class": "app.skein.core.vault.repository.ObjectLifecycleEmulatorLaneTest",
+      "name": "a_note_created_with_a_deleted_notes_title_regains_its_backlinks",
+      "outcome": [
+        "passed"
+      ],
+      "path": "core/vault/build/outputs/androidTest-results/connected/debug/flavors/dev/TEST-test(AVD) - 15.xml",
+      "duration_seconds": "0.073"
+    },
+    {
+      "module": "core/vault",
+      "class": "app.skein.core.vault.repository.ObjectLifecycleEmulatorLaneTest",
+      "name": "attachment_blob_outlives_a_delete_whose_commit_fails",
+      "outcome": [
+        "passed"
+      ],
+      "path": "core/vault/build/outputs/androidTest-results/connected/debug/flavors/dev/TEST-test(AVD) - 15.xml",
+      "duration_seconds": "0.060"
+    },
+    {
+      "module": "core/vault",
+      "class": "app.skein.core.vault.repository.ObjectLifecycleEmulatorLaneTest",
+      "name": "fts_delete_cost_with_secure_delete_is_recorded",
+      "outcome": [
+        "passed"
+      ],
+      "path": "core/vault/build/outputs/androidTest-results/connected/debug/flavors/dev/TEST-test(AVD) - 15.xml",
+      "duration_seconds": "1.486"
+    },
+    {
+      "module": "core/vault",
+      "class": "app.skein.core.vault.repository.VaultRepositoryImplContractTest",
+      "name": "observeTimeline_reemits_within_50ms_of_a_write_on_another_coroutine",
+      "outcome": [
+        "passed"
+      ],
+      "path": "core/vault/build/outputs/androidTest-results/connected/debug/flavors/dev/TEST-test(AVD) - 15.xml",
+      "duration_seconds": "0.024"
+    },
+    {
+      "module": "core/vault",
+      "class": "app.skein.core.vault.repository.VaultRepositoryImplContractTest",
+      "name": "searchBodies_quantum_returns_bm25_ranked_hit_with_bracket_snippet",
+      "outcome": [
+        "passed"
+      ],
+      "path": "core/vault/build/outputs/androidTest-results/connected/debug/flavors/dev/TEST-test(AVD) - 15.xml",
+      "duration_seconds": "0.015"
+    },
+    {
+      "module": "core/vault",
+      "class": "app.skein.core.vault.repository.VaultRepositoryImplContractTest",
+      "name": "createDocument_callers_id_wins_over_frontmatter_id_key",
+      "outcome": [
+        "passed"
+      ],
+      "path": "core/vault/build/outputs/androidTest-results/connected/debug/flavors/dev/TEST-test(AVD) - 15.xml",
+      "duration_seconds": "0.017"
+    },
+    {
+      "module": "core/vault",
+      "class": "app.skein.core.vault.repository.VaultRepositoryImplContractTest",
+      "name": "orphan_edge_sweep_deletes_edges_from_missing_sources_and_stray_vectors",
+      "outcome": [
+        "passed"
+      ],
+      "path": "core/vault/build/outputs/androidTest-results/connected/debug/flavors/dev/TEST-test(AVD) - 15.xml",
+      "duration_seconds": "0.021"
+    },
+    {
+      "module": "core/vault",
+      "class": "app.skein.core.vault.repository.VaultRepositoryImplContractTest",
+      "name": "createDocument_frontmatter_id_key_is_the_fallback_when_caller_supplies_none",
+      "outcome": [
+        "passed"
+      ],
+      "path": "core/vault/build/outputs/androidTest-results/connected/debug/flavors/dev/TEST-test(AVD) - 15.xml",
+      "duration_seconds": "0.019"
+    },
+    {
+      "module": "core/vault",
+      "class": "app.skein.core.vault.repository.VaultRepositoryImplContractTest",
+      "name": "altered_excerpt_does_not_unpin_other_citations_or_its_own_revision",
+      "outcome": [
+        "passed"
+      ],
+      "path": "core/vault/build/outputs/androidTest-results/connected/debug/flavors/dev/TEST-test(AVD) - 15.xml",
+      "duration_seconds": "0.045"
+    },
+    {
+      "module": "core/vault",
+      "class": "app.skein.core.vault.repository.VaultRepositoryImplContractTest",
+      "name": "staged_export_file_of_a_deleted_document_is_purged_after_commit",
+      "outcome": [
+        "passed"
+      ],
+      "path": "core/vault/build/outputs/androidTest-results/connected/debug/flavors/dev/TEST-test(AVD) - 15.xml",
+      "duration_seconds": "0.025"
+    },
+    {
+      "module": "core/vault",
+      "class": "app.skein.core.vault.repository.VaultRepositoryImplContractTest",
+      "name": "a_frontmatter_only_edit_requeues_ingest",
+      "outcome": [
+        "passed"
+      ],
+      "path": "core/vault/build/outputs/androidTest-results/connected/debug/flavors/dev/TEST-test(AVD) - 15.xml",
+      "duration_seconds": "0.025"
+    },
+    {
+      "module": "core/vault",
+      "class": "app.skein.core.vault.repository.VaultRepositoryImplContractTest",
+      "name": "deleteDocument_sentinel_matches_EdgeUpserter_for_a_non_ascii_title",
+      "outcome": [
+        "passed"
+      ],
+      "path": "core/vault/build/outputs/androidTest-results/connected/debug/flavors/dev/TEST-test(AVD) - 15.xml",
+      "duration_seconds": "0.023"
+    },
+    {
+      "module": "core/vault",
+      "class": "app.skein.core.vault.repository.VaultRepositoryImplContractTest",
+      "name": "attachment_round_trip_1MiB_of_random_bytes",
+      "outcome": [
+        "passed"
+      ],
+      "path": "core/vault/build/outputs/androidTest-results/connected/debug/flavors/dev/TEST-test(AVD) - 15.xml",
+      "duration_seconds": "0.097"
+    },
+    {
+      "module": "core/vault",
+      "class": "app.skein.core.vault.repository.VaultRepositoryImplContractTest",
+      "name": "attachment_blob_is_deleted_only_after_commit",
+      "outcome": [
+        "passed"
+      ],
+      "path": "core/vault/build/outputs/androidTest-results/connected/debug/flavors/dev/TEST-test(AVD) - 15.xml",
+      "duration_seconds": "0.022"
+    },
+    {
+      "module": "core/vault",
+      "class": "app.skein.core.vault.repository.VaultRepositoryImplContractTest",
+      "name": "renameDocument_requeues_ingest_with_a_fresh_queued_at",
+      "outcome": [
+        "passed"
+      ],
+      "path": "core/vault/build/outputs/androidTest-results/connected/debug/flavors/dev/TEST-test(AVD) - 15.xml",
+      "duration_seconds": "0.027"
+    },
+    {
+      "module": "core/vault",
+      "class": "app.skein.core.vault.repository.VaultRepositoryImplContractTest",
+      "name": "deleteDocument_id_spelling_equal_to_title_still_has_only_an_id_binding",
+      "outcome": [
+        "passed"
+      ],
+      "path": "core/vault/build/outputs/androidTest-results/connected/debug/flavors/dev/TEST-test(AVD) - 15.xml",
+      "duration_seconds": "0.025"
+    },
+    {
+      "module": "core/vault",
+      "class": "app.skein.core.vault.repository.VaultRepositoryImplContractTest",
+      "name": "a_chat_documents_snapshots_stay_bounded_and_its_citations_still_resolve",
+      "outcome": [
+        "passed"
+      ],
+      "path": "core/vault/build/outputs/androidTest-results/connected/debug/flavors/dev/TEST-test(AVD) - 15.xml",
+      "duration_seconds": "0.070"
+    },
+    {
+      "module": "core/vault",
+      "class": "app.skein.core.vault.repository.VaultRepositoryImplContractTest",
+      "name": "renameDocument_does_not_treat_code_literal_id_as_a_link_binding",
+      "outcome": [
+        "passed"
+      ],
+      "path": "core/vault/build/outputs/androidTest-results/connected/debug/flavors/dev/TEST-test(AVD) - 15.xml",
+      "duration_seconds": "0.022"
+    },
+    {
+      "module": "core/vault",
+      "class": "app.skein.core.vault.repository.VaultRepositoryImplContractTest",
+      "name": "sweep_never_removes_the_current_revision",
+      "outcome": [
+        "passed"
+      ],
+      "path": "core/vault/build/outputs/androidTest-results/connected/debug/flavors/dev/TEST-test(AVD) - 15.xml",
+      "duration_seconds": "0.021"
+    },
+    {
+      "module": "core/vault",
+      "class": "app.skein.core.vault.repository.VaultRepositoryImplContractTest",
+      "name": "recordIngestFailure_count_resets_when_the_document_is_re_queued",
+      "outcome": [
+        "passed"
+      ],
+      "path": "core/vault/build/outputs/androidTest-results/connected/debug/flavors/dev/TEST-test(AVD) - 15.xml",
+      "duration_seconds": "0.022"
+    },
+    {
+      "module": "core/vault",
+      "class": "app.skein.core.vault.repository.VaultRepositoryImplContractTest",
+      "name": "deleteDocument_rewrites_wikilink_in_edges_to_the_title_sentinel_at_weight_half",
+      "outcome": [
+        "passed"
+      ],
+      "path": "core/vault/build/outputs/androidTest-results/connected/debug/flavors/dev/TEST-test(AVD) - 15.xml",
+      "duration_seconds": "0.021"
+    },
+    {
+      "module": "core/vault",
+      "class": "app.skein.core.vault.repository.VaultRepositoryImplContractTest",
+      "name": "replaceBody_never_writes_the_title",
+      "outcome": [
+        "passed"
+      ],
+      "path": "core/vault/build/outputs/androidTest-results/connected/debug/flavors/dev/TEST-test(AVD) - 15.xml",
+      "duration_seconds": "0.027"
+    },
+    {
+      "module": "core/vault",
+      "class": "app.skein.core.vault.repository.VaultRepositoryImplContractTest",
+      "name": "recordIngestFailure_increments_and_persists_across_dequeue",
+      "outcome": [
+        "passed"
+      ],
+      "path": "core/vault/build/outputs/androidTest-results/connected/debug/flavors/dev/TEST-test(AVD) - 15.xml",
+      "duration_seconds": "0.034"
+    },
+    {
+      "module": "core/vault",
+      "class": "app.skein.core.vault.repository.VaultRepositoryImplContractTest",
+      "name": "a_message_without_citations_still_round_trips_legacy_chunk_ids",
+      "outcome": [
+        "passed"
+      ],
+      "path": "core/vault/build/outputs/androidTest-results/connected/debug/flavors/dev/TEST-test(AVD) - 15.xml",
+      "duration_seconds": "0.022"
+    },
+    {
+      "module": "core/vault",
+      "class": "app.skein.core.vault.repository.VaultRepositoryImplContractTest",
+      "name": "deleteDocument_keeps_other_chats_citation_excerpts",
+      "outcome": [
+        "passed"
+      ],
+      "path": "core/vault/build/outputs/androidTest-results/connected/debug/flavors/dev/TEST-test(AVD) - 15.xml",
+      "duration_seconds": "0.025"
+    },
+    {
+      "module": "core/vault",
+      "class": "app.skein.core.vault.repository.VaultRepositoryImplContractTest",
+      "name": "sweep_is_idempotent",
+      "outcome": [
+        "passed"
+      ],
+      "path": "core/vault/build/outputs/androidTest-results/connected/debug/flavors/dev/TEST-test(AVD) - 15.xml",
+      "duration_seconds": "0.032"
+    },
+    {
+      "module": "core/vault",
+      "class": "app.skein.core.vault.repository.VaultRepositoryImplContractTest",
+      "name": "commit_acknowledgements_wait_for_outer_commit_and_never_run_on_rollback",
+      "outcome": [
+        "passed"
+      ],
+      "path": "core/vault/build/outputs/androidTest-results/connected/debug/flavors/dev/TEST-test(AVD) - 15.xml",
+      "duration_seconds": "0.020"
+    },
+    {
+      "module": "core/vault",
+      "class": "app.skein.core.vault.repository.VaultRepositoryImplContractTest",
+      "name": "createDocument_captures_a_revision_addressing_the_content",
+      "outcome": [
+        "passed"
+      ],
+      "path": "core/vault/build/outputs/androidTest-results/connected/debug/flavors/dev/TEST-test(AVD) - 15.xml",
+      "duration_seconds": "0.021"
+    },
+    {
+      "module": "core/vault",
+      "class": "app.skein.core.vault.repository.VaultRepositoryImplContractTest",
+      "name": "cancellation_immediately_after_commit_cannot_skip_acknowledgement_or_undo_the_send",
+      "outcome": [
+        "passed"
+      ],
+      "path": "core/vault/build/outputs/androidTest-results/connected/debug/flavors/dev/TEST-test(AVD) - 15.xml",
+      "duration_seconds": "0.024"
+    },
+    {
+      "module": "core/vault",
+      "class": "app.skein.core.vault.repository.VaultRepositoryImplContractTest",
+      "name": "updateBody_bumps_updated_at_and_changes_content_hash",
+      "outcome": [
+        "passed"
+      ],
+      "path": "core/vault/build/outputs/androidTest-results/connected/debug/flavors/dev/TEST-test(AVD) - 15.xml",
+      "duration_seconds": "0.022"
+    },
+    {
+      "module": "core/vault",
+      "class": "app.skein.core.vault.repository.VaultRepositoryImplContractTest",
+      "name": "appendMessage_rematerializes_bodymd_containing_message_text",
+      "outcome": [
+        "passed"
+      ],
+      "path": "core/vault/build/outputs/androidTest-results/connected/debug/flavors/dev/TEST-test(AVD) - 15.xml",
+      "duration_seconds": "0.023"
+    },
+    {
+      "module": "core/vault",
+      "class": "app.skein.core.vault.repository.VaultRepositoryImplContractTest",
+      "name": "recordIngestFailure_returns_zero_and_writes_nothing_once_the_entry_is_gone",
+      "outcome": [
+        "passed"
+      ],
+      "path": "core/vault/build/outputs/androidTest-results/connected/debug/flavors/dev/TEST-test(AVD) - 15.xml",
+      "duration_seconds": "0.020"
+    },
+    {
+      "module": "core/vault",
+      "class": "app.skein.core.vault.repository.VaultRepositoryImplContractTest",
+      "name": "appendMessage_round_trips_a_citation_record",
+      "outcome": [
+        "passed"
+      ],
+      "path": "core/vault/build/outputs/androidTest-results/connected/debug/flavors/dev/TEST-test(AVD) - 15.xml",
+      "duration_seconds": "0.025"
+    },
+    {
+      "module": "core/vault",
+      "class": "app.skein.core.vault.repository.VaultRepositoryImplContractTest",
+      "name": "updateBody_rejects_attachments_and_chats",
+      "outcome": [
+        "passed"
+      ],
+      "path": "core/vault/build/outputs/androidTest-results/connected/debug/flavors/dev/TEST-test(AVD) - 15.xml",
+      "duration_seconds": "0.026"
+    },
+    {
+      "module": "core/vault",
+      "class": "app.skein.core.vault.repository.VaultRepositoryImplContractTest",
+      "name": "commit_acknowledgement_registration_requires_this_repositorys_transaction",
+      "outcome": [
+        "passed"
+      ],
+      "path": "core/vault/build/outputs/androidTest-results/connected/debug/flavors/dev/TEST-test(AVD) - 15.xml",
+      "duration_seconds": "0.036"
+    },
+    {
+      "module": "core/vault",
+      "class": "app.skein.core.vault.repository.VaultRepositoryImplContractTest",
+      "name": "sweep_removes_an_uncited_superseded_revision",
+      "outcome": [
+        "passed"
+      ],
+      "path": "core/vault/build/outputs/androidTest-results/connected/debug/flavors/dev/TEST-test(AVD) - 15.xml",
+      "duration_seconds": "0.020"
+    },
+    {
+      "module": "core/vault",
+      "class": "app.skein.core.vault.repository.VaultRepositoryImplContractTest",
+      "name": "index_writes_for_a_missing_source_document_are_skipped",
+      "outcome": [
+        "passed"
+      ],
+      "path": "core/vault/build/outputs/androidTest-results/connected/debug/flavors/dev/TEST-test(AVD) - 15.xml",
+      "duration_seconds": "0.019"
+    },
+    {
+      "module": "core/vault",
+      "class": "app.skein.core.vault.repository.VaultRepositoryImplContractTest",
+      "name": "a_citation_into_a_deleted_document_does_not_match",
+      "outcome": [
+        "passed"
+      ],
+      "path": "core/vault/build/outputs/androidTest-results/connected/debug/flavors/dev/TEST-test(AVD) - 15.xml",
+      "duration_seconds": "0.020"
+    },
+    {
+      "module": "core/vault",
+      "class": "app.skein.core.vault.repository.VaultRepositoryImplContractTest",
+      "name": "searchTitles_and_searchBodies_never_return_a_deleted_document",
+      "outcome": [
+        "passed"
+      ],
+      "path": "core/vault/build/outputs/androidTest-results/connected/debug/flavors/dev/TEST-test(AVD) - 15.xml",
+      "duration_seconds": "0.023"
+    },
+    {
+      "module": "core/vault",
+      "class": "app.skein.core.vault.repository.VaultRepositoryImplContractTest",
+      "name": "completeIngest_noop_when_requeued",
+      "outcome": [
+        "passed"
+      ],
+      "path": "core/vault/build/outputs/androidTest-results/connected/debug/flavors/dev/TEST-test(AVD) - 15.xml",
+      "duration_seconds": "0.028"
+    },
+    {
+      "module": "core/vault",
+      "class": "app.skein.core.vault.repository.VaultRepositoryImplContractTest",
+      "name": "orphan_edge_sweep_is_idempotent",
+      "outcome": [
+        "passed"
+      ],
+      "path": "core/vault/build/outputs/androidTest-results/connected/debug/flavors/dev/TEST-test(AVD) - 15.xml",
+      "duration_seconds": "0.031"
+    },
+    {
+      "module": "core/vault",
+      "class": "app.skein.core.vault.repository.VaultRepositoryImplContractTest",
+      "name": "observeDocument_emits_null_after_delete",
+      "outcome": [
+        "passed"
+      ],
+      "path": "core/vault/build/outputs/androidTest-results/connected/debug/flavors/dev/TEST-test(AVD) - 15.xml",
+      "duration_seconds": "0.019"
+    },
+    {
+      "module": "core/vault",
+      "class": "app.skein.core.vault.repository.VaultRepositoryImplContractTest",
+      "name": "countChatsCiting_counts_distinct_chats_by_decoded_citation_records",
+      "outcome": [
+        "passed"
+      ],
+      "path": "core/vault/build/outputs/androidTest-results/connected/debug/flavors/dev/TEST-test(AVD) - 15.xml",
+      "duration_seconds": "0.032"
+    },
+    {
+      "module": "core/vault",
+      "class": "app.skein.core.vault.repository.VaultRepositoryImplContractTest",
+      "name": "updateBody_changes_the_revision_hash_and_keeps_the_old_revision_readable",
+      "outcome": [
+        "passed"
+      ],
+      "path": "core/vault/build/outputs/androidTest-results/connected/debug/flavors/dev/TEST-test(AVD) - 15.xml",
+      "duration_seconds": "0.028"
+    },
+    {
+      "module": "core/vault",
+      "class": "app.skein.core.vault.repository.VaultRepositoryImplContractTest",
+      "name": "deleteDocument_removes_cite_in_edges",
+      "outcome": [
+        "passed"
+      ],
+      "path": "core/vault/build/outputs/androidTest-results/connected/debug/flavors/dev/TEST-test(AVD) - 15.xml",
+      "duration_seconds": "0.020"
+    },
+    {
+      "module": "core/vault",
+      "class": "app.skein.core.vault.repository.VaultRepositoryImplContractTest",
+      "name": "deleteDocument_removes_the_documents_chunks",
+      "outcome": [
+        "passed"
+      ],
+      "path": "core/vault/build/outputs/androidTest-results/connected/debug/flavors/dev/TEST-test(AVD) - 15.xml",
+      "duration_seconds": "0.020"
+    },
+    {
+      "module": "core/vault",
+      "class": "app.skein.core.vault.repository.VaultRepositoryImplContractTest",
+      "name": "new_draft_same_id_is_separate_in_each_space",
+      "outcome": [
+        "passed"
+      ],
+      "path": "core/vault/build/outputs/androidTest-results/connected/debug/flavors/dev/TEST-test(AVD) - 15.xml",
+      "duration_seconds": "0.024"
+    },
+    {
+      "module": "core/vault",
+      "class": "app.skein.core.vault.repository.VaultRepositoryImplContractTest",
+      "name": "sweep_keeps_a_superseded_revision_still_cited_by_a_message",
+      "outcome": [
+        "passed"
+      ],
+      "path": "core/vault/build/outputs/androidTest-results/connected/debug/flavors/dev/TEST-test(AVD) - 15.xml",
+      "duration_seconds": "0.026"
+    },
+    {
+      "module": "core/vault",
+      "class": "app.skein.core.vault.repository.VaultRepositoryImplContractTest",
+      "name": "observeTimeline_orders_newest_first_and_filters_by_persona",
+      "outcome": [
+        "passed"
+      ],
+      "path": "core/vault/build/outputs/androidTest-results/connected/debug/flavors/dev/TEST-test(AVD) - 15.xml",
+      "duration_seconds": "0.027"
+    },
+    {
+      "module": "core/vault",
+      "class": "app.skein.core.vault.repository.VaultRepositoryImplContractTest",
+      "name": "writes_to_a_deleted_document_throw_NoSuchElementException_and_write_nothing",
+      "outcome": [
+        "passed"
+      ],
+      "path": "core/vault/build/outputs/androidTest-results/connected/debug/flavors/dev/TEST-test(AVD) - 15.xml",
+      "duration_seconds": "0.029"
+    },
+    {
+      "module": "core/vault",
+      "class": "app.skein.core.vault.repository.VaultRepositoryImplContractTest",
+      "name": "deleteDocument_is_idempotent_for_a_missing_id",
+      "outcome": [
+        "passed"
+      ],
+      "path": "core/vault/build/outputs/androidTest-results/connected/debug/flavors/dev/TEST-test(AVD) - 15.xml",
+      "duration_seconds": "0.020"
+    },
+    {
+      "module": "core/vault",
+      "class": "app.skein.core.vault.repository.VaultRepositoryImplContractTest",
+      "name": "a_closed_repository_cannot_borrow_another_repositorys_transaction",
+      "outcome": [
+        "passed"
+      ],
+      "path": "core/vault/build/outputs/androidTest-results/connected/debug/flavors/dev/TEST-test(AVD) - 15.xml",
+      "duration_seconds": "0.034"
+    },
+    {
+      "module": "core/vault",
+      "class": "app.skein.core.vault.repository.VaultRepositoryImplContractTest",
+      "name": "replay_detects_a_source_that_changed_under_a_citation",
+      "outcome": [
+        "passed"
+      ],
+      "path": "core/vault/build/outputs/androidTest-results/connected/debug/flavors/dev/TEST-test(AVD) - 15.xml",
+      "duration_seconds": "0.028"
+    },
+    {
+      "module": "core/vault",
+      "class": "app.skein.core.vault.repository.VaultRepositoryImplContractTest",
+      "name": "renameDocument_on_an_attachment_keeps_its_byte_hash",
+      "outcome": [
+        "passed"
+      ],
+      "path": "core/vault/build/outputs/androidTest-results/connected/debug/flavors/dev/TEST-test(AVD) - 15.xml",
+      "duration_seconds": "0.020"
+    },
+    {
+      "module": "core/vault",
+      "class": "app.skein.core.vault.repository.VaultRepositoryImplContractTest",
+      "name": "transaction_nests_writes_without_deadlock",
+      "outcome": [
+        "passed"
+      ],
+      "path": "core/vault/build/outputs/androidTest-results/connected/debug/flavors/dev/TEST-test(AVD) - 15.xml",
+      "duration_seconds": "0.027"
+    },
+    {
+      "module": "core/vault",
+      "class": "app.skein.core.vault.repository.VaultRepositoryImplContractTest",
+      "name": "deleteDocument_removes_the_row_and_getDocument_returns_null",
+      "outcome": [
+        "passed"
+      ],
+      "path": "core/vault/build/outputs/androidTest-results/connected/debug/flavors/dev/TEST-test(AVD) - 15.xml",
+      "duration_seconds": "0.022"
+    },
+    {
+      "module": "core/vault",
+      "class": "app.skein.core.vault.repository.VaultRepositoryImplContractTest",
+      "name": "draft_roundtrip_preserves_unicode_selection_and_has_no_document_side_effects",
+      "outcome": [
+        "passed"
+      ],
+      "path": "core/vault/build/outputs/androidTest-results/connected/debug/flavors/dev/TEST-test(AVD) - 15.xml",
+      "duration_seconds": "0.028"
+    },
+    {
+      "module": "core/vault",
+      "class": "app.skein.core.vault.repository.VaultRepositoryImplContractTest",
+      "name": "orphan_edge_sweep_deletes_edges_to_missing_documents_and_requeues_their_sources",
+      "outcome": [
+        "passed"
+      ],
+      "path": "core/vault/build/outputs/androidTest-results/connected/debug/flavors/dev/TEST-test(AVD) - 15.xml",
+      "duration_seconds": "0.030"
+    },
+    {
+      "module": "core/vault",
+      "class": "app.skein.core.vault.repository.VaultRepositoryImplContractTest",
+      "name": "deleteDocument_removes_out_edges_of_every_kind",
+      "outcome": [
+        "passed"
+      ],
+      "path": "core/vault/build/outputs/androidTest-results/connected/debug/flavors/dev/TEST-test(AVD) - 15.xml",
+      "duration_seconds": "0.022"
+    },
+    {
+      "module": "core/vault",
+      "class": "app.skein.core.vault.repository.VaultRepositoryImplContractTest",
+      "name": "observeMessages_emits_empty_after_the_chat_is_deleted",
+      "outcome": [
+        "passed"
+      ],
+      "path": "core/vault/build/outputs/androidTest-results/connected/debug/flavors/dev/TEST-test(AVD) - 15.xml",
+      "duration_seconds": "0.025"
+    },
+    {
+      "module": "core/vault",
+      "class": "app.skein.core.vault.repository.VaultRepositoryImplContractTest",
+      "name": "quiesce_timeout_rolls_back_and_never_reopens_admission",
+      "outcome": [
+        "passed"
+      ],
+      "path": "core/vault/build/outputs/androidTest-results/connected/debug/flavors/dev/TEST-test(AVD) - 15.xml",
+      "duration_seconds": "0.041"
+    },
+    {
+      "module": "core/vault",
+      "class": "app.skein.core.vault.repository.VaultRepositoryImplContractTest",
+      "name": "draft_batch_rolls_back_and_quiesce_refuses_late_writes",
+      "outcome": [
+        "passed"
+      ],
+      "path": "core/vault/build/outputs/androidTest-results/connected/debug/flavors/dev/TEST-test(AVD) - 15.xml",
+      "duration_seconds": "0.018"
+    },
+    {
+      "module": "core/vault",
+      "class": "app.skein.core.vault.repository.VaultRepositoryImplContractTest",
+      "name": "failing_acknowledgement_does_not_undo_commit_or_prevent_the_next_acknowledgement",
+      "outcome": [
+        "passed"
+      ],
+      "path": "core/vault/build/outputs/androidTest-results/connected/debug/flavors/dev/TEST-test(AVD) - 15.xml",
+      "duration_seconds": "0.020"
+    },
+    {
+      "module": "core/vault",
+      "class": "app.skein.core.vault.repository.VaultRepositoryImplContractTest",
+      "name": "deleteDocument_requeues_the_surviving_document_with_the_same_title",
+      "outcome": [
+        "passed"
+      ],
+      "path": "core/vault/build/outputs/androidTest-results/connected/debug/flavors/dev/TEST-test(AVD) - 15.xml",
+      "duration_seconds": "0.022"
+    },
+    {
+      "module": "core/vault",
+      "class": "app.skein.core.vault.repository.VaultRepositoryImplContractTest",
+      "name": "a_failed_transaction_rolls_back_every_delete_in_it",
+      "outcome": [
+        "passed"
+      ],
+      "path": "core/vault/build/outputs/androidTest-results/connected/debug/flavors/dev/TEST-test(AVD) - 15.xml",
+      "duration_seconds": "0.022"
+    },
+    {
+      "module": "core/vault",
+      "class": "app.skein.core.vault.repository.VaultRepositoryImplContractTest",
+      "name": "create_then_get_preserves_frontmatter_id",
+      "outcome": [
+        "passed"
+      ],
+      "path": "core/vault/build/outputs/androidTest-results/connected/debug/flavors/dev/TEST-test(AVD) - 15.xml",
+      "duration_seconds": "0.019"
+    },
+    {
+      "module": "core/vault",
+      "class": "app.skein.core.vault.repository.VaultRepositoryImplContractTest",
+      "name": "send_and_draft_clear_commit_together_or_both_roll_back",
+      "outcome": [
+        "passed"
+      ],
+      "path": "core/vault/build/outputs/androidTest-results/connected/debug/flavors/dev/TEST-test(AVD) - 15.xml",
+      "duration_seconds": "0.020"
+    },
+    {
+      "module": "core/vault",
+      "class": "app.skein.core.vault.repository.VaultRepositoryImplContractTest",
+      "name": "an_undone_edit_resolves_back_to_the_original_revision",
+      "outcome": [
+        "passed"
+      ],
+      "path": "core/vault/build/outputs/androidTest-results/connected/debug/flavors/dev/TEST-test(AVD) - 15.xml",
+      "duration_seconds": "0.028"
+    },
+    {
+      "module": "core/vault",
+      "class": "app.skein.core.vault.repository.VaultRepositoryImplContractTest",
+      "name": "renameDocument_keeps_content_hash_and_captures_no_revision",
+      "outcome": [
+        "passed"
+      ],
+      "path": "core/vault/build/outputs/androidTest-results/connected/debug/flavors/dev/TEST-test(AVD) - 15.xml",
+      "duration_seconds": "0.019"
+    },
+    {
+      "module": "core/vault",
+      "class": "app.skein.core.vault.repository.VaultRepositoryImplContractTest",
+      "name": "renameDocument_preserves_explicit_id_links_and_detaches_a_mixed_title_link",
+      "outcome": [
+        "passed"
+      ],
+      "path": "core/vault/build/outputs/androidTest-results/connected/debug/flavors/dev/TEST-test(AVD) - 15.xml",
+      "duration_seconds": "0.026"
+    },
+    {
+      "module": "core/vault",
+      "class": "app.skein.core.vault.repository.VaultRepositoryImplContractTest",
+      "name": "quiesce_drains_nested_transaction_and_refuses_late_writes",
+      "outcome": [
+        "passed"
+      ],
+      "path": "core/vault/build/outputs/androidTest-results/connected/debug/flavors/dev/TEST-test(AVD) - 15.xml",
+      "duration_seconds": "0.021"
+    },
+    {
+      "module": "core/vault",
+      "class": "app.skein.core.vault.repository.VaultRepositoryImplContractTest",
+      "name": "attachments_have_no_revisions",
+      "outcome": [
+        "passed"
+      ],
+      "path": "core/vault/build/outputs/androidTest-results/connected/debug/flavors/dev/TEST-test(AVD) - 15.xml",
+      "duration_seconds": "0.019"
+    },
+    {
+      "module": "core/vault",
+      "class": "app.skein.core.vault.repository.VaultRepositoryImplContractTest",
+      "name": "a_real_frontmatter_edit_does_change_the_revision_hash",
+      "outcome": [
+        "passed"
+      ],
+      "path": "core/vault/build/outputs/androidTest-results/connected/debug/flavors/dev/TEST-test(AVD) - 15.xml",
+      "duration_seconds": "0.024"
+    },
+    {
+      "module": "core/vault",
+      "class": "app.skein.core.vault.repository.VaultRepositoryImplContractTest",
+      "name": "observeTimeline_drops_the_deleted_document",
+      "outcome": [
+        "passed"
+      ],
+      "path": "core/vault/build/outputs/androidTest-results/connected/debug/flavors/dev/TEST-test(AVD) - 15.xml",
+      "duration_seconds": "0.027"
+    },
+    {
+      "module": "core/vault",
+      "class": "app.skein.core.vault.repository.VaultRepositoryImplContractTest",
+      "name": "a_late_autosave_never_resurrects_a_deleted_note",
+      "outcome": [
+        "passed"
+      ],
+      "path": "core/vault/build/outputs/androidTest-results/connected/debug/flavors/dev/TEST-test(AVD) - 15.xml",
+      "duration_seconds": "0.029"
+    },
+    {
+      "module": "core/vault",
+      "class": "app.skein.core.vault.repository.VaultRepositoryImplContractTest",
+      "name": "renameDocument_with_ifTitleIs_writes_nothing_when_the_title_changed",
+      "outcome": [
+        "passed"
+      ],
+      "path": "core/vault/build/outputs/androidTest-results/connected/debug/flavors/dev/TEST-test(AVD) - 15.xml",
+      "duration_seconds": "0.021"
+    },
+    {
+      "module": "core/vault",
+      "class": "app.skein.core.vault.repository.VaultRepositoryImplContractTest",
+      "name": "retitling_alone_does_not_change_the_revision_hash",
+      "outcome": [
+        "passed"
+      ],
+      "path": "core/vault/build/outputs/androidTest-results/connected/debug/flavors/dev/TEST-test(AVD) - 15.xml",
+      "duration_seconds": "0.024"
+    },
+    {
+      "module": "core/vault",
+      "class": "app.skein.core.vault.repository.VaultRepositoryImplContractTest",
+      "name": "renameDocument_changes_only_the_title",
+      "outcome": [
+        "passed"
+      ],
+      "path": "core/vault/build/outputs/androidTest-results/connected/debug/flavors/dev/TEST-test(AVD) - 15.xml",
+      "duration_seconds": "0.024"
+    },
+    {
+      "module": "core/vault",
+      "class": "app.skein.core.vault.repository.VaultRepositoryImplContractTest",
+      "name": "renameDocument_detaches_wikilink_in_edges_to_the_old_title_sentinel",
+      "outcome": [
+        "passed"
+      ],
+      "path": "core/vault/build/outputs/androidTest-results/connected/debug/flavors/dev/TEST-test(AVD) - 15.xml",
+      "duration_seconds": "0.021"
+    },
+    {
+      "module": "core/vault",
+      "class": "app.skein.core.vault.repository.VaultRepositoryImplContractTest",
+      "name": "renameDocument_does_not_change_updated_at",
+      "outcome": [
+        "passed"
+      ],
+      "path": "core/vault/build/outputs/androidTest-results/connected/debug/flavors/dev/TEST-test(AVD) - 15.xml",
+      "duration_seconds": "0.031"
+    },
+    {
+      "module": "core/vault",
+      "class": "app.skein.core.vault.repository.VaultRepositoryImplContractTest",
+      "name": "deleted_chat_cascades_draft_and_late_write_cannot_resurrect_it",
+      "outcome": [
+        "passed"
+      ],
+      "path": "core/vault/build/outputs/androidTest-results/connected/debug/flavors/dev/TEST-test(AVD) - 15.xml",
+      "duration_seconds": "0.022"
+    },
+    {
+      "module": "core/vault",
+      "class": "app.skein.core.vault.repository.VaultRepositoryImplContractTest",
+      "name": "renameDocument_keeps_cite_in_edges",
+      "outcome": [
+        "passed"
+      ],
+      "path": "core/vault/build/outputs/androidTest-results/connected/debug/flavors/dev/TEST-test(AVD) - 15.xml",
+      "duration_seconds": "0.023"
+    },
+    {
+      "module": "core/vault",
+      "class": "app.skein.core.vault.repository.VaultRepositoryImplContractTest",
+      "name": "kindsOf_returns_only_requested_live_kinds_in_a_large_batch",
+      "outcome": [
+        "passed"
+      ],
+      "path": "core/vault/build/outputs/androidTest-results/connected/debug/flavors/dev/TEST-test(AVD) - 15.xml",
+      "duration_seconds": "0.034"
+    },
+    {
+      "module": "core/vault",
+      "class": "app.skein.core.vault.repository.VaultRepositoryImplContractTest",
+      "name": "kindsOf_reads_its_own_transaction_without_deadlocking",
+      "outcome": [
+        "passed"
+      ],
+      "path": "core/vault/build/outputs/androidTest-results/connected/debug/flavors/dev/TEST-test(AVD) - 15.xml",
+      "duration_seconds": "0.021"
+    },
+    {
+      "module": "core/vault",
+      "class": "app.skein.core.vault.repository.VaultRepositoryImplContractTest",
+      "name": "deleteDocument_explicit_id_link_is_not_a_title_link_to_a_replacement",
+      "outcome": [
+        "passed"
+      ],
+      "path": "core/vault/build/outputs/androidTest-results/connected/debug/flavors/dev/TEST-test(AVD) - 15.xml",
+      "duration_seconds": "0.024"
+    },
+    {
+      "module": "core/vault",
+      "class": "app.skein.core.vault.repository.VaultRepositoryImplContractTest",
+      "name": "deleteDocument_removes_messages_revisions_and_the_ingest_queue_entry",
+      "outcome": [
+        "passed"
+      ],
+      "path": "core/vault/build/outputs/androidTest-results/connected/debug/flavors/dev/TEST-test(AVD) - 15.xml",
+      "duration_seconds": "0.026"
+    },
+    {
+      "module": "core/vault",
+      "class": "app.skein.core.vault.repository.VaultRepositoryImplContractTest",
+      "name": "a_cosmetic_frontmatter_rewrite_does_not_change_the_revision_hash",
+      "outcome": [
+        "passed"
+      ],
+      "path": "core/vault/build/outputs/androidTest-results/connected/debug/flavors/dev/TEST-test(AVD) - 15.xml",
+      "duration_seconds": "0.026"
+    },
+    {
+      "module": "core/vault",
+      "class": "app.skein.core.vault.repository.VaultRepositoryImplContractTest",
+      "name": "renameDocument_trims_collapses_line_breaks_and_rejects_blank_or_over_200",
+      "outcome": [
+        "passed"
+      ],
+      "path": "core/vault/build/outputs/androidTest-results/connected/debug/flavors/dev/TEST-test(AVD) - 15.xml",
+      "duration_seconds": "0.021"
+    },
+    {
+      "module": "core/vault",
+      "class": "app.skein.core.vault.repository.VaultRepositoryImplContractTest",
+      "name": "capturing_unchanged_content_is_idempotent",
+      "outcome": [
+        "passed"
+      ],
+      "path": "core/vault/build/outputs/androidTest-results/connected/debug/flavors/dev/TEST-test(AVD) - 15.xml",
+      "duration_seconds": "0.021"
+    },
+    {
+      "module": "core/vault",
+      "class": "app.skein.core.vault.repository.VaultRepositoryImplContractTest",
+      "name": "deleting_a_document_cascades_its_revisions_ahead_of_any_sweep",
+      "outcome": [
+        "passed"
+      ],
+      "path": "core/vault/build/outputs/androidTest-results/connected/debug/flavors/dev/TEST-test(AVD) - 15.xml",
+      "duration_seconds": "0.016"
+    },
+    {
+      "module": "core/vault",
+      "class": "app.skein.vault.SchemaLoadInstrumentedTest",
+      "name": "test001InitialSqlLoadsStatementByStatementOnTheSpikeDriver",
+      "outcome": [
+        "passed"
+      ],
+      "path": "core/vault/build/outputs/androidTest-results/connected/debug/flavors/dev/TEST-test(AVD) - 15.xml",
+      "duration_seconds": "0.011"
+    },
+    {
+      "module": "inference-service",
+      "class": "app.skein.inference.service.InferenceServiceInstrumentedTest",
+      "name": "aGenerationStreamsTokensAndCompletesExactlyOnce",
+      "outcome": [
+        "passed"
+      ],
+      "path": "inference-service/build/outputs/androidTest-results/connected/debug/flavors/dev/TEST-test(AVD) - 15.xml",
+      "duration_seconds": "4.491"
+    },
+    {
+      "module": "inference-service",
+      "class": "app.skein.inference.service.InferenceServiceInstrumentedTest",
+      "name": "anUnlockedServiceLoadsFromADescriptor",
+      "outcome": [
+        "passed"
+      ],
+      "path": "inference-service/build/outputs/androidTest-results/connected/debug/flavors/dev/TEST-test(AVD) - 15.xml",
+      "duration_seconds": "1.056"
+    },
+    {
+      "module": "inference-service",
+      "class": "app.skein.inference.service.InferenceServiceInstrumentedTest",
+      "name": "cpuOnlyLoadReportsNoGpuOrIgpuDevice",
+      "outcome": [
+        "passed"
+      ],
+      "path": "inference-service/build/outputs/androidTest-results/connected/debug/flavors/dev/TEST-test(AVD) - 15.xml",
+      "duration_seconds": "1.112"
+    },
+    {
+      "module": "inference-service",
+      "class": "app.skein.inference.service.InferenceServiceInstrumentedTest",
+      "name": "lockingMidGenerationCancelsThenLockedTerminatesTheIsolatedProcess",
+      "outcome": [
+        "passed"
+      ],
+      "path": "inference-service/build/outputs/androidTest-results/connected/debug/flavors/dev/TEST-test(AVD) - 15.xml",
+      "duration_seconds": "1.858"
+    },
+    {
+      "module": "inference-service",
+      "class": "app.skein.inference.service.InferenceServiceInstrumentedTest",
+      "name": "aLockingServiceRefusesTheNextGenerateBeforeProcessTeardown",
+      "outcome": [
+        "passed"
+      ],
+      "path": "inference-service/build/outputs/androidTest-results/connected/debug/flavors/dev/TEST-test(AVD) - 15.xml",
+      "duration_seconds": "1.001"
+    },
+    {
+      "module": "inference-service",
+      "class": "app.skein.inference.service.InferenceServiceInstrumentedTest",
+      "name": "cpuOnlyLoadReportsExactlyOneCpuDevice",
+      "outcome": [
+        "passed"
+      ],
+      "path": "inference-service/build/outputs/androidTest-results/connected/debug/flavors/dev/TEST-test(AVD) - 15.xml",
+      "duration_seconds": "1.092"
+    },
+    {
+      "module": "inference-service",
+      "class": "app.skein.inference.service.InferenceServiceInstrumentedTest",
+      "name": "aColdServiceRefusesLoadUntilUnlocked",
+      "outcome": [
+        "passed"
+      ],
+      "path": "inference-service/build/outputs/androidTest-results/connected/debug/flavors/dev/TEST-test(AVD) - 15.xml",
+      "duration_seconds": "0.541"
+    },
+    {
+      "module": "inference-service",
+      "class": "app.skein.inference.service.InferenceServiceInstrumentedTest",
+      "name": "aLoadedServiceReportsReady",
+      "outcome": [
+        "passed"
+      ],
+      "path": "inference-service/build/outputs/androidTest-results/connected/debug/flavors/dev/TEST-test(AVD) - 15.xml",
+      "duration_seconds": "1.038"
+    },
+    {
+      "module": "inference-service",
+      "class": "app.skein.inference.service.InferenceServiceInstrumentedTest",
+      "name": "anOversizedAnswerReservationIsRefusedBeforeTokenStreaming",
+      "outcome": [
+        "passed"
+      ],
+      "path": "inference-service/build/outputs/androidTest-results/connected/debug/flavors/dev/TEST-test(AVD) - 15.xml",
+      "duration_seconds": "1.094"
+    },
+    {
+      "module": "inference-service",
+      "class": "app.skein.inference.service.InferenceServiceInstrumentedTest",
+      "name": "aHashMismatchIsRefusedAndLeavesTheServiceUnloaded",
+      "outcome": [
+        "passed"
+      ],
+      "path": "inference-service/build/outputs/androidTest-results/connected/debug/flavors/dev/TEST-test(AVD) - 15.xml",
+      "duration_seconds": "0.539"
+    },
+    {
+      "module": "inference-service",
+      "class": "app.skein.inference.service.InferenceServiceInstrumentedTest",
+      "name": "cancelMidGenerationCompletesAsCancelledWithinTheBudget",
+      "outcome": [
+        "passed"
+      ],
+      "path": "inference-service/build/outputs/androidTest-results/connected/debug/flavors/dev/TEST-test(AVD) - 15.xml",
+      "duration_seconds": "1.867"
+    },
+    {
+      "module": "inference-service",
+      "class": "app.skein.inference.service.InferenceServiceInstrumentedTest",
+      "name": "staleLockedPushDoesNotKillNewlyAuthorizedService",
+      "outcome": [
+        "passed"
+      ],
+      "path": "inference-service/build/outputs/androidTest-results/connected/debug/flavors/dev/TEST-test(AVD) - 15.xml",
+      "duration_seconds": "1.090"
+    },
+    {
+      "module": "inference-service",
+      "class": "app.skein.inference.service.InferenceServiceInstrumentedTest",
+      "name": "unloadIsIdempotent",
+      "outcome": [
+        "passed"
+      ],
+      "path": "inference-service/build/outputs/androidTest-results/connected/debug/flavors/dev/TEST-test(AVD) - 15.xml",
+      "duration_seconds": "1.054"
+    },
+    {
+      "module": "inference-service",
+      "class": "app.skein.inference.service.InferenceServiceInstrumentedTest",
+      "name": "aSecondConcurrentGenerateIsRefusedWithBusy",
+      "outcome": [
+        "passed"
+      ],
+      "path": "inference-service/build/outputs/androidTest-results/connected/debug/flavors/dev/TEST-test(AVD) - 15.xml",
+      "duration_seconds": "1.643"
+    },
+    {
+      "module": "inference-service",
+      "class": "app.skein.inference.service.InferenceServiceInstrumentedTest",
+      "name": "aHighGpuLayersLoadReportsAGpuDeviceWhenVulkanIsAvailable",
+      "outcome": [
+        "passed"
+      ],
+      "path": "inference-service/build/outputs/androidTest-results/connected/debug/flavors/dev/TEST-test(AVD) - 15.xml",
+      "duration_seconds": "1.038"
+    },
+    {
+      "module": "inference-service",
+      "class": "app.skein.inference.service.InferenceServiceInstrumentedTest",
+      "name": "theServiceBindsAndReportsUnloaded",
+      "outcome": [
+        "passed"
+      ],
+      "path": "inference-service/build/outputs/androidTest-results/connected/debug/flavors/dev/TEST-test(AVD) - 15.xml",
+      "duration_seconds": "0.150"
+    },
+    {
+      "module": "inference-service",
+      "class": "app.skein.inference.service.LlamaNativeTest",
+      "name": "tokenizeReturnsAtLeastTwoIds",
+      "outcome": [
+        "passed"
+      ],
+      "path": "inference-service/build/outputs/androidTest-results/connected/debug/flavors/dev/TEST-test(AVD) - 15.xml",
+      "duration_seconds": "0.129"
+    },
+    {
+      "module": "inference-service",
+      "class": "app.skein.inference.service.LlamaNativeTest",
+      "name": "zeroHandlesThrowIllegalStateException",
+      "outcome": [
+        "passed"
+      ],
+      "path": "inference-service/build/outputs/androidTest-results/connected/debug/flavors/dev/TEST-test(AVD) - 15.xml",
+      "duration_seconds": "0.002"
+    },
+    {
+      "module": "inference-service",
+      "class": "app.skein.inference.service.LlamaNativeTest",
+      "name": "decodePromptThenEightSamplesYieldsEightIds",
+      "outcome": [
+        "passed"
+      ],
+      "path": "inference-service/build/outputs/androidTest-results/connected/debug/flavors/dev/TEST-test(AVD) - 15.xml",
+      "duration_seconds": "0.578"
+    },
+    {
+      "module": "inference-service",
+      "class": "app.skein.inference.service.LlamaNativeTest",
+      "name": "scaffoldTokenizerRejectsMalformedUnicodeAndInvalidByteRanges",
+      "outcome": [
+        "passed"
+      ],
+      "path": "inference-service/build/outputs/androidTest-results/connected/debug/flavors/dev/TEST-test(AVD) - 15.xml",
+      "duration_seconds": "0.100"
+    },
+    {
+      "module": "inference-service",
+      "class": "app.skein.inference.service.LlamaNativeTest",
+      "name": "secureFreeZeroesTheKvCacheBeforeFreeing",
+      "outcome": [
+        "passed"
+      ],
+      "path": "inference-service/build/outputs/androidTest-results/connected/debug/flavors/dev/TEST-test(AVD) - 15.xml",
+      "duration_seconds": "0.107"
+    },
+    {
+      "module": "inference-service",
+      "class": "app.skein.inference.service.LlamaNativeTest",
+      "name": "descriptorLoadCancellationFromProgressClosesOwnedStreamAndKeepsCallerFd",
+      "outcome": [
+        "passed"
+      ],
+      "path": "inference-service/build/outputs/androidTest-results/connected/debug/flavors/dev/TEST-test(AVD) - 15.xml",
+      "duration_seconds": "0.197"
+    },
+    {
+      "module": "inference-service",
+      "class": "app.skein.inference.service.LlamaNativeTest",
+      "name": "sameSeedTwiceProducesTheSameIds",
+      "outcome": [
+        "passed"
+      ],
+      "path": "inference-service/build/outputs/androidTest-results/connected/debug/flavors/dev/TEST-test(AVD) - 15.xml",
+      "duration_seconds": "1.924"
+    },
+    {
+      "module": "inference-service",
+      "class": "app.skein.inference.service.LlamaNativeTest",
+      "name": "loadingANonGgufFileFailsWithInvalidModelAndLeaksNoHandle",
+      "outcome": [
+        "passed"
+      ],
+      "path": "inference-service/build/outputs/androidTest-results/connected/debug/flavors/dev/TEST-test(AVD) - 15.xml",
+      "duration_seconds": "0.047"
+    },
+    {
+      "module": "inference-service",
+      "class": "app.skein.inference.service.LlamaNativeTest",
+      "name": "safeTemplateTokensMatchNativeTokensForBenignSyntheticConversation",
+      "outcome": [
+        "passed"
+      ],
+      "path": "inference-service/build/outputs/androidTest-results/connected/debug/flavors/dev/TEST-test(AVD) - 15.xml",
+      "duration_seconds": "0.120"
+    },
+    {
+      "module": "inference-service",
+      "class": "app.skein.inference.service.LlamaNativeTest",
+      "name": "goldenGreedySequenceIsPinned",
+      "outcome": [
+        "passed"
+      ],
+      "path": "inference-service/build/outputs/androidTest-results/connected/debug/flavors/dev/TEST-test(AVD) - 15.xml",
+      "duration_seconds": "0.977"
+    },
+    {
+      "module": "inference-service",
+      "class": "app.skein.inference.service.LlamaNativeTest",
+      "name": "cancelFlagAbortsADecodeWithin100Ms",
+      "outcome": [
+        "passed"
+      ],
+      "path": "inference-service/build/outputs/androidTest-results/connected/debug/flavors/dev/TEST-test(AVD) - 15.xml",
+      "duration_seconds": "0.126"
+    },
+    {
+      "module": "inference-service",
+      "class": "app.skein.inference.service.LlamaNativeTest",
+      "name": "controlsSpanningTemplateAndContentRemainLiteralInBothDirections",
+      "outcome": [
+        "passed"
+      ],
+      "path": "inference-service/build/outputs/androidTest-results/connected/debug/flavors/dev/TEST-test(AVD) - 15.xml",
+      "duration_seconds": "0.104"
+    },
+    {
+      "module": "inference-service",
+      "class": "app.skein.inference.service.LlamaNativeTest",
+      "name": "contextCapacityRejectsZeroWrongAndFreedHandles",
+      "outcome": [
+        "passed"
+      ],
+      "path": "inference-service/build/outputs/androidTest-results/connected/debug/flavors/dev/TEST-test(AVD) - 15.xml",
+      "duration_seconds": "0.108"
+    },
+    {
+      "module": "inference-service",
+      "class": "app.skein.inference.service.LlamaNativeTest",
+      "name": "nativeWhitespaceAndUnicodeTokensMatchWholePromptReference",
+      "outcome": [
+        "passed"
+      ],
+      "path": "inference-service/build/outputs/androidTest-results/connected/debug/flavors/dev/TEST-test(AVD) - 15.xml",
+      "duration_seconds": "0.114"
+    },
+    {
+      "module": "inference-service",
+      "class": "app.skein.inference.service.LlamaNativeTest",
+      "name": "exactNativeCapacityAcceptsLastReservedPositionAndRefusesOneBeyond",
+      "outcome": [
+        "passed"
+      ],
+      "path": "inference-service/build/outputs/androidTest-results/connected/debug/flavors/dev/TEST-test(AVD) - 15.xml",
+      "duration_seconds": "13.088"
+    },
+    {
+      "module": "inference-service",
+      "class": "app.skein.inference.service.LlamaNativeTest",
+      "name": "pathLoadCancellationFromProgressRetainsNoNativeHandle",
+      "outcome": [
+        "passed"
+      ],
+      "path": "inference-service/build/outputs/androidTest-results/connected/debug/flavors/dev/TEST-test(AVD) - 15.xml",
+      "duration_seconds": "0.094"
+    },
+    {
+      "module": "inference-service",
+      "class": "app.skein.inference.service.LlamaNativeTest",
+      "name": "embedIsUnitLengthAndModelWidth",
+      "outcome": [
+        "passed"
+      ],
+      "path": "inference-service/build/outputs/androidTest-results/connected/debug/flavors/dev/TEST-test(AVD) - 15.xml",
+      "duration_seconds": "0.174"
+    },
+    {
+      "module": "inference-service",
+      "class": "app.skein.inference.service.LlamaNativeTest",
+      "name": "backendReportWithNoModelReportsOnlyCompileTimeCpuFeatures",
+      "outcome": [
+        "passed"
+      ],
+      "path": "inference-service/build/outputs/androidTest-results/connected/debug/flavors/dev/TEST-test(AVD) - 15.xml",
+      "duration_seconds": "0.004"
+    },
+    {
+      "module": "inference-service",
+      "class": "app.skein.inference.service.LlamaNativeTest",
+      "name": "tokenToPieceConcatenatesBackToTheInput",
+      "outcome": [
+        "passed"
+      ],
+      "path": "inference-service/build/outputs/androidTest-results/connected/debug/flavors/dev/TEST-test(AVD) - 15.xml",
+      "duration_seconds": "0.093"
+    },
+    {
+      "module": "inference-service",
+      "class": "app.skein.inference.service.LlamaNativeTest",
+      "name": "chatTemplatingRenderUsesTheModelsOwnTemplateAndMarkersAroundTheContent",
+      "outcome": [
+        "passed"
+      ],
+      "path": "inference-service/build/outputs/androidTest-results/connected/debug/flavors/dev/TEST-test(AVD) - 15.xml",
+      "duration_seconds": "0.091"
+    },
+    {
+      "module": "inference-service",
+      "class": "app.skein.inference.service.LlamaNativeTest",
+      "name": "errorMessagesCarryNoPromptText",
+      "outcome": [
+        "passed"
+      ],
+      "path": "inference-service/build/outputs/androidTest-results/connected/debug/flavors/dev/TEST-test(AVD) - 15.xml",
+      "duration_seconds": "0.002"
+    },
+    {
+      "module": "inference-service",
+      "class": "app.skein.inference.service.LlamaNativeTest",
+      "name": "literalChatMlDelimiterCannotAddAnotherNativeControlToken",
+      "outcome": [
+        "passed"
+      ],
+      "path": "inference-service/build/outputs/androidTest-results/connected/debug/flavors/dev/TEST-test(AVD) - 15.xml",
+      "duration_seconds": "0.090"
+    },
+    {
+      "module": "inference-service",
+      "class": "app.skein.inference.service.LlamaNativeTest",
+      "name": "applyChatTemplateContainsTheUserMessage",
+      "outcome": [
+        "passed"
+      ],
+      "path": "inference-service/build/outputs/androidTest-results/connected/debug/flavors/dev/TEST-test(AVD) - 15.xml",
+      "duration_seconds": "0.089"
+    }
+  ],
+  "identity_delta": {
+    "prior295_retained": true,
+    "all_prior295_now_pass": true,
+    "added4": [
+      [
+        "core/vault",
+        "app.skein.core.vault.key.recovery.ExistingVaultKeyProofInstrumentedTest",
+        "committedWalSchemaIsReadWithoutImmutableModeOrSourceCheckpoint"
+      ],
+      [
+        "core/vault",
+        "app.skein.core.vault.key.recovery.ExistingVaultKeyProofInstrumentedTest",
+        "plaintextEmptyMissingCorruptAndUnknownSchemaNeverProveCandidate"
+      ],
+      [
+        "core/vault",
+        "app.skein.core.vault.key.recovery.ExistingVaultKeyProofInstrumentedTest",
+        "proofNeverMigratesOlderSupportedSchema"
+      ],
+      [
+        "core/vault",
+        "app.skein.core.vault.key.recovery.ExistingVaultKeyProofInstrumentedTest",
+        "rawKeyProvesEncryptedPagesAndWrongKeyCannotChangeSources"
+      ]
+    ],
+    "removed": [],
+    "unexpected": []
+  },
+  "lc09": {
+    "all14_pass": true,
+    "corrected_canonical_CHAT_messages_survival_pass": true,
+    "scope": "Disposable encrypted repository/file behavior; no physical delete UX claim"
+  },
+  "recovery4": [
+    {
+      "module": "core/vault",
+      "class": "app.skein.core.vault.key.recovery.ExistingVaultKeyProofInstrumentedTest",
+      "name": "committedWalSchemaIsReadWithoutImmutableModeOrSourceCheckpoint",
+      "outcome": [
+        "failure"
+      ],
+      "path": "core/vault/build/outputs/androidTest-results/connected/debug/flavors/dev/TEST-test(AVD) - 15.xml",
+      "duration_seconds": "0.048",
+      "details": {
+        "failure": "<failure>expected: UNSUPPORTED_SCHEMA\nbut was : UNAVAILABLE\n\tat app.skein.core.vault.key.recovery.ExistingVaultKeyProofInstrumentedTest.committedWalSchemaIsReadWithoutImmutableModeOrSourceCheckpoint(ExistingVaultKeyProofInstrumentedTest.kt:92)\n</failure>\n    "
+      }
+    },
+    {
+      "module": "core/vault",
+      "class": "app.skein.core.vault.key.recovery.ExistingVaultKeyProofInstrumentedTest",
+      "name": "plaintextEmptyMissingCorruptAndUnknownSchemaNeverProveCandidate",
+      "outcome": [
+        "passed"
+      ],
+      "path": "core/vault/build/outputs/androidTest-results/connected/debug/flavors/dev/TEST-test(AVD) - 15.xml",
+      "duration_seconds": "0.036"
+    },
+    {
+      "module": "core/vault",
+      "class": "app.skein.core.vault.key.recovery.ExistingVaultKeyProofInstrumentedTest",
+      "name": "proofNeverMigratesOlderSupportedSchema",
+      "outcome": [
+        "failure"
+      ],
+      "path": "core/vault/build/outputs/androidTest-results/connected/debug/flavors/dev/TEST-test(AVD) - 15.xml",
+      "duration_seconds": "0.065",
+      "details": {
+        "failure": "<failure>expected: VERIFIED\nbut was : UNAVAILABLE\n\tat app.skein.core.vault.key.recovery.ExistingVaultKeyProofInstrumentedTest.proofNeverMigratesOlderSupportedSchema(ExistingVaultKeyProofInstrumentedTest.kt:105)\n</failure>\n    "
+      }
+    },
+    {
+      "module": "core/vault",
+      "class": "app.skein.core.vault.key.recovery.ExistingVaultKeyProofInstrumentedTest",
+      "name": "rawKeyProvesEncryptedPagesAndWrongKeyCannotChangeSources",
+      "outcome": [
+        "failure"
+      ],
+      "path": "core/vault/build/outputs/androidTest-results/connected/debug/flavors/dev/TEST-test(AVD) - 15.xml",
+      "duration_seconds": "0.040",
+      "details": {
+        "failure": "<failure>expected: VERIFIED\nbut was : UNAVAILABLE\n\tat app.skein.core.vault.key.recovery.ExistingVaultKeyProofInstrumentedTest.rawKeyProvesEncryptedPagesAndWrongKeyCannotChangeSources(ExistingVaultKeyProofInstrumentedTest.kt:36)\n</failure>\n    "
+      }
+    }
+  ],
+  "failure_mechanism": {
+    "classification": "strong_source_supported_hypothesis_not_direct_private_file_runtime_attestation",
+    "facts": [
+      "All failures are wrapper UNAVAILABLE; the direct JNI malformed/unknown-schema case passed.",
+      "The WAL-present branch completed VERIFIED and source-byte equality before failing only after the fixture WAL was removed.",
+      "Vendored sqlite3WalOpen at sqlite3.c:69563 uses SQLITE_OPEN_READWRITE|SQLITE_OPEN_CREATE|SQLITE_OPEN_WAL independently of read-only main DB opening.",
+      "ClosedVaultRecoverySnapshot post-call check pins private WAL fingerprint to original absence; any newly created empty private WAL therefore refuses, and ExistingVaultKeyProof maps RecoverySnapshotRefused to UNAVAILABLE."
+    ],
+    "missing_runtime_detail": "Existing tests delete their private snapshot in use/finally and do not retain native return code or private before/after WAL length; actual absence-to-empty WAL transition not yet directly captured.",
+    "safe_proposal": "For source-WAL-absent capture only, explicitly create an empty WAL in the private snapshot before sealing a separate private-copy identity. Keep original source absence/DB/WAL/SHM/envelope identity strict, and exact private DB/WAL identity before/after proof. Add old-source host negative controls and native diagnostic assertions for empty-private-WAL semantics. No immutable mode, create/open of live DB, checkpoint, arbitrary WAL omission or weakened test expectations.",
+    "alternative": "Phase-scoped absent-to-empty private WAL equivalence is possible but easier to over-broaden; prefer deterministic precreation plus exact sealed private identity."
+  },
+  "workflow": {
+    "steps": [
+      {
+        "number": 1,
+        "name": "Set up job",
+        "status": "completed",
+        "conclusion": "success"
+      },
+      {
+        "number": 2,
+        "name": "Checkout",
+        "status": "completed",
+        "conclusion": "success"
+      },
+      {
+        "number": 3,
+        "name": "Set up JDK 17 (Temurin)",
+        "status": "completed",
+        "conclusion": "success"
+      },
+      {
+        "number": 4,
+        "name": "Cache the tiny GGUF test model",
+        "status": "completed",
+        "conclusion": "success"
+      },
+      {
+        "number": 5,
+        "name": "Choose the OpenSSL tarball cache directory",
+        "status": "completed",
+        "conclusion": "success"
+      },
+      {
+        "number": 6,
+        "name": "Derive pinned OpenSSL sha256 (cache key)",
+        "status": "completed",
+        "conclusion": "success"
+      },
+      {
+        "number": 7,
+        "name": "Cache the pinned OpenSSL tarball",
+        "status": "completed",
+        "conclusion": "success"
+      },
+      {
+        "number": 8,
+        "name": "Put Android SDK cmdline-tools / platform-tools / emulator on PATH",
+        "status": "completed",
+        "conclusion": "success"
+      },
+      {
+        "number": 9,
+        "name": "Install required Android SDK packages",
+        "status": "completed",
+        "conclusion": "success"
+      },
+      {
+        "number": 10,
+        "name": "Set up Gradle",
+        "status": "completed",
+        "conclusion": "success"
+      },
+      {
+        "number": 11,
+        "name": "Verify actual XML reviewer",
+        "status": "completed",
+        "conclusion": "success"
+      },
+      {
+        "number": 12,
+        "name": "Enable KVM",
+        "status": "completed",
+        "conclusion": "success"
+      },
+      {
+        "number": 13,
+        "name": "Run instrumented tests",
+        "status": "completed",
+        "conclusion": "failure"
+      },
+      {
+        "number": 14,
+        "name": "Require complete passing ordinary instrumentation XML",
+        "status": "completed",
+        "conclusion": "failure"
+      },
+      {
+        "number": 15,
+        "name": "Record instrumentation source and artifact hashes",
+        "status": "completed",
+        "conclusion": "success"
+      },
+      {
+        "number": 16,
+        "name": "Upload instrumented test reports",
+        "status": "completed",
+        "conclusion": "success"
+      },
+      {
+        "number": 28,
+        "name": "Post Set up Gradle",
+        "status": "completed",
+        "conclusion": "success"
+      },
+      {
+        "number": 29,
+        "name": "Post Cache the pinned OpenSSL tarball",
+        "status": "completed",
+        "conclusion": "skipped"
+      },
+      {
+        "number": 30,
+        "name": "Post Cache the tiny GGUF test model",
+        "status": "completed",
+        "conclusion": "skipped"
+      },
+      {
+        "number": 31,
+        "name": "Post Set up JDK 17 (Temurin)",
+        "status": "completed",
+        "conclusion": "success"
+      },
+      {
+        "number": 32,
+        "name": "Post Checkout",
+        "status": "completed",
+        "conclusion": "success"
+      },
+      {
+        "number": 33,
+        "name": "Complete job",
+        "status": "completed",
+        "conclusion": "success"
+      }
+    ],
+    "connected_task_lines": [
+      "2026-09-30T11:18:52.9515350Z > Task :inference-service:connectedDevDebugAndroidTest",
+      "2026-09-30T11:19:40.0517109Z > Task :app:connectedDevDebugAndroidTest",
+      "2026-09-30T11:20:24.6506090Z > Task :core:vault:connectedDevDebugAndroidTest",
+      "2026-09-30T11:23:50.8553821Z > Task :core:vault:connectedDevDebugAndroidTest FAILED"
+    ],
+    "build_summary": [
+      "2026-09-30T11:23:51.1275734Z BUILD FAILED in 12m 39s",
+      "2026-09-30T11:23:51.1276385Z 470 actionable tasks: 248 executed, 222 from cache"
+    ],
+    "strict_reviewer_passed": false,
+    "api35_x86_64_in_actual_log": true
+  },
+  "apk_attribution": {
+    "archive_contains_actual_apk_bytes": false,
+    "host_declared_built_apks": [
+      {
+        "path": "app/build/outputs/apk/androidTest/dev/debug/app-dev-debug-androidTest.apk",
+        "sha256": "1c3b2777c2237773b5cab1aaec4a44b0443f29d8732e2d4e1c7eafe98d812478"
+      },
+      {
+        "path": "app/build/outputs/apk/dev/debug/app-dev-debug.apk",
+        "sha256": "a7b337242a857f473a887d2466cfb6e73597942414d72f937cec9eabbd635874"
+      },
+      {
+        "path": "core/vault/build/outputs/apk/androidTest/dev/debug/vault-dev-debug-androidTest.apk",
+        "sha256": "b2a3993502090d773139c46f13338c226d9041eab98316b33c29d6d6e0137fdd"
+      },
+      {
+        "path": "inference-service/build/outputs/apk/androidTest/dev/debug/inference-service-dev-debug-androidTest.apk",
+        "sha256": "b08e589491ef670abfbda6c1081c4309745efd55dd6ea6896c75c5c528285bed"
+      }
+    ],
+    "independently_measured_apks": [],
+    "installed_attestation": false
+  },
+  "prior_failure_receipt": {
+    "path": "/Users/andrewherrera/skein-worktrees/ux-integration-20260929/build/agent-logs/six-priorities-20260930/remote8042/ordinary/connected-test-reports.zip",
+    "bytes": 1099047,
+    "sha256": "670e3392960c19373878ca2284569ffa2c007027d5e496ef235e0497efabd336"
+  },
+  "source_pins": [
+    {
+      "path": ".github/workflows/emulator.yml",
+      "bytes": 14907,
+      "sha256": "5599deb96b14dfda856782ccd46d6e11792fe5c2dabc2beb2c647b4d55ee6f3a"
+    },
+    {
+      "path": "tools/ci/verify-instrumentation.py",
+      "bytes": 2977,
+      "sha256": "5a03d41890aa8538f2f195048e823ee4a181e0cdcdb786fd461c88cc2623e46e"
+    },
+    {
+      "path": "tools/ci/verification-manifest.py",
+      "bytes": 3572,
+      "sha256": "26e62bc0eed6508f3486ed52a9804f60d155782d5b05befa8167aca302977d17"
+    },
+    {
+      "path": "core/vault/src/androidTest/kotlin/app/skein/core/vault/repository/FileLifecycleInstrumentedTest.kt",
+      "bytes": 30194,
+      "sha256": "8b67c79e3cfb5df4688b34543ade59993bd76a82c10752d50516e29768d04f64"
+    },
+    {
+      "path": "core/vault/src/androidTest/kotlin/app/skein/core/vault/key/recovery/ExistingVaultKeyProofInstrumentedTest.kt",
+      "bytes": 6749,
+      "sha256": "0518228cb32fcc4a189496d7f5ffe9ca11bdd668ec84c2a4ec564739d86c00a3"
+    },
+    {
+      "path": "core/vault/src/main/kotlin/app/skein/core/vault/key/recovery/ExistingVaultKeyProof.kt",
+      "bytes": 1750,
+      "sha256": "ceafbac4a949d2fdb56504916697982a500998eddf2bacd715f988e0a6e0b528"
+    },
+    {
+      "path": "core/vault/src/main/kotlin/app/skein/core/vault/key/recovery/ClosedVaultRecoverySnapshot.kt",
+      "bytes": 5140,
+      "sha256": "082111682ad6eebca1ca60fea3a6126336ac4ffb64707ec986113d94ff9a70b2"
+    },
+    {
+      "path": "core/vault/src/main/kotlin/app/skein/core/vault/db/RecoveryProofNative.kt",
+      "bytes": 442,
+      "sha256": "30e05da275c21570174ca28b5246f36f4c96b4d5a813913194b0b6f263ea57d1"
+    },
+    {
+      "path": "native/sqlite/androidx-jni/skein_recovery_proof_jni.c",
+      "bytes": 5963,
+      "sha256": "a8898d637beacc03a0449a6a9d0c28de83963e1df8b637391774fc70a6e12bd1"
+    },
+    {
+      "path": "tools/models/test-model.lock",
+      "bytes": 1154,
+      "sha256": "10e00fa9d689051318f8430230ca661e5f93a4b3f65aec2f69b5e5efb09a74dd"
+    }
+  ],
+  "limitations": [
+    "Three recovery proofs failed; do not mark gg11.29 or native recovery acceptance complete.",
+    "All295 older ordinary identities and all14LC09 passing establish only their disposable emulator assertions.",
+    "Recovery lease issuer/provider/envelope activation and physical Fold gates remain open.",
+    "Direct JNI does not wipe caller Java key; Kotlin wrapper finally does.",
+    "No build/test/emulator/device/CI command or tracked edit executed by reviewer."
+  ]
+}

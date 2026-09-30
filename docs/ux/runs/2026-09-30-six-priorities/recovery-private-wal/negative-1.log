@@ -1,0 +1,119 @@
+{"owner": "coordinator", "pid": 9083, "token": "64def6f2-5573-457e-9157-dbc654d9cc54", "worktree": "/Users/andrewherrera/skein-worktrees/recovery-wal-proof-20260930", "started_at": "2026-09-30T11:45:34.785116+00:00", "command": ["./gradlew", "--no-daemon", "--max-workers=2", ":core:vault:testDevDebugUnitTest", "--tests", "app.skein.core.vault.key.recovery.ClosedVaultRecoverySnapshotTest.absent source WAL stages an empty private WAL without changing source absence", "--tests", "app.skein.core.vault.key.recovery.ExistingVaultKeyProofTest.read only native work leaving empty private WAL proves without changing source absence", "--no-build-cache", "--rerun-tasks"]}
+To honour the JVM settings for this build a single-use Daemon process will be forked. For more on this, please refer to https://docs.gradle.org/9.7.1/userguide/gradle_daemon.html#sec:disabling_the_daemon in the Gradle documentation.
+Daemon will be stopped at the end of the build 
+Calculating task graph as no cached configuration is available for tasks: :core:vault:testDevDebugUnitTest --tests app.skein.core.vault.key.recovery.ClosedVaultRecoverySnapshotTest.absent source WAL stages an empty private WAL without changing source absence --tests app.skein.core.vault.key.recovery.ExistingVaultKeyProofTest.read only native work leaving empty private WAL proves without changing source absence
+> Task :build-logic:guards:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :build-logic:guards:pluginDescriptors
+> Task :build-logic:guards:processResources
+
+> Task :build-logic:guards:compileKotlin
+w: file:///Users/andrewherrera/skein-worktrees/recovery-wal-proof-20260930/build-logic/guards/src/main/kotlin/app/skein/gradle/LicenseAuditTask.kt:84:31 'fun fields(): (Mutable)Iterator<(Mutable)Map.(Mutable)Entry<String!, JsonNode!>!>!' is deprecated. Deprecated in Java.
+w: file:///Users/andrewherrera/skein-worktrees/recovery-wal-proof-20260930/build-logic/guards/src/main/kotlin/app/skein/gradle/PomLicenseExtractor.kt:123:18 'fun fields(): (Mutable)Iterator<(Mutable)Map.(Mutable)Entry<String!, JsonNode!>!>!' is deprecated. Deprecated in Java.
+w: file:///Users/andrewherrera/skein-worktrees/recovery-wal-proof-20260930/build-logic/guards/src/main/kotlin/app/skein/gradle/PomLicenseExtractor.kt:144:18 'fun fields(): (Mutable)Iterator<(Mutable)Map.(Mutable)Entry<String!, JsonNode!>!>!' is deprecated. Deprecated in Java.
+
+> Task :build-logic:guards:compileJava NO-SOURCE
+> Task :build-logic:guards:classes
+> Task :build-logic:guards:jar
+> Task :testing:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :testing-fakes:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :core:model:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :core:model:processResources
+> Task :testing-fakes:processResources NO-SOURCE
+> Task :testing:processResources
+> Task :core:markdown:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :core:markdown:compileKotlin
+> Task :core:markdown:compileJava NO-SOURCE
+> Task :core:markdown:processResources NO-SOURCE
+> Task :core:markdown:classes UP-TO-DATE
+> Task :core:model:compileKotlin
+> Task :core:model:compileJava NO-SOURCE
+> Task :core:model:classes
+> Task :core:markdown:jar
+> Task :core:model:jar
+> Task :core:vault:preBuild UP-TO-DATE
+> Task :core:vault:preDevDebugBuild UP-TO-DATE
+> Task :core:vault:generateDevDebugResources
+> Task :core:vault:packageDevDebugResources
+> Task :core:vault:processDevDebugNavigationResources
+> Task :core:vault:parseDevDebugLocalResources
+> Task :core:vault:generateDevDebugRFile
+> Task :testing-fakes:compileKotlin
+> Task :testing-fakes:compileJava NO-SOURCE
+> Task :testing-fakes:classes UP-TO-DATE
+> Task :testing-fakes:jar
+> Task :testing:compileKotlin
+> Task :testing:compileJava NO-SOURCE
+> Task :testing:classes
+
+> Task :core:vault:compileDevDebugKotlin
+w: file:///Users/andrewherrera/skein-worktrees/recovery-wal-proof-20260930/core/vault/src/main/kotlin/app/skein/core/vault/key/AndroidBiometricAuthenticator.kt:178:46 Unnecessary safe call on a non-null receiver of type 'CharSequence'.
+w: file:///Users/andrewherrera/skein-worktrees/recovery-wal-proof-20260930/core/vault/src/main/kotlin/app/skein/core/vault/key/recovery/RecoveryEnvelopeTransaction.kt:47:14 Only safe (?.) or non-null asserted (!!.) calls are allowed on a nullable receiver of type 'File?'.
+w: file:///Users/andrewherrera/skein-worktrees/recovery-wal-proof-20260930/core/vault/src/main/kotlin/app/skein/core/vault/key/recovery/RecoveryEnvelopeTransaction.kt:47:37 Only safe (?.) or non-null asserted (!!.) calls are allowed on a nullable receiver of type 'File?'.
+w: file:///Users/andrewherrera/skein-worktrees/recovery-wal-proof-20260930/core/vault/src/main/kotlin/app/skein/core/vault/key/recovery/RecoveryEnvelopeTransaction.kt:54:27 Java type mismatch: inferred type is 'File?', but 'File' was expected.
+w: file:///Users/andrewherrera/skein-worktrees/recovery-wal-proof-20260930/core/vault/src/main/kotlin/app/skein/core/vault/key/recovery/RecoveryEnvelopeTransaction.kt:58:27 Java type mismatch: inferred type is 'File?', but 'File' was expected.
+w: file:///Users/andrewherrera/skein-worktrees/recovery-wal-proof-20260930/core/vault/src/main/kotlin/app/skein/core/vault/key/recovery/RecoveryEnvelopeTransaction.kt:69:27 Java type mismatch: inferred type is 'File?', but 'File' was expected.
+w: file:///Users/andrewherrera/skein-worktrees/recovery-wal-proof-20260930/core/vault/src/main/kotlin/app/skein/core/vault/transfer/VaultZipImporter.kt:347:55 Expression is unused.
+
+> Task :testing:jar
+> Task :core:vault:javaPreCompileDevDebug
+> Task :core:vault:preDevDebugUnitTestBuild UP-TO-DATE
+> Task :core:vault:writeDevDebugAarMetadata
+> Task :core:vault:compileDevDebugJavaWithJavac NO-SOURCE
+> Task :core:vault:bundleLibRuntimeToJarDevDebug
+> Task :core:vault:bundleLibCompileToJarDevDebug
+> Task :core:vault:mapDevDebugSourceSetPaths
+> Task :core:vault:compileDevDebugLibraryResources
+> Task :core:vault:mapDevDebugUnitTestSourceSetPaths
+> Task :core:vault:generateDevDebugUnitTestResources
+> Task :core:vault:checkDevDebugUnitTestAarMetadata
+> Task :core:vault:extractDeepLinksDevDebug
+> Task :core:vault:processDevDebugManifest
+> Task :core:vault:mergeDevDebugUnitTestManifest
+> Task :core:vault:processDevDebugUnitTestManifest
+> Task :core:vault:javaPreCompileDevDebugUnitTest
+> Task :core:vault:generateDevDebugUnitTestAssets UP-TO-DATE
+> Task :core:vault:generateDevDebugAssets UP-TO-DATE
+> Task :core:vault:mergeDevDebugAssets
+> Task :core:vault:mergeDevDebugUnitTestAssets
+> Task :core:vault:processDevDebugJavaRes
+> Task :core:vault:mergeDevDebugUnitTestResources
+> Task :core:vault:processDevDebugUnitTestResources
+> Task :core:vault:packageDevDebugUnitTestForUnitTest
+> Task :core:vault:generateDevDebugUnitTestConfig
+
+> Task :core:vault:compileDevDebugUnitTestKotlin
+w: file:///Users/andrewherrera/skein-worktrees/recovery-wal-proof-20260930/core/vault/src/test/kotlin/app/skein/core/vault/db/SkeinSQLiteDriverTest.kt:25:16 'fun openWithKey(fileName: String, passphrase: ByteArray?): SQLiteConnection' is deprecated. Use the primary SkeinSQLiteDriver(key: ByteArray) constructor and open(fileName) instead; openWithKey predates the §4.9 PRAGMA-based key setup and is kept only for callers that have not migrated yet.
+w: file:///Users/andrewherrera/skein-worktrees/recovery-wal-proof-20260930/core/vault/src/test/kotlin/app/skein/core/vault/db/SkeinSQLiteDriverTest.kt:39:20 'fun openWithKey(fileName: String, passphrase: ByteArray?): SQLiteConnection' is deprecated. Use the primary SkeinSQLiteDriver(key: ByteArray) constructor and open(fileName) instead; openWithKey predates the §4.9 PRAGMA-based key setup and is kept only for callers that have not migrated yet.
+w: file:///Users/andrewherrera/skein-worktrees/recovery-wal-proof-20260930/core/vault/src/test/kotlin/app/skein/core/vault/db/SkeinSQLiteDriverTest.kt:56:16 'fun openWithKey(fileName: String, passphrase: ByteArray?): SQLiteConnection' is deprecated. Use the primary SkeinSQLiteDriver(key: ByteArray) constructor and open(fileName) instead; openWithKey predates the §4.9 PRAGMA-based key setup and is kept only for callers that have not migrated yet.
+w: file:///Users/andrewherrera/skein-worktrees/recovery-wal-proof-20260930/core/vault/src/test/kotlin/app/skein/core/vault/db/SkeinSQLiteDriverTest.kt:75:20 'fun openWithKey(fileName: String, passphrase: ByteArray?): SQLiteConnection' is deprecated. Use the primary SkeinSQLiteDriver(key: ByteArray) constructor and open(fileName) instead; openWithKey predates the §4.9 PRAGMA-based key setup and is kept only for callers that have not migrated yet.
+w: file:///Users/andrewherrera/skein-worktrees/recovery-wal-proof-20260930/core/vault/src/test/kotlin/app/skein/core/vault/db/SkeinSQLiteDriverTest.kt:92:20 'fun openWithKey(fileName: String, passphrase: ByteArray?): SQLiteConnection' is deprecated. Use the primary SkeinSQLiteDriver(key: ByteArray) constructor and open(fileName) instead; openWithKey predates the §4.9 PRAGMA-based key setup and is kept only for callers that have not migrated yet.
+w: file:///Users/andrewherrera/skein-worktrees/recovery-wal-proof-20260930/core/vault/src/test/kotlin/app/skein/core/vault/db/SkeinSQLiteDriverTest.kt:171:16 'fun openWithKey(fileName: String, passphrase: ByteArray?): SQLiteConnection' is deprecated. Use the primary SkeinSQLiteDriver(key: ByteArray) constructor and open(fileName) instead; openWithKey predates the §4.9 PRAGMA-based key setup and is kept only for callers that have not migrated yet.
+w: file:///Users/andrewherrera/skein-worktrees/recovery-wal-proof-20260930/core/vault/src/test/kotlin/app/skein/core/vault/db/SkeinSQLiteDriverTest.kt:191:16 'fun openWithKey(fileName: String, passphrase: ByteArray?): SQLiteConnection' is deprecated. Use the primary SkeinSQLiteDriver(key: ByteArray) constructor and open(fileName) instead; openWithKey predates the §4.9 PRAGMA-based key setup and is kept only for callers that have not migrated yet.
+
+> Task :core:vault:compileDevDebugUnitTestJavaWithJavac NO-SOURCE
+> Task :core:vault:processDevDebugUnitTestJavaRes
+
+> Task :core:vault:testDevDebugUnitTest FAILED
+
+ClosedVaultRecoverySnapshotTest > absent source WAL stages an empty private WAL without changing source absence FAILED
+    com.google.common.truth.AssertionErrorWithFacts at ClosedVaultRecoverySnapshotTest.kt:37
+
+ExistingVaultKeyProofTest > read only native work leaving empty private WAL proves without changing source absence FAILED
+    com.google.common.truth.Platform$ComparisonFailureWithFacts at ExistingVaultKeyProofTest.kt:45
+
+2 tests completed, 2 failed
+
+[Incubating] Problems report is available at: file:///Users/andrewherrera/skein-worktrees/recovery-wal-proof-20260930/build/reports/problems/problems-report.html
+
+FAILURE: Build failed with an exception.
+
+* What went wrong:
+Execution failed for task ':core:vault:testDevDebugUnitTest'.
+> There were failing tests. See the report at: file:///Users/andrewherrera/skein-worktrees/recovery-wal-proof-20260930/core/vault/build/reports/tests/testDevDebugUnitTest/index.html
+
+* Try:
+> Run with --scan to get full insights from a Build Scan (powered by Develocity).
+
+BUILD FAILED in 23s
+44 actionable tasks: 44 executed
+Configuration cache entry stored.
