@@ -1,0 +1,516 @@
+{
+  "schema": "skein-converter-assessment-v1",
+  "date_utc": "2026-09-30",
+  "bead": "skein-81zu",
+  "status": "source_assessment_complete; adoption_and_benchmark_unmeasured",
+  "answer": "Skein can learn from both and compare their local desktop output. Prefer adapting converter contracts, structured extraction and provenance before considering runtime adoption. Neither Python stack is a demonstrated Android replacement.",
+  "scope": {
+    "performed": [
+      "Read pinned primary source, licenses and dependency declarations",
+      "Inspect current Skein import and citation source",
+      "Hash downloaded source bytes and verify local source against the baseline commit"
+    ],
+    "not_performed": [
+      "Dependency installation or upstream code execution",
+      "Model download, license clearance or conversion benchmark",
+      "Owner-document access, Android build, CI, or device operation",
+      "Retrieval tuning or changes to gold labels and thresholds"
+    ],
+    "source_boundary": "Facts below describe the pinned repository files; transitive dependencies, individual model revisions and runtime behavior have not been audited."
+  },
+  "upstream_heads": [
+    {
+      "repository": "microsoft/markitdown",
+      "sha": "b8f79c57ebc0044be41323d89b2a45d3fda8460e",
+      "head_url": "https://api.github.com/repos/microsoft/markitdown/commits/HEAD",
+      "head_json_sha256": "0c70eda0bbe6d5f0d7dd3e05d1091231e8978c54251b7a1432ba65fdc6dfc93e",
+      "tree_sha256": "55b6440fd787f6917187bbadfc5eed02ce0181c61edf68a9024c2449536d09a7",
+      "fetched_at": "2026-09-30T02:55:12.336323+00:00"
+    },
+    {
+      "repository": "datalab-to/marker",
+      "sha": "8a1d2344de25d7ec4c5209133aed7af565874ff0",
+      "head_url": "https://api.github.com/repos/datalab-to/marker/commits/HEAD",
+      "head_json_sha256": "c912486a6e1afcd3a7f8427eb1e14e9dae424f44178147727fe7f0106402450b",
+      "tree_sha256": "f06468c1df8862cd40ccff93bd2de97ce3935a7f1873e42ceaf0dd7aba896248",
+      "fetched_at": "2026-09-30T02:55:12.318382+00:00"
+    }
+  ],
+  "source_facts": {
+    "markitdown": [
+      {
+        "statement": "Code is MIT. The package declares Python >=3.10,<3.15; base dependencies include requests, BeautifulSoup, markdownify and Magika. PDF support adds pdfminer.six >=20251230 and pdfplumber >=0.11.9.",
+        "source_refs": [
+          "md-license",
+          "md-deps"
+        ]
+      },
+      {
+        "statement": "DocumentConverter accepts a binary stream plus StreamInfo; accepts must restore the stream position. DocumentConverterResult exposes Markdown and an optional title, without page/block/span provenance. StreamInfo describes format, name, local path and URL.",
+        "source_refs": [
+          "md-contract",
+          "md-stream"
+        ]
+      },
+      {
+        "statement": "Built-in converters default on and plugins default off. General convert dispatch supports paths, URLs, response objects and streams; explicit convert_local or convert_stream narrows that I/O surface. Non-seekable streams are fully buffered.",
+        "source_refs": [
+          "md-dispatch"
+        ]
+      },
+      {
+        "statement": "The PDF converter buffers the source, uses pdfplumber word coordinates for form/table heuristics and pdfminer for text extraction, and returns Markdown. Page cache release does not remove the whole-source buffer. This converter has no OCR path.",
+        "source_refs": [
+          "md-pdf"
+        ]
+      },
+      {
+        "statement": "DOCX conversion uses Mammoth with HTML conversion; XLSX conversion uses pandas/openpyxl and renders worksheet content. These are separate optional format dependencies, not Android implementations.",
+        "source_refs": [
+          "md-deps",
+          "md-docx",
+          "md-xlsx"
+        ]
+      }
+    ],
+    "marker": [
+      {
+        "statement": "Current repository code is Apache-2.0. The separate MODEL_LICENSE has distinct conditions; the code license alone does not establish permission for model use or output distribution.",
+        "source_refs": [
+          "marker-license",
+          "marker-deps",
+          "marker-model-license"
+        ]
+      },
+      {
+        "statement": "MODEL_LICENSE Attachment A 2(a) and 2(b) restrict use above prior-year revenue of $5 million or total equity/debt funding of $5 million, with personal/research exceptions in those clauses. Clause 2(c) separately restricts competing products/services without that exception. Section 8 applies share-alike language to outputs and their derivatives. These are review flags, not a conclusion about Skein legal eligibility.",
+        "source_refs": [
+          "marker-model-license"
+        ]
+      },
+      {
+        "statement": "Package marker-pdf 2.0.0 declares Python >=3.10,<4, PyTorch >=2.7,<3, Transformers >=5.12.1,<6, Surya OCR >=0.22.1,<0.23 and pdftext >=0.7,<0.8. Optional cloud API SDK dependencies do not prove a conversion uses the cloud.",
+        "source_refs": [
+          "marker-deps"
+        ]
+      },
+      {
+        "statement": "The current model factory creates clients for shared Surya servers: balanced VLM layout/recognition, fast layout, and OCR-error classification. Digital table reconstruction uses text-layer heuristics; scanned tables use page OCR. The README describes vLLM Docker on NVIDIA and llama-server on CPU/Apple Silicon. This is a host/server architecture, not an Android integration demonstrated here.",
+        "source_refs": [
+          "marker-models",
+          "marker-readme"
+        ]
+      },
+      {
+        "statement": "Optional use_llm defaults false; the default configured repair service is GoogleGeminiService when that option is enabled. This optional LLM processing is separate from Surya VLM OCR. Fast mode with disable_ocr can avoid VLM OCR, but still uses other models and is not a model-free arm.",
+        "source_refs": [
+          "marker-pdf",
+          "marker-models",
+          "marker-readme"
+        ]
+      },
+      {
+        "statement": "JSON output contains document metadata and page/block children with id, block_type, html, polygon, bbox, optional children/section_hierarchy/images. Block IDs encode page and block position/type. The internal block schema also tracks extraction method and source, but JSONRenderer does not explicitly emit those internal fields per block.",
+        "source_refs": [
+          "marker-json",
+          "marker-block",
+          "marker-page",
+          "marker-document",
+          "marker-polygon"
+        ]
+      },
+      {
+        "statement": "Markdown rendering supports page delimiters and table serialization. Neither page-delimited Markdown nor layout IDs are immutable original-file hashes or Skein revision anchors.",
+        "source_refs": [
+          "marker-markdown",
+          "marker-block",
+          "skein-revisions"
+        ]
+      }
+    ],
+    "skein_today": [
+      {
+        "statement": "PdfImporter uses PDFBox Android on a whole input buffer, appends text page by page with separators and returns only nullable text/title. Empty extraction and caught parser/password failures have no typed distinction; OCR is absent.",
+        "source_refs": [
+          "skein-pdf"
+        ]
+      },
+      {
+        "statement": "ImportServiceImpl reads the full PDF, first saves its original bytes as an attachment, then creates a new source-linked note from extraction or a no-text-layer notice. The source frontmatter links the attachment ID. This code does not provide a page/block mapping or establish one transaction across attachment and note creation.",
+        "source_refs": [
+          "skein-import"
+        ]
+      },
+      {
+        "statement": "Current citation records use document ID, revision hash, locator and excerpt. Revision hashing addresses canonical body/frontmatter; retrieval locators identify byte ranges in that body, not coordinates in an original PDF. Offered items without revision/locator are omitted from the persisted anchored record.",
+        "source_refs": [
+          "skein-citations",
+          "skein-revisions",
+          "skein-retrieval"
+        ]
+      },
+      {
+        "statement": "Production lexical evidence coverage remains lexical-query-coverage-v1 with default minimum 0.5. Converter evaluation does not change this policy.",
+        "source_refs": [
+          "skein-evidence-policy"
+        ]
+      }
+    ]
+  },
+  "inferences_and_adaptation": [
+    {
+      "inference": "A small Android-native extraction interface is the first useful adaptation: explicit supported format, bounded input, cancellation, typed outcome and page-level output. MarkItDown provides a useful separation of dispatch from converters; directly shipping its Python dependency graph is not justified by this inspection.",
+      "source_refs": [
+        "md-contract",
+        "md-dispatch",
+        "skein-pdf",
+        "skein-import"
+      ]
+    },
+    {
+      "inference": "Marker is the stronger structure/OCR comparison candidate; its structured output may preserve table/page relationships that plain Markdown loses. Quality, speed, resource fit and model terms remain gates. Use local desktop evaluation before any Android port decision.",
+      "source_refs": [
+        "marker-json",
+        "marker-models",
+        "marker-deps",
+        "marker-model-license"
+      ]
+    },
+    {
+      "inference": "Current PdfImporter appends separators before checking whether the combined body is blank. A multi-page document with empty extracted page text may therefore yield separator-only nonblank text. Include a two-page scan/blank fixture; this is a source-derived risk, not an executed reproduction.",
+      "source_refs": [
+        "skein-pdf"
+      ]
+    },
+    {
+      "inference": "Preserve original attachment bytes, extraction output and any optional repaired output separately. A cleaner table or fluent repaired sentence is a candidate extraction, not a verified fact and not proof that a citation supports an answer.",
+      "source_refs": [
+        "skein-import",
+        "skein-citations",
+        "marker-pdf",
+        "marker-json"
+      ]
+    }
+  ],
+  "proposed_provenance_mapping": {
+    "status": "proposal_only; no locked schema or runtime change",
+    "source_identity": [
+      "attachment_id",
+      "sha256_of_original_attachment_bytes",
+      "media_type"
+    ],
+    "conversion_identity": [
+      "converter_repository_commit_and_package_version",
+      "configuration_hash",
+      "dependency_lock_hash",
+      "each_model_id_revision_and_artifact_hash_if_used"
+    ],
+    "layout_locator": [
+      "zero_based_source_page_index",
+      "converter_block_id",
+      "polygon_or_bbox_with_coordinate_basis_and_page_dimensions",
+      "reading_order"
+    ],
+    "text_anchor": [
+      "exact_extraction_output_sha256",
+      "extracted_utf8_start_and_end",
+      "skein_document_id_and_revision_hash",
+      "canonical_revision_utf8_start_and_end"
+    ],
+    "outcome": [
+      "typed_status",
+      "structured_warning_codes",
+      "extraction_method_if_observed_else_unknown",
+      "raw_extraction_vs_llm_repaired_derivation"
+    ],
+    "fact_review": [
+      "fixture_or_human_verified_fact_id_and_source_locator",
+      "verification_status_independent_of_converter_confidence_or_fluent_text"
+    ],
+    "rules": [
+      "Page/block IDs and polygons locate layout; they do not establish stable source identity across reruns or file revisions.",
+      "Original byte SHA256 and Skein canonical revision hash have different domains; preserve both and map spans after normalization.",
+      "Do not infer extraction method from a missing Marker JSON field; instrument an explicit adapter or record unknown.",
+      "Keep scanned/no text, encrypted, malformed, unsupported, resource failure, cancellation and partial extraction distinguishable; preserve warnings instead of silently converting every failure into no text.",
+      "Validate every span and excerpt against the exact revision. Valid anchors establish identity and integrity, not factual support."
+    ]
+  },
+  "next_bounded_benchmark": {
+    "status": "proposed; corpus/golds/thresholds have not yet been created or frozen",
+    "first_deliverable": "Create only synthetic source documents and independently authored gold records, then seal their hashes plus split and metric definitions before running converters. Add a host adapter contract that retains all failures and outputs without executing model downloads.",
+    "corpus": {
+      "size": "12 parseable PDFs, exactly 24 pages, plus 2 failure inputs (one password-protected PDF and one deliberately truncated PDF); 14 inputs total",
+      "pairs": [
+        "Two single-column PDFs with headings, links, footnotes and exact numeric facts",
+        "Two multi-column PDFs with explicitly authored reading order",
+        "Two table PDFs with merged headers, units and cross-page continuation",
+        "Two raster scan PDFs including rotation and a page without machine text",
+        "Two mixed-script/equation PDFs with unambiguous gold transcriptions",
+        "Two blank/mixed-empty PDFs, including one with two wholly blank pages"
+      ],
+      "split": "One document from each pair is development and the other held-out validation: 6 PDFs/12 pages per split. Failure inputs are an integrity suite. Author and seal validation gold before conversion; do not tune after exposing it.",
+      "gold": "Fixture authors record source-page text/order, table cells and header associations, supported numeric/entity facts, absent-fact probes and source locators. Freeze source PDFs, gold JSON, generator version, fonts and metric configuration by hash. Converter output and converter agreement are never gold.",
+      "scope_limit": "PDF only first. DOCX/XLSX and real owner documents require a separate authorized scope."
+    },
+    "candidate_arms": [
+      "Current Skein PDFBox extraction at a pinned source revision, through its existing controlled test harness in a later serialized verification slot",
+      "Pinned MarkItDown local PDF conversion; explicit local file/stream, plugins disabled, no remote converter or URL input",
+      "Pinned Marker fast mode with disable_ocr, only after reviewing every actual model license/artifact and host resource requirements",
+      "Optional later Marker local OCR arm with exact fast/balanced/backend/model configuration after the same unresolved model and resource gates; use_llm stays false for this comparison"
+    ],
+    "metrics": [
+      "Per-page text coverage and reading-order error; character/word error against independent transcription for scanned pages",
+      "Table cell exact values, row/column and header association, numeric value/unit preservation, page attribution",
+      "Supported-fact extraction recall and introduced/unsupported-fact rate, reported separately from any downstream answer metric",
+      "Source-hash coverage, page/block mapping coverage, UTF-8 span validity, exact excerpt resolution and cross-document anchor errors",
+      "Typed outcome/warning accuracy for blank, encrypted, malformed, partial and unavailable conversion; include every input in denominators",
+      "Wall time, peak host RAM, model/artifact disk bytes and output bytes; later authorized runs record one cold and three warm repetitions per arm/input, with descriptive ranges rather than unreliable small-sample p95 claims"
+    ],
+    "integrity_acceptance": "Zero missing original hashes, invalid claimed anchors, cross-document anchors or silently dropped failures. Preserve raw outputs and actual warnings even when a quality gate fails.",
+    "quality_acceptance": "Pre-register numeric quality thresholds before running validation. No threshold or pass result is invented here; report each arm against independent gold and current reference behavior.",
+    "retrieval_boundary": "This is extraction evaluation. Keep existing retrieval gold, labels, split, thresholds and lexical-query-coverage-v1 at 0.5 unchanged; development-falsified alternatives remain disabled. A later retrieval experiment requires its own frozen protocol, including supported false rejection and unsupported acceptance."
+  },
+  "open_gates": [
+    "Applicability of exact model licenses, competitive-use and output obligations before model execution or distribution; no legal clearance claimed",
+    "Pinned transitive dependencies, model manifests, network behavior and artifact hashes for any executable harness",
+    "Measured extraction quality, table/fact fidelity and complete typed-failure handling",
+    "Host and eventual Android memory, latency, battery, thermal and cancellation behavior",
+    "Explicit source-to-revision provenance mapping and citation integrity tests",
+    "Independent benchmark gold and preregistered thresholds; no retrieval or production promotion from source review"
+  ],
+  "source_artifacts": [
+    {
+      "repository": "microsoft/markitdown",
+      "commit": "b8f79c57ebc0044be41323d89b2a45d3fda8460e",
+      "path": "LICENSE",
+      "sha256": "c2cfccb812fe482101a8f04597dfc5a9991a6b2748266c47ac91b6a5aae15383",
+      "bytes": 1141,
+      "source_url": "https://github.com/microsoft/markitdown/blob/b8f79c57ebc0044be41323d89b2a45d3fda8460e/LICENSE",
+      "id": "md-license"
+    },
+    {
+      "repository": "microsoft/markitdown",
+      "commit": "b8f79c57ebc0044be41323d89b2a45d3fda8460e",
+      "path": "README.md",
+      "sha256": "9f9dc0e582d066e8ac671a1f63b3a73c70a7be9909e8be51a7f5aeb5a7c04af2",
+      "bytes": 18313,
+      "source_url": "https://github.com/microsoft/markitdown/blob/b8f79c57ebc0044be41323d89b2a45d3fda8460e/README.md",
+      "id": "md-readme"
+    },
+    {
+      "repository": "microsoft/markitdown",
+      "commit": "b8f79c57ebc0044be41323d89b2a45d3fda8460e",
+      "path": "packages/markitdown/pyproject.toml",
+      "sha256": "68275854fef84923b1a62fce9d7f366ef7073232edfe5ba0b930a6f6cc02b4a8",
+      "bytes": 2934,
+      "source_url": "https://github.com/microsoft/markitdown/blob/b8f79c57ebc0044be41323d89b2a45d3fda8460e/packages/markitdown/pyproject.toml",
+      "id": "md-deps"
+    },
+    {
+      "repository": "microsoft/markitdown",
+      "commit": "b8f79c57ebc0044be41323d89b2a45d3fda8460e",
+      "path": "packages/markitdown/src/markitdown/_base_converter.py",
+      "sha256": "3b9cfbe86bc2af4f7f23042e60eaccf5e8d9df866d8a35a77d00672eab5202e6",
+      "bytes": 4516,
+      "source_url": "https://github.com/microsoft/markitdown/blob/b8f79c57ebc0044be41323d89b2a45d3fda8460e/packages/markitdown/src/markitdown/_base_converter.py",
+      "id": "md-contract"
+    },
+    {
+      "repository": "microsoft/markitdown",
+      "commit": "b8f79c57ebc0044be41323d89b2a45d3fda8460e",
+      "path": "packages/markitdown/src/markitdown/_markitdown.py",
+      "sha256": "11f251f2a3bb67d9d4be55d12970c6c8438112a6a2f841f3e94bcac74001afb0",
+      "bytes": 33033,
+      "source_url": "https://github.com/microsoft/markitdown/blob/b8f79c57ebc0044be41323d89b2a45d3fda8460e/packages/markitdown/src/markitdown/_markitdown.py",
+      "id": "md-dispatch"
+    },
+    {
+      "repository": "microsoft/markitdown",
+      "commit": "b8f79c57ebc0044be41323d89b2a45d3fda8460e",
+      "path": "packages/markitdown/src/markitdown/_stream_info.py",
+      "sha256": "039bce7e9d0c5e62a6ed55ac6133e7fa530d7025a2ed8372e35538b072f6dbdf",
+      "bytes": 1076,
+      "source_url": "https://github.com/microsoft/markitdown/blob/b8f79c57ebc0044be41323d89b2a45d3fda8460e/packages/markitdown/src/markitdown/_stream_info.py",
+      "id": "md-stream"
+    },
+    {
+      "repository": "microsoft/markitdown",
+      "commit": "b8f79c57ebc0044be41323d89b2a45d3fda8460e",
+      "path": "packages/markitdown/src/markitdown/converters/_pdf_converter.py",
+      "sha256": "8a48783a111f8c240ab87320921455e879a5f6753421a6cc472e6d2b89bf2c92",
+      "bytes": 20542,
+      "source_url": "https://github.com/microsoft/markitdown/blob/b8f79c57ebc0044be41323d89b2a45d3fda8460e/packages/markitdown/src/markitdown/converters/_pdf_converter.py",
+      "id": "md-pdf"
+    },
+    {
+      "repository": "microsoft/markitdown",
+      "commit": "b8f79c57ebc0044be41323d89b2a45d3fda8460e",
+      "path": "packages/markitdown/src/markitdown/converters/_docx_converter.py",
+      "sha256": "35b6da35a3d2bb940d2c872a092965c249b9f34cb77e3f3dfb76131a110d7302",
+      "bytes": 4581,
+      "source_url": "https://github.com/microsoft/markitdown/blob/b8f79c57ebc0044be41323d89b2a45d3fda8460e/packages/markitdown/src/markitdown/converters/_docx_converter.py",
+      "id": "md-docx"
+    },
+    {
+      "repository": "microsoft/markitdown",
+      "commit": "b8f79c57ebc0044be41323d89b2a45d3fda8460e",
+      "path": "packages/markitdown/src/markitdown/converters/_xlsx_converter.py",
+      "sha256": "ea01d4447ef83a827cfc109e8886fb262c129a8257cb774a5f3dd784d8854090",
+      "bytes": 8598,
+      "source_url": "https://github.com/microsoft/markitdown/blob/b8f79c57ebc0044be41323d89b2a45d3fda8460e/packages/markitdown/src/markitdown/converters/_xlsx_converter.py",
+      "id": "md-xlsx"
+    },
+    {
+      "repository": "datalab-to/marker",
+      "commit": "8a1d2344de25d7ec4c5209133aed7af565874ff0",
+      "path": "LICENSE",
+      "sha256": "cfc7749b96f63bd31c3c42b5c471bf756814053e847c10f3eb003417bc523d30",
+      "bytes": 11358,
+      "source_url": "https://github.com/datalab-to/marker/blob/8a1d2344de25d7ec4c5209133aed7af565874ff0/LICENSE",
+      "id": "marker-license"
+    },
+    {
+      "repository": "datalab-to/marker",
+      "commit": "8a1d2344de25d7ec4c5209133aed7af565874ff0",
+      "path": "MODEL_LICENSE",
+      "sha256": "636dfb8eb19efc5835ed6efb878f8b694a93f028c715d2547d831e2a55440276",
+      "bytes": 14726,
+      "source_url": "https://github.com/datalab-to/marker/blob/8a1d2344de25d7ec4c5209133aed7af565874ff0/MODEL_LICENSE",
+      "id": "marker-model-license"
+    },
+    {
+      "repository": "datalab-to/marker",
+      "commit": "8a1d2344de25d7ec4c5209133aed7af565874ff0",
+      "path": "README.md",
+      "sha256": "1b874b82efc709d55d3a251cc631c13f695ed08935241fb4cce995e964fd00e4",
+      "bytes": 35428,
+      "source_url": "https://github.com/datalab-to/marker/blob/8a1d2344de25d7ec4c5209133aed7af565874ff0/README.md",
+      "id": "marker-readme"
+    },
+    {
+      "repository": "datalab-to/marker",
+      "commit": "8a1d2344de25d7ec4c5209133aed7af565874ff0",
+      "path": "pyproject.toml",
+      "sha256": "3f48777c87877b07ec962cdd8b6691fbe7cb060c4f2d356e382a988c9fba21f5",
+      "bytes": 1967,
+      "source_url": "https://github.com/datalab-to/marker/blob/8a1d2344de25d7ec4c5209133aed7af565874ff0/pyproject.toml",
+      "id": "marker-deps"
+    },
+    {
+      "repository": "datalab-to/marker",
+      "commit": "8a1d2344de25d7ec4c5209133aed7af565874ff0",
+      "path": "marker/converters/pdf.py",
+      "sha256": "c7f826a5184dac86400cec23474b4c0ce594fd89440172548e79f0c892a59492",
+      "bytes": 8734,
+      "source_url": "https://github.com/datalab-to/marker/blob/8a1d2344de25d7ec4c5209133aed7af565874ff0/marker/converters/pdf.py",
+      "id": "marker-pdf"
+    },
+    {
+      "repository": "datalab-to/marker",
+      "commit": "8a1d2344de25d7ec4c5209133aed7af565874ff0",
+      "path": "marker/renderers/json.py",
+      "sha256": "26e3a7bc4c27ed348966a527c2ce8133c8b42b9f9abc42e1a796bfcb3db1b4c5",
+      "bytes": 3100,
+      "source_url": "https://github.com/datalab-to/marker/blob/8a1d2344de25d7ec4c5209133aed7af565874ff0/marker/renderers/json.py",
+      "id": "marker-json"
+    },
+    {
+      "repository": "datalab-to/marker",
+      "commit": "8a1d2344de25d7ec4c5209133aed7af565874ff0",
+      "path": "marker/renderers/markdown.py",
+      "sha256": "73f6c53b730f8f5c3fbcc9771485b3106865bfe4099063293d46c6a4cf0881a3",
+      "bytes": 11313,
+      "source_url": "https://github.com/datalab-to/marker/blob/8a1d2344de25d7ec4c5209133aed7af565874ff0/marker/renderers/markdown.py",
+      "id": "marker-markdown"
+    },
+    {
+      "repository": "datalab-to/marker",
+      "commit": "8a1d2344de25d7ec4c5209133aed7af565874ff0",
+      "path": "marker/schema/blocks/base.py",
+      "sha256": "27fe9bb2fd95eee8f544645abb18f701b54c8625faf41336be5caf80e6ec6821",
+      "bytes": 12733,
+      "source_url": "https://github.com/datalab-to/marker/blob/8a1d2344de25d7ec4c5209133aed7af565874ff0/marker/schema/blocks/base.py",
+      "id": "marker-block"
+    },
+    {
+      "repository": "datalab-to/marker",
+      "commit": "8a1d2344de25d7ec4c5209133aed7af565874ff0",
+      "path": "marker/schema/groups/page.py",
+      "sha256": "a0e675fdcd11abf52728cc72b5b06fe62d721ded8009f9e005fa2c0d2d6651c7",
+      "bytes": 13662,
+      "source_url": "https://github.com/datalab-to/marker/blob/8a1d2344de25d7ec4c5209133aed7af565874ff0/marker/schema/groups/page.py",
+      "id": "marker-page"
+    },
+    {
+      "repository": "datalab-to/marker",
+      "commit": "8a1d2344de25d7ec4c5209133aed7af565874ff0",
+      "path": "marker/schema/document.py",
+      "sha256": "cb6c0d09d63188816f62b74684b1600e3fb17e1ebb08b31292752cd427b65fda",
+      "bytes": 3638,
+      "source_url": "https://github.com/datalab-to/marker/blob/8a1d2344de25d7ec4c5209133aed7af565874ff0/marker/schema/document.py",
+      "id": "marker-document"
+    },
+    {
+      "repository": "datalab-to/marker",
+      "commit": "8a1d2344de25d7ec4c5209133aed7af565874ff0",
+      "path": "marker/schema/polygon.py",
+      "sha256": "72eeefa93efd9480c62190a6758a727b1248cdbcc76c23f0cd49b846509289b7",
+      "bytes": 7966,
+      "source_url": "https://github.com/datalab-to/marker/blob/8a1d2344de25d7ec4c5209133aed7af565874ff0/marker/schema/polygon.py",
+      "id": "marker-polygon"
+    },
+    {
+      "repository": "datalab-to/marker",
+      "commit": "8a1d2344de25d7ec4c5209133aed7af565874ff0",
+      "path": "marker/models.py",
+      "sha256": "411ecd580d1bdf40601aa7551fefe4fb878fb658ceed2f552655b174babed59f",
+      "bytes": 3525,
+      "source_url": "https://github.com/datalab-to/marker/blob/8a1d2344de25d7ec4c5209133aed7af565874ff0/marker/models.py",
+      "id": "marker-models"
+    }
+  ],
+  "skein_source_artifacts": [
+    {
+      "id": "skein-pdf",
+      "commit": "90ec3f9c7e5a8579c568ec278f060d905d8dbd77",
+      "path": "core/vault/src/main/kotlin/app/skein/core/vault/transfer/PdfImporter.kt",
+      "sha256": "1e704fbcadfb6179f22af57d4c093ec86b9a706e5e35a71fc3089858058d7a87",
+      "bytes": 7267
+    },
+    {
+      "id": "skein-import",
+      "commit": "90ec3f9c7e5a8579c568ec278f060d905d8dbd77",
+      "path": "core/vault/src/main/kotlin/app/skein/core/vault/transfer/ImportServiceImpl.kt",
+      "sha256": "9f119430786588472ef434c27a2d9a8e44a0d21a979064bfcf7be2c46c526efd",
+      "bytes": 23172
+    },
+    {
+      "id": "skein-citations",
+      "commit": "90ec3f9c7e5a8579c568ec278f060d905d8dbd77",
+      "path": "core/rag/src/main/kotlin/app/skein/core/rag/chat/CitationRecords.kt",
+      "sha256": "081f3be4f83d29c4cd5aba3528474dd08953cf44740af96fd06cb736f946221c",
+      "bytes": 5187
+    },
+    {
+      "id": "skein-revisions",
+      "commit": "90ec3f9c7e5a8579c568ec278f060d905d8dbd77",
+      "path": "core/model/src/main/kotlin/app/skein/core/model/Revisions.kt",
+      "sha256": "47cd77fb5f92a4d8a91ae9150e9511ad9556424db81d2fc6e64a44646b632cc6",
+      "bytes": 8760
+    },
+    {
+      "id": "skein-retrieval",
+      "commit": "90ec3f9c7e5a8579c568ec278f060d905d8dbd77",
+      "path": "core/model/src/main/kotlin/app/skein/core/model/Retrieval.kt",
+      "sha256": "4510de03113eef653109680f0f9f765e6373c20332a30396824d832835c4c2a3",
+      "bytes": 13224
+    },
+    {
+      "id": "skein-evidence-policy",
+      "commit": "90ec3f9c7e5a8579c568ec278f060d905d8dbd77",
+      "path": "core/rag/src/main/kotlin/app/skein/core/rag/retrieval/LexicalEvidenceGate.kt",
+      "sha256": "33f6c132c932c9482c9850217c6dc5aedb379fbd383cbaed87971b48d042b445",
+      "bytes": 4694
+    }
+  ]
+}
