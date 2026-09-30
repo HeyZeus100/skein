@@ -2,6 +2,7 @@ import glob
 import hashlib
 import importlib.util
 import pathlib
+import re
 import tempfile
 import unittest
 
@@ -98,6 +99,7 @@ class VerificationManifestTest(unittest.TestCase):
     def test_includes_nested_variant_records_without_rewriting_failed_evidence(self):
         with tempfile.TemporaryDirectory() as directory:
             root = pathlib.Path(directory)
+            self.write_records(root, {"feature/chat/build.gradle.kts": b"// fixture project"})
             records = {
                 "feature/chat/build/test-results/testDebugUnitTest/TEST.xml": b'<testsuite><testcase><failure/></testcase></testsuite>',
                 "feature/chat/build/test-results/roborazzi/debug/results-summary.json": b'{"changed":1}',
@@ -115,6 +117,78 @@ class VerificationManifestTest(unittest.TestCase):
             unit = reviewer.manifest(root, "unit", "source")
             self.assertEqual(1, len(unit["files"]))
             self.assertEqual("source", unit["source_sha"])
+
+    def test_unit_and_screenshots_only_inventory_current_module_build_roots(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = pathlib.Path(directory)
+            projects = {
+                "build.gradle.kts": b"// root project",
+                "app/build.gradle.kts": b"// Android project",
+                "core/vault/build.gradle.kts": b"// nested project",
+                "feature/chat/build.gradle.kts": b"// screenshot project",
+                "build-logic/guards/build.gradle.kts": b"// composite project",
+                "testing/build.gradle": b"// Groovy project",
+            }
+            xml = {
+                f"{pathlib.PurePosixPath(project).parent}/build/test-results/testDebugUnitTest/TEST.xml".removeprefix("./"):
+                    b'<testsuite><testcase><failure/></testcase><testcase><skipped/></testcase></testsuite>'
+                for project in projects
+            }
+            screenshots = {
+                "feature/chat/build/test-results/roborazzi/debug/results-summary.json": b'{"changed":1}',
+                "feature/chat/build/test-results/roborazzi/debug/results/one.json": b'{"type":"changed"}',
+            }
+            current = {**xml, **screenshots}
+            excluded = {}
+            # Archive even the project declarations, so an adjacent build file
+            # alone cannot make retained historical evidence look current.
+            for prefix in ("docs/ux/runs/previous/raw/", "build/agent-logs/previous/",
+                           "feature/chat/build/agent-logs/previous/"):
+                excluded.update({prefix + name: data for name, data in {**projects, **current}.items()})
+            excluded.update({
+                "docs/build.gradle.kts": b"// archived declaration, not a project",
+                "docs/build/test-results/test/TEST.xml": b"historical XML",
+                "feature/not-a-project/build/test-results/test/TEST.xml": b"no project declaration",
+            })
+            records = {**projects, **current, **excluded}
+            self.write_records(root, records)
+
+            for lane, expected in (("unit", xml), ("screenshots", current)):
+                with self.subTest(lane=lane):
+                    result = reviewer.manifest(root, lane, "source")
+                    self.assertEqual(set(expected), {item["path"] for item in result["files"]})
+                    self.assertEqual([], result["built_apks"])
+                    for item in result["files"]:
+                        self.assertEqual(len(records[item["path"]]), item["bytes"])
+                        self.assertEqual(hashlib.sha256(records[item["path"]]).hexdigest(), item["sha256"])
+            for name, data in records.items():
+                self.assertEqual(data, (root / name).read_bytes())
+
+    def test_historical_unit_and_screenshot_evidence_cannot_fill_missing_outputs(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = pathlib.Path(directory)
+            records = {"feature/chat/build.gradle.kts": b"// current module without output"}
+            for prefix in ("docs/ux/runs/previous/", "build/agent-logs/previous/"):
+                records.update({
+                    prefix + "feature/chat/build.gradle.kts": b"// archived project",
+                    prefix + "feature/chat/build/test-results/test/TEST.xml": b"old XML",
+                    prefix + "feature/chat/build/test-results/roborazzi/results.json": b'{"changed":0}',
+                })
+            self.write_records(root, records)
+            for lane in ("unit", "screenshots"):
+                with self.subTest(lane=lane):
+                    self.assertEqual([], reviewer.manifest(root, lane, "source")["files"])
+
+    def test_supported_layout_covers_every_current_declared_project(self):
+        repository = pathlib.Path(__file__).resolve().parents[2]
+        expected = {repository / "build"}
+        for build in (repository, repository / "build-logic"):
+            settings = (build / "settings.gradle.kts").read_text()
+            expected.update(
+                build.joinpath(*project.strip(":").split(":"), "build")
+                for project in re.findall(r'"(:[\w:-]+)"', settings)
+            )
+        self.assertEqual(expected, set(reviewer.module_output_roots(repository)))
 
     def test_instrumentation_retains_report_and_built_apk_hash_separately(self):
         with tempfile.TemporaryDirectory() as directory:

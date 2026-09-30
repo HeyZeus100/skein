@@ -11,10 +11,30 @@ import subprocess
 import sys
 
 INSTRUMENTATION_MODULES = ("app", "core/vault", "inference-service")
+# Skein's supported project layout: root/top-level projects, core and feature
+# modules, and the build-logic composite's projects. New deeper module layouts
+# must extend this inventory; never discover projects inside retained evidence.
+MODULE_DIRECTORY_PATTERNS = ("*", "core/*", "feature/*", "build-logic/*")
+NON_PROJECT_ROOTS = {"build", "docs", ".git", "third_party"}
+
+
+def module_output_roots(root):
+    candidates = {root} | {
+        directory
+        for pattern in MODULE_DIRECTORY_PATTERNS
+        for directory in root.glob(pattern)
+    }
+    modules = {
+        directory for directory in candidates
+        if directory.is_dir()
+        and not set(directory.relative_to(root).parts) & NON_PROJECT_ROOTS
+        and any((directory / name).is_file() for name in ("build.gradle.kts", "build.gradle"))
+    }
+    return sorted(directory / "build" for directory in modules)
 
 
 def manifest(root, lane, source):
-    patterns = ["**/build/test-results/**/*.xml"]
+    patterns = []
     apk_patterns = []
     if lane == "instrumentation":
         # Committed evidence under docs/ can contain earlier build-output paths.
@@ -23,8 +43,12 @@ def manifest(root, lane, source):
             for module in INSTRUMENTATION_MODULES
         ] + ["build/instrumentation-review.json"]
         apk_patterns = [f"{module}/build/outputs/apk/**/*.apk" for module in INSTRUMENTATION_MODULES]
-    if lane == "screenshots":
-        patterns += ["**/build/test-results/roborazzi/**/*.json"]
+    else:
+        for output in module_output_roots(root):
+            relative = output.relative_to(root)
+            patterns.append(f"{relative}/test-results/**/*.xml")
+            if lane == "screenshots":
+                patterns.append(f"{relative}/test-results/roborazzi/**/*.json")
     paths = sorted({p for pattern in patterns for p in root.glob(pattern) if p.is_file()})
     built_apks = sorted({p for pattern in apk_patterns for p in root.glob(pattern) if p.is_file()})
     return {
