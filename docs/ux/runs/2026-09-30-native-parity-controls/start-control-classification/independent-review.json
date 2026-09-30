@@ -1,0 +1,589 @@
+{
+  "reviewer": "/root/fold_transport",
+  "review_type": "independent read-only source/hash/actual XML review; no tests rerun",
+  "commit": "005c9fc6bc49567142498cecf685bade13a56e27",
+  "result": "PASS bounded test-only fix and retained host evidence",
+  "source": [
+    {
+      "path": "inference-service/src/syntheticBenchmarkFixtures/kotlin/app/skein/inference/service/SyntheticParityControls.kt",
+      "sha256": "dafa4030ea7ebc18cdb426512809ef48ed532f41d7afd1577b7d393b1f1c3fb4",
+      "bytes": 3494,
+      "matches_immutable_commit": true
+    },
+    {
+      "path": "inference-service/src/test/kotlin/app/skein/inference/service/SyntheticParityControlsTest.kt",
+      "sha256": "188f477766e2bd93064e949f31b67919cba7f8c4242ae06c082e9a72f29c2030",
+      "bytes": 4791,
+      "matches_immutable_commit": true
+    }
+  ],
+  "source_findings": [
+    "Singleton native token ID equality remains required.",
+    "Explicit literal turn-start calls expectedEog=false; each declared end control calls expectedEog=true. Helper now enforces equality for both.",
+    "New negative synthetic test passes start-as-EOG=true and requires rejection; existing positive non-EOG start remains.",
+    "Two Kotlin test source files changed; no production/default unmanifested template behavior changed."
+  ],
+  "archive": {
+    "path": "/Users/andrewherrera/skein-worktrees/native-template-resume-20260930/docs/ux/runs/2026-09-30-native-parity-controls/start-control-classification/raw-followup-evidence.zip",
+    "bytes": 45411,
+    "sha256": "2957a8c24166adbce0d51fa8a2948d60e8b7c99c247071fdf1252243e79cddae"
+  },
+  "archive_members": [
+    {
+      "path": "inference-service/build/test-results/testDevDebugUnitTest/TEST-app.skein.inference.service.ChatTemplateBoundaryTest.xml",
+      "bytes": 697,
+      "sha256": "844b79c23fb04eceb4a5c29dd9fffc7be070a69acb8a71c1fbc59fc9034b61b0"
+    },
+    {
+      "path": "inference-service/build/test-results/testDevDebugUnitTest/TEST-app.skein.inference.service.ChatTemplatingTest.xml",
+      "bytes": 3054,
+      "sha256": "24c2bc3545cdbe471b648bcd37a2e0954777adc744f903c173f976215e9d32e5"
+    },
+    {
+      "path": "inference-service/build/test-results/testDevDebugUnitTest/TEST-app.skein.inference.service.GgufFileTypeTest.xml",
+      "bytes": 1401,
+      "sha256": "898d17dc281ed2a710a75229085b6ad640990ff098233f4f5c504f539a2f89c2"
+    },
+    {
+      "path": "inference-service/build/test-results/testDevDebugUnitTest/TEST-app.skein.inference.service.InferenceEngineStateTest.xml",
+      "bytes": 395327,
+      "sha256": "27e57d07eef3e021d6808e306adb35f2ed5dfd3688d41204a027b4ae3cac8daf"
+    },
+    {
+      "path": "inference-service/build/test-results/testDevDebugUnitTest/TEST-app.skein.inference.service.InferenceWorkerLifecycleTest.xml",
+      "bytes": 535,
+      "sha256": "6b095a50ddd1d884bcf04661db82867700af27e1643c5220d1e177a54d5fffe9"
+    },
+    {
+      "path": "inference-service/build/test-results/testDevDebugUnitTest/TEST-app.skein.inference.service.InferenceWorkerResultTest.xml",
+      "bytes": 860,
+      "sha256": "b8d4c07d792eb0c58bb35bcd647636393b9a026c7feec479cc1d7e46211b04d9"
+    },
+    {
+      "path": "inference-service/build/test-results/testDevDebugUnitTest/TEST-app.skein.inference.service.IsolatedSessionGateTest.xml",
+      "bytes": 3768,
+      "sha256": "0c33a66a70847edc9ec6219dfe9cd3fa58a65606cd1fc9870fede62cc2ffa715"
+    },
+    {
+      "path": "inference-service/build/test-results/testDevDebugUnitTest/TEST-app.skein.inference.service.LlamaLogRedactorTest.xml",
+      "bytes": 2486,
+      "sha256": "0b97a85e6f1b340b7c6646d43701ca097ba31590236f3dca934c5ddad6f42c7a"
+    },
+    {
+      "path": "inference-service/build/test-results/testDevDebugUnitTest/TEST-app.skein.inference.service.LlamaNativeSurfaceTest.xml",
+      "bytes": 477,
+      "sha256": "e9ff736d25a4d188a8873d67bbc2f764191f29c16c01f35165e4e8c808a4b09a"
+    },
+    {
+      "path": "inference-service/build/test-results/testDevDebugUnitTest/TEST-app.skein.inference.service.NativeBackendReportTest.xml",
+      "bytes": 1292,
+      "sha256": "e073b3db298a337456c15b932633efb7eb5274c1c50d55cc0ef06498c7eb6bb8"
+    },
+    {
+      "path": "inference-service/build/test-results/testDevDebugUnitTest/TEST-app.skein.inference.service.PinnedTemplateReferenceTest.xml",
+      "bytes": 548,
+      "sha256": "2d1fc3c8758a5054b41d43a6083f07b561035cb699501fed3c6db0641b33cf78"
+    },
+    {
+      "path": "inference-service/build/test-results/testDevDebugUnitTest/TEST-app.skein.inference.service.ServiceErrorMappingTest.xml",
+      "bytes": 4085,
+      "sha256": "3654d7189fe2a450e4807e278ed6122a7923ab540afce0c51f0c3ca02f9489d9"
+    },
+    {
+      "path": "inference-service/build/test-results/testDevDebugUnitTest/TEST-app.skein.inference.service.StopStringMatcherTest.xml",
+      "bytes": 2514,
+      "sha256": "17c3b0ff094c5ddbe85df34f7ab31e4183ccd0575dfd4dadfaaddcf200bb638b"
+    },
+    {
+      "path": "inference-service/build/test-results/testDevDebugUnitTest/TEST-app.skein.inference.service.SyntheticParityControlsTest.xml",
+      "bytes": 1481,
+      "sha256": "ef79f199ae2df9b64e00694959359f7ce19e0858732b7dead2685ef037cd9659"
+    },
+    {
+      "path": "inference-service/build/test-results/testDevDebugUnitTest/TEST-app.skein.inference.service.TokenBatcherTest.xml",
+      "bytes": 2562,
+      "sha256": "ffdf6d72f36a2a1de73cdd818946e3bdc47e3225a335efa3e29cc72b979b16a6"
+    },
+    {
+      "path": "inference-service/build/test-results/testDevDebugUnitTest/TEST-app.skein.inference.service.Utf8BufferTest.xml",
+      "bytes": 2143,
+      "sha256": "61f16a17a87e1913973464f9d08f09d6b48ae726f8b4bd5092beafdba2177ba7"
+    },
+    {
+      "path": "inference-service/build/test-results/testFossDebugUnitTest/TEST-app.skein.inference.service.ChatTemplateBoundaryTest.xml",
+      "bytes": 697,
+      "sha256": "d6a4c3353bb0c9b1eb55613a97916cc11ee07e31135c384e9a0f176fa6f6e614"
+    },
+    {
+      "path": "inference-service/build/test-results/testFossDebugUnitTest/TEST-app.skein.inference.service.ChatTemplatingTest.xml",
+      "bytes": 3056,
+      "sha256": "f2558e7692f517375652070b6eb929ac56e327a1d79773f8135cde7d23410947"
+    },
+    {
+      "path": "inference-service/build/test-results/testFossDebugUnitTest/TEST-app.skein.inference.service.GgufFileTypeTest.xml",
+      "bytes": 1401,
+      "sha256": "5389830a9785f403b8afbf0bb522b663e145fb9ed730e89a4d5410ac27eb1f44"
+    },
+    {
+      "path": "inference-service/build/test-results/testFossDebugUnitTest/TEST-app.skein.inference.service.InferenceEngineStateTest.xml",
+      "bytes": 378911,
+      "sha256": "db34be947092d31e3bfbdd965eb80833890495fa94794de188a863c6987793aa"
+    },
+    {
+      "path": "inference-service/build/test-results/testFossDebugUnitTest/TEST-app.skein.inference.service.InferenceWorkerLifecycleTest.xml",
+      "bytes": 535,
+      "sha256": "fe5ee8ebbbdefc246bdf675059073e9aa5eb638988b9945ac17a4b52017ce608"
+    },
+    {
+      "path": "inference-service/build/test-results/testFossDebugUnitTest/TEST-app.skein.inference.service.InferenceWorkerResultTest.xml",
+      "bytes": 860,
+      "sha256": "740057a55a787a4015da8350b3289726cb60620a46a09d47e027f77540a3fee3"
+    },
+    {
+      "path": "inference-service/build/test-results/testFossDebugUnitTest/TEST-app.skein.inference.service.IsolatedSessionGateTest.xml",
+      "bytes": 3768,
+      "sha256": "6ec93120af859b0a0433e4c52e0458fcf81571d76a8dc45529fc355ab6496fe4"
+    },
+    {
+      "path": "inference-service/build/test-results/testFossDebugUnitTest/TEST-app.skein.inference.service.LlamaLogRedactorTest.xml",
+      "bytes": 2481,
+      "sha256": "bb7384c01267d98916e62f7f747cba401319883a804dd7f62abc5a885a955671"
+    },
+    {
+      "path": "inference-service/build/test-results/testFossDebugUnitTest/TEST-app.skein.inference.service.LlamaNativeSurfaceTest.xml",
+      "bytes": 477,
+      "sha256": "8f3acfae95feff2e99bdb74165e2206952097b0548af56342e88c5b342a19403"
+    },
+    {
+      "path": "inference-service/build/test-results/testFossDebugUnitTest/TEST-app.skein.inference.service.NativeBackendReportTest.xml",
+      "bytes": 1292,
+      "sha256": "54cfbef99c0ad06fdbf6699e043614e31c1f156d07702dd45754e20060ec0fe0"
+    },
+    {
+      "path": "inference-service/build/test-results/testFossDebugUnitTest/TEST-app.skein.inference.service.PinnedTemplateReferenceTest.xml",
+      "bytes": 546,
+      "sha256": "d5bb81256ffeabea4e943ca9e7ea4ffc7ee9ece112c9c8d703156227d4863726"
+    },
+    {
+      "path": "inference-service/build/test-results/testFossDebugUnitTest/TEST-app.skein.inference.service.ServiceErrorMappingTest.xml",
+      "bytes": 4085,
+      "sha256": "7dfb364c5a9d25da66580bc1c8b56b4f14228524e63cfc706d84eacf11808979"
+    },
+    {
+      "path": "inference-service/build/test-results/testFossDebugUnitTest/TEST-app.skein.inference.service.StopStringMatcherTest.xml",
+      "bytes": 2514,
+      "sha256": "af8cf1640b2bc564dbf93ddc0cc3b65078c8766584d25f3a0c806d7b2c9a26b3"
+    },
+    {
+      "path": "inference-service/build/test-results/testFossDebugUnitTest/TEST-app.skein.inference.service.SyntheticParityControlsTest.xml",
+      "bytes": 1483,
+      "sha256": "23f9063179b527eeed202b36cf7d7c4f956abbbd87db058d29cbfc40379ab4e2"
+    },
+    {
+      "path": "inference-service/build/test-results/testFossDebugUnitTest/TEST-app.skein.inference.service.TokenBatcherTest.xml",
+      "bytes": 2562,
+      "sha256": "bdc056a6b9f07285f6a38a784e39525c80cd86f2b5c2fc58eb8ef6c143d61ff1"
+    },
+    {
+      "path": "inference-service/build/test-results/testFossDebugUnitTest/TEST-app.skein.inference.service.Utf8BufferTest.xml",
+      "bytes": 2141,
+      "sha256": "ed13361614852de2a038cfaaece12d45c531054cb076b43835fdaee6d7499345"
+    },
+    {
+      "path": "agent-logs/build-01.exit",
+      "bytes": 2,
+      "sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa"
+    },
+    {
+      "path": "agent-logs/build-01.log",
+      "bytes": 10921,
+      "sha256": "b38ffdcdae3e1d1c1fd2e1f7e38bf4bab40ec66f0e72d8ab0474b0dd351391e3"
+    },
+    {
+      "path": "agent-logs/lease-acquired.json",
+      "bytes": 294,
+      "sha256": "b546900365d31864028eb8edd8d830913d6de23174a731f10db1a72f27b33bfe"
+    },
+    {
+      "path": "agent-logs/lease-released.json",
+      "bytes": 820,
+      "sha256": "ff23150385cc171ef4d32d15933b6ce31d5ec308c326979d58f80042e62b6dfd"
+    },
+    {
+      "path": "agent-logs/source-freeze.json",
+      "bytes": 506,
+      "sha256": "29adeac740a1180f66dfd649fbecf430c1affd19ffdfb5223a0d3436a87f3e92"
+    }
+  ],
+  "xml": [
+    {
+      "path": "inference-service/build/test-results/testDevDebugUnitTest/TEST-app.skein.inference.service.ChatTemplateBoundaryTest.xml",
+      "sha256": "844b79c23fb04eceb4a5c29dd9fffc7be070a69acb8a71c1fbc59fc9034b61b0",
+      "counts": {
+        "tests": 2,
+        "failure": 0,
+        "error": 0,
+        "skipped": 0
+      }
+    },
+    {
+      "path": "inference-service/build/test-results/testDevDebugUnitTest/TEST-app.skein.inference.service.ChatTemplatingTest.xml",
+      "sha256": "24c2bc3545cdbe471b648bcd37a2e0954777adc744f903c173f976215e9d32e5",
+      "counts": {
+        "tests": 18,
+        "failure": 0,
+        "error": 0,
+        "skipped": 0
+      }
+    },
+    {
+      "path": "inference-service/build/test-results/testDevDebugUnitTest/TEST-app.skein.inference.service.GgufFileTypeTest.xml",
+      "sha256": "898d17dc281ed2a710a75229085b6ad640990ff098233f4f5c504f539a2f89c2",
+      "counts": {
+        "tests": 8,
+        "failure": 0,
+        "error": 0,
+        "skipped": 0
+      }
+    },
+    {
+      "path": "inference-service/build/test-results/testDevDebugUnitTest/TEST-app.skein.inference.service.InferenceEngineStateTest.xml",
+      "sha256": "27e57d07eef3e021d6808e306adb35f2ed5dfd3688d41204a027b4ae3cac8daf",
+      "counts": {
+        "tests": 120,
+        "failure": 0,
+        "error": 0,
+        "skipped": 0
+      }
+    },
+    {
+      "path": "inference-service/build/test-results/testDevDebugUnitTest/TEST-app.skein.inference.service.InferenceWorkerLifecycleTest.xml",
+      "sha256": "6b095a50ddd1d884bcf04661db82867700af27e1643c5220d1e177a54d5fffe9",
+      "counts": {
+        "tests": 1,
+        "failure": 0,
+        "error": 0,
+        "skipped": 0
+      }
+    },
+    {
+      "path": "inference-service/build/test-results/testDevDebugUnitTest/TEST-app.skein.inference.service.InferenceWorkerResultTest.xml",
+      "sha256": "b8d4c07d792eb0c58bb35bcd647636393b9a026c7feec479cc1d7e46211b04d9",
+      "counts": {
+        "tests": 3,
+        "failure": 0,
+        "error": 0,
+        "skipped": 0
+      }
+    },
+    {
+      "path": "inference-service/build/test-results/testDevDebugUnitTest/TEST-app.skein.inference.service.IsolatedSessionGateTest.xml",
+      "sha256": "0c33a66a70847edc9ec6219dfe9cd3fa58a65606cd1fc9870fede62cc2ffa715",
+      "counts": {
+        "tests": 23,
+        "failure": 0,
+        "error": 0,
+        "skipped": 0
+      }
+    },
+    {
+      "path": "inference-service/build/test-results/testDevDebugUnitTest/TEST-app.skein.inference.service.LlamaLogRedactorTest.xml",
+      "sha256": "0b97a85e6f1b340b7c6646d43701ca097ba31590236f3dca934c5ddad6f42c7a",
+      "counts": {
+        "tests": 15,
+        "failure": 0,
+        "error": 0,
+        "skipped": 0
+      }
+    },
+    {
+      "path": "inference-service/build/test-results/testDevDebugUnitTest/TEST-app.skein.inference.service.LlamaNativeSurfaceTest.xml",
+      "sha256": "e9ff736d25a4d188a8873d67bbc2f764191f29c16c01f35165e4e8c808a4b09a",
+      "counts": {
+        "tests": 1,
+        "failure": 0,
+        "error": 0,
+        "skipped": 0
+      }
+    },
+    {
+      "path": "inference-service/build/test-results/testDevDebugUnitTest/TEST-app.skein.inference.service.NativeBackendReportTest.xml",
+      "sha256": "e073b3db298a337456c15b932633efb7eb5274c1c50d55cc0ef06498c7eb6bb8",
+      "counts": {
+        "tests": 7,
+        "failure": 0,
+        "error": 0,
+        "skipped": 0
+      }
+    },
+    {
+      "path": "inference-service/build/test-results/testDevDebugUnitTest/TEST-app.skein.inference.service.PinnedTemplateReferenceTest.xml",
+      "sha256": "2d1fc3c8758a5054b41d43a6083f07b561035cb699501fed3c6db0641b33cf78",
+      "counts": {
+        "tests": 1,
+        "failure": 0,
+        "error": 0,
+        "skipped": 0
+      }
+    },
+    {
+      "path": "inference-service/build/test-results/testDevDebugUnitTest/TEST-app.skein.inference.service.ServiceErrorMappingTest.xml",
+      "sha256": "3654d7189fe2a450e4807e278ed6122a7923ab540afce0c51f0c3ca02f9489d9",
+      "counts": {
+        "tests": 27,
+        "failure": 0,
+        "error": 0,
+        "skipped": 0
+      }
+    },
+    {
+      "path": "inference-service/build/test-results/testDevDebugUnitTest/TEST-app.skein.inference.service.StopStringMatcherTest.xml",
+      "sha256": "17c3b0ff094c5ddbe85df34f7ab31e4183ccd0575dfd4dadfaaddcf200bb638b",
+      "counts": {
+        "tests": 15,
+        "failure": 0,
+        "error": 0,
+        "skipped": 0
+      }
+    },
+    {
+      "path": "inference-service/build/test-results/testDevDebugUnitTest/TEST-app.skein.inference.service.SyntheticParityControlsTest.xml",
+      "sha256": "ef79f199ae2df9b64e00694959359f7ce19e0858732b7dead2685ef037cd9659",
+      "counts": {
+        "tests": 7,
+        "failure": 0,
+        "error": 0,
+        "skipped": 0
+      }
+    },
+    {
+      "path": "inference-service/build/test-results/testDevDebugUnitTest/TEST-app.skein.inference.service.TokenBatcherTest.xml",
+      "sha256": "ffdf6d72f36a2a1de73cdd818946e3bdc47e3225a335efa3e29cc72b979b16a6",
+      "counts": {
+        "tests": 17,
+        "failure": 0,
+        "error": 0,
+        "skipped": 0
+      }
+    },
+    {
+      "path": "inference-service/build/test-results/testDevDebugUnitTest/TEST-app.skein.inference.service.Utf8BufferTest.xml",
+      "sha256": "61f16a17a87e1913973464f9d08f09d6b48ae726f8b4bd5092beafdba2177ba7",
+      "counts": {
+        "tests": 13,
+        "failure": 0,
+        "error": 0,
+        "skipped": 0
+      }
+    },
+    {
+      "path": "inference-service/build/test-results/testFossDebugUnitTest/TEST-app.skein.inference.service.ChatTemplateBoundaryTest.xml",
+      "sha256": "d6a4c3353bb0c9b1eb55613a97916cc11ee07e31135c384e9a0f176fa6f6e614",
+      "counts": {
+        "tests": 2,
+        "failure": 0,
+        "error": 0,
+        "skipped": 0
+      }
+    },
+    {
+      "path": "inference-service/build/test-results/testFossDebugUnitTest/TEST-app.skein.inference.service.ChatTemplatingTest.xml",
+      "sha256": "f2558e7692f517375652070b6eb929ac56e327a1d79773f8135cde7d23410947",
+      "counts": {
+        "tests": 18,
+        "failure": 0,
+        "error": 0,
+        "skipped": 0
+      }
+    },
+    {
+      "path": "inference-service/build/test-results/testFossDebugUnitTest/TEST-app.skein.inference.service.GgufFileTypeTest.xml",
+      "sha256": "5389830a9785f403b8afbf0bb522b663e145fb9ed730e89a4d5410ac27eb1f44",
+      "counts": {
+        "tests": 8,
+        "failure": 0,
+        "error": 0,
+        "skipped": 0
+      }
+    },
+    {
+      "path": "inference-service/build/test-results/testFossDebugUnitTest/TEST-app.skein.inference.service.InferenceEngineStateTest.xml",
+      "sha256": "db34be947092d31e3bfbdd965eb80833890495fa94794de188a863c6987793aa",
+      "counts": {
+        "tests": 120,
+        "failure": 0,
+        "error": 0,
+        "skipped": 0
+      }
+    },
+    {
+      "path": "inference-service/build/test-results/testFossDebugUnitTest/TEST-app.skein.inference.service.InferenceWorkerLifecycleTest.xml",
+      "sha256": "fe5ee8ebbbdefc246bdf675059073e9aa5eb638988b9945ac17a4b52017ce608",
+      "counts": {
+        "tests": 1,
+        "failure": 0,
+        "error": 0,
+        "skipped": 0
+      }
+    },
+    {
+      "path": "inference-service/build/test-results/testFossDebugUnitTest/TEST-app.skein.inference.service.InferenceWorkerResultTest.xml",
+      "sha256": "740057a55a787a4015da8350b3289726cb60620a46a09d47e027f77540a3fee3",
+      "counts": {
+        "tests": 3,
+        "failure": 0,
+        "error": 0,
+        "skipped": 0
+      }
+    },
+    {
+      "path": "inference-service/build/test-results/testFossDebugUnitTest/TEST-app.skein.inference.service.IsolatedSessionGateTest.xml",
+      "sha256": "6ec93120af859b0a0433e4c52e0458fcf81571d76a8dc45529fc355ab6496fe4",
+      "counts": {
+        "tests": 23,
+        "failure": 0,
+        "error": 0,
+        "skipped": 0
+      }
+    },
+    {
+      "path": "inference-service/build/test-results/testFossDebugUnitTest/TEST-app.skein.inference.service.LlamaLogRedactorTest.xml",
+      "sha256": "bb7384c01267d98916e62f7f747cba401319883a804dd7f62abc5a885a955671",
+      "counts": {
+        "tests": 15,
+        "failure": 0,
+        "error": 0,
+        "skipped": 0
+      }
+    },
+    {
+      "path": "inference-service/build/test-results/testFossDebugUnitTest/TEST-app.skein.inference.service.LlamaNativeSurfaceTest.xml",
+      "sha256": "8f3acfae95feff2e99bdb74165e2206952097b0548af56342e88c5b342a19403",
+      "counts": {
+        "tests": 1,
+        "failure": 0,
+        "error": 0,
+        "skipped": 0
+      }
+    },
+    {
+      "path": "inference-service/build/test-results/testFossDebugUnitTest/TEST-app.skein.inference.service.NativeBackendReportTest.xml",
+      "sha256": "54cfbef99c0ad06fdbf6699e043614e31c1f156d07702dd45754e20060ec0fe0",
+      "counts": {
+        "tests": 7,
+        "failure": 0,
+        "error": 0,
+        "skipped": 0
+      }
+    },
+    {
+      "path": "inference-service/build/test-results/testFossDebugUnitTest/TEST-app.skein.inference.service.PinnedTemplateReferenceTest.xml",
+      "sha256": "d5bb81256ffeabea4e943ca9e7ea4ffc7ee9ece112c9c8d703156227d4863726",
+      "counts": {
+        "tests": 1,
+        "failure": 0,
+        "error": 0,
+        "skipped": 0
+      }
+    },
+    {
+      "path": "inference-service/build/test-results/testFossDebugUnitTest/TEST-app.skein.inference.service.ServiceErrorMappingTest.xml",
+      "sha256": "7dfb364c5a9d25da66580bc1c8b56b4f14228524e63cfc706d84eacf11808979",
+      "counts": {
+        "tests": 27,
+        "failure": 0,
+        "error": 0,
+        "skipped": 0
+      }
+    },
+    {
+      "path": "inference-service/build/test-results/testFossDebugUnitTest/TEST-app.skein.inference.service.StopStringMatcherTest.xml",
+      "sha256": "af8cf1640b2bc564dbf93ddc0cc3b65078c8766584d25f3a0c806d7b2c9a26b3",
+      "counts": {
+        "tests": 15,
+        "failure": 0,
+        "error": 0,
+        "skipped": 0
+      }
+    },
+    {
+      "path": "inference-service/build/test-results/testFossDebugUnitTest/TEST-app.skein.inference.service.SyntheticParityControlsTest.xml",
+      "sha256": "23f9063179b527eeed202b36cf7d7c4f956abbbd87db058d29cbfc40379ab4e2",
+      "counts": {
+        "tests": 7,
+        "failure": 0,
+        "error": 0,
+        "skipped": 0
+      }
+    },
+    {
+      "path": "inference-service/build/test-results/testFossDebugUnitTest/TEST-app.skein.inference.service.TokenBatcherTest.xml",
+      "sha256": "bdc056a6b9f07285f6a38a784e39525c80cd86f2b5c2fc58eb8ef6c143d61ff1",
+      "counts": {
+        "tests": 17,
+        "failure": 0,
+        "error": 0,
+        "skipped": 0
+      }
+    },
+    {
+      "path": "inference-service/build/test-results/testFossDebugUnitTest/TEST-app.skein.inference.service.Utf8BufferTest.xml",
+      "sha256": "ed13361614852de2a038cfaaece12d45c531054cb076b43835fdaee6d7499345",
+      "counts": {
+        "tests": 13,
+        "failure": 0,
+        "error": 0,
+        "skipped": 0
+      }
+    }
+  ],
+  "actual_counts": {
+    "tests": 556,
+    "failure": 0,
+    "error": 0,
+    "skipped": 0
+  },
+  "xml_files": 32,
+  "prior_counts": {
+    "tests": 554,
+    "failure": 0,
+    "error": 0,
+    "skipped": 0
+  },
+  "all_prior_identities_retained": true,
+  "exact_added": [
+    [
+      "inference-service/build/test-results/testDevDebugUnitTest/TEST-app.skein.inference.service.SyntheticParityControlsTest.xml",
+      "app.skein.inference.service.SyntheticParityControlsTest",
+      "native_turn_start_must_be_classified_as_non_eog"
+    ],
+    [
+      "inference-service/build/test-results/testFossDebugUnitTest/TEST-app.skein.inference.service.SyntheticParityControlsTest.xml",
+      "app.skein.inference.service.SyntheticParityControlsTest",
+      "native_turn_start_must_be_classified_as_non_eog"
+    ]
+  ],
+  "fresh_logged_tasks": {
+    ":inference-service:ktlintCheck": [
+      "> Task :inference-service:ktlintCheck"
+    ],
+    ":inference-service:testDevDebugUnitTest": [
+      "> Task :inference-service:testDevDebugUnitTest"
+    ],
+    ":inference-service:testFossDebugUnitTest": [
+      "> Task :inference-service:testFossDebugUnitTest"
+    ],
+    ":inference-service:compileDevDebugAndroidTestKotlin": [
+      "> Task :inference-service:compileDevDebugAndroidTestKotlin"
+    ],
+    ":inference-service:compileFossDebugAndroidTestKotlin": [
+      "> Task :inference-service:compileFossDebugAndroidTestKotlin"
+    ]
+  },
+  "unmeasured": [
+    "Native execution",
+    "Actual E4B artifact identity and control/EOG classification",
+    "Generation stopping/quality",
+    "Fold installation or acceptance"
+  ]
+}

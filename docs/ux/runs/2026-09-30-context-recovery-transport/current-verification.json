@@ -1,0 +1,36 @@
+{
+  "application_source": "534161291b5b392994a73eb098affc6d43893086",
+  "policy": "Local checks default; hosted dispatch requires explicit owner request",
+  "implementation": {
+    "unit_passes": 5636,
+    "unit_skips_unchanged": 86,
+    "unit_xml": 569,
+    "eval_tooling_passes": 115,
+    "ci_tooling_passes": 58,
+    "screenshots_passes": 1397,
+    "screenshots_skips_unchanged": 80,
+    "unchanged_images": 552,
+    "apk_sha256": "662cf5bb257dc3bdb44e9e128c2866f0b07225c13c682b16dad2bbf0ba9d779c",
+    "independent_review": "PASS"
+  },
+  "runtime": {
+    "earlier_source": "a2effe4ac39e88af5fd577017a5e7ce0bdbce400",
+    "earlier_API35_x86_64_passes": 303,
+    "current_API35_arm64": "ATD secure-lock setup refused; zero tests executed. Compatible-image qualification in progress under skein-8e6y."
+  },
+  "physical": {
+    "installed_application": "e62f94785ef8e696d8ee59745fd299fe1f83cc4a",
+    "installed_apk_sha256": "4052c0a8ba6363baa1f7387fcce0703ad0ca73e1355a7c7b22512583bca4d4a4",
+    "new_source_installed": false,
+    "connection": "Owner told Fold may disconnect; recheck normal unlock before future hardware work."
+  },
+  "open_acceptance": [
+    "Existing-envelope recovery activation and Android authenticated recovery",
+    "Actual AIOUT encrypted coordinator lock-persistence integration and unsupported survivor kinds",
+    "Generic nonce/geometry runtime, exact Fold profile and physical acceptance",
+    "Actual E4B artifact/template/native execution and blinded answer quality",
+    "Independent embedding reference, Android backend, human decision and hybrid quality",
+    "Temporary Chats nonpersistent implementation and acceptance"
+  ],
+  "fresh40": "Consumed regression: original20/40 strict,12 false absence admissions,6 contextual cases unexecuted. No new run, relabeling or threshold change."
+}

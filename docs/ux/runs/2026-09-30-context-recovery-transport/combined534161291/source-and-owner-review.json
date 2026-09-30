@@ -1,0 +1,49 @@
+{
+  "head": "534161291b5b392994a73eb098affc6d43893086",
+  "source_clean": true,
+  "previous_source": "15941fd155b232f1433cd21d32472f6dc17b3109",
+  "production_delta": [
+    {
+      "path": "app/src/main/kotlin/app/skein/shell/DocumentDeleteCoordinator.kt",
+      "sha256": "beefeac9961175afdc0ea05adf04a87a2093ce55c8f532d86b9bd9894a48eda4"
+    },
+    {
+      "path": "app/src/main/kotlin/app/skein/shell/DocumentDeletionServices.kt",
+      "sha256": "0d2315aaea18d71da495c87bff23c5d0554ff4ff782ee469f904f2e2e349a881"
+    },
+    {
+      "path": "feature/editor/src/main/kotlin/app/skein/feature/editor/EditorState.kt",
+      "sha256": "d149fdcdd3e8c6b9d4c595cb7d33ba228192f514256e2adbe673b9c8c0f5cb90"
+    },
+    {
+      "path": "feature/editor/src/main/kotlin/app/skein/feature/editor/notetab/NoteDeletionRegistry.kt",
+      "sha256": "08f63375bb658b7304c8d1c4e799fcfb2db4d1fab63537aeec5c2cd55f81f8f4"
+    },
+    {
+      "path": "feature/editor/src/main/kotlin/app/skein/feature/editor/notetab/NoteTab.kt",
+      "sha256": "f0fe4232e5b49e7ed1a762a935919c1d2efd8f852489c57c5dc5c2d4f84cb65f"
+    },
+    {
+      "path": "feature/editor/src/main/kotlin/app/skein/feature/editor/notetab/NoteTabState.kt",
+      "sha256": "02d4dbcdc8c77d622ecc0c9d6c3ed37718841cec3a02360cd439d1c50e04d913"
+    }
+  ],
+  "preserved_unchanged_groups": [
+    "tools/eval/fixtures",
+    "core/rag",
+    "feature/chat",
+    "native",
+    "third_party",
+    "ux-baselines"
+  ],
+  "owner": {
+    "preserved_file_count": 21,
+    "status_stash_exact": true,
+    "baseline_sha256": "d8d761a644a6631ff44125f8f6bde98c4ce4b4f7bf16191fbfb8b153309b5b0e"
+  },
+  "limits": [
+    "Owner file paths and bytes remain private.",
+    "No physical installation or actual E4B model execution.",
+    "Existing test outputs do not qualify broad AIOUT encrypted-lock acceptance."
+  ]
+}

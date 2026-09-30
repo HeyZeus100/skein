@@ -1,0 +1,139 @@
+{
+  "reviewer": "/root/recovery",
+  "source": "534161291b5b392994a73eb098affc6d43893086",
+  "source_worktree_clean_observed": true,
+  "scope": "Independent read-only combined local evidence review; no builds/device/hosted runs",
+  "verdict": "PASS within host verification scope",
+  "source_files_rehashed_against_prior_worker_frozen_receipts": {
+    "inference-service/build.gradle.kts": "58d5240e8e737df438386f7dbaf84afcc8470aecb7e8e2a835b2e1d273d585bb",
+    "inference-service/src/syntheticBenchmark/kotlin/app/skein/inference/service/SyntheticTemplateParityTest.kt": "27586a2b6a6adf2a99db61b74b9b99fd195ef35db31e95e703f7f8997f1f889b",
+    "inference-service/src/syntheticBenchmarkFixtures/kotlin/app/skein/inference/service/SyntheticParityControls.kt": "dafa4030ea7ebc18cdb426512809ef48ed532f41d7afd1577b7d393b1f1c3fb4",
+    "inference-service/src/test/kotlin/app/skein/inference/service/SyntheticParityControlsTest.kt": "188f477766e2bd93064e949f31b67919cba7f8c4242ae06c082e9a72f29c2030",
+    "tools/eval/ANDROID_SYNTHETIC.md": "5cfc5792e5fa8bf260bafe59271740aae2c5e4ac9b5b643ae9478a61af9e91f2",
+    "tools/eval/prepare_native_parity.py": "187f4e4bc82dcc0eadd0d2a439069a29932b685992ba09bf7b919ff5747a2dd0",
+    "tools/eval/qualify_model_artifact.py": "69cfc4d791005378b75079a246335d4bb1da3fdf349826378c489d4f0140d4f2",
+    "tools/eval/test_prepare_native_parity.py": "c379200571c0feb333200c392a78f7586cb633a4ecc3ee058bd20818a5c2ed5f",
+    "tools/eval/test_qualify_model_artifact.py": "9a541616f51b5f2906f1578aef8c88609997ed1aed60fb667e8e4817348f5c37",
+    "app/src/main/kotlin/app/skein/shell/DocumentDeleteCoordinator.kt": "beefeac9961175afdc0ea05adf04a87a2093ce55c8f532d86b9bd9894a48eda4",
+    "app/src/main/kotlin/app/skein/shell/DocumentDeletionServices.kt": "0d2315aaea18d71da495c87bff23c5d0554ff4ff782ee469f904f2e2e349a881",
+    "app/src/test/kotlin/app/skein/shell/FileDocumentDeleteCoordinatorTest.kt": "37ac57b700ba7c4274b8eb4ecc42709cf7165d7792ce3d90ae969b8efd075f92",
+    "feature/editor/src/main/kotlin/app/skein/feature/editor/EditorState.kt": "d149fdcdd3e8c6b9d4c595cb7d33ba228192f514256e2adbe673b9c8c0f5cb90",
+    "feature/editor/src/main/kotlin/app/skein/feature/editor/notetab/NoteDeletionRegistry.kt": "08f63375bb658b7304c8d1c4e799fcfb2db4d1fab63537aeec5c2cd55f81f8f4",
+    "feature/editor/src/main/kotlin/app/skein/feature/editor/notetab/NoteTab.kt": "f0fe4232e5b49e7ed1a762a935919c1d2efd8f852489c57c5dc5c2d4f84cb65f",
+    "feature/editor/src/main/kotlin/app/skein/feature/editor/notetab/NoteTabState.kt": "02d4dbcdc8c77d622ecc0c9d6c3ed37718841cec3a02360cd439d1c50e04d913",
+    "feature/editor/src/test/kotlin/app/skein/feature/editor/notetab/NoteSourceDetachmentTest.kt": "de9d5e41db043a6477cfa8fb632161d6328e0e13bd566e74facd73497e26eb65"
+  },
+  "python": {
+    "eval": 115,
+    "ci": 58,
+    "result": "PASS log/exit verified; not rerun by reviewer"
+  },
+  "apk": {
+    "bytes": 128112723,
+    "sha256": "662cf5bb257dc3bdb44e9e128c2866f0b07225c13c682b16dad2bbf0ba9d779c",
+    "native_payloads": [
+      {
+        "path": "lib/arm64-v8a/libandroidx.graphics.path.so",
+        "bytes": 10096,
+        "sha256": "41e9a793c43a0f4fddb19e33f346bace464f30f888ba7b9eaf96294ea115bfb6"
+      },
+      {
+        "path": "lib/arm64-v8a/libdatastore_shared_counter.so",
+        "bytes": 7784,
+        "sha256": "178f89a2c6c9234ddf980dd4cd1f3616186a46b2b932aafa6707abd04c5fd76a"
+      },
+      {
+        "path": "lib/arm64-v8a/libonnxruntime.so",
+        "bytes": 27985944,
+        "sha256": "850f897a50d369b3305582244210f5649be9cfeb193c5807fba14146301616c7"
+      },
+      {
+        "path": "lib/arm64-v8a/libonnxruntime4j_jni.so",
+        "bytes": 83208,
+        "sha256": "f86f2a5f56b907e4a25d67febc422ec13f5a265d36665f50e2808de6e4a515b6"
+      },
+      {
+        "path": "lib/arm64-v8a/libskein_llama.so",
+        "bytes": 33413256,
+        "sha256": "b1ff614714a8973d9359fba0034482534c9a65ba8e28d1cab995ed428bf89ee3"
+      },
+      {
+        "path": "lib/arm64-v8a/libskein_sqlite.so",
+        "bytes": 6269000,
+        "sha256": "00a04ba8fda9b13cbe6211a9f04c66fe1f8233724e7cbef5d987a08156df328e"
+      },
+      {
+        "path": "lib/arm64-v8a/libskein_sqlite_jni.so",
+        "bytes": 22320,
+        "sha256": "2ca53aa854232b3f5e16c798b53f80e6630d49df0b4882bd5737609f645c9f0a"
+      }
+    ],
+    "all7_match_prior_recorded_baseline_inventory": true,
+    "binary_manifest_sha256": "5cbe490d4a4ba6d007096486094511ab2baef4c573c0b1d093242562ac41aacb",
+    "decoded_manifest_sha256": "9967d1f0bddc1f613bf479bc861f102a0bdaee5fd0d88a730161b0f216212c16",
+    "internet_permission": false,
+    "isolated_processes": [
+      "inference",
+      "embedder"
+    ],
+    "new_source_definition_strings_observed": {
+      "classes9.dex": [
+        "prepareSourceDetachment",
+        "conflictingDrafts",
+        "unregisterDeletionWriter",
+        "deletionScopeHandle"
+      ]
+    },
+    "attribution": "Actual local APK bytes hashed; build checkout attribution, not installed APK or physical acceptance."
+  },
+  "source_diff_boundary": "No Android manifest/native/submodule/model-pin source difference versus15941fd15 baseline.",
+  "task_reuse": "Unit/build includes executed/cache/up-to-date tasks; screenshot gate explicitly --no-build-cache. Actual retained records reviewed; no blanket all-tasks-fresh claim.",
+  "limitations": [
+    "Local tests do not establish ordinary Android runtime for534161291.",
+    "No installed-byte, Fold geometry, owner unlock or recovery activation acceptance.",
+    "No actual E4B model/native parity/quality acceptance; Fresh40 remains consumed regression.",
+    "Historical skips and original failure evidence remain unchanged."
+  ],
+  "unit": {
+    "archive_sha256": "223c3fca8f416bb0645da9c4fe98eacde0de7a1d3670f15f584bc98b306bdad5",
+    "xml_files": 569,
+    "actual_counts": {
+      "passed": 5636,
+      "skipped": 86
+    },
+    "manifest_records_rehashed": 569,
+    "all_prior_identities_outcomes_and_exact_skip_details_preserved": true,
+    "added_count": 50,
+    "added_classes": {
+      "app.skein.shell.FileDocumentDeleteCoordinatorTest": 14,
+      "app.skein.feature.editor.notetab.NoteSourceDetachmentTest": 22,
+      "app.skein.inference.service.SyntheticParityControlsTest": 14
+    },
+    "exact_skip_records_sha256": "0fa19b3dc82ce67019d869966832da241d5ebc37245106c0ce18697368f6c3ee",
+    "exact_addition_identities_sha256": "cc1d5f5ca212c1f2d27239bcd0a6d8abe25ee256ee78fa00f2cd51073c7d8fb1"
+  },
+  "screenshots": {
+    "archive_sha256": "64d627a85078f9a24e951918a6c5306385c8966dd68d60bf00ad84d9a555aa3a",
+    "xml_files": 161,
+    "actual_counts": {
+      "passed": 1397,
+      "skipped": 80
+    },
+    "manifest_records_rehashed": 721,
+    "all_prior_identities_outcomes_and_exact_skip_details_preserved": true,
+    "added_count": 22,
+    "added_classes": {
+      "app.skein.feature.editor.notetab.NoteSourceDetachmentTest": 22
+    },
+    "exact_skip_records_sha256": "97470990de75f786d39222b0f4cd2b4e03a8865b57513d6fd000afed2396e217",
+    "exact_addition_identities_sha256": "dd321b1185db2c0481b757450ce6ae6570b040c2ff6e8b429666350da92c85ed",
+    "actual_capture_json": {
+      "count": 552,
+      "types": {
+        "unchanged": 552
+      },
+      "all_prior_golden_identities_preserved": true
+    }
+  },
+  "detailed_peer_receipt_sha256": "779bb6f238d358a6af7fae09393c6fae7f40373ba81dd8743f32f6c6ecd10493"
+}

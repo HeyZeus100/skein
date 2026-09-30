@@ -1,0 +1,56 @@
+{
+  "status": "BLOCKED before instrumentation; secure lock prerequisite unavailable on ATD",
+  "source_sha": "534161291b5b392994a73eb098affc6d43893086",
+  "source_clean": true,
+  "private_result": {
+    "path": "/Users/andrewherrera/skein-worktrees/ux-integration-20260929/build/agent-logs/local-ordinary-20260930-01/result.json",
+    "bytes": 20577,
+    "sha256": "2d160e76518fdb59f1e617ae72cc93120f39d3fe7caa058332cb1d6171d37538"
+  },
+  "actual_boot_properties": {
+    "sys.boot_completed": "1",
+    "dev.bootcomplete": "1",
+    "init.svc.bootanim": "stopped"
+  },
+  "owned_emulator": {
+    "serial": "emulator-5580",
+    "avd": "skein_local_ordinary_20260930_01",
+    "pid": 45980,
+    "terminal_exit": 0
+  },
+  "failing_argv": [
+    "/Users/andrewherrera/android-sdk/platform-tools/adb",
+    "-s",
+    "emulator-5580",
+    "shell",
+    "locksettings",
+    "set-pin",
+    "1234"
+  ],
+  "failure_exit": 255,
+  "failure_stderr": "The device does not support lock screen - ignoring the command.\n",
+  "failure_stderr_sha256": "affeda65f5e639a4b644f333671bb98a2f9b60dd326994a69e66abced3d5ce90",
+  "command_count": 27,
+  "scoped_adb_command_count": 21,
+  "gradle_invocations": 0,
+  "instrumentation_testcases": 0,
+  "physical_device_commands": 0,
+  "lease_release": [
+    "device.lock",
+    "build.lock"
+  ],
+  "owner_avd_metadata": {
+    "/Users/andrewherrera/.android/avd/skein_spike.ini": {
+      "before_sha256": "7bd434594b0e32208f14562ed5d0f1d90aa9a0c065e493c5d61a68b45399aa07",
+      "after_sha256": "7bd434594b0e32208f14562ed5d0f1d90aa9a0c065e493c5d61a68b45399aa07",
+      "unchanged": true
+    },
+    "/Users/andrewherrera/.android/avd/skein_spike.avd/config.ini": {
+      "before_sha256": "3c7ec2f396a26d6b063d486e1729e723a168f682b56481b66b8703b991d77d37",
+      "after_sha256": "3c7ec2f396a26d6b063d486e1729e723a168f682b56481b66b8703b991d77d37",
+      "unchanged": true
+    }
+  },
+  "remaining_gate": "Compatible image with real secure-lock support is needed; no weaker PIN/keystore assertion, no unchanged retry. Ordinary303 not run, fold transport/geometry/exactPixel and physical gates still open.",
+  "private_raw_log_warning": "Emulator logs contain ADB public-key and host metadata; keep original private; publish bounded counts/hash receipt only."
+}

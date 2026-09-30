@@ -1,0 +1,570 @@
+{
+  "state": "booting",
+  "source_sha": "534161291b5b392994a73eb098affc6d43893086",
+  "serial": "emulator-5580",
+  "avd": "skein_local_ordinary_20260930_01",
+  "platform": "macOS/API35/google_atd/arm64-v8a",
+  "commands": [
+    {
+      "argv": [
+        "git",
+        "rev-parse",
+        "HEAD"
+      ],
+      "started": "2026-09-30T23:13:49.483066+00:00",
+      "timeout_seconds": 30,
+      "label": "source",
+      "exit": 0,
+      "stdout_sha256": "76483d0ecddbaf60f6c88fa5967460f57cae7b9e1d9692b5e1664a7cbb0ff692",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "ended": "2026-09-30T23:13:49.488574+00:00"
+    },
+    {
+      "argv": [
+        "git",
+        "status",
+        "--porcelain",
+        "--untracked-files=no"
+      ],
+      "started": "2026-09-30T23:13:49.488692+00:00",
+      "timeout_seconds": 30,
+      "label": "source",
+      "exit": 0,
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "ended": "2026-09-30T23:13:49.519626+00:00"
+    },
+    {
+      "argv": [
+        "/usr/sbin/sysctl",
+        "hw.memsize"
+      ],
+      "started": "2026-09-30T23:13:50.354986+00:00",
+      "timeout_seconds": 30,
+      "label": "host-capacity",
+      "exit": 0,
+      "stdout_sha256": "e04112397a21f25a3d5513b80cf18e7b5761cf5fb208e78900a05bcfdfe682ac",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "ended": "2026-09-30T23:13:50.358445+00:00"
+    },
+    {
+      "argv": [
+        "/usr/bin/memory_pressure",
+        "-Q"
+      ],
+      "started": "2026-09-30T23:13:50.358642+00:00",
+      "timeout_seconds": 30,
+      "label": "host-capacity",
+      "exit": 0,
+      "stdout_sha256": "edb5e466adc53b7c08addc53957b1c2e3bdde35b5627719bc5101eb6d8d38724",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "ended": "2026-09-30T23:13:50.361580+00:00"
+    },
+    {
+      "argv": [
+        "/bin/df",
+        "-k",
+        "/Users/andrewherrera/skein-worktrees/ux-integration-20260929"
+      ],
+      "started": "2026-09-30T23:13:50.361742+00:00",
+      "timeout_seconds": 30,
+      "label": "host-capacity",
+      "exit": 0,
+      "stdout_sha256": "2e27b9b5d11f501e519f795ff9e8763d2df9e2f11959d1d1a046d50b08a9fff8",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "ended": "2026-09-30T23:13:50.364386+00:00"
+    },
+    {
+      "argv": [
+        "/Users/andrewherrera/android-sdk/cmdline-tools/latest/bin/avdmanager",
+        "create",
+        "avd",
+        "--name",
+        "skein_local_ordinary_20260930_01",
+        "--package",
+        "system-images;android-35;google_atd;arm64-v8a",
+        "--device",
+        "pixel_6",
+        "--path",
+        "/Users/andrewherrera/skein-worktrees/ux-integration-20260929/build/agent-logs/local-ordinary-20260930-01/avd-home/skein_local_ordinary_20260930_01.avd"
+      ],
+      "started": "2026-09-30T23:13:50.364631+00:00",
+      "timeout_seconds": 120,
+      "label": "create-owned-avd",
+      "exit": 0,
+      "stdout_sha256": "69b9f2e1ed25b6e742684d3d28a9e8ad8c12c15d312dc357c72efefe9a18b75d",
+      "stderr_sha256": "d955192cce07f0b5ac34f99db9c6b0164edfe784f5e4fb057f6d99089aeed131",
+      "ended": "2026-09-30T23:13:50.779321+00:00"
+    },
+    {
+      "argv": [
+        "/Users/andrewherrera/android-sdk/platform-tools/adb",
+        "-s",
+        "emulator-5580",
+        "shell",
+        "getprop",
+        "ro.kernel.qemu"
+      ],
+      "started": "2026-09-30T23:13:56.106542+00:00",
+      "timeout_seconds": 20,
+      "label": "emulator-adb",
+      "exit": 1,
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderr_sha256": "a7d0391f2b9ecc7dc302d6ca042251f413b26e1f1ee29d396e7db3df0701640f",
+      "ended": "2026-09-30T23:13:56.116264+00:00"
+    },
+    {
+      "argv": [
+        "/Users/andrewherrera/android-sdk/platform-tools/adb",
+        "-s",
+        "emulator-5580",
+        "shell",
+        "getprop",
+        "ro.kernel.qemu"
+      ],
+      "started": "2026-09-30T23:14:01.333159+00:00",
+      "timeout_seconds": 20,
+      "label": "emulator-adb",
+      "exit": 1,
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderr_sha256": "a7d0391f2b9ecc7dc302d6ca042251f413b26e1f1ee29d396e7db3df0701640f",
+      "ended": "2026-09-30T23:14:01.344402+00:00"
+    },
+    {
+      "argv": [
+        "/Users/andrewherrera/android-sdk/platform-tools/adb",
+        "-s",
+        "emulator-5580",
+        "shell",
+        "getprop",
+        "ro.kernel.qemu"
+      ],
+      "started": "2026-09-30T23:14:06.555670+00:00",
+      "timeout_seconds": 20,
+      "label": "emulator-adb",
+      "exit": 0,
+      "stdout_sha256": "4355a46b19d348dc2f57c046f8ef63d4538ebb936000f3c9ee954a27460dd865",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "ended": "2026-09-30T23:14:06.570406+00:00"
+    },
+    {
+      "argv": [
+        "/Users/andrewherrera/android-sdk/platform-tools/adb",
+        "-s",
+        "emulator-5580",
+        "emu",
+        "avd",
+        "name"
+      ],
+      "started": "2026-09-30T23:14:06.670545+00:00",
+      "timeout_seconds": 20,
+      "label": "emulator-adb",
+      "exit": 0,
+      "stdout_sha256": "25c408cbb5d63705bcf0b0a5dbbd452e486ab97914a1c1c1d8f0654a554d93a0",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "ended": "2026-09-30T23:14:06.681716+00:00"
+    },
+    {
+      "argv": [
+        "/Users/andrewherrera/android-sdk/platform-tools/adb",
+        "-s",
+        "emulator-5580",
+        "shell",
+        "getprop",
+        "sys.boot_completed"
+      ],
+      "started": "2026-09-30T23:14:06.782485+00:00",
+      "timeout_seconds": 10,
+      "label": "emulator-adb",
+      "exit": 0,
+      "stdout_sha256": "01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "ended": "2026-09-30T23:14:06.797511+00:00"
+    },
+    {
+      "argv": [
+        "/Users/andrewherrera/android-sdk/platform-tools/adb",
+        "-s",
+        "emulator-5580",
+        "shell",
+        "getprop",
+        "dev.bootcomplete"
+      ],
+      "started": "2026-09-30T23:14:06.899422+00:00",
+      "timeout_seconds": 10,
+      "label": "emulator-adb",
+      "exit": 0,
+      "stdout_sha256": "01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "ended": "2026-09-30T23:14:06.914787+00:00"
+    },
+    {
+      "argv": [
+        "/Users/andrewherrera/android-sdk/platform-tools/adb",
+        "-s",
+        "emulator-5580",
+        "shell",
+        "getprop",
+        "init.svc.bootanim"
+      ],
+      "started": "2026-09-30T23:14:07.016677+00:00",
+      "timeout_seconds": 10,
+      "label": "emulator-adb",
+      "exit": 0,
+      "stdout_sha256": "f247a76b2893208aae7751dbf51f4c495efacfb6d9e743802870300f31ac45c8",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "ended": "2026-09-30T23:14:07.032955+00:00"
+    },
+    {
+      "argv": [
+        "/Users/andrewherrera/android-sdk/platform-tools/adb",
+        "-s",
+        "emulator-5580",
+        "shell",
+        "getprop",
+        "ro.kernel.qemu"
+      ],
+      "started": "2026-09-30T23:14:12.230509+00:00",
+      "timeout_seconds": 20,
+      "label": "emulator-adb",
+      "exit": 0,
+      "stdout_sha256": "4355a46b19d348dc2f57c046f8ef63d4538ebb936000f3c9ee954a27460dd865",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "ended": "2026-09-30T23:14:12.244898+00:00"
+    },
+    {
+      "argv": [
+        "/Users/andrewherrera/android-sdk/platform-tools/adb",
+        "-s",
+        "emulator-5580",
+        "emu",
+        "avd",
+        "name"
+      ],
+      "started": "2026-09-30T23:14:12.336822+00:00",
+      "timeout_seconds": 20,
+      "label": "emulator-adb",
+      "exit": 0,
+      "stdout_sha256": "25c408cbb5d63705bcf0b0a5dbbd452e486ab97914a1c1c1d8f0654a554d93a0",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "ended": "2026-09-30T23:14:12.346645+00:00"
+    },
+    {
+      "argv": [
+        "/Users/andrewherrera/android-sdk/platform-tools/adb",
+        "-s",
+        "emulator-5580",
+        "shell",
+        "getprop",
+        "sys.boot_completed"
+      ],
+      "started": "2026-09-30T23:14:12.446404+00:00",
+      "timeout_seconds": 10,
+      "label": "emulator-adb",
+      "exit": 0,
+      "stdout_sha256": "4355a46b19d348dc2f57c046f8ef63d4538ebb936000f3c9ee954a27460dd865",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "ended": "2026-09-30T23:14:12.463579+00:00"
+    },
+    {
+      "argv": [
+        "/Users/andrewherrera/android-sdk/platform-tools/adb",
+        "-s",
+        "emulator-5580",
+        "shell",
+        "getprop",
+        "dev.bootcomplete"
+      ],
+      "started": "2026-09-30T23:14:12.561822+00:00",
+      "timeout_seconds": 10,
+      "label": "emulator-adb",
+      "exit": 0,
+      "stdout_sha256": "4355a46b19d348dc2f57c046f8ef63d4538ebb936000f3c9ee954a27460dd865",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "ended": "2026-09-30T23:14:12.576185+00:00"
+    },
+    {
+      "argv": [
+        "/Users/andrewherrera/android-sdk/platform-tools/adb",
+        "-s",
+        "emulator-5580",
+        "shell",
+        "getprop",
+        "init.svc.bootanim"
+      ],
+      "started": "2026-09-30T23:14:12.669230+00:00",
+      "timeout_seconds": 10,
+      "label": "emulator-adb",
+      "exit": 0,
+      "stdout_sha256": "f247a76b2893208aae7751dbf51f4c495efacfb6d9e743802870300f31ac45c8",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "ended": "2026-09-30T23:14:12.683261+00:00"
+    },
+    {
+      "argv": [
+        "/Users/andrewherrera/android-sdk/platform-tools/adb",
+        "-s",
+        "emulator-5580",
+        "shell",
+        "getprop",
+        "ro.kernel.qemu"
+      ],
+      "started": "2026-09-30T23:14:32.805034+00:00",
+      "timeout_seconds": 20,
+      "label": "emulator-adb",
+      "exit": 0,
+      "stdout_sha256": "4355a46b19d348dc2f57c046f8ef63d4538ebb936000f3c9ee954a27460dd865",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "ended": "2026-09-30T23:14:32.819683+00:00"
+    },
+    {
+      "argv": [
+        "/Users/andrewherrera/android-sdk/platform-tools/adb",
+        "-s",
+        "emulator-5580",
+        "emu",
+        "avd",
+        "name"
+      ],
+      "started": "2026-09-30T23:14:32.909892+00:00",
+      "timeout_seconds": 20,
+      "label": "emulator-adb",
+      "exit": 0,
+      "stdout_sha256": "25c408cbb5d63705bcf0b0a5dbbd452e486ab97914a1c1c1d8f0654a554d93a0",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "ended": "2026-09-30T23:14:32.919309+00:00"
+    },
+    {
+      "argv": [
+        "/Users/andrewherrera/android-sdk/platform-tools/adb",
+        "-s",
+        "emulator-5580",
+        "shell",
+        "input",
+        "keyevent",
+        "KEYCODE_WAKEUP"
+      ],
+      "started": "2026-09-30T23:14:33.009827+00:00",
+      "timeout_seconds": 20,
+      "label": "emulator-adb",
+      "exit": 0,
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "ended": "2026-09-30T23:14:33.027709+00:00"
+    },
+    {
+      "argv": [
+        "/Users/andrewherrera/android-sdk/platform-tools/adb",
+        "-s",
+        "emulator-5580",
+        "shell",
+        "getprop",
+        "ro.kernel.qemu"
+      ],
+      "started": "2026-09-30T23:14:33.121906+00:00",
+      "timeout_seconds": 20,
+      "label": "emulator-adb",
+      "exit": 0,
+      "stdout_sha256": "4355a46b19d348dc2f57c046f8ef63d4538ebb936000f3c9ee954a27460dd865",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "ended": "2026-09-30T23:14:33.135608+00:00"
+    },
+    {
+      "argv": [
+        "/Users/andrewherrera/android-sdk/platform-tools/adb",
+        "-s",
+        "emulator-5580",
+        "emu",
+        "avd",
+        "name"
+      ],
+      "started": "2026-09-30T23:14:33.226691+00:00",
+      "timeout_seconds": 20,
+      "label": "emulator-adb",
+      "exit": 0,
+      "stdout_sha256": "25c408cbb5d63705bcf0b0a5dbbd452e486ab97914a1c1c1d8f0654a554d93a0",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "ended": "2026-09-30T23:14:33.236323+00:00"
+    },
+    {
+      "argv": [
+        "/Users/andrewherrera/android-sdk/platform-tools/adb",
+        "-s",
+        "emulator-5580",
+        "shell",
+        "wm",
+        "dismiss-keyguard"
+      ],
+      "started": "2026-09-30T23:14:33.327419+00:00",
+      "timeout_seconds": 20,
+      "label": "emulator-adb",
+      "exit": 0,
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "ended": "2026-09-30T23:14:33.344458+00:00"
+    },
+    {
+      "argv": [
+        "/Users/andrewherrera/android-sdk/platform-tools/adb",
+        "-s",
+        "emulator-5580",
+        "shell",
+        "getprop",
+        "ro.kernel.qemu"
+      ],
+      "started": "2026-09-30T23:14:33.435168+00:00",
+      "timeout_seconds": 20,
+      "label": "emulator-adb",
+      "exit": 0,
+      "stdout_sha256": "4355a46b19d348dc2f57c046f8ef63d4538ebb936000f3c9ee954a27460dd865",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "ended": "2026-09-30T23:14:33.449593+00:00"
+    },
+    {
+      "argv": [
+        "/Users/andrewherrera/android-sdk/platform-tools/adb",
+        "-s",
+        "emulator-5580",
+        "emu",
+        "avd",
+        "name"
+      ],
+      "started": "2026-09-30T23:14:33.540039+00:00",
+      "timeout_seconds": 20,
+      "label": "emulator-adb",
+      "exit": 0,
+      "stdout_sha256": "25c408cbb5d63705bcf0b0a5dbbd452e486ab97914a1c1c1d8f0654a554d93a0",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "ended": "2026-09-30T23:14:33.550312+00:00"
+    },
+    {
+      "argv": [
+        "/Users/andrewherrera/android-sdk/platform-tools/adb",
+        "-s",
+        "emulator-5580",
+        "shell",
+        "locksettings",
+        "set-pin",
+        "1234"
+      ],
+      "started": "2026-09-30T23:14:33.641114+00:00",
+      "timeout_seconds": 20,
+      "label": "emulator-adb",
+      "exit": 255,
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderr_sha256": "affeda65f5e639a4b644f333671bb98a2f9b60dd326994a69e66abced3d5ce90",
+      "ended": "2026-09-30T23:14:33.658598+00:00"
+    }
+  ],
+  "physical_device_actions": 0,
+  "fold_acceptance": "UNRUN; separate compatibility gate",
+  "installed_apk_readback": "NOT_MEASURED",
+  "token": "02eff09d-95a6-4225-9ac5-f50d43c9d8e9",
+  "started": "2026-09-30T23:13:49.482583+00:00",
+  "controller_sha256": "07d31ded176e148f6308fbbaf98ede65a4c378ddaef012112027a8db4e1c3887",
+  "test_model": {
+    "bytes": 88202080,
+    "sha256": "741ad12b64088fedc17c33aacb22e48be1972ef36a39f03666dd68bd15614fb9"
+  },
+  "owner_avd_before": {
+    "/Users/andrewherrera/.android/avd/skein_spike.ini": "7bd434594b0e32208f14562ed5d0f1d90aa9a0c065e493c5d61a68b45399aa07",
+    "/Users/andrewherrera/.android/avd/skein_spike.avd/config.ini": "3c7ec2f396a26d6b063d486e1729e723a168f682b56481b66b8703b991d77d37"
+  },
+  "sdk_inventory_receipt": {
+    "path": "/Users/andrewherrera/skein-worktrees/fold-transport-resume-20260930/build/agent-logs/local-emulator-feasibility-20260930/sdk-image-inventory.json",
+    "sha256": "437a994850c12152b3f5381dba6e2f25076fe7fa6c019201c812941001210ca8"
+  },
+  "sdk_runtime_binaries": {
+    "/Users/andrewherrera/android-sdk/emulator/emulator": "b3b8fc0dcedcf6e15b54b41f3e5156319029aa00b88a59fd489f80abdd8fc133",
+    "/Users/andrewherrera/android-sdk/emulator/qemu/darwin-aarch64/qemu-system-aarch64": "eaa97a970b81f81640db73ed79e19ee173323653a0a1203217e1199d078011f3",
+    "/Users/andrewherrera/android-sdk/platform-tools/adb": "1811e253b21b12cbfda7201ebaf86c10e7ddcb5c606a7a81f7c82b4c429c2d3b"
+  },
+  "image_payloads": {
+    "/Users/andrewherrera/android-sdk/system-images/android-35/google_atd/arm64-v8a/NOTICE.txt": {
+      "bytes": 20105848,
+      "sha256": "172e009f41885808e91c51d0f8f2e307fb99242dfc2b4d677d4ff7186b91c03e"
+    },
+    "/Users/andrewherrera/android-sdk/system-images/android-35/google_atd/arm64-v8a/VerifiedBootParams.textproto": {
+      "bytes": 356,
+      "sha256": "8f12c7dec01b45142f8e3e1d7cff653f7b3d0390959f9ba8290757ff2977409c"
+    },
+    "/Users/andrewherrera/android-sdk/system-images/android-35/google_atd/arm64-v8a/advancedFeatures.ini": {
+      "bytes": 758,
+      "sha256": "b293a499caf9a3a2b0ba8e95fbc3d9113c8d3c33da27af59c6284e5f81119e5e"
+    },
+    "/Users/andrewherrera/android-sdk/system-images/android-35/google_atd/arm64-v8a/build.prop": {
+      "bytes": 4777,
+      "sha256": "d0f3943c0e9fb57a8c19a82c0dcb530d1a77a116b4595870caa856597b0ca6b0"
+    },
+    "/Users/andrewherrera/android-sdk/system-images/android-35/google_atd/arm64-v8a/encryptionkey.img": {
+      "bytes": 18874368,
+      "sha256": "522bd0b6a2c92e37de465059bb9487bb9597a9aae032b469a8ebe0b38146d8c3"
+    },
+    "/Users/andrewherrera/android-sdk/system-images/android-35/google_atd/arm64-v8a/kernel-ranchu": {
+      "bytes": 14474326,
+      "sha256": "a9dda2ae115395ea352bca2201294b4df0020a7f425cbfae879ee66a03a8f19f"
+    },
+    "/Users/andrewherrera/android-sdk/system-images/android-35/google_atd/arm64-v8a/kernel_cmdline.txt": {
+      "bytes": 16,
+      "sha256": "5bd6571f46a3e593053a7c6c37f4eed840c0da2278506fa53d1ff021e9d4d8e4"
+    },
+    "/Users/andrewherrera/android-sdk/system-images/android-35/google_atd/arm64-v8a/package.xml": {
+      "bytes": 19130,
+      "sha256": "1875c5fc5a02fd5e8cf4a1bb178796f6d206169ca3aca6818bcb8bef58547600"
+    },
+    "/Users/andrewherrera/android-sdk/system-images/android-35/google_atd/arm64-v8a/ramdisk.img": {
+      "bytes": 2080134,
+      "sha256": "f0eb89a28da487da43ec1fc4fe5b808619d76ad967f646b26747f92098ba26d6"
+    },
+    "/Users/andrewherrera/android-sdk/system-images/android-35/google_atd/arm64-v8a/source.properties": {
+      "bytes": 387,
+      "sha256": "ea12d0d9426e9edef361c47c8b9b5b1a838053b5a742b1d14ea9145800b14032"
+    },
+    "/Users/andrewherrera/android-sdk/system-images/android-35/google_atd/arm64-v8a/system.img": {
+      "bytes": 1622147072,
+      "sha256": "25f667d72b1f7e6334a5fe95cc471b82a2a3270e8da2d1bbf446554e65359c9b"
+    },
+    "/Users/andrewherrera/android-sdk/system-images/android-35/google_atd/arm64-v8a/vendor.img": {
+      "bytes": 106954752,
+      "sha256": "a44afb37065c038e588e787170bfd63e58f4d546ef6a6eccdc01df10f7d255dd"
+    }
+  },
+  "avd_config_before_boot_sha256": "398b6e4e8b3636dc04e2d65077d42701d598f795827daf9e397e2e7a80f9e30f",
+  "emulator": {
+    "pid": 45980,
+    "command": [
+      "/Users/andrewherrera/android-sdk/emulator/emulator",
+      "-avd",
+      "skein_local_ordinary_20260930_01",
+      "-ports",
+      "5580,5581",
+      "-memory",
+      "3072",
+      "-cores",
+      "2",
+      "-gpu",
+      "swiftshader",
+      "-no-window",
+      "-noaudio",
+      "-no-boot-anim",
+      "-no-snapshot-load",
+      "-no-snapshot-save"
+    ],
+    "started": "2026-09-30T23:13:50.870642+00:00",
+    "token": "02eff09d-95a6-4225-9ac5-f50d43c9d8e9"
+  },
+  "boot_last_observation": "emulator-adb exit 1: ['/Users/andrewherrera/android-sdk/platform-tools/adb', '-s', 'emulator-5580', 'shell', 'getprop', 'ro.kernel.qemu']",
+  "boot_properties": {
+    "sys.boot_completed": "1",
+    "dev.bootcomplete": "1",
+    "init.svc.bootanim": "stopped"
+  },
+  "error": "RuntimeError(\"emulator-adb exit 255: ['/Users/andrewherrera/android-sdk/platform-tools/adb', '-s', 'emulator-5580', 'shell', 'locksettings', 'set-pin', '1234']\")",
+  "passed": false,
+  "emulator_terminal_exit": 0,
+  "released_matching_leases": [
+    "device.lock",
+    "build.lock"
+  ],
+  "ended": "2026-09-30T23:14:34.677952+00:00"
+}

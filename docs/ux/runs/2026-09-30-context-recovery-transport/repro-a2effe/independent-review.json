@@ -1,0 +1,281 @@
+{
+  "reviewer": "/root/fold_transport",
+  "mode": "Independent full archive rehash, actual in-memory byte comparisons, source and raw native log review; no new run/download/build/device action",
+  "run_id": 36751785141,
+  "source_sha": "a2effe4ac39e88af5fd577017a5e7ce0bdbce400",
+  "artifacts": [
+    {
+      "artifact_id": 11116075322,
+      "name": "rb-build-a",
+      "bytes": 101089940,
+      "sha256": "340da9529cb0a65e2ff5542e74ea974af09944bbb2e1e6754a988655a956ba86",
+      "api_digest_matched": true,
+      "members": [
+        {
+          "path": "SHA256SUMS-a.txt",
+          "bytes": 96,
+          "sha256": "fd040b671351127a85c0bc7d48af275b3f5a6ebb204a3f74f440bdbd6d4b01e7"
+        },
+        {
+          "path": "context-a.txt",
+          "bytes": 363,
+          "sha256": "721b37202c330bad9e9e00b37a4187cfb65862fb65f764d1f6337ddc1bda4121"
+        },
+        {
+          "path": "app-foss-release-unsigned.apk",
+          "bytes": 101089067,
+          "sha256": "2bee520d3d7457148e3d93792db9c58dde6b09d89d9213d5b768f1c3ab154df0"
+        }
+      ]
+    },
+    {
+      "artifact_id": 11115705548,
+      "name": "so-determinism",
+      "bytes": 50711050,
+      "sha256": "ed29d8bb86575385182665a6d1b87f9622c6b726e2c5cfa2f925e82a00384b88",
+      "api_digest_matched": true,
+      "members": [
+        {
+          "path": "SHA256SUMS.txt",
+          "bytes": 852,
+          "sha256": "3fcbc15ca2c39de0a54107f335972b53d887176457629f34de9a79c0fcc38e65"
+        },
+        {
+          "path": "run.IJOZyffu/SHA256SUMS.txt",
+          "bytes": 501,
+          "sha256": "d0cae06845bc9c9c68419edd4e05426b99bd02f1f373607bf9b59f62038f4ac4"
+        },
+        {
+          "path": "run.IJOZyffu/build-1.log",
+          "bytes": 40178,
+          "sha256": "82ab704e94f6ce0dc43b093cb9371b289b4e0e59621bf8d58a2a035a7315ecaf"
+        },
+        {
+          "path": "run.IJOZyffu/build-2.log",
+          "bytes": 38595,
+          "sha256": "39c03839f8e5b0d985a92c48eec990d5b4ae039cbaea7e989600797411c30520"
+        },
+        {
+          "path": "run.IJOZyffu/context.txt",
+          "bytes": 552,
+          "sha256": "c525efa7151f43cb81f7c1060bae113ec8f4549ae74ca9257ad7bb27961523f8"
+        },
+        {
+          "path": "run.IJOZyffu/libskein_llama.1.2aefda01.so",
+          "bytes": 25314032,
+          "sha256": "2aefda01808f10bf5693ab02d0857e0169dc09550b615896939cb176c032daff"
+        },
+        {
+          "path": "run.IJOZyffu/libskein_llama.2.2aefda01.so",
+          "bytes": 25314032,
+          "sha256": "2aefda01808f10bf5693ab02d0857e0169dc09550b615896939cb176c032daff"
+        },
+        {
+          "path": "run.IJOZyffu/result.txt",
+          "bytes": 14,
+          "sha256": "ed163d69a09ddc0ffcbdf126a42d5745a93449fa7a39354788e948b7ac795c04"
+        },
+        {
+          "path": "run.log",
+          "bytes": 777,
+          "sha256": "36214f8183463cf49bc39f986e654688d9ad952faef227a038301f4dcfe8f61b"
+        },
+        {
+          "path": "workflow-context.txt",
+          "bytes": 85,
+          "sha256": "1f6240df0ee547d666ae66c7581bf0f644724d0ee8d0bcf9d8d98de1dca8eb1d"
+        }
+      ]
+    },
+    {
+      "artifact_id": 11115496133,
+      "name": "rb-build-b",
+      "bytes": 101089954,
+      "sha256": "9fcfd59b8806a1a8b05d766ffb9841b5c9616883ceac74cd6c672f01d3820422",
+      "api_digest_matched": true,
+      "members": [
+        {
+          "path": "SHA256SUMS-b.txt",
+          "bytes": 96,
+          "sha256": "fd040b671351127a85c0bc7d48af275b3f5a6ebb204a3f74f440bdbd6d4b01e7"
+        },
+        {
+          "path": "app-foss-release-unsigned.apk",
+          "bytes": 101089067,
+          "sha256": "2bee520d3d7457148e3d93792db9c58dde6b09d89d9213d5b768f1c3ab154df0"
+        },
+        {
+          "path": "context-b.txt",
+          "bytes": 377,
+          "sha256": "cced0ad52e749ba411a15cf21c5cc44ee63e9de3f629dd3d79f9c49d004e9e72"
+        }
+      ]
+    }
+  ],
+  "apk_pair": {
+    "count": 2,
+    "bytes_each": 101089067,
+    "sha256": "2bee520d3d7457148e3d93792db9c58dde6b09d89d9213d5b768f1c3ab154df0",
+    "actual_byte_equality": true
+  },
+  "cold_native_pair": {
+    "count": 2,
+    "bytes_each": 25314032,
+    "sha256": "2aefda01808f10bf5693ab02d0857e0169dc09550b615896939cb176c032daff",
+    "actual_byte_equality": true,
+    "abi": "arm64-v8a",
+    "negative_control": false
+  },
+  "verified_manifest_entries": [
+    {
+      "manifest": "rb-build-a/SHA256SUMS-a.txt",
+      "target": "app-foss-release-unsigned.apk",
+      "sha256": "2bee520d3d7457148e3d93792db9c58dde6b09d89d9213d5b768f1c3ab154df0"
+    },
+    {
+      "manifest": "so-determinism/SHA256SUMS.txt",
+      "target": "run.IJOZyffu/SHA256SUMS.txt",
+      "sha256": "d0cae06845bc9c9c68419edd4e05426b99bd02f1f373607bf9b59f62038f4ac4"
+    },
+    {
+      "manifest": "so-determinism/SHA256SUMS.txt",
+      "target": "run.IJOZyffu/build-1.log",
+      "sha256": "82ab704e94f6ce0dc43b093cb9371b289b4e0e59621bf8d58a2a035a7315ecaf"
+    },
+    {
+      "manifest": "so-determinism/SHA256SUMS.txt",
+      "target": "run.IJOZyffu/build-2.log",
+      "sha256": "39c03839f8e5b0d985a92c48eec990d5b4ae039cbaea7e989600797411c30520"
+    },
+    {
+      "manifest": "so-determinism/SHA256SUMS.txt",
+      "target": "run.IJOZyffu/context.txt",
+      "sha256": "c525efa7151f43cb81f7c1060bae113ec8f4549ae74ca9257ad7bb27961523f8"
+    },
+    {
+      "manifest": "so-determinism/SHA256SUMS.txt",
+      "target": "run.IJOZyffu/libskein_llama.1.2aefda01.so",
+      "sha256": "2aefda01808f10bf5693ab02d0857e0169dc09550b615896939cb176c032daff"
+    },
+    {
+      "manifest": "so-determinism/SHA256SUMS.txt",
+      "target": "run.IJOZyffu/libskein_llama.2.2aefda01.so",
+      "sha256": "2aefda01808f10bf5693ab02d0857e0169dc09550b615896939cb176c032daff"
+    },
+    {
+      "manifest": "so-determinism/SHA256SUMS.txt",
+      "target": "run.IJOZyffu/result.txt",
+      "sha256": "ed163d69a09ddc0ffcbdf126a42d5745a93449fa7a39354788e948b7ac795c04"
+    },
+    {
+      "manifest": "so-determinism/SHA256SUMS.txt",
+      "target": "run.log",
+      "sha256": "36214f8183463cf49bc39f986e654688d9ad952faef227a038301f4dcfe8f61b"
+    },
+    {
+      "manifest": "so-determinism/SHA256SUMS.txt",
+      "target": "workflow-context.txt",
+      "sha256": "1f6240df0ee547d666ae66c7581bf0f644724d0ee8d0bcf9d8d98de1dca8eb1d"
+    },
+    {
+      "manifest": "so-determinism/run.IJOZyffu/SHA256SUMS.txt",
+      "target": "run.IJOZyffu/context.txt",
+      "sha256": "c525efa7151f43cb81f7c1060bae113ec8f4549ae74ca9257ad7bb27961523f8"
+    },
+    {
+      "manifest": "so-determinism/run.IJOZyffu/SHA256SUMS.txt",
+      "target": "run.IJOZyffu/result.txt",
+      "sha256": "ed163d69a09ddc0ffcbdf126a42d5745a93449fa7a39354788e948b7ac795c04"
+    },
+    {
+      "manifest": "so-determinism/run.IJOZyffu/SHA256SUMS.txt",
+      "target": "run.IJOZyffu/build-1.log",
+      "sha256": "82ab704e94f6ce0dc43b093cb9371b289b4e0e59621bf8d58a2a035a7315ecaf"
+    },
+    {
+      "manifest": "so-determinism/run.IJOZyffu/SHA256SUMS.txt",
+      "target": "run.IJOZyffu/build-2.log",
+      "sha256": "39c03839f8e5b0d985a92c48eec990d5b4ae039cbaea7e989600797411c30520"
+    },
+    {
+      "manifest": "so-determinism/run.IJOZyffu/SHA256SUMS.txt",
+      "target": "run.IJOZyffu/libskein_llama.1.2aefda01.so",
+      "sha256": "2aefda01808f10bf5693ab02d0857e0169dc09550b615896939cb176c032daff"
+    },
+    {
+      "manifest": "so-determinism/run.IJOZyffu/SHA256SUMS.txt",
+      "target": "run.IJOZyffu/libskein_llama.2.2aefda01.so",
+      "sha256": "2aefda01808f10bf5693ab02d0857e0169dc09550b615896939cb176c032daff"
+    },
+    {
+      "manifest": "rb-build-b/SHA256SUMS-b.txt",
+      "target": "app-foss-release-unsigned.apk",
+      "sha256": "2bee520d3d7457148e3d93792db9c58dde6b09d89d9213d5b768f1c3ab154df0"
+    }
+  ],
+  "contexts": {
+    "rb-build-a/context-a.txt": "build_id=a\nabs_path=/home/runner/work/skein/skein/rb-a/skein\ncommit=a2effe4ac39e88af5fd577017a5e7ce0bdbce400\nsource_date_epoch=1790789372\nrunner=Linux/X64\njdk: openjdk version \"17.0.20.1\" 2026-08-18\njdk: OpenJDK Runtime Environment Temurin-17.0.20.1+1 (build 17.0.20.1+1)\njdk: OpenJDK 64-Bit Server VM Temurin-17.0.20.1+1 (build 17.0.20.1+1, mixed mode, sharing)\n",
+    "so-determinism/run.IJOZyffu/context.txt": "source_sha=a2effe4ac39e88af5fd577017a5e7ce0bdbce400\nsource_date_epoch=1790789372\nabi=arm64-v8a\nrequested_builds=2\nnegative_control=0\nmax_workers=2\n\nsource_status:\n\nsubmodule_status:\n ad9184e76a66b1001c29db9b0a3e87f646c64de0 third_party/SPIRV-Headers (ad9184e)\n 8864cdc896bbc2a9b6eb36b3218fc9ef57908d77 third_party/Vulkan-Headers (8864cdc)\n b29c606e28a01b1bc8c1351026a0fa6e616bf6c4 third_party/llama.cpp (b29c606)\n\nscript_sha256:\n3f3421ec9562cceefd6341921c65841108e5419bc80b083c67345117c3729098  /home/runner/work/skein/skein/tools/rb/so-determinism.sh\n",
+    "so-determinism/workflow-context.txt": "source_sha=a2effe4ac39e88af5fd577017a5e7ce0bdbce400\nrun_id=36751785141\nrun_attempt=1\n",
+    "rb-build-b/context-b.txt": "build_id=b\nabs_path=/home/runner/work/skein/skein/rb-b/nested/deeper/skein\ncommit=a2effe4ac39e88af5fd577017a5e7ce0bdbce400\nsource_date_epoch=1790789372\nrunner=Linux/X64\njdk: openjdk version \"17.0.20.1\" 2026-08-18\njdk: OpenJDK Runtime Environment Temurin-17.0.20.1+1 (build 17.0.20.1+1)\njdk: OpenJDK 64-Bit Server VM Temurin-17.0.20.1+1 (build 17.0.20.1+1, mixed mode, sharing)\n"
+  },
+  "native_raw_log_findings": {
+    "run.IJOZyffu/build-1.log": {
+      "success": true,
+      "from_cache_count": 0,
+      "native_tasks": [
+        "> Task :inference-service:configureCMakeRelWithDebInfo[arm64-v8a]",
+        "> Task :inference-service:configureCMakeRelWithDebInfo[arm64-v8a]",
+        "> Task :inference-service:configureCMakeRelWithDebInfo[arm64-v8a]",
+        "> Task :inference-service:buildCMakeRelWithDebInfo[arm64-v8a][skein_llama]"
+      ]
+    },
+    "run.IJOZyffu/build-2.log": {
+      "success": true,
+      "from_cache_count": 0,
+      "native_tasks": [
+        "> Task :inference-service:configureCMakeRelWithDebInfo[arm64-v8a]",
+        "> Task :inference-service:buildCMakeRelWithDebInfo[arm64-v8a][skein_llama]"
+      ]
+    }
+  },
+  "reviewed_source": {
+    "so_determinism_sha256": "3f3421ec9562cceefd6341921c65841108e5419bc80b083c67345117c3729098",
+    "workflow_sha256": "60e1b16ce69607d85c05938d8c87229bb19aaa4d7333917dd9f5e9922bcb96f6",
+    "cold_recipe": "Native .cxx removed per iteration; Gradle clean + assembleFossRelease --no-build-cache; actual native configure/build tasks logged on both runs, zero FROM-CACHE records."
+  },
+  "jobs": [
+    {
+      "name": "Toolchain manifest and tool self-tests",
+      "conclusion": "success"
+    },
+    {
+      "name": "Verify SQLCipher amalgamation matches pinned source",
+      "conclusion": "skipped"
+    },
+    {
+      "name": "libskein_llama.so is a function of its sources",
+      "conclusion": "success"
+    },
+    {
+      "name": "Build b (unsigned foss release)",
+      "conclusion": "success"
+    },
+    {
+      "name": "Build a (unsigned foss release)",
+      "conclusion": "success"
+    },
+    {
+      "name": "Compare the two builds",
+      "conclusion": "success"
+    }
+  ],
+  "scope_limits": [
+    "Evidence belongs to a2effe4ac; does not prove newer integrated534161291 build reproducibility.",
+    "One two-runner unsigned FOSS release pair and two same-job arm64 cold native builds; not a signed release nor broad universal determinism.",
+    "SQLCipher fresh pinned-source amalgamation regeneration is tag-only and skipped for this main run; packaged-byte equality does not discharge that independent gate.",
+    "No actual installation/readback, physical Fold, geometry, model quality or multimodal acceptance.",
+    "Earlier failed/partial transport downloads are retained in their original directories and are not build failures."
+  ],
+  "result": "PASS exact retained APK and cold native byte-pair equality"
+}

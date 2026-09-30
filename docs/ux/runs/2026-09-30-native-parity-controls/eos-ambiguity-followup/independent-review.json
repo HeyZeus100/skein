@@ -1,0 +1,107 @@
+{
+  "date": "2026-09-30",
+  "source": "f1867d6a28e67ea3aa9fedbdd080cbc90622fcdc",
+  "reviewer": "/root/fold_transport",
+  "result": "PASS bounded host EOS ambiguity correction; original negative preserved.",
+  "source_receipts": [
+    {
+      "path": "tools/eval/prepare_native_parity.py",
+      "bytes": 4340,
+      "sha256": "187f4e4bc82dcc0eadd0d2a439069a29932b685992ba09bf7b919ff5747a2dd0"
+    },
+    {
+      "path": "tools/eval/qualify_model_artifact.py",
+      "bytes": 9587,
+      "sha256": "69cfc4d791005378b75079a246335d4bb1da3fdf349826378c489d4f0140d4f2"
+    },
+    {
+      "path": "tools/eval/test_prepare_native_parity.py",
+      "bytes": 6609,
+      "sha256": "c379200571c0feb333200c392a78f7586cb633a4ecc3ee058bd20818a5c2ed5f"
+    },
+    {
+      "path": "tools/eval/test_qualify_model_artifact.py",
+      "bytes": 6834,
+      "sha256": "9a541616f51b5f2906f1578aef8c88609997ed1aed60fb667e8e4817348f5c37"
+    }
+  ],
+  "author_archive": {
+    "bytes": 7017,
+    "sha256": "238db1e38d625b478d38ad047196ed3a2ec5375bea5da77d952cdd8ea4f2cc8f"
+  },
+  "author_archive_members": [
+    {
+      "path": "affected-host.exit",
+      "bytes": 2,
+      "sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa"
+    },
+    {
+      "path": "affected-host.log",
+      "bytes": 3044,
+      "sha256": "5520ce83f17808dc342c15b566779ab73031e71dbd936997bb3777e0dd27b341"
+    },
+    {
+      "path": "after-rejection.json",
+      "bytes": 198,
+      "sha256": "b05c77c9782edae4cfd65acb7b816f5dcdb1d9d356e10b756fa15dd4680cdd94"
+    },
+    {
+      "path": "before-unexpected-acceptance.json",
+      "bytes": 773,
+      "sha256": "9cc70d9728869acb4f2cd64d3e2068f0f4660cf3d2123a16467cca770e8a42c0"
+    },
+    {
+      "path": "duplicate-eos-metadata-only.gguf",
+      "bytes": 457,
+      "sha256": "48a1f9eefc78dc459d95b892aee42a9f8a65fcc637b164eb4f2d3b89b76e1fa1"
+    },
+    {
+      "path": "peer-before.json",
+      "bytes": 17306,
+      "sha256": "821778a7ea8ec8df78ae1594fd6729f40e594c1fc99cb4cf87317035c6454bc5"
+    }
+  ],
+  "independent_tests": {
+    "command": [
+      "python3",
+      "-m",
+      "unittest",
+      "test_prepare_native_parity",
+      "test_qualify_model_artifact",
+      "-v"
+    ],
+    "cwd": "/Users/andrewherrera/skein-worktrees/native-template-resume-20260930",
+    "environment_overrides": {
+      "PYTHONPATH": "tools/eval",
+      "PYTHONDONTWRITEBYTECODE": "1"
+    },
+    "exit": 0,
+    "methods": 15,
+    "log": {
+      "bytes": 2814,
+      "sha256": "27e51214c32890f58ac0d09dec2fec1d5ad2161b336719264eb0a37cdd2968f9"
+    }
+  },
+  "original_exact_counterexample": {
+    "file": "../duplicate-eos-metadata-only.gguf",
+    "bytes": 457,
+    "sha256": "48a1f9eefc78dc459d95b892aee42a9f8a65fcc637b164eb4f2d3b89b76e1fa1",
+    "original_result": "accepted at beb07e696, receipt preserved",
+    "fixed_result": "ValueError declared EOS spelling is ambiguous in the vocabulary",
+    "process_exit": 1,
+    "log": {
+      "bytes": 1019,
+      "sha256": "cc7455ba1d45aa836060ff6aa2176c86f67a12a90255d07e54f245692e4c9323"
+    }
+  },
+  "source_assessment": [
+    "One bounded scan counts vocabulary occurrences of all declared-token spellings; prepare requires declared EOS count exactly one before constructing explicit controls.",
+    "Duplicated EOS spelling is refused whether duplicate entry is NORMAL or CONTROL. Start/end uniqueness and same-EOS/turn-end deduplication remain.",
+    "Only four Python files changed after beb07e696; all Kotlin/default case definitions and production source remain unchanged."
+  ],
+  "limits": [
+    "15 Python methods executed by this reviewer using synthetic metadata; no model/native/Gradle/emulator/device/hosted execution.",
+    "Original 554-unit/113-Python/opt-in Kotlin compile evidence belongs to beb07e696 and was not rerun by this correction.",
+    "No actual E4B artifact, generated stopping, quality or physical acceptance established."
+  ]
+}
