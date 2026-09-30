@@ -130,7 +130,14 @@ fun ChatHistoryRow(
             listOfNotNull(
                 item.onRename?.let { SkeinAction(label = "Rename…", icon = SkeinIcons.Rename, onClick = it) },
                 item.onDelete?.let {
-                    SkeinAction(label = "Delete…", icon = SkeinIcons.Delete, destructive = true, onClick = it)
+                    SkeinAction(
+                        label = "Delete…",
+                        icon = SkeinIcons.Delete,
+                        destructive = true,
+                        enabled = item.deleteDisabledReason == null,
+                        supportingText = item.deleteDisabledReason,
+                        onClick = it,
+                    )
                 },
             ),
     )

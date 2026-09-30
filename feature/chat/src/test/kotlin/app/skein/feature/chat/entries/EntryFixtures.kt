@@ -14,6 +14,7 @@ import androidx.compose.ui.test.WindowSize
 import androidx.compose.ui.unit.DpSize
 import androidx.compose.ui.unit.dp
 import app.skein.core.model.Capability
+import app.skein.core.model.DocId
 import app.skein.core.model.Model
 import app.skein.core.model.ModelFormat
 import app.skein.core.model.Persona
@@ -99,12 +100,14 @@ internal fun EntriesHost(
     zone: ZoneId = ZoneOffset.UTC,
     windowAdaptiveInfo: WindowAdaptiveInfo? = null,
     sessionChat: Boolean = false,
+    onDelete: ((DocId) -> Unit)? = null,
+    turnController: ChatTurnController? = null,
 ) {
     if (size == null) {
-        Host(vault, pipeline, onShell, clock, zone, windowAdaptiveInfo, sessionChat)
+        Host(vault, pipeline, onShell, clock, zone, windowAdaptiveInfo, sessionChat, onDelete, turnController)
     } else {
         DeviceConfigurationOverride(DeviceConfigurationOverride.WindowSize(size)) {
-            Host(vault, pipeline, onShell, clock, zone, windowAdaptiveInfo, sessionChat)
+            Host(vault, pipeline, onShell, clock, zone, windowAdaptiveInfo, sessionChat, onDelete, turnController)
         }
     }
 }
@@ -118,6 +121,8 @@ private fun Host(
     zone: ZoneId,
     windowAdaptiveInfo: WindowAdaptiveInfo?,
     sessionChat: Boolean,
+    onDelete: ((DocId) -> Unit)?,
+    turnController: ChatTurnController?,
 ) {
     val manager = remember { idleUnlockManager() }
     val shell = rememberSkeinShellState(manager)
@@ -129,7 +134,7 @@ private fun Host(
         remember(vault, sessionChat) {
             if (sessionChat) SessionDraftStore(vault, 7L, { 7L }, { null }, scope) else null
         }
-    val turns =
+    val localTurns =
         remember(vault, pipeline, drafts) {
             if (drafts != null && pipeline != null) {
                 ChatTurnController(
@@ -145,13 +150,14 @@ private fun Host(
                 null
             }
         }
-    DisposableEffect(turns, drafts) {
+    val turns = turnController ?: localTurns
+    DisposableEffect(localTurns, drafts) {
         onDispose {
-            turns?.close()
+            localTurns?.close()
             drafts?.close()
         }
     }
-    val history = rememberChatHistory(vault, shell, zone = zone, now = clock)
+    val history = rememberChatHistory(vault, shell, zone = zone, now = clock, onDelete = onDelete, turns = turns)
     val chat =
         ChatEntryDeps(
             vault,
@@ -163,6 +169,7 @@ private fun Host(
             turns = turns,
             drafts = drafts,
             defaultSpaceId = "10000000-0000-4000-8000-000000000001",
+            onDelete = onDelete,
         )
     SkeinShellHost(
         shell = shell,

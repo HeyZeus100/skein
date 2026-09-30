@@ -17,6 +17,10 @@ data class SkeinAction(
     val label: String,
     @DrawableRes val icon: Int? = null,
     val destructive: Boolean = false,
+    /** Menu availability; disabled menu items are also omitted from row accessibility actions. */
+    val enabled: Boolean = true,
+    /** Optional visible menu explanation, such as why an action is temporarily unavailable. */
+    val supportingText: String? = null,
     val onClick: () -> Unit,
 ) {
     /** The label a screen reader announces: [label] without the menu's trailing "…" ("Rename", not "Rename…"). */

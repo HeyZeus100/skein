@@ -15,6 +15,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.key
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
@@ -100,6 +101,8 @@ class ChatEntryDeps(
     val drafts: SessionDraftStore? = null,
     val defaultSpaceId: String? = null,
     val modelStatus: ChatModelStatus = ChatModelStatus.Unavailable,
+    /** Requests the shared confirmation dialog; never deletes directly. Null hides Delete. */
+    val onDelete: ((DocId) -> Unit)? = null,
 )
 
 /**
@@ -128,6 +131,7 @@ object ChatEntryTestTags {
     const val CONTEXT_ACTION = "chat_entry_context_action"
     const val NEW_CHAT_ACTION = "chat_entry_new_chat_action"
     const val UNAVAILABLE = "chat_entry_unavailable"
+    const val DELETE_MENU = "chat_entry_delete_menu"
 }
 
 /** One Chat key's content (§8.2). The Chat root renders by container: the landing in a drawer, else Conversations. */
@@ -207,6 +211,8 @@ private fun ChatRoute(
     val composer = deps.drafts?.let { rememberDraftComposerState(it, ChatDraftKey.Existing(rawId)) }
     val onePane = LocalSkeinWindowLayout.current.maxPanes == 1
     val phone = LocalSkeinWindowLayout.current.navMode() == NavMode.PHONE
+    val deleteRequest = deps.onDelete?.takeIf { document.document.kind == DocumentKind.CHAT }
+    val deleteDisabledReason = if (deleteRequest != null) rememberChatDeleteDisabledReason(deps.turns, rawId) else null
     ChatScreen(
         docId = rawId,
         vaultRepository = repository,
@@ -248,6 +254,11 @@ private fun ChatRoute(
                             Modifier.testTag(ChatEntryTestTags.NEW_CHAT_ACTION),
                         ) {
                             shell.navigate { goTo(it, NewChatKey(SkeinId.random())) }
+                        }
+                    }
+                    if (deleteRequest != null) {
+                        ChatDeleteMenu(deleteDisabledReason) {
+                            requestChatDelete(rawId, deps.turns, deleteRequest)
                         }
                     }
                 }
@@ -360,8 +371,8 @@ private fun sourcesLabel(count: Int) = if (count == 1) "1 source" else "$count s
  * The chat history (CHAT_UX_SPEC.md §12) for the drawer and the Conversations
  * pane: every chat, newest activity first, the open one selected. A row opens
  * its chat (go to). ponytail: no preview line or answering ring until the
- * chat-summary projection (ask B7) and the turn controller (C1); Rename and
- * Delete stay hidden until their dialogs (LC-22).
+ * chat-summary projection (ask B7). Rename stays hidden until its dialog;
+ * Delete is supplied by the shared confirmation requester (LC-22).
  */
 @Composable
 fun rememberChatHistory(
@@ -370,14 +381,17 @@ fun rememberChatHistory(
     zone: ZoneId = ZoneId.systemDefault(),
     locale: Locale = LocalLocale.current.platformLocale,
     now: () -> Long = System::currentTimeMillis,
+    onDelete: ((DocId) -> Unit)? = null,
+    turns: ChatTurnController? = null,
 ): List<ChatHistoryItem> {
     val chats by remember(repository) {
         repository.observeTimeline(TimelineFilter(kinds = setOf(DocumentKind.CHAT)), limit = HISTORY_LIMIT)
     }.collectAsState(emptyList())
     val open = shell.nav.stack(Destination.CHAT).firstNotNullOfOrNull { (it as? ChatKey)?.chatId?.value }
-    return remember(chats, open) {
-        val nowMillis = now()
-        chats.map { chat ->
+    val nowMillis = now()
+    return chats.map { chat ->
+        key(chat.id) {
+            val disabledReason = if (onDelete != null) rememberChatDeleteDisabledReason(turns, chat.id) else null
             ChatHistoryItem(
                 id = chat.id,
                 title = chat.title.ifBlank { UNTITLED_CHAT },
@@ -385,6 +399,8 @@ fun rememberChatHistory(
                 timeLabel = chatTimeLabel(chat.updatedAt, nowMillis, zone, locale),
                 isSelected = chat.id == open,
                 onOpen = { shell.open(chat) },
+                onDelete = onDelete?.let { request -> { requestChatDelete(chat.id, turns, request) } },
+                deleteDisabledReason = disabledReason,
             )
         }
     }

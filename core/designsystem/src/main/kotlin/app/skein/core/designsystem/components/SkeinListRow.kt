@@ -129,7 +129,7 @@ fun SkeinListRow(
                         if (selected) this.selected = true
                         if (hasMenu) {
                             customActions =
-                                menuActions.map { action ->
+                                menuActions.filter { it.enabled }.map { action ->
                                     CustomAccessibilityAction(action.accessibilityLabel) {
                                         action.onClick()
                                         true
@@ -240,9 +240,28 @@ private fun MenuItem(
     action: SkeinAction,
     onDismiss: () -> Unit,
 ) {
-    val color = if (action.destructive) MaterialTheme.colorScheme.error else MaterialTheme.colorScheme.onSurface
+    val color =
+        if (!action.enabled) {
+            MaterialTheme.colorScheme.onSurface.copy(alpha = 0.38f)
+        } else if (action.destructive) {
+            MaterialTheme.colorScheme.error
+        } else {
+            MaterialTheme.colorScheme.onSurface
+        }
     DropdownMenuItem(
-        text = { Text(action.label, style = MaterialTheme.typography.bodyLarge, color = color) },
+        text = {
+            Column {
+                Text(action.label, style = MaterialTheme.typography.bodyLarge, color = color)
+                action.supportingText?.let {
+                    Text(
+                        it,
+                        style = MaterialTheme.typography.bodySmall,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant,
+                    )
+                }
+            }
+        },
+        enabled = action.enabled,
         onClick = {
             onDismiss()
             action.onClick()
@@ -253,7 +272,14 @@ private fun MenuItem(
                     Icon(
                         painter = painterResource(icon),
                         contentDescription = null,
-                        tint = if (action.destructive) color else MaterialTheme.colorScheme.onSurfaceVariant,
+                        tint =
+                            if (action.destructive ||
+                                !action.enabled
+                            ) {
+                                color
+                            } else {
+                                MaterialTheme.colorScheme.onSurfaceVariant
+                            },
                     )
                 }
             },

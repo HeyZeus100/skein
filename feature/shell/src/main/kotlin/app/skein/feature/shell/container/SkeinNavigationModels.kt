@@ -34,6 +34,8 @@ data class ChatHistoryItem(
     val onRename: (() -> Unit)? = null,
     /** Null hides the row's Delete… action (LC-22). */
     val onDelete: (() -> Unit)? = null,
+    /** A visible explanation when deletion is temporarily unavailable. */
+    val deleteDisabledReason: String? = null,
 )
 
 /**

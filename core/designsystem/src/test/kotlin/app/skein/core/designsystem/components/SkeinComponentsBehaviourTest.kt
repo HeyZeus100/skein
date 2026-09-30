@@ -28,8 +28,10 @@ import androidx.compose.ui.test.SemanticsMatcher
 import androidx.compose.ui.test.SemanticsNodeInteraction
 import androidx.compose.ui.test.assert
 import androidx.compose.ui.test.assertHeightIsAtLeast
+import androidx.compose.ui.test.assertIsNotEnabled
 import androidx.compose.ui.test.assertIsNotSelected
 import androidx.compose.ui.test.assertIsSelected
+import androidx.compose.ui.test.click
 import androidx.compose.ui.test.hasContentDescription
 import androidx.compose.ui.test.isHeading
 import androidx.compose.ui.test.longClick
@@ -74,6 +76,31 @@ class SkeinComponentsBehaviourTest {
     private fun setContent(content: @Composable () -> Unit) = composeRule.setContent { SkeinTheme(content = content) }
 
     private fun more(title: String) = composeRule.onNodeWithContentDescription("More options for “$title”")
+
+    @Test
+    fun `disabled destructive action explains why and cannot run through touch or accessibility`() {
+        val reason = "Stop the answer to delete this chat."
+        setContent {
+            SkeinListRow(
+                title = "Beta",
+                onClick = {},
+                selected = true,
+                menuActions =
+                    listOf(
+                        SkeinAction("Rename…") { calls += "rename" },
+                        SkeinAction("Delete…", destructive = true, enabled = false, supportingText = reason) {
+                            calls += "delete"
+                        },
+                    ),
+            )
+        }
+        val custom = composeRule.onNodeWithText("Beta").fetchSemanticsNode().config[SemanticsActions.CustomActions]
+        assertEquals(listOf("Rename"), custom.map { it.label })
+        more("Beta").performClick()
+        composeRule.onNodeWithText("Delete…").assertIsNotEnabled().performTouchInput { click() }
+        composeRule.onNodeWithText(reason, substring = true).assertExists()
+        assertTrue(calls.isEmpty())
+    }
 
     // --- SkeinListRow: the ⋮ rule (IA §8a) ---
 
