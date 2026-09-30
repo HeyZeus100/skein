@@ -1,0 +1,279 @@
+{
+  "base_commit": "6713feb1986cf090a58f6a38a4c72a8a52d2ad67",
+  "source": {
+    "path": "app/src/androidTest/kotlin/app/skein/chat/ContextualSendPathInstrumentedTest.kt",
+    "sha256": "013f40082828bcc76e7e14a3871282375921166401c99aec4ba89013dfb490eb"
+  },
+  "classes": [
+    {
+      "path": "app/build/intermediates/built_in_kotlinc/devDebugAndroidTest/compileDevDebugAndroidTestKotlin/classes/app/skein/chat/ContextualSendPathInstrumentedTest$Companion.class",
+      "sha256": "5d52f972683c4e71e7e79dbeb226f20f984e1f4db83804b9a07bf13691f3e9d2",
+      "bytes": 997
+    },
+    {
+      "path": "app/build/intermediates/built_in_kotlinc/devDebugAndroidTest/compileDevDebugAndroidTestKotlin/classes/app/skein/chat/ContextualSendPathInstrumentedTest$Fixture$chat$1.class",
+      "sha256": "e8c28334c03b762ac9d8446a28746940375e1a27671de97eeaf23ac3fae91feb",
+      "bytes": 1905
+    },
+    {
+      "path": "app/build/intermediates/built_in_kotlinc/devDebugAndroidTest/compileDevDebugAndroidTestKotlin/classes/app/skein/chat/ContextualSendPathInstrumentedTest$Fixture$ingest$1.class",
+      "sha256": "f990833ca670ce933343d92f5d94a2b37989aca4643e19a29b2f82128458adcb",
+      "bytes": 1952
+    },
+    {
+      "path": "app/build/intermediates/built_in_kotlinc/devDebugAndroidTest/compileDevDebugAndroidTestKotlin/classes/app/skein/chat/ContextualSendPathInstrumentedTest$Fixture$observed$1$retrieveContext$1.class",
+      "sha256": "12d8cb44a9b1e1696a5533753ee939b07bdab71b4695529f3c60163e3cfdfd9f",
+      "bytes": 2020
+    },
+    {
+      "path": "app/build/intermediates/built_in_kotlinc/devDebugAndroidTest/compileDevDebugAndroidTestKotlin/classes/app/skein/chat/ContextualSendPathInstrumentedTest$Fixture$observed$1.class",
+      "sha256": "b9559fd1bbdae958396ca75047cb84d1f8934283bce77b4bf884ae330eab7076",
+      "bytes": 5700
+    },
+    {
+      "path": "app/build/intermediates/built_in_kotlinc/devDebugAndroidTest/compileDevDebugAndroidTestKotlin/classes/app/skein/chat/ContextualSendPathInstrumentedTest$Fixture$pipeline$1.class",
+      "sha256": "781e044ce5eefc1c2e50af5ee64a947f95cc0e935070e09ca022077cc9ba0e42",
+      "bytes": 2063
+    },
+    {
+      "path": "app/build/intermediates/built_in_kotlinc/devDebugAndroidTest/compileDevDebugAndroidTestKotlin/classes/app/skein/chat/ContextualSendPathInstrumentedTest$Fixture$pipeline$2.class",
+      "sha256": "c6612b005fcbadebc3f9b0e8d4a530be7612aedc51d3fb785b8cea46416a55db",
+      "bytes": 3401
+    },
+    {
+      "path": "app/build/intermediates/built_in_kotlinc/devDebugAndroidTest/compileDevDebugAndroidTestKotlin/classes/app/skein/chat/ContextualSendPathInstrumentedTest$Fixture$pipeline$3.class",
+      "sha256": "e167fd8e91a6aeb420e9235866a28ba874190232e275e4c0e436373f6a558e62",
+      "bytes": 3035
+    },
+    {
+      "path": "app/build/intermediates/built_in_kotlinc/devDebugAndroidTest/compileDevDebugAndroidTestKotlin/classes/app/skein/chat/ContextualSendPathInstrumentedTest$Fixture$seed$1.class",
+      "sha256": "d8a152011d4b2d409ecce8f8ed01f92c62ecf8b986919f51c35c552a3b600d62",
+      "bytes": 1958
+    },
+    {
+      "path": "app/build/intermediates/built_in_kotlinc/devDebugAndroidTest/compileDevDebugAndroidTestKotlin/classes/app/skein/chat/ContextualSendPathInstrumentedTest$Fixture$send$2$completed$1.class",
+      "sha256": "4252b294cb8d8fa829d4542e403351276def38bd221ca500bc7e4c929a384856",
+      "bytes": 3790
+    },
+    {
+      "path": "app/build/intermediates/built_in_kotlinc/devDebugAndroidTest/compileDevDebugAndroidTestKotlin/classes/app/skein/chat/ContextualSendPathInstrumentedTest$Fixture$send$2.class",
+      "sha256": "0939dd68585c62a92cb3f45a39b5864ea9c2dac33e46f6b645f38d9f19711f37",
+      "bytes": 5687
+    },
+    {
+      "path": "app/build/intermediates/built_in_kotlinc/devDebugAndroidTest/compileDevDebugAndroidTestKotlin/classes/app/skein/chat/ContextualSendPathInstrumentedTest$Fixture.class",
+      "sha256": "201486c46060a909e096bd9e4a8339b75060797dabc2e1449ea04f0367f5b838",
+      "bytes": 14666
+    },
+    {
+      "path": "app/build/intermediates/built_in_kotlinc/devDebugAndroidTest/compileDevDebugAndroidTestKotlin/classes/app/skein/chat/ContextualSendPathInstrumentedTest$TestEngine.class",
+      "sha256": "83106dd3305ec82799ce586ad7074307605de118c4ddd45a99ffb53138e9b09f",
+      "bytes": 4274
+    },
+    {
+      "path": "app/build/intermediates/built_in_kotlinc/devDebugAndroidTest/compileDevDebugAndroidTestKotlin/classes/app/skein/chat/ContextualSendPathInstrumentedTest$TestKey.class",
+      "sha256": "b466dd588bfa33e0108dfd260096737bc9331252873acf54aba3fd9717200707",
+      "bytes": 5583
+    },
+    {
+      "path": "app/build/intermediates/built_in_kotlinc/devDebugAndroidTest/compileDevDebugAndroidTestKotlin/classes/app/skein/chat/ContextualSendPathInstrumentedTest$committed_source_deletion_preserves_quotes_and_refuses_contextual_generation$1$1.class",
+      "sha256": "561ace0592f3634c7a605d9c71cf3273fe5df2edea860d4a8547702f37764582",
+      "bytes": 7527
+    },
+    {
+      "path": "app/build/intermediates/built_in_kotlinc/devDebugAndroidTest/compileDevDebugAndroidTestKotlin/classes/app/skein/chat/ContextualSendPathInstrumentedTest$committed_source_deletion_preserves_quotes_and_refuses_contextual_generation$1.class",
+      "sha256": "719a19bdd61d870dead5d3f0d2d95fc330f33818e0ba87c1557815b963c23650",
+      "bytes": 3933
+    },
+    {
+      "path": "app/build/intermediates/built_in_kotlinc/devDebugAndroidTest/compileDevDebugAndroidTestKotlin/classes/app/skein/chat/ContextualSendPathInstrumentedTest$edited_and_reingested_source_cannot_repin_a_previous_encrypted_turn$1$1.class",
+      "sha256": "7d76013e1ed94edb25cda54df58f2a72590ab4472fb747acce5a1095a2982b19",
+      "bytes": 8304
+    },
+    {
+      "path": "app/build/intermediates/built_in_kotlinc/devDebugAndroidTest/compileDevDebugAndroidTestKotlin/classes/app/skein/chat/ContextualSendPathInstrumentedTest$edited_and_reingested_source_cannot_repin_a_previous_encrypted_turn$1.class",
+      "sha256": "1b5c333d60bb3a628d44a8c52e1f43e63e2ad2fa013f716419c2b004c0fa68ec",
+      "bytes": 3879
+    },
+    {
+      "path": "app/build/intermediates/built_in_kotlinc/devDebugAndroidTest/compileDevDebugAndroidTestKotlin/classes/app/skein/chat/ContextualSendPathInstrumentedTest$persisted_citation_resolves_raw_followup_through_encrypted_send_path$1$1.class",
+      "sha256": "04b056601853d20445b97eba4568061aa56ea630f10b6aea1dff523cff59cc9d",
+      "bytes": 12381
+    },
+    {
+      "path": "app/build/intermediates/built_in_kotlinc/devDebugAndroidTest/compileDevDebugAndroidTestKotlin/classes/app/skein/chat/ContextualSendPathInstrumentedTest$persisted_citation_resolves_raw_followup_through_encrypted_send_path$1.class",
+      "sha256": "ef09d32ad0c6a003d39f7aaea89cd3bc7bb7ff4ea1269c084ce31bbd62ad3d9d",
+      "bytes": 3885
+    },
+    {
+      "path": "app/build/intermediates/built_in_kotlinc/devDebugAndroidTest/compileDevDebugAndroidTestKotlin/classes/app/skein/chat/ContextualSendPathInstrumentedTest$withFixture$1.class",
+      "sha256": "fcdf8b79f8596a64341a8c0e87923f510ba0ff209dedbf35d66cff1fec5223a9",
+      "bytes": 2575
+    },
+    {
+      "path": "app/build/intermediates/built_in_kotlinc/devDebugAndroidTest/compileDevDebugAndroidTestKotlin/classes/app/skein/chat/ContextualSendPathInstrumentedTest.class",
+      "sha256": "a79be04dbde175a95c2801c245923f49f18a3593f6a9445f507ebd207d5db9e6",
+      "bytes": 11986
+    },
+    {
+      "path": "app/build/intermediates/built_in_kotlinc/fossDebugAndroidTest/compileFossDebugAndroidTestKotlin/classes/app/skein/chat/ContextualSendPathInstrumentedTest$Companion.class",
+      "sha256": "5d52f972683c4e71e7e79dbeb226f20f984e1f4db83804b9a07bf13691f3e9d2",
+      "bytes": 997
+    },
+    {
+      "path": "app/build/intermediates/built_in_kotlinc/fossDebugAndroidTest/compileFossDebugAndroidTestKotlin/classes/app/skein/chat/ContextualSendPathInstrumentedTest$Fixture$chat$1.class",
+      "sha256": "e8c28334c03b762ac9d8446a28746940375e1a27671de97eeaf23ac3fae91feb",
+      "bytes": 1905
+    },
+    {
+      "path": "app/build/intermediates/built_in_kotlinc/fossDebugAndroidTest/compileFossDebugAndroidTestKotlin/classes/app/skein/chat/ContextualSendPathInstrumentedTest$Fixture$ingest$1.class",
+      "sha256": "f990833ca670ce933343d92f5d94a2b37989aca4643e19a29b2f82128458adcb",
+      "bytes": 1952
+    },
+    {
+      "path": "app/build/intermediates/built_in_kotlinc/fossDebugAndroidTest/compileFossDebugAndroidTestKotlin/classes/app/skein/chat/ContextualSendPathInstrumentedTest$Fixture$observed$1$retrieveContext$1.class",
+      "sha256": "12d8cb44a9b1e1696a5533753ee939b07bdab71b4695529f3c60163e3cfdfd9f",
+      "bytes": 2020
+    },
+    {
+      "path": "app/build/intermediates/built_in_kotlinc/fossDebugAndroidTest/compileFossDebugAndroidTestKotlin/classes/app/skein/chat/ContextualSendPathInstrumentedTest$Fixture$observed$1.class",
+      "sha256": "b9559fd1bbdae958396ca75047cb84d1f8934283bce77b4bf884ae330eab7076",
+      "bytes": 5700
+    },
+    {
+      "path": "app/build/intermediates/built_in_kotlinc/fossDebugAndroidTest/compileFossDebugAndroidTestKotlin/classes/app/skein/chat/ContextualSendPathInstrumentedTest$Fixture$pipeline$1.class",
+      "sha256": "781e044ce5eefc1c2e50af5ee64a947f95cc0e935070e09ca022077cc9ba0e42",
+      "bytes": 2063
+    },
+    {
+      "path": "app/build/intermediates/built_in_kotlinc/fossDebugAndroidTest/compileFossDebugAndroidTestKotlin/classes/app/skein/chat/ContextualSendPathInstrumentedTest$Fixture$pipeline$2.class",
+      "sha256": "c6612b005fcbadebc3f9b0e8d4a530be7612aedc51d3fb785b8cea46416a55db",
+      "bytes": 3401
+    },
+    {
+      "path": "app/build/intermediates/built_in_kotlinc/fossDebugAndroidTest/compileFossDebugAndroidTestKotlin/classes/app/skein/chat/ContextualSendPathInstrumentedTest$Fixture$pipeline$3.class",
+      "sha256": "e167fd8e91a6aeb420e9235866a28ba874190232e275e4c0e436373f6a558e62",
+      "bytes": 3035
+    },
+    {
+      "path": "app/build/intermediates/built_in_kotlinc/fossDebugAndroidTest/compileFossDebugAndroidTestKotlin/classes/app/skein/chat/ContextualSendPathInstrumentedTest$Fixture$seed$1.class",
+      "sha256": "d8a152011d4b2d409ecce8f8ed01f92c62ecf8b986919f51c35c552a3b600d62",
+      "bytes": 1958
+    },
+    {
+      "path": "app/build/intermediates/built_in_kotlinc/fossDebugAndroidTest/compileFossDebugAndroidTestKotlin/classes/app/skein/chat/ContextualSendPathInstrumentedTest$Fixture$send$2$completed$1.class",
+      "sha256": "4252b294cb8d8fa829d4542e403351276def38bd221ca500bc7e4c929a384856",
+      "bytes": 3790
+    },
+    {
+      "path": "app/build/intermediates/built_in_kotlinc/fossDebugAndroidTest/compileFossDebugAndroidTestKotlin/classes/app/skein/chat/ContextualSendPathInstrumentedTest$Fixture$send$2.class",
+      "sha256": "0939dd68585c62a92cb3f45a39b5864ea9c2dac33e46f6b645f38d9f19711f37",
+      "bytes": 5687
+    },
+    {
+      "path": "app/build/intermediates/built_in_kotlinc/fossDebugAndroidTest/compileFossDebugAndroidTestKotlin/classes/app/skein/chat/ContextualSendPathInstrumentedTest$Fixture.class",
+      "sha256": "201486c46060a909e096bd9e4a8339b75060797dabc2e1449ea04f0367f5b838",
+      "bytes": 14666
+    },
+    {
+      "path": "app/build/intermediates/built_in_kotlinc/fossDebugAndroidTest/compileFossDebugAndroidTestKotlin/classes/app/skein/chat/ContextualSendPathInstrumentedTest$TestEngine.class",
+      "sha256": "83106dd3305ec82799ce586ad7074307605de118c4ddd45a99ffb53138e9b09f",
+      "bytes": 4274
+    },
+    {
+      "path": "app/build/intermediates/built_in_kotlinc/fossDebugAndroidTest/compileFossDebugAndroidTestKotlin/classes/app/skein/chat/ContextualSendPathInstrumentedTest$TestKey.class",
+      "sha256": "b466dd588bfa33e0108dfd260096737bc9331252873acf54aba3fd9717200707",
+      "bytes": 5583
+    },
+    {
+      "path": "app/build/intermediates/built_in_kotlinc/fossDebugAndroidTest/compileFossDebugAndroidTestKotlin/classes/app/skein/chat/ContextualSendPathInstrumentedTest$committed_source_deletion_preserves_quotes_and_refuses_contextual_generation$1$1.class",
+      "sha256": "561ace0592f3634c7a605d9c71cf3273fe5df2edea860d4a8547702f37764582",
+      "bytes": 7527
+    },
+    {
+      "path": "app/build/intermediates/built_in_kotlinc/fossDebugAndroidTest/compileFossDebugAndroidTestKotlin/classes/app/skein/chat/ContextualSendPathInstrumentedTest$committed_source_deletion_preserves_quotes_and_refuses_contextual_generation$1.class",
+      "sha256": "719a19bdd61d870dead5d3f0d2d95fc330f33818e0ba87c1557815b963c23650",
+      "bytes": 3933
+    },
+    {
+      "path": "app/build/intermediates/built_in_kotlinc/fossDebugAndroidTest/compileFossDebugAndroidTestKotlin/classes/app/skein/chat/ContextualSendPathInstrumentedTest$edited_and_reingested_source_cannot_repin_a_previous_encrypted_turn$1$1.class",
+      "sha256": "7d76013e1ed94edb25cda54df58f2a72590ab4472fb747acce5a1095a2982b19",
+      "bytes": 8304
+    },
+    {
+      "path": "app/build/intermediates/built_in_kotlinc/fossDebugAndroidTest/compileFossDebugAndroidTestKotlin/classes/app/skein/chat/ContextualSendPathInstrumentedTest$edited_and_reingested_source_cannot_repin_a_previous_encrypted_turn$1.class",
+      "sha256": "1b5c333d60bb3a628d44a8c52e1f43e63e2ad2fa013f716419c2b004c0fa68ec",
+      "bytes": 3879
+    },
+    {
+      "path": "app/build/intermediates/built_in_kotlinc/fossDebugAndroidTest/compileFossDebugAndroidTestKotlin/classes/app/skein/chat/ContextualSendPathInstrumentedTest$persisted_citation_resolves_raw_followup_through_encrypted_send_path$1$1.class",
+      "sha256": "04b056601853d20445b97eba4568061aa56ea630f10b6aea1dff523cff59cc9d",
+      "bytes": 12381
+    },
+    {
+      "path": "app/build/intermediates/built_in_kotlinc/fossDebugAndroidTest/compileFossDebugAndroidTestKotlin/classes/app/skein/chat/ContextualSendPathInstrumentedTest$persisted_citation_resolves_raw_followup_through_encrypted_send_path$1.class",
+      "sha256": "ef09d32ad0c6a003d39f7aaea89cd3bc7bb7ff4ea1269c084ce31bbd62ad3d9d",
+      "bytes": 3885
+    },
+    {
+      "path": "app/build/intermediates/built_in_kotlinc/fossDebugAndroidTest/compileFossDebugAndroidTestKotlin/classes/app/skein/chat/ContextualSendPathInstrumentedTest$withFixture$1.class",
+      "sha256": "fcdf8b79f8596a64341a8c0e87923f510ba0ff209dedbf35d66cff1fec5223a9",
+      "bytes": 2575
+    },
+    {
+      "path": "app/build/intermediates/built_in_kotlinc/fossDebugAndroidTest/compileFossDebugAndroidTestKotlin/classes/app/skein/chat/ContextualSendPathInstrumentedTest.class",
+      "sha256": "a79be04dbde175a95c2801c245923f49f18a3593f6a9445f507ebd207d5db9e6",
+      "bytes": 11986
+    }
+  ],
+  "signatures": [
+    {
+      "variant": "devDebugAndroidTest",
+      "javap": "Compiled from \"ContextualSendPathInstrumentedTest.kt\"\npublic final class app.skein.chat.ContextualSendPathInstrumentedTest {\n  public static final int $stable;\n  public static final java.lang.String FIRST_QUERY;\n  public static final java.lang.String FOLLOW_UP;\n  public static final java.lang.String SCRIPTED_ANSWER;\n  public app.skein.chat.ContextualSendPathInstrumentedTest();\n  public final void persisted_citation_resolves_raw_followup_through_encrypted_send_path();\n  public final void edited_and_reingested_source_cannot_repin_a_previous_encrypted_turn();\n  public final void committed_source_deletion_preserves_quotes_and_refuses_contextual_generation();\n  public static final java.lang.Object access$withFixture(app.skein.chat.ContextualSendPathInstrumentedTest, kotlin.jvm.functions.Function2, kotlin.coroutines.Continuation);\n  static {};\n}\n"
+    },
+    {
+      "variant": "fossDebugAndroidTest",
+      "javap": "Compiled from \"ContextualSendPathInstrumentedTest.kt\"\npublic final class app.skein.chat.ContextualSendPathInstrumentedTest {\n  public static final int $stable;\n  public static final java.lang.String FIRST_QUERY;\n  public static final java.lang.String FOLLOW_UP;\n  public static final java.lang.String SCRIPTED_ANSWER;\n  public app.skein.chat.ContextualSendPathInstrumentedTest();\n  public final void persisted_citation_resolves_raw_followup_through_encrypted_send_path();\n  public final void edited_and_reingested_source_cannot_repin_a_previous_encrypted_turn();\n  public final void committed_source_deletion_preserves_quotes_and_refuses_contextual_generation();\n  public static final java.lang.Object access$withFixture(app.skein.chat.ContextualSendPathInstrumentedTest, kotlin.jvm.functions.Function2, kotlin.coroutines.Continuation);\n  static {};\n}\n"
+    }
+  ],
+  "commands": [
+    [
+      "./gradlew",
+      ":app:ktlintFormat",
+      "--no-daemon",
+      "--max-workers=2"
+    ],
+    [
+      "./gradlew",
+      ":app:ktlintCheck",
+      ":app:compileDevDebugAndroidTestKotlin",
+      ":app:compileFossDebugAndroidTestKotlin",
+      "--no-daemon",
+      "--max-workers=2"
+    ]
+  ],
+  "exit_codes": [
+    0,
+    0
+  ],
+  "lease_release": {
+    "released": true,
+    "owner": "/root/application_context",
+    "token": "1e729d6a-2ff2-4ac9-9e98-fc4b21a3ba66",
+    "at": "2026-09-30T17:19:28.359253+00:00"
+  },
+  "compile_tasks_executed": [
+    ":app:compileDevDebugAndroidTestKotlin",
+    ":app:compileFossDebugAndroidTestKotlin"
+  ],
+  "runtime_executed": false,
+  "runtime_xml_files": 0,
+  "case_count": 3,
+  "native_model_generation": false,
+  "device_operations": false,
+  "archive": {
+    "path": "runtime-compiled-evidence.zip",
+    "sha256": "0331ccc52b337c21c40d4afb13c1d0d22e8091308e8a6c595210518e35c9f0f7",
+    "bytes": 117918
+  }
+}
