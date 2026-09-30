@@ -372,6 +372,24 @@ public class RealRetrievalEvaluationTest {
                     val reservedValidation = validation(RejectionValidationEvaluation.Fixture.PUBLIC_RESERVED)
                     phase = "independent_validation"
                     val independentValidation = validation(RejectionValidationEvaluation.Fixture.FROZEN_20260928)
+                    val freshContextualValidation =
+                        if (args.getString("skein.retrieval.fresh40") == "true") {
+                            phase = "fresh_contextual_validation"
+                            FreshContextualValidationEvaluation.evaluate(
+                                repetitions = repetitions,
+                                buildRevision = checkNotNull(args.getString("skein.retrieval.revision")),
+                                candidateFreeze =
+                                    checkNotNull(
+                                        args.getString("skein.retrieval.fresh40CandidateFreeze"),
+                                    ),
+                                evaluatorFreeze =
+                                    checkNotNull(
+                                        args.getString("skein.retrieval.fresh40EvaluatorFreeze"),
+                                    ),
+                            )
+                        } else {
+                            null
+                        }
                     phase = "report"
                     val report =
                         buildJsonObject {
@@ -390,6 +408,7 @@ public class RealRetrievalEvaluationTest {
                             put("experimental_policy", experimentalPolicy)
                             put("rejection_validation", reservedValidation)
                             put("independent_validation", independentValidation)
+                            freshContextualValidation?.let { put("fresh_contextual_validation", it) }
                             put("validation_policy_freeze", policyFreeze)
                             put(
                                 "scope_mapping",
