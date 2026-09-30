@@ -23,6 +23,9 @@
 // elsewhere.
 @file:OptIn(com.github.takahirom.roborazzi.ExperimentalRoborazziApi::class)
 
+import org.gradle.api.tasks.PathSensitivity
+import org.gradle.api.tasks.testing.Test
+
 plugins {
     alias(libs.plugins.android.library)
     alias(libs.plugins.kotlin.compose)
@@ -57,6 +60,27 @@ android {
             isIncludeAndroidResources = true
         }
     }
+}
+
+// Source guards read these files directly, including modules that are not on
+// this module's test classpath. Keep their contents in both the up-to-date and
+// build-cache keys. NoShadowOrGradientTest also scans test/preview Kotlin, so
+// exclude only build output from the union of all guard scopes.
+val sourceGuardInputs =
+    rootProject.fileTree(rootProject.layout.projectDirectory) {
+        include("feature/**/*.kt", "core/designsystem/**/*.kt", "core/markdown/**/*.kt")
+        exclude("**/build/**")
+    }
+
+tasks.withType<Test>().configureEach {
+    inputs
+        .files(sourceGuardInputs)
+        .withPropertyName("sourceGuardKotlin")
+        .withPathSensitivity(PathSensitivity.RELATIVE)
+    inputs
+        .file(rootProject.layout.projectDirectory.file("docs/ux/tools/contrast.py"))
+        .withPropertyName("sourceGuardContrastScript")
+        .withPathSensitivity(PathSensitivity.RELATIVE)
 }
 
 // skein-xtov.23.8 (DS8) / skein-xtov.23.9 (DS9), docs/ux/UX_TEST_PLAN.md
