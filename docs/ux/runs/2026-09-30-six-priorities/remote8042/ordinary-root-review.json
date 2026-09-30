@@ -1,0 +1,14 @@
+{
+  "source": "8042a4cef675458a9f408acf0a994fe451ad2378",
+  "run": 36694179099,
+  "archive_sha256": "670e3392960c19373878ca2284569ffa2c007027d5e496ef235e0497efabd336",
+  "manifest_hashes_verified": 4,
+  "terminal": "failure",
+  "counts": {
+    "pass": 294,
+    "failure": 1,
+    "error": 0,
+    "skipped": 0
+  },
+  "raw_actual_xml_archive": "ordinary-connected-test-reports.zip"
+}

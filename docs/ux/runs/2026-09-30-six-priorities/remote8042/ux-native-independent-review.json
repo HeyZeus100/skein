@@ -1,0 +1,545 @@
+{
+  "source": "8042a4cef675458a9f408acf0a994fe451ad2378",
+  "status": "PASS",
+  "errors": [],
+  "ux": {
+    "name": "ux-verification-records",
+    "run": 36694107516,
+    "artifact_id": 11088030027,
+    "bytes": 455748,
+    "sha256": "4066e97515921a17c1006e82a539d313a86eb471a0671014bd4824fbdacd9bdc",
+    "api_digest_verified": true,
+    "manifest_records": 719,
+    "raw_xml": 159,
+    "xml_counts": {
+      "tests": 1434,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 80
+    },
+    "actual_testcase_counts": {
+      "tests": 1434,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 80
+    },
+    "passed": 1354,
+    "screenshots": {
+      "unchanged": 552
+    },
+    "modules": {
+      "core/designsystem": 288,
+      "feature/chat": 303,
+      "feature/editor": 280,
+      "feature/graph": 74,
+      "feature/models": 58,
+      "feature/settings": 89,
+      "feature/shell": 291,
+      "feature/timeline": 51
+    },
+    "fresh_unit_tasks": [
+      {
+        "task": ":core:designsystem:testDebugUnitTest",
+        "suffix": ""
+      },
+      {
+        "task": ":feature:chat:testDebugUnitTest",
+        "suffix": ""
+      },
+      {
+        "task": ":feature:editor:testDebugUnitTest",
+        "suffix": ""
+      },
+      {
+        "task": ":feature:graph:testDebugUnitTest",
+        "suffix": ""
+      },
+      {
+        "task": ":feature:models:testDebugUnitTest",
+        "suffix": ""
+      },
+      {
+        "task": ":feature:settings:testDebugUnitTest",
+        "suffix": ""
+      },
+      {
+        "task": ":feature:timeline:testDebugUnitTest",
+        "suffix": ""
+      },
+      {
+        "task": ":feature:shell:testDebugUnitTest",
+        "suffix": ""
+      }
+    ],
+    "workflow_log_sha256": "b86ef1b1085302125871f437ab6c6485c3ee07b135b0822ae61a10a13377a88f"
+  },
+  "native": {
+    "name": "so-determinism",
+    "run": 36694107458,
+    "artifact_id": 11087461000,
+    "bytes": 50711050,
+    "sha256": "6f8b7a2d0b518fe8127010b4696e32a645003ac6394e945e59c4eabcaad79aeb",
+    "api_digest_verified": true,
+    "pair_bytes_equal": true,
+    "library_bytes": 25314032,
+    "library_sha256": "2aefda01808f10bf5693ab02d0857e0169dc09550b615896939cb176c032daff",
+    "manifest_pin_checks": 15,
+    "source_context_sha256": "9930cbcf5c5661900657b0d0a6d87ce2e60bef943fed966c610b02959c6472cc",
+    "submodule_pins": [
+      "ad9184e76a66b1001c29db9b0a3e87f646c64de0",
+      "8864cdc896bbc2a9b6eb36b3218fc9ef57908d77",
+      "b29c606e28a01b1bc8c1351026a0fa6e616bf6c4"
+    ],
+    "native_exit": "exit_status=0"
+  },
+  "workflow": [
+    {
+      "run": 36694107516,
+      "source": "8042a4cef675458a9f408acf0a994fe451ad2378",
+      "status": "completed",
+      "conclusion": "success",
+      "jobs": [
+        {
+          "name": "Verify Roborazzi goldens",
+          "conclusion": "success",
+          "steps": [
+            {
+              "name": "Set up job",
+              "conclusion": "success"
+            },
+            {
+              "name": "Checkout",
+              "conclusion": "success"
+            },
+            {
+              "name": "Set up JDK 17 (Temurin)",
+              "conclusion": "success"
+            },
+            {
+              "name": "Install required Android SDK platform",
+              "conclusion": "success"
+            },
+            {
+              "name": "Set up Gradle",
+              "conclusion": "success"
+            },
+            {
+              "name": "Verify screenshots",
+              "conclusion": "success"
+            },
+            {
+              "name": "Goldens untouched by verify",
+              "conclusion": "success"
+            },
+            {
+              "name": "Baseline size budget",
+              "conclusion": "success"
+            },
+            {
+              "name": "Job summary",
+              "conclusion": "skipped"
+            },
+            {
+              "name": "Upload screenshot diffs",
+              "conclusion": "skipped"
+            },
+            {
+              "name": "Record screenshot evidence source and hashes",
+              "conclusion": "success"
+            },
+            {
+              "name": "Upload screenshot verification records",
+              "conclusion": "success"
+            },
+            {
+              "name": "Post Set up Gradle",
+              "conclusion": "success"
+            },
+            {
+              "name": "Post Set up JDK 17 (Temurin)",
+              "conclusion": "success"
+            },
+            {
+              "name": "Post Checkout",
+              "conclusion": "success"
+            },
+            {
+              "name": "Complete job",
+              "conclusion": "success"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "run": 36694107458,
+      "source": "8042a4cef675458a9f408acf0a994fe451ad2378",
+      "status": "completed",
+      "conclusion": "success",
+      "jobs": [
+        {
+          "name": "Toolchain manifest and tool self-tests",
+          "conclusion": "success",
+          "steps": [
+            {
+              "name": "Set up job",
+              "conclusion": "success"
+            },
+            {
+              "name": "Checkout",
+              "conclusion": "success"
+            },
+            {
+              "name": "Set up Python",
+              "conclusion": "success"
+            },
+            {
+              "name": "Install PyYAML (reproducible-builds.yml parser)",
+              "conclusion": "success"
+            },
+            {
+              "name": "reproducible-builds.yml agrees with the tree",
+              "conclusion": "success"
+            },
+            {
+              "name": "manifest-check self-test",
+              "conclusion": "success"
+            },
+            {
+              "name": "SOURCE_DATE_EPOCH derivation self-test",
+              "conclusion": "success"
+            },
+            {
+              "name": "strip-signature self-test",
+              "conclusion": "success"
+            },
+            {
+              "name": "normalize-apk self-test",
+              "conclusion": "success"
+            },
+            {
+              "name": "APK comparator self-test",
+              "conclusion": "success"
+            },
+            {
+              "name": "verify.sh self-test",
+              "conclusion": "success"
+            },
+            {
+              "name": "so-determinism self-test",
+              "conclusion": "success"
+            },
+            {
+              "name": "Post Set up Python",
+              "conclusion": "success"
+            },
+            {
+              "name": "Post Checkout",
+              "conclusion": "success"
+            },
+            {
+              "name": "Complete job",
+              "conclusion": "success"
+            }
+          ]
+        },
+        {
+          "name": "Verify SQLCipher amalgamation matches pinned source",
+          "conclusion": "skipped",
+          "steps": []
+        },
+        {
+          "name": "libskein_llama.so is a function of its sources",
+          "conclusion": "success",
+          "steps": [
+            {
+              "name": "Set up job",
+              "conclusion": "success"
+            },
+            {
+              "name": "Checkout",
+              "conclusion": "success"
+            },
+            {
+              "name": "Verify third_party submodule pins",
+              "conclusion": "success"
+            },
+            {
+              "name": "Set up JDK 17 (Temurin)",
+              "conclusion": "success"
+            },
+            {
+              "name": "Install required Android SDK platform",
+              "conclusion": "success"
+            },
+            {
+              "name": "Set up Gradle",
+              "conclusion": "success"
+            },
+            {
+              "name": "Derive SOURCE_DATE_EPOCH from the commit",
+              "conclusion": "success"
+            },
+            {
+              "name": "Two cold builds of libskein_llama.so, compared",
+              "conclusion": "success"
+            },
+            {
+              "name": "Hash the retained native evidence",
+              "conclusion": "success"
+            },
+            {
+              "name": "Upload native determinism evidence",
+              "conclusion": "success"
+            },
+            {
+              "name": "Post Set up Gradle",
+              "conclusion": "success"
+            },
+            {
+              "name": "Post Set up JDK 17 (Temurin)",
+              "conclusion": "success"
+            },
+            {
+              "name": "Post Checkout",
+              "conclusion": "success"
+            },
+            {
+              "name": "Complete job",
+              "conclusion": "success"
+            }
+          ]
+        },
+        {
+          "name": "Build b (unsigned foss release)",
+          "conclusion": "success",
+          "steps": [
+            {
+              "name": "Set up job",
+              "conclusion": "success"
+            },
+            {
+              "name": "Checkout (build b)",
+              "conclusion": "success"
+            },
+            {
+              "name": "Verify third_party submodule pins",
+              "conclusion": "success"
+            },
+            {
+              "name": "Set up JDK 17 (Temurin)",
+              "conclusion": "success"
+            },
+            {
+              "name": "Install required Android SDK platform",
+              "conclusion": "success"
+            },
+            {
+              "name": "Choose the OpenSSL tarball cache directory",
+              "conclusion": "success"
+            },
+            {
+              "name": "Derive pinned OpenSSL sha256 (cache key)",
+              "conclusion": "success"
+            },
+            {
+              "name": "Cache the pinned OpenSSL tarball",
+              "conclusion": "success"
+            },
+            {
+              "name": "Set up Gradle",
+              "conclusion": "success"
+            },
+            {
+              "name": "Derive SOURCE_DATE_EPOCH from the commit",
+              "conclusion": "success"
+            },
+            {
+              "name": "Assemble foss release",
+              "conclusion": "success"
+            },
+            {
+              "name": "Record hash and build context",
+              "conclusion": "success"
+            },
+            {
+              "name": "Upload build b",
+              "conclusion": "success"
+            },
+            {
+              "name": "Post Set up Gradle",
+              "conclusion": "success"
+            },
+            {
+              "name": "Post Cache the pinned OpenSSL tarball",
+              "conclusion": "success"
+            },
+            {
+              "name": "Post Set up JDK 17 (Temurin)",
+              "conclusion": "success"
+            },
+            {
+              "name": "Post Checkout (build b)",
+              "conclusion": "success"
+            },
+            {
+              "name": "Complete job",
+              "conclusion": "success"
+            }
+          ]
+        },
+        {
+          "name": "Build a (unsigned foss release)",
+          "conclusion": "success",
+          "steps": [
+            {
+              "name": "Set up job",
+              "conclusion": "success"
+            },
+            {
+              "name": "Checkout (build a)",
+              "conclusion": "success"
+            },
+            {
+              "name": "Verify third_party submodule pins",
+              "conclusion": "success"
+            },
+            {
+              "name": "Set up JDK 17 (Temurin)",
+              "conclusion": "success"
+            },
+            {
+              "name": "Install required Android SDK platform",
+              "conclusion": "success"
+            },
+            {
+              "name": "Choose the OpenSSL tarball cache directory",
+              "conclusion": "success"
+            },
+            {
+              "name": "Derive pinned OpenSSL sha256 (cache key)",
+              "conclusion": "success"
+            },
+            {
+              "name": "Cache the pinned OpenSSL tarball",
+              "conclusion": "success"
+            },
+            {
+              "name": "Set up Gradle",
+              "conclusion": "success"
+            },
+            {
+              "name": "Derive SOURCE_DATE_EPOCH from the commit",
+              "conclusion": "success"
+            },
+            {
+              "name": "Assemble foss release",
+              "conclusion": "success"
+            },
+            {
+              "name": "Record hash and build context",
+              "conclusion": "success"
+            },
+            {
+              "name": "Upload build a",
+              "conclusion": "success"
+            },
+            {
+              "name": "Post Set up Gradle",
+              "conclusion": "success"
+            },
+            {
+              "name": "Post Cache the pinned OpenSSL tarball",
+              "conclusion": "success"
+            },
+            {
+              "name": "Post Set up JDK 17 (Temurin)",
+              "conclusion": "success"
+            },
+            {
+              "name": "Post Checkout (build a)",
+              "conclusion": "success"
+            },
+            {
+              "name": "Complete job",
+              "conclusion": "success"
+            }
+          ]
+        },
+        {
+          "name": "Compare the two builds",
+          "conclusion": "success",
+          "steps": [
+            {
+              "name": "Set up job",
+              "conclusion": "success"
+            },
+            {
+              "name": "Checkout",
+              "conclusion": "success"
+            },
+            {
+              "name": "Download build a",
+              "conclusion": "success"
+            },
+            {
+              "name": "Download build b",
+              "conclusion": "success"
+            },
+            {
+              "name": "Show both build contexts",
+              "conclusion": "success"
+            },
+            {
+              "name": "Self-test the APK comparator",
+              "conclusion": "success"
+            },
+            {
+              "name": "sha256sum -c across runners",
+              "conclusion": "success"
+            },
+            {
+              "name": "Compare unsigned release APKs entry by entry",
+              "conclusion": "success"
+            },
+            {
+              "name": "Classify the difference",
+              "conclusion": "skipped"
+            },
+            {
+              "name": "Install diffoscope",
+              "conclusion": "skipped"
+            },
+            {
+              "name": "Produce the diffoscope report",
+              "conclusion": "skipped"
+            },
+            {
+              "name": "Upload apk-diff",
+              "conclusion": "skipped"
+            },
+            {
+              "name": "Verdict",
+              "conclusion": "success"
+            },
+            {
+              "name": "Post Checkout",
+              "conclusion": "success"
+            },
+            {
+              "name": "Complete job",
+              "conclusion": "success"
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "limitations": [
+    "80 XML skips retained, not passes.",
+    "SQLCipher amalgamation pin-verification job skipped by workflow condition; not native-runtime or installed evidence.",
+    "Only complete UX and so-determinism archives inspected; APK downloads deliberately excluded from this report.",
+    "No physical device, runtime answer generation, thermal/PSS or fresh40 policy acceptance.",
+    "Source attribution is hosted checkout/context plus GitHub API, not installed APK attestation."
+  ]
+}

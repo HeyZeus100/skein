@@ -1,0 +1,137 @@
+{
+  "status": "PASS",
+  "source": "8042a4cef675458a9f408acf0a994fe451ad2378",
+  "run_id": 36694107458,
+  "run_conclusion": "success",
+  "errors": [],
+  "archives": [
+    {
+      "name": "rb-build-a",
+      "artifact_id": 11088240511,
+      "archive_bytes": 100972208,
+      "archive_sha256": "f53c1ebcb513ab7e3efed5c5fcbacb3c920ec3598ace19e5bfe558f30b2a4540",
+      "api_digest_matches": true,
+      "declared_apk_hash_records_verified": 1,
+      "apk_bytes": 100971335,
+      "apk_sha256": "17558be4d76da3f4843f0bc7bd039d56c01ce96a6c5441e3ec4c6c6745bef15a",
+      "context_sha256": "43ce617c6c2fb4da2b8d1e2b42ca597d7ecb0b83e73c3e6f6fe9bc2d45ffbeea",
+      "source_context": {
+        "build_id": "a",
+        "abs_path": "/home/runner/work/skein/skein/rb-a/skein",
+        "commit": "8042a4cef675458a9f408acf0a994fe451ad2378",
+        "source_date_epoch": "1790759264",
+        "runner": "Linux/X64"
+      },
+      "native_payloads": [
+        {
+          "path": "lib/arm64-v8a/libandroidx.graphics.path.so",
+          "bytes": 10096,
+          "sha256": "41e9a793c43a0f4fddb19e33f346bace464f30f888ba7b9eaf96294ea115bfb6"
+        },
+        {
+          "path": "lib/arm64-v8a/libdatastore_shared_counter.so",
+          "bytes": 7784,
+          "sha256": "178f89a2c6c9234ddf980dd4cd1f3616186a46b2b932aafa6707abd04c5fd76a"
+        },
+        {
+          "path": "lib/arm64-v8a/libonnxruntime.so",
+          "bytes": 27985944,
+          "sha256": "850f897a50d369b3305582244210f5649be9cfeb193c5807fba14146301616c7"
+        },
+        {
+          "path": "lib/arm64-v8a/libonnxruntime4j_jni.so",
+          "bytes": 83208,
+          "sha256": "f86f2a5f56b907e4a25d67febc422ec13f5a265d36665f50e2808de6e4a515b6"
+        },
+        {
+          "path": "lib/arm64-v8a/libskein_llama.so",
+          "bytes": 25314032,
+          "sha256": "2aefda01808f10bf5693ab02d0857e0169dc09550b615896939cb176c032daff"
+        },
+        {
+          "path": "lib/arm64-v8a/libskein_sqlite.so",
+          "bytes": 6249008,
+          "sha256": "fabd5322a8e2b7b54fe3661e260149e4d652d404e40fdad988955e31c91c38af"
+        },
+        {
+          "path": "lib/arm64-v8a/libskein_sqlite_jni.so",
+          "bytes": 19296,
+          "sha256": "2d6454ff03023ef85f0d19fd7c3cce88169b5b212a9de86b7fe649b98ff5d229"
+        }
+      ]
+    },
+    {
+      "name": "rb-build-b",
+      "artifact_id": 11087051968,
+      "archive_bytes": 100972222,
+      "archive_sha256": "b78086065627995c40f10450e4979fe431e14c90737fa107e43cf0933f793f0c",
+      "api_digest_matches": true,
+      "declared_apk_hash_records_verified": 1,
+      "apk_bytes": 100971335,
+      "apk_sha256": "17558be4d76da3f4843f0bc7bd039d56c01ce96a6c5441e3ec4c6c6745bef15a",
+      "context_sha256": "33b7308a5254b6a11e663bac94a9878e7768ed1bd9163244bb0f4e0f2f689940",
+      "source_context": {
+        "build_id": "b",
+        "abs_path": "/home/runner/work/skein/skein/rb-b/nested/deeper/skein",
+        "commit": "8042a4cef675458a9f408acf0a994fe451ad2378",
+        "source_date_epoch": "1790759264",
+        "runner": "Linux/X64"
+      },
+      "native_payloads": [
+        {
+          "path": "lib/arm64-v8a/libandroidx.graphics.path.so",
+          "bytes": 10096,
+          "sha256": "41e9a793c43a0f4fddb19e33f346bace464f30f888ba7b9eaf96294ea115bfb6"
+        },
+        {
+          "path": "lib/arm64-v8a/libdatastore_shared_counter.so",
+          "bytes": 7784,
+          "sha256": "178f89a2c6c9234ddf980dd4cd1f3616186a46b2b932aafa6707abd04c5fd76a"
+        },
+        {
+          "path": "lib/arm64-v8a/libonnxruntime.so",
+          "bytes": 27985944,
+          "sha256": "850f897a50d369b3305582244210f5649be9cfeb193c5807fba14146301616c7"
+        },
+        {
+          "path": "lib/arm64-v8a/libonnxruntime4j_jni.so",
+          "bytes": 83208,
+          "sha256": "f86f2a5f56b907e4a25d67febc422ec13f5a265d36665f50e2808de6e4a515b6"
+        },
+        {
+          "path": "lib/arm64-v8a/libskein_llama.so",
+          "bytes": 25314032,
+          "sha256": "2aefda01808f10bf5693ab02d0857e0169dc09550b615896939cb176c032daff"
+        },
+        {
+          "path": "lib/arm64-v8a/libskein_sqlite.so",
+          "bytes": 6249008,
+          "sha256": "fabd5322a8e2b7b54fe3661e260149e4d652d404e40fdad988955e31c91c38af"
+        },
+        {
+          "path": "lib/arm64-v8a/libskein_sqlite_jni.so",
+          "bytes": 19296,
+          "sha256": "2d6454ff03023ef85f0d19fd7c3cce88169b5b212a9de86b7fe649b98ff5d229"
+        }
+      ]
+    }
+  ],
+  "actual_apk_byte_equality": true,
+  "distinct_build_roots": true,
+  "embedded_llama_matches_independently_verified_native_pair": true,
+  "required_success_jobs": [
+    "Toolchain manifest and tool self-tests",
+    "libskein_llama.so is a function of its sources",
+    "Build b (unsigned foss release)",
+    "Build a (unsigned foss release)",
+    "Compare the two builds"
+  ],
+  "skipped_jobs": [
+    "Verify SQLCipher amalgamation matches pinned source"
+  ],
+  "limits": [
+    "Unsigned hosted build reproducibility only; no installed bytes, signing identity, app runtime, device acceptance or native model behavior.",
+    "SQLCipher amalgamation verification job skipped by workflow condition.",
+    "No blanket equality claim against earlier e62 APK or all earlier native payloads."
+  ]
+}

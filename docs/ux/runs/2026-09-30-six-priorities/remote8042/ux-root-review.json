@@ -1,0 +1,54 @@
+{
+  "run_id": 36694107516,
+  "source": "8042a4cef675458a9f408acf0a994fe451ad2378",
+  "archive_sha256": "4066e97515921a17c1006e82a539d313a86eb471a0671014bd4824fbdacd9bdc",
+  "actual_xml_files": 159,
+  "manifest_records_verified": 719,
+  "totals": {
+    "tests": 1434,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 80
+  },
+  "passed": 1354,
+  "screenshots": {
+    "unchanged": 552
+  },
+  "scope": "actual XML/image JSON and all eight freshly executed test tasks at exact source",
+  "test_tasks": [
+    {
+      "module": ":core:designsystem",
+      "suffix": ""
+    },
+    {
+      "module": ":feature:chat",
+      "suffix": ""
+    },
+    {
+      "module": ":feature:editor",
+      "suffix": ""
+    },
+    {
+      "module": ":feature:graph",
+      "suffix": ""
+    },
+    {
+      "module": ":feature:models",
+      "suffix": ""
+    },
+    {
+      "module": ":feature:settings",
+      "suffix": ""
+    },
+    {
+      "module": ":feature:timeline",
+      "suffix": ""
+    },
+    {
+      "module": ":feature:shell",
+      "suffix": ""
+    }
+  ],
+  "workflow_conclusion": "success",
+  "workflow_log_sha256": "b86ef1b1085302125871f437ab6c6485c3ee07b135b0822ae61a10a13377a88f"
+}

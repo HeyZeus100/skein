@@ -1,0 +1,21 @@
+{
+  "run_id": 36694107458,
+  "apks_byte_equal": true,
+  "apks": {
+    "rb-build-a": {
+      "archive_sha256": "f53c1ebcb513ab7e3efed5c5fcbacb3c920ec3598ace19e5bfe558f30b2a4540",
+      "apk_path": "app-foss-release-unsigned.apk",
+      "apk_sha256": "17558be4d76da3f4843f0bc7bd039d56c01ce96a6c5441e3ec4c6c6745bef15a",
+      "apk_bytes": 100971335
+    },
+    "rb-build-b": {
+      "archive_sha256": "b78086065627995c40f10450e4979fe431e14c90737fa107e43cf0933f793f0c",
+      "apk_path": "app-foss-release-unsigned.apk",
+      "apk_sha256": "17558be4d76da3f4843f0bc7bd039d56c01ce96a6c5441e3ec4c6c6745bef15a",
+      "apk_bytes": 100971335
+    }
+  },
+  "embedded_llama_sha256": "2aefda01808f10bf5693ab02d0857e0169dc09550b615896939cb176c032daff",
+  "context_and_terminal_review": "Exact8042 distinct build roots, terminal success; SQLCipher regeneration skipped",
+  "peer_apk_receipt_sha256": "c416d3d0c26cad3329afefc48d74fb5558ca8b05a1699e7c9eb5e6fef0f4de7e"
+}

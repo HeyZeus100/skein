@@ -1,0 +1,145 @@
+{
+  "previous_run": 36664671504,
+  "current_run": 36694179099,
+  "previous_cases": 281,
+  "current_cases": 295,
+  "removed": [],
+  "added": [
+    {
+      "identity": [
+        "core/vault",
+        "app.skein.core.vault.repository.FileLifecycleInstrumentedTest",
+        "a_new_surviving_source_dependent_requires_fresh_editor_reservations"
+      ],
+      "status": "passed"
+    },
+    {
+      "identity": [
+        "core/vault",
+        "app.skein.core.vault.repository.FileLifecycleInstrumentedTest",
+        "changed_import_source_rolls_back_attachment_linkage_and_leaves_unrelated_note_intact"
+      ],
+      "status": "passed"
+    },
+    {
+      "identity": [
+        "core/vault",
+        "app.skein.core.vault.repository.FileLifecycleInstrumentedTest",
+        "changed_membership_is_rejected_before_any_partial_delete"
+      ],
+      "status": "passed"
+    },
+    {
+      "identity": [
+        "core/vault",
+        "app.skein.core.vault.repository.FileLifecycleInstrumentedTest",
+        "failed_outer_commit_preserves_every_row_index_and_blob"
+      ],
+      "status": "passed"
+    },
+    {
+      "identity": [
+        "core/vault",
+        "app.skein.core.vault.repository.FileLifecycleInstrumentedTest",
+        "failed_post_commit_unlink_is_pending_and_recovered_after_reopen"
+      ],
+      "status": "failed"
+    },
+    {
+      "identity": [
+        "core/vault",
+        "app.skein.core.vault.repository.FileLifecycleInstrumentedTest",
+        "file_delete_removes_all_text_indexes_and_bytes_but_retains_quotes_and_other_files"
+      ],
+      "status": "passed"
+    },
+    {
+      "identity": [
+        "core/vault",
+        "app.skein.core.vault.repository.FileLifecycleInstrumentedTest",
+        "import_reservation_survives_blob_landing_before_metadata_and_sweep_does_not_deadlock"
+      ],
+      "status": "passed"
+    },
+    {
+      "identity": [
+        "core/vault",
+        "app.skein.core.vault.repository.FileLifecycleInstrumentedTest",
+        "late_ingest_cannot_restore_deleted_text_chunks_vectors_or_edges"
+      ],
+      "status": "passed"
+    },
+    {
+      "identity": [
+        "core/vault",
+        "app.skein.core.vault.repository.FileLifecycleInstrumentedTest",
+        "lock_cancels_uncommitted_file_delete_without_removing_bytes"
+      ],
+      "status": "passed"
+    },
+    {
+      "identity": [
+        "core/vault",
+        "app.skein.core.vault.repository.FileLifecycleInstrumentedTest",
+        "pdf_extraction_finishing_after_file_delete_cannot_create_its_note"
+      ],
+      "status": "passed"
+    },
+    {
+      "identity": [
+        "core/vault",
+        "app.skein.core.vault.repository.FileLifecycleInstrumentedTest",
+        "quoting_chat_count_deduplicates_multiple_text_sources_and_turns"
+      ],
+      "status": "passed"
+    },
+    {
+      "identity": [
+        "core/vault",
+        "app.skein.core.vault.repository.FileLifecycleInstrumentedTest",
+        "unlock_sweep_retains_shared_references_and_missing_blob_metadata"
+      ],
+      "status": "passed"
+    },
+    {
+      "identity": [
+        "core/vault",
+        "app.skein.core.vault.repository.FileLifecycleInstrumentedTest",
+        "zip_attachment_and_existing_text_link_before_a_delete_can_observe_them"
+      ],
+      "status": "passed"
+    },
+    {
+      "identity": [
+        "core/vault",
+        "app.skein.core.vault.repository.FileLifecycleInstrumentedTest",
+        "zip_with_attachment_entry_before_notes_links_later_notes_atomically"
+      ],
+      "status": "passed"
+    }
+  ],
+  "prior_cases_not_passing": [],
+  "diagnostic_classes": [],
+  "manifest_source": "8042a4cef675458a9f408acf0a994fe451ad2378",
+  "manifest_sha256": "f9804c1b45e76a8e5d782cb6425c64a13362595c9b898bb0d31b62b5c69a3ada",
+  "verified_manifest_files": [
+    {
+      "path": "app/build/outputs/androidTest-results/connected/debug/flavors/dev/TEST-test(AVD) - 15.xml",
+      "sha256": "78e0f9a2f73cd7cc1d40a15cfd3f425baba755eb179fb76d48518a2f5dc5a754"
+    },
+    {
+      "path": "build/instrumentation-review.json",
+      "sha256": "a8d343afa48e27bbc6326069db99cfd5478818f67c758e8351aa4ba4500b4112"
+    },
+    {
+      "path": "core/vault/build/outputs/androidTest-results/connected/debug/flavors/dev/TEST-test(AVD) - 15.xml",
+      "sha256": "d23119283edfd890030292666b01075157356a1c4cf57e8dc3660d17c4717426"
+    },
+    {
+      "path": "inference-service/build/outputs/androidTest-results/connected/debug/flavors/dev/TEST-test(AVD) - 15.xml",
+      "sha256": "fa38fb3c992613becb700830dd49ca7c972471d5db53c87021d5d6399e18923b"
+    }
+  ],
+  "apk_limitation": "The four built APK hashes are host declared; archive does not provide APK bytes and does not attest any physical Fold install.",
+  "conclusion": "All accepted281 identities remain and pass. Exactly14 LC09 added,13 pass and1 stale-baseline assertion fails. Current ordinary gate remains failed."
+}

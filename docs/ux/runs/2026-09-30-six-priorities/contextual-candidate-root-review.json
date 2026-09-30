@@ -1,0 +1,14 @@
+{
+  "candidate": "65b7cc9830a025dcdbfc3cbe325f7342f5658dd7",
+  "receipt_sha256": "9349054e0e57ffc1f8f01de2b4781795007c2504b2cf5af5ae1aa4d1c01dd2c6",
+  "source_files_verified": 8,
+  "actual_xml_files": 8,
+  "passed": 68,
+  "failed": 0,
+  "errors": 0,
+  "skipped": 0,
+  "context_app_path": "UNEXECUTED",
+  "fresh40": "UNEXECUTED",
+  "threshold": "unchanged0.5",
+  "backend": "unavailable default"
+}

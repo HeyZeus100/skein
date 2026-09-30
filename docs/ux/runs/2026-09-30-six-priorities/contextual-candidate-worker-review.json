@@ -1,0 +1,164 @@
+{
+  "status": "HOST_VERIFIED_CANDIDATE_NOT_PROMOTED",
+  "base": "6c7ab46ef12940d88f8e845f5a9ae097e69f2285",
+  "tests_added": 29,
+  "files": [
+    {
+      "path": "core/model/src/main/kotlin/app/skein/core/model/ContextualRetrieval.kt",
+      "bytes": 2233,
+      "sha256": "87e3dadf95d746e33c7711af8aad5de084aa28f5d20510b90724b69026383cf0"
+    },
+    {
+      "path": "core/rag/src/main/kotlin/app/skein/core/rag/retrieval/EvidenceSelection.kt",
+      "bytes": 1526,
+      "sha256": "5d578bb285ab2bca19205ddad425a8cc770503e575c0e4ba6d2f54b998657abb"
+    },
+    {
+      "path": "core/rag/src/main/kotlin/app/skein/core/rag/retrieval/EvidenceUnitSelector.kt",
+      "bytes": 9358,
+      "sha256": "3e0df9955436230f86d258b4873744737e1ce255dea908878fe56643f606ecb6"
+    },
+    {
+      "path": "core/rag/src/main/kotlin/app/skein/core/rag/retrieval/ProvenanceFollowUpResolver.kt",
+      "bytes": 2951,
+      "sha256": "7be817e3dd1c739b0f8586618816241e1e62d1ff1105816a72501a19d9ff6795"
+    },
+    {
+      "path": "core/rag/src/main/kotlin/app/skein/core/rag/retrieval/RetrievalServiceImpl.kt",
+      "bytes": 13809,
+      "sha256": "1fbc77f1c5b81edee720c99eb9cb0f82935b7bb49e8056c04d305fe7f5703920"
+    },
+    {
+      "path": "core/rag/src/test/kotlin/app/skein/core/rag/retrieval/ContextualRetrievalServiceTest.kt",
+      "bytes": 8602,
+      "sha256": "cf4d3e19d3014cbd53619d0ac69dfc2a9b9b10eb5c9961c240e17997195a0214"
+    },
+    {
+      "path": "core/rag/src/test/kotlin/app/skein/core/rag/retrieval/EvidenceUnitSelectorTest.kt",
+      "bytes": 13604,
+      "sha256": "695ab352bea1db61780b32f264641c93961fcaf07c8f01dabd2879b7c0835f14"
+    },
+    {
+      "path": "core/rag/src/test/kotlin/app/skein/core/rag/retrieval/ProvenanceFollowUpResolverTest.kt",
+      "bytes": 6297,
+      "sha256": "4042cab244baf8b994483ced8b7e32d3eead8a7149d1ac496e6edcf6878b0749"
+    }
+  ],
+  "scope": "Explicit new request overload only, default String API and production lexical v1 at0.5 remain unchanged.",
+  "guarantees": [
+    "Current NOTE Space and revision hash verified, exact canonical UTF8 indexed anchor match, complete bounded blank-line regions including fenced blocks.",
+    "Exact same-document/revision transitive overlap byte union keeps first-ranked source and every original member. Oversized later overlap refused.",
+    "Follow-up uses prior USER query and one current same-Space source pin only as recall hint; raw original query gates final evidence.",
+    "Re-read rejects observed source changes/deletion/Space moves; no atomic publication lease claimed."
+  ],
+  "evaluation_adapter_gate": {
+    "status": "OPEN",
+    "reason": "Legacy RetrievalMetrics.validResult requires indexed chunk text/locator equality and is unsuitable for expanded source units.",
+    "required": [
+      "Verify returned same-revision source bytes and UTF8 locator boundaries independently.",
+      "Verify each declared original member identity and indexed canonical anchor lies in expanded unit; preserve original source signals.",
+      "Score all relevant spans and absence/fact criteria against independently frozen gold without editing old gold or thresholds.",
+      "Report context application path UNEXECUTED until real caller pipeline executes; never substitute oracle resolved queries."
+    ]
+  },
+  "unmet": [
+    "Fresh expanded-evidence scorer/adapter with immutable gold and all-span/absence metrics remains OPEN.",
+    "Context real app path UNEXECUTED; no production contextual activation.",
+    "No semantic completeness, contradiction resolution, paraphrase adequacy or entailment claim.",
+    "No semantic embedder activation/backend choice or Fold acceptance."
+  ],
+  "tests_actual": {
+    "tests": 68,
+    "passed": 68,
+    "failures": 0,
+    "errors": 0,
+    "skips": 0,
+    "new_tests": 29,
+    "suites": [
+      {
+        "suite": "app.skein.core.rag.retrieval.AuthoritativeEvidenceTest",
+        "testcases": 5,
+        "nonpassing": [],
+        "timestamp": "2026-09-30T09:34:14.336Z",
+        "path": "build/agent-logs/contextual-retrieval-20260930/attempt-3/core/rag/build/test-results/testDebugUnitTest/TEST-app.skein.core.rag.retrieval.AuthoritativeEvidenceTest.xml",
+        "sha256": "712304eaa27a0319652a922ca47f55e50f886ff9cd377d7be2ddb8ea079b4c28"
+      },
+      {
+        "suite": "app.skein.core.rag.retrieval.ContextualRetrievalServiceTest",
+        "testcases": 6,
+        "nonpassing": [],
+        "timestamp": "2026-09-30T09:34:14.408Z",
+        "path": "build/agent-logs/contextual-retrieval-20260930/attempt-3/core/rag/build/test-results/testDebugUnitTest/TEST-app.skein.core.rag.retrieval.ContextualRetrievalServiceTest.xml",
+        "sha256": "5a338a4871821ca5304049f7de037adcd7cd4392c335aa52255eb753159a536d"
+      },
+      {
+        "suite": "app.skein.core.rag.retrieval.EvidenceUnitSelectorTest",
+        "testcases": 15,
+        "nonpassing": [],
+        "timestamp": "2026-09-30T09:34:14.431Z",
+        "path": "build/agent-logs/contextual-retrieval-20260930/attempt-3/core/rag/build/test-results/testDebugUnitTest/TEST-app.skein.core.rag.retrieval.EvidenceUnitSelectorTest.xml",
+        "sha256": "fc47edc97bffe11b10d183bb79abed36f5591c8ec8160df3fba57d90309224d7"
+      },
+      {
+        "suite": "app.skein.core.rag.retrieval.LexicalEvidenceGateTest",
+        "testcases": 11,
+        "nonpassing": [],
+        "timestamp": "2026-09-30T09:34:14.446Z",
+        "path": "build/agent-logs/contextual-retrieval-20260930/attempt-3/core/rag/build/test-results/testDebugUnitTest/TEST-app.skein.core.rag.retrieval.LexicalEvidenceGateTest.xml",
+        "sha256": "8b1fe72cf698c1d6b3bc17550a4c4912ceb06d9dacce7314aeaa4259ee8064a5"
+      },
+      {
+        "suite": "app.skein.core.rag.retrieval.ProvenanceFollowUpResolverTest",
+        "testcases": 8,
+        "nonpassing": [],
+        "timestamp": "2026-09-30T09:34:14.454Z",
+        "path": "build/agent-logs/contextual-retrieval-20260930/attempt-3/core/rag/build/test-results/testDebugUnitTest/TEST-app.skein.core.rag.retrieval.ProvenanceFollowUpResolverTest.xml",
+        "sha256": "c3d6c3a0205240e72ba94d58030d33276cbfd0697a20efb030aac25d5ca67374"
+      },
+      {
+        "suite": "app.skein.core.rag.retrieval.RetrievalServiceImplContractTest",
+        "testcases": 9,
+        "nonpassing": [],
+        "timestamp": "2026-09-30T09:34:14.460Z",
+        "path": "build/agent-logs/contextual-retrieval-20260930/attempt-3/core/rag/build/test-results/testDebugUnitTest/TEST-app.skein.core.rag.retrieval.RetrievalServiceImplContractTest.xml",
+        "sha256": "cedb1f6a3a55cb17f4b49659c68ae2767ef37527f04c5ff15129fe798c133f70"
+      },
+      {
+        "suite": "app.skein.core.rag.retrieval.RetrievalServiceImplEndToEndTest",
+        "testcases": 2,
+        "nonpassing": [],
+        "timestamp": "2026-09-30T09:34:14.475Z",
+        "path": "build/agent-logs/contextual-retrieval-20260930/attempt-3/core/rag/build/test-results/testDebugUnitTest/TEST-app.skein.core.rag.retrieval.RetrievalServiceImplEndToEndTest.xml",
+        "sha256": "f00f0fc8a52e7cb1a9cada7aad8c4b67995f3f3160e0c9a51f0e21f53d765192"
+      },
+      {
+        "suite": "app.skein.core.rag.retrieval.RetrievalServiceImplTest",
+        "testcases": 12,
+        "nonpassing": [],
+        "timestamp": "2026-09-30T09:34:15.212Z",
+        "path": "build/agent-logs/contextual-retrieval-20260930/attempt-3/core/rag/build/test-results/testDebugUnitTest/TEST-app.skein.core.rag.retrieval.RetrievalServiceImplTest.xml",
+        "sha256": "92d08802f61835dea15baa4aa37cf3ba9bef07dde64247805110258a8dd63a97"
+      }
+    ]
+  },
+  "invocation_log": {
+    "path": "build/agent-logs/contextual-retrieval-20260930/attempt-3.log",
+    "sha256": "be30ff99fa3180f6fd8d2ad36d4daae388b9677f66c50cb01a34d5ef4f81fc86",
+    "exit": 0
+  },
+  "task_outcomes": {
+    ":core:rag:testDebugUnitTest": "EXECUTED",
+    ":core:rag:ktlintCheck": "EXECUTED",
+    ":core:model:checkIsolationGuards": "EXECUTED",
+    ":core:rag:checkNoRawLogging": "EXECUTED",
+    ":core:rag:checkNoTestDoublesInMain": "EXECUTED",
+    ":core:model:ktlintCheck": "UP-TO-DATE after successful main check in attempt-2; format/check inputs current"
+  },
+  "failed_attempts_retained": [
+    "attempt-1: task lookup only, wrong rag isolation target; no tests",
+    "attempt-2: unformatted main lint, no tests",
+    "format-1: formatter convergence/test layout, no tests"
+  ],
+  "successful_formatter": "format-2",
+  "source_freeze": "These eight source/test hashes frozen before held-out execution; implementation lane did not read fresh40 query/document/label contents."
+}
