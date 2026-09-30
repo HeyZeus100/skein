@@ -1,0 +1,12 @@
+{
+  "at": "2026-09-30T17:01:08.185943+00:00",
+  "source": "0c494e777",
+  "command": "python3 -m unittest discover -s tools/ci -p 'test_foldable*.py'",
+  "tests": 31,
+  "failures": 1,
+  "wall_seconds": 1.384,
+  "test": "test_no_input_adb_child_cannot_wait_for_an_inherited_open_stdin_pipe",
+  "error": "subprocess.TimeoutExpired: Command ['adb', '-s', 'emulator-5554', 'shell', '-n', '-T', 'true'] timed out after 0.5 seconds",
+  "python": "/Library/Frameworks/Python.framework/Versions/3.14/lib/python3.14",
+  "scope": "Host subprocess test; not physical or emulator failure. Original tool output retained in coordinator session."
+}

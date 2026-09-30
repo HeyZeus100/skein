@@ -1,0 +1,57 @@
+{
+  "source_parent": "0c494e777",
+  "source_change": {
+    "path": "tools/ci/test_foldable_console.py",
+    "bytes": 20068,
+    "sha256": "fbee22977fe58db3bd711e2226316a9ad9fb4b75362711fcb648284240a49286"
+  },
+  "production_source_unchanged": true,
+  "original_host_failure": "root-host-failure.json is root summary of tool-captured failure, not raw exact log.31tests/1failure, fake-process0.5s deadline. Original44case pass retained separately.",
+  "diagnosis": "Original harness counts helper startup and stdin blocking in the same deadline; this failure does not isolate the stdin mechanism. No actual emulator cause established.",
+  "repair": "Fake process signals READY on stderr after startup. Unchanged0.5s synthetic blocking deadline begins only after that signal; separate5s startup bound. Parent retains open stdin through exit. No production timing changes.",
+  "actual_host_tests": {
+    "log": "synchronized-host-tests.log",
+    "tests": 44,
+    "failures": 0,
+    "errors": 0,
+    "skips": 0
+  },
+  "negative_controls": {
+    "mechanism": "fake child signals READY after startup before unchanged0.5s blocked-input deadline starts; parent stdin held open",
+    "scope": "fake adb real subprocess, no emulator or original cause claim",
+    "results": [
+      {
+        "variant": "old",
+        "source_sha256": "4259a869f1132b83b6c35ddd88fdec0caa8c686e59892b8a50855778c526b269",
+        "tests": 1,
+        "failures": 1,
+        "errors": 0,
+        "expected_failure": true
+      },
+      {
+        "variant": "fixed",
+        "source_sha256": "97e84bd6e27234ffcf9eade2d9d46e75be02740ae629bae10904ed560622c7a0",
+        "tests": 1,
+        "failures": 0,
+        "errors": 0,
+        "expected_failure": false
+      }
+    ]
+  },
+  "readiness_scope": "One successful nonce exchange per fresh instrumentation process before first Activity launch/geometry; later@Before calls use process-local success. Original sixposture/fivegeometry still required.",
+  "remaining": "Kotlin lint/compile, actual emulator requestACK/geometry, exact profile and physical acceptance remain open.",
+  "evidence_files": {
+    "root-host-failure.json": {
+      "bytes": 633,
+      "sha256": "b0990bf0dad7c3f4dcc232ec38276cc205e66cae9074f1b7b619615b2c8b6d95"
+    },
+    "synchronized-host-tests.log": {
+      "bytes": 8213,
+      "sha256": "5e7b8732044bd42da260e0de48dcd6e18cab22cd385187924403a946059c34ce"
+    },
+    "synchronized-stdin-controls.zip": {
+      "bytes": 4253,
+      "sha256": "65a0abd52c0462ef7e1e6a2a565ac43c1ee563abb8fd036e9a40241cd4a0743e"
+    }
+  }
+}

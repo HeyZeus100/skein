@@ -126,21 +126,44 @@ class ConsoleProtocolTest(unittest.TestCase):
         # Real process test of the stdin mechanism, not a real adb/emulator acceptance claim.
         # A fake adb consumes stdin until EOF; the parent intentionally keeps its pipe open.
         fake = self.path / "adb"
-        fake.write_text("#!/usr/bin/env python3\nimport sys\nsys.stdin.read()\nprint('EOF received')\n")
+        fake.write_text("#!/usr/bin/env python3\nimport sys\nprint('READY', file=sys.stderr, flush=True)\nsys.stdin.read()\nprint('EOF received')\n")
         fake.chmod(0o755)
         runner = self.path / "runner.py"
-        runner.write_text(f"""import importlib.util, pathlib
+        runner.write_text(f"""import importlib.util, pathlib, selectors, subprocess
 spec = importlib.util.spec_from_file_location('bridge', {str(Path(bridge.__file__).resolve())!r})
 m = importlib.util.module_from_spec(spec)
 spec.loader.exec_module(m)
-host = m.Bridge('emulator-5554', {'a' * 32!r}, pathlib.Path({str(self.path)!r}), environment={{'GITHUB_ACTIONS': 'true'}})
+def run_after_fake_ready(argv, **options):
+    # The 0.5-second invariant concerns blocked inherited input, not Python startup.
+    deadline = options.pop('timeout')
+    options.pop('check')
+    options.pop('capture_output')
+    payload = options.pop('input', None)
+    process = subprocess.Popen(argv, stdout=subprocess.PIPE, stderr=subprocess.PIPE, **options)
+    try:
+        with selectors.DefaultSelector() as selector:
+            selector.register(process.stderr, selectors.EVENT_READ)
+            if not selector.select(timeout=5):
+                raise RuntimeError('fake adb never reached the synchronized stdin read')
+        if process.stderr.readline() != 'READY\\n':
+            raise RuntimeError('fake adb startup failed')
+        stdout, stderr = process.communicate(input=payload, timeout=deadline)
+        return subprocess.CompletedProcess(argv, process.returncode, stdout, stderr)
+    finally:
+        if process.poll() is None:
+            process.kill()
+            process.wait()
+        process.stdout.close()
+        process.stderr.close()
+host = m.Bridge('emulator-5554', {'a' * 32!r}, pathlib.Path({str(self.path)!r}), run=run_after_fake_ready,
+                environment={{'GITHUB_ACTIONS': 'true'}})
 print(host.adb('shell', '-n', '-T', 'true', timeout=0.5).stdout, flush=True)
 """)
         process = subprocess.Popen([sys.executable, str(runner)], stdin=subprocess.PIPE, stdout=subprocess.PIPE,
                                    stderr=subprocess.PIPE, text=True,
                                    env={**os.environ, "PATH": str(self.path) + os.pathsep + os.environ["PATH"]})
         try:
-            process.wait(timeout=3)
+            process.wait(timeout=8)
             self.assertEqual(0, process.returncode, process.stderr.read())
             self.assertEqual("EOF received\n\n", process.stdout.read())
         finally:
