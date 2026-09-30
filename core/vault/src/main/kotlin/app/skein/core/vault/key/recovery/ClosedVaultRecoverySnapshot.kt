@@ -21,6 +21,7 @@ internal class ClosedVaultRecoverySnapshot private constructor(
     private val lease: ClosedVaultRecoveryLease,
     private val sources: List<File>,
     private val identity: List<String?>,
+    private val privateIdentity: List<String?>,
     private val directory: File,
     val database: File,
 ) : Closeable {
@@ -34,7 +35,7 @@ internal class ClosedVaultRecoverySnapshot private constructor(
         // Success must attest the exact captured ciphertext, not another file at the private path.
         // SQLite may create its private shared-memory index, but may not replace DB/WAL evidence.
         val copies = listOf(database, File(directory, "vault.db-wal"))
-        if (copies.map(::fingerprint) != identity.take(2)) throw RecoverySnapshotRefused()
+        if (copies.map(::fingerprint) != privateIdentity) throw RecoverySnapshotRefused()
         lease.assertExclusiveAndClosed()
     }
 
@@ -46,6 +47,8 @@ internal class ClosedVaultRecoverySnapshot private constructor(
     }
 
     companion object {
+        private const val EMPTY_FILE_SHA256 = "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+
         fun capture(lease: ClosedVaultRecoveryLease): ClosedVaultRecoverySnapshot {
             lease.assertExclusiveAndClosed()
             val root = lease.vaultDirectory.absoluteFile
@@ -88,7 +91,24 @@ internal class ClosedVaultRecoverySnapshot private constructor(
                     }
                     lease.assertExclusiveAndClosed()
                 }
-                return ClosedVaultRecoverySnapshot(lease, sources, identity, privateDirectory, copied).also {
+                // SQLite opens the WAL with CREATE even for a read-only main database.
+                // Stage that empty sidecar deliberately when the source has no WAL, so
+                // native reads cannot change the sealed private evidence from absent to
+                // empty. Source absence remains pinned separately and never normalized.
+                if (identity[1] == null) {
+                    Files.createFile(File(privateDirectory, "vault.db-wal").toPath())
+                }
+                // Derive expected identities only from captured evidence or known empty
+                // bytes, never from a fresh fingerprint that could bless changed copies.
+                val privateIdentity = listOf(identity[0], identity[1] ?: EMPTY_FILE_SHA256)
+                return ClosedVaultRecoverySnapshot(
+                    lease,
+                    sources,
+                    identity,
+                    privateIdentity,
+                    privateDirectory,
+                    copied,
+                ).also {
                     it.assertSourceUnchanged()
                 }
             } catch (failure: Throwable) {

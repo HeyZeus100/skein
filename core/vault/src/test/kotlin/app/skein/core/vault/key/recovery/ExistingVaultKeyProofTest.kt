@@ -28,6 +28,49 @@ class ExistingVaultKeyProofTest {
     }
 
     @Test
+    fun `read only native work leaving empty private WAL proves without changing source absence`() {
+        val lease = lease()
+        val sourceWal = File(lease.vaultDirectory, "vault.db-wal")
+        assertThat(sourceWal.exists()).isFalse()
+        val key = ByteArray(32) { 42 }
+        ClosedVaultRecoverySnapshot.capture(lease).use { snapshot ->
+            val privateWal = File(snapshot.database.parentFile, "vault.db-wal")
+            val proof =
+                ExistingVaultKeyProof { _, _ ->
+                    // Models sqlite3WalOpen's CREATE side effect for a read-only main DB.
+                    // On old source the absent private WAL changes to empty during proof.
+                    privateWal.writeBytes(ByteArray(0))
+                    0
+                }
+            assertThat(proof.verify(snapshot, key)).isEqualTo(ExistingVaultKeyProofResult.VERIFIED)
+            assertThat(privateWal.isFile).isTrue()
+            assertThat(privateWal.readBytes()).isEmpty()
+            assertThat(sourceWal.exists()).isFalse()
+        }
+        assertThat(key).isEqualTo(ByteArray(32))
+    }
+
+    @Test
+    fun `empty WAL or SHM appearing at source during proof still refuses and zeros candidate`() {
+        val lease = lease()
+        for (name in listOf("vault.db-wal", "vault.db-shm")) {
+            val source = File(lease.vaultDirectory, name)
+            assertThat(source.exists()).isFalse()
+            ClosedVaultRecoverySnapshot.capture(lease).use { snapshot ->
+                val key = ByteArray(32) { 42 }
+                val proof =
+                    ExistingVaultKeyProof { _, _ ->
+                        source.writeBytes(ByteArray(0))
+                        0
+                    }
+                assertThat(proof.verify(snapshot, key)).isEqualTo(ExistingVaultKeyProofResult.UNAVAILABLE)
+                assertThat(key).isEqualTo(ByteArray(32))
+            }
+            source.delete()
+        }
+    }
+
+    @Test
     fun `native refusal statuses never count as proof and zero every key`() {
         ClosedVaultRecoverySnapshot.capture(lease()).use { snapshot ->
             val codes =

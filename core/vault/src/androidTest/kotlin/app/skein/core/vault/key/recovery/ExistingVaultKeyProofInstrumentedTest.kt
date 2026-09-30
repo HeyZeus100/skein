@@ -42,6 +42,34 @@ class ExistingVaultKeyProofInstrumentedTest {
     }
 
     @Test
+    fun directReadOnlyProofCreatesOnlyEmptyPrivateWalAndPreservesEncryptedSources() {
+        val source = root()
+        create(source, encrypted = true)
+        val before = sources(source)
+        assertThat(File(source, "vault.db-wal").exists()).isFalse()
+        // Separate closed disposable copy, with no snapshot wrapper to hide native status
+        // or sidecar behavior. Never use this direct-native pattern on the live vault.
+        val privateRoot = root()
+        val database = File(source, "vault.db").copyTo(File(privateRoot, "vault.db"))
+        val copied = database.readBytes().toList()
+        val wal = File(privateRoot, "vault.db-wal")
+        assertThat(wal.exists()).isFalse()
+        val candidate = key.copyOf()
+        val nativeCode =
+            try {
+                RecoveryProofNative.nativeVerify(database.path, candidate)
+            } finally {
+                // The JNI method wipes its native buffers; its caller owns this array.
+                candidate.fill(0)
+            }
+        assertThat(nativeCode).isEqualTo(0)
+        assertThat(wal.isFile).isTrue()
+        assertThat(wal.readBytes()).isEmpty()
+        assertThat(database.readBytes().toList()).isEqualTo(copied)
+        assertThat(sources(source)).containsExactlyEntriesIn(before)
+    }
+
+    @Test
     fun plaintextEmptyMissingCorruptAndUnknownSchemaNeverProveCandidate() {
         val root = root()
         create(root, encrypted = false)

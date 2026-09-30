@@ -28,6 +28,67 @@ class ClosedVaultRecoverySnapshotTest {
     }
 
     @Test
+    fun `absent source WAL stages an empty private WAL without changing source absence`() {
+        val lease = lease()
+        File(lease.vaultDirectory, "vault.db-wal").delete()
+        val originals = sourceBytes()
+        ClosedVaultRecoverySnapshot.capture(lease).use { snapshot ->
+            val privateWal = File(snapshot.database.parentFile, "vault.db-wal")
+            assertThat(privateWal.isFile).isTrue()
+            assertThat(privateWal.readBytes()).isEmpty()
+            snapshot.assertSourceUnchanged()
+            assertThat(sourceBytes()).containsExactlyEntriesIn(originals)
+        }
+    }
+
+    @Test
+    fun `staged empty private WAL cannot disappear become nonempty or redirect to another file`() {
+        val lease = lease()
+        File(lease.vaultDirectory, "vault.db-wal").delete()
+        val originals = sourceBytes()
+        val target = File(lease.vaultDirectory, "unrelated-empty").apply { writeBytes(ByteArray(0)) }
+        for (mutation in listOf("delete", "nonempty", "directory", "symlink")) {
+            ClosedVaultRecoverySnapshot.capture(lease).use { snapshot ->
+                val privateWal = File(snapshot.database.parentFile, "vault.db-wal")
+                privateWal.delete()
+                when (mutation) {
+                    "nonempty" -> privateWal.writeBytes(byteArrayOf(1))
+                    "directory" -> check(privateWal.mkdir())
+                    "symlink" -> Files.createSymbolicLink(privateWal.toPath(), target.toPath())
+                }
+                assertThrows(RecoverySnapshotRefused::class.java) { snapshot.assertSourceUnchanged() }
+                assertThat(sourceBytes()).containsExactlyEntriesIn(originals)
+                assertThat(target.readBytes()).isEmpty()
+            }
+        }
+    }
+
+    @Test
+    fun `captured WAL keeps exact private identity including empty and nonempty evidence`() {
+        val lease = lease()
+        val sourceWal = File(lease.vaultDirectory, "vault.db-wal")
+        for (original in listOf(ByteArray(0), ByteArray(64) { 11 })) {
+            sourceWal.writeBytes(original)
+            val originals = sourceBytes()
+            val mutations =
+                if (original.isEmpty()) listOf("delete", "replace") else listOf("delete", "replace", "truncate")
+            for (mutation in mutations) {
+                ClosedVaultRecoverySnapshot.capture(lease).use { snapshot ->
+                    val privateWal = File(snapshot.database.parentFile, "vault.db-wal")
+                    assertThat(privateWal.readBytes()).isEqualTo(original)
+                    when (mutation) {
+                        "delete" -> privateWal.delete()
+                        "replace" -> privateWal.writeBytes(ByteArray(64) { 77 })
+                        "truncate" -> privateWal.writeBytes(ByteArray(0))
+                    }
+                    assertThrows(RecoverySnapshotRefused::class.java) { snapshot.assertSourceUnchanged() }
+                    assertThat(sourceBytes()).containsExactlyEntriesIn(originals)
+                }
+            }
+        }
+    }
+
+    @Test
     fun `unestablished lease refuses before creating private copies`() {
         val lease = lease().apply { held = false }
         assertThrows(RecoverySnapshotRefused::class.java) { ClosedVaultRecoverySnapshot.capture(lease) }
@@ -96,5 +157,5 @@ class ClosedVaultRecoverySnapshotTest {
 
     private fun sourceBytes() =
         listOf("vault.db", "vault.db-wal", "vault.db-shm", "keys/key-envelope.v1")
-            .associateWith { File(tempDir.root, it).readBytes().toList() }
+            .associateWith { name -> File(tempDir.root, name).takeIf { it.exists() }?.readBytes()?.toList() }
 }
